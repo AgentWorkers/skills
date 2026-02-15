@@ -1,6 +1,5 @@
 ---
-slug: "image-to-data"
-display_name: "Image To Data"
+name: "image-to-data"
 description: "使用人工智能视觉技术从施工图像中提取数据。分析现场照片、扫描的文档和图纸。"
 ---
 
@@ -8,7 +7,7 @@ description: "使用人工智能视觉技术从施工图像中提取数据。分
 
 ## 概述
 
-本技能基于DDC方法论（第2.4章），利用计算机视觉、OCR（光学字符识别）和AI模型从建筑图像中提取结构化数据，从而分析现场照片、扫描文档和图纸。
+本技能基于DDC方法论（第2.4章），利用计算机视觉、OCR（光学字符识别）和AI模型从建筑图像中提取结构化数据，以分析现场照片、扫描文档和图纸。
 
 **参考书籍**：《数据转换成结构化形式》（Data Transformation to Structured Form）
 
@@ -565,14 +564,14 @@ if safety['overall_compliance'] == 'non-compliant':
 
 ## 快速参考
 
-| 组件          | 功能                      |
-|---------------|-------------------------|
-| `ConstructionImageAnalyzer` | 主要分析引擎                |
-| `OCREngine`      | 文本提取                    |
-| `ObjectDetector`   | 对象检测                    |
-| `TableExtractor`   | 表格提取                    |
-| `ProgressAnalyzer`   | 进度分析                    |
-| `ImageAnalysisResult` | 完整的分析结果                |
+| 组件          | 功能                |
+|---------------|-------------------|
+| `ConstructionImageAnalyzer` | 主要分析引擎           |
+| `OCREngine`       | 文本提取             |
+| `ObjectDetector`    | 对象检测             |
+| `TableExtractor`    | 表格提取             |
+| `ProgressAnalyzer`    | 进度分析             |
+| `ImageAnalysisResult` | 完整分析结果           |
 
 ## 资源
 

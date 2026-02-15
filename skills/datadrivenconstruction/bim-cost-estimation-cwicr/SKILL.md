@@ -1,32 +1,32 @@
 ---
-slug: "bim-cost-estimation-cwicr"
-display_name: "BIM Cost Estimation CWICR"
-description: "**使用 DDC CWICR 数据库从 BIM 模型中自动进行成本估算**  
-该系统包含 55,719 个工作项，通过人工智能（AI）进行分类，并结合向量搜索技术来实现精确的定价。"
+name: "bim-cost-estimation-cwicr"
+description: "使用 DDC CWICR 数据库，从 BIM 模型中自动进行成本估算；该数据库包含 55,719 个工作项。通过 AI 分类和向量搜索技术来实现精确的定价。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw":{"emoji":"🏗️","os":["darwin","linux","win32"],"homepage":"https://datadrivenconstruction.io","requires":{"bins":["python3"],"env":["OPENAI_API_KEY","QDRANT_URL"]},"primaryEnv":"OPENAI_API_KEY"}}
 ---
 
 # 使用 DDC CWICR 进行 BIM 成本估算
 
-通过 AI 分类和 DDC CWICR 建设成本数据库，从 BIM 模型中生成准确的成本估算。
+通过 AI 分类和 DDC CWICR 建筑成本数据库，从 BIM 模型中生成准确的成本估算。
 
 ## 商业案例
 
 **问题**：
-- 传统的成本估算方法：
-  - 手动操作，耗时较长（详细估算需要数周时间）
+- 传统成本估算方法：
+  - 手动操作，耗时较长（详细估算可能需要数周时间）
   - 主观性强，不同估算人员之间的结果存在差异
-  - 需要专业知识
+  - 需要专业技能
   - 难以根据设计变更进行更新
 
 **解决方案**：
 - 自动化的 BIM 到成本转换流程：
   - 直接从模型中提取工程量数据
   - 使用 AI 将元素分类为具体的工作项
-  - 通过向量搜索在 DDC CWICR 中查找匹配的价格
-  - 几小时内即可完成成本估算，而非数周时间
+  - 通过向量搜索在 DDC CWICR 中查找相应的价格
+  - 完成估算仅需几小时，而非数周时间
 
 **投资回报率 (ROI)**：
-- 估算时间缩短 80%，方法更加统一
+- 估算时间缩短 80%，方法更加统一和一致
 
 ## 系统架构
 
@@ -95,7 +95,7 @@ Collections:
 | 4 | 工作项分解 | AI 将元素类型细分为具体的工作项 |
 | 5 | 向量搜索 | 在 DDC CWICR 中查找匹配的价格 |
 | 6 | 单位转换 | 将 BIM 单位转换为成本计算所需的单位 |
-| 7 | 成本计算 | 工程量 × 单价 = 成本 |
+| 7 | 成本计算 | 工程量 × 单价 |
 | 7.5 | 验证 | 由技术总监 (CTO) 审查估算的完整性 |
 | 8 | 数据汇总 | 按阶段和类别汇总成本 |
 | 9 | 报告生成 | 生成 HTML 和 Excel 格式的报告 |
@@ -550,4 +550,4 @@ CONFIDENCE ANALYSIS
 
 ---
 
-*“基于资源的成本核算方法将实际工程量与波动较大的价格分开，从而实现透明且可审计的成本估算。”*
+*“基于资源的成本核算方法将实际工程量与价格波动因素分离，从而实现透明且可审计的估算结果。”*

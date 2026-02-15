@@ -1,6 +1,5 @@
 ---
-slug: "dwg-to-excel"
-display_name: "DWG To Excel"
+name: "dwg-to-excel"
 description: "使用 DwgExporter CLI 将 AutoCAD DWG 文件（版本 1983–2026）转换为 Excel 数据库。无需 Autodesk 许可证即可提取图层、块、属性和几何数据。"
 ---
 
@@ -10,7 +9,7 @@ description: "使用 DwgExporter CLI 将 AutoCAD DWG 文件（版本 1983–2026
 
 ### 问题描述
 AutoCAD 的 DWG 文件包含了以专有格式存储的宝贵项目数据：
-- 具有绘图组织结构的图层
+- 包含绘图组织的图层结构
 - 带有属性数据的块引用
 - 文本注释和尺寸标注
 - 几何实体（直线、多段线、弧线）
@@ -19,14 +18,14 @@ AutoCAD 的 DWG 文件包含了以专有格式存储的宝贵项目数据：
 提取这些数据通常需要 AutoCAD 许可证或复杂的编程技术。
 
 ### 解决方案
-DwgExporter.exe 可以在离线环境下将 DWG 文件转换为结构化的 Excel 数据库，且无需 Autodesk 许可证。
+DwgExporter.exe 可以在无需 Autodesk 许可证的情况下，将 DWG 文件离线转换为结构化的 Excel 数据库。
 
 ### 商业价值
 - **零许可成本**：无需 AutoCAD 许可证
-- **对旧版本的兼容性**：支持 1983 至 2026 年发布的所有 DWG 文件格式
-- **数据提取功能**：可以提取图层、块、属性、文本和几何图形等信息
-- **PDF 导出**：可以将 DWG 文件中的内容导出为 PDF 格式的图纸
-- **批量处理**：能够同时处理数千个 DWG 文件
+- **支持旧版本**：能够读取 1983 年至 2026 年发布的 DWG 文件
+- **数据提取**：支持图层、块、属性、文本和几何图形
+- **PDF 导出**：可以从 DWG 布局生成 PDF 图纸
+- **批量处理**：可以同时转换数千个 DWG 文件
 
 ## 技术实现
 
@@ -39,12 +38,12 @@ DwgExporter.exe <input_dwg> [options]
 | 输出格式 | 描述 |
 |--------|-------------|
 | `.xlsx` | 包含所有几何实体的 Excel 数据库 |
-| `.pdf` | 从 DWG 文件布局生成的 PDF 图纸 |
+| `.pdf` | 从 DWG 布局生成的 PDF 图纸 |
 
 ### 支持的 DWG 版本
 | 版本范围 | 描述 |
 |---------------|-------------|
-| R12 (1992) | 旧版本的 DWG 文件格式 |
+| R12 (1992) | 早期版本的 DWG 文件 |
 | R14 (1997) | AutoCAD 14 |
 | 2000-2002 | DWG 2000 格式 |
 | 2004-2006 | DWG 2004 格式 |
@@ -385,30 +384,30 @@ def batch_convert_dwg(folder: str,
     return [r['output'] for r in results if r['status'] == 'success']
 ```
 
-## 输出数据结构
+## 输出结构
 
 ### Excel 工作表
 | 工作表 | 内容 |
 |-------|---------|
-| 实体信息 | 所有 DWG 实体及其属性 |
-| 图层信息 | 图层定义 |
-| 块信息 | 块的定义 |
-| 绘图布局 | 绘图布局/图纸 |
+| 实体 | 所有 DWG 实体及其属性 |
+| 图层 | 图层定义 |
+| 块 | 块定义 |
+| 布局 | 绘图布局/图纸 |
 
-### 实体属性列
+### 实体列
 | 列名 | 类型 | 描述 |
 |--------|------|-------------|
 | Handle | 字符串 | 实体的唯一标识符 |
-| EntityType | 字符串 | 实体类型（如直线、圆等） |
-| Layer | 字符串 | 所属图层名称 |
-| Color | 整数 | 图层颜色索引（0-256） |
+| EntityType | 字符串 | 实体类型（如 LINE、CIRCLE 等） |
+| Layer | 字符串 | 图层名称 |
+| Color | 整数 | 颜色索引（0-256） |
 | Linetype | 字符串 | 线型名称 |
 | Lineweight | 浮点数 | 线宽（单位：毫米） |
-| X, Y, Z | 浮点数 | 实体的坐标 |
-| BlockName | 字符串 | 对于 INSERT 类型的实体，包含块名称 |
-| TextContent | 字符串 | 对于 TEXT/MTEXT 类型的实体，包含文本内容 |
+| X, Y, Z | 浮点数 | 实体坐标 |
+| BlockName | 字符串 | 对于 INSERT 类型的实体 |
+| TextContent | 字符串 | 对于 TEXT/MTEXT 类型的实体 |
 
-## 快速入门指南
+## 快速入门
 ```python
 # Initialize exporter
 exporter = DWGExporter("C:/DDC/DwgExporter.exe")
@@ -436,19 +435,19 @@ for _, row in texts.iterrows():
 ```
 
 ## 常见使用场景
-- **图层审核**：检查 DWG 文件中的图层结构
-- **块管理**：管理 DWG 文件中的块引用
-- **图纸对比**：将 DWG 文件与现有图纸进行对比
-- **与 DDC 流程集成**：将转换结果整合到数据管道中
+- **图层审计**：检查图层结构
+- **块管理**：管理图块及其属性
+- **图纸对比**：比较不同版本的图纸
+- **与 DDC 流程集成**：将转换结果集成到数据处理流程中
 
 ## 最佳实践
-1. **检查 DWG 文件版本**：较旧的文件可能包含有限的数据
-2. **验证图层结构**：在处理前清理图层信息
+1. **检查 DWG 版本**：较旧的文件可能包含有限的数据
+2. **验证图层结构**：在处理前清理数据
 3. **处理外部引用**：根据需要绑定外部引用（xref）
-4. **批量处理**：对于大型文件，建议分批处理以节省时间
-5. **核对实体数量**：如有必要，可以将转换结果与 AutoCAD 中的实体数量进行核对
+4. **批量处理**：处理大量文件时建议分批进行
+5. **核对实体数量**：如有必要，与 AutoCAD 的数据结果进行比对
 
 ## 资源
-- **GitHub 项目**：[cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
-- **视频教程**：[DWG 到 Excel 的转换流程](https://www.youtube.com/watch?v=jVU7vlMNTO0)
-- **相关书籍**：第 2.4 章 – CAD 数据提取技术
+- **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
+- **视频教程**: [DWG 到 Excel 的转换流程](https://www.youtube.com/watch?v=jVU7vlMNTO0)
+- **相关书籍**: 第 2.4 章 – CAD 数据提取

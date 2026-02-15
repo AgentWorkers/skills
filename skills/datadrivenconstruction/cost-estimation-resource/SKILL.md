@@ -1,16 +1,18 @@
 ---
 name: "cost-estimation-resource"
 description: "使用基于资源的方法来计算建造成本。根据工作项、物理资源标准以及当前价格来估算项目成本。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw":{"emoji":"🧮","os":["darwin","linux","win32"],"homepage":"https://datadrivenconstruction.io","requires":{"bins":["python3"]}}}
 ---
 
 # 成本估算 - 资源法
 
-## 业务场景
+## 商业案例
 
-### 问题描述
-传统成本核算方法存在的挑战：
+### 问题陈述
+传统成本核算方法面临的挑战：
 - 固定的单价容易过时
-- 无法清晰地了解成本构成
+- 无法清晰了解成本构成
 - 难以根据实际情况调整成本
 - 成本分析能力有限
 
@@ -18,7 +20,6 @@ description: "使用基于资源的方法来计算建造成本。根据工作项
 基于资源的成本核算方法将实际资源消耗（标准用量）与单价分开，从而实现准确、可调整且透明的成本估算。
 
 ## 技术实现
-
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -296,7 +297,6 @@ class ResourceBasedEstimator:
 ```
 
 ## 快速入门
-
 ```python
 # Initialize estimator
 estimator = ResourceBasedEstimator()
@@ -331,7 +331,7 @@ print(f"Direct Cost: ${estimate['totals']['direct_cost']:,.2f}")
 print(f"Grand Total: ${estimate['totals']['grand_total']:,.2f}")
 ```
 
-## 常见应用场景
+## 常见使用场景
 
 ### 1. 资源分解
 ```python

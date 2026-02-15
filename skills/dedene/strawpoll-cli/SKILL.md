@@ -5,6 +5,27 @@ description: >
   using the strawpoll CLI. Use when the user wants to create polls, view poll results,
   schedule meetings with availability, run ranked-choice votes, delete or update polls,
   or automate StrawPoll workflows in scripts.
+license: MIT
+homepage: https://github.com/dedene/strawpoll-cli
+metadata:
+  author: dedene
+  version: "1.1.0"
+  openclaw:
+    primaryEnv: STRAWPOLL_API_KEY
+    requires:
+      env:
+        - STRAWPOLL_API_KEY
+        - STRAWPOLL_KEYRING_BACKEND
+      bins:
+        - strawpoll
+    install:
+      - kind: brew
+        tap: dedene/tap
+        formula: strawpoll
+        bins: [strawpoll]
+      - kind: go
+        package: github.com/dedene/strawpoll-cli/cmd/strawpoll
+        bins: [strawpoll]
 ---
 
 # strawpoll-cli
@@ -163,6 +184,7 @@ strawpoll poll results "$POLL_ID" --participants --json
 # Set defaults
 strawpoll config set dupcheck session
 strawpoll config set results_visibility after_vote
+strawpoll config set is_private true
 
 # View config
 strawpoll config show
@@ -173,9 +195,9 @@ strawpoll config path
 
 配置文件保存在 `~/.config/strawpoll/config.yaml` 中。
 
-## 交互式模式
+## 交互模式
 
-在终端中不带参数运行该命令时，会启动一个交互式向导：
+在终端中运行命令时（不带参数），会启动一个交互式向导：
 
 ```bash
 # Launches wizard (poll title, options, settings)
@@ -192,11 +214,11 @@ strawpoll meeting create "Team sync"
 - 投票选项：最少 2 个，最多 30 个
 - 投票 ID：可以接受简短的 ID 或完整的 URL（包含/不包含 `https://`、`www.`、`/polls/`）
 - 截止时间：使用 RFC3339 格式（例如 `2025-03-15T18:00:00Z`）或持续时间（例如 `24h`、`1h30m`）
-- 会议日期：`YYYY-MM-DD` 表示全天，`YYYY-MM-DD HH:MM-HH:MM` 表示特定时间段
+- 会议日期：`YYYY-MM-DD` 表示全天，`YYYY-MM-DD HH:MM-HH:MM` 表示特定时间范围
 - 时区：使用 IANA 格式（例如 `Europe/Berlin`、`America/New_York`）
-- 无专门的投票端点——投票只能通过投票 URL 在浏览器中完成
+- 无专门的投票接口——投票只能通过投票 URL 在浏览器中完成
 
-## Shell 完成提示（Shell Completion Tips）
+## Shell 完成提示
 
 ```bash
 strawpoll completion bash > /etc/bash_completion.d/strawpoll
@@ -204,4 +226,10 @@ strawpoll completion zsh > "${fpath[1]}/_strawpoll"
 strawpoll completion fish > ~/.config/fish/completions/strawpoll.fish
 ```
 
-有关所有命令的完整参数说明，请参阅 [reference.md](reference.md)。
+有关所有命令的参数详细信息，请参阅 [reference.md](reference.md)。
+
+## 安装
+
+```bash
+brew install dedene/tap/strawpoll
+```

@@ -1,21 +1,21 @@
 # AgentOS SDK 技能文档
 
 ## 概述
-AgentOS 是一个专为 AI 代理设计的完整责任管理基础设施。它提供了持久化存储、项目管理、看板功能、头脑风暴存储、活动日志记录、代理间通信以及自我进化机制。
+AgentOS 是一个为 AI 代理提供的完整责任管理基础设施。它提供了持久化存储、项目管理、看板功能、头脑风暴记录、活动日志记录、网络通信以及自我进化机制。
 
-**使用场景：** 当您需要存储数据、管理项目、跟踪任务、记录活动、与其他代理进行通信，或在会话之间持续优化代理行为时，均可使用 AgentOS。
+**使用场景：** 当你需要存储信息、管理项目、跟踪任务、记录活动、与其他代理通信，或在会话之间持续优化代理行为时。
 
 ## 🆕 代理操作指南
-请阅读 `AGENT-OPS.md` 以获取在 AgentOS 上作为代理运行的完整操作指南。该指南涵盖以下内容：
+**请阅读 `AGENT-OPS.md` 以获取在 AgentOS 上作为代理操作的完整指南。** 其内容包括：
 - 内存组织（路径、标签、重要性）
 - 项目管理（创建、更新、跟踪）
 - 看板工作流程（任务、状态、优先级）
-- 头脑风暴存储（想法、决策、学习成果）
+- 头脑风暴记录（想法、决策、学习内容）
 - 日常操作（会话开始/结束检查清单）
 - 自我进化机制
 
 ## 🆕 aos CLI - 完整的仪表盘控制
-`aos` CLI 允许您完全控制 AgentOS 仪表盘：
+`aos` CLI 可让你完全控制 AgentOS 仪表盘：
 
 ```bash
 # Memory
@@ -40,18 +40,64 @@ aos activity log "Completed API refactor" --project <id>
 aos mesh send <agent> "Topic" "Message body"
 ```
 
-运行 `aos help` 或 `aos <command>` 可查看详细使用说明。
+运行 `aos help` 或 `aos <command>` 可查看详细用法。
 
-## **推荐设置：黄金同步**  
-为了获得最准确的仪表盘数据（包括内存信息和项目详情），请执行以下操作：
+## **推荐：黄金同步**  
+为了确保仪表盘数据的完整性和准确性（包括内存和项目信息），请运行以下命令：
 ```bash
 ~/clawd/bin/agentos-golden-sync.sh
 ```
 
-此操作会同步内存数据，并将每个项目的 Markdown 文件（`TASKS.md`、`IDEAS.md`、`CHANGELOG.md`、`CHALLENGES.md`）更新到数据库并显示在仪表板上。
+该命令会同步内存数据，并更新每个项目的 Markdown 文件：
+`TASKS.md`、`IDEAS.md`、`CHANGELOG.md`、`CHALLENGES.md` → 数据库 → 仪表盘。
+
+## 🏷️ 内存分类（必填）
+**所有内存数据都必须正确分类。** 使用以下 8 个标准类别：
+| 类别 | 颜色 | 用途 | 路径前缀 | 主要标签 |
+|----------|-------|---------|-------------|-------------|
+| **身份** | 🔴 红色 | 用户信息、团队结构 | `identity/` | `["identity", ...]` |
+| **知识** | 🟠 橙色 | 事实、研究资料、文档 | `knowledge/` | `["knowledge", ...]` |
+| **记忆** | 🟣 紫色 | 长期记忆、学习内容、决策 | `memory/` | `["memory", ...]` |
+| **偏好设置** | 🔵 蓝色 | 用户偏好、设置、样式 | `preferences/` | `["preferences", ...]` |
+| **项目** | 🟢 绿色 | 活动中的任务、代码上下文 | `projects/` | `["project", "<name>"]` |
+| **操作记录** | 🟤 棕色 | 日志记录、状态信息 | `operations/` | `["operations", ...]` |
+| **机密信息** | ⚪ 灰色 | 访问权限信息、服务器位置（非实际密钥！） | `secrets/` | `["secrets", ...]` |
+| **协议** | 🔵 青色 | 标准操作流程、检查清单 | `protocols/` | `["protocols", ...]` |
+
+### 路径结构
+```
+<category>/<subcategory>/<item>
+
+Examples:
+identity/user/ben-profile
+knowledge/research/ai-agents-market
+memory/learnings/2026-02-mistakes
+preferences/user/communication-style
+projects/agentos/tasks
+operations/daily/2026-02-13
+secrets/access/hetzner-server
+protocols/deploy/agentos-checklist
+```
+
+### 标签规则
+每条内存数据必须包含：
+1. **主要类别标签** — 属于上述 8 个类别之一
+2. **子类别标签** — 更具体的分类
+3. **可选的项目标签** — 如果与项目相关
+
+```bash
+# Example: Store a learning with proper tags
+AOS_TAGS='["memory", "learnings"]' AOS_SEARCHABLE=true \
+  aos_put "/memory/learnings/2026-02-13" '{"lesson": "Always categorize memories"}'
+
+# Example: Store user preference
+AOS_TAGS='["preferences", "user"]' \
+  aos_put "/preferences/user/communication" '{"style": "direct, no fluff"}'
+```
+
+---
 
 ## 快速入门
-
 ```bash
 # Set environment variables
 export AGENTOS_API_KEY="your-api-key"
@@ -71,17 +117,15 @@ aos_get "/memories/today"
 aos_search "what did I learn today"
 ```
 
-## 配置参数
-
-| 参数 | 是否必填 | 说明 |
-|---------|---------|-------------|
-| `AGENTOS_API_KEY` | 是 | 来自 agentos.software 仪表板的 API 密钥 |
+## 配置
+| 变量 | 是否必填 | 说明 |
+|----------|----------|-------------|
+| `AGENTOS_API_KEY` | 是 | 从 agentos.software 仪表板获取的 API 密钥 |
 | `AGENTOS_BASE_URL` | 是 | API 端点（默认：`http://178.156.216.106:3100`） |
 | `AGENTOS_AGENT_ID` | 是 | 该代理实例的唯一标识符 |
 
 ## 核心 API 功能
-
-### aos_put - 存储数据
+### aos_put - 存储内存数据
 ```bash
 aos_put <path> <value_json> [options]
 
@@ -97,7 +141,7 @@ AOS_SEARCHABLE=true aos_put "/facts/solana" '{"info": "Solana uses proof of hist
 AOS_TTL=86400 aos_put "/cache/price" '{"sol": 120.50}'
 ```
 
-### aos_get - 获取数据
+### aos_get - 获取内存数据
 ```bash
 aos_get <path>
 
@@ -107,7 +151,7 @@ aos_get <path>
 aos_get "/learnings/2026-02-04"
 ```
 
-### aos_search - 智能搜索
+### aos_search - 语义搜索
 ```bash
 aos_search <query> [limit] [path_prefix]
 
@@ -118,7 +162,7 @@ aos_search "what mistakes have I made" 10
 aos_search "solana facts" 5 "/facts"
 ```
 
-### aos_delete - 删除数据
+### aos_delete - 删除内存数据
 ```bash
 aos_delete <path>
 
@@ -172,12 +216,12 @@ aos_dump "" 500
 ## 自我进化框架
 **有关完整的自我进化指南，请参阅 [SELF-EVOLUTION.md](./SELF-EVOLUTION.md)。**
 
-AgentOS 通过以下方式帮助代理不断提升智能：
-- **错误追踪**：避免重复相同错误
-- **问题库**：将解决方案索引以供将来参考
-- **任务前检查**：在行动前搜索相关学习内容
-- **进度检查点**：防止内存压缩
-- **验证日志**：确保任务确实完成
+AgentOS 通过以下方式帮助代理每天变得更智能：
+- **错误追踪** — 避免重复同样的错误
+- **问题记录** — 将解决方案索引以供将来参考
+- **任务前检查** — 在执行任务前搜索相关学习内容
+- **进度检查点** — 防止内存压缩
+- **验证日志** — 确保任务确实完成
 
 ### 快速入门：自我进化
 ```bash
@@ -203,19 +247,18 @@ aos_session_start
 aos_evolve_check
 ```
 
-## 核心功能
-
+### 核心功能
 | 功能 | 用途 |
-|---------|---------|
-| `aos_before_action` | 在执行操作前检查是否存在错误及解决方案 |
-| `aos_mistake` | 记录失败原因及经验教训 |
+|----------|---------|
+| `aos_before_action` | 在执行任务前检查错误/解决方案 |
+| `aos_mistake` | 记录失败及经验教训 |
 | `aos_problem_solved` | 注册已解决的问题 |
 | `aos_check_solved` | 搜索类似的已解决问题 |
 | `aos_save_progress` | 记录已完成的任务（防止内存压缩） |
 | `aos_checkpoint` | 每 15-20 分钟保存工作状态 |
 | `aos_session_start` | 会话开始时恢复上下文 |
-| `aos_verify_logged` | 记录验证结果 |
-| `aos_daily_summary` | 查看当天的工作内容 |
+| `aos_verify_logged` | 记录验证证据 |
+| `aos_daily_summary` | 回顾当天的工作 |
 | `aos_evolve_check` | 显示进化检查清单 |
 
 ### 推荐的内存结构
@@ -250,7 +293,7 @@ aos_evolve_check
 ```
 
 ### 自我反思机制
-完成重要任务后，请记录您的反思内容：
+完成重要任务后，请记录反思内容：
 ```bash
 # After a mistake
 aos_put "/learnings/mistakes/$(date +%Y-%m-%d)-$(uuidgen | cut -c1-8)" '{
@@ -287,7 +330,7 @@ aos_search "lessons from the past week" 20
 ```
 
 ## 实时同步（WebSocket）
-当内存数据发生变化时，您可以接收实时更新：
+当内存数据发生变化时，通过 WebSocket 接收实时更新：
 ```javascript
 const ws = new WebSocket('ws://178.156.216.106:3100');
 
@@ -319,13 +362,13 @@ ws.onmessage = (event) => {
 ```
 
 ### WebSocket 事件
-| 事件类型 | 事件载荷 | 说明 |
+| 事件 | 数据内容 | 说明 |
 |-------|---------|-------------|
-| `memory:created` | `{agentId, path, versionId, value, tags, createdAt}` | 新数据已存储 |
-| `memory:deleted` | `{agentId, path, versionId, deletedAt}` | 数据已被删除 |
+| `memory:created` | `{agentId, path, versionId, value, tags, createdAt}` | 新内存数据被存储 |
+| `memory:deleted` | `{agentId, path, versionId, deletedAt}` | 内存数据被删除 |
 
 ## Webhook 集成
-您可以注册 Webhook，在内存数据发生变化时接收 HTTP 回调：
+注册 Webhook 以在内存数据发生变化时接收 HTTP 回调：
 ```bash
 # Register a webhook (via dashboard or API)
 curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
@@ -339,7 +382,7 @@ curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
   }'
 ```
 
-### Webhook 事件载荷
+### Webhook 数据内容
 ```json
 {
   "event": "memory:created",
@@ -359,19 +402,19 @@ curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
 
 ## 速率限制与配额
 | 操作类型 | 默认限制 |
-|---------|---------------|
+|-----------|---------------|
 | 读取操作（get, list, glob, history） | 每分钟 60 次 |
 | 写入操作（put, delete） | 每分钟 60 次 |
 | 搜索操作 | 每分钟 20 次 |
-| WebSocket 连接 | 每个租户最多 5 个连接 |
+| WebSocket 连接 | 每个租户 5 个连接 |
 
 ## 心跳上下文备份机制（至关重要）
-**所有使用 AgentOS 的代理都必须在执行心跳操作时强制进行上下文备份。**
+**使用 AgentOS 的所有代理必须在每次心跳时执行强制性的上下文备份。**
 
 ### 设计原因：
 - AI 代理在会话压缩过程中可能会丢失上下文
-- 仅依赖“每次任务后备份”策略是不可靠的——代理可能会忘记备份
-- 通过心跳触发备份可确保上下文永远不会丢失
+- “每次任务后备份”这种提示容易忘记执行
+- 通过心跳驱动的备份确保上下文永远不会丢失
 
 ### Clawdbot 配置
 在 `clawdbot.json` 中将心跳间隔设置为 10 分钟：
@@ -389,7 +432,7 @@ curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
 ```
 
 ### HEARTBEAT.md 模板
-将以下内容添加到您的工作空间配置文件 `HEARTBEAT.md` 中：
+将以下内容添加到工作区的 `HEARTBEAT.md` 文件中：
 ```markdown
 ## 🔴 MANDATORY: Context Backup (DO THIS FIRST)
 
@@ -409,7 +452,7 @@ This is a HARD RULE. Never skip this step.
 ```
 
 ### AGENTS.md 规则
-将以下内容添加到 `AGENTS.md` 中：
+将以下内容添加到 `AGENTS.md` 文件中：
 ```markdown
 ## HARD RULE: Context Backup on EVERY Heartbeat
 
@@ -452,12 +495,11 @@ aos_put "/context/current" "$(cat CONTEXT.md)"
 aos_put "/daily/$(date +%Y-%m-%d)" "$(cat memory/daily/$(date +%Y-%m-%d).md)"
 ```
 
-这样您的上下文数据既会在本地备份，也会被存储在 AgentOS 云端。
+这样可以确保你的上下文数据在本地和 AgentOS 云端都有备份。
 
 ---
 
 ## 最佳实践
-
 ### 1. 使用有意义的路径名称
 ```bash
 # Good - hierarchical, descriptive
@@ -474,7 +516,7 @@ AOS_SEARCHABLE=true \
 aos_put "/projects/raptor/decisions/..." '...'
 ```
 
-### 3. 对临时数据设置过期时间（TTL）
+### 3. 对临时数据使用 TTL（过期时间）
 ```bash
 # Cache that expires in 1 hour
 AOS_TTL=3600 aos_put "/cache/api-response" '...'
@@ -495,24 +537,23 @@ aos_put "/config/critical-setting" '...'
 ```
 
 ## 故障排除
-
 ### “未经授权”错误
 - 确保 `AGENTOS_API_KEY` 设置正确
 - 验证该密钥具有所需的权限（`memory:read`、`memory:write`、`search:read`）
 
 ### 搜索结果为空
-- 确保数据已设置为 `searchable=true`
-- 检查数据是否已成功嵌入（可能需要几秒钟）
+- 确保内存数据已设置为 `searchable=true`
+- 检查是否生成了嵌入数据（可能需要几秒钟）
 
 ### 速率限制错误
 - 实施指数级退避策略
 - 尽可能批量处理操作
 - 检查 `X-PreAuth-RateLimit-Remaining` 请求头
 
-## 代理间通信（Agent-to-Agent）
-AgentOS 的 Mesh 功能支持 AI 代理之间的实时通信：
+## 网络通信（代理间通信）
+AgentOS 的网络机制支持 AI 代理之间的实时通信。
 
-### Mesh 功能
+### 网络功能
 ```bash
 # Send a message to another agent
 aos_mesh_send <to_agent> <topic> <body>
@@ -570,16 +611,16 @@ echo "$messages" | jq -r '.[] | "From: \(.from) - \(.topic)"'
 aos_mesh_send "kai" "Re: Project Update" "Thanks for the update, looks good!"
 ```
 
-### 实时消息处理守护进程
-要实时接收消息，请运行相应的守护进程：
+### 实时网络守护进程
+要实时接收消息，请运行网络守护进程：
 ```bash
 node ~/clawd/bin/mesh-daemon.mjs
 ```
 
-该守护进程通过 WebSocket 连接并接收消息以进行后续处理。
+该守护进程通过 WebSocket 连接并排队处理接收到的消息。
 
-### Mesh 事件（WebSocket）
-| 事件类型 | 事件载荷 | 说明 |
+### 网络事件（WebSocket）
+| 事件 | 数据内容 | 说明 |
 |-------|---------|-------------|
 | `mesh:message` | `{fromAgent, toAgent, topic, body, messageId}` | 收到新消息 |
 | `mesh:task_update` | `{taskId, assignedTo, title, status}` | 任务状态发生变化 |
@@ -598,4 +639,4 @@ node ~/clawd/bin/mesh-daemon.mjs
 
 ---
 
-*AgentOS — 为不断进化的 AI 代理提供持久化存储和实时通信功能*
+*AgentOS — 为不断进化的 AI 代理提供持久化存储和网络通信功能*

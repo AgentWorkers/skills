@@ -1,11 +1,32 @@
 ---
 name: nocodb
-description: 通过 v3 REST API 访问和管理 NocoDB 数据库。该 API 可用于管理工作区、数据库、表、字段、视图、记录等对象。支持过滤、排序、分页、关联记录、附件管理以及团队协作功能。
+description: 通过 REST API 访问和管理 NocoDB 数据库。免费计划支持数据库、表、字段、记录、链接、过滤器、排序和附件等功能。企业级计划还提供了工作区、视图、脚本、团队以及协作功能。
+metadata:
+  openclaw:
+    requires:
+      env:
+        - NOCODB_TOKEN
+        - NOCODB_URL
+        - NOCODB_VERBOSE
+      bins:
+        - curl
+        - jq
+    primaryEnv: NOCODB_TOKEN
 ---
 
-# NocoDB v3 命令行界面 (CLI)
+# NocoDB CLI
 
-这是一个功能齐全的 NocoDB v3 API 命令行界面。
+NocoDB CLI 是用于操作 NocoDB API 的命令行工具。
+
+## 平台支持
+
+- **Linux / macOS**: `scripts/nocodb.sh`（基于 Bash，需要 `curl` 和 `jq` 工具）
+
+## 计划类型
+
+**免费计划 (Free Plans):** 提供基础 (Base)、表 (Table)、字段 (Field)、记录 (Record)、链接 (Link)、附件 (Attachment) 等 API 功能，以及过滤 (Filter) 和排序 (Sort) 相关 API。
+
+**企业级计划 (Enterprise Plans) (自托管或云托管):** 还提供工作空间 (Workspace)、工作空间协作 (Workspace Collaboration)、基础协作 (Base Collaboration)、视图 (View)、脚本 (Script)、团队 (Team) 等 API 功能，以及 API 令牌 (API Token) 相关服务。
 
 ## 设置
 
@@ -15,30 +36,29 @@ export NOCODB_URL="https://app.nocodb.com"  # optional, this is default
 export NOCODB_VERBOSE=1                      # optional, shows resolved IDs
 ```
 
-获取您的 API 令牌：登录 NocoDB → 点击“团队与设置” → “API 令牌” → “添加新令牌”。
+获取您的 API 令牌：登录 NocoDB → 进入“团队与设置”（Team & Settings）→ 选择“API 令牌”（API Tokens）→ 点击“添加新令牌”（Add New Token）。
 
 ## 参数顺序
 
-命令遵循层次结构。参数的顺序始终如下：
+命令的执行遵循一定的层次结构，参数的顺序始终如下：
 
 ```
 WORKSPACE → BASE → TABLE → VIEW/FIELD → RECORD
 ```
 
-您可以使用 **名称**（便于人类阅读）或 **ID**（更快捷，直接从 NocoDB 获取）。
-
-**ID 前缀：**  
-`w` = 工作区 (workspace)  
-`p` = 基础数据库 (base)  
+您可以使用**名称**（human-readable）或**ID**（ID）来调用 API。  
+**ID 前缀说明：**  
+`w` = 工作空间 (workspace)  
+`p` = 基础数据表 (base)  
 `m` = 表 (table)  
 `c` = 列 (column)  
 `vw` = 视图 (view)  
 
 示例：  
-- 名称：`nc record:list MyBase Users`  
-- ID：`nc record:list pdef5678uvw mghi9012rst`  
+- 使用名称：`nc record:list MyBase Users`  
+- 使用 ID：`nc record:list pdef5678uvw mghi9012rst`  
 
-将 `NOCODB_VERBOSE=1` 设置为 1 可以查看解析后的 ID：  
+若需查看解析后的 ID，可以设置 `NOCODB_VERBOSE=1`：  
 ```bash
 NOCODB_VERBOSE=1 nc field:list MyBase Users
 # → base: MyBase → pdef5678uvw
@@ -48,20 +68,29 @@ NOCODB_VERBOSE=1 nc field:list MyBase Users
 ## 快速参考
 
 ```bash
+# Workspace APIs (Enterprise only)
 nc workspace:list                                   # → wabc1234xyz
+
+# Free plan APIs
 nc base:list wabc1234xyz                            # → pdef5678uvw
 nc table:list pdef5678uvw                           # → mghi9012rst
 nc field:list pdef5678uvw mghi9012rst               # → cjkl3456opq
-nc view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
 nc record:list pdef5678uvw mghi9012rst
 nc record:get pdef5678uvw mghi9012rst 31
 nc filter:list pdef5678uvw mghi9012rst vwmno7890abc
+
+# View APIs (Enterprise only: self-hosted or cloud-hosted)
+nc view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
+
+# Filter syntax help
 nc where:help
 ```
 
-## 命令
+## 命令列表
 
-### 工作区 (Workspaces)
+### 工作空间 (Workspaces)
+
+**注意：** 工作空间 API 和工作空间协作 API 仅支持企业级自托管计划（Enterprise self-hosted plans）和云托管企业级计划（cloud-hosted Enterprise plans）。
 
 ```bash
 nc workspace:list                         # → wabc1234xyz
@@ -70,9 +99,12 @@ nc workspace:create '{"title":"New Workspace"}'
 nc workspace:update wabc1234xyz '{"title":"Renamed"}'
 nc workspace:delete wabc1234xyz
 nc workspace:members wabc1234xyz
+nc workspace:members:add wabc1234xyz '{"email":"user@example.com","roles":"workspace-creator"}'
+nc workspace:members:update wabc1234xyz '{"email":"user@example.com","roles":"workspace-viewer"}'
+nc workspace:members:remove wabc1234xyz '{"email":"user@example.com"}'
 ```
 
-### 基础数据库 (Bases)
+### 基础数据表 (Bases)
 
 ```bash
 nc base:list wabc1234xyz                  # → pdef5678uvw
@@ -80,6 +112,15 @@ nc base:get pdef5678uvw
 nc base:create wabc1234xyz '{"title":"New Base"}'
 nc base:update pdef5678uvw '{"title":"Renamed"}'
 nc base:delete pdef5678uvw
+```
+
+**基础数据表协作功能（仅限企业级计划）**
+
+```bash
+nc base:members pdef5678uvw
+nc base:members:add pdef5678uvw '{"email":"user@example.com","roles":"base-editor"}'
+nc base:members:update pdef5678uvw '{"email":"user@example.com","roles":"base-viewer"}'
+nc base:members:remove pdef5678uvw '{"email":"user@example.com"}'
 ```
 
 ### 表 (Tables)
@@ -102,10 +143,12 @@ nc field:update pdef5678uvw mghi9012rst cjkl3456opq '{"title":"Mobile"}'
 nc field:delete pdef5678uvw mghi9012rst cjkl3456opq
 ```
 
-字段类型：  
-SingleLineText（单行文本）、LongText（长文本）、Number（数字）、Decimal（小数）、Currency（货币）、Percent（百分比）、Email（电子邮件）、URL（网址）、PhoneNumber（电话号码）、Date（日期）、DateTime（日期时间）、Time（时间）、SingleSelect（单选）、MultiSelect（多选）、Checkbox（复选框）、Rating（评分）、Attachment（附件）、Links（链接）、User（用户）、JSON（JSON 数据）等。
+字段类型包括：  
+SingleLineText、LongText、Number、Decimal、Currency、Percent、Email、URL、PhoneNumber、Date、DateTime、Time、SingleSelect、MultiSelect、Checkbox、Rating、Attachment、Links、User、JSON 等。
 
 ### 视图 (Views)
+
+**注意：** 视图 API 仅支持自托管企业和云托管企业级计划。
 
 ```bash
 nc view:list pdef5678uvw mghi9012rst      # → vwmno7890abc
@@ -115,7 +158,7 @@ nc view:update pdef5678uvw mghi9012rst vwmno7890abc '{"title":"Renamed"}'
 nc view:delete pdef5678uvw mghi9012rst vwmno7890abc
 ```
 
-视图类型：grid（网格）、gallery（画廊）、kanban（看板）、calendar（日历）。
+视图类型包括：grid（网格视图）、gallery（画廊视图）、kanban（看板视图）、calendar（日历视图）。
 
 ### 记录 (Records)
 
@@ -139,7 +182,7 @@ nc record:count pdef5678uvw mghi9012rst
 nc record:count pdef5678uvw mghi9012rst "(status,eq,active)"
 ```
 
-### 相关联的记录 (Linked Records)
+### 关联记录 (Linked Records)
 
 ```bash
 nc link:list pdef5678uvw mghi9012rst cjkl3456opq 31
@@ -147,7 +190,7 @@ nc link:add pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
 nc link:remove pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
 ```
 
-### 过滤与排序（视图级别） (Filters & Sorts, View-level)
+### 过滤与排序（针对视图级别） (Filters & Sorts, View-level)
 
 ```bash
 nc filter:list pdef5678uvw mghi9012rst vwmno7890abc
@@ -164,12 +207,16 @@ nc attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
 
 ### 脚本 (Scripts)
 
+**注意：** 脚本 API 仅支持自托管企业和云托管企业级计划。
+
 ```bash
 nc script:list pdef5678uvw
 nc script:create pdef5678uvw '{"title":"My Script"}'
 ```
 
 ### 团队 (Teams)
+
+**注意：** 团队相关 API 仅适用于企业级计划（Enterprise plans）。
 
 ```bash
 nc team:list wabc1234xyz
@@ -178,15 +225,17 @@ nc team:create wabc1234xyz '{"title":"Engineering"}'
 
 ### API 令牌 (API Tokens)
 
+**注意：** API 令牌相关服务仅支持自托管企业和云托管企业级计划。
+
 ```bash
 nc token:list
 nc token:create '{"title":"CI Token"}'
 nc token:delete tkn1a2b3c4d5e6f7g
 ```
 
-## `where` 过滤语法
+## 过滤语法
 
-运行 `nc where:help` 可以查看完整文档。
+运行 `nc where:help` 可以查看完整的过滤语法说明。
 
 ### 基本语法
 
@@ -197,23 +246,19 @@ nc token:delete tkn1a2b3c4d5e6f7g
 (field,operator,sub_op,value)       # for date with value
 ```
 
-### 常用运算符 (Common Operators)
+### 常用操作符 (Common Operators)
 
-| 运算符 | 描述 | 示例 |
+| 操作符 | 描述 | 示例 |
 |----------|-------------|---------|
-| eq     | 等于       | `(name, eq, John)` |
-| neq     | 不等于      | `(status, neq, archived)` |
-| like     | 包含（通配符）   | `(name, like, %john%)` |
-| in      | 在列表中     | `(status, in, active, pending)` |
-| gt       | 大于       | `(price, gt, 100)` |
-| lt       | 小于       | `(price, lt, 100)` |
-| gte      | 大于或等于   | `(price, gte, 100)` |
-| lte      | 小于或等于   | `(price, lte, 100)` |
-| blank     | 空         | `(notes, blank)` |
-| notblank | 非空       | `(notes, notblank)` |
-| checked   | 已选中     | `(is_active, checked)` |
+| eq     | 等于       | `(name,eq,John)` |
+| neq     | 不等于      | `(status,neq,archived)` |
+| like     | 包含（通配符）   | `(name,like,%john%)` |
+| in      | 在列表中     | `(status,in,active,pending)` |
+| gt, lt, gte, lte | 数值比较    | `(price,gt,100)` |
+| blank, notblank | 是否为空     | `(notes,blank)` |
+| checked, notchecked | 布尔值      | `(is_active,checked)` |
 
-### 日期运算符 (Date Operators)
+### 日期操作符 (Date Operators)
 
 ```bash
 (created_at,eq,today)
@@ -223,9 +268,9 @@ nc token:delete tkn1a2b3c4d5e6f7g
 (event_date,eq,exactDate,2024-06-15)
 ```
 
-### 组合过滤 (Combining Filters)
+### 组合过滤条件
 
-**重要提示：** 使用 `~and`、`~or`、`~not`（前缀为波浪号 `~`）进行组合过滤。
+**重要提示：** 使用 `~and`、`~or`、`~not`（以波浪号 `~` 作为前缀）来组合过滤条件。
 
 ```bash
 (name,eq,John)~and(age,gte,18)
@@ -234,7 +279,7 @@ nc token:delete tkn1a2b3c4d5e6f7g
 (status,in,active,pending)~and(country,eq,USA)
 ```
 
-### 复杂示例 (Complex Examples)
+### 复杂示例
 
 ```bash
 # Active users created this month

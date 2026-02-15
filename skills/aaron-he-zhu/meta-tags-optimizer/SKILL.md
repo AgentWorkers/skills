@@ -1,31 +1,74 @@
 ---
 name: meta-tags-optimizer
-description: 生成并优化元标签（包括标题标签、元描述、Open Graph标签和Twitter卡片），以提升点击率和社交分享的参与度。
-geo-relevance: "low"
+description: '**使用场景：**  
+当用户请求“优化标题标签”、“编写元描述”、“提高点击率（CTR）”、“设置Open Graph标签”、“生成社交媒体预览图”、“我的标题标签需要修改”、“点击率过低”或“元标签无法正常显示”时，可使用该工具。该工具负责创建并优化包括标题标签、元描述、Open Graph标签以及Twitter卡片在内的元数据，以提升点击率和社交媒体分享效果。如需进行更全面的页面内容审计，可参考`on-page-seo-auditor`；如需处理结构化数据标记，可参考`schema-markup-generator`。'
+license: Apache-2.0
+metadata:
+  author: aaron-he-zhu
+  version: "2.0.0"
+  geo-relevance: "low"
+  tags:
+    - seo
+    - meta tags
+    - title tag
+    - meta description
+    - open graph
+    - twitter cards
+    - ctr optimization
+    - social sharing
+  triggers:
+    - "optimize title tag"
+    - "write meta description"
+    - "improve CTR"
+    - "Open Graph tags"
+    - "social media preview"
+    - "title optimization"
+    - "meta tags"
+    - "my title tag needs work"
+    - "low click-through rate"
+    - "fix my meta tags"
+    - "OG tags not showing"
 ---
 
 # 元标签优化器
 
-该技能能够生成引人注目且经过优化的元标签，从而提高搜索结果中的点击率（CTR），并提升社交媒体分享效果。它涵盖标题标签、元描述以及社交媒体相关的元标签。
+> **[SEO与地理定位技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 20项SEO与地理定位相关技能 · 全部技能安装方式：`npx skills add aaron-he-zhu/seo-geo-claude-skills`
 
-## 适用场景
+<details>
+<summary>浏览全部20项技能</summary>
+
+**研究** · [关键词研究](../../research/keyword-research/) · [竞争对手分析](../../research/competitor-analysis/) · [SERP分析](../../research/serp-analysis/) · [内容差距分析](../../research/content-gap-analysis/)
+
+**构建** · [SEO内容编写器](../seo-content-writer/) · [地理内容优化器](../geo-content-optimizer/) · **元标签优化器** · [Schema标记生成器](../schema-markup-generator/)
+
+**优化** · [页面SEO审核器](../../optimize/on-page-seo-auditor/) · [技术SEO检查器](../../optimize/technical-seo-checker/) · [内部链接优化器](../../optimize/internal-linking-optimizer/) · [内容更新器](../../optimize/content-refresher/)
+
+**监控** · [排名追踪器](../../monitor/rank-tracker/) · [反向链接分析器](../../monitor/backlink-analyzer/) · [性能报告器](../../monitor/performance-reporter/) · [警报管理器](../../monitor/alert-manager/)
+
+**跨领域** · [内容质量审核器](../../cross-cutting/content-quality-auditor/) · [域名权威性审核器](../../cross-cutting/domain-authority-auditor/) · [实体优化器](../../cross-cutting/entity-optimizer/) · [内存管理](../../cross-cutting/memory-management/)
+
+</details>
+
+该技能能够生成引人注目且经过优化的元标签，从而提高搜索结果中的点击率，并提升社交媒体的分享效果。它涵盖标题标签、元描述以及社交媒体元标签。
+
+## 何时使用此技能
 
 - 为新页面创建元标签
-- 优化现有元标签以提高点击率
+- 优化现有元标签以提高点击率（CTR）
 - 为社交媒体分享准备页面
 - 修复重复或缺失的元标签
 - 对标题和描述进行A/B测试
-- 针对特定的搜索引擎结果页面（SERP）特征进行优化
+- 针对特定的SERP特征进行优化
 - 为不同类型的页面生成元标签
 
-## 功能概述
+## 该技能的功能
 
-1. **标题标签生成**：编写包含关键词的吸引人标题
+1. **标题标签生成**：编写引人注目且包含关键词的标题
 2. **元描述编写**：创建具有吸引力的描述
 3. **Open Graph优化**：为社交媒体分享准备页面
 4. **Twitter卡片设置**：优化Twitter特定的元标签
 5. **CTR分析**：提供改进建议以提升点击率
-6. **字符计数**：确保标题长度符合搜索引擎结果页面（SERP）的显示要求
+6. **字符计数**：确保符合SERP显示要求
 7. **A/B测试建议**：提供多种版本以供测试
 
 ## 使用方法
@@ -54,20 +97,21 @@ Create Open Graph and Twitter card tags for [page/URL]
 
 ## 数据来源
 
-> 有关工具类别的占位符，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
+> 请参阅[CONNECTORS.md](../../CONNECTORS.md)以获取工具类别的相关信息。
 
-**当连接了 ~~搜索控制台 + ~~SEO工具时：**
-- 自动获取当前的元标签、按查询统计的CTR数据、竞争对手的标题/描述模式、SERP预览数据以及展示次数/点击量指标，以识别优化机会。
+**当连接到[搜索控制台] + [SEO工具]时：**
+自动获取当前的元标签、按查询生成的CTR数据、竞争对手的标题/描述模式、SERP预览数据以及展示次数/点击量指标，以识别优化机会。
+
 **仅使用手动数据时：**
-- 要求用户提供：
-  - 当前页面的标题和元描述（如果需要优化现有元标签）
-  - 目标主关键词及2-3个次要关键词
-  - 页面URL和主要内容/价值主张
-  - 竞争对手的URL或在SERP中表现良好的标题示例
+要求用户提供：
+1. 当前页面的标题和元描述（如需优化现有元标签）
+2. 目标关键词及2-3个次要关键词
+3. 页面URL和主要内容/价值主张
+4. 竞争对手的URL或在SERP中表现良好的标题示例
 
-使用提供的数据完成整个工作流程。在输出中注明哪些指标来自自动化收集，哪些来自用户提供的数据。
+使用提供的数据完成整个工作流程。请在输出中明确指出哪些指标来自自动化收集，哪些来自用户提供的数据。
 
-## 操作步骤
+## 使用说明
 
 当用户请求元标签优化时：
 
@@ -182,10 +226,10 @@ Create Open Graph and Twitter card tags for [page/URL]
    ```html
    <!-- 主要Open Graph标签 -->
    <meta property="og:type" content="[文章/网站/产品]">
-   <meta property="og:url" content="[完整的规范URL]">
+   <meta property="og:url" content="[完整规范URL]">
    <meta property="og:title" content="[优化后的标题 - 最长60个字符]">
    <meta property="og:description" content="[优化后的描述 - 最长200个字符]">
-   <meta property="og:image" content="[图片URL - 建议使用1200x630像素的图片]">
+   <meta property="og:image" content="[图片URL - 建议使用1200x630像素]">
    
    <!-- 可选但推荐 -->
    <meta property="og:site_name" content="[网站名称]">
@@ -241,11 +285,11 @@ Create Open Graph and Twitter card tags for [page/URL]
    <!-- Twitter卡片标签 -->
    <meta name="twitter:card" content="[摘要图片/摘要]">
    <meta name="twitter:site" content="@[你的Twitter账号]">
-   <meta name="twitter:creator" content="@[作者的Twitter账号]">
+   <meta name="twitter:creator" content="@[作者Twitter账号]">
    <meta name="twitter:title" content="[标题 - 最长70个字符]">
    <meta name="twitter:description" content="[描述 - 最长200个字符]">
    <meta name="twitter:image" content="[图片URL]">
-   <meta name="twitter:image:alt" content="图片的描述（用于辅助访问）">
+   <meta name="twitter:image:alt" content="图片描述（用于辅助访问）"]">
    ```
    
    **Twitter-Specific Considerations**:
@@ -323,7 +367,7 @@ Create Open Graph and Twitter card tags for [page/URL]
    <meta name="twitter:title" content="[Twitter标题]">
    <meta name="twitter:description" content="[Twitter描述]">
    <meta name="twitter:image" content="[图片URL]">
-   <meta name="twitter:image:alt" content="图片的描述（用于辅助访问）">
+   <meta name="twitter:image:alt" content="图片描述（用于辅助访问）"]">
    ```
    ```
 
@@ -379,18 +423,18 @@ Create Open Graph and Twitter card tags for [page/URL]
 ## 验证要点
 
 ### 输入验证
-- [ ] 确认了目标关键词，并且与页面内容一致
-- [ ] 确定了页面类型（博客/产品/ landing页面/首页）
-- [ ] 明确了目标受众和搜索意图
-- [ ] 阐明了独特的价值主张
+- [ ] 确认目标关键词并与页面内容匹配
+- [ ] 确定页面类型（博客/产品/着陆页/首页）
+- [ ] 明确目标受众和搜索意图
+- [ ] 清晰阐述独特价值主张
 
 ### 输出验证
 - [ ] 标题长度为50-60个字符（在SERP中能完整显示）
 - [ ] 元描述长度为150-160个字符
-- [ ] 主关键词同时出现在标题和描述中
+- [ ] 关键词同时出现在标题和描述中
 - [ ] 指定了Open Graph图片（建议使用1200x630像素）
 - [ ] 所有HTML语法均正确（无未闭合的引号或标签）
-- [ ] 明确说明了每个数据点的来源（~~搜索控制台的CTR数据、~~SEO工具的竞争对手数据、用户提供的数据或估算值）
+- [ ] 明确每个数据点的来源（来自搜索控制台的CTR数据、SEO工具的竞争数据、用户提供的数据或估算值）
 
 ## 示例
 
@@ -411,7 +455,7 @@ Create Open Graph and Twitter card tags for [page/URL]
 
 ### Meta Description
 ```html
-<meta name="description" content="通过我们的分步指南学习如何在[当前年份]开始播客。涵盖设备、托管、录制以及发布第一集的内容。今天就开始你的播客吧！">
+<meta name="description" content="通过我们的分步指南学习如何在[当前年份]开始播客。涵盖设备、托管、录制以及发布第一集的内容。今天就开始播客吧！">
 ```
 **Length**: ~163 characters ✅
 **Keyword**: Included naturally ✅
@@ -422,26 +466,25 @@ Create Open Graph and Twitter card tags for [page/URL]
 ```html
 <!-- 主要元标签 -->
 <title>如何在[当前年份]开始播客：完整的初学者指南</title>
-<meta name="description" content="通过我们的分步指南学习如何在[当前年份]开始播客。涵盖设备、托管、录制以及发布第一集的内容。今天就开始你的播客吧！">
+<meta name="description" content="通过我们的分步指南学习如何在[当前年份]开始播客。涵盖设备、托管、录制以及发布第一集的内容。今天就开始播客吧！">
 <link rel="canonical" href="https://yoursite.com/how-to-start-a-podcast/">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://yoursite.com/how-to-start-a-podcast/">
 <meta property="og:title" content="如何在[当前年份]开始播客（完整指南）">
-<meta property="og:description" content="启动播客所需的一切：设备推荐、托管平台、录制技巧和分步启动清单。无需任何经验。」>
+<meta property="og:description" content="启动播客所需的一切：设备推荐、托管平台、录制技巧和分步发布清单。无需经验。」>
 <meta property="og:image" content="https://yoursite.com/images/podcast-guide.jpg">
 <meta property="og:site_name" content="你的网站名称">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="摘要图片">
 <meta name="twitter:title" content="如何在[当前年份]开始播客">
-<meta name="twitter:description" content="完整的初学者指南，涵盖播客的启动方法：设备、托管、录制等。」>
+<meta name="twitter:description" content="完整的初学者指南：包括设备、托管、录制等内容。」>
 <meta name="twitter:image" content="https://yoursite.com/images/podcast-guide.jpg">
 <meta name="twitter:site" content="@你的Twitter账号">
-
 <!-- 文章标签 -->
-<meta property="article:published_time" content="[YYYY-MM-DD]T08:00:00+00:00">
+<meta property="article:published_time" content "[YYYY-MM-DD]T08:00:00+00:00">
 <meta property="article:author" content="https://yoursite.com/author/name">
 <meta property="article:section" content="播客">
 <meta property="article:tag" content="播客">
@@ -492,7 +535,7 @@ Create Open Graph and Twitter card tags for [page/URL]
 
 ## 成功技巧
 
-1. **前置关键词** - 将重要词汇放在标题的开头
+1. **前置关键词** - 将重要词汇放在开头
 2. **匹配搜索意图** - 描述应准确反映页面内容
 3. **具体明确** - 模糊的描述会被忽略
 4. **测试不同版本** - 微小的改动可能会显著影响点击率
@@ -505,35 +548,35 @@ Create Open Graph and Twitter card tags for [page/URL]
 
 | 公式 | 模板 | 示例 | 适用场景 |
 |---------|----------|---------|---------|
-| 操作指南 | 如何[实现目标]（[年份]） | 如何提高SEO排名（2026年） | 信息类指南 |
-| 数字列表 | [数字] [形容词] [目标受众] | 15种经过验证的电子商务SEO策略 | 列表文章 |
-| 问题式 | [问题]？[答案预览] | 什么是技术SEO？完整指南 | 定义类内容 |
+| “如何”系列 | 如何[实现目标]（[年份]） | 如何提高SEO排名（2026年） | 信息类指南 |
+| 数字列表 | [数字] [形容词] [目标受众] | 15个经过验证的电子商务SEO策略 | 列表文章 |
+| 问题式 | [问题]？[这里是答案预览] | 什么是技术SEO？完整指南 | 定义类内容 |
 | 对比式 | [选项A] vs [选项B]：[区别点] | Ahrefs vs SEMrush：哪个SEO工具更胜一筹？ | 对比页面 |
-| 基于年份 | [年份]的最佳[主题]（[测试/排名]） | 2026年最佳SEO工具（专家测试） | 永恒且新鲜的内容 |
-| 价值驱动 | [价值]：[如何实现] | 在Google上排名第一的10步SEO检查清单 | 高点击率页面 |
-| 括号用法 | [主题]（[修饰词]） | 链接构建指南（含模板） | 体现价值 |
-| 负面强调 | [数字] [主题] 错误 [后果] | 7个会毁掉你排名的SEO错误 | 问题意识类内容 |
+| 基于年份 | [年份]的最佳[主题]（[经过测试/排名]） | 2026年最佳SEO工具（专家测试） | 持久且新鲜的内容 |
+| 优势驱动 | [优势]：[如何实现] | 在Google上排名第一的10步SEO清单 | 高点击率页面 |
+| 括号式 | [主题]（[修饰词]） | 链接构建指南（含模板） | 传递价值信号 |
+| 负面式 | [数字] [主题] 错误 [后果] | 7个会毁掉你排名的SEO错误 | 问题意识类内容 |
 
 ## 标题标签中的关键词
 
 | 关键词类型 | 常用关键词 | 使用建议 |
 |----------|-----------|---------------|
-| 紧急性 | 现在、今天、快速、立即、2026 | 不要过度使用；需结合实质内容 |
-| 价值性 | 免费、经过验证、完整、必备、终极 | 避免无根据的夸张表述 |
-| 具体性 | [具体数字]、分步指南、检查清单 | 更具体的内容 = 更高的点击率 |
+| 紧急性 | 现在、今天、快速、立即、2026 | 避免过度使用；需结合实质内容 |
+| 价值性 | 免费、经过验证、完整、必备、终极 | 避免夸大其词 |
+| 具体性 | [具体数字]、分步说明、清单、模板 | 越具体，点击率越高 |
 | 好奇心 | 秘密、鲜为人知、令人惊讶 | 必须兑现承诺 |
 | 权威性 | 专家、有研究支持、数据驱动 | 仅用于真正专业的内容 |
-| 情感诉求 | 最佳、最差、错误、警告、有力 | 在表达情感时需保持可信度 |
+| 情感性 | 最佳、最差、错误、警告、有力 | 平衡情感与可信度 |
 
 ## 标题标签长度优化
 
 | 长度范围 | 在SERP中的显示效果 | 建议 |
 |-------------|--------------|----------------|
 | <30个字符 | 可能显示不完整 | 通过添加修饰词或品牌名称来扩展 |
-| 30-50个字符 | 在所有设备上都能完整显示 | 非常适合移动设备优先的页面 |
-| 50-60个字符 | 在桌面设备上能完整显示，但在移动设备上可能会被截断 | 对桌面设备来说是最佳长度 |
-| 60-65个字符 | 在某些设备上会被截断 | 前置关键词效果更好 |
-| >65个字符 | 在所有设备上都会被截断 | 应避免使用，因为关键信息会被省略 |
+| 30-50个字符 | 在所有设备上都能完整显示 | 非常适合移动设备 |
+| 50-60个字符 | 在桌面设备上能完整显示，可能在移动设备上被截断 | 最佳长度 |
+| 60-65个字符 | 在某些设备上可能被截断 | 前置关键词 |
+| >65个字符 | 在所有设备上都会被截断 | 应避免使用 |
 
 ## 元描述写作框架
 
@@ -541,19 +584,19 @@ Create Open Graph and Twitter card tags for [page/URL]
 
 | 元素 | 功能 | 示例 |
 |---------|-------------|---------|
-| **注意力** | 用引人注目的声明或问题吸引读者 | “想要将自然流量翻倍吗？” |
-| **兴趣** | 建立相关性 | “本指南涵盖了15种经过验证的策略...” |
-| **欲望** | 展示内容带来的好处 | “...被顶级网站用来提高200%的流量。” |
+| **注意力** | 用醒目的声明或问题吸引注意力 | “想让你的自然流量翻倍吗？” |
+| **兴趣** | 建立相关性 | “本指南涵盖了15个经过验证的策略...” |
+| **欲望** | 展示好处 | “...被顶级网站用来提高200%流量的方法。” |
 | **行动** | 提供行动号召 | “现在就阅读完整指南。” |
 
-**完整示例**：“想要将自然流量翻倍吗？本指南涵盖了顶级网站使用的15种经过验证的SEO策略，这些策略能帮助你提高200%的流量。现在就阅读完整指南。”（158个字符）
+**完整示例**：“想让你的自然流量翻倍吗？本指南涵盖了顶级网站使用的15个经过验证的SEO策略，可提高200%的流量。现在就阅读完整指南。”（158个字符）
 
 ### PAS框架
 
 | 元素 | 功能 | 示例 |
 |---------|-------------|---------|
 | **问题** | 识别痛点 | “在Google上难以排名吗？” |
-| **放大问题** | 强化问题 | “大多数SEO指南已经过时，忽略了关键的排名因素。” |
+| **放大** | 强化问题 | “大多数SEO指南已经过时，忽略了关键的排名因素。” |
 | **解决方案** | 提供解决方案 | “我们的2026年指南涵盖了真正有效的方法。立即阅读。” |
 
 ## CTR优化数据
@@ -567,28 +610,30 @@ Create Open Graph and Twitter card tags for [page/URL]
 | 情感词汇 | +7% | 如“经过验证”、“必备”、“错误” |
 | 括号/括号 | +38% | 如“[指南]”、“（附示例）” |
 | 当前年份 | +10-15% | 如“2026年最佳SEO工具” |
-| 关键词的使用 | +12% | 参见上面的关键词使用建议 |
-| 与搜索意图匹配 | +15-25% | 使标题与SERP的预期一致 |
-| 丰富的内容结构（schema） | +30% | 常见问题解答、操作指南、评论星级 |
+| 关键词 | +12% | 参见上面的关键词列表 |
+| 与搜索意图匹配 | +15-25% | 使标题与SERP预期一致 |
+| 丰富的内容（Schema标记） | +30% | 常见问题解答、操作指南、评分 |
 
 ## 各平台的Open Graph最佳实践
 
+### 平台特定的OG优化
+
 | 平台 | 图片尺寸 | 标题长度 | 描述长度 | 特殊标签 |
 |----------|-----------|-------------|-------------------|-------------|
-| Facebook | 1200x630像素 | 40-60个字符 | 125-155个字符 | og:type、og:locale |
-| Twitter/X | 1200x600像素 | 最多70个字符 | 200个字符 | twitter:card、twitter:site |
+| Facebook | 1200x630像素 | 40-60个字符 | 125-155个字符 | og:type, og:locale |
+| Twitter/X | 1200x600像素 | 最多70个字符 | 200个字符 | twitter:card, twitter:site |
 | LinkedIn | 1200x627像素 | 70个字符 | 150个字符 | 标准OG标签 |
-| Pinterest | 1000x1500像素（2:3比例） | 100个字符 | 500个字符 | 建议使用og:type=article |
-| Slack | 最小500x500像素 | 完整的标题 | 前300个字符 | 标准OG标签 |
+| Pinterest | 1000x1500像素（2:3） | 100个字符 | 500个字符 | 建议使用og:type=article |
+| Slack | 最小500x500像素 | 完整标题 | 前300个字符 | 标准OG标签 |
 
-## OG标签检查清单
+### OG标签检查清单
 
 | 标签 | 是否必需 | 备注 |
 |-----|----------|-------|
 | og:title | 是 | 可能与HTML标题不同；需优化以适应社交媒体分享 |
-| og:description | 是 | 需要针对社交媒体进行优化；可能与元描述不同 |
-| og:image | 是 | 必须是绝对路径；建议使用1200x200像素的图片 |
-| og:url | 是 | 必须是规范URL |
+| og:description | 是 | 需针对社交媒体进行优化；可能与元描述不同 |
+| og:image | 是 | 必须是绝对URL；建议使用1200x200像素的图片 |
+| og:url | 是 | 规范URL |
 | og:type | 是 | 首页使用“website”，博客文章使用“article” |
 | og:site_name | 建议使用 | 例如“en_US” |
 | twitter:card | 建议使用 | 文章使用“summary_large_image” |
@@ -596,13 +641,13 @@ Create Open Graph and Twitter card tags for [page/URL]
 
 ## 参考资料
 
-- [元标签公式](./references/meta-tag-formulas.md) — 包含经过验证的标题和描述公式、模板、关键词建议以及CTR数据
+- [元标签公式](./references/meta-tag-formulas.md) — 提供经过验证的标题和描述公式，包含模板、关键词和CTR数据
 
 ## 相关技能
 
-- [seo-content-writer](../seo-content-writer/) — 为元标签创建内容
-- [schema-markup-generator](../schema-markup-generator/) — 添加结构化数据 |
-- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — 审查所有元标签 |
-- [serp-analysis](../../research/serp-analysis/) — 分析竞争对手的元标签 |
-- [geo-content-optimizer](../geo-content-optimizer/) — 地理位置优化，补充元标签优化 |
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 全面的CORE-EEAT审计，包括元标签涉及的C01/C02项目
+- [seo-content-writer](../seo-content-writer/) — 用于编写元标签的内容 |
+- [schema-markup-generator](../schema-markup-generator/) — 用于添加结构化数据 |
+- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — 用于审核所有元标签 |
+- [serp-analysis](../../research/serp-analysis/) — 用于分析竞争对手的元标签 |
+- [geo-content-optimizer](../geo-content-optimizer/) — 地理定位优化可辅助元标签的优化 |
+- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 全面的CORE-EEAT审核，包括元标签涉及的C01/C02项目 |

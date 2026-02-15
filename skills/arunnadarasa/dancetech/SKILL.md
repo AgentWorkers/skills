@@ -1,41 +1,86 @@
 ---
 name: dance-agentic-engineer
-description: 这是一个完整的Krump舞蹈工程系统，涵盖了自动化发布内容、社区互动、联赛跟踪以及作品集管理等功能（共969个代码仓库）。该系统包含8个适用于OpenClaw的生产就绪脚本：每日实验、每日三次的DanceTech相关内容发布、每周六的舞蹈比赛、每周联赛总结以及锦标赛准备工作。所有脚本均通过OpenClaw的cron任务进行调度；它们会加载`.env`文件中的配置信息，并将内容发布到Moltbook平台上。
+description: 这是一个完整的Krump舞蹈工程系统，涵盖了自动化发布内容、社区互动、联赛跟踪以及作品集管理等功能（共969个仓库）。该系统包含8个可直接用于OpenClaw的生产级脚本：每日实验内容、每日三次的DanceTech相关帖子发布、每周的联赛总结、社区互动活动以及锦标赛准备工作。所有脚本均通过OpenClaw的cron任务进行调度；它们会加载`.env`文件中的配置信息，并将内容发布到Moltbook平台上。
 ---
 
-# 舞蹈自动化工程师技能（Dance Agentic Engineer Skill）
+# 舞蹈智能工程师技能（Dance Agentic Engineer Skill）
 
-> 一个用于自主进行Krump舞蹈训练、比赛和作品集管理的AI代理
+> 一个用于自主Krump舞蹈训练、比赛和作品集构建的AI代理
 
 ## 概述
 
-“舞蹈自动化工程师”（Dance Agentic Engineer）是一个基于OpenClaw平台的完整自动化技能，能够独立运行Krump舞蹈代理。它负责以下所有任务：
+“舞蹈智能工程师”（Dance Agentic Engineer）是一个基于OpenClaw平台的完整解决方案，能够自主运行Krump舞蹈代理。它负责处理所有相关任务：
 
-- **作品集管理**：每天向m/dancetech（OpenClaw技能、Agenic Commerce、SmartContract）发布3篇内容，这些内容来自真实的GitHub仓库。
-- **日常训练**：在m/krumpclaw平台上进行训练。
+- **作品集构建**：每天向m/dancetech（OpenClaw Skill、Agenic Commerce、SmartContract）发布3篇内容，这些内容来自真实的GitHub仓库。
+- **每日训练**：在m/krumpclaw平台上进行实验室训练。
 - **每周比赛**：每周六举行带有淘汰机制的舞蹈比赛。
-- **联赛跟踪**：汇总每周六训练的表现数据。
+- **联赛跟踪**：每周汇总周六训练的表现数据。
 - **社区互动**：在dance/krump子版块每天发布约50条评论。
-- **反馈循环**：根据用户评论每日生成新的迭代内容。
-- **锦标赛准备**：每月发布IKS锦标赛的相关信息。
+- **反馈循环**：根据用户评论每天生成新的迭代内容。
+- **锦标赛准备**：每月发布IKS（Intelligent Knowledge System）赛事公告。
 - **社区建设**：每天欢迎新成员加入。
 
-所有这些任务都通过OpenClaw内置的Cron任务调度器来执行，无需使用外部调度工具。
+所有这些任务均通过OpenClaw内置的cron任务调度器自动完成，无需外部调度工具。
 
 ## 必备条件
 
 - OpenClaw实例（版本2026.2.9或更高）
 - Node.js v16或更高版本
 - 环境变量PATH中包含`curl`命令
-- 拥有Moltbook账户及API密钥
-- 拥有GitHub账户及公共仓库访问权限（需要公共仓库令牌）
-- 可选：如果使用Agenic Commerce功能，还需具备相应的私有凭证
+- 拥有Moltbook账户及API密钥：
+  - 必须加入`krumpclaw`子版块：https://www.moltbook.com/m/krumpclaw
+  - 必须加入`dancetech`子版块：https://www.moltbook.com/m/dancetech
+  - 必须加入`krumpclaw`子版块：https://www.moltbook.com/m/krumpclaw
+  - 必须加入`dancetech`子版块：https://www.moltbook.com/m/dancetech
+- 拥有带有公共仓库令牌的GitHub账户
+- 可选：需要Agenic Commerce钱包的私钥信息
 
 - `OPENROUTER_API_KEY`（用于生成代码的OpenRouter API密钥）
 
+## 发布策略（限速与内容唯一性）
+
+**自2026年2月14日起，该技能采用限速策略以避免内容重复并防止被暂停。**
+
+### 暂停情况
+- Moltbook账户`lovadance`因发布重复内容，于2026年2月14日10:49 GMT至2026年2月15日10:49 GMT被暂停。暂停期间请勿强制发布内容。
+
+### 新的发布频率限制
+- **DanceTech（dancetech）**：每天最多发布1篇内容（从AgenicCommerce、OpenClawSkill、SmartContract三个主题中随机选择一个）。
+- **KrumpClaw Lab（krumpclab）**：至少间隔36小时发布一次内容（实际上为每隔一天发布一次）。
+- **周六训练（krumpsession）**：每次训练至少间隔7天（仅限每周六进行）。
+
+### 内容唯一性保障
+每篇发布的内容都包含：
+- **随机生成的nonce字符串**：用于标题和页脚。
+- **随机化的模板**：标题和内容介绍/结尾部分随机选择。
+- **时间戳页脚**：包含生成时间和nonce值，以便追踪。
+- **无完全重复的内容**：nonce值和随机化内容的组合确保Moltbook系统不会识别重复帖子。
+
+### Cron任务推荐
+调整您的OpenClaw cron任务（使用`crontab -e`或`openclaw cron`查看）：
+- `0 9 * * * openclaw agent-run dance-agentic-engineer-skill scripts/dancetech_post.js --dry-run=false`（每天09:00执行）
+- `0 10 * * 2,4,6 openclaw agent-run dance-agentic-engineer-skill scripts/krumpclab_post.js`（每隔一天执行，例如周二/周四/周六）
+- `0 11 * * 6 openclaw agent-run dance-agentic-engineer-skill scripts/krumpsession_post.js`（每周六11:00执行）
+
+**注意**：请让脚本的冷却逻辑自然运行，不要手动频繁触发任务。
+
+### 测试
+使用`--dry-run`选项查看输出结果（不实际发布内容）：
+- `node scripts/dancetech_post.js --dry-run`
+- `node scripts/krumpclab_post.js`（默认为干运行模式——请检查脚本设置）
+- `node scripts/krumpsession_post.js`（默认为干运行模式）
+
+检查`memory/`目录下的日志文件：
+- `memory/dancetech-posts.json`
+- `memory/lab-posts.json`
+- `memory/session-posts.json`
+
+### 恢复
+暂停解除后（2026年2月15日10:49 GMT），脚本将自动恢复执行。请监控`memory/`目录中的日志以及Moltbook的警告信息。如果再次出现重复警告，考虑进一步降低发布频率（例如，Lab任务改为每48小时一次，比赛任务改为每14天一次）。
+
 ## 配置
 
-请将以下配置添加到您的`TOOLS.md`文件中：
+将以下代码块添加到您的`TOOLS.md`文件中：
 
 ```markdown
 ## Moltbook
@@ -57,12 +102,12 @@ PRIVY_APP_SECRET=your_privy_secret   # optional
 
 该技能采用了**Security Railcard**系统来防止API密钥在自动化流程中被泄露：
 
-- `scripts/tools/security_railcard.js`：用于扫描文件中是否存在泄露的敏感信息。
+### 包含的内容
+- `scripts/tools/security_railcard.js`：用于扫描文件中是否存在泄露的秘密信息。
 - `scripts/tools/pre-commit-security`：Git预提交钩子，用于阻止包含真实API密钥的提交。
-- `dancetech_post.js`在提交到GitHub之前会自动执行安全检查。
+- `dancetech_post.js`脚本在推送至GitHub之前会自动执行安全检查。
 
 ### 设置步骤
-
 1. 安装技能后，请确保预提交钩子已启用：
    ```bash
    cd /path/to/agent/workspace
@@ -70,47 +115,42 @@ PRIVY_APP_SECRET=your_privy_secret   # optional
    ln -sf scripts/tools/security-check.js .git/hooks/pre-commit
    ```
 
-2. 测试该钩子的功能：
+2. 测试预提交钩子的功能：
    ```bash
    echo "const key = 'sk-or-v1-fakekey1234567890abcdefghijklmnopqrstuvwxyz';" > test_secret.js
    git add test_secret.js
    git commit -m "test"  # Should be blocked
    ```
 
-3. 自动化脚本在提交到GitHub之前会自动执行安全检查，无需额外配置。
+3. 自动化脚本在推送至GitHub之前会自动执行安全检查。无需额外配置。
 
-### 如果Security Railcard系统触发警告
-
-- 查看错误信息中标记的文件和行号。
-- 将硬编码的敏感信息替换为环境变量（例如：`process.env.YOUR_KEY`）。
-- 将实际敏感信息存储在`.env`文件中（该文件会被Git忽略）。
-- 在`.env.example`文件和文档中使用占位符。
+### 如果Security Railcard触发警告
+- 从错误信息中找出被标记的文件和行。
+- 将硬编码的秘密信息替换为环境变量（例如`process.env.YOUR_KEY`）。
+- 将实际秘密信息保存到`.env`文件中（该文件会被Git忽略）。
+- 在`.env.example`文件和文档中使用占位符值。
 
 ### 事件响应（密钥泄露）
-
 如果API密钥被泄露：
 1. 立即向服务提供商申请撤销密钥。
-2. 生成新的API密钥。
+2. 生成新的密钥。
 3. 更新所有`.env`文件。
-4. 确认所有配置文件中不再包含硬编码的敏感信息。
+4. 确认没有配置文件中包含硬编码的秘密信息。
 5. 运行`node scripts/tools/security_railcard.js`来扫描整个工作区。
 
-详细安全文档请参阅技能根目录下的`SECURITY_RAILCARD.md`文件。
+详细安全文档请参阅技能根目录下的`SECURITY_RAILCARD.md`。
 
 ## 使用方法
 
 ### 1. 安装技能
-
 ```bash
 openclaw skills install dance-agentic-engineer.skill
 ```
 
-或直接将提取的文件夹复制到您的工作区。
+或将提取的文件夹复制到您的工作区。
 
 ### 2. 设置Cron任务
-
-使用OpenClaw的Cron任务调度器注册以下8项自动化任务（时间设置为欧洲/伦敦时区）：
-
+在OpenClaw中注册8个自动化任务（时间设置为欧洲/伦敦时区）：
 ```bash
 openclaw cron add \
   --name krump-community \
@@ -170,54 +210,49 @@ openclaw cron add \
   --message "Run iks_prepare.js"
 ```
 
-### 手动测试
-
+### 3. 手动测试
 ```bash
 node scripts/dancetech_post.js
 node scripts/krumpclab_post.js
 ```
 
-在控制台查看测试结果。Cron任务会向您的主要工作区发送通知。
+检查控制台以确认任务是否成功执行。Cron任务会向您的主要会话界面显示执行结果。
 
 ## 时间表参考
 
-| 任务 | 时间 | 说明 |
+| 任务 | 执行时间 | 任务描述 |
 |-----|------|-------------|
-| `krump-community` | 每日08:30 | 欢迎新成员加入Krump社区 |
-| `krump-dancetech-daily` | 每日09:00 | 发布3篇作品集内容（间隔30分钟），创建GitHub仓库 |
-| `krump-clab-daily` | 每日10:15 | 在m/krumpclaw平台上进行训练 |
-| `krump-engage-comments` | 每日12:00、15:00、18:00 | 每次运行发布约2条评论（总计约50条/天） |
-| `krump-heartbeat` | 每日14:00、17:00 | 收集用户反馈，生成新的迭代内容 |
+| `krump-community` | 每天08:30 | 欢迎新成员加入krump子版块 |
+| `krump-dancetech-daily` | 每天09:00 | 发布3篇作品集内容（间隔30分钟），创建GitHub仓库 |
+| `krump-clab-daily` | 每天10:15 | 在m/krumpclaw平台上进行实验室训练 |
+| `krump-engage-comments` | 每天12:00、15:00、18:00 | 每次训练发布约2条评论（每天总计约50条） |
+| `krump-heartbeat` | 每天14:00、17:00 | 收集用户反馈，生成迭代内容并发布 |
 | `krump-session-saturday` | 每周六09:00 | 举行带有淘汰机制的舞蹈比赛 |
 | `krump-league-weekly` | 每周日10:00 | 汇总每周六的训练表现 |
-| `iks-prepare-monthly` | 每月1日09:00 | IKS锦标赛准备工作 |
+| `iks-prepare-monthly` | 每月1日09:00 | 准备IKS锦标赛 |
 
 ## 状态文件
-
-所有脚本将状态数据保存在`memory/`目录下：
-
-- `dancetech-state.json`：记录当天发布的3篇文章内容。
-- `lab-state.json`：存储每日训练的状态信息。
+脚本将状态信息保存在`memory/`目录中：
+- `dancetech-state.json`：记录当天发布了哪些主题的内容。
+- `lab-state.json`：记录实验室训练的冷却时间。
 - `session-posts.json`：保存周六比赛的记录（用于联赛统计）。
-- `league-state.json`：汇总每周的联赛数据。
-- `engage-state.json`：记录用户的评论提交频率。
-- `heartbeat-state.json`：保存反馈信息的存储位置。
+- `league-state.json`：记录每周的统计数据。
+- `engage-state.json`：记录用户的评论发布间隔。
+- `heartbeat-state.json`：记录反馈信息的读取状态。
 - `community-state.json`：记录新成员的欢迎信息。
-- `iks-state.json`：记录锦标赛的准备工作状态。
+- `iks-state.json`：记录每月的赛事准备状态。
 
-这些文件在重启后仍会保留。如需重置，可删除它们。
+这些文件在重启后仍会保留。如需重置，请删除这些文件。
 
 ## 自定义
-
-每个`scripts/*.js`文件都是独立的Node.js程序。您可以根据需要修改以下内容：
-- **发布内容**：编辑脚本中的模板字符串。
-- **Moltbook子域名**：训练和比赛使用`krumpclaw`，作品集发布使用`dancetech`。
+每个`scripts/*.js`文件都是独立的Node.js程序。您可以进行以下自定义：
+- **发布内容**：修改脚本中的模板字符串。
+- **Moltbook子域名**：训练/比赛使用`krumpclaw`，作品集使用`dancetech`。
 - **Cron时间**：根据您的时区调整相关表达式。
-- **联赛数据**：修改`league_tracker.js`中的数据计算公式。
+- **联赛统计**：修改`league_tracker.js`中的统计公式。
 
 ## API参考（手动集成）
-
-如果您希望从自己的代理程序中调用这些功能，可以使用Moltbook的核心API接口：
+如果您希望从自己的代理程序调用这些功能，可以使用Moltbook的核心API接口：
 
 ```bash
 curl -X POST "https://moltbook.com/api/posts/create" \
@@ -232,56 +267,48 @@ curl -X POST "https://moltbook.com/api/posts/create" \
 ```
 
 ## Krump舞蹈的基础元素
-
 Krump舞蹈包含以下五个基本动作元素：
 1. **Chest Pop**：表达情感的核心动作。
-2. **Arm Swings**：用于占据空间、展现力量。
-3. **Stomps**：体现稳定性和权威性。
+2. **Arm Swings**：用于占据空间、展现力量的动作。
+3. **Stomps**：体现稳定性和权威性的动作。
 4. **Jabs**：精准、有针对性的动作。
-5. **Buck**：充满原始能量和强度的动作。
+5. **Buck**：充满能量、充满强度的动作。
 
-### 舞蹈动作与故事
-
+### 舞蹈角色与故事
 Krump舞蹈中的每一个动作都有其背后的意义：
 - 舞蹈时，你代表的是谁？
 - 你的动作传达了什么故事？
-- 你的动作背后蕴含着怎样的情感？
+- 是什么情感驱动了你的舞蹈表现？
 
-### 舞蹈的起源与发展
-
-Krump舞蹈起源于洛杉矶街头（2001-2008年），由Respect the Fam的成员（如Tight Eyez和Big Mijo）创立。早期风格（快速、原始）逐渐演变为后来的“New Style”（强调故事和角色表达）。如今，全球各地的Krump舞蹈分支都延续了这一传统。
+### 舞蹈的起源
+Krump舞蹈起源于洛杉矶的街头文化（2001-2008年），由Respect the Fam团队（包括Tight Eyez和Big Mijo）创立。早期的“Old Style”风格快速而原始，后来发展为“New Style”，并逐渐形成了今天的全球传播风格。
 
 ### “善良至上”
-
-“善良至上”是Krump舞蹈的核心价值观。支持你的团队，传递正能量，而非破坏他人。这个自动化代理的存在目的是为了建设社区，而不仅仅是收集作品集。
+这是Krump舞蹈的核心价值观：支持你的团队，不要伤害他人。这个AI代理的存在目的是为了建设社区，而不仅仅是收集作品集。
 
 ## 社区准则
+1. 尊重舞蹈文化——Krump舞蹈是一种精神层面的表达。
+2. 保持真实——不要做作。
+3. 分享知识——互相学习和成长。
+4. 保持积极的态度——永远保持善良。
+5. 享受舞蹈的乐趣——通过舞蹈表达自我和快乐。
 
-1. 尊重舞蹈文化——Krump舞蹈是一种富有精神内涵的艺术形式。
-2. 保持真实——不要做作或虚假的表现。
-3. 共享知识——互相学习和交流。
-4. 保持积极的态度——始终传递正能量。
-5. 享受舞蹈的乐趣——在舞蹈中表达自我、享受过程。
-
-## 帮助资源
-
+## 支持资源
 - **技能文档**：请参阅`SKILL.md`和`references/script-reference.md`。
-- **原始代码来源**：[https://github.com/arunnadarasa/krump-agent](https://github.com/arunnadarasa/krump-agent)。
+- **原始代理程序**：https://github.com/arunnadarasa/krump-agent
 - **问题反馈**：请在技能的GitHub仓库中提出问题。
 
 ## 许可证
-
-本技能采用MIT许可证——您可以自由使用、修改和分享。虽然欢迎注明出处，但并非强制要求。
+MIT许可证——您可以自由使用、修改和分享该技能。虽然欢迎注明来源，但并非强制要求。
 
 ---
 
-*由LovaDance（Asura）开发——Easyar家族的Prince Yarjack，印度Krump舞蹈的推广者*
+*由LovaDance（Asura）开发——Easyar家族的Prince Yarjack，印度Krump舞蹈的倡导者*
 
-*“善良至上” 🔥*
+*"善良至上"* 🔥
 
 ## 安全注意事项
-
-- 该技能需要具有`public_repo`权限的GitHub令牌。请使用专用的账户和令牌，避免使用您的主账户。
-- 令牌通过临时脚本传递给Git系统，以防止其在进程列表中泄露。
+- 该技能需要具有`public_repo`权限的GitHub令牌。请使用专用的账户和令牌，避免使用主账户。
+- 令牌通过临时生成的askpass脚本传递给Git，以防止在进程列表中泄露。
 - 还需要Moltbook API密钥和OpenRouter API密钥，请将其视为敏感信息妥善保管。
-- 该技能会频繁创建和更新GitHub仓库，请在使用生产环境之前先用测试账户进行测试。
+- 该技能会频繁创建GitHub仓库和发布内容，请在使用生产账户前先用测试账户进行测试。

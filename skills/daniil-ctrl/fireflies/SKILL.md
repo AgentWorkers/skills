@@ -1,16 +1,16 @@
 ---
 name: fireflies
-description: 通过 GraphQL API 访问 Fireflies.ai 的会议记录、会议摘要、行动项以及分析数据
+description: 通过 GraphQL API 访问 Fireflies.ai 的会议记录、摘要、待办事项和分析数据
 metadata: {"clawdbot":{"secrets":["FIREFLIES_API_KEY"]}}
 ---
 
 # Fireflies.ai 技能
 
-用于查询 Fireflies.ai 中的会议记录、摘要、待办事项和分析数据。
+该技能用于查询 Fireflies.ai 中的会议记录、会议摘要、行动项以及相关分析数据。
 
 ## 设置
 
-设置您的 Fireflies API 密钥：
+请设置您的 Fireflies API 密钥：
 ```bash
 FIREFLIES_API_KEY=your_api_key_here
 ```
@@ -20,14 +20,13 @@ FIREFLIES_API_KEY=your_api_key_here
 ## API 基础信息
 
 GraphQL 端点：`https://api.fireflies.aigraphql`
-
 授权头：`Bearer $FIREFLIES_API_KEY`
 
 ---
 
 ## 核心查询
 
-### 获取当前用户
+### 获取当前用户信息
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -84,7 +83,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($keyword:String,$scope:String){transcripts(keyword:$keyword,scope:$scope,limit:10){id title date summary{overview}}}","variables":{"keyword":"pricing","scope":"ALL"}}' | jq
 ```
 
-### 获取我的近期会议记录
+### 获取我的最近会议记录
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -97,7 +96,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 
 ## 高级查询
 
-### 获取包含摘要和待办事项的完整会议记录
+### 获取包含摘要和行动项的完整会议记录
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -141,7 +140,12 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 获取过去 7 天内包含特定参与者的所有会议记录：
 
 ```bash
-FROM_DATE=$(date -u -v-7d +"%Y-%m-%dT00:00:00.000Z")  # macOS
+# Date commands (pick based on your OS):
+# macOS:
+FROM_DATE=$(date -u -v-7d +"%Y-%m-%dT00:00:00.000Z")
+# Linux:
+# FROM_DATE=$(date -u -d '7 days ago' +"%Y-%m-%dT00:00:00.000Z")
+
 TO_DATE=$(date -u +"%Y-%m-%dT23:59:59.999Z")
 
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -161,38 +165,38 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 - `dateString` - ISO 8601 格式的日期时间
 - `duration` - 会议时长（分钟）
 - `organizer_email` - 会议组织者邮箱
-- `participants` - 所有参与者的邮箱
+- `participants` - 所有参与者邮箱
 - `fireflies_users` - 参与的 Fireflies 用户
 - `workspace_users` - 参与的团队成员
-- `meeting_attendees` - 详细的参会者信息（显示名称、邮箱）
-- `transcript_url` - 在仪表板上查看会议记录的链接
-- `audio_url` - 下载音频文件（Pro+ 订阅者可用，有效期 24 小时）
-- `video_url` - 下载视频文件（Business+ 订阅者可用，有效期 24 小时）
+- `meeting_attendees` - 与会者详细信息（显示名称、邮箱）
+- `transcript_url` - 在仪表板中查看会议记录的链接
+- `audio_url` - 下载音频文件（仅限 Pro+ 订阅用户，有效期 24 小时）
+- `video_url` - 下载视频文件（仅限 Business+ 订阅用户，有效期 24 小时）
 
-### 摘要字段
+### 会议摘要字段
 - `keywords` - 关键主题
-- `action_items` - 提取的待办事项
-- `overview` - 会议概述
-- `topics_discussed` - 主要讨论的主题
-- `meeting_type` - 会议类型
-- `outline` - 结构化的会议大纲
+- `action_items` - 提取出的行动项
+- `overview` - 会议概要
+- `topics_discussed` - 讨论的主题
+- `meeting_type` - 会议类别
+- `outline` - 会议结构化大纲
 - `bullet_gist` - 会议内容的要点总结
 
-### 句子字段
-- `text` - 句子文本
+### 语句字段
+- `text` - 语句内容
 - `speaker_name` - 说话者名称
-- `start_time` - 说话开始时间（秒）
-- `end_time` - 说话结束时间
-- `ai_filters` - 过滤条件（任务、问题、价格等）
+- `start_time` - 语句开始时间（秒）
+- `end_time` - 语句结束时间
+- `ai_filters` - 过滤条件（任务、问题等）
 
-### 演讲者字段
-- `name` - 演讲者名称
-- `duration` - 演讲时长
-- `word_count` - 说话所用单词数
-- `filler_words` - 闲聊或重复性话语的数量
+### 发言者字段
+- `name` - 发言者名称
+- `duration` - 发言时长
+- `word_count` - 发言所用单词数
+- `filler_words` - 闲聊内容所用单词数
 - `questions` - 提出的问题数量
-- `longest_monologue` - 最长的连续讲话时间
-- `words_per_minute` - 每分钟的讲话速度
+- `longest_monologue` - 最长的连续发言内容
+- `words_per_minute` - 每分钟的发言速度
 
 ---
 
@@ -256,21 +260,63 @@ Invoke-RestMethod -Uri "https://api.fireflies.ai/graphql" -Method POST -Headers 
 
 ---
 
+## 可共享的录制链接
+
+API 提供 `transcript_url`、`video_url` 和 `audio_url`，但若需与外部方（如潜在客户）共享，请使用 **嵌入链接** 格式：
+
+```
+API transcript_url:  https://app.fireflies.ai/view/{id}           (requires Fireflies login)
+Embed URL:           https://share.fireflies.ai/embed/meetings/{id}  (no login required, permanent)
+```
+
+**使用嵌入链接的原因：**
+- 查看内容无需 Fireflies 账户
+- 链接永久有效（不同于 `video_url`/`audio_url`）
+- 更佳的观看体验（嵌入式播放器）
+
+**链接生成方式：**
+```bash
+# Get meeting ID from API
+MEETING_ID=$(curl -s -X POST https://api.fireflies.ai/graphql \
+  -H "Authorization: Bearer $FIREFLIES_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ transcripts(mine:true,limit:1) { id } }"}' | jq -r '.data.transcripts[0].id')
+
+# Construct embed URL
+EMBED_URL="https://share.fireflies.ai/embed/meetings/${MEETING_ID}"
+echo "Share this: $EMBED_URL"
+```
+
+**在 HTML 中嵌入链接：**
+```html
+<iframe 
+  src="https://share.fireflies.ai/embed/meetings/{id}" 
+  width="640" 
+  height="360" 
+  frameborder="0" 
+  allow="autoplay; fullscreen; picture-in-picture" 
+  allowfullscreen>
+</iframe>
+```
+
+---
+
 ## 注意事项
 
-- **速率限制**：请咨询 Fireflies 客服了解当前的请求限制。
-- **分页**：对于大量数据，使用 `limit`（最多 50 条）和 `skip` 参数进行分页处理。
-- **日期格式**：始终使用 ISO 8601 格式（例如：`YYYY-MM-DDTHH:mm:ss.sssZ`）。
-- **音频/视频链接**：链接有效期为 24 小时，需要时可重新生成。
-- **分析数据**：需要 Pro 订阅才能使用相关功能。
-- **视频录制**：必须在仪表板设置中启用。
+- **依赖库**：需要安装 `curl` 和 `jq`（安装命令：`sudo apt install jq` 或 `brew install jq`）
+- **请求限制**：请咨询 Fireflies 客服了解当前的请求限制
+- **分页处理**：对于大量数据，使用 `limit`（最多 50 条）和 `skip` 参数进行分页
+- **日期格式**：始终使用 ISO 8601 格式（`YYYY-MM-DDTHH:mm:ss.sssZ`）
+- **音频/视频链接**：有效期为 24 小时，可根据需要重新生成（建议使用嵌入链接进行永久共享）
+- **分析数据**：需要 Pro 计划或更高级别的订阅才能使用分析功能
+- **视频录制**：必须在仪表板设置中启用视频录制功能
 
 ---
 
 ## 常见使用场景
 
-1. **每周管道审查**：按日期和参与者搜索会议记录。
-2. **后续任务**：从近期会议中提取待办事项。
-3. **竞争对手提及**：在句子中搜索特定关键词。
-4. **演讲分析**：分析演讲者的发言时间和提出的问题。
-5. **会议洞察**：获取会议摘要和关键主题。
+1. **每周管道审查**：按日期和参与者筛选会议记录
+2. **跟进任务**：从最近会议中提取行动项
+3. **竞争对手提及**：在会议内容中搜索特定关键词
+4. **发言分析**：分析发言时长和提问情况
+5. **会议洞察**：获取会议摘要和关键主题

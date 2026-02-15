@@ -1,19 +1,18 @@
 ---
-slug: "ifc-data-extraction"
-display_name: "IFC Data Extraction"
-description: "使用 IfcOpenShell 从 IFC（Industry Foundation Classes）文件中提取结构化数据。解析 BIM 模型，提取数量、属性和空间关系，并将结果导出为多种格式。"
+name: "ifc-data-extraction"
+description: "使用 IfcOpenShell 从 IFC（Industry Foundation Classes）文件中提取结构化数据。解析 BIM 模型，提取数量信息、属性以及空间关系，并将结果导出为多种格式。"
 ---
 
-# IFC数据提取
+# IFC 数据提取
 
 ## 概述
 
-本技能提供了使用IfcOpenShell进行IFC文件解析和数据提取的全面方法。可以从BIM模型中提取元素数据、数量信息、属性以及元素之间的关系，以便进一步分析和生成报告。
+本技能提供了使用 IfcOpenShell 对 IFC 文件进行解析和数据提取的全面方法。可以从 BIM 模型中提取元素数据、数量、属性及相互关系，以便进行分析和生成报告。
 
-**基于Open BIM标准**——采用与供应商无关的IFC格式，以实现最大的互操作性。
+**基于 Open BIM 标准**——采用与供应商无关的 IFC 格式，以实现最大的互操作性。
 
-> “IFC是一个开放的BIM数据交换标准，允许用户不受软件限制地提取信息。”  
-> — DDC Methodology
+> “IFC 是一个开放的 BIM 数据交换标准，允许用户独立于所使用的软件来提取信息。”  
+> —— DDC 方法论
 
 ## 快速入门
 
@@ -265,9 +264,9 @@ class IFCExtractor:
         return pd.DataFrame(relationships)
 ```
 
-## 几何图形提取
+## 几何体提取
 
-### 提取几何数据
+### 提取几何体数据
 
 ```python
 import numpy as np
@@ -447,14 +446,14 @@ class IFCExporter:
 
 ## 快速参考
 
-| 元素类型 | 常见属性 | 数量信息 |
+| 元素类型 | 常见属性 | 数量 |
 |-------------|-------------------|------------|
 | IfcWall | 是否为外部构件（IsExternal）、防火等级（FireRating） | 长度（Length）、高度（Height）、面积（Area）、体积（Volume） |
 | IfcSlab | 是否为承重构件（LoadBearing）、面积（Area）、体积（Volume）、周长（Perimeter） |
 | IfcColumn | 是否为承重构件（LoadBearing）、高度（Height）、截面面积（CrossSectionArea） |
 | IfcBeam | 是否为承重构件（LoadBearing）、长度（Length）、截面面积（CrossSectionArea） |
 | IfcDoor | 防火等级（FireRating）、隔音等级（AcousticRating）、宽度（Width）、高度（Height） |
-| IfcWindow | 传热系数（ThermalTransmittance）、宽度（Width）、高度（Height）、面积（Area） |
+| IfcWindow | 透热系数（ThermalTransmittance）、宽度（Width）、高度（Height）、面积（Area） |
 
 ## 属性集查询
 
@@ -473,12 +472,12 @@ PSETS = {
 
 ## 资源
 
-- **IfcOpenShell**: https://ifcopenshell.org
-- **IFC标准**: https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/
-- **DDC网站**: https://datadrivenconstruction.io
+- **IfcOpenShell**: https://ifcopenshell.org  
+- **IFC 标准**: https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/  
+- **DDC 网站**: https://datadrivenconstruction.io  
 
 ## 下一步操作
 
-- 查看`bim-validation-pipeline`以验证提取的数据
-- 查看`qto-report`以生成数量统计报告
-- 查看`4d-simulation`以将数据链接到相关计划表中
+- 查看 `bim-validation-pipeline` 以验证提取的数据  
+- 查看 `qto-report` 以生成数量统计报告  
+- 查看 `4d-simulation` 以将数据链接到施工计划中

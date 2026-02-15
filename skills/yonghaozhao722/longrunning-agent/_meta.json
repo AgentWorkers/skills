@@ -1,0 +1,11 @@
+{
+  "owner": "yonghaozhao722",
+  "slug": "longrunning-agent",
+  "displayName": "Long-Running Agent",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1771075294281,
+    "commit": "https://github.com/openclaw/skills/commit/91813caa076505f2227fad705b8b94354757ab2d"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "l-fy",
+  "slug": "myfeed",
+  "displayName": "My Life Feed",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771064127407,
+    "commit": "https://github.com/openclaw/skills/commit/9f25a37e96b80bf25cb01bfc9de0a84c137aa610"
+  },
+  "history": []
+}

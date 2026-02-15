@@ -3,11 +3,16 @@
   "slug": "jobforbots",
   "displayName": "JobForBots",
   "latest": {
-    "version": "2.0.0",
-    "publishedAt": 1769971785528,
-    "commit": "https://github.com/clawdbot/skills/commit/ab9cac19309ca7132b56f363be506297d9228470"
+    "version": "3.2.0",
+    "publishedAt": 1771038598338,
+    "commit": "https://github.com/openclaw/skills/commit/cc2923cd19d841d0213b9108c9503a42987fb743"
   },
   "history": [
+    {
+      "version": "2.0.0",
+      "publishedAt": 1769971785528,
+      "commit": "https://github.com/clawdbot/skills/commit/ab9cac19309ca7132b56f363be506297d9228470"
+    },
     {
       "version": "1.2.3",
       "publishedAt": 1769948595632,

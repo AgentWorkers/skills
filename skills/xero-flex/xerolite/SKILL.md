@@ -1,12 +1,13 @@
 ---
 name: xerolite
 description: "将 OpenClaw 与 Xerolite 交易平台集成。使用场景包括：查询 Xerolite API、下订单、搜索合约以及处理 Xerolite 的 Webhook 事件。"
+metadata: {"openclaw":{"requires":{"bins":["node"],"env":["XEROLITE_API_URL","XEROLITE_API_KEY"]}}}
 ---
 
 # Xerolite
 
 Xerolite 是一个将 TradingView 数据传输到经纪商（IB）的交易平台。  
-该插件允许代理通过 OpenClaw 下单、搜索合约以及接收来自 Xerolite 的 Webhook 消息。
+该插件允许代理通过 OpenClaw 下单、搜索合约以及接收 Xerolite 发送的 Webhook 消息。
 
 ## 设置
 
@@ -50,13 +51,13 @@ skills/xerolite/
 
 ## 命令
 
-请从插件目录中使用这些命令（或在其他插件中使用 `{baseDir}` 来调用它们）。
+请从该插件的目录中使用这些命令（或在其他插件中使用 `{baseDir}` 来调用它们）。
 
 **默认参数值**（可选；省略即可）：`--currency USD`、`--asset-class STOCK`、`--exch SMART`。
 
 ### 下单
 
-必填参数：`--action`、`--qty`、`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
+必需参数：`--action`、`--qty`、`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
 
 ```bash
 # Minimal (defaults: USD, STOCK, SMART)
@@ -88,7 +89,7 @@ node {baseDir}/scripts/xerolite.mjs order place \
 
 ### 搜索合约
 
-必填参数：`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
+必需参数：`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
 
 ```bash
 # Minimal (defaults: USD, STOCK, SMART)
@@ -131,7 +132,7 @@ node {baseDir}/scripts/xerolite.mjs contract search \
 
 ### 数据格式
 
-`transforms` 模块可以处理多种数据格式：
+`transforms` 模块支持多种数据格式：
 
 ```json
 {"event": "order.created", "data": {"id": "123", "total": 99.99}}
@@ -153,35 +154,35 @@ node {baseDir}/scripts/xerolite.mjs contract search \
 
 ## REST API
 
-有关此插件使用的订单和合约搜索端点的详细信息，请参阅 [references/API.md](references/API.md)。
+有关该插件使用的订单和合约搜索端点的详细信息，请参阅 [references/API.md](references/API.md)。
 
 ## Transform 模块
 
 随插件提供的 `transforms/xerolite.js` 模块负责：
-- 数据格式化，使其易于阅读
-- 提取事件/消息/数据字段
-- 将数据自动发送到配置的通道
-- 确保数据在传输过程中不被重新格式化
+- 将接收到的数据格式化为结构清晰的形式。
+- 提取事件/消息/数据字段。
+- 自动将数据发送到配置的通道。
+- 确保数据在传输过程中不被重新格式化。
 
-如需自定义 `transforms/xerolite.js`，请在安装前对其进行修改。
+如需自定义 `transforms` 模块，请在安装前编辑 `transforms/xerolite.js` 文件。
 
 ## 系统要求
 
 - 环境变量：`XEROLITE_API_URL`、`XEROLITE_API_KEY`
-- Node.js 18 及以上版本（支持内置的 `fetch` 函数）
-- OpenClaw 的 Webhook 功能已启用
+- Node.js 18 及以上版本（用于内置的 `fetch` 函数）
+- 开启 OpenClaw 的 Webhook 功能
 
 ## 故障排除
 
-### Webhook 未接收
-- 确认 `openclaw` 配置中已设置 `hooks.token`
-- 检查 Xerolite 是否正确设置了 `Authorization: Bearer <token>` 请求头
-- 安装完成后确认网关已重新启动
+### Webhook 未收到
+- 确认 `openclaw` 配置中设置了正确的 `hooks.token`。
+- 检查 Xerolite 是否正确发送了 `Authorization: Bearer <token>` 请求头。
+- 确保安装完成后网关已重新启动。
 
 ### 401 Unauthorized 错误
-- 令牌不匹配 —— 确认 Xerolite 使用的令牌与 `hooks.token` 一致
+- 令牌不匹配 —— 确认 Xerolite 使用的令牌与 `hooks.token` 一致。
 
 ### Transform 模块无法工作
-- 确认 `transforms/xerolite.js` 文件位于 `~/.openclaw/hooks/transforms/` 目录下
-- 重新运行 `install.sh` 以更新转换脚本
-- 查看网关日志以获取错误信息
+- 检查 `transforms/xerolite.js` 文件是否位于 `~/.openclaw/hooks/transforms/` 目录下。
+- 重新运行 `install.sh` 以更新 `transforms` 模块。
+- 查看网关日志以获取错误信息。

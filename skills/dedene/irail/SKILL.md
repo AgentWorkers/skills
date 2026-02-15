@@ -4,11 +4,30 @@ description: >
   Query Belgian railway (NMBS/SNCB) schedules via the irail CLI. Use when the user wants
   train departures, connections between stations, train compositions, or service disruptions.
   Triggered by mentions of Belgian trains, NMBS, SNCB, iRail, train schedules, or railway delays.
+license: MIT
+homepage: https://github.com/dedene/irail-cli
+metadata:
+  author: dedene
+  version: "1.1.0"
+  openclaw:
+    requires:
+      bins:
+        - irail
+      anyBins:
+        - jq
+    install:
+      - kind: brew
+        tap: dedene/tap
+        formula: irail
+        bins: [irail]
+      - kind: go
+        package: github.com/dedene/irail-cli/cmd/irail
+        bins: [irail]
 ---
 
 # irail-cli
 
-这是一个用于查询比利时铁路（NMBS/SNCB）信息的命令行工具（CLI），通过 [iRail API](https://api.irail.be/) 进行数据交互。无需进行身份验证。
+这是一个用于查询比利时铁路（NMBS/SNCB）信息的命令行工具（CLI），通过 [iRail API](https://api.irail.be/) 实现。无需进行身份验证。
 
 ## 快速入门
 
@@ -29,8 +48,8 @@ irail disturbances
 
 ## 核心规则
 
-1. **在程序化解析输出时，务必使用 `--json` 参数。**
-2. **车站名称具有灵活性**——支持部分匹配；多词名称需要用引号括起来。
+1. **在程序化解析输出时，务必使用 `--json` 标志。**
+2. **车站名称具有灵活性**——支持部分匹配，多词名称需要用引号括起来。
 3. **时间格式**：HH:MM（24小时制）；日期格式：YYYY-MM-DD。
 4. **语言选项**：nl（荷兰语）、fr（法语）、en（英语）、de（德语）（默认为 nl）。
 
@@ -39,15 +58,15 @@ irail disturbances
 | 标志 | 格式 | 用途 |
 |------|--------|----------|
 | （默认） | 表格形式 | 适合用户查看，包含颜色提示 |
-| `--json` | JSON 格式 | 适用于代理程序解析或脚本编写 |
+| `--json` | JSON 格式 | 适用于代理程序或脚本解析 |
 
 颜色说明：
 - 红色：列车延误
-- 黄色：列车更换站台
+- 黄色：站台变更
 
 ## 工作流程
 
-### 实时信息（列车到发时间）
+### 实时信息（列车到发）
 
 ```bash
 # Departures from station
@@ -124,7 +143,7 @@ irail composition IC1832
 irail composition S51507 --json
 ```
 
-### 服务中断情况
+### 服务中断信息
 
 ```bash
 # All current disruptions
@@ -161,7 +180,7 @@ irail disturbances --json | jq -r '.[].title'
 
 ## 环境变量
 
-| 变量 | 说明 |
+| 变量 | 描述 |
 |----------|-------------|
 | `IRAIL_LANG` | 默认语言（nl, fr, en, de） |
 | `IRAIL_JSON` | 默认输出格式为 JSON |
@@ -183,17 +202,17 @@ irail connections Brugge Leuven --lang en
 
 ## 命令参考
 
-| 命令 | 说明 |
+| 命令 | 描述 |
 |---------|-------------|
-| `liveboard` | 查看车站的列车到发时间 |
-| `connections` | 查询两站之间的路线信息 |
+| `liveboard` | 查看车站的列车到发信息 |
+| `connections` | 查询两个车站之间的路线及换乘信息 |
 | `stations` | 列出/搜索车站 |
-| `vehicle` | 获取列车信息及停靠站 |
+| `vehicle` | 查看列车信息及停靠站 |
 | `composition` | 查看列车车厢编组 |
-| `disturbances` | 查看服务中断情况 |
+| `disturbances` | 查看列车服务中断情况 |
 | `completion` | 提供 Shell 命令的补全功能 |
 
-## 常见用法
+## 常用操作模式
 
 ### 检查列车是否延误
 
@@ -215,7 +234,13 @@ irail connections Brugge Leuven --json | jq '[.[] | select(.vias == null or (.vi
 
 ## 使用指南
 
-- 无需身份验证，API 是公开的。
-- 在循环中使用 API 时请注意控制请求频率（避免频繁请求导致延迟）。
+- 无需身份验证——API 是公开的。
+- 在循环中使用 API 时，请注意控制请求间隔，以避免过度加载服务器。
 - 车站名称不区分大小写，支持部分匹配。
 - 延误时间以秒为单位（需除以 60 转换为分钟）。
+
+## 安装方法
+
+```bash
+brew install dedene/tap/irail
+```

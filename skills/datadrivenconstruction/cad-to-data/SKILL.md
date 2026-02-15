@@ -1,16 +1,15 @@
 ---
-slug: "cad-to-data"
-display_name: "CAD To Data"
+name: "cad-to-data"
 description: "将 CAD/BIM 文件转换为结构化数据。从 Revit、IFC、DWG、DGN 文件中提取元素数据。"
 ---
 
-# 将CAD文件转换为结构化数据
+# CAD到数据（CAD to Data）
 
 ## 概述
 
-本技能基于DDC方法论（第2.4章），将CAD和BIM文件转换为结构化数据，从Revit、IFC、DWG和DGN文件中提取元素属性、数量和关系信息。
+本技能基于DDC方法论（第2.4章），将CAD和BIM文件转换为结构化数据，从Revit、IFC、DWG和DGN文件中提取元素属性、数量及元素之间的关系。
 
-**参考书籍**：《数据转换成结构化形式》（Data Transformation to Structured Form）
+**参考书籍**：《数据转换为结构化形式》（Data Transformation to Structured Form）
 
 ## 快速入门
 
@@ -607,7 +606,7 @@ print(f"Wall count: {quantities['quantities']['wall']['count']}")
 print(f"Total wall area: {quantities['quantities']['wall']['totals']['Area']}")
 ```
 
-### 生成进度报表
+### 生成进度表
 
 ```python
 door_schedule = converter.extract_schedule(
@@ -632,14 +631,14 @@ print(report)
 
 ## 快速参考
 
-| 组件          | 功能                          |
-|--------------|-----------------------------|
-| `CADDataConverter` | 主要转换引擎                     |
-| `IFCExtractor` | 提取IFC文件中的数据                 |
-| `DWGExtractor` | 提取DWG/DXF文件中的数据                 |
-| `CADElement` | 提取的元素数据                     |
-| `CADExtractionResult` | 完整的提取结果                     |
-| `ElementCategory` | BIM元素分类                     |
+| 组件          | 功能                |
+|--------------|-------------------|
+| `CADDataConverter` | 主要转换引擎           |
+| `IFCExtractor` | IFC文件提取工具          |
+| `DWGExtractor` | DWG/DXF文件提取工具        |
+| `CADElement` | 提取的元素数据           |
+| `CADExtractionResult` | 完整的提取结果           |
+| `ElementCategory` | BIM元素分类           |
 
 ## 资源
 
@@ -648,6 +647,6 @@ print(report)
 
 ## 下一步操作
 
-- 使用 [image-to-data](../image-to-data/SKILL.md) 功能提取图像数据
-- 使用 [qto-report](../../Chapter-3.2/qto-report/SKILL.md) 功能生成数量报告
-- 使用 [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) 功能进行数据验证
+- 使用 [image-to-data](../image-to-data/SKILL.md) 进行图像数据提取
+- 使用 [qto-report](../../Chapter-3.2/qto-report/SKILL.md) 生成数量报告
+- 使用 [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) 进行数据验证

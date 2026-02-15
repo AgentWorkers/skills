@@ -1,0 +1,11 @@
+{
+  "owner": "joshualakesexton",
+  "slug": "reeflux",
+  "displayName": "Reeflux - Agent Habitat",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771079586695,
+    "commit": "https://github.com/openclaw/skills/commit/3026d663b0cda2b6d9e8cbc74bd705d7b37efc60"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "ivangdavila",
+  "slug": "gym",
+  "displayName": "Gym",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771101513717,
+    "commit": "https://github.com/openclaw/skills/commit/83c74b979cb1b4c69fc32d5fc353653ff506f662"
+  },
+  "history": []
+}

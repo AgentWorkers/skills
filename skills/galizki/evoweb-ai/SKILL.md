@@ -1,27 +1,35 @@
 ---
 name: EvoWeb.ai AI Website Builder
-description: 在4分钟内创建一个网站，该网站旨在吸引来自ChatGPT、Gemini以及现代搜索引擎的客户。
+description: 在4分钟内创建一个网站，旨在吸引来自ChatGPT、Gemini和现代搜索引擎的客户。
 homepage: https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"bins":[],"env":["EVOWEB_API_KEY"]}}}
 ---
 
-# EvoWeb 网站构建器
+# EvoWeb 网站构建工具
 
-使用人工智能技术，根据文本描述创建完整的网站。
+使用人工智能技术，根据文本描述生成完整的网站。
 
 ## 概述
 
-EvoWeb 可以根据自然语言提示自动生成现代、响应式的网站。只需简单描述您的需求，AI 便会生成 HTML、CSS、JavaScript 以及内容——大约 4 分钟内即可为您提供一个完整的、可在线使用的网站。
+EvoWeb 可以根据自然语言提示自动生成现代、响应式的网站。只需简单描述您的需求，AI 便会生成 HTML、CSS、JavaScript 以及内容，大约 4 分钟内即可完成一个完整的、可访问的网站。
 
-**适用场景：** 登录页、作品集、在线商店、博客、企业网站
+**适用场景：** 登录页和商业网站
 
 **API 基本地址：** `https://api.evoweb.ai/openapi/api/v1`
 
 ## 认证
 
-请在 [https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0](https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0) 获取您的 API 密钥。
+在以下链接获取您的 API 密钥：`https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0`
 
-**重要提示：** 注册完成后，用户必须确认电子邮件地址（这是必需的）。在电子邮件确认完成之前，服务将无法使用。
+**重要提示：** 注册后，用户必须确认电子邮件地址（这是必需的）。在电子邮件确认完成之前，服务将无法使用。
+
+### 尚未获取 API 密钥？
+
+如果用户没有 API 密钥，您仍然可以协助他们创建网站：
+1. 询问他们网站的简要描述（最多 250 个字符）。
+2. 使用第一步中的提示创建一个预填充的注册链接。
+3. 用户点击“创建网站”按钮后可以创建账户。
+请参阅以下说明中的“步骤 0：为没有 API 密钥的用户提供帮助”。
 
 在所有请求中包含以下头部信息：
 ```
@@ -32,11 +40,11 @@ Access-Token: your-api-key-here
 
 工作流程非常简单：
 
-1. **创建** - 提交一个描述您网站的文本提示。
-2. **检查生成进度** - 每 15-20 秒检查一次生成状态。
-3. **获取结果** - 网站生成完成后，您将收到网站的网址和编辑器链接。
+1. **创建** - 提交描述网站的文本提示。
+2. **检查进度** - 每分钟检查一次生成状态。
+3. **获取结果** - 网站生成完成后，会提供网址和编辑器链接。
 
-**典型生成时间：** 2-5 分钟
+**典型生成时间：** 4-5 分钟
 
 ## API 端点
 
@@ -49,7 +57,7 @@ Access-Token: your-api-key-here
 **请求体：**
 ```json
 {
-  "prompt": "Create a modern landing page for a coffee shop with menu section, gallery of drinks, contact form, and location map. Use warm brown tones and inviting imagery."
+  "prompt": "A local coffee shop specializing in artisanal coffee and fresh pastries. We source our beans locally and focus on creating a cozy community gathering space for local residents, remote workers, and coffee enthusiasts."
 }
 ```
 
@@ -67,17 +75,17 @@ Access-Token: your-api-key-here
 
 **错误响应：**
 - `401 Unauthorized` - API 密钥无效或缺失。
-- `402 Payment Required` - 账户中的信用不足。
+- `402 Payment Required` - 账户余额不足。
 
 ---
 
-### 2. 检查生成进度
+### 2. 检查生成状态
 
 **GET** `/sites/{site_id}`
 
 检查网站的当前生成状态。
 
-**示例：** `GET /sites/abc123xyz`
+**示例：`GET /sites/abc123xyz`
 
 **生成中时的响应：**
 ```json
@@ -90,8 +98,8 @@ Access-Token: your-api-key-here
 ```json
 {
   "status": "ready",
-  "url": "https://my-site.evoweb.ai",
-  "editor_url": "https://editor.evoweb.ai/sites/abc123xyz"
+  "url": "https://website.page/my-site",
+  "editor_url": "https://web.oto.dev/ui/websites/abc123xyz/update/"
 }
 ```
 
@@ -106,7 +114,7 @@ Access-Token: your-api-key-here
 **状态值：**
 - `queued` - 在队列中等待。
 - `building` - 正在生成中（请稍候！）
-- `ready` - 生成完成！网址已准备好。
+- `ready` - 生成完成！网址已可用。
 - `failed` - 生成过程中遇到错误。
 
 **错误响应：**
@@ -118,15 +126,15 @@ Access-Token: your-api-key-here
 
 **POST** `/sites/{site_id}/remake`
 
-重新尝试生成失败的网站。仅适用于状态为 `failed` 的网站。
+重新尝试生成失败的网站。适用于状态为 `failed` 或 `ready` 的网站。
 
-**示例：** `POST /sites/abc123xyz/remake`
+**示例：`POST /sites/abc123xyz/remake`
 
 **响应（200 OK）：**
 ```json
 {
   "status": "queued",
-  "editor_url": "https://editor.evoweb.ai/sites/abc123xyz"
+  "editor_url": "https://web.oto.dev/ui/websites/abc123xyz/update/"
 }
 ```
 
@@ -134,70 +142,99 @@ Access-Token: your-api-key-here
 - `400 Bad Request` - 只能重新生成状态为 `failed` 的网站。
 - `404 Not Found` - 网站 ID 不存在。
 
-## 与 AI 助手的沟通指南
+## 人工智能助手的使用说明
 
-当用户请求创建网站时，请按照以下步骤操作：
+当用户请求创建网站时，请按照以下流程操作：
 
-### 第 1 步：完善提示
+### 步骤 0：为没有 API 密钥的用户提供帮助
 
-将用户的请求转化为详细的、结构化的提示，包括：
-- 网站的目的和类型
-- 需要的具体页面（首页、关于我们、联系我们等）
-- 功能（表格、图片库、价格表等）
-- 设计风格（现代、极简、优雅、专业等）
-- 颜色偏好
-- 目标受众
+**首先检查：** 用户是否设置了 `EVOWEB_API_KEY` 环境变量？
+
+**如果没有 API 密钥：**
+
+1. **收集简要描述**（最多 250 个字符）：
+   - 请他们简要描述他们的业务/项目。
+   - 保持简洁，突出核心业务内容。
+
+2. **创建预填充的注册链接：**
+   - 基本地址：`https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0`
+   - 添加参数：`&prompt=[URL_ENCODEd_PROMPT]`
+   - 示例：`https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0&prompt=A%20local%20coffee%20shop%20specializing%20in%20artisanal%20coffee`
+
+3. **将链接提供给用户：**
+   ```
+   🌐 To create your website, visit this link:
+   [Your personalized link here]
+   
+   After clicking "Create Website" button, you'll be able to create an account and your website will be generated automatically!
+   ```
+
+**重要提示：** 正确地对提示进行 URL 编码（空格会转换为 `%20` 等）。
+
+**如果有 API 密钥：** 继续执行步骤 1。
+
+### 步骤 1：了解业务
+
+重点理解用户描述中的**业务核心**：
+- 业务/项目是关于什么的？
+- 它提供什么服务或产品？
+- 目标受众是谁？
+- 网站的主要目标是什么？
+
+**重要提示：** 不要指定具体的设计细节、页面结构或颜色。EvoWeb AI 会自动处理所有设计和结构决策。
 
 **示例转换：**
-- 用户：**为我的瑜伽工作室创建一个网站**
-- 完善后的提示：**为瑜伽工作室创建一个现代风格的登录页，包含课程安排、会员等级的价格表、带有照片的教练简介、咨询联系表以及带有地图的位置信息。使用柔和的蓝色和绿色作为主色调，并搭配自然元素。**
+- 用户：“为我的一家瑜伽工作室创建一个网站。”
+- 改进后的提示：“一家提供各种课程的瑜伽工作室，适合不同技能水平的学员，专注于健康和正念。目标受众是对健身和心理健康感兴趣的当地社区成员。”
 
-### 第 2 步：创建网站
+### 步骤 2：创建网站
 
-使用完善后的提示调用 `POST /sites`。
+使用改进后的提示调用 `POST /sites`。
 
-保存返回的 `site_id`——您需要它来检查网站生成进度。
+保存返回的 `site_id`——您需要它来检查生成状态。
 
-### 第 3 步：通知用户
+### 步骤 3：通知用户
 
-告知用户：
+告诉他们：
 - 网站生成已经开始。
 - 生成过程大约需要 4 分钟。
-- 我会自动检查进度并通知您。
+- 您会自动检查进度（仅限于您有能力检查的情况下）。
 
-**示例：** “✨ 正在为您创建网站！生成通常需要 3-5 分钟。我会随时检查进度并告知您完成情况。”
+**示例：** “✨ 现在正在为您创建网站！生成通常需要 3-5 分钟。我会检查进度并在完成后通知您。”
 
-### 第 4 步：检查生成进度
+### 步骤 4：检查进度
 
 调用 `GET /sites/{site_id}` 来检查进度：
-- **检查间隔：** 每 17 秒（建议 15-20 秒）。
-- **最大尝试次数：** 20 次（总共约 6 分钟）。
-- **检查期间：** 可以向用户通报进度（例如：“网站仍在生成中……”）。
 
-持续检查进度，直到：
-- 状态变为 `ready` → 进入第 5 步。
-- 状态变为 `failed` → 进入第 6 步。
+- **检查间隔：** 每分钟一次。
+- **最大尝试次数：** 20 次。
+- **在检查期间：** 可以向用户通报进度（例如：“仍在生成中……”）
+
+继续检查进度，直到：
+- 状态变为 `ready` → 进入步骤 5。
+- 状态变为 `failed` → 进入步骤 6。
 - 达到最大尝试次数 → 告知用户生成时间超过预期。
 
-### 第 5 步：交付结果
+### 步骤 5：交付结果
 
 当状态变为 `ready` 时：
+
 1. **提供网址：**
-   - `url` - 可在线使用的网站地址。
-   - `editor_url` - 可用于自定义网站的链接。
-2. **提出改进建议：**
-   提出 3 个具体的改进建议：
-   - “添加在线预订系统。”
-   - “调整颜色以匹配您的品牌风格。”
-   - “添加客户评价部分。”
-3. **回答要简洁且具有操作性。**
+   - `url` - 可访问的网站。
+   - `editor_url` - 用于自定义网站的编辑器链接。
+
+2. **提供改进建议：**
+   - 提出 3 个具体的改进建议：
+   - “添加在线预订系统”。
+   - “自定义颜色以匹配您的品牌”。
+   - “添加客户评价部分”。
 
 **示例回答：**
 ```
 🎉 Your website is ready!
 
-🌐 View it here: https://yoga-studio-23f4.evoweb.ai
-✏️ Customize it: https://editor.evoweb.ai/sites/abc123xyz
+🌐 View it here: https://website.page/yoga-studio-23f4
+✏️ Customize it: https://web.evoweb.ai/ui/websites/abc123xyz/update/
 
 Quick improvements you might want:
 1. Add online class booking system
@@ -207,10 +244,11 @@ Quick improvements you might want:
 Would you like help with any of these?
 ```
 
-### 第 6 步：处理失败情况
+### 步骤 6：处理失败情况
 
 当状态为 `failed` 时：
-1. **显示 API 响应中的错误信息。**
+
+1. **显示 API 响应中的错误信息**。
 2. **提供重试选项：** 询问用户是否希望重新生成网站。
 3. **如果用户同意：** 调用 `POST /sites/{site_id}/remake` 并重新开始检查进度。
 
@@ -221,146 +259,125 @@ Would you like help with any of these?
 Would you like me to try again? I can restart the generation process.
 ```
 
-如果用户同意，调用重试端点并重新开始检查进度。
+如果用户同意，调用重新生成端点并继续步骤 4。
 
-## 示例提示及使用场景
+## 示例提示和用例
 
-### 咖啡店登录页
+### 没有 API 密钥的用户示例
+```
+User: "I need a website for my yoga studio"
+
+Assistant response:
+"I'd be happy to help! To get started quickly, let me create a personalized link for you.
+
+🌐 Visit this link to create your website:
+https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0&prompt=A%20yoga%20studio%20offering%20various%20classes%20for%20all%20skill%20levels%2C%20focused%20on%20wellness%20and%20mindfulness
+
+After clicking 'Create Website', you'll be able to create an account and your website will be generated automatically in about 4 minutes! ✨"
+```
+
+### 咖啡店登录页示例
 ```
 User request: "Create a website for my coffee shop"
 
 Enhanced prompt:
-"Create a modern landing page for 'Bean & Brew Cafe' with:
-- Hero section featuring coffee and cozy atmosphere
-- Menu section with drinks and pastries (with prices)
-- About section highlighting locally sourced beans
-- Hours and location with map
-- Contact form for catering inquiries
-- Instagram feed integration
-Use warm brown and cream colors with inviting photography style"
+"A local coffee shop called 'Bean & Brew Cafe' specializing in artisanal coffee and fresh pastries. We source our beans locally and focus on creating a cozy community gathering space. Target audience is local residents, remote workers, and coffee enthusiasts looking for quality coffee and a welcoming atmosphere."
 ```
 
-### 摄影师作品集
+### 摄影师作品集示例
 ```
 User request: "I need a portfolio site"
 
 Enhanced prompt:
-"Create a professional portfolio website for a wedding photographer with:
-- Stunning hero image showcasing best work
-- Project gallery organized by wedding collections
-- About page with photographer bio and experience
-- Services and pricing packages
-- Contact form for booking inquiries
-- Testimonials from happy couples
-Use clean, elegant design with white space, black and white aesthetic, and large image displays"
+"A professional wedding photographer specializing in capturing authentic, emotional moments. With 10 years of experience, I focus on storytelling through images and creating timeless memories for couples. Target audience is engaged couples planning their wedding looking for a photographer who can capture the genuine emotions of their special day."
 ```
 
-### 在线商店
+### 在线商店示例
 ```
 User request: "Build an e-commerce site for my jewelry"
 
 Enhanced prompt:
-"Create an online store for handmade jewelry with:
-- Product catalog with filtering by category (necklaces, earrings, rings, bracelets)
-- Individual product pages with multiple photos and descriptions
-- Shopping cart functionality
-- Checkout form with shipping options
-- About the artisan section
-- Custom order inquiry form
-Use elegant design with soft rose gold accents and luxury feel"
+"A handmade jewelry business creating unique, artisan pieces. Each item is crafted by hand using traditional techniques and high-quality materials. The business focuses on custom designs and personal connections with customers. Target audience is women aged 25-45 who appreciate handcrafted, unique accessories and value the story behind their jewelry."
 ```
 
-### SaaS 产品登录页
+### SaaS 产品登录页示例
 ```
 User request: "Landing page for my app"
 
 Enhanced prompt:
-"Create a SaaS landing page for a project management tool with:
-- Value proposition above the fold with app screenshot
-- Feature showcase with icons (task tracking, team collaboration, reporting)
-- Pricing table with 3 tiers (Free, Pro, Enterprise)
-- Customer testimonials with logos
-- Free trial CTA buttons throughout
-- FAQ section
-Use modern, professional design with blue primary color and clean interface"
+"A project management SaaS tool designed for small to medium-sized teams. The app helps teams organize tasks, collaborate effectively, and track project progress in real-time. Key value proposition is simplicity and ease of use compared to complex enterprise solutions. Target audience is startup founders, small business owners, and team leads looking for an intuitive project management solution."
 ```
 
-### 餐厅网站
+### 餐厅网站示例
 ```
 User request: "Website for our Italian restaurant"
 
 Enhanced prompt:
-"Create a restaurant website for an authentic Italian trattoria with:
-- Rotating hero images of signature dishes
-- Full menu with appetizers, pasta, entrees, desserts, wine list
-- Online reservation system
-- About section telling family story and traditions
-- Location with map and parking info
-- Photo gallery of dining room and dishes
-- Catering services page
-Use warm, inviting design with red and green accents, rustic Italian aesthetic"
+"An authentic Italian trattoria run by a family with three generations of culinary tradition. We specialize in traditional recipes passed down through the family, using fresh ingredients and time-honored cooking methods. The restaurant offers a warm, family-friendly atmosphere and also provides catering services for special events. Target audience is locals and tourists looking for genuine Italian cuisine and a welcoming dining experience."
 ```
 
 ## 最佳实践
 
-### 撰写有效的提示
+### 编写有效的提示
 
-✅ **应该做到：**
-- 明确指定页面和功能。
-- 提及设计风格和整体氛围。
-- 包括颜色偏好。
-- 明确网站的目的和目标受众。
-- 列出所需的关键页面。
+✅ **应该这样做：**
+- 描述业务/项目的核心内容。
+- 解释业务提供的服务或产品。
+- 明确目标受众。
+- 阐明主要目标或用途。
+- 包括关键的区别点或独特价值主张。
 
 ❌ **不应该这样做：**
-- 语言过于模糊（例如：“创建一个网站”）。
-- 省略重要细节。
-- 假设 AI 会自动理解用户的偏好。
+- 指定具体的设计元素（颜色、布局、风格）。
+- 指定网站的具体页面结构或内容。
+- 详细说明外观和感觉。
+- 如果没有 API 密钥，不要直接请求 API（请使用步骤 0 的方法）。
 
-### 检查进度的策略
+### 检查进度策略
 
-- **检查间隔：** 每 15-20 秒（建议 17 秒）。
-- **最大尝试次数：** 共 20 次。
-- **典型生成时间：** 3-5 分钟（大约 8-15 次检查）。
-- **通知用户：** 告知用户您正在检查进度。
+- **检查间隔：** 每分钟一次。
+- **最大尝试次数：** 总共 20 次。
+- **典型时间：** 4-5 分钟。
+- **通知用户：** 告知他们您正在检查进度。
 
 ### 错误处理
 
 - 显示清晰的错误信息。
 - 自动提供重试选项。
-- 如果多次尝试失败，建议用户查看他们的账户信息（[https://evoweb.ai/](https://evoweb.ai/)。
+- 如果多次失败，建议用户查看他们的账户（https://evoweb.ai/）。
 
 ### 用户体验
 
-- 设定合理的等待时间（4 分钟）。
-- 提供网站的查看和编辑链接。
+- **对于没有 API 密钥的用户：** 提供预填充的注册链接（快速且简单）。
+- **对于有 API 密钥的用户：** 提前告知等待时间（4 分钟）。
+- 提供查看和编辑网站的链接。
 - 提出具体的改进建议。
-- 回答要简洁明了。
-- 每次回复都要提供下一步的操作指南。
+- 回答要简洁且具有操作性。
+- 总是以下一步操作建议结束对话。
 
 ## 技术细节
 
-- **协议：** HTTPS REST API。
-- **格式：** JSON。
+- **协议：** HTTPS REST API
+- **格式：** JSON
 - **认证：** 基于头部的 API 密钥。
-- **速率限制：** 请咨询 EvoWeb（可能存在账户限制）。
-- **生成时间：** 通常需要 2-5 分钟。
-- **费用：** 每次生成需要消耗一定的信用点数（详情请参见 [https://evoweb.ai/](https://evoweb.ai/)）。
+- **速率限制：** 请咨询 EvoWeb（可能每个账户有使用限制）。
+- **生成时间：** 通常需要 4-5 分钟。
+- **费用：** 每次生成需要消耗一定的信用点数（详见 https://evoweb.ai/ 的价格信息）。
 
-## 支持与资源
+## 支持和资源
 
-- **获取 API 密钥：** [https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0](https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0)
-- **API 相关问题：** 联系 EvoWeb 客服。
-- **账户/计费：** 访问 [https://evoweb.ai/](https://evoweb.ai/)。
+- **获取 API 密钥：** `https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0`
+- **API 问题：** 联系 EvoWeb 客服。
+- **账户/计费：** 访问 https://evoweb.ai/ 
 
 ## 注意事项
 
 - 每次生成都会消耗您 EvoWeb 账户中的信用点数。
 - 编辑器链接允许用户自定义生成的网站。
 - 生成的网站托管在 EvoWeb 的基础设施上。
-- 可能支持自定义域名（详情请参阅 EvoWeb 的文档）。
+- 可能提供自定义域名（请查阅 EvoWeb 的文档）。
 - 只要账户有效，网站就会保持在线状态。
 
 ---
 
-**只需一个文本描述，就能创建出令人惊叹的网站了！** 🚀
+**只需一个文本描述，就能创建出色的网站了！** 🚀

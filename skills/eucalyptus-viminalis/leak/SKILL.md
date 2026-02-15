@@ -1,8 +1,8 @@
 ---
 name: leak
-description: 使用 leak CLI 工具来购买或出售基于 x402 协议的数字内容。在卖家端，当用户希望发布、上传文件或“泄露”文件并希望收取费用时，可以使用此功能；在买家端，当用户希望下载需要付费的文件时，也可以使用此功能。
+description: 使用 `leak` CLI 工具来购买或出售基于 x402 标准的数字内容。对于卖家而言，当用户希望发布、释放或“泄露”某个文件并希望收取费用时，可以使用此功能；对于买家而言，当用户希望下载需要付费的文件时，也可以使用此功能。
 compatibility: Requires access to the internet
-version: 2026.2.14
+version: 2026.2.15-beta.1
 metadata:
   openclaw:
     emoji: 💦
@@ -23,206 +23,165 @@ metadata:
 
 ## 概述
 
-该功能通过 `leak` CLI 工具来实现以下操作：
-- **发布** 文件：将文件发布到一个需要支付 402 状态码（表示“需要付款”）的服务器，并在付款成功后生成一个限时令牌。
-- **分享** 文件：使用 `/` 作为促销链接（适合分享到社交媒体），并使用 `/download` 作为购买链接。
-- **购买**：用户可以通过促销链接（`/`）或购买链接（`/download`）购买文件，并将文件保存到本地。
+该技能用于操作 `leak` 命令行工具（CLI）：
+- **发布** 本地文件，并设置 x402 状态码为 “402 Payment Required”（表示需要支付）。
+- **分享** 促销链接（`/`），以便在社交媒体上推广或供代理发现使用。
+- **购买** 通过促销链接（`/`）或下载链接（`/download`）获取文件，并将其保存到本地。
 
-## 术语说明
+## 安全政策（强制要求）
 
-- `content`、`file`、`artifact`、`media`、`digital good` 这些术语可以互换使用，指代任何格式的数字文件（如 `.mp3`、`.zip`、`.png`、`.md` 等）。
-- `publish`、`release`、`sell`、`leak`、`drop`、`serve` 这些术语可以互换使用，表示从主机服务器启动服务，通过带有 402 状态码的下载链接将数字文件发布到互联网上。
+每次使用该技能时，请遵守以下规则：
+1. **严禁** 在命令参数中请求、存储或传递原始私钥。
+2. **默认情况下** 不会创建钱包。只有在用户明确同意的情况下，才允许创建钱包。
+3. **在发布文件之前**，必须获得用户的明确确认。
+4. **在将文件公开到互联网之前**，必须获得用户的明确同意（使用 `--public` 选项）。
+5. **严禁** 在常规输出中显示私钥内容。
 
-## 安装 CLI（第一步）
+## 命令解析
 
-建议将 `leak` CLI 添加到系统的 PATH 环境变量中。如果未安装，可以先通过 npm 全局安装：
+如果 `leak` 已经安装在系统的 PATH 环境变量中，可以直接使用该命令：
 
 ```bash
-npm i -g leak-cli
+leak --help
 ```
 
-如果安装失败，或者需要使用开发环境的配置，请使用 `scripts/ensure_leak.sh` 脚本：
-
-运行以下命令：
+如果 `leak` 未安装，可以使用以下命令进行一次性安装：
 
 ```bash
-bash scripts/ensure_leak.sh
+npx -y leak-cli@2026.2.14 --help
 ```
 
-**注意：**
-- 首先尝试运行 `npm i -g leak-cli`。
-- 如果安装失败，脚本会通过 HTTPS 从 GitHub 克隆 `leak` 仓库，然后执行 `npm install` 和 `npm link`。
-- 可以通过 `LEAK_REPO_URL=...` 参数自定义仓库地址。
-- 如果有辅助脚本可用，它们会自动执行 `leak` 命令；否则会使用 `npx -y leak-cli`。
+**请勿** 从该技能中运行自动安装或通过 git 克隆相关的脚本。
 
-## 发布内容（服务器端）
+## 发布内容（卖家）
 
-当用户执行以下操作时，该功能会被激活：
-- “发布这个文件”
-- “分享这个文件”
-- “让这个文件可下载”
+当用户请求发布、出售或泄露文件时，激活该功能。
 
-**推荐做法：** 使用辅助脚本，该脚本会自动完成安装并生成一个清晰的分享链接。
+### 必需输入参数
+1. 文件路径（必须是普通文件）。
+2. 价格（以 USDC 为单位）。
+3. 销售窗口的持续时间。
+4. 卖家的收款地址（使用 `--pay-to` 选项指定）。
+5. 是否公开文件（使用 `--public` 选项指定）。
 
-### 交互式流程（推荐）
+### CLI 实施的安全限制
+1. **拒绝** 目录和符号链接的上传。
+2. **默认情况下**，禁止上传敏感文件路径（如 `~/.ssh`、`~/.aws`、`~/.gnupg`、`~/.config/gcloud`、`/etc`、`/proc`、`/sys`、`/var/run/secrets`）。
+3. 如果使用了 `--public` 选项，必须获得用户的明确确认。
 
-当用户想要发布文件时，引导他们完成以下步骤：
-1. **选择文件**：需要发布哪个文件或文件夹？
-2. **设置价格**：需要支付多少 USDC？（例如：0.01 或 1.00）
-3. **设置时长**：文件的有效时长是多少？（15 分钟、1 小时、6 小时、24 小时）
-4. **是否公开分享**：是否需要公开分享？（需要使用 Cloudflare 服务）
-5. **指定支付地址**：付款应发送到哪个以太坊地址？
-
-然后运行发布命令，并提供促销链接和购买链接，其中促销链接将作为默认的分享链接。
-
-### 仅限本地使用（适用于测试）
-
-此方法仅用于测试；当用户希望在公开发布之前测试服务器功能时可以使用。
+### 本地发布
 
 ```bash
-bash scripts/publish.sh \
-  --file /absolute/or/relative/path/to/file \
+bash skills/leak/scripts/publish.sh \
+  --file ./protected/asset.bin \
   --price 0.01 \
   --window 15m \
   --pay-to 0xSELLER_ADDRESS \
   --network eip155:84532
 ```
 
-**直接使用 CLI 的命令：**
+### 公开发布
 
 ```bash
-leak \
-  --file /absolute/or/relative/path/to/file \
+bash skills/leak/scripts/publish.sh \
+  --file ./protected/asset.bin \
   --price 0.01 \
   --window 15m \
   --pay-to 0xSELLER_ADDRESS \
-  --network eip155:84532
+  --public
 ```
 
-**需要提供给买家的信息：**
-- `http://127.0.0.1:4021/`（用于分享的促销链接）
-- `http://127.0.0.1:4021/download`（直接购买链接）
-- 或者你的局域网 IP 地址（如果需要在同一网络内的其他设备上进行测试）
+该工具会输出以下信息：
+- **促销链接**：`https://.../`
+- **购买链接**：`https://.../download`
 
-### 使用 Cloudflare 生成公开链接
+请将促销链接（`/`）分享到社交媒体上。
 
-**前提条件：** 已安装 Cloudflare 服务。
+## 购买内容（买家）
 
-**安装示例：**
+当用户请求购买或下载文件时，激活该功能。
+
+### 买家快速操作流程（强制要求）
+
+对于未知的购买链接，请按照以下默认流程操作：
+1. 如果 `leak` 未安装，请先安装它。
+2. 询问用户是否拥有现有的买家密钥文件路径。
+3. 如果用户没有密钥文件，可以提供以下备用方案：
+   “我可以在 `./.leak/buyer.key` 文件中生成一个新的买家密钥。请注意，这是一个临时钱包，因此请保持资金量最小化，并妥善备份密钥。”
+4. **只有在用户明确同意的情况下**，才继续执行下面的密钥生成流程。
+5. 运行以下命令：
 
 ```bash
-# macOS (Homebrew)
-brew install cloudflared
-
-# Windows (winget)
-winget install --id Cloudflare.cloudflared
+bash skills/leak/scripts/buy.sh "<promo_or_download_url>" --buyer-private-key-file <buyer_key_file_path>
 ```
 
-**Linux 系统的安装文档：**
-`https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/`
+6. 报告保存的文件路径以及下载的字节数。
 
-**直接使用 CLI 的命令：**
+默认的密钥生成方式为 `--buyer-private-key-file`。如果用户要求通过标准输入（stdin）生成密钥，请使用 `--buyer-private-key-stdin` 选项。
+
+**注意事项**：
+1. **严禁** 在聊天中请求用户的原始私钥文本。
+2. **不要** 先进行手动的安全传输或签名操作。
+3. **在尝试购买之前**，不要向用户展示多个可能的购买选项。
+
+如果用户明确询问相关协议细节，请向其解释 x402 协议的运作原理。
+
+### 明确同意后的密钥生成流程（确定性操作）
+
+只有在用户明确同意创建密钥后，才执行以下流程：
+1. 确认密钥文件的保存路径：`./.leak/buyer.key`。
+2. 创建一个仅限所有者具有访问权限的目录和密钥文件：
+   - 目录权限设置为 `0700`
+   - 密钥文件权限设置为 `0600`
+3. 将私钥以十六进制字符串的形式写入密钥文件中（不要添加 `0x` 前缀）。
+4. **严禁** 在常规输出中显示私钥内容。只需显示生成的钱包地址即可。
+5. 如果当前工作区是 Git 仓库，请告知用户会将密钥路径添加到 `.gitignore` 文件中，以防止文件被跟踪。
+
+6. 继续执行购买流程：
 
 ```bash
-leak --file ./protected/asset.bin --price 0.01 --window 15m --pay-to 0x... --public
+bash skills/leak/scripts/buy.sh "<promo_or_download_url>" --buyer-private-key-file ./.leak/buyer.key
 ```
 
-**CLI 会输出以下信息：**
-- `[leak] 公开链接：https://xxxx.trycloudflare.com`
-- `[leak] 促销链接：https://xxxx.trycloudflare.com/`
-- `[leak] 购买链接：https://xxxx.trycloudflare.com/download`
+### 买家首次回复模板
 
-**在社交媒体帖子中分享文件时，请使用 `/` 作为链接；使用 `/download` 进行代理辅助购买。**
+收到文件链接后，使用以下模板进行回复：
+1. 确认链接类型（促销链接 `/` 或下载链接 `/download`）。
+2. 请求用户批准安装 `leak` 工具：`clawhub install leak`。
+3. 询问用户是否拥有现有的买家密钥文件路径。
+4. 提供备用方案：`如果您需要，我可以在 `./.leak/buyer.key` 中为您生成一个新的密钥。`
 
-**可选的 OpenGraph 图片元数据设置：**
+### 密钥处理要求
+
+只能使用以下两种方式之一：
+1. `--buyer-private-key-file <路径>`
+2. `--buyer-private-key-stdin`
+
+**严禁** 使用 `--buyer-private-key` 选项，因为它已被禁止使用。
+
+### 购买示例
 
 ```bash
-leak --file ./protected/asset.bin --price 0.01 --window 15m --pay-to 0x... --public \
-  --og-title "Nightwire" \
-  --og-description "Limited release, agent-assisted purchase" \
-  --og-image-url https://cdn.example.com/nightwire-cover.jpg \
-  --ended-window-seconds 86400
+bash skills/leak/scripts/buy.sh "https://xxxx.trycloudflare.com/" --buyer-private-key-file ./buyer.key
 ```
-
-### 确认付款（可选）
-
-使用 `--confirmed` 参数在生成令牌之前确认付款是否完成：
 
 ```bash
-leak --file ./protected/asset.bin --price 0.01 --window 15m --pay-to 0x... --confirmed
+cat ./buyer.key | bash skills/leak/scripts/buy.sh "https://xxxx.trycloudflare.com/" --buyer-private-key-stdin
 ```
 
-当用户希望出售文件时，必须使用此参数，以确保只有在付款确认后才允许买家下载文件。
-
-## 购买文件
-
-当用户执行以下操作时，该功能会被激活：
-- “购买这个文件”
-- “下载这个文件”
-- “获取这个文件”
-- 或者直接提供文件链接
-
-**推荐做法：** 使用辅助脚本（确保先完成文件安装）。
-
-**前提条件：** 用户需要拥有兼容以太坊网络的私钥。
-
-### 买家购买流程：
-
-当用户想要购买文件时，请按照以下步骤操作：
-1. **获取链接**：获取促销链接或购买链接（如果尚未提供）：
-   - 促销链接示例：`https://xxxx.trycloudflare.com/`
-   - 购买链接示例：`https://xxxx.trycloudflare.com/download`
-2. **检查前提条件**：
-   - 用户是否有钱包或私钥？
-   - 用户是否有足够的 USDC 来支付文件费用？
-3. **如果没有钱包？**
-   - 告知用户所需支付的金额，并协助他们创建一个兼容以太坊网络的钱包。
-   - 帮助用户安全地保存私钥，并告知他们保存位置。
-4. **资金不足？**
-   - 告知用户需要支付的 USDC 金额，并等待确认后再尝试。
-5. **执行购买操作**：
-   - 使用用户的私钥运行购买脚本。
-   - 显示交易详情（交易哈希、网络信息）。
-   - 确认文件已成功保存。
-6. **购买成功**：
-   - 确认文件已保存，并告知用户文件的具体保存路径。
-
-**直接使用 CLI 的命令：**
+### 可选的输出控制选项
 
 ```bash
-bash scripts/buy.sh "https://xxxx.trycloudflare.com/" --buyer-private-key 0xBUYER_KEY
+bash skills/leak/scripts/buy.sh "https://xxxx.trycloudflare.com/" --buyer-private-key-file ./buyer.key --out ./downloads/myfile.bin
 ```
-
-**可选的文件命名规则：**
 
 ```bash
-# choose exact output path
-leak buy "https://xxxx.trycloudflare.com/" --buyer-private-key 0x... --out ./downloads/myfile.bin
-
-# choose basename, keep server extension
-leak buy "https://xxxx.trycloudflare.com/" --buyer-private-key 0x... --basename myfile
+bash skills/leak/scripts/buy.sh "https://xxxx.trycloudflare.com/" --buyer-private-key-file ./buyer.key --basename myfile
 ```
 
-### 常见买家问题及应对方式：
-
-| 问题 | 响应方式 |
-|-------|---------------|
-| “我没有钱包” | 建议使用 `eth-account` 工具创建钱包，并安全保存私钥。|
-| “我没有 USDC” | 告知所需支付的金额以及获取 USDC 的方法。|
-| “交易失败” | 检查交易费用（gas）是否足够，或者尝试重新支付，或者确认销售是否已经结束。|
-| “文件已经存在” | 提供覆盖现有文件的选项或选择新的文件名。|
-
-### 买家示例交互：
-
-用户：**“我想购买这个文件：https://abc123.trycloudflare.com/”**
-
-客服：**“我会帮助您下载这个文件。首先，我会查询文件的价格……”**
-- **获取 402 状态码以确认价格。**
-- **“这个文件的价格是 0.01 USDC。您有 USDC 吗？或者需要帮助创建钱包吗？”**
-
-## 故障排除**
-
-- **“找不到 `leak` 命令”**：运行 `bash skills/leak/scripts/ensure_leak.sh` 或使用 `npx -y leak-cli --help` 来查看命令用法。
-- **“卖家提供的支付地址无效”**：确保使用的支付地址是有效的以太坊地址（格式为 `0x` 后跟 40 个十六进制字符）。
-- **“使用 `--public` 选项时出现错误”**：请先安装 Cloudflare 服务（在 macOS 上使用 `brew install cloudflared`），然后再尝试。
-- **端口已被占用**：尝试使用其他端口号（例如 `--port 4021`），并在配置隧道时使用新的端口号。
+## 故障排除
+- 如果出现 “`leak: command not found`” 错误，请尝试以下操作：
+  - 全局安装 `leak-cli`：`npm i -g leak-cli`
+  - 或者使用固定的版本进行安装：`npx -y leak-cli@2026.2.14 --help`
+- 如果出现 “无效的卖家收款地址” 错误，请使用有效的以太坊地址（格式为 `0x` + 40 个十六进制字符）。
+- 如果在使用 `--public` 选项时出现确认失败，请重新运行命令，并按照提示提供正确的确认语句。

@@ -1,0 +1,11 @@
+{
+  "owner": "buddhasource",
+  "slug": "payram-vs-x402",
+  "displayName": "PayRam vs x402 Protocol",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771090810721,
+    "commit": "https://github.com/openclaw/skills/commit/26ddbbd11ebed06e339bbc3323d2f18bb58a7f19"
+  },
+  "history": []
+}

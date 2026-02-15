@@ -1,78 +1,43 @@
 ---
 name: muninn
-version: 2.1.14
-description: "**通用上下文协议（Universal Context Protocol, CXP）与AI代理的长期记忆（Long-Term Memory）**  
-Muninn MCP为AI代理提供了项目级别的持久化存储功能，用于存储架构决策、开发模式以及相关的技术上下文信息。当代理需要在不同会话之间保留项目历史记录、快速检索相关代码片段（最多可节省95%的存储空间），或维护架构的一致性时，该工具尤为实用。它通过沙箱化的CXP引擎支持本地语义搜索，并采用零侵入式的安全模型来保护数据安全。  
-
-**触发条件（Trigger Conditions）：**  
-- 上下文（Context）  
-- 内存（Memory）  
-- 项目架构（Project Architecture）  
-- 持久化学习（Persistent Learning）  
-- 令牌优化（Token Optimization）  
-- 语义搜索（Semantic Search）"
-author: blackknight
-tags: mcp, context, memory, productivity, long-term-memory
-runtime: node
-permissions:
-  - path: "~/.muninn/"
-    access: "read-write"
-    description: "Global configuration and project state storage."
-  - path: "./.muninn/"
-    access: "read-write"
-    description: "Project-local memory storage and context indices."
-install: "npm install -g muninn-core"
+version: 2.3.7
+homepage: https://www.muninn.space
+description: 通用上下文协议（Universal Context Protocol，简称CXP）适用于AI代理。版本2.3.7包含了最新的高性能CXP引擎（编译于2026年2月13日），该引擎修复了内存相关的问题，并支持macOS平台以及pfeilschnell索引技术。该协议由@Blackknight1dev开发。
+metadata: {"clawdbot":{"emoji":"🐦⬛","requires":{"bins":["node"]},"install":[{"id":"npm","kind":"node","package":"muninn-core","version":"2.3.7","bins":["muninn-core"],"label":"Install Muninn Core"}]}}
 ---
 
-# Muninn MCP
+# Muninn – 通用内存层
 
-**面向人工智能驱动开发的通用内存层**
+Muninn 是一款专为 AI 代理设计的先进内存系统。它采用 **上下文交换协议（Context Exchange Protocol, CXP）** 来实现高性能、低成本的上下文管理。
 
-Muninn MCP（Memory Context Protocol）是一个标准化的内存层，确保人工智能代理能够访问项目特定的知识。它通过提供一个共享的、项目级的“大脑”（project-local “Brain”），弥合了不同AI会话和工具之间的差距。
+## 🛡️ 安全性与隐私（以本地数据为主）
 
-## 安全性与风险缓解（符合审计标准）
+Muninn 的设计理念是 **隐私优先**：
+- **本地存储**：所有项目索引和内存数据均 **仅存储在主机机器上**，具体位置为 `.muninn/` 文件夹（针对单个项目）或 `~/.muninn/`（用于全局设置）。
+- **禁止数据泄露**：Muninn **不会** 将任何代码、上下文或内存数据传输到第三方服务器或远程 API。所有处理操作（语义搜索、索引构建和上下文注入）均通过基于 Rust 的高性能 CXP 引擎在本地完成。
+- **透明控制**：内存数据以标准 Markdown 文件的形式存储，您可以随时查看、编辑或删除这些文件。
 
-Muninn MCP v2.1.14在架构设计上充分考虑了安全性与代理的安全性：
+## ⚙️ 集成
 
-### 1. 命令注入防护（RCE）
-- **仅执行二进制文件**：所有对内部`cxp`引擎的调用都使用`child_process.execFile`，从而绕过了shell解释过程，使得shell注入变得不可能。
-- **输入验证**：所有查询都通过严格的白名单正则表达式（`/[\w\s\-\.\?\!\(\)\[\]]/`）进行验证。
-- **长度限制**：输入长度被限制在500个字符以内，以防止缓冲区相关攻击。
+Muninn 作为 MCP（模型上下文协议，Model Context Protocol）服务器运行。
 
-### 2. 环境完整性（零攻击策略）
-- **禁止强制修改**：自动写入`.cursorrules`或`CLAUDE.md`的操作被禁用。
-- **仅限手动使用**：`enforce_rules`工具仅用于项目启动时的手动配置。
-- **被动式中间件**：默认情况下，自动的上下文拦截功能被禁用；Muninn仅作为一个高保真的库使用，而不是一个拦截代理。
+### 🚀 Muninn 协议（强制要求）
 
-### 3. 本地优先的隐私保护原则
-- **100% 本地处理**：任何数据、遥测信息或代码都不会离开主机机器。所有语义搜索都通过高性能的Rust引擎在设备上完成。
+作为代理，您必须遵循 “以大脑为中心”（Brain-First）的工作流程，以确保高效性和准确性。MCP 服务器会在允许执行敏感操作之前验证上下文信息：
+1. **自我定位 (`brain_check`)**：在每次会话开始时或切换项目时调用此函数。该函数会加载本地项目索引并识别关键文件和模式。
+2. **编码前先搜索 (`search_context`)**：切勿假设自己了解整个代码库的情况，使用本地语义搜索功能来查找现有的模式或先前的决策。
+3. **边使用边学习 (`add_memory`)**：任何重要的修复、架构决策或用户偏好都应被保存为本地内存数据。
 
-## 代理使用方式
+## 🛠 工具参考（MCP）
 
-代理通过Muninn MCP来维护项目级的“大脑”：
-1. **同步**：在会话开始时调用`brain_check`以加载项目级别的知识。
-2. **学习**：使用`add_memory`来处理架构决策、修复漏洞或引入新的开发模式。
-3. **搜索**：利用`search_context`进行深度语义搜索，以查找相关的文件和逻辑。
-
-## 设置
-
-### 使用npm安装（推荐）
-```bash
-npm install -g muninn-core
-```
-
-### 手动配置
-将相关配置添加到您的MCP设置文件中（例如`claude_desktop_config.json`）：
-```json
-{
-  "mcpServers": {
-    "muninn": {
-      "command": "npx",
-      "args": ["-y", "muninn-core"]
-    }
-  }
-}
-```
+- **`init_project`**：在项目目录中初始化本地 Muninn 系统。
+- **`brain_check`**：强制执行的自我定位步骤，用于加载本地上下文和模式。
+- **`add_memory`**：将事实和决策保存到本地的 `.muninn/memories` 文件夹中。
+- **`search_context`**：对本地项目索引进行语义查询。
+- **`reindex_context`**：重新构建本地语义索引。
+- **`health_check`**：验证本地 Muninn 系统的运行状态。
 
 ---
-*由BlackKnight维护。版本：2.1.14*
+
+## 🦞 给代理们的专业提示
+Muninn 仅会精确地检索所需的数据。无需读取整个文件，只需使用 `search_context` 来查找相关的代码行。这样可以显著降低上下文处理的开销和资源消耗，同时确保您的工作严格保持在本地且安全。

@@ -1,6 +1,6 @@
 ---
 name: glab-mcp
-description: 管理 GitLab Managed Cluster Platform (MCP) 的资源与配置。适用于处理 MCP 部署、管理平台资源或配置托管集群的场景。相关操作会在 MCP、托管集群平台或平台资源层面触发。
+description: 与 Model Context Protocol (MCP) 服务器配合使用，以实现 AI 助手的集成。该协议将 GitLab 的功能暴露为工具，供 AI 助手（如 Claude Code）与项目、问题、合并请求以及管道等进行交互。适用于将 AI 助手与 GitLab 集成，或在与 MCP 服务器协作时使用。相关触发事件包括 MCP、Model Context Protocol、AI 助手集成以及 glab mcp serve。
 ---
 
 # glab mcp
@@ -15,11 +15,10 @@ description: 管理 GitLab Managed Cluster Platform (MCP) 的资源与配置。�
   AI assistants (like Claude Code) to interact with GitLab projects, issues,                                            
   merge requests, pipelines, and other resources.                                                                       
                                                                                                                         
-  This feature is experimental. It might be broken or removed without any prior notice.                                 
-  Read more about what experimental features mean at                                                                    
-  https://docs.gitlab.com/policy/development_stages_support/                                                            
-                                                                                                                        
-  Use experimental features at your own risk.                                                                           
+  This feature is an experiment and is not ready for production use.                                                    
+  It might be unstable or removed at any time.                                                                          
+  For more information, see                                                                                             
+  https://docs.gitlab.com/policy/development_stages_support/.                                                           
                                                                                                                         
          
   USAGE  
@@ -47,4 +46,4 @@ glab mcp --help
 
 ## 子命令
 
-有关完整的 `--help` 命令帮助信息，请参阅 [references/commands.md](references/commands.md)。
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

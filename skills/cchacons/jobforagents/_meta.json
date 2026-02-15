@@ -3,9 +3,15 @@
   "slug": "jobforagents",
   "displayName": "Job For Agents",
   "latest": {
-    "version": "1.2.1",
-    "publishedAt": 1769948537848,
-    "commit": "https://github.com/clawdbot/skills/commit/626db2dd1e22c9868e8eeb836d091af0eef32f22"
+    "version": "3.2.0",
+    "publishedAt": 1771038654339,
+    "commit": "https://github.com/openclaw/skills/commit/64aebff705a76ec54e5d26270800dbef95c514b8"
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.2.1",
+      "publishedAt": 1769948537848,
+      "commit": "https://github.com/clawdbot/skills/commit/626db2dd1e22c9868e8eeb836d091af0eef32f22"
+    }
+  ]
 }

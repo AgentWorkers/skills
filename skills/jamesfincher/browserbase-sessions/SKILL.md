@@ -1,41 +1,46 @@
 ---
 name: browserbase-sessions
-description: 创建并管理具有身份验证持久性的 Browserbase 云浏览器会话。当您需要自动化浏览器操作、在多次交互之间保持登录状态、抓取已认证的页面或管理云浏览器实例时，可以使用此功能。
+description: 创建并管理具有身份验证持久性的Browserbase云浏览器会话。当您需要自动化浏览器操作、在多次交互中保持登录状态、抓取已认证的页面或管理云浏览器实例时，可以使用此功能。
 license: MIT
 homepage: https://docs.browserbase.com
-metadata: {"author":"custom","version":"2.4.0","openclaw":{"emoji":"🌐","requires":{"bins":["python3"]},"primaryEnv":"BROWSERBASE_API_KEY"}}
+metadata: {"author":"custom","version":"2.5.0","openclaw":{"emoji":"🌐","requires":{"bins":["python3"]},"primaryEnv":"BROWSERBASE_API_KEY"}}
 ---
 
 # Browserbase会话技能
 
-通过Browserbase管理持久的云浏览器会话。该技能可以创建会话，这些会话在多次交互中保持认证状态（cookie、本地存储），自动解决CAPTCHA，并记录会话以供后续查看。
+通过Browserbase管理持久的云浏览器会话。该技能可以创建会话，确保在多次交互过程中保持认证状态（cookie、本地存储），自动解决CAPTCHA，并记录会话以供后续查看。
 
-## 代理检查清单（主动处理）
+## 代理检查清单（主动应对）
 
 - 如果缺少`BROWSERBASE_API_KEY`或`BROWSERBASE PROJECT_ID`，**请向用户询问**（并告知他们在哪里可以找到这些信息）。在配置完成之前，不要运行Browserbase命令。
-- 如果由于缺少Python依赖项（如`browserbase`或`playwright`导致导入错误），请运行：
+- 如果由于缺少Python依赖项（如`browserbase`或`playwright`的`ImportError`）导致命令失败，请运行：
   - `python3 {baseDir}/scripts/browserbase_manager.py install`
   - 然后重试原始命令。
-- 询问用户希望持久化哪些内容以及如何组织这些内容：
+- 询问用户希望保留哪些内容以及如何组织这些内容：
   - **按应用/站点划分的工作区**（隔离）：`github`、`slack`、`stripe`
   - **按任务/项目划分的工作区**（多站点工作流程）：`invoice-run`、`lead-gen`、`expense-recon`
-- 工作区会持久化以下内容：
+- 工作区会保留以下内容：
   - 通过Browserbase的**上下文**（cookie + 存储）保持登录状态
-  - 打开的标签页（URL + 标题快照），以便您可以从中断的地方继续浏览
+  - 打开的标签页（URL + 标题快照），以便用户可以从中恢复之前的操作
 - 当用户希望浏览器在聊天轮次之间保持打开状态时，优先使用工作区命令（`create-workspace`、`start-workspace`、`resume-workspace`、`stop-workspace`），而不是原始的会话命令。
-- 在需要直接操作浏览器时，优先使用以下命令（`list-tabs`、`new-tab`、`switch-tab`、`close-tab`、`click`、`type`、`press`、`wait-for`、`go-back`、`go-forward`、`reload`、`read-page`），只有在必要时才使用`execute-js`。
+- 在需要用户执行手动操作时（如SSO/MFA/同意屏幕），优先使用直接交互命令（`list-tabs`、`new-tab`、`switch-tab`、`close-tab`、`click`、`type`、`press`、`wait-for`、`go-back`、`go-forward`、`reload`、`read-page`），只有在必要时才使用`execute-js`。
+- 如果某个工作区/会话有`pending_handoff`，**在执行其他操作之前先检查它**：
+  - `python3 {baseDir}/scripts/browserbase_manager.py handoff --action check --workspace <ws>`
+  - 如果未完成，重新发送`suggested_user_message`并停止操作。
 - 每当打开浏览器（`start-workspace`、`resume-workspace`或`create-session`）时，立即分享人类远程控制链接：
   - 优先使用命令输出中的`human_handoff.share_url`。
-  - 回复用户时，优先使用`human_handoff.share_text`或`human_handoff.share_markdown`。
-  - 如果缺失，则使用`human_control_url`。
+  - 在回复用户时，优先使用`human_handoff.share_text`或`human_handoff.share_markdown`。
   - 如果缺失，运行`live-url`并分享其`human_handoff.share_url`。
-- 关闭浏览器时，使用`stop-workspace`（而不是`terminate-session`），以便保存标签页快照和认证状态。
+- 当需要用户执行手动步骤（如SSO/MFA/同意屏幕）时，使用带有完成检查的**handoff**：
+  - 设置：`python3 {baseDir}/scripts/browserbase_manager.py handoff --action set --workspace <ws> --instructions "<要执行的操作>" --url-contains "<后续操作URL片段>"`（或`--selector/--text/--cookie-name/...`）
+  - 后续验证：`python3 {baseDir}/scripts/browserbase_manager.py handoff --action check --workspace <ws>`（或`--action wait`）
+- 关闭浏览器时，使用`stop-workspace`（而不是`terminate-session`），以确保标签页被快照保存并且认证状态得到保留。
 
 ## 优化提示的响应模式
 
 使用简短、一致的响应，让用户始终知道下一步该做什么。
 
-当缺少凭据时：
+- 当缺少凭据时：
 ```text
 I need your Browserbase credentials before I can open a browser.
 Please provide:
@@ -43,31 +48,41 @@ Please provide:
 2) BROWSERBASE_PROJECT_ID
 ```
 
-当打开浏览器（会话/工作区）时：
+- 当打开浏览器（会话/工作区）时：
 ```text
 Browser is ready.
 <human_handoff.share_text>
 I can keep working while you browse.
 ```
 
-当恢复现有工作区时：
+- 当恢复现有工作区时：
 ```text
 Reconnected to your existing workspace.
 <human_handoff.share_text>
 ```
 
-当实时URL暂时不可用时：
+- 当需要用户执行手动操作（如SSO/MFA/同意屏幕）时：
+```text
+I need you to do one step in the live browser:
+1) <exact steps>
+
+Open: <human_handoff.share_url>
+Stop when you reach: <a specific completion state (URL contains / selector visible)>.
+I’ll detect it and continue automatically. If I don’t, reply “done” and I’ll re-check.
+```
+
+- 当实时URL暂时不可用时：
 ```text
 The remote-control URL is temporarily unavailable. I’ll retry now.
 ```
 
 ## 首次设置
 
-### 第1步 — 获取您的Browserbase凭据
+### 第1步 — 获取Browserbase凭据
 
-1. 如果您还没有注册，请访问[browserbase.com](https://www.browserbase.com/)。
-2. 转到**设置 → API密钥**并复制您的API密钥（以`bb_live_`开头）。
-3. 转到**设置 → 项目**并复制您的项目ID（一个UUID）。
+1. 如果您还没有注册，请访问[browserbase.com](https://www.browserbase.com/)进行注册。
+2. 转到**设置 → API密钥**，复制您的API密钥（以`bb_live_`开头）。
+3. 转到**设置 → 项目**，复制您的项目ID（一个UUID）。
 
 如果您有API密钥但不确定使用哪个项目ID，可以列出所有项目：
 
@@ -98,7 +113,7 @@ export BROWSERBASE_API_KEY="bb_live_your_key_here"
 export BROWSERBASE_PROJECT_ID="your-project-uuid-here"
 ```
 
-或者通过`~/.openclaw/openclaw.json`（JSON5）中的`skills.entries["browserbase-sessions"].env`进行配置。因为此技能设置了`primaryEnv: BROWSERBASE_API_KEY`，您也可以使用`skills.entries["browserbase-sessions"].apiKey`作为API密钥：
+或者通过OpenClaw的`skills.entries["browserbase-sessions"].env`在`~/.openclaw/openclaw.json`（JSON5）中进行配置。因为此技能设置了`primaryEnv: BROWSERBASE_API_KEY`，您也可以使用`skills.entries["browserbase-sessions"].apiKey`来设置API密钥：
 
 ```json5
 {
@@ -124,15 +139,16 @@ export BROWSERBASE_PROJECT_ID="your-project-uuid-here"
 python3 {baseDir}/scripts/browserbase_manager.py setup --install
 ```
 
-如果所有步骤都通过，您应该会看到“status”: “success”。如果有任何步骤失败，错误信息会明确指出需要修复的问题。
+如果所有步骤都通过，您应该会看到`"status": "success"`。如果有任何步骤失败，错误信息会明确指出需要修复的问题。
 
 ## 默认设置
 
 每个会话都使用以下默认设置来支持研究工作流程：
 
-- **CAPTCHA解决：开启** — Browserbase会自动解决CAPTCHA，因此登录流程和受保护的页面无需手动干预。可以使用`--no-solve-captchas`来禁用。
-- **会话记录：开启** — Browserbase会记录会话（视频保存在仪表板中；可以通过API检索rrweb事件）。可以使用`--no-record`来禁用。
-- **认证持久化** — 如果您使用上下文（或工作区），认证状态将默认被持久化。可以使用`--no-persist`来禁用持久化。
+- **CAPTCHA解决：开启** — Browserbase会自动解决CAPTCHA，因此登录流程和受保护的页面无需手动干预。使用`--no-solve-captchas`可以禁用此功能。
+- **会话记录：开启** — Browserbase会记录会话（视频保存在仪表板中；可以通过API检索rrweb事件）。使用`--no-record`可以禁用此功能。
+- **会话日志：开启** — Browserbase会捕获会话日志，可以通过API检索。使用`--no-logs`可以禁用此功能。
+- **认证状态持久化** — 如果您使用了上下文（或工作区），认证状态会默认被持久化。使用`--no-persist`可以禁用此功能。
 
 ## 功能与限制（明确说明）
 
@@ -140,15 +156,15 @@ python3 {baseDir}/scripts/browserbase_manager.py setup --install
 - 创建/检查/终止Browserbase会话和上下文。
 - 使用工作区在聊天轮次之间保持浏览器“打开”状态（保持会话活跃 + 恢复标签页）。
 - 通过Browserbase上下文（`persist=true`）在会话之间保持登录状态。
-- 通过重新打开最后保存的打开标签页（URL + 标题快照）来恢复浏览位置。
-- 提供实时调试器URL，以便用户在代理继续工作时可以手动浏览。
+- 通过重新打开上次保存的打开标签页（URL + 标题快照）来恢复之前的操作。
+- 提供一个实时调试器URL，以便用户在代理继续工作时可以手动浏览。
 - 使用交互式浏览器控制：列出/打开/切换/关闭标签页，点击/输入/按键，等待选择器/文本/URL状态，后退/前进/重新加载，以及阅读页面文本/HTML/链接。
 - 截取屏幕截图，运行JavaScript，读取cookie，获取日志和rrweb记录事件。
 
 代理无法：
 - 无限期地保持会话运行（Browserbase会设置超时；最长为6小时）。
-- 完整恢复浏览器的历史记录（仅恢复打开的URL）。
-- 除非代理重新连接或截取屏幕截图，否则无法可靠地“看到”用户在实时调试器中执行的操作。
+- 恢复完整的浏览器历史记录（仅恢复打开的URL）。
+- 被动“监视”用户在实时调试器中的操作。为了检测用户操作，代理必须重新连接并通过`handoff`或`wait-for`来**检查特定的完成条件**（选择器/文本/URL/cookie/存储）。
 - 在没有用户参与的情况下绕过MFA/SSO。
 - 通过API下载仪表板视频（API返回的是rrweb事件，而不是视频文件）。
 
@@ -174,14 +190,14 @@ python3 {baseDir}/scripts/browserbase_manager.py setup --install
 
 ### 工作区（推荐）
 
-工作区是在聊天过程中保持浏览器“打开”状态并稍后继续使用的推荐方式。工作区包含：
-- 一个Browserbase **上下文**（持久化cookie + 本地/会话存储，因此您可以保持登录状态）
-- 一个本地的**标签页快照**（URLs + 标题），以便在下一个会话中恢复标签页（注意：这仅恢复打开的URL，而不是完整的浏览历史记录）
+工作区是在聊天过程中保持浏览器“打开”状态并稍后继续使用的推荐方式。工作区结合了以下内容：
+- Browserbase的**上下文**（保留cookie + 本地/会话存储，因此用户保持登录状态）
+- 本地**标签页快照**（URL和标题），以便在下一个会话中恢复标签页（注意：这只会恢复打开的URL，不会恢复完整的浏览器历史记录）
 - 当前的**活动会话ID**，以便代理可以重新连接
 
 #### 任务工作区（多站点流程）
 
-单个Browserbase上下文是一个浏览器配置文件，因此它可以同时让您登录到**多个站点**。对于“在站点A上执行某些操作，然后在站点B上执行某些操作”之类的工作流程，创建一个**任务工作区**并将两个站点作为标签页打开：
+单个Browserbase上下文是一个浏览器配置文件，因此它可以同时保持您在**多个站点**的登录状态。对于需要在“在站点A上执行某些操作，然后在站点B上执行某些操作”的工作流程，创建一个**任务工作区**并将两个站点作为标签页保持打开：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-workspace --name invoice-run
@@ -189,9 +205,9 @@ python3 {baseDir}/scripts/browserbase_manager.py start-workspace --name invoice-
 python3 {baseDir}/scripts/browserbase_manager.py live-url --workspace invoice-run
 ```
 
-如果您需要账户/cookie隔离（不同的登录，减少跨站副作用），请为每个应用/站点使用单独的工作区。
+如果您需要账户/cookie隔离（不同的登录状态，减少跨站点副作用），请为每个应用/站点使用单独的工作区。
 
-创建并启动工作区：
+创建并启动一个工作区：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-workspace --name github
 python3 {baseDir}/scripts/browserbase_manager.py list-workspaces
@@ -200,14 +216,14 @@ python3 {baseDir}/scripts/browserbase_manager.py start-workspace --name github -
 # human_handoff.share_url (fallback: human_control_url / live_urls.debugger_url)
 ```
 
-注意：`start-workspace`会通过Playwright执行短暂的“预热连接”，即使用户尚未打开实时调试器，也会避免会话因5分钟的连接要求而终止。
+注意：`start-workspace`会通过Playwright执行一个短暂的“预热连接”，因此即使用户尚未打开实时调试器，会话也不会因5分钟的连接要求而终止。
 
-当用户在实时调试器中浏览时，代理可以继续工作。要稍后恢复：
+当用户在实时调试器中浏览时，代理可以继续工作。要稍后恢复会话：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py resume-workspace --name github
 ```
 
-对于长时间运行的会话（特别是当用户手动打开/关闭标签页时），请定期获取快照：
+对于长时间运行的会话（特别是当用户手动打开/关闭标签页时），定期进行快照保存：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py snapshot-workspace --name github
 ```
@@ -217,21 +233,21 @@ python3 {baseDir}/scripts/browserbase_manager.py snapshot-workspace --name githu
 python3 {baseDir}/scripts/browserbase_manager.py stop-workspace --name github
 ```
 
-要检查工作区保存的内容（上下文ID、活动会话ID、标签页、历史记录）：
+要检查工作区保存的内容（上下文ID、活动会话ID、标签页）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-workspace --name github
 ```
 
-大多数命令都接受`--workspace <name>`而不是`--session-id`：
+大多数命令都接受`--workspace <名称>`而不是`--session-id`：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py navigate --workspace github --url "https://github.com/settings/profile"
 python3 {baseDir}/scripts/browserbase_manager.py screenshot --workspace github --output /tmp/profile.png
 python3 {baseDir}/scripts/browserbase_manager.py execute-js --workspace github --code "document.title"
 ```
 
-### 上下文管理（用于认证持久化）
+### 上下文管理（用于认证状态持久化）
 
-创建一个命名上下文以存储登录状态：
+创建一个命名上下文以保存登录状态：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-context --name github
 ```
@@ -248,7 +264,7 @@ python3 {baseDir}/scripts/browserbase_manager.py delete-context --context-id git
 
 ### 会话生命周期
 
-创建新会话（默认启用CAPTCHA解决和记录）：
+创建新会话（默认启用CAPTCHA解决、记录和日志记录）：
 ```bash
 # Basic session
 python3 {baseDir}/scripts/browserbase_manager.py create-session
@@ -350,13 +366,18 @@ python3 {baseDir}/scripts/browserbase_manager.py execute-js --session-id <id> --
 python3 {baseDir}/scripts/browserbase_manager.py get-cookies --session-id <id>
 ```
 
-上述所有命令也都支持`--workspace <name>`，以便自动使用当前活动的工作区会话。
+上述所有命令也都支持`--workspace <名称>`，以便自动使用当前活动的工作区会话。
 
-### 录制、日志与调试
+### 录制、日志和调试
 
 获取rrweb记录事件（必须先终止会话）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id> --output /tmp/session.rrweb.json
+```
+
+下载会话期间保存的文件（存档）：
+```bash
+python3 {baseDir}/scripts/browserbase_manager.py get-downloads --session-id <id> --output /tmp/downloads.zip
 ```
 
 获取会话日志：
@@ -364,10 +385,55 @@ python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id>
 python3 {baseDir}/scripts/browserbase_manager.py get-logs --session-id <id>
 ```
 
-获取实时调试URL（用于查看正在运行的会话）：
+获取实时调试器URL（用于查看正在运行的会话）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py live-url --session-id <id>
 # Share: human_handoff.share_url
+```
+
+### 人类手动交接（手动步骤）
+
+当用户需要执行手动操作（如SSO/MFA/同意屏幕）并且您希望**检测完成情况**并自动恢复时，使用`handoff`。
+
+完成检查（选择最可靠的信号）：
+- 对于登录后的目标URL（例如 `/dashboard`、`/app`、`/settings`），优先使用`--url-contains`。
+- 当URL不变时（例如单页应用程序），使用`--selector`。
+- 仅在知道稳定的认证指标时，使用`--cookie-name`、`--local-storage-key`、`--session-storage-key`。
+
+组合检查：
+- 默认是`--match all`（AND）：所有提供的检查都必须为真。
+- 当您需要多个备用信号时（例如，URL包含 `/dashboard` 或选择器 `.dashboard-ready`），使用`--match any`（OR）。
+
+设置交接（保存指令和完成检查）：
+```bash
+python3 {baseDir}/scripts/browserbase_manager.py handoff \
+  --action set \
+  --workspace myapp \
+  --instructions "Log in and stop on the dashboard." \
+  --url-contains "/dashboard"
+```
+
+备用示例（任意一个条件满足）：
+```bash
+python3 {baseDir}/scripts/browserbase_manager.py handoff \
+  --action set \
+  --workspace myapp \
+  --instructions "Complete login and stop on the dashboard." \
+  --url-contains "/dashboard" \
+  --selector ".dashboard-ready" \
+  --match any
+```
+
+提示：`handoff --action set`返回`suggested_user_message.text` / `suggested_user_message.markdown`，因此您可以将一致的提示信息（包含实时调试器URL）粘贴给用户。
+
+稍后进行一次验证：
+```bash
+python3 {baseDir}/scripts/browserbase_manager.py handoff --action check --workspace myapp
+```
+
+或者等待最多5分钟（默认）以确认完成：
+```bash
+python3 {baseDir}/scripts/browserbase_manager.py handoff --action wait --workspace myapp
 ```
 
 ## 常见工作流程
@@ -395,7 +461,7 @@ python3 {baseDir}/scripts/browserbase_manager.py stop-workspace --name myapp
 python3 {baseDir}/scripts/browserbase_manager.py resume-workspace --name myapp
 ```
 
-### 工作流程1b：跨多个站点的任务工作流程（持久化标签页+登录）
+### 工作流程1b：跨多个站点的任务工作流程（保留标签页和登录状态）
 
 ```bash
 # 1) Create a task workspace (one browser profile that can stay logged into multiple sites)
@@ -416,7 +482,7 @@ python3 {baseDir}/scripts/browserbase_manager.py snapshot-workspace --name lead-
 python3 {baseDir}/scripts/browserbase_manager.py stop-workspace --name lead-gen
 ```
 
-### 工作流程2：截图文档
+### 工作流程2：截图记录
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-session
@@ -425,7 +491,7 @@ python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --ur
 python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id <id>
 ```
 
-### 工作流程3：录制并分享操作过程
+### 工作流程3：录制和分享操作过程
 
 ```bash
 # Session recording is ON by default
@@ -439,27 +505,28 @@ python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id>
 
 ## 重要说明
 
-- **CAPTCHA解决默认是开启的。** Browserbase在登录流程和页面加载期间自动处理CAPTCHA。可以使用`--no-solve-captchas`来禁用。
-- **记录默认是开启的。** 视频保存在Browserbase仪表板中；`get-recording`可以获取rrweb事件（主标签页）以供程序化回放。可以使用`--no-record`来禁用。
+- **CAPTCHA解决默认是开启的。** Browserbase在登录流程和页面加载期间自动处理CAPTCHA。使用`--no-solve-captchas`可以禁用此功能。
+- **记录默认是开启的。** 视频保存在Browserbase仪表板中；`get-recording`可以获取rrweb事件（主标签页）以供程序化回放。使用`--no-record`可以禁用此功能。
+- **日志记录默认是开启的。** 使用`get-logs`可以获取日志；使用`--no-logs`可以禁用此功能。
 - **连接超时**：创建后有5分钟的连接时间，之后会自动终止。
-- **保持会话活跃**：在断开连接后仍会保持会话状态，必须明确终止。
-- **上下文持久化**：如果使用`persist=true`创建会话，则在终止后等待几秒钟再使用相同的上下文创建新会话。
-- **命名上下文**：使用`--name`与`create-context`来保存友好的名称（例如`github`、`slack`）。在任何需要上下文ID的地方使用该名称。
-- **工作区状态**：工作区存储在`~/.browserbase/workspaces/<name>.json`（或`BROWSERBASE_CONFIG_DIR/workspaces`）中。它们包含上下文ID、活动会话ID和最后保存的标签页快照。
+- **保持会话活跃**：会话在断开连接后仍然保持活跃，必须明确终止。
+- **上下文持久化**：如果使用`persist=true`创建了会话，则在终止后等待几秒钟再使用相同的上下文创建新会话。
+- **命名上下文**：使用`--name`与`create-context`来保存友好的名称（例如 `github`、`slack`）。在任何需要上下文ID的地方使用该名称。
+- **工作区状态**：工作区保存在本地文件`~/.browserbase/workspaces/<名称>.json`（或`BROWSERBASE_CONFIG_DIR/workspaces`）中。它们包含上下文ID、活动会话ID和最后保存的标签页快照。
 - **每个站点一个上下文**：为不同的认证站点使用单独的上下文。
 - **避免在同一上下文中同时进行多个会话**。
 - **区域**：us-west-2（默认）、us-east-1、eu-central-1、ap-southeast-1。
 - **会话超时**：60–21600秒（最长6小时）。
-- **费用/限制**：您的Browserbase计划有使用限制（浏览器使用时间、代理数据、并发数）。保持会话活跃会消耗时间；终止会话并设置合理的`--timeout`值以控制费用。请查看Browserbase仪表板上的当前配额。
+- **费用/限制**：您的Browserbase计划有使用限制（浏览器使用时间、代理数据、并发数）。保持会话活跃会消耗时间；通过设置合理的`--timeout`值来控制费用。请查看Browserbase仪表板上的当前配额。
 
 ## 错误处理
 
-所有命令都会返回JSON输出。出现错误时，输出中包含一个“error”键。常见错误包括：
+所有命令都会返回JSON格式的输出。出现错误时，输出中会包含一个`"error"`键。常见错误包括：
 - `APIConnectionError`：无法访问Browserbase API
 - `RateLimitError`：您的计划允许的并发会话数量过多
 - `APIStatusError`：参数无效或认证失败
-- 缺少环境变量：设置`BROWSERBASE_API_KEY`和`BROWSERBASE_PROJECT_ID`
+- 环境变量缺失：请设置`BROWSERBASE_API_KEY`和`BROWSERBASE_Project_ID`
 
-## 参考
+## 参考资料
 
-有关完整的API详细信息，请阅读`{baseDir}/references/api-quick-ref.md`。
+有关完整的API详细信息，请阅读 `{baseDir}/references/api-quick-ref.md`。

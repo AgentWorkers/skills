@@ -23,6 +23,8 @@ import csv
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 import time
 import zipfile
@@ -33,7 +35,7 @@ import urllib.request
 from typing import Any, Dict, List, Optional, Tuple
 
 
-USER_AGENT = "clawdbot-med-info/0.2 (+https://clawhub.ai/DuncanDobbins/med-info)"
+USER_AGENT = "clawdbot-med-info/0.4 (+https://clawhub.ai/DuncanDobbins/med-info)"
 TIMEOUT_S = 20
 
 # Best-effort request traceability. Stores *redacted* URLs (api_key removed).
@@ -116,6 +118,110 @@ def is_probable_ndc(s: str) -> bool:
     if re.fullmatch(r"\d{4,5}-\d{3,4}(-\d{1,2})?", s):
         return True
     return False
+
+
+def ndc_normalize_hyphenated_to_11(ndc: str) -> Optional[str]:
+    """Normalize a hyphenated 10-digit NDC into NDC-11 (5-4-2) when possible.
+
+    Rules (FDA standard):
+    - 4-4-2 -> pad labeler to 5 (leading zero)
+    - 5-3-2 -> pad product to 4 (leading zero)
+    - 5-4-1 -> pad package to 2 (leading zero)
+
+    Returns None if the format is not recognized.
+    """
+    s = re.sub(r"[^0-9-]", "", (ndc or "").strip())
+    parts = [p for p in s.split("-") if p]
+    if len(parts) != 3:
+        return None
+
+    a, b, c = parts
+    if not (a.isdigit() and b.isdigit() and c.isdigit()):
+        return None
+
+    la, lb, lc = len(a), len(b), len(c)
+
+    # 4-4-2
+    if (la, lb, lc) == (4, 4, 2):
+        return "0" + a + b + c
+    # 5-3-2
+    if (la, lb, lc) == (5, 3, 2):
+        return a + "0" + b + c
+    # 5-4-1
+    if (la, lb, lc) == (5, 4, 1):
+        return a + b + "0" + c
+
+    # Already 5-4-2?
+    if (la, lb, lc) == (5, 4, 2):
+        return a + b + c
+
+    return None
+
+
+def ndc11_candidates_from_10digits(ndc10: str) -> List[Dict[str, str]]:
+    """Generate best-effort NDC-11 candidates from 10 digits with unknown hyphenation."""
+    d = re.sub(r"\D", "", (ndc10 or "").strip())
+    if len(d) != 10:
+        return []
+
+    # Candidate schemas for 10-digit NDCs.
+    # A) 4-4-2 -> pad labeler
+    a = "0" + d
+
+    # B) 5-3-2 -> pad product
+    b = d[:5] + "0" + d[5:]
+
+    # C) 5-4-1 -> pad package
+    c = d[:9] + "0" + d[9:]
+
+    out = [
+        {"ndc11": a, "schema": "4-4-2"},
+        {"ndc11": b, "schema": "5-3-2"},
+        {"ndc11": c, "schema": "5-4-1"},
+    ]
+
+    # Deduplicate (some weird numbers may collide).
+    seen = set()
+    uniq = []
+    for x in out:
+        if x["ndc11"] in seen:
+            continue
+        seen.add(x["ndc11"])
+        uniq.append(x)
+    return uniq
+
+
+def ndc_normalize_input(ndc: str) -> Dict[str, Any]:
+    """Return a normalization object for an NDC input.
+
+    Output keys:
+    - input
+    - digits
+    - ndc11 (when determinable)
+    - ndc11_candidates (when ambiguous)
+    """
+    s = (ndc or "").strip()
+    digits = re.sub(r"\D", "", s)
+
+    norm: Dict[str, Any] = {"input": s, "digits": digits, "ndc11": None, "ndc11_candidates": []}
+
+    if re.fullmatch(r"\d{11}", digits):
+        norm["ndc11"] = digits
+        return norm
+
+    # If hyphenated, try exact normalization.
+    if "-" in s:
+        ndc11 = ndc_normalize_hyphenated_to_11(s)
+        if ndc11 and re.fullmatch(r"\d{11}", ndc11):
+            norm["ndc11"] = ndc11
+            return norm
+
+    # Digits-only 10-digit NDC is ambiguous, provide candidates.
+    if re.fullmatch(r"\d{10}", digits):
+        norm["ndc11_candidates"] = ndc11_candidates_from_10digits(digits)
+        return norm
+
+    return norm
 
 
 def is_uuid_like(s: str) -> bool:
@@ -306,6 +412,46 @@ def openfda_ndc_lookup(ndc: str, limit: int = 5) -> List[Dict[str, Any]]:
     return res or []
 
 
+def compact_openfda_ndc_result(r: Dict[str, Any], *, include_packaging: bool = True) -> Dict[str, Any]:
+    """Return a compact, pharmacist-friendly shape for openFDA drug/ndc results."""
+    pkgs_in = r.get("packaging") or []
+    pkgs_out = []
+    if include_packaging and isinstance(pkgs_in, list):
+        for p in pkgs_in:
+            if not isinstance(p, dict):
+                continue
+            pkgs_out.append({
+                "package_ndc": p.get("package_ndc"),
+                "description": p.get("description"),
+                "marketing_start_date": p.get("marketing_start_date"),
+                "marketing_end_date": p.get("marketing_end_date"),
+                "sample_package": p.get("sample_package"),
+            })
+
+    active = []
+    for ai in (r.get("active_ingredients") or []):
+        if isinstance(ai, dict):
+            active.append({"name": ai.get("name"), "strength": ai.get("strength")})
+
+    return {
+        "product_ndc": r.get("product_ndc"),
+        "product_type": r.get("product_type"),
+        "marketing_category": r.get("marketing_category"),
+        "application_number": r.get("application_number"),
+        "brand_name": r.get("brand_name"),
+        "generic_name": r.get("generic_name"),
+        "labeler_name": r.get("labeler_name"),
+        "dosage_form": r.get("dosage_form"),
+        "route": r.get("route"),
+        "active_ingredients": active,
+        "marketing_start_date": r.get("marketing_start_date"),
+        "marketing_end_date": r.get("marketing_end_date"),
+        "listing_expiration_date": r.get("listing_expiration_date"),
+        "packaging": pkgs_out,
+        "openfda": r.get("openfda") or {},
+    }
+
+
 def openfda_enforcement_search(search: str, limit: int = 5) -> List[Dict[str, Any]]:
     url = openfda_url("/drug/enforcement", search, limit=limit)
     j = http_get_json(url, allow_404=True)
@@ -351,6 +497,106 @@ def rxclass_by_rxcui(rxcui: str) -> List[Dict[str, Any]]:
             "relaSource": ci.get("relaSource"),
         })
     return out
+
+
+def rxnav_interactions_by_rxcui(rxcui: str) -> List[Dict[str, Any]]:
+    """Return a compact interaction list from RxNav.
+
+    Docs: https://lhncbc.nlm.nih.gov/RxNav/APIs/api-RxNorm.getInteraction.html
+
+    Note: RxNav interaction results can be large and a bit nested.
+    We keep a stable compact shape: [{"severity","description","minConcept","sourceConcept"}...]
+    """
+    url = "https://rxnav.nlm.nih.gov/REST/interaction/interaction.json?" + urllib.parse.urlencode({"rxcui": rxcui})
+    j = http_get_json(url)
+    groups = (((j or {}).get("interactionTypeGroup")) or [])
+    if isinstance(groups, dict):
+        groups = [groups]
+
+    out: List[Dict[str, Any]] = []
+
+    for g in groups:
+        itypes = (g or {}).get("interactionType") or []
+        if isinstance(itypes, dict):
+            itypes = [itypes]
+        for it in itypes:
+            pairs = (it or {}).get("interactionPair") or []
+            if isinstance(pairs, dict):
+                pairs = [pairs]
+            for p in pairs:
+                desc = p.get("description")
+                sev = p.get("severity")
+
+                # source/min concepts are sometimes present.
+                src = p.get("interactionConcept") or []
+                if isinstance(src, dict):
+                    src = [src]
+                min_concept = None
+                src_concept = None
+                if src:
+                    # Try to pull the minConceptItem for both sides when possible.
+                    try:
+                        # There are usually two concepts; keep both in a compact form.
+                        items = []
+                        for c in src[:2]:
+                            mi = (c.get("minConceptItem") or {}) if isinstance(c, dict) else {}
+                            if mi:
+                                items.append({"rxcui": mi.get("rxcui"), "name": mi.get("name"), "tty": mi.get("tty")})
+                        if items:
+                            min_concept = items
+                    except Exception:
+                        pass
+
+                if desc or sev or min_concept:
+                    out.append({
+                        "severity": sev,
+                        "description": desc,
+                        "concepts": min_concept,
+                    })
+
+    # Best-effort stable sort: severe first, then alpha.
+    sev_rank = {"high": 0, "severe": 0, "moderate": 1, "medium": 1, "low": 2, "minor": 2, None: 3, "": 3}
+
+    def k(x: Dict[str, Any]) -> Tuple[int, str]:
+        sev = (x.get("severity") or "").strip().lower()
+        return (sev_rank.get(sev, 3), (x.get("description") or ""))
+
+    return sorted(out, key=k)
+
+
+def pubchem_compound_properties(name: str) -> Optional[Dict[str, Any]]:
+    """Fetch a minimal PubChem property block for a compound name.
+
+    PUG REST: https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest
+    """
+    nm = (name or "").strip()
+    if not nm:
+        return None
+
+    props = [
+        "MolecularFormula",
+        "MolecularWeight",
+        "IUPACName",
+        "InChIKey",
+        "IsomericSMILES",
+    ]
+    path = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{urllib.parse.quote(nm)}/property/{','.join(props)}/JSON"
+
+    try:
+        j = http_get_json(path, allow_404=False)
+    except Exception:
+        return None
+
+    tbl = (((j or {}).get("PropertyTable")) or {}).get("Properties") or []
+    if isinstance(tbl, dict):
+        tbl = [tbl]
+    if not tbl:
+        return None
+
+    # Return first match.
+    p0 = tbl[0]
+    out = {k: p0.get(k) for k in ["CID"] + props if p0.get(k) is not None}
+    return out or None
 
 
 def dailymed_history(setid: str) -> Dict[str, Any]:
@@ -545,6 +791,7 @@ def purplebook_search(term: str, max_results: int = 10) -> List[Dict[str, Any]]:
         return []
     rows = purplebook_load(max_age_days=30)
     hits: List[Dict[str, Any]] = []
+    seen: set = set()
 
     fields = [
         "Proprietary Name",
@@ -557,7 +804,7 @@ def purplebook_search(term: str, max_results: int = 10) -> List[Dict[str, Any]]:
     for r in rows:
         blob = " ".join([_norm(r.get(f, "")) for f in fields])
         if term_n in blob:
-            hits.append({
+            row = {
                 "applicant": r.get("Applicant"),
                 "bla_number": r.get("BLA Number"),
                 "proprietary_name": r.get("Proprietary Name"),
@@ -573,7 +820,17 @@ def purplebook_search(term: str, max_results: int = 10) -> List[Dict[str, Any]]:
                 "ref_product_proper_name": r.get("Ref. Product Proper Name"),
                 "ref_product_proprietary_name": r.get("Ref. Product Proprietary Name"),
                 "interchangeable": r.get("Interchangeable"),
-            })
+            }
+            key = (
+                (row.get("bla_number") or ""),
+                _norm(row.get("proprietary_name") or ""),
+                _norm(row.get("proper_name") or ""),
+                _norm(row.get("applicant") or ""),
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            hits.append(row)
             if len(hits) >= max_results:
                 break
 
@@ -590,6 +847,345 @@ def medlineplus_by_rxcui(rxcui: str) -> Dict[str, Any]:
     }
     url = "https://connect.medlineplus.gov/service?" + urllib.parse.urlencode(params)
     return http_get_json(url)
+
+
+def _http_get_text(url: str, headers: Optional[Dict[str, str]] = None, *, max_bytes: int = 2_000_000) -> str:
+    """Fetch a URL as text (best-effort)."""
+    _log_url(url)
+    req = urllib.request.Request(url)
+    req.add_header("User-Agent", USER_AGENT)
+    if headers:
+        for k, v in headers.items():
+            req.add_header(k, v)
+    with urllib.request.urlopen(req, timeout=TIMEOUT_S) as resp:
+        data = resp.read(max_bytes)
+    return data.decode("utf-8", errors="replace")
+
+
+def guess_controlled_substance_schedule(text_fields: Dict[str, str]) -> Dict[str, Any]:
+    """Best-effort CSA schedule guess from label text.
+
+    This is intentionally conservative and should be treated as a hint only.
+    """
+    combined = "\n\n".join(text_fields.values())
+
+    pats = [
+        re.compile(r"\bSchedule\s*(I|II|III|IV|V|1|2|3|4|5)\b", re.IGNORECASE),
+        re.compile(r"\bC-?(I|II|III|IV|V)\b", re.IGNORECASE),
+    ]
+
+    for pat in pats:
+        m = pat.search(combined)
+        if not m:
+            continue
+        raw = (m.group(1) or "").upper()
+        # Normalize digits to roman-ish output.
+        digit_map = {"1": "I", "2": "II", "3": "III", "4": "IV", "5": "V"}
+        sched = digit_map.get(raw, raw)
+        start = max(0, m.start() - 60)
+        end = min(len(combined), m.end() + 60)
+        snip = re.sub(r"\s+", " ", combined[start:end]).strip()
+        return {"schedule_guess": sched, "evidence": snip}
+
+    return {"schedule_guess": None, "evidence": None}
+
+
+def build_safety_flags(label: Dict[str, Any], text_fields: Dict[str, str]) -> Dict[str, Any]:
+    sections = (label or {}).get("sections") or {}
+
+    boxed = sections.get("boxed_warning")
+    cs = guess_controlled_substance_schedule(text_fields)
+
+    # Medication Guide / Patient information is sometimes present as separate label fields.
+    mg_present = any(k.lower().startswith("medication_guide") for k in text_fields.keys())
+
+    return {
+        "boxed_warning_present": bool(boxed and str(boxed).strip()),
+        "boxed_warning_excerpt": _compact(boxed, max_len=240) if boxed else None,
+        "controlled_substance_schedule_guess": cs.get("schedule_guess"),
+        "controlled_substance_evidence": cs.get("evidence"),
+        "medication_guide_field_present": mg_present,
+    }
+
+
+NIOSH_HAZARDOUS_DOC_URL = "https://www.cdc.gov/niosh/docs/2025-103/default.html"
+NIOSH_HAZARDOUS_PDF_URL = "https://www.cdc.gov/niosh/docs/2025-103/pdfs/2025-103.pdf"
+
+
+def _have_pdftotext() -> bool:
+    return shutil.which("pdftotext") is not None
+
+
+def _niosh_norm(s: str) -> str:
+    x = (s or "").lower()
+    x = re.sub(r"[^a-z0-9]+", " ", x)
+    x = re.sub(r"\s+", " ", x).strip()
+    return x
+
+
+def parse_niosh_hazardous_pdf_text(text: str) -> List[Dict[str, Any]]:
+    """Parse NIOSH 2024 hazardous drug list tables out of pdftotext output."""
+    lines = [ln.strip() for ln in (text or "").splitlines()]
+
+    records: List[Dict[str, Any]] = []
+    current_table: Optional[int] = None
+    pending_name: List[str] = []
+
+    def is_header_line(ln: str) -> bool:
+        return ln in {
+            "Drug",
+            "AHFS Classifcation",
+            "AHFS Classification",
+            "MSHI",
+            "Biologics",
+            "Biologics License",
+            "Application",
+            "Only Developmental and/",
+            "or Reproductive Hazard†",
+            "IARC and NTP Classifcation",
+            "IARC and NTP Classification",
+        }
+
+    def looks_like_ahfs(ln: str) -> bool:
+        return bool(re.match(r"^\d{1,2}:\d{2}", ln))
+
+    def take_yesno(start_i: int, n: int = 2) -> List[str]:
+        out: List[str] = []
+        k = start_i
+        while k < len(lines) and len(out) < n:
+            if lines[k] in ("Yes", "No"):
+                out.append(lines[k])
+            k += 1
+        return out
+
+    i = 0
+    while i < len(lines):
+        ln = lines[i]
+
+        if ln.startswith("Table 1"):
+            current_table = 1
+            pending_name = []
+            i += 1
+            continue
+
+        if ln.startswith("Table 2"):
+            current_table = 2
+            pending_name = []
+            i += 1
+            continue
+
+        if current_table in (1, 2):
+            if not ln or is_header_line(ln):
+                pending_name = []
+                i += 1
+                continue
+
+            if ln in ("Yes", "No") or re.fullmatch(r"\d+", ln):
+                i += 1
+                continue
+
+            # If we hit AHFS classification, finalize a record.
+            if looks_like_ahfs(ln):
+                drug = re.sub(r"\s+", " ", " ".join(pending_name)).strip()
+                pending_name = []
+
+                # Consume multi-line AHFS classification until blank line.
+                ahfs_parts = [ln]
+                j = i + 1
+                while j < len(lines) and lines[j] and lines[j] not in ("Yes", "No") and not lines[j].startswith("Table "):
+                    # Stop if the next line looks like a new drug name (lowercase word) and we've already got a reasonable AHFS.
+                    if re.match(r"^[a-z0-9][a-z0-9\-\s]+$", lines[j]) and not re.search(r"\d", lines[j]):
+                        break
+                    ahfs_parts.append(lines[j])
+                    j += 1
+                ahfs = re.sub(r"\s+", " ", " ".join(ahfs_parts)).strip()
+
+                yn = take_yesno(j, n=2)
+
+                rec: Dict[str, Any] = {
+                    "drug": drug,
+                    "table": current_table,
+                    "ahfs": ahfs,
+                }
+                if current_table == 1:
+                    rec["mshi"] = yn[0] if len(yn) > 0 else None
+                    rec["biologics"] = yn[1] if len(yn) > 1 else None
+                else:
+                    rec["biologics_license_application"] = yn[0] if len(yn) > 0 else None
+                    rec["only_developmental_or_reproductive_hazard"] = yn[1] if len(yn) > 1 else None
+
+                if drug:
+                    records.append(rec)
+
+                i = j
+                continue
+
+            # Otherwise, treat as part of a drug name (keep short, low-noise lines).
+            lower = ln.lower()
+            if any(x in lower for x in ["te drugs", "tese drugs", "drugs reviewed", "table abbreviations", "foreword", "contents"]):
+                pending_name = []
+                i += 1
+                continue
+
+            # Keep at most 3 lines for multi-line drug names.
+            if len(ln) <= 60:
+                pending_name.append(ln)
+                pending_name = pending_name[-3:]
+
+        i += 1
+
+    # Deduplicate by normalized name + table.
+    seen = set()
+    uniq: List[Dict[str, Any]] = []
+    for r in records:
+        key = (_niosh_norm(r.get("drug") or ""), r.get("table"))
+        if key in seen or not key[0]:
+            continue
+        seen.add(key)
+        uniq.append(r)
+
+    return uniq
+
+
+def niosh_hazardous_load(max_age_days: int = 90) -> Dict[str, Any]:
+    """Load and cache parsed NIOSH hazardous drug list records."""
+    p_json = cache_path("niosh", "2025-103.parsed.json")
+    if cache_is_fresh(p_json, max_age_days):
+        try:
+            return json.loads(p_json.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    if not _have_pdftotext():
+        return {
+            "ok": False,
+            "reason": "pdftotext not installed",
+            "doc_url": NIOSH_HAZARDOUS_DOC_URL,
+            "pdf_url": NIOSH_HAZARDOUS_PDF_URL,
+            "records": [],
+        }
+
+    p_pdf = cache_path("niosh", "2025-103.pdf")
+    if not cache_is_fresh(p_pdf, max_age_days):
+        download_to(NIOSH_HAZARDOUS_PDF_URL, p_pdf)
+
+    p_txt = cache_path("niosh", "2025-103.txt")
+    if (not p_txt.exists()) or (p_txt.stat().st_mtime < p_pdf.stat().st_mtime):
+        subprocess.run(["pdftotext", str(p_pdf), str(p_txt)], check=True)
+
+    txt = p_txt.read_text(encoding="utf-8", errors="replace")
+    records = parse_niosh_hazardous_pdf_text(txt)
+
+    obj = {
+        "ok": True,
+        "doc_url": NIOSH_HAZARDOUS_DOC_URL,
+        "pdf_url": NIOSH_HAZARDOUS_PDF_URL,
+        "count": len(records),
+        "records": records,
+    }
+    try:
+        p_json.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except Exception:
+        pass
+    return obj
+
+
+def niosh_hazardous_match(candidate_names: List[str]) -> Dict[str, Any]:
+    """Match candidate drug names against NIOSH hazardous list (best-effort)."""
+    cand = [c for c in (candidate_names or []) if c and str(c).strip()]
+    cand_norm = {_niosh_norm(str(c)) for c in cand}
+
+    data = niosh_hazardous_load(max_age_days=90)
+    if not data.get("ok"):
+        return {
+            "ok": False,
+            "reason": data.get("reason"),
+            "doc_url": data.get("doc_url"),
+            "pdf_url": data.get("pdf_url"),
+            "matches": [],
+        }
+
+    matches = []
+    for r in data.get("records") or []:
+        rn = _niosh_norm(r.get("drug") or "")
+        if not rn:
+            continue
+        if rn in cand_norm:
+            matches.append(r)
+
+    return {
+        "ok": True,
+        "doc_url": data.get("doc_url"),
+        "pdf_url": data.get("pdf_url"),
+        "matches": matches[:50],
+        "note": "NIOSH list matching is best-effort; verify against the full NIOSH document.",
+    }
+
+
+FDA_REMS_INFO_URL = "https://www.fda.gov/drugs/drug-safety-and-availability/risk-evaluation-and-mitigation-strategies-rems"
+FDA_REMS_DATABASE_URL = "https://www.accessdata.fda.gov/scripts/cder/rems/index.cfm"
+
+
+def fda_rems_best_effort(candidate_names: List[str]) -> Dict[str, Any]:
+    """Best-effort REMS program lookup.
+
+    NOTE: FDA accessdata endpoints may return an "FDA apology" abuse-detection page for scripted access.
+    We treat that as unavailable and return only links.
+    """
+    cand = [c for c in (candidate_names or []) if c and str(c).strip()]
+
+    out = {
+        "ok": False,
+        "database_url": FDA_REMS_DATABASE_URL,
+        "info_url": FDA_REMS_INFO_URL,
+        "matches": [],
+        "note": "Best-effort only. Verify on FDA REMS@FDA.",
+    }
+
+    try:
+        html = _http_get_text(FDA_REMS_DATABASE_URL, max_bytes=2_000_000)
+    except Exception as e:
+        out["reason"] = f"fetch failed: {e}"
+        return out
+
+    low = html.lower()
+    if "fda apology" in low or "excessive-requests-apology" in low or "abuse-detection" in low:
+        out["reason"] = "blocked by FDA abuse-detection"
+        return out
+
+    # Parse entries like: ...REMS=17">Opioid Analgesic REMS</a>
+    items = []
+    for m in re.finditer(r"href=\"([^\"]*REMS=([0-9]+)[^\"]*)\"[^>]*>([^<]{1,200})</a>", html, re.IGNORECASE):
+        href = m.group(1)
+        rid = m.group(2)
+        name = re.sub(r"\s+", " ", (m.group(3) or "")).strip()
+        if not rid or not name:
+            continue
+        url = urllib.parse.urljoin(FDA_REMS_DATABASE_URL, href)
+        items.append({"rems_id": rid, "name": name, "url": url})
+
+    # Dedup by id.
+    seen = set()
+    uniq = []
+    for it in items:
+        if it["rems_id"] in seen:
+            continue
+        seen.add(it["rems_id"])
+        uniq.append(it)
+
+    # Match by simple containment.
+    cand_n = [_niosh_norm(x) for x in cand]
+    matches = []
+    for it in uniq:
+        nm = _niosh_norm(it.get("name") or "")
+        if any(c and c in nm for c in cand_n):
+            matches.append(it)
+
+    out["ok"] = True
+    out["matches"] = matches[:20]
+    if not matches:
+        out["reason"] = "no REMS name match"
+    return out
 
 
 def pick_best_candidate(candidates: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
@@ -739,6 +1335,35 @@ def _parse_sections(sections: List[str]) -> Optional[List[str]]:
     return out
 
 
+DEFAULT_SECTIONS_STANDARD = [
+    "boxed_warning",
+    "indications_and_usage",
+    "dosage_and_administration",
+    "contraindications",
+    "warnings_and_precautions",
+    "drug_interactions",
+    "adverse_reactions",
+]
+
+# Pharmacist-facing bundle: still label-first, but covers the sections pharmacists reach for.
+DEFAULT_SECTIONS_PHARMACIST = [
+    "highlights_of_prescribing_information",
+    "recent_major_changes",
+    "boxed_warning",
+    "indications_and_usage",
+    "dosage_and_administration",
+    "dosage_forms_and_strengths",
+    "contraindications",
+    "warnings_and_precautions",
+    "drug_interactions",
+    "adverse_reactions",
+    "use_in_specific_populations",
+    "patient_counseling_information",
+    "how_supplied",
+    "storage_and_handling",
+]
+
+
 def _compact_recall(r: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "recall_number": r.get("recall_number"),
@@ -776,6 +1401,13 @@ def main() -> int:
     ap.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
     ap.add_argument("--brief", action="store_true", help="Compact human-readable output")
     ap.add_argument(
+        "--profile",
+        choices=["standard", "pharmacist"],
+        default="standard",
+        help="Output profile (default: standard). 'pharmacist' prints a broader, pharmacist-friendly section bundle.",
+    )
+    ap.add_argument("--pharmacist", action="store_true", help="Alias for --profile pharmacist")
+    ap.add_argument(
         "--sections",
         action="append",
         default=[],
@@ -802,6 +1434,11 @@ def main() -> int:
     ap.add_argument("--rxclass", action="store_true", help="Include RxClass drug class info")
     ap.add_argument("--rxclass-max", type=int, default=15, help="Max RxClass items (default: 15)")
 
+    ap.add_argument("--interactions", action="store_true", help="Include RxNav interaction list (signal only)")
+    ap.add_argument("--interactions-max", type=int, default=20, help="Max interactions to return (default: 20)")
+
+    ap.add_argument("--chem", action="store_true", help="Include PubChem chemical properties (best-effort)")
+
     ap.add_argument("--dailymed", action="store_true", help="Include DailyMed SPL metadata and media links")
     ap.add_argument("--dailymed-media-max", type=int, default=10, help="Max DailyMed media items (default: 10)")
 
@@ -813,6 +1450,18 @@ def main() -> int:
 
     ap.add_argument("--purplebook", action="store_true", help="Lookup FDA Purple Book biologics/biosimilars")
     ap.add_argument("--purplebook-max", type=int, default=10, help="Max Purple Book matches (default: 10)")
+
+    # Pharmacist workflow helpers (best-effort)
+    ap.add_argument(
+        "--hazardous",
+        action="store_true",
+        help="Flag if the drug appears on the NIOSH hazardous drugs list (best-effort, cached).",
+    )
+    ap.add_argument(
+        "--rems",
+        action="store_true",
+        help="Best-effort FDA REMS lookup/linking (may be blocked by FDA abuse-detection).",
+    )
 
     # Keyword search
     ap.add_argument(
@@ -831,6 +1480,10 @@ def main() -> int:
 
     args = ap.parse_args()
 
+    # Shorthand alias.
+    if getattr(args, "pharmacist", False):
+        args.profile = "pharmacist"
+
     # RxImage API was retired, treat --rximage as an alias for DailyMed media images.
     if getattr(args, "rximage", False):
         args.images = True
@@ -840,7 +1493,9 @@ def main() -> int:
     out: Dict[str, Any] = {
         "input": {"query": q, "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())},
         "rxnorm": {},
+        "rxnav": {},
         "openfda": {},
+        "pubchem": {},
         "medlineplus": {},
         "notes": [],
     }
@@ -1052,6 +1707,32 @@ def main() -> int:
                     classes = rxclass_by_rxcui(rxcui)
                     out["rxclass"] = classes[: max(1, int(args.rxclass_max))]
 
+                # Optional: RxNav interactions
+                if args.interactions and rxcui:
+                    try:
+                        inter = rxnav_interactions_by_rxcui(rxcui)
+                        out["rxnav"]["interactions"] = {
+                            "rxcui": rxcui,
+                            "results": inter[: max(1, int(args.interactions_max))],
+                            "note": "Interactions are informational and may be incomplete. Verify against official labeling and clinical references.",
+                        }
+                    except Exception as e:
+                        out["notes"].append(f"RxNav interactions lookup failed: {e}")
+
+                # Optional: PubChem chemical profile
+                if args.chem:
+                    # Prefer a generic/substance name for PubChem.
+                    generic0 = _first_of(openfda_block.get("substance_name")) or _first_of(openfda_block.get("generic_name")) or rx_name or q
+                    chem = pubchem_compound_properties(generic0)
+                    if chem:
+                        out["pubchem"]["compound"] = {
+                            "query": generic0,
+                            "properties": chem,
+                            "url": f"https://pubchem.ncbi.nlm.nih.gov/compound/{chem.get('CID')}" if chem.get("CID") else None,
+                        }
+                    else:
+                        out["notes"].append("PubChem lookup returned no match (try a generic ingredient name).")
+
                 # Optional: DailyMed metadata and media
                 if (args.dailymed or args.images) and setid:
                     dm = dailymed_enrich(setid, media_max=max(1, int(args.dailymed_media_max)))
@@ -1245,6 +1926,31 @@ def main() -> int:
             ct = c.get("classType")
             src = c.get("relaSource")
             print(f"- {nm} ({ct}, {src})")
+
+    inter = (out.get("rxnav") or {}).get("interactions")
+    if args.interactions and inter:
+        print("\nRxNav interactions (signal)")
+        for r in (inter.get("results") or [])[: int(args.interactions_max)]:
+            sev = (r or {}).get("severity") or ""
+            desc = _compact((r or {}).get("description"), 260)
+            print(f"- {sev}: {desc}".strip())
+
+    chem = (out.get("pubchem") or {}).get("compound")
+    if args.chem and chem:
+        print("\nPubChem")
+        props = (chem.get("properties") or {}) if isinstance(chem, dict) else {}
+        cid = props.get("CID")
+        mf = props.get("MolecularFormula")
+        mw = props.get("MolecularWeight")
+        inchikey = props.get("InChIKey")
+        if cid:
+            print(f"- CID: {cid}")
+        if mf or mw:
+            print(f"- formula: {mf or ''} | MW: {mw or ''}".strip())
+        if inchikey:
+            print(f"- InChIKey: {inchikey}")
+        if chem.get("url"):
+            print(f"- {chem.get('url')}")
 
     dm = out.get("dailymed")
     if (args.dailymed or args.images) and dm:

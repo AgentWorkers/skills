@@ -1,7 +1,7 @@
 ---
 name: zoho-email-integration
-description: **Zoho Mail 的完整集成：支持 OAuth2、REST API（速度提升 5-10 倍）、Clawdbot/email 命令、HTML 邮件、附件以及批量操作。**  
-该集成方案在安全性方面进行了强化，有效防止了路径遍历（path traversal）和命令注入（command injection）攻击。非常适合用于电子邮件自动化处理和工作流程管理。
+description: **Zoho Mail 完整集成：支持 OAuth2、REST API（速度提升 5-10 倍）、Clawdbot/email 命令、HTML 邮件、附件以及批量操作。**  
+系统经过安全加固，有效防范路径遍历（path traversal）和命令注入（command injection）攻击。非常适合用于电子邮件自动化处理和工作流程管理。
 homepage: https://github.com/briansmith80/clawdbot-zoho-email
 metadata:
   openclaw:
@@ -17,11 +17,34 @@ metadata:
 
 # Zoho 邮件集成
 
-**v2.2.4** - 完整支持 Zoho Mail 集成，采用 OAuth2 认证方式，REST API 后端（速度比 IMAP/SMTP 快 5-10 倍），并支持通过 `/email` 命令在 Telegram/Discord 中使用 Clawdbot。**安全性得到加强**，防止路径遍历和命令注入攻击。支持 HTML 邮件、附件、批量操作以及高级自动化工作流程。
+**v2.2.6** - 完整支持 Zoho Mail 的集成，采用 OAuth2 认证和 REST API 后端（速度比 IMAP/SMTP 快 5-10 倍），并支持通过 `/email` 命令在 Telegram/Discord 中使用 Clawdbot。**安全性得到加强**，防止路径遍历和命令注入攻击。支持 HTML 邮件、附件、批量操作以及高级自动化工作流。
 
 选择您的认证方式：OAuth2（推荐，更安全）或应用密码（设置简单）。
 
-## ✨ 特性
+## 🔄 升级到最新版本
+
+```bash
+clawhub install zoho-email-integration --force
+```
+
+或者更新所有技能：
+```bash
+clawhub update
+```
+
+## 🔒 安全公告（v2.2.5+）
+
+**紧急修复：** 移除了易受攻击的 JavaScript 命令处理程序。如果您使用了示例文件夹中的 `email-command.js`，请立即更新：
+
+```bash
+# Re-download the secure handler
+clawhub install zoho-email-integration --force
+cp ~/.openclaw/skills/zoho-email-integration/examples/clawdbot-extension/email-command.js /your/deployment/path/
+```
+
+旧版本使用了带有 shell 插值的 `execSync`，新版本则使用 `spawn` 并传递参数数组来防止命令注入。
+
+## ✨ 功能
 
 ### 🔐 认证与性能
 - **OAuth2 认证** - 基于令牌的安全认证，支持自动刷新
@@ -30,7 +53,7 @@ metadata:
 - **应用密码支持** - OAuth2 的简单替代方案
 
 ### 📧 邮件操作
-- **📥 阅读邮件** - 从任意文件夹（收件箱、已发送邮件、草稿等）获取邮件
+- **📥 阅读邮件** - 从任意文件夹（收件箱、已发送邮件、草稿等）中读取邮件
 - **🔍 智能搜索** - 通过主题、发件人或关键词进行搜索，速度快速
 - **📊 监控收件箱** - 实时显示未读邮件数量以接收通知
 - **📤 发送邮件** - 支持纯文本或 HTML 格式，支持抄送/密送
@@ -43,7 +66,7 @@ metadata:
 - **试运行模式** - 执行前预览操作以确保安全
 
 ### 🔒 安全性
-- **不使用硬编码的凭证** - 仅使用 OAuth2 令牌或环境变量
+- **无硬编码的凭据** - 仅使用 OAuth2 令牌或环境变量
 - **自动令牌刷新** - 令牌自动更新
 - **加密连接** - 所有操作均使用 SSL/TLS 协议
 
@@ -55,7 +78,7 @@ clawdhub install zoho-email
 
 **要求：**
 - Python 3.x
-- `requests` 库（安装方式：`pip3 install requests`)
+- `requests` 库（安装：`pip3 install requests`）
 - Zoho Mail 账户
 
 ## ⚙️ 设置
@@ -67,22 +90,22 @@ clawdhub install zoho-email
 1. 登录 Zoho Mail
 2. 转到 **设置** → **安全** → **应用密码**
 3. 为 “Clawdbot” 或 “IMAP/SMTP 访问” 生成一个新的应用密码
-4. 复制该密码（后续会用到）
+4. 复制密码（后续会用到）
 
-### 2. 配置凭证
+### 2. 配置凭据
 
 **选项 A：环境变量**
 
-导出您的 Zoho 凭证：
+导出您的 Zoho 凭据：
 
 ```bash
 export ZOHO_EMAIL="your-email@domain.com"
 export ZOHO_PASSWORD="your-app-specific-password"
 ```
 
-**选项 B：凭证文件**
+**选项 B：凭据文件**
 
-创建 `~/.clawdbot/zoho-credentials.sh` 文件：
+创建 `~/.clawdbot/zoho-credentials.sh`：
 
 ```bash
 #!/bin/bash
@@ -95,7 +118,7 @@ export ZOHO_PASSWORD="your-app-specific-password"
 chmod 600 ~/.clawdbot/zoho-credentials.sh
 ```
 
-运行前执行以下命令：
+然后在运行前执行该文件：
 ```bash
 source ~/.clawdbot/zoho-credentials.sh
 ```
@@ -113,7 +136,7 @@ python3 scripts/zoho-email.py unread
 
 ## 🚀 使用方法
 
-所有命令都需要通过环境变量设置凭证。
+所有命令都需要通过环境变量设置凭据。
 
 ### 常用命令
 
@@ -146,9 +169,9 @@ python3 scripts/zoho-email.py empty-trash --execute
 
 ### 发送 HTML 邮件
 
-发送包含富格式内容的 HTML 邮件，支持多部分/替代格式（HTML 和纯文本版本）：
+发送格式丰富的 HTML 邮件，支持多部分/替代格式（HTML 和纯文本版本）：
 
-**命令行：**
+**CLI 命令：**
 ```bash
 # Send HTML from a file
 python3 scripts/zoho-email.py send-html recipient@example.com "Newsletter" examples/templates/newsletter.html
@@ -192,18 +215,18 @@ zoho.send_html_email(
 )
 ```
 
-**特性：**
+**特点：**
 - ✅ 支持多部分/替代格式的邮件（HTML + 纯文本）
-- ✅ 自动生成纯文本备份
-- ✅ 可从文件或内联字符串加载 HTML 内容
-- ✅ 发送前提供预览功能
+- ✅ 自动生成纯文本作为备用方案
+- ✅ 可从文件或内联字符串加载 HTML
+- ✅ 发送前支持预览模式
 - ✅ 全面支持 CSS 样式
 - ✅ 适用于所有邮件客户端
 
 **模板：**
-预建模板位于 `examples/templates/` 目录下：
-- `newsletter.html` - 专业新闻稿布局
-- `announcement.html` - 重要公告（含横幅）
+`examples/templates/` 目录中提供预建模板：
+- `newsletter.html` - 专业新闻通讯布局
+- `announcement.html` - 带有横幅的重要公告
 - `welcome.html` - 新员工欢迎邮件
 - `simple.html` - 基本 HTML 模板，便于快速定制
 
@@ -229,7 +252,7 @@ python3 scripts/zoho-email.py search "invoice"
 python3 scripts/zoho-email.py search-sent "client name"
 ```
 
-返回最近 5 封已发送的邮件。
+返回最近 5 封符合条件的已发送邮件。
 
 ### 获取特定邮件
 
@@ -260,7 +283,8 @@ python3 scripts/zoho-email.py send "client@example.com" "Invoice" "Please find t
 python3 scripts/zoho-email.py list-attachments Inbox 4590
 ```
 
-返回附件的详细信息（JSON 格式）：
+返回包含附件详细信息的 JSON 数据：
+
 ```json
 [
   {
@@ -288,7 +312,8 @@ python3 scripts/zoho-email.py download-attachment Inbox 4590 0
 python3 scripts/zoho-email.py download-attachment Inbox 4590 1 my-receipt.jpg
 ```
 
-返回下载附件的详细信息（JSON 格式）：
+返回包含下载详细信息的 JSON 数据：
+
 ```json
 {
   "filename": "invoice.pdf",
@@ -302,7 +327,7 @@ python3 scripts/zoho-email.py download-attachment Inbox 4590 1 my-receipt.jpg
 
 ### 晨间简报
 
-查看未读邮件并生成报告：
+检查未读邮件并生成报告：
 
 ```bash
 UNREAD=$(python3 scripts/zoho-email.py unread | jq -r '.unread_count')
@@ -356,7 +381,7 @@ echo "$ATTACHMENTS" | jq -r '.[] | select(.content_type == "application/pdf") | 
 done
 ```
 
-发送带附件的报告：
+发送带有附件的报告：
 
 ```bash
 # Generate report
@@ -368,7 +393,7 @@ python3 scripts/zoho-email.py send "manager@example.com" "Weekly Report" "Please
 
 ## 📖 Python API
 
-导入该模块以进行程序化操作：
+导入该模块以进行程序化使用：
 
 ```python
 from scripts.zoho_email import ZohoEmail
@@ -434,13 +459,19 @@ count = zoho.get_unread_count()
 
 ## 📖 HTML 邮件示例
 
-请查看 `examples/send-html-newsletter.py` 示例文件：
+请查看 `examples/send-html-newsletter.py` 中的完整示例：
 
-**示例内容：**
+```bash
+# Run the HTML email examples
+python3 examples/send-html-newsletter.py
+```
+
+示例内容包括：
 - 发送简单的内联 HTML 邮件
-- 加载并发送 HTML 模板
-- 自动生成纯文本备份
-- 支持专业邮件布局
+- 加载和发送 HTML 模板
+- 自动生成纯文本作为备用方案
+- 支持预览功能
+- 全面支持 CSS 样式
 
 **快速入门：**
 ```python
@@ -473,7 +504,7 @@ zoho.send_html_email(
 
 ## 🔧 高级配置
 
-（如果使用自托管的 Zoho Mail，可）覆盖默认的 IMAP/SMTP 服务器配置：
+（如果使用自托管的 Zoho Mail，可以）覆盖默认的 IMAP/SMTP 服务器配置：
 
 ```bash
 export ZOHO_IMAP="imap.yourdomain.com"
@@ -488,12 +519,12 @@ export ZOHO_SMTP_PORT="465"
 
 - 确保 Zoho Mail 设置中启用了 IMAP
 - 使用 **应用专用密码**，而非主密码
-- 验证凭证是否正确导出
+- 验证凭据是否正确导出
 
 ### 连接超时
 
 - 检查防火墙是否允许端口 993（IMAP）和 465（SMTP）
-- 确认 Zoho Mail 服务器状态
+- 验证 Zoho Mail 服务器的状态
 - 尝试使用其他网络（企业防火墙可能会阻止 IMAP）
 
 ### 搜索无结果
@@ -504,39 +535,42 @@ export ZOHO_SMTP_PORT="465"
 
 ### “ZOHO_EMAIL 和 ZOHO_PASSWORD 必须设置”
 
-您忘记导出凭证了！请运行以下命令：
+您忘记导出凭据了！请运行以下命令：
+
 ```bash
 export ZOHO_EMAIL="your-email@domain.com"
 export ZOHO_PASSWORD="your-app-password"
 ```
 
-## 🛣️ 发展计划
+## 🛣️ 路线图
 
-### ✅ 已完成的功能（v2.0.0）：
+### ✅ 已完成的功能（v2.0.0）
+
 - [x] **OAuth2 认证** - 基于令牌的安全认证，支持自动刷新
 - [x] **Zoho Mail REST API** - 操作速度比 IMAP/SMTP 快 5-10 倍
 - [x] **附件支持** - 支持下载和发送附件
 - [x] **HTML 邮件编写** - 支持丰富的格式和模板
-- [x] **批量操作** - 高效地标记、删除或移动多封邮件
+- [x] **批量操作** - 标记、删除或移动多封邮件
 - [x] **批量操作** - 一次搜索并处理多封邮件
 
-### 🔮 未来改进计划：
-- [ ] **邮件分组** - 将相关邮件归类
+### 🔮 未来改进计划
+
+- [ ] **邮件分组** - 将相关邮件归类在一起
 - [ ] **标签管理** - 创建和管理 Zoho Mail 标签
 - [ ] **草稿邮件管理** - 创建、编辑和发送草稿邮件
-- [ ] **定时发送** - 预定邮件发送时间
+- [ ] **定时发送** - 安排邮件发送时间
 - [ ] **邮件模板** - 可重用的邮件模板，支持变量
-- [ ] **Webhook** - 新邮件到达时实时通知
+- [ ] **Webhook** - 新邮件到达时发送实时通知
 - [ ] **高级搜索** - 按大小、是否包含附件、日期范围筛选邮件
-- [ ] **Zoho 日历集成** - 从邮件创建日历事件
-- [ ] **Zoho CRM 集成** - 同步联系人和活动记录
+- [ ] **Zoho 日历集成** - 从邮件创建事件
+- [ ] **Zoho CRM 集成** - 同步联系人和活动
 
-## 📝 备注
+## 📝 注意事项
 
-- **搜索限制**：默认返回最近 5-10 封邮件（可通过代码配置）
-- **正文截断**：搜索结果仅显示前 500 个字符
-- **编码**：支持 UTF-8 和多种邮件编码格式
-- **安全性**：凭证不会离开您的系统，只会传输到 Zoho 服务器
+- **搜索限制：** 默认返回最近 5-10 封邮件（可通过代码配置）
+- **正文截断：** 搜索结果仅显示前 500 个字符
+- **编码：** 支持 UTF-8 和多种邮件编码格式
+- **安全性：** 凭据不会离开您的系统，只会传输到 Zoho 服务器
 
 ## 🤝 贡献
 
@@ -544,17 +578,17 @@ export ZOHO_PASSWORD="your-app-password"
 
 ## 📄 许可证
 
-MIT 许可证 - 可自由使用、修改和分发。
+MIT 许可证 - 可免费使用、修改和分发。
 
 ---
 
 **创建日期：** 2026-01-29  
-**状态：** 已准备好投入生产 ✅  
-**所需环境：** Python 3.x。对于 REST API 模式，需运行 `pip install -r requirements.txt`（包含 `requests` 库）。
+**状态：** 已准备好生产使用 ✅  
+**所需环境：** Python 3.x。对于 REST API 模式：`pip install -r requirements.txt`（包含 `requests` 库）。
 
 ## 🔄 批量操作
 
-**v1.1 新功能！** 支持使用批量命令高效处理多封邮件。
+**v1.1 新功能！** 使用批量命令高效处理多封邮件。
 
 ### 将多封邮件标记为已读
 
@@ -562,7 +596,7 @@ MIT 许可证 - 可自由使用、修改和分发。
 python3 scripts/zoho-email.py mark-read INBOX 1001 1002 1003
 ```
 
-一次命令即可将多封邮件标记为已读，非常适合清除通知。
+一次命令即可将多封邮件标记为已读。非常适合清除通知。
 
 ### 将多封邮件标记为未读
 
@@ -570,7 +604,7 @@ python3 scripts/zoho-email.py mark-read INBOX 1001 1002 1003
 python3 scripts/zoho-email.py mark-unread INBOX 1004 1005
 ```
 
-将重要邮件标记为待处理。
+标记重要邮件以便稍后处理。
 
 ### 删除多封邮件
 
@@ -578,7 +612,7 @@ python3 scripts/zoho-email.py mark-unread INBOX 1004 1005
 python3 scripts/zoho-email.py delete INBOX 2001 2002 2003
 ```
 
-**安全提示：** 删除前会请求确认。邮件会被移动到垃圾箱，而非永久删除。
+**安全提示：** 删除前会请求确认。邮件会被移动到垃圾邮件文件夹（而非永久删除）。
 
 ### 在文件夹间移动邮件
 
@@ -588,7 +622,7 @@ python3 scripts/zoho-email.py move INBOX "Archive/2024" 3001 3002 3003
 
 通过将邮件移动到自定义文件夹来整理邮件。
 
-### 基于搜索的批量操作
+### 带搜索功能的批量操作
 
 对符合搜索条件的所有邮件执行操作：
 
@@ -610,7 +644,7 @@ python3 scripts/zoho-email.py bulk-action \
 **可用操作：**
 - `mark-read` - 将所有匹配的邮件标记为已读
 - `mark-unread` - 将所有匹配的邮件标记为未读
-- `delete` - 将所有匹配的邮件移动到垃圾箱
+- `delete` - 将所有匹配的邮件移动到垃圾邮件文件夹
 
 **搜索示例：**
 ```bash
@@ -673,7 +707,7 @@ result = zoho.bulk_action(
 
 ### 批量清理示例
 
-自动清理旧新闻稿：
+自动清理旧新闻通讯：
 
 ```bash
 # 1. Preview what will be deleted

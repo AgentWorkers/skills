@@ -1,83 +1,135 @@
 ---
 name: domain-authority-auditor
-description: 执行一次全面的 CITE 40 项域名权威性审计，根据域名类型对各个维度进行加权评分。生成一份详细的报告，其中包含每项的得分、维度分析、否决检查结果以及优先级行动计划。
-geo-relevance: "medium"
+description: '**使用说明：**  
+当用户询问“域名权威性审计”、“域名信任评分”、“CITE审计”、“我的网站有多权威”、“域名可信度检查”、“我的域名是否可信”或“域名可信度评分”时，可使用该工具。该工具会执行全面的CITE 40项域名权威性审计，从4个维度对域名进行评分（评分方式会根据域名类型进行加权处理）。最终会生成一份详细报告，其中包含每项指标的评分结果、维度分析、需要重点处理的问题以及优先级高的改进措施。如需进行内容层面的评估，请使用`content-quality-auditor`；如需了解链接概况信息，请使用`backlink-analyzer`。'
+license: Apache-2.0
+metadata:
+  author: aaron-he-zhu
+  version: "2.0.0"
+  geo-relevance: "medium"
+  tags:
+    - seo
+    - geo
+    - domain authority
+    - domain audit
+    - site trust
+    - credibility
+    - cite framework
+    - domain rating
+    - domain scoring
+  triggers:
+    - "audit domain authority"
+    - "domain trust score"
+    - "CITE audit"
+    - "how authoritative is my site"
+    - "domain credibility check"
+    - "domain rating"
+    - "site authority"
+    - "is my domain trustworthy"
+    - "domain credibility score"
 ---
 
 # 域名权威性审计工具
 
 > 该工具基于 [CITE 域名评级](https://github.com/aaron-he-zhu/cite-domain-rating) 算法进行评估。完整的基准测试参考文档请参见：[references/cite-domain-rating.md](../../references/cite-domain-rating.md)
 
-该工具通过 40 个标准化指标对域名权威性进行综合评估，这些指标分为 4 个维度。评估结果会生成一份详细的审计报告，包括每个指标的得分、各维度的得分、按域名类型划分的加权总分、存在问题的指标以及优先改进措施。
+> **[SEO 与 GEO 技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 包含 20 项 SEO 和 GEO 相关技能 · 可通过 `npx skills add aaron-he-zhu/seo-geo-claude-skills` 命令安装
 
-**相关工具**：[content-quality-auditor](../content-quality-auditor/) 用于页面级别的内容质量评估（共 80 个指标）。这两个工具结合使用，可以完成对域名及其内容的全面评估（共 120 个指标）。
+<details>
+<summary>浏览全部 20 项技能</summary>
 
-**命名规则说明**：  
-- CITE 使用 C01-C10 来表示引用相关指标；CORE-EEAT 使用 C01-C10 来表示上下文清晰度相关指标。在综合评估中，需要在前缀中加上相应的框架名称（例如：CITE-C01 vs CORE-C01），以避免混淆。
+**研究** · [关键词研究](../../research/keyword-research/) · [竞争对手分析](../../research/competitor-analysis/) · [SERP 分析](../../research/serp-analysis/) · [内容差距分析](../../research/content-gap-analysis/)
 
-## 适用场景  
-- 在开展地理定位（GEO）营销活动之前评估域名权威性  
-- 将自己的域名与竞争对手进行对比  
-- 判断某个域名作为引用来源的可靠性  
-- 定期检查域名的健康状况  
-- 在进行链接建设活动后评估效果  
-- 识别潜在的域名操纵行为（如虚假网站、链接农场、被处罚的历史记录）  
-- 制定提升域名权威性的策略  
-- 与 [content-quality-auditor] 结合使用，进行全面的 120 项评估  
+**构建** · [SEO 内容编写器](../../build/seo-content-writer/) · [地理内容优化器](../../build/geo-content-optimizer/) · [元标签优化器](../../build/meta-tags-optimizer/) · [架构标记生成器](../../build/schema-markup-generator/)
 
-## 工具功能  
-1. **全面评估（40 个指标）**：对每个 CITE 指标进行“通过/部分通过/未通过”的评分  
-2. **维度评分**：计算 4 个维度的得分（每个维度 0-100 分）  
-3. **加权计算**：根据域名类型为 CITE 得分应用相应的权重  
-4. **问题检测**：标记出关键的操纵行为（如 T03、T05、T09）  
-5. **优先级排序**：按影响程度排序出需要优先改进的 5 个方面  
-6. **制定改进计划**：生成具体可行的改进步骤  
-7. **交叉验证**：可选择与 [CORE-EEAT] 结合使用，进行综合诊断  
+**优化** · [页面 SEO 审计工具](../../optimize/on-page-seo-auditor/) · [技术 SEO 检查工具](../../optimize/technical-seo-checker/) · [内部链接优化器](../../optimize/internal-linking-optimizer/) · [内容更新工具](../../optimize/content-refresher/)
 
-## 使用方法  
-### 审计单个域名  
+**监控** · [排名跟踪器](../../monitor/rank-tracker/) · [反向链接分析器](../../monitor/backlink-analyzer/) · [性能报告工具](../../monitor/performance-reporter/) · [警报管理工具](../../monitor/alert-manager/)
+
+**跨领域技能** · [内容质量审计工具](../content-quality-auditor/) · **域名权威性审计工具** · [实体优化工具](../entity-optimizer/) · [内存管理工具](../memory-management/)
+
+</details>
+
+该工具根据 40 个标准化标准对域名权威性进行评估，这些标准分为 4 个维度。它生成一份全面的审计报告，其中包含每项指标的得分、各维度的得分以及按域名类型划分的加权总分，还会标出需要禁止的操作项，并提出优先级的改进计划。
+
+**关联技能**：[内容质量审计工具](../content-quality-auditor/) 用于评估页面级别的内容（80 项指标）。该工具用于评估内容背后的域名（40 项指标）。两者结合可提供完整的 120 项评估。
+
+> **命名空间说明**：CITE 使用 C01-C10 来表示引用相关指标；CORE-EEAT 使用 C01-C10 来表示上下文清晰度相关指标。在综合评估中，需要在前缀加上框架名称（例如 CITE-C01 与 CORE-C01），以避免混淆。
+
+## 适用场景
+
+- 在开展 GEO 活动前评估域名权威性
+- 与竞争对手进行域名权威性对比
+- 评估某个域名作为引用来源的可靠性
+- 定期检查域名健康状况
+- 在链接建设活动后评估进展
+- 识别潜在的域名操纵行为（如 PBN、链接农场、处罚记录）
+- 制定域名权威性提升策略
+- 与内容质量审计工具结合使用，进行全面的 120 项评估
+
+## 功能介绍
+
+1. **全面 40 项审计**：对每个 CITE 评估指标进行“通过/部分通过/未通过”的评分
+2. **维度评分**：计算 4 个维度的得分（每个维度 0-100 分）
+3. **加权总分**：根据域名类型为 CITE 得分应用相应的权重
+4. **关键问题检测**：标记出潜在的操纵行为（如 T03、T05、T09）
+5. **优先级排序**：按影响程度排序出最需要改进的 5 项
+6. **改进计划**：生成具体的、可操作的改进步骤
+7. **交叉验证**：可选择与 CORE-EEAT 结合使用，进行综合诊断
+
+## 使用方法
+
+### 审计你的域名
+
 ```
 Audit domain authority for [domain]
-```  
+```
 
-### 按域名类型进行审计  
+### 按域名类型进行审计
+
 ```
 CITE audit for example.com as an e-commerce site
-```  
+```
 
-### 对比审计  
+### 对比审计
+
 ```
 Compare domain authority: [your domain] vs [competitor 1] vs [competitor 2]
-```  
+```
 
-### 综合评估  
+### 综合评估
+
 ```
 Run full 120-item assessment on [domain]: CITE domain audit + CORE-EEAT content audit on [sample pages]
-```  
+```
 
-## 数据来源  
-> 有关工具类别的详细信息，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。  
+## 数据来源
 
-**当连接到以下工具时**：  
-- **链接数据库**：自动获取反向链接信息及链接质量数据  
-- **SEO 工具**：获取域名权威性评分和关键词排名  
-- **AI 监测工具**：获取 AI 引用数据  
-- **知识图谱**：获取实体存在信息  
-- **品牌监控工具**：获取品牌提及数据  
+> 有关工具类别的详细信息，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**仅使用手动数据时**：  
-- 用户需提供以下信息：  
-  - 需要评估的域名  
-  - 域名类型（系统自动检测或用户手动指定：内容发布者、产品与服务、电子商务、社区与用户生成内容、工具与实用工具、权威机构）  
-  - 反向链接数据：引用域名的数量、域名权威性、主要链接来源  
-  - 流量数据（可来自任何 SEO 工具或 SimilarWeb）  
-  - 对比用的竞争对手域名（可选）  
+**当连接了以下工具时：**
+- **链接数据库**：自动获取反向链接信息和链接质量数据
+- **SEO 工具**：获取域名权威性评分和关键词排名
+- **AI 监控工具**：获取 AI 引用数据
+- **知识图谱**：获取实体存在信息
+- **品牌监控工具**：获取品牌提及数据
 
-使用提供的数据完成 40 项的全面审计。注意报告中会标注因数据缺失而无法完全评估的指标（如 AI 引用数据、知识图谱查询结果、WHOIS 历史记录等）。  
+**仅使用手动数据时**：
+- 请用户提供以下信息：
+  - 需要审计的域名
+  - 域名类型（如果系统无法自动识别：内容发布者、产品与服务、电子商务、社区与用户生成内容、工具与实用工具、权威机构）
+  - 反向链接数据：引用域名的数量、域名权威性、主要链接来源域名
+  - 流量估算数据（来自任何 SEO 工具或 SimilarWeb）
+  - 对比用的竞争对手域名（可选）
 
-## 使用说明  
-当用户请求域名权威性审计时：  
-### 第一步：准备工作  
+使用提供的数据执行全面的 40 项审计。注意报告中哪些指标因数据缺失而无法完全评估（例如 AI 引用数据、知识图谱查询结果、WHOIS 历史记录）。
+
+## 使用说明
+
+当用户请求进行域名权威性审计时：
+
+### 第一步：准备
+
 ```markdown
 ### Audit Setup
 
@@ -103,21 +155,69 @@ Run full 120-item assessment on [domain]: CITE domain audit + CORE-EEAT content 
 | T03: Link-Traffic Coherence | ✅ Pass / ⚠️ VETO | [If VETO: "Audit backlink profile; disavow toxic links"] |
 | T05: Backlink Profile Uniqueness | ✅ Pass / ⚠️ VETO | [If VETO: "Flag as manipulation network; investigate link sources"] |
 | T09: Penalty & Deindex History | ✅ Pass / ⚠️ VETO | [If VETO: "Address penalty first; all other optimization is futile"] |
-```  
-如果发现任何问题指标，请在报告顶部显著标出。无论其他指标得分如何，CITE 的最高得分仅为 39 分（表示域名权威性较低）。  
+```
 
-### 第二步：评估引用相关指标（20 项）  
-根据 [references/cite-domain-rating.md](../../references/cite-domain-rating.md) 中的标准对每个指标进行评分：  
-- **通过** = 10 分（完全符合标准）  
-- **部分通过** = 5 分（部分符合标准）  
-- **未通过** = 0 分  
+如果发现任何需要禁止的操作项，请在报告顶部醒目地标出。无论其他指标得分如何，CITE 得分的最高值为 39 分（表示“较差”）。
 
-### 第三步：评估信任度和影响力相关指标（20 项）  
-评分方式相同。  
+### 第二步：C + I 部分（20 项评估）
 
-**注意**：部分指标需要专门的数据（如 C05-C08 的 AI 引用数据、I01 的知识图谱查询结果、T04-T05 的 IP 分析数据）。对于无法验证的指标，标记为“N/A — 需要 [数据来源]”并排除在维度总分之外。  
+根据 [references/cite-domain-rating.md](../../references/cite-domain-rating.md) 中的标准对每个指标进行评估。
+- **通过** = 10 分（完全符合标准）
+- **部分通过** = 5 分（部分符合标准）
+- **未通过** = 0 分
 
-### 第四步：计算得分并生成报告  
+```markdown
+### C — Citation
+
+| ID | Check Item | Score | Notes |
+|----|-----------|-------|-------|
+| C01 | Referring Domains Volume | Pass/Partial/Fail | [specific observation] |
+| C02 | Referring Domains Quality | Pass/Partial/Fail | [specific observation] |
+| ... | ... | ... | ... |
+| C10 | Link Source Diversity | Pass/Partial/Fail | [specific observation] |
+
+**C Score**: [X]/100
+
+### I — Identity
+
+| ID | Check Item | Score | Notes |
+|----|-----------|-------|-------|
+| I01 | Knowledge Graph Presence | Pass/Partial/Fail | [specific observation] |
+| ... | ... | ... | ... |
+
+**I Score**: [X]/100
+```
+
+### 第三步：T + E 部分（20 项评估）
+
+信任和声望维度的评估方法相同。
+
+```markdown
+### T — Trust
+
+| ID | Check Item | Score | Notes |
+|----|-----------|-------|-------|
+| T01 | Link Profile Naturalness | Pass/Partial/Fail | [specific observation] |
+| ... | ... | ... | ... |
+
+**T Score**: [X]/100
+
+### E — Eminence
+
+| ID | Check Item | Score | Notes |
+|----|-----------|-------|-------|
+| E01 | Organic Search Visibility | Pass/Partial/Fail | [specific observation] |
+| ... | ... | ... | ... |
+
+**E Score**: [X]/100
+```
+
+**注意**：某些指标需要专门的数据（如 C05-C08 的 AI 引用数据、I01 的知识图谱查询、T04-T05 的 IP/域名分析）。对于无法验证的指标，标记为“N/A — 需要 [数据来源]”并排除在维度平均值计算之外。
+
+### 第四步：评分与生成报告
+
+计算得分并生成最终报告：
+
 ```markdown
 ## CITE Domain Authority Report
 
@@ -203,28 +303,31 @@ For a complete assessment, pair this CITE audit with a CORE-EEAT content audit:
 - For backlink strategy: use [backlink-analyzer](../../monitor/backlink-analyzer/) for detailed link analysis
 - For competitor benchmarking: use [competitor-analysis](../../research/competitor-analysis/) with CITE scores
 - For tracking progress: run `/seo:report` with CITE score trends
-```  
+```
 
-## 验证要点  
-- **输入验证**：  
-  - 域名已识别且可访问  
-  - 域名类型已确认（系统自动检测或用户手动指定）  
-  - 反向链接数据齐全（至少包括引用域名的数量、域名权威性）  
-  - 如果进行对比审计，需提供竞争对手的域名信息  
+## 验证要点
 
-**输出验证**：  
-- 所有 40 个指标均已完成评分（或标明“N/A”并说明原因）  
-- 所有 4 个维度的得分计算正确  
-- 加权后的 CITE 得分与设定的域名类型权重配置一致  
-- 三个问题指标均已检查并标记（如有问题）  
-- 按影响程度排序出的优先改进事项是合理的  
-- 每条建议都是具体且可操作的  
-- 行动计划包含具体的步骤及所需时间  
+### 输入验证
+- 域名已识别且可访问
+- 域名类型已确认（系统自动检测或用户指定）
+- 反向链接数据可用（至少包括引用域名的数量、域名权威性）
+- 如果进行对比审计，还需提供竞争对手域名
 
-**示例**：  
-**用户请求**：**作为内容发布者，审计 cloudhosting.com 的域名权威性**  
+### 输出验证
+- 所有 40 项指标均已评分（或标记为“N/A”并说明原因）
+- 所有 4 个维度的得分计算正确
+- 加权后的 CITE 得分与域名类型配置一致
+- 3 个关键禁止项已检查并标记
+- 按影响程度排序出的 5 项改进措施是合理的
+- 每条建议都是具体且可操作的
+- 改进计划包含具体的步骤和所需的工作量估算
 
-**输出结果**：  
+## 示例
+
+**用户请求**：“对 cloudhosting.com 这个内容发布者的域名进行权威性审计”
+
+**输出结果**：
+
 ```markdown
 ## CITE Domain Authority Report
 
@@ -313,25 +416,28 @@ Sorted by: weight × points lost (highest impact first)
 - For entity building: run [entity-optimizer](../entity-optimizer/) to strengthen I-dimension signals
 - For content audit: use [content-quality-auditor](../content-quality-auditor/) on key pages
 - For tracking progress: run `/seo:report` with CITE score trends quarterly
-```  
+```
 
-**使用建议**：  
-1. **优先检查问题指标**（T03、T05、T09）——这些指标可能会影响整体评分结果  
-2. **先确定域名类型**——不同类型的域名在评估中的权重不同  
-3. **AI 引用指标（C05-C08）对地理定位策略至关重要**——通过相关问题查询 AI 工具进行测试  
-4. **部分指标需要专用工具**——如果相关工具未连接，可能需要手动查询知识图谱或分析 IP 数据  
-5. **结合使用 CORE-EEAT 进行全面评估**——仅评估域名权威性而忽略内容质量会片面了解实际情况  
-6. **每季度重新审计一次**——域名权威性变化较慢，大多数域名类型每季度审计一次即可  
-7. **与竞争对手进行对比**——绝对得分不如在行业内的相对排名重要  
+## 使用技巧
 
-**参考资料**：  
-- [CITE 域名评级](../../references/cite-domain-rating.md)：包含 40 个评估指标的详细说明、评分标准、权重表及问题指标  
+1. **优先检查关键指标** — T03、T05、T09 可能导致整个评估结果无效
+2. **先确定域名类型** — 不同类型的域名具有不同的权重分布
+3. **AI 引用指标（C05-C08）对 GEO 评估至关重要** — 通过向相关 AI 工具提问来测试
+4. **部分指标需要专用工具** — 如果相关工具未连接，可能需要手动查询知识图谱、监控 AI 引用数据或分析 IP 地理分布
+5. **结合 CORE-EEAT 进行综合评估** — 单纯的域名权威性评估（或不考虑内容质量）只能提供部分信息
+6. **每季度重新审计一次** — 域名权威性变化缓慢；对于大多数域名类型来说，每季度审计一次即可
+7. **与竞争对手进行对比** — 绝对得分不如在特定领域内的相对排名重要
 
-**相关工具**：  
-- [content-quality-auditor](../content-quality-auditor/)：用于页面级别的内容质量评估（80 个指标）  
-- [backlink-analyzer](../../monitor/backlink-analyzer/)：深入分析反向链接情况  
-- [competitor-analysis](../../research/competitor-analysis/)：比较多个域名的 CITE 得分  
-- [performance-reporter](../../monitor/performance-reporter/)：跟踪 CITE 得分的趋势变化  
-- [geo-content-optimizer](../../build/geo-content-optimizer/)：进行页面级别的地理定位优化  
-- [memory-management](../memory-management/)：存储域名审计结果以供后续参考  
-- [entity-optimizer](../entity-optimizer/)：评估实体的在线存在情况，补充 CITE 的评估内容
+## 参考资料
+
+- [CITE 域名评级](../../references/cite-domain-rating.md) — 包含完整的 40 项评估标准、维度定义、权重表和禁止操作项
+
+## 相关技能
+
+- [内容质量审计工具](../content-quality-auditor/) — 用于页面级别的内容评估（80 项指标）
+- [反向链接分析工具](../../monitor/backlink-analyzer/) — 深入分析反向链接信息
+- [竞争对手分析工具](../../research/competitor-analysis/) — 比较不同竞争对手的 CITE 得分
+- [性能报告工具](../../monitor/performance-reporter/) — 跟踪 CITE 得分的长期趋势
+- [地理内容优化工具](../../build/geo-content-optimizer/) — 用于页面级别的 GEO 优化；CITE 的 C05-C08 项可提供域名层面的上下文信息
+- [内存管理工具](../memory-management/) — 用于存储审计结果以便后续跟踪
+- [实体优化工具](../entity-optimizer/) — 用于评估实体的存在情况；补充 CITE 的 I 维度评估

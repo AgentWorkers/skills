@@ -1,9 +1,8 @@
-# Findings: med-info upgrades
+# Findings: med-info growth pass
 
 ## Current published state (ClawHub)
 - Skill page: https://clawhub.ai/DuncanDobbins/med-info
-- OpenClaw scan: benign/high confidence.
-- VirusTotal: pending at the time of review.
+- VirusTotal flagged “Suspicious” previously due to openFDA query injection concern, now mitigated by escaping/validating openFDA search strings in v0.2.1.
 
 ## Known data model detail (openFDA drug/ndc)
 - `product_ndc` is top-level.

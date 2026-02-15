@@ -1,6 +1,5 @@
 ---
-slug: "rvt-to-excel"
-display_name: "RVT To Excel"
+name: "rvt-to-excel"
 description: "将 RVT/RFA 文件转换为 Excel 数据库。提取 BIM 元素的数据、属性和数量信息。"
 ---
 
@@ -16,13 +15,13 @@ description: "将 RVT/RFA 文件转换为 Excel 数据库。提取 BIM 元素的
 - 生成报告和数量统计
 
 ### 解决方案
-将 RVT 文件转换为结构化的 Excel 数据库，以便进行分析和报告生成。
+将 RVT 文件转换为结构化的 Excel 数据库，以便进行分析和生成报告。
 
 ### 商业价值
 - **批量处理**：能够同时处理多个项目
-- **数据可访问性**：Excel 格式便于全局访问
+- **数据可访问性**：Excel 格式便于全球范围内的数据访问
 - **流程集成**：可以将数据导入商业智能（BI）工具和机器学习（ML）模型
-- **结构化输出**：数据元素及其属性都经过整理
+- **结构化输出**：数据以有序的方式呈现，便于查看和分析
 
 ## 技术实现
 
@@ -34,7 +33,7 @@ RvtExporter.exe <input_path> [export_mode] [options]
 ### 导出模式
 | 模式 | 类别 | 描述 |
 |------|-----------|-------------|
-| `basic` | 309 | 必需的结构元素 |
+| `basic` | 309 | 必需的结构化元素 |
 | `standard` | 724 | 标准的 BIM 类别 |
 | `complete` | 1209 | 所有 Revit 类别 |
 | `custom` | 用户自定义 | 仅导出特定类别 |
@@ -152,8 +151,8 @@ class RevitExporter:
 | Level | string | 所属楼层 |
 | Area | float | 表面积（平方米） |
 | Volume | float | 体积（立方米） |
-| BBox_MinX/Y/Z | float | 边界框最小坐标 |
-| BBox_MaxX/Y/Z | float | 边界框最大坐标 |
+| BBox_MinX/Y/Z | float | 边界框最小值 |
+| BBox_MaxX/Y/Z | float | 边界框最大值 |
 
 ## 使用示例
 ```python
@@ -201,11 +200,11 @@ print(f"Total estimate: ${sum(costs.values()):,.2f}")
 ```
 
 ## 最佳实践
-1. **选择合适的导出模式**：使用 `basic` 模式进行快速分析，使用 `complete` 模式获取完整数据。
-2. **包含边界框信息**：这对于空间分析和可视化非常重要。
-3. **谨慎处理批量导入**：大型文件可能需要较长时间；建议在夜间进行导入。
-4. **验证输出结果**：检查导出数据中的元素数量是否与 Revit 中的明细表一致。
+1. **选择合适的导出模式**：使用 `basic` 模式进行快速分析，使用 `complete` 模式获取完整数据
+2. **包含边界框信息**：这对于空间分析和可视化非常有用
+3. **谨慎处理批量导出**：大型文件可能需要较长时间；建议在夜间进行导出
+4. **验证输出结果**：检查导出的元素数量是否与 Revit 中的明细表一致
 
 ## 资源
 - **GitHub**：[cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
-- **下载**：请查看仓库中的发布版本以获取 RvtExporter.exe 工具。
+- **下载**：请查看仓库中的 RvtExporter.exe 文件

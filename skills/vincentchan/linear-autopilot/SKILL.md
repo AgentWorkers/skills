@@ -1,54 +1,59 @@
 ---
 name: linear-autopilot
-description: 使用 Discord 通知和 Git 同步来自动化处理 Linear 任务。适用于设置从看板（Kanban）到代理（Agent）的工作流程，其中 Linear 任务通过 Discord 触发 Clawdbot 的操作。该系统能够处理任务接收、状态更新、私信通知以及自动将任务推送到 Git。支持任何类型的任务——研究、内容创作、代码任务或自定义工作流程。
+version: 1.0.2
+description: **使用 Discord 通知和 Git 同步自动化处理 Linear 任务**  
+适用于设置从 Kanban 到代理的工作流程时，其中 Linear 任务通过 Discord 触发 Clawdbot 的操作。该系统可处理任务接收、状态更新、私信通知以及自动推送至 Git 的功能，支持任何类型的任务——研究、内容创作、代码任务或自定义工作流程。
+author: vincentchan
 ---
 
-# 线性自动化流程（Linear Autopilot）
+# 线性自动化系统（Linear Autopilot）
 
-自动化流程：**Linear → Webhook 服务 → Discord → Clawdbot → Git**
+> **🔒 安全提示：** 本教程会涉及API密钥、令牌和Webhook地址，因为这些内容用于配置与Linear、Discord以及自动化服务（如Make.com、Pipedream、Zapier）的集成。这些信息仅用于教学目的，教程本身不会收集或传输您的任何敏感信息。所有设置操作都在您的本地机器上完成，相关服务的数据也不会被传输到外部。
 
-在 Linear 中创建的任务会自动触发 Clawdbot 的处理，并通过实时通知进行同步，以便在 Obsidian 或本地访问这些任务。
+**自动化流程：** **Linear → Webhook服务 → Discord → Clawdbot → Git**
+
+在Linear中创建的任务会自动触发Clawdbot的处理，并通过实时通知进行反馈；同时，任务状态会同步到Git，以便在Obsidian或本地环境中查看。
 
 ## 免费计划的限制
 
-在设置之前，请了解免费计划的限制：
+在开始设置之前，请了解免费计划的限制：
 
 | 服务 | 免费计划限制 | 建议 |
 |---------|------------------|----------------|
-| **Linear** | 250 个问题，无限成员 | 对于大多数个人或小型团队来说已经足够 |
-| **Make.com** | 每月 1,000 次操作，2 种场景，15 分钟间隔 | ✅ 最佳的免费选项——限制较为宽松 |
-| **Pipedream** | 约 100 个信用点（重置方式不明确），即时触发 | 如果需要实时处理，但信用点消耗较快 |
-| **Zapier** | 每月 100 个任务，5 个 Zap 规则，15 分钟轮询，**不支持 Webhook** | 需要付费计划才能使用此工作流程 |
+| **Linear** | 250个问题，无限成员 | 适合大多数个人或小型团队使用 |
+| **Make.com** | 每月1,000次操作，2个场景，15分钟触发间隔 | ✅ 最适合免费用户的方案，限制较为宽松 |
+| **Pipedream** | 约100个信用点（重置机制不明确），支持即时触发 | 如果需要实时处理任务，但信用点消耗较快 |
+| **Zapier** | 每月100个任务，5个Zap规则，15分钟轮询频率，**不支持Webhook** | 使用此工作流需要付费计划 |
 
 **重要提示：**
-- **Make.com** 提供每月 1,000 次操作的免费额度——我们推荐免费用户使用该服务 |
-- **Pipedream** 支持即时 Webhook 触发，但免费信用点有限且消耗较快 |
-- **Zapier** 的免费计划不支持 Webhook，需要付费的 Zapier 计划（Starter+） |
-- 对于预算有限的用户：**建议使用 Make.com**
+- **Make.com** 提供每月1,000次操作的免费额度，是我们推荐给免费用户的方案。
+- **Pipedream** 支持即时Webhook触发，但免费信用点数量有限，容易被消耗完毕。
+- **Zapier** 的免费计划不支持Webhook功能，需要购买Starter+及以上级别的付费计划。
+- 对于预算有限的用户，**建议使用Make.com**。
 
-## 设置
+## 设置步骤
 
-### 1. 配置 Linear API
+### 1. 配置Linear API
 
-运行以下命令以存储您的 Linear API 密钥：
+运行以下命令以保存您的Linear API密钥：
 
 ```bash
 mkdir -p ~/.clawdbot
 echo "LINEAR_API_KEY=lin_api_xxxxx" > ~/.clawdbot/linear.env
 ```
 
-从以下位置获取您的 API 密钥：Linear → 设置 → API → 个人 API 密钥
+获取API密钥的方法：登录Linear → 设置 → API → 个人API密钥
 
-### 2. 获取 Linear 的 ID
+### 2. 获取Linear的团队ID和状态ID
 
-找到您的团队 ID 和任务状态 ID：
+找到您的团队ID和状态ID：
 
 ```bash
 ./scripts/linear-api.sh teams    # Get team ID
 ./scripts/linear-api.sh states   # Get state IDs (Todo, In Progress, Done)
 ```
 
-更新 `~/.clawdbot/linear-config.json` 文件：
+更新`~/.clawdbot/linear-config.json`文件：
 
 ```json
 {
@@ -69,52 +74,51 @@ echo "LINEAR_API_KEY=lin_api_xxxxx" > ~/.clawdbot/linear.env
 }
 ```
 
-### 3. 设置 Webhook 服务
+### 3. 设置Webhook服务
 
 选择您喜欢的自动化平台：
 
-#### 选项 A：Make.com（推荐给免费用户）
-- 免费用户每月可进行 1,000 次操作
-- 免费计划下最小间隔为 15 分钟
-- 请参阅 `references/make-setup.md` 以获取详细步骤
+#### 选项A：Make.com（推荐给免费用户）
+- 免费用户每月可执行1,000次操作
+- 免费计划下触发间隔为15分钟
+- 详细步骤请参考`references/make-setup.md`
 
-快速设置：
-1. 在 make.com 上创建一个场景
-2. 添加“监视问题”（Watch Issues）触发器
-3. 添加筛选条件：state.name = “Todo”
-4. 添加 Discord Webhook 动作
-5. 激活该场景
+**快速设置步骤：**
+1. 在Make.com上创建一个场景。
+2. 添加“监控问题”（Watch Issues）触发条件。
+3. 设置过滤条件：`state.name = "Todo"`。
+4. 添加Discord Webhook动作。
+5. 激活该场景。
 
-#### 选项 B：Pipedream（如果您需要即时触发）
-- 支持即时 Webhook 触发
-- 免费信用点有限，消耗较快
-- 请参阅 `references/pipedream-setup.md` 以获取详细步骤
+#### 选项B：Pipedream（如果需要即时触发）
+- 支持即时Webhook触发。
+- 免费信用点数量有限，容易被消耗。
+- 详细步骤请参考`references/pipedream-setup.md`。
 
-快速设置：
-1. 在 pipedream.com 上创建一个工作流程，并设置 HTTP Webhook 触发器
-2. 将 Webhook 指向您的 Pipedream URL
-3. 添加使用 Clawdbot 机器人工具的 Discord “发送消息”（Send Message）步骤
-4. 消息模板：
-   ```
+**快速设置步骤：**
+1. 在pipedream.com上创建一个工作流，并设置HTTP Webhook触发。
+2. 将Webhook地址指向您的Pipedream服务器。
+3. 添加Discord的“发送消息”（Send Message）步骤，并使用Clawdbot的机器人令牌。
+4. 消息模板：```
    <@BOT_ID>
    📋 New task: {{steps.trigger.event.data.title}}
      Status: {{steps.trigger.event.data.state.name}}
      ID: {{steps.trigger.event.data.identifier}}
    ```
 
-#### 选项 C：Zapier（如果您有付费账户）
-- 免费用户每月可执行 100 个任务（数量非常有限）
-- 支持与 Linear 和 Discord 的原生集成
-- 请参阅 `references/zapier-setup.md` 以获取详细步骤
+#### 选项C：Zapier（如果您有付费账户）
+- 免费用户每月可执行100个任务，但功能非常有限。
+- 支持与Linear和Discord的原生集成。
+- 详细步骤请参考`references/zapier-setup.md`。
 
-快速设置：
-1. 创建一个 Zap 规则：Linear（新问题）→ Discord（发送频道消息）
-2. 使用 Webhook 或机器人工具与 Discord 集成
-3. 将 Linear 的字段映射到消息模板中
+**快速设置步骤：**
+1. 创建一个Zap规则：Linear（新问题）→ Discord（发送频道消息）。
+2. 使用Webhook或机器人集成来处理Discord消息。
+3. 将Linear中的字段映射到消息模板中。
 
-### 4. 配置 Discord 频道
+### 4. 配置Discord频道
 
-确保 Clawdbot 能够监听您的任务频道。在 `clawdbot.json` 文件中进行相应配置：
+确保Clawdbot能够监听您的任务频道。在`clawdbot.json`文件中进行相应配置：
 
 ```json
 {
@@ -137,10 +141,10 @@ echo "LINEAR_API_KEY=lin_api_xxxxx" > ~/.clawdbot/linear.env
 
 ## 任务处理流程
 
-当任务到达 Discord 频道时：
+当任务到达Discord频道时：
 
-### 1. 确认接收
-- 在频道中回复以确认收到任务
+### 1. 确认收到任务
+- 在频道中回复以确认已收到任务。
 
 ### 2. 通过私信通知用户
 ```
@@ -151,16 +155,16 @@ Use message tool:
 ```
 
 ### 3. 处理任务
-- 通过 `./scripts/linear-api.sh start [task-id]` 将任务状态更新为“进行中”（In Progress）
-- 如果任务复杂，启动子代理来执行任务
-- 将处理结果保存到指定位置（如 `research/`、`content/` 等文件夹）
+- 通过`./scripts/linear-api.sh start [task-id]`将任务状态更新为“进行中”（In Progress）。
+- 如果任务复杂，可以启动子代理来执行任务。
+- 将处理结果保存到指定目录（如`research/`、`content/`等）。
 
 ### 4. 完成任务
-- 通过 `./scripts/linear-api.sh done [task-id]` 将任务状态更新为“已完成”（Done）
-- 通过 `./scripts/linear-api.sh comment [task-id] “[总结]` 为任务添加评论
-- 通过私信向用户发送完成通知
+- 通过`./scripts/linear-api.sh done [task-id]`将任务状态更新为“已完成”（Done）。
+- 通过`./scripts/linear-api.sh comment [task-id] "[summary]"`为任务添加备注。
+- 通过私信向用户发送完成通知。
 
-### 5. 执行 Git 同步（如果已启用）
+### 5. （可选）Git同步
 ```bash
 git add [output files]
 git commit -m "task: [ID] - [title]"
@@ -169,39 +173,38 @@ git push
 
 ## 脚本参考
 
-`scripts/linear-api.sh` 的常用命令：
+`scripts/linear-api.sh`中的常用命令：
 
-| 命令 | 描述 |
+| 命令 | 功能 |
 |---------|-------------|
-| `teams` | 列出所有团队及其 ID |
-| `states` | 列出所有任务状态 |
-| `get [id]` | 获取任务详细信息 |
-| `pending` | 列出待处理的任务 |
-| `start [id]` | 将任务状态标记为“进行中” |
-| `done [id]` | 将任务状态标记为“已完成” |
-| `comment [id] "text"` | 为任务添加评论 |
+| `teams` | 显示所有团队及其ID |
+| `states` | 显示任务状态 |
+| `get [id]` | 获取任务详情 |
+| `pending` | 显示待处理任务列表 |
+| `start [id]` | 将任务标记为“进行中” |
+| `done [id]` | 将任务标记为“已完成” |
+| `comment [id] "text"` | 为任务添加备注 |
 
 ## 任务类型示例
 
-此工作流程可以处理任何类型的任务：
+该自动化系统可以处理以下类型的任务：
+- **研究任务**：启动子代理并将结果保存到`research/[topic].md`文件。
+- **内容创作**：生成草稿并保存到`content/`目录。
+- **代码编写/修改**：编写或修改代码，并提交更改。
+- **数据处理**：运行脚本并输出结果。
+- **自定义任务**：您可以自定义任务的处理方式。
 
-- **研究任务**：启动子代理，并将结果保存到 `research/[主题].md` 文件中 |
-- **内容创作**：生成草稿并保存到 `content/` 文件夹 |
-- **代码任务**：编写或修改代码，并提交更改 |
-- **数据处理**：运行脚本并输出结果 |
-- **自定义任务**：您可以自定义任务的输出格式
-
-## 故障排除
+## 常见问题解决方法
 
 **任务未触发？**
-- 确保已启用 Pipedream 的工作流程
-- 检查 Discord 频道是否已在 Clawdbot 的配置中
-- 如果使用 Webhook，请确保 `allowBots` 设置为 `true`
+- 确保已启用Pipedream的工作流功能。
+- 检查Discord频道是否已配置为Clawdbot的监听目标。
+- 如果使用Webhook，请确保`allowBots`设置为`true`。
 
-**Linear API 出现错误？**
-- 检查 `~/.clawdbot/linear.env` 文件中的 API 密钥是否正确
-- 确认团队 ID 和任务状态 ID 是否无误
+**Linear API出现错误？**
+- 确认`~/.clawdbot/linear.env`文件中的API密钥是否正确。
+- 检查团队ID和状态ID是否无误。
 
-**Git 推送失败？**
-- 确保已配置 Git 远程仓库
-- 检查 SSH 密钥或凭据是否正确
+**Git推送失败？**
+- 确保已正确配置Git远程仓库。
+- 检查SSH密钥或登录凭据是否有效。

@@ -1,29 +1,28 @@
 ---
-slug: "ifc-to-excel"
-display_name: "IFC To Excel"
+name: "ifc-to-excel"
 description: "使用 IfcExporter CLI 将 IFC 文件（格式为 2x3、4x1 或 4x3）转换为 Excel 数据库。无需借助任何专有软件即可提取 BIM 数据、属性和几何信息。"
 ---
 
-# IFC 到 Excel 的转换
+# IFC到Excel的转换
 
 ## 商业案例
 
 ### 问题描述
-IFC（Industry Foundation Classes）是开放的 BIM 标准，但存在以下问题：
-- 读取 IFC 文件需要专门的软件；
+IFC（Industry Foundation Classes）是开放的BIM标准，但存在以下问题：
+- 读取IFC文件需要专门的软件；
 - 提取属性需要编程知识；
-- 批量处理过程繁琐且耗时；
+- 批量处理过程手动且耗时；
 - 与分析工具的集成较为复杂。
 
 ### 解决方案
-IfcExporter.exe 可将 IFC 文件转换为结构化的 Excel 数据库，从而使 BIM 数据能够用于分析、验证和报告。
+IfcExporter.exe可以将IFC文件转换为结构化的Excel数据库，从而使BIM数据能够被用于分析、验证和报告。
 
 ### 商业价值
-- **开放标准**：支持处理所有版本的 IFC 文件（2x3、4x、4.3）；
-- **无需许可证**：无需安装 BIM 软件即可离线使用；
-- **数据提取**：可提取所有属性、数量和材料信息；
-- **3D 几何信息**：可导出为 Collada DAE 格式；
-- **易于集成**：可方便地与 ETL（提取、转换、加载）工作流程结合使用。
+- **开放标准**：支持处理任何版本的IFC文件（2x3、4x、4.3）；
+- **无需许可证**：无需BIM软件即可离线使用；
+- **数据提取**：可以提取所有属性和数量信息；
+- **3D几何信息**：支持导出为Collada DAE格式；
+- **易于集成**：可方便地与ETL工作流程结合使用。
 
 ## 技术实现
 
@@ -32,26 +31,26 @@ IfcExporter.exe 可将 IFC 文件转换为结构化的 Excel 数据库，从而�
 IfcExporter.exe <input_ifc> [options]
 ```
 
-### 支持的 IFC 版本
+### 支持的IFC版本
 | 版本 | 架构 | 说明 |
 |---------|--------|-------------|
 | IFC2x3 | MVD | 最常见的交换格式 |
-| IFC4 | ADD1 | 增强了属性功能 |
+| IFC4 | ADD1 | 增强了属性支持 |
 | IFC4x1 | 支持基础设施数据 |
 | IFC4x3 | 最新版本 | 完整的基础设施数据支持 |
 
 ### 输出格式
 | 输出格式 | 说明 |
 |--------|-------------|
-| `.xlsx` | 包含元素及其属性的 Excel 数据库 |
-| `.dae` | 包含 3D 几何信息的 Collada 文件（带有对应的 ID） |
+| `.xlsx` | 包含元素和属性的Excel数据库 |
+| `.dae` | 包含3D几何信息的Collada格式文件（带有对应的ID） |
 
 ### 选项
 | 选项 | 说明 |
 |--------|-------------|
 | `bbox` | 包含元素的边界框信息 |
-| `-no-xlsx` | 跳过 Excel 导出 |
-| `-no-collada` | 跳过 3D 几何信息导出 |
+| `-no-xlsx` | 跳过Excel导出 |
+| `-no-collada` | 跳过3D几何信息导出 |
 
 ### 示例
 ```bash
@@ -68,7 +67,7 @@ IfcExporter.exe "C:\Models\Building.ifc" -no-collada
 for /R "C:\IFC_Models" %f in (*.ifc) do IfcExporter.exe "%f" bbox
 ```
 
-### Python 集成示例
+### Python集成示例
 ```python
 import subprocess
 import pandas as pd
@@ -435,20 +434,20 @@ def get_ifc_summary(xlsx_file: str) -> Dict[str, Any]:
 
 ## 输出结构
 
-### Excel 表格内容
+### Excel表格内容
 | 表格 | 内容 |
 |-------|---------|
-| Elements | 所有 IFC 元素及其属性 |
-| Types | 元素类型汇总 |
-| Levels | 建筑楼层信息 |
-| Materials | 材料使用情况 |
-| PropertySets | IFC 属性集 |
+| 元素 | 所有包含属性的IFC元素 |
+| 类型 | 元素类型汇总 |
+| 楼层 | 建筑物的楼层信息 |
+| 材料 | 材料分配信息 |
+| 属性集 | IFC属性集 |
 
-### 元素列信息
+### 元素列
 | 列名 | 类型 | 说明 |
 |--------|------|-------------|
-| GlobalId | string | IFC 实体唯一标识符 |
-| IfcType | string | IFC 实体类型 |
+| GlobalId | string | IFC唯一标识符 |
+| IfcType | string | IFC实体类型 |
 | Name | string | 元素名称 |
 | Description | string | 元素描述 |
 | Level | string | 所在楼层 |
@@ -483,10 +482,10 @@ print(qto)
 ## 常见应用场景
 - **模型验证**  
 - **数量统计**  
-- **材料清单制作**  
-- **与 DDC（数据定义代码）工作流程的集成**  
+- **材料清单生成**  
+- **与DDC（Design Data Capture）流程的集成**  
 
 ## 相关资源
-- **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)  
-- **IFC 标准**: [buildingSMART](https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/)  
-- **DDC 手册**: 第 2.4 章 – CAD/BIM 数据提取
+- **GitHub项目**：[cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)  
+- **IFC标准文档**：[buildingSMART](https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/)  
+- **DDC相关书籍**：第2.4章 - CAD/BIM数据提取

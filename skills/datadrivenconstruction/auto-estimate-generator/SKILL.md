@@ -1,7 +1,8 @@
 ---
-slug: "auto-estimate-generator"
-display_name: "Auto Estimate Generator"
+name: "auto-estimate-generator"
 description: "根据QTO（Quantities Taken Off）数据自动生成估算值。将定价规则应用于BIM（Building Information Modeling）中的工程量，以生成成本估算。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw":{"emoji":"⚡","os":["darwin","linux","win32"],"homepage":"https://datadrivenconstruction.io","requires":{"bins":["python3"]}}}
 ---
 
 # 自动估算生成器
@@ -10,15 +11,16 @@ description: "根据QTO（Quantities Taken Off）数据自动生成估算值。�
 
 ### 问题描述
 手动创建估算时面临以下挑战：
-- 量值映射耗时较长
-- 定价规则不一致
-- 计算错误
-- 估算更新困难
+- 花费大量时间进行数量统计
+- 定价规则不统一
+- 计算过程中容易出错
+- 难以更新估算结果
 
 ### 解决方案
 利用可配置的定价规则和组件映射，从 BIM/QTO 数据自动生成估算结果。
 
 ## 技术实现
+
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional, Callable
@@ -303,6 +305,7 @@ class AutoEstimateGenerator:
 ```
 
 ## 快速入门
+
 ```python
 # Initialize generator
 generator = AutoEstimateGenerator("Office Building A")
@@ -340,7 +343,7 @@ print(f"Mapping Rate: {result['mapping_rate']}%")
 
 ## 常见使用场景
 
-### 1. 按元素类型划分成本
+### 1. 按元素类型分类的成本统计
 ```python
 by_type = generator.get_cost_by_element_type()
 for element_type, cost in by_type.items():

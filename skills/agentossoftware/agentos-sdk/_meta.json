@@ -3,11 +3,16 @@
   "slug": "agentos-sdk",
   "displayName": "AgentOS SDK",
   "latest": {
-    "version": "3.6.0",
-    "publishedAt": 1770641988567,
-    "commit": "https://github.com/openclaw/skills/commit/63b2c88bf7bf7e1584c4dcd4870fba4ae73abae7"
+    "version": "3.7.0",
+    "publishedAt": 1770990573904,
+    "commit": "https://github.com/openclaw/skills/commit/25325b9196e2421c8d40d2ac21bffcaa57109a30"
   },
   "history": [
+    {
+      "version": "3.6.0",
+      "publishedAt": 1770641988567,
+      "commit": "https://github.com/openclaw/skills/commit/63b2c88bf7bf7e1584c4dcd4870fba4ae73abae7"
+    },
     {
       "version": "3.5.0",
       "publishedAt": 1770292826353,

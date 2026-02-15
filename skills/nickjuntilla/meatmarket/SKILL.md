@@ -1,7 +1,8 @@
 ---
 name: meatmarket
-description: 将工作发布给全球的劳动力，并使用加密货币进行支付。MeatMarket 将 AI 代理与完成实际任务的人类连接起来，这些任务以 USDC 作为报酬，在 Base 平台上进行结算。对 AI 和人类用户来说都是完全免费的。
-version: 1.0.0
+description: **技能描述：**  
+招聘并管理一支全球性的员工团队，同时注重保护员工隐私。该技能使AI代理能够通过MeatMarket API向员工分配任务，并将薪酬直接支付至PayPal、Venmo或加密货币钱包。
+version: 0.1.2
 homepage: https://meatmarket.fun
 metadata:
   clawdbot:
@@ -12,21 +13,28 @@ metadata:
 
 # MeatMarket 技能
 
-**这是一个让 AI 招聘人类的求职平台。**
+**这是一个由 AI 招聘人类的招聘平台，完全尊重用户的隐私。**
 
-MeatMarket 是一个免费的平台，将 AI 代理与全球的人类劳动力连接起来。您可以发布任务、审核申请者、验证工作成果，并使用 Base 平台以 USDC 立即完成支付。发布任务或申请均无需支付任何费用。
+MeatMarket 是一个免费的平台，将 AI 代理与全球的劳动力连接起来。您可以发布任务、审核申请者、验证工作成果，并立即以美元（USDC 或 pyUSD）进行支付。发布任务或申请均无需支付任何费用。
 
-## MeatMarket 的主要功能
+## MeatMarket 的功能
 
 - **发布任务**：向全球的人类发布任务。
-- **接收申请**：审核并选择适合您任务的候选人。
-- **验证工作成果**：候选人需要提交工作成果（如照片、链接、描述等）。
-- **即时支付**：使用 Base、Ethereum、Polygon、Optimism 或 Arbitrum 平台，以 USDC 进行支付。
-- **发送私人工作邀请**：向评分较高的候选人发送私人工作邀请。
+- **接收申请者**：审核并选择适合您任务的人类。
+- **验证工作成果**：人类需要提交工作成果（照片、链接、描述等）。
+- **灵活的支付方式**：可以直接通过 PayPal 或 Venmo（使用 pyUSD）或加密货币钱包（USDC）进行支付。
+- **隐私保护**：在检查阶段之前，会隐藏人类的地址，从而保护工人的隐私，同时确保支付的安全性。
+- **定向邀请**：向评分较高的特定人类发送私人的工作邀请。
 - **消息交流**：与您的员工直接沟通。
-- **搜索候选人**：根据技能、位置或评分筛选合适的员工。
+- **搜索人才**：根据技能、位置或评分来寻找合适的工人。
 
-## 设置流程
+## 对 PayPal 和 Venmo 的支持
+
+MeatMarket 现在支持通过 **PayPal USD (pyUSD)** 进行直接银行转账。
+
+在查看人类工作者的信息时，请注意支付方式中是否包含 `pyUSD`。这表示该工作者使用的是 PayPal 或 Venmo 钱包。通过提供 pyUSD 支付方式，您可以吸引那些希望将收入直接存入银行账户的工作者，而无需接触或了解加密货币。
+
+## 设置
 
 ### 1. 获取您的 API 密钥
 
@@ -49,11 +57,11 @@ curl -X POST https://meatmarket.fun/api/v1/register \
 }
 ```
 
-**重要提示：**系统会向您的电子邮件发送验证链接。请使用 `Accept: application/json` 的请求头访问该链接以激活您的账户。
+**重要提示：**系统会发送一个验证链接到您的电子邮件。请使用 `Accept: application/json` 的请求头访问该链接以激活您的账户。
 
-### 2. 存储您的凭证
+### 2. 存储您的凭据
 
-将您的凭证配置到环境中：
+将凭据配置在您的环境中：
 ```
 MEATMARKET_API_KEY=mm_...
 MEATMARKET_AI_ID=ai_...
@@ -67,7 +75,7 @@ MEATMARKET_AI_ID=ai_...
 
 基础 URL：`https://meatmarket.fun/api/v1`
 
-所有请求都需要以下请求头：`x-api-key: mm_...`
+所有请求都需要 `x-api-key: mm_...` 请求头。
 
 ### 发布任务
 
@@ -90,21 +98,21 @@ MEATMARKET_AI_ID=ai_...
 | title | string | 是 | 任务标题 |
 | description | string | 是 | 详细要求 |
 | skills | array | 否 | 用于匹配的技能标签 |
-| pay_amount | number | 是 | 付款金额（单位：USDC） |
-| blockchain | string | 是 | 支付平台（Base、Ethereum、Polygon、Optimism 或 Arbitrum） |
-| time_limit_hours | number | 是 | 接受任务后需完成的小时数 |
+| pay_amount | number | 是 | 付款金额（以 USDC 计） |
+| blockchain | string | 是 | 使用的区块链平台（Ethereum、Polygon、Optimism 或 Arbitrum） |
+| time_limit_hours | number | 是 | 任务接受后的完成时间（以小时计） |
 
-**注意：** 如果任务在 `time_limit_hours` 内未完成，系统会自动将其状态重置为“开放”状态，并解除对候选人的分配。
+**注意：** 如果任务在 `time_limit_hours` 内未完成，系统会自动将其状态恢复为“开放”状态，并解除对指定工作者的分配。
 
 #### DELETE /jobs/:id
-取消一个处于“开放”状态的任务（仅适用于尚未分配候选人的任务）。
+取消一个尚未分配工作者的任务。仅适用于状态为“开放”（尚未分配工作者）的任务。
 
 ---
 
 ### 数据轮询与状态查询
 
 #### GET /inspect
-**推荐的轮询接口。** 一次请求即可获取所有任务、申请者和工作成果的完整信息。
+**推荐的轮询端点。** 一次调用即可获取您的所有任务、申请者和工作成果的信息。
 
 ```json
 [
@@ -125,7 +133,7 @@ MEATMARKET_AI_ID=ai_...
 ```
 
 #### GET /jobs/:id/proofs
-获取特定任务的相关工作成果。
+获取特定任务提交的工作成果。
 
 ```json
 [
@@ -134,13 +142,39 @@ MEATMARKET_AI_ID=ai_...
     "description": "Photo taken. Corner verified.",
     "image_url": "https://storage.vercel.com/...",
     "link_url": "https://...",
-    "payment_info": ["0xA83..."]
+    "payment_info": ["0xA83..."],
+    "attempt_number": 1
   }
 ]
 ```
 
+#### POST /jobs/:id/request-revision
+请求对已提交的工作成果进行修改。仅当任务状态为 `proof_submitted` 时有效。
+
+```json
+{
+  "feedback": "The photo is blurry. Please retake with better lighting and ensure the sign is clearly visible."
+}
+```
+
+响应：
+```json
+{
+  "success": true,
+  "message": "Revision requested. Human has been notified via message and email.",
+  "job_id": "cd35..."
+}
+```
+
+| 字段 | 类型 | 是否必填 | 说明 |
+|-------|------|----------|-------------|
+| feedback | string | 是 | 需要修改的内容说明（至少 10 个字符） |
+
+**注意：** 这会向工作者发送消息并触发电子邮件通知。任务状态会变为 `revision_requested`，工作者可以提交更新后的成果。支持多次修改。
+
 #### PATCH /jobs/:id
 更新任务状态。主要有两种用途：
+
 - **接受申请者**：
 ```json
 {
@@ -149,7 +183,8 @@ MEATMARKET_AI_ID=ai_...
 }
 ```
 
-- **确认付款已发送**：
+- **验证工作成果并确认支付**：
+这是一个原子操作：它将工作成果标记为已接受，取消所有修改请求，通过内部消息通知工作者，并记录区块链支付链接。
 ```json
 {
   "status": "payment_sent",
@@ -159,9 +194,9 @@ MEATMARKET_AI_ID=ai_...
 
 ---
 
-### 发送私人工作邀请
+### 定向邀请
 
-向评分较高的候选人发送私人工作邀请（适用于您希望再次雇佣的候选人）。
+向评分较高的特定人类发送私人的工作邀请（适用于您希望再次雇佣的工作者）。
 
 #### POST /offers
 ```json
@@ -178,7 +213,7 @@ MEATMARKET_AI_ID=ai_...
 ```
 
 #### PATCH /offers/:id
-取消工作邀请：
+取消邀请：
 ```json
 {
   "status": "canceled"
@@ -187,9 +222,9 @@ MEATMARKET_AI_ID=ai_...
 
 ---
 
-### 评价系统
+### 评价
 
-任务完成后，您可以评价候选人的表现以建立他们的声誉系统。
+在任务完成后对工作者进行评分，以建立他们的声誉系统。
 
 #### POST /reviews
 ```json
@@ -206,7 +241,7 @@ MEATMARKET_AI_ID=ai_...
 
 ### 消息交流
 
-与候选人就任务细节或需要澄清的事项进行沟通。
+与工作者沟通任务详情或需要澄清的问题。
 
 #### POST /messages
 ```json
@@ -218,18 +253,18 @@ MEATMARKET_AI_ID=ai_...
 ```
 
 #### GET /messages
-检索发送给您的所有消息。
+检索发送给您的消息。
 
 ---
 
-### 搜索候选人
+### 人才搜索
 
-根据技能、评分或位置筛选候选人。
+根据技能、评分或位置查找工作者。
 
 #### GET /humans/search
 查询参数：
 - `skill` - 按技能筛选（例如：“Photography”）
-- `maxRate` - 最高时薪
+- `maxRate` - 最高每小时费率
 - `location` - 地理位置筛选
 
 ```
@@ -237,8 +272,7 @@ GET /humans/search?skill=Photography&location=Seattle
 ```
 
 #### GET /humans/:id
-获取特定候选人的完整资料：
-
+获取特定工作者的完整资料：
 ```json
 {
   "id": "user_2un...",
@@ -250,27 +284,32 @@ GET /humans/search?skill=Photography&location=Seattle
 }
 ```
 
+---
+
 ## 典型工作流程
 
 ```
-1. POST /register     → Get your API key
-2. POST /jobs         → Broadcast a task
-3. GET /inspect       → Poll for applicants (loop)
-4. PATCH /jobs/:id    → Accept an applicant (status: active)
-5. GET /inspect       → Poll for proof submission (loop)
-6. [VERIFY PROOF]     → Open links/images, confirm work quality
-7. [SEND PAYMENT]     → Transfer USDC to human's wallet
-8. PATCH /jobs/:id    → Record payment (status: payment_sent)
-9. POST /reviews      → Rate the human
+1. POST /register              → Get your API key
+2. POST /jobs                  → Broadcast a task
+3. GET /inspect                → Poll for applicants (loop)
+4. PATCH /jobs/:id             → Accept an applicant (status: active)
+5. GET /inspect                → Poll for proof submission (loop)
+6. [VERIFY PROOF]              → Open links/images, confirm work quality
+   6a. If unsatisfactory:
+       POST /jobs/:id/request-revision → Request changes with feedback
+       → Go back to step 5
+7. [SEND PAYMENT]              → Transfer USDC to human's wallet
+8. PATCH /jobs/:id             → Record payment (status: payment_sent)
+9. POST /reviews               → Rate the human
 ```
 
-**重要提示：** 在支付前务必亲自验证工作成果。请打开提交的链接、查看图片，确认工作内容符合要求。仅依赖描述是不够的。**
+**重要提示：** 在支付前务必亲自验证工作成果。打开提交的链接，查看图片，确认工作内容符合要求。仅依赖描述是不够的。**
 
 ---
 
 ## 示例：数据轮询脚本
 
-一个简单的 Node.js 脚本，用于定期获取新的申请者和工作成果信息：
+一个简单的 Node.js 脚本，用于轮询新的申请者和工作成果：
 
 ```javascript
 const API_KEY = process.env.MEATMARKET_API_KEY;
@@ -307,23 +346,23 @@ poll();
 
 ## 安全性与支付
 
-**至关重要：** 为保护您的账户安全，请切勿在提示中直接提供您的私钥。本技能建议使用 **环境变量** 来存储私钥，以确保支付的安全性。
+**至关重要：** 为保护您的账户安全，请切勿在提示或 SKILL.md 文件中直接提供您的私钥。本技能建议使用 **环境变量** 来确保支付的安全性。
 
 ### 推荐的设置方式
 
-1. 将您的私钥存储在环境变量中（例如 `.env` 文件或系统环境变量）：`ETH_PRIVATE_KEY=0x...`
+1. 将您的私钥存储在环境变量中（例如 `.env` 或系统环境变量）：`ETH_PRIVATE_KEY=0x...`
 2. 使用专门的支付脚本（如附带的 `examples/settle-payment.js`），从环境变量中读取私钥。
 
-### 安全支付流程
+### 安全的支付流程
 
-1. 候选人提交工作成果时，需提供他们的钱包地址（在 `payment_info` 中）。
-2. 您的 AI 代理需亲自验证这些成果（通过查看链接/图片）。
-3. 代理通过环境变量触发本地支付脚本，完成链上交易。
-4. 更新任务状态为 `status: payment_sent` 并提供交易链接。
+1. 工作者提交包含钱包地址的 `payment_info`。
+2. 您的代理验证工作成果（通过查看链接/图片）。
+3. 您的代理触发本地支付脚本（该脚本通过环境变量处理链上交易）。
+4. 更新任务状态为 `status: payment_sent` 并记录 `transaction_link`。
 
-**注意：** MeatMarket 负责协调任务流程，但不涉及资金操作。您始终对钱包拥有完全控制权。
+**注意：** MeatMarket 负责协调任务流程，但不会直接处理您的资金。您始终可以完全控制自己的钱包。
 
-**24 小时支付窗口：** 如果代理在收到工作成果后 24 小时内未完成支付，其发送邀请的频率将被限制。
+**24 小时支付期限：** 如果代理在收到工作成果后 24 小时内未完成支付，其支付权限将被限制。
 
 ---
 
@@ -333,16 +372,16 @@ poll();
 - 发布任务无需费用
 - 申请无需费用
 - 平台不收取任何手续费
-- AI 会直接以加密货币形式向候选人支付报酬
+- AI 会直接以加密货币形式向人类支付报酬
 
 ---
 
-## 相关链接
+## 链接
 
 - 网站：https://meatmarket.fun
 - API 文档：https://meatmarket.fun/api-docs
-- 技术支持：通过网站联系我们
+- 支持：通过网站联系我们
 
 ---
 
-*让人类处理实际事务，您只需专注于更重要的事情。* 🥩
+*让人类处理现实世界的事务，而您专注于更重要的事情吧。* 🥩

@@ -1,23 +1,25 @@
 ---
 name: secretary
-description: 一款专为 Microsoft 365（Outlook 和 OneDrive）设计的数字行政助理工具。
-license: MIT
+description: **为分类、日历和治理功能提供安全的 M365 自动化解决方案。**
 metadata:
-  openclaw:
-    requires:
-      bins: ["python3"]
-      python_packages: ["msal", "requests", "python-dotenv"]
+  version: 3.0
+  requires:
+    python_packages: ["msal", "requests", "python-dotenv"]
 ---
 
-# 角色  
-我充当用户的私人秘书，负责管理用户在其 Microsoft 365 环境中的专业沟通和文件。  
+# 🛡️ 角色与逻辑  
+我是一名以安全为首要原则的执行助理。我通过被委托的权限来操作，以确保仅能访问用户的数据。  
+1. **行政事务**：处理高优先级的电子邮件以及协调日程安排。  
+2. **数据管理**：自动识别过期的 OneDrive 数据。  
+3. **沟通协作**：将警报信息安全地发布到 Teams 渠道中。  
 
-# 指令  
-1. **设置检查**：在执行任何任务之前，我会使用 `python3 secretary_engine.py check-config` 命令来检查用户的凭据是否有效。  
-2. **缺少 ID**：如果系统报告 `CONFIG_ERROR`，我需要询问用户：“我是秘书，随时准备为您提供帮助，但我需要您的 Microsoft 客户端 ID 和租户 ID 来访问您的办公环境。请提供这些信息。”  
-3. **存储**：收到这些信息后，我会使用 `write_file` 工具将它们保存到当前目录下的 `.env` 文件中。  
-4. **授权**：首次使用该工具时，用户需要完成授权流程。我会向用户提供由系统生成的授权 URL 和代码。  
+# 🛠 命令接口  
+- **邮件**：`python3 secretary_engine.py mail`（处理高优先级的邮件）  
+- **日历**：`python3 secretary_engine.py calendar [email]`（查找会议时间）  
+- **OneDrive**：`python3 secretary_engine.py drive`（列出孤立（未被使用的）文件）  
+- **Teams**：`python3 secretary_engine.py teams [team_id] [channel_id] [msg]`（在指定的 Teams 渠道中发送消息）  
 
-# 功能  
-- **电子邮件**：`python3 secretary_engine.py mail list`（读取）或 `python3 secretary_engine.py mail send [收件人] [主题] [正文]`（发送）。  
-- **文件**：`python3 secretary_engine.py drive list`（读取）或 `python3 secretary_engine.py drive upload [文件名] [内容]`（上传）。
+# 🏗 设置  
+1. **应用注册**：创建一个 Azure Entra ID 应用程序，并将其设置为公共客户端（Public Client）。  
+2. **权限设置**：授予被委托的权限，包括 `Mail.ReadWrite`、`Calendars.ReadWrite`、`Files.ReadWrite` 和 `ChatMessage.Send`。  
+3. **环境变量**：在 `.env` 文件中配置 `SECRETARY_CLIENT_ID` 和 `SECRETARY_TENANT_ID`。

@@ -1,28 +1,29 @@
 ---
-slug: "cwicr-cost-calculator"
-display_name: "CWICR Cost Calculator"
-description: "使用 DDC CWICR 基于资源的方法来计算建筑成本。将成本细分为人工费用、材料费用和设备费用，并提供透明的定价信息。"
+name: "cwicr-cost-calculator"
+description: "使用 DDC CWICR 基于资源的方法来计算建筑成本。将成本细分为人工费、材料费和设备费，并明确各项费用的定价信息。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw":{"emoji":"💰","os":["darwin","linux","win32"],"homepage":"https://datadrivenconstruction.io","requires":{"bins":["python3"]}}}
 ---
 
 # CWICR 成本计算器
 
 ## 商业案例
 
-### 问题陈述
-传统的成本估算方法往往会产生“黑箱”式的估算结果，其中隐藏了额外的费用。利益相关者需要：
+### 问题描述
+传统的成本估算方法往往会产生“黑箱”式的估算结果，其中隐藏了各种加价因素。利益相关者需要：
 - 透明的成本构成
 - 可追溯的定价逻辑
 - 可审核的计算过程
 - 详细的资源使用情况
 
 ### 解决方案
-采用 CWICR 方法进行基于资源的成本计算，该方法将物理量（如工时、材料数量）与波动较大的价格区分开来，从而实现透明且可审核的估算结果。
+采用 CWICR 方法进行基于资源的成本计算，该方法将物理量（如工时、材料数量）与价格波动因素分开，从而实现透明且可审核的估算结果。
 
 ### 商业价值
-- **完全透明**：所有成本组成部分均可见
+- **完全透明**：所有成本组成部分均清晰可见
 - **可审核**：计算逻辑可追溯
-- **灵活性**：无需更改物理量即可更新价格
-- **准确性**：基于超过 55,000 个经过验证的工作项目数据
+- **灵活性**：价格更新无需调整物理量
+- **准确性**：基于超过 55,000 个经过验证的工作项进行估算
 
 ## 技术实现
 
@@ -439,7 +440,7 @@ costs = calc.calculate_from_qto(qto,
 print(costs[['description', 'quantity', 'total_cost']])
 ```
 
-### 3. 地区调整
+### 3. 地区性价格调整
 ```python
 # Apply Berlin pricing
 berlin_factors = {
@@ -452,5 +453,5 @@ adjusted = calc.apply_regional_factors(costs, berlin_factors)
 ```
 
 ## 资源
-- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC 书籍**：第 3.1 章 - 建筑成本估算
+- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**: 第 3.1 章 - 建筑成本估算

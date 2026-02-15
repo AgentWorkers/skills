@@ -1,6 +1,5 @@
 ---
-slug: "rvt-to-ifc"
-display_name: "RVT To IFC"
+name: "rvt-to-ifc"
 description: "将 RVT 文件转换为 IFC 格式。支持 IFC2x3、IFC4 和 IFC4.3 格式，并提供可自定义的导出设置。"
 ---
 
@@ -11,23 +10,23 @@ description: "将 RVT 文件转换为 IFC 格式。支持 IFC2x3、IFC4 和 IFC4
 ## 商业案例
 
 ### 问题描述
-IFC 是用于实现 BIM（建筑信息模型）互操作性的开放标准，但存在以下问题：
+IFC 是用于实现 BIM 数据互操作性的开放标准，但存在以下问题：
 - 使用 Revit 的原生 IFC 导出功能需要 Autodesk 许可证；
 - 导出设置会显著影响数据质量；
-- 批量处理过程既繁琐又耗时。
+- 批量处理过程手动且耗时。
 
 ### 解决方案
-RVT2IFCconverter.exe 可以在离线环境下将 Revit 文件转换为 IFC 格式，无需许可证，并且用户可以完全控制导出设置。
+RVT2IFCconverter.exe 可以在无需许可证的情况下离线将 Revit 文件转换为 IFC 格式，并允许用户完全控制导出设置。
 
 ### 商业价值
 - **无需许可证**：无需安装 Autodesk 软件即可使用；
 - **支持多种 IFC 版本**：IFC2x3、IFC4、IFC4.3；
-- **支持批量处理**：能够处理数千个文件；
+- **支持批量处理**：可以批量转换数千个文件；
 - **数据质量一致**：采用标准化的导出设置。
 
 ## 技术实现
 
-### 命令行接口（CLI）语法
+### 命令行界面（CLI）语法
 ```bash
 RVT2IFCconverter.exe <input.rvt> [<output.ifc>] [preset=<name>] [config="..."]
 ```
@@ -36,15 +35,15 @@ RVT2IFCconverter.exe <input.rvt> [<output.ifc>] [preset=<name>] [config="..."]
 | 版本 | 适用场景 |
 |---------|----------|
 | IFC2x3 | 与大多数软件的兼容性 |
-| IFC4 | 支持更多属性和现代 BIM 功能 |
+| IFC4 | 更丰富的属性和更现代的 BIM 功能 |
 | IFC4.3 | 适用于基础设施项目，是最新的标准 |
 
 ### 导出预设
 | 预设 | 描述 |
 |--------|-------------|
-| `standard` | 默认的平衡导出设置 |
+| `standard` | 默认的、平衡的导出设置 |
 | `extended` | 最详细的导出内容和属性 |
-| `custom` | 用户自定义的导出配置 |
+| `custom` | 用户自定义的配置 |
 
 ### 示例
 ```bash
@@ -291,7 +290,7 @@ config = IFCExportConfig(
 ifc = converter.convert("building.rvt", preset=ExportPreset.CUSTOM, config=config)
 ```
 
-## 常见应用场景
+## 常见使用场景
 
 ### 1. 批量处理
 ```python
@@ -310,7 +309,7 @@ validation = converter.validate_output("model.ifc")
 print(f"Valid: {validation['valid']}, Version: {validation['ifc_version']}")
 ```
 
-### 预设比较
+### 3. 预设比较
 ```python
 checker = IFCQualityChecker(converter)
 comparison = checker.compare_presets("building.rvt")

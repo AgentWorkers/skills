@@ -1,0 +1,11 @@
+{
+  "owner": "araratdev",
+  "slug": "ezyhost",
+  "displayName": "EzyHost",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771089654945,
+    "commit": "https://github.com/openclaw/skills/commit/fa7fc5c230cf942237280943b8a4edc35fbadf63"
+  },
+  "history": []
+}
