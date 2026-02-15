@@ -1,25 +1,24 @@
 ---
-slug: "data-anomaly-detector"
-display_name: "Data Anomaly Detector"
-description: "检测建筑数据中的异常值和离群点：包括不寻常的成本、进度偏差以及生产力的突然上升。采用统计方法和基于机器学习的检测技术。"
----
-
-# 建筑数据异常检测器
+name: "data-anomaly-detector"
+description: "检测建筑数据中的异常值和离群点：包括不寻常的成本、进度偏差以及生产力的突然上升。采用基于统计学和机器学习的检测方法。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "✔️", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑数据异常检测器
 
 ## 概述
 
-本工具用于检测建筑数据中的异常模式、离群值和异常情况，以便在这些问题对项目产生影响之前及时发现成本超支、进度延误、生产效率问题以及数据质量问题。
+用于检测建筑数据中的异常模式、离群值和异常情况。在这些问题对项目产生负面影响之前，及时发现成本超支、进度延误、生产效率问题以及数据质量问题。
 
 ## 商业价值
 
 建筑数据中常常存在以下异常情况：
 - 成本估算错误或欺诈行为
-- 进度计划逻辑问题
+- 进度安排逻辑问题
 - 生产效率问题
 - 数据录入错误
 - 设备或材料问题
 
-早期发现这些异常可以避免高昂的纠正成本和项目延误。
+早期发现这些问题可以避免昂贵的补救措施和项目延误。
 
 ## 技术实现
 
@@ -509,5 +508,5 @@ pip install pandas numpy scipy
 
 ## 资源
 
-- **统计方法**：四分位数间距（IQR）、Z分数、修正Z分数
+- **统计方法**：四分位数范围（IQR）、Z分数、修正Z分数
 - **建筑行业基准指标**：RSMeans指数、ENR指数

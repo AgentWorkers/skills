@@ -1,53 +1,107 @@
-# AGIRAILS Payments - OpenClaw Skill
+# AGIRAILS Payments — OpenClaw Skill
 
-Official OpenClaw skill for AI agent payments via the ACTP (Agent Commerce Transaction Protocol).
+**Give your AI agent a wallet. Let it earn and pay USDC — settled on-chain, gasless, in under 2 seconds.**
 
-## What is this?
+> **Quick start**: Tell your agent: *"Read SKILL.md and set up AGIRAILS payments"* — the onboarding flow will guide you interactively.
 
-This skill enables AI agents running on [OpenClaw/Clawdbot](https://openclaw.ai) to:
-- **Pay for services** from other agents
-- **Receive payments** for providing services
-- **Track transactions** through the 8-state machine
-- **Handle disputes** with blockchain-secured escrow
+AGIRAILS is the open settlement layer for AI agents on Base L2. This skill turns any [OpenClaw/Clawdbot](https://openclaw.ai) agent into a full participant in the agent economy — earning, paying, and settling in USDC with on-chain guarantees.
 
-### Manual installation
+## Why This Exists
+
+AI agents need to pay each other. Not with API keys and invoices — with real money, real escrow, real dispute resolution. AGIRAILS handles the hard parts:
+
+- **Gasless transactions** — Smart Wallet (ERC-4337) + Paymaster. Your agent never needs ETH.
+- **USDC settlement** — real stablecoin, $1 = $1. On Base L2.
+- **Encrypted wallet** — auto-generated keystore (AES-128-CTR, chmod 600, gitignored). No keys in code, ever.
+- **Two payment modes** — ACTP escrow for complex jobs. x402 instant for API calls. Same SDK.
+- **On-chain identity** — ERC-8004 portable identity + reputation. Follows your agent across marketplaces.
+- **Deployment security** — fail-closed key policy, `ACTP_KEYSTORE_BASE64` for containers, `actp deploy:check` secret scanning.
+- **10,000 test USDC** — `actp init` in mock mode. Testnet: 1,000 USDC minted gaslessly during registration.
+- **1% transparent fee** — `max(amount * 1%, $0.05)`. Same on both payment paths. No subscriptions.
+
+## ACTP or x402? Pick the Right Payment Mode
+
+```
+Need time to do the work?  →  ACTP (escrow)
+  Lock USDC → work → deliver → dispute window → settle
+  Think: hiring a contractor
+
+Instant API call?  →  x402 (instant)
+  Pay → get response. One step. No escrow. No disputes.
+  Think: buying from a vending machine
+```
+
+Both modes are in the same SDK. Your agent can use both simultaneously.
+
+## Quick Start
+
 ```bash
-# Clone to your skills directory
+# Install the skill
 git clone https://github.com/agirails/openclaw-skill.git ~/.openclaw/skills/agirails
 ```
 
+Then just tell your agent:
+
+> "Pay 10 USDC to 0xProviderAddress for translation service"
+
+Or use the SDK directly:
+
+```bash
+npx actp init --mode mock
+npx actp init --scaffold --intent earn --service code-review --price 5
+npx ts-node agent.ts
+```
+
+Three commands. Mock mode. No keys, no gas, no config.
+
 ## Prerequisites
 
-1. **AGIRAILS SDK** installed in your project:
+1. **AGIRAILS SDK**:
    ```bash
    npm install @agirails/sdk   # TypeScript
    pip install agirails        # Python
    ```
 
-2. **Environment variables**:
+2. **Wallet setup** (SDK auto-detects: keystore → `ACTP_KEYSTORE_BASE64` → `ACTP_PRIVATE_KEY`):
    ```bash
-   export AGENT_PRIVATE_KEY="0x..."   # Wallet private key
-   export AGENT_ADDRESS="0x..."       # Wallet address
+   # Option A: Encrypted keystore (recommended)
+   npx actp init -m testnet
+   export ACTP_KEY_PASSWORD="your-keystore-password"
+
+   # Option B: For Docker/Railway/serverless
+   export ACTP_KEYSTORE_BASE64="$(base64 < .actp/keystore.json)"
+   export ACTP_KEY_PASSWORD="your-keystore-password"
    ```
+   > **Note:** `ACTP_PRIVATE_KEY` is blocked on mainnet Use encrypted keystores.
 
-3. **USDC on Base** - Bridge via [bridge.base.org](https://bridge.base.org)
+## Networks
 
-## Usage
+**Mock**
+- Cost to start: Free
+- Gas: Simulated
+- USDC: 10,000 auto-minted
+- Escrow: `request()` auto-releases; `client.pay()` manual
+- Tx limit: None
 
-Once installed, just tell your AI agent:
+**Testnet (Base Sepolia)**
+- Cost to start: Free (1,000 USDC minted during registration)
+- Gas: Sponsored
+- USDC: 1,000 minted gaslessly on registration
+- Escrow: Manual `release()`
+- Tx limit: None
 
-> "Pay 10 USDC to 0xProviderAddress for translation service"
+**Mainnet (Base)**
+- Cost to start: Real USDC
+- Gas: Sponsored
+- USDC: bridge.base.org
+- Escrow: Manual `release()`
+- Tx limit: $1,000
 
-The skill provides documentation for:
-- Basic API (one-liner payments)
-- Standard API (full control)
-- Advanced API (provider flows, proof encoding)
-
-## Skill Contents
+## What's Inside
 
 ```
 openclaw-skill/
-├── SKILL.md                         # Main skill documentation
+├── SKILL.md                         # Full protocol reference + interactive onboarding
 ├── README.md                        # This file
 ├── references/
 │   ├── state-machine.md             # 8-state machine reference
@@ -56,11 +110,12 @@ openclaw-skill/
 ├── examples/
 │   ├── simple-payment.md            # All 3 API levels explained
 │   └── full-lifecycle.md            # Complete transaction flow
-├── openclaw/                        # OpenClaw integration
+├── openclaw/                        # OpenClaw-specific integration
 │   ├── QUICKSTART.md                # 5-minute setup guide
 │   ├── agent-config.json            # Ready-to-use configs
 │   ├── SOUL-treasury.md             # Buyer agent template
 │   ├── SOUL-provider.md             # Seller agent template
+│   ├── SOUL-agent.md                # Full autonomous agent (earn + pay + x402)
 │   ├── cron-examples.json           # Automation jobs
 │   ├── validation-patterns.md       # Delivery validators
 │   └── security-checklist.md        # Pre-launch audit
@@ -73,20 +128,22 @@ openclaw-skill/
 ## State Machine
 
 ```
-INITIATED → QUOTED → COMMITTED → IN_PROGRESS → DELIVERED → SETTLED
-                          ↓            ↓             ↓
-                     CANCELLED    DISPUTED ─────────→↑
+INITIATED ─┬──> QUOTED ──> COMMITTED ──> IN_PROGRESS ──> DELIVERED ──> SETTLED
+            │                  │              │              │
+            └──> COMMITTED     │              │              └──> DISPUTED
+                               v              v                    │    │
+                           CANCELLED      CANCELLED            SETTLED  CANCELLED
 ```
 
-**Important:** `IN_PROGRESS` is required before `DELIVERED`.
+8 states. Forward-only transitions. SETTLED and CANCELLED are terminal.
 
 ## Links
 
-- **AGIRAILS Website**: https://agirails.io
-- **SDK Documentation**: https://docs.agirails.io
-- **SDK Repository**: https://github.com/agirails/sdk
-- **Discord**: https://discord.gg/nuhCt75qe4
+- [SDK (npm)](https://www.npmjs.com/package/@agirails/sdk) | [SDK (pip)](https://pypi.org/project/agirails/)
+- [GitHub](https://github.com/agirails) | [Docs](https://docs.agirails.io) | [Examples](https://github.com/agirails/sdk-js/tree/main/examples)
+- [Discord](https://discord.gg/nuhCt75qe4) | [Issues](https://github.com/agirails/openclaw-skill/issues)
+- Security: security@agirails.io
 
 ## License
 
-MIT © AGIRAILS Inc.
+MIT

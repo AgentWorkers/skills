@@ -22,9 +22,7 @@ const abiCoder = ethers.AbiCoder.defaultAbiCoder();
 
 async function requesterWorkflow() {
   const client = await ACTPClient.create({
-    mode: 'mainnet',
-    privateKey: process.env.REQUESTER_PRIVATE_KEY!,
-    requesterAddress: process.env.REQUESTER_ADDRESS!,
+    mode: 'mainnet',  // auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
   });
 
   // Step 1: Create transaction (State: INITIATED)
@@ -79,9 +77,7 @@ async function requesterWorkflow() {
 
 async function providerWorkflow(txId: string) {
   const client = await ACTPClient.create({
-    mode: 'mainnet',
-    privateKey: process.env.PROVIDER_PRIVATE_KEY!,
-    requesterAddress: process.env.PROVIDER_ADDRESS!,
+    mode: 'mainnet',  // auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
   });
 
   // Step 1: Calculate and send quote (State: QUOTED)
@@ -117,9 +113,7 @@ async function providerWorkflow(txId: string) {
 
 async function mediatorResolve(txId: string) {
   const client = await ACTPClient.create({
-    mode: 'mainnet',
-    privateKey: process.env.MEDIATOR_PRIVATE_KEY!,
-    requesterAddress: process.env.MEDIATOR_ADDRESS!,
+    mode: 'mainnet',  // auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
   });
 
   // Split funds: 30% to requester, 65% to provider, 5% mediator fee

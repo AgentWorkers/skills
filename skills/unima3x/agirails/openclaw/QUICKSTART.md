@@ -53,12 +53,14 @@ Add this to your `openclaw.json` → `agents.list`:
 
 ---
 
-## Step 3: Set Environment Variable (30 sec)
+## Step 3: Set Up Wallet (30 sec)
 
 ```bash
-# Add to your shell profile or OpenClaw env config
-export AGENT_PRIVATE_KEY="0x..."
-export AGENT_ADDRESS="0x..."
+# Generate encrypted keystore (recommended)
+npx @agirails/sdk init -m testnet
+
+# Set password to decrypt keystore at runtime
+export ACTP_KEY_PASSWORD="your-keystore-password"
 ```
 
 Or add to `openclaw.json` → `env.vars`:
@@ -67,14 +69,15 @@ Or add to `openclaw.json` → `env.vars`:
 {
   "env": {
     "vars": {
-      "AGENT_PRIVATE_KEY": "0x...",
-      "AGENT_ADDRESS": "0x..."
+      "ACTP_KEY_PASSWORD": "your-keystore-password"
     }
   }
 }
 ```
 
-> ⚠️ **Security:** Never commit private keys to git!
+The SDK auto-detects your wallet: checks `ACTP_PRIVATE_KEY` env var first, then falls back to `.actp/keystore.json` decrypted with `ACTP_KEY_PASSWORD`.
+
+> **Security:** Never commit private keys or keystore passwords to git!
 
 ---
 

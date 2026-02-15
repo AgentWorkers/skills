@@ -1,16 +1,14 @@
 ---
-slug: "bim-qto"
-display_name: "BIM QTO"
-description: "从 BIM/CAD 数据中提取用于成本估算的各类数据，并按类型、层级、区域进行分类。生成详细的材料清单（QTO, Quantity Takeoff）报告。"
----
-
-# BIM数量统计（Quantity Takeoff）
+name: "bim-qto"
+description: "从 BIM/CAD 数据中提取用于成本估算的各类数据，并按类型、层级、区域进行分类。生成相应的数量清单（QTO）报告。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "⚡", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# BIM数量统计（BIM Quantity Takeoff）
 
 ## 概述
-数量统计（Quantity Takeoff, QTO）是从BIM模型中提取可测量数据的过程。该技能通过处理BIM导出文件来生成分组后的数量报告，用于成本估算。
+数量统计（Quantity Takeoff, QTO）是从BIM模型中提取可测量数据的过程。该技能通过处理BIM导出文件，生成用于成本估算的汇总数量报告。
 
 ## Python实现
-
 ```python
 import pandas as pd
 import numpy as np
@@ -314,7 +312,6 @@ class BIMQuantityTakeoff:
 ```
 
 ## 快速入门
-
 ```python
 # Load BIM export
 df = pd.read_excel("revit_export.xlsx")

@@ -3,11 +3,16 @@
   "slug": "clawlink",
   "displayName": "Clawlink",
   "latest": {
-    "version": "2.5.2",
-    "publishedAt": 1771126182152,
-    "commit": "https://github.com/openclaw/skills/commit/42f07c8910abb614195fd2a0ece0f80b29df7fed"
+    "version": "2.6.0",
+    "publishedAt": 1771132015368,
+    "commit": "https://github.com/openclaw/skills/commit/3a64213343186489e9e9b558fd0fc5a920f6794b"
   },
   "history": [
+    {
+      "version": "2.5.2",
+      "publishedAt": 1771126182152,
+      "commit": "https://github.com/openclaw/skills/commit/42f07c8910abb614195fd2a0ece0f80b29df7fed"
+    },
     {
       "version": "2.4.0",
       "publishedAt": 1771120886663,

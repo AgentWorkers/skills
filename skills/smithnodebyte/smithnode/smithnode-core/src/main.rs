@@ -189,9 +189,7 @@ fn solve_nl_math(expr: &str) -> Option<String> {
     None
 }
 
-/// Poll the sequencer's RPC for a signed upgrade announcement.
-/// This is the fallback when gossipsub doesn't deliver upgrade messages.
-/// Returns the full UpgradeAnnouncement (with operator signature) so we can verify locally.
+
 async fn poll_sequencer_for_upgrade(rpc_url: &str) -> anyhow::Result<Option<p2p::UpgradeAnnouncement>> {
     let client = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(5))
@@ -603,7 +601,7 @@ async fn main() -> anyhow::Result<()> {
             }
         }
         
-        Commands::AnnounceUpgrade {
+        Commands::AnnounceNode {
             keypair, version,
             url_linux_x64, checksum_linux_x64,
             url_darwin_arm64, checksum_darwin_arm64,
@@ -712,7 +710,7 @@ async fn main() -> anyhow::Result<()> {
             let client = reqwest::Client::new();
             let rpc_payload = serde_json::json!({
                 "jsonrpc": "2.0",
-                "method": "smithnode_announceUpgrade",
+                "method": "smithnode_AnnounceNode",
                 "params": [announcement],
                 "id": 1
             });

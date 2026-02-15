@@ -1,0 +1,11 @@
+{
+  "owner": "axellageraldinc",
+  "slug": "claude-hemat",
+  "displayName": "Claude Hemat",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771167711328,
+    "commit": "https://github.com/openclaw/skills/commit/d671eb8f3c89e9ed8f638d6962e8fbc5a023fb1f"
+  },
+  "history": []
+}

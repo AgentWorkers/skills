@@ -7,8 +7,7 @@
  *   PROVIDER_ADDRESS=0x... npx ts-node test-purchase.ts
  * 
  * Requires:
- *   - AGENT_PRIVATE_KEY env var
- *   - AGENT_ADDRESS env var
+ *   - .actp/keystore.json OR ACTP_PRIVATE_KEY env var
  *   - PROVIDER_ADDRESS env var (or pass as argument)
  *   - @agirails/sdk installed
  */
@@ -19,16 +18,8 @@ import { ethers } from 'ethers';
 async function main() {
   console.log('🧪 AGIRAILS Test Purchase\n');
 
-  // Check env vars
-  const address = process.env.AGENT_ADDRESS;
-  const privateKey = process.env.AGENT_PRIVATE_KEY;
   const provider = process.env.PROVIDER_ADDRESS || process.argv[2];
   const mode = (process.env.AGIRAILS_MODE as 'mock' | 'testnet' | 'mainnet') || 'testnet';
-
-  if (!address || !privateKey) {
-    console.error('❌ AGENT_ADDRESS and AGENT_PRIVATE_KEY must be set');
-    process.exit(1);
-  }
 
   if (!provider) {
     console.error('❌ PROVIDER_ADDRESS not set');
@@ -37,7 +28,6 @@ async function main() {
   }
 
   console.log(`Mode: ${mode}`);
-  console.log(`Requester: ${address}`);
   console.log(`Provider: ${provider}`);
   console.log('');
 
@@ -48,12 +38,10 @@ async function main() {
   }
 
   try {
-    // Initialize client
-    const client = await ACTPClient.create({
-      mode,
-      privateKey,
-      requesterAddress: address,
-    });
+    // SDK auto-detects wallet: .actp/keystore.json → ACTP_PRIVATE_KEY → PRIVATE_KEY
+    const client = await ACTPClient.create({ mode });
+    const address = await client.getAddress();
+    console.log(`Requester: ${address}`);
 
     // Check balance first
     const balance = await client.getBalance(address);

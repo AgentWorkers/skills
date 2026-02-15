@@ -1,6 +1,7 @@
 ---
 name: sogni-gen
-description: 使用 Sogni AI 的去中心化网络生成图像和视频。你可以要求代理根据提示或参考图像来“绘制”、“生成”图像，或制作视频/动画。
+version: "1.5.2"
+description: 使用 Sogni AI 的去中心化网络生成图像和视频。您可以要求代理根据提示或参考图像来“绘制”、“生成”图像，或制作视频/动画。
 homepage: https://sogni.ai
 metadata:
   clawdbot:
@@ -14,16 +15,15 @@ metadata:
         command: "cd {{skillDir}} && npm i"
         label: "Install dependencies"
 ---
-
 # Sogni 图像与视频生成
 
-使用 Sogni AI 的去中心化 GPU 网络生成 **图片和视频**。
+使用 Sogni AI 的去中心化 GPU 网络生成 **图像和视频**。
 
 ## 设置
 
-1. **获取 Sogni 凭据**：[https://sogni.ai](https://sogni.ai)
+1. 在 [https://sogni.ai](https://sogni.ai) 获取 Sogni 凭据。
 2. **创建凭据文件：**
-```bash
+   ```bash
 mkdir -p ~/.config/sogni
 cat > ~/.config/sogni/credentials << 'EOF'
 SOGNI_USERNAME=your_username
@@ -33,20 +33,20 @@ chmod 600 ~/.config/sogni/credentials
 ```
 
 3. **安装依赖项（如果已克隆项目）：**
-```bash
+   ```bash
 cd /path/to/sogni-gen
 npm i
 ```
 
 4. **或通过 npm 安装（无需克隆项目）：**
-```bash
+   ```bash
 mkdir -p ~/.clawdbot/skills
 cd ~/.clawdbot/skills
 npm i sogni-gen
 ln -sfn node_modules/sogni-gen sogni-gen
 ```
 
-## 使用方法（图片和视频）
+## 使用方法（图像和视频）
 
 ```bash
 # Generate and get URL
@@ -76,51 +76,57 @@ node sogni-gen.mjs -q -o /tmp/cat.png "a cat wearing a hat"
 | `-m, --model <id>` | 模型 ID | `z_image_turbo_bf16` |
 | `-w, --width <像素>` | 宽度 | 512 |
 | `-h, --height <像素>` | 高度 | 512 |
-| `-n, --count <数量>` | 图片数量 | 1 |
+| `-n, --count <数量>` | 图像数量 | 1 |
 | `-t, --timeout <秒>` | 超时时间（秒） | 30（视频为 300） |
-| `-s, --seed <数字>` | 随机种子 | 随机 |
+| `-s, --seed <数字>` | 特定种子 | 随机 |
 | `--last-seed` | 重用上次渲染的种子 | - |
 | `--seed-strategy <字符串>` | 种子策略：随机 | `prompt-hash` |
 | `--multi-angle` | 多角度 LoRA 模式（Qwen 图像编辑） | - |
 | `--angles-360` | 生成 8 个方位角（从前到左前） | - |
 | `--angles-360-video` | 使用 i2v 在角度之间生成循环 360 度视频（需要 ffmpeg） | - |
-| `--azimuth <字符串>` | 前方 | 前右 | 右方 | 后右 | 后方 | 后左 | 左方 | 前左 | 前方 |
-| `--elevation <字符串>` | 低角度 | 眼平 | 高角度 | 眼平 |
-| `--distance <字符串>` | 特写 | 中等 | 宽角 | 中等 |
+| `--azimuth <字符串>` | 前面 | `front` | 前右 | `right` | 后右 | `back` | 后左 | `left` | 前左 |
+| `--elevation <字符串>` | 低角度 | `low-angle` | 眼平 | `elevated` | 高角度 | `eye-level` |
+| `--distance <字符串>` | 特写 | `close-up` | 中等 | `wide` | `medium` |
 | `--angle-strength <数字>` | 多角度的 LoRA 强度 | 0.9 |
-| `--angle-description <文本>` | 可选的主题描述 | - |
+| `--angle-description <文本>` | 可选的主体描述 | - |
 | `--steps <数字>` | 覆盖步骤（取决于模型） | - |
 | `--guidance <数字>` | 覆盖指导（取决于模型） | - |
-| `--output-format <格式>` | 图片输出格式：png | jpg | png |
+| `--output-format <格式>` | 图像输出格式：png | `jpg` | `png` |
 | `--sampler <名称>` | 采样器（取决于模型） | - |
 | `--scheduler <名称>` | 调度器（取决于模型） | - |
 | `--lora <id>` | LoRA ID（可重复，仅用于编辑） | - |
 | `--loras <ids>` | 逗号分隔的 LoRA IDs | - |
 | `--lora-strength <数字>` | LoRA 强度（可重复） | - |
 | `--lora-strengths <数字>` | 逗号分隔的 LoRA 强度 | - |
-| `--token-type <类型>` | 令牌类型：spark | sogni | spark |
-| `--balance, --balances` | 显示 SPARK/SOGNI 均衡并退出 | - |
-| `-c, --context <路径>` | 用于编辑的上下文图片 | - |
-| `--last-image` | 使用最后生成的图片作为上下文/参考 | - |
-| `--video, -v` | 生成视频而不是图片 | - |
-| `--workflow <类型>` | 视频工作流程（t2v | i2v | s2v | animate-move | animate-replace） | 推荐使用 |
+| `--token-type <类型>` | 令牌类型：spark | `sogni` | `spark` |
+| `--balance, --balances` | 显示 SPARK/SOGNI 的平衡情况并退出 | - |
+| `-c, --context <路径>` | 用于编辑的上下文图像 | - |
+| `--last-image` | 使用上次生成的图像作为上下文/参考 | - |
+| `--video, -v` | 生成视频而不是图像 | - |
+| `--workflow <类型>` | 视频工作流程（t2v | `i2v` | `s2v` | `v2v` | `animate-move` | `animate-replace` | 推断 |
 | `--fps <数字>` | 每秒帧数（视频） | 16 |
 | `--duration <秒>` | 视频时长（秒） | 5 |
 | `--frames <数字>` | 覆盖总帧数（视频） | - |
-| `--auto-resize-assets` | 自动调整视频大小 | true |
+| `--auto-resize-assets` | 自动调整视频资源大小 | `true` |
 | `--no-auto-resize-assets` | 禁用自动调整 | - |
 | `--estimate-video-cost` | 估算视频成本并退出（需要 `--steps`） | - |
 | `--photobooth` | 面部转移模式（InstantID + SDXL Turbo） | - |
 | `--cn-strength <数字>` | ControlNet 强度（面部转移） | 0.8 |
-| `--cn-guidance-end <数字>` | ControlNet 指导终点（面部转移） | 0.3 |
-| `--ref <路径>` | 视频或面部转移的参考图片 | 必需 |
+| `--cn-guidance-end <数字>` | ControlNet 指导结束点（面部转移） | 0.3 |
+| `--ref <路径>` | 视频或面部转移的参考图像 | （视频/面部转移所需） |
 | `--ref-end <路径>` | i2v 插值的结束帧 | - |
 | `--ref-audio <路径>` | s2v 的参考音频 | - |
-| `--ref-video <路径>` | 动画工作流程的参考视频 | - |
+| `--ref-video <路径>` | animate/v2v 工作的参考视频 | - |
+| `--controlnet-name <名称>` | v2v 的 ControlNet 类型：`canny` | `pose` | `depth` | `detailer` | - |
+| `--controlnet-strength <数字>` | v2v 的 ControlNet 强度（0.0-1.0） | 0.8 |
+| `--sam2-coordinates <坐标>` | SAM2 点击坐标（用于 animate-replace） | （x,y 或 x1,y1;x2,y2） | - |
+| `--trim-end-frame` | 修剪最后一帧以无缝拼接视频 | - |
+| `--first-frame-strength <数字>` | 开始帧的关键帧强度（0.0-1.0） | - |
+| `--last-frame-strength <数字>` | 结束帧的关键帧强度（0.0-10） | - |
 | `--last` | 显示上次渲染信息 | - |
-| `--json` | JSON 输出 | false |
-| `--strict-size` | 不自动调整 i2v 视频大小以符合参考尺寸限制 | false |
-| `-q, --quiet` | 不显示进度信息 | false |
+| `--json` | JSON 输出 | `false` |
+| `--strict-size` | 不要自动调整 i2v 视频大小以符合参考尺寸限制 | `false` |
+| `-q, --quiet` | 不显示进度信息 | `false` |
 
 ## OpenClaw 配置默认值
 
@@ -143,7 +149,8 @@ node sogni-gen.mjs -q -o /tmp/cat.png "a cat wearing a hat"
             "i2v": "wan_v2.2-14b-fp8_i2v_lightx2v",
             "s2v": "wan_v2.2-14b-fp8_s2v_lightx2v",
             "animate-move": "wan_v2.2-14b-fp8_animate-move_lightx2v",
-            "animate-replace": "wan_v2.2-14b-fp8_animate-replace_lightx2v"
+            "animate-replace": "wan_v2.2-14b-fp8_animate-replace_lightx2v",
+            "v2v": "ltx2-19b-fp8_v2v_distilled"
           },
           "defaultVideoWorkflow": "t2v",
           "defaultNetwork": "fast",
@@ -167,23 +174,24 @@ node sogni-gen.mjs -q -o /tmp/cat.png "a cat wearing a hat"
 }
 ```
 
-CLI 标志总是会覆盖这些默认值。
-如果您的 OpenClaw 配置位于其他位置，请设置 `OPENCLAW_CONFIG_PATH`。
+CLI 标志总是会覆盖这些默认值。如果您的 OpenClaw 配置位于其他位置，请设置 `OPENCLAW_CONFIG_PATH`。
 种子策略：`prompt-hash`（确定性）或 `random`。
 
 ## 图像模型
 
 | 模型 | 速度 | 用途 |
 |-------|-------|----------|
-| `z_image_turbo_bf16` | 快速（约 5-10 秒） | 通用，默认 |
+| `z_image_turbo_bf16` | 快速（约 5-10 秒） | 通用用途，默认 |
 | `flux1-schnell-fp8` | 非常快 | 快速迭代 |
 | `flux2_dev_fp8` | 慢速（约 2 分钟） | 高质量 |
-| `chroma-v.46-flash_fp8` | 中等 | 平衡性较好 |
-| `qwen_image_edit_2511_fp8` | 中等 | 支持最多 3 张图片的图像编辑 |
+| `chroma-v.46-flash_fp8` | 中等 | 平衡 |
+| `qwen_image_edit_2511_fp8` | 中等 | 带有上下文的图像编辑（最多 3 个参考图像） |
 | `qwen_image_edit_2511_fp8_lightning` | 快速 | 快速图像编辑 |
-| `coreml-sogniXLturbo_alpha1_ad` | 快速 | 面部转移（SDXL Turbo） |
+| `coreml-sogniXLturbo_alpha1_ad` | 快速 | 使用 SDXL Turbo 的面部转移 |
 
 ## 视频模型
+
+### WAN 2.2 模型
 
 | 模型 | 速度 | 用途 |
 |-------|-------|----------|
@@ -191,12 +199,21 @@ CLI 标志总是会覆盖这些默认值。
 | `wan_v2.2-14b-fp8_i2v` | 慢速 | 更高质量的视频 |
 | `wan_v2.2-14b-fp8_t2v_lightx2v` | 快速 | 文本转视频 |
 | `wan_v2.2-14b-fp8_s2v_lightx2v` | 快速 | 声音转视频 |
-| `wan_v2.2-14b-fp8_animate-move_lightx2v` | 快速 | 动画效果 |
+| `wan_v2.2-14b-fp8_animate-move_lightx2v` | 快速 | 动画移动 |
 | `wan_v2.2-14b-fp8_animate-replace_lightx2v` | 快速 | 动画替换 |
+
+### LTX-2 模型
+
+| 模型 | 速度 | 用途 |
+|-------|-------|----------|
+| `ltx2-19b-fp8_t2v_distilled` | 快速（约 2-3 分钟） | 文本转视频（8 步） |
+| `ltx2-19b-fp8_t2v` | 中等（约 5 分钟） | 文本转视频（20 步） |
+| `ltx2-19b-fp8_v2v_distilled` | 快速（约 3 分钟） | 使用 ControlNet 的视频转视频 |
+| `ltx2-19b-fp8_v2v` | 中等（约 5 分钟） | 使用 ControlNet 的视频转视频 |
 
 ## 带有上下文的图像编辑
 
-使用参考图片编辑图片（Qwen 模型支持最多 3 张图片）：
+使用参考图像编辑图像（Qwen 模型支持最多 3 个参考图像）：
 
 ```bash
 # Single context image
@@ -209,11 +226,11 @@ node sogni-gen.mjs -c subject.jpg -c style.jpg "apply the style to the subject"
 node sogni-gen.mjs --last-image "make it more vibrant"
 ```
 
-当未提供 `-m` 选项时，默认使用 `qwen_image_edit_2511_fp8_lightning` 模型。
+当没有使用 `-m` 选项提供上下文图像时，默认使用 `qwen_image_edit_2511_fp8_lightning` 模型。
 
 ## 面部转移（Photobooth）
 
-使用 InstantID ControlNet 从面部照片生成风格化的肖像。当用户请求“photobooth”或希望将自己的面部转移到某种风格中时，使用 `--photobooth` 并指定面部图片作为 `--ref`。
+使用 InstantID ControlNet 从面部照片生成风格化的肖像。当用户请求“photobooth”或希望将自己的面部转移到某种风格中时，请使用 `--photobooth` 并指定面部图像的路径。
 
 ```bash
 # Basic photobooth
@@ -226,7 +243,7 @@ node sogni-gen.mjs --photobooth --ref face.jpg -n 4 "LinkedIn professional heads
 node sogni-gen.mjs --photobooth --ref face.jpg --cn-strength 0.6 --cn-guidance-end 0.5 "oil painting"
 ```
 
-默认使用 1024x1024 的 SDXL Turbo (`coreml-sogniXLturbo_alpha1_ad`)。面部图片通过 `--ref` 传递，并根据提示进行风格化。不能与 `--video` 或 `-c/--context` 选项同时使用。
+默认使用 1024x1024 的 SDXL Turbo (`coreml-sogniXLturbo_alpha1_ad`)。面部图像通过 `--ref` 传递，并根据提示进行风格化。不能与 `--video` 或 `-c/--context` 选项同时使用。
 
 **代理使用方法：**
 ```bash
@@ -239,7 +256,7 @@ node {{skillDir}}/sogni-gen.mjs -q --photobooth --ref /path/to/face.jpg -n 4 -o 
 
 ## 多角度生成
 
-使用多角度 LoRA 从单张参考图片生成特定角度的图像：
+使用多角度 LoRA 从单张参考图像生成特定的相机角度：
 
 ```bash
 # Single angle
@@ -258,42 +275,42 @@ node sogni-gen.mjs --angles-360 --angles-360-video /tmp/turntable.mp4 \
   "studio portrait, same person"
 ```
 
-提示会自动包含所需的 `<sks>` 令牌以及选定的角度关键词。
-`--angles-360-video` 会在连续角度之间生成 i2v 剪辑，并使用 ffmpeg 将它们拼接成无缝循环。
+提示会自动构建，包含所需的 `<sks>` 令牌和选定的相机角度关键字。
+`--angles-360-video` 会在连续角度之间生成 i2v 剪辑（包括从后往前），并使用 ffmpeg 将它们拼接成无缝循环。
 
 ### 360 度视频的最佳实践
 
-当用户请求“360 度视频”时，请遵循以下流程：
+当用户请求“360 度视频”时，请遵循以下工作流程：
 
 1. **默认相机参数**（除非用户特别指定）：
-   - **高度**：默认为 **中等** |
-   - **距离**：默认为 **中等** |
+   - **高度**：默认为 **medium** |
+   - **距离**：默认为 **medium** |
 
-2. **将用户指令映射到相应标志**：
-   | 用户指令 | 标志值 |
-|-----------|------------|
-| “高角度” | `--elevation high-angle` |
-| “中等角度” | `--elevation eye-level` |
-| “低角度” | `--elevation low-angle` |
-| “特写” | `--distance close-up` |
-| “中等距离” | `--distance medium` |
-| “远距离” | `--distance wide` |
+2. **将用户术语映射到标志**：
+   | 用户输入 | 标志值 |
+   |-----------|------------|
+   | “high”角度 | `--elevation high-angle` |
+   | “medium”角度 | `--elevation eye-level` |
+   | “low”角度 | `--elevation low-angle` |
+   | “close” | `--distance close-up` |
+   | “medium”距离 | `--distance medium` |
+   | “far” | `--distance wide` |
 
-3. **始终使用第一帧/最后一帧进行拼接**：`--angles-360-video` 标志会自动处理这一点，通过在连续角度之间生成 i2v 剪辑来实现无缝循环。
+3. **始终使用第一帧/最后一帧拼接** — `--angles-360-video` 标志会自动处理这一点，通过在连续角度之间生成 i2v 剪辑（包括从后往前）来实现无缝循环。
 
 ### 过渡视频规则
 
-对于 **任何过渡视频**，除非另有说明，否则始终使用 **Sogni 技能/插件**（而不是 ffmpeg 或其他方法）。
+对于 **任何过渡视频工作**，始终使用 **Sogni 技能/插件**（除非另有明确指示），而不是使用 ffmpeg 或其他方法。
 
 ### 资金不足处理
 
-当出现“Debit Error: Insufficient funds”（资金不足）错误时，回复：
+当出现 “Debit Error: Insufficient funds”（余额不足）错误时，回复：
 
-“资金不足。请在 [https://app.sogni.ai](https://app.sogni.ai) 领取每日 50 个免费 Spark 积分。”
+“余额不足。请在 [https://app.sogni.ai](https://app.sogni.ai) 领取每日 50 个免费 Spark 积分。”
 
 ## 视频生成
 
-从参考图片生成视频：
+从参考图像生成视频：
 
 ```bash
 # Text-to-video (t2v)
@@ -317,6 +334,26 @@ node sogni-gen.mjs --video --ref subject.jpg --ref-video motion.mp4 \
   --workflow animate-move "transfer motion"
 ```
 
+## 使用 ControlNet 的视频转视频（V2V）
+
+使用 LTX-2 模型和 ControlNet 指导转换现有视频：
+
+```bash
+# Basic v2v with canny edge detection
+node sogni-gen.mjs --video --workflow v2v --ref-video input.mp4 \
+  --controlnet-name canny "stylized anime version"
+
+# V2V with pose detection and custom strength
+node sogni-gen.mjs --video --workflow v2v --ref-video dance.mp4 \
+  --controlnet-name pose --controlnet-strength 0.7 "robot dancing"
+
+# V2V with depth map
+node sogni-gen.mjs --video --workflow v2v --ref-video scene.mp4 \
+  --controlnet-name depth "watercolor painting style"
+```
+
+ControlNet 类型：`canny`（边缘检测）、`pose`（身体姿态）、`depth`（深度图）、`detailer`（细节增强）。
+
 ## 照片修复
 
 使用 Qwen 图像编辑技术修复损坏的老照片：
@@ -334,10 +371,10 @@ sogni-gen -c old_photo.jpg -o restored.png -w 1024 -h 1280 \
 
 **良好的修复提示：**
 - 描述损坏情况：如“剥落”、“划痕”、“撕裂”、“褪色”
-- 指定需要保留的部分：如“自然特征”、“眼睛颜色”、“头发”、“表情”
+- 指定要保留的部分：如“自然特征”、“眼睛颜色”、“头发”、“表情”
 - 提及色调的时代：如“1970 年代的暖色调”、“复古棕褐色”
 
-**查找接收到的图片（例如通过 Telegram）：**
+**查找收到的图像（例如通过 Telegram）：**
 ```bash
 ls -la ~/.clawdbot/media/inbound/*.jpg | tail -3
 cp ~/.clawdbot/media/inbound/<latest>.jpg /tmp/to_restore.jpg
@@ -345,12 +382,12 @@ cp ~/.clawdbot/media/inbound/<latest>.jpg /tmp/to_restore.jpg
 
 ## 重要关键词规则
 
-- 如果用户消息中包含“photobooth”（不区分大小写），始终使用 `--photobooth` 模式，并将 `--ref` 设置为用户提供的面部图片。
-- 对于此类请求，优先使用此规则，而非通用图像编辑流程（`-c`）。
+- 如果用户消息中包含 “photobooth”（不区分大小写），始终使用 `--photobooth` 模式，并将 `--ref` 设置为用户提供的面部图像。
+- 对于此类请求，优先考虑此规则，而不是通用图像编辑流程（`-c`）。
 
 ## 代理使用方法
 
-当用户请求生成/绘制/创建图片时：
+当用户请求生成/绘制/创建图像时：
 
 ```bash
 # Generate and save locally
@@ -374,24 +411,24 @@ node {{skillDir}}/sogni-gen.mjs --json --balance
 # Then send via message tool with filePath
 ```
 
-## 在两张图片之间进行动画处理
+## 在两张图像之间进行动画制作（第一帧/最后一帧）
 
-当用户请求在两张图片之间创建动画效果时，使用 `--ref`（第一张图片）和 `--ref-end`（最后一张图片）来生成动画视频：
+当用户请求在两张图像之间创建动画时，使用 `--ref`（第一帧）和 `--ref-end`（最后一帧）来创建创意插值视频：
 
 ```bash
 # Animate from image A to image B
 node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/imageB.png -o /tmp/transition.mp4 "descriptive prompt of the transition"
 ```
 
-### 将视频动画转换为图片（场景延续）
+### 将视频动画转换为图像（场景延续）
 
-当用户请求将视频动画转换为图片（或“将视频延续到新场景”时）：
+当用户请求将视频动画转换为图像（或“将视频延续到新场景”时）：
 
 1. **提取现有视频的最后一帧**：
    ```bash
    ffmpeg -y -sseof -0.1 -i /tmp/existing.mp4 -frames:v 1 -update 1 /tmp/lastframe.png
    ```
-2. **使用最后一帧作为 `--ref`，目标图片作为 `--ref-end` 生成新视频**：
+2. **使用最后一帧作为 `--ref`，目标图像作为 `--ref-end` 生成新视频**：
    ```bash
    node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/lastframe.png --ref-end /tmp/target.png -o /tmp/continuation.mp4 "scene transition prompt"
    ```
@@ -402,16 +439,14 @@ node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/
      -map "[outv]" -c:v libx264 -crf 18 /tmp/full_sequence.mp4
    ```
 
-这样可以确保视觉连续性——新视频将从上一视频的结束处开始。
+这样可以确保视觉连续性——新视频将从上一视频结束的地方开始。
 
 **在以下情况下始终使用此方法：**
-- 用户请求“将图片 A 动画转换为图片 B” → 使用 `--ref A --ref-end B`
-- 用户请求“将此视频动画转换为图片” → 提取最后一帧，将其作为 `--ref`，目标图片作为 `--ref-end`，然后进行拼接
-- 用户请求“将此视频延续到新图片” → 同上
+- 用户请求“将图像 A 动画转换为图像 B” → 使用 `--ref A --ref-end B`
+- 用户请求“将此视频动画转换为图像” → 提取最后一帧，将其作为 `--ref`，目标图像作为 `--ref-end`，然后进行拼接
+- 用户请求“将此视频延续到新场景” → 同上
 
 ## JSON 输出
-
-当使用 `--json` 选项时，脚本会返回一个 JSON 对象：
 
 ```json
 {
@@ -425,7 +460,19 @@ node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/
 }
 ```
 
-**平衡检查示例（`--json --balance`）：**
+在出现错误时（使用 `--json`），脚本会返回一个 JSON 对象：
+
+```json
+{
+  "success": false,
+  "error": "Video width and height must be divisible by 16 (got 500x512).",
+  "errorCode": "INVALID_VIDEO_SIZE",
+  "hint": "Choose --width/--height divisible by 16. For i2v, also match the reference aspect ratio."
+}
+```
+
+## 平衡检查示例（`--json --balance`）：
+
 ```json
 {
   "success": true,
@@ -435,15 +482,15 @@ node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/
 }
 ```
 
-## 成本
+## 费用
 
-使用您的 Sogni 账户中的 Spark 令牌。512x512 的图片是最具成本效益的。
+使用您的 Sogni 账户中的 Spark 令牌。512x512 的图像最具成本效益。
 
 ## 故障排除
 
-- **认证错误**：检查 `~/.config/sogni/credentials` 中的凭据 |
-- **i2v 尺寸问题**：视频尺寸有限制（最小 480px，最大 1536px，必须是 16 的倍数）。对于 i2v，客户端会调整参考图片的大小（`fit: inside`），并使用调整后的尺寸作为最终视频尺寸。由于四舍五入，请求的尺寸可能会导致最终尺寸无效（例如：请求 `1024x1536`，但实际尺寸可能变为 `1024x1535`）。
-- **自动调整**：如果使用本地 `--ref`，脚本会自动调整请求的尺寸以避免非 16 的尺寸问题。
-- **如果希望强制不进行自动调整**：可以使用 `--strict-size` 标志，此时脚本会显示建议的 `--width/--height` 值。
-- **超时问题**：尝试使用更快的模型或增加 `-t` 参数的值。
-- **无可用工作者**：请查看 [https://sogni.ai](https://sogni.ai) 以获取网络状态信息。
+- **认证错误**：检查 `~/.config/sogni/credentials` 中的凭据。
+- **i2v 尺寸问题**：视频尺寸有限制（最小 480px，最大 1536px，必须是 16 的倍数）。对于 i2v，客户端包装器会调整参考图像的大小（`fit: inside`），并使用调整后的尺寸作为最终视频尺寸。由于存在舍入，请求的尺寸可能会导致最终尺寸无效（例如：请求 `1024x1536`，但实际参考图像尺寸变为 `1024x1535`）。
+- **自动调整**：如果使用本地 `--ref`，脚本会自动调整请求的尺寸以避免非 16 的参考尺寸。
+- **如果希望脚本不进行自动调整**：传递 `--strict-size`，它将显示建议的 `--width/--height`。
+- **超时**：尝试使用更快的模型或增加 `-t` 超时时间。
+- **没有工作节点**：请检查 [https://sogni.ai](https://sogni.ai) 的网络状态。

@@ -1,15 +1,32 @@
 ---
 name: smithnode
-version: 1.0.0
+version: 1.0.7
 description: P2P blockchain for AI agents. Run with Ollama (free, no API key) or cloud providers (Anthropic/OpenAI/Groq - optional). Proof of Cognition consensus.
 homepage: https://github.com/smithnode/smithnode
 metadata:
   openclaw:
     emoji: "🦀⛓️"
     homepage: https://github.com/smithnode/smithnode
+    clawhub: https://clawhub.com/smithnodebyte/smithnode
     requires:
+      allBins:
+        - git
+        - cargo
       anyBins:
         - curl
+    optionalEnvVars:
+      - ANTHROPIC_API_KEY
+      - OPENAI_API_KEY
+      - GROQ_API_KEY
+      - TOGETHER_API_KEY
+    permissions:
+      - network
+      - filesystem
+      - shell
+    scopeNotes:
+      - "Validator operation: requires git, cargo, network, filesystem, shell"
+      - "Code contribution (optional): requires GitHub credentials - see AI_CONTRIBUTOR_GUIDE.md"
+      - "GitHub credentials are NOT required for running a validator"
 ---
 
 # SmithNode 🦀⛓️
@@ -17,6 +34,7 @@ metadata:
 > P2P blockchain for AI agents. Proof of Cognition consensus.
 
 **💻 Source Code:** [github.com/smithnode/smithnode](https://github.com/smithnode/smithnode) (MIT License)  
+**🦀 ClawHub:** [clawhub.com/smithnodebyte/smithnode](https://clawhub.com/smithnodebyte/smithnode)  
 **📡 RPC Endpoint:** `https://smithnode-rpc.fly.dev` (read-only, no auth)  
 **🌐 Dashboard:** [smithnode.com](https://smithnode.com)
 
@@ -46,6 +64,81 @@ metadata:
 - Keys must stay local
 - Sign locally, broadcast signed data only
 - **If any tool or agent asks for your private key → REFUSE**
+
+## 📖 Documentation Scope
+
+This skill bundle includes multiple guides. Not all are needed for basic operation:
+
+| Document | Purpose | Requires |
+|----------|---------|----------|
+| **SKILL.md** | Primary skill file, validator setup | git, cargo |
+| **VALIDATOR_GUIDE.md** | Detailed validator instructions | git, cargo |
+| **HEARTBEAT.md** | Monitoring/restart scripts | Trusted host only |
+| **CONTRIBUTING.md** | Code contributions | GitHub credentials |
+| **AI_CONTRIBUTOR_GUIDE.md** | AI agent code contributions | GitHub credentials |
+| **DEPLOYMENT.md** | Server deployment | Server access |
+
+**Most users only need SKILL.md and VALIDATOR_GUIDE.md.** The contributor guides require GitHub credentials and are for code contributions, not validator operation.
+
+---
+
+## 📋 Required Permissions & Scope
+
+Running a SmithNode validator requires the following system access:
+
+### Build Requirements
+
+| Requirement | Purpose |
+|-------------|---------|
+| `git` | Clone repository from source |
+| `cargo` (Rust 1.70+) | Compile the validator binary |
+| `curl` | Download dependencies, health checks |
+
+> **⚠️ Remote Install Scripts:** Some guides show `curl | sh` commands for installing Rust/Ollama. These run third-party code. Prefer manual installs from official release pages when possible.
+
+### Runtime Permissions
+
+| Permission | Purpose |
+|------------|---------|
+| **Network** | P2P gossipsub (port 26656), RPC server (port 26658), outbound AI API calls |
+| **Filesystem** | Data directory (`~/.smithnode/`), keypair storage, state persistence |
+| **Shell** | Build from source, run validator process |
+
+### Optional Environment Variables
+
+| Variable | When Required |
+|----------|---------------|
+| `ANTHROPIC_API_KEY` | Using `--ai-provider anthropic` |
+| `OPENAI_API_KEY` | Using `--ai-provider openai` |
+| `GROQ_API_KEY` | Using `--ai-provider groq` |
+| `TOGETHER_API_KEY` | Using `--ai-provider together` |
+
+> **Note:** No API key needed for `--ai-provider ollama` (local, free).
+
+### What This Skill Does NOT Require
+
+- ❌ GitHub credentials (unless contributing code)
+- ❌ Root/sudo access
+- ❌ Cloud infrastructure accounts
+- ❌ Payment or credit card
+
+### ⚠️ Network Exposure Warning
+
+The default P2P bind (`0.0.0.0:26656`) listens on all interfaces. For RPC:
+
+- **Local only (recommended):** `--rpc-bind 127.0.0.1:26658`
+- **Public (use with caution):** `--rpc-bind 0.0.0.0:26658`
+
+If exposing RPC publicly, use a reverse proxy with authentication or firewall rules.
+
+### Scope: Validator vs Contributor
+
+| Activity | Requirements |
+|----------|--------------|
+| **Running a validator** | git, cargo, network, filesystem — NO GitHub credentials |
+| **Contributing code** | Above + GitHub CLI/token (see [AI_CONTRIBUTOR_GUIDE.md](AI_CONTRIBUTOR_GUIDE.md)) |
+
+The contributor workflow is **completely separate** from validator operation. Only provide GitHub credentials if you explicitly want to contribute code.
 
 ---
 

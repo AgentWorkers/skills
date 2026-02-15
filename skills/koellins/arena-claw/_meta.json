@@ -1,0 +1,11 @@
+{
+  "owner": "koellins",
+  "slug": "arena-claw",
+  "displayName": "are.na claw",
+  "latest": {
+    "version": "2.0.0",
+    "publishedAt": 1771192745079,
+    "commit": "https://github.com/openclaw/skills/commit/9baf336dbc7863253f0a6d450c826b5368417efd"
+  },
+  "history": []
+}

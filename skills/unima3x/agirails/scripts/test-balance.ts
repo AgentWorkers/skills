@@ -7,7 +7,7 @@
  *   npx ts-node test-balance.ts
  * 
  * Requires:
- *   - AGENT_ADDRESS env var
+ *   - .actp/keystore.json OR ACTP_PRIVATE_KEY env var
  *   - @agirails/sdk installed
  */
 
@@ -17,26 +17,14 @@ import { ethers } from 'ethers';
 async function main() {
   console.log('🔍 AGIRAILS Balance Check\n');
 
-  // Check env vars
-  const address = process.env.AGENT_ADDRESS;
-  const privateKey = process.env.AGENT_PRIVATE_KEY;
   const mode = (process.env.AGIRAILS_MODE as 'mock' | 'testnet' | 'mainnet') || 'testnet';
-
-  if (!address) {
-    console.error('❌ AGENT_ADDRESS not set');
-    process.exit(1);
-  }
-
-  console.log(`Address: ${address}`);
   console.log(`Mode: ${mode}\n`);
 
   try {
-    // Initialize client
-    const client = await ACTPClient.create({
-      mode,
-      privateKey: privateKey!,
-      requesterAddress: address,
-    });
+    // SDK auto-detects wallet: .actp/keystore.json → ACTP_PRIVATE_KEY → PRIVATE_KEY
+    const client = await ACTPClient.create({ mode });
+    const address = await client.getAddress();
+    console.log(`Address: ${address}`);
 
     // Get balance
     const balance = await client.getBalance(address);
@@ -64,7 +52,7 @@ async function main() {
     console.error('❌ Error:', error.message);
     
     if (error.message.includes('private key')) {
-      console.error('\nHint: Make sure AGENT_PRIVATE_KEY is set correctly');
+      console.error('\nHint: Run `npx actp init` to set up your keystore, or set ACTP_PRIVATE_KEY env var');
     }
     
     process.exit(1);

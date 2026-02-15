@@ -1,0 +1,11 @@
+{
+  "owner": "echology-io",
+  "slug": "decompose-mcp",
+  "displayName": "Decompose",
+  "latest": {
+    "version": "0.1.0",
+    "publishedAt": 1771174189346,
+    "commit": "https://github.com/openclaw/skills/commit/886fed237005358229ce44ad2494f819b6224e12"
+  },
+  "history": []
+}

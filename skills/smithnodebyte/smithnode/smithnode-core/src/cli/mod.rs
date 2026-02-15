@@ -95,11 +95,8 @@ pub enum Commands {
         #[arg(short, long)]
         output: Option<PathBuf>,
     },
-    
-    /// Announce a software upgrade to all peers (operator only)
-    /// Peers will download and restart when they see a verified announcement.
-    /// Provide per-platform URLs and checksums for release management.
-    AnnounceUpgrade {
+
+    AnnounceNode {
         /// Path to operator keypair JSON file (must be in TRUSTED_OPERATOR_KEYS)
         #[arg(long, short = 'k')]
         keypair: PathBuf,

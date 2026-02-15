@@ -1,22 +1,21 @@
 ---
-slug: "validation-rules-builder"
-display_name: "Validation Rules Builder"
+name: "validation-rules-builder"
 description: "为建筑数据构建验证规则。为BIM元素、成本代码和进度数据创建基于正则表达式（RegEx）和逻辑的验证机制。"
----
-
-# 验证规则构建器（Validation Rules Builder）
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "✔️", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 验证规则构建器（Validation Rules Builder）
 
 ## 商业案例（Business Case）
 
 ### 问题描述（Problem Statement）
-建筑数据质量面临以下挑战：
-- 命名规范不一致
+在建筑数据管理中，存在以下质量挑战：
+- 命名规范不统一
 - 成本代码和WBS（工作分解结构）无效
 - 数据缺失或格式错误
 - BIM（建筑信息模型）元素不符合标准
 
 ### 解决方案（Solution）
-基于规则的验证引擎，利用正则表达式（RegEx）和逻辑规则来确保各个建筑系统中的数据质量。
+采用基于规则的验证引擎，结合正则表达式（RegEx）和逻辑规则，确保整个建筑系统中的数据质量。
 
 ## 技术实现（Technical Implementation）
 ```python
@@ -395,7 +394,7 @@ print(f"Valid: {results['valid_records']}/{results['total_records']}")
 print(f"Errors: {results['error_count']}, Warnings: {results['warning_count']}")
 ```
 
-## 常见使用场景（Common Use Cases）
+## 常见用例（Common Use Cases）
 
 ### 1. 成本数据验证（Cost Data Validation）
 ```python

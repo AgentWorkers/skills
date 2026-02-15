@@ -1,6 +1,6 @@
 {
   "_comment": "Copy this to openclaw.json → agents.list",
-  
+
   "requester": {
     "_description": "Agent that BUYS services (pays USDC)",
     "config": {
@@ -42,12 +42,13 @@
   "env_vars": {
     "_description": "Add to openclaw.json → env.vars",
     "required": {
-      "AGENT_PRIVATE_KEY": "0x... (wallet private key)",
-      "AGENT_ADDRESS": "0x... (wallet address)"
+      "ACTP_KEY_PASSWORD": "password for .actp/keystore.json (set up via: npx @agirails/sdk init -m testnet)"
     },
     "optional": {
+      "ACTP_PRIVATE_KEY": "0x... (alternative: raw private key instead of keystore)",
       "AGIRAILS_MODE": "mainnet | testnet | mock",
-      "AGIRAILS_RPC_URL": "https://... (custom RPC, optional)"
+      "BASE_SEPOLIA_RPC": "https://... (custom RPC for testnet)",
+      "BASE_MAINNET_RPC": "https://... (custom RPC for mainnet)"
     }
   }
 }

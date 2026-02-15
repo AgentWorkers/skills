@@ -1,8 +1,22 @@
 ---
 name: post-bridge-social-manager
-description: 将你的 OpenClaw 转换成一个自主的社交媒体管理工具，通过使用 Post Bridge API 来实现跨多个平台的发布和管理功能。该工具支持在 TikTok、Instagram Reels、YouTube Shorts、Twitter/X、LinkedIn、Pinterest、Facebook、Threads 和 Bluesky 等平台上进行内容调度、发布和日常管理。功能包括媒体上传、帖子创建、发布计划制定、平台特定配置设置、草稿模式以及发布结果跟踪等。
+version: 1.0.3
+title: Social Media Assistant (via post-bridge.com)
+description: 将您的 OpenClaw 转换为一个自主的社交媒体管理工具，通过使用 Post Bridge API 来实现跨多个平台的发布和管理功能。该工具支持在 TikTok、Instagram Reels、YouTube Shorts、Twitter/X、LinkedIn、Pinterest、Facebook、Threads 以及 Bluesky 等平台上进行内容调度、发布和管理。功能包括媒体上传、帖子创建、发布计划制定、平台特定配置设置、草稿模式以及发布结果跟踪等。
+license: MIT
+author: Jack Friks <jack@frikit.net>
+homepage: https://clawhub.ai/jackfriks/post-bridge-social-manager
+repository: https://github.com/jackfriks/post-bridge-social-manager
+keywords: social-media, automation, post-bridge, tiktok, instagram, youtube, twitter, linkedin
+metadata:
+  openclaw:
+    requires:
+      env:
+        - POST_BRIDGE_API_KEY
+      bins:
+        - ffmpeg
+    primaryEnv: POST_BRIDGE_API_KEY
 ---
-
 # Post Bridge 社交媒体管理工具
 
 通过 [Post Bridge](https://post-bridge.com) 的 API 自动管理社交媒体发布。
@@ -33,7 +47,7 @@ Authorization: Bearer <POST_BRIDGE_API_KEY>
 ```
 GET /v1/social-accounts
 ```
-返回包含 `id`、`platform`、`username` 的已连接账户数组。请保存这些 ID，因为它们在每次发布时都会用到。
+返回包含 `id`、`platform`、`username` 的已连接账户数组。请保存这些 ID，因为每个发布操作都需要它们。
 
 ### 2. 上传媒体文件
 ```
@@ -47,7 +61,7 @@ Content-Type: video/mp4
 Body: <binary file>
 ```
 
-### 3. 创建帖子
+### 3. 创建发布内容
 ```
 POST /v1/posts
 Body: {
@@ -63,46 +77,46 @@ Body: {
 ```
 GET /v1/posts/<post_id>
 ```
-返回状态：`processing`（处理中）、`scheduled`（已安排）、`posted`（已发布）或 `failed`（失败）。
+返回状态：`processing`（处理中）、`scheduled`（已安排）、`posted`（已发布）、`failed`（失败）。
 
 ## 平台配置
 
-在创建帖子时，通过 `platform_configurations` 对象传递以下配置：
+在创建发布内容时，通过 `platform_configurations` 对象传递以下配置：
 
 **TikTok：**
-- `draft: true` — 保存为草稿（需手动发布并选择热门音效）
+- `draft: true` — 保存为草稿（需手动在 TikTok 上发布并选择热门音效）
 - `video_cover_timestamp_ms: 3000` — 覆盖图缩略图时长为 3 秒
-- `is_aigc: true` — 标记为 AI 生成的内容
+- `is_aigc: true` — 标记为人工智能生成的内容
 
 **Instagram：**
 - `video_cover_timestamp_ms: 3000` — 覆盖图缩略图时长
 - `is_trial_reel: true` — 试用模式（需要 1000 名以上粉丝）
-- `trial_graduation: "SS_PERFORMANCE"` — 根据表现自动升级为正式发布
+- `trial_graduation: "SS_PERFORMANCE"` — 根据表现自动升级
 
 **YouTube：**
 - `video_cover_timestamp_ms: 3000` — 覆盖图缩略图时长
-- `title: "My Short Title"` — 覆盖帖子标题
+- `title: "我的短标题"` — 覆盖帖子标题
 
 **Twitter/X：**
-- `caption: "override caption"` — 平台特定的标题
+- `caption: "自定义标题"` — 平台特定的标题
 
-所有平台都支持对 `caption` 和 `media` 进行自定义设置。
+所有平台都支持 `caption` 和 `media` 的自定义设置。
 
 ## 视频内容的推荐工作流程
 
-1. 将视频保存到本地文件夹。
+1. 将视频存储在本地文件夹中。
 2. 使用 ffmpeg 提取视频中的帧以获取文字信息。
-3. 根据视频内容生成标题和标签。
-4. 上传视频 → 创建帖子 → 安排发布或立即发布。
-5. 将已发布的视频移至 `posted/` 子文件夹以避免重复。
-6. 设置定时任务，在预定发布时间后 5 分钟检查帖子状态。
-7. 通过浏览平台页面或查看发布结果来监控效果。
+3. 根据视频内容生成标题并添加标签。
+4. 上传视频 → 创建发布内容 → 安排发布时间或立即发布。
+5. 将已发布的视频移动到 `posted/` 子文件夹中以避免重复。
+6. 设置定时任务，在预定发布时间后 5 分钟检查发布状态。
+7. 通过浏览平台页面或查看发布结果来跟踪内容的表现。
 
 ## 提示
 
-- 通过包含多个账户 ID 同时发布到多个平台。
-- 分散发布时间（例如上午 9 点和下午 3 点），以提高曝光率。
-- 使用 `scheduled_at` 功能预先安排发布时间——Post Bridge 会自动处理时间安排。
+- 通过添加多个账户 ID 同时在多个平台上发布内容。
+- 分散发布时间（例如上午 9 点和下午 3 点），以提高覆盖范围。
+- 使用 `scheduled_at` 功能预先安排发布批次——Post Bridge 会处理时间安排。
 - TikTok 的草稿模式允许您在发布前手动添加热门音效。
-- 每条帖子使用 4-5 个标签以获得最佳互动效果。
+- 每条帖子添加 4-5 个标签以获得更好的互动效果。
 - 监测哪些方法有效，并不断优化标题和格式。

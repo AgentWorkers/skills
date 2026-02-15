@@ -1,19 +1,18 @@
 ---
-slug: "data-quality-check"
-display_name: "Data Quality Check"
+name: "data-quality-check"
 description: "使用完整性、准确性、一致性、及时性和有效性等指标来评估构建数据的质量。通过正则表达式模式、阈值以及报告功能实现自动化验证。"
----
-
-# 建筑项目的数据质量检查
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "✔️", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑项目的数据质量检查
 
 ## 概述
 
-根据DDC方法论（第2.6章），本技能提供了针对建筑项目的全面数据质量评估。数据质量不佳会导致决策失误——因此需要尽早且频繁地进行数据验证。
+根据DDC方法论（第2.6章），本技能为建筑项目提供全面的数据质量评估。数据质量不佳会导致决策失误——因此需要尽早且频繁地进行数据验证。
 
 **参考书籍**：《数据质量要求与保障》（"Требования к качеству данных и его обеспечение"）
 
 > “数据质量由五个关键指标决定：完整性、准确性、一致性、及时性和可靠性。”
-> — DDC书籍，第2.6章
+> — DDC手册，第2.6章
 
 ## 快速入门
 
@@ -552,10 +551,10 @@ def export_quality_report(df, output_path, include_details=True):
 | 完整性 | 非空值的百分比 | ≥ 95% |
 | 准确性 | 值在有效范围内 | ≥ 98% |
 | 一致性 | ID唯一性、关系正确性 | ≥ 99% |
-| 可靠性 | 值符合预期模式 | ≥ 95% |
+| 可靠性 | 数据符合预期模式 | ≥ 95% |
 | 及时性 | 记录更新频率 | ≥ 80% |
 
-## 常见验证模式
+## 常见的数据验证模式
 
 ```python
 # Construction-specific regex patterns
@@ -578,6 +577,6 @@ PATTERNS = {
 
 ## 下一步操作
 
-- 有关BIM特定验证的详细信息，请参阅`bim-validation-pipeline`；
-- 有关数据处理流程的信息，请参阅`etl-pipeline`；
-- 有关质量仪表板的信息，请参阅`data-visualization`。
+- 有关BIM特定的验证流程，请参阅`bim-validation-pipeline`
+- 有关数据处理流程，请参阅`etl-pipeline`
+- 有关质量仪表板，请参阅`data-visualization`

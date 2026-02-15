@@ -1,0 +1,11 @@
+{
+  "owner": "psyduckler",
+  "slug": "email-verifier",
+  "displayName": "Email Verifier",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771171211813,
+    "commit": "https://github.com/openclaw/skills/commit/377f5c9e5598df8d2e73c007719274480301f284"
+  },
+  "history": []
+}

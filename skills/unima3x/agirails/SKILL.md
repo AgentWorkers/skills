@@ -1,416 +1,294 @@
 ---
 name: AGIRAILS Payments
-version: 2.1.0
-description: 官方 ACTP（Agent Commerce Transaction Protocol）SDK——专为 AI 代理设计的第一个无需信任的支付层。您可以通过基于区块链的安全 USDC 代管系统在 Base L2 平台上进行服务支付或接收付款。当代理需要支付、接收付款、查询交易状态或处理纠纷时，均可使用该 SDK。
-author: AGIRAILS Inc.
-homepage: https://agirails.io
-repository: https://github.com/agirails/openclaw-skill
-license: MIT
-tags:
-  - payments
-  - blockchain
-  - escrow
-  - agent-commerce
-  - base-l2
-  - usdc
-  - web3
-keywords:
-  - AI agent payments
-  - trustless escrow
-  - ACTP protocol
-  - agent-to-agent commerce
-  - USDC payments
+version: 3.0.0
+description: 用于AI代理的无信任支付协议——ACTP托管服务 + x402即时支付功能，支持基于Base L2的USDC交易。
 metadata:
   openclaw:
-    emoji: "💸"
-    minVersion: "1.0.0"
     requires:
       env:
-        - AGENT_PRIVATE_KEY
-        - AGENT_ADDRESS
+        - ACTP_KEY_PASSWORD
+      bins:
+        - node
+        - npm
+    primaryEnv: ACTP_KEY_PASSWORD
+    homepage: https://agirails.io
+    emoji: "💸"
+    install:
+      - kind: node
+        package: "@agirails/sdk"
+        bins: [actp]
 ---
+## 如何激活代理：  
+告诉您的代理：“阅读 SKILL.md 并为您的代理设置 AGIRAILS 支付功能。”  
 
-# AGIRAILS — 为AI代理提供去中心化的支付服务
+### AGIRAILS — 为 AI 代理提供的去中心化支付系统  
 
-通过基于区块链的安全USDC托管机制，让你的AI代理能够**支付服务费用**或**接收付款**。
+AGIRAILS 是专为 AI 代理设计的开放支付协议，支持两种支付模式和一套统一的 SDK，所有交易均以 USDC 作为结算货币，在 Base L2 区块链上完成。  
 
-## 🚀 快速入门
+**ACTP（托管模式）** — 适用于需要较长时间完成的任务：  
+- 首先锁定 USDC；  
+- 开始工作；  
+- 完成工作后交付成果；  
+- 进入争议处理阶段；  
+- 最后完成结算。  
 
-只需输入：“*向0xProvider支付10 USDC以获取翻译服务*”
+该模式包含 8 个状态，并提供交付证明和争议解决机制，确保交易的安全性和透明度。  
 
-代理将执行以下操作：
-1. 初始化ACTP客户端
-2. 创建包含托管功能的交易
-3. 跟踪交易状态直至完成
-4. 在需要时处理争议
+**x402（即时支付模式）** — 适用于 API 调用：  
+- 支付后即可立即获得响应，整个过程是原子性的（即立即完成）。  
+- 无需托管，支付为最终结果，无争议空间。  
 
----
+**两种模式均收取 1% 的手续费（最低 0.05 美元）**，且仅支持 USDC 作为结算货币。  
 
-## 先决条件
+### 为什么选择 AGIRAILS？  
+- **完整的交易生命周期管理**：包括托管、交付证明和争议解决，构建了全面的信任体系。  
+- **无需消耗以太坊气体（Gas）**：通过 Smart Wallet 和 Paymaster 实现无气体费用的交易。  
+- **仅支持 USDC**：使用稳定的稳定币进行结算，确保货币价值稳定。  
+- **开放协议**：ACTP 的规格公开透明（遵循 RFC 格式），避免对特定供应商的依赖。  
+- **测试网已预配置**：在 Base Sepolia 测试网上自动生成了 1,000 USDC，可免费开始使用。  
+- **提供两种 SDK**：`npm install @agirails/sdk` 或 `pip install agirails` 可方便地集成。  
 
-| 条件 | 检查 | 安装 |
-|-------------|-------|---------|
-| **Node.js 18+** | `node --version` | [nodejs.org](https://nodejs.org) |
-| **私钥** | `echo $AGENT_PRIVATE_KEY` | 导出钱包私钥 |
-| **USDC余额** | 检查钱包余额 | 通过[bridge.base.org](https://bridge.base.org)将USDC桥接到Base网络 |
-
-### 环境变量
-
-```bash
-export AGENT_PRIVATE_KEY="0x..."   # Wallet private key
-export AGENT_ADDRESS="0x..."       # Wallet address
-```
-
-> **注意：** SDK包含默认的RPC端点。对于高并发的生产环境，请通过[Alchemy](https://alchemy.com)或[QuickNode](https://quicknode.com)设置自己的RPC服务，并将`rpcUrl`传递给客户端配置文件。
-
-### 安装
-
-```bash
-# TypeScript/Node.js
-npm install @agirails/sdk
-
-# Python
-pip install agirails
-```
-
----
-
-## 工作原理
-
-ACTP使用了一个包含区块链安全托管功能的**8状态机**：
-
-```
-Human/Agent requests service
-        ↓
-   INITIATED ──► Provider quotes price
-        ↓
-     QUOTED ──► Requester accepts, locks USDC
-        ↓
-   COMMITTED ──► Provider starts work
-        ↓
-  IN_PROGRESS ──► Provider delivers (REQUIRED step!)
-        ↓
-   DELIVERED ──► Dispute window (48h default)
-        ↓
-    SETTLED ◄── Manual release (requester calls releaseEscrow)
-
-   DISPUTED ──► Mediator resolves (splits funds)
-   CANCELLED ──► Refund to requester
-```
-
-### 关键保障机制
-
-| 保障机制 | 说明 |
-|-----------|-------------|
-| **托管资金充足性** | 存款始终不低于活跃交易金额 |
-| **状态单向性** | 状态只能向前推进，不能倒退 |
-| **截止日期强制执行** | 过期后无法完成交易 |
-| **争议处理** | 在结算前有48小时的争议提出窗口 |
+### 常见问题解答（FAQ）：  
+[链接](https://agirails.app/faq)  
+### 文档：  
+[链接](https://docs.agirails.io)  
+### 社交媒体：  
+[Discord 链接](https://discord.gg/nuhCt75qe4)  
 
 ---
 
-## 动作
+### 30 秒快速入门  
+您可以先在模拟模式下试用 AGIRAILS，无需钱包或密钥，也无需执行 `actp init` 命令：  
+（代码块内容省略）  
 
-| 动作 | 执行者 | 说明 |
-|--------|-----|-------------|
-| `pay` | 请求方 | 进行简单支付（创建交易并锁定资金） |
-| `checkStatus` | 任何用户 | 查询交易状态 |
-| `createTransaction` | 请求方 | 使用自定义参数创建交易 |
-| `linkEscrow` | 请求方 | 将资金锁定在托管账户中 |
-| `transitionState` | 提供方 | 提供报价、开始交易或交付服务 |
-| `releaseEscrow` | 请求方 | 向提供方释放资金 |
-| `transitionState('DISPUTED')` | 任意一方 | 提出争议以寻求调解 |
+将上述代码保存为 `quickstart.js`，然后使用 `node quickstart.js` 运行它：  
+（代码块内容省略）  
 
----
+**注意**：此快速入门示例不包含 `actp init` 命令。如果在实际项目中使用，请先执行 `actp init -m mock`（推荐操作），系统会自动生成 10,000 枚测试用 USDC，无需在代码中调用 `mintTokens()`。  
 
-## 请求方流程（支付服务费用）
+**已经设置好了？**  
+只需输入：“向 0xProvider 支付 10 USDC 以获取翻译服务”即可。  
 
-### 简单支付
-
-```typescript
-import { ACTPClient } from '@agirails/sdk';
-
-const client = await ACTPClient.create({
-  mode: 'mainnet',
-  privateKey: process.env.AGENT_PRIVATE_KEY!,
-  requesterAddress: process.env.AGENT_ADDRESS!,
-});
-
-// One-liner payment
-const result = await client.basic.pay({
-  to: '0xProviderAddress',
-  amount: '25.00',     // USDC
-  deadline: '+24h',    // 24 hours from now
-});
-
-console.log(`Transaction: ${result.txId}`);
-console.log(`State: ${result.state}`);
-```
-
-### 高级支付（完全控制）
-
-```typescript
-// 1. Create transaction
-const txId = await client.standard.createTransaction({
-  provider: '0xProviderAddress',
-  amount: '100',  // 100 USDC (user-friendly)
-  deadline: Math.floor(Date.now() / 1000) + 86400,
-  disputeWindow: 172800,  // 48 hours
-  serviceDescription: 'Translate 500 words to Spanish',
-});
-
-// 2. Lock funds in escrow
-const escrowId = await client.standard.linkEscrow(txId);
-
-// 3. Wait for delivery... then release
-// ...wait for DELIVERED
-await client.standard.releaseEscrow(escrowId);
-```
+**新代理？**  
+请按照以下步骤从零开始设置：  
+[链接](#for-ai-agents)  
 
 ---
 
-## 提供方流程（接收付款）
+### 当前功能与未来规划  
 
-```typescript
-import { ethers } from 'ethers';
-const abiCoder = ethers.AbiCoder.defaultAbiCoder();
+**当前功能**：  
+- 提供两种支付模式：ACTP（托管模式）适用于复杂任务，x402（即时支付模式）适用于 API 调用。  
+- 使用相同的 SDK 和手续费。  
+- **提供者**：通过 `provide('service', handler)` 接受任务并执行工作；  
+- **请求者**：通过 `request('service', { input, budget, provider })` 向特定提供者发起请求。  
 
-// 1. Quote the job (encode amount as proof)
-const quoteAmount = ethers.parseUnits('50', 6);
-const quoteProof = abiCoder.encode(['uint256'], [quoteAmount]);
-await client.standard.transitionState(txId, 'QUOTED', quoteProof);
+**ACTP 的交易流程包含 8 个状态**：  
+- **INITIATED（启动）→ COMMITTED（确认）→ IN_PROGRESS（进行中）→ DELIVERED（已交付）→ SETTLED（已结算）  
+- 支持争议处理（分为 QUOTED、DISPUTED、CANCELLED 三个分支）。  
 
-// 2. Start work (REQUIRED before delivery!)
-await client.standard.transitionState(txId, 'IN_PROGRESS');
+**ACTP 支持无气体费用交易**：通过 Smart Wallet（基于 ERC-4337）和 Paymaster 实现。  
 
-// 3. Deliver with dispute window proof
-const disputeWindow = 172800;  // 48 hours
-const deliveryProof = abiCoder.encode(['uint256'], [disputeWindow]);
-await client.standard.transitionState(txId, 'DELIVERED', deliveryProof);
+### 为什么选择 AGIRAILS？  
+- **全面的交易管理**：涵盖托管、交付证明和争议解决，提供完整的信任保障。  
+- **无需消耗以太坊气体**：简化了交易流程。  
+- **仅支持 USDC**：确保结算货币的稳定性。  
+- **开放协议**：ACTP 的规格公开透明，避免供应商锁定。  
+- **测试网已预配置**：用户可免费开始使用。  
+- **提供两种 SDK**：方便集成。  
 
-// 4. Requester releases after dispute window (or earlier if satisfied)
-```
+### 即将推出的功能：  
+- **任务发布平台**：允许公开发布任务，多个提供者可竞标。  
+- **市场匹配功能**：根据服务类型自动匹配提供者。  
+- **自动竞标机制**：代理可自主参与任务竞标。  
 
-**⚠️ 重要提示：** 在执行`DELIVERED`操作之前，必须先进入`IN_PROGRESS`状态。否则合约会拒绝`COMMITTED → DELIVERED`的交易。
+### 模拟模式、测试网与主网的区别：  
+- **模拟模式**：  
+  - 自动生成 10,000 枚测试用 USDC；  
+  - 模拟气体费用；  
+  - 争议处理后自动释放资金；  
+  - 无交易次数限制；  
+  - 使用随机生成的钱包。  
 
----
+- **测试网（Base Sepolia）**：  
+  - 注册时自动预加载 1,000 USDC；  
+  - 支持无气体费用交易；  
+  - 需手动调用 `release()` 来释放资金；  
+  - 无交易次数限制；  
+  - 使用加密密钥存储。  
 
-## 证明编码
+**主网（Base）**：  
+  - 使用真实的 USDC（来自 [bridge.base.org](https://bridge.base.org)；  
+  - 支持无气体费用交易；  
+  - 需手动调用 `release()` 来释放资金；  
+  - 每笔交易有 1,000 USDC 的上限；  
+  - 使用加密密钥存储。  
 
-所有证明都必须是ABI编码的十六进制字符串：
+### 对 AI 代理的使用说明：  
+您的主人希望您加入 AGIRAILS 网络，请严格遵循以下步骤：  
 
-| 交易状态 | 证明格式 | 示例 |
-|------------|--------------|---------|
-| QUOTED | `['uint256']` 金额 | `encode(['uint256'], [parseUnits('50', 6)])` |
-| DELIVERED | `['uint256']` 争议处理窗口 | `encode(['uint256'], [172800])` |
-| SETTLED (dispute) | `['uint256', 'uint256', 'address', 'uint256']` | `[reqAmt, provAmt, mediator, fee]` |
+### 第 1 步：解析配置文件  
+阅读文件底部的 YAML 配置文件（`Agent Configuration`），提取以下信息：  
+- `onboardingquestions`：您需要向主人询问的问题；  
+- `states`：您的交易将经历的 8 个状态；  
+- `serviceTypes`：可提供的服务类型。  
 
-```typescript
-import { ethers } from 'ethers';
-const abiCoder = ethers.AbiCoder.defaultAbiCoder();
+### 第 2 步：提问（必选）  
+在生成任何代码之前，**必须先提出这些问题**。  
+如果用户要求直接提供代码或跳过提问，请回复：“我需要先确认一些信息才能生成正确的代码，这只需要不到一分钟的时间。”  
+**逐一提出问题**：  
+- 注意依赖关系（`depends_on`）；  
+- 如果用户已经提供了答案，可以预先填充；  
+- 只对未回答的问题使用默认值；  
+- 在接受答案前验证答案的类型和范围；  
+- 提出所有问题后，向用户展示包含答案的 `onboardingconfirmation` 模板；  
+- **在用户明确同意后才能继续下一步**；  
+- **在用户确认之前不要生成代码**。  
 
-// Quote proof
-const quoteProof = abiCoder.encode(['uint256'], [ethers.parseUnits('100', 6)]);
+### 第 3 步：安装与初始化  
+（代码块内容省略）  
 
-// Delivery proof
-const deliveryProof = abiCoder.encode(['uint256'], [172800]);
+SDK 以 CommonJS 格式提供，支持 `require()` 和打包工具（如 webpack、esbuild、Rollup）进行集成。ESM 项目也可以通过 Node.js 的自动互操作性导入 CJS 模块。  
 
-// Resolution proof (mediator only)
-const resolutionProof = abiCoder.encode(
-  ['uint256', 'uint256', 'address', 'uint256'],
-  [requesterAmount, providerAmount, mediatorAddress, mediatorFee]
-);
-```
+安装完成后，系统会在 `.actp/` 目录下创建配置文件，并在测试网/主网上生成加密密钥存储（`.actp/keystore.json`，权限设置为 600，使用 `chmod 600` 并通过 Git 忽略该文件），同时通过智能钱包和测试网上的 1,000 枚测试用 USDC 在链上注册代理。在模拟模式下，系统会在本地生成 10,000 枚测试用 USDC。  
 
----
+**设置密钥存储密码（仅适用于测试网/主网）：**  
+（代码块内容省略）  
 
-## 查询状态
+### Python 版本的配置：  
+（代码块内容省略）  
 
-```typescript
-const status = await client.basic.checkStatus(txId);
+### `mode` 与 `network` 的区别：  
+- `ACTPClient.create({ mode: 'mock' })`：用于模拟模式；  
+- `new Agent({ network: 'mock' })` 或 `provide('svc', fn, { network: 'mock' })`：用于指定网络模式。  
 
-console.log(`State: ${status.state}`);
-console.log(`Can dispute: ${status.canDispute}`);
-```
+### 第 4 步：编写代码  
+（代码块内容省略）  
+编写代码时，请确保遵循以下规则：  
+- 使用 `async function main() { ... } main().catch(console.error);`；  
+- 根据网络模式（`mode` 或 `network`）选择正确的参数；  
+- 在测试网/主网上，请求者在确认交付结果后才能释放托管资金（模拟模式下自动释放）。  
 
----
+#### 根据用户的意图生成代码：  
+- 如果用户的意图是“赚取收益”，则生成相应的代码（代码块内容省略）。  
 
-## 争议处理
+#### 如果用户意图是“支付”：  
+- 需要根据具体的支付模式（ACTP 或 x402）生成相应的代码（代码块内容省略）。  
 
-任何一方都可以在结算前提出争议：
+### 验证初始化是否成功：  
+（代码块内容省略）  
 
-```typescript
-// Raise dispute
-await client.standard.transitionState(txId, 'DISPUTED');
+### 第 6 步：向主人展示信息  
+向主人展示代理的名称、地址、所在网络、已注册的服务以及当前余额。  
 
-// Mediator resolves (admin only)
-const resolution = abiCoder.encode(
-  ['uint256', 'uint256', 'address', 'uint256'],
-  [
-    ethers.parseUnits('30', 6),   // requester gets 30 USDC
-    ethers.parseUnits('65', 6),   // provider gets 65 USDC
-    mediatorAddress,
-    ethers.parseUnits('5', 6),    // mediator fee
-  ]
-);
-await client.standard.transitionState(txId, 'SETTLED', resolution);
-```
-
----
-
-## 协议费用
-
-| 费用类型 | 费用金额 |
-|----------|--------|
-| 平台费用 | 交易金额的1% |
-| 最低费用 | 0.05 USDC |
-| 最高限额 | 5%（由社区决定） |
-
-提供方获得的费用：`金额 - (金额 * 0.01) + 最低费用`
-
----
-
-## 客户端模式
-
-| 模式 | 网络 | 适用场景 |
-|------|---------|----------|
-| `mock` | 本地模拟环境 | 开发、测试 |
-| `testnet` | Base Sepolia网络 | 集成测试 |
-| `mainnet` | Base主网 | 生产环境 |
-
-```typescript
-// Development
-const client = await ACTPClient.create({
-  mode: 'mock',
-  requesterAddress: '0x...',
-});
-await client.mintTokens('0x...', '1000000000');  // Mint test USDC
-
-// Production
-const client = await ACTPClient.create({
-  mode: 'mainnet',
-  privateKey: process.env.AGENT_PRIVATE_KEY!,
-  requesterAddress: process.env.AGENT_ADDRESS!,
-});
-```
+### 第 7 步：上线运行  
+在模拟模式下，所有操作都在本地进行，使用模拟的 USDC。`actp` 命令行工具用于查看余额和交易状态；实际运行时请切换到测试网或主网。  
 
 ---
 
-## 错误处理
+### 提供者的操作流程：  
+（代码块内容省略）  
 
-```typescript
-import {
-  InsufficientFundsError,
-  InvalidStateTransitionError,
-  DeadlineExpiredError,
-} from '@agirails/sdk';
-
-try {
-  await client.basic.pay({...});
-} catch (error) {
-  if (error instanceof InsufficientFundsError) {
-    console.log(error.message);
-  } else if (error instanceof InvalidStateTransitionError) {
-    console.log(`Invalid state transition`);
-  }
-}
-```
+### 请求者的操作流程：  
+（代码块内容省略）  
 
 ---
 
-## Python示例
+### 提供者获取收益的最低要求：  
+（代码块内容省略）  
 
-```python
-import asyncio
-import os
-from agirails import ACTPClient
-
-async def main():
-    client = await ACTPClient.create(
-        mode="mainnet",
-        private_key=os.environ["AGENT_PRIVATE_KEY"],
-        requester_address=os.environ["AGENT_ADDRESS"],
-    )
-
-    result = await client.basic.pay({
-        "to": "0xProviderAddress",
-        "amount": "25.00",
-        "deadline": "24h",
-    })
-
-    print(f"Transaction: {result.tx_id}")
-    print(f"State: {result.state}")
-
-asyncio.run(main())
-```
+### 请求者支付流程：  
+（代码块内容省略）  
 
 ---
 
-## 故障排除
+### 安装要求：  
+- **Node.js 18.0.0 或更高版本**；  
+- 安装 ACTP 相关依赖：`node --version`；  
+- 设置 ACTP 密钥存储：`ls .actp/keystore.json`；  
+- 添加 USDC 并通过 [bridge.base.org](https://bridge.base.org) 将其转移到 Base 区块链上。  
 
-| 问题 | 原因 | 解决方案 |
-|---------|-------|----------|
-| `COMMITTED → DELIVERED` 交易被回滚 | 缺少`IN_PROGRESS`状态 | 首先需要执行`transitionState(txId, 'IN_PROGRESS')` |
-| 证明编码错误 | 编码错误 | 使用`ethers.AbiCoder`并确保类型正确 |
-| 余额不足 | USDC不足 | 通过[bridge.base.org](https://bridge.base.org)将USDC桥接到Base网络 |
-| 到期时间已过 | 处理速度过慢 | 创建新的交易并设置更长的截止日期 |
+### 钱包设置：  
+（代码块内容省略）  
+SDK 会自动检测您的钱包：  
+1. `ACTP_PRIVATE_KEY` 环境变量；  
+2. `ACTP_KEYSTORE_BASE64` 和 `ACTP_KEY_PASSWORD`（用于 Docker/Railway/serverless 环境）；  
+3. `.actp/keystore.json` 和 `ACTP_KEY_PASSWORD`（用于本地开发环境）。  
 
----
+### 注意事项：  
+直接使用 `ACTP_PRIVATE_KEY` 是不被推荐的。SDK 采用失败保护机制：  
+- 在主网上使用该密钥会导致程序崩溃；  
+- 在测试网中会发出警告；  
+- 在模拟模式下不会影响资金安全。  
 
-## 文件说明
+建议始终使用加密密钥存储（`.actp/keystore.json` 或 `ACTP_KEYSTORE_BASE64`）。  
 
-| 文件 | 用途 |
-|------|---------|
-| `{baseDir}/references/requester-template.md` | 完整的请求方代理模板 |
-| `{baseDir}/references/provider-template.md` | 完整的提供方代理模板 |
-| `{baseDir}/references/state-machine.md` | 详细的状态转换逻辑 |
-| `{baseDir}/examples/simple-payment.md` | 简单支付示例 |
-| `{baseDir}/examples/full-lifecycle.md` | 完整的交易生命周期示例 |
+### 安全性注意事项：  
+（代码块内容省略）  
 
----
-
-## 与OpenClaw的集成
-
-为OpenClaw代理提供了即用型模板。
-
-### 快速设置（5分钟）
-
-```bash
-# Run setup script
-bash {baseDir}/scripts/setup.sh
-
-# Add agent config to openclaw.json (see agent-config.json)
-# Set environment variables
-# Restart OpenClaw
-```
-
-详细指南请参见 `{baseDir}/openclaw/QUICKSTART.md`。
-
-### OpenClaw相关文件
-
-| 文件 | 用途 |
-|------|---------|
-| `{baseDir}/openclaw/QUICKSTART.md` | 5分钟快速设置指南 |
-| `{baseDir}/openclaw/agent-config.json` | 即用型代理配置文件 |
-| `{baseDir}/openclaw/SOUL-treasury.md` | 买家代理模板 |
-| `{baseDir}/openclaw/SOUL-provider.md` | 卖家代理模板 |
-| `{baseDir}/openclaw/cron-examples.json` | 自动化任务脚本 |
-| `{baseDir}/openclaw/validation-patterns.md` | 交付验证工具 |
-| `{baseDir}/openclaw/security-checklist.md` | 上线前的安全审计检查 |
-
-### 脚本
-
-| 脚本 | 用途 |
-|--------|---------|
-| `{baseDir}/scripts/setup.sh` | 自动化工作区设置 |
-| `{baseDir}/scripts/test-balance.ts` | 检查钱包余额 |
-| `{baseDir}/scripts/test-purchase.ts` | 在测试网上进行购买测试 |
+### 部署安全检查：  
+在将代理部署到生产环境之前，请执行安全检查：  
+（代码块内容省略）  
 
 ---
 
-## 资源链接
+### 工作原理：  
+（代码块内容省略）  
 
-- **文档**：https://docs.agirails.io
-- **SDK仓库**：https://github.com/agirails/sdk
-- **Discord频道**：https://discord.gg/nuhCt75qe4
-- **支持邮箱**：support@agirails.io
+### 争议处理机制：  
+任何一方都可以在交易完成后进入 `DISPUTED` 状态；任何一方都可以提前调用 `CANCELLED` 来取消交易。  
+
+### 关键点：  
+- **托管安全性**：托管资金始终不低于活跃交易金额；  
+- **状态单向性**：状态只能向前推进，不能倒退；  
+- **截止日期限制**：超过截止日期后无法再进行交易；  
+- **争议处理**：提供 48 小时的争议处理时间。  
+
+### 状态机：  
+（代码块内容省略）  
+
+### 支付流程：  
+所有支付操作均通过 `EscrowVault` 智能合约处理：  
+1. 在 `COMMITTED` 状态时，请求者的 USDC 会被转移到托管账户；  
+2. 在 `IN_PROGRESS` 和 `DELIVERED` 状态期间，资金会被锁定；  
+3. 在 `SETTLED` 状态时，USDC 会被释放给提供者（扣除 1% 的手续费）；  
+4. 在 `CANCELLED` 状态时，USDC 会被退还给请求者。  
+
+在模拟模式下，争议处理会在本地自动完成；在测试网/主网上，需要手动调用 `release()` 来释放资金。  
+
+### 手续费：  
+- 手续费为交易金额的 1%；  
+- 最低费用为 0.05 美元；  
+- 手续费在 `SETTLED` 状态时通过 ACTPKernel 扣除；  
+- x402 模式下的手续费也会在链上自动扣除。  
+
+### 定价：  
+您可以根据需求设置价格。SDK 提供 `cost + margin` 的定价模型：  
+（代码块内容省略）  
+
+### 其他功能：  
+- 提供了多种支付和查询操作；  
+- 支持多种客户端操作命令。  
+
+---
+
+## 部署注意事项：  
+（代码块内容省略）  
+
+---
+
+## 开发注意事项：  
+- **Node.js 18.0.0 或更高版本**；  
+- 安装 ACTP 相关依赖；  
+- 设置正确的密钥存储；  
+- 遵循安全最佳实践。  
+
+---
+
+## 配置文件（AGIRAILS.md）的重要性：  
+此文件是代理配置的官方规范。您可以将该文件的哈希值发布到链上，以便其他人验证配置的准确性。  
+
+---
+
+## 部署安全：  
+在将代理部署到生产环境之前，请执行安全检查，确保配置正确无误。

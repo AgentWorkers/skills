@@ -1,14 +1,13 @@
 ---
-slug: "data-source-audit"
-display_name: "Data Source Audit"
-description: "对所有建筑数据源和系统进行全面审计。梳理数据流，识别数据孤岛（即数据无法共享或重复存储的情况），评估数据质量，并制定数据整合的路线图。"
----
-
-# 建筑行业的数据源审计
+name: "data-source-audit"
+description: "对所有建筑数据源和系统进行全面审计。绘制数据流图，识别数据孤岛（即数据无法有效共享或整合的情况），评估数据质量，并制定数据整合的路线图。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🔗", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑项目的数据源审计
 
 ## 概述
 
-对建筑行业的数据源进行全面审计，以识别数据孤岛、梳理数据流、评估数据质量，并制定数据集成策略。这是推动数字化转型和数据驱动的建筑工程项目的重要步骤。
+对建筑项目的数据源进行全面审计，以识别数据孤岛、梳理数据流、评估数据质量，并制定数据集成策略。这是实现数字化转型和数据驱动的建设项目所必需的。
 
 ## 商业价值
 
@@ -22,15 +21,15 @@ description: "对所有建筑数据源和系统进行全面审计。梳理数据
 - 现场应用程序
 - 电子表格
 
-> **注意：**本技能与具体供应商无关，适用于任何类型的数据源。示例中提到的产品名称均为其各自所有者的商标。
+> **注意：** 本技能与具体供应商无关，适用于任何类型的数据源。示例中提到的产品名称均为其各自所有者的商标。
 
 本技能有助于：
-- 完整识别所有数据源
+- 发现所有可用的数据源
 - 理清数据流及其相互依赖关系
-- 发现数据集成的机会
-- 优先安排数据优化工作
+- 识别数据集成的机会
+- 确定数据改进工作的优先级
 
-## 技术实现方式
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -453,7 +452,7 @@ class DataSourceAuditor:
         return recommendations
 ```
 
-## 快速入门指南
+## 快速入门
 
 ```python
 # Initialize auditor
@@ -520,7 +519,7 @@ catalog.to_excel("data_catalog.xlsx", index=False)
 
 ## 调查模板
 
-使用此调查问卷来了解企业内部的所有数据源：
+使用此调查问卷来梳理整个组织中的数据源：
 
 ```yaml
 System Survey:

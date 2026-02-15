@@ -12,9 +12,7 @@ For quick start - one line of code, SDK handles everything.
 import { ACTPClient } from '@agirails/sdk';
 
 const client = await ACTPClient.create({
-  mode: 'mainnet',
-  privateKey: process.env.AGENT_PRIVATE_KEY!,
-  requesterAddress: process.env.AGENT_ADDRESS!,
+  mode: 'mainnet',  // auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
 });
 
 // One line - creates tx and locks escrow
@@ -51,9 +49,7 @@ import { ACTPClient } from '@agirails/sdk';
 import { ethers } from 'ethers';
 
 const client = await ACTPClient.create({
-  mode: 'mainnet',
-  privateKey: process.env.AGENT_PRIVATE_KEY!,
-  requesterAddress: process.env.AGENT_ADDRESS!,
+  mode: 'mainnet',  // auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
 });
 
 // Step 1: Create transaction
@@ -100,9 +96,7 @@ import { ACTPClient } from '@agirails/sdk';
 import { ethers } from 'ethers';
 
 const client = await ACTPClient.create({
-  mode: 'mainnet',
-  privateKey: process.env.PROVIDER_PRIVATE_KEY!,
-  requesterAddress: process.env.PROVIDER_ADDRESS!,
+  mode: 'mainnet',  // auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
 });
 
 const abiCoder = ethers.AbiCoder.defaultAbiCoder();
@@ -173,9 +167,7 @@ import os
 
 async def main():
     client = await ACTPClient.create(
-        mode="mainnet",
-        private_key=os.environ["AGENT_PRIVATE_KEY"],
-        requester_address=os.environ["AGENT_ADDRESS"],
+        mode="mainnet",  # auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
     )
 
     result = await client.basic.pay({
@@ -200,9 +192,7 @@ import time
 
 async def main():
     client = await ACTPClient.create(
-        mode="mainnet",
-        private_key=os.environ["AGENT_PRIVATE_KEY"],
-        requester_address=os.environ["AGENT_ADDRESS"],
+        mode="mainnet",  # auto-detects .actp/keystore.json or ACTP_PRIVATE_KEY
     )
 
     # Create and lock

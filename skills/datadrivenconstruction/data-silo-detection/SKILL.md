@@ -1,16 +1,15 @@
 ---
-slug: "data-silo-detection"
-display_name: "Data Silo Detection"
-description: "检测并绘制建筑组织中的数据孤岛分布图。识别那些彼此孤立的数据源以及潜在的集成机会。"
----
-
-# 数据孤岛检测
+name: "data-silo-detection"
+description: "检测并绘制建筑组织中的数据孤岛分布图。识别那些相互孤立的数据源以及实现数据整合的潜在机会。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🔗", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 数据孤岛检测
 
 ## 概述
 
-本技能基于DDC方法论（第1.2章），用于检测和识别建筑组织中的数据孤岛，包括断开连接的数据源、重复数据以及数据整合的潜在机会。
+本技能基于DDC方法论（第1.2章），用于检测和识别建筑组织中的数据孤岛，包括断开连接的数据源、重复数据以及整合机会。
 
-**参考书籍**：《现代建筑中的技术与管理系统》（"Технологии и системы управления в современном строительстве"）
+**参考书籍**：《现代建筑中的技术与管理系统》（Technologies and Management Systems in Modern Construction）
 
 ## 快速入门
 
@@ -680,17 +679,17 @@ for phase, items in analysis.integration_roadmap.items():
 ## 快速参考
 
 | 组件          | 功能                |
-|---------------|-------------------|
+|--------------|-------------------|
 | `DataSiloDetector` | 主要检测引擎           |
 | `DataSource`     | 数据源定义             |
-| `DataSilo`     | 检测到的数据孤岛及其详细信息     |
+| `DataSilo`     | 被检测到的数据孤岛及其详细信息     |
 | `DuplicateData`   | 重复数据检测           |
 | `SiloAnalysis`   | 完整的分析结果           |
-| `SiloSeverity`   | 数据孤岛的严重程度分类       |
+| `SiloSeverity`   | 孤岛的严重程度分类         |
 
 ## 资源
 
-- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第1.2章
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（Data-Driven Construction），第1.2章
 - **网站**：https://datadrivenconstruction.io
 
 ## 下一步操作
