@@ -1,6 +1,6 @@
 ---
 name: clawpod
-description: 通过 Massive 的 Unblocker REST API 可以获取任何网页内容。该 API 在服务器端处理 JavaScript 渲染、反爬虫保护、验证码、付费墙以及地理限制等问题，最终返回格式化良好的 Markdown 文本。适用于需要获取网页内容、进行数据抓取或提取信息的场景，尤其是在标准 HTTP 请求会被阻止的情况下。
+description: 通过 Massive 的 Unblocker REST API 获取任何网页。该 API 可在服务器端处理 JavaScript 渲染、反机器人保护、验证码、付费墙以及地理限制等问题，最终返回格式化良好的 Markdown 内容。适用于所有需要获取网页、进行数据抓取或内容提取的场景，特别是在标准 HTTP 请求被阻止的情况下。
 allowed-tools: Bash(curl:*), Bash(node:*), Bash(npm:*)
 homepage: https://clawpod.joinmassive.com
 metadata: {"openclaw":{"emoji":"🔓","homepage":"https://clawpod.joinmassive.com","primaryEnv":"MASSIVE_UNBLOCKER_TOKEN","requires":{"bins":["curl"],"env":["MASSIVE_UNBLOCKER_TOKEN"]}}}
@@ -20,22 +20,22 @@ node -e "require('node-html-markdown')" 2>/dev/null || npm install -g node-html-
 ```
 
 如果 API 令牌缺失，请告知用户：
-1. 访问 **clawpod.joinmassive.com/waitlist** 以获取 API 令牌。
-2. 请用户提供该令牌。
-3. 将令牌保存在环境中以便后续使用（例如，通过导出或配置文件）。
+1. 访问 **clawpod.joinmassive.com/waitlist** 获取 API 令牌。
+2. 提供该令牌。
+3. 将令牌保存在环境中以便后续使用（例如，通过导出文件或设置文件）。
 4. 在获取到令牌之前，请勿继续操作。
 
-如果 `node-html-markdown` 无法使用，也可以直接进行操作——系统会返回原始 HTML 内容，届时大型语言模型（LLM）可以直接解析这些内容。
+如果 `node-html-markdown` 无法使用，可以继续执行操作——系统会直接返回原始 HTML 内容，然后由大型语言模型（LLM）进行解析。
 
 ## 工作原理
 
-使用单一的 API 端点，通过 `GET` 请求获取网页内容。系统会将获取到的 HTML 内容传递给 `node-html-markdown` 工具进行处理，从而生成格式规范的 Markdown 文本；如果 `node-html-markdown` 无法使用，则会直接返回原始 HTML 内容。
+使用单个 API 端点，发送 `GET` 请求以获取 HTML 内容。内容会通过 `node-html-markdown` 工具进行处理，从而生成格式规范的 Markdown 文本；如果 `node-html-markdown` 无法使用，则会直接返回原始 HTML 内容。
 
 ```
 https://unblocker.joinmassive.com/browser?url=<encoded-url>
 ```
 
-授权请求头：`Authorization: Bearer $MASSIVE_UNBLOCKER_TOKEN`
+授权头：`Authorization: Bearer $MASSIVE_UNBLOCKER_TOKEN`
 
 ## 获取 URL 内容
 
@@ -46,11 +46,11 @@ curl -s -G --data-urlencode "url=THE_URL" \
   (node -e "const{NodeHtmlMarkdown}=require('node-html-markdown');console.log(NodeHtmlMarkdown.translate(require('fs').readFileSync('/tmp/_page.html','utf8')))" 2>/dev/null || cat /tmp/_page.html)
 ```
 
-请将 `THE_URL` 替换为实际的 URL。`curl --data-urlencode` 会自动处理 URL 的编码工作。
+请将 `THE_URL` 替换为实际的 URL。`curl --data-urlencode` 会自动处理 URL 的编码问题。
 
 ## 获取多个 URL 的内容
 
-按顺序遍历多个 URL。每次请求可能需要最多 2 分钟的时间（用于处理验证码或进行重试）。
+按顺序遍历多个 URL。每次请求可能需要最多 2 分钟（包括验证码处理和重试时间）。
 
 ```bash
 URLS=(
@@ -71,13 +71,13 @@ done
 
 根据需要将参数添加到查询字符串中：
 
-| 参数          | 值            | 默认值         | 使用场景                |
-|---------------|-----------------|--------------|----------------------|
-| `format`       | `rendered`       | `rendered`      | 使用 `raw` 可跳过 JavaScript 渲染（速度更快） |
-| `expiration`   | `0` 到 `N`（天）      | `1`          | 设置为 `0` 可绕过缓存            |
-| `delay`        | `0.1` 到 `10`（秒）     | 无            | 页面需要更多时间加载动态内容时使用         |
-| `device`       | 设备名称字符串     | `desktop`       | 需要针对移动设备的特定内容时使用       |
-| `ip`          | `residential`     | `isp`         | 使用 ISP IP 地址以降低被检测的风险       |
+| 参数 | 值 | 默认值 | 使用场景 |
+|---------|--------|---------|----------|
+| `format` | `rendered` 或 `raw` | `rendered` | 设置为 `raw` 可跳过 JavaScript 渲染（速度更快） |
+| `expiration` | `0` 到 `N`（天） | `1` | 设置为 `0` 可绕过缓存 |
+| `delay` | `0.1` 到 `10`（秒） | 无 | 如果页面需要更多时间加载动态内容，可设置此参数 |
+| `device` | 设备名称字符串 | `desktop` | 需要针对移动设备的特定内容 |
+| `ip` | `residential` 或 `isp` | `residential` | 选择 `residential` 可降低被检测到的风险 |
 
 示例（包含可选参数）：
 
@@ -88,10 +88,9 @@ curl -s -G --data-urlencode "url=THE_URL" \
   (node -e "const{NodeHtmlMarkdown}=require('node-html-markdown');console.log(NodeHtmlMarkdown.translate(require('fs').readFileSync('/tmp/_page.html','utf8')))" 2>/dev/null || cat /tmp/_page.html)
 ```
 
-## 规则
-
-- **每个请求仅返回一个结果。** 同一 URL 不会被重复请求。
-- **必须对目标 URL 进行编码。** 必须执行此操作。
-- **处理多个 URL 时需按顺序进行。** 不允许并发请求。
-- **每次请求的超时时间为 2 分钟。** 如果页面加载缓慢，可能是由于 API 处理重试或验证码导致的。
-- **如果 `node-html-markdown` 可用，请将其应用于处理结果。** 它会将 HTML 转换为格式规范的 Markdown；如果无法使用，则返回原始 HTML，大型语言模型仍可对其进行解析。
+## 规则：
+- 每次请求仅返回一个结果。请勿重复请求相同的 URL。
+- 必须对目标 URL 进行 URL 编码。
+- 多个 URL 需要按顺序处理，禁止并行请求。
+- 每次请求的超时时间为 2 分钟。如果页面加载缓慢，可能是由于 API 处理重试或验证码导致的。
+- 如果 `node-html-markdown` 可用，会将 HTML 转换为格式规范的 Markdown；否则会返回原始 HTML，大型语言模型仍能对其进行解析。

@@ -6,30 +6,31 @@ description: >
   (4) Geocoding addresses to coordinates and reverse, (5) Places search and details, (6) Transit 
   planning with arrival times. Supports future departure times, traffic models (pessimistic/optimistic), 
   avoid options (tolls/highways), and multiple travel modes (driving/walking/bicycling/transit).
-version: 3.0.0
+version: 3.1.2
 author: Leo 🦁
 tags: [maps, places, location, navigation, google, traffic, directions, geocoding, routes-api]
-metadata: {"clawdbot":{"emoji":"🗺️","requires":{"env":["GOOGLE_API_KEY"]},"primaryEnv":"GOOGLE_API_KEY","install":[{"id":"pip","kind":"pip","package":"requests","label":"Install dependencies (pip)"}]}}
+metadata: {"clawdbot":{"emoji":"🗺️","requires":{"env":["GOOGLE_API_KEY"]},"primaryEnv":"GOOGLE_API_KEY","secondaryEnv":["GOOGLE_MAPS_API_KEY"],"install":[{"id":"pip","kind":"pip","package":"requests","label":"Install requests library"}]}}
 allowed-tools: [exec]
 ---
 
 # Google Maps 🗺️
 
-Google Maps集成功能由Routes API提供支持。
+Google Maps的集成功能由Routes API提供支持。
 
-## 必需条件
+## 必备条件
 
 - 需要设置`GOOGLE_API_KEY`环境变量。
 - 在Google Cloud Console中启用Routes API、Places API和Geocoding API。
 
-## 配置
+## 配置参数
 
 | 环境变量 | 默认值 | 说明 |
 |--------------|---------|-------------|
 | `GOOGLE_API_KEY` | - | 必需的Google Maps API密钥 |
-| `GOOGLE_MAPS_LANG` | `en` | 响应语言（en、he、ja等） |
+| `GOOGLE_MAPS_API_KEY` | - | `GOOGLE_API_KEY`的备用选项（仅作为备用） |
+| `GOOGLE_MAPS_LANG` | `en` | 响应语言（如en、he、ja等） |
 
-在OpenClaw配置文件中进行设置：
+请在OpenClaw配置文件中设置这些参数：
 ```json
 {
   "env": {
@@ -49,22 +50,22 @@ python3 skills/google-maps/lib/map_helper.py <action> [options]
 
 ## 功能说明
 
-### `distance` - 计算行驶时间
+### `distance` - 计算旅行时间
 
 ```bash
 python3 lib/map_helper.py distance "origin" "destination" [options]
 ```
 
-**选项：**
-| 选项 | 值 | 说明 |
+**参数说明：**
+| 参数 | 可选值 | 说明 |
 |--------|--------|-------------|
-| `--mode` | driving（驾驶）、walking（步行）、bicycling（骑行）、transit（公共交通） | 行驶方式（默认为driving） |
-| `--depart` | now（现在）、+30m（30分钟后）、+1h（1小时后）、14:00（14:00）、2026-02-07 08:00（2026年2月7日8:00） | 出发时间 |
-| `--arrive` | 14:00（14:00） | 到达时间（仅适用于公共交通） |
-| `--traffic` | best_guess（最佳估计）、pessimistic（悲观估计）、optimistic（乐观估计） | 交通模型 |
-| `--avoid` | tolls（收费道路）、highways（高速公路）、ferries（渡轮） | 以逗号分隔的避免路线类型 |
+| `--mode` | driving, walking, bicycling, transit | 旅行方式（默认：driving） |
+| `--depart` | now, +30m, +1h, 14:00, 2026-02-07 08:00 | 出发时间 |
+| `--arrive` | 14:00 | 到达时间（仅适用于交通方式） |
+| `--traffic` | best_guess, pessimistic, optimistic | 交通模型 |
+| `--avoid` | tolls, highways, ferries | 需要避免的交通方式（用逗号分隔） |
 
-**示例：**
+**使用示例：**
 ```bash
 python3 lib/map_helper.py distance "New York" "Boston"
 python3 lib/map_helper.py distance "Los Angeles" "San Francisco" --depart="+1h"
@@ -73,7 +74,7 @@ python3 lib/map_helper.py distance "London" "Manchester" --mode=transit --arrive
 python3 lib/map_helper.py distance "Paris" "Lyon" --avoid=tolls,highways
 ```
 
-**响应结果：**
+**返回结果：**
 ```json
 {
   "distance": "215.2 mi",
@@ -93,21 +94,21 @@ python3 lib/map_helper.py distance "Paris" "Lyon" --avoid=tolls,highways
 python3 lib/map_helper.py directions "origin" "destination" [options]
 ```
 
-**其他选项（除计算距离外）：**
-| 选项 | 说明 |
+**附加参数：**
+| 参数 | 说明 |
 |--------|-------------|
 | `--alternatives` | 返回多条路线 |
 | `--waypoints` | 中间停留点（用管道符号分隔） |
 | `--optimize` | 优化停留点顺序（采用TSP算法） |
 
-**示例：**
+**使用示例：**
 ```bash
 python3 lib/map_helper.py directions "New York" "Washington DC"
 python3 lib/map_helper.py directions "San Francisco" "Los Angeles" --alternatives
 python3 lib/map_helper.py directions "Miami" "Orlando" --waypoints="Fort Lauderdale|West Palm Beach" --optimize
 ```
 
-**响应结果包括：** 路线概要、各个停留点的名称、行驶时间、静态行驶时间、警告信息以及最优的停留点顺序。
+**返回结果包括：** 路线概要、各个停留点的名称、行驶时间、总行驶时间、交通警告信息以及详细的行驶路径。
 
 ---
 
@@ -119,12 +120,12 @@ python3 lib/map_helper.py directions "Miami" "Orlando" --waypoints="Fort Lauderd
 python3 lib/map_helper.py matrix "orig1|orig2" "dest1|dest2"
 ```
 
-**示例：**
+**使用示例：**
 ```bash
 python3 lib/map_helper.py matrix "New York|Boston" "Philadelphia|Washington DC"
 ```
 
-**响应结果：**
+**返回结果：**
 ```json
 {
   "origins": ["New York", "Boston"],
@@ -154,7 +155,7 @@ python3 lib/map_helper.py reverse 51.5074 -0.1278  # London
 
 ---
 
-### `search` - 搜索地点
+### `search` - 查找地点
 
 ```bash
 python3 lib/map_helper.py search "coffee near Times Square"
@@ -171,17 +172,17 @@ python3 lib/map_helper.py details "<place_id>"
 
 ## 交通模型
 
-| 模型 | 适用场景 |
+| 交通模型 | 适用场景 |
 |-------|----------|
-| `best_guess` | 默认的平衡估计值 |
-| `pessimistic` | 重要会议等场景（最坏情况） |
-| `optimistic` | 最佳情况 |
+| `best_guess` | 默认的平衡预测模型 |
+| `pessimistic` | 用于重要会议等需要考虑最坏情况的场景 |
+| `optimistic` | 用于最佳情况的预测 |
 
 ---
 
 ## 地区限制
 
-部分功能可能并非在所有国家都可用：
+某些功能可能并非在所有国家都可用：
 
 | 功能 | 可用地区 |
 |---------|--------------|
@@ -209,9 +210,9 @@ python3 lib/map_helper.py distance "東京" "大阪"
 python3 lib/map_helper.py distance "دبي" "أبو ظبي"
 ```
 
-**语言配置：**
-1. 通过环境变量设置默认语言：`GOOGLE_MAPS_LANG=he`（永久生效） |
-2. 每次请求时手动覆盖语言设置：`--lang=ja` |
+**语言配置方法：**
+1. 通过环境变量设置默认语言：`GOOGLE_MAPS_LANG=he`（永久生效）
+2. 每次请求时手动指定语言：`--lang=ja`
 
 ```bash
 # Set Hebrew as default in OpenClaw config
