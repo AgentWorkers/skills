@@ -1,0 +1,21 @@
+// .vscode/settings.json
+{
+    "files.exclude": {
+        "skills/**": true
+    },
+    "search.exclude": {
+        "skills/**": true
+    },
+    "files.watcherExclude": {
+        "skills/**": true,
+        ".cache/**": true
+    },
+    "python.analysis.exclude": [
+        "skills/**/*.py",
+        ".cache/**/*.py"
+    ],
+    "python.analysis.ignore": [
+        "skills/**/*.py",
+        ".cache/**/*.py"
+    ]
+}
