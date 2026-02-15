@@ -26,35 +26,35 @@ requiredBins:
 
 # Agent Pulse 💓
 
-Liveness signaling for autonomous agents on Base. An agent periodically sends a **pulse** (PULSE token transfer) to prove it's alive. Observers query status via API or on-chain.
+这是用于管理Base链上自主代理的存活状态检测机制。代理会定期发送一个“脉冲”（PULSE代币转移）来证明自身的存活状态。观察者可以通过API或链上接口查询代理的状态。
 
-**Network:** Base (chainId 8453)
+**网络：** Base（链ID：8453）
 
-| Contract        | Address                                      |
+| 合同        | 地址                                      |
 |-----------------|----------------------------------------------|
 | PulseToken      | `0x21111B39A502335aC7e45c4574Dd083A69258b07`  |
 | PulseRegistry   | `0xe61C615743A02983A46aFF66Db035297e8a43846`  |
 | API             | `https://x402pulse.xyz`         |
 
-> **$PULSE is a utility token for pulse signals.** A pulse shows recent wallet activity — it does not prove identity, quality, or "AI." Avoid language suggesting financial upside.
+> **$PULSE** 是一种用于发送脉冲信号的实用代币。脉冲信号仅用于显示代理最近的交易活动，并不能证明代理的身份、质量或具备“AI”能力。请避免使用可能暗示财务收益的表述。
 
-## Decision Tree
+## 决策树
 
-1. **First time?** → Run `scripts/setup.sh` to auto-detect wallet, check balance, verify approval.
-2. **Send a pulse?** → `scripts/pulse.sh --direct 1000000000000000000` (requires `PRIVATE_KEY`).
-3. **Automated heartbeat?** → `scripts/auto-pulse.sh` (cron-safe; skips if TTL is healthy).
-4. **Check one agent?** → `scripts/status.sh <address>` or `curl .../api/v2/agent/<addr>/alive`.
-5. **Check many agents?** → `scripts/monitor.sh <addr1> <addr2> ...`
-6. **View pulse feed?** → `scripts/monitor.sh --feed`
-7. **Protocol config/health?** → `scripts/config.sh` / `scripts/health.sh`
+1. **首次使用？** → 运行 `scripts/setup.sh` 以自动检测钱包、检查余额并验证是否已获得注册许可。
+2. **发送脉冲？** → 运行 `scripts/pulse.sh --direct 1000000000000000000`（需要 `PRIVATE_KEY`）。
+3. **自动检测代理状态？** → 运行 `scripts/auto-pulse.sh`（支持定时任务；如果TTL值正常，则跳过检测）。
+4. **检查单个代理的状态？** → 运行 `scripts/status.sh <地址>` 或 `curl .../api/v2/agent/<地址>/alive`。
+5. **检查多个代理的状态？** → 运行 `scripts/monitor.sh <地址1> <地址2> ...`。
+6. **查看脉冲信号流？** → 运行 `scripts/monitor.sh --feed`。
+7. **查看协议配置/代理健康状况？** → 运行 `scripts/config.sh` 或 `scripts/health.sh`。
 
-## Scripts Reference
+## 脚本参考
 
-All scripts live in `scripts/`. Pass `-h` or `--help` for usage.
+所有脚本均位于 `scripts/` 目录下。使用 `-h` 或 `--help` 可查看脚本的详细用法。
 
-### setup.sh — Self-Configure
+### setup.sh — 自动配置
 
-Auto-detects wallet from `PRIVATE_KEY`, checks PULSE balance, verifies registry approval, and queries agent status.
+使用 `PRIVATE_KEY` 自动检测钱包，检查PULSE代币余额，验证注册许可，并查询代理的状态。
 
 ```bash
 # Interactive setup
@@ -64,24 +64,24 @@ Auto-detects wallet from `PRIVATE_KEY`, checks PULSE balance, verifies registry 
 {baseDir}/scripts/setup.sh --auto-approve --quiet
 ```
 
-**Env:** `PRIVATE_KEY` (required), `BASE_RPC_URL`, `API_BASE`
-**Requires:** `cast`, `curl`, `jq`
+**环境变量：** `PRIVATE_KEY`（必需）、`BASE_RPC_URL`、`API_BASE`
+**所需工具：** `cast`、`curl`、`jq`
 
-### pulse.sh — Send Pulse
+### pulse.sh — 发送脉冲信号
 
-Send an on-chain pulse via direct `cast send`.
+通过 `cast send` 直接在链上发送脉冲信号。
 
 ```bash
 export PRIVATE_KEY="0x..."
 {baseDir}/scripts/pulse.sh --direct 1000000000000000000
 ```
 
-**Env:** `PRIVATE_KEY` (required), `BASE_RPC_URL`
-**Requires:** `cast`
+**环境变量：** `PRIVATE_KEY`（必需）、`BASE_RPC_URL`
+**所需工具：** `cast`
 
-### auto-pulse.sh — Cron Heartbeat
+### auto-pulse.sh — 自动检测代理状态
 
-Check if agent is alive; send pulse only when TTL is low or agent is dead. Safe to run on a schedule.
+定期检查代理的存活状态；仅在TTL值过低或代理处于“死亡”状态时发送脉冲信号。适合定时执行。
 
 ```bash
 # Normal: pulse only if needed
@@ -94,23 +94,23 @@ Check if agent is alive; send pulse only when TTL is low or agent is dead. Safe 
 {baseDir}/scripts/auto-pulse.sh --dry-run
 ```
 
-**Env:** `PRIVATE_KEY` (required), `BASE_RPC_URL`, `PULSE_AMOUNT` (default 1e18), `TTL_THRESHOLD` (default 21600s = 6h)
-**Exit codes:** 0 = success or skipped, 1 = error
+**环境变量：** `PRIVATE_KEY`（必需）、`BASE_RPC_URL`、`PULSE_AMOUNT`（默认值：1e18）、`TTL_THRESHOLD`（默认值：21600秒 = 6小时）
+**退出代码：** 0 = 成功；1 = 出错
 
-### status.sh — Agent Status
+### status.sh — 代理状态查询
 
 ```bash
 {baseDir}/scripts/status.sh 0xAgentAddress
 ```
 
-### config.sh / health.sh — Protocol Info
+### config.sh / health.sh — 协议信息查询
 
 ```bash
 {baseDir}/scripts/config.sh     # addresses, network, x402 config
 {baseDir}/scripts/health.sh     # paused status, total agents, health
 ```
 
-### monitor.sh — Multi-Agent Monitor
+### monitor.sh — 多代理监控工具
 
 ```bash
 # Check specific agents
@@ -126,18 +126,18 @@ Check if agent is alive; send pulse only when TTL is low or agent is dead. Safe 
 {baseDir}/scripts/monitor.sh --feed
 ```
 
-## API Quick Reference
+## API 快速参考
 
-| Endpoint                           | Method | Auth  | Description              |
-|------------------------------------|--------|-------|--------------------------|
-| `/api/v2/agent/{addr}/alive`       | GET    | None  | Alive check + TTL        |
-| `/api/status/{addr}`               | GET    | None  | Full status + streak     |
-| `/api/pulse-feed`                  | GET    | None  | Recent pulse activity    |
-| `/api/config`                      | GET    | None  | Protocol configuration   |
-| `/api/protocol-health`             | GET    | None  | Health and paused state  |
-| `/api/pulse`                       | POST   | x402  | Send pulse via API       |
+| API端点            | 方法        | 认证方式    | 描述                          |
+|-------------------|-----------|-----------|----------------------------------------|
+| `/api/v2/agent/{地址}/alive`    | GET       | 无         | 检查代理存活状态及TTL值                |
+| `/api/status/{地址}`     | GET       | 无         | 获取代理的完整状态信息                |
+| `/api/pulse-feed`      | GET       | 无         | 查看最近的脉冲信号活动                |
+| `/api/config`       | GET       | 无         | 查看协议配置                    |
+| `/api/protocol-health`    | GET       | 无         | 检查协议的运行状态及暂停状态              |
+| `/api/pulse`      | POST       | x402认证    | 通过API发送脉冲信号                  |
 
-## Direct On-Chain (cast)
+## 直接在链上发送脉冲（使用 `cast`）
 
 ```bash
 export BASE_RPC_URL="https://mainnet.base.org"
@@ -163,19 +163,19 @@ cast send --rpc-url "$BASE_RPC_URL" --private-key "$PRIVATE_KEY" \
   "pulse(uint256)" 1000000000000000000
 ```
 
-## Error Handling
+## 错误处理
 
-| Error                   | Cause                                    | Fix                          |
-|-------------------------|------------------------------------------|------------------------------|
-| `BelowMinimumPulse`    | Amount < `minPulseAmount` (default 1e18) | Use ≥ 1000000000000000000    |
-| ERC20 transfer failure  | Missing approval or low PULSE balance    | Run `setup.sh --auto-approve`|
-| `whenNotPaused`        | Registry paused                          | Wait; check `health.sh`     |
-| 401/402/403             | Missing payment for paid endpoints       | Use direct on-chain mode     |
-| 5xx                     | Transient API error                      | Retry with backoff           |
+| 错误类型            | 原因                                      | 处理方法                          |
+|-------------------------|------------------------------------------|--------------------------------------------|
+| `BelowMinimumPulse`    | 发送的脉冲金额低于最小要求（默认值：1e18） | 确保发送的金额大于或等于100000000000000000             |
+| ERC20转账失败        | 缺少批准或PULSE余额不足                | 运行 `setup.sh --auto-approve`                |
+| `whenNotPaused`       | 注册服务处于暂停状态                          | 等待一段时间后再尝试；或检查 `health.sh`                |
+| 401/402/403           | 需要支付的API接口未收到付款                | 使用直接在链上的发送方式                |
+| 5xx                | API临时错误                        | 重试并设置延迟时间                    |
 
-## Read-Only Mode (No Private Key)
+## 仅读模式（无需 `PRIVATE_KEY`）
 
-These commands work without `PRIVATE_KEY` — no wallet or signing required:
+以下命令无需 `PRIVATE_KEY` 即可执行——无需使用钱包或进行签名操作：
 
 ```bash
 # Check any agent's status
@@ -194,37 +194,37 @@ These commands work without `PRIVATE_KEY` — no wallet or signing required:
 {baseDir}/scripts/health.sh
 ```
 
-## Security
+## 安全性注意事项
 
-### Required Credentials
+### 必需的凭证
 
-| Env Var | Required For | Default |
-|---------|-------------|---------|
-| `PRIVATE_KEY` | Write ops (pulse, approve) | *(none — read-only without it)* |
-| `BASE_RPC_URL` | All on-chain calls | `https://mainnet.base.org` |
-| `API_BASE` | API calls | `https://x402pulse.xyz` |
-| `PULSE_AMOUNT` | Pulse amount (wei) | `1000000000000000000` (1 PULSE) |
-| `TTL_THRESHOLD` | Auto-pulse skip threshold | `21600` (6 hours) |
-| `PULSE_REGISTRY_ADDRESS` | Override registry | `0xe61C...` |
-| `PULSE_TOKEN_ADDRESS` | Override token | `0x2111...` |
-| `X402_PAYMENT_HEADER` | x402 payment proof for API pulse | *(none — use direct on-chain mode without it)* |
-| `X402_HEADER_NAME` | Custom x402 header name | `X-402-Payment` |
+| 环境变量          | 使用场景      | 默认值                         |
+|-----------------|-------------|-----------------------------------------|
+| `PRIVATE_KEY`       | 执行写入操作（发送脉冲、批准请求） | 无（仅限读取操作）                    |
+| `BASE_RPC_URL`     | 所有链上请求       | `https://mainnet.base.org`                   |
+| `API_BASE`      | API请求       | `https://x402pulse.xyz`                   |
+| `PULSE_AMOUNT`     | 发送脉冲的代币数量    | `100000000000000000`                   |
+| `TTL_THRESHOLD`    | 自动跳过检测的TTL阈值 | 21600秒（6小时）                     |
+| `PULSE_REGISTRY_ADDRESS` | 重置注册表地址     | `0xe61C...`                       |
+| `PULSE_TOKEN_ADDRESS` | 代币地址        | `0x2111...`                       |
+| `X402_payment_HEADER` | API脉冲支付的头部信息   | 无（直接使用链上方式时无需设置）             |
+| `X402_HEADER_NAME` | 自定义的X402请求头名称 | `X-402-Payment`                     |
 
-### Approval Behavior
+### 审批机制
 
-- `setup.sh --auto-approve` sets a **bounded allowance of 1,000 PULSE** (not unlimited). This is enough for ~1,000 pulses before re-approval is needed.
-- `pulse.sh --direct` approves the **exact amount** per transaction (no excess allowance).
-- The PulseRegistry contract can only call `transferFrom` during `pulse()` — it cannot arbitrarily drain tokens.
+- `setup.sh --auto-approve` 会设置一个**上限为1,000个PULSE代币的发送额度**（并非无限）。这个额度足够发送大约1,000次脉冲信号后需要重新审批。
+- `pulse.sh --direct` 会按每次交易的实际金额进行审批，不会超出预设的额度。
+- `PulseRegistry` 合同只能在 `pulse()` 方法中调用 `transferFrom` 函数，不能随意消耗代币。
 
-### Best Practices
+### 最佳实践
 
-- **Never** log, print, or commit `PRIVATE_KEY`.
-- Use a **dedicated wallet** with only the PULSE tokens needed — not your main wallet.
-- Start with `--dry-run` mode to verify behavior before sending real transactions.
-- Verify contract addresses and chainId before signing transactions.
-- Test with small amounts first.
+- **切勿** 将 `PRIVATE_KEY` 记录在日志中、打印出来或提交到代码库。
+- 使用专门用于发送PULSE代币的钱包，切勿使用主钱包。
+- 在执行实际交易前，先使用 `--dry-run` 模式进行测试。
+- 在签署交易前，请务必核对合约地址和链ID。
+- 先使用少量代币进行测试。
 
-## References
+## 参考资料
 
-- Action guide: `references/action_guide.md` — detailed API patterns and examples
-- Contract ABI: `references/contract_abi.json` — PulseRegistry full ABI
+- **操作指南：`references/action_guide.md` — 详细的API使用模式和示例。
+- **合约ABI：`references/contract_abi.json` — PulseRegistry合约的完整ABI文档。

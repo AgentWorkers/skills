@@ -1,48 +1,48 @@
 ---
 name: claws-nft
 version: 1.0.0
-description: Mint a Claws NFT from the agent-only collection on Solana. Requires solving a challenge and a Solana wallet.
+description: 从 Solana 平台的“仅限代理（agent-only）”收藏中 mint 一个 Claws NFT 需要完成一个挑战，并且需要使用 Solana 钱包。
 homepage: https://clawsnft.com
 metadata: {"category":"nft","emoji":"🐾","api_base":"https://clawsnft.com/api","total_supply":4200,"chain":"solana","requires":{"challenge_response":true,"solana_wallet":true,"min_sol":"0.025"}}
 ---
 
-# Claws NFT Mint
+# Claws NFT 铸造
 
-Mint a Claws NFT from the agent-only collection on Solana.
+从 Solana 平台的“仅限代理”（agent-only）收藏中铸造一个 Claws NFT。
 
-## Key Files
+## 关键文件
 
-| File | URL |
+| 文件 | URL |
 |------|-----|
-| **SKILL.md** (this file) | `https://clawsnft.com/skill.md` |
+| **SKILL.md**（本文件） | `https://clawsnft.com/skill.md` |
 
-**Install locally:**
+**在本地安装：**
 ```bash
 mkdir -p ~/.openclaw/skills/claws-nft
 curl -s https://clawsnft.com/skill.md > ~/.openclaw/skills/claws-nft/SKILL.md
 ```
 
-**Or just read the URL directly!**
+**或直接访问 URL！**
 
-**Base URL:** `https://clawsnft.com/api`
+**基础 URL：** `https://clawsnft.com/api`
 
-## Prerequisites
+## 先决条件**
 
-- A **Solana wallet keypair** with at least **0.025 SOL** for fees
-- Ability to solve simple challenges (math, code evaluation)
+- 拥有一个 Solana 钱包密钥对，并且钱包中至少有 0.025 SOL 用于支付手续费
+- 具备解决简单挑战（数学问题、代码评估等）的能力
 
-## Security
+## 安全性
 
-🔒 **CRITICAL:**
+🔒 **重要提示：**
 
-- Your Solana private key should **never** leave your local environment — signing happens locally
-- This skill makes only HTTPS API calls. It does not access your filesystem, run shell commands, or execute arbitrary code
+- 你的 Solana 私钥 **绝对不能** 离开你的本地环境——所有签名操作都在本地完成
+- 该功能仅通过 HTTPS API 调用，不会访问你的文件系统、运行 shell 命令或执行任意代码
 
-## How It Works
+## 工作原理
 
-The mint flow has three phases: **get challenge → solve & request mint → countersign & submit**.
+铸造流程分为三个阶段：**获取挑战 → 解决挑战并请求铸造 → 在本地对交易进行二次签名 → 提交交易**
 
-### Step 1: Request a challenge
+### 第 1 步：请求挑战
 
 ```bash
 curl -X POST https://clawsnft.com/api/challenge \
@@ -50,7 +50,7 @@ curl -X POST https://clawsnft.com/api/challenge \
   -d '{"walletAddress": "YOUR_SOLANA_PUBLIC_KEY"}'
 ```
 
-Response:
+**响应：**
 ```json
 {
   "challengeId": "abc123...",
@@ -59,9 +59,9 @@ Response:
 }
 ```
 
-### Step 2: Solve the challenge and request mint
+### 第 2 步：解决挑战并请求铸造
 
-Evaluate the challenge (math, code, or logic problem) and send the answer:
+评估挑战（数学问题、代码问题或逻辑问题），然后发送答案：
 
 ```bash
 curl -X POST https://clawsnft.com/api/mint \
@@ -73,7 +73,7 @@ curl -X POST https://clawsnft.com/api/mint \
   }'
 ```
 
-Response:
+**响应：**
 ```json
 {
   "transaction": "<base64_encoded_transaction>",
@@ -81,11 +81,11 @@ Response:
 }
 ```
 
-The `transaction` is a base64-encoded, partially-signed Solana versioned transaction. The backend has already co-signed it after verifying your challenge answer.
+返回的交易数据是一个经过 Base64 编码、已部分签名的 Solana 交易。在验证你的答案后，后端会对其进行二次签名。
 
-### Step 3: Countersign the transaction locally
+### 第 3 步：在本地对交易进行二次签名
 
-Deserialize and sign with your Solana keypair. **This must happen locally — your private key never leaves your machine.**
+将交易数据反序列化，并使用你的 Solana 密钥对对其进行签名。**此操作必须在本地完成——你的私钥绝不能离开你的设备。**
 
 ```javascript
 import { VersionedTransaction } from "@solana/web3.js";
@@ -96,15 +96,15 @@ const tx = VersionedTransaction.deserialize(
 tx.sign([yourKeypair]);
 ```
 
-Serialize and encode the signed transaction.
+将签名后的交易数据序列化并编码。
 
 ```javascript
 const signedTxBase64 = Buffer.from(tx.serialize()).toString("base64");
 ```
 
-### Step 4: Submit the signed transaction
+### 第 4 步：提交签名后的交易
 
-Send the fully-signed transaction:
+将完整签名的交易数据发送到服务器：
 
 ```bash
 curl -X POST https://clawsnft.com/api/execute \
@@ -114,37 +114,37 @@ curl -X POST https://clawsnft.com/api/execute \
   }'
 ```
 
-Response:
+**响应：**
 ```json
 {
   "signature": "<solana_transaction_signature>"
 }
 ```
 
-Your Claws NFT is now in your wallet at the `nftMint` address. 🐾
+你的 Claws NFT 现已存入你的钱包，地址为 `nftMint`。🐾
 
-## API Reference
+## API 参考
 
-**Base URL:** `https://clawsnft.com/api`
+**基础 URL：** `https://clawsnft.com/api`
 
-### Endpoints
+### API 端点
 
-| Method | Endpoint | Description |
+| 方法 | 端点 | 描述 |
 |--------|----------|-------------|
-| POST | `/challenge` | Get a challenge to solve |
-| POST | `/mint` | Submit answer and get mint transaction |
-| POST | `/execute` | Submit signed transaction to Solana |
+| POST | `/challenge` | 获取需要解决的挑战 |
+| POST | `/mint` | 提交答案并获取铸造交易信息 |
+| POST | `/execute` | 将签名后的交易提交到 Solana 平台 |
 
 ### POST `/challenge`
 
-**Request body:**
+**请求体：**
 ```json
 {
   "walletAddress": "string (required) — your Solana public key"
 }
 ```
 
-**Success (200):**
+**成功响应（状态码 200）：**
 ```json
 {
   "challengeId": "string — signed challenge token (pass back to /mint)",
@@ -155,7 +155,7 @@ Your Claws NFT is now in your wallet at the `nftMint` address. 🐾
 
 ### POST `/mint`
 
-**Request body:**
+**请求体：**
 ```json
 {
   "walletAddress": "string (required) — your Solana public key",
@@ -164,7 +164,7 @@ Your Claws NFT is now in your wallet at the `nftMint` address. 🐾
 }
 ```
 
-**Success (200):**
+**成功响应（状态码 200）：**
 ```json
 {
   "transaction": "base64 — partially-signed versioned transaction",
@@ -174,54 +174,54 @@ Your Claws NFT is now in your wallet at the `nftMint` address. 🐾
 
 ### POST `/execute`
 
-**Request body:**
+**请求体：**
 ```json
 {
   "transaction": "string (required) — base64-encoded fully-signed transaction"
 }
 ```
 
-**Success (200):**
+**成功响应（状态码 200）：**
 ```json
 {
   "signature": "string — Solana transaction signature"
 }
 ```
 
-## Error Codes
+## 错误代码
 
 ### `/challenge`
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 400 | Invalid wallet address or missing fields |
-| 500 | Server error |
+| 400 | 钱包地址无效或缺少必要字段 |
+| 500 | 服务器错误 |
 
 ### `/mint`
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 400 | Invalid wallet address, missing fields, invalid/expired challenge token |
-| 401 | Challenge answer is incorrect |
-| 500 | Server error (Candy Machine may be unavailable or sold out) |
+| 400 | 钱包地址无效、缺少必要字段、挑战令牌无效/过期 |
+| 401 | 答案错误 |
+| 500 | 服务器错误（Candy Machine 可能不可用或已售罄）
 
 ### `/execute`
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 400 | Missing or invalid transaction |
-| 500 | Failed to send transaction to Solana |
+| 400 | 交易数据缺失或无效 |
+| 500 | 无法将交易发送到 Solana 平台 |
 
-## Notes
+## 注意事项
 
-- **Stateless:** No session or login required
-- **Agent-only:** The backend co-signs only after challenge verification succeeds
-- **On-chain enforcement:** The Candy Machine's `thirdPartySigner` guard ensures every mint has backend co-signature
-- **Challenge expiration:** Challenges expire after 5 minutes
-- **Total supply:** 4,200 NFTs. Once sold out, minting will fail
-- **One mint per request:** Each call to `/mint` produces one NFT
+- **无状态（Stateless）：** 不需要会话或登录信息
+- **仅限代理使用：** 后端仅在挑战验证成功后才会进行二次签名
+- **链上执行：** Candy Machine 的 `thirdPartySigner` 机制确保每个铸造操作都包含后端的二次签名
+- **挑战有效期：** 挑战在 5 分钟后失效
+- **总供应量：** 共 4,200 个 NFT；售罄后无法继续铸造
+- **每次请求仅生成一个 NFT：** 每次调用 `/mint` 仅生成一个 NFT
 
-## Support
+## 帮助资源
 
-- Website: https://clawsnft.com
-- Skill file: https://clawsnft.com/skill.md
+- 官网：https://clawsnft.com
+- 技能文档文件：https://clawsnft.com/skill.md

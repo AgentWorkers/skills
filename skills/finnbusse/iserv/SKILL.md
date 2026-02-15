@@ -1,27 +1,24 @@
 ---
 name: iserv
-description: HTTP client for IServ school platforms. Log in to an IServ instance (e.g. https://grabbe-dt.de) and fetch common student data like unread mail counts, calendar events, files/folders, tasks/exercises, announcements/news, and other IServ modules via HTTP endpoints. Includes best-effort file ops + exercise submission.
+description: 这是一个用于 IServ 学校平台的 HTTP 客户端。用户可以通过该客户端登录到 IServ 实例（例如：https://grabbe-dt.de），并通过 HTTP 端点获取学生的常用信息，如未读邮件数量、日历事件、文件/文件夹、任务/练习、公告/新闻等。该客户端支持基本的文件操作功能以及练习的提交功能。
 ---
 
-# IServ (school platform)
+# IServ（学校平台）
 
-This skill uses an HTTP client (no browser automation) to log in and call IServ endpoints.
+该技能使用HTTP客户端（不依赖浏览器自动化）来登录并调用IServ的各个接口。
 
-## Credentials / security
+## 凭据/安全性
 
-- Do NOT hardcode credentials.
-- Provide credentials via environment variables.
+- **切勿将凭据硬编码**，应通过环境变量来传递。
+- 单一用户配置：
+  - `ISERV_BASE_URL`（例如：`https://grabbe-dt.de`）
+  - `ISERV_USER`
+  - `ISERV_PASS`
+- 多个用户配置（同时使用）：
+  - 设置 `ISERV_PROFILE=<名称>` 或通过命令行参数 `--profile <名称>`
+  - 提供 `ISERV_<PROFILE>_BASE_URL`、`ISERV_<PROFILE>_USER`、`ISERV_<PROFILE>_PASS`
 
-Single profile:
-- `ISERV_BASE_URL` (e.g. `https://grabbe-dt.de`)
-- `ISERV_USER`
-- `ISERV_PASS`
-
-Multiple profiles (parallel):
-- set `ISERV_PROFILE=<name>` or pass `--profile <name>`
-- provide `ISERV_<PROFILE>_BASE_URL`, `ISERV_<PROFILE>_USER`, `ISERV_<PROFILE>_PASS`
-
-## Commands
+## 命令
 
 ```bash
 cd skills/iserv/scripts
@@ -79,21 +76,20 @@ cd skills/iserv/scripts
 ./iserv.py exercise-submit --id 123 --file ./solution.pdf --comment "Abgabe"
 ```
 
-## Notes / next steps
+## 注意事项/后续步骤
 
-- Exercises: listing/details/submission are implemented via HTML scraping.
-  Submission is now form-driven (parses the actual `<form>` on the exercise page and posts multipart), which is more robust than guessing an internal upload API.
-  If it still fails on a specific IServ instance, capture:
-  - the HTML of the exercise detail page (after login)
-  - response status + redirect URL
+- **练习功能**：练习的列表、详情查看和提交操作是通过HTML抓取实现的。
+  - 提交功能现在采用表单驱动的方式（解析练习页面上的实际表单数据并通过multipart方式发送数据），这种方式比猜测内部上传API更为可靠。
+  - 如果在某个特定的IServ实例上仍然出现错误，请记录以下信息：
+    - 登录后的练习详情页面的HTML内容
+    - 响应状态码及重定向URL
+- **文件操作**：文件列表、下载、上传、创建目录、重命名和删除等功能在不同版本的ISServ中均按“最佳实践”进行实现。
+  - 部分IServ实例的接口可能略有不同；客户端会尝试检测是否存在Symfony FOS路由（如果可用），并在无法使用时切换到通用的API路径。
 
-- Files: list/download/upload + mkdir/rename/delete are implemented as **best-effort** across IServ versions.
-  Some instances expose slightly different endpoints; the client tries to discover Symfony FOS routes (when available) and falls back to common API paths.
+**进一步扩展的思路**：
+- **增强练习信息的解析功能**：添加截止日期、教师信息、练习描述等字段
+- **添加公告/新闻功能**
+- **实现消息通知系统**（目前仍处于实验阶段）
+- **提供强大的文件搜索、移动/复制以及递归文件夹下载功能**
 
-Ideas to extend further:
-- richer exercise parsing (due dates, teacher, description)
-- announcements/news
-- messenger notifications (currently experimental)
-- robust file search, move/copy, and recursive folder download
-
-Reference: IServ routes are discoverable via the bundled FOS routes JS (commonly `/iserv/js/fos_js_routes.js`; some instances also use `/iserv/js/assets/fos_js_routes*.js`).
+**参考资料**：IServ的接口路径可以通过随软件提供的FOS路由JavaScript文件（通常位于 `/iserv/js/fos_js_routes.js`）来获取；部分实例也可能使用 `/iserv/js/assets/fos_js_routes*.js` 文件。

@@ -1,7 +1,7 @@
 ---
 name: google-trends
 version: 1.0.0
-description: Monitor Google Trends - get trending searches, compare keywords, and track interest over time. Use for market research, content planning, and trend analysis.
+description: 监控 Google Trends：获取热门搜索词，比较关键词，并追踪用户兴趣的变化趋势。适用于市场研究、内容规划和趋势分析。
 author: Buba Draugelis
 license: MIT
 tags:
@@ -15,23 +15,23 @@ metadata:
     emoji: "📈"
 ---
 
-# Google Trends Monitoring
+# 谷歌趋势监控
 
-Monitor and analyze Google Trends data for market research, content planning, and trend tracking.
+监控和分析谷歌趋势数据，用于市场研究、内容规划和趋势跟踪。
 
-## Capabilities
+## 功能
 
-1. **Daily Trending Searches** - What's trending today in any country
-2. **Keyword Interest Over Time** - Historical trend data for keywords
-3. **Keyword Comparison** - Compare multiple keywords
-4. **Related Topics & Queries** - Discover related searches
-5. **Regional Interest** - See where keywords are most popular
+1. **每日热门搜索词** - 了解当今任何国家的热门搜索词
+2. **关键词兴趣变化** - 关键词的历史趋势数据
+3. **关键词比较** - 比较多个关键词
+4. **相关主题与查询** - 发现相关的搜索内容
+5. **地区兴趣分布** - 查看关键词在哪些地区最受欢迎
 
-## Usage
+## 使用方法
 
-### Get Trending Searches (Today)
+### 获取每日热门搜索词
 
-Use web_fetch to get Google Trends RSS:
+使用 `web_fetch` 获取谷歌趋势的 RSS 数据：
 
 ```bash
 # US Daily Trends
@@ -44,9 +44,9 @@ curl -s "https://trends.google.com/trending/rss?geo=LT" | head -100
 curl -s "https://trends.google.com/trending/rss?geo=" | head -100
 ```
 
-### Check Keyword Interest
+### 检查关键词兴趣
 
-For detailed keyword analysis, use the Google Trends website:
+如需详细分析关键词，请访问谷歌趋势官方网站：
 
 ```bash
 # Open in browser
@@ -56,18 +56,18 @@ open "https://trends.google.com/trends/explore?q=bitcoin&geo=US"
 web_fetch "https://trends.google.com/trends/explore?q=bitcoin"
 ```
 
-### Compare Keywords
+### 比较关键词
 
 ```bash
 # Compare multiple terms (comma-separated)
 open "https://trends.google.com/trends/explore?q=bitcoin,ethereum,solana&geo=US"
 ```
 
-## Scripts
+## 脚本
 
 ### trends-daily.sh
 
-Get today's trending searches:
+获取今日的热门搜索词：
 
 ```bash
 #!/bin/bash
@@ -84,7 +84,7 @@ curl -s "https://trends.google.com/trending/rss?geo=$GEO" | \
 
 ### trends-compare.sh
 
-Generate comparison URL:
+生成关键词比较链接：
 
 ```bash
 #!/bin/bash
@@ -95,9 +95,9 @@ KEYWORDS=$(echo "$@" | tr ' ' ',')
 echo "https://trends.google.com/trends/explore?q=$KEYWORDS"
 ```
 
-## Example Workflows
+## 示例工作流程
 
-### Morning Market Research
+### 早晨市场研究
 
 ```
 1. Get US trending searches
@@ -106,7 +106,7 @@ echo "https://trends.google.com/trends/explore?q=$KEYWORDS"
 4. Report interesting findings
 ```
 
-### Content Planning
+### 内容规划
 
 ```
 1. Compare potential blog topics
@@ -115,7 +115,7 @@ echo "https://trends.google.com/trends/explore?q=$KEYWORDS"
 4. Decide on content focus
 ```
 
-### Competitor Monitoring
+### 竞争对手监控
 
 ```
 1. Compare brand names
@@ -124,9 +124,9 @@ echo "https://trends.google.com/trends/explore?q=$KEYWORDS"
 4. Investigate causes
 ```
 
-## Cron Job Integration
+## Cron 作业集成
 
-Set up automated trend monitoring:
+设置自动化的趋势监控任务：
 
 ```javascript
 // Example cron job for daily trends report
@@ -140,28 +140,28 @@ Set up automated trend monitoring:
 }
 ```
 
-## Countries
+## 国家代码
 
-Common country codes:
-- US - United States
-- LT - Lithuania
-- DE - Germany
-- GB - United Kingdom
-- FR - France
-- JP - Japan
-- (empty) - Worldwide
+常见的国家代码：
+- US - 美国
+- LT - 立陶宛
+- DE - 德国
+- GB - 英国
+- FR - 法国
+- JP - 日本
+- (empty) - 全球
 
-## Limitations
+## 限制
 
-- Google Trends doesn't provide official API
-- Rate limiting may apply for heavy usage
-- Data is relative (not absolute numbers)
-- Historical data limited to ~5 years for detailed view
+- 谷歌趋势不提供官方 API
+- 高频率使用可能会受到流量限制
+- 数据为相对值（非绝对数字）
+- 历史数据仅提供约 5 年的详细视图
 
-## Tips
+## 提示
 
-1. **Use specific terms** - "iPhone 15 Pro" vs just "iPhone"
-2. **Check seasonality** - Some trends are cyclical
-3. **Compare with baseline** - Use a stable term for reference
-4. **Look at related queries** - Discover new opportunities
-5. **Monitor competitors** - Track brand interest over time
+1. **使用具体术语** - 例如使用 “iPhone 15 Pro” 而不是 “iPhone”
+2. **注意季节性变化** - 一些趋势具有周期性
+3. **与基准数据进行比较** - 使用稳定的关键词作为参考
+4. **查看相关查询** - 发现新的市场机会
+5. **监控竞争对手** - 随时间跟踪品牌的热度变化

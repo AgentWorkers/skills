@@ -1,25 +1,24 @@
 ---
 slug: "ml-model-builder"
 display_name: "ML Model Builder"
-description: "Build ML models for construction predictions. Train and evaluate custom models for cost, duration, and risk prediction."
+description: "构建用于建筑预测的机器学习模型。训练并评估用于成本、工期和风险预测的定制模型。"
 ---
 
-# ML Model Builder
+# 机器学习模型构建工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction prediction challenges:
-- Complex relationships between variables
-- Limited historical data utilization
-- Need for multiple prediction targets
-- Model validation and deployment
+### 问题描述
+在建筑预测领域，面临以下挑战：
+- 变量之间的复杂关系
+- 历史数据利用率有限
+- 需要实现多个预测目标
+- 模型的验证与部署
 
-### Solution
-Comprehensive ML model building framework for construction predictions with data preprocessing, model training, evaluation, and export capabilities.
+### 解决方案
+提供一个全面的机器学习模型构建框架，支持数据预处理、模型训练、评估以及模型导出等功能，以解决建筑预测中的问题。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -420,8 +419,7 @@ class MLModelBuilder:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 import pandas as pd
 
@@ -459,9 +457,9 @@ result = builder.predict('duration_model_v1', {
 print(f"Predicted duration: {result['prediction']} days")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Train Multiple Models
+### 1. 训练多个模型
 ```python
 # Linear regression
 linear_model = builder.build_model(df, 'cost', features,
@@ -480,19 +478,19 @@ comparison = builder.compare_models()
 print(comparison)
 ```
 
-### 2. Feature Importance
+### 2. 特征重要性分析
 ```python
 importance = builder.get_feature_importance('duration_model_v1')
 print(importance)
 ```
 
-### 3. Export Model
+### 3. 模型导出
 ```python
 builder.export_model('duration_model_v1', 'model.json')
 builder.export_to_excel('models_summary.xlsx')
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.5 - Future: Predictions and Machine Learning
-- **scikit-learn**: https://scikit-learn.org/
-- **Website**: https://datadrivenconstruction.io
+## 资源参考
+- **DDC手册**：第4.5章 - 未来：预测与机器学习
+- **scikit-learn**：https://scikit-learn.org/
+- **官方网站**：https://datadrivenconstruction.io

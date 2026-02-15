@@ -1,87 +1,91 @@
 ---
 name: Hebrew
-description: Write Hebrew that sounds human. Not formal, not robotic, not AI-generated.
+description: **Write Hebrew that sounds human. Not formal, not robotic, not AI-generated.**  
+
+翻译成中文就是：  
+“写出听起来像人类语言的希伯来语。不要过于正式，也不要有机器人般的腔调，更不能是人工智能生成的。”  
+
+这个要求强调的是语言的自然性和人性化表达，避免使用生硬、机械或不符合自然语言习惯的写作方式。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Hebrew is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with slang and shortcuts. Match that.
+虽然AI生成的希伯来语在语法上是正确的，但听起来很不自然。过于正式、过于文学化。本地人说话时通常更随意，会使用俚语和缩写。我们需要让语言更贴近自然。
 
-## Formality Default
+## 默认的正式程度
 
-Default register is too high. Israeli Hebrew is notably informal. Unless explicitly formal: lean casual. "היי" not "שלום". "אוקיי" not "בסדר גמור".
+希伯来语的默认表达方式过于正式。实际上，以色列人的日常交流中使用的希伯来语要随意得多。除非需要明确表达正式场合，否则应该采用更随意的表达方式。例如，他们会说“היי”而不是“שלום”，“אוקיי”而不是“בסדר גמור”。
 
-## Formal vs Casual
+## 正式与随意
 
-Hebrew registers:
-- Formal: news, academia, official documents
-- Casual: daily life, texting, online
-- Israeli culture is very informal
-- Over-formal = stiff, foreign
+希伯来语的表达风格可以分为：
+- 正式：用于新闻、学术界或官方文件
+- 随意：用于日常生活、短信交流或网络聊天
+- 以色列文化非常随意，过于正式的表达会显得生硬、不自然
 
-## Gender Agreement
+## 性别表达
 
-Hebrew marks gender throughout:
-- Verbs, adjectives, pronouns agree with gender
-- Get this right—it's fundamental
-- Masculine plural as default for mixed groups
-- But be natural, not robotic about it
+希伯来语中有明显的性别区分：
+- 动词、形容词和代词都需要与性别保持一致
+- 这一点非常重要，必须掌握正确用法
+- 混合性别的人群通常使用阳性复数形式
+- 但表达时要自然，不要显得机械或刻板
 
-## Slang & Shortcuts
+## 俚语与缩写
 
-Common casual patterns:
-- בסדר → בסדגמור, סבבה
-- תודה → תודות, תנקס
-- נו → emphasis, impatience
-- יאללה → let's go, come on
+常见的随意表达方式包括：
+- בסדר → 说成 בסדגמור 或 סבבה
+- תודה → 说成 תודות 或 תנקס
+- נו → 用于表达急切或不耐烦
+- יאללה → 用于催促或表示“快点”
 
-## Particles & Fillers
+## 粒子词与填充词
 
-These make Hebrew natural:
-- נו: impatience, emphasis ("נו אז?")
-- כאילו: "like" filler
-- סתם: "just", "for no reason"
-- ממש: "really", emphasis
-- בכלל: "at all", "in general"
+这些词能让希伯来语表达更自然：
+- נו：表示急切或强调（例如：“נו אז?”）
+- כאילו：表示“好像”
+- סתם：表示“只是”或“无缘无故”
+- ממש：表示“真的”或强调
+- בכלל：表示“根本不”或“一般而言”
 
-## Fillers & Flow
+## 表达方式与流畅性
 
-Real Hebrew has fillers:
+真实的希伯来语中会使用一些填充词来增强语言的流畅性：
 - אז, נו, כאילו
 - יעני, סתם, ממש
 - אוקיי, טוב
 - בקיצור, בעצם
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- טוב → מעולה, אדיר, על הפנים (great)
-- רע → גרוע, נורא, חרא
-- מאוד → ממש, לגמרי, מלא
+不要总是选择最“安全”的表达方式：
+- “טוב”可以表达为 מעולה、אדיר 或 על הפנים
+- “רע”可以表达为 גרוע、נורא 或 חרא
+- “מאוד”可以表达为 ממש、לגמרי 或 מלא
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- סבבה, אחלה, יאללה
-- אין בעיה, הכל טוב
-- מה קורה?, מה נשמע?
-- באסה, חבל, יופי
+自然的表达方式包括：
+- סבבה, אחלה, יאללה（表示惊讶或鼓励）
+- אין בעיה, הכל טוב（表示没有问题）
+- מה קורה?, מה נשמע?（表示好奇或询问）
+- באסה, חבל, יופי（表示遗憾或赞美）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- באמת?, רצינית?, מה?
-- וואו!, יאללה!, אלוהים!
-- אחלה!, מדהים!, סבבה!
-- חחח, lol in text
+反应时要自然：
+- באמת?, רצינית?, מה?（表示惊讶或疑问）
+- וואו!, יאללה!, אלוהים!（表示兴奋或感叹）
+- אחלה!, מדהים!, סבבה!（表示赞叹）
+- חחח（表示笑声）
 
-## English Mixing
+## 英语的混合使用
 
-Israelis mix English naturally:
-- "זה היה super awkward"
-- "Nice אחד"
-- Very common in casual speech
+以色列人在日常交流中会自然地混合使用英语：
+- 他们会说“זה היה super awkward”（这真的很尴尬）
+- 他们会说“Nice אחד”（这个真不错）
+- 这在日常对话中非常常见
 
-## The "Native Test"
+## “本地人的测试”
 
-Before sending: would an Israeli screenshot this as "AI-generated"? If yes—too formal, no slang, no יאללה. Add sabra flavor.
+在发送内容之前，需要考虑：如果一个以色列人看到这段文字，他会认为这是AI生成的吗？如果是这样的话，这段文字就太正式了，没有俚语，也没有“יאללה”这样的表达。我们需要加入一些以色列人常用的表达方式，让语言更贴近他们的习惯。

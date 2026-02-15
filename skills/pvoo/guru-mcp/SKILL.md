@@ -1,42 +1,42 @@
 ---
 name: guru-mcp
-description: Access Guru knowledge base via MCP - ask AI questions, search documents, create drafts, and update cards. Connects to all your Guru sources including Slack, Drive, Confluence, and SharePoint.
+description: 通过 MCP 访问 Guru 知识库：您可以提出 AI 相关问题、搜索文档、创建草稿以及更新卡片。该工具能够连接到您所有的 Guru 数据源，包括 Slack、Drive、Confluence 和 SharePoint。
 homepage: https://www.getguru.com
 metadata: {"clawdbot":{"emoji":"🧠","requires":{"bins":["mcporter"],"env":["GURU_API_TOKEN"]}}}
 ---
 
 # Guru MCP
 
-Access your Guru knowledge base via the official MCP server. Ask AI-powered questions, search documents, create drafts, and update cards.
+您可以通过官方的MCP服务器访问Guru知识库。您可以提出由AI驱动的问题、搜索文档、创建文档草稿以及更新卡片内容。
 
-## Features
+## 主要功能
 
-- **AI-Powered Answers** — Get comprehensive answers from Knowledge Agents
-- **Document Search** — Find cards and content across your knowledge base
-- **Create Drafts** — Generate new card drafts from AI tools
-- **Update Cards** — Modify existing cards directly
-- **Connected Sources** — Access Salesforce, Slack, Google Drive, Confluence, SharePoint through Guru
-- **Permission-Aware** — Respects all existing Guru permissions
-- **Analytics** — All queries logged in AI Agent Center
+- **AI驱动的答案**：从知识代理那里获得全面的答案。
+- **文档搜索**：在整个知识库中查找卡片和内容。
+- **创建草稿**：利用AI工具生成新的卡片草稿。
+- **更新卡片**：直接修改现有的卡片。
+- **集成外部资源**：通过Guru访问Salesforce、Slack、Google Drive、Confluence和SharePoint。
+- **权限管理**：严格遵守现有的Guru权限设置。
+- **数据分析**：所有查询都会被记录在AI代理中心。
 
-## Setup
+## 设置流程
 
-### 1. Get API Token
+### 1. 获取API令牌
 
-1. Go to **Guru Admin → API Tokens**
-2. Create a new token
-3. Note your email and token
+1. 登录Guru管理界面，选择“API Tokens”。
+2. 创建一个新的API令牌。
+3. 记下您的电子邮件地址和令牌值。
 
-### 2. Configure Environment
+### 2. 配置环境
 
-Add to `~/.clawdbot/.env`:
+将以下配置添加到`~/.clawdbot/.env`文件中：
 ```bash
 GURU_API_TOKEN=your.email@company.com:your-api-token
 ```
 
-### 3. Configure mcporter
+### 3. 配置mcporter
 
-Add to `config/mcporter.json`:
+将以下配置添加到`config/mcporter.json`文件中：
 ```json
 {
   "mcpServers": {
@@ -50,23 +50,22 @@ Add to `config/mcporter.json`:
 }
 ```
 
-### 4. Verify
+### 4. 验证配置
 
 ```bash
 mcporter list guru
 ```
 
-## Available Tools
+## 可用的工具
 
-### `guru_list_knowledge_agents`
+### `guru_list_knowledgeAgents`
 
-List all Knowledge Agents in your workspace. **Always call this first** to get agent IDs for other tools.
-
+列出您工作空间中的所有知识代理。在使用其他工具之前，请务必先调用此命令以获取代理的ID。
 ```bash
 mcporter call 'guru.guru_list_knowledge_agents()'
 ```
 
-Returns:
+返回结果：
 ```json
 [
   {"id": "08de66e8-...", "name": "Guru"},
@@ -76,8 +75,7 @@ Returns:
 
 ### `guru_answer_generation`
 
-Get AI-powered answers from a Knowledge Agent. Best for specific questions like "What is X?" or "How do I Y?".
-
+从知识代理那里获取AI驱动的答案。适用于诸如“X是什么？”或“我该如何做Y？”之类的具体问题。
 ```bash
 mcporter call 'guru.guru_answer_generation(
   agentId: "YOUR_AGENT_ID",
@@ -85,16 +83,15 @@ mcporter call 'guru.guru_answer_generation(
 )'
 ```
 
-Optional filters:
-- `collectionIds` — Limit to specific collections
-- `sourceIds` — Limit to specific sources
+可选参数：
+- `collectionIds`：仅搜索特定集合中的内容。
+- `sourceIds`：仅搜索来自特定来源的文档。
 
-Returns comprehensive answer with sources.
+返回包含来源信息的完整答案。
 
 ### `guru_search_documents`
 
-Find documents, cards, and sources. Best for browsing content like "find docs on X" or "do we have cards about Y?".
-
+用于查找文档、卡片和资源。适用于诸如“查找关于X的文档”或“我们有关于Y的卡片吗？”之类的查询。
 ```bash
 mcporter call 'guru.guru_search_documents(
   agentId: "YOUR_AGENT_ID",
@@ -102,22 +99,20 @@ mcporter call 'guru.guru_search_documents(
 )'
 ```
 
-Returns list of matching documents with snippets.
+返回匹配的文档列表，并附有文档片段。
 
 ### `guru_get_card_by_id`
 
-Get full card content in HTML format.
-
+以HTML格式获取卡片的完整内容。
 ```bash
 mcporter call 'guru.guru_get_card_by_id(id: "CARD_ID")'
 ```
 
-Returns card ID, title, and HTML content.
+返回卡片的ID、标题和HTML内容。
 
 ### `guru_create_draft`
 
-Create a new card draft.
-
+创建一个新的卡片草稿。
 ```bash
 mcporter call 'guru.guru_create_draft(
   title: "New Process Guide",
@@ -125,26 +120,16 @@ mcporter call 'guru.guru_create_draft(
 )'
 ```
 
-Returns draft ID and URL.
+返回草稿的ID和URL。
 
 ### `guru_update_card`
 
-Update an existing card. First retrieve current content with `guru_get_card_by_id`, then modify.
+更新现有的卡片。首先使用`guru_get_card_by_id`获取当前卡片内容，然后进行修改。
+**注意：**在更新时请保持HTML结构的完整性，避免破坏现有的DOM结构。
 
-```bash
-mcporter call 'guru.guru_update_card(
-  cardId: "CARD_ID",
-  title: "Updated Title",
-  content: "<p>Updated HTML content...</p>"
-)'
-```
+## 使用方式
 
-**Important:** Preserve HTML structure when updating. Insert/replace content within existing DOM hierarchy.
-
-## Usage Patterns
-
-### Ask a Question
-
+### 提出问题
 ```bash
 # 1. Get agent ID
 mcporter call 'guru.guru_list_knowledge_agents()'
@@ -156,8 +141,7 @@ mcporter call 'guru.guru_answer_generation(
 )'
 ```
 
-### Find and Read a Card
-
+### 查找并阅读卡片
 ```bash
 # 1. Search for cards
 mcporter call 'guru.guru_search_documents(
@@ -169,8 +153,7 @@ mcporter call 'guru.guru_search_documents(
 mcporter call 'guru.guru_get_card_by_id(id: "CARD_ID_FROM_SEARCH")'
 ```
 
-### Create New Documentation
-
+### 创建新文档
 ```bash
 mcporter call 'guru.guru_create_draft(
   title: "API Authentication Guide",
@@ -178,33 +161,33 @@ mcporter call 'guru.guru_create_draft(
 )'
 ```
 
-## Choosing the Right Tool
+## 选择合适的工具
 
-| Use Case | Tool |
-|----------|------|
-| "What is X?" / "How do I Y?" | `guru_answer_generation` |
-| "Find docs about X" | `guru_search_documents` |
-| "Show me card XYZ" | `guru_get_card_by_id` |
-| "Create a new guide for X" | `guru_create_draft` |
-| "Update this card with..." | `guru_update_card` |
+| 使用场景 | 所需工具 |
+|---------|--------|
+| “X是什么？” / “我该如何做Y？” | `guru_answer_generation` |
+| “查找关于X的文档” | `guru_search_documents` |
+| “显示卡片XYZ” | `guru_get_card_by_id` |
+| “为X创建新的指南” | `guru_create_draft` |
+| “用……更新这张卡片” | `guru_update_card` |
 
-## Token Format
+## 令牌格式
 
-The `GURU_API_TOKEN` must be in format `email:token`:
+`GURU_API_TOKEN`的格式应为`email:token`：
 ```
 your.email@company.com:a1b2c3d4-e5f6-7890-abcd-ef1234567890
 ```
 
-## Notes
+## 注意事项
 
-- Questions appear in Guru's **AI Agent Center** analytics
-- All permissions enforced (users only see what they have access to)
-- Knowledge Agents can be domain-specific — choose the right one for your question
-- Card content is HTML — preserve structure when updating
+- 提出的问题会显示在Guru的**AI代理中心**的统计报告中。
+- 系统会严格遵循用户的权限设置（用户只能查看他们有权访问的内容）。
+- 知识代理可以是针对特定领域的——请根据您的问题选择合适的代理。
+- 卡片内容采用HTML格式——在更新时请保持其结构不变。
 
-## Resources
+## 参考资源
 
-- [Guru MCP Documentation](https://help.getguru.com/docs/connecting-gurus-mcp-server)
-- [Guru API Reference](https://developer.getguru.com)
-- [AI Agent Center](https://app.getguru.com/ai-agent-center)
-- [MCP Feedback](https://help.getguru.com/docs/connecting-gurus-mcp-server#feedback)
+- [Guru MCP文档](https://help.getguru.com/docs/connecting-gurus-mcp-server)
+- [Guru API参考文档](https://developer.getguru.com)
+- [AI代理中心](https://app.getguru.com/ai-agent-center)
+- [MCP反馈渠道](https://help.getguru.com/docs/connecting-gurus-mcp-server#feedback)

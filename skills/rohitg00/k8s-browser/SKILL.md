@@ -1,13 +1,13 @@
 ---
 name: k8s-browser
-description: Browser automation for Kubernetes dashboards and web UIs. Use when interacting with Kubernetes Dashboard, Grafana, ArgoCD UI, or other web interfaces. Requires MCP_BROWSER_ENABLED=true.
+description: 用于 Kubernetes 仪表板和 Web 用户界面的浏览器自动化工具。适用于与 Kubernetes 仪表板、Grafana、ArgoCD 用户界面或其他 Web 界面进行交互的场景。需要启用 `MCP_BROWSER_ENABLED=true` 参数。
 ---
 
-# Browser Automation for Kubernetes
+# Kubernetes浏览器自动化
 
-Automate Kubernetes web UIs using kubectl-mcp-server's browser tools (26 tools).
+使用`kubectl-mcp-server`提供的浏览器工具（共26种工具）来自动化Kubernetes Web界面的操作。
 
-## Enable Browser Tools
+## 启用浏览器工具
 
 ```bash
 export MCP_BROWSER_ENABLED=true
@@ -17,7 +17,7 @@ export MCP_BROWSER_PROVIDER=browserbase  # or browseruse
 export BROWSERBASE_API_KEY=bb_...
 ```
 
-## Basic Navigation
+## 基本导航
 
 ```python
 # Open URL
@@ -40,7 +40,7 @@ browser_forward()
 browser_refresh()
 ```
 
-## Screenshots and Content
+## 截图与内容抓取
 
 ```python
 # Take screenshot
@@ -59,7 +59,7 @@ browser_title()
 browser_url()
 ```
 
-## Interactions
+## 交互操作
 
 ```python
 # Click element
@@ -82,7 +82,7 @@ browser_press(key="Enter")
 browser_press(key="Escape")
 ```
 
-## Waiting
+## 等待操作
 
 ```python
 # Wait for element
@@ -96,7 +96,7 @@ browser_wait_for_navigation()
 browser_wait_for_load_state(state="networkidle")
 ```
 
-## Session Management
+## 会话管理
 
 ```python
 # List sessions
@@ -109,7 +109,7 @@ browser_session_switch(session_id="my-session")
 browser_close()
 ```
 
-## Viewport and Device
+## 视口与设备设置
 
 ```python
 # Set viewport size
@@ -119,7 +119,7 @@ browser_set_viewport(width=1920, height=1080)
 browser_set_viewport(device="iPhone 12")
 ```
 
-## Kubernetes Dashboard Workflow
+## Kubernetes控制台工作流程
 
 ```python
 # 1. Start kubectl proxy
@@ -139,7 +139,7 @@ browser_type(selector="input[placeholder*=search]", text="nginx")
 browser_press(key="Enter")
 ```
 
-## Grafana Dashboard Workflow
+## Grafana控制台工作流程
 
 ```python
 # 1. Open Grafana
@@ -156,7 +156,7 @@ browser_click(selector="text=Last 1 hour")
 browser_screenshot(path="grafana-cluster.png", full_page=True)
 ```
 
-## ArgoCD UI Workflow
+## ArgoCD用户界面工作流程
 
 ```python
 # 1. Open ArgoCD
@@ -176,7 +176,7 @@ browser_click(selector="button.sync-button")
 browser_click(selector="text=Synchronize")
 ```
 
-## Related Skills
+## 相关技能
 
-- [k8s-gitops](../k8s-gitops/SKILL.md) - ArgoCD CLI tools
-- [k8s-diagnostics](../k8s-diagnostics/SKILL.md) - Cluster analysis
+- [k8s-gitops](../k8s-gitops/SKILL.md) - ArgoCD命令行工具
+- [k8s-diagnostics](../k8s-diagnostics/SKILL.md) - 集群诊断工具

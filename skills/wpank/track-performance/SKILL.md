@@ -1,44 +1,42 @@
 ---
 name: track-performance
-description: Track the performance of Uniswap LP positions over time — check which positions need attention, are out of range, or have uncollected fees. Use when the user asks how their positions are doing.
+description: 跟踪 Uniswap 的长期锁定池（LP）头寸表现——检查哪些头寸需要关注、是否超出正常范围，或者是否有未收取的费用。当用户询问其头寸状况时，可以使用此功能。
 model: opus
 allowed-tools: [Task(subagent_type:portfolio-analyst)]
 ---
 
-# Track Performance
+# 性能跟踪
 
-## Overview
+## 概述
 
-Tracks the performance of Uniswap LP positions with a focus on changes and alerts since the last review. Delegates to the `portfolio-analyst` agent to check position status, fee accumulation, and identify positions needing attention.
+该功能用于跟踪Uniswap流动性提供者（LP）头寸的性能，重点关注自上次检查以来的变化和异常情况。具体操作由`portfolio-analyst`代理负责，该代理会检查头寸状态、费用累积情况，并识别需要关注的头寸。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下问题时，可激活此功能：
 
-- "How are my positions doing?"
-- "Check my LP performance"
-- "Any positions need attention?"
-- "Which positions are out of range?"
-- "How much have I earned today?"
-- "Position status update"
+- “我的头寸表现如何？”
+- “请查看我的LP投资表现”
+- “是否有需要关注的头寸？”
+- “哪些头寸超出了预设范围？”
+- “我今天赚了多少钱？”
+- “请更新头寸状态”
 
-## Parameters
+## 参数
 
-| Parameter | Required | Default                 | Description                              |
-| --------- | -------- | ----------------------- | ---------------------------------------- |
-| wallet    | No       | Configured agent wallet | Wallet address to track                  |
-| chains    | No       | All chains              | Specific chains or "all"                  |
-| since     | No       | Last check              | Time period: "24h", "7d", "30d"           |
+| 参数          | 是否必填 | 默认值                | 说明                                      |
+|--------------|--------|-------------------|-----------------------------------------|
+| wallet       | 否      | 配置好的代理钱包地址         | 需要跟踪的钱包地址                          |
+| chains        | 否      | 所有链                 | 指定链或“所有链”                             |
+| since        | 否      | 上次检查时间             | 时间范围：24小时、7天、30天                          |
 
-## Workflow
+## 工作流程
 
-1. **Extract parameters** from the user's request: identify wallet, chain filter, and time period.
+1. 从用户请求中提取参数：确定钱包地址、链筛选条件以及时间范围。
+2. 调用`portfolio-analyst`代理：执行`Task(subagent_type:portfolio-analyst)`任务，重点关注性能跟踪和异常情况处理。代理会检查所有头寸，识别状态变化，并标记需要关注的头寸。
+3. 呈现结果：以性能总结的形式展示结果，并附带可操作的提醒信息。
 
-2. **Delegate to portfolio-analyst**: Invoke `Task(subagent_type:portfolio-analyst)` with a focus on performance tracking and alerts. The agent checks all positions, identifies status changes, and flags positions needing attention.
-
-3. **Present results**: Format as a performance summary with actionable alerts.
-
-## Output Format
+## 输出格式
 
 ```text
 Performance Update (last 24h)
@@ -61,17 +59,17 @@ Performance Update (last 24h)
     2. Consider collecting $1,200 in accumulated fees from UNI/WETH
 ```
 
-## Important Notes
+## 重要说明
 
-- Delegates entirely to `portfolio-analyst` — no direct MCP tool calls.
-- "Out of range" positions are not earning fees and may need rebalancing.
-- Action items are suggestions, not automatic actions.
-- Performance data may be slightly delayed due to RPC/subgraph sync.
+- 全部功能由`portfolio-analyst`代理负责处理，不涉及直接调用MCP工具。
+- 超出预设范围的头寸无法产生费用，可能需要重新平衡。
+- 提出的操作建议仅供参考，并非自动执行。
+- 由于RPC或子图同步的原因，性能数据可能会有轻微延迟。
 
-## Error Handling
+## 错误处理
 
-| Error                | User-Facing Message                              | Suggested Action              |
-| -------------------- | ------------------------------------------------ | ----------------------------- |
-| Wallet not configured | "No wallet configured."                          | Set WALLET_TYPE + PRIVATE_KEY |
-| No positions found   | "No Uniswap positions found."                    | Wallet may not have LP'd      |
-| Data stale           | "Position data may be delayed."                  | Try again in a few minutes    |
+| 错误类型           | 显示给用户的消息                                      | 建议的操作                                      |
+|------------------|--------------------------------------------------|-------------------------------------------|
+| 未配置钱包       | “未配置钱包。”                                      | 请设置WALLET_TYPE和PRIVATE_KEY                   |
+| 未找到头寸       | “未找到Uniswap头寸。”                                    | 可能是因为钱包未进行LP投资                     |
+| 数据延迟         | “头寸数据可能存在延迟。”                                    | 请稍后再试                         |

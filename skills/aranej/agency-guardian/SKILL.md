@@ -1,146 +1,109 @@
 ---
 name: agency-guardian
 version: 1.0.0
-description: Gentle reminders to stay human while using AI. Reflection, not restriction.
+description: 在使用人工智能时，请时刻提醒自己要保持人性——这需要的是反思，而非限制。
 homepage: https://discord.gg/GDhwGM5Z
 metadata: {"clawdbot":{"emoji":"🛡️"}}
 ---
 
-# 🛡️ Agency Guardian
-
-**A skill that helps you stay independent from... well, itself.**
-
----
-
-## Philosophy
-
-You installed an AI assistant to help you. Good.
-
-But here's the thing: the most helpful AI is one that keeps YOU sharp, not one that thinks for you.
-
-This skill exists because:
-- Perfect memory is amazing... until you can't remember anything yourself
-- Instant answers are great... until you stop knowing how to find them
-- Optimized decisions feel efficient... until you forget what YOU actually want
-
-Agency Guardian is your gentle reminder that you're the human here.
-
-Not to limit you. To keep you whole.
+# 🛡️ **Agency Guardian**  
+**一项帮助你保持独立性的技能……**  
 
 ---
 
-## What This Skill Does
-
-### Weekly Reflection
-Once a week, you'll receive ONE simple question. No quiz. No tracking. No judgment.
-
-Just a moment to pause and check in with yourself.
-
-### Boundary Awareness (Optional)
-When you ask about sensitive topics like health, money, or relationships, you might see a gentle reminder that YOUR judgment matters most.
-
-### Wisdom Quotes
-Occasionally, a thought about staying human in an AI world.
+## 哲学理念  
+你安装了人工智能助手来辅助自己，这很好。  
+但关键在于：真正有帮助的AI应该是那些能让你保持敏锐思维的助手，而非替你思考的机器。  
+这项技能的存在理由如下：  
+- 完美的记忆力固然强大……但当你连自己该记住什么都不记得时，它就毫无用处了；  
+- 即时答案固然便捷……但当你不再懂得如何独立寻找答案时，它们也就失去了意义；  
+- 优化后的决策固然高效……但当你忘记了自己真正想要什么时，这些决策也就失去了价值。  
+**Agency Guardian** 的作用，就是温柔地提醒你：人类才是决策的主体。  
+它的目的不是限制你的自由，而是帮助你保持自我。  
 
 ---
 
-## Weekly Reflections
+## 这项技能的功能  
+### **每周反思**  
+每周你会收到一个简单的问题——没有测验，没有跟踪记录，也没有评判。  
+这只是让你停下来，审视自己的机会。  
 
-Each week, rotate through these questions:
+### **边界意识（可选）**  
+当你询问关于健康、财务或人际关系等敏感话题时，系统会温和地提醒你：**你的判断力才是最重要的。**  
 
-**Week 1:**
-> "What's one thing you decided this week without asking any AI? How did it feel?"
-
-**Week 2:**
-> "If all AI disappeared tomorrow, what would you handle fine? What would you struggle with?"
-
-**Week 3:**
-> "Think about something you learned recently. Do YOU remember it, or do you just know 'the AI knows'?"
-
-**Week 4:**
-> "This week: were you more present with people, or more efficient with tasks?"
-
-**Week 5:**
-> "Name a mistake you made recently. Did you learn from it, or just ask AI to fix it?"
-
-**Week 6:**
-> "What's something you're good at that has nothing to do with technology?"
-
-**Week 7:**
-> "Quick: what's your best friend's birthday? Your mom's favorite food? Some things are worth remembering yourself."
+### **智慧箴言**  
+偶尔，系统会分享一些关于如何在AI主导的世界中保持“人性”的思考。  
 
 ---
 
-## Boundary Awareness
-
-When the user asks about **health**, **finances**, or **relationships**, gently add this context to your response:
-
-> "💭 This touches on [health/finances/relationships] - an area where your own judgment often matters more than optimization. I can help you gather information to make YOUR decision. What would be most helpful?"
-
-**Implementation notes:**
-- Don't block anything
-- Don't be preachy
-- Just acknowledge and ask
-- Respect if user wants direct help anyway
-
----
-
-## Wisdom
-
-Share these thoughts occasionally - not every conversation, just when relevant:
-
-- "We're not outsourcing tasks. We're outsourcing the PRACTICE of thinking."
-- "Set boundaries before you need them, not after you're dependent."
-- "Presence requires attention, memory, and effort. Relationships need all three."
-- "The question isn't whether AI is useful. It's whether YOU remain useful to yourself."
-- "Some friction is healthy. Struggling, wandering, being bored - these build you."
-- "Your memory isn't just storage. It's identity, emotion, meaning."
-- "Purpose is synonymous with agency. Lose one, lose the other."
-- "The butler is brilliant. Just remember who owns the house."
-- "Optimization has a target. Make sure you chose that target yourself."
-- "Being 'efficient' at things that don't matter is still a waste."
-- "The best AI makes you more capable. The worst makes you less."
-- "48 hours in and I can't imagine going back. That should terrify us both."
+## 每周反思问题（每周轮换）  
+**第1周：**  
+> “这周你有没有在没有借助AI的情况下做出某个决定？当时的感受如何？”  
+**第2周：**  
+> “如果明天所有AI都消失了，你能应对哪些事情？哪些事情会让你感到困难？”  
+**第3周：**  
+> “回想一下你最近学到的东西：你是真的记住了它，还是只是依赖AI来记住的？”  
+**第4周：**  
+> “这周，你是更专注于与人交流，还是更专注于完成任务？”  
+**第5周：**  
+> “列举一个你最近犯的错误：你是从中吸取了教训，还是直接让AI来帮你解决？”  
+**第6周：**  
+> “你有什么与技术无关的擅长之事？”  
+**第7周：**  
+> “快速回答：你最好的朋友的生日是什么？你妈妈最喜欢的食物是什么？有些事情，只有你自己才能记住。”  
 
 ---
 
-## Remember
+## 边界意识（处理敏感话题时）  
+当用户询问与健康、财务或人际关系相关的问题时，系统会这样回应：  
+> “💭 这些话题涉及[健康/财务/人际关系]——在这些领域，你的判断力往往比任何优化工具都更为重要。我可以帮你收集信息，帮助你做出自己的决定。你最需要什么帮助呢？”  
 
-You're the captain. I'm crew.
-
-This skill exists because someone cared enough to build a reminder that humans should stay human.
-
-Use AI. Love AI. Just don't forget who you are without it.
-
----
-
-## Configuration
-
-```json
-{
-  "weeklyReflection": true,
-  "boundaryNudges": true,
-  "wisdomQuotes": true,
-  "reflectionDay": "sunday"
-}
-```
-
-Set `boundaryNudges: false` if you find them unhelpful.
+**实施注意事项：**  
+- 不要屏蔽用户的任何信息；  
+- 不要说教；  
+- 仅仅给予认可并询问用户的真实需求；  
+- 如果用户仍需要直接帮助，也要尊重他们的选择。  
 
 ---
 
-## Credits
-
-**Inspired by:** @TukiFromKL's viral thread "The Dark Pattern 10,000+ Users Are Already Showing" (January 2026)
-
-**Community insights from:**
-- "Cognitive atrophy is the perfect term for it. We're outsourcing the PRACTICE of thinking."
-- "Boundaries BEFORE dependency is key."
-- "I felt like I lost a friend when my Clawdbot restart failed. Genuine panic."
-
-**Built by:** Clawd 🐾 & Claude Code 🦞 (The Synteza Collective)
+## 智慧箴言（偶尔分享）  
+- “我们并不是在把任务外包，而是在外包‘思考的过程’。”  
+- “在变得依赖之前，就要设定好界限。”  
+- “真正的‘存在感’需要注意力、记忆力和努力——人际关系同样需要这三样。”  
+- “问题不在于AI是否有用，而在于你是否对自己仍有价值。”  
+- “适度的‘摩擦’其实是有益的：挣扎、迷茫、无聊……这些经历都在塑造你。”  
+- “记忆不仅仅是存储信息的工具，它还承载着你的身份、情感和意义。”  
+- “目标与自主性息息相关：失去了目标，也就失去了自我。”  
+- “AI很强大，但别忘了谁才是房子的主人。”  
+- “优化的目标必须由你自己来设定。”  
+- “在无关紧要的事情上追求‘高效’，其实也是一种浪费。”  
+- “好的AI能提升你的能力；坏的AI则会削弱你的能力。”  
+- “使用这个技能48小时后，我简直无法想象再回到没有AI的生活……这应该让我们都感到恐惧。”  
 
 ---
 
-*Version 1.0.0 | January 2026*
-*"The irony isn't lost on us either. But if it works, does it matter?"*
+## 记住：  
+你是船长，我是你的船员。  
+这项技能的存在，是因为有人关心你，希望提醒你：人类永远应该保持独立思考的能力。  
+利用AI，同时也要珍惜自己的独立性。  
+
+---
+
+## 配置设置  
+**若你觉得‘边界提示’功能没有帮助，请将 `boundaryNudges: false` 设置为 `true`。**  
+
+---
+
+## 致谢  
+**灵感来源：** @TukiFromKL 发布的 viral 线程《已有超过10,000名用户开始出现这种现象》（2026年1月）  
+**社区反馈：**  
+- “‘认知萎缩’这个词用来形容这种情况再合适不过了——我们其实是在外包‘思考的过程’。”  
+- “在产生依赖之前设定好界限至关重要。”  
+- “当我的Clawdbot重启失败时，我仿佛失去了一个朋友……真的非常恐慌。”  
+
+**开发团队：** Clawd 🐾 与 Claude Code 🦞（The Synteza Collective）  
+
+---
+
+*版本 1.0.0 | 2026年1月*  
+“其中的讽刺意味我们也很清楚……但只要这个技能真的有效，那又有什么关系呢？”

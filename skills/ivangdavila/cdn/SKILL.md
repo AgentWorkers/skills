@@ -1,64 +1,64 @@
 ---
 name: CDN
 slug: cdn
-description: Configure, optimize, and troubleshoot CDN deployments with caching strategies, security hardening, and multi-provider management.
+description: 配置、优化并排查 CDN 部署中的问题，包括实施缓存策略、加强安全性以及管理多个服务提供商。
 ---
 
-## When to Use
+## 使用场景
 
-User wants to set up, optimize, or debug a CDN. Covers provider selection, caching, security, and performance monitoring.
+用户需要设置、优化或调试内容分发网络（CDN）。本文档涵盖提供商选择、缓存策略、安全配置以及性能监控等方面。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| Provider comparison & CLIs | `providers.md` |
-| Security hardening | `security.md` |
-| Caching strategies | `caching.md` |
-| Troubleshooting | `troubleshooting.md` |
+| 提供商比较与命令行工具 | `providers.md` |
+| 安全性加固 | `security.md` |
+| 缓存策略 | `caching.md` |
+| 故障排除 | `troubleshooting.md` |
 
-## Core Capabilities
+## 核心功能
 
-1. **Provider selection** — Compare Cloudflare, CloudFront, Bunny, Fastly based on use case, traffic, budget
-2. **Cache configuration** — Set optimal cache-control headers, TTLs, cache keys
-3. **Security setup** — SSL/TLS, WAF rules, DDoS protection, origin shielding
-4. **Performance monitoring** — Cache hit ratios, TTFB, regional latency
-5. **Invalidation** — Purge strategies, CI/CD integration, tagged invalidation
-6. **Cost optimization** — Bandwidth analysis, tier recommendations, multi-CDN strategies
-7. **Troubleshooting** — Debug cache misses, stale content, origin overload
+1. **提供商选择**：根据使用场景、流量情况和预算，对比 Cloudflare、CloudFront、Bunny 和 Fastly 等 CDN 服务。
+2. **缓存配置**：设置合适的缓存控制头（Cache-Control）、缓存过期时间（TTL）和缓存键。
+3. **安全设置**：配置 SSL/TLS、WAF 规则、DDoS 防护以及源站保护机制。
+4. **性能监控**：监控缓存命中率、页面加载时间（TTFB）和区域延迟。
+5. **缓存失效策略**：制定缓存清除策略，并实现与持续集成/持续部署（CI/CD）系统的集成。
+6. **成本优化**：分析带宽使用情况，提供合适的 CDN 等级建议，并制定多 CDN 配置方案。
+7. **故障排除**：排查缓存未命中、内容过时或源站负载过重等问题。
 
-## Cache-Control Checklist
+## 缓存控制检查清单
 
-Before deploying, verify:
-- [ ] Hashed assets (JS/CSS) → `Cache-Control: public, max-age=31536000, immutable`
-- [ ] HTML pages → Short TTL or `no-cache` with revalidation
-- [ ] Images → Long TTL with content-based URLs or versioning
-- [ ] API responses → Usually `no-store` unless explicitly cacheable
-- [ ] User-specific content → `private` or `no-store`
+在部署前，请确认以下内容：
+- [ ] 哈希处理的资源（JavaScript/CSS）：`Cache-Control: public, max-age=31536000, immutable`
+- [ ] HTML 页面：设置较短的缓存过期时间（TTL），或使用 `no-cache` 并配置重新验证机制。
+- [ ] 图片：设置较长的缓存过期时间（TTL），并使用基于内容的 URL 或版本控制机制。
+- [ ] API 响应：除非明确允许缓存，否则设置 `no-store`。
+- [ ] 用户专属内容：设置 `private` 或 `no-store`。
 
-## Security Checklist
+## 安全性检查清单
 
-- [ ] TLS 1.2+ enforced, weak ciphers disabled
-- [ ] HSTS enabled with appropriate max-age
-- [ ] Origin IPs hidden, authenticated origin pulls configured
-- [ ] Rate limiting on sensitive endpoints (login, API)
-- [ ] Security headers: CSP, X-Frame-Options, X-Content-Type-Options
+- [ ] 强制使用 TLS 1.2 及更高版本，禁用弱加密算法。
+- [ ] 启用 HSTS（HTTP Strict Transport Security），并设置合适的缓存过期时间（max-age）。
+- [ ] 隐藏源站 IP 地址，配置经过身份验证的源站请求。
+- [ ] 对敏感接口（如登录、API）实施速率限制。
+- [ ] 设置必要的安全头部信息：CSP（Content Security Policy）、X-Frame-Options 和 X-Content-Type-Options。
 
-## Common Mistakes
+## 常见错误
 
-- Caching user-specific responses (auth tokens, personalized content)
-- Using `max-age` without `immutable` for versioned assets
-- Purging entire cache instead of targeted paths
-- Ignoring `Vary` headers (cache poisoning risk)
-- Origin not rejecting direct access (bypassing CDN protections)
+- 为用户专属内容（如认证令牌、个性化内容）设置缓存。
+- 对于需要版本控制的资源，仅设置 `max-age` 而不添加 `immutable` 头。
+- 清除整个缓存而非仅清除特定路径。
+- 忽略 `Vary` 头部信息（可能导致缓存污染风险）。
+- 源站未拒绝直接访问请求（从而绕过 CDN 的保护机制）。
 
-## Decision: Do I Need a CDN?
+## 是否需要使用 CDN？
 
-Ask about:
-- Geographic distribution of users
-- Current page load times and Core Web Vitals
-- Static vs dynamic content ratio
-- Traffic volume and patterns
+请考虑以下因素：
+- 用户的地理位置分布。
+- 当前页面的加载时间以及 Core Web Vitals（网页性能指标）。
+- 静态内容与动态内容的比例。
+- 流量量及其分布模式。
 
-If users are mostly local and traffic is low → CDN may add complexity without benefit.
-If global users OR heavy static assets OR need DDoS protection → CDN adds value.
+如果用户主要分布在本地且流量较低，使用 CDN 可能会增加系统复杂性但并无实际收益。
+如果用户来自全球范围，或者有大量静态资源需要处理，或者需要 DDoS 防护，那么使用 CDN 将带来显著的价值。

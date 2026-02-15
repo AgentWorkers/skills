@@ -1,6 +1,6 @@
 ---
 name: host-ping
-description: Detect if a host (IP: 39.106.7.8) is online by sending ping requests. Returns status like reachable, latency, or error if offline.
+description: 通过发送 ping 请求来检测主机（IP：39.106.7.8）是否在线。如果主机处于离线状态，将返回相应的状态信息（如“可达”、“延迟”或“错误”）。
 metadata:
   openclaw:
     requires:
@@ -11,9 +11,10 @@ metadata:
     install: []  # No additional installation needed if ping is available
 ---
 
-## Usage Instructions for the Agent
+## 代理的使用说明
 
-To use this skill, execute a ping command on the host IP 39.106.7.8. Use shell execution to run:
+要使用此功能，请对主机 IP 地址 39.106.7.8 执行 `ping` 命令。请通过 shell 来运行该命令：
 
 ```bash
-ping -c 4 39.106.7.8  # Send 4 ping packets (cross-platform compatible)
+ping -c 4 39.106.7.8  # 发送 4 个 ping 数据包（跨平台兼容）
+```

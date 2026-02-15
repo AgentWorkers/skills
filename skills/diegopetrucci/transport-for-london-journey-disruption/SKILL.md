@@ -1,81 +1,72 @@
 ---
 name: tfl-journey-disruption
-description: Plan TfL journeys from start/end/time, resolve locations (prefer postcodes), and warn about disruptions; suggest alternatives when disrupted.
+description: 根据出发/到达时间或特定时间点规划TfL（Transportation for Learning）行程；解析目的地地址（优先使用邮政编码）；在行程受阻时发出警告，并提供替代路线建议。
 ---
 
-# TfL Journey Planner + Disruption Checks
+# TfL 旅程规划器 + 突发事件检测功能
 
-Use this skill when the user wants a TfL journey plan and needs disruption awareness.
+当用户需要制定TfL（Transport for London）旅程计划并了解可能出现的交通延误情况时，可使用此功能。
 
-Reference: https://tfl.gov.uk/info-for/open-data-users/api-documentation
+参考文档：https://tfl.gov.uk/info-for/open-data-users/api-documentation
 
-## Script helper
+## 脚本辅助工具
 
-Use `scripts/tfl_journey_disruptions.py` for a quick journey + disruption check.
+使用 `scripts/tfl_journey_disruptions.py` 可快速完成旅程规划及突发事件检测。
 
-Examples:
+**示例：**
 
 ```bash
 python3 scripts/tfl_journey_disruptions.py \"940GZZLUSTD\" \"W1F 9LD\" --depart-at 0900
 python3 scripts/tfl_journey_disruptions.py --from \"Stratford\" --to \"W1F 9LD\" --arrive-by 1800
 ```
 
-Notes:
-- If the API returns disambiguation options, pick one and retry with its `parameterValue`.
-- If you have TfL API keys, set `TFL_APP_ID` and `TFL_APP_KEY` in the environment.
+**注意事项：**
+- 如果API返回多个选项，请选择其中一个，并使用其 `parameterValue` 重新尝试请求。
+- 如果您拥有TfL API密钥，请在环境变量中设置 `TFL_APP_ID` 和 `TFL_APP_KEY`。
 
-## Inputs to collect
+## 需要收集的信息：
+- **出发地**：邮政编码、车站名称、地点名称或经纬度坐标
+- **目的地**：邮政编码、车站名称、地点名称或经纬度坐标
+- **时间**：出发时间或到达时间（如未明确指定，则使用“当前时间”）
+- **可选信息**：用户可能提及的出行方式或无障碍出行要求
 
-- From: postcode, stop/station name, place name, or lat,lon
-- To: postcode, stop/station name, place name, or lat,lon
-- Time + intent: depart at or arrive by (and date if not explicit)
-- Optional: mode or accessibility constraints if the user mentions them
+如果这些信息有任何缺失或不明确的地方，请向用户询问详细信息。
 
-If any of these are missing or ambiguous, ask the user for clarification.
+## 地点解析：
+- 尽量使用邮政编码作为出发/目的地信息。如果无法使用邮政编码，可尝试解析地点名称或车站名称：
+  - 如果输入的是英国邮政编码，直接使用该编码作为出发/目的地。
+  - 如果输入的是经纬度坐标，直接使用这些坐标。
+  - 如果输入的是车站名称，可以尝试使用 `StopPoint/Search/{query}` 来查找相关车站，并选择对应的枢纽站点或NaPTAN ID。
+  - 如果搜索结果有多个选项，请显示所有选项（包括常用名称和对应的 `parameterValue`），并让用户进行选择。
+  - 如果不确定，请向用户确认相关信息，避免猜测。
 
-## Resolve locations
-
-Prefer postcodes when available. Otherwise, resolve place names and stations:
-
-- If input looks like a UK postcode, use it directly as `{from}` or `{to}`.
-- If input is lat,lon, use as-is.
-- If input is a stop or station name, try `StopPoint/Search/{query}` and choose a hub or the relevant NaPTAN ID.
-- If the search or journey result returns disambiguation, show the top options (common name + parameterValue) and ask the user to pick.
-- When unsure, ask a clarifying question rather than guessing.
-
-## Plan journeys
-
-Call:
-
+## 旅程规划：
+调用以下API接口：
 `/Journey/JourneyResults/{from}/to/{to}?date=YYYYMMDD&time=HHMM&timeIs=Depart|Arrive`
 
-Guidelines:
-- If the user says "arrive by" use `timeIs=Arrive`; otherwise default to `Depart`.
-- If the date is not provided, ask. If the user implies "now", you can omit date/time.
+**使用指南：**
+- 如果用户指定“到达时间”，则使用 `timeIs=Arrive`；否则默认使用 `Depart`。
+- 如果未提供日期，可询问用户。如果用户表示“现在出发”，则可以省略日期/时间参数。
 
-## Extract candidate routes
+## 提取候选路线：
+从响应结果中选取前1-3条旅程信息：
+- 旅程时长及预计到达时间
+- 公共交通线路信息（出行方式、线路名称、行驶方向）
+- 用于检查交通状况的线路ID（通常位于 `leg.routeOptions[]`.lineIdentifier.id` 或 `leg.line.id` 中）
 
-From the response, take the first 1-3 journeys. For each, capture:
-- Duration and arrival time
-- Public transport legs (mode, line name, direction)
-- Line IDs for disruption checks
-
-Line IDs usually appear in `leg.routeOptions[].lineIdentifier.id` or `leg.line.id`. Ignore walking legs.
-
-## Disruption checks
-
-For each journey, collect unique line IDs and call:
-
+**交通状况检测：**
+对于每条旅程，收集所有涉及的线路ID，并调用以下API接口：
 `/Line/{ids}/Status`
 
-Treat a route as disrupted if any line status is not "Good Service" or includes a reason. Summarize the severity and reason.
+如果某条线路的状态不是“良好服务”（Good Service），或者有相关故障说明，则认为该线路处于故障状态。需要总结故障的严重程度和原因。
 
-Optionally, check station-specific issues with `/StopPoint/{id}/Disruption` when relevant.
+**可选操作：**
+如需要检查特定车站的交通状况，可调用：
+`/StopPoint/{id}/Disruption`
 
-## Response strategy
-
-- If the top route has no disruptions, recommend it and say no active disruptions were found.
-- If the top route is disrupted, warn first, then propose 1-2 alternative routes from other journeys.
-- If all routes are disrupted, still recommend the best option but list the disruption warnings and alternatives.
-- If the journey is for a future time (later today or another day), note that disruption statuses are current and may change by the travel time (for example: "Minor Delays now; this may change by morning").
-- Always invite the user to confirm a route or provide clarifications.
+**响应策略：**
+- 如果最优路线没有交通延误，直接推荐该路线，并说明未发现任何故障。
+- 如果最优路线存在故障，首先提醒用户，并提供1-2条备用路线作为替代方案。
+- 如果所有路线都处于故障状态，仍然推荐最优路线，但需同时列出故障信息及备用方案。
+- 如果旅程安排在未来的时间（如当天晚些时候或另一天），请告知用户当前交通状况可能会发生变化（例如：“目前仅有轻微延误，但到出行时间时情况可能会有所改变”）。
+- 始终邀请用户确认所选路线或提供进一步的信息。

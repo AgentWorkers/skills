@@ -1,308 +1,139 @@
 ---
 name: kimi-integration
-description: Step-by-step guide for integrating Moonshot AI (Kimi) and Kimi Code models into Clawdbot. Use when someone asks how to add Kimi models, configure Moonshot AI, or set up Kimi for Coding in Clawdbot.
+description: 将 Moonshot AI (Kimi) 和 Kimi Code 模型集成到 Clawdbot 的逐步指南。适用于需要了解如何添加 Kimi 模型、配置 Moonshot AI 或在 Clawdbot 中设置 Kimi 用于编程的用户。
 ---
 
-# Kimi Model Integration
+# Kimi模型集成
 
-Complete guide for adding Moonshot AI (Kimi) and Kimi Code models to Clawdbot.
+本文档提供了将Moonshot AI（Kimi）和Kimi Code模型添加到Clawdbot的完整指南。
 
-## Overview
+## 概述
 
-Kimi offers two separate model families:
+Kimi提供了两个独立的模型系列：
 
-1. **Moonshot AI (Kimi K2)** - General-purpose models via OpenAI-compatible API
-2. **Kimi Code** - Specialized coding model with dedicated endpoint
+1. **Moonshot AI（Kimi K2）**：通过OpenAI兼容的API提供通用模型。
+2. **Kimi Code**：专门用于代码生成的模型，拥有独立的API端点。
 
-Both require API keys from different sources.
+这两个模型都需要从不同来源获取API密钥。
 
-## Prerequisites
+## 先决条件
 
-- Clawdbot installed and configured
-- API keys (see Getting API Keys section)
+- Clawdbot已安装并配置完成。
+- 已获取API密钥（请参阅“获取API密钥”部分）。
 
-## Getting API Keys
+## 获取API密钥
 
-### Moonshot AI (Kimi K2)
+### Moonshot AI（Kimi K2）
 
-1. Visit https://platform.moonshot.cn
-2. Register an account
-3. Navigate to API Keys section
-4. Create a new API key
-5. Copy the key (starts with `sk-...`)
+1. 访问 [https://platform.moonshot.cn](https://platform.moonshot.cn)。
+2. 注册一个账户。
+3. 转到“API密钥”部分。
+4. 创建一个新的API密钥。
+5. 复制密钥（密钥以 `sk-` 开头）。
 
 ### Kimi Code
 
-1. Visit https://api.kimi.com/coding
-2. Register an account  
-3. Navigate to API Keys section
-4. Create a new API key
-5. Copy the key (starts with `sk-...`)
+1. 访问 [https://api.kimi.com/coding](https://api.kimi.com/coding)。
+2. 注册一个账户。
+3. 转到“API密钥”部分。
+4. 创建一个新的API密钥。
+5. 复制密钥（密钥以 `sk-` 开头）。
 
-**Note:** Moonshot and Kimi Code use separate keys and endpoints.
+**注意：** Moonshot AI和Kimi Code使用不同的API密钥和端点。
 
-## Integration Steps
+## 集成步骤
 
-### Option 1: Moonshot AI (Kimi K2 models)
+### 选项1：Moonshot AI（Kimi K2模型）
 
-#### Step 1: Set environment variable
+#### 第1步：设置环境变量
 
-```bash
-export MOONSHOT_API_KEY="sk-your-moonshot-key-here"
-```
+（代码示例）：
 
-Or add to `.env` file:
+或将其添加到 `.env` 文件中：
 
-```bash
-echo 'MOONSHOT_API_KEY="sk-your-moonshot-key-here"' >> ~/.env
-```
+#### 第2步：添加提供者配置
 
-#### Step 2: Add provider configuration
+编辑您的 `clawdbot.json` 配置文件：
 
-Edit your `clawdbot.json` config:
+#### 第3步：重启Clawdbot
 
-```json5
-{
-  "agents": {
-    "defaults": {
-      "model": {
-        "primary": "moonshot/kimi-k2.5"
-      }
-    }
-  },
-  "models": {
-    "mode": "merge",
-    "providers": {
-      "moonshot": {
-        "baseUrl": "https://api.moonshot.cn/v1",
-        "apiKey": "${MOONSHOT_API_KEY}",
-        "api": "openai-completions",
-        "models": [
-          {
-            "id": "moonlight-v1-32k",
-            "name": "Moonlight V1 32K",
-            "contextWindow": 32768
-          },
-          {
-            "id": "moonshot-v1-8k",
-            "name": "Moonshot V1 8K",
-            "contextWindow": 8192
-          },
-          {
-            "id": "moonshot-v1-32k",
-            "name": "Moonshot V1 32K",
-            "contextWindow": 32768
-          },
-          {
-            "id": "moonshot-v1-128k",
-            "name": "Moonshot V1 128K",
-            "contextWindow": 131072
-          },
-          {
-            "id": "kimi-k2.5",
-            "name": "Kimi K2.5",
-            "contextWindow": 200000
-          }
-        ]
-      }
-    }
-  }
-}
-```
+#### 第4步：验证集成
 
-#### Step 3: Restart Clawdbot
+（代码示例）：
 
-```bash
-clawdbot gateway restart
-```
+您应该能在模型列表中看到Moonshot模型。
 
-#### Step 4: Verify integration
+#### 第5步：使用模型
 
-```bash
-clawdbot models list
-```
+- 将其设置为默认模型：
+（代码示例）
 
-You should see Moonshot models in the list.
+- 或在聊天中使用模型别名：
+（代码示例）
 
-#### Step 5: Use the model
+### 选项2：Kimi Code（专门用于代码生成的模型）
 
-Set as default:
-```bash
-clawdbot models set moonshot/kimi-k2.5
-```
+#### 第1步：设置环境变量
 
-Or use model aliases in chat:
-```bash
-/model moonshot/kimi-k2.5
-```
+（代码示例）：
 
-### Option 2: Kimi Code (specialized coding model)
+或将其添加到 `.env` 文件中：
 
-#### Step 1: Set environment variable
+#### 第2步：添加提供者配置
 
-```bash
-export KIMICODE_API_KEY="sk-your-kimicode-key-here"
-```
+编辑您的 `clawdbot.json` 配置文件：
 
-Or add to `.env`:
+#### 第3步：重启Clawdbot
 
-```bash
-echo 'KIMICODE_API_KEY="sk-your-kimicode-key-here"' >> ~/.env
-```
+#### 第4步：验证集成
 
-#### Step 2: Add provider configuration
+（代码示例）：
 
-Edit your `clawdbot.json` config:
+您应该能在模型列表中看到 `kimicode/kimi-for-coding`。
 
-```json5
-{
-  "agents": {
-    "defaults": {
-      "model": {
-        "primary": "kimicode/kimi-for-coding"
-      },
-      "models": {
-        "kimicode/kimi-for-coding": {
-          "alias": "kimi"
-        }
-      }
-    }
-  },
-  "models": {
-    "mode": "merge",
-    "providers": {
-      "kimicode": {
-        "baseUrl": "https://api.kimi.com/coding/v1",
-        "apiKey": "${KIMICODE_API_KEY}",
-        "api": "openai-completions",
-        "models": [
-          {
-            "id": "kimi-for-coding",
-            "name": "Kimi For Coding",
-            "contextWindow": 200000,
-            "maxTokens": 8192
-          }
-        ]
-      }
-    }
-  }
-}
-```
+#### 第5步：使用模型
 
-#### Step 3: Restart Clawdbot
+- 将其设置为默认模型：
+（代码示例）
 
-```bash
-clawdbot gateway restart
-```
+- 或在聊天中使用模型别名：
+（代码示例）
 
-#### Step 4: Verify integration
+## 同时使用两种提供者
 
-```bash
-clawdbot models list
-```
+您可以同时配置Moonshot AI和Kimi Code模型：
 
-You should see `kimicode/kimi-for-coding` in the list.
+（代码示例）：
 
-#### Step 5: Use the model
+- 使用别名在模型之间切换：
+  - `/model k25` - Kimi K2.5（通用模型）
+  - `/model kimi` - Kimi for Coding（专门用于代码生成的模型）
 
-Set as default:
-```bash
-clawdbot models set kimicode/kimi-for-coding
-```
+## 故障排除
 
-Or use model alias in chat:
-```bash
-/model kimi
-```
+### 模型未出现在列表中
 
-## Using Both Providers
+- 检查配置语法是否正确。
+- 验证API密钥是否已正确设置。
 
-You can configure both Moonshot and Kimi Code simultaneously:
+### 认证错误
 
-```json5
-{
-  "agents": {
-    "defaults": {
-      "model": {
-        "primary": "moonshot/kimi-k2.5"
-      },
-      "models": {
-        "kimicode/kimi-for-coding": {
-          "alias": "kimi"
-        },
-        "moonshot/kimi-k2.5": {
-          "alias": "k25"
-        }
-      }
-    }
-  },
-  "models": {
-    "mode": "merge",
-    "providers": {
-      "moonshot": {
-        "baseUrl": "https://api.moonshot.cn/v1",
-        "apiKey": "${MOONSHOT_API_KEY}",
-        "api": "openai-completions",
-        "models": [
-          { "id": "kimi-k2.5", "name": "Kimi K2.5", "contextWindow": 200000 }
-        ]
-      },
-      "kimicode": {
-        "baseUrl": "https://api.kimi.com/coding/v1",
-        "apiKey": "${KIMICODE_API_KEY}",
-        "api": "openai-completions",
-        "models": [
-          { "id": "kimi-for-coding", "name": "Kimi For Coding", "contextWindow": 200000 }
-        ]
-      }
-    }
-  }
-}
-```
+- 确保API密钥以 `sk-` 开头。
+- 在提供者控制台上验证密钥的有效性。
+- 确保每个提供者的基础URL正确。
 
-Switch between models using aliases:
-- `/model k25` - Kimi K2.5 (general)
-- `/model kimi` - Kimi for Coding (specialized)
+### 连接问题
 
-## Troubleshooting
+直接测试API端点：
 
-### Model not appearing in list
+#### 模型推荐
 
-Check config syntax:
-```bash
-clawdbot gateway config.get | grep -A 20 moonshot
-```
+- **Kimi K2.5** (`moonshot/kimi-k2.5`)：适用于一般任务，上下文容量为200K。
+- **Kimi for Coding** (`kimicode/kimi-for-coding`)：专门用于代码生成。
+- **Moonshot V1 128K** (`moonshot/moonshot-v1-128k`)：旧版本模型，上下文容量为128K。
 
-Verify API key is set:
-```bash
-echo $MOONSHOT_API_KEY
-echo $KIMICODE_API_KEY
-```
+## 参考资料
 
-### Authentication errors
-
-- Verify API key starts with `sk-`
-- Check key is valid on provider dashboard
-- Ensure correct base URL for each provider
-
-### Connection issues
-
-Test API endpoint directly:
-```bash
-curl -X POST "https://api.moonshot.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $MOONSHOT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model": "kimi-k2.5", "messages": [{"role": "user", "content": "test"}]}'
-```
-
-## Model Recommendations
-
-- **Kimi K2.5** (`moonshot/kimi-k2.5`) - Best for general tasks, 200K context
-- **Kimi for Coding** (`kimicode/kimi-for-coding`) - Specialized for code generation
-- **Moonshot V1 128K** (`moonshot/moonshot-v1-128k`) - Legacy model, 128K context
-
-## References
-
-- Moonshot AI Docs: https://platform.moonshot.cn/docs
-- Kimi Code API: https://api.kimi.com/coding/docs
-- Clawdbot Model Providers: /home/eyurc/clawdbot/docs/concepts/model-providers.md
+- Moonshot AI文档：[https://platform.moonshot.cn/docs](https://platform.moonshot.cn/docs)
+- Kimi Code API文档：[https://api.kimi.com/coding/docs](https://api.kimi.com/coding/docs)
+- Clawdbot模型提供者文档：[https://home/eyurc/clawdbot/docs/concepts/model-providers.md](https://home/eyurc/clawdbot/docs/concepts/model-providers.md)

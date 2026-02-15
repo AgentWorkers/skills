@@ -1,69 +1,69 @@
 ---
 name: C++
-description: Avoid common C++ mistakes — memory leaks, dangling references, undefined behavior, and ownership confusion.
+description: 避免常见的 C++ 错误：内存泄漏、悬空引用、未定义行为以及所有权混淆。
 metadata: {"clawdbot":{"emoji":"⚡","requires":{"bins":["g++"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Memory Ownership
-- Raw `new` without `delete` leaks — use `std::unique_ptr` or `std::make_unique`
-- `std::unique_ptr` for single ownership — can't copy, only move
-- `std::shared_ptr` for shared ownership — overhead of reference counting
-- `std::make_shared` more efficient — single allocation for object and control block
-- Raw pointers for non-owning references only — never `delete` a borrowed pointer
+## 内存所有权
+- 使用 `new` 创建对象后如果没有使用 `delete` 来释放内存，会导致内存泄漏——应使用 `std::unique_ptr` 或 `std::make_unique`。
+- `std::unique_ptr` 用于单一对象的所有权管理——只能移动对象，不能复制。
+- `std::shared_ptr` 用于多个对象的所有权共享——会带来引用计数的开销。
+- `std::make_shared` 更高效——它一次性分配对象和其控制块。
+- 对于不拥有对象的引用，应使用原始指针——切勿删除借来的指针。
 
-## Dangling References
-- Returning reference to local variable — undefined behavior, object destroyed
-- Reference to temporary extends lifetime only for const ref — not for ref to ref
-- Capturing local by reference in lambda that outlives scope — use `[=]` or copy
-- Iterator invalidation: `push_back` may relocate vector — don't hold iterators across modifications
-- `string_view` doesn't own data — underlying string must outlive the view
+## 悬挂引用（Dangling References）
+- 将局部变量的引用返回会引发未定义行为，导致对象被销毁。
+- 对临时对象的引用只会延长其生命周期（仅适用于常量引用），而不能用于引用另一个引用。
+- 如果 lambda 表达式中的局部变量超出了作用域，应使用 `[=]` 来捕获该变量的值或直接复制它。
+- 迭代器可能失效：`push_back` 可能会重新分配容器中的元素——在修改容器内容时不要使用迭代器。
+- `string_view` 不拥有底层字符串的数据——底层字符串必须比 `string_view` 的生命周期更长。
 
-## Undefined Behavior
-- Array out of bounds — no runtime check, silent corruption
-- Null pointer dereference — crash or worse, silent corruption
-- Signed integer overflow — undefined, not wrap-around
-- Use after free — memory may be reused, unpredictable behavior
-- Data race on non-atomic — use `std::mutex` or `std::atomic`
+## 未定义行为（Undefined Behavior）
+- 访问数组越界——没有运行时检查，会导致数据损坏。
+- 解引用空指针——程序会崩溃或出现其他严重问题，同时数据也可能被损坏。
+- 有符号整数溢出——行为是未定义的，不会发生进位。
+- 在释放内存后仍然尝试访问该内存——内存可能被重新使用，导致不可预测的结果。
+- 在非原子操作上发生数据竞争——应使用 `std::mutex` 或 `std::atomic` 来保证同步。
 
-## Rule of 0/3/5
-- Rule of 0: no manual resource management — rely on smart pointers and RAII
-- Rule of 3: if custom destructor, copy constructor, or copy assignment — define all three
-- Rule of 5: add move constructor and move assignment — for efficient transfers
-- `= default` to use compiler-generated — `= delete` to forbid operation
+## 0/3/5 规则
+- 规则 0：不要手动管理资源——依赖智能指针和 RAII（Resource Acquisition Is Initialization）机制。
+- 规则 3：如果类有自定义的析构函数、拷贝构造函数或拷贝赋值函数，必须同时定义这三个函数。
+- 规则 5：为类添加移动构造函数和移动赋值函数——以实现高效的资源转移。
+- 使用 `= default` 可以让编译器自动生成相应的成员函数；使用 `= delete` 可以禁止某些操作。
 
-## Move Semantics
-- `std::move` doesn't move — casts to rvalue reference, enables move
-- Moved-from object in valid but unspecified state — don't use without reassigning
-- Return local by value — compiler applies RVO/NRVO, don't std::move return values
-- `&&` in parameter is rvalue reference — `&&` in type deduction is forwarding reference
+## 移动语义（Move Semantics）
+- `std::move` 实际上并不会移动对象本身，而是将其转换为右值引用，从而允许对象被移动。
+- 被移动的对象处于有效但未明确的状态——在未重新赋值的情况下不要使用它。
+- 如果需要返回局部变量，应使用值传递（value return），编译器会自动应用 RVO（Return Value Optimization）或 NRVO（Naked Return Value Optimization）；不要直接使用 `std::move` 来返回局部变量。
+- 参数中的 `&&` 表示右值引用；类型推导中的 `&&` 表示前向引用。
 
-## Initialization
-- Braced init `{}` prevents narrowing — `int x{3.5}` is error, `int x(3.5)` truncates silently
-- Most vexing parse: `Widget w();` declares function — use `Widget w{};` or `Widget w;`
-- Member initializer list order follows declaration order — not list order, can cause bugs
-- `static` locals initialized once — thread-safe since C++11
+## 初始化（Initialization）
+- 使用大括号 `{}` 进行初始化可以避免类型转换导致的精度损失——例如 `int x{3.5}` 会引发错误，而 `int x(3.5)` 会默默地截断小数部分。
+- 最容易引起混淆的初始化方式是 `Widget w();`——应使用 `Widget w{};` 或 `Widget w;`。
+- 成员变量的初始化顺序应与声明顺序一致，否则可能导致程序错误。
+- 自 C++11 起，`static` 局部变量只初始化一次，因此是线程安全的。
 
-## const Correctness
-- `const` method can be called on const object — mark methods that don't modify state
-- `const` reference parameter avoids copy — use for read-only access
-- `const_cast` to remove const is usually wrong — modifying originally const is UB
-- `mutable` for members modified in const methods — caches, mutexes
+## const 的正确使用
+- `const` 方法可以用于 `const` 对象上——用于标记不会修改对象状态的成员函数。
+- `const` 引用参数可以避免数据复制——适用于只读访问。
+- 使用 `const_cast` 来取消对象的 `const` 属性通常是错误的——修改原本 `const` 的对象会导致未定义行为。
+- 对于在 `const` 方法中被修改的成员变量，应使用 `mutable` 类型。
 
-## Virtual and Inheritance
-- Base class needs virtual destructor — otherwise derived destructor not called through base pointer
-- Object slicing: copying derived to base loses derived data — use pointers or references
-- `override` keyword catches signature mismatches — always use when overriding
-- `final` prevents further override — also enables devirtualization optimization
+## 虚函数和继承（Virtual Functions and Inheritance）
+- 基类必须提供虚析构函数——否则派生类的析构函数可能不会被调用。
+- 在将派生类对象赋值给基类指针时，可能会发生“对象切片”（object slicing）现象，导致派生类的数据丢失——应使用指针或引用。
+- 使用 `override` 关键字来明确覆盖基类的虚函数——始终在使用 `override` 时指定正确的函数签名。
+- `final` 关键字可以防止进一步的重写——同时也可以启用某些优化。
 
-## STL Gotchas
-- `vector<bool>` is not a container of bools — returns proxy, avoid or use `deque<bool>`
-- `map[key]` inserts default if missing — use `find()` or `contains()` (C++20) to check
-- `erase()` returns next iterator — use returned value in loop: `it = container.erase(it)`
-- Range-for with modification — doesn't work, use index or iterator loop
+## STL 中需要注意的问题
+- `vector<bool>` 并不是一个存储布尔值的容器——它实际上返回的是一个指向布尔值的代理对象，应避免使用 `vector<bool>`，或者改用 `deque<bool>`。
+- `map[key]` 如果键不存在会插入默认值——应使用 `find()` 或 `contains()`（C++20）来检查键是否存在。
+- `erase()` 方法返回的是下一个元素的迭代器——在循环中应使用返回的迭代器：`it = container.erase(it)`。
+- 使用 `range-for` 进行修改操作是不安全的——应使用索引或迭代器进行循环。
 
-## Modern C++ Patterns
-- `auto` for complex types — but explicit for clarity when type matters
-- Structured bindings: `auto [a, b] = pair;` — cleaner than `.first`, `.second`
-- `std::optional` for maybe-values — better than pointer or sentinel
-- `constexpr` for compile-time computation — catches errors earlier
-- `[[nodiscard]]` on functions whose return shouldn't be ignored — warns on discard
+## 现代 C++ 的编程模式
+- 对于复杂的类型，可以使用 `auto` 来简化代码——但在类型明确时建议使用显式类型声明。
+- 使用结构化绑定：`auto [a, b] = pair;` 比 `.first`, `.second` 更简洁。
+- `std::optional` 可以用来表示可能为空的值——比使用指针或哨兵值（sentinel value）更合适。
+- `constexpr` 可以用于编译时的计算——有助于提前发现错误。
+- 使用 `[[nodiscard]]` 标注那些返回值不应被忽略的函数——可以防止程序忽略返回值。

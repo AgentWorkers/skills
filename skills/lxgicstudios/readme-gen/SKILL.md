@@ -1,29 +1,29 @@
 ---
 name: readme-gen
-description: Generate beautiful README.md files with badges, install instructions, and API docs. Use when starting new projects.
+description: 生成精美的 README.md 文件，其中包含徽章、安装说明和 API 文档。在新项目启动时可以使用这些文件。
 ---
 
-# README Gen
+# README 生成器
 
-Your project has no README. Or worse, it has one that says "TODO: write readme". This tool generates complete README files from your codebase. Badges, installation steps, API documentation, examples. A README that makes people actually want to use your project.
+你的项目可能没有 README 文件，或者更糟糕的是，README 文件里只写着 “TODO: 编写 README”。这个工具可以根据你的代码库自动生成完整的 README 文件，包括徽章、安装步骤、API 文档和使用示例——让人们真正想要使用你的项目。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-readme
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates a complete README from your project structure
-- Adds appropriate badges (npm, license, build status)
-- Creates installation instructions for your package manager
-- Documents your API based on exports
-- Includes usage examples from your code or tests
+- 根据你的项目结构生成完整的 README 文件
+- 添加相应的徽章（如 npm、许可证、构建状态）
+- 为你的包管理器生成安装说明
+- 根据你的代码中的导出内容生成 API 文档
+- 包含来自代码或测试的使用示例
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate README for current project
@@ -39,42 +39,42 @@ npx ai-readme --sections intro,install,api,examples
 npx ai-readme --type cli
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Run at project start** - Easier to maintain a README than to write one from scratch later
-- **Customize the intro** - AI writes decent intros but your voice is better
-- **Add real examples** - Generated examples are generic. Show your actual use cases.
-- **Keep badges minimal** - Nobody needs 15 badges. Pick the 3-5 that matter.
+- **在项目启动时运行该工具**：这样比之后从头开始编写 README 更容易维护
+- **自定义介绍内容**：虽然 AI 可以生成不错的介绍，但你的文字描述会更准确
+- **添加真实的示例**：生成的示例通常是通用的，展示你的实际使用场景
+- **保持徽章数量适中**：没人需要 15 个徽章，只需选择 3-5 个重要的徽章即可
 
-## When to Use This
+## 适用场景
 
-- Starting a new open source project
-- Publishing a package to npm
-- Your README is embarrassingly empty
-- Restructuring a project and need fresh docs
+- 开始一个新的开源项目
+- 将项目发布到 npm
+- 你的 README 文件内容过于简陋
+- 项目结构发生变更，需要更新文档
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册，也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-readme --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool reads your package.json, analyzes your source files for exports and CLI commands, checks for existing docs or examples, then generates a structured README with all the sections a good project needs.
+该工具会读取你的 `package.json` 文件，分析源代码中的导出内容及 CLI 命令，检查现有的文档或示例，然后生成一个结构完整的 README 文件，包含一个优秀项目所需的所有部分。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+MIT 许可证。永久免费使用，你可以随意使用它。

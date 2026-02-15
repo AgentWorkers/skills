@@ -1,6 +1,6 @@
 ---
 name: estate-planning
-description: Expert guidance for estate-planning.
+description: 遗产规划的专家指导。
 version: 1.0.0
 tags: [finance,investment,wealth]
 author: OpenWork
@@ -11,17 +11,18 @@ metadata:
       env: []
 ---
 
-# uestate planning
+# uestate规划
 
-Financial guidance and education.
+提供财务指导与教育服务。
 
-## Capabilities
+## 服务内容
 
-- Analysis methods
-- Strategy guidance
-- Best practices
-- Tips and recommendations
+- 分析方法
+- 战略规划建议
+- 最佳实践
+- 实用技巧与建议
 
-## Usage
-Help with finance
-Investment guidance
+## 使用方式
+
+- 协助财务管理
+- 提供投资指导

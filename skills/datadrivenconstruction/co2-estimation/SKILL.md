@@ -1,21 +1,21 @@
 ---
 slug: "co2-estimation"
 display_name: "Co2 Estimation"
-description: "Calculate carbon footprint of construction projects. Estimate CO2 emissions from materials, transportation, and construction processes using emission factors databases."
+description: "计算建筑项目的碳足迹。利用排放因子数据库，估算材料生产、运输及施工过程中的二氧化碳排放量。"
 ---
 
-# CO2 Estimation for Construction
+# 建筑项目的二氧化碳估算
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 3.3), this skill provides comprehensive CO2 and carbon footprint calculations for construction projects. Sustainability is no longer optional - clients and regulations demand accurate environmental impact assessments.
+根据DDC方法论（第3.3章），本技能提供了针对建筑项目的全面二氧化碳（CO2）和碳足迹计算服务。如今，可持续性已不再是可选项——客户和法规都要求进行准确的环境影响评估。
 
-**Book Reference:** "4D, 6D-8D и расчет CO2" / "4D-8D BIM and CO2 Calculation"
+**参考书籍**：《4D、6D-8D与二氧化碳计算》（"4D-8D BIM and CO2 Calculation"）
 
-> "Расчет углеродного следа становится обязательным требованием для многих проектов. BIM-модель содержит все необходимые данные для автоматизации этого процесса."
-> — DDC Book, Chapter 3.3
+> “计算碳足迹已成为许多项目的强制性要求。BIM模型包含了自动化这一过程所需的所有数据。”
+> —— DDC手册，第3.3章
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -44,9 +44,9 @@ print(f"Total Carbon Footprint: {total_co2:,.0f} kg CO2")
 print(f"Equivalent: {total_co2/1000:,.1f} tonnes CO2")
 ```
 
-## Emission Factors Database
+## 排放因子数据库
 
-### Material Emission Factors (Embodied Carbon)
+### 材料排放因子（隐含碳）
 
 ```python
 # Comprehensive emission factors database (kg CO2e per kg material)
@@ -112,9 +112,9 @@ EMISSION_FACTORS_M3 = {
 }
 ```
 
-## Carbon Footprint Calculator
+## 碳足迹计算器
 
-### Basic Calculator
+### 基本计算器
 
 ```python
 class CarbonCalculator:
@@ -238,7 +238,7 @@ class CarbonCalculator:
         return "\n".join(report)
 ```
 
-### Usage Example
+### 使用示例
 
 ```python
 # Load project data
@@ -279,9 +279,9 @@ print(calc.generate_report())
 footprint = calc.get_total_footprint()
 ```
 
-## Life Cycle Assessment (LCA)
+## 生命周期评估（LCA）
 
-### Full LCA Calculation
+### 完整的LCA计算
 
 ```python
 class ConstructionLCA:
@@ -370,9 +370,9 @@ class ConstructionLCA:
         }
 ```
 
-## Reporting and Visualization
+## 报告与可视化
 
-### Carbon Report Generation
+### 碳报告生成
 
 ```python
 def generate_carbon_report(df, project_name, floor_area_m2):
@@ -441,9 +441,9 @@ def export_carbon_report(report, filepath):
         mat_df.to_excel(writer, sheet_name='By Material')
 ```
 
-## Carbon Reduction Strategies
+## 减排策略
 
-### Material Optimization
+### 材料优化
 
 ```python
 def suggest_carbon_reduction(df, material_col='Material'):
@@ -479,35 +479,35 @@ def suggest_carbon_reduction(df, material_col='Material'):
     return pd.DataFrame(suggestions).sort_values('potential_saving_kg', ascending=False)
 ```
 
-## Quick Reference
+## 快速参考
 
-| Metric | Formula |
-|--------|---------|
-| Embodied Carbon | `Weight_kg × Emission_Factor` |
-| Transport Carbon | `(Weight_tonnes) × Distance_km × 0.062` |
-| Carbon Intensity | `Total_CO2 / Floor_Area_m2` |
-| LCA Total | `A1-A3 + A4 + A5 + B1-B7 + C1-C4 + D` |
+| 指标 | 公式         |
+|--------|-------------|
+| 隐含碳   | `重量（kg）× 排放因子` |
+| 运输碳   | `(重量（吨）× 距离（公里）× 0.062` |
+| 碳强度  | `总二氧化碳排放量 / 地板面积（平方米）` |
+| LCA总计 | `A1-A3 + A4 + A5 + B1-B7 + C1-C4 + D` |
 
-## Common Emission Factors
+## 常见排放因子
 
-| Material | kg CO2e/kg | kg CO2e/m³ |
-|----------|------------|------------|
-| Concrete C30 | 0.13 | 312 |
-| Steel (new) | 1.85 | 14,430 |
-| Steel (recycled) | 0.47 | 3,666 |
-| Timber | -1.60 | -800 |
-| Brick | 0.24 | 432 |
-| Aluminum | 8.14 | 21,978 |
+| 材料        | 单位重量二氧化碳排放量（kg CO2e/kg） | 单位体积二氧化碳排放量（kg CO2e/m³） |
+|------------|-------------------|-------------------------|
+| C30混凝土   | 0.13                | 312                        |
+| 新钢        | 1.85                | 14,430                     |
+| 回收钢       | 0.47                | 3,666                     |
+| 木材        | -1.60                | -800                       |
+| 砖块        | 0.24                | 432                        |
+| 铝        | 8.14                | 21,978                     |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 3.3
-- **Website**: https://datadrivenconstruction.io
-- **ICE Database**: Inventory of Carbon and Energy
-- **EN 15978**: Sustainability of construction works standard
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第3.3章
+- **网站**：https://datadrivenconstruction.io
+- **ICE数据库**：碳与能源清单（Inventory of Carbon and Energy）
+- **EN 15978标准**：建筑作品可持续性标准
 
-## Next Steps
+## 下一步操作
 
-- See `cost-prediction` for cost-carbon optimization
-- See `qto-report` for extracting quantities for CO2 calculation
-- See `data-visualization` for carbon dashboards
+- 查阅`cost-prediction`以进行成本-碳优化
+- 查阅`qto-report`以获取用于二氧化碳计算的所需数据
+- 查阅`data-visualization`以查看碳足迹仪表板

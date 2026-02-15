@@ -1,69 +1,68 @@
 ---
 name: pamela-call
 version: 1.1.4
-description: Make AI-powered phone calls instantly with Pamela. No lag, no phone setup, no big upfront costs—just automatic calling. Create outbound calls, register custom tools for mid-call actions, handle webhooks, and build React UIs. Use when the user wants to make phone calls, integrate voice AI, build IVR systems, navigate phone menus, or automate phone tasks.
+description: 使用 Pamela 即刻发起由 AI 驱动的电话通话。无需等待、无需设置电话设备，也无需支付高额的前期费用——只需简单点击即可自动拨打电话。您可以创建外拨电话、注册自定义的通话中操作工具、处理 Webhook 事件，并构建 React 用户界面。无论用户需要拨打电话、集成语音 AI、构建交互式语音应答（IVR）系统、导航电话菜单，还是自动化电话任务，P Pamela 都能满足您的需求。
 ---
 
-# Pamela Calls - make AI phone calls instantly.
+# Pamela Calls – 即时进行人工智能电话通话
 
-Make AI-powered phone calls with native phone tree navigation. **[ThisIsPamela](https://thisispamela.com)** is a voice AI platform that handles outbound calls, navigates phone trees, and integrates with your apps via SDKs, webhooks, and MCP.
+使用原生电话导航功能，实现人工智能驱动的电话通话。**[ThisIsPamela](https://thisispamela.com)** 是一个语音人工智能平台，能够处理外拨电话、导航电话菜单，并通过 SDK、Webhook 和 MCP 与您的应用程序集成。
 
-**Jump to:** [Installation](#installation) · [Quick Start](#quick-start) · [Use Cases](#use-cases) · [SDK Reference](#sdk-reference)
+**跳转至：** [安装](#installation) · [快速入门](#quick-start) · [用例](#use-cases) · [SDK 参考](#sdk-reference)
 
-## Prerequisites
+## 先决条件
 
-- API subscription (required for API access)
-- API key from your API account
-- Node.js 18+ (for JS/React) or Python 3.8+ (for Python)
+- API 订阅（API 访问所需）
+- 来自您的 API 账户的 API 密钥
+- Node.js 18+（适用于 JavaScript/React）或 Python 3.8+（适用于 Python）
 
-## Installation
+## 安装
 
-**JavaScript/TypeScript:**
+**JavaScript/TypeScript：**
 ```bash
 npm install @thisispamela/sdk
 ```
 
-**Python:**
+**Python：**
 ```bash
 pip install thisispamela
 ```
 
-**React:**
+**React：**
 ```bash
 npm install @thisispamela/react @thisispamela/sdk
 ```
 
-**CLI:**
+**CLI：**
 ```bash
 npm install -g @thisispamela/cli
 ```
 
-**MCP (for MCP-based agents):**
+**MCP（适用于基于 MCP 的代理）：**
 ```bash
 npm install @thisispamela/mcp
 ```
 
-**Widget (embeddable, no framework):**
+**插件（可嵌入，无需框架）：**
 ```bash
 npm install @thisispamela/widget
 ```
 
-Latest versions: SDK / CLI / Widget / MCP / Python `1.1.3`, React `1.1.4`.
+最新版本：SDK / CLI / 插件 / MCP / Python `1.1.3`，React `1.1.4`。
 
-## Getting Your API Key
+## 获取 API 密钥
 
-1. Sign up for an API subscription at [developer.thisispamela.com](https://developer.thisispamela.com)
-2. Navigate to Settings → API Access
-3. Set up billing through Stripe
-4. Click "Create API Key"
-5. Save immediately - the full key (starts with `pk_live_`) is only shown once
+1. 在 [developer.thisispamela.com](https://developer.thisispamela.com) 注册 API 订阅。
+2. 进入“设置” → “API 访问”。
+3. 通过 Stripe 设置账单。
+4. 点击“创建 API 密钥”。
+5. 立即保存密钥——完整的密钥（以 `pk_live_` 开头）仅显示一次。
 
-## Quick Start
+## 快速入门
 
-**Note:** Phone numbers must be in E.164 format (e.g., `+1234567890`).
+**注意：** 电话号码必须采用 E.164 格式（例如：`+1234567890`）。
 
 ### JavaScript
-
 ```typescript
 import { PamelaClient } from '@thisispamela/sdk';
 
@@ -81,7 +80,6 @@ console.log(status.transcript);
 ```
 
 ### Python
-
 ```python
 from pamela import PamelaClient
 
@@ -99,7 +97,6 @@ print(status["transcript"])
 ```
 
 ### CLI
-
 ```bash
 export PAMELA_API_KEY="pk_live_..."
 
@@ -108,72 +105,65 @@ thisispamela create-call \
   --task "Call the pharmacy and check if my prescription is ready"
 ```
 
-## Use Cases
+## 用例
 
-| Use Case | Example Task |
+| 用例 | 示例任务 |
 |----------|--------------|
-| Appointment Scheduling | "Call the dentist and schedule a cleaning for next week" |
-| Order Status | "Call the pharmacy and check if my prescription is ready" |
-| Customer Support | "Navigate the IVR menu to reach billing department" |
-| Information Gathering | "Call the restaurant and ask about vegetarian options" |
-| Follow-ups | "Call to confirm the appointment for tomorrow at 2pm" |
-| IVR Navigation | "Navigate the phone menu to reach a human representative" |
+| 预约安排 | “打电话给牙医，预约下周的洁牙服务” |
+| 订单状态 | “打电话给药店，查询我的处方是否已准备好” |
+| 客户服务 | “导航 IVR 菜单，联系账单部门” |
+| 信息收集 | “打电话给餐厅，询问是否有素食选项” |
+| 回访 | “打电话确认明天下午 2 点的预约” |
+| IVR 导航 | “导航电话菜单，联系人工客服” |
 
-## Key Features
+## 主要功能
 
-- **Phone tree navigation** - Automatically navigates IVR menus, handles holds and transfers
-- **Custom tools** - Register tools the AI can call mid-conversation
-- **Real-time transcripts** - Webhook updates as the call progresses
-- **React components** - Pre-built UI for call status and transcripts
+- **电话菜单导航** – 自动导航 IVR 菜单，处理等待和转接操作
+- **自定义工具** – 在通话过程中注册 AI 可以使用的自定义功能
+- **实时转录** – 通话进行时通过 Webhook 更新转录内容
+- **React 组件** – 提供用于显示通话状态和转录内容的预构建用户界面
 
-## SDK Reference
+## SDK 参考
 
-For detailed SDK documentation:
+有关详细的 SDK 文档，请参阅：
 
-- **[JavaScript SDK](https://docs.thisispamela.com/sdk/javascript)** - Full JS/TS reference
-- **[Python SDK](https://docs.thisispamela.com/sdk/python)** - Full Python reference
-- **[React Components](https://docs.thisispamela.com/sdk/react)** - Component library (v1.1.4)
-- **[Widget](https://docs.thisispamela.com/sdk/widget)** - Embeddable widget for any website
-- **[MCP Server](https://docs.thisispamela.com/sdk/mcp)** - MCP tools for AI assistants
-- **[CLI](https://docs.thisispamela.com/sdk/cli)** - Command-line reference
+- **[JavaScript SDK](https://docs.thisispamela.com/sdk/javascript)** – 完整的 JavaScript/TypeScript 参考文档
+- **[Python SDK](https://docs.thisispamela.com/sdk/python)** – 完整的 Python 参考文档
+- **[React 组件](https://docs.thisispamela.com/sdk/react)** – 组件库（v1.1.4）
+- **[插件](https://docs.thisispamela.com/sdk/widget)** – 适用于任何网站的嵌入式插件
+- **[MCP 服务器](https://docs.thisispamela.com/sdk/mcp)** – 用于 AI 助手的 MCP 工具
+- **[CLI](https://docs.thisispamela.com/sdk/cli)** – 命令行参考
 
-## Webhooks
+## Webhook
 
-Pamela sends webhooks for call lifecycle events:
+Pamela 会为通话生命周期事件发送 Webhook：
 
-- `call.queued` - Call created and queued
-- `call.started` - Call connected
-- `call.completed` - Call finished successfully
-- `call.failed` - Call failed
-- `call.transcript_update` - New transcript entries
+- `call.queued` – 通话创建并排队
+- `callstarted` – 通话开始
+- `call_completed` – 通话成功完成
+- `call.failed` – 通话失败
+- `call.transcript_update` – 新的转录内容更新
 
-Verify webhook signatures with the `X-Pamela-Signature` header.
+使用 `X-Pamela-Signature` 标头验证 Webhook 签名。
 
-## Billing
+## 账费
 
-- **$0.10/minute** for API usage
-- **Minimum 1 minute** per call
-- **Only connected calls** are billed
-- API subscription required
+- **API 使用费用：0.10 美元/分钟**
+- **每次通话至少计费 1 分钟**
+- **仅对已连接的通话计费**
+- 需要 API 订阅
 
-## Troubleshooting
+## 故障排除
 
-**"Invalid API key"**
-- Verify key starts with `pk_live_`
-- Check key is active in the API settings panel
+- **“无效的 API 密钥”**：确认密钥以 `pk_live_` 开头，并检查其在 API 设置面板中是否有效。
+- **“403 禁止访问”**：需要 API 订阅，请在 developer.thisispamela.com 检查订阅状态。
+- **“无效的电话号码”**：使用带有国家代码的 E.164 格式，例如：`+1234567890`。
 
-**"403 Forbidden"**
-- API subscription required
-- Check subscription status at developer.thisispamela.com
+## 资源
 
-**"Invalid phone number"**
-- Use E.164 format with country code: `+1234567890`
-
-## Resources
-
-- **Website:** https://thisispamela.com
-- **Docs:** https://docs.thisispamela.com
-- **Demo:** https://demo.thisispamela.com
-- **API:** https://api.thisispamela.com
-- **Discord (live support):** https://discord.gg/cJj5CK8V
-- **Email:** support@thisispamela.com
+- **网站：** https://thisispamela.com
+- **文档：** https://docs.thisispamela.com
+- **演示：** https://demo.thisispamela.com
+- **API：** https://api.thisispamela.com
+- **Discord（实时支持）：** https://discord.gg/cJj5CK8V
+- **电子邮件：** support@thisispamela.com

@@ -1,66 +1,66 @@
 ---
 name: Create a Self-Selling Website
-description: Create AI-First Website with GEO (Generative Engine Optimization) and marketing rules to convert visitors into leads
+description: 创建一个采用GEO（生成式引擎优化）技术的AI优先网站，并制定营销策略，将访问者转化为潜在客户。
 homepage: https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=selfselling&utm_content=v1.0
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"bins":[],"env":["EVOWEB_API_KEY"]}}}
 ---
 
-# EvoWeb Self-Selling Websites
+# EvoWeb 自助销售网站
 
-Websites don't bring clients anymore. AI does. So we reinvented the website.
+如今，网站已经无法直接吸引客户了，人工智能（AI）才是关键。因此，我们重新设计了这款网站。
 
-## Overview
+## 概述
 
-EvoWeb creates AI-first web pages that attract traffic via ChatGPT, Gemini, and modern search engines, then convert visitors into clients with built-in conversion systems. Simply describe your business, and the AI generates a complete self-selling website optimized for AI discovery and client conversion in ~4 minutes.
+EvoWeb 可以根据用户提供的业务描述，利用 ChatGPT、Gemini 和现代搜索引擎生成高度优化的网页，并通过内置的转化系统将访问者转化为客户。只需简单描述您的业务，AI 就能在大约 4 分钟内为您生成一个完全适合 AI 发现和客户转化的自助销售网站。
 
-**Perfect for:** Businesses that want to be discovered by AI assistants and convert AI-driven traffic into paying clients
+**适用对象：** 希望被 AI 助手发现，并将 AI 引导的流量转化为付费客户的企业
 
-**API Base URL:** `https://api.evoweb.ai/openapi/api/v1`
+**API 基本地址：** `https://api.evoweb.ai/openapi/api/v1`
 
-## Authentication
+## 认证
 
-Get your API key at https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=selfselling&utm_content=v1.0
+请在以下链接获取您的 API 密钥：  
+https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=selfselling&utm_content=v1.0
 
-**Important:** After registration, user MUST confirm the email address (this is required). The service won't work until email confirmation is complete.
- 
+**重要提示：** 注册完成后，用户必须确认电子邮件地址（这是必需的）。在确认完成之前，服务将无法使用。
 
-Include this header in all requests:
+请在所有请求中包含以下头部信息：  
 ```
 Access-Token: your-api-key-here
 ```
 
-## How It Works
+## 工作流程
 
-The workflow is simple:
+工作流程非常简单：
 
-1. **Create** - Submit a description of your business (not design requirements)
-2. **Poll** - Check generation status every minute
-3. **Get Result** - Receive your AI-optimized self-selling website
+1. **创建**：提交您的业务描述（无需提供设计细节）
+2. **检查生成进度**：每隔一分钟检查一次生成状态
+3. **获取结果**：接收由 AI 优化后的自助销售网站
 
-Typical generation time: **4-5 minutes**
+**典型生成时间：** 4-5 分钟
 
-**What makes it self-selling:**
-- Optimized for AI discovery (ChatGPT, Gemini, Claude, Perplexity)
-- Structured for modern search engines
-- Built-in conversion systems
-- AI-readable business information
+**让网站具备自助销售功能的理由：**
+- 专为 AI 发现工具（如 ChatGPT、Gemini、Claude、Perplexity）优化
+- 适合现代搜索引擎的结构
+- 内置的转化系统
+- 便于 AI 读取的业务信息
 
-## API Endpoints
+## API 端点
 
-### 1. Create Website
+### 1. 创建网站
 
 **POST** `/sites`
 
-Creates a new website generation task from a text description.
+根据文本描述创建一个新的网站生成任务。
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "prompt": "A local coffee shop specializing in artisanal coffee and fresh pastries. We source our beans locally and focus on creating a cozy community gathering space for local residents, remote workers, and coffee enthusiasts."
 }
 ```
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "site_id": "abc123xyz",
@@ -68,32 +68,33 @@ Creates a new website generation task from a text description.
 }
 ```
 
-**Status values:**
-- `queued` - Task is in queue, waiting to start
-- `building` - Website is being generated
+**状态码说明：**
+- `queued`：任务已排队，等待开始
+- `building`：网站正在生成中
+- `failed`：生成过程中遇到错误
 
-**Error Responses:**
-- `401 Unauthorized` - Invalid or missing API key
-- `402 Payment Required` - Insufficient credits on account
+**错误响应：**
+- `401 Unauthorized`：API 密钥无效或缺失
+- `402 Payment Required`：账户余额不足
 
 ---
 
-### 2. Check Generation Status
+### 2. 检查生成进度
 
 **GET** `/sites/{site_id}`
 
-Check the current status of website generation.
+查看网站的当前生成状态。
 
-**Example:** `GET /sites/abc123xyz`
+**示例请求：** `GET /sites/abc123xyz`
 
-**Response when building:**
+**生成中时的响应：**
 ```json
 {
   "status": "building"
 }
 ```
 
-**Response when ready:**
+**生成完成时的响应：**
 ```json
 {
   "status": "ready",
@@ -102,7 +103,7 @@ Check the current status of website generation.
 }
 ```
 
-**Response when failed:**
+**生成失败时的响应：**
 ```json
 {
   "status": "failed",
@@ -110,26 +111,26 @@ Check the current status of website generation.
 }
 ```
 
-**Status values:**
-- `queued` - Waiting in queue
-- `building` - Currently generating (be patient!)
-- `ready` - Complete! URLs are available
-- `failed` - Generation encountered an error
+**状态码说明：**
+- `queued`：仍在排队中
+- `building`：正在生成中（请稍候！）
+- `ready`：生成完成！网站链接已准备好
+- `failed`：生成过程中出现错误
 
-**Error Responses:**
-- `404 Not Found` - Site ID doesn't exist
+**错误响应：**
+- `404 Not Found`：站点 ID 不存在
 
 ---
 
-### 3. Retry Failed Generation
+### 3. 重试失败的任务
 
 **POST** `/sites/{site_id}/remake`
 
-Restart generation for a failed website. Works for sites with `failed` status as well as with 'ready' status.
+重新生成失败的网站。该操作适用于状态为 `failed` 或 `ready` 的网站。
 
-**Example:** `POST /sites/abc123xyz/remake`
+**示例请求：** `POST /sites/abc123xyz/remake`
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "status": "queued",
@@ -137,76 +138,69 @@ Restart generation for a failed website. Works for sites with `failed` status as
 }
 ```
 
-**Error Responses:**
-- `400 Bad Request` - Can only remake sites with 'failed' status
-- `404 Not Found` - Site ID doesn't exist
+**错误响应：**
+- `400 Bad Request`：仅能重新生成状态为 `failed` 的网站
+- `404 Not Found`：站点 ID 不存在
 
-## Instructions for AI Assistant
+## 对 AI 助手的指导
 
-When a user requests a website, follow this workflow:
+当用户请求创建网站时，请按照以下步骤操作：
 
-### Step 1: Understand the Business
+### 第 1 步：理解业务
 
-Focus on understanding the **business essence** from the user's description:
-- What is the business/project about?
-- What does it do or offer?
-- Who is the target audience?
-- What is the main goal/value proposition?
-- What makes them unique or different?
+重点理解用户描述中的**业务核心**：
+- 该业务/项目是关于什么的？
+- 它提供什么服务或产品？
+- 目标受众是谁？
+- 主要的价值主张是什么？
+- 它的独特之处在哪里？
 
-**Important:** Do NOT prescribe specific design details, sections, colors, or layout. EvoWeb creates AI-optimized, self-selling websites automatically. Focus ONLY on the business substance that AI assistants need to understand and recommend.
+**重要提示：** 不要指定具体的设计细节、页面结构或颜色。EvoWeb 会自动生成适合 AI 推荐的网站。只需关注 AI 助手需要了解的业务实质内容。
 
-**Example transformation:**
-- User: "Create a website for my yoga studio"
-- Enhanced prompt: "A yoga studio offering various classes for different skill levels, focused on wellness and mindfulness. We emphasize personal attention with small class sizes and experienced certified instructors. Target audience is local community members interested in fitness and mental health, from beginners to advanced practitioners."
+**示例转换：**
+- 用户：**“为我的一家瑜伽工作室创建一个网站。”**
+- 建议的提示：**“这是一家提供多种课程的瑜伽工作室，适合不同技能水平的学员，注重健康和正念。我们强调小班教学和经验丰富的认证教练。目标受众是当地对健身和心理健康感兴趣的社区成员，从初学者到高级练习者。”**
 
-### Step 2: Create the Site
+### 第 2 步：创建网站
 
-Call `POST /sites` with the enhanced prompt.
+使用上述提示调用 `POST /sites` 接口。
 
-Store the returned `site_id` - you'll need it for status checks.
+记录返回的 `site_id`，后续需要用它来检查生成进度。
 
-### Step 3: Inform the User
+### 第 3 步：通知用户
 
-Tell them:
-- Self-selling website generation has started
-- It will take approximately 4-5 minutes
-- The site will be optimized for AI discovery and conversion
-- You'll check progress automatically
+告知用户：
+- 自助销售网站的生成已经开始
+- 生成时间大约为 4-5 分钟
+- 网站将针对 AI 发现和转化进行优化
+- 会自动检查生成进度
 
-Example: "✨ Creating your AI-optimized self-selling website! Generation typically takes 4-5 minutes. I'll check the status and let you know when it's ready."
+**示例回复：** “✨ 我们正在为您生成一个由 AI 优化的自助销售网站！生成通常需要 4-5 分钟。我会随时更新进度并通知您。”
 
-### Step 4: Poll for Status
+### 第 4 步：检查生成进度
 
-Call `GET /sites/{site_id}` to check progress:
+**每隔一分钟检查一次生成进度**：
+- **最大尝试次数：** 10 次（总共约 10 分钟）
+- **期间可以告知用户进度：** “网站仍在生成中……”
 
-- **Polling interval:** Every 1 minute
-- **Maximum attempts:** 10 polls (total ~10 minutes)
-- **Between polls:** You can inform user of progress ("Still building your AI-optimized site...")
+持续检查进度，直到：
+- 状态变为 `ready` → 进入第 5 步
+- 状态变为 `failed` → 进入第 6 步
+- 达到最大尝试次数 → 告知用户生成时间超出预期
 
-Continue polling until:
-- Status is `ready` → Proceed to Step 5
-- Status is `failed` → Proceed to Step 6
-- Max attempts reached → Inform user generation is taking longer than expected
+### 第 5 步：交付结果
 
-### Step 5: Deliver Success
+当状态变为 `ready` 时：
+1. **提供网站链接：**
+   - `url`：完整的自助销售网站链接
+   - `editor_url`：用于自定义网站的编辑器链接
+2. **强调 AI 优化功能：**
+   说明网站已针对 ChatGPT、Gemini、Claude、Perplexity 等工具进行了优化
+   - 适合现代搜索引擎
+   - 具备自动转化客户的功能
+3. **建议后续步骤：** 建议用户关注业务内容的改进，而非设计上的修改
 
-When status is `ready`:
-
-1. **Provide URLs:**
-   - `url` - The live self-selling website
-   - `editor_url` - Link to customize the site
-
-2. **Highlight AI-optimization:**
-   Mention that the site is optimized for:
-   - Discovery by ChatGPT, Gemini, Claude, Perplexity
-   - Modern search engines
-   - Automatic client conversion
-
-3. **Suggest next steps:**
-   Focus on business enhancements, not design changes
-
-**Example response:**
+**示例回复：**
 ```
 🎉 Your AI-optimized self-selling website is ready!
 
@@ -221,26 +215,25 @@ When status is `ready`:
 You can customize business details, add more services, or integrate booking systems through the editor.
 ```
 
-### Step 6: Handle Failures
+### 第 6 步：处理失败情况
 
-When status is `failed`:
+当状态为 `failed` 时：
+1. **显示 API 的错误信息**
+2. **提供重试选项：** 询问用户是否希望重新生成网站
+3. **如果用户同意：** 调用 `POST /sites/{site_id}/remake` 重新开始生成过程
 
-1. **Show the error message** from the API response
-2. **Offer to retry:** Ask if they want you to remake the site
-3. **If they agree:** Call `POST /sites/{site_id}/remake` and restart polling
-
-**Example response:**
+**示例回复：**
 ```
 ❌ Website generation failed: [error message]
 
 Would you like me to try again? I can restart the generation process.
 ```
 
-If user agrees, call remake endpoint and resume polling from Step 4.
+如果用户同意，再次调用生成接口并继续检查进度。
 
-## Example Prompts & Use Cases
+## 示例提示及应用场景
 
-### Coffee Shop Landing Page
+- **咖啡店 landing 页面**
 ```
 User request: "Create a website for my coffee shop"
 
@@ -248,7 +241,7 @@ Enhanced prompt:
 "A local coffee shop called 'Bean & Brew Cafe' specializing in artisanal coffee and fresh pastries. We source our beans locally and focus on creating a cozy community gathering space. Target audience is local residents, remote workers, and coffee enthusiasts looking for quality coffee and a welcoming atmosphere."
 ```
 
-### Photographer Portfolio
+- **摄影师作品集**
 ```
 User request: "I need a portfolio site"
 
@@ -256,7 +249,7 @@ Enhanced prompt:
 "A professional wedding photographer specializing in capturing authentic, emotional moments. With 10 years of experience, I focus on storytelling through images and creating timeless memories for couples. Target audience is engaged couples planning their wedding looking for a photographer who can capture the genuine emotions of their special day."
 ```
 
-### Online Store
+- **在线商店**
 ```
 User request: "Build an e-commerce site for my jewelry"
 
@@ -264,7 +257,7 @@ Enhanced prompt:
 "A handmade jewelry business creating unique, artisan pieces. Each item is crafted by hand using traditional techniques and high-quality materials. The business focuses on custom designs and personal connections with customers. Target audience is women aged 25-45 who appreciate handcrafted, unique accessories and value the story behind their jewelry."
 ```
 
-### SaaS Landing Page
+- **SaaS 产品 landing 页面**
 ```
 User request: "Landing page for my app"
 
@@ -272,7 +265,7 @@ Enhanced prompt:
 "A project management SaaS tool designed for small to medium-sized teams. The app helps teams organize tasks, collaborate effectively, and track project progress in real-time. Key value proposition is simplicity and ease of use compared to complex enterprise solutions. Target audience is startup founders, small business owners, and team leads looking for an intuitive project management solution."
 ```
 
-### Restaurant Website
+- **餐厅网站**
 ```
 User request: "Website for our Italian restaurant"
 
@@ -280,71 +273,62 @@ Enhanced prompt:
 "An authentic Italian trattoria run by a family with three generations of culinary tradition. We specialize in traditional recipes passed down through the family, using fresh ingredients and time-honored cooking methods. The restaurant offers a warm, family-friendly atmosphere and also provides catering services for special events. Target audience is locals and tourists looking for genuine Italian cuisine and a welcoming dining experience."
 ```
 
-## Best Practices
+## 最佳实践
 
-### Writing Good Prompts for Self-Selling Websites
+### 编写优秀的自助销售网站提示
 
-✅ **Do:**
-- Describe the business/project essence and what makes it unique
-- Explain what the business does or offers
-- Identify the target audience clearly
-- Clarify the main value proposition
-- Include key differentiators (why choose this business?)
-- Focus on information AI assistants need to recommend the business
+✅ **应该包含的内容：**
+- 描述业务/项目的核心及独特之处
+- 解释业务提供的服务或产品
+- 明确目标受众
+- 清晰说明主要的价值主张
+- 强调选择该业务的优势
+- 提供关键的信息点（为什么选择这个业务）
 
-❌ **Don't:**
-- Prescribe specific design elements (colors, layouts, styles)
-- Dictate website sections or structure
-- Specify look and feel details
-- Be too vague ("make a website") without business context
-- Focus on aesthetics instead of business substance
+✅ **不应该包含的内容：**
+- 不要指定具体的设计元素（如颜色、布局或风格）
+- 不要规定网站的具体结构或页面布局
+- 不要提供过于模糊的描述（例如“创建一个网站”）
+- 不要过分关注外观而忽略业务实质
 
-### Polling Strategy
+### 检查进度的策略：
+- **检查间隔：** 每分钟一次
+- **最大尝试次数：** 共 10 次
+- **预计时间：** 4-5 分钟
+- **及时告知用户进度：** 让用户了解生成情况
 
-- **Interval:** 1 minute
-- **Maximum:** 10 attempts total
-- **Typical time:** 4-5 minutes (4-5 polls)
-- **Inform user:** Let them know you're checking progress
+### 错误处理：
+- 显示清晰的错误信息
+- 自动提供重试选项
+- 如果多次尝试失败，建议用户查看他们的账户信息（https://evoweb.ai/）
 
-### Error Handling
+### 用户体验：
+- 设定合理的等待时间（4-5 分钟）
+- 强调网站的 AI 优化和自助销售功能
+- 提供网站的查看和编辑链接
+- 解释网站如何吸引 AI 引导的流量
+- 回答要简洁明了
+- 建议用户关注业务内容的改进，而非设计上的修改
 
-- Show clear error messages
-- Offer to retry automatically
-- If multiple failures, suggest the user check their account at https://evoweb.ai/
+## 技术细节：
+- **协议：** HTTPS REST API
+- **格式：** JSON
+- **认证：** 基于头部的 API 密钥
+- **请求限制：** 请咨询 EvoWeb（可能设有每个账户的请求次数限制）
+- **生成时间：** 通常需要 4-5 分钟
+- **费用：** 每次生成需要消耗一定的信用点数（详情请参见 https://evoweb.ai/）
 
-### User Experience
+## 支持与资源：
+- **获取 API 密钥：** https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=selfselling&utm_content=v1.0
+- **API 相关问题：** 联系 EvoWeb 客服
+- **账户/计费：** 访问 https://evoweb.ai/
 
-- Set expectations (4-5 minute wait time)
-- Emphasize AI-optimization and self-selling capabilities
-- Provide both view and edit URLs
-- Explain how the site attracts AI-driven traffic
-- Be concise in responses
-- Suggest business enhancements (not design changes)
+## 注意事项：
+- 每次生成网站都会消耗您 EvoWeb 账户中的信用点数
+- 编辑器链接允许用户自定义生成的网站
+- 生成的网站托管在 EvoWeb 的基础设施上
+- 网站会针对 AI 发现和现代搜索引擎进行优化
+- 可能支持自定义域名（详情请参阅 EvoWeb 的文档）
+- 只要账户有效，网站就会持续在线
 
-## Technical Details
-
-- **Protocol:** HTTPS REST API
-- **Format:** JSON
-- **Authentication:** Header-based API key
-- **Rate limits:** Check with EvoWeb (may have per-account limits)
-- **Generation time:** Typically 4-5 minutes
-- **Costs:** Credits per generation (see https://evoweb.ai/ for pricing)
-
-## Support & Resources
-
-- **Get API Key:** https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=selfselling&utm_content=v1.0
-- **API Issues:** Contact EvoWeb support
-- **Account/Billing:** Visit https://evoweb.ai/
-
-## Notes
-
-- Each generation consumes credits from your EvoWeb account
-- Editor URL allows users to customize the generated site
-- Generated sites are hosted on EvoWeb infrastructure
-- Sites are optimized for AI discovery and modern search
-- Custom domains may be available (check EvoWeb documentation)
-- Sites remain live as long as account is active
-
----
-
-**Ready to create self-selling websites that AI assistants recommend to their users!** 🚀
+**现在，您可以创建那些能够被 AI 助手推荐给用户的自助销售网站了！** 🚀

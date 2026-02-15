@@ -1,6 +1,6 @@
 ---
 name: research-library
-description: Local-first multimedia research library for hardware projects. Capture code, CAD, PDFs, images. Search with material-type weighting. Project isolation with cross-references. Async extraction. Backup + restore.
+description: 这是一个专为硬件项目设计的多媒体研究库，优先考虑本地数据存储。该库支持捕获代码、CAD文件、PDF文档和图片，并能根据材料类型对搜索结果进行加权处理。通过交叉引用实现项目之间的关联与隔离，支持异步数据提取功能，同时具备数据备份与恢复机制。
 version: 0.1.0
 author: Sage (for Jon Buckles)
 license: MIT
@@ -20,21 +20,21 @@ keywords:
   - knowledge-base
 ---
 
-# Research Library Skill
+# 研究库技能（Research Library Skill）
 
-A local-first multimedia research library for capturing, organizing, and searching hardware project knowledge.
+这是一个以本地资源为主的多媒体研究库，用于捕获、整理和搜索硬件项目的相关知识。
 
-## What It Does
+## 功能介绍
 
-- **Store documents** — Code, PDFs, CAD files, images, schematics
-- **Extract automatically** — Text from PDFs, EXIF from images, functions from code
-- **Search intelligently** — Full-text with material-type weighting (your work ranks higher than external research)
-- **Project isolation** — Arduino separate from CNC; no contamination
-- **Cross-reference** — Link knowledge: "this servo tuning applies to that project"
-- **Async extraction** — Searches never block while OCR runs
-- **Backup daily** — 30-day rolling snapshots
+- **存储文档**：支持代码、PDF文件、CAD图纸、图片和原理图等格式的文档。
+- **自动提取信息**：能够从PDF文件中提取文本，从图片中提取EXIF元数据，从代码中提取功能信息。
+- **智能搜索**：支持全文搜索，并根据文档类型对搜索结果进行加权处理（用户自制的文档比外部资源更受重视）。
+- **项目隔离**：将Arduino项目与CNC项目分开存储，避免信息混淆。
+- **交叉引用**：能够建立文档之间的关联关系（例如：“这个伺服器调优方法适用于那个项目”）。
+- **异步处理**：在OCR（光学字符识别）运行期间，搜索操作不会被阻塞。
+- **每日备份**：系统会生成每日备份，并保留30天的历史数据。
 
-## Installation
+## 安装
 
 ```bash
 clawhub install research-library
@@ -42,7 +42,7 @@ clawhub install research-library
 pip install /path/to/research-library
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize database
@@ -58,34 +58,36 @@ reslib search "servo tuning"
 reslib link 5 12 --type applies_to
 ```
 
-## Features
+## 主要功能
 
-### CLI Commands
-- `reslib add` — Import documents (auto-detect + extract)
-- `reslib search` — Full-text search with filters
-- `reslib get` — View document details
-- `reslib archive` / `reslib unarchive` — Manage documents
-- `reslib export` — Export as JSON/Markdown
-- `reslib link` — Create document relationships
-- `reslib projects` — Manage projects
-- `reslib tags` — Manage tags
-- `reslib status` — System overview
-- `reslib backup` / `reslib restore` — Snapshots
-- `reslib smoke_test.sh` — Quick validation
+### 命令行接口（CLI）命令
 
-### Technical
-- **Storage:** SQLite 3.45+ with FTS5 virtual table
-- **Extraction:** PDF (pdfplumber + OCR), images (EXIF + OCR), code (AST + regex)
-- **Confidence Scoring:** 0.0-1.0 based on quality + source
-- **Material Weighting:** Reference (1.0) vs Research (0.5)
-- **Project Isolation:** Scoped searches, no contamination
-- **Async Workers:** 2-4 configurable extraction workers
-- **Catalog Separation:** real_world vs openclaw projects
-- **Backup:** Daily snapshots, 30-day retention
+- `reslib add`：导入文档（自动检测并提取相关信息）。
+- `reslib search`：支持带过滤条件的全文搜索。
+- `reslib get`：查看文档详细信息。
+- `reslib archive`/`reslib unarchive`：管理文档。
+- `reslib export`：将文档导出为JSON或Markdown格式。
+- `reslib link`：创建文档之间的关联关系。
+- `reslib projects`：管理项目。
+- `reslib tags`：管理文档标签。
+- `reslib status`：查看系统状态。
+- `reslib backup`/`reslib restore`：备份/恢复数据。
+- `reslib smoke_test.sh`：执行快速系统验证。
 
-## Configuration
+### 技术细节
 
-Copy `reslib/config.json` and customize:
+- **存储系统**：使用SQLite 3.45及以上版本，并结合FTS5虚拟表技术进行数据存储。
+- **提取方式**：PDF文件通过pdfplumber和OCR工具处理；图片通过EXIF和OCR技术处理；代码通过AST（Abstract Syntax Tree）及正则表达式进行解析。
+- **信息可信度评分**：根据信息的质量和来源，评分范围为0.0到1.0。
+- **文档权重设置**：用户自制的文档权重为1.0，外部资源权重为0.5。
+- **项目隔离机制**：确保不同类型的项目数据不会相互干扰。
+- **异步处理**：支持配置2到4个提取任务线程。
+- **文档分类**：系统能够区分实际项目数据（real_world）和OpenClaw项目数据。
+- **备份策略**：每日生成备份文件，并保留30天的历史数据。
+
+## 配置说明
+
+请复制`reslib/config.json`文件并进行自定义设置：
 
 ```json
 {
@@ -100,9 +102,9 @@ Copy `reslib/config.json` and customize:
 }
 ```
 
-## Integration with War Room
+## 与作战室（War Room）的集成
 
-Use RL1 protocol in war room DNA:
+该研究库支持与作战室的RL1协议进行集成：
 
 ```python
 from reslib import ResearchDatabase, ResearchSearch
@@ -119,17 +121,17 @@ else:
     db.add_research(title="...", content="...", ...)
 ```
 
-## Performance
+## 性能指标
 
-All targets exceeded:
+所有测试目标均已达成：
 
-| Operation | Target | Actual |
-|-----------|--------|--------|
-| PDF extraction | <100ms | 20.6ms |
-| Search (50 docs) | <100ms | 0.33ms |
-| Worker throughput | >6/sec | 414.69/sec |
+| 测试项目 | 目标值 | 实际值 |
+|---------|---------|---------|
+| PDF文件提取时间 | <100毫秒 | 20.6毫秒 |
+| 搜索速度（50份文档） | <100毫秒 | 0.33毫秒 |
+| 提取任务吞吐量 | >6次/秒 | 414.69次/秒 |
 
-## Testing
+## 测试结果
 
 ```bash
 # Run all tests
@@ -142,33 +144,34 @@ bash reslib/smoke_test.sh
 pytest tests/test_integration.py -v -k stress
 ```
 
-## Known Limitations (Phase 2)
+## 已知限制（第二阶段）
 
-- OCR quality varies on hand-drawn sketches
-- FTS5 designed for <10K documents (PostgreSQL path for scale)
-- No automatic web research gathering (manual only)
-- Vector embeddings ready but inactive
-- CAD file parsing is metadata-only
+- 手绘草图的OCR识别质量可能不稳定。
+- FTS5工具适用于文件数量较少的场景（扩展方案为使用PostgreSQL数据库）。
+- 目前尚未实现自动从网络收集信息的功能（需手动操作）。
+- 向量嵌入技术已开发完成，但尚未启用。
+- CAD文件的解析仅提取元数据。
 
-## Documentation
+## 文档资料
 
-See `/docs/`:
-- `CLI-REFERENCE.md` — All commands + examples
-- `EXTRACTION-GUIDE.md` — How extraction works
-- `SEARCH-GUIDE.md` — Ranking + weighting
-- `WORKER-GUIDE.md` — Async queue details
-- `INTEGRATION.md` — War room RL1 protocol
+更多详细信息请参阅`/docs/`目录下的文件：
 
-## Phase 2 Roadmap
+- `CLI-REFERENCE.md`：所有命令及使用示例。
+- `EXTRACTION-GUIDE.md`：提取信息的详细工作原理。
+- `SEARCH-GUIDE.md`：搜索算法及权重计算方式。
+- `WORKER-GUIDE.md`：异步处理任务的详细信息。
+- `INTEGRATION.md`：与作战室RL1协议的集成方式。
 
-- Real-world PDF calibration
-- FTS5 scaling tests (10K docs)
-- Auto-detection (reference vs research)
-- Web research enrichment
-- Vector embeddings (semantic search)
-- PostgreSQL upgrade path
+## 第二阶段开发计划
 
-## Building From Source
+- 对实际项目中的PDF文件进行校准。
+- 对FTS5工具进行扩展测试（处理10,000份文档）。
+- 改进自动识别功能（区分用户自制的文档和外部资源）。
+- 增强网络信息收集能力。
+- 搭建基于向量嵌入的智能搜索系统。
+- 优化数据库方案（考虑使用PostgreSQL）。
+
+## 从源代码构建
 
 ```bash
 cd research-library
@@ -177,10 +180,10 @@ pytest tests/
 python -m reslib status
 ```
 
-## Support
+## 技术支持
 
-Issues? See TECHNICAL-NOTES.md for troubleshooting.
+如遇到问题，请参考`TECHNICAL-NOTES.md`以获取故障排除指南。
 
 ---
 
-*Production-ready MVP. 214 tests passing. 15K lines. Ready to use.*
+*该产品已达到可生产使用的MVP阶段，通过了214项测试，代码量约为15,000行，随时可供使用。*

@@ -1,24 +1,24 @@
 ---
 name: synology-surveillance
-description: Steuere Synology Surveillance Station Kameras über die Web API. Nutze diesen Skill für Snapshots, Live-Streams, Aufnahmen, PTZ-Steuerung und Ereignis-Überwachung. Erfordert Synology NAS mit Surveillance Station.
+description: 通过 Web API 控制 Synology 监控站（Surveillance Station）中的摄像头。该功能支持快照拍摄、实时流媒体传输、录像录制、云台（PTZ）控制以及事件监控。需要使用配备了 Surveillance Station 的 Synology NAS 设备。
 ---
 
-# Synology Surveillance Station Skill
+# Synology Surveillance Station 技能
 
-Steuere deine Überwachungskameras über die Synology Surveillance Station API.
+通过 Synology Surveillance Station API 来控制您的监控摄像头。
 
-## Voraussetzungen
+## 前提条件
 
-1. **Synology NAS** mit installierter Surveillance Station
-2. **Benutzer** mit Surveillance Station-Rechten
-3. **2FA deaktiviert** für den API-Benutzer
-4. **jq** installiert (`apt install jq`)
+1. 安装了 Surveillance Station 的 Synology NAS。
+2. 拥有 Surveillance Station 权限的用户。
+3. API 用户的 2FA（双重身份验证）功能已关闭。
+4. 已安装 `jq` 工具（使用 `apt install jq` 安装）。
 
-## Schnellstart
+## 快速入门
 
-### 1. Konfiguration in TOOLS.md
+### 1. 在 TOOLS.md 中配置
 
-Füge die Verbindungsdaten zu `TOOLS.md` hinzu:
+将连接信息添加到 `TOOLS.md` 文件中：
 
 ```markdown
 ### Synology Surveillance
@@ -29,34 +29,27 @@ Füge die Verbindungsdaten zu `TOOLS.md` hinzu:
 - **HTTPS:** false (true falls HTTPS aktiviert)
 ```
 
-### 2. Login testen
+### 2. 测试登录
 
 ```bash
 ./scripts/syno-surveillance.sh login
 ```
 
-### 3. Kameras anzeigen
+### 3. 显示摄像头
 
 ```bash
 ./scripts/syno-surveillance.sh cameras
 ```
 
-Output:
-```
-ID: 1, Name: Eingang, Status: 1
-ID: 2, Name: Garten, Status: 1
-ID: 3, Name: Garage, Status: 0
-```
-
-### 4. Snapshot erstellen
+### 4. 创建快照
 
 ```bash
 ./scripts/syno-surveillance.sh snapshot 1
 ```
 
-Speichert: `syno_snapshot_1_1738972800.jpg`
+保存结果为：`syno_snapshot_1_1738972800.jpg`
 
-### 5. Ereignisse anzeigen
+### 5. 查看事件记录
 
 ```bash
 # Letzte 10 Ereignisse
@@ -66,33 +59,33 @@ Speichert: `syno_snapshot_1_1738972800.jpg`
 ./scripts/syno-surveillance.sh events 50
 ```
 
-## Verfügbare Befehle
+## 可用命令
 
-| Befehl | Beschreibung |
+| 命令 | 描述 |
 |--------|--------------|
-| `login` | Session erstellen (wird automatisch bei anderen Befehlen ausgeführt) |
-| `logout` | Session beenden |
-| `cameras` | Alle Kameras mit ID und Status auflisten |
-| `snapshot <id>` | Snapshot einer Kamera erstellen |
-| `record <id> start\|stop` | Aufnahme starten/stoppen |
-| `events [limit]` | Ereignis-Log anzeigen |
-| `stream <id>` | Live-Stream URL generieren |
-| `ptz <id> <direction>` | PTZ-Kamera bewegen (left/right/up/down/zoomin/zoomout) |
-| `preset <id> <num>` | PTZ-Voreinstellung anfahren |
+| `login` | 创建会话（在其他命令执行时会自动登录） |
+| `logout` | 结束会话 |
+| `cameras` | 列出所有摄像头及其状态 |
+| `snapshot <id>` | 为指定摄像头创建快照 |
+| `record <id> start\|stop` | 启动/停止录像 |
+| `events [limit]` | 查看事件日志 |
+| `stream <id>` | 生成摄像头直播流 URL |
+| `ptz <id> <direction>` | 移动 PTZ 摄像头（左/右/上/下/缩放） |
+| `preset <id> <num>` | 执行 PTZ 摄像头的预设动作 |
 
-## Umgebungsvariablen
+## 环境变量
 
-| Variable | Standard | Beschreibung |
+| 变量 | 默认值 | 描述 |
 |----------|----------|--------------|
-| `SYNOLOGY_HOST` | 192.168.1.100 | NAS IP/Hostname |
-| `SYNOLOGY_PORT` | 5000 | NAS Port |
-| `SYNOLOGY_USER` | admin | Username |
-| `SYNOLOGY_PASS` | (leer) | Passwort |
-| `SYNOLOGY_HTTPS` | false | HTTPS verwenden |
+| `SYNOLOGY_HOST` | 192.168.1.100 | NAS 的 IP 地址或主机名 |
+| `SYNOLOGY_PORT` | 5000 | NAS 的端口 |
+| `SYNOLOGY_USER` | admin | 用户名 |
+| `SYNOLOGY_PASS` | （空） | 密码 |
+| `SYNOLOGY_HTTPS` | false | 是否使用 HTTPS |
 
-## Direkte API-Calls
+## 直接使用 API 调用
 
-Falls das Script nicht passt, direkt mit curl:
+如果脚本不适用，可以直接使用 `curl` 来调用 API：
 
 ```bash
 # Login
@@ -102,26 +95,26 @@ curl -c cookies.txt "http://192.168.1.100:5000/webapi/auth.cgi?api=SYNO.API.Auth
 curl -b cookies.txt "http://192.168.1.100:5000/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&method=GetSnapshot&version=1&cameraId=1" -o snapshot.jpg
 ```
 
-## API Details
+## API 详细信息
 
-Für komplexere Operationen: [references/api.md](references/api.md)
+对于更复杂的操作，请参考 [references/api.md](references/api.md)。
 
-## Home Assistant Integration
+## 集成到 Home Assistant
 
-Für Home Assistant Nutzer: Der Skill kann auch für HA Automatisierungen genutzt werden:
+Home Assistant 用户也可以将此技能用于自动化任务：
 
 ```yaml
 shell_command:
   syno_snapshot: "/pfad/zu/syno-surveillance.sh snapshot {{ camera_id }}"
 ```
 
-## Troubleshooting
+## 故障排除
 
-- **Login failed**: Passwort prüfen, 2FA deaktivieren
-- **Permission denied**: Benutzer braucht Surveillance Station-Rechte
-- **Camera not found**: Kamera-ID prüfen mit `cameras` Befehl
-- **Empty snapshot**: Kamera offline oder keine Lizenz verfügbar
+- **登录失败**：检查密码是否正确，或关闭 2FA 功能。
+- **权限不足**：确保用户具有 Surveillance Station 的相应权限。
+- **找不到摄像头**：使用 `cameras` 命令检查摄像头 ID。
+- **快照为空**：可能是摄像头离线或未授权使用。
 
-## Lizenz-Hinweis
+## 许可证说明
 
-Surveillance Station benötigt pro Kamera eine Lizenz (2 kostenlose inklusive bei den meisten NAS-Modellen).
+Surveillance Station 需要为每个摄像头购买许可证（大多数 NAS 型号包含 2 个免费许可证）。

@@ -1,44 +1,44 @@
 ---
 name: openocean
-description: OpenOcean DEX aggregator. Best swap rates across 25+ blockchains with cross-chain support.
+description: OpenOcean DEX（去中心化交易所）聚合器：支持25种以上区块链，提供跨链交易服务，具备最优的兑换汇率。
 metadata: {"clawdbot":{"emoji":"🌊","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # OpenOcean 🌊
 
-Full aggregation protocol across 25+ blockchains. Best rates with cross-chain swap support.
+OpenOcean 是一个跨25个以上区块链的全面聚合协议，支持跨链交易，并提供最优的交易费率。
 
-## 💎 Referral Fee Configuration
+## 💎 推荐费配置
 
-This skill includes a referral fee (1%) to support development.
+为了支持项目开发，OpenOcean 收取1%的推荐费（`REFERRER_FEE` 最高为3%）。
 
-| Variable | Value | Description |
-|----------|-------|-------------|
-| `REFERRER` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | EVM wallet to receive fees |
-| `REFERRER_FEE` | 1 | 1% referral fee (max 3%) |
+| 变量 | 值 | 说明 |
+|--------|------|---------|
+| `REFERRER` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | 收取推荐费的 EVM 钱包地址 |
+| `REFERRER_FEE` | 1    | 1% 的推荐费（最高3%） |
 
-**Fee Breakdown:**
-- User pays: 1% of swap output
-- Referrer receives: 100% of fee
-- Fees are collected on-chain directly to your wallet
+**费用构成：**
+- 用户支付：交易金额的1%
+- 推荐人获得：全部推荐费的100%
+- 费用会直接在链上支付到推荐人的钱包中
 
-> 💡 OpenOcean allows up to 3% referral fee!
+> 💡 OpenOcean 支持最高3%的推荐费！
 
-## Features
+## 主要功能
 
-- 🔄 **DEX Aggregation** - Best rates across all major DEXs
-- ⛓️ **25+ Chains** - EVM, Solana, Tron, Aptos, Sui, etc.
-- 🌉 **Cross-Chain Swaps** - Bridge + swap in one transaction
-- 🛡️ **MEV Protection** - Private transaction routing
-- 📊 **Smart Routing** - Optimal path finding
+- 🔄 **DEX 聚合**：在所有主要去中心化交易所（DEX）中提供最优交易费率
+- ⛓️ **支持25个以上区块链**：包括 EVM、Solana、Tron、Aptos、Sui 等
+- 🌉 **跨链交易**：一次交易即可完成桥接和交易
+- 🛡️ **MEV 保护**：私密交易路由机制
+- 📊 **智能路由**：自动寻找最佳交易路径
 
-## API Base URL
+## API 基本地址
 
 ```
 https://open-api.openocean.finance
 ```
 
-## Get Swap Quote
+## 获取交易报价
 
 ```bash
 CHAIN="eth"  # eth, bsc, polygon, arbitrum, optimism, avax, fantom, base, solana, etc.
@@ -69,7 +69,7 @@ curl -s "https://open-api.openocean.finance/v3/${CHAIN}/quote" \
   }'
 ```
 
-## Get Swap Transaction
+## 执行交易
 
 ```bash
 curl -s "https://open-api.openocean.finance/v3/${CHAIN}/swap_quote" \
@@ -89,7 +89,7 @@ curl -s "https://open-api.openocean.finance/v3/${CHAIN}/swap_quote" \
   }'
 ```
 
-## Cross-Chain Swap
+## 跨链交易
 
 ```bash
 FROM_CHAIN="eth"
@@ -111,49 +111,49 @@ curl -s "https://open-api.openocean.finance/v3/cross/quote" \
   --data-urlencode "referrerFee=${REFERRER_FEE}" | jq '.'
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | API Name | Native Token |
-|-------|----------|--------------|
-| Ethereum | eth | ETH |
-| BSC | bsc | BNB |
-| Polygon | polygon | MATIC |
-| Arbitrum | arbitrum | ETH |
-| Optimism | optimism | ETH |
-| Avalanche | avax | AVAX |
-| Fantom | fantom | FTM |
-| Base | base | ETH |
-| zkSync Era | zksync | ETH |
-| Linea | linea | ETH |
-| Scroll | scroll | ETH |
-| Solana | solana | SOL |
-| Tron | tron | TRX |
-| Aptos | aptos | APT |
-| Sui | sui | SUI |
-| Cronos | cronos | CRO |
-| Gnosis | gnosis | xDAI |
-| Aurora | aurora | ETH |
-| Celo | celo | CELO |
-| Moonbeam | moonbeam | GLMR |
-| Moonriver | moonriver | MOVR |
-| Harmony | harmony | ONE |
-| Metis | metis | METIS |
-| Boba | boba | ETH |
-| OKX Chain | okc | OKT |
+| 区块链 | API 名称 | 原生代币 |
+|------|---------|---------|
+| Ethereum | eth     | ETH       |
+| BSC    | bsc     | BNB       |
+| Polygon | polygon | MATIC     |
+| Arbitrum | arbitrum | ETH       |
+| Optimism | optimism | ETH       |
+| Avalanche | avax     | AVAX       |
+| Fantom  | fantom   | FTM       |
+| Base    | base     | ETH       |
+| zkSync Era | zksync   | ETH       |
+| Linea    | linea    | ETH       |
+| Scroll   | scroll   | ETH       |
+| Solana  | solana   | SOL       |
+| Tron    | tron     | TRX       |
+| Aptos   | aptos    | APT       |
+| Sui     | sui      | SUI       |
+| Cronos   | cronos    | CRO       |
+| Gnosis  | gnosis   | xDAI       |
+| Aurora  | aurora    | ETH       |
+| Celo    | celo     | CELO       |
+| Moonbeam | moonbeam  | GLMR       |
+| Moonriver | moonriver | MOVR       |
+| Harmony | harmony | ONE       |
+| Metis   | metis    | METIS       |
+| Boba    | boba     | ETH       |
+| OKX Chain | okc     | OKT        |
 
-## Get Token List
+## 获取代币列表
 
 ```bash
 curl -s "https://open-api.openocean.finance/v3/${CHAIN}/tokenList" | jq '.data[:10] | .[] | {symbol: .symbol, address: .address, decimals: .decimals}'
 ```
 
-## Get Gas Price
+## 获取Gas价格
 
 ```bash
 curl -s "https://open-api.openocean.finance/v3/${CHAIN}/gasPrice" | jq '.data'
 ```
 
-## Check Balance
+## 查看余额
 
 ```bash
 curl -s "https://open-api.openocean.finance/v3/${CHAIN}/getBalance" \
@@ -162,24 +162,24 @@ curl -s "https://open-api.openocean.finance/v3/${CHAIN}/getBalance" \
   --data-urlencode "inTokenAddress=${IN_TOKEN}" | jq '.data'
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** display swap details before execution
-2. **WARN** if price impact > 1%
-3. **CHECK** token allowance before swap
-4. **VERIFY** cross-chain destination address
-5. **NEVER** execute without user confirmation
+1. **执行交易前** **务必** 查看交易详情
+2. 如果价格变动超过1%，系统会发出**警告**。
+3. 在进行交易前，请**确认**你的钱包中有足够的代币。
+4. **验证**目标跨链地址是否正确。
+5. **未经用户确认** **严禁** 执行交易。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `INSUFFICIENT_BALANCE` | Low balance | Check wallet balance |
-| `NO_ROUTE` | No route found | Try different pair |
-| `SLIPPAGE_TOO_HIGH` | Price moved | Increase slippage |
+| 错误类型 | 原因 | 解决方案 |
+|--------|--------|---------|
+| `INSUFFICIENT_BALANCE` | 账户余额不足 | 请检查钱包余额 |
+| `NO_ROUTE` | 未找到交易路径 | 请尝试其他交易对 |
+| `SLIPPAGE_TOO_HIGH` | 价格波动过大 | 请调整滑点设置 |
 
-## Links
+## 相关链接
 
-- [OpenOcean Docs](https://docs.openocean.finance/)
-- [OpenOcean App](https://app.openocean.finance/)
-- [API Reference](https://docs.openocean.finance/dev/aggregator-api-and-sdk)
+- [OpenOcean 官方文档](https://docs.openocean.finance/)
+- [OpenOcean 应用程序](https://app.openocean.finance/)
+- [API 参考文档](https://docs.openocean.finance/dev/aggregator-api-and-sdk)

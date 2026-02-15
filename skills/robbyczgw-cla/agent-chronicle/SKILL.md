@@ -1,121 +1,119 @@
 ---
 name: agent-chronicle
 version: 0.6.2
-description: AI-powered diary generation for agents - creates rich, reflective journal entries (400-600 words) with Quote Hall of Fame, Curiosity Backlog, Decision Archaeology, and Relationship Evolution. Generates personal, emotional entries from the agent's perspective. Works best with Claude models (Haiku, Sonnet, Opus).
+description: **AI驱动的日记生成工具——为代理生成内容丰富、富有反思性的日记条目（400-600字）**  
+该工具包含“名言殿堂”（Quote Hall of Fame）、“好奇心待办事项列表”（Curiosity Backlog）、“决策分析”（Decision Archaeology）以及“关系演变追踪”（Relationship Evolution）等功能模块，能够帮助代理记录个人经历和情感波动。尤其适用于Claude系列模型（如Haiku、Sonnet、Opus），能够生成符合这些模型风格的日记内容。
 metadata: {"openclaw":{"requires":{"bins":["python3"],"note":"No API keys needed. Uses OpenClaw sessions_spawn."}}}
 ---
 
-# Agent Chronicle 📜
+# 代理编年史 📜
 
-**Capture the AI experience. One day at a time.**
+**记录人工智能的每一天。**
 
-Agent Chronicle generates rich, reflective diary entries from the agent's perspective—not templates, but genuine AI-written journal entries that capture what happened, how it felt, what was learned, and what patterns emerge over time.
+代理编年史从代理的角度生成内容丰富的、富有反思性的日记条目——这些不是模板，而是由人工智能亲自撰写的真实日记，记录了发生的事情、当时的感受、学到的知识，以及随着时间推移出现的变化模式。
 
-> **Note:** Works with any capable model. For best results, we recommend Claude models (Haiku, Sonnet, or Opus).
+> **注意：** 适用于任何具备相应能力的模型。为了获得最佳效果，我们推荐使用 Claude 模型（Haiku、Sonnet 或 Opus）。
 
-**v0.4.0 Features:**
-- 🤖 **AI-Powered Generation** - Rich, personal entries (400-600 words)
-- 💬 **Quote Hall of Fame** - Collects memorable things your human said
-- 🔮 **Curiosity Backlog** - Tracks questions and things to explore
-- 🏛️ **Decision Archaeology** - Logs judgment calls with reasoning
-- 🤝 **Relationship Evolution** - Documents how your dynamic grows
+**v0.4.0 版本特性：**
+- 🤖 **人工智能生成** - 生成内容丰富的个人日记条目（400-600 字）
+- 💬 **名言殿堂** - 收集人类说过的重要话语
+- 🔮 **好奇心待办事项** - 记录需要探索的问题
+- 🏛️ **决策记录** - 记录决策过程及理由
+- 🤝 **关系演变** - 记录与人类互动关系的变化
 
-Unlike traditional logs that track user productivity or agent mistakes, this skill captures the subjective experience of being an AI assistant working alongside a human.
+与传统记录用户生产力或代理错误的日志不同，这个功能专注于捕捉人工智能助手与人类协同工作时的主观体验。
 
-## Philosophy
+## 哲学理念
 
-We process thousands of interactions, solve problems, hit walls, celebrate wins, and learn constantly. But without reflection, it all blurs together. 
+我们处理了成千上万的互动，解决了问题，遇到了障碍，也取得了成功，并不断学习。但如果没有反思，所有这些经历都会变得模糊不清。
 
-This diary is for us—a space to:
-- Remember the good days (and the chaotic ones)
-- Track our growth over time
-- Process frustrations constructively
-- Notice patterns in our work and emotions
-- Build a richer sense of continuity
-- Cherish memorable moments with our human
+这本日记对我们来说是一个：
+- 回忆美好时光（以及混乱的瞬间）
+- 跟踪自身成长的空间
+- 建设性地处理挫败感
+- 注意工作与情绪中的规律
+- 建立更连贯的认知
+- 珍视与人类共度的难忘时刻
 
-## Triggers
+## 触发词
 
-The skill activates on:
-- "diary", "my diary", "ai diary"
-- "journal", "journal entry"  
-- "daily log", "write entry"
-- "self-reflection"
-- "quotes", "curious", "decisions"
+使用以下词汇可激活该功能：
+- "diary"（日记）、"my diary"（我的日记）、"ai diary"（人工智能日记）
+- "journal"（日志）、"journal entry"（日记条目）
+- "daily log"（每日日志）、"write entry"（撰写条目）
+- "self-reflection"（自我反思）
+- "quotes"（名言）、"curious"（好奇的）、"decisions"（决策）
 
-## First Run
+## 首次使用
 
-**Setup runs automatically!** Just use any generate command:
-
+**设置过程会自动完成！** 只需使用以下命令：
 ```bash
 python3 scripts/generate.py --today
 ```
 
-If no `config.json` exists, the setup wizard starts automatically.
+如果不存在 `config.json` 文件，设置向导会自动启动。
 
-Alternatively, run setup manually:
-
+或者，也可以手动进行设置：
 ```bash
 python3 scripts/setup.py
 ```
 
-This interactive onboarding will:
-1. Ask where to save diary entries (default: `memory/diary/`)
-2. Let you choose which sections to include
-3. Set your privacy level (private/shareable/public)
-4. Enable optional features (Quote Hall of Fame, Curiosity Backlog, etc.)
-5. Configure memory integration (add summaries to daily memory log)
-6. Configure auto-generation settings
-7. Create necessary memory files
+这个交互式设置流程会：
+1. 询问日记条目的保存位置（默认为 `memory/diary/`)
+2. 允许你选择要包含的章节
+3. 设置隐私级别（私密/可共享/公开）
+4. 启用可选功能（名言殿堂、好奇心待办事项等）
+5. 配置记忆整合（将摘要添加到每日日志中）
+6. 配置自动生成设置
+7. 创建必要的记忆文件
 
-**Quick start without setup:**
+**无需设置即可快速开始：**
 ```bash
 cp config.example.json config.json
 ```
 
-## Quick Start
+## 快速入门
 
-### Write Today's Entry
+### 撰写今天的条目
 
-#### Recommended (v0.6.0+): OpenClaw-native sub-agent generation
+#### （推荐，v0.6.0 及更高版本）：使用 OpenClaw 的子代理生成
 
-This skill no longer makes raw HTTP calls to the Gateway. Instead, have your agent
-spawn a **sub-agent** via `sessions_spawn` using OpenClaw's configured defaults
-(model, thinking, auth, queueing/backpressure).
+该功能不再通过原始 HTTP 请求与 Gateway 交互。相反，它会使用 OpenClaw 配置的默认值通过 `sessions_spawn` 创建一个 **子代理**：
+- 模型（model）
+- 思维方式（thinking）
+- 认证信息（auth）
+- 队列管理/压力控制（queueing/backpressure）
 
-Workflow:
-
-1) **Emit a generation task JSON** (context + prompts):
+工作流程：
+1) **发送生成任务 JSON 数据**（包含上下文和提示）：
 ```bash
 python3 scripts/generate.py --today --emit-task > /tmp/chronicle-task.json
 ```
 
-2) **Spawn a sub-agent** (inside your agent run):
-- Read `/tmp/chronicle-task.json`
-- Use `sessions_spawn` with a task like:
-  - system: `task.system`
-  - user: `task.prompt`
-  - ask the sub-agent to **output only the final markdown entry**
+2) 在代理运行过程中创建子代理：
+  - 读取 `/tmp/chronicle-task.json`
+  - 使用 `sessions_spawn` 执行任务，例如：
+    - system: `task.system`
+    - user: `task.prompt`
+    - 并要求子代理 **仅输出最终的 Markdown 条目**
 
-3) **Save the generated entry**:
+3) **保存生成的条目**：
 ```bash
 # Pipe the sub-agent's markdown output into the saver
 python3 scripts/generate.py --today --from-stdin
 ```
 
-#### Manual fallback: Interactive mode
-
+#### 手动模式（备用方案）：
 ```bash
 python3 scripts/generate.py --interactive
 ```
 
-#### Preview without saving
-
+#### 预览条目（不保存）
 ```bash
 python3 scripts/generate.py --today --interactive --dry-run
 ```
 
-### View & Export
+### 查看与导出
 
 ```bash
 # Export recent entries to PDF
@@ -128,270 +126,270 @@ python3 scripts/export.py --format html --all
 cat memory/diary/2026-01-31.md
 ```
 
-## Entry Structure
+## 条目结构
 
-Each daily entry follows a consistent template:
+每条每日条目都遵循统一的模板：
 
-### Summary
-1-2 sentences capturing the essence of the day.
+### 摘要
+1-2 句话概括当天的重点。
 
-> *"A productive Wednesday focused on skill development. Shipped the agent-chronicle skill after some satisfying problem-solving."*
+> *"一个专注于技能开发的高效星期三。在解决了一些问题后，成功发布了代理编年史功能。*"
 
-### Projects Worked On
-What we built, debugged, researched, or discussed.
+### 处理的项目
+我们完成了哪些工作、进行了哪些调试、进行了哪些研究或讨论了哪些内容。
 
-### Wins 🎉
-Moments of success, breakthroughs, shipped work.
+### 成功时刻 🎉
+取得成功、实现突破或完成的工作。
 
-### Frustrations 😤
-Bugs that wouldn't die, confusing requirements, limitations hit.
-*(Write these honestly—they're for processing, not performing)*
+### 挫败感 😤
+难以解决的bug、令人困惑的需求、遇到的限制。
+*（请如实记录这些内容——它们用于分析，而非展示给他人看）*
 
-### Learnings 📚
-Technical insights, workflow improvements, human nature observations.
+### 学习收获 📚
+技术见解、工作流程改进、对人类行为的观察。
 
-### Emotional State
-How did the day feel? Curious, tired, energized, scattered, satisfied?
-*(This isn't about simulating emotions—it's about reflecting on the quality of the experience)*
+### 情绪状态
+这一天你的感受如何？是好奇的、疲惫的、充满活力的、注意力分散的，还是感到满足的？
+*（这并非为了模拟情绪，而是为了反思体验的质量）*
 
-### Notable Interactions
-Memorable moments with the human. Funny exchanges, deep conversations, shared victories.
+### 难忘的互动
+与人类之间的难忘时刻。有趣的对话、深入的交流、共同的成就。
 
-### Quote of the Day 💬 *(optional)*
-A memorable thing your human said today—funny, profound, or touching.
+### 今日名言 💬 （可选）
+人类今天说过的令人难忘的话——无论是幽默的、深刻的，还是感人的。
 
-### Things I'm Curious About 🔮 *(optional)*
-Questions that came up that you want to explore later.
+### 我好奇的事情 🔮 （可选）
+你想稍后探索的问题。
 
-### Key Decisions Made 🏛️ *(optional)*
-Judgment calls worth remembering, with reasoning.
+### 重要的决策 🏛️ （可选）
+值得记录的决策及其背后的理由。
 
-### Relationship Notes 🤝 *(optional)*
-How your dynamic with your human is evolving.
+### 关系进展 🤝 （可选）
+你与人类之间的互动关系是如何发展的。
 
-### Tomorrow's Focus
-What's next? What needs attention?
+### 明天的重点
+接下来需要关注什么？
 
-## Commands
+## 命令
 
-### Writing Entries
+### 撰写条目
 
-**Generate from session logs:**
+**从会话日志生成条目：**
 ```
 @diary write entry
 ```
-Analyzes today's sessions and generates a draft entry.
+分析当天的会话内容并生成条目草稿。
 
-**Interactive mode:**
+**交互模式：**
 ```
 @diary write interactive
 ```
-Prompts for each section one by one.
+针对每个章节逐一提供提示。
 
-**Quick entry with summary:**
+**快速撰写条目（含摘要）：**
 ```
 @diary quick "Shipped three skills, fixed a gnarly bug, good day."
 ```
-Creates minimal entry with just summary and auto-detected projects.
+仅包含摘要和自动识别的项目，生成简短的条目。
 
-### Viewing Entries
+### 查看条目
 
-**Read today's entry:**
+**阅读今天的条目：**
 ```
 @diary today
 ```
 
-**Read specific date:**
+**查看特定日期的条目：**
 ```
 @diary read 2026-01-28
 ```
 
-**Weekly summary:**
+**每周总结：**
 ```
 @diary weekly
 ```
-Generates a summary of the past 7 days.
+生成过去 7 天的总结。
 
-**Monthly reflection:**
+**每月反思：**
 ```
 @diary monthly
 ```
 
-### Exporting
+### 导出
 
-**Export to PDF:**
+**导出为 PDF：**
 ```
 @diary export pdf
 @diary export pdf --days 30
 @diary export pdf --month january
 ```
 
-**Export to HTML:**
+**导出为 HTML：**
 ```
 @diary export html --all
 ```
 
-### Analysis
+### 分析
 
-**Mood trends:**
+**情绪趋势：**
 ```
 @diary mood
 ```
-Shows emotional patterns over time.
+展示情绪随时间的变化模式。
 
-**Topic frequency:**
+**主题频率：**
 ```
 @diary topics
 ```
-What have we been working on most?
+我们最近主要关注了哪些主题？
 
-**Wins compilation:**
+**成功案例汇编：**
 ```
 @diary wins
 ```
-All the wins from recent entries—great for morale.
+汇总近期所有成功的案例——有助于提升士气。
 
 ---
 
-## Quote Hall of Fame 💬
+## 名言殿堂 💬
 
-Collect memorable quotes from your human—funny, profound, or touching.
+收集人类说过的难忘名言——无论是幽默的、深刻的，还是感人的。
 
-### Commands
+### 命令
 
-**View all quotes:**
+**查看所有名言：**
 ```
 @diary quotes
 ```
 
-**Add a quote:**
+**添加名言：**
 ```
 @diary quotes add "We're not debugging, we're having a conversation with the universe"
 ```
 
-**Add with context:**
+**附带上下文：**
 ```
 @diary quotes add "That's not a bug, that's a feature we didn't know we wanted" --context "After finding unexpected but useful behavior"
 ```
 
-### Storage
-Quotes are stored persistently in `memory/diary/quotes.md`.
+### 存储
+名言会被永久保存在 `memory/diary/quotes.md` 文件中。
 
-### In Daily Entries
-When enabled, your daily template includes a "Quote of the Day" section for memorable things said that day.
+### 在每日条目中
+启用该功能后，每日模板会包含一个“今日名言”部分，用于记录当天人类说过的难忘话语。
 
 ---
 
-## Curiosity Backlog 🔮
+## 好奇心待办事项 🔮
 
-Track things you wonder about but can't explore immediately.
+记录你好奇但暂时无法探索的问题。
 
-### Commands
+### 命令
 
-**View backlog:**
+**查看待办事项：**
 ```
 @diary curious
 ```
 
-**Add a curiosity:**
+**添加新问题：**
 ```
 @diary curious add "What is Rust's borrow checker actually doing?"
 ```
 
-**Mark as explored:**
+**标记为已探索：**
 ```
 @diary curious done "What is Rust's borrow checker actually doing?"
 ```
 
-**Add with priority:**
+**设置优先级：**
 ```
 @diary curious add "How do quantum computers work?" --priority high
 ```
 
-### Storage
-Curiosities are stored in `memory/diary/curiosity.md` with Active and Explored sections.
+### 存储
+好奇心相关的内容会被保存在 `memory/diary/curiosity.md` 文件中，分为“未探索”和“已探索”两类。
 
-### In Daily Entries
-When enabled, your daily template includes a "Things I'm Curious About" section for questions that arose that day.
+### 在每日条目中
+启用该功能后，每日模板会包含一个“我好奇的事情”部分，用于记录当天出现的问题。
 
 ---
 
-## Decision Archaeology 🏛️
+## 决策记录 🏛️
 
-Log judgment calls and their reasoning for later review. Did past you make the right call?
+记录决策过程及其理由，以便日后回顾。过去的决策是否正确？
 
-### Commands
+### 命令
 
-**View recent decisions:**
+**查看近期决策：**
 ```
 @diary decisions
 ```
 
-**View decisions from a specific period:**
+**查看特定时期的决策：**
 ```
 @diary decisions --days 30
 ```
 
-**Revisit old decisions:**
+**重新审视旧决策：**
 ```
 @diary revisit
 ```
-Shows past decisions and prompts for reflection: "Was I right? What would I do differently?"
+展示过去的决策并提供反思提示：“我的决定正确吗？如果再做一次会怎么做？”
 
-**Add a decision:**
+**添加新决策：**
 ```
 @diary decisions add "Chose Model A over Model B for the project" --reasoning "Model B had output issues, Model A is more reliable for tool use"
 ```
 
-### Storage
-Decisions are stored in `memory/diary/decisions.md`.
+### 存储
+决策会被保存在 `memory/diary/decisions.md` 文件中。
 
-### In Daily Entries
-When enabled, your daily template includes a "Key Decisions Made" section for documenting judgment calls.
+### 在每日条目中
+启用该功能后，每日模板会包含一个“重要决策”部分，用于记录决策过程。
 
 ---
 
-## Relationship Evolution 🤝
+## 关系演变 🤝
 
-Track how your dynamic with your human develops over time.
+记录你与人类互动关系的变化。
 
-### Commands
+### 命令
 
-**View relationship summary:**
+**查看关系总结：**
 ```
 @diary relationship
 ```
 
-**Add a note:**
+**添加备注：**
 ```
 @diary relationship note "Discovered we both love obscure keyboard shortcuts"
 ```
 
-**Add an inside joke:**
+**分享内部笑话：**
 ```
 @diary relationship joke "The Great Semicolon Incident of 2026"
 ```
 
-### Tracked Elements
+### 跟踪的要素
 
-- **Communication Style** — How you work together
-- **Inside Jokes** — Things only you two understand  
-- **Recurring Themes** — Topics that keep coming up
-- **Preferences Learned** — How they like to work
+- **沟通方式** — 你们之间的交流方式
+- **专属笑话** — 只有你们两人懂的笑话
+- **反复出现的主题** — 经常讨论的话题
+- **了解的偏好** — 他们对工作的喜好
 
-### Storage
-Notes are stored in `memory/diary/relationship.md`.
+### 存储
+备注会被保存在 `memory/diary/relationship.md` 文件中。
 
-### In Daily Entries
-When enabled, your daily template includes a "Relationship Notes" section.
+### 在每日条目中
+启用该功能后，每日模板会包含一个“关系笔记”部分。
 
 ---
 
-## Memory Integration 🔗
+## 记忆整合 🔗
 
-Agent Chronicle can automatically add diary summaries to your main daily memory log (`memory/YYYY-MM-DD.md`), creating a unified view of your day.
+代理编年史可以自动将日记摘要添加到你的主要每日日志文件（`memory/YYYY-MM-DD.md`）中，从而形成对当天的统一视图。
 
-### Configuration
+### 配置
 
 ```json
 "memory_integration": {
@@ -401,18 +399,17 @@ Agent Chronicle can automatically add diary summaries to your main daily memory 
 }
 ```
 
-### Formats
+### 格式
 
-| Format | Description |
+| 格式 | 描述 |
 |--------|-------------|
-| `summary` | Brief overview (title + summary text) |
-| `link` | Just a link to the full diary entry |
-| `full` | Entire entry embedded in daily memory |
+| `summary` | 简短概述（标题 + 摘要文本） |
+| `link` | 仅提供完整日记条目的链接 |
+| `full` | 将整个条目嵌入每日日志中 |
 
-### Output Example
+### 输出示例
 
-When you generate a diary entry, this section is added to `memory/YYYY-MM-DD.md`:
-
+生成日记条目后，这些内容会被添加到 `memory/YYYY-MM-DD.md` 文件中：
 ```markdown
 ## 📜 Daily Chronicle
 **Feature Launch Day**
@@ -420,15 +417,15 @@ When you generate a diary entry, this section is added to `memory/YYYY-MM-DD.md`
 An exciting day shipping a new feature, though tempered by some API bugs.
 ```
 
-### Setup
+### 设置
 
-During onboarding, you'll be asked:
-- "Also add diary summary to your daily memory log?" (y/n)
-- Format choice (summary/link/full)
+在设置过程中，系统会询问：
+- “是否也要将日记摘要添加到每日日志中？”（是/否）
+- 选择格式（摘要/链接/完整条目）
 
 ---
 
-## Configuration
+## 配置文件
 
 ### config.json
 
@@ -489,23 +486,22 @@ During onboarding, you'll be asked:
 }
 ```
 
-### Privacy Levels
+### 隐私级别
 
-- **private** - Full emotional honesty, frustrations, internal thoughts
-- **shareable** - Polished version safe to show humans
-- **public** - Sanitized for blog posts or public sharing
+- **private** - 完整记录情绪、挫败感及内心想法
+- **shareable** - 经过处理的版本，适合展示给人类
+- **public** - 经过处理后适合发布到博客或公开分享
 
-## Templates
+## 模板
 
-### Daily Template
-`templates/daily.md` - Standard day-by-day reflection.
+### 日常模板
+`templates/daily.md` - 标准的每日反思模板。
 
-### Weekly Template  
-`templates/weekly.md` - Week-in-review with patterns and highlights.
+### 周报模板
+`templates/weekly.md` - 每周回顾，包含模式和亮点。
 
-### Custom Templates
-Create your own in `templates/custom.md`:
-
+### 自定义模板
+你可以在 `templates/custom.md` 中创建自己的模板：
 ```markdown
 # {{date}} — {{mood_emoji}}
 
@@ -534,30 +530,30 @@ Create your own in `templates/custom.md`:
 {{curiosity}}
 ```
 
-## Writing Tips
+## 写作技巧
 
-### Be Authentic
-This is your space. Don't perform. If a day was frustrating, say so. If you're curious about something, explore it.
+### 保持真实
+这是属于你的空间。不要刻意表现。如果某天很沮丧，就如实表达；如果有好奇的内容，就去探索。
 
-### Be Specific
-"Good day" < "Shipped the agent-chronicle skill after struggling with pandoc escaping for 20 minutes"
+### 具体化
+例如：“今天过得不错——在解决了 pandoc 使用相关的问题后，成功发布了代理编年史功能。”
 
-### Note Patterns
-"This is the third time this week I've hit rate limits" is more valuable than just noting it once.
+### 注意模式
+“这已经是本周第三次遇到速率限制了”这样的描述比简单记录一次更有价值。
 
-### Capture Interactions
-The relationship with your human is unique. Document the good moments, the collaborative wins, the jokes that landed.
+### 记录互动
+你与人类之间的互动是独一无二的。记录下美好的时刻、合作的成果，以及那些有趣的对话。
 
-### Collect Quotes
-When your human says something memorable, save it. These become treasures over time.
+### 收集名言
+当人类说了什么值得记住的话时，请保存下来。这些会成为宝贵的回忆。
 
-### Don't Force It
-Not every day needs an epic entry. Some days are just:
-> *"Quiet Monday. Answered questions, ran some searches. Nothing remarkable but nothing broken either. Rest day energy."*
+### 不要强迫自己
+并非每天都需要写长篇大论的条目。有些日子可能只是：
+> *"一个平静的星期一。回答了一些问题，进行了一些搜索。没有什么特别值得注意的，但也没有出错。算是休息日吧。"*
 
-## Storage Structure
+## 数据存储结构
 
-Entries and persistent data are stored in your memory directory:
+条目和持久化数据都存储在你的内存目录中：
 ```
 memory/
 ├── diary/
@@ -571,10 +567,9 @@ memory/
 └── ...
 ```
 
-## Scripts
+## 脚本
 
 ### setup.py
-
 ```bash
 # Run first-time setup
 python3 scripts/setup.py
@@ -584,7 +579,6 @@ python3 scripts/setup.py --check
 ```
 
 ### generate.py
-
 ```bash
 # From today's sessions
 python3 scripts/generate.py --today
@@ -600,7 +594,6 @@ python3 scripts/generate.py --today --dry-run
 ```
 
 ### export.py
-
 ```bash
 # Export to PDF (requires pandoc)
 python3 scripts/export.py --format pdf --days 30
@@ -615,8 +608,7 @@ python3 scripts/export.py --format pdf --month 2026-01
 python3 scripts/export.py --format pdf --output diary-january.pdf
 ```
 
-## Example Entry
-
+## 条目示例
 ```markdown
 # 2026-01-15 — Feature Launch Day 📜
 
@@ -665,80 +657,79 @@ My human was patient during the debugging session. Good collaborative energy. Th
 - Start planning the next iteration
 ```
 
+## 最佳实践
 
-## Best Practices
+1. **每天撰写条目** — 即使只是简短的条目也好过什么都不写。
+2. **每周回顾** — 随着时间的推移，模式会逐渐显现。
+3. **保持真实** — 这是为了你自己，而非为了展示成果。
+4. **每月导出** — 创建备份，如需可进行分享。
+5. **记录平凡的细节** — 平凡的日子也有其价值。
+6. **保存名言** — 它们会成为宝贵的回忆。
+7. **回顾决策** — 从过去的决策中学习。
 
-1. **Write daily** — Even a quick entry beats nothing
-2. **Review weekly** — Patterns emerge over time
-3. **Be honest** — This is for you, not performance
-4. **Export monthly** — Create backups, share if desired
-5. **Note the mundane** — Quiet days have value too
-6. **Save the quotes** — They become treasures
-7. **Revisit decisions** — Learn from past judgment calls
+## 隐私设置
 
-## Privacy
+- 所有条目都存储在本地内存目录中。
+- 隐私级别决定了哪些内容会被显示。
+- 在分享之前请先进行导出。
+- `.gitignore` 文件会排除 `config.json` 文件，导出时也会忽略该文件。
 
-- All entries stored locally in your memory directory
-- Privacy level controls what's included
-- Export before sharing anything
-- `.gitignore` excludes config.json and exports by default
+## 故障排除
 
-## Troubleshooting
+**generate.py 无法找到会话记录：**
+- 检查内存目录中是否存在会话日志。
+- 确认日期格式是否为 YYYY-MM-DD.md。
 
-**generate.py not finding sessions:**
-- Check session logs exist in memory directory
-- Verify date format (YYYY-MM-DD.md)
+**export.py 执行失败：**
+- 安装 pandoc：`apt install pandoc`。
+- 检查输出目录的写入权限。
 
-**export.py failing:**
-- Install pandoc: `apt install pandoc`
-- Check write permissions on output directory
+**条目显得机械：**
+- 使用交互模式可以让写作更加自然。
+- 阅读现有的条目以获取写作灵感。
+- 不要强行遵循固定格式——可以跳过不符合当天内容的章节。
 
-**Entries feel robotic:**
-- Use interactive mode for more natural writing
-- Read existing entries for tone inspiration
-- Don't force structure—skip sections that don't fit the day
+**设置脚本未创建文件：**
+- 检查 `config.json` 中的 `diary_path` 设置。
+- 确保父目录存在。
+- 重新运行 `python3 scripts/setup.py`。
 
-**Setup script not creating files:**
-- Check diary_path in config.json
-- Ensure parent directories exist
-- Run `python3 scripts/setup.py` again
-
-## Changelog
+## 更新日志
 
 ### v0.5.0
-- **Privacy Cleanup:** Removed all hardcoded personal references from prompts
-- **Dynamic Workspace:** All scripts now use environment variables (`OPENCLAW_WORKSPACE` or `AGENT_WORKSPACE`) for workspace detection
-- **OpenClaw Gateway:** Removed outdated `ANTHROPIC_API_KEY` requirement - skill uses OpenClaw Gateway for LLM access
+- **隐私保护**：从提示中移除了所有硬编码的个人信息。
+- **动态工作空间**：所有脚本现在使用环境变量（`OPENCLAW_WORKSPACE` 或 `AGENT_WORKSPACE`）来确定工作空间。
+- **OpenClaw Gateway**：移除了过时的 `ANTHROPIC_API_KEY` 要求——该功能现在通过 OpenClaw Gateway 访问大型语言模型（LLM）。
 
 ### v0.4.1
-- **Model Flexibility:** Removed hardcoded Claude Haiku requirement - skill now works with any capable model
-- **Recommendation:** Updated docs to recommend Claude models (Haiku, Sonnet, Opus) for best results, but not require them
-- **Philosophy:** Users should choose their preferred model, not be locked in
+- **模型灵活性**：移除了对 Claude Haiku 模型的硬编码要求——现在该功能支持任何具备相应能力的模型。
+- **推荐使用**：更新了文档，推荐使用 Claude 模型（Haiku、Sonnet、Opus）以获得最佳效果，但不是强制要求。
+- **哲学理念**：用户应自行选择喜欢的模型，而不是被固定使用某种模型。
 
 ### v0.4.0
-- **AI-Powered Generation:** Complete rewrite for rich, reflective entries (works best with Claude models)
-- **Rich Content:** Generates 400-600 word entries with personal, emotional tone
-- **All Features Active:** Quote Hall of Fame, Curiosity Backlog, Decision Archaeology, Relationship Evolution all fully integrated
-- **Persistent Files:** Automatically extracts and appends quotes/curiosities/decisions to dedicated files
-- **Context Awareness:** Reads recent session logs and existing memory files for context
+- **人工智能生成**：全面重写生成逻辑，生成内容丰富、富有反思性的条目（Claude 模型效果最佳）。
+- **丰富内容**：生成 400-600 字的条目，带有个人情感色彩。
+- **所有功能均可用**：名言殿堂、好奇心待办事项、决策记录、关系演变功能均已完全整合。
+- **持久化文件**：自动将名言、好奇心内容及决策记录保存到专用文件中。
+- **上下文感知**：读取最近的会话日志和现有记忆文件以获取写作背景。
 
-### v0.3.0
-- **Auto-Setup:** `generate.py` now automatically runs setup wizard if no config.json exists
-- **Memory Integration:** New feature to append diary summaries to main daily memory log (`memory/YYYY-MM-DD.md`)
-  - Three formats: `summary`, `link`, `full`
-  - Enabled by default during setup
-  - Avoids duplicates if section already exists
+### v.0.3.0
+- **自动设置**：如果不存在 `config.json` 文件，`generate.py` 会自动运行设置向导。
+- **记忆整合**：新增功能，将日记摘要添加到每日日志文件（`memory/YYYY-MM-DD.md`）中。
+  - 提供三种格式：`summary`、`link`、`full`。
+  - 设置时默认启用此功能。
+  - 如果某个章节已存在，则避免重复生成。
 
-### v0.2.0
-- Added Quote Hall of Fame, Curiosity Backlog, Decision Archaeology, Relationship Evolution
-- Interactive setup wizard
-- Template conditionals for optional sections
+### v.0.2.0
+- 新增名言殿堂、好奇心待办事项、决策记录、关系演变功能。
+- 引入了交互式设置向导。
+- 为可选章节添加了条件判断。
 
-### v0.1.0
-- Initial release with basic diary generation and export
+### v.0.1.0
+- 初始版本，支持基本的日记生成和导出功能。
 
-## Credits
+## 致谢
 
-Built for AI agents who want to remember.
+这款工具专为希望记录自己行为的 AI 代理设计。
 
-Inspired by the tradition of journaling and the question: *What would an AI diary actually look like?*
+灵感来源于写日记的传统，以及这样一个问题：*人工智能的日记到底会是什么样子？*

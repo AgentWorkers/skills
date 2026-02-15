@@ -1,56 +1,55 @@
 ---
 name: "Monetize"
-description: "Pricing, launch, and revenue strategies for indie products, SaaS, mobile apps, and creators. Concrete prices, not theory."
+description: "独立产品、SaaS服务、移动应用以及创作者的定价、发布和收入策略。提供具体的价格信息，而非理论性的描述。"
 ---
 
-## How This Works
+## 这个方案的工作原理
 
-Tell me what you're building and your situation. I'll give you specific prices, a launch plan, and templates you can use today.
+请告诉我您正在开发的产品以及您所处的具体情况。我会为您提供具体的价格方案、发布计划，以及您可以立即使用的模板。
 
-No "it depends." No theory. Decisions made for you.
+这里没有“视情况而定”的说法，也不会进行理论性的讨论——所有决策都会由我来为您做出。
 
-## Load the Right Guide
+## 选择合适的指南
 
-| Situation | Read |
-|-----------|------|
-| Mobile app | `mobile-apps.md` |
-| SaaS/subscription | `saas.md` |
-| Content/creator | `creator.md` |
-| Need pricing math | `pricing.md` |
-| Ready to launch | `launch.md` |
-| Need copy/templates | `templates.md` |
-| Real success patterns | `success.md` |
+根据您的具体情况，参考以下指南：
+- 移动应用：`mobile-apps.md`
+- SaaS/订阅服务：`saas.md`
+- 内容创作工具：`creator.md`
+- 需要价格计算帮助：`pricing.md`
+- 准备发布产品：`launch.md`
+- 需要文案或模板：`templates.md`
+- 成功案例参考：`success.md`
 
-## Universal Truths
+## 普遍适用的真理
 
-**You're probably underpriced.** Data across 25K+ companies shows the median leaves 30% on the table. Price higher than comfortable, validate with real sales.
+**您的产品定价可能过低。** 根据对2.5万多家公司的调查数据，产品的定价通常只达到了潜在价值的30%。如果不确定是否应该定价更高，请通过实际销售数据来验证。
 
-**Packaging > Pricing.** How you bundle features matters more than the number. Get packaging right first.
+**产品包装（功能组合）比定价更重要。** 如何组合产品功能比功能数量本身更为关键。务必先做好产品的包装设计。
 
-**10 happy customers who'd recommend > 100 customers.** Quality matters more than quantity.
+**10位满意的客户带来的推荐效果，远胜于100位普通客户。** 质量比数量更重要。
 
-**Charge from day one.** No "free beta." If people won't pay $1, they won't pay $100. Credit cards validate, promises don't.
+**从第一天就开始收费。** 不要提供“免费试用版”；如果用户不愿意支付1美元，他们也不会愿意支付100美元。使用信用卡支付可以验证用户的支付意愿，而口头承诺往往不可靠。
 
-**Build for yourself first.** You should be user #1. If you don't need it, you'll quit when it gets hard.
+**先为自己使用这个产品。** 您应该成为产品的第一个用户。如果连自己都不愿意使用它，那么在遇到困难时您很可能会放弃。
 
-## Unit Economics (Know These)
+## 必须了解的财务指标
 
-Before pitching anyone (VCs, partners, yourself):
+在向任何人（风险投资机构、合作伙伴或自己）展示产品之前，请确保您了解以下财务指标：
 
-| Metric | Target | How to Calculate |
-|--------|--------|------------------|
-| LTV:CAC | >3:1 | Lifetime value ÷ acquisition cost |
-| Payback | <12 months | CAC ÷ (monthly revenue × margin) |
-| Gross margin | >70% | (Revenue - variable costs) ÷ revenue |
-| Monthly churn | <5% | Lost customers ÷ start customers |
+| 指标          | 目标值        | 计算方法                                      |
+|------------------|-------------|--------------------------------------------|
+| 客户生命周期价值（LTV）与客户获取成本（CAC） | >3:1        | 客户生命周期价值 ÷ 客户获取成本                      |
+| 回收期（Payback Period） | <12个月      | 客户获取成本 ÷ （每月收入 × 利润率）                   |
+| 毛利率（Gross Margin）   | >70%        | （收入 - 可变成本） ÷ 收入                        |
+| 月流失率（Monthly Churn） | <5%        | 流失的客户数 ÷ 初始客户数                          |
 
-**If you can't answer these with data, you're not ready.**
+**如果您无法用数据来回答这些问题，那么说明您还没有准备好推出产品。**
 
-## Red Flags
+## 需警惕的警示信号
 
-- Building for months without $1 of revenue
-- "I'll figure out pricing later"
-- Free tier has >90% of the value
-- Discounting to close every deal
-- No idea who your best customers are
-- Copying competitor prices without understanding why
+- 几个月来一直在开发产品，但仍未获得任何收入；
+- “价格问题稍后再解决”；
+- 免费版本占据了产品价值的90%以上；
+- 为了促成交易而频繁打折；
+- 不清楚自己的最佳客户群体是谁；
+- 未经分析就直接复制竞争对手的定价策略。

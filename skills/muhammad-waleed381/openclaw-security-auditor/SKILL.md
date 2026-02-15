@@ -1,6 +1,6 @@
 ---
 name: openclaw-security-audit
-description: Audit OpenClaw configuration for security risks and generate a remediation report using the user's configured LLM.
+description: 审计 OpenClaw 的配置以识别安全风险，并使用用户配置的 Large Language Model (LLM) 生成一份修复报告。
 metadata:
   openclaw:
     requires:
@@ -8,66 +8,64 @@ metadata:
     os: ["darwin", "linux", "windows"]
 ---
 
-# OpenClaw Security Audit Skill
+# OpenClaw 安全审计技能
 
-Local-only skill that audits `~/.openclaw/openclaw.json`, runs 15+ security
-checks, and generates a detailed report using the user's existing LLM
-configuration. No external APIs or keys required.
+这是一项仅限本地使用的技能，用于审计 `~/.openclaw/openclaw.json` 配置文件。该技能会执行 15 项以上的安全检查，并根据用户现有的大型语言模型（LLM）配置生成详细的审计报告。无需使用任何外部 API 或密钥。
 
-## When to Use This Skill
+## 适用场景
 
-- The user asks for a security audit of their OpenClaw instance.
-- The user wants a remediation checklist for configuration risks.
-- The user is preparing an OpenClaw deployment and wants a hardening review.
+- 用户希望对自身的 OpenClaw 实例进行安全审计。
+- 用户需要针对配置风险制定相应的修复措施。
+- 用户在准备 OpenClaw 的部署时，希望获得安全加固方面的建议。
 
-## How It Works
+## 工作原理
 
-1. Read config with standard tools (`cat`, `jq`).
-2. Extract security-relevant settings (NEVER actual secrets).
-3. Build a structured findings object with metadata only.
-4. Pass findings to the user's LLM via OpenClaw's normal agent flow.
-5. Generate a markdown report with severity ratings and fixes.
+1. 使用标准工具（如 `cat`、`jq`）读取配置文件。
+2. 提取与安全相关的设置（但不会包含实际的敏感信息）。
+3. 构建一个包含元数据的结构化审计结果对象。
+4. 通过 OpenClaw 的常规代理流程将审计结果传递给用户的大型语言模型。
+5. 生成一份包含风险等级和修复建议的 Markdown 报告。
 
-## Inputs
+## 输入参数
 
-- target_config_path (optional): Path to OpenClaw config file.
-  - default: ~/.openclaw/openclaw.json
+- `target_config_path`（可选）：OpenClaw 配置文件的路径。
+  - 默认值：`~/.openclaw/openclaw.json`
 
-## Outputs
+## 输出结果
 
-- Markdown report including:
-  - Overall risk score (0-100)
-  - Findings categorized by severity (Critical/High/Medium/Low)
-  - Each finding with description, why it matters, how to fix, example config
-  - Prioritized remediation roadmap
+- 一份 Markdown 格式的报告，内容包括：
+  - 总体风险评分（0-100 分）
+  - 按严重程度分类的审计结果（严重/高/中/低）
+  - 每项审计结果的详细说明、问题原因、修复方法及示例配置
+  - 优先级排序的修复建议
 
-## Security Checks (15+)
+## 安全检查项目（共 15 项以上）
 
-1. API keys hardcoded in config (vs environment variables)
-2. Weak or missing gateway authentication tokens
-3. Unsafe gateway.bind settings (0.0.0.0 without proper auth)
-4. Missing channel access controls (allowFrom not set)
-5. Unsafe tool policies (elevated tools without restrictions)
-6. Sandbox disabled when it should be enabled
-7. Missing rate limits on channels
-8. Secrets potentially exposed in logs
-9. Outdated OpenClaw version
-10. Insecure WhatsApp configuration
-11. Insecure Telegram configuration
-12. Insecure Discord configuration
-13. Missing audit logging for privileged actions
-14. Overly permissive file system access scopes
-15. Unrestricted webhook endpoints
-16. Insecure default admin credentials
+1. 配置文件中硬编码了 API 密钥（而非从环境变量中获取）
+2. 网关认证令牌设置不安全或缺失
+3. 网关的 `bind` 设置不安全（例如设置为 `0.0.0.0` 且未进行适当认证）
+4. 缺少通道访问控制机制（`allowFrom` 未配置）
+5. 工具权限设置不安全（某些工具被赋予了过高权限）
+6. 沙箱功能被禁用（而实际上应该启用）
+7. 通道访问没有设置速率限制
+8. 日志中可能泄露敏感信息
+9. OpenClaw 版本过旧
+10. WhatsApp 配置不安全
+11. Telegram 配置不安全
+12. Discord 配置不安全
+13. 特权操作缺乏审计日志记录
+14. 文件系统访问权限设置过于宽松
+15. Webhook 端点未受到限制
+16. 管理员默认凭据不安全
 
-## Data Handling Rules
+## 数据处理规则
 
-- Strip all secrets before analysis.
-- Only report metadata such as present/missing/configured.
-- Do not log or emit actual key values.
-- Use local-only execution; no network calls.
+- 在分析之前会删除所有敏感信息。
+- 仅报告配置项的存在、缺失或已配置的状态等元数据。
+- 不会记录或暴露实际的密钥值。
+- 该技能仅在本机执行，不涉及任何网络请求。
 
-## Example Findings Object (Redacted)
+## 审计结果示例（部分内容已屏蔽）
 
 ```json
 {
@@ -90,16 +88,15 @@ configuration. No external APIs or keys required.
 }
 ```
 
-## Report Format
+## 报告格式要求
 
-The report must include:
+报告必须包含以下内容：
+- 总体风险评分（0-100 分）
+- 安全风险等级（严重/高/中/低）
+- 每项安全问题的详细说明、问题原因、修复方法及示例配置
+- 优先级排序的修复建议
 
-- Overall risk score (0-100)
-- Severity buckets: Critical, High, Medium, Low
-- Each finding: description, why it matters, how to fix, example config
-- Prioritized remediation roadmap
-
-## Skill Flow (Pseudo)
+## 技能执行流程（简化示意图）
 
 ```text
 read_config_path = input.target_config_path || ~/.openclaw/openclaw.json
@@ -111,8 +108,7 @@ report = openclaw.agent.analyze(findings, format=markdown)
 return report
 ```
 
-## Notes
+## 注意事项
 
-- Uses the user's existing OpenClaw LLM configuration (Opus, GPT, Gemini, and
-  local models).
-- No external APIs or special model access are required.
+- 该技能依赖于用户现有的 OpenClaw 大型语言模型配置（如 Opus、GPT、Gemini 等）。
+- 不需要使用任何外部 API 或特殊模型。

@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Networking - Java
+# Telnyx 网络服务 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all Regions
+## 列出所有区域
 
-List all regions and the interfaces that region supports
+列出所有区域及其支持的接口
 
 `GET /regions`
 
@@ -44,9 +44,9 @@ import com.telnyx.sdk.models.regions.RegionListResponse;
 RegionListResponse regions = client.regions().list();
 ```
 
-## List all Networks
+## 列出所有网络
 
-List all Networks.
+列出所有网络。
 
 `GET /networks`
 
@@ -57,9 +57,9 @@ import com.telnyx.sdk.models.networks.NetworkListParams;
 NetworkListPage page = client.networks().list();
 ```
 
-## Create a Network
+## 创建网络
 
-Create a new Network.
+创建一个新的网络。
 
 `POST /networks`
 
@@ -74,9 +74,9 @@ NetworkCreate params = NetworkCreate.builder()
 NetworkCreateResponse network = client.networks().create(params);
 ```
 
-## Retrieve a Network
+## 查取网络信息
 
-Retrieve a Network.
+获取网络信息。
 
 `GET /networks/{id}`
 
@@ -87,9 +87,9 @@ import com.telnyx.sdk.models.networks.NetworkRetrieveResponse;
 NetworkRetrieveResponse network = client.networks().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update a Network
+## 更新网络信息
 
-Update a Network.
+更新网络信息。
 
 `PATCH /networks/{id}`
 
@@ -107,9 +107,9 @@ NetworkUpdateParams params = NetworkUpdateParams.builder()
 NetworkUpdateResponse network = client.networks().update(params);
 ```
 
-## Delete a Network
+## 删除网络
 
-Delete a Network.
+删除网络。
 
 `DELETE /networks/{id}`
 
@@ -120,7 +120,7 @@ import com.telnyx.sdk.models.networks.NetworkDeleteResponse;
 NetworkDeleteResponse network = client.networks().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get Default Gateway status.
+## 获取默认网关状态
 
 `GET /networks/{id}/default_gateway`
 
@@ -131,7 +131,7 @@ import com.telnyx.sdk.models.networks.defaultgateway.DefaultGatewayRetrieveRespo
 DefaultGatewayRetrieveResponse defaultGateway = client.networks().defaultGateway().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Create Default Gateway.
+## 创建默认网关
 
 `POST /networks/{id}/default_gateway`
 
@@ -142,7 +142,7 @@ import com.telnyx.sdk.models.networks.defaultgateway.DefaultGatewayCreateRespons
 DefaultGatewayCreateResponse defaultGateway = client.networks().defaultGateway().create("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete Default Gateway.
+## 删除默认网关
 
 `DELETE /networks/{id}/default_gateway`
 
@@ -153,9 +153,9 @@ import com.telnyx.sdk.models.networks.defaultgateway.DefaultGatewayDeleteRespons
 DefaultGatewayDeleteResponse defaultGateway = client.networks().defaultGateway().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List all Interfaces for a Network.
+## 列出网络的所有接口
 
-`GET /networks/{id}/network_interfaces`
+`GET /networks/{id}/networkInterfaces`
 
 ```java
 import com.telnyx.sdk.models.networks.NetworkListInterfacesPage;
@@ -164,11 +164,11 @@ import com.telnyx.sdk.models.networks.NetworkListInterfacesParams;
 NetworkListInterfacesPage page = client.networks().listInterfaces("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List all WireGuard Interfaces
+## 列出所有 WireGuard 接口
 
-List all WireGuard Interfaces.
+列出所有 WireGuard 接口。
 
-`GET /wireguard_interfaces`
+`GET /wireguardInterfaces`
 
 ```java
 import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceListPage;
@@ -177,11 +177,11 @@ import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceListParams;
 WireguardInterfaceListPage page = client.wireguardInterfaces().list();
 ```
 
-## Create a WireGuard Interface
+## 创建新的 WireGuard 接口
 
-Create a new WireGuard Interface.
+创建一个新的 WireGuard 接口。
 
-`POST /wireguard_interfaces`
+`POST /wireguardInterfaces`
 
 ```java
 import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceCreateParams;
@@ -190,11 +190,11 @@ import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceCreateRespons
 WireguardInterfaceCreateResponse wireguardInterface = client.wireguardInterfaces().create();
 ```
 
-## Retrieve a WireGuard Interfaces
+## 查取 WireGuard 接口信息
 
-Retrieve a WireGuard Interfaces.
+获取 WireGuard 接口信息。
 
-`GET /wireguard_interfaces/{id}`
+`GET /wireguardInterfaces/{id}`
 
 ```java
 import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceRetrieveParams;
@@ -203,11 +203,11 @@ import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceRetrieveRespo
 WireguardInterfaceRetrieveResponse wireguardInterface = client.wireguardInterfaces().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a WireGuard Interface
+## 删除 WireGuard 接口
 
-Delete a WireGuard Interface.
+删除 WireGuard 接口。
 
-`DELETE /wireguard_interfaces/{id}`
+`DELETE /wireguardInterfaces/{id}`
 
 ```java
 import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceDeleteParams;
@@ -216,9 +216,9 @@ import com.telnyx.sdk.models.wireguardinterfaces.WireguardInterfaceDeleteRespons
 WireguardInterfaceDeleteResponse wireguardInterface = client.wireguardInterfaces().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List all WireGuard Peers
+## 列出所有 WireGuard 对等方
 
-List all WireGuard peers.
+列出所有 WireGuard 对等方。
 
 `GET /wireguard_peers`
 
@@ -229,9 +229,9 @@ import com.telnyx.sdk.models.wireguardpeers.WireguardPeerListParams;
 WireguardPeerListPage page = client.wireguardPeers().list();
 ```
 
-## Create a WireGuard Peer
+## 创建新的 WireGuard 对等方
 
-Create a new WireGuard Peer.
+创建一个新的 WireGuard 对等方。
 
 `POST /wireguard_peers`
 
@@ -245,9 +245,9 @@ WireguardPeerCreateParams params = WireguardPeerCreateParams.builder()
 WireguardPeerCreateResponse wireguardPeer = client.wireguardPeers().create(params);
 ```
 
-## Retrieve the WireGuard Peer
+## 查取 WireGuard 对等方信息
 
-Retrieve the WireGuard peer.
+获取 WireGuard 对等方信息。
 
 `GET /wireguard_peers/{id}`
 
@@ -258,9 +258,9 @@ import com.telnyx.sdk.models.wireguardpeers.WireguardPeerRetrieveResponse;
 WireguardPeerRetrieveResponse wireguardPeer = client.wireguardPeers().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update the WireGuard Peer
+## 更新 WireGuard 对等方信息
 
-Update the WireGuard peer.
+更新 WireGuard 对等方信息。
 
 `PATCH /wireguard_peers/{id}`
 
@@ -276,9 +276,9 @@ WireguardPeerUpdateParams params = WireguardPeerUpdateParams.builder()
 WireguardPeerUpdateResponse wireguardPeer = client.wireguardPeers().update(params);
 ```
 
-## Delete the WireGuard Peer
+## 删除 WireGuard 对等方
 
-Delete the WireGuard peer.
+删除 WireGuard 对等方。
 
 `DELETE /wireguard_peers/{id}`
 
@@ -289,7 +289,7 @@ import com.telnyx.sdk.models.wireguardpeers.WireguardPeerDeleteResponse;
 WireguardPeerDeleteResponse wireguardPeer = client.wireguardPeers().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Retrieve Wireguard config template for Peer
+## 获取 WireGuard 对等方的配置模板
 
 `GET /wireguard_peers/{id}/config`
 
@@ -299,9 +299,9 @@ import com.telnyx.sdk.models.wireguardpeers.WireguardPeerRetrieveConfigParams;
 String response = client.wireguardPeers().retrieveConfig("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get all Private Wireless Gateways
+## 获取用户所有的私有无线网关
 
-Get all Private Wireless Gateways belonging to the user.
+获取用户所有的私有无线网关。
 
 `GET /private_wireless_gateways`
 
@@ -312,11 +312,11 @@ import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayListP
 PrivateWirelessGatewayListPage page = client.privateWirelessGateways().list();
 ```
 
-## Create a Private Wireless Gateway
+## 为已创建的网络创建私有无线网关
 
-Asynchronously create a Private Wireless Gateway for SIM cards for a previously created network.
+异步地为已创建的网络中的 SIM 卡创建私有无线网关。
 
-`POST /private_wireless_gateways` — Required: `network_id`, `name`
+`POST /private_wireless_gateways` — 必需参数：`network_id`、`name`
 
 ```java
 import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayCreateParams;
@@ -329,9 +329,9 @@ PrivateWirelessGatewayCreateParams params = PrivateWirelessGatewayCreateParams.b
 PrivateWirelessGatewayCreateResponse privateWirelessGateway = client.privateWirelessGateways().create(params);
 ```
 
-## Get a Private Wireless Gateway
+## 获取私有无线网关信息
 
-Retrieve information about a Private Wireless Gateway.
+获取私有无线网关的详细信息。
 
 `GET /private_wireless_gateways/{id}`
 
@@ -342,9 +342,9 @@ import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayRetri
 PrivateWirelessGatewayRetrieveResponse privateWirelessGateway = client.privateWirelessGateways().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Private Wireless Gateway
+## 删除私有无线网关
 
-Deletes the Private Wireless Gateway.
+删除私有无线网关。
 
 `DELETE /private_wireless_gateways/{id}`
 
@@ -355,9 +355,9 @@ import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayDelet
 PrivateWirelessGatewayDeleteResponse privateWirelessGateway = client.privateWirelessGateways().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List all Public Internet Gateways
+## 列出所有公共互联网网关
 
-List all Public Internet Gateways.
+列出所有公共互联网网关。
 
 `GET /public_internet_gateways`
 
@@ -368,9 +368,9 @@ import com.telnyx.sdk.models.publicinternetgateways.PublicInternetGatewayListPar
 PublicInternetGatewayListPage page = client.publicInternetGateways().list();
 ```
 
-## Create a Public Internet Gateway
+## 创建公共互联网网关
 
-Create a new Public Internet Gateway.
+创建一个新的公共互联网网关。
 
 `POST /public_internet_gateways`
 
@@ -381,9 +381,9 @@ import com.telnyx.sdk.models.publicinternetgateways.PublicInternetGatewayCreateR
 PublicInternetGatewayCreateResponse publicInternetGateway = client.publicInternetGateways().create();
 ```
 
-## Retrieve a Public Internet Gateway
+## 获取公共互联网网关信息
 
-Retrieve a Public Internet Gateway.
+获取公共互联网网关的详细信息。
 
 `GET /public_internet_gateways/{id}`
 
@@ -394,9 +394,9 @@ import com.telnyx.sdk.models.publicinternetgateways.PublicInternetGatewayRetriev
 PublicInternetGatewayRetrieveResponse publicInternetGateway = client.publicInternetGateways().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Public Internet Gateway
+## 删除公共互联网网关
 
-Delete a Public Internet Gateway.
+删除公共互联网网关。
 
 `DELETE /public_internet_gateways/{id}`
 
@@ -407,9 +407,9 @@ import com.telnyx.sdk.models.publicinternetgateways.PublicInternetGatewayDeleteR
 PublicInternetGatewayDeleteResponse publicInternetGateway = client.publicInternetGateways().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List all Virtual Cross Connects
+## 列出所有虚拟交叉连接
 
-List all Virtual Cross Connects.
+列出所有虚拟交叉连接。
 
 `GET /virtual_cross_connects`
 
@@ -420,9 +420,9 @@ import com.telnyx.sdk.models.virtualcrossconnects.VirtualCrossConnectListParams;
 VirtualCrossConnectListPage page = client.virtualCrossConnects().list();
 ```
 
-## Create a Virtual Cross Connect
+## 创建虚拟交叉连接
 
-Create a new Virtual Cross Connect.<br /><br />For AWS and GCE, you have the option of creating the primary connection first and the secondary connection later.
+创建一个新的虚拟交叉连接。<br /><br />对于 AWS 和 GCE，您可以先创建主连接，然后再创建次级连接。
 
 `POST /virtual_cross_connects`
 
@@ -433,9 +433,9 @@ import com.telnyx.sdk.models.virtualcrossconnects.VirtualCrossConnectCreateRespo
 VirtualCrossConnectCreateResponse virtualCrossConnect = client.virtualCrossConnects().create();
 ```
 
-## Retrieve a Virtual Cross Connect
+## 查取虚拟交叉连接信息
 
-Retrieve a Virtual Cross Connect.
+获取虚拟交叉连接的详细信息。
 
 `GET /virtual_cross_connects/{id}`
 
@@ -446,9 +446,9 @@ import com.telnyx.sdk.models.virtualcrossconnects.VirtualCrossConnectRetrieveRes
 VirtualCrossConnectRetrieveResponse virtualCrossConnect = client.virtualCrossConnects().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update the Virtual Cross Connect
+## 更新虚拟交叉连接信息
 
-Update the Virtual Cross Connect.<br /><br />Cloud IPs can only be patched during the `created` state, as GCE will only inform you of your generated IP once the pending connection requested has bee...
+更新虚拟交叉连接信息。<br /><br />只有在“创建”状态下才能修改云 IP 地址；GCE 会在连接请求处理完成后通知您生成的 IP 地址...
 
 `PATCH /virtual_cross_connects/{id}`
 
@@ -459,9 +459,9 @@ import com.telnyx.sdk.models.virtualcrossconnects.VirtualCrossConnectUpdateRespo
 VirtualCrossConnectUpdateResponse virtualCrossConnect = client.virtualCrossConnects().update("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Virtual Cross Connect
+## 删除虚拟交叉连接
 
-Delete a Virtual Cross Connect.
+删除虚拟交叉连接。
 
 `DELETE /virtual_cross_connects/{id}`
 
@@ -472,9 +472,9 @@ import com.telnyx.sdk.models.virtualcrossconnects.VirtualCrossConnectDeleteRespo
 VirtualCrossConnectDeleteResponse virtualCrossConnect = client.virtualCrossConnects().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List Virtual Cross Connect Cloud Coverage
+## 查看虚拟交叉连接的覆盖范围
 
-List Virtual Cross Connects Cloud Coverage.<br /><br />This endpoint shows which cloud regions are available for the `location_code` your Virtual Cross Connect will be provisioned in.
+查看虚拟交叉连接的覆盖范围。<br /><br />此端点显示虚拟交叉连接将被配置到的云区域。
 
 `GET /virtual_cross_connects/coverage`
 
@@ -485,9 +485,9 @@ import com.telnyx.sdk.models.virtualcrossconnectscoverage.VirtualCrossConnectsCo
 VirtualCrossConnectsCoverageListPage page = client.virtualCrossConnectsCoverage().list();
 ```
 
-## List all Global IPs
+## 列出所有全局 IP 地址
 
-List all Global IPs.
+列出所有全局 IP 地址。
 
 `GET /global_ips`
 
@@ -498,9 +498,9 @@ import com.telnyx.sdk.models.globalips.GlobalIpListParams;
 GlobalIpListPage page = client.globalIps().list();
 ```
 
-## Create a Global IP
+## 创建全局 IP 地址
 
-Create a Global IP.
+创建一个新的全局 IP 地址。
 
 `POST /global_ips`
 
@@ -511,9 +511,9 @@ import com.telnyx.sdk.models.globalips.GlobalIpCreateResponse;
 GlobalIpCreateResponse globalIp = client.globalIps().create();
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址信息
 
-Retrieve a Global IP.
+获取全局 IP 地址的详细信息。
 
 `GET /global_ips/{id}`
 
@@ -524,9 +524,9 @@ import com.telnyx.sdk.models.globalips.GlobalIpRetrieveResponse;
 GlobalIpRetrieveResponse globalIp = client.globalIps().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Global IP
+## 删除全局 IP 地址
 
-Delete a Global IP.
+删除全局 IP 地址。
 
 `DELETE /global_ips/{id}`
 
@@ -537,7 +537,9 @@ import com.telnyx.sdk.models.globalips.GlobalIpDeleteResponse;
 GlobalIpDeleteResponse globalIp = client.globalIps().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List all Global IP Allowed Ports
+## 列出所有允许使用的全球 IP 端口
+
+列出所有允许使用的全球 IP 端口。
 
 `GET /global_ip_allowed_ports`
 
@@ -548,7 +550,9 @@ import com.telnyx.sdk.models.globalipallowedports.GlobalIpAllowedPortListRespons
 GlobalIpAllowedPortListResponse globalIpAllowedPorts = client.globalIpAllowedPorts().list();
 ```
 
-## Global IP Assignment Health Check Metrics
+## 全局 IP 地址分配的健康检查指标
+
+获取全局 IP 地址分配的健康检查指标。
 
 `GET /global_ip_assignment_health`
 
@@ -559,9 +563,9 @@ import com.telnyx.sdk.models.globalipassignmenthealth.GlobalIpAssignmentHealthRe
 GlobalIpAssignmentHealthRetrieveResponse globalIpAssignmentHealth = client.globalIpAssignmentHealth().retrieve();
 ```
 
-## List all Global IP assignments
+## 列出所有全局 IP 地址分配记录
 
-List all Global IP assignments.
+列出所有全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments`
 
@@ -572,9 +576,9 @@ import com.telnyx.sdk.models.globalipassignments.GlobalIpAssignmentListParams;
 GlobalIpAssignmentListPage page = client.globalIpAssignments().list();
 ```
 
-## Create a Global IP assignment
+## 创建全局 IP 地址分配记录
 
-Create a Global IP assignment.
+创建一个新的全局 IP 地址分配记录。
 
 `POST /global_ip_assignments`
 
@@ -587,9 +591,9 @@ GlobalIpAssignment params = GlobalIpAssignment.builder().build();
 GlobalIpAssignmentCreateResponse globalIpAssignment = client.globalIpAssignments().create(params);
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址分配记录
 
-Retrieve a Global IP assignment.
+获取全局 IP 地址分配的详细信息。
 
 `GET /global_ip_assignments/{id}`
 
@@ -600,9 +604,9 @@ import com.telnyx.sdk.models.globalipassignments.GlobalIpAssignmentRetrieveRespo
 GlobalIpAssignmentRetrieveResponse globalIpAssignment = client.globalIpAssignments().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update a Global IP assignment
+## 更新全局 IP 地址分配记录
 
-Update a Global IP assignment.
+更新全局 IP 地址分配记录。
 
 `PATCH /global_ip_assignments/{id}`
 
@@ -613,9 +617,9 @@ import com.telnyx.sdk.models.globalipassignments.GlobalIpAssignmentUpdateRespons
 GlobalIpAssignmentUpdateResponse globalIpAssignment = client.globalIpAssignments().update("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Global IP assignment
+## 删除全局 IP 地址分配记录
 
-Delete a Global IP assignment.
+删除全局 IP 地址分配记录。
 
 `DELETE /global_ip_assignments/{id}`
 
@@ -626,7 +630,9 @@ import com.telnyx.sdk.models.globalipassignments.GlobalIpAssignmentDeleteRespons
 GlobalIpAssignmentDeleteResponse globalIpAssignment = client.globalIpAssignments().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Global IP Assignment Usage Metrics
+## 全局 IP 地址分配的使用情况指标
+
+获取全局 IP 地址分配的使用情况指标。
 
 `GET /global_ip_assignments/usage`
 
@@ -637,9 +643,9 @@ import com.telnyx.sdk.models.globalipassignmentsusage.GlobalIpAssignmentsUsageRe
 GlobalIpAssignmentsUsageRetrieveResponse globalIpAssignmentsUsage = client.globalIpAssignmentsUsage().retrieve();
 ```
 
-## List all Global IP Health check types
+## 列出所有全局 IP 地址的健康检查类型
 
-List all Global IP Health check types.
+列出所有全局 IP 地址的健康检查类型。
 
 `GET /global_ip_health_check_types`
 
@@ -650,9 +656,9 @@ import com.telnyx.sdk.models.globaliphealthchecktypes.GlobalIpHealthCheckTypeLis
 GlobalIpHealthCheckTypeListResponse globalIpHealthCheckTypes = client.globalIpHealthCheckTypes().list();
 ```
 
-## List all Global IP health checks
+## 查看所有全局 IP 地址的健康检查记录
 
-List all Global IP health checks.
+列出所有全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks`
 
@@ -663,9 +669,9 @@ import com.telnyx.sdk.models.globaliphealthchecks.GlobalIpHealthCheckListParams;
 GlobalIpHealthCheckListPage page = client.globalIpHealthChecks().list();
 ```
 
-## Create a Global IP health check
+## 创建全局 IP 地址的健康检查
 
-Create a Global IP health check.
+创建一个新的全局 IP 地址健康检查。
 
 `POST /global_ip_health_checks`
 
@@ -676,9 +682,9 @@ import com.telnyx.sdk.models.globaliphealthchecks.GlobalIpHealthCheckCreateRespo
 GlobalIpHealthCheckCreateResponse globalIpHealthCheck = client.globalIpHealthChecks().create();
 ```
 
-## Retrieve a Global IP health check
+## 获取全局 IP 地址的健康检查记录
 
-Retrieve a Global IP health check.
+获取全局 IP 地址的健康检查记录的详细信息。
 
 `GET /global_ip_health_checks/{id}`
 
@@ -689,9 +695,9 @@ import com.telnyx.sdk.models.globaliphealthchecks.GlobalIpHealthCheckRetrieveRes
 GlobalIpHealthCheckRetrieveResponse globalIpHealthCheck = client.globalIpHealthChecks().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Global IP health check
+## 删除全局 IP 地址的健康检查记录
 
-Delete a Global IP health check.
+删除全局 IP 地址的健康检查记录。
 
 `DELETE /global_ip_health_checks/{id}`
 
@@ -702,7 +708,9 @@ import com.telnyx.sdk.models.globaliphealthchecks.GlobalIpHealthCheckDeleteRespo
 GlobalIpHealthCheckDeleteResponse globalIpHealthCheck = client.globalIpHealthChecks().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Global IP Latency Metrics
+## 全局 IP 地址的延迟指标
+
+获取全局 IP 地址的延迟指标。
 
 `GET /global_ip_latency`
 
@@ -713,7 +721,9 @@ import com.telnyx.sdk.models.globaliplatency.GlobalIpLatencyRetrieveResponse;
 GlobalIpLatencyRetrieveResponse globalIpLatency = client.globalIpLatency().retrieve();
 ```
 
-## List all Global IP Protocols
+## 列出所有全局 IP 协议
+
+列出所有全局 IP 协议。
 
 `GET /global_ip_protocols`
 
@@ -724,7 +734,9 @@ import com.telnyx.sdk.models.globalipprotocols.GlobalIpProtocolListResponse;
 GlobalIpProtocolListResponse globalIpProtocols = client.globalIpProtocols().list();
 ```
 
-## Global IP Usage Metrics
+## 全局 IP 地址的使用情况指标
+
+获取全局 IP 地址的使用情况指标。
 
 `GET /global_ip_usage`
 

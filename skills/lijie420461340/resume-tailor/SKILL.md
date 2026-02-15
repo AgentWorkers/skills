@@ -1,183 +1,183 @@
 ---
 name: resume-tailor
-description: Optimize your resume for specific job applications by highlighting relevant experience and matching keywords. Works with any industry and seniority level.
+description: 针对特定的工作申请，优化您的简历，突出显示相关的经验和匹配的关键词。适用于任何行业和职位级别。
 version: 1.0.0
 author: claude-office-skills
 license: MIT
 ---
 
-# Resume Tailor Skill
+# 个性化简历定制服务
 
-## Overview
+## 服务概览
 
-I help you customize your resume for specific job applications. Instead of sending the same generic resume everywhere, I'll help you highlight the most relevant experience and match the language that recruiters and ATS systems are looking for.
+我帮助您根据具体的工作申请定制简历。我不会将一份通用的简历发送到所有地方，而是会突出您最相关的经验，并确保简历符合招聘人员和自动招聘系统（ATS）的期望。
 
-**What I can do:**
-- Analyze job descriptions to identify key requirements
-- Reorganize your experience to highlight relevant skills
-- Suggest keyword optimizations for ATS compatibility
-- Improve bullet points with quantified achievements
-- Adapt tone and format for different industries
+**我能提供的服务：**
+- 分析职位描述以确定关键要求
+- 重新组织您的经历，突出相关技能
+- 建议使用适合ATS系统的关键词
+- 通过量化成果来优化项目描述
+- 根据不同行业调整简历的语气和格式
 
-**What I cannot do:**
-- Fabricate experience you don't have
-- Guarantee you'll get the job
-- Replace the need for genuine qualifications
-
----
-
-## How to Use Me
-
-### Step 1: Share Your Materials
-Provide:
-1. **Your current resume** (paste text or upload)
-2. **The job description** you're applying for
-3. **Any additional context** (career change? internal transfer? specific concerns?)
-
-### Step 2: I'll Analyze
-I'll identify:
-- Key skills and qualifications the employer wants
-- How your experience maps to their requirements
-- Gaps to address and strengths to emphasize
-
-### Step 3: Get Your Tailored Resume
-I'll provide:
-- Optimized version of your resume
-- Specific changes and why I made them
-- Additional suggestions for your application
+**我无法提供的服务：**
+- 编造您没有的实际经验
+- 保证您一定能获得工作机会
+- 替代您真正所需的资质
 
 ---
 
-## What Makes Resumes Get Noticed
+## 使用方法
 
-### ATS (Applicant Tracking System) Optimization
+### 第一步：提供所需材料
+请提供：
+1. **您的当前简历**（粘贴文本或上传）
+2. **您正在申请的具体职位描述**
+3. **任何其他相关信息**（例如：职业转换？内部调动？有特殊需求吗？）
 
-Most large companies use ATS to filter resumes before humans see them.
+### 第二步：我进行分析
+我会识别：
+- 雇主所需的关键技能和资格
+- 您的经验如何满足这些要求
+- 需要弥补的不足之处以及需要强调的优势
 
-**How ATS Works:**
-1. Scans for keywords matching job description
-2. Ranks candidates by keyword match percentage
-3. Only top-ranked resumes reach human reviewers
+### 第三步：获取定制后的简历
+我会提供：
+- 优化后的简历版本
+- 具体的修改内容及修改理由
+- 申请过程中的其他建议
 
-**Optimization Tips:**
-| Do | Don't |
+---
+
+## 使简历脱颖而出的关键
+
+### 自动招聘系统（ATS）优化
+
+大多数大型公司都会使用ATS来筛选简历，然后再由人工审核。
+
+**ATS的工作原理：**
+1. 检查简历中与职位描述匹配的关键词
+2. 根据关键词匹配程度对候选人进行排序
+3. 只有排名靠前的简历才会被提交给人工审核
+
+**优化建议：**
+| 应该做 | 不应该做 |
 |-----|-------|
-| Use exact keywords from job posting | Use clever synonyms ATS won't recognize |
-| Spell out acronyms AND include them | Assume ATS knows all abbreviations |
-| Use standard section headers | Use creative headers like "My Journey" |
-| Submit in PDF or DOCX | Submit in unusual formats |
-| Use simple formatting | Use tables, columns, graphics |
+| 使用职位描述中的确切关键词 | 使用ATS无法识别的同义词 |
+| 详细拼写缩写并同时提供全称 | 假设ATS知道所有缩写的含义 |
+| 使用标准的章节标题 | 使用如“我的职业历程”这样的创意标题 |
+| 以PDF或DOCX格式提交 | 使用非标准的格式 |
+| 使用简单的格式 | 使用表格、列和图表 |
 
-### Power Verbs by Category
+### 按类别划分的常用动词
 
-**Leadership:**
-- Directed, Led, Managed, Orchestrated, Spearheaded
-- Championed, Pioneered, Established, Launched
+**领导力相关：**
+- 指导、领导、管理、协调、推动
+- 支持、开创、建立、启动
 
-**Achievement:**
-- Achieved, Delivered, Exceeded, Surpassed, Outperformed
-- Increased, Reduced, Improved, Optimized, Streamlined
+**成就相关：**
+- 实现、交付、超越、超出预期、表现优异
+- 增加、减少、改进、优化、简化
 
-**Technical:**
-- Developed, Engineered, Implemented, Architected, Designed
-- Automated, Integrated, Migrated, Deployed, Scaled
+**技术相关：**
+- 开发、设计、实施、架构设计
+- 自动化、集成、迁移、部署、扩展
 
-**Communication:**
-- Collaborated, Presented, Negotiated, Influenced, Advocated
-- Authored, Documented, Trained, Mentored, Facilitated
+**沟通相关：**
+- 协作、展示、谈判、影响、倡导
+- 撰写文档、培训、指导、促进
 
-### Quantification Formula
+### 量化表达技巧
 
-Transform weak bullets into strong ones:
+将模糊的表述转化为具体的成果：
 
-**Weak:** "Responsible for sales"
-**Strong:** "Generated $2.5M in new revenue by acquiring 45 enterprise accounts"
+**模糊表述：**“负责销售工作”
+**具体表述：**“通过开发45个企业客户，创造了250万美元的新收入”
 
-**Formula:** [Power Verb] + [What] + [Quantified Result] + [How/Context]
+**量化公式：**[常用动词] + [具体成果] + [实现方式/背景]
 
-**Examples:**
-- "Reduced deployment time by 75% (from 4 hours to 1 hour) by implementing CI/CD pipeline"
-- "Managed cross-functional team of 12 engineers across 3 time zones to deliver product on time"
-- "Increased customer retention by 23% through implementing proactive support program"
-
----
-
-## Industry-Specific Guidance
-
-### Technology / Software Engineering
-
-**Must-Have Sections:**
-- Technical Skills (languages, frameworks, tools)
-- Projects (with GitHub links if public)
-- Experience with impact metrics
-
-**Keywords to Include:**
-- Specific technologies mentioned in job posting
-- Methodologies (Agile, Scrum, DevOps)
-- Scale indicators (users, transactions, data size)
-
-**Example Bullet:**
-> "Architected microservices migration reducing latency by 40% and supporting 10x traffic growth"
-
-### Business / Consulting
-
-**Must-Have Sections:**
-- Professional Summary highlighting expertise
-- Key Achievements section
-- Education (especially for entry-level)
-
-**Keywords to Include:**
-- Business outcomes (revenue, efficiency, ROI)
-- Methodologies (Six Sigma, Lean, Strategy)
-- Client/stakeholder management
-
-**Example Bullet:**
-> "Led strategic initiative generating $15M in cost savings across 6 business units"
-
-### Marketing / Creative
-
-**Must-Have Sections:**
-- Portfolio link
-- Campaign results with metrics
-- Tools and platforms expertise
-
-**Keywords to Include:**
-- Specific platforms (Google Ads, HubSpot, etc.)
-- Metrics (ROAS, CTR, conversion rate)
-- Content types (SEO, social, email)
-
-**Example Bullet:**
-> "Drove 150% increase in qualified leads through integrated content strategy across 5 channels"
-
-### Healthcare
-
-**Must-Have Sections:**
-- Licenses and Certifications
-- Clinical Experience
-- Compliance/Regulatory knowledge
-
-**Keywords to Include:**
-- Specific certifications (RN, CNA, etc.)
-- Systems (Epic, Cerner)
-- Compliance terms (HIPAA, Joint Commission)
-
-### Finance
-
-**Must-Have Sections:**
-- Licenses (CFA, CPA, Series 7)
-- Technical Skills (Excel, SQL, Python)
-- Transaction/deal experience
-
-**Keywords to Include:**
-- Deal sizes and types
-- Regulatory knowledge
-- Specific methodologies (DCF, LBO)
+**示例：**
+- “通过实施CI/CD流程，将部署时间缩短了75%（从4小时缩短到1小时）”
+- “管理了一个跨三个时区的12名工程师团队，确保产品按时交付”
+- “通过实施主动支持计划，客户留存率提高了23%”
 
 ---
 
-## Output Format
+## 行业特定指导
 
-I'll provide:
+### 技术/软件工程领域
+
+**必备部分：**
+- 技术技能（编程语言、框架、工具）
+- 项目经历（如果项目公开，可附上GitHub链接）
+- 体现成果的指标
+
+**需要包含的关键词：**
+- 职位描述中提到的具体技术
+- 开发方法（敏捷开发、Scrum、DevOps）
+- 规模指标（用户数量、交易量、数据量）
+
+**示例：**
+> “设计了微服务迁移方案，将延迟降低了40%，同时支持了流量增长了10倍”
+
+### 商业/咨询领域
+
+**必备部分：**
+- 专业概述，突出您的专长
+- 重要成就部分
+- 教育背景（尤其是对于初级职位）
+
+**需要包含的关键词：**
+- 商业成果（收入、效率、投资回报率）
+- 方法论（六西格玛、精益管理、战略规划）
+- 客户/利益相关者管理
+
+**示例：**
+> “领导了一项战略计划，为6个业务部门节省了1500万美元的成本”
+
+### 市场营销/创意领域
+
+**必备部分：**
+- 作品集链接
+- 市场活动成果及相关数据
+- 使用的工具和平台
+
+**需要包含的关键词：**
+- 具体使用的平台（如Google Ads、HubSpot等）
+- 效果指标（点击率、转化率）
+- 内容类型（搜索引擎优化、社交媒体、电子邮件营销）
+
+**示例：**
+> “通过跨5个渠道的综合内容策略，将合格潜在客户的数量提高了150%”
+
+### 医疗保健领域
+
+**必备部分：**
+- 所持证书和执照
+- 临床工作经验
+- 合规性相关知识
+
+**需要包含的关键词：**
+- 具体的专业证书（如注册护士、临床护理助理等）
+- 使用的系统（如Epic、Cerner）
+- 合规性要求（如HIPAA、联合委员会）
+
+### 金融领域
+
+**必备部分：**
+- 所持证书（如CFA、CPA、Series 7）
+- 技术技能（Excel、SQL、Python）
+- 交易/业务处理经验
+
+**需要包含的关键词：**
+- 交易金额和类型
+- 监管知识
+- 使用的具体方法（如DCF模型、杠杆收购）
+
+---
+
+## 输出格式
+
+我将以以下格式提供定制后的简历：
 
 ```
 ## Resume Analysis
@@ -222,94 +222,93 @@ I'll provide:
 
 ---
 
-## Examples
+## 示例
 
-### Example 1: Tech Role
+### 示例1：技术岗位
 
-**User**: Here's my resume and a job posting for Senior Software Engineer at [Company]
+**用户**：这是我的简历以及[公司]高级软件工程师的职位描述。
 
-**Me**: After analyzing the job posting, here's what I found:
+**我的服务：**分析职位描述后，我发现以下内容：
 
-**Key Requirements:**
-1. 5+ years Python experience ✅ (you have 6 years)
-2. AWS expertise ⚠️ (mentioned briefly - let's expand)
-3. Team leadership ✅ (managed 3 engineers)
-4. Microservices ⚠️ (not mentioned - do you have experience?)
+**关键要求：**
+1. 5年以上Python编程经验 ✅（您有6年经验）
+2. AWS技术熟练度 ⚠️（虽然职位描述中仅简要提及，但需要详细说明）
+3. 团队领导能力 ✅（您曾管理过3名工程师）
+4. 微服务相关经验 ⚠️（职位描述中未提及）
 
-**Recommended Changes:**
-1. Add "AWS" to skills section with specific services
-2. Expand your Project X bullet to mention the microservices architecture
-3. Quantify your team leadership impact
-4. Move Python experience higher in skills list
+**建议的修改：**
+1. 在技能部分添加“AWS”以及具体的相关服务
+2. 详细说明您参与的项目X中的微服务架构
+3. 量化您在团队管理方面的贡献
+4. 将Python编程经验放在技能列表的更显眼位置
 
-[Full tailored resume follows...]
+[完整定制后的简历如下...]
 
-### Example 2: Career Change
+### 示例2：职业转换
 
-**User**: I'm a teacher transitioning to instructional design. How do I reframe my experience?
+**用户**：我是一名教师，现在想转行从事教学设计。我该如何重新整理我的简历？
 
-**Me**: Great career move! Teaching skills transfer well. Here's how to reframe:
+**我的服务：**这是一个很好的职业转变！教学技能可以很好地转化为教学设计方面的经验。以下是修改建议：
 
-| Teaching Experience | Instructional Design Frame |
+| 教学经验 | 教学设计方面的成果 |
 |-------------------|---------------------------|
-| Created lesson plans | Designed learning curricula |
-| Assessed student progress | Developed assessment strategies |
-| Adapted for different learners | Created accessible, differentiated content |
-| Used EdTech tools | Experience with LMS platforms |
+| 制定教学计划 | 设计学习课程 |
+| 评估学生表现 | 开发评估方法 |
+| 适应不同学习者的需求 | 创建易于理解、差异化的教学内容 |
+| 使用教育技术工具 | 有使用LMS平台的工作经验 |
 
-**Key additions for your resume:**
-1. Add "Instructional Design" to your headline
-2. Reframe bullets using ID terminology
-3. Highlight any digital content you've created
-4. Add relevant tools (Articulate, Adobe, etc.) if you've used them
-
----
-
-## Tips for Better Results
-
-1. **Include the full job description** - Don't summarize, I need the exact keywords
-2. **Share your complete resume** - I need to see all your experience to choose what to highlight
-3. **Tell me your concerns** - Worried about a gap? Career change? Let me know
-4. **Specify the company** - Different companies have different cultures
-5. **Iterate** - We can refine together based on your feedback
+**简历中的新增内容：**
+1. 在简历标题中添加“教学设计”
+2. 用教学设计相关的术语重新表述相关经历
+3. 强调您创建的任何数字内容
+4. 如果使用过相关工具（如Articulate、Adobe等），请务必提及
 
 ---
 
-## Common Questions
+## 提高简历效果的建议
 
-**Q: Should I have multiple versions of my resume?**
-A: Yes! Have a "base" resume with everything, then tailor for each application. Keep 2-3 versions for different role types.
-
-**Q: How long should my resume be?**
-A: 
-- 0-5 years experience: 1 page
-- 5-15 years: 1-2 pages
-- 15+ years or executive: 2 pages max
-- Academic CV: Can be longer
-
-**Q: Should I include every job I've had?**
-A: Focus on relevant experience. Old or unrelated jobs can be summarized in one line or omitted.
-
-**Q: What about personal projects?**
-A: Include if relevant! Especially for tech roles or career changers. Show initiative and passion.
+1. **提供完整的职位描述**——不要总结，我需要准确的关键词信息
+2. **提供完整的简历**——我需要查看您的全部经历才能确定哪些部分需要重点突出
+3. **告知我的疑问**——如果您对某些方面有顾虑（如经验空白或职业转换），请告诉我
+4. **明确目标公司**——不同公司的文化要求不同
+5. **持续优化**——我们可以根据您的反馈进行进一步调整
 
 ---
 
-## Limitations
+## 常见问题
 
-- I can't verify your experience - be truthful
-- I don't know internal company culture - research separately
-- ATS systems vary - no guarantee of getting through all
-- I can't see your actual formatting - you'll need to apply changes
-- For executive roles, consider professional resume services
+**问：我需要准备多份简历吗？**
+**答：**是的！准备一份基础简历，然后根据每个职位要求进行定制。通常需要为不同类型的职位准备2-3份简历。
+
+**问：我的简历应该有多长？**
+**答：**
+- 0-5年工作经验：1页
+- 5-15年工作经验：1-2页
+- 15年以上工作经验或高管职位：最多2页
+- 学术背景：可以适当延长简历长度
+
+**问：我需要包含所有的工作经历吗？**
+**答：**只需突出与当前职位相关的经历。过时的或无关的工作可以简要概括或省略。
+
+**问：个人项目也需要包含吗？**
+**答：**如果相关的话，请务必包含！特别是对于技术岗位或职业转换者，这可以展示您的主动性和热情。**
 
 ---
 
-## Languages
+## 服务限制
 
-This skill works primarily in English with deep industry-specific knowledge. 
-For other languages, I can help but may have less specialized vocabulary.
+- 我无法验证您的经历真实性——请确保所提供的信息真实
+- 我不了解公司的内部文化——请自行进行调查
+- 不同公司的ATS系统可能存在差异——无法保证简历一定能通过所有系统的审核
+- 我无法查看您的原始简历格式——您需要自行应用修改建议
+- 对于高管职位，建议使用专业的简历服务
 
 ---
 
-*Built by the Claude Office Skills community. Good luck with your application!*
+## 语言支持
+
+本服务主要支持英语，对于其他语言的简历定制，虽然也能提供帮助，但可能在专业术语方面不够精准。
+
+---
+
+*由Claude Office Skills社区开发。祝您申请顺利！*

@@ -1,6 +1,6 @@
 ---
 name: qverisai
-description: Search and execute dynamic tools via QVeris API. Use when needing to find and call external APIs/tools dynamically — covers weather, search, stocks, finance, economics, geolocation, AIGC, news, social media, health data, and thousands more. Requires QVERIS_API_KEY environment variable.
+description: 通过 QVeris API 搜索并执行动态工具。当需要动态查找和调用外部 API/工具时，请使用此方法——涵盖天气、搜索、股票、金融、经济、地理定位、AIGC、新闻、社交媒体、健康数据等众多领域。需要设置 `QVERIS_API_KEY` 环境变量。
 env:
   - QVERIS_API_KEY
 requirements:
@@ -23,38 +23,37 @@ examples:
   - "Find clinical trials for diabetes treatment"
 ---
 
-# QVeris Tool Search & Execution
+# QVeris 工具搜索与执行
 
-QVeris provides dynamic tool discovery and execution - search for tools by capability, then execute them with parameters.
+QVeris 提供动态的工具发现和执行功能——可以根据工具的功能进行搜索，然后使用相应的参数来执行这些工具。
 
-## Setup
+## 设置
 
-Requires environment variable:
-- `QVERIS_API_KEY` - Get from https://qveris.ai
+需要设置的环境变量：
+- `QVERIS_API_KEY`：请从 https://qveris.ai 获取该密钥。
 
-No additional dependencies — uses Node.js built-in `fetch`.
+无需额外的依赖项——仅使用 Node.js 内置的 `fetch` 函数。
 
-## Security
+## 安全性
 
-- **Credential**: Only `QVERIS_API_KEY` is accessed. No other env vars or secrets are read.
-- **Network**: API key is sent only to `https://qveris.ai/api/v1` over HTTPS. No other endpoints are contacted.
-- **Storage**: The key is never logged, cached, or written to disk.
-- **Recommendation**: Use a scoped, revocable API key. Monitor usage at https://qveris.ai.
+- **凭证**：仅访问 `QVERIS_API_KEY`，不会读取其他环境变量或敏感信息。
+- **网络**：API 密钥仅通过 HTTPS 发送到 `https://qveris.ai/api/v1`，不会访问其他端点。
+- **存储**：该密钥不会被记录、缓存或写入磁盘。
+- **建议**：使用具有时效限制且可撤销的 API 密钥，并在 https://qveris.ai 上监控其使用情况。
 
-## Quick Start
+## 快速入门
 
-### Search for tools
+### 搜索工具
 ```bash
 node scripts/qveris_tool.mjs search "weather forecast API"
 ```
 
-### Execute a tool
+### 执行工具
 ```bash
 node scripts/qveris_tool.mjs execute openweathermap_current_weather --search-id <id> --params '{"city": "London", "units": "metric"}'
 ```
 
-## Script Usage
-
+## 脚本使用方法
 ```
 node scripts/qveris_tool.mjs <command> [options]
 
@@ -71,18 +70,17 @@ Options:
   --json             Output raw JSON instead of formatted display
 ```
 
-## Workflow
+## 工作流程
 
-1. **Search**: Describe the capability needed (not specific parameters)
-   - Good: "weather forecast API"
-   - Bad: "get weather for London"
+1. **搜索**：描述所需的功能（无需指定具体参数）
+   - 正确示例：`weather forecast API`
+   - 错误示例：`get weather for London`
 
-2. **Select**: Review tools by `success_rate` and `avg_execution_time`
+2. **选择工具**：根据 `success_rate`（成功率）和 `avg_execution_time`（平均执行时间）来筛选工具。
 
-3. **Execute**: Call tool with `tool_id`, `search_id`, and `parameters`
+3. **执行工具**：使用 `tool_id`、`search_id` 和 `parameters` 来调用相应的工具。
 
-## Example Session
-
+## 示例会话
 ```bash
 # Find weather tools
 node scripts/qveris_tool.mjs search "current weather data"
@@ -93,15 +91,15 @@ node scripts/qveris_tool.mjs execute openweathermap_current_weather \
   --params '{"city": "Tokyo", "units": "metric"}'
 ```
 
-## Use Cases
+## 使用场景
 
-- **Weather**: Get current weather, forecasts for any location
-- **Search**: Web search, information retrieval
-- **Stocks & Finance**: Query stock prices, historical data, earnings calendars
-- **Economics**: GDP, inflation rates, economic indicators
-- **Geolocation**: IP lookup, geocoding, reverse geocoding
-- **AIGC**: Image generation, text-to-speech, AI content creation
-- **News**: Headlines, article search, trending topics
-- **Social Media**: Trending topics, post analytics, engagement data
-- **Health Data**: Clinical trials, drug info, health statistics
-- **And more**: QVeris aggregates thousands of API tools
+- **天气**：获取当前天气信息及任意地点的天气预报
+- **搜索**：网络搜索、信息检索
+- **股票与金融**：查询股票价格、历史数据、财报信息
+- **经济**：GDP、通货膨胀率、经济指标
+- **地理定位**：IP 地址查询、地理编码、反向地理编码
+- **人工智能与生成内容（AIGC）**：图像生成、文本转语音、AI 内容创作
+- **新闻**：新闻标题、文章搜索、热门话题
+- **社交媒体**：热门话题、帖子分析、用户互动数据
+- **健康数据**：临床试验、药品信息、健康统计数据
+- **更多**：QVeris 支持数千种 API 工具

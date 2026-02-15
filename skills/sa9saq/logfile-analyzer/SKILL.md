@@ -1,22 +1,22 @@
 ---
-description: Parse and analyze application logs — extract error patterns, frequency, timelines, and actionable insights.
+description: 解析并分析应用程序日志——提取错误模式、错误发生的频率、时间线以及可操作的洞察（即基于日志数据得出的实际建议或行动方案）。
 ---
 
-# Log Analyzer
+# 日志分析工具
 
-Parse and summarize application logs to find errors, patterns, and anomalies.
+该工具用于解析和汇总应用程序日志，以发现错误、模式及异常情况。
 
-**Use when** analyzing log files, debugging errors, or summarizing system events.
+**适用场景**：分析日志文件、调试错误或汇总系统事件。
 
-## Requirements
+## 所需工具
 
-- Standard Unix tools: `grep`, `awk`, `sort`, `uniq`
-- Optional: `jq` (for JSON logs)
-- No API keys needed
+- 标准的 Unix 工具：`grep`、`awk`、`sort`、`uniq`
+- 可选工具：`jq`（用于处理 JSON 格式的日志）
+- 无需 API 密钥
 
-## Instructions
+## 使用步骤
 
-1. **Get log source** — common locations:
+1. **获取日志来源** — 常见日志存放位置：
    ```bash
    # System logs
    /var/log/syslog
@@ -34,7 +34,7 @@ Parse and summarize application logs to find errors, patterns, and anomalies.
    # Ask user for path
    ```
 
-2. **Quick analysis** — run these in sequence:
+2. **快速分析** — 按以下顺序执行相应命令：
    ```bash
    # File overview
    wc -l logfile
@@ -58,13 +58,13 @@ Parse and summarize application logs to find errors, patterns, and anomalies.
    grep -iE '(error|exception|fatal)' logfile | tail -30
    ```
 
-3. **JSON logs** (structured logging):
+3. **JSON 格式日志**（结构化日志）：
    ```bash
    cat logfile | jq -r 'select(.level == "error") | .message' | sort | uniq -c | sort -rn
    cat logfile | jq -r 'select(.level == "error") | .timestamp' | head -5  # first errors
    ```
 
-4. **Output format**:
+4. **输出格式**：
    ```
    📊 Log Analysis — filename.log (42,531 lines)
    Time range: 2025-01-15 00:00 → 2025-01-15 14:30
@@ -96,22 +96,24 @@ Parse and summarize application logs to find errors, patterns, and anomalies.
    - [ ] Increase JVM heap size (7 OOM errors)
    ```
 
-## Edge Cases
+## 特殊情况处理
 
-- **Large files (>100MB)**: Use `tail -n 10000` or `--since` filtering first. Never read entire file into memory.
-- **Non-standard log format**: Ask user about the timestamp and level format, then adapt grep patterns.
-- **Binary/compressed logs**: `zgrep` for `.gz` files, `journalctl` for systemd binary logs.
-- **Multi-line stack traces**: Use `grep -A 5` to capture context lines after errors.
-- **No timestamps**: Fall back to line-number-based analysis.
+- **大文件（>100MB）**：建议先使用 `tail -n 10000` 或 `--since` 进行筛选，避免将整个文件加载到内存中。
+- **非标准日志格式**：需询问用户日志的时间戳和级别格式，然后相应地调整 `grep` 的匹配规则。
+- **二进制/压缩日志**：
+  - 对 `.gz` 文件使用 `zgrep`；
+  - 对 systemd 系统生成的日志使用 `journalctl`。
+- **多行堆栈跟踪信息**：使用 `grep -A 5` 来获取错误发生后的上下文信息。
+- **无时间戳**：在这种情况下，需依赖日志行号来进行分析。
 
-## Real-time Monitoring
+## 实时监控
 
-For live monitoring, suggest:
+如需实现实时监控，建议使用以下方法：
 ```bash
 tail -f logfile | grep --line-buffered -iE '(error|fatal)'
 ```
 
-## Security Considerations
+## 安全注意事项
 
-- Log files may contain sensitive data (IPs, emails, tokens). Redact before sharing analysis.
-- Don't pipe log contents to external services.
+- 日志文件可能包含敏感数据（如 IP 地址、电子邮件地址、令牌等），在分享分析结果前请对这些信息进行脱敏处理。
+- 不要将日志内容通过管道传输到外部服务。

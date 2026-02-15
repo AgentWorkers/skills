@@ -1,6 +1,6 @@
 ---
 name: x402-wach
-description: DeFi risk analysis toolkit powered by WACH.AI via x402 payments. Currently supports ERC-20 and Solana SPL token asset risk analysis. Use when the user asks to check if a token is safe, assess DeFi risk, detect honeypots, analyze liquidity, holder distribution, or smart contract vulnerabilities for tokens on Ethereum, Polygon, Base, BSC, or Solana. Costs 0.01 USDC per query on Base.
+description: 由 WACH.AI 提供支持的 DeFi 风险分析工具包，通过 x402 支付方式使用。目前支持 ERC-20 和 Solana SPL 类型的代币资产风险分析。当用户需要检查代币的安全性、评估 DeFi 风险、检测恶意网站（“蜜罐”）、分析流动性、持有人分布或以太坊、Polygon、Base、BSC、Solana 上智能合约的漏洞时，可以使用该工具包。在 Base 平台上，每次查询的费用为 0.01 美元。
 license: MIT
 compatibility: Requires Node.js 18+, npm, network access, and a funded EVM wallet (USDC on Base).
 metadata:
@@ -10,53 +10,52 @@ metadata:
   payment: 0.01 USDC on Base (automatic via x402)
 ---
 
-# x402-wach — DeFi Risk Analysis
+# x402-wach — DeFi风险分析工具
 
-A DeFi risk analysis toolkit powered by WACH.AI, using the x402 HTTP payment protocol. Payment is handled automatically (0.01 USDC per request on Base).
+这是一个由WACH.AI提供支持的DeFi风险分析工具，使用x402 HTTP支付协议进行处理。所有支付操作都是自动完成的（每个请求的费用为0.01 USDC，基于Base网络）。
 
-**Currently supported features:**
+**目前支持的功能：**
 
-- **Asset Risk Analysis** — ERC-20 tokens (Ethereum, Polygon, Base, BSC) and Solana SPL tokens
+- **资产风险分析**：支持ERC-20代币（Ethereum、Polygon、Base、BSC）和Solana SPL代币
 
-## When to Use This Skill
+## 何时使用此工具
 
-Use this skill when the user wants to:
+当用户需要执行以下操作时，可以使用此工具：
+- **评估特定代币或资产的风险**；
+- **检查代币的安全性**或判断其是否为钓鱼网站/陷阱；
+- **获取代币风险评分**（整体评分、代码评分、市场评分）；
+- **分析代币持有者分布**（大户集中度、主要持有者、交易所钱包）；
+- **审查流动性状况**（总流动性、交易对、去中心化交易所（DEX））；
+- **检查智能合约的安全性**（所有权信息、铸造权限、冻结权限、黑名单、暂停机制）；
+- **查询代币市场数据**（价格、市值、24小时交易量、供应量）。
 
-- **Assess DeFi risk** for a specific token or asset
-- **Check if a token is safe** or a potential scam/honeypot
-- **Get token risk scores** (overall, code, market)
-- **Analyze holder distribution** (whale concentration, top holders, exchange wallets)
-- **Review liquidity health** (total liquidity, trading pairs, DEXes)
-- **Inspect smart contract security** (ownership, mint authority, freeze authority, blacklists, pausability)
-- **Look up token market data** (price, market cap, 24h volume, supply)
+## 安装
 
-## Installation
-
-Install the CLI globally via npm:
+可以通过npm全局安装此工具的命令行界面（CLI）：
 
 ```bash
 npm install -g @quillai-network/x402-wach
 ```
 
-Or install locally in a project:
+或者将其本地安装到项目中：
 
 ```bash
 npm install @quillai-network/x402-wach
 ```
 
-Verify the installation:
+验证安装是否成功：
 
 ```bash
 x402-wach --version
 ```
 
-## Setup
+## 设置
 
-After installation, follow these steps to get ready for token analysis:
+安装完成后，请按照以下步骤进行配置，以便开始代币分析：
 
-### 1. Create or Import a Wallet
+### 1. 创建或导入钱包
 
-You need an EVM wallet to sign x402 payments.
+您需要一个EVM钱包来签名x402支付请求。
 
 ```bash
 # Option A — Generate a brand new wallet
@@ -66,53 +65,52 @@ x402-wach wallet create
 x402-wach wallet import
 ```
 
-The wallet is stored securely at `~/.x402-wach/wallet.json` with restricted file permissions (owner read/write only).
+钱包文件存储在`~/.x402-wach/wallet.json`中，并具有受限的文件权限（仅所有者可读写）。
 
-### 2. Fund the Wallet
+### 2. 为钱包充值
 
-Each token analysis costs **0.01 USDC on Base**. Send USDC (Base network) to your wallet address.
+每次代币分析的费用为0.01 USDC（基于Base网络）。请将USDC发送到您的钱包地址。
 
 ```bash
 # Check your wallet address
 x402-wach wallet info
 ```
 
-You can bridge USDC from Ethereum or other chains using https://bridge.base.org.
+您可以通过https://bridge.base.org将USDC从Ethereum或其他区块链桥接至Base网络。
 
-### 3. You're Ready
+### 3. 准备就绪
 
-Run the setup guide anytime:
+随时可以运行设置指南以开始使用该工具：
 
 ```bash
 x402-wach guide
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Short Name | Chain               | Token Standard | Use For                          |
+| 简称 | 区块链            | 代币标准          | 适用范围                          |
 | ---------- | ------------------- | -------------- | -------------------------------- |
-| `eth`      | Ethereum            | ERC-20         | Tokens on Ethereum mainnet       |
-| `pol`      | Polygon             | ERC-20         | Tokens on Polygon                |
-| `base`     | Base                | ERC-20         | Tokens on Base                   |
-| `bsc`      | Binance Smart Chain | BEP-20         | Tokens on BSC                    |
-| `sol`      | Solana              | SPL            | Tokens on Solana                 |
+| `eth`      | Ethereum           | ERC-20             | Ethereum主网上的代币                     |
+| `pol`      | Polygon             | ERC-20             | Polygon上的代币                     |
+| `base`     | Base                | ERC-20             | Base上的代币                     |
+| `bsc`      | Binance Smart Chain | BEP-20             | BSC上的代币                     |
+| `sol`      | Solana              | SPL               | Solana上的代币                     |
 
-## Commands
+## 命令
 
-### Analyze Token Risk
+### 分析代币风险
 
 ```bash
 x402-wach verify-risk <TOKEN_ADDRESS> <CHAIN_SHORT_NAME>
 ```
 
-**Parameters:**
+**参数：**
+- `TOKEN_ADDRESS`：代币的合约地址
+  - EVM区块链：以`0x`开头，后跟40个十六进制字符（例如：`0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48`）
+  - Solana地址：32–44个base58字符的字符串（例如：`6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN`）
+- `CHAIN_SHORT_NAME`：`eth`、`pol`、`base`、`bsc`、`sol`之一
 
-- `TOKEN_ADDRESS` — The token's contract address
-  - EVM chains: `0x` followed by 40 hex characters (e.g., `0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48`)
-  - Solana: Base58 string, 32–44 characters (e.g., `6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN`)
-- `CHAIN_SHORT_NAME` — One of: `eth`, `pol`, `base`, `bsc`, `sol`
-
-**Examples:**
+**示例：**
 
 ```bash
 # Analyze USDC on Ethereum
@@ -125,7 +123,7 @@ x402-wach verify-risk 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN sol
 x402-wach verify-risk 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 base
 ```
 
-### Wallet Management
+### 钱包管理
 
 ```bash
 # Create a new wallet
@@ -138,7 +136,7 @@ x402-wach wallet import
 x402-wach wallet info
 ```
 
-### Other Commands
+### 其他命令
 
 ```bash
 # List all supported chains
@@ -151,9 +149,9 @@ x402-wach guide
 x402-wach --help
 ```
 
-## Programmatic Usage
+## 程序化使用
 
-The SDK can also be used as a Node.js/TypeScript library:
+该工具的SDK也可作为Node.js/TypeScript库使用：
 
 ```typescript
 import { verifyTokenRisk, validateTokenAddress } from "@quillai-network/x402-wach";
@@ -168,30 +166,27 @@ if (!validation.valid) {
 }
 ```
 
-## Output Structure
+## 输出结构
 
-The risk analysis report includes (when available):
+风险分析报告包含以下内容（如可用）：
+- **市场数据**：价格、市值、24小时交易量、价格变动、总供应量；
+- **风险评分**：整体评分、代码评分、市场评分（0–100%）；
+- **钓鱼网站分析**：判断代币是否为钓鱼网站，以及相关的买卖/转账费用信息；
+- **持有者信息**：总持有者数量、主要持有者（包括交易所钱包）及持有比例；
+- **流动性**：总流动性（以USDC计）、交易对数量、主要去中心化交易所；
+- **代码分析**：所有权检查、铸造/冻结权限、黑名单机制、暂停机制；
+- **社交与社区信息**：Twitter、Discord、Telegram链接及官方网站信息。
 
-- **Market Data**: Price, market cap, 24h volume, price change, total supply
-- **Risk Scores**: Overall score, code score, market score (0–100%)
-- **Honeypot Analysis**: Whether the token is a honeypot, buy/sell/transfer taxes
-- **Holders**: Total count, top holders with labels (e.g., exchange wallets), supply concentration
-- **Liquidity**: Total liquidity in USD, number of trading pairs, top DEX pairs
-- **Code Analysis**: Ownership checks, mint/freeze authority, blacklist mechanisms, pausability
-- **Social & Community**: Twitter, Discord, Telegram, website links
+## 特殊情况与错误处理：
+- **地址格式错误**：CLI会在发送请求前（以及任何支付操作前）验证地址格式。EVM地址必须以`0x`开头，后跟40个十六进制字符；Solana地址必须是32–44个base58字符。
+- **地址链路错误**：CLI会检测地址是否正确，并提示使用正确的区块链。
+- **代币不存在**：如果在选定的区块链上找不到该代币，会显示错误信息而非空报告。
+- **USDC不足**：如果钱包资金不足，x402支付会失败，并提示用户充值。
+- **未配置钱包**：CLI会提示用户运行`x402-wach wallet create`或`x402-wach wallet import`命令来创建或导入钱包。
 
-## Edge Cases and Error Handling
-
-- **Invalid address format**: The CLI validates addresses client-side before making the request (and before any payment). EVM addresses must be `0x` + 40 hex chars. Solana addresses must be 32–44 base58 chars.
-- **Wrong chain for address**: The CLI detects mismatches (e.g., a Solana address used with `eth`) and suggests the correct chain.
-- **Token not found**: If no token exists at the given address on the selected chain, a clear error message is shown instead of an empty report.
-- **Insufficient USDC**: If the wallet lacks funds, the x402 payment will fail with a 402 error prompting the user to fund their wallet.
-- **No wallet configured**: The CLI will prompt the user to run `x402-wach wallet create` or `x402-wach wallet import`.
-
-## Important Notes
-
-- Each analysis costs **0.01 USDC on Base** — deducted automatically via the x402 payment protocol.
-- The **payment always happens on Base**, regardless of which chain the token being analyzed is on.
-- The wallet is stored at `~/.x402-wach/wallet.json` with restricted file permissions (owner-only).
-- Always validate the token address and chain before calling `verify-risk` to avoid paying for invalid queries.
-- This is a **DeFi risk analysis toolkit** — ERC-20/SPL asset risk analysis is the first supported feature, with more analysis types planned.
+## 重要说明：
+- 每次分析费用为0.01 USDC（基于Base网络），通过x402支付协议自动扣除。
+- 无论分析的代币位于哪个区块链，支付始终在Base网络上完成。
+- 钱包文件存储在`~/.x402-wach/wallet.json`中，具有受限的文件权限（仅所有者可访问）。
+- 在调用`verify-risk`之前，请务必验证代币地址和区块链信息，以避免为无效请求支付费用。
+- 该工具仅用于DeFi风险分析，目前主要支持ERC-20/SPL代币的风险分析，未来将支持更多类型的分析。

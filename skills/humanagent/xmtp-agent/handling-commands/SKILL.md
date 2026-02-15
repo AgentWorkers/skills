@@ -1,54 +1,56 @@
 ---
 name: handling-commands
-description: Patterns for handling commands, validating input, and filtering messages in XMTP agents. Use when implementing slash commands, validators, or message filters. Triggers on command handling, input validation, or type guards.
+description: 在 XMTP 代理中处理命令、验证输入以及过滤消息的模式。这些模式可用于实现斜杠命令（slash commands）、输入验证器（input validators）或消息过滤器（message filters）。它们会在命令处理、输入验证或类型检查（type guards）的环节被触发。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP commands and validation
+# XMTP命令与验证
 
-Best practices for handling commands, validating input, and filtering messages.
+处理命令、验证输入以及过滤消息的最佳实践。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Implementing slash commands
-- Validating hex strings and addresses
-- Filtering message types
-- Using type guards instead of type assertions
+在以下情况下请参考这些指南：
+- 实现斜杠命令（slash commands）
+- 验证十六进制字符串和地址
+- 过滤消息类型
+- 使用类型防护（type guards）代替类型断言（type assertions）
 
-## Rule categories by priority
+## 规则类别（按优先级排序）
 
-| Priority | Category | Impact | Prefix |
+| 优先级 | 类别 | 影响程度 | 前缀 |
 |----------|----------|--------|--------|
-| 1 | Validators | CRITICAL | `validators-` |
-| 2 | Filters | HIGH | `filters-` |
-| 3 | Type Guards | HIGH | `guards-` |
+| 1 | 验证器（Validators） | 关键性（CRITICAL） | `validators-` |
+| 2 | 过滤器（Filters） | 高优先级（HIGH） | `filters-` |
+| 3 | 类型防护（Type Guards） | 高优先级（HIGH） | `guards-` |
 
-## Quick reference
+## 快速参考
 
-### Validators (CRITICAL)
-- `validators-hex` - Use validHex() for hex string validation
-- `validators-address` - Validate Ethereum addresses
+### 验证器（Critical）
 
-### Filters (HIGH)
-- `filters-message-types` - Filter by message type
-- `filters-sender` - Filter out self-messages
-- `filters-content` - Check for defined content
+- `validators-hex`：使用`validHex()`函数验证十六进制字符串
+- `validators-address`：验证以太坊地址
 
-### Type Guards (HIGH)
-- `guards-codec` - Use usesCodec() instead of type assertions
-- `guards-content-type` - Use filter helpers for type safety
+### 过滤器（High Priority）
 
-## How to use
+- `filters-message-types`：按消息类型进行过滤
+- `filters-sender`：过滤掉来自发送者的消息
+- `filters-content`：检查消息内容是否符合预设要求
 
-Read individual rule files for detailed explanations:
+### 类型防护（High Priority）
+
+- `guards-codec`：使用`usesCodec()`函数代替类型断言
+- `guards-content-type`：利用类型防护机制确保代码的安全性
+
+## 使用方法
+
+有关详细说明，请阅读相应的规则文件：
 
 ```
 rules/validators-hex.md
 rules/filters-message-types.md
 rules/guards-codec.md
 ```
-

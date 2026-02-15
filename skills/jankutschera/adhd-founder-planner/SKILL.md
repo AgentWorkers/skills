@@ -1,7 +1,7 @@
 ---
 name: adhd-founder-planner
 version: 1.1.0
-description: "This skill should be used when the user asks to 'plan my day', 'help me plan today', 'morning planning', 'what should I work on today', 'daily planner', 'evening reflection', 'reflect on my day', 'migrate tasks', 'carry tasks forward', 'rapid log', 'brain dump my tasks', or mentions ADHD-friendly planning, time-blindness, swim lanes, energy-based task management, bullet journal for ADHD, or dopamine menu. Provides a BuJo-style daily planning system with swim lanes, migration, reflection, and dopamine rewards. Part of the ADHD-founder.com ecosystem."
+description: "当用户请求“帮我规划一天”、“协助我安排今天的工作”、“进行晨间规划”、“今天应该处理哪些任务”、“创建每日计划”、“进行晚间反思”、“总结一天的工作”、“迁移任务”、“将任务延续到明天”、“快速记录任务”或提到适合多动症（ADHD）的规划方法（如时间盲视、任务管理工具、基于能量的任务分配方式、适用于多动症的子弹日记等）时，应使用此技能。该技能提供了一个类似子弹日记（BuJo）风格的每日规划系统，包含任务管理功能（如任务迁移）、反思环节以及通过奖励机制来提升用户完成任务的动力。该系统是ADHD-founder.com生态系统中的一部分。"
 homepage: https://adhd-founder.com
 author: ADHD-founder.com
 license: MIT
@@ -28,148 +28,128 @@ metadata:
     slug: adhd-founder-planner
 ---
 
-# ADHD Daily Planner 📝🧠
+# ADHD每日计划表 📝🧠
 
-**Part of the [ADHD-founder.com](https://adhd-founder.com) Ecosystem**
-*"Time-blindness friendly. Migration supported. Dopamine optimized."*
-
----
-
-## What This Skill Does
-
-Provides a bullet journal (BuJo) style daily planning system designed for ADHD brains:
-- Rapid logging with ADHD-friendly symbols
-- Time-blindness protection (relative times, not absolute)
-- Task migration (carry forward = strategy, not failure)
-- Daily intent (morning: "What ONE thing must happen?")
-- Evening reflection ("What worked? What didn't?")
-- Swim lane organization (energy-based, not time-based)
-- Dopamine Menu integration (built-in rewards)
-
-## Core Philosophy
-
-**"Plans are hypotheses, not promises"**
-**"Migration is success, not failure"**
-**"Swim lanes, not time blocks"**
-**"Intent > Schedule"**
+**属于[ADHD-founder.com](https://adhd-founder.com)生态系统**  
+*“适用于时间感知障碍者。支持任务迁移功能。优化多巴胺分泌机制。”*
 
 ---
 
-## Commands
+## 该工具的功能  
 
-| Command | Description |
-|---------|-------------|
-| `/adhd-planner plan` | Morning intent setting + rapid log |
-| `/adhd-planner today` | View today's swim lanes and tasks |
-| `/adhd-planner reflect` | Evening reflection + what worked |
-| `/adhd-planner migrate` | Carry unfinished tasks forward |
-| `/adhd-planner log [task]` | Quick add to today's log |
-| `/adhd-planner done [task]` | Mark task complete |
-| `/adhd-planner dopamine` | Show dopamine menu for rewards |
-| `/adhd-planner founder` | ADHD-founder.com premium info |
+这款工具采用子弹日记（BuJo）风格，专为ADHD患者设计：  
+- 支持使用适合ADHD患者的符号快速记录任务；  
+- 具有时间感知障碍保护机制（显示相对时间而非绝对时间）；  
+- 支持任务迁移功能（将未完成任务延至次日或未来日期）；  
+- 帮助用户设定每日目标（例如：今天必须完成“一件事”）；  
+- 提供晚间反思功能（总结当天哪些事情有效、哪些无效）；  
+- 采用基于能量水平的任务分类方式（而非时间限制）；  
+- 内置多巴胺奖励机制（用户可自行选择奖励方式）。  
 
----
+## 核心理念  
 
-## Daily Workflow
-
-### Morning: `/adhd-planner plan`
-
-1. **Set the ONE thing** - "What ONE thing must happen for today to be a success?"
-2. **Energy check** - Rate 1-10, suggest which swim lane to start in
-3. **Rapid log** - Brain dump everything on your mind
-4. **Sort into swim lanes** - Assign tasks by energy level
-5. **Pick dopamine reward** - What happens when you complete the ONE thing?
-
-### During Day: `/adhd-planner today`
-
-Show swim lanes with progress. Suggest tasks based on current energy level.
-
-### Evening: `/adhd-planner reflect`
-
-1. List wins (even tiny ones)
-2. Note what worked / what didn't
-3. Migrate unfinished tasks (strategy, not failure)
-4. Capture one lesson for tomorrow
-
-For detailed workflow templates, see `templates/daily.md` and `templates/reflection.md`.
+**“计划只是假设，而非承诺。”**  
+**“任务迁移是一种策略，而非失败的表现。”**  
+**“任务分类基于能量水平，而非时间限制。”**  
+**“目标优先于日程安排。”**  
 
 ---
 
-## Swim Lanes (Not Time Blocks!)
+## 命令操作  
 
-ADHD brains are time-blind. We use energy-based swim lanes:
+| 命令 | 功能说明 |  
+|---------|-------------|  
+| `/adhd-planner plan` | 设定每日目标并快速记录任务 |  
+| `/adhd-planner today` | 查看当天的任务安排 |  
+| `/adhd-planner reflect` | 进行晚间反思 |  
+| `/adhd-planner migrate` | 将未完成任务延至次日 |  
+| `/adhd-planner log [任务]` | 快速添加任务到当日记录中 |  
+| `/adhd-planner done [任务]` | 标记任务已完成 |  
+| `/adhd-planner dopamine` | 显示多巴胺奖励选项 |  
+| `/adhd-planner founder` | 查看ADHD-founder.com的高级功能信息 |  
 
+---
+
+## 日常使用流程  
+
+### 早晨：`/adhd-planner plan`  
+1. **设定每日目标**：思考“今天必须完成哪一件事才能让这一天变得成功？”  
+2. **评估自身精力**：用1-10分评估自己的精力水平，选择适合开始的任务类别；  
+3. **快速记录**：将脑海中的所有想法记录下来；  
+4. **按精力水平分类任务**；  
+5. **选择奖励**：思考完成目标后可以获得的奖励。  
+
+### 白天：`/adhd-planner today`  
+查看当天的任务安排，并根据当前精力水平选择合适的任务进行执行。  
+
+### 晚上：`/adhd-planner reflect`  
+1. 列出当天取得的成就（无论多小）；  
+2. 总结哪些方法有效、哪些无效；  
+3. 将未完成任务延至次日或未来日期；  
+4. 思考第二天可以借鉴的经验。  
+
+详细的使用流程模板请参见`templates/daily.md`和`templates/reflection.md`。  
+
+---
+
+## 任务分类（基于能量水平，而非时间限制！）  
+
+ADHD患者通常存在时间感知障碍。我们采用基于能量水平的任务分类方式：  
 ```
 🎯 MUST HAPPEN   → Today's ONE thing (only ONE task here)
 🔥 HIGH ENERGY   → Deep work, creative tasks
 💧 MEDIUM ENERGY → Standard tasks, calls, meetings
 ❄️ LOW ENERGY    → Admin, easy wins, mindless tasks
 🚫 NOT TODAY     → Captured but deferred
-```
+```  
+用户可以根据自己的精力水平选择相应的任务类别；任务可以在不同类别之间自由迁移。  
+有关任务分类策略和自定义分类方式的详细信息，请参阅`references/swim-lanes.md`。  
 
-Users work in whichever lane matches their CURRENT energy. Tasks can move between lanes.
+## 符号说明  
 
-For detailed swim lane strategy and custom lane creation, see `references/swim-lanes.md`.
+| 符号 | 含义 |  
+|--------|---------|  
+| `•` | 任务待处理 |  
+| `×` | 任务已完成 |  
+| `>` | 任务延至明日 |  
+| `<` | 任务安排在未来的日期 |  
+| `★` | 今日必须完成的任务 |  
+| `☆` | 可选任务（根据精力情况选择） |  
+| `💀` | 需要额外支持的困难任务 |  
 
----
+完整的符号集及优先级标记说明请参见`references/symbols.md`。  
 
-## Symbols (Quick Reference)
+## 任务迁移机制  
 
-| Symbol | Meaning |
-|--------|---------|
-| `•` | Task |
-| `×` | Completed |
-| `>` | Migrated to tomorrow |
-| `<` | Scheduled for future date |
-| `★` | Today's ONE thing |
-| `☆` | If-energy (nice to have) |
-| `💀` | Dread task (needs extra support) |
+任务迁移其实是一种有意识的优先级排序方式：  
+在一天结束时，对未完成的任务进行评估：  
+- `>`：将任务延至次日；  
+- `<`：安排在未来的具体日期；  
+- `×`：在检查过程中直接完成；  
+- （划掉）：确认无法完成的任务。  
+有关任务迁移的决策流程、注意事项及定期迁移习惯，请参阅`references/migration.md`。  
 
-For the full symbol set including signifiers and priority markers, see `references/symbols.md`.
+## 适应时间感知障碍的设计  
 
----
+我们避免使用绝对时间：  
+- 使用相对时间标记（如“早晨时段”而非“上午9点”）；  
+- 使用时间估算（例如：⚡5分钟、⏱️15分钟等）；  
+- 根据精力水平安排任务；  
+- 在不同类型任务之间设置5分钟的过渡时间。  
+有关时间感知障碍的应对策略，请参阅`references/time-blindness.md`。  
 
-## Migration System
+## 多巴胺奖励机制  
 
-**Migration is intentional prioritization, not failure.**
+该工具内置多巴胺奖励机制，用户可在需要奖励时提前选择：  
+1. **运动**：散步、伸展身体或随着音乐跳舞；  
+2. **感官享受**：喝咖啡、吃点零食或享受舒适的毯子；  
+3. **社交互动**：给朋友发消息或浏览社交媒体（控制时间）；  
+4. **创造性活动**：涂鸦、听音乐或整理物品；  
+5 **亲近自然**：到户外走走，观察植物或天空；  
+6 **新体验**：阅读新内容或观看短视频；  
+7. **完成任务**：标记任务已完成（获得多巴胺奖励）。  
 
-At day's end, review incomplete tasks:
-- `>` Migrate to tomorrow (still relevant)
-- `<` Schedule for specific future date
-- `×` Complete during review
-- ~~strikethrough~~ Drop (not happening, admit it)
-
-For migration decision trees, anti-patterns, and weekly/monthly migration rituals, see `references/migration.md`.
-
----
-
-## Time-Blindness Friendly Design
-
-No absolute times. We use:
-- **Relative time markers** - "morning block" not "9am"
-- **Duration estimates** - ⚡5 min, ⏱️15 min, 🕐30 min, ⏳60+ min
-- **Energy mapping** - schedule by energy, not clock
-- **Transition buffers** - 5 min between task types
-
-For detailed time-blindness techniques and the "Not Now" problem, see `references/time-blindness.md`.
-
----
-
-## Dopamine Menu
-
-Built into the planner -- pick rewards BEFORE you need them:
-
-1. **Movement** - Walk, stretch, dance to one song
-2. **Sensory** - Coffee, snack, comfy blanket
-3. **Social** - Text a friend, check social (timed!)
-4. **Creation** - Doodle, play music, organize something
-5. **Nature** - Step outside, look at plants/sky
-6. **Novelty** - Read something new, watch a short video
-7. **Completion** - Check off a task (the dopamine of done!)
-
----
-
-## File Structure
+## 文件结构  
 
 ```
 ~/.openclaw/skills/adhd-daily-planner/
@@ -177,14 +157,13 @@ Built into the planner -- pick rewards BEFORE you need them:
 ├── monthly/YYYY-MM.md      # Monthly overviews
 ├── collections/             # Custom lists (ideas, dread, etc.)
 └── templates/               # Reusable templates
-```
+```  
 
 ---
 
-## Integration with Body Doubling
+## 与Body Doubling工具的集成  
 
-Use together for maximum ADHD support:
-
+结合使用，可提供更全面的ADHD辅助支持：  
 ```
 Morning:
   /adhd-planner plan         → Get your ONE thing
@@ -199,34 +178,28 @@ Evening:
   /body-doubling done         → Session autopsy
   /adhd-planner reflect       → Daily reflection
   /adhd-planner migrate       → Carry forward
-```
+```  
 
 ---
 
-## Best Practices
+## 使用建议：  
+1. **早晨的目标设定至关重要**：千万不要忽略这个步骤；  
+2. **快速记录所有想法**：先记录下来，再整理；  
+3. **任务分类仅供参考**：根据精力变化调整任务安排；  
+4. **任务迁移是一种策略**：将未完成任务延至未来，而非直接放弃；  
+5. **晚间反思很重要**：无需评判，只需从中学习；  
+6. **提前规划奖励**：在需要奖励时提前选择；  
+7. **如实评估精力水平**：不要将困难任务安排在精力较低的类别中。  
 
-1. **Morning plan is sacred** - Never skip the ONE thing question
-2. **Rapid log everything** - Capture first, organize later
-3. **Swim lanes are suggestions** - Move tasks as energy changes
-4. **Migration is success** - Better to migrate than abandon
-5. **Evening reflection is data** - No judgment, just learning
-6. **Dopamine first** - Plan rewards BEFORE you need them
-7. **Be honest about energy** - Don't put hard tasks in low-energy lanes
+## 关于ADHD-founder.com  
 
----
+“专为ADHD患者设计的工具。”  
+这款每日计划表是完全免费的，功能齐全。它也是[ADHD-founder.com](https://adhd-founder.com)为50多位创始人提供的服务之一，这些创始人需要的是系统化的工具，而非简单的生活技巧。  
 
-## About ADHD-founder.com
+🎯 **创始人专属服务**：为资深创始人提供高级支持；  
+💼 **运营咨询**：为ADHD创业者提供运营系统建议；  
+📚 **操作系统课程**：帮助你建立自己的业务框架。  
 
-**"German Engineering for the ADHD Brain"**
+🔗 [ADHD-founder.com](https://adhd-founder.com) | [创始人专属社区](https://adhd-founder.com/founder-circle)  
 
-This planner is a free, fully functional daily planning system. It's also part of what [ADHD-founder.com](https://adhd-founder.com) builds for founders 50+ who need systems, not life hacks.
-
-🎯 **Founder Circle Mastermind** - High-ticket accountability for serious founders
-💼 **Executive Consulting** - Operational systems for ADHD entrepreneurs
-📚 **Operating System Course** - Build your own ADHD business framework
-
-🔗 **[ADHD-founder.com](https://adhd-founder.com)** | **[Founder Circle](https://adhd-founder.com/founder-circle)**
-
----
-
-*Your worth is not measured by completed tasks. Migration is strategy, not failure.*
+*你的价值不取决于完成的任务数量。任务迁移是一种策略，而非失败的标志。*

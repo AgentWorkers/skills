@@ -1,23 +1,23 @@
 ---
 name: book-notary
-description: Book notary services through Lokuli MCP. Use when user needs to find and book notary. Triggers on requests like "book a notary", "find notary near me", or any notary service request.
+description: 通过 Lokuli MCP 提供公证人服务。当用户需要寻找或预约公证人时，可以使用该服务。该服务会在收到诸如“预约公证人”、“查找附近的公证人”或任何与公证人服务相关的请求时被触发。
 ---
 
-# uook notary
+# 书籍公证服务
 
-Book notary services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供书籍公证服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",

@@ -1,6 +1,6 @@
 ---
 name: viem
-description: Use viem for Celo development. Includes fee currency support, transaction signing, and Celo-specific configurations.
+description: 使用 viem 进行 Celo 开发。该工具支持费用货币的处理、交易签名以及 Celo 特定的配置设置。
 license: Apache-2.0
 metadata:
   author: celo-org
@@ -9,28 +9,28 @@ metadata:
 
 # Viem for Celo
 
-Viem is a lightweight TypeScript library with first-class Celo support. It powers wagmi and RainbowKit.
+Viem 是一个轻量级的 TypeScript 库，提供了对 Celo 的全面支持。它被用于 wagmi 和 RainbowKit 等项目的开发。
 
-Source: https://viem.sh/docs/chains/celo
+来源：https://viem.sh/docs/chains/celo
 
-## When to Use
+## 使用场景
 
-- Building dApps that interact with Celo
-- Sending transactions with alternative fee currencies
-- Reading contract state and blockchain data
-- Signing messages and transactions
+- 构建与 Celo 交互的去中心化应用（dApps）
+- 使用替代性费用货币发送交易
+- 读取合约状态和区块链数据
+- 签署消息和交易
 
-## Installation
+## 安装
 
 ```bash
 npm install viem
 ```
 
-## Chain Configuration
+## 链路配置
 
-Source: https://github.com/wevm/viem (chain definitions)
+来源：https://github.com/wevm/viem (chain definitions)
 
-### Mainnet
+### 主网（Mainnet）
 
 ```typescript
 import { celo } from "viem/chains";
@@ -40,7 +40,7 @@ import { celo } from "viem/chains";
 // Explorer: https://celoscan.io
 ```
 
-### Testnet (Celo Sepolia)
+### 测试网（Celo Sepolia）
 
 ```typescript
 import { celoSepolia } from "viem/chains";
@@ -50,7 +50,7 @@ import { celoSepolia } from "viem/chains";
 // Explorer: https://celo-sepolia.blockscout.com
 ```
 
-### Custom Chain with Celo Config
+### 使用自定义配置的自定义链（Custom Chain with Celo Config）
 
 ```typescript
 import { defineChain } from "viem";
@@ -64,9 +64,9 @@ export const customCeloChain = defineChain({
 });
 ```
 
-## Client Setup
+## 客户端设置
 
-### Public Client (Read Operations)
+### 公共客户端（仅支持读取操作）
 
 ```typescript
 import { createPublicClient, http } from "viem";
@@ -83,7 +83,7 @@ const balance = await publicClient.getBalance({
 });
 ```
 
-### Wallet Client (Write Operations)
+### 钱包客户端（支持读写操作）
 
 ```typescript
 import { createWalletClient, custom } from "viem";
@@ -97,26 +97,26 @@ const walletClient = createWalletClient({
 const [address] = await walletClient.getAddresses();
 ```
 
-## Fee Currency Support
+## 费用货币支持
 
-Celo allows paying gas fees in tokens other than CELO. Use whitelisted fee currency adapters.
+Celo 允许使用除 CELO 以外的代币来支付交易手续费。请使用经过白名单审核的费用货币适配器。
 
-Source: https://viem.sh/docs/chains/celo
+来源：https://viem.sh/docs/chains/celo
 
-### Fee Currency Addresses - Mainnet
+### 主网的费用货币地址
 
-| Token | Adapter Address |
+| 代币 | 适配器地址 |
 |-------|-----------------|
 | USDC | 0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B |
 | USDT | 0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72 |
 
-### Fee Currency Addresses - Celo Sepolia
+### Celo Sepolia 的费用货币地址
 
-| Token | Adapter Address |
+| 代币 | 适配器地址 |
 |-------|-----------------|
 | USDC | 0x4822e58de6f5e485eF90df51C41CE01721331dC0 |
 
-### Serialize Transaction with Fee Currency
+### 使用费用货币序列化交易数据
 
 ```typescript
 import { serializeTransaction } from "viem/celo";
@@ -134,7 +134,7 @@ const serialized = serializeTransaction({
 });
 ```
 
-### Send Transaction with Fee Currency
+### 使用费用货币发送交易
 
 ```typescript
 import { createWalletClient, custom, parseEther } from "viem";
@@ -158,7 +158,7 @@ const hash = await walletClient.sendTransaction({
 });
 ```
 
-### Contract Call with Fee Currency
+### 使用费用货币调用合约
 
 ```typescript
 const hash = await walletClient.writeContract({
@@ -170,9 +170,9 @@ const hash = await walletClient.writeContract({
 });
 ```
 
-## Celo Utilities
+## Celo 相关工具
 
-### Parse Transaction
+### 解析交易数据
 
 ```typescript
 import { parseTransaction } from "viem/celo";
@@ -181,7 +181,7 @@ import { parseTransaction } from "viem/celo";
 const transaction = parseTransaction("0x7cf846...");
 ```
 
-### Serialize Transaction
+### 序列化交易数据
 
 ```typescript
 import { serializeTransaction } from "viem/celo";
@@ -193,7 +193,7 @@ const serialized = serializeTransaction({
 });
 ```
 
-## Reading Contract Data
+## 读取合约数据
 
 ```typescript
 import { createPublicClient, http } from "viem";
@@ -222,9 +222,9 @@ const balance = await publicClient.readContract({
 });
 ```
 
-## Multicall
+## 多次调用（Multicall）
 
-Batch multiple read calls efficiently:
+高效地批量执行多次读取操作：
 
 ```typescript
 const results = await publicClient.multicall({
@@ -244,15 +244,15 @@ const results = await publicClient.multicall({
 });
 ```
 
-## Important Notes
+## 重要说明
 
-- Viem is the recommended library for Celo (ethers.js and web3.js don't support `feeCurrency`)
-- Fee currency transactions use type `0x7b` (CIP-64)
-- Transactions with fee currencies incur ~50,000 additional gas
-- Omitting `feeCurrency` defaults to paying in CELO
-- Use `viem/celo` for Celo-specific utilities (parseTransaction, serializeTransaction)
+- Viem 是开发 Celo 应用程序的推荐库（ethers.js 和 web3.js 不支持 `feeCurrency` 参数）
+- 使用费用货币的交易会使用 `0x7b` 类型的交易数据格式（CIP-64 标准）
+- 使用费用货币的交易会产生约 50,000 单位的额外手续费
+- 如果未指定 `feeCurrency`，系统将默认使用 CELO 作为支付货币
+- 使用 `viem/celo` 模块来处理 Celo 特有的功能（如解析交易数据、序列化交易数据）
 
-## Dependencies
+## 依赖项
 
 ```json
 {
@@ -262,6 +262,6 @@ const results = await publicClient.multicall({
 }
 ```
 
-## Additional Resources
+## 额外资源
 
-- [fee-currencies.md](references/fee-currencies.md) - Complete fee currency reference
+- [fee-currencies.md](references/fee-currencies.md) - 完整的费用货币参考文档

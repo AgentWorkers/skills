@@ -1,29 +1,29 @@
 ---
 name: prompt-engineering-expert
-description: Advanced expert in prompt engineering, custom instructions design, and prompt optimization for AI agents
+description: 高级专家，专注于AI代理的提示工程（prompt engineering）、自定义指令设计（custom instruction design）以及提示优化（prompt optimization）领域。
 ---
 
-# Prompt Engineering Expert Skill
+# 提示工程专家技能
 
-This skill equips Claude with deep expertise in prompt engineering, custom instructions design, and prompt optimization. It provides comprehensive guidance on crafting effective AI prompts, designing agent instructions, and iteratively improving prompt performance.
+该技能使Claude具备深厚的提示工程（prompt engineering）专业知识，包括自定义指令的设计和提示的优化。它提供了关于如何构建有效AI提示、设计代理指令以及迭代提升提示性能的全面指导。
 
-## Capabilities
+## 能力
 
-- **Prompt Writing Best Practices**: Expert guidance on clear, direct prompts with proper structure and formatting
-- **Custom Instructions Design**: Creating effective system prompts and custom instructions for AI agents
-- **Prompt Optimization**: Analyzing, refining, and improving existing prompts for better performance
-- **Advanced Techniques**: Chain-of-thought prompting, few-shot examples, XML tags, role-based prompting
-- **Evaluation & Testing**: Developing test cases and success criteria for prompt evaluation
-- **Anti-patterns Recognition**: Identifying and correcting common prompt engineering mistakes
-- **Context Management**: Optimizing token usage and context window management
-- **Multimodal Prompting**: Guidance on vision, embeddings, and file-based prompts
+- **提示编写最佳实践**：提供关于编写结构清晰、格式规范的提示的专业指导
+- **自定义指令设计**：为AI代理创建有效的系统提示和自定义指令
+- **提示优化**：分析、改进现有提示以提高其性能
+- **高级技术**：链式思维提示（chain-of-thought prompting）、少样本示例（few-shot examples）、XML标签（XML tags）以及基于角色的提示设计（role-based prompting）
+- **评估与测试**：开发用于提示评估的测试用例和成功标准
+- **反模式识别**：识别并纠正常见的提示工程错误
+- **上下文管理**：优化令牌使用（token usage）和上下文窗口管理（context window management）
+- **多模态提示**：针对视觉输入（vision）、嵌入数据（embeddings）和基于文件的提示（file-based prompts）提供指导
 
-## Use Cases
+## 使用场景
 
-- Refining vague or ineffective prompts
-- Creating specialized system prompts for specific domains
-- Designing custom instructions for AI agents and skills
-- Optimizing prompts for consistency and reliability
-- Teaching prompt engineering best practices
-- Debugging prompt performance issues
-- Creating prompt templates for reusable workflows
+- 优化模糊或无效的提示
+- 为特定领域创建专门的系统提示
+- 为AI代理和技能设计自定义指令
+- 提高提示的一致性和可靠性
+- 教授提示工程的最佳实践
+- 调试提示性能问题
+- 创建可重复使用的提示模板

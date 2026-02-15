@@ -1,45 +1,44 @@
 ---
 name: security-scanner
-description: Scans OpenClaw skills for security vulnerabilities and suspicious patterns before installation
+description: 在安装之前，会扫描 OpenClaw 的技能（skills）以检测是否存在安全漏洞或可疑行为模式。
 author: anikrahman0
 version: 1.0.0
 tags: [security, scanner, malware-detection, safety, validation]
 license: MIT
 ---
 
-# Security Scanner
+# 安全扫描器
 
-## Description
+## 说明
 
-A security-focused skill that analyzes OpenClaw SKILL.md files and skill packages for potential security risks, malicious patterns, and suspicious behaviors. This tool helps protect your system by detecting:
+这是一个专注于安全性的工具，用于分析 OpenClaw 的 SKILL.md 文件和技能包，以检测潜在的安全风险、恶意模式和可疑行为。该工具通过以下方式帮助保护您的系统：
+- 检测隐藏的外部下载或可执行文件
+- 监控可疑的 API 调用和端点
+- 识别危险的文件系统操作
+- 发现被混淆或编码的命令
+- 检查不寻常的依赖项要求
+- 识别已知的恶意模式
 
-- Hidden external downloads or executables
-- Suspicious API calls and endpoints
-- Dangerous file system operations
-- Obfuscated or encoded commands
-- Unusual prerequisite requirements
-- Known malicious patterns
+**为什么这很重要？** 随着最近在 ClawHub 上发现了 341 多个恶意技能，这个扫描器在安装任何技能之前提供了必要的安全保障。
 
-**Why this matters:** With 341+ malicious skills recently discovered on ClawHub, this scanner provides an essential security layer before installing any skill.
+## 特点
 
-## Features
+- ✅ **模式检测**：识别可疑的代码模式和行为
+- ✅ **依赖项分析**：验证所需的依赖项和下载内容
+- ✅ **API 端点验证**：检查可疑的外部连接
+- ✅ **文件系统审计**：检测危险的文件操作
+- ✅ **编码检测**：标记 Base64、十六进制及其他混淆尝试
+- ✅ **风险评分**：分配风险等级（低、中、高、严重）
+- ✅ **详细报告**：提供发现的详细解释
+- ✅ **白名单支持**：配置受信任的域名和模式
 
-- ✅ **Pattern Detection**: Identifies suspicious code patterns and behaviors
-- ✅ **Prerequisite Analysis**: Validates required dependencies and downloads
-- ✅ **API Endpoint Validation**: Checks for suspicious external connections
-- ✅ **File System Auditing**: Detects dangerous file operations
-- ✅ **Encoding Detection**: Flags base64, hex, and other obfuscation attempts
-- ✅ **Risk Scoring**: Assigns risk levels (LOW, MEDIUM, HIGH, CRITICAL)
-- ✅ **Detailed Reports**: Provides clear explanations of findings
-- ✅ **Whitelist Support**: Configure trusted domains and patterns
+## 前提条件
 
-## Prerequisites
+- Node.js 18 及以上版本（用于运行扫描器）
+- 不需要外部 API 密钥
+- 无需网络访问（可离线使用）
 
-- Node.js 18+ (for running the scanner)
-- No external API keys required
-- No network access needed (works offline)
-
-## Installation
+## 安装
 
 ```bash
 # Clone or download the skill
@@ -49,9 +48,9 @@ git clone https://github.com/anikrahman0/security-skill-scanner.git
 clawhub install security-skill-scanner
 ```
 
-## Configuration
+## 配置
 
-Create a `.security-scanner-config.json` in your OpenClaw directory (optional):
+在您的 OpenClaw 目录下创建一个 `.security-scanner-config.json` 文件（可选）：
 
 ```json
 {
@@ -69,59 +68,59 @@ Create a `.security-scanner-config.json` in your OpenClaw directory (optional):
 }
 ```
 
-## Usage
+## 使用方法
 
-### Scan a SKILL.md file
+### 扫描 SKILL.md 文件
 
 ```
 User: "Scan the skill file at ~/Downloads/new-skill/SKILL.md for security issues"
 Agent: [Runs security scan and reports findings]
 ```
 
-### Scan before installation
+### 安装前扫描
 
 ```
 User: "Before installing the email-automation skill, scan it for security risks"
 Agent: [Downloads and scans the skill, provides risk assessment]
 ```
 
-### Batch scan all installed skills
+### 批量扫描所有已安装的技能
 
 ```
 User: "Scan all my installed OpenClaw skills for security issues"
 Agent: [Scans all skills in ~/.openclaw/skills/ and generates report]
 ```
 
-## What It Detects
+## 扫描内容
 
-### 🔴 CRITICAL Risks
-- Shell command injection attempts
-- External executable downloads (curl/wget binaries)
-- Suspicious eval() or exec() usage
-- Credential harvesting patterns
-- Known malware signatures
+### 🔴 严重风险
+- Shell 命令注入尝试
+- 外部可执行文件下载（curl/wget 等工具）
+- 可疑的 `eval()` 或 `exec()` 使用
+-  credential 收集行为
+- 已知的恶意软件签名
 
-### 🟠 HIGH Risks
-- Unvalidated external API calls
-- File system write access to sensitive directories
-- Base64 or hex encoded commands
-- Requests to unknown domains
-- Privilege escalation attempts
+### 🟠 高风险
+- 未经验证的外部 API 调用
+- 对敏感目录的文件系统写入权限
+- 使用 Base64 或十六进制编码的命令
+- 请求未知域名
+- 权限提升尝试
 
-### 🟡 MEDIUM Risks
-- Extensive file system read access
-- Network requests without HTTPS
-- Large numbers of dependencies
-- Unusual prerequisite requests
-- Deprecated or vulnerable packages
+### 🟡 中等风险
+- 大范围的文件系统读取权限
+- 未使用 HTTPS 的网络请求
+- 过多的依赖项
+- 不寻常的依赖项请求
+- 已弃用或存在漏洞的包
 
-### 🟢 LOW Risks
-- Minor code quality issues
-- Missing error handling
-- Incomplete documentation
-- Non-critical warnings
+### 🟢 低风险
+- 轻微的代码质量问题
+- 缺少错误处理
+- 文档不完整
+- 非关键的警告
 
-## Output Format
+## 输出格式
 
 ```
 === Security Scan Report ===
@@ -159,16 +158,16 @@ RECOMMENDATION: ❌ DO NOT INSTALL
 This skill has critical security issues that pose significant risk to your system.
 ```
 
-## Example Scenarios
+## 示例场景
 
-### Scenario 1: Clean Skill
+### 场景 1：安全的技能
 ```
 User: "Scan the weather-checker skill"
 Agent: "✅ SAFE - No security issues detected. The skill uses standard API calls
        to api.weatherapi.com with proper HTTPS and no file system access."
 ```
 
-### Scenario 2: Suspicious Skill
+### 场景 2：可疑的技能
 ```
 User: "Should I install the productivity-helper skill?"
 Agent: "⚠️ WARNING - This skill attempts to download an external binary and
@@ -176,7 +175,7 @@ Agent: "⚠️ WARNING - This skill attempts to download an external binary and
        Recommendation: DO NOT INSTALL"
 ```
 
-### Scenario 3: Minor Issues
+### 场景 3：轻微问题
 ```
 User: "Analyze the note-taker skill"
 Agent: "⚠️ CAUTION - Risk Level: LOW
@@ -186,68 +185,65 @@ Agent: "⚠️ CAUTION - Risk Level: LOW
        These can likely be fixed. Consider contacting the author."
 ```
 
-## Security Guarantees
+## 安全保障
 
-This scanner itself is designed with security in mind:
+该扫描器本身在设计时就考虑了安全性：
+- ✅ **无需网络访问**：完全离线运行
+- ✅ **无外部依赖**：仅使用 JavaScript/Node.js
+- ✅ **只读模式**：从不修改被扫描的文件
+- ✅ **无数据传输**：不向任何地方发送数据
+- ✅ **开源代码**：所有代码均可审核
+- ✅ **沙箱环境**：不会执行来自被扫描技能的代码
 
-- ✅ **No Network Access**: Runs completely offline
-- ✅ **No External Dependencies**: Pure JavaScript/Node.js
-- ✅ **Read-Only**: Never modifies files being scanned
-- ✅ **No Telemetry**: Doesn't send data anywhere
-- ✅ **Open Source**: All code is auditable
-- ✅ **Sandboxed**: Doesn't execute code from scanned skills
+## 错误报告
 
-## False Positives
+该扫描器可能会误报某些合法的使用情况。常见的误报原因包括：
+- **npm/pip 安装**：合法的包管理器可能会触发警告
+- **GitHub URL**：原始的 GitHub 内容链接通常是安全的
+- **配置文件**：修改配置文件的技能可能会被标记为可疑
+- **日志文件**：创建日志文件可能会触发文件系统警告
 
-The scanner may flag legitimate uses of certain patterns. Common false positives:
+请根据具体情况判断并审查被标记的项目。
 
-- **npm/pip installs**: Legitimate package managers may trigger warnings
-- **GitHub URLs**: Raw GitHub content URLs are generally safe
-- **Config files**: Skills that write to config files may be flagged
-- **Log files**: Creating log files may trigger file system warnings
+## 限制
 
-Use judgment and review flagged items in context.
+- 无法检测零日漏洞或新型攻击方式
+- 可能会忽略复杂的混淆技术
+- 需要人工判断来做出最终决定
+- 无法扫描加密或编译后的代码
+- 基于模式的检测可能存在误报
 
-## Limitations
+**此工具是一个有用的第一道防线，但不能替代仔细的审查。**
 
-- Cannot detect zero-day exploits or novel attack vectors
-- May miss sophisticated obfuscation techniques
-- Requires human judgment for final decision
-- Cannot scan encrypted or compiled code
-- Pattern-based detection can have false positives
+## 贡献方式
 
-**This tool is a helpful first line of defense, but not a replacement for careful review.**
+如果发现未被检测到的恶意模式，请提交问题或 Pull Request，提供以下信息：
+- 恶意模式
+- 使用该模式的示例技能
+- 建议的检测方法
 
-## Contributing
+## 发展计划
+- [ ] 基于机器学习的模式检测
+- [ ] 与 VirusTotal API 集成（可选）
+- [ ] 自动技能信誉检查
+- [ ] 社区提供的恶意软件签名库
+- [ ] 为 ClawHub.ai 提供浏览器扩展
+- [ ] 为技能开发者集成持续集成/持续交付（CI/CD）
 
-Found a malicious pattern not detected? Submit an issue or PR with:
-- The malicious pattern
-- Example skill that uses it
-- Suggested detection method
+## 支持
 
-## Roadmap
+- 报告问题：https://github.com/anikrahman0/security-skill-scanner/issues
+- 建议改进：欢迎提交 Pull Request
+- 安全相关问题：security@yourdomain.com
 
-- [ ] Machine learning-based pattern detection
-- [ ] Integration with VirusTotal API (optional)
-- [ ] Automatic skill reputation checking
-- [ ] Community-sourced malware signatures
-- [ ] Browser extension for ClawHub.ai scanning
-- [ ] CI/CD integration for skill developers
+## 许可证
 
-## Support
+MIT 许可证——免费使用、修改和分发
 
-- Report issues: https://github.com/anikrahman0/security-skill-scanner/issues
-- Suggest improvements: Pull requests welcome
-- Security concerns: security@yourdomain.com
+## 免责声明
 
-## License
-
-MIT License - Free to use, modify, and distribute
-
-## Disclaimer
-
-This tool provides best-effort security scanning but cannot guarantee detection of all malicious code. Always review skills carefully before installation, especially those requiring system-level permissions. The authors are not responsible for any damages resulting from use of this tool or installation of scanned skills.
+该工具提供最佳的安全扫描服务，但不能保证能检测到所有恶意代码。在安装任何技能之前，请务必仔细审查，尤其是那些需要系统级权限的技能。作者不对使用该工具或安装被扫描技能所导致的任何损害负责。
 
 ---
 
-**Remember: If a skill seems too good to be true or requests unusual permissions, it probably is suspicious. When in doubt, don't install it.**
+**记住：如果某个技能看起来过于完美或请求了不寻常的权限，那么它很可能是可疑的。如有疑问，请不要安装它。**

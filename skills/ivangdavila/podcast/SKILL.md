@@ -1,18 +1,18 @@
 ---
 name: Podcast
-description: Create and grow podcasts by planning episodes, producing audio or video, generating clips, and building audience across formats.
+description: 通过规划剧集、制作音频或视频、生成剪辑内容，以及跨多种平台吸引听众，来创建并发展播客。
 ---
 
-## Core Workflow
+## 核心工作流程
 
-Every podcast follows: Concept → Plan → Record/Generate → Edit → Publish → Promote.
+每个播客都遵循以下流程：概念构思 → 计划制定 → 录制/内容生成 → 编辑 → 发布 → 推广。
 
-Before starting ANY podcast:
-1. **Format** — Solo, interview, panel, narrative, or AI-generated
-2. **Niche** — Specific topic + audience (not "business" but "bootstrapped SaaS founders")
-3. **Cadence** — Weekly, biweekly, or seasonal (consistency > frequency)
+在开始任何播客之前，请先完成以下步骤：
+1. **确定播客形式**：单人播客、访谈节目、小组讨论节目、叙事类节目或由人工智能生成的节目。
+2. **明确目标受众**：选择特定的主题和目标受众群体（例如“初创SaaS公司的创始人”）。
+3. **确定发布频率**：每周、每两周或按季节性周期发布（保持一致性比追求高频率更重要）。
 
-## Project Structure
+## 项目结构
 
 ```
 ~/podcasts/<show>/
@@ -28,34 +28,34 @@ Before starting ANY podcast:
 └── analytics.md        # Performance patterns
 ```
 
-## Episode Checklist
+## 每集播客的制作检查清单
 
-Pre-production:
-- [ ] Topic researched, angle clear
-- [ ] Outline/script with hooks and transitions
-- [ ] Guest prep (if interview): questions + research
+**前期准备**：
+- [ ] 已研究相关主题，明确讲述角度。
+- [ ] 编写包含吸引听众注意力的开头和过渡环节的提纲/剧本。
+- [ ] （如为访谈节目）提前准备嘉宾的问题和相关资料。
 
-Post-production:
-- [ ] Audio cleaned, levels normalized
-- [ ] Show notes with timestamps
-- [ ] 3-5 clips extracted for social
-- [ ] Thumbnail (if video)
+**后期制作**：
+- [ ] 清理音频文件，调整音量至标准水平。
+- [ ] 制作带有时间戳的节目笔记。
+- [ ] 选取3-5段适合在社交媒体上分享的音频片段。
+- [ ] （如为视频节目）制作节目封面图。
 
-## Quick Reference
+## 快速参考
 
-| Need | Load |
+| 需要的信息 | 参考文档 |
 |------|------|
-| Format-specific guidance (solo, interview, panel) | `formats.md` |
-| Audio and video production techniques | `production.md` |
-| AI-generated podcast creation | `ai-generation.md` |
-| Growth, SEO, social, monetization | `growth.md` |
-| Episode planning, scripts, show notes | `episodes.md` |
-| Tools, platforms, APIs | `tools.md` |
+| 不同播客形式的制作指南（单人播客、访谈节目、小组讨论节目） | `formats.md` |
+| 音频和视频制作技巧 | `production.md` |
+| 人工智能生成播客的创建方法 | `ai-generation.md` |
+| 播客的推广、搜索引擎优化（SEO）及盈利策略 | `growth.md` |
+| 每集播客的策划、剧本编写及节目笔记 | `episodes.md` |
+| 使用的工具、平台及相关API | `tools.md` |
 
-## Critical Rules
+## 重要规则
 
-1. **Hook in first 30 seconds** — State the value, tease the best moment
-2. **Consistency beats perfection** — Ship on schedule, improve incrementally
-3. **Clips are growth engine** — Every episode = 3-5 social clips minimum
-4. **Engage the niche** — Better to own a small audience than chase a big one
-5. **Video is optional but powerful** — YouTube podcast search is growing fast
+1. **在开头30秒内吸引听众**：明确节目的价值，并预告最精彩的部分。
+2. **保持一致性比追求完美更重要**：按时发布内容，并逐步改进。
+3. **音频片段是推动播客传播的关键**：每集至少制作3-5段适合在社交媒体上分享的音频片段。
+4. **专注于目标受众**：专注于小众群体，比试图吸引广泛受众更有效。
+5. **视频是可选但非常有效的传播方式**：YouTube上的播客搜索功能正在快速发展。

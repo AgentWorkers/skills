@@ -1,42 +1,42 @@
 ---
 name: bank-skill
 version: 0.1.4
-description: Check balances, send money, and share receive details via Wise
+description: 通过 Wise 功能，您可以查询账户余额、转账资金，以及查看转账的详细信息。
 homepage: https://github.com/singularityhacker/bank-skills
 metadata: {"openclaw":{"emoji":"🏦","requires":{"bins":["python"],"env":["WISE_API_TOKEN"]},"primaryEnv":"WISE_API_TOKEN"}}
 ---
 
-# Bank Skill
+# 银行服务技能
 
-## Purpose
+## 目的
 
-Gives AI agents banking capabilities via the Wise API. Agents can check multi-currency balances, send money, and retrieve account/routing details for receiving payments.
+通过 Wise API 为 AI 代理提供银行相关功能。代理可以查询多货币余额、转账资金以及获取收款所需的账户/路由信息。
 
-## Prerequisites
+## 先决条件
 
-- `WISE_API_TOKEN` environment variable set to a valid Wise API token
-- Optional: `WISE_PROFILE_ID` (defaults to first available profile)
+- 环境变量 `WISE_API_TOKEN` 已设置为一个有效的 Wise API 令牌。
+- 可选：`WISE_PROFILE_ID`（默认使用第一个可用的账户信息）。
 
-## Operations
+## 操作
 
-### 1. Check Balance
+### 1. 查询余额
 
-**Purpose:** Query Wise multi-currency balances for the configured profile.
+**目的：** 查询配置账户的多货币余额。
 
-**Inputs:**
-- `action`: `"balance"` (required)
-- `currency`: Currency code filter, e.g. `"USD"` (optional — returns all if omitted)
+**输入：**
+- `action`：`"balance"`（必填）
+- `currency`：货币代码过滤器，例如 `"USD"`（可选——省略时返回所有货币）
 
-**Outputs:**
-- JSON array of balance objects, each with `currency`, `amount`, and `reservedAmount`
+**输出：**
+- 一个 JSON 数组，其中每个对象包含 `currency`（货币代码）、`amount`（余额）和 `reservedAmount`（预留金额）
 
-**Usage:**
+**使用方式：**
 ```bash
 echo '{"action": "balance"}' | ./run.sh
 echo '{"action": "balance", "currency": "USD"}' | ./run.sh
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "success": true,
@@ -47,24 +47,24 @@ echo '{"action": "balance", "currency": "USD"}' | ./run.sh
 }
 ```
 
-### 2. Get Receive Details
+### 2. 获取收款信息
 
-**Purpose:** Retrieve account number, routing number, IBAN, and related info so others can send you payments.
+**目的：** 获取账户号码、路由号码、IBAN 及其他相关信息，以便他人向您转账。
 
-**Inputs:**
-- `action`: `"receive-details"` (required)
-- `currency`: Currency code, e.g. `"USD"` (optional — returns all if omitted)
+**输入：**
+- `action`：`"receive-details"`（必填）
+- `currency`：货币代码，例如 `"USD"`（可选——省略时返回所有货币）
 
-**Outputs:**
-- JSON object with account holder name, account number, routing number (or IBAN/SWIFT for non-USD), and bank name
+**输出：**
+- 一个 JSON 对象，其中包含账户持有人姓名、账户号码、路由号码（非 USD 账户的 IBAN/SWIFT）以及银行名称
 
-**Usage:**
+**使用方式：**
 ```bash
 echo '{"action": "receive-details"}' | ./run.sh
 echo '{"action": "receive-details", "currency": "USD"}' | ./run.sh
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "success": true,
@@ -80,31 +80,31 @@ echo '{"action": "receive-details", "currency": "USD"}' | ./run.sh
 }
 ```
 
-### 3. Send Money
+### 3. 转账资金
 
-**Purpose:** Initiate a transfer from your Wise balance to a recipient.
+**目的：** 从您的 Wise 账户向指定收款人转账。
 
-**Inputs:**
-- `action`: `"send"` (required)
-- `sourceCurrency`: Source currency code, e.g. `"USD"` (required)
-- `targetCurrency`: Target currency code, e.g. `"EUR"` (required)
-- `amount`: Amount to send as a number (required)
-- `recipientName`: Full name of the recipient (required)
-- `recipientAccount`: Recipient account number or IBAN (required)
+**输入：**
+- `action`：`"send"`（必填）
+- `sourceCurrency`：源货币代码，例如 `"USD"`（必填）
+- `targetCurrency`：目标货币代码，例如 `"EUR"`（必填）
+- `amount`：转账金额（数字形式，必填）
+- `recipientName`：收款人全名（必填）
+- `recipientAccount`：收款人账户号码或 IBAN（必填）
 
-**Additional fields for USD ACH transfers:**
-- `recipientRoutingNumber`: 9-digit ABA routing number (required)
-- `recipientCountry`: Two-letter country code, e.g. `"US"` (required)
-- `recipientAddress`: Street address (required)
-- `recipientCity`: City (required)
-- `recipientState`: State code, e.g. `"NY"` (required)
-- `recipientPostCode`: ZIP/postal code (required)
-- `recipientAccountType`: `"CHECKING"` or `"SAVINGS"` (optional, defaults to `"CHECKING"`)
+**针对 USD ACH 转账的额外字段：**
+- `recipientRoutingNumber`：9 位 ABA 路由号码（必填）
+- `recipientCountry`：国家代码（2 个字母，例如 `"US"`（必填）
+- `recipientAddress`：街道地址（必填）
+- `recipientCity`：城市名称（必填）
+- `recipientState`：州代码（例如 `"NY"`（必填）
+- `recipientPostCode`：邮政编码（必填）
+- `recipientAccountType`：`"CHECKING"` 或 `"SAVINGS"`（可选，默认为 `"CHECKING"`）
 
-**Outputs:**
-- JSON object with transfer ID, status, and confirmation details
+**输出：**
+- 一个 JSON 对象，其中包含转账 ID、转账状态及确认信息
 
-**USD ACH Transfer Example:**
+**USD ACH 转账示例：**
 ```bash
 echo '{
   "action": "send",
@@ -123,7 +123,7 @@ echo '{
 }' | ./run.sh
 ```
 
-**EUR IBAN Transfer Example (simpler):**
+**EUR IBAN 转账示例（简化版）：**
 ```bash
 echo '{
   "action": "send",
@@ -135,7 +135,7 @@ echo '{
 }' | ./run.sh
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "success": true,
@@ -150,19 +150,19 @@ echo '{
 }
 ```
 
-## Failure Modes
+## 失败情况
 
-- **Missing `WISE_API_TOKEN`:** Returns `{"success": false, "error": "WISE_API_TOKEN environment variable is not set"}`. Set the token and retry.
-- **Invalid API token:** Returns `{"success": false, "error": "Authentication failed — check your WISE_API_TOKEN"}`.
-- **Insufficient funds:** Returns `{"success": false, "error": "Insufficient funds in USD balance"}`. Check balance before retrying with a smaller amount.
-- **Invalid recipient details:** Returns `{"success": false, "error": "Invalid recipient account details"}`. Verify recipient information and retry.
-- **Unknown action:** Returns `{"success": false, "error": "Unknown action: <action>"}`. Use one of: `balance`, `receive-details`, `send`.
+- **缺少 `WISE_API_TOKEN`：** 返回 `{"success": false, "error": "WISE_API_TOKEN 环境变量未设置"}`。请设置令牌后重试。
+- **API 令牌无效：** 返回 `{"success": false, "error": "身份验证失败 — 请检查您的 WISE_API_TOKEN"}`。
+- **余额不足：** 返回 `{"success": false, "error": "USD 余额不足"`。请先查询余额，然后尝试转账较小的金额。
+- **收款人信息无效：** 返回 `{"success": false, "error": "收款人账户信息无效"}`。请核实收款人信息后重试。
+- **未知操作：** 返回 `{"success": false, "error": "未知操作：<action>"}`。请使用 `balance`、`receive-details` 或 `send` 中的一个操作。
 
-## When to Use
+## 适用场景
 
-Use this skill when you need to check bank balances, send money to someone, or share your account details so someone can pay you.
+当您需要查询银行余额、向他人转账或共享账户信息以接收付款时，可以使用此技能。
 
-## When Not to Use
+## 不适用场景
 
-- Do not use for crypto transactions (Wise restricts crypto use)
-- Do not use with accounts holding significant funds (R&D only)
+- 不适用于加密货币交易（Wise 禁止使用加密货币相关功能）。
+- 不适用于持有大量资金的账户（仅限研发用途）。

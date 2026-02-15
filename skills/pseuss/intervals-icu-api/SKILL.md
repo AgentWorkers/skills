@@ -1,17 +1,23 @@
 ---
 name: intervals-icu-api
-description: Complete guide for accessing and managing training data with the intervals.icu API. Use when working with Intervals.icu athlete profiles, activities, workouts, events, wellness data, and training plans. Covers authentication, retrieving activities with combined data fields, managing calendar events with planned workouts, and creating/updating training data. Includes curl examples for all major operations.
+description: **使用 intervals.icu API 访问和管理训练数据的完整指南**  
+本指南适用于处理 Intervals.icu 中的运动员资料、活动记录、训练计划、健康数据等相关内容。涵盖以下方面：  
+1. **身份验证**：如何使用 intervals.icu API 进行身份验证。  
+2. **检索包含复合数据字段的活动记录**：如何获取包含多种数据字段的活动详情。  
+3. **管理带有计划训练的日历事件**：如何创建或更新与训练计划相关的日历事件。  
+4. **创建/更新训练数据**：如何添加或修改训练数据。  
+**所有操作均提供 curl 命令示例**，方便读者快速实践。
 ---
 
-# Intervals.icu API Skill
+# intervals.icu API 使用指南
 
-Comprehensive guide for interacting with the intervals.icu API to manage athlete training data, activities, workouts, and calendar events.
+本指南全面介绍了如何使用 intervals.icu API 来管理运动员的训练数据、活动、锻炼计划以及日历事件。
 
-## Authentication
+## 认证
 
-### API Key Method
+### API 密钥方法
 
-Get your Athlete ID and API Key from [intervals.icu settings page](https://intervals.icu/settings).
+请从 [intervals.icu 设置页面](https://intervals.icu/settings) 获取您的运动员 ID 和 API 密钥。
 
 ```bash
 # Using API Key header
@@ -19,7 +25,7 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID
 ```
 
-### Bearer Token Method (OAuth)
+### 承载令牌方法 (OAuth)
 
 ```bash
 # Using Bearer token
@@ -27,34 +33,34 @@ curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID
 ```
 
-**Base URL:** `https://intervals.icu/api/v1`
+**基础 URL:** `https://intervals.icu/api/v1`
 
-**Date Format:** ISO-8601 (e.g., `2024-01-15` or `2024-01-15T10:30:00`)
-
----
-
-## Core Concepts
-
-### Athlete ID
-
-Your unique identifier in Intervals.icu. Used in all API endpoints as `{id}` path parameter.
-
-### Activities vs Events
-
-- **Activities**: Completed workouts with actual data (GPS, power, HR). Retrieved from `/athlete/{id}/activities`
-- **Events**: Planned workouts on your calendar. Retrieved from `/athlete/{id}/events`
-
-### Data Fields
-
-Activities and events can return different fields. Use the `fields` query parameter to include/exclude specific data points for more efficient queries.
+**日期格式:** ISO-8601（例如：`2024-01-15` 或 `2024-01-15T10:30:00`）
 
 ---
 
-## Getting Activities (Completed Workouts)
+## 核心概念
 
-### List Activities for Date Range
+### 运动员 ID
 
-Retrieve all activities between two dates, sorted newest to oldest.
+在 intervals.icu 中的唯一标识符。所有 API 端点都会使用 `{id}` 作为路径参数。
+
+### 活动与事件
+
+- **活动**: 已完成的锻炼记录，包含实际数据（GPS 数据、功率数据、心率数据）。可通过 `/athlete/{id}/activities` 获取。
+- **事件**: 日历上的计划锻炼。可通过 `/athlete/{id}/events` 获取。
+
+### 数据字段
+
+活动和事件可以返回不同的字段。使用 `fields` 查询参数来选择需要包含或排除的特定数据，以优化查询效率。
+
+---
+
+## 获取活动（已完成的锻炼）
+
+### 获取指定日期范围内的活动列表
+
+按完成时间从新到旧排序，获取两个日期之间的所有活动。
 
 ```bash
 # Basic activity list
@@ -74,9 +80,9 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/activities?oldest=2024-01-01&newest=2024-01-31" | jq '.[] | select(.type == "Ride")'
 ```
 
-### Combine Activities with External Data
+### 将活动数据与外部数据结合
 
-Use `fields` parameter to combine activity data with contextual information:
+使用 `fields` 参数将活动数据与外部信息关联起来：
 
 ```bash
 # Power, HR, and load data
@@ -96,7 +102,7 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/activities?oldest=2024-01-01&fields=id,name,type,average_heartrate,max_heartrate,icu_hr_zone_times,trimp"
 ```
 
-### Get Single Activity with Full Details
+### 获取单次活动的详细信息
 
 ```bash
 # Get activity by ID with all data
@@ -108,7 +114,7 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/activity/ACTIVITY_ID?intervals=true"
 ```
 
-### Export Activity Streams (CSV or JSON)
+### 导出活动数据（CSV 或 JSON 格式）
 
 ```bash
 # Get activity streams as JSON
@@ -127,11 +133,11 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
 
 ---
 
-## Calendar & Planned Workouts
+## 日历与计划锻炼
 
-### List Calendar Events (Planned Workouts)
+### 获取日历事件（计划锻炼）
 
-Retrieve planned workouts, notes, and training targets from your calendar.
+从日历中获取计划中的锻炼、备注和训练目标。
 
 ```bash
 # Get all events in date range
@@ -151,7 +157,7 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/events?oldest=2024-02-01&category=TARGET"
 ```
 
-### Get Single Event Details
+### 获取单次事件的详细信息
 
 ```bash
 # Get specific planned workout
@@ -159,9 +165,9 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/events/EVENT_ID"
 ```
 
-### Download Planned Workout File
+### 下载计划锻炼文件
 
-Export planned workouts in various formats for your training device.
+将计划中的锻炼数据导出为多种格式，以便在训练设备上使用。
 
 ```bash
 # Download as .zwo (Zwift format)
@@ -192,11 +198,11 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
 
 ---
 
-## Creating & Writing Data
+## 创建和写入数据
 
-### Create Manual Activity
+### 创建手动记录的活动
 
-Add a manually-logged activity to your training history.
+向训练记录中添加手动记录的活动。
 
 ```bash
 # Basic manual activity
@@ -244,7 +250,7 @@ curl -X POST \
   https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/activities/manual
 ```
 
-### Create Multiple Activities (Bulk)
+### 批量创建活动
 
 ```bash
 # Bulk create activities
@@ -270,9 +276,9 @@ curl -X POST \
   https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/activities/manual/bulk
 ```
 
-### Create Planned Workout (Event on Calendar)
+### 创建计划锻炼（日历事件）
 
-Add a scheduled workout to your calendar for future training.
+在日历中添加未来的锻炼计划。
 
 ```bash
 # Basic planned workout
@@ -312,7 +318,7 @@ curl -X POST \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/events?upsertOnUid=true"
 ```
 
-### Create Multiple Events (Bulk)
+### 批量创建事件
 
 ```bash
 # Bulk create planned workouts
@@ -342,9 +348,9 @@ curl -X POST \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/events/bulk?upsertOnUid=true&updatePlanApplied=true"
 ```
 
-### Create Training Target (Goal for Date)
+### 设置训练目标
 
-Set a specific training target for a date.
+为特定日期设定训练目标。
 
 ```bash
 # Create power target
@@ -374,11 +380,11 @@ curl -X POST \
 
 ---
 
-## Updating Data
+## 更新数据
 
-### Update Activity
+### 更新活动
 
-Modify an existing completed activity.
+修改已完成的锻炼记录。
 
 ```bash
 # Update activity notes and tags
@@ -404,9 +410,9 @@ curl -X PUT \
   https://intervals.icu/api/v1/activity/ACTIVITY_ID
 ```
 
-### Update Planned Workout (Event)
+### 更新计划锻炼（日历事件）
 
-Modify a scheduled event on your calendar.
+修改日历中的计划锻炼事件。
 
 ```bash
 # Update workout details
@@ -438,7 +444,7 @@ curl -X PUT \
   https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/events/EVENT_ID
 ```
 
-### Update Multiple Events (Date Range)
+### 批量更新事件（指定日期范围）
 
 ```bash
 # Hide all workouts for a week
@@ -453,11 +459,11 @@ curl -X PUT \
 
 ---
 
-## Wellness & Recovery Data
+## 健康与恢复数据
 
-### Get Wellness Records
+### 获取健康数据
 
-Track sleep, fatigue, resting HR, and other wellness metrics.
+跟踪睡眠质量、疲劳程度、静息心率等健康指标。
 
 ```bash
 # Get wellness data for date range
@@ -474,9 +480,9 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/wellness?oldest=2024-01-01&fields=id,sleep_secs,soreness,fatigue,resting_hr,notes"
 ```
 
-### Update Wellness Record
+### 更新健康数据
 
-Log wellness data for a specific date.
+为特定日期记录健康数据。
 
 ```bash
 # Add sleep, HRV, and fatigue
@@ -503,7 +509,7 @@ curl -X PUT \
   https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/wellness/2024-01-15
 ```
 
-### Bulk Update Wellness Records
+### 批量更新健康数据
 
 ```bash
 # Update multiple wellness days at once
@@ -532,11 +538,11 @@ curl -X PUT \
 
 ---
 
-## Sport Settings & Zones
+## 运动设置与训练区间
 
-### Get Sport Settings
+### 获取运动设置
 
-Retrieve power zones, HR zones, and FTP settings for a sport.
+获取某项运动的功率区间、心率区间和 FTP 设置。
 
 ```bash
 # Get Ride settings
@@ -552,9 +558,9 @@ curl -H "Authorization: ApiKey API_KEY:YOUR_API_KEY" \
   "https://intervals.icu/api/v1/athlete/YOUR_ATHLETE_ID/sport-settings"
 ```
 
-### Update Sport Settings
+### 更新运动设置
 
-Modify power zones, FTP, or HR zones.
+修改功率区间、FTP 区间或心率区间。
 
 ```bash
 # Update FTP and power zones
@@ -580,9 +586,9 @@ curl -X PUT \
 
 ---
 
-## Common Use Cases
+## 常见使用场景
 
-### Workflow: Sync Training Data with External System
+### 工作流程：将训练数据同步到外部系统
 
 ```bash
 #!/bin/bash
@@ -608,7 +614,7 @@ echo "Events: $EVENTS"
 echo "Wellness: $WELLNESS"
 ```
 
-### Workflow: Create Weekly Training Plan
+### 工作流程：创建每周训练计划
 
 ```bash
 #!/bin/bash
@@ -670,7 +676,7 @@ curl -X POST \
   "https://intervals.icu/api/v1/athlete/$ATHLETE_ID/events/bulk?upsertOnUid=true&updatePlanApplied=true"
 ```
 
-### Workflow: Analyze Week Data
+### 工作流程：分析每周训练数据
 
 ```bash
 #!/bin/bash
@@ -686,42 +692,42 @@ curl -s -H "Authorization: ApiKey $ATHLETE_ID:$API_KEY" \
 
 ---
 
-## Important Notes
+## 重要说明
 
-### Rate Limiting
+### 速率限制
 
-Be respectful with API calls. Don't hammer the API with rapid successive requests.
+请合理使用 API 请求，避免频繁发送大量请求。
 
-### Field Selection
+### 数据字段选择
 
-Use the `fields` parameter to request only the data you need. This improves performance and reduces payload size.
+使用 `fields` 参数仅请求所需的数据，以提高性能并减少数据传输量。
 
-### Date Formats
+### 日期格式
 
-Always use ISO-8601 format: `YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`
+始终使用 ISO-8601 格式：`YYYY-MM-DD` 或 `YYYY-MM-DDTHH:MM:SS`。
 
-### Upsert Parameter
+### 更新操作（Upsert）
 
-When creating events, use `upsertOnUid=true` to update existing events with matching UIDs instead of creating duplicates.
+在创建事件时，使用 `upsertOnUid=true` 选项来更新具有相同 UID 的现有事件，避免重复创建。
 
-### External IDs
+### 外部 ID
 
-Use `external_id` when syncing data from other systems to avoid duplicates on re-sync.
+在从其他系统同步数据时，请使用 `external_id` 以避免重复。
 
-### Forum Discussion
+### 论坛讨论
 
-For more detailed API information, see: [API Access Forum Post](https://forum.intervals.icu/t/api-access-to-intervals-icu/609)
+如需更多关于 API 的详细信息，请参阅：[API 访问论坛帖子](https://forum.intervals.icu/t/api-access-to-intervals-icu/609)
 
 ---
 
-## Response Status Codes
+## 响应状态码
 
-- **200**: Success
-- **201**: Created successfully (activities, events)
-- **400**: Bad request (invalid parameters)
-- **401**: Unauthorized (invalid API key or token)
-- **404**: Not found (invalid IDs)
-- **429**: Rate limited (too many requests)
-- **500**: Server error
+- **200**: 成功
+- **201**: 创建成功（活动或事件）
+- **400**: 请求错误（参数无效）
+- **401**: 未经授权（API 密钥或令牌无效）
+- **404**: 未找到（ID 无效）
+- **429**: 速率限制（请求过多）
+- **500**: 服务器错误
 
-Check response headers for error details and rate limit information.
+请查看响应头中的错误详情和速率限制信息。

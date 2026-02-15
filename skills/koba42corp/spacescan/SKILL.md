@@ -1,41 +1,40 @@
-# Spacescan Skill
+# Spacescan 技能
 
-Explore the Chia blockchain via Spacescan.io API.
+通过 Spacescan.io API 探索 Chia 区块链。
 
-## What It Does
+## 功能
 
-- View blocks and transactions
-- Check address balances
-- Monitor network statistics
-- Search blockchain data
-- Track CAT tokens and NFTs
-- Get XCH price
+- 查看区块和交易记录
+- 检查地址余额
+- 监控网络统计信息
+- 搜索区块链数据
+- 跟踪 CAT 代币和 NFT 的状态
+- 获取 XCH 的价格
 
-## ⚠️ API Key Required
+## ⚠️ 需要 API 密钥
 
-Spacescan requires an API key. Get yours at: https://www.spacescan.io/apis
+Spacescan 需要一个 API 密钥。您可以在以下链接获取密钥：https://www.spacescan.io/apis
 
-Set the environment variable:
+请设置环境变量：
 ```bash
 export SPACESCAN_API_KEY=your_key_here
 ```
 
-Or add to your shell profile (~/.zshrc or ~/.bashrc):
+或者将其添加到您的 shell 配置文件（如 ~/.zshrc 或 ~/.bashrc）中：
 ```bash
 echo 'export SPACESCAN_API_KEY=your_key_here' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-## Commands
+## 命令
 
-All commands can be triggered via:
-- `/scan <command>` in Telegram
-- `/spacescan <command>` in Telegram
-- `scan <command>` in CLI
-- `spacescan <command>` in CLI
+所有命令可以通过以下方式执行：
+- 在 Telegram 中输入 `/scan <命令>`
+- 在 Telegram 中输入 `/spacescan <命令>`
+- 在 CLI 中输入 `scan <命令>`
+- 在 CLI 中输入 `spacescan <命令>`
 
-### Blocks
-
+### 区块
 ```bash
 /scan block latest          Get latest block
 /scan block <height>        Get block by height
@@ -43,28 +42,24 @@ All commands can be triggered via:
 /scan blocks <start> <end>  Get block range
 ```
 
-### Transactions
-
+### 交易记录
 ```bash
 /scan tx <id>               Get transaction details
 ```
 
-### Addresses
-
+### 地址
 ```bash
 /scan address <addr>        Get address info
 /scan address balance <a>   Get address balance
 /scan address txs <addr>    Get recent transactions
 ```
 
-### Coins
-
+### 代币
 ```bash
 /scan coin <id>             Get coin details
 ```
 
-### Network
-
+### 网络信息
 ```bash
 /scan stats                 Network statistics
 /scan network               Network info
@@ -73,28 +68,24 @@ All commands can be triggered via:
 /scan price                 XCH price
 ```
 
-### Tokens
-
+### 代币
 ```bash
 /scan cats                  List CAT tokens
 /scan cat <id>              Get CAT details
 ```
 
-### NFTs
-
+### NFT
 ```bash
 /scan nft <id>              Get NFT details
 ```
 
-### Search
-
+### 搜索
 ```bash
 /scan search <query>        Search blockchain
 /scan <long_hash>           Quick search
 ```
 
-## Agent Usage
-
+## 代理使用方法
 ```javascript
 const { handleCommand } = require('./skills/spacescan');
 
@@ -102,8 +93,7 @@ const { handleCommand } = require('./skills/spacescan');
 const output = await handleCommand('block latest');
 ```
 
-## API Client
-
+## API 客户端
 ```javascript
 const SpacescanAPI = require('./skills/spacescan/lib/api');
 const api = new SpacescanAPI('your-api-key');
@@ -121,8 +111,7 @@ const stats = await api.getNetworkStats();
 const result = await api.search('xch1...');
 ```
 
-## Installation
-
+## 安装
 ```bash
 cd skills/spacescan
 npm install
@@ -130,42 +119,38 @@ chmod +x cli.js
 npm link  # Makes 'scan' and 'spacescan' global
 ```
 
-## Configuration
+## 配置
 
-**Required:** Set your API key
+**注意：** 请务必设置您的 API 密钥。
 
-```bash
-export SPACESCAN_API_KEY=your_key_here
-```
+您可以在以下链接获取密钥：https://www.spacescan.io/apis
 
-Get your key at: https://www.spacescan.io/apis
+免费 tier 提供一定的使用限制。
 
-Free tier available with rate limits.
+## 示例
 
-## Examples
-
-**Check latest block:**
+- **查看最新区块：**
 ```bash
 /scan block latest
 ```
 
-**Get address balance:**
+- **获取地址余额：**
 ```bash
 /scan address balance xch1...
 ```
 
-**Network stats:**
+- **网络统计信息：**
 ```bash
 /scan stats
 ```
 
-**XCH price:**
+- **XCH 价格：**
 ```bash
 /scan price
 ```
 
-## Support
+## 支持
 
-- Spacescan: https://www.spacescan.io
-- API Plans: https://www.spacescan.io/apis
-- Bug reports: File in skill repository
+- Spacescan 官网：https://www.spacescan.io
+- API 计划：https://www.spacescan.io/apis
+- 错误报告：请提交到技能仓库（skill repository）

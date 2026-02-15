@@ -1,3 +1,3 @@
-# Moments Copy Generator
+# 时刻复制生成器
 
-Generate viral WeChat Moments content.
+生成能在微信上迅速传播的动态内容。

@@ -1,6 +1,6 @@
 ---
 name: Job Description Generator
-description: Create compelling job postings with requirements, responsibilities, and qualifications
+description: 创建引人注目的职位招聘信息，明确列出职位要求、职责以及应聘者的资格条件。
 author: claude-office-skills
 version: "1.0"
 tags: [hr, recruitment, hiring, job-posting]
@@ -8,32 +8,32 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [text_editor]
 ---
 
-# Job Description Generator
+# 职位描述生成器
 
-Generate professional, inclusive job descriptions that attract qualified candidates.
+本工具可帮助您生成专业且具有包容性的职位描述，从而吸引符合条件的候选人。
 
-## Overview
+## 概述
 
-This skill helps HR professionals and hiring managers create comprehensive job postings that:
-- Clearly communicate role expectations
-- Use inclusive, bias-free language
-- Follow industry best practices
-- Attract diverse, qualified candidates
+该技能专为人力资源专业人士和招聘经理设计，旨在帮助他们创建完善的职位公告：
+- 清晰传达职位要求
+- 使用包容性、无偏见的语言
+- 遵循行业最佳实践
+- 吸引多元化的、具备资格的候选人
 
-## How to Use
+## 使用方法
 
-Provide the following information:
-1. **Job Title**: The position name
-2. **Department**: Team or department
-3. **Level**: Entry, Mid, Senior, Lead, Director, etc.
-4. **Employment Type**: Full-time, Part-time, Contract
-5. **Location**: On-site, Remote, Hybrid
-6. **Key Responsibilities**: What the role will do
-7. **Requirements**: Must-have qualifications
-8. **Nice-to-haves**: Preferred qualifications
-9. **Company Info**: Brief about the company (optional)
+请提供以下信息：
+1. **职位名称**：职位的名称
+2. **部门**：所属的团队或部门
+3. **职位级别**：初级、中级、高级、主管、总监等
+4. **就业类型**：全职、兼职、合同制
+5. **工作地点**：现场办公、远程办公、混合办公
+6. **主要职责**：职位的具体工作内容
+7. **必备要求**：必须具备的资格条件
+8. **优先考虑的资格**：推荐具备的资格条件
+9. **公司信息**：公司简介（可选）
 
-## Output Structure
+## 输出格式
 
 ```markdown
 # [Job Title]
@@ -71,32 +71,32 @@ Provide the following information:
 [Application instructions]
 ```
 
-## Best Practices
+## 最佳实践
 
-### Language Guidelines
-- Use "you" instead of "the ideal candidate"
-- Avoid gendered language (he/she → they)
-- Remove unnecessary jargon
-- Be specific about requirements vs. nice-to-haves
-- Include salary range when possible (improves applications by 30%)
+### 语言指南
+- 使用“您”而非“理想的候选人”
+- 避免使用性别歧视性的语言（如“他/她”）
+- 去除不必要的行话
+- 明确区分必备要求和优先考虑的条件
+- 如有可能，请提供薪资范围（这能提高申请率30%）
 
-### Red Flags to Avoid
-- "Rockstar" / "Ninja" / "Guru" → Use "Expert" or "Specialist"
-- "Fast-paced environment" → Be specific about workload
-- Excessive requirements → Limit to 5-7 must-haves
-- Vague responsibilities → Use measurable outcomes
+### 应避免的错误表述
+- 使用“超级明星”/“高手”/“专家”等夸张词汇，改用“专家”或“资深人士”
+- 对于工作节奏的描述，应具体说明工作量
+- 必备要求过多，建议控制在5-7项以内
+- 职责描述模糊不清，应使用可衡量的成果来描述工作内容
 
-### Inclusive Language
-| Instead of | Use |
-|------------|-----|
-| "Young and energetic" | "Motivated and enthusiastic" |
-| "Native English speaker" | "Fluent in English" |
-| "Cultural fit" | "Values alignment" |
-| "Digital native" | "Proficient with digital tools" |
+### 包容性语言示例
+| 应避免的表述 | 可替换的表述 |
+|------------|-------------------|
+| “年轻且充满活力” | “积极进取、热情高涨” |
+| “英语母语者” | “英语流利” |
+| “文化契合度” | “价值观一致” |
+| “数字原住民” | “熟练使用数字工具” |
 
-## Examples
+## 示例
 
-### Example Request
+### 示例请求
 ```
 Create a job description for:
 - Title: Senior Frontend Developer
@@ -108,8 +108,7 @@ Create a job description for:
 - Company: B2B SaaS startup, Series B
 ```
 
-### Example Output
-
+### 示例输出
 ```markdown
 # Senior Frontend Developer
 
@@ -154,29 +153,28 @@ Join our 8-person frontend team to architect and build the next generation of ou
 Send your resume and a brief note about why you're interested to careers@company.com
 ```
 
-## Domain Knowledge
+## 领域知识
 
-### Job Levels (Typical)
-| Level | Years | Scope |
-|-------|-------|-------|
-| Entry/Junior | 0-2 | Individual tasks |
-| Mid-level | 2-5 | Independent projects |
-| Senior | 5-8 | Technical leadership |
-| Staff/Lead | 8-12 | Cross-team impact |
-| Principal/Director | 12+ | Organization-wide |
+### 职位级别（常见划分）
+| 职位级别 | 工作经验年限 | 职责范围 |
+|---------|-----------------|-------------------|
+| 初级/初级员工 | 0-2年 | 执行具体任务 |
+| 中级员工 | 2-5年 | 独立完成项目 |
+| 高级员工 | 5-8年 | 提供技术指导 |
+| 主管/团队负责人 | 8-12年 | 对团队产生直接影响 |
+| 总监/负责人 | 12年以上 | 负责整个团队的管理工作 |
 
-### Standard Benefits to Consider
-- Health insurance
-- Retirement plans (401k, pension)
-- PTO / Vacation policy
-- Remote work options
-- Professional development
-- Parental leave
-- Equipment/stipends
+### 常见的福利项目
+- 医疗保险
+- 退休计划（401(k)计划、养老金）
+- 休假政策
+- 远程办公选项
+- 专业发展机会
+- 亲子假
+- 工作设备/补贴
 
-## Limitations
-
-- Cannot guarantee legal compliance (have HR/legal review)
-- Salary benchmarks may not reflect local markets
-- Industry-specific requirements need domain input
-- Cannot verify company information provided
+## 限制事项
+- 无法保证内容的合法性（需由人力资源部门或法律顾问审核）
+- 薪资标准可能不反映当地市场行情
+- 行业特定要求需依据行业知识来确定
+- 无法验证所提供的公司信息

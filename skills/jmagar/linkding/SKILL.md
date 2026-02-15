@@ -1,16 +1,16 @@
 ---
 name: linkding
 version: 1.0.1
-description: Manage bookmarks with Linkding. Use when the user asks to "save a bookmark", "add link", "search bookmarks", "list my bookmarks", "find saved links", "tag a bookmark", "archive bookmark", "check if URL is saved", "list tags", "create bundle", or mentions Linkding bookmark management.
+description: 使用 Linkding 来管理书签。当用户请求“保存书签”、“添加链接”、“搜索书签”、“查看我的书签”、“查找已保存的链接”、“给书签添加标签”、“归档书签”、“检查 URL 是否已保存”、“查看标签”、“创建书签包”或提及 Linkding 的书签管理功能时，请使用该工具。
 ---
 
-# Linkding Bookmark Manager
+# Linkding书签管理器
 
-Query and manage bookmarks via the Linkding REST API.
+通过Linkding的REST API查询和管理书签。
 
-## Setup
+## 设置
 
-Config: `~/.clawdbot/credentials/linkding/config.json`
+配置文件：`~/.clawdbot/credentials/linkding/config.json`
 
 ```json
 {
@@ -19,11 +19,11 @@ Config: `~/.clawdbot/credentials/linkding/config.json`
 }
 ```
 
-Get your API token from Linkding Settings page.
+请从Linkding的设置页面获取您的API令牌。
 
-## Quick Reference
+## 快速参考
 
-### List/Search Bookmarks
+### 列出/搜索书签
 
 ```bash
 # List recent bookmarks
@@ -39,7 +39,7 @@ Get your API token from Linkding Settings page.
 ./scripts/linkding-api.sh bookmarks --modified-since "2025-01-01T00:00:00Z"
 ```
 
-### Create Bookmark
+### 创建书签
 
 ```bash
 # Basic
@@ -55,34 +55,34 @@ Get your API token from Linkding Settings page.
 ./scripts/linkding-api.sh create "https://example.com" --archived
 ```
 
-### Check if URL Exists
+### 检查URL是否存在
 
 ```bash
 ./scripts/linkding-api.sh check "https://example.com"
 ```
 
-Returns existing bookmark data if found, plus scraped metadata.
+如果找到书签，将返回书签数据以及抓取到的元数据。
 
-### Update Bookmark
+### 更新书签
 
 ```bash
 ./scripts/linkding-api.sh update 123 --title "New Title" --tags "newtag1,newtag2"
 ```
 
-### Archive/Unarchive
+### 归档/解压书签
 
 ```bash
 ./scripts/linkding-api.sh archive 123
 ./scripts/linkding-api.sh unarchive 123
 ```
 
-### Delete
+### 删除书签
 
 ```bash
 ./scripts/linkding-api.sh delete 123
 ```
 
-### Tags
+### 标签
 
 ```bash
 # List all tags
@@ -92,7 +92,7 @@ Returns existing bookmark data if found, plus scraped metadata.
 ./scripts/linkding-api.sh tag-create "mytag"
 ```
 
-### Bundles (saved searches)
+### 搜索结果包（保存的搜索记录）
 
 ```bash
 # List bundles
@@ -105,9 +105,9 @@ Returns existing bookmark data if found, plus scraped metadata.
   --excluded-tags "personal"
 ```
 
-## Response Format
+## 响应格式
 
-All responses are JSON. Bookmark object:
+所有响应均为JSON格式。书签对象的格式如下：
 
 ```json
 {
@@ -125,16 +125,16 @@ All responses are JSON. Bookmark object:
 }
 ```
 
-## Common Patterns
+## 常用操作
 
-**Save current page for later:**
+**保存当前页面以备后续使用：**
 ```bash
 ./scripts/linkding-api.sh create "$URL" --tags "toread" --unread
 ```
 
-**Quick search and display:**
+**快速搜索并显示结果：**
 ```bash
 ./scripts/linkding-api.sh bookmarks --query "keyword" --limit 10 | jq -r '.results[] | "\(.title) - \(.url)"'
 ```
 
-**Bulk tag update:** Update via API PATCH with new tag_names array.
+**批量更新标签：** 通过API的PATCH请求，使用新的`tag_names`数组进行更新。

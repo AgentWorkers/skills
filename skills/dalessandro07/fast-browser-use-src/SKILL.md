@@ -25,18 +25,18 @@ config:
     export BROWSER_HEADLESS="true"
 ---
 
-# Fastest Browser Use
+# 最快速的浏览器自动化工具
 
 **GitHub:** https://github.com/rknoche6/fast-browser-use
 
-A Rust-based browser automation engine that provides a lightweight binary driving Chrome directly via CDP. It is optimized for token-efficient DOM extraction, robust session management, and speed.
+这是一个基于Rust的浏览器自动化引擎，它通过CDP（Chrome DevTools Protocol）直接控制Chrome浏览器。该工具在DOM提取效率、会话管理以及执行速度方面进行了优化。
 
-![Terminal Demo](https://placehold.co/800x400/1e1e1e/ffffff?text=Terminal+Demo+Coming+Soon)
+![终端演示](https://placehold.co/800x400/1e1e1e/ffffff?text=Terminal+Demo+Coming+Soon)
 
-## 🧪 Recipes for Agents
+## 代理（Agents）实用技巧
 
-### 1. Bypass "Bot Detection" via Human Emulation
-Simulate mouse jitter and random delays to scrape protected sites.
+### 1. 通过模拟人类行为绕过“机器人检测”
+通过模拟鼠标抖动和随机延迟来抓取受保护的网站内容。
 
 ```bash
 fast-browser-use navigate --url "https://protected-site.com" \
@@ -44,28 +44,28 @@ fast-browser-use navigate --url "https://protected-site.com" \
   --wait-for-selector "#content"
 ```
 
-### 2. The "Deep Freeze" Snapshot
-Capture the entire DOM state *and* computed styles for perfect reconstruction later.
+### 2. “深度冻结”功能
+捕获整个DOM状态及计算出的样式，以便后续进行精确的页面重建。
 
 ```bash
 fast-browser-use snapshot --include-styles --output state.json
 ```
 
-### 3. Login & Cookie Heist
-Log in manually once, then steal the session for headless automation.
+### 3. 登录并窃取Cookie
+手动登录一次，然后窃取会话信息以进行无头自动化操作。
 
-**Step 1: Open non-headless for manual login**
+**步骤1：以非无头模式登录**  
 ```bash
 fast-browser-use login --url "https://github.com/login" --save-session ./auth.json
 ```
 
-**Step 2: Reuse session later**
+**步骤2：后续重用会话信息**  
 ```bash
 fast-browser-use navigate --url "https://github.com/dashboard" --load-session ./auth.json
 ```
 
-### 4. 🚜 Infinite Scroll Harvester
-**Extract fresh data from infinite-scroll pages** — perfect for harvesting the latest posts, news, or social feeds.
+### 4. 无限滚动数据采集
+从具有无限滚动功能的页面中提取最新数据——非常适合抓取最新帖子、新闻或社交动态。
 
 ```bash
 # Harvest headlines from Hacker News (scrolls 3x, waits 800ms between)
@@ -77,7 +77,7 @@ fast-browser-use harvest \
   --output headlines.json
 ```
 
-**Real output** (59 unique items in ~6 seconds):
+**实际输出**（约6秒内获取59条独特数据）：
 ```json
 [
   "Genode OS is a tool kit for building highly secure special-purpose OS",
@@ -88,10 +88,10 @@ fast-browser-use harvest \
 ]
 ```
 
-Works on any infinite scroll page: Reddit, Twitter, LinkedIn feeds, search results, etc.
+适用于所有具有无限滚动功能的页面：Reddit、Twitter、LinkedIn动态、搜索结果等。
 
-### 5. 📸 Quick Screenshot
-Capture any page as PNG:
+### 5. 快速截图
+将任何页面截图为PNG格式：
 
 ```bash
 fast-browser-use screenshot \
@@ -100,8 +100,8 @@ fast-browser-use screenshot \
   --full-page  # Optional: capture entire scrollable page
 ```
 
-### 6. 🗺️ Sitemap & Page Structure Analyzer
-Discover how a site is organized by parsing sitemaps and analyzing page structure.
+### 6. 网站地图与页面结构分析
+通过解析网站地图（sitemaps）和分析页面结构来了解网站的布局。
 
 ```bash
 # Basic sitemap discovery (checks robots.txt + common sitemap URLs)
@@ -118,12 +118,12 @@ fast-browser-use sitemap \
   --output site-structure.json
 ```
 
-**Options:**
-- `--analyze-structure`: Also extract page structure (headings, nav, sections, meta)
-- `--max-pages N`: Limit structure analysis to N pages (default: 5)
-- `--max-sitemaps N`: Limit sitemap parsing to N sitemaps (default: 10, useful for large sites)
+**选项：**
+- `--analyze-structure`：同时提取页面结构（标题、导航栏、章节、元数据）
+- `--max-pages N`：将结构分析限制在N页以内（默认值：5）
+- `--max-sitemaps N`：将站点地图解析限制在N个以内（默认值：10，适用于大型网站）
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "base_url": "https://example.com",
@@ -160,49 +160,49 @@ fast-browser-use sitemap \
 }
 ```
 
-Use this to understand site architecture before scraping, map navigation flows, or audit SEO structure.
+使用这些功能可以在抓取数据前了解网站架构，绘制导航流程图，或审计网站的SEO结构。
 
-## ⚡ Performance Comparison
+## 性能对比
 
-| Feature | Fast Browser Use (Rust) | Puppeteer (Node) | Selenium (Java) |
-| :--- | :--- | :--- | :--- |
-| **Startup Time** | **< 50ms** | ~800ms | ~2500ms |
-| **Memory Footprint** | **15 MB** | 100 MB+ | 200 MB+ |
-| **DOM Extract** | **Zero-Copy** | JSON Serialize | Slow Bridge |
+| 功能        | Fast Browser Use (Rust) | Puppeteer (Node) | Selenium (Java) |
+|------------|-----------------|-----------------|-------------------|
+| **启动时间**    | **< 50毫秒**         | **约800毫秒**         | **约2500毫秒**         |
+| **内存占用**    | **15 MB**           | **100 MB以上**        | **200 MB以上**        |
+| **DOM提取**    | **零拷贝**           | **JSON序列化**       | **通过中间层处理**       |
+| ----------------|-----------------|-----------------|------------------- |
 
-## Capabilities & Tools
+## 功能与工具
 
-### Vision & Extraction
-- **vision_map**: Returns a screenshot overlay with numbered bounding boxes for all interactive elements.
-- **snapshot**: Capture the raw HTML snapshot (YAML/Markdown optimized for AI).
-- **screenshot**: Capture a visual image of the page.
-- **extract**: Get structured data from the DOM.
-- **markdown**: Convert the current page content to Markdown.
-- **sitemap**: Analyze site structure via robots.txt, sitemaps, and page semantic analysis.
+### 网页抓取与数据提取
+- **vision_map**：生成包含所有交互元素编号边界框的截图。
+- **snapshot**：捕获原始HTML快照（优化后适合AI处理）。
+- **screenshot**：捕获页面的视觉图像。
+- **extract**：从DOM中提取结构化数据。
+- **markdown**：将当前页面内容转换为Markdown格式。
+- **sitemap**：通过robots.txt、站点地图及页面语义分析来解析网站结构。
 
-### Navigation & Lifecycle
-- **navigate**: Visit a specific URL.
-- **go_back** / **go_forward**: Traverse browser history.
-- **wait**: Pause execution or wait for specific conditions.
-- **new_tab**: Open a new browser tab.
-- **switch_tab**: Switch focus to a specific tab.
-- **close_tab**: Close the current or specified tab.
-- **tab_list**: List all open tabs.
-- **close**: Terminate the browser session.
+### 导航与页面生命周期管理
+- **navigate**：访问指定URL。
+- **go_back** / **go_forward**：浏览浏览器历史记录。
+- **wait**：暂停执行或等待特定条件。
+- **new_tab**：打开新标签页。
+- **switch_tab**：切换到指定标签页。
+- **close_tab**：关闭当前标签页或指定标签页。
+- **tab_list**：列出所有打开的标签页。
+- **close**：终止浏览器会话。
 
-### Interaction
-- **click**: Click elements via CSS selectors or DOM indices.
-- **input**: Type text into fields.
-- **press_key**: Send specific keyboard events.
-- **hover**: Hover over elements.
-- **scroll**: Scroll the viewport.
-- **select**: Choose options in dropdowns.
+### 交互操作
+- **click**：通过CSS选择器或DOM索引点击元素。
+- **input**：在输入框中输入文本。
+- **press_key**：发送特定的键盘事件。
+- **hover**：将鼠标悬停在元素上。
+- **scroll**：滚动页面视图。
+- **select**：从下拉菜单中选择选项。
 
-### State & Debugging
-- **cookies**: Manage session cookies (get/set).
-- **local_storage**: Manage local storage data.
-- **debug**: Access console logs and debug information.
+### 状态管理与调试
+- **cookies**：管理会话Cookie（获取/设置）。
+- **local_storage**：管理本地存储数据。
+- **debug**：访问控制台日志和调试信息。
 
-## Usage
-
-This skill is specialized for complex web interactions that require maintaining state (like being logged in), handling dynamic JavaScript content, or managing multiple pages simultaneously. It offers higher performance and control compared to standard fetch-based tools.
+## 使用场景
+该工具专为需要维护状态（如保持登录状态）、处理动态JavaScript内容或同时处理多个页面的复杂网页交互而设计。与基于fetch的标准工具相比，它提供了更高的性能和更强的控制能力。

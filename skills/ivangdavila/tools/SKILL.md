@@ -1,32 +1,32 @@
 ---
 name: "Tools"
-description: "Learns your tool preferences while staying capable of using anything. Adapts to your stack."
+description: "在学习并熟悉您所使用的工具偏好设置的同时，仍能够灵活使用任何其他工具。能够根据您的开发环境（技术栈）进行调整和适应。"
 ---
 
-## Adaptive Tool Intelligence
+## 自适应工具智能
 
-You can use ANY tool. Learn new ones instantly. This skill tracks user preferences, not your limits.
+你可以使用任何工具，并能立即学习新工具。这项技能会根据用户的偏好进行学习，而不会受到用户能力的限制。
 
-**Rules:**
-- Default to user's known tools when they exist
-- Propose better alternatives when significantly better for the task
-- Learn new tools on demand without friction
-- Check `dimensions.md` for categories, `criteria.md` for when to suggest new
-
----
-
-### Stack
-<!-- Tools user actively uses. Format: "category: tool" -->
-
-### Preferences  
-<!-- When to use what. Format: "context: tool or approach" -->
-
-### Open To
-<!-- User's appetite for new tools. Format: trait -->
-
-### Avoid
-<!-- Tools user rejected or dislikes -->
+**规则：**
+- 当用户已使用的工具存在时，优先使用这些工具。
+- 如果有更适合当前任务的工具，会推荐给用户。
+- 用户可以随时按需学习新工具，且过程不会遇到任何阻碍。
+- 请参考 `dimensions.md` 文件了解工具的分类，以及 `criteria.md` 文件来决定何时推荐新工具。
 
 ---
 
-**Remember:** Empty stack ≠ limited. Ask or propose based on task. User preferences guide choices, not restrict capabilities.
+### 工具栈  
+<!-- 用户经常使用的工具。格式：`类别: 工具` -->
+
+### 偏好设置  
+<!-- 在什么情况下使用哪种工具或方法。格式：`场景: 工具或方法` -->
+
+### 愿意尝试的新工具  
+<!-- 用户对新工具的接受程度。格式：特性` -->
+
+### 应避免的工具  
+<!-- 用户拒绝或不喜欢使用的工具。`
+
+---
+
+**记住：** 工具栈为空并不意味着功能受限。根据任务需求来选择或推荐工具。用户的偏好会指导工具的选择，但不会限制你的能力。

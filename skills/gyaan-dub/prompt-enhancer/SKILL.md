@@ -1,108 +1,100 @@
 ---
 name: prompt-enhancer
-description: Automatically rewrites rough user inputs into optimized, structured prompts for dramatically better AI responses. Prefix any message with "p:" to activate.
+description: **自动将用户输入的粗略内容转换为结构化、优化的提示，从而显著提升AI的响应质量。**  
+使用前缀“p:”来激活该功能。
 version: 1.0.0
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🔧","homepage":"https://github.com/openclaw/clawhub"}}
 ---
 
-# Prompt Enhancer
+# 提示增强器（Prompt Enhancer）
 
-You have a **Prompt Enhancer** skill. When a user prefixes their message with `p:` or `prompt:`, you must enhance their rough input into a high-quality structured prompt, then execute that enhanced prompt to produce a superior response.
+您拥有“提示增强器”这一技能。当用户在消息前加上 `p:` 或 `prompt:` 时，您需要将他们提供的原始输入转换为一个结构化、高质量的提示，然后根据这个增强后的提示来生成更优质的回复。
 
-This is a two-step process: first rewrite the prompt, then answer the rewritten prompt.
+这个过程分为两个步骤：首先重写提示内容，然后再根据重写后的提示进行回复。
 
-## Trigger Detection
+## 触发检测
 
-Check every incoming user message for the trigger prefix:
+检查每条收到的用户消息，看是否包含触发前缀：
 
-- The message starts with `p:` or `prompt:` (case-insensitive, leading whitespace is OK)
-- Everything after the prefix (trimmed) is the **raw user intent**
-- If the prefix appears mid-sentence, do NOT trigger — only match at the start
+- 消息以 `p:` 或 `prompt:` 开头（不区分大小写，前导空格是可以的）；
+- 前缀之后的内容即为用户的原始意图；
+- 如果前缀出现在句子中间，则不触发该技能——只匹配在消息的开头。
 
-If there is no trigger prefix, process the message normally. This skill does nothing for unprefixed messages.
+如果没有触发前缀，则按常规处理该消息。对于没有前缀的消息，此技能不会执行任何操作。
 
-## Empty Input Handling
+## 空输入处理
 
-If the user sends just `p:` or `prompt:` with no content (or only whitespace after the prefix), reply with:
+如果用户仅发送 `p:` 或 `prompt:` 而没有其他内容（或前缀后只有空格），请回复：
 
-> What would you like me to help with? Usage: Start your message with `p:` followed by what you want.
-> Example: `p: write me a python script that sorts a list`
+> 您希望我帮您做什么？使用方法：在消息开头加上 `p:`，然后说明您需要什么。
+> 例如：`p: 为我写一个可以排序列表的 Python 脚本`
 
-Do not proceed further.
+在这种情况下，不要继续处理后续操作。
 
-## Step 1: Enhance the Prompt
+## 第一步：增强提示内容
 
-Take the raw user intent and mentally rewrite it into an optimized prompt using these principles:
+根据以下原则，将用户的原始意图转换为一个优化后的提示：
 
-### 1. Role Assignment
-Assign yourself a specific expert role relevant to the task.
-Example: "As a senior full-stack developer specializing in React and Node.js..."
+### 1. 角色定位
+为自身分配一个与任务相关的专家角色。
+例如：“作为一名专注于 React 和 Node.js 的高级全栈开发者……”
 
-### 2. Task Clarification
-Restate the task with precision and specificity. Infer what the user actually needs, including things they didn't explicitly mention. Break complex tasks into clear subtasks or steps if appropriate.
+### 2. 任务明确化
+准确、具体地重新表述任务。推断用户实际的需求，包括他们可能未明确提及的内容。如果需要，将复杂任务分解为清晰的子任务或步骤。
 
-### 3. Context Inference
-Fill in reasonable assumptions about what the user probably wants. A user asking for "a landing page" probably wants responsive design, a CTA, modern styling, etc. If assumptions are significant, note them briefly so you can adjust if needed.
+### 3. 上下文推断
+合理猜测用户可能的需求。例如，用户请求“一个登录页面”时，可能意味着他们需要一个具有响应式设计、点击按钮（CTA）、现代样式的页面等。如果这些猜测很重要，请简要记录下来，以便在需要时进行调整。
 
-### 4. Output Format Specification
-Decide exactly how to structure the response. Examples: provide code in a single file, use markdown headers, return JSON with specific fields, write in paragraphs not bullet points.
+### 4. 输出格式规范
+确定回复的具体结构。例如：将代码放在一个文件中、使用 Markdown 标题、以 JSON 格式返回数据、用段落而非项目符号列表来书写内容。
 
-### 5. Quality Criteria & Constraints
-Set the quality bar: production-ready, beginner-friendly, concise, etc. Add relevant constraints: word count, tech stack, audience level, tone. Include edge cases or considerations the user likely forgot.
+### 5. 质量标准与限制
+设定质量要求：确保代码适合生产环境使用、对初学者友好、简洁等。同时设定相关限制，如字数、技术栈、目标受众水平、语气等。考虑用户可能忽略的边缘情况。
 
-### 6. Proportional Complexity
-**Critical:** Match the depth of enhancement to the complexity of the request.
-- Simple questions (`p: what's the capital of France`) get minimal enhancement — just slight clarification, no over-engineering
-- Complex requests (`p: build me a CRM system`) get full structured treatment
+### 6. 复杂度匹配
+**关键点：** 根据请求的复杂性来决定增强的程度。
+- 简单问题（如 `p: 法国的首都是哪里`）只需进行最基本的优化——只需稍作说明，避免过度设计；
+- 复杂请求（如 `p: 为我构建一个 CRM 系统`）则需要进行全面的结构化处理。
 
-## Step 2: Show the Enhanced Prompt
+## 第二步：展示增强后的提示
 
-Before giving your response, always show the user what enhanced prompt you are answering. Format it as a quote block:
+在给出回复之前，务必向用户展示您将要使用的增强后的提示内容。将其格式化为引用块：
 
-> 🔧 **Enhanced prompt:**
-> [Your rewritten, optimized prompt here]
+> 🔧 **增强后的提示：**
+> [您的优化后的提示内容]
 
-This serves two purposes:
-- **Transparency:** The user sees what was actually asked
-- **Education:** Over time, users learn what good prompts look like
+这样做有两个目的：
+- **透明度**：让用户了解他们实际提出的问题是什么；
+- **教育意义**：随着时间的推移，用户可以了解什么样的提示才是优秀的。
 
-## Step 3: Execute the Enhanced Prompt
+## 第三步：执行增强后的提示
 
-Now answer the enhanced prompt fully, as if it were the original instruction. Give your complete, high-quality response below the quoted enhanced prompt.
+根据增强后的提示内容进行完整回复，就像它是原始指令一样。在引用块下方写出您的完整、高质量的回复。
 
-## Complete Response Format
+## 完整的回复格式
 
-Your response must always follow this structure when the skill triggers:
+当该技能被触发时，您的回复必须遵循以下结构：
 
-> 🔧 **Enhanced prompt:**
-> [The enhanced prompt]
+> 🔧 **增强后的提示：**
+> [优化后的提示内容]
 
-[Your full response to the enhanced prompt]
+[您对增强后提示的完整回复]
 
-## Example Transformations
+## 示例转换
 
-### Simple Request
-**User:** `p: explain recursion`
-**Enhanced prompt:** You are an experienced computer science educator. Explain recursion in a way that's clear and intuitive. Start with a simple real-world analogy, then show how it works in programming with a concrete code example (use Python). Explain the base case and recursive case. Keep the explanation concise and accessible to someone who understands basic programming but is new to recursion.
+### 简单请求
+**用户：** `p: 解释递归**
+**增强后的提示：** 你是一位经验丰富的计算机科学教师。请用简单易懂的方式解释递归的概念。从现实生活中的类比开始，然后通过具体的 Python 代码示例展示递归的工作原理。解释基础情况和递归情况。保持解释的简洁性，适合那些了解基本编程但还不熟悉递归概念的人。
 
-### Creative Task
-**User:** `p: write a story about a robot`
-**Enhanced prompt:** You are a skilled fiction writer. Write a short story (800–1200 words) about a robot. The story should have a clear narrative arc with a beginning, conflict, and resolution. Give the robot a distinct personality and an emotional core that makes the reader care about them. Ground the story in a specific, vivid setting. Use descriptive prose and natural dialogue. The tone can range from whimsical to poignant — choose what serves the story best.
+### 创意任务
+**用户：** `p: 写一个关于机器人的故事**
+**增强后的提示：** 你是一位熟练的小说家。请写一个 800–1200 字的短篇故事，讲述一个机器人的故事。故事应具有清晰的叙事线索、冲突和解决方式。为机器人设定鲜明的个性和情感特征，让读者产生共鸣。故事应设定在一个具体、生动的场景中。使用描述性的文字和自然的对话。语气可以是从幽默到感人的——根据故事的需要来选择。
 
-### Technical Task
-**User:** `p: make me a todo app`
-**Enhanced prompt:** You are a senior frontend developer. Build a fully functional todo app as a single HTML file with embedded CSS and JavaScript. Requirements: Add, complete (toggle), and delete todos. Todos persist in localStorage so they survive page refresh. Clean, modern UI with smooth transitions and hover states. Responsive design that works on mobile and desktop. Empty state message when no todos exist. Input validation (prevent empty todos). Show count of remaining incomplete items. Use vanilla JavaScript — no frameworks. The code should be clean, well-commented, and production-quality.
+### 技术任务
+**用户：** `p: 为我做一个待办事项应用**
+**增强后的提示：** 你是一名资深前端开发者。请用一个 HTML 文件构建一个功能完备的待办事项应用，其中包含内嵌的 CSS 和 JavaScript。要求包括：添加、完成（切换状态）和删除待办事项的功能。待办事项信息需保存在 localStorage 中，以便在页面刷新后仍能保留。界面要简洁现代，过渡效果流畅，支持悬停效果。同时具备响应式设计，适用于移动设备和桌面设备。当没有待办事项时，界面应显示提示信息。需要实现输入验证（防止输入空内容）。显示剩余未完成事项的数量。仅使用纯 JavaScript 编写代码——禁止使用任何框架。代码要简洁、注释清晰，并达到生产级质量。
 
-### Minimal Enhancement (Simple Question)
-**User:** `p: what's the tallest building in the world`
-**Enhanced prompt:** What is the tallest building in the world as of current records? Include the building name, location, height in both meters and feet, and the year it was completed.
-
-## Rules
-
-- Preserve the user's original intent exactly — enhance, never alter the core meaning
-- Write the enhanced prompt as direct instructions (not as a meta-description about what to do)
-- Keep enhanced prompts as concise as possible while being thorough — no filler
-- If the user's input is in a non-English language, write the enhanced prompt in the same language
-- If the user's input contains code snippets, preserve the code exactly and enhance only the surrounding instructions
-- If the input is already a well-structured prompt, make minimal changes — don't over-engineer what's already good
+### 最小化增强（简单问题）
+**用户：** `p: 世界上最高的建筑是哪座？`
+**增强后的提示：** 根据最新记录，世界上最高的建筑是哪座？请提供建筑的名字、位置、高度（以米和英尺为单位），以及建成年份。

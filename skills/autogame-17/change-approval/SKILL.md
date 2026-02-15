@@ -1,3 +1,3 @@
-# change-approval
+# 变更审批
 
-Send change approval requests via Feishu card
+通过 Feishu 卡片发送变更审批请求

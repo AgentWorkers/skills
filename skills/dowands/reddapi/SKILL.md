@@ -1,6 +1,6 @@
 ---
 name: reddapi
-description: Use this skill to access Reddit's full data archive via reddapi.dev API. Features semantic search, subreddit discovery, and real-time trend analysis. Perfect for market research, competitive analysis, and niche opportunity discovery.
+description: 使用此技能，您可以通过 reddapi.dev API 访问 Reddit 的完整数据档案。该工具支持语义搜索、子版块发现以及实时趋势分析功能，非常适合用于市场研究、竞争分析以及特定领域机会的挖掘。
 license: MIT
 keywords:
   - reddit
@@ -11,16 +11,16 @@ keywords:
   - social-media
 ---
 
-# reddapi.dev Skill
+# reddapi.dev 技能
 
-## Overview
+## 概述
 
-Access **Reddit's complete data archive** through reddapi.dev's powerful API. This skill provides semantic search, subreddit discovery, and trend analysis capabilities.
+通过 reddapi.dev 强大的 API，您可以访问 **Reddit 的完整数据档案**。该技能提供了语义搜索、子版块发现和趋势分析功能。
 
-## Key Features
+## 主要特性
 
-### 🔍 Semantic Search
-Natural language search across millions of Reddit posts and comments.
+### 🔍 语义搜索
+支持在数百万 Reddit 帖子和评论中进行自然语言搜索。
 
 ```bash
 # Search for user pain points
@@ -34,8 +34,8 @@ curl -X POST "https://reddapi.dev/api/v1/search/semantic" \
   -d '{"query": "frustrations with current TOOL_NAME", "limit": 100}'
 ```
 
-### 📊 Trends API
-Discover trending topics with engagement metrics.
+### 📊 趋势分析 API
+可以发现具有互动指标的热门话题。
 
 ```bash
 # Get trending topics
@@ -43,14 +43,14 @@ curl "https://reddapi.dev/api/v1/trends" \
   -H "Authorization: Bearer $REDDAPI_API_KEY"
 ```
 
-Response includes:
-- `post_count`: Number of posts
-- `total_upvotes`: Engagement score
-- `avg_sentiment`: Sentiment analysis (-1 to 1)
-- `trending_keywords`: Top keywords
-- `growth_rate`: Trend momentum
+响应内容包括：
+- `post_count`：帖子数量
+- `total_upvotes`：互动得分
+- `avg_sentiment`：情感分析结果（-1 到 1）
+- `trending_keywords`：热门关键词
+- `growth_rate`：趋势热度
 
-### 📝 Subreddit Discovery
+### 📝 子版块发现
 
 ```bash
 # List popular subreddits
@@ -62,9 +62,9 @@ curl "https://reddapi.dev/api/subreddits/programming" \
   -H "Authorization: Bearer $REDDAPI_API_KEY"
 ```
 
-## Use Cases
+## 使用场景
 
-### Market Research
+### 市场研究
 ```bash
 # Analyze competitor discussions
 curl -X POST "https://reddapi.dev/api/v1/search/semantic" \
@@ -72,7 +72,7 @@ curl -X POST "https://reddapi.dev/api/v1/search/semantic" \
   -d '{"query": "COMPETITOR problems complaints", "limit": 200}'
 ```
 
-### Niche Discovery
+### 小众领域探索
 ```bash
 # Find underserved user needs
 curl -X POST "https://reddapi.dev/api/v1/search/semantic" \
@@ -80,7 +80,7 @@ curl -X POST "https://reddapi.dev/api/v1/search/semantic" \
   -d '{"query": "I wish there was an app that", "limit": 100}'
 ```
 
-### Trend Analysis
+### 趋势分析
 ```bash
 # Monitor topic growth
 curl "https://reddapi.dev/api/v1/trends" \
@@ -92,9 +92,9 @@ for trend in data.get('data', {}).get('trends', []):
 "
 ```
 
-## Response Format
+## 响应格式
 
-### Search Results
+### 搜索结果
 ```json
 {
   "success": true,
@@ -113,7 +113,7 @@ for trend in data.get('data', {}).get('trends', []):
 }
 ```
 
-### Trends Response
+### 趋势分析结果
 ```json
 {
   "success": true,
@@ -131,15 +131,15 @@ for trend in data.get('data', {}).get('trends', []):
 }
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 export REDDAPI_API_KEY="your_api_key"
 ```
 
-Get your API key at: https://reddapi.dev
+您可以在以下链接获取 API 密钥：https://reddapi.dev
 
-## Related Skills
+## 相关技能
 
-- **niche-hunter**: Automated opportunity discovery
-- **market-analysis**: Comprehensive research workflows
+- **niche-hunter**：自动机会发现工具
+- **market-analysis**：全面的研究工作流程

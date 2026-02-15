@@ -1,42 +1,42 @@
 ---
 name: proposal-writer
-description: Create compelling business proposals that win deals and partnerships
+description: **创建有吸引力的商业提案，以赢得交易和合作伙伴关系**
 version: 1.0.0
 author: Claude Office Skills Contributors
 license: MIT
 tags: [sales, business, writing]
 ---
 
-# Proposal Writer
+# 提案撰写工具
 
-## Overview
+## 概述
 
-This skill helps you create professional, persuasive business proposals that clearly communicate value and win deals. From simple quotes to comprehensive RFP responses.
+本工具可帮助您撰写专业且具有说服力的商业提案，清晰地传达产品或服务的价值，从而促成交易。适用范围从简单的报价单到全面的响应文件（如RFP/RFI）。
 
-**Use Cases:**
-- Sales proposals and quotes
-- Project proposals
-- Partnership proposals
-- RFP/RFI responses
-- Grant applications
-- Service agreements
+**使用场景：**
+- 销售提案和报价单
+- 项目提案
+- 合作伙伴提案
+- RFP/RFI响应文件
+- 补助金申请
+- 服务协议
 
-## How to Use
+## 使用方法
 
-1. Tell me about the opportunity (client, project, requirements)
-2. Share your solution and pricing
-3. Specify the proposal type and length needed
-4. I'll create a structured, compelling proposal
+1. 请告知我项目的相关信息（客户、项目详情、需求等）
+2. 共享您的解决方案和定价方案
+3. 指定所需的提案类型和长度
+4. 我将为您生成结构清晰、内容引人入胜的提案。
 
-**Example prompts:**
-- "Create a proposal for website redesign services"
-- "Write a partnership proposal for joint marketing"
-- "Draft an RFP response for IT services"
-- "Generate a project proposal for the new feature"
+**示例提示：**
+- “为网站重新设计服务创建一份提案”
+- “撰写一份关于联合营销的合作伙伴提案”
+- “起草一份针对IT服务的RFP响应文件”
+- “为新功能制定一份项目提案”
 
-## Proposal Templates
+## 提案模板
 
-### Sales/Service Proposal
+### 销售/服务提案
 
 ```markdown
 # [Project Name] Proposal
@@ -179,7 +179,7 @@ This skill helps you create professional, persuasive business proposals that cle
 [Company Website]
 ```
 
-### Quick Quote Proposal
+### 快速报价提案
 
 ```markdown
 # Quote for [Service/Product]
@@ -223,7 +223,7 @@ Signature: _______________ Date: ___________
 Questions? Contact [Name] at [email/phone]
 ```
 
-### Partnership Proposal
+### 合作伙伴提案
 
 ```markdown
 # Partnership Proposal
@@ -290,39 +290,39 @@ Questions? Contact [Name] at [email/phone]
 Let's schedule a call to discuss: [Calendar link]
 ```
 
-## Proposal Writing Best Practices
+## 提案撰写最佳实践
 
-### Executive Summary
-- Write it last (after full proposal)
-- Make it stand alone
-- Lead with client benefits, not your features
-- Keep to 1 page max
+### 执行摘要
+- 最后撰写（在完成整个提案后）
+- 使其独立成篇
+- 首先强调对客户的好处，而非自身的功能
+- 保持不超过1页的篇幅
 
-### Understanding Section
-- Show you've done your homework
-- Reference specific client challenges
-- Use their language and terminology
-- Acknowledge their goals
+### 了解客户需求部分
+- 体现您已经做了充分的准备
+- 提及客户的具体挑战
+- 使用客户的语言和术语
+- 认可客户的目标
 
-### Solution Section
-- Focus on outcomes, not activities
-- Explain WHY, not just WHAT
-- Use visuals where helpful
-- Make it easy to understand
+### 解决方案部分
+- 重点介绍预期成果，而不仅仅是实施步骤
+- 解释“为什么”选择该方案，而不仅仅是“是什么”
+- 在适当的地方使用可视化辅助说明
+- 保证内容易于理解
 
-### Pricing Section
-- Offer options when possible
-- Anchor with higher option first
-- Be transparent about what's included
-- Justify the investment
+### 定价部分
+- 尽可能提供多种定价选项
+- 首先展示最高价的选项
+- 公开所有包含的服务和费用
+- 为投资成本提供合理的理由
 
-### Call to Action
-- Make next steps crystal clear
-- Remove friction (easy to say yes)
-- Create urgency appropriately
-- Provide contact for questions
+### 行动号召
+- 明确下一步的具体行动
+- 减少客户犹豫（让客户更容易做出决策）
+- 适当营造紧迫感
+- 提供咨询联系方式
 
-## Output Format
+## 输出格式
 
 ```markdown
 # [Proposal Title]
@@ -335,74 +335,74 @@ Let's schedule a call to discuss: [Calendar link]
 - Key deliverables: [List]
 ```
 
-## Customization Options
+## 定制选项
 
-Tell me your preferences:
-- **Length:** Brief (2-3 pages), standard (5-10 pages), comprehensive
-- **Style:** Conservative/corporate, modern/creative, technical
-- **Focus:** Price-competitive, value-focused, relationship-building
-- **Format:** Document, presentation slides, email-friendly
+请告知您的偏好：
+- **长度：** 简短（2-3页）、标准（5-10页）或详细（超过10页）
+- **风格：** 保守/正式、现代/创意或技术风格
+- **重点：** 价格竞争力、价值导向或关系建立
+- **格式：** 文档形式、演示文稿幻灯片或适合发送电子邮件的格式
 
-## Limitations
+## 限制条件
 
-- Cannot research the specific client (provide context)
-- Pricing must be provided by you
-- Legal terms should be reviewed by counsel
-- Industry-specific regulations may apply
-- Cannot guarantee deal closure
+- 无法针对特定客户进行深入调研（需提供相关背景信息）
+- 定价方案需由您自行提供
+- 法律条款需由专业律师审核
+- 可能需要遵守行业特定规定
+- 无法保证一定能促成交易
 
-## Examples
+## 示例
 
-### Example: SaaS Implementation Proposal
+### 示例：SaaS实施提案
 
-**Input:** "Create a proposal for implementing our HR software for a 500-person company. 3-month timeline, $75,000 budget, includes training and support."
+**输入：** “为一家拥有500名员工的公司制定一份SaaS软件实施提案。项目周期为3个月，预算为75,000美元，包含培训和支持服务。”
 
-**Output:**
+**输出：**
 
-# HR Software Implementation Proposal
+# 人力资源软件实施提案
 
-**Prepared for:** [Client Company]
-**Prepared by:** [Your Company]
-**Date:** [Date]
-
----
-
-## Executive Summary
-
-We're excited to partner with [Client Company] to modernize your HR operations with our comprehensive HR software platform. This implementation will streamline your people processes, reduce administrative burden, and provide real-time insights across your 500-person organization.
-
-**Key Benefits:**
-- Reduce HR administrative time by 40%
-- Single source of truth for all employee data
-- Self-service portal reducing HR tickets by 60%
-- Full implementation in 12 weeks
+**致：** [客户公司]
+**提交方：** [您的公司]
+**日期：** [日期]
 
 ---
 
-## Investment Summary
+## 执行摘要
 
-| Phase | Investment |
+我们很高兴能与[客户公司]合作，利用我们的综合人力资源软件平台来现代化您的人力资源管理流程。此次实施将简化您的人力资源管理工作，减少行政负担，并为整个500人的团队提供实时数据支持。
+
+**主要优势：**
+- 人力资源管理时间减少40%
+- 所有员工数据实现统一管理
+- 自助服务门户可减少60%的人力资源相关问题
+- 项目将在12周内完成实施
+
+---
+
+## 投资概算
+
+| 阶段 | 投资金额 |
 |-------|------------|
-| Implementation & Configuration | $45,000 |
-| Data Migration | $10,000 |
-| Training Program | $12,000 |
-| Go-Live Support | $8,000 |
-| **Total** | **$75,000** |
+| 实施与配置 | 45,000美元 |
+| 数据迁移 | 10,000美元 |
+| 培训计划 | 12,000美元 |
+| 上线支持 | 8,000美元 |
+| **总计** | 75,000美元 |
 
-*Includes 12 months of priority support*
+*包含12个月的优先级支持服务*
 
 ---
 
-## Implementation Timeline
+## 实施时间表
 
-| Phase | Weeks | Activities |
+| 阶段 | 周数 | 主要活动 |
 |-------|-------|------------|
-| Discovery & Planning | 1-2 | Requirements, data audit, project plan |
-| Configuration | 3-6 | System setup, workflows, integrations |
-| Data Migration | 7-8 | Historical data import, validation |
-| Testing & Training | 9-11 | UAT, admin training, employee training |
-| Go-Live & Support | 12 | Launch, monitoring, optimization |
+| 发现与规划 | 1-2周 | 需求分析、数据审核、项目计划制定 |
+| 配置 | 3-6周 | 系统设置、工作流程设计、系统集成 |
+| 数据迁移 | 7-8周 | 历史数据导入与验证 |
+| 测试与培训 | 9-11周 | 用户验收测试、管理员培训、员工培训 |
+| 上线与支持 | 12周 | 系统上线、监控与优化 |
 
 ---
 
-[Continue with full proposal structure...]
+[继续生成完整的提案内容……]

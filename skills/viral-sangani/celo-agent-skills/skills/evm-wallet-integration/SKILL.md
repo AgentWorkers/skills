@@ -1,54 +1,51 @@
 ---
 name: evm-wallet-integration
-description: Integrate wallets into Celo dApps. Covers RainbowKit, Dynamic, and wallet connection patterns.
+description: 将钱包集成到 Celo dApps 中。涵盖 RainbowKit、Dynamic 以及钱包连接的相关模式。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# EVM Wallet Integration for Celo
+# Celo的EVM钱包集成
 
-This skill covers integrating wallet connection libraries into Celo dApps.
+本技能涵盖了将钱包连接库集成到Celo去中心化应用程序（dApps）中的方法。
 
-## When to Use
+## 使用场景
 
-- Adding wallet connection to a dApp
-- Supporting multiple wallet types
-- Implementing authentication flows
-- Building wallet experiences
+- 为dApp添加钱包连接功能  
+- 支持多种类型的钱包  
+- 实现身份验证流程  
+- 构建用户友好的钱包体验  
 
-## Wallet Connection Libraries
+## 钱包连接库  
 
-| Library | Description | Best For |
-|---------|-------------|----------|
-| Reown AppKit | Official WalletConnect SDK with wagmi | Production React apps |
-| Dynamic | Auth-focused with dashboard | Apps needing user management |
-| ConnectKit | Simple wagmi integration | Quick setup |
-| Custom wagmi | Direct connector setup | Full control |
+| 库名 | 说明 | 适用场景 |  
+|---------|-------------|----------|  
+| Reown AppKit | 官方WalletConnect SDK，支持wagmi | 适用于生产环境的React应用程序  
+| Dynamic | 专注于身份验证功能，包含仪表板 | 需要用户管理的应用程序  
+| ConnectKit | 简单的wagmi集成方案 | 快速设置  
+| Custom wagmi | 直接的连接器配置方式 | 提供完全的控制权  
 
-## Reown AppKit
+## Reown AppKit  
 
-Official WalletConnect SDK for React apps with built-in wallet UI. Supports 600+ wallets.
+专为React应用程序设计的官方WalletConnect SDK，内置了钱包用户界面，支持600多种钱包。  
+来源：https://docs.reown.com/appkit  
 
-Source: https://docs.reown.com/appkit
+> **注意**：Reown是之前称为WalletConnect Inc.的公司（2024年进行了品牌重塑）。wagmi连接器的协议和npm包仍使用“walletConnect”作为名称。  
 
-> **Note**: Reown is the company formerly known as WalletConnect Inc. (rebranded in 2024). The protocol and npm packages for wagmi connectors still use "walletConnect" naming.
-
-### Installation
-
+### 安装  
 ```bash
 npm install @reown/appkit @reown/appkit-adapter-wagmi wagmi viem @tanstack/react-query
-```
+```  
 
-### Get Project ID
+### 获取项目ID  
 
-1. Go to [cloud.reown.com](https://cloud.reown.com)
-2. Create a new project
-3. Copy the project ID
+1. 访问[cloud.reown.com](https://cloud.reown.com)  
+2. 创建一个新的项目  
+3. 复制项目ID  
 
-### Configuration
-
+### 配置  
 ```typescript
 // config.ts
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
@@ -63,10 +60,9 @@ export const wagmiAdapter = new WagmiAdapter({
 });
 
 export const config = wagmiAdapter.wagmiConfig;
-```
+```  
 
-### Provider Setup
-
+### 提供者设置  
 ```tsx
 "use client";
 import { WagmiProvider } from "wagmi";
@@ -98,10 +94,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </WagmiProvider>
   );
 }
-```
+```  
 
-### Connect Button
-
+### 连接按钮  
 ```tsx
 import { AppKitButton } from "@reown/appkit/react";
 
@@ -112,10 +107,9 @@ function Header() {
     </nav>
   );
 }
-```
+```  
 
-### Custom Connect Button
-
+### 自定义连接按钮  
 ```tsx
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 
@@ -134,10 +128,9 @@ function WalletConnect() {
 
   return <button onClick={() => open()}>Connect Wallet</button>;
 }
-```
+```  
 
-### Using Wagmi Hooks with AppKit
-
+### 使用AppKit与wagmi Hooks  
 ```tsx
 import { useAccount, useBalance, useDisconnect } from "wagmi";
 
@@ -156,22 +149,19 @@ function AccountInfo() {
     </div>
   );
 }
-```
+```  
 
-## Dynamic
+## Dynamic  
 
-Authentication-focused wallet connection with user management dashboard.
+专注于身份验证功能的钱包连接解决方案，同时提供用户管理功能及仪表板。  
+来源：https://docs.dynamic.xyz  
 
-Source: https://docs.dynamic.xyz
-
-### Installation
-
+### 安装  
 ```bash
 npm install @dynamic-labs/sdk-react
-```
+```  
 
-### Setup
-
+### 配置  
 ```tsx
 import {
   DynamicContextProvider,
@@ -189,21 +179,20 @@ function App() {
     </DynamicContextProvider>
   );
 }
-```
+```  
 
-### Enable Celo
+### 启用Celo  
 
-1. Go to app.dynamic.xyz dashboard
-2. Navigate to Configurations
-3. Select EVM card
-4. Toggle Celo on
+1. 访问app.dynamic.xyz的仪表板  
+2. 转到“配置”选项  
+3. 选择“EVM”网络  
+4. 打开Celo网络支持  
 
-## Custom Implementation
+## 自定义实现  
 
-Build wallet connection without a library using wagmi directly.
+无需依赖任何第三方库，直接使用wagmi来实现钱包连接功能。  
 
-### Wagmi Configuration
-
+### Wagmi配置  
 ```typescript
 import { http, createConfig } from "wagmi";
 import { celo, celoSepolia } from "wagmi/chains";
@@ -223,10 +212,9 @@ export const config = createConfig({
     [celoSepolia.id]: http(),
   },
 });
-```
+```  
 
-### Wallet Connect Component
-
+### 钱包连接组件  
 ```tsx
 import { useConnect, useConnectors, useAccount, useDisconnect } from "wagmi";
 
@@ -258,45 +246,40 @@ function WalletConnect() {
     </div>
   );
 }
-```
+```  
 
-## Network Configuration
+## 网络配置  
 
-### Celo Networks
+| 网络 | 链路ID | Reown中的导入方式 | Wagmi中的导入方式 |  
+|---------|----------|--------------|--------------|  
+| Mainnet | 42220 | `@reown/appkit/networks`中的`celo` | `wagmi/chains`中的`celo` |  
+| Celo Alfajores | 44787 | `@reown/appkit/networks`中的`celoAlfajores` | `wagmi/chains`中的`celoAlfajores` |  
+| Celo Sepolia | 11142220 | - | `wagmi/chains`中的`celoSepolia` |  
 
-| Network | Chain ID | Reown Import | Wagmi Import |
-|---------|----------|--------------|--------------|
-| Mainnet | 42220 | `celo` from `@reown/appkit/networks` | `celo` from `wagmi/chains` |
-| Celo Alfajores | 44787 | `celoAlfajores` from `@reown/appkit/networks` | `celoAlfajores` from `wagmi/chains` |
-| Celo Sepolia | 11142220 | - | `celoSepolia` from `wagmi/chains` |
+### Reown项目ID  
 
-### Reown Project ID
-
-Required for WalletConnect connections. WalletConnect Inc. rebranded to **Reown** in 2024.
-
-1. Go to [cloud.reown.com](https://cloud.reown.com) (formerly WalletConnect Cloud)
-2. Create a new project (select "AppKit" type)
-3. Copy the project ID
-4. Add to environment variables:
-
+用于WalletConnect连接功能。WalletConnect Inc.于2024年更名为Reown。  
+1. 访问[cloud.reown.com](https://cloud.reown.com)（原名为WalletConnect Cloud）  
+2. 创建一个新的项目（选择“AppKit”类型）  
+3. 复制项目ID  
+4. 将项目ID添加到环境变量中：  
 ```bash
 NEXT_PUBLIC_REOWN_PROJECT_ID=your_project_id
-```
+```  
 
-> **Note**: The wagmi `walletConnect` connector still uses the same project ID. Only the cloud console was rebranded.
+> **注意**：wagmi的`walletConnect`连接器仍然使用原来的项目ID，仅云服务端进行了品牌重塑。  
 
-## Best Practices
+## 最佳实践  
 
-1. **Support Multiple Wallets** - Don't force users into one wallet
-2. **Handle Network Switching** - Prompt users to switch to Celo
-3. **Show Connection State** - Clear UI for connected/disconnected
-4. **Handle Errors** - User-friendly error messages
-5. **Test on Mobile** - Mobile browsers and wallet apps
+1. **支持多种钱包**：不要强制用户使用特定的钱包。  
+2. **处理网络切换**：提示用户切换到Celo网络。  
+3. **显示连接状态**：在用户界面中清晰地显示钱包的连接状态（已连接/未连接）。  
+4. **处理错误**：提供易于理解的错误信息。  
+5. **在移动设备上进行测试**：确保应用程序在移动浏览器和钱包应用程序中都能正常工作。  
 
-## Dependencies
+## 依赖项  
 
-### Reown AppKit
-
+### Reown AppKit  
 ```json
 {
   "dependencies": {
@@ -307,10 +290,9 @@ NEXT_PUBLIC_REOWN_PROJECT_ID=your_project_id
     "@tanstack/react-query": "^5.0.0"
   }
 }
-```
+```  
 
-### Custom wagmi (without AppKit)
-
+### 自定义wagmi（不使用AppKit）  
 ```json
 {
   "dependencies": {
@@ -319,8 +301,8 @@ NEXT_PUBLIC_REOWN_PROJECT_ID=your_project_id
     "@tanstack/react-query": "^5.0.0"
   }
 }
-```
+```  
 
-## Additional Resources
+## 额外资源  
 
-- [wallet-connectors.md](references/wallet-connectors.md) - Connector configuration reference
+- [wallet-connectors.md](references/wallet-connectors.md)：连接器配置参考文档

@@ -1,23 +1,23 @@
 ---
 name: dropbox-lite
-description: Upload, download, and manage files in Dropbox with automatic OAuth token refresh.
+description: 使用自动更新的 OAuth 令牌，在 Dropbox 中上传、下载和管理文件。
 homepage: https://www.dropbox.com/developers
 ---
 
 # Dropbox
 
-Upload, download, list, and search files in Dropbox. Supports automatic token refresh.
+支持在 Dropbox 中上传、下载、列出和搜索文件，同时支持自动刷新访问令牌。
 
-## Required Credentials
+## 所需凭据
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 说明 |
 |----------|----------|-------------|
-| `DROPBOX_APP_KEY` | ✅ Yes | Your Dropbox app key |
-| `DROPBOX_APP_SECRET` | ✅ Yes | Your Dropbox app secret |
-| `DROPBOX_REFRESH_TOKEN` | ✅ Yes | OAuth refresh token (long-lived) |
-| `DROPBOX_ACCESS_TOKEN` | Optional | Short-lived access token (auto-refreshed) |
+| `DROPBOX_APP_KEY` | ✅ 是 | 你的 Dropbox 应用密钥 |
+| `DROPBOX_APP_SECRET` | ✅ 是 | 你的 Dropbox 应用秘钥 |
+| `DROPBOX_REFRESH_TOKEN` | ✅ 是 | OAuth 刷新令牌（长期有效） |
+| `DROPBOX_ACCESS_TOKEN` | 可选 | 短期访问令牌（自动刷新） |
 
-Store in `~/.config/atlas/dropbox.env`:
+将这些凭据保存在 `~/.config/atlas/dropbox.env` 文件中：
 ```bash
 DROPBOX_APP_KEY=your_app_key
 DROPBOX_APP_SECRET=your_app_secret
@@ -25,31 +25,31 @@ DROPBOX_REFRESH_TOKEN=xxx...
 DROPBOX_ACCESS_TOKEN=sl.u.xxx...
 ```
 
-## Initial Setup (One-Time)
+## 初始设置（一次性操作）
 
-### 1. Create a Dropbox App
+### 1. 创建 Dropbox 应用
 
-1. Go to https://www.dropbox.com/developers/apps
-2. Click "Create app"
-3. Choose "Scoped access"
-4. Choose "Full Dropbox" (or "App folder" for limited access)
-5. Name your app
-6. Note the **App key** and **App secret**
+1. 访问 https://www.dropbox.com/developers/apps
+2. 点击 “创建应用”
+3. 选择 “有限访问权限”（Scoped access）
+4. 选择 “全 Dropbox 访问权限”（Full Dropbox）或 “应用文件夹访问权限”（App folder）
+5. 为应用命名
+6. 记下 **应用密钥**（App key）和 **应用秘钥**（App secret）
 
-### 2. Set Permissions
+### 2. 设置权限
 
-In the app settings under "Permissions", enable:
-- `files.metadata.read`
-- `files.metadata.write`
-- `files.content.read`
-- `files.content.write`
-- `account_info.read`
+在应用设置中的 “权限”（Permissions）选项下，启用以下权限：
+- `files.metadata.read`（读取文件元数据）
+- `files.metadata.write`（写入文件元数据）
+- `files.content.read`（读取文件内容）
+- `files.content.write`（写入文件内容）
+- `account_info.read`（读取账户信息）
 
-Click "Submit" to save.
+点击 “提交” 以保存设置。
 
-### 3. Run OAuth Flow
+### 3. 运行 OAuth 流程
 
-Generate the authorization URL:
+生成授权 URL：
 
 ```python
 import urllib.parse
@@ -66,12 +66,12 @@ auth_url = "https://www.dropbox.com/oauth2/authorize?" + urllib.parse.urlencode(
 print(auth_url)
 ```
 
-Give the URL to the user. They will:
-1. Open it in a browser
-2. Authorize the app
-3. Receive an **authorization code**
+将生成的 URL 提供给用户。用户需要：
+1. 在浏览器中打开该 URL
+2. 授权该应用
+3. 接收到一个 **授权码**（authorization code）
 
-### 4. Exchange Code for Tokens
+### 4. 将授权码兑换为访问令牌
 
 ```bash
 curl -X POST "https://api.dropboxapi.com/oauth2/token" \
@@ -81,11 +81,11 @@ curl -X POST "https://api.dropboxapi.com/oauth2/token" \
   -d "client_secret=APP_SECRET"
 ```
 
-Response includes:
-- `access_token` — Short-lived (~4 hours)
-- `refresh_token` — Long-lived (never expires unless revoked)
+响应中包含以下内容：
+- `access_token` — 短期访问令牌（有效期约 4 小时）
+- `refresh_token` — 长期有效令牌（除非被明确撤销，否则永远不会过期）
 
-## Usage
+## 使用方法
 
 ```bash
 # Account info
@@ -104,36 +104,35 @@ dropbox.py download "/path/to/file.pdf"
 dropbox.py upload local_file.pdf "/Dropbox/path/remote_file.pdf"
 ```
 
-## Token Refresh
+## 令牌刷新
 
-The script automatically handles token refresh:
+脚本会自动处理令牌刷新：
+1. 当收到 401 Unauthorized 错误时，使用刷新令牌获取新的访问令牌
+2. 将新的访问令牌更新到 `dropbox.env` 文件中
+3. 重新尝试原始请求
 
-1. On 401 Unauthorized, it uses the refresh token to get a new access token
-2. Updates `dropbox.env` with the new access token
-3. Retries the original request
+## 令牌生命周期
 
-## Token Lifecycle
-
-| Token | Lifetime | Storage |
+| 令牌类型 | 有效期 | 存储方式 |
 |-------|----------|---------|
-| Access Token | ~4 hours | Updated automatically |
-| Refresh Token | Never expires* | Keep secure, don't share |
+| 访问令牌 | 约 4 小时 | 自动更新 |
+| 刷新令牌 | 永不过期* | 请妥善保管，切勿共享 |
 
-*Refresh tokens only expire if explicitly revoked or app access is removed.
+*除非明确撤销或应用访问权限被取消，否则刷新令牌永远不会过期。
 
-## Troubleshooting
+## 故障排除
 
-**401 Unauthorized on refresh:**
-- App may have been disconnected — re-run OAuth flow from step 3
+- **刷新时出现 401 Unauthorized 错误**：
+  - 可能是应用连接中断，请重新运行步骤 3 中的 OAuth 流程。
 
-**403 Forbidden:**
-- Check app permissions in Dropbox console
+- **出现 403 Forbidden 错误**：
+  - 请检查 Dropbox 控制台中的应用权限设置。
 
-**Path errors:**
-- Dropbox paths start with `/` and are case-insensitive
-- Use forward slashes even on Windows
+- **路径错误**：
+  - Dropbox 的路径以 `/` 开头，并且不区分大小写
+  - 即使在 Windows 系统上，也请使用正斜杠（/）作为路径分隔符。
 
-## API Reference
+## API 参考
 
-- OAuth Guide: https://developers.dropbox.com/oauth-guide
-- API Explorer: https://dropbox.github.io/dropbox-api-v2-explorer/
+- OAuth 指南：https://developers.dropbox.com/oauth-guide
+- API 探索器：https://dropbox.github.io/dropbox-api-v2-explorer/

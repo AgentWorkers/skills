@@ -1,24 +1,24 @@
 ---
 slug: "predictive-analytics-construction"
 display_name: "Predictive Analytics Construction"
-description: "Forecast project outcomes using historical data: cost overruns, schedule delays, risk probabilities. Machine learning models for construction prediction."
+description: "利用历史数据预测项目结果：成本超支、进度延误、风险概率。用于建筑行业预测的机器学习模型。"
 ---
 
-# Predictive Analytics for Construction
+# 建筑行业的预测分析
 
-## Overview
+## 概述
 
-Use historical project data to predict future outcomes: cost overruns, schedule delays, quality issues, and risks. Apply machine learning models tailored for construction industry patterns.
+利用历史项目数据来预测未来的结果：成本超支、进度延误、质量问题以及潜在风险。采用专为建筑行业特点量身定制的机器学习模型。
 
-## Business Case
+## 商业价值
 
-Predictive analytics enables proactive project management:
-- **Early Warning**: Identify projects likely to overrun before it happens
-- **Resource Optimization**: Allocate resources based on predicted needs
-- **Risk Mitigation**: Focus on high-risk areas early
-- **Better Estimates**: Learn from historical accuracy
+预测分析有助于实现主动的项目管理：
+- **早期预警**：在问题发生之前识别出可能超支的项目
+- **资源优化**：根据预测的需求分配资源
+- **风险缓解**：提前关注高风险领域
+- **更准确的估算**：从历史数据中学习并提高估算的准确性
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -357,7 +357,7 @@ class ConstructionPredictiveAnalytics:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -396,13 +396,13 @@ report = analytics.generate_prediction_report(new_project, historical)
 print(report)
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy scikit-learn
 ```
 
-## Resources
+## 资源推荐
 
-- **ML for Construction**: Research on predictive models
-- **Feature Engineering**: Construction-specific features
+- **建筑行业机器学习**：关于预测模型的研究资料
+- **特征工程**：针对建筑行业特点的特征提取方法

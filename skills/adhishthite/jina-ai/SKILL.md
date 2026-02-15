@@ -1,6 +1,6 @@
 ---
 name: jina
-description: Web reading and searching via Jina AI APIs. Fetch clean markdown from URLs (r.jina.ai), web search (s.jina.ai), or deep multi-step research (DeepSearch).
+description: 通过 Jina AI API 进行网页阅读和搜索。可以从 URL（r.jina.ai）获取格式清晰的 Markdown 内容，执行网页搜索（s.jina.ai），或进行深度的多步骤研究（DeepSearch）。
 homepage: "https://github.com/adhishthite/jina-ai-skill"
 metadata:
   {
@@ -14,54 +14,54 @@ metadata:
   }
 ---
 
-# Jina AI — Reader, Search & DeepSearch
+# Jina AI — 阅读器、搜索与深度搜索
 
-Web reading and search powered by Jina AI. Requires `JINA_API_KEY` environment variable.
+Jina AI 提供网页阅读和搜索功能。使用此功能需要设置 `JINA_API_KEY` 环境变量。
 
-> **Trust & Privacy:** By using this skill, URLs and queries are transmitted to Jina AI (jina.ai). Only install if you trust Jina with your data.
+> **信任与隐私：** 使用此功能时，URL 和查询数据会传输到 Jina AI（jina.ai）。只有在您信任 Jina 并愿意共享数据的情况下，才请安装此功能。
 
-> **Model Invocation:** This skill may be invoked autonomously by the model without explicit user trigger (standard for integration skills). If you prefer manual-only invocation, disable model invocation in your OpenClaw skill settings.
+> **模型调用：** 该功能可以由模型自动调用，无需用户手动触发（这是集成功能的默认行为）。如果您希望仅通过手动操作来调用该功能，请在 OpenClaw 的技能设置中禁用模型调用。
 
-**Get your API key:** https://jina.ai/ → Dashboard → API Keys
+**获取您的 API 密钥：** https://jina.ai/ → 仪表板 → API 密钥
 
-## External Endpoints
+## 外部端点
 
-This skill makes HTTP requests to the following external endpoints only:
+此功能仅向以下外部端点发送 HTTP 请求：
 
-| Endpoint | URL Pattern | Purpose |
+| 端点 | URL 模式 | 功能 |
 |----------|-------------|---------|
-| **Reader API** | `https://r.jina.ai/{url}` | Sends URL content request to Jina for conversion to markdown |
-| **Search API** | `https://s.jina.ai/{query}` | Sends search query to Jina for web search results |
-| **DeepSearch API** | `https://deepsearch.jina.ai/v1/chat/completions` | Sends research question to Jina for multi-step research |
+| **阅读器 API** | `https://r.jina.ai/{url}` | 将 URL 内容发送给 Jina 并转换为 Markdown 格式 |
+| **搜索 API** | `https://s.jina.ai/{query}` | 向 Jina 发送搜索查询以获取网页搜索结果 |
+| **深度搜索 API** | `https://deepsearch.jina.ai/v1/chat/completions` | 向 Jina 发送研究问题以进行多步骤分析 |
 
-No other external network calls are made by this skill.
+此功能不会进行其他外部网络调用。
 
-## Security & Privacy
+## 安全与隐私
 
-- **Authentication:** Only your `JINA_API_KEY` is transmitted to Jina's servers (via `Authorization` header)
-- **Data sent:** URLs and search queries you provide are sent to Jina's servers for processing
-- **Local files:** No local files are read or transmitted by this skill
-- **Local storage:** No data is stored locally beyond stdout output
-- **Environment access:** Scripts only access the `JINA_API_KEY` environment variable; no other env vars are read
-- **Cookies:** Cookies are not forwarded by default; the `X-Set-Cookie` header is available for authenticated content but is opt-in only
+- **身份验证：** 仅将您的 `JINA_API_KEY` 通过 `Authorization` 头部发送到 Jina 的服务器 |
+- **发送的数据：** 您提供的 URL 和搜索查询会被发送到 Jina 的服务器进行处理 |
+- **本地文件：** 该功能不会读取或传输任何本地文件 |
+- **本地存储：** 除标准输出外，不会在本地存储任何数据 |
+- **环境访问：** 脚本仅访问 `JINA_API_KEY` 环境变量；不会读取其他环境变量 |
+- **Cookies：** 默认情况下不会转发 Cookies；对于已认证的内容，可以使用 `X-Set-Cookie` 头部进行设置，但这是可选的 |
 
-## Endpoints
+## 端点
 
-| Endpoint | Base URL | Purpose |
+| 端点 | 基本 URL | 功能 |
 |----------|----------|---------|
-| **Reader** | `https://r.jina.ai/{url}` | Convert any URL → clean markdown |
-| **Search** | `https://s.jina.ai/{query}` | Web search with LLM-friendly results |
-| **DeepSearch** | `https://deepsearch.jina.ai/v1/chat/completions` | Multi-step research agent |
+| **阅读器** | `https://r.jina.ai/{url}` | 将任何 URL 转换为干净的 Markdown 格式 |
+| **搜索** | `https://s.jina.ai/{query}` | 使用大型语言模型（LLM）生成的结果进行网页搜索 |
+| **深度搜索** | `https://deepsearch.jina.ai/v1/chat/completions` | 多步骤研究辅助工具 |
 
-All endpoints accept `Authorization: Bearer $JINA_API_KEY`.
+所有端点都支持 `Authorization: Bearer $JINA_API_KEY` 的身份验证。
 
 ---
 
-## Reader API (`r.jina.ai`)
+## 阅读器 API (`r.jina.ai`)
 
-Fetches any URL and returns clean, LLM-friendly content. Works with web pages, PDFs, and JS-heavy sites.
+用于获取任何 URL 并返回适合大型语言模型（LLM）处理的干净内容。支持网页、PDF 文件以及包含大量 JavaScript 代码的网站。
 
-### Basic Usage
+### 基本用法
 
 ```bash
 # Plain text output
@@ -75,41 +75,41 @@ curl -s "https://r.jina.ai/https://example.com" \
   -H "Accept: application/json"
 ```
 
-Or use the helper script: `scripts/jina-reader.sh <url> [--json]`
+或者使用辅助脚本：`scripts/jina-reader.sh <url> [--json]`
 
-### Parameters (via headers or query params)
+### 参数（通过头部或查询参数）
 
-#### Content Control
+#### 内容控制
 
-| Header | Query Param | Values | Default | Description |
+| 头部字段 | 查询参数 | 可能的值 | 默认值 | 说明 |
 |--------|-------------|--------|---------|-------------|
-| `X-Respond-With` | `respondWith` | `content`, `markdown`, `html`, `text`, `screenshot`, `pageshot`, `vlm`, `readerlm-v2` | `content` | Output format |
-| `X-Retain-Images` | `retainImages` | `none`, `all`, `alt`, `all_p`, `alt_p` | `all` | Image handling |
-| `X-Retain-Links` | `retainLinks` | `none`, `all`, `text`, `gpt-oss` | `all` | Link handling |
-| `X-With-Generated-Alt` | `withGeneratedAlt` | `true`/`false` | `false` | Auto-caption images |
-| `X-With-Links-Summary` | `withLinksSummary` | `true` | - | Append links section |
-| `X-With-Images-Summary` | `withImagesSummary` | `true`/`false` | `false` | Append images section |
-| `X-Token-Budget` | `tokenBudget` | number | - | Max tokens for response |
+| `X-Respond-With` | `respondWith` | `content`, `markdown`, `html`, `text`, `screenshot`, `pageshot`, `vlm`, `readerlm-v2` | 输出格式 |
+| `X-Retain-Images` | `retainImages` | `none`, `all`, `alt`, `all_p`, `alt_p` | 图片处理方式 |
+| `X-Retain-Links` | `retainLinks` | `none`, `all`, `text`, `gpt-oss` | 链接处理方式 |
+| `X-With-Generated-Alt` | `withGeneratedAlt` | `true`/`false` | 是否自动生成图片标题 |
+| `X-With-Links-Summary` | `withLinksSummary` | `true` | 是否添加链接部分 |
+| `X-With-Images-Summary` | `withImagesSummary` | `true`/`false` | 是否添加图片部分 |
+| `X-Token-Budget` | `tokenBudget` | 数字 | 响应的最大令牌数量 |
 
-#### CSS Selectors
+#### CSS 选择器
 
-| Header | Query Param | Description |
+| 头部字段 | 查询参数 | 说明 |
 |--------|-------------|-------------|
-| `X-Target-Selector` | `targetSelector` | Only extract matching elements |
-| `X-Wait-For-Selector` | `waitForSelector` | Wait for elements before extracting |
-| `X-Remove-Selector` | `removeSelector` | Remove elements before extraction |
+| `X-Target-Selector` | `targetSelector` | 仅提取匹配的元素 |
+| `X-Wait-For-Selector` | `waitForSelector` | 在提取前等待指定元素加载完成 |
+| `X-Remove-Selector` | `removeSelector` | 在提取前移除指定元素 |
 
-#### Browser & Network
+#### 浏览器与网络设置
 
-| Header | Query Param | Description |
+| 头部字段 | 查询参数 | 说明 |
 |--------|-------------|-------------|
-| `X-Timeout` | `timeout` | Page load timeout (1-180s) |
-| `X-Respond-Timing` | `respondTiming` | When page is "ready" (`html`, `network-idle`, etc.) |
-| `X-No-Cache` | `noCache` | Bypass cached content |
-| `X-Proxy` | `proxy` | Country code or `auto` for proxy |
-| `X-Set-Cookie` | `setCookies` | Forward cookies for authenticated content |
+| `X-Timeout` | `timeout` | 页面加载超时时间（1-180 秒） |
+| `X-Respond-Timing` | `respondTiming` | 确定页面何时“准备好”（例如通过 `html` 或 `network-idle` 等条件） |
+| `X-No-Cache` | `noCache` | 忽略缓存内容 |
+| `X-Proxy` | `proxy` | 代理服务器的国家代码或 `auto`（自动选择代理） |
+| `X-Set-Cookie` | `setCookies` | 为已认证的内容转发 Cookies |
 
-### Common Patterns
+### 常见使用模式
 
 ```bash
 # Extract main content, remove navigation elements
@@ -138,11 +138,11 @@ curl -s "https://r.jina.ai/https://spa-app.com" \
 
 ---
 
-## Search API (`s.jina.ai`)
+## 搜索 API (`s.jina.ai`)
 
-Web search returning LLM-friendly results with full page content.
+提供适合大型语言模型（LLM）处理的网页搜索结果，包含完整页面内容。
 
-### Basic Usage
+### 基本用法
 
 ```bash
 # Plain text
@@ -156,22 +156,22 @@ curl -s "https://s.jina.ai/your+search+query" \
   -H "Accept: application/json"
 ```
 
-Or use the helper script: `scripts/jina-search.sh "<query>" [--json]`
+或者使用辅助脚本：`scripts/jina-search.sh "<query>" [--json]`
 
-### Search Parameters
+### 搜索参数
 
-| Param | Values | Description |
+| 参数 | 可能的值 | 说明 |
 |-------|--------|-------------|
-| `site` | domain | Limit to specific site |
-| `type` | `web`, `images`, `news` | Search type |
-| `num` / `count` | 0-20 | Number of results |
-| `gl` | country code | Geo-location (e.g. `us`, `in`) |
-| `filetype` | extension | Filter by file type |
-| `intitle` | string | Must appear in title |
+| `site` | 域名 | 限制搜索范围到特定网站 |
+| `type` | `web`, `images`, `news` | 搜索类型 |
+| `num` / `count` | 0-20 | 结果数量 |
+| `gl` | 国家代码 | 地理位置（例如 `us`, `in`） |
+| `filetype` | 文件扩展名 | 按文件类型过滤 |
+| `intitle` | 字符串 | 必须出现在页面标题中 |
 
-All Reader parameters also work on search results.
+所有阅读器相关的参数也适用于搜索结果。
 
-### Common Patterns
+### 常见使用模式
 
 ```bash
 # Site-scoped search
@@ -191,9 +191,9 @@ curl -s "https://s.jina.ai/machine+learning+survey?filetype=pdf&num=5" \
 
 ---
 
-## DeepSearch
+## 深度搜索
 
-Multi-step research agent that combines search + reading + reasoning. OpenAI-compatible chat completions API.
+结合搜索、阅读和推理的多步骤研究工具。兼容 OpenAI 的聊天式问答 API。
 
 ```bash
 curl -s "https://deepsearch.jina.ai/v1/chat/completions" \
@@ -206,41 +206,45 @@ curl -s "https://deepsearch.jina.ai/v1/chat/completions" \
   }'
 ```
 
-Or use the helper script: `scripts/jina-deepsearch.sh "<question>"`
+或者使用辅助脚本：`scripts/jina-deepsearch.sh "<question>"`
 
-Use for complex research requiring multiple sources and reasoning chains.
+适用于需要多个来源和推理过程的复杂研究任务。
 
 ---
 
-## Helper Scripts
+## 辅助脚本
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `scripts/jina-reader.sh` | Read any URL as markdown |
-| `scripts/jina-search.sh` | Web search |
-| `scripts/jina-deepsearch.sh` | Deep multi-step research |
-| `scripts/jina-reader.py` | Python reader (no deps beyond stdlib) |
+| `scripts/jina-reader.sh` | 将任何 URL 读取为 Markdown 格式 |
+| `scripts/jina-search.sh` | 执行网页搜索 |
+| `scripts/jina-deepsearch.sh` | 进行多步骤深度研究 |
+| `scripts/jina-reader.py` | 使用 Python 编写的阅读器脚本（仅依赖标准库） |
 
 ---
 
-## Rate Limits
+## 使用限制
 
-- **Free (no key):** 20 RPM
-- **With API key:** Higher limits, token-based pricing
+- **免费（无 API 密钥）：** 每分钟 20 次请求 |
+- **使用 API 密钥：** 提供更高的请求限制，并采用基于令牌的计费方式
 
-## API Docs
+## API 文档
 
-- Reader: https://jina.ai/reader
-- Search: https://s.jina.ai/docs
-- OpenAPI specs: https://r.jina.ai/openapi.json | https://s.jina.ai/openapi.json
+- 阅读器 API：https://jina.ai/reader |
+- 搜索 API：https://s.jina.ai/docs |
+- OpenAPI 规范：https://r.jina.ai/openapi.json | https://s.jina.ai/openapi.json
 
-## When to Use
+## 使用场景
 
-| Need | Use |
+| 需求 | 使用功能 |
 |------|-----|
-| Fetch a URL as markdown | **Reader** — better than web_fetch for JS-heavy sites |
-| Web search | **Search** — LLM-friendly results |
-| Complex multi-source research | **DeepSearch** |
-| Parse a PDF from URL | **Reader** — pass PDF URL directly |
-| Screenshot a page | **Reader** with `X-Respond-With: screenshot` |
-| Extract structured data | **Reader** with `jsonSchema` param |
+| 将 URL 转换为 Markdown | **阅读器** — 适用于包含大量 JavaScript 代码的网站 |
+| 进行网页搜索 | **搜索** — 生成适合大型语言模型的结果 |
+| 多源复杂研究 | **深度搜索** |
+| 从 URL 解析 PDF 文件 | **阅读器** — 直接提供 PDF URL |
+| 截取页面截图 | **阅读器** 并使用 `X-Respond-With: screenshot` 参数 |
+| 提取结构化数据 | **阅读器** 并使用 `jsonSchema` 参数 |
+
+---
+
+## 注意事项：

@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-value-engineering"
 display_name: "CWICR Value Engineering"
-description: "Perform value engineering analysis using CWICR data. Identify cost-saving alternatives while maintaining function and quality."
+description: "使用 CWICR 数据进行价值工程分析。在保持功能和质量的前提下，寻找能够节省成本的替代方案。"
 ---
 
-# CWICR Value Engineering
+# CWICR价值工程
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Projects often exceed budget:
-- Where can costs be reduced?
-- What alternatives exist?
-- How to maintain quality?
-- Document VE decisions
+### 问题陈述
+项目经常超出预算：
+- 哪些地方可以降低成本？
+- 有哪些替代方案？
+- 如何保持质量？
+- 如何记录价值工程的决策？
 
-### Solution
-Systematic value engineering using CWICR data to identify cost-effective alternatives, analyze trade-offs, and document decisions.
+### 解决方案
+利用CWICR数据进行系统的价值工程分析，以识别具有成本效益的替代方案、分析权衡因素，并记录相关决策。
 
-### Business Value
-- **Cost savings** - Identify reduction opportunities
-- **Quality maintenance** - Function-based analysis
-- **Documentation** - VE proposal records
-- **Client value** - Optimize value for cost
+### 商业价值
+- **成本节约**：识别成本降低的机会
+- **质量维护**：基于功能的分析
+- **文档记录**：价值工程提案的详细记录
+- **客户价值**：在成本与价值之间实现最优平衡
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -353,8 +352,7 @@ class CWICRValueEngineering:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -372,9 +370,9 @@ for alt in alternatives[:3]:
     print(f"{alt['code']}: ${alt['savings']:,.2f} savings ({alt['savings_pct']}%)")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Identify VE Opportunities
+### 1. 识别价值工程的机会
 ```python
 items = [
     {'work_item_code': 'CONC-001', 'quantity': 200},
@@ -386,7 +384,7 @@ for item in high_cost:
     print(f"{item['code']}: ${item['cost']:,.2f} ({item['percentage']}%)")
 ```
 
-### 2. Create VE Proposal
+### 2. 制定价值工程提案
 ```python
 proposal = ve.create_proposal(
     proposal_id="VE-001",
@@ -404,12 +402,12 @@ proposal = ve.create_proposal(
 print(f"Potential Savings: ${proposal.savings:,.2f}")
 ```
 
-### 3. Generate VE Report
+### 3. 生成价值工程报告
 ```python
 analysis = ve.generate_ve_analysis("Building Project")
 ve.export_ve_report(analysis, "ve_analysis.xlsx")
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.2 - Value Engineering
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC手册**：第3.2章 - 价值工程

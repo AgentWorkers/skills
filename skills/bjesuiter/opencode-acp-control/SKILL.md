@@ -1,32 +1,32 @@
 ---
 name: opencode-acp-control
-description: Control OpenCode directly via the Agent Client Protocol (ACP). Start sessions, send prompts, resume conversations, and manage OpenCode updates.
+description: 通过代理客户端协议（Agent Client Protocol, ACP）直接控制 OpenCode。可以启动会话、发送提示、恢复对话以及管理 OpenCode 的更新。
 metadata: {"version": "1.0.2", "author": "Benjamin Jesuiter <bjesuiter@gmail.com>", "license": "MIT", "github_url": "https://github.com/bjesuiter/opencode-acp-skill"}
 ---
 
-# OpenCode ACP Skill
+# OpenCode ACP 技能
 
-Control OpenCode directly via the Agent Client Protocol (ACP).
+通过代理客户端协议（ACP）直接控制 OpenCode。
 
-## Metadata
+## 元数据
 
-- For ACP Protocol Docs (for Agents/LLMs): https://agentclientprotocol.com/llms.txt
-- GitHub Repo: https://github.com/bjesuiter/opencode-acp-skill
-- If you have issues with this skill, please open an issue ticket here: https://github.com/bjesuiter/opencode-acp-skill/issues
+- ACP 协议文档（适用于代理/大型语言模型）：https://agentclientprotocol.com/llms.txt
+- GitHub 仓库：https://github.com/bjesuiter/opencode-acp-skill
+- 如果您遇到此技能的问题，请在此处提交问题票：https://github.com/bjesuiter/opencode-acp-skill/issues
 
-## Quick Reference
+## 快速参考
 
-| Action | How |
+| 操作 | 方法 |
 |--------|-----|
-| Start OpenCode | `bash(command: "opencode acp", background: true)` |
-| Send message | `process.write(sessionId, data: "<json-rpc>\n")` |
-| Read response | `process.poll(sessionId)` - repeat every 2 seconds |
-| Stop OpenCode | `process.kill(sessionId)` |
-| List sessions | `bash(command: "opencode session list", workdir: "...")` |
-| Resume session | List sessions → ask user → `session/load` |
-| Check version | `bash(command: "opencode --version")` |
+| 启动 OpenCode | `bash(command: "opencode acp", background: true)` |
+| 发送消息 | `process.write(sessionId, data: "<json-rpc>\n")` |
+| 读取响应 | `process.poll(sessionId)` - 每 2 秒轮询一次 |
+| 停止 OpenCode | `process.kill(sessionId)` |
+| 列出会话 | `bash(command: "opencode session list", workdir: "...")` |
+| 恢复会话 | 列出会话 → 询问用户 → `session/load` |
+| 检查版本 | `bash(command: "opencode --version")` |
 
-## Starting OpenCode
+## 启动 OpenCode
 
 ```
 bash(
@@ -36,91 +36,91 @@ bash(
 )
 ```
 
-Save the returned `sessionId` - you'll need it for all subsequent commands.
+保存返回的 `sessionId`——后续所有命令都需要它。
 
-## Protocol Basics
+## 协议基础
 
-- All messages are **JSON-RPC 2.0** format
-- Messages are **newline-delimited** (end each with `\n`)
-- Maintain a **message ID counter** starting at 0
+- 所有消息均为 **JSON-RPC 2.0** 格式
+- 消息以 **换行符分隔**（每条消息以 `\n` 结尾）
+- 从 0 开始维护一个 **消息 ID 计数器**
 
-## Step-by-Step Workflow
+## 逐步工作流程
 
-### Step 1: Initialize Connection
+### 第 1 步：初始化连接
 
-Send immediately after starting OpenCode:
+在启动 OpenCode 后立即发送请求：
 
 ```json
 {"jsonrpc":"2.0","id":0,"method":"initialize","params":{"protocolVersion":1,"clientCapabilities":{"fs":{"readTextFile":true,"writeTextFile":true},"terminal":true},"clientInfo":{"name":"clawdbot","title":"Clawdbot","version":"1.0.0"}}}
 ```
 
-Poll for response. Expect `result.protocolVersion: 1`.
+轮询响应。预期返回 `result.protocolVersion: 1`。
 
-### Step 2: Create Session
+### 第 2 步：创建会话
 
 ```json
 {"jsonrpc":"2.0","id":1,"method":"session/new","params":{"cwd":"/path/to/project","mcpServers":[]}}
 ```
 
-Poll for response. Save `result.sessionId` (e.g., `"sess_abc123"`).
+轮询响应。保存 `result.sessionId`（例如，`"sess_abc123"`）。
 
-### Step 3: Send Prompts
+### 第 3 步：发送提示
 
 ```json
 {"jsonrpc":"2.0","id":2,"method":"session/prompt","params":{"sessionId":"sess_abc123","prompt":[{"type":"text","text":"Your question here"}]}}
 ```
 
-Poll every 2 seconds. You'll receive:
-- `session/update` notifications (streaming content)
-- Final response with `result.stopReason`
+每 2 秒轮询一次。您将收到：
+- `session/update` 通知（流式内容）
+- 包含 `result.stopReason` 的最终响应
 
-### Step 4: Read Responses
+### 第 4 步：读取响应
 
-Each poll may return multiple lines. Parse each line as JSON:
+每次轮询可能返回多行内容。将每行解析为 JSON：
 
-- **Notifications**: `method: "session/update"` - collect these for the response
-- **Response**: Has `id` matching your request - stop polling when `stopReason` appears
+- **通知**：`method: "session/update"`——收集这些通知
+- **响应**：如果包含与您的请求匹配的 `id`，则停止轮询
 
-### Step 5: Cancel (if needed)
+### 第 5 步：取消（如需要）
 
 ```json
 {"jsonrpc":"2.0","method":"session/cancel","params":{"sessionId":"sess_abc123"}}
 ```
 
-No response expected - this is a notification.
+不期待响应——这表示收到的是通知。
 
-## State to Track
+## 需要跟踪的状态
 
-Per OpenCode instance, track:
-- `processSessionId` - from bash tool (clawdbot's process ID)
-- `opencodeSessionId` - from session/new response (OpenCode's session ID)  
-- `messageId` - increment for each request you send
+对于每个 OpenCode 实例，跟踪以下信息：
+- `processSessionId`——来自 bash 工具（clawdbot 的进程 ID）
+- `opencodeSessionId`——来自 session/new 响应（OpenCode 的会话 ID）
+- `messageId`——每次发送请求时递增
 
-## Polling Strategy
+## 轮询策略
 
-- Poll every **2 seconds**
-- Continue until you receive a response with `stopReason`
-- Max wait: **5 minutes** (150 polls)
-- If no response, consider the operation timed out
+- 每 **2 秒轮询一次**
+- 继续轮询，直到收到包含 `stopReason` 的响应
+- 最大等待时间：**5 分钟**（150 次轮询）
+- 如果没有响应，视为操作超时
 
-## Common Stop Reasons
+## 常见停止原因
 
-| stopReason | Meaning |
+| stopReason | 含义 |
 |------------|---------|
-| `end_turn` | Agent finished responding |
-| `cancelled` | You cancelled the prompt |
-| `max_tokens` | Token limit reached |
+| `end_turn` | 代理停止响应 |
+| `cancelled` | 您取消了提示 |
+| `max_tokens` | 达到令牌限制 |
 
-## Error Handling
+## 错误处理
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Empty poll response | Keep polling - agent is thinking |
-| Parse error | Skip malformed line, continue |
-| Process exited | Restart OpenCode |
-| No response after 5min | Kill process, start fresh |
+| 轮询响应为空 | 继续轮询——代理正在处理中 |
+| 解析错误 | 跳过格式错误的行，继续轮询 |
+| 进程退出 | 重新启动 OpenCode |
+| 5 分钟后仍无响应 | 结束进程，重新开始
 
-## Example: Complete Interaction
+## 示例：完整交互流程
 
 ```
 1. bash(command: "opencode acp", background: true, workdir: "/home/user/myproject")
@@ -143,17 +143,17 @@ Per OpenCode instance, track:
 
 ---
 
-## Resume Session
+## 恢复会话
 
-Resume a previous OpenCode session by letting the user choose from available sessions.
+通过让用户从可用会话中选择来恢复之前的 OpenCode 会话。
 
-### Step 1: List Available Sessions
+### 第 1 步：列出可用会话
 
 ```
 bash(command: "opencode session list", workdir: "/path/to/project")
 ```
 
-Example output:
+示例输出：
 ```
 ID                                  Updated              Messages
 ses_451cd8ae0ffegNQsh59nuM3VVy      2026-01-11 15:30     12
@@ -161,9 +161,9 @@ ses_451a89e63ffea2TQIpnDGtJBkS      2026-01-10 09:15     5
 ses_4518e90d0ffeJIpOFI3t3Jd23Q      2026-01-09 14:22     8
 ```
 
-### Step 2: Ask User to Choose
+### 第 2 步：询问用户选择
 
-Present the list to the user and ask which session to resume:
+向用户展示会话列表，并询问要恢复哪个会话：
 
 ```
 "Which session would you like to resume?
@@ -175,30 +175,30 @@ Present the list to the user and ask which session to resume:
 Enter session number or ID:"
 ```
 
-### Step 3: Load Selected Session
+### 第 3 步：加载选定的会话
 
-Once user responds (e.g., "1", "the first one", or "ses_451cd8ae..."):
+用户响应后（例如，输入“1”、“第一个”或“ses_451cd8ae...”）：
 
-1. **Start OpenCode ACP**:
+1. **启动 OpenCode ACP**：
    ```
    bash(command: "opencode acp", background: true, workdir: "/path/to/project")
    ```
 
-2. **Initialize**:
+2. **初始化**：
    ```json
    {"jsonrpc":"2.0","id":0,"method":"initialize","params":{...}}
    ```
 
-3. **Load the session**:
+3. **加载会话**：
    ```json
    {"jsonrpc":"2.0","id":1,"method":"session/load","params":{"sessionId":"ses_451cd8ae0ffegNQsh59nuM3VVy","cwd":"/path/to/project","mcpServers":[]}}
    ```
 
-**Note**: `session/load` requires `cwd` and `mcpServers` parameters.
+**注意**：`session/load` 需要 `cwd` 和 `mcpServers` 参数。
 
-On load, OpenCode streams the full conversation history back to you.
+加载会话后，OpenCode 会将完整的对话历史记录流式传输给您。
 
-### Resume Workflow Summary
+### 恢复会话的工作流程总结
 
 ```
 function resumeSession(workdir):
@@ -224,66 +224,66 @@ function resumeSession(workdir):
     return process
 ```
 
-### Important Notes
+### 重要说明
 
-- **History replay**: On load, all previous messages stream back
-- **Memory preserved**: Agent remembers the full conversation
-- **Process independent**: Sessions survive OpenCode restarts
+- **历史记录重放**：加载会话时，所有之前的消息都会被重新传输
+- **数据保留**：代理会记住完整的对话内容
+- **进程独立**：会话在 OpenCode 重启后仍然存在
 
 ---
 
-## Updating OpenCode
+## 更新 OpenCode
 
-OpenCode auto-updates when restarted. Use this workflow to check and trigger updates.
+OpenCode 会在重启时自动更新。使用此工作流程来检查和触发更新。
 
-### Step 1: Check Current Version
+### 第 1 步：检查当前版本
 
 ```
 bash(command: "opencode --version")
 ```
 
-Returns something like: `opencode version 1.1.13`
+返回类似 `opencode version 1.1.13` 的信息
 
-Extract the version number (e.g., `1.1.13`).
+提取版本号（例如，`1.1.13`）。
 
-### Step 2: Check Latest Version
+### 第 2 步：检查最新版本
 
 ```
 webfetch(url: "https://github.com/anomalyco/opencode/releases/latest", format: "text")
 ```
 
-The redirect URL contains the latest version tag:
-- Redirects to: `https://github.com/anomalyco/opencode/releases/tag/v1.2.0`
-- Extract version from the URL path (e.g., `1.2.0`)
+重定向 URL 包含最新版本的标签：
+- 重定向到：`https://github.com/anomalyco/opencode/releases/tag/v1.2.0`
+- 从 URL 路径中提取版本号（例如，`1.2.0`）
 
-### Step 3: Compare and Update
+### 第 3 步：比较并更新
 
-If latest version > current version:
+如果最新版本高于当前版本：
 
-1. **Stop all running OpenCode processes**:
+1. **停止所有正在运行的 OpenCode 进程**：
    ```
    process.list()  # Find all "opencode acp" processes
    process.kill(sessionId) # For each running instance
    ```
 
-2. **Restart instances** (OpenCode auto-downloads new binary on start):
+2. **重启实例**（OpenCode 会在启动时自动下载新版本）：
    ```
    bash(command: "opencode acp", background: true, workdir: "/path/to/project")
    ```
 
-3. **Re-initialize** each instance (initialize + session/load for existing sessions)
+3. **重新初始化** 每个实例（对现有会话执行初始化和加载操作）
 
-### Step 4: Verify Update
+### 第 4 步：验证更新
 
 ```
 bash(command: "opencode --version")
 ```
 
-If version still doesn't match latest:
-- Inform user: "OpenCode auto-update may have failed. Current: X.X.X, Latest: Y.Y.Y"
-- Suggest manual update: `curl -fsSL https://opencode.dev/install | bash`
+如果版本号仍然不匹配最新版本：
+- 通知用户：“OpenCode 自动更新可能失败。当前版本：X.X.X，最新版本：Y.Y.Y”
+- 建议手动更新：`curl -fsSL https://opencode.dev/install | bash`
 
-### Update Workflow Summary
+### 更新工作流程总结
 
 ```
 function updateOpenCode():
@@ -312,8 +312,8 @@ function updateOpenCode():
         notify("OpenCode is up to date: " + current)
 ```
 
-### Important Notes
+### 重要说明
 
-- **Sessions persist**: `opencodeSessionId` survives restarts — use `session/load` to recover
-- **Auto-update**: OpenCode downloads new binary automatically on restart
-- **No data loss**: Conversation history is preserved server-side
+- **会话持久化**：`opencodeSessionId` 在重启后仍然有效——使用 `session/load` 来恢复会话
+- **自动更新**：OpenCode 会在重启时自动下载新版本
+- **数据不丢失**：对话历史记录会保存在服务器端

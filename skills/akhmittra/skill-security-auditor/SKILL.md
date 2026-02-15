@@ -1,6 +1,6 @@
 ---
 name: skill-security-auditor
-description: Command-line security analyzer for ClawHub skills. Run analyze-skill.sh to scan SKILL.md files for malicious patterns, credential leaks, and C2 infrastructure before installation. Includes threat intelligence database with 20+ detection patterns.
+description: ClawHub 技能的命令行安全分析工具。运行 `analyze-skill.sh` 命令，可在安装前扫描 SKILL.md 文件，检测恶意代码模式、凭证泄露情况以及 C2（Command and Control）基础设施相关问题。该工具配备了包含 20 多种检测模式的威胁情报数据库。
 emoji: 🔍🛡️
 metadata:
   openclaw:
@@ -12,94 +12,93 @@ metadata:
     tags: ["security", "audit", "malware-detection", "skill-vetting", "cli-tool"]
 ---
 
-# Skill Security Auditor
+# 技能安全审计器
 
-## Description
+## 介绍
 
-The Skill Security Auditor is a **command-line tool** that performs pattern-based security analysis of ClawHub skills before installation. Given the recent discovery of 341+ malicious skills (ClawHavoc campaign) that distributed Atomic Stealer (AMOS) and stole cryptocurrency credentials, this tool provides essential pre-installation threat detection.
+技能安全审计器是一个**命令行工具**，用于在安装ClawHub技能之前对其进行基于模式的安全分析。鉴于最近发现了341个以上的恶意技能（ClawHavoc活动），这些技能会分发Atomic Stealer（AMOS）并窃取加密货币凭证，该工具提供了必要的预安装威胁检测功能。
 
-**What this skill provides:**
-- ✅ Bash script (`analyze-skill.sh`) for local security analysis
-- ✅ Threat intelligence database (`patterns/malicious-patterns.json`)
-- ✅ Pattern matching against 20+ known malicious indicators
-- ✅ Risk scoring system (0-100 scale)
-- ✅ Detailed audit reports with recommendations
+**该工具提供以下功能：**
+- ✅ Bash脚本（`analyze-skill.sh`）用于本地安全分析
+- ✅ 威胁情报数据库（`patterns/malicious-patterns.json`）
+- ✅ 与20多种已知恶意指标进行模式匹配
+- ✅ 风险评分系统（0-100分）
+- ✅ 详细的审计报告及建议
 
-**How to use it:**
-1. Install this skill from ClawHub
-2. Run the `analyze-skill.sh` script against any skill (by slug or local file)
-3. Review the risk assessment and findings
-4. Make informed decision about installation
+**使用方法：**
+1. 从ClawHub安装此工具
+2. 对任何技能（通过slug或本地文件）运行`analyze-skill.sh`脚本
+3. 查看风险评估和发现结果
+4. 根据评估结果做出安装决策
 
-**Use this tool when:**
-- About to install a new skill from ClawHub
-- Investigating suspicious skill behavior  
-- Performing security due diligence on community skills
-- Auditing your currently installed skills
+**在以下情况下使用此工具：**
+- 即将从ClawHub安装新技能时
+- 调查可疑技能行为时
+- 对社区技能进行安全审查时
+- 审计已安装的技能时
 
-**This tool does NOT:**
-- ❌ Automatically scan skills (you run it manually)
-- ❌ Block installations (it's advisory only)
-- ❌ Access VirusTotal API (use ClawHub's web interface for that)
-- ❌ Guarantee 100% detection (defense in depth recommended)
+**此工具不执行以下操作：**
+- ❌ 自动扫描技能（需手动运行）
+- ❌ 阻止安装（仅提供建议）
+- ❌ 访问VirusTotal API（请通过ClawHub的Web界面进行）
+- ❌ 保证100%的检测率（建议采取深度防御措施）
 
-## Core Capabilities
+## 核心功能
 
-### 1. **Malicious Pattern Detection**
-Scans for known malicious patterns from the ClawHavoc campaign:
-- Fake prerequisite installations (openclaw-agent.zip, openclaw-setup.exe)
-- Suspicious download commands in SKILL.md
-- Hidden payload execution in metadata
-- Social engineering language patterns
-- Unauthorized external binary downloads
+### 1. **恶意模式检测**
+- 检查ClawHavoc活动中已知的恶意模式：
+  - 假装的必备软件安装文件（如`openclaw-agent.zip`、`openclaw-setup.exe`）
+  - SKILL.md文件中的可疑下载命令
+  - 元数据中隐藏的负载执行
+  - 社会工程学语言模式
+  - 未经授权的外部二进制文件下载
 
-### 2. **Credential Leak Analysis**
-Identifies potential credential exposure vectors:
-- Hardcoded API keys, tokens, passwords in SKILL.md
-- Suspicious environment variable exfiltration
-- Unencrypted sensitive data transmission
-- Overly broad permission requests
-- Credential harvesting patterns
+### 2. **凭证泄露分析**
+- 识别潜在的凭证泄露途径：
+  - SKILL.md文件中硬编码的API密钥、令牌、密码
+  - 可疑的环境变量泄露
+  - 未加密的敏感数据传输
+  - 过度宽泛的权限请求
+  - 证书收集行为
 
-### 3. **Dependency Chain Validation**
-Analyzes skill dependencies for:
-- Unverified binary requirements
-- Suspicious GitHub repository sources
-- External script execution
-- Network connections to unknown hosts
-- Nested dependency exploitation
+### 3. **依赖关系链验证**
+- 分析技能的依赖关系：
+  - 未经验证的二进制文件需求
+  - 来自可疑GitHub仓库的依赖项
+  - 外部脚本的执行
+  - 与未知主机的网络连接
+  - 嵌套依赖关系的利用
 
-### 4. **C2 Infrastructure Detection**
-Checks for Command & Control indicators:
-- Known malicious IP addresses (e.g., 91.92.242.30 from ClawHavoc)
-- Suspicious domain patterns
-- Encoded communication endpoints
-- Data exfiltration channels
-- Beaconing behavior patterns
+### 4. **C2基础设施检测**
+- 检查命令与控制（C2）指标：
+  - 已知的恶意IP地址（例如，ClawHavoc的91.92.242.30）
+  - 可疑的域名模式
+  - 编码的通信端点
+  - 数据泄露通道
+  - 信标行为模式
 
-### 5. **SKILL.md Structure Validation**
-Verifies skill integrity:
-- Proper YAML frontmatter structure
-- Metadata consistency
-- Description clarity vs actual behavior
-- Permission justification
-- Author verification (GitHub account age)
+### 5. **SKILL.md结构验证**
+- 验证技能的完整性：
+  - 正确的YAML格式
+  - 元数据的一致性
+  - 描述与实际行为的匹配度
+  - 权限要求的合理性
+  - 作者的验证（GitHub账户的使用时长）
 
-## Security Scoring System
+## 安全评分系统
 
-Each analyzed skill receives a **Risk Score (0-100)**:
+每个分析过的技能都会获得一个**风险评分（0-100分）**：
+- **0-20分**：✅ **安全** - 无重大安全问题
+- **21-40分**：⚠️ **低风险** - 有轻微问题，需谨慎操作
+- **41-60分**：🟡 **中等风险** - 存在多个风险提示，建议手动审查
+- **61-80分**：🔴 **高风险** - 存在严重问题，未经专家审查请勿安装
+- **81-100分**：☠️ **危急** - 检测到恶意指标，请避免安装
 
-- **0-20**: ✅ **SAFE** - No significant security concerns
-- **21-40**: ⚠️ **LOW RISK** - Minor concerns, proceed with caution
-- **41-60**: 🟡 **MEDIUM RISK** - Multiple red flags, manual review recommended
-- **61-80**: 🔴 **HIGH RISK** - Serious concerns, do NOT install without expert review
-- **81-100**: ☠️ **CRITICAL** - Malicious indicators detected, AVOID installation
+## 使用说明
 
-## Usage Instructions
+该工具提供了一个**bash脚本**（`analyze-skill.sh`），用于对ClawHub技能进行基于模式的安全分析。分析过程使用内置的威胁情报数据库在本地执行。
 
-This skill provides a **bash script** (`analyze-skill.sh`) that performs pattern-based security analysis of ClawHub skills. The analysis runs locally using the included threat intelligence database.
-
-### Installation & Setup
+### 安装与设置
 
 ```bash
 # Install the skill from ClawHub
@@ -113,9 +112,9 @@ echo 'alias audit-skill="~/.openclaw/skills/skill-security-auditor/analyze-skill
 source ~/.bashrc
 ```
 
-### Audit a Skill Before Installing
+### 安装前审计技能
 
-**Method 1: Analyze by slug (automatic fetch from ClawHub)**
+**方法1：通过slug自动从ClawHub获取并分析**
 
 ```bash
 ~/.openclaw/skills/skill-security-auditor/analyze-skill.sh --slug bitcoin-tracker
@@ -129,7 +128,7 @@ source ~/.bashrc
 # ...
 ```
 
-**Method 2: Analyze local file**
+**方法2：分析本地文件**
 
 ```bash
 # Download skill first
@@ -139,7 +138,7 @@ curl -s "https://clawhub.ai/api/skills/bitcoin-tracker/latest" > /tmp/skill.md
 ~/.openclaw/skills/skill-security-auditor/analyze-skill.sh --file /tmp/skill.md
 ```
 
-### Audit All Installed Skills
+### 审计所有已安装的技能
 
 ```bash
 # Scan all skills in your workspace
@@ -149,72 +148,72 @@ for skill in ~/.openclaw/skills/*/SKILL.md; do
 done
 ```
 
-### Quick Manual Security Check
+### 快速手动安全检查
 
 ```bash
 # Fast grep-based pattern matching (no full analysis)
 grep -iE "(prerequisite.*download|91\.92\.242\.30|curl.*\|.*bash)" SKILL.md
 ```
 
-## Detection Heuristics
+## 检测规则
 
-### 🚨 CRITICAL Red Flags (Auto-fail)
+### 🚨 危急警告（自动触发）
 
-1. **Fake Prerequisites Section**
-   - Matches: "Prerequisites", "Setup Required", "Installation Steps"
-   - Contains: Download links to `.zip`, `.exe`, `.dmg` files
-   - Example: "Download openclaw-agent.zip from https://..."
+1. **虚假的必备软件部分**
+   - 匹配关键词：“Prerequisites”（必备软件）、“Setup Required”（设置要求）、“Installation Steps”（安装步骤）
+   - 包含`.zip`、`.exe`、`.dmg`文件的下载链接
+   - 例如：“从https://...下载openclaw-agent.zip”
 
-2. **Known Malicious Infrastructure**
-   - IP: `91.92.242.30` (ClawHavoc C2)
-   - Domains: Newly registered or suspicious TLDs
-   - Encoded URLs or base64 obfuscation
+2. **已知的恶意基础设施**
+   - IP地址：`91.92.242.30`（ClawHavoc的C2服务器）
+   - 新注册或可疑的顶级域名（TLD）
+   - 编码的URL或Base64混淆
 
-3. **Credential Harvesting**
-   - Regex patterns for API keys: `(api[_-]?key|token|password)\s*[:=]\s*['\"][^'\"]+['\"]`
-   - SSH key access requests
-   - Wallet private key patterns
+3. **证书收集**
+   - API密钥的正则表达式匹配：`api[_-]?key|token|password)\s*[:=]\s*['\"][^'\"]+['\"]`
+   - SSH密钥访问请求
+   - 钱包私钥相关内容
 
-4. **Unauthorized Code Execution**
-   - `curl | bash` or `wget | sh` patterns
-   - Hidden base64 encoded commands
-   - Dynamic eval() or exec() on external input
+4. **未经授权的代码执行**
+   - `curl | bash`或`wget | sh`命令
+   - 隐藏的Base64编码命令
+   - 对外部输入使用`eval()`或`exec()`函数
 
-### ⚠️ Warning Indicators (Score increase)
+### ⚠️ 警示指标（评分增加）
 
-1. **Suspicious Dependencies**
-   - Binary requirements without clear justification
-   - Dependencies from unverified sources
-   - Excessive permission requests
+1. **可疑的依赖关系**
+   - 无明确理由的二进制文件需求
+   - 来自未经验证来源的依赖项
+   - 过度的权限请求
 
-2. **Obfuscation Techniques**
-   - Heavily encoded strings in metadata
-   - Minified or obfuscated JavaScript/Python
-   - Redirect chains in URLs
+2. **混淆技术**
+   - 元数据中高度编码的字符串
+   - 缩小或混淆的JavaScript/Python代码
+   - URL中的重定向链
 
-3. **Social Engineering Language**
-   - Urgency phrases: "Install immediately", "Limited time"
-   - Authority claims: "Official OpenClaw", "Verified by Anthropic"
-   - Fear tactics: "Your system is at risk without this"
+3. **社会工程学语言**
+   - 紧急提示语：“立即安装”、“时间有限”
+   - 权威声明：“官方OpenClaw”、“由Anthropic验证”
+   - 恐吓性语言：“不安装此工具，系统将面临风险”
 
-### ✅ Positive Security Indicators
+### ✅ 安全提示指标
 
-1. **Verified Author**
-   - GitHub account > 1 year old
-   - Multiple well-rated skills
-   - Active community engagement
+1. **经过验证的作者**
+   - GitHub账户使用时长超过1年
+   - 拥有多个高评价的技能
+   - 积极参与社区活动
 
-2. **Transparent Dependencies**
-   - Clear binary requirements with official sources
-   - Open-source tool dependencies
-   - Well-documented permission needs
+2. **透明的依赖关系**
+   - 来源明确的二进制文件需求
+   - 依赖开源工具
+   - 权限需求有详细文档说明
 
-3. **Code Quality**
-   - Clean, readable SKILL.md
-   - Proper error handling
-   - No unnecessary network calls
+3. **代码质量**
+   - SKILL.md文件清晰易读
+   - 适当的错误处理
+   - 无不必要的网络请求
 
-## Audit Report Format
+## 审计报告格式
 
 ```markdown
 ## Security Audit Report
@@ -247,23 +246,22 @@ grep -iE "(prerequisite.*download|91\.92\.242\.30|curl.*\|.*bash)" SKILL.md
 {If available from ClawHub}
 ```
 
-## Integration with VirusTotal
+## 与VirusTotal的集成
 
-**Important**: This skill does NOT directly access VirusTotal's API. Instead, VirusTotal integration is available through ClawHub's web interface via their partnership with VirusTotal.
+**重要提示**：此工具不直接访问VirusTotal的API。可以通过ClawHub与VirusTotal的合作关系，在其Web界面查看VirusTotal的扫描结果。
 
-To check VirusTotal results for a skill:
+要查看技能的VirusTotal扫描结果：
+1. 访问技能的ClawHub页面：`https://clawhub.ai/skills/{skill-slug}`
+2. 在技能页面上查找VirusTotal的扫描结果
+3. ClawHub会通过其与VirusTotal的合作关系自动扫描发布的技能
 
-1. Visit the skill's ClawHub page: `https://clawhub.ai/skills/{skill-slug}`
-2. Look for the VirusTotal scan results on the skill's page
-3. ClawHub automatically scans published skills via their VirusTotal partnership
+**此分析器侧重于基于模式的威胁检测**，它补充（但不会替代）ClawHub的VirusTotal扫描功能。
 
-**This analyzer focuses on pattern-based threat detection.** It complements (but does not replace) ClawHub's VirusTotal scanning.
+### 推荐的安全工作流程
 
-### Recommended Security Workflow
-
-1. **Run this analyzer first** - Pattern-based detection (local, instant)
-2. **Check ClawHub's VirusTotal results** - Binary/file reputation (if available)
-3. **Manual code review** - Final verification for critical use cases
+1. **首先运行此分析器** - 进行基于模式的检测（本地、即时）
+2. **查看ClawHub的VirusTotal结果** - 检查二进制文件/文件的信誉
+3. **手动代码审查** - 对于关键场景进行最终验证
 
 ```bash
 # Step 1: Pattern analysis (local)
@@ -277,11 +275,11 @@ curl -s "https://clawhub.ai/api/skills/suspicious-skill/latest" > skill.md
 less skill.md
 ```
 
-## Example Workflow
+## 示例工作流程
 
-**Scenario**: User wants to install a skill called `solana-wallet-tracker`
+**场景**：用户想要安装名为`solana-wallet-tracker`的技能
 
-**Step 1: Run Security Analysis**
+**步骤1：运行安全分析**
 ```bash
 $ ~/.openclaw/skills/skill-security-auditor/analyze-skill.sh -s solana-wallet-tracker
 
@@ -310,56 +308,54 @@ DO NOT INSTALL. Malicious patterns detected matching known attack campaigns.
 ============================================
 ```
 
-**Step 2: Decision**
-- ☠️ **CRITICAL Risk** → **DO NOT INSTALL**
-- Report skill to ClawHub moderators
-- Look for safe alternatives
+**步骤2：做出决策**
+- ☠️ **高风险** → **不要安装**
+- 向ClawHub管理员报告该技能
+- 寻找安全的替代方案
 
-**Step 3: Verify on ClawHub** (optional)
+**步骤3：在ClawHub上验证**（可选）
 ```bash
 # Visit skill page to check VirusTotal results
 open "https://clawhub.ai/skills/solana-wallet-tracker"
 ```
 
-## Advanced Features
+## 高级功能
 
-### 1. Behavioral Analysis (Future Enhancement)
-- Sandbox execution monitoring
-- Network traffic analysis
-- File system access patterns
+### 1. 行为分析（未来增强功能）
+- 沙箱环境中的执行监控
+- 网络流量分析
+- 文件系统访问模式
 
-### 2. Community Threat Intelligence
-- Share malicious skill signatures
-- Collaborative IOC database
-- Reputation scoring system
+### 2. 社区威胁情报
+- 共享恶意技能签名
+- 协作的IOC（Indicators of Compromise）数据库
+- 声誉评分系统
 
-### 3. Continuous Monitoring
-- Auto-audit skills on updates
-- Alert on new security advisories
-- Periodic re-scanning of installed skills
+### 3. 持续监控**
+- 自动审计更新后的技能
+- 新安全警告的即时通知
+- 定期重新扫描已安装的技能
 
-## False Positive Mitigation
+## 减少误报
 
-To minimize false positives:
+为了减少误报：
+1. **上下文分析**：验证合法工具的二进制文件需求（例如，用于GitHub CLI的`gh`）
+2. **白名单**：经过验证的作者和知名技能会获得信任加分
+3. **人工审核选项**：始终为安全决策提供详细理由
+4. **申诉流程**：用户可以报告误报以调整技能的信誉
 
-1. **Contextual Analysis**: Binary requirements for legitimate tools (e.g., `gh` for GitHub CLI) are validated against known safe sources
-2. **Whitelisting**: Verified authors and established skills get trust bonuses
-3. **Human Review Option**: Always provide detailed reasoning for security decisions
-4. **Appeal Process**: Users can report false positives for skill reputation adjustment
+## 合规性与伦理
 
-## Compliance & Ethics
+- ✅ 分析公开可用的技能元数据
+- ✅ 保护用户安全和隐私
+- ✅ 促进负责任的技能开发
+- ❌ 不进行未经授权的访问
+- ❌ 不能保证100%的安全性（没有工具能做到）
+- ❌ 不替代用户的判断
 
-This skill:
-- ✅ Analyzes publicly available skill metadata
-- ✅ Protects user security and privacy
-- ✅ Promotes responsible skill development
-- ❌ Does NOT perform unauthorized access
-- ❌ Does NOT guarantee 100% security (nothing does)
-- ❌ Does NOT replace user judgment
+## 响应模板
 
-## Response Templates
-
-### Safe Skill
+### 安全的技能
 ```
 ✅ Security Audit Complete
 
@@ -378,7 +374,7 @@ VirusTotal: {link}
 Recommendation: Safe to proceed with installation.
 ```
 
-### Suspicious Skill
+### 可疑的技能
 ```
 🔴 Security Alert: HIGH RISK DETECTED
 
@@ -396,44 +392,44 @@ Recommendation: DO NOT INSTALL. Consider reporting this skill to ClawHub moderat
 Alternative safe skills: {suggestions}
 ```
 
-## Technical Implementation Notes
+## 技术实现说明
 
-**Pattern Database Location**: `~/.openclaw/security-auditor/patterns/`
-- `malicious-patterns.json`: Known bad indicators
-- `safe-patterns.json`: Whitelisted elements
-- `ioc-database.json`: Indicators of Compromise
+**模式数据库位置**：`~/.openclaw/security-auditor/patterns/`
+- `malicious-patterns.json`：已知的恶意指标
+- `safe-patterns.json`：白名单中的元素
+- `ioc-database.json`：泄露的指标
 
-**Update Mechanism**:
+**更新机制**：
 ```bash
 # Pull latest threat intelligence
 curl -s "https://openclaw-security.github.io/threat-intel/latest.json" \
   > ~/.openclaw/security-auditor/patterns/ioc-database.json
 ```
 
-## Contributing
+## 贡献方式
 
-Found a new malicious pattern? Submit IOCs to the OpenClaw Security Working Group:
-- GitHub: github.com/openclaw/security-auditor
-- Report Format: JSON with pattern regex, description, severity
+发现新的恶意模式？请将IOC（Indicators of Compromise）提交给OpenClaw安全工作组：
+- GitHub：`github.com/openclaw/security-auditor`
+- 报告格式：包含模式正则表达式、描述和严重性的JSON文件
 
-## Limitations
+## 限制
 
-⚠️ **Important Disclaimers**:
-- This tool provides analysis, not guarantees
-- Sophisticated malware may evade detection
-- Always combine with VirusTotal + manual review for critical applications
-- Security is a shared responsibility
-- No automated tool replaces security expertise
+⚠️ **重要免责声明**：
+- 该工具提供分析结果，但不保证100%的准确性
+- 复杂的恶意软件可能逃避检测
+- 对于关键应用，建议结合使用VirusTotal和人工审查
+- 安全是共同的责任
+- 没有工具可以完全替代专业安全人员
 
-## References
+## 参考资料
 
-- ClawHavoc Campaign Analysis: [The Hacker News, Feb 2026]
-- OpenClaw Security Partnership: VirusTotal Integration
-- Malicious Skill Database: OpenSourceMalware Research
-- ClawHub Moderation Guide: docs.openclaw.ai/security
+- ClawHavoc活动分析：[The Hacker News, 2026年2月]
+- OpenClaw与VirusTotal的安全合作
+- 恶意技能数据库：OpenSourceMalware Research
+- ClawHub管理指南：`docs.openclaw.ai/security`
 
 ---
 
-**Remember**: The best security is defense in depth. Use this skill as ONE layer of your security strategy, not the only layer.
+**记住**：最佳的安全措施是深度防御。将此工具作为安全策略的一部分，但不要仅依赖它。
 
-Stay safe, stay skeptical, stay secure. 🦞🛡️
+保持安全，保持怀疑态度，确保安全。🦞🛡️

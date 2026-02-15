@@ -1,71 +1,71 @@
 ---
 name: canva
 version: 1.0.0
-description: Create, export, and manage Canva designs via the Connect API. Generate social posts, carousels, and graphics programmatically.
+description: 通过 Connect API 创建、导出和管理 Canva 设计；能够以编程方式生成社交媒体帖子、轮播图和图形元素。
 homepage: https://github.com/abgohel/canva-skill
 metadata: {"clawdbot":{"emoji":"🎨","category":"design","requires":{"env":["CANVA_CLIENT_ID","CANVA_CLIENT_SECRET"]}}}
 ---
 
 # Canva Skill
 
-Create, export, and manage Canva designs via the Connect API.
+通过 Connect API 创建、导出和管理 Canva 设计。
 
-## When to Use
+## 使用场景
 
-- "Create an Instagram post about [topic]"
-- "Export my Canva design as PNG"
-- "List my recent designs"
-- "Create a carousel from these points"
-- "Upload this image to Canva"
+- “创建关于 [主题] 的 Instagram 帖子”
+- “将我的 Canva 设计导出为 PNG 格式”
+- “列出我最近的设计”
+- “根据这些内容创建一个轮播图”
+- “将这张图片上传到 Canva”
 
-## Prerequisites
+## 先决条件
 
-1. **Create a Canva Integration:**
-   - Go to https://www.canva.com/developers/
-   - Create a new integration
-   - Get your Client ID and Client Secret
+1. **创建 Canva 集成：**
+   - 访问 https://www.canva.com/developers/
+   - 创建一个新的集成
+   - 获取您的客户端 ID（Client ID）和客户端密钥（Client Secret）
 
-2. **Set Environment Variables:**
+2. **设置环境变量：**
    ```bash
    export CANVA_CLIENT_ID="your_client_id"
    export CANVA_CLIENT_SECRET="your_client_secret"
    ```
 
-3. **Authenticate (first time):**
-   Run the auth flow to get access tokens (stored in `~/.canva/tokens.json`)
+3. **首次认证：**
+   运行认证流程以获取访问令牌（存储在 `~/.canva/tokens.json` 文件中）
 
-## API Base URL
+## API 基本 URL
 
 ```
 https://api.canva.com/rest/v1
 ```
 
-## Authentication
+## 认证
 
-Canva uses OAuth 2.0. The skill handles token refresh automatically.
+Canva 使用 OAuth 2.0。该技能会自动刷新令牌。
 
 ```bash
 # Get access token (stored in ~/.canva/tokens.json)
 ACCESS_TOKEN=$(cat ~/.canva/tokens.json | jq -r '.access_token')
 ```
 
-## Core Operations
+## 核心操作
 
-### List Designs
+### 列出设计（List Designs）
 
 ```bash
 curl -s "https://api.canva.com/rest/v1/designs" \
   -H "Authorization: Bearer $ACCESS_TOKEN" | jq .
 ```
 
-### Get Design Details
+### 获取设计详情（Get Design Details）
 
 ```bash
 curl -s "https://api.canva.com/rest/v1/designs/{designId}" \
   -H "Authorization: Bearer $ACCESS_TOKEN" | jq .
 ```
 
-### Create Design from Template
+### 根据模板创建设计（Create Design from Template）
 
 ```bash
 curl -X POST "https://api.canva.com/rest/v1/autofills" \
@@ -80,7 +80,7 @@ curl -X POST "https://api.canva.com/rest/v1/autofills" \
   }'
 ```
 
-### Export Design
+### 导出设计（Export Design）
 
 ```bash
 # Start export job
@@ -97,7 +97,7 @@ curl -s "https://api.canva.com/rest/v1/exports/{jobId}" \
   -H "Authorization: Bearer $ACCESS_TOKEN" | jq .
 ```
 
-### Upload Asset
+### 上传资产（Upload Asset）
 
 ```bash
 curl -X POST "https://api.canva.com/rest/v1/asset-uploads" \
@@ -107,79 +107,79 @@ curl -X POST "https://api.canva.com/rest/v1/asset-uploads" \
   --data-binary @image.png
 ```
 
-### List Brand Templates
+### 列出品牌模板（List Brand Templates）
 
 ```bash
 curl -s "https://api.canva.com/rest/v1/brand-templates" \
   -H "Authorization: Bearer $ACCESS_TOKEN" | jq .
 ```
 
-## Export Formats
+## 导出格式（Export Formats）
 
-| Format | Options |
+| 格式 | 选项 |
 |--------|---------|
-| PNG | width, height, lossless |
-| JPG | width, height, quality (1-100) |
-| PDF | standard, print |
-| MP4 | (for video designs) |
-| GIF | (for animated designs) |
+| PNG | 宽度、高度、无损压缩 |
+| JPG | 宽度、高度、质量（1-100） |
+| PDF | 标准格式、适合打印 |
+| MP4 | 适用于视频设计 |
+| GIF | 适用于动画设计 |
 
-## Common Workflows
+## 常见工作流程
 
-### Create Instagram Post
+### 创建 Instagram 帖子
 
-1. List brand templates: `GET /brand-templates`
-2. Find Instagram post template
-3. Autofill with content: `POST /autofills`
-4. Export as PNG 1080x1080: `POST /exports`
-5. Download the exported file
+1. 列出品牌模板：`GET /brand-templates`
+2. 选择 Instagram 帖子模板
+3. 自动填充内容：`POST /autofills`
+4. 将设计导出为 1080x1080 像素的 PNG 文件：`POST /exports`
+5. 下载导出的文件
 
-### Create Carousel
+### 创建轮播图
 
-1. Create multiple designs using autofill
-2. Export each as PNG
-3. Combine for posting
+1. 使用自动填充功能创建多个设计
+2. 将每个设计导出为 PNG 格式
+3. 将它们组合起来用于发布
 
-### Batch Export
+### 批量导出
 
-1. List designs: `GET /designs`
-2. Loop through and export each
-3. Download all files
+1. 列出所有设计：`GET /designs`
+2. 遍历并逐个导出设计
+3. 下载所有文件
 
-## Rate Limits
+## 速率限制
 
-- Most endpoints: 100 requests/minute
-- Upload/Export: 30 requests/minute
+- 大多数接口：每分钟 100 次请求
+- 上传/导出：每分钟 30 次请求
 
-## Error Handling
+## 错误处理
 
-Common errors:
-- `401` - Token expired, refresh needed
-- `403` - Missing required scope
-- `429` - Rate limit exceeded
-- `404` - Design/template not found
+常见错误：
+- `401` - 令牌过期，需要刷新
+- `403` - 缺少必要的权限范围
+- `429` - 超过速率限制
+- `404` - 设计/模板未找到
 
-## Scopes Required
+## 所需权限范围（Scopes Required）
 
-- `design:content:read` - Read designs
-- `design:content:write` - Create/modify designs
-- `asset:read` - Read assets
-- `asset:write` - Upload assets
-- `brandtemplate:content:read` - Read brand templates
+- `design:content:read` - 读取设计信息
+- `design:content:write` - 创建/修改设计
+- `asset:read` - 读取资产信息
+- `asset:write` - 上传资产
+- `brandtemplate:content:read` - 读取品牌模板信息
 
-## Tips
+## 提示
 
-1. **Use Brand Templates** - Pre-designed templates are faster than creating from scratch
-2. **Batch Operations** - Group exports to avoid rate limits
-3. **Cache Template IDs** - Store commonly used template IDs locally
-4. **Check Job Status** - Exports are async; poll until complete
+- **使用品牌模板** - 使用预先设计好的模板可以节省时间
+- **批量操作** - 分组导出以避免超出速率限制
+- **缓存模板 ID** - 将常用的模板 ID 存储在本地
+- **检查任务状态** - 导出操作是异步的；请等待完成后再进行下一步操作
 
-## Resources
+## 资源
 
-- [Canva Connect API Docs](https://www.canva.dev/docs/connect/)
-- [OpenAPI Spec](https://www.canva.dev/sources/connect/api/latest/api.yml)
-- [Starter Kit](https://github.com/canva-sdks/canva-connect-api-starter-kit)
+- [Canva Connect API 文档](https://www.canva.dev/docs/connect/)
+- [OpenAPI 规范](https://www.canva.dev/sources/connect/api/latest/api.yml)
+- [入门套件](https://github.com/canva-sdks/canva-connect-api-starter-kit)
 
 ---
 
-Built by **Meow 😼** for the Moltbook community 🦞
+由 **Meow 😼** 为 Moltbook 社区 🦞 制作

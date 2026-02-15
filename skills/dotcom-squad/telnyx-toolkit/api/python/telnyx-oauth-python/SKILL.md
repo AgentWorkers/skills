@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Oauth - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Authorization server metadata
+## 授权服务器元数据
 
-OAuth 2.0 Authorization Server Metadata (RFC 8414)
+OAuth 2.0 授权服务器元数据 (RFC 8414)
 
 `GET /.well-known/oauth-authorization-server`
 
@@ -44,9 +45,9 @@ response = client.well_known.retrieve_authorization_server_metadata()
 print(response.authorization_endpoint)
 ```
 
-## Protected resource metadata
+## 受保护资源元数据
 
-OAuth 2.0 Protected Resource Metadata for resource discovery
+用于资源发现的 OAuth 2.0 受保护资源元数据
 
 `GET /.well-known/oauth-protected-resource`
 
@@ -55,9 +56,9 @@ response = client.well_known.retrieve_protected_resource_metadata()
 print(response.authorization_servers)
 ```
 
-## OAuth authorization endpoint
+## OAuth 授权端点
 
-OAuth 2.0 authorization endpoint for the authorization code flow
+用于授权码流程的 OAuth 2.0 授权端点
 
 `GET /oauth/authorize`
 
@@ -69,9 +70,9 @@ client.oauth.retrieve_authorize(
 )
 ```
 
-## List OAuth clients
+## 列出 OAuth 客户端
 
-Retrieve a paginated list of OAuth clients for the authenticated user
+获取已认证用户的 OAuth 客户端列表（分页显示）
 
 `GET /oauth/clients`
 
@@ -81,11 +82,11 @@ page = page.data[0]
 print(page.client_id)
 ```
 
-## Create OAuth client
+## 创建 OAuth 客户端
 
-Create a new OAuth client
+创建一个新的 OAuth 客户端
 
-`POST /oauth/clients` — Required: `name`, `allowed_scopes`, `client_type`, `allowed_grant_types`
+`POST /oauth/clients` — 必需参数：`name`, `allowed_scopes`, `client_type`, `allowed_grant_types`
 
 ```python
 oauth_client = client.oauth_clients.create(
@@ -97,9 +98,9 @@ oauth_client = client.oauth_clients.create(
 print(oauth_client.data)
 ```
 
-## Get OAuth client
+## 获取 OAuth 客户端信息
 
-Retrieve a single OAuth client by ID
+通过 ID 获取单个 OAuth 客户端的信息
 
 `GET /oauth/clients/{id}`
 
@@ -110,9 +111,9 @@ oauth_client = client.oauth_clients.retrieve(
 print(oauth_client.data)
 ```
 
-## Update OAuth client
+## 更新 OAuth 客户端
 
-Update an existing OAuth client
+更新现有的 OAuth 客户端
 
 `PUT /oauth/clients/{id}`
 
@@ -123,9 +124,9 @@ oauth_client = client.oauth_clients.update(
 print(oauth_client.data)
 ```
 
-## Delete OAuth client
+## 删除 OAuth 客户端
 
-Delete an OAuth client
+删除一个 OAuth 客户端
 
 `DELETE /oauth/clients/{id}`
 
@@ -135,9 +136,9 @@ client.oauth_clients.delete(
 )
 ```
 
-## Get OAuth consent token
+## 获取 OAuth 同意令牌
 
-Retrieve details about an OAuth consent token
+获取 OAuth 同意令牌的详细信息
 
 `GET /oauth/consent/{consent_token}`
 
@@ -148,9 +149,9 @@ oauth = client.oauth.retrieve(
 print(oauth.data)
 ```
 
-## List OAuth grants
+## 列出 OAuth 授权令牌
 
-Retrieve a paginated list of OAuth grants for the authenticated user
+获取已认证用户的 OAuth 授权令牌列表（分页显示）
 
 `GET /oauth/grants`
 
@@ -160,9 +161,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Get OAuth grant
+## 获取 OAuth 授权令牌
 
-Retrieve a single OAuth grant by ID
+通过 ID 获取单个 OAuth 授权令牌的信息
 
 `GET /oauth/grants/{id}`
 
@@ -173,9 +174,9 @@ oauth_grant = client.oauth_grants.retrieve(
 print(oauth_grant.data)
 ```
 
-## Revoke OAuth grant
+## 撤销 OAuth 授权令牌
 
-Revoke an OAuth grant
+撤销一个 OAuth 授权令牌
 
 `DELETE /oauth/grants/{id}`
 
@@ -186,11 +187,11 @@ oauth_grant = client.oauth_grants.delete(
 print(oauth_grant.data)
 ```
 
-## Token introspection
+## 令牌检查
 
-Introspect an OAuth access token to check its validity and metadata
+检查 OAuth 访问令牌的有效性和元数据
 
-`POST /oauth/introspect` — Required: `token`
+`POST /oauth/introspect` — 必需参数：`token`
 
 ```python
 response = client.oauth.introspect(
@@ -201,7 +202,7 @@ print(response.client_id)
 
 ## JSON Web Key Set
 
-Retrieve the JSON Web Key Set for token verification
+获取用于令牌验证的 JSON Web Key Set
 
 `GET /oauth/jwks`
 
@@ -210,9 +211,9 @@ response = client.oauth.retrieve_jwks()
 print(response.keys)
 ```
 
-## Dynamic client registration
+## 动态客户端注册
 
-Register a new OAuth client dynamically (RFC 7591)
+动态注册一个新的 OAuth 客户端 (RFC 7591)
 
 `POST /oauth/register`
 
@@ -221,15 +222,16 @@ response = client.oauth.register()
 print(response.client_id)
 ```
 
-## OAuth token endpoint
+## OAuth 令牌端点
 
-Exchange authorization code, client credentials, or refresh token for access token
+交换授权码、客户端凭据或刷新令牌以获取访问令牌
 
-`POST /oauth/token` — Required: `grant_type`
+`POST /oauth/token` — 必需参数：`grant_type`
 
 ```python
 response = client.oauth.token(
     grant_type="client_credentials",
 )
 print(response.access_token)
+```
 ```

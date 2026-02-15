@@ -1,28 +1,32 @@
 ---
 name: brave-search-setup
-description: Configure Brave Search API and troubleshoot network/proxy issues for web_search functionality. Use when user needs to (1) Set up Brave Search API key, (2) Fix web_search fetch failures, (3) Configure proxy for OpenClaw tools on macOS with Clash/V2Ray/Surge, or (4) Diagnose "fetch failed" errors with web_search/web_fetch tools.
+description: 配置 Brave Search API 并解决与网络/代理相关的问题，以支持 web_search 功能。适用于以下情况：  
+1. 设置 Brave Search API 密钥；  
+2. 解决 web_search 的数据获取失败问题；  
+3. 在 macOS 上使用 Clash/V2Ray/Surge 为 OpenClaw 工具配置代理；  
+4. 使用 web_search/web_fetch 工具诊断 “数据获取失败” 的错误。
 ---
 
-# Brave Search Setup & Proxy Configuration
+# Brave Search 设置与代理配置
 
-Setup Brave Search API and resolve network connectivity issues for OpenClaw web tools.
+配置 Brave Search API 并解决 OpenClaw 网络连接问题。
 
-## Prerequisites
+## 先决条件
 
-- Brave Search API key (get from https://brave.com/search/api/)
-- OpenClaw CLI installed
-- macOS with proxy client (Clash/V2Ray/Surge) if behind GFW
+- Brave Search API 密钥（从 https://brave.com/search/api/ 获取）
+- 安装了 OpenClaw CLI
+- 如果使用的是 GFW（中国国家防火墙），则需要安装 macOS 上的代理客户端（如 Clash/V2Ray/Surge）
 
-## Quick Setup
+## 快速设置
 
-### Step 1: Configure API Key
+### 第一步：配置 API 密钥
 
 ```bash
 # Option A: Via config.patch (key will be stored securely)
 openclaw gateway config.patch --raw '{"tools":{"web":{"search":{"apiKey":"YOUR_BRAVE_API_KEY","enabled":true,"provider":"brave"}}}}'
 ```
 
-Or edit `~/.openclaw/openclaw.json` directly:
+或者直接编辑 `~/.openclaw/openclaw.json` 文件：
 ```json
 {
   "tools": {
@@ -37,25 +41,25 @@ Or edit `~/.openclaw/openclaw.json` directly:
 }
 ```
 
-### Step 2: Test Without Proxy
+### 第二步：不使用代理进行测试
 
 ```bash
 openclaw web.search --query "test" --count 1
 ```
 
-If works → Done.
-If "fetch failed" → Continue to proxy setup.
+如果测试成功 → 完成。
+如果出现 “fetch failed” 的错误 → 继续进行代理配置。
 
-## Proxy Setup (macOS)
+## 代理配置（macOS）
 
-### Step 3: Detect Proxy Port
+### 第三步：检测代理端口
 
-Common proxy ports by client:
-- Clash: 7890 (HTTP), 7891 (SOCKS5), 7897 (mixed-port)
-- Surge: 6152, 6153
-- V2Ray: 1080, 10808
+常见代理端口号：
+- Clash：7890（HTTP），7891（SOCKS5），7897（混合端口）
+- Surge：6152，6153
+- V2Ray：1080，10808
 
-Detect actual port:
+检测实际使用的代理端口：
 ```bash
 # Check if Clash is running
 ps aux | grep -i clash
@@ -71,35 +75,35 @@ for port in 7890 7891 7897 6152 6153 1080 10808; do
 done
 ```
 
-### Step 4: Set System Proxy
+### 第四步：设置系统代理
 
-**Method A: launchctl (Recommended - survives restart)**
+**方法 A：使用 launchctl（推荐，重启后代理设置仍然有效）**
 ```bash
 # Set for current session and future sessions
 launchctl setenv HTTPS_PROXY http://127.0.0.1:7897
 launchctl setenv HTTP_PROXY http://127.0.0.1:7897
 ```
 
-**Method B: Shell export (Session only)**
+**方法 B：通过 Shell 设置环境变量（仅适用于当前会话）**
 ```bash
 export HTTPS_PROXY=http://127.0.0.1:7897
 export HTTP_PROXY=http://127.0.0.1:7897
 ```
 
-**Method C: Add to shell profile (Permanent)**
+**方法 C：将代理设置添加到 Shell 配置文件中（永久生效）**
 ```bash
 echo 'export HTTPS_PROXY=http://127.0.0.1:7897' >> ~/.zshrc
 echo 'export HTTP_PROXY=http://127.0.0.1:7897' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### Step 5: Enable Gateway Restart
+### 第五步：启用代理服务器的重启功能
 
 ```bash
 openclaw gateway config.patch --raw '{"commands":{"restart":true}}'
 ```
 
-### Step 6: Restart Gateway with Proxy
+### 第六步：使用代理重新启动代理服务器
 
 ```bash
 # Restart to pick up proxy env vars
@@ -109,7 +113,7 @@ openclaw gateway restart
 kill -USR1 $(pgrep -f "openclaw gateway")
 ```
 
-### Step 7: Verify
+### 第七步：验证配置是否正确
 
 ```bash
 # Test web search
@@ -119,46 +123,45 @@ openclaw web.search --query "Brave Search test" --count 1
 openclaw web.fetch --url "https://api.search.brave.com" --max-chars 100
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "fetch failed" but proxy works in browser
+### 出现 “fetch failed” 错误，但浏览器可以正常访问 Google
 
-Symptom: Browser can access Google, but OpenClaw tools fail.
-Cause: Gateway process started before proxy env vars were set.
-Solution: Restart Gateway after setting HTTPS_PROXY.
+**症状**：浏览器可以访问 Google，但 OpenClaw 工具无法正常使用。
+**原因**：代理服务器在环境变量设置完成之前就已经启动了。
+**解决方法**：在设置好 HTTPS_PROXY 后重新启动代理服务器。
 
-### Permission denied on Gateway restart
+### 重启代理服务器时遇到权限问题
 
-Enable restart command:
+**解决方法**：启用代理服务器的重启命令：
 ```bash
 openclaw gateway config.patch --raw '{"commands":{"restart":true}}'
 ```
 
-### API key errors
+### API 密钥相关问题
 
-Verify key is set:
+**验证密钥是否已正确设置**：
 ```bash
 openclaw gateway config.get | grep -A5 'web.*search'
 ```
 
-Test directly with curl:
+**使用 curl 直接测试 API**：
 ```bash
 curl -s "https://api.search.brave.com/res/v1/web/search?q=test&count=1" \
   -H "Accept: application/json" \
   -H "X-Subscription-Token: YOUR_API_KEY"
 ```
 
-### Mixed-port vs dedicated ports
+### 混合端口与专用端口
 
-Clash "mixed-port" (default 7897) handles both HTTP and SOCKS5.
-If using dedicated ports:
-- HTTP proxy: 7890
-- SOCKS5 proxy: 7891 (requires different handling)
+Clash 的 “混合端口”（默认为 7897）同时支持 HTTP 和 SOCKS5 协议。
+**如果使用专用端口**：
+- HTTP 代理：7890
+- SOCKS5 代理：7891（需要分别配置）
 
-## Advanced: Per-Tool Proxy
+## 高级设置：针对特定工具配置代理
 
-Not all tools respect HTTPS_PROXY. For tools that don't:
-
+并非所有 OpenClaw 工具都会自动使用设置的 HTTPS_PROXY。对于不支持代理的工具，需要手动配置：
 ```bash
 # Use proxychains-ng
 brew install proxychains-ng
@@ -175,17 +178,17 @@ EOF
 proxychains4 openclaw web.search --query "test"
 ```
 
-## Workflow Summary
+## 工作流程总结
 
-1. **Configure API key** → `config.patch` or edit JSON
-2. **Test** → If fails, proxy needed
-3. **Detect port** → Check Clash/Surge config
-4. **Set env vars** → `launchctl setenv` or shell export
-5. **Restart Gateway** → `openclaw gateway restart`
-6. **Verify** → Run test search
+1. **配置 API 密钥** → 通过 `config.patch` 文件或直接编辑 `openclaw.json`
+2. **进行测试** → 如果测试失败，说明需要配置代理
+3. **检测代理端口** → 查看 Clash 或 Surge 的配置文件
+4. **设置环境变量** → 使用 `launchctl setenv` 或 Shell 命令设置环境变量
+5. **重启代理服务器** → 使用 `openclaw gateway restart` 命令重启代理服务器
+6. **验证配置** → 运行搜索测试
 
-## References
+## 参考资料
 
-- Brave Search API Docs: https://api.search.brave.com/app/docs
-- OpenClaw Config: https://docs.openclaw.ai/config
-- Clash Verge: https://github.com/clash-verge-rev/clash-verge-rev
+- Brave Search API 文档：https://api.search.brave.com/app/docs
+- OpenClaw 配置指南：https://docs.openclaw.ai/config
+- Clash Verge 项目：https://github.com/clash-verge-rev/clash-verge-rev

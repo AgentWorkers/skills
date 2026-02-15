@@ -1,15 +1,15 @@
 ---
 slug: "json-parser"
 display_name: "Json Parser"
-description: "Parse and validate JSON data from construction APIs, IoT sensors, and BIM exports. Transform nested JSON to flat DataFrames."
+description: "从建筑API、物联网传感器以及BIM导出文件中解析并验证JSON数据。将嵌套的JSON数据转换为扁平化的DataFrames（数据框）。"
 ---
 
-# JSON Parser for Construction Data
+# 用于建筑数据的 JSON 解析器
 
-## Overview
-Construction systems increasingly use JSON for data exchange - from IoT sensors to BIM metadata exports. This skill handles parsing, validation, and flattening of JSON structures.
+## 概述
+建筑系统越来越多地使用 JSON 进行数据交换——从物联网传感器到建筑信息模型（BIM）元数据的导出。本技能涵盖了 JSON 结构的解析、验证以及扁平化处理。
 
-## Python Implementation
+## Python 实现
 
 ```python
 import json
@@ -188,7 +188,7 @@ class IoTJSONParser(ConstructionJSONParser):
         return pd.DataFrame(readings)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 parser = ConstructionJSONParser()
@@ -206,27 +206,27 @@ flat = parser.flatten_json(result.data)
 elements = parser.extract_elements(result.data, "project.building.floors")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. BIM Metadata
+### 1. 建筑信息模型（BIM）元数据
 ```python
 bim_parser = BIMJSONParser()
 result = bim_parser.parse_file("revit_export.json")
 elements = bim_parser.parse_bim_elements(result.data)
 ```
 
-### 2. IoT Sensors
+### 2. 物联网传感器
 ```python
 iot_parser = IoTJSONParser()
 readings = iot_parser.parse_sensor_batch(sensor_data)
 ```
 
-### 3. API Response
+### 3. API 响应
 ```python
 parser = ConstructionJSONParser()
 result = parser.parse_string(api_response)
 df = parser.to_dataframe(result.data)
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.1 - Semi-structured Data
+## 资源
+- **DDC 曲典**：第 2.1 章 - 半结构化数据

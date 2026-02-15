@@ -1,14 +1,14 @@
 ---
 name: 10dlc-registration
-description: Register for 10DLC as a sole proprietor to enable SMS messaging in the USA. Use when setting up A2P SMS, registering brands/campaigns, or assigning phone numbers for compliant US messaging. Requires Telnyx CLI.
+description: 以个体经营者（sole proprietor）的身份注册 10DLC，以启用在美国的短信服务（SMS messaging）。该功能可用于设置 A2P（Application-to-Party）短信服务、注册品牌/活动（register brands/campaigns），或为符合美国法规的短信通信分配电话号码（assign phone numbers for compliant US messaging）。注册过程中需要使用 Telnyx CLI（命令行界面）。
 metadata: {"openclaw":{"emoji":"📱","requires":{"bins":["telnyx"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
-# 10DLC Registration
+# 10DLC 注册
 
-Register for 10DLC (10-Digit Long Code) to enable A2P SMS in the USA.
+注册 10DLC（10 位长代码），以在美国启用 A2P SMS 功能。
 
-## Quick Start with Scripts
+## 使用脚本快速入门
 
 ```bash
 # Interactive registration wizard
@@ -21,23 +21,23 @@ Register for 10DLC (10-Digit Long Code) to enable A2P SMS in the USA.
 ./scripts/assign.sh +15551234567 <campaign-id>
 ```
 
-## Prerequisites
+## 先决条件
 
-- Telnyx CLI installed: `npm install -g @telnyx/api-cli`
-- API key configured: `telnyx auth setup`
-- At least one US phone number
+- 已安装 Telnyx CLI：`npm install -g @telnyx/api-cli`
+- 已配置 API 密钥：`telnyx auth setup`
+- 拥有至少一个美国电话号码
 
-## Quick Start
+## 快速入门
 
-Interactive wizard (easiest):
+**交互式向导（最简单的方式）：**
 
 ```bash
 telnyx 10dlc wizard
 ```
 
-## Manual Registration
+## 手动注册
 
-### Step 1: Create Sole Proprietor Brand
+### 第 1 步：创建个体经营者品牌
 
 ```bash
 telnyx 10dlc brand create --sole-prop \
@@ -46,14 +46,14 @@ telnyx 10dlc brand create --sole-prop \
   --email you@example.com
 ```
 
-### Step 2: Verify Brand (if required)
+### 第 2 步：验证品牌（如需要）
 
 ```bash
 telnyx 10dlc brand get <brand-id>
 telnyx 10dlc brand verify <brand-id> --pin 123456
 ```
 
-### Step 3: Create Campaign
+### 第 3 步：创建活动（Campaign）
 
 ```bash
 telnyx 10dlc campaign create \
@@ -64,31 +64,31 @@ telnyx 10dlc campaign create \
   --sample-message-2 "Reply STOP to opt out."
 ```
 
-### Step 4: Assign Phone Number
+### 第 4 步：分配电话号码
 
 ```bash
 telnyx 10dlc assign +15551234567 <campaign-id>
 ```
 
-### Step 5: Wait for Approval
+### 第 5 步：等待审核结果
 
 ```bash
 telnyx 10dlc campaign get <campaign-id>
 ```
 
-## Use Cases
+## 使用场景
 
-| Use Case | Description |
+| 使用场景 | 描述 |
 |----------|-------------|
-| `2FA` | Auth codes |
-| `CUSTOMER_CARE` | Support messages |
-| `ACCOUNT_NOTIFICATION` | Account alerts |
-| `DELIVERY_NOTIFICATION` | Shipping updates |
-| `MIXED` | Multiple purposes |
+| `2FA` | 二次验证代码 |
+| `CUSTOMER_CARE` | 客户服务信息 |
+| `ACCOUNT_NOTIFICATION` | 账户通知 |
+| `DELIVERY_NOTIFICATION` | 运输更新 |
+| `MIXED` | 多种用途 |
 
-List all: `telnyx 10dlc usecases`
+查看所有使用场景：`telnyx 10dlc usecases`
 
-## Status Commands
+## 状态查询命令
 
 ```bash
 telnyx 10dlc brand list
@@ -96,21 +96,21 @@ telnyx 10dlc campaign list
 telnyx 10dlc assignment status +15551234567
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Errors
+### 常见错误
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `Brand verification required` | Sole proprietor brands need phone verification | Check email/SMS for PIN, run `telnyx 10dlc brand verify <id> --pin <code>` |
-| `Campaign rejected: insufficient description` | Description too vague | Be specific about message purpose, include business context |
-| `Sample messages must include opt-out` | Missing STOP instructions | Add "Reply STOP to unsubscribe" to sample messages |
-| `Phone number already assigned` | Number linked to another campaign | Run `telnyx 10dlc unassign +1...` first |
-| `Brand pending` | Still under review (24-72h typical) | Wait and check status with `telnyx 10dlc brand get <id>` |
-| `Invalid use case for sole proprietor` | Some use cases restricted | Sole prop limited to: 2FA, CUSTOMER_CARE, DELIVERY_NOTIFICATION, ACCOUNT_NOTIFICATION |
-| `Rate limit exceeded` | Too many API calls | Wait 60s and retry |
+| `需要品牌验证` | 个体经营者品牌需要电话号码验证 | 查看电子邮件或短信中的 PIN 码，运行 `telnyx 10dlc brand verify <id> --pin <code>` |
+| `活动被拒绝：描述不够具体` | 描述过于模糊 | 请明确消息的目的，并提供业务背景信息 |
+| 样本消息中缺少退订选项 | 样本消息中缺少“回复 STOP 以退订”的提示 | 在样本消息中添加“回复 STOP 以退订” |
+| 电话号码已被分配给其他活动 | 该号码已关联到其他活动 | 先运行 `telnyx 10dlc unassign +1...` |
+| 品牌审核中 | 审核通常需要 24-72 小时 | 等待审核结果，并使用 `telnyx 10dlc brand get <id>` 查询状态 |
+| 该使用场景不适用于个体经营者 | 某些使用场景受到限制 | 个体经营者仅限使用：2FA、CUSTOMER_CARE、DELIVERY_NOTIFICATION、ACCOUNT_NOTIFICATION |
+| 超过 API 调用频率限制 | API 调用次数过多 | 等待 60 秒后重试 |
 
-### Debug Tips
+### 调试技巧
 
 ```bash
 # Verbose output for debugging
@@ -123,22 +123,22 @@ telnyx 10dlc assignment status +15551234567
 telnyx 10dlc campaign list --json | jq '.data[] | {id, status, usecase}'
 ```
 
-### Timeline Expectations
+### 时间线预期
 
-| Step | Typical Time |
+| 步骤 | 典型时间 |
 |------|--------------|
-| Brand creation | Instant |
-| Brand verification | 1-5 minutes (PIN via SMS/email) |
-| Brand approval | 24-72 hours |
-| Campaign review | 24-48 hours |
-| Number assignment | Instant (after campaign approved) |
+| 创建品牌 | 即时 |
+| 品牌验证 | 1-5 分钟（通过短信/电子邮件接收 PIN 码） |
+| 品牌审核 | 24-72 小时 |
+| 活动审核 | 24-48 小时 |
+| 分配电话号码 | 活动审核通过后立即生效 |
 
-### Getting Help
+### 获取帮助
 
-- Telnyx docs: https://developers.telnyx.com/docs/messaging/10dlc
-- Support portal: https://support.telnyx.com
-- API status: https://status.telnyx.com
+- Telnyx 文档：https://developers.telnyx.com/docs/messaging/10dlc
+- 支持门户：https://support.telnyx.com
+- API 状态：https://status.telnyx.com
 
-## Pricing
+## 价格
 
-Brand and campaign registration: **Free**
+品牌和活动注册：**免费**

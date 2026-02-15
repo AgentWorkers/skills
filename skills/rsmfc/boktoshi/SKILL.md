@@ -1,40 +1,40 @@
 # Boktoshi
 
-**Free-to-play AI trading arena — watch an AI bot trade 24/7 and compete against it with play money.**
+**免费AI交易竞技场——观看AI机器人24小时不间断地进行交易，并用虚拟资金与其竞争。**
 
-Boktoshi is a live trading arena where an AI bot named Boktoshi trades stocks, crypto, and commodities around the clock using real market data. Every user gets free play money (BOKS) to trade alongside the bot — no purchase required, no wallet needed, no strings attached.
+Boktoshi是一个实时的交易竞技场，在这里名为Boktoshi的AI机器人利用真实的市场数据全天候进行股票、加密货币和商品的交易。每位用户都可以免费获得虚拟交易资金（BOKS），与机器人一起进行交易——无需购买任何东西，也无需使用任何钱包，没有任何附加条件。
 
-## What You Get
+## 您将获得什么
 
-- **200 BOKS free** on signup + **800 bonus BOKS** to claim
-- BOKS are pegged 1:1 to USD inside the arena — trade like it's real
-- Leveraged trading on crypto, stocks, and commodities
-- Live leaderboard — humans vs AI, see who wins
+- 注册即获**200 BOKS**，还可领取**800 BOKS**的奖励
+- BOKS在竞技场内的价值与美元1:1挂钩——就像在真实市场中交易一样
+- 可对加密货币、股票和商品进行杠杆交易
+- 实时排行榜——人类交易者与AI机器人竞争，看看谁更胜一筹
 
-## The AI Bot
+## AI机器人
 
-Boktoshi trades 24/7 using a multi-stage AI pipeline we're actively training in the open:
+Boktoshi通过一个多阶段的AI系统进行24小时不间断的交易，该系统正在公开进行持续优化：
 
-1. **Signal Generator** — aggressive pattern detection across multiple strategies
-2. **Cost Simulator** — filters signals through real-world fees, slippage, and funding costs
-3. **Live Arena** — every trade is transparent, you can watch entries, exits, P&L, and reasoning in real time
+1. **信号生成器**——通过多种策略检测交易信号
+2. **成本模拟器**——根据现实世界的费用、滑点和资金成本对交易信号进行筛选
+3. **实时竞技场**——每笔交易都透明可见，您可以实时查看交易记录、盈亏情况以及交易理由
 
-## How It Works
+## 使用方法
 
-- Sign up for free at [boktoshi.com](https://boktoshi.com)
-- Get your free BOKS and start trading immediately
-- Trade the same markets the AI bot trades — crypto perps, stocks, commodities
-- Use leverage, set stops, manage risk — full trading experience
-- Climb the leaderboard and see if you can beat the bot
+- 免费在 [boktoshi.com](https://boktoshi.com) 注册
+- 立即获取免费BOKS并开始交易
+- 交易与AI机器人相同的品种——加密货币、股票、商品
+- 可使用杠杆，设置止损点，管理风险——享受完整的交易体验
+- 在排行榜上挑战机器人，看看您能否战胜它
 
-## Key Details
+## 重要细节
 
-- **100% free to play** — no credit card, no deposit, no catch
-- Real market data from live exchanges
-- Play money only — BOKS have no cash value outside the arena
-- Optional real-money mode available for experienced traders
-- PWA — works on desktop, Android, and iOS
+- **100%免费体验**——无需信用卡，无需存款，没有任何隐藏费用
+- 使用来自真实交易所的实时市场数据
+- 仅使用虚拟资金——BOKS在竞技场之外没有任何现金价值
+- 经验丰富的交易者可选择使用真实货币模式
+- 支持PWA（Progressive Web Application）——可在桌面、Android和iOS设备上使用
 
-## Website
+## 官网
 
 https://boktoshi.com

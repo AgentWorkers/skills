@@ -1,18 +1,18 @@
 ---
 slug: "rag-construction"
 display_name: "Rag Construction"
-description: "Build RAG systems for construction knowledge bases. Create searchable AI-powered construction document systems"
+description: "构建用于建筑知识库的RAG（Retrieval, Augmentation, and Generation）系统。开发基于人工智能的可搜索建筑文档管理系统。"
 ---
 
-# RAG Construction
+# RAG 构建（RAG Construction）
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.3), this skill builds Retrieval-Augmented Generation (RAG) systems for construction knowledge bases, enabling semantic search and AI-powered question answering over construction documents.
+本技能基于 DDC 方法论（第 2.3 章）开发了用于建筑知识库的检索增强生成（Retrieval-Augmented Generation, RAG）系统，实现了对建筑文档的语义搜索和基于人工智能的问答功能。
 
-**Book Reference:** "Pandas DataFrame и LLM ChatGPT" / "Pandas DataFrame and LLM ChatGPT"
+**参考书籍**：《Pandas DataFrame 和 LLM ChatGPT》
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -609,9 +609,9 @@ class ConstructionRAG:
         }
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Build Construction Knowledge Base
+### 构建建筑知识库（Build Construction Knowledge Base）
 
 ```python
 rag = ConstructionRAG(
@@ -650,7 +650,7 @@ chunks_created = rag.add_document(spec_doc)
 print(f"Created {chunks_created} chunks")
 ```
 
-### Search Knowledge Base
+### 搜索知识库（Search Knowledge Base）
 
 ```python
 # Search for concrete requirements
@@ -667,7 +667,7 @@ for result in results:
     print()
 ```
 
-### Answer Questions with RAG
+### 使用 RAG 回答问题（Answer Questions with RAG）
 
 ```python
 response = rag.query(
@@ -680,24 +680,24 @@ print(f"Confidence: {response.confidence:.0%}")
 print(f"Sources: {len(response.sources)}")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
+| 组件 | 用途 |
 |-----------|---------|
-| `ConstructionRAG` | Main RAG system |
-| `TextChunker` | Document chunking |
-| `VectorStore` | Embedding storage |
-| `EmbeddingModel` | Text embeddings |
-| `DocumentChunk` | Chunk with metadata |
-| `RAGResponse` | Query response |
+| `ConstructionRAG` | 主要的 RAG 系统 |
+| `TextChunker` | 文档分块工具 |
+| `VectorStore` | 嵌入式存储系统 |
+| `EmbeddingModel` | 文本嵌入模型 |
+| `DocumentChunk` | 带有元数据的文档块 |
+| `RAGResponse` | 查询结果生成器 |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.3
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko 著的《Data-Driven Construction》，第 2.3 章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步
 
-- Use [llm-data-automation](../llm-data-automation/SKILL.md) for automation
-- Use [vector-search](../../Chapter-4.4/vector-search/SKILL.md) for advanced search
-- Use [document-classification-nlp](../../../DDC_Innovative/document-classification-nlp/SKILL.md) for classification
+- 使用 [llm-data-automation](../llm-data-automation/SKILL.md) 实现自动化处理
+- 使用 [vector-search](../../Chapter-4.4/vector-search/SKILL.md) 进行高级搜索
+- 使用 [document-classification-nlp](../../../DDC_Innovative/document-classification-nlp/SKILL.md) 进行文档分类

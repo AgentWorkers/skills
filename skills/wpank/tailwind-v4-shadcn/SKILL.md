@@ -3,37 +3,46 @@ name: tailwind-v4-+-shadcn/ui-stack
 model: fast
 ---
 
-# Tailwind v4 + shadcn/ui Stack
+# Tailwind v4 + shadcn/ui 组合方案
 
-Production-tested setup for Tailwind v4 with shadcn/ui. Prevents 8 documented errors through a mandatory four-step architecture.
+这是一个经过生产环境测试的 Tailwind v4 与 shadcn/ui 配置方案，通过强制性的四步流程有效避免了 8 种常见错误。
 
-## WHAT
+## 什么是 Tailwind v4 + shadcn/ui？
 
-Complete Tailwind v4 + shadcn/ui configuration:
-- Four-step theming architecture (mandatory)
-- CSS variable-based color system
-- Automatic dark mode switching
-- Error prevention for 8 common mistakes
-- Migration guide from v3
-- Production-ready templates
+- 完整的 Tailwind v4 + shadcn/ui 配置：
+  - 强制性的四步主题设置流程
+  - 基于 CSS 变量的颜色系统
+  - 自动切换暗模式功能
+  - 预防 8 种常见配置错误
+  - 从 Tailwind v3 迁移的指南
+  - 适用于生产环境的模板
 
-## WHEN
+## 适用场景
 
-- Starting a new React/Vite project with Tailwind v4
-- Migrating from Tailwind v3 to v4
-- Setting up shadcn/ui with Tailwind v4
-- Debugging: colors not working, dark mode broken, build failures
-- Fixing `@theme inline`, `@apply`, or `@layer base` issues
+- 新建使用 Tailwind v4 的 React/Vite 项目
+- 从 Tailwind v3 迁移到 v4
+- 配置 shadcn/ui 与 Tailwind v4
+- 解决颜色显示异常、暗模式失效或构建失败等问题
+- 修复与 `@theme inline`、`@apply` 或 `@layer base` 相关的问题
 
-## KEYWORDS
+## 关键词
 
-tailwind v4, tailwindcss 4, shadcn, shadcn/ui, @theme inline, dark mode, css variables, vite, tw-animate-css, tailwind config, migration
+- Tailwind v4
+- TailwindCSS 4
+- shadcn
+- shadcn/ui
+- @theme inline
+- 暗模式
+- CSS 变量
+- vite
+- tw-animate-css
+- Tailwind 配置
+- 迁移
 
-**Production verified:** WordPress Auditor (https://wordpress-auditor.webfonts.workers.dev)  
-**Versions:** tailwindcss@4.1.18, @tailwindcss/vite@4.1.18
+**生产环境验证：** WordPress Auditor (https://wordpress-auditor.webfonts.workers.dev)
+**版本：** tailwindcss@4.1.18, @tailwindcss/vite@4.1.18
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -44,7 +53,7 @@ npx clawhub@latest install tailwind-v4-shadcn
 
 ---
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Install dependencies
@@ -56,7 +65,7 @@ pnpm dlx shadcn@latest init
 rm tailwind.config.ts
 ```
 
-**vite.config.ts:**
+**vite.config.ts：**
 ```typescript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -69,7 +78,7 @@ export default defineConfig({
 })
 ```
 
-**components.json (CRITICAL):**
+**components.json（关键文件）：**
 ```json
 {
   "tailwind": {
@@ -83,11 +92,11 @@ export default defineConfig({
 
 ---
 
-## The Four-Step Architecture (MANDATORY)
+## 强制性的四步流程
 
-Skipping steps breaks theming. Follow exactly:
+跳过任意一步都会导致主题设置失败，请严格遵循以下步骤：
 
-### Step 1: Define CSS Variables at Root
+### 第一步：在根目录定义 CSS 变量
 
 ```css
 /* src/index.css */
@@ -111,9 +120,9 @@ Skipping steps breaks theming. Follow exactly:
 }
 ```
 
-**Critical:** Define at root level (NOT inside `@layer base`). Use `hsl()` wrapper.
+**注意：** 变量必须定义在根目录（而非 `@layer base` 内部），并使用 `hsl()` 包装器。
 
-### Step 2: Map Variables to Tailwind
+### 第二步：将变量映射到 Tailwind CSS
 
 ```css
 @theme inline {
@@ -125,9 +134,9 @@ Skipping steps breaks theming. Follow exactly:
 }
 ```
 
-**Why:** Generates utility classes (`bg-background`, `text-primary`). Without this, utilities don't exist.
+**原因：** 这一步会生成辅助类（如 `bg-background`、`text-primary`）。如果没有这一步，辅助类将无法使用。
 
-### Step 3: Apply Base Styles
+### 第三步：应用基础样式
 
 ```css
 @layer base {
@@ -138,9 +147,9 @@ Skipping steps breaks theming. Follow exactly:
 }
 ```
 
-**Critical:** Reference variables directly. Never double-wrap: `hsl(var(--background))`.
+**注意：** 直接引用变量，切勿重复包装：例如 `hsl(var(--background))`。
 
-### Step 4: Result - Automatic Dark Mode
+### 第四步：自动切换暗模式
 
 ```tsx
 <div className="bg-background text-foreground">
@@ -148,34 +157,34 @@ Skipping steps breaks theming. Follow exactly:
 </div>
 ```
 
-No `dark:` variants needed for semantic colors.
+对于具有语义意义的颜色，无需使用 `dark:` 变体。
 
 ---
 
-## Critical Rules
+## 重要规则
 
-### Always Do
-1. Wrap colors with `hsl()` in `:root`/`.dark`: `--bg: hsl(0 0% 100%);`
-2. Use `@theme inline` to map all CSS variables
-3. Set `"tailwind.config": ""` in components.json
-4. Delete `tailwind.config.ts` if exists
-5. Use `@tailwindcss/vite` plugin (NOT PostCSS)
+### 必须遵守的规则：
+1. 在 `:root` 或 `.dark` 中使用 `hsl()` 包装颜色：`--bg: hsl(0 0% 100%)`
+2. 使用 `@theme inline` 来映射所有 CSS 变量
+3. 在 `components.json` 中设置 `"config": ""`
+4. 如果存在 `tailwind.config.ts`，请删除它
+5. 使用 `@tailwindcss/vite` 插件（而非 PostCSS）
 
-### Never Do
-1. Put `:root`/`.dark` inside `@layer base`
-2. Use `.dark { @theme { } }` (v4 doesn't support nested @theme)
-3. Double-wrap: `hsl(var(--background))`
-4. Use `tailwind.config.ts` for theme
-5. Use `@apply` with `@layer base/components` classes
-6. Use `dark:` variants for semantic colors
+### 绝对不能做的：
+1. 将 `:root` 或 `.dark` 放在 `@layer base` 内部
+2. 使用 `.dark { @theme { } }`（v4 不支持嵌套的 `@theme`）
+3. 重复包装颜色：例如 `hsl(var(--background))`
+4. 使用 `tailwind.config.ts` 来管理主题设置
+5. 在 `@layer base/components` 类上使用 `@apply`
+6. 对于具有语义意义的颜色使用 `dark:` 变体
 
 ---
 
-## Common Errors & Solutions
+## 常见错误及解决方法
 
-### Error 1: tw-animate-css Import
+### 错误 1：`tw-animate-css` 无法导入
 
-**Error:** `Cannot find module 'tailwindcss-animate'`
+**错误：** “无法找到模块 ‘tailwindcss-animate’”
 
 ```bash
 # Wrong (v3 package)
@@ -190,11 +199,9 @@ pnpm add -D tw-animate-css
 @import "tw-animate-css";
 ```
 
-### Error 2: Colors Not Working
+### 错误 2：颜色显示异常
 
-**Error:** `bg-primary` doesn't apply styles
-
-**Cause:** Missing `@theme inline` mapping
+**原因：** 缺少 `@theme inline` 的映射
 
 ```css
 @theme inline {
@@ -203,25 +210,25 @@ pnpm add -D tw-animate-css
 }
 ```
 
-### Error 3: Dark Mode Not Switching
+### 错误 3：暗模式无法切换
 
-**Cause:** Missing ThemeProvider
+**原因：** 缺少 ThemeProvider
 
-See `templates/theme-provider.tsx` and wrap your app.
+请参考 `templates/theme-provider.tsx` 并正确配置应用程序。
 
-### Error 4: Build Fails
+### 错误 4：构建失败
 
-**Error:** `Unexpected config file`
+**原因：** 配置文件格式不正确
 
 ```bash
 rm tailwind.config.ts  # v4 doesn't use this
 ```
 
-### Error 5: @theme inline Breaks Multi-Theme
+### 错误 5：`@theme inline` 导致多主题系统出现问题
 
-**Cause:** `@theme inline` bakes values at build time
+**原因：** `@theme inline` 会在构建时固定颜色值
 
-Use `@theme` (without inline) for multi-theme systems:
+对于多主题系统，请使用 `@theme`（而非 `@theme inline`）：
 
 ```css
 /* For multi-theme (not just light/dark) */
@@ -236,11 +243,11 @@ Use `@theme` (without inline) for multi-theme systems:
 }
 ```
 
-### Error 6: @apply Breaking
+### 错误 6：`@apply` 使用错误
 
-**Error:** `Cannot apply unknown utility class`
+**原因：** 无法应用某些辅助类
 
-v4 changed `@apply` behavior:
+v4 中的 `@apply` 行为发生了变化：
 
 ```css
 /* Wrong (v3 pattern) */
@@ -254,9 +261,9 @@ v4 changed `@apply` behavior:
 }
 ```
 
-### Error 7: @layer base Styles Ignored
+### 错误 7：`@layer base` 的样式被忽略
 
-**Cause:** CSS layer cascade issues
+**原因：** CSS 层级覆盖问题
 
 ```css
 /* Better: Don't use @layer base for critical styles */
@@ -267,117 +274,76 @@ body {
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Symptom | Cause | Fix |
+| 症状 | 原因 | 解决方法 |
 |---------|-------|-----|
-| `bg-primary` doesn't work | Missing `@theme inline` | Add mapping |
-| Colors black/white | Double `hsl()` | Use `var(--color)` not `hsl(var(--color))` |
-| Dark mode stuck | Missing ThemeProvider | Wrap app |
-| Build fails | `tailwind.config.ts` exists | Delete file |
-| Animation errors | Wrong package | Use `tw-animate-css` |
+| `bg-primary` 无法显示颜色 | 缺少 `@theme inline` 的映射 | 添加相应的映射 |
+| 颜色显示为黑色或白色 | 变量包装错误（使用了 `hsl(var(--color))` 而不是 `hsl(var(--color))`） | 使用 `var(--color)` |
+| 暗模式无法切换 | 缺少 ThemeProvider | 正确配置 ThemeProvider |
+| 构建失败 | 存在 `tailwind.config.ts` 文件 | 删除该文件 |
+| 动画效果异常 | 依赖的库版本不正确 | 使用 `tw-animate-css` |
 
 ---
 
-## Tailwind v4 New Features
+## Tailwind v4 的新特性
 
-### OKLCH Color Space
-
-v4 uses OKLCH for perceptually uniform colors. Automatic sRGB fallbacks generated.
-
-```css
-@theme {
-  /* Modern approach */
-  --color-brand: oklch(0.7 0.15 250);
-  
-  /* Legacy (still works) */
-  --color-brand: hsl(240 80% 60%);
-}
-```
-
-### Container Queries (Built-in)
-
-```tsx
-<div className="@container">
-  <div className="@md:text-lg @lg:grid-cols-2">
-    Content responds to container width
-  </div>
-</div>
-```
-
-### Line Clamp (Built-in)
-
-```tsx
-<p className="line-clamp-3">Truncate to 3 lines...</p>
-```
-
-### Plugins
-
-```css
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/forms";
-```
+- **OKLCH 颜色空间**：v4 使用 OKLCH 颜色空间，确保颜色显示更加均匀。
+- **内置的容器查询** 和 **行限制功能**。
 
 ---
 
-## Migration from v3
 
-### Key Changes
+## 从 Tailwind v3 迁移
 
-1. Delete `tailwind.config.ts`
-2. Move theme to CSS with `@theme inline`
-3. Replace `tailwindcss-animate` → `tw-animate-css`
-4. Replace `require()` → `@plugin`
-5. `@apply` in `@layer components` → `@utility`
+- 删除 `tailwind.config.ts`
+- 将主题设置移到 CSS 中，并使用 `@theme inline`
+- 将 `tailwindcssanimate` 替换为 `tw-animate-css`
+- 将 `require()` 替换为 `@plugin`
+- 将 `@apply` 从 `@layer components` 中移除，改为使用 `@utility`
 
-### Color Migration
-
-```tsx
-// Before: Hardcoded + dark variants
-<div className="bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
-
-// After: Semantic + automatic
-<div className="bg-info/10 text-info">
-```
-
-### Visual Changes
-
-- Ring width default: 3px → 1px (use `ring-3` to match v3)
-- Heading styles removed from Preflight (add via `@tailwindcss/typography` or custom)
+### 颜色迁移
 
 ---
 
-## Files
 
-- `templates/index.css` - Complete CSS with all variables
-- `templates/theme-provider.tsx` - Dark mode provider
-- `templates/vite.config.ts` - Vite configuration
-- `templates/components.json` - shadcn/ui v4 config
-- `templates/utils.ts` - `cn()` utility
-- `references/architecture.md` - Deep dive on four-step pattern
-- `references/migration-guide.md` - Semantic color migration
-- `references/dark-mode.md` - Complete dark mode setup
+## 视觉上的变化
+
+- 环形图元素的默认宽度从 3px 更改为 1px（使用 `ring-3` 以保持与 v3 兼容）
+- 标题样式已从 Preflight 移除（需通过 `@tailwindcss/typography` 或自定义样式添加）
 
 ---
 
-## Setup Checklist
+## 相关文件
 
-- [ ] `@tailwindcss/vite` installed
-- [ ] `vite.config.ts` uses `tailwindcss()` plugin
-- [ ] `components.json` has `"config": ""`
-- [ ] NO `tailwind.config.ts` exists
-- [ ] `src/index.css` follows 4-step pattern
-- [ ] ThemeProvider wraps app
-- [ ] Theme toggle works
+- `templates/index.css`：包含所有 CSS 变量的完整样式文件
+- `templates/theme-provider.tsx`：暗模式提供者
+- `templates/vite.config.ts`：Vite 配置文件
+- `templates/components.json`：shadcn/ui v4 的配置文件
+- `templates/utils.ts`：辅助函数库
+- `references/architecture.md`：四步配置流程的详细说明
+- `references/migration-guide.md`：颜色迁移指南
+- `references/dark-mode.md`：完整的暗模式配置指南
 
 ---
 
-## NEVER
+## 配置检查清单
 
-- Put `:root` or `.dark` inside `@layer base`
-- Use `tailwind.config.ts` with v4 (it's ignored)
-- Double-wrap colors: `hsl(var(--background))`
-- Use `tailwindcss-animate` (use `tw-animate-css`)
-- Use `@apply` on `@layer base/components` classes in v4
-- Skip the `@theme inline` step
+- 确保已安装 `@tailwindcss/vite`
+- `vite.config.ts` 中使用了 `tailwindcss()` 插件
+- `components.json` 中设置了 `"config": ""`
+- 不存在 `tailwind.config.ts`
+- `src/index.css` 遵循四步配置流程
+- 应用程序正确使用了 ThemeProvider
+- 暗模式切换功能正常工作
+
+---
+
+## 绝对不能做的事情：
+
+- 不要在 `@layer base` 内部使用 `:root` 或 `.dark`
+- 在 v4 中使用 `tailwind.config.ts`（它会被忽略）
+- 重复包装颜色（例如 `hsl(var(--background))`
+- 在 v4 中使用 `tailwindcssanimate`（应使用 `tw-animate-css`）
+- 在 `@layer base/components` 类上使用 `@apply`
+- 跳过 `@theme inline` 的步骤

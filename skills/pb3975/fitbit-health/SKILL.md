@@ -1,22 +1,22 @@
 ---
 name: fitbit
-description: Query Fitbit health data (activity, sleep, heart rate, weight) via CLI. Use when answering health/fitness questions that require Fitbit data, or when the user asks about their steps, sleep, heart rate, or weight from Fitbit.
+description: 通过命令行界面（CLI）查询 Fitbit 的健康数据（活动量、睡眠质量、心率、体重）。适用于需要 Fitbit 数据来回答健康/健身相关问题，或者当用户询问自己的步数、睡眠情况、心率或体重时使用。
 metadata: {"clawdbot":{"emoji":"💪","requires":{"bins":["fitbit"]}}}
 ---
 
 # Fitbit CLI
 
-Retrieve health and fitness data from Fitbit's Web API.
+用于从 Fitbit 的 Web API 中检索健康和健身数据。
 
-## Setup
+## 设置
 
-1. Register an app at https://dev.fitbit.com/apps
-   - OAuth 2.0 Application Type: **Personal**
-   - Callback URL: `http://localhost:18787/callback`
-2. Run `fitbit configure` and enter your Client ID
-3. Run `fitbit login` to authorize
+1. 在 https://dev.fitbit.com/apps 注册一个应用程序：
+   - OAuth 2.0 应用程序类型：**个人**
+   - 回调 URL：`http://localhost:18787/callback`
+2. 运行 `fitbit configure` 并输入您的客户端 ID。
+3. 运行 `fitbit login` 进行授权。
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Setup & auth
@@ -33,15 +33,15 @@ fitbit summary [date]         # Full daily summary
 fitbit today                  # Today's summary (shortcut)
 ```
 
-## Options
+## 选项
 
-All commands support:
-- `--json` — JSON output
-- `--no-color` — Plain text output
-- `--verbose` — Debug/HTTP details
-- `--tz <zone>` — Override timezone (e.g., `America/Chicago`)
+所有命令都支持以下选项：
+- `--json` — 以 JSON 格式输出结果
+- `--no-color` — 以纯文本格式输出结果
+- `--verbose` — 显示调试信息及 HTTP 请求的详细信息
+- `--tz <zone>` — 更改时区（例如：`America/Chicago`）
 
-## Examples
+## 示例
 
 ```bash
 # Get today's step count
@@ -54,9 +54,9 @@ fitbit summary 2026-01-25 --json
 fitbit status
 ```
 
-## Notes
+## 注意事项
 
-- Dates default to today if omitted
-- Date format: `YYYY-MM-DD` or `today`
-- Tokens are stored in `~/.config/fitbit-cli/tokens.json` (chmod 600)
-- Token refresh is automatic
+- 如果省略日期，默认使用当前日期。
+- 日期格式为 `YYYY-MM-DD` 或 `today`。
+- 令牌存储在 `~/.config/fitbit-cli/tokens.json` 文件中（权限设置为 600）。
+- 令牌会自动更新。

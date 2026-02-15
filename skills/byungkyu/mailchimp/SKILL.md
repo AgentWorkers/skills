@@ -15,9 +15,9 @@ metadata:
 
 # Mailchimp
 
-Access the Mailchimp Marketing API with managed OAuth authentication. Manage audiences, campaigns, templates, automations, reports, and subscribers for email marketing.
+通过管理的OAuth认证来访问Mailchimp营销API。您可以管理受众群体、营销活动、模板、自动化脚本、报告以及电子邮件营销的订阅者信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all audiences
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/mailchimp/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Mailchimp API endpoint path (e.g., `3.0/lists`). The gateway proxies requests to your Mailchimp data center and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Mailchimp API端点路径（例如 `3.0/lists`）。该网关会将请求代理到您的Mailchimp数据中心，并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Mailchimp OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Mailchimp OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Mailchimp connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Mailchimp连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,27 +138,27 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Lists (Audiences)
+### 列表（受众群体）
 
-Within the Mailchimp app, "audience" is the common term, but the API uses "lists" for endpoints.
+在Mailchimp应用程序中，“audience”是常用术语，但API中使用“lists”作为端点名称。
 
-#### Get All Lists
+#### 获取所有列表
 
 ```bash
 GET /mailchimp/3.0/lists
 ```
 
-Query parameters:
-- `count` - Number of records to return (default 10, max 1000)
-- `offset` - Number of records to skip (for pagination)
-- `fields` - Comma-separated list of fields to include
-- `exclude_fields` - Comma-separated list of fields to exclude
+查询参数：
+- `count` - 返回的记录数（默认为10，最大为1000）
+- `offset` - 跳过的记录数（用于分页）
+- `fields` - 需要包含的字段列表（用逗号分隔）
+- `exclude_fields` - 需要排除的字段列表（用逗号分隔）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -169,7 +169,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "lists": [
@@ -191,13 +191,13 @@ EOF
 }
 ```
 
-#### Get a List
+#### 获取单个列表
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -208,7 +208,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create a List
+#### 创建列表
 
 ```bash
 POST /mailchimp/3.0/lists
@@ -235,34 +235,34 @@ Content-Type: application/json
 }
 ```
 
-#### Update a List
+#### 更新列表
 
 ```bash
 PATCH /mailchimp/3.0/lists/{list_id}
 ```
 
-#### Delete a List
+#### 删除列表
 
 ```bash
 DELETE /mailchimp/3.0/lists/{list_id}
 ```
 
-### List Members (Subscribers)
+### 列表成员（订阅者）
 
-Members are contacts within an audience. The API uses MD5 hash of the lowercase email address as the subscriber identifier.
+成员是指受众群体中的联系人。API使用电子邮件地址的小写形式的MD5哈希值作为订阅者标识符。
 
-#### Get List Members
+#### 获取列表成员
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}/members
 ```
 
-Query parameters:
-- `status` - Filter by subscription status (subscribed, unsubscribed, cleaned, pending, transactional)
-- `count` - Number of records to return
-- `offset` - Number of records to skip
+查询参数：
+- `status` - 按订阅状态过滤（已订阅、已取消订阅、待处理、交易中）
+- `count` - 返回的记录数
+- `offset` - 跳过的记录数
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -273,7 +273,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "members": [
@@ -294,15 +294,15 @@ EOF
 }
 ```
 
-#### Get a Member
+#### 获取单个成员信息
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
 ```
 
-The `subscriber_hash` is the MD5 hash of the lowercase email address.
+`subscriber_hash` 是电子邮件地址的小写形式的MD5哈希值。
 
-**Example:**
+**示例：**
 
 ```bash
 # For email "john@example.com", subscriber_hash = md5("john@example.com")
@@ -314,7 +314,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Add a Member
+#### 添加成员
 
 ```bash
 POST /mailchimp/3.0/lists/{list_id}/members
@@ -331,7 +331,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -344,13 +344,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Member
+#### 更新成员信息
 
 ```bash
 PATCH /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -363,7 +363,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Add or Update a Member (Upsert)
+#### 添加或更新成员信息（更新操作）
 
 ```bash
 PUT /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
@@ -379,33 +379,33 @@ Content-Type: application/json
 }
 ```
 
-Creates a new member or updates an existing one based on the email hash. Use `status_if_new` to set the status when creating a new member.
+根据电子邮件哈希值创建新成员或更新现有成员。使用 `status_if_new` 参数来设置新成员的状态。
 
-#### Delete a Member
+#### 删除成员
 
-Archives a member (can be re-added later):
+将成员标记为已存档（以后可以重新添加）：
 
 ```bash
 DELETE /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-To permanently delete (GDPR compliant):
+**永久删除成员（符合GDPR规定）：**
 
 ```bash
 POST /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}/actions/delete-permanent
 ```
 
-### Member Tags
+### 成员标签
 
-#### Get Member Tags
+#### 获取成员标签
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}/tags
 ```
 
-#### Add or Remove Tags
+#### 添加或删除标签
 
 ```bash
 POST /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}/tags
@@ -419,17 +419,17 @@ Content-Type: application/json
 }
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-### Segments
+### 分段
 
-#### Get Segments
+#### 获取分段信息
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}/segments
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -440,7 +440,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create a Segment
+#### 创建分段
 
 ```bash
 POST /mailchimp/3.0/lists/{list_id}/segments
@@ -462,42 +462,42 @@ Content-Type: application/json
 }
 ```
 
-#### Update a Segment
+#### 更新分段
 
 ```bash
 PATCH /mailchimp/3.0/lists/{list_id}/segments/{segment_id}
 ```
 
-#### Get Segment Members
+#### 获取分段成员
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}/segments/{segment_id}/members
 ```
 
-#### Delete a Segment
+#### 删除分段
 
 ```bash
 DELETE /mailchimp/3.0/lists/{list_id}/segments/{segment_id}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-### Campaigns
+### 营销活动
 
-#### Get All Campaigns
+#### 获取所有营销活动
 
 ```bash
 GET /mailchimp/3.0/campaigns
 ```
 
-Query parameters:
-- `type` - Campaign type (regular, plaintext, absplit, rss, variate)
-- `status` - Campaign status (save, paused, schedule, sending, sent)
-- `list_id` - Filter by list ID
-- `count` - Number of records to return
-- `offset` - Number of records to skip
+查询参数：
+- `type` - 营销活动类型（常规、纯文本、absplit、rss、variate）
+- `status` - 营销活动状态（保存中、暂停、计划中、已发送、已发送）
+- `list_id` - 按列表ID过滤
+- `count` - 返回的记录数
+- `offset` - 跳过的记录数
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -508,7 +508,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "campaigns": [
@@ -533,13 +533,13 @@ EOF
 }
 ```
 
-#### Get a Campaign
+#### 获取单个营销活动信息
 
 ```bash
 GET /mailchimp/3.0/campaigns/{campaign_id}
 ```
 
-#### Create a Campaign
+#### 创建营销活动
 
 ```bash
 POST /mailchimp/3.0/campaigns
@@ -558,7 +558,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -571,27 +571,23 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Campaign
+#### 更新营销活动
 
 ```bash
 PATCH /mailchimp/3.0/campaigns/{campaign_id}
 ```
 
-#### Delete a Campaign
+#### 删除营销活动
 
-```bash
-DELETE /mailchimp/3.0/campaigns/{campaign_id}
-```
+**成功时返回 `204 No Content`。**
 
-Returns `204 No Content` on success.
-
-#### Get Campaign Content
+#### 获取营销活动内容
 
 ```bash
 GET /mailchimp/3.0/campaigns/{campaign_id}/content
 ```
 
-#### Set Campaign Content
+#### 设置营销活动内容
 
 ```bash
 PUT /mailchimp/3.0/campaigns/{campaign_id}/content
@@ -603,7 +599,7 @@ Content-Type: application/json
 }
 ```
 
-Or use a template:
+**或使用模板：**
 
 ```bash
 PUT /mailchimp/3.0/campaigns/{campaign_id}/content
@@ -619,21 +615,21 @@ Content-Type: application/json
 }
 ```
 
-#### Get Campaign Send Checklist
+#### 获取营销活动发送检查清单
 
-Check if a campaign is ready to send:
+检查营销活动是否准备好发送：
 
 ```bash
 GET /mailchimp/3.0/campaigns/{campaign_id}/send-checklist
 ```
 
-#### Send a Campaign
+#### 发送营销活动
 
 ```bash
 POST /mailchimp/3.0/campaigns/{campaign_id}/actions/send
 ```
 
-#### Schedule a Campaign
+#### 计划营销活动
 
 ```bash
 POST /mailchimp/3.0/campaigns/{campaign_id}/actions/schedule
@@ -644,26 +640,26 @@ Content-Type: application/json
 }
 ```
 
-#### Cancel a Scheduled Campaign
+#### 取消已计划的营销活动
 
 ```bash
 POST /mailchimp/3.0/campaigns/{campaign_id}/actions/cancel-send
 ```
 
-### Templates
+### 模板
 
-#### Get All Templates
+#### 获取所有模板
 
 ```bash
 GET /mailchimp/3.0/templates
 ```
 
-Query parameters:
-- `type` - Template type (user, base, gallery)
-- `count` - Number of records to return
-- `offset` - Number of records to skip
+查询参数：
+- `type` - 模板类型（用户自定义、基础模板、图库模板）
+- `count` - 返回的记录数
+- `offset` - 跳过的记录数
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -674,19 +670,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get a Template
+#### 获取单个模板信息
 
 ```bash
 GET /mailchimp/3.0/templates/{template_id}
 ```
 
-#### Get Template Default Content
+#### 获取模板的默认内容
 
 ```bash
 GET /mailchimp/3.0/templates/{template_id}/default-content
 ```
 
-#### Create a Template
+#### 创建模板
 
 ```bash
 POST /mailchimp/3.0/templates
@@ -698,31 +694,27 @@ Content-Type: application/json
 }
 ```
 
-#### Update a Template
+#### 更新模板
 
 ```bash
 PATCH /mailchimp/3.0/templates/{template_id}
 ```
 
-#### Delete a Template
+#### 删除模板
 
-```bash
-DELETE /mailchimp/3.0/templates/{template_id}
-```
+**成功时返回 `204 No Content`。**
 
-Returns `204 No Content` on success.
+### 自动化脚本
 
-### Automations
+Mailchimp的经典自动化脚本允许您根据日期、活动或事件触发电子邮件系列。
 
-Mailchimp's classic automations let you build email series triggered by dates, activities, or events.
-
-#### Get All Automations
+#### 获取所有自动化脚本
 
 ```bash
 GET /mailchimp/3.0/automations
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -733,33 +725,33 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get an Automation
+#### 获取单个自动化脚本
 
 ```bash
 GET /mailchimp/3.0/automations/{workflow_id}
 ```
 
-#### Start an Automation
+#### 启动自动化脚本
 
 ```bash
 POST /mailchimp/3.0/automations/{workflow_id}/actions/start-all-emails
 ```
 
-#### Pause an Automation
+#### 暂停自动化脚本
 
 ```bash
 POST /mailchimp/3.0/automations/{workflow_id}/actions/pause-all-emails
 ```
 
-#### Get Automation Emails
+#### 获取自动化脚本执行的电子邮件
 
 ```bash
 GET /mailchimp/3.0/automations/{workflow_id}/emails
 ```
 
-#### Add Subscriber to Automation Queue
+#### 将订阅者添加到自动化脚本队列
 
-Manually add a subscriber to an automation workflow:
+手动将订阅者添加到自动化脚本工作流程中：
 
 ```bash
 POST /mailchimp/3.0/automations/{workflow_id}/emails/{workflow_email_id}/queue
@@ -770,20 +762,20 @@ Content-Type: application/json
 }
 ```
 
-### Reports
+### 报告
 
-#### Get Campaign Reports
+#### 获取营销活动报告
 
 ```bash
 GET /mailchimp/3.0/reports
 ```
 
-Query parameters:
-- `count` - Number of records to return
-- `offset` - Number of records to skip
-- `type` - Campaign type
+查询参数：
+- `count` - 返回的记录数
+- `offset` - 跳过的记录数
+- `type` - 营销活动类型
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -794,7 +786,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "reports": [
@@ -819,37 +811,37 @@ EOF
 }
 ```
 
-#### Get Campaign Report
+#### 获取单个营销活动报告
 
 ```bash
 GET /mailchimp/3.0/reports/{campaign_id}
 ```
 
-#### Get Campaign Open Details
+#### 获取营销活动打开详情
 
 ```bash
 GET /mailchimp/3.0/reports/{campaign_id}/open-details
 ```
 
-#### Get Campaign Click Details
+#### 获取营销活动点击详情
 
 ```bash
 GET /mailchimp/3.0/reports/{campaign_id}/click-details
 ```
 
-#### Get List Activity
+#### 获取列表活动信息
 
 ```bash
 GET /mailchimp/3.0/lists/{list_id}/activity
 ```
 
-Returns recent daily aggregated activity stats (unsubscribes, signups, opens, clicks) for up to 180 days.
+返回过去180天的每日聚合活动统计信息（取消订阅、新注册、打开邮件、点击次数）。
 
-### Batch Operations
+### 批量操作
 
-Process multiple operations in a single call.
+在一次调用中处理多个操作。
 
-#### Create Batch Operation
+#### 创建批量操作
 
 ```bash
 POST /mailchimp/3.0/batches
@@ -871,29 +863,29 @@ Content-Type: application/json
 }
 ```
 
-#### Get Batch Status
+#### 获取批量操作状态
 
 ```bash
 GET /mailchimp/3.0/batches/{batch_id}
 ```
 
-#### List All Batches
+#### 列出所有批量操作
 
 ```bash
 GET /mailchimp/3.0/batches
 ```
 
-#### Delete a Batch
+#### 删除批量操作
 
 ```bash
 DELETE /mailchimp/3.0/batches/{batch_id}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-## Pagination
+## 分页
 
-Mailchimp uses offset-based pagination:
+Mailchimp使用基于偏移量的分页机制：
 
 ```bash
 python <<'EOF'
@@ -904,7 +896,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-Response includes `total_items` for calculating total pages:
+响应中包含 `total_items`，用于计算总页数：
 
 ```json
 {
@@ -913,7 +905,7 @@ Response includes `total_items` for calculating total pages:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -963,33 +955,33 @@ response = requests.post(
 subscriber_hash = hashlib.md5(email.lower().encode()).hexdigest()
 ```
 
-## Notes
+## 注意事项
 
-- List IDs are 10-character alphanumeric strings
-- Subscriber hashes are MD5 hashes of lowercase email addresses
-- Timestamps are in ISO 8601 format
-- The API has a 120-second timeout on calls
-- Maximum 1000 records per request for list endpoints
-- "Audience" and "list" are used interchangeably (app vs API terminology)
-- "Contact" and "member" are used interchangeably (app vs API terminology)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 列表ID是10个字符的字母数字字符串。
+- 订阅者哈希值是电子邮件地址的小写形式的MD5哈希值。
+- 时间戳采用ISO 8601格式。
+- API的调用有120秒的超时限制。
+- 每个列表端点的请求最多返回1000条记录。
+- “Audience”和“list”在应用程序和API中的术语可以互换使用。
+- “Contact”和“member”在应用程序和API中的术语可以互换使用。
+- 重要提示：当URL包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 选项来禁用全局解析。
+- 重要提示：当将curl输出传递给 `jq` 或其他命令时，在某些Shell环境中环境变量 `$MATON_API_KEY` 可能无法正确解析，可能会导致“Invalid API key”错误。
 
-## Response Codes
+## 响应代码
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 200 | Success with response body |
-| 204 | Success with no content (DELETE, some POST operations) |
-| 400 | Bad request or missing Mailchimp connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 405 | Method not allowed |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Mailchimp API |
+| 200 | 请求成功，返回响应体 |
+| 204 | 请求成功，但没有返回内容（DELETE、某些POST操作） |
+| 400 | 请求错误或未建立Mailchimp连接 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 权限不足 |
+| 404 | 资源未找到 |
+| 405 | 方法不允许 |
+| 429 | 超过请求频率限制 |
+| 4xx/5xx | 来自Mailchimp API的传递错误 |
 
-Mailchimp error responses include detailed information:
+Mailchimp的错误响应包含详细信息：
 
 ```json
 {
@@ -1007,15 +999,15 @@ Mailchimp error responses include detailed information:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -1026,18 +1018,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `mailchimp`. For example:
+1. 确保您的URL路径以 `mailchimp` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/mailchimp/3.0/lists`
+- 错误的路径：`https://gateway.maton.ai/3.0/lists`
 
-- Correct: `https://gateway.maton.ai/mailchimp/3.0/lists`
-- Incorrect: `https://gateway.maton.ai/3.0/lists`
+## 资源
 
-## Resources
-
-- [Mailchimp Marketing API Documentation](https://mailchimp.com/developer/marketing/)
-- [API Reference](https://mailchimp.com/developer/marketing/api/)
-- [Quick Start Guide](https://mailchimp.com/developer/marketing/guides/quick-start/)
-- [Release Notes](https://mailchimp.com/developer/release-notes/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Mailchimp营销API文档](https://mailchimp.com/developer/marketing/)
+- [API参考](https://mailchimp.com/developer/marketing/api/)
+- [快速入门指南](https://mailchimp.com/developer/marketing/guides/quick-start/)
+- [版本说明](https://mailchimp.com/developer/release-notes/)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

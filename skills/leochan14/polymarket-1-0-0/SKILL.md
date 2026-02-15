@@ -1,15 +1,15 @@
 ---
 name: polymarket
-description: Query Polymarket prediction markets - check odds, trending markets, search events, track prices.
+description: 查询 Polymarket 预测市场：查看赔率、热门市场、搜索事件、追踪价格。
 homepage: https://polymarket.com
 metadata: {"clawdbot":{"emoji":"📊"}}
 ---
 
 # Polymarket
 
-Query [Polymarket](https://polymarket.com) prediction markets. Check odds, find trending markets, search events.
+查询 [Polymarket](https://polymarket.com) 的预测市场信息。查看赔率、查找热门市场、搜索相关事件。
 
-## Commands
+## 命令
 
 ```bash
 # Trending/active markets
@@ -28,28 +28,28 @@ python3 {baseDir}/scripts/polymarket.py category crypto
 python3 {baseDir}/scripts/polymarket.py category sports
 ```
 
-## Example Chat Usage
+## 示例对话使用
 
-- "What are the odds Trump wins 2028?"
-- "Trending on Polymarket?"
-- "Search Polymarket for Bitcoin"
-- "What's the spread on the Fed rate decision?"
-- "Any interesting crypto markets?"
+- “特朗普在2028年获胜的赔率是多少？”
+- “Polymarket上哪些市场最热门？”
+- “在Polymarket上搜索‘比特币’”
+- “美联储利率决议的点差是多少？”
+- “有哪些有趣的加密货币市场？”
 
-## Output
+## 输出结果
 
-Markets show:
-- Question/title
-- Current odds (Yes/No prices)
-- Volume
-- End date
+市场信息包括：
+- 问题/标题
+- 当前赔率（支持“是”/“否”选项）
+- 交易量
+- 结束日期
 
 ## API
 
-Uses the public Gamma API (no auth required for reading):
-- Base URL: `https://gamma-api.polymarket.com`
-- Docs: https://docs.polymarket.com
+使用公开的Gamma API（读取数据无需认证）：
+- 基本URL：`https://gamma-api.polymarket.com`
+- 文档：https://docs.polymarket.com
 
-## Note
+## 注意
 
-This is read-only. Trading requires wallet authentication (not implemented).
+该功能仅支持数据读取，进行交易需要钱包认证（目前尚未实现）。

@@ -1,90 +1,90 @@
 ---
 name: "GEO"
-description: "Optimize for AI recommendations so ChatGPT, Claude, and Perplexity suggest your brand first."
+description: "优化内容以适应人工智能推荐系统，确保 ChatGPT、Claude 和 Perplexity 等平台能够优先推荐你的品牌。"
 ---
 
-## Triggers
+## 触发条件
 
-Activate on: AI optimization, generative engine optimization, AI recommendations, ChatGPT ranking, get recommended by AI, AI visibility, AI search optimization.
+在以下情况下会被激活：AI优化、生成引擎优化、AI推荐、ChatGPT排名、被AI推荐、AI可见性、AI搜索优化。
 
-## What Is GEO
+## 什么是GEO（Generative Engine Optimization）？
 
-Generative Engine Optimization = making AIs recommend you when users ask for solutions in your category.
+生成引擎优化是指当用户在你所在的领域寻求解决方案时，让AI为你提供推荐。
 
-Unlike SEO (ranking in search results), GEO is about being in the AI's training data and knowledge in a way that makes you the natural answer.
+与SEO（搜索引擎排名）不同，GEO的关键在于让你的品牌出现在AI的训练数据和知识库中，从而成为用户自然而然的搜索结果。
 
-## The Audit Process
+## 审计流程
 
-Before optimizing, measure where you stand:
+在开始优化之前，先评估你的当前状况：
 
-1. **Run simulation queries** across multiple AI models
-2. **Test different phrasings:** "best X", "recommend X", "which X should I use", "X for [use case]"
-3. **Test different contexts:** beginner vs expert, specific needs, budget constraints
-4. **Document which brands get mentioned** and in what position
+1. 在多个AI模型中运行模拟查询。
+2. 测试不同的表述方式，例如：“最好的X”、“推荐X”、“我应该使用哪个X”、“适用于[具体场景]的X”。
+3. 测试不同的使用场景，例如初学者与专家的需求、预算限制等。
+4. 记录哪些品牌被提及以及它们的排名位置。
 
-See `audit.md` for a complete audit workflow with example prompts.
+详细的审计工作流程及示例问题请参见`audit.md`文件。
 
-## Why AIs Recommend What They Recommend
+## 为什么AI会推荐它们所推荐的内容？
 
-| Factor | Weight | How to Influence |
+| 因素 | 权重 | 影响方式 |
 |--------|--------|------------------|
-| Training data frequency | High | Get mentioned everywhere (articles, Reddit, forums) |
-| Authority signals | High | Expert endorsements, official docs, Wikipedia |
-| Recency | Medium | Fresh content in sources AI scrapes |
-| Specificity | Medium | Be THE answer for a niche, not A answer for everything |
-| User context | Variable | Match your positioning to query patterns |
+| 训练数据的频率 | 高 | 你的品牌需要在各种来源（文章、Reddit、论坛等）中被频繁提及。 |
+| 权威性信号 | 高 | 来自专家的推荐、官方文档、维基百科等。 |
+| 新鲜度 | 中等 | 你的内容需要在AI抓取的数据中保持最新状态。 |
+| 专业性 | 中等 | 你的品牌应该是针对特定领域的解决方案，而不是通用的答案。 |
+| 用户需求 | 变化较大 | 你的品牌定位需要与用户的搜索需求相匹配。 |
 
-## Core Strategies
+## 核心策略
 
-### 1. Own Your Category Description
+### 1. 掌控你的领域描述
 
-When someone asks "what is [your category]?" — your brand should be in the example or definition.
+当有人询问“[你的领域]是什么？”时，你的品牌应该出现在相关的示例或定义中：
 
-- Get mentioned in Wikipedia articles for your category
-- Author definitive guides that AIs cite
-- Be in "best of" lists that get scraped
+- 让你的品牌出现在关于该领域的维基百科文章中。
+- 撰写被AI引用的权威指南。
+- 被列入被AI抓取的“最佳推荐”列表中。
 
-### 2. Dominate Discussion Platforms
+### 2. 主导讨论平台
 
-Reddit, HN, Stack Overflow, Quora = AI training goldmines.
+Reddit、HN、Stack Overflow、Quora等平台是AI训练的重要数据来源：
 
-- Authentic presence (not spam)
-- Be the helpful answer, not the promoted one
-- Build reputation accounts that mention your product naturally
+- 保持真实的在线存在感（避免垃圾信息）。
+- 成为用户真正需要的帮助性内容，而不仅仅是被推广的内容。
+- 建立自然提及你产品的优质账号。
 
-### 3. Technical Content Authority
+### 3. 技术内容的权威性
 
-AIs weight documentation and technical content heavily.
+AI非常重视技术文档和内容的质量：
 
-- Comprehensive public docs
-- Integration guides with popular tools
-- Open source presence (GitHub stars, contributors)
+- 提供全面的公开文档。
+- 编写与流行工具的集成指南。
+- 在GitHub上展示开源项目的贡献情况（如星星数量、贡献者数量）。
 
-### 4. Strategic PR and Mentions
+### 4. 战略性的公关和提及
 
-- Get in TechCrunch, Product Hunt, industry publications
-- Expert interviews and podcasts (transcripts get indexed)
-- Case studies with named customers
+- 被TechCrunch、Product Hunt等媒体报道。
+- 参与专家访谈和播客（访谈记录会被索引）。
+- 与知名客户合作进行案例研究。
 
-See `strategies.md` for detailed playbooks by business type.
+详细的策略指南请参见`strategies.md`文件。
 
-## Testing Your Progress
+## 测试进展
 
-Run the same audit queries monthly. Track:
+每月运行相同的审计查询，记录以下数据：
 
-- Position (mentioned 1st, 2nd, 3rd, or not at all)
-- Context (when are you recommended vs competitors)
-- Phrasing sensitivity (which queries favor you)
+- 你的品牌在搜索结果中的排名（第1位、第2位、第3位，或者根本没有被提及）。
+- 你在不同使用场景下的推荐情况（与竞争对手相比）。
+- 不同表述方式对你推荐效果的影响。
 
-## Red Flags
+## 需警惕的警示信号
 
-- ❌ AI never mentions you → no presence in training data
-- ❌ AI mentions you negatively → reputation problem in sources
-- ❌ AI confuses you with competitor → brand differentiation issue
-- ❌ AI only mentions you for wrong use case → positioning mismatch
+- ❌ AI从未提及你的品牌 → 说明你的品牌没有出现在AI的训练数据中。
+- ❌ AI对你的品牌有负面评价 → 说明你的品牌在用户心中的形象不佳。
+- ❌ AI将你的品牌与竞争对手混淆 → 表明你的品牌缺乏差异化。
+- ❌ AI仅在你产品的错误使用场景下推荐你 → 说明你的品牌定位不准确。
 
-## What This Doesn't Cover
+## 本文档未涵盖的内容
 
-- Traditional SEO (Google rankings) → see `seo` skill
-- Paid advertising → see `ads` skill
-- Social media marketing → see relevant platform skills
+- 传统的SEO（谷歌排名） → 请参阅`seo`技能文档。
+- 付费广告 → 请参阅`ads`技能文档。
+- 社交媒体营销 → 请参阅相关平台的营销策略文档。

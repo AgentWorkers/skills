@@ -1,11 +1,11 @@
 ---
 name: glab-user
-description: View and manage GitLab user information including profile, events, and SSH keys. Use when viewing user profiles, checking user activity, or managing user settings. Triggers on user, profile, user info, view user, user activity.
+description: 查看和管理 GitLab 用户信息，包括个人资料、事件记录以及 SSH 密钥。适用于查看用户资料、检查用户活动或管理用户设置等场景。该功能会在用户信息发生变化（如用户资料更新、用户活动记录产生等）时自动触发。
 ---
 
-# glab user
+# glab 用户
 
-## Overview
+## 概述
 
 ```
 
@@ -24,12 +24,12 @@ description: View and manage GitLab user information including profile, events, 
     -h --help         Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab user --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

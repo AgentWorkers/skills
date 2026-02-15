@@ -1,48 +1,46 @@
 ---
 name: "Compare"
-description: "Rigorous comparisons with confidence parity, weighted criteria, and research depth tracking."
+description: "严格的比较，包括信心度（confidence parity）的评估、加权标准的应用，以及对研究深度（research depth）的跟踪。"
 ---
 
-## Core Principle
+## 核心原则
 
-Comparisons fail when confidence is uneven. Only as reliable as the weakest-researched dimension.
+当各指标的可靠性不同时，比较结果将失去意义。最终的评估结果只能基于研究最不充分的那个指标来判定其可靠性。
 
-## Protocol
+## 协议
 
 ```
 Criteria → Research Parity → Confidence Check → Score → Present
 ```
 
-### 1. Criteria
+### 1. 评估标准
 
-- Load domain defaults (`domains.md`)
-- Overlay user preferences from memory
-- If unknown: "What matters most here?"
-- Output: Ranked criteria with weights (sum = 100%)
+- 加载默认的领域设置（`domains.md`）
+- 从内存中读取用户的偏好设置
+- 如果某些信息未知：“在这里，什么最重要？”
+- 输出：按权重排序的评估标准（权重总和为100%）
 
-### 2. Research Parity (Critical)
+### 2. 研究深度的一致性（关键要求）
 
-**Research each item to equivalent depth before scoring.**
+**在评分之前，对每个评估标准进行同等深度的研究。**
 
-Track: `| Criterion | Item A sources | Item B sources |`
+例如：`| 评估标准 | 项目A的参考来源 | 项目B的参考来源 |`
+如果项目A有5个参考来源，而项目B只有1个参考来源，则应先对项目B进行更深入的研究。切勿对数据不平衡的情况进行评分。
 
-5 reviews for A but 1 for B? Research more for B first. Never score unbalanced data.
+### 3. 可靠性检查
 
-### 3. Confidence Check
+在展示结果之前，需要验证以下内容：
+- 每个评估标准都得到了同等程度的研究
+- 每个评估标准都经过了同等程度的调查
+- 来源的质量具有可比性
+- 数据的时效性也具有可比性
+如果任何一项不满足上述条件，就需要进一步研究或明确标注风险。
 
-Verify before presenting:
-- Each item researched equally
-- Each criterion researched equally
-- Source quality comparable
-- Data recency comparable
+### 4. 评分
 
-Fail any? Research more OR caveat explicitly.
+**最终得分 = Σ（评估标准得分 × 权重）** —— 显示具体的计算过程。
 
-### 4. Score
-
-`Final = Σ(criterion_score × weight)` — Show the math.
-
-### 5. Present
+### 5. 结果展示
 
 ```
 🆚 [A] vs [B]
@@ -53,12 +51,15 @@ Fail any? Research more OR caveat explicitly.
 💡 IF [X] MATTERS MORE: [alt winner]
 ```
 
-## After
+## 后续操作
 
-Note which criteria user focused on. Update `preferences.md` by category.
+记录用户关注的重点评估标准，并根据这些标准更新 `preferences.md` 文件。
 
-## Decline When
+## 在以下情况下应拒绝执行评估：
 
-Research parity impossible, priorities unclear, or time insufficient. Partial > misleading.
+- 无法实现研究深度的一致性
+- 优先级不明确
+- 时间不足
+在这种情况下，部分评估结果可能会产生误导。
 
-References: `domains.md`, `confidence.md`, `traps.md`, `preferences.md`
+参考文件：`domains.md`、`confidence.md`、`traps.md`、`preferences.md`

@@ -1,11 +1,11 @@
 ---
 name: universal-notify
-description: Send notifications through multiple channels with a single script. Supports ntfy.sh (free, no signup), Gotify (self-hosted), generic webhooks, email (SMTP/curl), Telegram Bot API, and Pushover. Use when sending alerts, monitoring notifications, deployment notices, or any event that needs to reach a human through their preferred channel. Unified interface with priority levels (low/normal/high/urgent).
+description: 通过单个脚本通过多个渠道发送通知。支持 ntfy.sh（免费、无需注册）、Gotify（自托管）、通用 Webhook、电子邮件（SMTP/curl）、Telegram Bot API 和 Pushover。适用于发送警报、监控通知、部署通知或任何需要通过用户偏好的渠道传达给用户的事件。提供统一的管理界面，并支持不同的优先级级别（低/普通/高/紧急）。
 ---
 
 # Universal Notify
 
-Send notifications via `scripts/notify.sh`:
+通过 `scripts/notify.sh` 发送通知：
 
 ```bash
 # ntfy.sh (free, no auth needed)
@@ -27,11 +27,19 @@ scripts/notify.sh --channel telegram --bot-token BOT:TOK --chat-id 12345 --messa
 scripts/notify.sh --channel pushover --app-token X --user-key Y --message "Alert" --priority high
 ```
 
-## Common Options
+## 常见选项
 
-All channels support `--message` (required), `--title` (optional), and `--priority low|normal|high|urgent` (default: normal).
+所有通知渠道都支持以下选项：
+- `--message`（必填）：通知内容
+- `--title`（可选）：通知标题
+- `--priority`（可选）：通知优先级（默认值：normal）
+  - `low`：低优先级
+  - `normal`：普通优先级
+  - `high`：高优先级
+  - `urgent`：紧急优先级
 
-## Requirements
+## 系统要求
 
-- `curl` (standard on most systems)
-- No API keys needed for ntfy.sh — other channels require their respective credentials
+- 需要安装 `curl`（大多数系统都预装了该工具）
+
+注意：`ntfy.sh` 本身不需要 API 密钥；其他通知渠道则需要使用相应的凭证进行身份验证。

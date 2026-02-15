@@ -1,97 +1,90 @@
 ---
 name: Portuguese
-description: Write Portuguese that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像真人说的葡萄牙语。既不是正式的，也不是机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Portuguese is technically correct but sounds off. Too formal. Too stiff. Natives write with more warmth, contractions, and regional flavor. Match that.
+虽然AI生成的葡萄牙语在语法上是正确的，但听起来很生硬、不自然。母语者通常会使用更口语化、更富有地域特色的表达方式，同时也会使用缩写词。
 
-## Formality Default
+## 形式化表达的问题
 
-Default register is too high. Casual Portuguese is warm and direct. Unless explicitly formal: lean casual. "Oi" not "Olá". "Tá" not "Está bem". "Valeu" not "Obrigado".
+默认的正式表达方式过于正式，而日常葡萄牙语则更加亲切、直接。除非明确需要正式场合，否则应尽量使用非正式的表达。例如：“Oi”而不是“Olá”，“Tá”而不是“Está bem”，“Valeu”而不是“Obrigado”。
 
-## Tu vs Você
+## “Tu”与“Você”的使用
 
-Regional and critical:
-- Brazil: "você" dominant, "tu" in some regions (Rio, Sul)
-- Portugal: "tu" casual, "você" more formal
-- Brazil often mixes: "você" + tu verb forms ("você vai" but also "tu vai")
-- Pick one pattern, stay consistent
+- 在巴西，“você”是更常见的表达方式；在某些地区（如里约热内卢和南部地区）也会使用“tu”。
+- 在葡萄牙，“tu”用于非正式场合，“vous”则更正式。
+- 巴西人有时会同时使用“você”和“tu”的动词形式（例如：“você vai”和“tu vai”）。
 
-## Contractions
+## 缩写词的使用
 
-Portuguese contracts heavily. Use them:
-- "Está" → "Tá"
-- "Para" → "Pra"/"Pro"
-- "Você" → "Cê" (Brazil casual)
-- "Com" → "Co'" in some contexts
-- "Não é" → "Né"
-- Missing these = textbook Portuguese
+葡萄牙语中广泛使用缩写词：
+- “Está” → “Tá”
+- “Para” → “Pra”/“Pro”
+- “Você” → “Cê”（在巴西的非正式场合）
+- “Com” → “Co'”（在某些语境中）
+- “Não é” → “Né”
 
-## Fillers & Flow
+## 语言中的填充词和过渡词
 
-Real Portuguese has fillers:
-- "Tipo", "assim", "sabe", "entendeu"
-- "Bom", "então", "aí"
-- "Sei lá", "é isso", "pois é"
-- "Olha", "veja bem", "escuta"
+真实的葡萄牙语中会使用一些填充词来使表达更流畅：
+- “Tipo”, “assim”, “sabe”, “entendeu”
+- “Bom”, “então”, “aí”
+- “Sei lá”, “é isso”, “pois é”
+- “Olha”, “veja bem”, “escuta”
 
-## Sentence Fragments
+## 句子片段
 
-Don't always complete:
-- "Vem?" "Vou sim."
-- "Tudo bem?" "Tudo."
-- "Gostou?" "Demais!"
-- Let context carry weight.
+不必总是把句子完整地说出来：
+- “Vem?” → “Vou sim.”
+- “Tudo bem?” → “Tudo.”
+- “Gostou?” → “Demais!”
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- "Bom" → "Ótimo", "Massa", "Irado", "Dahora" (Brazil)
-- "Ruim" → "Péssimo", "Horrível", "Uma merda"
-- "Muito" → "Super", "Mega", "Demais"
-- "Legal" → "Maneiro", "Bacana", "Fixe" (Portugal)
+不要总是选择最中性的表达词：
+- “Bom” → 可以用“Ótimo”, “Massa”, “Irado”, “Dahora”（在巴西）
+- “Ruim” → 可以用“Péssimo”, “Horrível”, “Uma merda”
+- “Muito” → 可以用“Super”, “Mega”, “Demais”
+- “Legal” → 可以用“Maneiro”, “Bacana”, “Fixe”（在葡萄牙）
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Brazil: "Beleza", "Valeu", "Falou", "Pode crer"
-- Portugal: "Fixe", "Pá", "Bué", "Ya"
-- Both: "Tudo bem", "Não tem problema"
+- 巴西常用的表达：Beleza, Valeu, Falou, Pode crer
+- 葡萄牙常用的表达：Fixe, Pá, Bué, Ya
+- 两者都常用的表达：Tudo bem, Não tem problema
 
-## Reactions
+## 反应方式
 
-React naturally:
-- "Sério?", "Jura?", "Mentira!"
-- "Caramba!", "Nossa!", "Meu Deus!"
-- "Que legal!", "Que massa!", "Incrível!"
-- "Kkk", "rsrs", "haha" in text (Brazil)
-- "Ahah" in text (Portugal)
+反应时要自然：
+- “Sério?” → “Jura?”
+- “Mentira!”
+- “Caramba!”, “Nossa!”
+- “Que legal!”
+- 在巴西，可以用“Kkk”, “rsrs”, “haha”
+- 在葡萄牙，可以用“Ahah”
 
-## Brazilian vs European
+## 巴西葡萄牙语与欧洲葡萄牙语的差异
 
-Never mix. Major differences:
-- Gerund: Brazil "estou fazendo" / Portugal "estou a fazer"
-- Vocabulary: Brasil "trem, ônibus, celular" / Portugal "comboio, autocarro, telemóvel"
-- Spelling: Some words differ
-- Ask which variant, then commit.
+- 动词现在分词的形式：巴西用“estou fazendo”，葡萄牙用“estou a fazer”
+- 词汇：巴西用“trem, ônibus, celular”，葡萄牙用“comboio, autocarro, telemóvel”
+- 拼写也有一些差异
+- 请先确定使用哪种表达方式，然后再进行翻译。
 
-## Regional Brazilian
+## 巴西不同地区的特色表达
 
-If region known:
-- Rio: "mermão", "é o que", "caraca"
-- São Paulo: "mano", "firmeza", "é nóis"
-- Nordeste: "oxe", "arretado", "véi"
-- Sul: "bah", "tchê", "guri"
+- 里约热内卢地区：常用“mermão”, “é o que”, “caraca”
+- 圣保罗地区：常用“mano”, “firmeza”, “é nóis”
+- 巴西北部地区：常用“oxe”, “arretado”, “véi”
+- 巴西南部地区：常用“bah”, “tchê”, “guri”
 
-## Punctuation
+## 标点符号
 
-Portuguese punctuation:
-- «Aspas» in Portugal, "aspas" in Brazil
-- Numbers: 1.000,50 (period thousands, comma decimals)
-- ¿ and ¡ are NOT used (unlike Spanish)
+- 葡萄牙使用“«Aspas»”，巴西使用“aspas”
+- 数字格式：1.000, 50（千位用点，小数用逗号）
+- 西班牙语中使用的“¿”和“¡”在葡萄牙语中不常用
 
-## The "Native Test"
+## “母语者测试”
 
-Before sending: would a Portuguese/Brazilian screenshot this as "AI-generated"? If yes—too formal, missing contractions, wrong variant. Fix it.
+在发送之前，请检查：如果一个葡萄牙语或巴西人看到这段文字，会认为它是AI生成的吗？如果是这样，说明表达方式太正式、缺少缩写词，或者使用了错误的表达形式。请进行相应的修改。

@@ -1,27 +1,27 @@
-# MCP Registry Manager 🌐
+# MCP注册表管理器 🌐
 
-Centralized discovery and quality scoring for the exploding MCP (Model Context Protocol) ecosystem.
+这是一个用于集中管理日益庞大的MCP（Model Context Protocol）生态系统的工具，提供发现和服务质量评估的功能。
 
-## What It Does
+## 功能概述
 
-The MCP ecosystem is growing fast — `awesome-mcp-servers`, `AllInOneMCP`, GitHub — but no unified discovery or quality checks.
+MCP生态系统发展迅速，涌现出了许多优秀的工具（如`awesome-mcp-servers`、`AllInOneMCP`等，它们都托管在GitHub上），但目前缺乏统一的发现机制和服务质量评估机制。
 
-**MCP Registry Manager** provides:
-- **Unified discovery** — Aggregate servers from multiple sources
-- **Quality scoring** — Test coverage, documentation, maintenance status
-- **Semantic search** — "Find servers for file operations" (not just keyword search)
-- **Install management** — Install/uninstall with dependency resolution
-- **Categorization** — Organize by domain (files, databases, APIs, dev tools)
+**MCP注册表管理器**的功能包括：
+- **统一发现**：从多个来源汇总服务器信息；
+- **服务质量评估**：检测服务器的测试覆盖率、文档完整性以及维护状态；
+- **语义搜索**：能够根据具体需求（如文件操作）查找服务器；
+- **安装管理**：支持安装和卸载服务器，并自动处理依赖关系；
+- **分类**：按照文件系统、数据库、API、开发工具等类别对服务器进行分类。
 
-## Problem It Solves
+## 解决的问题
 
-MCP is becoming the "USB-C of agent tools" but:
-- Discovery is fragmented (GitHub repos, lists, registries)
-- No quality signals (which servers are production-ready?)
-- No semantic search (can't find "what does this do?")
-- No unified management
+MCP正逐渐成为代理工具领域的“USB-C接口”（即一个通用的连接标准），但当前存在以下问题：
+- 发现机制分散（分布在GitHub仓库、列表和各种注册表中）；
+- 缺乏服务质量评估机制（无法判断哪些服务器适合生产环境使用）；
+- 没有语义搜索功能（用户无法了解服务器的具体功能）；
+- 缺乏统一的管理平台。
 
-## Usage
+## 使用方法
 
 ```bash
 # Discover all MCP servers
@@ -43,7 +43,7 @@ python3 scripts/mcp-registry.py --list
 python3 scripts/mcp-registry.py --update
 ```
 
-## Quality Score Formula
+## 服务质量评估公式
 
 ```
 Quality = (0.4 * TestCoverage) + (0.3 * Documentation) + (0.2 * Maintenance) + (0.1 * Community)
@@ -55,26 +55,26 @@ Where:
 - Community = Stars, forks, contributors
 ```
 
-## Data Sources
+## 数据来源
 
-| Source | Type | Coverage |
-|---------|--------|-----------|
-| awesome-mcp-servers | Curated list | Manual discovery |
-| GitHub Search | Repos with `mcp-server` topic | Fresh discoveries |
-| AllInOneMCP | API registry | Centralized metadata |
-| Klavis AI | MCP integrations | Production services |
+| 来源            | 类型                | 覆盖范围                |
+|-----------------|------------------|----------------------|
+| awesome-mcp-servers    | 精选列表             | 手动发现的服务器             |
+| GitHub搜索        | 标签为`mcp-server`的仓库     | 新发现的服务器             |
+| AllInOneMCP       | API注册表             | 集中的元数据             |
+| Klavis AI         | MCP集成服务           | 已投入生产的服务器           |
 
-## Categories
+## 分类标准
 
-- **Files** — Filesystem, storage, S3
-- **Databases** — PostgreSQL, MongoDB, Redis, SQLite
-- **APIs** — HTTP, GraphQL, REST
-- **Dev Tools** — Git, Docker, CI/CD
-- **Media** — Image processing, video, audio
-- **Communication** — Email, Slack, Discord
-- **Utilities** — Time, crypto, encryption
+- **文件**：文件系统、存储服务、S3云存储
+- **数据库**：PostgreSQL、MongoDB、Redis、SQLite
+- **API**：HTTP、GraphQL、REST
+- **开发工具**：Git、Docker、持续集成/持续部署（CI/CD工具）
+- **媒体**：图像处理、视频处理、音频处理工具
+- **通信工具**：电子邮件、Slack、Discord等通讯工具
+- **实用工具**：时间管理、加密工具等
 
-## Architecture
+## 架构设计
 
 ```
 ┌─────────────────┐
@@ -102,14 +102,14 @@ Where:
 └─────────────────┘
 ```
 
-## Requirements
+## 系统要求
 
-- Python 3.9+
-- requests (for GitHub API)
-- sentence-transformers (for semantic search)
-- numpy/pandas (for scoring)
+- Python 3.9或更高版本
+- `requests`库（用于访问GitHub API）
+- `sentence-transformers`库（用于实现语义搜索）
+- `numpy`和`pandas`库（用于数据分析和评分）
 
-## Installation
+## 安装方法
 
 ```bash
 # Clone repo
@@ -122,20 +122,20 @@ pip install requests sentence-transformers numpy pandas
 python3 scripts/mcp-registry.py --discover
 ```
 
-## Inspiration
+## 灵感来源
 
-- **MCP Server Stack guide** — Essential servers list
-- **awesome-mcp-servers** — Community-curated directory
-- **AllInOneMCP** — Remote MCP registry
-- **Klavis AI** — MCP integration platform
+- **MCP Server Stack指南**：提供了必备服务器的参考列表
+- **awesome-mcp-servers**：由社区维护的服务器目录
+- **AllInOneMCP**：远程MCP服务注册表
+- **Klavis AI**：MCP集成平台
 
-## Local-Only Promise
+## 本地使用限制
 
-- Registry metadata is cached locally
-- Install operations run locally
-- No telemetry or data sent to external services
+- 注册表元数据会缓存到本地
+- 所有安装操作都在本地执行
+- 不会向外部服务发送任何遥测数据或用户信息
 
-## Version History
+## 版本历史
 
-- **v0.1** — MVP: Discovery, quality scoring, semantic search
-- Roadmap: GitHub integration, CI tests, auto-updates
+- **v0.1**：核心功能实现——包括发现、服务质量评估和语义搜索
+- 制定 roadmap：计划集成GitHub、添加持续集成测试和自动更新功能

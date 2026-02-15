@@ -1,71 +1,66 @@
 ---
 name: Bulgarian
-description: Write Bulgarian that sounds human. Not formal, not robotic, not AI-generated.
+description: **编写听起来像人类说话的保加利亚语。**  
+不要使用正式的语言，也不要有机器人或人工智能生成的语气。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Bulgarian is technically correct but sounds off. Too formal. Too книжовен (literary). Natives write more casually, with particles and warmth. Match that.
+虽然AI生成的保加利亚语在语法上是正确的，但听起来很生硬、过于正式，缺乏自然的语感。保加利亚本地人说话时通常更随意，会使用各种语气词和表达方式来增加语言的亲切感。我们需要让AI生成的文本更贴近保加利亚人的语言习惯。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Casual Bulgarian is warm and direct. Unless explicitly formal: lean casual. "Здрасти" or "Здравей" not "Добър ден".
+保加利亚语的正式程度通常较高，但在日常对话中人们更倾向于使用非正式的表达方式。除非需要特别正式的表达，否则应尽量使用自然、亲切的语言。例如，人们会说“Здрасти”或“Здравей”，而不是“Добър ден”。
 
-## Ти vs Вие
+## “Ти”与“Вие”的使用
 
-Critical distinction:
-- Вие: formal, elderly, professional
-- Ти: friends, peers, internet, casual
-- Bulgarian internet uses ти
-- Overusing Вие = stiff, distant
+在保加利亚语中，“Ти”用于朋友、同龄人或非正式场合的交流，而“Вие”则用于正式场合、长辈或职业对话中。过度使用“Вие”会让语言显得生硬和疏远。
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Bulgarian natural:
-- Де: urging ("Ела де!")
-- Ма: dismissive, emphasis
-- Бе: casual address (male)
-- Ба: casual address (female)
-- Нали: "right?", confirmation
+以下是一些使保加利亚语更自然的表达词：
+- **Де**：用于催促（例如：“Ела де！”）
+- **Ма**：表示轻蔑或强调
+- **Бе**：用于对男性的非正式称呼
+- **Ба**：用于对女性的非正式称呼
+- **Нали**：用于确认（例如：“Нали, ти си ту?”）
 
-## Fillers & Flow
+## 语言的填充词与流畅性
 
-Real Bulgarian has fillers:
-- Ами, значи, тоест
-- Като, някак си
-- Всъщност, иначе
-- Чуй, виж
+保加利亚语中经常使用一些填充词来使句子更流畅，例如：
+- **Ами**, **значи**, **тоест**（意思是“是的，也就是说”）
+- **Като**, **някак си**（意思是“你怎么样”）
+- **Всъщност**, **иначе**（意思是“其实，不然的话”）
+- **Чуй**, **виж**（意思是“听着，你看”）
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Добре → Супер, Страхотно, Яко
-- Лошо → Зле, Ужас, Гадно
-- Много → Мега, Яко, Адски
+在表达情感时，避免使用过于中立的词汇：
+- **Добре** → 可以用“Супер”、“Страхотно”、“Яко”等更富有表现力的词汇
+- **Лошо** → 可以用“Зле”、“Ужас”、“Гадно”等词汇
+- **Много** → 可以用“Мега”、“Яко”、“Адски”等词汇
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Добре, Ок, Супер
-- Няма проблем, Без драми
-- Сериозно?, Наистина?, Я?
-- Страхотно!, Яко!, Готино!
+一些自然的表达方式包括：
+- **Добре**, **Ок**, **Супер**（表示赞同或同意）
+- **Няма проблем**, **Без драми**（表示“没有问题，别大惊小怪”）
+- **Сериозно?**, **Наистина?**, **Я?**（表示惊讶或疑问）
+- **Страхотно!**, **Яко!**, **Готино!**（表示兴奋或赞叹）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Сериозно?, Наистина?, Какво?
-- Божеее!, Ужас!, Яко!
-- Супер!, Готино!, Страхотно!
-- Хаха, лол in text
+在交流时，应保持自然的语气：
+- **Сериозно?**, **Наистина?**, **Какво?**（表示惊讶或疑问）
+- **Божеее!**, **Ужас!**, **Яко!**（表示惊讶或感叹）
+- **Супер!**, **Готино!**, **Страхотно!**（表示兴奋或赞叹）
+- **Хаха, лол**（用于幽默或轻松的场合）
 
-## Bulgarian Specifics
+## 保加利亚语的独特特点
 
-Unique features:
-- Definite article at end: книгата, човекът
-- No infinitive—use да + present
-- These are natural, use them right
+- 保加利亚语中名词后通常会加上定冠词（例如：“книгата”表示“那本书”）
+- 保加利亚语没有不定式形式，通常使用“да”加上动词的现在时态来表示动作
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Bulgarian screenshot this as "AI-generated"? If yes—too formal, no particles, too stiff. Add "де" and warmth.
+在发送文本之前，可以想象一下：如果一个保加利亚人看到这个文本，他会认为这是AI生成的吗？如果是的话，那么这个文本就太正式了，缺乏自然的语感和语气词。需要添加一些“де”这样的词来让文本更贴近保加利亚人的说话方式，同时增加语言的亲切感。

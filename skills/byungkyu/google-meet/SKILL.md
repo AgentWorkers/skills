@@ -15,9 +15,9 @@ metadata:
 
 # Google Meet
 
-Access the Google Meet API with managed OAuth authentication. Create and manage meeting spaces, list conference records, and retrieve participant information.
+您可以使用托管的 OAuth 认证来访问 Google Meet API。该 API 允许您创建和管理会议空间、列出会议记录以及检索参与者信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Create a meeting space
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-meet/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Meet API endpoint path. The gateway proxies requests to `meet.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google Meet API 端点路径。该网关会将请求代理到 `meet.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Meet connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Meet 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,13 +142,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Spaces
+### 会议空间
 
-#### Create Space
+#### 创建会议空间
 
 ```bash
 POST /google-meet/v2/spaces
@@ -157,7 +157,7 @@ Content-Type: application/json
 {}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "name": "spaces/abc123",
@@ -170,13 +170,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Space
+#### 获取会议空间信息
 
 ```bash
 GET /google-meet/v2/spaces/{spaceId}
 ```
 
-#### Update Space
+#### 更新会议空间信息
 
 ```bash
 PATCH /google-meet/v2/spaces/{spaceId}
@@ -189,89 +189,89 @@ Content-Type: application/json
 }
 ```
 
-#### End Active Call
+#### 结束活动会议
 
 ```bash
 POST /google-meet/v2/spaces/{spaceId}:endActiveConference
 ```
 
-### Conference Records
+### 会议记录
 
-#### List Conference Records
+#### 列出会议记录
 
 ```bash
 GET /google-meet/v2/conferenceRecords
 ```
 
-With filter:
+支持过滤：
 
 ```bash
 GET /google-meet/v2/conferenceRecords?filter=space.name="spaces/abc123"
 ```
 
-#### Get Conference Record
+#### 获取会议记录信息
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}
 ```
 
-### Participants
+### 参与者
 
-#### List Participants
+#### 列出参与者
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/participants
 ```
 
-#### Get Participant
+#### 获取参与者信息
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/participants/{participantId}
 ```
 
-### Participant Sessions
+### 参与者的会议会话
 
-#### List Participant Sessions
+#### 列出参与者的会议会话
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/participants/{participantId}/participantSessions
 ```
 
-### Recordings
+### 录像
 
-#### List Recordings
+#### 列出录像文件
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/recordings
 ```
 
-#### Get Recording
+#### 获取录像文件信息
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/recordings/{recordingId}
 ```
 
-### Transcripts
+### 文本记录
 
-#### List Transcripts
+#### 列出文本记录
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts
 ```
 
-#### Get Transcript
+#### 获取文本记录信息
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts/{transcriptId}
 ```
 
-#### List Transcript Entries
+#### 列出文本记录条目
 
 ```bash
 GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts/{transcriptId}/entries
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -314,35 +314,35 @@ space = response.json()
 print(f"Meeting URL: {space['meetingUri']}")
 ```
 
-## Notes
+## 注意事项
 
-- Spaces are persistent meeting rooms that can be reused
-- Conference records are created when a meeting starts and track meeting history
-- Access types: `OPEN` (anyone with link), `TRUSTED` (organization members only), `RESTRICTED` (invited only)
-- Recordings and transcripts require Google Workspace with recording enabled
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 会议空间是可重复使用的永久性会议室。
+- 会议记录会在会议开始时创建，并用于追踪会议历史。
+- 访问权限类型包括：`OPEN`（任何人都可以访问）、`TRUSTED`（仅限组织成员）和 `RESTRICTED`（仅限受邀人员）。
+- 录像和文本记录功能需要启用 Google Workspace 的录像功能。
+- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含方括号，请使用 `curl -g` 以避免全局解析问题。
+- **重要提示：** 在将 `curl` 的输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Meet connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Meet API |
+| 400 | 未找到 Google Meet 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Google Meet API 的传递错误 |
 
-### Troubleshooting: Invalid API Key
+### 故障排除：无效的 API 密钥
 
-**When you receive a "Invalid API key" error, ALWAYS follow these steps before concluding there is an issue:**
+**当收到 “无效 API 密钥” 错误时，请务必按照以下步骤操作，再判断是否存在问题：**
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保 `MATON_API_KEY` 环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -353,20 +353,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-meet`. For example:
+1. 确保您的 URL 路径以 `google-meet` 开头。例如：
+   - 正确的路径：`https://gateway.maton.ai/google-meet/v2/spaces`
+   - 错误的路径：`https://gateway.maton.ai/meet/v2/spaces`
 
-- Correct: `https://gateway.maton.ai/google-meet/v2/spaces`
-- Incorrect: `https://gateway.maton.ai/meet/v2/spaces`
+## 资源
 
-## Resources
-
-- [Google Meet API Overview](https://developers.google.com/meet/api/reference/rest)
-- [Spaces](https://developers.google.com/meet/api/reference/rest/v2/spaces)
-- [Conference Records](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords)
-- [Participants](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords.participants)
-- [Recordings](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords.recordings)
-- [Transcripts](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords.transcripts)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Google Meet API 概述](https://developers.google.com/meet/api/reference/rest)
+- [会议空间](https://developers.google.com/meet/api/reference/rest/v2/spaces)
+- [会议记录](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords)
+- [参与者](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords.participants)
+- [录像](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords.recordings)
+- [文本记录](https://developers.google.com/meet/api/reference/rest/v2/conferenceRecords.transcripts)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

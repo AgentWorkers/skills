@@ -1,62 +1,60 @@
 ---
 name: mongodb-atlas
-description: browse MongoDB Atlas Admin API specifications and execute operations (if credentials provided).
+description: 浏览 MongoDB Atlas 管理 API 的详细规范，并在提供凭据的情况下执行相关操作。
 homepage: https://www.mongodb.com/docs/api/doc/atlas-admin-api-v2/
 metadata: {"clawdbot":{"emoji":"🍃","requires":{"bins":["node"],"env":["ATLAS_CLIENT_ID","ATLAS_CLIENT_SECRET"]},"primaryEnv":""}}
 ---
 
-# MongoDB Atlas Admin API
+# MongoDB Atlas 管理 API
 
-Tool to browse OpenAPI specifications for MongoDB Atlas.
-**Note:** If `ATLAS_CLIENT_ID` and `ATLAS_CLIENT_SECRET` are configured in the environment, this tool can also execute live API calls. Without credentials, it functions as a read-only documentation browser.
+这是一个用于浏览 MongoDB Atlas 的 OpenAPI 规范的工具。
+**注意：** 如果在环境中配置了 `ATLAS_CLIENT_ID` 和 `ATLAS_CLIENT_SECRET`，该工具还可以执行实际的 API 调用。如果没有这些凭据，它将仅作为只读的文档浏览器使用。
 
-## Commands
+## 命令
 
-### 1. List API Catalog
-List all available API categories or filter by keyword.
+### 1. 列出 API 目录
+列出所有可用的 API 类别，或根据关键词进行过滤。
 
 ```bash
 node {baseDir}/scripts/atlas-api.mjs catalog # list all categories
 node {baseDir}/scripts/atlas-api.mjs catalog Clusters
 ```
 
-### 2. Get API Details
-
-Get full endpoint definition (method, path, params) for a specific Operation ID.
+### 2. 获取 API 详情
+获取特定操作 ID 的完整端点定义（方法、路径、参数）。
 
 ```bash
 node {baseDir}/scripts/atlas-api.mjs detail listClusterDetails
 ```
 
-### 3. Get Schema Definition
-
-Get the data model schema for complex types.
+### 3. 获取数据模型定义
+获取复杂类型的数据模型架构。
 
 ```bash
 node {baseDir}/scripts/atlas-api.mjs schema "#/components/schemas/ApiError"
 ```
 
-### 4. Execute Live API Calls
-Execute real HTTP requests against the Atlas API.
+### 4. 执行实时 API 调用
+对 Atlas API 发起实际的 HTTP 请求。
 
-**Script:** `node {baseDir}/scripts/atlas-call.mjs <METHOD> <ENDPOINT> [flags]`
+**脚本示例：** `node {baseDir}/scripts/atlas-call.mjs <METHOD> <ENDPOINT> [flags]`
 
-#### ⚠️ Mandatory Safety Protocol
-**For any state-changing operation (POST, PUT, PATCH, DELETE):**
-1.  **STOP & REVIEW**: You MUST NOT execute the command immediately.
-2.  **PREVIEW**: Use `--dry-run` first to verify the payload and endpoint.
-3.  **CONFIRM**: Display the full command and JSON body to the user.
-4.  **EXECUTE**: Only run with `--yes` after receiving explicit user approval.
+#### ⚠️ 强制性安全协议
+**对于任何会改变状态的操作（POST、PUT、PATCH、DELETE）：**
+1. **停止并审核**：切勿立即执行该命令。
+2. **预览**：首先使用 `--dry-run` 来验证请求数据内容和端点。
+3. **确认**：向用户显示完整的命令和 JSON 请求体。
+4. **执行**：只有在获得用户的明确批准后，才能使用 `--yes` 来执行该命令。
 
-#### Usage Examples
+#### 使用示例
 
-**1. Read-Only (Safe)**
+**1. 只读（安全模式）**
 
 ```bash
 node {baseDir}/scripts/atlas-call.mjs GET groups/{groupId}/clusters
 ```
 
-**2. Create/Modify (RISKY - Require Approval)**
+**2. 创建/修改（风险较高 - 需要批准）**
 
 ```bash
 node {baseDir}/scripts/atlas-call.mjs POST groups/{groupId}/clusters \
@@ -64,26 +62,23 @@ node {baseDir}/scripts/atlas-call.mjs POST groups/{groupId}/clusters \
   --dry-run
 ```
 
-#### Options
+#### 选项
+* `-d, --data <json>`：请求体字符串（请确保正确进行 JSON 转义）。
+* `-p, --params <json>`：查询参数。
+* `--dry-run`：打印请求详情但不执行（建议用于验证）。
+* `--yes`：跳过交互式确认（请谨慎使用）。
 
-* `-d, --data <json>`: Request body string (ensure proper JSON escaping).
-* `-p, --params <json>`: Query parameters.
-* `--dry-run`: Print the request details without executing (Recommended for verification).
-* `--yes`: Skip interactive confirmation (Use CAREFULLY).
+#### 环境要求
+需要设置 `ATLAS_CLIENT_ID` 和 `ATLAS_CLIENT_SECRET`。
 
-#### Environment
+## 核心类别
+（使用 `catalog` 命令可查看 50 多个类别的完整列表）
 
-Requires `ATLAS_CLIENT_ID` and `ATLAS_CLIENT_SECRET` to be set.
-
-## Core Categories
-
-(Use `catalog` command to see the full list of 50+ categories)
-
-* **Clusters** / **Cloud Backups**
-* **Projects** / **Organizations**
-* **Database Users** / **Custom Database Roles**
-* **Alerts** / **Alert Configurations**
-* **Monitoring and Logs** / **Events**
-* **Network Peering** / **Private Endpoint Services**
-* **Serverless Instances**
-* **Access Tracking** / **Auditing**
+* **集群** / **云备份**
+* **项目** / **组织**
+* **数据库用户** / **自定义数据库角色**
+* **警报** / **警报配置**
+* **监控和日志** / **事件**
+* **网络对等** / **私有端点服务**
+* **无服务器实例**
+* **访问跟踪** / **审计**

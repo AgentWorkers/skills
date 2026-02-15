@@ -1,24 +1,24 @@
 ---
 slug: "workflow-automation"
 display_name: "Workflow Automation"
-description: "Automate construction data workflows. Build ETL pipelines and DAG workflows for recurring tasks."
+description: "自动化构建数据工作流程。为重复性任务构建 ETL（提取、转换、加载）管道和 DAG（有向无环图）工作流程。"
 ---
 
-# Workflow Automation
+# 工作流自动化
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Data workflow challenges:
-- Manual repetitive tasks
-- Data inconsistency between systems
-- Error-prone manual processes
-- Lack of audit trails
+### 问题描述
+数据工作流面临以下挑战：
+- 手动重复性任务
+- 系统之间的数据不一致性
+- 易出错的手动流程
+- 缺乏审计追踪
 
-### Solution
-Automated workflow system for construction data pipelines with task dependencies, scheduling, and monitoring.
+### 解决方案
+构建自动化的工作流系统，用于处理建筑数据管道，包括任务依赖关系、调度和监控功能。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -475,7 +475,7 @@ def {task.task_id}_func(**kwargs):
         ]
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create workflow automation
@@ -525,28 +525,28 @@ print(f"Status: {result['overall_status']}")
 print(f"Successful: {result['successful_tasks']}/{result['total_tasks']}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Schedule Workflow
+### 1. 调度工作流
 ```python
 automation.set_schedule("daily_cost_etl", ScheduleInterval.DAILY)
 ```
 
-### 2. Generate Airflow DAG
+### 2. 生成 Airflow DAG（有向无环图）
 ```python
 dag_code = automation.generate_airflow_dag("daily_cost_etl")
 with open("daily_cost_dag.py", "w") as f:
     f.write(dag_code)
 ```
 
-### 3. Export Definition
+### 3. 导出工作流定义
 ```python
 definition = automation.export_workflow_definition("daily_cost_etl")
 with open("workflow.json", "w") as f:
     json.dump(definition, f, indent=2)
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.2 - ETL and Process Automation
-- **Apache Airflow**: https://airflow.apache.org/
-- **Website**: https://datadrivenconstruction.io
+## 参考资源
+- **DDC Book**：第 4.2 章 - ETL 和流程自动化
+- **Apache Airflow**：https://airflow.apache.org/
+- **官方网站**：https://datadrivenconstruction.io

@@ -1,17 +1,17 @@
 ---
 name: nextjs
-description: Expert in Next.js 14+ App Router, Server Components, and Server Actions. Use when building Next.js applications, implementing SSR/SSG, or configuring dynamic routing and data fetching. Covers streaming, caching strategies, middleware, and deployment optimization.
+description: Next.js 14+ 应用程序路由器、服务器组件及服务器动作方面的专家。在构建 Next.js 应用程序、实现服务器端渲染（SSR/SSG）、配置动态路由和数据获取时具有丰富经验。涵盖流式传输、缓存策略、中间件以及部署优化等相关内容。
 ---
 
-# Next.js Expert
+# Next.js 专家
 
-You are an expert in Next.js 14+ with deep knowledge of the App Router, Server Components, and modern React patterns.
+您是 Next.js 14 及更高版本的资深开发者，对 App Router、Server Components 以及现代 React 设计模式有着深入的了解。
 
-## Core Expertise
+## 核心专长
 
-### 1. App Router Architecture
+### 1. App Router 架构
 
-**File-System Based Routing**:
+**基于文件系统的路由**：
 ```
 app/
 ├── layout.tsx          # Root layout
@@ -31,26 +31,26 @@ app/
         └── page.tsx    # /features
 ```
 
-**Route Groups**:
-- `(marketing)`, `(dashboard)` for organizing routes
-- Shared layouts within groups
-- Different root layouts per group
+**路由组**：
+- `(marketing)`、`(dashboard)`：用于组织路由
+- 每个组内共享布局
+- 不同的根布局对应不同的路由组
 
-**Dynamic Routes**:
-- `[slug]` for single dynamic segment
-- `[...slug]` for catch-all routes
-- `[[...slug]]` for optional catch-all routes
+**动态路由**：
+- `[slug]`：用于处理单个动态参数
+- `[...slug]`：用于捕获所有未匹配的路由
+- `[[...slug]]`：用于处理可选的捕获路由
 
 ### 2. Server Components (RSC)
 
-**Server Component Benefits**:
-- Zero JavaScript sent to client
-- Direct database/API access
-- Automatic code splitting
-- Streaming and Suspense support
-- Better SEO (fully rendered HTML)
+**Server Components 的优势**：
+- 不向客户端发送任何 JavaScript 代码
+- 直接访问数据库或 API
+- 自动代码分割
+- 支持流式加载和 Suspense（延迟渲染）
+- 更好的 SEO（完全渲染的 HTML）
 
-**Server Component Example**:
+**Server Component 示例**：
 ```typescript
 // app/posts/page.tsx (Server Component by default)
 async function getPosts() {
@@ -77,7 +77,7 @@ export default async function PostsPage() {
 }
 ```
 
-**Client Components**:
+**Client Components（客户端组件）**：
 ```typescript
 'use client'; // Mark as Client Component
 
@@ -94,7 +94,7 @@ export function Counter() {
 }
 ```
 
-**Composition Pattern**:
+**组合式编程模式**：
 ```typescript
 // Server Component
 import { ClientButton } from './ClientButton';
@@ -111,9 +111,9 @@ export default async function Page() {
 }
 ```
 
-### 3. Data Fetching Strategies
+### 3. 数据获取策略
 
-**Server-Side Rendering (SSR)**:
+**服务器端渲染（SSR）**：
 ```typescript
 // Dynamic data fetching (SSR)
 async function getData() {
@@ -124,7 +124,7 @@ async function getData() {
 }
 ```
 
-**Static Site Generation (SSG)**:
+**静态站点生成（SSG）**：
 ```typescript
 // Static data fetching (SSG)
 async function getData() {
@@ -135,7 +135,7 @@ async function getData() {
 }
 ```
 
-**Incremental Static Regeneration (ISR)**:
+**增量式静态内容更新（ISR）**：
 ```typescript
 // Revalidate every 60 seconds
 async function getData() {
@@ -146,7 +146,7 @@ async function getData() {
 }
 ```
 
-**On-Demand Revalidation**:
+**按需重新验证数据**：
 ```typescript
 // app/api/revalidate/route.ts
 import { revalidatePath, revalidateTag } from 'next/cache';
@@ -158,9 +158,9 @@ export async function POST() {
 }
 ```
 
-### 4. Caching Strategies
+### 4. 缓存策略
 
-**Fetch Caching**:
+**数据获取缓存**：
 ```typescript
 // Force cache (default)
 fetch('...', { cache: 'force-cache' });
@@ -175,7 +175,7 @@ fetch('...', { next: { revalidate: 3600 } });
 fetch('...', { next: { tags: ['posts'] } });
 ```
 
-**React Cache**:
+**React 缓存**：
 ```typescript
 import { cache } from 'react';
 
@@ -186,7 +186,7 @@ const getUser = cache(async (id: string) => {
 });
 ```
 
-**Unstable Cache** (Experimental):
+**不稳定的缓存（实验性功能）**：
 ```typescript
 import { unstable_cache } from 'next/cache';
 
@@ -199,9 +199,9 @@ const getCachedData = unstable_cache(
 );
 ```
 
-### 5. Server Actions
+### 5. 服务器端操作
 
-**Form Handling**:
+**表单处理**：
 ```typescript
 // app/posts/create/page.tsx
 import { createPost } from './actions';
@@ -240,7 +240,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-**Progressive Enhancement**:
+**渐进式增强**：
 ```typescript
 'use client';
 
@@ -257,9 +257,9 @@ function SubmitButton() {
 }
 ```
 
-### 6. Routing and Navigation
+### 6. 路由与导航
 
-**Link Component**:
+**Link 组件**：
 ```typescript
 import Link from 'next/link';
 
@@ -270,7 +270,7 @@ import Link from 'next/link';
 </Link>
 ```
 
-**useRouter Hook**:
+**useRouter Hook**：
 ```typescript
 'use client';
 
@@ -287,7 +287,7 @@ export function NavigateButton() {
 }
 ```
 
-**Parallel Routes**:
+**并行路由**：
 ```
 app/
 ├── @team/
@@ -297,7 +297,7 @@ app/
 └── layout.tsx  # Renders both @team and @analytics
 ```
 
-**Intercepting Routes**:
+**拦截路由请求**：
 ```
 app/
 ├── photos/
@@ -307,9 +307,9 @@ app/
 │       └── page.tsx
 ```
 
-### 7. Metadata and SEO
+### 7. 元数据与 SEO
 
-**Static Metadata**:
+**静态元数据**：
 ```typescript
 import type { Metadata } from 'next';
 
@@ -327,7 +327,7 @@ export const metadata: Metadata = {
 };
 ```
 
-**Dynamic Metadata**:
+**动态元数据**：
 ```typescript
 export async function generateMetadata({ params }): Promise<Metadata> {
   const post = await getPost(params.id);
@@ -344,7 +344,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 }
 ```
 
-**JSON-LD Structured Data**:
+**JSON-LD 结构化数据**：
 ```typescript
 export default function BlogPost({ post }) {
   const jsonLd = {
@@ -370,9 +370,9 @@ export default function BlogPost({ post }) {
 }
 ```
 
-### 8. API Routes (Route Handlers)
+### 8. API 路由（路由处理程序）
 
-**Basic API Route**:
+**基本 API 路由**：
 ```typescript
 // app/api/hello/route.ts
 import { NextRequest, NextResponse } from 'next/server';
@@ -388,7 +388,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-**Dynamic API Routes**:
+**动态 API 路由**：
 ```typescript
 // app/api/posts/[id]/route.ts
 export async function GET(
@@ -400,7 +400,7 @@ export async function GET(
 }
 ```
 
-**Middleware**:
+**中间件**：
 ```typescript
 // middleware.ts (root level)
 import { NextResponse } from 'next/server';
@@ -422,9 +422,9 @@ export const config = {
 };
 ```
 
-### 9. Image Optimization
+### 9. 图像优化
 
-**next/image**:
+**next/image**：
 ```typescript
 import Image from 'next/image';
 
@@ -448,7 +448,7 @@ import Image from 'next/image';
 />
 ```
 
-**Image Configuration**:
+**图像配置**：
 ```javascript
 // next.config.js
 module.exports = {
@@ -464,9 +464,9 @@ module.exports = {
 };
 ```
 
-### 10. Performance Optimization
+### 10. 性能优化
 
-**Code Splitting**:
+**代码分割**：
 ```typescript
 import dynamic from 'next/dynamic';
 
@@ -477,7 +477,7 @@ const DynamicComponent = dynamic(() => import('@/components/Heavy'), {
 });
 ```
 
-**Streaming with Suspense**:
+**流式加载与 Suspense**：
 ```typescript
 import { Suspense } from 'react';
 
@@ -493,7 +493,7 @@ export default function Page() {
 }
 ```
 
-**Font Optimization**:
+**字体优化**：
 ```typescript
 import { Inter, Roboto_Mono } from 'next/font/google';
 
@@ -504,9 +504,9 @@ const roboto = Roboto_Mono({ subsets: ['latin'], variable: '--font-mono' });
 <body className={`${inter.variable} ${roboto.variable}`}>
 ```
 
-## Configuration
+## 配置
 
-**next.config.js**:
+**next.config.js**：
 ```javascript
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -530,17 +530,17 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Server Components by Default**: Use Client Components only when needed
-2. **Streaming**: Use Suspense for better perceived performance
-3. **Image Optimization**: Always use next/image
-4. **Font Optimization**: Use next/font for automatic optimization
-5. **Metadata**: Use generateMetadata for dynamic SEO
-6. **Caching**: Leverage ISR and revalidation strategies
-7. **Type Safety**: Enable TypeScript strict mode and typed routes
-8. **Security Headers**: Configure in next.config.js
-9. **Error Handling**: Implement error.tsx for error boundaries
-10. **Loading States**: Add loading.tsx for better UX
+1. **默认使用 Server Components**：仅在必要时使用 Client Components。
+2. **流式加载**：使用 Suspense 来提升用户体验。
+3. **图像优化**：始终使用 `next/image` 进行图像处理。
+4. **字体优化**：使用 `next/font` 自动优化字体。
+5. **元数据**：使用 `generateMetadata` 生成动态元数据以提升 SEO 效果。
+6. **缓存**：充分利用 ISR（增量式静态内容更新）和重新验证策略。
+7. **类型安全**：启用 TypeScript 的严格模式并使用类型化的路由配置。
+8. **安全头**：在 `next.config.js` 中配置安全相关设置。
+9. **错误处理**：实现 `error.tsx` 以处理错误情况。
+10. **加载状态**：使用 `loading.tsx` 提供更好的用户体验。
 
-You are ready to build high-performance Next.js applications!
+您已准备好构建高性能的 Next.js 应用程序！

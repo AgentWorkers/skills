@@ -1,6 +1,6 @@
 ---
 name: sprite-animator
-description: Generate animated pixel art sprites from any image using AI. Send a photo, get a 16-frame animated GIF.
+description: 使用人工智能从任何图片生成动画像素艺术精灵（sprite）。只需发送一张图片，即可获得一个包含16帧的动画GIF文件。
 metadata:
   {
     "openclaw":
@@ -14,9 +14,9 @@ metadata:
 
 # Sprite Animator
 
-Generate animated pixel art sprites from any image. Uses nano-banana-pro (Gemini) to create a 16-frame sprite sheet in a single request, then assembles it into an animated GIF.
+该工具可以从任何图像生成动画像素艺术精灵图像。它使用 `nano-banana-pro`（基于 Gemini 的 AI 模型）在一次请求中生成一个包含 16 帧的精灵图集，然后将其组装成一个循环播放的 GIF 文件。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Wave animation (default 16 frames)
@@ -29,38 +29,38 @@ uv run --with sprite-animator sprite-animator -i avatar.png -o bounce.gif -a bou
 uv run --with sprite-animator sprite-animator -i pet.jpg -o dance.gif -a dance --keep-sheet --keep-frames
 ```
 
-## Animations
+## 动画类型
 
-| Type | Description |
+| 类型 | 描述 |
 |------|-------------|
-| `idle` | Subtle breathing + blinking loop |
-| `wave` | Arm raises, waves back and forth, lowers |
-| `bounce` | Crouch → jump → land → recover |
-| `dance` | Lean, spin, jump — fun and energetic |
+| `idle` | 微微的呼吸动作 + 眨眼循环 |
+| `wave` | 双臂向上举起、前后摆动、再放下 |
+| `bounce` | 蹲下 → 跳跃 → 着陆 → 恢复 |
+| `dance` | 倾斜身体、旋转、跳跃 —— 有趣且充满活力 |
 
-## Options
+## 参数选项
 
-| Flag | Description |
+| 参数 | 描述 |
 |------|-------------|
-| `-i, --input` | Input image (photo, drawing, etc.) |
-| `-o, --output` | Output GIF path |
-| `-a, --animation` | Animation type: idle, wave, bounce, dance (default: idle) |
-| `-d, --duration` | Frame duration in ms (default: 100) |
-| `-s, --size` | Output sprite size in px (default: 128) |
-| `-r, --resolution` | Generation resolution: 1K or 2K (default: 1K) |
-| `--keep-sheet` | Save the raw sprite sheet |
-| `--keep-frames` | Save individual frame PNGs |
-| `-v, --verbose` | Verbose output |
+| `-i, --input` | 输入图像（照片、绘图等） |
+| `-o, --output` | 输出 GIF 文件的路径 |
+| `-a, --animation` | 动画类型：idle、wave、bounce、dance（默认：idle） |
+| `-d, --duration` | 每帧的持续时间（以毫秒为单位）（默认：100） |
+| `-s, --size` | 输出精灵图的大小（以像素为单位）（默认：128） |
+| `-r, --resolution` | 生成图像的分辨率：1K 或 2K（默认：1K） |
+| `--keep-sheet` | 保存原始的精灵图集文件 |
+| `--keep-frames` | 保存单独的帧图片（PNG 格式） |
+| `-v, --verbose` | 详细输出日志信息 |
 
-## How It Works
+## 工作原理
 
-1. Creates a labeled 4x4 grid template (16 cells)
-2. Sends the template + source image to Gemini in ONE request
-3. AI fills each cell with a pixel art frame following the animation sequence
-4. Frames are extracted from the sheet and assembled into a looping GIF
+1. 创建一个 4x4 的网格模板（共 16 个单元格）。
+2. 将模板和源图像一起发送给 Gemini 模型。
+3. AI 模型会根据预设的动画序列为每个单元格生成对应的像素艺术图像。
+4. 将生成的帧提取出来并组装成一个循环播放的 GIF 文件。
 
-Single-request generation ensures consistent style across all frames.
+通过一次请求完成所有帧的生成，确保所有帧的风格保持一致。
 
-## Source
+## 来源代码
 
 https://github.com/Olafs-World/sprite-animator

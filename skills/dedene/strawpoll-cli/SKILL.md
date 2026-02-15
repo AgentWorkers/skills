@@ -9,9 +9,9 @@ description: >
 
 # strawpoll-cli
 
-Command-line interface for the [StrawPoll API v3](https://strawpoll.com/). Supports three poll types: multiple-choice, meeting (availability), and ranking.
+这是一个用于 [StrawPoll API v3](https://strawpoll.com/) 的命令行接口。支持三种类型的投票：多项选择、会议可用性投票以及排名投票。
 
-## Installation
+## 安装
 
 ```bash
 # Homebrew (macOS/Linux)
@@ -21,9 +21,9 @@ brew install dedene/tap/strawpoll
 go install github.com/dedene/strawpoll-cli/cmd/strawpoll@latest
 ```
 
-## Authentication
+## 认证
 
-An API key is required. Get one at [strawpoll.com/account/settings](https://strawpoll.com/account/settings).
+需要一个 API 密钥。您可以在 [strawpoll.com/account/settings](https://strawpoll.com/account/settings) 获取密钥。
 
 ```bash
 # Store in system keyring (interactive prompt)
@@ -36,7 +36,7 @@ export STRAWPOLL_API_KEY="your-key-here"
 strawpoll auth status
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Create a poll
@@ -53,9 +53,9 @@ strawpoll poll results NPgxkzPqrn2
 strawpoll poll delete NPgxkzPqrn2
 ```
 
-## Poll Types
+## 投票类型
 
-### Multiple-Choice Polls
+### 多项选择投票
 
 ```bash
 # Basic poll
@@ -82,7 +82,7 @@ strawpoll poll update NPgxkzPqrn2 --title "New title" --add-option "New option"
 strawpoll poll reset NPgxkzPqrn2
 ```
 
-### Meeting Polls (Availability)
+### 会议可用性投票
 
 ```bash
 # With all-day dates
@@ -105,7 +105,7 @@ strawpoll meeting results xYz123abc
 strawpoll meeting list
 ```
 
-### Ranking Polls
+### 排名投票
 
 ```bash
 # Create ranking poll
@@ -121,9 +121,9 @@ strawpoll ranking results rAnK456 --verbose
 strawpoll ranking list
 ```
 
-## Output Formats
+## 输出格式
 
-All commands support three output modes:
+所有命令都支持三种输出格式：
 
 ```bash
 # Default: colored table (human-readable)
@@ -139,7 +139,7 @@ strawpoll poll results NPgxkzPqrn2 --plain
 strawpoll poll results NPgxkzPqrn2 --no-color
 ```
 
-### Scripting Examples
+### 脚本示例
 
 ```bash
 # Get poll ID from creation
@@ -155,9 +155,9 @@ strawpoll poll delete "$POLL_ID" --force
 strawpoll poll results "$POLL_ID" --participants --json
 ```
 
-## Configuration Defaults
+## 配置默认值
 
-Save preferred settings to avoid repetitive flags:
+保存您的偏好设置，以避免重复输入参数：
 
 ```bash
 # Set defaults
@@ -171,11 +171,11 @@ strawpoll config show
 strawpoll config path
 ```
 
-Config stored at `~/.config/strawpoll/config.yaml`.
+配置文件保存在 `~/.config/strawpoll/config.yaml` 中。
 
-## Interactive Mode
+## 交互式模式
 
-Create commands launch an interactive wizard when run in a terminal without arguments:
+在终端中不带参数运行该命令时，会启动一个交互式向导：
 
 ```bash
 # Launches wizard (poll title, options, settings)
@@ -185,18 +185,18 @@ strawpoll poll create
 strawpoll meeting create "Team sync"
 ```
 
-Wizards render on stderr; data output goes to stdout. In non-TTY (pipes), provide all arguments via flags.
+向导的输出会显示在标准错误流（stderr）中，数据输出会显示在标准输出流（stdout）中。在非终端环境（如管道）中，需要通过参数传递所有必要的信息。
 
-## Important Notes
+## 重要说明
 
-- Poll options: minimum 2, maximum 30
-- Poll IDs: accepts bare IDs or full URLs (with/without `https://`, `www.`, `/polls/`)
-- Deadlines: RFC3339 (`2025-03-15T18:00:00Z`) or duration (`24h`, `1h30m`)
-- Meeting dates: `YYYY-MM-DD` for all-day, `YYYY-MM-DD HH:MM-HH:MM` for time ranges
-- Timezones: IANA format (e.g., `Europe/Berlin`, `America/New_York`)
-- No voting endpoint — voting is browser-only via the poll URL
+- 投票选项：最少 2 个，最多 30 个
+- 投票 ID：可以接受简短的 ID 或完整的 URL（包含/不包含 `https://`、`www.`、`/polls/`）
+- 截止时间：使用 RFC3339 格式（例如 `2025-03-15T18:00:00Z`）或持续时间（例如 `24h`、`1h30m`）
+- 会议日期：`YYYY-MM-DD` 表示全天，`YYYY-MM-DD HH:MM-HH:MM` 表示特定时间段
+- 时区：使用 IANA 格式（例如 `Europe/Berlin`、`America/New_York`）
+- 无专门的投票端点——投票只能通过投票 URL 在浏览器中完成
 
-## Shell Completions
+## Shell 完成提示（Shell Completion Tips）
 
 ```bash
 strawpoll completion bash > /etc/bash_completion.d/strawpoll
@@ -204,4 +204,4 @@ strawpoll completion zsh > "${fpath[1]}/_strawpoll"
 strawpoll completion fish > ~/.config/fish/completions/strawpoll.fish
 ```
 
-See [reference.md](reference.md) for complete flag reference for all commands.
+有关所有命令的完整参数说明，请参阅 [reference.md](reference.md)。

@@ -1,8 +1,8 @@
-# WhatsApp Analyzer
+# WhatsApp 分析器
 
-Automatically detect appointments and urgent messages from WhatsApp, alert via Telegram, and optionally add to Google Calendar.
+该工具可自动检测来自 WhatsApp 的约会信息及紧急消息，并通过 Telegram 发出警报；同时可选择将相关信息同步到 Google 日历中。
 
-## How It Works
+## 工作原理
 
 ```
 WhatsApp message arrives
@@ -18,7 +18,7 @@ RDV detected? → Telegram: "Add to calendar? OUI/NON"
 User confirms → Google Calendar event created
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 ./setup.sh
@@ -27,30 +27,30 @@ User confirms → Google Calendar event created
 # Done! 🎉
 ```
 
-## Requirements
+## 所需软件及环境
 
 - Docker
 - Node.js
-- OpenClaw with Telegram configured
-- `gog` CLI for Google Calendar (optional)
+- 配置了 Telegram 的 OpenClaw
+- 用于同步到 Google 日历的 `gog` CLI（可选）
 
-## What Gets Detected
+## 可检测的信息类型
 
-| Type | Keywords | Action |
+| 信息类型 | 关键词 | 处理方式 |
 |------|----------|--------|
-| **RDV** | meeting, rdv, rendez-vous, reunion, appointment + time | Telegram alert + Calendar option |
-| **Urgent** | urgent, important, asap, help, sos | Telegram alert |
+| **约会** | meeting, rdv, rendez-vous, reunion, appointment + 时间 | 通过 Telegram 发出警报，并可选择同步到日历 |
+| **紧急消息** | urgent, important, asap, help, sos | 通过 Telegram 发出警报 |
 
-## Files Created
+## 生成的文件
 
-| File | Location | Purpose |
+| 文件名 | 存放位置 | 用途 |
 |------|----------|---------|
-| `message-store.js` | `~/.openclaw/workspace/.whatsapp-messages/` | Webhook receiver |
-| `messages.jsonl` | same | Message storage |
-| `.last-ts` | same | Last processed timestamp |
-| `.env` | same | WAHA credentials |
+| `message-store.js` | `~/.openclaw/workspace/.whatsapp-messages/` | 用于接收 WhatsApp 消息的 Webhook 处理程序 |
+| `messages.jsonl` | 同上 | 存储消息内容 |
+| `.last-ts` | 同上 | 记录消息最后处理的时间戳 |
+| `.env` | 同上 | 存储 WhatsApp 和 Telegram 的登录凭据 |
 
-## Commands
+## 可使用的命令
 
 ```bash
 # Check WAHA status
@@ -69,9 +69,9 @@ curl -s -H "X-Api-Key: $WAHA_API_KEY" http://localhost:3000/api/default/auth/qr 
 open /tmp/qr.png
 ```
 
-## Troubleshooting
+## 常见问题排查
 
-### WhatsApp disconnected
+### WhatsApp 连接失败
 ```bash
 # Get new QR
 source ~/.openclaw/workspace/.whatsapp-messages/.env
@@ -79,20 +79,20 @@ curl -s -H "X-Api-Key: $WAHA_API_KEY" http://localhost:3000/api/default/auth/qr 
 open /tmp/qr.png
 ```
 
-### Messages not arriving
-1. Check WAHA: `docker logs whatsapp-waha | tail -10`
-2. Check message store: `cat /tmp/whatsapp-store.log`
-3. Check webhook config in WAHA dashboard: http://localhost:3000
+### 消息未传送到系统
+1. 检查 WhatsApp-Waha 的日志：`docker logs whatsapp-waha | tail -10`
+2. 查看消息存储文件：`cat /tmp/whatsapp-store.log`
+3. 查看 WhatsApp-Waha 仪表板中的 Webhook 配置：`http://localhost:3000`
 
-### Calendar not working
-Make sure `gog` is configured:
+### 日历同步失败
+确保 `gog` 已正确配置：
 ```bash
 gog auth login
 gog calendar events primary --from today --to tomorrow
 ```
 
-## Privacy
+## 隐私政策
 
-- All data stored locally
-- No external servers (except WhatsApp/Telegram/Google APIs)
-- Credentials in `.env` (not committed to git)
+- 所有数据均存储在本地
+- 不使用任何外部服务器（仅依赖 WhatsApp、Telegram 和 Google 的 API）
+- 登录凭据存储在 `.env` 文件中（未上传至 Git）

@@ -1,32 +1,32 @@
 ---
 name: volcengine-web-search
-description: Using volcengine web_search.py script to search web and get the result, prepare clear and specific `query`.Run the script `python scripts/web_search.py "query"`. Organize the answer based on the returned summary list, do not add or guess content.
+description: 使用 `volcengine/web_search.py` 脚本在网页上搜索并获取结果，请准备一个清晰且具体的 `query`（查询条件）。运行脚本：`python scripts/web_search.py "query"`。根据返回的摘要列表来整理搜索结果，不要添加或猜测任何内容。
 license: Complete terms in LICENSE.txt
 ---
 
-# Web Search
+# 网页搜索
 
-## Scenarios
+## 使用场景
 
-When you need to quickly get summary information from public web pages, use this skill to call the `web_search` function.
+当你需要从公共网页中快速获取摘要信息时，可以使用此功能来调用 `web_search` 函数。
 
-## Steps
+## 使用步骤
 
-1. Prepare a clear and specific `query`.
-2. Run the script `python scripts/web_search.py "query"`. Before running, navigate to the corresponding directory.
-3. Organize the answer based on the returned summary list, do not add or guess content.
+1. 准备一个清晰且具体的查询内容。
+2. 运行脚本 `python scripts/web_search.py "query"`。运行之前，请先进入相应的目录。
+3. 根据返回的摘要列表来整理结果，不要添加或猜测任何内容。
 
-## Authentication and Credentials
+## 认证与凭据
 
-- First, it will try to read the `VOLCENGINE_ACCESS_KEY` and `VOLCENGINE_SECRET_KEY` environment variables.
-- If not configured, it will try to use VeFaaS IAM temporary credentials.
+- 首先，系统会尝试读取 `VOLCENGINE_ACCESS_KEY` 和 `VOLCENGINE_SECRET_KEY` 环境变量。
+- 如果这些变量未配置，系统将尝试使用 VeFaaS 的临时 IAM 凭据进行认证。
 
-## Output Format
+## 输出格式
 
-- The console will output the summary list, up to 5 items.
-- If the call fails, it will print the error response.
+- 控制台会输出最多 5 项的摘要信息。
+- 如果调用失败，系统会打印错误响应。
 
-## Examples
+## 示例
 
 ```bash
 python scripts/web_search.py "2026 latest version of Python"

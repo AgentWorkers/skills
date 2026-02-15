@@ -1,43 +1,43 @@
 ---
 name: verify-task
-description: "MUST use after completing any multi-step task or project. Verifies completion against the original plan, checks quality criteria, and documents outcomes."
+description: "必须在完成任何多步骤任务或项目后使用该工具。它根据原始计划验证任务的完成情况，检查质量标准，并记录最终结果。"
 ---
 
-# Verify Task
+# 验证任务
 
-## Overview
+## 概述
 
-Confirm successful completion and document outcomes against the original plan.
+确认任务已成功完成，并根据原始计划记录结果。
 
-## When to Verify
+## 需要验证的情况
 
-- All tasks from plan are marked complete
-- User asks "is it done?" or "did it work?"
-- Before declaring a project finished
-- After each checkpoint in long-running tasks
+- 计划中的所有任务均被标记为已完成；
+- 用户询问“任务完成了吗？”或“任务是否有效？”；
+- 在宣布项目结束时；
+- 在长时间运行的任务的每个检查点之后。
 
-## Verification Process
+## 验证流程
 
-### Step 1: Load Original Plan
+### 第一步：加载原始计划
 
-Read the plan that was created by write-plan skill.
+读取由 `write-plan` 技能创建的计划。
 
-### Step 2: Verify Each Checkpoint
+### 第二步：验证每个检查点
 
-Go through each checkpoint and confirm:
-- [ ] All tasks marked complete
-- [ ] Verification criteria met
-- [ ] Quality standards achieved
+逐一检查每个检查点，确认：
+- [ ] 所有标记为完成的任务均已完成；
+- [ ] 验证标准均已满足；
+- [ ] 质量标准均已达到。
 
-### Step 3: Final Quality Checks
+### 第三步：最终质量检查
 
-**General quality criteria:**
-- [ ] Output matches original goal
-- [ ] No obvious errors or issues
-- [ ] Documentation updated (if applicable)
-- [ ] User can use/access the result
+**一般质量标准：**
+- [ ] 输出结果与原始目标一致；
+- [ ] 不存在明显的错误或问题；
+- [ ] 文档已更新（如适用）；
+- [ ] 用户能够使用或访问结果。
 
-### Step 4: User Confirmation
+### 第四步：用户确认
 
 ```
 "Verification complete. Final checks:
@@ -51,11 +51,11 @@ Go through each checkpoint and confirm:
 Does this meet your expectations? Any adjustments needed?"
 ```
 
-### Step 5: Document Completion
+### 第五步：记录完成情况
 
-Save completion report to: `memory/plans/YYYY-MM-DD-<project>-complete.md`
+将完成报告保存到：`memory/plans/YYYY-MM-DD-<project>-complete.md`
 
-Template:
+模板：
 ```markdown
 # [Project] - Completion Report
 
@@ -91,16 +91,16 @@ Template:
 - [What to do differently next time]
 ```
 
-## Handling Issues
+## 处理问题
 
-### If verification fails:
+### 如果验证失败：
 
-**Minor issues:** Quick fixes, proceed
-**Major issues:** Return to doing-tasks or re-plan
+**小问题：** 迅速修复后继续执行；
+**大问题：** 返回到 `doing-tasks` 阶段或重新制定计划。
 
-## Principles
+## 原则
 
-- **Objectivity** - Verify against the plan, not assumptions
-- **Thoroughness** - Check all criteria
-- **Honesty** - Report issues, don't hide problems
-- **User-centric** - Final approval comes from user satisfaction
+- **客观性**：根据计划进行验证，而非基于假设；
+- **彻底性**：检查所有标准；
+- **诚实性**：如实报告问题，不要隐瞒问题；
+- **以用户为中心**：最终批准取决于用户的满意度。

@@ -1,48 +1,48 @@
 ---
 name: alibaba-cloud-model-setup
-description: Configure OpenClaw (including historical Moltbot/Clawdbot paths) to use Alibaba Cloud Model Studio through a strict interactive flow. The first required step is asking whether the user can run terminal commands now; use that answer to choose env-var mode (preferred) or inline mode before collecting site/key details. Use this skill when a user asks to add, switch, or repair Alibaba Cloud/Qwen provider configuration in OpenClaw.
+description: 配置 OpenClaw（包括旧的 Moltbot/Clawdbot 路径），使其能够通过严格的交互流程使用 Alibaba Cloud Model Studio。第一步需要询问用户是否能够运行终端命令；根据用户的回答，选择环境变量模式（推荐）或内联模式，然后再收集站点/密钥详细信息。当用户请求在 OpenClaw 中添加、切换或修复 Alibaba Cloud/Qwen 提供商的配置时，可以使用此技能。
 ---
 
-# Alibaba Cloud Model Setup
+# 阿里云模型设置
 
-## Overview
+## 概述
 
-Use this skill to configure Alibaba Cloud as an OpenClaw model provider with minimal manual editing. Prefer the bundled script for deterministic updates and safe backups.
+使用此功能可以以最少的手动编辑量将阿里云配置为OpenClaw的模型提供者。建议使用捆绑的脚本进行确定性更新和安全的备份。
 
-## Workflow
+## 工作流程
 
-1. Confirm OpenClaw config location.
-2. Run the interactive script to collect:
-- First and mandatory: whether user can run terminal commands now (decides env mode vs inline mode)
-- In env mode, show 2 commands for user to run (`export` + append to `~/.bashrc`), then wait for confirmation and verify
-- Retry env detection up to 2 times; if still not detected, ask whether to fallback to inline key
-- Site choice (`Beijing/中国站/CN`, `Singapore/国际站/INTL`, or `Virginia/美国站/US`)
-- Access Key (only required if inline mode, or if user chooses inline fallback)
-- Validate API key against selected site before any config write
-- In systemd deployments, ensure service environment is ready before write
-- Default preset models (`qwen-max`, `qwen-flash`, `qwen3-coder-plus`)
-- Whether to add extra models from live API list
-- Whether to change primary model from default
-- Whether to set this model as default
-3. Validate the resulting JSON and report the final provider/model path.
-4. If user is unsure which model IDs are available, fetch live models from API first.
+1. 确认OpenClaw配置文件的位置。
+2. 运行交互式脚本以收集以下信息：
+   - 首先也是必须的：用户当前是否可以运行终端命令（这将决定使用环境变量模式还是内联模式）。
+   - 在环境变量模式下，显示两个供用户运行的命令（`export`命令以及将其添加到`~/.bashrc`文件中），然后等待用户确认并验证。
+   - 重试环境变量检测最多2次；如果仍未检测到环境变量，则询问用户是否切换到内联模式。
+   - 选择站点（`Beijing/中国站/CN`、`Singapore/国际站/INTL`或`Virginia/美国站/US`）。
+   - 访问密钥（仅在启用内联模式或用户选择内联模式时需要）。
+   - 在写入任何配置之前，验证API密钥是否与所选站点匹配。
+   - 在systemd部署中，确保服务环境已准备好再进行配置写入。
+   - 默认预设模型（`qwen-max`、`qwen-flash`、`qwen3-coder-plus`）。
+   - 是否要从实时API列表中添加额外的模型。
+   - 是否要更改默认模型。
+   - 是否将此模型设置为默认模型。
+3. 验证生成的JSON文件，并报告最终的提供者/模型路径。
+4. 如果用户不确定有哪些模型可用，可以先通过API获取实时模型列表。
 
-## Safety Rules (Mandatory)
+## 安全规则（必填）
 
-1. Always run `python3 scripts/alibaba_cloud_model_setup.py` for configuration changes.
-2. Never edit `~/.openclaw/openclaw.json` manually when this skill is used.
-3. In environment-variable mode, never proceed to config write unless env detection succeeds in the script flow; if detection fails and user rejects inline fallback, stop with `Config not changed.`
-4. In systemd deployments, never proceed to config write unless `systemctl --user show-environment` contains the configured env var.
+1. 进行配置更改时，始终运行`python3 scripts/alibaba_cloud_model_setup.py`脚本。
+2. 使用此功能时，切勿手动编辑`~/.openclaw/openclaw.json`文件。
+3. 在使用环境变量模式时，除非脚本中的环境变量检测成功，否则不要进行配置写入；如果检测失败且用户拒绝使用内联模式，则停止操作，并显示“配置未更改”。
+4. 在systemd部署中，除非`systemctl --user show-environment`命令显示了已配置的环境变量，否则不要进行配置写入。
 
-## Run Script
+## 运行脚本
 
-Execute:
+执行：
 
 ```bash
 python3 scripts/alibaba_cloud_model_setup.py
 ```
 
-Optional flags for non-interactive use:
+**非交互式使用的可选参数：**
 
 ```bash
 python3 scripts/alibaba_cloud_model_setup.py \
@@ -55,7 +55,7 @@ python3 scripts/alibaba_cloud_model_setup.py \
   --set-default
 ```
 
-List live model IDs via API (no config write):
+**通过API列出实时模型ID（不进行配置写入）：**
 
 ```bash
 python3 scripts/alibaba_cloud_model_setup.py \
@@ -65,27 +65,27 @@ python3 scripts/alibaba_cloud_model_setup.py \
   --non-interactive
 ```
 
-## Default Behavior
+## 默认行为
 
-- Detect config path in this order:
+- 按以下顺序检测配置文件的位置：
 - `~/.openclaw/openclaw.json`
 - `~/.moltbot/moltbot.json`
 - `~/.clawdbot/clawdbot.json`
-- If none exists, create `~/.openclaw/openclaw.json`
-- Write provider `balian` with OpenAI-compatible API mode
-- Create a timestamped backup before overwriting an existing file
-- Preserve unrelated config sections
+- 如果这些文件都不存在，则创建`~/.openclaw/openclaw.json`。
+- 使用与OpenAI兼容的API模式设置提供者“balian”。
+- 在覆盖现有文件之前创建带有时间戳的备份。
+- 保留与模型配置无关的部分。
 
-## Validation Checklist
+## 验证检查清单
 
-After configuration:
+配置完成后：
 
-1. Confirm JSON is valid by running `python3 -m json.tool <config-path>`.
-2. Ensure `models.providers.balian.baseUrl` matches site selection.
-3. Ensure `models.providers.balian.models` contains expected model IDs.
-4. Ensure `agents.defaults.model.primary` is `balian/<model-id>` when default is enabled.
-5. Start dashboard (`openclaw dashboard`) or TUI (`openclaw tui`) and verify model call succeeds.
+1. 通过运行`python3 -m json.tool <config-path>`来确认JSON文件的有效性。
+2. 确保`modelsproviders.balian.baseUrl`与所选站点匹配。
+3. 确保`modelsproviders.balian.models`包含预期的模型ID。
+4. 当启用默认模型时，确保`agents.defaults.model.primary`的值为`balian/<model-id>`。
+5. 启动仪表板（`openclaw dashboard`）或TUI（`openclaw tui`），并验证模型调用是否成功。
 
-## References
+## 参考资料
 
-- Endpoint and field conventions: `references/openclaw_alibaba_cloud.md`
+- 端点和字段约定：`references/openclaw_alibaba_cloud.md`

@@ -1,19 +1,19 @@
 ---
-description: Schedule and automate social media posts to X/Twitter with cron-based queue management.
+description: 使用基于 Cron 的队列管理系统，来安排和自动化在 X（Facebook）/Twitter 上发布的内容。
 ---
 
-# SNS Auto Poster
+# SNS自动发布工具
 
-Automated social media posting with cron scheduling and queue management.
+通过Cron调度和队列管理实现自动化的社交媒体发布功能。
 
-## Requirements
+## 系统要求
 
-- Python 3.8+
-- `requests` library (`pip install requests`)
-- Platform API credentials (see Configuration)
-- OpenClaw cron (for scheduling)
+- Python 3.8及以上版本
+- `requests` 库（使用 `pip install requests` 安装）
+- 平台API凭证（详见配置文件）
+- OpenClaw Cron任务调度工具
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Add a post to the queue
@@ -32,7 +32,7 @@ python3 {skill_dir}/poster.py list
 python3 {skill_dir}/poster.py clean
 ```
 
-## Cron Setup
+## Cron任务设置
 
 ```bash
 # Process queue every 15 minutes
@@ -42,51 +42,51 @@ openclaw cron add --schedule "*/15 * * * *" --command "python3 {skill_dir}/poste
 openclaw cron add --schedule "0 9 * * *" --command "python3 {skill_dir}/poster.py run-template morning"
 ```
 
-## Configuration
+## 配置文件
 
-### Required Environment Variables
+### 必需的环境变量
 
-| Variable | Platform | Description |
-|----------|----------|-------------|
-| `X_CONSUMER_KEY` | X/Twitter | API Consumer Key |
-| `X_CONSUMER_SECRET` | X/Twitter | API Consumer Secret |
-| `X_ACCESS_TOKEN` | X/Twitter | OAuth Access Token |
-| `X_ACCESS_TOKEN_SECRET` | X/Twitter | OAuth Access Token Secret |
+| 变量        | 平台        | 说明                          |
+|-------------|------------|-----------------------------------------|
+| `X_CONSUMER_KEY` | X/Twitter    | API消费者密钥                          |
+| `X_CONSUMER_SECRET` | X/Twitter    | API消费者密钥秘钥                          |
+| `X_ACCESS_TOKEN` | X/Twitter    | OAuth访问令牌                          |
+| `X_ACCESS_TOKEN_SECRET` | X/Twitter    | OAuth访问令牌秘钥秘钥                          |
 
-Store in `~/.openclaw/secrets.env` — never commit to git.
+将这些变量保存在 `~/.openclaw/secrets.env` 文件中，切勿将其提交到Git仓库。
 
-### Post Queue (`queue.json`)
+### 发布队列（`queue.json`）
 
 ```json
 [{"id": "uuid", "platform": "x", "text": "Hello!", "image": null, "schedule": "2025-01-15T09:00:00", "status": "pending"}]
 ```
 
-### Templates (`templates/morning.json`)
+### 模板文件（`templates/morning.json`）
 
 ```json
 {"platform": "x", "text": "☀️ Good morning! Today is {date}. {custom_message}", "schedule_time": "09:00"}
 ```
 
-## Supported Platforms
+## 支持的平台
 
-| Platform | Status | Auth |
-|----------|--------|------|
-| X (Twitter) | ✅ Ready | OAuth 1.0a |
-| Bluesky | 🔜 Planned | App Password |
-| Mastodon | 🔜 Planned | OAuth 2.0 |
+| 平台        | 支持状态      | 认证方式                        |
+|-------------|-------------|-----------------------------------------|
+| X (Twitter)    | ✅ 已支持       | OAuth 1.0a                          |
+| Bluesky      | 🔜 计划中      | 应用密码认证                          |
+| Mastodon     | 🔜 计划中      | OAuth 2.0                          |
 
-## Edge Cases & Troubleshooting
+## 特殊情况与故障排除
 
-- **Duplicate posts**: X API rejects identical tweets within a short window. Add a timestamp or vary text.
-- **Rate limits**: X allows ~300 tweets/3 hours. The queue processor respects this.
-- **Image too large**: X max image size is 5MB. Compress before posting.
-- **Expired tokens**: If posting fails with 401, tokens need regeneration at developer.x.com.
-- **Queue corruption**: If `queue.json` is malformed, back it up and recreate.
-- **Missed schedule**: Posts scheduled in the past are posted on next `run` — they don't expire.
+- **重复发布**：X平台不允许在短时间内发布相同的推文。请添加时间戳或修改文本内容。
+- **频率限制**：X平台每3小时允许发布约300条推文。队列处理程序会遵守这一限制。
+- **图片过大**：X平台允许的图片最大大小为5MB。发布前请对图片进行压缩。
+- **令牌过期**：如果发布失败并返回401错误，需在 developer.x.com 重新生成令牌。
+- **队列损坏**：如果 `queue.json` 文件格式错误，请备份文件并重新创建。
+- **错过调度时间**：过去安排的发布任务会在下一次任务执行时自动发布，不会过期。
 
-## Security
+## 安全性注意事项
 
-- **Never log or display API credentials** in output.
-- Store credentials in `secrets.env` with `chmod 600`.
-- Validate post content before sending (check character limits: X=280 chars).
-- Review queued posts before enabling automated cron processing.
+- **切勿在输出中显示API凭证**。
+- 将凭证保存在 `secrets.env` 文件中，并设置权限为 `chmod 600` 以保护文件安全。
+- 发布前请验证内容长度（X平台限制推文长度为280个字符）。
+- 在启用自动调度功能之前，请先检查队列中的所有待发布内容。

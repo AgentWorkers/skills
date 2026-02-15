@@ -1,62 +1,59 @@
 ---
 name: solax-summary-fetch
-description: Fetch inverter summary data from the Solax Cloud API using the npm package solax-cloud-api. Use when the user provides (or has configured) a Solax tokenId and inverter serial number (sn) and wants current/summary energy data returned as JSON (typed as SolaxSummary) for dashboards/automation.
+description: 使用 npm 包 `solax-cloud-api` 从 Solax Cloud API 获取逆变器的汇总数据。当用户提供了（或已配置了）Solax tokenId 和逆变器序列号（sn）时，可以使用此方法将当前的/汇总的能源数据以 JSON 格式（类型为 SolaxSummary）返回，以便用于仪表板或自动化系统。
 ---
 
 # solax-summary-fetch
 
-Fetch Solax inverter summary data as JSON.
+用于以 JSON 格式获取 Solax 逆变器的摘要信息。
 
-## Setup (one-time)
+## 设置（一次性操作）
 
-This skill uses Node.js and the npm package `solax-cloud-api`.
+本技能依赖于 Node.js 和 npm 包 `solax-cloud-api`。
 
-Install dependencies inside the skill folder:
+在技能文件夹内安装所需的依赖项：
 
 ```bash
 cd /home/openclaw/.openclaw/workspace/skills/solax-summary-fetch/scripts
 npm install
 ```
 
-(We use `npm install` instead of `npm ci` because this skill does not ship with a lockfile.)
+（我们使用 `npm install` 而不是 `npm ci`，因为本技能不包含锁文件。）
 
-## Inputs
+## 输入参数
 
-You need:
+您需要提供以下信息：
+- `tokenId`（Solax Cloud API 的令牌 ID）
+- `sn`（逆变器的序列号）
 
-- `tokenId` (Solax Cloud API token id)
-- `sn` (inverter serial number)
+### 建议：将参数设置为环境变量
 
-### Recommended: environment variables
-
-Set these in your runtime (preferred so you don’t leak secrets into shell history):
-
+建议在运行时设置这些环境变量（这样可以避免将敏感信息泄露到 shell 历史记录中）：
 - `SOLAX_TOKENID`
 - `SOLAX_SN`
 
-**Do not** hardcode credentials into the skill files.
+**请勿** 将凭据硬编码到技能文件中。
 
-### Alternate: CLI arguments
+### 替代方案：通过 CLI 参数传递
 
-Pass them explicitly as:
-
+您也可以通过以下命令行参数传递这些值：
 - `--tokenId <tokenId>`
 - `--sn <serial>`
 
-## Command
+## 命令格式
 
 ```bash
 cd /home/openclaw/.openclaw/workspace/skills/solax-summary-fetch/scripts
 node fetch_summary.mjs --tokenId "$SOLAX_TOKENID" --sn "$SOLAX_SN"
 ```
 
-## Output
+## 输出结果
 
-- Prints a single JSON object to stdout.
-- The JSON conforms to the **SolaxSummary** interface exposed by `solax-cloud-api` (see `references/solax-summary.d.ts`).
-- Under the hood (solax-cloud-api v0.2.0): fetches `getAPIData()` then converts via `SolaxCloudAPI.toSummary()`.
+- 将一个 JSON 对象输出到标准输出（stdout）。
+- 该 JSON 对象符合 `solax-cloud-api` 提供的 **SolaxSummary** 接口规范（详见 `references/solax-summary.d.ts`）。
+- 在内部实现中（solax-cloud-api v0.2.0）：首先调用 `getAPIData()`，然后通过 `SolaxCloudAPI.toSummary()` 进行转换。
 
-## Guardrails
+## 安全注意事项
 
-- Never print or log the tokenId beyond confirming whether it is set (redact it).
-- If the API call fails, return a structured error JSON with `ok:false` and a short `error` message.
+- 在确认 `tokenId` 已正确设置后，切勿将其打印或记录到日志中（应对其进行屏蔽）。
+- 如果 API 调用失败，返回一个包含 `ok`: false` 和简短错误信息的 JSON 对象。

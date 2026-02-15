@@ -1,34 +1,34 @@
 ---
 name: captchas-openclaw
-description: OpenClaw integration guidance for CAPTCHAS Agent API, including OpenResponses tool schemas and plugin tool registration.
+description: OpenClaw集成指南：针对CAPTCHAS Agent API的使用，包括OpenResponses工具的架构说明以及插件工具的注册方法。
 homepage: https://captchas.co
 metadata: {"openclaw":{"emoji":"🧩","requires":{"env":["CAPTCHAS_API_KEY","CAPTCHAS_ENDPOINT"]},"primaryEnv":"CAPTCHAS_API_KEY"}}
 ---
 
-# CAPTCHAS + OpenClaw
+# 图形验证码（CAPTCHAs）与 OpenClaw 的集成
 
-Use this skill when integrating CAPTCHAS with OpenClaw via OpenResponses tools or OpenClaw plugin tools.
+当需要通过 OpenResponses 工具或 OpenClaw 插件将图形验证码功能与 OpenClaw 集成时，请使用此技能。
 
-## Configuration
+## 配置
 
-Set environment variables:
+设置环境变量：
 
 - `CAPTCHAS_ENDPOINT` = `https://agent.captchas.co`
 - `CAPTCHAS_API_KEY` = `<your-api-key>`
 
-Headers:
+请求头：
 
-- `x-api-key`: required (use `CAPTCHAS_API_KEY`).
-- `x-domain`: optional; validated if provided.
+- `x-api-key`：必填项（使用 `CAPTCHAS_API_KEY`）。
+- `x-domain`：可选项；如果提供，则会进行验证。
 
-Notes:
+注意事项：
 
-- `site_key` is optional; if omitted, it resolves from the API key or account default.
-- Avoid sending PII in `signals`.
+- `site_key` 是可选项；如果省略，系统会从 API 密钥或账户默认值中自动获取。
+- 请避免在请求数据中传输个人身份信息（PII）。
 
-## OpenResponses Tool Schemas (OpenClaw Gateway)
+## OpenResponses 工具的请求格式（OpenClaw 网关）
 
-Use the OpenClaw `tools` array shape when calling the Gateway `/v1/responses` endpoint.
+在调用 `/v1/responses` 端点时，需使用 OpenClaw 的 `tools` 数组格式。
 
 ```json
 {
@@ -99,11 +99,11 @@ Use the OpenClaw `tools` array shape when calling the Gateway `/v1/responses` en
 }
 ```
 
-## OpenClaw Plugin Tool Registration
+## OpenClaw 插件工具的注册
 
-Register tools using `api.registerTool(...)` and the same JSON Schema parameters as above.
+使用 `api.registerTool(...)` 方法注册工具，并使用与上述相同的 JSON 格式参数。
 
-Example:
+示例：
 
 ```js
 api.registerTool({
@@ -125,7 +125,7 @@ api.registerTool({
 });
 ```
 
-## References
+## 参考资料
 
-- Use `/v1/agent/verify`, `/v1/agent/challenge/:id/complete`, and `/v1/agent/token-verify` as the canonical API calls.
-- See `captchas-human-verification/SKILL.md` for workflow guidance.
+- 使用 `/v1/agent/verify`、`/v1/agent/challenge/:id/complete` 和 `/v1/agent/token-verify` 作为官方推荐的 API 调用方法。
+- 有关工作流程的详细指导，请参阅 `captchas-human-verification/SKILL.md`。

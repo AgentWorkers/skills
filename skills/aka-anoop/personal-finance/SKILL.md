@@ -1,28 +1,28 @@
 ---
 name: personal-finance
-description: Manage personal finances, track spending by category, set budgets, and receive reminders for EMIs and one-time annual expenses. Use for logging expenses, checking budget status, or setting up financial reminders.
+description: 管理个人财务，按类别追踪支出，制定预算，并接收关于分期付款（EMIs）和一次性年度支出的提醒。可用于记录支出、查看预算状况或设置财务提醒。
 ---
 
-# Personal Finance
+# 个人理财
 
-Track spending, manage budgets, and stay on top of recurring payments (EMIs) and one-time annual expenses using a local SQLite backend.
+使用本工具，您可以跟踪开支、管理预算，并实时掌握定期还款（EMIs）和一次性年度支出的情况。该工具基于本地的 SQLite 数据库进行操作。
 
-## Preset Categories
-The skill starts with: `Food`, `Rent`, `Utilities`, `Travel`, `Entertainment`, `Shopping`, `Health`, `Misc`.
+## 预设分类
+系统提供了以下预设分类：`食品`、`房租`、`水电费`、`旅行`、`娱乐`、`购物`、`健康`、`杂项`。
 
-## Core Features
-- **Categorized Tracking**: Log expenses into preset or custom categories.
-- **Dynamic Categories**: Add new categories on the fly.
-- **SQLite Backend**: All data is stored in `finance.db`.
+## 核心功能
+- **分类记录**：将支出记录到预设或自定义的分类中。
+- **动态添加分类**：可以随时添加新的分类。
+- **SQLite 数据库**：所有数据都存储在 `finance.db` 文件中。
 
-## Setup
-1. Run `scripts/init_db.py` to initialize the database (already done).
-2. Ask the user if they want to add custom categories or set budgets for the presets.
+## 设置
+1. 运行 `scripts/init_db.py` 命令以初始化数据库（此步骤已完成）。
+2. 系统会询问用户是否需要添加自定义分类或为预设分类设置预算。
 
-## Logging Expenses
-Record spends into `finance.db`. 
-Example: "Spent 500 on Food for lunch" -> Insert into transactions table.
+## 记录支出
+将支出信息保存到 `finance.db` 数据库中。
+示例：「午餐花费了 500 元」 -> 该信息会被插入到 `transactions` 表中。
 
-## Scheduled Tasks
-- **Weekly Digest**: Summarize SQLite `transactions` table.
-- **Reminders**: Check `schedules` table for EMIs and One-time spends.
+## 定期任务
+- **每周汇总**：自动汇总 `transactions` 表中的数据。
+- **提醒功能**：系统会检查 `schedules` 表中的定期还款记录和一次性支出项目。

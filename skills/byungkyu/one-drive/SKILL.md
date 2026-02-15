@@ -17,9 +17,9 @@ metadata:
 
 # OneDrive
 
-Access the OneDrive API with managed OAuth authentication via Microsoft Graph. Manage files, folders, drives, and sharing with full CRUD operations.
+通过 Microsoft Graph 和管理的 OAuth 认证来访问 OneDrive API。您可以执行完整的 CRUD 操作（创建、读取、更新和删除）来管理文件、文件夹、驱动器以及文件共享功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List files in OneDrive root
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/one-drive/v1.0/{resource}
 ```
 
-The gateway proxies requests to `graph.microsoft.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `graph.microsoft.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your OneDrive OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 OneDrive OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple OneDrive connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 OneDrive 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Drives
+### 驱动器
 
-#### Get Current User's Drive
+#### 获取当前用户的驱动器
 
 ```bash
 GET /one-drive/v1.0/me/drive
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "b!F3Y7M0VT80OO9iu_D6Z-LA...",
@@ -172,33 +172,33 @@ GET /one-drive/v1.0/me/drive
 }
 ```
 
-#### List User's Drives
+#### 列出用户的驱动器
 
 ```bash
 GET /one-drive/v1.0/me/drives
 ```
 
-#### Get Drive by ID
+#### 根据 ID 获取驱动器
 
 ```bash
 GET /one-drive/v1.0/drives/{drive-id}
 ```
 
-### Files and Folders
+### 文件和文件夹
 
-#### Get Drive Root
+#### 获取驱动器根目录
 
 ```bash
 GET /one-drive/v1.0/me/drive/root
 ```
 
-#### List Root Children
+#### 列出根目录下的子文件夹
 
 ```bash
 GET /one-drive/v1.0/me/drive/root/children
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -226,35 +226,35 @@ GET /one-drive/v1.0/me/drive/root/children
 }
 ```
 
-#### Get Item by ID
+#### 根据 ID 获取文件或文件夹
 
 ```bash
 GET /one-drive/v1.0/me/drive/items/{item-id}
 ```
 
-#### Get Item by Path
+#### 根据路径获取文件或文件夹
 
-Use colon (`:`) syntax to access items by path:
+使用冒号（`:`）语法来根据路径访问文件或文件夹：
 
 ```bash
 GET /one-drive/v1.0/me/drive/root:/Documents/report.pdf
 ```
 
-#### List Folder Children by Path
+#### 列出文件夹下的子文件夹
 
 ```bash
 GET /one-drive/v1.0/me/drive/root:/Documents:/children
 ```
 
-#### Get Item Children
+#### 获取文件或文件夹的子项
 
 ```bash
 GET /one-drive/v1.0/me/drive/items/{item-id}/children
 ```
 
-### Special Folders
+### 特定文件夹
 
-Access known folders by name:
+可以通过名称访问已知的文件夹：
 
 ```bash
 GET /one-drive/v1.0/me/drive/special/documents
@@ -263,32 +263,32 @@ GET /one-drive/v1.0/me/drive/special/music
 GET /one-drive/v1.0/me/drive/special/approot
 ```
 
-### Recent and Shared
+### 最近访问的文件和共享文件
 
-#### Get Recent Files
+#### 获取最近访问的文件
 
 ```bash
 GET /one-drive/v1.0/me/drive/recent
 ```
 
-#### Get Files Shared With Me
+#### 获取与我共享的文件
 
 ```bash
 GET /one-drive/v1.0/me/drive/sharedWithMe
 ```
 
-### Search
+### 搜索
 
 ```bash
 GET /one-drive/v1.0/me/drive/root/search(q='{query}')
 ```
 
-Example:
+示例：
 ```bash
 GET /one-drive/v1.0/me/drive/root/search(q='budget')
 ```
 
-### Create Folder
+### 创建文件夹
 
 ```bash
 POST /one-drive/v1.0/me/drive/root/children
@@ -301,7 +301,7 @@ Content-Type: application/json
 }
 ```
 
-Create folder inside another folder:
+在另一个文件夹内创建文件夹：
 ```bash
 POST /one-drive/v1.0/me/drive/items/{parent-id}/children
 Content-Type: application/json
@@ -312,7 +312,7 @@ Content-Type: application/json
 }
 ```
 
-### Upload File (Simple - up to 4MB)
+### 上传文件（简单 - 最大 4MB）
 
 ```bash
 PUT /one-drive/v1.0/me/drive/items/{parent-id}:/{filename}:/content
@@ -321,7 +321,7 @@ Content-Type: application/octet-stream
 {file binary content}
 ```
 
-Example - upload to root:
+示例 - 上传到驱动器根目录：
 ```bash
 PUT /one-drive/v1.0/me/drive/root:/document.txt:/content
 Content-Type: text/plain
@@ -329,11 +329,11 @@ Content-Type: text/plain
 Hello, OneDrive!
 ```
 
-### Upload File (Large - resumable)
+### 上传文件（大文件 - 可分块上传）
 
-For files over 4MB, use resumable upload:
+对于超过 4MB 的文件，可以使用分块上传：
 
-**Step 1: Create upload session**
+**步骤 1：创建上传会话**
 ```bash
 POST /one-drive/v1.0/me/drive/root:/{filename}:/createUploadSession
 Content-Type: application/json
@@ -345,7 +345,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "uploadUrl": "https://sn3302.up.1drv.com/up/...",
@@ -353,17 +353,17 @@ Content-Type: application/json
 }
 ```
 
-**Step 2: Upload bytes to the uploadUrl**
+**步骤 2：将文件数据上传到 `uploadUrl`**
 
-### Download File
+### 下载文件
 
-Get the file metadata to retrieve the download URL:
+获取文件元数据以获取下载 URL：
 
 ```bash
 GET /one-drive/v1.0/me/drive/items/{item-id}
 ```
 
-The response includes `@microsoft.graph.downloadUrl` - a pre-authenticated URL valid for a short time:
+响应中包含 `@microsoft.graph.downloadUrl`——这是一个经过预认证的临时 URL：
 
 ```json
 {
@@ -373,9 +373,9 @@ The response includes `@microsoft.graph.downloadUrl` - a pre-authenticated URL v
 }
 ```
 
-Use this URL directly to download the file content (no auth header needed).
+直接使用此 URL 下载文件内容（无需添加认证头）。
 
-### Update Item (Rename/Move)
+### 更新文件（重命名/移动）
 
 ```bash
 PATCH /one-drive/v1.0/me/drive/items/{item-id}
@@ -386,7 +386,7 @@ Content-Type: application/json
 }
 ```
 
-Move to different folder:
+将文件移动到其他文件夹：
 ```bash
 PATCH /one-drive/v1.0/me/drive/items/{item-id}
 Content-Type: application/json
@@ -398,7 +398,7 @@ Content-Type: application/json
 }
 ```
 
-### Copy Item
+### 复制文件
 
 ```bash
 POST /one-drive/v1.0/me/drive/items/{item-id}/copy
@@ -412,19 +412,19 @@ Content-Type: application/json
 }
 ```
 
-Returns `202 Accepted` with a `Location` header to monitor the copy operation.
+响应代码为 `202 Accepted`，并附带 `Location` 头以跟踪复制操作。
 
-### Delete Item
+### 删除文件
 
 ```bash
 DELETE /one-drive/v1.0/me/drive/items/{item-id}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-### Sharing
+### 文件共享
 
-#### Create Sharing Link
+#### 创建共享链接
 
 ```bash
 POST /one-drive/v1.0/me/drive/items/{item-id}/createLink
@@ -436,16 +436,16 @@ Content-Type: application/json
 }
 ```
 
-Link types:
-- `view` - Read-only access
-- `edit` - Read-write access
-- `embed` - Embeddable link
+链接类型：
+- `view` - 只读访问
+- `edit` - 读写访问
+- `embed` - 可嵌入的链接
 
-Scopes:
-- `anonymous` - Anyone with the link
-- `organization` - Anyone in your organization
+访问范围：
+- `anonymous` - 任何拥有链接的人
+- `organization` - 您组织中的任何人
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "...",
@@ -457,7 +457,7 @@ Scopes:
 }
 ```
 
-#### Invite Users (Share with specific people)
+#### 邀请用户（与特定用户共享）
 
 ```bash
 POST /one-drive/v1.0/me/drive/items/{item-id}/invite
@@ -473,24 +473,24 @@ Content-Type: application/json
 }
 ```
 
-## Query Parameters
+## 查询参数
 
-Customize responses with OData query parameters:
+使用 OData 查询参数来自定义响应内容：
 
-- `$select` - Choose specific properties: `?$select=id,name,size`
-- `$expand` - Include related resources: `?$expand=children`
-- `$filter` - Filter results: `?$filter=file ne null` (files only)
-- `$orderby` - Sort results: `?$orderby=name`
-- `$top` - Limit results: `?$top=10`
+- `$select` - 选择特定属性：`?$select=id,name,size`
+- `$expand` - 包含相关资源：`?$expand=children`
+- `$filter` - 筛选结果：`?$filter=file ne null`（仅限文件）
+- `$orderby` - 对结果进行排序：`?$orderby=name`
+- `$top` - 限制结果数量：`?$top=10`
 
-Example:
+示例：
 ```bash
 GET /one-drive/v1.0/me/drive/root/children?$select=id,name,size&$top=20&$orderby=name
 ```
 
-## Pagination
+## 分页
 
-Results are paginated. The response includes `@odata.nextLink` for additional pages:
+结果会分页显示。响应中包含 `@odata.nextLink` 以获取下一页：
 
 ```json
 {
@@ -499,9 +499,9 @@ Results are paginated. The response includes `@odata.nextLink` for additional pa
 }
 ```
 
-Use the full URL from `@odata.nextLink` (without the gateway prefix) to fetch the next page.
+使用 `@odata.nextLink` 中的完整 URL（不包括网关前缀）来获取下一页。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -555,30 +555,30 @@ upload_response = requests.put(
 )
 ```
 
-## Notes
+## 注意事项
 
-- OneDrive uses Microsoft Graph API (`graph.microsoft.com`)
-- Item IDs are unique within a drive
-- Use colon (`:`) syntax for path-based addressing: `/root:/path/to/file`
-- Simple uploads are limited to 4MB; use resumable upload for larger files
-- Download URLs from `@microsoft.graph.downloadUrl` are pre-authenticated and temporary
-- Conflict behavior options: `fail`, `replace`, `rename`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- OneDrive 使用 Microsoft Graph API (`graph.microsoft.com`)。
+- 文件或文件夹的 ID 在同一驱动器内是唯一的。
+- 使用冒号（`:`）语法进行路径定位：`/root:/path/to/file`。
+- 简单上传的最大文件大小为 4MB；大文件请使用分块上传。
+- 从 `@microsoft.graph.downloadUrl` 下载的文件 URL 是经过预认证的临时链接。
+- 冲突处理选项：`fail`、`replace`、`rename`。
+- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含括号，请使用 `curl -g` 以防止全局解析。
+- **重要提示：** 当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 Shell 环境中 `$MATON_API_KEY` 可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing OneDrive connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions |
-| 404 | Item not found |
-| 409 | Conflict (e.g., item already exists) |
-| 429 | Rate limited (check `Retry-After` header) |
-| 4xx/5xx | Passthrough error from Microsoft Graph API |
+| 400 | 未找到 OneDrive 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足 |
+| 404 | 文件或文件夹未找到 |
+| 409 | 冲突（例如，文件已存在） |
+| 429 | 请求频率限制（请查看 `Retry-After` 头） |
+| 4xx/5xx | 来自 Microsoft Graph API 的传递错误 |
 
-### Error Response Format
+### 错误响应格式
 
 ```json
 {
@@ -589,15 +589,15 @@ upload_response = requests.put(
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -608,20 +608,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `one-drive`. For example:
+1. 确保您的 URL 路径以 `one-drive` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/one-drive/v1.0/me/drive/root/children`
+- 错误的路径：`https://gateway.maton.ai/v1.0/me/drive/root/children`
 
-- Correct: `https://gateway.maton.ai/one-drive/v1.0/me/drive/root/children`
-- Incorrect: `https://gateway.maton.ai/v1.0/me/drive/root/children`
+## 资源
 
-## Resources
-
-- [OneDrive Developer Documentation](https://learn.microsoft.com/en-us/onedrive/developer/)
-- [Microsoft Graph API Reference](https://learn.microsoft.com/en-us/graph/api/overview)
-- [DriveItem Resource](https://learn.microsoft.com/en-us/graph/api/resources/driveitem)
-- [Drive Resource](https://learn.microsoft.com/en-us/graph/api/resources/drive)
-- [Sharing and Permissions](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/concepts/sharing)
-- [Large File Upload](https://learn.microsoft.com/en-us/graph/api/driveitem-createuploadsession)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [OneDrive 开发者文档](https://learn.microsoft.com/en-us/onedrive/developer/)
+- [Microsoft Graph API 参考](https://learn.microsoft.com/en-us/graph/api/overview)
+- [DriveItem 资源](https://learn.microsoft.com/en-us/graph/api/resources/driveitem)
+- [Drive 资源](https://learn.microsoft.com/en-us/graph/api/resources/drive)
+- [文件共享和权限](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/concepts/sharing)
+- [大文件上传](https://learn.microsoft.com/en-us/graph/api/driveitem-createuploadsession)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

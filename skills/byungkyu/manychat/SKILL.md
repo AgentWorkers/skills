@@ -17,9 +17,9 @@ metadata:
 
 # ManyChat
 
-Access the ManyChat API with managed authentication. Manage subscribers, tags, custom fields, flows, and send messages through chat automation.
+通过托管的认证方式访问ManyChat API。您可以管理订阅者、标签、自定义字段、自动化流程，并通过聊天自动化功能发送消息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get page info
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/manychat/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual ManyChat API endpoint path. The gateway proxies requests to `api.manychat.com` and automatically injects your API token.
+请将 `{native-api-path}` 替换为实际的ManyChat API端点路径。该网关会将请求代理到 `api.manychat.com` 并自动插入您的API密钥。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your ManyChat connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的ManyChat连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Complete the connection by providing your ManyChat API key through the connection URL.
+通过提供您的ManyChat API密钥来完成连接设置。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple ManyChat connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个ManyChat连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,21 +140,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Page Operations
+### 页面操作
 
-#### Get Page Info
+#### 获取页面信息
 
 ```bash
 GET /manychat/fb/page/getInfo
 ```
 
-Rate limit: 100 queries per second
+请求速率限制：每秒100次
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -172,17 +172,17 @@ Rate limit: 100 queries per second
 }
 ```
 
-### Tag Operations
+### 标签操作
 
-#### List Tags
+#### 列出标签
 
 ```bash
 GET /manychat/fb/page/getTags
 ```
 
-Rate limit: 100 queries per second
+请求速率限制：每秒100次
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -193,7 +193,7 @@ Rate limit: 100 queries per second
 }
 ```
 
-#### Create Tag
+#### 创建标签
 
 ```bash
 POST /manychat/fb/page/createTag
@@ -204,9 +204,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Remove Tag from Page
+#### 从页面中删除标签
 
 ```bash
 POST /manychat/fb/page/removeTag
@@ -217,9 +217,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second. Removes tag from page and all subscribers.
+请求速率限制：每秒10次。该操作会从页面和所有订阅者中删除标签。
 
-#### Remove Tag by Name
+#### 按名称删除标签
 
 ```bash
 POST /manychat/fb/page/removeTagByName
@@ -230,19 +230,19 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-### Custom Field Operations
+### 自定义字段操作
 
-#### List Custom Fields
+#### 列出自定义字段
 
 ```bash
 GET /manychat/fb/page/getCustomFields
 ```
 
-Rate limit: 100 queries per second
+请求速率限制：每秒100次
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -253,7 +253,7 @@ Rate limit: 100 queries per second
 }
 ```
 
-#### Create Custom Field
+#### 创建自定义字段
 
 ```bash
 POST /manychat/fb/page/createCustomField
@@ -266,21 +266,21 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-**Field Types:** `text`, `number`, `date`, `datetime`, `boolean`
+**字段类型：** `text`、`number`、`date`、`datetime`、`boolean`
 
-### Bot Field Operations
+### 机器人字段操作
 
-#### List Bot Fields
+#### 列出机器人字段
 
 ```bash
 GET /manychat/fb/page/getBotFields
 ```
 
-Rate limit: 100 queries per second
+请求速率限制：每秒100次
 
-#### Create Bot Field
+#### 创建机器人字段
 
 ```bash
 POST /manychat/fb/page/createBotField
@@ -294,9 +294,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Set Bot Field
+#### 设置机器人字段
 
 ```bash
 POST /manychat/fb/page/setBotField
@@ -308,9 +308,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Set Bot Field by Name
+#### 按名称设置机器人字段
 
 ```bash
 POST /manychat/fb/page/setBotFieldByName
@@ -322,9 +322,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Set Multiple Bot Fields
+#### 设置多个机器人字段
 
 ```bash
 POST /manychat/fb/page/setBotFields
@@ -338,19 +338,19 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second. Maximum 20 fields per request.
+请求速率限制：每秒10次。每次请求最多设置20个字段。
 
-### Flow Operations
+### 流程操作
 
-#### List Flows
+#### 列出流程
 
 ```bash
 GET /manychat/fb/page/getFlows
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒100次
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -365,37 +365,37 @@ Rate limit: 10 queries per second
 }
 ```
 
-### Growth Tools
+### 成长工具
 
-#### List Growth Tools
+#### 列出成长工具
 
 ```bash
 GET /manychat/fb/page/getGrowthTools
 ```
 
-Rate limit: 100 queries per second
+请求速率限制：每秒100次
 
-### OTN Topics
+### OTN主题
 
-#### List OTN Topics
+#### 列出OTN主题
 
 ```bash
 GET /manychat/fb/page/getOtnTopics
 ```
 
-Rate limit: 100 queries per second
+请求速率限制：每秒100次
 
-### Subscriber Operations
+### 订阅者操作
 
-#### Get Subscriber Info
+#### 获取订阅者信息
 
 ```bash
 GET /manychat/fb/subscriber/getInfo?subscriber_id=123456789
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -414,23 +414,23 @@ Rate limit: 10 queries per second
 }
 ```
 
-#### Find Subscriber by Name
+#### 按名称查找订阅者
 
 ```bash
 GET /manychat/fb/subscriber/findByName?name=John%20Doe
 ```
 
-Rate limit: 10 queries per second. Maximum 100 results.
+请求速率限制：每秒10次。最多返回100个结果。
 
-#### Find Subscriber by Custom Field
+#### 按自定义字段查找订阅者
 
 ```bash
 GET /manychat/fb/subscriber/findByCustomField?field_id=123&field_value=value
 ```
 
-Rate limit: 10 queries per second. Works with Text and Number fields. Maximum 100 results.
+请求速率限制：每秒10次。支持使用 `text` 和 `number` 字段。最多返回100个结果。
 
-#### Find Subscriber by System Field
+#### 按系统字段查找订阅者
 
 ```bash
 GET /manychat/fb/subscriber/findBySystemField?email=john@example.com
@@ -440,15 +440,15 @@ GET /manychat/fb/subscriber/findBySystemField?email=john@example.com
 GET /manychat/fb/subscriber/findBySystemField?phone=+1234567890
 ```
 
-Rate limit: 50 queries per second. Set either `email` OR `phone` parameter.
+请求速率限制：每秒50次。需要设置 `email` 或 `phone` 参数。
 
-#### Get Subscriber by User Ref
+#### 根据用户引用查找订阅者
 
 ```bash
 GET /manychat/fb/subscriber/getInfoByUserRef?user_ref=123456
 ```
 
-#### Create Subscriber
+#### 创建订阅者
 
 ```bash
 POST /manychat/fb/subscriber/createSubscriber
@@ -466,11 +466,11 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-**Note:** Importing subscribers with phone or email requires special permissions from ManyChat. Contact ManyChat support to enable this feature for your account.
+**注意：** 使用电话或电子邮件导入订阅者需要ManyChat的特别权限。请联系ManyChat支持以为您的账户启用此功能。
 
-#### Update Subscriber
+#### 更新订阅者信息
 
 ```bash
 POST /manychat/fb/subscriber/updateSubscriber
@@ -485,9 +485,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Add Tag to Subscriber
+#### 为订阅者添加标签
 
 ```bash
 POST /manychat/fb/subscriber/addTag
@@ -499,9 +499,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Add Tag by Name
+#### 按名称添加标签
 
 ```bash
 POST /manychat/fb/subscriber/addTagByName
@@ -513,9 +513,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Remove Tag from Subscriber
+#### 从订阅者中删除标签
 
 ```bash
 POST /manychat/fb/subscriber/removeTag
@@ -527,9 +527,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Remove Tag by Name
+#### 按名称删除标签
 
 ```bash
 POST /manychat/fb/subscriber/removeTagByName
@@ -541,9 +541,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Set Custom Field
+#### 设置自定义字段
 
 ```bash
 POST /manychat/fb/subscriber/setCustomField
@@ -556,9 +556,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Set Custom Field by Name
+#### 按名称设置自定义字段
 
 ```bash
 POST /manychat/fb/subscriber/setCustomFieldByName
@@ -571,9 +571,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-#### Set Multiple Custom Fields
+#### 设置多个自定义字段
 
 ```bash
 POST /manychat/fb/subscriber/setCustomFields
@@ -588,9 +588,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second. Maximum 20 fields per request.
+请求速率限制：每秒10次。每次请求最多设置20个字段。
 
-#### Verify Subscriber by Signed Request
+#### 通过签名请求验证订阅者
 
 ```bash
 POST /manychat/fb/subscriber/verifyBySignedRequest
@@ -602,11 +602,11 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 10 queries per second
+请求速率限制：每秒10次
 
-### Sending Operations
+### 发送操作
 
-#### Send Content
+#### 发送内容
 
 ```bash
 POST /manychat/fb/sending/sendContent
@@ -629,14 +629,14 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 25 queries per second
+请求速率限制：每秒25次
 
-**Message Tags:** Required for sending outside the 24-hour messaging window
+**消息标签：** 在24小时消息发送窗口之外发送消息时需要使用以下标签：
 - `CONFIRMED_EVENT_UPDATE`
 - `POST_PURCHASE_UPDATE`
 - `ACCOUNT_UPDATE`
 
-**OTN (One-Time Notification):**
+**OTN（一次性通知）：**
 ```json
 {
   "subscriber_id": 123456789,
@@ -645,7 +645,7 @@ Rate limit: 25 queries per second
 }
 ```
 
-#### Send Content by User Ref
+#### 根据用户引用发送内容
 
 ```bash
 POST /manychat/fb/sending/sendContentByUserRef
@@ -667,9 +667,9 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 25 queries per second
+请求速率限制：每秒25次
 
-#### Send Flow
+#### 发送流程
 
 ```bash
 POST /manychat/fb/sending/sendFlow
@@ -681,13 +681,13 @@ Content-Type: application/json
 }
 ```
 
-Rate limit: 20 queries per second, maximum 100 per subscriber per hour
+请求速率限制：每秒20次，每小时每个订阅者最多发送100条消息
 
-## Message Content Format
+## 消息内容格式
 
-ManyChat uses a structured content format for sending messages:
+ManyChat使用结构化内容格式来发送消息：
 
-### Text Message
+### 文本消息
 
 ```json
 {
@@ -703,7 +703,7 @@ ManyChat uses a structured content format for sending messages:
 }
 ```
 
-### Image Message
+### 图片消息
 
 ```json
 {
@@ -719,7 +719,7 @@ ManyChat uses a structured content format for sending messages:
 }
 ```
 
-### Quick Replies
+### 快速回复
 
 ```json
 {
@@ -739,7 +739,7 @@ ManyChat uses a structured content format for sending messages:
 }
 ```
 
-### Buttons
+### 按钮
 
 ```json
 {
@@ -759,7 +759,7 @@ ManyChat uses a structured content format for sending messages:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -826,44 +826,44 @@ send_response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Subscriber IDs are unique within your ManyChat page
-- Flow namespaces (flow_ns) are used to identify specific automation flows
-- The `message_tag` parameter is required when sending messages outside the 24-hour messaging window
-- OTN (One-Time Notification) allows sending one message per topic subscription
-- Most POST endpoints return `{"status": "success"}` on success
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 订阅者ID在您的ManyChat页面中是唯一的。
+- 流程命名空间（`flow_ns`）用于标识特定的自动化流程。
+- 在24小时消息发送窗口之外发送消息时，必须使用 `message_tag` 参数。
+- OTN（一次性通知）允许每个主题订阅者发送一条消息。
+- 大多数POST端点在成功时会返回 `{"status": "success"}`。
+- **重要提示：** 当使用 `curl` 命令时，如果URL包含括号，请使用 `curl -g` 以禁用全局解析。
+- **重要提示：** 当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些shell环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing ManyChat connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from ManyChat API |
+| 400 | 未找到ManyChat连接 |
+| 401 | Maton API密钥无效或缺失 |
+| 429 | 请求速率受限 |
+| 4xx/5xx | 来自ManyChat API的传递错误 |
 
-### ManyChat Error Codes
+### ManyChat错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 2011 | Subscriber not found |
-| 2012 | User ref not found |
-| 3011 | Invalid message content |
-| 3021 | Message tag required |
-| 3031 | OTN topic not found |
+| 2011 | 未找到订阅者 |
+| 2012 | 未找到用户引用 |
+| 3011 | 消息内容无效 |
+| 3021 | 需要`message_tag` |
+| 3031 | 未找到OTN主题 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -874,17 +874,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `manychat`. For example:
+1. 确保您的URL路径以 `manychat` 开头。例如：
+- 正确：`https://gateway.maton.ai/manychat/fb/page/getInfo`
+- 错误：`https://gateway.maton.ai/fb/page/getInfo`
 
-- Correct: `https://gateway.maton.ai/manychat/fb/page/getInfo`
-- Incorrect: `https://gateway.maton.ai/fb/page/getInfo`
+## 资源
 
-## Resources
-
-- [ManyChat API Documentation](https://api.manychat.com/swagger)
-- [ManyChat API Key Generation Guide](https://help.manychat.com/hc/en-us/articles/14959510331420)
-- [ManyChat Dev Program](https://help.manychat.com/hc/en-us/articles/14281269835548)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [ManyChat API文档](https://api.manychat.comswagger)
+- [ManyChat API密钥生成指南](https://help.manychat.com/hc/en-us/articles/14959510331420)
+- [ManyChat开发者计划](https://help.manychat.com/hc/en-us/articles/14281269835548)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

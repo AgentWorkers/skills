@@ -11,13 +11,13 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Content Pipeline
+# 人工智能内容制作流程
 
-![AI Content Pipeline](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg06qgcg105rh6y1kvxm4wvm.png)
+![人工智能内容制作流程](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg06qgcg105rh6y1kvxm4wvm.png)
 
-Build multi-step content creation pipelines via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行界面（CLI）构建多步骤的内容制作流程。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,31 +27,31 @@ infsh app run falai/flux-dev --input '{"prompt": "portrait of a woman smiling"}'
 infsh app run falai/wan-2-5 --input '{"image_url": "<url-from-previous>"}'
 ```
 
-## Pipeline Patterns
+## 流程模式
 
-### Pattern 1: Image -> Video -> Audio
+### 模式 1：图片 -> 视频 -> 音频
 
 ```
 [FLUX Image] -> [Wan 2.5 Video] -> [Foley Sound]
 ```
 
-### Pattern 2: Script -> Speech -> Avatar
+### 模式 2：脚本 -> 语音 -> 阿凡达
 
 ```
 [LLM Script] -> [Kokoro TTS] -> [OmniHuman Avatar]
 ```
 
-### Pattern 3: Research -> Content -> Distribution
+### 模式 3：研究 -> 内容 -> 分发
 
 ```
 [Tavily Search] -> [Claude Summary] -> [FLUX Visual] -> [Twitter Post]
 ```
 
-## Complete Workflows
+## 完整工作流程
 
-### YouTube Short Pipeline
+### YouTube 短视频制作流程
 
-Create a complete short-form video from a topic.
+根据指定主题制作一个完整的短视频。
 
 ```bash
 # 1. Generate script with Claude
@@ -85,9 +85,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Talking Head Video Pipeline
+### 语音播报视频流程
 
-Create an AI avatar presenting content.
+创建一个能够播报内容的人工智能阿凡达。
 
 ```bash
 # 1. Write the script
@@ -113,9 +113,9 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }' > talking_head.json
 ```
 
-### Product Demo Pipeline
+### 产品演示流程
 
-Create a product showcase video.
+制作产品展示视频。
 
 ```bash
 # 1. Generate product image
@@ -142,9 +142,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Blog to Video Pipeline
+### 博文转视频流程
 
-Convert written content to video format.
+将文本内容转换为视频格式。
 
 ```bash
 # 1. Summarize blog post
@@ -180,57 +180,57 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## Pipeline Building Blocks
+## 流程构建模块
 
-### Content Generation
+### 内容生成
 
-| Step | App | Purpose |
+| 步骤 | 应用程序 | 用途 |
 |------|-----|---------|
-| Script | `openrouter/claude-sonnet-45` | Write content |
-| Research | `tavily/search-assistant` | Gather information |
-| Summary | `openrouter/claude-haiku-45` | Condense content |
+| 脚本 | `openrouter/claude-sonnet-45` | 编写内容 |
+| 研究 | `tavily/search-assistant` | 收集信息 |
+| 摘要 | `openrouter/claude-haiku-45` | 提炼内容 |
 
-### Visual Assets
+### 视觉素材
 
-| Step | App | Purpose |
+| 步骤 | 应用程序 | 用途 |
 |------|-----|---------|
-| Image | `falai/flux-dev` | Generate images |
-| Image | `google/imagen-3` | Alternative image gen |
-| Upscale | `falai/topaz-image-upscaler` | Enhance quality |
+| 图片 | `falai/flux-dev` | 生成图片 |
+| 图片 | `google/imagen-3` | 替代图片生成工具 |
+| 图像放大 | `falai/topaz-image-upscaler` | 提升图片质量 |
 
-### Animation
+### 动画制作
 
-| Step | App | Purpose |
+| 步骤 | 应用程序 | 用途 |
 |------|-----|---------|
-| I2V | `falai/wan-2-5` | Animate images |
-| T2V | `google/veo-3-1-fast` | Generate from text |
-| Avatar | `bytedance/omnihuman-1-5` | Talking heads |
+| I2V | `falai/wan-2-5` | 图片动画化 |
+| T2V | `google/veo-3-1-fast` | 从文本生成动画 |
+| 阿凡达 | `bytedance/omnihuman-1-5` | 生成语音播报的阿凡达 |
 
-### Audio
+### 音频处理
 
-| Step | App | Purpose |
+| 步骤 | 应用程序 | 用途 |
 |------|-----|---------|
-| TTS | `infsh/kokoro-tts` | Voice narration |
-| Music | `infsh/ai-music` | Background music |
-| Foley | `infsh/hunyuanvideo-foley` | Sound effects |
+| 文本转语音 | `infsh/kokoro-tts` | 语音合成 |
+| 音乐 | `infsh/ai-music` | 背景音乐 |
+| 音效 | `infsh/hunyuanvideo-foley` | 音效制作 |
 
-### Post-Production
+### 后期制作
 
-| Step | App | Purpose |
+| 步骤 | 应用程序 | 用途 |
 |------|-----|---------|
-| Upscale | `falai/topaz-video-upscaler` | Enhance video |
-| Merge | `infsh/media-merger` | Combine media |
-| Caption | `infsh/caption-video` | Add subtitles |
+| 视频放大 | `falai/topaz-video-upscaler` | 提升视频质量 |
+| 媒体合并 | `infsh/media-merger` | 合并多种媒体文件 |
+| 字幕添加 | `infsh/caption-video` | 添加字幕 |
 
-## Best Practices
+## 最佳实践
 
-1. **Plan the pipeline first** - Map out each step before running
-2. **Save intermediate results** - Store outputs for iteration
-3. **Use appropriate quality** - Fast models for drafts, quality for finals
-4. **Match resolutions** - Keep consistent aspect ratios throughout
-5. **Test each step** - Verify outputs before proceeding
+1. **先规划流程** - 在开始之前明确每个步骤的具体内容。
+2. **保存中间结果** - 将输出结果保存以便后续迭代。
+3. **选择合适的质量设置** - 草稿阶段使用快速模型，最终成品使用高质量模型。
+4. **保持分辨率一致** - 确保整个流程中的画面比例一致。
+5. **测试每个步骤** - 在继续下一步之前验证输出结果。
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Video generation models
@@ -249,9 +249,9 @@ npx skills add inferencesh/skills@llm-models
 npx skills add inferencesh/skills@inference-sh
 ```
 
-Browse all apps: `infsh app list`
+浏览所有可用应用程序：`infsh app list`
 
-## Documentation
+## 文档资料
 
-- [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Official pipeline guide
-- [Building Workflows](https://inference.sh/blog/guides/ai-workflows) - Workflow best practices
+- [内容制作流程示例](https://inference.sh/docs/examples/content-pipeline) - 官方流程指南
+- [工作流程构建指南](https://inference.sh/blog/guides/ai-workflows) - 工作流程最佳实践

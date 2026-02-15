@@ -1,54 +1,54 @@
 ---
 name: creating-inline-actions
-description: Interactive button-based UI for XMTP agents following XIP-67. Use when creating menus, confirmation dialogs, selection options, or any button-based interaction. Triggers on inline actions, buttons, menus, or ActionBuilder.
+description: 基于按钮的交互式用户界面（UI），适用于遵循 XIP-67 协议的 XMTP 代理。可用于创建菜单、确认对话框、选择选项或任何基于按钮的交互功能。该界面可通过内联操作、按钮、菜单或 ActionBuilder 来触发。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP inline actions
+# XMTP内联操作
 
-Interactive button-based UI for XMTP agents following the XIP-67 specification. Users can tap buttons instead of typing commands.
+基于交互式按钮的UI，用于遵循XIP-67规范的XMTP代理。用户可以通过点击按钮来执行操作，而无需输入命令。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Creating interactive button menus
-- Building confirmation dialogs
-- Implementing selection options
-- Setting up multi-menu navigation
-- Handling action callbacks
+在以下情况下，请参考这些指南：
+- 创建交互式按钮菜单
+- 构建确认对话框
+- 实现选择选项
+- 设置多菜单导航
+- 处理操作回调
 
-## Rule categories by priority
+## 规则类别（按优先级排序）
 
-| Priority | Category | Impact | Prefix |
+| 优先级 | 类别 | 影响程度 | 前缀 |
 |----------|----------|--------|--------|
-| 1 | ActionBuilder | CRITICAL | `builder-` |
-| 2 | Helpers | HIGH | `helpers-` |
-| 3 | App Config | MEDIUM | `config-` |
-| 4 | Validators | MEDIUM | `validators-` |
+| 1 | ActionBuilder | 关键性 | `builder-` |
+| 2 | Helpers | 高度重要 | `helpers-` |
+| 3 | App Config | 中等重要 | `config-` |
+| 4 | Validators | 中等重要 | `validators-` |
 
-## Quick reference
+## 快速参考
 
-### ActionBuilder (CRITICAL)
-- `builder-create` - Create action menus with ActionBuilder
-- `builder-send` - Send actions to conversation
+### ActionBuilder（关键性）
+- `builder-create` - 使用ActionBuilder创建操作菜单
+- `builder-send` - 向对话框发送操作
 
-### Helpers (HIGH)
-- `helpers-confirmation` - Send confirmation dialogs
-- `helpers-selection` - Send selection menus
-- `helpers-navigation` - Show navigation options
+### Helpers（高度重要）
+- `helpers-confirmation` - 显示确认对话框
+- `helpers-selection` - 显示选择菜单
+- `helpers-navigation` - 显示导航选项
 
-### App Config (MEDIUM)
-- `config-menus` - Configure multi-menu applications
-- `config-initialize` - Initialize app from config
+### App Config（中等重要）
+- `config-menus` - 配置多菜单应用程序
+- `config-initialize` - 根据配置初始化应用程序
 
-### Validators (MEDIUM)
-- `validators-inbox-id` - Validate inbox ID format
-- `validators-ethereum-address` - Validate Ethereum address
+### Validators（中等重要）
+- `validators-inbox-id` - 验证收件箱ID格式
+- `validators-ethereum-address` - 验证以太坊地址
 
-## Quick start
+## 快速入门
 
 ```typescript
 // 1. Add middleware to handle intent messages
@@ -66,9 +66,9 @@ await ActionBuilder.create("my-menu", "Choose an option:")
   .send(ctx);
 ```
 
-## Implementation snippets
+## 实现示例
 
-**Action registry and handler:**
+**操作注册表和处理器：**
 
 ```typescript
 import type { AgentMiddleware, MessageContext } from "@xmtp/agent-sdk";
@@ -82,7 +82,7 @@ const registerAction = (id: string, handler: ActionHandler) => {
 };
 ```
 
-**Inline actions middleware:**
+**内联操作中间件：**
 
 ```typescript
 const inlineActionsMiddleware: AgentMiddleware = async (ctx, next) => {
@@ -97,7 +97,7 @@ const inlineActionsMiddleware: AgentMiddleware = async (ctx, next) => {
 };
 ```
 
-**ActionBuilder class:**
+**ActionBuilder类：**
 
 ```typescript
 import { ActionStyle } from "@xmtp/node-sdk";
@@ -125,7 +125,7 @@ class ActionBuilder {
 }
 ```
 
-**Confirmation helper:**
+**确认辅助功能：**
 
 ```typescript
 const sendConfirmation = async (
@@ -140,13 +140,12 @@ const sendConfirmation = async (
 };
 ```
 
-## How to use
+## 使用方法
 
-Read individual rule files for detailed explanations:
+有关详细说明，请阅读相应的规则文件：
 
 ```
 rules/builder-create.md
 rules/helpers-confirmation.md
 rules/config-menus.md
 ```
-

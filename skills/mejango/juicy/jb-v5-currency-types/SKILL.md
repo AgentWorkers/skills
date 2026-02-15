@@ -8,106 +8,106 @@ description: |
   (1=ETH, 2=USD), never token-derived currencies. Token currencies vary by chain address.
 ---
 
-# Juicebox V5 Currency Types
+# Juicebox V5 货币类型
 
-## Problem
+## 问题
 
-Juicebox V5 has two different currency systems that are easy to confuse, leading to:
-- Inconsistent issuance rates across chains
-- Projects vulnerable to stablecoin depegs
-- Misconfigured accounting contexts
-- Cross-chain ruleset interpretation failures
+Juicebox V5 支持两种不同的货币系统，这两种系统很容易混淆，从而导致以下问题：
+- 不同链路上的发行率不一致
+- 项目容易受到稳定币贬值的影响
+- 会计处理出现错误
+- 跨链规则集的解释出现故障
 
-## Context / Trigger Conditions
+## 使用场景
 
-Apply this knowledge when:
-- Setting `ruleset.baseCurrency` for token issuance
-- Configuring `JBAccountingContext.currency` for terminals
-- Working with `JBCurrencyAmount` in payout limits or allowances
-- Building cross-chain projects that need consistent behavior
-- Debugging why issuance rates differ between chains
-- Seeing different currency values for "the same" token on different chains
+在以下情况下需要应用这些知识：
+- 设置 `ruleset.baseCurrency` 以确定代币的发行方式
+- 配置 `JBAccountingContext(currency` 以指定终端使用的货币
+- 在支付限额或配额中处理 `JBCurrencyAmount`
+- 构建需要跨链一致性的项目
+- 调试不同链路上发行率差异的原因
+- 发现同一代币在不同链路上的价值不同
 
-## Solution
+## 解决方案
 
-### Two Currency Systems
+### 两种货币系统
 
-**1. Real-World Currencies (JBCurrencies)**
+**1. 现实世界货币（JBCurrencies）**
 
-Abstract values representing the concept of a currency, chain-agnostic:
+这些货币是抽象值，与具体链路无关：
 
-| Currency | Value | Use For |
-|----------|-------|---------|
-| ETH | 1 | "Per ETH" pricing regardless of chain |
-| USD | 2 | "Per dollar" pricing regardless of chain |
+| 货币 | 值 | 用途 |
+|------|------|------|
+| ETH | 1    | 表示“每 ETH”的定价，与链路无关 |
+| USD | 2    | 表示“每美元”的定价，与链路无关 |
 
-These are stable across ALL chains. `baseCurrency=2` means "issue X tokens per USD" whether you're on Ethereum, Base, Celo, or Polygon.
+这些货币在所有链路上都是通用的。`baseCurrency=2` 表示“每 USD 发行 X 个代币”，无论是在 Ethereum、Base、Celo 还是 Polygon 上。
 
-**2. Token-Derived Currencies**
+**2. 派生自代币的货币**
 
-Computed from token addresses, chain-specific:
+这些货币是根据代币地址计算得出的，与特定链路相关：
 
 ```solidity
 currency = uint32(uint160(tokenAddress))
 ```
 
-| Token | Chain | Address | Currency |
-|-------|-------|---------|----------|
+| 代币 | 链路 | 地址 | 货币 |
+|------|------|------|------|
 | USDC | Ethereum | 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 | 909516616 |
 | USDC | Optimism | 0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85 | 3530704773 |
 | USDC | Base | 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 | 3169378579 |
 | USDC | Arbitrum | 0xaf88d065e77c8cC2239327C5EDb3A432268e5831 | 1156540465 |
-| NATIVE_TOKEN | All | 0xEEEE...EEEe | 4008636142 |
+| NATIVE_TOKEN | 所有链路 | 0xEEEE...EEEe | 4008636142 |
 
-### When to Use Which
+### 何时使用哪种货币
 
-| Field | Use | Why |
-|-------|-----|-----|
-| `ruleset.baseCurrency` | **Real-world only** (1 or 2) | Rulesets must be interpretable consistently across ALL chains |
-| `JBAccountingContext.currency` | **Token-derived** | You're tracking a specific token at a specific address |
-| `JBCurrencyAmount.currency` | Either | Depends on whether you want abstract value or token-specific |
-| `JBFundAccessLimitGroup` amounts | Either | Use real-world for cross-chain consistency |
+| 字段 | 使用场景 | 原因 |
+|------|---------|------|
+| `ruleset.baseCurrency` | **仅用于现实世界货币（1 或 2）** | 规则集需要在所有链路上保持一致的解释 |
+| `JBAccountingContext(currency` | **用于派生自代币的货币** | 当你跟踪特定地址上的特定代币时 |
+| `JBCurrencyAmount(currency` | 两者均可 | 取决于你是需要抽象值还是特定代币的数值 |
+| `JBFundAccessLimitGroup` 中的金额 | 两者均可 | 为了实现跨链一致性，应使用现实世界货币 |
 
-### Critical Rules
+### 重要规则
 
-1. **NEVER use token currencies for `baseCurrency`**
-   - Token addresses change across chains
-   - Would cause different issuance rates per chain
-   - Breaks cross-chain project consistency
+1. **绝对不要将派生自代币的货币用作 `baseCurrency`**：
+   - 代币地址在不同链路上会发生变化
+   - 这会导致不同链路上的发行率不同
+   - 会破坏跨链项目的稳定性
 
-2. **NEVER use NATIVE_TOKEN's currency (4008636142) for `baseCurrency`**
-   - Different chains have different native tokens (ETH, CELO, MATIC, etc.)
-   - NATIVE_TOKEN represents "whatever is native on this chain" - not specifically ETH
-   - If you want issuance relative to ETH, use `JBCurrencies.ETH` (which is `1`)
-   - JBPrices provides a 1:1 price feed between NATIVE_TOKEN currency and ETH currency on chains where ETH is the native token
+2. **绝对不要将 `NATIVE_TOKEN` 的货币（0xEEEE...EEEe）用作 `baseCurrency`**：
+   - 不同链路的原生代币不同（如 ETH、CELO、MATIC 等）
+   - `NATIVE_TOKEN` 代表的是该链路上的“原生代币”，而不是 ETH
+   - 如果你想根据 ETH 来发行代币，应使用 `JBCurrencies.ETH`（其值为 1）
+   - JBPrices 可以在 ETH 作为原生代币的链路上提供 `NATIVE_TOKEN` 与 ETH 之间的 1:1 价格转换
 
-3. **ALWAYS use token currencies for `JBAccountingContext`**
-   - Formula: `currency = uint32(uint160(token))`
-   - The terminal needs to know exactly which token it's accounting for
+3. **始终将派生自代币的货币用作 `JBAccountingContext`**：
+   - 公式：`currency = uint32(uint160(token))`
+   - 终端需要准确知道它正在处理的是哪种代币
 
-4. **USD vs USDC distinction matters**
-   - USD (2) = abstract dollar concept
-   - USDC (token-derived) = specific stablecoin
-   - If USDC depegs to $0.98, a project with `baseCurrency=2` still issues tokens per dollar (protected)
-   - JBPrices handles the exchange rate between USD and USDC
+4. **区分 USD 和 USDC**：
+   - USD（值 2）表示抽象的美元概念
+   - USDC（派生自代币）表示具体的稳定币
+   - 即使 USDC 的价值跌至 0.98，`baseCurrency=2` 的项目仍然会按照每美元的金额发行代币
+   - JBPrices 负责处理 USD 和 USDC 之间的汇率转换
 
 ### JBPrices
 
-JBPrices manages exchange rates between:
-- Real-world currencies (ETH ↔ USD)
-- Token currencies (USDC ↔ USD, ETH token ↔ ETH concept)
-- Cross-currency conversions for payments and cash outs
+JBPrices 负责管理以下货币之间的汇率转换：
+- 现实世界货币（ETH ↔ USD）
+- 派生自代币的货币（USDC ↔ USD、ETH 代币 ↔ ETH）
+- 支付和提现时的跨货币转换
 
-## Verification
+## 验证
 
-To verify correct configuration:
-1. Check `baseCurrency` is 1 or 2, never a large token-derived number
-2. Check `JBAccountingContext.currency` matches `uint32(uint160(token))`
-3. Deploy to testnet on two different chains and verify issuance rates match
+为了验证配置是否正确：
+1. 确保 `baseCurrency` 的值为 1 或 2，而不是一个较大的派生自代币的数值
+2. 确保 `JBAccountingContext(currency` 与 `uint32(uint160(token))` 匹配
+3. 将配置部署到两个不同的测试网上，验证发行率是否一致
 
-## Example
+## 示例
 
-**Correct cross-chain project configuration:**
+**正确的跨链项目配置：**
 
 ```javascript
 const rulesetConfig = {
@@ -128,7 +128,7 @@ const terminalConfig = {
 }
 ```
 
-**Wrong:**
+**错误的配置：**
 ```javascript
 const rulesetConfig = {
   metadata: {
@@ -138,7 +138,7 @@ const rulesetConfig = {
 }
 ```
 
-**Also wrong:**
+**另一个错误的配置：**
 ```javascript
 const rulesetConfig = {
   metadata: {
@@ -149,16 +149,16 @@ const rulesetConfig = {
 }
 ```
 
-## Notes
+## 注意事项
 
-- Price feeds between all currency types are managed by JBPrices contract
-- The NATIVE_TOKEN address (0xEEEE...EEEe) is special and constant across chains, but represents different actual tokens per chain
-- `baseCurrency=1` (ETH) means "issue tokens relative to ETH the asset" - JBPrices correlates NATIVE_TOKEN to ETH at 1:1 on ETH-native chains
-- On non-ETH-native chains (Celo, Polygon), JBPrices provides the ETH/NATIVE_TOKEN exchange rate so issuance stays ETH-denominated
-- This architecture enables truly portable rulesets that behave identically regardless of deployment chain
-- The separation between "real-world currency concepts" and "token-derived currencies" is what makes cross-chain consistency possible
+- 所有货币类型之间的价格信息由 JBPrices 合同管理
+- `NATIVE_TOKEN` 的地址（0xEEEE...EEEe）在所有链路上是固定的，但在不同链路上代表不同的实际代币
+- `baseCurrency=1`（ETH）表示“根据 ETH 来发行代币”
+- 在非 ETH 作为原生货币的链路上（如 Celo、Polygon），JBPrices 会提供 ETH/NATIVE_TOKEN 之间的汇率，以确保发行金额以 ETH 为单位
+- 这种架构使得规则集具有真正的可移植性，无论部署在哪个链路上都能保持一致的行为
+- “现实世界货币概念”与“派生自代币的货币”之间的区分是实现跨链一致性的关键
 
-## Related Skills
+## 相关技能
 
-- `/jb-suckers` - Cross-chain bridging mechanics via sucker contracts
-- `/jb-omnichain-ui` - Building omnichain UIs with Relayr and Bendystraw
+- `/jb-suckers`：通过 sucker 合约实现跨链桥接
+- `/jb-omnichain-ui`：使用 Relayr 和 Bendystraw 构建跨链用户界面

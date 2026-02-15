@@ -1,12 +1,12 @@
 ---
 name: playwright-cli
-description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
+description: 该工具可自动化浏览器操作，用于网页测试、表单填写、截图以及数据提取。适用于用户需要浏览网站、与网页交互、填写表单、截取屏幕截图、测试Web应用程序或从网页中提取信息的情况。
 allowed-tools: Bash(playwright-cli:*)
 ---
 
-# Browser Automation with playwright-cli
+# 使用playwright-cli进行浏览器自动化
 
-## Quick start
+## 快速入门
 
 ```bash
 playwright-cli open https://playwright.dev
@@ -15,15 +15,15 @@ playwright-cli type "page.click"
 playwright-cli press Enter
 ```
 
-## Core workflow
+## 核心工作流程
 
-1. Navigate: `playwright-cli open https://example.com`
-2. Interact using refs from the snapshot
-3. Re-snapshot after significant changes
+1. 导航：`playwright-cli open https://example.com`
+2. 根据快照中的引用与页面元素进行交互
+3. 在发生重大更改后重新生成快照
 
-## Commands
+## 命令
 
-### Core
+### 核心命令
 
 ```bash
 playwright-cli open https://example.com/
@@ -48,7 +48,7 @@ playwright-cli dialog-dismiss
 playwright-cli resize 1920 1080
 ```
 
-### Navigation
+### 导航命令
 
 ```bash
 playwright-cli go-back
@@ -56,7 +56,7 @@ playwright-cli go-forward
 playwright-cli reload
 ```
 
-### Keyboard
+### 键盘操作
 
 ```bash
 playwright-cli press Enter
@@ -65,7 +65,7 @@ playwright-cli keydown Shift
 playwright-cli keyup Shift
 ```
 
-### Mouse
+### 鼠标操作
 
 ```bash
 playwright-cli mousemove 150 300
@@ -76,7 +76,7 @@ playwright-cli mouseup right
 playwright-cli mousewheel 0 100
 ```
 
-### Save as
+### 保存当前操作
 
 ```bash
 playwright-cli screenshot
@@ -85,7 +85,7 @@ playwright-cli screenshot --filename=page.png
 playwright-cli pdf --filename=page.pdf
 ```
 
-### Tabs
+### 切换标签页
 
 ```bash
 playwright-cli tab-list
@@ -96,7 +96,7 @@ playwright-cli tab-close 2
 playwright-cli tab-select 0
 ```
 
-### Storage
+### 数据存储
 
 ```bash
 playwright-cli state-save
@@ -127,7 +127,7 @@ playwright-cli sessionstorage-delete step
 playwright-cli sessionstorage-clear
 ```
 
-### Network
+### 网络操作
 
 ```bash
 playwright-cli route "**/*.jpg" --status=404
@@ -137,7 +137,7 @@ playwright-cli unroute "**/*.jpg"
 playwright-cli unroute
 ```
 
-### DevTools
+### 开发工具
 
 ```bash
 playwright-cli console
@@ -150,14 +150,15 @@ playwright-cli video-start
 playwright-cli video-stop video.webm
 ```
 
-### Install
+### 安装playwright-cli
 
 ```bash
 playwright-cli install-browser
 playwright-cli install-skills
 ```
 
-### Configuration
+### 配置playwright-cli
+
 ```bash
 # Use specific browser when creating session
 playwright-cli open --browser=chrome
@@ -176,7 +177,7 @@ playwright-cli --session=mysession config my-config.json
 playwright-cli open --config=my-config.json
 ```
 
-### Sessions
+### 会话管理
 
 ```bash
 playwright-cli --session=mysession open example.com
@@ -189,7 +190,7 @@ playwright-cli session-delete
 playwright-cli session-delete mysession
 ```
 
-## Example: Form submission
+## 示例：表单提交
 
 ```bash
 playwright-cli open https://example.com/form
@@ -201,7 +202,7 @@ playwright-cli click e3
 playwright-cli snapshot
 ```
 
-## Example: Multi-tab workflow
+## 示例：多标签页操作流程
 
 ```bash
 playwright-cli open https://example.com
@@ -211,7 +212,7 @@ playwright-cli tab-select 0
 playwright-cli snapshot
 ```
 
-## Example: Debugging with DevTools
+## 示例：使用开发工具进行调试
 
 ```bash
 playwright-cli open https://example.com
@@ -221,20 +222,12 @@ playwright-cli console
 playwright-cli network
 ```
 
-```bash
-playwright-cli open https://example.com
-playwright-cli tracing-start
-playwright-cli click e4
-playwright-cli fill e7 "test"
-playwright-cli tracing-stop
-```
+## 具体任务
 
-## Specific tasks
-
-* **Request mocking** [references/request-mocking.md](references/request-mocking.md)
-* **Running Playwright code** [references/running-code.md](references/running-code.md)
-* **Session management** [references/session-management.md](references/session-management.md)
-* **Storage state (cookies, localStorage)** [references/storage-state.md](references/storage-state.md)
-* **Test generation** [references/test-generation.md](references/test-generation.md)
-* **Tracing** [references/tracing.md](references/tracing.md)
-* **Video recording** [references/video-recording.md](references/video-recording.md)
+* **请求模拟** [references/request-mocking.md](references/request-mocking.md)
+* **运行Playwright脚本** [references/running-code.md]
+* **会话管理** [references/session-management.md]
+* **数据存储（cookies、localStorage）** [references/storage-state.md]
+* **测试生成** [references/test-generation.md]
+* **跟踪代码执行过程** [references/tracing.md]
+* **视频录制** [references/video-recording.md]

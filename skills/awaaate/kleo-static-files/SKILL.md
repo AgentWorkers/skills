@@ -7,11 +7,11 @@ description: >
   include sf sites (create/list/delete), sf upload (files/directories), sf files (list/delete).
 ---
 
-# Static Files Hosting
+# 静态文件托管
 
-Host static content on `*.{domain}` subdomains with automatic SSL.
+将静态内容托管在 `*.{domain}` 子域名上，并自动启用 SSL 加密。
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Create site
@@ -37,16 +37,16 @@ sf files mysite delete path/to/file.txt
 sf sites delete mysite
 ```
 
-## Environment Setup
+## 环境配置
 
 ```bash
 export SF_API_URL=http://localhost:3000   # API endpoint
 export SF_API_KEY=sk_xxxxx                # Your API key
 ```
 
-## Workflows
+## 工作流程
 
-### Deploy a Static Website
+### 部署静态网站
 
 ```bash
 # 1. Create the site
@@ -59,7 +59,7 @@ sf upload ./build docs
 curl -I https://docs.498as.com
 ```
 
-### Protected File Sharing
+### 保护文件共享
 
 ```bash
 # 1. Create site with auth
@@ -73,7 +73,7 @@ sf upload ./reports private
 # https://private.498as.com (user / strongpassword)
 ```
 
-### Update Existing Files
+### 更新现有文件
 
 ```bash
 # Overwrite existing file
@@ -84,17 +84,17 @@ sf files mysite delete old-file.pdf
 sf upload ./new-file.pdf mysite
 ```
 
-## CLI Commands
+## 命令行接口（CLI）命令
 
 ### sites
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `sf sites list` | List all sites |
-| `sf sites create <name>` | Create new site |
-| `sf sites delete <name>` | Delete site and all files |
-| `sf sites auth <name> <user:pass>` | Set basic auth |
-| `sf sites auth <name> --remove` | Remove auth |
+| `sf sites list` | 列出所有站点 |
+| `sf sites create <name>` | 创建新站点 |
+| `sf sites delete <name>` | 删除站点及其所有文件 |
+| `sf sites auth <name> <user:pass>` | 设置基本认证信息 |
+| `sf sites auth <name> --remove` | 移除认证信息 |
 
 ### upload
 
@@ -102,18 +102,18 @@ sf upload ./new-file.pdf mysite
 sf upload <path> <site> [subdir] [--overwrite] [--json]
 ```
 
-- `path`: File or directory to upload
-- `site`: Target site name
-- `subdir`: Optional subdirectory
-- `--overwrite`: Replace existing files
-- `--json`: Output JSON
+- `path`：要上传的文件或目录路径 |
+- `site`：目标站点名称 |
+- `subdir`：可选的子目录 |
+- `--overwrite`：覆盖现有文件 |
+- `--json`：以 JSON 格式输出结果 |
 
 ### files
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `sf files <site>` | List all files |
-| `sf files <site> delete <path>` | Delete specific file |
+| `sf files <site>` | 列出所有文件 |
+| `sf files <site> delete <path>` | 删除指定文件 |
 
 ### stats
 
@@ -122,33 +122,33 @@ sf stats              # Global stats
 sf stats <site>       # Site-specific stats
 ```
 
-## API Endpoints
+## API 端点
 
-Base: `$SF_API_URL` with `Authorization: Bearer $SF_API_KEY`
+基础 URL：`$SF_API_URL`，请求头需包含 `Authorization: Bearer $SF_API_KEY`
 
-| Method | Path | Description |
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| GET | `/sites` | List sites |
-| POST | `/sites` | Create site |
-| DELETE | `/sites/{name}` | Delete site |
-| PATCH | `/sites/{name}` | Update auth |
-| GET | `/sites/{name}/files` | List files |
-| POST | `/sites/{name}/files` | Upload file |
-| DELETE | `/sites/{name}/files/{path}` | Delete file |
-| GET | `/stats` | Global stats |
-| GET | `/stats/{name}` | Site stats |
-| GET | `/health` | Health check |
+| GET | `/sites` | 列出所有站点 |
+| POST | `/sites` | 创建新站点 |
+| DELETE | `/sites/{name}` | 删除站点 |
+| PATCH | `/sites/{name}` | 更新站点认证信息 |
+| GET | `/sites/{name}/files` | 列出站点文件 |
+| POST | `/sites/{name}/files` | 上传文件 |
+| DELETE | `/sites/{name}/files/{path}` | 删除文件 |
+| GET | `/stats` | 获取全局统计信息 |
+| GET | `/stats/{name}` | 获取站点统计信息 |
+| GET | `/health` | 进行健康检查 |
 
-## Constraints
+## 限制条件
 
-- **Site names**: lowercase, alphanumeric, hyphens only (max 63 chars)
-- **File size**: 50MB default (configurable)
-- **Quota**: 100MB per site default
-- **Rate limit**: 100 requests/minute per API key
+- **站点名称**：只能使用小写字母、数字和连字符，长度最多 63 个字符 |
+- **文件大小**：默认为 50MB（可配置） |
+- **每个站点的配额**：默认为 100MB |
+- **API 密钥的请求速率限制**：每分钟 100 次请求 |
 
-## Troubleshooting
+## 故障排除
 
-### "Cannot connect to API"
+### “无法连接到 API”
 ```bash
 # Check service status
 systemctl status kleo-static-files
@@ -157,7 +157,7 @@ systemctl status kleo-static-files
 curl http://localhost:3000/health
 ```
 
-### "Invalid API key"
+### “API 密钥无效”
 ```bash
 # Verify key is set
 echo $SF_API_KEY
@@ -166,7 +166,7 @@ echo $SF_API_KEY
 bun run /opt/kleo-static-files/scripts/create-key.ts "new-key"
 ```
 
-### "Quota exceeded"
+### “超出配额”
 ```bash
 # Check current usage
 sf stats mysite
@@ -175,7 +175,7 @@ sf stats mysite
 sf files mysite delete large-file.zip
 ```
 
-### Site not accessible via HTTPS
+### 站点无法通过 HTTPS 访问”
 ```bash
 # Verify DNS points to server
 dig mysite.498as.com
@@ -187,27 +187,27 @@ cat /etc/caddy/sites.d/static-files.caddy
 bun run /opt/kleo-static-files/scripts/sync-caddy.ts --reload
 ```
 
-## Installation
+## 安装
 
-### Server Installation (run once on host)
+### 服务器端安装（在主机上运行一次）
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/498AS/kleo-static-files/main/install.sh | sudo bash
 ```
 
-The installer outputs JSON with connection details between `KLEO_SF_CONFIG_BEGIN` and `KLEO_SF_CONFIG_END` markers. Parse this to get `api_url` and `api_key`.
+安装程序会生成一个 JSON 文件，其中包含从 `KLEO_SF_CONFIG_BEGIN` 到 `KLEO_SF_CONFIG_END` 之间的配置信息。解析该文件可获取 `api_url` 和 `api_key`。
 
-### After Installation
+### 安装完成后
 
 ```bash
 export SF_API_URL=http://localhost:3000
 export SF_API_KEY=sk_xxxxx  # from installer output
 ```
 
-### Check Status
+### 检查状态
 
 ```bash
 sudo /opt/kleo-static-files/install.sh --status
 ```
 
-See [references/install.md](references/install.md) for manual installation.
+有关手动安装的详细信息，请参阅 [references/install.md](references/install.md)。

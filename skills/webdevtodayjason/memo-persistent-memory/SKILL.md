@@ -1,7 +1,7 @@
 ---
 name: openclaw-persistent-memory
 version: 0.1.0
-description: Persistent memory system - automatic context capture and semantic search
+description: 持久内存系统——自动上下文捕获与语义搜索
 author: Jason Brashear / Titanium Computing
 repository: https://github.com/webdevtodayjason/openclaw_memory
 metadata:
@@ -16,38 +16,38 @@ metadata:
         label: "Install OpenClaw Persistent Memory (npm)"
 ---
 
-# OpenClaw Persistent Memory
+# OpenClaw 持久化内存系统
 
-Persistent memory system that automatically captures context across sessions using SQLite + FTS5.
+OpenClaw 是一个持久化内存系统，它利用 SQLite 和 FTS5 技术在会话之间自动捕获用户的相关信息。
 
-## Features
+## 主要特性
 
-- 🧠 **Auto-capture** - Important observations saved automatically after each response
-- 🔍 **Auto-recall** - Relevant memories injected before each prompt
-- 💾 **SQLite + FTS5** - Fast full-text search across all memories
-- 🛠️ **Tools** - `memory_search`, `memory_get`, `memory_store`, `memory_delete`
-- 📊 **Progressive disclosure** - Token-efficient retrieval
+- 🧠 **自动捕获**：每次用户做出响应后，重要的观察结果会自动被保存下来。
+- 🔍 **自动回忆**：在每次用户收到提示时，相关的记忆内容会被自动呈现给用户。
+- 💾 **SQLite + FTS5**：支持对所有保存的记忆内容进行快速的全文搜索。
+- 🛠️ **工具**：提供了 `memory_search`、`memory_get`、`memory_store` 和 `memory_delete` 等实用工具。
+- 📊 **渐进式展示**：通过高效的方式逐步向用户展示记忆内容。
 
-## Setup
+## 设置步骤
 
-1. **Install the npm package:**
+1. **安装 npm 包：**
    ```bash
    npm install -g openclaw-persistent-memory
    ```
 
-2. **Start the worker service:**
+2. **启动工作进程服务：**
    ```bash
    openclaw-persistent-memory start
    ```
 
-3. **Install the OpenClaw extension:**
+3. **安装 OpenClaw 扩展程序：**
    ```bash
    # Copy extension to OpenClaw extensions directory
    cp -r node_modules/openclaw-persistent-memory/extension ~/.openclaw/extensions/openclaw-mem
    cd ~/.openclaw/extensions/openclaw-mem && npm install
    ```
 
-4. **Configure OpenClaw** (in `~/.openclaw/openclaw.json`):
+4. **配置 OpenClaw（在 `~/.openclaw/openclaw.json` 文件中配置）：**
    ```json
    {
      "plugins": {
@@ -69,41 +69,41 @@ Persistent memory system that automatically captures context across sessions usi
    }
    ```
 
-5. **Restart OpenClaw gateway**
+5. **重启 OpenClaw 服务器：**
 
-## Tools Provided
+## 提供的工具
 
-| Tool | Description |
+| 工具 | 功能描述 |
 |------|-------------|
-| `memory_search` | Search memories with natural language |
-| `memory_get` | Get a specific memory by ID |
-| `memory_store` | Save important information |
-| `memory_delete` | Delete a memory by ID |
+| `memory_search` | 通过自然语言查询记忆内容。 |
+| `memory_get` | 根据 ID 获取特定的记忆内容。 |
+| `memory_store` | 保存重要信息。 |
+| `memory_delete` | 根据 ID 删除记忆内容。 |
 
-## API Endpoints
+## API 端点
 
-Worker runs on `http://127.0.0.1:37778`:
+工作进程运行在 `http://127.0.0.1:37778` 上：
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 功能描述 |
 |----------|--------|-------------|
-| `/api/health` | GET | Health check |
-| `/api/stats` | GET | Database statistics |
-| `/api/search` | POST | Full-text search |
-| `/api/observations` | GET | List recent observations |
-| `/api/observations/:id` | GET | Get observation |
-| `/api/observations/:id` | DELETE | Delete observation |
-| `/api/observations/:id` | PATCH | Update observation |
+| `/api/health` | GET | 获取系统健康状态。 |
+| `/api/stats` | GET | 查看数据库统计信息。 |
+| `/api/search` | POST | 执行全文搜索。 |
+| `/api/observations` | GET | 列出最近的观察结果。 |
+| `/api/observations/:id` | GET | 获取指定 ID 的观察结果。 |
+| `/api/observations/:id` | DELETE | 删除指定 ID 的观察结果。 |
+| `/api/observations/:id` | PATCH | 更新指定 ID 的观察结果。 |
 
-## Troubleshooting
+## 故障排除
 
-### Worker not running
+### 工作进程未运行
 ```bash
 curl http://127.0.0.1:37778/api/health
 # If fails, restart:
 openclaw-persistent-memory start
 ```
 
-### Auto-recall not working
-- Check OpenClaw logs: `tail ~/.openclaw/logs/*.log | grep openclaw-mem`
-- Verify `plugins.slots.memory` is set to `"openclaw-mem"`
-- Restart gateway after config changes
+### 自动回忆功能未生效
+- 检查 OpenClaw 日志：`tail ~/.openclaw/logs/*.log | grep openclaw-mem`
+- 确保 `plugins.slots.memory` 的值设置为 `"openclaw-mem"`
+- 在配置更改后重启 OpenClaw 服务器。

@@ -1,8 +1,8 @@
-# web-deploy
+# Web 部署
 
-Build and deploy websites, web apps, and APIs to production.
+将网站、Web 应用程序和 API 部署到生产环境。
 
-## Local Preview Workflow
+## 本地预览流程
 
 ```bash
 # Static site
@@ -20,9 +20,9 @@ npm run dev          # Dev server
 npm run build && npx serve dist  # Production preview
 ```
 
-## Deployment Targets
+## 部署目标
 
-### Vercel (Frontend / Next.js / Static)
+### Vercel（前端 / Next.js / 静态网站）
 
 ```bash
 # First time setup
@@ -38,9 +38,9 @@ npx vercel --prod
 npx vercel env add SECRET_KEY
 ```
 
-**Best for:** Next.js apps, React SPAs, static sites, serverless functions.
+**适用场景：** Next.js 应用程序、React 单页应用（SPA）、静态网站、无服务器函数。
 
-**Config:** `vercel.json` (usually not needed for Next.js)
+**配置方式：** 使用 `vercel.json` 文件（Next.js 通常不需要此配置文件）  
 ```json
 {
   "buildCommand": "npm run build",
@@ -49,7 +49,7 @@ npx vercel env add SECRET_KEY
 }
 ```
 
-### Railway (Backend / APIs / Databases)
+### Railway（后端 / API / 数据库）
 
 ```bash
 # First time setup
@@ -69,9 +69,9 @@ railway variables set SECRET_KEY=value
 railway logs
 ```
 
-**Best for:** Backend APIs, databases, long-running processes, Docker containers.
+**适用场景：** 后端 API、数据库、长时间运行的进程、Docker 容器。
 
-### GitHub Pages (Static Sites)
+### GitHub Pages（静态网站）
 
 ```bash
 # Using gh-pages package
@@ -80,29 +80,29 @@ npm install -D gh-pages
 npm run build && npm run deploy
 ```
 
-**Best for:** Documentation, simple static sites, project pages.
+**适用场景：** 文档、简单的静态网站、项目页面。
 
-### Canvas (Clawdbot Workspace)
+### Canvas（Clawdbot 工作区）
 
-Deploy to `~/clawd/canvas/` for local serving through the clawdbot gateway.
+将应用部署到 `~/clawd/canvas/` 目录，通过 clawdbot 代理进行本地预览。
 ```bash
 cp -r ./dist/* ~/clawd/canvas/my-project/
 ```
 
-## Pre-Deploy Checklist
+## 部署前检查清单
 
-- [ ] Build succeeds locally (`npm run build` / `python -m build`)
-- [ ] No TypeScript/lint errors
-- [ ] Tests pass
-- [ ] Environment variables set on target platform
-- [ ] `.env` / secrets NOT in git
-- [ ] `robots.txt` and `sitemap.xml` if public site
-- [ ] Favicon and meta tags set
-- [ ] HTTPS configured (automatic on Vercel/Railway)
-- [ ] Error pages (404, 500) configured
-- [ ] Performance: images optimized, code split, no huge bundles
+- [ ] 本地构建成功（`npm run build` / `python -m build`）
+- [ ] 无 TypeScript 或代码格式检查（lint）错误
+- [ ] 测试通过
+- [ ] 环境变量已配置到目标平台
+- [ ] `.env` 和 `secret` 文件未包含在 Git 代码库中
+- [ ] 如果是公开网站，已配置 `robots.txt` 和 `sitemap.xml`
+- [ ] 已设置favicon 和元标签
+- [ ] 已配置 HTTPS（Vercel/Railway 会自动处理）
+- [ ] 已配置错误页面（404、500 状态码）
+- [ ] 性能优化：图片已压缩，代码已分割，避免生成过大的文件包
 
-## Rollback
+## 回滚机制
 
 ```bash
 # Vercel — redeploy previous
@@ -115,7 +115,7 @@ railway rollback
 git revert HEAD && git push
 ```
 
-## Domain Setup
+## 域名设置
 
 ```bash
 # Vercel

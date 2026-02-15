@@ -1,6 +1,6 @@
 ---
 name: sui-move
-description: Sui blockchain and Move smart contract development. Use when the user asks about Sui, Move language, smart contracts, objects, transactions, or blockchain development on Sui.
+description: Sui区块链与Move智能合约开发：当用户询问有关Sui平台、Move编程语言、智能合约、数据对象、交易机制或Sui上的区块链开发相关内容时，可参考此文档。
 version: 1.1.0
 metadata:
   author: EasonClawdbot1
@@ -15,15 +15,15 @@ metadata:
       label: Install Sui CLI (brew)
 ---
 
-# Sui Move Development
+# Sui Move 开发
 
-Comprehensive knowledge base for Sui blockchain and Move smart contract development.
+这是一个关于 Sui 区块链和 Move 智能合约开发的综合性知识库。
 
 **GitHub:** <https://github.com/EasonC13-agent/sui-skills/tree/main/sui-move>
 
-## Setup References
+## 设置参考
 
-Clone the official documentation:
+克隆官方文档：
 
 ```bash
 # Create skill directory
@@ -41,36 +41,36 @@ cd sui && git sparse-checkout set docs
 git clone --depth 1 https://github.com/MystenLabs/awesome-move.git
 ```
 
-## Additional Resources
+## 其他资源
 
 ### Awesome Move (`references/awesome-move/`)
-A curated list of Move resources, including:
-- Example projects and code snippets
-- Libraries and frameworks
-- Tools and utilities
-- Learning resources
+这是一个精选的 Move 资源列表，包括：
+- 示例项目和代码片段
+- 库和框架
+- 工具和实用程序
+- 学习资源
 
-⚠️ **Note**: Some code examples in awesome-move may be outdated as the Move language and Sui platform evolve. Always verify against the latest Move Book and Sui documentation.
+⚠️ **注意**：由于 Move 语言和 Sui 平台的更新，awesome-move 中的一些代码示例可能会过时。请始终参考最新的 Move 官方文档和 Sui 文档。
 
-## Reference Structure
+## 参考结构
 
-### Move Book (`references/move-book/book/`)
-| Directory | Content |
+### Move 官方文档 (`references/move-book/book/`)
+| 目录 | 内容 |
 |-----------|---------|
-| `your-first-move/` | Hello World, Hello Sui tutorials |
-| `move-basics/` | Variables, functions, structs, abilities, generics |
-| `concepts/` | Packages, manifest, addresses, dependencies |
-| `storage/` | Object storage, UID, transfer functions |
-| `object/` | Object model, ownership, dynamic fields |
-| `programmability/` | Events, witness, publisher, display |
-| `move-advanced/` | BCS, PTB, cryptography |
-| `guides/` | Testing, debugging, upgrades, BCS |
-| `appendix/` | Glossary, reserved addresses |
+| `your-first-move/` | “Hello World” 和 “Hello Sui” 教程 |
+| `move-basics/` | 变量、函数、结构体、能力（abilities）、泛型（generics） |
+| `concepts/` | 包（packages）、清单（manifest）、地址（addresses）、依赖关系（dependencies） |
+| `storage/` | 对象存储（object storage）、UID（Unique Identifier）、转账函数（transfer functions） |
+| `object/` | 对象模型（object model）、所有权（ownership）、动态字段（dynamic fields） |
+| `programmability/` | 事件（events）、见证者（witnesses）、发布者（publishers）、显示功能（display） |
+| `move-advanced/` | BCS（Blockchain Contract Storage）、PTB（Programmable Transfer Block）机制、加密技术（cryptography） |
+| `guides/` | 测试（testing）、调试（debugging）、升级（upgrades）、BCS 相关内容 |
+| `appendix/` | 术语表（glossary）、保留地址（reserved addresses） |
 
-### Sui Docs (`references/sui/docs/content/`)
-- Concepts, guides, standards, references
+### Sui 官方文档 (`references/sui/docs/content/`)
+- 概念（concepts）、指南（guides）、标准（standards）、参考资料（references）
 
-## Quick Search
+## 快速搜索
 
 ```bash
 # Search Move Book for a topic
@@ -83,15 +83,15 @@ rg -i "keyword" {baseDir}/references/sui/docs/ --type md
 find {baseDir}/references -name "*.md" | xargs grep -l "topic"
 ```
 
-## Key Concepts
+## 关键概念
 
-### Move Language Basics
+### Move 语言基础
 
-**Abilities** - Type capabilities:
-- `copy` - Can be copied
-- `drop` - Can be dropped (destroyed)
-- `store` - Can be stored in objects
-- `key` - Can be used as a key in global storage (objects)
+**能力（Abilities）** - 对象的操作能力：
+- `copy` - 可以被复制
+- `drop` - 可以被销毁
+- `store` - 可以存储在对象中
+- `key` - 可以作为全局存储（对象）中的键使用
 
 ```move
 public struct MyStruct has key, store {
@@ -100,14 +100,14 @@ public struct MyStruct has key, store {
 }
 ```
 
-**Object Model**:
-- Every object has a unique `UID`
-- Objects can be owned (address), shared, or immutable
-- Transfer functions: `transfer::transfer`, `transfer::share_object`, `transfer::freeze_object`
+**对象模型（Object Model）**：
+- 每个对象都有一个唯一的 `UID`（Unique Identifier）
+- 对象可以被拥有（owned）、共享或设置为不可变（immutable）
+- 转账函数：`transfer::transfer`、`transfer::share_object`、`transfer::freeze_object`
 
-### Common Patterns
+### 常见模式
 
-**Create and Transfer Object**:
+**创建和转移对象（Create and Transfer Objects）**：
 ```move
 public fun create(ctx: &mut TxContext) {
     let obj = MyObject {
@@ -118,7 +118,7 @@ public fun create(ctx: &mut TxContext) {
 }
 ```
 
-**Shared Object**:
+**共享对象（Shared Objects）**：
 ```move
 public fun create_shared(ctx: &mut TxContext) {
     let obj = SharedObject {
@@ -129,14 +129,14 @@ public fun create_shared(ctx: &mut TxContext) {
 }
 ```
 
-**Entry Functions**:
+**入口函数（Entry Functions）**：
 ```move
 public entry fun do_something(obj: &mut MyObject, value: u64) {
     obj.value = value;
 }
 ```
 
-## CLI Commands
+## 命令行界面（CLI）命令
 
 ```bash
 # Create new project
@@ -158,66 +158,66 @@ sui client call --package <PACKAGE_ID> --module <MODULE> --function <FUNCTION> -
 sui client object <OBJECT_ID>
 ```
 
-## Workflow
+## 工作流程
 
-When answering Sui/Move questions:
+在回答关于 Sui/Move 的问题时，请按照以下步骤操作：
 
-1. **Search references first**:
+1. **首先搜索相关参考资料**：
    ```bash
    rg -i "topic" {baseDir}/references/move-book/book/ -l
    ```
 
-2. **Read relevant files**:
+2. **阅读相关文档**：
    ```bash
    cat {baseDir}/references/move-book/book/<path>/<file>.md
    ```
 
-3. **Provide code examples** from the references
+3. **提供来自参考资料的代码示例**：
 
-4. **Link to official docs** when helpful:
-   - Move Book: https://move-book.com
-   - Sui Docs: https://docs.sui.io
+4. **在必要时提供官方文档的链接**：
+   - Move 官方文档：https://move-book.com
+   - Sui 官方文档：https://docs.sui.io
 
-## Topics Index
+## 主题索引
 
-| Topic | Location |
+| 主题 | 文档位置 |
 |-------|----------|
-| Hello World | `move-book/book/your-first-move/hello-world.md` |
-| Hello Sui | `move-book/book/your-first-move/hello-sui.md` |
-| Primitives | `move-book/book/move-basics/primitive-types.md` |
-| Structs | `move-book/book/move-basics/struct.md` |
-| Abilities | `move-book/book/move-basics/abilities-introduction.md` |
-| Generics | `move-book/book/move-basics/generics.md` |
-| Object Model | `move-book/book/object/` |
-| Storage | `move-book/book/storage/` |
-| Events | `move-book/book/programmability/events.md` |
-| Testing | `move-book/book/guides/testing.md` |
-| Upgrades | `move-book/book/guides/upgradeability.md` |
-| PTB | `move-book/book/move-advanced/ptb/` |
-| BCS | `move-book/book/move-advanced/bcs.md` |
+| “Hello World” | `move-book/book/your-first-move/hello-world.md` |
+| “Hello Sui” | `move-book/book/your-first-move/hello-sui.md` |
+| 原始类型（Primitives） | `move-book/book/move-basics/primitive-types.md` |
+| 结构体（Structs） | `move-book/book/move-basics/struct.md` |
+| 能力（Abilities） | `move-book/book/move-basics/abilities-introduction.md` |
+| 泛型（Generics） | `move-book/book/move-basics/generics.md` |
+| 对象模型（Object Model） | `move-book/book/object/` |
+| 存储（Storage） | `move-book/book/storage/` |
+| 事件（Events） | `move-book/book/programmability/events.md` |
+| 测试（Testing） | `move-book/book/guides/testing.md` |
+| 升级（Upgrades） | `move-book/book/guides/upgradeability.md` |
+| PTB（Programmable Transfer Block） | `move-book/book/move-advanced/ptb/` |
+| BCS（Blockchain Contract Storage） | `move-book/book/move-advanced/bcs.md` |
 
-## Related Skills
+## 相关技能
 
-This skill is part of the Sui development skill suite:
+本技能属于 Sui 开发技能套件的一部分：
 
-| Skill | Description |
+| 技能 | 描述 |
 |-------|-------------|
-| [sui-decompile](https://clawhub.ai/EasonC13/sui-decompile) | Fetch and read on-chain contract source code |
-| **sui-move** | Write and deploy Move smart contracts |
-| [sui-coverage](https://clawhub.ai/EasonC13/sui-coverage) | Analyze test coverage with security analysis |
-| [sui-agent-wallet](https://clawhub.ai/EasonC13/sui-agent-wallet) | Build and test DApps frontend |
+| [sui-decompile](https://clawhub.ai/EasonC13/sui-decompile) | 获取并阅读链上合约的源代码 |
+| **sui-move** | 编写和部署 Move 智能合约 |
+| [sui-coverage](https://clawhub.ai/EasonC13/sui-coverage) | 使用安全分析工具进行测试覆盖率评估 |
+| [sui-agent-wallet](https://clawhub.ai/EasonC13/sui-agent-wallet) | 构建和测试 DApp 的前端界面 |
 
-**Workflow:**
+**工作流程**：
 ```
 sui-decompile → sui-move → sui-coverage → sui-agent-wallet
     Study        Write      Test & Audit   Build DApps
 ```
 
-All skills: <https://github.com/EasonC13-agent/sui-skills>
+所有技能的详细信息请查看：<https://github.com/EasonC13-agent/sui-skills>
 
-## Notes
+## 注意事项
 
-- Move 2024 edition introduces new features (enums, method syntax, etc.)
-- Sui uses a unique object-centric model different from other blockchains
-- Gas is paid in SUI tokens
-- Testnet/Devnet available for development
+- Move 2024 版本引入了新特性（如枚举类型、方法语法等）
+- Sui 采用了一种以对象为中心的独特模型，与其他区块链不同
+- 在 Sui 中，交易费用以 SUI 代币支付
+- 提供了测试网（Testnet）和开发网（Devnet）用于开发工作

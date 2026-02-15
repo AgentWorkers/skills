@@ -1,15 +1,15 @@
 ---
 name: client-project-manager
-description: Manage freelance clients, projects, invoices, and communications. Use when tracking client work, creating invoices, sending updates, managing deadlines, or organizing freelance business operations.
+description: 管理自由职业者客户、项目、发票以及沟通记录。适用于跟踪客户的工作进度、生成发票、发送更新信息、管理截止日期，或组织自由职业者的业务运营。
 argument-hint: "[action] [client-or-project]"
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
-# Client Project Manager
+# 客户项目经理
 
-A complete freelance business management system. Track clients, projects, deadlines, deliverables, invoices, and communications from a single skill.
+这是一个功能齐全的Freelance业务管理系统，能够通过一个统一的界面来管理客户、项目、截止日期、交付物、发票以及沟通记录。
 
-## How to Use
+## 使用方法
 
 ```
 /client-project-manager add client "Acme Corp" --contact "jane@acme.com" --rate "$100/hr"
@@ -21,9 +21,9 @@ A complete freelance business management system. Track clients, projects, deadli
 /client-project-manager dashboard
 ```
 
-## Data Storage
+## 数据存储
 
-All data is stored in `./freelance-data/` as JSON files:
+所有数据都以JSON格式存储在`./freelance-data/`目录下：
 
 ```
 freelance-data/
@@ -34,19 +34,18 @@ freelance-data/
   updates/            # Client update emails
 ```
 
-If the directory doesn't exist, create it on first use. If files exist, read them first and preserve all existing data.
+如果该目录不存在，请在首次使用时创建它。如果文件已经存在，请先读取这些文件并保留所有现有数据。
 
-## Commands
+## 命令
 
-### `add client`
-
-Add a new client to the CRM.
+### `add client`  
+向CRM系统中添加一个新的客户。
 
 ```
 /client-project-manager add client "[Name]" --contact "[email]" --rate "[rate]" --notes "[notes]"
 ```
 
-Store in `clients.json`:
+数据存储位置：`clients.json`  
 ```json
 {
   "id": "client-uuid",
@@ -62,15 +61,14 @@ Store in `clients.json`:
 }
 ```
 
-### `add project`
-
-Add a new project under a client.
+### `add project`  
+在某个客户名下添加一个新的项目。
 
 ```
 /client-project-manager add project "[Name]" --client "[Client]" --deadline "[date]" --budget "[amount]" --deliverables "[list]"
 ```
 
-Store in `projects.json`:
+数据存储位置：`projects.json`  
 ```json
 {
   "id": "project-uuid",
@@ -94,15 +92,14 @@ Store in `projects.json`:
 }
 ```
 
-### `log time`
-
-Log time worked on a project.
+### `log time`  
+记录在项目上花费的工作时间。
 
 ```
 /client-project-manager log time "[Project]" --hours [X] --description "[what you did]"
 ```
 
-Append to `time-log.json`:
+数据存储位置：`time-log.json`  
 ```json
 {
   "id": "entry-uuid",
@@ -116,19 +113,17 @@ Append to `time-log.json`:
 }
 ```
 
-### `update`
-
-Update project progress and add notes.
+### `update`  
+更新项目进度并添加备注。
 
 ```
 /client-project-manager update "[Project]" --progress [0-100] --note "[update]" --deliverable "[name]" --status "[done|in-progress|pending]"
 ```
 
-### `status`
+### `status`  
+显示所有活跃项目的当前状态。
 
-Show current status of all active projects.
-
-Output format:
+输出格式：  
 ```
 ╔══════════════════════════════════════════════════════════════╗
 ║                    FREELANCE DASHBOARD                       ║
@@ -152,17 +147,15 @@ DELIVERABLES:
 ──────────────────────────────────────────────────────────────
 ```
 
-### `invoice`
-
-Generate a professional invoice for a client.
+### `invoice`  
+为某个客户生成专业的发票。
 
 ```
 /client-project-manager invoice "[Client]" --project "[Project]" --period "[start] to [end]"
 ```
 
-Generate the invoice as both Markdown and HTML in `freelance-data/invoices/`:
-
-**Invoice content**:
+发票文件将以Markdown和HTML格式生成，并保存在`freelance-data/invoices/`目录下：  
+**发票内容**：  
 ```
 INVOICE #[INV-YYYY-NNN]
 Date: [today]
@@ -192,17 +185,16 @@ Payment Methods: [from config.json or "Bank Transfer / PayPal"]
 Thank you for your business.
 ```
 
-Save as `freelance-data/invoices/INV-2026-001-acme-corp.md` and `.html`.
+文件名示例：`freelance-data/invoices/INV-2026-001-acme-corp.md` 和 `freelance-data/invoices/INV-2026-001-acme-corp.html`
 
-### `weekly-update`
-
-Generate a professional weekly client update email.
+### `weekly-update`  
+生成一份专业的每周客户更新邮件。
 
 ```
 /client-project-manager weekly-update "[Client]"
 ```
 
-Read the client's projects, recent time entries, and notes. Generate:
+读取客户的项目信息、最近的工作记录和备注，然后生成相应的更新邮件。
 
 ```
 Subject: Weekly Update — [Project Name] — Week of [date]
@@ -231,24 +223,22 @@ Best,
 [Your name]
 ```
 
-Save to `freelance-data/updates/` and display for copy-paste.
+邮件内容将保存在`freelance-data/updates/`目录中，可供复制和粘贴使用。
 
-### `payment-reminder`
-
-Generate a polite payment reminder for overdue invoices.
+### `payment-reminder`  
+为逾期未付的发票生成礼貌的付款提醒。
 
 ```
 /client-project-manager payment-reminder "[Client]"
 ```
 
-Check for unpaid invoices past due date. Generate appropriate reminder:
-- 1-7 days overdue: Gentle reminder
-- 8-14 days overdue: Firm but professional follow-up
-- 15+ days overdue: Final notice with late fee mention
+检查所有逾期未付的发票：
+- 逾期1-7天：发送温和的提醒  
+- 逾期8-14天：发送正式但专业的跟进通知  
+- 逾期15天及以上：发送最终通知并提及滞纳金
 
-### `dashboard`
-
-Show a comprehensive business overview:
+### `dashboard`  
+展示全面的业务概览。
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
@@ -275,20 +265,19 @@ UPCOMING DEADLINES:
   Mar 15 — Website launch (Acme Corp)
 ```
 
-### `config`
-
-Set your business details for invoices and communications.
+### `config`  
+设置发票和沟通相关的基本配置信息。
 
 ```
 /client-project-manager config --name "Your Name" --business "Your Business LLC" --email "you@email.com" --payment "PayPal: you@email.com / Bank: routing XXX"
 ```
 
-Save to `freelance-data/config.json`.
+配置信息将保存在`freelance-data/config.json`文件中。
 
-## Data Integrity Rules
+## 数据完整性规则
 
-1. **Never overwrite** — always read existing data first, modify, then write back
-2. **Always backup** — before any write operation, check data exists and is valid JSON
-3. **UUID generation** — use timestamp-based IDs: `client-[timestamp]`, `project-[timestamp]`
-4. **Date format** — always use ISO 8601: `YYYY-MM-DD`
-5. **Currency** — store as numbers, display with `$` formatting
+1. **切勿覆盖现有数据**——始终先读取现有数据，再进行修改后再写入。
+2. **务必备份数据**——在任何写入操作之前，先检查数据是否存在且格式正确（JSON格式）。
+3. **使用UUID生成唯一标识符**：例如 `client-[timestamp]`、`project-[timestamp]`。
+4. **日期格式**——始终使用ISO 8601格式（`YYYY-MM-DD`）。
+5. **货币单位**——以数字形式存储货币，显示时使用 `$` 标记。

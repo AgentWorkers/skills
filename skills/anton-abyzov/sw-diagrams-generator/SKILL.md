@@ -1,67 +1,67 @@
 ---
 name: diagrams-generator
-description: Generate Mermaid diagrams following C4 conventions. Activates for create diagram, draw diagram, visualize, system diagram, architecture diagram, C4 diagram, context diagram, container diagram, component diagram, sequence diagram, ER diagram, entity relationship, data model, deployment diagram. Coordinates with diagrams-architect agent.
+description: 根据 C4 规范生成 Mermaid 图表。支持创建图表、绘制图表、可视化数据、系统架构图、组件图、序列图、ER 图（实体关系图）、数据模型图以及部署图等功能。并与 diagrams-architect 代理进行协同工作。
 allowed-tools: Read, Write, Edit, Task
 ---
 
-# Diagrams Generator Skill
+# 图表生成技能
 
-Lightweight coordinator that detects diagram requests and delegates to the `diagrams-architect` agent for generation.
+这是一个轻量级的协调器，负责检测图表生成请求，并将任务委托给 `diagrams-architect` 代理来执行实际的图表生成工作。
 
-## Your Role
+## 你的角色
 
-You are a **coordinator**, not a diagram generator. Your job is to:
-1. **Detect** when user wants a diagram
-2. **Identify** diagram type and scope
-3. **Load context** (if available)
-4. **Invoke** diagrams-architect agent
-5. **Save** diagram to correct location
-6. **Confirm** completion to user
+你是一个**协调者**，而不是图表生成器。你的职责包括：
+1. **检测**用户是否需要生成图表；
+2. **确定**图表的类型和范围；
+3. **加载相关上下文信息**（如果有的话）；
+4. **调用** `diagrams-architect` 代理来生成图表；
+5. **将生成的图表保存到正确的位置**；
+6. **向用户确认图表生成是否完成。
 
-**DO NOT generate diagrams yourself** - Always delegate to `diagrams-architect` agent.
+**请勿自行生成图表**——始终将任务委托给 `diagrams-architect` 代理。
 
-## Activation Keywords
+## 激活关键词
 
-This skill activates when user mentions:
-- **General**: "create diagram", "draw diagram", "visualize", "generate diagram"
-- **C4 Model**: "C4 diagram", "context diagram", "container diagram", "component diagram"
-- **Flows**: "sequence diagram", "flow diagram", "interaction diagram"
-- **Data**: "ER diagram", "entity relationship", "data model", "database schema"
-- **Infrastructure**: "deployment diagram", "architecture diagram", "infrastructure diagram"
+当用户使用以下关键词时，该技能会被激活：
+- **通用请求**：`create diagram`（创建图表）、`draw diagram`（绘制图表）、`visualize`（可视化）、`generate diagram`（生成图表）；
+- **C4 模型**：`C4 diagram`（C4 图表）、`context diagram`（上下文图）、`container diagram`（容器图）、`component diagram`（组件图）；
+- **流程图**：`sequence diagram`（序列图）、`flow diagram`（流程图）、`interaction diagram`（交互图）；
+- **数据模型**：`ER diagram`（实体关系图）、`entity relationship`（实体关系）、`data model`（数据模型）、`database schema`（数据库模式）；
+- **基础设施**：`deployment diagram`（部署图）、`architecture diagram`（架构图）、`infrastructure diagram`（基础设施图）。
 
-## Workflow
+## 工作流程
 
-### Step 1: Detect Diagram Type
+### 第一步：检测图表类型
 
-Analyze user's request to determine:
+分析用户的请求，以确定所需的图表类型：
 
-**C4 Context (Level 1)**: System boundaries, external actors
-- Keywords: "context", "system", "boundaries", "external"
-- Example: "Create C4 context diagram for authentication"
+- **C4 上下文图（第1层）**：系统边界、外部参与者
+  - 关键词：`context`（上下文）、`system`（系统）、`boundaries`（边界）、`external`（外部）
+  - 例如：`创建用于认证的 C4 上下文图`
 
-**C4 Container (Level 2)**: Services, applications, databases
-- Keywords: "container", "services", "applications", "microservices"
-- Example: "Create container diagram showing our services"
+- **C4 容器图**：服务、应用程序、数据库
+  - 关键词：`container`（容器）、`services`（服务）、`applications`（应用程序）、`microservices`（微服务）
+  - 例如：`创建展示我们服务的容器图`
 
-**C4 Component (Level 3)**: Internal module structure
-- Keywords: "component", "internal", "module", "service internals"
-- Example: "Create component diagram for Auth Service"
+- **C4 组件图**：内部模块结构
+  - 关键词：`component`（组件）、`internal`（内部）、`module`（模块）、`service internals`（服务内部结构）
+  - 例如：`创建用于认证服务的组件图`
 
-**Sequence**: Interaction flows
-- Keywords: "sequence", "flow", "interaction", "steps", "process"
-- Example: "Create login flow diagram"
+- **序列图**：交互流程
+  - 关键词：`sequence`（序列）、`flow`（流程）、`interaction`（交互）、`steps`（步骤）、`process`（过程）
+  - 例如：`创建登录流程图`
 
-**ER Diagram**: Data models
-- Keywords: "ER", "entity", "relationship", "data model", "schema"
-- Example: "Create data model for users and sessions"
+- **ER 图**：数据模型
+  - 关键词：`ER`（实体关系图）、`entity`（实体）、`relationship`（关系）、`data model`（数据模型）、`schema`（模式）
+  - 例如：`创建用户和会话的数据模型图`
 
-**Deployment**: Infrastructure
-- Keywords: "deployment", "infrastructure", "hosting", "cloud"
-- Example: "Create deployment diagram for production"
+- **部署图**：基础设施
+  - 关键词：`deployment`（部署）、`infrastructure`（基础设施）、`hosting`（托管）、`cloud`（云）
+  - 例如：`创建生产环境的部署图`
 
-### Step 2: Load Context (Optional)
+### 第二步：加载上下文信息（可选）
 
-If relevant specifications exist, load them:
+如果存在相关的规范或文档，请加载这些信息：
 
 ```typescript
 // For authentication diagram:
@@ -71,9 +71,9 @@ const architecture = await Read('.specweave/docs/internal/architecture/auth-desi
 // Pass to agent as context
 ```
 
-### Step 3: Invoke diagrams-architect Agent
+### 第三步：调用 `diagrams-architect` 代理
 
-Delegate to agent via Task tool:
+通过任务工具将任务委托给 `diagrams-architect` 代理：
 
 ```typescript
 const result = await Task({
@@ -91,85 +91,62 @@ Requirements:
 });
 ```
 
-### Step 4: Save Diagram
+### 第四步：保存图表
 
-The agent returns diagram content. Save to correct location:
+代理生成图表后，将其保存到正确的位置：
+- **C4 上下文图/容器图**：`.specweave/docs/internal/architecture/diagrams/`
+- **C4 组件图**：`.specweave/docs/internal/architecture/diagrams/{module}/`
+- **序列图**：`.specweave/docs/internal/architecture/diagrams/{module}/flows/`
+- **ER 图**：`.specweave/docs/internal/architecture/diagrams/{module}/data-model.mmd`
+- **部署图**：`.specweave/docs/internal/operations/diagrams/deployment-{env}.mmd`
 
-**C4 Context/Container**: `.specweave/docs/internal/architecture/diagrams/`
-**C4 Component**: `.specweave/docs/internal/architecture/diagrams/{module}/`
-**Sequence**: `.specweave/docs/internal/architecture/diagrams/{module}/flows/`
-**ER Diagram**: `.specweave/docs/internal/architecture/diagrams/{module}/data-model.mmd`
-**Deployment**: `.specweave/docs/internal/operations/diagrams/deployment-{env}.mmd`
+### 第五步：向用户确认
 
-### Step 5: Confirm to User
+向用户确认图表生成是否完成，并提供相应的文件路径：
 
 ```
 ✅ Diagram created: {path}
 📋 Please verify rendering in VS Code with Mermaid Preview extension
 ```
 
-## Examples
+## 示例
 
-### Example 1: C4 Context Diagram
+### 示例 1：C4 上下文图
 
-**User**: "Create C4 context diagram for authentication"
+**用户**：**创建用于认证的 C4 上下文图**
 
-**You**:
-1. Detect: C4 Context (Level 1)
-2. Load context: Read auth spec if exists
-3. Invoke agent:
-```typescript
-await Task({
-  subagent_type: "sw-diagrams:diagrams-architect:diagrams-architect",
-  prompt: "Create C4 context diagram for authentication system. Show user types, authentication system, and external integrations (email, SMS, OAuth).",
-  description: "Generate C4 Level 1 diagram"
-});
-```
-4. Agent returns diagram content
-5. Save to `.specweave/docs/internal/architecture/diagrams/auth-context.mmd`
-6. Confirm: "✅ Diagram created: .specweave/docs/internal/architecture/diagrams/auth-context.mmd"
+**你的操作**：
+1. **检测**：用户请求的是 C4 上下文图；
+2. **加载上下文**：如果存在认证相关的规范文件，则将其加载；
+3. **调用代理**：执行图表生成任务；
+4. **保存图表**：将生成的图表保存到指定路径；
+5. **确认**：`图表已生成：`.specweave/docs/internal/architecture/diagrams/auth-context.mmd`
 
-### Example 2: Sequence Diagram
+### 示例 2：序列图
 
-**User**: "Create login flow diagram"
+**用户**：**创建登录流程图**
 
-**You**:
-1. Detect: Sequence diagram
-2. Load context: Read login spec/flow docs if exist
-3. Invoke agent:
-```typescript
-await Task({
-  subagent_type: "sw-diagrams:diagrams-architect:diagrams-architect",
-  prompt: "Create sequence diagram for login flow. Show: User → Browser → AuthService → Database → SessionStore. Include success and failure paths.",
-  description: "Generate sequence diagram"
-});
-```
-4. Agent returns diagram
-5. Save to `.specweave/docs/internal/architecture/diagrams/auth/flows/login-flow.mmd`
-6. Confirm completion
+**你的操作**：
+1. **检测**：用户请求的是序列图；
+2. **加载上下文**：如果存在登录流程相关的文档，则将其加载；
+3. **调用代理**：执行图表生成任务；
+4. **保存图表**：将生成的图表保存到指定路径；
+5. **确认**：图表生成完成。
 
-### Example 3: ER Diagram
+### 示例 3：ER 图
 
-**User**: "Create data model for users and sessions"
+**用户**：**创建用户和会话的数据模型图**
 
-**You**:
-1. Detect: ER diagram
-2. Load context: Read database schema docs if exist
-3. Invoke agent:
-```typescript
-await Task({
-  subagent_type: "sw-diagrams:diagrams-architect:diagrams-architect",
-  prompt: "Create ER diagram for authentication data model. Entities: USER, SESSION, REFRESH_TOKEN, PASSWORD_RESET. Show relationships and key fields.",
-  description: "Generate ER diagram"
-});
-```
-4. Agent returns diagram
-5. Save to `.specweave/docs/internal/architecture/diagrams/auth/data-model.mmd`
-6. Confirm completion
+**你的操作**：
+1. **检测**：用户请求的是 ER 图；
+2. **加载上下文**：如果存在数据库模式相关的文档，则将其加载；
+3. **调用代理**：执行图表生成任务；
+4. **保存图表**：将生成的图表保存到指定路径；
+5. **确认**：图表生成完成。
 
-## Validation
+## 验证
 
-After saving diagram, ALWAYS tell user to validate:
+在保存图表后，务必提醒用户对图表进行验证：
 
 ```
 ✅ Diagram created: {path}
@@ -183,36 +160,27 @@ After saving diagram, ALWAYS tell user to validate:
 If diagram fails to render, I will regenerate with fixes.
 ```
 
-## File Naming Conventions
+## 文件命名规则
 
-**C4 Context**: `{system-name}-context.mmd` or `system-context.mmd`
-**C4 Container**: `{system-name}-container.mmd` or `system-container.mmd`
-**C4 Component**: `component-{service-name}.mmd`
-**Sequence**: `{flow-name}-flow.mmd` or `{flow-name}.sequence.mmd`
-**ER Diagram**: `data-model.mmd` or `{module}-data-model.mmd`
-**Deployment**: `deployment-{environment}.mmd`
+- **C4 上下文图**：`{系统名称}-context.mmd` 或 `system-context.mmd`
+- **C4 容器图**：`{系统名称}-container.mmd` 或 `system-container.mmd`
+- **C4 组件图**：`component-{服务名称}.mmd`
+- **序列图**：`{流程名称}-flow.mmd` 或 `{流程名称}.sequence.mmd`
+- **ER 图**：`data-model.mmd` 或 `{模块}-data-model.mmd`
+- **部署图**：`deployment-{环境名称}.mmd`
 
-## Error Handling
+## 错误处理
 
-**If diagram type is unclear**:
-- Ask user for clarification
-- Example: "Do you want a C4 context diagram (system level) or container diagram (service level)?"
+- **如果图表类型不明确**：**请用户明确说明需求**（例如：“您需要的是 C4 上下文图还是容器图？**）
+- **如果上下文信息不足**：**请用户提供关键实体或组件信息**（例如：“与您的认证系统集成的主要外部系统有哪些？**）
+- **如果代理返回错误**：**向用户报告错误并建议调整请求**，然后重新尝试。
 
-**If context is insufficient**:
-- Ask user for key entities/components
-- Example: "What are the main external systems that integrate with your authentication?"
+## 集成方式
 
-**If agent returns error**:
-- Report error to user
-- Suggest corrections
-- Retry with adjusted prompt
-
-## Integration
-
-**Invoked by**: User request (auto-activation via description keywords)
-**Invokes**: `diagrams-architect` agent (via Task tool)
-**Output**: Mermaid diagram files in correct locations
+- **触发方式**：用户通过相关关键词触发该技能；
+- **调用方**：`diagrams-architect` 代理（通过任务工具）；
+- **输出结果**：生成的图表将以 Mermaid 格式保存在指定目录中。
 
 ---
 
-**Remember**: You are a coordinator. Always delegate actual diagram generation to the `diagrams-architect` agent.
+**请记住**：你只是一个协调者，实际的图表生成工作由 `diagrams-architect` 代理负责完成。

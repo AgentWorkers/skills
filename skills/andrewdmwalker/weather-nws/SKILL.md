@@ -1,6 +1,6 @@
 ---
 name: weather-nws
-description: Reliable US weather data using the National Weather Service API. Free, no API key, detailed forecasts and official alerts.
+description: 使用美国国家气象局（National Weather Service）的API获取可靠的天气数据。完全免费，无需API密钥，提供详细的天气预报和官方天气警报。
 version: 1.0.0
 author: awalker
 homepage: https://weather.gov
@@ -12,48 +12,48 @@ metadata:
       bins: ["curl", "node"]
 ---
 
-# Weather NWS
+# 天气信息（NWS）
 
-Get reliable, detailed weather data from the National Weather Service API. Perfect for US locations - completely free, no API key required, with official weather alerts.
+通过美国国家气象局（National Weather Service, NWS）的API获取可靠、详细的天气数据。非常适合美国境内的使用——完全免费，无需API密钥，并提供官方天气警报。
 
-## When to Use
+## 使用场景
 
-Use this skill when you need:
-- **Reliable US weather data** without API key hassles
-- **Official weather alerts** (tornado warnings, flood alerts, etc.)
-- **Detailed current conditions** beyond basic temperature
-- **7-day forecasts** with comprehensive descriptions
-- **Morning briefings** with accurate local weather
-- **Weather monitoring** in automation/cron jobs
-- **Alert-based notifications** for severe weather
+当您需要以下功能时，可以使用此技能：
+- **无需API密钥的可靠美国天气数据**
+- **官方天气警报**（龙卷风预警、洪水预警等）
+- **超出基本温度信息的详细当前天气状况**
+- **包含详细描述的7天天气预报**
+- **包含准确当地天气信息的晨间天气简报**
+- **用于自动化或定时任务中的天气监控**
+- **针对恶劣天气的警报通知**
 
-This skill is ideal for US-based OpenClaw deployments that need professional-grade weather data without the complexity or cost of commercial APIs.
+此技能非常适合基于OpenClaw的系统，能够满足对专业级天气数据的需求，同时避免了商业API的复杂性及高昂费用。
 
-## Features
+## 主要功能
 
-- 🌡️ **Detailed Current Conditions** - Temperature, feels-like, humidity, wind, pressure, visibility, dewpoint
-- 📅 **7-Day Forecast** - Comprehensive daily forecasts with detailed descriptions
-- 🚨 **Official Alerts** - Cold Weather Advisories, Tornado Warnings, Flood Alerts, etc.
-- 🆓 **100% Free** - No API key, no rate limits, reliable government service
-- 📍 **Accurate** - Data from official NWS weather stations
+- 🌡️ **详细当前天气状况**：温度、体感温度、湿度、风速、气压、能见度、露点
+- 📅 **7天天气预报**：每日详细的天气预报
+- 🚨 **官方警报**：寒冷天气预警、龙卷风预警、洪水预警等
+- 🆓 **100% 免费**：无需API密钥，无使用限制，使用的是政府提供的可靠服务
+- 📍 **数据准确性**：数据来源于美国国家气象局的官方气象站
 
-## Quick Start
+## 快速入门
 
-### Get Current Weather
+### 获取当前天气信息
 
 ```bash
 node weather-nws.js
 ```
 
-### JSON Output (for scripts)
+### JSON输出（适用于脚本）
 
 ```bash
 node weather-nws.js --json
 ```
 
-## Configuration
+## 配置
 
-Edit the coordinates in `weather-nws.js` to set your location:
+请在`weather-nws.js`文件中修改坐标，以设置您的位置：
 
 ```javascript
 // Example: Fort Worth, Texas
@@ -63,19 +63,19 @@ const FORT_WORTH = {
 };
 ```
 
-Find coordinates at [latlong.net](https://www.latlong.net)
+您可以在[latlong.net](https://www.latlong.net)获取坐标。
 
-## Usage Examples
+## 使用示例
 
-### Basic Weather Check
+### 基本天气查询
 
-Get a quick overview of current conditions and forecast:
+快速获取当前天气状况和天气预报：
 
 ```bash
 node weather-nws.js
 ```
 
-**Output:**
+**输出：**
 ```
 === CURRENT CONDITIONS ===
 Temperature: 30°F (Feels like: 21°F)
@@ -103,68 +103,61 @@ Cold Weather Advisory (Moderate/Expected)
 Cold Weather Advisory issued January 29 at 11:49PM CST until January 31 at 11:00AM CST
 ```
 
-### Programmatic Use (JSON)
+### 程序化使用（JSON格式）
 
-For automation and integration:
+适用于自动化和集成：
 
 ```bash
 node weather-nws.js --json
 ```
 
-Returns structured JSON with:
-- `current` - Current conditions object
-- `forecast` - 7-day forecast array
-- `alerts` - Detected alert keywords
-- `timestamp` - ISO timestamp
-- `source` - "National Weather Service"
+返回的结构化JSON数据包含：
+- `current`：当前天气状况对象
+- `forecast`：7天天气预报数组
+- `alerts`：检测到的天气警报信息
+- `timestamp`：ISO时间戳
+- `source`："National Weather Service"
 
-### Integration with OpenClaw
+### 与OpenClaw集成
 
-Use in your OpenClaw prompts:
+您可以在OpenClaw的提示功能或定时任务中使用此技能：
 
 ```
 Check the weather and let me know if I need a jacket today.
 ```
 
-Or in cron jobs:
+### 天气警报监控
 
-```bash
-# Morning weather brief
-0 8 * * * node /path/to/weather-nws.js
-```
+该技能支持检测以下类型的警报：
+- 🌪️ **龙卷风**预警（紧急级别）
+- ⛈️ **强风暴**（伴有强风和冰雹，高风险）
+- 🌊 **洪水**预警和山洪暴发（高风险）
+- ❄️ **冬季天气**：冰暴、暴风雪、大雪（高风险）
+- 🔥 **高温**预警和极端高温预警（中等风险）
+- 💨 **大风**预警（中等风险）
 
-### Weather Alert Monitoring
+## API详细信息
 
-The skill includes alert detection for:
-- 🌪️ **Tornado** warnings and watches (CRITICAL)
-- ⛈️ **Severe Storms** with damaging winds, hail (HIGH)
-- 🌊 **Flood** warnings and flash floods (HIGH)
-- ❄️ **Winter Weather** - ice storms, blizzards, heavy snow (HIGH)
-- 🔥 **Heat** advisories and excessive heat warnings (MEDIUM)
-- 💨 **Wind** advisories and high wind warnings (MEDIUM)
+### 美国国家气象局API
 
-## API Details
+- **端点**：`api.weather.gov`
+- **认证**：无需认证（建议添加User-Agent头部）
+- **使用限制**：无（合理使用情况下无限制）
+- **覆盖范围**：仅限美国境内
+- **文档**：https://weather-gov.github.io/api/
 
-### National Weather Service API
+### 数据来源
 
-- **Endpoint:** api.weather.gov
-- **Authentication:** None required (User-Agent header recommended)
-- **Rate Limiting:** None (reasonable use expected)
-- **Coverage:** United States only
-- **Documentation:** https://weather-gov.github.io/api/
+1. **Points API**：获取您所在位置的预报办公室和网格坐标
+2. **Forecast API**：提供7天天气预报及详细描述
+3. **Observations API**：获取最近气象站的实时数据
+4. **Alerts API**：获取您所在地区的实时天气警报
 
-### Data Sources
+## 高级用法
 
-1. **Points API** - Gets forecast office and grid coordinates for your location
-2. **Forecast API** - 7-day forecast with detailed descriptions
-3. **Observations API** - Real-time data from nearest weather station
-4. **Alerts API** - Active weather alerts for your area
+### 自定义位置
 
-## Advanced Usage
-
-### Custom Location
-
-Create a wrapper script for a different city:
+为其他城市创建相应的脚本：
 
 ```javascript
 const NWSWeather = require('./weather-nws.js');
@@ -175,9 +168,9 @@ const data = await weather.getWeather();
 console.log(JSON.stringify(data, null, 2));
 ```
 
-### Alert Monitoring
+### 检查天气警报
 
-Check for active official alerts:
+实时监控官方发布的天气警报：
 
 ```javascript
 const NWSWeather = require('./weather-nws.js');
@@ -194,9 +187,9 @@ if (alerts.length > 0) {
 }
 ```
 
-## Output Format
+## 输出格式
 
-### Current Conditions Object
+### 当前天气状况对象
 
 ```json
 {
@@ -223,42 +216,42 @@ if (alerts.length > 0) {
 }
 ```
 
-## Why NWS?
+## 为什么选择NWS？
 
-Compared to other weather APIs:
+与其他天气API相比：
 
-| Feature | NWS | wttr.in | OpenWeather | WeatherAPI |
+| 功能 | NWS | wttr.in | OpenWeather | WeatherAPI |
 |---------|-----|---------|-------------|------------|
-| Cost | FREE | FREE | $40+/mo | $0-$50/mo |
-| API Key | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
-| Reliability | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| Official Alerts | ✅ Yes | ❌ No | ❌ No | ⚠️ Limited |
-| Detail Level | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| US Coverage | ✅ Excellent | ✅ Good | ✅ Good | ✅ Good |
+| 费用 | 免费 | 免费 | 每月40美元起 | 每月0-50美元 |
+| API密钥 | 不需要 | 不需要 | 需要 | 需要 |
+| 可靠性 | 非常可靠 | 一般 | 相对可靠 | 相对可靠 |
+| 官方警报 | 支持 | 不支持 | 不支持 | 仅部分支持 |
+| 详细程度 | 非常详细 | 一般 | 相对详细 | 非常详细 |
+| 美国覆盖范围 | 完全覆盖 | 完全覆盖 | 完全覆盖 | 完全覆盖 |
 
-## Troubleshooting
+## 故障排除
 
-### "Invalid response from NWS"
+### “NWS返回无效响应”
 
-Check your coordinates are correct and within the US. The NWS API only covers United States territories.
+请确认您的坐标正确且位于美国境内。NWS API仅覆盖美国领土。
 
-### Timeout errors
+### 超时错误
 
-Increase the timeout in the script:
+请在脚本中增加超时时间：
 
 ```javascript
 { encoding: 'utf8', timeout: 30000 } // 30 seconds
 ```
 
-### No alerts showing
+### 未显示警报
 
-This is normal! The skill only shows alerts when there are active weather warnings for your area.
+这是正常现象！该技能仅在您所在地区有天气警报时才会显示警报信息。
 
-## Integration Examples
+## 集成示例
 
-### Morning Brief
+### 晨间天气简报
 
-Include weather in your daily automation:
+在每日自动化任务中包含天气信息：
 
 ```javascript
 const NWSWeather = require('./weather-nws.js');
@@ -273,9 +266,9 @@ if (data.alerts.length > 0) {
 }
 ```
 
-### Discord/Telegram Bot
+### Discord/Telegram机器人
 
-Post weather updates to channels:
+将天气更新发布到聊天频道：
 
 ```javascript
 const data = await weather.getWeather();
@@ -288,9 +281,9 @@ const message = `🌤️ **Weather Update**\n` +
 await sendMessage(message);
 ```
 
-### Cron Job with Alerts
+### 基于警报的定时任务
 
-Monitor for severe weather:
+实时监控恶劣天气：
 
 ```bash
 #!/bin/bash
@@ -306,19 +299,19 @@ if [ -n "$alerts" ]; then
 fi
 ```
 
-## License
+## 许可证
 
-This skill uses the National Weather Service API, which is public domain (US Government).
+该技能使用了美国国家气象局的API，属于公共领域（美国政府所有）。
 
-## Support
+## 技术支持
 
-- **NWS API Issues:** https://github.com/weather-gov/weather.gov/issues
-- **Skill Issues:** Contact the author
+- **NWS API相关问题**：[https://github.com/weather-gov/weather.gov/issues]
+- **技能使用问题**：请联系作者
 
-## Credits
+## 致谢
 
-Weather data provided by the National Weather Service (NOAA).
+天气数据由美国国家气象局（NOAA）提供。
 
 ---
 
-**Built for OpenClaw** (formerly Clawdbot)
+**专为OpenClaw设计**（原名Clawdbot）

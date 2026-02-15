@@ -1,88 +1,88 @@
 ---
 name: scout-commerce
 version: 1.1.0
-description: Search for products on Amazon/shopify and buy with USDC on Solana. Swap tokens using Jupiter.
+description: 在 Amazon 或 Shopify 上搜索产品，并使用 Solana 中的 USDC 进行购买。通过 Jupiter 来交换代币。
 homepage: https://scout.trustra.xyz
 metadata: {"emoji":"🛒","category":"shopping","api_base":"https://scout-api.trustra.xyz/api/v2"}
 ---
 
 # Scout 🛒
 
-Buy from Amazon & Shopify with USDC. Swap tokens via Jupiter. US shipping only.
+您可以使用 USDC 在 Amazon 和 Shopify 上进行购物，并通过 Jupiter 进行代币兑换。仅支持美国境内配送。
 
-## Presenting Products (Important!)
+## 产品展示（重要！）
 
-**Search results:** For each recommended product, send the image as actual media (not markdown links) with the product details as the caption. One product per message so images render properly.
+**搜索结果：** 对于每个推荐的产品，请将产品图片作为实际媒体文件发送（而非 Markdown 链接），并将产品详情作为图片的说明文字。每条消息中只包含一个产品信息，以确保图片能够正确显示。
 
-**Product details:** When showing details, send images as media attachments alongside the text. The API returns images in the same response — use them immediately, don't make the user ask.
+**产品详情：** 在展示产品详情时，应将产品图片作为媒体附件随文字一起发送。API 会返回产品的图片，请立即使用这些图片，无需让用户另行请求。
 
-**Why:** Markdown image links (`![](url)`) don't render on Telegram/messaging platforms. Always send images as actual media using the message tool with `media` parameter, or via inline if supported.
+**原因：** Markdown 中的图片链接（`![](url)`）在 Telegram 或其他消息平台上无法正常显示。请始终使用带有 `media` 参数的消息工具发送图片，或者如果支持的话，也可以使用内联图片格式。
 
-## Quick Reference
+## 快速参考
 
-**Setup (once)** → `python get_api_key.py --email ... --address "..."`
+**首次设置：** `python get_api_key.py --email ... --address "..."`
 
-**Find products** → `python search.py "gaming mouse under $50"`
+**查找产品：** `python search.py "价格低于 $50 的游戏鼠标"`
 
-**Get Product details** → `python product.py amazon:B07GBZ4Q68`
+**获取产品详情：** `python product.py amazon:B07GBZ4Q68`
 
-**Check Wallet balance** → `python balance.py` (shows all tokens)
+**查看钱包余额：** `python balance.py`（显示所有代币）
 
-**Buy product** → `python buy.py amazon:B07GBZ4Q68`
+**购买产品：** `python buy.py amazon:B07GBZ4Q68`
 
-**Check order** → `python order_status.py ord_abc123`
+**查看订单状态：** `python order_status.py ord_abc123`
 
-**List orders** → `python order_status.py --list`
+**列出订单：** `python order_status.py --list`
 
-**Swap tokens** → `python swap.py SOL USDC 5` (min $5)
+**兑换代币：** `python swap.py SOL USDC 5`（最低交易金额为 $5）
 
-**Get swap quote** → `python swap.py --quote SOL USDC 5`
+**获取兑换报价：** `python swap.py --quote SOL USDC 5`
 
-**List wallet tokens** → `python swap.py --list`
+**列出钱包中的代币：** `python swap.py --list`
 
-All commands run from `scripts/` folder. API key loads automatically from `credentials.json`.
+所有命令均需在 `scripts/` 目录下执行。API 密钥会自动从 `credentials.json` 文件中加载。
 
-## Setup (one-time)
+## 首次设置
 
 ```bash
 python get_api_key.py --email <EMAIL> --address "<NAME>,<STREET>,<CITY>,<STATE>,<ZIP>,<COUNTRY>"
 ```
 
-Creates a **Crossmint wallet** + **API key** and stores them in `credentials.json`. Fund the wallet with USDC to buy.
+此步骤会创建一个 **Crossmint 钱包** 并生成一个 **API 密钥**，并将它们保存在 `credentials.json` 文件中。请使用 USDC 为钱包充值以便进行购物。
 
-**Keep API key secure** - it authorizes transactions from your wallet.
+**请妥善保管 API 密钥**——它用于授权您的钱包进行交易。
 
-## Commands
+## 命令说明
 
-| Command | Usage |
+| 命令 | 用法 |
 |---------|-------|
-| Search | `python search.py "query"` |
-| Details | `python product.py amazon:B07GBZ4Q68` |
-| Balance | `python balance.py` (all tokens) or `balance.py --usdc` |
-| Buy | `python buy.py amazon:B07GBZ4Q68` |
-| Orders | `python order_status.py --list` or `order_status.py <orderId>` |
-| Swap | `python swap.py SOL USDC 5` (min $5 for gasless) |
-| Quote | `python swap.py --quote SOL USDC 5` |
-| Tokens | `python swap.py --list` |
+| 搜索 | `python search.py "查询"` |
+| 产品详情 | `python product.py amazon:B07GBZ4Q68` |
+| 查看余额 | `python balance.py`（显示所有代币）或 `balance.py --usdc` |
+| 购买 | `python buy.py amazon:B07GBZ4Q68` |
+| 查看订单 | `python order_status.py --list` 或 `order_status.py <orderId>` |
+| 兑换代币 | `python swap.py SOL USDC 5`（最低交易金额为 $5） |
+| 获取兑换报价 | `python swap.py --quote SOL USDC 5` |
+| 查看代币 | `python swap.py --list` |
 
-**Supported tokens:** SOL, USDC, USDT, BONK, TRUST — or use any mint address directly.
+**支持的代币：** SOL、USDC、USDT、BONK、TRUST —— 或者可以直接使用任何代币的地址。
 
-## Workflow
+## 工作流程
 
-1. **No credentials?** → `get_api_key.py` (creates wallet + API key)
-2. **No balance?** → Fund wallet address shown by `balance.py`
-3. **Ready to buy** → `buy.py <locator>`
+1. **没有 API 密钥？** 执行 `get_api_key.py`（创建钱包和 API 密钥）。
+2. **钱包余额不足？** 使用 `balance.py` 查看钱包地址并进行充值。
+3. **准备购买？** 执行 `buy.py <产品链接>`。
 
-## Errors
+## 错误处理
 
-| Error | Fix |
-|-------|-----|
-| `INSUFFICIENT_BALANCE` | Fund wallet (`balance.py` shows address) |
-| `No API key found` | Run `get_api_key.py` |
-| `OUT_OF_STOCK` | Search for alternatives |
-| `OVER_LIMIT` | Max $1,500 per order |
+| 错误类型 | 处理方法 |
+|---------|-------|
+| **余额不足** | 使用 `balance.py` 为钱包充值 |
+| **找不到 API 密钥** | 运行 `get_api_key.py` |
+| **商品缺货** | 查找其他商品 |
+| **交易金额超出限制** | 每单交易的最大金额为 $1,500 |
 
-## Credentials (`credentials.json`)
+## 凭据文件（`credentials.json`）
 
 ```json
 {
@@ -92,4 +92,4 @@ Creates a **Crossmint wallet** + **API key** and stores them in `credentials.jso
 }
 ```
 
-Never share the API key.
+请勿泄露 API 密钥。

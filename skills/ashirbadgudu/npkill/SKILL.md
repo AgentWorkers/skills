@@ -1,110 +1,93 @@
 ---
 name: npkill
-description: Clean up node_modules and .next folders to free up disk space using npkill. Specifically designed to help JavaScript and Next.js developers remove accumulated build artifacts that consume significant storage. Provides both interactive and automated cleanup options with safety checks to protect important system directories.
+description: 使用 `npkill` 清理 `node_modules` 和 `.next` 文件夹，以释放磁盘空间。该工具专为 JavaScript 和 Next.js 开发者设计，旨在帮助他们清除累积的构建产物（这些产物会占用大量存储空间）。它提供了交互式和自动化的清理选项，并带有安全检查机制，以保护重要的系统目录。
 ---
 
-# NPkill - Node.js and Next.js Build Artifact Cleaner
+# NPkill – 用于清理 Node.js 和 Next.js 构建产物的工具
 
-This skill leverages the npkill tool to clean up node_modules and .next folders that accumulate over time from JavaScript and Next.js development, freeing up significant disk space.
+该工具利用 `npkill` 命令来清除在 JavaScript 和 Next.js 开发过程中逐渐积累的 `node_modules` 文件夹及 `.next` 文件夹，从而释放大量磁盘空间。
 
-## Purpose
+## 目的
 
-This skill addresses a common problem faced by JavaScript and Next.js developers: accumulation of large build artifact folders (node_modules, .next) that consume significant disk space over time. It provides a safe and efficient way to identify and remove these unnecessary folders.
+该工具旨在解决 JavaScript 和 Next.js 开发者面临的一个常见问题：随着项目的发展，`node_modules` 和 `.next` 文件夹会不断增大，占用大量磁盘空间。它提供了一种安全、高效的方法来识别并删除这些不必要的文件夹。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- Your disk space is running low due to accumulated node_modules folders
-- You want to clean up old Next.js build artifacts (.next folders)
-- You need to maintain a clean development environment
-- You want to identify which projects are consuming the most disk space
-- You want to perform regular maintenance on your development workspace
+在以下情况下使用该工具：
+- 由于 `node_modules` 文件夹的积累，导致磁盘空间不足；
+- 需要清理旧的 Next.js 构建产物（`.next` 文件夹）；
+- 希望保持开发环境的整洁；
+- 需要了解哪些项目占用了最多的磁盘空间；
+- 需要对开发工作区进行定期维护。
 
-## Core Commands
+## 核心命令
 
-### Interactive Cleanup (Recommended)
+### 交互式清理（推荐使用）
 ```bash
 npkill
 ```
-Launches the interactive interface to browse and selectively delete node_modules folders. This is the safest method as it allows you to review each folder before deletion.
+启动交互式界面，您可以浏览并选择性地删除 `node_modules` 文件夹。这是最安全的方法，因为它允许您在删除前逐一查看每个文件夹。
 
-### Target .next Folders Specifically
+### 专门针对 `.next` 文件夹进行清理
 ```bash
 npkill --target .next
 ```
-Search specifically for .next folders (used by Next.js projects) instead of node_modules.
+专门搜索 Next.js 项目使用的 `.next` 文件夹，而不是所有的 `node_modules` 文件夹。
 
-### Dry Run (Always Recommended First)
+### 干运行（强烈建议先执行）
 ```bash
 npkill --dry-run
 ```
-Simulates the operation without actually deleting anything. Shows what would be deleted.
+模拟删除操作，而不会实际删除任何文件。此功能可帮助您预览删除结果。
 
-### Automated Cleanup (Use with Caution)
+### 自动化清理（请谨慎使用）
 ```bash
 npkill --delete-all --yes
 ```
-Automatically deletes all node_modules folders found. Use only after verifying with dry-run.
+自动删除所有找到的 `node_modules` 文件夹。请仅在完成干运行后使用此选项。
 
-### View Sizes in Gigabytes
+### 以吉字节显示文件夹大小
 ```bash
 npkill --gb
 ```
-Shows folder sizes in gigabytes instead of megabytes for easier reading.
+以吉字节为单位显示文件夹大小，便于阅读。
 
-### Scan from Specific Directory
+### 从指定目录开始扫描
 ```bash
 npkill --directory /path/to/search/from
 ```
-Starts searching from a specific directory instead of current directory.
+从指定目录开始扫描，而不是当前目录。
 
-## Safety Features
+## 安全特性
 
-- **Warnings for Protected Directories**: npkill highlights system/app directories that shouldn't be deleted with a ⚠️ symbol
-- **Interactive Confirmation**: Manual selection required in interactive mode
-- **Dry-run Option**: Preview changes before executing any deletions
-- **Exclusion Options**: Ability to exclude specific directories from scanning
+- **受保护目录的警告**：`npkill` 会用 ⚠️ 符号标出不应被删除的系统或应用程序目录；
+- **交互式确认**：在交互模式下需要手动确认删除操作；
+- **干运行选项**：在执行删除前预览更改内容；
+- **排除选项**：可以排除某些目录，避免被扫描。
 
-## Common Use Cases for Next.js Developers
+## Next.js 开发者的常见使用场景
 
-### Clean .next Folders Safely
-```bash
-# First, preview what would be deleted
-npkill --target .next --dry-run
+- **安全地清理 `.next` 文件夹**；
+- **定期维护开发环境**；
+- **检查磁盘使用情况**。
 
-# Then, if satisfied with the preview, run interactively
-npkill --target .next
-```
+## 最佳实践
 
-### Regular Maintenance
-```bash
-# Run interactive cleanup to review and selectively delete
-npkill
-```
+1. **始终先使用 `--dry-run` 选项查看删除内容**；
+2. **仔细阅读关于受保护目录的警告**；
+- **使用交互式模式进行更安全的删除操作**；
+- **如有需要，使用 `--exclude` 选项排除重要项目目录**；
+- **定期安排清理任务，防止文件积累过多**。
 
-### Check Disk Usage
-```bash
-# View all node_modules folders sorted by size
-npkill --sort=size
-```
+## 安装要求
 
-## Best Practices
-
-1. **Always run with --dry-run first** to see what would be deleted
-2. **Review warnings carefully** about protected directories marked with ⚠️
-3. **Use interactive mode** for safer selective deletion
-4. **Consider excluding important project directories** using --exclude if needed
-5. **Schedule regular cleanup** to prevent massive accumulation
-
-## Installation Requirements
-
-This skill requires the npkill CLI tool to be installed globally:
+使用该工具前，需要全局安装 `npkill` 命令行工具：
 ```bash
 npm install -g npkill
 ```
 
-## Limitations
+## 限制
 
-- Requires npkill to be installed separately
-- May not detect all protected system directories in all environments
-- Interactive mode requires terminal with arrow key support
+- 需要单独安装 `npkill` 工具；
+- 可能无法在所有环境中检测到所有受保护的系统目录；
+- 交互式模式需要支持箭头键的终端环境。

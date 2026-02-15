@@ -1,136 +1,135 @@
 ---
 name: b2c-marketing
-description: B2C mobile app marketing via short-form video content on TikTok, Instagram Reels, and YouTube Shorts. Use when creating, scheduling, or strategizing organic social media content for consumer apps. Covers slideshow generation, caption writing, format research, posting via Post Bridge API, and content performance analysis.
+description: 通过TikTok、Instagram Reels和YouTube Shorts上的短视频内容进行B2C移动应用营销。适用于为消费者应用创建、安排或制定社交媒体内容策略时使用。内容涵盖幻灯片制作、标题编写、格式研究、通过Post Bridge API发布内容以及内容表现分析。
 ---
 
-# B2C Marketing — Short-Form Video Content Machine
+# B2C营销——短形式视频内容制作工具
 
-Automate organic B2C app marketing through short-form video on TikTok, Instagram Reels, and YouTube Shorts. This skill is based on a proven method that drove 30,000 downloads in one month with zero ad spend.
+通过TikTok、Instagram Reels和YouTube Shorts上的短形式视频，自动化实现B2C应用的有机营销。这一技巧基于一种已被验证的方法：在一个月内实现了30,000次应用下载，且无需任何广告支出。
 
-## The Growth Playbook
+## 成长策略
 
-### Phase 1: Account Warmup (Days 1-2)
-- Create new account(s) on Instagram and/or TikTok
-- Scroll 15 min/day in your target audience niche ONLY
-- Follow, comment, and like posts that your app/product is relevant to
-- This teaches the algorithm where to push your content — CRITICAL for TikTok especially
-- Never buy old accounts — they suck and have a locked-in audience you can't change
-- Same email for multiple TikTok accounts is fine
+### 第一阶段：账号预热（第1-2天）
+- 在Instagram和/或TikTok上创建新账号
+- 每天仅在自己的目标受众领域浏览15分钟的内容
+- 关注、评论并点赞与你的应用/产品相关的帖子
+- 这有助于算法判断应该将你的内容推送给哪些用户——尤其是对于TikTok来说至关重要
+- 绝不要购买旧账号——这些账号质量较差，且其受众群体固定，无法改变
+- 多个TikTok账号可以使用相同的电子邮件地址
 
-### Phase 2: Research (Ongoing)
-- Save any videos you see that you could remake to promote your app
-- Study what other apps in your niche are doing
-- Browse competitor accounts — sort by Popular on TikTok to see their top performers
-- Note caption patterns, video length, hooks, hashtags
-- Think creatively about how existing viral formats can showcase YOUR app
+### 第二阶段：研究（持续进行）
+- 收集所有你可以重新制作以推广应用的视频
+- 研究同领域其他应用的做法
+- 浏览竞争对手的账号——按TikTok上的热门程度排序，了解他们的最佳表现
+- 记录视频的标题格式、时长、吸引人的元素以及使用的标签
+- 创造性地思考如何利用现有的病毒式传播格式来展示你的应用
 
-### Phase 3: Start Posting (Day 3+)
-- Start with 1 post/day per warmed account — quality over quantity
-- Every post needs a CTA relevant to your app (in caption, comment, or end of video)
-- Views without downloads are useless — always tie content back to your app
-- If you can't break 500 views after consistent posting, pause 2-3 days and improve content quality
+### 第三阶段：开始发布内容（第3天起）
+- 每个预热过的账号每天发布1条视频——质量胜过数量
+- 每条视频都需要包含与你的应用相关的呼吁行动（CTA）（可以在标题、评论或视频结尾处）
+- 仅有观看量而没有下载量的视频是没有意义的——务必将内容与你的应用联系起来
+- 如果连续发布后仍无法达到500次观看量，暂停2-3天并提升内容质量
 
-### Phase 4: Find Your Winner
-- Each app's "winning format" is unique — this may take 300+ videos to find
-- Keep testing new formats, hooks, and angles
-- Once you find a format that pops, DOUBLE DOWN on it
-- Make variations of your winner — same hook structure, different content
+### 第四阶段：找到成功的发布格式
+- 每个应用的“成功发布格式”都是独特的——可能需要发布300多个视频才能找到
+- 不断测试新的格式、吸引人的元素和角度
+- 一旦找到成功的格式，就集中精力推广它
+- 制作该格式的不同版本——保持吸引人的元素不变，但更换内容
 
-### Phase 5: Scale with Post Bridge
-- Once you have a winning format, scale to 2-6 posts/day
-- Use Post Bridge API to upload and schedule across IG, TikTok, YouTube simultaneously
-- Instagram as main platform, then reupload to YouTube, TikTok, and others via Post Bridge
-- This takes 10x less time than posting manually on each platform
+### 第五阶段：利用Post Bridge工具进行批量发布
+- 一旦找到成功的发布格式，每天发布2-6条视频
+- 使用Post Bridge API同时上传并安排发布到Instagram、TikTok和YouTube
+- 先以Instagram为主要平台，然后通过Post Bridge将视频重新发布到YouTube、TikTok等其他平台
+- 这比手动在每个平台上发布节省大量时间
 
-## What the Algorithm Wants
+## 算法偏好
 
-The algo LOVES two things:
-1. **Watch time** — short videos (under 10 seconds) get highest completion rates
-2. **Comments** — make content that drives people to comment ("what app is this?")
+算法非常看重两点：
+1. **观看时长**——短视频（时长低于10秒）的完成率最高
+2. **评论**——制作能引发人们评论的内容（例如“这是哪个应用？”）
 
-Your two goals with every piece of content: maximize watch time and drive comments.
+每条内容的目标是：最大化观看时长并鼓励用户评论。
 
-Don't name the app in the caption — let people ask in comments. This drives engagement AND the algo rewards comment activity.
+**注意：**不要在标题中直接提及应用名称——让用户在评论中提问。这既能提高互动率，也能让算法更青睐你的内容。
 
-## Content Strategy
+## 内容策略
 
-### Key Principles
-- Hook in first 1-2 seconds (text overlay or surprising visual)
-- "POV:" captions drive curiosity and shares
-- Show the app in action, not just talking about it
-- Emotional triggers: love, FOMO, curiosity, relatability
-- 1 creative, well-thought-out post > 5 pieces of slop
-- Log every lesson, iterate on what works
+### 关键原则
+- 在开头1-2秒内吸引用户的注意力（可以使用文字叠加或令人惊讶的视觉效果）
+- 使用第一人称视角（POV）的标题来激发好奇心和分享意愿
+- 展示应用的实际使用效果，而不仅仅是介绍功能
+- 利用情感因素：爱、害怕错过（FOMO）、好奇心、共鸣
+- 一条有创意、精心设计的视频比多条质量低下的视频更有价值
+- 记录每次尝试的经验，并不断优化有效的部分
 
-### The Hook Formula
+### 吸引用户注意力的方法
 
-**WINNING formula:** [Another person] + [conflict/doubt] → showed them [app/result] → they changed their mind
+**成功的公式：** [某个人] + [冲突/疑问] → 向他们展示[应用/结果] → 他们改变了想法
+- 在观众脑海中构建一个故事——让他们想象自己会有的反应
+- 关注的是“人的情感体验”，而不是应用本身
+- 以用户为中心的吸引元素（如功能、价格）往往效果不佳
+- 总要问：“那个人是谁？冲突是什么？”
 
-- Creates a story in the viewer's head — they picture the reaction
-- It's about the HUMAN MOMENT, not the app
-- Self-focused hooks about features/price → dead
-- Always ask: "Who's the other person, and what's the conflict?"
+### 吸引用户注意力的模板（根据你的领域进行调整）
+- `pov: [与你的应用相关的场景]`
+- `我发现[受众]最适合使用的[应用类型]`
+- `希望这种[情感]能打动你[表情符号]`
+- `[某人]直到我给他看了这个才相信我`
+- `这个[功能]简直太棒了`
+- `我怎么之前不知道这个呢`
 
-### Hook Templates (adapt to your niche)
-- `pov: [relatable scenario involving your app]`
-- `found the cutest/best/most useful [app type] for [audience]`
-- `may this type of [emotion] find you [emoji]`
-- `[person] didn't believe me until I showed them this`
-- `this [feature] is actually insane`
-- `how did I not know about this sooner`
+### 标签策略
+- 每条视频最多使用4-5个标签
+- 混合使用通用标签（如#fyp #viral）和领域特定的标签（如#yourappniche）
+- 除非应用名称已经广为人知，否则不要在标签中包含应用名称
 
-### Hashtag Strategy
-- Max 4-5 hashtags per post
-- Mix broad (#fyp #viral) with niche (#yourappniche)
-- Don't include app name in hashtags unless it's already known
+### 幻灯片格式
+TikTok/Reels的幻灯片由AI生成——详见`references/slideshow-method.md`：
+- 使用AI生成图片作为幻灯片内容
+- 程序化添加文字叠加效果
+- 非常适合那些没有可视化演示内容的应用
 
-### Slideshow Format
-AI-generated slideshows for TikTok/Reels — see `references/slideshow-method.md`:
-- Use AI image generation for frames
-- Add text overlays programmatically
-- Great for apps without visual demo content
+## 通过Post Bridge API发布内容
 
-## Posting via Post Bridge API
+基础接口：`https://api.post-bridge.com` | 认证方式：`Authorization: Bearer <key>`
 
-Base: `https://api.post-bridge.com` | Auth: `Authorization: Bearer <key>`
+### 设置步骤
+1. 在post-bridge.com上创建Post Bridge账户（每月费用9美元，API附加费14美元）
+2. 连接你的社交媒体账号（TikTok、Instagram、YouTube、Twitter等）
+3. 从设置中获取API密钥
+4. 将API密钥保存在工作区的`.env`文件中：`POST_BRIDGE_API_KEY=pb_live_xxxxx`
 
-### Setup
-1. Create Post Bridge account at post-bridge.com ($9/mo, API add-on $14/mo)
-2. Connect your social accounts (TikTok, Instagram, YouTube, Twitter, etc.)
-3. Get API key from Settings → API
-4. Store in workspace `.env`: `POST_BRIDGE_API_KEY=pb_live_xxxxx`
+### 发布流程
+1. 发送请求：`POST /v1/media/create-upload-url`，参数如下：`{"mime_type": "video/mp4", "size_bytes": <int>, "name": "file.mp4"}`
+2. 上传视频文件：`PUT <upload_url>`
+3. 发送发布请求：`POST /v1/posts`，提供标题、媒体ID、社交媒体账号ID以及可选的`scheduled_at`参数
+4. 查询发布状态：`GET /v1/posts/<id>`
 
-### Posting Flow
-1. `POST /v1/media/create-upload-url` → `{ "mime_type": "video/mp4", "size_bytes": <int>, "name": "file.mp4" }`
-2. `PUT <upload_url>` with binary file
-3. `POST /v1/posts` with caption, media IDs, social_account IDs, optional `scheduled_at`
-4. `GET /v1/posts/<id>` to check status
+### 平台配置（根据需要调整）
+- **TikTok：** `{ draft: true, video_cover_timestamp_ms: 3000 }` — 这个选项允许你手动添加流行音乐
+- **Instagram：** `{ video_cover_timestamp_ms: 3000 }` — 默认为普通Reel格式
+- **YouTube：** `{ video_cover_timestamp_ms: 3000 }` — 会自动发布为Short格式
 
-### Platform Configs (pass in `platform_configurations`)
-- **TikTok:** `{ draft: true, video_cover_timestamp_ms: 3000 }` — draft lets you add trending sound manually
-- **Instagram:** `{ video_cover_timestamp_ms: 3000 }` — normal reel by default
-- **YouTube:** `{ video_cover_timestamp_ms: 3000 }` — posts as Short automatically
+### 安排发布时间
+- 使用`scheduled_at`参数（ISO 8601 UTC格式）来提前安排发布时间
+- 如需立即发布，则省略此参数
+- 将发布时间分散在一天中的不同时间段（例如上午9点和下午3点）
 
-### Scheduling
-- Set `scheduled_at` (ISO 8601 UTC) to schedule ahead
-- Omit for instant post
-- Stagger posts throughout the day (e.g. 9am + 3pm)
+## 性能监控
 
-## Performance Tracking
+在本地文件中记录每条内容的发布情况：
+- 发布ID、平台、标题、内容格式、发布日期
+- 通过浏览平台页面来查看观看量
+- 记录哪些元素或格式效果最好
+- 每周进行总结：重点推广表现优秀的视频，尝试新的变体
+- 如果某种格式不再有效，返回研究阶段
 
-Track every post in a local file:
-- Post ID, platform, caption, format type, date
-- Check views by browsing platform pages
-- Note which hooks/formats perform best
-- Weekly review: double down on winners, try new variations of top performers
-- If a format stops working, go back to research phase
-
-## Daily Workflow
-
-1. Pick next unposted video from content folder
-2. Extract frame → read text overlay → write caption + hashtags
-3. Upload media → create post → schedule or post instantly
-4. Move video to `posted/` subfolder
-5. Set cron to check post status 5 mins after scheduled time
-6. Report results (include TikTok caption in copy-paste block if using draft mode)
-7. Repeat for each daily post slot
+## 日常工作流程
+1. 从内容文件夹中选择下一条未发布的视频
+2. 提取视频中的关键画面，阅读其中的文字说明
+3. 编写标题和标签
+4. 上传视频并创建发布内容，然后安排发布时间或立即发布
+5. 将视频移至`posted/`子文件夹
+6. 设置定时任务，在预定时间后5分钟检查发布状态
+7. 报告发布结果（如果使用草稿模式，需复制TikTok上的标题）
+8. 重复上述步骤，处理每天的所有发布任务

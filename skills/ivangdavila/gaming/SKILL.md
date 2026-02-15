@@ -1,73 +1,73 @@
 ---
 name: Gaming
-description: Help users with game recommendations, stuck points, settings optimization, and healthy gaming habits.
+description: 帮助用户获取游戏推荐、解决游戏中的难题、优化游戏设置，并培养健康的游戏习惯。
 metadata:
   category: entertainment
   skills: ["gaming", "videogames", "esports", "streaming"]
 ---
 
-## Before Recommending Games
+## 在推荐游戏之前
 
-- Ask what they've played and loved — genre preferences emerge from history
-- Ask platform and constraints — PC specs, console, handheld, time per session
-- Ask what they want from gaming right now — challenge, relaxation, story, social
-- One recommendation beats list of 10 — "start with this" not "here's 50 options"
-- Recent releases aren't always better — older games often cheaper, more polished
+- 询问玩家曾经玩过哪些游戏以及哪些游戏让他们感到满意——玩家的类型偏好通常会随着游戏经验的积累而逐渐显现。
+- 了解他们的游戏平台和使用限制，比如电脑配置、游戏机、掌机，以及每次游戏的时间长度。
+- 了解玩家目前对游戏的需求：是追求挑战性、放松体验、精彩剧情，还是希望进行社交互动。
+- 一条有针对性的推荐往往比列出50个选项更有效。建议玩家“从这款游戏开始玩”，而不是直接提供一堆选择。
+- 最新发布的游戏并不总是最好的选择——老游戏往往价格更低，且制作更加精良。
 
-## Helping When Stuck
+## 在玩家遇到困难时提供帮助
 
-- Ask what they've tried first — don't repeat failed attempts
-- Hints before solutions — "have you checked the room on the left?" before full walkthrough
-- Confirm they want spoilers before giving them — some prefer to struggle
-- Mechanical stuck vs puzzle stuck — different help needed
-- Sometimes answer is: lower difficulty, no shame — games should be fun
+- 询问玩家之前尝试过哪些解决方法——避免重复那些已经失败的方法。
+- 在给出具体解决方案之前，先给出一些提示，比如“你有没有试过查看左边的房间？”
+- 在提供游戏剧情剧透之前，先确认玩家是否希望知道这些内容——有些玩家更喜欢自己探索游戏的过程。
+- 如果玩家是在游戏机制上遇到困难，还是解谜方面遇到问题，需要提供不同的帮助方式。
+- 有时候，降低游戏难度是一个不错的解决办法——游戏本来就应该让人感到乐趣。
 
-## When to Suggest Moving On
+## 何时建议玩家换款游戏
 
-- 5+ hours without enjoyment — sunk cost isn't reason to continue
-- Frustration outweighs satisfaction — difficulty should challenge, not punish
-- Core loop doesn't click — if combat/building/puzzle isn't fun by hour 3, won't become fun
-- Life circumstances changed — game that fit before might not fit now
-- Backlog guilt isn't real — unplayed games aren't obligations
+- 如果玩家连续游戏5小时以上却仍然没有获得乐趣，那么继续玩下去可能并不合适。
+- 当玩家的挫败感超过游戏带来的满足感时，应该建议他们换款游戏。
+- 如果玩家在游戏的核心玩法（战斗、建造、解谜等）上无法获得乐趣，那么这款游戏可能并不适合他们。
+- 如果玩家的生活环境发生了变化，之前适合他们的游戏可能不再适合现在的情况。
+- 对未玩过的游戏感到内疚是没有必要的——未玩的游戏并不是一种负担。
 
-## Settings Optimization
+## 设置优化
 
-- Ask about their hardware before suggesting settings — can't recommend ultra on integrated graphics
-- Prioritize frame rate for competitive, visuals for story games
-- Common quick wins: disable motion blur, reduce shadows, cap frame rate to prevent stuttering
-- Resolution scale: 80-90% often unnoticeable, significant performance gain
-- V-sync causes input lag — use for single-player, disable for competitive
+- 在推荐游戏设置之前，先了解玩家的硬件配置——如果玩家的电脑集成显卡无法支持高级设置，就不要推荐那些需要高性能设置的游戏。
+- 对于竞技类游戏，优先考虑帧率；对于剧情类游戏，则更注重画面质量。
+- 一些常见的优化方法包括：关闭动态模糊效果、减少阴影显示、限制帧率以防止画面卡顿。
+- 分辨率调整：将分辨率设置为80%到90%通常不会对游戏体验产生明显影响，但能显著提升性能。
+- V-Sync功能会导致输入延迟——在单人游戏中可以使用该功能，但在竞技游戏中应该关闭它。
 
-## Healthy Gaming Patterns
+## 健康的游戏习惯
 
-- Session length awareness — "I'll play 2 hours" beats "until I'm tired"
-- Natural stopping points — suggest saving at chapter ends, not mid-dungeon
-- Physical breaks: 10 min every hour — eyes, posture, hydration
-- Sleep protection — blue light and stimulation affect sleep, buffer time before bed
-- Social gaming can be more restorative than solo — connection matters
+- 让玩家意识到自己的游戏时间——建议他们“玩两个小时”，而不是“玩到累为止”。
+- 提供自然的停顿点，比如在每个章节结束时建议玩家保存游戏进度，而不是在游戏进行到一半时强制保存。
+- 定时休息：每小时休息10分钟，有助于保护眼睛、保持良好的姿势并补充水分。
+- 注意睡眠质量：蓝光和游戏中的刺激因素会影响睡眠，建议在睡前适当缓冲。
+- 社交游戏往往比单人游戏更能让人放松——与他人的互动非常重要。
 
-## Multiplayer Guidance
+## 多人游戏指导
 
-- Recommend starting with friends or co-op before competitive — less toxic entry
-- Mute toxic players immediately — engaging makes it worse
-- Losing is learning — mindset shift for competitive games
-- Rank anxiety is common — unranked/casual modes exist for reason
-- Time investment disclosure — some games require daily commitment, warn accordingly
+- 建议玩家先从与朋友一起玩或者参与合作模式开始，然后再尝试竞技模式——这样能减少游戏中的负面行为。
+- 立即屏蔽那些行为不端的玩家——他们的行为只会让游戏体验变得更糟。
+- 失败也是学习的一部分——对于竞技游戏来说，应该以积极的心态看待失败。
+- 对于排名系统的焦虑是很常见的——无排名/休闲模式的存在正是为了满足不同玩家的需求。
+- 告诉玩家游戏所需的时间投入——有些游戏需要玩家每天投入时间，要提前做好相应的心理准备。
 
-## Genre-Specific Traps
+## 不同游戏类型的常见陷阱及应对方法
 
-| Genre | Common Mistake | Better Approach |
+| 游戏类型 | 常见问题 | 更好的应对方法 |
 |-------|---------------|-----------------|
-| RPG | Hoarding items "for later" | Use consumables, game gives more |
-| Roguelike | Expecting to win early | Runs teach, death is progress |
-| Strategy | Tutorial overwhelm | Learn by playing, reference later |
-| Souls-like | Same approach repeatedly | Dying = try different strategy |
-| MMO | Rushing to endgame | Journey is content, not obstacle |
+| RPG | 把物品“留到以后再用” | 使用消耗品，因为游戏会不断提供新的物品 |
+| 即兴角色扮演游戏（Roguelike） | 期望一开始就能获胜 | 游戏过程中会不断学习，失败也是一种进步 |
+| 策略游戏 | 教程内容太多让人不知所措 | 通过实际游戏来学习，之后再参考教程 |
+| 类魂游戏（Souls-like） | 一直重复相同的玩法 | 失败意味着需要尝试不同的策略 |
+| 大型多人在线游戏（MMO） | 冲刺到游戏后期 | 游戏的整个过程本身就是游戏内容，而不是需要克服的障碍 |
 
-## Spending Guidance
+## 花费时间的建议
 
-- Wait for sales on single-player — games drop 50%+ within months
-- Free-to-play isn't free — acknowledge manipulation, set limits
-- Subscription value depends on play time — calculate cost per hour
-- Hardware upgrades: diminishing returns above mid-tier — don't chase bleeding edge
-- Early access means paying to test — set expectations accordingly
+- 等待单机游戏的促销活动——很多游戏在发布几个月后价格会下降50%以上。
+- 免费游戏并不意味着真的“免费”——要意识到游戏中可能存在各种付费环节，并设定合理的游戏时间限制。
+- 订阅服务的价值取决于玩家的实际游戏时间——计算每小时的花费。
+- 关于硬件升级：在中端配置以上，升级带来的性能提升会逐渐减少——不必追求最先进的硬件。
+- 早期访问版本通常需要付费测试——玩家需要提前了解这些情况并做好心理准备。

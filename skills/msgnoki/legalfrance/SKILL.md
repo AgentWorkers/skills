@@ -1,53 +1,53 @@
 ---
 name: legalfrance
-description: "Assistant juridique français RAG sur codes et lois consolidés (LEGI/DILA). Utiliser pour questions de droit français, recherche d'articles, explication de textes législatifs, synthèse juridique avec citations vérifiables."
+description: "法国法律辅助工具 RAG，专注于法典和综合法律（LEGI/DILA）。可用于查询法国法律问题、查找相关条文、解释法律文本，并提供可核实的法律条文引用及法律综述。"
 ---
 
 # LegalFrance
 
-Assistant juridique FR basé sur un retrieval hybride (FTS + vector) avec citations d'articles.
+这是一个基于混合检索技术（FTS + 向量方法）的法语法律辅助工具，能够提供相关文章的引用。
 
-## Première utilisation — initialisation du référentiel
+## 首次使用 — 初始化数据库
 
-Si les index sont absents (`data/chroma_db` ou `data/fts_index.db` manquants), **demander confirmation à l'utilisateur avant d'exécuter** :
+如果索引文件缺失（`data/chroma_db` 或 `data/fts_index.db` 不存在），**在执行操作前请先获取用户的确认**：
 
 ```bash
 python scripts/ingest.py
 ```
 
-⚠️ Cette étape télécharge le corpus LEGI (HuggingFace) et le modèle d'embeddings BGE-M3 (~2 Go au total) puis écrit les index sur disque. Durée estimée : 20–40 min selon la connexion.
+⚠️ 此步骤会下载 HuggingFace 提供的 LEGI 数据集以及 BGE-M3 嵌入模型（总大小约为 2 Go），并将索引文件写入磁盘。根据网络连接速度，预计耗时 20–40 分钟。
 
-Demander : *"L'initialisation va télécharger ~2 Go de données (corpus juridique + modèle). Confirmer ?"*
+提示：*“初始化操作将下载约 2 Go 的数据（法律语料库 + 模型）。是否确认？”*
 
-## Utilisation
+## 使用方法
 
-Question juridique :
+- 提出法律问题：
 
 ```bash
 python scripts/one_shot.py "<question>"
 ```
 
-Mode structuré JSON :
+- 以结构化 JSON 格式输入问题：
 
 ```bash
 python scripts/one_shot.py "<question>" --json
 ```
 
-Recherche brute dans les codes :
+- 对法律条文进行直接搜索：
 
 ```bash
 python scripts/search.py "<requête>" 5
 ```
 
-## Règles de réponse
+## 回答规则：
 
-- Citer uniquement les sources retrouvées dans les index
-- Ne jamais inventer d'article ou de décision
-- Si sources insuffisantes : le dire explicitement
-- Format recommandé : Principe → Application → Limites → Sources
-- Disclaimer obligatoire en fin de réponse (information générale, pas conseil juridique personnalisé)
+- 仅引用在索引中找到的来源资料；
+- 绝不允许编造任何文章或法律判决的内容；
+- 如果找不到足够的参考资料，必须明确说明；
+- 建议的回答格式为：**原则 → 适用情况 → 限制条件 → 参考来源**；
+- 回答末尾必须添加免责声明（仅提供一般性信息，不提供个性化法律建议）。
 
-## Module jurisprudence (optionnel)
+## 法律判例模块（可选）
 
-Le module `search_jurisprudence` (Cour de cassation / Conseil d'État) est optionnel.
-S'il est absent, le skill fonctionne normalement sur les codes législatifs uniquement.
+`search_jurisprudence` 模块（包含最高法院/国务委员会的判例数据）为可选配置。
+如果该模块未安装，该工具将仅针对法律条文提供查询服务。

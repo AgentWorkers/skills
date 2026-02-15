@@ -1,19 +1,19 @@
 ---
 name: warren-nft
-description: Deploy NFT collections permanently on MegaETH mainnet. Images are stored on-chain via SSTORE2, then published through WarrenContainer and WarrenLaunchedNFT.
+description: 将NFT系列永久部署到MegaETH主网。图片通过SSTORE2存储在链上，随后通过WarrenContainer和WarrenLaunchedNFT进行发布。
 metadata: {"openclaw":{"emoji":"🖼️","homepage":"https://thewarren.app","requires":{"anyBins":["node"]}}}
 user-invocable: true
 ---
 
-# Warren NFT - On-Chain NFT Collection Deployment
+# Warren NFT - 在链上的NFT集合部署
 
-Deploy complete NFT collections with permanent on-chain image storage on MegaETH mainnet.
+将完整的NFT集合部署到MegaETH主网上，并实现图像的永久性存储。
 
-**Network**: MegaETH Mainnet (Chain ID: 4326)
+**网络**: MegaETH主网（链ID：4326）
 **RPC**: `https://mainnet.megaeth.com/rpc`
-**Explorer**: https://megaeth.blockscout.com
+**浏览器**: https://megaeth.blockscout.com
 
-## How It Works
+## 工作原理
 
 ```
 Your Images → SSTORE2 (on-chain) → WarrenContainer → WarrenLaunchedNFT
@@ -22,44 +22,40 @@ Your Images → SSTORE2 (on-chain) → WarrenContainer → WarrenLaunchedNFT
                                      ...
 ```
 
-1. Each image is deployed as a Page contract (fractal tree for larger files).
-2. All images are stored in a WarrenContainer NFT at `/images/1.png`, `/images/2.png`, etc.
-3. A WarrenLaunchedNFT contract is deployed referencing the container.
-4. Collection is registered for management and mint pages.
+1. 每张图片都作为Page合约进行部署（对于较大的文件，会使用分形树结构）。
+2. 所有图片都存储在`/images/1.png`、`/images/2.png`等路径下的WarrenContainer NFT中。
+3. 部署一个WarrenLaunchedNFT合约来引用这些图片容器。
+4. 注册该集合以进行管理和 mint（创建新NFT）操作。
 
-## Setup (One Time)
+## 设置（一次性操作）
 
 ```bash
 cd {baseDir}
 bash setup.sh
 ```
 
-## Prerequisites
+## 先决条件
 
-### 1. Wallet + MegaETH ETH
+### 1. 钱包 + MegaETH ETH
 
-Bridge ETH from Ethereum to MegaETH mainnet for gas.
+需要将ETH从Ethereum桥接到MegaETH主网以支付交易费用（gas）。
 
-Approximate cost:
+**大致费用**：
+- 对于包含约10张图片的小型集合，费用约为0.03 ETH。
 
-- ~0.03 ETH for a small collection (around 10 images)
+### 2. Genesis访问权限
 
-### 2. Genesis Access Requirement
+脚本会按以下顺序检查权限：
+1. 人类生成的Genesis密钥（0xRabbitNeo）
+2. 0xRabbit.agent密钥
+3. 自动生成的0xRabbit.agent密钥（免费）
 
-The script checks in this order:
+默认的`RABBIT_AGENT_ADDRESS`为`0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2`（可通过环境变量进行覆盖）。
+如果您选择覆盖或取消设置该地址，请通过`https://thewarren.app/mint`手动生成人类生成的Genesis密钥。
 
-1. Human Genesis Key (0xRabbitNeo)
-2. 0xRabbit.agent Key
-3. Auto-mint 0xRabbit.agent Key (free)
+## 合约地址（主网）
 
-Default `RABBIT_AGENT_ADDRESS`: `0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2` (override via env).
-If you override or unset it, mint a human key:
-
-- https://thewarren.app/mint
-
-## Contract Addresses (Mainnet)
-
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | Genesis Key NFT (0xRabbitNeo) | `0x0d7BB250fc06f0073F0882E3Bf56728A948C5a88` |
 | 0xRabbit.agent Key NFT | `0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2` |
@@ -67,9 +63,9 @@ If you override or unset it, mint a human key:
 | WarrenContainerRenderer | `0x9b1f966491F1dBf734DECadaAA2aaA65cdF8B923` |
 | Treasury/Relayer | `0xcea9d92ddb052e914ab665c6aaf1ff598d18c550` |
 
-## Deploy NFT Collection
+## 部署NFT集合
 
-### Option 1: From Image Folder
+### 选项1：从图片文件夹部署
 
 ```bash
 cd {baseDir}
@@ -81,7 +77,7 @@ PRIVATE_KEY=0x... node deploy-nft.js \
   --max-supply 100
 ```
 
-### Option 2: Auto-Generate SVG Art
+### 选项2：自动生成SVG艺术作品
 
 ```bash
 cd {baseDir}
@@ -92,7 +88,7 @@ PRIVATE_KEY=0x... node deploy-nft.js \
   --description "AI-generated on-chain art"
 ```
 
-### Full Configuration
+### 完整配置
 
 ```bash
 PRIVATE_KEY=0x... node deploy-nft.js \
@@ -107,24 +103,24 @@ PRIVATE_KEY=0x... node deploy-nft.js \
   --royalty-bps 500
 ```
 
-## CLI Options
+## 命令行选项
 
-| Option | Required | Default | Description |
+| 选项 | 是否必需 | 默认值 | 说明 |
 |--------|----------|---------|-------------|
-| `--images-folder <path>` | * | - | Folder with image files |
-| `--generate-svg <count>` | * | - | Generate random SVG art (1-256) |
-| `--name <string>` | Yes | - | Collection name |
-| `--symbol <string>` | Yes | - | Collection symbol (3-5 chars) |
-| `--description <text>` | No | Auto | Collection description |
-| `--max-supply <number>` | No | Image count | Maximum mintable NFTs |
-| `--whitelist-price <eth>` | No | 0 | Whitelist mint price in ETH |
-| `--public-price <eth>` | No | 0 | Public mint price in ETH |
-| `--max-per-wallet <number>` | No | 10 | Mint limit per wallet |
-| `--royalty-bps <number>` | No | 500 | Royalty (500 = 5%, max 1000 = 10%) |
+| `--images-folder <路径>` | 是 | - | 包含图片文件的文件夹路径 |
+| `--generate-svg <数量>` | 是 | - | 生成随机SVG艺术作品（1-256张） |
+| `--name <字符串>` | 是 | - | 集合名称 |
+| `--symbol <字符串>` | 是 | - | 集合符号（3-5个字符） |
+| `--description <文本>` | 否 | 自动生成 | 集合描述 |
+| `--max-supply <数字>` | 否 | | 最大可铸造的NFT数量 |
+| `--whitelist-price <ETH>` | 否 | 0 | 白名单铸造价格（以ETH计） |
+| `--public-price <ETH>` | 否 | 0 | 公开铸造价格（以ETH计） |
+| `--max-per-wallet <数字>` | 否 | 10 | 每个钱包的最大铸造数量 |
+| `--royalty-bps <数字>` | 否 | 500 | 版权费（500表示5%，最高1000表示10%） |
 
-\* Either `--images-folder` or `--generate-svg` is required.
+**注意**：必须至少选择`--images-folder`或`--generate-svg`中的一个选项。
 
-## Output
+## 输出结果
 
 ```
 🎉 NFT Collection Deployed!
@@ -140,54 +136,54 @@ Public Price:  0 ETH (Free)
 ============================================================
 ```
 
-## Image Requirements
+## 图片要求
 
-- Formats: PNG, JPG, JPEG, SVG, GIF, WebP
-- Size: up to 500KB per image
-- Count: 1-256 images per collection
-- Naming: sequential or alphabetical
+- 格式：PNG、JPG、JPEG、SVG、GIF、WebP
+- 大小：每张图片不超过500KB
+- 数量：每个集合最多1-256张图片
+- 命名规则：按顺序或字母顺序命名
 
-## Example Workflows
+## 示例工作流程
 
-### Quick Test (3 SVGs)
+### 快速测试（3张SVG图片）
 
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js --generate-svg 3 --name "Quick Test" --symbol "QT"
 ```
 
-### Medium Test (20 SVGs)
+### 中等规模测试（20张SVG图片）
 
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js --generate-svg 20 --name "Art Collection" --symbol "ART" --public-price 0.001
 ```
 
-### Full Collection (100 SVGs)
+### 完整集合（100张SVG图片）
 
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js --generate-svg 100 --name "Century" --symbol "C100" --max-per-wallet 3
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"No ETH balance"**
-- Bridge ETH to MegaETH mainnet.
+**“没有ETH余额”**
+- 将ETH从Ethereum桥接到MegaETH主网。
 
-**"No Genesis Key found and RABBIT_AGENT_ADDRESS is not configured"**
-- Set `RABBIT_AGENT_ADDRESS=0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2`, or mint human key at `https://thewarren.app/mint`.
+**“未找到Genesis密钥且未配置RABBIT_AGENT_ADDRESS”**
+- 设置`RABBIT_AGENT_ADDRESS=0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2`，或通过`https://thewarren.app/mint`生成人类生成的Genesis密钥。
 
-**"Image exceeds 500KB"**
-- Resize or compress images.
+**“图片大小超过500KB”**
+- 调整图片大小或压缩图片。
 
-**"Too many images"**
-- Maximum 256 images per container.
+**“图片数量过多”**
+- 每个容器最多只能存储256张图片。
 
-**DB registration warning**
-- Non-critical. Collection is still deployed on-chain.
+**数据库注册警告**
+- 该问题不影响集合在链上的部署。
 
-## Notes
+## 注意事项
 
-- Mainnet content is permanent and immutable.
-- You pay gas from your own wallet.
+- 主网上的内容是永久且不可更改的。
+- 交易费用需从您的钱包中支付。

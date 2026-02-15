@@ -15,9 +15,9 @@ metadata:
 
 # WhatsApp Business
 
-Access the WhatsApp Business API with managed OAuth authentication. Send messages, manage message templates, handle media, and interact with customers through WhatsApp.
+您可以使用托管的 OAuth 认证来访问 WhatsApp Business API。通过该 API，您可以发送消息、管理消息模板、处理媒体文件，并通过 WhatsApp 与客户进行互动。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Send a text message
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/whatsapp-business/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual WhatsApp Business API endpoint path. The gateway proxies requests to `graph.facebook.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 WhatsApp Business API 端点路径。该网关会将请求代理到 `graph.facebook.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your WhatsApp Business OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 WhatsApp Business OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple WhatsApp Business connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 WhatsApp Business 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,13 +142,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活跃连接。
 
-## API Reference
+## API 参考
 
-### Messages
+### 消息
 
-#### Send Text Message
+#### 发送文本消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -166,7 +166,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Template Message
+#### 发送模板消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -193,7 +193,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Image Message
+#### 发送图片消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -210,7 +210,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Document Message
+#### 发送文档消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -228,7 +228,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Video Message
+#### 发送视频消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -245,7 +245,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Audio Message
+#### 发送音频消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -261,7 +261,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Location Message
+#### 发送位置信息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -280,7 +280,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Contact Message
+#### 发送联系人信息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -305,7 +305,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Interactive Button Message
+#### 发送交互式按钮消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -330,7 +330,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Interactive List Message
+#### 发送交互式列表消息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -360,7 +360,7 @@ Content-Type: application/json
 }
 ```
 
-#### Mark Message as Read
+#### 将消息标记为已读
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/messages
@@ -373,9 +373,9 @@ Content-Type: application/json
 }
 ```
 
-### Media
+### 媒体文件
 
-#### Upload Media
+#### 上传媒体文件
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/media
@@ -386,31 +386,31 @@ type=image/jpeg
 messaging_product=whatsapp
 ```
 
-#### Get Media URL
+#### 获取媒体文件的 URL
 
 ```bash
 GET /whatsapp-business/v21.0/{media_id}
 ```
 
-#### Delete Media
+#### 删除媒体文件
 
 ```bash
 DELETE /whatsapp-business/v21.0/{media_id}
 ```
 
-### Message Templates
+### 消息模板
 
-#### List Templates
+#### 列出所有模板
 
 ```bash
 GET /whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates
 ```
 
-Query parameters:
-- `limit` - Number of templates to return
-- `status` - Filter by status: `APPROVED`, `PENDING`, `REJECTED`
+查询参数：
+- `limit` - 返回的模板数量
+- `status` - 按状态过滤：`APPROVED`、`PENDING`、`REJECTED`
 
-#### Create Template
+#### 创建模板
 
 ```bash
 POST /whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates
@@ -438,37 +438,37 @@ Content-Type: application/json
 }
 ```
 
-Template categories: `AUTHENTICATION`, `MARKETING`, `UTILITY`
+模板类别：`AUTHENTICATION`、`MARKETING`、`UTILITY`
 
-#### Delete Template
+#### 删除模板
 
 ```bash
 DELETE /whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates?name=template_name
 ```
 
-### Phone Numbers
+### 手机号码
 
-#### Get Phone Number
+#### 获取电话号码
 
 ```bash
 GET /whatsapp-business/v21.0/{phone_number_id}
 ```
 
-#### List Phone Numbers
+#### 列出所有电话号码
 
 ```bash
 GET /whatsapp-business/v21.0/{whatsapp_business_account_id}/phone_numbers
 ```
 
-### Business Profile
+### 商业资料
 
-#### Get Business Profile
+#### 获取商业资料信息
 
 ```bash
 GET /whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile?fields=about,address,description,email,profile_picture_url,websites,vertical
 ```
 
-#### Update Business Profile
+#### 更新商业资料信息
 
 ```bash
 POST /whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile
@@ -485,7 +485,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -568,43 +568,43 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项：
 
-- Phone numbers must be in international format without `+` or leading zeros (e.g., `1234567890`)
-- `messaging_product` must always be set to `whatsapp`
-- Template messages are required for initiating conversations (24-hour messaging window)
-- Media files must be publicly accessible URLs or uploaded via the Media API
-- Interactive messages support up to 3 buttons or 10 list items
-- Message IDs (`wamid`) are used to track message status and replies
-- API version `v21.0` is current; check Meta docs for latest version
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 电话号码必须采用国际格式，且不能包含 `+` 或前导零（例如：`1234567890`）。
+- `messaging_product` 必须始终设置为 `whatsapp`。
+- 发送消息时需要使用模板消息（24 小时消息发送窗口）。
+- 媒体文件必须是公开可访问的 URL，或者通过 Media API 上传。
+- 交互式消息最多支持 3 个按钮或 10 个列表项。
+- 消息 ID（`wamid`）用于跟踪消息状态和回复。
+- 当前使用的 API 版本为 `v21.0`；请查看 Meta 文档以获取最新版本信息。
+- 重要提示：当使用 `curl` 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 可能无法正确展开，这可能导致 “Invalid API key” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing WhatsApp Business connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Phone number or resource not found |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from WhatsApp Business API |
+| 400 | 未找到 WhatsApp Business 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 电话号码或资源未找到 |
+| 429 | 每个账户的请求速率限制达到（每秒 10 次请求） |
+| 4xx/5xx | 来自 WhatsApp Business API 的传递错误 |
 
-Common error codes from WhatsApp:
-- `131030` - Phone number not registered
-- `131031` - Message failed to send
-- `132000` - Template not found or not approved
-- `133010` - Phone number rate limit reached
+常见的 WhatsApp 错误代码：
+- `131030` - 电话号码未注册
+- `131031` - 消息发送失败
+- `132000` - 模板未找到或未获批准
+- `133010` - 电话号码的请求速率限制已达到
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -615,22 +615,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `whatsapp-business`. For example:
+1. 确保您的 URL 路径以 `whatsapp-business` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/whatsapp-business/v21.0/PHONE_NUMBER_ID/messages`
+- 错误格式：`https://gateway.maton.ai/v21.0/PHONE_NUMBER_ID/messages`
 
-- Correct: `https://gateway.maton.ai/whatsapp-business/v21.0/PHONE_NUMBER_ID/messages`
-- Incorrect: `https://gateway.maton.ai/v21.0/PHONE_NUMBER_ID/messages`
+## 资源
 
-## Resources
-
-- [WhatsApp Business API Overview](https://developers.facebook.com/docs/whatsapp/cloud-api/overview)
-- [Send Messages](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages)
-- [Message Templates](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates)
-- [Media](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media)
-- [Phone Numbers](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers)
-- [Business Profiles](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/business-profiles)
-- [Webhooks](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks)
-- [Error Codes](https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [WhatsApp Business API 概述](https://developers.facebook.com/docs/whatsapp/cloud-api/overview)
+- [发送消息](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages)
+- [消息模板](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates)
+- [媒体文件](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media)
+- [电话号码](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers)
+- [商业资料](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/business-profiles)
+- [Webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks)
+- [错误代码](https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

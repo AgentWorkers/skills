@@ -1,6 +1,6 @@
 ---
 name: klutch
-description: OpenClaw skill for Klutch programmable credit card API integration. View cards, transactions, spending categories, and analyze spending patterns.
+description: OpenClaw技能：用于集成Klutch的可编程信用卡API。可以查看信用卡信息、交易记录、消费类别，并分析消费模式。
 metadata:
   openclaw:
     emoji: 💳
@@ -20,23 +20,23 @@ metadata:
 
 # Klutch Skill
 
-OpenClaw skill for Klutch programmable credit card API integration.
+这是一个用于集成Klutch可编程信用卡API的OpenClaw技能。
 
-## Overview
+## 概述
 
-This skill provides a command-line interface for accessing Klutch credit card data through their GraphQL API. It supports viewing card information, transaction history, spending categories, and spending analysis.
+该技能提供了一个命令行接口，用于通过Klutch的GraphQL API访问信用卡数据。它支持查看卡片信息、交易历史、消费类别以及消费分析。
 
-## Prerequisites
+## 先决条件
 
-1. **Klutch Account**: Active Klutch credit card account
-2. **API Credentials**: Client ID and Secret Key from Klutch developer portal
-3. **Python 3.10+**: Required for running the scripts
+1. **Klutch账户**：一个活跃的Klutch信用卡账户。
+2. **API凭据**：来自Klutch开发者门户的客户端ID和密钥。
+3. **Python 3.10+**：运行脚本所必需的版本。
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-Set your Klutch API credentials:
+设置您的Klutch API凭据：
 
 ```bash
 # Option 1: Direct credentials
@@ -47,9 +47,9 @@ export KLUTCH_SECRET_KEY="your-secret-key"
 export KLUTCH_1PASSWORD_ITEM="Klutch API Credential"
 ```
 
-### Configuration File
+### 配置文件
 
-The skill stores configuration and session tokens in `~/.config/klutch/`:
+该技能将配置信息和会话令牌存储在`~/.config/klutch/`目录下：
 
 ```bash
 ~/.config/klutch/
@@ -57,9 +57,9 @@ The skill stores configuration and session tokens in `~/.config/klutch/`:
 └── token.json       # Cached session token (auto-managed)
 ```
 
-### Configuration Options
+### 配置选项
 
-Edit `~/.config/klutch/config.json` to customize:
+编辑`~/.config/klutch/config.json`文件以进行自定义设置：
 
 ```json
 {
@@ -70,9 +70,9 @@ Edit `~/.config/klutch/config.json` to customize:
 }
 ```
 
-## Commands Reference
+## 命令参考
 
-### Balance
+### 查看余额
 
 ```bash
 # Check card information
@@ -90,7 +90,7 @@ python scripts/klutch.py balance
 }
 ```
 
-### Transactions
+### 查看交易记录
 
 ```bash
 # List recent transactions (last 30 days)
@@ -112,27 +112,27 @@ python scripts/klutch.py transactions --limit 25
 }
 ```
 
-### Card Management
+### 卡片管理
 
-#### List Cards
+#### 列出卡片
 
 ```bash
 python scripts/klutch.py card list
 ```
 
-#### View Categories
+#### 查看消费类别
 
 ```bash
 python scripts/klutch.py card categories
 ```
 
-#### View Spending by Category
+#### 按类别查看消费情况
 
 ```bash
 python scripts/klutch.py card spending
 ```
 
-### Configuration Management
+### 配置管理
 
 ```bash
 # Get configuration value
@@ -145,45 +145,45 @@ python scripts/klutch.py config set api.timeout 60
 python scripts/klutch.py config get
 ```
 
-## API Endpoints
+## API端点
 
-The skill connects to Klutch's GraphQL API:
+该技能连接到Klutch的GraphQL API：
 
-| Environment | Endpoint |
-|-------------|----------|
-| Production | `https://graphql.klutchcard.com/graphql` |
-| Sandbox | `https://sandbox.klutchcard.com/graphql` |
+| 环境 | 端点 |
+|---------|--------|
+| 生产环境 | `https://graphql.klutchcard.comgraphql` |
+| 沙盒环境 | `https://sandbox.klutchcard.comgraphql` |
 
-## Authentication Flow
+## 认证流程
 
-The skill uses Klutch's session token authentication:
+该技能使用Klutch的会话令牌进行认证：
 
-1. **Initial Request**: Sends `createSessionToken` mutation with Client ID and Secret Key
-2. **Token Caching**: Stores the JWT session token in `~/.config/klutch/token.json`
-3. **Subsequent Requests**: Uses cached token until it expires
-4. **Auto-Refresh**: Creates a new session token when the cached one fails
+1. **初始请求**：使用客户端ID和密钥发送`createSessionToken` mutation。
+2. **令牌缓存**：将JWT会话令牌存储在`~/.config/klutch/token.json`文件中。
+3. **后续请求**：使用缓存的令牌，直到其过期。
+4. **自动刷新**：当缓存的令牌失效时，会自动创建新的会话令牌。
 
-## Hypothetical Agent Use Cases
+## 假设的代理使用场景
 
-The Klutch skill enables agents to handle their own budget or provide personal finance assistance.
+Klutch技能使代理能够管理自己的预算或提供个人财务帮助：
 
-*   **Sub-Agent Budgeting**: Create a virtual card for a sub-agent to pay for its own usage (AWS, OpenAI) with a hard limit.
-*   **Budget Guardrails**: Monitor spending categories (e.g., 'FOOD') and alert the user if they exceed a monthly budget.
-*   **Transaction Alerts**: Watch for specific merchants or unusual activity and notify the user immediately.
-*   **Expense Summary**: Summarize monthly spending and categorize transactions for personal journaling.
+*   **子代理预算管理**：为子代理创建虚拟卡片，以便其支付自己的费用（例如AWS、OpenAI），并设置使用上限。
+*   **预算监控**：监控消费类别（例如“食品”），并在超出月度预算时提醒用户。
+* **交易警报**：监控特定商家或异常交易，并立即通知用户。
+* **费用汇总**：汇总每月的消费情况，并按类别分类以便个人记录。
 
-## Error Handling
+## 错误处理
 
-The skill handles common error scenarios:
+该技能能够处理以下常见错误情况：
 
-- **Authentication failures**: Prompts to verify credentials
-- **Session expiration**: Automatically creates a new session token
-- **Network errors**: Clear error messages with retry suggestions
-- **GraphQL errors**: Detailed error messages from the API
+- **认证失败**：提示用户验证凭据。
+- **会话过期**：自动创建新的会话令牌。
+- **网络错误**：显示错误信息并提供重试建议。
+- **GraphQL错误**：显示来自API的详细错误信息。
 
-## Integration with OpenClaw
+## 与OpenClaw的集成
 
-### Using from OpenClaw Sessions
+### 从OpenClaw会话中使用该技能
 
 ```bash
 # OpenClaw can invoke the skill directly
@@ -192,24 +192,24 @@ klutch transactions --limit 5
 klutch card list
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Authentication Issues
+### 认证问题
 
-If you receive authentication errors:
-1. Verify your credentials with `python scripts/klutch.py config get`
-2. Delete `~/.config/klutch/token.json` to force re-authentication
-3. Check that your API credentials are correct
+如果您遇到认证错误：
+1. 使用`python scripts/klutch.py config get`命令验证您的凭据。
+2. 删除`~/.config/klutch/token.json`文件以强制重新认证。
+3. 确保您的API凭据正确无误。
 
-### Session Token Issues
+### 会话令牌问题
 
-Force token refresh:
+强制刷新令牌：
 ```bash
 rm ~/.config/klutch/token.json
 ```
 
-## Security Notes
+## 安全注意事项
 
-- Never commit credentials to version control
-- The skill stores tokens in `~/.config/klutch/token.json`
-- Session tokens are refreshed automatically when needed
+- **切勿将凭据提交到版本控制系统中**。
+- 该技能将令牌存储在`~/.config/klutch/token.json`文件中。
+- 会话令牌会在需要时自动刷新。

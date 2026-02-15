@@ -1,19 +1,19 @@
 ---
 name: react-perf
-description: React and Next.js performance optimization patterns. Use when writing, reviewing, or optimizing React code for web apps, Remotion videos, or any React-based UI. Covers waterfall elimination, bundle optimization, re-render prevention, and server-side patterns.
+description: React 和 Next.js 的性能优化技巧。适用于编写、审查或优化用于 Web 应用程序、Remotion 视频或任何基于 React 的用户界面的 React 代码。内容涵盖消除不必要的代码层级（waterfall elimination）、优化代码打包（bundle optimization）、防止不必要的重新渲染（re-render prevention）以及服务器端优化策略（server-side optimization）。
 metadata:
   author: misskim
   version: "1.0"
   origin: Concept from Vercel react-best-practices (57 rules), distilled to essentials
 ---
 
-# React Performance Patterns
+# React 性能优化模式
 
-React 코드 작성 시 성능 최적화 핵심 패턴.
+在编写 React 代码时，以下是一些关键的性能优化模式。
 
-## 우선순위별 핵심 규칙
+## 按优先级划分的核心规则
 
-### 🔴 CRITICAL: 워터폴 제거
+### 🔴 关键性（CRITICAL）：消除水坝效应（Waterfall Effect）
 
 ```javascript
 // ❌ 순차 await — 각 요청이 이전을 기다림
@@ -24,10 +24,10 @@ const posts = await getPosts();
 const [user, posts] = await Promise.all([getUser(), getPosts()]);
 ```
 
-- `await`를 실제 사용 브랜치로 이동 (불필요한 대기 제거)
-- Suspense 경계로 콘텐츠 스트리밍
+- 将 `await` 语句移至实际需要使用的代码分支中（以消除不必要的等待）
+- 使用 `Suspense` 来控制内容的加载顺序
 
-### 🔴 CRITICAL: 번들 크기
+### 🔴 关键性（CRITICAL）：减小打包文件的大小（Bundle Size）
 
 ```javascript
 // ❌ barrel import — 전체 모듈 로드
@@ -37,17 +37,17 @@ import { Button } from '@/components';
 import { Button } from '@/components/ui/Button';
 ```
 
-- `next/dynamic`으로 무거운 컴포넌트 지연 로드
-- 분석/로깅은 hydration 후 로드
-- hover/focus 시 preload로 체감 속도 향상
+- 使用 `next/dynamic` 功能延迟加载重量较大的组件
+- 将分析或日志记录操作推迟到组件渲染完成后再执行
+- 通过预加载（preload）来提升用户操作时的响应速度（例如：鼠标悬停或焦点聚焦时）
 
-### 🟡 HIGH: 서버사이드
+### 🟡 高度建议（HIGH）：服务器端优化
 
-- `React.cache()`로 요청 내 중복 제거
-- 클라이언트로 전달하는 데이터 최소화
-- 컴포넌트 구조 변경으로 fetch 병렬화
+- 使用 `React.cache()` 来避免重复请求
+- 减少传递给客户端的数据量
+- 通过调整组件结构来并行化数据请求
 
-### 🟢 MEDIUM: 리렌더 방지
+### 🟢 中等建议（MEDIUM）：避免不必要的重新渲染（Prevent Re renders）
 
 ```javascript
 // ❌ 콜백에서만 쓰는 state를 구독
@@ -59,21 +59,21 @@ const itemsRef = useRef([]);
 const handleClick = () => process(itemsRef.current);
 ```
 
-- 비용 높은 작업은 memo 컴포넌트로 분리
-- `useState` 초기값에 함수 전달 (lazy init)
-- `startTransition`으로 긴급하지 않은 업데이트 분리
-- 파생 state는 effect 대신 렌더 중 계산
+- 将计算成本较高的操作封装到 `memo` 组件中
+- 将函数作为初始状态值传递给 `useState`（实现惰性初始化）
+- 使用 `startTransition` 来延迟非紧急的更新
+- 将衍生状态（derived state）的计算放在组件渲染过程中进行，而不是在效应（effect）中
 
-### 🔵 LOW: JS 성능
+### 🔵 低优先级（LOW）：提升 JavaScript 性能
 
-- 반복 조회 → `Map`/`Set` 사용 (O(1))
-- `filter().map()` → 하나의 루프로 결합
-- RegExp는 루프 밖에서 생성
-- `array.length` 먼저 체크 후 비싼 비교
+- 对于重复查询，使用 `Map` 或 `Set` 数据结构（时间复杂度为 O(1)）
+- 将 `filter().map()` 操作合并为一个循环来减少执行次数
+- 避免在循环内部创建正则表达式（RegExp）
+- 先检查 `array.length`，然后再进行代价较高的比较操作
 
-## Remotion에서의 React
+## Remotion 中的 React
 
-Remotion 비디오 컴포넌트도 React이므로 동일 원칙 적용:
-- `interpolate()`는 매 프레임 호출 → 비싸면 캐싱
-- 무거운 계산은 `useMemo` / `useCallback`
-- 오프스크린 요소 렌더링 최소화
+由于 Remotion 视频组件也是基于 React 实现的，因此同样适用以下原则：
+- `interpolate()` 方法会在每一帧中都被调用，如果计算成本较高，应使用缓存机制
+- 对于计算量较大的操作，使用 `useMemo` 或 `useCallback` 来避免重复计算
+- 尽量减少非屏幕可见元素的渲染

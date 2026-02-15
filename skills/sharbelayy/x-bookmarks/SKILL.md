@@ -9,23 +9,23 @@ description: >
   X/Twitter authentication via browser cookies or manual tokens.
 ---
 
-# X Bookmarks
+# X 书签功能
 
-Turn X/Twitter bookmarks from a graveyard of good intentions into actionable work.
+将 X/Twitter 上的书签从“好意”的集合转变为可执行的行动方案。
 
-**Core philosophy:** Don't just summarize — propose actions the agent can execute.
+**核心理念：** 不仅仅是总结书签内容，还要提出代理程序能够执行的具体操作建议。
 
-## Prerequisites
+## 先决条件
 
-- **bird CLI**: `npm install -g bird-cli` (v0.8+)
-- **Auth** (one of):
-  - `--chrome-profile <name>` — auto-extracts cookies from Chrome (recommended)
-  - `--firefox-profile <name>` — Firefox equivalent
-  - Manual: `--auth-token <token> --ct0 <token>` from browser dev tools
-  - Config: `~/.config/bird/config.json5` with `{ chromeProfile: "Default" }`
-- See [references/auth-setup.md](references/auth-setup.md) for detailed setup guide
+- **bird CLI**：`npm install -g bird-cli`（版本 0.8 或更高）
+- **身份验证**（选择以下方式之一）：
+  - `--chrome-profile <名称>` — 从 Chrome 中自动提取 cookies（推荐）
+  - `--firefox-profile <名称>` — Firefox 的对应方式
+  - 手动输入：`--auth-token <token> --ct0 <token>`（通过浏览器开发者工具获取）
+  - 配置文件：`~/.config/bird/config.json5`，内容为 `{ chromeProfile: "Default" }`
+- 详细设置指南请参阅 [references/auth-setup.md]
 
-## Fetching Bookmarks
+## 获取书签信息
 
 ```bash
 # Latest 20 bookmarks (default)
@@ -47,11 +47,12 @@ bird --chrome-profile "Default" bookmarks --json
 bird --auth-token "$AUTH_TOKEN" --ct0 "$CT0" bookmarks --json
 ```
 
-If user has a `.env.bird` file or env vars `AUTH_TOKEN`/`CT0`, source them first: `source .env.bird`
+如果用户有 `.env.bird` 文件或环境变量 `AUTH_TOKEN`/`CT0`，请先加载这些配置：`source .env.bird`
 
-## JSON Output Format
+## JSON 输出格式
 
-Each bookmark returns:
+每个书签的信息将以 JSON 格式返回：
+
 ```json
 {
   "id": "tweet_id",
@@ -66,33 +67,34 @@ Each bookmark returns:
 }
 ```
 
-## Core Workflows
+## 核心工作流程
 
-### 1. Action-First Digest (Primary Use Case)
+### 1. 以行动为导向的摘要（主要使用场景）
 
-The key differentiator: don't just summarize, **propose actions the agent can execute**.
+关键区别在于：不仅要总结书签内容，还要提出具体的操作建议。
 
-1. Fetch bookmarks: `bird bookmarks -n <count> --json`
-2. Parse and categorize by topic (auto-detect: crypto, AI, marketing, tools, personal, etc.)
-3. For EACH category, propose specific actions:
-   - **Tool/repo bookmarks** → "I can test this, set it up, or analyze the code"
-   - **Strategy/advice bookmarks** → "Here are the actionable steps extracted — want me to implement any?"
-   - **News/trends** → "This connects to [user's work]. Here's the angle for content"
-   - **Content ideas** → "This would make a great tweet/video in your voice. Here's a draft"
-   - **Questions/discussions** → "I can research this deeper and give you a summary"
-4. Flag stale bookmarks (>2 weeks old) — "Use it or lose it"
-5. Deliver categorized digest with actions
+1. 获取书签信息：`bird bookmarks -n <数量> --json`
+2. 按主题对书签进行分类（自动识别类别：加密技术、人工智能、市场营销、工具、个人事务等）
+3. 对于每个类别，提出具体的操作建议：
+   - **工具/仓库相关的书签** → “我可以测试这个工具，设置它，或者分析其代码”
+   - **策略/建议相关的书签** → “以下是可执行的步骤，需要我帮忙实现吗？”
+   - **新闻/趋势相关的书签** → “这与你的工作相关，这是可以用来创作内容的方向”
+   - **内容创意相关的书签** → “这可以成为一条很棒的推文或视频，这里有一个草稿”
+   - **问题/讨论相关的书签** → “我可以深入研究这些问题并为你提供总结”
+4. 标记过期的书签（超过 2 周的）—— “要么使用这些书签，要么删除它们”
+5. 以分类的形式输出摘要及相应的操作建议
 
-Format output as:
+输出格式如下：
+
 ```
 📂 CATEGORY (count)
 • Bookmark summary (@author)
 → 🤖 I CAN: [specific action the agent can take]
 ```
 
-### 2. Scheduled Digest (Cron)
+### 2. 定时摘要生成（通过 Cron 任务）
 
-Set up a recurring bookmark check. Suggest this cron config to the user:
+设置定期检查书签的机制。可以向用户推荐以下 Cron 配置：
 
 ```
 Schedule: daily or weekly
@@ -101,45 +103,45 @@ Payload: "Check my X bookmarks for new saves since last check.
   Categorize and propose actions. Deliver to me."
 ```
 
-Track state by saving the most recent bookmark ID processed. Store in workspace:
-`memory/bookmark-state.json` → `{ "lastSeenId": "...", "lastDigestAt": "..." }`
+通过保存最近处理的书签 ID 来跟踪状态。将结果存储在工作区文件 `memory/bookmark-state.json` 中：
+`{"lastSeenId": "...", "lastDigestAt": "..."}`
 
-### 3. Content Recycling
+### 3. 内容再利用
 
-When user asks for content ideas from bookmarks:
-1. Fetch recent bookmarks
-2. Identify high-engagement tweets (>500 likes) with frameworks, tips, or insights
-3. Rewrite key ideas in the user's voice (if voice data available)
-4. Suggest posting times based on the bookmark's original engagement
+当用户需要从书签中获取内容创意时：
+1. 获取最新的书签信息
+2. 识别那些获得高互动量（超过 500 个赞）的推文（例如包含框架、技巧或见解的推文）
+3. 用用户的声音重新表述这些关键内容（如果有语音数据的话）
+4. 根据书签的原始互动情况建议合适的发布时间
 
-### 4. Pattern Detection
+### 4. 模式识别
 
-When user has enough bookmark history:
-1. Fetch all bookmarks (`--all`)
-2. Cluster by topic/keywords
-3. Report: "You've bookmarked N tweets about [topic]. Want me to go deeper?"
-4. Suggest: research reports, content series, or tools based on patterns
+当用户有足够的书签记录时：
+1. 获取所有书签（使用 `--all` 参数）
+2. 按主题或关键词对书签进行分类
+3. 报告： “你已经收藏了 N 条关于 [主题] 的推文。需要我进一步研究吗？”
+4. 根据书签的类型建议用户可以尝试的研究报告、内容系列或相关工具
 
-### 5. Bookmark Cleanup
+### 5. 书签清理
 
-For stale bookmarks:
-1. Identify bookmarks older than a threshold (default: 30 days)
-2. For each: extract the TL;DR and one actionable takeaway
-3. Present: "Apply it today or clear it"
-4. User can unbookmark via: `bird unbookmark <tweet-id>`
+对于过期的书签：
+1. 识别那些超过指定时间限制（默认为 30 天）的书签
+2. 对每个过期的书签提取核心内容及一个可执行的建议
+3. 提示用户： “今天就应用这个建议，或者直接删除它”
+4. 用户可以通过 `bird unbookmark <推文 ID>` 来取消书签的收藏
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Fix |
+| 错误类型 | 原因 | 解决方法 |
 |-------|-------|-----|
-| "No Twitter cookies found" | Not logged into X in browser | Log into x.com in Chrome/Firefox |
-| EPERM on Safari cookies | macOS permissions | Use Chrome or Firefox instead |
-| Empty results | Cookies expired | Re-login to x.com, retry |
-| Rate limit | Too many requests | Wait and retry, use `--max-pages` to limit |
+| “未找到 Twitter cookies” | 用户未在浏览器中登录 X 账户 | 请在 Chrome 或 Firefox 中登录 x.com |
+| Safari 中出现 EPERM 错误 | macOS 权限问题 | 请改用 Chrome 或 Firefox |
+| 结果为空 | Cookies 已过期 | 重新登录 x.com 并重试 |
+| 超过请求频率限制 | 请求次数过多 | 等待一段时间后重试，可以使用 `--max-pages` 参数来限制请求次数 |
 
-## Tips
+## 使用技巧
 
-- Start with `-n 20` for quick digests, `--all` for deep analysis
-- Use `--include-parent` to get thread context for replies
-- Bookmark folders are supported via `--folder-id <id>`
-- Add `--sort-chronological` for time-ordered output
+- 使用 `-n 20` 参数快速获取书签摘要
+- 使用 `--all` 参数进行深入分析
+- 通过 `--folder-id <ID>` 参数来处理文件夹中的书签
+- 使用 `--sort-chronological` 参数按时间顺序输出结果

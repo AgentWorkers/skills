@@ -1,6 +1,6 @@
 ---
 name: ComfyUI
-description: Run local ComfyUI workflows via the HTTP API. Use when the user asks to run ComfyUI, execute a workflow by file path/name, or supply raw API-format JSON; supports the default workflow bundled in assets.
+description: 通过 HTTP API 运行本地的 ComfyUI 工作流程。当用户请求运行 ComfyUI、根据文件路径/名称执行某个工作流程，或提供符合 API 格式的 JSON 数据时，可以使用此方法；系统支持随资产一起提供的默认工作流程。
 read_when:
   - User asks to generate images with ComfyUI
   - User provides a workflow file or JSON to run
@@ -9,94 +9,94 @@ read_when:
 metadata: {"clawdbot":{"emoji":"🖼️","requires":{"bins":["python3"]}}}
 ---
 
-# ComfyUI Runner
+# ComfyUI 运行器
 
-## Overview
-Run ComfyUI workflows on the local server (default 127.0.0.1:8188) using API-format JSON and return output images.
+## 概述
+使用 API 格式的 JSON 在本地服务器（默认为 127.0.0.1:8188）上运行 ComfyUI 工作流程，并返回生成的图像。
 
-## Editing the workflow before running
-The run script only takes `--workflow <path>`. You must **inspect and edit the workflow JSON** before running, using your best knowledge of the ComfyUI API format. Do not assume fixed node IDs, `class_type` names, or `_meta.title` values — the user may have updated the default workflow or supplied a custom one.
+## 在运行前编辑工作流程
+运行脚本仅接受 `--workflow <路径>` 参数。在运行之前，你必须根据自己对 ComfyUI API 格式的了解，**检查并编辑工作流程 JSON 文件**。不要假设节点 ID、`class_type` 名称或 `_meta.title` 值是固定的——用户可能已经更新了默认的工作流程或提供了自定义的工作流程。
 
-**For every run (including the default workflow):**
-1. Read the workflow JSON (default: `skills/comfyui/assets/default-workflow.json`, or the path/file the user gave).
-2. **Identify prompt-related nodes** by inspecting the graph: look for nodes that hold the main text prompt — e.g. `PrimitiveStringMultiline`, `CLIPTextEncode` (positive text), or any node with `_meta.title` or `class_type` suggesting "Prompt" / "positive" / "text". Update the corresponding input (e.g. `inputs.value`, or the text input to the encoder) to the image prompt you derived from the user (subject, style, lighting, quality). If the user didn’t ask for a custom image, you can leave the existing prompt or tweak only if needed.
-3. **Optionally identify style/prefix nodes** — e.g. `StringConcatenate`, or a second string input that acts as style. Set them if the user asked for a specific style or to clear a default prefix.
-4. **Optionally set a new seed** — find sampler-like nodes (e.g. `KSampler`, `BasicGuider`, or any node with a `seed` input) and set `seed` to a new random integer so each run can differ.
-5. Write the modified workflow to a temp file (e.g. `skills/comfyui/assets/tmp-workflow.json`). Use `~/ComfyUI/venv/bin/python` for any inline Python; do not use bare `python`.
-6. Run: `comfyui_run.py --workflow <path-to-edited-json>`.
+**对于每次运行（包括默认工作流程）：**
+1. 读取工作流程 JSON 文件（默认路径为 `skills/comfyui/assets/default-workflow.json`，或用户提供的路径/文件）。
+2. **识别与提示相关的节点**：查看节点图，找到包含主要文本提示的节点——例如 `PrimitiveStringMultiline`、`CLIPTextEncode`（用于生成正文本的节点），或任何具有 `_meta.title` 或 `class_type` 为 “Prompt” / “positive” / “text” 的节点。根据用户提供的信息（主题、风格、光照、质量等），更新相应的输入内容（例如 `inputs.value` 或编码器的文本输入）。如果用户没有要求自定义图像，可以保留现有的提示内容，或者仅在必要时进行微调。
+3. **可选地识别风格/前缀相关的节点**——例如 `StringConcatenate` 节点，或用于设置风格的第二个字符串输入。如果用户指定了特定的风格或需要清除默认前缀，请设置这些节点。
+4. **可选地设置新的随机种子值**：找到类似采样器的节点（例如 `KSampler`、`BasicGuider` 或任何具有 `seed` 输入的节点），并将 `seed` 设置为一个新的随机整数，以确保每次运行结果不同。
+5. 将修改后的工作流程文件写入临时文件（例如 `skills/comfyui/assets/tmp-workflow.json`）。如果需要使用内嵌的 Python 代码，请使用 `~/ComfyUI/venv/bin/python`；不要直接使用 `python` 命令。
+6. 运行命令：`comfyui_run.py --workflow <编辑后的 JSON 文件路径>`。
 
-If the workflow structure is unclear or you can’t find prompt/sampler nodes, run the file as-is and only change what you can reliably identify. Same approach for arbitrary user-supplied JSON: inspect first, edit at your best knowledge, then run.
+如果工作流程的结构不明确，或者你找不到提示/采样器节点，请直接运行脚本，并仅更改你能可靠识别的部分。对于用户提供的任意 JSON 文件，也采用相同的处理方式：先检查，然后根据你的知识进行编辑，最后再运行。
 
-## Run script (single responsibility)
+## 运行脚本（单一职责）
 ```bash
 ~/ComfyUI/venv/bin/python skills/comfyui/scripts/comfyui_run.py \
   --workflow <path-to-workflow.json>
 ```
 
-The script only queues the workflow and polls until done. It prints JSON with `prompt_id` and output `images`. All prompt/style/seed changes are done by you in the JSON beforehand.
+该脚本仅负责将工作流程放入队列并等待其完成。它会输出包含 `prompt_id` 和 `images` 的 JSON 数据。所有与提示/风格/种子相关的更改都需你在 JSON 文件中预先完成。
 
-## If the server isn’t reachable
-If the run script fails with a connection error (e.g. connection refused or timeout to 127.0.0.1:8188), ComfyUI may not be installed or not running.
+## 如果服务器无法访问
+如果运行脚本因连接错误（例如连接到 127.0.0.1:8188 时被拒绝或超时）而失败，可能是因为 ComfyUI 未安装或未运行。
 
-**Check:** Does `~/ComfyUI` exist and contain `main.py`?
+**检查：** `~/ComfyUI` 目录是否存在，并且其中是否包含 `main.py` 文件？
 
-- **If not installed:** Install ComfyUI (e.g. clone the repo, create a venv, install dependencies, then start the server). Example:
+- **如果未安装 ComfyUI：** 安装 ComfyUI（例如克隆仓库、创建虚拟环境、安装依赖项，然后启动服务器）。示例：
   ```bash
   git clone https://github.com/comfyanonymous/ComfyUI.git ~/ComfyUI
   cd ~/ComfyUI
   python3 -m venv venv
   ~/ComfyUI/venv/bin/pip install -r requirements.txt
   ```
-  Then start the server (see below). Tell the user they may need to install model weights into `~/ComfyUI/models/` depending on the workflow.
+  接着启动服务器（详见下方说明）。告知用户，根据工作流程的不同，他们可能还需要将模型权重文件安装到 `~/ComfyUI/models/` 目录中。
 
-- **If installed but not running:** Start the ComfyUI server so the API is available on port 8188. Example:
+- **如果已安装但未运行：** 启动 ComfyUI 服务器，确保 API 在 8188 端口上可用。示例：
   ```bash
   ~/ComfyUI/venv/bin/python ~/ComfyUI/main.py --listen 127.0.0.1
   ```
-  Run in the background or in a separate terminal so it keeps running. Then retry the workflow run.
+  可以在后台或单独的终端中运行服务器，以确保其持续运行。之后再尝试运行工作流程。
 
-Use `~` (or the user’s home) for paths so it works on their machine.
+在路径引用时，请使用 `~`（或用户的 home 目录）以确保脚本能在用户的机器上正常运行。
 
-## Model weights from URLs
-When the user pastes or sends a **list of model weight URLs** (one per line, or comma-separated), download those files into the ComfyUI installation so the workflow can use them later.
+## 从 URL 下载模型权重文件
+当用户提供模型权重的 URL 列表（每行一个 URL，或用逗号分隔）时，将这些文件下载到 ComfyUI 安装目录中，以便后续的工作流程可以使用这些文件。
 
-1. **Normalize the list** — one URL per line; strip empty lines and comments (lines starting with `#`).
-2. **Run the download script** with the ComfyUI base path (default `~/ComfyUI`). The script uses [pget](https://github.com/replicate/pget) for parallel downloads when available; if `pget` is not in PATH, it installs it to `~/.local/bin` automatically (no sudo). If pget cannot be installed (e.g. unsupported OS/arch), it falls back to a built-in download. Use the ComfyUI venv Python so the script runs correctly:
+1. **规范列表格式**：确保每行只有一个 URL；删除空行和注释（以 `#` 开头的行）。
+2. 使用 ComfyUI 的基础路径（默认为 `~/ComfyUI`）运行下载脚本。该脚本会使用 [pget](https://github.com/replicate/pget) 来进行并行下载；如果 `pget` 未安装在系统中，它会自动将其安装到 `~/.local/bin` 目录中（无需使用 `sudo`）。如果 `pget` 无法安装（例如由于操作系统或架构不支持），则会使用内置的下载工具。为了确保脚本正确运行，请使用 ComfyUI 的虚拟环境 Python：  
    ```bash
    ~/ComfyUI/venv/bin/python skills/comfyui/scripts/download_weights.py --base ~/ComfyUI
    ```
-   Pass URLs as arguments, or pipe a file/list on stdin:
+   可以将 URL 作为参数传递，或者将文件/列表通过标准输入（stdin）传递：
    ```bash
    echo "https://example.com/model.safetensors" | ~/ComfyUI/venv/bin/python skills/comfyui/scripts/download_weights.py --base ~/ComfyUI
    ```
-   Or save the user’s list to a temp file and run:
+   或者将用户提供的列表保存到临时文件中，然后运行脚本：
    ```bash
    ~/ComfyUI/venv/bin/python skills/comfyui/scripts/download_weights.py --base ~/ComfyUI < /tmp/weight_urls.txt
    ```
-   To force the built-in download (no pget): add `--no-pget`.
-3. **Subfolder:** The script infers the ComfyUI models subfolder from the URL/filename (e.g. `vae`, `clip`, `loras`, `checkpoints`, `text_encoders`, `controlnet`, `upscale_models`). The user can optionally specify a subfolder per line as `url subfolder` (e.g. `https://.../model.safetensors vae`). You can also pass a default with `--subfolder loras` so all URLs in that run go to `models/loras/`.
-4. **Existing files:** By default the script skips URLs that already exist on disk; use `--overwrite` to replace.
-5. **Paths:** Files are written under `~/ComfyUI/models/<subfolder>/`. Tell the user where each file was saved and that they can run the workflow once the ComfyUI server is (re)started if needed.
+   如果需要使用内置下载工具（不使用 `pget`），请添加 `--no-pget` 参数。
+3. **子文件夹**：脚本会根据 URL 或文件名自动推断 ComfyUI 模型的子文件夹（例如 `vae`、`clip`、`loras`、`checkpoints`、`text_encoders`、`controlnet`、`upscale_models`）。用户也可以在每行指定子文件夹，例如 `https://.../model.safetensors vae`。你也可以使用 `--subfolder loras` 参数设置默认子文件夹，这样所有相关文件都会被保存到 `models/loras/` 目录中。
+4. **处理现有文件**：默认情况下，脚本会跳过磁盘上已存在的文件；如果需要覆盖现有文件，请使用 `--overwrite` 参数。
+5. **文件路径**：文件会被保存在 `~/ComfyUI/models/<子文件夹>/` 目录下。请告知用户文件的保存位置，并告诉他们在 ComfyUI 服务器重新启动后可以再次运行工作流程。
 
-Supported subfolders (under `ComfyUI/models/`): `checkpoints`, `clip`, `clip_vision`, `controlnet`, `diffusion_models`, `embeddings`, `loras`, `text_encoders`, `unet`, `vae`, `vae_approx`, `upscale_models`, and others. Use `--subfolder <name>` when the auto-inference is wrong.
+支持的子文件夹（位于 `ComfyUI/models/` 目录下）：`checkpoints`、`clip`、`clip_vision`、`controlnet`、`diffusion_models`、`embeddings`、`loras`、`text_encoders`、`unet`、`vae`、`vae_approx`、`upscale_models` 等。如果自动推断的子文件夹不正确，可以使用 `--subfolder <名称>` 参数进行手动指定。
 
-## After run
-Outputs are saved under `ComfyUI/output/`. Use the `images` list from the script output to locate the files (filename + subfolder).
+## 运行后的处理
+生成的输出文件会被保存在 `ComfyUI/output/` 目录下。可以使用脚本输出中的 `images` 列表来定位文件的位置（文件名 + 子文件夹路径）。
 
-### ⚠️ Always send the output to the user
-After a successful ComfyUI run, **you must deliver the generated image(s) to the user**. Do not reply with only the filename in text or with NO_REPLY.
+### ⚠️ 必须将结果发送给用户
+ComfyUI 运行成功后，**必须将生成的图像发送给用户**。不要仅回复文件名或直接返回 `NO_REPLY`。
 
-1. Parse the script output JSON for `images` (each has `filename`, `subfolder`, `type`).
-2. Build the full path: `ComfyUI/output/` + subfolder + filename (e.g. `ComfyUI/output/z-image_00007_.png`).
-3. **Send the image to the user** via the channel they're on (e.g. use the message/send tool with the image `path` so the user receives the file). Include a short caption if helpful (e.g. "Here you go." or "Tokyo street scene.").
+1. 从脚本输出中解析 `images` 数据（每个图像包含 `filename`、`subfolder`、`type` 信息）。
+2. 构建完整的文件路径：`ComfyUI/output/` + 子文件夹 + 文件名（例如 `ComfyUI/output/z-image_00007_.png`）。
+3. 通过用户使用的通道将图像发送给他们（例如使用消息发送工具，并提供图像的完整路径）。如果需要，可以附上简短的说明文字（例如 “这是生成的图像。” 或 “东京街道场景。”）。
 
-Every successful run must result in the user receiving the image. Never leave them with only a filename or no delivery.
+每次成功的运行都应确保用户能够收到生成的图像。切勿仅提供文件名而不进行任何交付。
 
-## Resources
+## 资源
 
-### scripts/
-- `comfyui_run.py`: Queue a workflow, poll until completion, print `prompt_id` and `images`. No args — you edit the JSON before running.
-- `download_weights.py`: Download model weight URLs into `~/ComfyUI/models/<subfolder>/`. Uses [pget](https://github.com/replicate/pget) when available (installs to `~/.local/bin` if missing); fallback to built-in download. Input: URLs as args or one per line on stdin. Options: `--base`, `--subfolder`, `--overwrite`, `--no-pget`. Infers subfolder from URL/filename when not given.
+### 脚本：
+- `comfyui_run.py`：负责将工作流程放入队列、等待完成，并输出 `prompt_id` 和 `images` 数据。无需参数——运行前你需要先编辑 JSON 文件。
+- `download_weights.py`：将模型权重文件的 URL 下载到 `~/ComfyUI/models/<子文件夹>/` 目录中。该脚本会使用 [pget](https://github.com/replicate/pget) 来进行下载；如果 `pget` 未安装，会自动安装到 `~/.local/bin` 目录中。支持参数：`--base`、`--subfolder`、`--overwrite`、`--no-pget`。如果未指定子文件夹，脚本会根据 URL 或文件名自动推断。
 
-### assets/
-- `default-workflow.json`: Default workflow. Copy and edit (prompt, style, seed) then run with the edited path; or run as-is for a generic run.
+### 资源文件：
+- `default-workflow.json`：默认的工作流程文件。你可以复制并编辑其中的提示内容、风格设置和随机种子值，然后使用编辑后的文件路径运行工作流程；或者直接使用默认设置进行通用运行。

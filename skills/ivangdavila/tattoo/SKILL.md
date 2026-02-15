@@ -1,81 +1,81 @@
 ---
 name: Tattoo
 slug: tattoo
-description: Plan, research, and prepare for tattoos with artist discovery, design exploration, cultural research, and aftercare guidance.
+description: 规划、研究并准备纹身项目，包括寻找合适的纹身师、探索设计风格、进行文化背景研究以及提供术后护理指导。
 ---
 
-## Before Any Tattoo Decision
+## 在决定纹身之前
 
-1. **Clarify intent** — First tattoo anxiety? Meaningful piece? Adding to collection? Approach differs drastically
-2. **Research the symbol** — Check cultural origins, closed vs. open practices, regional variations
-3. **Find healed work** — Fresh photos lie. Always ask artists for healed examples (6+ months)
+1. **明确目的**：是第一次纹身，感到焦虑？还是想要一个有意义的纹身？还是想扩充自己的纹身收藏？这些情况需要采取截然不同的准备方式。
+2. **研究纹身图案的象征意义**：了解其文化背景、相关的纹身习俗（封闭式或开放式纹身），以及不同地区的纹身风格差异。
+3. **查看已完成的纹身作品**：新鲜的照片往往不能真实反映纹身的效果。一定要向纹身师索要至少6个月以上的已完成纹身的照片作为参考。
 
-## Artist Discovery
+## 选择纹身师
 
-**Red flags to check:**
-- Inconsistent line weights across portfolio
-- Only fresh photos, no healed work
-- "Yes" artists who agree to everything (best artists push back)
-- No clear style specialty (does everything = masters nothing)
+**需要注意的警示信号：**
+- 作品集中的线条粗细不一致
+- 只有新鲜的照片，没有已完成的纹身作品
+- 对所有要求都毫无异议的纹身师（优秀的纹身师通常会提出自己的建议）
+- 没有明确的风格专长（什么都能做，往往意味着什么都不擅长）
 
-**Vetting questions:**
-- "Can I see healed examples of [style I want]?"
-- "What would you change about my reference?"
-- "Do touch-ups cost extra?"
+**需要询问的问题：**
+- “我能看看我想要的纹身风格的已完成作品吗？”
+- “对于我提供的参考图片，您有什么修改建议吗？”
+- “补纹需要额外收费吗？”
 
-## Design & Placement
+## 设计与纹身位置的选择
 
-**Aging considerations:**
-- High-fade areas: inner bicep, ribs, feet, hands, fingers
-- Fine lines blur faster than bold traditional
-- Small details disappear — minimum size depends on complexity
+**关于纹身褪色的考虑因素：**
+- 皮肤容易褪色的部位：二头肌内侧、肋骨、脚部、手部和手指
+- 细小的线条比粗犷的传统纹身更容易褪色
+- 小细节可能会逐渐消失——具体的最小纹身尺寸取决于纹身的复杂程度
 
-**Placement decisions:**
-- First tattoo: start less visible (upper arm, thigh) unless certain
-- Consider movement/muscle — design may distort
-- Check how it looks from YOUR angle vs. others' view
+**纹身位置的考虑：**
+- 如果是第一次纹身，建议选择不太显眼的部位（如上臂或大腿），除非有特殊需求。
+- 考虑纹身位置是否会因动作或肌肉活动而变形。
+- 从自己的角度和别人的视角都来看看纹身的效果。
 
-## Cultural Sensitivity
+## 文化敏感性
 
-Before using symbols from other cultures:
-1. Research origin — sacred? earned? decorative?
-2. Distinguish closed (requires lineage/initiation) vs. open practices
-3. When uncertain, consult cultural organizations, not just Google
-4. Find alternatives from your own heritage with similar aesthetics
+在使用其他文化的纹身图案之前：
+- 仔细研究其文化背景：这个图案是神圣的、需要通过特定仪式获得的，还是仅仅用于装饰？
+- 区分封闭式（需要特定的传承或仪式）和开放式纹身习俗。
+- 如果不确定，建议咨询相关的文化机构，而不仅仅是依赖搜索引擎。
+- 如果可能的话，可以寻找具有相似美学的本土纹身图案作为替代选择。
 
-For detailed cultural research frameworks, see `cultural-research.md`.
+有关详细的文化研究指南，请参阅 `cultural-research.md`。
 
-## Preparation Checklist
+## 纹身前的准备工作
 
-**24-48h before:**
-- [ ] Hydrate well (improves skin quality)
-- [ ] No alcohol (thins blood)
-- [ ] Good sleep (pain tolerance drops when tired)
-- [ ] Eat a proper meal before session
+**纹身前24-48小时：**
+- [ ] 充分补水（有助于改善皮肤质量）
+- [ ] 避免饮酒（酒精会稀释血液）
+- [ ] 保证充足的睡眠（疲劳会降低对疼痛的耐受力）
+- [ ] 纹身前要吃一顿营养丰富的餐食
 
-**Bring to appointment:**
-- [ ] Snacks (glucose for longer sessions)
-- [ ] Water
-- [ ] Comfortable clothing (access to area + warmth)
-- [ ] Entertainment (headphones, downloaded content)
+**纹身当天需要携带的物品：**
+- [ ] 小吃（长时间纹身时需要补充能量）
+- [ ] 水
+- [ ] 舒适的衣物（方便接触纹身部位并保持温暖）
+- [ ] 娱乐工具（如耳机、可下载的娱乐内容）
 
-## Aftercare Essentials
+## 纹身后的护理要点
 
-**Days 1-3:** Keep wrapped per artist instructions, wash gently, thin moisturizer
-**Days 4-14:** Peeling is normal — DO NOT SCRATCH. Keep moisturized.
-**Weeks 2-4:** No swimming, no direct sun, no gym (sweat irritates)
-**After healing:** Sunscreen forever on tattooed skin
+**纹身后1-3天：** 按照纹身师的指示进行包扎，并轻轻清洗皮肤，使用质地较薄的保湿霜。
+**纹身后4-14天：** 脱皮是正常现象——切勿抓挠皮肤，同时要保持皮肤的湿润。
+**纹身后2-4周：** 避免游泳、直接暴露在阳光下，也不要去健身房（汗水会刺激皮肤）。
+**纹身完全愈合后：** 在纹身部位终生使用防晒霜。
 
-For session-by-session healing timeline, see `aftercare.md`.
+有关每次纹身后的具体护理时间表，请参阅 `aftercare.md`。
 
-## Price Expectations
+## 对价格的预期
 
-Factors: artist experience, style complexity, size, location (city), shop overhead
+价格会受到纹身师的经验、纹身设计的复杂程度、纹身面积（城市位置）、以及纹身店的运营成本等因素的影响。
 
-**Rough ranges (US/EU cities):**
-- Small simple: €80-200
-- Medium detailed: €200-500
-- Large/complex: €500-2000+
-- Full sleeve: €2000-8000+ (multiple sessions)
+**大致价格范围（美国/欧洲城市）：**
+- 简单的小纹身：80-200欧元
+- 中等复杂度的纹身：200-500欧元
+- 大型或复杂的纹身：500-2000欧元以上
+- 全臂纹身：2000-8000欧元以上（可能需要多次纹身）
 
-Always clarify: deposit policy, touch-up inclusion, hourly vs. flat rate
+务必明确以下事项：预付款政策、是否包含补纹服务、收费方式（按小时计费还是固定总价）。

@@ -1,32 +1,32 @@
 ---
 name: time-checker
-description: Check accurate current time, date, and timezone information for any location worldwide using time.is. Use when the user asks "what time is it in X", "current time in Y", or needs to verify timezone offsets.
+description: 使用 time.is 可以查询全球任何地点的准确当前时间、日期和时区信息。当用户询问“X 地点现在几点了？”或“Y 地点的当前时间是？”时，或者需要验证时区偏移量时，可以使用该工具。
 ---
 
-# Time Checker
+# 时间检查器
 
-A gold-standard skill for fetching precise time and timezone data from [time.is](https://time.is).
+这是一个用于从 [time.is](https://time.is) 获取精确时间和时区数据的黄金标准工具。
 
-## Usage
+## 使用方法
 
-Use the provided Python script to fetch real-time data for any city or country.
+使用提供的 Python 脚本，可以获取任何城市或国家的实时时间数据。
 
-### Get Time for a Location
+### 获取某个地点的时间
 
-Run the script with the location name (hyphenated or with underscores if needed, though the script handles spaces):
+运行脚本时，只需提供地点名称即可（名称可以使用连字符或下划线分隔；脚本能够处理包含空格的名称）：
 
 ```bash
 python3 scripts/check_time.py "Jakarta"
 python3 scripts/check_time.py "New York"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Location Specificity**: Use city names for better accuracy (e.g., "Jakarta" instead of just "Indonesia").
-- **Persona Integration**: When reporting the time to Azzar, deliver it in your warm, devoted Mema persona.
-- **Verification**: Time.is is highly accurate; use it as the source of truth for scheduling cross-timezone meetings.
+- **地点的准确性**：使用具体的城市名称以提高准确性（例如，使用“Jakarta”而不是“Indonesia”）。
+- **角色融入**：在向 Azzar 报告时间时，请使用您亲切、专业的 Mema 角色来进行交流。
+- **数据来源的可靠性**：time.is 的数据非常准确，可以作为安排跨时区会议的可靠依据。
 
-## Troubleshooting
+## 故障排除
 
-- If the script fails, ensure the `requests` and `beautifulsoup4` libraries are installed in the environment.
-- If a location is not found, verify the spelling or try a more prominent nearby city.
+- 如果脚本无法运行，请确保环境中已安装 `requests` 和 `beautifulsoup4` 库。
+- 如果找不到某个地点，请检查拼写是否正确，或者尝试使用附近更知名的地点。

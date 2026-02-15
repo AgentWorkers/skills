@@ -1,80 +1,80 @@
 ---
 name: beijing-tech-finance
-description: Comprehensive financial management system for Beijing-based technology companies, covering financial director workflows, budget management, accounting systems, tax optimization, expense reimbursement, customs declaration, annual reporting, and integration with business contracts, R&D budgets, project management, HR, and administrative services. Use when managing any aspect of tech company finances in Beijing including budget planning, expense processing, tax compliance, financial reporting, or cross-functional financial coordination.
+description: 这是一个专为北京地区的科技公司设计的综合性财务管理系统，涵盖了财务总监的工作流程、预算管理、会计系统、税务优化、费用报销、海关申报、年度报告等功能，并且能够与业务合同、研发预算、项目管理、人力资源（HR）以及行政服务进行集成。该系统适用于管理北京地区科技公司的各项财务事务，包括预算规划、费用处理、税务合规性、财务报告以及跨部门的财务协调工作。
 ---
 
-# Beijing Technology Company Financial Management
+# 北京科技公司财务管理
 
-This skill provides comprehensive financial management capabilities specifically designed for technology companies operating in Beijing, China. It covers all essential financial processes from strategic planning to operational execution.
+本技能专为在中国北京运营的科技公司提供全面的财务管理能力，涵盖了从战略规划到运营执行的所有关键财务流程。
 
-## Core Capabilities
+## 核心功能
 
-- **Financial Director Management**: Strategic financial planning, cash flow management, investor relations
-- **Budget & Expense Management**: R&D budgets, project budgets, departmental budgets, expense reimbursement workflows
-- **Accounting Systems**: Chinese GAAP compliance, double-entry bookkeeping, financial statement preparation
-- **Tax Optimization**: VAT, corporate income tax, R&D tax incentives, Beijing-specific tax policies
-- **Compliance & Reporting**: Annual reports, statistical reporting, customs declaration for imported equipment
-- **Cross-functional Integration**: Business contract financial terms, project cost tracking, HR payroll integration, administrative expense management
+- **财务总监管理**：战略财务规划、现金流管理、投资者关系管理
+- **预算与费用管理**：研发预算、项目预算、部门预算、费用报销流程
+- **会计系统**：符合中国会计准则（GAAP）、复式记账、财务报表编制
+- **税务优化**：增值税（VAT）、企业所得税、研发税收优惠、北京特有的税收政策
+- **合规与报告**：年度报告、统计报告、进口设备的海关申报
+- **跨职能整合**：商业合同中的财务条款、项目成本跟踪、人力资源薪资管理、行政费用管理
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when you need to:
-- Create or manage company budgets (R&D, projects, departments)
-- Process expense reimbursements with proper documentation
-- Handle tax planning and compliance for Beijing tech companies
-- Prepare financial statements and reports
-- Manage business contract financial terms and payment schedules
-- Coordinate financial aspects across teams (engineering, sales, HR, admin)
-- Handle customs declaration for imported technology equipment
-- Prepare annual reports and statutory filings
+当您需要以下操作时，请使用本技能：
+- 制定或管理公司预算（研发、项目、部门预算）
+- 通过适当的文件处理费用报销
+- 为北京科技公司处理税务规划与合规事务
+- 编制财务报表和报告
+- 管理商业合同中的财务条款和付款计划
+- 协调各团队（工程、销售、人力资源、行政）的财务工作
+- 处理进口技术设备的海关申报
+- 准备年度报告和法定文件
 
-## Getting Started
+## 入门指南
 
-### 1. Financial Policies & Systems
+### 1. 财务政策与系统
 
-Start with `references/financial-policies.md` for comprehensive accounting systems, internal controls, and Beijing compliance requirements.
+首先查阅 `references/financial-policies.md`，了解全面的会计系统、内部控制以及北京的合规要求。
 
-### 2. Beijing Tax Optimization
+### 2. 北京税务优化
 
-Consult `references/beijing-tax-policies.md` for current tax incentives, R&D super deductions, VAT policies, and Beijing municipal benefits.
+参考 `references/beijing-tax-policies.md`，了解当前的税收优惠、研发费用超额抵扣政策、增值税政策以及北京市政府提供的各项补贴。
 
-### 3. Budget & Project Finance
+### 3. 预算与项目财务
 
-Use `references/budget-project-finance.md` for R&D budgeting, project cost tracking, and integration with business contracts.
+使用 `references/budget-project-finance.md`，学习研发预算编制、项目成本跟踪以及与商业合同的整合方法。
 
-### 4. HR & Administrative Integration
+### 4. 人力资源与行政整合
 
-Reference `references/hr-admin-finance.md` for payroll integration, benefit costs, administrative expense management, and team coordination.
+参考 `references/hr-admin-finance.md`，了解薪资管理、福利成本、行政费用管理以及团队协作的相关内容。
 
-### 5. Workflows & Templates
+### 5. 流程与模板
 
-Access `references/workflows-templates.md` for practical templates, approval workflows, and step-by-step procedures.
+访问 `references/workflows-templates.md`，获取实用的模板、审批流程及操作指南。
 
-## Key Beijing-Specific Considerations
+## 北京特有的关键注意事项
 
-- **High-Tech Enterprise Certification**: Qualify for 15% corporate income tax rate (vs standard 25%)
-- **R&D Expense Super Deduction**: Additional 75-100% deduction for qualified R&D expenses
-- **Beijing Municipal Incentives**: Various subsidies and grants for tech companies
-- **Customs Procedures**: Special procedures for importing R&D equipment and materials
-- **Social Insurance**: Beijing-specific contribution rates and requirements
+- **高新技术企业认证**：可享受15%的企业所得税税率（而非标准的25%）
+- **研发费用超额抵扣**：符合条件的研发费用可额外享受75-100%的抵扣
+- **北京市政府的激励措施**：针对科技公司的各类补贴和拨款
+- **海关流程**：进口研发设备和材料的特殊申报程序
+- **社会保险**：北京特有的缴纳比例和要求
 
-## Bundled Resources
+## 配套资源
 
-This skill includes comprehensive reference materials organized by functional area:
+本技能包含按功能领域分类的全面参考资料：
 
-- `references/budgeting.md` - Budget planning templates and workflows
-- `references/expenses.md` - Expense reimbursement policies and procedures  
-- `references/tax-compliance.md` - Tax planning and compliance guide
-- `references/accounting.md` - Accounting standards and procedures
-- `references/integration.md` - Cross-functional financial coordination
-- `references/compliance.md` - Regulatory compliance and reporting requirements
+- `references/budgeting.md` – 预算规划模板和流程
+- `references/expenses.md` – 费用报销政策和流程
+- `references/tax-compliance.md` – 税务规划与合规指南
+- `references/accounting.md` – 会计标准和流程
+- `references/integration.md` – 跨职能财务协调
+- `references/compliance.md` – 监管合规性和报告要求
 
-## Usage Guidelines
+## 使用指南
 
-1. **Always check Beijing-specific regulations** - Local policies change frequently
-2. **Maintain proper documentation** - Chinese tax authorities require detailed records
-3. **Leverage tech industry incentives** - Ensure proper qualification for tax benefits
-4. **Coordinate with legal counsel** - For complex contractual or compliance matters
-5. **Regular financial reviews** - Monthly cash flow, quarterly performance, annual planning
+1. **始终关注北京的地方性法规** – 当地政策经常更新
+2. **保持完整的文档记录** – 中国税务机关要求提供详细的财务记录
+3. **充分利用科技行业的税收优惠** – 确保符合税收优惠的资格要求
+4. **咨询法律顾问** – 处理复杂的合同或合规问题
+5. **定期进行财务审查** – 每月现金流分析、季度业绩评估、年度规划
 
-Load specific reference files based on your immediate needs rather than loading all content at once.
+根据您的实际需求，有选择地加载相关参考文件，无需一次性加载所有内容。

@@ -1,52 +1,52 @@
 ---
 name: resolving-domains
-description: ENS and Web3 identity resolution for XMTP agents. Use when resolving domain names, extracting mentions, or fetching Farcaster profiles. Triggers on ENS resolution, Farcaster lookup, or mention extraction.
+description: ENS（Ethereum Name Service）和Web3身份解析功能，适用于XMTP代理。这些功能可用于解析域名、提取相关提及信息或获取Farcaster用户的个人资料。当发生ENS解析、Farcaster查询或提及信息提取时，这些功能会被触发执行。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP domain resolver
+# XMTP 域名解析器
 
-Resolve Web3 identities including ENS, Farcaster, Basenames, and Lens Protocol.
+用于解析 Web3 身份信息，包括 ENS（Ethereum Name Service）、Farcaster、Basenames 和 Lens Protocol。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Resolving ENS names to addresses
-- Extracting @mentions from messages
-- Fetching Farcaster profiles
-- Working with shortened addresses in groups
+在以下情况下请参考这些指南：
+- 将 ENS 名称解析为地址
+- 从消息中提取 @提及（mention）信息
+- 获取 Farcaster 用户的个人信息
+- 处理群组中的缩短地址
 
-## Rule categories by priority
+## 规则分类（按优先级排序）
 
-| Priority | Category | Impact | Prefix |
+| 优先级 | 分类 | 影响程度 | 前缀 |
 |----------|----------|--------|--------|
-| 1 | Resolve | HIGH | `resolve-` |
-| 2 | Extract | HIGH | `extract-` |
-| 3 | Profiles | MEDIUM | `profiles-` |
+| 1 | 解析 | 高 | `resolve-` |
+| 2 | 提取 | 高 | `extract-` |
+| 3 | 用户信息 | 中等 | `profiles-` |
 
-## Quick reference
+## 快速参考
 
-### Resolve (HIGH)
-- `resolve-address` - Resolve domain names to addresses
-- `resolve-mentions` - Resolve all mentions in a message
+### 解析（高优先级）
+- `resolve-address` - 将域名解析为地址
+- `resolve-mentions` - 解析消息中的所有 @提及信息
 
-### Extract (HIGH)
-- `extract-mentions` - Extract @mentions from text
+### 提取（高优先级）
+- `extract-mentions` - 从文本中提取 @提及信息
 
-### Profiles (MEDIUM)
-- `profiles-farcaster` - Fetch Farcaster profile data
+### 用户信息（中等优先级）
+- `profiles-farcaster` - 获取 Farcaster 用户的个人信息
 
-## Supported platforms
+## 支持的平台
 
 - **ENS** - `vitalik.eth`
 - **Farcaster** - `dwr.eth`, `username.farcaster.eth`
 - **Basenames** - `tony.base.eth`
 - **Lens Protocol** - `stani.lens`
 
-## Quick start
+## 快速入门
 
 ```typescript
 import { createNameResolver } from "@xmtp/agent-sdk/user";
@@ -67,9 +67,9 @@ const profile = await fetchFarcasterProfile("dwr.eth");
 console.log(profile.username, profile.fid);
 ```
 
-## Implementation snippets
+## 实现示例
 
-**Extract mentions from text:**
+**从文本中提取 @提及信息：**
 
 ```typescript
 const extractMentions = (message: string): string[] => {
@@ -91,7 +91,7 @@ const extractMentions = (message: string): string[] => {
 };
 ```
 
-**Resolve mentions in message:**
+**解析消息中的 @提及信息：**
 
 ```typescript
 import { createNameResolver } from "@xmtp/agent-sdk/user";
@@ -115,7 +115,7 @@ const resolveMentionsInMessage = async (
 };
 ```
 
-**Fetch Farcaster profile:**
+**获取 Farcaster 用户的个人信息：**
 
 ```typescript
 const fetchFarcasterProfile = async (name: string) => {
@@ -131,13 +131,12 @@ const fetchFarcasterProfile = async (name: string) => {
 };
 ```
 
-## How to use
+## 使用方法
 
-Read individual rule files for detailed explanations:
+如需详细说明，请阅读相应的规则文件：
 
 ```
 rules/resolve-address.md
 rules/extract-mentions.md
 rules/profiles-farcaster.md
 ```
-

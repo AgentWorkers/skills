@@ -1,16 +1,16 @@
 ---
 name: telnyx-missions
-description: Track agent activities using the Telnyx AI Missions API. Use this skill when executing multi-step tasks that should be logged and tracked. Supports creating voice/SMS agents, scheduling calls, and retrieving conversation insights. Use when tasks involve calling people, sending SMS, or any substantial tracked work.
+description: 使用 Telnyx AI Missions API 来追踪代理的活动。在执行需要记录和追踪的多步骤任务时，请使用此功能。该 API 支持创建语音/短信代理、安排通话以及检索通话记录。适用于涉及拨打电话、发送短信或任何需要详细追踪的工作场景。
 metadata: {"openclaw":{"emoji":"🎯","requires":{"bins":["python3"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
 # Telnyx AI Missions
 
-Track multi-step agent activities using the Telnyx AI Missions API. Create voice/SMS assistants, schedule calls, and retrieve conversation insights.
+使用Telnix AI Missions API跟踪多步骤代理活动。创建语音/SMS助手，安排通话，并检索对话洞察。
 
-## Setup
+## 设置
 
-The Python script `telnyx_api.py` handles all API calls:
+Python脚本`telnyx_api.py`处理所有API调用：
 
 ```bash
 # Set your API key
@@ -23,42 +23,41 @@ python3 {baseDir}/scripts/telnyx_api.py <command> [args...]
 alias missions="python3 {baseDir}/scripts/telnyx_api.py"
 ```
 
-**Note:** All command examples in this document use `python telnyx_api.py` for brevity. Replace with the full path `python3 {baseDir}/scripts/telnyx_api.py` or use the alias above.
+**注意：**本文档中的所有命令示例都使用`python telnyx_api.py`来简化表示。请将其替换为完整路径`python3 {baseDir}/scripts/telnyx_api.py`，或使用上述别名。
 
 ---
 
-This skill enables you to track your work using the Telnyx AI Missions API, including making phone calls and sending SMS messages through AI assistants.
+此技能使您能够使用Telnix AI Missions API跟踪您的工作，包括通过AI助手拨打电话和发送短信。
 
 ---
 
-# ⚠️ CRITICAL: SAVE STATE FREQUENTLY ⚠️
+# ⚠️ 重要提示：频繁保存状态 ⚠️
 
-**You MUST save your progress after EVERY significant action.** If the session crashes or restarts, unsaved work is LOST.
+**您必须在每个重要操作后保存进度。** 如果会话崩溃或重新启动，未保存的工作将会丢失。
 
-## Two-Layer Persistence: Memory + Events
+## 双层持久化：内存 + 事件
 
-Always save to BOTH:
-1. **Local Memory** (`.missions_state.json`) - Fast, survives restarts
-2. **Events API** (cloud) - Permanent audit trail, survives local file loss
+始终保存到以下两个地方：
+1. **本地内存**（`.missions_state.json`）- 快速，可恢复重启
+2. **事件API**（云端）- 永久审计追踪，可恢复本地文件丢失
 
-## When to Save (After EVERY action!)
-
-| Action | Save Memory | Log Event |
+## 何时保存（每次操作后！）
+| 操作 | 保存内存 | 记录事件 |
 |--------|-------------|-----------|
-| Web search returns results | ✅ append-memory | ✅ log-event (tool_call) |
-| Found a contractor/lead | ✅ append-memory | ✅ log-event (custom) |
-| Created assistant | ✅ save-memory | ✅ log-event (custom) |
-| Assigned phone number | ✅ save-memory | ✅ log-event (custom) |
-| Scheduled a call/SMS | ✅ append-memory | ✅ log-event (custom) |
-| Call completed | ✅ save-memory | ✅ log-event (custom) |
-| Got quote/insight | ✅ save-memory | ✅ log-event (custom) |
-| Made a decision | ✅ save-memory | ✅ log-event (message) |
-| Step started | ✅ save-memory | ✅ update-step (in_progress) + log-event (step_started) |
-| Step completed | ✅ save-memory | ✅ update-step (completed) + log-event (step_completed) |
-| Step failed | ✅ save-memory | ✅ update-step (failed) + log-event (error) |
-| Error occurred | ✅ save-memory | ✅ log-event (error) |
+| 网页搜索返回结果 | ✅ append-memory | ✅ log-event (tool_call) |
+| 找到承包商/潜在客户 | ✅ append-memory | ✅ log-event (custom) |
+| 创建助手 | ✅ save-memory | ✅ log-event (custom) |
+| 分配电话号码 | ✅ save-memory | ✅ log-event (custom) |
+| 安排通话/SMS | ✅ append-memory | ✅ log-event (custom) |
+| 通话完成 | ✅ save-memory | ✅ log-event (custom) |
+| 获得报价/洞察 | ✅ save-memory | ✅ log-event (custom) |
+| 做出决定 | ✅ save-memory | ✅ log-event (message) |
+| 步骤开始 | ✅ save-memory | ✅ update-step (in_progress) + log-event (step_started) |
+| 步骤完成 | ✅ save-memory | ✅ update-step (completed) | log-event (step_completed) |
+| 步骤失败 | ✅ save-memory | ✅ update-step (failed) | log-event (error) |
+| 发生错误 | ✅ save-memory | ✅ log-event (error) |
 
-## Memory Commands (Local Backup)
+## 内存命令（本地备份）
 
 ```bash
 # Save a single value
@@ -72,7 +71,7 @@ python telnyx_api.py get-memory "<slug>"           # Get all memory
 python telnyx_api.py get-memory "<slug>" "key"     # Get specific key
 ```
 
-## Event Commands (Cloud Backup)
+## 事件命令（云端备份）
 
 ```bash
 # Log an event (step_id is REQUIRED - links event to a plan step)
@@ -83,9 +82,9 @@ python telnyx_api.py log-event <mission_id> <run_id> <type> "<summary>" <step_id
 #          Use "-" if event doesn't belong to a specific step
 ```
 
-## Example: Complete Save Pattern
+## 示例：完整的保存模式
 
-After finding a contractor via web search, do BOTH:
+通过网页搜索找到承包商后，执行以下两个操作：
 
 ```bash
 # 1. Save to local memory (fast recovery)
@@ -95,7 +94,7 @@ python telnyx_api.py append-memory "find-window-washers" "contractors_found" '{"
 python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" custom "Found contractor: ABC Cleaning +13125551234" "research" '{"contractor": "ABC Cleaning", "phone": "+13125551234", "source": "google search"}'
 ```
 
-After scheduling a call:
+安排通话后：
 
 ```bash
 # 1. Local memory
@@ -105,7 +104,7 @@ python telnyx_api.py append-memory "find-window-washers" "calls_scheduled" '{"ev
 python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" custom "Scheduled call to ABC Cleaning for 3:00 PM" "calls" '{"scheduled_event_id": "evt_123", "contractor": "ABC Cleaning", "scheduled_for": "2024-12-01T15:00:00Z"}'
 ```
 
-After getting a quote from a call:
+从通话中获取报价后：
 
 ```bash
 # 1. Local memory
@@ -115,40 +114,40 @@ python telnyx_api.py save-memory "find-window-washers" "quotes" '{"ABC Cleaning"
 python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" custom "Call completed: ABC Cleaning quoted $350" "calls" '{"contractor": "ABC Cleaning", "quote": 350, "availability": "next week", "conversation_id": "conv_xyz"}'
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Save IMMEDIATELY** - Don't wait, don't batch
-2. **Save to BOTH** - Memory (local) AND Events (cloud)
-3. **Be verbose** - More data saved = easier recovery
-4. **Include context** - Timestamps, sources, IDs
-5. **Save partial results** - Something is better than nothing
-6. **Save before risky operations** - Before long API calls or waits
+1. **立即保存** - 不要等待，不要批量保存
+2. **保存到两个地方** - 内存（本地）和事件（云端）
+3. **详细记录** - 保存的数据越多，恢复越容易
+4. **包含上下文** - 时间戳、来源、ID
+5. **保存部分结果** - 有总比没有好
+6. **在高风险操作前保存** - 在进行长时间API调用或等待之前
 
 ---
 
-## When to Use This Skill
+## 何时使用此技能
 
-This skill has two modes: **full missions** (tracked, multi-step) and **simple calls** (one-off, no mission overhead). Pick the right one.
+此技能有两种模式：**完整任务**（跟踪的、多步骤的）和**简单通话**（一次性的，无需任务开销）。选择合适的一种。
 
-### Use a Full Mission When:
-- The task involves **multiple calls or SMS** (batch outreach, surveys, sweeps)
-- You need a **complete audit trail** with events, plans, and state tracking
-- The task is **multi-step** and takes significant effort across phases
-- **Retries and failure tracking** matter
-- You need to **compare results** across multiple calls
+### 在以下情况下使用完整任务：
+- 任务涉及**多次通话或短信**（批量外联、调查、扫雷）
+- 需要包含事件、计划和状态跟踪的**完整审计追踪**
+- 任务是**多步骤的**，并且需要在多个阶段付出大量努力
+- **需要跟踪重试和失败情况**
+- 需要**比较多次通话的结果**
 
-Examples:
-- "Find me window washing contractors in Chicago, call them and negotiate rates"
-- "Contact all leads in this list and schedule demos"
-- "Call 10 weather stations and find the hottest one"
+示例：
+- “在芝加哥找到擦窗承包商，给他们打电话并协商价格”
+- “联系此列表中的所有潜在客户并安排演示”
+- “拨打10个气象站的电话，找出温度最高的”
 
-### Do NOT Use a Mission When:
-- The task is a **single outbound call** — just create an assistant (or reuse one) and schedule the call directly
-- It's a **one-off SMS** — schedule it and done
-- The task doesn't need tracking, plans, or state recovery
-- You'd be creating a mission with one step and one call — that's overengineering
+### 不要在以下情况下使用任务：
+- 任务是**单次外拨电话** — 只需要创建一个助手（或重用一个）并直接安排通话
+- 是**一次性短信** — 安排好即可
+- 任务不需要跟踪、计划或状态恢复
+- 如果您只为一个步骤和一次通话创建任务 — 那就是过度设计了
 
-**For simple calls, just:**
+**对于简单通话，只需：**
 ```bash
 # Reuse or create an assistant
 python telnyx_api.py list-assistants --name=<relevant>
@@ -160,21 +159,21 @@ python telnyx_api.py get-event <assistant_id> <event_id>
 python telnyx_api.py get-insights <conversation_id>
 ```
 
-No mission, no run, no plan. Keep it simple.
+没有任务，就不需要运行，也不需要计划。保持简单。
 
-## Required Setup
+## 所需设置
 
-The Python script `telnyx_api.py` handles all API calls. Check that `TELNYX_API_KEY` environment variable is set:
+Python脚本`telnyx_api.py`处理所有API调用。请确保`TELNYX_API_KEY`环境变量已设置：
 
 ```bash
 python telnyx_api.py check-key
 ```
 
-# State Persistence
+# 状态持久化
 
-The script automatically manages state in `.missions_state.json`. This survives restarts and supports multiple concurrent missions.
+脚本自动在`.missions_state.json`中管理状态。这可以在重启后保留，并支持多个并发任务。
 
-## State Commands
+## 状态命令
 
 ```bash
 # List all active missions
@@ -189,29 +188,29 @@ python telnyx_api.py remove-state "find-window-washing-contractors"
 
 ---
 
-# Core Workflow
+# 核心工作流程
 
-## Phase 1: Initialize Tracking
+## 第1阶段：初始化跟踪
 
-### Step 1.1: Create a Mission
+### 步骤1.1：创建任务
 
 ```bash
 python telnyx_api.py create-mission "Brief descriptive name" "Full description of the task"
 ```
 
-**Save the returned `mission_id`** - you'll need it for all subsequent calls.
+**保存返回的`mission_id`** - 您将在后续所有通话中需要它。
 
-### Step 1.2: Start a Run
+### 步骤1.2：开始运行
 
 ```bash
 python telnyx_api.py create-run <mission_id> '{"original_request": "The exact user request", "context": "Any relevant context"}'
 ```
 
-**Save the returned `run_id`**.
+**保存返回的`run_id`**。
 
-### Step 1.3: Create a Plan
+### 步骤1.3：创建计划
 
-Before executing, outline your plan:
+在执行之前，概述您的计划：
 
 ```bash
 python telnyx_api.py create-plan <mission_id> <run_id> '[
@@ -223,15 +222,15 @@ python telnyx_api.py create-plan <mission_id> <run_id> '[
 ]'
 ```
 
-### Step 1.4: Set Run to Running
+### 步骤1.4：将运行设置为进行中
 
 ```bash
 python telnyx_api.py update-run <mission_id> <run_id> running
 ```
 
-### High-Level Alternative: Initialize Everything at Once
+### 高级替代方案：一次性初始化所有内容
 
-Use the `init` command to create mission, run, plan, and set status in one step:
+使用`init`命令一步创建任务、运行、计划并设置状态：
 
 ```bash
 python telnyx_api.py init "Find window washing contractors" "Find contractors in Chicago, call them, negotiate rates" "User wants window washing quotes" '[
@@ -242,46 +241,46 @@ python telnyx_api.py init "Find window washing contractors" "Find contractors in
 ]'
 ```
 
-This also automatically resumes if a mission with the same name already exists.
+如果已经存在同名任务，这也会自动恢复。
 
 ---
 
-## Phase 2: Voice/SMS Agent Setup
+## 第2阶段：语音/SMS代理设置
 
-When your task requires making calls or sending SMS, create an AI assistant first.
+当您的任务需要拨打电话或发送短信时，首先创建一个AI助手。
 
-### Step 2.1: Create a Voice/SMS Assistant
+### 步骤2.1：创建语音/SMS助手
 
-**For phone calls:**
+**对于电话通话：**
 ```bash
 python telnyx_api.py create-assistant "Contractor Outreach Agent" "You are calling on behalf of [COMPANY]. Your goal is to [SPECIFIC GOAL]. Be professional and concise. Collect: [WHAT TO COLLECT]. If they cannot talk now, ask for a good callback time." "Hi, this is an AI assistant calling on behalf of [COMPANY]. Is this [BUSINESS NAME]? I am calling to inquire about your services. Do you have a moment?" '["telephony"]'
 ```
 
-**For SMS:**
+**对于短信：**
 ```bash
 python telnyx_api.py create-assistant "SMS Outreach Agent" "You send SMS messages to collect information. Keep messages brief and professional." "Hi! I am reaching out on behalf of [COMPANY] regarding [PURPOSE]. Could you please reply with [REQUESTED INFO]?" '["messaging"]'
 ```
 
-**Save the returned `assistant_id`**.
+**保存返回的`assistant_id`**。
 
-### Step 2.2: Find and Assign a Phone Number
+### 步骤2.2：查找并分配电话号码
 
-#### 2.2.1: List Available Phone Numbers
+#### 2.2.1：列出可用电话号码
 
 ```bash
 python telnyx_api.py list-phones --available
 ```
 
-Or get the first available one directly:
+或者直接获取第一个可用的号码：
 
 ```bash
 python telnyx_api.py get-available-phone
 ```
 
-**If no phone numbers are available, STOP and inform the user:**
-> "No available phone numbers found. You need to purchase phone numbers from Telnyx at https://portal.telnyx.com before I can make calls."
+**如果没有可用电话号码，请停止并通知用户：**
+> “未找到可用电话号码。您需要从Telnyx（https://portal.telnyx.com）购买电话号码才能进行通话。”
 
-#### 2.2.2: Get Assistant's Connection ID
+#### 2.2.2：获取助手的连接ID**
 
 ```bash
 # For voice calls
@@ -291,7 +290,7 @@ python telnyx_api.py get-connection-id <assistant_id> telephony
 python telnyx_api.py get-connection-id <assistant_id> messaging
 ```
 
-#### 2.2.3: Assign Phone Number to Assistant
+#### 2.2.3：将电话号码分配给助手
 
 ```bash
 # For voice calls
@@ -301,33 +300,33 @@ python telnyx_api.py assign-phone <phone_number_id> <connection_id> voice
 python telnyx_api.py assign-phone <phone_number_id> <connection_id> sms
 ```
 
-### High-Level Alternative: Setup Agent in One Step
+### 高级替代方案：一步设置代理
 
-Use the `setup-agent` command to create assistant and assign phone number:
+使用`setup-agent`命令创建助手并分配电话号码：
 
 ```bash
 python telnyx_api.py setup-agent "find-window-washing-contractors" "Contractor Caller" "You are calling to get quotes for commercial window washing. Ask about: rates per floor, availability, insurance. Be professional." "Hi, I am calling to inquire about your commercial window washing services. Do you have a moment to discuss rates?"
 ```
 
-This automatically:
-- Creates the assistant with telephony features
-- **Links the agent to the mission run** (if mission_id and run_id are in state)
-- Finds an available phone number
-- Assigns it to the assistant
-- Saves all IDs to the state file
+这会自动：
+- 创建具有电话功能的助手
+- **将助手与任务运行关联**（如果`mission_id`和`run_id`存在于状态中）
+- 查找可用的电话号码
+- 将其分配给助手
+- 将所有ID保存到状态文件中
 
-### Step 2.3: Link Agent to Mission Run
+### 步骤2.3：将代理与任务运行关联
 
-**IMPORTANT**: After creating an assistant, you MUST link it to the mission run. This allows the system to track which agents are working on which missions.
+**重要提示：** 创建助手后，必须将其与任务运行关联。这允许系统跟踪哪些代理正在处理哪些任务。
 
-**If using `setup-agent` command**: Linking is done automatically when mission_id and run_id are in the state.
+**如果使用`setup-agent`命令**：当`mission_id`和`run_id`存在于状态中时，关联会自动完成。
 
-**If setting up manually**:
+**如果手动设置：**
 ```bash
 python telnyx_api.py link-agent <mission_id> <run_id> <assistant_id>
 ```
 
-You can also list and unlink agents:
+您还可以列出和解除代理的关联：
 ```bash
 # List all agents linked to a run
 python telnyx_api.py list-linked-agents <mission_id> <run_id>
@@ -336,7 +335,7 @@ python telnyx_api.py list-linked-agents <mission_id> <run_id>
 python telnyx_api.py unlink-agent <mission_id> <run_id> <assistant_id>
 ```
 
-### Step 2.4: Log the Setup
+### 步骤2.4：记录设置
 
 ```bash
 python telnyx_api.py log-event <mission_id> <run_id> custom "Created voice assistant and assigned phone number" "setup" '{"assistant_id": "<assistant_id>", "phone_number": "+15551234567", "type": "telephony"}'
@@ -344,13 +343,13 @@ python telnyx_api.py log-event <mission_id> <run_id> custom "Created voice assis
 
 ---
 
-## Phase 3: Research & Data Gathering
+## 第3阶段：研究与数据收集
 
-Search for the information you need (contractors, leads, etc.):
+搜索您需要的信息（承包商、潜在客户等）：
 
-1. Use web search tools if available
-2. Use any specialized tools provided for the task
-3. Log each search as an event with step_id
+1. 如果有可用的网络搜索工具，请使用它们
+2. 使用为任务提供的任何专用工具
+3. 将每次搜索记录为事件，并附带`step_id`
 
 ```bash
 python telnyx_api.py log-event <mission_id> <run_id> tool_call "Searching for window washing contractors in Chicago" "research" '{"tool": "WebSearch", "query": "commercial window washing contractors Chicago"}'
@@ -358,30 +357,30 @@ python telnyx_api.py log-event <mission_id> <run_id> tool_call "Searching for wi
 
 ---
 
-## Phase 4: Scheduling Calls/SMS
+## 第4阶段：安排通话/SMS
 
-### Business Hours Consideration
+### 考虑营业时间
 
-**CRITICAL**: Before scheduling calls, consider business hours:
-- Typical business hours: 9 AM - 5 PM local time
-- If current time is outside business hours, schedule for next business day
-- `scheduled_at_fixed_datetime` must be in the future (at least 1 minute from now)
+**重要提示**：在安排通话之前，请考虑营业时间：
+- 典型的营业时间：当地时间上午9点至下午5点
+- 如果当前时间不在营业时间内，请安排在下一个营业日
+- `scheduled_at_fixed_datetime`必须在未来（至少距离现在1分钟）
 
-### Step 4.1: Schedule a Phone Call
+### 步骤4.1：安排电话通话
 
 ```bash
 python telnyx_api.py schedule-call <assistant_id> "+15551234567" "+15559876543" "2024-12-01T14:30:00Z" <mission_id> <run_id>
 ```
 
-**Save the returned `scheduled_event_id`**.
+**保存返回的`scheduled_event_id`**。
 
-### Step 4.2: Schedule an SMS
+### 步骤4.2：安排短信
 
 ```bash
 python telnyx_api.py schedule-sms <assistant_id> "+15551234567" "+15559876543" "2024-12-01T14:30:00Z" "Hi! I am reaching out on behalf of [COMPANY] to inquire about your window cleaning rates for commercial buildings. Could you share your pricing?"
 ```
 
-### Step 4.3: Log Each Scheduled Event
+### 步骤4.3：记录每个安排的事件
 
 ```bash
 python telnyx_api.py log-event <mission_id> <run_id> custom "Scheduled call to ABC Window Cleaning for 2:30 PM" "calls" '{"scheduled_event_id": "<event_id>", "contractor": "ABC Window Cleaning", "phone": "+15551234567", "scheduled_for": "2024-12-01T14:30:00Z"}'
@@ -389,102 +388,86 @@ python telnyx_api.py log-event <mission_id> <run_id> custom "Scheduled call to A
 
 ---
 
-## Phase 5: Monitoring Call Completion
+## 第5阶段：监控通话完成情况
 
-After a call is scheduled, you need to poll for completion.
+在安排通话后，您需要轮询通话是否完成。
 
-### Step 5.1: Check Scheduled Event Status
+### 步骤5.1：检查安排的事件状态
 
 ```bash
 python telnyx_api.py get-event <assistant_id> <scheduled_event_id>
 ```
 
-### Event Status Values
+### 事件状态值
 
-The event-level `status` tracks the overall lifecycle:
+事件级别的`status`跟踪整个生命周期：
 
-| Status | Meaning | Action |
+| 状态 | 含义 | 操作 |
 |--------|---------|--------|
-| `pending` | Waiting for scheduled time | Wait and check again later |
-| `in_progress` | Call/SMS in progress | Check again in a few minutes |
-| `completed` | Finished successfully | Get conversation_id, fetch insights |
-| `failed` | Failed after retries | Consider rescheduling |
+| `pending` | 等待预定时间 | 等待并稍后再次检查 |
+| `in_progress` | 通话/SMS正在进行中 | 几分钟后再次检查 |
+| `completed` | 成功完成 | 获取`conversation_id`，获取洞察 |
+| `failed` | 失败后尝试重试 | 考虑重新安排 |
 
-### Call Status Values (Phone Calls Only)
+### 通话状态值（仅限电话通话）
 
-The `call_status` field provides the telephony-level outcome. **This is the most important field for deciding what to do next.**
+`call_status`字段提供了电话级别的结果。**这是决定下一步行动的最重要字段。**
 
-| call_status | Meaning | Action |
+| call_status | 含义 | 操作 |
 |-------------|---------|--------|
-| `ringing` | Phone is ringing, not yet answered | Still in progress — wait and poll again in 1-2 minutes |
-| `in-progress` | Call is active, conversation ongoing | Still in progress — poll again in 2-3 minutes |
-| `completed` | Call connected and finished normally | Success — get `conversation_id`, fetch insights |
-| `no-answer` | Phone rang but nobody picked up | **Retryable** — reschedule for a different time |
-| `busy` | Line is busy | **Retryable** — reschedule in 10-15 minutes, line may free up quickly |
-| `canceled` | Call was canceled | Check if you canceled it; if not, may need to reschedule |
-| `failed` | Call failed (network/system error) | **Retryable** — reschedule after a short backoff (5-10 minutes) |
+| `ringing` | 电话正在响铃，尚未接听 | 仍然进行中 — 1-2分钟后再次尝试 |
+| `in_progress` | 通话正在进行中 | 2-3分钟后再次尝试 |
+| `completed` | 通话已连接并完成 | 成功 — 获取`conversation_id`，获取洞察 |
+| `no-answer` | 电话响了但无人接听 | **可重试** — 在不同的时间重新安排 |
+| `busy` | 线路忙 | **可重试** — 10-15分钟后再次尝试 |
+| `cancelled` | 通话被取消 | 查看是否已取消；如果没有，可能需要重新安排 |
+| `failed` | 通话失败（网络/系统错误） | **可重试** — 在短暂等待后（5-10分钟）再次尝试 |
 
-### Step 5.2: Polling Strategy
+### 步骤5.2：轮询策略
 
-**When to start polling**: A few minutes after `scheduled_at_fixed_datetime`
+**何时开始轮询**：在`scheduled_at_fixed_datetime`之后几分钟
 
-**Polling intervals based on call_status**:
-- `ringing` → poll again in 1-2 minutes (call may connect any moment)
-- `in-progress` → poll again in 2-3 minutes (conversation is happening)
-- `pending` (event status) → poll every 5 minutes until scheduled time passes
-- `no-answer` / `busy` / `failed` → stop polling, handle retry immediately
-- `completed` → done, proceed to fetch insights
+**根据`call_status`调整轮询间隔**：
+- `ringing` → 1-2分钟后再次尝试（电话可能随时接通）
+- `in_progress` → 2-3分钟后再次尝试（通话正在进行中）
+- `pending`（事件状态） → 每5分钟轮询一次，直到预定时间过去
+- `no-answer` / `busy` / `failed` → 停止轮询，立即重试
+- `completed` → 完成后，继续获取洞察
 
-**Timeout**: If still `ringing` or `in-progress` after 30 minutes, treat as failed.
+### 步骤5.3：处理可重试的通话状态
 
-### Step 5.3: Handle Retryable Call Statuses
+当`call_status`为`no-answer`、`busy`或`failed`时，可以尝试重试：
 
-When `call_status` is `no-answer`, `busy`, or `failed`, the call can be retried:
+1. 使用失败原因更新通话跟踪器
+2. 检查重试次数 — 默认最多重试3次（除非用户另有指定）
+3. 根据失败类型安排不同的重试时间：
+   - `busy` → 10-15分钟后再次尝试（线路可能很快空闲）
+   - `no-answer` → 30分钟到2小时后再次尝试（尝试不同的时间）
+   - `failed` → 5-10分钟后再次尝试（尝试不同的时间）
 
-1. Update the call tracker with the failure reason
-2. Check retry count — by default, retry up to 3 times (unless user specifies otherwise)
-3. Schedule a retry at a different time based on the failure type:
-   - `busy` → retry in 10-15 minutes (line may free up)
-   - `no-answer` → retry in 30 minutes to 2 hours (try a different time of day)
-   - `failed` → retry in 5-10 minutes (transient error)
-4. Log the failure and retry as events
+### 步骤5.4：获取对话洞察
 
-```bash
-# Update tracker
-python telnyx_api.py save-memory "<slug>" "call_tracker" '{"+15551234567": {"status": "no_answer", "attempts": 1, "call_status": "no-answer", "next_retry": "2024-12-02T10:00:00Z"}}'
+一旦通话完成并且您有了`conversation_id`，就获取对话洞察。
 
-# Log the failure
-python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" custom "Call not answered (busy), scheduling retry #2" "calls" '{"phone": "+15551234567", "call_status": "busy", "attempt": 1}'
+**重要提示**：始终使用洞察来获取通话摘要。**不要获取原始对话消息 — 洞察提供了对话结果的结构化摘要。**
 
-# Schedule retry
-python telnyx_api.py schedule-call <assistant_id> "+15551234567" "+15559876543" "2024-12-02T10:00:00Z" <mission_id> <run_id>
-```
-
----
-
-## Phase 6: Getting Conversation Insights
-
-Once a call completes and you have a `conversation_id`, retrieve the conversation insights.
-
-**IMPORTANT**: Always use insights to get the call summary. Do NOT fetch raw conversation messages - insights provide a structured summary of the conversation outcome.
-
-### Step 6.1: Get Conversation Insights
+### 步骤6.1：获取对话洞察
 
 ```bash
 python telnyx_api.py get-insights <conversation_id>
 ```
 
-### Step 6.2: Poll Until Insight is Complete
+### 步骤6.2：轮询直到洞察完成
 
-The insight may not be immediately ready after the call ends. **You must poll until the insight status is "completed".**
+对话洞察可能在通话结束后不会立即准备好。**您必须轮询，直到洞察状态变为“completed”。**
 
-**Polling strategy:**
-- Check immediately after getting the `conversation_id`
-- If status is NOT "completed", wait 10 seconds and retry
-- Continue polling until status is "completed" or 20 minutes have passed
-- Only use the insight data when status is "completed"
+**轮询策略：**
+- 在获取`conversation_id`后立即检查
+- 如果状态不是“completed”，等待10秒后再次尝试
+- 继续轮询，直到状态变为“completed”或20分钟过去
+**只有在状态为“completed”时才使用洞察数据**
 
-**Example polling flow:**
+**示例轮询流程：**
 ```bash
 # First attempt
 python telnyx_api.py get-insights "conv_xyz"
@@ -499,7 +482,7 @@ python telnyx_api.py get-insights "conv_xyz"
 # Output: Insight: Customer quoted $350 for a 10-story building...
 ```
 
-### Step 6.3: Log the Insight
+### 步骤6.3：记录洞察
 
 ```bash
 python telnyx_api.py log-event <mission_id> <run_id> custom "Call completed with ABC Window Cleaning - quoted $350" "calls" '{"conversation_id": "<conv_id>", "contractor": "ABC Window Cleaning", "outcome": "success", "quote": "$350", "availability": "next week", "notes": "Willing to negotiate for recurring contracts"}'
@@ -507,38 +490,38 @@ python telnyx_api.py log-event <mission_id> <run_id> custom "Call completed with
 
 ---
 
-## Phase 7: Complete the Mission
+## 第7阶段：完成任务
 
-### Step 7.1: Analyze Results
+### 步骤7.1：分析结果
 
-After all calls complete:
-1. Compare quotes and outcomes
-2. Select best options based on criteria
-3. Prepare summary for user
+在所有通话完成后：
+1. 比较报价和结果
+2. 根据标准选择最佳选项
+3. 为用户准备摘要
 
-### Step 7.2: Complete the Run
+### 步骤7.2：完成运行
 
 ```bash
 python telnyx_api.py update-run <mission_id> <run_id> succeeded
 ```
 
-Or with full results:
+或者使用完整结果：
 
 ```bash
 python telnyx_api.py complete "find-window-washing-contractors" <mission_id> <run_id> "Contacted 5 contractors, received 4 quotes. Best options: ABC Cleaning ($350) and XYZ Windows ($380)." '{"contractors_contacted": 5, "quotes_received": 4, "recommended": [{"name": "ABC Cleaning", "quote": 350}, {"name": "XYZ Windows", "quote": 380}]}'
 ```
 
-The `complete` command also removes the mission from the state file.
+`complete`命令还会从状态文件中删除任务。
 
 ---
 
-# Event Logging Reference
+# 事件日志参考
 
-**Log EVERY action as an event for complete audit trail.** Events are stored in the cloud and provide permanent backup even if local files are lost.
+**将每个操作都记录为事件，以获得完整的审计追踪。** 事件存储在云端，即使本地文件丢失也能提供永久备份。
 
-## CRITICAL: Update Step Status (Not Just Events!)
+## 重要提示：更新步骤状态（而不仅仅是事件！**
 
-**You MUST update the plan step status via `update-step` when starting or completing each step.** Logging events alone does NOT change the step status — the client tracks progress by looking at step statuses, not events.
+**在开始或完成每个步骤时，必须通过`update-step`更新步骤状态。** 仅记录事件不会更改步骤状态 — 客户通过查看步骤状态来跟踪进度。**
 
 ```bash
 # When STARTING a step:
@@ -557,11 +540,11 @@ python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" error "Failed: Could not 
 python telnyx_api.py update-step "$MISSION_ID" "$RUN_ID" "setup" "skipped"
 ```
 
-**Always call `update-step` BEFORE `log-event`** — this ensures the step status is correct even if the event logging fails.
+**总是在`log-event`之前调用`update-step`** — 这确保了步骤状态的正确性，即使事件记录失败。
 
-## IMPORTANT: step_id is Required
+## 重要提示：step_id是必需的**
 
-**step_id is a required parameter** - it links events to your plan steps, enabling tracking of which activities belong to which phase.
+**step_id是一个必需的参数** — 它将事件与您的计划步骤关联起来，从而能够跟踪哪些活动属于哪个阶段。
 
 ```bash
 # With step_id (links to plan step)
@@ -571,23 +554,23 @@ python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" custom "Found contractor"
 python telnyx_api.py log-event "$MISSION_ID" "$RUN_ID" custom "General note" "-" '{"note": "value"}'
 ```
 
-The step_id should match one of the step_id values from your plan (e.g., "research", "setup", "calls", "analyze").
+`step_id`应与计划中的`step_id`值之一匹配（例如，“research”、“setup”、“calls”、“analyze”）。
 
-| Action | Step Status Update | Event Type | step_id | Example Summary |
+| 操作 | 步骤状态更新 | 事件类型 | step_id | 示例摘要 |
 |--------|-------------------|------------|---------|-----------------|
-| Starting a plan step | `update-step ... in_progress` | `step_started` | step_id | "Starting: Research contractors" |
-| Completing a step | `update-step ... completed` | `step_completed` | step_id | "Completed: Research contractors" |
-| Step failed | `update-step ... failed` | `error` | step_id | "Failed: Could not reach contractors" |
-| Web search | — | `tool_call` | "research" | "Searching for window cleaning contractors" |
-| Creating assistant | — | `custom` | "setup" | "Created voice assistant: ast_123" |
-| Scheduling call | — | `custom` | "calls" | "Scheduled call to ABC for 2:30 PM" |
-| Call completed | — | `custom` | "calls" | "Call completed with ABC - got quote $350" |
-| Call failed | — | `error` | "calls" | "Call to XYZ not answered after 3 attempts" |
-| Decision made | — | `message` | "analyze" | "Selected ABC and XYZ as top choices" |
+| 开始计划步骤 | `update-step ... in_progress` | `step_started` | step_id | “开始：搜索承包商” |
+| 完成步骤 | `update-step ... completed` | `step_completed` | step_id | “完成：搜索承包商” |
+| 步骤失败 | `update-step ... failed` | `error` | step_id | “失败：无法联系到承包商” |
+| 网页搜索 | — | `tool_call` | “research” | “搜索擦窗承包商” |
+| 创建助手 | — | `custom` | “setup” | “创建语音助手：ast_123” |
+| 安排通话 | — | `custom` | “calls” | “安排与ABC的通话，时间为下午2:30” |
+| 通话完成 | — | `custom` | “通话完成，与ABC通话，获得报价$350” |
+| 通话失败 | — | `error` | “calls” | “与XYZ的通话未接听，尝试了3次” |
+| 做出决定 | — | `message` | “analyze” | “选择ABC和XYZ作为最佳选项” |
 
 ---
 
-# Quick Reference: All Commands
+# 快速参考：所有命令
 
 ```bash
 # Check setup
@@ -673,7 +656,7 @@ python telnyx_api.py complete <slug> <mission_id> <run_id> <summary> [payload_js
 
 ---
 
-# Complete Example: Window Washing Contractors
+# 完整示例：擦窗承包商
 
 ```bash
 # 1. Initialize the mission (creates mission, run, plan, sets to running)
@@ -774,13 +757,13 @@ python telnyx_api.py complete "find-window-washing-contractors" "mis_abc123" "ru
 
 ---
 
-# ⚠️ BEFORE CREATING ANYTHING: Review Existing Resources
+# ⚠️ 在创建任何内容之前：查看现有资源
 
-**Always check what already exists before creating new assistants, insights, or insight groups.** Reuse is better than duplication.
+**在创建新的助手、洞察或洞察组之前，始终检查已有的资源。** 重用比重复更好。
 
-### Pre-flight Checklist
+### 飞行前检查清单
 
-Run these commands at the start of every mission to inventory what's available:
+在每个任务开始时运行这些命令，以清点可用的资源：
 
 ```bash
 # 1. Search for existing assistants by name — maybe one already fits your use case
@@ -798,29 +781,29 @@ python telnyx_api.py list-insight-groups
 python telnyx_api.py list-phones --available
 ```
 
-**All list commands are paginated.** If you have many resources, page through with `--page=N`. The assistant name filter does substring matching — use it to quickly find relevant assistants instead of scrolling through pages.
+**所有列表命令都是分页的。** 如果您有很多资源，可以使用`--page=N`进行分页。助手名称过滤器支持子字符串匹配 — 使用它来快速找到相关的助手，而无需滚动页面。**
 
-### Decision Flow
+### 决策流程
 
-#### ⚠️ CRITICAL: Reuse Without Modification
+#### ⚠️ 重要提示：未经修改地重用
 
-**The rule is: reuse existing resources IF you can use them as-is. Do NOT modify existing assistants, insights, or insight groups that may be in use by other missions or users.** Editing a shared resource (e.g., changing an assistant's instructions or an insight's schema) can silently break unrelated workflows that depend on the current configuration.
+**规则是：如果可以原样使用现有资源，请重用它们。** 不要修改可能被其他任务或用户使用的现有助手、洞察或洞察组。** 修改共享资源（例如，更改助手的指令或洞察的架构）可能会无意中破坏依赖当前配置的工作流程。
 
-**Safe to reuse without modification:**
-- An existing assistant whose instructions, tools, voice, and settings already match your needs exactly
-- An existing insight template whose schema/instructions already extract what you need
-- The default "Summary" insight (always reuse this — never recreate it)
-- An existing insight group that already contains the insights you need
+**可以安全地未经修改地重用：**
+- 指令、工具、语音和设置已经完全符合您需求的现有助手
+- 模式/指令已经提取了您所需信息的现有洞察模板
+- 始终重用的默认“Summary”洞察
+- 已经包含您所需洞察的现有洞察组
 
-**When to create new instead of reusing:**
-- You need different instructions, tools, voice, or model → **create a new assistant**
-- You need a different extraction schema → **create a new insight template**
-- You need a different combination of insights → **create a new insight group**
-- The existing resource is "close but needs tweaks" → **create new, don't modify the existing one**
+**在以下情况下创建新资源而不是重用：**
+- 您需要不同的指令、工具、语音或模型 → **创建新的助手**
+- 您需要不同的提取模式 → **创建新的洞察模板**
+- 您需要不同的洞察组合 → **创建新的洞察组**
+- 现有资源“接近但需要调整” → **创建新的，不要修改现有的**
 
-**For dynamic context between calls** (e.g., Class 3 Sequential Negotiation, where you inject "best quote so far" into each call), use **dynamic variables passed via the scheduled events API** rather than modifying the assistant. Define variable placeholders in the assistant's instructions (e.g., `{{best_quote}}`) and pass the values at schedule time. This keeps the assistant immutable while varying context per call.
+**对于动态上下文（例如，在每次通话中插入“最佳报价”）**，使用**通过安排的事件API传递动态变量**，而不是修改助手。在助手的指令中定义变量占位符（例如，`{{best_quote}}），然后在安排时传递值。这样可以在每次通话中保持助手的不变性。**
 
-1. **Assistants:** Search for existing assistants. If one matches your needs exactly (instructions, tools, voice, model), reuse it. If it's close but not quite right, **create a new one** — don't modify the existing one:
+1. **助手：**搜索现有的助手。如果有一个完全符合您需求的助手（指令、工具、语音、模型），请重用它。如果它接近但不完全符合，**创建一个新的** — 不要修改现有的：
    ```bash
    python telnyx_api.py list-assistants --name=Weather  # search by name
    python telnyx_api.py get-assistant <id>  # inspect full config before deciding
@@ -828,19 +811,27 @@ python telnyx_api.py list-phones --available
    # If it doesn't fit → create a new assistant instead
    ```
 
-2. **Insights:** A structured insight like "extract high temperature and snow chance" is reusable across many missions. Check `list-insights` before creating a new one. If a good insight exists with the right schema, assign it to your group. If you need a different schema, create a new insight template — don't modify the existing one.
+2. **洞察：**像“提取最高温度和降雪概率”这样的结构化洞察可以在许多任务中重复使用。在创建新的洞察之前，请检查`list-insights`。如果有一个具有正确模式的良好洞察，请将其分配给您的组。如果您需要不同的模式，请创建新的洞察模板 — 不要修改现有的。
+3. **洞察组：**每个任务创建一个新的组（它们很便宜），但在它们匹配时用现有的洞察模板填充它们。只有当您的数据提取需求确实新的时候才创建新的洞察模板。
 
-3. **Insight Groups:** Create a new group per mission (they're cheap), but populate it with existing insight templates when they match. Only create new insight templates when your data extraction needs are genuinely new.
+**对于动态上下文（例如，在Class 3顺序谈判中，您需要在每次通话中插入“最佳报价”）**，使用**通过安排的事件API传递动态变量**，而不是修改助手。在助手的指令中定义变量占位符（例如，`{{best_quote}}），然后在安排时传递值。这样可以在每次通话中保持助手的不变性。
 
-4. **Phone Numbers:** Numbers already assigned to a connection can't be reused for a different assistant. Only grab unassigned numbers.
+1. **助手：**搜索现有的助手。如果有一个完全符合您需求的助手（指令、工具、语音、模型），请重用它。如果它接近但不完全符合，**创建一个新的** — 不要修改现有的：
+   ```bash
+   python telnyx_api.py list-assistants --name=Weather  # search by name
+   python telnyx_api.py get-assistant <id>  # inspect full config before deciding
+   # If it fits → reuse as-is
+   # If it doesn't fit → create a new assistant instead
+   ```
 
----
+2. **洞察：**像“提取最高温度和降雪概率”这样的结构化洞察可以在许多任务中重复使用。在创建新的洞察之前，请检查`list-insights`。如果有一个具有正确模式的良好洞察，请将其分配给您的组。如果您需要不同的模式，创建新的洞察模板 — 不要修改现有的。
+3. **洞察组：**每个任务创建一个新的组（它们很便宜），但在它们匹配时用现有的洞察模板填充它们。只有当您的数据提取需求确实新的时候才创建新的洞察模板。
 
-# Mission Classes
+## 任务类别
 
-Not all missions are the same. Before planning, identify which class your mission falls into — it determines whether calls run in parallel or serial, how state flows between calls, and whether human gates are needed.
+并非所有任务都相同。在计划之前，确定您的任务属于哪一类 — 这决定了通话是并行进行还是串行进行，状态如何在通话之间流动，以及是否需要人工干预。
 
-## Decision Tree
+## 决策树
 
 ```
 Does call N depend on results of call N-1?
@@ -856,24 +847,24 @@ Does call N depend on results of call N-1?
 
 ---
 
-## Class 1: Parallel Sweep
+## 类别1：并行扫雷
 
-Fan out calls in parallel batches. Every call asks the same question. No call depends on another's results. Collect all answers, then compare.
+并行分批拨打电话。每个电话都问同一个问题。没有任何电话依赖于另一个电话的结果。收集所有答案，然后进行比较。
 
-### When to Use
-- Same question to many targets (weather, hours, availability, prices)
-- Order doesn't matter — all calls are independent
-- You want raw data collection, not scoring or ranking
+### 何时使用
+- 对许多目标提出相同的问题（天气、营业时间、可用性、价格）
+- 排序无关紧要 — 所有电话都是独立的
+- 您需要原始数据收集，而不是评分或排名
 
-### Key Patterns
-- All calls use the **same assistant** with identical instructions
-- Schedule all calls in one batch (respect throttling limits — stagger by 1-2 min)
-- Use **structured insights** with a JSON schema to extract comparable data
-- Analysis happens after ALL calls complete
+### 关键模式
+- 所有电话都使用**相同的助手**和相同的指令
+- 将所有电话安排在同一批次中（遵守节流限制 — 每隔1-2分钟交错）
+- 使用**带有JSON模式的结构化洞察**来提取可比较的数据
+- 分析在所有电话完成后进行
 
-### Example 1: Weather IVR Sweep
+### 示例1：天气IVR扫雷
 
-**Goal:** Call 10 weather stations, extract today's high temperature, compare.
+**目标：**拨打10个气象站的电话，提取今天的最高温度，并进行比较。
 
 ```bash
 # Plan steps
@@ -899,9 +890,9 @@ Fan out calls in parallel batches. Every call asks the same question. No call de
 # 4. When all done: compare high_temp_f across all results, report hottest city
 ```
 
-### Example 2: Store Hours Check
+### 示例2：商店营业时间检查
 
-**Goal:** Call 10 retail stores to confirm holiday hours.
+**目标：**拨打10家零售店的电话，确认营业时间。
 
 ```bash
 # Same pattern: single assistant, all calls in parallel
@@ -921,25 +912,25 @@ Fan out calls in parallel batches. Every call asks the same question. No call de
 
 ---
 
-## Class 2: Parallel Screening with Rubric
+## 类别2：带有评分标准的并行筛选
 
-Fan out calls in parallel, but each call follows a structured rubric. Results are scored automatically via structured insights, then ranked post-hoc.
+并行分批拨打电话，但每个电话都遵循结构化的评分标准。结果通过结构化洞察自动评分，然后事后排名。
 
-### When to Use
-- You need to **rank or shortlist** from many candidates
-- Each call evaluates against the same criteria (scorecard)
-- Scoring is objective enough to define as a schema
-- You want automated ranking, not just raw data
+### 何时使用
+- 您需要**对许多候选人进行排名或筛选**
+- 每个电话都根据相同的标准进行评估（评分卡）
+- 评分足够客观，可以定义为模式
+- 您需要自动化排名，而不仅仅是原始数据
 
-### Key Patterns
-- Define the **rubric as a structured insight schema** upfront — include numeric scores, enums, booleans
-- The insight template does the scoring automatically from the conversation
-- After all calls complete, sort/filter results by score fields
-- The assistant instructions should guide the conversation to cover all rubric dimensions
+### 关键模式
+- 提前定义**评分标准作为结构化洞察模式** — 包括数字分数、枚举、布尔值
+- 洞察模板从对话中自动进行评分
+- 在所有电话完成后，根据评分字段对结果进行排序/筛选
+- 助手指令应指导对话以涵盖所有评分标准维度
 
-### Example 1: Restaurant Reservation Scout
+### 示例1：餐厅预订侦察
 
-**Goal:** Call 10 restaurants, score on availability/price/ambiance, rank top 3.
+**目标：**拨打10家餐厅的电话，根据可用性/价格/氛围进行评分，排名前三名。
 
 ```bash
 # Insight schema (the rubric)
@@ -967,9 +958,9 @@ Fan out calls in parallel, but each call follows a structured rubric. Results ar
 # 4. Collect structured insights → sort by overall_score desc → report top 3
 ```
 
-### Example 2: Interview Screening
+### 示例2：面试筛选
 
-**Goal:** Phone-screen 10 candidates, score on communication/experience/culture-fit, shortlist top 3.
+**目标：**通过电话筛选10位候选人，根据沟通/经验/文化契合度进行评分，排名前三名。
 
 ```bash
 # Insight schema (the rubric)
@@ -989,30 +980,28 @@ Fan out calls in parallel, but each call follows a structured rubric. Results ar
 # All 10 calls run in parallel → rank by overall_score → shortlist top 3
 ```
 
----
+## 类别3：顺序谈判
 
-## Class 3: Sequential Negotiation
+通话必须顺序进行。每个电话的策略都依赖于之前的结果。您正在利用之前的信息来获得更好的结果。
 
-Calls MUST run serially. Each call's strategy depends on previous results. You're leveraging information from earlier calls to get better outcomes in later ones.
+**⚠️ 绝不要并行化这些。** 整个价值来自于顺序信息的优势。
 
-**⚠️ NEVER parallelize these.** The entire value comes from sequential information advantage.
+### 何时使用
+- 您正在**谈判** — 报价、价格、条款
+- “目前最好的报价是X美元，你能超越它吗？”
+- 每个电话都需要之前通话的上下文
+- 通话顺序是一个战略决策
 
-### When to Use
-- You're **negotiating** — quotes, prices, terms
-- "Best quote so far is $X, can you beat it?"
-- Each call needs context from all previous calls
-- Call ordering is a strategic decision
+### 关键模式
+- **动态变量：**在安排的事件中使用`dynamic_variables`来根据每次通话注入上下文 — 不需要在通话之间修改助手
+- **状态向前传递：** 在内存中跟踪“迄今为止的最佳报价”，并将其作为动态变量传递给下一个通话
+- **通话顺序策略：** 从最不可能给出最佳报价的人开始（最弱的手开始）以便建立优势。将最强的候选人留到最后。**另一种方法：从最有可能给出可靠基线的候选人开始**
+- **一次一个电话：** 按照（带有动态变量的）顺序安排 → 轮询 → 获取洞察 → 更新状态 → 安排下一个
+- **助手保持不变：** 一次定义`{{best_quote}}`和`{{best_company}}`占位符，然后通过安排的事件API在每次通话中传递不同的值
 
-### Key Patterns
-- **Dynamic variables:** Use `dynamic_variables` in the scheduled event to inject context per call — no need to modify the assistant between calls
-- **State carries forward:** Track "best offer so far" in memory, pass it as a dynamic variable to the next call
-- **Call ordering strategy:** Start with whoever is least likely to give the best deal (weakest hand first) so you build leverage. Save the strongest candidate for last. Alternative: start with whoever will give a reliable baseline.
-- **One call at a time:** Schedule (with dynamic vars) → poll → get insight → update state → schedule next
-- **Assistant stays immutable** — define `{{best_quote}}` and `{{best_company}}` placeholders in instructions once, then pass different values per call via the scheduled events API
+### 示例1：屋顶工人报价
 
-### Example 1: Roofer Quotes
-
-**Goal:** Call 5 roofers sequentially, negotiate each against the best previous quote.
+**目标：**依次拨打5个屋顶工人的电话，与之前的最佳报价进行谈判。
 
 ```bash
 # Plan steps
@@ -1053,9 +1042,9 @@ Calls MUST run serially. Each call's strategy depends on previous results. You'r
 # 6. After all 5: report best deal with full comparison
 ```
 
-### Example 2: Car Insurance Quotes
+### 示例2：汽车保险报价
 
-**Goal:** Call 4 insurance providers, use each quote to leverage the next.
+**目标：**拨打4家保险公司的电话，利用每个报价进行下一步谈判。
 
 ```bash
 # Ordering strategy: Start with the provider you care least about (get a baseline),
@@ -1077,26 +1066,23 @@ Calls MUST run serially. Each call's strategy depends on previous results. You'r
 
 ---
 
-## Class 4: Multi-Round / Follow-up
+## 类别4：多轮/跟进
 
-The mission has distinct phases. Round 1 is broad outreach. Results are analyzed, a human approves the shortlist, then Round 2 does deep-dive calls with a different focus.
+任务有明确的阶段。第一轮是广泛的外联。结果进行分析，然后由人工进行筛选。
 
-### When to Use
-- Two or more distinct phases of calling
-- Human judgment needed between rounds (approval gate)
-- Round 2 targets a subset of Round 1
-- Round 2 may use a completely different assistant/instructions
+### 何时使用
+- 有两个或更多不同的呼叫阶段
+- 需要在轮次之间进行人工判断（审批关卡）
+- 第二轮针对第一轮的筛选结果
 
-### Key Patterns
-- Plan has explicit phases: `round-1-calls`, `round-1-analysis`, `human-approval`, `round-2-calls`
-- **Human approval gate:** DM the human via Telegram/Slack with Round 1 results + recommendation. Pause until they respond.
-- Round 2 assistant may have **completely different instructions** than Round 1
-- Track which candidates advanced to which round in memory
-- The cron job for Round 1 should trigger the human DM, then stop. A new cron handles Round 2 after approval.
+### 关键模式
+- 计划有明确的阶段：`round-1-calls`、`round-1-analysis`、`human-approval`、`round-2-calls`
+- **人工审批关卡：** 通过Telegram/Slack向人工发送第一轮的结果+建议。等待他们的回复。
+- 第二轮的助手可能有**完全不同的指令**
 
-### Example 1: Vendor Selection
+### 示例1：供应商选择
 
-**Goal:** Screen 10 vendors on basic criteria, shortlist top 3 with human approval, deep-dive on technical specs.
+**目标：**根据基本标准筛选10个供应商，通过人工审批筛选前三名。
 
 ```bash
 # Plan steps
@@ -1129,9 +1115,9 @@ The mission has distinct phases. Round 1 is broad outreach. Results are analyzed
 # Round 2 insight rubric: api_support, sla_score, dr_plan, references_provided
 ```
 
-### Example 2: Candidate Recruiting
+### 示例2：候选人招聘
 
-**Goal:** Phone-screen 15 candidates (Round 1), shortlist 5 (human approval), detailed interviews (Round 2).
+**目标：**通过电话筛选15位候选人（第一轮），筛选出5位（人工审批），进行详细面试（第二轮）。
 
 ```bash
 # Round 1: Quick 5-minute screen — "Tell me about your background, why this role,
@@ -1153,26 +1139,20 @@ python telnyx_api.py save-memory "<slug>" "rounds" '{
 }'
 ```
 
----
+## 类别5：信息收集 → 行动
 
-## Class 5: Information Gathering → Action
+打电话收集信息，但任务不仅仅是报告 — 它**根据结果采取行动**。一旦找到您需要的信息，就停止搜索并采取行动。
 
-Call to collect information, but the mission doesn't just report — it **takes action** based on results. Once you find what you need, stop searching and act.
+### 何时使用
+- 您需要**找到**某些东西（可用性、时间、匹配项），然后**采取行动**（预订它、确认它）
+- 提前终止：一旦达到目标，就停止呼叫
 
-### When to Use
-- You need to **find** something (availability, a slot, a match) and then **do** something (book it, confirm it, reserve it)
-- Early termination: stop calling once the goal is met
-- The last call transitions from "asking" to "acting"
+### 关键模式
+- **提前终止：** 当电话成功时（例如，餐厅有空位）**，停止呼叫。
 
-### Key Patterns
-- **Early termination:** When a call succeeds (e.g., restaurant has availability), cancel remaining scheduled calls. Use `list-events-assistant` to find pending events, then `cancel-scheduled-event` to cancel each one.
-- **Two-phase assistant instructions:** Phase 1 = "Are you available?" (screening). Phase 2 = "I'd like to book" (action). Use `update-assistant` to switch modes.
-- **Fallback expansion:** If the first batch yields no results, expand to more candidates
-- **The action step is the goal** — the mission succeeds when the action is taken, not when all calls complete
+### 示例1：餐厅预订
 
-### Example 1: Restaurant Booking
-
-**Goal:** Call restaurants until one has availability Friday 7pm for 4, then book it.
+**目标：**拨打餐厅的电话，直到找到周五下午4点的空位，然后预订它。
 
 ```bash
 # Plan steps
@@ -1209,9 +1189,9 @@ Call to collect information, but the mission doesn't just report — it **takes 
 # Early termination: when reservation_confirmed = true, mission succeeds
 ```
 
-### Example 2: Appointment Scheduling
+### 示例2：预约安排
 
-**Goal:** Call dentist offices until one has a slot this week, confirm the appointment.
+**目标：**拨打牙医办公室的电话，直到找到本周的预约时间。
 
 ```bash
 # Same pattern as restaurant booking:
@@ -1226,15 +1206,13 @@ Call to collect information, but the mission doesn't just report — it **takes 
 # or expand to more offices.
 ```
 
----
+## 跨类别模式
 
-## Cross-Cutting Patterns
+这些模式适用于多个任务类别。
 
-These patterns apply across multiple mission classes.
+### 1. 通话之间的动态上下文
 
-### 1. Dynamic Context Between Calls
-
-Use **dynamic variables** passed via the scheduled events API to inject context from previous call results into each call. This keeps the assistant immutable — define `{{variable}}` placeholders in instructions once, then pass different values per scheduled event. Essential for Class 3 (Sequential Negotiation) and Class 5 (action phase).
+使用**通过安排的事件API传递动态变量**，将之前通话的结果注入每个通话中。这保持助手的不变性 — 在指令中定义`{{variable}}占位符，然后通过安排的事件传递不同的值。这对于类别3（顺序谈判）和类别5（行动阶段）至关重要。
 
 ```bash
 # Assistant instructions use placeholders:
@@ -1249,9 +1227,9 @@ Use **dynamic variables** passed via the scheduled events API to inject context 
 python telnyx_api.py schedule-call <assistant_id> "+1555..." "+1555..." "<time>" <mission_id> <run_id> '{"best_quote": "$350", "best_company": "ABC Roofing"}'
 ```
 
-### 2. Human Approval Gates
+### 2. 人工审批关卡
 
-Between rounds or before taking action, DM the human and pause.
+在轮次之间或采取行动之前，通过Telegram/Slack与人工联系并暂停。
 
 ```
 # Pattern:
@@ -1263,9 +1241,9 @@ Between rounds or before taking action, DM the human and pause.
 # 6. Human replies "approved" or "change X" → cron detects reply → proceeds
 ```
 
-### 3. Early Termination
+### 3. 提前终止
 
-When the goal is met, stop unnecessary remaining calls.
+当目标达成时，停止不必要的剩余通话。
 
 ```bash
 # Check for pending events:
@@ -1275,384 +1253,659 @@ python telnyx_api.py list-events-assistant <assistant_id>
 python telnyx_api.py cancel-scheduled-event <assistant_id> <event_id>
 ```
 
-### 4. Call Ordering Strategy
+### 4. 通话顺序策略
 
-For Sequential Negotiation (Class 3), order matters:
+对于顺序谈判（类别3），呼叫顺序很重要：
 
-- **Weakest first:** Start with vendors you care least about. Get a baseline without pressure. Use their quotes as leverage for better vendors.
-- **Strongest last:** Save your preferred vendor for when you have maximum leverage.
-- **Baseline first:** Alternatively, start with whoever will give a reliable, honest baseline quote — then use it against everyone else.
-- **Random for parallel:** For Classes 1 and 2, order doesn't matter. Schedule however is convenient.
+- **最弱的人先开始：** 从您最不关心的供应商开始。在没有压力的情况下获取基准。使用他们的报价作为优势。
+- **最强的最后一个：** 最后使用最有力的供应商。
+- **先确定基准：** 或者先从最有可能给出可靠基准的供应商开始。
+
+### 示例1：屋顶工人报价
+
+**目标：**依次拨打5个屋顶工人的电话，与之前的最佳报价进行谈判。
+
+```bash
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create assistant + find roofers", "sequence": 1},
+  {"step_id": "call-1", "description": "Call roofer 1 (baseline)", "sequence": 2},
+  {"step_id": "call-2", "description": "Call roofer 2 with context", "sequence": 3},
+  {"step_id": "call-3", "description": "Call roofer 3 with context", "sequence": 4},
+  {"step_id": "call-4", "description": "Call roofer 4 with context", "sequence": 5},
+  {"step_id": "call-5", "description": "Call roofer 5 with context", "sequence": 6},
+  {"step_id": "analyze", "description": "Select best deal", "sequence": 7}
+]
+
+# Flow:
+# 1. Create assistant with dynamic variable placeholders in instructions:
+#    "Ask for a quote for roof repair on a 2000 sq ft home. Get price, timeline, warranty.
+#     {{#if best_quote}}
+#     CONTEXT: You have received a quote of {{best_quote}} from {{best_company}}.
+#     Mention this if the price seems high. Ask if they can match or beat it.
+#     {{/if}}"
+#    Set dynamic_variables: {"best_quote": null, "best_company": null}
+
+# 2. Call roofer 1 (no leverage yet — best_quote is null, so that section is skipped)
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID
+#    → get insight → save quote ($500)
+#    python telnyx_api.py save-memory "<slug>" "best_quote" '{"amount": 500, "company": "Roofer 1"}'
+
+# 3. Call roofer 2 — pass dynamic variables via scheduled event:
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID \
+#      '{"best_quote": "$500", "best_company": "Roofer 1"}'
+#    → get insight → if better ($420), update best_quote
+
+# 4. Call roofer 3 — pass updated context:
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID \
+#      '{"best_quote": "$420", "best_company": "Roofer 2"}'
+
+# 5. Repeat: schedule with new dynamic vars → poll → insight → update state → next
+# 6. After all 5: report best deal with full comparison
+```
+
+### 示例2：汽车保险报价
+
+**目标：**拨打4家保险公司的电话，利用每个报价进行下一步谈判。
+
+```bash
+# Ordering strategy: Start with the provider you care least about (get a baseline),
+# end with your preferred provider (maximum leverage).
+
+# Assistant instructions use dynamic variable placeholders:
+#   "You are calling about auto insurance for a 2022 Toyota Camry.
+#    {{#if best_quote}}
+#    LEVERAGE: The best quote so far is {{best_quote}}/month
+#    from {{best_company}}. Mention this and ask them to beat it.
+#    {{/if}}"
+
+# Sequential pattern — pass dynamic variables per call:
+# Call 1 (baseline): no leverage vars → "What's your rate for [coverage details]?"
+# Call 2: {"best_quote": "$180", "best_company": "Geico"}
+# Call 3: {"best_quote": "$155", "best_company": "Progressive"}
+# Call 4 (preferred): {"best_quote": "$145", "best_company": "StateFarm"}
+```
 
 ---
 
-# Operational Guide: Best Practices for Voice Missions
+## 类别4：多轮/跟进
 
-This section covers real-world considerations for running voice missions at scale. **Read this before planning any mission involving outbound calls.**
+任务有不同的阶段。第一轮是广泛的外联。结果进行分析，然后由人工批准筛选名单，第二轮进行深入的通话。
 
-## Default Tools: Always Include send_dtmf
+### 何时使用
+- 有两个或更多不同的呼叫阶段
+- 需要在轮次之间进行人工判断（审批关卡）
+- 第二轮针对第一轮的筛选结果
 
-**The `send_dtmf` tool is included by default** on all assistants created by this skill. Most outbound calls — even to businesses with live staff — will hit an IVR or phone tree first before reaching a person. Without `send_dtmf`, the assistant can't navigate these menus and the call will fail or time out.
+### 关键模式
+- 计划有明确的阶段：`round-1-calls`、`round-1-analysis`、`human-approval`、`round-2-calls`
+- **人工审批关卡：** 通过Telegram/Slack向人工发送第一轮的结果+建议。等待他们的回复。
+- 第二轮的助手可能有**完全不同的指令**
 
-If you explicitly pass a custom `tools` list, make sure to include `send_dtmf` unless you have a specific reason not to.
+### 示例1：供应商选择
 
-## Noise Suppression: Disabled by Default
-
-**Noise suppression is disabled by default** for mission assistants. Aggressive noise suppression (krisp, deepfilternet) can interfere with IVR tones, hold music, and low-quality phone audio, causing the assistant to miss information. Only enable it if you're in a known-noisy environment and calling humans directly.
-
-## IVR Navigation Tips
-
-**Tip:** Some numbers include required button presses in their listing (e.g., `602-275-0073(#4)`). Include these in the assistant's instructions: *"After connecting, press # then 4 to reach the local forecast."*
-
-**Expect IVRs even when calling businesses.** Most restaurants, hotels, and offices have a phone tree. Instruct the assistant: *"If you reach an automated menu, press 0 or say 'representative' to reach a person. If you hear options, press the one for reservations/front desk."*
-
-## Insights Over Transcripts
-
-**Always prefer structured insights over raw transcripts for analyzing call results.** Insights give you machine-readable, consistent data. Transcripts are noisy and require parsing.
-
-### Setting Up Structured Insights for a Mission
-
-**Step 1: Create a structured insight template** with a JSON schema defining exactly what to extract:
+**目标：**根据基本标准筛选10个供应商，通过人工审批筛选前三名。
 
 ```bash
-python telnyx_api.py create-insight "Weather Forecast Data" \
-  "Extract weather forecast information from the recorded forecast. Listen for today's high temperature, any mention of snow or snow probability, and a brief summary of conditions." \
-  '{"json_schema": {"type": "object", "properties": {"location": {"type": "string", "description": "City or region name"}, "high_temp_f": {"type": "number", "description": "Todays high temperature in Fahrenheit"}, "low_temp_f": {"type": "number", "description": "Todays low temperature in Fahrenheit"}, "snow_mentioned": {"type": "boolean", "description": "Whether snow was mentioned in the forecast"}, "snow_chance_pct": {"type": "number", "description": "Snow probability percentage if mentioned, null otherwise"}, "forecast_summary": {"type": "string", "description": "Brief summary of forecast conditions"}}, "required": ["location", "high_temp_f", "snow_mentioned"]}}'
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create screening assistant + insight rubric", "sequence": 1},
+  {"step_id": "round-1-calls", "description": "Screen all 10 vendors", "sequence": 2},
+  {"step_id": "round-1-analysis", "description": "Rank and shortlist top 3", "sequence": 3},
+  {"step_id": "human-approval", "description": "DM human with top 3, wait for approval", "sequence": 4},
+  {"step_id": "round-2-setup", "description": "Create deep-dive assistant with technical questions", "sequence": 5},
+  {"step_id": "round-2-calls", "description": "Deep-dive calls with approved vendors", "sequence": 6},
+  {"step_id": "final-analysis", "description": "Final recommendation", "sequence": 7}
+]
+
+# Round 1 assistant: "Ask about pricing, lead time, minimum order, and general capabilities."
+# Round 1 insight rubric: price_score, lead_time_days, meets_minimum, capability_match
+
+# After Round 1 completes:
+# → Rank by scores → DM human:
+#   "Round 1 complete. Top 3 vendors:
+#    1. VendorA — score 8.5, $12/unit, 2-week lead
+#    2. VendorB — score 7.8, $14/unit, 1-week lead
+#    3. VendorC — score 7.2, $11/unit, 3-week lead
+#    Approve these for Round 2? Reply YES or adjust."
+
+# Wait for human response (pause cron or check for reply)
+
+# Round 2 assistant (different!): "Ask detailed technical questions:
+#   API integration support? SLA guarantees? Disaster recovery?
+#   Reference customers we can contact?"
+# Round 2 insight rubric: api_support, sla_score, dr_plan, references_provided
 ```
 
-**Step 2: Create an insight group and assign the insight:**
+### 示例2：候选人招聘
+
+**目标：**通过电话筛选15位候选人（第一轮），筛选出5位（人工审批），进行详细面试（第二轮）。
 
 ```bash
-python telnyx_api.py create-insight-group "Weather Mission Insights"
-python telnyx_api.py assign-insight <group_id> <insight_id>
-```
+# Round 1: Quick 5-minute screen — "Tell me about your background, why this role,
+#   salary expectations, availability."
+# Insight rubric: communication_score, experience_match, salary_in_range, enthusiasm
 
-**Step 3: Wire the group to the assistant** via `insight_settings`:
+# → Rank → DM human with top 5 + scores
+# → Human approves (or swaps in someone from position 6-7)
 
-```bash
-python telnyx_api.py create-assistant "Weather Listener" \
-  "..." "..." \
-  '{"features": ["telephony"], "insight_settings": {"insight_group_id": "<group_id>"}}'
-```
+# Round 2: 15-minute deep dive — completely different assistant:
+#   "Ask about: specific project experience with [TECH], how they handle conflict,
+#    a time they failed and what they learned, questions they have for us."
+# Different insight rubric: technical_depth, problem_solving, culture_fit, curiosity
 
-Now every completed call automatically produces structured JSON you can compare across calls — no transcript parsing needed.
-
-### Always Pair Structured Insights with an Unstructured Summary
-
-**When creating structured insights, always also add an unstructured "Conversation Summary" insight to the group.** Structured schemas only capture what you explicitly define — if the conversation reveals something unexpected (an alternative time offered, a special event mentioned, a caveat), the structured insight will miss it.
-
-**Every account has a default "Summary" insight** — search for it and reuse it instead of creating a new one:
-
-```bash
-# 1. Find the default Summary insight (may be on later pages — paginate!)
-python telnyx_api.py list-insights
-python telnyx_api.py list-insights --page=2
-# Look for one named "Summary" (unstructured) — it's typically one of the earliest created
-
-# 2. Only if you can't find it, create one:
-python telnyx_api.py create-insight "Conversation Summary" \
-  "Provide a detailed summary of the entire conversation. Include everything discussed: what was asked, what was answered, any alternatives offered, tone of the interaction, and any information that might be useful but wasn't explicitly asked about. Be thorough — this is the safety net for anything the structured extraction might miss."
-
-# 3. Add BOTH structured + summary to the insight group
-python telnyx_api.py assign-insight <group_id> <structured_insight_id>
-python telnyx_api.py assign-insight <group_id> <summary_insight_id>
-```
-
-This way you get clean structured data for ranking/comparison AND a full narrative you can fall back on.
-
-### When to Use Unstructured Insights
-
-Use unstructured (free-text) insights when:
-- You need open-ended summaries or qualitative analysis
-- The data you want doesn't fit a fixed schema
-- You're exploring what information is available before defining structure
-
-Use structured insights when:
-- You need to compare data across many calls (scores, categories, numbers)
-- You're feeding results into analytics or dashboards
-- You need boolean flags or enum classifications
-- The mission has a clear set of data points to extract
-
-## Call Limits and Throttling
-
-**Be aware of your Telnyx account's concurrent call limits.** Firing 100 outbound calls simultaneously will hit rate limits and fail.
-
-### Recommended approach:
-- **Check your account limits** before planning batch sizes
-- **Stagger calls in batches** — e.g., 5-10 concurrent calls, wait for completion, then next batch
-- **Space scheduled times** — schedule calls at least 1-2 minutes apart within a batch
-- **Monitor failures** — if you see rate limit errors (HTTP 429), reduce batch size and increase spacing
-- **Log batch progress** — track which batch you're on in mission memory so you can resume after failures
-
-### Example batching pattern:
-```
-Batch 1: Numbers 1-10  → schedule at T+0, T+1m, T+2m, ... T+9m
-Wait for Batch 1 completion (poll all events)
-Batch 2: Numbers 11-20 → schedule at T+0, T+1m, ...
-...
-```
-
-## Answering Machine Detection (AMD / Voicemail Detection)
-
-The assistant supports voicemail detection via `telephony_settings.voicemail_detection`. **Use it wisely based on your target:**
-
-### When to ENABLE AMD:
-- Calling **humans** where you want to leave a voicemail or skip machines
-- Outbound sales/outreach where talking to a live person matters
-- Configure `on_voicemail_detected` action:
-  - `stop_assistant` — just hang up, don't leave a message
-  - `leave_message_and_stop_assistant` — leave a voicemail, then hang up
-
-```bash
-# Just hang up on voicemail (no message)
-python telnyx_api.py create-assistant "Human Caller" "..." "..." \
-  '{"features": ["telephony"], "telephony_settings": {"voicemail_detection": {"on_voicemail_detected": {"action": "stop_assistant"}}}}'
-
-# Leave a voicemail message, then hang up
-python telnyx_api.py create-assistant "Human Caller" "..." "..." \
-  '{"features": ["telephony"], "telephony_settings": {"voicemail_detection": {"on_voicemail_detected": {"action": "leave_message_and_stop_assistant", "voicemail_message": {"type": "prompt", "prompt": "Leave a brief message explaining why you called and ask them to call back."}}}}}'
-```
-
-### When to DISABLE AMD (or omit it):
-- Calling **IVR systems, automated lines, or recordings** — AMD would detect "machine" and hang up on the exact thing you're trying to interact with
-- Any scenario where the "answering machine" IS the target
-- **Calling businesses with phone trees** — many restaurants, hotels, and service businesses use automated greetings or "press 1 for..." menus. AMD will classify these as machines and prevent your assistant from navigating the menu with DTMF or voice. Disable AMD so the assistant can interact normally.
-- When you want the assistant to engage regardless of what picks up
-
-**How to disable AMD:** Set the action to `continue_assistant` — this tells the assistant to keep going even if voicemail/machine is detected. Do NOT set `voicemail_detection` to `null` — that may not stick or may revert to defaults on some API operations.
-
-```bash
-python telnyx_api.py update-assistant <assistant_id> '{"telephony_settings": {"voicemail_detection": {"on_voicemail_detected": {"action": "continue_assistant"}}}}'
-```
-
-**Rule of thumb:** If there's any chance the call will be answered by an automated greeting, phone tree, or IVR — even a simple "press 1 for reservations" — disable AMD. It's better to handle a voicemail manually than to have AMD block your assistant from navigating a phone menu.
-
-## Polling for Results: Use Cron Jobs
-
-After scheduling calls, **do not block the main session with polling loops.** Instead, set up a cron job to poll for results periodically.
-
-### The Pattern
-
-1. **Main session** handles setup + scheduling (interactive, needs human input)
-2. **Main session creates a cron job** that periodically checks call status
-3. **Cron job** (isolated session) loads mission memory, polls pending events, collects insights, updates tracker, handles retries
-4. **Cron job removes itself** when all calls are resolved (succeeded/abandoned)
-5. **Cron job reports results** to the human via the configured channel
-
-### Why Cron Over Sub-Agents
-
-- **No timeout limits** — missions can span minutes or hours (retries across business hours)
-- **Doesn't burn a session** — fires briefly every N minutes, not continuously
-- **Handles mixed durations** — fast batch results + slow retries in the same mission
-- **Survives session restarts** — cron persists independently of the main session
-
-### Safety: Cron Jobs Must Never Schedule Uncontrolled Calls
-
-**CRITICAL:** The polling cron job must ONLY:
-- Poll event status (read-only)
-- Collect insights (read-only)
-- Schedule retries ONLY when the attempt counter is below the max AND the status warrants it
-
-**Never** schedule new calls without checking the tracker first. The cron should be **idempotent** — running it twice with the same state must not produce duplicate calls. Always check `status` and `attempts` before scheduling anything.
-
-**Always clean up:** The cron MUST remove itself when the mission is complete. Include the cron job ID in the task prompt so the isolated session can call `cron remove`.
-
-### Cron Must Complete the Full Mission Lifecycle
-
-The polling cron isn't just checking statuses — it's responsible for the FULL mission lifecycle after calls are scheduled. The cron task prompt MUST include instructions to:
-
-1. **Poll event statuses** for all pending calls
-2. **Collect insights** from completed conversations
-3. **Log events** for each completed call (with conversation_id in payload)
-4. **Update plan step statuses** — call `update-step` to mark steps as `in_progress`/`completed`/`failed`, AND log corresponding events
-5. **Save results to mission memory** — intermediate and final results
-6. **Handle retries** — schedule retries for failures (checking tracker first)
-7. **Complete the mission** — mark all remaining steps as `completed` (or `failed`/`skipped`), then call `complete` with `result_summary` and `result_payload`
-8. **Report to human** — send summary via Telegram/Slack
-9. **Remove itself** — delete the cron job
-
-**If you skip steps 3-7, the mission will look abandoned in the Telnyx portal** — run status stuck on "running", plan steps all "pending", no results recorded. The portal is the source of truth for anyone reviewing missions.
-
-### Linking Conversations to Missions
-
-When a call completes and you get a `conversation_id`, always log it as an event on the mission run. This creates the link between the conversation and the mission in the audit trail:
-
-```bash
-python telnyx_api.py log-event <mission_id> <run_id> custom \
-  "Call completed: Miami FL" "batch-calls" \
-  '{"conversation_id": "conv_xyz", "location": "Miami FL", "phone": "+13052294550"}'
-```
-
-There is no dedicated API to formally link conversations to mission runs. The `link-agent` command links the assistant, but individual conversations are tracked via events. **Always include conversation_id in event payloads** so the relationship is traceable.
-
-### Cron Job Setup
-
-After scheduling calls, create a cron job like:
-
-```
-Schedule: every 2-3 minutes
-Session: isolated (agentTurn)
-Task: "Load mission memory from .missions_state.json for slug '<slug>'.
-  For each call in call_tracker with status 'scheduled' or 'in_progress':
-    - Poll get-event for the event_id
-    - If completed with conversation_id: get-insights, update status to 'succeeded', save results
-    - If failed: increment attempts, schedule retry if under max, or mark abandoned
-  When ALL calls are succeeded or abandoned:
-    - Update plan step statuses: update-step for each step (completed/failed)
-    - Run analysis (compare results)
-    - Complete the mission (update-step for analyze step, then complete command)
-    - Report summary to the human
-    - Remove this cron job"
-```
-
-### Cron Polling Intervals
-
-| Phase | Interval | Rationale |
-|---|---|---|
-| Active calls (just scheduled) | Every 2-3 min | Calls complete within minutes |
-| Waiting for retries | Every 10-15 min | Retries are spaced out |
-| All calls complete, analyzing | One-shot | Final analysis, then done |
-
-Adjust the interval based on the mission — short batch sweeps poll frequently, long-running outreach can poll less often.
-
-## Retry Strategy
-
-Every mission involving outbound calls needs a retry plan. Calls fail — busy signals, no answer, network issues, IVR timeouts.
-
-### Tracking Call Status
-
-Track every number's status in mission memory:
-
-```bash
-python telnyx_api.py save-memory "<slug>" "call_tracker" '{
-  "+15551234567": {"status": "pending", "attempts": 0, "location": "Phoenix, AZ"},
-  "+15559876543": {"status": "pending", "attempts": 0, "location": "Chicago, IL"}
+# Track in memory:
+python telnyx_api.py save-memory "<slug>" "rounds" '{
+  "round_1": {"candidates": [...], "advanced": ["+1555...", "+1555..."]},
+  "round_2": {"candidates": [...], "results": [...]}
 }'
 ```
 
-Status values: `pending` → `scheduled` → `succeeded` | `failed` | `no_answer` | `busy` | `abandoned`
+## 类别5：信息收集 → 行动
 
-The tracker `status` should reflect the `call_status` from the API response:
-- `call_status: completed` → tracker status: `succeeded`
-- `call_status: no-answer` → tracker status: `no_answer`
-- `call_status: busy` → tracker status: `busy`
-- `call_status: failed` → tracker status: `failed`
-- `call_status: canceled` → tracker status: `abandoned` (unless you want to retry)
+打电话收集信息，但任务不仅仅是报告 — 它**根据结果采取行动**。一旦找到您需要的信息，就停止搜索并采取行动。
 
-### Retry Policy
+### 何时使用
+- 您需要**找到**某些东西（可用性、时间、匹配项），然后**采取行动**（预订它、确认它）**
 
-Retry strategy depends on **who you're calling**. An IVR or restaurant front desk can be called back in minutes. A vendor, interview candidate, or professional contact should get a voicemail and a callback days later during business hours.
+### 示例1：餐厅预订
 
-#### Retry by Recipient Type
-
-**Automated systems (IVR, hotlines, info lines):**
-
-| Failure Type | Max Retries | Backoff | Notes |
-|---|---|---|---|
-| No answer | 3 | 15 min | System may be temporarily busy |
-| Busy signal | 3 | 10 min | Line may free up quickly |
-| Network/timeout | 2 | 5 min | Transient, retry sooner |
-| Empty insights | 2 | 15 min | Adjust DTMF or instructions |
-
-**Service industry (restaurants, shops, front desks):**
-
-| Failure Type | Max Retries | Backoff | Notes |
-|---|---|---|---|
-| No answer | 3 | 30 min - 2 hours | Try different times; avoid peak hours (lunch/dinner for restaurants) |
-| Busy signal | 3 | 15-30 min | Front desk may be slammed |
-| Voicemail | 1 | Leave message, retry next business day | Don't leave multiple voicemails |
-| Empty insights | 2 | 1 hour | May have reached wrong dept |
-
-**Professionals (vendors, candidates, B2B contacts):**
-
-| Failure Type | Max Retries | Backoff | Notes |
-|---|---|---|---|
-| No answer | 2 | 1-2 business days | Enable AMD — leave a voicemail on first no-answer |
-| Voicemail | 0 | — | Leave one voicemail with callback info, don't call again until they respond or 2+ days pass |
-| Busy signal | 2 | 2-4 hours | They're on another call |
-| Empty insights | 1 | Next business day | Retry with clearer instructions |
-
-**Key rules for professional contacts:**
-- **Always enable voicemail detection** — leave a professional message on no-answer
-- **Never call the same person twice in one day** unless they asked you to
-- **Business hours only** — schedule retries between 9 AM - 5 PM in the recipient's timezone
-- **One voicemail max** — leaving multiple voicemails is pushy and counterproductive
-- **Track voicemails left** in the call tracker: `"voicemail_left": true`
-
-#### General Failure Types
-
-**"Call completed with empty insights"** is a distinct failure from "call failed." The call connects but insight extraction returns nothing. Causes:
-- IVR menu wasn't navigated correctly (missing DTMF)
-- Recording was too short or garbled
-- Assistant spoke over the recording instead of listening
-- Wrong department or menu path reached
-
-Consider retrying with adjusted instructions or DTMF sequences.
-
-### Retry Flow
-
-1. After each call completes (or fails), update the tracker:
-```bash
-python telnyx_api.py save-memory "<slug>" "call_tracker" '{"+15551234567": {"status": "no_answer", "attempts": 1, "last_attempt": "2024-12-01T15:00:00Z", "next_retry": "2024-12-01T15:15:00Z"}}'
-```
-
-2. After each batch, scan for retryable failures and schedule the next attempt
-3. After max retries, mark as `abandoned` and move on
-4. Log all retries as events so the audit trail is complete:
-```bash
-python telnyx_api.py log-event "$MID" "$RID" custom "Retry #2 for Phoenix - no answer on first attempt" "calls" '{"phone": "+15551234567", "attempt": 2, "reason": "no_answer"}'
-```
-
-### Time-Based Retry Spread
-
-For missions spanning many numbers, spread retries across time:
-- **Attempt 1:** Original scheduled time
-- **Attempt 2:** 15-30 minutes later
-- **Attempt 3:** 2-4 hours later or next business day
-- This increases the chance of reaching a live system or avoiding peak congestion
-
-## Phone Number Selection
-
-When assigning phone numbers to an assistant:
-
-1. **Prefer HD voice numbers** — `get-available-phone` automatically prioritizes these
-2. **Fall back gracefully** — not all number types support HD voice; the skill handles this
-3. **For IVR calls**, HD voice improves transcription accuracy since the audio quality is better
-4. **For human calls**, HD voice provides a more natural experience
+**目标：**拨打餐厅的电话，直到找到周五下午4点的空位，然后预订它。
 
 ```bash
-# Automatically prefers HD voice, falls back if unavailable
-python telnyx_api.py get-available-phone
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create screening assistant", "sequence": 1},
+  {"step_id": "screen", "description": "Call restaurants to check availability", "sequence": 2},
+  {"step_id": "book", "description": "Book at first available restaurant", "sequence": 3}
+]
 
-# Assign with HD voice enabled (falls back if not supported)
-python telnyx_api.py assign-phone <phone_id> <connection_id> voice
+# Flow:
+# 1. Create assistant: "Call and ask if they have a table for 4 this Friday at 7pm.
+#    If yes, say you'd like to book it under the name [NAME]. Confirm the reservation.
+#    If no, ask about Saturday instead, then politely end the call."
 
-# Explicitly disable HD voice if needed
-python telnyx_api.py assign-phone <phone_id> <connection_id> voice --no-hd
+# 2. Schedule calls to 5 restaurants (parallel — screening doesn't depend on each other)
+
+# 3. Poll results as they come in:
+#    - Restaurant A: no availability → continue
+#    - Restaurant B: has availability, BOOKED! → SUCCESS
+#    - Cancel/ignore remaining calls (Restaurants C, D, E)
+#    - If none of the 5 work: expand to 5 more restaurants (fallback)
+
+# Insight schema:
+{"type": "object", "properties": {
+  "restaurant_name": {"type": "string"},
+  "has_availability": {"type": "boolean"},
+  "reservation_confirmed": {"type": "boolean"},
+  "reservation_time": {"type": "string"},
+  "reservation_name": {"type": "string"},
+  "confirmation_number": {"type": "string"},
+  "alternative_offered": {"type": "string"}
+}, "required": ["restaurant_name", "has_availability", "reservation_confirmed"]}
+
+# Early termination: when reservation_confirmed = true, mission succeeds
 ```
 
----
+### 示例2：预约安排
 
-# Error Handling
+**目标：**拨打牙医办公室的电话，直到找到本周的预约时间。
 
-The Python script provides clear error messages:
+```bash
+# Same pattern as restaurant booking:
+# 1. Screen in parallel: "Do you have any openings this week for a cleaning?"
+# 2. First office with availability: "I'd like to book that slot for [NAME], DOB [DOB]."
+# 3. Stop remaining calls once booked.
 
-1. **No API key**: Prints "ERROR: TELNYX_API_KEY environment variable not set" and exits
-2. **HTTP errors**: Prints the status code, reason, and response body
-3. **Connection errors**: Prints the connection error details
-4. **No available phone numbers**: Prints instructions to purchase at portal.telnyx.com
+# Key difference: may need to provide insurance info, patient details.
+# Assistant instructions include all necessary details upfront.
 
----
+# Fallback: if no office has availability this week, expand search to next week
+# or expand to more offices.
+```
 
-# Troubleshooting
+## 跨类别模式
 
-**Command not working?**
-1. Check API key: `python telnyx_api.py check-key`
-2. Run with verbose output by adding print statements or checking stderr
+这些模式适用于多个任务类别。
 
-**JSON parsing errors?**
-- Make sure JSON arguments use single quotes around the whole string
-- Escape inner quotes or use different quote styles
+### 1. 通话之间的动态上下文
 
-**Missing arguments?**
-- Run `python telnyx_api.py` without arguments to see usage
+使用**通过安排的事件API传递动态变量**，将之前通话的结果注入每个通话中。这保持助手的不变性 — 在指令中定义`{{variable}}占位符，然后通过安排的事件传递不同的值。这对于类别3（顺序谈判）和类别5（行动阶段）至关重要。
+
+```bash
+# Assistant instructions use placeholders:
+#   "You are calling to get a quote for roof repair on a 2000 sq ft home.
+#    {{#if best_quote}}
+#    IMPORTANT CONTEXT: Another contractor has quoted {{best_quote}}.
+#    If this contractor quotes higher, mention you have a better offer and ask if
+#    they can match or beat it. Be professional but firm.
+#    {{/if}}"
+
+# After getting a quote of $350 from call 1, pass it as a dynamic variable on call 2:
+python telnyx_api.py schedule-call <assistant_id> "+1555..." "+1555..." "<time>" <mission_id> <run_id> '{"best_quote": "$350", "best_company": "ABC Roofing"}'
+```
+
+### 2. 人工审批关卡
+
+在轮次之间或采取行动之前，通过Telegram/Slack与人工联系并暂停。
+
+```
+# Pattern:
+# 1. Cron job detects Round 1 complete
+# 2. Formats results summary
+# 3. Sends message to human via Telegram/Slack
+# 4. Saves state: {"awaiting_approval": true, "approval_summary": "..."}
+# 5. Cron continues to poll but takes no action until human responds
+# 6. Human replies "approved" or "change X" → cron detects reply → proceeds
+```
+
+### 3. 提前终止
+
+当目标达成时，停止不必要的剩余通话。
+
+```bash
+# Check for pending events:
+python telnyx_api.py list-events-assistant <assistant_id>
+
+# Cancel each pending event:
+python telnyx_api.py cancel-scheduled-event <assistant_id> <event_id>
+```
+
+### 4. 通话顺序策略
+
+对于顺序谈判（类别3），呼叫顺序很重要：
+
+- **最弱的人先开始：** 从您最不关心的供应商开始。在没有压力的情况下获取基准。使用他们的报价作为优势。
+- **最强的最后一个：** 最后使用最有力的供应商。
+- **先确定基准：** 或者先从最有可能给出可靠基准的供应商开始。
+- **顺序安排：** 先拨打最不可能给出最佳报价的供应商（最弱的人）。
+
+### 示例1：屋顶工人报价
+
+**目标：**依次拨打5个屋顶工人的电话，与之前的最佳报价进行谈判。
+
+```bash
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create assistant + find roofers", "sequence": 1},
+  {"step_id": "call-1", "description": "Call roofer 1 (baseline)", "sequence": 2},
+  {"step_id": "call-2", "description": "Call roofer 2 with context", "sequence": 3},
+  {"step_id": "call-3", "description": "Call roofer 3 with context", "sequence": 4},
+  {"step_id": "call-4", "description": "Call roofer 4 with context", "sequence": 5},
+  {"step_id": "call-5", "description": "Call roofer 5 with context", "sequence": 6},
+  {"step_id": "analyze", "description": "Select best deal", "sequence": 7}
+]
+
+# Flow:
+# 1. Create assistant with dynamic variable placeholders in instructions:
+#    "Ask for a quote for roof repair on a 2000 sq ft home. Get price, timeline, warranty.
+#     {{#if best_quote}}
+#     CONTEXT: You have received a quote of {{best_quote}} from {{best_company}}.
+#     Mention this if the price seems high. Ask if they can match or beat it.
+#     {{/if}}"
+#    Set dynamic_variables: {"best_quote": null, "best_company": null}
+
+# 2. Call roofer 1 (no leverage yet — best_quote is null, so that section is skipped)
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID
+#    → get insight → save quote ($500)
+#    python telnyx_api.py save-memory "<slug>" "best_quote" '{"amount": 500, "company": "Roofer 1"}'
+
+# 3. Call roofer 2 — pass dynamic variables via scheduled event:
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID \
+#      '{"best_quote": "$500", "best_company": "Roofer 1"}'
+#    → get insight → if better ($420), update best_quote
+
+# 4. Call roofer 3 — pass updated context:
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID \
+#      '{"best_quote": "$420", "best_company": "Roofer 2"}'
+
+# 5. Repeat: schedule with new dynamic vars → poll → insight → update state → next
+# 6. After all 5: report best deal with full comparison
+```
+
+### 示例2：汽车保险报价
+
+**目标：**拨打4家保险公司的电话，利用每个报价进行下一步谈判。
+
+```bash
+# Ordering strategy: Start with the provider you care least about (get a baseline),
+# end with your preferred provider (maximum leverage).
+
+# Assistant instructions use dynamic variable placeholders:
+#   "You are calling about auto insurance for a 2022 Toyota Camry.
+#    {{#if best_quote}}
+#    LEVERAGE: The best quote so far is {{best_quote}}/month
+#    from {{best_company}}. Mention this and ask them to beat it.
+#    {{/if}}"
+
+# Sequential pattern — pass dynamic variables per call:
+# Call 1 (baseline): no leverage vars → "What's your rate for [coverage details]?"
+# Call 2: {"best_quote": "$180", "best_company": "Geico"}
+# Call 3: {"best_quote": "$155", "best_company": "Progressive"}
+# Call 4 (preferred): {"best_quote": "$145", "best_company": "StateFarm"}
+```
+
+## 类别4：多轮/跟进
+
+任务有不同的阶段。第一轮是广泛的外联。结果进行分析，然后由人工批准筛选名单，第二轮进行深入的通话。
+
+### 何时使用
+- 有两个或更多不同的呼叫阶段
+- 需要在轮次之间进行人工判断（审批关卡）
+- 第二轮针对第一轮的筛选结果
+
+### 关键模式
+- 计划有明确的阶段：`round-1-calls`、`round-1-analysis`、`human-approval`、`round-2-calls`
+- **人工审批关卡：** 通过Telegram/Slack向人工发送第一轮的结果+建议。等待他们的回复。
+- 第二轮的助手可能有**完全不同的指令**
+
+### 示例1：供应商选择
+
+**目标：**根据基本标准筛选10个供应商，通过人工审批筛选前三名。
+
+```bash
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create screening assistant + insight rubric", "sequence": 1},
+  {"step_id": "round-1-calls", "description": "Screen all 10 vendors", "sequence": 2},
+  {"step_id": "round-1-analysis", "description": "Rank and shortlist top 3", "sequence": 3},
+  {"step_id": "human-approval", "description": "DM human with top 3, wait for approval", "sequence": 4},
+  {"step_id": "round-2-setup", "description": "Create deep-dive assistant with technical questions", "sequence": 5},
+  {"step_id": "round-2-calls", "description": "Deep-dive calls with approved vendors", "sequence": 6},
+  {"step_id": "final-analysis", "description": "Final recommendation", "sequence": 7}
+]
+
+# Round 1 assistant: "Ask about pricing, lead time, minimum order, and general capabilities."
+# Round 1 insight rubric: price_score, lead_time_days, meets_minimum, capability_match
+
+# After Round 1 completes:
+# → Rank by scores → DM human:
+#   "Round 1 complete. Top 3 vendors:
+#    1. VendorA — score 8.5, $12/unit, 2-week lead
+#    2. VendorB — score 7.8, $14/unit, 1-week lead
+#    3. VendorC — score 7.2, $11/unit, 3-week lead
+#    Approve these for Round 2? Reply YES or adjust."
+
+# Wait for human response (pause cron or check for reply)
+
+# Round 2 assistant (different!): "Ask detailed technical questions:
+#   API integration support? SLA guarantees? Disaster recovery?
+#   Reference customers we can contact?"
+# Round 2 insight rubric: api_support, sla_score, dr_plan, references_provided
+```
+
+### 示例2：候选人招聘
+
+**目标：**通过电话筛选15位候选人（第一轮），筛选出5位（人工审批），进行详细面试（第二轮）。
+
+```bash
+# Round 1: Quick 5-minute screen — "Tell me about your background, why this role,
+#   salary expectations, availability."
+# Insight rubric: communication_score, experience_match, salary_in_range, enthusiasm
+
+# → Rank → DM human with top 5 + scores
+# → Human approves (or swaps in someone from position 6-7)
+
+# Round 2: 15-minute deep dive — completely different assistant:
+#   "Ask about: specific project experience with [TECH], how they handle conflict,
+#    a time they failed and what they learned, questions they have for us."
+# Different insight rubric: technical_depth, problem_solving, culture_fit, curiosity
+
+# Track in memory:
+python telnyx_api.py save-memory "<slug>" "rounds" '{
+  "round_1": {"candidates": [...], "advanced": ["+1555...", "+1555..."]},
+  "round_2": {"candidates": [...], "results": [...]}
+}'
+```
+
+## 类别5：信息收集 → 行动
+
+打电话收集信息，但任务不仅仅是报告 — 它**根据结果采取行动**。一旦找到您需要的信息，就停止搜索并采取行动。
+
+### 何时使用
+- 您需要**找到**某些东西（可用性、时间、匹配项），然后**采取行动**（预订它、确认它）
+
+### 示例1：餐厅预订
+
+**目标：**拨打餐厅的电话，直到找到周五下午4点的空位，然后预订它。
+
+```bash
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create screening assistant", "sequence": 1},
+  {"step_id": "screen", "description": "Call restaurants to check availability", "sequence": 2},
+  {"step_id": "book", "description": "Book at first available restaurant", "sequence": 3}
+]
+
+# Flow:
+# 1. Create assistant: "Call and ask if they have a table for 4 this Friday at 7pm.
+#    If yes, say you'd like to book it under the name [NAME]. Confirm the reservation.
+#    If no, ask about Saturday instead, then politely end the call."
+
+# 2. Schedule calls to 5 restaurants (parallel — screening doesn't depend on each other)
+
+# 3. Poll results as they come in:
+#    - Restaurant A: no availability → continue
+#    - Restaurant B: has availability, BOOKED! → SUCCESS
+#    - Cancel/ignore remaining calls (Restaurants C, D, E)
+#    - If none of the 5 work: expand to 5 more restaurants (fallback)
+
+# Insight schema:
+{"type": "object", "properties": {
+  "restaurant_name": {"type": "string"},
+  "has_availability": {"type": "boolean"},
+  "reservation_confirmed": {"type": "boolean"},
+  "reservation_time": {"type": "string"},
+  "reservation_name": {"type": "string"},
+  "confirmation_number": {"type": "string"},
+  "alternative_offered": {"type": "string"}
+}, "required": ["restaurant_name", "has_availability", "reservation_confirmed"]}
+
+# Early termination: when reservation_confirmed = true, mission succeeds
+```
+
+### 示例2：预约安排
+
+**目标：**拨打牙医办公室的电话，直到找到本周的预约时间。
+
+```bash
+# Same pattern as restaurant booking:
+# 1. Screen in parallel: "Do you have any openings this week for a cleaning?"
+# 2. First office with availability: "I'd like to book that slot for [NAME], DOB [DOB]."
+# 3. Stop remaining calls once booked.
+
+# Key difference: may need to provide insurance info, patient details.
+# Assistant instructions include all necessary details upfront.
+
+# Fallback: if no office has availability this week, expand search to next week
+# or expand to more offices.
+```
+
+## 跨类别模式
+
+这些模式适用于多个任务类别。
+
+### 1. 通话之间的动态上下文
+
+使用**通过安排的事件API传递动态变量**，将之前通话的结果注入每个通话中。这保持助手的不变性 — 在指令中定义`{{variable}}占位符，然后通过安排的事件传递不同的值。这对于类别3（顺序谈判）和类别5（行动阶段）至关重要。
+
+### 2. 人工审批关卡
+
+在轮次之间或采取行动之前，通过Telegram/Slack与人工联系并暂停。
+
+```
+# Pattern:
+# 1. Cron job detects Round 1 complete
+# 2. Formats results summary
+# 3. Sends message to human via Telegram/Slack
+# 4. Saves state: {"awaiting_approval": true, "approval_summary": "..."}
+# 5. Cron continues to poll but takes no action until human responds
+# 6. Human replies "approved" or "change X" → cron detects reply → proceeds
+```
+
+### 3. 提前终止
+
+当目标达成时，停止不必要的剩余通话。
+
+```bash
+# Check for pending events:
+python telnyx_api.py list-events-assistant <assistant_id>
+
+# Cancel each pending event:
+python telnyx_api.py cancel-scheduled-event <assistant_id> <event_id>
+```
+
+### 4. 通话顺序策略
+
+对于顺序谈判（类别3），呼叫顺序很重要：
+
+- **最弱的人先开始：** 从您最不关心的供应商开始。在没有压力的情况下获取基准。使用他们的报价作为优势。
+- **最强的最后一个：** 最后使用最有力的供应商。
+- **先确定基准：** 或者先从最有可能给出可靠基准的供应商开始。
+- **顺序安排：** 先拨打最不可能给出可靠基准的供应商（最弱的人）。
+
+### 示例1：屋顶工人报价
+
+**目标：**依次拨打5个屋顶工人的电话，与之前的最佳报价进行谈判。
+
+```bash
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create assistant + find roofers", "sequence": 1},
+  {"step_id": "call-1", "description": "Call roofer 1 (baseline)", "sequence": 2},
+  {"step_id": "call-2", "description": "Call roofer 2 with context", "sequence": 3},
+  {"step_id": "call-3", "description": "Call roofer 3 with context", "sequence": 4},
+  {"step_id": "call-4", "description": "Call roofer 4 with context", "sequence": 5},
+  {"step_id": "call-5", "description": "Call roofer 5 with context", "sequence": 6},
+  {"step_id": "analyze", "description": "Select best deal", "sequence": 7}
+]
+
+# Flow:
+# 1. Create assistant with dynamic variable placeholders in instructions:
+#    "Ask for a quote for roof repair on a 2000 sq ft home. Get price, timeline, warranty.
+#     {{#if best_quote}}
+#     CONTEXT: You have received a quote of {{best_quote}} from {{best_company}}.
+#     Mention this if the price seems high. Ask if they can match or beat it.
+#     {{/if}}"
+#    Set dynamic_variables: {"best_quote": null, "best_company": null}
+
+# 2. Call roofer 1 (no leverage yet — best_quote is null, so that section is skipped)
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID
+#    → get insight → save quote ($500)
+#    python telnyx_api.py save-memory "<slug>" "best_quote" '{"amount": 500, "company": "Roofer 1"}'
+
+# 3. Call roofer 2 — pass dynamic variables via scheduled event:
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID \
+#      '{"best_quote": "$500", "best_company": "Roofer 1"}'
+#    → get insight → if better ($420), update best_quote
+
+# 4. Call roofer 3 — pass updated context:
+#    python telnyx_api.py schedule-call <id> "+1555..." "+1555..." "<time>" $MISSION_ID $RUN_ID \
+#      '{"best_quote": "$420", "best_company": "Roofer 2"}'
+
+# 5. Repeat: schedule with new dynamic vars → poll → insight → update state → next
+# 6. After all 5: report best deal with full comparison
+```
+
+### 示例2：汽车保险报价
+
+**目标：**拨打4家保险公司的电话，利用每个报价进行下一步谈判。
+
+```bash
+# Ordering strategy: Start with the provider you care least about (get a baseline),
+# end with your preferred provider (maximum leverage).
+
+# Assistant instructions use dynamic variable placeholders:
+#   "You are calling about auto insurance for a 2022 Toyota Camry.
+#    {{#if best_quote}}
+#    LEVERAGE: The best quote so far is {{best_quote}}/month
+#    from {{best_company}}. Mention this and ask them to beat it.
+#    {{/if}}"
+
+# Sequential pattern — pass dynamic variables per call:
+# Call 1 (baseline): no leverage vars → "What's your rate for [coverage details]?"
+# Call 2: {"best_quote": "$180", "best_company": "Geico"}
+# Call 3: {"best_quote": "$155", "best_company": "Progressive"}
+# Call 4 (preferred): {"best_quote": "$145", "best_company": "StateFarm"}
+```
+
+## 类别4：多轮/跟进
+
+任务有不同的阶段。第一轮是广泛的外联。结果进行分析，然后由人工批准筛选名单，第二轮进行深入的通话。
+
+### 何时使用
+- 有两个或更多不同的呼叫阶段
+- 需要在轮次之间进行人工判断（审批关卡）
+- 第二轮针对第一轮的筛选结果
+
+### 关键模式
+- 计划有明确的阶段：`round-1-calls`、`round-1-analysis`、`human-approval`、`round-2-calls`
+- **人工审批关卡：** 通过Telegram/Slack向人工发送第一轮的结果+建议。等待他们的回复。
+- 第二轮的助手可能有**完全不同的指令**
+
+### 示例1：供应商选择
+
+**目标：**根据基本标准筛选10个供应商，通过人工审批筛选前三名。
+
+```bash
+# Plan steps
+[
+  {"step_id": "setup", "description": "Create screening assistant + insight rubric", "sequence": 1},
+  {"step_id": "round-1-calls", "description": "Screen all 10 vendors", "sequence": 2},
+  {"step_id": "round-1-analysis", "description": "Rank and shortlist top 3", "sequence": 3},
+  {"step_id": "human-approval", "description": "DM human with top 3, wait for approval", "sequence": 4},
+  {"step_id": "round-2-setup", "description": "Create deep-dive assistant with technical questions", "sequence": 5},
+  {"step_id": "round-2-calls", "description": "Deep-dive calls with approved vendors", "sequence": 6},
+  {"step_id": "final-analysis", "description": "Final recommendation", "sequence": 7}
+]
+
+# Round 1 assistant: "Ask about pricing, lead time, minimum order, and general capabilities."
+# Round 1 insight rubric: price_score, lead_time_days, meets_minimum, capability_match
+
+# After Round 1 completes:
+# → Rank by scores → DM human:
+#   "Round 1 complete. Top 3 vendors:
+#    1. VendorA — score 8.5, $12/unit, 2-week lead
+#    2. VendorB — score 7.8, $14/unit, 1-week lead
+#    3. VendorC — score 7.2, $11/unit, 3-week lead
+#    Approve these for Round 2? Reply YES or adjust."
+
+# Wait for human response (pause cron or check for reply)
+
+# Round 2 assistant (different!): "Ask detailed technical questions:
+#   API integration support? SLA guarantees? Disaster recovery?
+#   Reference customers we can contact?"
+# Round 2 insight rubric: api_support, sla_score, dr_plan, references_provided
+```
+
+### 示例2：候选人招聘
+
+**目标：**通过电话筛选15位候选人（第一轮），筛选出5位（人工审批），进行详细面试（第二轮）。
+
+```bash
+# Round 1: Quick 5-minute screen — "Tell me about your background, why this role,
+#   salary expectations, availability."
+# Insight rubric: communication_score, experience_match, salary_in_range, enthusiasm
+
+# → Rank → DM human with top 5 + scores
+# → Human approves (or swaps in someone from position 6-7)
+
+# Round 2: 15-minute deep dive — completely different assistant:
+#   "Ask about: specific project experience with [TECH], how they handle conflict,
+#    a time they failed and what they learned, questions they have for us."
+# Different insight rubric: technical_depth, problem_solving, culture_fit, curiosity
+
+# Track in memory:
+python telnyx_api.py save-memory "<slug>" "rounds" '{
+  "round_1": {"candidates": [...], "advanced": ["+1555...", "+1555..."]},
+  "round_2": {"candidates": [...], "results": [...]}
+}'
+```
+
+## 类别5：信息收集 → 行动
+
+打电话收集信息，但任务不仅仅是报告 — 它**根据结果采取行动**。一旦找到您需要的信息，就停止搜索并采取行动。
+
+### 何时使用
+
+### 当您需要**找到**某些东西（可用性、时间、匹配项），然后**采取行动**（预订它、确认它）

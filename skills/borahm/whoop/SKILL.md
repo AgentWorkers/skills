@@ -1,6 +1,6 @@
 ---
 name: whoop
-description: WHOOP morning check-in (recovery/sleep/strain) with suggestions.
+description: **WHOOP晨间签到（恢复/睡眠/压力情况）及建议**
 metadata:
   clawdbot:
     config:
@@ -12,60 +12,56 @@ metadata:
 
 # whoop
 
-WHOOP morning check-in:
-- fetches your latest WHOOP data (Recovery, Sleep, Cycle/Strain)
-- generates a short set of suggestions for the day
+## 每日早晨的WHOOP检查：
+- 获取您的最新WHOOP数据（恢复情况、睡眠质量、周期/压力水平）
+- 生成当天的建议
 
-## Quick Start (User + Bot)
+### 快速入门（用户 + 机器人）
 
-### What the user does (one-time)
+### 用户需要执行的操作（只需一次）：
+1. 创建一个WHOOP应用程序并获取凭证：
+   - `WHOOP_CLIENT_ID`
+   - `WHOOP_CLIENT_SECRET`
 
-1) Create a WHOOP app and get credentials:
-- `WHOOP_CLIENT_ID`
-- `WHOOP_CLIENT_SECRET`
+2. 在WHOOP开发者控制台中设置回调URL：
+   - `https://localhost:3000/callback`
 
-2) In the WHOOP developer dashboard, set Redirect URL:
-- `https://localhost:3000/callback`
-
-3) Put secrets into `~/.clawdbot/.env`:
+3. 将凭证添加到`~/.clawdbot/.env`文件中：
 
 ```bash
 WHOOP_CLIENT_ID=...
 WHOOP_CLIENT_SECRET=...
 ```
 
-4) Authorize once (get refresh token):
+4. 进行一次授权（获取刷新令牌）：
 
 ```bash
 node /home/claw/clawd/skills/whoop/bin/whoop-auth --redirect-uri https://localhost:3000/callback
 ```
 
-- Open the printed URL on your phone/browser
-- Tap Allow/Authorize
-- Copy the `code` from the callback URL and paste it back
+- 在手机或浏览器中打开生成的回调URL
+- 点击“允许/授权”
+- 复制回调URL中的`code`，然后粘贴回去
 
-This writes `WHOOP_REFRESH_TOKEN=...` into `~/.clawdbot/.env`.
+这样会自动将`WHOOP_REFRESH_TOKEN=...`写入`~/.clawdbot/.env`文件中。
 
-### What the bot does (each run)
-
-Run:
+### 机器人需要执行的操作（每次运行时）：
+执行以下命令：
 
 ```bash
 node /home/claw/clawd/skills/whoop/bin/whoop-morning
 ```
 
-Then send the output back to the user.
+然后将结果发送给用户。
 
-## Automation (daily)
+### 自动化（每日执行）：
+建议使用Gateway的cron任务进行每日自动执行：
+- 命令：`node /home/claw/clawd/skills/whoop/bin/whoop-morning`
+- 机器人应将执行结果以消息的形式发送给用户。
 
-Recommended: schedule with Gateway cron (daily morning).
-- Command: `node /home/claw/clawd/skills/whoop/bin/whoop-morning`
-- Bot should send the output as a message.
-
-## Notes
-
-- OAuth endpoints:
-  - auth: `https://api.prod.whoop.com/oauth/oauth2/auth`
-  - token: `https://api.prod.whoop.com/oauth/oauth2/token`
-- Requires `offline` scope to receive refresh tokens.
-- WHOOP rotates refresh tokens; the newest refresh token must be saved.
+## 注意事项：
+- OAuth接口地址：
+  - 认证：`https://api.prod.whoop.com/oauth/oauth2/auth`
+  - 令牌：`https://api.prod.whoop.com/oauth/oauth2/token`
+- 需要`offline`权限才能获取刷新令牌。
+- WHOOP会定期更新刷新令牌；必须保存最新的刷新令牌。

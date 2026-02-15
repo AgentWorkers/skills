@@ -1,79 +1,76 @@
 ---
 name: Welsh
-description: Write Welsh that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的威尔士语。既不要过于正式，也不要像机器人或人工智能生成的那样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Welsh is technically correct but sounds off. Too formal. Too literary. Natives write more casually, mixing with English naturally. Match that.
+虽然使用AI生成的威尔士语在语法上是正确的，但听起来很不自然。它过于正式、过于文学化。威尔士本地人说话时通常更加随意，会自然地将英语词汇融入到他们的表达中。因此，我们需要让AI生成的威尔士语更贴近本地人的说话方式。
 
-## Formality Default
+## 形式化的问题
 
-Default register is too high. Casual Welsh is warm. Unless explicitly formal: lean casual. "Shwmae" or "Haia" not always "Bore da".
+默认的语言风格过于正式。威尔士语中的非正式表达更加亲切、自然。除非需要明确表达正式场合，否则应采用更随意的语言风格。例如，人们更常说“Shwmae”或“Haia”，而不是“Bore da”。
 
-## Ti vs Chi
+## “Ti”与“Chi”的区别
 
-Distinction:
-- Chi: formal, plural, respect
-- Ti: singular casual, friends
-- Modern Welsh uses ti widely
-- Chi for groups or formal
+- “Chi”用于正式场合或复数形式，表示尊重；
+- “Ti”用于非正式场合或单数形式，用于朋友之间的交流；
+- 现代威尔士语中“Ti”的使用更为普遍；
+- “Chi”则更多用于指代群体或正式场合。
 
-## North vs South
+## 北方与南方的差异
 
-Regional differences:
-- North: different vocabulary, "fo" for "he"
-- South: different patterns, "fe" for "he"
-- Rydw i (formal) vs Dw i (casual)
-- Stay consistent to region
+- 北方威尔士语在词汇使用上有所不同，例如用“fo”表示“he”；
+- 南方威尔士语在语法结构上有所不同，例如用“fe”表示“he”；
+- 北方威尔士语中常用“Rydw i”（正式），南方则常用“Dw i”（非正式）；
+- 应根据地区差异保持语言表达的一致性。
 
-## English Mixing
+## 英语的混合使用
 
-Welsh speakers mix English naturally:
-- "Mae'n really good"
-- Code-switching is normal
-- Pure Welsh can sound forced casually
-- Match natural bilingual flow
+威尔士语使用者会自然地将英语词汇融入到他们的表达中：
+- 例如：“Mae'n really good”（确实很好）；
+- 语言之间的切换是很常见的现象；
+- 如果完全使用纯威尔士语，可能会显得刻意或不自然；
+- 应该让语言表达更符合双语者自然的说话方式。
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Welsh natural:
-- 'De: tag question (South)
-- 'Te: tag question (North)
-- Ynde: "isn't it"
-- Felly: "so", "like"
+这些词可以使威尔士语的表达更加自然：
+- “'De”：用于构成反义疑问句（南方用法）；
+- “'Te”：用于构成反义疑问句（北方用法）；
+- “Ynde”：表示“isn't it”；
+- “Felly”：表示“so”或“like”。
 
-## Fillers & Flow
+## 填充词与语调
 
-Real Welsh has fillers:
-- Wel, ia/ie, na
-- Ti'n gwybod, ti'n gweld
-- Felly, beth bynnag
-- Gwranda, edrych
+真正的威尔士语中会使用一些填充词来使表达更加流畅：
+- “Wel, ia/ie, na”等；
+- “Ti'n gwybod, ti'n gweld”等；
+- “Felly, beth bynnag”等；
+- “Gwranda, edrych”等。
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Da → Gwych, Bendigedig, Ffab
-- Drwg → Ofnadwy, Crap
-- Iawn → Rili, Proper (English loan)
+不要总是选择最“安全”的表达方式：
+- 例如：“Da”可以替换为“Gwych”、“Bendigedig”或“Ffab”；
+- “Drwg”可以替换为“Ofnadwy”或“Crap”；
+- “Iawn”可以替换为“Rili”或“Proper”（这些词是从英语借来的）。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Iawn, OK, Dim probs
-- Dim problem, Paid poeni
-- Go iawn?, Wir?, Be?
-- Grêt!, Lyfli!, Ffab!
+- “Iawn, OK, Dim probs”（是的，没问题）；
+- “Dim problem, Paid poeni”（没什么问题）；
+- “Go iawn?, Wir?, Be?”（你去吗？我们呢？怎么样？）；
+- “Grêt!, Lyfli!, Ffab!”（太棒了！）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Go iawn?, Wir yr?, Be?!
-- Jiw jiw!, Mam bach!
-- Gwych!, Bendigedig!
-- Haha in text
+回应时也应保持自然：
+- “Go iawn?, Wir yr?, Be?”（你去吗？我们呢？怎么样？）；
+- “Jiw jiw!, Mam bach!”（哎呀！妈妈！）；
+- “Gwych!, Bendigedig!”（太好了！谢谢！）；
+- 在短信或聊天中也可以使用“Haha”来表达笑声。
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Welsh speaker screenshot this as "AI-generated"? If yes—too formal, no English, too literary. Add natural flow.
+在发送信息之前，需要考虑一个问题：如果一个威尔士语使用者看到这条信息，他会认为这是AI生成的吗？如果是的话，那么这条信息就显得太正式了，而且缺乏英语的随意感。因此，我们需要让语言表达更加自然、更贴近本地人的说话方式。

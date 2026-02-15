@@ -1,25 +1,25 @@
 ---
 slug: "open-construction-estimate"
 display_name: "Open Construction Estimate"
-description: "Access and utilize open construction pricing databases. Match BIM elements to standardized work items, calculate costs using public unit price databases with 55,000+ work items."
+description: "访问并使用开放的建筑成本数据库。将 BIM 元素与标准化的工程项进行匹配，利用包含 55,000 多个工程项的公共单价数据库来计算成本。"
 ---
 
-# Open Construction Estimate
+# 开放式建筑估算（Open Construction Estimate）
 
-## Overview
+## 概述
 
-This skill leverages open construction pricing databases for automated cost estimation. Match project elements to standardized work items and calculate costs using publicly available unit prices.
+该技能利用开放的建筑定价数据库来实现自动成本估算。通过将项目元素与标准化的工种进行匹配，并使用公开可用的单价来计算成本。
 
-**Data Sources:**
-- OpenConstructionEstimate (55,000+ work items)
-- RSMeans Online (subscription)
-- Government pricing databases
-- Regional cost indexes
+**数据来源：**
+- OpenConstructionEstimate（包含55,000多个工种）
+- RSMeans Online（需订阅）
+- 政府定价数据库
+- 地区成本指数
 
-> "Открытые базы данных расценок содержат более 55,000 позиций работ, что позволяет автоматизировать сметные расчеты для большинства проектов."
+> “这些开放的定价数据库包含了超过55,000个工种的信息，能够为大多数项目实现自动化的预算编制。”
 > — DDC LinkedIn
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -46,9 +46,9 @@ matches = find_matching_items("reinforced concrete wall 300mm")
 print(matches)
 ```
 
-## Open Database Structure
+## 开放式数据库结构
 
-### Database Schema
+### 数据库模式（Database Schema）
 
 ```python
 # Standard work items database structure
@@ -92,9 +92,9 @@ CSI_DIVISIONS = {
 }
 ```
 
-## Work Item Matching Engine
+## 工种匹配引擎（Work Item Matching Engine）
 
-### Semantic Matching System
+### 语义匹配系统（Semantic Matching System）
 
 ```python
 import pandas as pd
@@ -237,9 +237,9 @@ class WorkItemMatcher:
         return element_mapping.get(elem_type)
 ```
 
-## Cost Estimation Engine
+## 成本估算引擎（Cost Estimation Engine）
 
-### Automated Estimator
+### 自动化估算工具（Automated Estimator）
 
 ```python
 class OpenConstructionEstimator:
@@ -369,9 +369,9 @@ class OpenConstructionEstimator:
         return low_confidence.to_dict('records')
 ```
 
-## Database Management
+## 数据库管理（Database Management）
 
-### Creating and Updating Database
+### 创建和更新数据库（Creating and Updating Database）
 
 ```python
 class OpenDatabaseManager:
@@ -428,25 +428,25 @@ class OpenDatabaseManager:
         }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Category | CSI Division | Typical Items |
+| 类别 | CSI分类（CSI Division） | 典型工种（Typical Items） |
 |----------|--------------|---------------|
-| Concrete | 03 | Walls, slabs, columns, beams |
-| Masonry | 04 | Brick, block, stone |
-| Metals | 05 | Structural steel, misc metals |
-| Finishes | 09 | Drywall, paint, flooring |
-| MEP | 21-26 | Plumbing, HVAC, electrical |
-| Sitework | 31-33 | Excavation, paving, utilities |
+| 混凝土（Concrete） | 03 | 墙体、楼板、柱子、梁 |
+| 砌体（Masonry） | 04 | 砖块、砌块、石材 |
+| 金属（Metals） | 05 | 结构钢、其他金属 |
+| 装饰材料（Finishes） | 09 | 石膏板、油漆、地板 |
+| MEP（机电工程） | 21-26 | 给排水系统、暖通空调、电气工程 |
+| 土木工程（Sitework） | 31-33 | 挖掘、铺路、公用设施 |
 
-## Resources
+## 资源
 
-- **OpenConstructionEstimate**: Open database initiative
-- **CSI MasterFormat**: https://www.csiresources.org/standards/masterformat
-- **DDC Website**: https://datadrivenconstruction.io
+- **OpenConstructionEstimate**：一个开放的数据库项目
+- **CSI MasterFormat**：https://www.csiresources.org/standards/masterformat
+- **DDC网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `vector-search` for semantic item matching
-- See `cost-prediction` for ML-based estimation
-- See `qto-report` for quantity extraction
+- 有关语义匹配，请参考`vector-search`；
+- 有关基于机器学习的成本估算，请参考`cost-prediction`；
+- 有关数量提取，请参考`qto-report`。

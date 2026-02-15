@@ -1,41 +1,41 @@
 ---
 name: google-drive
-description: Manage Google Drive files and folders. Upload, download, share, and organize files via Drive API.
+description: 管理 Google Drive 文件和文件夹。通过 Drive API 进行文件的上传、下载、共享和整理。
 metadata: {"clawdbot":{"emoji":"📁","requires":{"env":["GOOGLE_ACCESS_TOKEN"]}}}
 ---
 
 # Google Drive
 
-Cloud file storage and sharing.
+云文件存储与共享服务。
 
-## Environment
+## 环境配置
 
 ```bash
 export GOOGLE_ACCESS_TOKEN="ya29.xxxxxxxxxx"
 ```
 
-## List Files
+## 列出文件
 
 ```bash
 curl "https://www.googleapis.com/drive/v3/files?pageSize=20" \
   -H "Authorization: Bearer $GOOGLE_ACCESS_TOKEN"
 ```
 
-## Search Files
+## 搜索文件
 
 ```bash
 curl "https://www.googleapis.com/drive/v3/files?q=name%20contains%20'report'" \
   -H "Authorization: Bearer $GOOGLE_ACCESS_TOKEN"
 ```
 
-## Get File Metadata
+## 获取文件元数据
 
 ```bash
 curl "https://www.googleapis.com/drive/v3/files/{fileId}?fields=*" \
   -H "Authorization: Bearer $GOOGLE_ACCESS_TOKEN"
 ```
 
-## Download File
+## 下载文件
 
 ```bash
 curl "https://www.googleapis.com/drive/v3/files/{fileId}?alt=media" \
@@ -43,7 +43,7 @@ curl "https://www.googleapis.com/drive/v3/files/{fileId}?alt=media" \
   -o downloaded_file.pdf
 ```
 
-## Upload File
+## 上传文件
 
 ```bash
 curl -X POST "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart" \
@@ -52,7 +52,7 @@ curl -X POST "https://www.googleapis.com/upload/drive/v3/files?uploadType=multip
   -F "file=@localfile.txt"
 ```
 
-## Create Folder
+## 创建文件夹
 
 ```bash
 curl -X POST "https://www.googleapis.com/drive/v3/files" \
@@ -61,7 +61,7 @@ curl -X POST "https://www.googleapis.com/drive/v3/files" \
   -d '{"name": "New Folder", "mimeType": "application/vnd.google-apps.folder"}'
 ```
 
-## Share File
+## 共享文件
 
 ```bash
 curl -X POST "https://www.googleapis.com/drive/v3/files/{fileId}/permissions" \
@@ -70,6 +70,6 @@ curl -X POST "https://www.googleapis.com/drive/v3/files/{fileId}/permissions" \
   -d '{"role": "reader", "type": "user", "emailAddress": "user@example.com"}'
 ```
 
-## Links
-- Console: https://console.cloud.google.com/apis/library/drive.googleapis.com
-- Docs: https://developers.google.com/drive/api/v3/reference
+## 相关链接：
+- 控制台：https://console.cloud.google.com/apis/library/drive.googleapis.com
+- 文档：https://developers.google.com/drive/api/v3/reference

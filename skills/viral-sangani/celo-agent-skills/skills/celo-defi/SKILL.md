@@ -1,60 +1,60 @@
 ---
 name: celo-defi
-description: Integrate DeFi protocols on Celo. Use when building swaps, lending, or liquidity applications with Uniswap, Aave, Ubeswap, or other DeFi protocols.
+description: 在 Celo 上集成 DeFi 协议。当使用 Uniswap、Aave、Ubeswap 或其他 DeFi 协议构建交换、借贷或流动性应用程序时，可以使用这一功能。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# Celo DeFi Integration
+# Celo DeFi集成
 
-This skill covers integrating DeFi protocols on Celo, including Uniswap for swaps, Aave for lending/borrowing, and other protocols.
+本技能涵盖了在Celo平台上集成DeFi协议，包括用于交易的Uniswap、用于借贷的Aave以及其他相关协议。
 
-## When to Use
+## 使用场景
 
-- Building swap functionality with Uniswap or Ubeswap
-- Integrating lending/borrowing with Aave
-- Creating liquidity provision features
-- Building DeFi aggregators
+- 使用Uniswap或Ubeswap构建交易功能
+- 集成Aave的借贷服务
+- 创建流动性提供功能
+- 开发DeFi聚合器
 
-## DeFi Protocols on Celo
+## Celo上的DeFi协议
 
-### Decentralized Exchanges
+### 去中心化交易所（DEX）
 
-| Protocol | Description |
+| 协议 | 描述 |
 |----------|-------------|
-| Uniswap V3/V4 | Primary DEX with concentrated liquidity |
-| Ubeswap | Celo-native DEX, mobile-optimized |
-| Velodrome | Superchain DEX with liquidity mining |
-| Carbon DeFi | Orderbook-like automated trading |
+| Uniswap V3/V4 | 主要的DEX，拥有高度集中的流动性 |
+| Ubeswap | 原生于Celo的DEX，专为移动设备优化 |
+| Velodrome | Superchain平台的DEX，支持流动性挖矿 |
+| Carbon DeFi | 类订单簿的自动化交易系统 |
 
-### Lending & Borrowing
+### 借贷服务
 
-| Protocol | Description |
+| 协议 | 描述 |
 |----------|-------------|
-| Aave V3 | Decentralized lending (launched March 2025) |
-| Credit Collective | On-chain private credit for RWAs |
-| PWN | Fixed-rate lending |
+| Aave V3 | 去中心化借贷服务（2025年3月上线） |
+| Credit Collective | 基于链上的私人信贷服务 |
+| PWN | 固定利率借贷服务 |
 
-### DEX Aggregators
+### DEX聚合器
 
-| Protocol | Description |
+| 协议 | 描述 |
 |----------|-------------|
-| LI.FI | Cross-chain aggregator |
+| LI.FI | 跨链交易聚合器 |
 
-### Liquidity & Yield
+### 流动性与收益
 
-| Protocol | Description |
+| 协议 | 描述 |
 |----------|-------------|
-| Steer Protocol | Automated liquidity strategies |
-| Merkl | Liquidity provider rewards |
+| Steer Protocol | 自动化流动性管理策略 |
+| Merkl | 流动性提供者奖励机制 |
 
-## Uniswap V3 Integration
+## Uniswap V3集成
 
-### Contract Addresses - Mainnet (Chain ID: 42220)
+### 合约地址 - 主网（链ID：42220）
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | Factory | 0xAfE208a311B21f13EF87E33A90049fC17A7acDEc |
 | SwapRouter02 | 0x5615CDAb10dc425a742d643d949a7F474C01abc4 |
@@ -65,9 +65,9 @@ This skill covers integrating DeFi protocols on Celo, including Uniswap for swap
 | TickLens | 0x5f115D9113F88e0a0Db1b5033D90D4a9690AcD3D |
 | Multicall2 | 0x633987602DE5C4F337e3DbF265303A1080324204 |
 
-### Contract Addresses - Alfajores Testnet
+### 合约地址 - Alfajores测试网
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | Factory | 0x229Fd76DA9062C1a10eb4193768E192bdEA99572 |
 | SwapRouter02 | 0x8C456F41A3883bA0ba99f810F7A2Da54D9Ea3EF0 |
@@ -76,7 +76,7 @@ This skill covers integrating DeFi protocols on Celo, including Uniswap for swap
 | UniversalRouter | 0x84904B9E85F76a421223565be7b596d7d9A8b8Ce |
 | Permit2 | 0x000000000022D473030F116dDEE9F6B43aC78BA3 |
 
-### Simple Swap Example
+### 简单交易示例
 
 ```typescript
 import { createWalletClient, custom, encodeFunctionData } from "viem";
@@ -146,13 +146,13 @@ async function swapExactInput(
 }
 ```
 
-## Ubeswap Integration
+## Ubeswap集成
 
-Celo-native DEX with V2 and V3 support.
+Ubeswap是原生于Celo的DEX，支持Uniswap V2和V3协议。
 
-### Contract Addresses - Mainnet
+### 合约地址 - 主网
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | V3 Factory | 0x67FEa58D5a5a4162cED847E13c2c81c73bf8aeC4 |
 | V3 Universal Router | 0x3C255DED9B25f0BFB4EF1D14234BD2514d7A7A0d |
@@ -161,11 +161,11 @@ Celo-native DEX with V2 and V3 support.
 | V2 Router | 0xE3D8bd6Aed4F159bc8000a9cD47CffDb95F96121 |
 | UBE Token | 0x71e26d0E519D14591b9dE9a0fE9513A398101490 |
 
-## Aave V3 Integration
+## Aave V3集成
 
-### Contract Addresses - Mainnet
+### 合约地址 - 主网
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | Pool | 0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402 |
 | PoolAddressesProvider | 0x9F7Cf9417D5251C59fE94fB9147feEe1aAd9Cea5 |
@@ -175,9 +175,9 @@ Celo-native DEX with V2 and V3 support.
 | PoolDataProvider | 0x2e0f8D3B1631296cC7c56538D6Eb6032601E15ED |
 | Collector | 0xC959439207dA5341B74aDcdAC59016aa9Be7E9E7 |
 
-### Supported Assets
+### 支持的资产
 
-| Asset | Address | aToken |
+| 资产 | 地址 | aToken |
 |-------|---------|--------|
 | USDC | 0xcebA9300f2b948710d2653dD7B07f33A8B32118C | 0xFF8309b9e99bfd2D4021bc71a362aBD93dBd4785 |
 | USDT | 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e | - |
@@ -186,47 +186,7 @@ Celo-native DEX with V2 and V3 support.
 | CELO | 0x471EcE3750Da237f93B8E339c536989b8978a438 | - |
 | WETH | 0xD221812de1BD094f35587EE8E174B07B6167D9Af | - |
 
-### Supply Assets
-
-```typescript
-const AAVE_POOL = "0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402";
-
-const POOL_ABI = [
-  {
-    name: "supply",
-    type: "function",
-    stateMutability: "nonpayable",
-    inputs: [
-      { name: "asset", type: "address" },
-      { name: "amount", type: "uint256" },
-      { name: "onBehalfOf", type: "address" },
-      { name: "referralCode", type: "uint16" },
-    ],
-    outputs: [],
-  },
-] as const;
-
-async function supplyToAave(asset: string, amount: bigint): Promise<string> {
-  const walletClient = createWalletClient({
-    chain: celo,
-    transport: custom(window.ethereum),
-  });
-
-  const [address] = await walletClient.getAddresses();
-
-  // First approve the Pool to spend tokens
-  const hash = await walletClient.writeContract({
-    address: AAVE_POOL,
-    abi: POOL_ABI,
-    functionName: "supply",
-    args: [asset as `0x${string}`, amount, address, 0],
-  });
-
-  return hash;
-}
-```
-
-### Borrow Assets
+### 可借贷资产
 
 ```typescript
 const POOL_ABI_BORROW = [
@@ -268,9 +228,9 @@ async function borrowFromAave(
 }
 ```
 
-## Token Approval
+## 代币授权
 
-Before interacting with DeFi protocols, approve token spending:
+在与DeFi协议交互之前，需要先授权代币的使用：
 
 ```typescript
 const ERC20_ABI = [
@@ -309,16 +269,16 @@ async function approveToken(
 }
 ```
 
-## Fee Tiers (Uniswap V3)
+## 费用等级（Uniswap V3）
 
-| Fee | Use Case |
+| 费用 | 使用场景 |
 |-----|----------|
-| 100 (0.01%) | Stable pairs (USDm/USDC) |
-| 500 (0.05%) | Stable pairs |
-| 3000 (0.3%) | Most pairs |
-| 10000 (1%) | Exotic pairs |
+| 100（0.01%） | 稳定货币对（USDm/USDC） |
+| 500（0.05%） | 大多数货币对 |
+| 3000（0.3%） | 大多数货币对 |
+| 10000（1%） | 特殊货币对 |
 
-## Dependencies
+## 依赖项
 
 ```json
 {
@@ -328,16 +288,8 @@ async function approveToken(
 }
 ```
 
-For Aave integration:
+关于Aave的集成细节，请参考相关文档。
 
-```json
-{
-  "dependencies": {
-    "@bgd-labs/aave-address-book": "^4.0.0"
-  }
-}
-```
+## 额外资源
 
-## Additional Resources
-
-- [contract-addresses.md](references/contract-addresses.md) - All DeFi contract addresses
+- [contract-addresses.md](references/contract-addresses.md) - 所有DeFi协议的合约地址

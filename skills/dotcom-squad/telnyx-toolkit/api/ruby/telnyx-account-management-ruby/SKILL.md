@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Management - Ruby
+# Telnyx 账户管理 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -30,11 +30,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lists accounts managed by the current user.
+## 列出当前用户管理的账户
 
-Lists the accounts managed by the current user.
+列出当前用户管理的账户。
 
 `GET /managed_accounts`
 
@@ -44,11 +44,11 @@ page = client.managed_accounts.list
 puts(page)
 ```
 
-## Create a new managed account.
+## 创建一个新的受管理的账户
 
-Create a new managed account owned by the authenticated user.
+创建一个由已认证用户拥有的新受管理账户。
 
-`POST /managed_accounts` — Required: `business_name`
+`POST /managed_accounts` — 必需参数：`business_name`
 
 ```ruby
 managed_account = client.managed_accounts.create(business_name: "Larry's Cat Food Inc")
@@ -56,9 +56,9 @@ managed_account = client.managed_accounts.create(business_name: "Larry's Cat Foo
 puts(managed_account)
 ```
 
-## Retrieve a managed account
+## 获取受管理的账户信息
 
-Retrieves the details of a single managed account.
+获取单个受管理账户的详细信息。
 
 `GET /managed_accounts/{id}`
 
@@ -68,9 +68,9 @@ managed_account = client.managed_accounts.retrieve("id")
 puts(managed_account)
 ```
 
-## Update a managed account
+## 更新受管理的账户
 
-Update a single managed account.
+更新单个受管理的账户。
 
 `PATCH /managed_accounts/{id}`
 
@@ -80,9 +80,9 @@ managed_account = client.managed_accounts.update("id")
 puts(managed_account)
 ```
 
-## Disables a managed account
+## 禁用受管理的账户
 
-Disables a managed account, forbidding it to use Telnyx services, including sending or receiving phone calls and SMS messages.
+禁用受管理的账户，使其无法使用 Telnyx 服务（包括发送或接收电话呼叫和短信）。
 
 `POST /managed_accounts/{id}/actions/disable`
 
@@ -92,9 +92,9 @@ response = client.managed_accounts.actions.disable("id")
 puts(response)
 ```
 
-## Enables a managed account
+## 恢复受管理的账户
 
-Enables a managed account and its sub-users to use Telnyx services.
+启用受管理的账户及其子用户使用 Telnyx 服务。
 
 `POST /managed_accounts/{id}/actions/enable`
 
@@ -104,7 +104,9 @@ response = client.managed_accounts.actions.enable("id")
 puts(response)
 ```
 
-## Update the amount of allocatable global outbound channels allocated to a specific managed account.
+## 更新分配给特定受管理账户的全球出站通道数量
+
+更新分配给特定受管理账户的全球出站通道数量。
 
 `PATCH /managed_accounts/{id}/update_global_channel_limit`
 
@@ -114,7 +116,9 @@ response = client.managed_accounts.update_global_channel_limit("id")
 puts(response)
 ```
 
-## Display information about allocatable global outbound channels for the current user.
+## 显示当前用户可用的全球出站通道信息
+
+显示当前用户可用的全球出站通道信息。
 
 `GET /managed_accounts/allocatable_global_outbound_channels`
 

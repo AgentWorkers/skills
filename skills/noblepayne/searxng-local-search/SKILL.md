@@ -1,6 +1,6 @@
 ---
 name: searxng-web-search
-description: Search the web using SearXNG. Use when you need current information, research topics, find documentation, verify facts, or look up anything beyond your knowledge. Returns ranked results with titles, URLs, and content snippets.
+description: 使用 SearXNG 在网络上进行搜索。当您需要获取最新信息、研究某个主题、查找文档、验证事实，或查询超出您知识范围的内容时，可以使用它。该工具会返回带有标题、URL 和内容片段的排名结果。
 metadata:
   openclaw:
     requires:
@@ -11,55 +11,55 @@ metadata:
       plugin: "babashka"
 ---
 
-# SearXNG Web Search
+# SearXNG 网页搜索
 
-Search the web using a self-hosted SearXNG instance. This skill provides access to web search results through the SearXNG JSON API, with built-in rate limiting, error handling, and result formatting.
+使用自托管的 SearXNG 实例进行网页搜索。该功能通过 SearXNG 的 JSON API 提供网页搜索结果，同时具备内置的速率限制、错误处理和结果格式化功能。
 
-## When to Use
+## 使用场景
 
-Use this skill when you need to:
-- Find current information or recent news
-- Research topics beyond your knowledge cutoff
-- Look up documentation or technical references
-- Verify facts or check current status
-- Find URLs or resources on specific topics
-- Search for code examples or solutions
+当您需要以下操作时，可以使用此功能：
+- 查找当前信息或最新新闻
+- 研究超出您知识范围的主题
+- 查阅文档或技术参考资料
+- 验证事实或检查当前状态
+- 查找特定主题的 URL 或资源
+- 搜索代码示例或解决方案
 
-## Configuration
+## 配置
 
-Set the `SEARXNG_URL` environment variable to your SearXNG instance:
+将 `SEARXNG_URL` 环境变量设置为您的 SearXNG 实例地址：
 
 ```bash
 export SEARXNG_URL="http://localhost:8888"
 ```
 
-Or use the default (http://localhost:8888) if not set.
+如果未设置，则使用默认地址（http://localhost:8888）。
 
-## Usage
+## 使用方法
 
-Execute the search script with your query:
+使用以下命令执行搜索：
 
 ```bash
 bb scripts/search.clj "your search query"
 ```
 
-### Advanced Options
+### 高级选项
 
-Pass additional parameters as JSON:
+可以通过 JSON 传递额外参数：
 
 ```bash
 bb scripts/search.clj "your query" '{"category": "news", "time_range": "day", "num_results": 10}'
 ```
 
-Available options:
-- `category` - Filter by category: general, news, images, videos, it, science
-- `time_range` - Time filter: day, week, month, year
-- `language` - Language code (default: en)
-- `num_results` - Number of results to return (default: 5)
+可用参数：
+- `category` - 按类别过滤：general（综合）、news（新闻）、images（图片）、videos（视频）、it（技术）、science（科学）
+- `time_range` - 时间范围：day（当天）、week（一周）、month（一个月）、year（一年）
+- `language` - 语言代码（默认：en）
+- `num_results` - 返回的结果数量（默认：5）
 
-## Output Format
+## 输出格式
 
-The script returns formatted search results as text:
+脚本以文本形式返回格式化后的搜索结果：
 
 ```
 Search Results for "your query"
@@ -74,70 +74,70 @@ Found 42 total results
    ...
 ```
 
-## Error Handling
+## 错误处理
 
-The script handles common errors gracefully:
-- Network timeouts (30s timeout)
-- SearXNG unavailable (clear error message)
-- Invalid queries (error details)
-- Rate limiting (429 responses)
-- Empty results (informative message)
+脚本能够优雅地处理以下常见错误：
+- 网络超时（超时时间为 30 秒）
+- SearXNG 无法使用（显示清晰错误信息）
+- 无效查询（显示错误详情）
+- 速率限制（返回 429 错误代码）
+- 没有结果（显示提示信息）
 
-## Rate Limiting
+## 速率限制
 
-The script implements basic rate limiting:
-- Minimum 1 second between requests
-- Uses filesystem-based state (`.searxng-last-request`)
-- Prevents accidental spam
+脚本实现了基本的速率限制机制：
+- 请求之间至少间隔 1 秒
+- 使用文件系统来记录请求状态（文件名：`.searxng-last-request`）
+- 防止恶意刷取行为
 
-## Examples
+## 示例
 
-### Basic Search
+### 基本搜索
 ```bash
 bb scripts/search.clj "NixOS configuration"
 ```
 
-### News Search
+### 新闻搜索
 ```bash
 bb scripts/search.clj "AI developments" '{"category": "news", "time_range": "week"}'
 ```
 
-### Technical Search
+### 技术搜索
 ```bash
 bb scripts/search.clj "babashka http client" '{"category": "it", "num_results": 3}'
 ```
 
-### Recent Results Only
+### 仅显示最新结果
 ```bash
 bb scripts/search.clj "product launch" '{"time_range": "day"}'
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"SEARXNG_URL not set"**
-- Set the environment variable: `export SEARXNG_URL="http://localhost:8888"`
+**“SEARXNG_URL 未设置”**
+- 设置环境变量：`export SEARXNG_URL="http://localhost:8888"`
 
-**Connection timeout**
-- Check that SearXNG is running: `curl $SEARXNG_URL/search?q=test&format=json`
-- Verify firewall settings
-- Check service status: `systemctl status searx`
+**连接超时**
+- 检查 SearXNG 是否正在运行：`curl $SEARXNG_URL/search?q=test&format=json`
+- 检查防火墙设置
+- 查看服务状态：`systemctl status searx`
 
-**Empty results**
-- Try a broader query
-- Remove filters and try again
-- Check SearXNG logs: `journalctl -u searx -n 50`
+**没有结果**
+- 尝试使用更宽泛的查询条件
+- 移除过滤条件后重新尝试
+- 查看 SearXNG 日志：`journalctl -u searx -n 50`
 
-**Rate limit errors**
-- Wait a few seconds between searches
-- The script enforces minimum 1s delay automatically
+**速率限制错误**
+- 在每次搜索之间等待几秒钟
+- 脚本会自动确保至少间隔 1 秒
 
-## Implementation Notes
+## 实现说明
 
-The search script (`scripts/search.clj`) uses:
-- `babashka.http-client` for HTTP requests
-- Clojure's `cheshire.core` for JSON parsing
-- Filesystem-based rate limiting
-- 30-second timeout with proper error messages
-- Result scoring and sorting for best results first
+搜索脚本（`scripts/search.clj`）使用了以下工具：
+- `babashka.http-client` 用于发送 HTTP 请求
+- Clojure 的 `cheshire.core` 用于解析 JSON 数据
+- 基于文件系统的速率限制机制
+- 30 秒的超时设置，并附带相应的错误提示信息
+- 对搜索结果进行评分和排序，优先显示最佳结果
 
-For detailed API documentation, see `references/api-guide.md`.
+有关详细的 API 文档，请参阅 `references/api-guide.md`。

@@ -1,22 +1,22 @@
 ---
 name: performance-optimization
-description: React Native performance with Hermes V1, FlashList, expo-image v2, concurrent rendering. Use for slow app, memory leaks, or FPS issues.
+description: 使用 Hermes V1、FlashList、expo-image v2 以及并发渲染技术来优化 React Native 应用的性能。这些技术适用于那些运行速度较慢、存在内存泄漏问题或帧率（FPS）不佳的应用程序。
 ---
 
-# Performance Optimization Expert (RN 0.83+)
+# 性能优化专家（RN 0.83+）
 
-Specialized in optimizing React Native 0.83+ and Expo SDK 54+ applications for production. Expert in Hermes V1, React 19.2 concurrent features, Intersection Observer API, Web Performance APIs, and modern optimization strategies.
+专注于为 React Native 0.83+ 和 Expo SDK 54+ 应用程序进行生产环境下的性能优化。精通 Hermes V1、React 19.2 的并发特性、Intersection Observer API、Web 性能 API 以及现代的优化策略。
 
-## What I Know
+## 我的专长
 
-### React Native 0.83 Performance Features
+### React Native 0.83 的性能特性
 
-**Hermes V1 (Experimental)**
-- Next-generation JavaScript engine
-- Improved garbage collection
-- Better startup performance
-- Enhanced debugging with DevTools
-- Enable in metro.config.js:
+**Hermes V1（实验性）**
+- 新一代 JavaScript 引擎
+- 改进的垃圾回收机制
+- 更快的启动速度
+- DevTools 的调试功能得到增强
+- 可在 `metro.config.js` 中启用：
 
 ```javascript
 // metro.config.js
@@ -27,11 +27,11 @@ module.exports = {
 };
 ```
 
-**React 19.2 Concurrent Features**
-- Activity component for state preservation
-- useEffectEvent for stable event handlers
-- Improved concurrent rendering
-- Better memory management during transitions
+**React 19.2 的并发特性**
+- `Activity` 组件用于状态保存
+- `useEffectEvent` 用于稳定的事件处理
+- 改进的并发渲染机制
+- 在组件切换时更高效的内存管理
 
 ```typescript
 // Preserve state while hidden (React 19.2)
@@ -46,10 +46,10 @@ function TabContent({ isActive, children }) {
 }
 ```
 
-**Intersection Observer API (Canary)**
-- Web-like lazy loading for React Native
-- Visibility detection without scroll events
-- More efficient than manual scroll tracking
+**Intersection Observer API（Canary 版本）**
+- 为 React Native 实现类似 Web 的懒加载功能
+- 无需滚动事件即可检测元素可见性
+- 比手动滚动跟踪更高效
 
 ```typescript
 import { IntersectionObserver } from 'react-native';
@@ -64,10 +64,10 @@ const observer = new IntersectionObserver((entries) => {
 });
 ```
 
-**Web Performance APIs (Stable)**
-- performance.now() for precise timing
-- User Timing API for custom marks
-- PerformanceObserver for monitoring
+**Web 性能 API（稳定版本）**
+- `performance.now()` 用于精确的时间测量
+- `User Timing API` 用于自定义性能标记
+- `PerformanceObserver` 用于性能监控
 
 ```typescript
 // Performance measurement
@@ -90,9 +90,9 @@ const observer = new PerformanceObserver((list) => {
 observer.observe({ entryTypes: ['measure'] });
 ```
 
-### Bundle Size Optimization
+### 包大小优化
 
-**Analyzing Bundle Size**
+**分析包大小**
 ```bash
 # Generate bundle stats (Expo)
 npx expo export --dump-sourcemap
@@ -108,16 +108,16 @@ du -sh dist/
 npx react-native-bundle-visualizer
 ```
 
-**Reducing Bundle Size**
-- Remove unused dependencies with depcheck
-- Use Hermes V1 for smaller bytecode
-- Enable code minification and obfuscation
-- Tree shaking for unused code elimination
-- Lazy load heavy screens and components
-- Optimize asset sizes (images, fonts)
-- Use expo-image instead of react-native-fast-image
+**减小包大小**
+- 使用 `depcheck` 移除未使用的依赖项
+- 使用 Hermes V1 生成更小的字节码
+- 启用代码压缩和混淆
+- 通过“树摇动”（tree shaking）技术移除未使用的代码
+- 对重载的屏幕和组件实现懒加载
+- 优化资源文件（图片、字体）的大小
+- 使用 `expo-image` 替代 `react-native-fast-image`
 
-**Hermes Configuration (RN 0.83)**
+**Hermes 配置（RN 0.83）**
 ```javascript
 // app.json (Expo SDK 54+)
 {
@@ -141,9 +141,9 @@ module.exports = {
 };
 ```
 
-### Rendering Performance
+### 渲染性能优化
 
-**React.memo for Component Optimization**
+**使用 `React.memo` 优化组件**
 ```javascript
 import React, { memo } from 'react';
 
@@ -168,7 +168,7 @@ const UserCard = memo(
 );
 ```
 
-**useMemo and useCallback**
+**`useMemo` 和 `useCallback` 的使用**
 ```javascript
 import { useMemo, useCallback } from 'react';
 
@@ -197,7 +197,7 @@ function UserList({ users, onUserPress }) {
 }
 ```
 
-**Avoiding Inline Functions and Objects**
+**避免使用内联函数和对象**
 ```javascript
 // ❌ BAD: Creates new function on every render
 <TouchableOpacity onPress={() => handlePress(item.id)}>
@@ -218,9 +218,9 @@ const handleItemPress = useCallback(() => {
 </TouchableOpacity>
 ```
 
-### List Performance (FlatList/SectionList)
+### 列表性能优化（FlatList/SectionList）
 
-**Optimized FlatList Configuration**
+**优化 FlatList 的配置**
 ```javascript
 import { FlatList } from 'react-native';
 
@@ -263,7 +263,7 @@ const getItemLayout = (data, index) => ({
 });
 ```
 
-**FlashList (Better than FlatList)**
+**FlashList（优于 FlatList）**
 ```javascript
 // Install: npm install @shopify/flash-list
 import { FlashList } from "@shopify/flash-list";
@@ -279,7 +279,7 @@ function SuperFastList({ data }) {
 }
 ```
 
-**Intersection Observer for Lazy Loading (RN 0.83 Canary)**
+**使用 Intersection Observer 实现懒加载（RN 0.83 Canary 版本）**
 ```typescript
 import { useRef, useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -314,9 +314,9 @@ function LazyLoadItem({ onVisible, children }) {
 }
 ```
 
-### Image Optimization
+### 图片优化
 
-**expo-image v2 (Recommended for Expo SDK 54+)**
+**推荐使用 `expo-image`（适用于 Expo SDK 54+）**
 ```typescript
 // expo-image is the recommended solution for Expo projects
 import { Image, useImage } from 'expo-image';
@@ -355,7 +355,7 @@ function PreloadedImage({ uri }) {
 }
 ```
 
-**Fast Image for Bare RN Projects**
+**为纯 React Native 项目使用 `Fast Image`**
 ```javascript
 // For bare React Native projects without Expo
 // Install: npm install react-native-fast-image
@@ -376,7 +376,7 @@ function ProfilePicture({ uri }) {
 }
 ```
 
-**Image Optimization Best Practices**
+**图片优化的最佳实践**
 ```javascript
 // Use appropriate sizes (not 4K images for thumbnails)
 <Image
@@ -399,9 +399,9 @@ import { Image } from 'expo-image';
 />
 ```
 
-### Memory Management
+### 内存管理
 
-**Preventing Memory Leaks**
+**防止内存泄漏**
 ```javascript
 import { useEffect } from 'react';
 
@@ -429,7 +429,7 @@ function Component() {
 }
 ```
 
-**Image Memory Management**
+**图片内存管理**
 ```javascript
 // Clear image cache when memory warning
 import { Platform, Image } from 'react-native';
@@ -447,9 +447,9 @@ FastImage.clearMemoryCache();
 FastImage.clearDiskCache();
 ```
 
-### Navigation Performance
+### 导航性能优化**
 
-**Lazy Loading Screens**
+**实现屏幕的懒加载**
 ```javascript
 import { lazy, Suspense } from 'react';
 import { ActivityIndicator } from 'react-native';
@@ -472,7 +472,7 @@ function App() {
 }
 ```
 
-**React Navigation Optimization**
+**React Navigation 的优化**
 ```javascript
 // Freeze inactive screens (React Navigation v6+)
 import { enableScreens } from 'react-native-screens';
@@ -488,9 +488,9 @@ enableScreens();
 </Stack.Navigator>
 ```
 
-### Startup Time Optimization
+### 启动时间优化
 
-**Reducing Initial Load Time**
+**减少初始加载时间**
 ```javascript
 // app.json - Optimize splash screen
 {
@@ -511,7 +511,7 @@ enableScreens();
 }
 ```
 
-**Defer Non-Critical Initialization**
+**延迟非关键功能的初始化**
 ```javascript
 import { InteractionManager } from 'react-native';
 
@@ -532,9 +532,9 @@ function App() {
 }
 ```
 
-### Animation Performance
+### 动画性能优化**
 
-**Use Native Driver**
+**使用原生驱动**
 ```javascript
 import { Animated } from 'react-native';
 
@@ -557,7 +557,7 @@ function FadeInView({ children }) {
 }
 ```
 
-**Reanimated for Complex Animations**
+**对复杂动画使用 `Reanimated` 库**
 ```javascript
 // Install: npm install react-native-reanimated
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
@@ -581,30 +581,29 @@ function DraggableBox() {
 }
 ```
 
-## When to Use This Skill
+## 何时需要我的帮助
 
-Ask me when you need help with:
-- Reducing app bundle size
-- Optimizing FlatList/SectionList performance
-- Fixing memory leaks
-- Improving app startup time
-- Eliminating jank and frame drops
-- Optimizing image loading and caching
-- Reducing component re-renders
-- Implementing lazy loading
-- Optimizing navigation performance
-- Analyzing performance bottlenecks
-- Using React.memo, useMemo, useCallback effectively
-- Implementing 60fps animations
-- **Configuring Hermes V1 for better performance**
-- **Using React 19.2 Activity component for state preservation**
-- **Implementing Intersection Observer for lazy loading**
-- **Using Web Performance APIs for profiling**
-- **Migrating to expo-image v2**
+当您遇到以下问题时，请联系我：
+- 需要减少应用程序的包大小
+- 需要优化 FlatList/SectionList 的性能
+- 需要修复内存泄漏问题
+- 需要提高应用程序的启动速度
+- 需要优化图片加载和缓存
+- 需要减少组件的重新渲染次数
+- 需要实现懒加载功能
+- 需要优化导航性能
+- 需要分析性能瓶颈
+- 需要正确使用 `React.memo`, `useMemo`, `useCallback`
+- 需要实现 60fps 的动画效果
+- 需要配置 Hermes V1 以获得更好的性能
+- 需要使用 `React 19.2` 的 `Activity` 组件来保存状态
+- 需要实现基于 `Intersection Observer` 的懒加载功能
+- 需要使用 Web 性能 API 进行性能分析
+- 需要将项目迁移到 `expo-image v2`
 
-## Performance Monitoring
+## 性能监控
 
-### React Native Performance Monitor
+### React Native 性能监控工具
 ```javascript
 // In app, shake device → Show Perf Monitor
 // Shows:
@@ -613,7 +612,7 @@ Ask me when you need help with:
 // - RAM usage
 ```
 
-### Production Performance Monitoring
+### 生产环境下的性能监控
 ```javascript
 // Install: npm install @react-native-firebase/perf
 import perf from '@react-native-firebase/perf';
@@ -627,10 +626,9 @@ await trace.stop();
 import '@react-native-firebase/perf/lib/modular/index';
 ```
 
-## Pro Tips & Tricks
+## 专业技巧与建议
 
-### 1. Profile with React DevTools Profiler
-
+### 1. 使用 React DevTools 的性能分析工具进行性能分析**
 ```javascript
 import { Profiler } from 'react';
 
@@ -645,8 +643,7 @@ function onRender(id, phase, actualDuration) {
 </Profiler>
 ```
 
-### 2. Debounce Expensive Operations
-
+### 2. 对耗时较长的操作进行节流处理**
 ```javascript
 import { debounce } from 'lodash';
 import { useCallback } from 'react';
@@ -668,9 +665,9 @@ function SearchScreen() {
 }
 ```
 
-### 3. Virtualize Long Lists
+### 3. 对长列表进行虚拟化处理
 
-Use FlashList or RecyclerListView instead of ScrollView with many items:
+对于包含大量项的列表，使用 `FlashList` 或 `RecyclerListView` 替代 `ScrollView`：
 
 ```javascript
 // ❌ BAD: Renders all 1000 items
@@ -686,7 +683,7 @@ Use FlashList or RecyclerListView instead of ScrollView with many items:
 />
 ```
 
-### 4. Optimize StyleSheets
+### 4. 优化样式表（StyleSheets）
 
 ```javascript
 // ❌ BAD: Creates new style object on every render
@@ -703,20 +700,20 @@ const styles = StyleSheet.create({
 <View style={styles.container} />
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-**Performance Requirements**
-- Document performance targets in `spec.md` (e.g., <2s startup)
-- Include performance testing in `tasks.md` test plans
-- Measure before/after optimization in increment reports
+**性能要求**
+- 在 `spec.md` 中记录性能目标（例如：启动时间小于 2 秒）
+- 在 `tasks.md` 的测试计划中包含性能测试
+- 在性能优化前后进行对比分析
 
-**Performance Metrics**
-- Bundle size: Track in increment completion reports
-- Startup time: Measure and document improvements
-- FPS: Target 60fps for critical UI interactions
-- Memory usage: Set thresholds and monitor
+**性能指标**
+- 包大小：在增量报告中跟踪变化
+- 启动时间：测量并记录优化效果
+- 帧率（FPS）：关键用户界面交互的目标值为 60fps
+- 内存使用情况：设置阈值并进行监控
 
-**Living Documentation**
-- Document performance optimization strategies
-- Track bundle size trends across increments
-- Maintain performance runbooks for common issues
+**持续更新的文档**
+- 记录性能优化策略
+- 跟踪各版本之间的包大小变化趋势
+- 为常见问题维护性能优化方案

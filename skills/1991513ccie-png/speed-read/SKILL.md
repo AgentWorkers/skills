@@ -1,6 +1,6 @@
 ---
 name: speed-read
-description: Expert guidance for speed-read.
+description: 快速阅读的专家指南。
 version: 1.0.0
 tags: [mind,wellness,self-improvement]
 author: OpenWork
@@ -13,15 +13,16 @@ metadata:
 
 # uspeed read
 
-Mental training and wellness.
+**心理训练与健康**
 
-## Capabilities
+## 功能**
 
-- Techniques and methods
-- Practice exercises
-- Tips and guidance
-- Scientific background
+- 相关技巧与方法  
+- 练习练习  
+- 提示与指导  
+- 科学依据  
 
-## Usage
-Help with this skill
-Practice guidance
+## 使用方法**
+
+- 帮助提升阅读速度  
+- 提供阅读练习指导

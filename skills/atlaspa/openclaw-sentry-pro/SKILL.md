@@ -1,47 +1,48 @@
 ---
 name: openclaw-sentry-pro
-description: "Full secret scanning suite: detect leaked API keys, tokens, and credentials, then automatically redact, quarantine exposed files, and enforce .gitignore policies. Everything in openclaw-sentry (free) plus automated countermeasures."
+description: "**完整的安全扫描套件：**  
+能够检测泄露的 API 密钥、令牌和凭据，自动屏蔽（redact）这些敏感信息，隔离受影响的文件，并强制执行 `.gitignore` 规则。这套功能包含在 openclaw-sentry（免费版本）中，同时还提供了自动化应对措施。"
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🔑","requires":{"bins":["python3"]},"os":["darwin","linux","win32"]}}
 ---
 
 # OpenClaw Sentry Pro
 
-Everything in [openclaw-sentry](https://github.com/AtlasPA/openclaw-sentry) (free) plus automated countermeasures.
+[openclaw-sentry](https://github.com/AtlasPA/openclaw-sentry) 的所有功能（免费版本）再加上自动化对策。
 
-**Free version detects secrets. Pro version eliminates them.**
+**免费版本可检测秘密信息；Pro 版本可彻底清除这些秘密信息。**
 
-## Detection Commands (also in free)
+## 检测命令（免费版本也提供）
 
-### Full Scan
+### 全面扫描
 
-Scan all workspace files for secrets and high-risk files.
+扫描工作区中的所有文件，查找秘密信息和高风险文件。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py scan --workspace /path/to/workspace
 ```
 
-### Check Single File
+### 检查单个文件
 
-Check a specific file for secrets.
+检查特定文件中是否存在秘密信息。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py check MEMORY.md --workspace /path/to/workspace
 ```
 
-### Quick Status
+### 快速状态
 
-One-line summary of secret exposure risk, quarantine status, and policy state.
+提供关于秘密信息泄露风险、文件隔离状态以及政策配置的简短总结。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py status --workspace /path/to/workspace
 ```
 
-## Pro Countermeasures
+## Pro 版本的对策
 
-### Redact Secrets
+### 遮盖秘密信息
 
-Find secrets in files and replace them with masked versions (e.g., `sk-ant-abc...xyz` becomes `sk-ant-***REDACTED***`). Creates `.bak` backup before modifying. If no file specified, redact all files in workspace.
+在文件中找到秘密信息后，将其替换为掩码版本（例如，`sk-ant-abc...xyz` 会被替换为 `sk-ant-***REDACTED***`）。修改前会创建备份文件（`.bak`）。如果没有指定文件，则会覆盖工作区中的所有文件。
 
 ```bash
 # Redact a single file
@@ -51,41 +52,41 @@ python3 {baseDir}/scripts/sentry.py redact config.json --workspace /path/to/work
 python3 {baseDir}/scripts/sentry.py redact --workspace /path/to/workspace
 ```
 
-### Quarantine a File
+### 将文件隔离
 
-Move a file containing secrets to `.quarantine/sentry/` with metadata JSON recording what was found, when, and original location.
+将包含秘密信息的文件移动到 `.quarantine/sentry/` 目录，并附带元数据 JSON 文件，记录发现的内容、时间以及原始位置。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py quarantine .env --workspace /path/to/workspace
 ```
 
-### Unquarantine a File
+### 解除文件隔离
 
-Restore a quarantined file to its original location.
+将被隔离的文件恢复到原始位置。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py unquarantine .env --workspace /path/to/workspace
 ```
 
-### Defend
+### 防护措施
 
-Auto-generate/update `.gitignore` with common secret patterns (.env, *.pem, *.key, credentials.json, etc.) and create a `.sentry-policy.json` policy file listing which patterns to enforce.
+自动生成并更新 `.gitignore` 文件，以屏蔽常见的秘密信息模式（如 `.env`、`.pem`、`.key`、`credentials.json` 等文件），并创建 `.sentry-policy.json` 文件来指定需要执行的防护规则。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py defend --workspace /path/to/workspace
 ```
 
-### Protect (Automated Sweep)
+### 自动保护（全面扫描）
 
-Full automated sweep: scan all files, auto-redact secrets in non-critical files, quarantine files with high-density secrets, update .gitignore. **This is the recommended command for session startup.**
+进行全面自动化扫描：扫描所有文件，自动屏蔽非关键文件中的秘密信息，将含有高密度秘密信息的文件隔离，并更新 `.gitignore` 文件。**这是启动会话时推荐的命令。**
 
 ```bash
 python3 {baseDir}/scripts/sentry.py protect --workspace /path/to/workspace
 ```
 
-## Recommended Integration
+## 推荐的集成方式
 
-### Session Startup Hook (Claude Code)
+### 会话启动钩子（Claude Code）
 
 ```json
 {
@@ -105,49 +106,50 @@ python3 {baseDir}/scripts/sentry.py protect --workspace /path/to/workspace
 }
 ```
 
-### Heartbeat (OpenClaw)
+### 心跳检测（OpenClaw）
 
-Add to HEARTBEAT.md for periodic protection:
+将相关代码添加到 HEARTBEAT.md 文件中，以实现定期保护：
+
 ```
 - Run secret scanning protection (python3 {skill:openclaw-sentry-pro}/scripts/sentry.py protect)
 ```
 
-### After Adding New Configs or Secrets
+### 添加新配置或新秘密信息后
 
-Run `protect` to auto-redact and quarantine any newly exposed credentials.
+运行 `protect` 命令，自动屏蔽并隔离新暴露的秘密信息。
 
-## What It Detects
+## 可检测的秘密信息类型
 
-| Provider | Patterns |
+| 提供商 | 秘密信息模式 |
 |----------|----------|
-| **AWS** | Access keys (AKIA...), secret keys |
-| **GitHub** | PATs (ghp_, gho_, ghs_, ghr_, github_pat_) |
-| **Slack** | Bot/user tokens (xox...), webhooks |
-| **Stripe** | Secret keys (sk_live_), publishable keys |
-| **OpenAI** | API keys (sk-...) |
-| **Anthropic** | API keys (sk-ant-...) |
-| **Google** | API keys (AIza...), OAuth secrets |
-| **Azure** | Storage account keys |
-| **Generic** | API keys, secrets, passwords, bearer tokens, connection strings |
-| **Crypto** | PEM private keys, .key/.pem/.p12 files |
-| **Database** | PostgreSQL/MySQL/MongoDB/Redis URLs with credentials |
-| **JWT** | JSON Web Tokens |
-| **Environment** | .env files with variables |
+| **AWS** | 访问密钥（AKIA...）、秘密密钥 |
+| **GitHub** | PAT（ghp_、gho_、ghs_、ghr_、github_pat_） |
+| **Slack** | 机器人/用户令牌（xox...）、Webhook |
+| **Stripe** | 秘密密钥（sk_live_）、可公开密钥 |
+| **OpenAI** | API 密钥（sk-...） |
+| **Anthropic** | API 密钥（sk-ant-...） |
+| **Google** | API 密钥（AIza...）、OAuth 密钥 |
+| **Azure** | 存储账户密钥 |
+| **通用** | API 密钥、密码、bearer 令牌、连接字符串 |
+| **加密** | PEM 私钥、.key/.pem/.p12 文件 |
+| **数据库** | 包含凭据的 PostgreSQL/MySQL/MongoDB/Redis URL |
+| **JWT** | JSON Web 令牌 |
+| **环境变量** | .env 文件中的变量 |
 
-## Countermeasure Summary
+## 对策总结
 
-| Command | Action |
+| 命令 | 功能 |
 |---------|--------|
-| `protect` | Full scan + auto-redact + auto-quarantine + update .gitignore |
-| `redact [file]` | Replace secrets with masked versions, backup originals |
-| `quarantine <file>` | Move file to quarantine with metadata |
-| `unquarantine <file>` | Restore a quarantined file |
-| `defend` | Update .gitignore + create enforcement policy |
+| `protect` | 全面扫描 + 自动屏蔽秘密信息 + 自动隔离 + 更新 `.gitignore` |
+| `redact [file]` | 将秘密信息替换为掩码版本，并备份原始文件 |
+| `quarantine <file>` | 将文件移至隔离目录，并附带元数据 |
+| `unquarantine <file>` | 恢复被隔离的文件 |
+| `defend` | 更新 `.gitignore` 文件并创建防护策略 |
 
-## No External Dependencies
+## 无需外部依赖
 
-Python standard library only. No pip install. No network calls. Everything runs locally.
+仅依赖 Python 标准库，无需安装任何第三方库（如 pip），也不进行网络请求。所有操作均在本地执行。
 
-## Cross-Platform
+## 跨平台兼容性
 
-Works with OpenClaw, Claude Code, Cursor, and any tool using the Agent Skills specification.
+支持与 OpenClaw、Claude Code、Cursor 以及任何遵循 Agent Skills 规范的工具配合使用。

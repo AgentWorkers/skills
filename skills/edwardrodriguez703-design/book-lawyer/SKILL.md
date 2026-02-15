@@ -1,23 +1,23 @@
 ---
 name: book-lawyer
-description: Book lawyer services through Lokuli MCP. Use when user needs to find and book lawyer. Triggers on requests like "book a lawyer", "find lawyer near me", or any lawyer service request.
+description: 通过 Lokuli MCP 预订律师服务。当用户需要寻找或预约律师时，可以使用此功能。该功能会在用户输入类似“预约律师”、“查找附近的律师”或任何与律师服务相关的请求时被触发。
 ---
 
-# uook lawyer
+# 使用律师服务
 
-Book lawyer services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来预约律师服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输方式：SSE | JSON-RPC 2.0 | POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",

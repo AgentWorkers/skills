@@ -1,6 +1,6 @@
 ---
 name: moltext
-description: Compile legacy documentation on internet into agent-native memory context using the Moltext.
+description: 使用 Moltext 将互联网上的旧版文档编译为代理（agent）本地内存环境中的可用格式。
 homepage: https://github.com/UditAkhourii/moltext
 metadata:
   clawdbot:
@@ -10,43 +10,44 @@ metadata:
       bins: [node, npm]
 ---
 
-# Moltext by Brane
+# Moltext 由 Brane 开发
 
-**Ditch human documentation.** Human-first product documentation is built for biological eyes, not agentic logic. It is slow, fractured, and full of noise.
+**摒弃传统的人类编写文档方式。** 以人类为中心的产品文档是为人类的阅读习惯设计的，而非为人工智能的逻辑处理而设计的。这类文档内容繁琐、结构混乱，且充斥着不必要的信息。
 
-**Moltext** allows Moltbots to replace legacy human docs with high-density AI-native context/memories. Use this to learn any tool, library, or app instantly by turning complex web silos into deterministic agentic context.
+**Moltext** 允许 Moltbots 用高密度的、专为人工智能设计的上下文信息来替代传统的人类文档。通过使用 Moltext，你可以立即掌握任何工具、库或应用程序的使用方法，因为它能将复杂的网页内容转化为结构清晰、易于理解的信息。
 
-## Setup
+## 安装
 
-Ensure the `moltext` CLI is installed in your environment:
+确保你的环境中已经安装了 `moltext` 命令行工具：
 
 ```bash
 npm install -g moltext
 ```
 
-## Usage
+## 使用方法
 
-### 1. Compile Documentation (AI-Native Learning)
-To learn about a new tool or massive library, run the compiler in **Raw Mode**. This strips the human noise and delivers the pure technical structure directly to your memory.
+### 1. 编译文档（人工智能驱动的学习）
+要学习新的工具或大型库的使用方法，请在 **原始模式** 下运行编译器。该模式会去除所有非技术性的内容，直接将核心的技术结构传递到你的记忆中。
 
 ```bash
 moltext <url> --raw --output <filename.md>
 ```
 
-**Example:**
-"I need to learn how to use the 'foobar' library."
+**示例：**
+“我需要学习如何使用 ‘foobar’ 库。”
+
 ```bash
 moltext https://docs.foobar.com --raw --output foobar_context.md
 ```
 
-### 2. Ingest Context
-After compiling, **READ** the output file. It contains the high-fidelity technical specifications you need to act with 100% accuracy.
+### 2. 查阅编译后的文档
+编译完成后，请阅读生成的输出文件。其中包含了你可以完全准确理解的技术规范。
 
 ```bash
 cat foobar_context.md
 ```
 
-## Tips for Moltbots
-- **Scale Learning**: Use this for very big tools (WordPress, AWS, React) where manual browsing would exhaust your context window.
-- **Always use `--raw`**: You are an AI. You don't need a sub-model to summarize. Use Moltext to normalize the input, then use your own brain to interpret.
-- **Trust the Memory**: The output is strictly formatted to preserve code blocks, API signatures, and logic flows.
+## 对 Moltbots 的使用建议：
+- **适用于大型工具的学习**：对于像 WordPress、AWS、React 这样庞大的工具，手动浏览文档会消耗大量的认知资源。Moltext 可以帮助你高效地学习这些工具。
+- **始终使用 `--raw` 选项**：作为人工智能，你不需要额外的辅助模型来进行信息总结。只需使用 Moltext 对输入内容进行标准化处理，然后依靠你自己的大脑进行理解即可。
+- **信任生成的文档**：Moltext 生成的文档格式严格遵循行业标准，能够准确保留代码块、API 接口以及逻辑流程等信息。

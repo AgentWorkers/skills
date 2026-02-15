@@ -1,59 +1,69 @@
 # AgentMail Wrapper
 
-**Version:** 1.0.0  
-**Author:** Midas Skills  
-**License:** MIT
+**版本：** 1.0.0  
+**作者：** Midas Skills  
+**许可证：** MIT  
 
-## Description
-Verified email delivery integration. Send, track, schedule with multi-provider support (SendGrid, Mailgun, AWS SES, SMTP). GDPR/CAN-SPAM compliant.
+## 产品描述  
+AgentMail Wrapper 是一个用于验证电子邮件发送结果的工具，支持多种邮件服务提供商（SendGrid、Mailgun、AWS SES、SMTP），并提供发送、跟踪、定时发送等功能。该工具符合 GDPR 和 CAN-SPAM 法规要求。  
 
-## Value Proposition
-Verified email agent integration. Send, track, schedule emails with verified delivery & unsubscribe compliance. SMTP, API, OAuth support.
+## 产品优势  
+- 支持多种邮件服务提供商，确保邮件能够准确送达；  
+- 提供详细的邮件发送跟踪信息（打开率、点击率、退信率等）；  
+- 支持邮件验证功能；  
+- 提供模板管理功能，便于自定义邮件内容；  
+- 支持定时发送邮件；  
+- 支持批量处理邮件；  
+- 提供订阅管理功能，方便处理用户退订请求；  
+- 优化邮件列表的维护机制（处理退信邮件）；  
+- 提供合规性报告功能；  
+- 支持 OAuth 认证，便于与 Gmail 等服务集成；  
+- 支持回复跟踪功能。  
 
-## Category
-email-integration
+## 产品分类：** 邮件集成（Email Integration）**  
 
-## Tags
-email, delivery-tracking, multi-provider, compliance, automation
+## 关键标签：**  
+- 邮件（Email）  
+- 发送跟踪（Delivery Tracking）  
+- 多服务提供商（Multi-Provider）  
+- 合规性（Compliance）  
+- 自动化（Automation）  
 
-## Skill Type
-integration
+## 价格方案：  
+- **免费版：** $0  
+- **专业版：** $44.99  
 
-## Pricing
-- **Free:** $0
-- **Pro:** $44.99
+## 主要功能：  
+- ✅ 支持多种邮件服务提供商  
+- ✅ 邮件发送跟踪  
+- ✅ 邮件验证  
+- 模板管理  
+- 定时发送  
+- 批量处理  
+- 订阅管理  
+- 退信处理  
+- 合规性报告  
+- OAuth 认证（支持 Gmail）  
+- 回复跟踪  
 
-## Key Features
-- ✅ Multi-provider support (SendGrid, Mailgun, AWS SES, SMTP)
-- ✅ Delivery tracking (open, click, bounce)
-- ✅ Email verification
-- ✅ Template management
-- ✅ Scheduled sends
-- ✅ Batch processing
-- ✅ Unsubscribe management
-- ✅ List hygiene (bounce handling)
-- ✅ Compliance reporting
-- ✅ OAuth support (Gmail)
-- ✅ Reply tracking
+## 使用场景：  
+- 交易类邮件发送（如注册、密码重置通知）  
+- 邮件营销自动化  
+- 定时发送邮件序列  
+- 邮件发送结果验证与跟踪  
+- 邮件列表管理（处理退订、退信等）  
+- 多账户 SMTP 管理  
+- 邮件模板管理  
+- 合规性报告  
 
-## Use Cases
-- Transactional email delivery (signups, resets)
-- Email campaign automation
-- Scheduled email sequences
-- Delivery verification & tracking
-- List management (unsubscribes, bounces)
-- Multi-account SMTP management
-- Email template management
-- Compliance reporting
-
-## Installation
+## 安装说明：  
 ```bash
 npm install agentmail-wrapper
 # or
 pip install agentmail-wrapper
-```
+```  
 
-## Quick Start
+## 快速入门指南：  
 ```javascript
 const AgentMail = require('agentmail-wrapper');
 
@@ -69,11 +79,11 @@ await mail.send({
   trackClicks: true,
   trackOpens: true
 });
-```
+```  
 
-## Repository
-https://github.com/midas-skills/agentmail-wrapper
+## 项目仓库：  
+https://github.com/midas-skills/agentmail-wrapper  
 
-## Support
+## 技术支持：  
 📧 support@midas-skills.com  
-🔗 Docs: https://docs.midas-skills.com/agentmail-wrapper
+🔗 文档：https://docs.midas-skills.com/agentmail-wrapper

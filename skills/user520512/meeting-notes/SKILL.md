@@ -1,3 +1,3 @@
-# Meeting Notes Generator
+# 会议记录生成器
 
-Generate structured meeting minutes from transcripts.
+该工具能够根据会议记录自动生成结构化的会议纪要。

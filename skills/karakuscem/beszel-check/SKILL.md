@@ -1,18 +1,18 @@
 ---
 name: beszel
-description: Monitor home lab servers via Beszel (PocketBase).
+description: 通过 Beszel (PocketBase) 监控家庭实验室中的服务器。
 metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["node"]}}}
 ---
 
-# Beszel Monitoring
+# Beszel 监控
 
-Check the status of your local servers.
+用于检查本地服务器的状态。
 
-## Usage
-- `beszel status` - Get status of all systems
-- `beszel containers` - List top containers by CPU usage
+## 使用方法
+- `beszel status` - 查看所有系统的状态
+- `beszel containers` - 按 CPU 使用率列出占用资源最多的容器
 
-## Commands
+## 命令
 ```bash
 # Get status
 source ~/.zshrc && ~/clawd/skills/beszel/index.js status

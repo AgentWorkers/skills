@@ -1,25 +1,25 @@
 ---
 name: financial-data-visualization
 model: standard
-description: Patterns for building dark-themed financial charts and data visualizations. Covers chart theming, color scales for gains/losses, and real-time data display. Use when building trading dashboards or financial analytics. Triggers on chart theme, data visualization, financial chart, dark theme, gains losses, trading UI.
+description: 用于构建深色主题财务图表和数据可视化的模式。涵盖了图表样式设计、盈亏颜色刻度的设置以及实时数据展示的功能。适用于构建交易仪表板或进行财务分析时使用。相关关键词包括：图表主题（chart theme）、数据可视化（data visualization）、财务图表（financial chart）、深色主题（dark theme）、盈亏情况（gains/losses）、交易用户界面（trading UI）。
 ---
 
-# Financial Data Visualization
+# 金融数据可视化
 
-Build dark-themed financial charts and visualizations that are readable, beautiful, and consistent with modern trading UIs.
-
----
-
-## When to Use
-
-- Building trading dashboards with charts
-- Displaying portfolio performance
-- Showing price history and trends
-- Any financial data visualization
+构建深色主题的金融图表和可视化效果，使其既易于阅读，美观大方，又与现代交易用户界面保持一致。
 
 ---
 
-## Pattern 1: Chart Color Palette
+## 使用场景
+
+- 构建包含图表的交易仪表板
+- 显示投资组合表现
+- 展示价格历史和趋势
+- 任何金融数据的可视化展示
+
+---
+
+## 模式 1：图表颜色调色板
 
 ```typescript
 // lib/chart-theme.ts
@@ -52,7 +52,7 @@ export const chartColors = {
 
 ---
 
-## Pattern 2: Recharts Theme Config
+## 模式 2：Recharts 主题配置
 
 ```tsx
 // components/charts/chart-config.ts
@@ -107,7 +107,7 @@ export function ChartTooltip({ active, payload, label }: any) {
 
 ---
 
-## Pattern 3: Price Chart Component
+## 模式 3：价格图表组件
 
 ```tsx
 import {
@@ -169,7 +169,7 @@ export function PriceChart({ data, isPositive = true }: PriceChartProps) {
 
 ---
 
-## Pattern 4: Candlestick Colors
+## 模式 4：蜡烛图颜色设置
 
 ```typescript
 export const candlestickColors = {
@@ -197,7 +197,7 @@ const candlestickSeries = chart.addCandlestickSeries({
 
 ---
 
-## Pattern 5: Percentage Bar
+## 模式 5：百分比条形图
 
 ```tsx
 interface PercentageBarProps {
@@ -251,7 +251,7 @@ export function PercentageBar({ value, showLabel = true }: PercentageBarProps) {
 
 ---
 
-## Pattern 6: Mini Sparkline
+## 模式 6：迷你折线图
 
 ```tsx
 interface SparklineProps {
@@ -295,7 +295,7 @@ export function Sparkline({ data, width = 80, height = 24 }: SparklineProps) {
 
 ---
 
-## Pattern 7: Chart Legend
+## 模式 7：图表图例
 
 ```tsx
 interface LegendItem {
@@ -326,25 +326,25 @@ export function ChartLegend({ items }: { items: LegendItem[] }) {
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — Complete design system workflow
-- [animated-financial-display](../animated-financial-display/) — Number animations and value flash effects
-- [dual-stream-architecture](../../realtime/dual-stream-architecture/) — Real-time data streaming patterns
-
----
-
-## NEVER Do
-
-- **Use light theme colors** — Ensure sufficient contrast on dark backgrounds
-- **Use red/green without considering colorblind users** — Add shapes or patterns
-- **Skip grid lines** — They help read values
-- **Use thick strokes** — 1-2px is optimal for data lines
-- **Animate charts on every data point** — Reserve animation for initial load
+- **元技能：** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — 完整的设计系统工作流程
+- [animated-financial-display](../animated-financial-display/) — 数字动画和数值闪烁效果
+- [dual-stream-architecture](../../realtime/dual-stream-architecture/) — 实时数据流处理技术
 
 ---
 
-## Quick Reference
+## 绝对不要做
+
+- **使用浅色主题** — 确保在深色背景上具有足够的对比度
+- **在未考虑色盲用户的情况下使用红色/绿色** — 应添加形状或图案来辅助识别
+- **省略网格线** — 网格线有助于读取数据值
+- **使用过粗的线条** — 数据线的最佳粗细为 1-2 像素
+- **对每个数据点都进行动画处理** — 将动画效果保留到初次加载时使用
+
+---
+
+## 快速参考
 
 ```tsx
 // Color assignment

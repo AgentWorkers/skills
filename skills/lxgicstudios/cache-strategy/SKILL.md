@@ -1,28 +1,28 @@
 ---
 name: cache-strategy
-description: Get AI-powered caching strategy suggestions for your API. Use when performance matters.
+description: 为您的 API 获取基于人工智能的缓存策略建议。在性能至关重要的情况下使用这些策略。
 ---
 
-# Cache Strategy
+# 缓存策略
 
-You know you should cache things but you're not sure what, where, or for how long. Point this tool at your API routes and get specific caching recommendations.
+你知道应该对某些数据进行缓存，但不确定应该缓存什么、缓存在哪里以及缓存多长时间。将这个工具应用于你的 API 路由，就能获得具体的缓存建议。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-cache-strategy ./src/api/
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes your API endpoints
-- Identifies what should be cached
-- Recommends TTL values based on data patterns
-- Suggests caching layer (CDN, Redis, memory)
+- 分析你的 API 端点
+- 确定哪些数据应该被缓存
+- 根据数据访问模式推荐合适的缓存时长（TTL 值）
+- 建议使用哪种缓存方式（如 CDN、Redis、内存等）
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Analyze API routes
@@ -35,42 +35,42 @@ npx ai-cache-strategy ./routes/products.ts
 npx ai-cache-strategy ./src/api/ --layer redis
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Cache static data aggressively** - config, reference data, rarely changing content
-- **Be careful with user data** - personalized responses need different strategies
-- **Invalidate properly** - stale cache is worse than no cache
-- **Monitor hit rates** - if nothing is hitting cache, something's wrong
+- **积极缓存静态数据**：配置文件、参考数据、不经常变化的内容
+- **谨慎处理用户数据**：个性化响应需要不同的缓存策略
+- **正确地更新缓存**：过时的缓存比没有缓存更糟糕
+- **监控缓存命中率**：如果没有任何请求命中缓存，说明可能存在问题
 
-## When to Use This
+## 适用场景
 
-- API response times are too slow
-- Database is getting hammered with repeated queries
-- Scaling up and need to reduce load
-- Building a new API and want to design caching upfront
+- API 响应时间过慢
+- 数据库因重复查询而负担过重
+- 需要扩展系统以减轻负载
+- 在开发新 API 时，希望提前设计好缓存策略
 
-## Part of the LXGIC Dev Toolkit
+## 作为 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册，也无需 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-cache-strategy --help
 ```
 
-## How It Works
+## 工作原理
 
-Reads your API route files, understands the data patterns and access patterns from the code, and recommends appropriate caching strategies. The AI considers factors like data freshness requirements, personalization, and common access patterns.
+该工具会读取你的 API 路由文件，理解代码中的数据访问模式，并据此推荐合适的缓存策略。人工智能会考虑数据更新频率、个性化需求以及常见的访问模式等因素。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。你可以随意使用该工具。

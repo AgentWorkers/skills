@@ -12,9 +12,9 @@ allowed-tools: Bash(infsh *)
 
 # Talking Head Production
 
-Create talking head videos with AI avatars and lipsync via [inference.sh](https://inference.sh) CLI.
+使用 [inference.sh](https://inference.sh) 命令行工具，可以通过 AI 阵容和口型同步功能来制作谈话类视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -31,29 +31,29 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-## Portrait Requirements
+## 肖像要求
 
-The source portrait image is critical. Poor portraits = poor video output.
+源肖像图片的质量至关重要。肖像质量差会导致视频效果不佳。
 
-### Must Have
+### 必备条件
 
-| Requirement | Why | Spec |
+| 条件 | 原因 | 规格 |
 |------------|-----|------|
-| **Center-framed** | Avatar needs face in predictable position | Face centered in frame |
-| **Head and shoulders** | Body visible for natural gestures | Crop below chest |
-| **Eyes to camera** | Creates connection with viewer | Direct frontal gaze |
-| **Neutral expression** | Starting point for animation | Slight smile OK, not laughing/frowning |
-| **Clear face** | Model needs to detect features | No sunglasses, heavy shadows, or obstructions |
-| **High resolution** | Detail preservation | Min 512x512 face region, ideally 1024x1024+ |
+| **画面居中** | 阵容的脸部需要位于可预测的位置 | 脸部需在画面正中央 |
+| **仅显示头部和肩膀** | 以便展示自然的肢体动作 | 剪裁至胸部以下 |
+| **眼睛朝向镜头** | 与观众建立联系 | 需要直视镜头 |
+| **表情中性** | 作为动画的起点 | 轻微微笑可以，但禁止大笑或皱眉 |
+| **面部清晰** | 模型需要能够识别面部特征 | 不能有太阳镜、浓重的阴影或遮挡物 |
+| **高分辨率** | 以保持细节清晰 | 至少 512x512 的面部区域，理想为 1024x1024 或更高 |
 
-### Background
+### 背景
 
-| Type | When to Use |
+| 类型 | 适用场景 |
 |------|-------------|
-| Solid color | Professional, clean, easy to composite |
-| Soft bokeh | Natural, lifestyle feel |
-| Office/studio | Business context |
-| Transparent (via bg removal) | Compositing into other scenes |
+| 单色背景 | 专业、干净，易于合成 |
+| 柔和的散景效果 | 自然、生活化的氛围 |
+| 办公室/工作室背景 | 商业场景 |
+| 透明背景（通过去除背景实现） | 可以与其他场景合成 |
 
 ```bash
 # Generate a professional portrait background
@@ -67,20 +67,20 @@ infsh app run <bg-removal-app> --input '{
 }'
 ```
 
-## Audio Quality
+## 音频质量
 
-Audio quality directly impacts lipsync accuracy. Clean audio = accurate lip movement.
+音频质量直接影响口型同步的准确性。清晰的音频能够确保口型动作与视频同步。
 
-### Requirements
+### 要求
 
-| Parameter | Target | Why |
+| 参数 | 目标 | 原因 |
 |-----------|--------|-----|
-| Background noise | None/minimal | Noise confuses lipsync timing |
-| Volume | Consistent throughout | Prevents sync drift |
-| Sample rate | 44.1kHz or 48kHz | Standard quality |
-| Format | MP3 128kbps+ or WAV | Compatible with all tools |
+| 背景噪音 | 无或最小 | 噪音会干扰口型同步的时机 |
+| 音量 | 全程保持一致 | 防止同步偏差 |
+| 采样率 | 44.1kHz 或 48kHz | 标准音质 |
+| 格式 | MP3 128kbps 或 WAV | 与所有工具兼容 |
 
-### Generating Audio
+### 生成音频
 
 ```bash
 # Simple narration
@@ -94,18 +94,18 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-## Model Selection
+## 模型选择
 
-| Model | App ID | Best For | Max Duration |
+| 模型 | 应用ID | 适用场景 | 最大时长 |
 |-------|--------|----------|-------------|
-| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | Multi-character, gestures, high quality | ~30s per clip |
-| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | Single character, simpler | ~30s per clip |
-| PixVerse Lipsync | `falai/pixverse-lipsync` | Quick lipsync on existing video | Short clips |
-| Fabric | `falai/fabric-1-0` | Cloth/fabric animation on portraits | Short clips |
+| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | 支持多角色、肢体动作，高质量 | 每个片段约 30 秒 |
+| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | 支持单角色，操作简单 | 每个片段约 30 秒 |
+| PixVerse Lipsync | `falai/pixverse-lipsync` | 可快速为现有视频添加口型同步效果 | 适用于短片段 |
+| Fabric | `falai/fabric-1-0` | 可为肖像添加布料动画效果 | 适用于短片段 |
 
-## Production Workflows
+## 制作流程
 
-### Basic: Portrait + Audio -> Video
+### 基本流程：肖像 + 音频 -> 视频
 
 ```bash
 # 1. Generate or prepare audio
@@ -120,7 +120,7 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-### With Captions
+### 添加字幕
 
 ```bash
 # 1-2. Same as above
@@ -132,9 +132,9 @@ infsh app run infsh/caption-videos --input '{
 }'
 ```
 
-### Long-Form (Stitched Clips)
+### 长视频（多片段合成）
 
-For content longer than 30 seconds, split into segments:
+对于时长超过 30 秒的视频，建议将其分割成多个片段：
 
 ```bash
 # Generate audio segments
@@ -153,9 +153,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Multi-Character Conversation
+### 多角色对话
 
-OmniHuman 1.5 supports up to 2 characters:
+OmniHuman 1.5 支持最多 2 个角色的对话：
 
 ```bash
 # 1. Generate dialogue with two speakers
@@ -170,7 +170,7 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-## Framing Guidelines
+## 拍摄指南
 
 ```
 ┌─────────────────────────────────┐
@@ -187,19 +187,19 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 └─────────────────────────────────┘
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Low-res portrait | Blurry face, poor lipsync | Use 1024x1024+ face region |
-| Profile/side angle | Lipsync can't track mouth well | Use frontal or near-frontal |
-| Noisy audio | Lipsync drifts, looks unnatural | Record clean or use TTS |
-| Too-long clips | Quality degrades after 30s | Split into segments, stitch |
-| Sunglasses/obstruction | Face features hidden | Clear face required |
-| Inconsistent lighting | Uncanny when animated | Even, soft lighting |
-| No captions | Loses silent/mobile viewers | Always add captions |
+| 肖像分辨率低 | 脸部模糊，口型同步效果差 | 使用至少 1024x1024 的面部区域 |
+| 侧面或斜角拍摄 | 口型同步难以准确追踪 | 应使用正面或接近正面的拍摄角度 |
+| 音频质量差 | 口型同步不准确，看起来不自然 | 录制清晰的声音或使用文本转语音（TTS） |
+| 视频过长 | 超过 30 秒后质量下降 | 将视频分割成多个片段后再合成 |
+| 有太阳镜或遮挡物 | 面部特征被遮挡 | 需要确保面部清晰可见 |
+| 照明不均匀 | 动画效果不自然 | 使用均匀、柔和的照明 |
+| 未添加字幕 | 无声或移动设备观众无法理解内容 | 必须添加字幕 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-avatar-video
@@ -207,4 +207,4 @@ npx skills add inferencesh/skills@ai-video-generation
 npx skills add inferencesh/skills@text-to-speech
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用应用：`infsh app list`

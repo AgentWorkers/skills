@@ -1,8 +1,8 @@
 ---
 name: oney-test-skill
-description: Test skill for debugging
+description: 测试用于调试的技能
 ---
 
-# Test Skill
+# 测试技能
 
-This is a test.
+这是一个测试。

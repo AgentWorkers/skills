@@ -1,6 +1,6 @@
 ---
 name: content-remix-studio
-description: Transform one piece of content into platform-optimized versions for YouTube, TikTok, Twitter/X, LinkedIn, Instagram, newsletters, and blogs. Adapts tone, format, length, and style for each platform's algorithm and audience expectations.
+description: 将同一份内容转化为适用于 YouTube、TikTok、Twitter/X、LinkedIn、Instagram、新闻通讯和博客的优化版本。根据每个平台的算法和受众需求，调整内容的语气、格式、长度和风格。
 metadata:
   openclaw:
     emoji: "🎬"
@@ -15,448 +15,425 @@ metadata:
 
 # Content Remix Studio
 
-## Description
+## 产品描述
 
-Content Remix Studio is the ultimate content repurposing engine for creators, marketers, and brands. Take one piece of content (video script, blog post, podcast transcript, presentation) and intelligently transform it into platform-optimized versions for YouTube, TikTok, Instagram, Twitter/X, LinkedIn, blogs, and newsletters—each with the right tone, format, length, and hook for maximum engagement.
+Content Remix Studio 是专为内容创作者、营销人员和品牌设计的终极内容再利用工具。它能够将一篇内容（如视频脚本、博客文章、播客文字记录或演示文稿）智能地转化为适用于多个平台的版本，包括 YouTube、TikTok、Instagram、Twitter/X、LinkedIn、博客和新闻通讯等。每个版本都会根据平台的特点调整语言风格、格式、长度和互动元素，以最大化用户的参与度。
 
-Stop recreating content from scratch. Start remixing strategically.
+无需从头开始重新制作内容，只需运用策略性内容重组即可。
 
-## The Problem This Solves
+## 产品解决的问题
 
-Content creators face a brutal dilemma:
-- **Creating for one platform** = Limited reach, wasted potential
-- **Recreating for every platform** = Exhausting, time-consuming, expensive
-- **Copy-pasting everywhere** = Poor performance, algorithm penalties, low engagement
+内容创作者面临一个棘手的困境：
+- **只为一个平台创作内容** → 达达范围有限，潜力浪费
+- **为每个平台重新创作内容** → 既耗时又昂贵
+- **到处复制粘贴内容** → 效果不佳，可能受到平台算法的惩罚，用户参与度低
 
-The answer? **Strategic remixing** with platform intelligence.
+解决方案就是利用平台特性进行**策略性内容重组**。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Multi-Platform Transformation
-Take one source content and generate:
-- **YouTube** (long-form): Title, description, timestamps, chapters, pinned comment
-- **TikTok/Reels/Shorts** (15-60s): Hook-first script, visual cues, trending sounds
-- **Twitter/X Thread**: 8-15 tweet thread, quote-tweets, engagement prompts
-- **LinkedIn Article**: Professional tone, industry insights, call-to-action
-- **Instagram Carousel**: 10-slide story arc, visual text, swipe prompts
-- **Blog Post**: SEO-optimized article, meta description, headers
-- **Newsletter**: Email-friendly format, personal tone, clickable structure
-- **Podcast Script**: Conversational flow, intro/outro, ad break placements
+### 1. 多平台转换
 
-### 2. Platform-Specific Optimization
+输入一份原始内容，系统可生成以下多种格式：
+- **YouTube（长视频）**：包含标题、描述、时间戳、章节划分和固定评论
+- **TikTok/Reels/Shorts（15-60秒）**：吸引注意力的开场白、视觉提示和流行音乐
+- **Twitter/X 线程**：包含 8-15 条推文，带有引用和互动提示
+- **LinkedIn 文章**：专业的语言风格、行业洞察和行动号召
+- **Instagram 轮播图**：包含 10 张幻灯片的故事结构、视觉文本和滑动提示
+- **博客文章**：优化过搜索引擎排名的文章，带有元描述和标题
+- **新闻通讯**：适合电子邮件的格式，个人化的语言风格和可点击的链接
 
-**YouTube Strategy:**
-- Title psychology (curiosity gaps, numbers, power words)
-- Description optimization (first 3 lines, keywords, timestamps)
-- Thumbnail concepts (contrast, faces, text overlay)
-- Engagement hooks (ask to subscribe at X:XX)
-- Retention tactics (pattern interrupts, callbacks)
+### 2. 平台特定优化
 
-**TikTok/Short-Form Strategy:**
-- Hook in first 3 seconds (scroll-stopping opening)
-- Visual storytelling cues (text overlays, transitions)
-- Trending sound integration suggestions
-- Call-to-action timing (7-second rule)
-- Loop-ability for algorithm boost
+- **YouTube 优化策略**：
+  - 标题设计（利用读者的好奇心和数字元素）
+  - 描述优化（前 3 行、关键词、时间戳）
+  - 缩略图设计（对比鲜明、包含人物或文字）
+  - 互动设计（鼓励用户在指定时间订阅）
+  - 保留用户的方法（通过重复内容提高留存率）
 
-**Twitter/X Strategy:**
-- Thread structure (numbered tweets, emotional arc)
-- Engagement bait (questions, polls, hot takes)
-- Quote-tweetable moments
-- Reply-seeding strategy
-- Viral mechanics (controversy, relatability, data)
+- **TikTok/Shorts 优化策略**：
+  - 开场 3 秒内吸引用户注意力
+  - 使用视觉叙事元素和过渡效果
+  - 推荐流行音乐
+  - 设计吸引人的行动号召（通常在 7 秒处）
 
-**LinkedIn Strategy:**
-- Professional hook (industry insight, data-driven)
-- Story structure (challenge → insight → lesson)
-- Authority building (credentials, experience)
-- Engagement prompts (agree/disagree, share experience)
-- Hashtag strategy (3-5 relevant tags)
+- **Twitter/X 优化策略**：
+  - 推文结构（编号清晰）
+  - 通过问题或投票引发用户互动
+  - 设计便于引用的推文
+  - 通过转发促进传播
 
-**Instagram Strategy:**
-- Carousel storytelling (problem → steps → result)
-- Visual hierarchy (text size, color, whitespace)
-- Swipe prompts ("See next slide for...")
-- Story highlights tie-in
-- Saveable/shareable formats
+- **LinkedIn 优化策略**：
+  - 专业的语言风格和行业洞察
+  - 故事结构（提出问题→提供见解→给出解决方案）
+  - 建立权威（展示资质和经验）
+  - 互动设计（鼓励用户表达观点）
 
-### 3. Tone & Voice Adaptation
+- **Instagram 优化策略**：
+  - 6-10 张幻灯片的轮播图
+  - 文本和颜色的视觉层次设计
+  - 设计滑动提示（引导用户查看下一张幻灯片）
+  - 提供可保存或分享的格式
 
-Automatically adjust content personality for each platform:
-- **YouTube**: Enthusiastic, detailed, educational
-- **TikTok**: Casual, Gen-Z humor, fast-paced
-- **Twitter**: Witty, conversational, hot-take ready
-- **LinkedIn**: Professional, thoughtful, industry-focused
-- **Instagram**: Aesthetic, aspirational, community-focused
-- **Blog**: Informative, SEO-friendly, evergreen
-- **Newsletter**: Personal, intimate, direct
+### 3. 语言风格和语气调整
 
-### 4. Content Type Support
+系统能自动根据平台特点调整内容的语气和风格：
+- **YouTube**：热情洋溢、详细且具有教育性
+- **TikTok**：轻松幽默、适合 Z 世代
+- **Twitter**：机智幽默、适合对话式交流
+- **LinkedIn**：专业且富有深度
+- **Instagram**：注重美学、具有吸引力且强调社区互动
+- **博客**：信息丰富、适合搜索引擎优化
+- **新闻通讯**：个人化表达、直接明了
 
-Works with any source material:
-- **Video scripts** (YouTube, Zoom recordings, webinars)
-- **Blog posts** (articles, guides, case studies)
-- **Podcast transcripts** (interviews, solo shows)
-- **Presentations** (slide decks, keynotes)
-- **Research papers** (studies, whitepapers)
-- **Case studies** (client work, success stories)
-- **Product launches** (announcements, demos)
+### 4. 支持的内容类型
 
-### 5. Strategic Content Planning
+系统支持多种类型的原始内容：
+- **视频脚本**（如 YouTube 视频、Zoom 录像、网络研讨会）
+- **博客文章**（如研究论文、指南、案例研究）
+- **播客文字记录**（如采访、个人节目）
+- **演示文稿**（如幻灯片、演讲稿）
+- **研究报告**（如白皮书）
+- **案例研究**（如客户案例、成功故事）
+- **产品发布**（如公告、演示文稿）
 
-Beyond just conversion, get strategic guidance:
-- Platform priority ranking (which platforms first?)
-- Publishing schedule (spacing and timing)
-- Cross-promotion strategy (how to link between platforms)
-- A/B testing suggestions (title variations, hooks)
-- Evergreen vs. trending content decisions
+### 5. 战略性内容规划
 
-## Usage Examples
+除了内容转换外，系统还提供战略指导：
+- 确定内容的优先发布平台
+- 制定发布计划（时间和频率）
+- 制定跨平台推广策略
+- 提供 A/B 测试建议（如标题修改、互动设计）
+- 帮助决定内容是长期有效还是短期热门
 
-### Example 1: YouTube Video → Multi-Platform Remix
+## 使用示例
 
-**User**: "I just recorded a 15-minute YouTube video about '5 Productivity Hacks for Remote Workers.' Help me repurpose it."
+### 示例 1：YouTube 视频 → 多平台转换
 
-**Assistant Response**:
+**用户**：“我刚刚录制了一个关于‘远程工作者的 5 个提高效率的技巧’的 15 分钟视频。请帮我将其重新制作成适合多个平台的版本。”
 
-**YouTube (Main Content):**
-- Title: "5 Productivity Hacks That Actually Work for Remote Workers (No BS)"
-- Hook Script: "If you're working from home and feel like you're drowning in distractions..."
-- Timestamps: 0:00 Intro | 1:23 Hack #1: The 52-17 Rule | 4:10 Hack #2...
-- Pinned Comment: "Which hack are you trying first? Drop a number 1-5 below 👇"
+**系统建议：**
 
-**TikTok/Shorts (5x 60-second clips):**
-Clip 1: "The 52-17 Rule"
-- Hook: "This productivity hack is backed by science and I use it every single day..."
-- Visual cues: [Text overlay: "52 min work"] [Timer animation] [Text: "17 min break"]
-- CTA: "Follow for more productivity tips that actually work"
+**YouTube（主要版本）：**
+- 标题：“5 个真正有效的远程工作者效率技巧”
+- 开场白：“如果你在家工作，感觉被各种干扰困扰……”
+- 时间戳：0:00 开场 | 1:23 技巧 1：52-17 规则 | 4:10 技巧 2……”
+- 固定评论：“你先尝试哪个技巧？在下方留言 👇”
 
-**Twitter Thread (12 tweets):**
-1/ I just tested 5 productivity hacks for 30 days while working remotely.
+**TikTok/Shorts（5 个 60 秒的视频片段）：**
+- 视频 1：“52-17 规则”
+- 开场白：“这个效率技巧有科学依据，我每天都在使用……”
+- 视觉元素：[文本叠加：“52 分钟工作”] [计时器动画] [文本：“17 分钟休息”]
+- 行动号召：“关注我，获取更多实用技巧”
 
-Only 3 actually worked. Here's what I learned 🧵
+**Twitter 线程（12 条推文）：**
+1. “我远程工作了 30 天，测试了 5 个效率技巧。只有 3 个真的有效。这是我的发现 🧵”
+2. “首先，问题在于：在家工作会导致无尽的干扰……”
+（继续分享见解、数据和收获）
 
-2/ First, the problem: Working from home = endless distractions...
+**LinkedIn 文章：**
+- 标题：“5 个基于证据的远程团队效率策略”
+- 开头：“2025 年第四季度，我进行了一项个人实验，测试了流行的效率方法……”
+（专业语言风格、行业统计数据、领导力见解）
+- 行动号召：“你的远程团队使用了哪些效率系统？在评论中分享。”
 
-[Continues with insights, data, and takeaways]
+**Instagram 轮播图（10 张幻灯片）：**
+- 幻灯片 1：“远程工作的 5 个效率技巧 ➡️”
+- 幻灯片 2-6：每个技巧配图标和简短说明
+- 幻灯片 7：“30 天后的结果”
+- 幻灯片 8-9：数据可视化、关键指标
+- 幻灯片 10：“保存此内容！你打算尝试哪个技巧？在评论中留言 🔥”
 
-12/ Which one resonates most with you? Reply and let me know!
+**博客文章（SEO 优化版本）：**
+- 标题：“远程工作者的 5 个效率技巧（2026 年指南）”
+- 元描述：“在家工作时效率低下？试试这 5 个基于科学的有效技巧……”
+- 结构：2000 字，使用 H2/H3 标题，内部链接，包含常见问题解答
 
-And if this thread helped you, RT the first tweet so others can see it 🙏
-
-**LinkedIn Article:**
-Title: "5 Evidence-Based Productivity Strategies for Remote Teams"
-Opening: "In Q4 2025, I conducted a personal experiment testing popular productivity methodologies..."
-[Professional tone, industry statistics, leadership insights]
-CTA: "What productivity systems have worked for your remote team? Share in comments."
-
-**Instagram Carousel (10 slides):**
-Slide 1: "5 Productivity Hacks for Remote Work ➡️"
-Slide 2-6: [Each hack with icon, 1-2 sentences, visual design]
-Slide 7: "My Results After 30 Days"
-Slide 8-9: [Data visualization, key metrics]
-Slide 10: "Save this for later! Which will you try? Drop a 🔥 in comments"
-
-**Blog Post (SEO Version):**
-Title: "5 Productivity Hacks for Remote Workers (2026 Guide)"
-Meta: "Struggling with productivity while working from home? These 5 science-backed hacks..."
-Structure: 2,000 words, H2/H3 headers, internal links, FAQ section
-Keywords: remote work productivity, work from home tips, productivity hacks 2026
-
-**Newsletter Version:**
-Subject: "I tested 5 productivity hacks so you don't have to"
-Tone: Personal, story-driven, direct
-Format: Problem → journey → lessons → one clear action
-CTA: "Reply and tell me which hack you're trying this week"
+**新闻通讯版本：**
+- 主题：“我测试了 5 个效率技巧，让你不必再犯同样的错”
+- 语言风格：个人化、故事驱动
+- 格式：问题 → 过程 → 经验 → 明确的行动建议
 
 ---
 
-### Example 2: Blog Post → Platform Optimization
+### 示例 2：博客文章 → 平台优化
 
-**User**: "I wrote a 2,500-word blog post about 'The Psychology of Color in Branding.' How should I repurpose this?"
+**用户**：“我写了一篇 2500 字的博客文章，主题是‘品牌设计中的色彩心理学’。该如何将其重新制作成适合多个平台的版本？”
 
-**Assistant Response**:
+**系统建议：**
 
-**Primary Platform: LinkedIn** (Best for B2B content)
-Strategy: Create 3-part series over 3 weeks
+**主要平台：LinkedIn**（适合 B2B 内容）
+- **策略**：分 3 周发布 3 部分内容
 
-**Part 1:** "Why Your Brand Colors Are Losing You Customers"
-- Hook with contrarian insight
-- Share 1-2 case studies from blog
-- End with cliffhanger for Part 2
+- **第一部分**：“为什么你的品牌颜色正在流失客户”
+  - 用反传统观点吸引读者
+  - 分享 1-2 个来自博客的案例研究
+  - 以悬念结束，引导读者阅读第二部分
 
-**Part 2:** "The Science Behind Color Psychology (And Why Most Brands Get It Wrong)"
-- Data-driven approach
-- Visual examples
-- Tag industry leaders for reach
+- **第二部分**：“色彩心理学背后的科学（以及大多数品牌为何做错）”
+  - 用数据支持观点
+  - 使用视觉示例
+  - 标记行业领导者以扩大影响力
 
-**Part 3:** "How to Choose Brand Colors That Actually Convert"
-- Actionable framework
-- Template/worksheet offer
-- CTA to full blog post
+- **第三部分**：“如何选择能真正转化用户的品牌颜色”
+  - 提供实用框架
+  - 提供模板和工作表
+  - 链接到完整博客文章
 
-**Secondary Platform: Twitter/X**
-Create 5 atomic tweets (standalone):
-1. Controversial take: "Red doesn't mean passion. Blue doesn't mean trust. Here's what brand colors ACTUALLY mean..."
-2. Data tweet: "We analyzed 500 Fortune 500 brands. 67% are using the wrong primary color for their industry..."
-3. Case study: "Slack changed their brand color and lost 23% recognition overnight. Here's what went wrong..."
-4. Quick tip: "Before choosing brand colors, ask these 3 questions: [framework]"
-5. Myth-busting: "The biggest color psychology myths designers need to stop believing..."
+**次要平台：Twitter/X**
+- 发布 5 条独立的推文：
+  - 1. 有争议的观点：“红色并不意味着热情，蓝色并不意味着信任。品牌颜色的真实含义是……”
+  - 2. 数据推文：“我们分析了 500 家 Fortune 500 公司，67% 的公司选错了主要颜色……”
+  - 3. 案例研究：“Slack 更改了品牌颜色后，知名度下降了 23%。原因是什么……”
+  - 4. 快速提示：“在选择品牌颜色前，先问这三个问题……”
+  - 5. 破除误区：“设计师们需要停止相信的关于色彩心理学的最大误解……”
 
-**Tertiary Platform: Instagram Carousel**
-"Color Psychology Cheat Sheet for Brands"
-- 8 slides with color + emotion + brand examples
-- Highly saveable format
-- Design-first approach
+**Instagram 轮播图：**
+- “品牌色彩心理学速查表”
+- 8 张幻灯片，包含色彩、情感和品牌案例
+- 高度可保存的格式
 
-**YouTube Short:**
-"The $1M Color Mistake Most Brands Make"
-- 45-second explainer
-- Visual demonstration
-- Hook: Show before/after brand transformation
+**YouTube 短视频：**
+- “大多数品牌都会犯的 100 万美元的色彩错误”
+- 45 秒的解释视频
+- 视觉演示
+- 开场白：“看看品牌改变前后的对比”
 
-**TikTok:**
-"POV: You just learned why your brand color is wrong"
-- Trending sound
-- Quick visual education
-- Relatability angle for creators/business owners
+**TikTok：**
+- 视角：“你刚刚了解到为什么你的品牌颜色选错了”
+- 使用流行音乐
+- 简短的视觉教育内容
+- 适合创作者和企业主的视角
 
-**Email Newsletter:**
-"The Color Psychology Masterclass (That Your Competitors Don't Know)"
-- Exclusive framework not in blog
-- Interactive element (quiz: "What does YOUR brand color say?")
-- Deep-dive link to full article
-
----
-
-### Example 3: Podcast Interview → Content Goldmine
-
-**User**: "I interviewed a 7-figure founder about scaling e-commerce. 45-minute podcast. What should I do with this?"
-
-**Assistant Response**:
-
-**Content Extraction Strategy:**
-
-**Main Assets (Create First):**
-1. YouTube version with chapters (full interview)
-2. Blog post: "7 Lessons from Scaling an E-Commerce Brand to $10M"
-3. LinkedIn article: Professional insights for founders
-
-**Micro-Content (Generate 20+ pieces):**
-
-**Instagram:**
-- 5 quote graphics (founder's best quotes)
-- 3 carousels (tactical frameworks shared)
-- 8 Reels (60-second insights)
-
-**TikTok:**
-- 10 clips with hooks like "This 7-figure founder just revealed..." 
-- Behind-the-scenes of podcast recording
-- Reaction-style clips: "Wait until you hear what they said about..."
-
-**Twitter:**
-- 3 threads (one per major topic)
-- 15 standalone tweets (hot takes, data points, counterintuitive advice)
-- Quote-tweet thread promoting full interview
-
-**LinkedIn:**
-- 5 text posts with key insights
-- 3 carousel posts with frameworks
-- 1 article combining all lessons
-
-**YouTube Shorts:**
-- 8 clips optimized for retention
-- Cliffhanger editing to drive to full episode
-
-**Newsletter:**
-- Interview highlights edition
-- Exclusive: 3 questions that didn't make the final cut
-- Action items: How to apply these lessons
-
-**Blog/SEO:**
-- Full transcript (SEO goldmine)
-- Pillar post with internal linking
-- FAQ section: Common questions answered
-
-**Cross-Promotion Strategy:**
-- Week 1: Release full interview, announce on all platforms
-- Week 2-4: Drip micro-content daily across platforms
-- Week 5: Republish top-performing clips
-- Evergreen: Reuse clips for months (founder quotes, frameworks)
+**电子邮件新闻通讯：**
+- “品牌色彩心理学大师课（竞争对手不知道的秘密）”
+- 提供博客中未包含的独家框架
+- 互动元素（测验：“你的品牌颜色代表什么？”）
+- 提供深入阅读的链接
 
 ---
 
-## Platform Specifications & Best Practices
+### 示例 3：播客采访 → 内容再利用
+
+**用户**：“我采访了一位年收入 7 位数的创始人，内容时长 45 分钟。该如何将其重新制作成适合多个平台的版本？”
+
+**系统建议：**
+
+**主要内容提取：**
+- **首先创建 YouTube 版本（包含章节）**
+- **博客文章**：“从 0 到 1000 万美元的电子商务品牌扩张的 7 个经验教训”
+- **LinkedIn 文章**：为创始人提供的专业见解
+
+**生成的其他内容：**
+- **Instagram：**
+  - 5 张包含创始人名言的图片
+  - 3 个轮播图（分享策略框架）
+- **8 个 TikTok 视频（60 秒片段）**
+
+- **TikTok：**
+  - 10 个片段，每个片段包含吸引注意力的开场白
+  - 推荐播客录制的幕后花絮
+  - 互动风格的视频片段：“等你听听他们说了什么……”
+
+- **Twitter：**
+  - 3 个主题相关的推文线程
+- 15 条独立的推文（包含热点观点、数据点和反传统建议）
+- 推文线程，推广完整采访
+
+**LinkedIn：**
+- 5 篇包含关键见解的文字帖子
+- 3 个轮播图帖子
+- 1 篇整合所有见解的文章
+
+**YouTube 短视频：**
+- 8 个适合用户记忆的片段
+- 设计悬念，引导用户观看完整采访
+
+**新闻通讯：**
+- 采访精华版
+- 独家内容：未入选最终版本的 3 个问题
+- 行动建议：如何应用这些见解
+
+**博客/SEO：**
+- 完整的文字记录（适合搜索引擎优化）
+- 使用 H2/H3 标题的支柱文章
+- 包含常见问题解答
+
+**跨平台推广策略：**
+- 第 1 周：在所有平台发布完整采访
+- 第 2-4 周：每天在多个平台发布碎片化内容
+- 第 5 周：重新发布表现最好的片段
+- 长期内容：重复使用片段（如创始人名言、策略框架）
+
+## 平台规范和最佳实践
 
 ### YouTube
-- **Title**: 60-70 characters, front-load keywords
-- **Description**: First 150 characters are critical, 3-5 timestamps minimum
-- **Thumbnail**: High contrast, 1-2 words max, face (if applicable)
-- **Length**: 8-15 min (sweet spot for retention + ads)
-- **Engagement**: Ask question at 30%, remind to subscribe at 70%
+- **标题**：60-70 个字符，包含关键词
+- **描述**：前 150 个字符至关重要，至少包含 3-5 个时间戳
+- **缩略图**：对比鲜明，最多包含 1-2 个单词或人物图片
+- **时长**：8-15 分钟（适合用户停留和广告展示）
+- **互动设计**：在 30% 的观看时长处提出问题，在 70% 的观看时长处提醒用户订阅
 
 ### TikTok/Shorts/Reels
-- **Hook**: First 1-3 seconds must stop scroll
-- **Length**: 15-45 seconds (sweet spot), up to 60s
-- **Captions**: Always add (80% watch without sound)
-- **Text overlays**: Large, bold, yellow or white text
-- **CTA**: 3-5 seconds before end
-- **Loop-ability**: Last frame → first frame for algorithm
+- **开场白**：前 1-3 秒必须吸引用户注意力
+- **时长**：15-45 秒（最佳时长），最长 60 秒
+- **字幕**：务必添加（80% 的观看者不使用声音）
+- **文本叠加**：大字号、黄色或白色的文字
+- **行动号召**：在视频结束前 3-5 秒
+- **循环播放**：最后一个画面回到第一个画面，以优化算法
 
 ### Twitter/X
-- **Thread length**: 8-15 tweets (optimal engagement)
-- **Tweet 1**: Hook with promise ("Here's how..." "X lessons...")
-- **Formatting**: Use line breaks, emojis sparingly, number tweets
-- **Engagement**: Question in last tweet, RT request
-- **Timing**: Post 8-10 AM or 5-7 PM EST
+- **推文线程**：8-15 条推文（最佳互动效果）
+- **推文 1**：用承诺吸引用户（如“这是……的方法”）
+- **格式**：使用换行符和表情符号
+- **互动设计**：在最后一条推文中提出问题，鼓励用户转发
+- **发布时间**：美国东部时间上午 8-7 点
 
 ### LinkedIn
-- **First line**: Make them click "see more" (hook)
-- **Length**: 1,300-2,000 characters (sweet spot)
-- **Formatting**: Short paragraphs, line breaks, bold for emphasis
-- **CTA**: Ask for engagement (thoughts? agree? experience?)
-- **Hashtags**: 3-5 relevant, not spammy
+- **开头**：设计吸引用户点击“查看更多”
+- **时长**：1300-2000 字（最佳长度）
+- **格式**：短段落、使用换行符和加粗文字
+- **行动号召**：鼓励用户表达观点或分享经验
+- **标签**：3-5 个相关标签，避免过度使用
 
 ### Instagram
-- **Carousel**: 6-10 slides (completion rate matters)
-- **First slide**: Hook + promise ("Swipe to learn...")
-- **Design**: High contrast, readable from thumbnail
-- **Caption**: First line is critical (before "...more")
-- **CTA**: "Save this," "Share with someone who needs this"
+- **轮播图**：6-10 张幻灯片（完成率很重要）
+- **第一张幻灯片**：吸引用户并给出承诺（“滑动查看下一张……”）
+- **设计**：对比鲜明，便于从缩略图阅读
+- **标题**：第一行至关重要（引导用户继续观看）
+- **行动号召**：“保存此内容”，“分享给需要的人”
 
-### Blog/SEO
-- **Title**: Include primary keyword, under 60 characters
-- **Meta description**: 150-160 characters, include keyword + CTA
-- **Headers**: H2 every 300 words, H3 for subsections
-- **Length**: 1,500-2,500 words (sweet spot for ranking)
-- **Internal links**: 3-5 to related content
-- **Images**: Alt text, compress for speed
+### 博客/SEO**
+- **标题**：包含关键词，不超过 60 个字符
+- **元描述**：150-160 个字符，包含关键词和行动号召
+- **标题**：每 300 字使用一个 H2 标题
+- **时长**：1500-2500 字（适合搜索引擎排名）
+- **内部链接**：链接到相关内容
+- **图片**：添加 alt 文本，压缩以加快加载速度
 
-### Newsletter
-- **Subject line**: Under 50 characters, create curiosity or urgency
-- **Preview text**: First 50 characters of email (optimize!)
-- **Formatting**: Short paragraphs, scannable
-- **Links**: 1-3 max (more = dilution)
-- **CTA**: One clear action (read, reply, click)
+### 新闻通讯
+- **主题行**：不超过 50 个字符，引发好奇心或紧迫感
+- **预览文本**：邮件前 50 个字符（优化阅读体验）
+- **格式**：短段落、便于阅读
+- **链接**：最多 1-3 个链接（过多链接会分散注意力）
+- **行动号召**：明确一个行动建议（如“阅读”、“回复”、“分享”）
 
-## Content Remix Frameworks
+## 内容重组框架
 
-### The Pillar → Cluster Method
-1. Create one pillar content (long-form: video, blog, podcast)
-2. Extract 20-50 micro-content pieces (quotes, tips, frameworks)
-3. Distribute micro-content across platforms
-4. Link back to pillar for depth
+### “支柱 → 集群”方法
+- 创建一篇长篇内容（如视频、博客文章或播客）
+- 从中提取 20-50 个碎片化内容
+- 将这些碎片化内容分发到多个平台
+- 在每个平台上链接回原始长篇内容，以增加深度
 
-### The Atomization Strategy
-Take one 15-minute video and create:
-- 1 YouTube video (pillar)
-- 10 TikTok/Shorts (clips)
-- 5 Instagram Reels (clips)
-- 3 Twitter threads (insights)
-- 2 LinkedIn posts (professional takes)
-- 1 blog post (SEO version)
-- 15 quote graphics (Instagram/LinkedIn)
-- 1 newsletter (synthesis)
+### “原子化”方法
+- 以 15 分钟的视频为例：
+- 生成 1 个 YouTube 视频（支柱内容）
+- 10 个 TikTok/Shorts 视频片段
+- 5 个 Instagram Reels 视频片段
+- 3 条 Twitter 线程（包含见解）
+- 2 篇 LinkedIn 文章（专业见解）
+- 1 篇博客文章（SEO 优化版本）
+- 15 张包含名言的图片（适用于 Instagram/LinkedIn）
+- 1 篇新闻通讯（综合内容）
 
-Total: 38 pieces of content from 1 source
+### “多角度”方法
+- 同一主题，针对不同平台采用不同的呈现方式：
+- **YouTube**：深入的教育性内容
+- **TikTok**：有趣且易于理解的见解
+- **LinkedIn**：专业的行业见解
+- **Twitter**：反传统的观点或热点话题
+- **Instagram**：视觉化的故事形式
+- **博客**：全面的指南
 
-### The Multi-Angle Approach
-Same topic, different angles for different platforms:
-- **YouTube**: Deep educational content
-- **TikTok**: Entertaining, relatable take
-- **LinkedIn**: Professional insight with data
-- **Twitter**: Contrarian or hot take
-- **Instagram**: Visual transformation story
-- **Blog**: Comprehensive guide
+## 吸引用户注意力的技巧
 
-## Hook Psychology
+### YouTube 的吸引技巧：
+- **模式中断**：“忘掉你对……的所有认知……”
+- **好奇心缺口**：“没人告诉你关于……的真相……”
+- **结果优先**：“这是我如何在 30 天内赚到 5 万美元的……”
+- **共鸣**：“如果你在……方面遇到困难，这会改变一切……”
+- **争议性观点**：“大家都在错误地做……。原因如下……”
 
-### YouTube Hooks
-- **Pattern Interrupt**: "Forget everything you know about X..."
-- **Curiosity Gap**: "The one thing nobody tells you about..."
-- **Results First**: "Here's how I made $50k in 30 days..."
-- **Relatability**: "If you're struggling with X, this will change everything..."
-- **Controversy**: "Everyone's doing X wrong. Here's why..."
+### TikTok 的吸引技巧：
+- **直接针对目标受众**：“如果你是创作者，希望获得更多观看量……”
+- **负面观点**：“停止做……。这会毁掉你的内容……”
+- **数字事实**：“在开始之前，我希望知道……的 3 件事……”
+- **个人故事**：“我尝试了……30 天后，发生了这些……”
+- **视角**：“从我的视角看……”
 
-### TikTok Hooks
-- **Direct Address**: "If you're a creator who wants more views..."
-- **Negative Hook**: "Stop doing X. It's killing your content..."
-- **Numbers**: "3 things I wish I knew before starting..."
-- **Personal Story**: "I tried X for 30 days and here's what happened..."
-- **POV Style**: "POV: You just learned the secret to..."
+### Twitter 的吸引技巧：
+- **大胆的声明**：“X 已经过时了。这是它的替代品……”
+- **编号推文**：“从 X 中学到的 10 个教训 🧵”
+- **反传统观点**：“大多数人认为 X 是错误的。原因如下……”
+- **数据驱动**：“我分析了 1000 条推文。这是我发现的有效方法……”
+- **个人经历**：“我通过 Y 赚到了 X。具体方法如下……”
 
-### Twitter Hooks
-- **Bold Claim**: "X is dead. Here's what's replacing it..."
-- **Numbered Thread**: "10 lessons from X that changed my life 🧵"
-- **Contrarian**: "Unpopular opinion: X is overrated. Here's why..."
-- **Data-Driven**: "I analyzed 1000 tweets. Here's what works..."
-- **Personal**: "I made $X doing Y. Here's exactly how..."
+### LinkedIn 的吸引技巧：
+- **行业洞察**：“X 行业正在发生的最大变化……”
+- **经验教训**：“在 X 行业工作 10 年后，我学到了……”
+- **挑战/解决方案**：“X 问题正在恶化。这是解决方法……”
+- **反传统观点**：“大家都在做 X，但我做了相反的事……”
+- **数据驱动**：“我们的团队分析了 X，发现了惊人的结果……”
 
-### LinkedIn Hooks
-- **Industry Insight**: "The biggest shift happening in X industry right now..."
-- **Lessons Learned**: "After 10 years in X, here's what I've learned..."
-- **Challenge/Solution**: "The X problem is getting worse. Here's how to fix it..."
-- **Counterintuitive**: "Everyone says to do X. I did the opposite..."
-- **Data Story**: "Our team analyzed X and found something surprising..."
+## 内容发布计划
 
-## Content Calendar Strategy
+### 每周发布计划
+- **周一**：发布 LinkedIn 文章（专业主题）
+- **周二-周四**：每天发布 TikTok/Shorts 视频（提升算法排名）
+- **周三**：发布 Twitter 线程（提高周末的互动率）
+- **周四**：发布 YouTube 视频（最佳发现时间）
+- **周五**：发布 Instagram 轮播图（适合周末阅读）
+- **周末**：发布新闻通讯（适合阅读）
 
-### Weekly Publishing Schedule
-- **Monday**: LinkedIn article (professional mindset)
-- **Tuesday-Thursday**: Daily TikTok/Shorts (algorithm momentum)
-- **Wednesday**: Twitter thread (mid-week engagement peak)
-- **Thursday**: YouTube video (prime discovery day)
-- **Friday**: Instagram carousel (weekend save/share behavior)
-- **Weekend**: Newsletter (time to read)
+### 内容分批制作
+- **第一批内容**：创建 30-50 个碎片化内容
+- 在 4-6 周内分批发布
+- 保持持续的内容更新，无需每天创作
+- 每季度重新利用长期有效的内容
 
-### Content Batching
-- **Batch 1 pillar** → Create 30-50 pieces
-- Publish over 4-6 weeks
-- Maintain consistent presence without daily creation
-- Repurpose evergreen content quarterly
+## 适用场景
 
-## When to Use This Skill
+- 当你创建了内容，希望在不同平台扩大影响力时
+- 当你需要为新的受众重新利用旧内容时
+- 当你需要针对特定平台进行优化（如吸引方式、格式、语言风格）时
+- 当你需要制定内容发布计划并需要策略性分发时
+- 当你需要在不重新创作的情况下扩大内容产出时
+- 当你需要分析优先发布哪些平台时
+- 当你需要根据不同受众调整内容风格时
+- 当你需要为新产品或服务制作多渠道内容时
 
-Use Content Remix Studio when:
-- You've created content and want to maximize reach across platforms
-- You're repurposing old content for new audiences
-- You need platform-specific optimizations (hooks, formats, tone)
-- You're planning a content calendar and need strategic distribution
-- You want to scale content production without creating from scratch
-- You're analyzing which platforms to prioritize for a topic
-- You need help adapting your brand voice for different audiences
-- You're launching a product/service and need omnichannel content
+## 战略性原则
 
-## Strategic Principles
+### “1→10→100 规则”
+- 花 1 小时创建一篇长篇内容
+- 每个碎片化内容花费 10 分钟（共 100 分钟）
+- 为受众提供超过 100 小时的价值
 
-### The 1→10→100 Rule
-- 1 hour creating pillar content
-- 10 minutes per micro-content piece (10 pieces = 100 minutes)
-- 100+ hours of value delivered to audience
+### “以平台为先”的思考方式
+- 不要一次性创建内容然后到处复制。而是要思考：
+  - 目标是什么？（提高知名度、增加互动还是促进转化）
+  - 你的受众在哪里？（平台的人口统计特征）
+  - 该平台适合哪种内容格式？
+  - 该平台的算法看重什么？（用户留存率、分享量、保存率）
 
-### Platform-First Thinking
-Don't create once and copy everywhere. Think:
-1. What's the goal? (Awareness vs. engagement vs. conversion)
-2. Where is my audience? (Platform demographics)
-3. What format works there? (Video vs. text vs. carousel)
-4. What's the platform algorithm rewarding? (Retention, shares, saves)
+### 内容分层策略
+- **入门级内容**：TikTok/Shorts（提高知名度，快速提供价值）
+- **中级内容**：Instagram/Twitter（建立社区，增加互动）
+- **深入内容**：YouTube/博客（建立权威，提供教育）
+- **转化内容**：新闻通讯（建立长期关系，促进销售）
 
-### The Content Staircase
-- **Entry Point**: TikTok/Shorts (awareness, quick value)
-- **Mid-Funnel**: Instagram/Twitter (community, engagement)
-- **Deep Dive**: YouTube/Blog (authority, education)
-- **Conversion**: Newsletter (relationship, sales)
+## 重要提示
 
-## Important Notes
-
-- Every platform has a different "content language" - respect it
-- Don't just copy-paste; transform with intention
-- Test and iterate - platforms evolve constantly
-- Quality > quantity, but smart repurposing = both
-- Cite sources, give credit, be authentic
-- Platform algorithms change - stay adaptable
-- Your audience overlap varies by platform - treat them uniquely
+- 每个平台都有不同的“内容语言”——请尊重这一点
+- 不要简单地复制粘贴，要有目的地进行转化
+- 不断测试和迭代——平台在不断变化
+- 质量比数量更重要，但聪明的内容再利用同样重要
+- 引用来源，给予署名，保持真实性
+- 平台算法在不断变化——要保持灵活性
+- 不同平台的受众特征各不相同——请针对每个平台进行个性化处理
 
 ---
 
-*Remember: The best content isn't created once—it's remixed intelligently across every platform where your audience lives.*
+*记住：最好的内容不是第一次创作出来的，而是通过智能地重新利用，在每个受众所在的平台上进行优化后产生的。*

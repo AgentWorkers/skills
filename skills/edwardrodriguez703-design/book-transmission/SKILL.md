@@ -1,23 +1,23 @@
 ---
 name: book-transmission
-description: Book transmission services through Lokuli MCP. Use when user needs to find and book transmission. Triggers on requests like "book a transmission", "find transmission near me", or any transmission service request.
+description: 通过 Lokuli MCP 提供车辆接送服务。当用户需要寻找或预订车辆接送服务时可以使用该功能。该功能会在收到诸如“预订接送服务”、“查找附近的接送服务”或任何与车辆接送相关的请求时被触发。
 ---
 
-# uook transmission
+# 书籍传输服务
 
-Book transmission services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供书籍传输服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

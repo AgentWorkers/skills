@@ -1,21 +1,21 @@
 ---
-description: Audit and rotate API keys, tokens, and secrets with expiry tracking and safe handling.
+description: 审计并轮换 API 密钥、令牌和敏感信息，同时实现过期跟踪和安全处理。
 ---
 
 # Secret Rotator
 
-Audit, track, and rotate API keys, tokens, and secrets safely.
+安全地审计、跟踪和轮换 API 密钥、令牌以及其他敏感信息。
 
-## Requirements
+## 使用要求
 
-- File system access to scan `.env` and config files
-- No API keys needed (this tool manages other tools' keys)
+- 需要访问文件系统以扫描 `.env` 文件和配置文件
+- 本工具无需管理自身的 API 密钥（仅负责管理其他工具的密钥）
 
-## Instructions
+## 使用说明
 
-### Step 1: Inventory secrets (with user consent)
+### 第 1 步：在用户同意的情况下统计敏感信息的数量
 
-**⚠️ Always ask the user which directories to scan before running.**
+**⚠️ 在运行之前，务必询问用户需要扫描哪些目录。**
 
 ```bash
 # Find .env files in specified directories
@@ -25,13 +25,13 @@ find ~/projects -maxdepth 3 -name ".env*" -type f 2>/dev/null
 ls -la ~/.config/*/config* ~/.ssh/config 2>/dev/null
 ```
 
-Report for each secret found:
-- File path
-- Key name (e.g., `OPENAI_API_KEY`)
-- Last modified date and age in days
-- **NEVER print actual secret values**
+对于发现的每条敏感信息，需报告以下内容：
+- 文件路径
+- 密钥名称（例如：`OPENAI_API_KEY`
+- 最后修改日期及剩余使用天数
+- **严禁** 显示实际的密钥值
 
-### Step 2: Age analysis
+### 第 2 步：分析密钥的使用时长
 
 ```
 ## 🔐 Secret Inventory — <timestamp>
@@ -45,33 +45,33 @@ Report for each secret found:
 **Policy**: 🟢 < 90 days | 🟡 90–180 days | 🔴 > 180 days
 ```
 
-### Step 3: Rotation guidance
+### 第 3 步：提供密钥轮换的指导
 
-For each key needing rotation:
-1. Identify the service (OpenAI, AWS, Stripe, etc.)
-2. Provide the dashboard URL for key regeneration
-3. List all files that reference this key (need updating after rotation)
+对于需要轮换的每个密钥：
+1. 确定该密钥所属的服务（如 OpenAI、AWS、Stripe 等）
+2. 提供用于重新生成密钥的仪表板 URL
+3. 列出所有引用该密钥的文件（轮换后需要更新这些文件）
 
-### Step 4: Post-rotation verification
+### 第 4 步：轮换后的验证
 
-1. Test the new key works (e.g., `curl` a health endpoint with the new key)
-2. Confirm old key is invalidated
-3. Update file timestamps
-4. Verify `.gitignore` includes all secret files
+1. 使用新密钥测试相关功能（例如：使用新密钥通过 `curl` 请求健康检查端点）
+2. 确认旧密钥已失效
+3. 更新文件的时间戳
+4. 确认 `.gitignore` 文件中包含了所有敏感信息文件
 
-## Security Rules
+## 安全规则
 
-- ❌ **NEVER** display full secret values — mask as `sk-...XXXX` (last 4 only)
-- ❌ **NEVER** send secrets via chat, logs, or messaging
-- ❌ **NEVER** commit secrets to git
-- ✅ Always `chmod 600` on secret files
-- ✅ Verify `.gitignore` entries exist for `.env*` files
-- ✅ Show only key names and metadata, never values
+- ❌ **严禁** 显示完整的密钥值——仅显示前 4 位字符（例如：`sk-...XXXX`）
+- ❌ **严禁** 通过聊天、日志或消息传递敏感信息
+- ❌ **严禁** 将敏感信息提交到 Git 仓库
+- ✅ 确保敏感信息文件的权限设置为 `chmod 600`
+- ✅ 确认 `.gitignore` 文件中包含了所有 `.env*` 文件的条目
+- ✅ 仅显示密钥名称和元数据，严禁显示密钥值
 
-## Edge Cases
+## 特殊情况处理
 
-- **Symlinked .env files**: Follow symlinks but report the real path.
-- **Docker secrets**: Check `docker secret ls` if Docker is available.
-- **Env vars only (no file)**: Some keys exist only in environment — note these can't be age-tracked.
-- **Shared secrets**: Warn if the same key appears in multiple files (update all on rotation).
-- **No secrets found**: Report clean scan — still suggest setting up a rotation policy.
+- **包含符号链接的 `.env` 文件**：跟随符号链接的路径进行扫描，但需报告实际的文件路径。
+- **Docker 中的敏感信息**：如果可用，请使用 `docker secret ls` 命令查看相关信息。
+- **仅存在于环境变量中的密钥**：这类密钥无法进行使用时长统计，请特别注意。
+- **共享的敏感信息**：如果同一密钥出现在多个文件中，需在轮换时更新所有相关文件。
+- **未发现敏感信息**：即使扫描结果为空，也建议设置密钥轮换策略。

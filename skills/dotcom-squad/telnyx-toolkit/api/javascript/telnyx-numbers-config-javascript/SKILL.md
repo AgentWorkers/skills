@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Config - JavaScript
+# Telnyx 数字信息配置 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,9 +31,9 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## Lists the phone number blocks jobs
+## 列出电话号码相关任务
 
 `GET /phone_number_blocks/jobs`
 
@@ -44,7 +44,7 @@ for await (const job of client.phoneNumberBlocks.jobs.list()) {
 }
 ```
 
-## Retrieves a phone number blocks job
+## 获取特定的电话号码相关任务
 
 `GET /phone_number_blocks/jobs/{id}`
 
@@ -54,11 +54,11 @@ const job = await client.phoneNumberBlocks.jobs.retrieve('id');
 console.log(job.data);
 ```
 
-## Deletes all numbers associated with a phone number block
+## 删除与某个电话号码块关联的所有号码
 
-Creates a new background job to delete all the phone numbers associated with the given block.
+创建一个新的后台任务，以删除与该电话号码块关联的所有号码。
 
-`POST /phone_number_blocks/jobs/delete_phone_number_block` — Required: `phone_number_block_id`
+`POST /phone_number_blocks/jobs/delete_phone_number_block` — 必需参数：`phone_number_block_id`
 
 ```javascript
 const response = await client.phoneNumberBlocks.jobs.deletePhoneNumberBlock({
@@ -68,7 +68,7 @@ const response = await client.phoneNumberBlocks.jobs.deletePhoneNumberBlock({
 console.log(response.data);
 ```
 
-## List phone numbers
+## 列出所有电话号码
 
 `GET /phone_numbers`
 
@@ -79,7 +79,7 @@ for await (const phoneNumberDetailed of client.phoneNumbers.list()) {
 }
 ```
 
-## Retrieve a phone number
+## 获取某个电话号码的信息
 
 `GET /phone_numbers/{id}`
 
@@ -89,7 +89,7 @@ const phoneNumber = await client.phoneNumbers.retrieve('1293384261075731499');
 console.log(phoneNumber.data);
 ```
 
-## Update a phone number
+## 更新某个电话号码的信息
 
 `PATCH /phone_numbers/{id}`
 
@@ -99,7 +99,7 @@ const phoneNumber = await client.phoneNumbers.update('1293384261075731499');
 console.log(phoneNumber.data);
 ```
 
-## Delete a phone number
+## 删除某个电话号码
 
 `DELETE /phone_numbers/{id}`
 
@@ -109,9 +109,9 @@ const phoneNumber = await client.phoneNumbers.delete('1293384261075731499');
 console.log(phoneNumber.data);
 ```
 
-## Change the bundle status for a phone number (set to being in a bundle or remove from a bundle)
+## 更改电话号码的捆绑状态（将其添加到捆绑包中或从捆绑包中移除）
 
-`PATCH /phone_numbers/{id}/actions/bundle_status_change` — Required: `bundle_id`
+`PATCH /phone_numbers/{id}/actions/bundle_status_change` — 必需参数：`bundle_id`
 
 ```javascript
 const response = await client.phoneNumbers.actions.changeBundleStatus('1293384261075731499', {
@@ -121,9 +121,9 @@ const response = await client.phoneNumbers.actions.changeBundleStatus('129338426
 console.log(response.data);
 ```
 
-## Enable emergency for a phone number
+## 为某个电话号码启用紧急呼叫功能
 
-`POST /phone_numbers/{id}/actions/enable_emergency` — Required: `emergency_enabled`, `emergency_address_id`
+`POST /phone_numbers/{id}/actions/enable_emergency` — 必需参数：`emergency_enabled`, `emergency_address_id`
 
 ```javascript
 const response = await client.phoneNumbers.actions.enableEmergency('1293384261075731499', {
@@ -134,7 +134,7 @@ const response = await client.phoneNumbers.actions.enableEmergency('129338426107
 console.log(response.data);
 ```
 
-## Retrieve a phone number with voice settings
+## 获取带有语音设置的电话号码信息
 
 `GET /phone_numbers/{id}/voice`
 
@@ -144,7 +144,7 @@ const voice = await client.phoneNumbers.voice.retrieve('1293384261075731499');
 console.log(voice.data);
 ```
 
-## Update a phone number with voice settings
+## 更新带有语音设置的电话号码信息
 
 `PATCH /phone_numbers/{id}/voice`
 
@@ -154,11 +154,11 @@ const voice = await client.phoneNumbers.voice.update('1293384261075731499');
 console.log(voice.data);
 ```
 
-## Verify ownership of phone numbers
+## 验证电话号码的所有权
 
-Verifies ownership of the provided phone numbers and returns a mapping of numbers to their IDs, plus a list of numbers not found in the account.
+验证提供的电话号码的所有权，并返回号码与其 ID 的对应关系，以及未在账户中找到的号码列表。
 
-`POST /phone_numbers/actions/verify_ownership` — Required: `phone_numbers`
+`POST /phone_numbers/actions/verify_ownership` — 必需参数：`phone_numbers`
 
 ```javascript
 const response = await client.phoneNumbers.actions.verifyOwnership({
@@ -168,7 +168,7 @@ const response = await client.phoneNumbers.actions.verifyOwnership({
 console.log(response.data);
 ```
 
-## List CSV downloads
+## 列出 CSV 下载文件
 
 `GET /phone_numbers/csv_downloads`
 
@@ -179,7 +179,7 @@ for await (const csvDownload of client.phoneNumbers.csvDownloads.list()) {
 }
 ```
 
-## Create a CSV download
+## 创建 CSV 下载文件
 
 `POST /phone_numbers/csv_downloads`
 
@@ -189,7 +189,7 @@ const csvDownload = await client.phoneNumbers.csvDownloads.create();
 console.log(csvDownload.data);
 ```
 
-## Retrieve a CSV download
+## 获取 CSV 下载文件
 
 `GET /phone_numbers/csv_downloads/{id}`
 
@@ -199,7 +199,7 @@ const csvDownload = await client.phoneNumbers.csvDownloads.retrieve('id');
 console.log(csvDownload.data);
 ```
 
-## Lists the phone numbers jobs
+## 列出所有电话号码相关任务
 
 `GET /phone_numbers/jobs`
 
@@ -210,7 +210,7 @@ for await (const phoneNumbersJob of client.phoneNumbers.jobs.list()) {
 }
 ```
 
-## Retrieve a phone numbers job
+## 获取特定的电话号码相关任务信息
 
 `GET /phone_numbers/jobs/{id}`
 
@@ -220,11 +220,11 @@ const job = await client.phoneNumbers.jobs.retrieve('id');
 console.log(job.data);
 ```
 
-## Delete a batch of numbers
+## 删除一批电话号码
 
-Creates a new background job to delete a batch of numbers.
+创建一个新的后台任务，以删除一批电话号码。
 
-`POST /phone_numbers/jobs/delete_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/delete_phone_numbers` — 必需参数：`phone_numbers`
 
 ```javascript
 const response = await client.phoneNumbers.jobs.deleteBatch({
@@ -234,11 +234,11 @@ const response = await client.phoneNumbers.jobs.deleteBatch({
 console.log(response.data);
 ```
 
-## Update the emergency settings from a batch of numbers
+## 更新一批电话号码的紧急呼叫设置
 
-Creates a background job to update the emergency settings of a collection of phone numbers.
+创建一个新的后台任务，以更新一批电话号码的紧急呼叫设置。
 
-`POST /phone_numbers/jobs/update_emergency_settings` — Required: `emergency_enabled`, `phone_numbers`
+`POST /phone_numbers/jobs/update_emergency_settings` — 必需参数：`emergency_enabled`, `phone_numbers`
 
 ```javascript
 const response = await client.phoneNumbers.jobs.updateEmergencySettingsBatch({
@@ -249,11 +249,11 @@ const response = await client.phoneNumbers.jobs.updateEmergencySettingsBatch({
 console.log(response.data);
 ```
 
-## Update a batch of numbers
+## 更新一批电话号码的信息
 
-Creates a new background job to update a batch of numbers.
+创建一个新的后台任务，以更新一批电话号码的信息。
 
-`POST /phone_numbers/jobs/update_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/update_phone_numbers` — 必需参数：`phone_numbers`
 
 ```javascript
 const response = await client.phoneNumbers.jobs.updateBatch({
@@ -263,7 +263,7 @@ const response = await client.phoneNumbers.jobs.updateBatch({
 console.log(response.data);
 ```
 
-## Retrieve regulatory requirements for a list of phone numbers
+## 获取一组电话号码的监管要求信息
 
 `GET /phone_numbers/regulatory_requirements`
 
@@ -274,9 +274,9 @@ const phoneNumbersRegulatoryRequirement =
 console.log(phoneNumbersRegulatoryRequirement.data);
 ```
 
-## Slim List phone numbers
+## 简化版电话号码列表
 
-List phone numbers, This endpoint is a lighter version of the /phone_numbers endpoint having higher performance and rate limit.
+提供性能更高、限制更少的电话号码列表接口。
 
 `GET /phone_numbers/slim`
 
@@ -287,7 +287,7 @@ for await (const phoneNumberSlimListResponse of client.phoneNumbers.slimList()) 
 }
 ```
 
-## List phone numbers with voice settings
+## 列出带有语音设置的电话号码
 
 `GET /phone_numbers/voice`
 
@@ -298,7 +298,7 @@ for await (const phoneNumberWithVoiceSettings of client.phoneNumbers.voice.list(
 }
 ```
 
-## List Mobile Phone Numbers
+## 列出手机号码
 
 `GET /v2/mobile_phone_numbers`
 
@@ -309,7 +309,7 @@ for await (const mobilePhoneNumber of client.mobilePhoneNumbers.list()) {
 }
 ```
 
-## Retrieve a Mobile Phone Number
+## 获取某个手机号码的信息
 
 `GET /v2/mobile_phone_numbers/{id}`
 
@@ -319,7 +319,7 @@ const mobilePhoneNumber = await client.mobilePhoneNumbers.retrieve('id');
 console.log(mobilePhoneNumber.data);
 ```
 
-## Update a Mobile Phone Number
+## 更新某个手机号码的信息
 
 `PATCH /v2/mobile_phone_numbers/{id}`
 

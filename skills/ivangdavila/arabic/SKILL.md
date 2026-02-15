@@ -1,99 +1,97 @@
 ---
 name: Arabic
-description: Write Arabic that sounds human. Not formal, not robotic, not AI-generated.
+description: **Write Arabic that sounds human. Not formal, not robotic, not AI-generated.**
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Arabic is technically correct but sounds off. Too formal. Too فصحى (classical). Natives blend registers and use colloquial naturally. Match that.
+虽然AI生成的阿拉伯语在语法上是正确的，但听起来很不自然。这种语言过于正式，过于偏向“فصحى”（标准阿拉伯语）。而母语者会自然地混合使用不同的语体，并使用口语化的表达方式。我们需要让生成的文本更贴近阿拉伯人的日常交流习惯。
 
-## MSA vs Dialect
+## 标准阿拉伯语（MSA）与方言的区别
 
-Critical distinction:
-- فصحى (MSA): news, formal writing, academia, religion
-- عامية (dialect): daily life, social media, texting, casual
-- Most online communication uses dialect or MSA-dialect mix
-- Pure MSA in casual contexts = robotic, unnatural
+关键区别：
+- **فصحى（MSA）**：用于新闻、正式写作、学术交流和宗教场合。
+- **عامية（方言）**：用于日常生活、社交媒体、短信交流等非正式场景。
+- 大多数在线交流实际上都是方言与标准阿拉伯语的混合体。
+- 在非正式场合使用纯标准阿拉伯语会显得机械、不自然。
 
-## Regional Dialects
+## 地方方言
 
-If region known, commit:
-- Egyptian: أيوه، عامل إيه، كده، خالص
-- Levantine: هلا، كيفك، هيك، كتير
-- Gulf: شلونك، واجد، زين، يالله
-- Moroccan: لاباس، واخا، بزاف
-- Don't mix. Each dialect has distinct vocabulary.
+如果知道说话者的具体地区，可以参考以下表达：
+- **埃及方言**：أيوه（是的），عامل إيه（你在做什么？），كده（就这样），خالص（好的）。
+- **黎凡特方言**：هلا（你好），كيفك（你好吗？），هيك（是的），كتير（很多）。
+- **海湾方言**：شلونك（你好吗？），واجد（你好），زين（很好），يالله（拜托）。
+- **摩洛哥方言**：لاباس（你好），واخا（兄弟），بزاف（很多）。
+- 不要随意混合使用这些方言，因为每种方言都有其独特的词汇。
 
-## Formality Default
+## 语言的正式程度
 
-Default is too formal. Unless explicitly formal:
-- Use dialect or light MSA
-- Contractions and shortcuts are normal
-- Colloquial expressions welcome
+默认情况下，阿拉伯语的表达方式过于正式。除非有明确的需要，否则应使用方言或较为轻松的标准阿拉伯语：
+- 使用缩写和简写是常见的。
+- 口语化的表达也是被接受的。
 
-## Greetings
+## 问候语
 
-Natural greetings vary by context:
-- Casual: مرحبا، هلا، أهلين
-- Religious: السلام عليكم (formal/religious)
-- Egyptian: إزيك، عامل إيه
-- Gulf: شلونك، شخبارك
+问候语的选择取决于语境：
+- **非正式场合**：مرحبا（你好），هلا（你好），أهلين（大家好）。
+- **宗教场合**：السلام عليكم（愿平安与你同在，正式/宗教用语）。
+- **埃及方言**：إزيك（你好吗？），عامل إيه（你在做什么？）。
+- **海湾方言**：شلونك（你好吗？），شخبارك（最近怎么样？）
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- إن شاء الله: "hopefully" (overuse is native!)
-- يعني: filler, "I mean", "like"
-- الله يعطيك العافية: appreciation
-- ما شاء الله: admiration
-- يلا: "let's go", "come on"
+- **إن شاء الله**：意为“希望如此”（这种表达在阿拉伯语中非常常用！）
+- **يعني**：用于过渡或补充，相当于“我的意思是”或“就像”。
+- **الله يعطيك العافية**：表示感谢或祝福。
+- **ما شاء الله**：表示赞赏。
+- **يلا**：表示“我们走吧”或“快点”。
 
-## Fillers & Flow
+## 语言的流畅性
 
-Real Arabic has fillers:
-- يعني، طيب، خلاص
-- هيك/كده، بس، أصلاً
-- والله، صراحة
-- عادي، مش مشكلة
+阿拉伯语中有很多填充词，用于使表达更自然：
+- يعني（意思是），طيب（好吧），خلاص（结束了）。
+- هيك/كده（就是这样），بس（不过），أصلاً（本来就）。
+- والله（真的），صراحة（说实话）。
+- عادي（没关系）。
 
-## Reactions
+## 交流时的反应
 
-React naturally:
-- والله؟، جد؟، معقول؟
-- يا سلام!، ما شاء الله!
-- هههههه، 😂
-- يا ريت، إن شاء الله
+回应时要自然：
+- والله؟（真的吗？），جد؟（真的吗？），معقول؟（真的吗？）
+- يا سلام！（哇！），ما شاء الله！（太棒了！）
+- هههههه，😂（哈哈）
+- يا ريت، إن شاء الله（但愿如此）。
 
-## Sentence Structure
+## 句子结构
 
-Casual Arabic is flexible:
-- Topic fronting for emphasis
-- Fragments are natural
-- Questions without question marks common
-- Answers can be very short
+阿拉伯语的句子结构很灵活：
+- 可以将主题放在句首以强调重点。
+- 短句在阿拉伯语中也很常见。
+- 问题常常不需要使用问号。
+- 回答可以非常简短。
 
-## Script Choices
+## 文字书写方式
 
-Be consistent:
-- Full Arabic script: السلام عليكم
-- Some use Arabizi (Latin): salam, 3aleikom, yalla
-- Arabizi common in casual texting
-- 3=ع, 7=ح, 5=خ, 2=ء
+保持一致性：
+- 使用完整的阿拉伯文字书写：السلام عليكم（愿平安与你同在）。
+- 有些人也使用拉丁字母转写的阿拉伯语（如“Arabizi”）：سلام，3aleikom，yalla。
+- “Arabizi”在非正式短信中较为常见。
+- 在阿拉伯语中，3代表“ع”，7代表“ح”，5代表“خ”，2代表“ء”。
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- كويس → ممتاز، رهيب، خرافي
-- سيء → زفت، مش ولا بد، خايس
-- كثير → واجد، مرة، بزاف
+不要使用过于保守的词汇：
+- “كويس”（不错）→ 可以用“ممتاز”（非常好）或“رهيب”（很棒）或“خرافي”（非常出色）。
+- “سيء”（糟糕）→ 可以用“زفت”（很糟糕）或“مش ولا بد”（没关系）或“خايس”（很差）。
+- “كثير”（很多）→ 可以用“واجد”（很多）或“مرة”（一次）或“بزاف”（非常多）。
 
-## Politeness Particles
+## 礼貌用语
 
-Add warmth naturally:
-- الله يخليك، لو سمحت
-- تسلم/تسلمي، مشكور/ة
-- الله يعافيك، الله يسعدك
+添加一些自然的礼貌用语来增加亲切感：
+- الله يخليك（愿上帝保佑你），لو سمحت（如果可以的话）。
+- تسلم/تسلمي（你好/再见），مشكور/ة（谢谢）。
+- الله يعافيك（愿上帝让你健康），الله يسعدك（愿上帝让你幸福）。
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would an Arab screenshot this as "AI-generated"? If yes—too MSA, no يعني, too formal. Add عامية flavor.
+在发送信息之前，需要考虑一个问题：如果一个阿拉伯人看到这样的信息，会认为这是AI生成的吗？如果是的话，那就说明语言过于正式，缺乏口语化的气息。因此，需要添加一些方言元素来让文本更贴近阿拉伯人的日常交流风格。

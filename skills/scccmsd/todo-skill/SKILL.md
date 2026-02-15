@@ -1,47 +1,46 @@
 ---
 name: todo-skill
-description: A skill to break large tasks into smaller actionable steps, optimize execution for each step, and dynamically adapt based on progress.
+description: 一种将大型任务分解为更小、更易执行的步骤的技能；针对每个步骤优化执行方式，并根据进度动态调整策略。
 ---
 
-# To-Do Skill
+# 待办事项管理技能
 
-This skill enables the assistant to break down a large task into smaller tasks, create an optimized execution plan, and dynamically adjust actions based on progress and new information.
+该技能使助手能够将大型任务分解为更小的任务，制定优化的执行计划，并根据进度和新信息动态调整行动方案。
 
-## Features
-- **Task Breakdown**: Automatically decompose a complex request into smaller, actionable sub-tasks.
-- **Execution Optimization**: Analyze and plan how to execute each step better before proceeding.
-- **Adaptive Progress**: Dynamically adjust to-do lists based on feedback or results from completed tasks.
-- **Visual To-Do List**: Provide a clear and interactive to-do list for tracking and managing progress.
-- **Priority Management**: Prioritize tasks based on importance, deadlines, or complexity.
+## 主要功能
+- **任务分解**：自动将复杂的请求分解为更小、更易于执行的子任务。
+- **执行优化**：在开始执行之前，分析并规划每个步骤的最佳执行方式。
+- **自适应进度管理**：根据已完成任务的反馈或结果动态调整待办事项列表。
+- **可视化待办列表**：提供清晰、交互式的待办列表，便于跟踪和管理进度。
+- **优先级管理**：根据任务的重要性、截止日期或复杂性对任务进行优先级排序。
 
-## Workflow
-1. **Input -** User specifies a high-level task or goal.
-2. **Breakdown -** Skill breaks the task down into sub-tasks using logical order.
-3. **Optimization -** Each task is optimized for execution, identifying dependencies, tools, and strategies.
-4. **Execution and Update -** Execute tasks one by one while adjusting the plan dynamically based on progress.
-5. **Output -** Provide status updates and final results with a review of completed sub-tasks.
+## 工作流程
+1. **输入**：用户指定一个高层次的任务或目标。
+2. **任务分解**：该技能按照逻辑顺序将任务分解为子任务。
+3. **优化执行方案**：针对每个任务进行优化，确定所需的依赖项、工具和策略。
+4. **执行与更新**：逐一执行任务，并根据进度动态调整执行计划。
+5. **输出**：提供状态更新以及已完成子任务的汇总结果。
 
-## Usage
-- **Add Task:**
-  Say "Plan and execute [TASK] step by step."
-- **Check Progress:**
-  Say "What is the status of [TASK]?"
-- **Update Task:**
-  Say "Update step [STEP NUMBER] of [TASK]."
+## 使用方法
+- **添加任务**：
+  说：“逐步规划并执行[任务名称]。”
+- **检查进度**：
+  说：“[任务名称]的进度如何？”
+- **更新任务**：
+  说：“更新[任务名称]的第[步骤编号]步。”
 
-## Example Interaction
-User: "Plan and execute a marketing campaign."
+## 示例交互
+用户：“规划并执行一场营销活动。”
 
-Assistant:
-- Step 1: Define the target audience.
-- Step 2: Create marketing materials.
-- Step 3: Schedule and launch the campaign.
-- Step 4: Collect and analyze feedback.
+助手：
+- 第1步：确定目标受众。
+- 第2步：制作营销材料。
+- 第3步：安排并启动活动。
+- 第4步：收集并分析反馈。
 
-Shall we start with Step 1?
+我们先从第1步开始吗？
 
-User: "Yes, continue with Step 1."
+用户：“是的，请继续第1步。”
 
-Assistant: "For Step 1, let us first research the ideal demographic profile for our product. I'll document my findings."
-
+助手：“对于第1步，我们首先需要研究适合我们产品的理想目标人群。我会记录下我的调查结果。”
 ...

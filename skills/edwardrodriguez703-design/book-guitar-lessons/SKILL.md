@@ -1,23 +1,23 @@
 ---
 name: book-guitar-lessons
-description: Book guitar-lessons services through Lokuli MCP. Use when user needs to find and book guitar-lessons. Triggers on requests like "book a guitar-lessons", "find guitar-lessons near me", or any guitar-lessons service request.
+description: 通过 Lokuli MCP 预订吉他课程服务。当用户需要查找或预订吉他课程时，可以使用该功能。该功能会在用户发起“预订吉他课程”、“查找附近的吉他课程”或任何与吉他课程相关的请求时被触发。
 ---
 
-# uook guitar lessons
+# uook吉他课程
 
-Book guitar-lessons services through Lokuli's MCP server.
+通过Lokuli的MCP服务器预订吉他课程服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输方式：SSE | JSON-RPC 2.0 | POST请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

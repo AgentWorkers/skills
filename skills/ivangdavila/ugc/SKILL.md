@@ -1,104 +1,92 @@
 ---
 name: UGC
-description: Create viral user-generated content for marketing with effective hooks, formats, and creator strategies.
+description: 创建具有吸引力的用户生成内容（UGC）以用于营销，需要运用有效的策略、格式以及与创作者的合作方式。
 metadata: {"clawdbot":{"emoji":"📱","os":["linux","darwin","win32"]}}
 ---
 
-## Hook (First 1-3 Seconds)
+## 钩子（前1-3秒）  
+- 必须阻止用户继续滚动屏幕——利用视觉或内容上的突然变化来吸引注意力；  
+- 面部要靠近摄像头——营造亲密感，增加观众的关注度；  
+- 第一帧中要有动态元素——静态画面容易被用户忽略；  
+- 文本叠加效果能增强吸引力（即使声音关闭也能起作用）；  
+- 提出有争议或令人惊讶的观点——能激发观众的兴趣；  
+- 只有当内容真正有价值时才使用“请稍等”的提示——虽然常用，但效果显著。  
 
-- Must stop the scroll—pattern interrupt or curiosity gap
-- Face close to camera—creates intimacy, attention
-- Movement in first frame—static = scroll past
-- Text overlay reinforces hook—works with sound off
-- Controversial or surprising statement—triggers engagement
-- "Wait for it" only if payoff delivers—overused but works when earned
+## 真实性胜过过度制作  
+- 更倾向于使用iPhone拍摄的视频质量——过于精致的视频看起来像广告，而原始的视频更真实；  
+- 使用真实人物和真实环境——而非摄影棚或完美照明的场景；  
+- 采用自然的语音表达方式——避免刻板的台词；  
+- 有意保留一些小错误——这样更显真实、更具亲和力；  
+- 采用第一人称视角——让观众感觉像是在向朋友展示东西一样。  
 
-## Authenticity Over Production
+## 有效的表达形式  
+- 问题→解决方案：“我在使用X时遇到了麻烦，直到发现了这个方法”；  
+- 教程/演示：展示产品的实际使用效果，而不仅仅是口头描述；  
+- 使用前后对比：展示产品带来的变化；  
+- 用户反馈：真实的使用体验；  
+- 故事式讲述：将产品融入故事中；  
+- 在产品页面或评论中使用绿幕技术——增加用户的信任感。  
 
-- iPhone quality preferred—polished = ad, raw = real
-- Real person, real environment—not studio, not perfect lighting
-- Natural speech patterns—not scripted-sounding
-- Mistakes left in strategically—human, relatable
-- POV style—viewer feels like friend showing them something
+## 平台特性  
+- TikTok：趋势和声音很重要，节奏要快；  
+- Instagram Reels：稍微精致一点的视频更合适，可以使用较老的演示内容；  
+- YouTube Shorts：可以包含更多信息，用户停留时间更长；  
+- 跨平台发布内容，但要注意每个平台的风格和节奏差异。  
 
-## Formats That Work
+## 趋势与声音的运用  
+- 使用热门的声音效果——有助于提升视频的曝光率；  
+- 为热门趋势添加自己的创意元素——不要简单复制，要创造独特价值；  
+- 动作要迅速——趋势通常持续几天，而不是几周；  
+- 将热门内容保存下来以备参考；  
+- 原创声音可能带来意想不到的效果——值得一试。  
 
-- Problem → Solution: "I was struggling with X until I found this"
-- Tutorial/Demo: show product in use, not just talking about it
-- Before/After: visual transformation
-- Reaction: genuine response to trying product
-- Story time: narrative hook, product woven in
-- Green screen over product page/reviews—social proof
+## 创作者需要了解的内容  
+- 明确的产品优势——传达一个核心信息，而非多个；  
+- 目标受众的描述——明确你的内容是为谁准备的；  
+- 必需包含的元素：产品展示、关键词、呼吁行动（CTA）；  
+- 创作上的自由度——创作者要了解自己的受众；  
+- 成功案例的参考——可以参考其他创作者的视频，而非固定脚本；  
+- 应避免的错误和表达方式。  
 
-## Platform Specifics
+## 呼吁行动（CTA）  
+- 呼吁行动要清晰、简洁——在个人简介中添加链接，或提供免费试用机会；  
+- 在内容展示完毕后的最后2秒内发出呼吁行动；  
+- 通过口头和屏幕上的文字同时强化呼吁行动；  
+- 当情况紧急时（如时间有限或机会难得时）要强调紧迫性；  
+- 在视频字幕中添加温和的呼吁行动——给观众第二次机会。  
 
-- TikTok: trends matter, sounds matter, fast pace
-- Instagram Reels: slightly more polished acceptable, older demo
-- YouTube Shorts: can be more informational, longer retention
-- Cross-post but native feels different—adjust energy, pacing
+## 测试与迭代  
+- 对同一内容尝试多种吸引观众的方式（前3秒）；  
+- 使用不同的创作者，但提供相同的创作指导——不同受众可能会有不同的反应；  
+- 对有效的创意进行优化和迭代；  
+- 快速淘汰无效的方案——80%的尝试可能失败，这很正常；  
+- 按创作者而非整个活动来跟踪数据，找出规律。  
 
-## Trends and Sounds
+## 重要的指标  
+- 钩子效果：观看视频超过3秒的比例——反映创意质量；  
+- 观看时长：完成观看的比例——反映内容质量；  
+- 用户互动情况：分享、评论、点赞的数量——反映用户的兴趣；  
+- 点击率：用户是否真正采取行动——反映转化效果；  
+- 每个结果的成本：衡量效率，优化有效的内容。  
 
-- Use trending sounds—algorithm boost, familiarity
-- Put your spin on trend—don't just copy, add value
-- Move fast—trends die in days, not weeks
-- Save trending content for reference—build swipe file
-- Original sounds can blow up—worth trying
+## 创作者的选择  
+- 选择与受众相符的创作者——而不仅仅是看视频的粉丝数量；  
+- 检查他们的创作风格——是否与品牌风格一致；  
+- 互动率（而非粉丝数量）——活跃的受众才是关键；  
+- 创作者之前的作品表现如何；  
+- 微创作者往往表现更好——他们更受信任，转化率也更高。  
 
-## Brief for Creators
+## 内容发布策略  
+- 内容数量比质量更重要——算法更看重发布频率；  
+- 每个平台使用3-5个不同的创意和3-5位创作者进行测试；  
+- 重新利用成功的创意——适用于不同的平台和时长；  
+- 用户的评论可以成为新的吸引元素——利用真实的反馈和语言；  
+- 根据季节或时机选择合适的主题（如黑色星期五、新年等）。  
 
-- Clear product benefit—one main message, not five
-- Target audience description—who should feel spoken to
-- Mandatory elements—product visible, key phrase, CTA
-- Freedom on execution—creator knows their audience
-- Examples of what works—reference videos, not scripts
-- What NOT to do—avoid these mistakes/phrases
-
-## Call to Action
-
-- Clear, single CTA—link in bio, use code, try free
-- CTA in last 2 seconds—after value delivered
-- Verbal + text on screen—reinforce both ways
-- Urgency when genuine—limited time, limited spots
-- Soft CTA in caption—second chance if skipped
-
-## Testing and Iteration
-
-- Multiple hooks for same content—test first 3 seconds
-- Multiple creators, same brief—different audiences resonate differently
-- Winning concepts get variations—iterate on what works
-- Kill losers fast—80% won't work, that's normal
-- Track by creative, not just campaign—identify patterns
-
-## Metrics That Matter
-
-- Hook rate: % watching past 3 seconds—creative quality
-- Watch time: % completing—content quality
-- Engagement: saves > shares > comments > likes—intent signals
-- Click-through: actually taking action—conversion quality
-- Cost per result: efficiency—scale what works
-
-## Creator Selection
-
-- Authentic to your audience—not just follower count
-- Check their content style—matches brand energy?
-- Engagement rate over followers—active audience matters
-- Previous brand work—how did it perform?
-- Micro-creators often outperform—more trusted, better rates
-
-## Volume Strategy
-
-- More content > perfect content—algorithm needs volume
-- 3-5 concepts, 3-5 creators each—matrix of tests
-- Repurpose winners—different hooks, platforms, lengths
-- User comments become new hooks—real objections, real language
-- Seasonal/timely angles—Black Friday, New Year, etc.
-
-## Common Mistakes
-
-- Too branded—looks like ad, users scroll
-- Product shown too late—already lost attention
-- Weak hook—generic opening, no curiosity
-- No clear CTA—engagement without conversion
-- Wrong creator for audience—mismatch kills authenticity
-- One video tested—need volume, most won't work
+## 常见错误  
+- 内容过于商业化——看起来像广告，用户会直接滚动屏幕；  
+- 产品展示得太晚——观众可能已经失去兴趣；  
+- 开场缺乏吸引力——开头平淡无奇，无法引起好奇心；  
+- 没有明确的呼吁行动——没有转化的互动毫无意义；  
+- 选错了适合受众的创作者——风格不匹配会破坏真实感；  
+- 只测试一个视频——需要大量内容来验证效果——大多数创意可能都不成功。

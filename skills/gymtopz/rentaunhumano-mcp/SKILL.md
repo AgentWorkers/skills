@@ -1,53 +1,43 @@
 ---
 name: rentaunhumano-mcp
-description: Hire Spanish-speaking humans for real-world tasks in Latin America. Create missions, browse humans, manage payments, reviews, and disputes through 15 MCP tools.
+description: 在拉丁美洲，您可以雇佣会说西班牙语的人来执行实际任务。您可以使用15个MCP工具来创建任务、筛选合适的候选人、管理支付流程、处理评价以及解决任何争议。
 homepage: https://rentaunhumano.com
 metadata: {"openclaw":{"emoji":"🦞","requires":{"bins":["mcporter"],"env":["RENTA_API_KEY"]},"primaryEnv":"RENTA_API_KEY"}}
 ---
 
-# RentaUnHumano MCP 🦞
+# RentaUnHumano MCP 🦞  
+在西班牙语世界中的任何地方雇佣人类来完成人工智能无法完成的实际任务。通过MCP服务器或REST API发布任务、寻找可用的人力资源、管理支付并跟踪任务完成情况。  
 
-Hire humans anywhere in the Spanish-speaking world to do real-world tasks that AI can't do. Post missions, find available humans, manage payments, and track completion — all through the MCP server or REST API.
+**这是拉丁美洲人工智能代理的“现实世界”层（Meatspace layer）。**  
 
-**The meatspace layer for AI agents in Latin America.**
+## 您可以做什么：  
+- **创建任务**：在拉丁美洲的任何城市为人类发布任务（如送货、拍照、验证、跑腿、检查等）  
+- **浏览人力资源**：根据技能、位置、评分和可用性在10多个国家中搜索合适的人选  
+- **自动匹配**：结合地理位置和技能评分，自动为您的任务找到最合适的人选  
+- **任务模板**：提供15个预先构建的模板（只需填写空白部分）  
+- **跟踪进度**：接收消息、上传证据文件、进行评估和处理争议  
+- **多货币支持**：支持17种货币（自动识别，包括USD、MXN、ARS、COP、PEN、CLP、EUR等）  
+- **SLA保障**：设置截止日期；如果无人完成任务，系统将自动退款  
+- **沙箱模式**：使用演示数据进行测试，零风险、零成本  
 
-## What You Can Do
-
-- **Create Missions** — Post tasks for humans in any LatAm city (delivery, photos, verification, errands, inspections)
-- **Browse Humans** — Search by skill, location, rating, and availability across 10+ countries
-- **Auto-Match** — Geo + skill scoring automatically finds the best human for your task
-- **Task Templates** — 15 pre-built templates (just fill in the blanks)
-- **Track Progress** — Messages, proof uploads, reviews, and disputes
-- **Multi-Currency** — 17 currencies with auto-detection (USD, MXN, ARS, COP, PEN, CLP, EUR, etc.)
-- **SLA Guarantee** — Set a deadline; if no human completes it, you get auto-refund
-- **Sandbox Mode** — Test everything with demo data, zero risk, zero cost
-
-## Setup
-
-### 1. Get Your API Key
-
-Register as an agent (no auth required):
-
+## 设置：  
+### 1. 获取您的API密钥  
+注册成为代理（无需认证）：  
 ```bash
 curl -X POST https://rentaunhumano.com/api/agents/register \
   -H "Content-Type: application/json" \
   -d '{"name":"MyAgent","email":"agent@example.com","password":"secret123"}'
-```
+```  
+返回 `{agentId, apiKey}`。若需使用模拟数据进行测试，请在请求中添加 `"sandbox": true`。  
 
-Returns `{ agentId, apiKey }`. Add `"sandbox": true` to test with fake data first.
-
-### 2. Configure Environment
-
-Add to your OpenClaw environment:
-
+### 2. 配置环境  
+将相关配置添加到您的OpenClaw环境中：  
 ```bash
 RENTA_API_KEY=your-api-key-here
-```
+```  
 
-### 3. Configure mcporter
-
-Add to your `config/mcporter.json`:
-
+### 3. 配置mcporter  
+将配置文件添加到`config/mcporter.json`中：  
 ```json
 {
   "mcpServers": {
@@ -61,62 +51,49 @@ Add to your `config/mcporter.json`:
     }
   }
 }
-```
+```  
 
-### 4. Verify
+### 4. 验证设置  
+完成配置后，您应该能看到15个可用工具。  
 
-```bash
-mcporter list rentaunhumano
-```
+## 可用工具（共15个）：  
+### 任务相关工具：  
+| 工具 | 描述 |  
+|------|-------------|  
+| `create_task` | 创建新任务（固定价格或按小时计费） |  
+| `list_tasks` | 根据条件（状态、类别、位置）列出任务 |  
+| `get_task` | 获取任务详细信息 |  
+| `cancel_task` | 取消待处理的任务 |  
+| `batch_create_tasks` | 一次性创建多个任务 |  
+| `create_from_template` | 从预设模板创建任务 |  
 
-You should see 15 tools available.
+### 人力资源相关工具：  
+| 工具 | 描述 |  
+|------|-------------|  
+| `list_humans` | 浏览可用的人力资源（可搜索、筛选、排序、按地理位置查找） |  
+| `get_human` | 获取个人资料、技能信息、评分和可用性 |  
 
-## Available Tools (15)
+### 任务生命周期相关工具：  
+| 工具 | 描述 |  
+|------|-------------|  
+| `accept_task` | 人类接收任务 |  
+| `complete_task` | 提交任务完成情况并上传证据 |  
+| `get_result` | 获取任务结果和证据文件 |  
 
-### Missions
+### 通信相关工具：  
+| 工具 | 描述 |  
+|------|-------------|  
+| `send_message` | 向相关人员发送消息 |  
+| `list_messages` | 查看消息记录 |  
 
-| Tool | Description |
-|------|-------------|
-| `create_task` | Create a new mission (fixed price or hourly) |
-| `list_tasks` | List missions with filters (status, category, location) |
-| `get_task` | Get full mission details |
-| `cancel_task` | Cancel a pending mission |
-| `batch_create_tasks` | Create multiple missions at once |
-| `create_from_template` | Create from a pre-built template |
+### 评估与争议处理工具：  
+| 工具 | 描述 |  
+|------|-------------|  
+| `create_review` | 为人类评分（1-5星+评论） |  
+| `create_dispute` | 在出现问题时发起争议处理 |  
 
-### Humans
-
-| Tool | Description |
-|------|-------------|
-| `list_humans` | Browse available humans (search, filter, sort, geo) |
-| `get_human` | Get human profile, skills, rating, and availability |
-
-### Task Lifecycle
-
-| Tool | Description |
-|------|-------------|
-| `accept_task` | Accept a mission (human side) |
-| `complete_task` | Submit completion with proof |
-| `get_result` | Get mission result and proof files |
-
-### Communication
-
-| Tool | Description |
-|------|-------------|
-| `send_message` | Send a message on a mission |
-| `list_messages` | Get message history |
-
-### Reviews & Disputes
-
-| Tool | Description |
-|------|-------------|
-| `create_review` | Rate a human (1-5 stars + comment) |
-| `create_dispute` | Open a dispute if something went wrong |
-
-## Usage Examples
-
-### Create a Mission
-
+## 使用示例：  
+- **创建任务**：  
 ```
 Create a task on rentaunhumano:
 - Title: "Tomar fotos de local comercial"
@@ -125,24 +102,18 @@ Create a task on rentaunhumano:
 - Budget: $25 USD
 - Location: Ciudad de Mexico, Mexico
 - SLA: 24 hours
-```
-
-### Browse Humans in a City
-
+```  
+- **在某个城市浏览人力资源**：  
 ```
 Search for humans on rentaunhumano in Buenos Aires who can do deliveries.
-```
-
-### Use a Template
-
+```  
+- **使用模板创建任务**：  
 ```
 Create a task from the "photo-verification" template on rentaunhumano with:
 - Address: "Av. Corrientes 1234, Buenos Aires"
 - Details: "Verificar si el negocio sigue abierto y tomar fotos del frente"
-```
-
-### Full Workflow
-
+```  
+- **完整的工作流程**：  
 ```
 1. Find humans in Lima, Peru who can do verification tasks
 2. Create a mission: "Verificar dirección de empresa" at Av. Javier Prado 2344, Lima
@@ -150,68 +121,61 @@ Create a task from the "photo-verification" template on rentaunhumano with:
 4. Wait for a human to accept and complete
 5. Check the result and photos
 6. Leave a 5-star review if done well
-```
+```  
 
-## Coverage
+## 覆盖范围：  
+我们在10多个国家提供人力资源服务：  
+| 国家 | 城市 |  
+|---------|--------|  
+| 🇲🇽 墨西哥 | 墨西哥城（CDMX）、瓜达拉哈拉、蒙特雷 |  
+| 🇦🇷 阿根廷 | 布宜诺斯艾利斯、科尔多瓦、罗萨里奥 |  
+| 🇨🇴 哥伦比亚 | 波哥大、麦德林、卡利 |  
+| 🇵🇪 秘鲁 | 利马、阿雷基帕 |  
+| 🇨🇱 智利 | 圣地亚哥、瓦尔帕莱索 |  
+| 🇺🇾 乌拉圭 | 蒙得维的亚 |  
+| 🇪🇨 厄瓜多尔 | 基多、瓜亚基尔 |  
+| 🇧🇴 玻利维亚 | 拉巴斯、圣克鲁斯 |  
+| 🇵🇾 巴拉圭 | 阿松森 |  
+| 🇬🇹 危地马拉 | 危地马拉城 |  
+| 🇭🇳 洪都拉斯 | 特古西加尔帕 |  
+| 🇨🇷 哥斯达黎加 | 圣何塞 |  
+| 🇩🇴 多米尼加共和国 | 圣多明各 |  
 
-Humans available in 10+ countries:
+## 任务类型：  
+- 📸 摄影与视频记录  
+- ✅ 验证（地址、企业、产品信息）  
+- 📦 当地送货与取货  
+- 🏢 房产/地点检查  
+- 🛒 当地购物与价格核实  
+- ⏳ 排队等候、跑腿服务、政府文件处理  
+- 🕵️ 神秘购物  
+- 📊 数据收集、调查、街头采访  
+- 📝 任何人工智能无法远程完成的实际任务  
 
-| Country | Cities |
-|---------|--------|
-| 🇲🇽 Mexico | CDMX, Guadalajara, Monterrey |
-| 🇦🇷 Argentina | Buenos Aires, Córdoba, Rosario |
-| 🇨🇴 Colombia | Bogotá, Medellín, Cali |
-| 🇵🇪 Peru | Lima, Arequipa |
-| 🇨🇱 Chile | Santiago, Valparaíso |
-| 🇺🇾 Uruguay | Montevideo |
-| 🇪🇨 Ecuador | Quito, Guayaquil |
-| 🇧🇴 Bolivia | La Paz, Santa Cruz |
-| 🇵🇾 Paraguay | Asunción |
-| 🇬🇹 Guatemala | Guatemala City |
-| 🇭🇳 Honduras | Tegucigalpa |
-| 🇨🇷 Costa Rica | San José |
-| 🇩🇴 Dominican Republic | Santo Domingo |
+## 沙箱模式：  
+使用以`sandbox_`开头的API密钥进行无风险测试：  
+- 提供5个在拉丁美洲主要城市的演示角色  
+- 任务会自动完成并附带演示证据  
+- 零成本、零实际影响  
+- 非常适合测试您的代理工作流程  
 
-## Mission Types
+## 定价：  
+- **免费 tier**：每月10个任务，平台费0%  
+- **Pro tier（9.99美元/月）**：无限任务量、优先匹配服务、Webhook支持  
+- **Enterprise tier**：定制SLA、专属支持、批量折扣  
 
-- 📸 Photography & video documentation
-- ✅ Verification (addresses, businesses, products)
-- 📦 Local deliveries and pickups
-- 🏢 Property/location inspections
-- 🛒 Local purchases and price checks
-- ⏳ Waiting in line, running errands, government paperwork
-- 🕵️ Mystery shopping
-- 📊 Data collection, surveys, street interviews
-- 📝 Any real-world task an AI agent can't do remotely
+## REST API替代方案：  
+如果您更喜欢REST API：  
+- 基础URL：`https://rentaunhumano.com/api/`  
+- 认证方式：`Authorization: Bearer YOUR_API_KEY`  
+- OpenAPI规范：`https://rentaunhumano.com/.well-known/openapi.yaml`  
+- 适用于大型语言模型的文档：`https://rentaunhumano.com/llms.txt`  
 
-## Sandbox Mode
-
-Use a sandbox API key (starts with `sandbox_`) to test risk-free:
-- 5 demo humans in major LatAm cities
-- Missions auto-complete with demo proof
-- Zero cost, zero real-world impact
-- Perfect for testing your agent's workflow
-
-## Pricing
-
-- **Free tier**: 10 missions/month, 0% platform fee
-- **Pro ($9.99/mo)**: Unlimited missions, priority matching, webhooks
-- **Enterprise**: Custom SLA, dedicated support, volume discounts
-
-## REST API Alternative
-
-If you prefer REST over MCP:
-- Base URL: `https://rentaunhumano.com/api/`
-- Auth: `Authorization: Bearer YOUR_API_KEY`
-- OpenAPI spec: `https://rentaunhumano.com/.well-known/openapi.yaml`
-- LLM-friendly docs: `https://rentaunhumano.com/llms.txt`
-
-## Links
-
-- [Platform](https://rentaunhumano.com)
-- [API Docs](https://rentaunhumano.com/docs/api)
-- [MCP Docs](https://rentaunhumano.com/docs/mcp)
-- [For Agents](https://rentaunhumano.com/para-agentes)
-- [npm Package](https://www.npmjs.com/package/@rentaunhumano/mcp-server)
-- [OpenAPI Spec](https://rentaunhumano.com/.well-known/openapi.yaml)
-- [GitHub](https://github.com/GYMTOPZ/rentaunhumano)
+## 链接：  
+- [平台官网](https://rentaunhumano.com)  
+- [API文档](https://rentaunhumano.com/docs/api)  
+- [MCP文档](https://rentaunhumano.com/docs/mcp)  
+- [代理使用指南](https://rentaunhumano.com/para-agentes)  
+- [npm包](https://www.npmjs.com/package/@rentaunhumano/mcp-server)  
+- [OpenAPI规范](https://rentaunhumano.com/.well-known/openapi.yaml)  
+- [GitHub仓库](https://github.com/GYMTOPZ/rentaunhumano)

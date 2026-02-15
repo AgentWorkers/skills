@@ -1,358 +1,356 @@
 ---
 name: apple-hig
-description: Expert guide for designing iOS, macOS, watchOS, tvOS, and visionOS apps following Apple Human Interface Guidelines. Use when building Apple platform apps or interfaces, implementing SF Symbols, designing with iOS components, following accessibility guidelines, or creating native Apple experiences. Covers design principles, patterns, components, typography, color, layout, navigation, and platform-specific conventions.
+description: **专家指南：根据 Apple 人机界面指南设计 iOS、macOS、watchOS、tvOS 和 visionOS 应用程序**  
+本指南适用于开发 Apple 平台应用程序或界面、实现 SF Symbols（Apple 的矢量图形格式）、使用 iOS 组件进行设计、遵循无障碍设计规范，以及创建原生的 Apple 用户体验。内容涵盖设计原则、设计模式、常用组件、排版技巧、色彩搭配、布局布局、导航设计以及各平台的特定规范。
 ---
 
-# Apple Human Interface Guidelines Skill
+# Apple 人类界面指南技能
 
-Design exceptional experiences for Apple platforms following official Apple HIG principles, patterns, and best practices.
+遵循 Apple 官方的人类界面指南（Human Interface Guidelines, HIG）、设计模式和最佳实践，为 Apple 平台打造出色的用户体验。
 
-## Core Design Principles
+## 核心设计原则
 
-### Clarity
-- **Text must be legible** at every size
-- **Icons should be precise and lucid**
-- **Adornments are subtle and appropriate**
-- **Functionality is obvious through focus on content**
+### 清晰性
+- **文本在任何尺寸下都应清晰可读**  
+- **图标应精确且直观**  
+- **装饰元素应简洁且恰当**  
+- **通过关注内容来体现功能**
 
-### Deference
-- **Content fills the entire screen** while UI stays out of the way
-- **Translucency and blurring** hint at more content
-- **Minimal use of bezels, gradients, and shadows** keeps interface light and airy
+### 低调设计  
+- **内容占据整个屏幕，而界面元素不抢眼**  
+- **透明度和模糊效果** 可以暗示更多内容  
+- **尽量减少边框、渐变和阴影的使用**，以保持界面的简洁和通透感
 
-### Depth
-- **Visual layers and realistic motion** convey hierarchy and vitality
-- **Touch and discoverability** heighten delight
-- **Smooth transitions** maintain spatial orientation
+### 深度感  
+- **视觉层次和真实的动画效果** 可以传达层次感和活力  
+- **触控操作和探索性** 能提升用户体验的愉悦感  
+- **平滑的过渡效果** 有助于保持空间感
 
-## Platform-Specific Guidelines
+## 平台特定指南
 
-###iOS / iPadOS
+### iOS / iPadOS
 
-**Key Characteristics:**
-- Touch-first interaction
-- Portrait and landscape orientations
-- Safe area respect (notch, Dynamic Island, home indicator)
-- Gestures: swipe, tap, long press, pinch, rotate
+**主要特点：**
+- 以触控操作为主  
+- 支持竖屏和横屏模式  
+- 遵循安全区域规范（刘海、动态岛、主屏幕图标）  
+- 支持手势操作：滑动、点击、长按、捏合、旋转  
 
-**Layout:**
-- Use **SF Pro** text (system font)
-- Respect safe areas and readable content guides
-- Adopt **Auto Layout** for adaptive interfaces
-- Support **Dynamic Type** for accessibility
+**布局：**
+- 使用 **SF Pro** 系统字体  
+- 遵守安全区域规范，确保内容易于阅读  
+- 采用 **自动布局** 以实现自适应界面  
+- 支持 **动态字体** 以提高可访问性  
 
-**Navigation:**
-- **Tab Bar:** 3-5 primary destinations, always visible
-- **Navigation Bar:** Hierarchical browsing, back button
-- **Search:** Prominent when important to app experience
+**导航：**
+- **标签栏**：显示 3-5 个主要功能  
+- **导航栏**：提供层次化的导航和返回按钮  
+- **搜索栏**：在重要位置突出显示  
 
-For complete iOS patterns, see [references/ios.md](references/ios.md)
+有关完整的 iOS 设计模式，请参阅 [references/ios.md](references/ios.md)
 
 ### macOS
 
-**Key Characteristics:**
-- Mouse/trackpad/keyboard interaction
-- Resizable windows
-- Menu bar at top of screen
-- Dock for launching apps
+**主要特点：**
+- 支持鼠标/触控板/键盘操作  
+- 窗口可调整大小  
+- 屏幕顶部有菜单栏  
+- 通过 Dock 启动应用程序  
 
-**Layout:**
-- Use **SF Pro** (system font)
-- Window controls (close, minimize, zoom) on left
-- **Sidebars** for navigation (leading edge)
-- **Toolbars** for primary actions
+**布局：**
+- 使用 **SF Pro** 系统字体  
+- 窗口控制按钮（关闭、最小化、缩放）位于左侧  
+- **侧边栏** 用于导航  
+- **工具栏** 用于执行主要操作  
 
-**Interaction:**
-- Right-click context menus
-- Keyboard shortcuts (⌘ Command key)
-- Drag and drop between windows
+**交互：**
+- 右键点击可弹出上下文菜单  
+- 使用 **⌘ Command** 键组合键  
+- 窗口之间支持拖放操作  
 
-For complete macOS patterns, see [references/macos.md](references/macos.md)
+有关完整的 macOS 设计模式，请参阅 [references/macos.md]
 
 ### watchOS
 
-**Key Characteristics:**
-- Glanceable information
-- Quick interactions
-- Digital Crown and side button
-- Always-on display support
+**主要特点：**
+- 信息可快速查看  
+- 支持快速交互  
+- 配备数字表冠和侧边按钮  
+- 支持常亮显示  
 
-**Layout:**
-- **SF Compact** (rounded system font for watches)
-- Edge-to-edge content
-- Vertical scrolling preferred
+**布局：**
+- 使用 **SF Compact** （适用于手表的圆形系统字体）  
+- 内容布局从屏幕边缘开始  
+- 建议使用垂直滚动  
 
-**Interaction:**
-- **Tap:** Primary action
-- **Digital Crown:** Scroll and zoom
-- **Force Touch:** (older models) Context menu
-- **Raise to wake**
+**交互：**
+- **点击**：主要操作方式  
+- **数字表冠**：用于滚动和缩放  
+- **Force Touch**（旧款手表）：用于弹出上下文菜单  
+- **抬手唤醒**  
 
-For complete watchOS patterns, see [references/watchos.md](references/watchos.md)
+有关完整的 watchOS 设计模式，请参阅 [references/watchos.md]
 
 ### tvOS
 
-**Key Characteristics:**
-- 10-foot viewing distance
-- Siri Remote (directional pad + touch)
-- Focus-driven navigation
-- Parallax effects
+**主要特点：**
+- 视距为 10 英尺  
+- 使用 Siri 遥控器（带有方向键和触控功能）  
+- 通过焦点驱动导航  
+- 支持视差效果  
 
-**Layout:**
-- **SF Pro** (system font)
-- Large touch targets (minimum 250pt)
-- Grid layouts for content
-- Focus engine handles navigation
+**布局：**
+- 使用 **SF Pro** 系统字体  
+- 触控目标区域较大（至少 250 像素）  
+- 内容采用网格布局  
+- 通过焦点引擎进行导航  
 
-**Interaction:**
-- **Directional:** Up/down/left/right focus movement
-- **Select (click):** Primary action
-- **Menu:** Back navigation
-- **Siri:** Voice commands
+**交互：**
+- **方向性操作**：向上/向下/向左/向右移动焦点  
+- **点击**：主要操作方式  
+- **菜单**：用于返回导航  
+- **Siri**：支持语音命令  
 
-For complete tvOS patterns, see [references/tvos.md](references/tvos.md)
+有关完整的 tvOS 设计模式，请参阅 [references/tvos.md]
 
 ### visionOS
 
-**Key Characteristics:**
-- Spatial computing environment
-- 3D depth and windows
-- Eye tracking + hand gestures
-- Immersive and windowed modes
+**主要特点：**
+- 支持空间计算  
+- 具有 3D 深度和窗口效果  
+- 支持眼动追踪和手势操作  
+- 提供沉浸式和分屏模式  
 
-**Layout:**
-- **Depth and layers** in 3D space
-- **Glass materials** with vibrancy
-- **SF Pro** (system font)
+**布局：**
+- 3D 空间中的层次感和深度效果  
+- 使用具有视觉冲击力的 **玻璃材质**  
+- 使用 **SF Pro** 系统字体  
 
-**Interaction:**
-- **Gaze + pinch:** Primary selection
-- **Hand gestures:** Tap, drag, rotate
-- **Voice:** Siri commands
-- **Immersion:** Dial controls environment blend
+**交互：**
+- **注视** 和 **捏合**：主要选择方式  
+- **手势操作**：点击、拖动、旋转  
+- **语音**：通过 Siri 发出指令  
+- **沉浸式体验**：结合环境控制  
 
-For complete visionOS patterns, see [references/visionos.md](references/visionos.md)
+## 字体
 
-## Typography
+### SF Symbols（Apple 自定义图标）
 
-### SF Symbols
-- **6,000+ icons** designed by Apple
-- **Variable weight and scale** (Ultralight to Black)
-- **Multicolor, hierarchical, palette, monochrome** rendering modes
-- **SF Symbols 6** latest version
+- Apple 设计的 6,000 多个图标  
+- 图标具有不同的粗细和颜色级别（从超轻到黑色）  
+- 支持多种渲染模式（多色、层次化、单色）  
+- 最新版本为 **SF Symbols 6**  
 
-**Usage:**
+**使用说明：**
 ```swift
 Image(systemName: "star.fill")
 Image(systemName: "heart.circle.fill")
 ```
 
-**Guidelines:**
-- Match symbol weight to text weight
-- Use filled variants for selected states
-- Leverage multicolor for semantic meaning
+**设计指南：**
+- 根据文本的粗细选择相应的图标  
+- 选中状态时使用填充效果的图标  
+- 利用多色效果来表达语义含义  
 
-### San Francisco (SF)
-Apple's system font family optimized for legibility:
+### San Francisco （SF）字体系列  
+- Apple 的系统字体系列，专为可读性优化：  
+  - **SF Pro**：适用于 iOS、macOS、tvOS  
+  - **SF Compact**：适用于 watchOS  
+  - **SF Mono**：适用于代码和表格数据  
+  - **SF Arabic, SF Hebrew**：本地化版本  
 
-- **SF Pro:** iOS, macOS, tvOS
-- **SF Compact:** watchOS (rounded)
-- **SF Mono:** Code and tabular data
-- **SF Arabic, SF Hebrew:** Localized variants
+**文本样式（动态字体）：**
+- 大标题、标题 1/2/3  
+- 标题、正文、强调文本、脚注、副标题 1/2  
 
-**Text Styles (Dynamic Type):**
-- Large Title, Title 1/2/3
-- Headline, Body, Callout
-- Subheadline, Footnote, Caption 1/2
+**始终支持动态字体** 以提高可访问性。
 
-**Always support Dynamic Type** for accessibility.
+## 颜色
 
-## Color
+### 系统颜色  
+- 使用具有语义意义的颜色，并根据亮/暗模式自动调整：  
+  - **标签**：主要文本  
+  - **次要标签**：次要文本  
+  - **三级标签**：禁用文本  
+  - **系统背景**：界面元素的背景颜色  
+  - **系统填充色**：界面元素的填充颜色  
 
-### System Colors
-Use semantic colors that adapt to light/dark mode:
+### 强调色  
+- 为交互元素（按钮、链接）使用强调色  
+- 确保足够的对比度（WCAG AA: 4.5:1）  
+- 在亮/暗模式下进行测试  
 
-- **Label:** Primary text
-- **Secondary Label:** Secondary text
-- **Tertiary Label:** Disabled text
-- **System Background:** Main background
-- **System Fill:** Fill colors for UI elements
+### 动态效果  
+- 使用渐变背景来增强视觉层次感  
+- 颜色应根据背景材质进行调整  
 
-### Accent Colors
-- Use **accent color** for interactive elements (buttons, links)
-- Ensure **sufficient contrast** (WCAG AA: 4.5:1 for text)
-- Test in **both light and dark modes**
+## 组件
 
-### Vibrancy
-- **Materials:** Blur backgrounds to show depth
-- **Vibrancy:** Colors that adapt to material behind them
+### iOS 组件  
 
-## Components
+**按钮：**  
+- 有填充效果、着色效果、灰色和纯色三种样式  
+- 大小有三种选择（小、中、大）  
+- 使用 SF Symbols 作为图标  
 
-### iOS Components
+**列表：**  
+- 现代 iOS 风格的嵌入式列表  
+- 支持滑动操作  
+- 支持上下文菜单  
 
-**Buttons:**
-- Filled, Tinted, Gray, Plain styles
-- Size: Small, Medium, Large
-- Use SF Symbols for icons
+**模态窗口：**  
+- 提供不同的固定位置（中、大）  
+- 可通过拖动关闭  
 
-**Lists:**
-- Inset grouped style (modern iOS)
-- Swipe actions (leading/trailing)
-- Context menus
+**导航：**  
+- iOS 11 及更高版本支持大标题  
+- 滚动状态下显示内联标题  
+- 集成搜索栏  
 
-**Sheets:**
-- Modal presentation
-- Detents: medium, large
-- Drag to dismiss
+有关所有 iOS 组件的详细信息，请参阅 [references/ios-components.md]
 
-**Navigation:**
-- Large titles (iOS 11+)
-- Inline titles for scrolled state
-- Search bar integration
+### macOS 组件  
 
-For all iOS components, see [references/ios-components.md](references/ios-components.md)
+**窗口：**  
+- 标准窗口、工具窗口和面板  
+- 标题栏样式（默认、透明或统一风格）  
+- 支持侧边栏和分屏显示  
 
-### macOS Components
+**工具栏：**  
+- 可以显示图标和文本，或仅显示图标  
+- 为不同视图提供分段控件  
+- 提供搜索字段  
 
-**Windows:**
-- Standard, utility, panel types
-- Titlebar styles: default, transparent, unified
-- Sidebars and split views
+有关所有 macOS 组件的详细信息，请参阅 [references/macos-components.md]
 
-**Toolbars:**
-- Icon + text or icon-only buttons
-- Segmented controls for views
-- Search fields
+## 布局与间距  
 
-For all macOS components, see [references/macos-components.md](references/macos-components.md)
+### 网格系统**  
+- 基本网格尺寸为 8 像素（iOS 和 macOS）  
+- 边距：iPhone 为 16 像素，iPad 和 Mac 为 20 像素  
+- 标准间距为 8 像素、16 像素、24 像素、32 像素  
 
-## Layout & Spacing
+**安全区域：**  
+- **顶部**：状态栏、刘海、动态岛  
+- **底部**：主屏幕图标（iPhone）和 Dock（iPad）  
+- **边缘区域**：避免将内容放置得太靠近边缘  
 
-### Grid System
-- **8pt grid** as baseline (iOS, macOS)
-- **Margins:** 16pt (iPhone), 20pt (iPad), 20pt (Mac)
-- **Spacing:** 8pt, 16pt, 24pt, 32pt standard increments
+**自适应布局：**  
+- 支持不同的屏幕尺寸（紧凑型、常规型）  
+- 根据亮/暗模式和文本大小调整布局  
 
-### Safe Areas
-- **Top:** Status bar, notch, Dynamic Island
-- **Bottom:** Home indicator (iPhone), dock (iPad)
-- **Leading/Trailing:** Avoid placing content too close to edges
+## 可访问性  
 
-### Adaptive Layouts
-- **Size classes:** Compact, Regular (width/height)
-- **Trait variations:** Light/Dark mode, Dynamic Type sizes
-- Support **landscape and portrait**
+**VoiceOver（语音辅助功能）**  
+- 提供有意义的可访问性标签  
+- 将相关元素分组  
+- 确保逻辑上的焦点顺序  
 
-## Accessibility
+**动态字体**  
+- 支持所有文本大小（默认范围为 -3 到 +7）  
+- 在不同的可访问性设置下进行测试  
+- 使用可缩放的字体和布局  
 
-### VoiceOver
-- Provide meaningful **accessibility labels**
-- Group related elements
-- Ensure logical **focus order**
+**颜色对比度**  
+- 根据 WCAG 标准：  
+  - 正常文本：WCAG AA: 4.5:1  
+  - 大字体：WCAG AA: 3:1  
+  - 在灰度和色盲模式下进行测试  
 
-### Dynamic Type
-- Support all text sizes (from -3 to +7 default)
-- Test at **Accessibility sizes** (AX1-AX5)
-- Use **scalable fonts** and layouts
+**减少动画效果**  
+- 在需要减少动画效果时，提供替代方案  
+- 使用淡入/淡出效果代替滑动动画  
 
-### Color Contrast
-- **WCAG AA:** 4.5:1 for normal text, 3:1 for large text
-- **WCAG AAA:** 7:1 for normal text, 4.5:1 for large text
-- Test with **grayscale** and **color blindness** modes
+## 交互模式  
 
-### Reduce Motion
-- Provide alternatives to animations
-- Use **crossfade** instead of slides when motion reduced
+**手势操作（iOS/iPadOS）**  
+- **点击**：主要操作  
+- **长按**：弹出上下文菜单或预览  
+- **滑动**：用于导航、删除或显示内容  
+- **捏合**：用于缩放  
+- **旋转**：用于旋转内容  
+- **边缘滑动**：用于返回导航  
 
-## Interaction Patterns
+**触觉反馈（iOS）**  
+- 通过物理碰撞或边界来提供反馈  
+- 通过不同的触觉效果区分不同的操作状态（成功、警告、错误）  
+- 通过点击或切换来改变选中状态  
 
-### Gestures (iOS/iPadOS)
-- **Tap:** Primary action
-- **Long press:** Context menu or drag preview
-- **Swipe:** Navigate, delete, reveal actions
-- **Pinch:** Zoom in/out
-- **Rotate:** Rotate content
-- **Edge swipe:** Back navigation
+**键盘快捷键（macOS/iPadOS）**  
+- **⌘ Command**：执行主要操作  
+- **⌘N**：新建  
+- **⌘S**：保存  
+- **⇧ Shift**：修改操作  
+- **⌥ Option**：改变操作行为  
+- **⌃ Control**：特定功能的快捷键  
 
-### Haptics (iOS)
-- **Impact:** Physical collision or boundary
-- **Notification:** Success, warning, error
-- **Selection:** Picker or toggle change
+## 动画与过渡效果  
 
-### Keyboard Shortcuts (macOS/iPadOS)
-- **⌘ Command:** Primary actions (⌘N new, ⌘S save)
-- **⇧ Shift:** Modify command (⇧⌘S save as)
-- **⌥ Option:** Alternative behavior
-- **⌃ Control:** Context-specific
+**动画时长**：  
+- **快速**：0.2-0.3 秒（如按钮点击、简单过渡）  
+- **标准**：0.3-0.5 秒（如屏幕切换、模态窗口）  
+- **慢速**：0.5-0.8 秒（如复杂或空间相关的过渡）  
 
-## Animation & Motion
+**动画效果**：  
+- **平滑过渡**：大多数动画都采用这种效果  
+- **自然流畅的动画效果**  
+- **线性过渡**：仅用于进度指示器  
 
-### Duration
-- **Quick:** 0.2-0.3s (button press, small transitions)
-- **Standard:** 0.3-0.5s (screen transitions, sheets)
-- **Slow:** 0.5-0.8s (complex, spatial transitions)
+**设计原则**：  
+- **连续性**：元素之间的过渡要自然流畅  
+- **预提示**：提前提示即将发生的变更  
+- **完整体验**：动画效果要自然完成  
 
-### Easing
-- **Ease In/Out:** Standard for most animations
-- **Spring:** Natural, playful motion
-- **Linear:** Progress indicators only
+## 暗模式  
 
-### Principles
-- **Continuity:** Elements smoothly transition
-- **Anticipation:** Hint at upcoming change
-- **Follow-through:** Motion completes naturally
+**设计指南：**  
+- 在开发过程中测试两种模式  
+- 使用具有语义意义的颜色（系统颜色会自动调整）  
+- 通过微妙的颜色变化来增强视觉效果（而非单纯使用纯黑色）  
+- **避免使用纯黑色（#000000）**——使用深灰色来表示真正的黑色  
 
-## Dark Mode
+**材质效果**：  
+- iOS：`.systemBackground`、`.secondarySystemBackground`、`.tertiarySystemBackground`  
+- macOS：`.windowBackgroundColor`、`.controlBackgroundColor`  
 
-### Guidelines
-- **Test both modes** during development
-- Use **semantic colors** (system colors adapt automatically)
-- **Elevate** surfaces with subtle color increases (not just lighter)
-- **Avoid pure black** (#000000) — use dark gray for true blacks
+## 平台集成**  
 
-### Materials
-- iOS: `.systemBackground`, `.secondarySystemBackground`, `.tertiarySystemBackground`
-- macOS: `.windowBackgroundColor`, `.controlBackgroundColor`
+**iOS 功能：**  
+- **小部件**：主屏幕、锁屏界面、待机界面  
+- **动态岛**：显示实时活动  
+- **App Clips**：轻量级的应用程序体验  
+- **快捷方式**：与 Siri 集成  
+- **App Intents**：系统级别的操作  
 
-## Platform Integration
+**macOS 功能：**  
+- **菜单栏**：全局应用程序菜单  
+- **Dock**：显示应用程序图标和徽标  
+- **触控栏**（旧款 MacBook Pro）  
+- **扩展功能**：分享、今日推荐、文件浏览器  
+- **连续性**：支持设备间的数据传输  
 
-### iOS Features
-- **Widgets:** Home Screen, Lock Screen, StandBy
-- **Live Activities:** Dynamic Island, Lock Screen
-- **App Clips:** Lightweight app experiences
-- **Shortcuts:** Siri Shortcuts integration
-- **App Intents:** System-level actions
+## 快速参考  
 
-### macOS Features
-- **Menu Bar:** Global app menus
-- **Dock:** App icon with badges
-- **Touch Bar:** (older MacBook Pros)
-- **Extensions:** Share, Today, Finder
-- **Continuity:** Handoff, Universal Clipboard
-
-## Quick Reference
-
-| Platform | Font | Grid | Safe Areas | Primary Interaction |
-|----------|------|------|------------|-------------------|
-| iOS | SF Pro | 8pt | Yes (notch/home indicator) | Touch |
-| macOS | SF Pro | 8pt | No | Mouse/keyboard |
-| watchOS | SF Compact | - | Yes (round/square) | Digital Crown + tap |
-| tvOS | SF Pro | - | Yes (overscan) | Siri Remote focus |
-| visionOS | SF Pro | - | Yes (spatial bounds) | Gaze + gesture |
+| 平台 | 字体 | 网格系统 | 安全区域 | 主要交互方式 |
+|------|------|------------|-------------------|
+| iOS | SF Pro | 8pt | 支持（刘海/主屏幕图标） | 触控 |
+| macOS | SF Pro | 8pt | 不支持（无刘海） | 鼠标/键盘 |
+| watchOS | SF Compact | 不适用 | 支持（圆形/方形图标） | 数字表冠 + 点击 |
+| tvOS | SF Pro | 不适用 | 支持（屏幕边缘触控） | Siri 遥控器 |
+| visionOS | SF Pro | 不适用 | 支持（空间感应） | 视线 + 手势 |
 
 ---
 
-## Resources
+## 资源  
 
-- [iOS Patterns](references/ios.md) - Complete iOS component library
-- [macOS Patterns](references/macos.md) - Complete macOS component library
-- [watchOS Patterns](references/watchos.md) - Complete watchOS component library  
-- [tvOS Patterns](references/tvos.md) - Complete tvOS component library
-- [visionOS Patterns](references/visionos.md) - Complete visionOS patterns
-- [iOS Components Reference](references/ios-components.md) - All iOS UIKit/SwiftUI components
-- [macOS Components Reference](references/macos-components.md) - All macOS AppKit/SwiftUI components
+- [iOS 设计模式](references/ios.md) - 完整的 iOS 组件库  
+- [macOS 设计模式](references/macos.md) - 完整的 macOS 组件库  
+- [watchOS 设计模式](references/watchos.md) - 完整的 watchOS 组件库  
+- [tvOS 设计模式](references/tvos.md) - 完整的 tvOS 组件库  
+- [visionOS 设计模式](references/visionos.md) - 完整的 visionOS 组件库  
+- [iOS 组件参考](references/ios-components.md) - 所有 iOS UIKit/SwiftUI 组件  
+- [macOS 组件参考](references/macos-components.md) - 所有 macOS AppKit/SwiftUI 组件  
 
 ---
 
-*Based on Apple Human Interface Guidelines - https://developer.apple.com/design/human-interface-guidelines*
+*基于 Apple 人类界面指南（https://developer.apple.com/design/human-interface-guidelines）*

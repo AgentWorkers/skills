@@ -1,73 +1,73 @@
 ---
 name: design-fhir-loinc-questionnaires
-description: Helps creating FHIR conforming questionnaire definitions from plain requirement ideation docs. Contains scripts to look up LOINC and SNOMED CT codes for medical conditions, findings, observations, medications, procedures from a official coding APIs. No API keys required at the moment. 
+description: 该工具能够帮助用户根据普通的业务需求文档创建符合 FHIR 标准的问卷定义。它包含了一些脚本，用于通过官方的编码 API 查找与医疗状况、检查结果、观察结果、药物及医疗程序相关的 LOINC（Logical Observation Identifiers）和 SNOMED CT（Systematized Nomenclature of Medicine – Clinical Terms）代码。目前无需使用 API 密钥即可使用该工具。
 metadata:
   dependencies: python>=3.8, jsonschema>=4.0.0
 ---
 
-# FHIR Questionnaire Skill
+# FHIR 问卷技能
 
-## ⚠️ CRITICAL RULES - READ FIRST
+## ⚠️ 重要规则 - 请先阅读
 
-**NEVER suggest LOINC or SNOMED CT codes from memory or training data. ALWAYS use the search and query scripts in this skill.**
+**切勿凭记忆或训练数据来推荐 LOINC 或 SNOMED CT 代码。务必使用本技能中的搜索和查询脚本。**
 
-When any clinical code is needed:
-1. **For clinical questions/observations: ALWAYS run `python scripts/search_loinc.py "search term"` FIRST**
-2. **For clinical concepts/conditions: ALWAYS run `python scripts/search_snomed.py "search term"` FIRST**
-3. **ONLY use codes returned by the scripts**
-4. **If search fails or returns no results, DO NOT make up codes**
+当需要任何临床代码时：
+1. **对于临床问题/观察结果：务必先运行 `python scripts/search_loinc.py "搜索词"`**
+2. **对于临床概念/疾病：务必先运行 `python scripts/search_snomed.py "搜索词"`**
+3. **仅使用脚本返回的代码**
+4. **如果搜索失败或未返回结果，请勿自行编造代码**
 
-Clinical codes from AI memory are highly unreliable and will cause incorrect clinical coding.
+来自 AI 的临床代码可靠性极低，可能会导致错误的临床编码。
 
-## Network Access Requirements
+## 网络访问要求
 
-Requires whitelisted network access:
-- `clinicaltables.nlm.nih.gov` (LOINC search)
-- `tx.fhir.org` (FHIR terminology server for LOINC answer lists and SNOMED CT search)
+需要白名单网络访问权限：
+- `clinicaltables.nlm.nih.gov`（用于 LOINC 搜索）
+- `tx.fhir.org`（用于 LOINC 答案列表和 SNOMED CT 搜索的 FHIR 术语服务器）
 
-If network access fails, STOP. Do not suggest codes.
+如果网络访问失败，请立即停止操作，切勿推荐任何代码。
 
-## Essential Scripts (Use These Every Time)
+## 必需使用的脚本（每次使用）
 
-### 1. Search LOINC Codes
-**ALWAYS run this before suggesting any LOINC code (clinical questions/observations):**
+### 1. 搜索 LOINC 代码
+**在推荐任何 LOINC 代码（临床问题/观察结果）之前，务必先运行此脚本：**
 ```bash
 python scripts/search_loinc.py "depression screening"
 python scripts/search_loinc.py "blood pressure" --format fhir
 ```
 
-### 2. Search SNOMED CT Codes
-**ALWAYS run this before suggesting any SNOMED CT code (clinical concepts/conditions):**
+### 2. 搜索 SNOMED CT 代码
+**在推荐任何 SNOMED CT 代码（临床概念/疾病）之前，务必先运行此脚本：**
 ```bash
 python scripts/search_snomed.py "diabetes"
 python scripts/search_snomed.py "hypertension" --format fhir
 python scripts/search_snomed.py "diabetes mellitus" --semantic-tag "disorder"
 ```
-Note: The `--semantic-tag` filter works best when the semantic tag appears in the display name (e.g., "Diabetes mellitus (disorder)").
+注意：当语义标签出现在显示名称中时（例如：“Diabetes mellitus (disorder)”），`--semantic-tag` 过滤器效果最佳。
 
-### 3. Find Answer Options
-**For questions with standardized answers:**
+### 3. 查找答案选项
+**对于有标准化答案的问题：**
 ```bash
 python scripts/query_valueset.py --loinc-code "72166-2"
 python scripts/query_valueset.py --loinc-code "72166-2" --format fhir
 ```
 
-### 4. Validate Questionnaire
-**Before finalizing:**
+### 4. 验证问卷
+**在最终确定答案之前：**
 ```bash
 python scripts/validate_questionnaire.py questionnaire.json
 ```
 
-## Templates
+## 模板
 
-Start with `assets/templates/`:
-- `minimal.json` - Bare bones structure
-- `basic.json` - Simple questionnaire
-- `advanced.json` - Complex with conditional logic
+从 `assets/templates/` 目录开始：
+- `minimal.json` - 基本结构
+- `basic.json` - 简单问卷
+- `advanced.json` - 包含条件逻辑的复杂问卷
 
-## Workflows
+## 工作流程
 
-### Standardized Clinical Instruments (PHQ-9, GAD-7, etc.)
+### 标准化临床工具（PHQ-9、GAD-7 等）
 ```bash
 # Step 1: Find panel code (NEVER skip this)
 python scripts/search_loinc.py "PHQ-9 panel"
@@ -79,7 +79,7 @@ python scripts/query_valueset.py --loinc-code "FOUND-CODE" --format fhir
 # Check references/examples.md for complete implementations
 ```
 
-### Custom Organizational Questionnaires
+### 定制组织问卷
 ```bash
 # Step 1: Start with template
 cp assets/templates/advanced.json my-questionnaire.json
@@ -97,9 +97,9 @@ python scripts/query_valueset.py --loinc-code "FOUND-CODE"
 python scripts/validate_questionnaire.py my-questionnaire.json
 ```
 
-### Custom Answer Lists (When LOINC Has No Match)
+### 定制答案列表（当 LOINC 无法匹配时）
 
-When LOINC search returns no suitable answer list, use **inline answerOption with system-less valueCoding** by default. This is the simplest, spec-compliant approach for custom answer lists:
+当 LOINC 搜索未返回合适的答案列表时，默认使用 **带有无系统代码的 inline answerOption**。这是符合规范的、最简单的自定义答案列表方法：
 
 ```json
 {
@@ -114,87 +114,87 @@ When LOINC search returns no suitable answer list, use **inline answerOption wit
 }
 ```
 
-**Do NOT invent a coding system URI.** Omitting `system` is valid FHIR and signals that these are local, questionnaire-scoped codes.
+**切勿创建自定义的编码系统 URI**。省略 `system` 是符合 FHIR 标准的做法，表示这些代码是本地生成的、仅用于特定问卷的。
 
-#### Opt-in: Reusable Welshare Coding System
+#### 可选：可重用的 Welshare 编码系统
 
-If the user explicitly requests reusable codes that can be shared across questionnaires, use the Welshare namespace (`http://codes.welshare.app`) via the helper script:
+如果用户明确要求使用可在多个问卷中重复使用的代码，请通过辅助脚本使用 Welshare 命名空间（`http://codes.welshare.app`）：
 
 ```bash
 python scripts/create_custom_codesystem.py --interactive
 ```
 
-This creates a CodeSystem + ValueSet pair. To convert an inline answer list to the reusable format, add `"system": "http://codes.welshare.app/CodeSystem/<category>/<id>.json"` to each `valueCoding` and optionally reference the ValueSet via `answerValueSet`. See `references/loinc_guide.md` for details.
+这将创建一个 CodeSystem + ValueSet 对。要将内联答案列表转换为可重用格式，请在每个 `valueCoding` 中添加 `"system": "http://codes.welshare.app/CodeSystem/<category>/<id>.json"`，并通过 `answerValueSet` 参考相应的 ValueSet。详情请参阅 `references/loinc_guide.md`。
 
-## Common Patterns
+## 常见模式
 
-- **Conditional display**: Use `enableWhen` to show/hide questions
-- **Repeating groups**: Set `"repeats": true` for medications, allergies, etc.
-- **Standardized answers**: Use `query_valueset.py --loinc-code "CODE"` for LOINC-backed answer lists
-- **Custom answers**: Use inline `answerOption` with `valueCoding` (no `system`) for non-standardized choices
+- **条件显示**：使用 `enableWhen` 来显示/隐藏问题
+- **重复组**：对于药物、过敏等情况，设置 `"repeats": true`
+- **标准化答案**：对于基于 LOINC 的答案列表，使用 `query_valueset.py --loinc-code "CODE"`
+- **自定义答案**：对于非标准化的选项，使用带有 `valueCoding` 的内联 `answerOption`（不包含 `system`）
 
-See `references/examples.md` for complete working examples.
+完整的工作示例请参阅 `references/examples.md`。
 
-## Script Reference
+## 脚本参考
 
-### search_loinc.py - Find LOINC Codes
+### search_loinc.py - 查找 LOINC 代码
 ```bash
 python scripts/search_loinc.py "blood pressure"
 python scripts/search_loinc.py "depression" --limit 10 --format fhir
 ```
 
-### search_snomed.py - Find SNOMED CT Codes
+### search_snomed.py - 查找 SNOMED CT 代码
 ```bash
 python scripts/search_snomed.py "diabetes"
 python scripts/search_snomed.py "hypertension" --limit 10 --format fhir
 python scripts/search_snomed.py "asthma" --format table
 python scripts/search_snomed.py "diabetes mellitus" --semantic-tag "disorder"
 ```
-**Formats:** `json` (default), `table`, `fhir`
-**Semantic tags (when present in results):** `disorder`, `finding`, `procedure`, `body structure`, `substance`, `organism`
-Note: Semantic tag filtering only works when tags are included in the display name from the terminology server.
+**输出格式：** `json`（默认）、`table`、`fhir`
+**结果中的语义标签：** `disorder`、`finding`、`procedure`、`body structure`、`substance`、`organism`
+注意：只有当术语服务器的显示名称中包含语义标签时，语义标签过滤才有效。
 
-### query_valueset.py - Find Answer Options
+### query_valueset.py - 查找答案选项
 ```bash
 python scripts/query_valueset.py --loinc-code "72166-2"
 python scripts/query_valueset.py --loinc-code "72166-2" --format fhir
 python scripts/query_valueset.py --search "smoking"
 ```
-**Alternative servers** (if tx.fhir.org fails):
+**备用服务器**（如果 `tx.fhir.org` 失效时）：
 - `--server https://hapi.fhir.org/baseR4`
 - `--server https://r4.ontoserver.csiro.au/fhir`
 
-### validate_questionnaire.py - Validate Structure
+### validate_questionnaire.py - 验证问卷结构
 ```bash
 python scripts/validate_questionnaire.py questionnaire.json
 python scripts/validate_questionnaire.py questionnaire.json --verbose
 ```
 
-### extract_loinc_codes.py - Analyze Codes
+### extract_loinc_codes.py - 分析代码
 ```bash
 python scripts/extract_loinc_codes.py questionnaire.json
 python scripts/extract_loinc_codes.py questionnaire.json --validate
 ```
 
-### create_custom_codesystem.py - Reusable Custom Codes (Opt-in)
+### create_custom_codesystem.py - 可重用的自定义代码（可选）
 ```bash
 python scripts/create_custom_codesystem.py --interactive
 ```
-Only use when the user explicitly requests reusable codes across questionnaires. Uses the Welshare namespace: `http://codes.welshare.app`. Default for custom answers is inline `answerOption` without a coding system.
+仅当用户明确要求在多个问卷中使用可重用代码时使用。使用 Welshare 命名空间：`http://codes.welshare.app`。默认情况下，自定义答案使用不带编码系统的 inline `answerOption`。
 
-## Troubleshooting
+## 故障排除
 
-- **No LOINC results**: Use broader search terms (e.g., "depression" not "PHQ-9 question 1")
-- **Network errors**: Try alternative servers with `--server` flag
-- **Validation errors**: Check `references/fhir_questionnaire_spec.md` for requirements
-- **No answer list found**: Use inline `answerOption` with system-less `valueCoding` (code + display only). Do NOT fall back to a custom coding system unless the user explicitly requests it
+- **没有 LOINC 结果**：使用更宽泛的搜索词（例如，使用 “depression” 而不是 “PHQ-9 question 1”）
+- **网络错误**：尝试使用 `--server` 标志切换到备用服务器
+- **验证错误**：请查阅 `references/fhir_questionnaire_spec.md` 以了解要求
+- **未找到答案列表**：使用带有无系统代码的 `valueCoding` 的内联 `answerOption`（仅显示代码）。除非用户明确要求，否则不要使用自定义编码系统
 
-## Deep Knowledge References
+## 深度知识参考
 
-We've assembled deep knowledge for you to consult on specific topics. Checkout the index file on See [REFERENCE.md](REFERENCE.md) and drill down the knowledge path for highly detailed instructions on modelling questionnaires.
+我们整理了相关主题的深度知识供您参考。请查看 [REFERENCE.md] 中的索引文件，并深入了解问卷建模的详细说明。
 
-## Reference Links
+## 参考链接
 
-- [FHIR Questionnaire Spec](https://hl7.org/fhir/questionnaire.html)
-- [LOINC Database](https://loinc.org)
-- [Complete Documentation](REFERENCE.md)
+- [FHIR 问卷规范](https://hl7.org/fhir/questionnaire.html)
+- [LOINC 数据库](https://loinc.org)
+- [完整文档](REFERENCE.md)

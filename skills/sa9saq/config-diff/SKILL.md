@@ -1,55 +1,36 @@
 ---
-description: Compare config files semantically, highlight differences, and suggest merge strategies.
+description: **语义上比较配置文件，突出差异，并提出合并策略。**
 ---
 
-# Config Diff
+# 配置文件差异对比与合并工具
 
-Semantically compare and merge configuration files (YAML, JSON, TOML, INI, .env).
+该工具用于对配置文件（格式包括 YAML、JSON、TOML、INI、.env）进行语义上的对比和合并操作。
 
-## Instructions
+## 使用说明
 
-1. **Detect format** from file extension or content
-2. **Semantic diff** — parse structure, don't just compare text:
-   ```bash
-   # JSON: normalize and diff
-   jq -S . a.json > /tmp/a.json && jq -S . b.json > /tmp/b.json
-   diff --unified /tmp/a.json /tmp/b.json
+1. **检测文件格式**：根据文件扩展名或文件内容自动识别文件格式。
+2. **进行语义差异对比**：深入解析文件的结构，而不仅仅是简单地比较文本内容。
+3. **对变更进行分类**：
+   - 🟢 **新增内容**：目标文件中出现的新的键。
+   - 🔴 **删除的内容**：目标文件中缺失的键。
+   - 🟡 **修改的内容**：键相同但值不同的内容。
+   - ⚪ **未修改的内容**：键和值都保持不变。
+4. **生成差异报告**：以易于阅读的格式呈现对比结果。
+5. **提供合并建议**：在出现冲突的情况下，根据环境上下文推荐应保留的配置值。
 
-   # YAML: convert to sorted JSON first
-   yq -o=json -S '.' a.yml | diff - <(yq -o=json -S '.' b.yml)
+## 安全性注意事项
 
-   # .env files
-   diff <(sort a.env) <(sort b.env)
-   ```
-3. **Classify changes**:
-   - 🟢 **Added**: New keys in target
-   - 🔴 **Removed**: Keys missing from target
-   - 🟡 **Changed**: Same key, different value
-   - ⚪ **Unchanged**: Same key and value
-4. **Report format**:
-   ```
-   📋 Config Diff: config.yml vs config.prod.yml
-   | Key Path | Source | Target | Change |
-   |----------|--------|--------|--------|
-   | db.host  | localhost | db.prod.internal | 🟡 Changed |
-   | db.pool  | —      | 20     | 🟢 Added |
-   | debug    | true   | —      | 🔴 Removed |
-   ```
-5. **Merge suggestions**: For conflicts, recommend which value to keep based on environment context
+- 对敏感信息（如密码、令牌、密钥）进行标记处理，避免完整显示；使用 `****` 进行遮盖。
+- 如果不同环境之间的配置信息存在差异，会发出警告（这可能表明配置存在问题）。
 
-## Security
+## 特殊情况说明
 
-- Flag sensitive values (passwords, tokens, keys) — never display in full; mask as `****`
-- Warn if secrets differ between environments (may indicate misconfiguration)
+- **注释**：文本差异对比会保留注释内容，但语义差异对比会忽略注释。
+- **键的顺序**：语义差异对比不考虑键的顺序；如果键的顺序对配置有重要影响（例如 INI 文件中的配置项），需要特别标注。
+- **嵌套对象**：使用点表示法将嵌套对象的路径展平，以便于清晰地展示差异内容。
 
-## Edge Cases
+## 系统要求
 
-- **Comments**: Text diff preserves comments; semantic diff ignores them — note this
-- **Key ordering**: Semantic diff ignores order; flag if order matters (INI sections)
-- **Nested objects**: Flatten key paths with dot notation for clear reporting
-
-## Requirements
-
-- `diff` (pre-installed)
-- Optional: `jq` (JSON), `yq` (YAML)
-- No API keys needed
+- 必需安装 `diff` 工具。
+- 可选工具：`jq`（用于处理 JSON 格式文件）和 `yq`（用于处理 YAML 格式文件）。
+- 无需使用任何 API 密钥。

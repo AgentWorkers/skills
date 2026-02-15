@@ -1,82 +1,79 @@
 ---
 name: seo-content-writer
-description: Creates high-quality, SEO-optimized content that ranks in search engines. Applies on-page SEO best practices, keyword optimization, and content structure for maximum visibility and engagement.
+description: 生成高质量、经过SEO优化的内容，以在搜索引擎中获得良好的排名。通过应用页面内的SEO最佳实践、关键词优化以及内容结构来提升内容的可见性和用户参与度。
 geo-relevance: "medium"
 ---
 
-# SEO Content Writer
+# SEO内容撰写专家
 
-This skill creates search-engine-optimized content that ranks well while providing genuine value to readers. It applies proven SEO copywriting techniques, proper keyword integration, and optimal content structure.
+该技能专注于创作经过搜索引擎优化的内容，既能确保在搜索结果中获得良好的排名，又能为读者提供实质性的价值。它运用了经过验证的SEO写作技巧、恰当的关键词整合方法以及最佳的内容结构。
 
-## When to Use This Skill
+## 适用场景
 
-- Writing blog posts targeting specific keywords
-- Creating landing pages optimized for search
-- Developing pillar content for topic clusters
-- Writing product descriptions for e-commerce
-- Creating service pages for local SEO
-- Producing how-to guides and tutorials
-- Writing comparison and review articles
+- 撰写针对特定关键词的博客文章  
+- 创建针对搜索优化的 landing 页面  
+- 为专题系列撰写核心内容（pillar content）  
+- 为电子商务平台编写产品描述  
+- 为本地SEO策略创建服务页面  
+- 制作操作指南和教程  
+- 撰写对比分析和评论文章  
 
-## What This Skill Does
+## 技能核心功能  
 
-1. **Keyword Integration**: Naturally incorporates target and related keywords
-2. **Structure Optimization**: Creates scannable, well-organized content
-3. **Title & Meta Creation**: Writes compelling, click-worthy titles
-4. **Header Optimization**: Uses strategic H1-H6 hierarchy
-5. **Internal Linking**: Suggests relevant internal link opportunities
-6. **Readability Enhancement**: Ensures content is accessible and engaging
-7. **Featured Snippet Optimization**: Formats for SERP feature opportunities
+1. **关键词整合**：自然地融入目标关键词及相关关键词  
+2. **结构优化**：创建易于阅读、条理清晰的内容  
+3. **标题与元信息生成**：撰写引人注目、点击率高的标题  
+4. **标题层级优化**：合理使用H1-H6标题层级  
+5. **内部链接建议**：提供相关的内部链接建议  
+6. **可读性提升**：确保内容易于理解且具有吸引力  
+7. **特色片段优化**：优化内容以适应搜索引擎结果页（SERP）的展示  
 
-## How to Use
+## 使用方法  
 
-### Basic Content Creation
+### 基础内容创作  
 
 ```
 Write an SEO-optimized article about [topic] targeting the keyword [keyword]
-```
-
+```  
 ```
 Create a blog post for [topic] with these keywords: [keyword list]
-```
+```  
 
-### With Specific Requirements
+### 特殊需求下的应用  
 
 ```
 Write a 2,000-word guide about [topic] targeting [keyword],
 include FAQ section for featured snippets
-```
+```  
 
-### Content Briefs
+### 内容撰写流程  
 
 ```
 Here's my content brief: [brief]. Write SEO-optimized content following this outline.
-```
+```  
 
-## Data Sources
+## 数据来源  
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的相关信息。  
 
-**With ~~SEO tool + ~~search console connected:**
-Automatically pull keyword metrics (search volume, difficulty, CPC), competitor content analysis (top-ranking pages, content length, common topics), SERP features (featured snippets, PAA questions), and keyword opportunities (related keywords, question-based queries).
+**当连接到 ~~SEO工具 + ~~搜索控制台时：**  
+自动获取关键词指标（搜索量、难度、点击成本CPC）、竞争对手内容分析（排名靠前的页面、内容长度、常见主题）、SERP展示特征（特色片段、PAA问题）以及关键词机会（相关关键词、基于问题的查询）。  
 
-**With manual data only:**
-Ask the user to provide:
-1. Target primary keyword and 3-5 secondary keywords
-2. Target audience and search intent (informational/commercial/transactional)
-3. Target word count and desired tone
-4. Any competitor URLs or content examples to reference
+**仅使用手动数据时：**  
+要求用户提供：  
+1. 目标主要关键词及3-5个次要关键词  
+2. 目标受众和搜索意图（信息型/商业型/交易型）  
+3. 目标字数及期望的语气  
+4. 可参考的竞争对手URL或内容示例  
 
-Proceed with the full workflow using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+根据提供的数据执行完整的工作流程。在输出结果中明确标注哪些数据来自自动化收集，哪些来自用户提供。  
 
-## Instructions
+## 指导步骤  
 
-When a user requests SEO content:
+当用户请求SEO内容时：  
 
-1. **Gather Requirements**
-
-   Confirm or ask for:
-   
+1. **收集需求**  
+   确认或询问以下信息：  
    ```markdown
    ### Content Requirements
    
@@ -89,12 +86,10 @@ When a user requests SEO content:
    **Tone**: [professional/casual/technical/friendly]
    **CTA Goal**: [what action should readers take]
    **Competitor URLs**: [top ranking content to beat]
-   ```
+   ```  
 
-2. **Load CORE-EEAT Quality Constraints**
-
-   Before writing, load content quality standards from the [CORE-EEAT Benchmark](../../references/core-eeat-benchmark.md):
-
+2. **加载CORE-EEAT质量标准**  
+   在开始写作前，从 [CORE-EEAT基准](../../references/core-eeat-benchmark.md) 中加载内容质量标准：  
    ```markdown
    ### CORE-EEAT Pre-Write Checklist
 
@@ -125,12 +120,10 @@ When a user requests SEO content:
    _These 16 items apply across all content types. For content-type-specific dimension weights, see the Content-Type Weight Table in [core-eeat-benchmark.md](../../references/core-eeat-benchmark.md)._
    _Full 80-item benchmark: [references/core-eeat-benchmark.md](../../references/core-eeat-benchmark.md)_
    _For complete content quality audit: use [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
-   ```
+   ```  
 
-3. **Research and Plan**
-
-   Before writing:
-   
+3. **研究与规划**  
+   在写作前进行必要的研究：  
    ```markdown
    ### Content Research
    
@@ -148,10 +141,9 @@ When a user requests SEO content:
    
    **Content Angle**:
    [What unique perspective or value will this content provide?]
-   ```
+   ```  
 
-4. **Create Optimized Title**
-
+4. **创建优化后的标题**  
    ```markdown
    ### Title Optimization
    
@@ -172,10 +164,9 @@ When a user requests SEO content:
       - Power words: [list]
    
    **Recommended**: [Best option with reasoning]
-   ```
+   ```  
 
-5. **Write Meta Description**
-
+5. **编写元描述**  
    ```markdown
    ### Meta Description
    
@@ -192,10 +183,9 @@ When a user requests SEO content:
    - ✅ Primary keyword
    - ✅ Value proposition
    - ✅ CTA or curiosity hook
-   ```
+   ```  
 
-6. **Structure Content with SEO Headers**
-
+6. **使用SEO标题层级构建内容结构**  
    ```markdown
    ### Content Structure
    
@@ -227,10 +217,9 @@ When a user requests SEO content:
    - Summarize key points
    - Include primary keyword
    - Clear call-to-action
-   ```
+   ```  
 
-7. **Apply On-Page SEO Best Practices**
-
+7. **应用页面内SEO最佳实践**  
    ```markdown
    ### On-Page SEO Checklist
    
@@ -263,12 +252,10 @@ When a user requests SEO content:
    - [ ] External links to authoritative sources (2-3)
    - [ ] Image alt text with keywords
    - [ ] URL slug includes keyword
-   ```
+   ```  
 
-8. **Write the Content**
-
-   Follow this structure:
-
+8. **撰写内容**  
+   按照以下结构进行写作：  
    ```markdown
    # [H1 with Primary Keyword]
    
@@ -334,10 +321,9 @@ When a user requests SEO content:
    [Final thought or insight]
    
    [Clear call-to-action: what should reader do next?]
-   ```
+   ```  
 
-9. **Optimize for Featured Snippets**
-
+9. **优化特色片段展示**  
    ```markdown
    ### Featured Snippet Optimization
    
@@ -352,10 +338,9 @@ When a user requests SEO content:
    
    **For How-To Snippets**:
    Number each step clearly: "Step 1:", "Step 2:", etc.
-   ```
+   ```  
 
-10. **Add Internal/External Links**
-
+10. **添加内部/外部链接**  
    ```markdown
    ### Link Recommendations
    
@@ -366,10 +351,9 @@ When a user requests SEO content:
    **External Links** (include 2-3 authoritative sources):
    1. "[anchor text]" → [authoritative-source.com] (supports: [claim])
    2. "[anchor text]" → [authoritative-source.com] (supports: [claim])
-   ```
+   ```  
 
-11. **Final SEO Review**
-
+11. **最终SEO审核**  
     ```markdown
     ### Content SEO Score
 
@@ -391,12 +375,10 @@ When a user requests SEO content:
     **Improvements to Consider**:
     1. [Suggestion]
     2. [Suggestion]
-    ```
+    ```  
 
-12. **CORE-EEAT Self-Check**
-
-    After writing, verify content against loaded CORE-EEAT constraints:
-
+12. **自我检查（CORE-EEAT标准）**  
+    写作完成后，根据加载的CORE-EEAT标准对内容进行验证：  
     ```markdown
     ### CORE-EEAT Post-Write Check
 
@@ -422,30 +404,29 @@ When a user requests SEO content:
     **Items Needing Attention**: [list any ⚠️/❌ items]
 
     _For full 80-item audit, use [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
-    ```
+    ```  
 
-## Validation Checkpoints
+## 验证要点  
 
-### Input Validation
-- [ ] Primary keyword confirmed and matches search intent
-- [ ] Target word count specified (minimum 800 words for substantive content)
-- [ ] Content type and audience clearly defined
-- [ ] Competitor URLs reviewed or target SERP features identified
+### 输入验证  
+- [ ] 主要关键词已确认且符合搜索意图  
+- [ ] 指定了目标字数（实质性内容至少800字）  
+- [ ] 明确了内容类型和目标受众  
+- [ ] 已查看竞争对手的URL或确定了目标SERP展示特征  
 
-### Output Validation
-- [ ] Keyword density within 1-2% for primary keyword (Note: Keyword density is a guideline, not a hard rule. Modern search engines prioritize semantic relevance and natural language over exact density targets. Focus on covering the topic comprehensively with semantic variants rather than hitting a specific percentage.)
-- [ ] All sections from outline covered completely
-- [ ] Internal links included (2-5 relevant links)
-- [ ] FAQ section present with at least 3 questions
-- [ ] Readability score appropriate for target audience
-- [ ] Source of each data point clearly stated (~~SEO tool data, user-provided, or estimated)
+### 输出验证  
+- [ ] 主要关键词的密度控制在1-2%范围内（注：关键词密度仅供参考，现代搜索引擎更重视语义相关性和自然语言表达，而非严格的百分比要求。重点在于全面覆盖主题，并使用语义相关的变体，而非单纯追求密度）  
+- [ ] 大纲中的所有部分均得到覆盖  
+- [ ] 包含了2-5个相关内部链接  
+- [ ] 包含了至少3个常见问题解答（FAQ）  
+- [ ] 可读性适合目标受众  
+- [ ] 明确标注了每个数据来源（SEO工具数据、用户提供的数据或估算值）  
 
-## Example
+## 示例  
 
-**User**: "Write an SEO-optimized article about 'email marketing best practices' targeting small businesses"
+**用户需求**：“撰写一篇针对小型企业的‘电子邮件营销最佳实践’的SEO优化文章”  
 
-**Output**:
-
+**输出结果**：  
 ```markdown
 # Email Marketing Best Practices: A Complete Guide for Small Businesses
 
@@ -562,58 +543,50 @@ Start with one improvement today. Whether it's segmenting your list, testing sub
 *Further reading: [Internal link: "How to Write Email Copy That Converts"]*
 
 *Sources: [Litmus Email Marketing Statistics](https://litmus.com), [Campaign Monitor Email Benchmarks](https://campaignmonitor.com)*
-```
+```  
 
-## Content Type Templates
+## 内容类型模板  
 
-### How-To Guide
-
+- **操作指南**  
 ```
 Write a how-to guide for [task] targeting [keyword]
-```
-
-### Comparison Article
-
+```  
+- **对比文章**  
 ```
 Write a comparison article: [Option A] vs [Option B] for [keyword]
-```
-
-### Listicle
-
+```  
+- **列表文章**  
 ```
 Write a list post: "X Best [Items] for [Audience/Purpose]" targeting [keyword]
-```
-
-### Ultimate Guide
-
+```  
+- **终极指南**  
 ```
 Write an ultimate guide about [topic] (3,000+ words) targeting [keyword]
-```
+```  
 
-## Tips for Success
+## 成功技巧  
 
-1. **Match search intent** - Informational queries need guides, not sales pages
-2. **Front-load value** - Put key information early for readers and snippets
-3. **Use data and examples** - Specific beats generic every time
-4. **Write for humans first** - SEO optimization should feel natural
-5. **Include visual elements** - Break up text with images, tables, lists
-6. **Update regularly** - Fresh content signals to search engines
+1. **匹配搜索意图**：信息型查询需要的是指导性内容，而非销售页面  
+2. **前置关键信息**：在文章开头提供关键信息，便于读者快速获取有用信息  
+3. **使用数据和示例**：具体数据比通用表述更有效  
+4. **以用户为中心写作**：SEO优化应自然流畅  
+5. **添加视觉元素**：用图片、表格、列表等方式丰富文本  
+6. **定期更新**：新鲜的内容能向搜索引擎传递积极信号  
 
-## Reference Materials
+## 参考资料  
 
-- [Title Formulas](./references/title-formulas.md) - Proven headline formulas, power words, CTR patterns
-- [Content Structure Templates](./references/content-structure-templates.md) - Templates for blog posts, comparisons, listicles, how-tos, pillar pages
+- [标题公式](./references/title-formulas.md)：经过验证的标题编写公式、关键词使用技巧、点击率提升方法  
+- [内容结构模板](./references/content-structure-templates.md)：适用于博客文章、对比分析、列表文章、操作指南、专题页面的模板  
 
-## Related Skills
+## 相关技能  
 
-- [keyword-research](../../research/keyword-research/) — Find keywords to target
-- [geo-content-optimizer](../geo-content-optimizer/) — Optimize for AI citations
-- [meta-tags-optimizer](../meta-tags-optimizer/) — Create compelling meta tags
-- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — Audit SEO elements
-- [internal-linking-optimizer](../../optimize/internal-linking-optimizer/) — Place internal links during content writing
-- [content-refresher](../../optimize/content-refresher/) — Refresh and update existing content
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full 80-item CORE-EEAT audit
-- [memory-management](../../cross-cutting/memory-management/) — Track content performance over time
-- [content-gap-analysis](../../research/content-gap-analysis/) — Identify content opportunities to write about
-- [schema-markup-generator](../schema-markup-generator/) — Add structured data to published content
-
+- [关键词研究](../../research/keyword-research/)：寻找目标关键词  
+- [地理内容优化器](../geo-content-optimizer/)：优化内容以提升AI引用效果  
+- [元标签优化器](../meta-tags-optimizer/)：生成吸引人的元标签  
+- [页面内SEO审核工具](../../optimize/on-page-seo-auditor/)：审核页面内的SEO元素  
+- [内部链接生成工具](../../optimize/internal-linking-optimizer/)：在写作过程中添加内部链接  
+- [内容更新工具](../../optimize/content-refresher/)：更新现有内容  
+- [内容质量审核工具](../../cross-cutting/content-quality-auditor/)：进行全面的质量审核  
+- [内容绩效追踪工具](../../cross-cutting/memory-management/)：长期跟踪内容表现  
+- [内容需求分析工具](../../research/content-gap-analysis/)：识别可创作的新内容主题  
+- [结构化数据生成工具](../schema-markup-generator/)：为已发布的内容添加结构化数据

@@ -1,6 +1,6 @@
 ---
 name: doc-pipeline
-description: Chain document operations into reusable pipelines
+description: 将文档操作链转换为可重用的管道（pipelines）
 author: claude-office-skills
 version: "1.0"
 tags: ['pipeline', 'workflow', 'chain', 'automation']
@@ -12,28 +12,27 @@ library:
   stars: N/A
 ---
 
-# Doc Pipeline Skill
+# 文档处理管道技能（Doc Pipeline Skill）
 
-## Overview
+## 概述
 
-This skill enables building document processing pipelines - chain multiple operations (extract, transform, convert) into reusable workflows with data flowing between stages.
+该技能用于构建文档处理管道，即通过将多个操作（如提取、转换、格式化等）串联起来，形成一个可重用的工作流程，实现数据在各处理阶段之间的顺畅流动。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to accomplish
-2. Provide any required input data or files
-3. I'll execute the appropriate operations
+1. 描述您想要完成的目标。
+2. 提供所需的输入数据或文件。
+3. 我将执行相应的操作。
 
-**Example prompts:**
-- "PDF → Extract Text → Translate → Generate DOCX"
-- "Image → OCR → Summarize → Create Report"
-- "Excel → Analyze → Generate Charts → Create PPT"
-- "Multiple inputs → Merge → Format → Output"
+**示例提示：**
+- “PDF → 提取文本 → 翻译 → 生成 DOCX 文件”
+- “图片 → 光学字符识别（OCR） → 摘要生成 → 创建报告”
+- “Excel 文件 → 分析数据 → 生成图表 → 创建 PowerPoint 演示文稿”
+- “多个输入文件 → 合并 → 格式化 → 输出结果”
 
-## Domain Knowledge
+## 相关领域知识
 
-
-### Pipeline Architecture
+### 管道架构（Pipeline Architecture）
 
 ```
 Stage 1      Stage 2      Stage 3      Stage 4
@@ -46,7 +45,7 @@ Stage 1      Stage 2      Stage 3      Stage 4
                  Data Flow
 ```
 
-### Pipeline DSL (Domain Specific Language)
+### 管道专用语言（Pipeline DSL）
 
 ```yaml
 # pipeline.yaml
@@ -72,7 +71,7 @@ stages:
     output: $output_file
 ```
 
-### Python Implementation
+### Python 实现方式
 
 ```python
 from typing import Callable, Any
@@ -108,7 +107,7 @@ pipeline.add_stage("generate", create_docx_report)
 result = pipeline.run("/path/to/contract.pdf")
 ```
 
-### Advanced: Conditional Pipelines
+### 高级功能：条件化管道（Advanced: Conditional Pipelines）
 
 ```python
 class ConditionalPipeline(Pipeline):
@@ -129,22 +128,21 @@ pipeline.add_conditional_stage(
 )
 ```
 
+## 最佳实践
 
-## Best Practices
+1. **确保每个处理阶段只负责一项具体任务（单一职责原则）**
+2. **使用中间输出结果以便于调试**
+3. **为每个处理阶段实现错误处理机制**
+4. **通过 YAML/JSON 等格式化配置管道的运行参数**
 
-1. **Keep stages focused (single responsibility)**
-2. **Use intermediate outputs for debugging**
-3. **Implement stage-level error handling**
-4. **Make pipelines configurable via YAML/JSON**
-
-## Installation
+## 安装方法
 
 ```bash
 # Install required dependencies
 pip install python-docx openpyxl python-pptx reportlab jinja2
 ```
 
-## Resources
+## 资源链接
 
-- [Custom Repository](https://github.com/claude-office-skills/skills)
-- [Claude Office Skills Hub](https://github.com/claude-office-skills/skills)
+- [自定义代码仓库](https://github.com/claude-office-skills/skills)
+- [Claude Office Skills 中心](https://github.com/claude-office-skills/skills)

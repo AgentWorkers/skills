@@ -14,11 +14,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Google Workspace Admin
+# Google Workspace 管理
 
-Access the Google Workspace Admin SDK with managed OAuth authentication. Manage users, groups, organizational units, roles, and domain settings for Google Workspace.
+通过管理的 OAuth 认证来访问 Google Workspace 管理 SDK。您可以管理 Google Workspace 的用户、组、组织单元、角色和域名设置。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List users in the domain
@@ -30,39 +30,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-workspace-admin/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Admin SDK API endpoint path. The gateway proxies requests to `admin.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Admin SDK API 端点路径。该网关会将请求代理到 `admin.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -73,7 +73,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -86,7 +86,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -97,7 +97,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -112,9 +112,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -125,9 +125,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Workspace Admin connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Workspace 管理连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -139,27 +139,27 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Users
+### 用户
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/users?customer=my_customer&maxResults=100
 ```
 
-Query parameters:
-- `customer` - Customer ID or `my_customer` for your domain (required)
-- `domain` - Filter by specific domain
-- `maxResults` - Maximum results per page (1-500, default 100)
-- `orderBy` - Sort by `email`, `familyName`, or `givenName`
-- `query` - Search query (e.g., `email:john*`, `name:John*`)
-- `pageToken` - Token for pagination
+查询参数：
+- `customer` - 客户 ID 或 `my_customer`（用于您的域名）（必填）
+- `domain` - 按特定域名过滤
+- `maxResults` - 每页的最大结果数（1-500，默认为 100）
+- `orderBy` - 按 `email`、`familyName` 或 `givenName` 排序
+- `query` - 搜索查询（例如：`email:john*`、`name:John*`）
+- `pageToken` - 分页令牌
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -170,7 +170,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "admin#directory#users",
@@ -195,15 +195,15 @@ EOF
 }
 ```
 
-#### Get User
+#### 获取用户信息
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/users/{userKey}
 ```
 
-`userKey` can be the user's primary email or unique user ID.
+`userKey` 可以是用户的主要电子邮件地址或唯一用户 ID。
 
-#### Create User
+#### 创建用户
 
 ```bash
 POST /google-workspace-admin/admin/directory/v1/users
@@ -221,7 +221,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update User
+#### 更新用户信息
 
 ```bash
 PUT /google-workspace-admin/admin/directory/v1/users/{userKey}
@@ -237,7 +237,7 @@ Content-Type: application/json
 }
 ```
 
-#### Patch User (partial update)
+#### 部分更新用户信息
 
 ```bash
 PATCH /google-workspace-admin/admin/directory/v1/users/{userKey}
@@ -248,13 +248,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete User
+#### 删除用户
 
 ```bash
 DELETE /google-workspace-admin/admin/directory/v1/users/{userKey}
 ```
 
-#### Make User Admin
+#### 将用户设置为管理员
 
 ```bash
 POST /google-workspace-admin/admin/directory/v1/users/{userKey}/makeAdmin
@@ -265,29 +265,29 @@ Content-Type: application/json
 }
 ```
 
-### Groups
+### 组
 
-#### List Groups
+#### 列出组
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/groups?customer=my_customer
 ```
 
-Query parameters:
-- `customer` - Customer ID or `my_customer` (required)
-- `domain` - Filter by domain
-- `maxResults` - Maximum results (1-200)
-- `userKey` - List groups for a specific user
+查询参数：
+- `customer` - 客户 ID 或 `my_customer`（必填）
+- `domain` - 按域名过滤
+- `maxResults` - 最大结果数（1-200）
+- `userKey` - 为特定用户列出所属的组
 
-#### Get Group
+#### 获取组信息
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/groups/{groupKey}
 ```
 
-`groupKey` can be the group's email or unique ID.
+`groupKey` 可以是组的电子邮件地址或唯一 ID。
 
-#### Create Group
+#### 创建组
 
 ```bash
 POST /google-workspace-admin/admin/directory/v1/groups
@@ -300,7 +300,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Group
+#### 更新组信息
 
 ```bash
 PUT /google-workspace-admin/admin/directory/v1/groups/{groupKey}
@@ -312,21 +312,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Group
+#### 删除组
 
 ```bash
 DELETE /google-workspace-admin/admin/directory/v1/groups/{groupKey}
 ```
 
-### Group Members
+### 组成员
 
-#### List Members
+#### 列出组成员
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/groups/{groupKey}/members
 ```
 
-#### Add Member
+#### 添加成员
 
 ```bash
 POST /google-workspace-admin/admin/directory/v1/groups/{groupKey}/members
@@ -338,9 +338,9 @@ Content-Type: application/json
 }
 ```
 
-Roles: `OWNER`, `MANAGER`, `MEMBER`
+角色：`OWNER`、`MANAGER`、`MEMBER`
 
-#### Update Member Role
+#### 更新成员的角色
 
 ```bash
 PATCH /google-workspace-admin/admin/directory/v1/groups/{groupKey}/members/{memberKey}
@@ -351,31 +351,31 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Member
+#### 删除成员
 
 ```bash
 DELETE /google-workspace-admin/admin/directory/v1/groups/{groupKey}/members/{memberKey}
 ```
 
-### Organizational Units
+### 组织单元
 
-#### List Org Units
+#### 列出组织单元
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/customer/my_customer/orgunits
 ```
 
-Query parameters:
-- `type` - `all` (default) or `children`
-- `orgUnitPath` - Parent org unit path
+查询参数：
+- `type` - `all`（默认）或 `children`
+- `orgUnitPath` - 父组织单元路径
 
-#### Get Org Unit
+#### 获取组织单元信息
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/customer/my_customer/orgunits/{orgUnitPath}
 ```
 
-#### Create Org Unit
+#### 创建组织单元
 
 ```bash
 POST /google-workspace-admin/admin/directory/v1/customer/my_customer/orgunits
@@ -388,7 +388,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Org Unit
+#### 更新组织单元信息
 
 ```bash
 PUT /google-workspace-admin/admin/directory/v1/customer/my_customer/orgunits/{orgUnitPath}
@@ -399,45 +399,45 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Org Unit
+#### 删除组织单元
 
 ```bash
 DELETE /google-workspace-admin/admin/directory/v1/customer/my_customer/orgunits/{orgUnitPath}
 ```
 
-### Domains
+### 域名
 
-#### List Domains
+#### 列出域名
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/customer/my_customer/domains
 ```
 
-#### Get Domain
+#### 获取域名信息
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/customer/my_customer/domains/{domainName}
 ```
 
-### Roles
+### 角色
 
-#### List Roles
+#### 列出角色
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/customer/my_customer/roles
 ```
 
-#### List Role Assignments
+#### 列出角色分配
 
 ```bash
 GET /google-workspace-admin/admin/directory/v1/customer/my_customer/roleassignments
 ```
 
-Query parameters:
-- `userKey` - Filter by user
-- `roleId` - Filter by role
+查询参数：
+- `userKey` - 按用户过滤
+- `roleId` - 按角色过滤
 
-#### Create Role Assignment
+#### 创建角色分配
 
 ```bash
 POST /google-workspace-admin/admin/directory/v1/customer/my_customer/roleassignments
@@ -450,7 +450,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -509,37 +509,37 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Use `my_customer` as the customer ID for your own domain
-- User keys can be primary email or unique user ID
-- Group keys can be group email or unique group ID
-- Org unit paths start with `/` (e.g., `/Engineering/Frontend`)
-- Admin privileges are required for most operations
-- Password must meet Google's complexity requirements
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 对于您自己的域名，请使用 `my_customer` 作为客户 ID。
+- 用户键可以是主要电子邮件地址或唯一用户 ID。
+- 组键可以是组的电子邮件地址或唯一组 ID。
+- 组织单元路径以 `/` 开头（例如：`/Engineering/Frontend`）。
+- 大多数操作需要管理员权限。
+- 密码必须符合 Google 的复杂性要求。
+- 重要提示：当 URL 包含方括号（`fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Google Workspace Admin connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient admin privileges |
-| 404 | User, group, or resource not found |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Admin SDK API |
+| 400 | 未建立 Google Workspace 管理连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 缺乏管理员权限 |
+| 404 | 用户、组或资源未找到 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 Admin SDK API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -550,22 +550,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-workspace-admin`. For example:
+1. 确保您的 URL 路径以 `google-workspace-admin` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/google-workspace-admin/admin/directory/v1/users?customer=my_customer`
+- 错误的格式：`https://gateway.maton.ai/admin/directory/v1/users?customer=my_customer`
 
-- Correct: `https://gateway.maton.ai/google-workspace-admin/admin/directory/v1/users?customer=my_customer`
-- Incorrect: `https://gateway.maton.ai/admin/directory/v1/users?customer=my_customer`
+## 资源
 
-## Resources
-
-- [Admin SDK Overview](https://developers.google.com/admin-sdk)
-- [Directory API Users](https://developers.google.com/admin-sdk/directory/reference/rest/v1/users)
-- [Directory API Groups](https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups)
-- [Directory API Members](https://developers.google.com/admin-sdk/directory/reference/rest/v1/members)
-- [Directory API Org Units](https://developers.google.com/admin-sdk/directory/reference/rest/v1/orgunits)
-- [Directory API Domains](https://developers.google.com/admin-sdk/directory/reference/rest/v1/domains)
-- [Directory API Roles](https://developers.google.com/admin-sdk/directory/reference/rest/v1/roles)
-- [Admin SDK Guides](https://developers.google.com/admin-sdk/directory/v1/guides)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Admin SDK 概述](https://developers.google.com/admin-sdk)
+- [Directory API 用户](https://developers.google.com/admin-sdk/directory/reference/rest/v1/users)
+- [Directory API 组](https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups)
+- [Directory API 成员](https://developers.google.com/admin-sdk/directory/reference/rest/v1/members)
+- [Directory API 组织单元](https://developers.google.com/admin-sdk/directory/reference/rest/v1/orgunits)
+- [Directory API 域名](https://developers.google.com/admin-sdk/directory/reference/rest/v1/domains)
+- [Directory API 角色](https://developers.google.com/admin-sdk/directory/reference/rest/v1/roles)
+- [Admin SDK 文档](https://developers.google.com/admin-sdk/directory/v1/guides)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

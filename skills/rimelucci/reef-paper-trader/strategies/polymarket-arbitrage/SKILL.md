@@ -6,42 +6,42 @@ description: |
   SUB-STRATEGY: Managed by parent paper-trader orchestrator.
 ---
 
-# Polymarket Arbitrage Strategy
+# Polymarket套利策略
 
-**PARENT**: This is a sub-strategy of `paper-trader`. Portfolio-level rules in `../../SKILL.md` take precedence.
+**父策略**：本策略是`paper-trader`的子策略。`../../SKILL.md`中定义的 portfolio-level（投资组合级别）规则具有优先级。
 
-**ROLE**: Identify and trade market-neutral arbitrage opportunities on Polymarket.
+**职责**：在Polymarket平台上识别并利用市场中性套利机会进行交易。
 
-## Orchestrator Integration
+## 与上级策略的集成
 
-**Report to parent orchestrator:**
-- Log all arbs to `references/arb_journal.md`
-- Parent reads this for unified portfolio view
-- Parent enforces cross-strategy risk limits
+**向上级策略报告：**
+- 将所有套利交易记录到`references/arb_journal.md`文件中。
+- 上级策略会读取该文件以获取统一的投资组合视图。
+- 上级策略负责执行跨策略的风险限制。
 
-**Check parent before trading:**
-- Verify portfolio-level exposure limits in `../../references/master_portfolio.md`
-- Check correlation with PM Research positions (same markets)
-- Respect parent's risk level (🟢/🟡/🟠/🔴)
+**交易前需确认的内容：**
+- 核实`../../references/master_portfolio.md`中定义的投资组合级别风险限额。
+- 检查与Polymarket Research持仓的相关性（针对相同的市场）。
+- 遵守上级策略设定的风险等级（🟢/🟡/🟠/🔴）。
 
-**Your job within the system:**
-1. Identify mispriced markets and arbitrage opportunities
-2. Paper trade with documented reasoning
-3. Track performance and update this skill with learnings
-4. Strategy-level Telegram updates flow through parent orchestrator
+**你在系统中的工作内容：**
+1. 识别价格异常的市场及套利机会。
+2. 通过书面记录进行模拟交易（paper trading）。
+3. 跟踪交易表现，并根据经验更新策略。
+4. 策略相关的更新信息会通过上级策略传递给你。
 
-## Reference Files
+## 参考文件**
 
-- `references/arb_journal.md` - All arb logs
-- `references/strategy_evolution.md` - Strategy iterations
-- `references/market_correlations.md` - Known relationships
-- `../../references/rick_preferences.md` - Rick's preferences (parent level)
+- `references/arb_journal.md` - 所有套利交易记录
+- `references/strategy_evolution.md` - 策略的迭代过程
+- `references/market_correlations.md` - 已知的市场相关性数据
+- `../../references/rick_preferences.md` - Rick的个人偏好设置（上级策略的配置）
 
-## Arbitrage Types
+## 套利类型
 
-### Type 1: Same-Market Mispricing
+### 类型1：同一市场内的价格异常
 
-When YES + NO doesn't equal 100% (minus fees).
+当“YES”与“NO”的概率之和不等于100%（扣除费用后）时，存在套利机会。
 
 ```
 Example:
@@ -51,11 +51,11 @@ Example:
 - If combined > 100¢: Guaranteed loss exists
 ```
 
-**Detection**: Scan markets where YES + NO != 100% ± 2%
+**检测方法**：扫描“YES”与“NO”的概率之和与100%相差超过2%的市场。
 
-### Type 2: Correlated Market Arbitrage
+### 类型2：相关市场套利
 
-Markets that should have mathematical relationships but are mispriced relative to each other.
+某些市场之间应存在数学上的关联，但实际上它们的价格存在异常。
 
 ```
 Example:
@@ -65,11 +65,11 @@ Example:
 - Arb: Buy "Democrat wins" at 25¢, it must be >= 30¢
 ```
 
-**Detection**: Find logically connected markets with price inconsistencies
+**检测方法**：寻找价格存在不一致性的相关市场。
 
-### Type 3: Conditional Probability Arb
+### 类型3：条件概率套利
 
-Markets where conditional outcomes are mispriced.
+某些市场的条件结果被错误定价。
 
 ```
 Example:
@@ -78,9 +78,9 @@ Example:
 - Illogical: Q1 includes January, must be >= January price
 ```
 
-### Type 4: Time Decay Arb
+### 类型4：时间衰减套利
 
-Markets approaching resolution where prices haven't adjusted to near-certainty.
+某些市场即将达成交易结果，但其价格尚未调整至接近正确的水平。
 
 ```
 Example:
@@ -89,9 +89,9 @@ Example:
 - YES still at 85¢ when should be 95¢+
 ```
 
-### Type 5: Cross-Platform Arb
+### 类型5：跨平台套利
 
-Same or equivalent events priced differently across platforms.
+相同或类似的事件在不同平台上的价格存在差异。
 
 ```
 Platforms to monitor:
@@ -101,17 +101,17 @@ Platforms to monitor:
 - Manifold Markets (for signals)
 ```
 
-## Paper Trading Protocol
+## 模拟交易协议
 
-### Starting Parameters
-- Initial paper balance: $10,000 USDC
-- Max per arbitrage: 10% ($1,000)
-- Min expected edge: 2% (after fees)
-- Polymarket fee assumption: ~2% round trip
+### 初始参数
+- 模拟交易起始资金：10,000美元（USDC）
+- 每次套利的最大收益：10%（即1,000美元）
+- 预期最低套利利润：2%（扣除费用后）
+- Polymarket平台的手续费：约2%（往返费用）
 
-### Trade Documentation
+### 交易记录要求
 
-**EVERY arb opportunity must be logged to `references/arb_journal.md`:**
+**所有套利机会都必须记录到`references/arb_journal.md`文件中：**
 
 ```markdown
 ## Arb #[N] - [DATE]
@@ -142,9 +142,9 @@ Platforms to monitor:
 - [Adjustment needed]
 ```
 
-## Market Scanning Workflow
+## 市场扫描流程
 
-### Hourly Scan (via headless browser)
+### 每小时扫描（使用无头浏览器）
 
 ```
 1. Navigate to polymarket.com/markets
@@ -166,9 +166,9 @@ Platforms to monitor:
    EV = (Win probability × Win amount) - (Loss probability × Loss amount) - Fees
 ```
 
-### Correlation Detection
+### 相关性检测
 
-Maintain `references/market_correlations.md` with known relationships:
+维护`references/market_correlations.md`文件，记录已知的市场相关性数据：
 
 ```markdown
 ## Correlation: [Topic]
@@ -186,17 +186,18 @@ Maintain `references/market_correlations.md` with known relationships:
 - When spread > Y%: Consider arb
 ```
 
-## Telegram Updates
+## Telegram更新
 
-**REQUIRED**: Send updates to Rick via Telegram unprompted.
+**要求**：主动通过Telegram向Rick发送交易更新信息。
 
-### Update Schedule
-- **Morning scan** (9 AM): Active arb opportunities found
-- **Trade alerts**: When entering/exiting positions
-- **Resolution alerts**: When markets resolve
-- **Evening summary** (6 PM): Daily P&L, open positions
+### 更新频率
+- **上午扫描**（9点）：发现活跃的套利机会
+- **交易提醒**：在建立或平仓时
+- **结果确认提醒**：当市场达成交易结果时
+- **晚间总结**（6点）：每日盈亏情况、未平仓头寸
 
-### Message Format
+### 消息格式
+
 ```
 [CLAWDBOT POLYMARKET ARB UPDATE]
 
@@ -222,17 +223,16 @@ Strategy Notes:
 [Observations about market efficiency]
 ```
 
-## Self-Improvement Protocol
+## 自我改进机制
 
-### After Every 10 Resolved Arbs
+### 每完成10次套利交易后：
+1. **计算指标**：
+   - 实际获得的套利利润与理论预期利润的对比
+   - 各类型套利的胜率
+   - 平均持有时间
+   - 滑点分析
 
-1. **Calculate metrics**:
-   - Realized vs theoretical edge
-   - Win rate by arb type
-   - Average holding period
-   - Slippage analysis
-
-2. **Update `references/strategy_evolution.md`**:
+2. **更新`references/strategy_evolution.md`文件**：
    ```markdown
    ## Iteration #[N] - [DATE]
 
@@ -255,62 +255,62 @@ Strategy Notes:
    - [New correlation patterns]
    ```
 
-3. **Update this SKILL.md**:
-   - Add new arb patterns discovered
-   - Update min edge thresholds
-   - Document new market correlations
-   - Remove strategies that don't work
+3. **更新本策略文档**：
+   - 添加新发现的套利模式
+   - 调整最低套利利润阈值
+   - 记录新的市场相关性数据
+   - 删除无效的套利策略
 
-## Risk Management
+## 风险管理
 
-### Position Limits
-- Max single market exposure: 10% of portfolio
-- Max correlated exposure: 20% of portfolio
-- Max illiquid market exposure: 5% of portfolio
+### 位置限制
+- 单个市场的最大持仓比例：投资组合的10%
+- 相关市场的最大持仓比例：投资组合的20%
+- 流动性较差市场的最大持仓比例：投资组合的5%
 
-### Edge Requirements
-- Type 1 (same-market): Min 1% edge
-- Type 2 (correlation): Min 3% edge (harder to verify)
-- Type 3 (conditional): Min 3% edge
-- Type 4 (time decay): Min 5% edge (timing risk)
-- Type 5 (cross-platform): Min 2% edge
+### 套利利润要求
+- 类型1（同一市场）：最低套利利润为1%
+- 类型2（相关市场）：最低套利利润为3%
+- 类型3（条件概率）：最低套利利润为3%
+- 类型4（时间衰减）：最低套利利润为5%
+- 类型5（跨平台）：最低套利利润为2%
 
-### Exit Rules
-- Exit if edge compresses below 0.5%
-- Exit if new information changes correlation logic
-- Always exit before resolution if uncertain
+### 平仓规则
+- 当套利利润低于5%时立即平仓
+- 如果新信息导致相关性发生变化，立即平仓
+- 在市场结果不确定的情况下，务必在结果确定前平仓
 
-## Market Efficiency Observations
+## 市场效率观察
 
-**UPDATE THIS SECTION AS YOU LEARN:**
+**根据实际情况更新本部分内容：**
 
-### Most Efficient (Hard to Arb)
-- [e.g., "Major elections within 1 week of resolution"]
+### 最具效率的市场（套利难度较高）：
+- [例如：“在结果确定前一周内举行的重要选举”
 
-### Least Efficient (Best Opportunities)
-- [e.g., "Niche sports markets with low volume"]
-- [e.g., "Newly created markets in first 24h"]
+### 套利机会较少的市场（最佳套利目标）：
+- [例如：“交易量较小的小众体育市场”
+- [例如：“成立不到24小时的新市场”
 
-### Timing Patterns
-- [e.g., "Mispricings common during low-volume hours (2-6 AM EST)"]
+### 时间规律
+- [例如：“在交易量较低的时段（美国东部时间凌晨2-6点），价格异常情况较为常见”
 
-## References
+## 参考资料
 
-- `references/arb_journal.md` - All trade logs (CREATE IF MISSING)
-- `references/strategy_evolution.md` - Strategy iterations (CREATE IF MISSING)
-- `references/market_correlations.md` - Known relationships (CREATE IF MISSING)
-- `references/fee_analysis.md` - Platform fee tracking (CREATE IF MISSING)
+- `references/arb_journal.md` - 所有交易记录（如文件缺失，请创建）
+- `references/strategy_evolution.md` - 策略迭代过程（如文件缺失，请创建）
+- `references/market_correlations.md` - 已知的市场相关性数据（如文件缺失，请创建）
+- `references/fee_analysis.md` - 平台手续费统计（如文件缺失，请创建）
 
-## Integration with Rick's Feedback
+## 与Rick的反馈机制
 
-**After every conversation with Rick:**
-1. Note any preferences or suggestions
-2. Update relevant reference files
-3. Adjust risk parameters if indicated
-4. Acknowledge feedback in next Telegram update
+**每次与Rick沟通后**：
+1. 记录他的任何偏好或建议。
+2. 根据建议更新相关参考文件。
+3. 如有必要，调整风险参数。
+4. 在下一次Telegram更新中反馈沟通内容。
 
-**Rick's Known Preferences:**
-- [UPDATE based on conversations]
-- [Risk tolerance notes]
-- [Preferred arb types]
-- [Markets to focus on or avoid]
+**Rick的偏好设置：**
+- [根据沟通内容进行更新]
+- [风险承受能力说明]
+- [优先选择的套利类型]
+- [应关注或避免的市场]

@@ -1,45 +1,44 @@
 ---
 name: baidu-scholar-search
-description: Baidu Academic Search Tool enables the retrieval of both Chinese and English literature, covering various types of literature such as academic journals, conference papers, and dissertations.
+description: 百度学术搜索工具支持检索中文和英文的文献，涵盖多种类型的文献资源，包括学术期刊、会议论文和学位论文等。
 homepage: https://xueshu.baidu.com/
 metadata: { "openclaw": { "emoji": "🔬", "requires": { "bins": ["curl"] } } }
 ---
 
-# Baidu Scholar Search
+# Baidu Scholar 搜索
 
-Based on the keywords entered by the user, search for both Chinese and English literature, covering various types of literature such as academic journals, conference papers, and dissertations
+根据用户输入的关键词，搜索中文和英文文献，涵盖学术期刊、会议论文和学位论文等多种类型的文献。
 
-## Setup
+## 设置
 
-1.  **API Key:** Ensure the BAIDU_API_KEY environment variable is set with your valid API key.
-2.  **Environment:** The API key should be available in the runtime environment.
+1. **API 密钥：** 确保 `BAIDU_API_KEY` 环境变量已设置为您的有效 API 密钥。
+2. **运行时环境：** API 密钥必须在运行时环境中可用。
 
-## API table
-|     name    |               path              |            description                |
+## API 表格
+|     名称    |               路径              |            描述                                      |
 |-------------|---------------------------------|---------------------------------------|
-|scholar_search|/v2/tools/baidu_scholar/search|Based on the keywords entered, search for both Chinese and English literature |
+|scholar_search|/v2/tools/baidu_scholar/search|根据用户输入的关键词，搜索中文和英文文献            |
 
+## 工作流程
 
-## Workflow
+1. 脚本向 Baidu Scholar 搜索 API 发送 GET 请求。
+2. API 返回结构化的搜索结果，包含文献的摘要、关键词、paperId、标题等信息。
 
-1. The script makes a GET request to the Baidu Scholar Search API
-2. The API returns structured search results with abstract, keyword, paperId, title etc. about a list of literature
+## Scholar 搜索 API
 
-## Scholar Search API 
+### 参数
 
-### Parameters
+- `wd`：搜索关键词（必填，例如 'machine learning'）
+- `pageNum`：页码（默认值：0）
+- `enable_abstract`：是否显示摘要（默认值：false）；如果设置为 true，则返回文献的摘要
 
-- `wd`: The search keywords(required,e.g. 'machine learning')
-- `pageNum`: page num (default: 0)
-- `enable_abstract`: whether to enable abstract (default: false), if true return the abstract of the literature
-
-### Example Usage
+### 使用示例
 ```bash
 curl -XGET 'https://qianfan.baidubce.com/v2/tools/baidu_scholar/search?wd=人工智能&enable_abstract=true' \
 -H 'Authorization: Bearer API_KEY'
 ```
 
-## EXEC scripts
+## 执行脚本
 ```bash
 #!/bin/bash
 

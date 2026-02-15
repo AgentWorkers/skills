@@ -1,11 +1,11 @@
 ---
 name: glab-mcp
-description: Manage GitLab Managed Cluster Platform (MCP) resources and configurations. Use when working with MCP deployments, managing platform resources, or configuring managed clusters. Triggers on MCP, managed cluster platform, platform resources.
+description: 管理 GitLab Managed Cluster Platform (MCP) 的资源与配置。适用于处理 MCP 部署、管理平台资源或配置托管集群的场景。相关操作会在 MCP、托管集群平台或平台资源层面触发。
 ---
 
 # glab mcp
 
-## Overview
+## 概述
 
 ```
 
@@ -39,12 +39,12 @@ description: Manage GitLab Managed Cluster Platform (MCP) resources and configur
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab mcp --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令帮助信息，请参阅 [references/commands.md](references/commands.md)。

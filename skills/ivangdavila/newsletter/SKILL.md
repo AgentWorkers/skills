@@ -1,121 +1,119 @@
 ---
 name: Newsletter
-description: Create, grow, and monetize newsletters with effective content and subscriber strategies.
+description: 通过有效的内容和订阅策略来创建、发展并实现新闻邮件的盈利。
 metadata: {"clawdbot":{"emoji":"📧","os":["linux","darwin","win32"]}}
 ---
 
-## Subject Lines
+## 主题行（Subject Lines）
 
-- Curiosity gap—promise value, don't reveal everything
-- Specific > vague: "5 tools I use daily" > "Useful tools"
-- Numbers work—quantified promises feel tangible
-- Personal: "you" and lowercase feels like friend
-- Urgency when genuine—time-sensitive content only
-- Test constantly—small changes, big impact on opens
-- Avoid spam triggers—"FREE", all caps, excessive punctuation
+- 激发读者的好奇心：只透露有价值的信息，不要全部剧透。
+- 使用具体而非模糊的表述：“我每天使用的5个工具”比“实用工具”更有效。
+- 数字化表达能增强信息的可信度：量化的承诺让人感觉更实在。
+- 采用亲昵的称呼（如“你”）和 lowercase 字体，让邮件更像朋友间的交流。
+- 当信息确实紧急时才使用“紧急”一词——仅针对时效性强的内容。
+- 不断测试：小改动也可能带来显著的打开率提升。
+- 避免使用刺激性语言（如“免费”、“全大写”或过多的标点符号）。
 
-## Preview Text
+## 预览文本（Preview Text）
 
-- Extension of subject, not repetition
-- Complete the curiosity—add context that increases open
-- Don't waste on "View in browser"—prime real estate
-- First line of email becomes preview if not set—control it
+- 预览文本应是对主题的补充说明，而不是简单的重复。
+- 充分满足读者的好奇心，提供更多背景信息以增加邮件被打开的概率。
+- 不要浪费空间在“在浏览器中查看”这样的提示上——这些信息应该放在更显眼的位置。
+- 如果没有设置，邮件的第一行就应该成为预览内容——要控制好这一点。
 
-## Content Structure
+## 内容结构（Content Structure）
 
-- TL;DR at top for skimmers—then expand below
-- One main idea per issue—focus beats variety
-- Scannable: headers, bullets, bold key phrases
-- Consistent format—readers know what to expect
-- Personal voice—distinct from generic corporate
-- End with clear CTA—one action, not five
+- 在顶部提供简短的总结（TL;DR），便于读者快速了解核心内容；然后在下方详细展开。
+- 每个主题只讨论一个主要观点——专注比多样化更有效。
+- 采用易于阅读的格式：使用标题、项目符号和加粗的关键短语。
+- 保持格式的一致性，让读者知道内容的结构。
+- 采用个人化的写作风格，区别于千篇一律的企业官方邮件。
+- 在结尾明确提示读者应该采取的行动（CTA），避免给出过多的选项。
 
-## Frequency
+## 发送频率（Frequency）
 
-- Consistency over frequency—weekly better than sporadic daily
-- Set expectations at signup—"Every Tuesday" not "sometimes"
-- Quality per issue matters more—don't pad to hit schedule
-- Test frequency changes—some audiences want more, some less
+- 保持发送的稳定性比偶尔发送更重要——每周发送一次比每天发送几次更好。
+- 在注册时就明确发送频率，例如“每周二”。
+- 每期内容的质量比发送频率更重要——不要为了完成计划而凑内容。
+- 根据目标受众的需求调整发送频率：有些人希望收到更多内容，有些人则不喜欢频繁发送。
 
-## Growth Strategies
+## 成长策略（Growth Strategies）
 
-- Lead magnet: valuable free resource for email
-- Content upgrades: bonus content within popular posts
-- Referral program: rewards for sharing
-- Cross-promotions: swap with similar newsletters
-- Social proof: subscriber count, testimonials
-- Twitter/LinkedIn teasers—excerpt best parts publicly
+- 提供有价值的免费资源作为吸引读者的“磁铁”。
+- 在热门文章中添加额外内容作为升级选项。
+- 实施推荐计划：对分享者给予奖励。
+- 与其他类似的新闻通讯进行交叉推广。
+- 使用社交媒体展示订阅者数量和读者的评价作为“社交证明”。
+- 在 Twitter 或 LinkedIn 上发布文章的精彩片段。
 
-## Landing Page
+## 登陆页（Landing Page）
 
-- Single focus: email capture—no other distractions
-- Clear value proposition—what they get, how often
-- Social proof—subscriber count, notable readers, testimonials
-- Preview content—show what emails look like
-- Low friction form—email only, name optional
-- Mobile optimized—significant traffic from social
+- 专注于收集读者的电子邮件地址——避免其他干扰元素。
+- 清晰地说明邮件能带来的价值（他们能得到什么、多久收到一次邮件）。
+- 展示预览内容，让读者了解邮件的实际样子。
+- 使用简单易用的表单收集信息——只要求提供电子邮件地址，姓名可选。
+- 优化页面以适应移动设备——来自社交媒体的访问量很大。
 
-## Welcome Sequence
+## 欢迎流程（Welcome Sequence）
 
-- Immediate welcome—confirm subscription, set expectations
-- Best content showcase—send top 3 past issues
-- Ask what they want—segment based on response
-- Personal story—build connection, why you write
-- Quick win—valuable content immediately
+- 立即向新订阅者发送欢迎信息，确认他们的订阅并明确期望。
+- 发送过去的三期精华内容，展示最好的内容。
+- 根据读者的反馈进行个性化沟通。
+- 分享个人故事，建立与读者的联系，解释你写邮件的原因。
+- 立即提供有价值的内容，让他们感受到收获。
 
-## Segmentation
+## 用户细分（Segmentation）
 
-- By interest: what topics they clicked
-- By engagement: active vs dormant
-- By source: different lead magnets = different interests
-- By behavior: purchasers vs free only
-- Personalize content per segment—relevance increases engagement
+- 按兴趣细分：根据读者点击的主题进行分类。
+- 按活跃度细分：区分活跃用户和长期不活跃的用户。
+- 按来源细分：不同的吸引策略会吸引不同的兴趣群体。
+- 按行为细分：区分付费用户和仅接收免费内容的用户。
+- 为每个细分群体定制内容——提高内容的相关性，从而提高互动率。
 
-## Deliverability
+## 邮件送达率（Deliverability）
 
-- Warm up new domain—start small, increase volume
-- Clean list regularly—remove bounces, long-term inactive
-- Authenticate: SPF, DKIM, DMARC configured
-- Easy unsubscribe—hidden unsubscribe hurts reputation
-- Monitor spam complaints—above 0.1% is problem
-- Avoid purchased lists—destroy reputation instantly
+- 新域名上线后要逐步增加发送量，避免一开始发送过多邮件。
+- 定期清理邮件列表，移除无效或长期不活跃的订阅者。
+- 配置 SPF、DKIM 和 DMARC 等安全协议。
+- 提供便捷的退订方式——隐藏的退订选项会损害邮件服务的声誉。
+- 监控垃圾邮件投诉的比例——如果超过0.1%，就需要采取措施。
+- 避免使用购买来的订阅列表——这会立即破坏邮件的信誉。
 
-## Metrics
+## 监控指标（Metrics）
 
-- Open rate: 40%+ good, below 20% problem—but Apple Mail inflates
-- Click rate: 2-5% typical, depends on content type
-- Growth rate: net new subscribers per period
-- Reply rate: engagement signal, builds relationship
-- Revenue per subscriber: for monetized newsletters
+- 邮件打开率：40%以上表示效果良好，低于20%则需关注——不过 Apple Mail 的算法可能会影响打开率统计。
+- 点击率：通常在2-5%之间，具体取决于内容类型。
+- 用户增长率：每期新增的订阅者数量。
+- 回复率：反映读者的参与度，有助于建立良好的关系。
+- 每位订阅者的收入：针对盈利型新闻通讯而言。
 
-## Monetization
+## 盈利方式（Monetization）
 
-- Sponsorships: once established, charge per issue or CPM
-- Premium tier: exclusive content, community access
-- Products: courses, guides, templates
-- Affiliate: products you genuinely recommend
-- Classified ads: job boards, tools relevant to audience
+- 赞助：一旦建立稳定的读者群体，可以按期收费或按每千次展示收费（CPM）。
+- 提供高级会员服务：包含独家内容和社区访问权限。
+- 销售相关产品：如课程、指南或模板。
+- 通过联盟营销推广产品：推荐读者可能感兴趣的产品。
+- 发布分类广告：针对目标受众的招聘信息或工具广告。
 
-## Sponsors
+## 赞助商选择（Sponsors）
 
-- Audience alignment—sponsor fits reader interest
-- Clear "sponsored" label—transparency builds trust
-- Limited per issue—one primary, maybe one classified
-- Write ad yourself—matches voice, performs better
-- Pricing: CPM model or flat rate based on audience value
+- 选择与读者兴趣相符的赞助商。
+- 明确标注“赞助内容”，增加透明度，建立信任。
+- 每期只选择一位赞助商，最多添加一个分类广告。
+- 自己撰写广告内容，这样更能体现你的写作风格和品牌特色。
+- 根据受众的价值制定合理的定价策略（CPM 或固定费用）。
 
-## Re-engagement
+## 重新吸引用户（Re-engagement）
 
-- Segment inactive (90+ days no open)
-- Win-back campaign: "Still interested?"
-- Remove if no response—quality over quantity
-- Different subject line style—pattern interrupt
-- Final email: "Last chance before I remove you"
+- 对于长期不活跃的用户（90天以上未打开邮件的用户），发起重新吸引的活动：“您还感兴趣吗？”
+- 如果没有回复，就移除他们的订阅——质量比数量更重要。
+- 改变主题行的风格，打破阅读者的习惯。
+- 发送最后一条提醒邮件：“这是最后一次机会，之后我们将移除您的订阅。”
 
-## Writing Habits
+## 写作习惯（Writing Habits）
 
-- Consistent publishing day—readers expect it
-- Write for one person—specific reader in mind
-- Share what you learned—curate and add insight
-- Link to sources—credit and provide depth
-- Proofread: typos damage credibility
+- 保持固定的发布时间，让读者养成习惯。
+- 为特定的读者群体写作，想象他们的需求和兴趣。
+- 分享自己的学习成果，进行内容整理并添加见解。
+- 链接到原始资料来源，体现专业性并增加可信度。
+- 仔细校对，避免错别字——错别字会损害邮件的可信度。

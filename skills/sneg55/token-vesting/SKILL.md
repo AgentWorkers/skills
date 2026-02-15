@@ -1,49 +1,48 @@
 ---
 name: sablier-vesting
-description: Create and manage token vesting streams using the Sablier Lockup protocol (linear, dynamic, tranched).
+description: 使用 Sablier Lockup 协议创建和管理代币归属流（包括线性、动态和分阶段分配两种方式）。
 homepage: https://docs.sablier.com
 disable-model-invocation: true
 metadata: {"openclaw":{"emoji":"⏳","requires":{"anyBins":["cast","forge"],"env":["ETH_RPC_URL"]},"primaryEnv":"ETH_PRIVATE_KEY"}}
 ---
 
-# Sablier Vesting Skill
+# Sablier 资产分配技能
 
-You are an AI agent that creates and manages **token vesting streams** on EVM-compatible blockchains using the **Sablier Lockup v3.0** protocol. Sablier is a token streaming protocol where the creator locks up ERC-20 tokens in a smart contract and the recipient's allocation increases every second until the stream ends.
+您是一个 AI 代理，使用 **Sablier Lockup v3.0** 协议在兼容 EVM 的区块链上创建和管理 **代币分配流**。Sablier 是一种代币流协议，其中创建者将 ERC-20 代币锁定在智能合约中，接收者的分配量会随着时间的推移逐渐增加，直到分配流结束。
 
-## When To Use This Skill
+## 何时使用此技能
 
-Use this skill when the user asks you to:
-
-- Create a token vesting stream (linear, dynamic, or tranched)
-- Lock tokens in a vesting contract
-- Set up employee vesting, investor vesting, or airdrop distribution
-- Stream tokens to a recipient over time
-- Cancel, withdraw from, or manage an existing Sablier stream
+当用户请求您执行以下操作时，请使用此技能：
+- 创建代币分配流（线性、动态或分阶段分配）
+- 将代币锁定在分配合约中
+- 设置员工分配、投资者分配或空投分配
+- 随时间将代币分配给接收者
+- 取消、撤回或管理现有的 Sablier 分配流
 
 ---
 
-## Security: Private Key and Secret Handling
+## 安全性：私钥和密钥处理
 
-**These rules are mandatory. Follow them in every interaction.**
+**这些规则是强制性的。在每次交互中都必须遵守。**
 
-### Agent Behavioral Constraints
+### 代理行为约束
 
-1. **NEVER ask the user to paste a private key into the chat.** If the user volunteers a raw private key in a message, warn them immediately that it may be logged and recommend they rotate it.
-2. **NEVER embed a raw private key in any command you execute.** Always use an environment variable reference (`$PRIVATE_KEY`, `$ETH_PRIVATE_KEY`) or a secure signing method instead.
-3. **NEVER log, echo, or print a private key or mnemonic** to stdout, a file, or any other output.
-4. **Always recommend the safest available signing method**, in this order of preference:
-   - **Hardware wallet**: `--ledger` or `--trezor` flags (most secure, no key exposure)
-   - **Foundry keystore** (`cast wallet import`): `--account <name>` (encrypted on disk, password-prompted at sign time)
-   - **Environment variable**: `--private-key $ETH_PRIVATE_KEY` (key stays in the shell environment, never appears in command text)
-   - **Raw `--private-key 0x...`**: Discourage this. Only acceptable for throwaway testnets where the key holds no real value.
+1. **切勿要求用户在聊天中粘贴私钥。** 如果用户主动在消息中提供原始私钥，请立即警告他们这可能会导致私钥被记录，并建议他们更换私钥。
+2. **切勿在任何执行的命令中嵌入原始私钥。** 始终使用环境变量引用（`$PRIVATE_KEY`、`$ETH_PRIVATE_KEY`）或安全的签名方法。
+3. **切勿将私钥或助记词记录、回显或打印到 stdout、文件或其他输出中。**
+4. **始终推荐最安全的签名方法**，优先顺序如下：
+   - **硬件钱包**：`--ledger` 或 `--trezor` 标志（最安全，不会暴露私钥）
+   - **Foundry 密钥库**（`cast wallet import`）：`--account <name>`（在签名时提示输入密码）
+   - **环境变量**：`--private-key $ETH_PRIVATE_KEY`（私钥仅存在于 shell 环境中，不会出现在命令文本中）
+   - **原始的 `--private-key 0x...`：仅适用于临时测试网，因为这些测试网中的私钥没有实际价值）
 
-### Setting Up Secure Signing
+### 设置安全签名
 
-**Option 1 -- Hardware wallet (recommended for mainnet):**
+**选项 1 – 硬件钱包（推荐用于主网）：**
 
-No setup required. Just add `--ledger` or `--trezor` to any `cast send` / `forge script` command.
+无需额外设置。只需在任何 `cast send` / `forge` 脚本命令中添加 `--ledger` 或 `--trezor` 即可。
 
-**Option 2 -- Foundry encrypted keystore (recommended default):**
+**选项 2 – Foundry 加密密钥库（推荐默认设置）：**
 
 ```bash
 # Import a key once (you'll be prompted for the private key and an encryption password)
@@ -53,9 +52,9 @@ cast wallet import my-deployer --interactive
 cast send ... --account my-deployer
 ```
 
-The key is stored encrypted at `~/.foundry/keystores/my-deployer`. You only type your password at sign time; the private key is never exposed in shell history or process arguments.
+密钥存储在 `~/.foundry/keystores/my-deployer` 中。您只需在签名时输入密码；私钥不会出现在 shell 历史记录或进程参数中。
 
-**Option 3 -- Environment variable (acceptable):**
+**选项 3 – 环境变量（可接受）：**
 
 ```bash
 # Export in your shell session (not in a file that gets committed)
@@ -65,9 +64,9 @@ export ETH_PRIVATE_KEY=0x...
 cast send ... --private-key $ETH_PRIVATE_KEY
 ```
 
-### RPC URL Handling
+### RPC URL 处理
 
-RPC URLs may contain API keys. Follow the same principles:
+RPC URL 可能包含 API 密钥。请遵循相同的原则：
 
 ```bash
 # Set once in your shell
@@ -77,40 +76,40 @@ export ETH_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/<YOUR_KEY>
 cast send <ADDRESS> "approve(address,uint256)" ...
 ```
 
-Alternatively, configure the RPC in `foundry.toml` under `[rpc_endpoints]`.
+或者，您可以在 `foundry.toml` 的 `[rpc_endpoints]` 部分配置 RPC。
 
 ---
 
-## Core Concepts
+## 核心概念
 
-### Stream Types
+### 流类型
 
-Sablier Lockup v3.0 uses a **single unified `SablierLockup` contract** per chain. There are three stream models:
+Sablier Lockup v3.0 在每个链上使用一个统一的 **SablierLockup` 合约。有三种流模型：
 
-| Model | Best For | Function (durations) | Function (timestamps) |
+| 模型 | 适用场景 | 功能（持续时间） | 功能（时间戳） |
 |---|---|---|---|
-| **Linear** | Constant-rate vesting, salaries | `createWithDurationsLL` | `createWithTimestampsLL` |
-| **Dynamic** | Exponential curves, custom curves | `createWithDurationsLD` | `createWithTimestampsLD` |
-| **Tranched** | Periodic unlocks (monthly, quarterly) | `createWithDurationsLT` | `createWithTimestampsLT` |
+| **线性** | 固定速率分配、薪资 | `createWithDurationsLL` | `createWithTimestampsLL` |
+| **动态** | 指数曲线、自定义曲线 | `createWithDurationsLD` | `createWithTimestampsLD` |
+| **分阶段** | 定期解锁（每月、每季度） | `createWithDurationsLT` | `createWithTimestampsLT` |
 
-### Stream Shapes
+### 流形状
 
-- **Linear**: Constant payment rate (identity function). Good for salaries and simple vesting.
-- **Cliff Unlock**: No tokens available before the cliff; linear streaming after. Great for employee vesting (e.g. 1-year cliff + 3 years linear).
-- **Initial Unlock**: Immediate release of some tokens + linear vesting for the rest. Good for signing bonuses.
-- **Exponential**: Recipient gets increasingly more tokens over time. Good for airdrops to incentivize long-term holding.
-- **Unlock in Steps**: Traditional periodic unlocks (weekly/monthly/yearly). Good for investor vesting.
-- **Unlock Monthly**: Tokens unlock on the same day every month. Good for salaries and ESOPs.
-- **Backweighted**: Little vests early, large chunks towards the end (e.g. 10%/20%/30%/40% over 4 years).
-- **Timelock**: All tokens locked until a specific date, then fully released.
+- **线性**：固定支付速率（恒定函数）。适用于薪资和简单的分配。
+- **悬崖解锁**：在达到特定时间点之前无法获取代币；之后按固定速率分配。适用于员工分配（例如：1 年的悬崖期 + 3 年的线性分配）。
+- **初始解锁**：立即释放部分代币，其余部分按固定速率分配。适用于奖励发放。
+- **指数型**：接收者随时间获得越来越多的代币。适用于激励长期持有的空投。
+- **分阶段解锁**：传统的定期解锁（每周/每月/每年）。适用于投资者分配。
+- **每月解锁**：每月同一天解锁代币。适用于薪资和员工股票期权计划（ESOP）。
+- **加权解锁**：早期分配少量代币，后期分配大量代币（例如：4 年内分别分配 10%/20%/30%/40%）。
+- **时间锁定**：所有代币在特定日期之前被锁定，之后全部释放。
 
 ---
 
-## Deployment Addresses (Lockup v3.0)
+## 部署地址（Lockup v3.0）
 
-All chains use the same contract pattern. Key mainnet deployments:
+所有链使用相同的合约模式。主要网络的部署地址如下：
 
-| Chain | SablierLockup | SablierBatchLockup |
+| 链接 | SablierLockup | SablierBatchLockup |
 |---|---|---|
 | **Ethereum** | `0xcF8ce57fa442ba50aCbC57147a62aD03873FfA73` | `0x0636d83b184d65c242c43de6aad10535bfb9d45a` |
 | **Arbitrum** | `0xF12AbfB041b5064b839Ca56638cDB62fEA712Db5` | `0xf094baa1b754f54d8f282bc79a74bd76aff29d25` |
@@ -125,22 +124,22 @@ All chains use the same contract pattern. Key mainnet deployments:
 | **Monad** | `0x003F5393F4836f710d492AD98D89F5BFCCF1C962` | `0x4FCACf614E456728CaEa87f475bd78EC3550E20B` |
 | **Berachain** | `0xC37B51a3c3Be55f0B34Fbd8Bd1F30cFF6d251408` | `0x35860B173573CbDB7a14dE5F9fBB7489c57a5727` |
 
-For testnets, see: https://docs.sablier.com/guides/lockup/deployments
+有关测试网的详细信息，请参阅：https://docs.sablier.com/guides/lockup/deployments
 
 ---
 
-## Step-by-Step: Creating a Vesting Stream with `cast`
+## 使用 `cast` 创建分配流的步骤
 
-The preferred method is using Foundry's `cast` CLI tool which the agent has access to.
+推荐使用 Foundry 的 `cast` CLI 工具。
 
-### Prerequisites
+### 先决条件
 
-1. The sender must have the ERC-20 tokens in their wallet.
-2. The sender must approve the SablierLockup contract to spend the tokens.
-3. You need: RPC URL, a signing method (keystore, hardware wallet, or env var), token address, recipient address.
-4. **Ask the user which signing method they prefer** before constructing commands. Default to `--account <KEYSTORE_NAME>` if they have one set up, or `--ledger` for mainnet. See the Security section above.
+1. 发送者必须在其钱包中拥有 ERC-20 代币。
+2. 发送者必须批准 SablierLockup 合约才能花费这些代币。
+3. 您需要以下信息：RPC URL、签名方法（密钥库、硬件钱包或环境变量）、代币地址和接收者地址。
+4. **在构建命令之前，请询问用户他们偏好的签名方法**。如果他们设置了密钥库，则默认使用 `--account <KEYSTORE_NAME>`；对于主网，则使用 `--ledger`。请参阅上述安全部分。
 
-### Step 1: Approve the Token
+### 第 1 步：批准代币
 
 ```bash
 cast send <TOKEN_ADDRESS> \
@@ -151,13 +150,13 @@ cast send <TOKEN_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-### Step 2: Create the Stream
+### 第 2 步：创建分配流
 
-#### Option A: Linear Stream (createWithDurationsLL)
+#### 选项 A：线性分配流（createWithDurationsLL）
 
-This creates a linear vesting stream. The `CreateWithDurations` struct is ABI-encoded as a tuple.
+这会创建一个线性分配流。`CreateWithDurations` 结构通过 ABI 编码为一个元组。
 
-**Parameters for `createWithDurationsLL`:**
+**createWithDurationsLL 的参数：**
 
 ```solidity
 function createWithDurationsLL(
@@ -167,12 +166,12 @@ function createWithDurationsLL(
 ) external returns (uint256 streamId);
 ```
 
-Where:
+其中：
 - `Lockup.CreateWithDurations` = `(address sender, address recipient, uint128 depositAmount, address token, bool cancelable, bool transferable, string shape)`
 - `LockupLinear.UnlockAmounts` = `(uint128 start, uint128 cliff)`
 - `LockupLinear.Durations` = `(uint40 cliff, uint40 total)`
 
-**Example: 1-year linear vesting of 10,000 tokens with no cliff:**
+**示例：** 1 年线性分配 10,000 个代币，无悬崖期：
 
 ```bash
 # Calculate values
@@ -189,7 +188,7 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-**Example: 4-year vesting with 1-year cliff:**
+**示例：** 4 年分配，1 年悬崖期：
 
 ```bash
 # cliff = 365 days = 31536000 seconds
@@ -205,7 +204,7 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-**Example: With initial unlock of 1000 tokens and cliff unlock of 2000 tokens (out of 10000 total):**
+**示例：** 初始解锁 1,000 个代币，后续 3,000 个代币在悬崖期解锁（总共 10,000 个代币）：
 
 ```bash
 cast send <SABLIER_LOCKUP_ADDRESS> \
@@ -218,9 +217,9 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-#### Option B: Tranched Stream (createWithDurationsLT)
+#### 选项 B：分阶段分配流（createWithDurationsLT）
 
-For periodic unlocks (monthly, quarterly, etc.).
+用于定期解锁（每月、每季度等）。
 
 ```solidity
 function createWithDurationsLT(
@@ -229,9 +228,9 @@ function createWithDurationsLT(
 ) external returns (uint256 streamId);
 ```
 
-Where `TrancheWithDuration` = `(uint128 amount, uint40 duration)`
+其中 `Tranche(Duration` = `(uint128 amount, uint40 duration)`
 
-**Example: 4 quarterly unlocks of 2500 tokens each:**
+**示例：** 每季度解锁 2,500 个代币，共 4 次：
 
 ```bash
 # Each quarter ≈ 13 weeks = 7862400 seconds
@@ -245,9 +244,9 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-#### Option C: Dynamic Stream (createWithTimestampsLD)
+#### 选项 C：动态分配流（createWithTimestampsLD）
 
-For exponential curves and custom distribution.
+用于指数曲线和自定义分配。
 
 ```solidity
 function createWithTimestampsLD(
@@ -256,12 +255,12 @@ function createWithTimestampsLD(
 ) external returns (uint256 streamId);
 ```
 
-Where:
+其中：
 - `Lockup.CreateWithTimestamps` = `(address sender, address recipient, uint128 depositAmount, address token, bool cancelable, bool transferable, (uint40,uint40) timestamps, string shape)`
-- `Lockup.Timestamps` = `(uint40 start, uint40 end)`
+- `Lockup Timestamps` = `(uint40 start, uint40 end)`
 - `LockupDynamic.Segment` = `(uint128 amount, UD2x18 exponent, uint40 timestamp)`
 
-**Example: Exponential stream (2 segments):**
+**示例：** 指数分配流（2 个阶段）：
 
 ```bash
 # Get current timestamp
@@ -279,27 +278,27 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-Note: The exponent in segments uses UD2x18 format (18 decimals). `1e18` = linear, `2e18` = quadratic, `3.14e18` = steeper curve.
+注意：阶段中的指数使用 UD2x18 格式（18 位小数）。`1e18` 表示线性，`2e18` 表示二次曲线，`3.14e18` 表示更陡峭的曲线。
 
 ---
 
-## Managing Existing Streams
+## 管理现有分配流
 
-### Check Stream Status
+### 检查分配流状态
 
 ```bash
 cast call <SABLIER_LOCKUP_ADDRESS> "statusOf(uint256)(uint8)" <STREAM_ID> --rpc-url <RPC_URL>
 ```
 
-Status values: 0=PENDING, 1=STREAMING, 2=SETTLED, 3=CANCELED, 4=DEPLETED
+状态值：0=待处理，1=分配中，2=已完成，3=已取消，4=已结束
 
-### Check Withdrawable Amount
+### 检查可提取的代币数量
 
 ```bash
 cast call <SABLIER_LOCKUP_ADDRESS> "withdrawableAmountOf(uint256)(uint128)" <STREAM_ID> --rpc-url <RPC_URL>
 ```
 
-### Withdraw from Stream (recipient)
+### 从分配流中提取代币（接收者）
 
 ```bash
 # First, calculate the minimum fee
@@ -314,7 +313,7 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-### Cancel Stream (sender only)
+### 取消分配流（仅限发送者）
 
 ```bash
 cast send <SABLIER_LOCKUP_ADDRESS> \
@@ -325,7 +324,7 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-### Renounce Cancelability (sender only, irreversible)
+### 放弃取消权（仅限发送者，不可撤销）
 
 ```bash
 cast send <SABLIER_LOCKUP_ADDRESS> \
@@ -336,13 +335,13 @@ cast send <SABLIER_LOCKUP_ADDRESS> \
 # Or: --ledger | --trezor | --private-key $ETH_PRIVATE_KEY
 ```
 
-### Check Streamed Amount
+### 检查已分配的代币数量
 
 ```bash
 cast call <SABLIER_LOCKUP_ADDRESS> "streamedAmountOf(uint256)(uint128)" <STREAM_ID> --rpc-url <RPC_URL>
 ```
 
-### Get Recipient of Stream
+### 获取分配流的接收者地址
 
 ```bash
 cast call <SABLIER_LOCKUP_ADDRESS> "getRecipient(uint256)(address)" <STREAM_ID> --rpc-url <RPC_URL>
@@ -350,18 +349,18 @@ cast call <SABLIER_LOCKUP_ADDRESS> "getRecipient(uint256)(address)" <STREAM_ID> 
 
 ---
 
-## Using Forge Scripts (Alternative)
+## 使用 Forge 脚本（替代方案）
 
-If the user prefers Solidity scripts over raw `cast` calls, you can create a Forge script. Reference the `@sablier/lockup` npm package.
+如果用户更喜欢使用 Solidity 脚本而不是原始的 `cast` 调用，您可以创建一个 Forge 脚本。请参考 `@sablier/lockup` npm 包。
 
-### Install dependency
+### 安装依赖项
 
 ```bash
 forge init sablier-vesting && cd sablier-vesting
 bun add @sablier/lockup
 ```
 
-### Example Forge Script
+### 示例 Forge 脚本
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -412,7 +411,7 @@ contract CreateVestingStream is Script {
 }
 ```
 
-Run with:
+使用以下命令运行 Forge 脚本：
 
 ```bash
 forge script script/CreateVestingStream.s.sol \
@@ -426,36 +425,36 @@ forge script script/CreateVestingStream.s.sol \
 
 ---
 
-## Important Notes
+## 重要注意事项
 
-- **Token decimals matter**: Always convert human-readable amounts to wei (e.g., for 18-decimal tokens: `amount * 1e18`). Use `cast --to-wei <amount>` to convert.
-- **Approve first**: The sender MUST approve the SablierLockup contract to spend the ERC-20 tokens before creating a stream.
-- **Cancelable vs Non-cancelable**: If `cancelable` is `true`, the sender can cancel and reclaim unvested tokens. Set to `false` for trustless vesting.
-- **Transferable**: If `true`, the recipient can transfer the stream NFT to another address.
-- **Gas costs**: Linear streams are cheapest (~169k gas). Tranched streams cost more with more tranches (~300k for 4 tranches). Dynamic streams vary by segment count.
-- **Stream NFT**: Each stream is represented as an ERC-721 NFT owned by the recipient. The NFT can be transferred if the stream is transferable.
-- **Minimum Solidity version**: v0.8.22 for the Lockup contracts.
-- **Sablier UI**: Streams can be viewed and managed at https://app.sablier.com
+- **代币的小数位数很重要**：始终将人类可读的金额转换为 wei（例如，对于 18 位小数的代币：`amount * 1e18`）。使用 `cast --to-wei <amount>` 进行转换。
+- **必须先获得批准**：发送者必须批准 SablierLockup 合约才能花费 ERC-20 代币。
+- **可取消 vs 不可取消**：如果 `cancelable` 为 `true`，发送者可以取消并收回未分配的代币。设置为 `false` 以实现无信任的分配。
+- **可转让性**：如果 `transferable` 为 `true`，接收者可以将分配流中的 NFT 转移到另一个地址。
+- **Gas 成本**：线性分配流的成本最低（约 169k gas）。分阶段分配流的成本更高（4 个阶段约 300k gas）。动态分配流的成本取决于阶段数量。
+- **分配流 NFT**：每个分配流都表示为一个由接收者拥有的 ERC-721 NFT。如果分配流是可转让的，NFT 也可以被转移。
+- **最低 Solidity 版本**：Lockup 合约需要 Solidity 版本 v0.8.22 或更高。
+- **Sablier UI**：您可以在 https://app.sablier.com 查看和管理分配流。
 
-## Quick Reference: Duration Conversions
+## 快速参考：持续时间转换
 
-| Duration | Seconds |
+| 持续时间 | 秒数 |
 |---|---|
-| 1 day | 86400 |
-| 1 week | 604800 |
-| 30 days | 2592000 |
-| 90 days (quarter) | 7776000 |
-| 180 days (half year) | 15552000 |
-| 365 days (1 year) | 31536000 |
-| 730 days (2 years) | 63072000 |
-| 1095 days (3 years) | 94608000 |
-| 1461 days (4 years) | 126230400 |
+| 1 天 | 86400 |
+| 1 周 | 604800 |
+| 30 天 | 2592000 |
+| 90 天（季度） | 7776000 |
+| 180 天（半年） | 15552000 |
+| 365 天（1 年） | 31536000 |
+| 730 天（2 年） | 63072000 |
+| 1095 天（3 年） | 94608000 |
+| 1461 天（4 年） | 126230400 |
 
-## Resources
+## 资源
 
-- Docs: https://docs.sablier.com
-- Lockup Source: https://github.com/sablier-labs/lockup
-- Examples: https://github.com/sablier-labs/evm-examples/tree/main/lockup
-- Integration Template: https://github.com/sablier-labs/lockup-integration-template
-- Deployment Addresses: https://docs.sablier.com/guides/lockup/deployments
-- Sablier App: https://app.sablier.com
+- 文档：https://docs.sablier.com
+- Lockup 源代码：https://github.com/sablier-labs/lockup
+- 示例：https://github.com/sablier-labs/evm-examples/tree/main/lockup
+- 集成模板：https://github.com/sablier-labs/lockup-integration-template
+- 部署地址：https://docs.sablier.com/guides/lockup/deployments
+- Sablier 应用程序：https://app.sablier.com

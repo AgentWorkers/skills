@@ -1,28 +1,28 @@
 ---
 name: claude-usage
-description: Calculate Claude Max subscription usage from OpenClaw session data. Shows credits consumed, weekly budget percentage, 5-hour rate limit window, and per-session breakdown.
+description: 根据 OpenClaw 会话数据计算 Claude Max 的订阅使用情况。显示已消耗的信用额度、每周预算占比、5 小时速率限制窗口以及每次会话的使用情况。
 ---
 
-# Claude Max Usage Calculator
+# Claude Max 使用量计算器
 
-Track your Claude Max subscription usage based on the reverse-engineered credits system from [she-llac.com/claude-limits](https://she-llac.com/claude-limits).
+根据 [she-llac.com/claude-limits](https://she-llac.com/claude-limits) 提供的反向工程信用系统，您可以跟踪自己的 Claude Max 订阅使用情况。
 
-## When to use
+## 使用场景
 
-When the user asks about Claude usage, credits, subscription consumption, rate limits, or wants to know how much budget is left.
+当用户询问 Claude 的使用情况、剩余信用、订阅消耗量、速率限制，或想知道剩余预算时，可以使用此工具。
 
-## Setup (first time)
+## 首次设置
 
-Ask the user for:
-1. **Weekly reset time** — visible on [claude.ai](https://claude.ai) Settings > Usage (e.g. "Resets Mon 2:00 PM")
-2. **Plan** — `pro` ($20), `5x` ($100), or `20x` ($200). Default: `5x`
+需要用户提供以下信息：
+1. **每周重置时间** — 可在 [claude.ai](https://claude.ai) 的“设置” > “使用情况”中查看（例如：“每周二下午 2:00 重置”）
+2. **订阅计划**：`pro`（20 美元）、`5x`（100 美元）或 `20x`（200 美元）。默认为 `5x`。
 
-Save it so they never have to repeat:
+将这些信息保存下来，避免用户重复输入：
 ```bash
 python3 {SKILL_DIR}/scripts/claude-usage.py "2026-02-09 14:00" --plan 5x --save
 ```
 
-## Commands
+## 命令
 
 ```bash
 # Weekly overview (uses saved config after first --save)
@@ -42,43 +42,43 @@ python3 {SKILL_DIR}/scripts/claude-usage.py --session "9aadee"
 python3 {SKILL_DIR}/scripts/claude-usage.py --json
 ```
 
-## What it shows
+## 功能展示
 
-### Weekly overview
-- Total credits used vs weekly budget (with progress bar)
-- **5-hour sliding window** — warns if approaching the per-5h rate limit
-- All sessions ranked by credits consumed
-- Model breakdown (Opus/Sonnet/Haiku/non-Claude)
+### 每周概览
+- 使用的信用总额与每周预算对比（附带进度条）
+- **5 小时滑动窗口**：当接近每 5 小时的速率限制时发出警告
+- 按信用消耗量排序的所有会话
+- 模型分类（Opus、Sonnet、Haiku、非 Claude 模型）
 
-### Single session detail (`--session`)
-- Credits consumed and % of weekly budget
-- % of total usage (how much of your spending this session accounts for)
-- Token breakdown (input/output/cache)
-- Per-model detail
+### 单个会话详情（使用 `--session` 命令）
+- 消耗的信用及占每周预算的百分比
+- 占总使用量的百分比（本次会话的花费占比）
+- 令牌使用情况（输入/输出/缓存）
+- 模型详细信息
 
-## Credits formula
+## 信用计算公式
 
 ```
 credits = (input_tokens + cache_write_tokens) × input_rate + output_tokens × output_rate
 ```
 
-| Model  | Input rate | Output rate |
+| 模型 | 输入速率 | 输出速率 |
 |--------|-----------|-------------|
 | Haiku  | 2/15      | 10/15       |
 | Sonnet | 6/15      | 30/15       |
 | Opus   | 10/15     | 50/15       |
 
-Cache reads are **free**. Non-Claude models (Gemini, Codex, etc.) don't consume Claude credits.
+缓存读取是**免费的**。非 Claude 模型（如 Gemini、Codex 等）不消耗 Claude 信用。
 
-## Plan budgets
+## 订阅计划与预算
 
-| Plan | $/month | Credits/5h | Credits/week |
+| 订阅计划 | 每月费用 | 每 5 小时的信用消耗 | 每周信用消耗 |
 |------|---------|-----------|-------------|
-| Pro  | $20     | 550,000   | 5,000,000   |
-| 5×   | $100    | 3,300,000 | 41,666,700  |
-| 20×  | $200    | 11,000,000| 83,333,300  |
+| Pro  | 20 美元     | 550,000   | 5,000,000   |
+| 5x   | 100 美元    | 3,300,000 | 41,666,700  |
+| 20x  | 200 美元    | 11,000,000| 83,333,300  |
 
-## Requirements
+## 系统要求
 
-- Python 3.9+
-- OpenClaw with session JSONL files (auto-detected at `~/.openclaw/agents/main/sessions/`)
+- Python 3.9 或更高版本
+- 需要 OpenClaw 及相应的 JSONL 会话文件（文件路径通常为 `~/.openclaw/agents/main/sessions/`）

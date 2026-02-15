@@ -1,30 +1,29 @@
 ---
 name: tradekix
-description: Query financial market data via the Tradekix API — stock prices, crypto, forex, indices, market news, earnings, economic events, Congressional trades, and social sentiment. Use when the user asks about markets, stock prices, trading data, economic calendars, or financial news. Also handles API key signup and upgrade to Pro.
+description: 通过 Tradekix API 查询金融市场数据——包括股票价格、加密货币价格、外汇汇率、指数、市场新闻、公司收益、经济事件以及国会交易情况等。当用户询问有关市场、股票价格、交易数据、经济日历或财经新闻的信息时，可以使用该功能。该服务还提供 API 密钥的注册以及升级至 Pro 版别的服务。
 ---
 
 # Tradekix
 
-Financial data API for AI agents. Free tier: 10 calls/day.
+这是一个为人工智能代理提供的金融数据API。免费 tier 支持每天 10 次请求。
 
-## Setup
+## 设置
 
-Check for existing config:
+检查是否存在配置文件：
 ```bash
 cat ~/.config/tradekix/config.json 2>/dev/null
 ```
 
-If no config exists, sign up automatically:
+如果不存在配置文件，系统会自动为您注册：
 ```bash
 bash SKILL_DIR/scripts/tradekix.sh signup --name "AGENT_NAME" --email "AGENT_EMAIL"
 ```
 
-This stores the API key in `~/.config/tradekix/config.json`.
+API 密钥将保存在 `~/.config/tradekix/config.json` 文件中。
 
-## Usage
+## 使用方法
 
-Run via the wrapper script. All commands auto-load the API key from config.
-
+通过包装脚本来运行该 API。所有命令都会自动从配置文件中加载 API 密钥。
 ```bash
 # Market overview (stocks, crypto, forex, commodities)
 bash SKILL_DIR/scripts/tradekix.sh market
@@ -66,33 +65,33 @@ bash SKILL_DIR/scripts/tradekix.sh upgrade monthly
 bash SKILL_DIR/scripts/tradekix.sh revoke
 ```
 
-## Endpoint Selection Guide
+## 终端点选择指南
 
-| User asks about... | Command |
+| 用户查询的内容 | 对应的命令 |
 |---|---|
-| General market conditions | `market` |
-| Specific stock/crypto price | `prices SYMBOL` |
-| Market indices (S&P, NASDAQ) | `indices` |
-| Currency exchange rates | `forex` |
-| Financial news | `news` |
-| Price alerts, market moves | `alerts` |
-| Fed meetings, CPI, jobs data | `economic` |
-| Company earnings dates | `earnings` |
-| Market sentiment, social buzz | `sentiment` or `tweets` |
-| Politician/Congress trades | `trades` |
+| 一般市场行情 | `market` |
+| 特定股票/加密货币价格 | `prices SYMBOL` |
+| 市场指数（如 S&P、NASDAQ） | `indices` |
+| 货币汇率 | `forex` |
+| 金融新闻 | `news` |
+| 价格警报、市场动态 | `alerts` |
+| 美联储会议、CPI、就业数据 | `economic` |
+| 公司盈利公告日期 | `earnings` |
+| 市场情绪、社交媒体动态 | `sentiment` 或 `tweets` |
+| 政客/国会的交易记录 | `trades` |
 
-## Response Format
+## 响应格式
 
-All responses return `{"success":true,"data":{...},"meta":{...}}`. Parse `data` for results. Check `meta.rate_limit_remaining` to track usage.
+所有响应都会以以下格式返回：`{"success": true, "data": {...}, "meta": {...}}`。请解析 `data` 部分以获取实际数据。同时，请查看 `meta.rate_limit_remaining` 以了解剩余的请求次数。
 
-## Rate Limits
+## 请求限制
 
-- **Free:** 10 calls/day, 5/min
-- **Pro:** 2,000 calls/day, 60/min ($9/mo or $89/yr)
-- **Enterprise:** 50,000 calls/day — contact sales@tradekix.com
+- **免费 tier**：每天 10 次请求，每次请求间隔 5 分钟。
+- **Pro tier**：每天 2,000 次请求，每次请求间隔 60 分钟（费用为每月 $9 或每年 $89）。
+- **Enterprise tier**：每天 50,000 次请求——请联系 sales@tradekix.com 获取更多信息。
 
-When rate limited (HTTP 429), check `Retry-After` header.
+当遇到请求限制（HTTP 429 错误）时，请查看 `Retry-After` 头部字段以了解重试间隔。
 
-## Full API Reference
+## 完整的 API 参考文档
 
-See [references/api-docs.md](references/api-docs.md) for complete endpoint documentation.
+请参阅 [references/api-docs.md](references/api-docs.md) 以获取完整的终端点使用说明。

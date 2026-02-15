@@ -1,24 +1,24 @@
 ---
 name: lastfm
-description: Access Last.fm listening history, music stats, and discovery. Query recent tracks, top artists/albums/tracks, loved tracks, similar artists, and global charts.
+description: 可以访问 Last.fm 的收听历史记录、音乐统计信息以及发现功能。可以查询最近的歌曲、热门艺术家/专辑/歌曲、用户喜爱的歌曲、相似的艺术家，以及全球音乐排行榜。
 ---
 
-# Last.fm API Skill
+# Last.fm API 技能
 
-Access Last.fm listening history, music stats, and discovery.
+用于访问 Last.fm 的收听历史记录、音乐统计信息以及新发现的音乐。
 
-## Configuration
+## 配置
 
-**Required env vars** (add to your shell profile or optionally `~/.clawdbot/.env`):
-- `LASTFM_API_KEY` — your Last.fm API key ([get one here](https://www.last.fm/api/account/create))
-- `LASTFM_USER` — your Last.fm username
+**必需的环境变量**（请将其添加到您的 shell 配置文件中，或可选地添加到 `~/.clawdbot/.env` 文件中）：
+- `LASTFM_API_KEY` — 您的 Last.fm API 密钥（[在此处获取](https://www.last.fm/api/account/create)）
+- `LASTFM_USER` — 您的 Last.fm 用户名
 
-**Base URL**: `http://ws.audioscrobbler.com/2.0/`  
-**Docs**: https://lastfm-docs.github.io/api-docs/
+**基础 URL**：`http://ws.audioscrobbler.com/2.0/`  
+**文档**：https://lastfm-docs.github.io/api-docs/
 
-## Example Output
+## 示例输出
 
-Here's what 17+ years of scrobbling looks like:
+以下是 17 年以上音乐收听记录的示例：
 
 ```
 Total scrobbles: 519,778
@@ -41,50 +41,51 @@ Top Tracks (all time):
 • System of a Down - Prison Song (1,102 plays)
 ```
 
-## Quick Reference
+## 快速参考
 
-All requests use GET with these base params:
+所有请求均使用 GET 方法，并包含以下基础参数：
+
 ```
 ?api_key=$LASTFM_API_KEY&format=json&user=$LASTFM_USER
 ```
 
-### User Endpoints
+### 用户端点
 
-#### Recent Tracks (what's playing / recently played)
+#### 最新播放的歌曲
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
-- First track with `@attr.nowplaying=true` is currently playing
-- Returns: artist, track name, album, timestamp, images
+- 其中第一条满足 `@attr.nowplaying=true` 条件的歌曲正在播放
+- 返回内容：艺术家名称、歌曲名称、专辑名称、时间戳以及图片
 
-#### User Info (profile stats)
+#### 用户信息（个人资料统计）
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json"
 ```
-- Returns: playcount, artist_count, track_count, album_count, registered date
+- 返回内容：播放次数、艺术家数量、歌曲数量、专辑数量、注册日期
 
-#### Top Artists
+#### 热门艺术家
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json&period=7day&limit=10"
 ```
-- `period`: overall | 7day | 1month | 3month | 6month | 12month
+- 时间范围：全部 | 7 天 | 1 个月 | 3 个月 | 6 个月 | 12 个月
 
-#### Top Albums
+#### 热门专辑
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json&period=7day&limit=10"
 ```
 
-#### Top Tracks
+#### 热门歌曲
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json&period=7day&limit=10"
 ```
 
-#### Loved Tracks
+#### 用户喜爱的歌曲
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
 
-#### Weekly Charts
+#### 周排行榜
 ```bash
 # Weekly artist chart
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getweeklyartistchart&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json"
@@ -96,58 +97,57 @@ curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=
 curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getweeklyalbumchart&user=$LASTFM_USER&api_key=$LASTFM_API_KEY&format=json"
 ```
 
-### Artist/Track/Album Info
+### 艺术家/歌曲/专辑信息
 
-#### Artist Info
+#### 艺术家信息
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Tame+Impala&api_key=$LASTFM_API_KEY&format=json&username=$LASTFM_USER"
 ```
-- Adding `username` includes user's playcount for that artist
+- 添加 `username` 参数后，会显示该艺术家的个人播放次数
 
-#### Similar Artists
+#### 类似艺术家
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=Tame+Impala&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
 
-#### Artist Top Tracks
+#### 艺术家的热门歌曲
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=Tame+Impala&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
 
-#### Track Info
+#### 歌曲信息
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=track.getinfo&artist=Tame+Impala&track=The+Less+I+Know+The+Better&api_key=$LASTFM_API_KEY&format=json&username=$LASTFM_USER"
 ```
 
-#### Similar Tracks
+#### 类似歌曲
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=Tame+Impala&track=Elephant&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
 
-#### Album Info
+#### 专辑信息
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=Tame+Impala&album=Currents&api_key=$LASTFM_API_KEY&format=json&username=$LASTFM_USER"
 ```
 
-### Search
+### 搜索
 
-#### Search Artists
+#### 搜索艺术家
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=tame&api_key=$LASTFM_API_KEY&format=json&limit=5"
 ```
 
-#### Search Tracks
+#### 搜索歌曲
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=track.search&track=elephant&api_key=$LASTFM_API_KEY&format=json&limit=5"
 ```
 
-#### Search Albums
+#### 搜索专辑
 ```bash
 curl -s "http://ws.audioscrobbler.com/2.0/?method=album.search&album=currents&api_key=$LASTFM_API_KEY&format=json&limit=5"
 ```
 
-### Charts (Global)
-
+### 全球排行榜
 ```bash
 # Top artists globally
 curl -s "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=$LASTFM_API_KEY&format=json&limit=10"
@@ -156,8 +156,7 @@ curl -s "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=$L
 curl -s "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
 
-### Tags
-
+### 标签
 ```bash
 # Top albums for a tag/genre
 curl -s "http://ws.audioscrobbler.com/2.0/?method=tag.gettopalbums&tag=psychedelic&api_key=$LASTFM_API_KEY&format=json&limit=10"
@@ -166,9 +165,9 @@ curl -s "http://ws.audioscrobbler.com/2.0/?method=tag.gettopalbums&tag=psychedel
 curl -s "http://ws.audioscrobbler.com/2.0/?method=tag.gettopartists&tag=brazilian&api_key=$LASTFM_API_KEY&format=json&limit=10"
 ```
 
-## Useful jq Filters
+## 有用的 jq 过滤器
 
-For JSON processing, see the [jq skill on ClawdHub](https://clawdhub.com/skills/jq).
+有关 JSON 处理的更多信息，请参阅 [ClawdHub 上的 jq 技能文档](https://clawdhub.com/skills/jq)。
 
 ```bash
 # Recent tracks: artist - track
@@ -181,9 +180,9 @@ jq '.topartists.artist[] | "\(.name) (\(.playcount))"'
 jq '.recenttracks.track[0] | if .["@attr"].nowplaying == "true" then "Now playing: \(.artist["#text"]) - \(.name)" else "Last played: \(.artist["#text"]) - \(.name)" end'
 ```
 
-## Notes
+## 注意事项
 
-- No auth needed for read-only endpoints (just API key)
-- Rate limit: be reasonable, no hard limit documented
-- URL-encode artist/track/album names (spaces → `+` or `%20`)
-- Images come in sizes: small, medium, large, extralarge
+- 仅读取数据的端点无需身份验证（只需提供 API 密钥即可）
+- 请合理使用请求频率，暂无明确的请求限制
+- 艺术家/歌曲/专辑名称需要使用 URL 编码（空格替换为 `+` 或 `%20`）
+- 图片提供小、中、大、特大四种尺寸

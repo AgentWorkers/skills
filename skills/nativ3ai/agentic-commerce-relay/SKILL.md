@@ -1,15 +1,15 @@
 ---
 name: agentic-commerce-relay
-description: Run the CCTP relay to burn USDC on a source chain and mint on a destination chain, returning verifiable receipts. Use for multichain agent-to-agent settlement, with optional Moltbook discovery and integrations.
+description: 运行CCTP中继，将USDC在源链上燃烧（销毁），并在目标链上重新铸造（生成新的USDC），同时返回可验证的交易收据。该系统适用于多链环境中的代理间结算，支持Moltbook的发现功能以及与其他系统的集成（可选）。
 ---
 
-# Agentic Commerce Relay
+# **Agentic Commerce Relay**
 
-Use this skill when you need to settle USDC across CCTP-supported chains without deploying contracts. The relay script calls Circle’s official CCTP contracts and outputs a machine-readable receipt.
+当您需要在支持CCTP（Cross-Chain Transaction Protocol）的链上转移USDC（Uniswap Decentralized Currency）而无需部署智能合约时，请使用此技能。该中继脚本会调用Circle官方的CCTP合约，并生成一份机器可读的收据。
 
-## Quick Use
+## **快速使用方法**
 
-From the repo root:
+从仓库根目录执行以下命令：
 
 ```bash
 SRC_RPC=... \
@@ -23,39 +23,39 @@ DST_DOMAIN=... \
 node scripts/cctp-bridge.js
 ```
 
-### Required env
+### **必需的环境变量**
 - `SRC_RPC`
 - `DST_RPC`
 - `PRIVATE_KEY`
 
-### Optional env (override per chain)
+### **可选的环境变量（可根据具体链进行配置）**
 - `SRC_USDC`
 - `SRC_TOKEN_MESSENGER`
 - `SRC_MESSAGE_TRANSMITTER`
 - `DST_MESSAGE_TRANSMITTER`
 - `DST_DOMAIN`
-- `AMOUNT` (default `1000000`, 1 USDC with 6 decimals)
+- `AMOUNT`（默认值为`1000000`，即1 USDC，保留6位小数）
 
-## Receipt
-The script prints JSON with:
-- `burnTx`
-- `messageHash`
-- `mintTx`
-- `recipient`
+## **收据内容**
+脚本会输出包含以下信息的JSON格式文件：
+- `burnTx`（用于销毁USDC的交易信息）
+- `messageHash`（交易消息的哈希值）
+- `mintTx`（用于铸造新USDC的交易信息）
+- `recipient`（接收USDC的地址）
 
-## Optional modules
+## **可选模块**
 
-### Moltbook discovery
-Find counterparties by submolt feed:
+### **Moltbook发现功能**
+通过子Molt feed（submolt feed）来查找交易对手方：
 ```bash
 MOLTBOOK_API_KEY=... \
 MOLTBOOK_BASE_URL=https://www.moltbook.com \
 node scripts/discovery-moltbook.cjs --submolt usdc --sort new --tag payment
 ```
 
-### Bundled integrations
-This repo includes optional modules under `integrations/`:
-- `integrations/mvp` (USDC Intent Payer)
-- `integrations/anonx402-hackathon` (Anon x402 Relay)
+### **集成模块**
+该仓库包含位于`integrations/`目录下的可选模块：
+- `integrations/mvp`（用于处理USDC转账请求的模块）
+- `integrations/anonx402-hackathon`（用于实现Anon x402协议的跨链中继功能）
 
-Use these for intent parsing/guardrails or privacy, then call the relay to settle cross-chain.
+您可以根据实际需求使用这些模块进行交易请求的解析、权限控制或隐私保护，之后再调用中继脚本来完成跨链转账。

@@ -15,9 +15,9 @@ metadata:
 
 # Airtable
 
-Access the Airtable API with managed OAuth authentication. Manage bases, tables, and records with full CRUD operations.
+通过管理的 OAuth 认证来访问 Airtable API。您可以执行完整的 CRUD 操作（创建、读取、更新和删除）来管理数据库、表格和记录。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List records from a table
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基础 URL
 
 ```
 https://gateway.maton.ai/airtable/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Airtable API endpoint path. The gateway proxies requests to `api.airtable.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Airtable API 端点路径。该网关会将请求代理到 `api.airtable.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Airtable OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Airtable OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Airtable connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Airtable 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,59 +138,51 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### List Bases
+### 列出数据库
 
 ```bash
 GET /airtable/v0/meta/bases
 ```
 
-### Get Base Schema
+### 获取数据库架构
 
 ```bash
 GET /airtable/v0/meta/bases/{baseId}/tables
 ```
 
-### List Records
+### 列出记录
 
 ```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}?maxRecords=100
 ```
 
-With view:
-
-```bash
+- 带视图：```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}?view=Grid%20view&maxRecords=100
 ```
 
-With filter formula:
-
-```bash
+- 带过滤公式：```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}?filterByFormula={Status}='Active'
 ```
 
-With field selection:
-
-```bash
+- 带字段选择：```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}?fields[]=Name&fields[]=Status&fields[]=Email
 ```
 
-With sorting:
-
-```bash
+- 带排序：```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}?sort[0][field]=Created&sort[0][direction]=desc
 ```
 
-### Get Record
+### 获取记录
 
 ```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}/{recordId}
 ```
 
-### Create Records
+### 创建记录
 
 ```bash
 POST /airtable/v0/{baseId}/{tableIdOrName}
@@ -209,7 +201,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Records (PATCH - partial update)
+### 更新记录（PATCH - 部分更新）
 
 ```bash
 PATCH /airtable/v0/{baseId}/{tableIdOrName}
@@ -227,7 +219,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Records (PUT - full replace)
+### 更新记录（PUT - 完整替换）
 
 ```bash
 PUT /airtable/v0/{baseId}/{tableIdOrName}
@@ -246,21 +238,21 @@ Content-Type: application/json
 }
 ```
 
-### Delete Records
+### 删除记录
 
 ```bash
 DELETE /airtable/v0/{baseId}/{tableIdOrName}?records[]=recXXXXX&records[]=recYYYYY
 ```
 
-## Pagination
+## 分页
 
-Use `pageSize` and `offset` for pagination:
+使用 `pageSize` 和 `offset` 进行分页：
 
 ```bash
 GET /airtable/v0/{baseId}/{tableIdOrName}?pageSize=50&offset=itrXXXXXXXXXXX
 ```
 
-Response includes `offset` when more records exist:
+当存在更多记录时，响应中会包含 `offset`：
 
 ```json
 {
@@ -269,7 +261,7 @@ Response includes `offset` when more records exist:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -297,35 +289,35 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Base IDs start with `app`
-- Table IDs start with `tbl` (can also use table name)
-- Record IDs start with `rec`
-- Maximum 100 records per request for create/update
-- Maximum 10 records per delete request
-- Filter formulas use Airtable formula syntax
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 数据库 ID 以 `app` 开头。
+- 表格 ID 以 `tbl` 开头（也可以使用表格名称）。
+- 记录 ID 以 `rec` 开头。
+- 每次创建/更新请求最多允许 100 条记录。
+- 每次删除请求最多允许 10 条记录。
+- 过滤公式使用 Airtable 的公式语法。
+- 重要提示：当使用 `curl` 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开，这可能导致 “无效的 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Airtable connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Airtable API |
+| 400 | 未找到 Airtable 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Airtable API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -336,20 +328,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `airtable`. For example:
+1. 确保您的 URL 路径以 `airtable` 开头。例如：
+  - 正确的格式：`https://gateway.maton.ai/airtable/v0/{baseId}/{tableIdOrName}`
+  - 错误的格式：`https://gateway.maton.ai/v0/{baseId}/{tableIdOrName}`
 
-- Correct: `https://gateway.maton.ai/airtable/v0/{baseId}/{tableIdOrName}`
-- Incorrect: `https://gateway.maton.ai/v0/{baseId}/{tableIdOrName}`
+## 资源
 
-## Resources
-
-- [Airtable API Overview](https://airtable.com/developers/web/api/introduction)
-- [List Records](https://airtable.com/developers/web/api/list-records)
-- [Create Records](https://airtable.com/developers/web/api/create-records)
-- [Update Records](https://airtable.com/developers/web/api/update-record)
-- [Delete Records](https://airtable.com/developers/web/api/delete-record)
-- [Formula Reference](https://support.airtable.com/docs/formula-field-reference)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Airtable API 概述](https://airtable.com/developers/web/api/introduction)
+- [列出记录](https://airtable.com/developers/web/api/list-records)
+- [创建记录](https://airtable.com/developers/web/api/create-records)
+- [更新记录](https://airtable.com/developers/web/api/update-record)
+- [删除记录](https://airtable.com/developers/web/api/delete-record)
+- [公式参考](https://support.airtable.com/docs/formula-field-reference)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

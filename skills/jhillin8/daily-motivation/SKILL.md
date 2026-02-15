@@ -1,6 +1,6 @@
 ---
 name: daily-motivation
-description: Get daily motivation with personalized encouragement, goal reminders, and momentum tracking
+description: 每天通过个性化的鼓励、目标提醒以及动力追踪来获得激励。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,55 +11,51 @@ triggers:
   - "feeling unmotivated"
 ---
 
-# Daily Motivation
+# 每日激励
 
-Fuel for your ambition. Get personalized encouragement, track progress, and stay accountable.
+为您的雄心提供动力，获得个性化的鼓励，跟踪进度，并保持责任感。
 
-## What it does
+## 功能介绍
 
-- **Personalized motivation** - Tailored encouragement based on your goals and past wins
-- **Goal reminders** - Contextual nudges that connect daily actions to bigger objectives
-- **Win recalls** - Celebrate past achievements to build momentum
-- **Momentum tracking** - Visual progress markers and streak counters
+- **个性化激励**：根据您的目标和过去的成就提供定制化的鼓励信息。
+- **目标提醒**：将日常行动与更大的目标联系起来，提供有针对性的提示。
+- **成就回顾**：庆祝过去的成就，以增强动力。
+- **进度追踪**：通过视觉化的进度标记和连续完成任务的计数器来记录您的进展。
 
-## Usage
+## 使用方法
 
-**Get motivated**
-- "motivate me" → receive personalized encouragement
-- "inspire me" → get a powerful quote aligned to your goals
+**获取激励**
+- 输入 “motivate me” → 接收个性化的鼓励信息。
+- 输入 “inspire me” → 获取与您的目标相匹配的励志名言。
 
-**Remind me why**
-- "remind me of my goals" → see your top 3 active goals
-- "why does this matter?" → context linking today's action to long-term vision
+**提醒目标**
+- 输入 “remind me of my goals” → 查看您当前最重要的3个目标。
+- 输入 “why does this matter?” → 了解今天的行动与长期愿景之间的联系。
 
-**Recall wins**
-- "what have I accomplished?" → list recent wins and milestones
-- "show me my streak" → view consistency tracking across habits
+**回顾成就**
+- 输入 “what have I accomplished?” → 查看您最近的成就和里程碑。
+- 输入 “show me my streak” → 查看您在各项习惯上的持续表现。
 
-**Set intentions**
-- "set today's intention" → frame the day around one key goal
-- "what should I focus on?" → priority suggestion based on your goals
+**设定目标**
+- 输入 “set today’s intention” → 为今天设定一个关键目标。
+- 输入 “what should I focus on?” → 根据您的目标提供优先事项建议。
 
-**Check momentum**
-- "how's my progress?" → snapshot of current streaks, completions, trends
-- "what's next?" → next actionable milestone
+**检查进度**
+- 输入 “how’s my progress?” → 查看当前的连续完成任务情况、已完成的任务以及整体趋势。
+- 输入 “what’s next?” → 了解下一个需要采取行动的里程碑。
 
-## Motivation Types
+## 激励类型
 
-**Goal-based** - Anchor daily motivation to specific objectives you've set
+- **基于目标的激励**：将每日激励与您设定的具体目标紧密相连。
+- **基于名言的激励**：根据您当前的目标或心情，提供精选的励志名言。
+- **成就回顾**：回顾过去的成就，以重建信心。
+- **未来展望**：描绘30天或90天后的成功画面。
+- **责任感**：通过公开或私密的承诺声明来强化您的决心。
 
-**Quote-based** - Contextual, curated quotes matched to your current goals or mood
+## 使用建议
 
-**Win-recall** - Pull from your achievement history to rebuild confidence
-
-**Future visualization** - Paint a picture of what success looks like 30/90 days out
-
-**Accountability** - Public or private commitment statements to strengthen resolve
-
-## Tips
-
-- Link motivation to real goals, not generic affirmations—specificity builds belief
-- Use win-recalls before tackling hard tasks—momentum is real
-- Set intentions daily, check momentum weekly—rhythm matters
-- Connect daily micro-actions to 90-day outcomes—this makes motivation stick
-- All data stays local on your machine
+- 将激励与实际目标联系起来，而不仅仅是泛泛而谈的肯定语——具体性有助于增强信念。
+- 在面对困难任务之前回顾过去的成就——动力是真实存在的。
+- 每天设定目标，每周检查进度——节奏很重要。
+- 将日常的小行动与90天后的成果联系起来——这样激励效果会更持久。
+- 所有数据都存储在您的设备上。

@@ -1,27 +1,27 @@
 ---
 name: sql-toolkit
-description: Query, design, migrate, and optimize SQL databases. Use when working with SQLite, PostgreSQL, or MySQL — schema design, writing queries, creating migrations, indexing, backup/restore, and debugging slow queries. No ORMs required.
+description: 查询、设计、迁移和优化 SQL 数据库。适用于 SQLite、PostgreSQL 或 MySQL 的开发工作，包括数据库模式设计、编写 SQL 语句、创建数据库迁移脚本、建立索引以及处理查询性能问题（如查询缓慢的情况）。无需使用对象关系映射（ORM）框架。
 metadata: {"clawdbot":{"emoji":"🗄️","requires":{"anyBins":["sqlite3","psql","mysql"]},"os":["linux","darwin","win32"]}}
 ---
 
-# SQL Toolkit
+# SQL 工具包
 
-Work with relational databases directly from the command line. Covers SQLite, PostgreSQL, and MySQL with patterns for schema design, querying, migrations, indexing, and operations.
+该工具包允许您直接通过命令行操作关系型数据库，支持 SQLite、PostgreSQL 和 MySQL，并提供了用于数据库模式设计、查询、数据迁移、索引创建及各种数据库操作的实用模式。
 
-## When to Use
+## 使用场景
 
-- Creating or modifying database schemas
-- Writing complex queries (joins, aggregations, window functions, CTEs)
-- Building migration scripts
-- Optimizing slow queries with indexes and EXPLAIN
-- Backing up and restoring databases
-- Quick data exploration with SQLite (zero setup)
+- 创建或修改数据库模式
+- 编写复杂的查询（包括连接操作、聚合函数、窗口函数以及公共表表达式 CTE）
+- 编写数据迁移脚本
+- 通过索引和 EXPLAIN 优化查询性能
+- 备份和恢复数据库
+- 使用 SQLite 进行快速数据探索（无需额外配置）
 
-## SQLite (Zero Setup)
+## SQLite（无需额外配置）
 
-SQLite is included with Python and available on every system. Use it for local data, prototyping, and single-file databases.
+SQLite 已内置在 Python 中，几乎所有系统都支持它。适用于本地数据存储、原型开发以及单文件数据库的创建。
 
-### Quick Start
+### 快速入门
 
 ```bash
 # Create/open a database
@@ -40,7 +40,7 @@ sqlite3 -header -csv mydb.sqlite "SELECT * FROM orders;" > orders.csv
 sqlite3 -header -column mydb.sqlite
 ```
 
-### Schema Operations
+### 数据库模式操作
 
 ```sql
 -- Create table
@@ -75,7 +75,7 @@ CREATE UNIQUE INDEX idx_users_email ON users(email);
 
 ## PostgreSQL
 
-### Connection
+### 连接数据库
 
 ```bash
 # Connect
@@ -94,7 +94,7 @@ psql -h localhost -U myuser -d mydb -f migration.sql
 psql -l
 ```
 
-### Schema Design Patterns
+### 数据库模式设计模式
 
 ```sql
 -- Use UUIDs for distributed-friendly primary keys
@@ -144,7 +144,7 @@ CREATE INDEX idx_orders_active ON orders(user_id, created_at)
 CREATE INDEX idx_orders_metadata ON orders USING GIN(metadata);
 ```
 
-### JSONB Queries (PostgreSQL)
+### JSONB 查询（PostgreSQL）
 
 ```sql
 -- Store JSON
@@ -162,14 +162,14 @@ UPDATE orders SET metadata = jsonb_set(metadata, '{source}', '"mobile"') WHERE i
 
 ## MySQL
 
-### Connection
+### 连接数据库
 
 ```bash
 mysql -h localhost -u root -p mydb
 mysql -h localhost -u root -p -e "SELECT NOW();" mydb
 ```
 
-### Key Differences from PostgreSQL
+### 与 PostgreSQL 的主要区别
 
 ```sql
 -- Auto-increment (not SERIAL)
@@ -195,9 +195,9 @@ SELECT * FROM orders WHERE JSON_EXTRACT(metadata, '$.source') = 'web';
 SELECT * FROM orders WHERE metadata->>'$.source' = 'web';
 ```
 
-## Query Patterns
+## 查询模式
 
-### Joins
+### 连接操作（JOIN）
 
 ```sql
 -- Inner join (only matching rows)
@@ -219,7 +219,7 @@ JOIN users b ON SPLIT_PART(a.email, '@', 2) = SPLIT_PART(b.email, '@', 2)
 WHERE a.id < b.id;
 ```
 
-### Aggregations
+### 聚合操作
 
 ```sql
 -- Group by with having
@@ -245,7 +245,7 @@ SELECT date, revenue,
 FROM daily_sales;
 ```
 
-### Common Table Expressions (CTEs)
+### 公共表表达式（CTE）
 
 ```sql
 -- Readable multi-step queries
@@ -278,9 +278,9 @@ WITH RECURSIVE org_tree AS (
 SELECT REPEAT('  ', depth) || name AS org_chart FROM org_tree ORDER BY depth, name;
 ```
 
-## Migrations
+## 数据迁移
 
-### Manual Migration Script Pattern
+### 手动数据迁移脚本的编写方式
 
 ```bash
 #!/bin/bash
@@ -312,7 +312,7 @@ done
 echo "All migrations applied."
 ```
 
-### Migration File Convention
+### 数据迁移文件的命名规范
 
 ```
 migrations/
@@ -322,7 +322,8 @@ migrations/
   004_add_orders_metadata_index.sql
 ```
 
-Each file:
+每个文件的结构如下：
+
 ```sql
 -- 003_add_users_phone.sql
 -- Up
@@ -331,9 +332,9 @@ ALTER TABLE users ADD COLUMN phone TEXT;
 -- To reverse: ALTER TABLE users DROP COLUMN phone;
 ```
 
-## Query Optimization
+## 查询优化
 
-### EXPLAIN (PostgreSQL)
+### 使用 EXPLAIN 分析查询性能（PostgreSQL）
 
 ```sql
 -- Show query plan
@@ -344,13 +345,13 @@ EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
 SELECT * FROM orders WHERE user_id = '...' AND status = 'paid';
 ```
 
-**What to look for:**
-- `Seq Scan` on large tables → needs an index
-- `Nested Loop` with large row counts → consider `Hash Join` (may need more `work_mem`)
-- `Rows Removed by Filter` being high → index doesn't cover the filter
-- Actual rows far from estimated → run `ANALYZE tablename;` to update statistics
+**需要注意的事项：**
+- 对于大型表，如果查询使用 `Seq Scan` 算法，则可能需要创建索引。
+- 当查询涉及大量数据行时，如果使用 `Nested Loop` 算法，可以考虑使用 `Hash Join`（但可能需要增加 `work_mem` 内存配置）。
+- 如果 `Rows Removed by Filter` 的数值很高，说明当前索引无法有效覆盖查询条件；此时应运行 `ANALYZE tablename;` 命令来更新数据库统计信息。
+- 如果实际查询处理的行数与预估值相差较大，建议运行 `ANALYZE tablename;` 命令以优化查询性能。
 
-### Index Strategy
+### 索引策略
 
 ```sql
 -- Single column (most common)
@@ -373,14 +374,14 @@ WHERE idx_scan = 0 AND indexname NOT LIKE '%pkey%'
 ORDER BY pg_relation_size(indexrelid) DESC;
 ```
 
-### SQLite EXPLAIN
+### 使用 SQLite 的 EXPLAIN 分析查询性能
 
 ```sql
 EXPLAIN QUERY PLAN SELECT * FROM orders WHERE user_id = 5;
 -- Look for: SCAN (bad) vs SEARCH USING INDEX (good)
 ```
 
-## Backup & Restore
+## 数据备份与恢复
 
 ### PostgreSQL
 
@@ -424,11 +425,11 @@ mysqldump -h localhost -u root -p mydb > backup.sql
 mysql -h localhost -u root -p mydb < backup.sql
 ```
 
-## Tips
+## 使用建议：
 
-- Always use parameterized queries in application code — never concatenate user input into SQL
-- Use `TIMESTAMPTZ` (not `TIMESTAMP`) in PostgreSQL for timezone-aware dates
-- Set `PRAGMA journal_mode=WAL;` in SQLite for concurrent read performance
-- Use `EXPLAIN` before deploying any query that runs on large tables
-- PostgreSQL: `\d+ tablename` shows columns, indexes, and size. `\di+` lists all indexes with sizes
-- For quick data exploration, import any CSV into SQLite: `sqlite3 :memory: ".mode csv" ".import file.csv t" "SELECT ..."`
+- 在应用程序代码中始终使用参数化查询，切勿将用户输入直接拼接到 SQL 语句中。
+- 在 PostgreSQL 中使用 `TIMESTAMPTZ` 而不是 `TIMESTAMP` 来处理时区相关的日期格式。
+- 在 SQLite 中设置 `PRAGMA journal_mode=WAL;` 以提高并发读写性能。
+- 在部署任何针对大型表的查询之前，务必使用 `EXPLAIN` 分析查询语句。
+- 在 PostgreSQL 中，使用 `\d+ tablename` 可查看列名、索引信息及表大小；使用 `\di+` 可查看所有索引的详细信息。
+- 如需快速数据探索，可以将 CSV 文件导入 SQLite 数据库：`sqlite3 :memory: ".mode csv" ".import file.csv t" "SELECT ..."`

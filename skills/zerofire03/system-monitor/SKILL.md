@@ -1,12 +1,12 @@
 ---
 name: system_monitor
-description: Check the current CPU, RAM, and GPU status of the local server.
+description: 检查本地服务器当前的CPU、RAM和GPU状态。
 ---
 
-# System Monitor Skill
+# 系统监控技能
 
-Use this skill when the user asks about the server's health, hardware usage, or GPU status.
+当用户询问服务器的健康状况、硬件使用情况或GPU状态时，可以使用此技能。
 
-## Usage
-To check the system status, run the local monitor script:
+## 使用方法
+要检查系统状态，请运行本地监控脚本：
 `./monitor.sh`

@@ -1,7 +1,7 @@
 ---
 name: arr-all
 version: 1.0.0
-description: Unified command-line interface for Radarr, Sonarr, and Lidarr. Search, add, and manage movies (Radarr), TV shows (Sonarr), and music (Lidarr) with calendar view and health monitoring.
+description: Radarr、Sonarr 和 Lidarr 的统一命令行界面：支持搜索、添加和管理电影（Radarr）、电视节目（Sonarr）以及音乐（Lidarr），并提供日历视图和设备健康状况监控功能。
 metadata:
   openclaw:
     requires:
@@ -12,16 +12,16 @@ metadata:
 
 # Arr-All
 
-Unified interface for Radarr (movies), Sonarr (TV), and Lidarr (music).
+这是一个用于管理 Radarr（电影）、Sonarr（电视节目）和 Lidarr（音乐）的统一接口。
 
-## Setup
+## 设置
 
-### Configuration
+### 配置
 
-You can use a unified config file or existing individual configs.
+你可以使用一个统一的配置文件，或者现有的单独配置文件。
 
-**Unified Config (Preferred):**
-Create `~/.openclaw/credentials/arr-all/config.json`:
+**统一配置（推荐）：**
+创建 `~/.openclaw/credentials/arr-all/config.json` 文件：
 
 ```json
 {
@@ -45,65 +45,65 @@ Create `~/.openclaw/credentials/arr-all/config.json`:
 }
 ```
 
-**Legacy Configs:**
-Existing configs at `~/.openclaw/credentials/{radarr,sonarr,lidarr}/config.json` are also supported.
+**旧版配置：**
+现有的配置文件（位于 `~/.openclaw/credentials/{radarr,sonarr,lidarr}/config.json`）也是支持的。
 
-## Usage
+## 使用方法
 
-Command format: `arr-all <type> <action> [args]`
+命令格式：`arr-all <类型> <操作> [参数]`
 
-### Common Commands
+### 常用命令
 
-All media types support these core commands:
+所有媒体类型都支持以下核心命令：
 
-- **Search**: `arr-all [movie|tv|music] search "Query"`
-- **Add**: `arr-all [movie|tv|music] add <id>`
-- **Check**: `arr-all [movie|tv|music] exists <id>`
-- **Remove**: `arr-all [movie|tv|music] remove <id> [--delete-files]`
-- **Config**: `arr-all [movie|tv|music] config`
+- **搜索**：`arr-all [电影|电视|音乐] search "查询内容"`
+- **添加**：`arr-all [电影|电视|音乐] add <ID>`
+- **检查**：`arr-all [电影|电视|音乐] exists <ID>`
+- **删除**：`arr-all [电影|电视|音乐] remove <ID> [--delete-files]`
+- **配置**：`arr-all [电影|电视|音乐] config`
 
-### Cross-Cutting Commands
+### 公共命令
 
-- **Calendar**: `arr-all calendar [days=7]` (Upcoming releases)
-- **Health**: `arr-all health` (Status of all apps)
-- **Status**: `arr-all status` (Connection status)
-- **Combined Search**: `arr-all search "Query"` (Searches all three)
+- **日历**：`arr-all calendar [天数=7]`（显示即将发布的媒体内容）
+- **状态**：`arr-all health`（查看所有应用程序的状态）
+- **连接状态**：`arr-all status`（查看连接状态）
+- **综合搜索**：`arr-all search "查询内容"`（同时搜索三种媒体类型）
 
-### Type-Specific Features
+### 类型特定功能
 
-**Movies (Radarr):**
+**电影（Radarr）：**
 
-- `arr-all movie add-collection <id>`
-- `arr-all movie collections`
+- `arr-all movie add-collection <ID>`
+- `arr-all movie collections`（查看电影收藏列表）
 
-**TV (Sonarr):**
+**电视节目（Sonarr）：**
 
-- `arr-all tv add <id> [--monitor latest|all|none|seasons:1,2]`
-- `arr-all tv seasons <id>`
-- `arr-all tv monitor-season <id> <season>`
+- `arr-all tv add <ID> [--monitor latest|all|none|seasons:1,2]`（添加电视节目或按季度监控）
+- `arr-all tv seasons <ID>`（查看电视节目的季数）
+- `arr-all tv monitor-season <ID> <季度>`（监控特定季度的节目）
 
-**Music (Lidarr):**
+**音乐（Lidarr）：**
 
-- `arr-all music add <id> [--discography]`
-- `arr-all music albums <id>`
-- `arr-all music monitor-album <id>`
+- `arr-all music add <ID> [--discography]`（添加音乐专辑）
+- `arr-all music albums <ID>`（查看音乐专辑列表）
+- `arr-all music monitor-album <ID>`（监控特定专辑的播放情况）
 
-## Examples
+## 示例
 
-**Add a Movie:**
+**添加一部电影：**
 
 ```bash
 arr-all movie search "Dune"
 arr-all movie add 438631
 ```
 
-**Check Calendar:**
+**查看日历：**
 
 ```bash
 arr-all calendar
 ```
 
-**Check Health:**
+**查看应用程序状态：**
 
 ```bash
 arr-all health

@@ -1,7 +1,7 @@
 ---
 name: "gitai-automation"
 display_name: "Gitai - Automated Conventional Commits in Git with AI"
-description: "Boost developer productivity with Gitai: An AI-powered Git automation tool that analyzes code changes and generates semantic Conventional Commits instantly. Supports Node.js, Python, Java, Go, PHP, and more. Compatible with OpenAI, Anthropic, and Groq."
+description: "利用 Gitai 提升开发者的生产力：Gitai 是一款基于人工智能的 Git 自动化工具，能够分析代码变更并即时生成符合规范（Conventional Commits）的提交信息。支持 Node.js、Python、Java、Go、PHP 等多种编程语言，同时兼容 OpenAI、Anthropic 和 Groq 等 AI 服务。"
 author: "leandrosilvaferreira"
 version: "1.0.0"
 tags: ["git", "automation", "ai", "commit", "conventional-commits", "workflow", "productivity", "dev-tools", "openai", "anthropic", "groq", "llm"]
@@ -9,90 +9,89 @@ allowed-tools: "Run Command, Read File, Write File"
 priority: "HIGH"
 ---
 
-# Gitai Automation - AI-Powered Git Workflow
+# Gitai Automation - 基于AI的Git工作流程自动化工具
 
-> **Transform your development workflow with intelligent, automated commit management.**
+> **利用智能、自动化的提交管理来优化您的开发流程。**
 
-Gitai analyzes your code changes to generate precise, descriptive commit messages following the **Conventional Commits** standard. It eliminates the friction of writing commit messages, ensuring a clean, semantic, and professional git history automatically.
+Gitai会分析您的代码变更，并根据**Conventional Commits**标准生成精确、描述性强的提交信息。它消除了编写提交信息的繁琐过程，确保您的Git历史记录始终保持清晰、语义明确且专业。
 
-**Key capabilities:**
--   **Universal Language Support**: Analyzes Node.js, Python, Java, Go, PHP, and more.
--   **Multi-LLM Support**: Choose your preferred AI brain—OpenAI (GPT), Anthropic (Claude), or Groq.
--   **Workflow Automation**: Stages, commits, and pushes changes in a single command.
--   **Standardized History**: Enforces consistency across your project's version history.
+**主要功能：**
+- **支持多种编程语言**：能够分析Node.js、Python、Java、Go、PHP等多种语言的代码。
+- **支持多种AI模型**：您可以选择自己喜欢的AI模型——OpenAI（GPT）、Anthropic（Claude）或Groq。
+- **工作流程自动化**：通过一个命令即可完成代码的分阶段处理、提交以及推送操作。
+- **统一的项目版本历史记录**：确保项目版本历史的一致性。
 
 ---
 
-## 📦 Prerequisites (MANDATORY)
+## 📦 先决条件（必须满足）
 
-This skill requires the `@notyped/gitai` CLI tool to be installed and configured on the system **BEFORE** the agent can operate.
+在使用该工具之前，系统上必须已经安装并配置了`@notyped/gitai` CLI工具。
 
-**The AGENT MUST NOT attempt to install this package or configure it.**
+**请注意：** **代理（AGENT）** **不得尝试自行安装或配置该工具**。
 
-1.  **CHECK** if `gitai` is available:
+1. **检查`gitai`是否已安装**：
     ```bash
     command -v gitai
     ```
-2.  **IF MISSING**, STOP immediately and inform the user:
-    > "The `gitai` CLI tool is not installed. Please install it globally (e.g., `npm install -g @notyped/gitai`) and configure it before using this skill."
-    
-3.  **CHECK** if `~/.gitai` exists.
-4.  **IF MISSING**, STOP immediately and inform the user:
-    > "The `gitai` tool is installed but not configured. Please run `gitai` in your terminal to complete the setup."
 
-5.  **ONLY PROCEED** if both checks pass.
+2. **如果未安装**，请立即停止并通知用户：
+    > “`gitai` CLI工具尚未安装。请全局安装它（例如：`npm install -g @notyped/gitai`），并完成配置后再使用该工具。”
 
-## 🚀 Usage & Workflows
+3. **检查`~/.gitai`文件是否存在**。
+4. **如果文件不存在**，请立即停止并通知用户：
+    > “`gitai`工具已安装但未配置。请在终端中运行`gitai`以完成配置。”
 
-### Command Structure
-Based on `gitai --help`:
+5. **只有当以上两项检查都通过后，才能继续使用该工具。**
+
+## 🚀 使用方法与工作流程
+
+### 命令结构
+参考`gitai --help`命令获取详细信息：
 ```bash
 gitai [options] [projectPath] [baseMessage]
 ```
 
-**Arguments:**
-- `projectPath`: The path to the project (default: ".").
-- `baseMessage`: The base commit message (Optional).
+**参数：**
+- `projectPath`：项目的路径（默认为“.”）。
+- `baseMessage`：基础提交信息（可选）。
 
-**Options:**
-- `-p, --push`: Whether to push after committing (default: false).
-- `-V, --version`: Output the version number.
-- `-h, --help`: Display help for command.
+**选项：**
+- `-p, --push`：提交后是否执行推送操作（默认为false）。
+- `-V, --version`：输出版本号。
+- `-h, --help`：显示命令帮助信息。
 
-### Standard Workflows
+### 标准工作流程
 
-| Command | Action Description |
-|---------|--------------------|
-| `gitai . ''` | Analyzes current folder, Generates message and commits |
-| `gitai . '' --push` | Analyzes current folder, Generates message, commits, AND pushes to remote |
-| `gitai ./frontend 'ui update'` | Analyzes only the `./frontend` directory, Generates message and commits |
+| 命令              | 功能描述                          |
+|-----------------|--------------------------------------------|
+| `gitai . ```       | 分析当前文件夹，生成提交信息并执行提交            |
+| `gitai . `` --push`    | 分析当前文件夹，生成提交信息并推送至远程仓库        |
+| `gitai ./frontend 'ui update'` | 仅分析`./frontend`目录，生成提交信息并执行提交        |
 
-### Verification
-Check which version of Gitai is currently active:
+### 验证
+查看当前使用的Gitai版本：
 ```bash
 gitai --version
 ```
 
+---
 
+## ⚠️ 故障排除
+
+- **交互式向导卡住**：如果`gitai`在等待用户输入时卡住，可能是`~/.gitai`文件缺失或无效。请按照步骤2中的说明手动创建该文件。
+- **Node.js版本问题**：确保系统使用的是Node.js 18及以上版本（运行`node -v`进行验证）。
+- **API错误**：请检查`~/.gitai`文件中的`API_KEY`是否正确。
 
 ---
 
-## ⚠️ Troubleshooting
+## 链接
+- **GitHub仓库**：[https://github.com/leandrosilvaferreira/gitai-skill](https://github.com/leandrosilvaferreira/gitai-skill)
+- **问题反馈**：[https://github.com/leandrosilvaferreira/gitai-skill/issues](https://github.com/leandrosilvaferreira/gitai-skill/issues)
 
--   **Interactive Wizard Hangs**: If `gitai` hangs waiting for input, it means `~/.gitai` is missing or invalid. create the file manually as described in Step 2.
--   **Node Version Error**: Ensure Node.js 18+ is active (`node -v`).
--   **API Errors**: Check the `API_KEY` in `~/.gitai`.
+## 开发者信息
+- **作者**：Leandro Zuck
+- **GitHub账号**：[https://github.com/leandrosilvaferreira](https://github.com/leandrosilvaferreira)
+- **电子邮件**：leandrosilvaferreira@gmail.com
 
----
-
-## Links
-- **GitHub**: [https://github.com/leandrosilvaferreira/gitai-skill](https://github.com/leandrosilvaferreira/gitai-skill)
-- **Issues**: [https://github.com/leandrosilvaferreira/gitai-skill/issues](https://github.com/leandrosilvaferreira/gitai-skill/issues)
-
-## Author
-- **Leandro Zuck**
-- **GitHub**: [https://github.com/leandrosilvaferreira](https://github.com/leandrosilvaferreira)
-- **Email**: leandrosilvaferreira@gmail.com
-
-## License
-MIT
+## 许可证
+MIT许可证

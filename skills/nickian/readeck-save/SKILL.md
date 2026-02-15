@@ -1,41 +1,41 @@
 ---
 name: readeck
-description: Save articles to Readeck (self-hosted read-it-later app). Use when the user wants to save an article for later reading, add something to their reading list, or send a page to Readeck.
+description: 将文章保存到 Readeck（一个自托管的“稍后阅读”应用程序）中。当用户希望保存文章以备日后阅读、将其添加到阅读列表中，或将某页面发送到 Readeck 时，可以使用此功能。
 ---
 
 # Readeck
 
-Save articles to a self-hosted Readeck instance for later reading.
+将文章保存到自托管的 Readeck 实例中，以便日后阅读。
 
-## Setup
+## 设置
 
-Set these environment variables (in your shell profile or Clawdbot config):
+请设置以下环境变量（在您的 shell 配置文件或 Clawdbot 配置文件中）：
 
 ```bash
 export READECK_URL="https://your-readeck-instance.com"
 export READECK_API_TOKEN="your-api-token"
 ```
 
-To get your API token: Readeck → Settings → API tokens → Create new token.
+要获取 API 令牌，请访问 Readeck → 设置 → API 令牌 → 创建新令牌。
 
-## Save an article
+## 保存文章
 
 ```bash
 {baseDir}/scripts/save.sh "<URL>"
 ```
 
-Example:
+示例：
 ```bash
 {baseDir}/scripts/save.sh "https://example.com/interesting-article"
 ```
 
-## API Details
+## API 详细信息
 
-- **Endpoint:** `POST {READECK_URL}/api/bookmarks`
-- **Auth:** Bearer token
-- **Body:** `{"url": "..."}`
+- **端点：** `POST {READECK_URL}/api/bookmarks`
+- **认证方式：** 持证令牌（Bearer token）
+- **请求体：** `{"url": "..."}`
 
-## Response
+## 响应
 
-Returns `{"status":202,"message":"Link submited"}` on success.
-Readeck will fetch and process the article content automatically.
+成功时返回 `{"status": 202, "message": "链接已保存"}`。
+Readeck 会自动获取并处理文章内容。

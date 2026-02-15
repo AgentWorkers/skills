@@ -1,7 +1,7 @@
 ---
 name: clawdscan
 version: 0.3.0
-description: "Diagnose Clawdbot/OpenClaw health — session bloat, zombies, stale files, AND skill dependency validation. Zero dependencies, single Python file."
+description: "诊断 Clawdbot/OpenClaw 的运行状态：检查会话是否膨胀（即会话数据量过大）、是否存在“僵尸进程”（即长时间未响应但仍占用的系统资源）、以及文件是否过期或失效。同时，还需要验证各项技能（skills）之间的依赖关系。整个系统实现依赖于零外部依赖项，仅使用一个 Python 文件即可完成所有功能。"
 user-invocable: true
 metadata:
   openclaw:
@@ -10,38 +10,38 @@ metadata:
       bins: ["python3"]
 ---
 
-# ClawdScan — Session Health Analyzer
+# ClawdScan — 会话健康分析工具
 
-> 🔍 Diagnose bloat, find zombies, reclaim disk space
+> 🔍 诊断系统臃肿问题，查找未使用的会话，释放磁盘空间
 
-ClawdScan is a zero-dependency Python CLI that analyzes Clawdbot/OpenClaw session JSONL files to identify bloated sessions, zombies, stale files, and provides actionable cleanup recommendations.
+ClawdScan 是一个完全依赖外部库的 Python 命令行工具（CLI），它通过分析 Clawdbot/OpenClaw 生成的 JSONL 文件来识别臃肿的会话、未使用的会话以及过时的文件，并提供相应的清理建议。
 
-## Features
+## 主要功能
 
-- **Session Health Analysis** - Detect bloated sessions, high message counts, disk usage patterns
-- **Zombie Detection** - Find sessions created but never used
-- **Stale Session Identification** - Identify sessions inactive for configurable periods  
-- **Tool Usage Analytics** - Track which tools are being used and how frequently
-- **Model Usage Patterns** - Monitor model switching and usage trends
-- **Disk Space Management** - Breakdown of storage usage by agent and session
-- **Automatic Cleanup** - Safe archive and deletion of problematic sessions
-- **Trend Tracking** - Historical analysis of session health over time
-- **Heartbeat Integration** - Automated monitoring and alerts
+- **会话健康分析**：检测会话是否臃肿、消息数量是否过多、磁盘使用情况是否异常
+- **未使用会话检测**：找出创建后从未被使用的会话
+- **过时会话识别**：识别超过指定时间长度（可配置）未活动的会话
+- **工具使用统计**：记录各工具的使用频率
+- **模型使用趋势**：监控模型切换情况和使用模式
+- **磁盘空间管理**：按代理和会话类型细分存储使用情况
+- **自动清理**：安全地归档或删除问题会话
+- **趋势跟踪**：历史分析会话健康状况
+- **心跳集成**：实现自动监控和警报功能
 
-## Installation
+## 安装
 
-### As Clawdbot Skill
+### 作为 Clawdbot 的技能（Skill）进行安装
 ```bash
 clawdbot skill install clawdscan
 ```
 
-### Standalone
+### 独立安装
 ```bash
 chmod +x clawdscan.py
 ./clawdscan.py --help
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Full health scan
@@ -57,29 +57,20 @@ clawdscan clean --zombies --execute
 clawdscan history --days 7
 ```
 
-## Commands
+## 命令说明
 
-### `scan` - Full Health Scan
-Comprehensive analysis of all Clawdbot sessions.
+### `scan` - 全面健康检查
+对所有 Clawdbot 会话进行综合分析。
 
-```bash
-clawdscan scan [--json output.json]
+**输出内容包括：**
+- 总会话数和磁盘使用量
+- 被认为臃肿的会话（文件大小超过 1MB 或消息数量超过 300 条）
+- 未使用的会话（创建后未被使用）
+- 按文件大小或消息数量排序的顶级会话
+- 清理建议
 
-# Examples
-clawdscan scan                    # Console output
-clawdscan scan --json report.json # Save as JSON
-```
-
-**Output includes:**
-- Total sessions and disk usage
-- Bloated sessions (>1MB or >300 messages)
-- Zombie sessions (created but unused)
-- Stale sessions (inactive >7 days)
-- Top sessions by size and messages
-- Cleanup recommendations
-
-### `top` - Top Sessions
-Show largest sessions by size or message count.
+### `top` - 显示顶级会话
+按文件大小或消息数量显示最大的会话。
 
 ```bash
 clawdscan top [-n COUNT] [--sort {size|messages}]
@@ -91,115 +82,77 @@ clawdscan top --sort messages     # Top 15 by message count
 clawdscan top -n 10 --sort messages # Top 10 by messages
 ```
 
-### `inspect` - Deep Session Analysis
-Detailed analysis of a specific session.
+### `inspect` - 详细会话分析
+对特定会话进行深入分析。
 
-```bash
-clawdscan inspect <session-id>
+**显示内容：**
+- 会话元数据（创建时间、最后活动时间、文件大小）
+- 按类型划分的消息数量
+- 会话中使用的工具
+- 模型使用情况
+- 大型消息或潜在问题
 
-# Example
-clawdscan inspect chhotu-agent-20240109
-```
+### `tools` - 工具使用统计
+汇总所有会话的工具使用情况。
 
-**Shows:**
-- Session metadata (created, last activity, size)
-- Message count breakdown by type
-- Tool usage within the session
-- Model usage patterns
-- Large messages or potential issues
+**分析内容包括：**
+- 最常用的工具
+- 各代理使用的工具
+- 工具的平均调用频率
+- 可能导致系统臃肿的工具
 
-### `tools` - Tool Usage Analytics
-Aggregate statistics across all sessions.
+### `models` - 模型使用趋势
+监控模型的使用情况和切换模式。
 
-```bash
-clawdscan tools
-```
+**显示内容：**
+- 模型使用分布
+- 模型切换频率
+- 模型使用对系统性能的影响（如果有关联的令牌数据）
+- 各代理偏好的模型
 
-**Analysis includes:**
-- Most frequently used tools
-- Tool usage by agent
-- Average tool call frequency
-- Tools that may be causing bloat
+### `disk` - 存储分析
+按代理和会话类型细分磁盘使用情况。
 
-### `models` - Model Usage Patterns
-Track model usage and switching patterns.
+**提供信息：**
+- 总存储使用量
+- 各代理的存储使用情况
+- 最大的目录
+- 存储使用增长趋势
+- 清理建议
 
-```bash
-clawdscan models
-```
+### `clean` - 会话清理
+安全地清理问题会话，支持预览模式。
 
-**Shows:**
-- Model usage distribution
-- Model switching frequency
-- Cost implications (if token data available)
-- Model preference by agent
+**安全特性：**
+- 默认启用预览模式（不会执行破坏性操作）
+- 删除前会创建备份
+- 对于大规模清理操作会提示确认
+- 所有操作的详细日志记录
 
-### `disk` - Storage Analysis
-Breakdown of disk usage by agent and session type.
+### `history` - 趋势分析（新功能）
+查看会话健康状况的历史变化趋势。
 
-```bash
-clawdscan disk
-```
+**跟踪内容：**
+- 会话数量随时间的变化
+- 存储使用量的增长趋势
+- 系统臃肿问题的累积情况
+- 清理操作的效果
 
-**Provides:**
-- Total storage usage
-- Usage by agent
-- Largest directories
-- Growth trends
-- Cleanup potential
+## 配置
 
-### `clean` - Session Cleanup
-Safe cleanup of problematic sessions with preview mode.
+### 环境变量
+- `CLAWDBOT_DIR`：覆盖 Clawdbot 的默认目录路径
+- `NO_COLOR`：禁用彩色输出
 
-```bash
-clawdscan clean [--zombies] [--stale-days N] [--execute]
+### 阈值（可在 `skill.json` 中自定义）
+- **臃肿文件大小阈值**：1MB（超过此大小的会话被视为臃肿）
+- **消息数量阈值**：300 条（超过此数量的会话被视为臃肿）
+- **过时会话阈值**：7 天未活动的会话
+- **未使用会话阈值**：创建后 48 小时未被使用的会话
 
-# Examples
-clawdscan clean --zombies           # Preview zombie cleanup
-clawdscan clean --zombies --execute # Execute zombie cleanup
-clawdscan clean --stale-days 28     # Preview cleanup of 28+ day old sessions
-clawdscan clean --stale-days 28 --execute # Execute stale cleanup
-```
+## 心跳集成
 
-**Safety features:**
-- Preview mode by default (no destructive actions)
-- Backup creation before deletion
-- Confirmation prompts for large cleanups
-- Detailed logs of all actions
-
-### `history` - Trend Analysis *(New)*
-View session health trends over time.
-
-```bash
-clawdscan history [--days N]
-
-# Examples
-clawdscan history               # Last 30 days
-clawdscan history --days 7     # Last week
-clawdscan history --days 90    # Last 3 months
-```
-
-**Tracks:**
-- Session count over time
-- Storage growth trends
-- Bloat accumulation patterns
-- Cleanup effectiveness
-
-## Configuration
-
-### Environment Variables
-- `CLAWDBOT_DIR` - Override default Clawdbot directory
-- `NO_COLOR` - Disable colored output
-
-### Thresholds (customizable in skill.json)
-- **Bloat Size**: 1 MB (sessions larger than this)
-- **Bloat Messages**: 300 messages
-- **Stale Threshold**: 7 days without activity  
-- **Zombie Threshold**: 48 hours created but unused
-
-## Heartbeat Integration
-
-ClawdScan can run automatically as part of Clawdbot's heartbeat system:
+ClawdScan 可以作为 Clawdbot 心跳系统的一部分自动运行：
 
 ```markdown
 ### In HEARTBEAT.md
@@ -209,7 +162,7 @@ ClawdScan can run automatically as part of Clawdbot's heartbeat system:
 - Auto-cleanup zombies (if enabled)
 ```
 
-### Heartbeat Configuration
+### 心跳配置
 ```json
 {
   "heartbeat": {
@@ -224,9 +177,9 @@ ClawdScan can run automatically as part of Clawdbot's heartbeat system:
 }
 ```
 
-## Output Examples
+## 输出示例
 
-### Scan Output
+### 扫描输出
 ```
 🔍 ClawdScan v0.1.0 — Clawdbot Session Health Analysis
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -252,7 +205,7 @@ ClawdScan can run automatically as part of Clawdbot's heartbeat system:
   • Consider shorter session lifetimes
 ```
 
-### History Output
+### 历史记录输出
 ```
 📈 Session Health Trends (Last 30 Days)
 
@@ -267,78 +220,48 @@ Week 4 (Jan 22-28): 28 sessions, 23.4 MB  📈 +21% growth
 💡 Growth Rate: +38% sessions/week, +44% storage/week
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-**"No sessions found"**
-- Check `--dir` parameter points to correct Clawdbot directory
-- Verify sessions exist in `agents/*/sessions/`
+- **“未找到会话”**：检查 `--dir` 参数是否指向正确的 Clawdbot 目录
+- 确认 `agents/*/sessions/` 目录中确实存在会话文件
+- **“权限拒绝”**：确保具有对 `~/.clawdbot` 目录的读取权限
+- 检查文件的所有权和权限设置
 
-**"Permission denied"**
-- Ensure read access to `~/.clawdbot` directory
-- Check file ownership and permissions
+- **“JSON 解析错误”**：某些会话文件可能已损坏
+- 使用 `--verbose` 标志获取详细的错误信息
 
-**"JSON parsing error"**
-- Some session files may be corrupted
-- Use `--verbose` flag for detailed error info
-
-### Debug Mode
+### 调试模式
 ```bash
 clawdscan scan --verbose --debug
 ```
 
-## Integration Examples
+## 集成示例
 
-### Cron Job
-```bash
-# Daily health check at 2 AM
-0 2 * * * /usr/local/bin/clawdscan scan --json /var/log/clawdscan.json
-```
+- **Cron 作业**：设置定时任务自动运行 ClawdScan
+- **Shell 脚本**：将 ClawdScan 集成到 Shell 脚本中
+- **Python 集成**：将 ClawdScan 作为 Python 程序的一部分运行
 
-### Shell Script
-```bash
-#!/bin/bash
-# Weekly cleanup script
-clawdscan clean --zombies --execute
-clawdscan clean --stale-days 14 --execute
-clawdscan scan --json /var/log/weekly-scan.json
-```
+## 开发流程
 
-### Python Integration
-```python
-import subprocess
-import json
+- 在 `clawdscan.py` 文件中添加新的命令处理逻辑
+- 更新 `skill.json` 文件中的工具列表
+- 为新功能添加文档说明
+- 更新 `--help` 文档中的命令说明
 
-# Run scan and get JSON output
-result = subprocess.run(['clawdscan', 'scan', '--json', '/tmp/scan.json'])
-with open('/tmp/scan.json') as f:
-    data = json.load(f)
-    
-# Process results
-if data['bloated_sessions'] > 5:
-    notify_admin("ClawdBot cleanup needed")
-```
+## 贡献方式
 
-## Development
+- 遵循现有的代码风格
+- 为新功能编写测试用例
+- 更新文档
+- 确保代码的向后兼容性
 
-### Adding New Commands
-1. Add command handler to `clawdscan.py`
-2. Update `skill.json` tools array
-3. Add documentation to `SKILL.md`
-4. Update `--help` text
+## 许可证
 
-### Contributing
-- Follow existing code style
-- Add tests for new features
-- Update documentation
-- Ensure backward compatibility
+MIT 许可证——详情请参阅 LICENSE 文件。
 
-## License
+## 支持方式
 
-MIT License - see LICENSE file for details.
-
-## Support
-
-- GitHub Issues: [Report bugs or request features](https://github.com/jugaad-lab/clawdscan/issues)
-- Documentation: This file and `clawdscan.py --help`
+- 通过 GitHub Issues 报告问题或请求新功能：[https://github.com/jugaad-lab/clawdscan/issues]
+- 文档支持：请参考本文件及 `clawdscan.py --help` 命令的输出信息

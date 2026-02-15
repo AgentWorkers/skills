@@ -1,44 +1,44 @@
 ---
-description: Discover devices and scan ports on your local network using nmap with security-first defaults.
+description: 使用 nmap 并设置“安全优先”（security-first）的默认配置，来发现本地网络中的设备并扫描各个端口。
 ---
 
-# Network Scanner
+# 网络扫描器
 
-Discover devices and scan ports on your local network.
+用于发现本地网络中的设备并扫描端口。
 
-**Use when** scanning LAN, finding devices, or checking open ports.
+**适用场景**：扫描局域网（LAN）、查找设备或检查开放的端口。
 
-## Requirements
+## 必备条件
 
-- `nmap` installed (`apt install nmap` / `brew install nmap`)
-- No API keys needed
+- 已安装 `nmap`（通过 `apt install nmap` 或 `brew install nmap` 安装）  
+- 无需 API 密钥  
 
-## Instructions
+## 使用方法
 
-1. **Determine target** — detect local subnet:
+1. **确定扫描目标** — 检测本地子网：  
    ```bash
    ip route | grep default | awk '{print $3}' | sed 's/\.[0-9]*$/.0\/24/'
    # or
    ifconfig | grep 'inet ' | grep -v '127.0.0.1'
-   ```
+   ```  
 
-2. **⚠️ Validate target — CRITICAL**:
-   - ✅ Only scan **private IP ranges**: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.0/8`
-   - ❌ **REJECT public IPs** unless user explicitly confirms ownership
-   - Always **confirm scan target** with user before executing
+2. **⚠️ 验证扫描目标（至关重要）**：  
+   - 只扫描 **私有 IP 范围**：`10.0.0.0/8`、`172.16.0.0/12`、`192.168.0.0/16`、`127.0.0.0/8`  
+   - 除非用户明确确认所有权，否则 **禁止扫描公共 IP**  
+   - 在执行扫描前务必 **获取用户的确认**  
 
-3. **Run scans** (prefer non-root options):
+3. **运行扫描**（建议使用非 root 用户权限）：  
 
-   | Scan Type | Command | Sudo? | Speed |
-   |-----------|---------|-------|-------|
-   | Host discovery | `nmap -sn {subnet}` | No | Fast |
-   | Quick ports | `nmap -F {target}` | No | Fast |
-   | All ports | `nmap -p- {target}` | No | Slow |
-   | Service detection | `nmap -sV {target}` | No | Medium |
-   | OS detection | `sudo nmap -O {target}` | Yes | Medium |
-   | Vulnerability scan | `nmap --script vuln {target}` | No | Slow |
+| 扫描类型 | 命令 | 是否需要 `sudo` | 扫描速度 |
+|---------|---------|---------|---------|
+| 主机发现 | `nmap -sn {subnet}` | 否 | 快速 |
+| 快速端口扫描 | `nmap -F {target}` | 否 | 快速 |
+| 扫描所有端口 | `nmap -p- {target}` | 否 | 慢速 |
+| 服务检测 | `nmap -sV {target}` | 否 | 中等速度 |
+| 操作系统检测 | `sudo nmap -O {target}` | 是 | 中等速度 |
+| 漏洞扫描 | `nmap --script vuln {target}` | 否 | 慢速 |
 
-4. **Output format**:
+4. **输出格式**：  
    ```
    ## 🔍 Network Scan Results
    **Subnet:** 192.168.1.0/24 | **Date:** YYYY-MM-DD HH:MM
@@ -52,25 +52,23 @@ Discover devices and scan ports on your local network.
    ### ⚠️ Security Notes
    - 192.168.1.10: SSH (22) open — ensure key-only auth
    - 192.168.1.15: Telnet (23) open — **insecure, disable if possible**
-   ```
+   ```  
 
-5. **Highlight security concerns**:
-   - Open Telnet (23) — insecure protocol
-   - Open FTP (21) — consider SFTP instead
-   - Default HTTP ports with no HTTPS
-   - Services on non-standard ports
+5. **提示安全风险**：  
+   - Telnet（端口 23）处于开放状态 — 这是一个不安全的协议  
+   - FTP（端口 21）处于开放状态 — 建议使用 SFTP 替代  
+   - 默认的 HTTP 端口未启用 HTTPS  
+   - 服务运行在非标准端口上  
 
-## Edge Cases
+## 特殊情况处理：  
+- **未安装 `nmap`**：建议安装该工具，或改用 `ping` 命令进行简单扫描，再使用 `nc` 命令检查端口状态。  
+- **权限不足**：非 root 用户无法执行 SYN 扫描或操作系统检测。请注意相关限制。  
+- **防火墙阻止**：部分主机可能无法响应 ping 命令。此时可使用 `-Pn` 选项跳过主机发现步骤。  
+- **子网规模非常大（/16 或更大）**：会花费较长时间，请用户缩小扫描范围。  
+- **使用 VPN**：被扫描的子网可能是 VPN 网络，而非本地局域网。请检查 `ip route` 命令以确认网络连接。  
 
-- **nmap not installed**: Suggest installation or fall back to `ping` sweep + `nc` port check.
-- **Permission denied**: Non-root can't do SYN scans or OS detection. Note limitations.
-- **Firewall blocking**: Some hosts won't respond to ping. Use `-Pn` to skip host discovery.
-- **Very large subnet (/16 or larger)**: Warn user it will take a long time. Suggest narrowing scope.
-- **VPN active**: Scanned subnet may be the VPN network, not local LAN. Check `ip route`.
-
-## Security Considerations
-
-- **Only scan networks you own or have explicit permission to scan.**
-- Unauthorized port scanning may violate laws and terms of service.
-- Don't share scan results publicly — they reveal network topology.
-- Use `sudo` only when explicitly needed and justified.
+## 安全注意事项：  
+- **仅扫描您拥有权限或获得明确许可的网络。**  
+- 未经授权的端口扫描可能违反法律法规和服务条款。  
+- 不要公开扫描结果，因为这些信息可能暴露网络拓扑结构。  
+- 仅在确实需要且合理的情况下使用 `sudo` 命令。

@@ -17,9 +17,9 @@ metadata:
 
 # Tally
 
-Access the Tally API with managed OAuth authentication. Manage forms, submissions, workspaces, and webhooks for your Tally account.
+您可以使用托管的 OAuth 认证来访问 Tally API，从而管理您的 Tally 账户中的表单、提交记录、工作空间和 Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List your forms
@@ -32,40 +32,40 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/tally/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Tally API endpoint path. The gateway proxies requests to `api.tally.so` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Tally API 端点路径。该网关会将请求代理到 `api.tally.so` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header and the User Agent header:
+所有请求都需要在 `Authorization` 头部和 `User Agent` 头部中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 User-Agent: Maton/1.0
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Tally OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Tally OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Tally connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Tally 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,19 +142,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User
+### 用户
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /tally/users/me
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "w2lBkb",
@@ -168,19 +168,19 @@ GET /tally/users/me
 }
 ```
 
-### Forms
+### 表单
 
-#### List Forms
+#### 列出表单
 
 ```bash
 GET /tally/forms
 ```
 
-**Query Parameters:**
-- `page` - Page number (default: 1)
-- `limit` - Items per page (default: 50)
+**查询参数：**
+- `page` - 页码（默认值：1）
+- `limit` - 每页显示的条数（默认值：50）
 
-**Response:**
+**响应：**
 ```json
 {
   "items": [
@@ -204,13 +204,13 @@ GET /tally/forms
 }
 ```
 
-#### Get Form
+#### 获取表单信息
 
 ```bash
 GET /tally/forms/{formId}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "GxdRaQ",
@@ -237,7 +237,7 @@ GET /tally/forms/{formId}
 }
 ```
 
-#### Create Form
+#### 创建表单
 
 ```bash
 POST /tally/forms
@@ -267,29 +267,29 @@ Content-Type: application/json
 }
 ```
 
-**Block Types:**
-- `FORM_TITLE` - Form title block
-- `INPUT_TEXT` - Single-line text input
-- `INPUT_EMAIL` - Email input
-- `INPUT_NUMBER` - Number input
-- `INPUT_PHONE_NUMBER` - Phone number input
-- `INPUT_DATE` - Date picker
-- `INPUT_TIME` - Time picker
-- `INPUT_LINK` - URL input
-- `TEXTAREA` - Multi-line text input
-- `MULTIPLE_CHOICE` - Radio buttons
-- `CHECKBOXES` - Checkbox group
-- `DROPDOWN` - Dropdown select
-- `LINEAR_SCALE` - Scale rating
-- `RATING` - Star rating
-- `FILE_UPLOAD` - File upload
-- `SIGNATURE` - Signature field
-- `PAYMENT` - Payment field
-- `HIDDEN_FIELDS` - Hidden fields
+**表单类型：**
+- `FORM_TITLE` - 表单标题块
+- `INPUT_TEXT` - 单行文本输入框
+- `INPUT_EMAIL` - 电子邮件输入框
+- `INPUT_NUMBER` - 数字输入框
+- `INPUT_PHONE_NUMBER` - 电话号码输入框
+- `INPUT_DATE` - 日期选择器
+- `INPUT_TIME` - 时间选择器
+- `INPUT_LINK` - URL 输入框
+- `TEXTAREA` - 多行文本输入框
+- `MULTIPLE_CHOICE` - 单选按钮
+- `CHECKBOXES` - 复选框组
+- `DROPDOWN` - 下拉菜单
+- `LINEAR_SCALE` - 等级评分
+- `RATING` - 星级评分
+- `FILE_UPLOAD` - 文件上传框
+- `SIGNATURE` - 签名字段
+- `PAYMENT` - 支付字段
+- `HIDDEN_fields` - 隐藏字段
 
-**Note:** Block `uuid` and `groupUuid` must be valid UUIDs (GUIDs).
+**注意：** `uuid` 和 `groupUuid` 字段必须是有效的 UUID（GUID）。
 
-#### Update Form
+#### 更新表单
 
 ```bash
 PATCH /tally/forms/{formId}
@@ -301,27 +301,27 @@ Content-Type: application/json
 }
 ```
 
-**Status Values:**
-- `DRAFT` - Form is a draft
-- `PUBLISHED` - Form is live
+**状态值：**
+- `DRAFT` - 表单为草稿状态
+- `PUBLISHED` - 表单已发布
 
-#### Delete Form
+#### 删除表单
 
 ```bash
 DELETE /tally/forms/{formId}
 ```
 
-Moves the form to trash.
+表单将被移至“回收站”。
 
-### Form Questions
+### 表单问题
 
-#### List Questions
+#### 列出问题
 
 ```bash
 GET /tally/forms/{formId}/questions
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "questions": [
@@ -335,22 +335,22 @@ GET /tally/forms/{formId}/questions
 }
 ```
 
-### Form Submissions
+### 表单提交
 
-#### List Submissions
+#### 列出提交记录
 
 ```bash
 GET /tally/forms/{formId}/submissions
 ```
 
-**Query Parameters:**
-- `page` - Page number (default: 1)
-- `limit` - Items per page (default: 50)
-- `startDate` - Filter by start date (ISO 8601)
-- `endDate` - Filter by end date (ISO 8601)
-- `afterId` - Get submissions after this ID (cursor pagination)
+**查询参数：**
+- `page` - 页码（默认值：1）
+- `limit` - 每页显示的条数（默认值：50）
+- `startDate` - 按开始日期过滤（ISO 8601 格式）
+- `endDate` - 按结束日期过滤（ISO 8601 格式）
+- `afterId` - 获取此 ID 之后的提交记录（分页查询）
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -386,27 +386,27 @@ GET /tally/forms/{formId}/submissions
 }
 ```
 
-#### Get Submission
+#### 获取提交记录信息
 
 ```bash
 GET /tally/forms/{formId}/submissions/{submissionId}
 ```
 
-#### Delete Submission
+#### 删除提交记录
 
 ```bash
 DELETE /tally/forms/{formId}/submissions/{submissionId}
 ```
 
-### Workspaces
+### 工作空间
 
-#### List Workspaces
+#### 列出工作空间
 
 ```bash
 GET /tally/workspaces
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "items": [
@@ -425,13 +425,13 @@ GET /tally/workspaces
 }
 ```
 
-#### Get Workspace
+#### 获取工作空间信息
 
 ```bash
 GET /tally/workspaces/{workspaceId}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "3jW9Q1",
@@ -449,20 +449,11 @@ GET /tally/workspaces/{workspaceId}
 }
 ```
 
-#### Create Workspace
+#### 创建工作空间
 
-```bash
-POST /tally/workspaces
-Content-Type: application/json
+**注意：** 创建工作空间需要 Pro 订阅。
 
-{
-  "name": "New Workspace"
-}
-```
-
-**Note:** Creating workspaces requires a Pro subscription.
-
-#### Update Workspace
+#### 更新工作空间
 
 ```bash
 PATCH /tally/workspaces/{workspaceId}
@@ -473,23 +464,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Workspace
+#### 删除工作空间
 
 ```bash
 DELETE /tally/workspaces/{workspaceId}
 ```
 
-Moves the workspace and all its forms to trash.
+工作空间及其所有表单将被移至“回收站”。
 
-### Organization Users
+### 组织用户
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /tally/organizations/{organizationId}/users
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -502,21 +493,21 @@ GET /tally/organizations/{organizationId}/users
 ]
 ```
 
-#### Remove User
+#### 删除用户
 
 ```bash
 DELETE /tally/organizations/{organizationId}/users/{userId}
 ```
 
-### Organization Invites
+### 组织邀请
 
-#### List Invites
+#### 列出邀请信息
 
 ```bash
 GET /tally/organizations/{organizationId}/invites
 ```
 
-#### Create Invite
+#### 创建邀请
 
 ```bash
 POST /tally/organizations/{organizationId}/invites
@@ -528,23 +519,19 @@ Content-Type: application/json
 }
 ```
 
-#### Cancel Invite
+#### 取消邀请
 
 ```bash
 DELETE /tally/organizations/{organizationId}/invites/{inviteId}
 ```
 
-### Webhooks
+### Webhook
 
-#### List Webhooks
+#### 列出 Webhook
 
-```bash
-GET /tally/webhooks
-```
+**注意：** 列出 Webhook 可能需要特定的权限。
 
-**Note:** Listing webhooks may require specific permissions.
-
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /tally/webhooks
@@ -557,10 +544,10 @@ Content-Type: application/json
 }
 ```
 
-**Webhook Event Types:**
-- `FORM_RESPONSE` - Triggered when a new form response is submitted
+**Webhook 事件类型：**
+- `FORM_RESPONSE` - 当新的表单响应被提交时触发
 
-#### Update Webhook
+#### 更新 Webhook
 
 ```bash
 PATCH /tally/webhooks/{webhookId}
@@ -571,33 +558,33 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /tally/webhooks/{webhookId}
 ```
 
-#### List Webhook Events
+#### 列出 Webhook 事件
 
 ```bash
 GET /tally/webhooks/{webhookId}/events
 ```
 
-#### Retry Webhook Event
+#### 重试 Webhook 事件
 
 ```bash
 POST /tally/webhooks/{webhookId}/events/{eventId}
 ```
 
-## Pagination
+## 分页
 
-Tally uses page-based pagination:
+Tally 使用基于页码的分页机制：
 
 ```bash
 GET /tally/forms?page=1&limit=50
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -609,9 +596,9 @@ Response includes pagination info:
 }
 ```
 
-For submissions, cursor-based pagination is also available using `afterId`.
+对于提交记录，也可以使用 `afterId` 进行基于游标的分页。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -646,7 +633,7 @@ data = response.json()
 print(data['items'])
 ```
 
-### Create Form and Get Submissions
+### 创建表单并获取提交记录
 
 ```python
 import os
@@ -698,36 +685,36 @@ submissions = response.json()
 print(f"Total submissions: {submissions['totalNumberOfSubmissionsPerFilter']['all']}")
 ```
 
-## Notes
+## 注意事项：
 
-- Form and workspace IDs are short alphanumeric strings (e.g., `GxdRaQ`)
-- Block `uuid` and `groupUuid` fields must be valid UUIDs (GUIDs)
-- Creating workspaces requires a Pro subscription
-- The API is in public beta and subject to changes
-- Rate limit: 100 requests per minute
-- Use webhooks instead of polling for real-time submission notifications
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 表单和工作空间的 ID 是简短的字母数字字符串（例如：`GxdRaQ`）。
+- `uuid` 和 `groupUuid` 字段必须是有效的 UUID（GUID）。
+- 创建工作空间需要 Pro 订阅。
+- 该 API 处于公开测试阶段，可能会发生变化。
+- 请求速率限制：每分钟 100 次请求。
+- 使用 Webhook 而不是轮询来获取实时提交通知。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Tally connection or validation error |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions |
-| 404 | Resource not found |
-| 429 | Rate limited (100 req/min) |
-| 4xx/5xx | Passthrough error from Tally API |
+| 400 | 未找到 Tally 连接或验证错误 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足 |
+| 404 | 资源未找到 |
+| 429 | 请求速率限制（每分钟 100 次请求） |
+| 4xx/5xx | 来自 Tally API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -738,17 +725,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `tally`. For example:
+1. 确保您的 URL 路径以 `tally` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/tally/forms`
+- 错误的路径：`https://gateway.maton.ai/forms`
 
-- Correct: `https://gateway.maton.ai/tally/forms`
-- Incorrect: `https://gateway.maton.ai/forms`
+## 资源
 
-## Resources
-
-- [Tally API Introduction](https://developers.tally.so/api-reference/introduction)
-- [Tally API Reference](https://developers.tally.so/llms.txt)
-- [Tally Help Center](https://help.tally.so/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Tally API 介绍](https://developers.tally.so/api-reference/introduction)
+- [Tally API 参考文档](https://developers.tally.so/llms.txt)
+- [Tally 帮助中心](https://help.tally.so/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

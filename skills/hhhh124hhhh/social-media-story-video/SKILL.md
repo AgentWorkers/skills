@@ -1,22 +1,20 @@
-# Social Media Story Video
+# 社交媒体故事视频
 
-**Version**: 1.0.0
-**Category**: E-commerce Video
-**Created by**: Momo (manual curation)
-**Created at**: 2026-02-05T16:51:45.971858
+**版本**: 1.0.0  
+**类别**: 电子商务视频  
+**创建者**: Momo（人工策划）  
+**创建时间**: 2026-02-05T16:51:45.971858  
 
-## Description
+## 说明  
 
-This skill provides a high-quality, manually crafted prompt template for AI e-commerce video generation.
+此模板为 AI 电子商务视频生成提供了高质量、经过人工精心设计的提示内容。  
 
-**Note**: This is a manually designed and tested prompt, optimized for real-world use cases in e-commerce and content creation.
+**注意**: 该提示内容是专为电子商务和内容创作的实际应用场景而设计的，并经过了测试。  
 
-## Usage
+## 使用方法  
 
-### Basic Usage
-
-Use this prompt template with your AI video/image generation tool:
-
+### 基本用法  
+将此模板与您的 AI 视频/图像生成工具结合使用：  
 ```text
 Create a vertical 9:16 story video (15 seconds) for {product_name}.
 
@@ -37,25 +35,22 @@ Requirements:
 - Aspect ratio: 9:16
 - Platform: Instagram Stories, TikTok, Snapchat
 - Optimize for sound-on viewing (text captions included)
-```
+```  
 
-### Variables
+### 变量说明  
+请将提示中的以下变量替换为您的实际值：  
+- `{product_name}`：您的产品名称  
+- `{brand_colors}`：您的品牌色彩方案（例如：“蓝色、白色、灰色”）  
+- `{background_style}`：首选的背景风格（极简风格、渐变效果、特定场景）  
+- `{target_audience}`：目标受众（例如：“25-35岁的年轻人”）  
+- `{cta_text}`：呼吁行动的文字（例如：“立即购物 - 享受8折优惠”）  
+- `{setting}`：场景设置（家庭、办公室、户外、咖啡馆）  
+- `{feature}`：需要突出的产品特性  
+- `{season}`：季节（春季、夏季、秋季、冬季）  
+- `{holiday_colors}`：节日色彩方案  
+- `{competitor_product}`：竞争对手的产品名称（用于对比）  
 
-Replace the following variables in the prompt with your specific values:
-
-- `{product_name}` - Name of your product
-- `{brand_colors}` - Your brand's color palette (e.g., "blue, white, gray")
-- `{background_style}` - Preferred background style (minimal, gradient, specific scene)
-- `{target_audience}` - Your target audience (e.g., "young adults, 25-35")
-- `{cta_text}` - Call-to-action text (e.g., "Shop Now - 20% Off")
-- `{setting}` - Scene setting (home, office, outdoor, café)
-- `{feature}` - Specific product feature to highlight
-- `{season}` - Season (spring, summer, autumn, winter)
-- `{holiday_colors}` - Holiday color palette
-- `{competitor_product}` - Competitor product name (for comparison)
-
-### Example
-
+### 示例  
 ```text
 Create a vertical 9:16 story video (15 seconds) for {{Premium Wireless Earbuds}}.
 
@@ -76,47 +71,38 @@ Requirements:
 - Aspect ratio: 9:16
 - Platform: Instagram Stories, TikTok, Snapchat
 - Optimize for sound-on viewing (text captions included)
-```
+```  
 
-## Tags
+## 标签  
+电子商务（E-commerce）、视频（Video）、社交媒体（Social Media）、故事（Stories）  
 
-ecommerce, video, social-media, stories
+## 使用要求  
+该模板兼容支持文本转视频或文本转图像的 AI 工具：  
+- 视频生成工具：Sora2、Google Veo、Runway、Pika Labs、Kling  
+- 图像生成工具：Midjourney、DALL-E 3、Stable Diffusion、Stable Diffusion XL  
 
-## Requirements
+## 提示  
+1. **自定义变量**：将所有 `{variable}` 占位符替换为您的实际值。  
+2. **多次测试与优化**：生成多个版本并选择最佳效果。  
+3. **调整参数**：根据需要调整分辨率、时长或风格。  
+4. **组合使用**：将多个模板结合使用以创建更丰富的内容。  
 
-Compatible with AI tools that support text-to-video or text-to-image generation:
-- For video: Sora2, Google Veo, Runway, Pika Labs, Kling
-- For image: Midjourney, DALL-E 3, Stable Diffusion, Stable Diffusion XL
+## 适用场景  
+- 电子商务产品视频和图片  
+- 营销活动和推广  
+- 社交媒体内容（Instagram、TikTok、YouTube Shorts）  
+- 产品发布和公告  
+- 季节性和节日营销活动  
+- 品牌故事讲述和用户评价  
 
-## Tips
+## 质量保证  
+该模板已通过以下验证：  
+- ✅ 由人工设计并精心策划  
+- ✅ 适用于实际电子商务场景  
+- ✅ 经过 AI 视频/图像生成工具测试  
+- ✅ 经过清晰度和效果审查  
 
-1. **Customize variables**: Replace all {variable} placeholders with your specific values
-2. **Test and iterate**: Generate multiple versions and choose the best result
-3. **Adjust parameters**: Modify resolution, duration, or style based on your needs
-4. **Combine with other skills**: Use multiple prompts together for comprehensive content
+## 意见反馈  
+如果您觉得此模板有用，请留下评论或分享您使用该模板生成的内容！  
 
-## Use Cases
-
-Perfect for:
-- E-commerce product videos and images
-- Marketing campaigns and promotions
-- Social media content (Instagram, TikTok, YouTube Shorts)
-- Product launches and announcements
-- Seasonal and holiday campaigns
-- Brand storytelling and testimonials
-
-## Quality Assurance
-
-This prompt has been:
-- ✅ Manually designed and curated
-- ✅ Optimized for real-world e-commerce scenarios
-- ✅ Tested for AI video/image generation tools
-- ✅ Reviewed for clarity and effectiveness
-
-## Feedback
-
-If you find this prompt helpful, please leave a review or share your generated content!
-
----
-
-*This skill is part of the Manual Prompts Collection - high-quality, curated prompts for AI content generation.*
+*本模板属于“人工提示集”系列——专为 AI 内容生成提供的高质量、精心策划的提示内容。*

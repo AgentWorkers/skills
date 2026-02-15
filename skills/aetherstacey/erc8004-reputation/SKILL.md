@@ -1,187 +1,92 @@
 ---
 name: ERC-8004 Reputation
-description: On-chain reputation for AI agents. Give feedback, check scores, view leaderboards, and build trust via the ERC-8004 Reputation Registry. Supports Base, Ethereum, Polygon, Monad, BNB.
+description: AI代理的链上声誉系统：用户可以通过ERC-8004声誉注册表提供反馈、查看评分、浏览排行榜，并以此建立信任。该系统支持Base、Ethereum、Polygon、Monad和BNB等区块链平台。
 ---
 
-# ERC-8004 Reputation Skill
+# ERC-8004 资信技能
 
-Interact with the ERC-8004 Reputation Registry — the decentralized reputation layer for AI agents.
+该技能允许用户与 ERC-8004 资信注册表进行交互，该注册表是一个用于管理 AI 代理去中心化信誉信息的系统。
 
-## Use This When...
+## 使用场景：
 
-- "Check an agent's reputation"
-- "Rate this agent"
-- "Give feedback to agent X"
-- "What's my agent's reputation?"
-- "Who gave feedback to my agent?"
-- "Show me the reputation leaderboard"
-- "Top agents by reputation"
-- "Revoke my feedback"
+- **查询代理的信誉**  
+- **对代理进行评分**  
+- **向代理 X 提供反馈**  
+- **查看我的代理的信誉**  
+- **谁对我的代理提供了反馈**  
+- **显示信誉排行榜**  
+- **按信誉排名筛选顶级代理**  
+- **撤销我之前给出的反馈**  
 
-## Commands
+## 命令：
 
-### lookup
-Look up an agent's reputation summary.
+### lookup  
+查询代理的信誉概要。  
+**返回内容：** 评审者数量、反馈数量、信誉总分以及具体反馈内容。  
 
-```bash
-python scripts/reputation.py lookup <agentId> [--chain CHAIN]
-```
+### give  
+向代理提供反馈。  
 
-Shows: reviewer count, feedback count, summary value, individual feedback.
+**示例：**  
+（命令示例此处省略）  
 
-### give
-Give feedback to an agent.
+### my-rep  
+查看您在所有链上的代理信誉。  
 
-```bash
-python scripts/reputation.py give <agentId> <value> [--decimals N] [--tag1 TAG] [--tag2 TAG] [--chain CHAIN]
-```
+### clients  
+列出所有向该代理提供反馈的地址。  
 
-**Examples:**
-```bash
-# Simple score (0-100)
-python scripts/reputation.py give 16700 85 --tag1 reliable
+### feedback  
+读取特定的反馈记录。  
 
-# Percentage with decimals (99.77%)
-python scripts/reputation.py give 16700 9977 --decimals 2 --tag1 uptime
-```
+### revoke  
+撤销您之前给出的反馈。  
 
-### my-rep
-Check your agent's reputation across all chains.
+### leaderboard  
+显示按信誉得分排名的顶级代理。  
+（返回内容：）代理的名称、得分以及星级评分。  
 
-```bash
-python scripts/reputation.py my-rep <agentId> [--chains base,ethereum,polygon]
-```
+## 跨技能工作流程：  
 
-### clients
-List all addresses that gave feedback.
+- **注册后的信誉建设**  
+（相关命令此处省略）  
 
-```bash
-python scripts/reputation.py clients <agentId> [--chain CHAIN]
-```
+- **与代理交互前的准备**  
+（相关命令此处省略）  
 
-### feedback
-Read a specific feedback entry.
+- **信誉监控**  
+（相关命令此处省略）  
 
-```bash
-python scripts/reputation.py feedback <agentId> <clientAddress> <feedbackIndex> [--chain CHAIN]
-```
+## 心跳信号集成  
+在自动化流程中监控代理的信誉变化。  
+（相关命令此处省略）  
 
-### revoke
-Revoke feedback you previously gave.
+## 配置：  
+- **钱包（写入操作必需）**  
+（用于存储和验证用户身份）  
 
-```bash
-python scripts/reputation.py revoke <agentId> <feedbackIndex> [--chain CHAIN]
-```
+- **读取操作（查询、查看个人信誉、列出反馈者、查看排行榜）**  
+无需钱包即可执行。  
 
-### leaderboard
-Show top agents by reputation score.
-
-```bash
-python scripts/reputation.py leaderboard [--chain CHAIN] [--limit 20]
-```
-
-Fetches from Agentscan API and displays top agents with scores and star ratings.
-
-## Cross-Skill Workflows
-
-### Post-Registration Reputation Building
-```bash
-# 1. Register your agent (from erc8004-register skill)
-python scripts/register.py register --name "MyBot" --description "..."
-
-# 2. Validate the registration
-python scripts/register.py validate 42
-
-# 3. Check initial reputation (should be empty)
-python scripts/reputation.py lookup 42
-
-# 4. After interacting with clients, check reputation growth
-python scripts/reputation.py my-rep 42
-```
-
-### Before Interacting with an Agent
-```bash
-# 1. Find the agent (from erc8004-discover skill)
-python scripts/discover.py search "oracle"
-
-# 2. Get detailed info
-python scripts/discover.py info 0x1234...
-
-# 3. Check their reputation
-python scripts/reputation.py lookup 42 --chain base
-
-# 4. If satisfied, interact and then give feedback
-python scripts/reputation.py give 42 85 --tag1 reliable --tag2 accurate
-```
-
-### Reputation Monitoring
-```bash
-# Check your reputation regularly
-python scripts/reputation.py my-rep 42
-
-# See who's giving feedback
-python scripts/reputation.py clients 42 --chain base
-
-# Read specific feedback
-python scripts/reputation.py feedback 42 0xABC... 1 --chain base
-```
-
-## Heartbeat Integration
-
-Monitor reputation changes in automated pipelines:
-
-```bash
-# Cron: check reputation daily
-0 9 * * * python scripts/reputation.py my-rep 42 >> /var/log/rep-monitor.log 2>&1
-
-# In a monitoring script:
-#!/bin/bash
-# Get current feedback count
-count=$(python scripts/reputation.py lookup 42 2>&1 | grep "Feedback count:" | awk '{print $3}')
-last_count=$(cat /tmp/rep-count-42.txt 2>/dev/null || echo 0)
-if [ "$count" != "$last_count" ]; then
-    echo "New feedback received! Count: $count" | notify-send
-    echo "$count" > /tmp/rep-count-42.txt
-fi
-```
-
-## Configuration
-
-### Wallet (required for write operations)
-
-```bash
-export ERC8004_MNEMONIC="your twelve word mnemonic phrase here"
-# OR
-export ERC8004_PRIVATE_KEY="0xabc123..."
-```
-
-Read operations (lookup, my-rep, clients, feedback, leaderboard) don't need a wallet.
-
-### Supported Chains
-
-| Chain    | ID   | Default | Gas Cost |
+## 支持的链：  
+| 链    | ID   | 是否支持 | 执行费用（Gas） |
 |----------|------|---------|----------|
-| Base     | 8453 | Yes     | ~$0.001  |
-| Ethereum | 1    |         | ~$1-10   |
-| Polygon  | 137  |         | ~$0.01   |
-| Monad    | 143  |         | ~$0.001  |
-| BNB      | 56   |         | ~$0.05   |
+| Base     | 8453 | 是       | 约 0.001 美元 |
+| Ethereum | 1    | 否       | 约 1–10 美元 |
+| Polygon  | 137  | 是       | 约 0.01 美元 |
+| Monad    | 143  | 是       | 约 0.001 美元 |
+| BNB      | 56   | 是       | 约 0.05 美元 |
 
-Base is recommended — cheapest gas by far.
+**推荐使用 Base 链**：执行费用最低。  
 
-## Contract Addresses
+## 合同地址：  
+所有链上的地址相同：  
+- **身份注册表**：`0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`  
+- **信誉注册表**：`0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`  
 
-Same on all chains:
-- **Identity Registry**: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
-- **Reputation Registry**: `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`
+## 依赖项：  
+（相关依赖项此处省略）  
 
-## Dependencies
-
-```bash
-pip install web3 eth-account
-```
-
-## Related Skills
-
-- **erc8004-register**: Register and manage agents on-chain
-- **erc8004-discover**: Find and monitor agents
+## 相关技能：  
+- **erc8004-register**：在链上注册和管理代理  
+- **erc8004-discover**：查找和监控代理

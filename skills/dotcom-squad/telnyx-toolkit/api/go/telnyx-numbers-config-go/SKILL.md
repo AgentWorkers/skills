@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Config - Go
+# Telnyx 数字信息配置 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,9 +38,9 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Lists the phone number blocks jobs
+## 列出电话号码相关任务
 
 `GET /phone_number_blocks/jobs`
 
@@ -52,7 +52,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieves a phone number blocks job
+## 获取电话号码相关任务的信息
 
 `GET /phone_number_blocks/jobs/{id}`
 
@@ -64,11 +64,11 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", job.Data)
 ```
 
-## Deletes all numbers associated with a phone number block
+## 删除与某个电话号码块关联的所有号码
 
-Creates a new background job to delete all the phone numbers associated with the given block.
+创建一个新的后台任务，以删除与该号码块关联的所有号码。
 
-`POST /phone_number_blocks/jobs/delete_phone_number_block` — Required: `phone_number_block_id`
+`POST /phone_number_blocks/jobs/delete_phone_number_block` — 必需参数：`phone_number_block_id`
 
 ```go
 	response, err := client.PhoneNumberBlocks.Jobs.DeletePhoneNumberBlock(context.TODO(), telnyx.PhoneNumberBlockJobDeletePhoneNumberBlockParams{
@@ -80,7 +80,7 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List phone numbers
+## 列出所有电话号码
 
 `GET /phone_numbers`
 
@@ -92,7 +92,7 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a phone number
+## 获取单个电话号码的信息
 
 `GET /phone_numbers/{id}`
 
@@ -104,7 +104,7 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", phoneNumber.Data)
 ```
 
-## Update a phone number
+## 更新电话号码信息
 
 `PATCH /phone_numbers/{id}`
 
@@ -120,7 +120,7 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", phoneNumber.Data)
 ```
 
-## Delete a phone number
+## 删除电话号码
 
 `DELETE /phone_numbers/{id}`
 
@@ -132,9 +132,9 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", phoneNumber.Data)
 ```
 
-## Change the bundle status for a phone number (set to being in a bundle or remove from a bundle)
+## 更改电话号码的捆绑状态（将其添加到捆绑包中或从捆绑包中移除）
 
-`PATCH /phone_numbers/{id}/actions/bundle_status_change` — Required: `bundle_id`
+`PATCH /phone_numbers/{id}/actions/bundle_status_change` — 必需参数：`bundle_id`
 
 ```go
 	response, err := client.PhoneNumbers.Actions.ChangeBundleStatus(
@@ -150,9 +150,9 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Enable emergency for a phone number
+## 为电话号码启用紧急呼叫功能
 
-`POST /phone_numbers/{id}/actions/enable_emergency` — Required: `emergency_enabled`, `emergency_address_id`
+`POST /phone_numbers/{id}/actions/enable_emergency` — 必需参数：`emergency_enabled`, `emergency_address_id`
 
 ```go
 	response, err := client.PhoneNumbers.Actions.EnableEmergency(
@@ -169,7 +169,7 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve a phone number with voice settings
+## 获取带有语音设置的电话号码信息
 
 `GET /phone_numbers/{id}/voice`
 
@@ -181,7 +181,7 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Update a phone number with voice settings
+## 更新带有语音设置的电话号码信息
 
 `PATCH /phone_numbers/{id}/voice`
 
@@ -199,11 +199,11 @@ Creates a new background job to delete all the phone numbers associated with the
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Verify ownership of phone numbers
+## 验证电话号码的所有权
 
-Verifies ownership of the provided phone numbers and returns a mapping of numbers to their IDs, plus a list of numbers not found in the account.
+验证提供的电话号码的所有权，并返回号码与其 ID 的对应关系，以及未在账户中找到的号码列表。
 
-`POST /phone_numbers/actions/verify_ownership` — Required: `phone_numbers`
+`POST /phone_numbers/actions/verify_ownership` — 必需参数：`phone_numbers`
 
 ```go
 	response, err := client.PhoneNumbers.Actions.VerifyOwnership(context.TODO(), telnyx.PhoneNumberActionVerifyOwnershipParams{
@@ -215,7 +215,7 @@ Verifies ownership of the provided phone numbers and returns a mapping of number
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List CSV downloads
+## 查看 CSV 下载记录
 
 `GET /phone_numbers/csv_downloads`
 
@@ -227,7 +227,7 @@ Verifies ownership of the provided phone numbers and returns a mapping of number
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a CSV download
+## 创建 CSV 下载文件
 
 `POST /phone_numbers/csv_downloads`
 
@@ -239,7 +239,7 @@ Verifies ownership of the provided phone numbers and returns a mapping of number
 	fmt.Printf("%+v\n", csvDownload.Data)
 ```
 
-## Retrieve a CSV download
+## 获取 CSV 下载文件
 
 `GET /phone_numbers/csv_downloads/{id}`
 
@@ -251,7 +251,7 @@ Verifies ownership of the provided phone numbers and returns a mapping of number
 	fmt.Printf("%+v\n", csvDownload.Data)
 ```
 
-## Lists the phone numbers jobs
+## 列出电话号码相关任务
 
 `GET /phone_numbers/jobs`
 
@@ -263,7 +263,7 @@ Verifies ownership of the provided phone numbers and returns a mapping of number
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a phone numbers job
+## 获取单个电话号码相关任务的信息
 
 `GET /phone_numbers/jobs/{id}`
 
@@ -275,11 +275,11 @@ Verifies ownership of the provided phone numbers and returns a mapping of number
 	fmt.Printf("%+v\n", job.Data)
 ```
 
-## Delete a batch of numbers
+## 删除一批电话号码
 
-Creates a new background job to delete a batch of numbers.
+创建一个新的后台任务，以删除一批电话号码。
 
-`POST /phone_numbers/jobs/delete_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/delete_phone_numbers` — 必需参数：`phone_numbers`
 
 ```go
 	response, err := client.PhoneNumbers.Jobs.DeleteBatch(context.TODO(), telnyx.PhoneNumberJobDeleteBatchParams{
@@ -291,11 +291,11 @@ Creates a new background job to delete a batch of numbers.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Update the emergency settings from a batch of numbers
+## 更新一批电话号码的紧急呼叫设置
 
-Creates a background job to update the emergency settings of a collection of phone numbers.
+创建一个新的后台任务，以更新一批电话号码的紧急呼叫设置。
 
-`POST /phone_numbers/jobs/update_emergency_settings` — Required: `emergency_enabled`, `phone_numbers`
+`POST /phone_numbers/jobs/update_emergency_settings` — 必需参数：`emergency_enabled`, `phone_numbers`
 
 ```go
 	response, err := client.PhoneNumbers.Jobs.UpdateEmergencySettingsBatch(context.TODO(), telnyx.PhoneNumberJobUpdateEmergencySettingsBatchParams{
@@ -308,11 +308,11 @@ Creates a background job to update the emergency settings of a collection of pho
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Update a batch of numbers
+## 更新一批电话号码的信息
 
-Creates a new background job to update a batch of numbers.
+创建一个新的后台任务，以更新一批电话号码的信息。
 
-`POST /phone_numbers/jobs/update_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/update_phone_numbers` — 必需参数：`phone_numbers`
 
 ```go
 	response, err := client.PhoneNumbers.Jobs.UpdateBatch(context.TODO(), telnyx.PhoneNumberJobUpdateBatchParams{
@@ -324,7 +324,7 @@ Creates a new background job to update a batch of numbers.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve regulatory requirements for a list of phone numbers
+## 获取一批电话号码的监管要求信息
 
 `GET /phone_numbers/regulatory_requirements`
 
@@ -336,9 +336,9 @@ Creates a new background job to update a batch of numbers.
 	fmt.Printf("%+v\n", phoneNumbersRegulatoryRequirement.Data)
 ```
 
-## Slim List phone numbers
+## 精简版电话号码列表
 
-List phone numbers, This endpoint is a lighter version of the /phone_numbers endpoint having higher performance and rate limit.
+列出电话号码，此端点的性能更高，但数据量限制更严格。
 
 `GET /phone_numbers/slim`
 
@@ -350,7 +350,7 @@ List phone numbers, This endpoint is a lighter version of the /phone_numbers end
 	fmt.Printf("%+v\n", page)
 ```
 
-## List phone numbers with voice settings
+## 列出带有语音设置的电话号码
 
 `GET /phone_numbers/voice`
 
@@ -362,7 +362,7 @@ List phone numbers, This endpoint is a lighter version of the /phone_numbers end
 	fmt.Printf("%+v\n", page)
 ```
 
-## List Mobile Phone Numbers
+## 列出手机号码
 
 `GET /v2/mobile_phone_numbers`
 
@@ -374,7 +374,7 @@ List phone numbers, This endpoint is a lighter version of the /phone_numbers end
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a Mobile Phone Number
+## 获取手机号码信息
 
 `GET /v2/mobile_phone_numbers/{id}`
 
@@ -386,7 +386,7 @@ List phone numbers, This endpoint is a lighter version of the /phone_numbers end
 	fmt.Printf("%+v\n", mobilePhoneNumber.Data)
 ```
 
-## Update a Mobile Phone Number
+## 更新手机号码信息
 
 `PATCH /v2/mobile_phone_numbers/{id}`
 

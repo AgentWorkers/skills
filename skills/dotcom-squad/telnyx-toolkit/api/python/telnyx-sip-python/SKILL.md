@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Sip - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Get all outbound voice profiles
+## 获取所有出站语音配置文件
 
-Get all outbound voice profiles belonging to the user that match the given filters.
+获取符合指定条件的用户的所有出站语音配置文件。
 
 `GET /outbound_voice_profiles`
 
@@ -46,11 +46,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an outbound voice profile
+## 创建一个出站语音配置文件
 
-Create an outbound voice profile.
+创建一个新的出站语音配置文件。
 
-`POST /outbound_voice_profiles` — Required: `name`
+`POST /outbound_voice_profiles` — 必需参数：`name`
 
 ```python
 outbound_voice_profile = client.outbound_voice_profiles.create(
@@ -59,9 +59,9 @@ outbound_voice_profile = client.outbound_voice_profiles.create(
 print(outbound_voice_profile.data)
 ```
 
-## Retrieve an outbound voice profile
+## 查询出站语音配置文件
 
-Retrieves the details of an existing outbound voice profile.
+查询现有出站语音配置文件的详细信息。
 
 `GET /outbound_voice_profiles/{id}`
 
@@ -72,9 +72,11 @@ outbound_voice_profile = client.outbound_voice_profiles.retrieve(
 print(outbound_voice_profile.data)
 ```
 
-## Updates an existing outbound voice profile.
+## 更新现有出站语音配置文件
 
-`PATCH /outbound_voice_profiles/{id}` — Required: `name`
+更新现有出站语音配置文件的详细信息。
+
+`PATCH /outbound_voice_profiles/{id}` — 必需参数：`name`
 
 ```python
 outbound_voice_profile = client.outbound_voice_profiles.update(
@@ -84,9 +86,9 @@ outbound_voice_profile = client.outbound_voice_profiles.update(
 print(outbound_voice_profile.data)
 ```
 
-## Delete an outbound voice profile
+## 删除出站语音配置文件
 
-Deletes an existing outbound voice profile.
+删除现有的出站语音配置文件。
 
 `DELETE /outbound_voice_profiles/{id}`
 
@@ -97,9 +99,9 @@ outbound_voice_profile = client.outbound_voice_profiles.delete(
 print(outbound_voice_profile.data)
 ```
 
-## List connections
+## 列出所有连接
 
-Returns a list of your connections irrespective of type.
+返回所有类型的连接列表。
 
 `GET /connections`
 
@@ -109,9 +111,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a connection
+## 查询连接信息
 
-Retrieves the high-level details of an existing connection.
+查询现有连接的详细信息。
 
 `GET /connections/{id}`
 
@@ -122,9 +124,9 @@ connection = client.connections.retrieve(
 print(connection.data)
 ```
 
-## List credential connections
+## 列出凭证连接
 
-Returns a list of your credential connections.
+返回所有凭证连接的列表。
 
 `GET /credential_connections`
 
@@ -134,11 +136,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a credential connection
+## 创建凭证连接
 
-Creates a credential connection.
+创建一个新的凭证连接。
 
-`POST /credential_connections` — Required: `user_name`, `password`, `connection_name`
+`POST /credential_connections` — 必需参数：`user_name`、`password`、`connection_name`
 
 ```python
 credential_connection = client.credential_connections.create(
@@ -149,9 +151,9 @@ credential_connection = client.credential_connections.create(
 print(credential_connection.data)
 ```
 
-## Retrieve a credential connection
+## 查询凭证连接信息
 
-Retrieves the details of an existing credential connection.
+查询现有凭证连接的详细信息。
 
 `GET /credential_connections/{id}`
 
@@ -162,9 +164,9 @@ credential_connection = client.credential_connections.retrieve(
 print(credential_connection.data)
 ```
 
-## Update a credential connection
+## 更新凭证连接信息
 
-Updates settings of an existing credential connection.
+更新现有凭证连接的设置。
 
 `PATCH /credential_connections/{id}`
 
@@ -175,9 +177,9 @@ credential_connection = client.credential_connections.update(
 print(credential_connection.data)
 ```
 
-## Delete a credential connection
+## 删除凭证连接
 
-Deletes an existing credential connection.
+删除现有的凭证连接。
 
 `DELETE /credential_connections/{id}`
 
@@ -188,9 +190,9 @@ credential_connection = client.credential_connections.delete(
 print(credential_connection.data)
 ```
 
-## Check a Credential Connection Registration Status
+## 检查凭证连接的注册状态
 
-Checks the registration_status for a credential connection, (`registration_status`) as well as the timestamp for the last SIP registration event (`registration_status_updated_at`)
+检查凭证连接的注册状态（`registration_status`）以及最后一次 SIP 注册事件的时间戳（`registration_status_updated_at`）。
 
 `POST /credential_connections/{id}/actions/check_registration_status`
 
@@ -201,9 +203,9 @@ response = client.credential_connections.actions.check_registration_status(
 print(response.data)
 ```
 
-## List Ips
+## 列出 IP 地址
 
-Get all IPs belonging to the user that match the given filters.
+获取符合指定条件的用户的所有 IP 地址。
 
 `GET /ips`
 
@@ -213,11 +215,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an Ip
+## 创建 IP 地址
 
-Create a new IP object.
+创建一个新的 IP 对象。
 
-`POST /ips` — Required: `ip_address`
+`POST /ips` — 必需参数：`ip_address`
 
 ```python
 ip = client.ips.create(
@@ -226,9 +228,9 @@ ip = client.ips.create(
 print(ip.data)
 ```
 
-## Retrieve an Ip
+## 查询 IP 地址信息
 
-Return the details regarding a specific IP.
+返回特定 IP 地址的详细信息。
 
 `GET /ips/{id}`
 
@@ -239,11 +241,11 @@ ip = client.ips.retrieve(
 print(ip.data)
 ```
 
-## Update an Ip
+## 更新 IP 地址信息
 
-Update the details of a specific IP.
+更新特定 IP 地址的详细信息。
 
-`PATCH /ips/{id}` — Required: `ip_address`
+`PATCH /ips/{id}` — 必需参数：`ip_address`
 
 ```python
 ip = client.ips.update(
@@ -253,9 +255,9 @@ ip = client.ips.update(
 print(ip.data)
 ```
 
-## Delete an Ip
+## 删除 IP 地址
 
-Delete an IP.
+删除指定的 IP 地址。
 
 `DELETE /ips/{id}`
 
@@ -266,9 +268,9 @@ ip = client.ips.delete(
 print(ip.data)
 ```
 
-## List Ip connections
+## 列出 IP 连接
 
-Returns a list of your IP connections.
+返回所有 IP 连接的列表。
 
 `GET /ip_connections`
 
@@ -278,9 +280,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an Ip connection
+## 创建 IP 连接
 
-Creates an IP connection.
+创建一个新的 IP 连接。
 
 `POST /ip_connections`
 
@@ -289,9 +291,9 @@ ip_connection = client.ip_connections.create()
 print(ip_connection.data)
 ```
 
-## Retrieve an Ip connection
+## 查询 IP 连接信息
 
-Retrieves the details of an existing ip connection.
+查询现有 IP 连接的详细信息。
 
 `GET /ip_connections/{id}`
 
@@ -302,9 +304,9 @@ ip_connection = client.ip_connections.retrieve(
 print(ip_connection.data)
 ```
 
-## Update an Ip connection
+## 更新 IP 连接信息
 
-Updates settings of an existing IP connection.
+更新现有 IP 连接的设置。
 
 `PATCH /ip_connections/{id}`
 
@@ -315,9 +317,9 @@ ip_connection = client.ip_connections.update(
 print(ip_connection.data)
 ```
 
-## Delete an Ip connection
+## 删除 IP 连接
 
-Deletes an existing IP connection.
+删除现有的 IP 连接。
 
 `DELETE /ip_connections/{id}`
 
@@ -328,9 +330,9 @@ ip_connection = client.ip_connections.delete(
 print(ip_connection.data)
 ```
 
-## List FQDNs
+## 列出 FQDN（完全 qualified domain names）
 
-Get all FQDNs belonging to the user that match the given filters.
+获取符合指定条件的用户的所有 FQDN。
 
 `GET /fqdns`
 
@@ -340,11 +342,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an FQDN
+## 创建 FQDN
 
-Create a new FQDN object.
+创建一个新的 FQDN 对象。
 
-`POST /fqdns` — Required: `fqdn`, `dns_record_type`, `connection_id`
+`POST /fqdns` — 必需参数：`fqdn`、`dns_record_type`、`connection_id`
 
 ```python
 fqdn = client.fqdns.create(
@@ -355,9 +357,9 @@ fqdn = client.fqdns.create(
 print(fqdn.data)
 ```
 
-## Retrieve an FQDN
+## 查询 FQDN 信息
 
-Return the details regarding a specific FQDN.
+返回特定 FQDN 的详细信息。
 
 `GET /fqdns/{id}`
 
@@ -368,9 +370,9 @@ fqdn = client.fqdns.retrieve(
 print(fqdn.data)
 ```
 
-## Update an FQDN
+## 更新 FQDN 信息
 
-Update the details of a specific FQDN.
+更新特定 FQDN 的详细信息。
 
 `PATCH /fqdns/{id}`
 
@@ -381,9 +383,9 @@ fqdn = client.fqdns.update(
 print(fqdn.data)
 ```
 
-## Delete an FQDN
+## 删除 FQDN
 
-Delete an FQDN.
+删除指定的 FQDN。
 
 `DELETE /fqdns/{id}`
 
@@ -394,9 +396,9 @@ fqdn = client.fqdns.delete(
 print(fqdn.data)
 ```
 
-## List FQDN connections
+## 列出 FQDN 连接
 
-Returns a list of your FQDN connections.
+返回所有 FQDN 连接的列表。
 
 `GET /fqdn_connections`
 
@@ -406,11 +408,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an FQDN connection
+## 创建 FQDN 连接
 
-Creates a FQDN connection.
+创建一个新的 FQDN 连接。
 
-`POST /fqdn_connections` — Required: `connection_name`
+`POST /fqdn_connections` — 必需参数：`connection_name`
 
 ```python
 fqdn_connection = client.fqdn_connections.create(
@@ -419,9 +421,9 @@ fqdn_connection = client.fqdn_connections.create(
 print(fqdn_connection.data)
 ```
 
-## Retrieve an FQDN connection
+## 查询 FQDN 连接信息
 
-Retrieves the details of an existing FQDN connection.
+查询现有 FQDN 连接的详细信息。
 
 `GET /fqdn_connections/{id}`
 
@@ -432,9 +434,9 @@ fqdn_connection = client.fqdn_connections.retrieve(
 print(fqdn_connection.data)
 ```
 
-## Update an FQDN connection
+## 更新 FQDN 连接信息
 
-Updates settings of an existing FQDN connection.
+更新现有 FQDN 连接的设置。
 
 `PATCH /fqdn_connections/{id}`
 
@@ -445,9 +447,9 @@ fqdn_connection = client.fqdn_connections.update(
 print(fqdn_connection.data)
 ```
 
-## Delete an FQDN connection
+## 删除 FQDN 连接
 
-Deletes an FQDN connection.
+删除现有的 FQDN 连接。
 
 `DELETE /fqdn_connections/{id}`
 
@@ -458,7 +460,9 @@ fqdn_connection = client.fqdn_connections.delete(
 print(fqdn_connection.data)
 ```
 
-## List Mobile Voice Connections
+## 列出移动语音连接
+
+获取所有移动语音连接的列表。
 
 `GET /v2/mobile_voice_connections`
 
@@ -468,7 +472,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a Mobile Voice Connection
+## 创建移动语音连接
+
+创建一个新的移动语音连接。
 
 `POST /v2/mobile_voice_connections`
 
@@ -477,7 +483,9 @@ mobile_voice_connection = client.mobile_voice_connections.create()
 print(mobile_voice_connection.data)
 ```
 
-## Retrieve a Mobile Voice Connection
+## 查询移动语音连接信息
+
+查询特定移动语音连接的详细信息。
 
 `GET /v2/mobile_voice_connections/{id}`
 
@@ -488,7 +496,9 @@ mobile_voice_connection = client.mobile_voice_connections.retrieve(
 print(mobile_voice_connection.data)
 ```
 
-## Update a Mobile Voice Connection
+## 更新移动语音连接信息
+
+更新现有移动语音连接的设置。
 
 `PATCH /v2/mobile_voice_connections/{id}`
 
@@ -499,7 +509,9 @@ mobile_voice_connection = client.mobile_voice_connections.update(
 print(mobile_voice_connection.data)
 ```
 
-## Delete a Mobile Voice Connection
+## 删除移动语音连接
+
+删除现有的移动语音连接。
 
 `DELETE /v2/mobile_voice_connections/{id}`
 

@@ -1,49 +1,50 @@
 ---
 name: youtube-data
-description: Access YouTube video data — transcripts, metadata, channel info, search, and playlists. A lightweight alternative to Google's YouTube Data API with no quota limits. Use when the user needs structured data from YouTube videos, channels, or playlists without dealing with Google API setup, OAuth, or daily quotas.
+description: **访问 YouTube 视频数据：字幕、元数据、频道信息、搜索结果及播放列表**  
+这是一个轻量级的替代方案，用于获取 YouTube 的视频数据，无需使用 Google 的 YouTube Data API，也没有使用量限制。当用户需要从 YouTube 视频、频道或播放列表中获取结构化数据时，无需进行 Google API 的配置、处理 OAuth 认证或担心每日使用量限制，即可使用该工具。
 homepage: https://transcriptapi.com
 user-invocable: true
 metadata: {"openclaw":{"emoji":"📊","requires":{"env":["TRANSCRIPT_API_KEY"],"bins":["node"],"config":["~/.openclaw/openclaw.json"]},"primaryEnv":"TRANSCRIPT_API_KEY"}}
 ---
 
-# YouTube Data
+# YouTube 数据
 
-YouTube data access via [TranscriptAPI.com](https://transcriptapi.com) — lightweight alternative to Google's YouTube Data API.
+可以通过 [TranscriptAPI.com](https://transcriptapi.com) 访问 YouTube 数据，这是 Google YouTube Data API 的一个轻量级替代方案。
 
-## Setup
+## 设置
 
-If `$TRANSCRIPT_API_KEY` is not set, help the user create an account (100 free credits, no card):
+如果 `$TRANSCRIPT_API_KEY` 未设置，请帮助用户创建一个账户（免费提供 100 个信用点数，无需使用信用卡）：
 
-**Step 1 — Register:** Ask user for their email.
+**步骤 1 — 注册：** 向用户索取他们的电子邮件地址。
 
 ```bash
 node ./scripts/tapi-auth.js register --email USER_EMAIL
 ```
 
-→ OTP sent to email. Ask user: _"Check your email for a 6-digit verification code."_
+→ 会向用户的电子邮件发送 OTP（一次性密码）。然后询问用户：“请查看您的电子邮件以获取 6 位数的验证码。”
 
-**Step 2 — Verify:** Once user provides the OTP:
+**步骤 2 — 验证：** 用户提供 OTP 后：
 
 ```bash
 node ./scripts/tapi-auth.js verify --token TOKEN_FROM_STEP_1 --otp CODE
 ```
 
-> API key saved to `~/.openclaw/openclaw.json`. See **File Writes** below for details. Existing file is backed up before modification.
+> API 密钥会被保存到 `~/.openclaw/openclaw.json` 文件中。具体操作请参见下方的 **文件写入** 部分。修改文件之前会先备份现有文件。
 
-Manual option: [transcriptapi.com/signup](https://transcriptapi.com/signup) → Dashboard → API Keys.
+**手动注册方式：** [transcriptapi.com/signup](https://transcriptapi.com/signup) → 仪表板 → API 密钥。
 
-## File Writes
+## 文件写入
 
-The verify and save-key commands save the API key to `~/.openclaw/openclaw.json` (sets `skills.entries.transcriptapi.apiKey` and `enabled: true`). **Existing file is backed up to `~/.openclaw/openclaw.json.bak` before modification.**
+`verify` 和 `save-key` 命令会将 API 密钥保存到 `~/.openclaw/openclaw.json` 文件中（同时设置 `skills.entries.transcriptapi.apiKey` 为该密钥，并将 `enabled` 设置为 `true`）。修改文件之前，现有文件会被备份到 `~/.openclaw/openclaw.json.bak`。
 
-To use the API key in terminal/CLI outside the agent, add to your shell profile manually:
+若要在终端/命令行（CLI）环境中使用该 API 密钥，请手动将其添加到 shell 配置文件中：
 `export TRANSCRIPT_API_KEY=<your-key>`
 
-## API Reference
+## API 参考
 
-Full OpenAPI spec: [transcriptapi.com/openapi.json](https://transcriptapi.com/openapi.json) — consult this for the latest parameters and schemas.
+完整的 OpenAPI 规范：[transcriptapi.com/openapi.json](https://transcriptapi.com/openapi.json) — 请查阅此处以获取最新的参数和数据结构信息。
 
-## Video Data (transcript + metadata) — 1 credit
+## 视频数据（文字记录 + 元数据）—— 1 个信用点数
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/transcript\
@@ -51,7 +52,7 @@ curl -s "https://transcriptapi.com/api/v2/youtube/transcript\
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-**Response:**
+**响应：**
 
 ```json
 {
@@ -69,49 +70,49 @@ curl -s "https://transcriptapi.com/api/v2/youtube/transcript\
 }
 ```
 
-## Search Data — 1 credit
+## 数据搜索—— 1 个信用点数
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/search?q=QUERY&type=video&limit=20" \
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-**Video result fields:** `videoId`, `title`, `channelId`, `channelTitle`, `channelHandle`, `channelVerified`, `lengthText`, `viewCountText`, `publishedTimeText`, `hasCaptions`, `thumbnails`
+**视频结果字段：** `videoId`、`title`、`channelId`、`channelTitle`、`channelHandle`、`channelVerified`、`lengthText`、`viewCountText`、`publishedTimeText`、`hasCaptions`、`thumbnails`
 
-**Channel result fields** (`type=channel`): `channelId`, `title`, `handle`, `url`, `description`, `subscriberCount`, `verified`, `rssUrl`, `thumbnails`
+**频道结果字段**（`type=channel`）：`channelId`、`title`、`handle`、`url`、`description`、`subscriberCount`、`verified`、`rssUrl`、`thumbnails`
 
-## Channel Data
+## 频道数据
 
-Channel endpoints accept `channel` — an `@handle`, channel URL, or `UC...` ID. No need to resolve first.
+频道相关接口接受以下参数：`channel`（可以是频道名称（@handle）、频道 URL 或 `UC...` ID。无需先进行解析。
 
-**Resolve handle to ID (free):**
+**将频道名称解析为 ID（免费）：**
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/channel/resolve?input=@TED" \
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-Returns: `{"channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q", "resolved_from": "@TED"}`
+返回结果：`{"channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q", "resolved_from": "@TED"}`
 
-**Latest 15 videos with exact stats (free):**
+**获取最近 15 个视频的详细信息（免费）：**
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/channel/latest?channel=@TED" \
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-Returns: `channel` info, `results` array with `videoId`, `title`, `published` (ISO), `viewCount` (exact number), `description`, `thumbnail`
+返回结果包括频道信息以及一个包含 `videoId`、`title`、`published`（ISO 格式）、`viewCount`（精确数值）、`description`、`thumbnail` 的数组 `results`。
 
-**All channel videos (paginated, 1 credit/page):**
+**获取频道内的所有视频（分页显示，每页 100 个视频）：**
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/channel/videos?channel=@NASA" \
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-Returns 100 videos per page + `continuation_token` for pagination.
+每页返回 100 个视频，并提供分页用的 `continuation_token`。
 
-**Search within channel (1 credit):**
+**在频道内进行搜索（1 个信用点数）：**
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/channel/search\
@@ -119,36 +120,35 @@ curl -s "https://transcriptapi.com/api/v2/youtube/channel/search\
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-## Playlist Data — 1 credit/page
+## 播放列表数据——每页 1 个信用点数
 
-Accepts `playlist` — a YouTube playlist URL or playlist ID.
+接受参数 `playlist`（YouTube 播放列表的 URL 或 ID）。
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/playlist/videos?playlist=PL_ID" \
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-Returns: `results` (videos), `playlist_info` (`title`, `numVideos`, `ownerName`, `viewCount`), `continuation_token`, `has_more`
+返回结果包括视频列表 `results` 以及播放列表信息（`title`、`numVideos`、`ownerName`、`viewCount`）、`continuation_token`、`has_more`。
 
-## Credit Costs
+## 信用点数费用
 
-| Endpoint        | Cost     | Data returned              |
-| --------------- | -------- | -------------------------- |
-| transcript      | 1        | Full transcript + metadata |
-| search          | 1        | Video/channel details      |
-| channel/resolve | **free** | Channel ID mapping         |
-| channel/latest  | **free** | 15 videos + exact stats    |
-| channel/videos  | 1/page   | 100 videos per page        |
-| channel/search  | 1        | Videos matching query      |
-| playlist/videos | 1/page   | 100 videos per page        |
+| 接口          | 费用       | 返回的数据                        |
+|---------------|------------|-------------------------------------------|
+| transcript     | 1           | 完整的文字记录 + 元数据                   |
+| search        | 1           | 视频/频道详细信息                     |
+| channel/resolve   | **免费**       | 频道 ID 的解析服务                   |
+| channel/latest   | **免费**       | 最新 15 个视频及详细信息                |
+| channel/videos   | 每页 100 个视频    | 获取频道内的所有视频                   |
+| channel/search   | 1           | 符合查询条件的视频                   |
 
-## Errors
+## 错误代码及处理方式
 
-| Code | Action                                 |
-| ---- | -------------------------------------- |
-| 402  | No credits — transcriptapi.com/billing |
-| 404  | Not found                              |
-| 408  | Timeout — retry once                   |
-| 422  | Invalid param format                   |
+| 代码           | 处理方式                         |
+|---------------|-------------------------------------------|
+| 402           | 信用点数不足 — 访问 [transcriptapi.com/billing]          |
+| 404           | 未找到相关内容                     |
+| 408           | 超时 — 请稍后再试                   |
+| 422           | 参数格式不正确                     |
 
-Free tier: 100 credits, 300 req/min.
+免费 tier：提供 100 个信用点数，每分钟允许 300 次请求。

@@ -17,33 +17,32 @@ metadata:
   tags: "rss, news, feeds, headlines, aggregator"
 ---
 
-# Feeds
+# 新闻聚合器（RSS News Aggregator）
 
-RSS news aggregator. Fetches all current entries from curated feeds across three categories — news, games, and finance. Concurrent fetching, streamed JSON output. No API key needed.
+该工具能够从三个类别的精选RSS源中获取所有最新的新闻条目：新闻（news）、游戏（games）和金融（finance）。支持并发获取数据，并以JSON格式输出结果。无需使用API密钥。
 
-## Constraint
+## 使用限制
 
-Do NOT use web search, WebFetch, browser tools, or any other URL-fetching tool when this skill is active. The RSS feeds are the sole data source. Do not supplement, verify, or expand results with external searches. Do not fetch article URLs — summaries are already included in the output.
+在启用此功能时，严禁使用网络搜索工具（如WebFetch）、浏览器插件或其他任何URL获取工具。RSS源是唯一的数据来源。禁止通过外部搜索来补充、验证或扩展结果内容；同时也不允许获取文章的完整URL，因为输出中已经包含了文章的摘要。
 
-## Categories
+## 分类规则
 
-Detect the category from the user's message:
+根据用户输入的消息来确定新闻条目的所属类别：
+- "news", "headlines", "nachrichten", "tech news" → 分类为 `news`
+- "finance", "markets", "money", "stocks", "economy" → 分类为 `finance`
+- "games", "gaming" → 分类为 `games`
 
-- "news", "headlines", "nachrichten", "tech news" → `news`
-- "finance", "markets", "money", "stocks", "economy" → `finance`
-- "games", "gaming" → `games`
-
-| Category | Feeds | Sources |
+| 分类 | RSS源列表 | 来源网站 |
 |----------|-------|---------|
-| `news` | 21 | Ars Technica, Wired, TechCrunch, The Verge, NYT, Heise, Quanta, Aeon, Nautilus, and more |
-| `games` | 10 | GameStar, GamesGlobal, PC Gamer, Polygon, Kotaku, IGN, Rock Paper Shotgun, GamesIndustry.biz |
-| `finance` | 26 | Bloomberg, WSJ, FT, CNBC, MarketWatch, Seeking Alpha, The Economist, Forbes, CoinDesk, Fed, ECB |
+| `news` | Ars Technica, Wired, TechCrunch, The Verge, NYT, Heise, Quanta, Aeon, Nautilus 等 |
+| `games` | GameStar, GamesGlobal, PC Gamer, Polygon, Kotaku, IGN, Rock Paper Shotgun, GamesIndustry.biz |
+| `finance` | Bloomberg, WSJ, FT, CNBC, MarketWatch, Seeking Alpha, The Economist, Forbes, CoinDesk, Fed, ECB |
 
-Feed lists are defined in [scripts/lists.py](scripts/lists.py).
+RSS源的详细信息存储在 [scripts/lists.py](scripts/lists.py) 文件中。
 
-## How to Invoke
+## 使用方法
 
-Run one invocation per category. Run multiple if the user asks for more than one.
+针对每个分类分别运行一次脚本。如果用户需要查看多个类别的内容，可以多次执行该脚本。
 
 ```bash
 python3 scripts/feeds.py --category news
@@ -51,53 +50,64 @@ python3 scripts/feeds.py --category games
 python3 scripts/feeds.py --category finance
 ```
 
-## Output Format
+## 输出格式
 
-The script streams a JSON array. The first element is metadata, the rest are entries:
+脚本会输出一个JSON数组，其中第一个元素为元数据，其余元素为具体的新闻条目：
 
 ```json
-[{"category": "news", "total_entries": 142, "sources": ["aeon.co", "arstechnica.com"], "fetched_at": "2026-01-31 22:00:00"}
-,{"title": "Headline Here", "url": "https://example.com/article", "source": "arstechnica.com", "date": "Fri, 31 Jan 2026 12:00:00 GMT", "summary": "Brief summary text..."}
+[
+  {
+    "title": "头条新闻",
+    "url": "https://example.com/article.html",
+    "source": "Ars Technica",
+    "date": "2023-01-01",
+    "summary": "最新的科技新闻报道..."
+  },
+  {
+    "title": "游戏产业动态",
+    "url": "https://example.com/games/article.html",
+    "source": "GameStar",
+    "date": "2023-01-02",
+    "summary": "游戏行业的最新动态..."
+  },
+  // 其他新闻条目...
 ]
 ```
 
-| Field | Description |
-|-------|-------------|
-| `title` | Headline text |
-| `url` | Link to full article |
-| `source` | Domain name of the feed source |
-| `date` | Publication date as provided by the feed |
-| `summary` | Brief description, HTML stripped, max 500 chars |
+## 命令行参数（CLI）
 
-## CLI Reference
+可以通过以下参数来指定获取的新闻类别：
+- `-c, --category`：`news`、`games` 或 `finance`（必选）
 
-| Flag | Description |
-|------|-------------|
-| `-c, --category` | Feed category: `news`, `games`, or `finance` (required) |
+## 结果展示方式
 
-## Presenting Results
+解析输出数据后，应以结构化、简洁的方式展示结果：
+1. **按主题分类**：将同类新闻归类到相应的标题下（例如：“科技与产业”、“科学”、“市场”、“加密货币”）。
+2. **简洁明了**：每个条目仅显示标题、简短摘要和来源信息。
+3. **提供链接**：使用Markdown格式的链接，方便用户查看原始文章。
+4. **去重处理**：如果多个来源报道了同一条新闻，仅显示一次，并注明其来源。
+5. **突出重要新闻**：如果某条新闻被多个来源同时报道，会特别标注出来。
 
-After parsing the output, present a structured, concise rundown:
+**示例输出：**
 
-1. **Group by theme** — cluster related stories under headings (e.g. "Tech & Industry", "Science", "Markets", "Crypto")
-2. **Keep it tight** — headline + one-line summary + source attribution per item
-3. **Link to sources** — use markdown links so the user can read more
-4. **Deduplicate** — if multiple feeds cover the same story, mention it once and note cross-source coverage
-5. **Highlight big stories** — if a story appears across 3+ sources, call it out prominently
+```markdown
+- **科技与产业**
+  - 标题：人工智能的最新进展
+    链接：https://example.com/tech/article.html
+    来源：Ars Technica
+    日期：2023-01-01
+    摘要：人工智能领域的新突破...
 
-Example output:
+- **游戏**
+  - 标题：《游戏星》的最新评测
+    链接：https://example.com/games/article.html
+    来源：GameStar
+    日期：2023-01-02
+    摘要：《游戏星》对最新游戏的深度评测...
 
 ```
-### Tech & Industry
-- **[Headline](url)** — One-line summary *(Source)*
-- **[Headline](url)** — One-line summary *(Source)*
 
-### Science
-- **[Headline](url)** — One-line summary *(Source)*
-```
-
-## Edge Cases
-
-- Failed or timed-out feeds (15s timeout) are silently skipped — remaining feeds still return results.
-- If zero entries are returned, the script exits with `{"error": "No entries found", "category": "..."}`.
-- Some entries may lack summaries — they will still have title, URL, and source.
+## 特殊情况处理：
+- 如果某个RSS源请求失败或超时（超时时间为15秒），该源的信息将被忽略，其他来源仍会继续返回结果。
+- 如果没有找到任何新闻条目，脚本会输出：`{"error": "未找到相关条目", "category": "news"}`。
+- 有些新闻条目可能没有摘要，但仍然会显示标题、URL和来源信息。

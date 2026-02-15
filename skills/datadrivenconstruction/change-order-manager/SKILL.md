@@ -1,16 +1,16 @@
 ---
 slug: "change-order-manager"
 display_name: "Change Order Manager"
-description: "Manage construction change orders from request to approval. Track costs, schedule impacts, and maintain audit trail for dispute prevention."
+description: "管理施工变更订单，从请求到审批的整个流程。跟踪成本、评估对进度的影响，并维护审计记录以防止争议。"
 ---
 
-# Change Order Manager
+# 变更订单管理器
 
-## Overview
+## 概述
 
-Manage the complete change order lifecycle from potential change identification through approval and payment. Track cost and schedule impacts, maintain documentation, and provide analytics for project control.
+该系统用于管理变更订单的整个生命周期，包括潜在变更的识别、审批、支付等环节。系统能够跟踪成本和进度的影响，维护相关文档，并为项目控制提供分析数据。
 
-## Change Order Workflow
+## 变更订单工作流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -26,7 +26,7 @@ Manage the complete change order lifecycle from potential change identification 
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -477,7 +477,7 @@ class ChangeOrderManager:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize manager
@@ -529,7 +529,7 @@ print(manager.generate_co_document(co.id))
 print(manager.generate_log())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

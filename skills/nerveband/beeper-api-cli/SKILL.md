@@ -1,29 +1,29 @@
 ---
 name: beeper-api-cli
-description: Read and send messages via Beeper CLI. Supports WhatsApp, Telegram, Signal, Instagram, Twitter/X, LinkedIn, Facebook Messenger and more.
+description: 通过 Beeper CLI 读取和发送消息。支持 WhatsApp、Telegram、Signal、Instagram、Twitter/X、LinkedIn、Facebook Messenger 等平台。
 metadata: {"clawdbot":{"emoji":"💬","os":["darwin","linux"]}}
 ---
 
 # beeper-api-cli
 
-LLM-friendly wrapper around the Beeper CLI for reading and sending messages across all connected chat networks.
+这是一个专为大型语言模型（LLM）设计的封装工具，它基于Beeper CLI，能够读取和发送消息到所有已连接的聊天网络。
 
-## ⚠️ CRITICAL: Message Sending Policy
+## ⚠️ 重要提示：消息发送政策
 
-**🚨 NEVER SEND ANY MESSAGE WITHOUT EXPLICIT USER APPROVAL 🚨**
+**🚨 未经用户明确许可，严禁发送任何消息！**
 
-**MANDATORY PROTOCOL FOR ALL MESSAGING:**
-1. **ALWAYS show the complete message draft first** - display full content
-2. **WAIT for explicit verbal approval** - "send it", "looks good", "go ahead", etc.
-3. **NEVER assume permission to send** - even if user says "draft a message"
-4. **Apply to ALL platforms**: WhatsApp, Telegram, Signal, Instagram, Twitter, Facebook, LinkedIn, etc.
-5. **NO EXCEPTIONS EVER** - This applies to new messages, replies, and forwards
+**所有消息发送必须遵循的协议：**
+1. **始终先显示完整的消息草稿** - 显示全部内容
+2. **等待用户的明确口头许可** - 例如：“发送吧”、“看起来不错”等
+3. **切勿擅自发送消息** - 即使用户只是说了“起草消息”
+4. **适用于所有平台**：WhatsApp、Telegram、Signal、Instagram、Twitter、Facebook、LinkedIn等
+5. **没有任何例外** - 这适用于新消息、回复和转发
 
-This rule is NON-NEGOTIABLE and applies to ALL beeper send commands.
+此规则不可协商，并适用于所有与Beeper相关的发送命令。
 
-## Quick Start
+## 快速入门
 
-### Step 1: Get Your Token from Beeper Desktop
+### 第一步：从Beeper桌面应用程序获取令牌
 ```
 1. Open Beeper Desktop
 2. Settings → Advanced → API
@@ -31,7 +31,7 @@ This rule is NON-NEGOTIABLE and applies to ALL beeper send commands.
 4. Copy the Bearer token
 ```
 
-### Step 2: Set Environment Variables
+### 第二步：设置环境变量
 ```bash
 # REQUIRED: Set your token
 export BEEPER_TOKEN="paste-your-token-here"
@@ -40,7 +40,7 @@ export BEEPER_TOKEN="paste-your-token-here"
 export BEEPER_API_URL="http://[::1]:23373"  # Default
 ```
 
-### Step 3: Use the CLI
+### 第三步：使用CLI
 ```bash
 # Use the skill wrapper (recommended)
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list --output json
@@ -49,26 +49,25 @@ export BEEPER_API_URL="http://[::1]:23373"  # Default
 /Users/ashrafali/clawd/beeper-api-cli/beeper chats list --output json
 ```
 
-**⚠️ Important:** Without setting `BEEPER_TOKEN`, all commands will fail with "Unauthorized" errors.
+**⚠️ 重要提示：** 如果未设置`BEEPER_TOKEN`，所有命令都会因“未经授权”而失败。
 
-## Prerequisites
+## 先决条件
 
-### 1. Beeper Desktop Must Be Running
-The CLI connects to Beeper Desktop's local API server.
+### 1. 必须运行Beeper桌面应用程序
+CLI需要连接到Beeper桌面应用程序的本地API服务器。
 
-### 2. Enable API Access in Beeper Desktop
-**⚠️ REQUIRED: You must configure the API token in Beeper Desktop first!**
+### 2. 在Beeper桌面应用程序中启用API访问
+**⚠️ 必须先配置API令牌！**
+1. 打开**Beeper桌面应用程序**
+2. 转到**设置 → 高级 → API**
+3. **启用API访问**
+4. **生成并复制Bearer令牌**
+5. （可选）配置允许的IP地址
+   - 默认情况下：仅允许`localhost`（127.0.0.1 / ::1）
+   - 如果从远程机器运行CLI，请将其IP地址添加到Beeper的设置中
 
-1. Open **Beeper Desktop**
-2. Go to **Settings → Advanced → API**
-3. **Enable API access**
-4. **Generate and copy the Bearer token**
-5. (Optional) Configure allowed IP addresses
-   - Default: Only `localhost` (127.0.0.1 / ::1) is allowed
-   - If running CLI from remote machine, add its IP address in Beeper settings
-
-### 3. Set Environment Variables
-You must set the token before the CLI will work:
+### 第三步：设置环境变量
+在CLI能够正常工作之前，必须设置令牌：
 
 ```bash
 # REQUIRED: Set your token from Beeper Desktop
@@ -78,20 +77,19 @@ export BEEPER_TOKEN="your-token-from-beeper-settings"
 export BEEPER_API_URL="http://[::1]:23373"
 ```
 
-**Where to get the token:**
-- Beeper Desktop → Settings → Advanced → API → Copy Bearer Token
+**获取令牌的位置：**
+- Beeper桌面应用程序 → 设置 → 高级 → API → 复制Bearer令牌
 
-**Important:**
-- ❌ The CLI will **NOT work** without setting `BEEPER_TOKEN`
-- ⚠️ Default API URL is `localhost` (`http://[::1]:23373`)
-- 🔒 If accessing from another machine, you must:
-  1. Add that machine's IP in Beeper Desktop API settings
-  2. Update `BEEPER_API_URL` to use the correct host IP
+**重要提示：**
+- ❌ 如果未设置`BEEPER_TOKEN`，CLI将无法工作
+- ⚠️ 默认API地址是`localhost`（`http://[::1]:23373`）
+- 🔒 如果从其他机器访问，请：
+  1. 将该机器的IP地址添加到Beeper的设置中
+  2. 更新`BEEPER_API_URL`以使用正确的主机IP地址
 
-## Commands
+## 命令
 
-### List All Chats
-
+### 列出所有聊天记录
 ```bash
 # JSON output (LLM-friendly)
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list --output json
@@ -103,7 +101,7 @@ export BEEPER_API_URL="http://[::1]:23373"
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list --output markdown
 ```
 
-**Example JSON output:**
+**示例JSON输出：**
 ```json
 [
   {
@@ -116,14 +114,12 @@ export BEEPER_API_URL="http://[::1]:23373"
 ]
 ```
 
-### Get Specific Chat
-
+### 获取特定聊天记录
 ```bash
 ~/clawd/skills/beeper-api-cli/beeper.sh chats get <chat-id> --output json
 ```
 
-### List Messages from Chat
-
+### 从聊天记录中读取消息
 ```bash
 # Get last 50 messages (default)
 ~/clawd/skills/beeper-api-cli/beeper.sh messages list --chat-id <chat-id>
@@ -132,7 +128,7 @@ export BEEPER_API_URL="http://[::1]:23373"
 ~/clawd/skills/beeper-api-cli/beeper.sh messages list --chat-id <chat-id> --limit 20 --output json
 ```
 
-**Example JSON output:**
+**示例JSON输出：**
 ```json
 [
   {
@@ -146,14 +142,13 @@ export BEEPER_API_URL="http://[::1]:23373"
 ]
 ```
 
-### Send a Message
-
+### 发送消息
 ```bash
 # ⚠️ REQUIRES USER APPROVAL FIRST - see Message Sending Policy above
 ~/clawd/skills/beeper-api-cli/beeper.sh send --chat-id <chat-id> --message "Your message here"
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "success": true,
@@ -162,23 +157,20 @@ export BEEPER_API_URL="http://[::1]:23373"
 }
 ```
 
-### Search Messages
-
+### 搜索消息
 ```bash
 # Search across all chats
 ~/clawd/skills/beeper-api-cli/beeper.sh search --query "keyword" --limit 10 --output json
 ```
 
-### Auto-Discover API URL
-
+### 自动发现API地址
 ```bash
 ~/clawd/skills/beeper-api-cli/beeper.sh discover
 ```
 
-## LLM Workflows
+## LLM工作流程
 
-### Find Chat and Send Message
-
+### 查找聊天记录并发送消息
 ```bash
 # 1. List chats to find the right one
 CHATS=$(~/clawd/skills/beeper-api-cli/beeper.sh chats list --output json)
@@ -190,28 +182,26 @@ CHAT_ID=$(echo "$CHATS" | jq -r '.[] | select(.title | contains("Project")) | .i
 ~/clawd/skills/beeper-api-cli/beeper.sh send --chat-id "$CHAT_ID" --message "Update ready!"
 ```
 
-### Get Conversation Context
-
+### 获取对话上下文
 ```bash
 # Get recent messages for context
 ~/clawd/skills/beeper-api-cli/beeper.sh messages list --chat-id <chat-id> --limit 20 --output json | jq
 ```
 
-### Monitor Unread Messages
-
+### 监控未读消息
 ```bash
 # Get all chats with unread count
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list --output json | jq '.[] | select(.unreadCount > 0) | {title, network, unread: .unreadCount}'
 ```
 
-## Output Formats
+## 输出格式
 
-### JSON (Default - LLM-Optimized)
-- Structured data ready for parsing
-- Perfect for programmatic use
-- Pipe to `jq` for filtering
+### JSON（默认格式 - 优化后的LLM格式）
+- 结构化数据，便于解析
+- 非常适合程序化使用
+- 可通过`jq`进行过滤
 
-### Text (Human-Readable)
+### 文本格式（人类可读）
 ```
 ID: !wcn4YMCOtKUEtxYXYAq1:beeper.local
 Title: beeper-api-cli - Lion Bot
@@ -220,7 +210,7 @@ Network: Telegram
 Unread: 15
 ```
 
-### Markdown (Documentation)
+### Markdown格式（用于文档）
 ```markdown
 ## beeper-api-cli - Lion Bot
 
@@ -230,72 +220,72 @@ Unread: 15
 - **Unread**: 15
 ```
 
-## Chat ID Formats
+## 聊天记录ID格式
 
-Different networks use different ID formats:
+不同平台使用不同的ID格式：
 
-- **Telegram**: `!wcn4YMCOtKUEtxYXYAq1:beeper.local`
-- **WhatsApp**: Phone number format (e.g., `15551234567@s.whatsapp.net`)
-- **Signal**: Phone number (e.g., `+15551234567`)
-- **Instagram/Twitter**: Platform-specific IDs
+- **Telegram**：`!wcn4YMCOtKUEtxYXYAq1:beeper.local`
+- **WhatsApp**：电话号码格式（例如，`15551234567@s.whatsapp.net`
+- **Signal**：电话号码（例如，`+15551234567`
+- **Instagram/Twitter**：平台特定的ID
 
-Use `chats list` to discover the exact format for your chats.
+使用`chats list`命令来获取您聊天记录的确切格式。
 
-## Environment Variables
+## 环境变量
 
-### Required Configuration
+### 必须设置的配置项
 
-**You MUST set these environment variables before using the CLI:**
+**在使用CLI之前，必须设置以下环境变量：**
 
-#### BEEPER_TOKEN (Required)
+#### BEEPER_TOKEN（必需）
 ```bash
 export BEEPER_TOKEN="your-bearer-token-from-beeper-desktop"
 ```
 
-**How to get your token:**
-1. Open Beeper Desktop
-2. Settings → Advanced → API
-3. Enable API access
-4. **Copy the Bearer token** shown in the settings
-5. Set it as an environment variable
+**获取令牌的方法：**
+1. 打开Beeper桌面应用程序
+2. 转到设置 → 高级 → API
+3. 启用API访问
+4. **复制设置中显示的Bearer令牌**
+5. 将其设置为环境变量
 
-**Without this token, the CLI will return "Unauthorized" errors.**
+**如果没有这个令牌，CLI将返回“未经授权”的错误。**
 
-#### BEEPER_API_URL (Optional)
+#### BEEPER_API_URL（可选）
 ```bash
 export BEEPER_API_URL="http://[::1]:23373"  # Default value
 ```
 
-**Default behavior:**
-- Uses `http://[::1]:23373` (localhost on IPv6)
-- This works when running CLI on the same machine as Beeper Desktop
+**默认行为：**
+- 使用`http://[::1]:23373`（IPv6下的localhost）
+- 当CLI与Beeper桌面在同一台机器上运行时，此地址有效
 
-**When to change:**
-- Running CLI from a **remote machine**
-- Beeper Desktop is on a different host
-- Using a custom port
+**何时需要更改：**
+- 从**远程机器**运行CLI时
+- Beeper桌面位于不同的主机上时
+- 使用自定义端口时
 
-**If running remotely:**
-1. Find the IP address of the machine running Beeper Desktop
-2. In Beeper Desktop → Settings → Advanced → API → Add the remote machine's IP to allowed list
-3. Set `BEEPER_API_URL` to: `http://<beeper-host-ip>:23373`
+**如果从远程机器运行：**
+1. 找到运行Beeper桌面应用程序的机器的IP地址
+2. 在Beeper桌面应用程序 → 设置 → 高级 → API中添加该远程机器的IP地址
+3. 将`BEEPER_API_URL`设置为：`http://<beeper-host-ip>:23373`
 
-Example for remote access:
+**远程访问示例：**
 ```bash
 export BEEPER_API_URL="http://192.168.1.100:23373"
 export BEEPER_TOKEN="your-token-here"
 ```
 
-### Skill Wrapper Behavior
+### Skill封装工具的行为
 
-The skill wrapper (`beeper.sh`) will:
-- ✅ Use `$BEEPER_TOKEN` from environment (you must set this!)
-- ✅ Default `$BEEPER_API_URL` to `http://[::1]:23373` if not set
-- ❌ **Fail with error** if `BEEPER_TOKEN` is not set
+Skill封装工具（`beeper.sh`）将：
+- ✅ 使用环境变量中的`$BEEPER_TOKEN`（您必须设置这个变量！）
+- ✅ 如果未设置`BEEPER_TOKEN`，则默认使用`http://[::1]:23373`
+- ❌ 如果未设置`BEEPER_TOKEN`，将会导致错误
 
-## Troubleshooting
+## 故障排除
 
-### "Connection refused"
+### “连接被拒绝”
 ```bash
 # Check if Beeper Desktop is running
 ps aux | grep -i beeper
@@ -304,11 +294,11 @@ ps aux | grep -i beeper
 open -a "Beeper Desktop"  # macOS
 ```
 
-### "Unauthorized" or "Invalid or missing token"
+### “未经授权”或“令牌无效或缺失”
 
-**This means you haven't set BEEPER_TOKEN or it's invalid.**
+**这意味着您尚未设置`BEEPER_TOKEN`，或者令牌无效。**
 
-**Fix:**
+**解决方法：**
 ```bash
 # 1. Check if token is set
 echo $BEEPER_TOKEN
@@ -326,23 +316,23 @@ export BEEPER_TOKEN="paste-the-token-here"
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list
 ```
 
-**Important Notes:**
-- The token is generated in **Beeper Desktop settings**, not in this CLI
-- You **must copy it exactly** from Settings → Advanced → API
-- Without a valid token, **no commands will work**
-- Tokens don't expire unless you regenerate them in Beeper settings
+**重要提示：**
+- 令牌是在**Beeper桌面应用程序的设置**中生成的，而不是在这个CLI中生成的
+- **必须从设置 → 高级 → API中准确复制令牌**
+- 没有有效的令牌，**所有命令都无法执行**
+- 除非在Beeper的设置中重新生成，否则令牌不会过期
 
-### "Chat not found"
+### “聊天记录未找到”
 ```bash
 # List all chats to find correct ID
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list --output text | grep -i "search-term"
 ```
 
-### Remote Access (CLI on different machine than Beeper Desktop)
+### 远程访问（CLI与Beeper桌面位于不同的机器上）
 
-**If you want to run the CLI from a different computer:**
+**如果您想从不同的计算机运行CLI：**
 
-**1. Configure Beeper Desktop to allow remote access:**
+**1. 配置Beeper桌面应用程序以允许远程访问：**
 ```
 - Open Beeper Desktop (on the machine running Beeper)
 - Settings → Advanced → API
@@ -351,7 +341,7 @@ export BEEPER_TOKEN="paste-the-token-here"
 - Example: 192.168.1.50
 ```
 
-**2. Set BEEPER_API_URL to point to the remote machine:**
+**2. 将`BEEPER_API_URL`设置为指向远程机器：**
 ```bash
 # On the machine running the CLI:
 export BEEPER_API_URL="http://<beeper-desktop-ip>:23373"
@@ -361,14 +351,14 @@ export BEEPER_TOKEN="your-token"
 export BEEPER_API_URL="http://192.168.1.100:23373"
 ```
 
-**Default behavior (localhost only):**
-- Default URL: `http://[::1]:23373` (IPv6 localhost)
-- Only works when CLI is on **same machine** as Beeper Desktop
-- **No remote access** unless you configure allowed IPs in Beeper settings
+**默认行为（仅限localhost）：**
+- 默认URL：`http://[::1]:23373`（IPv6下的localhost）
+- 仅当CLI与Beeper桌面在同一台机器上运行时有效
+- **除非在Beeper的设置中配置了允许的IP地址，否则无法进行远程访问**
 
-## Examples
+## 示例
 
-### Example 1: Check Unread Messages
+### 示例1：检查未读消息
 ```bash
 #!/bin/bash
 BEEPER="$HOME/clawd/skills/beeper-api-cli/beeper.sh"
@@ -378,7 +368,7 @@ $BEEPER chats list --output json | \
   jq -r '.[] | select(.unreadCount > 0) | "\(.title) (\(.network)): \(.unreadCount) unread"'
 ```
 
-### Example 2: Read Recent Messages
+### 示例2：读取最近的消息
 ```bash
 #!/bin/bash
 BEEPER="$HOME/clawd/skills/beeper-api-cli/beeper.sh"
@@ -388,7 +378,7 @@ CHAT_ID="!wcn4YMCOtKUEtxYXYAq1:beeper.local"
 $BEEPER messages list --chat-id "$CHAT_ID" --limit 10 --output text
 ```
 
-### Example 3: Search and Respond
+### 示例3：搜索并回复消息
 ```bash
 #!/bin/bash
 BEEPER="$HOME/clawd/skills/beeper-api-cli/beeper.sh"
@@ -400,45 +390,45 @@ RESULTS=$($BEEPER search --query "@clawdbot" --limit 5 --output json)
 echo "$RESULTS" | jq
 ```
 
-## Integration with Clawdbot
+## 与Clawdbot集成
 
-When using from Clawdbot tools, the environment variables are already configured:
+当从Clawdbot工具中使用该工具时，环境变量已经配置好了：
 
 ```bash
 # Direct usage from exec tool
 ~/clawd/skills/beeper-api-cli/beeper.sh chats list --output json
 ```
 
-The skill wrapper handles:
-- ✅ Auto-configuration of `BEEPER_API_URL` and `BEEPER_TOKEN`
-- ✅ Error checking for required environment variables
-- ✅ Clean passthrough of all CLI arguments
+Skill封装工具会处理：
+- ✅ 自动配置`BEEPER_API_URL`和`BEEPER_TOKEN`
+- ✅ 检查所需的环境变量是否已设置
+- ✅ 透明地传递所有CLI参数
 
-## Binary Location
+## 二进制文件位置
 
-- **Skill wrapper**: `~/clawd/skills/beeper-api-cli/beeper.sh`
-- **Beeper CLI binary**: `/Users/ashrafali/clawd/beeper-api-cli/beeper`
-- **Source code**: https://github.com/nerveband/beeper-api-cli
+- **Skill封装工具**：`~/clawd/skills/beeper-api-cli/beeper.sh`
+- **Beeper CLI二进制文件**：`/Users/ashrafali/clawd/beeper-api-cli/beeper`
+- **源代码**：https://github.com/nerveband/beeper-api-cli
 
-## Features
+## 特点
 
-✅ Read-only and write operations (unlike other tools)  
-✅ LLM-optimized JSON output  
-✅ Human-readable text and markdown formats  
-✅ Auto-discovery of Beeper Desktop API  
-✅ Cross-platform binaries (macOS, Linux, Windows)  
-✅ Environment variable configuration  
-✅ Comprehensive error messages  
-✅ Unix pipeline friendly  
+✅ 仅支持读写操作（与其他工具不同）
+✅ 优化后的JSON输出格式，适合LLM处理
+✅ 提供人类可读的文本和Markdown格式
+✅ 自动发现Beeper桌面应用程序的API
+### 跨平台二进制文件（macOS、Linux、Windows）
+✅ 支持环境变量配置
+✅ 提供详细的错误信息
+✅ 适用于Unix管道操作
 
-## Notes
+## 注意事项
 
-- The skill requires Beeper Desktop to be running
-- API access must be enabled in Beeper Desktop settings
-- Token is stored in Clawdbot config (already configured)
-- All networks connected to Beeper are accessible (WhatsApp, Telegram, Signal, etc.)
-- Use JSON output for LLM processing, text for human reading
+- 该工具需要Beeper桌面应用程序正在运行
+- 必须在Beeper桌面应用程序的设置中启用API访问
+- 令牌存储在Clawdbot的配置文件中（已自动配置）
+- 可访问所有连接到Beeper的聊天网络（WhatsApp、Telegram、Signal等）
+- 使用JSON格式的输出进行LLM处理，使用文本格式供人类阅读
 
-## Version
+## 版本
 
-Latest (dev build from source)
+最新版本（来自源代码的开发者构建）

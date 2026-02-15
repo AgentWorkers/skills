@@ -1,20 +1,20 @@
 ---
 name: ai-video-gen
-description: End-to-end AI video generation - create videos from text prompts using image generation, video synthesis, voice-over, and editing. Supports OpenAI DALL-E, Replicate models, LumaAI, Runway, and FFmpeg editing.
+description: 端到端的AI视频生成技术——通过图像生成、视频合成、旁白以及编辑功能，根据文本提示创建视频。支持使用OpenAI的DALL-E模型、Replicate模型、LumaAI模型以及FFmpeg进行视频编辑。
 ---
 
-# AI Video Generation Skill
+# 人工智能视频生成技能
 
-Generate complete videos from text descriptions using AI.
+使用人工智能根据文本描述生成完整的视频。
 
-## Capabilities
+## 功能
 
-1. **Image Generation** - DALL-E 3, Stable Diffusion, Flux
-2. **Video Generation** - LumaAI, Runway, Replicate models
-3. **Voice-over** - OpenAI TTS, ElevenLabs
-4. **Video Editing** - FFmpeg assembly, transitions, overlays
+1. **图像生成** - DALL-E 3、Stable Diffusion、Flux
+2. **视频生成** - LumaAI、Runway、Replicate模型
+3. **旁白** - OpenAI TTS、ElevenLabs
+4. **视频编辑** - 使用FFmpeg进行剪辑、添加过渡效果和叠加层
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate a complete video
@@ -27,11 +27,11 @@ python skills/ai-video-gen/images_to_video.py --images img1.png img2.png --outpu
 python skills/ai-video-gen/add_voiceover.py --video input.mp4 --text "Your narration" --output final.mp4
 ```
 
-## Setup
+## 设置
 
-### Required API Keys
+### 所需的API密钥
 
-Add to your environment or `.env` file:
+将API密钥添加到您的环境变量或`.env`文件中：
 
 ```bash
 # Image Generation (pick one)
@@ -50,7 +50,7 @@ ELEVENLABS_API_KEY=...            # ElevenLabs
 # Or use FREE local options (no API needed)
 ```
 
-### Install Dependencies
+### 安装依赖项
 
 ```bash
 pip install openai requests pillow replicate python-dotenv
@@ -58,11 +58,11 @@ pip install openai requests pillow replicate python-dotenv
 
 ### FFmpeg
 
-Already installed via winget.
+已通过Winget安装。
 
-## Usage Examples
+## 使用示例
 
-### 1. Text to Video (Full Pipeline)
+### 1. 从文本生成视频（完整流程）
 
 ```bash
 python skills/ai-video-gen/generate_video.py \
@@ -72,7 +72,7 @@ python skills/ai-video-gen/generate_video.py \
   --output future_city.mp4
 ```
 
-### 2. Multiple Scenes
+### 2. 多个场景
 
 ```bash
 python skills/ai-video-gen/multi_scene.py \
@@ -81,7 +81,7 @@ python skills/ai-video-gen/multi_scene.py \
   --output day_in_life.mp4
 ```
 
-### 3. Image Sequence to Video
+### 从图像序列生成视频
 
 ```bash
 python skills/ai-video-gen/images_to_video.py \
@@ -90,37 +90,37 @@ python skills/ai-video-gen/images_to_video.py \
   --output animation.mp4
 ```
 
-## Workflow Options
+## 工作流程选项
 
-### Budget Mode (FREE)
-- Image: Stable Diffusion (local or free API)
-- Video: Open source models
-- Voice: OpenAI TTS (cheap) or free TTS
-- Edit: FFmpeg
+### 经济模式（免费）
+- 图像：使用Stable Diffusion（本地资源或免费API）
+- 视频：使用开源模型
+- 旁白：使用OpenAI TTS（价格较低）或免费TTS服务
+- 编辑：使用FFmpeg
 
-### Quality Mode (Paid)
-- Image: DALL-E 3 or Midjourney
-- Video: Runway Gen-3 or LumaAI
-- Voice: ElevenLabs
-- Edit: FFmpeg + effects
+### 高质量模式（付费）
+- 图像：使用DALL-E 3或Midjourney
+- 视频：使用Runway Gen-3或LumaAI
+- 旁白：使用ElevenLabs
+- 编辑：使用FFmpeg并添加特效
 
-## Scripts Reference
+## 脚本参考
 
-- `generate_video.py` - Main end-to-end generator
-- `images_to_video.py` - Convert image sequence to video
-- `add_voiceover.py` - Add narration to existing video
-- `multi_scene.py` - Create multi-scene videos
-- `edit_video.py` - Apply effects, transitions, overlays
+- `generate_video.py` - 主要的端到端生成脚本
+- `images_to_video.py` - 将图像序列转换为视频
+- `add_voiceover.py` - 为现有视频添加旁白
+- `multi_scene.py` - 创建多场景视频
+- `edit_video.py` - 应用特效、过渡效果和叠加层
 
-## API Cost Estimates
+## API费用估算
 
-- **DALL-E 3**: ~$0.04-0.08 per image
-- **Replicate**: ~$0.01-0.10 per generation
-- **LumaAI**: $0-0.50 per 5sec (free tier available)
-- **Runway**: ~$0.05 per second
-- **OpenAI TTS**: ~$0.015 per 1K characters
-- **ElevenLabs**: ~$0.30 per 1K characters (better quality)
+- **DALL-E 3**：每张图片约0.04-0.08美元
+- **Replicate**：每次生成约0.01-0.10美元
+- **LumaAI**：每5秒0.50美元（提供免费 tier）
+- **Runway**：每秒约0.05美元
+- **OpenAI TTS**：每1000个字符约0.015美元
+- **ElevenLabs**：每1000个字符约0.30美元（提供更高质量的服务）
 
-## Examples
+## 示例
 
-See `examples/` folder for sample outputs and prompts.
+请查看`examples/`文件夹中的示例输出和提示。

@@ -1,62 +1,60 @@
 ---
 name: swiftui-empty-app-init
-description: Initialize a minimal SwiftUI iOS app in the current directory by generating a single `.xcodeproj` with XcodeGen (no workspaces, packages, or tests unless explicitly requested).
+description: 使用 XcodeGen 在当前目录下初始化一个简单的 SwiftUI iOS 应用程序，生成一个 `.xcodeproj` 文件（除非有明确要求，否则不生成工作区、包或测试文件）。
 ---
 
-# SwiftUI Empty App Init
+# SwiftUI 空应用初始化
 
-## Overview
-Initialize a clean, single-target SwiftUI iOS app in the current directory.
-The project is generated using **XcodeGen** to produce a single `.xcodeproj`, leaving developers ready to start adding features immediately.
+## 概述
+在当前目录下初始化一个简洁的、单目标的 SwiftUI iOS 应用。该项目是通过 **XcodeGen** 生成的，生成一个单独的 `.xcodeproj` 文件，使开发者可以立即开始添加功能。
 
-## Prerequisites
-- Xcode installed and selected via `xcode-select`
-- **XcodeGen** available on `PATH`
+## 先决条件
+- 已安装 Xcode 并通过 `xcode-select` 选择它。
+- **XcodeGen** 已添加到系统的 `PATH` 环境变量中。
 
-If any prerequisite is missing:
-- Stop execution
-- Tell the user exactly what is missing
-- Do **not** attempt alternative scaffolding or auto-installation
+如果缺少任何先决条件：
+- 停止执行当前操作。
+- 明确告知用户缺少什么。
+- **不要** 尝试使用其他脚手架工具或自动安装方式。
 
-## Inputs
-- **Project name** (required)
-- **Minimum iOS deployment target**
-- **Optional bundle identifier** (or use default)
+## 输入参数
+- **项目名称**（必填）
+- **最低 iOS 部署目标**（例如：iOS 12）
+- **可选的 Bundle 标识符**（或使用默认值）
 
-## Defaults (use without extra confirmation)
-- Bundle identifier default: `com.example.<ProjectName>`
-- Proceed immediately once required inputs are provided (do not ask extra confirmations)
+## 默认值（无需额外确认即可使用）
+- Bundle 标识符默认值：`com.example.<ProjectName>`
+- 提供所需输入后，立即开始生成项目（无需额外确认）。
 
-## Core Requirements
-The resulting project must:
-- Be generated via **XcodeGen** (do not hand-author `project.pbxproj`)
-- Use a single `.xcodeproj` (no `.xcworkspace`)
-- Contain exactly one **app target**
-- Use the SwiftUI `@main App` lifecycle
-- Contain a minimal `ContentView` placeholder
-- Contain a minimal `Info.plist` (avoid unnecessary scene or delegate keys)
-- Contain **no Swift packages**
-- Contain **no test targets** unless explicitly requested
+## 核心要求
+生成的项目必须满足以下条件：
+- 通过 **XcodeGen** 生成（不要手动创建 `project.pbxproj` 文件）。
+- 使用一个单独的 `.xcodeproj` 文件（不使用 `.xcworkspace`）。
+- 仅包含一个应用目标（app target）。
+- 使用 SwiftUI 的 `@main App` 生命周期。
+- 包含一个最小的 `ContentView` 占位组件。
+- 包含一个最小的 `Info.plist` 文件（避免不必要的键或配置）。
+- **不包含任何 Swift 包**。
+- 除非特别要求，否则不包含测试目标（test targets）。
 
-## Generation
-- Create a minimal `project.yml` using the provided inputs
-- Generate `YourApp.xcodeproj` using XcodeGen
-- Ensure the output matches all Core Requirements
+## 生成过程
+- 使用提供的输入参数创建一个最小的 `project.yml` 文件。
+- 使用 XcodeGen 生成 `YourApp.xcodeproj` 文件。
+- 确保生成的文件符合所有核心要求。
 
-## Expected Structure
+## 预期结构
 - `project.yml`
 - `YourApp.xcodeproj`
-- `YourApp/` (app target source files)
-- Optional config files only
+- `YourApp/`（应用目标的源代码文件）
+- 可选的配置文件
 
-No additional folders, packages, workspaces, scripts, or assets should be present.
+项目中不应包含额外的文件夹、包、工作区（workspaces）、脚本或资源文件。
 
-## Minimal Verification (fast)
-- Confirm `YourApp.xcodeproj` is generated successfully by XcodeGen.
-- Confirm the default scheme exists (e.g., via a lightweight scheme listing).
-- Do **not** boot simulators, build, install, or launch unless explicitly requested.
+## 最简单的验证步骤
+- 确认 `YourApp.xcodeproj` 文件已成功由 XcodeGen 生成。
+- 确认默认的方案（scheme）存在（例如，通过简单的方案列表来验证）。
+- 除非有明确要求，否则**不要** 启动模拟器、进行构建、安装或运行应用。
 
-## Notes
-- Keep the project minimal and unopinionated
-- Do not add icons/scripts, packages, workspaces, or architecture scaffolding
-- This skill is for **app initialization only**, not feature scaffolding
+## 注意事项
+- 保持项目的简洁性，避免添加不必要的组件（如图标、脚本、包或架构相关的文件）。
+- 本技能仅用于应用初始化，不涉及功能的搭建或开发。

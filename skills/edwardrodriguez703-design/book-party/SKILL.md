@@ -1,23 +1,23 @@
 ---
 name: book-party
-description: Book party services through Lokuli MCP. Use when user needs to find and book party. Triggers on requests like "book a party", "find party near me", or any party service request.
+description: 通过 Lokuli MCP 提供派对预订服务。当用户需要查找或预订派对时，可以使用此服务。该服务会在用户发起“预订派对”、“查找附近的派对”或任何与派对相关的请求时被触发。
 ---
 
-# uook party
+# 图书借阅派对服务
 
-Book party services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供图书借阅派对相关服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建借阅派对（Create Booking）
 ```json
 {
   "method": "tools/call",

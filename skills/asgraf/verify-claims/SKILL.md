@@ -1,128 +1,121 @@
 ---
 name: verify-claims
-description: Verify claims and information using professional fact-checking services. Use this skill when users want to verify facts, check claims in articles/videos/transcripts, validate news authenticity, cross-reference information with trusted fact-checkers, or investigate potentially false or misleading content. Triggers include requests to "fact check", "verify this", "is this true", "check if this is accurate", or when users share content they want validated against misinformation.
+description: 使用专业的事实核查服务来验证声明和信息。当用户需要核实事实、检查文章/视频/文字记录中的内容、验证新闻的真实性、将信息与可信的事实核查机构进行交叉比对，或调查可能虚假或具有误导性的内容时，可以使用这一技能。触发这种情况的指令包括“进行事实核查”、“验证这个”、“这是真的吗”、“检查这个是否准确”，或者当用户分享内容并希望其真实性得到验证时。
 ---
 
-# Fact-Checking Skill
+# 事实核查技能
 
-Verify claims and information using professional fact-checking services from around the world.
+使用全球范围内的专业事实核查服务来验证信息和主张。
 
-## Core Principles
+## 核心原则
 
-1. **Multiple sources** - Cross-reference findings from several fact-checking organizations
-2. **Regional relevance** - Prioritize fact-checkers appropriate to the content's context
-3. **Language matching** - Use fact-checkers in the native language of the content when possible
-4. **Credible sources only** - Never use fraudulent or unreliable fact-checking services
-5. **Balanced presentation** - Present both confirming and contradicting findings fairly
-
----
-
-## When to Use This Skill
-
-Trigger this skill when the user:
-- Explicitly asks to fact-check, verify, or validate information
-- Shares an article, video transcript, or claim and asks "is this true?"
-- Wants to check if something is misinformation or a hoax
-- Asks about the credibility of specific claims or statements
-- Requests verification of news, social media posts, or viral content
-- Wants to cross-reference information with trusted sources
-
-Do NOT trigger for:
-- General research or information gathering (use web search instead)
-- Checking grammar, spelling, or writing quality
-- Verifying code functionality or technical documentation
-- Questions about opinions rather than factual claims
+1. **多源验证** - 交叉参考多个事实核查机构的调查结果。
+2. **地域相关性** - 优先选择与内容背景相关的事实核查服务。
+3. **语言匹配** - 尽可能使用与内容语言相匹配的事实核查服务。
+4. **仅使用可信的来源** - 绝不使用欺诈性或不可靠的事实核查服务。
+5. **平衡呈现** - 公平地展示所有确认和反驳的结论。
 
 ---
 
-## Workflow
+## 何时使用此技能
 
-### Step 1: Understand the Content
+当用户：
+- 明确要求对信息进行事实核查、验证或确认时；
+- 分享文章、视频文字记录或主张，并询问“这是真的吗？”时；
+- 想要检查某件事是否是错误信息或骗局时；
+- 对特定主张或陈述的真实性提出疑问时；
+- 请求核实新闻、社交媒体帖子或病毒式内容时；
+- 希望将信息与可信来源进行交叉比对时。
 
-Before beginning verification, analyze what needs to be checked:
+**不适用的情况**：
+- 一般性研究或信息收集（使用网络搜索）；
+- 检查语法、拼写或写作质量；
+- 验证代码功能或技术文档；
+- 关于观点而非事实性主张的问题。
 
-1. **Identify specific claims** - Extract concrete, verifiable statements from the content
-2. **Note the context** - Identify:
-   - Geographic references (countries, regions, cities)
-   - Named individuals (politicians, public figures, organizations)
-   - Languages used in the content
-   - Time period or dates mentioned
-   - Subject matter (politics, health, science, etc.)
-3. **Determine user context**:
-   - User's native language (for selecting appropriate fact-checkers)
-   - User's location if relevant
+---
 
-**Example Analysis:**
-- Content: "Video claiming vaccines cause autism, mentions Andrew Wakefield, references UK study"
-- Claims to verify: Vaccine-autism link, Wakefield's research
-- Context: Medical/health topic, UK origin, English language
-- Key entities: Andrew Wakefield, MMR vaccine, UK medical establishment
+## 工作流程
 
-### Step 2: Select Fact-Checking Services
+### 第一步：理解内容
 
-**CRITICAL**: Begin by fetching the current list of fact-checking services:
+在开始验证之前，分析需要核查的内容：
+1. **识别具体主张** - 从内容中提取具体、可验证的陈述。
+2. **注意背景** - 确定：
+   - 地理参考（国家、地区、城市）；
+   - 被提及的个人（政治家、公众人物、组织）；
+   - 内容中使用的语言；
+   - 提及的时间段或日期；
+   - 主题（政治、健康、科学等）。
+3. **确定用户背景**：
+   - 用户的母语（用于选择合适的事实核查服务）；
+   - 如果相关，还包括用户的位置。
+
+**示例分析**：
+- 内容：“一段视频声称疫苗会导致自闭症，提到了安德鲁·韦克菲尔德，并引用了英国的研究”。
+- 需要验证的主张：疫苗与自闭症之间的关联，韦克菲尔德的研究。
+- 背景：医学/健康主题，来自英国，使用英语。
+- 关键人物：安德鲁·韦克菲尔德，MMR疫苗，英国医疗机构。
+
+### 第二步：选择事实核查服务
+
+**关键步骤**：首先获取当前可用的事实核查服务列表：
 
 ```
 Fetch: https://en.wikipedia.org/wiki/List_of_fact-checking_websites
 ```
 
-From this list, select 3-7 relevant fact-checking services based on:
+从该列表中，根据以下标准选择3-7个相关的事实核查服务：
 
-#### Selection Criteria
+#### 选择标准
 
-1. **User's language/location** - Always include fact-checkers in the user's native language
-   
-2. **Content language/location** - If different from user's language, also include fact-checkers in the content's language and region
+1. **用户的语言/位置** - 必须包括用户母语的事实核查服务。
+2. **内容的语言/位置** - 如果内容语言与用户语言不同，也要包括内容所在地区的语言服务。
+3. **地域相关性** - 如果内容提到了特定国家/地区：
+   - 包括来自这些国家的事实核查服务。
+   - 例如：关于法国政治的内容 → 包括法国的事实核查服务。
+4. **主题专家** - 一些事实核查服务专注于特定领域：
+   - 健康/医学主张 → Health Feedback, Science Feedback；
+   - 政治 → 国家特定的政治事实核查服务；
+   - 通用 → Snopes, FactCheck.org, Full Fact。
+5. **个人特定** - 如果内容涉及特定公众人物：
+   - 包括来自该人物所在国家的事实核查服务。
+   - 例如：关于美国政治家的主张 → 包括美国的事实核查服务。
 
-3. **Geographic relevance** - If content mentions specific countries/regions:
-   - Include fact-checkers from those countries
-   - Example: Content about French politics → include French fact-checkers
+#### 排除规则
 
-4. **Subject matter specialists** - Some fact-checkers specialize:
-   - Health/medical claims → Health Feedback, Science Feedback
-   - Politics → country-specific political fact-checkers
-   - General → Snopes, FactCheck.org, Full Fact
+**绝对不要使用** 维基百科页面上标记为“欺诈性事实核查网站”的服务，无论它们在其他标准上多么符合要求。
 
-5. **Person-specific** - If content focuses on specific public figures:
-   - Include fact-checkers from their home countries
-   - Example: Claims about a US politician → include US fact-checkers
+#### 优先级
 
-#### Exclusion Rule
+当必须限制服务数量时：
+- 优先顺序：用户语言 > 内容语言 > 地域相关性；
+- 偏好知名的服务（FactCheck.org, Snopes, Full Fact, AFP Fact Check等）；
+- 至少包括一个国际/通用服务。
 
-**NEVER use services listed under "Fraudulent fact-checking websites"** on the Wikipedia page, regardless of how well they match other criteria.
+**示例选择**：
+- 用户：波兰语使用者；
+- 内容：一篇关于美国疫苗的英文文章。
+- 选择的服务：
+  1. Demagog.pl（波兰语，适合用户）；
+  2. FactCheck.org（美国，针对内容地域）；
+  3. Snopes（美国，通用/医学）；
+  4. Health Feedback（健康领域专家）；
+  5. Full Fact（英国，英语使用者，通用）。
 
-#### Prioritization
+### 第三步：搜索每个事实核查服务
 
-When you must limit selections:
-- Prioritize: User's language > Content's language > Geographic relevance
-- Prefer well-established services (FactCheck.org, Snopes, Full Fact, AFP Fact Check, etc.)
-- Include at least one international/general service
+对于每个选定的服务，进行针对性的搜索：
 
-**Example Selection:**
-- User: Polish speaker
-- Content: English article about US vaccines
-- Selected services:
-  1. Demagog.pl (Polish, for user)
-  2. FactCheck.org (US, for content geography)
-  3. Snopes (US, general/medical)
-  4. Health Feedback (health specialist)
-  5. Full Fact (UK, English-speaking, general)
+#### 搜索策略
 
-### Step 3: Search Each Fact-Checking Service
-
-For each selected service, conduct targeted searches:
-
-#### Search Strategy
-
-1. **Extract 2-4 search terms** from the content:
-   - Key person names
-   - Main topics/subjects
-   - Specific claims or events
-   - Important keywords
-
-2. **Translate terms** to the fact-checker's native language if needed
-
-3. **Construct search queries** using DuckDuckGo with site operator:
+1. **从内容中提取2-4个搜索词**：
+   - 关键人物名称；
+   - 主要主题/议题；
+   - 具体的主张或事件；
+   - 重要关键词。
+2. **如有需要，将术语翻译成事实核查服务的母语**。
+3. **使用DuckDuckGo和相应的网站操作符构建搜索查询**：
    ```
    Format: site:domain.com [search terms in appropriate language]
    
@@ -133,99 +126,90 @@ For each selected service, conduct targeted searches:
    - site:healthfeedback.org vaccine safety
    ```
 
-4. **Execute 1-3 searches per fact-checker** (depending on content complexity)
+4. **每个事实核查服务执行1-3次搜索**（根据内容复杂性而定）。
 
-#### Search Best Practices
+#### 搜索最佳实践
 
-- Keep queries concise (2-4 words typically)
-- Start broad, then narrow if needed
-- Don't repeat very similar queries
-- If first search yields good results, proceed to analysis
-- If first search yields poor results, try alternative terms
+- 保持查询简洁（通常2-4个词）；
+- 从宽泛开始，必要时再缩小范围；
+- 避免重复非常相似的查询；
+- 如果第一次搜索结果良好，继续分析；
+- 如果第一次搜索结果不佳，尝试其他关键词。
 
-### Step 4: Analyze Search Results
+### 第四步：分析搜索结果
 
-For each fact-checking service:
+对于每个事实核查服务：
+1. **查看搜索结果** - 查看每个搜索的前5-10个结果。
+2. **选择相关文章** - 选择以下条件的文章：
+   - 标题直接涉及正在验证的主张；
+   - 内容较为详细（而不仅仅是简短提及）；
+   - 发布日期具有相关性（对于持续存在的问题，日期越近越好；对于历史性辟谣则无所谓）。
+3. **获取并阅读文章** - 使用`web_fetch`获取每个事实核查服务前2-4篇最相关文章的全文。
+4. **提取每篇文章的关键发现**：
+   - **结论** - 事实核查机构的结论是什么？（正确、错误、具有误导性、证据不足等）；
+   - **证据** - 他们引用了哪些证据？
+   **背景** - 任何重要的细节或背景信息；
+   **相关性** - 这与用户的主张有多直接相关？
 
-1. **Review search results** - Examine the first 5-10 results from each search
+### 第五步：综合并呈现结果
 
-2. **Select relevant articles** - Choose articles where:
-   - Headline directly addresses the claim being verified
-   - Content appears substantial (not just brief mentions)
-   - Publication date is relevant (recent for ongoing issues, any date for historical debunks)
+将发现整理成清晰、用户友好的格式：
 
-3. **Fetch and read articles** - Use `web_fetch` to retrieve the full text of 2-4 most relevant articles per fact-checker
+#### 先处理最新内容
 
-4. **Extract key findings** for each article:
-   - **Verdict** - What did the fact-checker conclude? (True, False, Misleading, Mixed, Unproven, etc.)
-   - **Evidence** - What evidence did they cite?
-   - **Context** - Any important nuance or context
-   - **Relevance** - How directly does this address the user's claim?
+在呈现结果之前，检查内容是否非常新（3天以内）：
+1. **如果找到事实核查结果**：按常规方式呈现结果。
+2. **如果没有找到事实核查结果且内容≤3天**：
+   - 注意内容太新，事实核查服务可能尚未覆盖；
+   - **如果支持任务调度**：
+     - 安排3天后的后续核查；
+     - 通知用户：“我已经安排了3天后的后续核查。如果事实核查机构发布了结果，我会通知您。”
+   - **如果不支持任务调度**：
+     - 建议：“这个内容非常新（发布于[日期]）。事实核查服务通常需要几天时间来验证主张。建议3天后再次查看。”
+   - 提供基于一般网络搜索的初步分析；
+   - 使用任何可用的信息进行呈现。
 
-### Step 5: Synthesize and Present Results
+3. **如果没有找到事实核查结果且内容较旧**：
+   - 注意事实核查服务尚未专门针对此内容进行核查；
+   - 建议进行一般性的网络研究。
 
-Organize findings into a clear, user-friendly format:
+#### 结构化回答
 
-#### Handle Fresh Content First
+1. **开场总结**（2-3句话）：
+   - 事实核查机构的总体共识；
+   - 对用户问题的简要回答。
+2. **按主张分类的关键发现**（如果有多个主张）：
+   - 将相关发现分组；
+   - 如果存在矛盾的证据，一并呈现。
+3. **详细证据**（按事实核查机构或主张分类）：
+   - 包括具体的结论；
+   - 引用使用的事实核查机构的证据；
+   - 注意不同事实核查机构之间的分歧。
+4. **重要背景**（如果相关）：
+   - 历史背景；
+   - 该主张为何持续存在；
+   - 常见的误解。
+5. **来源引用**：
+   - 提供所有引用的事实核查文章的直接链接；
+   - 格式：`[事实核查机构名称]：文章标题（如果有日期） - [URL]`。
 
-Before presenting results, check if the content is very recent (3 days old or less):
+#### 呈现指南
 
-1. **If fact-checks found**: Proceed normally with presentation
-2. **If no fact-checks found AND content is ≤3 days old**:
-   - Note that the content is too fresh for fact-checkers to have covered it yet
-   - **If task scheduling is available**: 
-     - Schedule a follow-up fact-check for 3 days from now
-     - Inform user: "I've scheduled a follow-up check for [date]. I'll notify you if fact-checkers have published verification by then."
-   - **If task scheduling is NOT available**:
-     - Suggest: "This content is very recent (published [date]). Fact-checkers typically need a few days to verify claims. I recommend checking back in 3 days for updated verification."
-   - Offer preliminary analysis using general web search
-   - Proceed with any available information from general sources
+- **客观** - 客观呈现发现，不加入个人判断；
+- **细致** - 避免简化复杂问题；
+- **明确不确定性** - 如果事实核查机构存在分歧或证据不明确，要说明；
+- **平衡** - 如果某些证据支持某些主张，同时也有反驳证据，要同时呈现；
+- **使用易懂的语言** - 避免使用专业术语；
+- **突出共识** - 当多个事实核查机构意见一致时，要强调这一点。
 
-3. **If no fact-checks found AND content is older**:
-   - Note that fact-checkers haven't specifically covered this
-   - Offer general web research instead
+#### 格式
 
-#### Structure Your Response
+- 使用清晰的标题来组织不同的主张或主题；
+- 使用自然的语言，而不是项目符号，来呈现主要发现；
+- 仅在确实需要时使用列表（例如多个相似项目、来源引用）；
+- 在整个回答中包含可点击的引用链接。
 
-1. **Opening summary** (2-3 sentences)
-   - Overall consensus from fact-checkers
-   - Brief answer to the user's question
-
-2. **Key findings by claim** (if multiple claims)
-   - Group related findings together
-   - Present contradicting evidence if it exists
-
-3. **Detailed evidence** (organized by fact-checker or by claim)
-   - Include specific verdicts
-   - Cite evidence fact-checkers used
-   - Note any disagreements between fact-checkers
-
-4. **Important context** (if relevant)
-   - Historical background
-   - Why the claim persists
-   - Common misconceptions
-
-5. **Source citations**
-   - Provide direct links to all fact-checking articles referenced
-   - Format: `[Fact-Checker Name]: Article Title (Date if available) - [URL]`
-
-#### Presentation Guidelines
-
-- **Be objective** - Present findings without inserting personal judgment
-- **Be nuanced** - Avoid oversimplifying complex issues
-- **Be clear about uncertainty** - If fact-checkers disagree or evidence is inconclusive, say so
-- **Be balanced** - If some evidence supports and some contradicts, present both
-- **Use accessible language** - Avoid jargon, explain technical terms
-- **Highlight consensus** - When multiple fact-checkers agree, emphasize this
-
-#### Formatting
-
-- Use clear headers to organize different claims or themes
-- Use natural prose, not bullet points, for the main findings
-- Only use lists for: multiple similar items, source citations, or when explicitly helpful
-- Include clickable citations throughout (not just at the end)
-
-#### Example Response Structure
+#### 示例回答结构
 
 ```
 Based on verification from five established fact-checking organizations, the claim that vaccines cause autism has been thoroughly debunked. Multiple independent reviews of the evidence have found no causal link between vaccination and autism spectrum disorder.
@@ -250,72 +234,73 @@ However, [Demagog.pl](link) notes that while the vaccine-autism link is false, c
 
 ---
 
-## Common Scenarios
+## 常见场景
 
-### Scenario 1: Single Specific Claim
+### 场景1：单一具体主张
 
-**User request:** "Is it true that 5G causes COVID-19?"
+**用户请求：“5G技术会导致COVID-19吗？”
 
-**Approach:**
-- Identify claim: 5G technology causes or spreads COVID-19
-- Select 4-5 general fact-checkers (international scope, tech/health focus)
-- Search for "5G COVID" or "5G coronavirus"
-- Expected result: Multiple fact-checkers will have debunked this
-- Present: Clear consensus with explanation of why the claim is false
+**处理方式**：
+- 识别主张：5G技术导致或传播COVID-19；
+- 选择4-5个通用的事实核查服务（国际范围，技术和健康领域）；
+- 搜索“5G COVID”或“5G coronavirus”；
+- 预期结果：多个事实核查服务会反驳这一主张；
+- 呈现：明确的一致性，并解释为什么该主张是错误的。
 
-### Scenario 2: Article with Multiple Claims
+### 场景2：包含多个主张的文章
 
-**User request:** "Can you fact-check this article about climate change?"
+**用户请求：“你能核查这篇关于气候变化的文章吗？”
 
-**Approach:**
-- Extract 3-5 specific verifiable claims from the article
-- Select fact-checkers: user's language + climate-focused services
-- Search each claim separately
-- Present: Findings organized by claim, with overall assessment
+**处理方式**：
+- 从文章中提取3-5个具体的可验证主张；
+- 选择用户语言相关且专注于气候的事实核查服务；
+- 分别搜索每个主张；
+- 按主张分类呈现结果，并给出总体评估。
 
-### Scenario 3: Complex Political Claim
+### 场景3：复杂的政治主张
 
-**User request:** "Did [politician] really say/do [thing]?"
+**用户请求：“[政治家]真的说过/做过[某事]吗？”
 
-**Approach:**
-- Identify the specific claim and context
-- Select fact-checkers from politician's country + user's language
-- Search politician's name + key terms
-- Present: Direct answer with context, including if statement was taken out of context
+**处理方式**：
+- 识别具体的主张和背景；
+- 选择来自该政治家所在国家且用户语言相关的事实核查服务；
+- 搜索政治家的名字和关键词；
+- 呈现直接答案，并说明该言论是否被断章取义。
 
-### Scenario 4: Viral Social Media Content
+### 场景4：病毒式社交媒体内容
 
-**User request:** "I saw this video on TikTok claiming [X], is it real?"
+**用户请求：“我在TikTok上看到这个视频，它说的是真的吗？”
 
-**Approach:**
-- Identify what's being claimed in the video
-- Select broad, well-known fact-checkers (viral content often fact-checked widely)
-- Search for key terms from the claim
-- Present: Whether it's been debunked, original context if misrepresented
+**处理方式**：
+- 识别视频中的主张；
+- 选择广泛知名的事实核查服务（病毒式内容通常会被广泛核查）；
+- 搜索主张中的关键词；
+- 呈现该内容是否已被辟谣，以及原始的上下文。
 
-### Scenario 5: Historical Claim
+### 场景5：历史性主张
 
-**User request:** "Did [historical event] really happen this way?"
+**用户请求：“[历史事件]真的是这样发生的吗？**
 
-**Approach:**
-- Note that this is historical verification, may need broader research
-- Select fact-checkers + consider using general web search for historical records
-- Present: What fact-checkers say if available, acknowledge if claim is outside typical fact-checking scope
+**处理方式**：
+- 注意这是历史性核查，可能需要更广泛的研究；
+- 选择事实核查服务，并考虑使用一般的网络搜索来查找历史记录；
+- 呈现事实核查机构的观点（如果有的话），并说明该主张是否超出事实核查服务的通常范围。
 
-### Scenario 6: Very Fresh Content (Breaking News)
+### 场景6：非常新的内容（突发新闻）
 
-**User request:** "I just saw this article published today claiming [X]. Is it true?"
+**用户请求：“我刚刚看到这篇文章，它声称[某事]。这是真的吗？**
 
-**Approach:**
-- Check publication date: is it 3 days old or less?
-- Search fact-checkers anyway (sometimes they work very quickly on major stories)
-- If no fact-checks found:
-  - **With task scheduling**: Schedule follow-up check for 3 days later, notify user of the scheduled check
-  - **Without task scheduling**: Inform user that content is too fresh, suggest returning in 3 days
-- Offer preliminary analysis using general web search
-- Present: "This is very recent content. Fact-checkers haven't had time to verify yet. Here's what I found from general sources, but I recommend waiting for professional fact-checking."
+**处理方式**：
+- 检查发布日期：是否在3天以内？
+- 尽管如此，仍然进行事实核查（有时它们会迅速处理重大新闻）；
+- 如果没有找到事实核查结果：
+  - **如果支持任务调度**：安排3天后的后续核查；
+  - 通知用户；
+  - **如果不支持任务调度**：告知用户内容太新，建议3天后再次查看；
+- 提供基于一般网络搜索的初步分析；
+- 呈现：“这是非常新的内容。事实核查服务尚未有时间进行验证。以下是我从一般来源找到的信息，但建议等待专业事实核查。”
 
-**Example response:**
+**示例回答**：
 ```
 This article was published just [X hours/days] ago, which is too recent for professional 
 fact-checkers to have verified the claims yet. They typically need a few days to conduct 
@@ -333,131 +318,129 @@ thorough verification in the coming days.
 
 ---
 
-## Edge Cases and Limitations
+## 特殊情况和限制
 
-### When Fact-Checkers Haven't Covered the Topic
+### 当事实核查服务未覆盖该主题时
 
-If searches return no relevant results:
-1. Try broader search terms
-2. Try related claims that fact-checkers may have covered
-3. If still no results, check if the content is recent (3 days or less)
-4. **For fresh content (≤3 days old)**:
-   - Acknowledge: "This is very recent content. Professional fact-checkers typically need a few days to verify claims."
-   - If scheduling tools are available: Schedule a follow-up fact-check for 3 days later
-   - If scheduling is not available: Suggest the user returns in 3 days for updated verification
-   - Offer to do preliminary general web research in the meantime
-5. **For older content**: Acknowledge "Professional fact-checkers haven't specifically addressed this claim"
-6. Offer to do general web research instead
-7. Consider if the claim is too obscure or too local for major fact-checkers
+如果搜索没有找到相关结果：
+1. 尝试使用更广泛的搜索词；
+2. 尝试相关的可能已被核查的主张；
+3. 如果仍然没有结果，检查内容是否非常新（3天以内）；
+4. **对于非常新的内容（≤3天）**：
+   - 说明：“这是非常新的内容。专业事实核查服务通常需要几天时间来验证主张。”
+   - 如果支持任务调度：安排3天后的后续核查；
+   - 如果不支持任务调度：建议用户3天后再次查看；
+   - 提供初步的一般网络研究。
+5. **对于较旧的内容**：说明“专业事实核查服务尚未专门针对此内容进行核查”；
+   - 建议进行一般的网络研究。
+6. 考虑该主张是否过于晦涩或过于地方化，因此主要事实核查服务可能未覆盖。
 
-### Contradicting Fact-Checkers
+### 不同事实核查机构的观点不一致
 
-If fact-checkers disagree:
-1. Present all perspectives fairly
-2. Note the disagreement explicitly
-3. Consider if they're addressing slightly different aspects
-4. Look for consensus on specific sub-points
-5. Don't force a conclusion if the evidence is genuinely mixed
+如果不同事实核查机构的结论不一致：
+1. 公平地呈现所有观点；
+2. 明确指出分歧；
+3. 考虑它们是否针对略有不同的方面；
+4. 如果证据确实存在分歧，考虑在具体子点上的共识；
+5. 如果证据确实模棱两可，不要强行得出结论。
 
-### Outdated Information
+### 信息过时
 
-If fact-checks are old but the claim is current:
-1. Note the publication dates
-2. Search for more recent fact-checks
-3. Consider if circumstances have changed
-4. Acknowledge if using older sources due to lack of recent coverage
+如果事实核查服务的结果较旧但主张仍然有效：
+1. 注意发布日期；
+2. 搜索更近期的事实核查结果；
+3. 考虑情况是否已经改变；
+4. 如果由于缺乏近期报道而使用较旧的信息，要予以说明。
 
-### Language Barriers
+### 语言障碍
 
-If key fact-checkers are in languages you don't fully understand:
-1. Use web_fetch to retrieve the content
-2. Focus on verdicts, ratings, and conclusion sections which are often clear
-3. Use any English summaries or abstracts
-4. Acknowledge limitations if language creates uncertainty
+如果主要事实核查服务使用的语言用户不完全理解：
+1. 使用`web_fetch`获取内容；
+2. 重点关注结论、评分和结论部分，这些部分通常比较清晰；
+3. 使用任何英文摘要或概要；
+4. 如果语言造成理解困难，要说明这一点。
 
-### Bias Concerns
+### 对事实核查机构可靠性的质疑
 
-Users may question fact-checker reliability:
-1. Stick to well-established, internationally recognized services
-2. Present findings from multiple fact-checkers to show consensus
-3. Note if you're using fact-checkers from multiple countries/perspectives
-4. Acknowledge that no source is perfect, but these are professional verification services
-
----
-
-## Quality Checklist
-
-Before presenting results, verify:
-
-- [ ] Checked at least 3 different fact-checking services
-- [ ] Included fact-checkers relevant to the user's language/location
-- [ ] Included fact-checkers relevant to the content's context
-- [ ] Excluded any fraudulent fact-checking services
-- [ ] Read full articles, not just headlines or snippets
-- [ ] Provided direct links to all sources cited
-- [ ] Presented findings objectively without adding personal judgment
-- [ ] Acknowledged any uncertainty or disagreement between sources
-- [ ] Organized response clearly with specific findings, not vague summaries
-- [ ] Used natural prose for main findings, lists only where truly helpful
-- [ ] **If content is ≤3 days old with no fact-checks**: Noted this and scheduled follow-up OR suggested user return in 3 days
-- [ ] **If providing preliminary analysis**: Clearly distinguished it from professional fact-checking
+用户可能会质疑事实核查机构的可靠性：
+1. 选择知名且国际认可的服务；
+2. 展示多个事实核查机构的发现，以显示共识；
+3. 如果使用了来自多个国家/视角的事实核查服务，要予以说明；
+4. 承认没有来源是完美的，但这些是专业的事实核查服务。
 
 ---
 
-## Examples of Good Fact-Checking Services
+## 质量检查清单
 
-**International/English:**
-- FactCheck.org (US, general)
-- Snopes (US, general)
-- Full Fact (UK, general)
-- AFP Fact Check (International, multilingual)
-- PolitiFact (US, politics)
-
-**Regional/Language-Specific:**
-- Demagog.pl (Poland, Polish)
-- Les Décodeurs (France, French)
-- Correctiv (Germany, German)
-- Maldita.es (Spain, Spanish)
-- Aos Fatos (Brazil, Portuguese)
-- Alt News (India, English/Hindi)
-- Africa Check (Africa, multilingual)
-
-**Specialized:**
-- Health Feedback (health/medical claims)
-- Climate Feedback (climate science claims)
-- Science Feedback (general science claims)
-
-**Note:** This is not exhaustive. Always fetch the current list from Wikipedia to see all available services.
+在呈现结果之前，验证以下内容：
+- [ ] 至少检查了3个不同的事实核查服务；
+- [ ] 包含与用户语言/位置相关的事实核查服务；
+- [ ] 包含与内容背景相关的事实核查服务；
+- [ ] 排除了任何欺诈性事实核查服务；
+- [ ] 阅读了完整文章，而不仅仅是标题或片段；
+- [ ] 提供了所有引用来源的直接链接；
+- [ ] 客观呈现发现，不加入个人判断；
+- [ ] 承认了来源之间的任何不确定性或分歧；
+- [ ] 清晰地组织了结果，具体呈现发现，而不是模糊的总结；
+- [ ] 对于内容≤3天且没有事实核查结果的情况：进行了说明，并安排了后续核查；
+- [ ] **如果提供了初步分析**：明确区分了初步分析和专业事实核查结果。
 
 ---
 
-## Final Notes
+## 优秀的事实核查服务示例
 
-### Task Scheduling for Fresh Content
+**国际/英语**：
+- FactCheck.org（美国，通用）；
+- Snopes（美国，通用）；
+- Full Fact（英国，通用）；
+- AFP Fact Check（国际，多语言）；
+- PolitiFact（美国，政治）。
 
-When content is very recent (≤3 days old) and hasn't been fact-checked yet:
+**地区/语言特定**：
+- Demagog.pl（波兰，波兰语）；
+- Les Décodeurs（法国，法语）；
+- Correctiv（德国，德语）；
+- Maldita.es（西班牙，西班牙语）；
+- Aos Fatos（巴西，葡萄牙语）；
+- Alt News（印度，英语/印地语）；
+- Africa Check（非洲，多语言）。
 
-**If task scheduling tools are available:**
-- Automatically schedule a follow-up fact-check for 3 days later
-- Store the original query, claims, and context
-- When the scheduled task runs:
-  - Re-search the same fact-checking services
-  - Compare new findings to preliminary analysis
-  - Notify user only if new fact-checks were found
-  - Provide updated verification with links
+**专业领域**：
+- Health Feedback（健康/医学主张）；
+- Climate Feedback（气候科学主张）；
+- Science Feedback（一般科学主张）。
 
-**If task scheduling is NOT available:**
-- Inform the user that the content is too fresh
-- Suggest they return in 3 days for updated verification
-- Provide preliminary analysis from general sources with appropriate caveats
-- Make it clear that preliminary findings are not from professional fact-checkers
+**注意**：这并非详尽列表。始终从维基百科获取最新服务列表。
 
-### Core Approach
+---
 
-This skill focuses on using professional fact-checking organizations rather than doing original research. These organizations employ journalists and researchers who specialize in verification. Your role is to:
-1. Find what they've already published
-2. Synthesize their findings
-3. Present them clearly to the user
-4. Schedule follow-ups for very recent content when possible
+## 最后说明
 
-If a topic hasn't been covered by fact-checkers, acknowledge this and offer to do general research instead. Don't try to replace professional fact-checking with web searches alone, but do provide preliminary information when users need it for fresh content.
+### 对于非常新的内容的任务调度
+
+当内容非常新（≤3天）且尚未被事实核查时：
+
+**如果支持任务调度**：
+- 自动安排3天后的后续核查；
+- 存储原始查询、主张和背景信息；
+- 当任务运行时：
+  - 重新搜索相同的事实核查服务；
+  - 比较新的发现和初步分析；
+  - 仅在新发现时通知用户；
+  - 提供更新的核查结果和链接。
+
+**如果不支持任务调度**：
+- 告知用户内容太新；
+- 建议他们3天后再次查看；
+- 提供来自一般来源的初步分析，并适当说明；
+- 明确指出初步分析并非来自专业事实核查服务。
+
+### 核心方法
+
+此技能侧重于使用专业的事实核查机构，而不是进行原创研究。这些机构雇佣了专门从事核查工作的记者和研究人员。你的角色是：
+1. 查找他们已经发布的内容；
+2. 综合他们的发现；
+3. 清晰地向用户呈现；
+4. 对于非常新的内容，尽可能安排后续核查。
+
+如果某个主题尚未被事实核查服务覆盖，要予以说明，并建议进行一般性研究。不要试图仅用网络搜索来替代专业事实核查，但在用户需要时提供初步信息。

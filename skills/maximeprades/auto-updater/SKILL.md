@@ -1,32 +1,32 @@
 ---
 name: auto-updater
-description: "Automatically update Clawdbot and all installed skills once daily. Runs via cron, checks for updates, applies them, and messages the user with a summary of what changed."
+description: "每天自动更新 Clawdbot 及所有已安装的技能。该过程通过 cron 任务执行：系统会检查是否有更新，然后应用这些更新，并向用户发送更新内容的摘要信息。"
 metadata: {"version":"1.0.0","clawdbot":{"emoji":"🔄","os":["darwin","linux"]}}
 ---
 
-# Auto-Updater Skill
+# 自动更新技能
 
-Keep your Clawdbot and skills up to date automatically with daily update checks.
+通过每日自动检查，确保您的 Clawdbot 及其技能始终保持最新状态。
 
-## What It Does
+## 功能概述
 
-This skill sets up a daily cron job that:
+该技能会设置一个每日运行的 cron 作业，用于：
 
-1. Updates Clawdbot itself (via `clawdbot doctor` or package manager)
-2. Updates all installed skills (via `clawdhub update --all`)
-3. Messages you with a summary of what was updated
+1. 更新 Clawdbot 本身（通过 `clawdbot doctor` 或包管理器）
+2. 更新所有已安装的技能（通过 `clawdhub update --all`）
+3. 向您发送更新总结信息
 
-## Setup
+## 设置方法
 
-### Quick Start
+### 快速入门
 
-Ask Clawdbot to set up the auto-updater:
+让 Clawdbot 自动设置自动更新功能：
 
 ```
 Set up daily auto-updates for yourself and all your skills.
 ```
 
-Or manually add the cron job:
+或者手动添加 cron 作业：
 
 ```bash
 clawdbot cron add \
@@ -39,43 +39,39 @@ clawdbot cron add \
   --message "Run daily auto-updates: check for Clawdbot updates and update all skills. Report what was updated."
 ```
 
-### Configuration Options
+### 配置选项
 
-| Option | Default | Description |
+| 选项 | 默认值 | 描述 |
 |--------|---------|-------------|
-| Time | 4:00 AM | When to run updates (use `--cron` to change) |
-| Timezone | System default | Set with `--tz` |
-| Delivery | Main session | Where to send the update summary |
+| 更新时间 | 上午 4:00 | 更新运行的时间（使用 `--cron` 进行修改） |
+| 时区 | 系统默认值 | 通过 `--tz` 设置 |
+| 更新通知方式 | 主会话窗口 | 更新总结信息的发送位置 |
 
-## How Updates Work
+## 更新流程
 
-### Clawdbot Updates
+### Clawdbot 的更新过程
 
-For **npm/pnpm/bun installs**:
+对于通过 **npm/pnpm/bun** 安装的技能：
 ```bash
 npm update -g clawdbot@latest
 # or: pnpm update -g clawdbot@latest
 # or: bun update -g clawdbot@latest
 ```
 
-For **source installs** (git checkout):
+对于通过 **git checkout** 安装的技能：
 ```bash
 clawdbot update
 ```
 
-Always run `clawdbot doctor` after updating to apply migrations.
+更新完成后，请务必运行 `clawdbot doctor` 以应用相应的迁移脚本。
 
-### Skill Updates
+### 技能的更新过程
 
-```bash
-clawdhub update --all
-```
+该功能会检查所有已安装的技能，并在发现有新版本时进行更新。
 
-This checks all installed skills against the registry and updates any with new versions available.
+## 更新总结格式
 
-## Update Summary Format
-
-After updates complete, you'll receive a message like:
+更新完成后，您将收到如下格式的消息：
 
 ```
 🔄 Daily Auto-Update Complete
@@ -93,47 +89,41 @@ gemini, sag, things-mac, himalaya, peekaboo
 No issues encountered.
 ```
 
-## Manual Commands
+## 手动命令
 
-Check for updates without applying:
+- 检查更新情况（不执行任何操作）：
 ```bash
 clawdhub update --all --dry-run
 ```
 
-View current skill versions:
+- 查看当前技能版本：
 ```bash
 clawdhub list
 ```
 
-Check Clawdbot version:
+- 查看 Clawdbot 的版本：
 ```bash
 clawdbot --version
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Updates Not Running
+### 更新失败的原因及解决方法
 
-1. Verify cron is enabled: check `cron.enabled` in config
-2. Confirm Gateway is running continuously
-3. Check cron job exists: `clawdbot cron list`
+- **更新未运行**：确认 cron 作业是否已启用（检查配置文件中的 `cron.enabled`）；确认 Gateway 是否持续运行；检查 cron 作业是否存在（使用 `clawdbot cron list` 命令）。
+- **更新失败**：更新总结中会包含失败原因。常见解决方法包括：
+  - **权限问题**：确保 Gateway 用户具有写入技能目录的权限；
+  - **网络问题**：检查网络连接是否正常；
+  - **包冲突**：运行 `clawdbot doctor` 以诊断问题。
 
-### Update Failures
+### 禁用自动更新
 
-If an update fails, the summary will include the error. Common fixes:
-
-- **Permission errors**: Ensure the Gateway user can write to skill directories
-- **Network errors**: Check internet connectivity
-- **Package conflicts**: Run `clawdbot doctor` to diagnose
-
-### Disabling Auto-Updates
-
-Remove the cron job:
+- 删除 cron 作业：
 ```bash
 clawdbot cron remove "Daily Auto-Update"
 ```
 
-Or disable temporarily in config:
+- 或者在配置文件中临时禁用自动更新功能：
 ```json
 {
   "cron": {
@@ -142,8 +132,8 @@ Or disable temporarily in config:
 }
 ```
 
-## Resources
+## 参考资源
 
-- [Clawdbot Updating Guide](https://docs.clawd.bot/install/updating)
-- [ClawdHub CLI](https://docs.clawd.bot/tools/clawdhub)
-- [Cron Jobs](https://docs.clawd.bot/cron)
+- [Clawdbot 更新指南](https://docs.clawd.bot/install/updating)
+- [ClawdHub 命令行工具](https://docs.clawd.bot/tools/clawdhub)
+- [Cron 作业相关文档](https://docs.clawd.bot/cron)

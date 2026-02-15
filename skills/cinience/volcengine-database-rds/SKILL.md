@@ -1,25 +1,25 @@
 ---
 name: volcengine-database-rds
-description: Operate Volcengine RDS instances and database workflows. Use when users need provisioning guidance, connectivity checks, performance troubleshooting, or backup/restore procedures.
+description: 操作 Volcengine RDS 实例及数据库工作流程。适用于用户需要配置指导、连接性检查、性能故障排除或备份/恢复流程的情况。
 ---
 
 # volcengine-database-rds
 
-Handle RDS tasks with safe operational order: inspect, validate, change, verify.
+以安全的操作顺序处理 RDS 相关任务：检查、验证、修改、确认。
 
-## Execution Checklist
+## 执行检查清单
 
-1. Confirm engine type, region, and instance identifier.
-2. Check connectivity, security rules, and parameter group.
-3. Execute target operation (query, tune, backup, restore).
-4. Return status, metrics, and next recommended action.
+1. 确认引擎类型、区域和实例标识符。
+2. 检查连接性、安全规则和参数组。
+3. 执行目标操作（查询、调优、备份、恢复）。
+4. 返回状态信息、指标数据以及下一条推荐的操作。
 
-## Safety Rules
+## 安全规则
 
-- Prefer snapshots before high-risk changes.
-- Surface parameter drift before applying updates.
-- Separate read-only diagnostics from write operations.
+- 在进行高风险更改之前，优先使用数据快照。
+- 在应用更新之前，先发现参数值的异常变化。
+- 将只读诊断操作与写入操作分开进行。
 
-## References
+## 参考资料
 
 - `references/sources.md`

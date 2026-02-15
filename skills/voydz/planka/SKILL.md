@@ -1,33 +1,33 @@
 ---
 name: planka
-description: Manage Planka (Kanban) projects, boards, lists, cards, and notifications via a custom Python CLI.
+description: 通过一个自定义的 Python CLI（命令行界面）来管理 Planka（看板）项目、看板页面、列表、卡片以及通知。
 metadata: {"clawdbot":{"emoji":"📋","requires":{"bins":["planka-cli"]}}}
 ---
 
 # Planka CLI
 
-This skill provides a CLI wrapper around the `plankapy` library to interact with a Planka instance.
+该工具提供了一个命令行接口（CLI），用于与 Planka 实例进行交互，该接口基于 `plankapy` 库实现。
 
-## Setup
+## 安装
 
-1.  **Install via Homebrew tap:**
+1. **通过 Homebrew tap 安装：**
     ```bash
     brew tap voydz/homebrew-tap
     brew install planka-cli
     ```
 
-    Source/pipx installs require Python 3.11+ to use plankapy v2.
+    使用 `source/pipx` 进行安装时，需要确保已安装 Python 3.11 或更高版本，以便使用 `plankapy` v2。
 
-2.  **Configuration:**
-    Use the `login` command to store credentials:
+2. **配置：**
+    使用 `login` 命令来存储登录凭据：
     ```bash
     planka-cli login --url https://planka.example --username alice --password secret
     # or: python3 scripts/planka_cli.py login --url https://planka.example --username alice --password secret
     ```
 
-## Usage
+## 使用方法
 
-Run the CLI with the installed `planka-cli` binary:
+运行已安装的 `planka-cli` 可执行文件即可使用该 CLI：
 
 ```bash
 # Show help
@@ -73,39 +73,39 @@ planka-cli notifications all
 planka-cli notifications unread
 ```
 
-## Examples
+## 示例
 
-**List all boards:**
-```bash
+- **列出所有卡片：**
+    ```bash
 planka-cli boards list
 ```
 
-**Show cards in list ID 1619901252164912136:**
-```bash
+- **显示 ID 为 1619901252164912136 的卡片信息：**
+    ```bash
 planka-cli cards list 1619901252164912136
 ```
 
-**Show card details for card ID 1619901252164912137:**
-```bash
+- **显示 ID 为 1619901252164912137 的卡片详细信息：**
+    ```bash
 planka-cli cards show 1619901252164912137
 ```
 
-**Create a card in list ID 1619901252164912136:**
-```bash
+- **在 ID 为 1619901252164912136 的列表中创建一张卡片：**
+    ```bash
 planka-cli cards create 1619901252164912136 "Ship CLI"
 ```
 
-**Move a card to another list:**
-```bash
+- **将一张卡片移动到另一个列表：**
+    ```bash
 planka-cli cards update 1619901252164912137 --list-id 1619901252164912136
 ```
 
-**Move a card to another list and pin it to the top:**
-```bash
+- **将一张卡片移动到另一个列表并将其置顶：**
+    ```bash
 planka-cli cards update 1619901252164912137 --list-id 1619901252164912136 --position top
 ```
 
-**Mark a card done by updating its name:**
-```bash
+- **通过更新卡片名称来标记卡片为已完成：**
+    ```bash
 planka-cli cards update 1619901252164912137 --name "Done: Ship CLI"
 ```

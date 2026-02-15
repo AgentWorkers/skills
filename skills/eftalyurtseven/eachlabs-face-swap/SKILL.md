@@ -1,35 +1,35 @@
 ---
 name: eachlabs-face-swap
-description: Swap faces between images using EachLabs AI. Use when the user wants to replace or swap faces in photos.
+description: 使用 EachLabs AI 在图像之间交换人脸。当用户需要替换或交换照片中的人脸时，可以使用此功能。
 metadata:
   author: eachlabs
   version: "1.0"
 ---
 
-# EachLabs Face Swap
+# EachLabs 面部替换功能
 
-Swap faces between images and videos using the EachLabs Predictions API.
+使用 EachLabs 的预测 API 在图片和视频之间进行面部替换。
 
-## Authentication
+## 认证
 
 ```
 Header: X-API-Key: <your-api-key>
 ```
 
-Set the `EACHLABS_API_KEY` environment variable. Get your key at [eachlabs.ai](https://eachlabs.ai).
+请设置 `EACHLABS_API_KEY` 环境变量。您可以在 [eachlabs.ai](https://eachlabs.ai) 获取该密钥。
 
-## Available Models
+## 可用模型
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| AI Face Swap V1 | `aifaceswap-face-swap` | Image face swap |
-| Eachlabs Face Swap | `each-faceswap-v1` | Image face swap |
-| Face Swap (legacy) | `face-swap-new` | Image face swap |
-| Faceswap Video | `faceswap-video` | Video face swap |
+| AI Face Swap V1 | `aifaceswap-face-swap` | 图片面部替换 |
+| Eachlabs Face Swap | `each-faceswap-v1` | 图片面部替换 |
+| Face Swap (legacy) | `face-swap-new` | 图片面部替换 |
+| Faceswap Video | `faceswap-video` | 视频面部替换 |
 
-## Examples
+## 示例
 
-### Image Face Swap with AI Face Swap V1
+### 使用 AI Face Swap V1 进行图片面部替换
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -45,7 +45,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Image Face Swap with Eachlabs
+### 使用 Eachlabs 进行图片面部替换
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -61,7 +61,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Video Face Swap
+### 视频面部替换
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -77,9 +77,9 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Alternative: Using GPT Image v1.5 Edit
+### 替代方案：使用 GPT Image v1.5 进行编辑
 
-For prompt-based face replacement:
+对于基于提示的面部替换操作，可以使用以下方法：
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -99,17 +99,17 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-## Prediction Flow
+## 预测流程
 
-1. **Check model** `GET https://api.eachlabs.ai/v1/model?slug=<slug>` — validates the model exists and returns the `request_schema` with exact input parameters. Always do this before creating a prediction to ensure correct inputs.
-2. **POST** `https://api.eachlabs.ai/v1/prediction` with model slug, version `"0.0.1"`, and input matching the schema
-3. **Poll** `GET https://api.eachlabs.ai/v1/prediction/{id}` until status is `"success"` or `"failed"`
-4. **Extract** the output image URL from the response
+1. **检查模型**：`GET https://api.eachlabs.ai/v1/model?slug=<slug>` — 验证模型是否存在，并返回包含正确输入参数的 `request_schema`。在创建预测请求之前，请务必执行此操作以确保输入正确。
+2. **发送请求**：`POST https://api.eachlabs.ai/v1/prediction`，并提供模型 slug、版本 `"0.0.1"` 以及符合 schema 的输入数据。
+3. **查询结果**：`GET https://api.eachlabs.ai/v1/prediction/{id}`，直到状态变为 `"success"` 或 `"failed"`。
+4. **提取输出结果**：从响应中获取输出图片的 URL。
 
-## Tips for Best Results
+## 优化建议
 
-- Use high-quality source images with clear, well-lit faces
-- The source face image should be a clear frontal or near-frontal portrait
-- Matching lighting conditions between source and target produces more natural results
-- Specify "seamless blending" and "natural skin tone" in prompts
-- For the target image, faces should be clearly visible and not heavily occluded
+- 使用高质量、面部清晰且光线充足的源图片。
+- 源图片应为正面或接近正面的肖像照片。
+- 确保源图片和目标图片的光线条件一致，以获得更自然的效果。
+- 在提示中指定“无缝融合”和“自然肤色”等参数。
+- 对于目标图片，确保面部清晰可见且未被严重遮挡。

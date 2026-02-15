@@ -1,117 +1,113 @@
 ---
 name: checkers-sixty60
-description: Shop on Checkers.co.za Sixty60 delivery service via browser automation. Use when the user asks to shop for groceries, add items to cart, order from Checkers, or manage their Checkers shopping basket. Handles delivery type selection, product search, backup preferences, regular item reordering, and deal evaluation.
+description: 通过浏览器自动化技术在 Checkers.co.za 上进行购物，并使用 Sixty60 送货服务。当用户需要购买食品杂货、将商品添加到购物车、在 Checkers 网站下单或管理自己的购物车时，可以使用该功能。该功能支持选择送货方式、搜索产品、保存购物偏好、定期重新订购商品以及评估优惠信息等操作。
 ---
 
-# Checkers Sixty60 Shopping
+# Checkers Sixty60 购物指南
 
-Guide for shopping on Checkers.co.za using browser automation, focused on Sixty60 quick delivery.
+本指南介绍了如何使用浏览器自动化技术在 Checkers.co.za 上进行购物，重点介绍 Sixty60 快速配送服务。
 
-## Delivery Types
+## 配送方式
 
-Checkers offers two delivery options:
+Checkers 提供两种配送方式：
 
-1. **Sixty60** (scooter icon 🛵) - Quick shop and delivery, **maximum 40 items**
-2. **Hyper** (van icon 🚚) - Bulk shopping and larger items
+1. **Sixty60**（配送方式图标 🛵）：适合快速购物，**最多可购买 40 件商品**  
+2. **Hyper**（配送方式图标 🚚）：适合批量购物或购买大型商品  
 
-**Default to Sixty60 delivery** unless the user specifically requests bulk/hyper shopping.
+**默认配送方式为 Sixty60**，除非用户特别选择批量/Hyper 配送。  
 
-## Cart Structure
+## 购物车结构  
 
-The cart has two sections:
-- **Top section**: Sixty60 items
-- **Bottom section**: Hyper items (generally ignore this section)
+购物车分为两个部分：  
+- **顶部区域**：展示可使用 Sixty60 配送方式购买的商品  
+- **底部区域**：展示适合 Hyper 配送方式购买的商品（通常可忽略此区域）  
 
-## Shopping Workflow
+## 购物流程  
 
-### 1. Filter for Sixty60 Items (Recommended)
+### 1. 筛选适合 Sixty60 配送的商品（推荐）  
 
-Click the **Sixty60 icon** next to "Shop By Delivery" in the navigation to show only Sixty60-eligible items.
+在导航栏中点击 “按配送方式购物” 旁边的 **Sixty60 图标**，仅显示适合 Sixty60 配送的商品。  
+⚠️ **重要提示**：这是一个切换按钮。如果该按钮已被激活，再次点击会取消筛选功能。  
 
-⚠️ **Important**: This is a toggle button. If already active, clicking again will deactivate the filter.
+### 2. 搜索并添加商品  
 
-### 2. Search and Add Items
+- 每件商品的卡片底部会显示对应的配送方式图标（Sixty60 或 Hyper）  
+- 当 Sixty60 筛选功能启用时，仅显示符合条件的商品  
+- 查看商品图片下方的优惠信息（例如：“节省 R5”，“买 2 件只需 R150”）  
 
-- Each item shows either a Sixty60 icon or Hyper icon at the bottom of the product card
-- When Sixty60 filter is active, only compatible items are shown
-- Look for deal badges under item images (e.g., "save R5", "buy 2 for R150")
+### 3. 选择商品策略  
 
-### 3. Product Selection Strategy
+在相似商品之间进行选择时：  
+- 如果价格相同或相近，优先选择带有 “Vitality” 标识的商品（该标识位于商品卡片左上角）——购买此类商品可赚取积分  
+- 在考虑优惠后，选择价格更低的商品  
+- 评估捆绑促销活动（例如：“买 2 件只需 X 元”）以判断是否值得购买  
+- 重点关注单位价格，而不仅仅是总价  
 
-When choosing between similar products:
-- **Prefer Vitality products** when price is equal or similar (identifiable by Vitality logo at top-left of product card) - user earns points on these
-- Choose the **cheaper option** after considering any sales/deals
-- Evaluate bundle deals (e.g., "buy 2 for X") to determine if worth purchasing
-- Consider unit price, not just total price
+**选择优先级（从高到低）：**  
+1. 价格相同或更低的 Vitality 商品  
+2. 价格更低的商品（考虑优惠情况）  
+3. 单位价格更优的商品  
 
-**Selection priority** (highest to lowest):
-1. Vitality product at same or lower price
-2. Lower price (considering deals)
-3. Better unit price
+### 4. 将商品添加到购物车（错误处理）  
 
-### 4. Adding Items to Cart (Error Handling)
+⚠️ **关键提示**：点击 “添加”/+/- 按钮后，务必等待用户界面更新完毕。  
+**操作步骤**：  
+1. 点击 “添加” 按钮或 “+”/“-” 按钮  
+2. 取新截图以确认更新结果  
+3. 查看商品卡片上的数量是否与预期一致  
+4. 如果出现错误提示，请及时告知用户  
+5. 如果数量与预期不符，请重新尝试或报告问题  
 
-⚠️ **Critical**: Always wait for UI to update after clicking Add/+/- buttons.
+**常见错误**：  
+- “无法验证您的商品是否符合 60 分钟配送要求” —— 可能是由于商品缺货或配送方式不兼容  
+- 如果商品缺货或无法使用指定配送方式，可能无法将其添加到购物车  
 
-**Process**:
-1. Click the Add button or +/- button
-2. Take a new snapshot to verify the update
-3. Check the item counter on the product card shows the expected quantity
-4. If an error alert appears, report it to the user
-5. If the quantity doesn't match expected, try again or report the issue
+**切勿盲目确认操作结果**—— 每次操作后务必检查购物车状态。  
 
-**Common errors**:
-- "Failed to validate your 60min item" - temporary stock/delivery issue
-- Items may not add if out of stock or delivery incompatible
+### 5. 设置商品替代方案  
 
-**Never assume success** - always verify the cart state after each operation.
+每件商品都可以设置替代品：  
+- 选择替代商品  
+- 或者选择 “我不需要替代品”（适用于没有合适替代品的情况）  
 
-### 5. Backup Preferences
+**注意**：之前购买的商品会保留其替代设置，便于后续重新订购。  
 
-Each cart item can have a backup in case of out-of-stock:
-- Select a backup product OR
-- Select **"I don't want a backup"** if no substitute is acceptable
+## 重新订购常购商品  
 
-**Note**: Items ordered before remember their backup preference, making reordering efficient.
+若需高效地重新订购之前购买的商品：  
+1. 在导航栏中点击 “我的购物车”  
+2. 点击 “重新订购常购商品”（或导航至 `/my-shop/shop-your-regulars`）  
 
-## Shop Your Regulars
+**功能特点**：  
+- 显示所有之前购买的商品  
+- 商品会保留之前的替代设置  
+- 无法在常购商品列表中进行搜索  
+- 可通过下拉菜单进行筛选  
+- 可对商品进行排序  
 
-Access previously purchased items to reorder efficiently:
+**最佳实践**：当用户提及经常购买的日常用品时，建议先查看常购商品列表。  
 
-1. Click **"My Shop"** in navigation
-2. Click **"Shop Your Regulars"** (or navigate to `/my-shop/shop-your-regulars`)
+## 优惠活动  
 
-**Features**:
-- Shows all previously ordered items
-- Items retain their backup preferences
-- Cannot search within regulars (limitation)
-- Can filter using the filter dropdown
-- Can sort items
+商品图片下方会显示优惠信息：  
+- 固定折扣：例如 “节省 R5”  
+- 捆绑促销：例如 “买 2 件只需 R150”  
+- 折扣百分比：例如 “打 30% 折”  
 
-**Best practice**: When user mentions common grocery items they regularly buy, check regulars first.
+**评估优惠方式时，请考虑以下因素**：  
+- 单位价格与常规价格  
+- 捆绑商品的数量是否符合用户需求  
+- 优惠商品是否与用户偏好的品牌相符  
 
-## Deals and Promotions
+## 购物车管理  
 
-Deal badges appear under item images showing:
-- Flat discounts: "save R5"
-- Bundle deals: "buy 2 for R150"
-- Percentage off: "30% off"
+- 每次使用 Sixty60 配送方式最多可购买 40 件商品  
+- 购物车右上角会显示累计总价（例如：“R52.98”）  
+- 可使用 “+”/“-” 按钮调整商品数量  
+- 通过将数量调整为 0 来删除商品  
 
-Evaluate deals by:
-- Comparing unit price vs. regular price
-- Checking if bundle quantity matches user needs
-- Considering if deal item is equivalent to preferred brand
-
-## Cart Management
-
-- Maximum **40 items** per Sixty60 order
-- Cart shows running total in top-right (e.g., "R52.98")
-- Can increase/decrease quantities using +/- buttons
-- Remove items by reducing quantity to zero
-
-## Navigation Tips
-
-- Search bar at top: Use for specific products
-- "Shop by Department": Browse by category
-- Check basket icon for current total and item count
-- Address shown at top - delivery location confirmation
+## 导航提示：  
+- 顶部搜索栏：用于查找特定商品  
+- “按部门购物”：按类别浏览商品  
+- 购物篮图标可查看当前总价和商品数量  
+- 左上角显示的地址用于确认配送地址

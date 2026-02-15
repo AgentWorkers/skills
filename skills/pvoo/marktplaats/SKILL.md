@@ -1,15 +1,15 @@
 ---
 name: marktplaats
-description: Search Marktplaats.nl classifieds across all categories with filtering support.
+description: 支持在 Marktplaats.nl 的所有分类中搜索分类广告，并提供过滤功能。
 homepage: https://www.marktplaats.nl
 metadata: {"clawdbot":{"emoji":"🇳🇱","requires":{"bins":["node"]}}}
 ---
 
 # Marktplaats Skill
 
-Search any Marktplaats category, filter by condition/delivery, list categories, and fetch listing details.
+您可以搜索 Marktplaats 上的任何类别，根据条件或配送方式筛选结果，查看类别列表，并获取商品详情。
 
-## CLI
+## 命令行界面 (CLI)
 
 ```bash
 npm install -g {baseDir}
@@ -31,19 +31,19 @@ marktplaats-categories <id>       # sub-categories for a category
   --json                          Output raw JSON
 ```
 
-## Filters
+## 过滤器
 
-Common filters work with `--param`:
+常见的过滤器可以通过 `--param` 参数进行设置：
 
-| Filter | Values |
+| 过滤器 | 可能的值 |
 |--------|--------|
-| `condition` | Nieuw, Refurbished, Zo goed als nieuw, Gebruikt, Niet werkend |
-| `delivery` | Ophalen, Verzenden |
-| `buyitnow` | true (Direct Kopen only) |
+| `condition` | 新品 (New), 二手 (Refurbished), 几乎全新 (Zo goed als nieuw), 二手商品 (Gebruikt), 不可用 (Niet werkend) |
+| `delivery` | 自取 (Ophalen), 邮寄 (Verzenden) |
+| `buyitnow` | true (仅限直接购买) |
 
-English aliases also work: `new`, `used`, `like-new`, `pickup`, `shipping`
+英文别名也可以使用：`new`, `used`, `like-new`, `pickup`, `shipping`
 
-## Examples
+## 示例
 
 ```bash
 # New laptops only
@@ -68,7 +68,7 @@ marktplaats-categories
 marktplaats-categories 96
 ```
 
-## Programmatic API (ESM)
+## 程序化 API (ESM)
 
 ```js
 import { searchListings, fetchCategories, getListingDetails } from '{baseDir}';
@@ -88,9 +88,9 @@ const bmw = await fetchCategories(96);       // BMW sub-categories
 const details = await getListingDetails(results.listings[0].vipUrl);
 ```
 
-## Notes
+## 注意事项：
 
-- Prices are in **euro cents** (€15,000 = 1500000)
-- Results include full URLs to listings
-- Use `--json` to see all available facets and filter keys
-- Filter hints are shown after search results
+- 价格以 **欧分** 为单位（例如：€15,000 表示 150,000 欧分）。
+- 搜索结果包含商品的完整网址。
+- 使用 `--json` 参数可以查看所有可用的筛选选项和字段。
+- 搜索结果后会显示筛选提示信息。

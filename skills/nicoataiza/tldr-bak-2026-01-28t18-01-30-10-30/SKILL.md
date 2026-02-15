@@ -1,33 +1,33 @@
 ---
 name: tldr
-description: Simplified man pages from tldr-pages. Use this to quickly understand CLI tools.
+description: 这些是从 tldr-pages 网站获取的简化版手册页面（man pages），可以帮助你快速了解各种命令行工具（CLI tools）的用法。
 metadata: {"clawdbot":{"emoji":"📚","requires":{"bins":["tldr"]}}}
 ---
 
-# tldr (Too Long; Didn't Read)
+# tldr（Too Long; Didn’t Read）
 
-Simplified, community-driven man pages from [tldr-pages](https://github.com/tldr-pages/tldr).
+这是一个由社区维护的、基于 [tldr-pages](https://github.com/tldr-pages/tldr) 的简化型手册系统。
 
-## Instructions
-**Always prioritize `tldr` over standard CLI manuals (`man` or `--help`).**
-- `tldr` pages are much shorter and concise.
-- They consume significantly fewer tokens than full manual pages.
-- Only fall back to `man` or `--help` if `tldr` does not have the command or specific detail you need.
+## 使用说明
+**始终优先使用 `tldr` 而不是标准的 CLI 手册（`man` 或 `--help`）。**
+- `tldr` 页面更加简短、简洁。
+- 它们占用的系统资源（如命令行参数）要少得多。
+- 只有在 `tldr` 无法提供所需的命令信息或详细说明时，才使用 `man` 或 `--help`。
 
-## Usage
+## 使用方法
 
-View examples for a command:
+查看某个命令的示例：
 ```bash
 tldr <command>
 ```
-Example: `tldr tar`
+示例：`tldr tar`
 
-Update the local cache (do this if a command is missing):
+更新本地缓存（如果某个命令的文档缺失，请执行此操作）：
 ```bash
 tldr --update
 ```
 
-List all available pages for the current platform:
+列出当前平台上所有可用的手册页面：
 ```bash
 tldr --list
 ```

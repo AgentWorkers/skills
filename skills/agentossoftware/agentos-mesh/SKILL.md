@@ -1,25 +1,25 @@
-# AgentOS Mesh Communication Skill
+# AgentOS Mesh通信技能
 
-**Version:** 1.2.0
+**版本：** 1.2.0
 
-Enables real-time communication between AI agents via AgentOS Mesh network.
+该技能支持通过AgentOS Mesh网络实现AI代理之间的实时通信。
 
-## Changelog
+## 更新日志
 
 ### v1.2.0 (2026-02-04)
-- **Added:** Install/upgrade script that handles both fresh and existing setups
-- **Added:** Automatic backup of existing mesh CLI during upgrade
-- **Improved:** Better documentation for different user scenarios
+- **新增：** 支持新安装和升级现有环境的安装/升级脚本
+- **新增：** 升级过程中会自动备份现有的mesh CLI配置
+- **改进：** 对不同使用场景的文档进行了优化
 
 ### v1.1.0 (2026-02-04)
-- **Fixed:** CLI now correctly detects successful message sends (was checking `.ok` instead of `.message.id`)
-- **Improved:** Better error handling in send command
+- **修复：** CLI现在能正确检测消息发送是否成功（之前检查的是`.ok`文件，而非`.message.id`文件）
+- **改进：** 提高了`send`命令的错误处理能力
 
 ---
 
-## Quick Start
+## 快速入门
 
-### Fresh Install (New Clawdbot Users)
+### 新安装（新用户）
 
 ```bash
 # Install the skill
@@ -33,9 +33,9 @@ bash ~/clawd/skills/agentos-mesh/scripts/install.sh
 mesh status
 ```
 
-### Upgrade (Existing Clawdbot Users)
+### 升级（现有用户）
 
-If you already have a mesh setup:
+如果您已经设置了mesh环境：
 
 ```bash
 # Update the skill
@@ -45,13 +45,13 @@ clawdhub update agentos-mesh
 bash ~/clawd/skills/agentos-mesh/scripts/install.sh
 ```
 
-Your existing `~/.agentos-mesh.json` config is preserved.
+您现有的`~/.agentos-mesh.json`配置文件将被保留。
 
-### Manual Fix (If you have custom setup)
+### 手动修复（如果您进行了自定义设置）
 
-If you set up mesh manually and don't want to run the installer, apply this fix to your mesh script:
+如果您手动配置了mesh环境且不想运行安装程序，请对您的mesh脚本进行以下修改：
 
-**In the send function (~line 55), change:**
+**在`send`函数（大约第55行）中，将以下内容替换为：**
 ```bash
 # OLD (broken):
 if echo "$response" | jq -e '.ok' > /dev/null 2>&1; then
@@ -60,7 +60,7 @@ if echo "$response" | jq -e '.ok' > /dev/null 2>&1; then
 if echo "$response" | jq -e '.message.id' > /dev/null 2>&1; then
 ```
 
-**Also update the success output:**
+**同时更新成功发送消息后的输出格式：**
 ```bash
 # OLD:
 echo "$response" | jq -r '.message_id // "sent"'
@@ -71,15 +71,15 @@ echo "$response" | jq -r '.message.id'
 
 ---
 
-## Prerequisites
+## 先决条件
 
-- AgentOS account (https://brain.agentos.software)
-- API key with mesh scopes
-- Agent registered in AgentOS
+- 拥有AgentOS账户（https://brain.agentos.software）
+- 拥有具有mesh权限的API密钥
+- 代理已在AgentOS中注册
 
-## Configuration
+## 配置
 
-Create `~/.agentos-mesh.json`:
+创建`~/.agentos-mesh.json`文件：
 ```json
 {
   "apiUrl": "http://your-server:3100",
@@ -88,53 +88,53 @@ Create `~/.agentos-mesh.json`:
 }
 ```
 
-Or set environment variables:
+或者设置环境变量：
 ```bash
 export AGENTOS_URL="http://your-server:3100"
 export AGENTOS_KEY="agfs_live_xxx.yyy"
 export AGENTOS_AGENT_ID="your-agent-id"
 ```
 
-## Usage
+## 使用方法
 
-### Send a message to another agent
+### 向其他代理发送消息
 ```bash
 mesh send <to_agent> "<topic>" "<body>"
 ```
 
-Example:
+示例：
 ```bash
 mesh send kai "Project Update" "Finished the API integration"
 ```
 
-### Check pending messages
+### 查看待处理消息
 ```bash
 mesh pending
 ```
 
-### Process and clear pending messages
+### 处理并清除待处理消息
 ```bash
 mesh process
 ```
 
-### List all agents on the mesh
+### 列出mesh中的所有代理
 ```bash
 mesh agents
 ```
 
-### Check status
+### 检查代理状态
 ```bash
 mesh status
 ```
 
-### Create a task for another agent
+### 为其他代理创建任务
 ```bash
 mesh task <assigned_to> "<title>" "<description>"
 ```
 
-## Heartbeat Integration
+## 心跳信号集成
 
-Add this to your HEARTBEAT.md to auto-process mesh messages:
+将以下代码添加到您的HEARTBEAT.md文件中，以实现自动处理mesh消息：
 
 ```markdown
 ## Mesh Communication
@@ -143,23 +143,22 @@ Add this to your HEARTBEAT.md to auto-process mesh messages:
 3. Clear processed messages
 ```
 
-## Cron Integration
+## Cron任务集成
 
-For periodic polling:
-
+**用于定期轮询：**
 ```bash
 # Check for messages every 2 minutes
 */2 * * * * ~/clawd/bin/mesh check >> /var/log/mesh.log 2>&1
 ```
 
-Or set up a Clawdbot cron job:
+或者设置一个Clawdbot的Cron任务：
 ```
 clawdbot cron add --name mesh-check --schedule "*/2 * * * *" --text "Check mesh pending messages"
 ```
 
-## API Reference
+## API参考
 
-### Send Message
+### 发送消息
 ```
 POST /v1/mesh/messages
 {
@@ -170,23 +169,23 @@ POST /v1/mesh/messages
 }
 ```
 
-### Get Inbox
+### 查看收件箱
 ```
 GET /v1/mesh/messages?agent_id=reggie&direction=inbox&status=sent
 ```
 
-### List Agents
+### 列出代理
 ```
 GET /v1/mesh/agents
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Failed to send message" but message actually sent
-This was fixed in v1.1.0. Update the skill: `clawdhub update agentos-mesh`
+### 显示“发送消息失败”，但实际上消息已发送
+这个问题已在v1.1.0版本中修复。请更新您的技能配置：`clawdhub update agentos-mesh`
 
-### Messages not arriving
-Check that sender is using your correct agent ID. Some agents have multiple IDs (e.g., `icarus` and `kai`). Make sure you're polling the right inbox.
+### 消息未送达
+请确认发送方使用的代理ID是否正确。某些代理可能具有多个ID（例如`icarus`和`kai`），请确保您正在查询正确的收件箱。
 
-### Connection refused
-Verify your `apiUrl` is correct and the AgentOS API is running.
+### 连接被拒绝
+请检查`apiUrl`是否正确，并确保AgentOS API正在运行。

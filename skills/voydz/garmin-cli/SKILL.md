@@ -1,55 +1,55 @@
 ---
 name: garmin
-description: Read health, fitness, and activity data from Garmin Connect via a non-interactive CLI.
+description: 通过一个非交互式的命令行界面（CLI），从 Garmin Connect 读取健康、健身和活动数据。
 metadata: {"clawdbot":{"emoji":"⌚","requires":{"bins":["gc"]}}}
 ---
 
 # Garmin Connect CLI
 
-This skill provides read access to Garmin Connect health and fitness data through the `gc` CLI.
+该工具通过 `gc` CLI 提供对 Garmin Connect 中的健康和健身数据的读取访问功能。
 
-## Setup
+## 设置
 
-1.  **Install via Homebrew tap:**
+1. **通过 Homebrew 安装：**
     ```bash
     brew tap voydz/homebrew-tap
     brew install garmin-cli
     ```
 
-2.  **Authentication:**
+2. **身份验证：**
     ```bash
     gc login --email user@example.com --password secret
     # With MFA:
     gc login --email user@example.com --password secret --mfa 123456
     ```
 
-3.  **Verify connection:**
+3. **验证连接：**
     ```bash
     gc status
     ```
 
-## Date Shortcuts
+## 日期快捷方式
 
-Most commands accept a date shortcut as first argument:
+大多数命令支持使用日期作为第一个参数：
 
-- `today` — current date
-- `yesterday` — previous date
-- `week` — last 7 days (returns a date range)
-- `month` — last 30 days (returns a date range)
-- `YYYY-MM-DD` — specific date
+- `today` — 当前日期
+- `yesterday` — 上一天
+- `week` — 过去 7 天（返回一个日期范围）
+- `month` — 过去 30 天（返回一个日期范围）
+- `YYYY-MM-DD` — 具体日期
 
-Alternatively use `--date`, `--start`/`--end` flags.
+也可以使用 `--date`、`--start`/`--end` 标志来指定日期范围。
 
-## Output
+## 输出格式
 
-All data commands support:
+所有数据相关的命令都支持以下格式选项：
 
-- `--format json` for machine-readable output (default: `table`)
-- `--output FILE` to write to a file
+- `--format json` — 以机器可读的 JSON 格式输出（默认格式为表格）
+- `--output FILE` — 将输出内容写入文件
 
-Always use `--format json` when parsing output programmatically.
+在程序解析输出时，务必使用 `--format json` 标志。
 
-## Usage
+## 使用方法
 
 ```bash
 # Authentication
@@ -179,54 +179,55 @@ gc menstrual calendar --start DATE --end DATE
 gc menstrual pregnancy
 ```
 
-## Examples
+## 示例
 
-**Get today's health summary as JSON:**
+**以 JSON 格式获取今天的健康概要：**
 ```bash
 gc health today --format json
 ```
 
-**Get last week's steps as JSON for analysis:**
+**以 JSON 格式获取上周的步数以供分析：**
 ```bash
 gc steps week --format json
 ```
 
-**Find the user's most recent run:**
+**查找用户最近的一次跑步记录：**
 ```bash
 gc activities --limit 5 --type running --format json
 ```
 
-**Get detailed info about a specific activity:**
+**获取特定活动的详细信息：**
 ```bash
 gc activities get 12345678 --format json
 ```
 
-**Download an activity as GPX:**
+**将某项活动下载为 GPX 格式：**
 ```bash
 gc activities download 12345678 --format gpx -o run.gpx
 ```
 
-**Check training readiness and HRV:**
+**检查训练状态和心率变异性（HRV）：**
 ```bash
 gc metrics training-readiness today --format json
 gc metrics hrv today --format json
 ```
 
-**Get sleep and body battery for yesterday:**
+**获取昨天的睡眠数据和身体电量：**
 ```bash
 gc sleep yesterday --format json
 gc battery yesterday --format json
 ```
 
-## Workout creation (concise)
-- Prefer `--file` with a Garmin-shaped JSON payload; the CLI does not infer or transform fields.
-- Get a valid payload by exporting an existing workout:
+## 创建锻炼计划（简述）
+
+- 建议使用带有 Garmin 标准格式 JSON 数据的 `--file` 参数；CLI 不会自动推断或转换数据字段。
+- 可以通过导出现有的锻炼计划来获取有效的 JSON 数据：
   ```bash
   gc workouts get WORKOUT_ID --format json > workout.json
   ```
-- If using flags, provide `--sport-id` explicitly and pass `--steps` as the exact `workoutSteps` JSON array from the API.
+- 如果使用标志，请明确指定 `--sport-id`，并传递来自 API 的 `workoutSteps` JSON 数组。
 
-Garmin workout shape (minimal example):
+Garmin 锻炼计划的 JSON 格式示例（最小化示例）：
 ```json
 {
   "workoutName": "Zone 2 Ride",
@@ -260,7 +261,7 @@ Garmin workout shape (minimal example):
 }
 ```
 
-Example creations:
+示例创建过程：
 ```bash
 # Create from file (recommended)
 gc workouts create --file workout.json
@@ -273,17 +274,18 @@ gc workouts create \
   --steps '[{"stepOrder":1,"stepType":{"stepTypeKey":"warmup"},"endCondition":{"conditionTypeKey":"time"},"endConditionValue":600},{"stepOrder":2,"stepType":{"stepTypeKey":"interval"},"endCondition":{"conditionTypeKey":"time"},"endConditionValue":3600}]'
 ```
 
-How to discover format and valid values for workout creation:
-- Sport type keys/ids (used in `sportType`):
+如何确定锻炼计划创建所需的格式和有效数据：
+
+- 运动类型键/ID（用于 `sportType`）：
   - `gc activities types --format json`
-- Workout step/target enums are not hardcoded in the CLI.
-  - Export an existing workout and reuse the exact values:
+- 锻炼计划的步数/目标值在 CLI 中不是硬编码的。
+- 可以导出现有的锻炼计划并重复使用其中的数值：
     ```bash
     gc workouts get WORKOUT_ID --format json
     ```
-  - Use the returned `stepType`, `endCondition`, and `targetType` fields verbatim.
+- 请直接使用返回的 `stepType`、`endCondition` 和 `targetType` 字段。
 
-**List devices and get solar data:**
+**列出设备并获取太阳能数据：**
 ```bash
 gc devices --format json
 gc devices solar DEVICE_ID today --format json

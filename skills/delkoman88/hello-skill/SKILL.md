@@ -1,13 +1,13 @@
 ---
 name: hello-skill
-description: Minimal demo skill that prints a hello message.
+description: 一个最基本的演示技能：能够打印出“hello”消息。
 metadata: { "openclaw": { "emoji": "👋" } }
 ---
 
 # hello-skill
 
-Minimal demo skill.
+这是一个简单的演示技能（demo skill）。
 
-## Usage
+## 使用方法
 
-- `hello-skill`
+- 输入命令：`hello-skill`

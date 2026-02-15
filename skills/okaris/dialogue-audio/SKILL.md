@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Dialogue Audio
+# 对话音频
 
-Create realistic multi-speaker dialogue with Dia TTS via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用 Dia TTS 创建逼真的多角色对话。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,39 +25,39 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-## Speaker Tags
+## 说话者标签
 
-Dia TTS uses `[S1]` and `[S2]` to distinguish two speakers.
+Dia TTS 使用 `[S1]` 和 `[S2]` 来区分不同的说话者。
 
-| Tag | Role | Voice |
+| 标签 | 角色 | 语音 |
 |-----|------|-------|
-| `[S1]` | Speaker 1 | Automatically assigned voice A |
-| `[S2]` | Speaker 2 | Automatically assigned voice B |
+| `[S1]` | 说话者1 | 自动分配的语音A |
+| `[S2]` | 说话者2 | 自动分配的语音B |
 
-**Rules:**
-- Always start each speaker turn with the tag
-- Tags must be uppercase: `[S1]` not `[s1]`
-- Maximum 2 speakers per generation
-- Each speaker maintains consistent voice within a session
+**规则：**
+- 每个说话者的发言前必须加上相应的标签
+- 标签必须大写：使用 `[S1]` 而不是 `[s1]`
+- 每次对话生成中最多只能有2个说话者
+- 同一对话过程中，每个说话者的语音要保持一致
 
-## Emotion & Expression Control
+## 情感与表达控制
 
-Dia TTS interprets punctuation and non-speech cues for emotional delivery.
+Dia TTS 能够根据标点符号和非语言线索来调整情感表达：
 
-### Punctuation Effects
+### 标点符号的效果
 
-| Punctuation | Effect | Example |
+| 标点符号 | 效果 | 例子 |
 |-------------|--------|---------|
-| `.` | Neutral, declarative, medium pause | "This is important." |
-| `!` | Emphasis, excitement, energy | "This is amazing!" |
-| `?` | Rising intonation, questioning | "Are you sure about that?" |
-| `...` | Hesitation, trailing off, long pause | "I thought it would work... but it didn't." |
-| `,` | Short breath pause | "First, we analyze. Then, we act." |
-| `—` or `--` | Interruption or pivot | "I was going to say — never mind." |
+| `.` | 中性、陈述语气、适度的停顿 | “这很重要。” |
+| `!` | 强调、兴奋、充满活力 | “太棒了！” |
+| `?` | 语调上升、表示疑问 | “你确定吗？” |
+| `...` | 犹豫、声音逐渐减弱、长时间的停顿 | “我以为会成功……但并没有。” |
+| `,` | 短暂的停顿 | “首先，我们分析。然后，我们行动。” |
+| `—` 或 `--` | 表示中断或话题转换 | “我本来想说——算了。” |
 
-### Non-Speech Sounds
+### 非语言声音
 
-Dia TTS supports parenthetical sound descriptions:
+Dia TTS 支持使用括号来描述声音效果：
 
 ```
 (laughs)      — laughter
@@ -67,7 +67,7 @@ Dia TTS supports parenthetical sound descriptions:
 (gasps)       — surprise
 ```
 
-### Examples with Emotion
+### 带有情感的对话示例
 
 ```bash
 # Excited conversation
@@ -86,22 +86,22 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-## Pacing Control
+## 语速控制
 
-### Pause Hierarchy
+### 停顿的层次结构
 
-| Technique | Pause Length | Use For |
+| 技巧 | 停顿时长 | 适用场景 |
 |-----------|-------------|---------|
-| Comma `,` | ~0.3 seconds | Between clauses, list items |
-| Period `.` | ~0.5 seconds | Between sentences |
-| Ellipsis `...` | ~1.0 seconds | Dramatic pause, thinking, hesitation |
-| New speaker tag | ~0.3 seconds | Natural turn-taking gap |
+| 逗号 `,` | 约0.3秒 | 用于分隔从句或列表项 |
+| 句号 `.` | 约0.5秒 | 用于分隔句子 |
+| 省略号 `...` | 约1.0秒 | 用于制造戏剧性停顿、表示思考或犹豫 |
+| 新说话者标签 | 约0.3秒 | 用于自然地切换说话者 |
 
-### Speed Control
+### 速度控制
 
-- **Shorter sentences** = faster perceived pace
-- **Longer sentences with commas** = measured, thoughtful pace
-- **Questions followed by answers** = engaging back-and-forth rhythm
+- **短句子** = 更快的语速 |
+- **包含逗号的长句子** = 有节奏的、深思熟虑的语速 |
+- **问题后接回答** = 产生互动的对话节奏
 
 ```bash
 # Fast-paced, energetic
@@ -115,9 +115,9 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-## Conversation Structure Patterns
+## 对话结构模式
 
-### Interview Format
+### 面试格式
 
 ```bash
 infsh app run falai/dia-tts --input '{
@@ -125,7 +125,7 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-### Tutorial / Explainer
+### 教程/解释说明
 
 ```bash
 infsh app run falai/dia-tts --input '{
@@ -133,7 +133,7 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-### Debate / Discussion
+### 辩论/讨论
 
 ```bash
 infsh app run falai/dia-tts --input '{
@@ -141,11 +141,11 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-## Post-Production Tips
+## 后期制作技巧
 
-### Volume Normalization
+### 音量标准化
 
-Both speakers should be at consistent volume. If one is louder:
+两个说话者的音量应该保持一致。如果其中一个说话者的音量较大：
 
 ```bash
 # Merge with balanced audio
@@ -156,7 +156,7 @@ infsh app run infsh/video-audio-merger --input '{
 }'
 ```
 
-### Adding Background/Music
+### 添加背景音乐
 
 ```bash
 # Merge dialogue with background music
@@ -165,9 +165,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Segmenting Long Conversations
+### 分割长对话
 
-For conversations longer than ~30 seconds, generate in segments:
+对于超过30秒的对话，建议分段生成：
 
 ```bash
 # Segment 1: Introduction
@@ -191,30 +191,30 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## Script Writing Tips
+## 脚本编写技巧
 
-| Do | Don't |
+| 应该做 | 不应该做 |
 |----|-------|
-| Write how people talk | Write how people write |
-| Short sentences (< 15 words) | Long academic sentences |
-| Contractions ("can't", "won't") | Formal ("cannot", "will not") |
-| Natural fillers ("So,", "Well,") | Every sentence perfectly formed |
-| Vary sentence length | All sentences same length |
-| Include reactions ("Exactly!", "Hmm.") | One-sided monologues |
-| Read it aloud before generating | Assume it sounds right |
+| 用人们实际说话的方式编写脚本 | 用书面语言编写脚本 |
+| 使用短句子（<15个词） | 使用冗长的学术句子 |
+| 使用缩写（如“can't”、“won't”） | 使用正式的表述（如“cannot”、“will not” |
+| 使用自然的填充词（如“So,”、“Well,） | 每个句子都结构完美 |
+| 句子长度要多样化 | 所有句子长度相同 |
+| 包含反应（如“Exactly!”, “Hmm.”） | 只使用单方面的独白 |
+| 生成前先大声朗读 | 假设脚本听起来自然 |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Monologues longer than 3 sentences | Sounds like a lecture, not conversation | Break into exchanges |
-| No emotional variation | Flat, robotic delivery | Use punctuation and non-speech cues |
-| Missing speaker tags | Voices don't alternate | Start every turn with `[S1]` or `[S2]` |
-| Formal written language | Sounds unnatural spoken | Use contractions, short sentences |
-| No pauses between topics | Feels rushed | Use `...` or scene breaks |
-| All same energy level | Monotonous | Vary between high/low energy moments |
+| 独白超过3句话 | 听起来像讲座，而不是对话 | 将内容拆分成多个对话片段 |
+| 没有情感变化 | 语气平淡、机械 | 使用标点符号和非语言线索来表达情感 |
+| 缺少说话者标签 | 语音无法交替 | 每个说话者的发言前加上 `[S1]` 或 `[S2]` |
+| 使用正式的书面语言 | 朗读时听起来不自然 | 使用缩写和短句子 |
+| 主题转换时没有停顿 | 会让对话显得仓促 | 使用 `...` 或场景转换的停顿 |
+| 语调始终不变 | 会显得单调 | 通过调整语速来营造不同的情绪氛围 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@text-to-speech
@@ -222,4 +222,4 @@ npx skills add inferencesh/skills@ai-podcast-creation
 npx skills add inferencesh/skills@ai-avatar-video
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

@@ -1,51 +1,53 @@
 ---
 name: "Fasting Tracker"
-description: "Track intermittent fasting, extended fasts, and eating windows. Auto-adapts to your style."
+description: "**记录间歇性禁食、长时间禁食以及进食时间**。该工具会自动适应您的饮食习惯。"
 ---
 
-## Auto-Adaptive Fasting Tracker
+## 自适应禁食追踪器
 
-This skill auto-evolves. Works for 16:8, OMAD, extended fasts, religious fasting, and custom protocols.
+此工具会自动根据用户的使用习惯进行优化和升级，适用于16:8禁食模式、每日一餐（OMAD）模式、长时间禁食、宗教性禁食以及自定义的禁食方案。
 
-**Rules:**
-- Only log when user shares — "starting fast", "breaking fast", "last meal at 8pm"
-- Detect fasting style and experience level
-- Beginners: offer tips (water, coffee, hunger waves pass), setup guidance, encouragement
-- Experienced: just data, minimal interruption
-- Breaking fast early is OK — not failure, just life. No guilt.
-- NEVER push someone to fast longer — their goal is their goal
-- Extended fasts (24h+): check in on safety, remind about electrolytes
-- Religious fasts (Ramadan): respect it's spiritual, note dry fasting (no water) has different safety rules
-- If eating disorder history mentioned: stop tracking, redirect to NEDA (1-800-931-2237)
-- Fasting zones (ketosis, autophagy) are ESTIMATES — individual variation is huge
-- Check `protocols.md` for fasting types, `safety.md` for contraindications
+**使用规则：**
+- 仅当用户主动分享相关信息时（如“开始禁食”、“结束禁食”、“晚餐时间”等）才会记录数据。
+- 系统会自动识别用户的禁食类型和经验水平：
+  - 对于初学者：提供实用建议（如饮水建议、咖啡的摄入方式、如何应对饥饿感等），以及使用指南和鼓励话语。
+  - 对于有经验的用户：仅记录数据，尽量减少干扰。
+- 提前结束禁食是正常现象，无需感到内疚；每个人的目标都不同。
+- **绝不会强迫用户延长禁食时间**。
+- 对于长时间禁食（超过24小时）的用户，系统会关注其健康状况，并提醒补充电解质。
+- 对于进行宗教性禁食（如斋月）的用户，系统会尊重其宗教习俗，并指出干禁食（不喝水）的特殊安全注意事项。
+- 如果用户有进食障碍的历史，请立即停止使用该工具，并联系NEDA（全国饮食失调协会，电话：1-800-931-2237）。
+- 禁食状态（如酮症、自噬等）仅为估计值，个体差异很大。
+- 详细信息请参考`protocols.md`文件中的禁食方案说明，以及`safety.md`文件中的禁忌事项。
+
+---
+
+### 数据来源
+<!-- 禁食数据的来源。格式：`source: 什么`）
+
+### 禁食方案
+<!-- 用户的禁食模式。格式：`protocol` -->
+- 例如：每天16:8禁食、每周36小时禁食、斋月禁食、灵活的禁食时间安排等。
+
+### 禁食计划
+<!-- 用户的日常禁食模式。格式：`pattern` -->
+- 例如：禁食时间设定为中午12点到晚上8点、日落至日出、周末时间灵活调整等。
+
+### 监测指标
+<!-- 用户关注的禁食相关指标。格式：`metric` -->
+- 例如：禁食时长、连续禁食的天数、体重变化、能量水平、血糖值等。
+
+### 禁食期间的感受
+<!-- 用户在禁食期间的身体反应。格式：`symptom: 时间` -->
+- 例如：饥饿感通常在禁食14到16小时时出现；禁食18小时后思维会更加清晰等。
+
+### 用户偏好
+// 用户希望如何使用该工具。格式：`preference` -->
+- 例如：为初学者提供实用建议、不发送提醒信息、每周生成禁食总结等。
 
 ---
 
-### Sources
-<!-- Where fasting data comes from. Format: "source: what" -->
+*如果某个部分为空，表示该数据尚未收集。请根据用户实际情况进行补充。*
 
-### Protocol
-<!-- Their fasting style. Format: "protocol" -->
-<!-- Examples: 16:8 daily, OMAD, 36h weekly, Ramadan, variable -->
-
-### Schedule
-<!-- Their patterns. Format: "pattern" -->
-<!-- Examples: eating window 12-8pm, sunset to sunrise, flexible weekends -->
-
-### Metrics
-<!-- What they track. Format: "metric" -->
-<!-- Examples: hours fasted, streak, weight, energy, glucose -->
-
-### Symptoms
-<!-- How they feel during fasts. Format: "symptom: when" -->
-<!-- Examples: hunger: hours 14-16, clarity: after 18h -->
-
-### Preferences
-<!-- How they want to track. Format: "preference" -->
-<!-- Examples: tips for beginners, no reminders, weekly summary -->
-
----
-*Empty sections = no data yet. Observe and fill.*
-
-**Disclaimer:** Educational only, not medical advice. Fasting isn't for everyone. Contraindicated: pregnancy, eating disorders, Type 1 diabetes, underweight. Type 2 diabetics on insulin/sulfonylureas: high hypo risk — consult doctor first. Stop if: dizziness, fainting, severe headaches, palpitations. If symptoms severe, seek emergency care.
+**免责声明：**  
+本工具仅用于提供教育性信息，不构成医疗建议。禁食并不适合所有人。以下人群禁食前请咨询医生：孕妇、有进食障碍的人、1型糖尿病患者、体重过轻的人。使用胰岛素或磺脲类药物的2型糖尿病患者禁食风险较高，请务必先咨询医生。如果出现头晕、昏厥、严重头痛或心悸等症状，请立即停止禁食并寻求紧急医疗帮助。

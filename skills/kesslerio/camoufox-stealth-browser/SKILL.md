@@ -1,7 +1,7 @@
 ---
 name: camoufox-stealth-browser
 homepage: https://github.com/kesslerio/camoufox-stealth-browser-clawhub-skill
-description: C++ level anti-bot browser automation using Camoufox (patched Firefox) in isolated containers. Bypasses Cloudflare Turnstile, Datadome, Airbnb, Yelp. Superior to Chrome-based solutions (undetected-chromedriver, puppeteer-stealth) which only patch at JS level. Use when standard Playwright/Selenium gets blocked.
+description: 使用 Camoufox（经过修改的 Firefox）在隔离容器中实现 C++ 级别的反机器人浏览器自动化技术。该技术能够绕过 Cloudflare Turnstile、Datadome、Airbnb 和 Yelp 等安全防护机制。相比基于 Chrome 的解决方案（如 undetected-chromedriver 或 puppeteer-stealth，这些方案仅在 JavaScript 层面进行修改），Camoufox 的性能更优越且更难被检测到。当标准的 Playwright/Selenium 被屏蔽时，可以使用该技术来实现自动化操作。
 metadata:
   openclaw:
     emoji: "🦊"
@@ -10,50 +10,50 @@ metadata:
       env: []
 ---
 
-# Camoufox Stealth Browser 🦊
+# Camoufox 隐形浏览器 🦊
 
-**C++ level** anti-bot evasion using Camoufox — a custom Firefox fork with stealth patches compiled into the browser itself, not bolted on via JavaScript.
+**利用 Camoufox 实现 C++ 级别的反机器人检测机制**——Camoufox 是一个基于 Firefox 的定制版本，其中包含了直接编译到浏览器中的隐形功能模块，而非通过 JavaScript 动态添加的。
 
-## Why Camoufox > Chrome-based Solutions
+## 为什么选择 Camoufox 而不是基于 Chrome 的解决方案？
 
-| Approach | Detection Level | Tools |
+| 方法 | 检测难度 | 使用工具 |
 |----------|-----------------|-------|
-| **Camoufox (this skill)** | C++ compiled patches | Undetectable fingerprints baked into browser |
-| undetected-chromedriver | JS runtime patches | Can be detected by timing analysis |
-| puppeteer-stealth | JS injection | Patches applied after page load = detectable |
-| playwright-stealth | JS injection | Same limitations |
+| **Camoufox** | C++ 编译的隐形模块 | 将浏览器自身的特征信息伪装得无法被检测到 |
+| `undetected-chromedriver` | JavaScript 运行时修改 | 可能通过时间分析被检测到 |
+| `puppeteer-stealth` | JavaScript 注入 | 页面加载后才会应用修改，因此仍可被检测到 |
+| `playwright-stealth` | JavaScript 注入 | 同样存在被检测的风险 |
 
-**Camoufox patches Firefox at the source code level** — WebGL, Canvas, AudioContext fingerprints are genuinely spoofed, not masked by JavaScript overrides that anti-bot systems can detect.
+**Camoufox 在源代码层面修改 Firefox**——它真正伪造了 WebGL、Canvas、AudioContext 等组件的特征信息，而非仅仅通过 JavaScript 动作进行伪装，这些伪装方式容易被反机器人系统识别出来。
 
-## Key Advantages
+## 主要优势：
 
-1. **C++ Level Stealth** — Fingerprint spoofing compiled into the browser, not JS hacks
-2. **Container Isolation** — Runs in distrobox, keeping your host system clean
-3. **Dual-Tool Approach** — Camoufox for browsers, curl_cffi for API-only (no browser overhead)
-4. **Firefox-Based** — Less fingerprinted than Chrome (everyone uses Chrome for bots)
+1. **C++ 级别的隐形技术**：特征信息伪装是通过编译到浏览器中实现的，而非依赖 JavaScript 动作。
+2. **容器隔离**：在 `distrobox` 环境中运行，保护宿主系统的安全。
+3. **双工具策略**：Camoufox 适用于浏览器操作，`curl_cffi` 仅用于 API 请求（无需占用浏览器资源）。
+4. **基于 Firefox**：相比 Chrome，Camoufox 更难被反机器人系统识别（因为更多人使用 Chrome 来执行自动化操作）。
 
-## When to Use
+## 适用场景：
 
-- Standard Playwright/Selenium gets blocked
-- Site shows Cloudflare challenge or "checking your browser"
-- Need to scrape Airbnb, Yelp, or similar protected sites
-- `puppeteer-stealth` or `undetected-chromedriver` stopped working
-- You need **actual** stealth, not JS band-aids
+- 当标准的 Playwright 或 Selenium 被阻止时。
+- 当网站显示 Cloudflare 的验证提示或“正在检查您的浏览器”时。
+- 需要抓取 Airbnb、Yelp 等受保护的网站数据时。
+- 当 `puppeteer-stealth` 或 `undetected-chromedriver` 失效时。
+- 需要真正的隐形效果，而不仅仅是简单的 JavaScript 遮盖手段。
 
-## Tool Selection
+## 工具选择：
 
-| Tool | Level | Best For |
+| 工具 | 功能 | 适用场景 |
 |------|-------|----------|
-| **Camoufox** | C++ patches | All protected sites - Cloudflare, Datadome, Yelp, Airbnb |
-| **curl_cffi** | TLS spoofing | API endpoints only - no JS needed, very fast |
+| **Camoufox** | C++ 编译的隐形模块 | 适用于所有需要伪装的网站（如 Cloudflare、Datadome、Yelp、Airbnb） |
+| **curl_cffi** | TLS 伪造技术 | 仅适用于 API 请求，无需浏览器，速度非常快 |
 
-## Quick Start
+## 快速入门：
 
-All scripts run in `pybox` distrobox for isolation.
+所有脚本都在 `pybox` 容器中运行，以实现隔离。
 
-⚠️ **Use `python3.14` explicitly** - pybox may have multiple Python versions with different packages installed.
+⚠️ **请明确使用 `python3.14`**——`pybox` 可能安装了多个版本的 Python，可能导致包版本不兼容。
 
-### 1. Setup (First Time)
+### 1. 设置（首次使用）
 
 ```bash
 # Install tools in pybox (use python3.14)
@@ -62,19 +62,19 @@ distrobox-enter pybox -- python3.14 -m pip install camoufox curl_cffi
 # Camoufox browser downloads automatically on first run (~700MB Firefox fork)
 ```
 
-### 2. Fetch a Protected Page
+### 2. 获取受保护的页面内容
 
-**Browser (Camoufox):**
+**使用 Camoufox 浏览器：**
 ```bash
 distrobox-enter pybox -- python3.14 scripts/camoufox-fetch.py "https://example.com" --headless
 ```
 
-**API only (curl_cffi):**
+**仅通过 API 请求（使用 curl_cffi）：**
 ```bash
 distrobox-enter pybox -- python3.14 scripts/curl-api.py "https://api.example.com/endpoint"
 ```
 
-## Architecture
+## 架构概述
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -90,49 +90,47 @@ distrobox-enter pybox -- python3.14 scripts/curl-api.py "https://api.example.com
 └─────────────────────────────────────────────────────────┘
 ```
 
-## Tool Details
+## 工具详细信息：
 
 ### Camoufox  
-- **What:** Custom Firefox build with C++ level stealth patches
-- **Pros:** Best fingerprint evasion, passes Turnstile automatically
-- **Cons:** ~700MB download, Firefox-based
-- **Best for:** All protected sites - Cloudflare, Datadome, Yelp, Airbnb
+- **简介**：基于 Firefox 的定制版本，包含 C++ 级别的隐形功能模块。  
+- **优点**：最佳的伪装效果，能够自动通过反机器人系统的检测。  
+- **缺点**：下载大小约为 700MB，基于 Firefox 构建。  
+- **适用场景**：所有需要伪装的网站（如 Cloudflare、Datadome、Yelp、Airbnb）。
 
-### curl_cffi
-- **What:** Python HTTP client with browser TLS fingerprint spoofing
-- **Pros:** No browser overhead, very fast
-- **Cons:** No JS execution, API endpoints only
-- **Best for:** Known API endpoints, mobile app reverse engineering
+### curl_cffi  
+- **简介**：一个 Python HTTP 客户端，用于伪造浏览器的 TLS 特征信息。  
+- **优点**：无需占用浏览器资源，执行速度极快。  
+- **缺点**：仅支持 API 请求，不支持 JavaScript 动作。  
+- **适用场景**：已知 API 端点，或需要反向工程移动应用程序的场景。
 
-## Critical: Proxy Requirements
+## 关键注意事项：代理设置
 
-**Datacenter IPs (AWS, DigitalOcean) = INSTANT BLOCK on Airbnb/Yelp**
-
-You MUST use residential or mobile proxies:
+**使用数据中心 IP（如 AWS、DigitalOcean）访问 Airbnb 或 Yelp 时**，可能会立即被拒绝访问。  
+**必须使用住宅类或移动类代理服务器：**
 
 ```python
 # Example proxy config
 proxy = "http://user:pass@residential-proxy.example.com:8080"
 ```
 
-See **[references/proxy-setup.md](references/proxy-setup.md)** for proxy configuration.
+请参考 **[references/proxy-setup.md](references/proxy-setup.md)** 以获取代理配置指南。
 
-## Behavioral Tips
+## 行为技巧：
 
-Sites like Airbnb/Yelp use behavioral analysis. To avoid detection:
+像 Airbnb 或 Yelp 这样的网站会使用行为分析来检测自动化访问。为了避免被检测到，请遵循以下建议：
 
-1. **Warm up:** Don't hit target URL directly. Visit homepage first, scroll, click around.
-2. **Mouse movements:** Inject random mouse movements (Camoufox handles this).
-3. **Timing:** Add random delays (2-5s between actions), not fixed intervals.
-4. **Session stickiness:** Use same proxy IP for 10-30 min sessions, don't rotate every request.
+1. **预热**：不要直接访问目标 URL，先访问首页，浏览页面并点击链接。
+2. **模拟鼠标操作**：随机生成鼠标移动轨迹（Camoufox 可自动处理这部分操作）。
+3. **控制操作间隔**：在每次操作之间添加随机延迟（2-5 秒）。
+4. **保持会话连续性**：在同一会话期间使用相同的代理 IP，避免每次请求都更换代理。
 
-## Headless Mode Warning
+## 注意：无头模式的使用
 
-⚠️ Old `--headless` flag is DETECTED. Options:
-
-1. **New Headless:** Use `headless="new"` (Chrome 109+)
-2. **Xvfb:** Run headed browser in virtual display
-3. **Headed:** Just run headed if you can (most reliable)
+⚠️ 旧版本的 `--headless` 标志会被反机器人系统识别。推荐使用以下方法：
+- **新版本的无头模式**：使用 `headless="new"`（Chrome 109 及更高版本）。
+- **Xvfb**：在虚拟显示器中运行带界面的浏览器。
+- **常规无头模式**：只有在必要时才使用无头模式（通常是最可靠的方式）。
 
 ```bash
 # Xvfb approach (Linux)
@@ -141,23 +139,22 @@ export DISPLAY=:99
 python scripts/camoufox-fetch.py "https://example.com"
 ```
 
-## Troubleshooting
+## 常见问题及解决方法：
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| "Access Denied" immediately | Use residential proxy |
-| Cloudflare challenge loops | Try Camoufox instead of Nodriver |
-| Browser crashes in pybox | Install missing deps: `sudo dnf install gtk3 libXt` |
-| TLS fingerprint blocked | Use curl_cffi with `impersonate="chrome120"` |
-| Turnstile checkbox appears | Add mouse movement, increase wait time |
-| `ModuleNotFoundError: camoufox` | Use `python3.14` not `python` or `python3` |
-| `greenlet` segfault (exit 139) | Python version mismatch - use `python3.14` explicitly |
-| `libstdc++.so.6` errors | NixOS lib path issue - use `python3.14` in pybox |
+| 立即出现“访问被拒绝”的错误 | 使用住宅类代理服务器。 |
+| 遭遇 Cloudflare 的验证提示 | 尝试使用 Camoufox 而不是 Nodriver。 |
+- 在 pybox 中浏览器崩溃 | 安装缺失的依赖库：`sudo dnf install gtk3 libXt`。 |
+- TLS 特征信息被识别 | 使用 `curl_cffi` 并设置 `impersonate="chrome120"`。 |
+- 出现“Turnstile”验证提示 | 增加操作间隔时间或模拟鼠标动作。 |
+- 报错 `ModuleNotFoundError: camoufox` | 明确使用 `python3.14` 而不是 `python` 或 `python3`。 |
+- 出现 `greenlet` 程序崩溃（退出代码 139） | 确保使用 `python3.14`。 |
+- 出现 `libstdc++.so.6` 错误**（NixOS 环境）：在 pybox 中使用 `python3.14`。 |
 
-### Python Version Issues (NixOS/pybox)
+### Python 版本问题（NixOS/pybox）
 
-The `pybox` container may have multiple Python versions with separate site-packages:
-
+`pybox` 容器中可能安装了多个版本的 Python，导致包版本不兼容。  
 ```bash
 # Check which Python has camoufox
 distrobox-enter pybox -- python3.14 -c "import camoufox; print('OK')"
@@ -169,41 +166,33 @@ distrobox-enter pybox -- python3.14 scripts/camoufox-session.py ...
 distrobox-enter pybox -- python3.14 scripts/camoufox-session.py ...
 ```
 
-If you get segfaults or import errors, always use `python3.14` explicitly.
+如果遇到程序崩溃或导入错误，请务必明确使用 `python3.14`。
 
-## Examples
+## 示例代码：
 
-### Scrape Airbnb Listing
-
-```bash
+- **抓取 Airbnb 的房源信息**：```bash
 distrobox-enter pybox -- python3.14 scripts/camoufox-fetch.py \
   "https://www.airbnb.com/rooms/12345" \
   --headless --wait 10 \
   --screenshot airbnb.png
 ```
-
-### Scrape Yelp Business
-
-```bash
+- **抓取 Yelp 的商家信息**：```bash
 distrobox-enter pybox -- python3.14 scripts/camoufox-fetch.py \
   "https://www.yelp.com/biz/some-restaurant" \
   --headless --wait 8 \
   --output yelp.html
 ```
-
-### API Scraping with TLS Spoofing
-
-```bash
+- **使用 TLS 伪造技术进行 API 数据抓取**：```bash
 distrobox-enter pybox -- python3.14 scripts/curl-api.py \
   "https://api.yelp.com/v3/businesses/search?term=coffee&location=SF" \
   --headers '{"Authorization": "Bearer xxx"}'
 ```
 
-## Session Management
+## 会话管理
 
-Persistent sessions allow reusing authenticated state across runs without re-logging in.
+通过会话管理，可以在多次请求之间保持登录状态，无需重新登录。
 
-### Quick Start
+### 快速入门步骤：
 
 ```bash
 # 1. Login interactively (headed browser opens)
@@ -221,62 +210,53 @@ distrobox-enter pybox -- python3.14 scripts/camoufox-session.py \
   --profile airbnb --status "https://www.airbnb.com"
 ```
 
-### Flags
+## 常用命令参数说明：
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `--profile NAME` | Named profile for session storage (required) |
-| `--login` | Interactive login mode - opens headed browser |
-| `--headless` | Use saved session in headless mode |
-| `--status` | Check if session appears valid |
-| `--export-cookies FILE` | Export cookies to JSON for backup |
-| `--import-cookies FILE` | Import cookies from JSON file |
+| `--profile NAME` | 为会话指定名称（必需） |
+| `--login` | 开启交互式登录模式（显示浏览器界面）。 |
+| `--headless` | 以无头模式使用已保存的会话。 |
+| `--status` | 检查会话是否有效。 |
+| `--export-cookies FILE` | 将 cookies 导出为 JSON 文件以备备份。 |
+| `--import-cookies FILE` | 从 JSON 文件中导入 cookies。 |
 
-### Storage
+## 数据存储位置：
 
-- **Location:** `~/.stealth-browser/profiles/<name>/`
-- **Permissions:** Directory `700`, files `600`
-- **Profile names:** Letters, numbers, `_`, `-` only (1-63 chars)
+- **存储路径**：`~/.stealth-browser/profiles/<name>/`  
+- **权限设置**：目录权限为 `700`，文件权限为 `600`。  
+- **文件名规则**：只能使用字母、数字、下划线（_）和减号（-），长度不超过 63 个字符。
 
-### Cookie Handling
+## Cookies 处理规则：
 
-- **Save:** All cookies from all domains stored in browser profile
-- **Restore:** Only cookies matching target URL domain are used
-- **SSO:** If redirected to Google/auth domain, re-authenticate once and profile updates
+- **保存方式**：所有网站的 Cookies 都保存在浏览器配置文件中。  
+- **使用规则**：仅使用与目标网站域名匹配的 Cookies。  
+- **单点登录（SSO）处理**：如果被重定向到 Google 或其他认证页面，需要重新登录以更新会话状态。
 
-### Login Wall Detection
+## 登录状态检测：
 
-The script detects session expiry using multiple signals:
+脚本通过多种方式检测会话是否过期：
+- **HTTP 状态码**：401、403  
+- **URL 路径**：`/login`、`/signin`、`/auth`  
+- **页面标题**：包含“login”、“sign in”等字样  
+- **页面内容**：包含“captcha”、“verify”、“authenticate”等关键词  
+- **表单元素**：密码输入框  
 
-1. **HTTP status:** 401, 403
-2. **URL patterns:** `/login`, `/signin`, `/auth`
-3. **Title patterns:** "login", "sign in", etc.
-4. **Content keywords:** "captcha", "verify", "authenticate"
-5. **Form detection:** Password input fields
+如果在无头模式下检测到会话过期，需要使用 `--login` 参数重新登录。
 
-If detected during `--headless` mode, you'll see:
-```
-🔒 Login wall signals: url-path, password-form
-```
+### 远程登录（SSH）
 
-Re-run with `--login` to refresh the session.
+由于 `--login` 需要显示浏览器界面，因此需要配置显示转发：
 
-### Remote Login (SSH)
-
-Since `--login` requires a visible browser, you need display forwarding:
-
-**X11 Forwarding (Preferred):**
-```bash
+- **推荐方式：X11 显示转发**：```bash
 # Connect with X11 forwarding
 ssh -X user@server
 
 # Run login (opens browser on your local machine)
 distrobox-enter pybox -- python3.14 scripts/camoufox-session.py \
   --profile mysite --login "https://example.com"
-```
-
-**VNC Alternative:**
-```bash
+```  
+- **备用方案：VNC**：```bash
 # On server: start VNC session
 vncserver :1
 
@@ -288,23 +268,22 @@ distrobox-enter pybox -- python3.14 scripts/camoufox-session.py \
   --profile mysite --login "https://example.com"
 ```
 
-### Security Notes
+## 安全注意事项：
 
-⚠️ **Cookies are credentials.** Treat profile directories like passwords:
-- Profile dirs have `chmod 700` (owner only)
-- Cookie exports have `chmod 600`
-- Don't share profiles or exported cookies over insecure channels
-- Consider encrypting backups
+⚠️ **Cookies 即为敏感信息**：请像处理密码一样保护配置文件和导出的 Cookies：
+- 配置文件目录的权限设置为 `chmod 700`（仅允许所有者访问）。  
+- 导出的 Cookies 也需设置权限为 `chmod 600`。  
+- 不要通过不安全的渠道共享配置文件或 Cookies。  
+- 考虑对备份文件进行加密。
 
-### Limitations
+## 注意事项：
 
-| Limitation | Reason |
-|------------|--------|
-| localStorage/sessionStorage not exported | Use browser profile instead (handles automatically) |
-| IndexedDB not portable | Stored in browser profile, not cookie export |
-| No parallel profile access | No file locking in v1; use one process per profile |
+- **局限性**：
+  - `localStorage` 和 `sessionStorage` 中的数据无法被导出，建议使用浏览器自带的会话管理机制。  
+  - IndexedDB 数据不支持跨平台迁移，因为存储在浏览器配置文件中。  
+  - 单个会话只能由一个进程访问（版本 1 的限制）。
 
-## References
+## 参考资料：
 
-- [references/proxy-setup.md](references/proxy-setup.md) — Proxy configuration guide
-- [references/fingerprint-checks.md](references/fingerprint-checks.md) — What anti-bot systems check
+- [references/proxy-setup.md](references/proxy-setup.md)：代理配置指南  
+- [references/fingerprint-checks.md]：反机器人系统通常会检测哪些特征信息。

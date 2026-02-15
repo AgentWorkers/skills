@@ -1,27 +1,27 @@
 ---
 name: feishu-memory-recall
 version: 2.0.0
-description: Cross-group memory, search, and event sharing for OpenClaw Feishu agents
+description: OpenClaw Feishu代理的跨组内存、搜索和事件共享功能
 tags: [feishu, memory, cross-session, search, digest]
 ---
 
-# Feishu Memory Recall
+# Feishu 记忆回溯功能
 
-Cross-group awareness for OpenClaw. Search messages, generate digests, and share events across all Feishu groups and DMs.
+该功能支持 OpenClaw 在不同组之间的信息共享，包括搜索消息、生成摘要以及在所有 Feishu 组和私信中分享事件。
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---|---|
-| `recall --user <id> [--hours 24]` | Find messages from a user across all groups |
-| `search --keyword <text> [--hours 24]` | Search messages by keyword across all groups |
-| `digest [--hours 6]` | Activity summary of all tracked groups |
-| `log-event -s <source> -e <text>` | Write event to RECENT_EVENTS.md + daily log |
-| `sync-groups` | Auto-discover groups from gateway sessions |
-| `add-group -i <id> -n <name>` | Manually track a group |
-| `list-groups` | Show tracked groups |
+| `recall --user <id> [--hours 24]` | 在所有组中查找指定用户的消息 |
+| `search --keyword <text> [--hours 24]` | 按关键词在所有组中搜索消息 |
+| `digest [--hours 6]` | 显示所有被跟踪组的活动摘要 |
+| `log-event -s <source> -e <text>` | 将事件记录到 `RECENT_events.md` 文件以及每日日志中 |
+| `sync-groups` | 从网关会话中自动发现新的组 |
+| `add-group -i <id> -n <name>` | 手动添加一个组到跟踪列表 |
+| `list-groups` | 显示所有被跟踪的组 |
 
-## Usage
+## 使用方法
 
 ```bash
 # Search for "GIF error" across all groups
@@ -40,18 +40,18 @@ node skills/feishu-memory-recall/index.js sync-groups
 node skills/feishu-memory-recall/index.js recall -u ou_cdc63fe05e88c580aedead04d851fc04 --hours 48
 ```
 
-## How It Works
+## 工作原理
 
-1. **sync-groups**: Reads `~/.openclaw/agents/main/sessions/sessions.json` to auto-discover all Feishu groups the agent is connected to.
-2. **search/recall/digest**: Calls Feishu API to fetch messages from tracked groups, filters by keyword/user/time.
-3. **log-event**: Appends to both `RECENT_EVENTS.md` (rolling 24h cross-session feed) and `memory/YYYY-MM-DD.md` (permanent daily log).
+1. **sync-groups**: 读取 `~/.openclaw/agents/main/sessions/sessions.json` 文件，自动识别代理连接的 Feishu 组。
+2. **search/recall/digest**: 调用 Feishu API 从被跟踪的组中获取消息，并根据关键词、用户或时间进行过滤。
+3. **log-event**: 将事件记录到 `RECENT_events.md`（24 小时跨会话的事件记录）和 `memory/YYYY-MM-DD.md`（永久性每日日志）文件中。
 
-## Configuration
+## 配置要求
 
-Requires Feishu credentials in `.env`:
+需要在 `.env` 文件中配置 Feishu 的认证信息：
 ```
 FEISHU_APP_ID=cli_xxxxx
 FEISHU_APP_SECRET=xxxxx
 ```
 
-Group list is stored in `memory/active_groups.json` and can be auto-populated via `sync-groups`.
+组列表存储在 `memory/active_groups.json` 文件中，可以通过 `sync-groups` 命令自动更新。

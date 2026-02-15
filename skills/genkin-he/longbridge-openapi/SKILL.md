@@ -1,51 +1,50 @@
 # Longbridge OpenAPI
 
-Longbridge Securities OpenAPI SDK, supporting Hong Kong and US stock trading, real-time market data subscription, and account management.
+Longbridge Securities OpenAPI SDK 支持香港和美国的股票交易、实时市场数据订阅以及账户管理功能。
 
-## Introduction
+## 介绍
 
-Longbridge OpenAPI Skill is an AI skill package integrated with Longbridge Securities Open API, allowing you to interact with OpenClaw using natural language to easily complete stock market queries, trade orders, account management, and other operations.
+Longbridge OpenAPI 是一个与 Longbridge Securities Open API 集成的 AI 技能包，允许您使用自然语言与 OpenClaw 进行交互，轻松完成股票市场查询、交易订单处理、账户管理等操作。
 
-## Core Features
+## 核心功能
 
-### 📊 Market Data
-- **Real-time Market Subscription**: Subscribe to real-time market feeds for Hong Kong stocks, US stocks, and A-shares
-- **Stock Quote Query**: Get real-time data such as latest price, volume, price change, etc.
-- **Candlestick Data**: Support multiple periods including minute, day, week, month, and year
-- **Static Information**: Query basic information such as stock name, exchange, currency, lot size, etc.
+### 📊 市场数据
+- **实时市场订阅**：订阅香港股票、美国股票和 A 股的实时市场数据
+- **股票报价查询**：获取实时价格、成交量、价格变动等数据
+- **K线图数据**：支持分钟、日、周、月和年等多个时间周期
+- **静态信息**：查询股票名称、交易所、货币、交易单位等基本信息
 
-### 💰 Trading Features
-- **Smart Order Placement**: Support various order types including limit order, market order, enhanced limit order, etc.
-- **Order Management**: Cancel orders, modify orders
-- **Order Query**: View today's orders, historical orders, and trade records
-- **Multi-market Support**: Coverage of Hong Kong stocks, US stocks, and A-shares
+### 💰 交易功能
+- **智能订单下达**：支持限价单、市价单、增强型限价单等多种订单类型
+- **订单管理**：取消订单、修改订单
+- **订单查询**：查看当天的订单、历史订单和交易记录
+- **多市场支持**：涵盖香港股票、美国股票和 A 股
 
-### 💼 Account Management
-- **Fund Query**: View account balance, buying power, and net assets in real-time
-- **Position Management**: Query current positions, cost price, market value, and other information
-- **Multi-currency Support**: Support multiple currencies including HKD, USD, CNY, etc.
+### 💼 账户管理
+- **资金查询**：实时查看账户余额、可用资金和净资产
+- **持仓管理**：查询当前持仓、成本价、市场价值等信息
+- **多货币支持**：支持港元（HKD）、美元（USD）、人民币（CNY）等多种货币
 
-## Supported Markets
+## 支持的市场
 
-| Market | Code Format | Examples |
+| 市场 | 代码格式 | 示例 |
 |--------|------------|----------|
-| 🇭🇰 Hong Kong | `XXX.HK` | `700.HK` (Tencent), `9988.HK` (Alibaba) |
-| 🇺🇸 US Stocks | `XXX.US` | `AAPL.US` (Apple), `TSLA.US` (Tesla) |
-| 🇨🇳 A-Shares | `XXX.SH/SZ` | `000001.SZ` (Ping An Bank), `600519.SH` (Moutai) |
+| 🇭🇰 香港 | `XXX.HK` | `700.HK`（腾讯）、`9988.HK`（阿里巴巴） |
+| 🇺🇸 美国股票 | `XXX.US` | `AAPL.US`（苹果）、`TSLA.US`（特斯拉） |
+| 🇨🇳 A 股 | `XXX.SH/SZ` | `000001.SZ`（平安银行）、`600519.SH`（茅台） |
 
-## Configuration Guide
+## 配置指南
 
-### 1. Obtain API Credentials
+### 1. 获取 API 凭据
 
-Visit [Longbridge Open Platform](https://open.longportapp.com/) to register an account and create an application to obtain:
+访问 [Longbridge Open Platform](https://open.longportapp.com/) 注册账户并创建应用程序，以获取以下信息：
+- **应用密钥**：App Key
+- **应用秘钥**：App Secret
+- **访问令牌**：Access Token
 
-- **App Key**: Application key
-- **App Secret**: Application secret
-- **Access Token**: Access token
+### 2. 配置环境变量
 
-### 2. Configure Environment Variables
-
-Before using this skill, you must set the following environment variables:
+在使用此技能之前，必须设置以下环境变量：
 
 ```bash
 export LONGBRIDGE_APP_KEY="your_app_key_here"
@@ -53,9 +52,9 @@ export LONGBRIDGE_APP_SECRET="your_app_secret_here"
 export LONGBRIDGE_ACCESS_TOKEN="your_access_token_here"
 ```
 
-**Persistent Configuration** (Recommended):
+**持久化配置**（推荐）：
 
-Add to `~/.bashrc` or `~/.zshrc`:
+将配置添加到 `~/.bashrc` 或 `~/.zshrc` 文件中：
 
 ```bash
 # Longbridge OpenAPI Configuration
@@ -64,22 +63,22 @@ export LONGBRIDGE_APP_SECRET="your_app_secret_here"
 export LONGBRIDGE_ACCESS_TOKEN="your_access_token_here"
 ```
 
-Then execute `source ~/.bashrc` or `source ~/.zshrc` to apply the configuration.
+然后执行 `source ~/.bashrc` 或 `source ~/.zshrc` 以应用配置。
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Query Stock Market Data
+### 示例 1：查询股票市场数据
 
-**User Input:**
+**用户输入：**
 ```
 Query the latest stock prices of Tencent and Alibaba
 ```
 
-**OpenClaw Operation:**
-- Call `get_realtime_quote` tool
-- Parameters: `symbols=['700.HK', '9988.HK']`
+**OpenClaw 操作：**
+- 调用 `get_realtime_quote` 工具
+- 参数：`symbols=['700.HK', '9988.HK']`
 
-**Response:**
+**响应：**
 ```
 Tencent Holdings (700.HK)
 Latest: 320.40 HKD | Change: +2.40 (+0.75%)
@@ -92,31 +91,31 @@ Open: 79.20 | High: 80.00 | Low: 78.00
 Volume: 2,345,678 shares | Turnover: 184M HKD
 ```
 
-### Example 2: Get Candlestick Data
+### 示例 2：获取 K线图数据
 
-**User Input:**
+**用户输入：**
 ```
 Get the last 7 days of daily candlestick data for Apple stock
 ```
 
-**OpenClaw Operation:**
-- Call `get_candlesticks` tool
-- Parameters: `symbol='AAPL.US', period='day', count=7`
+**OpenClaw 操作：**
+- 调用 `get_candlesticks` 工具
+- 参数：`symbol='AAPL.US', period='day', count=7`
 
-**Response:**
-Contains 7 candlesticks with data including open, high, low, close, volume, etc.
+**响应：**
+返回包含开盘价、最高价、最低价、收盘价、成交量等数据的 7 条 K 线图
 
-### Example 3: Submit Buy Order
+### 示例 3：提交买入订单
 
-**User Input:**
+**用户输入：**
 ```
 Buy 100 shares of Tencent at 320 HKD
 ```
 
-**OpenClaw Operation:**
-- First confirm order details with user
-- Call `submit_order` tool
-- Parameters:
+**OpenClaw 操作：**
+- 首先与用户确认订单详情
+- 调用 `submit_order` 工具
+- 参数：
   ```python
   symbol='700.HK'
   order_type='LO'  # Limit order
@@ -126,7 +125,7 @@ Buy 100 shares of Tencent at 320 HKD
   time_in_force='Day'
   ```
 
-**Response:**
+**响应：**
 ```
 ✅ Order submitted successfully
 Order ID: 123456789
@@ -137,17 +136,17 @@ Price: 320.00 HKD
 Type: Limit Order (Day)
 ```
 
-### Example 4: Query Account Information
+### 示例 4：查询账户信息
 
-**User Input:**
+**用户输入：**
 ```
 What is my account balance?
 ```
 
-**OpenClaw Operation:**
-- Call `get_account_balance` tool
+**OpenClaw 操作：**
+- 调用 `get_account_balance` 工具
 
-**Response:**
+**响应：**
 ```
 💰 Account Fund Status
 
@@ -162,17 +161,17 @@ Buying Power: 20,000.00 USD
 Net Assets: 30,000.00 USD
 ```
 
-### Example 5: View Positions
+### 示例 5：查看持仓情况
 
-**User Input:**
+**用户输入：**
 ```
 What stocks do I hold?
 ```
 
-**OpenClaw Operation:**
-- Call `get_stock_positions` tool
+**OpenClaw 操作：**
+- 调用 `get_stock_positions` 工具
 
-**Response:**
+**响应：**
 ```
 📊 Current Positions
 
@@ -187,62 +186,62 @@ What stocks do I hold?
    Market Value: 17,550.00 USD | P&L: +2,550.00 (+17.00%)
 ```
 
-## API Tool List
+## API 工具列表
 
-### Market Data Tools
-| Tool Name | Description |
+### 市场数据工具
+| 工具名称 | 描述 |
 |-----------|-------------|
-| `quote_subscribe` | Subscribe to real-time market feeds (quote/depth/broker/trade) |
-| `get_realtime_quote` | Get real-time stock quotes |
-| `get_static_info` | Get stock static information |
-| `get_candlesticks` | Get historical candlestick data |
+| `quote_subscribe` | 订阅实时市场数据（报价/深度/经纪商/交易） |
+| `get_realtime_quote` | 获取实时股票报价 |
+| `get_static_info` | 获取股票静态信息 |
+| `get_candlesticks` | 获取历史 K 线图数据 |
 
-### Trading Tools
-| Tool Name | Description |
+### 交易工具
+| 工具名称 | 描述 |
 |-----------|-------------|
-| `submit_order` | Submit trading orders |
-| `cancel_order` | Cancel orders |
-| `get_today_orders` | Get today's order list |
-| `get_history_orders` | Get historical orders |
+| `submit_order` | 提交交易订单 |
+| `cancel_order` | 取消订单 |
+| `get_today_orders` | 获取当天的订单列表 |
+| `get_history_orders` | 获取历史订单 |
 
-### Account Tools
-| Tool Name | Description |
+### 账户工具
+| 工具名称 | 描述 |
 |-----------|-------------|
-| `get_account_balance` | Query account fund balance |
-| `get_stock_positions` | Query position list |
+| `get_account_balance` | 查询账户资金余额 |
+| `get_stock_positions` | 查询持仓列表 |
 
-## Order Type Description
+## 订单类型说明
 
-| Type Code | Order Type | Description |
+| 类型代码 | 订单类型 | 描述 |
 |-----------|------------|-------------|
-| `LO` | Limit Order | Execute at specified price or better |
-| `MO` | Market Order | Execute immediately at current market price |
-| `ELO` | Enhanced Limit Order | Hong Kong stocks specific, can match at multiple price levels |
-| `ALO` | At-auction Limit Order | Use during auction period |
+| `LO` | 限价单 | 在指定价格或更优价格执行 |
+| `MO` | 市价单 | 立即以当前市场价格执行 |
+| `ELO` | 增强型限价单 | 仅适用于香港股票，可在多个价格水平匹配 |
+| `ALO` | 拍卖限价单 | 在拍卖期间使用 |
 
-## Order Time in Force
+## 订单生效时间
 
-| Code | Time in Force | Description |
+| 代码 | 有效时间 | 描述 |
 |------|---------------|-------------|
-| `Day` | Day Order | Valid for the current trading day |
-| `GTC` | Good Till Cancelled | Valid until filled or manually cancelled |
-| `GTD` | Good Till Date | Valid until specified date |
+| `Day` | 当日订单 | 仅在当前交易日内有效 |
+| `GTC` | 有效直至取消 | 有效直至成交或手动取消 |
+| `GTD` | 有效直至指定日期 | 有效直至指定日期 |
 
-## Security Precautions
+## 安全注意事项
 
-### ⚠️ Risk Warnings
-1. **Investment Risks**: Stock trading involves market risks, users are responsible for their own investment decisions
-2. **For Learning Only**: This skill is for technical learning and research only, does not constitute investment advice
-3. **Use with Caution**: Do not use directly in production environment without thorough testing
+### ⚠️ 风险提示
+1. **投资风险**：股票交易涉及市场风险，用户需自行承担投资决策责任
+2. **仅用于学习**：此技能仅用于技术学习和研究，不构成投资建议
+3. **谨慎使用**：未经充分测试，请勿在生产环境中直接使用
 
-### 🔒 Security Recommendations
-1. **Protect Keys**: Keep API keys secure, do not leak to others or commit to code repositories
-2. **Test with Demo**: Recommend testing with Longbridge demo account first
-3. **Order Confirmation**: All trading operations should be confirmed manually before execution
-4. **Permission Control**: Recommend setting minimum necessary permissions for API keys
-5. **Regular Rotation**: Regularly rotate API keys to improve security
+### 🔒 安全建议
+1. **保护密钥**：妥善保管 API 密钥，切勿泄露给他人或上传到代码仓库
+2. **使用演示账户测试**：建议先使用 Longbridge 的演示账户进行测试
+3. **订单确认**：所有交易操作在执行前应手动确认
+4. **权限控制**：为 API 密钥设置必要的最小权限
+5. **定期轮换**：定期轮换 API 密钥以提高安全性
 
-## Technical Architecture
+## 技术架构
 
 ```
 ┌──────────────────┐
@@ -268,68 +267,68 @@ What stocks do I hold?
 └──────────────────┘
 ```
 
-## Dependencies
+## 依赖项
 
-- **Python**: >= 3.7
-- **longbridge**: >= 0.2.77
+- **Python**：>= 3.7
+- **longbridge**：>= 0.2.77
 
-Dependencies will be installed automatically when installing the skill.
+安装此技能时，依赖项将自动安装。
 
-## Frequently Asked Questions
+## 常见问题
 
-### Q1: How to obtain API keys?
-Visit [Longbridge Open Platform](https://open.longportapp.com/), register an account, then create an application in "Application Management" to obtain the keys.
+### Q1：如何获取 API 密钥？
+访问 [Longbridge Open Platform](https://open.longportapp.com/)，注册账户，然后在“应用程序管理”中创建应用程序以获取密钥。
 
-### Q2: Does it support demo account?
-Yes, Longbridge provides demo accounts for testing. You can switch to the simulation environment on the open platform.
+### Q2：支持演示账户吗？
+是的，Longbridge 提供演示账户供测试使用。您可以在开放平台上切换到模拟环境。
 
-### Q3: What to do if order submission fails?
-Please check:
-- Are environment variables configured correctly?
-- Are API keys valid?
-- Is account balance sufficient?
-- Is trading time within market hours?
-- Are order parameters valid (price, quantity, etc.)?
+### Q3：如果订单提交失败怎么办？
+请检查：
+- 环境变量配置是否正确？
+- API 密钥是否有效？
+- 账户余额是否足够？
+- 是否在交易时间内？
+- 订单参数（价格、数量等）是否有效？
 
-### Q4: Which markets are supported?
-Currently supports stocks, ETFs, warrants, and options trading in Hong Kong, US, and A-share markets.
+### Q4：支持哪些市场？
+目前支持香港、美国和 A 股市场的股票、ETF、权证和期权交易。
 
-### Q5: How to view API call logs?
-The SDK outputs logs internally. You can configure Python's logging module to view detailed call information.
+### Q5：如何查看 API 调用日志？
+SDK 会内部输出日志。您可以配置 Python 的日志模块来查看详细的调用信息。
 
-## Changelog
+## 更新日志
 
 ### v1.0.0 (2026-02-02)
-- ✨ Initial release
-- ✅ Support real-time market query and subscription
-- ✅ Support order submission, cancellation, and modification
-- ✅ Support account fund and position queries
-- ✅ Support historical candlestick data retrieval
-- ✅ Full coverage of Hong Kong, US, and A-share markets
+- ✨ 初始发布
+- ✅ 支持实时市场查询和订阅
+- ✅ 支持订单提交、取消和修改
+- ✅ 支持账户资金和持仓查询
+- ✅ 支持历史 K 线图数据检索
+- ✅ 完全覆盖香港、美国和 A 股市场
 
-## References
+## 参考资料
 
-- 📖 [Longbridge OpenAPI Official Documentation](https://open.longbridge.com/docs)
-- 🐍 [Python SDK Documentation](https://longbridge.readthedocs.io/en/latest/)
-- 💻 [GitHub Source Repository](https://github.com/longportapp/openapi)
-- 📦 [PyPI Package](https://pypi.org/project/longbridge/)
-- 🌐 [Open Platform Homepage](https://open.longportapp.com/)
+- 📖 [Longbridge OpenAPI 官方文档](https://open.longbridge.com/docs)
+- 🐍 [Python SDK 文档](https://longbridge.readthedocs.io/en/latest/)
+- 💻 [GitHub 源代码仓库](https://github.com/longportapp/openapi)
+- 📦 [PyPI 包](https://pypi.org/project/longbridge/)
+- 🌐 [Open Platform 主页](https://open.longportapp.com/)
 
-## License
+## 许可证
 
-MIT License
+MIT 许可证
 
-## Author
+## 作者
 
 genkin
 
-## Support
+## 支持
 
-If you have questions or suggestions, please contact us through:
-- Submit issues to GitHub
-- Visit Longbridge developer community
-- Refer to official documentation
+如有任何问题或建议，请通过以下方式联系我们：
+- 在 GitHub 上提交问题
+- 访问 Longbridge 开发者社区
+- 查阅官方文档
 
 ---
 
-**Disclaimer**: This skill is for learning and technical research only and does not constitute investment advice. Users should fully understand the risks of stock investment and be responsible for their own investment decisions.
+**免责声明**：此技能仅用于学习和技术研究，不构成投资建议。用户应充分了解股票投资的风险，并自行承担投资决策责任。

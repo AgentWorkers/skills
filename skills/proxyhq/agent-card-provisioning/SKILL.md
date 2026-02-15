@@ -1,51 +1,49 @@
 ---
 name: agent-card-provisioning
-description: Provision virtual payment cards for AI agents on-demand. Create single-use or limited cards with spending controls, merchant restrictions, and automatic expiration. Cards are issued instantly when policy allows.
+description: 根据需求为AI代理提供虚拟支付卡。可以创建一次性使用的或有效期有限的支付卡，这些卡片具有消费限制、商户限制以及自动失效的功能。当政策允许时，支付卡会立即生成并发送给相关代理。
 ---
 
-# Agent Card Provisioning
+# 代理卡配置
 
-Provision virtual payment cards for AI agents with built-in spending controls.
+为具备内置消费控制功能的AI代理提供虚拟支付卡。
 
-## How It Works
+## 工作原理
 
-1. **Agent requests card** via payment intent
-2. **Policy evaluates** the request (amount, merchant, limits)
-3. **Card issued** if within policy OR **approval required** if over threshold
-4. **Agent uses card** for the specific purchase
-5. **Transaction tracked** and matched to intent
+1. **代理通过支付意图请求卡片**  
+2. **策略评估** 请求内容（金额、商户、限额）  
+3. 如果符合策略，则**发放卡片**；如果超出限额，则**需要人工审批**  
+4. **代理使用卡片** 进行特定购买  
+5. **交易会被追踪** 并与原始意图进行匹配  
 
-## Creating a Card (Intent-Based)
+## 创建卡片（基于支付意图）
 
-Cards are provisioned through payment intents, not created directly:
-
+卡片是通过支付意图来配置的，而不是直接创建的：  
 ```
 proxy.intents.create
 ├── merchant: "Amazon"
 ├── amount: 49.99
 ├── description: "Office supplies"
 └── category: "office_supplies" (optional)
-```
+```  
 
-If approved (auto or manual), a card is issued:
-
+如果请求获得批准（自动或手动），卡片将被发放：  
 ```
 Response:
 ├── id: "int_abc123"
 ├── status: "pending" or "card_issued"
 ├── cardId: "card_xyz789"
 └── message: "Card issued successfully"
-```
+```  
 
-## Getting Card Details
+## 获取卡片详情  
 
-### Masked (for display)
+### 遮蔽信息（用于显示）  
 ```
 proxy.cards.get { cardId: "card_xyz789" }
 → { last4: "4242", brand: "Visa", status: "active" }
-```
+```  
 
-### Full Details (for payment)
+### 完整详情（用于支付）  
 ```
 proxy.cards.get_sensitive { cardId: "card_xyz789" }
 → {
@@ -61,22 +59,21 @@ proxy.cards.get_sensitive { cardId: "card_xyz789" }
       country: "US"
     }
   }
-```
+```  
 
-## Card Controls (via Policy)
+## 卡片控制（通过策略实现）  
 
-Policies define what cards can be used for:
+策略用于定义哪些卡片可以被使用：  
 
-| Control | Description |
-|---------|-------------|
-| **Spending limit** | Max per transaction |
-| **Daily/monthly limits** | Cumulative caps |
-| **Merchant categories** | Allowed/blocked MCCs |
-| **Auto-approve threshold** | Below = instant, above = human approval |
-| **Expiration** | Card validity period |
+| 控制方式 | 描述                |  
+|---------|------------------|  
+| **消费限额** | 每笔交易的最高金额限制    |  
+| **每日/每月限额** | 累计消费上限        |  
+| **商户类别** | 允许/禁止的商户代码（MCC）    |  
+| **自动审批阈值** | 低于阈值 = 自动审批；高于阈值 = 需人工审批 |  
+| **有效期** | 卡片的有效期限        |  
 
-## Card Lifecycle
-
+## 卡片生命周期  
 ```
 Intent Created
       │
@@ -107,18 +104,18 @@ Transaction
   ▼
 Card
 Expired
-```
+```  
 
-## Best Practices
+## 最佳实践  
 
-1. **One intent per purchase** - Creates audit trail
-2. **Descriptive intent names** - Helps reconciliation
-3. **Set reasonable policies** - Balance autonomy vs control
-4. **Monitor transactions** - Use `proxy.transactions.list_for_card`
+1. **每次购买使用一个支付意图**——便于审计追踪  
+2. **使用描述性强的意图名称**——有助于对交易进行对账  
+3. **设置合理的策略**——在保障代理自主性的同时实现有效控制  
+4. **监控交易记录**——使用 `proxy.transactions.list_for_card` 功能  
 
-## Security
+## 安全性措施  
 
-- Cards are single-purpose (one intent = one card)
-- Unused cards auto-expire
-- Full PAN only via `get_sensitive` (requires auth)
-- All transactions logged and reconciled
+- 卡片具有单一用途（每个支付意图对应一张卡片）  
+- 未使用的卡片会自动过期  
+- 仅通过 `get_sensitive` 函数获取完整的卡号信息（需要授权）  
+- 所有交易都会被记录并定期对账

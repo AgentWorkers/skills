@@ -1,61 +1,60 @@
 ---
 name: Database
-description: Design and operate databases avoiding common scaling, reliability, and data integrity traps.
+description: 设计并操作数据库时，需避免常见的扩展性（scaling）、可靠性（reliability）以及数据完整性（data integrity）方面的问题。
 metadata: {"clawdbot":{"emoji":"🗃️","os":["linux","darwin","win32"]}}
 ---
 
-# Database Gotchas
+# 数据库使用中的常见问题
 
-## Connection Traps
-- Connection pools exhausted = app hangs silently — set max connections, monitor pool usage
-- Each Lambda/serverless invocation may open new connection — use connection pooling proxy (RDS Proxy, PgBouncer)
-- Connections left open block schema changes — `ALTER TABLE` waits for all transactions
-- Idle connections consume memory — set connection timeout, kill idle connections
+## 连接相关问题
+- 连接池耗尽会导致应用程序无响应（挂起）——请设置最大连接数并监控连接池的使用情况。
+- 每次 Lambda 或无服务器函数调用都可能创建新的连接——建议使用连接池代理（如 RDS Proxy、PgBouncer）来管理连接。
+- 未关闭的连接会阻塞数据库模式的修改操作——执行 `ALTER TABLE` 语句时，系统会等待所有未完成的交易完成。
+- 闲置连接会占用内存——请设置连接超时时间，并定期关闭闲置连接。
 
-## Transaction Gotchas
-- Long transactions hold locks and bloat MVCC — keep transactions short
-- Read-only transactions still take snapshots — can block vacuum/cleanup in Postgres
-- Implicit autocommit varies by database — explicit BEGIN/COMMIT is safer
-- Deadlocks from inconsistent lock ordering — always lock tables/rows in same order
-- Lost updates from read-modify-write without locking — use SELECT FOR UPDATE or optimistic locking
+## 事务相关问题
+- 长时间运行的事务会占用锁资源，导致 MVCC（多版本并发控制）机制效率降低——尽量缩短事务的执行时间。
+- 仅读事务仍会生成数据快照，这可能会影响 Postgres 的数据清理（如 vacuum 操作）——建议显式使用 `BEGIN/COMMIT` 来控制事务的提交。
+- 不一致的锁顺序可能导致死锁——请始终按照相同的顺序锁定表或行。
+- 在未进行锁定的情况下执行读-修改-写操作可能导致数据丢失——建议使用 `SELECT FOR UPDATE` 或乐观锁机制来避免数据丢失。
 
-## Schema Changes
-- Adding column with default rewrites entire table in old MySQL/Postgres — use NULL default, backfill, then alter
-- Index creation locks writes in some databases — use CONCURRENTLY in Postgres, ONLINE in MySQL 8+
-- Renaming column breaks running application — add new column, migrate, drop old
-- Dropping column with active queries causes errors — deploy code change first, then schema change
-- Foreign key checks slow bulk inserts — disable constraints, insert, re-enable
+## 数据库模式相关问题
+- 在旧版本的 MySQL/Postgres 中，添加带有默认值的列会重新生成整个表的索引——建议使用 `NULL` 作为默认值，先插入数据，再更新数据库模式。
+- 在某些数据库中，创建索引会锁定写入操作——在 Postgres 中使用 `CONCURRENTLY` 选项，在 MySQL 8.0 及更高版本中使用 `ONLINE` 选项。
+- 更改列名可能会影响正在运行的应用程序——建议先创建新列，再进行数据迁移，最后删除旧列。
+- 删除包含活跃查询的列可能会导致错误——请先部署代码更改，再执行数据库模式更改。
+- 外键检查会减慢批量插入操作的速度——建议在插入数据前禁用外键约束，插入完成后重新启用。
 
-## Backup and Recovery
-- Logical backups (pg_dump, mysqldump) lock tables or miss concurrent writes — use consistent snapshot
-- Point-in-time recovery requires WAL/binlog retention — configure before you need it
-- Backup verification: restore regularly — backups that can't restore aren't backups
-- Replication lag during backup can cause inconsistency — backup from replica, verify consistency
+## 备份与恢复相关问题
+- 逻辑备份（如 `pg_dump`、`mysqldump`）可能会锁定数据库表，从而影响并发写入操作——建议使用一致性的数据快照进行备份。
+- 点击时间恢复需要保留 WAL（事务日志）或 Binlog（重做日志）——请在需要恢复数据之前配置好相关设置。
+- 定期验证备份数据是否可以成功恢复——无法恢复的备份实际上并不能起到保护数据的作用。
+- 备份过程中的复制延迟可能导致数据不一致——建议从备份副本中进行恢复，并验证数据的一致性。
 
-## Replication Traps
-- Replication lag means stale reads — check lag before trusting replica data
-- Writes to replica corrupt replication — make replicas read-only
-- Schema changes can break replication — replicate schema changes, don't apply separately
-- Split-brain after failover loses writes — use fencing/STONITH to prevent
-- Promoting replica doesn't redirect connections — application must reconnect to new primary
+## 复制相关问题
+- 复制延迟可能导致读取到的数据不是最新的——在依赖副本数据之前，请先检查延迟情况。
+- 向副本写入数据可能会损坏复制关系——建议将副本设置为只读状态。
+- 数据库模式的更改可能会影响复制功能——请确保在复制过程中同步数据库模式的变化。
+- 故障切换后可能会出现数据不一致的情况——建议使用 fencing 或 STONITH 策略来防止数据丢失。
+- 提升副本为新的主节点后，应用程序需要重新连接到新的主节点。
 
-## Query Patterns
-- N+1 queries from ORM lazy loading — eager load relationships or batch queries
-- Missing indexes on foreign keys slows joins and cascading deletes
-- Large IN clauses become slow — batch into multiple queries or use temp table
-- COUNT(*) on large tables is slow — use approximate counts or cache
-- SELECT without LIMIT on unbounded data risks OOM
+## 查询相关问题
+- 通过 ORM（对象关系映射）懒加载数据时可能会出现 N+1 查询的情况——建议使用 eager loading 或批量查询来优化性能。
+- 外键对应的索引缺失会导致连接操作和级联删除操作变慢——请确保相关索引存在。
+- 大型的 `IN` 子句会导致查询性能下降——可以考虑将数据分批处理或使用临时表。
+- 在大型表上执行 `COUNT(*)` 操作会消耗大量资源——建议使用近似计数函数或缓存结果。
+- 在处理无限制的数据时，直接使用 `SELECT` 语句可能会导致内存溢出（OOM）——请谨慎使用。
 
-## Data Integrity
-- Application-level unique checks have race conditions — use database constraints
-- Check constraints often disabled for "flexibility" then data corrupts — keep them on
-- Orphan rows from missing foreign keys — add constraints retroactively, clean up first
-- Timezone confusion: store UTC, convert on display — never store local time without zone
-- Floating point for money causes rounding errors — use DECIMAL or integer cents
+## 数据完整性相关问题
+- 应用程序层面的唯一性检查可能存在竞争条件——建议使用数据库提供的约束机制来保证数据完整性。
+- 为了“灵活性”而禁用数据库约束可能会导致数据损坏——请始终启用这些约束机制。
+- 由于外键缺失而产生的孤立数据行需要及时清理——请先添加相应的约束，再清理这些数据行。
+- 时间 zone 的设置可能导致显示结果不准确——建议存储 UTC 时间，并在显示时进行转换；切勿直接存储本地时间。
+- 使用浮点数表示货币金额可能会导致舍入误差——建议使用 `DECIMAL` 或整数类型来存储货币金额。
 
-## Scaling Limits
-- Single table over 100M rows needs sharding strategy — plan before you hit it
-- Autovacuum falling behind causes table bloat — monitor dead tuple ratio
-- Query planner statistics stale after bulk changes — ANALYZE after large imports
-- Connection count doesn't scale linearly — more connections = more lock contention
-- Disk IOPS often bottleneck before CPU — monitor I/O wait
+## 扩展性相关问题
+- 当单个表的行数超过 1 亿条时，需要考虑分片策略——请在达到这个数量级之前就做好相应的扩展规划。
+- 自动清理（autovacuum）机制如果无法及时执行可能会导致表空间膨胀——请定期监控表中的“死数据”（即不再使用的记录）比例。
+- 大规模数据导入后，查询计划器的统计信息可能会失效——建议在数据导入完成后执行 `ANALYZE` 命令来优化查询性能。
+- 连接数并不会线性扩展——连接数增加会导致更多的锁竞争，从而影响系统性能。
+- 磁盘 I/O 操作通常是性能瓶颈——请密切监控 I/O 操作的延迟情况。

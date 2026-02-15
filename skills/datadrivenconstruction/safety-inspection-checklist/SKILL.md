@@ -1,29 +1,29 @@
 ---
 slug: "safety-inspection-checklist"
 display_name: "Safety Inspection Checklist"
-description: "Digital safety inspection checklists for construction sites. Generate, conduct, and track safety inspections with automated reporting and compliance monitoring."
+description: "建筑工地的数字安全检查清单：通过自动化报告和合规性监控来生成、执行并跟踪安全检查。"
 ---
 
-# Safety Inspection Checklist
+# 安全检查清单
 
-## Overview
+## 概述
 
-Digital safety inspection checklists streamline site safety management. Generate inspection forms, conduct mobile inspections, track findings, and automate compliance reporting.
+数字安全检查清单简化了现场安全管理流程。它能够生成检查表格、进行移动检查、跟踪发现的问题，并自动生成合规性报告。
 
-> "Digital checklists reduce inspection time by 60% and improve compliance tracking" — DDC Community
+> “数字检查清单可将检查时间减少60%，并提升合规性跟踪的效率。” — DDC社区
 
-## Why Digital Checklists?
+## 为什么选择数字检查清单？
 
-| Feature | Benefit |
+| 功能 | 好处 |
 |---------|---------|
-| Mobile-first | Inspect anywhere on site |
-| Photo documentation | Visual evidence attached |
-| Real-time sync | Immediate notification of issues |
-| Automated reports | Weekly/monthly summaries |
-| Trend analysis | Identify recurring hazards |
-| Compliance tracking | OSHA/local regulation alignment |
+| 首先支持移动设备 | 可在现场的任何位置进行检查 |
+| 照片记录 | 提供可视化的证据 |
+| 实时同步 | 问题发生时会立即收到通知 |
+| 自动化报告 | 提供每周/每月的总结报告 |
+| 趋势分析 | 识别反复出现的隐患 |
+| 合规性跟踪 | 确保符合OSHA或当地法规的要求 |
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -41,7 +41,7 @@ Digital safety inspection checklists streamline site safety management. Generate
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现细节
 
 ```python
 from dataclasses import dataclass, field
@@ -330,7 +330,7 @@ class SafetyInspectionManager:
         }
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 # Initialize manager
@@ -371,7 +371,7 @@ report = manager.generate_report(inspection.id)
 print(report)
 ```
 
-## Integration with n8n
+## 与n8n的集成
 
 ```json
 {
@@ -386,14 +386,14 @@ print(report)
 }
 ```
 
-## Requirements
+## 需求说明
 
 ```bash
 pip install (no external dependencies - uses standard library)
 ```
 
-## Resources
+## 参考资源
 
-- OSHA Construction Standards: https://www.osha.gov/construction
-- Safety inspection best practices
-- Mobile inspection apps integration
+- OSHA建筑标准：https://www.osha.gov/construction
+- 安全检查最佳实践
+- 移动检查应用程序的集成指南

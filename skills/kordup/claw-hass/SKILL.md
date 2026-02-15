@@ -1,7 +1,7 @@
 # SKILL.md
 
-## Description
-Control Home Assistant devices.
+## 描述
+用于控制 Home Assistant 设备。
 
-## Tools
-- `hass`: Control Home Assistant devices.
+## 工具
+- `hass`: 用于控制 Home Assistant 设备。

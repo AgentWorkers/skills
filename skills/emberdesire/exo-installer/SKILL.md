@@ -1,17 +1,17 @@
-# exo-installer Skill
+# exo-installer 技能
 
-**E.x.O. Ecosystem Manager**
+**E.x.O. 生态系统管理器**
 
-Install, update, and monitor all E.x.O. tools with a single command.
+通过一个命令即可安装、更新和监控所有 E.x.O. 工具。
 
-## When to Use
+## 使用场景
 
-- User wants to install E.x.O. tools (jasper-recall, hopeIDS, context-compactor)
-- User asks about the E.x.O. ecosystem
-- User needs to set up OpenClaw plugins
-- User wants to check health of installed tools
+- 用户需要安装 E.x.O. 工具（如 jasper-recall、hopeIDS、context-compactor）  
+- 用户想了解 E.x.O. 生态系统的详细信息  
+- 用户需要配置 OpenClaw 插件  
+- 用户希望检查已安装工具的运行状态  
 
-## Quick Start
+## 快速入门  
 
 ```bash
 # Install all public E.x.O. packages
@@ -27,44 +27,45 @@ exo doctor
 exo doctor --json  # For automation
 ```
 
-## Commands
+## 命令说明  
 
-| Command | Description |
+| 命令 | 功能说明 |
 |---------|-------------|
-| `exo install --all` | Install all public packages |
-| `exo install <pkg>` | Install specific package |
-| `exo update` | Update all installed packages |
-| `exo doctor` | Health check all components |
-| `exo doctor --json` | Health check with JSON output |
-| `exo list` | List available packages |
-| `exo internal clone` | Clone private repos (needs GitHub access) |
+| `exo install --all` | 安装所有公开可用的包 |
+| `exo install <pkg>` | 安装指定的包 |
+| `exo update` | 更新所有已安装的包 |
+| `exo doctor` | 检查所有组件的运行状态 |
+| `exo doctor --json` | 以 JSON 格式输出组件状态信息 |
+| `exo list` | 列出所有可用的包 |
+| `exo internal clone` | 克隆私有仓库（需要 GitHub 访问权限） |
 
-## Available Packages
+## 可用包  
 
-### Public (npm)
+### 公开包（通过 npm 获取）  
 
-| Package | Description |
+| 包名 | 功能说明 |
 |---------|-------------|
-| `jasper-recall` | Local RAG system for agent memory |
-| `hopeIDS` | Behavioral anomaly detection |
-| `jasper-context-compactor` | Token management for local models |
-| `jasper-configguard` | Safe config changes with rollback |
+| `jasper-recall` | 用于管理代理内存的本地 RAG（Retrieval, Aggregation, and Generation）系统 |
+| `hopeIDS` | 用于检测行为异常的工具 |
+| `jasper-context-compactor` | 用于管理本地模型的令牌系统 |
+| `jasper-configguard` | 提供安全配置修改功能，并支持回滚操作 |
 
-### Internal (GitHub)
+### 私有包（存储在 GitHub 上）  
 
-| Repo | Description |
+| 仓库名 | 功能说明 |
 |------|-------------|
-| `hopeClaw` | Meta-cognitive inference engine |
-| `moraClaw` | Temporal orchestration agent |
-| `task-dashboard` | Project management system |
-| `exo-distiller` | Agent distillation pipeline |
+| `hopeClaw` | 用于元认知推理的引擎 |
+| `moraClaw` | 用于任务调度的代理工具 |
+| `task-dashboard` | 项目管理系统 |
+| `exo-distiller` | 用于代理软件的分发和构建流程 |
 
-Internal packages require GitHub org access:
+**注意：** 私有包需要通过 GitHub 组织（org）进行访问。  
+
 ```bash
 exo internal clone
 ```
 
-## Health Check
+## 状态检查  
 
 ```bash
 $ exo doctor
@@ -84,9 +85,9 @@ jasper-context-compactor ...... ✅ v0.2.2
 Overall: 3/3 healthy
 ```
 
-## Integration
+## 集成说明  
 
-After installing, tools auto-register with OpenClaw:
+安装完成后，这些工具会自动注册到 OpenClaw 中：  
 
 ```json
 {
@@ -98,8 +99,8 @@ After installing, tools auto-register with OpenClaw:
 }
 ```
 
-## Links
+## 链接  
 
-- GitHub: https://github.com/E-x-O-Entertainment-Studios-Inc/exo-installer
-- Docs: https://exohaven.com/products
+- GitHub: https://github.com/E-x-O-Entertainment-Studios-Inc/exo-installer  
+- 文档: https://exohaven.com/products  
 - Discord: https://discord.com/invite/clawd

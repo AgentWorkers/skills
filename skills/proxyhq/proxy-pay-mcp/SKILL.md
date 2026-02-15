@@ -1,15 +1,16 @@
 ---
 name: proxy-pay-mcp
-description: Proxy MCP server integration for agent payments. Use MCP tools to create intents, issue cards within policy, and track transactions. Supports agent tokens for autonomous runs and OAuth for interactive clients.
+description: **用于代理MCP服务器的集成方案，以实现代理支付功能：**  
+通过MCP工具创建支付相关的意图（intents），根据政策要求发行支付卡片（cards），并追踪交易流程。该方案支持使用代理令牌（agent tokens）进行自主操作，同时兼容OAuth协议以支持交互式客户端（interactive clients）的接入。
 ---
 
-# Proxy MCP Integration
+# 代理MCP集成
 
-Connect to Proxy's MCP server for agent payments.
+连接到代理的MCP服务器以进行代理支付。
 
-## MCP server config
+## MCP服务器配置
 
-### Agent token (autonomous)
+### 代理令牌（自主操作）
 
 ```json
 {
@@ -25,11 +26,11 @@ Connect to Proxy's MCP server for agent payments.
 }
 ```
 
-### OAuth (interactive clients)
+### OAuth（交互式客户端）
 
-Add the MCP server and run your client's OAuth login flow. OAuth is for interactive clients (Codex, Claude, Cursor).
+添加MCP服务器并运行您的客户端的OAuth登录流程。OAuth适用于交互式客户端（如Codex、Claude、Cursor）。
 
-## Core flow (agent token)
+## 核心流程（代理令牌）
 
 ```
 proxy.kyc.status
@@ -41,56 +42,56 @@ proxy.cards.get_sensitive (include intentId + reason)
 proxy.transactions.list_for_card
 ```
 
-## Agent-token tools (autonomous)
+## 代理令牌相关工具（自主操作）
 
-- proxy.user.get
-- proxy.kyc.status
-- proxy.kyc.link
-- proxy.policies.get
-- proxy.policies.simulate
-- proxy.balance.get
-- proxy.tools.list
-- proxy.intents.create (agent token required)
-- proxy.intents.list
-- proxy.intents.get
-- proxy.intents.request_approval
-- proxy.intents.approval_status
-- proxy.cards.get_sensitive
-- proxy.transactions.list_for_card
-- proxy.transactions.get
-- proxy.receipts.attach
-- proxy.evidence.list_for_intent
-- proxy.merchants.resolve
-- proxy.mcc.explain (advisory)
-- proxy.merchants.allowlist_suggest (advisory)
+- `proxy.user.get`
+- `proxy.kyc.status`
+- `proxy.kyc.link`
+- `proxy.policies.get`
+- `proxy.policies.simulate`
+- `proxy.balance.get`
+- `proxy.tools.list`
+- `proxy.intents.create`（需要代理令牌）
+- `proxy.intents.list`
+- `proxy.intents.get`
+- `proxy.intents.request_approval`
+- `proxy.intents.approval_status`
+- `proxy_cards.get_sensitive`
+- `proxy.transactions.list_for_card`
+- `proxytransactions.get`
+- `proxy.receipts.attach`
+- `proxy.evidence.list_for(intent`
+- `proxy.merchants.resolve`
+- `proxy.mcc.explain`（建议性操作）
+- `proxy.merchants.allowlist_suggest`（建议性操作）
 
-## Human-only tools (blocked for agent tokens)
+## 仅限人工使用的工具（对代理令牌禁用）
 
-- proxy.funding.get
-- proxy.cards.list
-- proxy.cards.get
-- proxy.cards.freeze
-- proxy.cards.unfreeze
-- proxy.cards.rotate
-- proxy.cards.close
-- proxy.intents.approve
-- proxy.intents.reject
-- proxy.webhooks.list
-- proxy.webhooks.test_event
+- `proxy.funding.get`
+- `proxy_cards.list`
+- `proxy_cards.get`
+- `proxy_cards.freeze`
+- `proxy_cards.unfreeze`
+- `proxy_cards.rotate`
+- `proxy_cards.close`
+- `proxy.intents.approve`
+- `proxy.intents.reject`
+- `proxy.webhooks.list`
+- `proxy.webhooks.test_event`
 
-## Approval behavior
+## 审批规则
 
-- Approval is required only when policy.requireApproval is true and the amount exceeds autoApproveBelow.
-- Agents should call proxy.intents.request_approval only when needed.
+- 仅当`policy.requireApproval`为`true`且金额超过`autoApproveBelow`时才需要审批。
+- 代理应仅在必要时调用`proxy.intents.request_approval`。
 
-## Notes
+## 注意事项
 
-- Intents are required for every purchase. Cards stay locked between intents.
-- Merchant/MCC rules are advisory unless issuer-level controls are enabled.
-- proxy.cards.get_sensitive requires intentId and a clear reason; avoid logging PAN/CVV.
-- Amounts are in cents; formatted fields are provided for display where applicable.
+- 每次购买都需要使用`intents`。在处理多个请求期间，卡片状态将保持锁定状态。
+- 除非启用了发行机构级别的控制，否则商家/MCC规则仅具有建议性作用。
+- 使用`proxy_cards.getSensitive`时需要提供`intentId`和明确的原因；请避免记录PAN/CVV信息。
+- 金额以分为单位；适用的情况下，会提供格式化的显示字段。
 
-## Error format
+## 错误格式
 
 ```json
 {

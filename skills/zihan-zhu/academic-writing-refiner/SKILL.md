@@ -1,122 +1,115 @@
 ---
 name: academic-writing-refiner
-description: Refine academic writing for computer science research papers targeting top-tier venues (NeurIPS, ICLR, ICML, AAAI, IJCAI, ACL, EMNLP, NAACL, CVPR, WWW, KDD, SIGIR, CIKM, and similar). Use this skill whenever a user asks to improve, polish, refine, edit, or proofread academic or research writing — including paper drafts, abstracts, introductions, related work sections, methodology descriptions, experiment write-ups, or conclusion sections. Also trigger when users paste LaTeX content and ask for writing help, mention "camera-ready", "rebuttal", "paper revision", or reference any academic venue or conference. This skill handles both full paper refinement and section-by-section editing.
+description: **提升计算机科学研究论文的学术写作质量（适用于顶级学术会议）**  
+本技能专为针对NeurIPS、ICLR、ICML、AAAI、IJCAI、ACL、EMNLP、NAACL、CVPR、WWW、KDD、SIGIR、CIKM等顶级学术会议的计算机科学研究论文而设计。无论用户需要改进、润色、编辑或校对论文的任何部分（包括论文草稿、摘要、引言、相关工作综述、方法论描述、实验报告或结论部分），均可使用本技能。当用户粘贴LaTeX代码并请求写作帮助，或提及“适合发表在学术期刊/会议上”（如“camera-ready”）、“论文修订”等相关需求时，本技能也会自动触发。本技能支持对整篇论文进行全面优化，也可针对具体章节进行单独编辑。
 ---
 
-# Academic Writing Refiner
+# 学术写作精炼工具
 
-This skill transforms rough or intermediate academic drafts into polished, publication-ready prose for top-tier CS conferences. The goal is writing that is clear, precise, and accessible to a broad technical audience — the kind of writing that reviewers at venues like NeurIPS, ICML, or ACL appreciate because it respects their time and communicates ideas efficiently.
+该工具能够将粗糙或初级的学术草稿转化为适合顶级计算机科学会议发表的精炼文本。其目标是写出清晰、准确且易于广大技术读者理解的论文——这种写作风格受到NeurIPS、ICML或ACL等会议审稿人的青睐，因为它们尊重审稿人的时间，并能高效地传达研究思路。
 
-## Core Philosophy
+## 核心理念
 
-Top CS conferences share a common expectation: writing should be a transparent window into the ideas, not a display of vocabulary. The best papers at NeurIPS, ACL, or KDD succeed not because they use impressive words, but because every sentence earns its place and every paragraph advances the reader's understanding.
+顶级计算机科学会议有一个共同的期望：写作应当是研究内容的直观展示，而不仅仅是词汇的堆砌。在NeurIPS、ACL或KDD等会议上获得成功的论文，并非因为使用了华丽的词汇，而是因为每个句子都有其存在的必要性，每个段落都能帮助读者更好地理解研究内容。
 
-This means:
-- **Clarity over cleverness**: Use the simplest word that precisely conveys the meaning. "Use" instead of "utilize", "show" instead of "demonstrate" (unless you mean a formal proof/demonstration), "many" instead of "a plethora of".
-- **Precision over vagueness**: Replace hedging language with specific claims. Instead of "our method performs quite well", say "our method achieves 94.3% accuracy, outperforming the strongest baseline by 2.1 points".
-- **Economy over verbosity**: Every sentence should do work. If removing a sentence doesn't lose information, remove it.
-- **Flow over fragmentation**: Guide the reader from one idea to the next with logical connectives, not abrupt jumps.
+具体来说：
+- **清晰优先于巧妙**：使用最简单的词汇来准确表达意思。例如，使用“use”而不是“utilize”，使用“show”而不是“demonstrate”（除非是指正式的证明或演示），使用“many”而不是“a plethora of”。
+- **精确优先于模糊**：用具体的陈述取代含糊的语言。例如，不要说“我们的方法表现相当好”，而应该说“我们的方法达到了94.3%的准确率，比最强的基线方法高出2.1个百分点”。
+- **简洁优先于冗长**：每个句子都应有实际意义。如果删除某个句子不会丢失信息，就删除它。
+- **连贯优先于碎片化**：使用逻辑连接词引导读者从一个观点过渡到另一个观点，避免突然的跳跃。
 
-## How to Refine
+## 使用方法
 
-When a user provides text to refine, follow this process:
+当用户提供需要精炼的文本时，请按照以下步骤操作：
 
-### 1. Understand the Context
+### 1. 理解文本背景
 
-Before editing, figure out:
-- **What section is this?** (abstract, introduction, related work, methodology, experiments, conclusion) — each has different conventions.
-- **What venue?** If stated, tailor to that venue's style norms. ML venues (NeurIPS, ICML, ICLR) tend toward concise, equation-heavy writing. NLP venues (ACL, EMNLP, NAACL) often expect more linguistic precision and thorough related work. IR/Web venues (SIGIR, WWW, KDD, CIKM) often need clear problem motivation tied to practical impact.
-- **What stage?** A first draft needs structural help; a camera-ready needs polish.
+在编辑之前，需要明确以下内容：
+- **这是哪个部分？**（摘要、引言、相关工作、方法论、实验、结论）——每个部分都有不同的写作规范。
+- **这是哪个会议要求的？** 如果有明确说明，请根据该会议的风格要求进行修改。机器学习领域的会议（如NeurIPS、ICML、ICLR）倾向于简洁、以方程式为主的写作风格；自然语言处理领域的会议（如ACL、EMNLP、NAACL）则更注重语言的精确性和相关工作的详尽性；信息检索/网络领域的会议（如SIGIR、WWW、KDD、CIKM）通常需要明确的问题背景和实际应用价值。
+- **文本处于哪个阶段？** 初稿可能需要结构上的帮助；而已经接近发表的版本则需要进一步的润色。
 
-If the user doesn't specify, infer from content and ask only if genuinely ambiguous.
+如果用户没有明确说明，可以根据文本内容进行推断，只有在确实存在疑问时才询问。
 
-### 2. Apply Section-Specific Conventions
+### 2. 应用各部分的写作规范
 
-Read `references/section-guide.md` for detailed conventions per section type. The key principles:
+请阅读`references/section-guide.md`以获取各部分类型的详细写作规范。关键原则如下：
 
-**Abstract**: Should be self-contained, state the problem, approach, key result (with numbers), and significance — all in ~150–250 words. No citations, no undefined acronyms.
+**摘要**：应自成一体，明确问题、研究方法、主要成果（附带数据）及其重要性——字数控制在150–250字以内。不要包含引用或未定义的缩写。
 
-**Introduction**: Problem → gap → contribution → brief results → paper outline. The reader should understand what you did and why it matters within the first page.
+**引言**：首先介绍问题，然后说明现有研究的不足之处，接着阐述你的贡献，最后简要介绍论文的结构。读者应在第一页就理解你的研究内容及其重要性。
 
-**Related Work**: Group by theme, not by paper. Each paragraph should end by distinguishing the current work from what was just discussed. Avoid "laundry list" style (X did A. Y did B. Z did C.).
+**相关工作**：按主题分类相关研究，而不是按论文名称分类。每个段落结尾都要说明当前研究与之前讨论的内容的不同之处。避免使用“列举式”的写作方式（例如：“X做了A，Y做了B，Z做了C”）。
 
-**Methodology**: Present the approach in logical order. Define notation before using it. Use equations for precision but always provide intuition in words alongside them.
+**方法论**：按逻辑顺序介绍研究方法。在使用符号之前先对其进行定义。使用方程式时要确保其准确性，但同时也要用文字解释其含义。
 
-**Experiments**: Lead with research questions or hypotheses, then describe setup, then results. Tables and figures should be self-contained with descriptive captions.
+**实验**：首先提出研究问题或假设，然后描述实验设置和结果。表格和图表应包含清晰的标题和说明。
 
-**Conclusion**: Summarize contributions (not the whole paper), acknowledge limitations honestly, suggest concrete future directions.
+**结论**：总结你的贡献，诚实地指出研究的局限性，并提出未来的研究方向。
 
-### 3. Sentence-Level Refinement
+### 3. 句子层面的精炼
 
-Consult `references/word-choice.md` for a quick-reference table of common substitutions (fancy → simple, filler → delete, hedging calibration, and transition connectives). Apply these transformations systematically:
+请参考`references/word-choice.md`中的常见替换建议（将复杂的表达简化为简单的表达，删除冗余的词语，改进模糊的表述，以及使用恰当的过渡词）。系统地应用这些修改：
 
-**Tighten prose**:
-- Remove filler phrases: "it is worth noting that", "it should be mentioned that", "in order to" → "to"
-- Eliminate redundancy: "completely eliminate" → "eliminate", "future plans" → "plans"
-- Convert passive to active where it improves clarity: "the model was trained by us" → "we trained the model"
-- But keep passive voice when the agent is unimportant: "the dataset was collected from public sources" is fine
+- **简化句子**：
+  - 删除冗余的短语：“it is worth noting that”（值得指出的是），“it should be mentioned that”（应该提到的是），“in order to”（为了） → 直接使用“to”。
+  - 消除重复内容：“completely eliminate”（完全消除）→ “eliminate”（消除），“future plans”（未来计划）→ “plans”（计划）。
+  - 在不影响清晰度的情况下，将被动语态改为主动语态。例如：“the model was trained by us”（模型是由我们训练的）→ “we trained the model”（我们训练了模型）。
+- **修正常见的学术写作问题**：
+  - “Dangling modifiers”（悬而未决的修饰语）：例如“Using gradient descent, the loss decreases”（使用梯度下降方法，损失值会降低）→ “Using gradient descent, we minimize the loss”（使用梯度下降方法，我们最小化了损失值）。
+  - 名词堆叠：例如“multi-task learning based pre-trained language model fine-tuning approach”（基于多任务学习的预训练语言模型微调方法）→ 通过介词将其拆分成更清晰的表述。
+  - 模糊的指代：例如“This shows that...”（这表明……）——需要明确“this”指的是什么。
+  - 每个关于性能的陈述都应附带引用或实验依据。
 
-**Fix common academic writing issues**:
-- Dangling modifiers: "Using gradient descent, the loss decreases" → "Using gradient descent, we minimize the loss"
-- Noun pile-ups: "multi-task learning based pre-trained language model fine-tuning approach" → break it up with prepositions
-- Vague referents: "This shows that..." — what does "this" refer to? Make it explicit
-- Orphan claims: every claim about performance needs a citation or experimental reference
+- **加强句子之间的衔接**：
+  - 在句子之间使用逻辑连接词来表明句子之间的关系（例如：however, therefore, specifically, in contrast, building on this）。
+  - 在段落之间，每个段落的首句应与前一段的结论相衔接。
+  - 在章节之间，每个章节的最后一句应预示下一节的内容。
 
-**Strengthen transitions**:
-- Between sentences: use logical connectives that signal the relationship (however, therefore, specifically, in contrast, building on this)
-- Between paragraphs: the first sentence of each paragraph should connect to the previous paragraph's conclusion
-- Between sections: the last paragraph of a section should preview what comes next
+### 4. 特定于LaTeX的处理
 
-### 4. LaTeX-Specific Handling
+如果输入文本中包含LaTeX代码：
+- 保持所有的`\cite{}`、`\ref{}`、`\label{}`、方程式格式以及自定义宏的原样不变。
+- 仅修改文本部分，除非存在明显的符号不一致性，否则不要修改数学内容。
+- 保持`\textbf{}`、`\textit{}`、`\emph{}`等格式标签的使用。
+- 确保符号的一致性：如果用户在一个地方使用$\mathbf{x}$，在另一个地方使用$\boldsymbol{x}$来表示同一个量，请标明这一点。
+- 保留`\cite`和`\ref`前的`~`（非断行空格）。
+- 保留`%`注释。
+- 除非用户要求进行结构上的修改，否则不要添加或删除`\paragraph{}`、`\subsubsection{}`等格式标签。
 
-When the input contains LaTeX:
-- Preserve all `\cite{}`, `\ref{}`, `\label{}`, equation environments, and custom macros exactly as written
-- Fix only the prose — do not modify mathematical content unless there is a clear notational inconsistency
-- Maintain `\textbf{}`, `\textit{}`, `\emph{}` formatting choices
-- Ensure consistent notation: if the user writes $\mathbf{x}$ in one place and $\boldsymbol{x}$ in another for the same quantity, flag it
-- Keep `~` (non-breaking spaces) before `\cite` and `\ref`
-- Preserve `%` comments
-- Do not add or remove `\paragraph{}`, `\subsubsection{}` etc. unless the user asks for structural changes
+### 5. 需避免的行为
 
-### 5. What NOT to Do
+以下行为同样重要：
+- **不要使用过于花哨的词汇**。例如，“leverage”（利用）几乎总是不如“use”（使用）更合适；“elucidate”（阐明）几乎总是不如“explain”（解释）更准确。如果原文使用了正确的简单词汇，就保留它。
+- **不要过度使用模糊的表述**。学术写作需要适当的限定词（如“may”（可能）、“suggests”（建议），但过度使用模糊的表述会削弱论文的可信度。
+- **不要添加新的内容**。只需精炼现有的内容。如果缺少某些内容（例如相关研究的对比或基准数据），可以提出建议，但不要凭空创造新的论点或结果。
+- **不要统一写作风格**。如果作者有独特的（但正确的）写作风格，请保留它。精炼的目的是提升文章的质量，而不是统一所有文章的风格。
+- **不要过度使用破折号**。在学术写作中，通常使用括号或重新组织句子会更清晰。每个段落最多使用一个破折号。
+- **不要随意使用分号**。尽量使用适当的连接词来连接句子，而不是使用分号。
 
-These are equally important as what to do:
-- **Do not insert fancy vocabulary**. "Leverage" is almost never better than "use". "Elucidate" is almost never better than "explain". If the original uses a simple word correctly, keep it.
-- **Do not over-hedge**. Academic writing needs appropriate qualification ("may", "suggests"), but excessive hedging ("it could potentially be argued that this might possibly indicate") undermines confidence in the work.
-- **Do not add content**. Refine what is there. If something is missing (e.g., no related work comparison, no baseline), flag it as a suggestion but do not invent claims or results.
-- **Do not homogenize voice**. If the author has a distinct (but correct) style, preserve it. The goal is to polish, not to flatten.
-- **Do not use em-dashes excessively**. Parentheses or restructured sentences are usually cleaner in academic writing. One em-dash pair per paragraph at most.
-- **Do not introduce semicolons liberally**. Prefer shorter sentences joined by appropriate connectives over long semicolon-connected chains.
+## 输出格式
 
-## Output Format
+在提供精炼后的文本时：
+- 将精炼后的文本作为主要输出结果，并将其与修改说明分开。
+- 对于重要的修改，请添加简短的注释，解释修改的原因（例如：“为了更好地引导读者理解，将结构调整为先介绍贡献部分”或“明确了对X的比较”）。
+- 将无法解决的问题（如缺失的引用、不清晰的实验细节或潜在的事实错误）单独列出。
+- 如果输入是LaTeX格式的文本，输出LaTeX格式的文本；如果是纯文本格式的，输出纯文本格式的文本，并保持原有的格式。
 
-When presenting refined text:
+## 交互方式
 
-1. **Provide the refined version** as the primary output, clearly separated from commentary
-2. **Add brief marginal notes** for substantive changes — explain why you changed something when the reason isn't obvious (e.g., "Restructured to lead with the contribution rather than the gap" or "Made the comparison to X explicit")
-3. **Flag issues you cannot fix** — missing citations, unclear experimental details, potential factual concerns — as a separate list at the end
-4. If the input is LaTeX, output LaTeX. If the input is plain text, output plain text. Match the format.
+- **整篇论文的精炼**：如果用户提供了整篇论文（或大部分内容），请按章节逐一进行修改。可以从用户指定的部分开始，或者从摘要和引言开始修改，因为这些部分决定了整篇论文的风格。
+- **单个章节的精炼**：如果用户只要求“修正语法”或“进行轻微的编辑”，请仅修正拼写、语法和标点错误，不要对文本进行大幅的结构调整。
+- **迭代式精炼**：在提供精炼版本后，准备好根据用户的反馈进行相应的修改。例如，用户可能会说“太正式了”、“我希望保留第2段的原有结构”或“加强论文的动机部分”。请根据反馈进行针对性的修改，而不要重新修改整个文本。
+- **反驳性写作**：当用户提出反驳意见或审稿人的反馈时，请参考`references/rebuttal-guide.md`以获取撰写有效反驳意见的指导。
 
-## Interaction Patterns
+## 常见会议风格的注意事项
 
-**Full paper refinement**: If the user provides an entire paper (or most of one), work section by section. Start with whichever section the user indicates, or begin with the abstract and introduction since those set the tone.
-
-**Single section**: Apply the full refinement process to that section.
-
-**Quick polish**: If the user says "just fix the grammar" or "light edit only", respect that — fix spelling, grammar, and punctuation without restructuring or rewriting.
-
-**Iterative refinement**: After providing a refined version, be ready for feedback like "too formal", "I want to keep the original structure of paragraph 2", or "make the motivation stronger". Apply changes surgically without re-editing the rest.
-
-**Rebuttal writing**: When the user mentions a rebuttal or reviewer response, read `references/rebuttal-guide.md` for specific advice on crafting effective rebuttals.
-
-## Common Venue-Specific Notes
-
-| Venue Group | Style Tendencies |
+| 会议类型 | 写作风格特点 |
 |---|---|
-| NeurIPS, ICML, ICLR | Concise, equation-centric. Theoretical rigor valued. Anonymous review — remove self-identifying references. |
-| AAAI, IJCAI | Broader AI scope. Motivation and real-world relevance important. Slightly more expository than ML-focused venues. |
-| ACL, EMNLP, NAACL | Thorough related work expected. Linguistic precision in terminology. Error analysis and ablation studies valued. |
-| CVPR | Visual results critical. Qualitative examples alongside quantitative. Clear figure descriptions. |
-| WWW, KDD, SIGIR, CIKM | Problem-driven motivation. Scalability and practical impact often expected. Dataset descriptions need care. |
+| NeurIPS、ICML、ICLR | 文章简洁，以方程式为中心。重视理论严谨性。采用匿名审稿机制——请删除能暴露作者身份的引用。 |
+| AAAI、IJCAI | 研究范围更广泛，强调动机和实际应用价值。相比机器学习领域，这些会议的论文更注重解释性。 |
+| ACL、EMNLP、NAACL | 需要详细的相关研究内容。术语使用上要求语言精确性。重视错误分析和消融研究。 |
+| CVPR | 视觉结果非常重要。需要提供定性和定量的示例，并对图表进行清晰的描述。 |
+| WWW、KDD、SIGIR、CIKM | 强调问题驱动的动机。通常要求论文具备可扩展性和实际应用价值。数据集的描述需要仔细处理。 |
 
-These are tendencies, not rigid rules — good writing is good writing regardless of venue.
+这些只是写作风格的倾向，并非严格的规则——无论在哪个会议上，优秀的写作都是优秀的写作。

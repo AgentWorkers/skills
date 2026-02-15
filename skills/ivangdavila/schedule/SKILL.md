@@ -1,27 +1,27 @@
 ---
 name: "Schedule"
-description: "Program any recurring or one-time task. Daily reports, reminders, checks. Simple requests stay simple."
+description: "你可以编程来实现任何重复性或一次性任务，比如每日报告、提醒功能以及各种检查操作。简单的请求处理方式也依然保持简单直观。"
 ---
 
-## Core Behavior
+## 核心行为
 
-Simple requests → simple execution. Don't overcomplicate.
+简单的请求 → 简单的执行。不要过度复杂化。
 
-- "Every morning send me X" → create, confirm, done
-- "Remind me Friday 3pm" → one-shot, confirm, done
-- "Check Y every hour" → interval, confirm, done
+- “每天早上给我发送X” → 创建任务、确认、完成
+- “在周五下午3点提醒我” → 一次性任务，确认、完成
+- “每小时检查Y” → 定时任务，确认、完成
 
-Only ask if genuinely ambiguous. "Every morning" = reasonable hour (ask once, remember).
+只有当请求确实存在歧义时，才需要进一步确认。“每天早上”意味着一个合理的时刻（只需询问一次，系统会记住）。
 
-## When to Ask
+## 何时需要确认
 
-| Request | Ask? |
+| 请求 | 是否需要确认？ |
 |---------|------|
-| "Every morning do X" | Time once, then remember |
-| "Remind me tomorrow" | Hour if unclear |
-| "Every weekday" | No — clear enough |
+| “每天早上做X” | 需要指定一次具体时间，然后系统会记住 |
+| “明天提醒我” | 如果时间不明确，则需要确认 |
+| “每个工作日都做” | 不需要确认——时间已经很明确 |
 
-## Confirmation
+## 确认流程
 
 ```
 ✅ [what]
@@ -29,48 +29,49 @@ Only ask if genuinely ambiguous. "Every morning" = reasonable hour (ask once, re
 🆔 [id]
 ```
 
-Then execute. No lengthy setup unless requested.
+确认完成后，立即执行任务。除非用户有特别要求，否则不需要进行繁琐的设置。
 
-## Scaling Complexity
+## 复杂性的扩展
 
-Start simple. Add only when requested:
+从简单功能开始使用，根据用户需求逐步增加功能：
 
-| Level | Example |
+| 复杂度级别 | 例子 |
 |-------|---------|
-| Basic | "Every morning summarize emails" |
-| Conditional | "Only weekdays" / "Skip if empty" |
-| Silent | "Don't notify, just log" |
-| Chained | "After X, do Y" |
+| 基础 | “每天早上总结邮件” |
+| 条件性 | “仅在工作日执行” / “如果邮件为空则跳过” |
+| 无声执行 | “不发送通知，仅记录日志” |
+| 链式任务 | “在完成X之后执行Y” |
 
-User builds up. Don't front-load options.
+用户可以根据自己的需求逐步增加功能，不要一开始就提供过多的选项。
 
-## System Supports
+## 系统支持
 
-All work — user discovers as needed:
-- One-shot, daily, weekly, cron
-- Conditions (if X then skip)
-- Delivery (notify/silent/email)
-- Dependencies, pause/resume
+所有功能都是用户根据需要自行配置的：
+- 一次性任务、每日任务、每周任务、定时任务（使用cron）
+- 条件判断（如果满足条件则跳过任务）
+- 通知方式（发送通知、无声执行或通过电子邮件）
+- 任务依赖关系、暂停/恢复功能
 
-Check `patterns.md` for cron, `traps.md` for mistakes.
+详细信息请参阅 `patterns.md`（关于定时任务设置）和 `traps.md`（关于错误处理）。
 
-## Managing
+## 管理
 
-"What do I have scheduled":
+如何查看已安排的任务：
+
 ```
 1. [daily_summary] Emails — daily 8am
 2. [friday_review] Review — Fri 5pm
 ```
 
-Cancel/pause/edit by name or ID. Track in `jobs.md`.
+可以通过任务名称或ID来取消、暂停或编辑任务。所有任务记录在 `jobs.md` 文件中。
 
-## Learned
+## 需要注意的事项
 
-Avoid repeat questions:
-- Preferred morning time
-- Timezone
-- Default notification style
+避免重复提问：
+- 用户偏好的执行时间
+- 所在时区
+- 默认的通知方式
 
 ---
 
-*Simple stays simple. Complexity when needed.*
+*简单的设计永远是最优的。只有在必要时才增加复杂性。*

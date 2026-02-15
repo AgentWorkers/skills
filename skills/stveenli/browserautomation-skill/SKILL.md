@@ -1,6 +1,6 @@
 ---
 name: browser-automation-skill
-description: Advanced headless browser automation skill for OpenClaw agents. Enables intelligent web navigation, form filling, data extraction, and UI testing with structured commands and semantic element targeting.
+description: OpenClaw代理的高级无头浏览器自动化技能。通过结构化的命令和语义元素定位功能，实现智能网页导航、表单填写、数据提取以及用户界面测试。
 read_when:
   - Automating web interactions or browser tasks
   - Extracting data from websites
@@ -14,41 +14,41 @@ metadata: {"clawdbot":{"emoji":"🌐","requires":{"bins":["node","npm"]},"priori
 allowed-tools: Bash(agent-browser:*)
 ---
 
-# OpenClaw Browser Automation Skill
+# OpenClaw 浏览器自动化技能
 
-## IMPORTANT: Before You Start
+## 重要提示：在开始之前
 
-**READ THE PROJECT README.md FIRST!**
+**请先阅读项目的 README.md 文件！**
 
-Before executing any browser automation tasks:
-1. Read the project's README.md to understand the context and requirements
-2. Identify target URLs, credentials (if any), and expected outcomes
-3. Plan your automation workflow before running commands
-4. Check if authentication/session state exists that can be reused
+在执行任何浏览器自动化任务之前，请务必：
+1. 阅读项目的 README.md 文件，以了解项目的背景和要求。
+2. 确定目标 URL、凭据（如有）以及预期的结果。
+3. 在运行命令之前，规划好自动化的工作流程。
+4. 检查是否存在可以重用的认证/会话状态。
 
-## Installation
+## 安装
 
-### Quick Install (Recommended)
+### 快速安装（推荐）
 
 ```bash
 npm install -g agent-browser
 agent-browser install --with-deps
 ```
 
-### Verify Installation
+### 验证安装
 
 ```bash
 agent-browser --version
 ```
 
-If installation fails, try:
+如果安装失败，请尝试：
 ```bash
 npx agent-browser install --with-deps
 ```
 
-## Core Workflow Pattern
+## 核心工作流程模式
 
-Every browser automation task follows this pattern:
+所有浏览器自动化任务都遵循以下模式：
 
 ```
 1. OPEN    -> Navigate to target URL
@@ -59,75 +59,75 @@ Every browser automation task follows this pattern:
 6. CLOSE    -> Clean up browser session
 ```
 
-## Quick Reference
+## 快速参考
 
-### Navigation
+### 导航
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `agent-browser open <url>` | Navigate to URL |
-| `agent-browser back` | Go back in history |
-| `agent-browser forward` | Go forward |
-| `agent-browser reload` | Reload current page |
-| `agent-browser close` | Close browser session |
+| `agent-browser open <url>` | 导航到指定 URL |
+| `agent-browser back` | 回到上一页 |
+| `agent-browser forward` | 前进到下一页 |
+| `agent-browser reload` | 重新加载当前页面 |
+| `agent-browser close` | 关闭浏览器会话 |
 
-### Page Analysis
+### 页面分析
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `agent-browser snapshot -i` | **Most used**: Interactive elements with refs |
-| `agent-browser snapshot -i -c` | Compact interactive snapshot |
-| `agent-browser snapshot -s "#main"` | Scope to specific container |
-| `agent-browser snapshot -d 3` | Limit tree depth |
+| `agent-browser snapshot -i` | 生成页面快照（包含交互式元素及其引用） |
+| `agent-browser snapshot -i -c` | 生成简洁的交互式页面快照 |
+| `agent-browser snapshot -s "#main"` | 仅针对特定容器生成快照 |
+| `agent-browser snapshot -d 3` | 限制快照的深度（仅显示前 3 层元素结构） |
 
-### Element Interaction (use @refs from snapshot)
+### 元素交互（使用快照中的引用）
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `agent-browser click @e1` | Click element |
-| `agent-browser fill @e1 "text"` | Clear field and type (preferred for inputs) |
-| `agent-browser type @e1 "text"` | Type without clearing |
-| `agent-browser press Enter` | Press keyboard key |
-| `agent-browser press Control+a` | Key combination |
-| `agent-browser select @e1 "value"` | Select dropdown option |
-| `agent-browser check @e1` | Check checkbox |
-| `agent-browser uncheck @e1` | Uncheck checkbox |
-| `agent-browser hover @e1` | Hover over element |
-| `agent-browser upload @e1 file.pdf` | Upload file |
+| `agent-browser click @e1` | 点击指定元素 |
+| `agent-browser fill @e1 "text"` | 清空输入框后输入文本 |
+| `agent-browser type @e1 "text"` | 直接在输入框中输入文本 |
+| `agent-browser press Enter` | 按下回车键 |
+| `agent-browser press Control+a` | 按下组合键 |
+| `agent-browser select @e1 "value"` | 选择下拉菜单中的选项 |
+| `agent-browser check @e1` | 勾选复选框 |
+| `agent-browser uncheck @e1` | 取消勾选复选框 |
+| `agent-browser hover @e1` | 将鼠标悬停在元素上 |
+| `agent-browser upload @e1 file.pdf` | 上传文件 |
 
-### Data Extraction
+### 数据提取
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `agent-browser get text @e1` | Get element text content |
-| `agent-browser get html @e1` | Get inner HTML |
-| `agent-browser get value @e1` | Get input field value |
-| `agent-browser get attr @e1 href` | Get specific attribute |
-| `agent-browser get title` | Get page title |
-| `agent-browser get url` | Get current URL |
-| `agent-browser get count ".selector"` | Count matching elements |
+| `agent-browser get text @e1` | 获取元素的文本内容 |
+| `agent-browser get html @e1` | 获取元素的 HTML 内容 |
+| `agent-browser get value @e1` | 获取输入框的值 |
+| `agent-browser get attr @e1 href` | 获取元素的特定属性 |
+| `agent-browser get title` | 获取页面标题 |
+| `agent-browser get url` | 获取当前 URL |
+| `agent-browser get count ".selector"` | 计算匹配的元素数量 |
 
-### Waiting (Critical for Reliability)
+### 等待（确保操作可靠性）
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `agent-browser wait @e1` | Wait for element to appear |
-| `agent-browser wait 2000` | Wait milliseconds |
-| `agent-browser wait --text "Success"` | Wait for text to appear |
-| `agent-browser wait --url "/dashboard"` | Wait for URL change |
-| `agent-browser wait --load networkidle` | Wait for network idle |
+| `agent-browser wait @e1` | 等待指定元素出现 |
+| `agent-browser wait 2000` | 等待 2000 毫秒 |
+| `agent-browser wait --text "Success"` | 等待指定文本出现 |
+| `agent-browser wait --url "/dashboard"` | 等待页面 URL 发生变化 |
+| `agent-browser wait --load networkidle` | 等待网络请求完成 |
 
-### Screenshots & PDF
+### 截图与 PDF 生成
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `agent-browser screenshot out.png` | Save screenshot |
-| `agent-browser screenshot --full out.png` | Full page screenshot |
-| `agent-browser pdf output.pdf` | Save page as PDF |
+| `agent-browser screenshot out.png` | 保存当前页面的截图 |
+| `agent-browser screenshot --full out.png` | 保存整个页面的截图 |
+| `agent-browser pdf output.pdf` | 将页面内容保存为 PDF 文件 |
 
-## Common Task Recipes
+## 常见任务示例
 
-### Recipe 1: Login Flow
+### 示例 1：登录流程
 
 ```bash
 # 1. Open login page
@@ -155,7 +155,7 @@ agent-browser state save session.json
 agent-browser snapshot -i
 ```
 
-### Recipe 2: Data Extraction Loop
+### 示例 2：数据提取循环
 
 ```bash
 # Navigate to listing page
@@ -179,7 +179,7 @@ agent-browser wait --load networkidle
 agent-browser snapshot -i
 ```
 
-### Recipe 3: Form Submission with Validation
+### 示例 3：带有验证功能的表单提交
 
 ```bash
 # Open form
@@ -207,7 +207,7 @@ agent-browser wait --text "Thank you"
 agent-browser snapshot -i
 ```
 
-### Recipe 4: Session Persistence
+### 示例 4：会话状态保存
 
 ```bash
 # First time: Login and save state
@@ -225,7 +225,7 @@ agent-browser open https://app.example.com/dashboard
 # Already logged in!
 ```
 
-### Recipe 5: Multi-Tab Workflow
+### 示例 5：多标签页操作
 
 ```bash
 # Open first site
@@ -248,7 +248,7 @@ agent-browser snapshot -i
 # Work on tab 2...
 ```
 
-### Recipe 6: Debugging Failed Automation
+### 示例 6：调试失败的自动化任务
 
 ```bash
 # Enable headed mode to see what's happening
@@ -272,9 +272,9 @@ agent-browser trace start
 agent-browser trace stop trace.zip
 ```
 
-## Semantic Locators (Alternative to Refs)
+## 语义化定位器（替代引用）
 
-When refs are unstable or you need more readable selectors:
+当引用不稳定或需要更易读的定位方式时，可以使用语义化定位器：
 
 ```bash
 # Find by role
@@ -293,7 +293,7 @@ agent-browser find first ".item" click
 agent-browser find nth 2 "a" text
 ```
 
-## Network Control
+## 网络控制
 
 ```bash
 # Mock API response
@@ -310,7 +310,7 @@ agent-browser network requests --filter api
 agent-browser network unroute
 ```
 
-## Browser Configuration
+## 浏览器配置
 
 ```bash
 # Set viewport for responsive testing
@@ -328,16 +328,16 @@ agent-browser set geo 40.7128 -74.0060  # New York
 agent-browser set media dark
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Always Snapshot After Navigation
+### 1. 导航后务必生成快照
 ```bash
 agent-browser open https://example.com
 agent-browser wait --load networkidle
 agent-browser snapshot -i  # ALWAYS do this after navigation
 ```
 
-### 2. Use fill Instead of type for Inputs
+### 2. 对于输入框，使用 `fill` 而不是 `type`
 ```bash
 # GOOD: Clears existing text first
 agent-browser fill @e1 "new text"
@@ -346,7 +346,7 @@ agent-browser fill @e1 "new text"
 agent-browser type @e1 "new text"
 ```
 
-### 3. Add Explicit Waits for Reliability
+### 3. 为确保操作可靠性，添加显式的等待时间
 ```bash
 # After clicking that triggers navigation
 agent-browser click @e1
@@ -357,7 +357,7 @@ agent-browser click @e1
 agent-browser wait --text "Updated"
 ```
 
-### 4. Handle Iframes Explicitly
+### 4. 明确处理 iframe 元素
 ```bash
 # Switch to iframe before interacting
 agent-browser frame "#iframe-id"
@@ -368,16 +368,16 @@ agent-browser click @e1
 agent-browser frame main
 ```
 
-### 5. Save Session State Early
+### 5. 尽早保存会话状态
 ```bash
 # Save immediately after successful login
 agent-browser state save session.json
 # Can reload if something breaks later
 ```
 
-## Error Recovery
+## 错误处理
 
-### Element Not Found
+### 元素未找到
 ```bash
 # Re-snapshot to get updated refs
 agent-browser snapshot -i
@@ -390,7 +390,7 @@ agent-browser frame "#iframe"
 agent-browser snapshot -i
 ```
 
-### Page Not Loading
+### 页面无法加载
 ```bash
 # Increase timeout
 agent-browser open https://slow-site.com --timeout 60000
@@ -400,14 +400,14 @@ agent-browser wait --load networkidle
 agent-browser wait 5000
 ```
 
-### Session Lost
+### 会话丢失
 ```bash
 # Reload saved state
 agent-browser state load session.json
 agent-browser reload
 ```
 
-### Debug Mode
+### 调试模式
 ```bash
 # Visual debugging
 agent-browser open https://example.com --headed
@@ -416,10 +416,9 @@ agent-browser errors
 agent-browser console
 ```
 
-## Parallel Sessions
+## 并行会话处理
 
-For working with multiple isolated browsers:
-
+当需要同时操作多个浏览器时：
 ```bash
 # Session 1
 agent-browser --session user1 open https://app.com
@@ -435,9 +434,9 @@ agent-browser session list
 # Each session has separate cookies, storage, and state
 ```
 
-## JSON Output for Parsing
+## JSON 输出（便于解析）
 
-Add `--json` flag to get machine-readable output:
+使用 `--json` 标志可获取机器可读的输出格式：
 
 ```bash
 agent-browser snapshot -i --json | jq '.elements[]'
@@ -445,7 +444,7 @@ agent-browser get text @e1 --json
 agent-browser get url --json
 ```
 
-## Video Recording
+## 视频录制
 
 ```bash
 # Start recording from current page
@@ -459,12 +458,12 @@ agent-browser fill @e2 "text"
 agent-browser record stop
 ```
 
-## Troubleshooting Checklist
+## 故障排查指南
 
-1. **Command not found**: Run `agent-browser install --with-deps`
-2. **Element not found**: Run `agent-browser snapshot -i` to refresh refs
-3. **Page timeout**: Add `--timeout 60000` for slow pages
-4. **Can't see what's happening**: Add `--headed` flag
-5. **Login not persisting**: Use `agent-browser state save/load`
-6. **Refs changed**: Always re-snapshot after navigation
-7. **Iframe content**: Use `agent-browser frame` to switch context
+1. **命令未找到**：运行 `agent-browser install --with-deps` 进行安装。
+2. **元素未找到**：运行 `agent-browser snapshot -i` 以更新引用信息。
+3. **页面加载超时**：为加载缓慢的页面添加 `--timeout 60000` 参数。
+4. **无法查看操作结果**：使用 `--headed` 标志查看操作过程中的输出。
+5. **登录状态未保存**：使用 `agent-browser state save/load` 保存/恢复会话状态。
+6. **引用信息发生变化**：导航后务必重新生成快照。
+7. **iframe 内容问题**：使用 `agent-browser frame` 切换 iframe 的上下文。

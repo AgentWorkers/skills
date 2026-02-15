@@ -1,15 +1,15 @@
 ---
 name: eachlabs-tts
-description: Transcribe audio from URL using EachLabs Speech-to-Text (Scribe v1).
+description: 使用 EachLabs 的 Speech-to-Text (Scribe v1) 从 URL 中转录音频。
 homepage: https://eachlabs.ai/
 metadata: {"clawdbot":{"emoji":"🎙️","requires":{"bins":["curl"],"env":["EACHLABS_API_KEY"]},"primaryEnv":"EACHLABS_API_KEY"}}
 ---
 
-# EachLabs ElevenLabs Speech-to-Text
+# EachLabs ElevenLabs 语音转文本
 
-Transcribe audio files using EachLabs' integration with ElevenLabs Scribe v1 model. Supports diarization and timestamp granularity.
+使用 EachLabs 与 ElevenLabs Scribe v1 模型的集成来转录音频文件。支持对话记录功能以及精确的时间戳标注。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Basic transcription from URL
@@ -25,22 +25,22 @@ Transcribe audio files using EachLabs' integration with ElevenLabs Scribe v1 mod
 {baseDir}/scripts/transcribe.sh https://.../audio.mp3 --json
 ```
 
-## Options
+## 参数选项
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `--diarize` | Identify different speakers |
-| `--lang CODE` | ISO language code (e.g., en, pt, es) |
-| `--json` | Output full JSON with word timestamps |
-| `--events` | Tag audio events (laughter, music, etc.) |
+| `--diarize` | 识别不同的说话者 |
+| `--lang CODE` | ISO 语言代码（例如：en, pt, es） |
+| `--json` | 以 JSON 格式输出包含单词时间戳的完整数据 |
+| `--events` | 为音频中的事件（如笑声、音乐等）添加标签 |
 
-## Supported Input
+## 支持的输入格式
 
-Currently supports **Audio URLs** only. The file must be publicly accessible via HTTP/HTTPS.
+目前仅支持 **音频 URL**。该音频文件必须可以通过 HTTP/HTTPS 公开访问。
 
-## API Key
+## API 密钥
 
-Set `EACHLABS_API_KEY` environment variable, or configure in clawdbot.json:
+设置 `EACHLABS_API_KEY` 环境变量，或在 `clawdbot.json` 中进行配置：
 
 ```json5
 {

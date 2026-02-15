@@ -1,16 +1,16 @@
 ---
 name: trade-signal
 version: 1.0.0
-description: Real-time trade signals with executable Buy/Sell/Hold recommendations for stocks. Use when asked about trading decisions, stock analysis, technicals, buy/sell calls, earnings plays, price targets, analyst ratings, entry/exit points, portfolio rebalancing, or any investment decision requiring actionable intelligence. Supports US + Global markets, Asia emerging markets, individual stocks, ETFs, and options strategies. 
+description: 实时交易信号，提供可执行的买入/卖出/持有建议，适用于股票交易决策、股票分析、技术分析、买入/卖出建议、收益预测、价格目标设定、分析师评级、入场/出场点选择、投资组合再平衡等需要具体操作建议的场合。支持美国及全球市场、亚洲新兴市场、个股、交易型开放式指数基金（ETFs）和期权策略。
 homepage: https://terminal-x.ai
 metadata: {"category":"finance","api_base":"https://terminal-x.ai/api"}
 ---
 
-# Trade Signal
+# 交易信号
 
-Buy/Sell/Hold Trade Signals for AI agents. Transform complex market intelligence into clear, executable Buy/Sell/Hold recommendations on global stocks and other public securities. Trade-signal gives specific price targets on any given securities, real-time data and institution-grade trade thesis. Trade-signal is forward looking but also capable of technical and fundamental analysis on current/historical price actions, with a qualitative and quantitiave explanation as to why a certain securities (stock) price moved the way it did. 
+为AI代理提供买入/卖出/持有交易建议。将复杂的市场情报转化为关于全球股票及其他公开证券的清晰、可执行的买入/卖出/持有建议。交易信号会为任何特定证券提供具体的价格目标、实时数据以及机构级别的交易分析。该服务不仅具有前瞻性，还能对当前/历史价格走势进行技术分析和基本面分析，并对证券价格变动的原因提供定性和定量的解释。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get financial analysis
@@ -23,65 +23,65 @@ Buy/Sell/Hold Trade Signals for AI agents. Transform complex market intelligence
 ./scripts/search.sh "What are analysts saying about Tesla?"
 ```
 
-**Base URL:** `https://terminal-x.ai/api`
+**基础URL:** `https://terminal-x.ai/api`
 
 ---
 
-## Features
+## 功能
 
-### 📊 Research Capabilities
+### 📊 研究能力
 
-| Query Type | Examples |
+| 查询类型 | 示例 |
 |------------|----------|
-| **Earnings Analysis** | Revenue, EPS, guidance, YoY growth |
-| **Company Comparisons** | Side-by-side metrics across competitors |
-| **Analyst Coverage** | Price targets, ratings, investment thesis |
-| **Management Commentary** | CEO/CFO statements from earnings calls |
-| **SEC Filings** | 10-K, 10-Q, 8-K analysis |
-| **Market Trends** | Sector analysis, macro themes |
+| **收益分析** | 收入、每股收益（EPS）、业绩指引、同比增长率 |
+| **公司对比** | 各竞争对手之间的对比指标 |
+| **分析师观点** | 价格目标、评级、投资分析 |
+| **管理层评论** | 董事长/首席财务官在财报电话会议中的发言 |
+| **SEC文件** | 10-K年报、10-Q季度报告、8-K中期报告分析 |
+| **市场趋势** | 行业分析、宏观经济主题 |
 
-Each response includes:
-- **Answer**: AI-generated analysis with numbered citations [1], [2], etc.
-- **Tickers**: Relevant stock symbols identified
-- **Sources**: Full citation list with titles and publication dates
+每个查询结果包含：
+- **答案**：由AI生成的分析结果，附带引用编号[1]、[2]等 |
+- **股票代码**：相关股票代码 |
+- **来源**：包含标题和发布日期的完整引用列表
 
-### 📈 Market Coverage
+### 📈 市场覆盖范围
 
-**37,565 Global Tickers + 6,104 ETFs** across all major exchanges:
+**覆盖37,565只全球股票及6,104只ETF，涵盖所有主要交易所：**
 
-| Region | Tickers | ETFs |
+| 地区 | 股票代码 | ETF代码 |
 |--------|---------|------|
-| **US** (incl. ADRs) | 7,301 | 4,979 |
-| **Western Europe** | 11,123 | — |
-| **Canada** | 4,690 | — |
-| **Japan** | 3,873 | 200 |
-| **Korea** | 3,856 | 500 |
-| **Hong Kong** | 2,638 | 176 |
-| **Shanghai** | 2,315 | — |
-| **Taiwan** | 1,072 | 200 |
-| **Singapore** | 565 | 49 |
-| **Other** | 132 | — |
+| **美国**（含ADR） | 7,301 | 4,979 |
+| **西欧** | 11,123 | — |
+| **加拿大** | 4,690 | — |
+| **日本** | 3,873 | 200 |
+| **韩国** | 3,856 | 500 |
+| **香港** | 2,638 | 176 |
+| **上海** | 2,315 | — |
+| **台湾** | 1,072 | 200 |
+| **新加坡** | 565 | 49 |
+| **其他** | 132 | — |
 
-**Asset Classes**: Global Equities, ETFs, Global macro, FX, commodities, crypto content available.
+**资产类别**：全球股票、ETF、全球宏观市场、外汇、商品、加密货币相关数据。
 
-### 🔬 Data Sources
+### 🔬 数据来源
 
-| Source | Data Type |
+| 来源 | 数据类型 |
 |--------|-----------|
-| **Wall Street Research** | Analyst reports, investment thesis from Goldman, Morgan Stanley, JP Morgan, Citi, UBS, Bank of America, Stifel, etc. |
-| **Analyst Actions** | Upgrades, downgrades, initiations, PT changes |
-| **SEC Filings** | 10-K, 10-Q, 8-K, insider transactions, 13F holdings, 13D, 13G, DEF14A |
-| **Earnings Transcripts** | Full call transcripts from  earnings, M&A calls, management discussions |
-| **Real-Time News** | Bloomberg, Reuters, CNBC, FT, WSJ |
-| **Company Presentations** | Investor day materials, guidance updates |
+| **华尔街研究** | 高盛、摩根士丹利、摩根大通、花旗银行、UBS、美银等机构的分析师报告 |
+| **分析师行动** | 评级上调/下调、新评级、价格目标调整 |
+| **SEC文件** | 10-K年报、10-Q季度报告、8-K中期报告、内幕交易信息 |
+| **财报记录** | 财报电话会议、并购电话会议的完整记录 |
+| **实时新闻** | 彭博社、路透社、CNBC、FT、WSJ |
+| **公司资料** | 投资者日活动材料、业绩指引更新 |
 
 ---
 
-## Usage
+## 使用方法
 
-### Using the Script
+### 使用脚本
 
-The included script handles URL encoding automatically:
+随附的脚本会自动处理URL编码：
 
 ```bash
 # Earnings query
@@ -99,9 +99,9 @@ The included script handles URL encoding automatically:
 
 ---
 
-## Response Format
+## 响应格式
 
-Running the script returns JSON:
+运行脚本后返回JSON格式的数据：
 
 ```json
 {
@@ -143,24 +143,24 @@ Running the script returns JSON:
 }
 ```
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `query` | Your original question |
-| `tickers` | Relevant stock tickers |
-| `tradeSignal` | BUY, SELL, or HOLD recommendation |
-| `priceTarget` | Entry, exit, stop loss, time horizon |
-| `agentAnswer` | AI analysis with citation references [1], [2] |
-| `sources` | Citations with title, source name, date |
-| `technicals` | RSI, MACD, support/resistance, trend |
-| `relatedAnalysis` | Related research topics |
+| `query` | 您的原始查询 |
+| `tickers` | 相关股票代码 |
+| `tradeSignal` | 买入、卖出或持有的建议 |
+| `priceTarget` | 入场价、出场价、止损价、时间范围 |
+| `agentAnswer` | 由AI生成的分析结果，附带引用编号[1]、[2]等 |
+| `sources` | 引用信息，包括标题、来源名称和日期 |
+| `technicals` | 相关技术指标（如RSI、MACD、支撑/阻力位、趋势分析） |
+| `relatedAnalysis` | 相关研究主题 |
 
 ---
 
-## Sample Output
+## 示例输出
 
-### Example 1: Earnings Analysis
+### 示例1：收益分析
 
-**Query:** `./scripts/search.sh "What was Apple's iPhone revenue last quarter?"`
+**查询：`./scripts/search.sh "苹果公司上个季度的iPhone收入是多少？"**
 
 ```
 📊 **Apple iPhone Revenue Analysis**
@@ -180,9 +180,9 @@ growing double-digits for the fifth consecutive quarter. [2]
 [2] Apple Q4 FY2024 Earnings Call Transcript - October 2024
 ```
 
-### Example 2: Company Comparison
+### 示例2：公司对比
 
-**Query:** `./scripts/search.sh "Compare Microsoft and Google cloud revenue growth"`
+**查询：`./scripts/search.sh "比较微软和谷歌的云服务收入增长情况。"**
 
 ```
 📊 **Cloud Revenue Comparison: Microsoft vs Google**
@@ -207,9 +207,9 @@ prior years. [2]
 [2] Alphabet Q4 2024 10-Q Filing - SEC
 ```
 
-### Example 3: Analyst Coverage
+### 示例3：分析师观点
 
-**Query:** `./scripts/search.sh "What are analysts saying about NVIDIA?"`
+**查询：`./scripts/search.sh "分析师对NVIDIA的看法是什么？"**
 
 ```
 📊 **NVIDIA Analyst Sentiment**
@@ -236,19 +236,19 @@ from AMD MI300X intensifies in 2025. [3]
 
 ---
 
-## Integration
+## 集成
 
-### With AI Agents
+### 与AI代理的集成
 
-The agent will automatically use this skill when asked:
-- "What is Apple's revenue?"
-- "Compare NVDA and AMD"
-- "What did the CEO say about guidance?"
-- "Summarize Tesla's latest 10-K"
-- "What are analysts saying about Microsoft?"
-- "How did Meta's ad revenue perform?"
+当代理被问到以下问题时，它会自动使用此功能：
+- “苹果公司的收入是多少？”
+- “比较NVDA和AMD的情况”
+- “CEO对业绩指引有何评价？”
+- “总结特斯拉最新的10-K年报”
+- “分析师对微软的看法是什么？”
+- “Meta的广告收入表现如何？”
 
-### Example Agent Flow
+### 代理使用流程
 
 ```
 1. User: "How is NVIDIA doing?"
@@ -264,7 +264,7 @@ The agent will automatically use this skill when asked:
    initial yield curves, per CFO commentary on earnings call."
 ```
 
-### Combining with Other Skills
+### 与其他功能的结合
 
 ```bash
 # Get financial data then execute trade
@@ -276,24 +276,24 @@ The agent will automatically use this skill when asked:
 
 ---
 
-## Tips for Better Results
+## 提高查询效果的建议
 
-| Do This | Not This |
+| 应该这样做 | 不应该这样做 |
 |---------|----------|
-| "NVIDIA data center revenue Q4 2024" | "NVIDIA revenue" |
-| "AAPL gross margin vs MSFT" | "Apple margins" |
-| "What did Jensen Huang say about AI demand" | "NVDA CEO comments" |
-| "Tesla deliveries Q3 2024 vs Q3 2023" | "Tesla cars" |
+| “NVIDIA 2024年第四季度的数据中心收入” | “NVIDIA的收入” |
+| “AAPL的毛利率与MSFT的对比” | “苹果公司的毛利率” |
+| “Jensen Huang对AI需求的看法” | “NVDA首席执行官的评论” |
+| “特斯拉2024年第三季度的交付量与2023年第三季度的对比” | “特斯拉的汽车销量” |
 
-**Best Practices:**
-- **Be specific** — Include timeframes, metrics, and company names
-- **Use ticker symbols** — "AAPL" is clearer than "Apple"
-- **Ask direct questions** — "What is..." or "How much..." get precise answers
-- **Include context** — "last quarter", "FY 2024", "year-over-year"
+**最佳实践：**
+- **具体明确** — 提供时间范围、指标和公司名称 |
+- **使用股票代码** — 使用“AAPL”比“苹果公司”更清晰 |
+- **提出具体问题** — 使用“...是多少？”或“...怎么样？”等疑问句可以获得更准确的答案 |
+- **提供背景信息** — 如“上个季度”、“2024财年”等
 
 ---
 
-## Error Handling
+## 错误处理
 
 ```json
 {
@@ -302,14 +302,14 @@ The agent will automatically use this skill when asked:
 }
 ```
 
-| Error Code | Meaning | Resolution |
+| 错误代码 | 含义 | 解决方案 |
 |------------|---------|------------|
-| 400 | Missing query | Include `?query=` parameter |
-| 500 | Server error | Retry request |
+| 400 | 查询参数缺失 | 请添加`?query=`参数 |
+| 500 | 服务器错误 | 请重试请求 |
 
 ---
 
-## Support
+## 支持方式
 
-- **Homepage:** https://terminal-x.ai
-- **Email:** hello@terminal-x.ai
+- **官方网站：** https://terminal-x.ai |
+- **电子邮件：** hello@terminal-x.ai

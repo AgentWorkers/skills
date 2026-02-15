@@ -13,34 +13,34 @@ metadata:
 
 # Telnyx WebRTC - Flutter SDK
 
-Build real-time voice communication into Flutter applications (Android, iOS, Web).
+将实时语音通信功能集成到 Flutter 应用程序中（支持 Android、iOS 和 Web 平台）。
 
-> **Prerequisites**: Create WebRTC credentials and generate a login token using the Telnyx server-side SDK. See the `telnyx-webrtc-*` skill in your server language plugin (e.g., `telnyx-python`, `telnyx-javascript`).
+> **先决条件**：需要使用 Telnyx 服务器端 SDK 创建 WebRTC 凭据并生成登录令牌。请参考您所使用的服务器语言插件（如 `telnyx-python`、`telnyx-javascript`）中的 `telnyx-webrtc-*` 文档。
 
-## Quick Start Option
+## 快速入门选项
 
-For faster implementation, consider [Telnyx Common](https://pub.dev/packages/telnyx_common) - a higher-level abstraction that simplifies WebRTC integration with minimal setup.
+为了更快速地实现功能，可以考虑使用 [Telnyx Common](https://pub.dev/packages/telnyx_common)——这是一个高级抽象层，可以简化 WebRTC 集成过程，且设置步骤较少。
 
-## Installation
+## 安装
 
-Add to `pubspec.yaml`:
+在 `pubspec.yaml` 文件中添加以下内容：
 
 ```yaml
 dependencies:
   telnyx_webrtc: ^latest_version
 ```
 
-Then run:
+然后运行以下命令进行安装：
 
 ```bash
 flutter pub get
 ```
 
-## Platform Configuration
+## 平台配置
 
 ### Android
 
-Add to `AndroidManifest.xml`:
+在 `AndroidManifest.xml` 文件中添加以下配置：
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -50,7 +50,7 @@ Add to `AndroidManifest.xml`:
 
 ### iOS
 
-Add to `Info.plist`:
+在 `Info.plist` 文件中添加以下配置：
 
 ```xml
 <key>NSMicrophoneUsageDescription</key>
@@ -59,9 +59,9 @@ Add to `Info.plist`:
 
 ---
 
-## Authentication
+## 认证
 
-### Option 1: Credential-Based Login
+### 选项 1：基于凭据的登录
 
 ```dart
 final telnyxClient = TelnyxClient();
@@ -80,7 +80,7 @@ final credentialConfig = CredentialConfig(
 telnyxClient.connectWithCredential(credentialConfig);
 ```
 
-### Option 2: Token-Based Login (JWT)
+### 选项 2：基于令牌的登录（JWT）
 
 ```dart
 final tokenConfig = TokenConfig(
@@ -95,23 +95,23 @@ final tokenConfig = TokenConfig(
 telnyxClient.connectWithToken(tokenConfig);
 ```
 
-### Configuration Options
+## 配置选项
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `sipUser` / `sipToken` | String | Credentials from Telnyx Portal |
-| `sipCallerIDName` | String | Caller ID name displayed to recipients |
-| `sipCallerIDNumber` | String | Caller ID number |
-| `notificationToken` | String? | FCM (Android) or APNS (iOS) token |
-| `autoReconnect` | bool | Auto-retry login on failure |
-| `debug` | bool | Enable call quality metrics |
-| `logLevel` | LogLevel | none, error, warning, debug, info, all |
-| `ringTonePath` | String? | Custom ringtone asset path |
-| `ringbackPath` | String? | Custom ringback tone asset path |
+| `sipUser` / `sipToken` | String | 来自 Telnyx Portal 的凭据 |
+| `sipCallerIDName` | String | 显示给接收方的来电显示名称 |
+| `sipCallerIDNumber` | String | 来电显示号码 |
+| `notificationToken` | String? | FCM（Android）或 APNS（iOS）令牌 |
+| `autoReconnect` | bool | 失败时自动重试登录 |
+| `debug` | bool | 启用通话质量监控 |
+| `logLevel` | LogLevel | 无、错误、警告、调试、信息、全部 |
+| `ringTonePath` | String? | 自定义铃声资源路径 |
+| `ringbackPath` | String? | 自定义回铃音资源路径 |
 
 ---
 
-## Making Outbound Calls
+## 发起外拨电话
 
 ```dart
 telnyxClient.call.newInvite(
@@ -124,9 +124,9 @@ telnyxClient.call.newInvite(
 
 ---
 
-## Receiving Inbound Calls
+## 接收来电
 
-Listen for socket events:
+监听 socket 事件：
 
 ```dart
 InviteParams? _incomingInvite;
@@ -173,7 +173,7 @@ void acceptCall() {
 
 ---
 
-## Call Controls
+## 通话控制
 
 ```dart
 // End call
@@ -197,9 +197,9 @@ telnyxClient.call.dtmf(telnyxClient.call.callId, '1');
 
 ---
 
-## Push Notifications - Android (FCM)
+## 推送通知 - Android（FCM）
 
-### 1. Setup Firebase
+### 1. 设置 Firebase
 
 ```dart
 // main.dart
@@ -216,7 +216,7 @@ Future<void> main() async {
 }
 ```
 
-### 2. Background Handler
+### 2. 后台处理程序
 
 ```dart
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
@@ -245,7 +245,7 @@ Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
 }
 ```
 
-### 3. Handle Push When App Opens
+### 3. 应用启动时处理推送通知
 
 ```dart
 Future<void> _handlePushNotification() async {
@@ -261,7 +261,7 @@ Future<void> _handlePushNotification() async {
 }
 ```
 
-### Early Accept/Decline Handling
+### 提前接受/拒绝来电
 
 ```dart
 bool _waitingForInvite = false;
@@ -287,9 +287,9 @@ case SocketMethod.INVITE:
 
 ---
 
-## Push Notifications - iOS (APNS + PushKit)
+## 推送通知 - iOS（APNS + PushKit）
 
-### 1. AppDelegate Setup
+### 1. 设置 AppDelegate
 
 ```swift
 // AppDelegate.swift
@@ -328,7 +328,7 @@ func pushRegistry(_ registry: PKPushRegistry,
 }
 ```
 
-### 2. Handle in Flutter
+### 2. 在 Flutter 中处理推送通知
 
 ```dart
 FlutterCallkitIncoming.onEvent.listen((CallEvent? event) {
@@ -352,7 +352,7 @@ FlutterCallkitIncoming.onEvent.listen((CallEvent? event) {
 
 ---
 
-## Handling Late Notifications
+## 处理延迟推送通知
 
 ```dart
 const CALL_MISSED_TIMEOUT = 60;  // seconds
@@ -372,9 +372,9 @@ void handlePushMessage(RemoteMessage message) {
 
 ---
 
-## Call Quality Metrics
+## 通话质量监控
 
-Enable with `debug: true` in config:
+通过在配置中设置 `debug: true` 来启用通话质量监控：
 
 ```dart
 // When making a call
@@ -395,21 +395,19 @@ call.onCallQualityChange = (CallQualityMetrics metrics) {
 };
 ```
 
-| Quality Level | MOS Range |
+| 质量等级 | MOS 分数范围 |
 |---------------|-----------|
-| excellent | > 4.2 |
-| good | 4.1 - 4.2 |
-| fair | 3.7 - 4.0 |
-| poor | 3.1 - 3.6 |
-| bad | ≤ 3.0 |
+| 优秀 | > 4.2 |
+| 良好 | 4.1 - 4.2 |
+| 一般 | 3.7 - 4.0 |
+| 较差 | 3.1 - 3.6 |
+| 差 | ≤ 3.0 |
 
 ---
 
-## AI Agent Integration
+## 与 Telnyx 语音 AI 代理集成
 
-Connect to a Telnyx Voice AI Agent:
-
-### 1. Anonymous Login
+### 1. 匿名登录
 
 ```dart
 try {
@@ -423,7 +421,7 @@ try {
 }
 ```
 
-### 2. Start Conversation
+### 2. 开始对话
 
 ```dart
 telnyxClient.newInvite(
@@ -438,7 +436,7 @@ telnyxClient.newInvite(
 );
 ```
 
-### 3. Receive Transcripts
+### 3. 接收对话记录
 
 ```dart
 telnyxClient.onTranscriptUpdate = (List<TranscriptItem> transcript) {
@@ -457,7 +455,7 @@ List<TranscriptItem> current = telnyxClient.transcript;
 telnyxClient.clearTranscript();
 ```
 
-### 4. Send Text to AI Agent
+### 4. 向 AI 代理发送文本消息
 
 ```dart
 Call? activeCall = telnyxClient.calls.values.firstOrNull;
@@ -471,7 +469,7 @@ if (activeCall != null) {
 
 ---
 
-## Custom Logging
+## 自定义日志记录
 
 ```dart
 class MyCustomLogger extends CustomLogger {
@@ -491,20 +489,20 @@ final config = CredentialConfig(
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| No audio on Android | Check RECORD_AUDIO permission |
-| No audio on iOS | Check NSMicrophoneUsageDescription in Info.plist |
-| Push not working (debug) | Push only works in release mode |
-| Login fails | Verify SIP credentials in Telnyx Portal |
-| 10-second timeout | INVITE didn't arrive - check network/push setup |
-| sender_id_mismatch | FCM project mismatch between app and server |
+| Android 上没有音频 | 检查是否获得了 RECORD_AUDIO 权限 |
+| iOS 上没有音频 | 检查 `Info.plist` 中的 NSMicrophoneUsageDescription 设置 |
+| 推送通知无法发送（调试模式） | 推送通知仅在发布模式下生效 |
+| 登录失败 | 验证 Telnyx Portal 中的 SIP 凭据 |
+| 接听超时（10 秒） | 检查网络连接或推送设置 |
+| 发送方 ID 不匹配 | 应用程序与服务器之间的 FCM 项目配置不匹配 |
 
-## Resources
+## 资源
 
-- [Official Documentation](https://developers.telnyx.com/docs/voice/webrtc/flutter-sdk)
-- [pub.dev Package](https://pub.dev/packages/telnyx_webrtc)
-- [GitHub Repository](https://github.com/team-telnyx/flutter-voice-sdk)
-- [Telnyx Common (Simplified)](https://pub.dev/packages/telnyx_common)
+- [官方文档](https://developers.telnyx.com/docs/voice/webrtc/flutter-sdk)
+- [pub.dev 包](https://pub.dev/packages/telnyx_webrtc)
+- [GitHub 仓库](https://github.com/team-telnyx/flutter-voice-sdk)
+- [Telnyx Common（简化版）](https://pub.dev/packages/telnyx_common)

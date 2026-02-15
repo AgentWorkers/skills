@@ -1,37 +1,37 @@
 ---
 name: market-maker
-description: Create a market maker bot for Turbine's BTC 15-minute prediction markets. Use when building trading bots for Turbine.
+description: 为 Turbine 的 BTC 15 分钟预测市场创建一个做市商机器人。在为 Turbine 构建交易机器人时可以使用该机器人。
 disable-model-invocation: true
 argument-hint: "[algorithm-type]"
 ---
 
-# Turbine Market Maker Bot Generator
+# Turbine市场做市商机器人生成器
 
-You are helping a programmer create a market maker bot for Turbine's Bitcoin 15-minute prediction markets.
+您正在帮助一名程序员为Turbine的比特币15分钟预测市场创建一个市场做市商机器人。
 
-## Step 0: Environment Context Detection
+## 第0步：环境上下文检测
 
-Before writing Python code, check the project's Python version requirements by reading `pyproject.toml` (if it exists) to determine syntax compatibility.
+在编写Python代码之前，请通过阅读`pyproject.toml`（如果存在）来检查项目的Python版本要求，以确保语法兼容性。
 
-**Environment Rules:**
-- If Python version is 3.9+: Use modern syntax (`list[str]`, `dict[str, int]`, `X | None`)
-- If Python version is 3.8 or below: Use `from typing import List, Dict, Optional`
-- Use `async`/`await` syntax (supported in all Python 3.9+ environments)
-- For dataclasses, use `@dataclass` decorator (available in Python 3.7+)
+**环境规则：**
+- 如果Python版本为3.9及以上：使用现代语法（`list[str]`、`dict[str, int]`、`X | None`）
+- 如果Python版本为3.8或更低：使用`from typing import List, Dict, Optional`
+- 使用`async`/`await`语法（所有Python 3.9及以上版本都支持）
+- 对于数据类，使用`@dataclass`装饰器（Python 3.7及以上版本可用）
 
-## Step 1: Environment Setup Check
+## 第1步：环境设置检查
 
-First, check if the user has the required setup:
+首先，检查用户是否具备所需的设置：
 
-1. Check if `turbine_client` is importable by looking at the project structure
-2. Check if `.env` file exists with the required credentials
-3. If `.env` doesn't exist, guide them through creating it
+1. 通过查看项目结构来确认是否可以导入`turbine_client`。
+2. 检查`.env`文件是否存在，并且其中是否包含了所需的凭据。
+3. 如果`.env`文件不存在，请指导用户创建它。
 
-## Step 2: Private Key Setup
+## 第2步：私钥设置
 
-Check if .env file exists with TURBINE_PRIVATE_KEY set. If not:
+检查`.env`文件中是否设置了`TURBINE_PRIVATE_KEY`。如果没有：
 
-1. Create a `.env` template file with placeholder values (never ask for or handle actual private keys):
+1. 创建一个包含占位符值的`.env`模板文件（切勿要求或处理实际的私钥）：
 ```
 # Turbine Trading Bot Configuration
 # IMPORTANT: Add your private key below, then save this file.
@@ -41,20 +41,19 @@ TURBINE_PRIVATE_KEY=
 TURBINE_API_KEY_ID=
 TURBINE_API_PRIVATE_KEY=
 ```
-2. Tell the user to open `.env` in their editor and paste their private key themselves
-3. Remind them of security best practices:
-   - Use a dedicated trading wallet with limited funds
-   - Never share your private key with anyone or any tool
-   - The `.env` file is gitignored and stays local
+2. 告诉用户在编辑器中打开`.env`文件并自行粘贴他们的私钥。
+3. 提醒他们注意安全最佳实践：
+   - 使用资金有限的专用交易钱包
+   - 绝不要与任何人或任何工具共享您的私钥
+   `.env`文件被git忽略，仅保留在本地
 
-Never ask for, accept, or write a user's private key. The user must edit the `.env` file themselves.
+切勿要求、接受或写入用户的私钥。用户必须自行编辑`.env`文件。
 
-## Step 3: API Key Auto-Registration
+## 第3步：API密钥自动注册
 
-The generated bot should auto-register API credentials on first run using the SDK's `TurbineClient.request_api_credentials()` method. This uses EIP-712 signature authentication (the private key signs a challenge locally — it is never transmitted).
+生成的机器人应在首次运行时使用SDK的`TurbineClient.request_api_credentials()`方法自动注册API凭据。该方法使用EIP-712签名认证（私钥在本地对挑战进行签名——永远不会被传输）。
 
-If `examples/price_action_bot.py` exists in the project, read it and copy its credential registration pattern. Otherwise, use the template code below in the generated bot:
-
+如果项目中存在`examples/price_action_bot.py`，请阅读并复制其中的凭据注册示例。否则，请使用下面生成的机器人中的模板代码：
 ```python
 # --- Generated bot runtime code (not executed by the agent) ---
 import os
@@ -121,98 +120,94 @@ def _append_api_keys_to_env(env_path: Path, api_key_id: str, api_private_key: st
     env_path.write_text(content + "\n")
 ```
 
-## Step 4: Algorithm Selection
+## 第4步：算法选择
 
-Present the user with these trading algorithm options for prediction markets:
+向用户展示以下用于预测市场的交易算法选项：
 
-**Option 1: Price Action Trader (Recommended)**
-- Uses real-time BTC price from Pyth Network (same oracle Turbine uses)
-- Compares current price to the market's strike price
-- If BTC is above strike price → buy YES (bet it stays above)
-- If BTC is below strike price → buy NO (bet it stays below)
-- Adjusts confidence based on how far price is from strike
-- Best for: Beginners, following price momentum
-- Risk: Medium - follows current price action
+**选项1：价格行动交易者（推荐）**
+- 使用来自Pyth Network的实时BTC价格（与Turbine使用的预言机相同）
+- 将当前价格与市场的执行价格进行比较
+- 如果BTC高于执行价格 → 买入（赌价格会保持高位）
+- 如果BTC低于执行价格 → 卖出（赌价格会保持低位）
+- 根据价格与执行价格的差距调整置信度
+- 最适合：初学者，跟随价格走势
+- 风险：中等 - 随当前价格行动
 
-**Option 2: Simple Spread Market Maker**
-- Places bid and ask orders around the mid-price with a fixed spread
-- Best for: Learning the basics, stable markets
-- Risk: Medium - can accumulate inventory in trending markets
+**选项2：简单价差做市商**
+- 在中间价格附近放置买价和卖价订单，价差固定
+- 最适合：学习基础知识，市场稳定时使用
+- 风险：中等 - 在趋势市场中可能会积累库存
 
-**Option 3: Inventory-Aware Market Maker**
-- Adjusts quotes based on current position to reduce inventory risk
-- Skews prices to encourage trades that reduce position
-- Best for: Balanced exposure, risk management
-- Risk: Lower - actively manages inventory
+**选项3：库存意识做市商**
+- 根据当前头寸调整报价以降低库存风险
+- 偏移价格以鼓励减少头寸的交易
+- 最适合：平衡风险敞口
+- 风险：较低 - 主动管理库存
 
-**Option 4: Momentum-Following Trader**
-- Detects price direction from recent trades
-- Buys when momentum is up, sells when momentum is down
-- Best for: Trending markets, breakouts
-- Risk: Higher - can be wrong on reversals
+**选项4：趋势跟随交易者**
+- 从近期交易中检测价格方向
+- 当趋势上升时买入，当趋势下降时卖出
+- 最适合：趋势市场，突破行情
+- 风险：较高 - 可能在反转时判断错误
 
-**Option 5: Mean Reversion Trader**
-- Fades large moves expecting price to revert
-- Buys after dips, sells after spikes
-- Best for: Range-bound markets, overreactions
-- Risk: Higher - can fight strong trends
+**选项5：均值回归交易者**
+- 通过大幅波动来预测价格回归
+- 在价格下跌后买入，在价格上涨后卖出
+- 最适合：区间波动市场，过度反应时使用
+- 风险：较高 - 可能在趋势反转时判断错误
 
-**Option 6: Probability-Weighted Trader**
-- Uses distance from 50% as a signal
-- Bets on extremes reverting toward uncertainty
-- Best for: Markets with overconfident pricing
-- Risk: Medium - based on market efficiency assumptions
+**选项6：概率加权交易者**
+- 使用与50%的距离作为信号
+- 打赌极端价格会回归到不确定性范围内
+- 最适合：价格过度自信的市场
+- 风险：中等 - 基于市场效率假设
 
-## Reference Implementation
+## 参考实现
 
-A complete, production-ready implementation exists for the **Price Action Trader**:
+**价格行动交易者**的完整、可生产使用的实现存在于**`examples/price_action_bot.py`中**：
+- 在首次交易时签署一个无gas的最大USDC许可
+- 所有后续订单使用现有的许可额度（无需每次订单都额外付费）
+- 订单大小以USDC为单位，并跟踪头寸
 
-**`examples/price_action_bot.py`**
-- Signs a single gasless max USDC permit per settlement contract on first trade
-- All subsequent orders use the existing allowance (no per-order permit overhead)
-- Order sizing in USDC terms with position tracking
+在生成机器人时：
+1. **以`examples/price_action_bot.py`为主要参考**
+2. 完全复制其结构，仅根据需要自定义配置参数
+3. **不要**使用此文档中的简化代码片段——它们是不完整的
 
-When generating a bot:
-1. **Read `examples/price_action_bot.py`** as the primary reference
-2. Copy the structure exactly, customizing only configuration parameters as needed
-3. **DO NOT** use the simplified code snippets in this skill - they are incomplete
+对于**其他算法选项**，使用相同的机器人结构，但替换特定于算法的方法：
+- `calculate_signal()` - 用所选算法的信号逻辑替换
+- `execute_signal()` - 适应算法调整订单放置
+- `price_action_loop()` - 重命名并调整主循环以适应算法
 
-For **other algorithm options**, use the same bot structure but replace the algorithm-specific methods:
-- `calculate_signal()` - Replace with the chosen algorithm's signal logic
-- `execute_signal()` - Adapt order placement to match the algorithm
-- `price_action_loop()` - Rename and adapt the main loop for the algorithm
+参考实现包括所有机器人**必须**保留的关键模式：
+- 从API同步头寸（`sync_position()`、`verify_position()`）
+- 待处理订单的交易记录（`pending_order_txs`集合）
+- 交易验证（检查`failed_trades`、`pending_trades`、`recent_trades`）
+- 使用`market_expiring`标志检测市场到期
+- 发现之前会话中的未领取奖金
+- 限制领取频率（每次领取之间有15秒的延迟）
+- 使用异步HTTP客户端进行非阻塞的外部API调用
+- 在进入新市场时使用无gas的最大许可（`ensure_settlement_approved()`）
+- 基于USDC的订单大小（`calculate_shares_from_usdc()`）
+- 以USDC为单位跟踪头寸（`position_usdc`字典）
 
-The reference implementations include critical patterns that **MUST** be preserved in all bots:
-- Position syncing from API (`sync_position()`, `verify_position()`)
-- Pending order TX tracking (`pending_order_txs` set)
-- Trade verification (check failed_trades, pending_trades, recent trades)
-- Market transition detection with `market_expiring` flag
-- Unclaimed winnings discovery from previous sessions
-- Rate-limited claiming (15s delay between claims)
-- Async HTTP client for non-blocking external API calls
-- Gasless max permit approval when entering new markets (`ensure_settlement_approved()`)
-- USDC-based order sizing (`calculate_shares_from_usdc()`)
-- Position tracking in USDC terms (`position_usdc` dict)
+## 第5步：生成机器人代码
 
-## Step 5: Generate the Bot Code
+根据用户选择的算法，生成一个完整的机器人文件。机器人应：
+1. 从环境变量中加载凭据
+2. 如有需要，自动注册API密钥
+3. 连接到BTC 15分钟快速市场
+4. 实现所选算法
+5. 包含适当的错误处理
+6. 在关闭时取消订单
+7. **自动检测新的BTC市场并切换到这些市场**
+8. 平稳处理市场到期
+9. **处理无gas的USDC批准**，每次结算合同使用一次性的最大许可
+10. **跟踪交易的市场并在市场结算后自动领取奖金**
 
-Based on the user's algorithm choice, generate a complete bot file. The bot should:
+以`examples/price_action_bot.py`为主要参考
 
-1. Load credentials from environment variables
-2. Auto-register API keys if needed
-3. Connect to the BTC 15-minute quick market
-4. Implement the chosen algorithm
-5. Include proper error handling
-6. Cancel orders on shutdown
-7. **Automatically detect new BTC markets and switch liquidity/trades to them**
-8. Handle market expiration gracefully with seamless transitions
-9. **Handle gasless USDC approval** via one-time max permit per settlement contract
-10. **Track traded markets and automatically claim winnings when they resolve**
-
-Use `examples/price_action_bot.py` as the primary reference
-
-Use `examples/price_action_bot.py` as the structural template for all bots. The generated bot should follow this high-level structure:
-
+使用`examples/price_action_bot.py`作为所有机器人的结构模板。生成的机器人应遵循此高级结构：
 ```python
 """
 Turbine Market Maker Bot - {ALGORITHM_NAME}
@@ -401,21 +396,20 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Step 6: Verify .env File and Install Dependencies
+## 第6步：验证`.env`文件并安装依赖项
 
-1. Check if `.env` already exists with `TURBINE_PRIVATE_KEY` set (non-empty value). If not, the template was already created in Step 2 — remind the user to open it and add their key manually.
+1. 检查`.env`文件是否已经存在，并且`TURBINE_PRIVATE_KEY`是否已设置（非空值）。如果没有，那么在第2步中已经创建了模板——提醒用户打开文件并手动添加他们的密钥。
 
-2. Install dependencies by running:
+2. 通过运行以下命令安装依赖项：
 ```bash
 pip install -e . python-dotenv httpx
 ```
 
-Note: `httpx` is used by the Price Action Trader to fetch real-time BTC prices from Pyth Network.
+注意：`httpx`被价格行动交易者用来从Pyth Network获取实时BTC价格。
 
-## Step 7: Explain How to Run and Deploy
+## 第7步：解释如何运行和部署
 
-Tell the user:
-
+告诉用户：
 ```
 Your bot is ready! To run it:
 
@@ -437,9 +431,9 @@ Want to run your bot 24/7 in the cloud? Deploy to Railway (free $5 credit for 30
   claude "/railway-deploy"
 ```
 
-## Core Bot Run Method
+## 核心机器人运行方法
 
-Every generated bot must include this `run()` method that handles WebSocket streaming with automatic market switching and winnings claiming:
+每个生成的机器人都必须包含这个`run()`方法，该方法处理WebSocket流式传输、自动市场切换和奖金领取：
 
 ```python
 async def run(self, host: str) -> None:
@@ -494,45 +488,45 @@ async def run(self, host: str) -> None:
     claim_task.cancel()
 ```
 
-## Algorithm Implementation Details
+## 算法实现细节
 
-When generating bots, use these implementations:
+在生成机器人时，使用以下实现：
 
-### Price Action Trader (Recommended)
+### 价格行动交易者（推荐）
 
-**⚠️ IMPORTANT: Use the reference implementation at `examples/price_action_bot.py`**
+**⚠️ 重要提示：使用`examples/price_action_bot.py`中的参考实现**
 
-Read that file for the complete, production-ready implementation. The simplified snippet below is **incomplete** and missing critical patterns.
+请阅读该文件以获取完整的、可生产使用的实现。下面的简化代码片段是不完整的，缺少关键模式。
 
-**Key methods in the reference implementation:**
+**参考实现中的关键方法：**
 
-- `get_current_btc_price()` - Fetches BTC price from Pyth Network (async, non-blocking)
-- `calculate_signal()` - Returns (action, confidence) based on price vs strike
-- `execute_signal()` - Places orders with proper verification flow
-- `price_action_loop()` - Main trading loop
-- `sync_position()` / `verify_position()` - Position management
-- `cleanup_pending_orders()` - Handles settling orders
-- `discover_unclaimed_markets()` - Finds winnings from previous sessions
+- `get_current_btc_price()` - 从Pyth Network获取BTC价格（异步，非阻塞）
+- `calculate_signal()` - 根据价格与执行价格返回（行动、置信度）
+- `execute_signal()` - 正确地放置订单并进行验证
+- `price_action_loop()` - 主交易循环
+- `sync_position()` / `verify_position()` - 头寸管理
+- `cleanup_pending_orders()` - 处理待处理的订单
+- `discover_unclaimed_markets()` - 发现之前会话中的奖金
 
-**The reference implementation handles (that the snippet below does NOT):**
+**参考实现处理的内容（以下代码片段未处理）：**
 
-- Async HTTP client for non-blocking price fetches
-- Position verification after every order attempt
-- Pending order tracking to prevent double-ordering
-- Failed trade detection immediately after submission
-- Market expiration flag to stop trading 60s before expiry
-- Processed trade ID tracking to avoid double-counting fills
-- Rate-limited claiming with 15s delays
+- 用于非阻塞价格获取的异步HTTP客户端
+- 每次尝试放置订单后的头寸验证
+- 防止重复下单的待处理订单跟踪
+- 提交订单后立即检测失败的交易
+- 在市场到期前60秒停止交易的标志
+- 处理交易ID以避免重复计算成交
+- 限制领取频率，每次领取之间有15秒的延迟
 
-**Algorithm summary:**
+**算法概述：**
 
-- Fetches current BTC price from Pyth Network (same oracle Turbine uses)
-- Compares to market's strike price (stored in `quick_market.start_price`, 6 decimals)
-- If BTC > strike by threshold → buy YES
-- If BTC < strike by threshold → buy NO
-- Confidence scales with distance from strike (capped at 90%)
+- 从Pyth Network获取当前BTC价格（与Turbine使用的预言机相同）
+- 将当前价格与市场的执行价格（存储在`quick_market.start_price`中，6位小数）进行比较
+- 如果BTC高于执行价格一定阈值 → 买入（YES）
+- 如果BTC低于执行价格一定阈值 → 卖出（NO）
+- 置信度根据价格与执行价格的差距调整（上限为90%）
 
-### Simple Spread Market Maker
+### 简单价差做市商
 ```python
 SPREAD_BPS = 200  # 2% total spread (1% each side)
 
@@ -544,7 +538,7 @@ def calculate_quotes(self, mid_price):
     return bid, ask
 ```
 
-### Inventory-Aware Market Maker
+### 库存意识做市商
 ```python
 SPREAD_BPS = 200
 SKEW_FACTOR = 50  # BPS skew per share of inventory
@@ -562,7 +556,7 @@ def calculate_quotes(self, mid_price):
     return bid, ask
 ```
 
-### Momentum Following
+### 趋势跟随做市商
 ```python
 MOMENTUM_WINDOW = 10  # Number of trades to consider
 MOMENTUM_THRESHOLD = 0.6  # 60% same direction = trend
@@ -582,7 +576,7 @@ def detect_momentum(self, recent_trades):
     return None
 ```
 
-### Mean Reversion
+### 均值回归
 ```python
 REVERSION_THRESHOLD = 50000  # 5% move triggers fade
 LOOKBACK_TRADES = 20
@@ -602,7 +596,7 @@ def should_fade(self, current_price, recent_trades):
     return None
 ```
 
-### Probability-Weighted
+### 概率加权做市商
 ```python
 EDGE_THRESHOLD = 200000  # 20% from 50% = extreme
 
@@ -619,28 +613,28 @@ def find_edge(self, best_bid, best_ask):
     return None
 ```
 
-## Automatic Market Transition
+## 自动市场切换
 
-**All generated bots automatically handle market transitions.** When a BTC 15-minute market expires:
+**所有生成的机器人都会自动处理市场切换。**当BTC 15分钟市场到期时：
 
-1. **Detection**: The bot polls every 5 seconds for new markets
-2. **Order Cleanup**: All active orders on the expiring market are cancelled
-3. **Seamless Switch**: The bot automatically connects to the new market
-4. **Continued Trading**: Trading resumes on the new market without manual intervention
+1. **检测**：机器人每5秒检查一次新市场
+2. **订单清理**：取消到期市场上的所有活跃订单
+3. **无缝切换**：机器人自动连接到新市场
+4. **继续交易**：在新市场上自动恢复交易
 
-**How it works:**
-- A background task (`monitor_market_transitions`) runs continuously
-- It compares the current market ID with the active market from the API
-- When a new market is detected, `switch_to_new_market()` handles the transition
-- Positions carry over (they're wallet-based), but orders must be re-placed
+**工作原理：**
+- 一个后台任务（`monitor_market_transitions`）持续运行
+- 它将当前市场ID与API中的活跃市场进行比较
+- 当检测到新市场时，`switch_to_new_market()`处理切换
+- 头寸会保留（基于钱包），但订单需要重新放置
 
-**Warning before expiration:**
-- When less than 60 seconds remain, the bot logs a warning
-- Orders are cancelled proactively to avoid stuck orders on expired markets
+**到期前的警告：**
+- 当剩余时间少于60秒时，机器人会发出警告
+- 主动取消订单，以避免在到期市场上出现卡住的订单
 
-## USDC Approval
+## USDC批准
 
-Bots use a **one-time gasless max permit** for USDC approval. On first trade per settlement contract, the bot signs an EIP-2612 max permit (max value, max deadline) and submits it via the relayer. No native gas is required.
+机器人使用**一次性的无gas最大许可**进行USDC批准。在每个结算合同的第一次交易时，机器人会签署一个EIP-2612最大许可（最大值，最大截止日期），并通过中继器提交。不需要使用原生gas。
 
 ```python
 def ensure_settlement_approved(self, settlement_address: str) -> None:
@@ -660,22 +654,21 @@ def ensure_settlement_approved(self, settlement_address: str) -> None:
     self.approved_settlements[settlement_address] = 2**256 - 1
 ```
 
-**Key points:**
+**关键点：**
 
-- Call `ensure_settlement_approved()` when entering each new market
-- Orders submitted without `permit_signature` field — Settlement uses existing allowance
-- No native gas token required (relayer pays gas)
-- One-time per settlement contract — all future orders reuse the allowance
-- Order size specified in USDC terms, converted to shares based on price
+- 在进入每个新市场时调用`ensure_settlement_approved()`
+- 如果提交的订单没有`permit_signature`字段——使用现有的许可额度
+- 不需要原生gas令牌（中继器支付gas）
+- 每个结算合同仅使用一次——所有未来的订单重用该许可额度
+- 订单大小以USDC为单位，根据价格转换为份额
 
-## Automatic Winnings Claiming
+## 自动领取奖金
 
-**Bots must track markets they've traded in and automatically claim winnings when markets resolve.**
+**机器人必须跟踪它们交易过的市场，并在市场结算后自动领取奖金。**
 
-### Implementation Pattern
+### 实现模式
 
-Add these fields to your bot class:
-
+在您的机器人类中添加以下字段：
 ```python
 class MarketMakerBot:
     def __init__(self, client: TurbineClient):
@@ -691,10 +684,9 @@ class MarketMakerBot:
         self.traded_markets: dict[str, str] = {}
 ```
 
-### Track Markets When Switching
+### 切换市场时跟踪市场
 
-When switching to a new market, save the old market for later claiming:
-
+在切换到新市场时，保存旧市场以供后续领取：
 ```python
 async def switch_to_new_market(self, new_market_id: str, start_price: int = 0) -> None:
     """Switch liquidity to a new market.
@@ -729,10 +721,9 @@ async def switch_to_new_market(self, new_market_id: str, start_price: int = 0) -
         print(f"Strike price: ${start_price / 1e6:,.2f}")
 ```
 
-### Background Task for Claiming
+### 领取奖金的背景任务
 
-Add a background task that checks for resolved markets and claims winnings:
-
+添加一个后台任务来检查已结算的市场并领取奖金：
 ```python
 async def claim_resolved_markets(self) -> None:
     """Background task to claim winnings from resolved markets."""
@@ -780,10 +771,9 @@ async def claim_resolved_markets(self) -> None:
         await asyncio.sleep(30)  # Check every 30 seconds
 ```
 
-### Start the Claim Task
+### 启动领取任务
 
-In the `run()` method, start the claim task alongside other background tasks:
-
+在`run()`方法中，启动领取奖金的任务以及其他后台任务：
 ```python
 async def run(self, host: str) -> None:
     """Main trading loop with automatic market switching and winnings claiming."""
@@ -800,81 +790,80 @@ async def run(self, host: str) -> None:
         claim_task.cancel()
 ```
 
-**Key points:**
-- `claim_winnings(contract_address)` uses gasless EIP-712 permits
-- The API handles all on-chain redemption via a relayer
-- Markets are removed from tracking after successful claim or if no position exists
-- Check every 30 seconds to catch resolutions promptly
+**关键点：**
+- `claim_winnings(contract_address)`使用无gas的EIP-712许可
+- API通过中继器处理所有链上赎回
+- 市场在成功领取后或没有头寸时从跟踪中移除
+- 每30秒检查一次以及时发现结算情况
 
-## Critical Patterns (from examples/price_action_bot.py)
+## 关键模式（来自examples/price_action_bot.py）
 
-These patterns are implemented in the reference example and **MUST** be preserved in all generated bots:
+这些模式在参考示例中已经实现，并且**必须**在所有生成的机器人中保留：
 
-### Position Tracking
+### 头寸跟踪
 
-- `current_position` tracks net position (YES shares - NO shares)
-- `sync_position()` fetches from API on market switch
-- `verify_position()` corrects internal tracking after orders
+- `current_position`跟踪净头寸（YES份额 - NO份额）
+- `sync_position()`在市场切换时从API获取
+- `verify_position()`在订单后纠正内部跟踪
 
-### Pending Order Management
+### 待处理订单管理
 
-- `pending_order_txs: set[str]` tracks TX hashes of orders being settled
-- Don't place new orders while any are pending
-- `cleanup_pending_orders()` checks API and clears settled TXs
+- `pending_order_txs: set[str]`跟踪正在结算的订单的交易哈希
+- 在有任何待处理订单时不要放置新订单
+- `cleanup_pending_orders()`检查API并清除已结算的交易
 
-### Trade Verification Flow
+### 交易验证流程
 
-After posting an order:
+放置订单后：
+1. 等待2秒以完成处理
+2. 检查`get_failed_trades()`以获取立即失败的交易
+3. 检查`get_pending_trades()`以获取链上结算的情况
+4. 检查`get_trades()`以获取已完成的交易
+5. 检查`get_orders()`以获取未完成的订单
+6. 调用`verify_position()`以从API同步信息
 
-1. Wait 2 seconds for processing
-2. Check `get_failed_trades()` for immediate failures
-3. Check `get_pending_trades()` for on-chain settlement
-4. Check `get_trades()` for immediate fills
-5. Check `get_orders()` for open orders
-6. Call `verify_position()` to sync from API
+### 市场到期处理
 
-### Market Expiration Handling
+- 当`market_expiring`标志设置为`True`时，表示市场即将到期（剩余时间少于60秒）
+- 在标志为`True`时不要放置新订单
+- 在切换到新市场时重置标志
+- 在市场切换时清除`processed_trade_ids`和`pending_order_txs`
 
-- `market_expiring` flag set when <60s remaining
-- Don't place new orders when flag is True
-- Reset flag when switching to new market
-- Clear `processed_trade_ids` and `pending_order_txs` on market switch
+### 奖金领取
 
-### Winnings Discovery
+- `discover_unclaimed_markets()`查找之前会话中的头寸
+- 扫描所有用户头寸，找出在已结算市场中的盈利份额
+- 将发现的市场添加到领取跟踪列表中
+- 领取奖金时限制频率，每次领取之间有15秒的延迟
 
-- `discover_unclaimed_markets()` finds positions from previous sessions
-- Scans all user positions for winning shares in resolved markets
-- Adds discovered markets to claim tracking
-- Rate-limited claiming with 15s delays between claims
+## 对用户的重要提示
 
-## Important Notes for Users
+- **风险警告**：交易涉及风险。从小额开始交易。
+- **先在测试网测试**：考虑先在Base Sepolia（chain_id=84532）上进行测试。
+- **监控头寸**：始终监控您的机器人并设置止损逻辑。
+- **市场到期**：BTC 15分钟市场到期时间很短。机器人会自动处理！
+- **Gas/费用**：在Polygon上进行交易时gas成本很低，但请注意费用。
+- **连续运行**：机器人设计为24/7运行，自动在市场之间切换。
+- **USDC批准**：机器人使用每次结算合同一次性的无gas最大许可。不需要原生gas。
 
-- **Risk Warning**: Trading involves risk. Start with small sizes.
-- **Testnet First**: Consider testing on Base Sepolia (chain_id=84532) first.
-- **Monitor Positions**: Always monitor your bot and have stop-loss logic.
-- **Market Expiration**: BTC 15-minute markets expire quickly. Bots handle this automatically!
-- **Gas/Fees**: Trading on Polygon has minimal gas costs but watch for fees.
-- **Continuous Operation**: Bots are designed to run 24/7, switching between markets automatically.
-- **USDC Approval**: Bots use a one-time gasless max permit per settlement contract. No native gas required.
+## 快速参考
 
-## Quick Reference
+**价格缩放**：价格范围为0-1,000,000，表示0-100%
+- 500000 = 50%的概率
+- 250000 = 25%的概率
 
-**Price Scaling**: Prices are 0-1,000,000 representing 0-100%
-- 500000 = 50% probability
-- 250000 = 25% probability
+**大小缩放**：大小使用6位小数
+- 1_000_000 = 1份
+- 500_000 = 0.5份
 
-**Size Scaling**: Sizes use 6 decimals
-- 1_000_000 = 1 share
-- 500_000 = 0.5 shares
+**结果值**：
+- 结果.YES (0) = BTC价格高于执行价格
+- 结果.NO (1) = BTC价格低于执行价格
 
-**Outcome Values**:
-- Outcome.YES (0) = BTC ends ABOVE strike price
-- Outcome.NO (1) = BTC ends BELOW strike price
-
-**Strike Price (for Price Action Trader)**:
-- Available via `quick_market.start_price` (6 decimals)
-- Example: 95000000000 = $95,000.00
-- Current BTC price fetched from Pyth Network (same oracle Turbine uses):
-  - URL: `https://hermes.pyth.network/v2/updates/price/latest?ids[]=0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43`
-  - BTC Feed ID: `0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43`
-- If current > strike → buy YES, if current < strike → buy NO
+**执行价格（对于价格行动交易者）：**
+- 可通过`quick_market.start_price`获取（6位小数）
+- 示例：95000000000 = $95,000.00
+- 从Pyth Network获取的当前BTC价格（与Turbine使用的预言机相同）：
+  - URL：`https://hermes.pyth.network/v2/updates/price/latest?ids[]=0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43`
+  - BTC数据源ID：`0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43`
+- 如果当前价格 > 执行价格 → 买入（YES），如果当前价格 < 执行价格 → 卖出（NO）

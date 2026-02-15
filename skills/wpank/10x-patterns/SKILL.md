@@ -1,15 +1,14 @@
 ---
 name: 10x-patterns
 model: standard
-description: Patterns and practices that dramatically accelerate development velocity. Covers parallel execution, automation, feedback loops, workflow optimization, and anti-pattern avoidance. Use when starting projects, planning sprints, optimizing workflows, or onboarding developers.
+description: 能够显著提升开发速度的模式与实践。内容包括并行执行、自动化、反馈循环、工作流程优化以及避免常见开发误区（反模式）。适用于项目启动、冲刺计划制定、工作流程优化或新开发者入职培训等场景。
 ---
 
-# 10x Development Patterns (Meta-Skill)
+# 10倍开发效率模式（元技能）
 
-Patterns that compress timelines, eliminate waste, and multiply output. These are the habits and systems that separate high-velocity teams from the rest.
+这些模式能够压缩开发时间线、消除浪费并提高产出效率。正是这些习惯和系统，将高效率的团队与其他团队区分开来。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -17,94 +16,92 @@ Patterns that compress timelines, eliminate waste, and multiply output. These ar
 npx clawhub@latest install 10x-patterns
 ```
 
+---
+
+## 使用场景
+
+- **启动新项目** — 从第一天起就建立正确的基础
+- **规划冲刺** — 优先处理能够带来累积效果的工作
+- **优化工作流程** — 识别并消除瓶颈
+- **评估开发速度** — 测量并提升工作效率
+- **新员工入职** — 教授高效的开发习惯
+- **回顾会议** — 分析开发速度缓慢的原因
 
 ---
 
-## When to Use
+## 核心原则
 
-- Starting a new project — set up the right foundations from day one
-- Planning sprints — prioritize work that compounds
-- Optimizing workflow — identify and remove bottlenecks
-- Reviewing velocity — measure and improve throughput
-- Onboarding developers — teach high-leverage habits
-- Retrospectives — diagnose why things are slow
-
----
-
-## Core Principles
-
-| Principle | Description | Example |
+| 原则 | 描述 | 示例 |
 |---|---|---|
-| Parallel execution | Don't serialize independent tasks; run them concurrently | Run linting, tests, and type-checking in parallel CI jobs |
-| Early validation | Validate assumptions before building | Prototype the riskiest part first, not the easiest |
-| Reuse over rebuild | Leverage existing solutions before writing custom code | Use shadcn/ui instead of building a component library |
-| Automation first | Automate any repetitive task on the second occurrence | Script database seeding, not manual SQL inserts |
-| Fail fast | Catch errors at the earliest possible stage | Strict TypeScript, pre-commit hooks, schema validation |
-| Minimize context switching | Batch similar work together | Handle all PR reviews in one block, not scattered |
-| Shortest feedback loop | Reduce time between change and feedback | Hot reload, preview deploys, co-located tests |
+| **并行执行** | 不要顺序执行独立任务，而是同时运行它们 | 在CI（持续集成）流程中并行运行代码检查、测试和类型检查 |
+| **早期验证** | 在构建之前验证假设 | 先原型化风险最高的部分，而不是最简单的部分 |
+| **重用而非重建** | 在编写自定义代码之前，优先使用现有的解决方案 | 使用`shadcn/ui`而不是重新构建组件库 |
+| **自动化优先** | 对于重复性任务，一旦出现就立即自动化 | 通过脚本实现数据库数据初始化，而不是手动执行SQL操作 |
+| **快速发现错误** | 尽可能在最早阶段捕获错误 | 严格使用TypeScript，使用提交前钩子（pre-commit hooks），进行模式验证 |
+| **减少上下文切换** | 将类似的工作集中处理 | 将所有代码审查集中在一个阶段进行，而不是分散进行 |
+| **最短的反馈循环** | 减少从代码修改到获得反馈的时间 | 使用热重载（hot reload）、预览部署（preview deploys）和集成测试（co-located tests）
 
 ---
 
-## Development Velocity Patterns
+## 开发效率模式
 
-| Pattern | What It Does | Speed Multiplier |
+| 模式 | 功能 | 提高效率的倍数 |
 |---|---|---|
-| Hot reload / fast refresh | See changes instantly without losing state | 3-5x faster UI iteration |
-| Type-driven development | Define types/interfaces first, then implement | Catches 40%+ of bugs at write time |
-| Test-driven development | Write tests for complex logic before implementation | Fewer regressions, faster debugging |
-| Feature flags | Ship incomplete features safely behind toggles | Continuous delivery without risk |
-| Vertical slicing | Build full-stack thin slices end-to-end | Faster feedback, smaller PRs |
-| Monorepo | Share code, types, and config across packages | Eliminates cross-repo sync overhead |
-| Code generation | Generate boilerplate from schemas or templates | Minutes instead of hours for CRUD |
-| AI-assisted development | Use Cursor, Copilot for acceleration | 2-5x faster for boilerplate and exploration |
-| Template repositories | Start new projects from proven templates | Skip setup entirely |
-| Shared component libraries | Reusable, tested UI building blocks | Consistent UI, no re-implementation |
-| Preview deployments | Every PR gets a live URL (Vercel, Netlify) | Instant stakeholder feedback |
-| Trunk-based development | Short-lived branches, frequent merges to main | Eliminates merge hell |
-| Continuous deployment | Every merge to main auto-deploys | Zero manual deploy overhead |
-| Database migrations as code | Version-controlled, repeatable schema changes | No manual DB modifications |
-| Infrastructure as code | Terraform, Pulumi, SST for infra | Reproducible environments in minutes |
-| API-first design | Define API contracts before implementation | Frontend and backend work in parallel |
-| Storybook / component dev | Develop UI components in isolation | No need to navigate full app for UI work |
+| **热重载/快速刷新** | 即时查看更改，且不会丢失状态 | UI迭代速度提高3-5倍 |
+| **类型驱动开发** | 先定义类型/接口，再实现代码 | 编写代码时能捕获40%以上的错误 |
+| **测试驱动开发** | 在实现复杂逻辑之前编写测试 | 减少回归错误，加快调试速度 |
+| **功能开关** | 通过开关安全地发布未完成的功能 | 实现持续交付（continuous delivery） |
+| **垂直切片开发** | 从端到端构建完整的功能模块 | 提高反馈速度，减少代码审查的工作量 |
+| **单仓库模式** | 在所有包中共享代码、类型和配置 | 消除跨仓库同步的开销 |
+| **代码生成** | 从模式或模板生成样板代码 | 创建CRUD（创建、读取、更新、删除）功能只需几分钟 |
+| **人工智能辅助开发** | 使用Cursor、Copilot等工具加速开发 | 编写样板代码和探索代码的速度提高2-5倍 |
+| **模板仓库** | 使用经过验证的模板启动新项目 | 完全无需进行设置 |
+| **共享组件库** | 可复用的、经过测试的UI构建模块 | 保持UI的一致性，避免重复开发 |
+| **预览部署** | 每个代码提交（PR）都会生成一个实时可访问的URL | 使利益相关者能够立即获得反馈 |
+| **基于主干分支的开发** | 使用短期分支，频繁合并到主干分支 | 避免合并过程中的混乱 |
+| **持续部署** | 每次合并到主干分支后自动部署 | 消除手动部署的工作量 |
+| **数据库迁移作为代码** | 使用版本控制，实现可重复的数据库变更 | 几分钟内即可完成数据库迁移 |
+| **API优先设计** | 在实现之前定义API接口 | 前端和后端可以并行开发 |
+| **Storybook/组件开发** | 单独开发UI组件 | 开发UI时无需浏览整个应用程序 |
 
 ---
 
-## Leverage Points
+## 利用点
 
-High effort-to-impact ratio — small investments that pay dividends repeatedly.
+这些方法投入少，但能带来持续的回报。
 
-| Leverage Point | Effort | Impact | Payoff Timeline |
+| 利用点 | 需要的努力 | 效果 | 回报周期 |
 |---|---|---|---|
-| Automation scripts (seed, reset, deploy) | 1-2 hours | Saves 10+ min/day per developer | Days |
-| Shared utilities (formatting, validation, logging) | 2-4 hours | Eliminates repeated code across services | Weeks |
-| CI/CD pipelines | 4-8 hours | Removes all manual build/deploy steps | Immediately |
-| Documentation (ADRs, onboarding, runbooks) | 2-3 hours | Cuts onboarding time by 50%+ | Weeks |
-| Developer tooling (linters, formatters, git hooks) | 1-2 hours | Prevents entire categories of bugs | Immediately |
-| Database seed scripts | 1-2 hours | Instant realistic local environments | Days |
-| Error monitoring (Sentry, Axiom) | 1-2 hours | Find production bugs before users report them | Immediately |
+| **自动化脚本**（数据初始化、重置、部署） | 1-2小时 | 每个开发者每天节省10分钟以上 | 几天内可见效果 |
+| **共享工具**（格式化、验证、日志记录） | 2-4小时 | 消除跨服务之间的重复代码编写 | 几周内可见效果 |
+| **CI/CD流程** | 4-8小时 | 完全消除手动构建/部署步骤 | 立即生效 |
+| **文档**（活动目录（ADRs）、新员工入职培训、操作手册） | 2-3小时 | 将新员工入职时间缩短50%以上 | 几周内可见效果 |
+| **开发者工具**（代码检查工具、格式化工具、Git钩子） | 1-2小时 | 预防多种类型的错误 | 立即生效 |
+| **数据库初始化脚本** | 1-2小时 | 立即创建逼真的本地开发环境 | 几天内可见效果 |
+| **错误监控**（Sentry、Axiom） | 1-2小时 | 在用户报告之前发现生产环境中的错误 | 立即生效 |
 
 ---
 
-## Time Sink Detection
+## 时间浪费检测
 
-Common time wasters and how to eliminate them.
+以下是一些常见的时间浪费现象及其解决方法：
 
-| Time Sink | Hours Wasted/Week | Solution |
+| 时间浪费现象 | 每周浪费的时间（小时） | 解决方法 |
 |---|---|---|
-| Manual testing | 3-8 hours | Automated tests, Playwright for E2E, CI checks |
-| Environment setup | 2-5 hours (new devs) | Docker Compose, devcontainers, seed scripts |
-| Manual deployment | 1-3 hours | CI/CD pipeline, one-click deploys |
-| Code review bottlenecks | 2-6 hours waiting | Small PRs, async reviews, max 24h SLA |
-| Meeting overload | 5-10 hours | Async standups, written updates, office hours |
-| Debugging without logs | 2-4 hours | Structured logging, error tracking, source maps |
-| Dependency conflicts | 1-3 hours | Lock files, renovate bot, monorepo tooling |
-| Unclear requirements | 3-8 hours rework | Spike tickets, design docs, early prototypes |
+| **手动测试** | 3-8小时 | 使用自动化测试工具（如Playwright进行端到端测试，使用CI进行检查） |
+| **环境设置** | 2-5小时（新员工） | 使用Docker Compose、开发容器、数据初始化脚本 |
+| **手动部署** | 1-3小时 | 使用CI/CD流程，一键完成部署 |
+| **代码审查瓶颈** | 等待时间长达2-6小时 | 提交小规模的代码审查请求（PR），采用异步审查机制，确保SLA（服务水平协议）在24小时内完成 |
+| **会议过多** | 5-10小时 | 采用异步会议形式，编写会议记录，利用办公时间进行沟通 |
+| **没有日志的调试** | 2-4小时 | 使用结构化的日志记录和错误追踪工具 |
+| **依赖冲突** | 1-3小时 | 使用文件锁定机制，更新工具，使用单仓库模式 |
+| **需求不明确** | 3-8小时 | 重新设计功能，编写设计文档，制作早期原型 |
 
 ---
 
-## Workflow Optimization
+## 工作流程优化
 
-### Daily Workflow Template
+### 日常工作流程模板
 
 ```
 Morning (high energy)
@@ -122,20 +119,20 @@ Afternoon
   8. Open PRs, update tickets, write context for tomorrow
 ```
 
-### Essential IDE Shortcuts
+### 必备的IDE快捷键
 
-| Action | macOS | Why It Matters |
+| 动作 | macOS | 重要性 |
 |---|---|---|
-| Go to file | `Cmd+P` | Never browse the file tree |
-| Go to symbol | `Cmd+Shift+O` | Jump directly to functions/classes |
-| Find in project | `Cmd+Shift+F` | Find anything across the codebase |
-| Rename symbol | `F2` | Safe, project-wide renaming |
-| Quick fix | `Cmd+.` | Auto-import, auto-fix linter issues |
-| Toggle terminal | `` Ctrl+` `` | Stay in the editor |
-| Multi-cursor | `Cmd+D` | Edit multiple occurrences at once |
-| Move line | `Alt+Up/Down` | Reorder code without cut/paste |
+| **跳转到文件** | `Cmd+P` | 不要浏览文件树 |
+| **跳转到符号** | `Cmd+Shift+O` | 直接跳转到函数/类 |
+| **在整个项目中查找** | `Cmd+Shift+F` | 在整个代码库中查找任何内容 |
+| **重命名符号** | `F2` | 安全地全局重命名符号 |
+| **快速修复** | `Cmd+.` | 自动导入代码，自动修复代码检查工具发现的错误 |
+| **切换终端** | `Ctrl+` | 保持在编辑器中 |
+| **多光标编辑** | `Cmd+D` | 同时编辑多个代码位置 |
+| **移动代码行** | `Alt+Up/Down` | 不需要复制粘贴即可重新排序代码 |
 
-### CLI Aliases & Scripts
+### 命令行别名与脚本
 
 ```bash
 # Git acceleration
@@ -163,60 +160,58 @@ alias dcl='docker compose logs -f'
 alias repo='cd ~/dev/myproject'
 ```
 
-### Shell Scripts Worth Writing
+### 值得编写的Shell脚本
 
-| Script | Purpose | Time Saved |
+| 脚本 | 用途 | 节省的时间 |
 |---|---|---|
-| `./scripts/setup.sh` | One-command local environment setup | Hours per new dev |
-| `./scripts/seed.sh` | Reset and seed database with test data | 10 min/day |
-| `./scripts/deploy.sh` | Build, test, and deploy in sequence | 15 min/deploy |
-| `./scripts/new-feature.sh` | Scaffold feature (route, component, test) | 20 min/feature |
-| `./scripts/db-reset.sh` | Drop, recreate, migrate, seed database | 10 min/occurrence |
+| `./scripts/setup.sh` | 一次性设置本地开发环境 | 每个新员工可以节省数小时 |
+| `./scripts/seed.sh` | 重置数据库并插入测试数据 | 每天节省10分钟 |
+| `./scripts/deploy.sh` | 依次执行构建、测试和部署 | 每次部署节省15分钟 |
+| `./scripts/new-feature.sh` | 快速创建新功能的结构（包括路由、组件和测试） | 每个新功能节省20分钟 |
+| `./scripts/db-reset.sh` | 删除现有数据，重新创建数据库，然后迁移数据 | 每次操作节省10分钟 |
 
 ---
 
-## Anti-Patterns
+## 应避免的错误模式
 
-Patterns that feel productive but destroy velocity.
+这些模式看似高效，但实际上会降低开发效率。
 
-| Anti-Pattern | What Happens | Instead Do |
+| 应避免的模式 | 会导致的问题 | 应采取的措施 |
 |---|---|---|
-| Over-engineering | Build abstractions for problems you don't have | Solve today's problem; refactor when patterns emerge |
-| Premature optimization | Optimize code that isn't a bottleneck | Profile first, optimize the measured bottleneck |
-| Gold plating | Polish features beyond requirements | Ship the 80% solution, iterate based on feedback |
-| Yak shaving | Fix tangential problems endlessly | Time-box tangents to 15 min, then create a ticket |
-| Not-invented-here | Rebuild what open source already solved | Evaluate existing solutions before writing custom code |
-| Bikeshedding | Debate trivial decisions at length | Set a 5-min timer; if no consensus, the proposer decides |
-| Cargo culting | Copy patterns without understanding why | Understand the problem before adopting a solution |
+| **过度设计** | 为不存在的问题构建抽象层 | 先解决当前的问题，等模式出现后再进行重构 |
+| **过早优化** | 优化那些并非瓶颈的部分 | 先分析性能瓶颈，再针对瓶颈进行优化 |
+| **过度装饰** | 对功能进行不必要的改进 | 先发布80%的功能，根据反馈进行迭代 |
+**无意义的讨论** | 长时间讨论琐碎的问题 | 设定15分钟的讨论时间限制，如果无法达成共识，则由提出者决定 |
+| **盲目复制现有解决方案** | 不了解现有开源解决方案的情况下重复开发 | 在编写自定义代码之前，先评估现有的解决方案 |
+| **无意义的讨论** | 长时间争论琐碎的问题 | 设定5分钟的讨论时间限制，如果无法达成共识，则由提出者决定 |
+| **盲目跟风** | 不加思考地复制他人的代码模式 | 在采用任何解决方案之前，先理解问题的本质 |
 
----
+## 测量与评估 — DORA指标
 
-## Measurement — DORA Metrics
+通过跟踪以下四个指标，可以客观地评估开发效率：
 
-Track these four metrics to objectively measure engineering velocity.
-
-| Metric | Elite | High | Medium | Low |
+| 指标 | 优秀 | 高效 | 中等 | 低效 |
 |---|---|---|---|---|
-| **Deployment frequency** | On-demand (multiple/day) | Weekly | Monthly | Quarterly |
-| **Lead time for changes** | < 1 hour | < 1 week | < 1 month | > 1 month |
-| **Change failure rate** | < 5% | < 10% | < 15% | > 15% |
-| **Mean time to recovery** | < 1 hour | < 1 day | < 1 week | > 1 week |
+| **部署频率** | 按需部署（每天多次） | 每周部署 | 每月部署 | 每季度部署 |
+| **变更前置时间** | 小于1小时 | 小于1周 | 小于1个月 | 大于1个月 |
+| **变更失败率** | 小于5% | 小于10% | 小于15% | 大于15% |
+| **平均恢复时间** | 小于1小时 | 小于1天 | 小于1周 | 大于1周 |
 
-### How to Improve Each
+### 如何提升这些指标
 
-- **Deployment frequency** — CI/CD, feature flags, trunk-based development
-- **Lead time** — Small PRs, automated testing, preview deploys
-- **Change failure rate** — Type safety, comprehensive tests, canary deploys
-- **MTTR** — Observability, runbooks, feature flag kill switches
+- **部署频率**：使用CI/CD流程，启用功能开关（feature flags），采用基于主干分支的开发模式 |
+- **前置时间**：提交小规模的代码审查请求（PR），使用自动化测试，进行预览部署 |
+- **变更失败率**：确保代码类型安全，进行全面的测试，使用功能开关进行测试 |
+- **平均恢复时间**：加强代码的可观测性，使用操作手册（runbooks），合理设置功能开关（feature flag kill switches）
 
 ---
 
-## NEVER Do
+**绝对禁止的行为**
 
-1. **NEVER manually deploy to production** — always use CI/CD pipelines
-2. **NEVER merge without automated checks** — require passing CI before merge
-3. **NEVER keep long-lived feature branches** — merge within 1-2 days or break it smaller
-4. **NEVER skip writing types/interfaces** — the 30 seconds you save costs hours later
-5. **NEVER copy-paste code more than once** — extract to a shared utility immediately
-6. **NEVER ignore flaky tests** — fix or delete them; flaky tests erode trust in the suite
-7. **NEVER optimize without measuring** — profile first, gut feelings are usually wrong
+1. **绝不要手动将代码部署到生产环境** — 始终使用CI/CD流程 |
+2. **合并代码之前绝不要省略自动化检查** — 确保代码通过自动化检查后再合并 |
+3. **绝不要保留长期存在的功能分支** — 在1-2天内合并代码，或者将其拆分成更小的部分 |
+4. **绝不要省略定义类型/接口的步骤** — 节省的30秒可能会在未来节省大量时间 |
+5. **绝不要多次复制粘贴代码** — 应立即将代码提取到共享工具中 |
+6. **绝不要忽略有问题的测试** — 必须修复或删除这些问题；有问题的测试会损害团队的信任度 |
+7. **在没有进行性能分析的情况下绝不要进行优化** — 先进行性能分析，直觉往往是不准确的

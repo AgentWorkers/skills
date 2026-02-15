@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
 # Telnyx Numbers - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,9 +39,9 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Get country coverage
+## 获取国家覆盖范围
 
 `GET /country_coverage`
 
@@ -52,7 +53,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", countryCoverage.Data)
 ```
 
-## Get coverage for a specific country
+## 获取特定国家的覆盖范围
 
 `GET /country_coverage/countries/{country_code}`
 
@@ -64,9 +65,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Create an inventory coverage request
+## 创建库存覆盖请求
 
-Creates an inventory coverage request.
+创建一个库存覆盖请求。
 
 `GET /inventory_coverage`
 
@@ -78,9 +79,9 @@ Creates an inventory coverage request.
 	fmt.Printf("%+v\n", inventoryCoverages.Data)
 ```
 
-## List number reservations
+## 列出电话号码预订信息
 
-Gets a paginated list of phone number reservations.
+获取分页显示的电话号码预订信息。
 
 `GET /number_reservations`
 
@@ -92,9 +93,9 @@ Gets a paginated list of phone number reservations.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a number reservation
+## 创建电话号码预订
 
-Creates a Phone Number Reservation for multiple numbers.
+为多个电话号码创建预订。
 
 `POST /number_reservations`
 
@@ -106,11 +107,11 @@ Creates a Phone Number Reservation for multiple numbers.
 	fmt.Printf("%+v\n", numberReservation.Data)
 ```
 
-## Retrieve a number reservation
+## 查取电话号码预订信息
 
-Gets a single phone number reservation.
+获取单个电话号码的预订信息。
 
-`GET /number_reservations/{number_reservation_id}`
+`GET /number_reservations/{numberreservation_id}`
 
 ```go
 	numberReservation, err := client.NumberReservations.Get(context.TODO(), "number_reservation_id")
@@ -120,11 +121,11 @@ Gets a single phone number reservation.
 	fmt.Printf("%+v\n", numberReservation.Data)
 ```
 
-## Extend a number reservation
+## 延长电话号码预订的有效期
 
-Extends reservation expiry time on all phone numbers.
+延长所有电话号码的预订有效期。
 
-`POST /number_reservations/{number_reservation_id}/actions/extend`
+`POST /number_reservations/{numberreservation_id}/actions/extend`
 
 ```go
 	response, err := client.NumberReservations.Actions.Extend(context.TODO(), "number_reservation_id")
@@ -134,9 +135,9 @@ Extends reservation expiry time on all phone numbers.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List number orders
+## 列出电话号码订单
 
-Get a paginated list of number orders.
+获取分页显示的电话号码订单信息。
 
 `GET /number_orders`
 
@@ -148,9 +149,9 @@ Get a paginated list of number orders.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a number order
+## 创建电话号码订单
 
-Creates a phone number order.
+创建一个电话号码订单。
 
 `POST /number_orders`
 
@@ -162,9 +163,9 @@ Creates a phone number order.
 	fmt.Printf("%+v\n", numberOrder.Data)
 ```
 
-## Retrieve a number order
+## 查取电话号码订单信息
 
-Get an existing phone number order.
+获取现有的电话号码订单信息。
 
 `GET /number_orders/{number_order_id}`
 
@@ -176,9 +177,9 @@ Get an existing phone number order.
 	fmt.Printf("%+v\n", numberOrder.Data)
 ```
 
-## Update a number order
+## 更新电话号码订单信息
 
-Updates a phone number order.
+更新电话号码订单信息。
 
 `PATCH /number_orders/{number_order_id}`
 
@@ -194,9 +195,9 @@ Updates a phone number order.
 	fmt.Printf("%+v\n", numberOrder.Data)
 ```
 
-## List number block orders
+## 列出电话号码块订单
 
-Get a paginated list of number block orders.
+获取分页显示的电话号码块订单信息。
 
 `GET /number_block_orders`
 
@@ -208,11 +209,11 @@ Get a paginated list of number block orders.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a number block order
+## 创建电话号码块订单
 
-Creates a phone number block order.
+创建一个电话号码块订单。
 
-`POST /number_block_orders` — Required: `starting_number`, `range`
+`POST /number_block_orders` — 必需参数：`starting_number`、`range`
 
 ```go
 	numberBlockOrder, err := client.NumberBlockOrders.New(context.TODO(), telnyx.NumberBlockOrderNewParams{
@@ -225,9 +226,9 @@ Creates a phone number block order.
 	fmt.Printf("%+v\n", numberBlockOrder.Data)
 ```
 
-## Retrieve a number block order
+## 查取电话号码块订单信息
 
-Get an existing phone number block order.
+获取现有的电话号码块订单信息。
 
 `GET /number_block_orders/{number_block_order_id}`
 
@@ -239,9 +240,9 @@ Get an existing phone number block order.
 	fmt.Printf("%+v\n", numberBlockOrder.Data)
 ```
 
-## Retrieve a list of phone numbers associated to orders
+## 获取与订单关联的电话号码列表
 
-Get a list of phone numbers associated to orders.
+获取与订单关联的电话号码列表。
 
 `GET /number_order_phone_numbers`
 
@@ -253,9 +254,9 @@ Get a list of phone numbers associated to orders.
 	fmt.Printf("%+v\n", numberOrderPhoneNumbers.Data)
 ```
 
-## Update requirement group for a phone number order
+## 更新电话号码订单中的需求组
 
-`POST /number_order_phone_numbers/{id}/requirement_group` — Required: `requirement_group_id`
+`POST /number_order_phone_numbers/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```go
 	response, err := client.NumberOrderPhoneNumbers.UpdateRequirementGroup(
@@ -271,9 +272,9 @@ Get a list of phone numbers associated to orders.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve a single phone number within a number order.
+## 查取电话号码订单中的单个电话号码
 
-Get an existing phone number in number order.
+获取电话号码订单中的某个具体电话号码信息。
 
 `GET /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -285,9 +286,9 @@ Get an existing phone number in number order.
 	fmt.Printf("%+v\n", numberOrderPhoneNumber.Data)
 ```
 
-## Update requirements for a single phone number within a number order.
+## 更新电话号码订单中的单个电话号码的需求
 
-Updates requirements for a single phone number within a number order.
+更新电话号码订单中某个特定电话号码的需求信息。
 
 `PATCH /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -303,9 +304,9 @@ Updates requirements for a single phone number within a number order.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List sub number orders
+## 列出子号码订单
 
-Get a paginated list of sub number orders.
+获取分页显示的子号码订单信息。
 
 `GET /sub_number_orders`
 
@@ -317,9 +318,9 @@ Get a paginated list of sub number orders.
 	fmt.Printf("%+v\n", subNumberOrders.Data)
 ```
 
-## Update requirement group for a sub number order
+## 更新子号码订单的需求组
 
-`POST /sub_number_orders/{id}/requirement_group` — Required: `requirement_group_id`
+`POST /sub_number_orders/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```go
 	response, err := client.SubNumberOrders.UpdateRequirementGroup(
@@ -335,9 +336,9 @@ Get a paginated list of sub number orders.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve a sub number order
+## 查取子号码订单信息
 
-Get an existing sub number order.
+获取现有的子号码订单信息。
 
 `GET /sub_number_orders/{sub_number_order_id}`
 
@@ -353,9 +354,9 @@ Get an existing sub number order.
 	fmt.Printf("%+v\n", subNumberOrder.Data)
 ```
 
-## Update a sub number order's requirements
+## 更新子号码订单的需求信息
 
-Updates a sub number order.
+更新子号码订单的需求信息。
 
 `PATCH /sub_number_orders/{sub_number_order_id}`
 
@@ -371,9 +372,9 @@ Updates a sub number order.
 	fmt.Printf("%+v\n", subNumberOrder.Data)
 ```
 
-## Cancel a sub number order
+## 取消子号码订单
 
-Allows you to cancel a sub number order in 'pending' status.
+允许取消处于“待处理”状态的子号码订单。
 
 `PATCH /sub_number_orders/{sub_number_order_id}/cancel`
 
@@ -385,9 +386,9 @@ Allows you to cancel a sub number order in 'pending' status.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Create a sub number orders report
+## 创建子号码订单报告
 
-Create a CSV report for sub number orders.
+为子号码订单生成 CSV 报告。
 
 `POST /sub_number_orders/report`
 
@@ -399,9 +400,9 @@ Create a CSV report for sub number orders.
 	fmt.Printf("%+v\n", subNumberOrdersReport.Data)
 ```
 
-## Retrieve a sub number orders report
+## 查取子号码订单报告
 
-Get the status and details of a sub number orders report.
+获取子号码订单的报告状态和详细信息。
 
 `GET /sub_number_orders/report/{report_id}`
 
@@ -413,9 +414,9 @@ Get the status and details of a sub number orders report.
 	fmt.Printf("%+v\n", subNumberOrdersReport.Data)
 ```
 
-## Download a sub number orders report
+## 下载子号码订单报告
 
-Download the CSV file for a completed sub number orders report.
+下载已完成的子号码订单的 CSV 文件。
 
 `GET /sub_number_orders/report/{report_id}/download`
 
@@ -427,7 +428,9 @@ Download the CSV file for a completed sub number orders report.
 	fmt.Printf("%+v\n", response)
 ```
 
-## List Advanced Orders
+## 列出高级订单
+
+获取高级订单信息。
 
 `GET /advanced_orders`
 
@@ -439,7 +442,7 @@ Download the CSV file for a completed sub number orders report.
 	fmt.Printf("%+v\n", advancedOrders.Data)
 ```
 
-## Create Advanced Order
+## 创建高级订单
 
 `POST /advanced_orders`
 
@@ -453,7 +456,7 @@ Download the CSV file for a completed sub number orders report.
 	fmt.Printf("%+v\n", advancedOrder.ID)
 ```
 
-## Update Advanced Order
+## 更新高级订单
 
 `PATCH /advanced_orders/{advanced-order-id}/requirement_group`
 
@@ -471,7 +474,7 @@ Download the CSV file for a completed sub number orders report.
 	fmt.Printf("%+v\n", response.ID)
 ```
 
-## Get Advanced Order
+## 获取高级订单信息
 
 `GET /advanced_orders/{order_id}`
 
@@ -483,9 +486,9 @@ Download the CSV file for a completed sub number orders report.
 	fmt.Printf("%+v\n", advancedOrder.ID)
 ```
 
-## List inexplicit number orders
+## 获取非明确指定的电话号码订单
 
-Get a paginated list of inexplicit number orders.
+获取分页显示的非明确指定电话号码订单信息。
 
 `GET /inexplicit_number_orders`
 
@@ -497,11 +500,11 @@ Get a paginated list of inexplicit number orders.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create an inexplicit number order
+## 创建非明确指定的电话号码订单
 
-Create an inexplicit number order to programmatically purchase phone numbers without specifying exact numbers.
+创建一个非明确指定的电话号码订单，以便在不指定具体号码的情况下程序化购买电话号码。
 
-`POST /inexplicit_number_orders` — Required: `ordering_groups`
+`POST /inexplicit_number_orders` — 必需参数：`ordering_groups`
 
 ```go
 	inexplicitNumberOrder, err := client.InexplicitNumberOrders.New(context.TODO(), telnyx.InexplicitNumberOrderNewParams{
@@ -517,9 +520,9 @@ Create an inexplicit number order to programmatically purchase phone numbers wit
 	fmt.Printf("%+v\n", inexplicitNumberOrder.Data)
 ```
 
-## Retrieve an inexplicit number order
+## 查取非明确指定的电话号码订单信息
 
-Get an existing inexplicit number order by ID.
+根据 ID 获取现有的非明确指定电话号码订单。
 
 `GET /inexplicit_number_orders/{id}`
 
@@ -531,7 +534,9 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", inexplicitNumberOrder.Data)
 ```
 
-## Retrieve all comments
+## 查取所有评论
+
+获取所有评论信息。
 
 `GET /comments`
 
@@ -543,7 +548,7 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", comments.Data)
 ```
 
-## Create a comment
+## 创建评论
 
 `POST /comments`
 
@@ -555,7 +560,7 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", comment.Data)
 ```
 
-## Retrieve a comment
+## 查取评论信息
 
 `GET /comments/{id}`
 
@@ -567,7 +572,7 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", comment.Data)
 ```
 
-## Mark a comment as read
+## 将评论标记为已读
 
 `PATCH /comments/{id}/read`
 
@@ -579,7 +584,9 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List available phone number blocks
+## 列出可用的电话号码块
+
+获取可用的电话号码块信息。
 
 `GET /available_phone_number_blocks`
 
@@ -591,7 +598,9 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", availablePhoneNumberBlocks.Data)
 ```
 
-## List available phone numbers
+## 列出可用的电话号码
+
+获取可用的电话号码信息。
 
 `GET /available_phone_numbers`
 
@@ -603,9 +612,9 @@ Get an existing inexplicit number order by ID.
 	fmt.Printf("%+v\n", availablePhoneNumbers.Data)
 ```
 
-## Retrieve the features for a list of numbers
+## 获取电话号码列表的相关信息
 
-`POST /numbers_features` — Required: `phone_numbers`
+`POST /numbers_features` — 必需参数：`phone_numbers`
 
 ```go
 	numbersFeature, err := client.NumbersFeatures.New(context.TODO(), telnyx.NumbersFeatureNewParams{
@@ -619,11 +628,12 @@ Get an existing inexplicit number order by ID.
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `numberOrderStatusUpdate` | Number Order Status Update |
+| `numberOrderStatusUpdate` | 电话号码订单状态更新 |
+```
+```

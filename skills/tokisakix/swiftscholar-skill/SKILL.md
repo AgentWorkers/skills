@@ -1,312 +1,285 @@
 ---
 name: swiftscholar-skill
-description: Integrates the SwiftScholar HTTP API for searching, submitting, and analyzing academic papers. Use when the user wants to search literature, submit PDFs/URLs for parsing, retrieve analyses, manage favorites, or inspect SwiftScholar account usage programmatically.
+description: 该功能集成了 SwiftScholar 的 HTTP API，用于搜索、提交和分析学术论文。当用户需要搜索文献、提交 PDF 文件或 URL 以供解析、检索分析结果、管理收藏夹，或以编程方式检查 SwiftScholar 账户的使用情况时，可以使用此功能。
 ---
 
-# SwiftScholar Skill (`swiftscholar-skill`)
+# SwiftScholar 技能 (`swiftscholar-skill`)  
 
-This skill enables the agent to use the **SwiftScholar HTTP API** to search, submit, analyze, and manage academic papers.  
-Prefer the JSON-first `/api/tools/*` endpoints instead of deprecated `/api/mcp/tools/*` endpoints.
+此技能使代理能够使用 **SwiftScholar HTTP API** 来搜索、提交、分析和管理学术论文。建议优先使用以 JSON 为主的 `/api/tools/*` 端点，而非已弃用的 `/api/mcp/tools/*` 端点。  
 
-Basic information:
+**基本信息：**  
+- **基础 URL**: `https://www.swiftscholar.net`  
+- **认证**: `Authorization: Bearer <API_KEY>`  
+- **规范版本**: OpenAPI 3.1.0 (`SwiftScholar HTTP API 1.0.0`)  
 
-- **Base URL**: `https://www.swiftscholar.net`
-- **Auth**: `Authorization: Bearer <API_KEY>`
-- **Spec version**: OpenAPI 3.1.0 (`SwiftScholar HTTP API 1.0.0`)
-
-> Never expose the API key in natural language responses; only include it in actual HTTP headers.
-
----
-
-## 1. When to use this skill
-
-Use the SwiftScholar API in these situations:
-
-- The user wants to:  
-  - **search academic papers** (keyword or semantic/vector search)  
-  - **submit paper URLs / PDFs** for parsing  
-  - **retrieve structured markdown analysis** or raw markdown  
-  - **manage / inspect favorites and favorite folders**  
-  - **inspect parse quotas, usage, and available analysis models**
-
-Typical trigger phrases (examples):
-
-- “literature search”, “keyword search paper”, “semantic search paper”
-- “parse this paper PDF/URL”, “analyze this paper”
-- “get detailed analysis / markdown for this paper”
-- “SwiftScholar favorites / favorite folders”
-- “SwiftScholar account usage / quota / parse history”
+> **注意**：切勿在自然语言响应中暴露 API 密钥，仅将其包含在实际的 HTTP 请求头中。  
 
 ---
 
-## 2. Authentication and calling conventions
+## 1. 何时使用此技能  
 
-### 2.1 Authentication
+在以下情况下使用 SwiftScholar API：  
+- 用户希望：  
+  - **搜索学术论文**（关键词搜索或语义/向量搜索）  
+  - **提交论文 URL 或 PDF 文件**以进行解析  
+  - **获取结构化的 Markdown 分析结果**或原始 Markdown 内容  
+  - **管理/查看收藏夹和收藏文件夹**  
+  - **查看解析配额、使用情况以及可用的分析模型**  
 
-- All `/api/tools/*` endpoints use **Bearer tokens**:
-  - Header: `Authorization: Bearer <SWIFTSCHOLAR_API_KEY>`
-- The agent must not reveal or infer the key in natural language responses.
-
-### 2.2 General request conventions
-
-- **HTTP method**: all tool endpoints are `POST`.
-- **Content-Type**:
-  - JSON requests: `application/json`
-  - PDF upload: `multipart/form-data` with `file` as binary PDF
-- **Error handling**:
-  - JSON responses follow the `ToolApiResponse` structure:
-    - `ok: boolean` (always present)
-    - `data: object` (present on success)
-    - `error: string` (may be present on failure)
-  - After a call:
-    - If `ok == false` or `error` is present, briefly explain the failure to the user and suggest next steps (e.g., adjust parameters, narrow filters).
+**典型触发短语示例：**  
+- “文献搜索”，“关键词搜索论文”，“语义搜索论文”  
+- “解析这篇论文的 PDF/URL”，“分析这篇论文”  
+- “获取这篇论文的详细分析结果/Markdown”  
+- “SwiftScholar 收藏夹/收藏文件夹”  
+- “SwiftScholar 账户使用情况/配额/解析历史记录”  
 
 ---
 
-## 3. Core capabilities and endpoints
+## 2. 认证和调用规范  
 
-This section is organized by **capability**, not by URL, to help the agent choose appropriate tools.  
-All listed endpoints live under `paths./api/tools/...`.
+### 2.1 认证  
 
-### 3.1 Paper tags and basic browsing
+- 所有 `/api/tools/*` 端点都使用 **Bearer 令牌**：  
+  - 请求头：`Authorization: Bearer <SWIFTSCHOLAR_API_KEY>`  
+- 代理不得在自然语言响应中泄露或推断 API 密钥。  
 
-1. **List all paper tags (with IDs and usage counts)**
+### 2.2 通用请求规范  
 
-   - Endpoint: `POST /api/tools/paper_tags_list`
-   - Body: `{}` (no parameters)
-   - Purpose:
-     - When recommending tag filters or constructing complex queries, first list available tags and their IDs.
-
-2. **Paginate accessible papers**
-
-   - Endpoint: `POST /api/tools/papers_paginate`
-   - Body fields (partial):
-     - `page: integer >= 1` (default 1)
-     - `pageSize: integer 1–50` (default 10)
-     - `licenses: string[]` (may include `'none'`)
-     - `publishedFrom: string (YYYY-MM-DD)`
-     - `publishedTo: string (YYYY-MM-DD)`
-   - Purpose:
-     - Browse paper lists by time or license as a base for search results or user-library browsing.
-
-### 3.2 Search: keyword search vs vector (semantic) search
-
-1. **Keyword search (literal string matching)**
-
-   - Endpoint: `POST /api/tools/papers_search_keyword`
-   - Key body fields:
-     - `query: string` (required; search string)
-     - `page, pageSize` (same semantics as `papers_paginate`)
-     - `tags: string[]` / `tagNames: string[]` (tag filters)
-     - `tagMode: "and" | "or"` (default `"or"`)
-     - `licenses, publishedFrom, publishedTo` (same as above)
-   - Usage guidance:
-     - Prefer this when the user provides explicit keywords, title fragments, or phrases.
-     - Explain that this is **literal matching**, ideal for precise lookup.
-
-2. **Vector search (semantic search)**
-
-   - Endpoint: `POST /api/tools/papers_search_vector`
-   - Key body fields:
-     - `query: string` (required; natural-language query)
-     - `limit: integer 1–30` (default 10)
-     - Other filters as in `papers_search_keyword`
-   - Usage guidance:
-     - Use when the user describes **fuzzy concepts**, research themes, or questions (e.g., “recent progress of LLMs in medical imaging”).
-     - Clarify that this is **semantic search**, better for “finding related papers” without exact title matches.
-
-### 3.3 Submitting papers: URL / PDF / batch URLs
-
-1. **Submit a paper by URL**
-
-   - Endpoint: `POST /api/tools/paper_submit_url`
-   - Body fields:
-     - `url: string` (required; paper source page or PDF URL)
-     - `modelId: string` (optional; PDF analysis model)
-     - `force: boolean` (force re-parse)
-     - `favoriteFolderId: string | null` (favorites folder, `null` for root)
-     - `favoriteNote: string` (favorites note)
-   - Usage guidance:
-     - Use when the user provides a paper page URL or direct PDF URL and wants parsing, analysis, or saving to favorites.
-     - Mention that parsing may take time and suggest how to check results later if needed.
-
-2. **Submit or link a PDF file**
-
-   There are two main modes:
-
-   - JSON API:
-     - Endpoint: `POST /api/tools/paper_submit_pdf`
-     - JSON body:
-       - `pdfUrl: string` OR `pdfBase64: string` (one of them is required)
-       - `fileName: string` (optional)
-       - Other fields as in `paper_submit_url` (`modelId`, `force`, `favoriteFolderId`, `favoriteNote`)
-     - Note: the spec explicitly says “provide either `pdfUrl` or `pdfBase64`.”
-
-   - Multipart upload:
-     - Same endpoint with `multipart/form-data`:
-       - `file: binary` (required; PDF file content)
-       - Optional: `modelId`, `force`, `favoriteFolderId`, `favoriteNote`
-   - Usage guidance:
-     - Use this when the user has a local PDF or remote PDF URL and wants it parsed.
-
-3. **Batch submit URLs**
-
-   - Endpoint: `POST /api/tools/papers_submit_urls`
-   - Body fields:
-     - `urls: string[] | string` (array or newline-separated string)
-     - `modelId: string` (optional; applied to all URLs)
-     - `notifyOnComplete: boolean` (default false)
-     - `force: boolean` (default false)
-     - `favoriteFolderId: string | null`
-     - `favoriteNote: string`
-   - Usage guidance:
-     - Use when the user provides many paper URLs and wants them parsed, saved, or both in batch.
-
-### 3.4 Reading and analysis: markdown analysis / raw markdown / PDF link
-
-1. **Get markdown-formatted paper analysis**
-
-   - Endpoint: `POST /api/tools/paper_analysis_markdown`
-   - Body fields:
-     - `paperId: string` (required)
-     - `language: "auto" | "zh" | "en" | "both"` (default `"auto"`)
-     - `scope: "public" | "me" | "auto"` (default `"public"`)
-   - Usage guidance:
-     - Use when the user wants **structured, readable analysis** (summary, structure, key points).
-     - Set `language` according to the user’s preference:
-       - For Chinese users, prefer `"zh"` or `"both"`;
-       - If unsure, use `"auto"`.
-
-2. **Get the raw markdown source for a paper**
-
-   - Endpoint: `POST /api/tools/paper_markdown_raw`
-   - Body fields:
-     - `paperId: string` (required)
-     - `maxChars: integer (500–120000)` (optional; truncation)
-   - Usage guidance:
-     - Prefer this when the user wants to do custom processing, re-summarization, or extraction of formulas/tables.
-     - For very long papers, set a reasonable `maxChars` and inform the user if the content was truncated.
-
-3. **Get a guarded PDF download link**
-
-   - Endpoint: `POST /api/tools/paper_pdf_link`
-   - Body fields:
-     - `paperId: string` (required)
-   - Usage guidance:
-     - Use when the user wants to download or locally open the PDF.
-     - Respect copyright and visibility rules; only guide the user to links the API has authorized.
+- **HTTP 方法**：所有工具端点均为 `POST`。  
+- **Content-Type**：  
+  - JSON 请求：`application/json`  
+  - PDF 上传：`multipart/form-data`，并将文件作为二进制数据上传  
+- **错误处理**：  
+  - JSON 响应遵循 `ToolApiResponse` 结构：  
+    - `ok: boolean`（始终存在）  
+    - `data: object`（成功时存在）  
+    - `error: string`（失败时可能存在）  
+- **调用后**：  
+  - 如果 `ok` 为 `false` 或存在 `error`，向用户简要说明失败原因，并建议下一步操作（例如调整参数、缩小搜索范围）。  
 
 ---
 
-### 3.5 Favorite folders and favorite papers
+## 3. 核心功能及端点  
 
-1. **List favorite folders**
+本节按功能分类，而非按 URL 分类，以帮助代理选择合适的工具。  
+所有列出的端点均位于 `paths./api/tools/...` 下。  
 
-   - Endpoint: `POST /api/tools/paper_favorite_folders`
-   - Body: `{}`
-   - Purpose:
-     - Get folder IDs, parent/child relationships, and paths to help the user organize and target save locations.
+### 3.1 论文标签和基本浏览  
 
-2. **List favorite papers**
+1. **列出所有论文标签（含标签 ID 和使用次数）**  
+   - 端点：`POST /api/tools/paper_tags_list`  
+   - 请求体：`{}`（无参数）  
+   - **用途**：  
+     - 在推荐标签过滤器或构建复杂查询时，首先列出可用的标签及其 ID。  
 
-   - Endpoint: `POST /api/tools/paper_favorites_list`
-   - Body fields:
-     - `page, pageSize` (pagination; 1–50)
-     - `folderId: string | null` (`null` for root; omit for all folders)
-     - `includeDescendants: boolean` (default false)
-     - `search: string` (search in notes and titles)
-   - Purpose:
-     - Browse the user’s personal library or filter by notes and titles.
+2. **分页显示论文**  
+   - 端点：`POST /api/tools/papers_paginate`  
+   - 请求体字段（部分）：  
+     - `page: integer >= 1`（默认值 1）  
+     - `pageSize: integer 1–50`（默认值 10）  
+     - `licenses: string[]`（可能包含 `'none'`）  
+     - `publishedFrom: string (YYYY-MM-DD)`  
+     - `publishedTo: string (YYYY-MM-DD)`  
+   - **用途**：  
+     - 按时间或许可类型浏览论文列表，作为搜索结果或用户库浏览的依据。  
 
-3. **Save or update a favorite entry**
+### 3.2 搜索：关键词搜索 vs 向量（语义）搜索  
 
-   - Endpoint: `POST /api/tools/paper_favorite_save`
-   - Body fields:
-     - `paperId: string` (required)
-     - `folderId: string | null` (target folder; `null` for root; omit to reuse existing folder if present)
-     - `note: string` (optional note)
-   - Usage guidance:
-     - After identifying important papers, suggest saving them to an appropriate folder with a short descriptive note.
+1. **关键词搜索（字面匹配）**  
+   - 端点：`POST /api/tools/papers_search_keyword`  
+   - 关键请求体字段：  
+     - `query: string`（必填；搜索字符串）  
+     - `page, pageSize`（与 `papers_paginate` 相同）  
+     - `tags: string[]` / `tagNames: string[]`（标签过滤器）  
+     - `tagMode: "and" | "or"`（默认值 `"or"`）  
+     - `licenses, publishedFrom, publishedTo`（与上述相同）  
+   - **使用说明**：  
+     - 当用户提供明确的关键词、标题片段或短语时使用此方法。  
+     - 说明这是 **字面匹配**，适用于精确查找。  
+
+2. **向量搜索（语义搜索）**  
+   - 端点：`POST /api/tools/papers_search_vector`  
+   - 关键请求体字段：  
+     - `query: string`（必填；自然语言查询）  
+     - `limit: integer 1–30`（默认值 10）  
+     - 其他过滤器与 `papers_search_keyword` 相同  
+   - **使用说明**：  
+     - 当用户描述**模糊概念**、研究主题或问题时使用（例如：“LLM 在医学成像领域的最新进展”）。  
+     - 说明这是 **语义搜索**，更适合“查找相关论文”，无需精确匹配标题。  
+
+### 3.3 提交论文：URL / PDF / 批量 URL  
+
+1. **通过 URL 提交论文**  
+   - 端点：`POST /api/tools/paper_submit_url`  
+   - 请求体字段：  
+     - `url: string`（必填；论文来源页面或 PDF URL）  
+     - `modelId: string`（可选；PDF 分析模型）  
+     - `force: boolean`（强制重新解析）  
+     - `favoriteFolderId: string | null`（收藏文件夹；`null` 表示根目录）  
+     - `favoriteNote: string`（收藏备注）  
+   - **使用说明**：  
+     - 当用户提供论文页面 URL 或直接 PDF URL 并希望进行解析、分析或保存到收藏夹时使用。  
+     - 提醒解析可能需要时间，并建议在需要时查看结果。  
+
+2. **提交 PDF 文件**  
+   - 有两种主要方式：  
+     - **JSON API**：  
+       - 端点：`POST /api/tools/paper_submit_pdf`  
+       - JSON 请求体：  
+         - `pdfUrl: string` 或 `pdfBase64: string`（必须提供其中一个）  
+         - `fileName: string`（可选）  
+         - 其他字段与 `paper_submit_url` 相同（`modelId`, `force`, `favoriteFolderId`, `favoriteNote`）  
+     - **注意**：规范明确要求“提供 `pdfUrl` 或 `pdfBase64` 中的一个。  
+     - **multipart 上传**：  
+       - 使用相同的端点，但采用 `multipart/form-data`：  
+         - `file: binary`（必填；PDF 文件内容）  
+         - 可选字段：`modelId`, `force`, `favoriteFolderId`, `favoriteNote`  
+   - **使用说明**：  
+     - 当用户拥有本地 PDF 或远程 PDF URL 并希望对其进行解析时使用。  
+
+3. **批量提交 URL**  
+   - 端点：`POST /api/tools/papers_submit_urls`  
+   - 请求体字段：  
+     - `urls: string[] | string`（数组或换行符分隔的字符串）  
+     - `modelId: string`（可选；应用于所有 URL）  
+     - `notifyOnComplete: boolean`（默认值 false）  
+     - `force: boolean`（默认值 false）  
+     - `favoriteFolderId: string | null`  
+     - `favoriteNote: string`  
+   - **使用说明**：  
+     - 当用户提供多个论文 URL 并希望批量解析、保存或同时进行这两种操作时使用。  
+
+### 3.4 阅读和分析：Markdown 分析 / 原始 Markdown / PDF 链接  
+
+1. **获取Markdown格式的论文分析结果**  
+   - 端点：`POST /api/tools/paper_analysis_markdown`  
+   - 请求体字段：  
+     - `paperId: string`（必填）  
+     - `language: "auto" | "zh" | "en" | "both"`（默认值 `"auto"`）  
+     - `scope: "public" | "me" | "auto"`（默认值 `"public"`  
+   - **使用说明**：  
+     - 当用户需要**结构化、易读的分析结果**（摘要、结构、关键点）时使用。  
+     - 根据用户偏好设置 `language`：  
+       - 对于中文用户，建议使用 `"zh"` 或 `"both"`；  
+       - 如果不确定，使用 `"auto"`。  
+
+2. **获取论文的原始 Markdown 内容**  
+   - 端点：`POST /api/tools/paper_markdown_raw`  
+   - 请求体字段：  
+     - `paperId: string`（必填）  
+     - `maxChars: integer (500–120000)`（可选；限制字符数）  
+   - **使用说明**：  
+     - 当用户希望进行自定义处理、重新总结或提取公式/表格时使用。  
+     - 对于非常长的论文，请设置合理的 `maxChars` 并告知用户内容是否被截断。  
+
+3. **获取受保护的 PDF 下载链接**  
+   - 端点：`POST /api/tools/paper_pdf_link`  
+   - 请求体字段：  
+     - `paperId: string`（必填）  
+   - **使用说明**：  
+     - 当用户希望下载或本地打开 PDF 时使用。  
+     - 遵守版权和可见性规则；仅提供 API 授权的链接。  
 
 ---
 
-### 3.6 Analysis models and account usage
+### 3.5 收藏夹和收藏论文  
 
-1. **List available PDF analysis models**
+1. **列出收藏文件夹**  
+   - 端点：`POST /api/tools/paper_favorite_folders`  
+   - 请求体：`{}`  
+   - **用途**：  
+     - 获取文件夹 ID、父子关系及路径，帮助用户组织和定位保存位置。  
 
-   - Endpoint: `POST /api/tools/paper_analysis_models`
-   - Body: `{}`
-   - Purpose:
-     - Show available models under the current plan (including `consumeUnits` and per-parse extra price) to help choose `modelId`.
-     - Use when the user is concerned about cost or model quality; list models and give recommendations.
+2. **列出收藏论文**  
+   - 端点：`POST /api/tools/paper_favorites_list`  
+   - 请求体字段：  
+     - `page, pageSize`（分页；1–50）  
+     - `folderId: string | null`（`null` 表示根目录；省略则表示所有文件夹）  
+     - `includeDescendants: boolean`（默认值 false）  
+     - `search: string`（在备注和标题中搜索）  
+   - **用途**：  
+     - 浏览用户的个人图书馆或按备注和标题筛选论文。  
 
-2. **Summarize account quota and points**
+3. **保存或更新收藏记录**  
+   - 端点：`POST /api/tools/paper_favorite_save`  
+   - 请求体字段：  
+     - `paperId: string`（必填）  
+     - `folderId: string | null`（目标文件夹；`null` 表示根目录；如果存在则重用现有文件夹）  
+     - `note: string`（可选备注）  
+   - **使用说明**：  
+     - 在识别出重要论文后，建议将它们保存到合适的文件夹，并附上简短的描述性备注。  
 
-   - Endpoint: `POST /api/tools/account_usage_summary`
-   - Body: `{}`
-   - Purpose:
-     - Summarize current parse quota and points so the user knows how many more papers can be parsed.
+### 3.6 分析模型和账户使用情况  
 
-3. **List parse history**
+1. **列出可用的 PDF 分析模型**  
+   - 端点：`POST /api/tools/paper_analysis_models`  
+   - 请求体：`{}`  
+   - **用途**：  
+     - 显示当前计划下的可用模型（包括 `consumeUnits` 和每次解析的额外费用），帮助选择 `modelId`。  
+     - 当用户关心成本或模型质量时使用；列出模型并提供推荐。  
 
-   - Endpoint: `POST /api/tools/parse_history_list`
-   - Body fields:
-     - `page, pageSize` (1–100)
-     - `chargeMode: string` (optional, e.g., `FREE` or `BALANCE`)
-   - Purpose:
-     - Show parse usage records for the last 30 days (which papers, when parsed, potential charges).
+2. **汇总账户配额和积分**  
+   - 端点：`POST /api/tools/account_usage_summary`  
+   - 请求体：`{}`  
+   - **用途**：  
+     - 汇总当前的解析配额和积分，让用户了解还可以解析多少篇论文。  
+
+3. **列出解析历史记录**  
+   - 端点：`POST /api/tools/parse_history_list`  
+   - 请求体字段：  
+     - `page, pageSize`（1–100）  
+     - `chargeMode: string`（可选，例如 `FREE` 或 `BALANCE`）  
+   - **用途**：  
+     - 显示过去 30 天的解析使用记录（哪些论文被解析、何时被解析以及可能的费用）。  
+
+## 4. 推荐的工作流程  
+
+### 4.1 从研究问题到论文推荐（搜索工作流程）  
+
+1. 用自然语言明确用户的研究问题或主题。  
+2. 如果描述是概念性的或模糊的：  
+   - 首先调用 **向量搜索** `/api/tools/papers_search_vector` 以聚焦概念相关性。  
+3. 如果用户提供具体的关键词或标题片段：  
+   - 使用 **关键词搜索** `/api/tools/papers_search_keyword`。  
+4. 按相关性或最新时间排序结果：  
+   - 显示论文标题、年份和主要贡献的简要描述，以及 `paperId` 以便后续操作。  
+5. 对于选定的论文：  
+   - 调用 `/api/tools/paper_analysis_markdown` 进行详细分析；或  
+   - 调用 `/api/tools/paper_markdown_raw` 进行细粒度自定义处理。  
+
+### 4.2 提交新论文并获取分析结果（提交 + 分析工作流程）  
+
+1. 当用户提供论文 URL 或 PDF 时：  
+   - 使用 `/api/tools/paper_submit_url`。  
+   - 如果使用本地 PDF，使用 `/api/tools/paper_submit_pdf`。  
+2. 如果用户指定了文件夹或备注：  
+   - 在请求中包含 `favoriteFolderId` 和 `favoriteNote`。  
+3. 等待解析完成（如果 API 是异步的，可参考历史记录或文档中的 ID）：  
+   - 一旦获得 `paperId`，调用 `/api/tools/paper_analysis_markdown`。  
+4. 概述分析结果，包括：  
+   - 核心贡献、方法、数据集、结论以及它们与用户研究问题的关联。  
+
+### 4.3 管理个人文献库（收藏工作流程）  
+
+1. 当用户需要查看收藏夹结构时：  
+   - 调用 `/api/tools/paper_favorite_folders` 列出所有文件夹。  
+2. 按文件夹或搜索字符串查看收藏内容：  
+   - 使用适当的 `folderId` 和 `search` 调用 `/api/tools/paper_favorites_list`。  
+3. 当识别出重要的长期论文时：  
+   - 调用 `/api/tools/paper_favorite_save` 创建或更新收藏记录。  
+4. 在总结中：  
+   - 建议按主题或项目组织文件夹，以便将来方便检索。  
 
 ---
 
-## 4. Recommended workflows
+## 5. 实用技巧  
 
-### 4.1 From research question to paper recommendations (search workflow)
-
-1. Clarify the user’s research question or topic in natural language.
-2. If the description is conceptual or fuzzy:
-   - First call **vector search** `/api/tools/papers_search_vector` to focus on conceptual relevance.
-3. If the user provides concrete keywords or title fragments:
-   - Use **keyword search** `/api/tools/papers_search_keyword`.
-4. Organize results by relevance or recency:
-   - Present titles, years, and short descriptions of main contributions, plus `paperId` for follow-up.
-5. For selected papers:
-   - Call `/api/tools/paper_analysis_markdown` for detailed analysis; or
-   - Call `/api/tools/paper_markdown_raw` for fine-grained custom processing.
-
-### 4.2 Submit a new paper and obtain analysis (submission + analysis workflow)
-
-1. When the user provides a URL or PDF:
-   - URL: use `/api/tools/paper_submit_url`
-   - Local or remote PDF: use `/api/tools/paper_submit_pdf`
-2. If the user specifies a folder or note:
-   - Include `favoriteFolderId` and `favoriteNote` in the request.
-3. Wait for parsing to complete (if the API is asynchronous, rely on history or documented IDs):
-   - Once a `paperId` is available, call `/api/tools/paper_analysis_markdown`.
-4. Summarize the analysis in terms of:
-   - Core contributions, methods, datasets, conclusions, and how they relate to the user’s research question.
-
-### 4.3 Manage personal literature library (favorites workflow)
-
-1. When the user needs an overview of their favorites structure:
-   - Call `/api/tools/paper_favorite_folders` to list all folders.
-2. To view favorites by folder or search string:
-   - Call `/api/tools/paper_favorites_list` with appropriate `folderId` and `search`.
-3. When important long-term papers are identified:
-   - Call `/api/tools/paper_favorite_save` to create or update favorite records.
-4. In summaries:
-   - Suggest organizing folders by topic or project to simplify future retrieval.
-
----
-
-## 5. Practical tips
-
-- **Prefer `/api/tools/*`:**  
-  `/api/mcp/tools/*` endpoints are marked `deprecated` in the OpenAPI spec; avoid relying on them for new integrations.
-- **Validate parameters:**  
-  Respect OpenAPI constraints (pagination limits, required fields) to avoid unnecessary retries.
-- **Post-process responses:**  
-  After each call, convert raw JSON into user-friendly output:
-  - Concise paper lists (title + year + short description);
-  - Clear bullet-point summaries (methods, results, limitations);
-  - Direct conclusions and recommendations relevant to the user’s question (not just raw data dumps).
-
+- **优先使用 `/api/tools/*`：**  
+  `/api/mcp/tools/*` 端点在 OpenAPI 规范中被标记为已弃用；新集成时应避免使用它们。  
+- **验证参数：**  
+  遵守 OpenAPI 的限制（分页限制、必填字段），以避免不必要的重试。  
+- **后处理响应：**  
+  每次调用后，将原始 JSON 转换为用户友好的输出：  
+  - 简洁的论文列表（标题 + 年份 + 简短描述）；  
+  - 清晰的要点总结（方法、结果、局限性）；  
+  - 提供与用户问题相关的直接结论和建议（而不仅仅是原始数据）。

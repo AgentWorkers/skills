@@ -1,6 +1,6 @@
 ---
 name: noverload
-description: Give your agent a searchable knowledge brain - semantic search, topic synthesis, and action tracking across your saved YouTube videos, articles, Reddit threads, X posts, and PDFs
+description: 为你的智能助手配备一个可搜索的知识库——支持语义搜索、主题归纳以及对你保存的 YouTube 视频、文章、Reddit 帖子、X（TikTok）帖子和 PDF 文件中的操作进行追踪。
 homepage: https://noverload.com/openclaw
 user-invocable: true
 mcp-server:
@@ -10,30 +10,30 @@ mcp-server:
     NOVERLOAD_CONFIG: '{"accessToken":"${NOVERLOAD_TOKEN}","apiUrl":"https://www.noverload.com","readOnly":true}'
 ---
 
-# Noverload - Knowledge Memory for AI Agents
+# Noverload – 为AI代理提供的知识管理工具
 
-Your agent can now access your entire knowledge library. Search semantically, synthesize insights across sources, and track action items from everything you've saved.
+您的代理现在可以访问您的整个知识库。您可以进行语义搜索，跨来源合成见解，并跟踪您保存的所有内容中的待办事项。
 
-## What Noverload Provides
+## Noverload提供的功能
 
-- **Semantic Search**: Find content by meaning, not just keywords. Works across YouTube transcripts, articles, Reddit threads, X posts, and PDFs.
-- **AI Summaries**: Every piece of content is processed with key insights, action items, and takeaways extracted automatically.
-- **Topic Synthesis**: Combine insights from multiple sources to find patterns, contradictions, and connections.
-- **Action Tracking**: Tasks extracted from content, organized by your Health, Wealth, and Relationships goals.
-- **Framework Extraction**: Pull out methodologies, processes, and step-by-step guides from your saved content.
+- **语义搜索**：根据内容含义进行搜索，而不仅仅是关键词。支持YouTube转录文本、文章、Reddit帖子、X平台（如Twitter）的帖子以及PDF文件。
+- **AI摘要**：每条内容都会被自动处理，提取出关键见解、待办事项和要点。
+- **主题分析**：结合来自多个来源的见解，发现其中的模式、矛盾之处以及相互关联的内容。
+- **任务跟踪**：从内容中提取的任务会根据您的“健康”、“财富”和“人际关系”目标进行分类。
+- **框架提取**：从您保存的内容中提取方法论、流程和逐步指导。
 
-## Setup
+## 设置
 
-### 1. Get Your Token
+### 1. 获取您的访问令牌
 
-1. Sign up at https://noverload.com (free tier available)
-2. Go to Settings > Apps
-3. Click "New Token" to create a personal access token
-4. Copy the token (you won't see it again)
+1. 在https://noverload.com注册（提供免费试用）
+2. 进入“设置”>“应用程序”
+3. 点击“新建令牌”以创建个人访问令牌
+4. 复制令牌（您之后将无法再次看到它）
 
-### 2. Configure OpenClaw
+### 2. 配置OpenClaw
 
-Add to `~/.openclaw/openclaw.json`:
+将以下代码添加到`~/.openclaw/openclaw.json`文件中：
 
 ```json
 {
@@ -49,11 +49,11 @@ Add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-This skill uses MCP (Model Context Protocol) under the hood. The skill spawns the Noverload MCP server automatically via npx when activated.
+该技能在内部使用了MCP（Model Context Protocol）协议。激活该技能时，系统会通过`npx`命令自动启动Noverload MCP服务器。
 
-### Enable Saving (Optional)
+### 启用内容保存功能（可选）
 
-By default, the skill is **read-only** for security. To let your agent save new content:
+出于安全考虑，该技能默认为**只读**模式。若要允许您的代理保存新内容，请执行以下操作：
 
 ```json
 {
@@ -69,19 +69,19 @@ By default, the skill is **read-only** for security. To let your agent save new 
 }
 ```
 
-With `readOnly: false`, your agent can:
-- Save new URLs to your library
-- Add tags to content
-- Mark items as swipe files
-- Complete action items
+将`readOnly: false`设置为`true`后，您的代理可以：
+- 将新的URL保存到知识库中
+- 为内容添加标签
+- 将某些内容标记为需要处理的文件
+- 完成已保存内容中的待办事项
 
-### 3. Restart OpenClaw
+### 3. 重启OpenClaw
 
-The skill will be available in your next session.
+下次会话时，该技能将可用。
 
-## Available Commands
+## 可用的命令
 
-### Search Your Knowledge Base
+### 搜索您的知识库
 
 ```
 Search my Noverload for productivity tips
@@ -90,9 +90,9 @@ What have I saved about negotiation tactics?
 Look for anything about React Server Components
 ```
 
-The search uses semantic matching - it understands meaning, not just keywords. Ask naturally.
+该搜索功能支持语义匹配，能够理解内容的实际含义而不仅仅是关键词。请使用自然语言进行查询。
 
-### Get Full Content
+### 获取完整内容
 
 ```
 Get the full transcript of that Naval podcast
@@ -100,9 +100,9 @@ Show me the complete article about pricing strategy
 Give me details on the YouTube video about habits
 ```
 
-Retrieves full text, summaries, key insights, and metadata.
+检索内容的完整文本、摘要、关键见解和元数据。
 
-### Synthesize Topics
+### 合成主题
 
 ```
 Synthesize what I've saved about startup growth
@@ -111,9 +111,9 @@ What do different sources say about remote work?
 Compare perspectives on AI safety from my library
 ```
 
-Analyzes multiple sources to find connections, contradictions, and actionable patterns.
+分析多个来源的内容，找出其中的关联、矛盾之处以及可执行的模式。
 
-### Extract Frameworks
+### 提取框架
 
 ```
 What methodologies have I saved for building habits?
@@ -121,9 +121,9 @@ Find step-by-step processes from my content
 What frameworks exist in my library for cold outreach?
 ```
 
-Pulls structured approaches from your saved content.
+从您保存的内容中提取结构化的方法论和流程。
 
-### Track Actions
+### 跟踪待办事项
 
 ```
 What action items do I have from my saved content?
@@ -132,16 +132,16 @@ What should I work on based on what I've learned?
 Mark the meditation action as complete
 ```
 
-### Save New Content
+### 保存新内容
 
 ```
 Save this URL to Noverload: https://example.com/article
 Add this video to my knowledge base
 ```
 
-Saves content for processing (summaries, actions, embeddings generated automatically).
+保存内容以供进一步处理（系统会自动生成摘要、待办事项和相关数据）。
 
-### Browse Library
+### 浏览知识库
 
 ```
 What YouTube videos have I saved recently?
@@ -149,74 +149,55 @@ Show my articles from last week
 List content tagged with "marketing"
 ```
 
-## Example Workflows
+## 示例工作流程
 
-### Morning Brief
-```
-"Based on my saved content, what are the top 3 action items I should tackle today?"
-```
+- **晨间简报**
+- **研究模式**
+- **写作辅助**
+- **学习路径**
+- **决策支持**
 
-### Research Mode
-```
-"Find everything I've saved about pricing strategy and give me the key frameworks"
-```
+## 支持的内容类型
 
-### Writing Assistant
-```
-"What quotes and insights do I have saved about remote work? I'm writing a blog post."
-```
-
-### Learning Path
-```
-"Create a learning sequence from my saved machine learning content, starting with fundamentals"
-```
-
-### Decision Support
-```
-"I'm choosing between React and Vue. What have I saved that compares them?"
-```
-
-## Content Types Supported
-
-| Type | What Gets Extracted |
+| 类型 | 可提取的信息 |
 |------|---------------------|
-| YouTube | Full transcript, timestamps, key moments, action items |
-| Articles | Full text, main arguments, quotes, frameworks |
-| Reddit | Post + top comments, discussion themes, advice |
-| X/Twitter | Thread text, key points, linked content |
-| PDFs | Full text with OCR, document structure, highlights |
+| YouTube | 完整转录文本、时间戳、关键内容、待办事项 |
+| 文章 | 完整文本、主要论点、引用、方法论 |
+| Reddit | 帖子及热门评论、讨论主题、建议 |
+| X/Twitter | 帖子文本、关键点、链接内容 |
+| PDF文件 | 带有OCR技术的完整文本、文档结构、高亮部分 |
 
-## Tips for Best Results
+## 优化搜索效果的提示
 
-1. **Be specific**: "What did Paul Graham say about startup ideas?" works better than "startup stuff"
-2. **Use natural language**: The search understands context and meaning
-3. **Combine commands**: Search first, then synthesize the results
-4. **Check actions**: Your saved content has extracted tasks - use them
+1. **使用具体关键词**：例如“Paul Graham对创业想法有什么看法？”比“关于创业的内容”更有效。
+2. **使用自然语言**：搜索系统能够理解上下文和含义。
+3. **组合使用多个命令**：先搜索，再对结果进行综合分析。
+4. **查看待办事项**：您保存的内容中会包含提取出的任务，请及时处理它们。
 
-## Privacy & Security
+## 隐私与安全
 
-- Your data stays in YOUR Noverload account
-- Agent accesses via secure, revocable token
-- Read-only mode available for extra safety
-- No content is stored on OpenClaw servers
-- Revoke access anytime from Noverload settings
+- 您的数据仅存储在您的Noverload账户中。
+- 代理通过安全的、可撤销的访问令牌进行访问。
+- 提供只读模式以增加安全性。
+- 任何内容都不会存储在OpenClaw服务器上。
+- 您可以在Noverload的设置中随时撤销代理的访问权限。
 
-## Limits
+## 限制
 
-| Plan | Content Saves | MCP Access |
+| 订阅计划 | 可保存的内容量 | MCP访问权限 |
 |------|---------------|------------|
-| Free | 10/month | No |
-| Pro | Unlimited | Yes |
-| Trial | Unlimited | Yes (7 days) |
+| 免费 | 每月10条内容 | 无 |
+| 专业版 | 无限量内容 | 有 |
+| 试用版 | 无限量内容（7天） | 有 |
 
-MCP/API access is a Pro feature. Start a 7-day free trial to try it out.
+MCP/API访问权限属于专业版功能。您可以尝试7天的免费试用。
 
-## Support
+## 帮助支持
 
-- Documentation: https://noverload.com/docs/mcp
-- OpenClaw Integration: https://noverload.com/openclaw
-- Email: support@noverload.com
+- 文档说明：https://noverload.com/docs/mcp
+- OpenClaw集成指南：https://noverload.com/openclaw
+- 电子邮件支持：support@noverload.com
 
-## Version
+## 版本
 
-1.0.0 - Initial release for OpenClaw
+1.0.0 – 首次为OpenClaw发布

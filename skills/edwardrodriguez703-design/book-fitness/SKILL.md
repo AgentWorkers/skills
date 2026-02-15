@@ -1,23 +1,23 @@
 ---
 name: book-fitness
-description: Book fitness services through Lokuli MCP. Use when user needs to find and book fitness. Triggers on requests like "book a fitness", "find fitness near me", or any fitness service request.
+description: 通过 Lokuli MCP 预订健身服务。当用户需要查找和预订健身课程时使用该功能。该功能会在用户输入“预订健身课程”、“查找附近的健身场所”或其他任何与健身服务相关的请求时被触发。
 ---
 
-# uook fitness
+# uook健身
 
-Book fitness services through Lokuli's MCP server.
+通过Lokuli的MCP服务器预订健身服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输方式：SSE | JSON-RPC 2.0 | POST请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

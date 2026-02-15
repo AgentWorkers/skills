@@ -1,75 +1,61 @@
-# Token Economy
+# 代币经济系统
 
-Reduce OpenClaw costs by 60-80% through intelligent model routing and context management. Cheap-first escalation (GPT-4o → Sonnet → Opus), zero-token heartbeats, and budget guardrails. Save $60-105/month per deployment.
+通过智能的模型路由和上下文管理，将 OpenClaw 的使用成本降低 60-80%。系统采用“先选择低成本模型、再逐步升级”的策略（从 GPT-4o 升级到 Sonnet，最后使用 Opus），同时实现了“零代币心跳请求”功能，并设置了预算限制，从而每次部署可节省 60-105 美元的费用。
 
-**When to use:** Questions about costs, model routing, token optimization, budget
+**适用场景：**  
+当用户询问成本、模型路由方式、代币优化方案或预算相关问题时。
 
-**What to know:**
+**需要了解的内容：**
 
-## Active Optimizations
+## 活动中的优化措施  
+此 OpenClaw 分支版本（2026 年 2 月 13 日发布）包含以下代币经济相关优化功能：  
 
-This OpenClaw fork includes token-economy hooks (deployed Feb 13, 2026):
+**1. 模型路由**：  
+- **初始选择**：GPT-4o（速度快、成本低）  
+- **升级策略**：当任务需求增加时，自动切换到 Sonnet（性能更均衡）  
+- **最后选择**：只有在处理复杂任务时，才会使用 Opus（成本较高）。  
 
-**1. Model Routing** - Cheap-first with escalation:
-- Start: GPT-4o (fast, cheap)
-- Escalate: Sonnet (balanced)
-- Last resort: Opus (expensive, complex tasks only)
+**2. 上下文管理**：  
+- 通过设置上限来防止模型资源过度消耗：  
+  - 每个模型包的最大代币数量被限制为 10,000 个；  
+  - 如果超过限制，系统会自动截断请求。  
+  - 这有助于避免因上下文处理导致的代币浪费。  
 
-**2. Bounded Context** - Hard caps prevent bloat:
-- Max bundle size: 10,000 tokens
-- Auto-truncate if exceeded
-- Prevents runaway context costs
+**3. 零代币心跳请求**：  
+- 在调用大型语言模型（LLM）之前，系统会检查 `HEARTBEAT.md` 文件；  
+  - 如果该文件为空，则直接跳过 API 调用（从而完全避免代币消耗）。  
+  - 在优化之前，心跳请求占代币总使用量的约 50%。  
 
-**3. Zero-Token Heartbeat** - Pre-LLM check:
-- If `HEARTBEAT.md` empty → skip API call (100% cost elimination)
-- Heartbeats were ~50% of token usage before optimization
+**4. 代币审计**：  
+- 系统会记录所有代币使用情况（文件路径：`~/.openclaw/token-audit.jsonl`）；  
+- 提供每日审计报告；  
+- 设置每日预算上限为 25 美元。  
 
-**4. Token Auditing** - Full transparency:
-- Log: `~/.openclaw/token-audit.jsonl`
-- Daily reports available
-- Budget guardrails: $25/day hard cap
+**预期效果：**  
+- 总代币使用量减少 60-80%；  
+- 心跳请求相关的代币成本完全消除；  
+- 每天节省约 1-1.50 美元（优化前为每天 3-5 美元）；  
+- 每月可节省 60-105 美元。  
 
-## Expected Impact
+**配置位置：**  
+`~/.openclaw/openclaw.json` 文件中配置代币经济相关设置。  
 
-- 60-80% overall token reduction
-- 100% heartbeat cost elimination
-- ~$1-1.50/day (vs ~$3-5/day before)
-- $60-105/month savings
+**仓库链接：**  
+https://github.com/pfaria32/open-claw-token-economy  
 
-## Config Location
+**状态检查命令：**  
+（具体命令内容请参考相关文档或代码示例。）  
 
-`~/.openclaw/openclaw.json` - token-economy hooks configuration
+**适用场景：**  
+- 当用户询问成本或预算时；  
+- 在讨论模型选择方案时；  
+- 当用户对系统性能或成本表示疑问时；  
+- 在决定模型路由策略之前。  
 
-## Repository
+**自动切换到 Sonnet 的机制：**  
+如果模型被设置为 Opus，且用户超过 1 小时没有输入任何指令，且没有复杂的任务正在执行，系统会自动切换回 Sonnet 以节省成本。系统会每隔 30 分钟检查一次这一情况。  
 
-https://github.com/pfaria32/open-claw-token-economy
-
-## Status Commands
-
-```bash
-# Check current model
-openclaw status
-
-# View token usage
-cat ~/.openclaw/token-audit.jsonl | tail -20
-
-# Check heartbeat config
-cat ~/workspace/HEARTBEAT.md
-```
-
-## When to Mention
-
-- User asks about costs or budget
-- Model selection questions
-- "Why is this slow/expensive?"
-- Optimization discussions
-- Before making model routing decisions
-
-## Auto-Switch to Sonnet
-
-If model is set to Opus and there's no user input for >1 hour with no complex task in progress, automatically switch back to Sonnet to save costs. A cron job checks this every 30 minutes.
-
-**When to stay on Opus:**
-- Active complex reasoning/debugging task
-- User explicitly requested Opus for a specific purpose
-- Working on something that genuinely needs the extra capability
+**需要继续使用 Opus 的情况：**  
+- 当系统需要执行复杂的推理或调试任务时；  
+- 当用户明确要求使用 Opus 来完成特定任务时；  
+- 当任务确实需要 Opus 的高级功能时。

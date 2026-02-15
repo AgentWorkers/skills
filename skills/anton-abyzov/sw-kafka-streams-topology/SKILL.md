@@ -1,32 +1,32 @@
 ---
 name: kafka-streams-topology
-description: Kafka Streams topology design expert. Covers KStream vs KTable vs GlobalKTable, topology patterns, stream operations (filter, map, flatMap, branch), joins, windowing strategies, and exactly-once semantics. Activates for kafka streams topology, kstream, ktable, globalkTable, stream operations, stream joins, windowing, exactly-once, topology design.
+description: Kafka Streams 拓扑设计专家。深入研究 KStream、KTable 和 GlobalKTable 的区别，掌握各种拓扑模式，以及流处理操作（如过滤、映射、扁平化映射、分支操作）、数据连接（join）、窗口化策略和“恰好一次”（exactly-once）语义。专注于 Kafka Streams 拓扑设计、KStream、KTable 的使用，以及流处理相关的技术实现细节。
 ---
 
-# Kafka Streams Topology Skill
+# Kafka Streams 拓扑技能
 
-Expert knowledge of Kafka Streams library for building stream processing topologies in Java/Kotlin.
+具备使用 Kafka Streams 库构建 Java/Kotlin 流处理拓扑结构的专家级知识。
 
-## What I Know
+## 我所掌握的内容
 
-### Core Abstractions
+### 核心抽象概念
 
-**KStream** (Event Stream - Unbounded, Append-Only):
-- Represents immutable event sequences
-- Each record is an independent event
-- Use for: Clickstreams, transactions, sensor readings
+**KStream**（事件流 - 无界、仅支持追加操作）：
+- 表示不可变的事件序列
+- 每条记录都是一个独立事件
+- 适用于：点击流、交易数据、传感器读数等场景
 
-**KTable** (Changelog Stream - Latest State by Key):
-- Represents mutable state (compacted topic)
-- Updates override previous values (by key)
-- Use for: User profiles, product catalog, account balances
+**KTable**（变更日志流 - 按键存储最新状态）：
+- 表示可变状态（压缩后的主题）
+- 更新会覆盖之前的值（按键进行）
+- 适用于：用户资料、产品目录、账户余额等场景
 
-**GlobalKTable** (Replicated Table - Available on All Instances):
-- Full table replicated to every stream instance
-- No partitioning (broadcast)
-- Use for: Reference data (countries, products), lookups
+**GlobalKTable**（全局表 - 在所有实例上均可用）：
+- 整个表会被复制到每个流实例中
+- 不进行分区（广播式传输）
+- 适用于：参考数据（国家、产品信息）查询等场景
 
-**Key Differences**:
+**关键区别**：
 ```java
 // KStream: Every event is independent
 KStream<Long, Click> clicks = builder.stream("clicks");
@@ -45,22 +45,22 @@ GlobalKTable<Long, Product> products = builder.globalTable("products");
 // Available for lookups on any instance (no repartitioning needed)
 ```
 
-## When to Use This Skill
+## 何时需要使用此技能
 
-Activate me when you need help with:
-- Topology design ("How to design Kafka Streams topology?")
-- KStream vs KTable ("When to use KStream vs KTable?")
-- Stream operations ("Filter and transform events")
-- Joins ("Join KStream with KTable")
-- Windowing ("Tumbling vs hopping vs session windows")
-- Exactly-once semantics ("Enable EOS")
-- Topology optimization ("Optimize stream processing")
+当您需要以下帮助时，请使用我：
+- 拓扑设计（“如何设计 Kafka Streams 拓扑？”）
+- KStream 与 KTable 的选择（“何时使用 KStream，何时使用 KTable？”）
+- 流操作（“过滤和转换事件”）
+- 连接操作（“将 KStream 与 KTable 连接起来”）
+- 窗口操作（“滚动窗口、跳跃窗口、会话窗口”）
+- 一次精确处理语义（“启用 Exactly-once 语义”）
+- 拓扑优化（“优化流处理性能”）
 
-## Common Patterns
+## 常见模式
 
-### Pattern 1: Filter and Transform
+### 模式 1：过滤和转换
 
-**Use Case**: Clean and enrich events
+**用例**：清洗和丰富事件数据
 
 ```java
 StreamsBuilder builder = new StreamsBuilder();
@@ -80,9 +80,9 @@ KStream<Long, String> pages = humanClicks
 pages.to("pages");
 ```
 
-### Pattern 2: Branch by Condition
+### 模式 2：根据条件分支事件流
 
-**Use Case**: Route events to different paths
+**用例**：将事件路由到不同的处理路径
 
 ```java
 Map<String, KStream<Long, Order>> branches = orders
@@ -98,9 +98,9 @@ branches.get("order-high-value").to("priority-orders");
 branches.get("order-low-value").to("standard-orders");
 ```
 
-### Pattern 3: Enrich Stream with Table (Stream-Table Join)
+### 模式 3：通过表来丰富流数据（流-表连接）
 
-**Use Case**: Add user details to click events
+**用例**：为点击事件添加用户详细信息
 
 ```java
 // Users table (current state)
@@ -123,9 +123,9 @@ KStream<Long, EnrichedClick> enriched = clicks.leftJoin(
 enriched.to("enriched-clicks");
 ```
 
-### Pattern 4: Aggregate with Windowing
+### 模式 4：使用窗口功能进行聚合
 
-**Use Case**: Count clicks per user, per 5-minute window
+**用例**：计算每 5 分钟内每个用户的点击次数
 
 ```java
 KTable<Windowed<Long>, Long> clickCounts = clicks
@@ -144,9 +144,9 @@ clickCounts.toStream()
     .to("click-counts");
 ```
 
-### Pattern 5: Stateful Processing with State Store
+### 模式 5：结合状态存储进行状态处理
 
-**Use Case**: Detect duplicate events within 10 minutes
+**用例**：检测 10 分钟内的重复事件
 
 ```java
 // Define state store
@@ -190,11 +190,11 @@ KStream<Long, Event> deduplicated = events.transformValues(
 deduplicated.to("unique-events");
 ```
 
-## Join Types
+## 连接类型
 
-### 1. Stream-Stream Join (Inner)
+### 1. 流-流连接（内连接）
 
-**Use Case**: Correlate related events within time window
+**用例**：在时间窗口内关联相关事件
 
 ```java
 // Page views and clicks within 10 minutes
@@ -209,9 +209,9 @@ KStream<Long, ClickWithView> joined = clicks.join(
 );
 ```
 
-### 2. Stream-Table Join (Left)
+### 2. 流-表连接（左连接）
 
-**Use Case**: Enrich events with current state
+**用例**：用当前状态丰富事件数据
 
 ```java
 // Add product details to order items
@@ -228,9 +228,9 @@ KStream<Long, EnrichedOrderItem> enriched = items.leftJoin(
 );
 ```
 
-### 3. Table-Table Join (Inner)
+### 3. 表-表连接（内连接）
 
-**Use Case**: Combine two tables (latest state)
+**用例**：合并两个表的数据（获取最新状态）
 
 ```java
 // Join users with their current shopping cart
@@ -243,9 +243,9 @@ KTable<Long, UserWithCart> joined = users.join(
 );
 ```
 
-### 4. Stream-GlobalKTable Join
+### 4. 流-全局表连接
 
-**Use Case**: Enrich with reference data (no repartitioning)
+**用例**：使用参考数据进行数据丰富（无需分区）
 
 ```java
 // Add country details to user registrations
@@ -262,11 +262,11 @@ KStream<Long, EnrichedRegistration> enriched = registrations.leftJoin(
 );
 ```
 
-## Windowing Strategies
+## 窗口策略
 
-### Tumbling Windows (Non-Overlapping)
+### 滚动窗口（非重叠）
 
-**Use Case**: Aggregate per fixed time period
+**用例**：按固定时间周期进行数据聚合
 
 ```java
 // Count events every 5 minutes
@@ -278,9 +278,9 @@ KTable<Windowed<Long>, Long> counts = events
 // Windows: [0:00-0:05), [0:05-0:10), [0:10-0:15)
 ```
 
-### Hopping Windows (Overlapping)
+### 跳跃窗口（重叠）
 
-**Use Case**: Moving average or overlapping aggregates
+**用例**：计算移动平均值或进行重叠数据聚合
 
 ```java
 // Count events in 10-minute windows, advancing every 5 minutes
@@ -295,9 +295,9 @@ KTable<Windowed<Long>, Long> counts = events
 // Windows: [0:00-0:10), [0:05-0:15), [0:10-0:20)
 ```
 
-### Session Windows (Event-Based)
+### 会话窗口（基于事件）
 
-**Use Case**: User sessions with inactivity gap
+**用例**：检测用户会话中的不活跃间隔
 
 ```java
 // Session ends after 30 minutes of inactivity
@@ -307,9 +307,9 @@ KTable<Windowed<Long>, Long> sessionCounts = events
     .count();
 ```
 
-### Sliding Windows (Continuous)
+### 滑动窗口（连续）
 
-**Use Case**: Anomaly detection over sliding time window
+**用例**：在滑动时间窗口内检测异常行为
 
 ```java
 // Detect >100 events in any 1-minute period
@@ -319,11 +319,11 @@ KTable<Windowed<Long>, Long> slidingCounts = events
     .count();
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Partition Keys Correctly
+### 1. 正确选择分区键
 
-✅ **DO**:
+✅ **应该这样做**：
 ```java
 // Repartition by user_id before aggregation
 KStream<Long, Event> byUser = events
@@ -335,7 +335,7 @@ KTable<Long, Long> userCounts = byUser
     .count();
 ```
 
-❌ **DON'T**:
+❌ **不应该这样做**：
 ```java
 // WRONG: groupBy with different key (triggers repartitioning!)
 KTable<Long, Long> userCounts = events
@@ -343,9 +343,9 @@ KTable<Long, Long> userCounts = events
     .count();
 ```
 
-### 2. Use Appropriate Serdes
+### 2. 选择合适的序列化/反序列化器（Serdes）
 
-✅ **DO**:
+✅ **应该这样做**：
 ```java
 // Define custom serde for complex types
 Serde<User> userSerde = new JsonSerde<>(User.class);
@@ -356,15 +356,15 @@ KStream<Long, User> users = builder.stream(
 );
 ```
 
-❌ **DON'T**:
+❌ **不应该这样做**：
 ```java
 // WRONG: No serde specified (uses default String serde!)
 KStream<Long, User> users = builder.stream("users");
 ```
 
-### 3. Enable Exactly-Once Semantics
+### 3. 启用一次精确处理语义
 
-✅ **DO**:
+✅ **应该这样做**：
 ```java
 Properties props = new Properties();
 props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
@@ -372,9 +372,9 @@ props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
 props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100); // Commit frequently
 ```
 
-### 4. Use Materialized Stores for Queries
+### 4. 使用物化存储进行查询
 
-✅ **DO**:
+✅ **应该这样做**：
 ```java
 // Named store for interactive queries
 KTable<Long, Long> counts = events
@@ -393,11 +393,11 @@ ReadOnlyKeyValueStore<Long, Long> store =
 Long count = store.get(userId);
 ```
 
-## Topology Optimization
+## 拓扑优化
 
-### 1. Combine Operations
+### 1. 合并相关操作
 
-**GOOD** (Single pass):
+**好的做法**（一次完成所有操作）：
 ```java
 KStream<Long, String> result = events
     .filter((key, value) -> value.isValid())
@@ -405,7 +405,7 @@ KStream<Long, String> result = events
     .filterNot((key, value) -> value.contains("test"));
 ```
 
-**BAD** (Multiple intermediate topics):
+**不好的做法**（使用多个中间主题）：
 ```java
 KStream<Long, Event> valid = events.filter((key, value) -> value.isValid());
 valid.to("valid-events"); // Unnecessary write
@@ -414,9 +414,9 @@ KStream<Long, Event> fromValid = builder.stream("valid-events");
 KStream<Long, String> upper = fromValid.mapValues(v -> v.toUpperCase());
 ```
 
-### 2. Reuse KTables
+### 2. 重用 KTable
 
-**GOOD** (Shared table):
+**好的做法**（共享数据表）：
 ```java
 KTable<Long, User> users = builder.table("users");
 
@@ -424,15 +424,15 @@ KStream<Long, EnrichedClick> enrichedClicks = clicks.leftJoin(users, ...);
 KStream<Long, EnrichedOrder> enrichedOrders = orders.leftJoin(users, ...);
 ```
 
-**BAD** (Duplicate tables):
+**不好的做法**（创建重复的数据表）：
 ```java
 KTable<Long, User> users1 = builder.table("users");
 KTable<Long, User> users2 = builder.table("users"); // Duplicate!
 ```
 
-## Testing Topologies
+## 拓扑测试
 
-### Topology Test Driver
+### 拓扑测试工具
 
 ```java
 @Test
@@ -475,15 +475,14 @@ public void testClickFilter() {
 }
 ```
 
-## Common Issues & Solutions
+## 常见问题及解决方法
 
-### Issue 1: StreamsException - Not Co-Partitioned
+### 问题 1：StreamsException - 分区不匹配
 
-**Error**: Topics not co-partitioned for join
+**错误**：连接的流/表的分区数量不一致
+**根本原因**：分区数量不同
+**解决方法**：重新分区以匹配数据：
 
-**Root Cause**: Joined streams/tables have different partition counts
-
-**Solution**: Repartition to match:
 ```java
 // Ensure same partition count
 KStream<Long, Event> repartitioned = events
@@ -495,13 +494,12 @@ KStream<Long, Event> repartitioned = events
     );
 ```
 
-### Issue 2: Out of Memory (Large State Store)
+### 问题 2：内存不足（状态存储占用过多）
 
-**Error**: Java heap space
+**错误**：Java 堆内存不足
+**根本原因**：状态存储空间过大，未使用窗口功能
+**解决方法**：添加基于时间的清理机制：
 
-**Root Cause**: State store too large, windowing not used
-
-**Solution**: Add time-based cleanup:
 ```java
 // Use windowing to limit state size
 KTable<Windowed<Long>, Long> counts = events
@@ -513,11 +511,11 @@ KTable<Windowed<Long>, Long> counts = events
     .count();
 ```
 
-### Issue 3: High Lag, Slow Processing
+### 问题 3：延迟高，处理速度慢
 
-**Root Cause**: Blocking operations, inefficient transformations
+**根本原因**：阻塞操作或转换效率低下
+**解决方法**：采用异步处理方式：
 
-**Solution**: Use async processing:
 ```java
 // BAD: Blocking HTTP call
 events.mapValues(value -> {
@@ -528,12 +526,12 @@ events.mapValues(value -> {
 events.transformValues(() -> new AsyncEnricher());
 ```
 
-## References
+## 参考资料
 
-- Kafka Streams Documentation: https://kafka.apache.org/documentation/streams/
-- Kafka Streams Tutorial: https://kafka.apache.org/documentation/streams/tutorial
-- Testing Guide: https://kafka.apache.org/documentation/streams/developer-guide/testing.html
+- Kafka Streams 文档：https://kafka.apache.org/documentation/streams/
+- Kafka Streams 教程：https://kafka.apache.org/documentation/streams/tutorial
+- 测试指南：https://kafka.apache.org/documentation/streams/developer-guide/testing.html
 
 ---
 
-**Invoke me when you need topology design, joins, windowing, or exactly-once semantics expertise!**
+**当您需要关于拓扑设计、连接操作、窗口处理或一次精确处理语义方面的帮助时，请随时调用我！**

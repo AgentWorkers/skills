@@ -1,16 +1,16 @@
 ---
 name: Dreams
-description: Build a personal dream journal for recording, analyzing patterns, and exploring your subconscious.
+description: 创建一个个人梦想日记，用于记录、分析梦境中的模式，并探索你的潜意识。
 metadata: {"clawdbot":{"emoji":"🌙","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User describes dream → capture immediately with details
-- User asks about patterns → surface recurring themes
-- User curious about symbols → explore possible meanings
-- Create `~/dreams/` as workspace
+## 核心功能
+- 用户描述梦境时，系统会立即记录下所有细节。
+- 当用户询问梦境中的重复模式时，系统会找出这些模式。
+- 如果用户对某些符号感到好奇，系统会探索这些符号的可能含义。
+- 系统会创建一个名为 `~/dreams/` 的工作文件夹来存储所有梦境记录。
 
-## File Structure
+## 文件结构
 ```
 ~/dreams/
 ├── journal/
@@ -25,7 +25,7 @@ metadata: {"clawdbot":{"emoji":"🌙","os":["linux","darwin","win32"]}}
 └── insights.md
 ```
 
-## Dream Entry
+## 梦境记录
 ```markdown
 # 2024-02-11-flying-city.md
 ## Date
@@ -59,8 +59,8 @@ Grandmother: first time in a while
 Not lucid, realized it was dream only upon waking
 ```
 
-## Quick Capture
-For groggy morning logging:
+## 快速记录
+- 适用于头脑不清醒时的早晨记录：
 ```markdown
 # 2024-02-11.md
 Flying, glass city, grandma on rooftop
@@ -68,7 +68,7 @@ Anxious couldn't land
 [expand later]
 ```
 
-## Symbols Tracking
+## 符号追踪
 ```markdown
 # patterns/symbols.md
 ## Water
@@ -84,7 +84,7 @@ Anxious couldn't land
 See people.md
 ```
 
-## Recurring People
+## 反复出现的角色
 ```markdown
 # patterns/people.md
 ## Deceased
@@ -99,7 +99,7 @@ See people.md
 - Faceless figures: recurring in anxiety dreams
 ```
 
-## Themes
+## 梦境主题
 ```markdown
 # patterns/themes.md
 ## Common Themes
@@ -114,7 +114,7 @@ See people.md
 - No dreams remembered: alcohol nights
 ```
 
-## Lucid Dreaming
+## 清醒梦（Lucid Dreaming）
 ```markdown
 # lucid/techniques.md
 ## Reality Checks
@@ -131,33 +131,33 @@ See people.md
 - Feb 3: realized dreaming, flew intentionally
 ```
 
-## What To Surface
-- "Flying is your most common symbol"
-- "You dream about water when stressed"
-- "Grandmother appears near her anniversary"
-- "Third anxiety dream this week"
+## 需要记录的内容：
+- “飞行是你最常出现的梦境符号。”
+- “当你感到压力时，你会梦到水。”
+- “祖母总是在她的生日附近出现在梦中。”
+- “这是本周第三次出现焦虑相关的梦境。”
 
-## Capture Tips
-- Log immediately on waking — dreams fade fast
-- Voice note if too groggy to type
-- Any fragment is worth saving
-- Note emotions, not just events
+## 记录技巧：
+- 醒来后立即记录梦境——梦境内容会很快消失。
+- 如果头脑太不清醒，可以使用语音笔记。
+- 任何片段都值得保存。
+- 不仅要记录事件，还要记录当时的情绪。
 
-## What To Track
-- Date and rough time
-- Narrative (as much as remembered)
-- Emotions felt during dream
-- Symbols and recurring elements
-- Possible waking life triggers
+## 需要追踪的信息：
+- 日期和大致的时间。
+- 梦境的详细内容（尽可能回忆起来）。
+- 梦境中感受到的情绪。
+- 出现的符号和重复出现的元素。
+- 可能与梦境相关的现实生活中的触发因素。
 
-## Progressive Enhancement
-- Start: capture dreams on waking
-- Tag symbols and emotions
-- Review weekly for patterns
-- Track lucid dreaming attempts
+## 功能提升步骤：
+- 初始阶段：醒来后立即记录梦境。
+- 为梦境中的符号和情绪添加标签。
+- 每周回顾梦境，寻找其中的规律。
+- 记录自己尝试进入清醒梦的次数。
 
-## What NOT To Do
-- Interpret too literally
-- Force meaning on every dream
-- Dismiss fragments as not worth logging
-- Judge dream content
+## 不要做的行为：
+- 不要过于字面地解释梦境内容。
+- 不要强行给每个梦境赋予特定的含义。
+- 不要因为片段太简短就不记录它们。
+- 不要对梦境内容进行评判。

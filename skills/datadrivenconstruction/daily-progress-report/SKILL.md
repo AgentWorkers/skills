@@ -1,24 +1,24 @@
 ---
 slug: "daily-progress-report"
 display_name: "Daily Progress Report"
-description: "Generate automated daily progress reports from site data. Track work completed, labor hours, equipment usage, and weather conditions."
+description: "根据网站数据自动生成每日进度报告。记录已完成的工作、工时、设备使用情况以及天气状况。"
 ---
 
-# Daily Progress Report Generator
+# 日度进度报告生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Site managers spend hours creating daily reports:
-- Manual data collection
-- Inconsistent formats
-- Delayed submissions
-- Missing information
+### 问题描述
+站点管理员花费大量时间来制作每日报告：
+- 手动数据收集
+- 格式不一致
+- 提交延迟
+- 信息缺失
 
-### Solution
-Automated daily progress report generation from structured site data inputs.
+### 解决方案
+根据结构化站点数据自动生成每日进度报告。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -325,7 +325,7 @@ class DailyProgressReporter:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date
@@ -362,25 +362,25 @@ reporter.add_labor(report, "Concrete", "ABC Concrete Co", 8, 10, 2)
 reporter.export_to_excel(report, "daily_report.xlsx")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Generate Text Summary
+### 1. 生成文本摘要
 ```python
 text = reporter.generate_text_report(report)
 print(text)
 ```
 
-### 2. Track Delays
+### 2. 跟踪延迟
 ```python
 report.delays.append("Weather delay - rain from 14:00-16:00")
 report.delays.append("Material delivery late by 2 hours")
 ```
 
-### 3. Calculate Metrics
+### 3. 计算指标
 ```python
 summary = reporter.calculate_summary(report)
 print(f"Productivity: {summary['total_manhours']} man-hours")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.1 - Site Data Collection
+## 资源
+- **DDC手册**：第4.1章 - 站点数据收集

@@ -1,76 +1,75 @@
 ---
 name: clawpify
-description: Query and manage Shopify stores via GraphQL Admin API. Use for products, orders, customers, inventory, discounts, and all Shopify data operations.
+description: 通过 GraphQL Admin API 查询和管理 Shopify 商店。该 API 可用于处理产品、订单、客户、库存、折扣以及所有与 Shopify 相关的数据操作。
 dependencies:
   - Tool: shopify_graphql (from MCP server or custom function)
 ---
 
 # Shopify GraphQL Admin API
 
-A comprehensive skill for interacting with Shopify's GraphQL Admin API. This skill enables Claude to query and manage all aspects of Shopify store data.
+这是一项用于与Shopify的GraphQL Admin API进行交互的综合性技能。通过该技能，Claude能够查询和管理Shopify商店数据的所有方面。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user asks about:
-- Products (list, search, create, update, delete)
-- Orders (view, cancel, fulfill)
-- Customers (list, create, update)
-- Inventory (check levels, adjust quantities)
-- Discounts (create codes, manage promotions)
-- Any other Shopify store operations
+当用户需要执行以下操作时，请使用此技能：
+- 产品（列出、搜索、创建、更新、删除）
+- 订单（查看、取消、发货）
+- 客户（列出、创建、更新）
+- 库存（检查库存水平、调整数量）
+- 优惠券（创建优惠券代码、管理促销活动）
+- 任何其他Shopify商店相关操作
 
-## Critical Operations Requiring Permission
+## 需要权限的关键操作
 
-IMPORTANT: Before executing any of the following operations, you MUST ask for explicit user permission:
+重要提示：在执行以下任何操作之前，必须先获得用户的明确许可：
+- 退款：创建退款（涉及永久性的财务交易）
+- 订单取消：取消订单（可能会触发退款）
+- 礼品卡停用：永久禁用礼品卡
+- 库存调整：修改库存水平
+- 产品删除：永久删除产品
+- 优惠券激活：更改客户的价格
 
-- Refunds: Create refunds (permanent financial transactions)
-- Order Cancellations: Cancel orders (may trigger refunds)
-- Gift Card Deactivation: Permanently disable gift cards
-- Inventory Adjustments: Modify stock levels
-- Product Deletions: Permanently remove products
-- Discount Activations: Change pricing for customers
+请始终向用户说明将要进行的更改，并等待用户的确认。
 
-Always show what will be changed and wait for user confirmation.
+## 使用方法
 
-## How to Use
+1. 使用`shopify_graphql`工具来执行查询。
+2. 检查`errors`（GraphQL错误）和`userErrors`（验证错误）。
+3. 对于大量数据，使用`first`/`after`进行分页处理。
+4. 将所有ID格式化为：`gid://shopify/Resource/123`。
 
-1. Use the `shopify_graphql` tool to execute queries
-2. Check for `errors` (GraphQL issues) and `userErrors` (validation issues)
-3. Use pagination with `first`/`after` for large result sets
-4. Format all IDs as: `gid://shopify/Resource/123`
+## 可参考的文档
 
-## Available References
+有关详细模式和示例，请参阅以下文档：
+- products.md - 产品及变体管理
+- orders.md - 订单操作
+- customers.md - 客户管理
+- inventory.md - 库存管理
+- discounts.md - 优惠券代码及促销活动
+- collections.md - 产品系列
+- fulfillments.md - 订单发货
+- refunds.md - 退款处理
+- draft-orders.md - 草稿订单创建
+- gift-cards.md - 礼品卡管理
+- webhooks.md - 事件订阅
+- locations.md - 商店位置信息
+- marketing.md - 营销活动
+- markets.md - 多市场设置
+- menus.md - 导航菜单
+- metafields.md - 自定义数据字段
+- pages.md - 商店页面
+- blogs.md - 博文管理
+- files.md - 文件上传
+- shipping.md - 运输配置
+- shop.md - 商店信息
+- subscriptions.md - 订阅管理
+- translations.md - 内容翻译
+- segments.md - 客户分组
+- bulk-operations.md - 批量数据操作
 
-For detailed patterns and examples, refer to the reference documents:
-- products.md - Products and variants management
-- orders.md - Order operations
-- customers.md - Customer management
-- inventory.md - Inventory and locations
-- discounts.md - Discount codes and promotions
-- collections.md - Product collections
-- fulfillments.md - Order fulfillment and shipping
-- refunds.md - Process refunds
-- draft-orders.md - Draft order creation
-- gift-cards.md - Gift card management
-- webhooks.md - Event subscriptions
-- locations.md - Store locations
-- marketing.md - Marketing activities
-- markets.md - Multi-market setup
-- menus.md - Navigation menus
-- metafields.md - Custom data fields
-- pages.md - Store pages
-- blogs.md - Blog management
-- files.md - File uploads
-- shipping.md - Shipping configuration
-- shop.md - Store information
-- subscriptions.md - Subscription management
-- translations.md - Content translations
-- segments.md - Customer segments
-- bulk-operations.md - Bulk data operations
+## 快速示例
 
-## Quick Examples
-
-### List Recent Orders
+### 列出最近的交易记录
 ```graphql
 query {
   orders(first: 10, sortKey: CREATED_AT, reverse: true) {
@@ -86,7 +85,7 @@ query {
 }
 ```
 
-### Search Products
+### 搜索产品
 ```graphql
 query {
   products(first: 10, query: "title:*shirt* AND status:ACTIVE") {
@@ -99,7 +98,7 @@ query {
 }
 ```
 
-### Check Inventory
+### 检查库存情况
 ```graphql
 query GetInventory($id: ID!) {
   inventoryItem(id: $id) {
@@ -117,18 +116,18 @@ query GetInventory($id: ID!) {
 }
 ```
 
-## Error Handling
+## 错误处理
 
-Always check responses:
-- `errors` array = GraphQL syntax issues
-- `userErrors` in mutations = validation problems
+务必检查响应中的内容：
+- `errors`数组：表示GraphQL语法错误
+- `userErrors`：表示验证问题
 
-## Best Practices
+## 最佳实践
 
-1. Request only needed fields to optimize response size
-2. Use pagination for lists that may grow
-3. Check userErrors in all mutation responses
-4. Ask permission before dangerous operations
-5. Format results clearly for the user
-6. Use bulk operations for large data exports/imports
-7. Handle rate limits with exponential backoff
+1. 仅请求所需的字段以优化响应大小。
+2. 对于可能包含大量数据的列表，使用分页功能。
+3. 在所有mutation响应中检查`userErrors`。
+4. 在执行危险操作前先获取用户许可。
+5. 以清晰的方式向用户展示查询结果。
+6. 对于大量数据的导出/导入操作，使用批量处理功能。
+7. 采用指数级退避策略来处理请求速率限制。

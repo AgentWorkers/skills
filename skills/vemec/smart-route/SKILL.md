@@ -1,6 +1,6 @@
 ---
 name: smart-route
-description: Calculate traffic-aware routes, travel times, and distances between locations using Google Routes API. Use when the user asks for "traffic to X", "how long to get to Y", "best route to Z", or "drive time". Returns JSON with duration, distance, and a direct Google Maps navigation link.
+description: 使用 Google Routes API 计算考虑交通状况的路线、行驶时间以及地点之间的距离。当用户询问“X 地点的交通情况”、“到 Y 地点需要多长时间”、“去 Z 地点的最佳路线”或“驾驶时间”时，可以使用该 API。返回的 JSON 数据包含行驶时间、距离以及一个直接的 Google Maps 导航链接。
 metadata:
   openclaw:
     emoji: 🚦
@@ -11,31 +11,31 @@ metadata:
         - GOOGLE_ROUTES_API_KEY
 ---
 
-# Google Routes Calculator
+# Google 路线查询工具
 
-Get real-time traffic and routing information via Google Routes API (v2).
+通过 Google 路线 API（v2）获取实时交通信息和路线信息。
 
-## When to use
+## 使用场景
 
-Use this skill immediately when the user asks:
-- "How is the traffic to X?"
-- "How long does it take to drive to Y?"
-- "Give me the route to Z."
-- "What's the distance between A and B?"
+当用户提出以下问题时，可立即使用此功能：
+- “去 X 地点的交通情况如何？”
+- “开车到 Y 地点需要多长时间？”
+- “请给我提供从 A 到 Z 的路线。”
+- “A 和 B 之间的距离是多少？”
 
-## Usage
+## 使用方法
 
-This skill executes a Node.js script. It requires an API Key with "Routes API" enabled.
+此功能通过执行一个 Node.js 脚本来实现。需要一个已启用 “Routes API” 功能的 API 密钥。
 
-### Command
+### 命令
 
 ```bash
 node skills/smart-route/scripts/get_route.js --origin "Origin Address" --destination "Destination Address" [--mode DRIVE|BICYCLE|WALK]
 ```
 
-### Output Format
+### 输出格式
 
-The script returns a JSON object:
+脚本返回一个 JSON 对象：
 
 ```json
 {
@@ -49,35 +49,38 @@ The script returns a JSON object:
 }
 ```
 
-### Examples
+### 示例
 
-- **Check traffic in San Francisco:**
+- **查询旧金山的交通情况：**
   `node skills/smart-route/scripts/get_route.js --origin "Union Square, San Francisco, CA" --destination "Golden Gate Bridge, San Francisco, CA"`
 
-- **Drive time in Los Angeles:**
+- **查询洛杉矶的驾驶时间：**
   `node skills/smart-route/scripts/get_route.js --origin "Los Angeles, CA" --destination "Santa Monica, CA" --mode DRIVE`
 
-## Configuration
+## 配置
 
-### Privacy & Security
-- **Scope**: This skill only communicates with `routes.googleapis.com`.
-- **Data Handling**:
-  - It does not read local files or other environment variables besides the ones specified below.
-  - **PII Notice**: User-supplied origin and destination addresses are sent to Google Routes API and printed to stdout in the JSON response. Users should consider these addresses as potentially sensitive information (PII).
-- **Credentials**: API keys must be provided via environment variables. Providing keys via CLI flags is disabled for security reasons (to avoid exposing secrets in process lists).
+### 隐私与安全
 
-### API Credentials
-This skill requires a **Google Cloud API Key** with the **Routes API** enabled.
+- **通信范围**：此功能仅与 `routes.googleapis.com` 通信。
+- **数据处理的注意事项**：
+  - 除了下面指定的变量外，不会读取本地文件或其他环境变量。
+  - **个人身份信息（PII）处理**：用户提供的起点和终点地址会被发送到 Google 路线 API，并以 JSON 格式显示在输出中。用户应将这些地址视为可能包含敏感信息（PII）的数据。
+- **凭证要求**：必须通过环境变量提供 API 密钥。出于安全考虑，禁止通过命令行参数（CLI）传递密钥（以避免在进程列表中泄露敏感信息）。
 
-- **Variable**: `GOOGLE_ROUTES_API_KEY`
-- **Detection**: The skill will check for this environment variable at runtime.
-- **Strict Mode**: If the variable is missing, the script will exit with an error rather than falling back to other keys, ensuring no accidental usage of incorrect credentials.
+### API 凭证
 
-### Setup Instructions
-1.  Open the [Google Cloud Console](https://console.cloud.google.com/).
-2.  Enable the **Routes API** for your project.
-3.  Generate an API Key under **Credentials**.
-4.  Export the key to your environment:
+此功能需要一个已启用 “Routes API” 功能的 **Google Cloud API 密钥**。
+
+- **相关变量**：`GOOGLE_ROUTES_API_KEY`
+  - 该脚本会在运行时检查此环境变量的存在性。
+- **严格模式**：如果该变量缺失，脚本将立即退出并显示错误，而不会尝试使用其他密钥，从而确保不会误用错误的凭证。
+
+### 设置说明
+
+1. 打开 [Google Cloud 控制台](https://console.cloud.google.com/)。
+2. 为您的项目启用 “Routes API” 功能。
+3. 在 “凭证” 设置中生成 API 密钥。
+4. 将密钥导出到您的环境中：
     ```bash
     export GOOGLE_ROUTES_API_KEY="your_api_key_here"
     ```

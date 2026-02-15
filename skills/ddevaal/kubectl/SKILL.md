@@ -1,6 +1,6 @@
 ---
 name: kubectl-skill
-description: Execute and manage Kubernetes clusters via kubectl commands. Query resources, deploy applications, debug containers, manage configurations, and monitor cluster health. Use when working with Kubernetes clusters, containers, deployments, or pod diagnostics.
+description: 通过 `kubectl` 命令来执行和管理 Kubernetes 集群。可以查询资源、部署应用程序、调试容器、管理配置以及监控集群的健康状况。适用于处理 Kubernetes 集群、容器、部署任务或 Pod 相关的诊断工作。
 license: MIT
 metadata:
   author: Dennis de Vaal <d.devaal@gmail.com>
@@ -9,29 +9,29 @@ metadata:
 compatibility: Requires kubectl binary (v1.20+) and active kubeconfig connection to a Kubernetes cluster. Works on macOS, Linux, and Windows (WSL).
 ---
 
-# kubectl Skill
+# kubectl 技能
 
-Execute Kubernetes cluster management operations using the `kubectl` command-line tool.
+使用 `kubectl` 命令行工具执行 Kubernetes 集群管理操作。
 
-## Overview
+## 概述
 
-This skill enables agents to:
-- **Query Resources** — List and get details about pods, deployments, services, nodes, etc.
-- **Deploy & Update** — Create, apply, patch, and update Kubernetes resources
-- **Debug & Troubleshoot** — View logs, execute commands in containers, inspect events
-- **Manage Configuration** — Update kubeconfig, switch contexts, manage namespaces
-- **Monitor Health** — Check resource usage, rollout status, events, and pod conditions
-- **Perform Operations** — Scale deployments, drain nodes, manage taints and labels
+此技能使代理能够：
+- **查询资源** — 列出并获取有关Pod、部署、服务、节点等的信息
+- **部署和更新** — 创建、应用、修补和更新Kubernetes资源
+- **调试和故障排除** — 查看日志、在容器中执行命令、检查事件
+- **管理配置** — 更新kubeconfig文件、切换上下文、管理命名空间
+- **监控健康状况** — 检查资源使用情况、滚动发布状态、事件和Pod状态
+- **执行操作** — 扩展部署、释放节点、管理污点和标签
 
-## Prerequisites
+## 先决条件
 
-1. **kubectl binary** installed and accessible on PATH (v1.20+)
-2. **kubeconfig** file configured with cluster credentials (default: `~/.kube/config`)
-3. **Active connection** to a Kubernetes cluster
+1. 已安装 `kubectl` 可执行文件，并且可以在 `PATH` 中找到（版本要求：v1.20+）
+2. `kubeconfig` 文件已配置集群凭据（默认位置：`~/.kube/config`）
+3. 与Kubernetes集群保持活动连接
 
-## Quick Setup
+## 快速设置
 
-### Install kubectl
+### 安装 kubectl
 
 **macOS:**
 ```bash
@@ -44,15 +44,15 @@ apt-get install -y kubectl  # Ubuntu/Debian
 yum install -y kubectl      # RHEL/CentOS
 ```
 
-**Verify:**
+**验证安装：**
 ```bash
 kubectl version --client
 kubectl cluster-info  # Test connection
 ```
 
-## Essential Commands
+## 必需命令
 
-### Query Resources
+### 查询资源
 ```bash
 kubectl get pods                    # List all pods in current namespace
 kubectl get pods -A                 # All namespaces
@@ -61,7 +61,7 @@ kubectl get nodes                   # List nodes
 kubectl describe pod POD_NAME        # Detailed info with events
 ```
 
-### View Logs
+### 查看日志
 ```bash
 kubectl logs POD_NAME                # Get logs
 kubectl logs -f POD_NAME             # Follow logs (tail -f)
@@ -69,20 +69,20 @@ kubectl logs POD_NAME -c CONTAINER   # Specific container
 kubectl logs POD_NAME --previous     # Previous container logs
 ```
 
-### Execute Commands
+### 执行命令
 ```bash
 kubectl exec -it POD_NAME -- /bin/bash   # Interactive shell
 kubectl exec POD_NAME -- COMMAND         # Run single command
 ```
 
-### Deploy Applications
+### 部署应用程序
 ```bash
 kubectl apply -f deployment.yaml         # Apply config
 kubectl create -f deployment.yaml        # Create resource
 kubectl apply -f deployment.yaml --dry-run=client  # Test
 ```
 
-### Update Applications
+### 更新应用程序
 ```bash
 kubectl set image deployment/APP IMAGE=IMAGE:TAG  # Update image
 kubectl scale deployment/APP --replicas=3          # Scale pods
@@ -90,16 +90,16 @@ kubectl rollout status deployment/APP              # Check status
 kubectl rollout undo deployment/APP                # Rollback
 ```
 
-### Manage Configuration
+### 管理配置
 ```bash
 kubectl config view                  # Show kubeconfig
 kubectl config get-contexts          # List contexts
 kubectl config use-context CONTEXT   # Switch context
 ```
 
-## Common Patterns
+## 常见用法
 
-### Debugging a Pod
+### 调试Pod
 ```bash
 # 1. Identify the issue
 kubectl describe pod POD_NAME
@@ -115,7 +115,7 @@ kubectl exec -it POD_NAME -- /bin/bash
 kubectl get events --sort-by='.lastTimestamp'
 ```
 
-### Deploying a New Version
+### 部署新版本
 ```bash
 # 1. Update image
 kubectl set image deployment/MY_APP my-app=my-app:v2
@@ -130,7 +130,7 @@ kubectl get pods -l app=my-app
 kubectl rollout undo deployment/MY_APP
 ```
 
-### Preparing Node for Maintenance
+### 为维护准备节点
 ```bash
 # 1. Drain node (evicts all pods)
 kubectl drain NODE_NAME --ignore-daemonsets
@@ -142,26 +142,25 @@ kubectl drain NODE_NAME --ignore-daemonsets
 kubectl uncordon NODE_NAME
 ```
 
-## Output Formats
+## 输出格式
 
-The `--output` (`-o`) flag supports multiple formats:
+`--output`（`-o`）标志支持多种格式：
+- `table` — 默认的表格格式
+- `wide` — 带有额外列的扩展表格格式
+- `json` — JSON格式（适用于 `jq` 工具）
+- `yaml` — YAML格式
+- `jsonpath` — JSONPath表达式
+- `custom-columns` — 定义自定义输出列
+- `name` — 仅显示资源名称
 
-- `table` — Default tabular format
-- `wide` — Extended table with additional columns
-- `json` — JSON format (useful with `jq`)
-- `yaml` — YAML format
-- `jsonpath` — JSONPath expressions
-- `custom-columns` — Define custom output columns
-- `name` — Only resource names
-
-**Examples:**
+**示例：**
 ```bash
 kubectl get pods -o json | jq '.items[0].metadata.name'
 kubectl get pods -o jsonpath='{.items[*].metadata.name}'
 kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase
 ```
 
-## Global Flags (Available to All Commands)
+## 全局标志（所有命令均可使用）
 
 ```bash
 -n, --namespace=<ns>           # Operate in specific namespace
@@ -174,52 +173,52 @@ kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase
 -v, --v=<int>                  # Verbosity level (0-9)
 ```
 
-## Dry-Run Modes
+## 干运行模式
 
-- `--dry-run=client` — Fast client-side validation (test commands safely)
-- `--dry-run=server` — Server-side validation (more accurate)
-- `--dry-run=none` — Execute for real (default)
+- `--dry-run=client` — 快速的客户端验证（安全地测试命令）
+- `--dry-run=server` — 服务器端验证（更准确）
+- `--dry-run=none` — 真正执行命令（默认值）
 
-**Always test with `--dry-run=client` first:**
+**建议始终先使用 `--dry-run=client` 进行测试：**
 ```bash
 kubectl apply -f manifest.yaml --dry-run=client
 ```
 
-## Advanced Topics
+## 高级主题
 
-For detailed reference material, command-by-command documentation, troubleshooting guides, and advanced workflows, see:
-- [references/REFERENCE.md](references/REFERENCE.md) — Complete kubectl command reference
-- [scripts/](scripts/) — Helper scripts for common tasks
+有关详细参考资料、命令文档、故障排除指南和高级工作流程，请参阅：
+- [references/REFERENCE.md](references/REFERENCE.md) — 完整的 `kubectl` 命令参考
+- [scripts/](scripts/) — 用于常见任务的辅助脚本
 
-## Helpful Tips
+## 有用的提示
 
-1. **Use label selectors for bulk operations:**
+1. **使用标签选择器进行批量操作：**
    ```bash
    kubectl delete pods -l app=myapp
    kubectl get pods -l env=prod,tier=backend
    ```
 
-2. **Watch resources in real-time:**
+2. **实时监控资源状态：**
    ```bash
    kubectl get pods -w  # Watch for changes
    ```
 
-3. **Use `-A` flag for all namespaces:**
+3. **使用 `-A` 标志查看所有命名空间中的资源：**
    ```bash
    kubectl get pods -A  # See pods everywhere
    ```
 
-4. **Save outputs for later comparison:**
+4. **保存输出以供后续比较：**
    ```bash
    kubectl get deployment my-app -o yaml > deployment-backup.yaml
    ```
 
-5. **Check before you delete:**
+5. **删除前请先检查：**
    ```bash
    kubectl delete pod POD_NAME --dry-run=client
    ```
 
-## Getting Help
+## 获取帮助
 
 ```bash
 kubectl help                      # General help
@@ -228,20 +227,20 @@ kubectl explain pods              # Resource documentation
 kubectl explain pods.spec         # Field documentation
 ```
 
-## Environment Variables
+## 环境变量
 
-- `KUBECONFIG` — Path to kubeconfig file (can include multiple paths separated by `:`)
-- `KUBECTL_CONTEXT` — Override default context
+- `KUBECONFIG` — kubeconfig 文件的路径（可以包含多个路径，用冒号分隔）
+- `KUBECTL_CONTEXT` — 覆盖默认上下文
 
-## Resources
+## 资源链接
 
-- [Official kubectl Docs](https://kubernetes.io/docs/reference/kubectl/)
-- [kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
-- [Kubernetes API Reference](https://kubernetes.io/docs/reference/generated/kubernetes-api/)
-- [Agent Skills Specification](https://agentskills.io/)
+- [官方 kubectl 文档](https://kubernetes.io/docs/reference/kubectl/)
+- [kubectl 快速参考](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+- [Kubernetes API 参考](https://kubernetes.io/docs/reference/generated/kubernetes-api/)
+- [代理技能规范](https://agentskills.io/)
 
 ---
 
-**Version:** 1.0.0  
-**License:** MIT  
-**Compatible with:** kubectl v1.20+, Kubernetes v1.20+
+**版本：** 1.0.0  
+**许可证：** MIT  
+**兼容版本：** kubectl v1.20+，Kubernetes v1.20+

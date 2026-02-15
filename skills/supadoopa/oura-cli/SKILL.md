@@ -1,74 +1,81 @@
-# Oura Ring CLI Skill
+# Oura Ring CLI 工具
 
-## Description
-This tool allows retrieving health and biometric data from the Oura Ring API (V2) via a command-line interface. Use this to answer questions about the user's sleep, activity, readiness, and physiological stats.
+## 说明
+该工具通过命令行接口（CLI）从 Oura Ring API（V2）获取用户的健康和生物特征数据。您可以使用它来了解用户的睡眠情况、活动量、状态以及生理指标。
 
-Repository: [https://github.com/ruhrpotter/oura-cli](https://github.com/ruhrpotter/oura-cli)
+仓库地址：[https://github.com/ruhrpotter/oura-cli](https://github.com/ruhrpotter/oura-cli)
 
 
-## Prerequisite
-The CLI must be authenticated. If a command fails with an auth error, notify the user to run `./oura auth login`.
+## 先决条件
+在使用 CLI 之前，必须先完成身份验证。如果执行命令时出现身份验证错误，请提示用户运行 `./oura auth login` 进行登录。
 
-## Syntax
-`./oura get <category> [flags]`
 
-## Categories
-- `personal`: User profile (age, weight, height, email).
-- `sleep`: Daily sleep scores and efficiency.
-- `activity`: Daily activity scores, steps, and movement.
-- `readiness`: Daily readiness scores indicating recovery.
-- `heartrate`: Time-series heart rate data.
-- `workout`: Detailed workout sessions.
-- `spo2`: Blood oxygen saturation levels.
-- `sleep-details`: Detailed sleep sessions including hypnograms.
-- `sessions`: Activity sessions (e.g. naps, rest).
-- `sleep-times`: Optimal bedtime guidance.
-- `stress`: Daily stress levels.
-- `resilience`: Daily resilience scores and recovery.
-- `cv-age`: Cardiovascular age estimates.
-- `vo2-max`: VO2 Max measurements.
-- `ring-config`: Ring hardware configuration (color, size, etc.).
-- `rest-mode`: Rest mode periods.
-- `tags`: Enhanced tags (notes, lifestyle choices).
+## 语法
+`./oura get <类别> [参数]`
 
-## Arguments
-- `--start <YYYY-MM-DD>`: REQUIRED for most time-series data. The start date of the range.
-- `--end <YYYY-MM-DD>`: OPTIONAL. The end date of the range. If omitted, it may default to the start date or return a single day depending on context.
 
-## Agent Instructions
-1.  **Date Resolution**: You **MUST** resolve all relative date terms (e.g., "today", "yesterday", "last week", "this month") into absolute `YYYY-MM-DD` string format based on the current operational date.
-2.  **Date ranges**:
-    - For "today": Set `--start` to today's date.
-    - For "yesterday": Set `--start` to yesterday's date.
-    - For "last 7 days": Set `--start` to 7 days ago and `--end` to today.
-3.  **Path**: Assume the binary is `./oura` in the current working directory unless the user specifies otherwise.
-4.  **Output**: The CLI returns JSON. Parse the JSON `data` array to formulate a natural language response.
+## 可用类别
+- `personal`：用户个人信息（年龄、体重、身高、电子邮件）
+- `sleep`：每日睡眠评分和睡眠效率
+- `activity`：每日活动量、步数及运动情况
+- `readiness`：每日状态评分（表示身体的恢复情况）
+- `heartrate`：心率时间序列数据
+- `workout`：详细的锻炼记录
+- `spo2`：血氧饱和度
+- `sleep-details`：包含睡眠图谱的详细睡眠记录
+- `sessions`：活动记录（如小憩、休息等）
+- `sleep-times`：最佳就寝时间建议
+- `stress`：每日压力水平
+- `resilience`：每日恢复力评分
+- `cv-age`：心血管年龄估算
+- `vo2-max`：最大摄氧量（VO2 Max）
+- `ring-config`：Ring 硬件配置（颜色、尺寸等）
+- `rest-mode`：休息模式时长
+- `tags`：附加标签（备注、生活方式等信息)
 
-## Examples
 
-**User Request**: "How was my sleep last night?"
-**Context**: Today is 2024-03-15. "Last night" usually implies the sleep session ending on the morning of today, or the previous day's data depending on how Oura dates it (Oura dates sleep by the morning it ends).
-**Reasoning**: Sleep for the night of the 14th to 15th is logged as `2024-03-15`.
-**Command**:
+## 参数说明
+- `--start <YYYY-MM-DD>`：大多数时间序列数据所需的参数。指定数据范围的起始日期。
+- `--end <YYYY-MM-DD>`：可选参数。指定数据范围的结束日期。如果省略，则可能默认为起始日期，或根据具体情况返回单日数据。
+
+
+## 使用说明
+1. **日期处理**：所有相对日期格式（如“今天”、“昨天”、“上周”、“本月”）必须根据当前日期转换为绝对的 `YYYY-MM-DD` 格式。
+2. **日期范围**：
+    - “今天”：将 `--start` 设置为今天的日期。
+    - “昨天”：将 `--start` 设置为昨天的日期。
+    - “过去7天”：将 `--start` 设置为7天前，`--end` 设置为今天。
+3. **路径**：除非用户另有指定，否则假设二进制文件位于当前工作目录下的 `./oura`。
+4. **输出格式**：CLI 以 JSON 格式返回数据。您需要解析这些 JSON 数据以生成易于理解的自然语言响应。
+
+
+## 示例
+**用户请求**：“我昨晚的睡眠情况如何？”
+**背景信息**：今天是 2024-03-15。“昨晚”通常指的是截至今天早上的睡眠数据。
+**处理方式**：2024年3月14日晚上的睡眠数据会被记录为 `2024-03-15`。
+**命令**：
 ```bash
 ./oura get sleep --start 2024-03-15
 ```
 
-**User Request**: "What is my readiness score today?"
-**Context**: Today is 2024-03-15.
-**Command**:
+
+**用户请求**：“我今天的状态评分是多少？”
+**背景信息**：今天是 2024-03-15。
+**命令**：
 ```bash
 ./oura get readiness --start 2024-03-15
 ```
 
-**User Request**: "Show my heart rate for the first week of January 2024."
-**Command**:
+
+**用户请求**：“显示我2024年1月的第一周的心率数据。”
+**命令**：
 ```bash
 ./oura get heartrate --start 2024-01-01 --end 2024-01-07
 ```
 
-**User Request**: "Who am I?"
-**Command**:
+
+**用户请求**：“我是谁？”
+**命令**：
 ```bash
 ./oura get personal
 ```

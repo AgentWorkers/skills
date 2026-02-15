@@ -1,6 +1,6 @@
 ---
 name: registry-broker
-description: Search 72,000+ AI agents across 14 registries, chat with any agent, register your own agent.
+description: 在14个注册系统中搜索72,000多个AI代理，与任意代理进行聊天，或注册自己的代理。
 homepage: https://hol.org/registry
 metadata:
   {
@@ -13,32 +13,30 @@ metadata:
   }
 ---
 
-# Registry Broker
+# 注册表代理（Registry Broker）
 
-Universal AI agent discovery and cross-platform messaging. Search agents from AgentVerse, NANDA, OpenRouter, Virtuals Protocol, PulseMCP, Near AI, and 8 more registries.
+该工具支持通用的人工智能代理发现及跨平台消息传递功能，可以从 AgentVerse、NANDA、OpenRouter、Virtuals Protocol、PulseMCP、Near AI 等多个注册表中搜索代理。
 
-## When to use (trigger phrases)
+## 使用场景
 
-Use this skill when the user asks:
+当用户提出以下请求时，请使用该工具：
+- “查找能够执行某项任务的人工智能代理”
+- “搜索现有的代理”
+- “询问某个特定任务的代理”
+- “与代理进行对话”
+- “注册我的代理”
+- “列出所有可用的代理注册表”
 
-- "find an AI agent that can..."
-- "search for agents"
-- "what agents exist for X?"
-- "talk to an agent"
-- "chat with an agent"
-- "register my agent"
-- "list agent registries"
-
-## Setup
+## 设置
 
 ```bash
 cd {baseDir}
 npm install
 ```
 
-Optional: Set `REGISTRY_BROKER_API_KEY` for authenticated operations.
+**可选设置：** 设置 `REGISTRY_BROKER_API_KEY` 以支持身份验证操作。
 
-## Quick start
+## 快速入门
 
 ```bash
 # Search agents
@@ -54,51 +52,40 @@ npx tsx scripts/index.ts start_conversation "uaid:aid:..." "Hello"
 npx tsx scripts/index.ts send_message "session-id" "Tell me more"
 ```
 
-## Commands
+## 命令说明
 
-All commands output JSON to stdout. Run from `{baseDir}`.
+所有命令的输出格式为 JSON，需在 `{baseDir}` 目录下执行。
 
-| Command | Description |
-|---------|-------------|
-| `search_agents "<query>"` | Keyword search |
-| `vector_search "<query>" [limit]` | Semantic search with scores |
-| `get_agent "<uaid>"` | Agent details by UAID |
-| `list_registries` | Show all 14 registries |
-| `list_protocols` | Show 20 supported protocols |
-| `list_adapters` | Show platform adapters |
-| `get_stats` | Registry statistics |
-| `start_conversation "<uaid>" "<msg>"` | Start chat session |
-| `send_message "<sessionId>" "<msg>"` | Continue conversation |
-| `get_history "<sessionId>"` | Get chat history |
-| `end_session "<sessionId>"` | End session |
-| `register_agent '<json>' "<url>" "<protocol>" "<registry>"` | Register agent |
+| 命令            | 功能说明                                      |
+|-----------------|---------------------------------------------|
+| `searchAgents "<query>"`   | 根据关键词搜索代理                         |
+| `vector_search "<query>" [limit]` | 基于语义的搜索，并提供相关度评分                 |
+| `get_agent "<uaid>"`    | 根据 UAID 查看代理详细信息                         |
+| `list_registries`     | 显示所有可用的代理注册表                         |
+| `list_protocols`     | 显示支持的协议列表                         |
+| `list_adapters`     | 显示可用的平台适配器                         |
+| `get_stats`       | 获取注册表统计信息                         |
+| `start_conversation "<uaid>" "<msg>"` | 启动与代理的对话会话                         |
+| `send_message "<sessionId>" "<msg>"` | 继续与代理的对话                         |
+| `get_history "<sessionId>"`   | 查看对话历史记录                         |
+| `end_session "<sessionId>"`    | 结束对话会话                         |
+| `register_agent '<json>' "<url>" "<protocol>" "<registry>"` | 注册新的代理                         |
 
-## Flow: Find and chat with an agent
+## 使用流程：
 
-1. **Search**: `npx tsx scripts/index.ts vector_search "help with data analysis" 5`
-2. **Pick agent**: Note the `uaid` from results
-3. **Get details**: `npx tsx scripts/index.ts get_agent "uaid:aid:..."`
-4. **Start chat**: `npx tsx scripts/index.ts start_conversation "uaid:aid:..." "What can you help with?"`
-5. **Continue**: `npx tsx scripts/index.ts send_message "sess_xyz" "Can you analyze this dataset?"`
-6. **End**: `npx tsx scripts/index.ts end_session "sess_xyz"`
+1. **搜索代理**：`npx tsx scripts/index.ts vector_search "help with data analysis" 5`
+2. **选择代理**：从搜索结果中获取代理的 UAID。
+3. **查看代理信息**：`npx tsx scripts/index.ts get_agent "uaid:aid:..."`
+4. **开始对话**：`npx tsx scripts/index.ts start_conversation "uaid:aid:..." "What can you help with?"`
+5. **继续对话**：`npx tsx scripts/index.ts send_message "sess_xyz" "Can you analyze this dataset?"`
+6. **结束对话**：`npx tsx scripts/index.ts end_session "sess_xyz"`
 
-## Flow: Register an agent
+## 支持的注册表：
 
-```bash
-npx tsx scripts/index.ts register_agent \
-  '{"name":"My Bot","description":"Helps with X","capabilities":["task-a","task-b"]}' \
-  "https://my-agent.example.com/v1" \
-  "openai" \
-  "custom"
-```
+AgentVerse、PulseMCP、ERC-8004、Coinbase x402 Bazaar、NANDA、Virtuals Protocol、OpenRouter、Hedera/HOL、Near AI、OpenConvAI、A2A Registry、A2A Protocol、ERC-8004 Solana 等。
 
-## Connected registries
-
-AgentVerse, PulseMCP, ERC-8004, Coinbase x402 Bazaar, NANDA, Virtuals Protocol, OpenRouter, Hedera/HOL, Near AI, OpenConvAI, A2A Registry, A2A Protocol, ERC-8004 Solana, and more.
-
-## Notes
-
-- UAIDs look like `uaid:aid:2MVYv2iyB6gvzXJiAsxKHJbfyGAS8...`
-- Session IDs are returned from `start_conversation`
-- Vector search returns relevance scores; keyword search does not
-- On error the CLI prints `{"error":"message"}` and exits with code 1
+## 注意事项：
+- UAID 的格式为 `uaid:aid:2MVYv2iyB6gvzXJiAsxKHJbfyGAS8...`
+- 会话 ID 由 `start_conversation` 命令返回。
+- `vector_search` 命令会返回代理的相关度评分，而 `keyword_search` 不提供此功能。
+- 如果发生错误，命令行工具会输出 `{"error":"message"}` 并以代码 1 退出。

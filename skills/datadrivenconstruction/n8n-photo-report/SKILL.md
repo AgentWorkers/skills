@@ -1,24 +1,24 @@
 ---
 slug: "n8n-photo-report"
 display_name: "N8N Photo Report"
-description: "Automate construction photo report generation using n8n with AI-powered image analysis."
+description: "使用 n8n 结合基于 AI 的图像分析技术，自动化生成施工照片报告。"
 ---
 
-# n8n Photo Report Automation
+# n8n 照片报告自动化
 
-## Business Case
+## 商业案例
 
-Site photos require organization, analysis, and reporting. This workflow automates photo collection, AI analysis, and report generation.
+网站上的照片需要被整理、分析并生成报告。此工作流程实现了照片的自动收集、人工智能分析以及报告的生成。
 
-## Workflow Overview
+## 工作流程概述
 
 ```
 [Photo Upload] → [AI Analysis] → [Categorization] → [Report Generation] → [Distribution]
 ```
 
-## n8n Workflow Configuration
+## n8n 工作流程配置
 
-### 1. Photo Input Triggers
+### 1. 照片输入触发器
 
 ```json
 {
@@ -46,7 +46,7 @@ Site photos require organization, analysis, and reporting. This workflow automat
 }
 ```
 
-### 2. AI Image Analysis
+### 2. 人工智能图像分析
 
 ```json
 {
@@ -84,7 +84,7 @@ Site photos require organization, analysis, and reporting. This workflow automat
 }
 ```
 
-### 3. Categorize and Store
+### 3. 分类与存储
 
 ```json
 {
@@ -116,7 +116,7 @@ Site photos require organization, analysis, and reporting. This workflow automat
 }
 ```
 
-### 4. Generate Photo Report
+### 4. 生成照片报告
 
 ```json
 {
@@ -148,7 +148,7 @@ Site photos require organization, analysis, and reporting. This workflow automat
 }
 ```
 
-### 5. Distribution
+### 5. 分发
 
 ```json
 {
@@ -162,7 +162,7 @@ Site photos require organization, analysis, and reporting. This workflow automat
 }
 ```
 
-## Python Helper
+## Python 辅助工具
 
 ```python
 import requests
@@ -194,17 +194,17 @@ def batch_upload_photos(photo_paths: list, webhook_url: str, project_id: str):
     return results
 ```
 
-## Quick Start
+## 快速入门
 
-1. Import workflow to n8n
-2. Configure API keys:
-   - `ANTHROPIC_API_KEY` for Claude Vision
-   - Airtable credentials
-   - Email configuration
-3. Create Airtable base with "Site Photos" table
-4. Test with sample photo upload
+1. 将工作流程导入 n8n；
+2. 配置 API 密钥：
+   - `ANTHROPIC_API_KEY`（用于 Claude Vision）；
+   - Airtable 访问凭据；
+   - 电子邮件配置；
+3. 创建一个包含“Site Photos”表的 Airtable 数据库；
+4. 使用样本照片进行测试。
 
-## Resources
-- **n8n Documentation**: https://docs.n8n.io
-- **Claude Vision API**: https://docs.anthropic.com
-- **DDC Book**: Chapter 4.2 - Workflow Automation
+## 资源
+- **n8n 文档**：https://docs.n8n.io
+- **Claude Vision API**：https://docs.anthropic.com
+- **DDC 手册**：第 4.2 章 - 工作流程自动化

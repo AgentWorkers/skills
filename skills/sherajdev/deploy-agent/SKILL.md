@@ -1,6 +1,6 @@
 ---
 name: deploy-agent
-description: Multi-step deployment agent for full-stack apps. Build → Test → GitHub → Cloudflare Pages with human approval at each step.
+description: 多步骤部署代理，适用于全栈应用程序。流程包括：构建（Build）→ 测试（Test）→ 推送到 GitHub → 通过 Cloudflare Pages 发布；每个步骤均需要人工审核。
 metadata:
   clawdbot:
     emoji: "🚀"
@@ -10,9 +10,9 @@ metadata:
 
 # deploy-agent
 
-Deploy full-stack applications via a multi-step workflow with human approval at each stage.
+通过多步骤工作流程部署全栈应用程序，每个步骤都需要人工审批。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install via ClawdHub
@@ -28,73 +28,73 @@ deploy-agent status my-app
 deploy-agent continue my-app
 ```
 
-## Workflow Steps
+## 工作流程步骤
 
-| Step | Command | Description | Requires Approval |
+| 步骤 | 命令 | 说明 | 是否需要审批 |
 |------|---------|-------------|-------------------|
-| 1 | `deploy-agent init <name>` | Start deployment | ✅ Design phase |
-| 2 | `deploy-agent build <name>` | Build app | ✅ Before testing |
-| 3 | `deploy-agent test <name>` | Test locally | ✅ Before GitHub |
-| 4 | `deploy-agent push <name>` | Push to GitHub | ✅ Before Cloudflare |
-| 5 | `deploy-agent deploy <name>` | Deploy to Cloudflare | ✅ Final |
+| 1 | `deploy-agent init <名称>` | 启动部署 | ✅ 设计阶段 |
+| 2 | `deploy-agent build <名称>` | 构建应用程序 | ✅ 测试之前 |
+| 3 | `deploy-agent test <名称>` | 在本地测试 | ✅ 上推到 GitHub 之前 |
+| 4 | `deploy-agent push <名称>` | 将代码推送到 GitHub | ✅ 上推到 Cloudflare 之前 |
+| 5 | `deploy-agent deploy <名称>` | 部署到 Cloudflare | ✅ 最终步骤 |
 
-## Commands
+## 命令
 
-### Initialize Deployment
+### 初始化部署
 ```bash
 deploy-agent init my-app
 ```
-Creates a new deployment state and waits for design input.
+创建一个新的部署状态并等待设计输入。
 
-### Check Status
+### 检查状态
 ```bash
 deploy-agent status my-app
 ```
-Shows current step, approvals, and deployment info.
+显示当前步骤、审批情况和部署信息。
 
-### Continue
+### 继续
 ```bash
 deploy-agent continue my-app
 ```
-Get guidance on what to do next in the current step.
+获取当前步骤的下一步操作指南。
 
-### Build (Step 2)
+### 构建（步骤 2）
 ```bash
 deploy-agent build my-app
 ```
-After designing with C.R.A.B, run this to build the app.
+使用 C.R.A.B 完成设计后，运行此命令来构建应用程序。
 
-### Test (Step 3)
+### 测试（步骤 3）
 ```bash
 deploy-agent test my-app
 ```
-Verify the app is running locally before pushing.
+在上推之前验证应用程序是否在本地正常运行。
 
-### Push to GitHub (Step 4)
+### 推送到 GitHub（步骤 4）
 ```bash
 deploy-agent push my-app [repo-name]
 ```
-Creates GitHub repo and pushes code. Default repo name = app name.
+创建 GitHub 仓库并推送代码。默认仓库名称 = 应用程序名称。
 
-### Deploy to Cloudflare (Step 5)
+### 部署到 Cloudflare（步骤 5）
 ```bash
 deploy-agent deploy my-app [custom-domain]
 ```
-Deploys to Cloudflare Pages. Default domain: `{name}.sheraj.org`
+将应用程序部署到 Cloudflare Pages。默认域名：`{名称}.sheraj.org`
 
-### Cancel
+### 取消
 ```bash
 deploy-agent cancel my-app
 ```
-Aborts and cleans up the deployment.
+中止部署并清理相关资源。
 
-### List
+### 列出所有部署
 ```bash
 deploy-agent list
 ```
-Shows all active deployments.
+显示所有正在进行的部署。
 
-## Example Session
+## 示例会话
 
 ```bash
 # Start new deployment
@@ -119,9 +119,9 @@ $ deploy-agent deploy my-blog my-blog.sheraj.org
 App live at: https://my-blog.sheraj.org
 ```
 
-## State Management
+## 状态管理
 
-State stored in: `~/.clawdbot/skills/deploy-agent/state/{deployment-name}.json`
+状态存储在：`~/.clawdbot/skills/deploy-agent/state/{部署名称}.json`
 
 ```json
 {
@@ -134,46 +134,46 @@ State stored in: `~/.clawdbot/skills/deploy-agent/state/{deployment-name}.json`
 }
 ```
 
-## Requirements
+## 所需工具
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| `gh` | GitHub repo creation and management |
-| `wrangler` | Cloudflare Pages deployment |
-| `git` | Version control |
-| `jq` | JSON parsing (for state management) |
+| `gh` | 创建和管理 GitHub 仓库 |
+| `wrangler` | 部署到 Cloudflare Pages |
+| `git` | 版本控制 |
+| `jq` | JSON 解析（用于状态管理） |
 
-## Configuration
+## 配置
 
-Cloudflare token should be configured in `~/.wrangler.toml`:
+Cloudflare 令牌应配置在 `~/.wrangler.toml` 文件中：
 ```toml
 [account]
 api_token = "your-cloudflare-token"
 ```
 
-## Notes
+## 注意事项
 
-- Each deployment is independent
-- State persists across sessions
-- Human approval required at each major step
-- Use "cancel" to abort anytime
+- 每次部署都是独立的 |
+- 状态会在会话之间保持一致 |
+- 每个关键步骤都需要人工审批 |
+- 可以随时使用 “cancel” 命令中止部署 |
 
 ---
 
-## Next.js + Cloudflare D1 Deployment Guide
+## Next.js + Cloudflare D1 部署指南
 
-This section covers common pitfalls and fixes for deploying Next.js apps with D1 on Cloudflare Pages.
+本节介绍了在 Cloudflare Pages 上部署 Next.js 应用程序时常见的陷阱及解决方法。
 
-### Pre-Deployment Checklist
+### 部署前的检查清单
 
-| Check | Command | Fix if Failed |
+| 检查项 | 命令 | 失败时的解决方法 |
 |-------|---------|---------------|
-| Next.js version | `npm list next` | `npm install next@15.5.2` |
-| Package lock sync | `rm -rf node_modules package-lock.json && npm install` | Commit lock file |
-| Cloudflare adapter | `npm list @cloudflare/next-on-pages` | `npm install -D @cloudflare/next-on-pages` |
-| wrangler installed | `npm list wrangler` | `npm install -D wrangler` |
+| Next.js 版本 | `npm list next` | `npm install next@15.5.2` |
+| `package-lock.json` 文件同步 | `rm -rf node_modules package-lock.json && npm install` | 提交 `package-lock.json` 文件 |
+| Cloudflare 适配器 | `npm list @cloudflare/next-on-pages` | `npm install -D @cloudflare/next-on-pages` |
+| 是否安装了 wrangler | `npm list wrangler` | `npm install -D wrangler` |
 
-### Required Configuration
+### 必需的配置文件
 
 **1. package.json**
 ```json
@@ -202,7 +202,7 @@ database_name = "my-db"
 database_id = "your-db-id"
 ```
 
-**3. API Routes (each file)**
+**3. API 路由（每个文件）**
 ```typescript
 import { getRequestContext } from '@cloudflare/next-on-pages';
 
@@ -215,25 +215,25 @@ export async function GET() {
 }
 ```
 
-### Cloudflare Pages Build Settings
+### Cloudflare Pages 的构建设置
 
-| Setting | Value |
+| 设置 | 值 |
 |---------|-------|
-| Build command | `npx @cloudflare/next-on-pages` |
-| Output directory | `.vercel/output/static` |
-| Functions | Enable (for D1 API routes) |
+| 构建命令 | `npx @cloudflare/next-on-pages` |
+| 输出目录 | `.vercel/output/static` |
+| 是否启用函数 | 启用（对于 D1 API 路由） |
 
-### Common Issues & Fixes
+### 常见问题及解决方法
 
-| Issue | Error | Fix |
+| 问题 | 错误信息 | 解决方法 |
 |-------|-------|-----|
-| Lock file mismatch | `npm ci can only install packages when your package.json and package-lock.json are in sync` | `rm -rf node_modules package-lock.json && npm install && git add package-lock.json` |
-| Next.js version | `peer next@">=14.3.0 && <=15.5.2"` from @cloudflare/next-on-pages | Downgrade to `next: "15.5.2"` |
-| API routes not edge | `The following routes were not configured to run with the Edge Runtime` | Add `export const runtime = 'edge';` |
-| D1 access pattern | Using `context.env.DB` | Use `getRequestContext().env.DB` |
-| Missing types | TypeScript errors for D1 bindings | Create `env.d.ts` with CloudflareEnv interface |
+| `package-lock.json` 文件不匹配 | `npm ci` 只能在 `package.json` 和 `package-lock.json` 文件一致时安装包 | `rm -rf node_modules package-lock.json && npm install && git add package-lock.json` |
+| Next.js 版本 | `peer next@">=14.3.0 && <=15.5.2"`（来自 @cloudflare/next-on-pages） | 将版本降级为 `next: "15.5.2"` |
+| API 路由未配置为 Edge 运行模式 | “以下路由未配置为 Edge 运行模式” | 添加 `export const runtime = 'edge';` |
+| D1 访问模式 | 使用 `context.env.DB` | 应使用 `getRequestContext().env.DB` |
+| 类型定义缺失 | TypeScript 报错 | 创建 `env.d.ts` 文件并定义 `CloudflareEnv` 接口 |
 
-### CSS Fix (Scrollbar Flicker)
+### CSS 问题（滚动条闪烁）
 ```css
 html {
   overflow-x: hidden;
@@ -244,12 +244,12 @@ body {
 }
 ```
 
-### Post-Deployment
+### 部署后的操作
 
-1. Cloudflare Dashboard → Settings → Functions
-2. Add D1 binding: Variable name `DB` → Select your database
+1. 登录 Cloudflare 控制台 → 设置 → 函数
+2. 添加 D1 相关配置：变量名 `DB` → 选择相应的数据库
 
-### Reference Documents
+### 参考文档
 
-- Full guide: `docs/issues/nextjs-cloudflare-d1-deployment.md`
-- Cloudflare docs: https://developers.cloudflare.com/pages/framework-guides/nextjs/
+- 完整指南：`docs/issues/nextjs-cloudflare-d1-deployment.md`
+- Cloudflare 官方文档：https://developers.cloudflare.com/pages/framework-guides/nextjs/

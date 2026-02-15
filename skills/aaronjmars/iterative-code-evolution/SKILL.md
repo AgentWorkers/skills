@@ -1,32 +1,32 @@
 ---
 name: iterative-code-evolution
-description: Systematically improve code through structured analysis-mutation-evaluation loops. Adapted from ALMA (Automated meta-Learning of Memory designs for Agentic systems). Use when iterating on code quality, optimizing implementations, debugging persistent issues, or evolving a design through multiple improvement cycles. Replaces ad-hoc "try and fix" with disciplined reflection, variant tracking, and principled selection of what to change next.
+description: 通过结构化的分析-修改-评估循环（Analysis-Mutation-Evaluation loop）来系统地改进代码。该方法借鉴了ALMA（Automated meta-Learning of Memory designs for Agentic systems）的理念。适用于在代码质量迭代、实现优化、持续性问题调试，或通过多个改进周期来完善设计时使用。它取代了传统的“试错”方法，采用规范的反思流程、变体跟踪机制，以及基于原则的选择机制来决定下一步该修改哪些内容。
 ---
 
-# Iterative Code Evolution
+# 迭代式代码演进
 
-A structured methodology for improving code through disciplined reflect → mutate → verify → score cycles, adapted from the ALMA research framework for meta-learning code designs.
+这是一种结构化的方法论，通过“反思 → 修改 → 验证 → 评分”的循环来改进代码，该方法论借鉴了ALMA研究框架中用于元学习代码设计的理念。
 
-## When to Use This Skill
+## 适用场景
 
-- Iterating on code that isn't working well enough (performance, correctness, design)
-- Optimizing an implementation across multiple rounds of changes
-- Debugging persistent or recurring issues where simple fixes keep failing
-- Evolving a system design through structured experimentation
-- Any task where you've already tried 2+ approaches and need discipline about what to try next
-- Building or improving prompts, pipelines, agents, or any "program" that benefits from iterative refinement
+- 当代码的性能、正确性或设计存在问题，需要迭代改进时
+- 在多轮修改后优化代码实现时
+- 在调试持续存在或反复出现的问题时（简单的修复方法始终无效）
+- 通过结构化的实验来改进系统设计时
+- 在已经尝试了两种以上方法，但需要有条理地决定下一步该做什么时
+- 在构建或改进提示系统、处理流程、代理程序或任何可以从迭代优化中受益的“程序”时
 
-## When NOT to Use This Skill
+## 不适用场景
 
-- Simple one-shot code generation (just write it)
-- Mechanical tasks with clear solutions (refactoring, formatting, migrations)
-- When the user has already specified exactly what to change
+- 简单的一次性代码生成（直接编写即可）
+- 有明确解决方案的机械性任务（重构、格式化、迁移等）
+- 用户已经明确指出了需要修改的内容
 
-## Core Concepts
+## 核心概念
 
-### The Evolution Loop
+### 进化循环
 
-Every improvement cycle follows this sequence:
+每个改进循环都遵循以下步骤：
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -41,9 +41,9 @@ Every improvement cycle follows this sequence:
 └─────────────────────────────────────────────────────┘
 ```
 
-### The Evolution Log
+### 进化日志
 
-Track all iterations in `.evolution/log.json` at the project root. This is the memory that makes each cycle smarter than the last.
+将所有迭代记录在项目根目录下的`.evolution/log.json`文件中。这份日志记录使得每次迭代都比上一次更高效。
 
 ```json
 {
@@ -92,45 +92,45 @@ Track all iterations in `.evolution/log.json` at the project root. This is the m
 }
 ```
 
-## The Process in Detail
+## 详细流程
 
-### Phase 1: ANALYZE — Structured Diagnosis
+### 第1阶段：分析 — 结构化诊断
 
-Before changing anything, perform a structured analysis of the current code and its outputs. This is the most important phase — it prevents wasted mutations.
+在修改任何内容之前，先对当前代码及其输出进行结构化分析。这是最重要的阶段，可以避免不必要的修改。
 
-**Step 1 — Learn from past edits** (skip on first iteration)
+**步骤1 — 从过去的修改中学习**（首次迭代可跳过）
 
-Review the evolution log. For each previous change:
-- Did the score improve or degrade?
-- What pattern made it succeed or fail?
-- Extract 2-3 principles to adopt and 2-3 pitfalls to avoid
+查看进化日志。对于之前的每次修改：
+- 代码的性能是否有所提升或下降？
+- 是什么因素导致了修改的成功或失败？
+- 提取2-3个可以借鉴的原则和2-3个需要避免的陷阱
 
-**Step 2 — Component-level assessment**
+**步骤2 — 组件级评估**
 
-For each meaningful component (function, class, module, pipeline stage), label it:
+对每个有意义的组件（函数、类、模块、处理流程阶段）进行分类：
 
-| Label | Meaning |
+| 分类 | 含义 |
 |-------|---------|
-| **Working** | Produces correct output, no issues observed |
-| **Fragile** | Works on happy path but fails on edge cases or specific inputs |
-| **Broken** | Produces wrong output or errors |
-| **Redundant** | Duplicates logic found elsewhere, adds complexity without value |
-| **Missing** | A needed component that doesn't exist yet |
+| **正常工作** | 产生正确的输出，没有发现问题 |
+| **脆弱** | 在正常情况下可以工作，但在边缘情况或特定输入下会出错 |
+| **损坏** | 产生错误的输出或错误 |
+| **冗余** | 重复了其他地方的逻辑，增加了不必要的复杂性 |
+| **缺失** | 需要的组件尚未实现 |
 
-For each label, write a one-line explanation of *why* — linked to specific test outputs or observed behavior.
+对于每个分类，写一句话解释其原因，并附上具体的测试输出或观察到的行为作为依据。
 
-**Step 3 — Quality and coherence check**
+**步骤3 — 质量和一致性检查**
 
-Look for cross-cutting issues:
-- **Data flow**: Do components pass structured data to each other, or rely on implicit state?
-- **Error handling**: Are errors caught and handled, or silently swallowed?
-- **Duplication**: Is the same logic repeated in multiple places?
-- **Hardcoding**: Are there magic numbers, hardcoded paths, or environment-specific assumptions?
-- **Generalization**: Which parts would work on new inputs vs. which are overfitted to test cases?
+检查跨组件的问题：
+- **数据流**：组件之间是否传递了结构化的数据，还是依赖于隐含的状态？
+- **错误处理**：错误是否被捕获并处理了，还是被默默地忽略了？
+- **重复代码**：相同的逻辑是否在多个地方重复出现？
+- **硬编码**：是否存在魔法数字、硬编码的路径或特定于环境的假设？
+- **泛化能力**：哪些部分可以在新的输入下仍然有效，哪些部分只是针对测试用例进行了过度优化？
 
-**Step 4 — Produce prioritized suggestions**
+**步骤4 — 提出优先级建议**
 
-Based on Steps 1-3, produce concrete changes. Each suggestion must have:
+根据步骤1-3的内容，提出具体的修改建议。每个建议都必须基于实际的观察结果。
 
 ```
 - PRIORITY: High | Medium | Low
@@ -139,40 +139,38 @@ Based on Steps 1-3, produce concrete changes. Each suggestion must have:
 - RISK: What could go wrong if this change is made incorrectly
 ```
 
-**Rule: Every suggestion must link to an observation.** No "this might help" suggestions — only changes grounded in something you actually saw in the code or outputs.
+**规则：每个建议都必须有具体的观察依据。** 不要提出“这可能会有帮助”的建议，只提出基于代码或输出中实际发现的问题提出的修改。
 
-**Rule: Limit to 3 suggestions per cycle.** More than 3 changes at once makes it impossible to attribute improvement or regression to specific changes.
+**规则：每个循环最多提出3个建议。** 如果同时进行超过3个修改，将无法准确判断哪些修改导致了性能提升或下降。**
 
-### Phase 2: PLAN — Select What to Change
+### 第2阶段：规划 — 确定修改内容
 
-Pick 1-3 suggestions from the analysis. Selection principles:
+从分析结果中选择1-3个建议。选择原则如下：
+- **优先处理关键问题** — 先修复损坏的部分，再优化正常工作的部分
+- **每个循环专注于一个主题** — 不要同时进行不相关的修改（例如，不要在同一轮修改中同时修复解析问题和重构错误处理）
+- **优先选择针对性的修改** — 对单个函数进行精细调整，而不是重写整个模块
+- **如果遇到瓶颈，尝试其他方法** — 如果连续多个循环在同一组件上都没有取得明显效果，尝试修改另一个组件（这是ALMA框架中的“轮换原则”）
 
-- **High priority first** — fix broken things before optimizing working things
-- **One theme per cycle** — don't mix unrelated changes (e.g., don't fix parsing AND refactor error handling in the same mutation)
-- **Prefer targeted over sweeping** — a surgical change to one function beats a rewrite of three modules
-- **If stuck, explore** — if the last 2+ cycles showed diminishing returns on the same component, pick a different component to modify (this is the ALMA "visit penalty" principle — don't keep grinding on the same thing)
+### 第3阶段：修改代码
 
-### Phase 3: MUTATE — Implement Changes
+编写新的代码。关键原则如下：
+- **只修改计划中指定的内容**。避免在修改过程中试图“再修复一个问题”。
+- **保持接口的一致性**。除非计划中有明确要求，否则不要修改函数签名或返回类型。
+- **添加注释说明修改理由**。在每个修改处添加简短的注释，注明该修改所属的进化循环（例如：`# evo-v003：针对边缘情况错误切换到了状态机`）
 
-Write the new code. Key discipline:
+### 第4阶段：验证 — 运行并检查
 
-- **Change only what the plan says.** Resist the urge to "fix one more thing" while you're in there.
-- **Preserve interfaces.** Don't change function signatures or return types unless the plan explicitly calls for it.
-- **Comment the rationale.** Add a brief comment near each change referencing the evolution cycle (e.g., `# evo-v003: switched to state machine per edge case failures`)
+使用相同的输入和测试用例来运行修改后的代码。
 
-### Phase 4: VERIFY — Run and Check
+**如果代码崩溃（最多尝试3次）：**
 
-Execute the modified code against the same inputs/tests used for scoring.
+按照以下步骤进行修复：
+1. 读取完整的错误堆栈跟踪信息
+2. 找出**根本原因**（而不是表面现象）
+3. **仅**修复根本原因，不要进行其他无关的改进
+4. 重新运行代码
 
-**If it crashes (up to 3 retries):**
-
-Use the reflection-fix protocol:
-1. Read the full error traceback
-2. Identify the **root cause** (not the symptom)
-3. Fix **only** the root cause — do not make unrelated improvements
-4. Re-run
-
-After 3 failed retries, **revert to parent variant** and log the failure:
+如果尝试3次后仍然失败，**恢复到原始版本** 并记录失败原因：
 ```json
 {
   "attempted": "Description of what was tried",
@@ -181,60 +179,60 @@ After 3 failed retries, **revert to parent variant** and log the failure:
 }
 ```
 
-This failure data is valuable — it prevents re-attempting the same broken approach.
+这些失败记录非常宝贵，可以防止重复使用错误的修改方法。
 
-**If it runs but produces wrong output:**
+**如果代码运行正常但输出错误：**
 
-Don't immediately retry. Go back to Phase 1 (ANALYZE) with the new outputs. The wrong output is diagnostic data.
+不要立即再次尝试。回到第1阶段（分析），使用新的输出结果重新进行分析。错误的输出可以作为诊断依据。
 
-### Phase 5: SCORE — Measure Improvement
+### 第5阶段：评分 — 测量改进效果
 
-Compare the new variant's performance against its parent (not just the baseline). Scoring depends on context:
+将新版本的代码性能与原始版本进行比较（而不仅仅是与基准版本进行比较）。评分方法因具体场景而异：
 
-| Context | Score Method |
+| 评估标准 | 评分方法 |
 |---------|-------------|
-| Tests exist | Pass rate: tests_passed / total_tests |
-| Performance optimization | Metric delta (latency, throughput, memory) |
-| Code quality | Weighted checklist (correctness, edge cases, readability) |
-| User feedback | Binary: better/worse/same per the user's judgment |
-| LLM/prompt output quality | Sample outputs graded against criteria |
+| 测试情况 | 通过率：通过的测试数 / 总测试数 |
+| 性能优化 | 性能指标的变化（延迟、吞吐量、内存使用） |
+| 代码质量 | 权重评分标准（正确性、边缘情况处理、可读性） |
+| 用户反馈 | 用户的评价（更好/更差/相同） |
+| LLM/提示系统的输出质量 | 根据标准对输出样本进行评分 |
 
-**Always compute delta vs. parent.** This is how you learn which changes help vs. hurt.
+**始终比较新版本与原始版本的差异。** 这样才能判断哪些修改是有帮助的，哪些是有害的。
 
-### Phase 6: ARCHIVE — Log and Learn
+### 第6阶段：归档 — 记录并总结经验
 
-Update `.evolution/log.json`:
-1. Record the new variant with parent, description, changes, score, delta
-2. Write a `learned` field: one sentence about what this cycle taught you
-3. If the score improved, add the underlying principle to `principles_learned`
-4. If the score degraded, add the failure mode to `principles_learned` as a pitfall
+更新`.evolution/log.json`文件：
+1. 记录新版本的信息，包括原始版本、修改内容、评分结果和差异
+2. 添加一个“learned”字段，简要说明这次迭代中学到了什么
+3. 如果评分有所提升，将相关的改进原则添加到`principles_learned`列表中
+4. 如果评分下降，将失败的原因添加到`principles_learned`列表中，作为需要避免的陷阱
 
-## Variant Management
+## 变体管理
 
-### When to Branch vs. Modify
+### 何时进行分支修改 vs. 何时直接修改
 
-- **Modify in place** (same file, new version): When the change is clearly incremental (fixing a bug, adding a check, tuning a parameter)
-- **Branch** (copy to a new file): When trying a fundamentally different approach (different algorithm, different architecture, different strategy)
+- **直接修改**（在同一文件中添加新版本）：当修改是渐进式的（修复错误、添加检查机制、调整参数等）
+- **创建分支**（复制到新文件中）：当尝试根本不同的方法时（不同的算法、不同的架构、不同的策略）
 
-Keep branches in `.evolution/variants/` with descriptive names. The evolution log tracks which is active.
+将分支保存在`.evolution/variants/`目录下，并为每个分支添加描述性名称。进化日志会记录当前正在使用的版本。
 
-### Selection: Which Variant to Iterate On
+### 选择下一个迭代对象
 
-If you have multiple variants, pick the next one to improve using:
+如果有多个代码变体，可以使用以下标准来选择下一个改进的目标：
 
 ```
 score(variant) = normalized_reward - 0.5 * log(1 + visit_count)
 ```
 
-Where:
-- `normalized_reward` = variant score relative to baseline (0-1 range)
-- `visit_count` = how many times this variant has been selected for iteration
+其中：
+- `normalized_reward` 表示变体的评分相对于基准版本的得分（0-1范围）
+- `visit_count` 表示该变体被选中进行迭代的次数
 
-This balances **exploitation** (iterating on the best variant) with **exploration** (trying variants that haven't been touched recently). It prevents getting stuck in local optima.
+这种方法平衡了“利用现有最佳版本”和“探索新方法”的需求，防止陷入局部最优解。
 
-## Quick Reference: Analysis Template
+## 快速参考：分析模板
 
-When performing Phase 1, structure your thinking as:
+在进行第1阶段分析时，可以按照以下结构来组织思路：
 
 ```markdown
 ## Evolution Cycle [N] — Analysis
@@ -260,41 +258,41 @@ When performing Phase 1, structure your thinking as:
 2. **[Medium]** WHAT: ... | WHY: ... | RISK: ...
 ```
 
-## Example: Full Evolution Cycle
+## 示例：完整的迭代流程
 
-**Context:** User asks to improve a web scraper that's failing on 40% of target pages.
+**场景**：用户要求改进一个网页爬虫，该爬虫在40%的目标页面上无法正常工作。
 
-**Cycle 1 — Analysis:**
-- Component assessment: `parse_html()` is Broken (crashes on pages with no `<article>` tag), `fetch_page()` is Working, `extract_links()` is Fragile (misses relative URLs)
-- Cross-cutting: No error handling — one bad page kills the entire batch
-- Past edits: None (first cycle)
-- Plan: [High] Add fallback selectors in `parse_html()` for pages without `<article>`
+**第1轮迭代 — 分析：**
+- 组件评估：`parse_html()` 出现问题（在没有 `<article>` 标签的页面上崩溃），`fetch_page()` 可以正常工作，`extract_links()` 在处理相对URL时存在问题
+- 跨组件问题：没有错误处理机制——一个错误页面会导致整个批次失败
+- 之前的修改记录：无
+- 计划：[高优先级] 在 `parse_html()` 中为没有 `<article>` 标签的页面添加备用选择器
 
-**Cycle 1 — Mutate:** Add cascading selector logic: try `<article>`, fall back to `<main>`, fall back to `<body>`.
+**第1轮迭代 — 修改：** 添加级联选择逻辑：首先尝试匹配 `<article>`，如果找不到则尝试匹配 `<main>`，如果仍然找不到则尝试匹配 `<body>`
 
-**Cycle 1 — Verify:** Runs without crashes. 
+**第1轮迭代 — 验证：** 代码运行正常，没有崩溃
 
-**Cycle 1 — Score:** Pass rate 40% → 72%. Delta: +32%.
+**第1轮迭代 — 评分：** 通过率从40%提升到72%。提升幅度：+32%
 
-**Cycle 1 — Archive:** Learned: "Most failures were selector misses, not logic errors. Fallback chains are high-value."
+**第1轮迭代 — 归档：** 学到的经验：“大多数失败是由于选择器未能正确匹配标签，而不是逻辑错误。备用选择器非常有效。”
 
-**Cycle 2 — Analysis:**
-- Lessons: Fallback selectors gave +32%. Principle: handle structural variation before fixing logic.
-- Component assessment: `parse_html()` now Working. `extract_links()` still Fragile — relative URLs not resolved.
-- Plan: [High] Resolve relative URLs using `urljoin` in `extract_links()`
+**第2轮迭代 — 分析：**
+- 经验：备用选择器提高了32%的性能。原则：在修复逻辑之前，先处理结构上的差异。
+- 组件评估：`parse_html()` 现在可以正常工作，但 `extract_links()` 在处理相对URL时仍然存在问题
+- 计划：[高优先级] 在 `extract_links()` 中使用 `urljoin` 方法来解析相对URL
 
-**Cycle 2 — Mutate:** Add base URL resolution.
+**第2轮迭代 — 修改：** 添加URL解析功能
 
-**Cycle 2 — Score:** 72% → 88%. Delta: +16%.
+**第2轮迭代 — 评分：** 通过率从72%提升到88%。提升幅度：+16%
 
-**Cycle 2 — Archive:** Learned: "URL resolution was second-biggest failure mode. Always normalize URLs at extraction time."
+**第2轮迭代 — 归档：** 学到的经验：“URL解析是第二大问题。在提取数据时应该统一处理URL格式。”
 
-## Key Principles
+## 关键原则
 
-- **Every change must link to an observation** — no speculative fixes
-- **Max 3 changes per cycle** — attribute improvements accurately
-- **Log everything** — failed attempts are as valuable as successes
-- **Score against parent, not just baseline** — track marginal improvement
-- **Explore when stuck** — if 2+ cycles on the same component show diminishing returns, move to a different component
-- **Revert on 3 failed retries** — don't spiral; log the failure and try a different approach
-- **Principles compound** — the evolution log's `principles_learned` list is the most valuable artifact; it encodes what works for *this specific codebase*
+- **每个修改都必须基于具体的观察结果** — 避免随意的猜测性修改
+- **每个循环最多进行3次修改** — 以便准确判断改进效果
+- **记录所有修改过程** — 失败的尝试与成功的修改同样重要
+- **与原始版本进行比较** — 而不仅仅是与基准版本进行比较
+- **遇到瓶颈时尝试其他方法** — 如果连续多个循环在同一组件上都没有取得明显效果，尝试修改其他组件
+- **在尝试3次失败后恢复到原始版本** — 避免陷入恶性循环；记录失败原因并尝试其他方法
+- **不断总结经验**：进化日志中的 `principles_learned` 列表是最有价值的文档，它记录了适用于当前代码库的最佳实践

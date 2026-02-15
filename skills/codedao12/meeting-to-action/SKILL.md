@@ -1,56 +1,56 @@
 ---
 name: meeting-to-action
-description: Convert meeting notes or transcripts into clear summaries, decisions, and action items with owners and due dates. Use when a user asks to turn a meeting recording, transcript, or notes into a follow-up plan.
+description: 将会议记录或文字记录转换为清晰的摘要、决策内容以及带有负责人和截止日期的待办事项。当用户希望将会议录像、文字记录或会议笔记转化为后续执行计划时，可以使用此功能。
 ---
 
-# Meeting to Action
+# 将会议内容转化为可执行的行动方案
 
-## Goal
-Transform meeting content into an actionable follow-up package with clear ownership and deadlines.
+## 目标  
+将会议内容整理成一份包含明确责任人和截止日期的可执行行动方案。
 
-## Best fit
-- Use when the user provides a transcript or detailed notes.
-- Use when the user needs action items, decisions, and next steps.
-- Use when a concise recap email or message is required.
+## 适用场景  
+- 当用户提供了会议记录或详细笔记时。  
+- 当用户需要具体的行动事项、决策以及后续步骤时。  
+- 当需要发送简洁的会议总结邮件或消息时。  
 
-## Not fit
-- Avoid when the user wants tasks or calendar invites created automatically.
-- Avoid when the transcript is missing and cannot be summarized reliably.
-- Avoid when sensitive content should not be shared.
+## 不适用场景  
+- 当用户希望系统自动创建任务或日历邀请时。  
+- 当会议记录缺失且无法可靠地总结时。  
+- 当会议内容涉及敏感信息时（应避免共享）。  
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速参考  
+- `references/overview.md`：工作流程和质量标准。  
+- `references/auth.md`：访问权限和令牌管理。  
+- `references/endpoints.md`：可选的集成工具和模板。  
+- `references/webhooks.md`：异步事件处理机制。  
+- `references/ux.md`：信息收集方式及输出格式。  
+- `references/troubleshooting.md`：常见问题的解决方法。  
+- `references/safety.md`：安全与隐私保护措施。  
 
-## Required inputs
-- Transcript or notes.
-- Participant list and roles (if available).
-- Preferred due date format and timezone.
-- Audience for the recap (internal or external).
+## 必需输入  
+- 会议记录或笔记。  
+- 参与者名单及角色（如有的话）。  
+- 偏好的截止日期格式和时区。  
+- 会议总结的接收对象（内部或外部）。  
 
-## Expected output
-- Short summary and key decisions.
-- Action items with owners, due dates, and status.
-- Open questions or risks.
-- Draft follow-up message or email.
+## 预期输出  
+- 简洁的会议总结及关键决策。  
+- 明确了责任人、截止日期和执行状态的行动事项。  
+- 未解决的问题或潜在风险。  
+- 跟进行动方案的草稿（邮件或短信）。  
 
-## Operational notes
-- Mark any inferred owners or due dates as tentative.
-- Use clear, consistent action verbs.
-- Deliver drafts only; do not send or update systems.
+## 操作注意事项  
+- 将推断出的责任人和截止日期标记为“暂定”。  
+- 使用清晰、统一的行动动词。  
+- 仅提供草稿；切勿直接发送或更新系统。  
 
-## Security notes
-- Treat meeting content as confidential.
-- Avoid sharing outputs outside the user context.
+## 安全提示  
+- 将会议内容视为机密信息。  
+- 避免在用户授权范围之外分享会议结果。  
 
-## Safe mode
-- Summarize and draft action items only.
-- Do not create tasks, invites, or messages automatically.
+## 安全模式  
+- 仅负责总结会议内容并起草行动方案。  
+- 禁止自动创建任务、日历事件或发送消息。  
 
-## Sensitive ops
-- Creating tasks, calendar events, or sending messages is out of scope.
+## 特殊注意事项  
+- 创建任务、日历事件或发送消息超出了本工具的职责范围。

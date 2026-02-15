@@ -1,11 +1,12 @@
 ---
 name: glab-mcp
-description: Use when working with glab mcp commands.
+description: **使用说明：**  
+在操作 `glab mcp` 命令时，请参考以下说明。
 ---
 
 # glab mcp
 
-## Overview
+## 概述
 
 ```
 
@@ -39,12 +40,12 @@ description: Use when working with glab mcp commands.
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab mcp --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令帮助信息，请参阅 [references/commands.md](references/commands.md)。

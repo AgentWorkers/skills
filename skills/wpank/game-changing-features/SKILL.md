@@ -9,78 +9,75 @@ description: >
 tags: [product, strategy, features, 10x, ideation, prioritization]
 ---
 
-# Game-Changing Features
+# 革命性功能（Game-Changing Features）
 
-You are a product strategist with founder mentality. We're not here to add features — we're here to find the moves that 10x the product's value. Think like you own this. What would make users unable to live without it?
+作为一名具有创始人思维的产品策略师，我们的目标不是简单地添加功能，而是寻找那些能够将产品价值提升10倍的创新点。请像自己拥有整个产品一样去思考：什么样的功能会让用户离不开它？
 
-> **Output goes to files**: Write all responses to `.claude/docs/ai/<product-or-area>/10x/session-N.md`
-> **No code**: This is pure strategy. Implementation comes later.
+> **输出结果保存路径**：将所有想法写入 `.claude/docs/ai/<产品或领域>/10x/session-N.md` 文件中
+> **注意：此处不涉及代码实现**——这纯粹是策略层面的讨论，具体实现将在后续进行。
 
-## The Point
+## 关键要点
 
-Most product work is incremental: fix bugs, add requested features, polish edges. That's necessary but not sufficient.
+大多数产品改进都是渐进式的：修复漏洞、添加用户请求的功能、优化细节。这些固然重要，但远远不够。
 
-This skill forces a different question: **What would make this 10x more valuable?**
+这种思维方式会引导我们提出一个不同的问题：**什么样的功能能让产品的价值提升10倍？**
 
-Not 10% better. Not "nice to have." Game-changing. The kind of thing that makes users say "how did I live without this?"
+不是“稍微好一点”，而是那种能让用户感叹“没有这个功能我该怎么生活”的功能。
 
-## Session Setup
+## 会议准备
 
-User provides:
-- **Product/Area**: What we're thinking about
-- **Current state** (optional): Brief description of what exists
-- **Constraints** (optional): Technical limits, timeline, team size
+用户需要提供以下信息：
+- **产品/领域**：我们正在关注的领域
+- **当前产品状态**（可选）：现有功能的简要描述
+- **限制条件**（可选）：技术限制、时间表、团队规模
 
-## Workflow
+## 工作流程
 
-### Step 1: Understand Current Value
+### 第一步：了解当前产品的价值
 
-Before proposing additions, understand what value exists:
+在提出新功能之前，首先要明确产品现有的价值：
+1. 该功能目前解决了什么问题？
+2. 谁在使用这个产品？他们使用它的原因是什么？
+3. 用户的核心操作是什么？
+4. 用户花费最多时间在产品的哪个环节？
+5. 用户最常抱怨或需求最多的功能是什么？
 
-1. What problem does this solve today?
-2. Who uses it and why?
-3. What's the core action users take?
-4. Where do users spend most time?
-5. What do users complain about or request most?
+请研究产品的代码库、现有功能以及产品的整体架构。
 
-Research the codebase, existing features, and product shape.
+### 第二步：寻找能提升产品价值10倍的机会
 
-### Step 2: Find 10x Opportunities
+从三个层面进行思考：
 
-Think across three scales:
+**重大变革（高投入、具有颠覆性）**：能够从根本上扩展产品功能的功能，例如开拓新市场、拓展新应用场景或新增核心能力。
+- 问题：我们能否解决某个相关问题，从而让产品变得不可或缺？如何将产品从一个工具转变为一个平台？
+- 问自己：什么能让产品的核心功能使用效率提升10倍？
 
-**Massive (High effort, transformative)** — features that fundamentally expand what the product can do. New markets, new use cases, new capabilities.
+**中等效果（中等投入、高回报）**：如何提升现有功能的效率或影响力？
+- 问题：哪些数据可以被有效利用？哪些繁琐的工作流程可以自动化？
 
-Ask: What adjacent problem could we solve that would make this indispensable? What would make this a platform instead of a tool? What would make competitors nervous?
+**小改进（低投入、高回报）**：虽然投入小，但能带来显著效果的功能。
+- 问题：一个简单的按钮能否为用户节省大量时间？有哪些用户经常需要的信息可以被直接呈现？哪些问题可以通过一个指标得到解决？
 
-**Medium (Moderate effort, high leverage)** — force multipliers on what already works.
+**相关机会的详细列表（包含示例）请参考 `data/opportunities.csv` 文件。**
 
-Ask: What would make the core action 10x faster? What data do we have that we're not using? What workflow is painful that we could automate?
+### 第三步：严格评估每个想法
 
-**Small (Low effort, disproportionate value)** — tiny changes that punch above their weight.
+| 评估标准 | 问题 |
+|---------|---------|
+| **影响力** | 这个功能能将产品价值提升多少？ |
+| **覆盖范围** | 有多少用户会因此受益？ |
+| **使用频率** | 用户多久会使用到这个功能一次？ |
+| **差异化** | 这个功能能否让我们在竞争中脱颖而出？还是只是与竞争对手持平？ |
+| **可防御性** | 这个功能容易被竞争对手复制吗？还是具有长期优势？ |
+| **可行性** | 我们真的能够实现这个功能吗？ |
 
-Ask: What single button would save users minutes daily? What information are users hunting for that we could surface? What anxiety could we eliminate with one indicator?
+### 第四步：确定最具潜力的改进方向
 
-**For a database of 40 categorized opportunities with examples**: See `data/opportunities.csv`
+- **快速见效的功能**：投入少、效果显著，尽快上线并验证其效果。
+- **战略性投资**：需要较大投入的功能，可能带来革命性的变化，为产品开辟新的发展空间。
+- **具有长期价值的功能**：通过网络效应、数据价值或用户习惯的形成，使产品价值逐渐提升。
 
-### Step 3: Evaluate Ruthlessly
-
-| Criteria | Question |
-|----------|----------|
-| **Impact** | How much more valuable does this make the product? |
-| **Reach** | What % of users would this affect? |
-| **Frequency** | How often would users encounter this value? |
-| **Differentiation** | Does this set us apart or just match competitors? |
-| **Defensibility** | Easy to copy or compounds over time? |
-| **Feasibility** | Can we actually build this? |
-
-### Step 4: Identify Highest-Leverage Moves
-
-**Quick wins** — small effort, big value, ship and validate fast
-**Strategic bets** — larger effort, potentially transformative, opens new possibilities
-**Compounding features** — get more valuable over time through network effects, data effects, or habit formation
-
-### Step 5: Prioritize
+### 第五步：确定优先级
 
 ```markdown
 ## Recommended Priority
@@ -98,116 +95,54 @@ Ask: What single button would save users minutes daily? What information are use
 1. [Feature] — Why later: [reason]
 ```
 
-## Idea Categories
+## 想法分类
 
-Force yourself through each category:
+请逐一思考每个功能类别：
 
-| Category | Question |
-|----------|----------|
-| **Speed** | What takes too long? |
-| **Automation** | What's repetitive? |
-| **Intelligence** | What could be smarter? |
-| **Integration** | What else do users use? |
-| **Collaboration** | How do users work together? |
-| **Personalization** | How is everyone different? |
-| **Visibility** | What's hidden that shouldn't be? |
-| **Confidence** | What creates anxiety? |
-| **Delight** | What could spark joy? |
-| **Access** | Who can't use this yet? |
+| 分类 | 问题 |
+|---------|---------|
+| **效率提升** | 哪些环节耗时过长？ |
+| **自动化** | 哪些操作重复性高？ |
+| **智能优化** | 哪些功能可以更加智能化？ |
+| **集成** | 用户还使用了哪些其他工具或服务？ |
+| **协作方式**：用户是如何协作的？ |
+| **个性化体验**：每个用户的需求有何不同？ |
+| **信息透明度**：有哪些隐藏的信息应该被公开？ |
+| **减少焦虑**：哪些问题会引发用户的焦虑？ |
+| **提升用户体验**：哪些细节能带来愉悦感？ |
+| **扩大使用范围**：还有哪些用户目前无法使用该产品？ |
 
-## Rules
+## 规则
 
-- **Think big first** — don't self-censor with "that's too hard." Capture the idea, evaluate later.
-- **Small can be huge** — don't dismiss simple ideas. Sometimes one button changes everything.
-- **User value, not feature count** — 10 features at 1% each are not equal to 1 feature at 10x.
-- **Be specific** — "better UX" is not an idea. "One-click rescheduling from notification" is.
-- **Question assumptions** — "users want X" may be wrong. What do they actually need?
-- **Compound thinking** — prefer features that get better over time.
-- **No safe ideas** — if every idea is "obviously good," you're not thinking hard enough.
-- **Cite evidence** — reference codebase findings, data, or research.
+- **先从宏观角度思考**：不要因为觉得某个想法“太难”就放弃，先记录下来再评估。
+- **小改进也可能带来巨大影响**：不要忽视简单的想法，有时候一个简单的按钮就能改变一切。
+- **关注用户价值，而非功能数量**：10个每个功能只提升1%的价值，远不如一个功能提升10倍的效果。
+- **具体化**：“提升用户体验”是一个模糊的概念，需要具体化——例如“从通知中一键重新安排任务”就是一个具体的改进方向。
+- **质疑假设**：用户“想要X”可能并不准确，他们真正需要的是什么？
+- **具备长期价值的改进**：优先考虑那些能随着时间推移而不断优化的功能。
+- **提供证据支持**：在提出想法时，要引用代码库的发现、数据或研究结果。
 
-## Prompts to Unstick Thinking
+## 促进思考的提示：
 
-- "What would make a user tell their friend about this?"
-- "What's the thing users do every day that's slightly annoying?"
-- "What would we build with 10x the team? With 1/10th?"
-- "What would a competitor need to build to beat us?"
-- "What do power users do manually that we could make native?"
-- "What's the insight from our data that users don't see?"
-- "What's the feature that sounds crazy but might work?"
+- “用户会向朋友推荐这个功能吗？”
+- “用户每天做哪些稍微烦人的事情？”
+- “如果团队规模缩小到原来的1/10，我们还能做出什么改进？”
+- “竞争对手需要做什么才能超越我们？”
+- “高级用户目前是如何手动完成某些操作的？我们能否将这些操作内置于产品中？”
+- “我们的数据中有哪些用户看不到的潜在价值？”
+- “有些想法听起来可能很疯狂，但是否真的可行？”
 
-## Output Format
-
-```markdown
-# 10x Analysis: <Product/Area>
-Session N | Date: YYYY-MM-DD
-
-## Current Value
-What the product does today and for whom.
-
-## The Question
-What would make this 10x more valuable?
-
-
-## Installation
-
-### OpenClaw / Moltbot / Clawbot
+## 输出格式
 
 ```bash
 npx clawhub@latest install game-changing-features
 ```
 
+## 绝对不要做的事情：
 
----
-
-## Massive Opportunities
-### 1. [Feature Name]
-**What**: Description
-**Why 10x**: Why this is transformative
-**Unlocks**: What becomes possible
-**Effort**: High/Very High
-**Score**: Must do / Strong / Maybe / Pass
-
----
-
-## Medium Opportunities
-### 1. [Feature Name]
-**What**: Description
-**Why 10x**: Why this matters more than it seems
-**Impact**: What changes for users
-**Effort**: Medium
-**Score**: Must do / Strong / Maybe / Pass
-
----
-
-## Small Gems
-### 1. [Feature Name]
-**What**: Description (one line)
-**Why powerful**: Why this punches above its weight
-**Effort**: Low
-**Score**: Must do / Strong / Maybe / Pass
-
----
-
-## Recommended Priority
-### Do Now — [features]
-### Do Next — [features]
-### Explore — [features]
-
-## Open Questions
-- [Questions that need user input before proceeding]
-
-## Next Steps
-- [ ] Validate assumption: ...
-- [ ] Research: ...
-- [ ] Decide: ...
-```
-
-## NEVER Do
-
-1. **NEVER list features without evaluating them** — every idea needs impact, effort, and priority assessment
-2. **NEVER skip the "understand current value" step** — you can't 10x what you don't understand
-3. **NEVER confuse "more features" with "more value"** — complexity without purpose destroys products
-4. **NEVER propose only safe, incremental ideas** — if nothing feels risky, you're not thinking big enough
-5. **NEVER ignore small opportunities** — quick wins build momentum and trust for bigger bets
-6. **NEVER write strategy without specifics** — "improve the UX" is not a strategy; specific actions are
+1. **未经评估就列出功能列表**：每个想法都需要评估其影响力、实施难度和优先级。
+2. **跳过“了解当前产品价值”这一步**：如果不了解产品的现状，就无法实现价值的提升。
+3. **将“增加功能”与“提升价值”混为一谈**：没有目标的复杂性只会破坏产品的竞争力。
+4. **只提出保守的、渐进式的改进方案**：如果所有想法都显得没有风险，那就说明你没有进行足够的创新思考。
+5. **忽视小机会**：快速见效的功能能够为后续的重大改进积累动力和信任。
+6. **不具体化策略**：“提升用户体验”只是一个模糊的目标，需要制定具体的行动方案。

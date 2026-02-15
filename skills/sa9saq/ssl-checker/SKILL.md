@@ -1,24 +1,24 @@
 ---
-description: Check SSL/TLS certificate expiry, validity, chain, and configuration for any domain.
+description: 检查任何域名的 SSL/TLS 证书的有效期、有效性、证书链以及配置信息。
 ---
 
-# SSL Checker
+# SSL检查工具
 
-Inspect SSL/TLS certificates — expiry dates, issuer details, chain validation, and bulk checks.
+用于检查SSL/TLS证书：过期日期、颁发机构信息、证书链验证以及批量检测。
 
-## Requirements
+## 前提条件
 
-- `openssl` (pre-installed on most systems)
-- No API keys needed
+- `openssl`（已安装在大多数系统中）
+- 无需API密钥
 
-## Instructions
+## 使用说明
 
-### Single domain check
+### 单个域名检查
 ```bash
 echo | openssl s_client -servername example.com -connect example.com:443 2>/dev/null | openssl x509 -noout -dates -subject -issuer -ext subjectAltName
 ```
 
-### Extract specific fields
+### 提取特定字段
 ```bash
 # Expiry date only
 echo | openssl s_client -servername example.com -connect example.com:443 2>/dev/null | openssl x509 -noout -enddate
@@ -30,7 +30,7 @@ echo | openssl s_client -servername example.com -connect example.com:443 2>/dev/
 echo | openssl s_client -servername example.com -connect example.com:443 -showcerts 2>/dev/null
 ```
 
-### Bulk check (multiple domains)
+### 批量检查（多个域名）
 ```bash
 for domain in example.com google.com github.com; do
   expiry=$(echo | openssl s_client -servername $domain -connect $domain:443 2>/dev/null | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
@@ -38,7 +38,7 @@ for domain in example.com google.com github.com; do
 done
 ```
 
-### Output format
+### 输出格式
 ```
 ## 🔒 SSL Certificate Report — <timestamp>
 
@@ -51,17 +51,17 @@ done
 **Thresholds**: 🟢 > 30 days | 🟡 ≤ 30 days | 🔴 Expired or ≤ 7 days
 ```
 
-## Edge Cases
+## 特殊情况处理
 
-- **Non-standard port**: Support `domain:8443` syntax for custom ports.
-- **Connection refused**: Host may not serve HTTPS. Report clearly, don't hang.
-- **Self-signed certs**: `openssl` will show verify errors — report but still extract cert details.
-- **SNI required**: Always pass `-servername` flag (some servers serve different certs per hostname).
-- **Timeout**: Add `-connect` timeout: `timeout 5 openssl s_client ...`
-- **Wildcard certs**: Note when SAN contains `*.domain.com`.
+- **非标准端口**：支持使用`domain:8443`语法来指定自定义端口。
+- **连接被拒绝**：可能表示该主机不支持HTTPS服务。请明确报告错误，不要导致程序挂起。
+- **自签名证书**：`openssl`会显示验证错误，但仍需提取证书详细信息。
+- **需要SNI（Server Name Indication）**：务必使用`-servername`参数（某些服务器会根据主机名提供不同的证书）。
+- **超时设置**：可以使用`-connect`选项设置超时时间，例如：`timeout 5 openssl s_client ...`
+- **通配符证书**：当SAN（Subject Alternative Name）中包含`*.domain.com`时请特别注意。
 
-## Security
+## 安全性注意事项
 
-- Only connects to port 443 (or user-specified port) — read-only inspection.
-- No credentials or sensitive data involved.
-- Validate domain input: alphanumeric, hyphens, dots only.
+- 仅连接443端口（或用户指定的端口），仅进行读取操作。
+- 不涉及任何凭据或敏感数据。
+- 验证域名输入：仅允许使用字母、数字和连字符（-）。

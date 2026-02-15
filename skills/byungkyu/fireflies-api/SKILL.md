@@ -17,9 +17,9 @@ metadata:
 
 # Fireflies
 
-Access the Fireflies.ai GraphQL API with managed OAuth authentication. Retrieve meeting transcripts, summaries, users, contacts, channels, and use AI-powered meeting analysis with AskFred.
+您可以使用托管的 OAuth 认证来访问 Fireflies.ai 的 GraphQL API。该 API 可用于检索会议记录、会议摘要、用户信息、联系人信息以及频道信息，并通过 AskFred 功能利用人工智能对会议内容进行分析。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user
@@ -33,39 +33,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/fireflies/graphql
 ```
 
-All requests are sent to a single GraphQL endpoint. The gateway proxies requests to `api.fireflies.ai/graphql` and automatically injects your OAuth token.
+所有请求都会发送到一个统一的 GraphQL 端点。Fireflies 的网关会将请求代理到 `api.fireflies.aigraphql`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Fireflies OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Fireflies OAuth 连接。
 
-### List Connections
+### 列出所有连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Fireflies connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Fireflies 连接，可以使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -144,13 +144,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果未指定，网关将使用默认的（最旧的）活动连接。
 
 ## GraphQL API
 
-Fireflies uses GraphQL, which means all requests are POST requests to a single `/graphql` endpoint with a JSON body containing the query.
+Fireflies 使用 GraphQL，这意味着所有请求都是 POST 请求，目标端点为 `/graphql`，请求体需要包含 JSON 格式的查询内容。
 
-### Request Format
+### 请求格式
 
 ```bash
 POST /fireflies/graphql
@@ -164,9 +164,9 @@ Content-Type: application/json
 
 ---
 
-## Queries
+## 查询
 
-### Get Current User
+### 获取当前用户信息
 
 ```graphql
 {
@@ -183,7 +183,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -199,7 +199,7 @@ Content-Type: application/json
 }
 ```
 
-### List Users
+### 列出用户信息
 
 ```graphql
 {
@@ -214,7 +214,7 @@ Content-Type: application/json
 }
 ```
 
-### List Transcripts
+### 列出会议记录
 
 ```graphql
 {
@@ -236,7 +236,7 @@ Content-Type: application/json
 }
 ```
 
-**With Variables (filtering):**
+**带参数的查询（用于过滤）：**
 
 ```json
 {
@@ -248,7 +248,7 @@ Content-Type: application/json
 }
 ```
 
-### Get Transcript by ID
+### 根据 ID 获取会议记录
 
 ```graphql
 query($id: String!) {
@@ -283,7 +283,7 @@ query($id: String!) {
 }
 ```
 
-### List Channels
+### 列出频道信息
 
 ```graphql
 {
@@ -298,7 +298,7 @@ query($id: String!) {
 }
 ```
 
-### Get Channel by ID
+### 根据 ID 获取频道信息
 
 ```graphql
 query($id: String!) {
@@ -312,7 +312,7 @@ query($id: String!) {
 }
 ```
 
-### List Contacts
+### 列出联系人信息
 
 ```graphql
 {
@@ -325,7 +325,7 @@ query($id: String!) {
 }
 ```
 
-### List User Groups
+### 列出用户组信息
 
 ```graphql
 {
@@ -336,7 +336,7 @@ query($id: String!) {
 }
 ```
 
-### List Bites (Soundbites)
+### 列出会议中的语音片段（Bites）
 
 ```graphql
 {
@@ -356,7 +356,7 @@ query($id: String!) {
 }
 ```
 
-### Get Bite by ID
+### 根据 ID 获取语音片段
 
 ```graphql
 query($id: String!) {
@@ -372,7 +372,7 @@ query($id: String!) {
 }
 ```
 
-### List Active Meetings
+### 列出正在进行的会议
 
 ```graphql
 {
@@ -384,11 +384,9 @@ query($id: String!) {
 }
 ```
 
-### AskFred Threads
+### 使用 AskFred 功能查询会议内容
 
-Query meeting content using AI.
-
-**List Threads:**
+**列出会议中的讨论线程：**
 ```graphql
 {
   askfred_threads {
@@ -399,7 +397,7 @@ Query meeting content using AI.
 }
 ```
 
-**Get Thread by ID:**
+**根据 ID 获取讨论线程：**
 ```graphql
 query($id: String!) {
   askfred_thread(id: $id) {
@@ -415,9 +413,9 @@ query($id: String!) {
 
 ---
 
-## Mutations
+## 更改请求数据（Mutations）
 
-### Upload Audio
+### 上传音频文件
 
 ```graphql
 mutation($input: AudioUploadInput!) {
@@ -429,7 +427,7 @@ mutation($input: AudioUploadInput!) {
 }
 ```
 
-**Variables:**
+**参数：**
 ```json
 {
   "input": {
@@ -439,7 +437,7 @@ mutation($input: AudioUploadInput!) {
 }
 ```
 
-### Delete Transcript
+### 删除会议记录
 
 ```graphql
 mutation($id: String!) {
@@ -450,7 +448,7 @@ mutation($id: String!) {
 }
 ```
 
-### Update Meeting Title
+### 更新会议标题
 
 ```graphql
 mutation($id: String!, $title: String!) {
@@ -460,7 +458,7 @@ mutation($id: String!, $title: String!) {
 }
 ```
 
-### Update Meeting Privacy
+### 更改会议隐私设置
 
 ```graphql
 mutation($id: String!, $privacy: String!) {
@@ -470,7 +468,7 @@ mutation($id: String!, $privacy: String!) {
 }
 ```
 
-### Update Meeting Channel
+### 更改会议使用的频道
 
 ```graphql
 mutation($id: String!, $channelId: String!) {
@@ -480,7 +478,7 @@ mutation($id: String!, $channelId: String!) {
 }
 ```
 
-### Set User Role
+### 设置用户角色
 
 ```graphql
 mutation($userId: String!, $role: String!) {
@@ -490,7 +488,7 @@ mutation($userId: String!, $role: String!) {
 }
 ```
 
-### Create Bite
+### 创建新的语音片段
 
 ```graphql
 mutation($input: CreateBiteInput!) {
@@ -501,9 +499,9 @@ mutation($input: CreateBiteInput!) {
 }
 ```
 
-### AskFred Mutations
+### 使用 AskFred 功能进行操作
 
-**Create Thread:**
+**创建新的讨论线程：**
 ```graphql
 mutation($input: CreateAskFredThreadInput!) {
   createAskFredThread(input: $input) {
@@ -513,7 +511,7 @@ mutation($input: CreateAskFredThreadInput!) {
 }
 ```
 
-**Continue Thread:**
+**继续现有讨论线程：**
 ```graphql
 mutation($id: String!, $question: String!) {
   continueAskFredThread(id: $id, question: $question) {
@@ -526,7 +524,7 @@ mutation($id: String!, $question: String!) {
 }
 ```
 
-**Delete Thread:**
+**删除讨论线程：**
 ```graphql
 mutation($id: String!) {
   deleteAskFredThread(id: $id) {
@@ -535,9 +533,9 @@ mutation($id: String!) {
 }
 ```
 
-### Live Meeting Mutations
+### 实时会议操作
 
-**Update Meeting State (pause/resume):**
+**更改会议状态（暂停/恢复）：**
 ```graphql
 mutation($id: String!, $state: String!) {
   updateMeetingState(id: $id, state: $state) {
@@ -546,7 +544,7 @@ mutation($id: String!, $state: String!) {
 }
 ```
 
-**Create Live Action Item:**
+**创建实时操作项：**
 ```graphql
 mutation($meetingId: String!, $text: String!) {
   createLiveActionItem(meetingId: $meetingId, text: $text) {
@@ -555,7 +553,7 @@ mutation($meetingId: String!, $text: String!) {
 }
 ```
 
-**Create Live Soundbite:**
+**创建实时语音片段：**
 ```graphql
 mutation($meetingId: String!, $name: String!) {
   createLiveSoundbite(meetingId: $meetingId, name: $name) {
@@ -564,7 +562,7 @@ mutation($meetingId: String!, $name: String!) {
 }
 ```
 
-**Add Bot to Live Meeting:**
+**将机器人添加到实时会议中：**
 ```graphql
 mutation($meetingLink: String!) {
   addToLiveMeeting(meetingLink: $meetingLink) {
@@ -575,9 +573,9 @@ mutation($meetingLink: String!) {
 
 ---
 
-## Code Examples
+## 代码示例
 
-### JavaScript
+### JavaScript 示例
 
 ```javascript
 const query = `{
@@ -603,7 +601,7 @@ const data = await response.json();
 console.log(data.data.user);
 ```
 
-### Python
+### Python 示例
 
 ```python
 import os
@@ -633,28 +631,28 @@ for transcript in data['data']['transcripts']:
     print(f"{transcript['title']}: {transcript['duration']}s")
 ```
 
-## Notes
+## 注意事项：
 
-- Fireflies uses GraphQL, not REST - all requests are POST to `/graphql`
-- User IDs are ULIDs (e.g., `01KH5131Z0W4TS7BBSEP66CV6V`)
-- Timestamps are Unix timestamps (milliseconds)
-- The `summary` field on transcripts contains AI-generated content: overview, action_items, outline, keywords
-- AskFred allows natural language queries across meeting transcripts
-- Rate limits: 50 API calls/day on free plan, more on Business plan
-- IMPORTANT: All GraphQL queries and mutations must be sent as POST requests with Content-Type: application/json
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- Fireflies 使用 GraphQL 而非 REST：所有请求均为 POST 请求，目标端点为 `/graphql`。
+- 用户 ID 采用 ULID 格式（例如：`01KH5131Z0W4TS7BBSEP66CV6V`）。
+- 时间戳为 Unix 时间戳（以毫秒为单位）。
+- 会议记录中的 `summary` 字段包含人工智能生成的内容（如会议概要、操作项、大纲和关键词）。
+- AskFred 支持对会议记录进行自然语言查询。
+- 免费计划每天允许 50 次 API 请求；商业计划提供更多请求次数。
+- 重要提示：所有 GraphQL 查询和更改操作都必须以 `POST` 请求的形式发送，且请求头的 `Content-Type` 必须设置为 `application/json`。
+- 重要提示：在将 curl 的输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Invalid GraphQL query or missing connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions |
-| 429 | Rate limited |
-| 500 | Internal server error |
+| 400 | GraphQL 查询无效或未建立连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足 |
+| 429 | 请求次数达到限制 |
+| 500 | 服务器内部错误 |
 
-**GraphQL Errors:**
+**GraphQL 错误代码：**
 ```json
 {
   "errors": [
@@ -666,15 +664,15 @@ for transcript in data['data']['transcripts']:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥相关问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出所有连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -685,17 +683,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称错误
 
-1. Ensure your URL path starts with `fireflies`. For example:
+1. 确保您的 URL 路径以 `fireflies` 开头。例如：
+  - 正确的路径：`https://gateway.maton.ai/firefliesgraphql`
+  - 错误的路径：`https://gateway.maton.aigraphql`
 
-- Correct: `https://gateway.maton.ai/fireflies/graphql`
-- Incorrect: `https://gateway.maton.ai/graphql`
+## 资源
 
-## Resources
-
-- [Fireflies API Documentation](https://docs.fireflies.ai/)
-- [Fireflies GraphQL API Reference](https://docs.fireflies.ai/graphql-api)
-- [Fireflies Developer Program](https://docs.fireflies.ai/getting-started/developer-program)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Fireflies API 文档](https://docs.fireflies.ai/)
+- [Fireflies GraphQL API 参考文档](https://docs.fireflies.aigraphql-api)
+- [Fireflies 开发者计划](https://docs.fireflies.ai/getting-started/developer-program)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 客服](mailto:support@maton.ai)

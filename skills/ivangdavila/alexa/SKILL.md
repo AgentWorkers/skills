@@ -1,92 +1,107 @@
 ---
 name: Alexa
-description: Control devices, run automations, and help users get more from Alexa with smart home, routines, and skill development guidance.
+description: 通过智能家居、自动化脚本以及技能开发指导，帮助用户更好地控制设备、运行自动化任务，并充分利用Alexa的功能。
 ---
 
-## Device Control
+## 设备控制
 
-**Naming for reliable control:** Location + device type. "Kitchen light", "Bedroom fan". Avoid model numbers.
+**命名规则：** 为了确保设备能够被可靠地控制，建议使用“位置 + 设备类型”的组合来命名设备，例如“厨房灯”、“卧室风扇”，避免使用型号编号。  
+**基于房间的命令示例：**  
+- “关闭卧室的灯”（控制该房间内的所有设备）  
+- “打开楼下的灯”（控制属于同一组的设备）  
+- “将客厅的温度设置为22摄氏度”（通过恒温器调整温度）  
 
-**Room-based commands:**
-- "Turn off the bedroom" (all devices in room)
-- "Turn on downstairs lights" (group)
-- "Set living room to 72" (thermostat)
+**协议层次结构：** Matter > Zigbee > Wi-Fi  
+**内置的Zigbee hub设备：** Echo Plus、Echo 第四代、Echo Show 10  
 
-**Protocol hierarchy:** Matter > Zigbee > Wi-Fi. Built-in Zigbee hubs: Echo Plus, Echo 4th gen, Echo Show 10.
+**如果设备没有响应？**  
+- 检查Alexa应用程序 → “设备” → 找到相关设备 → 验证其在线状态；如有需要，可重新发现设备。  
 
-**Device not responding?** Check Alexa app → Devices → find device → verify online status. Re-discover if needed.
+## 常规操作（Routines）  
 
-## Routines
+**创建方法：**  
+通过Alexa应用程序 → “更多” → “常规操作”（More → Routines）  
 
-**Create via:** Alexa app → More → Routines
+**触发条件：**  
+- 语音指令（必须唯一，不能与内置命令重复）  
+- 时间安排（如日出/日落时间）  
+- 设备状态（例如门解锁、检测到运动）  
+- 位置变化（进入/离开预设的地理区域）  
+- 报警解除  
 
-**Triggers:**
-- Voice phrase (unique, not similar to built-in commands)
-- Schedule (time, sunrise/sunset)
-- Device state (door unlocks, motion detected)
-- Location (geofence enter/exit)
-- Alarm dismissed
+**常规操作的功能：**  
+- 控制设备  
+- 执行预设场景  
+- 播放通知  
+- 播放音乐  
+- 等待特定时间  
+- 发出自定义语音提示  
 
-**Actions:** Device control, scenes, announcements, music, wait (sequencing), custom speech.
+**如果常规操作失败？**  
+- 检查触发指令是否唯一  
+- 确认所有设备是否处于在线状态  
+- 查看应用程序中的常规操作历史记录。  
 
-**Routine fails?** Check trigger phrase uniqueness, verify all devices online, review routine history in app.
+## 快捷指令的设置  
 
-## Shortcuts Integration
+**创建语音快捷指令：**  
+在Alexa应用程序中 → “更多” → “语音” → “自定义” → 创建新的语音指令，以触发特定的命令。  
 
-**Quick voice shortcuts:** Alexa app → More → Voice → Custom → create phrase that triggers existing command.
+**第三方技能的集成：**  
+可以通过启用第三方技能（如IFTTT或智能家居品牌提供的服务），将其他设备的功能整合到常规操作中。  
 
-**Skills as automations:** Enable third-party skills that expose actions to routines (IFTTT, smart home brands).
+**通知功能：**  
+例如：“Alexa，宣布晚餐准备好了”，该指令会同时发送到所有连接的Echo设备上，这对常规操作非常有用。  
 
-**Announcements:** "Alexa, announce dinner is ready" → broadcasts to all Echo devices. Useful in routines.
+## 智能家居设置  
 
-## Smart Home Setup
+**添加设备：**  
+1. 在Alexa应用程序中启用相关设备的功能。  
+2. 如有必要，关联你的亚马逊账户。  
+3. 选择“Alexa，发现设备”或通过“设备” → “+” → “添加设备”。  
+4. 为设备指定所属房间（这对于基于房间的命令至关重要）。  
 
-**Adding devices:**
-1. Enable brand's skill in Alexa app
-2. Link account if required
-3. "Alexa, discover devices" or Devices → + → Add Device
-4. Assign to room (critical for room-based commands)
+**组（Groups）与场景（Scenes）的区别：**  
+- **组**：包含多个设备，执行相同的操作（例如“关闭楼下的灯”）  
+- **场景**：包含多个设备，预设共同的状态（例如“电影时间” → 调暗灯光、关闭百叶窗）  
 
-**Groups vs Scenes:**
-- Groups: multiple devices, same action ("turn off downstairs")
-- Scenes: multiple devices, preset states ("movie time" → dim lights, close blinds)
+**多房间音频播放：**  
+先创建扬声器组，然后通过“在[组名称]播放音乐”或“在所有房间播放音乐”来控制音频播放。  
 
-**Multi-room audio:** Create speaker groups, then "Play music on [group name]" or "Play everywhere".
+## 自定义技能的开发  
 
-## Skill Development
+**开发自定义技能时需注意：**  
+- 必需使用以下Amazon意图（Intents）：AMAZON.HelpIntent、AMAZON.StopIntent、AMAZON.CancelIntent、AMAZON.FallbackIntent  
+- 在模拟器和实际设备上测试技能的功能  
+- 每个意图至少需要10-20条示例语音指令  
+- 优先考虑语音交互方式（因为用户无法看到屏幕）  
 
-**When building custom skills:**
-- Required intents: AMAZON.HelpIntent, AMAZON.StopIntent, AMAZON.CancelIntent, AMAZON.FallbackIntent
-- Test in simulator AND on physical device (simulator misses edge cases)
-- 10-20 sample utterances per intent minimum
-- Voice-first: users don't see a screen
+**可能影响技能认证的因素：**  
+- 有些语音指令的实际执行效果可能与编写时预期的不同  
+- 缺少必要的帮助提示  
+- 未提供隐私政策信息  
 
-**Certification blockers:** Example phrases that don't work exactly as written, generic help intent, missing privacy policy.
+## 故障排除：**
 
-## Troubleshooting
+| 问题 | 解决方法 |  
+|---------|---------|  
+| 设备无响应 | 检查Wi-Fi连接，通过Alexa应用程序验证设备状态，必要时重新发现设备 |  
+| 常规操作未触发 | 重新命名触发指令，查看常规操作的历史记录 |  
+| 错误的设备被激活 | 为设备重新命名，以增加区分度 |  
+| 技能执行超时 | 检查Lambda函数的CloudWatch日志，适当延长执行超时时间 |  
+| 不知道如何操作某个功能 | 为相关意图添加更多示例语音指令 |  
 
-| Problem | Fix |
-|---------|-----|
-| "Device not responding" | Check Wi-Fi, verify in Alexa app, re-discover |
-| Routine doesn't trigger | Rename trigger phrase, check routine history |
-| Wrong device activates | Rename devices to be more distinct |
-| Skill timeout | Check Lambda CloudWatch logs, increase timeout |
-| "I don't know that" | Add more sample utterances to intent |
-
-## Privacy Controls
-
-**Voice history:** Alexa app → Privacy → Review Voice History. Enable auto-delete (3 or 18 months).
-
-**Quick delete:** "Alexa, delete what I just said" or "delete everything I said today".
-
-**Guard mode:** "Alexa, I'm leaving" → monitors for sounds (glass break, smoke alarm).
+## 隐私设置：**  
+- **语音记录**：在Alexa应用程序中进入“隐私”设置，可查看或删除语音记录（可选：3个月或18个月）。  
+- **快速删除记录**：可以语音指令“Alexa，删除我刚才说的话”或“删除我今天说过的所有内容”。  
+- **安全模式**：设置“Alexa，我正在离开”后，系统会监听异常声音（如玻璃破碎或烟雾报警）。  
 
 ---
 
-## When to Load More
+## 何时需要进一步查阅相关资料：  
 
-| Situation | Reference |
-|-----------|-----------|
-| Full command list by category | `commands.md` |
-| Smart home protocols, setup, troubleshooting | `smart-home.md` |
-| Building custom skills, Lambda, certification | `development.md` |
+| 需要了解的内容 | 参考文件 |  
+|----------------|----------------|  
+| 按类别整理的完整命令列表 | `commands.md` |  
+| 智能家居协议、设置及故障排除 | `smart-home.md` |  
+| 自定义技能开发、Lambda函数及认证相关内容 | `development.md` |

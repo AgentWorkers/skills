@@ -1,27 +1,27 @@
 ---
 name: email-triager
-description: Triage, categorize, and draft responses to emails. Sorts by urgency, flags action items, and generates context-aware reply drafts.
+description: 对收到的电子邮件进行分类、整理，并草拟回复内容。系统会根据邮件的紧急程度对邮件进行排序，标记需要处理的行动项，并自动生成与邮件内容相关的回复草稿。
 ---
 
-# Email Triager
+# 邮件分类与处理系统
 
-When asked to triage, sort, or process emails, follow this system.
+当需要对邮件进行分类、排序或处理时，请遵循以下系统。
 
-## Triage Categories
+## 分类标准
 
-Assign every email exactly one category:
+每封邮件必须被归入一个明确的类别：
 
-| Category | Icon | Criteria |
+| 类别 | 图标 | 判断标准 |
 |----------|------|----------|
-| **Urgent Action** | 🔴 | Requires response/action within 24h. Deadlines, escalations, time-sensitive requests. |
-| **Action Required** | 🟡 | Needs a response or task but not time-critical. Requests, approvals, questions. |
-| **FYI / Read** | 🔵 | Informational. No action needed but worth reading. Updates, reports, announcements. |
-| **Delegate** | 🟣 | Someone else should handle this. Forward with context. |
-| **Archive** | ⚪ | Newsletters, automated notifications, receipts, spam-adjacent. No action needed. |
+| **紧急处理** | 🔴 | 需要在24小时内回复或采取行动。涉及截止日期、升级事项或时间敏感的请求。 |
+| **需要处理** | 🟡 | 需要回复或执行某些操作，但不紧急。例如请求、审批、咨询等。 |
+| **仅供参考** | 🔵 | 仅提供信息，无需采取任何行动，但值得阅读。例如更新、报告、公告等。 |
+| **委托他人处理** | 🟣 | 应由其他人负责处理。请附上相关背景信息转发邮件。 |
+| **归档** | ⚪ | 新闻邮件、自动发送的通知、收据等。无需采取任何行动。 |
 
-## Triage Output Format
+## 分类后的输出格式
 
-For each email, produce:
+对于每封邮件，输出如下格式：
 
 ```
 [ICON] CATEGORY | From: sender | Subject: subject
@@ -30,50 +30,51 @@ Action: Specific next step (or "None — archive")
 Draft: [Yes/No] — whether a reply draft is included below
 ```
 
-## Draft Response Rules
+## 回复草稿生成规则
 
-Generate a reply draft when:
-- Category is Urgent Action or Action Required
-- The email contains a direct question or request
-- User explicitly asks for drafts
+在以下情况下生成回复草稿：
+- 邮件属于“紧急处理”或“需要处理”类别；
+- 邮件中包含直接的问题或请求；
+- 用户明确要求生成回复草稿。
 
-Draft style:
-- **Be direct.** Open with the answer or decision, not "Thank you for your email."
-- **Mirror their tone.** Formal email gets formal reply. Casual gets casual.
-- **Keep it short.** Most replies should be 2-5 sentences.
-- **End with clarity.** What happens next? Who does what by when?
-- **Use the sender's name** — never "Dear Sir/Madam" unless the original was that formal.
+回复草稿的撰写要点：
+- **直接明了**：直接给出答案或决定，不要以“感谢您的来信”开头。
+- **保持语气一致**：正式的邮件使用正式的回复语气，非正式的邮件则使用随意的语气。
+- **简洁明了**：回复内容应控制在2-5句话以内。
+- **明确后续步骤**：说明下一步该怎么做，以及谁在什么时间之前需要完成什么。
+- **使用发件人的姓名**：除非原邮件中使用了正式的称呼，否则不要使用“尊敬的先生/女士”。
 
-## Batch Processing
+## 批量处理
 
-When given multiple emails:
-1. Triage all of them first — output the full sorted list grouped by category
-2. Then provide drafts for Urgent Action and Action Required items
-3. Highlight any patterns ("3 emails from the same client — might want a call instead")
+当收到多封邮件时：
+1. 首先对所有邮件进行分类，并按类别整理成列表。
+2. 为“紧急处理”和“需要处理”的邮件生成回复草稿。
+3. 注意潜在的模式（例如：“来自同一客户的3封邮件——可能需要电话沟通”）。
 
-## Smart Signals
+## 智能提示
 
-Flag these automatically:
-- **Repeated follow-ups** from the same sender (they're waiting on you)
-- **CC escalation** — when someone adds a manager or exec to the thread
-- **Deadline mentions** — extract and highlight specific dates/times
-- **Sentiment shifts** — if tone has gotten noticeably more terse or frustrated
-- **Meeting requests** buried in email body (not calendar invites)
+自动标记以下特殊情况：
+- **同一发件人的重复跟进邮件**：表示对方仍在等待你的回复。
+- **抄送人员升级**：当有人将经理或高层加入邮件讨论时。
+- **提及截止日期**：提取并突出显示具体的日期或时间。
+- **语气变化**：如果邮件的语气明显变得生硬或沮丧。
+- **会议请求**：虽然邮件中提到了会议，但实际内容并非会议邀请。
 
-## Action Item Extraction
+## 动作项提取
 
-Pull out discrete action items from emails:
-- **What** needs to be done
-- **Who** is expected to do it
-- **When** it's due (if mentioned)
-- Format as a checklist the user can copy into their task manager
+从邮件中提取具体的操作事项：
+- 需要完成的具体任务；
+- 负责执行任务的人；
+- 预计的完成时间（如果已明确说明）。
 
-## When Not Triaging
+将提取出的操作事项整理成清单，用户可以将其复制到自己的任务管理器中。
 
-If the user asks about a specific email (not batch triage), switch to focused mode:
-- Summarize the email thread
-- Identify the core ask
-- Draft a response if requested
-- Flag anything the user should know before replying
+## 不进行邮件分类的情况
 
-Pair with an industry context pack for domain-specific email handling (legal, healthcare, finance, etc.) at https://afrexai-cto.github.io/context-packs
+如果用户询问某封具体的邮件（而非批量处理），请切换到专注模式：
+- 概述邮件内容；
+- 明确用户的核心需求；
+- 如用户要求，生成回复草稿；
+- 在回复前标记用户需要了解的重要信息。
+
+请结合行业特定的邮件处理指南（如法律、医疗、金融等领域）使用：[https://afrexai-cto.github.io/context-packs]

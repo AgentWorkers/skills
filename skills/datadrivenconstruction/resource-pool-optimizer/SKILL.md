@@ -1,16 +1,16 @@
 ---
 slug: "resource-pool-optimizer"
 display_name: "Resource Pool Optimizer"
-description: "Optimize shared resource pools across multiple construction projects. Balance resource allocation, minimize conflicts, and maximize utilization across the portfolio."
+description: "优化多个建设项目中的共享资源池。平衡资源分配，减少冲突，并最大化整个项目组合的资源利用率。"
 ---
 
-# Resource Pool Optimizer
+# 资源池优化器
 
-## Overview
+## 概述
 
-Manage and optimize shared resources (equipment, specialized labor, materials) across multiple construction projects. Identify conflicts, balance allocations, and maximize resource utilization while minimizing idle time and project delays.
+该工具用于管理和优化多个建筑项目中共享的资源（设备、专业劳动力、材料）。它可以识别资源分配中的冲突，平衡各项目的资源需求，从而最大化资源利用率，同时将资源闲置时间和项目延误降至最低。
 
-## Resource Pool Concept
+## 资源池的概念
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -36,7 +36,7 @@ Manage and optimize shared resources (equipment, specialized labor, materials) a
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -505,7 +505,7 @@ class ResourcePoolOptimizer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -562,7 +562,7 @@ for s in suggestions[:5]:
 print(optimizer.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

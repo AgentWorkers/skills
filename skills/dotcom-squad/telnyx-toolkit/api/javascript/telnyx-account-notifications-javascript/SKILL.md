@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Notifications - JavaScript
+# Telnyx 账户通知 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List notification channels
+## 列出通知渠道
 
-List notification channels.
+列出通知渠道。
 
 `GET /notification_channels`
 
@@ -45,9 +45,9 @@ for await (const notificationChannel of client.notificationChannels.list()) {
 }
 ```
 
-## Create a notification channel
+## 创建通知渠道
 
-Create a notification channel.
+创建一个新的通知渠道。
 
 `POST /notification_channels`
 
@@ -57,9 +57,9 @@ const notificationChannel = await client.notificationChannels.create();
 console.log(notificationChannel.data);
 ```
 
-## Get a notification channel
+## 获取通知渠道信息
 
-Get a notification channel.
+获取指定通知渠道的信息。
 
 `GET /notification_channels/{id}`
 
@@ -71,9 +71,9 @@ const notificationChannel = await client.notificationChannels.retrieve(
 console.log(notificationChannel.data);
 ```
 
-## Update a notification channel
+## 更新通知渠道信息
 
-Update a notification channel.
+更新通知渠道的设置。
 
 `PATCH /notification_channels/{id}`
 
@@ -85,9 +85,9 @@ const notificationChannel = await client.notificationChannels.update(
 console.log(notificationChannel.data);
 ```
 
-## Delete a notification channel
+## 删除通知渠道
 
-Delete a notification channel.
+删除指定的通知渠道。
 
 `DELETE /notification_channels/{id}`
 
@@ -99,9 +99,9 @@ const notificationChannel = await client.notificationChannels.delete(
 console.log(notificationChannel.data);
 ```
 
-## List all Notifications Events Conditions
+## 列出所有通知事件条件
 
-Returns a list of your notifications events conditions.
+返回所有通知事件条件的列表。
 
 `GET /notification_event_conditions`
 
@@ -112,9 +112,9 @@ for await (const notificationEventConditionListResponse of client.notificationEv
 }
 ```
 
-## List all Notifications Events
+## 列出所有通知事件
 
-Returns a list of your notifications events.
+返回所有通知事件的列表。
 
 `GET /notification_events`
 
@@ -125,9 +125,9 @@ for await (const notificationEventListResponse of client.notificationEvents.list
 }
 ```
 
-## List all Notifications Profiles
+## 列出所有通知配置文件
 
-Returns a list of your notifications profiles.
+返回所有通知配置文件的列表。
 
 `GET /notification_profiles`
 
@@ -138,9 +138,9 @@ for await (const notificationProfile of client.notificationProfiles.list()) {
 }
 ```
 
-## Create a notification profile
+## 创建通知配置文件
 
-Create a notification profile.
+创建一个新的通知配置文件。
 
 `POST /notification_profiles`
 
@@ -150,9 +150,9 @@ const notificationProfile = await client.notificationProfiles.create();
 console.log(notificationProfile.data);
 ```
 
-## Get a notification profile
+## 获取通知配置文件信息
 
-Get a notification profile.
+获取指定通知配置文件的信息。
 
 `GET /notification_profiles/{id}`
 
@@ -164,9 +164,9 @@ const notificationProfile = await client.notificationProfiles.retrieve(
 console.log(notificationProfile.data);
 ```
 
-## Update a notification profile
+## 更新通知配置文件信息
 
-Update a notification profile.
+更新通知配置文件的设置。
 
 `PATCH /notification_profiles/{id}`
 
@@ -178,9 +178,9 @@ const notificationProfile = await client.notificationProfiles.update(
 console.log(notificationProfile.data);
 ```
 
-## Delete a notification profile
+## 删除通知配置文件
 
-Delete a notification profile.
+删除指定的通知配置文件。
 
 `DELETE /notification_profiles/{id}`
 
@@ -192,9 +192,9 @@ const notificationProfile = await client.notificationProfiles.delete(
 console.log(notificationProfile.data);
 ```
 
-## List notification settings
+## 列出通知设置
 
-List notification settings.
+列出所有通知设置。
 
 `GET /notification_settings`
 
@@ -205,9 +205,9 @@ for await (const notificationSetting of client.notificationSettings.list()) {
 }
 ```
 
-## Add a Notification Setting
+## 添加通知设置
 
-Add a notification setting.
+添加一个新的通知设置。
 
 `POST /notification_settings`
 
@@ -217,9 +217,9 @@ const notificationSetting = await client.notificationSettings.create();
 console.log(notificationSetting.data);
 ```
 
-## Get a notification setting
+## 获取通知设置信息
 
-Get a notification setting.
+获取指定通知设置的信息。
 
 `GET /notification_settings/{id}`
 
@@ -231,9 +231,9 @@ const notificationSetting = await client.notificationSettings.retrieve(
 console.log(notificationSetting.data);
 ```
 
-## Delete a notification setting
+## 删除通知设置
 
-Delete a notification setting.
+删除指定的通知设置。
 
 `DELETE /notification_settings/{id}`
 

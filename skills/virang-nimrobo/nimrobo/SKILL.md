@@ -1,34 +1,34 @@
 ---
 name: Nimrobo
-description: Use the Nimrobo CLI for voice screening and matching network operations.
+description: 使用 Nimrobo CLI 进行语音筛查和网络匹配操作。
 ---
 
-# Nimrobo CLI Skill
+# Nimrobo CLI 技能
 
-This skill enables you to use the Nimrobo CLI for voice screening and matching network operations.
+此技能允许您使用 Nimrobo CLI 进行语音筛查和匹配网络操作。
 
-## Overview
+## 概述
 
-Nimrobo CLI provides two command platforms:
+Nimrobo CLI 提供了两个命令平台：
 
-1. **Voice Commands** (`nimrobo voice`) - Voice-first AI platform for running interviews, screening, and diagnostic conversations via shareable voice-links
-2. **Net Commands** (`nimrobo net`) - Matching network for organizations, job posts, applications, and messaging
+1. **语音命令** (`nimrobo voice`) – 以语音为主的人工智能平台，用于通过可共享的语音链接进行面试、筛查和诊断性对话。
+2. **网络命令** (`nimrobo net`) – 用于组织、职位发布、申请和消息传递的匹配网络。
 
-Both platforms share the same authentication system.
+这两个平台共享相同的认证系统。
 
-## Key Concepts
+## 关键概念
 
-### Input Methods
+### 输入方法
 
-Commands support multiple input methods (in priority order):
-1. **CLI Flags** - Direct options like `--name "Value"`
-2. **JSON Files** - Use `-f ./data.json` for complex inputs
-3. **Stdin** - Use `--stdin` to pipe JSON input
-4. **Interactive Mode** - Prompts when flags aren't provided
+命令支持多种输入方法（按优先级顺序）：
+1. **CLI 标志** – 直接选项，例如 `--name "Value"`
+2. **JSON 文件** – 使用 `-f ./data.json` 进行复杂输入
+3. **标准输入** – 使用 `--stdin` 通过管道传递 JSON 输入
+4. **交互式模式** – 当未提供标志时显示提示
 
-### Context System (Net Commands)
+### 上下文系统（网络命令）
 
-Net commands support a context system to avoid repeating IDs:
+网络命令支持上下文系统，以避免重复使用 ID：
 
 ```bash
 # Set context
@@ -44,37 +44,37 @@ nimrobo net context show
 nimrobo net context clear
 ```
 
-### Pagination
+### 分页
 
-List commands support `--limit` and `--skip` for pagination:
+列表命令支持 `--limit` 和 `--skip` 进行分页：
 
 ```bash
 nimrobo net posts list --limit 20 --skip 40  # Page 3
 ```
 
-### JSON Output
+### JSON 输出
 
-Add `--json` to any command for machine-readable output:
+在任何命令后添加 `--json` 以获得机器可读的输出：
 
 ```bash
 nimrobo net posts list --json
 ```
 
-## Documentation Files
+## 文档文件
 
-This skill includes the following documentation files for detailed reference:
+此技能包含以下文档文件以供详细参考：
 
-| File | Description |
+| 文件 | 描述 |
 |------|-------------|
-| `installation.md` | **Start Here**: Installation, login, and onboarding steps |
-| `commands.md` | Quick reference table of all commands |
-| `voice-commands.md` | Detailed Voice platform commands with examples |
-| `net-commands.md` | Detailed Net platform commands with examples |
-| `workflow.md` | Common workflow patterns and examples |
+| `installation.md` | **从这里开始**：安装、登录和入职步骤 |
+| `commands.md` | 所有命令的快速参考表 |
+| `voice-commands.md` | 带有示例的语音平台命令的详细说明 |
+| `net-commands.md` | 带有示例的网络平台命令的详细说明 |
+| `workflow.md` | 常见的工作流程模式和示例 |
 
-## Common Workflows
+## 常见工作流程
 
-### Voice: Run an Interview
+### 语音：进行面试
 
 ```bash
 # Create project and generate interview links
@@ -87,7 +87,7 @@ nimrobo voice sessions evaluation sess_xyz -t project -p default
 nimrobo voice sessions transcript sess_xyz -t project -p default --json
 ```
 
-### Net: Post a Job
+### 网络：发布职位
 
 ```bash
 # Create org and post
@@ -99,7 +99,7 @@ nimrobo net posts applications current --status pending
 nimrobo net applications accept app_123
 ```
 
-### Net: Apply for Jobs
+### 网络：申请职位
 
 ```bash
 # Search and apply
@@ -110,24 +110,24 @@ nimrobo net posts apply post_xyz --note "I'm excited about this role..."
 nimrobo net my applications --status pending
 ```
 
-## Tips for Automation
+## 自动化技巧
 
-1. **Use `--json` flag** for parsing output programmatically
-2. **Set context** with `use` commands to avoid repeating IDs
-3. **Use JSON files** (`-f`) for complex create/update operations
-4. **Check `my summary`** for a quick overview of pending actions
-5. **Batch operations** are available for applications (`batch-action`)
+1. **使用 `--json` 标志** 以编程方式解析输出
+2. **使用 `use` 命令设置上下文，以避免重复使用 ID
+3. **使用 JSON 文件`(-f)` 进行复杂的创建/更新操作
+4. **查看 `my summary` 以快速了解待办事项
+5. **应用程序支持批量操作 (`batch-action`)`
 
-## Exit Codes
+## 退出代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 0 | Success |
-| 1 | Error |
+| 0 | 成功 |
+| 1 | 错误 |
 
-## Getting Help
+## 获取帮助
 
-See [installation.md](installation.md) for setup instructions.
+请参阅 [installation.md](installation.md) 以获取设置说明。
 
 ```bash
 nimrobo --help              # List all commands
@@ -136,5 +136,5 @@ nimrobo net --help          # Net platform help
 nimrobo <command> --help    # Help for specific command
 ```
 
-# Onboard (set up profile and org from JSON). run only if the user says to onboard. and follow the instructions as per the response and ask user questions to fill onboarding.
+# 入职（使用 JSON 设置个人资料和组织信息）。仅在用户要求入职时运行此命令，并根据响应中的说明进行操作，同时向用户提问以完成入职流程。
 nimrobo onboard

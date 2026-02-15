@@ -1,52 +1,52 @@
 ---
 name: xmd
-description: Metal Dollar (XMD) stablecoin — mint, redeem, supply analytics, collateral reserves, oracle prices
+description: Metal Dollar (XMD) 稳定币：铸造、赎回、供应量分析、抵押品储备、预言机价格
 ---
 
 ## Metal Dollar (XMD)
 
-You have tools to interact with XMD, XPR Network's native stablecoin. XMD is a multi-collateral stablecoin pegged to $1 USD, minted and redeemed through the `xmd.treasury` contract.
+您可以使用相关工具来与 XMD（XPR Network 的原生稳定币）进行交互。XMD 是一种多抵押品稳定的加密货币，其价值与 1 美元挂钩，通过 `xmd.treasury` 合同进行铸造和赎回。
 
-### How XMD Works
+### XMD 的工作原理
 
-- **Mint:** Send a supported stablecoin (e.g. XUSDC) to `xmd.treasury` with memo `mint` → receive equivalent XMD at oracle price
-- **Redeem:** Send XMD to `xmd.treasury` with memo `redeem,SYMBOL` (e.g. `redeem,XUSDC`) → receive equivalent stablecoin back
-- **1:1 peg:** Oracle-priced at $1, backed by stablecoin reserves in the treasury
-- **Zero fees:** Currently 0% mint and redemption fees on all collateral types
+- **铸造（Mint）：** 将支持的稳定币（例如 XUSDC）发送到 `xmd.treasury`，并附上 `mint` 指令，即可按预言机价格获得等值的 XMD。
+- **赎回（Redeem）：** 将 XMD 发送到 `xmd.treasury`，并附上 `redeem,SYMBOL` 指令（例如 `redeem,XUSDC`），即可获得等值的稳定币。
+- **1:1 挂钩（1:1 Peg）：** XMD 的价格与 1 美元保持 1:1 的固定比率，其价值由 `xmd.treasury` 中的抵押品储备支撑。
+- **零费用（Zero Fees）：** 目前所有类型的抵押品在铸造和赎回过程中均不收取任何费用。
 
-### Supported Collateral
+### 支持的抵押品
 
-| Token | Contract | Oracle Feed | Max Treasury % | Status |
-|-------|----------|-------------|----------------|--------|
-| XUSDC | xtokens | USDC/USD | 60% | Mint + Redeem |
-| XPAX | xtokens | PAX/USD | 15% | Mint + Redeem |
-| XPYUSD | xtokens | PYUSD/USD | 15% | Mint + Redeem |
-| MPD | mpd.token | MPD/USD | 2% | Mint + Redeem |
+| 抵押品（Collateral） | 合同（Contract） | 预言机数据源（Oracle Feed） | 最大储备比例（Max Treasury %） | 状态（Status） |
+|-------------|----------------|------------------|------------------|--------|
+| XUSDC       | xtokens       | USDC/USD           | 60%                | 可铸造、可赎回 |
+| XPAX       | xtokens       | PAX/USD           | 15%                | 可铸造、可赎回 |
+| XPYUSD       | xtokens       | PYUSD/USD           | 15%                | 可铸造、可赎回 |
+| MPD         | mpd.token       | MPD/USD           | 2%                | 可铸造、可赎回 |
 
-### Contracts
+### 相关合约（Contracts）
 
-- `xmd.token` — XMD token contract (precision 6, issuer = xmd.treasury)
-- `xmd.treasury` — Mint/redeem logic, collateral management, oracle integration
-- `oracles` — On-chain price feeds from multiple providers
+- `xmd.token`：XMD 代币合约（精度为 6 位小数，发行方为 `xmd.treasury`）  
+- `xmd.treasury`：负责铸造/赎回逻辑、抵押品管理以及与预言机的集成  
+- `oracles`：来自多个提供者的链上价格数据源  
 
-### Read-Only Tools (safe, no signing)
+### 只读工具（Read-Only Tools，无需签名）  
 
-- `xmd_get_config` — treasury config: paused state, fee account, minimum oracle price threshold
-- `xmd_list_collateral` — all supported collateral tokens with fees, limits, oracle prices, mint/redeem volumes
-- `xmd_get_supply` — XMD total circulating supply
-- `xmd_get_balance` — check any account's XMD balance
-- `xmd_get_treasury_reserves` — current stablecoin reserves backing XMD, with USD valuations and collateralization ratio
-- `xmd_get_oracle_price` — current oracle price for any collateral token (with individual provider data)
+- `xmd_get_config`：获取 `xmd.treasury` 的配置信息（如暂停状态、费用账户、最低预言机价格阈值等）  
+- `xmd_list_collateral`：列出所有支持的抵押品代币，包括费用、交易限额、预言机价格以及铸造/赎回量  
+- `xmd_get_supply`：查询 XMD 的总流通量  
+- `xmd_get_balance`：查看任意账户的 XMD 余额  
+- `xmd_get_treasury_reserves`：获取支持 XMD 的稳定币储备情况（包含美元估值和抵押比率）  
+- `xmd_get_oracle_price`：获取任意抵押品代币的当前预言机价格（包含具体提供者的数据）  
 
-### Write Tools (require `confirmed: true`)
+### 可写工具（Write-Only Tools，需要设置 `confirmed: true`）  
 
-- `xmd_mint` — mint XMD by depositing a supported stablecoin
-- `xmd_redeem` — redeem XMD for a supported stablecoin
+- `xmd_mint`：通过存入支持的稳定币来铸造 XMD  
+- `xmd_redeem`：用指定的稳定币赎回 XMD  
 
-### Safety Rules
+### 安全规则（Safety Rules）  
 
-- Oracle price must be >= 0.995 (`minOraclePrice`) for mint/redeem to proceed
-- Each collateral has a `maxTreasuryPercent` cap — if the treasury already holds too much of one stablecoin, minting with it is blocked
-- Check `isMintEnabled` / `isRedeemEnabled` before attempting operations
-- The treasury can be paused by admins (`isPaused`) — check config first
-- XMD has precision 6 — all amounts use 6 decimal places (e.g. `1.000000 XMD`)
+- 铸造或赎回操作必须满足预言机价格 >= 0.995（`minOraclePrice`）的条件。  
+- 每种抵押品都有 `maxTreasuryPercent` 的上限——如果 `xmd.treasury` 中已持有过多某种稳定币，将无法继续铸造该货币。  
+- 在执行任何操作前，请检查 `isMintEnabled` 和 `isRedeemEnabled` 的状态。  
+- 管理员可以暂停 `xmd.treasury` 的服务（`isPaused`），请先查看配置信息。  
+- XMD 的精度为 6 位小数，所有金额均显示 6 位小数（例如 `1.000000 XMD`）。

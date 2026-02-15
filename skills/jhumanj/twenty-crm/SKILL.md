@@ -1,25 +1,25 @@
 ---
 name: twenty-crm
-description: Interact with Twenty CRM (self-hosted) via REST/GraphQL.
+description: 通过 REST/GraphQL 与 Twenty CRM（自托管版本）进行交互。
 metadata: {"clawdbot":{"emoji":"🗂️","os":["darwin","linux"]}}
 ---
 
 # Twenty CRM
 
-Interact with your self-hosted Twenty instance via REST and GraphQL.
+您可以通过 REST 和 GraphQL 与自己托管的 Twenty 实例进行交互。
 
-## Config
+## 配置
 
-Create `config/twenty.env` (example at `config/twenty.env.example`):
+创建 `config/twenty.env` 文件（示例文件位于 `config/twenty.env.example`）：
 
-- `TWENTY_BASE_URL` (e.g. `https://crm.example.com` or `http://localhost:3000`)
-- `TWENTY_API_KEY` (Bearer token)
+- `TWENTY_BASE_URL`（例如：`https://crm.example.com` 或 `http://localhost:3000`）
+- `TWENTY_API_KEY`（Bearer 令牌）
 
-Scripts load this file automatically.
+脚本会自动加载此文件。
 
-## Commands
+## 命令
 
-### Low-level helpers
+### 低级辅助工具
 
 - REST GET: `skills/twenty-crm/scripts/twenty-rest-get.sh "/companies" 'filter={"name":{"ilike":"%acme%"}}&limit=10'`
 - REST POST: `skills/twenty-crm/scripts/twenty-rest-post.sh "/companies" '{"name":"Acme"}'`
@@ -28,13 +28,13 @@ Scripts load this file automatically.
 
 - GraphQL: `skills/twenty-crm/scripts/twenty-graphql.sh 'query { companies(limit: 5) { totalCount } }'`
 
-### Common objects (examples)
+### 常用操作（示例）
 
-- Create company: `skills/twenty-crm/scripts/twenty-create-company.sh "Acme" "acme.com" 500`
-- Find companies by name: `skills/twenty-crm/scripts/twenty-find-companies.sh "acme" 10`
+- 创建公司：`skills/twenty-crm/scripts/twenty-create-company.sh "Acme" "acme.com" 500`
+- 按名称查找公司：`skills/twenty-crm/scripts/twenty-find-companies.sh "acme" 10`
 
-## Notes
+## 注意事项
 
-- Twenty supports both REST (`/rest/...`) and GraphQL (`/graphql`).
-- Object names/endpoints can differ depending on your workspace metadata and Twenty version.
-- Auth tokens can be short-lived depending on your setup; refresh if you get `401`.
+- Twenty 支持 REST（`/rest/...`）和 GraphQL（`/graphql`）两种接口。
+- 对象名称和端点可能因您的工作区元数据和 Twenty 版本而有所不同。
+- 根据您的设置，认证令牌的有效期可能较短；如果收到 401 错误，请刷新令牌。

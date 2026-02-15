@@ -1,15 +1,15 @@
 ---
 name: fluora-balance
-description: Check USDC balance on Base Mainnet for your Fluora wallet. Use when the user asks about their Fluora balance, wallet balance, USDC balance, or how much money they have in their Fluora account.
+description: 请检查您在 Base Mainnet 上的 Fluora 钱包中的 USDC 余额。当用户询问他们的 Fluora 余额、钱包余额、USDC 余额或他们在 Fluora 账户中有多少钱时，可以使用此信息进行回答。
 ---
 
 # Fluora Balance
 
-Check your USDC balance on Base Mainnet for the wallet configured in Fluora.
+请查看在Fluora中配置的钱包在Base Mainnet上的USDC余额。
 
-## Quick Start
+## 快速入门
 
-Run the balance check script:
+运行余额检查脚本：
 
 ```bash
 cd scripts/
@@ -17,22 +17,22 @@ npm install  # First time only
 node check_balance.js
 ```
 
-The script will:
-1. Read your mainnet wallet address from `~/.fluora/wallets.json`
-2. Query the USDC balance on Base Mainnet
-3. Display the formatted balance
+该脚本将：
+1. 从`~/.fluora/wallets.json`文件中读取您的主网钱包地址
+2. 查询Base Mainnet上的USDC余额
+3. 显示格式化的余额
 
-## Script Details
+## 脚本详情
 
-**Location:** `scripts/check_balance.js`
+**位置：** `scripts/check_balance.js`
 
-**What it does:**
-- Reads wallet address from `~/.fluora/wallets.json` (USDC_BASE_MAINNET.address field)
-- Connects to Base Mainnet via `https://mainnet.base.org`
-- Queries USDC contract at `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
-- Returns formatted balance in USDC
+**功能：**
+- 从`~/.fluora/wallets.json`文件中读取钱包地址（`USDC_BASE_MAINNET.address`字段）
+- 通过`https://mainnet.base.org`连接到Base Mainnet
+- 查询地址为`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`的USDC合约
+- 返回格式化的USDC余额
 
-**Output format:**
+**输出格式：**
 ```
 Checking USDC balance on Base Mainnet...
 
@@ -40,31 +40,31 @@ Wallet: 0x7DC445b40719ab482090...
 Balance: 1.234567 USDC
 ```
 
-**JSON output:** Add `--json` flag for programmatic parsing:
+**JSON输出：** 如需进行程序化解析，请添加`--json`参数：
 ```bash
 node check_balance.js --json
 ```
 
-## Dependencies
+## 依赖项
 
-The script requires `ethers` (v6+) for blockchain interaction:
+该脚本需要`ethers`（版本6及以上）来与区块链交互：
 ```bash
 cd scripts/
 npm install
 ```
 
-Dependencies are listed in `scripts/package.json`.
+依赖项列在`scripts/package.json`文件中。
 
-## Troubleshooting
+## 故障排除
 
-**Error: ~/.fluora/wallets.json not found**
-- Ensure Fluora is properly set up
-- Run the fluora-setup skill if needed
+**错误：未找到`~/.fluora/wallets.json`文件**
+- 确保Fluora已正确设置
+- 如有需要，请运行`fluora-setup`脚本进行初始化
 
-**Error: No USDC_BASE_MAINNET wallet address found**
-- Check that `wallets.json` contains a `USDC_BASE_MAINNET.address` field
-- Regenerate wallet if necessary
+**错误：未找到`USDC_BASE_MAINNET.address`字段**
+- 检查`wallets.json`文件中是否包含`USDC_BASE_MAINNET.address`字段
+- 如有必要，请重新生成钱包地址
 
-**Network errors**
-- Verify internet connection
-- Base Mainnet RPC may be temporarily unavailable (retry)
+**网络错误**
+- 确保网络连接正常
+- Base Mainnet的RPC服务可能暂时不可用（请稍后重试）

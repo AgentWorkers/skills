@@ -1,61 +1,61 @@
 ---
 name: jasper-configguard
 version: 1.0.0
-description: Safe config changes for OpenClaw with automatic rollback. Backs up before patching, health-checks after restart, auto-rolls back on failure. Commands: patch, restore, list, diff, validate, doctor.
+description: OpenClaw的安全配置更改功能支持自动回滚机制：在应用配置更新前会进行备份，重启后会对系统状态进行检查；如果配置更新失败，系统会自动恢复到之前的配置状态。可用命令包括：`patch`（应用配置更新）、`restore`（恢复到备份配置）、`list`（列出所有配置项）、`diff`（显示配置差异）、`validate`（验证配置合法性）、`doctor`（检查系统健康状况）。
 ---
 
 # Jasper ConfigGuard v1.0.0
 
-Safe config changes for OpenClaw with automatic rollback. Never brick your gateway again.
+这是一个用于 OpenClaw 的安全配置管理工具，支持自动回滚功能，确保您的网关配置不会出错。
 
-## Setup
+## 设置
 
 ```bash
 npm install -g jasper-configguard
 ```
 
-## Usage
+## 使用方法
 
-### Apply a config change safely
+### 安全地应用配置更改
 
 ```bash
 jasper-configguard patch '{"gateway":{"bind":"tailnet"}}'
 ```
 
-The tool will:
-1. Back up your current config
-2. Apply the patch (deep merge)
-3. Restart the gateway
-4. Wait for health check
-5. **Auto-rollback** if gateway fails
+该工具将执行以下操作：
+1. 备份当前的配置文件
+2. 应用配置更改（采用深度合并方式）
+3. 重启网关
+4. 等待网关的健康检查结果
+5. 如果网关出现故障，会自动回滚到之前的配置状态
 
-### Preview changes
+### 预览配置更改
 
 ```bash
 jasper-configguard patch --dry-run '{"agents":{"defaults":{"model":{"primary":"opus"}}}}'
 ```
 
-### Restore from backup
+### 从备份中恢复配置
 
 ```bash
 jasper-configguard restore
 ```
 
-### List backups
+### 查看所有备份记录
 
 ```bash
 jasper-configguard list
 ```
 
-### Check health
+### 检查网关状态
 
 ```bash
 jasper-configguard doctor
 ```
 
-## Agent Integration
+## 代理集成
 
-Use from your agent to safely modify OpenClaw config:
+您可以通过代理程序安全地修改 OpenClaw 的配置：
 
 ```bash
 # Safe model switch

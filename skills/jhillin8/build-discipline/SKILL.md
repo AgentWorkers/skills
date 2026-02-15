@@ -1,6 +1,6 @@
 ---
 name: build-discipline
-description: Build unbreakable discipline with habit stacking, streak tracking, and accountability
+description: 通过习惯的积累、连贯行为的追踪以及责任感的强化，培养出坚不可摧的自律性。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,59 +11,55 @@ triggers:
   - "discipline check"
 ---
 
-# Build Discipline
+# 建立自律
 
-**Become consistently excellent through habit stacking, streak tracking, and real-time accountability.**
+**通过习惯的积累、连续行为的追踪以及实时的自我监督，持续提升自己的表现。**
 
-## What it does
+## 功能介绍
 
-This skill transforms discipline from willpower (finite) into systems (infinite). It works by:
+这项技能将自律从一种有限的“意志力”转化为一种可持续的“系统化行为”。其工作原理如下：
 
-- **Commitment Tracking** - Lock in your daily non-negotiables and track adherence automatically
-- **Streak Systems** - Visual momentum through consecutive day counters that compound motivation
-- **Habit Stacking** - Attach new behaviors to existing anchors (e.g., "After coffee, meditate for 5 min")
-- **Willpower Management** - Smart timing for hard tasks + recovery windows to prevent burnout
-- **Accountability** - Daily check-ins with streak status, pattern analysis, and course corrections
+- **承诺追踪**：明确你每天必须完成的任务，并自动记录你的执行情况。
+- **连续行为追踪**：通过连续天数的计数器来可视化你的进步，从而增强动力。
+- **习惯叠加**：将新的行为与现有的习惯相结合（例如：“喝完咖啡后，冥想5分钟”）。
+- **意志力管理**：为困难任务设定合适的执行时间，并安排恢复时间，以防止过度疲劳。
+- **自我监督**：每天检查你的连续行为状态，分析行为模式，并根据需要进行调整。
 
-## Usage
+## 使用方法
 
-### Set commitments
-Define your non-negotiables for the day. Examples: "Sleep by 11pm", "1 hour deep work", "30 min exercise". Clawd stores these and reminds you when each window opens.
+### 设定承诺
+为每一天制定不可妥协的目标。例如：“晚上11点前睡觉”、“进行1小时的深度工作”、“锻炼30分钟”。Clawd会记录这些承诺，并在相应的时间提醒你执行。
 
-### Daily check-in
-Quick status update each morning: How did yesterday go? Clawd marks the streak as intact or broken, logs the data, and adjusts your difficulty curve.
+### 每日检查
+每天早上快速更新状态：昨天做得怎么样？Clawd会标记你的连续行为是否保持不变，记录相关数据，并调整你的任务难度。
 
-### Streak status
-See your current streaks at a glance. Visual feedback (🔥 for hot streaks) amplifies momentum. Long streaks become identity.
+### 连续行为状态
+一目了然地查看你的连续行为情况。视觉反馈（例如用🔥标记连续行为）能增强动力。长时间的连续行为会成为你个人身份的一部分。
 
-### Stack habits
-Pair new habits with existing ones. "After brush teeth → take 3 deep breaths." Piggyback behavior change on automatic routines.
+### 习惯叠加
+将新习惯与现有习惯结合起来。例如：“刷牙后 → 深呼吸3次”。这样可以让新的行为更容易融入到日常习惯中。
 
-### Review discipline
-Weekly or monthly review: Which commitments stuck? Which broke? Patterns emerge. Clawd suggests micro-adjustments to increase success rate.
+### 定期回顾
+每周或每月进行一次回顾：哪些承诺得到了坚持？哪些失败了？通过回顾可以发现规律，并据此做出微调，以提高成功率。
 
-## Discipline Pillars
+## 自律的五大支柱
 
-The framework targets five foundational pillars:
+该框架围绕五个基础支柱展开：
 
-| Pillar | Focus | Example |
+| 支柱 | 重点 | 示例 |
 |--------|-------|---------|
-| Sleep | 7-9 hrs, consistent time | Bed by 11pm, wake 6:30am |
-| Exercise | Movement + strength | 30 min walk or lift, 5x/week |
-| Nutrition | Whole foods, hydration | 2L water, no processed sugar |
-| Focus Blocks | Deep work windows | 2 hrs uninterrupted, 9-11am |
-| Recovery | Rest days, stretching | 1 rest day/week, 10 min mobility |
+| 睡眠 | 7-9小时的高质量睡眠 | 晚上11点前睡觉，早上6:30起床 |
+| 锻炼 | 促进身体活力和力量 | 每周锻炼3次，每次30分钟 |
+| 营养 | 均衡饮食，保持水分 | 每天喝2升水，避免摄入加工糖分 |
+| 集中工作时间 | 保持专注的工作时段 | 每天上午9点到11点进行2小时不间断的工作 |
+| 恢复 | 休息与放松 | 每周安排1天休息日，进行10分钟的伸展运动 |
 
-Each pillar auto-compounds when stacked together. Sleep improves focus. Exercise improves sleep. This creates a flywheel.
+当这些支柱相互结合时，它们的效果会得到叠加。良好的睡眠有助于提高工作效率，而适当的锻炼又能改善睡眠质量。这种良性循环会形成强大的自律机制。
 
-## Tips
+## 使用建议
 
-1. **Start with one pillar.** Don't overload. Pick the one that unlocks the others (usually sleep or exercise) and nail it for 30 days before adding more.
-
-2. **Stack, don't replace.** Attach new habits to existing anchors. "After morning coffee" is stronger than "at some point today."
-
-3. **Track the minimum.** A 5-min walk beats zero. A 6-hour sleep beats staying up. Consistency > perfection.
-
-4. **Review weekly, not daily.** Daily breaks feel like failure. Weekly patterns reveal truth. Adjust Tuesday for next Monday.
-
-5. **All data stays local on your machine.** Your discipline data never leaves your device. No cloud sync, no third-party analytics, no privacy leaks. You own everything.
+1. **从其中一个支柱开始**：不要一开始就同时尝试太多内容。选择能够带动其他支柱的支柱（通常是睡眠或锻炼），坚持30天后再添加新的习惯。
+2. **叠加新习惯，而非完全取代旧习惯**：将新习惯与现有的习惯结合，例如“喝完咖啡后冥想”，这样比“今天某个时候冥想”更有效。
+3. **从最基本的行为开始**：哪怕只有5分钟的锻炼也比不锻炼要好；哪怕每天只睡6小时也比熬夜要好。坚持比完美更重要。
+4. **每周回顾，而非每天检查**：每天频繁的自我评估可能会让你感到挫败感。每周的总结能帮助你发现真正的进步方向，并为下周做好准备。
+5. **所有数据都保存在你的设备上**：你的自律数据不会被上传到云端，也不会被第三方分析工具使用，从而保护你的隐私。你拥有所有数据的所有权。

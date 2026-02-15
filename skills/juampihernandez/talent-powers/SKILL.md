@@ -1,75 +1,75 @@
 ---
 name: talent-powers
-description: Query builder reputation data via Talent Protocol API. Get Builder Rank, verify humans, resolve identities (Twitter/Farcaster/GitHub/wallet), search by location/country, get credentials, and enrich with GitHub data.
+description: 通过 Talent Protocol API 查询构建器的信誉数据：获取构建器的排名、验证用户身份（Twitter/Farcaster/GitHub/钱包信息）、按地理位置或国家进行搜索、获取用户的凭证信息，并结合 GitHub 数据来完善构建器的信息。
 ---
 
-# Talent Powers
+# 人才能力（Talent Powers）
 
-Query professioanl data from [Talent Protocol](https://talent.app) - a platform that tracks onchain builders
+从 [Talent Protocol](https://talent.app) 查询专业数据——这是一个用于追踪区块链开发者的平台。
 
-**Use this skill to:**
-- Find verified developers by location, skills, or identity (Twitter/GitHub/Farcaster/wallet)
-- Check builder reputation scores and rankings
-- Map Twitter accounts with Wallets
-- Verify human identity from a wallet
-- Search for builder's credentials (earnings, contributions, hackathons, contracts, etc)
-- Discover what projects are being built by profiles
+**使用此功能可：**
+- 按地理位置、技能或身份（Twitter/GitHub/Farcaster/钱包）查找经过验证的开发者；
+- 查看开发者的声誉分数和排名；
+- 将 Twitter 账户与钱包关联起来；
+- 验证用户的真实身份；
+- 查找开发者的资质信息（收入、贡献、参与过的黑客马拉松、签订的合同等）；
+- 了解开发者正在参与或开发的项目。
 
-**API Key:** https://talent.app/~/settings/api  
-**Base URL:** `https://api.talentprotocol.com`
+**API 密钥：** https://talent.app/~/settings/api  
+**基础 URL：** `https://api.talentprotocol.com`
 
 ```bash
 curl -H "X-API-KEY: $TALENT_API_KEY" "https://api.talentprotocol.com/..."
 ```
 
-## Endpoints
+## 端点（Endpoints）
 
-| Endpoint | Purpose |
-|----------|---------|
-| `/search/advanced/profiles` | Search profiles by identity, tags, rank, verification |
-| `/profile` | Get profile by ID |
-| `/accounts` | Get connected wallets, GitHub, socials |
-| `/socials` | Get social profiles + bios |
-| `/credentials` | Get data points (earnings, followers, hackathons, etc.) |
-| `/human_checkmark` | Check if human-verified |
-| `/farcaster/scores` | Batch lookup Farcaster users |
+| 端点（Endpoint） | 功能（Function） |
+|------------|-------------------|
+| `/search/advanced/profiles` | 按身份、标签、排名或验证状态搜索开发者资料 |
+| `/profile` | 通过 ID 获取开发者资料 |
+| `/accounts` | 获取开发者关联的钱包、GitHub 账户及社交媒体信息 |
+| `/socials` | 获取开发者的社交媒体资料和简介 |
+| `/credentials` | 获取开发者的数据信息（收入、关注者数量、参与过的黑客马拉松等） |
+| `/human_checkmark` | 验证用户身份是否经过人工审核 |
+| `/farcaster/scores` | 批量查询 Farcaster 用户的信息 |
 
-## Key Parameters
+## 关键参数（Key Parameters）
 
-**Identity lookup:**
+**身份验证：**
 ```
 query[identity]={handle}&query[identity_type]={twitter|github|farcaster|ens|wallet}
 ```
 
-**Filters:**
+**筛选条件（Filters）：**
 ```
 query[human_checkmark]=true
 query[verified_nationality]=true
 query[tags][]=developer
 ```
 
-**Sorting:**
+**排序方式（Sorting）：**
 ```
 sort[score][order]=desc&sort[score][scorer]=Builder%20Score
 ```
 
-**Pagination:** `page=1&per_page=250` (max 250)
+**分页（Pagination）：`page=1&per_page=250`（每页最多显示 250 条记录）
 
-## URL Encoding
+## URL 编码（URL Encoding）
 
-`[` = `%5B`, `]` = `%5D`, Space = `%20`
+`[` = `%5B`, `]` = `%5D`, 空格 = `%20`
 
-## Response Fields
+## 响应字段（Response Fields）
 
-- `builder_score.rank_position` - Primary metric
-- `location` - User-entered location (returned in response)
-- `scores[]` - Use `builder_score_2025` for latest rank
+- `builder_score.rank_position`：主要指标
+- `location`：用户输入的地理位置（会在响应中返回）
+- `scores[]`：使用 `builder_score_2025` 获取最新的排名信息
 
-## Location Filter
+## 地理位置筛选（Location Filter）
 
-**DO NOT USE** `query[standardized_location]=Country` - doesn't work.
+**请勿使用** `query[standardized_location]=Country` —— 该方式无效。
 
-**USE `customQuery` with regex:**
+**建议使用 `customQuery` 并结合正则表达式进行筛选：**
 
 ```bash
 curl -X POST -H "X-API-KEY: $TALENT_API_KEY" -H "Content-Type: application/json" \
@@ -89,17 +89,17 @@ curl -X POST -H "X-API-KEY: $TALENT_API_KEY" -H "Content-Type: application/json"
   }'
 ```
 
-See [use-cases.md](references/use-cases.md#by-location-country) for more examples.
+更多使用示例请参阅 [use-cases.md](references/use-cases.md#by-location-country)。
 
-## Limitations
+## 限制条件（Limitations）
 
-- Max 250 per page
-- GET only for most endpoints (POST for customQuery)
-- Simple `query[standardized_location]` param broken - use `customQuery` regex
+- 每页最多显示 250 条记录
+- 大多数端点仅支持 GET 请求（`customQuery` 需使用 POST 请求）
+- 简单的 `query[standardized_location]` 参数可能无法正常工作，请使用 `customQuery` 和正则表达式进行筛选
 
-## GitHub Enrichment
+## GitHub 数据扩展（GitHub Enrichment）
 
-Get projects/repos via GitHub after resolving username from `/accounts`:
+通过 `/accounts` 获取用户的 GitHub 账户后，可进一步获取其相关项目信息：
 
 ```bash
 # 1. Get GitHub username
@@ -113,10 +113,10 @@ GET https://api.github.com/users/{username}/events/public             # Commits
 GET https://api.github.com/search/issues?q=author:{username}+type:pr+state:open  # Open PRs
 ```
 
-GitHub token: https://github.com/settings/tokens (60 req/hr without, 5000 with)
+GitHub 令牌：https://github.com/settings/tokens（未使用令牌时每小时请求 60 次，使用令牌时每小时请求 5000 次）
 
-## References
+## 参考资料（References）
 
-- [endpoints.md](references/endpoints.md) - Full endpoint docs
-- [use-cases.md](references/use-cases.md) - Common patterns
-- [github-enrichment.md](references/github-enrichment.md) - GitHub data
+- [endpoints.md](references/endpoints.md) —— 完整的端点文档
+- [use-cases.md](references/use-cases.md) —— 常见使用场景
+- [github-enrichment.md](references/github-enrichment.md) —— GitHub 数据相关说明

@@ -1,293 +1,289 @@
 ---
 name: dhmz-weather
-description: Get Croatian weather data, forecasts, and alerts from DHMZ (meteo.hr) - no API key required.
+description: 从 DHMZ (meteo.hr) 获取克罗地亚的天气数据、预报和警报——无需 API 密钥。
 homepage: https://meteo.hr/proizvodi.php?section=podaci&param=xml_korisnici
 metadata: { "openclaw": { "emoji": "🇭🇷", "requires": { "bins": ["curl"] } } }
 ---
 
-# DHMZ Weather (Croatia)
+# DHMZ天气（克罗地亚）
 
-Croatian Meteorological and Hydrological Service (DHMZ) provides free XML APIs. All data in Croatian, no authentication needed.
+克罗地亚气象和水文服务局（DHMZ）提供免费的XML API接口。所有数据均以克罗地亚语提供，无需认证。
 
-## Default Behavior
+## 默认行为
 
-When this skill is invoked:
-1. **If a city is provided as argument** (e.g., `/dhmz-weather Zagreb`): Immediately fetch and display weather for that city
-2. **If no city is provided**: Infer the city from conversation context (user's location, previously mentioned cities, or project context). If no context available, default to **Zagreb** (capital city)
+当调用此技能时：
+1. **如果提供了城市名称作为参数**（例如：`/dhmz-weather Zagreb`）：立即获取并显示该城市的天气信息。
+2. **如果没有提供城市名称**：会根据对话上下文（用户的位置、之前提到的城市或项目相关信息）推断出城市名称。如果无法确定城市名称，则默认使用**萨格勒布**（克罗地亚首都）。
 
-**Do not ask the user what they want** - just fetch the weather data immediately and present it in a readable format.
+**无需询问用户的具体需求**——直接获取天气数据并以易于阅读的格式展示给用户。
 
-## Weather Emojis
+## 天气表情符号
 
-Use these emojis when displaying weather data to make it more intuitive:
+在显示天气信息时使用以下表情符号，以增强直观性：
 
-### Conditions
-| Croatian | English | Emoji |
+### 天气状况
+| 克罗地亚语 | 英文 | 表情符号 |
 |----------|---------|-------|
-| vedro, sunčano | clear, sunny | ☀️ |
-| djelomično oblačno | partly cloudy | ⛅ |
-| pretežno oblačno | mostly cloudy | 🌥️ |
-| potpuno oblačno | overcast | ☁️ |
-| slaba kiša | light rain | 🌦️ |
-| kiša | rain | 🌧️ |
-| jaka kiša | heavy rain | 🌧️🌧️ |
-| grmljavina | thunderstorm | ⛈️ |
-| snijeg | snow | 🌨️ |
-| susnježica | sleet | 🌨️🌧️ |
-| magla | fog | 🌫️ |
-| rosa | dew | 💧 |
+| vedro, sunčano | 晴朗 | ☀️ |
+| delimično oblačno | 部分多云 | ⛅ |
+| pretežno oblačno | 大部分多云 | 🌥️ |
+| potpuno oblačno | 阴天 | ☁️ |
+| slaba kiša | 小雨 | 🌦️ |
+| kiša | 下雨 | 🌧️ |
+| jaka kiša | 大雨 | 🌧️🌧️ |
+| grmljavina | 雷暴 | ⛈️ |
+| snijeg | 下雪 | 🌨️ |
+| susnježica | 雨夹雪 | 🌨️🌧️ |
+| magla | 雾 | 🌫️ |
+| rosa | 露水 | 💧 |
 
-### Metrics
-| Metric | Emoji |
+### 天气指标
+| 指标 | 表情符号 |
 |--------|-------|
-| Temperature | 🌡️ |
-| Humidity | 💧 |
-| Pressure | 📊 |
-| Wind | 💨 |
-| Rain/Precipitation | 🌧️ |
-| UV Index | ☀️ |
-| Sea temperature | 🌊 |
+| 温度 | 🌡️ |
+| 湿度 | 💧 |
+| 气压 | 📊 |
+| 风速 | 💨 |
+| 降雨量 | 🌧️ |
+| 紫外线指数 | ☀️ |
+| 海水温度 | 🌊 |
 
-### Wind Strength
-| Description | Emoji |
+### 风力强度
+| 描述 | 表情符号 |
 |-------------|-------|
-| calm, light | 🍃 |
-| moderate | 💨 |
-| strong/windy (vjetrovito) | 💨💨 |
-| stormy (olujni) | 🌬️ |
+| 微风 | 🍃 |
+| 中等风速 | 💨 |
+| 强风 | 💨💨 |
+| 暴风雨 | 🌬️ |
 
-### Alerts
-| Level | Emoji |
+### 天气警报
+| 警报等级 | 表情符号 |
 |-------|-------|
-| Green (no warning) | 🟢 |
-| Yellow | 🟡 |
-| Orange | 🟠 |
-| Red | 🔴 |
+| 绿色（无警报） | 🟢 |
+| 黄色 | 🟡 |
+| 橙色 | 🟠 |
+| 红色 | 🔴 |
 
-## Current Weather
+## 当前天气
 
-All Croatian stations (alphabetical):
+所有克罗地亚气象站的天气信息（按字母顺序排列）：
 
 ```bash
 curl -s "https://vrijeme.hr/hrvatska_n.xml"
 ```
 
-By regions:
+按地区划分的天气信息：
 
 ```bash
 curl -s "https://vrijeme.hr/hrvatska1_n.xml"
 ```
 
-European cities:
+欧洲城市的天气信息：
 
 ```bash
 curl -s "https://vrijeme.hr/europa_n.xml"
 ```
 
-## Temperature Extremes
+## 温度极端值
 
-Max temperatures:
+最高温度：
 
 ```bash
 curl -s "https://vrijeme.hr/tx.xml"
 ```
 
-Min temperatures:
+最低温度：
 
 ```bash
 curl -s "https://vrijeme.hr/tn.xml"
 ```
 
-Min at 5cm (ground frost):
+地面最低温度（5厘米处）：
 
 ```bash
 curl -s "https://vrijeme.hr/t5.xml"
 ```
 
-## Sea & Water
+## 海洋与水域
 
-Adriatic sea temperature:
+亚得里亚海海水温度：
 
 ```bash
 curl -s "https://vrijeme.hr/more_n.xml"
 ```
 
-River temperatures:
+河流温度：
 
 ```bash
 curl -s "https://vrijeme.hr/temp_vode.xml"
 ```
 
-## Precipitation & Snow
+## 降雨与降雪
 
-Precipitation data:
+降雨数据：
 
 ```bash
 curl -s "https://vrijeme.hr/oborina.xml"
 ```
 
-Snow height:
+积雪深度：
 
 ```bash
 curl -s "https://vrijeme.hr/snijeg_n.xml"
 ```
 
-## Forecasts
+## 天气预报
 
-Today's forecast:
+今日预报：
 
 ```bash
 curl -s "https://prognoza.hr/prognoza_danas.xml"
 ```
 
-Tomorrow's forecast:
+明日预报：
 
 ```bash
 curl -s "https://prognoza.hr/prognoza_sutra.xml"
 ```
 
-3-day outlook:
+未来三天天气预报：
 
 ```bash
 curl -s "https://prognoza.hr/prognoza_izgledi.xml"
 ```
 
-Regional forecasts:
+地区性天气预报：
 
 ```bash
 curl -s "https://prognoza.hr/regije_danas.xml"
 ```
 
-3-day meteograms (detailed):
+未来三天详细天气图：
 
 ```bash
 curl -s "https://prognoza.hr/tri/3d_graf_i_simboli.xml"
 ```
 
-7-day meteograms:
+未来七天天气图：
 
 ```bash
 curl -s "https://prognoza.hr/sedam/hrvatska/7d_meteogrami.xml"
 ```
 
-## Weather Alerts (CAP format)
+## 天气警报（CAP格式）
 
-Today's warnings:
+今日的天气警报：
 
 ```bash
 curl -s "https://meteo.hr/upozorenja/cap_hr_today.xml"
 ```
 
-Tomorrow's warnings:
+明天的天气警报：
 
 ```bash
 curl -s "https://meteo.hr/upozorenja/cap_hr_tomorrow.xml"
 ```
 
-Day after tomorrow:
+后天的天气警报：
 
 ```bash
 curl -s "https://meteo.hr/upozorenja/cap_hr_day_after_tomorrow.xml"
 ```
 
-## Specialized Data
+## 专项数据
 
-UV index:
-
-```bash
+- 紫外线指数：```bash
 curl -s "https://vrijeme.hr/uvi.xml"
 ```
-
-Forest fire risk index:
-
-```bash
+- 森林火灾风险指数：```bash
 curl -s "https://vrijeme.hr/indeks.xml"
 ```
-
-Biometeorological forecast (health):
-
-```bash
+- 生物气象预报（健康提示）：```bash
 curl -s "https://prognoza.hr/bio_novo.xml"
 ```
-
-Heat wave alerts:
-
-```bash
+- 热浪警报：```bash
 curl -s "https://prognoza.hr/toplinskival_5.xml"
 ```
-
-Cold wave alerts:
-
-```bash
+- 寒潮警报：```bash
 curl -s "https://prognoza.hr/hladnival.xml"
 ```
 
-## Maritime / Adriatic
+## 海洋/亚得里亚海相关
 
-Nautical forecast:
+航海天气预报：
 
 ```bash
 curl -s "https://prognoza.hr/jadran_h.xml"
 ```
 
-Maritime forecast (sailors):
+船员专用海洋天气预报：
 
 ```bash
 curl -s "https://prognoza.hr/pomorci.xml"
 ```
 
-## Agriculture
+## 农业相关
 
-Agro bulletin:
+农业天气预报：
 
 ```bash
 curl -s "https://klima.hr/agro_bilten.xml"
 ```
 
-Soil temperature:
+土壤温度：
 
 ```bash
 curl -s "https://vrijeme.hr/agro_temp.xml"
 ```
 
-7-day agricultural data:
+未来七天的农业数据：
 
 ```bash
 curl -s "https://klima.hr/agro7.xml"
 ```
 
-## Hydrology
+## 水文信息
 
-Hydro bulletin:
+水文状况报告：
 
 ```bash
 curl -s "https://hidro.hr/hidro_bilten.xml"
 ```
 
-## Tips
+## 使用提示
+- 所有返回的数据均为XML格式。
+- 数据以克罗地亚语提供。
+- 气象站名称使用克罗地亚语字符（UTF-8编码）。
+- 数据更新频率：实时数据约每小时更新一次，天气预报每天更新一次。
+- 用于解析数据的工具包括`xmllint`或`xq`（需从`yq`包中安装）。
 
-- All responses are XML format
-- Data is in Croatian language
-- Station names use Croatian characters (UTF-8)
-- Updates vary: current data ~hourly, forecasts ~daily
-- For parsing, use `xmllint` or pipe to a JSON converter
-
-Extract specific station with xmllint:
-
-```bash
+**使用`xmllint`提取特定气象站的数据：**```bash
 curl -s "https://vrijeme.hr/hrvatska_n.xml" | xmllint --xpath "//Grad[GradIme='Zagreb']" -
 ```
 
-Convert to JSON (requires `xq` from yq package):
-
-```bash
+**将数据转换为JSON格式（需使用`xq`工具）：**```bash
 curl -s "https://vrijeme.hr/hrvatska_n.xml" | xq .
 ```
 
-## Common Station Names
+## 常见气象站名称
+- 萨格勒布（Zagreb）
+- 斯普利特（Split）
+- 里耶卡（Rijeka）
+- 奥西耶克（Osijek）
+- 扎达尔（Zadar）
+- 普拉（Pula）
+- 杜布罗夫尼克（Dubrovnik）
+- 斯拉沃恩斯基布罗德（Slavonski Brod）
+- 卡尔洛瓦茨（Karlovac）
+- 瓦拉兹丁（Varazdin）
+- 西萨克（Sisak）
+- 比耶洛瓦尔（Bjelovar）
+- 卡科韦茨（Cakovec）
+- 戈斯皮奇（Gospic）
+- 克尼恩（Knin）
+- 马卡尔斯卡（Makarska）
+- 西贝尼克（Sibenik）
 
-Zagreb, Split, Rijeka, Osijek, Zadar, Pula, Dubrovnik, Slavonski Brod, Karlovac, Varazdin, Sisak, Bjelovar, Cakovec, Gospic, Knin, Makarska, Sibenik
+## 数据来源
 
-## Data Source
-
-Official DHMZ (Drzavni hidrometeoroloski zavod) - Croatian Meteorological and Hydrological Service: <https://meteo.hr>
+克罗地亚气象和水文服务局（DHMZ）官方网站：<https://meteo.hr>

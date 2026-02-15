@@ -1,43 +1,45 @@
 ---
 name: kafka-iac-deployment
-description: Terraform deployment expert for Apache Kafka, AWS MSK, and Azure Event Hubs. Use when provisioning Kafka infrastructure with IaC, comparing managed vs self-hosted platforms, or automating cluster deployments.
+description: **Terraform 部署专家：专注于 Apache Kafka、AWS MSK 和 Azure Event Hubs 的部署**  
+擅长使用 Terraform 部署 Kafka 相关基础设施，包括与基础设施即代码（IaC）的集成；对比托管平台与自托管平台的优缺点；以及自动化 Kafka 集群的部署流程。
 ---
 
-# Kafka Infrastructure as Code (IaC) Deployment
+# Kafka基础设施即代码（IaC）部署
 
-Expert guidance for deploying Apache Kafka using Terraform across multiple platforms.
+本文档提供了使用Terraform在多个平台上部署Apache Kafka的专业指导。
 
-## When to Use This Skill
+## 适用场景
 
-I activate when you need help with:
-- **Terraform deployments**: "Deploy Kafka with Terraform", "provision Kafka cluster"
-- **Platform selection**: "Should I use AWS MSK or self-hosted Kafka?", "compare Kafka platforms"
-- **Infrastructure planning**: "How to size Kafka infrastructure", "Kafka on AWS vs Azure"
-- **IaC automation**: "Automate Kafka deployment", "CI/CD for Kafka infrastructure"
+当您需要以下帮助时，请参考本文档：
+- **Terraform部署**：如何使用Terraform部署Kafka集群
+- **平台选择**：应选择AWS MSK还是自托管Kafka？
+- **基础设施规划**：如何规划Kafka基础设施的规模？
+- **IaC自动化**：如何自动化Kafka的部署过程？
+- **持续集成/持续部署（CI/CD）**：如何为Kafka基础设施实现CI/CD流程？
 
-## What I Know
+## 我所掌握的知识
 
-### Available Terraform Modules
+### 可用的Terraform模块
 
-This plugin provides 3 production-ready Terraform modules:
+本插件提供了3个适用于生产环境的Terraform模块：
 
-#### 1. **Apache Kafka (Self-Hosted, KRaft Mode)**
-- **Location**: `plugins/specweave-kafka/terraform/apache-kafka/`
-- **Platform**: AWS EC2 (can adapt to other clouds)
-- **Architecture**: KRaft mode (no ZooKeeper dependency)
-- **Features**:
-  - Multi-broker cluster (3-5 brokers recommended)
-  - Security groups with SASL_SSL
-  - IAM roles for S3 backups
-  - CloudWatch metrics and alarms
-  - Auto-scaling group support
-  - Custom VPC and subnet configuration
-- **Use When**:
-  - ✅ You need full control over Kafka configuration
-  - ✅ Running Kafka 3.6+ (KRaft mode)
-  - ✅ Want to avoid ZooKeeper operational overhead
-  - ✅ Multi-cloud or hybrid deployments
-- **Variables**:
+#### 1. **Apache Kafka（自托管，KRaft模式）**
+- **位置**：`plugins/specweave-kafka/terraform/apache-kafka/`
+- **平台**：AWS EC2（可适配其他云平台）
+- **架构**：KRaft模式（无需依赖ZooKeeper）
+- **特点**：
+  - 多 broker集群（建议使用3-5个broker）
+  - 支持SASL_SSL的安全组
+  - 为S3备份配置IAM角色
+  - 提供CloudWatch指标和警报功能
+  - 支持自动扩展组
+  - 可自定义VPC和子网配置
+- **适用场景**：
+  - 需要对Kafka配置有完全控制权
+  - 需要运行Kafka 3.6及以上版本（KRaft模式）
+  - 希望避免ZooKeeper带来的运营开销
+  - 需要进行多云或混合环境部署
+- **相关变量**：
   ```hcl
   module "kafka" {
     source = "../../plugins/specweave-kafka/terraform/apache-kafka"
@@ -54,22 +56,22 @@ This plugin provides 3 production-ready Terraform modules:
   }
   ```
 
-#### 2. **AWS MSK (Managed Streaming for Kafka)**
-- **Location**: `plugins/specweave-kafka/terraform/aws-msk/`
-- **Platform**: AWS Managed Service
-- **Features**:
-  - Fully managed Kafka service
-  - IAM authentication + SASL/SCRAM
-  - Auto-scaling (provisioned throughput)
-  - Built-in monitoring (CloudWatch)
-  - Multi-AZ deployment
-  - Encryption in transit and at rest
-- **Use When**:
-  - ✅ You want AWS to manage Kafka operations
-  - ✅ Need tight AWS integration (IAM, KMS, CloudWatch)
-  - ✅ Prefer operational simplicity over cost
-  - ✅ Running in AWS VPC
-- **Variables**:
+#### 2. **AWS MSK（Kafka的托管服务）**
+- **位置**：`plugins/specweave-kafka/terraform/aws-msk/`
+- **平台**：AWS托管服务
+- **特点**：
+  - Kafka服务由AWS全权管理
+  - 支持IAM认证和SASL/SCRAM身份验证
+  - 支持自动扩展（根据需求调整吞吐量）
+  - 内置监控功能（CloudWatch）
+  - 支持多AZ部署
+  - 数据传输和存储均采用加密
+- **适用场景**：
+  - 希望由AWS负责Kafka的运营管理
+  - 需要与AWS的其他服务（如IAM、KMS、CloudWatch）紧密集成
+  - 更注重运营简便性而非成本
+  - 需要在AWS VPC中运行Kafka
+- **相关变量**：
   ```hcl
   module "msk" {
     source = "../../plugins/specweave-kafka/terraform/aws-msk"
@@ -88,22 +90,22 @@ This plugin provides 3 production-ready Terraform modules:
   }
   ```
 
-#### 3. **Azure Event Hubs (Kafka API)**
-- **Location**: `plugins/specweave-kafka/terraform/azure-event-hubs/`
-- **Platform**: Azure Managed Service
-- **Features**:
-  - Kafka 1.0+ protocol support
-  - Auto-inflate (elastic scaling)
-  - Premium SKU for high throughput
-  - Zone redundancy
-  - Private endpoints (VNet integration)
-  - Event capture to Azure Storage
-- **Use When**:
-  - ✅ Running on Azure cloud
-  - ✅ Need Kafka-compatible API without Kafka operations
-  - ✅ Want serverless scaling (auto-inflate)
-  - ✅ Integrating with Azure ecosystem
-- **Variables**:
+#### 3. **Azure Event Hubs（Kafka API）**
+- **位置**：`plugins/specweave-kafka/terraform/azure-event-hubs/`
+- **平台**：Azure托管服务
+- **特点**：
+  - 支持Kafka 1.0及以上协议
+  - 支持弹性扩展
+  - 提供高级版本（Premium SKU）以支持高吞吐量
+  - 支持区域冗余
+  - 支持私有端点（VNet集成）
+  - 支持将事件数据存储到Azure存储中
+- **适用场景**：
+  - 需要在Azure云环境中运行Kafka
+  - 需要Kafka兼容的API但无需自行管理Kafka服务
+  - 希望实现无服务器扩展（自动扩展）
+  - 需要与Azure生态系统集成
+- **相关变量**：
   ```hcl
   module "event_hubs" {
     source = "../../plugins/specweave-kafka/terraform/azure-event-hubs"
@@ -120,7 +122,7 @@ This plugin provides 3 production-ready Terraform modules:
   }
   ```
 
-## Platform Selection Decision Tree
+## 平台选择决策树
 
 ```
 Need Kafka deployment? START HERE:
@@ -144,11 +146,11 @@ Need Kafka deployment? START HERE:
 └─ Default → Use Apache Kafka module (self-hosted, KRaft mode)
 ```
 
-## Deployment Workflows
+## 部署工作流程
 
-### Workflow 1: Deploy Self-Hosted Kafka (Apache Kafka Module)
+### 工作流程1：部署自托管Kafka（使用Apache Kafka模块）
 
-**Scenario**: You want full control over Kafka on AWS EC2
+**场景**：您希望在AWS EC2上完全控制Kafka集群的配置和运行
 
 ```bash
 # 1. Create Terraform configuration
@@ -193,9 +195,9 @@ terraform output broker_endpoints
 # Output: ["kafka-0.kafka.example.com:9093", "kafka-1.kafka.example.com:9093", ...]
 ```
 
-### Workflow 2: Deploy AWS MSK (Managed Service)
+### 工作流程2：部署AWS MSK（Kafka的托管服务）
 
-**Scenario**: You want AWS to manage Kafka operations
+**场景**：您希望让AWS负责Kafka的运营管理
 
 ```bash
 # 1. Create Terraform configuration
@@ -231,9 +233,9 @@ terraform init && terraform apply
 # (module outputs IAM policy, attach to your application role)
 ```
 
-### Workflow 3: Deploy Azure Event Hubs (Kafka API)
+### 工作流程3：部署Azure Event Hubs（Kafka API）
 
-**Scenario**: You're on Azure and want Kafka-compatible API
+**场景**：您在Azure环境中，需要使用Kafka兼容的API
 
 ```bash
 # 1. Create Terraform configuration
@@ -272,9 +274,9 @@ terraform init && terraform apply
 terraform output connection_string
 ```
 
-## Infrastructure Sizing Recommendations
+## 基础设施规模规划建议
 
-### Small Environment (Dev/Test)
+### 小型环境（开发/测试）
 ```hcl
 # Self-hosted: 1 broker, m5.large
 broker_count  = 1
@@ -289,7 +291,7 @@ sku = "Basic"
 capacity = 1
 ```
 
-### Medium Environment (Staging/Production)
+### 中型环境（预发布/生产环境）
 ```hcl
 # Self-hosted: 3 brokers, m5.xlarge
 broker_count  = 3
@@ -306,7 +308,7 @@ auto_inflate_enabled = true
 maximum_throughput_units = 10
 ```
 
-### Large Environment (High-Throughput Production)
+### 大型环境（高吞吐量生产环境）
 ```hcl
 # Self-hosted: 5+ brokers, m5.2xlarge or m5.4xlarge
 broker_count  = 5
@@ -324,74 +326,56 @@ zone_redundant = true
 maximum_throughput_units = 20
 ```
 
-## Best Practices
+## 最佳实践
 
-### Security Best Practices
-1. **Always use encryption in transit**
-   - Self-hosted: Enable SASL_SSL listener
-   - AWS MSK: Set `encryption_in_transit_client_broker = "TLS"`
-   - Azure Event Hubs: HTTPS/TLS enabled by default
+### 安全最佳实践
+1. **确保数据传输过程中的加密**：
+  - 自托管环境：启用SASL_SSL加密
+  - AWS MSK：设置`encryption_in_transit_client_broker = "TLS"`
+  - Azure Event Hubs：默认启用HTTPS/TLS加密
+2. **尽可能使用IAM身份验证**：
+  - AWS MSK：设置`enable_iam_auth = true`
+  - Azure Event Hubs：使用Azure管理的身份验证机制
+3. **网络隔离**：
+  - 将Kafka集群部署在私有子网中
+  - 严格使用安全组/网络安全组（NSGs）进行访问控制
+  - （Azure Premium SKU支持使用私有端点）
 
-2. **Use IAM authentication (when possible)**
-   - AWS MSK: `enable_iam_auth = true`
-   - Azure Event Hubs: Managed identities
+### 高可用性最佳实践
+1. **多AZ部署**：
+  - 自托管环境：将broker分布在3个及以上的AZ中
+  - AWS MSK：自动实现多AZ部署
+  - Azure Event Hubs：启用`zone_redundant = true`（高级版本）
+2. **复制因子设置为3**：
+  - 自托管环境：`default.replication.factor=3`
+  - AWS MSK：自动配置复制因子
+  - Azure Event Hubs：该参数由Azure自动管理
+3. **设置最小同步副本数（min.insync.replicas = 2）**：
+  - 以确保即使一个broker发生故障，系统仍能正常运行
 
-3. **Network isolation**
-   - Deploy in private subnets
-   - Use security groups/NSGs restrictively
-   - Azure: Enable private endpoints for Premium SKU
+### 成本优化建议
+1. **合理选择实例规格**：
+  - 使用`ClusterSizingCalculator`工具进行实例规模规划
+  - 从小规模开始部署，根据实际运行情况逐步扩展
+2. **启用自动扩展**：
+  - AWS MSK：`enable_auto_scaling = true`
+  - Azure Event Hubs：`auto_inflate_enabled = true`
+3. **设置合适的日志保留策略**：
+  - 根据实际需求设置`log_retention_hours`（默认为168小时，即7天）
+  - 较短的保留时间可以降低存储成本
 
-### High Availability Best Practices
-1. **Multi-AZ deployment**
-   - Self-hosted: Distribute brokers across 3+ AZs
-   - AWS MSK: Automatically multi-AZ
-   - Azure Event Hubs: Enable `zone_redundant = true` (Premium)
+## 监控集成
 
-2. **Replication factor = 3**
-   - Self-hosted: `default.replication.factor=3`
-   - AWS MSK: Configured automatically
-   - Azure Event Hubs: N/A (fully managed)
+所有模块都支持监控集成：
+- **自托管Kafka**：通过JMX Exporter将数据发送到CloudWatch，然后使用Prometheus和Grafana进行监控
+- **AWS MSK**：提供内置的CloudWatch指标，支持自定义警报
+- **Azure Event Hubs**：内置Azure Monitor指标，支持与Azure Alerts的集成
 
-3. **min.insync.replicas = 2**
-   - Ensures durability even if 1 broker fails
+## 常见问题及解决方法
 
-### Cost Optimization
-1. **Right-size instances**
-   - Use ClusterSizingCalculator utility (in kafka-architecture skill)
-   - Start small, scale up based on metrics
-
-2. **Auto-scaling (where available)**
-   - AWS MSK: `enable_auto_scaling = true`
-   - Azure Event Hubs: `auto_inflate_enabled = true`
-
-3. **Retention policies**
-   - Set `log.retention.hours` based on actual needs (default: 168 hours = 7 days)
-   - Shorter retention = lower storage costs
-
-## Monitoring Integration
-
-All modules integrate with monitoring:
-
-### Self-Hosted Kafka
-- CloudWatch metrics (via JMX Exporter)
-- Prometheus + Grafana dashboards (see kafka-observability skill)
-- Custom CloudWatch alarms
-
-### AWS MSK
-- Built-in CloudWatch metrics
-- Enhanced monitoring available
-- Integration with CloudWatch Alarms
-
-### Azure Event Hubs
-- Built-in Azure Monitor metrics
-- Diagnostic logs to Log Analytics
-- Integration with Azure Alerts
-
-## Troubleshooting
-
-### "Terraform destroy fails on security groups"
-**Cause**: Resources using security groups still exist
-**Fix**:
+### “Terraform部署失败：安全组相关问题”
+**原因**：某些资源仍然依赖于旧的安全组设置
+**解决方法**：
 ```bash
 # 1. Find dependent resources
 aws ec2 describe-network-interfaces --filters "Name=group-id,Values=sg-12345678"
@@ -400,28 +384,27 @@ aws ec2 describe-network-interfaces --filters "Name=group-id,Values=sg-12345678"
 # 3. Retry terraform destroy
 ```
 
-### "AWS MSK cluster takes 20+ minutes to create"
-**Cause**: MSK provisioning is inherently slow (AWS behavior)
-**Fix**: This is normal. Use `--auto-approve` for automation:
+### “AWS MSK集群创建耗时过长（超过20分钟）”
+**原因**：AWS MSK的配置过程本身较为耗时
+**解决方法**：可以使用`--auto-approve`选项加速部署流程：
 ```bash
 terraform apply -auto-approve
 ```
 
-### "Azure Event Hubs: Connection refused"
-**Cause**: Kafka protocol not enabled OR incorrect connection string
-**Fix**:
-1. Verify `kafka_enabled = true` in Terraform
-2. Use Kafka connection string (not Event Hubs connection string)
-3. Check firewall rules (Premium SKU supports private endpoints)
+### “Azure Event Hubs连接失败”
+**原因**：Kafka协议未启用或连接字符串设置错误
+**解决方法**：
+1. 确保在Terraform配置中启用了`kafka_enabled`选项
+2. 使用正确的Kafka连接字符串（而非Event Hubs的连接字符串）
+3. 检查防火墙规则（Azure Premium SKU支持使用私有端点）
 
-## Integration with Other Skills
+## 与其他技能的集成
+- **kafka-architecture**：用于规划Kafka集群的规模和分区策略
+- **kafka-observability**：用于部署后配置Prometheus和Grafana监控工具
+- **kafka-kubernetes**：用于在Kubernetes上部署Kafka（作为Terraform的替代方案）
+- **kafka-cli-tools**：用于使用kcat工具测试已部署的Kafka集群
 
-- **kafka-architecture**: For cluster sizing and partitioning strategy
-- **kafka-observability**: For Prometheus + Grafana setup after deployment
-- **kafka-kubernetes**: For deploying Kafka on Kubernetes (alternative to Terraform)
-- **kafka-cli-tools**: For testing deployed clusters with kcat
-
-## Quick Reference Commands
+## 快速参考命令
 
 ```bash
 # Terraform workflow
@@ -442,8 +425,8 @@ az eventhubs eventhub list --namespace-name <name> --resource-group <rg> # List 
 
 ---
 
-**Next Steps After Deployment**:
-1. Use **kafka-observability** skill to set up Prometheus + Grafana monitoring
-2. Use **kafka-cli-tools** skill to test cluster with kcat
-3. Deploy your producer/consumer applications
-4. Monitor cluster health and performance
+**部署后的后续步骤**：
+1. 使用`kafka-observability`技能配置Prometheus和Grafana监控
+2. 使用`kafka-cli-tools`工具通过kcat测试Kafka集群的性能
+3. 部署生产者/消费者应用程序
+4. 定期监控Kafka集群的运行状态和性能表现

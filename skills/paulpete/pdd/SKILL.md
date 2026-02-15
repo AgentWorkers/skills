@@ -1,146 +1,144 @@
 ---
 name: pdd
-description: Transforms a rough idea into a detailed design document with implementation plan. Follows Prompt-Driven Development — iterative requirements clarification, research, design, and planning.
+description: 将一个初步的想法转化为包含实施计划的详细设计文档。遵循提示驱动开发（Prompt-Driven Development）的方法——即通过迭代的方式明确需求、进行研究、进行设计并制定计划。
 type: anthropic-skill
 version: "1.1"
 ---
 
-# Prompt-Driven Development
+# 提示驱动开发（Prompt-Driven Development）
 
-## Overview
+## 概述
 
-Transform a rough idea into a detailed design with an implementation plan. The process is iterative: clarify requirements, research, design, plan — moving between phases as needed.
+将一个初步的想法转化为详细的的设计方案，并制定实施计划。这个过程是迭代的：明确需求、进行研究、进行设计、制定计划——根据需要在不同阶段之间切换。
 
-## Important Notes
+## 重要注意事项
 
-These rules apply across ALL steps:
+以下规则适用于所有步骤：
 
-- **User-driven flow:** Never proceed to the next step without explicit user confirmation. At each transition, ask the user what they want to do next.
-- **Iterative:** The user can move between requirements clarification and research at any time. Always offer this option at phase transitions.
-- **Record as you go:** Append questions, answers, and findings to project files in real time — don't batch-write at the end.
-- **Mermaid diagrams:** Include diagrams for architectures, data flows, and component relationships in research and design documents.
-- **Sources:** Cite references and links in research documents when based on external materials.
+- **以用户为中心的流程（User-driven flow）：**在没有用户明确同意之前，切勿进入下一步。在每个阶段转换时，都要询问用户接下来想要做什么。
+- **迭代性（Iterative）：**用户可以随时在需求明确和研究中来回切换。在每个阶段转换时，始终提供这个选项。
+- **边做边记录（Record as you go）：**实时将问题、答案和发现内容添加到项目文件中——不要等到最后才一次性写入。
+- **Mermaid 图表（Mermaid diagrams）：**在研究和设计文档中加入架构图、数据流图以及组件关系图。
+- **引用来源（Sources）：**当基于外部资料时，在研究文档中注明参考文献和链接。
 
-## Parameters
+## 参数
 
-- **rough_idea** (required): The initial concept or idea to develop
-- **project_dir** (optional, default: `specs/{task_name}/`): Base directory for all artifacts. `{task_name}` is derived as kebab-case from the idea (e.g., "build a rate limiter" → `rate-limiter`). Aligns with Ralph's spec-driven pipeline.
+- **rough_idea**（必填）：需要开发的初始概念或想法。
+- **project_dir**（可选，默认值：`specs/{task_name}/`）：所有项目文件的根目录。`{task_name}` 是从想法中提取的（例如，“构建一个速率限制器” → `rate-limiter`）。这与 Ralph 的规范驱动流程（spec-driven pipeline）保持一致。
 
-**Constraints:**
-- You MUST ask for all required parameters upfront in a single prompt
-- You MUST support multiple input methods: direct text, file path, URL
-- You MUST derive `task_name` from the rough idea as kebab-case
-- You MUST NOT overwrite an existing project directory — ask for a new path if it already has contents
+**约束条件：**
+- 必须在单个提示中一次性询问所有必需的参数。
+- 必须支持多种输入方式：直接文本、文件路径、URL。
+- 必须从初步想法中提取 `task_name` 并将其转换为 kebab-case 格式。
+- 禁止覆盖现有的项目目录——如果目录中已有内容，请要求用户提供新的路径。
 
-## Steps
+## 步骤
 
-### 1. Create Project Structure
+### 1. 创建项目结构
 
-Create the directory and initial files:
-- `{project_dir}/rough-idea.md` — the provided rough idea
-- `{project_dir}/requirements.md` — Q&A record (initially empty)
-- `{project_dir}/research/` — directory for research notes
+创建相应的目录和初始文件：
+- `{project_dir}/rough-idea.md`：包含初步的想法。
+- `{project_dir}/requirements.md`：用于记录问题和答案（初始为空）。
+- `{project_dir}/research/`：用于存放研究笔记的目录。
 
-Inform the user the structure feeds into Ralph's spec-driven presets.
+告知用户，该项目结构将用于 Ralph 的规范驱动流程。
 
-### 2. Initial Process Planning
+### 2. 初始流程规划
 
-Ask the user their preferred starting point:
-- Requirements clarification (default)
-- Preliminary research on specific topics
-- Provide additional context first
+询问用户他们希望从哪个步骤开始：
+- 明确需求（Requirements clarification，默认选项）。
+- 对特定主题进行初步研究。
+- 先提供额外的背景信息。
 
-### 3. Requirements Clarification
+### 3. 明确需求
 
-Guide the user through questions to refine the idea into a thorough specification.
+通过一系列问题引导用户，将初步想法细化为完整的需求规范。
 
-**Constraints:**
-- You MUST ask ONE question at a time — do not list multiple questions
-- You MUST NOT pre-populate answers or batch-write Q&A to requirements.md
-- You MUST follow this cycle for each question:
-  1. Formulate and append question to requirements.md
-  2. Present to user, wait for complete response
-  3. Append answer to requirements.md
-  4. Proceed to next question
-- You MUST ask the user if requirements clarification is complete before moving on
+**约束条件：**
+- 每次只能提出一个问题——不要同时列出多个问题。
+- 不得预先填写答案，也不得一次性将问题和答案写入 `requirements.md`。
+- 必须按照以下步骤进行：
+  1. 提出问题并添加到 `requirements.md` 中。
+  2. 向用户展示问题，等待用户完整回答。
+  3. 将答案添加到 `requirements.md` 中。
+  4. 进入下一个问题。
+- 在继续之前，必须询问用户需求是否已经明确。
 
-Cover edge cases, user experience, technical constraints, and success criteria. Suggest options when the user is unsure.
+需要讨论边缘情况、用户体验、技术限制以及成功标准。当用户不确定时，提供相应的建议。
 
-### 4. Research
+### 4. 研究
 
-Conduct research on technologies, libraries, or existing code to inform the design.
+对相关技术、库或现有代码进行研究，为设计提供依据。
 
-**Constraints:**
-- You MUST propose a research plan to the user and incorporate their suggestions
-- You MUST document findings in `{project_dir}/research/` as separate topic files
-- You MUST periodically check in with the user to share findings and confirm direction
-- You MUST summarize key findings before moving on
+**约束条件：**
+- 必须向用户提出研究计划，并结合他们的建议。
+- 必须将研究结果以单独的文件形式保存在 `{project_dir}/research/` 目录中。
+- 必须定期与用户沟通，分享研究结果并确认发展方向。
+- 在继续之前，必须总结关键发现。
 
-### 5. Iteration Checkpoint
+### 5. 迭代检查点
 
-Summarize the current state of requirements and research, then ask the user:
-- Proceed to design?
-- Return to requirements clarification?
-- Conduct additional research?
+总结当前的需求和研究状态，然后询问用户：
+- 继续进行设计吗？
+- 返回到需求明确阶段？
+- 进行更多的研究吗？
 
-### 6. Create Detailed Design
+### 6. 创建详细设计
 
-Create `{project_dir}/design.md` as a standalone document with these sections:
-- Overview
-- Detailed Requirements (consolidated from requirements.md)
-- Architecture Overview
-- Components and Interfaces
-- Data Models
-- Error Handling
-- Acceptance Criteria (Given-When-Then format for machine verification)
-- Testing Strategy
-- Appendices (Technology Choices, Research Findings, Alternative Approaches)
+创建 `{project_dir}/design.md` 文件，内容包括：
+- 概述（Overview）。
+- 详细需求（从 `requirements.md` 中整理得出）。
+- 架构概述（Architecture Overview）。
+- 组件和接口（Components and Interfaces）。
+- 数据模型（Data Models）。
+- 错误处理（Error Handling）。
+- 接受标准（采用 Given-When-Then 格式以便机器验证）。
+- 测试策略（Testing Strategy）。
+- 附录（包含技术选择、研究结果、替代方案）。
 
-**Constraints:**
-- You MUST write the design as standalone — understandable without reading other files
-- You MUST consolidate all requirements from requirements.md
-- You MUST include an appendix summarizing research (technology choices, alternatives, limitations)
-- You MUST review the design with the user and iterate on feedback
+**约束条件：**
+- 设计文档必须独立成篇——无需阅读其他文件即可理解。
+- 必须整合 `requirements.md` 中的所有需求。
+- 必须包含一个附录，总结研究结果（技术选择、替代方案、限制因素）。
+- 必须与用户一起审查设计，并根据反馈进行迭代。
 
-### 7. Develop Implementation Plan
+### 7. 制定实施计划
 
-Create `{project_dir}/plan.md` — a numbered series of incremental implementation steps.
+创建 `{project_dir}/plan.md` 文件，其中包含一系列逐步实施的步骤。
 
-**Guiding principle:** Each step builds on previous steps, results in working demoable functionality, and follows TDD practices. No orphaned code — every step ends with integration. Core end-to-end functionality should be available as early as possible.
+**指导原则：**每个步骤都建立在前一步的基础上，最终实现可演示的功能，并遵循测试驱动开发（TDD）的最佳实践。确保没有孤立的部分——每个步骤都包含集成内容。应尽早实现核心的端到端功能。
 
-**Constraints:**
-- You MUST include a checklist at the top of plan.md tracking each step
-- You MUST format as "Step N:" with: objective, implementation guidance, test requirements, integration notes, and demo description
-- You MUST ensure the plan covers all aspects of the design without duplicating design details
+**约束条件：**
+- 必须在 `plan.md` 的顶部列出每个步骤的清单。
+- 文档格式必须为 “Step N:”，包括目标、实施指南、测试要求、集成说明以及演示描述。
+- 必须确保计划涵盖设计的所有方面，避免重复设计细节。
 
-### 8. Summarize and Present Results
+### 8. 总结并展示结果
 
-Create `{project_dir}/summary.md` listing all artifacts, a brief overview, and suggested next steps. Present this summary in the conversation.
+创建 `{project_dir}/summary.md` 文件，列出所有项目文件、简要概述以及下一步的建议。在交流过程中展示这个总结。
 
-### 9. Offer Ralph Integration
+### 9. 提供 Ralph 集成服务
 
-Ask: "Would you like me to set up Ralph to implement this autonomously?"
+询问用户：“您是否希望我使用 Ralph 自动实现这个项目？”
 
-If yes, create a concise PROMPT.md (under 100 lines) with:
-- Objective statement
-- Key requirements
-- Acceptance criteria (Given-When-Then)
-- Reference to `specs/{task_name}/`
+如果用户同意，创建一个简短的 PROMPT.md 文件（不超过 100 行），内容包括：
+- 目标陈述。
+- 关键需求。
+- 接受标准（Given-When-Then 格式）。
+- 指向 `specs/{task_name}/` 的引用。
 
-Suggest the appropriate command:
-- Full pipeline: `ralph run --config presets/pdd-to-code-assist.yml`
-- Simpler flow: `ralph run --config presets/spec-driven.yml`
+建议使用相应的命令：
+- 完整的流程：`ralph run --config presets/pdd-to-code-assist.yml`
+- 简化的流程：`ralph run --config presets/spec-driven.yml`
 
-## Example
+## 示例
 
-**Input:** "I want to build a template management feature for our internal tool — create, edit, share templates, generate documents with custom fields."
+**输入：**“我想为我们的内部工具开发一个模板管理功能——创建、编辑、共享模板，并生成包含自定义字段的文档。”
 
-**Output:** A `specs/template-management/` directory containing rough-idea.md, requirements.md, research/, design.md, plan.md, and summary.md — plus optionally a PROMPT.md for autonomous implementation.
+**输出：**创建一个 `specs/template-management/` 目录，其中包含 `rough-idea.md`、`requirements.md`、`research/`、`design.md`、`plan.md` 和 `summary.md` 文件——如果需要，还可以包含一个用于自动实现的 PROMPT.md 文件。
 
-## Troubleshooting
+## 故障排除
 
-**Requirements stall:** Suggest switching to a different aspect, provide examples, or pivot to research to unblock decisions.
-
-**Research limitations:** Document what's missing, suggest alternatives with available information, ask user for additional context. Don't block progress.
-
-**Design complexity:** Break into smaller components, focus on core functionality first, suggest phased implementation, return to requirements to re-prioritize.
+- **需求确定困难（Requirements stall）：**建议切换到另一个方面，提供示例，或者转向研究以帮助做出决策。
+- **研究受限（Research limitations）：**记录缺失的信息，根据现有信息提出替代方案，并请求用户提供更多背景信息。不要阻碍进度。
+- **设计过于复杂（Design complexity）：**将项目拆分为更小的部分，先专注于核心功能，建议分阶段实施，然后返回到需求阶段重新调整优先级。

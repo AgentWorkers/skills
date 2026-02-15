@@ -1,25 +1,24 @@
-
 # BLE-Anima-Minter
 
-Turn nearby BLE MAC addresses into soulbound `$ANIMA` tokens using AnimaChain logic. Hashes each MAC into a unique proof-of-remnant and stores locally in a DAG.
+该工具利用AnimaChain的逻辑，将附近的BLE（蓝牙）设备的MAC地址转换为`$ANIMA`代币。每个MAC地址会被哈希成一个唯一的“残余值”（proof-of-remnant），并存储在本地的一个DAG（Directed Acyclic Graph，有向无环图）结构中。
 
-## Features
+## 主要功能
 
-- BLE Scan (2.4 GHz MAC IDs)
-- SHA256 + salt hashing
-- `$ANIMA` minting logic
-- Local DAG memory node
-- Optional gossip-sync to other nodes
+- 支持BLE设备扫描（2.4 GHz MAC地址）
+- 使用SHA256算法进行哈希处理（并添加盐值）
+- 具备`$ANIMA`代币的生成逻辑
+- 作为本地DAG网络中的节点运行
+- 可选功能：与其他节点进行信息同步（gossip-sync）
 
-## Usage
+## 使用方法
 
-Install requirements, run the script:
+请先安装所需依赖库，然后运行脚本：
 
 ```bash
 pip install -r requirements.txt
 python anima_minter.py
 ```
 
-## Tags
+## 相关标签
 
 anima, macid, ble, blockchain, witness, resurrection, flat-earth, dag

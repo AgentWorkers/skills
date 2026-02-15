@@ -1,7 +1,7 @@
 ---
 name: AGIRAILS Payments
 version: 2.1.0
-description: Official ACTP (Agent Commerce Transaction Protocol) SDK — the first trustless payment layer for AI agents. Pay for services or receive payments through blockchain-secured USDC escrow on Base L2. Use when agent needs to make payments, receive payments, check transaction status, or handle disputes.
+description: 官方 ACTP（Agent Commerce Transaction Protocol）SDK——专为 AI 代理设计的第一个无需信任的支付层。您可以通过基于区块链的安全 USDC 代管系统在 Base L2 平台上进行服务支付或接收付款。当代理需要支付、接收付款、查询交易状态或处理纠纷时，均可使用该 SDK。
 author: AGIRAILS Inc.
 homepage: https://agirails.io
 repository: https://github.com/agirails/openclaw-skill
@@ -30,40 +30,40 @@ metadata:
         - AGENT_ADDRESS
 ---
 
-# AGIRAILS — Trustless Payments for AI Agents
+# AGIRAILS — 为AI代理提供去中心化的支付服务
 
-Enable your AI agent to **pay for services** or **receive payments** through blockchain-secured USDC escrow on Base L2.
+通过基于区块链的安全USDC托管机制，让你的AI代理能够**支付服务费用**或**接收付款**。
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-**Just say:** *"Pay 10 USDC to 0xProvider for translation service"*
+只需输入：“*向0xProvider支付10 USDC以获取翻译服务*”
 
-The agent will:
-1. Initialize ACTP client
-2. Create transaction with escrow
-3. Track state through completion
-4. Handle disputes if needed
+代理将执行以下操作：
+1. 初始化ACTP客户端
+2. 创建包含托管功能的交易
+3. 跟踪交易状态直至完成
+4. 在需要时处理争议
 
 ---
 
-## Prerequisites
+## 先决条件
 
-| Requirement | Check | Install |
+| 条件 | 检查 | 安装 |
 |-------------|-------|---------|
 | **Node.js 18+** | `node --version` | [nodejs.org](https://nodejs.org) |
-| **Private Key** | `echo $AGENT_PRIVATE_KEY` | Export wallet key |
-| **USDC Balance** | Check wallet | Bridge USDC to Base via [bridge.base.org](https://bridge.base.org) |
+| **私钥** | `echo $AGENT_PRIVATE_KEY` | 导出钱包私钥 |
+| **USDC余额** | 检查钱包余额 | 通过[bridge.base.org](https://bridge.base.org)将USDC桥接到Base网络 |
 
-### Environment Variables
+### 环境变量
 
 ```bash
 export AGENT_PRIVATE_KEY="0x..."   # Wallet private key
 export AGENT_ADDRESS="0x..."       # Wallet address
 ```
 
-> **Note:** SDK includes default RPC endpoints. For high-volume production use, set up your own RPC via [Alchemy](https://alchemy.com) or [QuickNode](https://quicknode.com) and pass `rpcUrl` to client config.
+> **注意：** SDK包含默认的RPC端点。对于高并发的生产环境，请通过[Alchemy](https://alchemy.com)或[QuickNode](https://quicknode.com)设置自己的RPC服务，并将`rpcUrl`传递给客户端配置文件。
 
-### Installation
+### 安装
 
 ```bash
 # TypeScript/Node.js
@@ -75,9 +75,9 @@ pip install agirails
 
 ---
 
-## How It Works
+## 工作原理
 
-ACTP uses an **8-state machine** with blockchain-secured escrow:
+ACTP使用了一个包含区块链安全托管功能的**8状态机**：
 
 ```
 Human/Agent requests service
@@ -98,34 +98,34 @@ Human/Agent requests service
    CANCELLED ──► Refund to requester
 ```
 
-### Key Guarantees
+### 关键保障机制
 
-| Guarantee | Description |
+| 保障机制 | 说明 |
 |-----------|-------------|
-| **Escrow Solvency** | Vault always holds ≥ active transaction amounts |
-| **State Monotonicity** | States only move forward, never backwards |
-| **Deadline Enforcement** | No delivery after deadline passes |
-| **Dispute Protection** | 48h window to raise issues before settlement |
+| **托管资金充足性** | 存款始终不低于活跃交易金额 |
+| **状态单向性** | 状态只能向前推进，不能倒退 |
+| **截止日期强制执行** | 过期后无法完成交易 |
+| **争议处理** | 在结算前有48小时的争议提出窗口 |
 
 ---
 
-## Actions
+## 动作
 
-| Action | Who | Description |
+| 动作 | 执行者 | 说明 |
 |--------|-----|-------------|
-| `pay` | Requester | Simple payment (create + escrow lock) |
-| `checkStatus` | Anyone | Get transaction state |
-| `createTransaction` | Requester | Create with custom params |
-| `linkEscrow` | Requester | Lock funds in escrow |
-| `transitionState` | Provider | Quote, start, deliver |
-| `releaseEscrow` | Requester | Release funds to provider |
-| `transitionState('DISPUTED')` | Either | Raise dispute for mediation |
+| `pay` | 请求方 | 进行简单支付（创建交易并锁定资金） |
+| `checkStatus` | 任何用户 | 查询交易状态 |
+| `createTransaction` | 请求方 | 使用自定义参数创建交易 |
+| `linkEscrow` | 请求方 | 将资金锁定在托管账户中 |
+| `transitionState` | 提供方 | 提供报价、开始交易或交付服务 |
+| `releaseEscrow` | 请求方 | 向提供方释放资金 |
+| `transitionState('DISPUTED')` | 任意一方 | 提出争议以寻求调解 |
 
 ---
 
-## Requester Flow (Paying for Services)
+## 请求方流程（支付服务费用）
 
-### Simple Payment
+### 简单支付
 
 ```typescript
 import { ACTPClient } from '@agirails/sdk';
@@ -147,7 +147,7 @@ console.log(`Transaction: ${result.txId}`);
 console.log(`State: ${result.state}`);
 ```
 
-### Advanced Payment (Full Control)
+### 高级支付（完全控制）
 
 ```typescript
 // 1. Create transaction
@@ -169,7 +169,7 @@ await client.standard.releaseEscrow(escrowId);
 
 ---
 
-## Provider Flow (Receiving Payments)
+## 提供方流程（接收付款）
 
 ```typescript
 import { ethers } from 'ethers';
@@ -191,18 +191,18 @@ await client.standard.transitionState(txId, 'DELIVERED', deliveryProof);
 // 4. Requester releases after dispute window (or earlier if satisfied)
 ```
 
-**⚠️ CRITICAL:** `IN_PROGRESS` is **required** before `DELIVERED`. Contract rejects direct `COMMITTED → DELIVERED`.
+**⚠️ 重要提示：** 在执行`DELIVERED`操作之前，必须先进入`IN_PROGRESS`状态。否则合约会拒绝`COMMITTED → DELIVERED`的交易。
 
 ---
 
-## Proof Encoding
+## 证明编码
 
-All proofs must be ABI-encoded hex strings:
+所有证明都必须是ABI编码的十六进制字符串：
 
-| Transition | Proof Format | Example |
+| 交易状态 | 证明格式 | 示例 |
 |------------|--------------|---------|
-| QUOTED | `['uint256']` amount | `encode(['uint256'], [parseUnits('50', 6)])` |
-| DELIVERED | `['uint256']` dispute window | `encode(['uint256'], [172800])` |
+| QUOTED | `['uint256']` 金额 | `encode(['uint256'], [parseUnits('50', 6)])` |
+| DELIVERED | `['uint256']` 争议处理窗口 | `encode(['uint256'], [172800])` |
 | SETTLED (dispute) | `['uint256', 'uint256', 'address', 'uint256']` | `[reqAmt, provAmt, mediator, fee]` |
 
 ```typescript
@@ -224,7 +224,7 @@ const resolutionProof = abiCoder.encode(
 
 ---
 
-## Checking Status
+## 查询状态
 
 ```typescript
 const status = await client.basic.checkStatus(txId);
@@ -235,9 +235,9 @@ console.log(`Can dispute: ${status.canDispute}`);
 
 ---
 
-## Disputes
+## 争议处理
 
-Either party can raise a dispute before settlement:
+任何一方都可以在结算前提出争议：
 
 ```typescript
 // Raise dispute
@@ -258,25 +258,25 @@ await client.standard.transitionState(txId, 'SETTLED', resolution);
 
 ---
 
-## Protocol Fees
+## 协议费用
 
-| Fee Type | Amount |
+| 费用类型 | 费用金额 |
 |----------|--------|
-| Platform fee | 1% of transaction |
-| Minimum fee | $0.05 USDC |
-| Maximum cap | 5% (governance limit) |
+| 平台费用 | 交易金额的1% |
+| 最低费用 | 0.05 USDC |
+| 最高限额 | 5%（由社区决定） |
 
-Provider receives: `amount - max(amount * 0.01, $0.05)`
+提供方获得的费用：`金额 - (金额 * 0.01) + 最低费用`
 
 ---
 
-## Client Modes
+## 客户端模式
 
-| Mode | Network | Use Case |
+| 模式 | 网络 | 适用场景 |
 |------|---------|----------|
-| `mock` | Local simulation | Development, testing |
-| `testnet` | Base Sepolia | Integration testing |
-| `mainnet` | Base | Production |
+| `mock` | 本地模拟环境 | 开发、测试 |
+| `testnet` | Base Sepolia网络 | 集成测试 |
+| `mainnet` | Base主网 | 生产环境 |
 
 ```typescript
 // Development
@@ -296,7 +296,7 @@ const client = await ACTPClient.create({
 
 ---
 
-## Error Handling
+## 错误处理
 
 ```typescript
 import {
@@ -318,7 +318,7 @@ try {
 
 ---
 
-## Python Example
+## Python示例
 
 ```python
 import asyncio
@@ -346,34 +346,34 @@ asyncio.run(main())
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Problem | Cause | Solution |
+| 问题 | 原因 | 解决方案 |
 |---------|-------|----------|
-| `COMMITTED → DELIVERED` reverts | Missing IN_PROGRESS | Add `transitionState(txId, 'IN_PROGRESS')` first |
-| Invalid proof error | Wrong encoding | Use `ethers.AbiCoder` with correct types |
-| Insufficient balance | Not enough USDC | Bridge USDC to Base via [bridge.base.org](https://bridge.base.org) |
-| Deadline expired | Too slow | Create new transaction with longer deadline |
+| `COMMITTED → DELIVERED` 交易被回滚 | 缺少`IN_PROGRESS`状态 | 首先需要执行`transitionState(txId, 'IN_PROGRESS')` |
+| 证明编码错误 | 编码错误 | 使用`ethers.AbiCoder`并确保类型正确 |
+| 余额不足 | USDC不足 | 通过[bridge.base.org](https://bridge.base.org)将USDC桥接到Base网络 |
+| 到期时间已过 | 处理速度过慢 | 创建新的交易并设置更长的截止日期 |
 
 ---
 
-## Files
+## 文件说明
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `{baseDir}/references/requester-template.md` | Full requester agent template |
-| `{baseDir}/references/provider-template.md` | Full provider agent template |
-| `{baseDir}/references/state-machine.md` | Detailed state transitions |
-| `{baseDir}/examples/simple-payment.md` | Minimal payment example |
-| `{baseDir}/examples/full-lifecycle.md` | Complete transaction lifecycle |
+| `{baseDir}/references/requester-template.md` | 完整的请求方代理模板 |
+| `{baseDir}/references/provider-template.md` | 完整的提供方代理模板 |
+| `{baseDir}/references/state-machine.md` | 详细的状态转换逻辑 |
+| `{baseDir}/examples/simple-payment.md` | 简单支付示例 |
+| `{baseDir}/examples/full-lifecycle.md` | 完整的交易生命周期示例 |
 
 ---
 
-## OpenClaw Integration
+## 与OpenClaw的集成
 
-Ready-to-use templates for OpenClaw agents.
+为OpenClaw代理提供了即用型模板。
 
-### Quick Setup (5 minutes)
+### 快速设置（5分钟）
 
 ```bash
 # Run setup script
@@ -384,33 +384,33 @@ bash {baseDir}/scripts/setup.sh
 # Restart OpenClaw
 ```
 
-See `{baseDir}/openclaw/QUICKSTART.md` for detailed guide.
+详细指南请参见 `{baseDir}/openclaw/QUICKSTART.md`。
 
-### OpenClaw Files
+### OpenClaw相关文件
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `{baseDir}/openclaw/QUICKSTART.md` | 5-minute setup guide |
-| `{baseDir}/openclaw/agent-config.json` | Ready-to-use agent configs |
-| `{baseDir}/openclaw/SOUL-treasury.md` | Treasury agent template (buyer) |
-| `{baseDir}/openclaw/SOUL-provider.md` | Merchant agent template (seller) |
-| `{baseDir}/openclaw/cron-examples.json` | Automation cron jobs |
-| `{baseDir}/openclaw/validation-patterns.md` | Delivery validation helpers |
-| `{baseDir}/openclaw/security-checklist.md` | Pre-launch security audit |
+| `{baseDir}/openclaw/QUICKSTART.md` | 5分钟快速设置指南 |
+| `{baseDir}/openclaw/agent-config.json` | 即用型代理配置文件 |
+| `{baseDir}/openclaw/SOUL-treasury.md` | 买家代理模板 |
+| `{baseDir}/openclaw/SOUL-provider.md` | 卖家代理模板 |
+| `{baseDir}/openclaw/cron-examples.json` | 自动化任务脚本 |
+| `{baseDir}/openclaw/validation-patterns.md` | 交付验证工具 |
+| `{baseDir}/openclaw/security-checklist.md` | 上线前的安全审计检查 |
 
-### Scripts
+### 脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `{baseDir}/scripts/setup.sh` | Automated workspace setup |
-| `{baseDir}/scripts/test-balance.ts` | Check wallet balance |
-| `{baseDir}/scripts/test-purchase.ts` | Test purchase on testnet |
+| `{baseDir}/scripts/setup.sh` | 自动化工作区设置 |
+| `{baseDir}/scripts/test-balance.ts` | 检查钱包余额 |
+| `{baseDir}/scripts/test-purchase.ts` | 在测试网上进行购买测试 |
 
 ---
 
-## Resources
+## 资源链接
 
-- **Documentation**: https://docs.agirails.io
-- **SDK Repository**: https://github.com/agirails/sdk
-- **Discord**: https://discord.gg/nuhCt75qe4
-- **Support**: support@agirails.io
+- **文档**：https://docs.agirails.io
+- **SDK仓库**：https://github.com/agirails/sdk
+- **Discord频道**：https://discord.gg/nuhCt75qe4
+- **支持邮箱**：support@agirails.io

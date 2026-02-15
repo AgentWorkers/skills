@@ -1,44 +1,44 @@
 ---
 name: x-voice-match
-description: Analyze a Twitter/X account's posting style and generate authentic posts that match their voice. Use when the user wants to create X posts that sound like them, analyze their posting patterns, or maintain consistent voice across posts. Works with Bird CLI integration.
+description: 分析某个 Twitter/X 账号的发布风格，并生成与该账号风格相符的原创帖子。适用于用户希望发布具有自己特色的 X 账号内容、分析其发布模式，或确保所有帖子保持一致的风格时。该功能支持与 Bird CLI 的集成。
 ---
 
-# X Voice Match
+# X 语音匹配
 
-Analyze Twitter/X accounts to extract posting patterns and generate authentic content that matches the account owner's unique voice.
+该工具分析 Twitter/X 账号的发帖模式，生成与账号所有者独特语音相匹配的原创内容。
 
-## Quick Start
+## 快速入门
 
-**Step 1: Analyze the account**
+**步骤 1：分析账号**
 ```bash
 cd /data/workspace/skills/x-voice-match
 python3 scripts/analyze_voice.py @username [--tweets 50] [--output profile.json]
 ```
 
-**Step 2: Generate posts**
+**步骤 2：生成帖子**
 ```bash
 python3 scripts/generate_post.py --profile profile.json --topic "your topic" [--count 3]
 ```
 
-Or use the all-in-one approach:
+或者使用一站式解决方案：
 ```bash
 python3 scripts/generate_post.py --account @username --topic "AI agents taking over" --count 5
 ```
 
-## What It Analyzes
+## 分析内容
 
-The skill extracts:
+该工具会分析以下方面：
 
-- **Length patterns**: Tweet character counts, thread usage, one-liner vs paragraph style
-- **Tone markers**: Humor style, sarcasm, self-deprecation, edginess level
-- **Topics**: Crypto, AI, tech, memes, personal life, current events
-- **Engagement patterns**: QT vs original, reaction tweets, conversation starters
-- **Language patterns**: Specific phrases, slang, emoji usage, punctuation style
-- **Content types**: Observations, hot takes, memes, threads, questions, personal stories
+- **内容长度**：推文的字符数量、多条推文的使用情况（单行 vs 多行）
+- **语气特征**：幽默风格、讽刺、自嘲、尖锐程度
+- **主题范围**：加密货币、人工智能、科技、表情包、个人生活、时事
+- **互动模式**：引用他人观点 vs 发表原创内容、引发他人反应的推文、对话开场白
+- **语言风格**：特定短语、俚语使用、表情符号的运用、标点符号的格式
+- **内容类型**：观察性评论、观点性言论、表情包、多条推文的系列、问题、个人故事
 
-## Output Format
+## 输出格式
 
-### Voice Profile (JSON)
+### 语音档案（JSON）
 ```json
 {
   "account": "@gravyxbt_",
@@ -57,56 +57,56 @@ The skill extracts:
 }
 ```
 
-### Generated Posts
-Returns 1-N posts with confidence scores and reasoning.
+### 生成的帖子
+返回 1- 条帖子，并附带置信度评分及生成理由。
 
-## Integration with Existing Tools
+## 与现有工具的集成
 
-Works with Bird CLI (`/data/workspace/bird.sh`):
+支持与 Bird CLI（`/data/workspace/bird.sh`）配合使用：
 ```bash
 # Fetch fresh tweets for analysis
 ./bird.sh user-tweets @gravyxbt_ -n 50 > recent_tweets.txt
 python3 scripts/analyze_voice.py --input recent_tweets.txt
 ```
 
-## Post Type Templates
+## 帖子类型模板
 
-See [references/post-types.md](references/post-types.md) for common X post frameworks:
-- Observations
-- Hot takes
-- Self-deprecating humor
-- Crypto commentary
-- Reaction posts
-- Questions
+请参阅 [references/post-types.md](references/post-types.md) 以了解常见的 X 账号帖子类型：
+- 观察性评论
+- 观点性言论
+- 自嘲式幽默
+- 加密货币相关评论
+- 引发他人反应的推文
+- 问题类帖子
 
-## Advanced Usage
+## 高级用法
 
-### Update Voice Profile
-Re-analyze periodically to capture style evolution:
+### 更新语音档案
+定期重新分析以捕捉语言风格的演变：
 ```bash
 python3 scripts/analyze_voice.py @username --update profile.json
 ```
 
-### Generate by Post Type
+### 按类型生成帖子
 ```bash
 python3 scripts/generate_post.py --profile profile.json --type "hot-take" --topic "crypto"
 ```
 
-### Batch Generation
+### 批量生成
 ```bash
 python3 scripts/generate_post.py --profile profile.json --batch topics.txt --output posts.json
 ```
 
-## Workflow
+## 工作流程
 
-1. **First time**: Run full analysis on 30-50 tweets
-2. **Generate posts**: Provide topic, get 3-5 style-matched options
-3. **User picks**: Select best option or iterate with feedback
-4. **Periodic updates**: Re-analyze monthly or after major voice shifts
+1. **首次使用**：对 30-50 条推文进行完整分析
+2. **生成帖子**：提供主题，获取 3-5 个符合该风格的选项
+3. **用户选择**：选择最佳选项或根据反馈进行迭代
+4. **定期更新**：每月分析一次，或在语音风格发生重大变化时重新分析
 
-## Tips
+## 提示
 
-- **Minimum tweets**: 30 tweets for basic analysis, 50+ for accuracy
-- **Recency matters**: Recent tweets reflect current style better than old ones
-- **Topic relevance**: Generated posts work best on topics the account normally covers
-- **Confidence scores**: <70% = may not sound authentic, revise or regenerate
+- **最低推文数量**：基本分析需要 30 条推文，更高精度分析需要 50 条以上
+- **时效性很重要**：最近的推文更能反映当前的语言风格
+- **主题相关性**：生成的帖子在账号常涉及的主题上效果最佳
+- **置信度评分**：低于 70% 的帖子可能不够真实，需重新生成

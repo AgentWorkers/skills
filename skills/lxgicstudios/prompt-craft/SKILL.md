@@ -1,8 +1,8 @@
 # ai-prompt-craft
 
-Transform basic prompts into elite structured prompts using Anthropic's 10-step framework.
+使用 Anthropic 的 10 步框架，将基本的提示转换为结构化的高级提示。
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Transform a basic prompt
@@ -22,32 +22,32 @@ ai-prompt-craft list tones
 ai-prompt-craft list formats
 ```
 
-## The 10-Step Framework
+## 10 步框架
 
-1. **Task Context** - Role + main task (`--role`, `--task`)
-2. **Tone Context** - Communication style (`--tone`)
-3. **Background Data** - Documents/context (`--context`)
-4. **Detailed Task** - Constraints/rules (`--instructions`, `--rules`)
-5. **Examples** - Desired outputs (`--examples`)
-6. **Conversation History** - Past context (`--history`)
-7. **Immediate Task** - Specific action (`--action`)
-8. **Deep Thinking** - Reasoning mode (`--thinking`)
-9. **Output Format** - Structure (`--format`)
-10. **Prefilled Response** - Start structure (`--prefill`)
+1. **任务背景** - 角色 + 主要任务 (`--role`, `--task`)
+2. **语气背景** - 交流风格 (`--tone`)
+3. **背景数据** - 文档/上下文 (`--context`)
+4. **详细任务** - 约束/规则 (`--instructions`, `--rules`)
+5. **示例** - 期望的输出结果 (`--examples`)
+6. **对话历史** - 之前的交流记录 (`--history`)
+7. **当前任务** - 具体操作 (`--action`)
+8. **深度思考** - 推理模式 (`--thinking`)
+9. **输出格式** - 输出的结构 (`--format`)
+10. **预填充响应** - 输出的初始结构 (`--prefill`)
 
-## Presets
+## 预设选项
 
-**Tones:** professional, casual, technical, warm, concise, academic, creative
+**语气：** 专业、随意、技术性、亲切、简洁、学术性、创造性
 
-**Formats:** bullets, numbered, markdown, json, table, prose, code, stepByStep
+**格式：** 列表、编号、Markdown、JSON、表格、散文、代码、逐步说明
 
-**Thinking:** standard, deep, analytical, critical, creative, systematic
+**推理模式：** 标准、深入、分析、批判性、创造性、系统性
 
-**Templates:** coding, writing, analysis, research, brainstorm, review, explain
+**模板：** 编码、写作、分析、研究、头脑风暴、审阅、解释
 
-## Examples
+## 示例
 
-### Code Review Prompt
+### 代码审查提示
 ```bash
 ai-prompt-craft build \
   --role "senior code reviewer" \
@@ -58,7 +58,7 @@ ai-prompt-craft build \
   --action "Review this pull request"
 ```
 
-### Research Prompt
+### 研究提示
 ```bash
 ai-prompt-craft build \
   --role "thorough researcher" \
@@ -68,13 +68,12 @@ ai-prompt-craft build \
   --action "Research the history of quantum computing"
 ```
 
-### Creative Writing
+### 创意写作
 ```bash
 ai-prompt-craft template --use-case writing --tone creative --action "Write a short story about AI"
 ```
 
-## Piping
-
+## 数据传输/管道操作
 ```bash
 echo "Explain machine learning" | ai-prompt-craft transform --tone warm --format stepByStep
 cat draft.txt | ai-prompt-craft analyze

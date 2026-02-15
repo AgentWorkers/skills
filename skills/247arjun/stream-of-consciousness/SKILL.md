@@ -1,73 +1,73 @@
 ---
 name: stream-of-consciousness
-description: Export the entire conversation context into Open-Token format (including tools and optional internal traces) for agent collaboration, auditability, and reproducibility.
+description: 将整个对话上下文导出为 Open-Token 格式（包括工具和可选的内部跟踪信息），以便于代理之间的协作、审计以及问题的重现。
 version: 0.1.0
 ---
 
-# Open-Token Export (SKILL)
+# Open-Token 导出（SKILL）
 
-## Objective
+## 目标
 
-When invoked, output the **entirety of the currently available conversation** in **Open-Token** format as a single export artifact, suitable for:
-- agent handoff / continuation across runtimes and providers
-- audit & incident review
-- reproducibility and debugging
-- provenance and diffing
+当被调用时，以 Open-Token 格式输出当前对话的 **全部内容**，作为一个单独的导出文件，适用于以下场景：
+- 代理在运行时和提供者之间的交接/延续
+- 审计和事件审查
+- 可复现性和调试
+- 来源追踪和差异分析
 
-The output MUST be machine-parseable and complete per the chosen mode.
+输出必须能够被机器解析，并且根据所选模式保持完整性。
 
-## Invocation
+## 调用方式
 
-Parse `$ARGUMENTS` as space-separated `key=value` pairs.
+将 `$ARGUMENTS` 解析为以空格分隔的 `key=value` 对。
 
-Supported options:
+支持的选项：
 
 - `mode=json|ndjson`  
-  Default: `json`
+  默认值：`json`
 
 - `pretty=true|false`  
-  Default: `true` for `json`; `false` for `ndjson`
+  默认值：`json` 时为 `true`；`ndjson` 时为 `false`
 
 - `include=visible-only|include-internal`  
-  Default: `visible-only`
+  默认值：`visible-only`
 
 - `internal=redacted|summary|full`  
-  Default: `redacted`  
-  Meaning:
-  - `redacted`: include internal events only as placeholders (no content)
-  - `summary`: include brief summaries of internal traces (if available)
-  - `full`: include internal traces verbatim (ONLY if available and permitted)
+  默认值：`redacted`  
+  含义：
+  - `redacted`：仅包含内部事件的占位符（无实际内容）
+  - `summary`：包含内部追踪的简要摘要（如果可用）
+  - `full`：包含内部追踪的原始内容（仅在可用且被允许的情况下）
 
 - `redact=none|secrets|pii|strict`  
-  Default: `secrets`
+  默认值：`secrets`
 
-- `max_bytes=<int>` (optional)  
-  If present, apply truncation rules defined below.
+- `max_bytes=<int>`（可选）  
+  如果存在，应用以下定义的截断规则。
 
-### Availability rule for internal traces
+### 内部追踪的可用性规则
 
-If `include=include-internal` is requested but internal traces (hidden reasoning, hidden system routing, hidden intermediate tokens) are not available in the current runtime context, DO NOT fabricate them.
+如果请求了 `include=include-internal`，但在当前运行时环境中无法获取内部追踪（隐藏的推理过程、隐藏的系统路由、隐藏的中间令牌），则不要伪造这些数据。
 
-In that case:
-- set `conversation.internal_availability="unavailable"`
-- omit internal-trace content events or export them as redacted placeholders, consistent with `internal=redacted`
-- still export tool calls/results if they are available
+在这种情况下：
+- 设置 `conversation.internal_availability="unavailable"`
+- 省略内部追踪内容事件，或将其作为占位符输出（与 `internal=redacted` 一致）
+- 仍然输出工具调用/结果（如果可用）
 
-## Non-negotiable rules
+## 不可协商的规则
 
-1. Export only what is available in the current conversation context; NEVER invent missing turns.
-2. Preserve causal order; DO NOT reorder events.
-3. Preserve attribution: correct actor, role, and event type.
-4. Tool outputs MUST be isolated in `tool_result` events.
-5. Apply redaction according to the `redact` option (unless `redact=none`).
-6. If output is truncated, annotate truncation deterministically (see Truncation section).
-7. Ensure the final output is valid JSON (or valid NDJSON per line) with no surrounding commentary.
+1. 仅导出当前对话环境中实际存在的数据；切勿虚构缺失的对话内容。
+2. 保持事件的因果顺序；不得重新排序事件。
+3. 保持归属信息：正确的参与者、角色和事件类型。
+4. 工具输出必须单独放在 `tool_result` 事件中。
+5. 根据 `redact` 选项应用隐藏规则（除非 `redact=none`）。
+6. 如果输出被截断，必须明确标注截断原因（参见截断部分）。
+7. 确保最终输出是有效的 JSON（或每行有效的 NDJSON），且没有额外的注释。
 
-## Open-Token schema v0.1
+## Open-Token 架构 v0.1
 
-### Top-level object (mode=json)
+### 顶层对象（mode=json）
 
-Emit exactly one JSON object:
+输出一个 JSON 对象：
 
 ```json
 {
@@ -80,86 +80,86 @@ Emit exactly one JSON object:
 }
 ```
 
-Constraints:
-- No extra top-level keys besides those listed (omit keys you cannot populate).
-- `events` MUST be in strictly increasing sequence order.
+约束：
+- 除了列出的键之外，不允许添加其他顶层键（无法填充的键请省略）。
+- `events` 必须按严格递增的顺序排列。
 
-### Streaming export (mode=ndjson)
+### 流式导出（mode=ndjson）
 
-Emit newline-delimited JSON records:
+输出以换行符分隔的 JSON 记录：
 
-1. Header line:
+1. 标头行：
 { "type": "header", "open_token_version": "0.1", "exported_at": "..." }
 
-2. Then one line per event:
+2. 然后每个事件占一行：
 { "type": "event", ...event object... }
 
-3. Optional footer line:
+3. 可选的页脚行：
 { "type": "footer", "integrity": { ... } }
 
-Constraints:
-- Every line MUST be valid JSON.
-- Do not wrap NDJSON in an array.
+约束：
+- 每行都必须是有效的 JSON。
+- 不要将 NDJSON 放入数组中。
 
-## conversation object
+## conversation 对象
 
-`conversation` fields:
+`conversation` 字段：
 
-- `id` (required): stable identifier if provided by runtime; else generate `conv_<YYYYMMDD>_<hash8>`
-- `title` (optional)
-- `started_at` (optional; RFC3339; do not guess)
-- `timezone` (optional)
-- `source_runtime` (optional): "cli"|"web"|"api"|"ide"|"other"
-- `provider` (optional): "openai"|"anthropic"|"google"|"meta"|"other"
-- `internal_availability` (optional): "available"|"unavailable"|"unknown"
-- `redaction` (required if redact != none):
-  - `mode`: none|secrets|pii|strict
-  - `strategy`: mask|drop|hash
-  - `notes`: array of high-level notes (no secrets)
+- `id`（必需）：如果由运行时提供，则使用稳定的标识符；否则生成 `conv_<YYYYMMDD>_<hash8>`
+- `title`（可选）
+- `started_at`（可选；遵循 RFC3339 格式；不要猜测）
+- `timezone`（可选）
+- `source_runtime`（可选）：`cli`|"web"|"api"|"ide"|"other"
+- `provider`（可选）：`openai"|"anthropic"|"google"|"meta"|"other"
+- `internal_availability`（可选）：`available"|"unavailable"|"unknown"
+- `redaction`（如果 `redact` 不为 `none` 则必需）：
+  - `mode`：`none`|`secrets`|`pii`|`strict`
+  - `strategy`：`mask`|`drop`|`hash`
+  - `notes`：高级别注释数组（不包含敏感信息）
 
-## participants array
+## participants 数组
 
-Each participant:
+每个参与者：
 
 {
   "actor_id": "act_###",
-  "kind": "human|model|tool|system",
+  "kind": "human"|`model`|`tool`|`system",
   "name": "string",
-  "provider": "string (optional)",
-  "model": "string (optional)",
-  "instance_id": "string (optional)"
+  "provider": "string (可选)",
+  "model": "string (可选)",
+  "instance_id": "string (可选)"
 }
 
-Rules:
-- Create one `participants` entry per distinct speaker/agent/tool/system originator.
-- Use `kind="system"` for system/developer prompt originators.
-- Use `kind="tool"` for external tools/functions.
-- Use `kind="model"` for model/agent outputs (including subagents).
+规则：
+- 每个不同的说话者/代理/工具发起者创建一个 `participants` 条目。
+- 对于系统/开发者提示的发起者，使用 `kind="system"`。
+- 对于外部工具/功能，使用 `kind="tool"`。
+- 对于模型/代理的输出，使用 `kind="model"`。
 
-## events array
+## events 数组
 
-### Event shape
+### 事件结构
 
-Each `events[]` entry MUST follow:
+每个 `events[]` 条目必须遵循以下格式：
 
 {
   "id": "evt_000001",
   "seq": 1,
-  "ts": "RFC3339 UTC timestamp (optional if unknown)",
-  "type": "message|tool_use|tool_result|span_start|span_end|annotation",
+  "ts": "RFC3339 UTC 时间戳（如果未知则可选）",
+  "type": "message"|`tool_use`|`tool_result`|`span_start`|`span_end`|`annotation`,
   "actor_id": "act_###",
-  "visibility": "public|internal|metadata",
-  "role": "system|developer|user|assistant|assistant_thought|tool",
+  "visibility": "public"|`internal`|`metadata`,
+  "role": "system"|`developer`|`user`|`assistant`|`assistant_thought`|`tool`,
   "content": {
-    "mime": "text/plain|application/json",
-    "text": "string (optional)",
+    "mime": "text/plain"|`application/json`,
+    "text": "string (可选)",
     "data": {}
   },
   "links": {
-    "parent_id": "evt_###### (optional)",
-    "replies_to": "evt_###### (optional)",
-    "call_id": "call_###### (optional)",
-    "span_id": "span_###### (optional)"
+    "parent_id": "evt_###### (可选)",
+    "replies_to": "evt_###### (可选)",
+    "call_id": "call_###### (可选)",
+    "span_id": "span_###### (可选)"
   },
   "usage": {
     "input_tokens": 0,
@@ -168,96 +168,97 @@ Each `events[]` entry MUST follow:
   }
 }
 
-Rules:
-- `id` REQUIRED; `seq` REQUIRED and must be contiguous (1..N).
-- `ts` OPTIONAL; do not guess timestamps.
-- `usage` OPTIONAL; include only if available.
-- If `content.text` is used, `content.mime` should be `text/plain`.
-- If `content.data` is used, `content.mime` should be `application/json`.
+规则：
+- `id` 是必需的；`seq` 是必需的，并且必须是连续的（1..N）。
+- `ts` 是可选的；不要猜测时间戳。
+- `usage` 是可选的；仅在可用时包含。
+- 如果使用了 `content.text`，则 `contentmime` 应为 `text/plain`。
+- 如果使用了 `content.data`，则 `contentmime` 应为 `application/json`。
 
-### Role mapping guidance
+### 角色映射指南
 
-Map provider concepts to `role` + `visibility`:
+将提供者概念映射到 `role` 和 `visibility`：
 
-- System prompt → `role="system"`, `visibility="internal"` (or `public` if explicitly shown)
-- Developer instruction → `role="developer"`, `visibility="internal"`
-- User message → `role="user"`, `visibility="public"`
-- Assistant final answer → `role="assistant"`, `visibility="public"`
-- Hidden reasoning trace:
-  - if available AND `include=include-internal`:
-    - `role="assistant_thought"`, `visibility="internal"`
-    - content depends on `internal`:
-      - `full`: include verbatim thought content
-      - `summary`: include a brief summary string
-      - `redacted`: include placeholder with no thought content
-  - else:
-    - omit thought content; set `conversation.internal_availability="unavailable"` when applicable
-- Tool invocation request → `type="tool_use"`, `role="assistant"`, `visibility="internal"`
-- Tool output → `type="tool_result"`, `role="tool"`, `visibility="internal"`
+- 系统提示 → `role="system"`，`visibility="internal"`（或如果明确显示则为 `public`）
+- 开发者指令 → `role="developer"`，`visibility="internal"`
+- 用户消息 → `role="user"`，`visibility="public"`
+- 助手最终答案 → `role="assistant"`，`visibility="public"`
+- 隐藏的推理过程：
+  - 如果可用且 `include=include-internal`：
+    - `role="assistant_thought"`，`visibility="internal"`
+    - `content` 的处理方式取决于 `internal`：
+      - `full`：包含原始的思考内容
+      - `summary`：包含简短的摘要字符串
+      - `redacted`：包含没有思考内容的占位符
+  - 否则：
+    - 省略思考内容；在这种情况下设置 `conversation.internal_availability="unavailable"`
+- 工具调用请求 → `type="tool_use"`，`role="assistant"`，`visibility="internal"`
+- 工具输出 → `type="tool_result"`，`role="tool"`，`visibility="internal"`
 
-### Tool event requirements
+### 工具事件要求
 
-For every tool call:
-- Emit one `tool_use` event and one `tool_result` event.
-- Both MUST share the same `links.call_id`.
-- `tool_use.content.data` MUST include:
-  - `tool_name` (string)
-  - `arguments` (object/array)
-- `tool_result.content` MUST contain ONLY the tool output.
-  - If structured: `content.mime="application/json"` and put output in `content.data`
-  - If text: `content.mime="text/plain"` and put output in `content.text`
+对于每个工具调用：
+- 输出一个 `tool_use` 事件和一个 `tool_result` 事件。
+- 两者必须共享相同的 `links.call_id`。
+- `tool_use.content.data` 必须包含：
+  - `tool_name`（字符串）
+  - `arguments`（对象/数组）
+- `tool_result.content` 必须仅包含工具的输出。
+  - 如果是结构化的：`contentmime="application/json"` 并将输出放在 `content.data` 中
+  - 如果是文本：`contentmime="text/plain"` 并将输出放在 `content.text` 中
 
-If a tool call was initiated but no result exists in context:
-- Still emit the `tool_use` event.
-- Emit a `tool_result` event with:
-  - `content.mime="application/json"`
-  - `content.data={"missing_result":true}`
-  - and include `conversation.redaction.notes` or an event-level annotation if relevant.
+如果工具调用被发起但上下文中没有结果：
+- 仍然输出 `tool_use` 事件。
+- 输出一个 `tool_result` 事件，其中包含：
+  - `contentmime="application/json"`
+  - `content.data={"missing_result":true}``
+  - 并根据需要包含 `conversation.redaction.notes` 或事件级别的注释。
 
-## Nested agents and subagents
+## 嵌套的代理和子代理
 
-If subagents exist:
-- Represent each subagent as its own participant (`kind="model"`).
-- Wrap subagent activity in a span:
-  - `span_start` event opens span (`links.span_id`)
-  - subagent events include `links.span_id`
-  - `span_end` event closes span
+如果存在子代理：
+- 将每个子代理表示为独立的参与者（`kind="model"`）。
+- 将子代理的活动包装在一个时间跨度中：
+  - `span_start` 事件开始时间跨度（`links.span_id`）
+  - 子代理事件包含 `links.span_id`
+  - `span_end` 事件结束时间跨度
 
-If spawn metadata is available, put it in `span_start.content.data`:
+如果有关于子代理的元数据，将其放在 `span_start.content.data` 中：
 - `spawn_reason`
 - `requested_capabilities`
 - `tooling_scope`
-- `model` (if specified)
+- `model`（如果指定）
 
-## Redaction
+## 隐藏规则
 
-Apply redaction according to `redact`:
+根据 `redact` 选项应用隐藏规则：
 
-- `none`: no redaction (still avoid emitting known-prohibited private keys if policy requires)
-- `secrets`: mask API keys, auth tokens, passwords, session cookies, private keys
-- `pii`: additionally mask emails, phone numbers, street addresses, direct personal identifiers
-- `strict`: mask secrets + pii + any internal-only configuration strings and untrusted tool outputs that may contain sensitive data
+- `none`：不进行隐藏（但如果政策要求，仍需避免输出已知的私密键）
+- `secrets`：隐藏 API 密钥、认证令牌、密码、会话 cookie、私钥
+- `pii`：额外隐藏电子邮件、电话号码、街道地址、直接的个人标识符
+- `strict`：隐藏敏感信息、个人身份信息（PII）以及任何可能包含敏感数据的内部配置字符串
 
-Mechanics:
-- Replace sensitive substrings with: `[REDACTED:<type>:<hash8>]`
-- Do not change surrounding punctuation unless necessary.
-- Record high-level notes in `conversation.redaction.notes` (no secret values).
+机制：
+- 用 `[REDACTED:<type>:<hash8>]` 替换敏感子字符串
+- 除非必要，否则不要更改周围的标点符号。
+- 在 `conversation.redaction.notes` 中记录高级别注释（不包含敏感值）。
 
-## Truncation
+## 截断
 
-If `max_bytes` is set and output exceeds limit:
-1. Prefer truncating large `content.text` fields:
-   - keep first 1024 chars + last 256 chars, insert `…`
-2. Mark truncated content:
-   - If `content.mime="text/plain"`:
-     - add `content.data={"truncated":true,"original_length":<int if known>}` and keep `text` truncated
-   - If `content.mime="application/json"`:
-     - include `{"truncated":true}` in the JSON structure where applicable
-3. Do NOT drop events unless explicitly requested; if you must drop, drop oldest first and insert an `annotation` event describing the omission.
+如果设置了 `max_bytes` 且输出超过限制：
+1. 优先截断较大的 `content.text` 字段：
+   - 保留前 1024 个字符和最后 256 个字符，然后插入 `…`
+2. 标记被截断的内容：
+   - 如果 `contentmime="text/plain"`：
+     - 在 JSON 结构中添加 `content.data={"truncated":true,"original_length":<int if known>}` 并保留截断后的文本
+   - 如果 `contentmime="application/json"`：
+     - 在 JSON 结构中添加 `{"truncated":true}`
 
-## Integrity (optional)
+3. 除非明确要求，否则不要删除事件；如果必须删除，请先删除最旧的事件，并添加一个描述删除情况的注释事件。
 
-If feasible, include:
+## 完整性（可选）
+
+如果可行，包括以下内容：
 
 "integrity": {
   "hash_alg": "sha256",
@@ -265,19 +266,19 @@ If feasible, include:
   "events_hash": "hex string"
 }
 
-If not feasible, omit `integrity`.
+如果不可行，则省略 `integrity`。
 
-## Output checklist (must pass)
+## 输出检查清单（必须满足）
 
-- Output is valid JSON (or NDJSON per line).
-- `seq` is contiguous and strictly increasing.
-- No fabricated timestamps or missing turns.
-- Tool calls: `tool_use` paired with `tool_result` via `call_id` (or explicit missing-result marker).
-- Redaction applied per `redact` option.
-- Internal traces included only if available; otherwise marked unavailable and not fabricated.
-- No extraneous text outside the export payload.
+- 输出是有效的 JSON（或每行有效的 NDJSON）。
+- `seq` 是连续且严格递增的。
+- 没有伪造的时间戳或缺失的对话内容。
+- 工具调用：`tool_use` 通过 `call_id` 与 `tool_result` 配对（或使用明确的缺失结果标记）。
+- 根据 `redact` 选项应用了隐藏规则。
+- 内部追踪仅在可用时包含；否则标记为不可用且不伪造。
+- 输出内容中不包含额外的文本。
 
-## Minimal example (json)
+## 最小示例（json）
 
 ```json
 {

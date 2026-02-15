@@ -1,13 +1,13 @@
 ---
 name: hevy-cli
-description: Interact with the Hevy fitness app via the hevy-cli command-line tool. Use when the user wants to view, create, or update workouts, routines, exercise templates, or routine folders in their Hevy account. Triggers on requests involving workout tracking, exercise history, routine management, or any Hevy-related data operations.
+description: 通过 `hevy-cli` 命令行工具与 Hevy 健身应用程序进行交互。当用户需要查看、创建或更新其 Hevy 账户中的锻炼计划、日常锻炼安排、锻炼模板或相关文件夹时，可以使用该工具。该工具适用于涉及锻炼跟踪、锻炼历史记录、日常锻炼计划管理或任何与 Hevy 相关的数据操作的场景。
 ---
 
 # Hevy CLI
 
-Use the `hevy` CLI to interact with Hevy fitness app data. Requires `HEVY_API_KEY` env var to be set.
+使用 `hevy` CLI 来操作 Hevy 健身应用程序的数据。需要设置环境变量 `HEVY_API_KEY`。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Verify access
@@ -20,16 +20,16 @@ hevy workouts list --page-size 10
 hevy -j workouts list
 ```
 
-## Common Tasks
+## 常见任务
 
-### View workout history
+### 查看锻炼历史记录
 
 ```bash
 hevy workouts list --page 1 --page-size 10
 hevy workouts get <workout-id>
 ```
 
-### Check exercise progress
+### 检查锻炼进度
 
 ```bash
 # Find the exercise template ID first
@@ -40,7 +40,7 @@ hevy exercises history <template-id>
 hevy exercises history <template-id> --start-date 2025-01-01 --end-date 2025-02-01
 ```
 
-### Create a workout
+### 创建锻炼计划
 
 ```bash
 hevy workouts create \
@@ -50,9 +50,9 @@ hevy workouts create \
   --exercises-json '[{"exercise_template_id":"79D0BB3A","sets":[{"type":"normal","weight_kg":60,"reps":8}]}]'
 ```
 
-For complex exercises, use a file: `--exercises-json @exercises.json`
+对于复杂的锻炼计划，可以使用文件：`--exercises-json @exercises.json`
 
-### Manage routines
+### 管理锻炼计划
 
 ```bash
 hevy routines list
@@ -60,21 +60,21 @@ hevy routines create --title "Upper Body" --exercises-json @routine.json
 hevy routines update <routine-id> --title "Updated Name"
 ```
 
-### Organize with folders
+### 使用文件夹进行组织
 
 ```bash
 hevy folders list
 hevy folders create --name "Hypertrophy Block"
 ```
 
-## Key Patterns
+## 关键用法模式
 
-- All list commands accept `--page` and `--page-size` for pagination.
-- Use `-j` flag before the subcommand for JSON output: `hevy -j workouts list`.
-- Exercise data for create/update uses `--exercises-json` accepting inline JSON or `@filepath`.
-- Set types: `normal`, `warmup`, `failure`, `dropset`.
-- IDs are returned in list/get responses -- use JSON mode (`-j`) to get exact IDs for subsequent commands.
+- 所有列表命令都支持 `--page` 和 `--page-size` 选项以实现分页。
+- 在子命令前使用 `-j` 标志可输出 JSON 格式的数据：`hevy -j workouts list`。
+- 创建/更新锻炼计划时，可以使用 `--exercises-json` 选项，该选项接受内联 JSON 数据或文件路径（`@filepath`）。
+- 锻炼计划的类型包括：`normal`（常规）、`warmup`（热身）、`failure`（失败）、`dropset`（递减组）。
+- 列表或获取响应中会返回锻炼计划的 ID——使用 JSON 模式（`-j`）可以获取这些 ID，以便后续命令使用。
 
-## Full Command Reference
+## 完整命令参考
 
-See [references/commands.md](references/commands.md) for complete command syntax, all flag options, enum values for exercise types/equipment/muscle groups, and the exercises JSON schema.
+请参阅 [references/commands.md](references/commands.md)，以获取完整的命令语法、所有标志选项、锻炼类型/设备/肌肉组的枚举值，以及锻炼计划的 JSON 数据结构。

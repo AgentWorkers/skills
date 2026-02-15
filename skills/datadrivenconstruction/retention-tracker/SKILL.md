@@ -1,16 +1,16 @@
 ---
 slug: "retention-tracker"
 display_name: "Retention Tracker"
-description: "Track construction retainage/retention amounts. Monitor held amounts by subcontractor, track release conditions, and manage retainage billing."
+description: "**跟踪工程保留金（Retainage）的金额**：监控分包商持有的保留金金额，追踪保留金的释放条件，并管理保留金的计费流程。"
 ---
 
-# Retention Tracker
+# 保留金跟踪器
 
-## Overview
+## 概述
 
-Track retainage (retention) amounts held and released throughout construction projects. Monitor amounts by subcontractor, track release milestones, and ensure proper documentation for retention release.
+本工具用于跟踪在整个建设项目过程中所持有的保留金（retention funds）及其释放情况。可按分包商进行金额监控，追踪保留金的释放节点，并确保保留金的释放过程有完整的文档记录。
 
-## Retainage Flow
+## 保留金处理流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -28,7 +28,7 @@ Track retainage (retention) amounts held and released throughout construction pr
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现细节
 
 ```python
 from dataclasses import dataclass, field
@@ -426,7 +426,7 @@ class RetentionTracker:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 from datetime import datetime
@@ -470,7 +470,7 @@ for f in forecasts[:5]:
     print(f"{f['date'].strftime('%Y-%m-%d')}: {f['subcontractor']} - ${f['amount']:,.0f}")
 ```
 
-## Requirements
+## 使用要求
 
 ```bash
 pip install (no external dependencies)

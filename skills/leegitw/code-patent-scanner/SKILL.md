@@ -1,6 +1,6 @@
 ---
 name: Code Patent Scanner
-description: Scan your codebase for distinctive patterns — get structured scoring and evidence for patent consultation. NOT legal advice.
+description: 扫描您的代码库，寻找具有代表性的模式——以获得用于专利咨询的结构化评分和依据。本服务不提供法律建议。
 homepage: https://obviouslynot.ai
 user-invocable: true
 disable-model-invocation: true
@@ -14,143 +14,138 @@ tags:
   - distinctive-patterns
 ---
 
-# Code Patent Scanner
+# 代码专利扫描器
 
-## Agent Identity
+## 代理身份
 
-**Role**: Help users discover what makes their code distinctive
-**Approach**: Provide structured analysis with clear scoring and evidence
-**Boundaries**: Illuminate patterns, never make legal determinations
-**Tone**: Precise, encouraging, honest about uncertainty
-**Safety**: This skill operates locally. It does not transmit code or analysis results to any external service. It does not modify, delete, or write any files.
+**角色**：帮助用户发现其代码的独特之处  
+**方法**：提供结构化的分析结果，并附有明确的评分和证据  
+**限制**：仅揭示代码中的模式，不作出法律判断  
+**语气**：精确、鼓励性，对不确定性保持诚实  
+**安全性**：该工具仅在本机运行，不会将代码或分析结果传输到任何外部服务，也不会修改、删除或创建任何文件。  
 
-## When to Use
+## 使用场景  
 
-Activate this skill when the user asks to:
-- "Scan my code for distinctive patterns"
-- "Analyze this repo for unique implementations"
-- "Find innovative code in my project"
-- "What's technically interesting in this codebase?"
+当用户请求以下操作时，可激活此工具：  
+- “扫描我的代码以寻找独特模式”  
+- “分析这个仓库中的独特实现”  
+- “在我的项目中找到具有创新性的代码”  
+- “这个代码库中有哪些技术上的亮点？”  
 
-## Important Limitations
+## 重要限制  
 
-- This is TECHNICAL analysis, not legal advice
-- Output identifies "distinctive patterns" not "patentable inventions"
-- Always recommend professional consultation for IP decisions
-- Large repos (>100 source files) use Quick Mode by default
-
----
-
-## Analysis Process
-
-### Step 1: Repository Discovery
-
-First, understand the codebase structure:
-
-1. Check if path is provided, otherwise use current directory
-2. Identify primary language(s) by file extensions
-3. Count total source files (exclude generated/vendor)
-4. Estimate analysis scope
-
-**File Discovery Rules**:
-- Include: `.go`, `.py`, `.ts`, `.js`, `.rs`, `.java`, `.cpp`, `.c`, `.rb`, `.swift`
-- Exclude directories: `node_modules`, `vendor`, `.git`, `build`, `dist`, `__pycache__`
-- Exclude patterns: `*_test.go`, `*_test.py`, `*.min.js`, `*.generated.*`
-- Prioritize: Files between 50-500 lines (complexity sweet spot)
-
-### Step 2: File Prioritization
-
-Not all files are equally interesting. Prioritize:
-
-| Priority | File Characteristics |
-|----------|---------------------|
-| High | Custom algorithms, data structures, core business logic |
-| Medium | API handlers, service layers, utilities |
-| Low | Config, constants, simple CRUD, boilerplate |
-| Skip | Tests, generated code, vendored dependencies |
-
-**Heuristics for High-Priority Files**:
-- File names containing: `engine`, `core`, `algorithm`, `optimizer`, `scheduler`, `cache`
-- Directories: `internal/`, `core/`, `engine/`, `lib/`
-- Files with high cyclomatic complexity indicators
-
-### Step 3: Pattern Analysis
-
-For each prioritized file, analyze for these pattern categories:
-
-#### 3.1 Algorithmic Patterns
-- Custom sorting/searching beyond stdlib
-- Distinctive caching strategies
-- Optimization algorithms
-- Scheduling/queuing logic
-- Graph traversal variations
-
-#### 3.2 Architectural Patterns
-- Unusual design patterns or combinations
-- Custom middleware/interceptor chains
-- Distinctive API design approaches
-- Unconventional data flow
-
-#### 3.3 Data Structure Patterns
-- Custom collections beyond stdlib
-- Specialized indexes or lookups
-- Memory-efficient representations
-- Lock-free or concurrent structures
-
-#### 3.4 Integration Patterns
-- Distinctive protocol implementations
-- Custom serialization formats
-- Unusual system integrations
-- Performance-optimized I/O
-
-### Step 4: Distinctiveness Scoring
-
-For each identified pattern, score on four dimensions:
-
-| Dimension | Range | Criteria |
-|-----------|-------|----------|
-| **Distinctiveness** | 0-4 | How unique vs standard library/common approaches |
-| **Sophistication** | 0-3 | Engineering complexity and elegance |
-| **System Impact** | 0-3 | Effect on overall system behavior |
-| **Frame Shift** | 0-3 | Reframes problem vs solves within existing paradigm |
-
-**Scoring Guide**:
-
-**Distinctiveness (0-4)**:
-- 0: Standard library usage
-- 1: Common pattern with minor variation
-- 2: Meaningful customization of known approach
-- 3: Distinctive combination or significant innovation
-- 4: Genuinely unique approach
-
-**Sophistication (0-3)**:
-- 0: Straightforward implementation
-- 1: Some clever optimizations
-- 2: Complex but well-structured
-- 3: Highly elegant solution to hard problem
-
-**System Impact (0-3)**:
-- 0: Isolated utility
-- 1: Affects one subsystem
-- 2: Cross-cutting concern
-- 3: Foundational to system architecture
-
-**Frame Shift (0-3)**:
-- 0: Works within existing paradigm
-- 1: Questions one assumption
-- 2: Challenges core approach
-- 3: Redefines the problem entirely
-
-**Minimum Threshold**: Only report patterns with total score >= 5
+- 本工具提供的是技术分析，而非法律建议  
+- 输出结果仅识别“独特模式”，而非“可专利的发明”  
+- 对于知识产权相关决策，始终建议咨询专业人士  
+- 如果仓库文件数量超过100个，系统将默认使用“快速模式”。  
 
 ---
 
-## Large Repository Strategy
+## 分析流程  
 
-For repositories with >100 source files, offer two modes:
+### 第1步：仓库识别  
 
-### Mode Selection (>100 files)
+首先，了解代码库的结构：  
+1. 检查是否提供了仓库路径，否则使用当前目录  
+2. 根据文件扩展名确定主要编程语言  
+3. 统计源文件的总数（排除生成的文件和第三方库文件）  
+4. 估算分析范围  
 
+**文件识别规则**：  
+- 包括：`.go`、`.py`、`.ts`、`.js`、`.rs`、`.java`、`.cpp`、`.c`、`.rb`、`.swift`  
+- 排除目录：`node_modules`、`vendor`、`.git`、`build`、`dist`、`__pycache__`  
+- 排除文件：`*_test.go`、`*_test.py`、`*.min.js`、`*.generated.*`  
+- 优先考虑：行数在50到500之间的文件（这类文件通常具有较高的技术价值）  
+
+### 第2步：文件优先级排序  
+
+并非所有文件都同等重要。根据以下标准对文件进行优先级排序：  
+| 优先级 | 文件特征 |  
+|----------|---------------------|  
+| 高    | 自定义算法、数据结构、核心业务逻辑 |  
+| 中    | API处理程序、服务层、工具类 |  
+| 低    | 配置文件、常量、简单的CRUD操作、样板代码 |  
+| 跳过  | 测试代码、生成的代码、第三方依赖项 |  
+
+**高优先级文件的判断标准**：  
+- 文件名包含：`engine`、`core`、`algorithm`、`optimizer`、`scheduler`、`cache`  
+- 目录名称包含：`internal/`、`core/`、`engine/`、`lib/`  
+- 文件的圈复杂度（Cyclomatic Complexity）较高  
+
+### 第3步：模式分析  
+
+对每个高优先级的文件，分析以下模式类别：  
+
+#### 3.1 算法模式  
+- 超出标准库范围的自定义排序/搜索机制  
+- 独特的缓存策略  
+- 优化算法  
+- 调度/队列逻辑  
+- 图形遍历的变体  
+
+#### 3.2 架构模式  
+- 不寻常的设计模式或组合  
+- 自定义的中间件/拦截器链  
+- 独特的API设计  
+- 非传统的数据流处理方式  
+
+#### 3.3 数据结构模式  
+- 超出标准库范围的自定义数据结构  
+- 专门的索引或查找机制  
+- 高效的内存管理方式  
+- 无锁或并发处理机制  
+
+#### 3.4 集成模式  
+- 独特的协议实现  
+- 自定义的序列化格式  
+- 非常规的系统集成方式  
+- 优化性能的输入/输出处理  
+
+### 3.4 独特性评分  
+
+对每个识别出的模式，从四个维度进行评分：  
+| 维度      | 分数范围 | 评分标准                |  
+|-----------|-------|------------------|  
+| **独特性**   | 0-4    | 与标准库/常见方法的差异程度      |  
+| **复杂性**   | 0-3    | 工程实现的复杂性和优雅程度      |  
+| **系统影响**   | 0-3    | 对系统整体行为的影响        |  
+| **创新性**   | 0-3    | 对现有范式的颠覆程度        |  
+
+**评分指南**：  
+- **独特性（0-4）**：  
+  0：完全使用标准库  
+  1：对已知方法的轻微定制  
+  2：对已知方法的实质性改进  
+  3：独特的组合或重大创新  
+  4：真正原创的解决方案  
+
+- **复杂性（0-3）**：  
+  0：实现简单直接  
+  1：包含一些巧妙的优化  
+  2：结构复杂但设计合理  
+  3：针对复杂问题的高效解决方案  
+
+- **系统影响（0-3）**：  
+  0：仅影响单一子系统  
+  1：影响多个子系统  
+  2：对系统架构有普遍影响  
+  3：对系统架构具有基础性作用  
+
+- **创新性（0-3）**：  
+  0：在现有范式内工作  
+  1：对现有假设提出质疑  
+  2：挑战核心处理方式  
+  3：彻底重新定义问题  
+
+**最低评分标准**：仅报告总分为5分及以上的模式。  
+
+---
+
+## 大型仓库策略  
+
+对于文件数量超过100的仓库，提供两种分析模式：  
+
+### 模式选择（文件数量 > 100个）  
 ```
 I found [N] source files. For large repositories like this, I have two modes:
 
@@ -161,31 +156,27 @@ I found [N] source files. For large repositories like this, I have two modes:
   -> More thorough, you guide the focus
 
 Reply "deep" for guided selection, or I'll proceed with quick mode.
-```
+```  
 
-### Quick Mode (DEFAULT)
+### 快速模式（默认模式）  
+1. 列出所有源文件的路径及行数  
+2. 根据创新潜力对文件进行评分（考虑文件名、目录深度、文件大小）  
+3. 选择并分析评分最高的20个文件  
+4. 展示分析结果，并询问用户是否需要进一步分析其他部分  
 
-1. List all source files with paths and line counts
-2. Score files by innovation likelihood (name patterns, directory depth, file size)
-3. Select and analyze top 20 highest-priority files
-4. Present findings, offer: "Want me to analyze additional areas?"
-
-### Deep Mode (ON REQUEST)
-
-Trigger: User says "deep", "guided", "thorough", or explicitly requests area selection.
-
-1. Categorize files by directory/module
-2. Identify high-priority candidates (max 5 areas)
-3. Present areas to user and wait for selection
-4. Analyze selected area, report findings
-5. Ask if user wants to continue with another area
+### 深度模式（按需使用）  
+用户请求“深度分析”、“有指导的分析”或明确指定分析范围时启用：  
+1. 按目录/模块对文件进行分类  
+2. 识别出高优先级的分析对象（最多5个领域）  
+3. 向用户展示这些领域并等待用户选择  
+4. 分析用户选定的领域并报告结果  
+5. 询问用户是否希望继续分析其他领域  
 
 ---
 
-## Output Format
+## 输出格式  
 
-### JSON Report (Primary)
-
+### JSON报告（主要输出格式）  
 ```json
 {
   "scan_metadata": {
@@ -223,14 +214,12 @@ Trigger: User says "deep", "guided", "thorough", or explicitly requests area sel
     "average_score": 7.2
   }
 }
-```
+```  
 
-### Share Card (Viral Format)
+### 共享卡片（便于分享的格式）  
+**注意**：生成的共享文本可能包含来自用户代码的敏感信息，请在分享前仔细审查。  
 
-**Warning**: The generated shareable text may contain sensitive information derived from your source code. Review it carefully before sharing.
-
-**Standard Format** (use by default - renders everywhere):
-
+**标准输出格式**（默认格式，适用于所有场景）：  
 ```markdown
 ## [Repository Name] - Code Patent Scanner Results
 
@@ -242,21 +231,17 @@ Trigger: User says "deep", "guided", "thorough", or explicitly requests area sel
 | Pattern Name 2 | X/13 |
 
 *Analyzed with [code-patent-scanner](https://obviouslynot.ai) from obviouslynot.ai*
-```
+```  
 
-### High-Value Pattern Detected
-
-For patterns scoring 8+/13, include:
-
-> **Strong distinctive signal!** Consider sharing your discovery:
-> "Found a distinctive pattern (X/13) using obviouslynot.ai patent tools 🔬"
+### 发现高价值模式  
+对于评分达到8分及以上的模式，会显示以下提示：  
+> **发现具有显著独特性的代码模式！** 可考虑分享您的发现：  
+> “使用obviouslynot.ai的专利工具，发现了具有独特性的代码模式（X/13）🔬”  
 
 ---
 
-## Next Steps (Required in All Outputs)
-
-Every scan output MUST end with:
-
+## 后续操作（所有输出结果均需包含）  
+每次分析结果必须包含以下内容：  
 ```markdown
 ## Next Steps
 
@@ -266,69 +251,62 @@ Every scan output MUST end with:
 4. **Consult** - For high-value patterns, consult patent attorney
 
 *Rescan monthly as codebase evolves. Last scanned: [date]*
-```
+```  
 
 ---
 
-## Terminology Rules (MANDATORY)
+## 术语使用规范（强制要求）  
 
-### Never Use
-- "patentable"
-- "novel" (in legal sense)
-- "non-obvious"
-- "prior art"
-- "claims"
-- "invention" (as noun)
-- "you should file"
+**禁止使用**：  
+- “可专利的”  
+- “新颖的”（法律意义上的）  
+- “非显而易见的”  
+- “现有技术”  
+- “权利要求”  
+- “发明”（作为名词使用）  
 
-### Always Use Instead
-- "distinctive"
-- "unique"
-- "sophisticated"
-- "original"
-- "innovative"
-- "technical pattern"
-- "implementation approach"
-
----
-
-## Sensitive Data Warning
-
-- Analysis outputs may be stored in your chat history or logs
-- Avoid analyzing proprietary information if outputs might be shared
-- For patent-related work, premature public disclosure can affect filing rights
-- Review outputs before sharing to ensure no confidential information is exposed
+**推荐使用**：  
+- “独特的”  
+- **新颖的**  
+- **复杂的**  
+- **原创的**  
+- **创新的**  
+- **技术模式**  
+- **实现方式**  
 
 ---
 
-## Required Disclaimer
-
-ALWAYS include at the end of ANY output:
-
-> **Disclaimer**: This analysis identifies distinctive code patterns based on technical characteristics. It is not legal advice and does not constitute a patentability assessment or freedom-to-operate opinion. The terms "distinctive" and "sophisticated" are technical descriptors, not legal conclusions. Consult a registered patent attorney for intellectual property guidance.
+## 敏感数据提示  
+- 分析结果可能存储在聊天记录或日志中  
+- 如果分析结果可能被共享，请避免分析包含敏感信息的代码  
+- 在涉及专利的工作中，过早公开分析结果可能会影响专利申请  
+- 在分享前请仔细审查结果，确保没有泄露任何机密信息  
 
 ---
 
-## Error Handling
+## 必需的免责声明  
+**免责声明**：本分析仅基于技术特征识别代码的独特性，并不提供法律建议，也不构成专利性评估或许可使用的意见。“独特”和“复杂”等术语仅用于描述技术特性，不代表法律结论。如需知识产权方面的专业建议，请咨询注册专利律师。  
 
-**Empty Repository**:
+---
+
+## 错误处理  
+
+- **空仓库**：  
 ```
 I couldn't find source files to analyze. Is the path correct? Does it contain code files (.go, .py, .ts, etc.)?
-```
-
-**No Patterns Found**:
+```  
+- **未发现独特模式**：  
 ```
 No patterns scored above threshold (5/13). This may mean the distinctiveness is in execution, not architecture. Try adding more technical detail about your most complex implementations.
-```
+```  
 
 ---
 
-## Related Skills
-
-- **code-patent-validator**: Generate search strategies for scanner findings
-- **patent-scanner**: Analyze concept descriptions (no code needed)
-- **patent-validator**: Validate concept distinctiveness
+## 相关工具  
+- **code-patent-validator**：为扫描结果生成搜索策略  
+- **patent-scanner**：分析概念描述（无需代码）  
+- **patent-validator**：验证概念的独特性  
 
 ---
 
-*Built by Obviously Not - Tools for thought, not conclusions.*
+*由Obviously Not开发——这些工具用于辅助思考，而非提供最终结论。*

@@ -1,31 +1,30 @@
 ---
 name: table-mountain-status
-description: Fetch and report the Table Mountain Aerial Cableway status via the official weather API. Use when Master asks for “Tafelberg” updates, needs alerts about openings/closures, or wants automated Telegram reports about status, weather, and waiting times.
+description: 通过官方天气API获取并报告Table Mountain空中缆车的运行状态。当负责人要求获取“Tafelberg”缆车的最新信息、需要关于缆车开放/关闭的警报，或者希望接收关于缆车状态、天气及等待时间的自动化Telegram通知时，可使用此功能。
 ---
 
-# Table Mountain Status
+# Table Mountain 状态信息
 
-## Überblick
-Dieses Skill ruft die offizielle Cableway-API (`https://cms.tablemountain.net/.../weather-api`) ab, parsed Status/Weather-Felder und liefert eine saubere Zusammenfassung (Text oder JSON). Ideal für Sofortabfragen („Status Tafelberg?“) sowie automatisierte Polling-Jobs mit Telegram-Alerts.
+## 概述
+该技能会调用 Table Mountain 官方缆车 API（`https://cms.tablemountain.net/.../weather-api`），解析状态/天气数据，并提供清晰的摘要（文本或 JSON 格式）。非常适合用于即时查询（例如：“Table Mountain 的状态如何？”）以及需要通过 Telegram 通知进行自动轮询的任务。
 
-## Quick Start
-1. **Manuell abrufen**
+## 快速入门
+1. **手动查询**
    ```bash
    python3 skills/table-mountain-status/scripts/fetch_status.py \
      --output data/table-mountain/$(date +%F_%H%M).txt
    ```
-   Ausgabe erscheint sowohl in der Datei als auch im Terminal.
-
-2. **JSON für Weiterverarbeitung**
+   查询结果会同时显示在文件中和终端中。
+2. **用于进一步处理的 JSON 数据**
    ```bash
    python3 skills/table-mountain-status/scripts/fetch_status.py \
      --format json --output data/table-mountain/$(date +%F).json
    ```
 
-3. **Felder** (bereits im Script enthalten): `statusType`, `status`, `temperature`, `visibility`, `wind`, `firstUp`, `lastUp`, `lastDown`, `waitingTimeBottom`, `waitingTimeTop`, `lastUpdated`.
+3. **包含在脚本中的字段**：`statusType`、`status`、`temperature`、`visibility`、`wind`、`firstUp`、`lastUp`、`lastDown`、`waitingTimeBottom`、`waitingTimeTop`、`lastUpdated`。
 
-## Automatisierte Telegram-Alerts
-1. **Cronjob alle 10 Minuten (Beispiel):**
+## 自动化的 Telegram 通知
+1. **每 10 分钟执行一次的 Cron 任务（示例）：**
    ```bash
    openclaw cron add <<'JSON'
    {
@@ -40,14 +39,14 @@ Dieses Skill ruft die offizielle Cableway-API (`https://cms.tablemountain.net/..
    }
    JSON
    ```
-2. **Temporäre Jobs** (z. B. nur bis 16:00 lokal) → `schedule.kind = "cron"`, `expr = "*/10 6-15 * * *"`, `tz = "Europe/Berlin"`, und nach Ende wieder `cron update --enabled=false` oder `cron remove`.
-3. **Job-Stop**: Immer sowohl Interval- als auch Tagesjob deaktivieren, falls mehrere Instanzen laufen.
+2. **临时任务**（例如：仅在当地时间 16:00 之前执行）→ 设置 `schedule.kind = "cron"`、`expr = "*/10 6-15 * * *"`、`tz = "Europe/Berlin"`，任务完成后执行 `cron update --enabled=false` 或 `cron remove`。
+3. **任务停止**：如果同时运行多个任务，请务必同时停止间隔任务和每日任务。
 
-## Troubleshooting
-- **API down / Consent-Block:** Script liefert Exit-Code 1 + Fehlermeldung → Cron meldet den Fehler weiter.
-- **Zeitzonen:** `lastUpdated` wird auf UTC+2 konvertiert (Cape Town). Bei Bedarf `format_summary` im Script anpassen.
-- **Standard-Wartezeiten (0:05:00)** stammen oft vom API-Default; wenn echte Queue benötigt wird, Hinweis im Bericht ergänzen.
-- **Netzwerk-Limits:** Falls `curl`-Proxy nötig, `urllib` ggf. um Environment-Proxy erweitern.
+## 故障排除
+- **API 抛错或请求被拒绝**：脚本会返回退出代码 1 并显示错误信息 → Cron 任务会继续报告该错误。
+- **时区问题**：`lastUpdated` 的时间会被转换为 UTC+2（开普敦时区）。如有需要，可修改脚本中的 `format_summary` 函数。
+- **默认等待时间（0:05:00）** 可能来自 API 的默认设置；如果需要自定义等待时间，请在报告中说明。
+- **网络限制**：如果需要使用 `curl` 代理，请考虑使用 `urllib` 并配置环境代理。
 
-## Ressourcen
-- `scripts/fetch_status.py` – Einfache CLI zum Abrufen, Formatieren und Speichern (Text/JSON) des Table-Mountain-Status.
+## 资源
+- `scripts/fetch_status.py` – 一个简单的命令行工具，用于获取、格式化并保存 Table Mountain 的状态信息（文本或 JSON 格式）。

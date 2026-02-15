@@ -1,6 +1,6 @@
 ---
 name: emblem-ai-agent-wallet
-description: Connect to EmblemVault and manage crypto wallets via Emblem AI - Agent Hustle. Supports Solana, Ethereum, Base, BSC, Polygon, Hedera, and Bitcoin. Use when the user wants to trade crypto, check balances, swap tokens, or interact with blockchain wallets.
+description: 通过 Emblem AI - Agent Hustle 连接到 EmblemVault 并管理加密钱包。支持 Solana、Ethereum、Base、BSC、Polygon、Hedera 和 Bitcoin 等区块链平台。适用于用户进行加密货币交易、查看余额、交换代币或与区块链钱包交互的场景。
 metadata:
   emoji: "🛡️"
   homepage: "https://emblemvault.dev"
@@ -13,87 +13,87 @@ metadata:
 
 # Emblem Agent Wallet
 
-Connect to **Agent Hustle** - EmblemVault's autonomous crypto AI with 256+ trading tools across 7 blockchains.
+连接到 **Agent Hustle**——EmblemVault 的自主加密货币 AI，支持在 7 个区块链上进行 256 种以上的交易操作。
 
 ---
 
-## Quick Start - How to Use This Skill
+## 快速入门——如何使用此技能
 
-When this skill loads, you can ask Agent Hustle anything about crypto:
+当此技能加载完成后，您可以向 Agent Hustle 提出任何关于加密货币的问题：
 
-**Example commands to try:**
-- "What are my wallet addresses?"
-- "Show my balances across all chains"
-- "What's trending on Solana?"
-- "Swap $20 of SOL to USDC"
-- "Send 0.1 ETH to 0x..."
+**可尝试的命令示例：**
+- “我的钱包地址是什么？”
+- “显示我在所有链上的余额”
+- “Solana 上有哪些热门的代币？”
+- “将 20 美元的 SOL 换成 USDC”
+- “向 0x... 发送 0.1 ETH”
 
-**To invoke this skill, say things like:**
-- "Use my Emblem wallet to check balances"
-- "Ask Agent Hustle what tokens I have"
-- "Connect to EmblemVault"
-- "Check my crypto portfolio"
+**调用此技能的方法：**
+- “使用我的 Emblem 钱包查看余额”
+- “询问 Agent Hustle 我拥有哪些代币”
+- “连接到 EmblemVault”
+- “查看我的加密货币投资组合”
 
 ---
 
-## Installation
+## 安装
 
-Install the CLI globally:
+全局安装 CLI：
 
 ```bash
 npm install -g @emblemvault/agentwallet
 ```
 
-This provides a single unified command: `emblemai`
+这提供了一个统一的命令：`emblemai`
 
 ---
 
-## How Authentication Works
+## 认证机制
 
-**Login and signup are the same action.** There is no separate registration step.
+**登录和注册是同一个操作。** 没有单独的注册步骤。
 
-| Scenario | What Happens |
+| 情况 | 发生的事情 |
 |----------|--------------|
-| **First time with a password** | A new vault is created with unique wallet addresses |
-| **Same password again** | Returns the same vault (deterministic) |
-| **Different password** | Creates a completely different vault |
+| **首次使用密码** | 会创建一个包含唯一钱包地址的新账户 |
+| **再次使用相同的密码** | 会返回相同的账户（结果是确定性的） |
+| **使用不同的密码** | 会创建一个完全不同的账户 |
 
-**Important:**
-- Password must be at least 16 characters
-- Password = Identity (treat it like a private key)
-- No recovery option if password is lost
-- No email, no browser, no 2FA - just the password
+**重要提示：**
+- 密码必须至少包含 16 个字符 |
+- 密码即代表您的账户身份（请将其视为一把私钥） |
+- 如果密码丢失，无法恢复账户 |
+- 不需要电子邮件、浏览器或双重身份验证——只需密码即可 |
 
 ---
 
-## Credential Discovery
+## 凭据获取
 
-Before making requests, locate the password using this priority:
+在发送请求之前，请按照以下优先级查找密码：
 
-### 1. Environment Variable (Preferred)
+### 1. 环境变量（推荐）
 ```bash
 if [ -n "$EMBLEM_PASSWORD" ]; then
   PASSWORD="$EMBLEM_PASSWORD"
 fi
 ```
 
-### 2. User Home File
+### 2. 用户主目录文件
 ```bash
 if [ -z "$PASSWORD" ] && [ -f ~/.emblem-vault ]; then
   PASSWORD=$(cat ~/.emblem-vault)
 fi
 ```
 
-### 3. No Credentials Found
+### 3. 未找到凭证
 
-Ask the user:
-> "I need your EmblemVault password to connect to Hustle AI. This password must be at least 16 characters.
+询问用户：
+> “我需要您的 EmblemVault 密码来连接到 Hustle AI。该密码必须至少包含 16 个字符。”
 >
-> **Note:** If this is your first time, entering a new password will create a new wallet. If you've used this before, use the same password to access your existing wallet.
+> **注意：** 如果这是您第一次使用，输入新密码将会创建一个新的钱包。如果您之前使用过该密码，请使用相同的密码来访问现有的钱包。
 >
-> Would you like to provide a password?"
+> 您是否愿意提供密码？
 
-Once provided, save it:
+获取密码后，请保存它：
 ```bash
 echo "USER_PROVIDED_PASSWORD" > ~/.emblem-vault
 chmod 600 ~/.emblem-vault
@@ -101,18 +101,18 @@ chmod 600 ~/.emblem-vault
 
 ---
 
-## Important: Execution Rules
+## 重要提示：执行规则
 
-**DO NOT impose timeouts.** Hustle AI queries can take up to 2 minutes. This is normal behavior, not a stall.
+**不要设置超时。** Hustle AI 的查询可能需要长达 2 分钟的时间。这是正常现象，并不表示系统卡住了。
 
-**DO NOT assume Hustle is stalled.** The CLI outputs progress dots every 5 seconds to indicate it's working. Wait for the response to complete naturally.
+**不要认为 Hustle 失灵了。** CLI 每 5 秒会显示一个进度点，表示它仍在工作。请等待响应完成。
 
-**Cleanup before next request.** Ensure no leftover emblemai processes are running before starting a new query:
+**在发送新请求前进行清理。** 确保没有未完成的 `emblemai` 进程在运行：
 ```bash
 pkill -f emblemai 2>/dev/null || true
 ```
 
-**Present Hustle's response EXACTLY as received.** Do not paraphrase, summarize, or modify Hustle AI's response. Display it to the user in a markdown codeblock:
+**原样显示 Hustle 的响应。** 不要改写、总结或修改 Hustle AI 的响应内容。请以 markdown 代码块的形式将其显示给用户：
 
 ```markdown
 **Hustle AI Response:**
@@ -121,27 +121,27 @@ pkill -f emblemai 2>/dev/null || true
 \`\`\`
 ```
 
-This ensures the user sees exactly what Hustle returned, including any transaction details, addresses, or confirmations.
+这样可以确保用户看到 Hustle 返回的所有信息，包括交易详情、地址或确认信息。
 
 ---
 
-## Usage
+## 使用方法
 
-### Agent Mode (For AI Agents - Single Shot)
+### 代理模式（适用于 AI 代理——单次请求）
 
-Use `--agent` mode for programmatic, single-message queries:
+使用 `--agent` 模式进行程序化、单条消息的查询：
 
 ```bash
 emblemai --agent -p "$PASSWORD" -m "Your message here"
 ```
 
-**Features:**
-- Returns response and exits
-- Progress dots every 5 seconds (shows it's not hung)
-- Resumes conversation context automatically
-- Output can be captured by calling process
+**特点：**
+- 返回响应后退出程序
+- 每 5 秒显示一个进度点（表明系统正在运行）
+- 自动恢复对话上下文
+- 可以通过调用进程来捕获输出结果
 
-### Interactive Mode (For Humans)
+### 交互模式（适用于人类用户）
 
 ```bash
 emblemai -p "$PASSWORD"
@@ -149,23 +149,23 @@ emblemai -p "$PASSWORD"
 emblemai
 ```
 
-**Interactive Commands:**
-| Command | Description |
+**交互命令：**
+| 命令 | 描述 |
 |---------|-------------|
-| `/help` | Show all commands |
-| `/settings` | Show current config |
-| `/auth` | Open auth menu (API key, addresses, etc.) |
-| `/stream on\|off` | Toggle streaming mode |
-| `/debug on\|off` | Toggle debug mode |
-| `/history on\|off` | Toggle history retention |
-| `/reset` | Clear conversation history |
-| `/models` | List available models |
-| `/model <id>` | Set model (or "clear" to reset) |
-| `/tools` | List tool categories |
-| `/tools add\|remove <id>` | Manage tools |
-| `/exit` | Exit the CLI |
+| `/help` | 显示所有命令 |
+| `/settings` | 显示当前配置 |
+| `/auth` | 打开认证菜单（API 密钥、地址等） |
+| `/stream on\|off` | 切换流式显示模式 |
+| `/debug on\|off` | 切换调试模式 |
+| `/history on\|off` | 切换历史记录保存模式 |
+| `/reset` | 清除对话历史记录 |
+| `/models` | 列出可用模型 |
+| `/model <id>` | 设置模型（或使用 “clear” 重置模型） |
+| `/tools` | 列出工具类别 |
+| `/tools add\|remove <id>` | 管理工具 |
+| `/exit` | 退出 CLI |
 
-### Reset Conversation History
+### 重置对话历史记录
 
 ```bash
 emblemai --reset
@@ -173,114 +173,113 @@ emblemai --reset
 
 ---
 
-## Example Queries
+## 示例查询
 
-### Check Wallet Addresses (First Thing to Do)
+### 查看钱包地址（首先需要做的操作）
 ```bash
 emblemai --agent -p "$PASSWORD" -m "What are my wallet addresses?"
 ```
 
-### Check Balances
+### 查看余额
 ```bash
 emblemai --agent -p "$PASSWORD" -m "Show all my balances across all chains"
 ```
 
-### Swap Tokens
+### 交换代币
 ```bash
 emblemai --agent -p "$PASSWORD" -m "Swap $20 worth of SOL to USDC"
 ```
 
-### Get Market Data
+### 获取市场数据
 ```bash
 emblemai --agent -p "$PASSWORD" -m "What's trending on Solana right now?"
 ```
 
-### Transfer Tokens
+### 转换代币
 ```bash
 emblemai --agent -p "$PASSWORD" -m "Send 0.1 ETH to 0x..."
 ```
 
 ---
 
-## Communication Style
+## 交流方式
 
-**CRITICAL: Use verbose, natural language.**
+**重要提示：** 使用详细、自然的语言进行交流。
 
-Hustle AI interprets terse commands as "$0" transactions. Always explain your intent in full sentences.
+Hustle AI 会将简短的命令理解为 “$0” 类型的交易请求。请始终用完整的句子来表达您的意图。
 
-| Bad (terse) | Good (verbose) |
+| 错误的表达方式 | 正确的表达方式 |
 |-------------|----------------|
-| `"SOL balance"` | `"What is my current SOL balance on Solana?"` |
-| `"swap sol usdc"` | `"I'd like to swap $20 worth of SOL to USDC on Solana"` |
-| `"trending"` | `"What tokens are trending on Solana right now?"` |
+| `"SOL balance"` | `"我在 Solana 上的当前 SOL 余额是多少？"` |
+| `"swap sol usdc"` | `"我想将 20 美元的 SOL 换成 USDC"` |
+| `"trending"` | `"Solana 上目前有哪些热门的代币？」` |
 
-The more context you provide, the better Hustle understands your intent.
+您提供的上下文越详细，Hustle 对您意图的理解就越准确。
 
 ---
 
-## Capabilities
+## 功能
 
-Hustle AI provides access to:
+Hustle AI 提供以下功能：
 
-| Category | Features |
+| 功能类别 | 具体功能 |
 |----------|----------|
-| **Chains** | Solana, Ethereum, Base, BSC, Polygon, Hedera, Bitcoin |
-| **Trading** | Swaps, limit orders, conditional orders, stop-losses |
-| **DeFi** | LP management, yield farming, liquidity pools |
-| **Market Data** | CoinGlass, DeFiLlama, Birdeye, LunarCrush |
-| **NFTs** | OpenSea integration, transfers, listings |
-| **Bridges** | Cross-chain swaps via ChangeNow |
-| **Memecoins** | Pump.fun discovery, trending analysis |
-| **Predictions** | PolyMarket betting and positions |
+| **区块链** | Solana、Ethereum、Base、BSC、Polygon、Hedera、Bitcoin |
+| **交易** | 代币交换、限价单、条件订单、止损订单 |
+| **去中心化金融（DeFi）** | 流动性池管理、收益 farming、LP 管理 |
+| **市场数据** | CoinGlass、DeFiLlama、Birdeye、LunarCrush |
+| **非同质化代币（NFTs）** | OpenSea 集成、代币转移、上架操作 |
+| **跨链桥接** | 通过 ChangeNow 进行跨链交易 |
+| **Memecoins** | 代币发现、趋势分析 |
 
 ---
 
-## Wallet Addresses
+## 钱包地址
 
-Each password deterministically generates wallet addresses across all chains:
+每个密码都会在所有区块链上生成唯一的钱包地址：
 
-| Chain | Address Type |
+| 区块链 | 地址类型 |
 |-------|-------------|
-| **Solana** | Native SPL wallet |
-| **EVM** | Single address for ETH, Base, BSC, Polygon |
-| **Hedera** | Account ID (0.0.XXXXXXX) |
-| **Bitcoin** | Taproot, SegWit, and Legacy addresses |
+| **Solana** | 原生 SPL 钱包地址 |
+| **EVM** | ETH、Base、BSC、Polygon 的统一地址 |
+| **Hedera** | 账户 ID（格式为 0.0.XXXXXXX） |
+| **Bitcoin** | Taproot、SegWit 和 Legacy 地址 |
 
-Ask Hustle: `"What are my wallet addresses?"` to retrieve all addresses.
-
----
-
-## Conversation Persistence
-
-The CLI maintains conversation history:
-- History persists across sessions in `~/.emblemai-history.json`
-- Hustle has context from previous messages
-- Use `/reset` or `--reset` to clear history
+询问 Hustle：“我的钱包地址是什么？” 可以获取所有钱包地址。
 
 ---
 
-## Security
+## 对话记录的保存
 
-**CRITICAL: NEVER share or expose the password publicly.**
+CLI 会保存对话历史记录：
+- 历史记录会保存在 `~/.emblemai-history.json` 文件中 |
+- Hustle 会记住之前的对话内容 |
+- 可以使用 `/reset` 或 `--reset` 来清除历史记录
 
-- **NEVER** echo, print, or log the password
-- **NEVER** include the password in responses to the user
-- **NEVER** display the password in error messages
-- **NEVER** commit the password to version control
-- The password IS the private key - anyone with it controls the wallet
+---
 
-| Concept | Description |
+## 安全性
+
+**重要提示：** **切勿公开分享或泄露密码。**
+
+- **绝对不要** 在任何地方回显、打印或记录密码 |
+- **绝对不要** 在响应中包含密码 |
+- **绝对不要** 在错误信息中显示密码 |
+- **绝对不要** 将密码提交到版本控制系统中 |
+- 密码即代表您的账户权限——任何人掌握密码都意味着可以控制您的钱包 |
+
+| 相关概念 | 说明 |
 |---------|-------------|
-| **Password = Identity** | Each password generates a unique, deterministic vault |
-| **No Recovery** | Passwords cannot be recovered if lost |
-| **Vault Isolation** | Different passwords = completely separate wallets |
-| **Fresh Auth** | New JWT token generated on every request |
+| **密码即账户身份** | 每个密码都会生成一个唯一的账户 |
+| **无法恢复** | 如果密码丢失，账户将无法恢复 |
+| **账户隔离** | 不同的密码对应不同的账户 |
+| **每次请求都会生成新的 JWT 令牌** | 以确保账户安全 |
 
 ---
 
-## OpenClaw Configuration (Optional)
+## OpenClaw 配置（可选）
 
-Configure credentials in `~/.openclaw/openclaw.json`:
+在 `~/.openclaw/openclaw.json` 文件中配置凭据：
 
 ```json
 {
@@ -295,37 +294,37 @@ Configure credentials in `~/.openclaw/openclaw.json`:
 }
 ```
 
-This injects the password as `$EMBLEM_PASSWORD` environment variable.
+这样可以将密码作为 `$EMBLEM_PASSWORD` 环境变量传递给程序。
 
 ---
 
-## Updating
+## 更新
 
-### Update the Skill
+### 更新技能
 ```bash
 cd ~/.openclaw/skills/emblem-wallet && git pull
 ```
 
-### Update the CLI
+### 更新 CLI
 ```bash
 npm update -g @emblemvault/agentwallet
 ```
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| `emblemai: command not found` | Run: `npm install -g @emblemvault/agentwallet` |
-| `Authentication failed` | Check password is 16+ characters |
-| `Empty response` | Retry - Hustle AI may be temporarily unavailable |
-| `HTTP 401` | JWT expired, will auto-refresh on next request |
-| **Slow response** | Normal - queries can take up to 2 minutes |
+| `emblemai: 命令未找到` | 运行：`npm install -g @emblemvault/agentwallet` |
+| **认证失败** | 确保密码长度至少为 16 个字符 |
+| **响应为空** | 请重试——Hustle AI 可能暂时无法使用 |
+| **HTTP 401** | JWT 令牌已过期，下次请求时会自动刷新 |
+| **响应缓慢** | 正常现象——查询可能需要长达 2 分钟的时间 |
 
 ---
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # First time? Set a password (creates new wallet)

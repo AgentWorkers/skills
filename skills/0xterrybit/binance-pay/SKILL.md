@@ -1,36 +1,37 @@
 ---
 name: binance-pay
-description: Binance Pay integration for crypto payments. Send, receive, and accept cryptocurrency payments with the world's largest exchange.
+description: **Binance Pay集成：支持加密货币支付**  
+您可以借助全球最大的加密货币交易平台Binance进行加密货币的发送、接收和接受操作。
 metadata: {"clawdbot":{"emoji":"🟡","requires":{"bins":["curl","jq"],"env":["BINANCE_PAY_API_KEY","BINANCE_PAY_SECRET"]}}}
 ---
 
 # Binance Pay 🟡
 
-Crypto payment solution powered by Binance, the world's largest cryptocurrency exchange.
+这是一个由全球最大的加密货币交易所 Binance 提供的加密货币支付解决方案。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `BINANCE_PAY_API_KEY` | Merchant API Key | Yes |
-| `BINANCE_PAY_SECRET` | API Secret Key | Yes |
-| `BINANCE_PAY_MERCHANT_ID` | Merchant ID | Yes |
+| `BINANCE_PAY_API_KEY` | 商户 API 密钥 | 是 |
+| `BINANCE_PAY_SECRET` | API 秘密密钥 | 是 |
+| `BINANCE_PAY_MERCHANT_ID` | 商户 ID | 是 |
 
-## Features
+## 功能
 
-- 💸 **C2C Transfers** - Send crypto to Binance users (0 fee)
-- 🛒 **Merchant Payments** - Accept crypto payments
-- 🔄 **Refunds** - Process payment refunds
-- 📊 **Order Management** - Track payment status
-- 🌍 **200M+ Users** - Access to Binance ecosystem
+- 💸 **C2C 转账** - 向 Binance 用户发送加密货币（免费）
+- 🛒 **商户收款** - 接受加密货币支付 |
+- 🔄 **退款** - 处理退款请求 |
+- 📊 **订单管理** - 跟踪支付状态 |
+- 🌍 **2 亿+ 用户** - 可访问 Binance 生态系统
 
-## API Base URL
+## API 基本 URL
 
 ```
 https://bpay.binanceapi.com
 ```
 
-## Authentication
+## 认证
 
 ```bash
 API_KEY="${BINANCE_PAY_API_KEY}"
@@ -46,7 +47,7 @@ generate_signature() {
 }
 ```
 
-## Create Payment Order
+## 创建支付订单
 
 ```bash
 PAYLOAD='{
@@ -75,7 +76,7 @@ curl -s -X POST "https://bpay.binanceapi.com/binancepay/openapi/v2/order" \
   -d "$PAYLOAD" | jq '.'
 ```
 
-## Query Order Status
+## 查询订单状态
 
 ```bash
 PAYLOAD='{
@@ -93,7 +94,7 @@ curl -s -X POST "https://bpay.binanceapi.com/binancepay/openapi/v2/order/query" 
   -d "$PAYLOAD" | jq '.'
 ```
 
-## Close Order
+## 关闭订单
 
 ```bash
 PAYLOAD='{
@@ -111,7 +112,7 @@ curl -s -X POST "https://bpay.binanceapi.com/binancepay/openapi/v2/order/close" 
   -d "$PAYLOAD" | jq '.'
 ```
 
-## Process Refund
+## 处理退款
 
 ```bash
 PAYLOAD='{
@@ -131,26 +132,26 @@ curl -s -X POST "https://bpay.binanceapi.com/binancepay/openapi/v2/order/refund"
   -d "$PAYLOAD" | jq '.'
 ```
 
-## Supported Currencies
+## 支持的货币
 
-| Currency | Type | Min Amount |
+| 货币 | 类型 | 最小金额 |
 |----------|------|------------|
-| USDT | Stablecoin | 0.01 |
-| BUSD | Stablecoin | 0.01 |
-| USDC | Stablecoin | 0.01 |
-| BTC | Crypto | 0.00001 |
-| ETH | Crypto | 0.0001 |
-| BNB | Crypto | 0.001 |
+| USDT | 稳定币 | 0.01 |
+| BUSD | 稳定币 | 0.01 |
+| USDC | 稳定币 | 0.01 |
+| BTC | 加密货币 | 0.00001 |
+| ETH | 加密货币 | 0.0001 |
+| BNB | 加密货币 | 0.001 |
 
-## Webhook Events
+## Webhook 事件
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `PAY` | Payment completed |
-| `REFUND` | Refund processed |
-| `CANCEL` | Order cancelled |
+| `PAY` | 支付完成 |
+| `REFUND` | 退款处理中 |
+| `CANCEL` | 订单已取消 |
 
-## Webhook Verification
+## Webhook 验证
 
 ```bash
 # Verify webhook signature
@@ -167,27 +168,27 @@ verify_webhook() {
 }
 ```
 
-## Order Status Codes
+## 订单状态代码
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `INITIAL` | Order created |
-| `PENDING` | Awaiting payment |
-| `PAID` | Payment successful |
-| `CANCELED` | Order cancelled |
-| `REFUNDING` | Refund in progress |
-| `REFUNDED` | Refund completed |
-| `EXPIRED` | Order expired |
+| `INITIAL` | 订单创建 |
+| `PENDING` | 等待支付 |
+| `PAID` | 支付成功 |
+| `CANCELED` | 订单已取消 |
+| `REFUNDING` | 退款中 |
+| `REFUNDED` | 退款完成 |
+| `EXPIRED` | 订单过期 |
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** verify webhook signatures
-2. **NEVER** expose API secrets
-3. **ALWAYS** use idempotent merchantTradeNo
-4. **CHECK** order status before fulfilling
+1. **始终** 验证 webhook 签名。
+2. **绝不要** 暴露 API 秘密信息。
+3. **始终** 使用 idempotent merchantTradeNo。
+4. **在完成交易前** 检查订单状态。
 
-## Links
+## 链接
 
-- [Binance Pay Docs](https://developers.binance.com/docs/binance-pay)
-- [Merchant Portal](https://merchant.binance.com/)
-- [API Reference](https://developers.binance.com/docs/binance-pay/api-order-create-v2)
+- [Binance Pay 文档](https://developers.binance.com/docs/binance-pay)
+- [商户门户](https://merchant.binance.com/)
+- [API 参考](https://developers.binance.com/docs/binance-pay/api-order-create-v2)

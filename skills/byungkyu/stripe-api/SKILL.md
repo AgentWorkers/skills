@@ -18,9 +18,9 @@ metadata:
 
 # Stripe
 
-Access the Stripe API with managed OAuth authentication. Manage customers, subscriptions, invoices, products, prices, and process payments.
+通过管理的OAuth身份验证来访问Stripe API。您可以管理客户、订阅、发票、产品、价格，并处理支付。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List customers
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/stripe/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Stripe API endpoint path. The gateway proxies requests to `api.stripe.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Stripe API端点路径。该网关会将请求代理到 `api.stripe.com`，并自动插入您的OAuth令牌。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Stripe OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Stripe OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth授权。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Stripe connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Stripe连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,11 +141,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-All Stripe API endpoints follow this pattern:
+所有Stripe API端点都遵循以下格式：
 
 ```
 /stripe/v1/{resource}
@@ -153,15 +153,15 @@ All Stripe API endpoints follow this pattern:
 
 ---
 
-## Balance
+## 账户余额
 
-### Get Balance
+### 获取账户余额
 
 ```bash
 GET /stripe/v1/balance
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "balance",
@@ -182,7 +182,7 @@ GET /stripe/v1/balance
 }
 ```
 
-### List Balance Transactions
+### 列出账户余额交易记录
 
 ```bash
 GET /stripe/v1/balance_transactions?limit=10
@@ -190,25 +190,25 @@ GET /stripe/v1/balance_transactions?limit=10
 
 ---
 
-## Customers
+## 客户
 
-### List Customers
+### 列出客户
 
 ```bash
 GET /stripe/v1/customers?limit=10
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `limit` | Number of results (1-100, default: 10) |
-| `starting_after` | Cursor for pagination |
-| `ending_before` | Cursor for reverse pagination |
-| `email` | Filter by email |
-| `created` | Filter by creation date |
+| `limit` | 结果数量（1-100，默认：10） |
+| `starting_after` | 分页的起始位置 |
+| `ending_before` | 分页的结束位置 |
+| `email` | 按电子邮件过滤 |
+| `created` | 按创建日期过滤 |
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -229,13 +229,13 @@ GET /stripe/v1/customers?limit=10
 }
 ```
 
-### Get Customer
+### 获取客户信息
 
 ```bash
 GET /stripe/v1/customers/{customer_id}
 ```
 
-### Create Customer
+### 创建客户
 
 ```bash
 POST /stripe/v1/customers
@@ -244,7 +244,7 @@ Content-Type: application/x-www-form-urlencoded
 email=customer@example.com&name=John%20Doe&metadata[user_id]=123
 ```
 
-### Update Customer
+### 更新客户信息
 
 ```bash
 POST /stripe/v1/customers/{customer_id}
@@ -253,7 +253,7 @@ Content-Type: application/x-www-form-urlencoded
 name=Jane%20Doe&email=jane@example.com
 ```
 
-### Delete Customer
+### 删除客户
 
 ```bash
 DELETE /stripe/v1/customers/{customer_id}
@@ -261,22 +261,22 @@ DELETE /stripe/v1/customers/{customer_id}
 
 ---
 
-## Products
+## 产品
 
-### List Products
+### 列出产品
 
 ```bash
 GET /stripe/v1/products?limit=10
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `active` | Filter by active status |
-| `type` | Filter by type: `good` or `service` |
+| `active` | 按活动状态过滤 |
+| `type` | 按类型过滤：`good` 或 `service` |
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -296,13 +296,13 @@ GET /stripe/v1/products?limit=10
 }
 ```
 
-### Get Product
+### 获取产品信息
 
 ```bash
 GET /stripe/v1/products/{product_id}
 ```
 
-### Create Product
+### 创建产品
 
 ```bash
 POST /stripe/v1/products
@@ -311,7 +311,7 @@ Content-Type: application/x-www-form-urlencoded
 name=Premium%20Plan&description=Premium%20subscription&type=service
 ```
 
-### Update Product
+### 更新产品信息
 
 ```bash
 POST /stripe/v1/products/{product_id}
@@ -320,7 +320,7 @@ Content-Type: application/x-www-form-urlencoded
 name=Updated%20Plan&active=true
 ```
 
-### Delete Product
+### 删除产品
 
 ```bash
 DELETE /stripe/v1/products/{product_id}
@@ -328,24 +328,24 @@ DELETE /stripe/v1/products/{product_id}
 
 ---
 
-## Prices
+## 价格
 
-### List Prices
+### 列出价格
 
 ```bash
 GET /stripe/v1/prices?limit=10
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `active` | Filter by active status |
-| `product` | Filter by product ID |
-| `type` | Filter: `one_time` or `recurring` |
-| `currency` | Filter by currency |
+| `active` | 按活动状态过滤 |
+| `product` | 按产品ID过滤 |
+| `type` | 按类型过滤：`one_time` 或 `recurring` |
+| `currency` | 按货币过滤 |
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -368,13 +368,13 @@ GET /stripe/v1/prices?limit=10
 }
 ```
 
-### Get Price
+### 获取价格信息
 
 ```bash
 GET /stripe/v1/prices/{price_id}
 ```
 
-### Create Price
+### 创建价格
 
 ```bash
 POST /stripe/v1/prices
@@ -383,7 +383,7 @@ Content-Type: application/x-www-form-urlencoded
 product=prod_XXX&unit_amount=1999&currency=usd&recurring[interval]=month
 ```
 
-### Update Price
+### 更新价格
 
 ```bash
 POST /stripe/v1/prices/{price_id}
@@ -394,23 +394,23 @@ active=false
 
 ---
 
-## Subscriptions
+## 订阅
 
-### List Subscriptions
+### 列出订阅信息
 
 ```bash
 GET /stripe/v1/subscriptions?limit=10
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `customer` | Filter by customer ID |
-| `price` | Filter by price ID |
-| `status` | Filter: `active`, `canceled`, `past_due`, etc. |
+| `customer` | 按客户ID过滤 |
+| `price` | 按价格ID过滤 |
+| `status` | 按状态过滤：`active`, `canceled`, `past_due` 等 |
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -440,13 +440,13 @@ GET /stripe/v1/subscriptions?limit=10
 }
 ```
 
-### Get Subscription
+### 获取订阅信息
 
 ```bash
 GET /stripe/v1/subscriptions/{subscription_id}
 ```
 
-### Create Subscription
+### 创建订阅
 
 ```bash
 POST /stripe/v1/subscriptions
@@ -455,7 +455,7 @@ Content-Type: application/x-www-form-urlencoded
 customer=cus_XXX&items[0][price]=price_XXX
 ```
 
-### Update Subscription
+### 更新订阅
 
 ```bash
 POST /stripe/v1/subscriptions/{subscription_id}
@@ -464,7 +464,7 @@ Content-Type: application/x-www-form-urlencoded
 items[0][id]=si_XXX&items[0][price]=price_YYY
 ```
 
-### Cancel Subscription
+### 取消订阅
 
 ```bash
 DELETE /stripe/v1/subscriptions/{subscription_id}
@@ -472,23 +472,23 @@ DELETE /stripe/v1/subscriptions/{subscription_id}
 
 ---
 
-## Invoices
+## 发票
 
-### List Invoices
+### 列出发票
 
 ```bash
 GET /stripe/v1/invoices?limit=10
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `customer` | Filter by customer ID |
-| `subscription` | Filter by subscription ID |
-| `status` | Filter: `draft`, `open`, `paid`, `void`, `uncollectible` |
+| `customer` | 按客户ID过滤 |
+| `subscription` | 按订阅ID过滤 |
+| `status` | 按状态过滤：`draft`, `open`, `paid`, `void`, `uncollectible` |
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -510,13 +510,13 @@ GET /stripe/v1/invoices?limit=10
 }
 ```
 
-### Get Invoice
+### 获取发票信息
 
 ```bash
 GET /stripe/v1/invoices/{invoice_id}
 ```
 
-### Create Invoice
+### 创建发票
 
 ```bash
 POST /stripe/v1/invoices
@@ -525,19 +525,19 @@ Content-Type: application/x-www-form-urlencoded
 customer=cus_XXX
 ```
 
-### Finalize Invoice
+### 完成发票处理
 
 ```bash
 POST /stripe/v1/invoices/{invoice_id}/finalize
 ```
 
-### Pay Invoice
+### 支付发票
 
 ```bash
 POST /stripe/v1/invoices/{invoice_id}/pay
 ```
 
-### Void Invoice
+### 废除发票
 
 ```bash
 POST /stripe/v1/invoices/{invoice_id}/void
@@ -545,22 +545,22 @@ POST /stripe/v1/invoices/{invoice_id}/void
 
 ---
 
-## Charges
+## 费用
 
-### List Charges
+### 列出费用信息
 
 ```bash
 GET /stripe/v1/charges?limit=10
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `customer` | Filter by customer ID |
-| `payment_intent` | Filter by payment intent |
+| `customer` | 按客户ID过滤 |
+| `payment_intent` | 按支付意图过滤 |
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -586,13 +586,13 @@ GET /stripe/v1/charges?limit=10
 }
 ```
 
-### Get Charge
+### 获取费用信息
 
 ```bash
 GET /stripe/v1/charges/{charge_id}
 ```
 
-### Create Charge
+### 创建费用记录
 
 ```bash
 POST /stripe/v1/charges
@@ -603,15 +603,15 @@ amount=2000&currency=usd&source=tok_XXX
 
 ---
 
-## Payment Intents
+## 支付意图
 
-### List Payment Intents
+### 列出支付意图
 
 ```bash
 GET /stripe/v1/payment_intents?limit=10
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "object": "list",
@@ -630,13 +630,13 @@ GET /stripe/v1/payment_intents?limit=10
 }
 ```
 
-### Get Payment Intent
+### 获取支付意图
 
 ```bash
 GET /stripe/v1/payment_intents/{payment_intent_id}
 ```
 
-### Create Payment Intent
+### 创建支付意图
 
 ```bash
 POST /stripe/v1/payment_intents
@@ -645,13 +645,13 @@ Content-Type: application/x-www-form-urlencoded
 amount=2000&currency=usd&customer=cus_XXX&payment_method_types[]=card
 ```
 
-### Confirm Payment Intent
+### 确认支付意图
 
 ```bash
 POST /stripe/v1/payment_intents/{payment_intent_id}/confirm
 ```
 
-### Cancel Payment Intent
+### 取消支付意图
 
 ```bash
 POST /stripe/v1/payment_intents/{payment_intent_id}/cancel
@@ -659,21 +659,21 @@ POST /stripe/v1/payment_intents/{payment_intent_id}/cancel
 
 ---
 
-## Payment Methods
+## 支付方式
 
-### List Payment Methods
+### 列出支付方式
 
 ```bash
 GET /stripe/v1/payment_methods?customer=cus_XXX&type=card
 ```
 
-### Get Payment Method
+### 获取支付方式信息
 
 ```bash
 GET /stripe/v1/payment_methods/{payment_method_id}
 ```
 
-### Attach Payment Method
+### 附加支付方式
 
 ```bash
 POST /stripe/v1/payment_methods/{payment_method_id}/attach
@@ -682,7 +682,7 @@ Content-Type: application/x-www-form-urlencoded
 customer=cus_XXX
 ```
 
-### Detach Payment Method
+### 移除支付方式
 
 ```bash
 POST /stripe/v1/payment_methods/{payment_method_id}/detach
@@ -690,21 +690,21 @@ POST /stripe/v1/payment_methods/{payment_method_id}/detach
 
 ---
 
-## Coupons
+## 优惠券
 
-### List Coupons
+### 列出优惠券
 
 ```bash
 GET /stripe/v1/coupons?limit=10
 ```
 
-### Get Coupon
+### 获取优惠券信息
 
 ```bash
 GET /stripe/v1/coupons/{coupon_id}
 ```
 
-### Create Coupon
+### 创建优惠券
 
 ```bash
 POST /stripe/v1/coupons
@@ -713,7 +713,7 @@ Content-Type: application/x-www-form-urlencoded
 percent_off=25&duration=once
 ```
 
-### Delete Coupon
+### 删除优惠券
 
 ```bash
 DELETE /stripe/v1/coupons/{coupon_id}
@@ -721,21 +721,21 @@ DELETE /stripe/v1/coupons/{coupon_id}
 
 ---
 
-## Refunds
+## 退款
 
-### List Refunds
+### 列出退款记录
 
 ```bash
 GET /stripe/v1/refunds?limit=10
 ```
 
-### Get Refund
+### 获取退款信息
 
 ```bash
 GET /stripe/v1/refunds/{refund_id}
 ```
 
-### Create Refund
+### 创建退款
 
 ```bash
 POST /stripe/v1/refunds
@@ -746,15 +746,15 @@ charge=ch_XXX&amount=1000
 
 ---
 
-## Pagination
+## 分页
 
-Stripe uses cursor-based pagination with `starting_after` and `ending_before`:
+Stripe使用基于游标的分页方式，通过 `starting_after` 和 `ending_before` 参数进行分页：
 
 ```bash
 GET /stripe/v1/customers?limit=10&starting_after=cus_XXX
 ```
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "object": "list",
@@ -764,9 +764,9 @@ GET /stripe/v1/customers?limit=10&starting_after=cus_XXX
 }
 ```
 
-Use the last item's ID as `starting_after` for the next page.
+使用上一页的最后一个项目的ID作为 `starting_after` 参数来获取下一页的数据。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -799,35 +799,35 @@ for customer in data['data']:
     print(f"{customer['id']}: {customer['email']}")
 ```
 
-## Notes
+## 注意事项
 
-- Stripe API uses `application/x-www-form-urlencoded` for POST requests (not JSON)
-- Amounts are in the smallest currency unit (e.g., cents for USD)
-- IDs start with prefixes: `cus_` (customers), `prod_` (products), `price_` (prices), `sub_` (subscriptions), `in_` (invoices), `ch_` (charges), `pi_` (payment intents)
-- Timestamps are Unix timestamps
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- Stripe API 对POST请求使用 `application/x-www-form-urlencoded` 格式（而非JSON）。
+- 金额以最小货币单位表示（例如，USD的金额为分）。
+- ID以特定前缀开头：`cus_`（客户）、`prod_`（产品）、`price_`（价格）、`sub_`（订阅）、`in_`（发票）、`ch_`（费用）、`pi_`（支付意图）。
+- 时间戳为Unix时间戳。
+- 重要提示：当使用 `curl` 命令时，如果URL包含括号，请使用 `curl -g` 以避免全局解析问题。
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or invalid parameters |
-| 401 | Invalid or missing Maton API key |
-| 402 | Card declined or payment required |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 500 | Stripe internal error |
+| 400 | 请求错误或参数无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 402 | 卡片被拒绝或需要支付 |
+| 404 | 资源未找到 |
+| 429 | 日志限制 |
+| 500 | Stripe内部错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -838,17 +838,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称错误
 
-1. Ensure your URL path starts with `stripe`. For example:
+1. 确保您的URL路径以 `stripe` 开头。例如：
 
-- Correct: `https://gateway.maton.ai/stripe/v1/customers`
-- Incorrect: `https://gateway.maton.ai/v1/customers`
+- 正确：`https://gateway.maton.ai/stripe/v1/customers`
+- 错误：`https://gateway.maton.ai/v1/customers`
 
-## Resources
+## 资源
 
-- [Stripe API Reference](https://docs.stripe.com/api)
-- [Stripe Dashboard](https://dashboard.stripe.com/)
-- [Stripe Testing](https://docs.stripe.com/testing)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Stripe API参考文档](https://docs.stripe.com/api)
+- [Stripe控制面板](https://dashboard.stripe.com/)
+- [Stripe测试工具](https://docs.stripe.com/testing)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

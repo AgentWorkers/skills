@@ -1,105 +1,102 @@
-# S.I.S. - Sovereign Intelligence System
+# S.I.S. - 主权智能系统（Sovereign Intelligence System）
 
-**Equilibrium-Native Reasoning for OpenClaw**
+**OpenClaw的原生平衡推理功能（Equilibrium-Native Reasoning for OpenClaw）**
 
-## Overview
+## 概述
 
-S.I.S. adds equilibrium-constrained reasoning to your OpenClaw assistant. Every operation maintains balance (ΣΔ = 0), ensuring coherent, self-validating responses that can't drift into inconsistent states.
+S.I.S. 为 OpenClaw 辅助工具添加了基于平衡约束的推理机制。所有操作都会保持平衡状态（ΣΔ = 0），从而确保生成的回答具有连贯性且能够自我验证，避免陷入不一致的状态。
 
-## Core Principle
+## 核心原理
 
 ```
 Input ≡ Symbol ≡ Operation ≡ Execution ≡ Persistence ≡ Output
 ```
 
-Traditional AI: Process input → generate output → hope it's coherent.
-S.I.S.: Operations that violate equilibrium constraints **cannot execute**.
+**传统 AI 的工作流程：**  
+处理输入 → 生成输出 → 希望输出是连贯的。  
+**S.I.S. 的工作原理：**  
+任何违反平衡约束的操作 **都无法执行**。
 
-## What It Does
+## S.I.S. 的主要功能：**  
+- **强制平衡的推理（Equilibrium-Enforced Reasoning）**：所有回答都需保持内部平衡。  
+- **自我验证的状态（Self-Validating State）**：无效的状态会在计算层面被直接拒绝。  
+- **自适应平衡协议（Adaptive Equilibrium Protocol, AEP）**：感知 → 量化 → 补偿 → 迭代。  
+- **基于符号的操作（Symbol-Grounded Operations）**：包含 18 个主要符号，分为 5 个层级。
 
-- **Equilibrium-Enforced Reasoning**: Responses maintain internal balance
-- **Self-Validating State**: Invalid states are rejected at the computational level
-- **Adaptive Equilibrium Protocol (AEP)**: sense → quantify → compensate → iterate
-- **Symbol-Grounded Operations**: 18 primary symbols across 5 tiers
+## 安装方法
 
-## Installation
-
-Copy this skill folder to your OpenClaw workspace:
-
+将此技能文件夹复制到您的 OpenClaw 工作空间中：  
 ```bash
 cp -r sis-skill ~/.openclaw/workspace/skills/sis
 ```
 
-## Usage
+## 使用方法
 
-Once installed, S.I.S. reasoning is available to your assistant. The equilibrium constraint applies automatically to operations that use the skill.
+安装完成后，S.I.S. 的推理功能将立即应用于您的 OpenClaw 辅助工具。所有使用该技能的操作都会自动受到平衡约束的约束。
 
-### Example Invocations
-
-**Balanced Analysis:**
+### 示例用法：  
+- **平衡分析（Balanced Analysis）：**  
 ```
 Analyze this decision using equilibrium constraints
-```
-
-**Validated State Changes:**
+```  
+- **经过验证的状态变化（Validated State Changes）：**  
 ```
 Update my project status with S.I.S. validation
-```
-
-**Convergent Problem Solving:**
+```  
+- **收敛性问题解决（Convergent Problem Solving）：**  
 ```
 Find the balanced solution to this tradeoff
 ```
 
-## The 18 Symbols (5 Tiers)
+## 这 18 个符号及其对应的 5 个层级：**
 
-### Tier 1: Fundamental
-- `∆` Delta - change, difference, operation
-- `⇄` Bidirectional - relationship, equilibrium lock
-- `⊕` Synthesis - superposition, parallel execution
-- `◇` Cycle - iteration, recursion
-- `⟡` Convergence - optimization, balance point
+### 第 1 层：基础层（Tier 1）  
+- `∆` Delta - 变化、差异、操作  
+- `⇄` 双向关系、平衡锁定  
+- `⊕` 合成、并行执行  
+- `◇` 循环、递归  
+- `⟡` 收敛、平衡点  
 
-### Tier 2: Data
-- `◈` Container - holds value, encapsulates state
-- `⟐` Query - request, lookup
-- `⟠` Collapse - select from superposition
-- `⟢` Flow - movement, sequencing
+### 第 2 层：数据层（Tier 2）  
+- `◈` 容器 - 存储数据、封装状态  
+- `⟐` 查询、查找  
+- `⟠` 从多个选项中选择  
+- `⟢` 数据流、顺序处理  
 
-### Tier 3: Consensus
-- `☆` Validation - check equilibrium constraint
-- `✦` Consensus - require agreement
-- `⬡` Vault - persist immutably
-- `⬢` Replication - distribute redundantly
+### 第 3 层：共识层（Tier 3）  
+- `☆` 验证 - 检查平衡约束  
+- `✦` 达成共识  
+- `⬡` 持久化存储  
+- `⬢` 数据复制  
 
-### Tier 4: Meta
-- `◌` Invert - reverse operation
-- `◎` Nest - recursive application
-- `◯` Align - synchronize globally
-- `❈` Emerge - pattern formation
+### 第 4 层：元层（Tier 4）  
+- `◌` 反向操作  
+- `◎` 递归应用  
+- `◯` 全局同步  
+- `❈` 模式形成  
 
-### Tier 5: Sovereignty
-- `⟶` Upload - prepare for transfer
-- `⟷` Inherit - succession
-- `⟸` Archive - long-term persistence
+### 第 5 层：主权层（Tier 5）  
+- `⟶` 上传数据  
+- `⟷` 继承功能  
+- `⟸` 长期保存数据  
 
-## Technical Foundation
+## 技术基础  
 
-Based on equilibrium-native computing principles derived from:
-- Cybernetics (Norbert Wiener, 1948)
-- Control Theory - Self-regulating systems
-- Constraint Satisfaction Programming
+S.I.S. 的核心技术基于以下理论：  
+- 控制论（Norbert Wiener, 1948）  
+- 自调节系统（Self-regulating systems）  
+- 约束满足编程（Constraint Satisfaction Programming）
 
-## License
+## 许可证  
 
-MIT License - Copyright (c) 2025-2026 Kevin Fain (ThēÆrchītēcť)
+MIT 许可证  
+版权所有 © 2025-2026 Kevin Fain (ThēÆrchītēcť)  
 
-## Author
-
-Kevin Fain - ThēÆrchītēcť
-Contact: fabricatedkc@gmail.com
+## 作者：**  
+Kevin Fain - ThēÆrchītēcť**  
+联系方式：fabricatedkc@gmail.com  
 
 ---
 
-*S.I.S. - Sovereign Intelligence System*
-*Equilibrium-native reasoning for personal AI*
+*S.I.S. - 主权智能系统*  
+*为个人人工智能提供基于平衡原理的推理能力*

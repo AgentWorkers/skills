@@ -1,6 +1,6 @@
 ---
 name: railway
-description: Deploy and manage applications on Railway.app. Use for deploying projects, managing services, viewing logs, setting environment variables, and managing databases. Railway is a modern cloud platform for deploying apps with zero configuration.
+description: 在 Railway.app 上部署和管理应用程序。该平台可用于部署项目、管理服务、查看日志、设置环境变量以及管理数据库。Railway 是一个现代化的云平台，支持无需任何配置即可部署应用程序的功能。
 metadata:
   {
     "openclaw":
@@ -30,9 +30,9 @@ metadata:
 
 # Railway
 
-Deploy and manage applications on [Railway.app](https://railway.app) - a modern cloud platform with zero-config deployments.
+在 [Railway.app](https://railway.app) 上部署和管理应用程序——这是一个支持零配置部署的现代云平台。
 
-## Authentication
+## 认证
 
 ```bash
 # Login (opens browser)
@@ -48,9 +48,9 @@ railway whoami
 railway logout
 ```
 
-## Project Management
+## 项目管理
 
-### Link & Initialize
+### 链接项目并初始化
 
 ```bash
 # Link current directory to existing project
@@ -66,7 +66,7 @@ railway init
 railway unlink
 ```
 
-### View Projects
+### 查看项目
 
 ```bash
 # List all projects
@@ -79,9 +79,9 @@ railway open
 railway status
 ```
 
-## Deployment
+## 部署
 
-### Deploy
+### 直接部署
 
 ```bash
 # Deploy current directory
@@ -103,7 +103,7 @@ railway redeploy
 railway redeploy --service <SERVICE_NAME>
 ```
 
-### Deploy from Template
+### 从模板部署
 
 ```bash
 # Deploy a template
@@ -113,7 +113,7 @@ railway deploy --template <TEMPLATE_NAME>
 railway deploy --template postgres --variable POSTGRES_USER=myuser
 ```
 
-## Services
+## 服务
 
 ```bash
 # List services in project
@@ -126,7 +126,7 @@ railway service create
 railway service delete <SERVICE_NAME>
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 # List all variables
@@ -145,7 +145,7 @@ railway variables delete KEY
 railway variables get KEY
 ```
 
-## Logs
+## 日志
 
 ```bash
 # View logs (live)
@@ -161,7 +161,7 @@ railway logs --no-follow
 railway logs --timestamps
 ```
 
-## Run Commands
+## 运行命令
 
 ```bash
 # Run command with Railway env vars
@@ -179,7 +179,7 @@ railway ssh
 railway ssh --service <SERVICE_NAME>
 ```
 
-## Domains
+## 域名
 
 ```bash
 # List domains
@@ -192,9 +192,9 @@ railway domain add <DOMAIN>
 railway domain delete <DOMAIN>
 ```
 
-## Databases
+## 数据库
 
-Railway supports one-click database provisioning:
+Railway 支持一键式数据库配置：
 
 ```bash
 # Add PostgreSQL
@@ -210,9 +210,9 @@ railway add --plugin redis
 railway add --plugin mongodb
 ```
 
-Database connection strings are automatically added to environment variables.
+数据库连接字符串会自动添加到环境变量中。
 
-## Environments
+## 环境配置
 
 ```bash
 # List environments
@@ -228,7 +228,7 @@ railway environment create <ENV_NAME>
 railway environment delete <ENV_NAME>
 ```
 
-## Volumes
+## 卷（存储资源）
 
 ```bash
 # List volumes
@@ -241,9 +241,9 @@ railway volume create --mount /data
 railway volume delete <VOLUME_ID>
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Deploy a New Project
+### 部署新项目
 
 ```bash
 # 1. Initialize in your project directory
@@ -260,7 +260,7 @@ railway variables set NODE_ENV=production
 railway up
 ```
 
-### Connect to Production Database
+### 连接到生产数据库
 
 ```bash
 # Run local command with production env vars
@@ -272,7 +272,7 @@ railway ssh
 psql $DATABASE_URL
 ```
 
-### View Deployment Status
+### 查看部署状态
 
 ```bash
 # Check status
@@ -285,7 +285,7 @@ railway logs
 railway open
 ```
 
-### Rollback Deployment
+### 回滚部署
 
 ```bash
 # View deployments in dashboard
@@ -296,9 +296,9 @@ railway open
 railway redeploy
 ```
 
-## CI/CD Integration
+## CI/CD 集成
 
-For GitHub Actions or other CI:
+对于 GitHub Actions 或其他持续集成（CI）工具：
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -320,9 +320,9 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 ```
 
-## Resources
+## 资源
 
-- [Railway Documentation](https://docs.railway.com)
-- [Railway CLI Reference](https://docs.railway.com/reference/cli-api)
-- [Railway Templates](https://railway.app/templates)
-- [Railway GitHub](https://github.com/railwayapp/cli)
+- [Railway 文档](https://docs.railway.com)
+- [Railway 命令行接口参考](https://docs.railway.com/reference/cli-api)
+- [Railway 模板](https://railway.app/templates)
+- [Railway 的 GitHub 仓库](https://github.com/railwayapp/cli)

@@ -1,86 +1,85 @@
 ---
 name: ip-lookup
-description: Get current public IP address and geolocation information. Use when users ask about IP addresses, network location, or want to check their public IP. Supports both fetching IP info and displaying it clearly.
+description: 获取当前的公共IP地址和地理位置信息。当用户询问IP地址、网络位置或想要查看自己的公共IP时，可以使用此功能。该功能既支持获取IP信息，也支持以清晰的方式显示这些信息。
 ---
 
-# IP Lookup Skill
+# IP查询技能
 
-## Overview
+## 概述
 
-This skill provides a simple way to check your public IP address and its geolocation information.
+该技能提供了一种简单的方法来查看您的公共IP地址及其地理位置信息。
 
-## Usage
+## 使用方法
 
-When users ask:
-- "What is my IP?"
-- "What is my current IP address?"
-- "What's my public IP?"
-- "Where am I?"
-- "Where am I located?"
-- "Check location"
-- "Check my IP location"
-- "Get location"
-- "Locate me"
-- "What's the IP?"
-- "What's your IP?"
+当用户询问以下问题时：
+- “我的IP地址是什么？”
+- “我当前的IP地址是什么？”
+- “我的公共IP地址是什么？”
+- “我在哪里？”
+- “我的位置在哪里？”
+- “查询我的位置”
+- “获取我的IP位置”
+- “定位我”
+- “IP地址是多少？”
+- “你的IP地址是多少？”
 
-Execute the workflow below.
+请执行以下工作流程。
 
-## Workflow
+## 工作流程
 
-### Basic IP Check
+### 基本IP查询
 
-Run this command to get your public IP and location:
+运行以下命令以获取您的公共IP地址和位置：
 
 ```bash
 curl -s myip.ipip.net
 ```
 
-Example output:
+示例输出：
 ```
 Current IP：8.8.8.8  From: SF CA USA Google
 Current IP：1.1.1.1  From: SF CA USA Cloudflare
 ```
 
-### Alternative Methods
+### 替代方法
 
-If the above fails, try these alternatives:
+如果上述方法失败，请尝试以下替代方案：
 
-**Method 1: icanhazip.com (fallback)**
+**方法1：icanhazip.com（备用方案）**
 ```bash
 curl -s icanhazip.com
 ```
 
-**Method 2: ipify API**
+**方法2：ipify API**
 ```bash
 curl -s https://api.ipify.org
 ```
 
-**Method 3: ifconfig.me**
+**方法3：ifconfig.me**
 ```bash
 curl -s ifconfig.me
 ```
 
-### Full Geolocation Lookup
+### 详细地理位置查询
 
-For more detailed geolocation info:
+如需更详细的地理位置信息：
 
 ```bash
 curl -s https://ipinfo.io/$(curl -s https://api.ipify.org)/json
 ```
 
-## Display Format
+## 显示格式
 
-Present the information clearly:
+以清晰的方式呈现信息：
 
-**IP Address:** [address]
-**Location:** [city], [region], [country]
-**ISP:** [ISP name]
-**Org:** [organization]
+**IP地址：** [地址]
+**位置：** [城市], [地区], [国家]
+**ISP：** [ISP名称]
+**组织：** [组织名称]
 
-## Error Handling
+## 错误处理
 
-If the primary service (`myip.ipip.net`) fails:
-1. Try alternative services one by one
-2. Report which service succeeded
-3. If all fail, inform the user about the network issue
+如果主要服务（`myip.ipip.net`）失败：
+1. 逐一尝试其他服务
+2. 报告哪些服务成功了
+3. 如果所有服务都失败，请告知用户网络问题

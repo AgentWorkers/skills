@@ -1,6 +1,6 @@
 ---
 name: agentmail
-description: Give your AI agent its own email inbox. Use when the bot needs to create an email account, send emails, receive emails, or manage its inbox. Powered by AgentMail (YC S25).
+description: 为你的AI代理设置一个独立的电子邮件收件箱。当机器人需要创建电子邮件账户、发送邮件、接收邮件或管理其收件箱时，可以使用这个功能。该功能由AgentMail（YC S25）提供支持。
 metadata:
   {
     "clawdbot":
@@ -12,14 +12,14 @@ metadata:
   }
 ---
 
-# AgentMail - Email for AI Agents
+# AgentMail – 为 AI 代理提供电子邮件服务
 
-Give your OpenClaw agent its own email inbox using AgentMail API.
+使用 AgentMail API 为您的 OpenClaw 代理设置专属的电子邮件收件箱。
 
-## Setup
+## 设置
 
-1. Get API key from https://www.agentmail.to (FREE tier: 3 inboxes, 3000 emails/month)
-2. Save to config:
+1. 从 [https://www.agentmail.to](https://www.agentmail.to) 获取 API 密钥（免费 tier：3 个收件箱，每月 3000 封邮件）
+2. 将 API 密钥保存到配置文件中：
 
 ```bash
 mkdir -p ~/.openclaw/skills/agentmail
@@ -30,32 +30,32 @@ cat > ~/.openclaw/skills/agentmail/config.json << 'CONFIG'
 CONFIG
 ```
 
-## Usage
+## 使用方法
 
-### Create an inbox for the bot
+### 为机器人创建收件箱
 ```bash
 scripts/agentmail.sh create-inbox milanclawdbot
 ```
-This creates: milanclawdbot@agentmail.to
+这将创建一个名为 `milanclawdbot@agentmail.to` 的收件箱。
 
-### Send an email
+### 发送电子邮件
 ```bash
 scripts/agentmail.sh send "recipient@example.com" "Subject" "Body text"
 ```
 
-### Check inbox
+### 查看收件箱
 ```bash
 scripts/agentmail.sh inbox
 ```
 
-### Read specific email
+### 阅读特定邮件
 ```bash
 scripts/agentmail.sh read <message_id>
 ```
 
-## Use Cases
+## 使用场景
 
-- **Sign up for services** - Bot can create accounts using its own email
-- **Apply for API access** - Bankr, Convex, etc.
-- **Receive notifications** - Alerts from trading platforms
-- **Business communications** - Respond to inquiries autonomously
+- **注册服务**：机器人可以使用自己的电子邮件地址创建账户。
+- **申请 API 访问权限**：例如 Bankr、Convex 等服务。
+- **接收通知**：来自交易平台的提醒信息。
+- **商务沟通**：自动回复客户咨询。

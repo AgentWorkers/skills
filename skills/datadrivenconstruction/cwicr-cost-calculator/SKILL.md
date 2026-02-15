@@ -1,38 +1,37 @@
 ---
 slug: "cwicr-cost-calculator"
 display_name: "CWICR Cost Calculator"
-description: "Calculate construction costs using DDC CWICR resource-based methodology. Break down costs into labor, materials, equipment with transparent pricing."
+description: "使用 DDC CWICR 基于资源的方法来计算建筑成本。将成本细分为人工费用、材料费用和设备费用，并提供透明的定价信息。"
 ---
 
-# CWICR Cost Calculator
+# CWICR 成本计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Traditional cost estimation often produces "black box" estimates with hidden markups. Stakeholders need:
-- Transparent cost breakdowns
-- Traceable pricing logic
-- Auditable calculations
-- Resource-level detail
+### 问题陈述
+传统的成本估算方法往往会产生“黑箱”式的估算结果，其中隐藏了额外的费用。利益相关者需要：
+- 透明的成本构成
+- 可追溯的定价逻辑
+- 可审核的计算过程
+- 详细的资源使用情况
 
-### Solution
-Resource-based cost calculation using CWICR methodology that separates physical norms (labor hours, material quantities) from volatile prices, enabling transparent and auditable estimates.
+### 解决方案
+采用 CWICR 方法进行基于资源的成本计算，该方法将物理量（如工时、材料数量）与波动较大的价格区分开来，从而实现透明且可审核的估算结果。
 
-### Business Value
-- **Full transparency** - Every cost component visible
-- **Auditable** - Traceable calculation logic
-- **Flexible** - Update prices without changing norms
-- **Accurate** - Based on 55,000+ validated work items
+### 商业价值
+- **完全透明**：所有成本组成部分均可见
+- **可审核**：计算逻辑可追溯
+- **灵活性**：无需更改物理量即可更新价格
+- **准确性**：基于超过 55,000 个经过验证的工作项目数据
 
-## Technical Implementation
+## 技术实现
 
-### Prerequisites
+### 先决条件
 ```bash
 pip install pandas numpy
 ```
 
-### Python Implementation
-
+### Python 实现
 ```python
 import pandas as pd
 import numpy as np
@@ -393,8 +392,7 @@ def estimate_project_cost(cwicr_data: pd.DataFrame,
     return report.generate_summary_report(items)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 import pandas as pd
 from cwicr_data_loader import CWICRDataLoader
@@ -414,9 +412,9 @@ print(f"  Material: ${breakdown.material_cost:,.2f}")
 print(f"  Equipment: ${breakdown.equipment_cost:,.2f}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Project Estimate
+### 1. 项目估算
 ```python
 items = [
     {'work_item_code': 'CONC-001', 'quantity': 150},
@@ -428,7 +426,7 @@ summary = calc.calculate_estimate(items)
 print(f"Project Total: ${summary.total_cost:,.2f}")
 ```
 
-### 2. QTO Integration
+### 2. 量清单（QTO）集成
 ```python
 # Load BIM quantities
 qto = pd.read_excel("quantities.xlsx")
@@ -441,7 +439,7 @@ costs = calc.calculate_from_qto(qto,
 print(costs[['description', 'quantity', 'total_cost']])
 ```
 
-### 3. Regional Adjustment
+### 3. 地区调整
 ```python
 # Apply Berlin pricing
 berlin_factors = {
@@ -453,7 +451,6 @@ berlin_factors = {
 adjusted = calc.apply_regional_factors(costs, berlin_factors)
 ```
 
-## Resources
-
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Construction Cost Estimation
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 - 建筑成本估算

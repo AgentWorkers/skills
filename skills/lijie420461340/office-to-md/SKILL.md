@@ -1,6 +1,6 @@
 ---
 name: office-to-md
-description: Convert Office documents (Word, Excel, PowerPoint, PDF) to Markdown using Microsoft's markitdown
+description: 使用 Microsoft 的 markitdown 工具将 Office 文档（Word、Excel、PowerPoint、PDF）转换为 Markdown 格式。
 author: claude-office-skills
 version: "1.0"
 tags: [markdown, conversion, markitdown, microsoft, office]
@@ -12,28 +12,27 @@ library:
   stars: 86k
 ---
 
-# Office to Markdown Skill
+# 将 Office 文档转换为 Markdown 的技能
 
-## Overview
+## 概述
 
-This skill enables conversion from various Office formats to Markdown using **markitdown** - Microsoft's open-source tool for converting documents to Markdown. Perfect for making Office content searchable, version-controllable, and AI-friendly.
+该技能支持使用 **markitdown**（微软开源的文档转 Markdown 工具）将各种 Office 格式的文件转换为 Markdown 格式。这非常适合让 Office 文档具备可搜索性、版本控制功能，并且更易于被人工智能处理。
 
-## How to Use
+## 使用方法
 
-1. Provide the Office file (Word, Excel, PowerPoint, PDF, etc.)
-2. Optionally specify conversion options
-3. I'll convert it to clean Markdown
+1. 提供需要转换的 Office 文件（如 Word、Excel、PowerPoint、PDF 等）。
+2. （可选）指定转换选项。
+3. 我会将文件转换为格式规范的 Markdown 格式。
 
-**Example prompts:**
-- "Convert this Word document to Markdown"
-- "Turn this PowerPoint into Markdown notes"
-- "Extract content from this PDF as Markdown"
-- "Convert this Excel file to Markdown tables"
+**示例命令：**
+- “将这个 Word 文档转换为 Markdown。”
+- “将这个 PowerPoint 文件转换为 Markdown 格式的笔记。”
+- “从这个 PDF 文件中提取内容并转换为 Markdown。”
+- “将这个 Excel 文件转换为 Markdown 格式的表格。”
 
-## Domain Knowledge
+## 相关知识
 
-### markitdown Fundamentals
-
+### markitdown 基础知识
 ```python
 from markitdown import MarkItDown
 
@@ -49,20 +48,20 @@ with open("output.md", "w") as f:
     f.write(result.text_content)
 ```
 
-### Supported Formats
+### 支持的格式
 
-| Format | Extension | Notes |
+| 格式 | 扩展名 | 说明 |
 |--------|-----------|-------|
-| Word | .docx | Full text, tables, basic formatting |
-| Excel | .xlsx | Converts to Markdown tables |
-| PowerPoint | .pptx | Slides as sections |
-| PDF | .pdf | Text extraction |
-| HTML | .html | Clean markdown |
-| Images | .jpg, .png | OCR with vision model |
-| Audio | .mp3, .wav | Transcription |
-| ZIP | .zip | Processes contained files |
+| Word | .docx | 包含纯文本、表格和基本格式。 |
+| Excel | .xlsx | 可转换为 Markdown 表格。 |
+| PowerPoint | .pptx | 幻灯片内容会被分割成独立的段落。 |
+| PDF | .pdf | 可提取文本内容。 |
+| HTML | .html | 生成格式规范的 Markdown。 |
+| 图片 | .jpg, .png | 可通过视觉模型进行OCR处理（生成图片描述）。 |
+| 音频 | .mp3, .wav | 可进行语音转文字处理。 |
+| ZIP | .zip | 会处理压缩文件内的所有内容。 |
 
-### Basic Usage
+### 基本使用方法
 
 #### Python API
 ```python
@@ -82,7 +81,7 @@ md = MarkItDown(
 )
 ```
 
-#### Command Line
+#### 命令行工具
 ```bash
 # Install
 pip install markitdown
@@ -94,8 +93,7 @@ markitdown document.docx > output.md
 markitdown document.docx -o output.md
 ```
 
-### Word Document Conversion
-
+### Word 文档转换方法
 ```python
 from markitdown import MarkItDown
 
@@ -114,7 +112,7 @@ result = md.convert("report.docx")
 print(result.text_content)
 ```
 
-**Example Output:**
+**示例输出：**
 ```markdown
 # Annual Report 2024
 
@@ -134,8 +132,7 @@ This report summarizes the key achievements and challenges...
 The following sections provide...
 ```
 
-### Excel Conversion
-
+### Excel 文件转换方法
 ```python
 from markitdown import MarkItDown
 
@@ -147,7 +144,7 @@ result = md.convert("data.xlsx")
 print(result.text_content)
 ```
 
-**Example Output:**
+**示例输出：**
 ```markdown
 ## Sheet1
 
@@ -163,8 +160,7 @@ print(result.text_content)
 | Widget A | 100 | 120 | 150 | 180 |
 ```
 
-### PowerPoint Conversion
-
+### PowerPoint 文件转换方法
 ```python
 from markitdown import MarkItDown
 
@@ -176,7 +172,7 @@ result = md.convert("presentation.pptx")
 print(result.text_content)
 ```
 
-**Example Output:**
+**示例输出：**
 ```markdown
 # Slide 1: Company Overview
 
@@ -196,8 +192,7 @@ The market opportunity is significant...
 **Notes:** Mention the competitor analysis here
 ```
 
-### PDF Conversion
-
+### PDF 文件转换方法
 ```python
 from markitdown import MarkItDown
 
@@ -209,8 +204,7 @@ result = md.convert("document.pdf")
 print(result.text_content)
 ```
 
-### Image Conversion (with Vision Model)
-
+### 图片转换方法（使用视觉模型）
 ```python
 from markitdown import MarkItDown
 import anthropic
@@ -229,8 +223,7 @@ print(result.text_content)
 # Output: Description of the image content
 ```
 
-### Batch Conversion
-
+### 批量转换
 ```python
 from markitdown import MarkItDown
 from pathlib import Path
@@ -260,236 +253,34 @@ def batch_convert(input_dir, output_dir):
 batch_convert('./documents', './markdown')
 ```
 
-## Best Practices
+## 使用建议
 
-1. **Check Output Quality**: Review converted Markdown for accuracy
-2. **Handle Tables**: Complex tables may need manual adjustment
-3. **Preserve Structure**: Use consistent heading levels in source docs
-4. **Image Handling**: Consider using vision models for important images
-5. **Version Control**: Store converted Markdown in Git for tracking
+1. **检查转换结果的质量**：仔细核对转换后的 Markdown 文件是否准确无误。
+2. **处理表格**：复杂的表格可能需要手动调整。
+3. **保持结构一致**：在源文档中使用统一的标题层级。
+4. **处理图片**：对于重要的图片，建议使用视觉模型进行识别处理。
+5. **版本控制**：将转换后的 Markdown 文件存储在 Git 中以便追踪修改历史。
 
-## Common Patterns
+## 常见应用场景
 
-### Document Archive
-```python
-import os
-from datetime import datetime
-from markitdown import MarkItDown
+- **文档归档**：将多种格式的文档统一转换为 Markdown 格式。
+- **构建适合 AI 处理的语料库**：将文档转换为适合人工智能分析的格式。
 
-def archive_document(doc_path, archive_dir):
-    """Convert and archive Office document to Markdown."""
-    md = MarkItDown()
-    result = md.convert(doc_path)
-    
-    # Create archive structure
-    date_str = datetime.now().strftime('%Y-%m-%d')
-    filename = os.path.basename(doc_path)
-    base_name = os.path.splitext(filename)[0]
-    
-    # Save with metadata
-    output_content = f"""---
-source: {filename}
-converted: {date_str}
----
+## 实例
 
-{result.text_content}
-"""
-    
-    output_path = os.path.join(archive_dir, f"{base_name}.md")
-    with open(output_path, 'w') as f:
-        f.write(output_content)
-    
-    return output_path
-```
+- **示例 1：文档集转换**：将一系列文档转换为 Markdown 格式。
+- **示例 2：会议记录处理**：将会议笔记转换为 Markdown 格式。
+- **示例 3：Excel 数据转换为文档**：将 Excel 数据转换为结构化的 Markdown 文档。
 
-### AI-Ready Corpus
-```python
-from markitdown import MarkItDown
-from pathlib import Path
-import json
+## 注意事项
 
-def create_ai_corpus(doc_folder, output_file):
-    """Convert documents to JSON corpus for AI training/RAG."""
-    md = MarkItDown()
-    corpus = []
-    
-    for doc in Path(doc_folder).glob('**/*'):
-        if doc.suffix in ['.docx', '.pdf', '.pptx', '.xlsx']:
-            try:
-                result = md.convert(str(doc))
-                corpus.append({
-                    'source': str(doc),
-                    'filename': doc.name,
-                    'content': result.text_content,
-                    'type': doc.suffix[1:]
-                })
-            except Exception as e:
-                print(f"Skipped {doc.name}: {e}")
-    
-    with open(output_file, 'w') as f:
-        json.dump(corpus, f, indent=2)
-    
-    print(f"Created corpus with {len(corpus)} documents")
-    return corpus
-```
+- 复杂的格式可能会被简化。
+- 图片不会被直接嵌入到转换后的 Markdown 中（需要使用视觉模型生成图片描述）。
+- 一些表格结构可能无法完美转换。
+- Word 文档中的修订痕迹可能无法被保留。
+- 文档中的注释可能无法被提取出来。
 
-## Examples
-
-### Example 1: Convert Documentation Suite
-```python
-from markitdown import MarkItDown
-from pathlib import Path
-
-def convert_docs_to_wiki(docs_folder, wiki_folder):
-    """Convert all Office docs to markdown wiki structure."""
-    md = MarkItDown()
-    docs_path = Path(docs_folder)
-    wiki_path = Path(wiki_folder)
-    
-    # Create wiki structure
-    wiki_path.mkdir(exist_ok=True)
-    
-    # Create index
-    index_content = "# Documentation Index\n\n"
-    
-    for doc in sorted(docs_path.glob('**/*.docx')):
-        try:
-            result = md.convert(str(doc))
-            
-            # Create relative path in wiki
-            rel_path = doc.relative_to(docs_path)
-            output_file = wiki_path / rel_path.with_suffix('.md')
-            output_file.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Write markdown
-            with open(output_file, 'w') as f:
-                f.write(result.text_content)
-            
-            # Add to index
-            link = str(rel_path.with_suffix('.md')).replace('\\', '/')
-            index_content += f"- [{doc.stem}]({link})\n"
-            
-            print(f"Converted: {doc.name}")
-            
-        except Exception as e:
-            print(f"Error: {doc.name} - {e}")
-    
-    # Write index
-    with open(wiki_path / 'index.md', 'w') as f:
-        f.write(index_content)
-
-convert_docs_to_wiki('./company_docs', './wiki')
-```
-
-### Example 2: Meeting Notes Processor
-```python
-from markitdown import MarkItDown
-import re
-from datetime import datetime
-
-def process_meeting_notes(pptx_path):
-    """Extract and structure meeting notes from PowerPoint."""
-    md = MarkItDown()
-    result = md.convert(pptx_path)
-    
-    # Parse the markdown
-    content = result.text_content
-    
-    # Extract sections
-    sections = {
-        'attendees': [],
-        'agenda': [],
-        'decisions': [],
-        'action_items': []
-    }
-    
-    current_section = None
-    
-    for line in content.split('\n'):
-        line_lower = line.lower()
-        
-        if 'attendee' in line_lower or 'participant' in line_lower:
-            current_section = 'attendees'
-        elif 'agenda' in line_lower:
-            current_section = 'agenda'
-        elif 'decision' in line_lower:
-            current_section = 'decisions'
-        elif 'action' in line_lower:
-            current_section = 'action_items'
-        elif line.strip().startswith(('-', '*', '•')) and current_section:
-            sections[current_section].append(line.strip()[1:].strip())
-    
-    # Generate structured output
-    output = f"""# Meeting Notes
-
-**Date:** {datetime.now().strftime('%Y-%m-%d')}
-**Source:** {pptx_path}
-
-## Attendees
-{chr(10).join('- ' + a for a in sections['attendees'])}
-
-## Agenda
-{chr(10).join('- ' + a for a in sections['agenda'])}
-
-## Decisions Made
-{chr(10).join('- ' + d for d in sections['decisions'])}
-
-## Action Items
-{chr(10).join('- [ ] ' + a for a in sections['action_items'])}
-"""
-    
-    return output
-
-notes = process_meeting_notes('team_meeting.pptx')
-print(notes)
-```
-
-### Example 3: Excel to Documentation
-```python
-from markitdown import MarkItDown
-
-def excel_to_data_dictionary(xlsx_path):
-    """Convert Excel data model to data dictionary documentation."""
-    md = MarkItDown()
-    result = md.convert(xlsx_path)
-    
-    # Add documentation structure
-    doc = f"""# Data Dictionary
-
-Generated from: `{xlsx_path}`
-
-{result.text_content}
-
-## Usage Notes
-
-- All tables are derived from the source Excel file
-- Review data types and constraints before use
-- Contact data team for clarifications
-
-## Change Log
-
-| Date | Change | Author |
-|------|--------|--------|
-| {datetime.now().strftime('%Y-%m-%d')} | Initial generation | Auto |
-"""
-    
-    return doc
-
-documentation = excel_to_data_dictionary('data_model.xlsx')
-with open('data_dictionary.md', 'w') as f:
-    f.write(documentation)
-```
-
-## Limitations
-
-- Complex formatting may be simplified
-- Images are not embedded (use vision model for descriptions)
-- Some table structures may not convert perfectly
-- Track changes in Word are not preserved
-- Comments may not be extracted
-
-## Installation
-
+## 安装方法
 ```bash
 pip install markitdown
 
@@ -501,8 +292,8 @@ pip install markitdown[images]  # Image OCR
 pip install markitdown[audio]   # Audio transcription
 ```
 
-## Resources
+## 参考资源
 
-- [GitHub Repository](https://github.com/microsoft/markitdown)
-- [PyPI Package](https://pypi.org/project/markitdown/)
-- [Supported Formats](https://github.com/microsoft/markitdown#supported-formats)
+- [GitHub 仓库](https://github.com/microsoft/markitdown)
+- [PyPI 包](https://pypi.org/project/markitdown/)
+- [支持的格式列表](https://github.com/microsoft/markitdown#supported-formats)

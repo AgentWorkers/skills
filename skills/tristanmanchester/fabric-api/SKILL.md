@@ -1,35 +1,35 @@
 ---
 name: fabric-api
-description: Create/search Fabric resources via HTTP API (notepads, folders, bookmarks, files).
+description: 通过 HTTP API 创建/搜索 Fabric 资源（记事本、文件夹、书签、文件）。
 homepage: https://fabric.so
 metadata: {"clawdbot":{"emoji":"🧵","requires":{"env":["FABRIC_API_KEY"],"bins":["curl"]},"primaryEnv":"FABRIC_API_KEY"}}
 ---
 
-# Fabric API (HTTP via curl)
+# Fabric API（通过curl进行HTTP请求）
 
-Use this skill to read/write content in a user's Fabric workspace using the Fabric HTTP API (`https://api.fabric.so`).
+使用此技能，可以通过Fabric HTTP API（`https://api.fabric.so`）读取或写入用户的工作空间中的内容。
 
-## Critical gotchas (read first)
+## 重要注意事项（请先阅读）
 
-- "Notes" are created via **POST `/v2/notepads`** (not `/v2/notes`).
-- Most create endpoints require **`parentId`**:
-  - A UUID **or** one of: `@alias::inbox`, `@alias::bin`.
-- Notepad create requires:
+- “笔记”是通过**POST `/v2/notepads`**创建的（而非 `/v2/notes`）。
+- 大多数创建资源的接口都需要提供**`parentId`**：
+  - 一个UUID，或者以下之一：`@alias::inbox`、`@alias::bin`。
+- 创建笔记时需要提供：
   - `parentId`
-  - AND either `text` (markdown string) **or** `ydoc` (advanced/structured).
-- `tags` must be an array of objects, each *either*:
-  - `{ "name": "tag name" }` or `{ "id": "<uuid>" }`
-  - Never nested arrays; never strings.
+  - 以及`text`（Markdown格式的字符串）或`ydoc`（高级/结构化格式的文档）。
+- `tags`必须是一个对象数组，每个对象可以是：
+  - `{ "name": "标签名称" }` 或 `{ "id": "<uuid>" }`
+  - 不能使用嵌套数组或字符串。
 
-When the user doesn't specify a destination folder: default to `parentId: "@alias::inbox"`.
+当用户未指定目标文件夹时，系统会默认使用 `parentId: "@alias::inbox"`。
 
-## Setup (Clawdbot)
+## 设置（Clawdbot）
 
-This skill expects the API key in:
+此技能需要以下API密钥：
 
 - `FABRIC_API_KEY`
 
-Recommended config (use `apiKey`; Clawdbot will inject `FABRIC_API_KEY` because `primaryEnv` is set):
+推荐配置（使用 `apiKey`；Clawdbot 会自动设置 `FABRIC_API_KEY`，因为 `primaryEnv` 已被配置）：
 
 ```json5
 {
@@ -42,26 +42,26 @@ Recommended config (use `apiKey`; Clawdbot will inject `FABRIC_API_KEY` because 
     }
   }
 }
-````
+```
 
-## HTTP basics
+## HTTP基本请求格式
 
-* Base: `https://api.fabric.so`
-* Auth: `X-Api-Key: $FABRIC_API_KEY`
-* JSON: `Content-Type: application/json`
+- 基本URL：`https://api.fabric.so`
+- 认证头：`X-Api-Key: $FABRIC_API_KEY`
+- 请求内容格式：`Content-Type: application/json`
 
-For debugging: prefer `--fail-with-body` so 4xx bodies are shown.
+为了便于调试，建议使用 `--fail-with-body` 选项，这样错误信息会以JSON格式显示。
 
-## Canonical curl templates (use heredocs to avoid quoting bugs)
+## 标准的curl请求模板（使用heredocs以避免编码错误）
 
-### GET
+### 获取请求（GET）
 
 ```bash
 curl -sS --fail-with-body "https://api.fabric.so/v2/user/me" \
   -H "X-Api-Key: $FABRIC_API_KEY"
 ```
 
-### POST (JSON)
+### 创建请求（POST，使用JSON）
 
 ```bash
 curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/ENDPOINT" \
@@ -72,15 +72,14 @@ curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/ENDPOINT" \
 JSON
 ```
 
-## Core workflows
+## 核心工作流程
 
-### 1) Create a notepad (note)
+### 1) 创建笔记
 
-Endpoint: `POST /v2/notepads`
-
-* Map user-provided "title" → `name` in the API payload.
-* Always include `parentId`.
-* Use `text` for markdown content.
+- 接口：`POST /v2/notepads`
+  - 将用户提供的“标题”映射到API请求中的`name`字段。
+- 必须包含`parentId`字段。
+- 使用`text`字段来存储Markdown格式的内容。
 
 ```bash
 curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/notepads" \
@@ -96,11 +95,11 @@ curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/notepads" \
 JSON
 ```
 
-If tags cause validation trouble, omit them and create/assign later via `/v2/tags`.
+如果标签导致验证错误，请省略标签信息，之后可以通过`/v2/tags`接口进行创建或修改。
 
-### 2) Create a folder
+### 2) 创建文件夹
 
-Endpoint: `POST /v2/folders`
+- 接口：`POST /v2/folders`
 
 ```bash
 curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/folders" \
@@ -115,9 +114,9 @@ curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/folders" \
 JSON
 ```
 
-### 3) Create a bookmark
+### 3) 创建书签
 
-Endpoint: `POST /v2/bookmarks`
+- 接口：`POST /v2/bookmarks`
 
 ```bash
 curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/bookmarks" \
@@ -133,11 +132,10 @@ curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/bookmarks" \
 JSON
 ```
 
-### 4) Browse resources (list children of a folder)
+### 4) 浏览资源（列出文件夹内的内容）
 
-Endpoint: `POST /v2/resources/filter`
-
-Use this to list what's inside a folder (use a folder UUID as `parentId`).
+- 接口：`POST /v2/resources/filter`
+  - 使用文件夹的UUID作为`parentId`来列出该文件夹内的所有资源。
 
 ```bash
 curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/resources/filter" \
@@ -152,11 +150,10 @@ curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/resources/filter" \
 JSON
 ```
 
-### 5) Search
+### 5) 搜索
 
-Endpoint: `POST /v2/search`
-
-Use search when the user gives a fuzzy description (“the note about…”).
+- 接口：`POST /v2/search`
+  - 当用户提供模糊搜索条件时，可以使用此接口进行搜索。
 
 ```bash
 curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/search" \
@@ -177,40 +174,38 @@ curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/search" \
 JSON
 ```
 
-## Tags (safe patterns)
+## 标签的使用规则
 
-### List tags
+### 列出所有标签
 
-`GET /v2/tags?limit=100`
+- 请求：`GET /v2/tags?limit=100`
 
-### Create tag
+### 创建新标签
 
-`POST /v2/tags` with `{ "name": "tag name", "description": null, "resourceId": null }`
+- 请求：`POST /v2/tags`，参数格式为：`{"name": "标签名称", "description": null, "resourceId": null}`
 
-### Assign tags on create
+### 在创建资源时分配标签
 
-Use `tags: [{"name":"x"}]` or `tags: [{"id":"<uuid>"}]` only.
+- 可以使用 `tags: [{"name":"x"}]` 或 `tags: [{"id":"<uuid>"}]` 来指定标签。
 
-## Rate limiting + retries
+## 速率限制与重试机制
 
-If you get `429 Too Many Requests`:
+如果收到 `429 Too Many Requests` 的错误（请求过多），请：
+- 暂停请求（等待一段时间后重试）。
+- 避免连续快速重复请求；采用分页方式逐步请求。
 
-* Back off (sleep + jitter) and retry.
-* Avoid tight loops; do pagination slowly.
+**注意**：不要在没有确保请求具有幂等性的情况下盲目重试，否则可能会导致重复创建资源。
 
-Do not blindly retry create requests without idempotency (you may create duplicates).
+## 常见问题排查指南
 
-## Troubleshooting quick map
+- `404 Not Found`：通常表示请求的接口或资源ID/父ID错误，或者权限问题。
+- `400 Bad Request`：表示请求格式不正确，请检查必填字段和标签格式。
+- `403 Forbidden`：表示订阅或权限限制。
+- `429 Too Many Requests`：请暂停请求并稍后重试。
 
-* `404 Not Found`: almost always wrong endpoint, wrong resourceId/parentId, or permissions.
-* `400 Bad Request`: schema validation; check required fields and tag shape.
-* `403 Forbidden`: subscription/permission limits.
-* `429 Too Many Requests`: back off + retry.
+## API参考文档
 
-## API reference
+OpenAPI的完整规范位于：
+- `{baseDir}/fabric-api.yaml`
 
-The OpenAPI schema lives here:
-
-* `{baseDir}/fabric-api.yaml`
-
-When in doubt, consult it before guessing endpoint names or payload shapes.
+在不确定接口名称或请求参数格式时，请先查阅该文档。

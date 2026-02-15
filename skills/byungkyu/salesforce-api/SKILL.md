@@ -15,9 +15,9 @@ metadata:
 
 # Salesforce
 
-Access the Salesforce REST API with managed OAuth authentication. Query records using SOQL, manage sObjects, and perform CRUD operations on your Salesforce data.
+您可以使用托管的 OAuth 认证来访问 Salesforce REST API。通过 SOQL 查询记录、管理 sObjects，并对 Salesforce 数据执行创建（Create）、读取（Read）、更新（Update）和删除（Delete，简称 CRUD）操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Query contacts
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/salesforce/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Salesforce REST API endpoint path. The gateway proxies requests to `{instance}.salesforce.com` (automatically replaced with your connection config) and injects your access token.
+请将 `{native-api-path}` 替换为实际的 Salesforce REST API 端点路径。该网关会将请求代理到 `{instance}.salesforce.com`（会根据您的连接配置自动替换），并插入您的访问令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Salesforce OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Salesforce OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Salesforce connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Salesforce 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,35 +138,35 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### SOQL Query
+### SOQL 查询
 
 ```bash
 GET /salesforce/services/data/v59.0/query?q=SELECT+Id,Name+FROM+Contact+LIMIT+10
 ```
 
-Complex query:
+复杂查询示例：
 
 ```bash
 GET /salesforce/services/data/v59.0/query?q=SELECT+Id,Name,Email+FROM+Contact+WHERE+Email+LIKE+'%example.com'+ORDER+BY+CreatedDate+DESC
 ```
 
-### Get Object
+### 获取对象信息
 
 ```bash
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
 ```
 
-Example:
+示例：
 
 ```bash
 GET /salesforce/services/data/v59.0/sobjects/Contact/003XXXXXXXXXXXXXXX
 ```
 
-### Create Object
+### 创建对象
 
 ```bash
 POST /salesforce/services/data/v59.0/sobjects/{objectType}
@@ -179,7 +179,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Object
+### 更新对象
 
 ```bash
 PATCH /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
@@ -190,31 +190,31 @@ Content-Type: application/json
 }
 ```
 
-### Delete Object
+### 删除对象
 
 ```bash
 DELETE /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
 ```
 
-### Describe Object (get schema)
+### 描述对象（获取对象结构）
 
 ```bash
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/describe
 ```
 
-### List Objects
+### 列出对象
 
 ```bash
 GET /salesforce/services/data/v59.0/sobjects
 ```
 
-### Search (SOSL)
+### 搜索（SOSL）
 
 ```bash
 GET /salesforce/services/data/v59.0/search?q=FIND+{searchTerm}+IN+ALL+FIELDS+RETURNING+Contact(Id,Name)
 ```
 
-### Composite Request (batch multiple operations)
+### 组合请求（批量执行多个操作）
 
 ```bash
 POST /salesforce/services/data/v59.0/composite
@@ -236,7 +236,7 @@ Content-Type: application/json
 }
 ```
 
-### Composite Batch Request
+### 组合批量请求
 
 ```bash
 POST /salesforce/services/data/v59.0/composite/batch
@@ -250,7 +250,7 @@ Content-Type: application/json
 }
 ```
 
-### sObject Collections Create (batch create)
+### 创建 sObject 集合（批量创建）
 
 ```bash
 POST /salesforce/services/data/v59.0/composite/sobjects
@@ -265,47 +265,47 @@ Content-Type: application/json
 }
 ```
 
-### sObject Collections Delete (batch delete)
+### 删除 sObject 集合（批量删除）
 
 ```bash
 DELETE /salesforce/services/data/v59.0/composite/sobjects?ids=003XXXXX,003YYYYY&allOrNone=true
 ```
 
-### Get Updated Records
+### 获取已更新的记录
 
 ```bash
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/updated/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z
 ```
 
-### Get Deleted Records
+### 获取已删除的记录
 
 ```bash
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/deleted/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z
 ```
 
-### Get API Limits
+### 获取 API 限制
 
 ```bash
 GET /salesforce/services/data/v59.0/limits
 ```
 
-### List API Versions
+### 列出 API 版本
 
 ```bash
 GET /salesforce/services/data/
 ```
 
-## Common Objects
+## 常见对象
 
-- `Account` - Companies/Organizations
-- `Contact` - People associated with accounts
-- `Lead` - Potential customers
-- `Opportunity` - Sales deals
-- `Case` - Support cases
-- `Task` - To-do items
-- `Event` - Calendar events
+- `Account` - 公司/组织
+- `Contact` - 与账户关联的人员
+- `Lead` - 潜在客户
+- `Opportunity` - 销售机会
+- `Case` - 支持案例
+- `Task` - 待办事项
+- `Event` - 日历事件
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -334,35 +334,35 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Use URL encoding for SOQL queries (spaces become `+`)
-- Record IDs are 15 or 18 character alphanumeric strings
-- API version (v59.0) can be adjusted; latest is v65.0
-- Update and Delete operations return HTTP 204 (no content) on success
-- Dates for updated/deleted queries use ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`
-- Use `allOrNone: true` in batch operations for atomic transactions
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 对 SOQL 查询使用 URL 编码（空格会转换为 `+`）。
+- 记录 ID 是 15 或 18 个字符的字母数字字符串。
+- API 版本（v59.0）可以调整；最新版本为 v65.0。
+- 创建和删除操作成功时会返回 HTTP 204（无内容）状态码。
+- 更新/删除操作的日期使用 ISO 8601 格式：`YYYY-MM-DDTHH:MM:SSZ`。
+- 在批量操作中使用 `allOrNone: true` 以确保原子性交易。
+- 重要提示：当 URL 包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Salesforce connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Salesforce API |
+| 400 | 未找到 Salesforce 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Salesforce API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -373,26 +373,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `salesforce`. For example:
+1. 确保您的 URL 路径以 `salesforce` 开头。例如：
+- 正确：`https://gateway.maton.ai/salesforce/services/data/v59.0/query`
+- 错误：`https://gateway.maton.ai/services/data/v59.0/query`
 
-- Correct: `https://gateway.maton.ai/salesforce/services/data/v59.0/query`
-- Incorrect: `https://gateway.maton.ai/services/data/v59.0/query`
+## 资源
 
-## Resources
-
-- [REST API Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_rest.htm)
-- [List sObjects](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_describeGlobal.htm)
-- [Describe sObject](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm)
-- [Get Record](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_retrieve_get.htm)
-- [Create Record](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm)
-- [Update Record](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm)
-- [Delete Record](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm)
-- [Query Records (SOQL)](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_query.htm)
-- [Composite Request](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_composite_composite_post.htm)
-- [sObject Collections](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_composite_sobjects_collections_create.htm)
-- [SOQL Reference](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql.htm)
-- [SOSL Reference](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl.htm)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [REST API 开发者指南](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/intro_rest.htm)
+- [列出 sObjects](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/resources_describeGlobal.htm)
+- [描述 sObject](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/resources_sobject_describe.htm)
+- [获取记录](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/resources_sobject_retrieve_get.htm)
+- [创建记录](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/dome_sobject_create.htm)
+- [更新记录](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/dome_update_fields.htm)
+- [删除记录](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/dome_delete_record.htm)
+- [查询记录（SOQL）](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/resources_query.htm)
+- [组合请求](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/resources_composite_composite_post.htm)
+- [sObject 集合](https://developer.salesforce.com/docs/atlas.en-us.api/rest.meta/api_rest/resources_composite_sobjects_collections_create.htm)
+- [SOQL 参考](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql.htm)
+- [SOSL 参考](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl.htm)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

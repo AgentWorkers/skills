@@ -1,21 +1,21 @@
 ---
 name: multi-user-workspace
-description: Multi-user workspace management with sandbox permissions, user profiles, and relationship networks.
+description: 支持多用户工作空间管理，具备沙箱权限机制、用户个人资料功能以及用户关系网络功能。
 ---
 
-# Friends
+# 朋友
 
-Configure per-user sessions with sandbox isolation, friend profiles, and relationship awareness.
+支持配置针对每个用户的会话环境（包含沙箱隔离功能）、用户个人资料以及用户间关系的管理。
 
-## Core Concepts
+## 核心概念
 
-- **UserId**: Lowercase unique identifier (e.g., `alice`, `bob`). Used in session keys, filenames, and cross-references.
-- **Session**: One session per user, named `agent:<agentId>:<mainKey>` where `mainKey` typically contains the userId.
-- **Sandbox**: Optional Docker isolation per session, configured in `openclaw.json`.
-- **FRIENDS/**: User profile directory (one file per user, named `{userId}.md`).
-- **RELATIONS/**: Relationship directory (files named `{userId1}-{userId2}.md`, alphabetically sorted, can be mutiple users).
+- **UserId**：小写形式的唯一标识符（例如 `alice`、`bob`），用于会话键、文件名以及跨引用中。
+- **Session**：每个用户对应一个会话，格式为 `agent:<agentId>:<mainKey>`，其中 `mainKey` 通常包含用户的 `userId`。
+- **Sandbox**：可选的会话隔离机制（基于 Docker），配置信息存储在 `openclaw.json` 中。
+- **FRIENDS/****：用户个人资料目录（每个用户对应一个文件，文件名为 `{userId}.md`）。
+- **RELATIONS/****：用户间关系记录目录（文件格式为 `{userId1}-{userId2}.md`，按字母顺序排序，可记录多个用户之间的关系）。
 
-## Example Workspace Structure
+## 示例工作区结构
 
 ```
 workspace/
@@ -32,9 +32,9 @@ workspace/
 
 ## USER.md
 
-Registry of all users. The assistant reads this to identify users and extract `userId` and `Name`.
+存储所有用户的资料。助手会读取该文件以识别用户并提取用户的 `userId` 和 `Name`。
 
-**Format:**
+**格式：**
 
 ```markdown
 # User Registry
@@ -52,13 +52,13 @@ Registry of all users. The assistant reads this to identify users and extract `u
 - Role: guest
 ```
 
-**Note:** `userId` is unique and in lower case. Use `Role` to determine sandbox configuration in `openclaw.json`.
+**注意：** `userId` 是唯一的且为小写形式。请通过 `openclaw.json` 中的 `Role` 字段来配置用户的沙箱环境。
 
 ## FRIENDS/
 
-User profiles. One Markdown file per user, named `{userId}.md`.
+用户个人资料目录。每个用户对应一个 Markdown 文件（文件名为 `{userId}.md`）。
 
-Content is flexible. Common sections include:
+文件内容可以自由定制。常见的包含部分包括：
 
 ```markdown
 # Alice
@@ -80,9 +80,9 @@ Free-form information about the user.
 
 ## RELATIONS/
 
-Interpersonal relationships. Files named `{userId1}-{userId2}.md` (alphabetical order, can be mutiple users).
+记录用户间的关系。文件格式为 `{userId1}-{userId2}.md`（按字母顺序排序，可记录多个用户之间的关系）。
 
-Content is flexible. Example:
+文件内容可以自由定制。示例：
 
 ```markdown
 # Alice & Bob
@@ -101,7 +101,7 @@ Friends who collaborate on projects.
 
 ## AGENTS.md
 
-Instructions for the assistant. Add this section:
+用于向助手提供指令的配置文件。请添加此部分：
 
 ```markdown
 ## User Identification
@@ -120,13 +120,13 @@ When a session starts (after `/new`):
 - Exception: Only when explicitly defined in RELATIONS/
 ```
 
-## Session Configuration
+## 会话配置
 
-Each user gets an isolated session with configurable sandbox and tool permissions. Configure via `openclaw.json`.
+每个用户都会获得一个具有可配置沙箱环境及工具权限的独立会话。具体配置信息请参考 `openclaw.json`。
 
-### Administrator Configuration
+### 管理员配置
 
-Full access, no sandbox restrictions:
+管理员拥有完全访问权限，且不受沙箱限制：
 
 ```json5
 {
@@ -149,9 +149,9 @@ Full access, no sandbox restrictions:
 }
 ```
 
-### Guest Configuration
+### 客户端配置
 
-Sandboxed session with isolated workspace. Guest can read/write/execute in their own directory only:
+客户端会获得一个隔离的工作区环境。客户端用户只能在其自己的目录内进行读写/执行操作：
 
 ```json5
 {
@@ -188,31 +188,31 @@ Sandboxed session with isolated workspace. Guest can read/write/execute in their
 }
 ```
 
-**Directory Setup:**
+## 目录结构说明：
 
 ```bash
 mkdir -p ~/.openclaw/workspace/guests/bob
 ```
 
-**Notes:**
+**注意事项：**
 
-- Guest sees `/workspace` as their root (isolated from main workspace)
-- Can read/write/execute freely within their directory
-- Cannot access USER.md, FRIENDS/, RELATIONS/, or other guests' data
+- 客户端用户将 `/workspace` 目录视为自己的根目录（与主工作区隔离）。
+- 客户端用户可以在自己的目录内自由读写/执行操作。
+- 客户端用户无法访问 `USER.md`、`FRIENDS/`、`RELATIONS/` 目录或其他用户的数据。
 
-### Configuration Options
+### 配置选项
 
-**Sandbox:**
+**沙箱设置：**
 
-- `mode`: `"off"` | `"all"` — Disable or enable sandbox
-- `scope`: `"session"` — One container per user session
-- `workspaceAccess`: `"none"` | `"ro"` | `"rw"` — Workspace file access
+- `mode`：`"off"` | `"all"` — 禁用或启用沙箱功能。
+- `scope`：`"session"` — 每个用户会话对应一个独立的 Docker 容器。
+- `workspaceAccess`：`"none"` | `"ro"` | `"rw"` — 客户端用户对工作区文件的访问权限（只读/读写）。
 
-**Tools:**
+**工具设置：**
 
-- `allow`: Array of permitted tool names
-- `deny`: Array of prohibited tool names (overrides allow)
+- `allow`：允许使用的工具名称列表。
+- `deny`：禁止使用的工具名称列表（会覆盖 `allow` 中的设置）。
 
-**Routing:**
+**路由规则：**
 
-- `bindings[].match.session.regex`: Match session key pattern (e.g., `alice$` matches sessions ending with "alice")
+- `bindings[].match.session.regex`：用于匹配会话键的模式（例如，`alice$` 表示以 “alice” 结尾的会话）。

@@ -1,10 +1,10 @@
 ---
 name: fluxA-x402-payment
-description: A FluxA Agent Wallet skill that enables agents to request budgets, sign x402 payments, and call paid endpoints autonomously. It walks through the full flow—from mandate creation to X-PAYMENT execution—so agents can perform paid actions without human intervention.
+description: 这是一个名为“FluxA Agent Wallet”的技能，它使代理能够自主请求预算、签署X402支付请求，并调用付费终端。该技能涵盖了从创建支付指令到执行X-PAYMENT的整个流程，从而使代理能够在无需人工干预的情况下执行付费操作。
 ---
 
-## Quick Start
-Step 1: Apply for a budget mandate
+## 快速入门
+步骤 1：申请预算授权
 <!--  -->
 ```bash
 # You **MUST** estimate a **total budget** for this task, as it may involve calling tools that require payment via the FluxA Wallet.
@@ -21,7 +21,7 @@ node ./scripts/fluxa-cli.bundle.js mandate-create --desc "{what task}" --amount 
 node ./scripts/fluxa-cli.bundle.js mandate-status --id <mandate-id>
 ```
 
-Step 2: Use the budget mandate to request a payment signature (payment mandate)
+步骤 2：使用预算授权来请求支付签名（payment mandate）
 
 ```
 node ./scripts/fluxa-cli.bundle.js x402-v3 \
@@ -35,7 +35,7 @@ curl -H "X-PAYMENT: $PAYMENT_MANDATE" https://api.example.com/paid-endpoint
 ```
 
 
-## Example
+## 示例
 
 ```
 node ./scripts/fluxa-cli.bundle.js x402-v3 \
@@ -61,7 +61,5 @@ node ./scripts/fluxa-cli.bundle.js x402-v3 \
 }
 ```
 
-## Others
-
-* Error handing during payment flow(fluxa-cli or server error): see ./error-handle.md 
-
+## 其他
+* 在支付流程中处理错误（fluxa-cli 或服务器错误）：请参阅 ./error-handle.md

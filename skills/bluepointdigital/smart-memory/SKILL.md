@@ -1,290 +1,147 @@
 ---
 name: smart-memory
-description: Context-aware memory for AI agents with dual retrieval modes — fast vector search or curated Focus Agent synthesis. SQLite backend, zero configuration, local embeddings.
+description: 面向AI代理的上下文感知内存系统，支持两种检索模式：快速向量搜索或定制化的Focus Agent合成功能。采用SQLite作为后端数据库，无需任何配置即可使用，同时支持本地嵌入（local embeddings）技术。
 ---
 
-# Smart Memory v2.1 - Focus Agent Edition
+# Smart Memory v2.1 – Focus Agent Edition
 
-**Drop-in replacement for OpenClaw's memory system** with superior search quality and optional curated retrieval via Focus Agent.
+**作为 OpenClaw 内存系统的替代方案**，具备更出色的搜索性能，并支持通过 Focus Agent 进行可选的精选内容检索。
 
-## Features
+## 主要特性
 
-- **Hybrid Search**: Combines FTS5 keyword search (BM25) with semantic vector search
-- **Focus Agent**: Multi-pass curation for complex queries (retrieve → rank → synthesize)
-- **Dual Modes**: Fast (direct) or Focus (curated) — toggle anytime
-- **SQLite Backend**: Single-file database, no external services
-- **100% Local**: Embeddings run locally with Transformers.js (no API keys)
-- **Auto-Optimization**: Uses sqlite-vec when available for native vector ops
-- **Zero Configuration**: Works immediately after install
+- **混合搜索**：结合了 FTS5 关键词搜索（BM25）和语义向量搜索技术
+- **Focus Agent**：针对复杂查询的多阶段内容精选过程（检索 → 排序 → 合成）
+- **双模式**：快速模式（直接搜索）或精选模式（智能检索）——可随时切换
+- **SQLite 后端**：使用单文件数据库，无需外部服务
+- **100% 本地化**：通过 Transformers.js 在本地运行嵌入模型（无需 API 密钥）
+- **自动优化**：在支持的情况下使用 sqlite-vec 进行原生向量运算
+- **零配置**：安装后立即可用
 
-## Installation
+## 安装方法
 
-```bash
-npx clawhub install smart-memory
-```
+（安装步骤请参见相应的代码块或访问 ClawHub：https://clawhub.ai/BluePointDigital/smart-memory）
 
-Or from ClawHub: https://clawhub.ai/BluePointDigital/smart-memory
+## 快速入门
 
-## Quick Start
+### 1. 同步数据
+（同步数据的代码请参见相应的代码块）
 
-### 1. Sync Memory
-```bash
-node smart-memory/smart_memory.js --sync
-```
+### 2. 搜索（快速模式 - 默认设置）
+（搜索操作的代码请参见相应的代码块）
 
-### 2. Search (Fast Mode - Default)
-```bash
-node smart-memory/smart_memory.js --search "James values principles"
-```
+### 3. 启用精选模式（智能检索）
+（启用精选模式的代码请参见相应的代码块）
 
-### 3. Enable Focus Mode (Curated Retrieval)
-```bash
-node smart-memory/smart_memory.js --focus
-node smart-memory/smart_memory.js --search "complex decision about project direction"
-```
+### 4. 禁用精选模式
+（禁用精选模式的代码请参见相应的代码块）
 
-### 4. Disable Focus Mode
-```bash
-node smart-memory/smart_memory.js --unfocus
-```
+## 搜索模式
 
-## Search Modes
+### 快速模式（默认模式）
+直接进行向量相似性搜索。适用于：
+- 简单查询
+- 快速获取事实信息
+- 常规查询
 
-### Fast Mode (Default)
-Direct vector similarity search. Best for:
-- Simple lookups
-- Quick fact retrieval
-- Routine queries
+（快速模式的代码请参见相应的代码块）
 
-```bash
-node smart-memory/smart_memory.js --search "git remote"
-```
+### 精选模式（智能检索）
+通过 Focus Agent 进行多阶段内容精选。适用于：
+- 复杂决策
+- 多项事实的综合分析
+- 规划与策略制定
+- 选项比较
 
-### Focus Mode (Curated)
-Multi-pass curation via Focus Agent. Best for:
-- Complex decisions
-- Multi-fact synthesis
-- Planning and strategy
-- Comparing options
+（精选模式的代码请参见相应的代码块）
 
-```bash
-node smart-memory/smart_memory.js --focus
-node smart-memory/smart_memory.js --search "What did we decide about BluePointDigital architecture?"
-```
+**精选模式的工作原理：**
+1. **检索**：获取 20 多个相关结果
+2. **排序**：根据权重相关性进行排序（结合向量相似度和关键词匹配结果）
+3. **合成**：将结果整合成连贯的叙述
+4. **提供**：附带置信度的结构化上下文信息
 
-**How Focus Mode Works:**
-1. **Retrieve** 20+ chunks (broad net)
-2. **Rank** by weighted relevance (vector + term matching + source boost)
-3. **Synthesize** into coherent narrative
-4. **Deliver** structured context with confidence scores
+## 工作原理
 
-## How It Works
+### 混合搜索算法
 
-### Hybrid Search Algorithm
+1. **FTS5**：查找精确的关键词匹配结果（基于 BM25 算法进行排序）
+2. **向量搜索**：查找语义上的匹配结果（基于余弦相似度）
+3. **合并结果**：采用加权评分方式：
+   - 70% 来自向量相似度得分 + 30% 来自关键词匹配得分
+   - 确保同时捕捉到用户的意图和精确的文本内容
 
-1. **FTS5** finds exact keyword matches (BM25 ranking)
-2. **Vector search** finds semantic matches (cosine similarity)
-3. **Merged results** using weighted scoring:
-   - 70% vector score + 30% keyword score
-   - Catches both "what you mean" and "exact tokens"
+### Focus Agent 的内容精选功能
 
-### Focus Agent Curation
+启用该功能后，搜索过程会进行额外的处理：
+（精选功能的代码请参见相应的代码块）
 
-When enabled, searches go through additional processing:
-
-```
-Query: "What did we decide about BluePointDigital?"
-
-┌─────────────────┐
-│  Retrieve 20+   │  ← Vector similarity
-│    chunks       │
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│   Weighted      │  ← Term matching
-│    Ranking      │    Source boosting
-│                 │    Recency boost
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│   Select Top 5  │  ← Threshold filtering
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│   Synthesize    │  ← Group by source
-│   Narrative     │    Extract key facts
-└────────┬────────┘
-         ▼
-    Structured output with confidence
-```
-
-## Tools
+## 工具
 
 ### memory_search
-```javascript
-memory_search({
-    query: "deployment configuration",
-    maxResults: 5
-})
-```
+（相关工具的代码请参见相应的代码块）
 
-Returns (Fast Mode):
-```json
-{
-    "query": "deployment configuration",
-    "mode": "fast",
-    "results": [
-        {
-            "path": "MEMORY.md",
-            "from": 42,
-            "lines": 8,
-            "score": 0.89,
-            "snippet": "..."
-        }
-    ]
-}
-```
+**快速模式下的返回结果：**
+（快速模式下的返回结果代码请参见相应的代码块）
 
-Returns (Focus Mode):
-```json
-{
-    "query": "deployment configuration",
-    "mode": "focus",
-    "confidence": 0.87,
-    "sources": ["MEMORY.md", "memory/2026-02-05.md"],
-    "synthesis": "Relevant context for: \"deployment configuration\"\n\nFrom MEMORY.md:\n  • Docker setup uses docker-compose...\n  • Production deployment on AWS...\n\nFrom memory/2026-02-05.md:\n  • Decided to use Railway instead...",
-    "facts": [
-        {
-            "content": "Docker setup uses docker-compose...",
-            "source": "MEMORY.md",
-            "lines": "42-50",
-            "confidence": 0.89
-        }
-    ]
-}
-```
+**精选模式下的返回结果：**
+（精选模式下的返回结果代码请参见相应的代码块）
 
 ### memory_get
-```javascript
-memory_get({
-    path: "MEMORY.md",
-    from: 42,
-    lines: 10
-})
-```
+（相关函数的代码请参见相应的代码块）
 
-### memory_mode (Focus Toggle)
-```javascript
-memory_mode('focus')    // Enable curated retrieval
-memory_mode('fast')     // Disable curated retrieval
-memory_mode()           // Get current mode status
-```
+### memory_mode（切换搜索模式）
+（切换搜索模式的代码请参见相应的代码块）
 
-## CLI Commands
+## 命令行接口（CLI）命令
+（CLI 命令的代码请参见相应的代码块）
 
-```bash
-# Sync memory files
-node smart_memory.js --sync
+## 性能对比
 
-# Search (uses current mode)
-node smart_memory.js --search "query" [--max-results N]
+| 特性 | 快速模式 | 精选模式（使用 sqlite-vec） |
+|---------|------------|----------------------|
+| 关键词搜索 | FTS5（原生） | FTS5（原生） |
+| 向量搜索 | JS 余弦相似度 | 原生 KNN 算法 |
+| 内容精选 | 加速 50-100 毫秒 | 加速 50-100 毫秒 |
+| 搜索速度 | 约 100 个结果/秒 | 约 10,000 个结果/秒 |
+| 内存使用 | 全部数据存储在 RAM 中 | 数据库处理 |
 
-# Search with mode override
-node smart_memory.js --search "query" --focus
-node smart_memory.js --search "query" --fast
+## 何时使用精选模式
 
-# Toggle modes
-node smart_memory.js --focus      # Enable focus mode
-node smart_memory.js --unfocus    # Disable focus mode
-node smart_memory.js --fast       # Same as --unfocus
+在以下情况下使用 `--focus` 选项或启用精选模式：
+- 查询涉及多个相关概念
+- 需要综合性的上下文信息，而不仅仅是原始数据片段
+- 需要基于关系做出决策
+- 需要总结项目历史信息
+- 需要比较不同文件中的内容
 
-# Check status
-node smart_memory.js --status     # Database stats + current mode
-node smart_memory.js --mode       # Current mode details
+**不建议在以下情况下使用精选模式：**
+- 需要快速查找具体信息（如电话号码、命令语法）
+- 需要精确的文本匹配结果
+- 对搜索延迟要求较高，而不在乎上下文质量
 
-# Focus agent only
-node focus_agent.js --search "query"
-node focus_agent.js --suggest "query"  # Check if focus recommended
+## （可选）安装 sqlite-vec
 
-# Mode management
-node memory_mode.js focus
-node memory_mode.js unfocus
-node memory_mode.js status
-```
+为了获得最佳性能，请安装 sqlite-vec：
+（安装 sqlite-vec 的代码请参见相应的代码块）
+**未安装时**：系统仍可正常使用，但在处理大型数据库时速度会稍慢。
 
-## Performance
+## 文件结构
+（文件结构的代码请参见相应的代码块）
 
-| Feature | Fallback | With sqlite-vec |
-|---------|----------|-----------------|
-| Keyword search | FTS5 (native) | FTS5 (native) |
-| Vector search | JS cosine | Native KNN |
-| Focus curation | +50-100ms | +50-100ms |
-| Speed | ~100 chunks/sec | ~10,000 chunks/sec |
-| Memory | All in RAM | DB handles it |
+## 环境变量设置
+（环境变量设置的代码请参见相应的代码块）
 
-## When to Use Focus Mode
+## 版本对比：v1 vs v2 vs v2.1
 
-Use `--focus` or enable focus mode when:
-- Query involves multiple related concepts
-- You need synthesized context, not raw chunks
-- Making decisions that require understanding relationships
-- Summarizing project history
-- Comparing options mentioned in different files
+| 版本 | v1（JSON 格式） | v2（SQLite 数据库） | v2.1（Focus Agent 版本） |
+|--------|-----------|------------------|-------------------|
+| 搜索方式 | 仅使用向量搜索 | 混合搜索（BM25 + 向量搜索） | 混合搜索 + 智能内容精选 |
+| 数据存储方式 | JSON 文件 | SQLite 数据库 | SQLite 数据库 |
+| 扩展性 | 处理约 1000 个结果 | 无限制 | 无限制 |
+| 关键词匹配能力 | 较弱 | 强（FTS5 算法） | 强（FTS5 算法） |
+| 上下文生成能力 | 无 | 无 | 有（可切换） |
+| 配置要求 | 无需配置 | 无需配置 | 无需配置 |
 
-Don't use focus mode when:
-- Quick fact lookup (phone number, command syntax)
-- You need exact text matches
-- Latency matters more than context quality
+## 许可证
 
-## Installation: sqlite-vec (Optional)
-
-For best performance, install sqlite-vec:
-
-```bash
-# macOS
-brew install sqlite-vec
-
-# Ubuntu/Debian
-# Download from https://github.com/asg017/sqlite-vec/releases
-# Place vec0.so in ~/.local/lib/ or /usr/local/lib/
-```
-
-Without it: Works fine, just slower on large databases.
-
-## File Structure
-
-```
-smart-memory/
-├── smart_memory.js      # Main CLI
-├── focus_agent.js       # Curated retrieval engine
-├── memory_mode.js       # Mode toggle commands
-├── memory.js            # OpenClaw wrapper
-├── db.js                # SQLite layer
-├── search.js            # Hybrid search
-├── chunker.js           # Token-based chunking
-├── embed.js             # Transformers.js embeddings
-└── vector-memory.db     # SQLite database (auto-created)
-```
-
-## Environment Variables
-
-```bash
-MEMORY_DIR=/path/to/memory        # Default: ./memory
-MEMORY_FILE=/path/to/MEMORY.md    # Default: ./MEMORY.md
-MEMORY_DB_PATH=/path/to/db.sqlite # Default: ./vector-memory.db
-```
-
-## Comparison: v1 vs v2 vs v2.1
-
-| | v1 (JSON) | v2 (SQLite) | v2.1 (Focus Agent) |
-|--|-----------|-------------|-------------------|
-| Search | Vector only | Hybrid (BM25 + Vector) | Hybrid + Focus Curation |
-| Storage | JSON file | SQLite | SQLite |
-| Scale | ~1000 chunks | Unlimited | Unlimited |
-| Keyword match | Weak | Strong (FTS5) | Strong (FTS5) |
-| Context curation | No | No | Yes (toggle) |
-| Setup | Zero config | Zero config | Zero config |
-
-## License
-
-MIT
+MIT 许可证

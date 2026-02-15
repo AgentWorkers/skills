@@ -1,51 +1,51 @@
 ---
 name: gifhorse
-description: Search video dialogue and create reaction GIFs with timed subtitles. Perfect for creating meme-worthy clips from movies and TV shows.
+description: 搜索视频中的对话内容，并生成带有定时字幕的反应动图。非常适合从电影和电视剧中制作出适合制作模因的片段。
 homepage: https://github.com/Coyote-git/gifhorse
 metadata: {"clawdbot":{"emoji":"🐴","requires":{"bins":["gifhorse","ffmpeg"]},"install":[{"id":"gifhorse-setup","kind":"shell","command":"git clone https://github.com/Coyote-git/gifhorse.git ~/gifhorse && cd ~/gifhorse && python3 -m venv venv && source venv/bin/activate && pip install -e .","bins":["gifhorse"],"label":"Install gifhorse CLI tool"},{"id":"ffmpeg-full","kind":"shell","command":"brew install ffmpeg-full","bins":["ffmpeg"],"label":"Install FFmpeg-full (macOS)"}],"config":{"examples":[{"GIFHORSE_DB":"~/gifhorse/transcriptions.db"}]}}}
 ---
 
-# GifHorse - Dialogue Search & GIF Creator
+# GifHorse - 对话搜索与GIF生成工具
 
-Create reaction GIFs from your video library by searching dialogue and adding timed subtitles.
+通过搜索视频中的对话内容并添加定时字幕，您可以从自己的视频库中创建反应GIF。
 
-## What GifHorse Does
+## GifHorse的功能
 
-1. **Transcribe videos** - Extract dialogue with timestamps by downloading subtitles, using local .srt files, or Whisper AI
-2. **Search dialogue** - Find quotes across your entire video library instantly
-3. **Preview clips** - See exactly what will be captured before creating the GIF
-4. **Create GIFs** - Generate GIFs with perfectly timed subtitles and optional watermarks
+1. **转录视频**：通过下载字幕文件、使用本地.srt文件或Whisper AI技术，提取带有时间戳的对话内容。
+2. **搜索对话**：能够快速在整个视频库中查找特定的对话片段。
+3. **预览片段**：在生成GIF之前，您可以预览最终效果。
+4. **创建GIF**：生成带有完美时间对齐的字幕以及可选水印的GIF。
 
-## Setup
+## 设置
 
-### First Time Setup
+### 首次使用
 
-1. Install gifhorse (via install button above)
-2. Install FFmpeg-full for subtitle rendering (via install button above)
-3. Transcribe your video library (downloads subtitles automatically):
+1. 安装gifhorse（通过上方的安装按钮）。
+2. 安装FFmpeg-full以支持字幕渲染（通过上方的安装按钮）。
+3. 转录您的视频库（系统会自动下载字幕文件）：
 
 ```bash
 cd ~/gifhorse && source venv/bin/activate
 gifhorse transcribe ~/Movies
 ```
 
-The gifhorse command must be run from within its virtual environment. You can activate it with:
+`gifhorse`命令必须在虚拟环境中运行。您可以使用以下命令激活虚拟环境：
 
 ```bash
 cd ~/gifhorse && source venv/bin/activate
 ```
 
-Or use the activation helper:
+或者使用激活辅助工具：
 
 ```bash
 source ~/gifhorse/activate.sh
 ```
 
-## Available Commands
+## 可用命令
 
-### Transcribe Videos
+### 转录视频
 
-Extract dialogue from your videos (one-time per video):
+从视频中提取对话内容（每个视频仅执行一次）：
 
 ```bash
 # Default: downloads subtitles from online providers (fast, recommended)
@@ -61,18 +61,18 @@ gifhorse transcribe /path/to/video.mp4 --use-whisper
 gifhorse transcribe /path/to/videos --force
 ```
 
-### Download Subtitles Only
+### 仅下载字幕
 
-Download .srt files without storing in the database:
+下载.srt文件，但不将其存储在数据库中：
 
 ```bash
 gifhorse fetch-subtitles /path/to/videos
 gifhorse fetch-subtitles /path/to/videos --skip-existing
 ```
 
-### Search Dialogue
+### 搜索对话
 
-Find quotes across your entire library:
+在整个视频库中查找指定的对话片段：
 
 ```bash
 # Basic search
@@ -88,18 +88,18 @@ gifhorse search "memorable quote" --all
 gifhorse search "memorable quote" --limit 50
 ```
 
-### Preview Before Creating
+### 创建前预览
 
-See exactly what will be captured:
+在生成GIF之前，您可以查看最终效果：
 
 ```bash
 gifhorse preview "memorable quote" 1
 gifhorse preview "quote" 1 --include-before 1 --include-after 1
 ```
 
-### Create GIF
+### 创建GIF
 
-Generate the GIF with subtitles:
+生成带有字幕的GIF：
 
 ```bash
 # Basic GIF (auto-named from dialogue, saved to exports/)
@@ -127,7 +127,7 @@ gifhorse create "quote" 1 --send
 gifhorse create "quote" 1 --send-to "+15551234567"
 ```
 
-### Manage Database
+### 管理数据库
 
 ```bash
 # Remove videos by path pattern (SQL LIKE wildcards)
@@ -139,7 +139,7 @@ gifhorse subtitle-status ~/Videos
 gifhorse subtitle-status ~/Videos --missing-only
 ```
 
-### Check Status
+### 检查状态
 
 ```bash
 # See transcription stats
@@ -149,7 +149,7 @@ gifhorse stats
 gifhorse list
 ```
 
-### Configuration
+### 配置
 
 ```bash
 # Set phone number for iMessage sending
@@ -159,157 +159,98 @@ gifhorse config --set-phone "+15551234567"
 gifhorse config --show
 ```
 
-## Timing Options
+## 时间控制选项
 
-Control exactly what gets captured:
+您可以精确控制哪些内容会被包含在GIF中：
 
-- `--include-before N` - Include N dialogue segments before the match
-- `--include-after N` - Include N dialogue segments after the match
-- `--padding-before SECS` - Add buffer seconds before dialogue starts (default: 1.0)
-- `--padding-after SECS` - Add buffer seconds after dialogue ends (default: 1.0)
-- `--start-offset SECS` - Manual adjustment to start time (can be negative)
-- `--end-offset SECS` - Manual adjustment to end time (can be negative)
+- `--include-before N`：在目标对话片段之前显示N个对话片段。
+- `--include-after N`：在目标对话片段之后显示N个对话片段。
+- `--padding-before SECS`：在对话开始前添加缓冲时间（默认值：1.0秒）。
+- `--padding-after SECS`：在对话结束后添加缓冲时间（默认值：1.0秒）。
+- `--start-offset SECS`：手动调整开始时间（可以为负数）。
+- `--end-offset SECS`：手动调整结束时间（可以为负数）。
 
-**Important:** For reactions after dialogue, use `--padding-after` instead of `--include-after`. The include-after option captures ALL time until the next dialogue segment (could be 30+ seconds!).
+**注意**：对于需要在对话之后的反应动画，应使用`--padding-after`选项，而不是`--include-after`。`--include-after`选项会捕获直到下一个对话片段开始的所有内容（可能会超过30秒）。
 
-## Quality Options
+## 质量选项
 
-- `--quality low|medium|high` - Color palette quality (affects file size)
-- `--fps N` - Frames per second (default: 15, use 24 for smooth)
-- `--width N` - Width in pixels (default: 480, use 720 for HD)
+- `--quality low|medium|high`：颜色调色板的质量（影响文件大小）。
+- `--fps N`：每秒帧数（默认值：15帧；使用24帧可获得更流畅的效果）。
+- `--width N`：GIF的宽度（以像素为单位，默认值：480像素；使用720像素可生成高清GIF）。
 
-## Subtitle Options
+## 字幕选项
 
-- `-s, --sub NUM OLD NEW` - Substitute words in a segment (repeatable). Replaced words render struck through in red, replacements in red. Segment numbers shown by `preview`.
-- `-r, --replace NUM OLD NEW` - Replace words cleanly (no strikethrough). Repeatable.
-- `--no-subtitles` - Create GIF without subtitle overlay
+- `-s, --sub NUM OLD NEW`：替换视频中的特定单词。被替换的单词会以红色显示，替换后的内容也会以红色显示；片段编号会在预览中显示。
+- `-r, --replace NUM OLD NEW`：彻底替换单词（不会显示删除线）。该操作可重复执行。
+- `--no-subtitles`：创建不带字幕覆盖层的GIF。
 
-## Output
+## 输出设置
 
-- Default output filename is auto-derived from dialogue text (e.g., `i_dont_think_so.gif`) and saved to `exports/`
-- Use `-o PATH` to override. Collision handling appends `_2`, `_3`, etc.
+- 默认输出文件名根据对话内容自动生成（例如：`i_dont_think_so.gif`），并保存在`exports/`目录下。
+- 可使用`-o PATH`参数覆盖输出路径。如果文件名冲突，系统会自动添加后缀（如 `_2`、`_3` 等）。
 
-## iMessage
+## iMessage功能
 
-- `--send` - Send created GIF to configured phone number via iMessage (macOS only)
-- `--send-to NUMBER` - Send to a specific phone number (overrides config)
+- `--send`：通过iMessage将生成的GIF发送到指定的电话号码（仅适用于macOS）。
+- `--send-to NUMBER`：直接发送到指定的电话号码（覆盖默认设置）。
 
-**Note:** All GIFs automatically include a subtle "gifhorse" watermark in the bottom-right corner.
+**注意**：所有生成的GIF都会在右下角添加一个微小的“gifhorse”水印。
 
-## Common Workflows
+## 常见使用场景
 
-### Quick Reaction GIF
+- **快速反应GIF**：创建简短的反应GIF。
+- **完整对话片段**：提取并展示完整的对话内容。
+- **带文字替换的Meme**：在GIF中替换特定单词。
+- **高画质GIF（适用于Twitter/X平台）**：生成适合社交媒体的高质量GIF。
+- **带对话后反应效果的场景**：在对话结束后添加相应的动画效果。
+- **通过iMessage发送GIF**：通过iMessage发送GIF。
 
-```bash
-gifhorse search "perfect"
-gifhorse create "perfect" 1 --padding-after 2.0
-```
+## 使用技巧
 
-### Full Conversation Exchange
+1. **务必先预览**：在生成GIF之前，请使用`preview`功能检查时间对齐是否正确。
+2. **自动下载字幕**：只需运行`gifhorse transcribe`，系统会自动下载字幕。
+3. **注意文件大小**：高质量和长视频会导致文件体积较大（20秒的视频可能超过20MB）。
+4. **选择合适的缓冲时间**：对于反应动画，使用`--padding-after`而非`--include-after`。
+5. **添加上下文信息**：使用`--context 2`查看对话的上下文。
+6. **重新转录**：如果字幕内容更新，可以使用`--force`选项重新生成转录结果。
+7. **检查字幕覆盖情况**：使用`subtitle-status`命令查看哪些视频需要添加字幕。
 
-```bash
-gifhorse search "key phrase"
-gifhorse preview "key phrase" 1 --include-before 2 --include-after 1
-gifhorse create "key phrase" 1 --include-before 2 --include-after 1
-```
+## 文件大小参考
 
-### Meme with Word Substitution
+- **低画质，10秒，360p**：约1-2 MB
+- **中等画质，10秒，480p**：约3-5 MB
+- **高画质，20秒，720p**：约20 MB以上
 
-```bash
-gifhorse preview "the age of men" 1 --include-after 1
-gifhorse create "the age of men" 1 --include-after 1 \
-  -s 1 "men" "standardized software" \
-  -s 2 "orc" "custom applications"
-```
+## 常见问题解决方法
 
-### High Quality for Twitter/X
+- **“command not found: gifhorse”**：请确保已激活虚拟环境。
+- **字幕渲染错误**：请确认已安装FFmpeg-full。
+- **视频文件未找到**：由于数据库存储的是绝对路径，如果视频位置发生变化，请重新进行转录。
 
-```bash
-gifhorse create "quote" 1 --width 720 --fps 24 --quality high -o tweet.gif
-```
+## 网络共享支持
 
-### Scene with Reaction After Dialogue
+GifHorse支持通过网络挂载的视频文件。
 
-```bash
-gifhorse create "memorable line" 1 --padding-after 3.0
-```
+## 适用场景
 
-### Create and Send via iMessage
+当用户需要执行以下操作时，可以使用GifHorse：
 
-```bash
-gifhorse config --set-phone "+15551234567"
-gifhorse create "quote" 1 --send
-```
+- 在视频库中搜索特定对话或片段。
+- 从电影或电视剧中创建反应GIF。
+- 制作带有文字替换的Meme GIF。
+- 为视频片段添加字幕。
+- 转录视频以方便后续搜索。
+- 在生成GIF之前预览效果。
+- 通过iMessage发送GIF。
+- 从数据库中删除视频文件。
+- 检查视频库中的字幕状态。
 
-## Tips & Tricks
+## 更多信息
 
-1. **Always preview first** - Use `preview` to verify timing before creating
-2. **Default downloads subtitles** - Just run `gifhorse transcribe` and subtitles are fetched automatically
-3. **Watch file sizes** - High quality + long duration = large files (20s can be 20+ MB)
-4. **Padding vs Include** - For reactions, use `--padding-after` not `--include-after`
-5. **Search with context** - Add `--context 2` to see surrounding dialogue
-6. **Re-transcribe with --force** - Use `--force` to update transcriptions after getting better subtitles
-7. **Check subtitle coverage** - Use `subtitle-status` to see which videos need subtitles
+- **GitHub仓库**：https://github.com/Coyote-git/gifhorse
+- **使用指南**：https://github.com/Coyote-git/gifhorse/blob/main/USAGE_GUIDE.md
+- **开发计划**：https://github.com/Coyote-git/gifhorse/blob/main/ROADMAP.md
 
-## File Size Guide
+## 许可证
 
-- **Low quality, 10s, 360p:** ~1-2 MB
-- **Medium quality, 10s, 480p:** ~3-5 MB
-- **High quality, 20s, 720p:** ~20+ MB
-
-## Troubleshooting
-
-### "command not found: gifhorse"
-
-Activate the virtual environment:
-
-```bash
-cd ~/gifhorse && source venv/bin/activate
-```
-
-### Subtitle rendering errors
-
-Make sure FFmpeg-full is installed:
-
-```bash
-brew install ffmpeg-full
-```
-
-### Video file not found
-
-The database stores absolute paths. If you moved videos after transcription, re-transcribe in the new location.
-
-## Network Share Support
-
-GifHorse works with network-mounted videos:
-
-```bash
-# Mount network share (macOS)
-open "smb://server-ip/share-name"
-
-# Transcribe from network
-gifhorse transcribe "/Volumes/server-ip/Movies"
-```
-
-## When to Use This Skill
-
-Invoke gifhorse when the user wants to:
-- Search for dialogue or quotes in their video library
-- Create a reaction GIF from a movie or TV show
-- Make a meme GIF with substituted words
-- Add subtitles to a video clip
-- Transcribe videos for searchable dialogue
-- Preview what a GIF will look like before creating it
-- Send a GIF via iMessage
-- Remove videos from the database
-- Check subtitle status for their video collection
-
-## Learn More
-
-- **GitHub:** https://github.com/Coyote-git/gifhorse
-- **Usage Guide:** https://github.com/Coyote-git/gifhorse/blob/main/USAGE_GUIDE.md
-- **Roadmap:** https://github.com/Coyote-git/gifhorse/blob/main/ROADMAP.md
-
-## License
-
-MIT
+MIT许可证

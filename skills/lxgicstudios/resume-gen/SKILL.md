@@ -1,28 +1,28 @@
 ---
 name: resume-gen
-description: Generate and improve developer resumes. Use when job hunting.
+description: 生成并优化开发人员的简历，用于求职时使用。
 ---
 
-# Resume Generator
+# 简历生成器
 
-Writing resumes is painful. Describe your experience and get a properly formatted developer resume.
+撰写简历是一件麻烦的事情。通过这个工具，您可以轻松描述自己的工作经验，并获得一份格式规范的开发者简历。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-resume "senior fullstack engineer, 5 years React, Node.js, AWS"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates professional developer resumes
-- Highlights relevant skills for the role
-- Uses action verbs and quantified achievements
-- Outputs markdown for easy editing
+- 生成专业的开发者简历
+- 突出与职位相关的重要技能
+- 使用动词性描述来表达成就，并对成果进行量化
+- 以 Markdown 格式输出，便于编辑
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Senior role
@@ -35,49 +35,49 @@ npx ai-resume "junior frontend dev, 1 year Vue.js" -o resume.md
 npx ai-resume "backend engineer transitioning to ML, Python, PyTorch"
 ```
 
-## Best Practices
+## 使用建议
 
-- **Quantify achievements** - "increased performance by 40%"
-- **Match keywords** - use terms from job descriptions
-- **Keep it concise** - one page for most roles
-- **Update regularly** - don't wait until you need it
+- **量化成果**：例如“将系统性能提升了 40%”
+- **使用职位描述中的关键词**  
+- **保持简洁**：大多数职位的简历应控制在一页以内  
+- **定期更新**：不要等到需要时才去更新简历
 
-## When to Use This
+## 适用场景
 
-- Starting a job search
-- Need a baseline to customize
-- Updating outdated resume
-- Applying to different role types
+- 开始求职时  
+- 需要一份基础简历以便进一步定制  
+- 更新过时的简历  
+- 申请不同类型的职位  
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。免费版本无付费门槛、无需注册，也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+**了解更多信息：**
+- GitHub: https://github.com/LXGIC-Studios  
+- Twitter: https://x.com/lxgicstudios  
+- Substack: https://lxgicstudios.substack.com  
+- 官网: https://lxgicstudios.com  
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-resume --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your experience description and generates a professionally formatted resume with appropriate sections, action verbs, and technical skills highlighting.
+该工具会根据您提供的经验描述，自动生成一份格式规范的简历，其中包含相应的章节、动词性描述以及突出的技术技能。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。
 
 ---
 
-**Built by LXGIC Studios**
+**由 LXGIC Studios 开发**
 
-- GitHub: [github.com/lxgicstudios/resume-gen](https://github.com/lxgicstudios/resume-gen)
+- GitHub: [github.com/lxgicstudios/resume-gen](https://github.com/lxgicstudios/resume-gen)  
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

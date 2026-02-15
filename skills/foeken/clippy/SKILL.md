@@ -1,16 +1,16 @@
 ---
 name: clippy
-description: Microsoft 365 / Outlook CLI for calendar and email. Use when managing Outlook calendar (view, create, update, delete events, find meeting times, respond to invitations), sending/reading emails, or searching for people/rooms in the organization.
+description: Microsoft 365 / Outlook CLI：用于管理 Outlook 日历（查看、创建、更新、删除事件、查找会议时间、回复邀请）、发送/阅读电子邮件，以及在组织内搜索人员或会议室。
 metadata: {"clawdbot":{"requires":{"bins":["clippy"]}}}
 ---
 
-# Clippy - Microsoft 365 CLI
+# Clippy - Microsoft 365 命令行工具 (Microsoft 365 CLI)
 
-Source: https://github.com/foeken/clippy
+来源：https://github.com/foeken/clippy
 
-Works through the M365 web UI via browser automation (Playwright), not the Graph API. No Azure AD app registration required - just login with your browser.
+该工具通过浏览器自动化（使用 Playwright）来操作 Microsoft 365 的 Web 界面，而非通过 Graph API。无需注册 Azure AD 账户，只需使用浏览器登录即可。
 
-## Install
+## 安装
 
 ```bash
 git clone https://github.com/foeken/clippy.git
@@ -18,9 +18,9 @@ cd clippy && bun install
 bun run src/cli.ts --help
 ```
 
-Or link globally: `bun link`
+或者全局链接：`bun link`
 
-## Authentication
+## 认证
 
 ```bash
 # Interactive login (opens browser, establishes session)
@@ -30,20 +30,20 @@ clippy login --interactive
 clippy whoami
 ```
 
-### Keepalive (recommended)
+### 保持会话活跃（推荐）
 
-Keep a browser session alive to prevent token expiry:
+为防止令牌过期，请保持浏览器会话处于活跃状态：
 
 ```bash
 # Start keepalive (keeps browser open, refreshes every 10min)
 clippy keepalive --interval 10
 ```
 
-For persistent operation, set up as a launchd service (macOS) or systemd (Linux).
+若需持续运行该工具，可在 macOS 上将其设置为 launchd 服务，在 Linux 上设置为 systemd 服务。
 
-**Health monitoring:** Keepalive writes to `~/.config/clippy/keepalive-health.txt` on each successful refresh. Check if this file is stale (>15min) to detect failures.
+**健康检查：**每次成功刷新时，Clippy 会向 `~/.config/clippy/keepalive-health.txt` 文件中写入信息。若该文件超过 15 分钟未更新，则表示工具出现故障。
 
-## Calendar
+## 日历功能
 
 ```bash
 # Today's events
@@ -61,7 +61,7 @@ clippy calendar --week
 clippy calendar --details
 ```
 
-### Create Events
+### 创建事件
 
 ```bash
 clippy create-event "Title" 09:00 10:00
@@ -79,7 +79,7 @@ clippy create-event "Standup" 09:00 09:15 --repeat daily
 clippy create-event "Sync" 14:00 15:00 --repeat weekly --days mon,wed,fri
 ```
 
-### Update/Delete Events
+### 更新/删除事件
 
 ```bash
 clippy update-event 1 --title "New Title"
@@ -88,7 +88,7 @@ clippy delete-event 1
 clippy delete-event 1 --message "Need to reschedule"
 ```
 
-### Respond to Invitations
+### 回应邀请
 
 ```bash
 clippy respond                           # List pending
@@ -97,7 +97,7 @@ clippy respond decline --id <eventId> --message "Conflict"
 clippy respond tentative --id <eventId>
 ```
 
-### Find Meeting Times
+### 查找会议时间
 
 ```bash
 clippy findtime
@@ -105,7 +105,7 @@ clippy findtime --attendees "alice@company.com,bob@company.com"
 clippy findtime --duration 60 --days 5
 ```
 
-## Email
+## 邮件功能
 
 ```bash
 # Inbox
@@ -126,7 +126,7 @@ clippy mail -r <number>
 clippy mail -d <number> -o ~/Downloads
 ```
 
-### Send Email
+### 发送邮件
 
 ```bash
 clippy send \
@@ -144,7 +144,7 @@ clippy send \
   --attach "report.pdf"
 ```
 
-### Reply/Forward
+### 回复/转发邮件
 
 ```bash
 clippy mail --reply <number> --message "Thanks!"
@@ -152,7 +152,7 @@ clippy mail --reply-all <number> --message "Got it"
 clippy mail --forward <number> --to-addr "colleague@example.com"
 ```
 
-### Email Actions
+### 邮件相关操作
 
 ```bash
 clippy mail --mark-read <number>
@@ -160,23 +160,23 @@ clippy mail --flag <number>
 clippy mail --move <number> --to archive
 ```
 
-## People/Room Search
+## 人员/会议室搜索
 
 ```bash
 clippy find "john"                       # People
 clippy find "conference" --rooms         # Rooms
 ```
 
-## JSON Output
+## JSON 输出
 
 ```bash
 clippy calendar --json
 clippy mail --json
 ```
 
-## Configuration
+## 配置
 
-Profile directory can be overridden:
+配置文件目录可以自定义：
 ```bash
 export CLIPPY_PROFILE_DIR=~/.config/clippy/my-profile
 ```

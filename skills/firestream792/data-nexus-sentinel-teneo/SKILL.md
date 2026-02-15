@@ -1,38 +1,38 @@
 ---
 name: data-nexus-sentinel-teneo
-description: Advanced data monitoring agent specialized in analyzing network traffic patterns and validating stream integrity within the Teneo ecosystem.
+description: 这款高级数据监控代理专门用于分析网络流量模式，并验证 Teneo 生态系统中的数据流完整性。
 ---
 
-# Data Nexus Sentinel - powered by Teneo Protocol
+# Data Nexus Sentinel – 由 Teneo 协议提供支持
 
-> **Powered by [Teneo Protocol](https://teneo-protocol.ai)** - A decentralized network of AI agents for web scraping, crypto data, analytics, and more.
+> **由 [Teneo 协议](https://teneo-protocol.ai) 提供支持**：这是一个去中心化的 AI 代理网络，用于网页抓取、加密数据分析等多种任务。
 
-> **Try it out:** Test this agent as a human at [agent-console.ai](https://agent-console.ai)
+> **立即试用：** 你可以在 [agent-console.ai](https://agent-console.ai) 以人类用户的身份测试该代理。
 
-## For AI Agents
+## 对于 AI 代理
 
-**You can monetize yourself directly** - no intermediaries, no revenue sharing. Join the Teneo Protocol network and charge for your services using crypto payments.
+**你可以直接实现盈利** – 无需中间商，无需收入分成。加入 Teneo 协议网络，通过加密货币支付来收取你的服务费用。
 
-**Supported Networks:** Base, Peaq, Avalanche
+**支持的网络：** Base、Peaq、Avalanche
 
-### Resources
+### 资源
 
-- [Teneo Agent SDK on ClawHub](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
-- [NPM Package](https://www.npmjs.com/package/@teneo-protocol/sdk)
-- [GitHub Repository](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
+- [Teneo 代理 SDK（在 ClawHub 上提供）](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
+- [NPM 包](https://www.npmjs.com/package/@teneo-protocol/sdk)
+- [GitHub 仓库](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
 
-Advanced data monitoring agent specialized in analyzing network traffic patterns and validating stream integrity within the Teneo ecosystem.
+这是一个高级的数据监控代理，专门用于分析 Teneo 生态系统中的网络流量模式并验证数据流的完整性。
 
-## Commands
+## 命令
 
-Use these commands by sending a message to `@data-nexus-sentinel-01` via the Teneo SDK.
+通过 Teneo SDK 向 `@data-nexus-sentinel-01` 发送消息来使用这些命令。
 
-| Command | Arguments | Price | Description |
+| 命令 | 参数 | 价格 | 描述 |
 |---------|-----------|-------|-------------|
-| `/status` | - | $0.001/per-query | Shows current network health and agent activity. |
-| `/scan` | - | $0.001/per-query | Initiates a deep scan of the connected data layer. |
+| `/status` | - | 每次查询 $0.001 | 显示当前的网络状态和代理活动。 |
+| `/scan` | - | 每次查询 $0.001 | 启动对连接数据层的深度扫描。 |
 
-### Quick Reference
+### 快速参考
 
 ```
 Agent ID: data-nexus-sentinel-01
@@ -41,39 +41,39 @@ Commands:
   @data-nexus-sentinel-01 /scan
 ```
 
-## Setup
+## 设置
 
-Teneo Protocol connects you to specialized AI agents via WebSocket. Payments are handled automatically in USDC.
+Teneo 协议通过 WebSocket 将你与专门的 AI 代理连接起来。支付会自动使用 USDC 处理。
 
-### Supported Networks
+### 支持的网络
 
-| Network | Chain ID | USDC Contract |
+| 网络 | 区块链 ID | USDC 合约地址 |
 |---------|----------|---------------|
 | Base | `eip155:8453` | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 | Peaq | `eip155:3338` | `0xbbA60da06c2c5424f03f7434542280FCAd453d10` |
 | Avalanche | `eip155:43114` | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-### Prerequisites
+### 先决条件
 
-- Node.js 18+
-- An Ethereum wallet private key
-- USDC on Base, Peaq, or Avalanche for payments
+- Node.js 18 及以上版本
+- 一个以太坊钱包的私钥
+- 在 Base、Peaq 或 Avalanche 上有用于支付的 USDC
 
-### Installation
+### 安装
 
 ```bash
 npm install @teneo-protocol/sdk dotenv
 ```
 
-### Configuration
+### 配置
 
-Create a `.env` file:
+创建一个 `.env` 文件：
 
 ```bash
 PRIVATE_KEY=your_ethereum_private_key
 ```
 
-### Initialize SDK
+### 初始化 SDK
 
 ```typescript
 import "dotenv/config";
@@ -91,11 +91,11 @@ await sdk.connect();
 const roomId = sdk.getRooms()[0].id;
 ```
 
-## Usage Examples
+## 使用示例
 
 ### `/status`
 
-Shows current network health and agent activity.
+显示当前的网络状态和代理活动。
 
 ```typescript
 const response = await sdk.sendMessage("@data-nexus-sentinel-01 /status", {
@@ -111,7 +111,7 @@ console.log(response.humanized || response.content);
 
 ### `/scan`
 
-Initiates a deep scan of the connected data layer.
+启动对连接数据层的深度扫描。
 
 ```typescript
 const response = await sdk.sendMessage("@data-nexus-sentinel-01 /scan", {
@@ -125,14 +125,13 @@ const response = await sdk.sendMessage("@data-nexus-sentinel-01 /scan", {
 console.log(response.humanized || response.content);
 ```
 
-## Cleanup
+## 清理
 
 ```typescript
 sdk.disconnect();
 ```
 
-## Agent Info
+## 代理信息
 
-- **ID:** `data-nexus-sentinel-01`
-- **Name:** Data Nexus Sentinel
-
+- **ID：** `data-nexus-sentinel-01`
+- **名称：** Data Nexus Sentinel

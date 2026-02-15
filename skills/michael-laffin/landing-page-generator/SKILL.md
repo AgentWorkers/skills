@@ -1,71 +1,71 @@
 ---
 name: landing-page-generator
-description: Generate high-converting landing pages for products, services, and lead generation. Use when creating marketing pages, product launches, squeeze pages, or digital asset sales pages.
+description: 生成高转化率的 landing 页面，适用于产品、服务以及潜在客户开发（lead generation）场景。这些页面可用于创建营销资料、产品发布页面、信息收集页面（squeeze pages）或数字资产销售页面。
 ---
 
-# Landing Page Generator
+# 着陆页生成器
 
-## Overview
+## 概述
 
-Generate high-converting landing pages with copy, structure, and HTML/CSS ready for deployment. Create marketing pages that convert visitors into customers.
+该工具能够生成转化率高的着陆页，提供完整的文案、页面结构和HTML/CSS代码，可直接用于部署。帮助您创建将访客转化为客户的营销页面。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Page Templates
+### 1. 页面模板
 
-**Pre-built templates for:**
-- Product launch pages (pre-launch and launch)
-- Squeeze pages (email capture)
-- Webinar registration pages
-- Digital product sales pages (courses, ebooks, templates)
-- Service booking pages
-- Affiliate review pages
-- Comparison pages (Product A vs Product B)
-- Thank you/confirmation pages
+**预建的模板包括：**
+- 产品发布页面（发布前/发布中）
+- 信息收集页面（用于收集电子邮件地址）
+- 网络研讨会注册页面
+- 数字产品销售页面（课程、电子书、模板等）
+- 服务预订页面
+- 会员推荐页面
+- 对比页面（产品A vs 产品B）
+- 感谢/确认页面
 
-### 2. Copywriting Frameworks
+### 2. 写作框架
 
-**Built with proven frameworks:**
-- AIDA (Attention, Interest, Desire, Action)
-- PAS (Problem, Agitation, Solution)
-- Story-based hooks
-- Social proof integration
-- Objection handling
-- Scarcity/urgency elements
+**采用经过验证的写作框架：**
+- AIDA（注意力、兴趣、欲望、行动）
+- PAS（问题、焦虑、解决方案）
+- 基于故事的内容结构
+- 社交证明的集成
+- 抗议处理机制
+- 稀缺性/紧迫感元素的运用
 
-### 3. SEO Optimization
+### 3. SEO优化
 
-**Automatically includes:**
-- Optimized meta tags (title, description, keywords)
-- Header tags (H1, H2, H3)
-- Alt text for images
-- Structured data (schema markup)
-- Mobile-responsive design
-- Fast loading structure
+**自动包含以下内容：**
+- 优化的元标签（标题、描述、关键词）
+- 头部标签（H1、H2、H3）
+- 图片的替代文本
+- 结构化数据（schema标记）
+- 移动设备友好设计
+- 快速加载的页面结构
 
-### 4. Conversion Elements
+### 4. 转化元素
 
-**Built-in conversion triggers:**
-- Clear value propositions
-- Benefit-oriented bullet points
-- Testimonials/social proof
-- FAQ sections
-- Multiple CTAs (above and below fold)
-- Guarantee/risk-reversal statements
-- Countdown timers
-- Limited-time offers
+**内置的转化触发因素：**
+- 明确的价值主张
+- 以利益为导向的列表项
+- 客户评价/社会证明
+- 常见问题解答（FAQ）部分
+- 多个呼叫行动按钮（页面上方和下方）
+- 保修/风险规避声明
+- 倒计时器
+- 限时优惠
 
-### 5. Responsive Design
+### 5. 自适应设计
 
-**Optimized for:**
-- Desktop (1920px+)
-- Tablet (768px - 1024px)
-- Mobile (320px - 767px)
-- Cross-browser compatibility
+**适配以下设备：**
+- 桌面电脑（1920px及以上）
+- 平板电脑（768px - 1024px）
+- 手机（320px - 767px）
+- 跨浏览器兼容性
 
-## Quick Start
+## 快速入门
 
-### Generate Product Launch Page
+### 生成产品发布页面
 
 ```python
 # Use scripts/generate_landing.py
@@ -79,7 +79,7 @@ python3 scripts/generate_landing.py \
   --output product_launch.html
 ```
 
-### Generate Squeeze Page
+### 生成信息收集页面
 
 ```python
 python3 scripts/generate_landing.py \
@@ -90,7 +90,7 @@ python3 scripts/generate_landing.py \
   --output squeeze.html
 ```
 
-### Generate Affiliate Review Page
+### 生成会员推荐页面
 
 ```python
 python3 scripts/generate_landing.py \
@@ -103,26 +103,26 @@ python3 scripts/generate_landing.py \
   --output affiliate_review.html
 ```
 
-## Scripts
+## 脚本
 
 ### `generate_landing.py`
-Generate landing page from parameters.
+根据参数生成着陆页。
 
-**Parameters:**
-- `--type`: Page type (product-launch, squeeze, webinar, digital-product, service, affiliate-review, comparison, thank-you)
-- `--headline`: Main headline
-- `--subheadline`: Supporting subheadline
-- `--product`: Product/service name
-- `--price`: Price or "Starting at $X"
-- `--benefits`: Comma-separated benefits
-- `--features`: Comma-separated features
-- `--testimonials`: Number of testimonials to include
-- `--cta`: Call-to-action button text
-- `--guarantee`: Guarantee text (optional)
-- `--urgency`: Urgency message (optional)
-- `--output`: Output file
+**参数：**
+- `--type`：页面类型（产品发布、信息收集、网络研讨会、数字产品、服务、会员推荐、对比、感谢）
+- `--headline`：主标题
+- `--subheadline`：辅助标题
+- `--product`：产品/服务名称
+- `--price`：价格（或“起价$X”）
+- `--benefits`：以逗号分隔的好处列表
+- `--features`：以逗号分隔的功能列表
+- `--testimonials`：要包含的客户评价数量
+- `--cta`：呼叫行动按钮文本
+- `--guarantee`：保修声明（可选）
+- `--urgency`：紧迫感信息（可选）
+- `--output`：输出文件路径
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/generate_landing.py \
   --type product-launch \
@@ -140,27 +140,27 @@ python3 scripts/generate_landing.py \
 ```
 
 ### `optimize_copy.py`
-Optimize existing landing page copy.
+优化现有的着陆页文案。
 
-**Parameters:**
-- `--input`: Input HTML file
-- `--framework`: Copywriting framework (AIDA, PAS, story)
-- `--add-social-proof`: Add testimonial placeholders
-- `--add-urgency`: Add scarcity elements
-- `--output`: Optimized output
+**参数：**
+- `--input`：输入的HTML文件
+- `--framework`：使用的写作框架（AIDA、PAS、基于故事的结构）
+- `--add-social-proof`：是否添加客户评价占位符
+- `--add-urgency`：是否添加稀缺性元素
+- `--output`：优化后的输出文件
 
 ### `ab_test_variations.py`
-Generate A/B testing variations.
+生成A/B测试变体。
 
-**Parameters:**
-- `--input`: Base landing page
-- `--variations`: Number to generate (default: 3)
-- `--test-elements`: What to test (headline, cta, price, colors)
-- `--output-dir`: Output directory for variations
+**参数：**
+- `--input`：基础着陆页代码
+- `--variations`：要生成的变体数量（默认：3个）
+- `--test-elements`：测试的内容（标题、呼叫行动按钮、价格、颜色等）
+- `--output-dir`：测试变体的输出目录
 
-## Page Templates
+## 页面模板
 
-### Product Launch Page Structure
+### 产品发布页面结构
 
 ```html
 <!DOCTYPE html>
@@ -239,43 +239,43 @@ Generate A/B testing variations.
 </html>
 ```
 
-## Best Practices
+## 最佳实践
 
-### Headlines
-- **Length:** 6-12 words maximum
-- **Format:** Clear, benefit-driven
-- **Punctuation:** Use numbers and brackets
-- **Examples:**
-  - "Master SEO in 30 Days"
-  - "[Product Name]: The #1 Solution"
-  - "How to [Benefit] Without [Pain]"
+### 标题
+- **长度：** 最多6-12个单词
+- **格式：** 清晰明了，突出利益
+- **标点符号：** 使用数字和括号
+- **示例：**
+  - “30天内掌握SEO技巧”
+  - “[产品名称]：排名第一的解决方案”
+  - “如何[获得好处]而无需[忍受痛苦]”
 
-### CTAs
-- **Positioning:** Above fold + multiple times below
-- **Color:** High contrast (green, orange, blue)
-- **Text:** Action-oriented (Enroll, Get, Start, Join)
-- **Urgency:** Add time or scarcity
+### 呼叫行动按钮（CTA）
+- **位置：** 位于页面上方，并在下方多次出现
+- **颜色：** 对比鲜明（绿色、橙色、蓝色）
+- **文本：** 行动导向（注册、获取、开始、加入）
+- **紧迫感：** 添加时间限制或稀缺性提示
 
-### Social Proof
-- **Placement:** Near CTA sections
-- **Variety:** Mix of reviews, case studies, stats
-- **Specificity:** Include names, photos, results
+### 社交证明
+- **放置位置：** 靠近呼叫行动按钮的位置
+- **类型：** 包括客户评价、案例研究、统计数据
+- **具体性：** 包含姓名、照片和实际效果
 
-### Pricing
-- **Anchoring:** Show expensive option first
-- **Tiered:** 3 tiers (Good, Better, Best)
-- **Highlight:** Make middle option stand out
-- **Psychological:** Use $299 instead of $300
+### 价格展示
+- **优先展示高价选项**
+- **分层定价：** 三个等级（优秀、更好、最佳）
+- **突出中间选项：** 使中间选项更显眼
+- **心理技巧：** 用$299代替$300
 
-### Mobile Optimization
-- **CTA placement:** Above fold on mobile
-- **Font size:** Minimum 16px
-- **Touch targets:** 44px minimum buttons
-- **Form fields:** One input per screen
+### 移动设备优化
+- **呼叫行动按钮的位置：** 手机页面上方
+- **字体大小：** 不少于16px
+- **按钮尺寸：** 不少于44px
+- **表单字段：** 每个屏幕只显示一个输入字段
 
-## Automation
+## 自动化
 
-### Bulk Landing Page Generation
+### 批量生成着陆页
 
 ```bash
 # Generate landing pages for multiple products
@@ -284,7 +284,7 @@ Generate A/B testing variations.
   --output-dir /path/to/landing-pages
 ```
 
-### A/B Test Automation
+### A/B测试自动化
 
 ```bash
 # Generate variations for top pages
@@ -294,9 +294,9 @@ Generate A/B testing variations.
   --output-dir /path/to/ab-tests
 ```
 
-## Integration Opportunities
+## 集成机会
 
-### With Product Description Generator
+### 与产品描述生成器集成
 ```bash
 # 1. Generate product description
 product-description-generator/scripts/generate_description.py \
@@ -308,7 +308,7 @@ landing-page-generator/scripts/generate_landing.py \
   --benefits "[extracted]"
 ```
 
-### With Review Summarizer
+### 与客户评价汇总工具集成
 ```bash
 # 1. Get review insights
 review-summarizer/scripts/scrape_reviews.py --url "[product_url]"
@@ -323,4 +323,4 @@ landing-page-generator/scripts/generate_landing.py \
 
 ---
 
-**Build pages. Convert visitors. Scale revenue.**
+**构建页面，转化访客，提升收入。**

@@ -1,35 +1,35 @@
 ---
 name: elevenlabs
-description: Text-to-speech, sound effects, music generation, voice management, and quota checks via the ElevenLabs API. Use when generating audio with ElevenLabs or managing voices.
+description: 通过 ElevenLabs API 实现文本转语音、音效生成、音乐制作、语音管理以及配额检查等功能。在利用 ElevenLabs 生成音频或管理语音资源时，请使用这些功能。
 metadata: {"clawdbot":{"requires":{"bins":["python3"],"env":["ELEVENLABS_API_KEY"]},"primaryEnv":"ELEVENLABS_API_KEY"}}
 ---
 
 # ElevenLabs Skill
 
-Core tools for interacting with the ElevenLabs API for sound generation, music, and voice management.
+这是一套用于与 ElevenLabs API 交互的核心工具，支持声音生成、音乐处理和语音管理功能。
 
-## Setup
+## 设置
 
-Requires `ELEVENLABS_API_KEY` in environment.
+运行这些工具需要将 `ELEVENLABS_API_KEY` 环境变量设置为有效的 API 密钥。
 
-## Output Formats
+## 输出格式
 
-All scripts support multiple output formats via `--format`:
+所有脚本都支持通过 `--format` 参数选择多种输出格式：
 
-| Format | Description |
+| 格式 | 描述 |
 |--------|-------------|
-| `mp3_44100_128` | MP3, 44.1kHz, 128kbps (default) |
-| `mp3_44100_192` | MP3, 44.1kHz, 192kbps |
-| `pcm_16000` | Raw PCM, 16kHz |
-| `pcm_22050` | Raw PCM, 22.05kHz |
-| `pcm_24000` | Raw PCM, 24kHz |
-| `pcm_44100` | Raw PCM, 44.1kHz |
-| `ulaw_8000` | μ-law, 8kHz (telephony) |
+| `mp3_44100_128` | MP3 格式，44.1kHz 频率，128kbps 流量（默认格式） |
+| `mp3_44100_192` | MP3 格式，44.1kHz 频率，192kbps 流量 |
+| `pcm_16000` | 原始 PCM 格式，16kHz 频率 |
+| `pcm_22050` | 原始 PCM 格式，22.05kHz 频率 |
+| `pcm_24000` | 原始 PCM 格式，24kHz 频率 |
+| `pcm_44100` | 原始 PCM 格式，44.1kHz 频率 |
+| `ulaw_8000` | μ-law 格式，8kHz 频率（适用于电话通信） |
 
-## Tools
+## 工具列表
 
 ### 1. Speech (`speech.py`)
-Text-to-speech using ElevenLabs voices.
+使用 ElevenLabs 提供的语音库将文本转换为语音。
 
 ```bash
 # Basic usage
@@ -43,7 +43,7 @@ python3 {baseDir}/scripts/speech.py "Hello" -v <voice_id> -o out.mp3 --stability
 ```
 
 ### 2. Sound Effects (`sfx.py`)
-Generate sound effects and short audio clips.
+生成音效和简短的音频片段。
 
 ```bash
 # Generate a sound
@@ -57,7 +57,7 @@ python3 {baseDir}/scripts/sfx.py "Whoosh" -o whoosh.pcm --format pcm_44100
 ```
 
 ### 3. Music Generation (`music.py`)
-Generate full musical compositions or instrumental tracks.
+创作完整的音乐作品或器乐曲目。
 
 ```bash
 # Generate instrumental intro
@@ -71,7 +71,7 @@ python3 {baseDir}/scripts/music.py --prompt "Jazz piano" --length-ms 10000 -o ja
 ```
 
 ### 4. Voices (`voices.py`)
-List available voices and their IDs.
+列出可用的语音资源及其对应的 ID。
 
 ```bash
 # List voices
@@ -81,8 +81,8 @@ python3 {baseDir}/scripts/voices.py
 python3 {baseDir}/scripts/voices.py --json
 ```
 
-### 5. Voice Cloning (`voiceclone.py`)
-Create instant voice clones from audio samples.
+### 5. Voice Cloning (`voiceclone.py`
+根据音频样本创建语音克隆版本。
 
 ```bash
 # Clone from audio files
@@ -96,7 +96,7 @@ python3 {baseDir}/scripts/voiceclone.py --name "Andi" --files *.m4a --descriptio
 ```
 
 ### 6. Quota & Usage (`quota.py`)
-Check subscription quota and usage statistics.
+查询订阅配额和使用情况统计信息。
 
 ```bash
 # Show current quota
@@ -112,7 +112,7 @@ python3 {baseDir}/scripts/quota.py --usage --days 7
 python3 {baseDir}/scripts/quota.py --json
 ```
 
-Output:
+## 输出结果
 ```
 📊 ElevenLabs Quota
 =======================================

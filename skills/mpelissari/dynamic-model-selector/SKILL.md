@@ -1,37 +1,36 @@
 ---
 name: dynamic-model-selector
-description: Dynamically select the best AI model for a task based on complexity, cost, and availability in GitHub Copilot. Use when deciding between free/paid models, or when you want automatic model routing based on query analysis.
+description: 在 GitHub Copilot 中，可以根据任务的复杂性、成本以及模型的可用性动态选择最适合的 AI 模型。这一功能适用于在免费模型和付费模型之间进行选择时，或者当您希望根据查询分析结果自动选择模型时使用。
 ---
 
-# Dynamic Model Selector
+# 动态模型选择器
 
-## Overview
+## 概述
 
-This skill analyzes user queries to recommend the optimal AI model from available GitHub Copilot options, balancing performance, cost, and task requirements.
+该功能通过分析用户查询，从 GitHub Copilot 提供的模型中推荐最适合的 AI 模型，同时兼顾性能、成本和任务需求。
 
-## How to Use
+## 使用方法
 
-1. Provide the user query or task description.
-2. Run the classification script to analyze complexity.
-3. Choose the suggested model or adjust based on preferences.
+1. 提供用户查询或任务描述。
+2. 运行分类脚本以分析任务的复杂度。
+3. 根据偏好选择推荐的模型或进行调整。
 
-## Classification Criteria
+## 分类标准
 
-- **Simple tasks** (short responses, basic chat): Use faster, free models like grok-code-fast-1.
-- **Complex reasoning** (analysis, multi-step): Use advanced models like gpt-4o or claude-3.5-sonnet.
-- **Code generation**: Prefer code-optimized models.
-- **Cost sensitivity**: Favor free models when possible.
+- **简单任务**（简短回复、基本聊天）：使用性能更快且免费的模型，如 grok-code-fast-1。
+- **复杂推理**（分析、多步骤操作）：使用高级模型，如 gpt-4o 或 claude-3.5-sonnet。
+- **代码生成**：优先选择优化过代码生成的模型。
+- **成本敏感**：尽可能选择免费的模型。
 
-## Example Usage
+## 示例用法
 
-For a query like "Explain quantum computing": Classify as medium complexity -> Recommend gpt-4o.
+- 对于“解释量子计算”这样的查询，将其归类为中等复杂度任务 -> 推荐使用 gpt-4o。
+- 对于“编写一个用于排序列表的 Python 函数”这样的任务，将其归类为代码生成任务 -> 推荐使用 grok-code-fast-1。
 
-For "Write a Python function to sort a list": Classify as code task -> Recommend grok-code-fast-1.
+## 资源
 
-## Resources
+### 脚本
+- `classify_task.py`：用于分析查询并输出模型推荐结果。
 
-### scripts/
-- `classify_task.py`: Analyzes the query and outputs model recommendation.
-
-### references/
-- `models.md`: Detailed list of available models, pros/cons, costs.
+### 参考资料
+- `models.md`：包含所有可用模型的详细列表，包括优缺点及成本信息。

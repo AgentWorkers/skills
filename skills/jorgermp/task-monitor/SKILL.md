@@ -1,101 +1,100 @@
 ---
 name: task-monitor
-description: Real-time web dashboard for OpenClaw sessions and background tasks. Mobile-responsive with auto-refresh.
+description: OpenClaw会话和后台任务的实时网络仪表板。支持移动设备访问，并具备自动刷新功能。
 version: 0.1.0
 ---
 
 # Task Monitor v0.1
 
-Real-time monitoring dashboard for OpenClaw with web interface.
+这是一个用于 OpenClaw 的实时监控仪表板，支持 Web 界面。
 
-## Features
+## 主要特性
 
-- 🌐 **Web Dashboard** - Beautiful, responsive UI accessible from any device
-- 📱 **Mobile-First** - Optimized for phones and tablets
-- 🔄 **Auto-Refresh** - Updates every 60 seconds
-- 🎨 **Modern Design** - Gradient UI with dark theme
-- 📊 **Live Data** - Main session, Discord, sub-agents, cron jobs
-- 🚀 **Fast API** - JSON endpoint with intelligent caching (30s TTL)
-- ⚡ **Performance** - <100ms response time (cached), ~15s cold cache
+- 🌐 **Web 仪表板**：美观且响应迅速的用户界面，可在任何设备上访问。
+- 📱 **优先考虑移动设备**：专为手机和平板电脑优化。
+- 🔄 **自动刷新**：每 60 秒更新一次数据。
+- 🎨 **现代设计**：采用渐变效果的界面设计，并支持深色主题。
+- 📊 **实时数据**：显示主会话信息、Discord 活动、子代理状态以及定时任务执行情况。
+- 🚀 **快速 API**：提供 JSON 格式的数据接口，并支持智能缓存（缓存有效期为 30 秒）。
+- ⚡ **高性能**：响应时间小于 100 毫秒（使用缓存时）；初次请求时可能需要约 15 秒。
 
-## Installation
+## 安装
 
 ```bash
 cd skills/task-monitor
 npm install
 ```
 
-## Usage
+## 使用方法
 
-### Start Web Server
+### 启动 Web 服务器
 
 ```bash
 ./scripts/start-server.sh
 ```
 
-Server will run on port **3030** (accessible on LAN).
+服务器将运行在端口 **3030** 上（局域网内可访问）。
 
-**Access URLs:**
-- Local: `http://localhost:3030`
-- LAN: `http://<your-ip>:3030`
+**访问地址：**
+- 本地：`http://localhost:3030`
+- 局域网：`http://<your-ip>:3030`
 
-### Stop Server
+### 停止服务器
 
 ```bash
 ./scripts/stop-server.sh
 ```
 
-### API Endpoint
+### API 接口
 
 ```bash
 curl http://localhost:3030/api/status
 ```
 
-Returns JSON with:
-- Main session stats
-- Discord session stats
-- Active sub-agents (with descriptions)
-- Recent cron job history
+该 API 返回以下 JSON 数据：
+- 主会话统计信息
+- Discord 会话统计信息
+- 活动的子代理（附带描述）
+- 最近执行的定时任务记录
 
-### Generate Markdown (v0.1)
+### 生成 Markdown 文档（v0.1）
 
-Legacy markdown generator still available:
+仍然支持使用传统的 Markdown 生成工具：
 
 ```bash
 ./scripts/generate-dashboard.js
 ```
 
-Updates `DASHBOARD.md` in workspace root.
+生成的 Markdown 文档会保存在工作区的根目录下（文件名为 `DASHBOARD.md`）。
 
-## Automation
+## 自动化
 
-CRON job runs every 5 minutes to update markdown dashboard:
-`*/5 * * * *` -> Executes `generate-dashboard.js`
+系统会通过 CRON 任务每 5 分钟更新一次 Markdown 仪表板内容：
+`*/5 * * * *` -> 执行 `generate-dashboard.js` 脚本。
 
-## Architecture
+## 架构
 
-- **Backend:** Node.js + Express
-- **Frontend:** Pure HTML/CSS/JS (no frameworks)
-- **Data Source:** `openclaw sessions list --json` + `openclaw cron list --json`
-- **Caching:** In-memory cache with 30-second TTL
-  - Pre-warmed on server startup
-  - Async background refresh when expired
-  - Stale-while-revalidate pattern for optimal UX
-- **Refresh:** Client-side polling (60s interval)
+- **后端**：使用 Node.js 和 Express 构建。
+- **前端**：纯 HTML/CSS/JS 代码（不依赖任何框架）。
+- **数据来源**：从 `openclaw sessions list --json` 和 `openclaw cron list --json` 命令获取数据。
+- **缓存机制**：使用内存缓存，缓存有效期为 30 秒：
+  - 服务器启动时会预先加载缓存数据。
+  - 缓存过期时会异步刷新数据。
+  - 采用“失效时重新验证”（Stale-while-revalidate）策略以优化用户体验。
+- **数据更新**：通过客户端轮询的方式实现（每 60 秒更新一次）。
 
-## Performance
+## 性能表现
 
-**Without cache:**
-- API response time: ~15 seconds (blocking)
-- Problem: Each request blocks Node.js event loop
+**未使用缓存时：**
+- API 响应时间：约 15 秒（会导致 Node.js 事件循环被阻塞）。
 
-**With cache:**
-- Cache hit: <100ms (~365x faster)
-- Cache miss: ~15s (first request only)
-- Stale cache: <100ms while refreshing in background
-- Cache TTL: 30 seconds
+**使用缓存时：**
+- 如果缓存有效：响应时间小于 100 毫秒（速度提升约 365 倍）。
+- 如果缓存无效：首次请求时响应时间仍为约 15 秒。
+- 缓存过期时：在后台进行刷新，响应时间仍小于 100 毫秒。
+- 缓存有效期：30 秒。
 
-The caching system ensures:
-- Lightning-fast responses for most requests
-- No blocking of concurrent requests
-- Graceful degradation when cache expires
+缓存系统确保了以下优势：
+- 大多数请求的响应速度极快。
+- 不会阻塞其他请求的处理。
+- 当缓存过期时，系统能够平滑地降级到无缓存的状态。

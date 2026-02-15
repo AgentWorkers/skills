@@ -17,9 +17,9 @@ metadata:
 
 # MailerLite
 
-Access the MailerLite API with managed OAuth authentication. Manage subscribers, groups, campaigns, automations, forms, fields, segments, and webhooks.
+通过管理的OAuth认证来访问MailerLite API。可以管理订阅者、组、活动、自动化脚本、表单、字段、细分受众和Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List subscribers
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/mailerlite/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual MailerLite API endpoint path. The gateway proxies requests to `connect.mailerlite.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的MailerLite API端点路径。该网关会将请求代理到 `connect.mailerlite.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your MailerLite OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的MailerLite OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple MailerLite connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个MailerLite连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,31 +140,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Subscriber Operations
+### 订阅者操作
 
-#### List Subscribers
+#### 列出订阅者
 
 ```bash
 GET /mailerlite/api/subscribers
 ```
 
-Query parameters:
-- `filter[status]` - Filter by status: `active`, `unsubscribed`, `unconfirmed`, `bounced`, `junk`
-- `limit` - Results per page (default: 25)
-- `cursor` - Pagination cursor
-- `include` - Include related data: `groups`
+查询参数：
+- `filter[status]` - 按状态筛选：`active`（活动中的）、`unsubscribed`（已取消订阅的）、`unconfirmed`（未确认的）、`bounced`（被退回的）、`junk`（垃圾邮件）
+- `limit` - 每页显示的结果数量（默认：25）
+- `cursor` - 分页游标
+- `include` - 是否包含相关数据：`groups`（包含组信息）
 
-#### Get Subscriber
+#### 获取订阅者信息
 
 ```bash
 GET /mailerlite/api/subscribers/{subscriber_id_or_email}
 ```
 
-#### Create/Upsert Subscriber
+#### 创建/更新订阅者
 
 ```bash
 POST /mailerlite/api/subscribers
@@ -181,9 +181,9 @@ Content-Type: application/json
 }
 ```
 
-Returns 201 for new subscribers, 200 for updates.
+创建新订阅者时返回 201 状态码，更新订阅者信息时返回 200 状态码。
 
-#### Update Subscriber
+#### 更新订阅者信息
 
 ```bash
 PUT /mailerlite/api/subscribers/{subscriber_id}
@@ -197,44 +197,44 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Subscriber
+#### 删除订阅者
 
 ```bash
 DELETE /mailerlite/api/subscribers/{subscriber_id}
 ```
 
-#### Get Subscriber Activity
+#### 获取订阅者活动记录
 
 ```bash
 GET /mailerlite/api/subscribers/{subscriber_id}/activity-log
 ```
 
-Query parameters:
-- `filter[log_name]` - Filter by activity type: `campaign_send`, `automation_email_sent`, `email_open`, `link_click`, `email_bounce`, `spam_complaint`, `unsubscribed`
-- `limit` - Results per page (default: 100)
-- `page` - Page number (starts from 1)
+查询参数：
+- `filter[log_name]` - 按活动类型筛选：`campaign_send`（活动发送）、`automation_email_sent`（自动化邮件发送）、`email_open`（邮件打开）、`link_click`（链接点击）、`email_bounce`（邮件退回）、`spam_complaint`（垃圾邮件投诉）、`unsubscribed`（取消订阅）
+- `limit` - 每页显示的结果数量（默认：100）
+- `page` - 页码（从1开始）
 
-#### Forget Subscriber (GDPR)
+#### 忘记订阅者（符合GDPR要求）
 
 ```bash
 POST /mailerlite/api/subscribers/{subscriber_id}/forget
 ```
 
-### Group Operations
+### 组操作
 
-#### List Groups
+#### 列出组
 
 ```bash
 GET /mailerlite/api/groups
 ```
 
-Query parameters:
-- `limit` - Results per page
-- `page` - Page number (starts from 1)
-- `filter[name]` - Filter by name (partial match)
-- `sort` - Sort by: `name`, `total`, `open_rate`, `click_rate`, `created_at` (prepend `-` for descending)
+查询参数：
+- `limit` - 每页显示的结果数量
+- `page` - 页码（从1开始）
+- `filter[name]` - 按名称筛选（部分匹配）
+- `sort` - 排序方式：`name`（名称）、`total`（总数）、`open_rate`（打开率）、`click_rate`（点击率）、`created_at`（按创建时间降序排序）
 
-#### Create Group
+#### 创建组
 
 ```bash
 POST /mailerlite/api/groups
@@ -245,7 +245,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Group
+#### 更新组
 
 ```bash
 PUT /mailerlite/api/groups/{group_id}
@@ -256,56 +256,56 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Group
+#### 删除组
 
 ```bash
 DELETE /mailerlite/api/groups/{group_id}
 ```
 
-#### Get Group Subscribers
+#### 获取组内的订阅者
 
 ```bash
 GET /mailerlite/api/groups/{group_id}/subscribers
 ```
 
-Query parameters:
-- `filter[status]` - Filter by status: `active`, `unsubscribed`, `unconfirmed`, `bounced`, `junk`
-- `limit` - Results per page (1-1000, default: 50)
-- `cursor` - Pagination cursor
+查询参数：
+- `filter[status]` - 按状态筛选：`active`（活动中的）、`unsubscribed`（已取消订阅的）、`unconfirmed`（未确认的）、`bounced`（被退回的）、`junk`（垃圾邮件）
+- `limit` - 每页显示的结果数量（1-1000，默认：50）
+- `cursor` - 分页游标
 
-#### Assign Subscriber to Group
+#### 将订阅者分配到组
 
 ```bash
 POST /mailerlite/api/subscribers/{subscriber_id}/groups/{group_id}
 ```
 
-#### Remove Subscriber from Group
+#### 从组中移除订阅者
 
 ```bash
 DELETE /mailerlite/api/subscribers/{subscriber_id}/groups/{group_id}
 ```
 
-### Campaign Operations
+### 活动操作
 
-#### List Campaigns
+#### 列出活动
 
 ```bash
 GET /mailerlite/api/campaigns
 ```
 
-Query parameters:
-- `filter[status]` - Filter by status: `sent`, `draft`, `ready`
-- `filter[type]` - Filter by type: `regular`, `ab`, `resend`, `rss`
-- `limit` - Results per page: 10, 25, 50, or 100 (default: 25)
-- `page` - Page number (starts from 1)
+查询参数：
+- `filter[status]` - 按状态筛选：`sent`（已发送的）、`draft`（草稿）、`ready`（准备好的）
+- `filter[type]` - 按类型筛选：`regular`（常规的）、`ab`（自动回复的）、`resend`（重新发送的）、`rss`（RSS邮件）
+- `limit` - 每页显示的结果数量：10、25、50或100（默认：25）
+- `page` - 页码（从1开始）
 
-#### Get Campaign
+#### 获取活动信息
 
 ```bash
 GET /mailerlite/api/campaigns/{campaign_id}
 ```
 
-#### Create Campaign
+#### 创建活动
 
 ```bash
 POST /mailerlite/api/campaigns
@@ -325,7 +325,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Campaign
+#### 更新活动
 
 ```bash
 PUT /mailerlite/api/campaigns/{campaign_id}
@@ -343,9 +343,9 @@ Content-Type: application/json
 }
 ```
 
-Note: Only draft campaigns can be updated.
+**注意：** 只有草稿活动可以更新。
 
-#### Schedule Campaign
+#### 安排活动发送
 
 ```bash
 POST /mailerlite/api/campaigns/{campaign_id}/schedule
@@ -356,7 +356,8 @@ Content-Type: application/json
 }
 ```
 
-For scheduled delivery:
+#### 取消活动
+
 ```json
 {
   "delivery": "scheduled",
@@ -368,54 +369,48 @@ For scheduled delivery:
 }
 ```
 
-#### Cancel Campaign
+将已准备好的活动恢复为草稿状态。
 
-```bash
-POST /mailerlite/api/campaigns/{campaign_id}/cancel
-```
-
-Reverts a ready campaign to draft status.
-
-#### Delete Campaign
+#### 删除活动
 
 ```bash
 DELETE /mailerlite/api/campaigns/{campaign_id}
 ```
 
-#### Get Campaign Subscriber Activity
+#### 获取活动中的订阅者活动记录
 
 ```bash
 GET /mailerlite/api/campaigns/{campaign_id}/reports/subscriber-activity
 ```
 
-Query parameters:
-- `filter[type]` - Filter by activity: `opened`, `unopened`, `clicked`, `unsubscribed`, `forwarded`, `hardbounced`, `softbounced`, `junk`
-- `filter[search]` - Search by email
-- `limit` - Results per page (10, 25, 50, or 100)
-- `page` - Page number (starts from 1)
+查询参数：
+- `filter[type]` - 按活动类型筛选：`opened`（已打开的）、`unopened`（未打开的）、`clicked`（点击的）、`unsubscribed`（取消订阅的）、`forwarded`（转发的）、`hardbounced`（硬退回的）、`softbounced`（软退回的）、`junk`（垃圾邮件）
+- `filter[search]` - 按电子邮件地址搜索
+- `limit` - 每页显示的结果数量（10、25、50或100）
+- `page` - 页码（从1开始）
 
-### Automation Operations
+### 自动化脚本操作
 
-#### List Automations
+#### 列出自动化脚本
 
 ```bash
 GET /mailerlite/api/automations
 ```
 
-Query parameters:
-- `filter[enabled]` - Filter by status: `true` or `false`
-- `filter[name]` - Filter by name
-- `filter[group]` - Filter by group ID
-- `page` - Page number (starts from 1)
-- `limit` - Results per page (default: 10)
+查询参数：
+- `filter[enabled]` - 按状态筛选：`true`（启用）或 `false`（禁用）
+- `filter[name]` - 按名称筛选
+- `filter[group]` - 按组ID筛选
+- `page` - 页码（从1开始）
+- `limit` - 每页显示的结果数量（默认：10）
 
-#### Get Automation
+#### 获取自动化脚本信息
 
 ```bash
 GET /mailerlite/api/automations/{automation_id}
 ```
 
-#### Create Automation
+#### 创建自动化脚本
 
 ```bash
 POST /mailerlite/api/automations
@@ -426,44 +421,44 @@ Content-Type: application/json
 }
 ```
 
-Creates a draft automation.
+创建一个草稿自动化脚本。
 
-#### Get Automation Activity
+#### 获取自动化脚本活动记录
 
 ```bash
 GET /mailerlite/api/automations/{automation_id}/activity
 ```
 
-Query parameters:
-- `filter[status]` - Required: `completed`, `active`, `canceled`, `failed`
-- `filter[date_from]` - Start date (Y-m-d)
-- `filter[date_to]` - End date (Y-m-d)
-- `filter[search]` - Search by email
-- `page` - Page number (starts from 1)
-- `limit` - Results per page (default: 10)
+查询参数：
+- `filter[status]` - 必填：`completed`（已完成）、`active`（活动中的）、`canceled`（已取消的）、`failed`（失败的）
+- `filter[date_from]` - 开始日期（格式：Y-m-d）
+- `filter[date_to]` - 结束日期（格式：Y-m-d）
+- `filter[search]` - 按电子邮件地址搜索
+- `page` - 页码（从1开始）
+- `limit` - 每页显示的结果数量（默认：10）
 
-#### Delete Automation
+#### 删除自动化脚本
 
 ```bash
 DELETE /mailerlite/api/automations/{automation_id}
 ```
 
-### Field Operations
+### 字段操作
 
-#### List Fields
+#### 列出字段
 
 ```bash
 GET /mailerlite/api/fields
 ```
 
-Query parameters:
-- `limit` - Results per page (max 100)
-- `page` - Page number (starts from 1)
-- `filter[keyword]` - Filter by keyword (partial match)
-- `filter[type]` - Filter by type: `text`, `number`, `date`
-- `sort` - Sort by: `name`, `type` (prepend `-` for descending)
+查询参数：
+- `limit` - 每页显示的结果数量（最多100个）
+- `page` - 页码（从1开始）
+- `filter[keyword]` - 按关键词筛选（部分匹配）
+- `filter[type]` - 按类型筛选：`text`（文本）、`number`（数字）、`date`（日期）
+- `sort` - 排序方式：`name`（名称）、`type`（类型）（按降序排序）
 
-#### Create Field
+#### 创建字段
 
 ```bash
 POST /mailerlite/api/fields
@@ -475,7 +470,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Field
+#### 更新字段
 
 ```bash
 PUT /mailerlite/api/fields/{field_id}
@@ -486,36 +481,36 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Field
+#### 删除字段
 
 ```bash
 DELETE /mailerlite/api/fields/{field_id}
 ```
 
-### Segment Operations
+### 细分受众操作
 
-#### List Segments
+#### 列出细分受众
 
 ```bash
 GET /mailerlite/api/segments
 ```
 
-Query parameters:
-- `limit` - Results per page (max 250)
-- `page` - Page number (starts from 1)
+查询参数：
+- `limit` - 每页显示的结果数量（最多250个）
+- `page` - 页码（从1开始）
 
-#### Get Segment Subscribers
+#### 获取细分受众中的订阅者
 
 ```bash
 GET /mailerlite/api/segments/{segment_id}/subscribers
 ```
 
-Query parameters:
-- `filter[status]` - Filter by status: `active`, `unsubscribed`, `unconfirmed`, `bounced`, `junk`
-- `limit` - Results per page
-- `cursor` - Pagination cursor
+查询参数：
+- `filter[status]` - 按状态筛选：`active`（活动中的）、`unsubscribed`（已取消订阅的）、`unconfirmed`（未确认的）、`bounced`（被退回的）、`junk`（垃圾邮件）
+- `limit` - 每页显示的结果数量
+- `cursor` - 分页游标
 
-#### Update Segment
+#### 更新细分受众
 
 ```bash
 PUT /mailerlite/api/segments/{segment_id}
@@ -526,36 +521,36 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Segment
+#### 删除细分受众
 
 ```bash
 DELETE /mailerlite/api/segments/{segment_id}
 ```
 
-### Form Operations
+### 表单操作
 
-#### List Forms
+#### 列出表单
 
 ```bash
 GET /mailerlite/api/forms/{type}
 ```
 
-Path parameters:
-- `type` - Form type: `popup`, `embedded`, `promotion`
+路径参数：
+- `type` - 表单类型：`popup`（弹出式）、`embedded`（嵌入式的）、`promotion`（促销用的）
 
-Query parameters:
-- `limit` - Results per page
-- `page` - Page number (starts from 1)
-- `filter[name]` - Filter by name (partial match)
-- `sort` - Sort by: `created_at`, `name`, `conversions_count`, `opens_count`, `visitors`, `conversion_rate`, `last_registration_at` (prepend `-` for descending)
+查询参数：
+- `limit` - 每页显示的结果数量
+- `page` - 页码（从1开始）
+- `filter[name]` - 按名称筛选（部分匹配）
+- `sort` - 排序方式：`created_at`（创建时间）、`name`（名称）、`conversions_count`（转化次数）、`opens_count`（打开次数）、`visitors`（访问者数量）、`conversion_rate`（转化率）、`last_registration_at`（最后注册时间）（按降序排序）
 
-#### Get Form
+#### 获取表单信息
 
 ```bash
 GET /mailerlite/api/forms/{form_id}
 ```
 
-#### Update Form
+#### 更新表单
 
 ```bash
 PUT /mailerlite/api/forms/{form_id}
@@ -566,38 +561,38 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Form
+#### 删除表单
 
 ```bash
 DELETE /mailerlite/api/forms/{form_id}
 ```
 
-#### Get Form Subscribers
+#### 获取表单中的订阅者
 
 ```bash
 GET /mailerlite/api/forms/{form_id}/subscribers
 ```
 
-Query parameters:
-- `filter[status]` - Filter by status: `active`, `unsubscribed`, `unconfirmed`, `bounced`, `junk`
-- `limit` - Results per page (default: 25)
-- `cursor` - Pagination cursor
+查询参数：
+- `filter[status]` - 按状态筛选：`active`（活动中的）、`unsubscribed`（已取消订阅的）、`unconfirmed`（未确认的）、`bounced`（被退回的）、`junk`（垃圾邮件）
+- `limit` - 每页显示的结果数量（默认：25）
+- `cursor` - 分页游标
 
-### Webhook Operations
+### Webhook操作
 
-#### List Webhooks
+#### 列出Webhook
 
 ```bash
 GET /mailerlite/api/webhooks
 ```
 
-#### Get Webhook
+#### 获取Webhook信息
 
 ```bash
 GET /mailerlite/api/webhooks/{webhook_id}
 ```
 
-#### Create Webhook
+#### 创建Webhook
 
 ```bash
 POST /mailerlite/api/webhooks
@@ -610,7 +605,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Webhook
+#### 更新Webhook
 
 ```bash
 PUT /mailerlite/api/webhooks/{webhook_id}
@@ -622,23 +617,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Webhook
+#### 删除Webhook
 
 ```bash
 DELETE /mailerlite/api/webhooks/{webhook_id}
 ```
 
-## Pagination
+## 分页
 
-MailerLite uses cursor-based pagination for most endpoints and page-based pagination for some.
+MailerLite对大多数端点使用基于游标的分页方式，对某些端点使用基于页面的分页方式。
 
-### Cursor-based Pagination
+### 基于游标的分页
 
 ```bash
 GET /mailerlite/api/subscribers?limit=25&cursor=eyJpZCI6MTIzNDU2fQ
 ```
 
-Response includes pagination links:
+响应中包含分页链接：
 ```json
 {
   "data": [...],
@@ -657,13 +652,13 @@ Response includes pagination links:
 }
 ```
 
-### Page-based Pagination
+### 基于页面的分页
 
 ```bash
 GET /mailerlite/api/groups?limit=25&page=2
 ```
 
-Response includes page metadata:
+响应中包含页面元数据：
 ```json
 {
   "data": [...],
@@ -678,7 +673,7 @@ Response includes page metadata:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -708,7 +703,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Create Subscriber Example
+### 创建订阅者的示例
 
 ```python
 import os
@@ -729,37 +724,37 @@ response = requests.post(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Rate limit: 120 requests per minute
-- Subscriber emails are used as unique identifiers (POST creates or updates)
-- Group names have a maximum length of 255 characters
-- Only draft campaigns can be updated
-- API versioning can be overridden via `X-Version: YYYY-MM-DD` header
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 请求速率限制：每分钟120次请求。
+- 订阅者的电子邮件地址用作唯一标识符（POST请求用于创建或更新订阅者信息）。
+- 组的名称最长为255个字符。
+- 只有草稿活动可以更新。
+- 可以通过 `X-Version: YYYY-MM-DD` 头来覆盖API版本。
+- **重要提示：** 当URL包含括号时，使用 `curl -g` 选项来禁用glob解析。
+- **重要提示：** 当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing MailerLite connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 422 | Validation error |
-| 429 | Rate limited (120 req/min) |
-| 4xx/5xx | Passthrough error from MailerLite API |
+| 400 | 未找到MailerLite连接 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 资源未找到 |
+| 422 | 验证错误 |
+| 429 | 请求速率限制（每分钟120次） |
+| 4xx/5xx | 来自MailerLite API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -770,18 +765,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `mailerlite`. For example:
+1. 确保您的URL路径以 `mailerlite` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/mailerlite/api/subscribers`
+- 错误的路径：`https://gateway.maton.ai/api/subscribers`
 
-- Correct: `https://gateway.maton.ai/mailerlite/api/subscribers`
-- Incorrect: `https://gateway.maton.ai/api/subscribers`
+## 资源
 
-## Resources
-
-- [MailerLite API Documentation](https://developers.mailerlite.com/docs/)
-- [MailerLite Subscribers API](https://developers.mailerlite.com/docs/subscribers.html)
-- [MailerLite Groups API](https://developers.mailerlite.com/docs/groups.html)
-- [MailerLite Campaigns API](https://developers.mailerlite.com/docs/campaigns.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [MailerLite API文档](https://developers.mailerlite.com/docs/)
+- [MailerLite 订阅者API](https://developers.mailerlite.com/docs/subscribers.html)
+- [MailerLite 组API](https://developers.mailerlite.com/docs/groups.html)
+- [MailerLite 活动API](https://developers.mailerlite.com/docs/campaigns.html)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

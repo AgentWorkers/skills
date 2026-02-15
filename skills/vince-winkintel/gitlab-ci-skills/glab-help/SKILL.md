@@ -1,11 +1,12 @@
 ---
 name: glab-help
-description: Use when working with glab help commands.
+description: **使用说明：**  
+在操作 glab 的帮助命令（help commands）时，请遵循以下规则：
 ---
 
-# glab help
+# glab 帮助文档
 
-## Overview
+## 概述
 
 ```
 
@@ -21,12 +22,12 @@ description: Use when working with glab help commands.
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab help --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

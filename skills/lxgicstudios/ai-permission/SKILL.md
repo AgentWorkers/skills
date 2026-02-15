@@ -1,26 +1,26 @@
 ---
 name: permission-gen
-description: Generate role-based permission systems
+description: 生成基于角色的权限系统
 ---
 
-# Permission Generator
+# 权限生成器
 
-Describe your roles and resources, get a complete RBAC implementation.
+本工具用于描述用户的角色和资源，并实现完整的角色基于角色的访问控制（RBAC）功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-permission "Admin, Editor, Viewer roles for posts and comments"
 ```
 
-## What It Does
+## 功能概述
 
-- Generates permission constants
-- Creates role hierarchies
-- Builds check functions
-- Includes middleware
+- 生成权限常量  
+- 创建角色层级结构  
+- 构建权限检查函数  
+- 提供中间件支持  
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate from description
@@ -33,15 +33,15 @@ npx ai-permission "roles for e-commerce" --framework express
 npx ai-permission "admin system" --out ./src/lib/permissions.ts
 ```
 
-## Output Includes
+## 输出内容
 
-- Permission enum/constants
-- Role definitions
-- hasPermission() function
-- Middleware for Express/Next.js
-- TypeScript types
+- 权限枚举常量  
+- 角色定义  
+- `hasPermission()` 函数  
+- 适用于 Express/Next.js 的中间件  
+- TypeScript 类型定义  
 
-## Example Output
+## 示例输出
 
 ```typescript
 export const Permissions = {
@@ -57,17 +57,18 @@ export const Roles = {
 };
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- 必需安装 Node.js 18 及更高版本。  
+- 需要配置 OPENAI_API_KEY。  
 
-## License
+## 许可证
 
-MIT. Free forever.
+采用 MIT 许可协议，永久免费使用。  
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-permission](https://github.com/lxgicstudios/ai-permission)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub 仓库：[github.com/lxgicstudios/ai-permission](https://github.com/lxgicstudios/ai-permission)  
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

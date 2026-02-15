@@ -22,11 +22,11 @@ allowed-tools:
 user-invocable: true
 ---
 
-# Kaspa Wallet Skill
+# Kaspa 钱包技能
 
-Simple self-custody wallet for Kaspa blockchain.
+这是一个用于 Kaspa 区块链的简单自托管钱包。
 
-## Overview
+## 概述
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -53,33 +53,33 @@ Simple self-custody wallet for Kaspa blockchain.
 └─────────────────────────────────────────────────────────┘
 ```
 
-## Features
+## 功能
 
-| Feature | Description |
+| 功能 | 描述 |
 |---------|-------------|
-| **Send KAS** | Transfer KAS to any Kaspa address |
-| **Balance Check** | Check balance of any address |
-| **Payment URIs** | Generate `kaspa:` payment request URIs |
-| **Fee Estimates** | Get current network fee tiers |
-| **Network Info** | Check node sync status and blocks |
-| **Wallet Generation** | Generate new mnemonic phrases |
+| **发送 KAS** | 将 KAS 转移到任何 Kaspa 地址 |
+| **余额查询** | 查询任何地址的余额 |
+| **支付 URI** | 生成 `kaspa:` 格式的支付请求 URI |
+| **费用估算** | 获取当前的网络费用等级 |
+| **网络信息** | 检查节点同步状态和区块 |
+| **钱包生成** | 生成新的助记词 |
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 python3 install.py
 ```
 
-**Requirements:** Python 3.8+ with pip. Works on macOS, Linux, Windows.
+**要求：** Python 3.8 及以上版本，并安装了 pip。支持 macOS、Linux 和 Windows 系统。
 
-**Troubleshooting install:**
-- If pip fails: `pip install kaspa` manually, or try `KASPA_PYTHON=python3.12 python3 install.py`
-- If venv missing: `sudo apt install python3-venv` (Ubuntu/Debian)
-- To reinstall: `rm -rf .venv && python3 install.py`
+**安装故障排除：**
+- 如果 pip 安装失败：手动执行 `pip install kaspa`，或尝试 `KASPA_PYTHON=python3.12 python3 install.py`
+- 如果缺少 venv：在 Ubuntu/Debian 系统上运行 `sudo apt install python3-venv`
+- 要重新安装：执行 `rm -rf .venv && python3 install.py`
 
-### CLI Usage
+### 命令行界面 (CLI) 使用方法
 
 ```bash
 # Check balance
@@ -103,9 +103,9 @@ python3 install.py
 ./kaswallet.sh generate-mnemonic
 ```
 
-### Payment URI Format
+### 支付 URI 格式
 
-## Architecture
+## 架构
 
 ```
 kaspa-wallet/
@@ -118,7 +118,7 @@ kaspa-wallet/
     └── kaswallet.py        # Main wallet logic
 ```
 
-## Configuration
+## 配置
 
 ```bash
 # Environment variables (one required)
@@ -132,21 +132,21 @@ export KASPA_RPC_URL="wss://..."            # Custom RPC endpoint
 export KASPA_RPC_CONNECT_TIMEOUT_MS="30000" # Connection timeout (default: 15000)
 ```
 
-## Core Functions
+## 核心功能
 
-### Check Balance
+### 查询余额
 
 ```bash
 ./kaswallet.sh balance                    # Your wallet balance
 ./kaswallet.sh balance kaspa:qrc8y...     # Any address balance
 ```
 
-**Output:**
+**输出：**
 ```json
 {"address": "kaspa:q...", "balance": "1.5", "sompi": "150000000", "network": "mainnet"}
 ```
 
-### Send KAS
+### 发送 KAS
 
 ```bash
 ./kaswallet.sh send <address> <amount>           # Send specific amount
@@ -154,68 +154,68 @@ export KASPA_RPC_CONNECT_TIMEOUT_MS="30000" # Connection timeout (default: 15000
 ./kaswallet.sh send <address> <amount> priority  # Priority fee tier
 ```
 
-**Output (success):**
+**成功输出：**
 ```json
 {"status": "sent", "txid": "abc123...", "from": "kaspa:q...", "to": "kaspa:q...", "amount": "0.5", "fee": "0.0002"}
 ```
 
-**Output (error):**
+**错误输出：**
 ```json
 {"error": "Storage mass exceeds maximum", "errorCode": "STORAGE_MASS_EXCEEDED", "hint": "...", "action": "consolidate_utxos"}
 ```
 
-### Network Info
+### 网络信息
 
 ```bash
 ./kaswallet.sh info
 ```
 
-**Output:**
+**输出：**
 ```json
 {"network": "mainnet", "url": "wss://...", "blocks": 12345678, "synced": true, "version": "1.0.0"}
 ```
 
-### Fee Estimates
+### 费用估算
 
 ```bash
 ./kaswallet.sh fees
 ```
 
-**Output:**
+**输出：**
 ```json
 {"network": "mainnet", "low": {"feerate": 1.0, "estimatedSeconds": 60}, "economic": {...}, "priority": {...}}
 ```
 
-### Generate New Wallet
+### 生成新钱包
 
 ```bash
 ./kaswallet.sh generate-mnemonic
 ```
 
-**Output:**
+**输出：**
 ```json
 {"mnemonic": "word1 word2 word3 ... word24"}
 ```
 
-### Payment URI
+### 支付 URI
 
 ```bash
 ./kaswallet.sh uri                          # Your address
 ./kaswallet.sh uri kaspa:q... 1.5 "payment" # With amount and message
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `STORAGE_MASS_EXCEEDED` | Amount too small for current UTXOs | Send `max` to yourself first to consolidate |
-| `NO_UTXOS` | No spendable outputs | Wait for confirmations or fund wallet |
-| `INSUFFICIENT_FUNDS` | Balance too low | Check balance, reduce amount |
-| `RPC_TIMEOUT` | Network slow | Retry or increase timeout |
-| `NO_CREDENTIALS` | Missing wallet key | Set KASPA_PRIVATE_KEY or KASPA_MNEMONIC |
-| `SDK_NOT_INSTALLED` | Kaspa SDK missing | Run `python3 install.py` |
+| `STORAGE_MASS_EXCEEDED` | 交易金额过小，无法满足当前未花费交易输出 (UTXOs) 的要求 | 先向自己发送 `max` 数量的 KAS 以合并交易输出 |
+| `NO_UTXOS` | 没有可花费的交易输出 (UTXOs) | 等待交易确认或为钱包充值 |
+| `INSUFFICIENT_FUNDS` | 余额不足 | 检查余额并减少转账金额 |
+| `RPC_TIMEOUT` | 网络延迟 | 重试或增加请求超时时间 |
+| `NO_CREDENTIALS` | 缺少钱包密钥 | 设置 `KASPA_PRIVATE_KEY` 或 `KASPA_MNEMONIC` |
+| `SDK_NOT_INSTALLED` | 未安装 Kaspa SDK | 运行 `python3 install.py` |
 
-## Payment Flow
+## 支付流程
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -236,11 +236,11 @@ export KASPA_RPC_CONNECT_TIMEOUT_MS="30000" # Connection timeout (default: 15000
        │                   │                   │
 ```
 
-## Common Workflows
+## 常见操作流程
 
-### Consolidate UTXOs (Fix Storage Mass Error)
+### 合并未花费的交易输出 (解决 `STORAGE_MASS_EXCEEDED` 错误)
 
-When sending fails with `STORAGE_MASS_EXCEEDED`:
+当发送失败并出现 `STORAGE_MASS_EXCEEDED` 错误时，可以执行以下操作：
 
 ```bash
 # 1. Get your address
@@ -254,13 +254,13 @@ When sending fails with `STORAGE_MASS_EXCEEDED`:
 ./kaswallet.sh send kaspa:qRECIPIENT... 0.5
 ```
 
-### Check Transaction Status
+### 查看交易状态
 
-After sending, use the `txid` to verify on a block explorer:
-- Mainnet: `https://explorer.kaspa.org/txs/{txid}`
-- Testnet: `https://explorer-tn10.kaspa.org/txs/{txid}`
+发送交易后，可以使用 `txid` 在区块浏览器中查询交易状态：
+- 主网：`https://explorer.kaspa.org/txs/{txid}`
+- 测试网：`https://explorer-tn10.kaspa.org/txs/{txid}`
 
-### Switch Networks
+### 切换网络
 
 ```bash
 # Testnet
@@ -272,42 +272,42 @@ export KASPA_NETWORK="mainnet"
 ./kaswallet.sh info
 ```
 
-## Units
+## 单位
 
-- **KAS**: Human-readable unit (e.g., 1.5 KAS)
-- **sompi**: Smallest unit, 1 KAS = 100,000,000 sompi
+- **KAS**：人类可读的单位（例如，1.5 KAS）
+- **sompi**：最小单位，1 KAS = 100,000,000 sompi
 
-All command inputs accept KAS. Outputs include both KAS and sompi where relevant.
+所有命令输入都接受 KAS 作为单位。输出结果中会同时显示 KAS 和 sompi（如适用）。
 
-## Security Notes
+## 安全注意事项
 
-- **Private keys**: Never expose in logs or error messages
-- **Mnemonics**: Passed via environment variables only
-- **No disk storage**: Wallet does not store credentials
-- **Fresh connections**: Each command establishes new RPC connection
-- **Address format**: Validate Kaspa addresses (`kaspa:q...` format)
+- **私钥**：切勿在日志或错误信息中泄露私钥 |
+- **助记词**：仅通过环境变量传递 |
+- **无磁盘存储**：钱包不存储任何凭证信息 |
+- **每次操作都建立新的 RPC 连接** |
+- **地址格式**：验证 Kaspa 地址（格式为 `kaspa:q...`）
 
-## Comparison with Traditional Wallets
+## 与传统钱包的比较
 
-| Feature | Traditional Wallet | Kaspa Wallet CLI |
+| 功能 | 传统钱包 | Kaspa 钱包 CLI |
 |---------|-------------------|------------------|
-| Setup | GUI install | `python3 install.py` |
-| Interface | Desktop app | CLI + JSON output |
-| Automation | Limited | Full (JSON parsing) |
-| Custody | Varies | Self-custody |
-| Agent-friendly | No | Yes |
+| 设置 | 需通过 GUI 安装 | 通过 `python3 install.py` 安装 |
+| 用户界面 | 桌面应用程序 | 命令行界面 + JSON 格式输出 |
+| 自动化程度 | 有限 | 全面（支持 JSON 解析） |
+| 托管方式 | 不同 | 自主托管 |
+| 适合代理服务器使用 | 不适用 | 适用 |
 
-## Roadmap
+## 开发计划
 
-- [ ] QR code generation for addresses
-- [ ] Payment links
-- [ ] Transaction history
-- [ ] Multi-address support
-- [ ] Batch payments
-- [ ] Telegram bot integration
+- [ ] 生成地址的 QR 码 |
+- [ ] 支持支付链接 |
+- [ ] 提供交易历史记录 |
+- [ ] 支持多地址操作 |
+- [ ] 批量支付功能 |
+- [ ] 集成 Telegram 机器人 |
 
-## Resources
+## 资源
 
-- [Kaspa Docs](https://docs.kaspa.org/)
-- [Kaspa Explorer](https://explorer.kaspa.org/)
+- [Kaspa 文档](https://docs.kaspa.org/) |
+- [Kaspa 浏览器](https://explorer.kaspa.org/) |
 - [kaspa-py SDK](https://github.com/aspect-build/kaspa-py)

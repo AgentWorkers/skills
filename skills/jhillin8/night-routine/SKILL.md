@@ -1,6 +1,6 @@
 ---
 name: night-routine
-description: Build a restful night routine with wind-down habits, sleep prep, and next-day planning
+description: 建立一个轻松的睡前习惯流程，包括放松身心、准备睡眠以及规划第二天的活动。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,46 +11,46 @@ triggers:
   - "evening habits"
 ---
 
-# Night Routine
+# 晚间作息习惯
 
-End your day intentionally. Wind down, prepare for sleep, plan ahead, and build consistency.
+有意识地结束你的一天。放松身心，为睡眠做好准备，提前规划，并保持作息的一致性。
 
-## What it does
+## 功能介绍
 
-- **Wind-down checklist** — Guided steps to transition from work to rest mode
-- **Sleep prep** — Screen cutoff, environment optimization, relaxation techniques
-- **Next-day planning** — Brief review of tomorrow's priorities and calendar
-- **Consistency tracking** — Monitor your routine adherence over time
+- **放松身心 checklist** — 提供从工作状态过渡到休息状态的指导步骤  
+- **睡眠准备** — 规定屏幕使用时间，优化睡眠环境，提供放松技巧  
+- **次日计划** — 简要回顾明天的优先事项和日程安排  
+- **作息一致性跟踪** — 监测你长期以来的作息习惯  
 
-## Usage
+## 使用方法
 
-**Start wind-down**
-Ask for a guided wind-down session. Clawd walks you through screen cutoff, breathing exercises, and transition activities.
+**开始放松过程**  
+请求一次引导式的放松环节。Clawd 会指导你关闭电子设备、进行呼吸练习以及完成其他过渡活动。  
 
-**Plan tomorrow**
-Review tomorrow's calendar, top 3 priorities, and any prep needed. Sets you up for a purposeful morning.
+**规划明天**  
+查看明天的日程、最重要的三项任务以及需要准备的事项，为第二天做好充分准备。  
 
-**Sleep prep**
-Get specific recommendations: room temperature, lighting, music, reading material, or guided relaxation based on your preferences.
+**睡眠准备**  
+根据你的偏好，获得具体的建议：房间温度、光线、音乐选择或放松方式（如阅读或听引导性放松音频）。  
 
-**Check routine**
-See your evening routine status—what you've completed tonight and where you are in the sequence.
+**检查作息情况**  
+查看你今晚的作息完成情况，以及在整个流程中的进度。  
 
-**Track consistency**
-View weekly or monthly routine adherence. Identify patterns in nights you sleep best.
+**跟踪作息一致性**  
+查看每周或每月的作息规律，找出睡眠质量最佳的夜晚模式。  
 
-## Common Elements
+## 常见要素  
 
-- **Screen cutoff** — Set a time to stop checking devices; Clawd reminds you
-- **Tomorrow's priorities** — 3 specific tasks or intentions for the next day
-- **Gratitude** — Brief reflection on the day—what went well
-- **Reading** — Recommended books or articles for wind-down time
-- **Sleep environment** — Temperature, darkness, sound, and comfort settings
+- **屏幕使用时间限制** — 设定停止使用电子设备的时间；Clawd 会提醒你遵守规定  
+- **明日优先事项** — 明天的三项具体任务或目标  
+- **感恩练习** — 简短回顾当天发生的积极事件  
+- **阅读** — 推荐适合放松时间的书籍或文章  
+- **睡眠环境** — 温度、光线、声音和舒适度的调整  
 
-## Tips
+## 使用建议  
 
-- **Start small.** Add one element at a time (e.g., screen cutoff first, then gratitude the next week).
-- **Consistency beats perfection.** Missing one night doesn't break the habit; pick it up tomorrow.
-- **Customize timing.** Your routine should fit your schedule—whether you sleep at 9 PM or midnight.
-- **Log what works.** Track which activities help you sleep best; double down on those.
-- **All data stays local on your machine.** Your sleep patterns and routine data remain private and encrypted on your device.
+- **从小处开始**：每次只添加一项新的习惯（例如，先设定屏幕使用时间限制，下周再尝试感恩练习）。  
+- **一致性比完美更重要**：即使某晚没坚持也没关系，第二天再继续坚持即可。  
+- **个性化调整时间**：你的作息计划应符合你的生活节奏（无论你晚上几点睡觉）。  
+- **记录有效的方法**：记录哪些活动有助于你更好地入睡，并持续坚持这些方法。  
+- **数据安全**：所有数据都存储在你的设备上，保持隐私和加密状态。

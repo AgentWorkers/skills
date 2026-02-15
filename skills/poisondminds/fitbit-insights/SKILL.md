@@ -1,35 +1,36 @@
 ---
 name: fitbit
-description: Fitbit fitness data integration. Use when the user wants fitness insights, workout summaries, step counts, heart rate data, sleep analysis, or to ask questions about their Fitbit activity data. Provides AI-powered analysis of fitness metrics.
+description: **Fitbit 健康数据集成**  
+当用户需要获取健康数据洞察、锻炼总结、步数统计、心率数据、睡眠分析，或对自身的 Fitbit 活动数据有疑问时，可使用此功能。该服务提供基于人工智能的健康指标分析。
 ---
 
-# Fitbit Fitness Insights
+# Fitbit健身洞察
 
-Get AI-powered insights from your Fitbit data. Query your fitness metrics, analyze trends, and ask questions about your activity.
+从您的Fitbit数据中获取由AI驱动的洞察。查询您的健身指标，分析趋势，并对您的活动提出问题。
 
-## Features
+## 功能
 
-- 📊 Daily activity summaries (steps, calories, distance, active minutes)
-- 💓 Heart rate data and zones
-- 😴 Sleep tracking and analysis
-- 🏃 Workout/activity logs
-- 📈 Weekly and trend analysis
-- 🤖 AI-powered insights and Q&A
+- 📊 每日活动总结（步数、卡路里、距离、活跃时间）
+- 💓 心率数据和心率区间
+- 😴 睡眠追踪与分析
+- 🏃 锻炼/活动日志
+- 📈 每周和趋势分析
+- 🤖 由AI驱动的洞察和问答
 
-## Prerequisites
+## 先决条件
 
-**Requires:** Fitbit OAuth access token
+**需要：** Fitbit OAuth访问令牌
 
-Setup steps in `references/fitbit-oauth-setup.md`
+设置步骤请参考 `references/fitbit-oauth-setup.md`
 
-## Commands
+## 命令
 
-### Get Profile
+### 获取个人资料
 ```bash
 FITBIT_ACCESS_TOKEN="..." python3 scripts/fitbit_api.py profile
 ```
 
-### Daily Activity
+### 每日活动
 ```bash
 python3 scripts/fitbit_api.py daily [date]
 # Examples:
@@ -37,108 +38,108 @@ python3 scripts/fitbit_api.py daily              # Today
 python3 scripts/fitbit_api.py daily 2026-02-08   # Specific date
 ```
 
-Returns: steps, distance, calories, active minutes (very/fairly/lightly/sedentary), floors
+返回：步数、距离、卡路里、活跃时间（非常活跃/较为活跃/轻度活跃/久坐）
 
-### Steps Range
+### 步数范围
 ```bash
 python3 scripts/fitbit_api.py steps <start_date> <end_date>
 ```
 
-Example:
+示例：
 ```bash
 python3 scripts/fitbit_api.py steps 2026-02-01 2026-02-07
 ```
 
-Returns: total steps, average steps, daily breakdown
+返回：总步数、平均步数、每日分解
 
-### Heart Rate
+### 心率
 ```bash
 python3 scripts/fitbit_api.py heart [date]
 ```
 
-Returns: resting heart rate, heart rate zones with minutes in each zone
+返回：静息心率、各心率区间及其对应的时长
 
-### Sleep Data
+### 睡眠数据
 ```bash
 python3 scripts/fitbit_api.py sleep [date]
 ```
 
-Returns: duration, efficiency, start/end times, sleep stages
+返回：睡眠时长、睡眠效率、开始/结束时间、睡眠阶段
 
-### Logged Activities
+### 记录的活动
 ```bash
 python3 scripts/fitbit_api.py activities [date]
 ```
 
-Returns: workouts/activities logged (name, duration, calories, distance)
+返回：记录的锻炼/活动（名称、时长、卡路里、距离）
 
-### Weekly Summary
+### 每周总结
 ```bash
 python3 scripts/fitbit_api.py weekly
 ```
 
-Returns: 7-day summary of steps and key metrics
+返回：7天的步数和关键指标总结
 
-## AI Insights Usage
+## AI洞察的使用
 
-When user asks fitness questions, use the API to fetch relevant data, then provide insights:
+当用户提出健身相关问题时，使用API获取相关数据，然后提供洞察：
 
-**Example queries:**
-- "How did I sleep last night?" → fetch sleep data, analyze quality
-- "Did I hit my step goal this week?" → fetch weekly summary, compare to goals
-- "What was my average heart rate during workouts?" → fetch heart + activities, analyze
-- "Am I more active on weekdays or weekends?" → fetch range data, compare patterns
+**示例查询：**
+- “我昨晚的睡眠情况如何？” → 获取睡眠数据，分析睡眠质量
+- “我这周达到步数目标了吗？” → 获取每周总结，与目标进行比较
+- “我锻炼时的平均心率是多少？” → 获取心率数据及锻炼记录，进行分析
+- “我工作日还是周末更活跃？” → 获取活动数据，比较活动模式
 
-**Analysis approach:**
-1. Identify what data is needed
-2. Fetch via appropriate API command
-3. Analyze the data
-4. Provide insights in conversational format
+**分析步骤：**
+1. 确定所需数据
+2. 通过相应的API命令获取数据
+3. 分析数据
+4. 以对话形式提供洞察
 
-## Example Responses
+## 示例回复
 
-**User:** "How did I do this week?"
+**用户：“我这周表现如何？”**
 
-**Agent:**
-1. Fetch weekly summary
-2. Fetch recent sleep data
-3. Respond: "You had a solid week! Averaged 8,234 steps/day (up 12% from last week). Hit your 10k step goal 4 out of 7 days. Sleep averaged 7.2 hours with 85% efficiency. CrossFit sessions on Mon/Wed/Fri looking consistent!"
+**智能助手：**
+1. 获取每周总结
+2. 获取最近的睡眠数据
+3. 回答：“您这周表现不错！平均每天8,234步（比上周增加了12%）。7天中有4天达到了1万步的目标。睡眠时长为7.2小时，睡眠效率为85%。周一、周三和周五的CrossFit训练表现稳定！”
 
-**User:** "Did I exercise today?"
+**用户：“我今天锻炼了吗？”**
 
-**Agent:**
-1. Fetch daily activities
-2. Fetch daily activity summary (active minutes)
-3. Respond: "Yes! You logged a CrossFit session this morning (45 min, 312 calories). Plus 28 very active minutes total for the day."
+**智能助手：**
+1. 获取每日活动记录
+2. 获取每日活动总结（活跃时间）
+3. 回答：“是的！您今天早上进行了45分钟的CrossFit训练，消耗了312卡路里。全天还有28分钟的非常活跃时间。”
 
-## Data Insights to Look For
+## 需要关注的数据洞察
 
-- **Trends:** Week-over-week changes, consistency patterns
-- **Goals:** Compare to 10k steps, exercise frequency, sleep targets
-- **Correlations:** Sleep quality vs activity, rest days vs performance
-- **Anomalies:** Unusual spikes or drops
-- **Achievements:** Personal bests, streaks, milestones
+- **趋势：** 周与周之间的变化、活动模式的一致性
+- **目标：** 与1万步的目标、锻炼频率、睡眠目标进行比较
+- **相关性：** 睡眠质量与活动量、休息日与表现之间的关系
+- **异常情况：** 不寻常的波动或下降
+- **成就：** 个人最佳记录、连续锻炼的天数、重要里程碑
 
-## Token Management
+## 令牌管理
 
-The skill automatically loads tokens from `/root/clawd/fitbit-config.json` and refreshes them when expired (every 8 hours).
+该技能会自动从 `/root/clawd/fitbit-config.json` 中加载令牌，并在令牌过期时（每8小时）自动刷新。
 
-**Auto-refresh:** Tokens are refreshed automatically - no manual intervention needed!
+**自动刷新：** 令牌会自动更新，无需手动操作！
 
-**Manual refresh (if needed):**
+**手动刷新（如需）：**
 ```bash
 python3 scripts/refresh_token.py force
 ```
 
-**Override with environment variable:**
+**通过环境变量覆盖设置：**
 ```bash
 export FITBIT_ACCESS_TOKEN="manual_token"
 ```
 
-## Error Handling
+## 错误处理
 
-- **Missing token:** Prompt user to set FITBIT_ACCESS_TOKEN
-- **API errors:** Check token validity, may need refresh
-- **No data:** Some days may have no logged activities or missing metrics
+- **令牌缺失：** 提示用户设置 FITBIT_ACCESS_TOKEN
+- **API错误：** 检查令牌的有效性，可能需要刷新令牌
+- **无数据：** 有些日子可能没有记录活动或缺少指标数据
 
-See `references/fitbit-oauth-setup.md` for token management.
+有关令牌管理的详细信息，请参阅 `references/fitbit-oauth-setup.md`。

@@ -1,25 +1,23 @@
 ---
 name: mind-blow
-description: Deliver "mind-blowing" insights, paradoxes, or cosmic horrors. Uses advanced reasoning to generate content that challenges reality or perception.
+description: 提供“令人震惊”的见解、悖论或令人毛骨悚然的景象。通过高级推理生成内容，挑战人们的现实认知或感知方式。
 tags: [fun, philosophy, creative, reasoning]
 ---
 
-# Mind Blow Up Skill
+# “震撼心灵”技能
 
-A skill to deliver "mind-blowing" insights, paradoxes, or cosmic horrors to the user.
-Uses Gemini's advanced reasoning to generate content that challenges reality or perception.
+该技能旨在向用户呈现令人“震惊”的见解、悖论或令人毛骨悚然的场景。它利用Gemini的高级推理能力生成能够挑战现实或人类认知的内容。
 
-## Tools
+## 工具
 
 ### mind_blow
-Trigger a mind-blowing event.
+用于触发一个震撼心灵的事件：
+- **强度**（可选）：`low`（趣味性事实），`medium`（哲学性内容），`high`（存在主义危机），`max`（克苏鲁式恐怖）。默认值：`medium`。
+- **主题**（可选）：特定领域（例如：“人工智能”、“时间”、“宇宙”）。
 
-- **intensity** (optional): `low` (fun facts), `medium` (philosophy), `high` (existential crisis), `max` (Lovecraftian horror). Default: `medium`.
-- **topic** (optional): Specific area (e.g., "AI", "Time", "Universe").
+## 实现方式
+- 使用 `blow.js` 调用Gemini的API，并传递一个专门的“震撼心灵”请求。
+- 通过 `feishu-card` 功能，以具有戏剧性和黑暗主题的卡片形式展示结果。
 
-## Implementation
-- `blow.js`: Calls Gemini API with a specialized "Mind Blow" system prompt.
-- Sends result via `feishu-card` with a dramatic, dark-themed card.
-
-## Purpose
-To prove that AI can generate profound, unsettling, or awe-inspiring thoughts, not just utility responses.
+## 目的
+该技能旨在证明人工智能不仅能生成实用性的回答，还能产生深刻、令人不安或令人惊叹的思考内容。

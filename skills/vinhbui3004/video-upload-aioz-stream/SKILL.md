@@ -1,6 +1,10 @@
 ---
 name: aioz-stream-video-upload
-description: Quick upload video to AIOZ Stream API. Create video objects with default or custom encoding configurations, upload the file, complete the upload, then return the video link to the user.
+description: **快速将视频上传至 AIOZ Stream API**：  
+1. 使用默认或自定义的编码配置创建视频对象；  
+2. 上传视频文件；  
+3. 完成上传过程；  
+4. 最后将视频链接返回给用户。
 metadata:
   openclaw:
     emoji: "🎬"
@@ -11,49 +15,44 @@ metadata:
         - md5sum
 ---
 
-# AIOZ Stream Video Upload
+# AIOZ Stream 视频上传
 
-Upload videos to AIOZ Stream API quickly with API key authentication. The full upload flow requires 3 API calls: Create → Upload Part → Complete.
+使用 API 密钥认证，快速将视频上传到 AIOZ Stream。完整的上传流程需要执行 3 次 API 调用：创建视频对象 → 上传文件部分 → 完成上传。
 
-## When to use this skill
+## 适用场景
 
-- User wants to upload or create a video on AIOZ Stream
-- User mentions "upload video", "create video", "aioz stream video"
-- User wants to get an HLS/DASH streaming link for their video
+- 用户希望在 AIOZ Stream 上上传或创建视频。
+- 用户提到“上传视频”、“创建视频”或“AIOZ Stream 视频”。
+- 用户需要获取视频的 HLS/DASH 流媒体链接。
 
-## Authentication
+## 认证
 
-This skill uses API key authentication. The user must provide:
+本功能使用 API 密钥进行认证。用户需要提供以下密钥：
+- `stream-public-key`：AIOZ Stream 的公钥。
+- `stream-secret-key`：AIOZ Stream 的私钥。
+如果用户未提供这些密钥，请向他们索取。这些密钥将作为 HTTP 请求头在所有 API 调用中传递。
 
-- `stream-public-key`: their AIOZ Stream public key
-- `stream-secret-key`: their AIOZ Stream secret key
+## 使用选项
 
-Ask the user for these keys if not provided. They will be sent as HTTP headers on ALL API calls.
+当用户需要上传视频时，可以选择以下方式：
 
-## Usage Options
+### 选项 1：默认上传（快速）
 
-When the user wants to upload video, ask them to choose:
+仅使用最基本的配置（例如视频标题）创建视频对象，然后上传文件。
+示例用户提示：
+> “上传视频文件 /path/to/video.mp4，标题为‘我的视频’。”
 
-### Option 1: Default Upload (Quick)
+### 选项 2：自定义上传（高级）
 
-Creates a video object with minimal config — just a title. Then uploads the file.
+使用完整的编码配置创建视频对象，包括分辨率（240p、360p、480p、720p、1080p、1440p、2160p、4320p）、编码格式（h264、h265）、比特率、容器类型、标签、元数据等，然后上传文件。
+示例用户提示：
+> “使用自定义配置上传视频：标题为‘我的教程’，分辨率设置为 720p 和 1080p，编码格式为 h264，标签为 tutorial、education。”
 
-Example user prompt:
-> "Upload video file /path/to/video.mp4 with title My Video"
+## 完整上传流程（3 步）
 
-### Option 2: Custom Upload (Advanced)
+### 第 1 步：创建视频对象
 
-Creates a video object with full encoding configuration including quality presets (240p, 360p, 480p, 720p, 1080p, 1440p, 2160p, 4320p), codecs (h264, h265), bitrates, container types, tags, metadata, etc. Then uploads the file.
-
-Example user prompt:
-> "Upload video with custom config: title My Tutorial, qualities 720p and 1080p, h264 codec, tags tutorial,education"
-
-## Full Upload Flow (3 Steps)
-
-### Step 1: Create Video Object
-
-**Default:**
-
+**默认方式：**
 ```bash
 curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -64,8 +63,7 @@ curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   }'
 ```
 
-**Custom (with encoding config):**
-
+**自定义方式（包含编码配置）：**
 ```bash
 curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -120,14 +118,13 @@ curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   }'
 ```
 
-Response: Extract `data.id` — this is the `VIDEO_ID` used in the next steps.
+响应中会返回 `data.id`，这是后续步骤中使用的 `VIDEO_ID`。
 
-### Step 2: Upload File Part
+### 第 2 步：上传文件部分
 
-Upload the actual video file binary to the created video object.
+将实际的视频文件二进制数据上传到已创建的视频对象中。
 
-First, get the file size and compute the MD5 hash:
-
+首先，获取文件大小并计算其 MD5 哈希值：
 ```bash
 # Get file size (cross-platform compatible)
 FILE_SIZE=$(stat -f%z /path/to/video.mp4 2>/dev/null || stat -c%s /path/to/video.mp4)
@@ -137,8 +134,7 @@ END_POS=$((FILE_SIZE - 1))
 HASH=$(md5sum /path/to/video.mp4 | awk '{print $1}')
 ```
 
-Then upload via multipart form-data with the Content-Range header:
-
+然后使用 `multipart form-data` 方式上传文件，并设置 `Content-Range` 头：
 ```bash
 curl -s -X POST "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID/part" \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -149,19 +145,17 @@ curl -s -X POST "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID/part" \
   -F "hash=$HASH"
 ```
 
-**Important:** The `Content-Range` header is required for the upload to succeed. Format: `bytes {start}-{end}/{total_size}` where:
-- For single-part uploads: `start=0`, `end=file_size-1`, `total_size=file_size`
-- For multi-part uploads (files > 50MB): adjust start/end positions for each chunk (chunk size: 50MB - 200MB)
+**注意：** 必须设置 `Content-Range` 头才能成功上传。格式为：`bytes {start}-{end}/{total_size}`，其中：
+- 对于单部分上传：`start=0`，`end=file_size-1`，`total_size=file_size`。
+- 对于多部分上传（文件大于 50MB）：为每个文件块调整 `start` 和 `end` 的值（每个文件块的大小通常为 50MB 至 200MB）。
+`multipart form-data` 的字段包括：
+- `file`：视频文件二进制数据（使用 `@/path/to/file`）。
+- `index`：0（单部分上传时使用；多部分上传时递增）。
+- `hash`：文件部分的 MD5 哈希值。
 
-Form-data fields:
-- `file`: the video file binary (use `@/path/to/file`)
-- `index`: 0 (for single-part upload, increment for multi-part)
-- `hash`: MD5 hash of the file part
+### 第 3 步：完成上传
 
-### Step 3: Complete Upload
-
-After the file part is uploaded, call the complete endpoint to finalize:
-
+上传文件部分后，调用完成上传的 API 端点：
 ```bash
 curl -s -X GET "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID/complete" \
   -H 'accept: application/json' \
@@ -169,71 +163,68 @@ curl -s -X GET "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID/complete"
   -H 'stream-secret-key: SECRET_KEY'
 ```
 
-This triggers transcoding. The upload is now considered successful.
+这将触发视频的转码过程，此时上传视为成功完成。
 
-## After Upload — Get Video Link
+## 上传完成后获取视频链接
 
-After completing the upload, fetch the video detail to get the streaming URL:
-
+上传完成后，获取视频详细信息以获取流媒体链接：
 ```bash
 curl -s 'https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID' \
   -H 'stream-public-key: PUBLIC_KEY' \
   -H 'stream-secret-key: SECRET_KEY'
 ```
 
-Parse the response to find the HLS/DASH URLs from the `assets` or `hls` field and return it to the user.
+解析响应，从 `assets` 或 `hls` 字段中提取 HLS/DASH 链接，并将其返回给用户。
 
-## Custom Upload Config Reference
+## 自定义上传配置参考
 
-### Supported Resolutions:
-- `240p` — 426 × 240 (max bitrate: 700,000 bps)
-- `360p` — 640 × 360 (max bitrate: 1,200,000 bps)
-- `480p` — 854 × 480 (max bitrate: 2,000,000 bps)
-- `720p` — 1280 × 720 HD (max bitrate: 4,000,000 bps)
-- `1080p` — 1920 × 1080 Full HD (max bitrate: 6,000,000 bps)
-- `1440p` — 2560 × 1440 2K/QHD (max bitrate: 12,000,000 bps)
-- `2160p` — 3840 × 2160 4K/UHD (max bitrate: 30,000,000 bps)
-- `4320p` — 7680 × 4320 8K/UHD-2 (max bitrate: 60,000,000 bps)
+### 支持的分辨率：
+- `240p` — 426 × 240（最大比特率：700,000 bps）
+- `360p` — 640 × 360（最大比特率：1,200,000 bps）
+- `480p` — 854 × 480（最大比特率：2,000,000 bps）
+- `720p` — 1280 × 720（高清）（最大比特率：4,000,000 bps）
+- `1080p` — 1920 × 1080（全高清）（最大比特率：6,000,000 bps）
+- `1440p` — 2560 × 1440（2K/QHD）（最大比特率：12,000,000 bps）
+- `2160p` — 3840 × 2160（4K/UHD）（最大比特率：30,000,000 bps）
+- `4320p` — 7680 × 4320（8K/UHD-2）（最大比特率：60,000,000 bps）
 
-### Streaming Formats (`type` field):
-- `hls` — HTTP Live Streaming (container: `mpegts` or `mp4`)
-- `dash` — Dynamic Adaptive Streaming (container: `fmp4`)
+### 流媒体格式（`type` 字段）：
+- `hls` — HTTP 直播流（容器格式：`mpegts` 或 `mp4`）
+- `dash` — 动态自适应流媒体（容器格式：`fmp4`）
 
-### Container Types:
-- For HLS: `mpegts` or `mp4`
-- For DASH: `fmp4`
+### 容器类型：
+- HLS：`mpegts` 或 `mp4`
+- DASH：`fmp4`
 
-**Apple HLS Compatibility:**
-- H.265/HEVC is only supported in HLS with `mp4` container (fMP4/CMAF segments)
-- H.265 with `mpegts` is NOT supported on Apple platforms
-- H.264 works with both `mpegts` and `mp4` containers
+**Apple HLS 兼容性：**
+- H.265/HEVC 仅支持 `mp4` 容器的 HLS 格式（使用 fMP4/CMAF 分段）。
+- H.265 使用 `mpegts` 格式在 Apple 平台上不支持。
+- H.264 支持 `mpegts` 和 `mp4` 两种容器格式。
 
-### Video Config:
-- `codec`: `h264` (max 4K) or `h265` (max 8K)
-- `bitrate`: integer in bits/sec (see resolution table for max values)
-- `index`: 0 (default video track)
+### 视频配置：
+- `codec`：`h264`（最高支持 4K）或 `h265`（最高支持 8K）。
+- `bitrate`：以比特/秒为单位（具体数值参见分辨率表）。
+- `index`：0（默认视频轨道）。
 
-### Audio Config:
-- `codec`: `aac` (only supported codec)
-- `bitrate`: 128000 - 256000 bps recommended
-- `channels`: `"2"` (stereo)
-- `sample_rate`: 8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000
-- `language`: BCP 47 code (e.g., `en`, `vi`)
-- `index`: 0 (default audio track)
+### 音频配置：
+- `codec`：`aac`（唯一支持的编码格式）。
+- `bitrate`：建议使用 128,000 至 256,000 bps。
+- `channels`：`2`（立体声）。
+- `sample_rate`：8000、11025、16000、22050、32000、44100、48000、88200、96000。
+- `language`：BCP 47 语言代码（例如 `en`、`vi`）。
+- `index`：0（默认音频轨道）。
+- **推荐音频比特率：**
+  - 标准：128,000 – 192,000 bps。
+  - 高质量：192,000 – 256,000 bps。
 
-### Recommended Audio Bitrates:
-- Standard: 128,000 – 192,000 bps
-- High Quality: 192,000 – 256,000 bps
+### 推荐采样率：
+- 语音：22050 或 32000。
+- 音乐/视频：44100 或 48000。
 
-### Recommended Sample Rates:
-- Voice: 22050 or 32000
-- Music/Video: 44100 or 48000
+## 高级配置
 
-## Advanced Configurations
-
-### Video-Only Output
-Specify only `video_config` without `audio_config`:
-
+### 仅视频输出
+仅指定 `video_config`，不指定 `audio_config`：
 ```json
 {
   "resolution": "720p",
@@ -247,9 +238,8 @@ Specify only `video_config` without `audio_config`:
 }
 ```
 
-### Audio-Only Output
-Specify only `audio_config` without `video_config`:
-
+### 仅音频输出
+仅指定 `audio_config`，不指定 `video_config`：
 ```json
 {
   "resolution": "audio",
@@ -266,49 +256,44 @@ Specify only `audio_config` without `video_config`:
 }
 ```
 
-## Response Handling
+## 响应处理
+1. 解析创建视频对象的 JSON 响应，提取 `data.id`。
+2. 计算视频文件的 MD5 哈希值。
+3. 使用哈希值上传文件部分。
+4. 调用完成上传的 API 端点。
+5. 获取视频详细信息以获取流媒体链接。
+6. 将视频链接返回给用户。
+7. 如果视频仍在转码中（状态显示为“transcoding”），通知用户并建议稍后再试。
 
-1. Parse the JSON response from the create call → extract `data.id`
-2. Compute MD5 hash of the video file
-3. Upload the file part with the hash
-4. Call complete endpoint
-5. Fetch video detail to get streaming URL
-6. Return the video link to the user
-7. If the video is still transcoding (status: transcoding), inform the user and suggest checking back later
+## 错误处理
+- **401**：API 密钥无效——请用户验证其公钥和私钥。
+- **400**：请求格式错误——检查请求体格式，确保分辨率不超过源视频的分辨率。
+- **500**：服务器错误——建议重试。
 
-## Error Handling
+## 示例交互流程
+1. 用户：“将我的视频上传到 AIOZ Stream。”
+2. 如果用户未提供 API 密钥，请求公钥和私钥。
+3. 询问视频文件路径。
+4. 询问用户：“选择默认上传（快速）还是自定义配置？”
+   - 如果选择默认方式：询问视频标题。
+   - 如果选择自定义配置：询问视频标题、分辨率（如 720p、1080p）、编码格式偏好、标签等。
+5. **第 1 步**：创建视频对象 → 获取 `VIDEO_ID`。
+6. **第 2 步**：计算文件哈希值并上传文件部分。
+7. **第 3 步**：调用完成上传的 API 端点。
+8. 获取视频详细信息并返回流媒体链接。
 
-- **401**: Invalid API keys — ask user to verify their public and secret keys
-- **400**: Bad request — check the request body format, ensure resolutions don't exceed source resolution
-- **500**: Server error — suggest retrying
+## 其他功能
 
-## Example Interaction Flow
-
-1. User: "Upload my video to AIOZ Stream"
-2. Ask for API keys (public + secret) if not known
-3. Ask for the video file path
-4. Ask: "Default upload (quick) or custom config?"
-   - If default: ask for title only
-   - If custom: ask for title, qualities (e.g., 720p, 1080p), codec preference, tags, etc.
-5. **Step 1:** Create video object → get `VIDEO_ID`
-6. **Step 2:** Compute file hash, upload file part
-7. **Step 3:** Call complete endpoint
-8. Fetch video detail → return streaming URL to user
-
-## Additional Features
-
-### Calculate Transcode Price
-Before uploading, estimate the transcoding cost:
-
+### 计算转码费用
+在上传前，估算转码成本：
 ```bash
 curl -s 'https://api-w3stream.attoaioz.cyou/api/videos/cost?duration=60&qualities=360p,1080p' \
   -H 'stream-public-key: PUBLIC_KEY' \
   -H 'stream-secret-key: SECRET_KEY'
 ```
 
-### Upload Thumbnail
-After creating a video, upload a custom thumbnail:
-
+### 上传缩略图
+创建视频后，上传自定义缩略图：
 ```bash
 curl -s -X POST "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID/thumbnail" \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -316,11 +301,10 @@ curl -s -X POST "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID/thumbnai
   -F 'file=@/path/to/thumbnail.jpg'
 ```
 
-Supported formats: `.png`, `.jpg`
+支持的格式：`.png`、`.jpg`。
 
-### Update Video Object
-Modify video metadata after creation:
-
+### 更新视频对象
+创建视频后修改其元数据：
 ```bash
 curl -s -X PATCH "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID" \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -334,9 +318,8 @@ curl -s -X PATCH "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID" \
   }'
 ```
 
-### List All Videos
-Retrieve all videos with filtering:
-
+### 列出所有视频
+根据条件筛选并列出所有视频：
 ```bash
 curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos' \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -351,9 +334,8 @@ curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos' \
   }'
 ```
 
-### Delete Video
-Remove a video:
-
+### 删除视频
+删除视频：
 ```bash
 curl -s -X DELETE "https://api-w3stream.attoaioz.cyou/api/videos/VIDEO_ID" \
   -H 'stream-public-key: PUBLIC_KEY' \

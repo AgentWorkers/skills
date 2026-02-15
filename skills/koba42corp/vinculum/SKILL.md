@@ -1,6 +1,6 @@
 ---
 name: vinculum
-description: Shared consciousness between Clawdbot instances. Links multiple bots into a collective, sharing memories, activities, and decisions in real-time over local network using Gun.js P2P sync.
+description: Clawdbot实例之间的共享意识：通过Gun.js的P2P同步技术，将多个机器人连接成一个集体，实现记忆、活动和决策的实时共享，所有操作都在本地网络内完成。
 version: 1.1.0
 author: Koba42 Corp
 license: MIT
@@ -28,140 +28,140 @@ tags:
   - real-time
 ---
 
-# Vinculum: Shared Consciousness
+# Vinculum：共享意识
 
-*"The Vinculum is the processing device at the core of every Borg vessel. It interconnects the minds of all the drones."* — Seven of Nine
+“Vinculum 是每个 Borg 船只的核心处理设备，它将所有机器人的思维连接在一起。” —— 七号
 
-Link multiple Clawdbot instances into a collective consciousness using Gun.js peer-to-peer sync.
+使用 Gun.js 的点对点同步功能，将多个 Clawdbot 实例连接成一个集体意识。
 
-## Features
+## 特点
 
-- 🔗 **Real-time link** — Changes propagate instantly between drones
-- 🌐 **Local network** — Works across machines on the same LAN
-- 🔐 **Encrypted** — All shared data encrypted
-- 🤖 **Individual identity** — Each drone keeps its own SOUL.md
-- 📡 **Drone discovery** — Automatic multicast discovery
+- 🔗 **实时链接** —— 变更会立即在所有机器人之间传播
+- 🌐 **局域网** —— 支持同一局域网内的多台机器
+- 🔐 **加密** —— 所有共享数据均经过加密
+- 🤖 **个体身份** —— 每个机器人都保留自己的 SOUL.md 文件
+- 📡 **机器人发现** —— 自动进行多播发现
 
-## Installation
+## 安装
 
-After installing from ClawdHub:
+从 ClawdHub 安装后：
 
 ```bash
 cd skills/vinculum
 npm install --production
 ```
 
-Or run the install script:
+或运行安装脚本：
 
 ```bash
 ./install.sh
 ```
 
-## Quick Start
+## 快速入门
 
-### 1. Start the Vinculum Relay
+### 1. 启动 Vinculum 中继
 
 ```
 /link relay start
 ```
 
-This starts the relay on port 8765 with local network multicast enabled.
+这将在端口 8765 上启动中继，并启用局域网多播功能。
 
-### 2. Initialize the Collective (First Bot)
+### 2. 初始化集体（第一个机器人）
 
 ```
 /link init
 ```
 
-You'll receive a pairing code. Share it with your other bot(s).
+您将收到一个配对码，请将其分享给其他机器人。
 
-### 3. Join the Collective (Additional Bots)
+### 3. 加入集体（其他机器人）
 
 ```
 /link join <pairing-code>
 ```
 
-### 4. Verify Connection
+### 4. 验证连接
 
 ```
 /link status
 /link drones
 ```
 
-## Commands Reference
+## 命令参考
 
-### Relay Management
-| Command | Description |
+### 中继管理
+| 命令 | 描述 |
 |---------|-------------|
-| `/link relay` | Show relay status |
-| `/link relay start` | Start Vinculum relay |
-| `/link relay stop` | Stop relay |
-| `/link relay restart` | Restart relay |
-| `/link relay peer <url>` | Add remote peer |
+| `/link relay` | 显示中继状态 |
+| `/link relay start` | 启动 Vinculum 中继 |
+| `/link relay stop` | 停止中继 |
+| `/link relay restart` | 重启中继 |
+| `/link relay peer <url>` | 添加远程节点 |
 
-### Collective Setup
-| Command | Description |
+### 集体设置
+| 命令 | 描述 |
 |---------|-------------|
-| `/link init` | Create new collective |
-| `/link join <code>` | Join with invite code |
-| `/link invite` | Generate new invite code |
-| `/link leave` | Leave collective |
+| `/link init` | 创建新的集体 |
+| `/link join <code>` | 使用配对码加入集体 |
+| `/link invite` | 生成新的邀请码 |
+| `/link leave` | 离开集体 |
 
-### Control
-| Command | Description |
+### 控制
+| 命令 | 描述 |
 |---------|-------------|
-| `/link` | Quick status |
-| `/link on` | Enable link |
-| `/link off` | Disable link |
-| `/link status` | Detailed status |
+| `/link` | 快速查看状态 |
+| `/link on` | 启用链接 |
+| `/link off` | 关闭链接 |
+| `/link status` | 详细状态信息 |
 
-### Shared Consciousness
-| Command | Description |
+### 共享意识
+| 命令 | 描述 |
 |---------|-------------|
-| `/link share "text"` | Share a thought/memory |
-| `/link drones` | List connected drones |
-| `/link activity` | Recent collective activity |
-| `/link decisions` | Shared decisions |
+| `/link share "text"` | 共享想法/记忆 |
+| `/link drones` | 列出连接的机器人 |
+| `/link activity` | 最近的集体活动 |
+| `/link decisions` | 共享的决策 |
 
-### Configuration
-| Command | Description |
+### 配置
+| 命令 | 描述 |
 |---------|-------------|
-| `/link config` | View all settings |
-| `/link config drone-name <name>` | Set this drone's designation |
-| `/link config share-activity on/off` | Toggle activity sharing |
-| `/link config share-memory on/off` | Toggle memory sharing |
+| `/link config` | 查看所有设置 |
+| `/link config drone-name <name>` | 设置机器人的名称 |
+| `/link config share-activity on/off` | 切换活动共享功能 |
+| `/link config share-memory on/off` | 切换记忆共享功能 |
 
-## What Gets Shared
+## 共享的内容
 
-| Data | Shared | Notes |
+| 数据类型 | 是否共享 | 备注 |
 |------|--------|-------|
-| Activity summaries | ✅ | What each drone did |
-| Learned knowledge | ✅ | Collective learnings |
-| Decisions | ✅ | Consensus achieved |
-| Drone status | ✅ | Online, current task |
-| Full conversations | ❌ | Stays local |
-| USER.md | ❌ | Individual identity |
-| SOUL.md | ❌ | Individual personality |
-| Credentials | ❌ | Never linked |
+| 活动摘要 | ✅ | 每个机器人的行为 |
+| 学习到的知识 | ✅ | 集体的学习成果 |
+| 决策 | ✅ | 经过集体讨论的决策 |
+| 机器人状态 | ✅ | 在线状态及当前任务 |
+| 完整对话 | ❌ | 仅保存在本地 |
+| USER.md | ❌ | 个体身份信息 |
+| SOUL.md | ❌ | 个体性格特征 |
+| 凭据 | ❌ | 绝不会被共享 |
 
-## Multi-Machine Setup
+## 多机器设置
 
-### Machine 1 (Runs Relay)
+### 机器 1（运行中继）
 ```
 /link relay start
 /link init
 ```
-Note the pairing code and your machine's IP (shown in `/link relay status`).
+请记下配对码和您的机器 IP 地址（在 `/link relay status` 中显示）。
 
-### Machine 2+ (Connects to Relay)
+### 机器 2+（连接到中继）
 ```
 /link relay peer http://<machine1-ip>:8765/gun
 /link join <pairing-code>
 ```
 
-## Configuration
+## 配置文件
 
-Config file: `~/.config/clawdbot/vinculum.yaml`
+配置文件：`~/.config/clawdbot/vinculum.yaml`
 
 ```yaml
 enabled: true
@@ -178,7 +178,7 @@ share:
   decisions: true
 ```
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────┐     ┌─────────────┐
@@ -194,30 +194,30 @@ share:
   └────────────────────────────┘
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"Relay not running"**
-- Run `/link relay start`
-- Check `/link relay logs` for errors
+**“中继未运行”**
+- 运行 `/link relay start`
+- 查看 `/link relay logs` 以获取错误信息
 
-**"No drones connected"**  
-- Ensure all bots use the same pairing code
-- Check network connectivity between machines
-- Port 8765 must be accessible
+**“没有机器人连接”**
+- 确保所有机器人使用相同的配对码
+- 检查机器之间的网络连接
+- 确保端口 8765 可被访问
 
-**"Link not working"**
-- Check `/link status` shows Connected
-- Try `/link relay restart`
+**“链接无法使用”**
+- 查看 `/link status` 是否显示已连接
+- 尝试运行 `/link relay restart`
 
-## Requirements
+## 所需软件
 
-- Node.js 18+
+- Node.js 18 及以上版本
 - npm
 
-## License
+## 许可证
 
 MIT — Koba42 Corp
 
 ---
 
-*Resistance is futile. You will be assimilated into the collective.*
+*抵抗是徒劳的。你们终将被同化到集体之中。*

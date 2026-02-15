@@ -1,40 +1,40 @@
 ---
 name: browserbase-auth
-description: Guide Claude through interactive authentication flows using the stagehand CLI
+description: 使用 stagehand CLI 指导 Claude 完成交互式身份验证流程
 ---
 
-# Authentication Skill
+# 认证技能
 
-Guide Claude through interactive authentication flows using the `stagehand` CLI.
+使用 `stagehand` CLI 指导 Claude 完成交互式认证流程。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- A website requires login to access content
-- You encounter a login page or authentication wall
-- The user needs to authenticate to complete a task
-- Session cookies have expired
+在以下情况下使用此技能：
+- 网站需要登录才能访问内容
+- 遇到登录页面或认证障碍
+- 用户需要认证才能完成任务
+- 会话 cookie 已过期
 
-## Authentication Flow
+## 认证流程
 
-### 1. Detect Login Page
+### 1. 检测登录页面
 
-After navigating to a URL, check if authentication is needed:
+导航到某个 URL 后，判断是否需要认证：
 
 ```bash
 stagehand snapshot
 ```
 
-Look for indicators:
-- Form elements with `type="password"` or `type="email"`
-- Text containing "sign in", "log in", "username", "password"
-- OAuth buttons (Google, GitHub, Microsoft, etc.)
+查找以下提示：
+- 类型为 `type="password"` 或 `type="email"` 的表单元素
+- 包含 “sign in”（登录）、“log in”（登录）、“username”（用户名）、“password”（密码）等文字的元素
+- OAuth 按钮（如 Google、GitHub、Microsoft 等）
 
-### 2. Prompt User for Credentials
+### 2. 请求用户提供凭证
 
-**Always ask the user for credentials - never assume or store them.**
+**务必请求用户提供凭证——切勿自行猜测或存储用户的凭证。**
 
-Example prompt:
+示例提示：
 ```
 I've detected a login page. To continue, I'll need your credentials:
 
@@ -44,9 +44,9 @@ I've detected a login page. To continue, I'll need your credentials:
 Note: Your credentials will only be used to fill the login form and won't be stored.
 ```
 
-### 3. Fill Login Form
+### 3. 填写登录表单
 
-Use the snapshot refs to identify form fields:
+使用快照引用（snapshot refs）来识别表单字段：
 
 ```bash
 # Get the current page state
@@ -62,15 +62,15 @@ stagehand fill @0-8 "their-password"
 stagehand click @0-12
 ```
 
-### 4. Handle 2FA/MFA
+### 4. 处理双重身份验证（2FA/MFA）
 
-If a 2FA prompt appears after login:
+如果登录后出现双重身份验证（2FA）提示：
 
 ```bash
 stagehand snapshot
 ```
 
-Prompt the user:
+提示用户：
 ```
 Two-factor authentication is required. Please provide:
 - The code from your authenticator app, OR
@@ -79,28 +79,28 @@ Two-factor authentication is required. Please provide:
 What is your 2FA code?
 ```
 
-Then fill and submit:
+然后填写并提交凭证：
 ```bash
 stagehand fill @0-3 "123456"
 stagehand click @0-5
 ```
 
-### 5. Verify Success
+### 5. 验证登录是否成功
 
-After submitting credentials:
+提交凭证后：
 
 ```bash
 stagehand wait networkidle
 stagehand snapshot
 ```
 
-Check for:
-- Redirect away from login page
-- User profile/avatar elements
-- Dashboard or home page content
-- Absence of error messages
+检查以下情况：
+- 是否已从登录页面跳转到其他页面
+- 是否显示了用户个人资料/头像
+- 是否显示了仪表板或首页内容
+- 是否没有错误信息
 
-If login failed:
+如果登录失败：
 ```
 The login attempt was unsuccessful. I see an error message: "[error text]"
 
@@ -110,14 +110,13 @@ Would you like to:
 3. Reset your password
 ```
 
-## OAuth/SSO Flows
+## OAuth/单点登录（SSO）流程
 
-For OAuth buttons (Google, GitHub, etc.):
-
-1. Click the OAuth button
-2. A popup or redirect will occur
-3. User completes authentication in the OAuth provider
-4. Wait for redirect back to the original site
+对于 OAuth 按钮（如 Google、GitHub 等）：
+1. 点击 OAuth 按钮
+2. 将出现弹窗或页面重定向
+3. 用户在 OAuth 提供商处完成认证
+4. 等待系统重定向回原始网站
 
 ```bash
 # Click OAuth button
@@ -130,9 +129,9 @@ stagehand wait networkidle
 stagehand snapshot
 ```
 
-## Common Patterns
+## 常见认证方式
 
-### Username + Password Form
+### 用户名 + 密码表单
 ```html
 <form>
   <input type="email" name="email">
@@ -141,7 +140,7 @@ stagehand snapshot
 </form>
 ```
 
-### Magic Link / Passwordless
+### 魔法链接（Magic Link）/ 无密码登录
 ```
 I see this site uses passwordless authentication (magic link).
 
@@ -152,7 +151,7 @@ I see this site uses passwordless authentication (magic link).
 What email should I use?
 ```
 
-### CAPTCHA
+### 图形验证码（CAPTCHA）
 ```
 This login page has a CAPTCHA. I cannot solve CAPTCHAs automatically.
 
@@ -162,17 +161,17 @@ Options:
 3. Contact the site administrator
 ```
 
-## Security Reminders
+## 安全提示
 
-- Never store or log user credentials
-- Credentials are only used to fill form fields
-- Recommend users use password managers
-- Suggest enabling 2FA when available
-- Clear sensitive data from conversation context after use
+- **切勿存储或记录用户的凭证**
+- 凭证仅用于填充表单字段
+- 建议用户使用密码管理工具
+- 如果支持双重身份验证，请建议用户启用该功能
+- 使用后及时清除对话记录中的敏感信息
 
-## Troubleshooting
+## 故障排除
 
-### Login button doesn't work
+### 登录按钮无法使用
 ```bash
 # Try waiting for page to be fully loaded
 stagehand wait networkidle
@@ -184,7 +183,7 @@ stagehand snapshot
 stagehand click 450,320
 ```
 
-### Form fields not found
+### 无法找到表单字段
 ```bash
 # Get full snapshot to find correct refs
 stagehand snapshot
@@ -193,7 +192,7 @@ stagehand snapshot
 stagehand eval "document.querySelector('input[type=password]')?.id"
 ```
 
-### Session expires quickly
-- Some sites have short session timeouts
-- Consider using `stagehand session create` with Browserbase for persistent sessions
-- Check if "Remember me" checkbox is available
+### 会话过期过快
+- 一些网站的会话超时时间较短
+- 可以考虑使用 `stagehand session create` 与 Browserbase 结合来实现持久化会话
+- 检查是否提供了 “记住我”（Remember me）选项

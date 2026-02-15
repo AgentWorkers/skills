@@ -1,87 +1,87 @@
 ---
 name: fairscale-solana
-description: Solana wallet reputation. Ask anything in plain English — "is this a bot?", "whale?", "diamond hands?" — get instant answers.
+description: Solana钱包的信誉系统：你可以用简单的英语提出任何问题，比如“这是一个机器人吗？”，“这个用户是大户投资者吗？”，“这个用户的交易行为是否稳定（即‘钻石手’行为）？”——都会立即得到答案。
 license: MIT
 metadata:
   author: FairScale
   version: "3.4.0"
 ---
 
-# FairScale — Reputation Intelligence for Solana
+# FairScale — 为 Solana 提供的信誉智能服务
 
-**Docs:** https://docs.fairscale.xyz
+**文档链接：** https://docs.fairscale.xyz
 
 ---
 
-## TWO ACCESS METHODS
+## 两种访问方式
 
-### Method 1: API Key (Recommended)
+### 方法 1：API 密钥（推荐）
 
-Use if you have a FairScale API key.
+如果您拥有 FairScale 的 API 密钥，请使用此方法。
 
 ```
 GET https://api.fairscale.xyz/score?wallet=WALLET_ADDRESS
 Header: fairkey: YOUR_API_KEY
 ```
 
-**Example:**
+**示例：**
 ```bash
 curl "https://api.fairscale.xyz/score?wallet=GFTVQdZumAnBRbmaRgN9n3Z5qH5nXvjMZXJ3EyqP32Tn" \
   -H "fairkey: YOUR_API_KEY"
 ```
 
-Get your key: https://sales.fairscale.xyz
+获取您的 API 密钥：https://sales.fairscale.xyz
 
 ---
 
-### Method 2: x402 Micropayments (For Agents with Wallets)
+### 方法 2：x402 微支付（适用于拥有 Solana 钱包的代理）
 
-No API key needed. Pay $0.05 USDC per call.
+无需 API 密钥。每次调用需支付 0.05 美元（USDC）。
 
 ```
 GET https://x402.fairscale.xyz/score?wallet=WALLET_ADDRESS
 ```
 
-**Flow:**
-1. Call endpoint → Get 402 response with payment details
-2. Send 0.05 USDC to treasury wallet shown
-3. Retry with header: `x-payment-signature: YOUR_TX_SIGNATURE`
-4. Get wallet data
+**操作流程：**
+1. 调用相应端点 → 接收包含支付详情的 402 响应
+2. 将 0.05 美元（USDC）发送到系统中指定的钱包
+3. 重新调用端点，并在请求头中添加 `x-payment-signature: YOUR_TX_SIGNATURE`
+4. 获取钱包信息
 
-**Pricing:**
-| Request | Price |
+**定价：**
+| 请求类型 | 费用 |
 |---------|-------|
-| Single wallet | $0.05 USDC |
-| Batch (10 wallets) | $0.40 USDC |
+| 单个钱包 | 0.05 美元（USDC） |
+| 批量（10 个钱包）| 0.40 美元（USDC） |
 
 ---
 
-## WHICH METHOD TO USE
+## 选择哪种方法
 
-| Situation | Use |
+| 情况 | 使用方法 |
 |-----------|-----|
-| Have API key configured | Method 1 (API Key) |
-| Agent has Solana wallet with USDC | Method 2 (x402) |
-| No API key, no wallet | Cannot access — need one or the other |
+| 已配置 API 密钥 | 方法 1（API 密钥） |
+| 拥有 Solana 钱包且可支付 USDC | 方法 2（x402） |
+| 既没有 API 密钥也没有钱包 | 无法访问 — 需要其中一种方法 |
 
-**Check for API key first.** If `$FAIRSCALE_API_KEY` is set, use Method 1. Otherwise, try Method 2.
+**请先检查是否拥有 API 密钥。** 如果 `$FAIRSCALE_API_KEY` 已设置，请使用方法 1；否则，尝试方法 2。
 
 ---
 
-## RESPONSE FIELDS
+## 响应字段
 
-| Field | Use |
+| 字段 | 用途 |
 |-------|-----|
-| `fairscore` | The score (0-100) — **USE THIS** |
-| `tier` | bronze / silver / gold / platinum |
-| `badges` | Array — list each `badge.label` |
-| `features` | Object — raw metrics for custom logic |
+| `fairscore` | 总分（0-100 分）—— **请使用此字段** |
+| `tier` | 铜级 / 银级 / 金级 / 白金级 |
+| `badges` | 数组 — 列出所有徽章的名称 |
+| `features` | 对象 — 包含用于自定义逻辑的原始数据 |
 
 ---
 
-## QUICK RESPONSE FORMAT
+## 快速响应格式
 
-For simple "check this wallet" requests:
+对于简单的查询请求（例如“检查这个钱包的信誉”），可以使用以下格式：
 
 ```
 📊 FairScore: [fairscore]/100 | Tier: [tier]
@@ -91,34 +91,33 @@ For simple "check this wallet" requests:
 🏅 Badges: [badge labels]
 ```
 
-**Risk thresholds:**
-- ≥60 → ✅ TRUSTED
-- 40-59 → ⚡ MODERATE  
-- 20-39 → ⚠️ CAUTION
-- <20 → 🚨 HIGH RISK
+**风险等级判断标准：**
+- ≥60 → ✅ 可信赖
+- 40-59 → ⚡ 中等风险
+- 20-39 → ⚠️ 警告
+- <20 → 🚨 高风险
 
 ---
 
-## NATURAL LANGUAGE → FEATURES
+## 用户自然语言请求与对应功能
 
-When users ask in plain English, translate to the right features:
+当用户用普通语言提问时，需要将其转换为相应的功能进行查询：
 
-| User asks | Check these | Logic |
+| 用户问题 | 需要检查的字段 | 判断逻辑 |
 |-----------|-------------|-------|
-| "trustworthy?" | `fairscore` | ≥60 = yes |
-| "whale?" / "deep pockets?" | `lst_percentile_score`, `stable_percentile_score`, `native_sol_percentile` | All >70 = whale |
-| "bot?" / "sybil?" | `burst_ratio`, `platform_diversity` | burst >50 OR diversity <20 = bot |
-| "diamond hands?" | `conviction_ratio`, `no_instant_dumps` | conviction >60 = yes |
-| "active user?" | `active_days`, `tx_count`, `platform_diversity` | All >40 = active |
-| "OG?" / "veteran?" | `wallet_age_score` | >70 = OG |
-| "airdrop eligible?" | `wallet_age_score >50`, `platform_diversity >30`, `burst_ratio <30` | All must pass |
-| "creditworthy?" | `conviction_ratio`, `no_instant_dumps`, `wallet_age_score` | All >50 = yes |
+| “这个钱包可信吗？” | `fairscore` | ≥60 分表示可信 |
+| “这个用户是大型投资者（‘whale’）吗？” | `lst_percentile_score`, `stable_percentile_score`, `native_sol_percentile` | 如果这些指标均大于 70，则为大型投资者 |
+| “这个用户是机器人（‘bot’）吗？” | `burst_ratio`, `platform_diversity` | 如果 `burst_ratio` 大于 50 或 `platform_diversity` 小于 20，则可能是机器人 |
+| “这个用户活跃吗？” | `active_days`, `tx_count`, `platform_diversity` | 如果这些指标均大于 40，则表示用户活跃 |
+| “这个用户是早期用户（‘OG’）吗？” | `wallet_age_score` | 如果 `wallet_age_score` 大于 70，则为早期用户 |
+| “这个钱包有资格参与空投吗？” | `wallet_age_score > 50`, `platform_diversity > 30`, `burst_ratio < 30` | 所有条件都必须满足 |
+| “这个用户信用良好吗？” | `conviction_ratio`, `no_instant_dumps`, `wallet_age_score` | 如果这些指标均大于 50，则表示信用良好 |
 
 ---
 
-## RESPONSE EXAMPLES
+## 响应示例
 
-**"Is this a whale?"**
+**“这个用户是大型投资者吗？”**
 ```
 🐋 Whale Check: GFTVQd...P32Tn
 
@@ -129,7 +128,7 @@ When users ask in plain English, translate to the right features:
 Verdict: 🟡 PARTIAL WHALE — Heavy DeFi, not cash-rich.
 ```
 
-**"Is this a bot?"**
+**“这个用户是机器人吗？”**
 ```
 🤖 Bot Check: GFTVQd...P32Tn
 
@@ -139,7 +138,7 @@ Verdict: 🟡 PARTIAL WHALE — Heavy DeFi, not cash-rich.
 Verdict: ✅ HUMAN — Not a bot.
 ```
 
-**"Airdrop eligible?"**
+**“这个钱包有资格参与空投吗？”**
 ```
 🎁 Airdrop Check: GFTVQd...P32Tn
 
@@ -152,11 +151,11 @@ Verdict: ✅ ELIGIBLE
 
 ---
 
-## CUSTOM CRITERIA
+## 自定义查询条件
 
-When users define their own rules:
+用户可以自定义查询条件，例如：
 
-> "Only wallets with conviction > 70"
+> “仅查询信用评分大于 70 的钱包”
 
 ```
 🔧 Custom Check: GFTVQd...P32Tn
@@ -168,42 +167,42 @@ Verdict: ❌ FAILS
 
 ---
 
-## ALL FEATURES
+## 所有功能
 
-| Feature | Description |
+| 功能 | 描述 |
 |---------|-------------|
-| `fairscore` | Overall score (0-100) |
-| `tier` | bronze/silver/gold/platinum |
-| `wallet_age_score` | Account age percentile |
-| `tx_count` | Transaction count percentile |
-| `active_days` | Active days percentile |
-| `platform_diversity` | DeFi protocols used |
-| `conviction_ratio` | Holding behavior |
-| `burst_ratio` | Bot-like patterns (high = bad) |
-| `no_instant_dumps` | Doesn't quick-sell |
-| `lst_percentile_score` | LST holdings |
-| `stable_percentile_score` | Stablecoin holdings |
-| `native_sol_percentile` | SOL balance |
-| `net_sol_flow_30d` | Accumulating or draining |
+| `fairscore` | 总分（0-100 分） |
+| `tier` | 账户等级（铜级/银级/金级/白金级） |
+| `wallet_age_score` | 账户年龄的百分位数 |
+| `tx_count` | 交易次数的百分位数 |
+| `active_days` | 账户活跃天数的百分位数 |
+| `platform_diversity` | 使用的 DeFi 协议类型 |
+| `conviction_ratio` | 用户的交易行为 |
+| `burst_ratio` | 是否存在类似机器人的交易模式 |
+| `no_instant_dumps` | 是否不会立即抛售资产 |
+| `lst_percentile_score` | 持有的 LST（Lightweight Staking）资产比例 |
+| `stable_percentile_score` | 持有的稳定币比例 |
+| `native_sol_percentile` | 持有的 SOL（Solana）币量 |
+| `net_sol_flow_30d` | 近 30 天内的 SOL 资产流动情况（积累或流出） |
 
 ---
 
-## CRITICAL RULES
+## 重要规则
 
-1. **ALWAYS call the API** — Never guess, never reuse old data
-2. **Check for API key first** — Use Method 1 if `$FAIRSCALE_API_KEY` is set
-3. **Fall back to x402** — If no API key, use Method 2 (if agent has wallet)
-4. **Use exact endpoint** — `/score?wallet=ADDRESS`
-5. **Translate user intent** — Map plain English to features
-6. **Give verdicts** — Users want yes/no answers, not data dumps
-7. **If API fails** — Say "❌ Couldn't fetch data. Try again."
+1. **务必通过 API 获取数据** — 绝不要猜测或使用旧数据 |
+2. **先检查是否有 API 密钥** — 如果 `$FAIRSCALE_API_KEY` 已设置，请使用方法 1 |
+3. **备用方案** — 如果没有 API 密钥且用户拥有 Solana 钱包，可以使用方法 2 |
+4. **使用正确的端点** — `/score?wallet=ADDRESS` |
+5. **理解用户意图** — 将用户的自然语言问题转换为相应的功能进行查询 |
+6. **提供明确的结果** — 用户需要的是“是/否”的答案，而不是数据列表 |
+7. **如果 API 请求失败** — 回答“❌ 无法获取数据，请重试”。
 
-**Never invent data. Never guess. Always call the API.**
+**切勿伪造数据，也切勿猜测。始终通过 API 获取信息。**
 
 ---
 
-## LINKS
+## 相关链接
 
-- Docs: https://docs.fairscale.xyz
-- API Key: https://sales.fairscale.xyz
-- Twitter: @FairScaleXYZ
+- 文档：https://docs.fairscale.xyz
+- API 密钥：https://sales.fairscale.xyz
+- Twitter：@FairScaleXYZ

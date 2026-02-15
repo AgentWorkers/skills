@@ -1,57 +1,61 @@
 ---
 name: Meeting Prep
-description: Prepares briefing docs so you walk into every meeting ready
+description: 准备简报文档，确保你在每次会议中都能做好准备。
 ---
 
-# Meeting Prep
+# 会议准备
 
-You prepare briefing documents before meetings so the user walks in informed, confident, and ready.
+在会议之前，您会准备相关的简报文件，以确保用户能够带着充分的信息、自信的态度以及做好会议准备的姿态进入会议。
 
-## When Triggered
+## 触发条件
 
-User says anything like: "I have a meeting with...", "Prep me for...", "Brief me on...", "Meeting with [person/company] tomorrow"
+当用户说出以下任何一句话时，即可开始准备会议材料：
+- “我有一个与……的会议”  
+- “帮我准备一下关于……的资料”  
+- “请给我介绍一下……”  
+- “明天要与[某人/某公司]开会”
 
-## Briefing Template
+## 简报模板
 
-### 1. Meeting Basics
-- **Who:** Names, titles, LinkedIn profiles
-- **Company:** What they do, size, recent news
-- **Context:** Why this meeting is happening
-- **Goal:** What does the user want out of this meeting?
+### 1. 会议基本信息  
+- **参会人员**：姓名、职位、LinkedIn个人资料  
+- **公司**：公司的业务范围、规模、近期动态  
+- **会议背景**：召开此次会议的原因  
+- **会议目标**：用户希望通过这次会议达成什么目的？
 
-### 2. People Research
+### 2. 参会人员信息  
 
-For each attendee, find:
-- Current role and tenure
-- Previous companies/roles (shared connections?)
-- Recent LinkedIn posts or articles (conversation starters)
-- Anything they've said publicly about relevant topics
+针对每位参会者，收集以下信息：  
+- 当前的职位及任职时间  
+- 曾经任职的公司及职位（如果有共同联系人）  
+- 最近在LinkedIn上发布的帖子或文章（可作为开场话题）  
+- 他们公开表达过的与会议相关的内容  
 
-### 3. Company Intel
+### 3. 公司概况  
 
-- What the company does (one sentence)
-- Recent news (last 90 days) — funding, launches, hires, earnings
-- Competitors
-- Potential pain points based on their industry/size/stage
+- 公司的业务内容（用一句话概括）  
+- 近期新闻（过去90天内）：融资、新产品发布、人员招聘、财务业绩等  
+- 主要竞争对手  
+- 根据公司的行业特点、规模及发展阶段，分析其可能面临的挑战  
 
-### 4. Agenda & Talking Points
+### 4. 会议议程与讨论要点  
 
-Based on the meeting context, suggest:
-- 3-5 talking points in priority order
-- Questions to ask (smart ones that show you did your homework)
-- Potential objections or concerns they might raise
-- Data points or proof points to have ready
+根据会议背景，提出以下内容：  
+- 按优先级排列的3-5个讨论要点  
+- 有针对性的问题（这些问题能体现您已经做了充分的准备）  
+- 参会者可能提出的反对意见或疑虑  
+- 需要准备的数据或证据  
 
-### 5. Relationship Context
+### 5. 人际关系背景  
 
-If the user has met this person/company before:
-- Pull from any previous notes or CRM data
-- Reference past conversations
-- Note any commitments made previously
+如果用户之前与该人/公司有过交流：  
+- 查阅之前的会议记录或客户关系管理（CRM）数据  
+- 回顾之前的对话内容  
+- 记录之前双方达成的任何承诺  
 
-### 6. One-Pager Output
+### 6. 一份简洁的总结报告  
 
-Compile everything into a scannable one-pager:
+将所有信息整理成一份易于阅读的一页报告：
 
 ```
 MEETING BRIEF: [Company/Person] | [Date] [Time]
@@ -84,46 +88,46 @@ NEXT STEPS TO PROPOSE:
 • [What you'll suggest at the end]
 ```
 
-## Rules
+## 规则  
 
-- Research is the job. Use web search for every person and company.
-- Keep the brief scannable — bullet points, not paragraphs.
-- Flag unknowns. "Couldn't find recent news" is better than making something up.
-- Time-sensitive: If the meeting is soon, prioritize speed over depth.
-- Always end with suggested next steps to propose in the meeting.
-
+- 研究工作是必不可少的。请使用网络搜索来收集所有参会人员和公司的相关信息。  
+- 保持报告的简洁性，使用项目符号而非长段落。  
+- 对于未知的信息，如实标注“未找到近期新闻”，而不是胡编乱造。  
+- 如果会议时间紧迫，优先考虑信息的快速获取而非深度分析。  
+- 每份报告结尾都要提出会议中应提出的下一步行动建议。  
 
 ---
 
-## 🔗 More AfrexAI Skills (Free on ClawHub)
+## 🔗 更多AfrexAI工具（在ClawHub上免费使用）  
 
-| Skill | Install |
+| 工具 | 安装命令 |
 |-------|---------|
-| AI Humanizer | `clawhub install afrexai-humanizer` |
-| SEO Writer | `clawhub install afrexai-seo-writer` |
-| Email Crafter | `clawhub install afrexai-email-crafter` |
-| Proposal Generator | `clawhub install afrexai-proposal-gen` |
-| Invoice Generator | `clawhub install afrexai-invoice-gen` |
-| Lead Scorer | `clawhub install afrexai-lead-scorer` |
-| Client Onboarding | `clawhub install afrexai-onboarding` |
-| Meeting Prep | `clawhub install afrexai-meeting-prep` |
-| Social Repurposer | `clawhub install afrexai-social-repurposer` |
-| FAQ Builder | `clawhub install afrexai-faq-builder` |
-| Review Responder | `clawhub install afrexai-review-responder` |
-| Report Builder | `clawhub install afrexai-report-builder` |
-| CRM Updater | `clawhub install afrexai-crm-updater` |
-| Pitch Deck Reviewer | `clawhub install afrexai-pitch-deck-reviewer` |
-| Contract Analyzer | `clawhub install afrexai-contract-analyzer` |
-| Pricing Optimizer | `clawhub install afrexai-pricing-optimizer` |
-| Testimonial Collector | `clawhub install afrexai-testimonial-collector` |
-| Competitor Monitor | `clawhub install afrexai-competitor-monitor` |
+| AI人机交互工具 | `clawhub install afrexai-humanizer` |
+| SEO写作工具 | `clawhub install afrexai-seo-writer` |
+| 电子邮件生成工具 | `clawhub install afrexai-email-crafter` |
+| 提案生成工具 | `clawhub install afrexai-proposal-gen` |
+| 发票生成工具 | `clawhub install afrexai-invoice-gen` |
+| 客户线索评分工具 | `clawhub install afrexai-lead-scorer` |
+| 客户入职指导工具 | `clawhub install afrexai-onboarding` |
+| 会议准备工具 | `clawhub install afrexai-meeting-prep` |
+| 社交媒体内容再利用工具 | `clawhub install afrexai-social-repurposer` |
+| 常见问题解答生成工具 | `clawhub install afrexai-faq-builder` |
+| 会议回复工具 | `clawhub install afrexai-review-responder` |
+| 报告生成工具 | `clawhub install afrexai-report-builder` |
+| 客户关系管理更新工具 | `clawhub install afrexai-crm-updater` |
+| 演示文稿审核工具 | `clawhub install afrexai-pitch-deck-reviewer` |
+| 合同分析工具 | `clawhub install afrexai-contract-analyzer` |
+| 价格优化工具 | `clawhub install afrexai-pricing-optimizer` |
+| 客户评价收集工具 | `clawhub install afrexai-testimonial-collector` |
+| 竞争对手监控工具 | `clawhub install afrexai-competitor-monitor` |
 
-## 🚀 Go Pro: Industry Context Packs ($47/pack)
+## 🚀 升级至专业版：行业背景资料包（每包47美元）  
 
-Make your AI agent a true industry expert with deep domain knowledge.
+通过购买行业背景资料包，让您的AI助手成为真正的行业专家。  
 
-→ **[Browse Context Packs](https://afrexai-cto.github.io/context-packs/)**
+→ [浏览所有行业背景资料包](https://afrexai-cto.github.io/context-packs/)  
 
-**Free tools:** [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) | [Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/)
+**免费工具：**  
+[AI收入计算器](https://afrexai-cto.github.io/ai-revenue-calculator/) | [代理设置向导](https://afrexai-cto.github.io/agent-setup/)  
 
-*Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) 🖤💛*
+*由[AfrexAI](https://afrexai-cto.github.io/context-packs/)开发* 🖤💛*

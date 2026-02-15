@@ -18,52 +18,51 @@ metadata:
         required: true
 ---
 
-# Messari Crypto Intel
+# Messari Crypto Intelligence
 
-Real-time crypto market intelligence via Messari's REST API — AI-powered analysis,
-on-chain metrics, sentiment, news, and institutional-grade research without building data pipelines.
+通过Messari的REST API获取实时的加密货币市场情报——利用AI技术进行分析，提供链上数据指标、市场情绪分析、新闻以及机构级别的研究报告，无需自行构建数据管道。
 
-## Prerequisites
+## 前提条件
 
-- **Messari API Key** — get one at [messari.io/api](https://messari.io/api)
-- **Messari AI Credits** — required for AI completion endpoints
+- **Messari API密钥**：请在 [messari.io/api](https://messari.io/api) 获取
+- **Messari AI信用点**：使用AI功能时需要这些信用点
 
-## REST API Overview
+## REST API概述
 
-**Base URL:** `https://api.messari.io`
+**基础URL：** `https://api.messari.io`
 
-**Authentication:** Include your API key in every request:
+**身份验证：** 在每个请求中都必须包含您的API密钥：
 
 ```
 x-messari-api-key: <YOUR_API_KEY>
 ```
 
-All endpoints accept and return JSON. Use `Content-Type: application/json` for POST requests.
+所有端点都支持并返回JSON格式的数据。POST请求时请设置 `Content-Type: application/json`。
 
-## Service Routing Table
+## 服务路由表
 
-| Service | Base Path | Use When |
+| 服务 | 基础路径 | 使用场景 |
 |---|---|---|
-| **AI** | `/ai/` | General crypto questions, synthesis across data sources |
-| **Signal** | `/signal/v1/` | Sentiment, mindshare, trending narratives |
-| **Metrics** | `/metrics/v2/` | Price, volume, market cap, fundamentals |
-| **News** | `/news/v1/` | Real-time crypto news, breaking events |
-| **Research** | `/research/v1/` | Institutional reports, protocol deep dives |
-| **Stablecoins** | `/stablecoins/v2/` | Stablecoin supply, per-chain breakdowns |
-| **Exchanges** | `/exchanges/v2/` | Exchange volume, metrics, timeseries |
-| **Networks** | `/networks/v2/` | L1/L2 network metrics, timeseries |
-| **Protocols** | `/protocols/v2/` | DeFi protocol metrics (DEX, lending, staking) |
-| **Token Unlocks** | `/token-unlocks/v1/` | Vesting schedules, unlock events |
-| **Fundraising** | `/fundraising/v1/` | Funding rounds, investors, M&A |
-| **Intel** | `/intel/v1/` | Governance events, protocol updates |
-| **Topics** | `/topics/v1/` | Trending topic classes, daily timeseries |
-| **X-Users** | `/signal/v1/x-users/` | Crypto X/Twitter user metrics |
+| **AI** | `/ai/` | 通用加密货币问题解答，跨数据源的综合分析 |
+| **Signal** | `/signal/v1/` | 市场情绪分析、趋势分析 |
+| **Metrics** | `/metrics/v2/` | 价格、交易量、市值、基本数据 |
+| **News** | `/news/v1/` | 实时加密货币新闻、突发事件 |
+| **Research** | `/research/v1/** | 机构研究报告、协议深度分析 |
+| **Stablecoins** | `/stablecoins/v2/` | 稳定币供应量、链上数据 |
+| **Exchanges** | `/exchanges/v2/` | 交易所交易量、指标数据 |
+| **Networks** | `/networks/v2/` | 第一/第二层网络指标数据 |
+| **Protocols** | `/protocols/v2/** | DeFi协议指标（去中心化交易所、借贷、质押等） |
+| **Token Unlocks** | `/token-unlocks/v1/** | 代币解锁计划、解锁事件 |
+| **Fundraising** | `/fundraising/v1/** | 融资轮次、投资者信息、并购动态 |
+| **Intel** | `/intel/v1/** | 治理事件、协议更新 |
+| **Topics** | `/topics/v1/** | 热门话题分类、每日数据趋势 |
+| **X-Users** | `/signal/v1/x-users/** | 加密货币领域Twitter用户数据分析 |
 
-For detailed endpoint documentation, see [references/api_services.md](references/api_services.md).
+有关详细端点文档，请参阅 [references/api_services.md](references/api_services.md)。
 
-## Example Requests
+## 示例请求
 
-### AI Chat Completion
+### AI聊天辅助
 
 ```bash
 curl -X POST "https://api.messari.io/ai/v1/chat/completions" \
@@ -76,47 +75,36 @@ curl -X POST "https://api.messari.io/ai/v1/chat/completions" \
   }'
 ```
 
-### Asset Metrics Lookup
+### 资产指标查询
 
 ```bash
 curl "https://api.messari.io/metrics/v2/assets?assetSlugs=bitcoin,ethereum" \
   -H "x-messari-api-key: $MESSARI_API_KEY"
 ```
 
-### Signal Mindshare Gainers
+### 市场情绪分析
 
 ```bash
 curl "https://api.messari.io/signal/v1/assets/gainers-losers?type=mindshare&limit=10" \
   -H "x-messari-api-key: $MESSARI_API_KEY"
 ```
 
-### News Feed
+### 新闻推送
 
 ```bash
 curl "https://api.messari.io/news/v1/news/feed?limit=20" \
   -H "x-messari-api-key: $MESSARI_API_KEY"
 ```
 
-## Routing Guidance
+## 路由指南
 
-### General crypto questions
-Route through **AI** first — broadest context, synthesizes across market data, research, news, social.
-
-### Quantitative questions
-Use **Metrics** for price/volume/fundamentals. **Exchanges** for exchange-level data. **Networks** for L1/L2 metrics. **Protocols** for DeFi-specific data.
-
-### Sentiment and narratives
-**Signal** for mindshare and sentiment. **Topics** for trending narrative classes. **X-Users** for influencer-level metrics.
-
-### Specific asset classes
-**Stablecoins** for stablecoin supply and flows. **Token Unlocks** for vesting schedules and upcoming unlocks.
-
-### Research, news, and events
-**Research** for deep dives and reports. **News** for real-time events. **Intel** for governance and protocol updates. **Fundraising** for funding rounds and M&A.
-
-### Multi-service queries
-Combine services for richer answers. Example — "Is SOL overvalued?":
-1. **Metrics** → current price, volume, fundamentals
-2. **Signal** → sentiment and mindshare trend
-3. **Token Unlocks** → upcoming supply pressure
-4. **AI** → synthesize a view from all data
+- **通用加密货币问题**：首先通过 **AI** 端点查询，以获取最全面的信息，该端点会整合市场数据、研究报告和新闻内容。
+- **定量分析**：使用 **Metrics** 端点查询价格、交易量和基本数据；使用 **Exchanges** 端点查询交易所级别的数据；使用 **Networks** 端点查询第一/第二层网络指标；使用 **Protocols** 端点查询DeFi相关数据。
+- **市场情绪与趋势分析**：使用 **Signal** 端点获取市场情绪和趋势分析；使用 **Topics** 端点获取热门话题信息；使用 **X-Users** 端点获取影响者级别的数据。
+- **特定资产类别**：使用 **Stablecoins** 端点查询稳定币的供应量和流动情况；使用 **Token Unlocks** 端点查询代币的解锁计划。
+- **研究报告与新闻**：使用 **Research** 端点获取深入分析和报告；使用 **News** 端点获取实时事件；使用 **Intel** 端点获取治理信息和协议更新；使用 **Fundraising** 端点获取融资轮次和并购动态。
+- **多服务联合查询**：结合多个服务以获得更全面的信息。例如：“SOL是否被高估了？”：
+  1. 使用 **Metrics** 端点查询当前价格、交易量和基本数据；
+  2. 使用 **Signal** 端点查询市场情绪和趋势；
+  3. 使用 **Token Unlocks** 端点查询即将到来的供应压力；
+  4. 使用 **AI** 端点整合所有数据生成综合分析结果。

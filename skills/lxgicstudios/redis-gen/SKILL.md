@@ -1,29 +1,29 @@
 ---
 name: redis-gen
-description: Generate Redis key patterns and data structure designs. Use when planning your Redis architecture.
+description: 生成 Redis 键模式和数据结构设计。在规划 Redis 架构时可以使用这些内容。
 ---
 
 # Redis Gen
 
-Redis is fast but designing key patterns is an art. This tool helps you plan your Redis schema with proper key naming, TTLs, and data structures. Stop guessing whether to use a hash or a sorted set.
+Redis是一款性能出色的数据库，但设计合适的键值存储模式却是一门艺术。这款工具可以帮助你通过合理的键命名、TTL（过期时间）设置以及数据结构来规划Redis的存储方案，从而避免在是否使用哈希（hash）或有序集合（sorted set）时陷入困惑。
 
-**One command. Zero config. Just works.**
+**只需一条命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-redis-schema "user sessions with activity tracking"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates optimal key patterns for your use case
-- Recommends the right data structures (strings, hashes, sets, sorted sets, lists)
-- Includes TTL recommendations for cache invalidation
-- Provides example commands for common operations
-- Documents memory considerations
+- 为你的具体使用场景生成最优的键值存储模式
+- 推荐合适的数据结构（字符串、哈希、集合、有序集合、列表）
+- 提供缓存失效的TTL设置建议
+- 提供常见操作的示例命令
+- 说明内存使用的相关注意事项
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Design session storage
@@ -39,43 +39,43 @@ npx ai-redis-schema "game leaderboard with weekly and all-time scores"
 npx ai-redis-schema "online presence tracking for chat app"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Namespace your keys** - Use colons to separate: `user:123:sessions`
-- **Include TTLs** - Most Redis data should expire. Don't fill memory forever.
-- **Think about scans** - Avoid patterns that require KEYS in production
-- **Consider memory** - Hashes are memory-efficient. Strings are not.
+- **为键值对添加命名空间**：使用冒号进行分隔，例如 `user:123:sessions`
+- **设置TTL**：大多数Redis数据都应该设置过期时间，避免占用大量内存
+- **考虑数据查询效率**：在生产环境中应避免使用复杂的数据结构
+- **注意内存消耗**：哈希结构更节省内存，而字符串结构则不然
 
-## When to Use This
+## 适用场景
 
-- Starting a new feature that needs Redis caching
-- Refactoring existing Redis usage that got messy
-- Learning Redis and want to see idiomatic patterns
-- Need to document your Redis schema for the team
+- 新功能开发需要使用Redis缓存时
+- 重构现有的Redis代码时（尤其是代码结构混乱的情况）
+- 学习Redis并希望了解常用的设计模式时
+- 需要为团队文档化Redis的存储方案时
 
-## Part of the LXGIC Dev Toolkit
+## 作为LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发者工具之一。完全免费，无需注册或支付API密钥，只需使用npx命令即可运行。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Requires OPENAI_API_KEY environment variable.
+无需安装，直接使用npx命令即可运行。建议使用Node.js 18及以上版本。运行时需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 export OPENAI_API_KEY=sk-...
 npx ai-redis-schema --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your use case description and applies Redis best practices to design an appropriate schema. Considers data access patterns, memory efficiency, and common pitfalls. Outputs a complete schema document with key patterns, data types, and example operations.
+该工具会根据你的使用场景描述，结合Redis的最佳实践来设计合适的存储方案。它会考虑数据访问模式、内存效率以及常见的使用误区，并生成包含键值存储模式、数据类型及示例操作的完整文档。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以随意使用该工具。

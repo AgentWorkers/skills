@@ -1,14 +1,14 @@
 ---
 name: coding-agent
-description: Run Codex CLI, Claude Code, OpenCode, or Pi Coding Agent via background process for programmatic control.
+description: 通过后台进程运行 Codex CLI、Claude Code、OpenCode 或 Pi Coding Agent，以实现程序化控制。
 metadata: {"clawdbot":{"emoji":"🧩","requires":{"anyBins":["claude","codex","opencode","pi"]}}}
 ---
 
-# Coding Agent (background-first)
+# 编码助手（优先使用后台模式）
 
-Use **bash background mode** for non-interactive coding work. For interactive coding sessions, use the **tmux** skill (always, except very simple one-shot prompts).
+对于非交互式的编码任务，请使用 **bash 的后台模式**。对于交互式的编码会话，请始终使用 **tmux**（除非是简单的、一次性完成的命令）。
 
-## The Pattern: workdir + background
+## 使用模式：工作目录 + 后台模式
 
 ```bash
 # Create temp space for chats/scratch work
@@ -33,15 +33,15 @@ process action:write sessionId:XXX data:"y"
 process action:kill sessionId:XXX
 ```
 
-**Why workdir matters:** Agent wakes up in a focused directory, doesn't wander off reading unrelated files (like your soul.md 😅).
+**为什么工作目录很重要？** 编码助手会在一个特定的工作目录中启动，不会去读取与当前任务无关的文件（比如你的 `soul.md` 文件 😅）。
 
 ---
 
 ## Codex CLI
 
-**Model:** `gpt-5.2-codex` is the default (set in ~/.codex/config.toml)
+**默认模型：** `gpt-5.2-codex`（配置在 `~/.codex/config.toml` 中）
 
-### Building/Creating (use --full-auto or --yolo)
+### 构建/创建项目（使用 `--full-auto` 或 `--yolo` 参数）
 ```bash
 # --full-auto: sandboxed but auto-approves in workspace
 bash workdir:~/project background:true command:"codex exec --full-auto \"Build a snake game with dark theme\""
@@ -52,11 +52,11 @@ bash workdir:~/project background:true command:"codex --yolo \"Build a snake gam
 # Note: --yolo is a shortcut for --dangerously-bypass-approvals-and-sandbox
 ```
 
-### Reviewing PRs (vanilla, no flags)
+### 查看 Pull Request（基础用法，无需任何特殊参数）
 
-**⚠️ CRITICAL: Never review PRs in Clawdbot's own project folder!**
-- Either use the project where the PR is submitted (if it's NOT ~/Projects/clawdbot)
-- Or clone to a temp folder first
+**⚠️ 重要提示：** **绝对不要在 Clawdbot 项目的目录中查看 Pull Request！**  
+- 请使用 Pull Request 被提交到的项目目录（如果该目录不是 `~/Projects/clawdbot`）；  
+- 或者先将其克隆到一个临时文件夹中。
 
 ```bash
 # Option 1: Review in the actual project (if NOT clawdbot)
@@ -74,9 +74,10 @@ git worktree add /tmp/pr-130-review pr-130-branch
 bash workdir:/tmp/pr-130-review background:true command:"codex review --base main"
 ```
 
-**Why?** Checking out branches in the running Clawdbot repo can break the live instance!
+**为什么这样做？** 在正在运行的 Clawdbot 仓库中切换分支可能会导致系统崩溃！
 
-### Batch PR Reviews (parallel army!)
+### 批量查看 Pull Request（并行处理）
+
 ```bash
 # Fetch all PR refs first
 git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
@@ -95,15 +96,15 @@ process action:log sessionId:XXX
 gh pr comment <PR#> --body "<review content>"
 ```
 
-### Tips for PR Reviews
-- **Fetch refs first:** `git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'`
-- **Use git diff:** Tell Codex to use `git diff origin/main...origin/pr/XX`
-- **Don't checkout:** Multiple parallel reviews = don't let them change branches
-- **Post results:** Use `gh pr comment` to post reviews to GitHub
+### 查看 Pull Request 的建议：
+- **先获取引用信息：** `git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'`  
+- **使用 `git diff`：** 告诉 Codex 使用 `git diff origin/main...origin/pr/XX` 来比较差异  
+- **不要切换分支：** 并行查看多个 Pull Request 时，避免它们互相影响分支状态  
+- **发布审核结果：** 使用 `gh pr comment` 将审核结果发布到 GitHub 上
 
 ---
 
-## Claude Code
+## Claude 代码
 
 ```bash
 bash workdir:~/project background:true command:"claude \"Your task\""
@@ -119,7 +120,7 @@ bash workdir:~/project background:true command:"opencode run \"Your task\""
 
 ---
 
-## Pi Coding Agent
+## Pi 编码助手
 
 ```bash
 # Install: npm install -g @mariozechner/pi-coding-agent
@@ -128,15 +129,13 @@ bash workdir:~/project background:true command:"pi \"Your task\""
 
 ---
 
-## Pi flags (common)
+## Pi 命令行参数（常用选项）：
+- `--print` / `-p`：非交互模式；执行命令后直接退出。  
+- `--provider <名称>`：选择代码生成服务（默认为 google）。  
+- `--model <ID>`：选择使用的语言模型（默认为 gemini-2.5-flash）。  
+- `--api-key <密钥>`：覆盖 API 密钥（默认使用环境变量中的密钥）。  
 
-- `--print` / `-p`: non-interactive; runs prompt and exits.
-- `--provider <name>`: pick provider (default: google).
-- `--model <id>`: pick model (default: gemini-2.5-flash).
-- `--api-key <key>`: override API key (defaults to env vars).
-
-Examples:
-
+**示例：**  
 ```bash
 # Set provider + model, non-interactive
 bash workdir:~/project background:true command:"pi --provider openai --model gpt-4o-mini -p \"Summarize src/\""
@@ -144,15 +143,15 @@ bash workdir:~/project background:true command:"pi --provider openai --model gpt
 
 ---
 
-## tmux (interactive sessions)
+## tmux（交互式会话）
 
-Use the tmux skill for interactive coding sessions (always, except very simple one-shot prompts). Prefer bash background mode for non-interactive runs.
+对于交互式的编码会话，请始终使用 tmux（除非是简单的、一次性完成的命令）。对于非交互式的任务，建议使用 bash 的后台模式。
 
 ---
 
-## Parallel Issue Fixing with git worktrees + tmux
+## 使用 git worktrees 和 tmux 并行修复问题
 
-For fixing multiple issues in parallel, use git worktrees (isolated branches) + tmux sessions:
+要同时修复多个问题，可以使用 git worktrees（创建隔离的分支）和 tmux 会话：
 
 ```bash
 # 1. Clone repo to temp location
@@ -189,28 +188,26 @@ git worktree remove /tmp/issue-78
 git worktree remove /tmp/issue-99
 ```
 
-**Why worktrees?** Each Codex works in isolated branch, no conflicts. Can run 5+ parallel fixes!
-
-**Why tmux over bash background?** Codex is interactive — needs TTY for proper output. tmux provides persistent sessions with full history capture.
-
----
-
-## ⚠️ Rules
-
-1. **Respect tool choice** — if user asks for Codex, use Codex. NEVER offer to build it yourself!
-2. **Be patient** — don't kill sessions because they're "slow"
-3. **Monitor with process:log** — check progress without interfering
-4. **--full-auto for building** — auto-approves changes
-5. **vanilla for reviewing** — no special flags needed
-6. **Parallel is OK** — run many Codex processes at once for batch work
-7. **NEVER start Codex in ~/clawd/** — it'll read your soul docs and get weird ideas about the org chart! Use the target project dir or /tmp for blank slate chats
-8. **NEVER checkout branches in ~/Projects/clawdbot/** — that's the LIVE Clawdbot instance! Clone to /tmp or use git worktree for PR reviews
+**为什么使用 git worktrees？** 每个 Codex 实例都在独立的分支上运行，不会产生冲突，可以同时进行多个修复任务！  
+**为什么选择 tmux 而不是 bash 的后台模式？** 因为 Codex 是交互式的，需要 TTY 来正确显示输出；tmux 可以保持会话的持久性，并记录完整的操作历史。
 
 ---
 
-## PR Template (The Razor Standard)
+## ⚠️ 规则：
+1. **尊重用户的选择**：如果用户请求使用 Codex，就使用 Codex；**绝对不要自行尝试构建它！**  
+2. **要有耐心**：不要因为会话运行缓慢就终止它们。  
+3. **使用 `process:log` 监控进程进度**：在不干扰会话的情况下查看进度。  
+4. **使用 `--full-auto` 参数进行自动构建**：自动批准代码更改。  
+5. **查看 Pull Request 时使用基础参数**：不需要任何特殊参数。  
+6. **并行处理是可行的**：可以同时运行多个 Codex 实例来处理批量任务。  
+7. ****绝对不要在 `~/clawd/** 目录下启动 Codex**：否则它可能会读取你的 `soul.md` 文件并产生错误的组织结构理解！** 请使用目标项目目录或 `/tmp` 作为新的工作环境。  
+8. ****绝对不要在 `~/Projects/clawdbot/** 目录下切换分支**：那里是 Clawdbot 的运行实例！** 请将代码克隆到 `/tmp` 或使用 git worktree 来查看 Pull Request。
 
-When submitting PRs to external repos, use this format for quality & maintainer-friendliness:
+---
+
+## Pull Request 模板（推荐格式）
+
+在向外部仓库提交 Pull Request 时，请使用以下格式，以确保代码质量和便于维护者阅读：
 
 ````markdown
 ## Original Prompt
@@ -225,7 +222,7 @@ When submitting PRs to external repos, use this format for quality & maintainer-
 
 **Example usage:**
 ```bash
-# Example
+# 示例
 command example
 ```
 
@@ -265,10 +262,10 @@ command example
 *Submitted by Razor 🥷 - Mariano's AI agent*
 ````
 
-**Key principles:**
-1. Human-written description (no AI slop)
-2. Feature intent for maintainers
-3. Timestamped prompt history
-4. Session logs if using Codex/agent
+**关键原则：**
+1. 由人工编写的描述（避免使用 AI 生成的文本）。  
+2. 向维护者清晰说明功能的目的。  
+3. 提供带有时间戳的命令执行历史记录。  
+4. 如果使用了 Codex 或编码助手，记录会话日志。  
 
-**Example:** https://github.com/steipete/bird/pull/22
+**示例：** https://github.com/steipete/bird/pull/22

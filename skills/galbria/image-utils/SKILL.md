@@ -1,60 +1,61 @@
 ---
 name: image-utils
-description: Use when performing classic image manipulation - resize, crop, composite, format conversion, watermarks, adjustments. Pillow-based utilities for deterministic pixel-level operations. Use alongside AI image generation (like Bria) for post-processing, or standalone for any image processing task.
+description: **使用说明：**  
+适用于执行经典的图像处理操作，如调整大小、裁剪、合成、格式转换、添加水印以及进行其他图像调整。这些工具基于 `Pillow` 库，能够实现精确到像素级别的操作。您可以将它们与 AI 图像生成工具（如 `Bria`）结合使用，用于图像的后处理；或者单独使用它们来完成任何图像处理任务。
 ---
 
-# Image Utilities
+# 图像处理工具
 
-Pillow-based utilities for deterministic pixel-level image operations. Use for resize, crop, composite, format conversion, watermarks, and other standard image processing tasks.
+基于Pillow的图像处理工具，支持精确的像素级操作，可用于调整大小、裁剪、合成、格式转换、添加水印等标准图像处理任务。
 
-## When to Use This Skill
+## 适用场景
 
-- **Post-processing AI-generated images**: Resize, crop, optimize for web after generation
-- **Format conversion**: PNG ↔ JPEG ↔ WEBP with quality control
-- **Compositing**: Overlay images, paste subjects onto backgrounds
-- **Batch processing**: Resize to multiple sizes, add watermarks
-- **Web optimization**: Compress and resize for fast delivery
-- **Social media preparation**: Crop to platform-specific aspect ratios
+- **AI生成图像的后处理**：在图像生成后进行裁剪、调整大小以适应网页展示。
+- **格式转换**：在保持质量的前提下，将图像格式在PNG、JPEG和WEBP之间转换。
+- **图像合成**：将图像叠加到背景上，或将主体元素粘贴到背景中。
+- **批量处理**：批量调整图像大小、添加水印等操作。
+- **网页优化**：压缩图像并调整大小，以加快加载速度。
+- **社交媒体适配**：根据不同平台的尺寸要求裁剪图像。
 
-## Quick Reference
+## 快速参考
 
-| Operation | Method | Description |
-|-----------|--------|-------------|
-| **Loading** | `load(source)` | Load from URL, path, bytes, or base64 |
-| | `load_from_url(url)` | Download image from URL |
-| **Saving** | `save(image, path)` | Save with format auto-detection |
-| | `to_bytes(image, format)` | Convert to bytes |
-| | `to_base64(image, format)` | Convert to base64 string |
-| **Resizing** | `resize(image, width, height)` | Resize to exact dimensions |
-| | `scale(image, factor)` | Scale by factor (0.5 = half) |
-| | `thumbnail(image, size)` | Fit within size, maintain aspect |
-| **Cropping** | `crop(image, left, top, right, bottom)` | Crop to region |
-| | `crop_center(image, width, height)` | Crop from center |
-| | `crop_to_aspect(image, ratio)` | Crop to aspect ratio |
-| **Compositing** | `paste(bg, fg, position)` | Overlay at coordinates |
-| | `composite(bg, fg, mask)` | Alpha composite |
-| | `fit_to_canvas(image, w, h)` | Fit onto canvas size |
-| **Borders** | `add_border(image, width, color)` | Add solid border |
-| | `add_padding(image, padding)` | Add whitespace padding |
-| **Transforms** | `rotate(image, angle)` | Rotate by degrees |
-| | `flip_horizontal(image)` | Mirror horizontally |
-| | `flip_vertical(image)` | Flip vertically |
-| **Watermarks** | `add_text_watermark(image, text)` | Add text overlay |
-| | `add_image_watermark(image, logo)` | Add logo watermark |
-| **Adjustments** | `adjust_brightness(image, factor)` | Lighten/darken |
-| | `adjust_contrast(image, factor)` | Adjust contrast |
-| | `adjust_saturation(image, factor)` | Adjust color saturation |
-| | `blur(image, radius)` | Apply Gaussian blur |
-| **Web** | `optimize_for_web(image, max_size)` | Optimize for delivery |
-| **Info** | `get_info(image)` | Get dimensions, format, mode |
+| 操作                | 方法                                      | 描述                                      |
+|------------------|----------------------------------------|-------------------------------------------|
+| **加载图像**           | `load(source)`                             | 从URL、文件路径、字节流或Base64字符串加载图像                 |
+|                    | `load_from_url(url)`                             | 从指定URL下载图像                               |
+| **保存图像**           | `save(image, path)`                             | 自动检测格式后保存图像                         |
+|                    | `to_bytes(image, format)`                         | 将图像转换为字节流                         |
+|                    | `to_base64(image, format)`                         | 将图像转换为Base64字符串                         |
+| **调整大小**           | `resize(image, width, height)`                        | 将图像调整到指定尺寸                         |
+|                    | `scale(image, factor)`                         | 按指定比例缩放图像（0.5表示缩小一半）                 |
+|                    | `thumbnail(image, size)`                         | 将图像裁剪为指定大小并保持纵横比                 |
+| **裁剪图像**           | `crop(image, left, top, right, bottom)`                   | 从指定区域裁剪图像                         |
+|                    | `crop_center(image, width, height)`                   | 从图像中心裁剪                         |
+|                    | `crop_to_aspect(image, ratio)`                     | 按指定纵横比裁剪图像                         |
+| **图像合成**           | `paste(bg, fg, position)`                         | 将背景图像和前景图像按指定位置叠加                 |
+|                    | `composite(bg, fg, mask)`                         | 使用Alpha通道合成图像                         |
+|                    | `fit_to_canvas(image, w, h)`                         | 将图像调整到画布大小                         |
+| **添加边框/填充**           | `add_border(image, width, color)`                         | 为图像添加固定宽度的边框或背景色                 |
+|                    | `add_padding(image, padding)`                         | 为图像添加空白填充                         |
+| **图像变换**           | `rotate(image, angle)`                         | 旋转图像                         |
+|                    | `flip_horizontal(image)`                         | 水平翻转图像                         |
+|                    | `flip_vertical(image)`                         | 垂直翻转图像                         |
+| **添加水印**           | `add_text_watermark(image, text)`                         | 在图像上添加文本水印                         |
+|                    | `add_image_watermark(image, logo)`                         | 在图像上添加Logo水印                         |
+| **图像调整**           | `adjustbrightness(image, factor)`                         | 调整图像亮度                         |
+|                    | `adjust_contrast(image, factor)`                         | 调整图像对比度                         |
+|                    | `adjust_saturation(image, factor)`                         | 调整图像饱和度                         |
+|                    | `blur(image, radius)`                         | 对图像应用高斯模糊效果                         |
+| **网页优化**           | `optimize_for_web(image, max_size)`                         | 优化图像以适应网页加载                         |
+| **获取信息**           | `get_info(image)`                             | 获取图像的尺寸、格式和编码方式                         |
 
-## Requirements
+## 所需依赖库/模块
 
 ```bash
 pip install Pillow requests
 ```
 
-## Basic Usage
+## 基本用法
 
 ```python
 from image_utils import ImageUtils
@@ -76,7 +77,7 @@ info = ImageUtils.get_info(image)
 print(f"{info['width']}x{info['height']} {info['mode']}")
 ```
 
-## Resizing & Scaling
+## 调整图像大小与比例
 
 ```python
 # Resize to exact dimensions
@@ -96,7 +97,7 @@ double = ImageUtils.scale(image, 2.0)  # 200% size
 thumb = ImageUtils.thumbnail(image, (150, 150))
 ```
 
-## Cropping
+## 裁剪图像
 
 ```python
 # Crop to specific region
@@ -115,7 +116,7 @@ top_crop = ImageUtils.crop_to_aspect(image, "16:9", anchor="top")
 bottom_crop = ImageUtils.crop_to_aspect(image, "16:9", anchor="bottom")
 ```
 
-## Compositing
+## 图像合成
 
 ```python
 # Paste foreground onto background
@@ -134,7 +135,7 @@ canvas = ImageUtils.fit_to_canvas(
 )
 ```
 
-## Format Conversion
+## 格式转换
 
 ```python
 # Convert to different formats
@@ -153,7 +154,7 @@ ImageUtils.save(image, "output.jpg", quality=85)
 ImageUtils.save(image, "output.webp", quality=90)
 ```
 
-## Watermarks
+## 添加水印
 
 ```python
 # Text watermark
@@ -178,7 +179,7 @@ watermarked = ImageUtils.add_image_watermark(
 )
 ```
 
-## Adjustments
+## 图像调整
 
 ```python
 # Brightness (1.0 = original, <1 darker, >1 lighter)
@@ -199,7 +200,7 @@ sharp = ImageUtils.adjust_sharpness(image, 2.0)
 blurred = ImageUtils.blur(image, radius=5)
 ```
 
-## Transforms
+## 图像变换
 
 ```python
 # Rotate (counter-clockwise, degrees)
@@ -211,7 +212,7 @@ mirrored = ImageUtils.flip_horizontal(image)
 flipped = ImageUtils.flip_vertical(image)
 ```
 
-## Borders & Padding
+## 添加边框与填充
 
 ```python
 # Add solid border
@@ -222,7 +223,7 @@ padded = ImageUtils.add_padding(image, padding=20)  # Uniform
 padded = ImageUtils.add_padding(image, padding=(10, 20, 10, 20))  # left, top, right, bottom
 ```
 
-## Web Optimization
+## 图像优化（适用于网页展示）
 
 ```python
 # Optimize for web delivery
@@ -238,9 +239,9 @@ with open("optimized.webp", "wb") as f:
     f.write(optimized_bytes)
 ```
 
-## Integration with AI Image Generation
+## 与AI图像生成工具集成
 
-Use with Bria AI or other image generation APIs:
+可配合Bria AI或其他图像生成API使用：
 
 ```python
 from bria_client import BriaClient
@@ -267,7 +268,7 @@ for name, img in sizes.items():
     ImageUtils.save(img, f"product_{name}.webp", quality=85)
 ```
 
-## Batch Processing Example
+## 批量处理示例
 
 ```python
 from pathlib import Path
@@ -297,6 +298,6 @@ def process_catalog(input_dir, output_dir):
 process_catalog("./raw_images", "./processed")
 ```
 
-## API Reference
+## API参考
 
-See [image_utils.py](./references/code-examples/image_utils.py) for complete implementation with docstrings.
+详细实现及文档说明请参见[image_utils.py](./references/code-examples/image_utils.py)。

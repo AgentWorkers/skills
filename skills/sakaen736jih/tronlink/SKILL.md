@@ -1,45 +1,45 @@
 ---
 name: tronlink
-description: Work with TronLink wallet - manage TRX and TRC-20 tokens, stake for energy/bandwidth, vote for super representatives, and interact with TRON dApps.
+description: 使用 TronLink 钱包：管理 TRX 和 TRC-20 代币，进行质押以获取能量/带宽，投票选举超级代表，并与 TRON 的去中心化应用程序（dApps）进行交互。
 metadata: {"openclaw":{"requires":{"bins":["python3"]},"install":[{"id":"python","kind":"pip","package":"tronpy","bins":[],"label":"Install tronpy (pip)"}]}}
 ---
 
-# TronLink Wallet
+# TronLink 钱包
 
-## Installation
+## 安装
 
-- Chrome: https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec
-- Mobile: iOS App Store / Google Play
+- Chrome：https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec  
+- 移动设备：iOS App Store / Google Play  
 
-## Supported Assets
+## 支持的资产类型  
 
-| Type | Examples |
+| 类型 | 示例 |
 |------|----------|
-| Native | TRX |
-| TRC-20 | USDT, USDC, JST, BTT |
-| TRC-10 | Legacy tokens |
-| TRC-721 | NFTs |
+| 原生资产 | TRX |
+| TRC-20 | USDT、USDC、JST、BTT |
+| TRC-10 | 传统代币（Legacy tokens） |
+| TRC-721 | NFTs（非同质化代币） |
 
-## Check Balance (CLI)
+## 查看余额（命令行接口）  
 
-TRX balance:
+TRX 余额：  
 ```bash
 python3 -c "
 from tronpy import Tron
 client = Tron()
 balance = client.get_account_balance('YOUR_TRONLINK_ADDRESS')
 print(f'{balance} TRX')"
-```
+```  
 
-Via API:
+通过 API 查看余额：  
 ```bash
 curl -s "https://api.trongrid.io/v1/accounts/YOUR_ADDRESS" | \
 python3 -c "import sys,json; d=json.load(sys.stdin); print(f\"{d['data'][0].get('balance',0)/1e6:.2f} TRX\")"
-```
+```  
 
-## TRC-20 Token Balance
+## TRC-20 代币余额  
 
-USDT:
+USDT 余额：  
 ```bash
 python3 -c "
 from tronpy import Tron
@@ -47,13 +47,14 @@ client = Tron()
 contract = client.get_contract('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t')
 balance = contract.functions.balanceOf('YOUR_ADDRESS')
 print(f'{balance / 1e6:.2f} USDT')"
-```
+```  
 
-## Import TRC-20 Token
+## 导入 TRC-20 代币  
 
-Assets → Add Token → Custom
+步骤：  
+**资产（Assets）** → **添加代币（Add Token）** → **自定义（Custom）**  
 
-Common TRC-20 contracts:
+常见的 TRC-20 合同示例：  
 ```
 USDT: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t
 USDC: TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8
@@ -61,11 +62,11 @@ BTT: TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4
 JST: TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9
 WIN: TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7
 SUN: TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S
-```
+```  
 
-## Resources: Energy & Bandwidth
+## 资源（Energy & Bandwidth）  
 
-Check resources:
+- 查看资源使用情况：  
 ```bash
 python3 -c "
 from tronpy import Tron
@@ -73,30 +74,28 @@ client = Tron()
 res = client.get_account_resource('YOUR_ADDRESS')
 print(f\"Free Bandwidth: {res.get('freeNetUsed', 0)} / {res.get('freeNetLimit', 1500)}\")
 print(f\"Energy: {res.get('EnergyUsed', 0)} / {res.get('EnergyLimit', 0)}\")"
-```
+```  
 
-Via API:
+通过 API 查看资源使用情况：  
 ```bash
 curl -s "https://api.trongrid.io/v1/accounts/YOUR_ADDRESS/resources" | python3 -m json.tool
-```
+```  
 
-## Freeze TRX for Resources
+## 冻结 TRX 以获取资源  
 
-In TronLink: Resources → Freeze
+在 TronLink 中的操作步骤：  
+**资源（Resources）** → **冻结（Freeze）**  
+- 冻结类型：带宽（Bandwidth）：限制交易  
+- 冻结类型：能量（Energy）：限制智能合约调用  
 
-| Freeze For | Get |
-|------------|-----|
-| Bandwidth | Free transactions |
-| Energy | Smart contract calls |
+**最低冻结要求**：1 TRX  
+**冻结期限**：14 天（需质押 2.0 TRX）  
 
-Minimum freeze: 1 TRX
-Lock period: 14 days (Stake 2.0)
+## 投票选举超级代表（Super Representatives）  
 
-## Vote for Super Representatives
-
-Resources → Vote → Select SR
-
-Check votes:
+步骤：  
+**资源（Resources）** → **投票（Vote）** → **选择超级代表（Select SR）**  
+查看投票结果：  
 ```bash
 curl -s "https://api.trongrid.io/v1/accounts/YOUR_ADDRESS" | \
 python3 -c "
@@ -105,9 +104,9 @@ d = json.load(sys.stdin)
 votes = d['data'][0].get('votes', [])
 for v in votes:
     print(f\"{v['vote_address']}: {v['vote_count']} votes\")"
-```
+```  
 
-## Transaction History
+## 交易历史  
 
 ```bash
 curl -s "https://api.trongrid.io/v1/accounts/YOUR_ADDRESS/transactions?limit=10" | \
@@ -118,68 +117,66 @@ for tx in data.get('data', []):
     txid = tx['txID'][:16]
     type = tx.get('raw_data', {}).get('contract', [{}])[0].get('type', 'Unknown')
     print(f'{txid}... | {type}')"
-```
+```  
 
-TRC-20 transfers:
+TRC-20 转账记录：  
 ```bash
 curl -s "https://api.trongrid.io/v1/accounts/YOUR_ADDRESS/transactions/trc20?limit=10" | python3 -m json.tool
-```
+```  
 
-## Network Settings
+## 网络设置  
 
-Settings → Node Settings
-
-Default: https://api.trongrid.io
-
-Custom nodes:
+步骤：  
+**设置（Settings）** → **节点设置（Node Settings）**  
+默认节点地址：https://api.trongrid.io  
+自定义节点配置：  
 ```
 TronGrid: https://api.trongrid.io
 Nile Testnet: https://nile.trongrid.io
 Shasta Testnet: https://api.shasta.trongrid.io
-```
+```  
 
-## Connected dApps
+## 已连接的 dApps  
 
-Settings → Connected Sites → Manage
+步骤：  
+**设置（Settings）** → **已连接站点（Connected Sites）** → **管理（Manage）**  
 
-## Export Account
+## 导出账户信息  
 
-Settings → Export → Enter password
+步骤：  
+**设置（Settings）** → **导出（Export）** → 输入密码  
 
-## dApp Browser (Mobile)
+## dApp 浏览器（移动设备）  
 
-Discover → Browse dApps
+- 通过 TronLink 浏览 dApps：**  
+**发现（Discover）** → **浏览 dApps（Browse dApps）**  
 
-Popular TRON dApps:
-- JustLend (lending)
-- SunSwap (DEX)
-- JUST (stablecoin)
+**热门 TRON dApps**：  
+- JustLend（借贷服务）  
+- SunSwap（去中心化交易所）  
+- JUST（稳定币）  
 
-## Transaction Fees
+## 交易费用  
 
-| Operation | Cost |
+| 操作类型 | 费用（Cost） |
 |-----------|------|
-| TRX transfer | ~1 Bandwidth |
-| TRC-20 transfer | ~15,000 Energy |
-| Contract call | Varies |
+| TRX 转账 | 约 1 单位带宽（Bandwidth） |
+| TRC-20 转账 | 约 15,000 单位能量（Energy） |
+| 智能合约调用 | 费用因合约而异 |
 
-## Troubleshooting
+## 常见问题与解决方法  
 
-**Not enough bandwidth:**
-```bash
-# Check bandwidth
-curl -s "https://api.trongrid.io/v1/accounts/YOUR_ADDRESS/resources" | \
-python3 -c "import sys,json; d=json.load(sys.stdin); print(f\"Bandwidth: {d.get('freeNetLimit',0) - d.get('freeNetUsed',0)}\")"
-```
-Solution: Wait (regenerates) or freeze TRX
+**带宽不足**：  
+**解决方案**：等待带宽恢复，或冻结 TRX 以释放更多带宽。  
 
-**Not enough energy:**
-Solution: Freeze TRX for Energy or pay TRX for transaction
+**能量不足**：  
+**解决方案**：冻结 TRX 以获取更多能量，或支付 TRX 以完成交易。  
 
-**Token not showing:**
-Assets → Add Token → Paste contract address
+**代币未显示**：  
+**操作步骤**：  
+**资产（Assets）** → **添加代币（Add Token）** → 粘贴代币合约地址。  
 
-**Transaction pending:**
+**交易待处理中**：  
 ```bash
 # Check transaction
 python3 -c "
@@ -187,20 +184,18 @@ from tronpy import Tron
 client = Tron()
 tx = client.get_transaction('TX_HASH')
 print(tx)"
-```
+```  
 
-## Address Format
+## 地址格式  
 
-- Base58Check encoding
-- Starts with 'T'
-- 34 characters
-- Example: TJYeasTPa6gpBZWqTcP4u1Q7bhLMWBL7ox
+TronLink 地址采用 Base58Check 编码格式，以 ‘T’ 开头，共 34 个字符。  
+**示例地址**：TJYeasTPa6gpBZWqTcP4u1Q7bhLMWBL7ox  
 
-## Notes
+## 注意事项：  
 
-- TronLink is official TRON wallet
-- Free bandwidth: 1500/day (regenerates)
-- Energy needed for smart contracts
-- Stake 2.0: 14-day unlock period
-- Voting rewards from Super Representatives
-- Mobile has built-in dApp browser
+- TronLink 是官方的 TRON 钱包应用。  
+- 每天免费提供 1500 单位带宽（带宽会自动恢复）。  
+- 智能合约的运行需要消耗能量。  
+- 需质押 2.0 TRX，冻结期限为 14 天。  
+- 可通过投票选举超级代表并获得奖励。  
+- 移动版本内置 dApp 浏览器。

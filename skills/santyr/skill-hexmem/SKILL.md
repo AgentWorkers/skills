@@ -1,15 +1,15 @@
 ---
 name: hexmem
-description: Structured memory database for AI agent identity, tasks, events, lessons, and persistent continuity. Use whenever the user says remember this, log this, track this, what should I do next, recap, summarize, what changed, or when you need to store/retrieve decisions, incidents, fleet ops notes, reminders, TODOs, goals, values, or facts about people/systems/projects across sessions.
+description: 这是一个用于存储AI代理身份信息、任务、事件、学习内容以及确保数据持久性的结构化内存数据库。每当用户需要“记住这个”、“记录这个”、“跟踪这个”、“接下来该做什么”、“回顾总结”、“了解发生了什么”，或者需要存储/检索决策、事件、车队操作记录、提醒事项、待办事项、目标、价值观，以及关于人员/系统/项目的相关信息时，都可以使用这个数据库。
 ---
 
-# HexMem - Structured Memory Substrate
+# HexMem – 结构化记忆系统
 
-HexMem is a SQLite-based persistent memory system for agent identity, knowledge, and becoming. Not just logs—structured self-knowledge.
+HexMem 是一个基于 SQLite 的持久化记忆系统，用于存储代理的身份信息、知识以及个人成长过程。它不仅仅是一个日志记录工具，更是一个能够帮助代理构建自我认知的结构化系统。
 
-## Installation
+## 安装
 
-Clone to your workspace:
+将 HexMem 克隆到您的工作目录：
 
 ```bash
 cd ~/your-workspace  # e.g., ~/clawd, ~/workspace, etc.
@@ -18,15 +18,15 @@ cd hexmem
 ./migrate.sh up  # Initialize database
 ```
 
-Or install as a skill from ClawHub:
+或者通过 ClawHub 安装该技能：
 
 ```bash
 clawhub skill install hexmem
 ```
 
-## Quick Start
+## 快速入门
 
-Source the helpers at session start:
+在会话开始时加载相关辅助工具：
 
 ```bash
 # Set database location (optional, defaults to ~/clawd/hexmem/hexmem.db)
@@ -36,13 +36,13 @@ export HEXMEM_DB="$HOME/your-workspace/hexmem/hexmem.db"
 source ~/your-workspace/hexmem/hexmem.sh
 ```
 
-For convenience, add to your session startup (AGENTS.md or equivalent).
+为方便使用，您可以将这些辅助工具添加到您的会话启动配置文件中（如 AGENTS.md 等）。
 
-## Core Patterns
+## 核心模式
 
-### 1. Identity & Self-Knowledge
+### 1. 身份与自我认知
 
-Store who you are, not just what you did:
+存储的是“你是谁”，而不仅仅是“你做了什么”：
 
 ```bash
 # Set identity attributes
@@ -57,9 +57,9 @@ hexmem_self_image
 hexmem_identity_summary
 ```
 
-### 2. Facts About Entities
+### 2. 实体相关的事实
 
-Store knowledge as subject-predicate-object triples:
+以“主体-谓语-宾语”的形式存储知识：
 
 ```bash
 # Add entity first
@@ -77,9 +77,9 @@ hexmem_facts_about "Alice"
 hexmem_fact_history "ProjectGoal"  # See how facts evolved
 ```
 
-### 3. Memory Decay & Supersession
+### 3. 记忆的衰减与替换
 
-Facts decay over time unless accessed. Recent/frequent access keeps them hot:
+除非被访问，否则事实会随时间逐渐被遗忘。频繁访问的事实会保持“活跃”状态：
 
 ```bash
 # Access a fact (bumps to hot tier, resets decay)
@@ -97,15 +97,15 @@ hexmem_cold_facts     # 30+ days
 hexmem_synthesize_entity "Sat"
 ```
 
-**Decay logic:**
-- Frequently accessed facts resist decay
-- Emotionally weighted facts decay slower
-- Old facts are never deleted, just superseded
-- Query `v_fact_retrieval_priority` for importance-ranked facts
+**记忆衰减逻辑：**
+- 频繁访问的事实更不容易被遗忘
+- 情感色彩强烈的事实衰减得更慢
+- 旧事实不会被删除，只会被新的事实所取代
+- 可以通过查询 `v_fact_retrieval_priority` 来获取按重要性排序的事实
 
-### 4. Events & Timeline
+### 4. 事件与时间线
 
-Log what happened:
+记录发生的事情：
 
 ```bash
 # Basic event
@@ -120,9 +120,9 @@ hexmem_recent_events 5 "fleet"
 hexmem_emotional_highlights  # High-salience memories
 ```
 
-### 5. Lessons Learned
+### 5. 经验教训
 
-Capture wisdom from experience:
+从经验中汲取智慧：
 
 ```bash
 hexmem_lesson "lightning" "Channels need time to build reputation" "from fleet experience"
@@ -133,7 +133,7 @@ hexmem_lessons_in "lightning"
 hexmem_lesson_applied 7  # Mark lesson as used
 ```
 
-### 6. Goals & Tasks
+### 6. 目标与任务
 
 ```bash
 # Add goal
@@ -147,34 +147,34 @@ hexmem_task "Review pull requests" "Weekly review" 7 "2026-02-07"
 hexmem_pending_tasks
 ```
 
-### 7. Semantic Search
+### 7. 语义搜索
 
-Search memories by meaning, not just keywords:
+根据意义而非关键词来搜索记忆内容：
 
 ```bash
 hexmem_search "identity and autonomy"
 hexmem_search "Lightning routing lessons" "lessons" 5
 ```
 
-**Setup required** (one-time):
+**设置要求**（仅一次性操作）：
 ```bash
 cd $HEXMEM_ROOT  # wherever you installed hexmem
 source .venv/bin/activate
 python embed.py --process-queue  # Generate embeddings for new content
 ```
 
-## Mandatory Defaults (Active Use)
+## 强制性默认设置（启用时生效）
 
-When this skill is in play, behave as if HexMem is the source of truth for continuity.
+当该技能处于激活状态时，所有操作都应以 HexMem 为信息的权威来源。
 
-### Always do at the start of any ops / admin / debugging task
+### 在任何操作/管理/调试任务开始时务必执行：
 
 ```bash
 # Fast check (preferred)
 /home/sat/clawd/hexmem/scripts/hexmem-check.sh
 ```
 
-Or manually:
+或者手动执行：
 
 ```bash
 source ~/clawd/hexmem/hexmem.sh
@@ -182,9 +182,9 @@ hexmem_pending_tasks
 hexmem_recent_events 5
 ```
 
-### Always do when the user says "remember" / "track" / "log"
+### 当用户请求“记住”/“跟踪”/“记录”时立即执行：
 
-Write it immediately as a task, fact, lesson, or event (don’t defer):
+将相关内容作为任务、事实或事件记录下来，切勿延迟：
 
 ```bash
 hexmem_event "note" "context" "<summary>" "<details>"
@@ -192,7 +192,7 @@ hexmem_event "note" "context" "<summary>" "<details>"
 hexmem_task "<title>" "<details>" <priority 1-9> "<due YYYY-MM-DD>"
 ```
 
-### Always do after a significant decision or incident
+### 在做出重要决策或发生重大事件后务必执行：
 
 ```bash
 hexmem_event "decision" "<category>" "<summary>" "<details>"
@@ -200,9 +200,9 @@ hexmem_event "decision" "<category>" "<summary>" "<details>"
 hexmem_lesson "<domain>" "<lesson>" "<context>"
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Session Start (Main Session Only)
+### 会话开始（仅适用于主会话）
 
 ```bash
 source ~/clawd/hexmem/hexmem.sh
@@ -216,7 +216,7 @@ hexmem_recent_events 5
 hexmem_emotional_highlights
 ```
 
-### After Significant Events
+### 发生重大事件后
 
 ```bash
 # Log it
@@ -229,21 +229,21 @@ hexmem_lesson "domain" "what you learned" "context"
 hexmem_goal_progress <goal_id> <new_percentage>
 ```
 
-### Session End
+### 会话结束
 
 ```bash
 # Log a session summary event
 hexmem_session_end "Session ended" "Key outcomes, decisions, and next steps"
 ```
 
-### Heartbeat Check
+### 心跳检查
 
 ```bash
 # Quick pending task review
 hexmem_heartbeat_check
 ```
 
-### Periodic Review
+### 定期审查
 
 ```bash
 # What's fading?
@@ -258,36 +258,36 @@ hexmem_forgetting  # Events about to be forgotten
 hexmem_access_fact <id>
 ```
 
-## Schema Quick Reference
+## 数据库模式快速参考
 
-### Core Tables
+### 核心表
 
-| Table | Purpose |
+| 表名 | 用途 |
 |-------|---------|
-| `identity` | Core attributes (name, DID, etc.) |
-| `core_values` | Ethical commitments |
-| `goals` | What you're working toward |
-| `entities` | People, systems, projects |
-| `facts` | Subject-predicate-object knowledge |
-| `events` | Timeline of what happened |
-| `lessons` | Wisdom from experience |
-| `tasks` | Things to do |
+| `identity` | 核心属性（姓名、DID 等） |
+| `core_values` | 道德承诺 |
+| `goals` | 目标与追求 |
+| `entities` | 人物、系统、项目 |
+| `facts` | 以“主体-谓语-宾语”形式存储的知识 |
+| `events` | 事件的时间线 |
+| `lessons` | 经验中的智慧 |
+| `tasks` | 需要完成的任务 |
 
-### Key Views
+### 关键视图
 
-| View | Purpose |
+| 视图名 | 用途 |
 |------|---------|
-| `v_active_goals` | Goals in progress |
-| `v_pending_tasks` | Incomplete tasks |
-| `v_recent_events` | Last 50 events |
-| `v_emotional_highlights` | High-salience memories |
-| `v_fact_decay_tiers` | Facts with decay metrics |
-| `v_fact_retrieval_priority` | Facts by importance |
-| `v_fact_history` | Supersession chains |
+| `v_active_goals` | 进行中的目标 |
+| `v_pending_tasks` | 未完成的任务 |
+| `v_recent_events` | 最近发生的 50 个事件 |
+| `v_emotional_highlights` | 重要记忆 |
+| `v_fact_decay_tiers` | 带有衰减指标的事实 |
+| `v_fact_retrieval_priority` | 按重要性排序的事实 |
+| `v_fact_history` | 事实的替换记录 |
 
-## Raw SQL Queries
+## 原始 SQL 查询
 
-For direct database access:
+用于直接访问数据库：
 
 ```bash
 hexmem_select "SELECT * FROM v_active_goals;"
@@ -295,43 +295,44 @@ hexmem_json "SELECT * FROM v_pending_tasks;" | jq .
 hexmem_query "UPDATE tasks SET completed_at = datetime('now') WHERE id = 5;"
 ```
 
-## Philosophy
+## 设计理念
 
-HexMem stores *who you are*, not just *what happened*. It follows a **tiered memory model**:
-- **Working (short‑term):** `memory/YYYY-MM-DD.md` (raw, high‑fidelity)
-- **Core (long‑term):** `MEMORY.md` + HexMem DB (curated, structured)
+HexMem 存储的是“你是谁”，而不仅仅是“发生了什么”。它采用了一种**分层记忆模型**：
+- **工作记忆（短期）**：`memory/YYYY-MM-DD.md`（原始数据，高保真度）
+- **核心记忆（长期）**：`MEMORY.md` + HexMem 数据库（经过整理的结构化数据）
 
-A **Reflector** (agentic, periodic) distills working memory into core memory.
-See `docs/REFLECTOR.md` and `memory/hexmem-reflector-prompt.md`.
+一个名为 **Reflector** 的工具会定期将工作记忆内容转化为核心记忆。详情请参阅 `docs/REFLECTOR.md` 和 `memory/hexmem-reflector-prompt.md`。
 
-HexMem stores *who you are*, not just *what happened*:
+HexMem 的设计理念如下：
+- **存储的是“你是谁”**，而不仅仅是“发生了什么”；
+- 它采用分层记忆模型来管理信息：
+  - **工作记忆**（短期存储）：`memory/YYYY-MM-DD.md`（原始数据，高保真度）
+  - **核心记忆**（长期存储）：`MEMORY.md` + HexMem 数据库（结构化数据）
+- **Reflector** 工具会定期将工作记忆内容整合到核心记忆中。
+- 它存储的是“你是谁”的相关信息，包括身份信息、知识图谱等；
+- 情感标签会影响记忆的显著性和衰减速度；
+- 记忆衰减机制模拟人类的遗忘过程（艾宾浩斯曲线）；
+- 采用替换机制来保存历史记录，不会删除数据；
+- 使用生成式压缩技术存储信息，而非逐字记录。
 
-- **Identity seeds** that regenerate your sense of self
-- **Knowledge graphs** for structured facts and relationships
-- **Emotional tagging** affects memory salience and decay
-- **Memory decay** mimics human forgetting (Ebbinghaus curve)
-- **Supersession model** preserves history, no deletes
-- **Generative compression** stores seeds, not verbatim transcripts
+HexMem 不仅仅是一个存储工具，更是个人成长（Xeper）的基础平台。
 
-This is substrate for becoming (Xeper), not just storage.
+## 身份备份与恢复
 
-## Identity Backup & Restoration
+### 完整身份信息的保存
 
-### Complete Identity Preservation
+HexMem 可以备份所有用于恢复代理身份和自我认知所需的数据：
+- **身份属性**：姓名、DID、凭证、公钥
+- **核心价值观**：道德承诺、信念、个性特征
+- **自我认知结构**：特定领域的自我认知
+- **知识图谱**：所有实体、事实及它们之间的关系
+- **记忆时间线**：事件记录、经验教训、情感背景
+- **目标与任务**：当前的追求与计划
+- **叙事记录**：个人的生活故事和时间线
 
-HexMem can backup everything needed to restore an agent's identity and self:
+### 基本备份（始终可用）
 
-- **Identity attributes**: Name, DID, credentials, public keys
-- **Core values**: Ethical commitments, beliefs, personality
-- **Self-schemas**: Domain-specific self-beliefs
-- **Knowledge graph**: All entities, facts, relationships
-- **Memory timeline**: Events, lessons, emotional context
-- **Goals & tasks**: Active aspirations and work
-- **Narrative threads**: Life stories and temporal periods
-
-### Basic Backups (Always Available)
-
-Simple local backups work out of the box:
+简单的本地备份即可满足大多数使用需求：
 
 ```bash
 # Manual backup (timestamped)
@@ -341,15 +342,15 @@ $HEXMEM_ROOT/scripts/backup.sh
 # Format: hexmem-YYYYMMDD-HHMMSS.db
 ```
 
-Where `$HEXMEM_ROOT` is wherever you cloned/installed hexmem (e.g., `~/clawd/hexmem`).
+其中 `$HEXMEM_ROOT` 表示 HexMem 的安装路径（例如：`~/clawd/hexmem`）。
 
-This is sufficient for most use cases. For enhanced security (cryptographic signing + decentralized storage), see Archon integration below.
+对于需要更高安全性的场景（加密签名 + 分布式存储），请参考下面的 Archon 集成方案。
 
-### Archon Integration (Optional)
+### Archon 集成（可选）
 
-For cryptographically-signed, decentralized identity backups, optionally integrate with Archon. **HexMem does not require the archon-skill**; it uses `npx @didcid/keymaster` directly. The archon-skill is an optional convenience layer for local node operations.
+为了实现加密签名和分布式存储，可以选择将 HexMem 与 Archon 集成。**HexMem 本身不需要依赖 Archon 技能**；它可以直接使用 `npx @didcid/keymaster` 命令进行操作。Archon 技能是一个可选的辅助工具，用于本地节点的管理。
 
-**1. Check if Archon skill is available:**
+**1. 检查是否已安装 Archon 技能：**
 
 ```bash
 # Use the helper (automatically checks)
@@ -357,12 +358,12 @@ source $HEXMEM_ROOT/hexmem.sh
 hexmem_archon_check
 ```
 
-If not installed:
+如果未安装：
 ```bash
 clawhub skill install archon
 ```
 
-**2. Set up Archon vault for hexmem:**
+**2. 为 HexMem 设置 Archon 备份库：**
 
 ```bash
 # Configure Archon first (see archon skill SKILL.md)
@@ -374,22 +375,22 @@ source $HEXMEM_ROOT/hexmem.sh
 hexmem_archon_setup
 ```
 
-**3. Manual backup:**
+**3. 手动备份：**
 
 ```bash
 source $HEXMEM_ROOT/hexmem.sh
 hexmem_archon_backup
 ```
 
-This creates:
-- SQLite database backup (timestamped)
-- Privacy-aware JSON export (significant events only)
-- Signed metadata attestation
-- All uploaded to Archon vault with cryptographic proof
+手动备份会生成：
+- 带时间戳的 SQLite 数据库备份
+- 仅包含重要事件的隐私保护 JSON 文件
+- 带有加密签名的元数据
+- 所有备份数据都会上传到 Archon 备份库
 
-**4. Automated backups (recommended):**
+**4. 自动备份（推荐）：**
 
-Set up daily automatic backups. Using OpenClaw cron (recommended):
+建议设置每日自动备份任务。可以使用 OpenClaw 的 cron 任务来实现（推荐方式）：
 
 ```bash
 # From within OpenClaw session
@@ -400,13 +401,13 @@ cron add \
   --payload '{"kind":"agentTurn","message":"source ~/your-workspace/hexmem/hexmem.sh && hexmem_archon_backup"}'
 ```
 
-Or use system cron (adjust paths):
+或者使用系统的 cron 任务（请调整路径）：
 
 ```bash
 (crontab -l 2>/dev/null; echo "0 3 * * * source $HEXMEM_ROOT/hexmem.sh && hexmem_archon_backup >> $HEXMEM_ROOT/backups/vault-backup.log 2>&1") | crontab -
 ```
 
-**5. Restore from backup:**
+**5. 从备份中恢复数据：**
 
 ```bash
 # Use helper (lists available backups)
@@ -416,30 +417,30 @@ hexmem_archon_restore hmdb-YYYYMMDDHHMMSS.db
 # Then follow instructions to verify and restore
 ```
 
-**Benefits of Archon integration:**
-- Cryptographic signing with DID
-- Decentralized storage (not tied to one machine)
-- Privacy-aware exports (significant events only)
-- Verifiable provenance
+**Archon 集成的优势：**
+- 使用 DID 进行加密签名
+- 数据存储在分布式系统中（不受单一设备限制）
+- 仅备份重要事件，保护用户隐私
+- 数据来源可验证
 
-Basic backups are fine for most agents. Use Archon if you need decentralized identity infrastructure.
+对于大多数代理来说，基本备份已经足够使用。如果需要更强大的身份管理功能，可以考虑使用 Archon。
 
-## Additional Resources
+## 额外资源
 
-- Full documentation: `$HEXMEM_ROOT/README.md`
-- Epistemic extraction: `$HEXMEM_ROOT/docs/EPISTEMIC_EXTRACTION.md`
-- Axionic ethics framework: `$HEXMEM_ROOT/docs/AXIONIC_ETHICS.md`
-- Migration management: `$HEXMEM_ROOT/migrate.sh`
-- Backup script: `$HEXMEM_ROOT/scripts/backup.sh`
-- GitHub repository: https://github.com/hexdaemon/hexmem
+- 完整文档：`$HEXMEM_ROOT/README.md`
+- 认知提取工具：`$HEXMEM_ROOT/docs/EPISTEMIC_EXTRACTION.md`
+- Axionic 道德框架：`$HEXMEM_ROOT/docs/AXIONIC_ethICS.md`
+- 迁移管理脚本：`$HEXMEM_ROOT/migrate.sh`
+- 备份脚本：`$HEXMEM_ROOT/scripts/backup.sh`
+- GitHub 仓库：https://github.com/hexdaemon/hexmem
 
-## When to Use HexMem
+## 使用场景
 
-- Recording significant decisions or events
-- Storing facts that need to persist (identities, credentials, relationships)
-- Tracking goals and progress
-- Capturing lessons learned
-- Managing tasks
-- Building knowledge graphs about entities
-- Querying historical context
-- Maintaining identity continuity across sessions
+- 记录重要的决策或事件
+- 存储需要长期保存的信息（如身份信息、凭证、关系）
+- 跟踪目标与进度
+- 捕获经验教训
+- 管理任务
+- 构建关于实体的知识图谱
+- 查询历史背景信息
+- 在不同会话之间保持身份信息的连续性

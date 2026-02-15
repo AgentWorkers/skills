@@ -1,11 +1,11 @@
 ---
 name: sonic-build
-description: Build SONiC (Software for Open Networking in the Cloud) switch images from sonic-buildimage. Use when building VS/ASIC images, configuring build parallelism/memory/caching, debugging build failures, managing submodules, cleaning artifacts, or optimizing build performance. Covers all platforms (VS, broadcom, mellanox, marvell, nvidia-bluefield).
+description: 使用 `sonic-buildimage` 工具来构建 SONiC（用于云中开放网络的软件）交换机镜像。该工具适用于构建 VS/ASIC 镜像、配置构建并行性/内存/缓存设置、调试构建失败问题、管理子模块、清理构建产生的临时文件以及优化构建性能。支持所有平台（VS、Broadcom、Mellanox、Marvell、Nvidia-Bluefield）。
 ---
 
-# SONiC Image Build
+# SONiC 镜像构建
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd sonic-buildimage
@@ -14,34 +14,34 @@ make configure PLATFORM=vs   # or broadcom, mellanox, etc.
 make SONIC_BUILD_JOBS=4 target/sonic-vs.img.gz
 ```
 
-For dev builds (skip tests): add `BUILD_SKIP_TEST=y`.
+**开发构建（跳过测试）：** 添加 `BUILD_SKIP_TEST=y`。
 
-## Build Architecture
+## 构建架构
 
-Two-phase build via GNU Make → slave.mk → sonic-slave Docker container:
+通过 GNU Make 进行两阶段构建：`slave.mk` → `sonic-slave` Docker 容器：
 
-1. **Bookworm phase** — compile all packages (debs, python wheels, Docker images) into `target/debs/bookworm/`
-2. **Trixie phase** — assemble final image from phase 1 packages into `target/debs/trixie/`
+1. **Bookworm 阶段** — 将所有软件包（`.deb` 文件、Python wheel 文件以及 Docker 镜像）编译到 `target/debs/bookworm/` 目录中。
+2. **Trixie 阶段** — 从第 1 阶段的软件包中组装最终的 Docker 镜像，并将其保存到 `target/debs/trixie/` 目录中。
 
-Makefile invokes `Makefile.work` with different `BLDENV` per phase. The `configure` target creates per-distro directories.
+`Makefile` 会为每个构建阶段调用不同的 `BLDENV` 值来运行 `Makefile.work` 脚本。`configure` 目标会为每个发行版创建相应的目录。
 
-## Configuration
+## 配置
 
-All knobs in `rules/config`. Override in `rules/config.user` (gitignored, persists across rebases).
+所有配置选项都位于 `rules/config` 文件中。可以在 `rules/config.user` 文件中进行自定义（该文件会被 Git 忽略，且配置更改会在重新基线操作后保持不变）。
 
-### Key Knobs
+### 关键配置选项
 
-| Knob | Default | Recommended | Effect |
+| 配置项 | 默认值 | 推荐值 | 功能 |
 |------|---------|-------------|--------|
-| `SONIC_CONFIG_BUILD_JOBS` | 1 | 4 | Parallel top-level package builds |
-| `SONIC_CONFIG_MAKE_JOBS` | `$(nproc)` | default | Compiler threads per package |
-| `BUILD_SKIP_TEST` | n | y (dev) | Skip unit tests |
-| `SONIC_BUILD_MEMORY` | unset | 24g | Docker `--memory` — contains OOM in container |
-| `SONIC_DPKG_CACHE_METHOD` | none | rwcache | Cache .deb packages for incremental builds |
-| `DEFAULT_BUILD_LOG_TIMESTAMP` | none | simple | Timestamps in build logs |
-| `SONIC_CONFIG_USE_NATIVE_DOCKERD_FOR_BUILD` | unset | y | Host Docker daemon instead of DinD |
+| `SONIC_CONFIG_BUILD_JOBS` | 1 | 4 | 并行构建顶层软件包 |
+| `SONIC_CONFIGMAKE_JOBS` | `$(nproc)` | 默认值 | 每个软件包使用的编译线程数 |
+| `BUILD_SKIP_TEST` | `n` | `y`（开发模式） | 跳过单元测试 |
+| `SONIC_BUILD_MEMORY` | 未设置 | 24GB | Docker 的 `--memory` 参数；用于指定容器的内存限制 |
+| `SONIC_DPKG_CACHE_METHOD` | 未设置 | `rwcache` | 用于增量构建的 `.deb` 包缓存机制 |
+| `DEFAULT_BUILD_LOG_TIMESTAMP` | 未设置 | `simple` | 在构建日志中添加时间戳 |
+| `SONIC_CONFIG_USE_NATIVE_DOCKERD_FOR_BUILD` | 未设置 | `y` | 使用宿主机上的 Docker 守护进程，而非 DinD |
 
-### Recommended `rules/config.user`
+### 推荐的 `rules/config.user` 配置
 
 ```makefile
 SONIC_CONFIG_BUILD_JOBS = 4
@@ -50,19 +50,19 @@ SONIC_BUILD_MEMORY = 24g
 DEFAULT_BUILD_LOG_TIMESTAMP = simple
 ```
 
-## Parallelism
+## 并行性
 
-**Rule of thumb:** `JOBS × 6GB ≤ available RAM`.
+**经验法则：** `JOBS × 6GB ≤ 可用内存大小`。
 
-- JOBS=1: ~3h VS build, ~10GB RAM
-- JOBS=4: significant speedup, ~20GB RAM
-- JOBS=8: OOM risk on <48GB RAM
+- `JOBS=1`：构建时间约 3 小时，需要约 10GB 内存。
+- `JOBS=4`：显著提升构建速度，需要约 20GB 内存。
+- `JOBS=8`：在内存小于 48GB 的情况下可能导致内存不足（OOM）。
 
-**Why JOBS=1 is slow:** 64/194 packages depend on `libswsscommon` (critical path bottleneck). JOBS=1 leaves most cores idle.
+**为什么 `JOBS=1` 时构建速度较慢？** 因为有 64/194 个软件包依赖于 `libswsscommon`（这是一个关键路径的瓶颈）。当 `JOBS=1` 时，大部分 CPU 核心处于空闲状态。
 
-## Memory Protection
+## 内存保护
 
-Without limits, parallel builds can trigger the **kernel OOM killer** on any host process.
+如果不对并行构建进行限制，可能会导致任何宿主机进程触发内核的 OOM（Out of Memory）保护机制。
 
 ```bash
 # Container-scoped OOM (host stays healthy):
@@ -71,20 +71,20 @@ SONIC_BUILD_MEMORY = 24g
 make SONIC_BUILDER_EXTRA_CMDLINE="--memory=24g" ...
 ```
 
-## Caching
+## 缓存
 
-### DPKG cache (package-level)
+### DPKG 缓存（软件包级别）
 ```makefile
 SONIC_DPKG_CACHE_METHOD = rwcache
 SONIC_DPKG_CACHE_SOURCE = /var/cache/sonic/artifacts
 ```
 
-### Version cache (downloads)
+### 版本缓存（下载内容）
 ```makefile
 SONIC_VERSION_CACHE_METHOD = cache
 ```
 
-## Rebuilding a Single Package
+## 重新构建单个软件包
 
 ```bash
 make target/debs/bookworm/sonic-utilities_1.2-1_all.deb
@@ -92,9 +92,9 @@ make target/docker-syncd-vs.gz
 ls target/debs/bookworm/ | grep <name>
 ```
 
-## Clean Builds
+## 清理构建结果
 
-When to clean: after branch switch, rebase, or unexplained failures.
+**何时需要清理构建结果？** 在切换分支、执行重新基线操作或遇到无法解释的构建失败时。
 
 ```bash
 rm -rf target/*   # always full clean, not selective
@@ -102,33 +102,28 @@ make configure PLATFORM=vs
 make SONIC_BUILD_JOBS=4 target/sonic-vs.img.gz
 ```
 
-> Stale artifacts (`.bin`, squashfs) confuse make into skipping phases.
+**注意：** 过期的构建产物（如 `.bin` 文件或 squashfs 格式的文件）可能会导致 `make` 命令错误地跳过某些构建步骤。
 
-## Submodules
+## 子模块
 
-```bash
-make init                                          # after clone or pull
-git submodule update --init --force src/<module>    # fix corrupted submodule
-```
+**使用 SSH 进行克隆比使用 HTTPS 更可靠**（因为 HTTPS 可能会返回 HTTP 500 错误）。
 
-SSH clone is more reliable than HTTPS (HTTPS can give HTTP 500).
+## 常见问题与解决方法**
 
-## Common Pitfalls
+有关详细的故障排除信息，请参阅 `references/troubleshooting.md`。
 
-For detailed troubleshooting, see `references/troubleshooting.md`.
+## 先决条件**
 
-## Prerequisites
+有关宿主机环境（Docker、Python、jinjanator）的配置要求，请参阅 `references/prerequisites.md`。
 
-See `references/prerequisites.md` for host setup (Docker, Python, jinjanator).
+## VS 平台相关说明
 
-## VS Platform Notes
+有关 Visual Studio 平台的特定配置信息（如 TAP 设备、端口映射、sai.profile 文件以及操作速度等），请参阅 `references/vs-platform.md`。
 
-See `references/vs-platform.md` for VS-specific details (TAP devices, port mapping, sai.profile, oper speed).
+## 提交 Pull Request (PR)
 
-## PR Submission
-
-- Single commit per PR (squash before push)
-- `git commit -s` for DCO sign-off
-- Rebase to latest master before force-push
-- Add tests — run `BUILD_SKIP_TEST=n` at least once
-- Monitor CI after push
+- 每个 PR 应只包含一个提交（推送前需要使用 `squash` 命令压缩代码）
+- 使用 `git commit -s` 命令进行 DCO（Developer Code Review）签名
+- 在强制推送之前先重新基线到最新的 master 分支
+- 添加测试代码——至少运行一次 `BUILD_SKIP_TEST=n` 命令
+- 推送后监控持续集成（CI）流程的结果

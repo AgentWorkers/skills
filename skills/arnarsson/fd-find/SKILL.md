@@ -1,17 +1,17 @@
 ---
 name: fd-find
-description: A fast and user-friendly alternative to 'find' - simple syntax, smart defaults, respects gitignore.
+description: 一个比 `find` 更快速、更用户友好的替代工具——简单的语法、智能的默认设置，并且会尊重 `gitignore` 文件中的规则。
 homepage: https://github.com/sharkdp/fd
 metadata: {"clawdbot":{"emoji":"📂","requires":{"bins":["fd"]},"install":[{"id":"brew","kind":"brew","formula":"fd","bins":["fd"],"label":"Install fd (brew)"},{"id":"apt","kind":"apt","package":"fd-find","bins":["fd"],"label":"Install fd (apt)"}]}}
 ---
 
-# fd - Fast File Finder
+# fd - 快速文件查找工具
 
-User-friendly alternative to `find` with smart defaults.
+这是一个用户友好的 `find` 替代工具，具备智能的默认设置。
 
-## Quick Start
+## 快速入门
 
-### Basic search
+### 基本搜索
 ```bash
 # Find files by name
 fd pattern
@@ -23,7 +23,7 @@ fd pattern /path/to/dir
 fd -i pattern
 ```
 
-### Common patterns
+### 常用搜索模式
 ```bash
 # Find all Python files
 fd -e py
@@ -41,9 +41,9 @@ fd -t f pattern
 fd -t l
 ```
 
-## Advanced Usage
+## 高级用法
 
-### Filtering
+### 过滤
 ```bash
 # Exclude patterns
 fd pattern -E "node_modules" -E "*.min.js"
@@ -61,7 +61,7 @@ fd -H -I pattern
 fd pattern -d 3
 ```
 
-### Execution
+### 执行方式
 ```bash
 # Execute command on results
 fd -e jpg -x convert {} {.}.png
@@ -73,7 +73,7 @@ fd -e md -x wc -l
 fd -e log -0 | xargs -0 rm
 ```
 
-### Regex patterns
+### 正则表达式模式
 ```bash
 # Full regex search
 fd '^test.*\.js$'
@@ -85,7 +85,7 @@ fd --full-path 'src/.*/test'
 fd -g "*.{js,ts}"
 ```
 
-## Time-based filtering
+## 基于时间的过滤
 ```bash
 # Modified within last day
 fd --changed-within 1d
@@ -97,7 +97,7 @@ fd --changed-before 2024-01-01
 fd --changed-within 1h
 ```
 
-## Size filtering
+## 基于文件大小的过滤
 ```bash
 # Files larger than 10MB
 fd --size +10m
@@ -109,7 +109,7 @@ fd --size -1k
 fd --size +100k --size -10m
 ```
 
-## Output formatting
+## 输出格式化
 ```bash
 # Absolute paths
 fd --absolute-path
@@ -124,71 +124,69 @@ fd -0 pattern
 fd --color always pattern
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-**Find and delete old files:**
+- **查找并删除旧文件：**
 ```bash
 fd --changed-before 30d -t f -x rm {}
 ```
 
-**Find large files:**
+- **查找大文件：**
 ```bash
 fd --size +100m --list-details
 ```
 
-**Copy all PDFs to directory:**
+- **将所有 PDF 文件复制到指定目录：**
 ```bash
 fd -e pdf -x cp {} /target/dir/
 ```
 
-**Count lines in all Python files:**
+- **统计所有 Python 文件的行数：**
 ```bash
 fd -e py -x wc -l | awk '{sum+=$1} END {print sum}'
 ```
 
-**Find broken symlinks:**
+- **查找损坏的符号链接：**
 ```bash
 fd -t l -x test -e {} \; -print
 ```
 
-**Search in specific time window:**
+- **在特定时间窗口内进行搜索：**
 ```bash
 fd --changed-within 2d --changed-before 1d
 ```
 
-## Integration with other tools
+## 与其他工具的集成
 
-**With ripgrep:**
+- **与 ripgrep 集成：**
 ```bash
 fd -e js | xargs rg "pattern"
 ```
 
-**With fzf (fuzzy finder):**
+- **与 fzf（模糊文件查找器）集成：**
 ```bash
 vim $(fd -t f | fzf)
 ```
 
-**With bat (cat alternative):**
+- **与 bat（cat 的替代工具）集成：**
 ```bash
 fd -e md | xargs bat
 ```
 
-## Performance Tips
+## 性能提示
 
-- `fd` is typically much faster than `find`
-- Respects `.gitignore` by default (disable with `-I`)
-- Uses parallel traversal automatically
-- Smart case: lowercase = case-insensitive, any uppercase = case-sensitive
+- `fd` 通常比 `find` 快得多。
+- 默认情况下会尊重 `.gitignore` 文件（使用 `-I` 可禁用此功能）。
+- 会自动使用并行扫描方式。
+- 智能区分大小写：小写匹配不区分大小写，大写匹配区分大小写。
 
-## Tips
+## 使用技巧
 
-- Use `-t` for type filtering (f=file, d=directory, l=symlink, x=executable)
-- `-e` for extension is simpler than `-g "*.ext"`
-- `{}` in `-x` commands represents the found path
-- `{.}` strips the extension
-- `{/}` gets basename, `{//}` gets directory
+- 使用 `-t` 进行文件类型过滤（例如：`f` 表示文件，`d` 表示目录，`l` 表示符号链接，`x` 表示可执行文件）。
+- 使用 `-e` 过滤文件扩展名比使用 `-g "*.ext"` 更简单。
+- 在 `-x` 命令中，`{}` 表示找到的文件路径；`{.}` 会去掉文件扩展名；`/{/}` 会提取文件名（不包含扩展名）；`//` 会提取文件所在的目录。
 
-## Documentation
+## 文档资料
 
 GitHub: https://github.com/sharkdp/fd
-Man page: `man fd`
+手册页：`man fd`

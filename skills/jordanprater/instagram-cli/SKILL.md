@@ -1,6 +1,6 @@
 ---
 name: instagram
-description: instagram
+description: Instagram
 homepage: 
 metadata: 
 ---

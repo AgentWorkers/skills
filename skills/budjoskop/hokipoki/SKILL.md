@@ -1,26 +1,26 @@
 ---
 name: hokipoki
-description: "Switch AI models without switching tabs using the HokiPoki CLI. Hop between Claude, Codex, and Gemini when one gets stuck. Use when the user wants to request help from a different AI model, hop to another AI, get a second opinion from another model, switch models, share AI subscriptions with teammates, or manage HokiPoki provider/listener mode. Triggers on: 'use codex/gemini for this', 'hop to another model', 'ask another AI', 'get a second opinion', 'switch models', 'hokipoki', 'listen for requests'."
+description: "使用 HokiPoki CLI，无需切换标签页即可切换 AI 模型。当某个 AI 模型无法解决问题时，可以快速在 Claude、Codex 和 Gemini 之间切换。该工具适用于用户希望向不同的 AI 模型求助、获取其他模型的建议、与其他团队成员共享 AI 订阅服务，或管理 HokiPoki 的提供者/监听者模式。触发命令包括：`use codex/gemini for this`、`hop to another model`、`ask another AI`、`get a second opinion`、`switch models`、`hokipoki`、`listen for requests`。"
 ---
 
-# HokiPoki Skill
+# HokiPoki 技能
 
-Route tasks to different AI CLIs (Claude, Codex, Gemini) via the HokiPoki P2P network. API keys never leave the provider's machine; only encrypted requests and results are exchanged.
+通过 HokiPoki P2P 网络将任务路由到不同的 AI CLI（Claude、Codex、Gemini）。API 密钥始终保留在提供者的机器上；仅交换加密后的请求和结果。
 
-## Prerequisites
+## 先决条件
 
-HokiPoki CLI must be installed and authenticated:
+必须安装并登录 HokiPoki CLI：
 
 ```bash
 npm install -g @next-halo/hokipoki-cli
 hokipoki login
 ```
 
-Verify with `hokipoki whoami`. If not installed, guide the user through setup.
+使用 `hokipoki whoami` 命令进行验证。如果未安装，请指导用户完成安装过程。
 
-## Requesting Help from Another AI
+## 向其他 AI 请求帮助
 
-Send a task to a remote AI model. Always use `--json` for parseable output:
+向远程 AI 模型发送任务。始终使用 `--json` 选项以确保输出结果可被解析：
 
 ```bash
 # Specific files
@@ -39,19 +39,19 @@ hokipoki request --tool claude --task "Optimize queries" --files src/db.ts --wor
 hokipoki request --tool codex --task "Refactor module" --dir src/ --no-auto-apply --json
 ```
 
-Tool selection: if the user doesn't specify a tool, ask which model to use or omit `--tool` to let HokiPoki choose.
+工具选择：如果用户未指定工具，可以询问用户希望使用哪个模型，或者省略 `--tool` 选项，让 HokiPoki 自动选择。
 
-### Patch Auto-Apply
+### 自动应用补丁
 
-Patches auto-apply when the target directory is a git repo with committed files. If auto-apply fails, inform the user and suggest:
+当目标目录是一个包含已提交文件的 Git 仓库时，系统会自动应用补丁。如果自动应用失败，应通知用户并建议用户采取相应措施：
 
 ```bash
 git init && git add . && git commit -m "initial"
 ```
 
-## Provider Mode (Sharing Your AI)
+## 提供者模式（共享你的 AI 资源）
 
-Register and listen for incoming requests:
+注册并监听来自其他用户的请求：
 
 ```bash
 # Register as a provider (one-time)
@@ -61,9 +61,9 @@ hokipoki register --as-provider --tools claude codex gemini
 hokipoki listen --tools claude codex
 ```
 
-Tasks execute in isolated Docker containers (read-only filesystem, tmpfs workspace, auto-cleanup). Docker must be running.
+任务在隔离的 Docker 容器中执行（容器具有只读文件系统、临时文件空间（tmpfs）以及自动清理功能）。确保 Docker 已经运行。
 
-## Status & Account
+## 状态与账户
 
 ```bash
 hokipoki whoami      # Current user info
@@ -71,13 +71,13 @@ hokipoki status      # Account, workspaces, history
 hokipoki dashboard   # Open web dashboard in browser
 ```
 
-## When to Suggest Hopping
+## 何时建议切换使用其他 AI 模型
 
-- User is stuck on a problem after multiple attempts
-- User asks for a different approach or fresh perspective
-- Task involves a domain where another model excels (e.g., Codex for boilerplate, Gemini for large-context analysis)
-- User explicitly asks to try another AI
+- 用户在多次尝试后仍然无法解决问题
+- 用户请求采用不同的方法或新的视角
+- 任务涉及某个其他模型更擅长的领域（例如，使用 Codex 处理重复性任务，使用 Gemini 进行复杂场景分析）
+- 用户明确要求尝试其他 AI 模型
 
-## Full Command Reference
+## 完整命令参考
 
-See [references/commands.md](references/commands.md) for all CLI options, auth token locations, and advanced usage.
+有关所有 CLI 选项、认证令牌的位置以及高级用法，请参阅 [references/commands.md](references/commands.md)。

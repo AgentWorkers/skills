@@ -1,6 +1,6 @@
 ---
 name: huckleberry
-description: Track baby sleep, feeding, diapers, and growth via Huckleberry app API. Use for logging baby activities through natural language.
+description: 通过 Huckleberry 应用程序的 API 来记录宝宝的睡眠、喂食、换尿布以及成长情况。可以使用自然语言来记录宝宝的各项活动。
 homepage: https://github.com/aaronn/openclaw-huckleberry-skill
 metadata:
   clawdbot:
@@ -15,13 +15,13 @@ metadata:
         label: Install huckleberry-api (pip)
 ---
 
-# Huckleberry Baby Tracker
+# Huckleberry婴儿追踪器
 
-Track baby activities (sleep, feeding, diapers, growth) via the Huckleberry app's Firebase backend.
+通过Huckleberry应用程序的Firebase后端来追踪婴儿的活动（睡眠、喂食、换尿布、生长情况）。
 
-## Setup
+## 设置
 
-1. Install the API:
+1. 安装API：
    ```bash
    # Install from GitHub (required for bottle feeding support until next PyPI release)
    pip install git+https://github.com/Woyken/py-huckleberry-api.git
@@ -29,14 +29,14 @@ Track baby activities (sleep, feeding, diapers, growth) via the Huckleberry app'
    uv pip install git+https://github.com/Woyken/py-huckleberry-api.git
    ```
 
-2. Configure credentials (choose one):
-   - Environment variables:
+2. 配置凭据（选择一种方式）：
+   - 环境变量：
      ```bash
      export HUCKLEBERRY_EMAIL="your-email@example.com"
      export HUCKLEBERRY_PASSWORD="your-password"
      export HUCKLEBERRY_TIMEZONE="America/Los_Angeles"  # optional
      ```
-   - Config file at `~/.config/huckleberry/credentials.json`:
+   - 配置文件位于`~/.config/huckleberry/credentials.json`：
      ```json
      {
        "email": "your-email@example.com",
@@ -45,9 +45,9 @@ Track baby activities (sleep, feeding, diapers, growth) via the Huckleberry app'
      }
      ```
 
-## CLI Usage
+## 命令行工具（CLI）使用方法
 
-The CLI is at `~/clawd/skills/huckleberry/scripts/hb.py`
+CLI工具位于`~/clawd/skills/huckleberry/scripts/hb.py`。
 
 ```bash
 # List children
@@ -84,222 +84,224 @@ python3 ~/clawd/skills/huckleberry/scripts/hb.py history --days 7 --type sleep -
 python3 ~/clawd/skills/huckleberry/scripts/hb.py history --json
 ```
 
-## Complete Parameter Reference
+## 完整参数参考
 
-### Sleep Commands
+### 睡眠相关命令
 
-| Command | Parameters | Description |
+| 命令 | 参数 | 描述 |
 |---------|------------|-------------|
-| `sleep-start` | — | Start a new sleep session (timer begins) |
-| `sleep-pause` | — | Pause the current sleep session |
-| `sleep-resume` | — | Resume a paused sleep session |
-| `sleep-complete` | `--notes` | End sleep and save to history |
-| `sleep-cancel` | — | Cancel without saving to history |
+| `sleep-start` | — | 开始新的睡眠会话（计时器开始） |
+| `sleep-pause` | — | 暂停当前的睡眠会话 |
+| `sleep-resume` | — | 恢复暂停的睡眠会话 |
+| `sleep-complete` | `--notes` | 结束睡眠并将记录保存到历史记录中 |
+| `sleep-cancel` | — | 取消睡眠操作，不保存记录 |
 
-### Breastfeeding Commands
+### 哺乳相关命令
 
-| Command | Parameters | Description |
+| 命令 | 参数 | 描述 |
 |---------|-----------|-------------|
-| `feed-start` | `--side {left,right}` (default: left) | Start nursing session |
-| `feed-pause` | — | Pause session, accumulate duration |
-| `feed-resume` | `--side {left,right}` (optional) | Resume on specified or last side |
-| `feed-switch` | — | Switch to other side (auto-resumes if paused) |
-| `feed-complete` | `--notes` | End session and save to history |
-| `feed-cancel` | — | Cancel without saving |
+| `feed-start` | `--side {left,right}` （默认：left） | 开始哺乳会话 |
+| `feed-pause` | — | 暂停哺乳会话，并记录持续时间 |
+| `feed-resume` | `--side {left,right}` （可选） | 在指定的一侧或上次哺乳的一侧继续哺乳 |
+| `feed-switch` | — | 切换哺乳位置（如果会话已暂停，则自动恢复） |
+| `feed-complete` | `--notes` | 结束哺乳并将记录保存到历史记录中 |
+| `feed-cancel` | — | 取消哺乳操作，不保存记录 |
 
-### Bottle Feeding
+### 滴奶瓶喂养相关命令
 
 ```
 bottle <amount> [options]
 ```
 
-| Parameter | Values | Required | Default |
+| 参数 | 值 | 是否必填 | 默认值 |
 |-----------|--------|----------|---------|
-| `amount` | Any number | **Yes** | — |
-| `--type` / `-t` | `"Breast Milk"`, `"Formula"`, `"Mixed"` | No | `"Formula"` |
-| `--units` / `-u` | `ml`, `oz` | No | `ml` |
-| `--notes` / `-n` | Any text | No | — |
+| `amount` | 任意数值 | **是** | — |
+| `--type` / `-t` | `"Breast Milk"`, `"Formula"`, `"Mixed"` | 否 | `"Formula"` |
+| `--units` / `-u` | `ml`, `oz` | 否 | `ml` |
+| `--notes` / `-n` | 任意文本 | 否 | — |
 
-### Diaper Change
+### 换尿布相关命令
 
 ```
 diaper <mode> [options]
 ```
 
-| Parameter | Values | Required | Default |
+| 参数 | 值 | 是否必填 | 默认值 |
 |-----------|--------|----------|---------|
-| `mode` | `pee`, `poo`, `both`, `dry` | **Yes** | — |
-| `--pee-amount` | `little`, `medium`, `big` | No | — |
-| `--poo-amount` | `little`, `medium`, `big` | No | — |
-| `--color` | `yellow`, `brown`, `black`, `green`, `red`, `gray` | No | — |
-| `--consistency` | `solid`, `loose`, `runny`, `mucousy`, `hard`, `pebbles`, `diarrhea` | No | — |
-| `--rash` | (flag) | No | false |
-| `--notes` | Any text | No | — |
+| `mode` | `pee`, `poo`, `both`, `dry` | **是** | — |
+| `--pee-amount` | `little`, `medium`, `big` | 否 | — |
+| `--poo-amount` | `little`, `medium`, `big` | 否 | — |
+| `--color` | `yellow`, `brown`, `black`, `green`, `red`, `gray` | 否 | — |
+| `--consistency` | `solid`, `loose`, `runny`, `mucousy`, `hard`, `pebbles`, `diarrhea` | 否 | — |
+| `--rash` | （标志） | 否 | false |
+| `--notes` | 任意文本 | 否 | — |
 
-#### Color Guide
-- **yellow** — Normal for breastfed babies
-- **brown** — Normal for formula-fed or older babies
-- **green** — Can be normal, or indicate fast digestion/foremilk
-- **black** — Normal first few days (meconium), concerning later
-- **red** — May indicate blood, consult pediatrician
-- **gray** — Uncommon, may indicate liver issues
+#### 颜色说明：
+- **黄色** — 母乳喂养婴儿的正常情况 |
+- **棕色** — 配方奶喂养或较大婴儿的正常情况 |
+- **绿色** — 可能是正常情况，也可能表示消化较快 |
+- **黑色** — 出生头几天的正常现象（胎便），后期可能表示异常 |
+- **红色** — 可能表示有血液，需咨询儿科医生 |
+- **灰色** | 不常见，可能表示肝脏问题 |
 
-#### Consistency Guide
-- **solid** — Formed stool
-- **loose** — Soft but not watery
-- **runny** — Watery consistency
-- **mucousy** — Contains mucus
-- **hard** — Firm, may indicate constipation
-- **pebbles** — Small hard pieces
-- **diarrhea** — Very watery, frequent
+#### 大便性状说明：
+- **solid** — 成形的大便 |
+- **loose** | 软但不是水状 |
+- **runny** | 水状的大便 |
+- **mucousy** | 含有黏液的粪便 |
+- **hard** | 硬的大便，可能表示便秘 |
+- **pebbles** | 小而硬的颗粒 |
+- **diarrhea** | 非常稀的大便 |
 
-### Growth Measurements
+### 生长测量相关命令
 
 ```
 growth [options]
 growth-get
 ```
 
-| Parameter | Values | Required | Notes |
+| 参数 | 值 | 是否必填 | 备注 |
 |-----------|--------|----------|-------|
-| `--weight` / `-w` | Number | At least one | kg (metric) or lbs (imperial) |
-| `--height` / `-l` | Number | measurement | cm (metric) or inches (imperial) |
-| `--head` | Number | required | cm (metric) or inches (imperial) |
-| `--units` / `-u` | `metric`, `imperial` | No | Default: `metric` |
-| `--notes` / `-n` | Any text | No | — |
+| `--weight` / `-w` | 数值 | 至少提供一个 | 千克（公制）或磅（英制） |
+| `--height` / `-l` | 数值 | 测量单位 | 厘米（公制）或英寸（英制） |
+| `--head` | 数值 | 必填 | 厘米（公制）或英寸（英制） |
+| `--units` / `-u` | `metric`, `imperial` | 否 | 默认：`metric` |
+| `--notes` / `-n` | 任意文本 | 否 | — |
 
-### History / Calendar
+### 历史记录/日历相关命令
 
 ```
 history [options]
 ```
 
-| Parameter | Values | Required | Default |
+| 参数 | 值 | 是否必填 | 默认值 |
 |-----------|--------|----------|---------|
-| `--date` / `-d` | `YYYY-MM-DD` | No | Today |
-| `--days` | Number | No | 1 |
-| `--type` / `-t` | `sleep`, `feed`, `diaper`, `health` | No | All types |
+| `--date` / `-d` | `YYYY-MM-DD` | 否 | 当前日期 |
+| `--days` | 数值 | 否 | 1 |
+| `--type` / `-t` | `sleep`, `feed`, `diaper`, `health` | 否 | 所有类型 |
 
-Use `--type` multiple times to filter: `--type sleep --type feed`
+可以使用`--type`多次过滤：`--type sleep --type feed`
 
-## Agent Guidelines: When to Ask for Details
+## 代理使用指南：何时请求详细信息
 
-### AI Attribution on Notes
-**Always** include AI attribution when logging entries:
+### 在备注中标注AI协助
 
-**Creating new entries:**
-- No user note: `--notes "Created via AI"`
-- User provides note: `--notes "user's note | Created via AI"`
+**在记录条目时** **始终** 需要标注AI的协助：
 
-**Editing existing entries:**
-- No user note: `--notes "Updated via AI"`
-- User provides note: append ` | Updated via AI` to existing notes
+**创建新条目时**：
+- 无用户备注：`--notes "通过AI创建"`
+- 用户提供备注：`--notes "用户备注 | 通过AI创建"`
 
-This creates a paper trail for AI-assisted entries.
+**编辑现有条目时**：
+- 无用户备注：`--notes "通过AI更新"`
+- 用户提供备注：在现有备注后添加 `| 通过AI更新`
 
-### When to Ask for Clarification
-When a user request is sparse, ask for clarification before logging. Here's when:
+这样可以记录下AI协助创建的条目。
 
-### Diaper Changes
-If user says just "diaper change" or "poop":
-- **Always ask:** Was it pee, poo, or both?
-- **For poo, consider asking:** Color? Consistency? Amount?
-- **Skip details if:** User seems rushed or says "just log it"
+### 何时需要进一步确认
 
-Example follow-up:
-> "Got it! Was it pee, poo, or both? Any details to note (color, consistency, amount)?"
+当用户提供的信息不完整时，在记录之前请请求进一步确认。例如：
 
-### Bottle Feeding
-If user says "bottle" without amount:
-- **Always ask:** How much? (in ml or oz)
-- **Consider asking:** Formula, breast milk, or mixed?
+### 换尿布时
+如果用户只说了“换尿布”或“大便”：
+- **务必询问**：是小便、大便还是两者都有？
+- **对于大便**，可以询问：颜色？性状？量？
+- **如果用户显得匆忙或只说“记录一下”**，可以省略这些细节。
 
-Example follow-up:
-> "How much was the bottle? And was it formula, breast milk, or mixed?"
+示例跟进：
+> “明白了！是小便、大便还是两者都有？有什么需要记录的细节（颜色、性状、量）？”
 
-### Growth Measurements
-If user says "log weight" without value:
-- **Always ask:** What's the weight? (and clarify units if ambiguous)
+### 滴奶瓶喂养时
+如果用户只说了“喂奶”，但没有提供量：
+- **务必询问**：喂了多少？（以毫升或盎司为单位）
+- **可以进一步询问**：是配方奶、母乳还是混合喂养？
 
-### Sleep/Feeding Timers
-These are typically clear commands, but clarify if ambiguous:
-- "Baby's eating" → "Starting breastfeeding — which side, left or right?"
-- "Feed done" → Check if breastfeeding or bottle context
+示例跟进：
+> “喂了多少毫升？是配方奶、母乳还是混合喂养？”
 
-## Natural Language Examples
+### 生长测量时
+如果用户只说了“记录体重”，但没有提供具体数值：
+- **务必询问**：体重是多少？（如果单位不明确，请明确说明）
 
-| User says | Action |
+### 睡眠/喂食计时器相关命令
+这些命令通常比较明确，但如果存在歧义，请进一步确认：
+- “婴儿开始吃奶了” → “开始哺乳 — 在哪一侧，左侧还是右侧？”
+- “喂奶完成” → 需要确认是母乳喂养还是使用奶瓶喂养
+
+## 自然语言示例
+
+| 用户输入 | 操作建议 |
 |-----------|--------|
-| "Baby fell asleep" | `sleep-start` |
-| "She woke up" | `sleep-complete` |
-| "Cancel that sleep" | `sleep-cancel` |
-| "Feeding on the left" | `feed-start --side left` |
-| "Switch sides" | `feed-switch` |
-| "Done nursing" | `feed-complete` |
-| "4oz bottle of formula" | `bottle 4 --type Formula --units oz` |
-| "120ml breast milk bottle" | `bottle 120 --type "Breast Milk" --units ml` |
-| "Diaper change, pee and poo" | → Ask about amounts/color/consistency |
-| "Just a wet diaper" | `diaper pee` |
-| "Dry check" | `diaper dry` |
-| "Weight is 5.5kg" | `growth --weight 5.5 --units metric` |
-| "What did the baby do today?" | `history --days 1` |
-| "Sleep history for the week" | `history --days 7 --type sleep` |
+| “婴儿睡着了” | `sleep-start` |
+| “婴儿醒了” | `sleep-complete` |
+| “取消这次睡眠” | `sleep-cancel` |
+| “在左侧喂奶” | `feed-start --side left` |
+| “更换哺乳位置” | `feed-switch` |
+| “哺乳完成” | `feed-complete` |
+| “喂了4盎司的配方奶” | `bottle 4 --type Formula --units oz` |
+| “喂了120毫升的母乳” | `bottle 120 --type "Breast Milk" --units ml` |
+| “换尿布，有尿和大便” | **询问尿量和大便的性状/颜色** |
+| “尿布只是湿了” | `diaper pee` |
+| “检查尿布是否干燥” | `diaper dry` |
+| “体重是5.5千克” | `growth --weight 5.5 --units metric` |
+| “婴儿今天做了什么？” | `history --days 1` |
+| “本周的睡眠记录” | `history --days 7 --type sleep` |
 
-## Multi-Child Support
+## 支持多个孩子
 
-If the account has multiple children, use `--child` / `-c`:
+如果账户中有多个孩子，可以使用`--child` / `-c`参数：
 ```bash
 python3 hb.py --child "Baby Name" sleep-start
 ```
 
-Without `--child`, commands default to the first child in the account.
+如果没有使用`--child`参数，命令将默认针对账户中的第一个孩子。
 
-## Troubleshooting
+## 故障排除
 
-**Authentication errors:**
-- Verify email/password are correct
-- Check credentials file permissions
-- Huckleberry doesn't support 2FA for API access
+**认证错误**：
+- 确认电子邮件/密码是否正确
+- 检查配置文件的权限
+- Huckleberry API访问不支持双因素认证（2FA）
 
-**"No children found":**
-- Ensure the account has at least one child profile in the Huckleberry app
+**“未找到孩子”**：
+- 确保账户中至少有一个孩子的资料在Huckleberry应用程序中
 
-**Timer already active:**
-- Complete or cancel the existing session before starting a new one
+**计时器已启动**：
+- 在开始新的会话之前，请完成或取消当前的会话
 
-## Technical Notes
+## 技术说明
 
-- Uses Firebase Firestore via gRPC (same as mobile app)
-- Real-time sync: Changes appear immediately in the Huckleberry app
-- Token auto-refresh: Sessions stay authenticated
-- **Timezone handling:** Huckleberry requires an `offset` field (minutes behind UTC) for entries to display correctly. E.g., PST (UTC-8) = 480 minutes. The CLI automatically calculates this from the configured timezone. Without this field, entries appear at UTC time in the app.
-
----
-
-## Credits
-
-Built on [py-huckleberry-api](https://github.com/Woyken/py-huckleberry-api) by Woyken — a reverse-engineered Python client for Huckleberry's Firebase backend.
+- 通过gRPC使用Firebase Firestore（与移动应用程序相同）
+- 实时同步：更改会立即显示在Huckleberry应用程序中
+- 令牌自动刷新：会话保持认证状态
+- **时区处理**：Huckleberry要求在条目中设置`offset`字段（UTC时间后的偏移量，单位为分钟）。例如，PST（UTC-8）表示偏移8分钟。CLI会根据配置的时区自动计算这个值。如果没有这个字段，条目会在应用程序中显示为UTC时间。
 
 ---
 
-*Created with AI - 2026-01-27*
-*Updated with AI - 2026-01-28*
+## 致谢
 
-## Notes on All Entry Types
+本工具基于[py-huckleberry-api](https://github.com/Woyken/py-huckleberry-api)开发，由Woyken创建——这是一个针对Huckleberry Firebase后端的Python客户端。
 
-The `--notes` / `-n` parameter is available on all entry types:
-- `sleep-complete --notes "Slept through the night!"`
-- `feed-complete --notes "Good latch today"`
-- `bottle --notes "Logged via AI"`
-- `diaper --notes "Checked by AI"`
-- `growth --notes "Measured at pediatrician"`
+---
 
-The upstream py-huckleberry-api only supports notes on diaper entries. This skill extends that to all types by updating the Firestore document directly after creation.
+*使用AI生成 - 2026-01-27*
+*使用AI更新 - 2026-01-28*
 
-## Not Supported by Upstream API
+## 关于所有条目类型的说明
 
-The following features exist in Huckleberry but aren't exposed in the py-huckleberry-api:
-- Sleep conditions (happy/upset at start/end)
-- Sleep locations (car, nursing, stroller, crib, etc.)
+`--notes` / `-n`参数适用于所有类型的条目：
+- `sleep-complete --notes "宝宝整晚都睡着了！"`
+- `feed-complete --notes "今天的吸吮姿势很好"`
+- `bottle --notes "通过AI记录"`
+- `diaper --notes "由AI检查"`
+- `growth --notes "在儿科医生处测量过"`
 
-These would require modifying the upstream library to accept additional parameters.
+上游的py-huckleberry-api仅支持在换尿布条目中添加备注。本工具通过直接更新Firestore文档，将这一功能扩展到了所有类型的条目。
+
+## 上游API不支持的功能
+
+Huckleberry中存在以下功能，但在py-huckleberry-api中不可用：
+- 睡眠状态（开始/结束时婴儿的情绪）
+- 睡眠地点（汽车、婴儿车、婴儿床等）
+
+要使用这些功能，需要修改上游库以接受额外的参数。

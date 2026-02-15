@@ -1,48 +1,48 @@
 ---
 name: agent-doppelganger
-description: Constrained autonomous delegate for identity-proxied communication. Handles incoming messages (Email, Discord, Slack, WhatsApp) by analyzing intent and applying declarative authority policies before generating responses. Use when the user wants to delegate communication tasks while maintaining identity fidelity and enforcing strict non-overreach boundaries.
+description: 受限的自主代理机制，用于身份代理通信。该机制通过分析接收到的消息（电子邮件、Discord、Slack、WhatsApp）的意图，并应用预先定义的权限策略来处理这些消息，从而在生成响应之前进行适当的控制。当用户希望委托通信任务的同时，仍能保持身份的真实性并严格执行严格的权限限制时，可以使用该机制。
 ---
 
 # Agent Doppelgänger (ADG)
 
-ADG is a policy-bounded identity proxy for real-world communication. It acts as a constrained autonomous delegate that communicates on your behalf within formally provable limits.
+ADG 是一个基于策略的身份代理，用于处理现实世界中的通信任务。它作为一个受限制的自主代理，在正式可证明的范围内代表用户进行通信。
 
-## Core Workflow
+## 核心工作流程
 
-1. **Adapter**: Normalize incoming messages from various channels.
-2. **Intent Analysis**: Classify the intent along Domain, Stakes, Authority, and Ambiguity.
-3. **Policy Gate**: Evaluate declarative policies (DSL) to determine if the agent is allowed to handle the request.
-4. **Confidence Engine**: Measure confidence in both intent analysis and proposed handling.
-5. **Response Generation**: Synthesize a response using your Style, Heuristics, and Preferences.
-6. **Verifier**: Audit the response against hard constraints before sending or drafting.
+1. **适配器（Adapter）**：将来自各种渠道的输入消息进行标准化处理。
+2. **意图分析（Intent Analysis）**：根据领域、利害关系、权限和信息的模糊性对用户的意图进行分类。
+3. **策略门控（Policy Gate）**：评估声明性策略（DSL），以确定代理是否被允许处理该请求。
+4. **信心引擎（Confidence Engine）**：对意图分析及提出的处理方案进行信心度评估。
+5. **响应生成（Response Generation）**：根据用户的风格、启发式规则和偏好生成相应的响应。
+6. **验证器（Verifier）**：在发送或草拟响应之前，对响应内容进行严格检查，确保其符合所有规定。
 
-## Implementation Details
+## 实现细节
 
-### 1. Identity Modeling
-Identity is modeled as a composition of four layers:
-- **Style**: Surface form characteristics (length, directness, vocabulary).
-- **Heuristics**: Core decision logic (e.g., "avoid meetings without agenda").
-- **Preferences**: Soft weights (e.g., Work > Social).
-- **Constraints**: Hard, user-defined rules.
+### 1. 身份建模（Identity Modeling）
+身份由四个层次组成：
+- **风格（Style）**：表示信息的表面特征（如长度、直接性、词汇选择）。
+- **启发式规则（Heuristics）**：核心决策逻辑（例如，“避免进行无议程的会议”）。
+- **偏好（Preferences）**：用户设定的权重（例如，工作优先于社交活动）。
+- **约束（Constraints）**：用户定义的硬性规则。
 
-### 2. Authority & Policy
-Policies are declarative and evaluated **before** any generation occurs. This ensures safety and prevents prompt injection from bypassing limits.
+### 2. 权限与策略（Authority & Policy）
+策略是声明性的，并在生成任何响应之前进行评估。这确保了系统的安全性，防止恶意代码绕过限制。
 
-### 3. Escalation
-ADG automatically escalates to you (Draft or Block) if:
-- Policy is violated.
-- Confidence falls below the defined threshold.
-- The request involves forbidden domains (Finance, Legal, Medical, etc.).
+### 3. 升级机制（Escalation）
+在以下情况下，ADG 会自动向用户发起升级请求（草拟响应或直接拒绝请求）：
+- 策略被违反。
+- 信心度低于预设阈值。
+- 请求涉及禁止处理的领域（如金融、法律、医疗等）。
 
-## References
+## 参考资料
 
-- See [specification.md](references/specification.md) for the full architectural blueprint.
-- See [policy-dsl.md](references/policy-dsl.md) (To Be Created) for the formal policy language definition.
+- 详细架构设计请参见 [specification.md](references/specification.md)。
+- 正式的策略语言定义请参见 [policy-dsl.md](references/policy-dsl.md)（待编写）。
 
-## Forbidden Modeling
-ADG is strictly forbidden from modeling or handling:
-- Secrets
-- Financial authority
-- Legal intent
-- Political opinions
-- Emotional vulnerability/trauma
+## 禁止处理的内容
+ADG 被严格禁止处理以下内容：
+- 秘密信息。
+- 金融相关权限。
+- 法律事务。
+- 政治观点。
+- 情绪敏感或可能引发创伤的信息。

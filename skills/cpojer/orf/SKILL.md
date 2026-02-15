@@ -1,60 +1,66 @@
 ---
 name: orf-digest
-description: "On-demand ORF news digest in German. Use when the user says 'orf', 'pull orf', or 'orf 10'. Focus on Austrian politics (Inland) and international politics (Ausland) + major headlines; exclude sports. Send each item as its own message (Title + Age + Link). Then generate a Nano Banana image in a cartoon ZiB studio with the anchor presenting the news, plus subtle Easter eggs based on the selected stories."
+description: "**按需提供的德语 ORF 新闻摘要**
+
+当用户输入 “orf”、“pull orf” 或 “orf 10” 时，系统会生成相应的新闻摘要。内容主要涵盖奥地利国内政治（Inland）和国际政治（Ausland）的重大新闻事件，不包含体育新闻。每条新闻将以独立消息的形式发送（包含标题、发布时间和链接）。
+
+随后，系统会在 ZiB 工作室中使用 Nano Banana 图像技术生成一张动画图片，图片中会有新闻主播呈现新闻内容，并根据用户选择的具体新闻添加一些有趣的“彩蛋”（Easter eggs）。
+
+**技术细节：**
+- 每条新闻都会作为一条独立的消息发送，包含标题、发布时间和链接。
+- 图片生成使用的是 Nano Banana 图像技术。
+- 主播的动画形象采用卡通风格。
+- 根据用户选择的具体新闻内容，图片中会添加一些有趣的“彩蛋”（Easter eggs）作为视觉效果。"
 ---
 
-# ORF Digest (news.orf.at)
+# ORF 新闻摘要（news.orf.at）
 
-## Command format
+## 命令格式
 
-Interpret a user message that starts with `orf` as a request for an ORF News digest.
+将以 `orf` 开头的用户消息解析为获取 ORF 新闻摘要的请求。
 
-Supported forms:
+支持的命令格式：
+- `orf` → 默认显示 5 条新闻
+- `orf <n>` → 显示 n 条新闻（最多 15 条）
+- `orf inland` / `orf ausland` → 选择特定类型的新闻（国内/国际新闻）
+- `orf <n> inland|ausland` → 同时显示国内和国际新闻
 
-- `orf` → default 5 items
-- `orf <n>` → n items (max 15)
-- `orf inland` / `orf ausland` → bias selection
-- `orf <n> inland|ausland` → both
+## 数据来源与范围：
+- 主要数据来源：`news.orf.at`（德语网站）
+- 优先展示内容：
+  - **国内**政治新闻
+  - **国际**政治新闻
+  - 重要头条新闻
+- 排除内容：体育新闻
 
-## Source + scope
+## 输出要求：
+- **不**添加任何额外的评论、前言或结尾语。
+- 将结果以 **单独的消息** 的形式发送。
+- 每条新闻消息必须包含以下内容：
+  - 第一行：新闻标题（德语）
+  - 第二行：新闻的发布时间（例如：`45分钟前`、`6小时前`、`2天前`）
+  - 第三行：新闻的链接
+- 在所有新闻消息之后，发送 **一条最终消息**，其中包含生成的图片。
+  - 该图片需要通过 **4–6 个不同的新闻面板** 在 Studio 视频墙上展示新闻内容。
+  - **面板布局要求**：
+    - **顶部**：使用大号粗体文字（1–2 个单词，全部大写）来展示新闻主题。这部分内容需要自行设计。
+    - **中间部分**：使用较小的文字（3–6 个单词）来描述新闻内容。这两行文字不能构成完整的句子，且避免重复相同的词汇。
+    - **底部**：展示 1–2 个简单的图标（禁止使用地图或复杂的图片组合）。
+    - **图标设计**：确保每个面板上的图标各不相同；避免重复使用相同的图标组合；只有在没有更合适的图标时才使用通用图标（如地球仪+图钉）。
+    - **可读性**：保持文本简洁且字体足够大，以便清晰显示。
+    - 禁止使用任何标志或水印。
+    - 如果聊天平台要求媒体内容包含非空文本，可以使用简短的说明文字（例如：.`）。
 
-- Primary source: `news.orf.at` (German)
-- Prefer: **Inland** politics, **Ausland** / international politics, and major headlines.
-- Exclude: sports (Sport).
+## 执行步骤：
+1. 从用户消息中解析出新闻数量 `n` 和可选的筛选条件（`inland`/`ausland`）。
+2. 运行命令：`python3 skills/orf-digest/scripts/orf.py --count <n> --focus <focus> --format json`。
+3. 将解析得到的每条新闻作为单独的消息发送（采用三行格式）。
+4. 使用 `Nano Banana` 工具生成 Studio 图片：
+  - 根据解析得到的新闻内容生成提示信息：`python3 skills/orf-digest/scripts/orf.py --count <n> --focus <focus> --format json | node skills/orf-digest/scripts/zib.prompt.mjs`
+  - 生成图片文件：`skills/orf-digest/scripts/generate_zib_nano_banana.sh ./tmp/orf-zib/zib.png`
+  - 将生成的图片作为最终消息发送。
 
-## Output requirements
-
-- Do **not** send any extra commentary/preamble/epilogue.
-- Send results as **individual messages**.
-- Each item message must be exactly:
-  - first line: the headline (German)
-  - second line: `<age>` (e.g. `45m ago`, `6h ago`, `2d ago`)
-  - third line: the ORF link
-- After the item messages, send **one final message** with the generated image.
-  - The image must visually incorporate the pulled news on the wraparound studio video wall using **4–6 distinct story panels**.
-  - **Panel layout (must):**
-    - TOP: big bold text (1–2 words, ALL CAPS). You must invent this.
-    - MIDDLE: smaller text (3–6 words) that describes the story. You must invent this.
-      - The two lines must **not** form a connected sentence.
-      - Avoid repeating the same words between the two lines.
-    - BOTTOM: exactly 1–2 simple icons (no maps, no busy collages)
-    - **Icon variety:** make icons distinct across panels whenever possible.
-      - Do not reuse the same icon pair across multiple panels.
-      - Avoid overusing generic icons (e.g. globe + pin); only use them when no better match exists.
-  - **Readability:** keep text minimal and large enough to render cleanly.
-  - No logos/watermarks.
-  - If the chat provider requires non-empty text for media, use a minimal caption `.`.
-
-## Procedure
-
-1. Parse `n` and optional `focus` (`inland`|`ausland`) from the user message.
-2. Run `python3 skills/orf-digest/scripts/orf.py --count <n> --focus <focus> --format json`.
-3. Send each returned item as its own message (3-line format).
-4. Generate the ZiB studio mood image via Nano Banana:
-   - Build prompt from items: `python3 skills/orf-digest/scripts/orf.py --count <n> --focus <focus> --format json | node skills/orf-digest/scripts/zib_prompt.mjs`
-   - Generate: `skills/orf-digest/scripts/generate_zib_nano_banana.sh ./tmp/orf-zib/zib.png`
-   - Send image as final message.
-
-If fetching/parsing fails or returns 0 items:
-- Use the browser tool to open `https://news.orf.at/`, pick N non-sport headlines by judgment, and send them in the same 3-line format.
-- Still generate a ZiB studio image with a few generic political-news Easter eggs.
+**异常处理**：
+- 如果数据获取或解析失败，或没有找到任何新闻（返回 0 条新闻）：
+  - 使用浏览器访问 `https://news.orf.at/`，手动选择 N 条非体育类新闻，并以相同的三行格式发送。
+  - 即使如此，仍需使用 `Nano Banana` 工具生成一张包含政治新闻元素的图片。

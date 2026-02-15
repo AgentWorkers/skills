@@ -1,27 +1,27 @@
-# Context Optimizer Skill
+# 上下文优化技能
 
-Automatically summarizes conversation context and cleans up old messages to prevent context overflow and save tokens.
+该技能能够自动总结对话内容，并清理旧消息，以防止上下文信息过载，同时节省系统资源（如令牌）。
 
-## Description
-This skill periodically summarizes the conversation into 10-20 bullet points plus facts to remember, saves them to memory, then clears the old context while keeping only the summary.
+## 描述  
+该技能会定期将对话内容总结为10-20个要点以及需要记住的重要事实，将这些信息保存到内存中，然后清除旧对话记录，仅保留总结内容。
 
-## Triggers
-- Manual activation: "optimize context", "clean context", "summarize and clear"
-- Scheduled: Can be run periodically via cron to maintain optimal context size
+## 触发条件  
+- 手动触发：输入“optimize context”、“clean context”或“summarize and clear”  
+- 定时触发：可通过cron任务定期执行，以维持最佳上下文规模  
 
-## Process
-1. Analyze current conversation context
-2. Extract key points into 10-20 bullet points
-3. Identify important facts to remember
-4. Save summary to memory files
-5. Clear old context while preserving essential information
+## 工作流程  
+1. 分析当前的对话上下文  
+2. 提取关键信息，生成10-20个要点  
+3. 确定需要记住的重要事实  
+4. 将总结内容保存到内存文件中  
+5. 清除旧对话记录，同时保留关键信息  
 
-## Files Used
-- memory/context-summary-YYYY-MM-DD.md - Stores conversation summaries
-- MEMORY.md - Updates with important facts
-- memory/context-history.json - Tracks context optimization history
+## 使用的文件  
+- `memory/context-summary-YYYY-MM-DD.md`：存储对话摘要  
+- `MEMORY.md`：更新其中的重要事实  
+- `memory/context-history.json`：记录上下文优化的历史记录  
 
-## Configuration
-- Summary frequency (manual or scheduled)
-- Number of bullet points to generate
-- Retention period for context
+## 配置选项  
+- 总结频率（手动触发或定时触发）  
+- 生成的要点数量  
+- 上下文信息的保留期限

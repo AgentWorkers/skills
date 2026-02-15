@@ -1,153 +1,153 @@
-# Memory Mastery - OpenClaw Memory System
+# 记忆管理 - OpenClaw 内存系统
 
-**A three-layer memory architecture for persistent context across sessions.**
+**一个支持跨会话持久化上下文的三层内存架构**
 
-## What This Is
+## 功能简介
 
-This skill implements a structured memory system for OpenClaw agents, enabling them to maintain context and continuity across sessions through a three-layer architecture:
+本技能为 OpenClaw 代理实现了结构化的内存管理系统，通过三层架构帮助代理在会话之间保持上下文和连贯性：
 
-- **L1 (Daily Logs)**: `memory/YYYY-MM-DD.md` - Append-only daily notes
-- **L2 (Long-Term Memory)**: `MEMORY.md` - Curated, permanent knowledge
-- **L3 (Vector Search)**: `memory_search` - Semantic search via memory-core plugin
+- **L1（每日日志）**：`memory/YYYY-MM-DD.md` - 仅用于追加内容的每日笔记
+- **L2（长期记忆）**：`MEMORY.md` - 经过整理的、永久性的知识库
+- **L3（向量搜索）**：`memory_search` - 通过 memory-core 插件实现的语义搜索
 
-## Why You Need This
+## 为何需要这个系统
 
-**Without this system:**
-- Agents wake up "fresh" every session, forgetting previous conversations
-- Context is lost between restarts
-- Repeated questions about preferences, past decisions, and project status
-- No searchable history of what happened when
+**不使用该系统时：**
+- 代理在每次会话开始时都会“重置”，忘记之前的对话内容
+- 重启后上下文会丢失
+- 会反复出现关于偏好设置、过去决策和项目状态的问题
+- 无法搜索过去发生的事情
 
-**With this system:**
-- Persistent memory across all sessions
-- Daily logs capture everything; long-term memory preserves what matters
-- Vector search finds relevant context instantly
-- Automatic prompts to save memory before compaction
-- Privacy-safe (MEMORY.md only loads in private sessions)
+**使用该系统后：**
+- 所有会话中的数据都能被持久化保存
+- 每日日志记录所有重要内容
+- 可以通过向量搜索快速找到相关信息
+- 系统会自动提示在数据压缩前保存重要信息
+- 保护隐私（`MEMORY.md` 仅在私有会话中加载）
 
-## Before You Install
+## 安装前准备
 
-### Prerequisites
+### 先决条件
 
-- OpenClaw workspace initialized
-- Write access to workspace directory
-- (Optional) memory-core plugin for L3 vector search
-- (Optional) Embedding API key for vector search
+- OpenClaw 工作区已初始化
+- 具有对工作区目录的写入权限
+- （可选）用于 L3 向量搜索的 memory-core 插件
+- （可选）用于向量搜索的嵌入 API 密钥
 
-### Diagnostic Check
+### 诊断检查
 
-Run the audit script to see your current memory state:
+运行审计脚本以查看当前的内存状态：
 
 ```bash
 bash scripts/audit.sh
 ```
 
-This will output JSON showing:
-- Whether MEMORY.md exists and its size
-- Whether memory/ directory exists and file count
-- Whether memory_search is available
+脚本将输出 JSON 数据，包括：
+- `MEMORY.md` 是否存在及其大小
+- `memory/` 目录是否存在及文件数量
+- `memory_search` 功能是否可用
 
-## Pros & Cons
+## 优点与缺点
 
-### ✅ Advantages
+### ✅ 优点
 
-1. **Persistent Context**: Agents remember across sessions
-2. **Two-Layer Freshness**: Daily logs for raw data, curated memory for insights
-3. **Semantic Search**: Find relevant memories by meaning, not just keywords
-4. **Auto-Flush**: Prompts to save before compaction (prevents memory loss)
-5. **Weekly Maintenance**: Structured review process keeps memory current
-6. **Privacy Protection**: MEMORY.md only loads in main sessions (not shared contexts)
+1. **持久化上下文**：代理在不同会话间能够记住信息
+2. **双层存储机制**：每日日志用于存储原始数据，整理后的记忆用于存储关键信息
+3. **语义搜索**：可以根据内容含义而非关键词查找相关记忆
+4. **自动保存机制**：系统会在数据压缩前提示保存重要内容
+5. **每周维护**：定期审查有助于保持内存内容的更新
+6. **隐私保护**：`MEMORY.md` 仅在私有会话中加载
 
-### ⚠️ Disadvantages
+### ⚠️ 缺点
 
-1. **MEMORY.md Bloat**: Can grow large over time, increasing token usage
-2. **Embedding API Cost**: L3 vector search requires external API (e.g., Voyage)
-3. **Disk Usage**: Daily logs accumulate (mitigate with archiving)
-4. **Maintenance Required**: L2 becomes stale if not reviewed regularly
-5. **Manual Curation**: Requires discipline to update MEMORY.md from daily logs
+1. **`MEMORY.md` 可能会变得很大**：随着时间推移文件可能膨胀，增加令牌使用量
+2. **嵌入 API 成本**：L3 向量搜索需要外部 API（如 Voyage）
+3. **磁盘占用**：每日日志会不断累积（可通过归档来缓解）
+4. **需要维护**：如果定期不审查，L2 中的内容可能会过时
+5. **需要手动管理**：需要定期从每日日志中更新 `MEMORY.md`
 
-## Installation
+## 安装步骤
 
-### Interactive Setup
+### 交互式设置
 
-**IMPORTANT: This will modify your workspace. You will be asked to confirm before proceeding.**
+**重要提示：此操作会修改您的工作区。请在继续前确认。**
 
-1. Review the diagnostic output:
+1. 查看诊断结果：
    ```bash
    bash scripts/audit.sh
    ```
 
-2. Understand what will change:
-   - Creates `memory/` directory (if missing)
-   - Creates `MEMORY.md` from template (backs up existing)
-   - Appends memory rules to `AGENTS.md`
-   - Appends maintenance tasks to `HEARTBEAT.md`
+2. 了解以下变化：
+   - 会创建 `memory/` 目录（如果不存在）
+   - 会从模板创建 `MEMORY.md`（并备份现有文件）
+   - 会将内存管理规则添加到 `AGENTS.md` 中
+   - 会将维护任务添加到 `HEARTBEAT.md` 中
 
-3. Run setup:
+3. 运行设置脚本：
    ```bash
    bash scripts/setup.sh /Users/ishikawaryuuta/.openclaw/workspace
    ```
 
-4. The script will:
-   - Show you what it plans to do
-   - Ask for confirmation (`y/n`)
-   - Back up existing files before modification
-   - Report success or failure
+4. 脚本会：
+   - 显示其执行计划
+   - 请求您的确认（输入 `y/n`）
+   - 在修改前备份现有文件
+   - 报告操作结果
 
-### What Gets Created/Modified
+### 创建/修改的内容
 
-**Created:**
-- `memory/` directory
-- `MEMORY.md` (if missing; existing files are backed up)
+**创建的内容：**
+- `memory/` 目录
+- `MEMORY.md`（如果不存在，则创建；现有文件会被备份）
 
-**Modified:**
-- `AGENTS.md` - Appends memory system rules
-- `HEARTBEAT.md` - Appends weekly maintenance task
+**修改的内容：**
+- `AGENTS.md`：添加内存管理规则
+- `HEARTBEAT.md`：添加每周维护任务
 
-**Backups:**
-- Existing files are backed up with `.backup-TIMESTAMP` suffix
+**备份：**
+- 现有文件会以 `.backup-TIMESTAMP` 为后缀进行备份
 
-## Usage
+## 使用方法
 
-### Daily Workflow
+### 日常工作流程
 
-**At the start of each session**, the agent should:
-1. Read `memory/YYYY-MM-DD.md` (today + yesterday)
-2. Read `MEMORY.md` (main session only)
+**在每次会话开始时**：
+- 代理应阅读 `memory/YYYY-MM-DD.md`（今天的日志及昨天的日志）
+- 仅在工作主会话中阅读 `MEMORY.md`
 
-**During the session**:
-- Write to `memory/YYYY-MM-DD.md` as things happen
-- Update `MEMORY.md` for significant decisions or insights
+**在会话进行中**：
+- 随着操作的发生，将内容写入 `memory/YYYY-MM-DD.md`
+- 对于重要的决策或见解，更新 `MEMORY.md`
 
-**Before compaction**:
-- Agent is prompted to save important context to memory
+**在数据压缩前**：
+- 系统会提示代理保存重要信息到内存中
 
-### Weekly Maintenance
+### 每周维护
 
-**Run the maintenance helper**:
+**运行维护脚本**：
 ```bash
 bash scripts/maintenance.sh
 ```
 
-This scans the last 7 days of daily logs and suggests items to integrate into `MEMORY.md`.
+该脚本会扫描过去 7 天的每日日志，并建议哪些内容应整合到 `MEMORY.md` 中。
 
-**Manual review**:
-1. Read suggested items
-2. Update `MEMORY.md` with distilled insights
-3. Remove outdated information from `MEMORY.md`
+**手动维护**：
+1. 阅读建议的内容
+2. 将精选的见解更新到 `MEMORY.md` 中
+3. 从 `MEMORY.md` 中删除过时的信息
 
-### Memory Search (L3)
+### 内存搜索（L3）
 
-If you have the memory-core plugin installed:
+如果您安装了 memory-core 插件：
 
 ```javascript
 // Search for relevant memories
 memory_search("project decisions about X")
 ```
 
-This uses vector embeddings to find semantically similar content across all memory files.
+该插件利用向量嵌入技术，在所有内存文件中查找语义上相似的内容。
 
-## File Structure
+## 文件结构
 
 ```
 workspace/
@@ -160,72 +160,72 @@ workspace/
 └── HEARTBEAT.md                 # Includes maintenance tasks
 ```
 
-## Maintenance Scripts
+## 维护脚本
 
 ### audit.sh
-**Purpose**: Diagnose current memory state  
-**Usage**: `bash scripts/audit.sh`  
-**Output**: JSON summary of memory system status
+**用途**：诊断当前的内存状态
+**使用方法**：`bash scripts/audit.sh`
+**输出**：内存系统状态的 JSON 总结
 
 ### setup.sh
-**Purpose**: Install memory system in workspace  
-**Usage**: `bash scripts/setup.sh <workspace_path>`  
-**Safety**: Non-destructive, backs up existing files, asks for confirmation
+**用途**：在工作区中安装内存管理系统
+**使用方法**：`bash scripts/setup.sh <workspace_path>`
+**安全性**：不会破坏现有文件，会进行备份，并会请求用户确认
 
 ### maintenance.sh
-**Purpose**: Suggest L2 integration candidates from recent L1 logs  
-**Usage**: `bash scripts/maintenance.sh`  
-**Output**: List of items to review for MEMORY.md
+**用途**：从最近的每日日志中推荐应整合到 `MEMORY.md` 中的内容
+**使用方法**：`bash scripts/maintenance.sh`
+**输出**：需要审核的内容列表
 
-## Privacy & Security
+## 隐私与安全
 
-- **MEMORY.md** contains personal context and should ONLY be loaded in private/main sessions
-- **Daily logs** can contain sensitive information; avoid sharing raw logs
-- **Vector embeddings** are stored by the memory-core plugin (check plugin docs for data handling)
+- `MEMORY.md` 包含个人隐私信息，仅应在私有/主会话中加载
+- **每日日志** 可能包含敏感信息，请避免共享原始日志
+- **向量嵌入数据** 由 memory-core 插件存储（请参阅插件文档了解数据处理方式）
 
-## Troubleshooting
+## 故障排除
 
-**MEMORY.md is too large**
-- Archive old sections to `memory/archive/`
-- Distill multiple related items into single entries
-- Remove outdated information
+**`MEMORY.md` 文件过大**
+- 将旧内容归档到 `memory/archive/`
+- 将多个相关条目合并为单个条目
+- 删除过时的信息
 
-**Daily logs pile up**
-- Create `memory/archive/YYYY-MM/` and move old logs
-- Keep 30-90 days active, archive the rest
+**每日日志堆积**
+- 创建 `memory/archive/YYYY-MM/` 目录并移动旧日志
+- 保留最近 30-90 天的日志，其余的进行归档
 
-**Memory search not working**
-- Check if memory-core plugin is installed
-- Verify embedding API key is configured
-- Re-index if necessary (see plugin docs)
+**内存搜索无法使用**
+- 检查是否安装了 memory-core 插件
+- 确认嵌入 API 密钥是否配置正确
+- 如有必要，重新构建索引（请参阅插件文档）
 
-**Setup fails**
-- Check workspace path is correct
-- Ensure write permissions
-- Review error messages in script output
+**安装失败**
+- 检查工作区路径是否正确
+- 确保具有写入权限
+- 查看脚本输出中的错误信息
 
-## Advanced: Customization
+## 高级功能：自定义设置
 
-### Modify Templates
+### 修改模板
 
-Edit files in `templates/` before running setup:
-- `MEMORY.md.template` - Customize section structure
-- `memory-rules.md` - Adjust memory rules
-- `heartbeat-memory.md` - Change maintenance frequency
+在运行设置脚本之前，请编辑 `templates/` 目录下的文件：
+- `MEMORY.md.template`：自定义页面结构
+- `memory-rules.md`：调整内存管理规则
+- `heartbeat-memory.md`：更改维护频率
 
-### Extend Scripts
+### 扩展脚本
 
-All scripts are pure bash, zero dependencies. Modify as needed for your workflow.
+所有脚本均为纯 Bash 脚本，无依赖项。可根据实际需求进行修改。
 
-## Support
+## 支持资源
 
-This is a self-contained skill. Refer to:
-- Script source code (heavily commented)
-- OpenClaw AGENTS.md for memory system rules
-- memory-core plugin docs for L3 vector search
+- 本技能为独立模块，可参考以下资源：
+- 脚本源代码（附带详细注释）
+- `OpenClaw AGENTS.md`：其中包含内存管理规则
+- memory-core 插件文档：了解 L3 向量搜索的详细信息
 
 ---
 
-**Version**: 1.0  
-**Compatibility**: OpenClaw (macOS/Linux)  
-**Dependencies**: None (L3 requires memory-core plugin + embedding API)
+**版本**：1.0  
+**兼容性**：OpenClaw（macOS/Linux）  
+**依赖项**：无（L3 功能需要 memory-core 插件和嵌入 API）

@@ -1,21 +1,21 @@
 ---
 name: book-pilates
-description: Book pilates services through Lokuli MCP. Use when user needs to find and book pilates. Triggers on requests like "book a pilates", "find pilates near me", or any pilates service request.
+description: 通过 Lokuli MCP 预订普拉提课程。当用户需要查找或预订普拉提服务时使用该功能。该功能会在用户发起“预订普拉提课程”、“查找附近的普拉提课程”或其他任何与普拉提服务相关的请求时被触发。
 ---
 
-# uook pilates
+# uook Pilates
 
-Book pilates services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订 Pilates 服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
 ### search
 ```json

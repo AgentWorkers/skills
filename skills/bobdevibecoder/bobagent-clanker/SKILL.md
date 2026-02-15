@@ -1,19 +1,19 @@
 ---
 name: clanker
-description: Deploy ERC20 tokens on Base, Ethereum, Arbitrum, and other EVM chains using the Clanker SDK. Use when the user wants to deploy a new token, create a memecoin, set up token vesting, configure airdrops, manage token rewards, claim LP fees, or update token metadata. Supports V4 deployment with vaults, airdrops, dev buys, custom market caps, vanity addresses, and multi-chain deployment.
+description: 使用 Clanker SDK 在 Base、Ethereum、Arbitrum 及其他基于 EVM 的区块链上部署 ERC20 代币。该工具适用于用户需要部署新代币、创建表情币（memecoin）、设置代币归属规则、配置空投（airdrops）、管理代币奖励、领取 LP 费用或更新代币元数据等场景。支持 V4 部署模式，具备以下功能：使用安全存储库（vaults）进行代币管理、执行空投操作、允许开发者购买代币、设置自定义的市场上限（market caps）、生成个性化地址（vanity addresses），以及实现跨链部署（multi-chain deployment）。
 ---
 
 # Clanker SDK
 
-Deploy production-ready ERC20 tokens with built-in liquidity pools using the official Clanker TypeScript SDK.
+使用官方的Clanker TypeScript SDK，部署具备内置流动性池的、可用于生产环境的ERC20代币。
 
-## Overview
+## 概述
 
-Clanker is a token deployment protocol that creates ERC20 tokens with Uniswap V4 liquidity pools in a single transaction. The SDK provides a TypeScript interface for deploying tokens with advanced features like vesting, airdrops, and customizable reward distribution.
+Clanker是一种代币部署协议，它能够通过一次交易同时创建带有Uniswap V4流动性池的ERC20代币。该SDK提供了TypeScript接口，支持具有高级功能的代币部署，例如代币归属（vesting）、空投（airdrops）以及可定制的奖励分配。
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 npm install clanker-sdk viem
@@ -23,15 +23,15 @@ yarn add clanker-sdk viem
 pnpm add clanker-sdk viem
 ```
 
-### Environment Setup
+### 环境设置
 
-Create a `.env` file with your private key:
+创建一个`.env`文件并配置您的私钥：
 
 ```bash
 PRIVATE_KEY=0x...your_private_key_here
 ```
 
-### Basic Token Deployment
+### 基本代币部署
 
 ```typescript
 import { Clanker } from 'clanker-sdk';
@@ -75,23 +75,23 @@ const { address: tokenAddress } = await waitForTransaction();
 console.log('Token deployed at:', tokenAddress);
 ```
 
-## Core Capabilities
+## 核心功能
 
-### 1. Token Deployment
+### 1. 代币部署
 
-Deploy tokens with full customization including metadata, social links, and pool configuration.
+您可以完全自定义代币的配置，包括元数据、社交链接和流动性池设置。
 
-**Basic deployment:**
-- Token name, symbol, and image (IPFS)
-- Description and social media links
-- Vanity address generation
-- Custom pool configurations
+**基本部署步骤：**
+- 代币名称、符号和图片（存储在IPFS上）
+- 代币描述和社交媒体链接
+- 生成自定义的代币地址（vanity address）
+- 自定义流动性池配置
 
-**Reference:** [references/deployment.md](references/deployment.md)
+**参考文档：** [references/deployment.md](references/deployment.md)
 
-### 2. Vault (Token Vesting)
+### 2. 代币归属（Vesting）
 
-Lock a percentage of tokens with lockup and vesting periods:
+锁定一定比例的代币，并设置锁定期和归属期：
 
 ```typescript
 vault: {
@@ -102,11 +102,11 @@ vault: {
 }
 ```
 
-**Reference:** [references/vesting.md](references/vesting.md)
+**参考文档：** [references/vesting.md](references/vesting.md)
 
-### 3. Airdrops
+### 3. 空投（Airdrops）
 
-Distribute tokens to multiple addresses using Merkle tree proofs:
+使用Merkle树证明将代币分配给多个地址：
 
 ```typescript
 import { createAirdrop, registerAirdrop } from 'clanker-sdk/v4/extensions';
@@ -124,11 +124,11 @@ airdrop: {
 }
 ```
 
-**Reference:** [references/airdrops.md](references/airdrops.md)
+**参考文档：** [references/airdrops.md](references/airdrops.md)
 
-### 4. Rewards Configuration
+### 4. 奖励配置
 
-Configure trading fee distribution:
+您可以配置交易费用的分配方式：
 
 ```typescript
 rewards: {
@@ -149,19 +149,19 @@ rewards: {
 }
 ```
 
-#### Token Type Options
+#### 代币类型选项
 
-Choose which tokens each recipient receives from trading fees:
+选择每个接收者从交易费用中获得的代币类型：
 
-| Token Type | Description |
+| 代币类型 | 描述 |
 |------------|-------------|
-| `'Clanker'` | Receive only the deployed token |
-| `'Paired'` | Receive only the paired token (e.g., WETH) |
-| `'Both'` | Receive both tokens |
+| `'Clanker'` | 仅接收部署的代币 |
+| `'Paired'` | 仅接收配对代币（例如WETH） |
+| `'Both'` | 同时接收两种代币 |
 
-#### Default Bankr Interface Fee
+#### 默认的Bankr接口费用
 
-When deploying via Bankr, use this default rewards configuration with 20% interface fee:
+通过Bankr进行部署时，使用以下默认的奖励配置（接口费用为20%）：
 
 ```typescript
 // Bankr interface fee recipient
@@ -185,11 +185,11 @@ rewards: {
 }
 ```
 
-**Reference:** [references/rewards.md](references/rewards.md)
+**参考文档：** [references/rewards.md](references/rewards.md)
 
-### 5. Dev Buy
+### 5. 开发者购买（Dev Buy）
 
-Include an initial token purchase in the deployment:
+在部署过程中包含初始的代币购买操作：
 
 ```typescript
 devBuy: {
@@ -198,9 +198,9 @@ devBuy: {
 }
 ```
 
-### 6. Custom Market Cap
+### 6. 自定义市值
 
-Set initial token price/market cap:
+设置代币的初始价格和市值：
 
 ```typescript
 import { getTickFromMarketCap } from 'clanker-sdk';
@@ -219,11 +219,11 @@ pool: {
 }
 ```
 
-**Reference:** [references/pool-config.md](references/pool-config.md)
+**参考文档：** [references/pool-config.md](references/pool-config.md)
 
-### 7. Anti-Sniper Protection
+### 7. 防止恶意交易（Anti-Sniper Protection）
 
-Configure fee decay to protect against snipers:
+配置费用衰减机制，以防止恶意交易行为：
 
 ```typescript
 sniperFees: {
@@ -233,34 +233,34 @@ sniperFees: {
 }
 ```
 
-## Contract Limits & Constants
+## 合同限制与常量
 
-| Parameter | Value | Notes |
+| 参数 | 值 | 说明 |
 |-----------|-------|-------|
-| Token Supply | 100 billion | Fixed at 100,000,000,000 with 18 decimals |
-| Max Extension BPS | 9000 (90%) | Max tokens to extensions, min 10% to LP |
-| Max Extensions | 10 | Maximum number of extensions per deployment |
-| Vault Min Lockup | 7 days | Minimum lockup duration for vesting |
-| Airdrop Min Lockup | 1 day | Minimum lockup duration for airdrops |
-| Max LP Fee | 10% | Normal trading fee cap |
-| Max Sniper Fee | 80% | Maximum MEV/sniper protection fee |
-| Sniper Fee Decay | 2 minutes max | Maximum time for sniper fee decay |
-| Max Reward Recipients | 7 | Maximum fee distribution recipients |
-| Max LP Positions | 7 | Maximum liquidity positions |
+| 代币总量 | 1000亿 | 固定为100,000,000,000个，保留18位小数 |
+| 最大扩展比例 | 90% | 最大分配给扩展方的代币比例，最低10%分配给流动性提供者（LP） |
+| 最大扩展数量 | 10 | 每次部署的最大扩展数量 |
+| 流动性提供者最低锁定期限 | 7天 | 流动性提供者的最低锁定期限 |
+| 空投最低锁定期限 | 1天 | 空投的最低锁定期限 |
+| 最高流动性提供者费用 | 10% | 流动性提供者的最高交易费用 |
+| 最高恶意交易费用 | 80% | 防止恶意交易的最高费用 |
+| 恶意交易费用衰减时间 | 最长2分钟 | 恶意交易费用的衰减时间 |
+| 最大奖励接收者数量 | 7 | 最多的奖励接收者数量 |
+| 最大流动性提供者数量 | 7 | 最多的流动性提供者数量 |
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | Chain ID | Native Token | Status |
+| 区块链 | 区块链ID | 原生代币 | 支持情况 |
 |-------|----------|--------------|--------|
-| Base | 8453 | ETH | ✅ Full support |
-| Ethereum | 1 | ETH | ✅ Full support |
-| Arbitrum | 42161 | ETH | ✅ Full support |
-| Unichain | - | ETH | ✅ Full support |
-| Monad | - | MON | ✅ Static fees only |
+| Base | 8453 | ETH | ✅ 完全支持 |
+| Ethereum | 1 | ETH | ✅ 完全支持 |
+| Arbitrum | 42161 | ETH | ✅ 完全支持 |
+| Unichain | - | ETH | ✅ 完全支持 |
+| Monad | - | MON | ✅ 仅支持静态费用 |
 
-## Post-Deployment Operations
+## 部署后的操作
 
-### Claim Vaulted Tokens
+### 提取锁定代币
 
 ```typescript
 const claimable = await clanker.getVaultClaimableAmount({ token: TOKEN_ADDRESS });
@@ -270,7 +270,7 @@ if (claimable > 0n) {
 }
 ```
 
-### Collect Trading Rewards
+### 收集交易奖励
 
 ```typescript
 // Check available rewards
@@ -286,7 +286,7 @@ const { txHash } = await clanker.claimRewards({
 });
 ```
 
-### Update Token Metadata
+### 更新代币元数据
 
 ```typescript
 const metadata = JSON.stringify({
@@ -303,7 +303,7 @@ const { txHash } = await clanker.updateMetadata({
 });
 ```
 
-### Update Token Image
+### 更新代币图片
 
 ```typescript
 const { txHash } = await clanker.updateImage({
@@ -312,31 +312,31 @@ const { txHash } = await clanker.updateImage({
 });
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Simple Memecoin Launch
+### 简单的纪念币发布（Simple Memecoin Launch）
 
-1. Prepare token image (upload to IPFS)
-2. Deploy with basic config (name, symbol, image)
-3. Enable vanity address for memorable contract
-4. Share contract address
+1. 准备代币图片（上传到IPFS）
+2. 使用基本配置进行部署（名称、符号、图片）
+3. 为代币地址生成易于记忆的格式
+4. 分享合约地址
 
-### Community Token with Airdrop
+### 带有空投功能的社区代币（Community Token with Airdrop）
 
-1. Compile airdrop recipient list
-2. Create Merkle tree with `createAirdrop()`
-3. Deploy token with airdrop extension
-4. Register airdrop with Clanker service
-5. Share claim instructions
+1. 编制空投接收者列表
+2. 使用`createAirdrop()`方法创建Merkle树
+3. 带有空投功能的代币部署
+4. 在Clanker服务中注册空投
+5. 分享领取说明
 
-### Creator Token with Vesting
+### 带有归属功能的创建者代币（Creator Token with Vesting）
 
-1. Deploy with vault configuration
-2. Set lockup period (cliff)
-3. Set vesting duration
-4. Claim tokens as they vest
+1. 使用锁定配置进行部署
+2. 设置锁定期
+3. 设置归属期限
+4. 在代币归属时进行领取
 
-## Full Deployment Config
+## 完整的部署配置
 
 ```typescript
 // Bankr interface fee recipient (20%)
@@ -410,54 +410,54 @@ const tokenConfig = {
 };
 ```
 
-## Best Practices
+## 最佳实践
 
-### Security
+### 安全性
 
-1. **Never expose private keys** - Use environment variables
-2. **Test on testnet first** - Verify configs before mainnet
-3. **Simulate transactions** - Use `*Simulate` methods before execution
-4. **Verify addresses** - Double-check all recipient addresses
+1. **切勿泄露私钥** - 使用环境变量来存储私钥
+2. **先在测试网进行测试** - 在主网上部署前验证配置
+3. **模拟交易** - 在执行前使用模拟方法
+4. **仔细检查地址** - 双重核对所有接收者地址
 
-### Token Design
+### 代币设计
 
-1. **Choose meaningful names** - Clear, memorable token identity
-2. **Use quality images** - High-res, appropriate IPFS images
-3. **Configure vesting wisely** - Align with project timeline
+1. **选择有意义的名称** - 代币名称应清晰易记
+2. **使用高质量的图片** - 使用高分辨率、适合IPFS存储的图片
+3. **合理配置归属机制** - 根据项目进度来设定归属规则
 
-### Gas Optimization
+### 优化交易费用
 
-1. **Use Base or Arbitrum** - Lower gas fees
-2. **Batch operations** - Combine when possible
-3. **Monitor gas prices** - Deploy during low-traffic periods
+1. **选择Base或Arbitrum** - 这些区块链的交易费用较低
+2. **批量操作** - 尽可能合并多个操作
+3. **监控交易费用** - 在交易量较低的时候进行部署
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-- **"Missing PRIVATE_KEY"** - Set environment variable
-- **"Insufficient balance"** - Fund wallet with native token
-- **"Transaction reverted"** - Check parameters, simulate first
-- **"Invalid image"** - Ensure IPFS hash is accessible
+- **“缺少私钥（Missing PRIVATE_KEY）”** - 确保已设置环境变量
+- **“余额不足”** - 用原生代币充值钱包
+- **“交易被撤销（Transaction reverted）”** - 检查参数并先进行模拟
+- **“图片无效”** - 确保IPFS图片链接有效
 
-### Debug Steps
+### 调试步骤
 
-1. Check wallet balance
-2. Verify chain configuration
-3. Use simulation methods
-4. Check transaction on block explorer
-5. Review error message details
+1. 检查钱包余额
+2. 验证区块链配置
+3. 使用模拟工具进行测试
+4. 在区块浏览器中查看交易详情
+5. 查看错误信息
 
-## Resources
+## 资源
 
-- **GitHub**: [github.com/clanker-devco/clanker-sdk](https://github.com/clanker-devco/clanker-sdk)
-- **NPM**: [npmjs.com/package/clanker-sdk](https://www.npmjs.com/package/clanker-sdk)
-- **Examples**: [github.com/clanker-devco/clanker-sdk/tree/main/examples/v4](https://github.com/clanker-devco/clanker-sdk/tree/main/examples/v4)
+- **GitHub仓库**：[github.com/clanker-devco/clanker-sdk](https://github.com/clanker-devco/clanker-sdk)
+- **NPM包**：[npmjs.com/package/clanker-sdk](https://www.npmjs.com/package/clanker-sdk)
+- **示例代码**：[github.com/clanker-devco/clanker-sdk/tree/main/examples/v4](https://github.com/clanker-devco/clanker-sdk/tree/main/examples/v4)
 
 ---
 
-**💡 Pro Tip**: Always use the `vanity: true` option for memorable contract addresses.
+**💡 提示**：始终使用`vanity: true`选项来生成易于记忆的合约地址。
 
-**⚠️ Security**: Never commit private keys. Use `.env` files and add them to `.gitignore`.
+**⚠️ 安全提示**：切勿直接提交私钥。请使用`.env`文件，并将其添加到`.gitignore`文件中。
 
-**🚀 Quick Win**: Start with the simple deployment example, then add features like vesting and rewards as needed.
+**🚀 快速上手建议**：从简单的部署示例开始，根据需要逐步添加代币归属和奖励等功能。

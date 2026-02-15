@@ -1,41 +1,41 @@
 ---
 name: customer-onboarding
-description: Design and execute customer onboarding that drives activation and retention. Use when building onboarding flows for new users, reducing churn in the first 30 days, improving time-to-value, or creating onboarding sequences (email, in-app, or manual). Covers activation metrics, onboarding step design, friction reduction, and measuring onboarding success. Trigger on "customer onboarding", "onboarding flow", "user onboarding", "reduce early churn", "improve activation", "onboarding sequence", "time to value".
+description: 设计和执行客户入职流程，以促进用户的激活和留存。适用于为新用户构建入职流程、降低用户在前30天的流失率、提升用户价值实现时间，或创建多种形式的入职序列（电子邮件、应用程序内通知或手动指导）。内容包括激活指标、入职步骤设计、减少使用障碍，以及评估入职流程的成功与否。相关关键词包括“客户入职”、“入职流程”、“用户入职”、“降低早期流失率”、“提升激活率”、“入职序列”和“用户价值实现时间”。
 ---
 
-# Customer Onboarding
+# 客户入职指导
 
-## Overview
-Onboarding is where you keep or lose customers. The first 7-30 days determine whether they stay or churn. Most solopreneurs focus on acquisition and ignore onboarding — then wonder why churn is high. This playbook builds an onboarding system that gets users to their first win fast, builds confidence, and sets them up for long-term success.
-
----
-
-## Step 1: Define Your Activation Metric
-
-Onboarding isn't about completing a checklist. It's about getting users to experience value — the "aha moment" where the product clicks.
-
-**Your activation metric is the action that predicts retention.**
-
-Examples:
-- **Slack:** Sent 2,000 messages as a team
-- **Dropbox:** Uploaded and shared at least one file
-- **SaaS analytics tool:** Connected a data source and viewed their first report
-- **Project management tool:** Created a project and added 3 tasks
-
-**How to find your activation metric:**
-1. Look at retained customers (those who stuck around 90+ days)
-2. Identify what they did in their first 7 days that non-retained customers didn't do
-3. That action (or set of actions) is your activation metric
-
-**Rule:** Onboarding is successful when a user completes your activation metric. Everything in your onboarding should drive toward this.
+## 概述
+客户入职指导是决定客户是否会继续使用你的产品或流失的关键环节。用户在前7到30天内决定是否会持续使用你的服务。许多独立创业者只关注新客户的获取，而忽视了入职指导的重要性，之后却疑惑为什么客户流失率如此之高。本指南旨在构建一个有效的入职指导系统，帮助用户快速体验产品的价值，建立信心，并为他们的长期成功打下基础。
 
 ---
 
-## Step 2: Map Your Onboarding Journey
+## 第一步：定义你的激活指标
 
-Before designing tactics, map the full journey from signup to activation.
+入职指导的目的不是简单地完成一系列任务，而是让用户真正感受到产品的价值——也就是他们体验到“啊哈”时刻（即意识到产品能解决他们问题的瞬间）。
 
-**Onboarding journey template:**
+**你的激活指标应该是能够预测用户是否会持续使用产品的那个具体行为。**
+
+**示例：**
+- **Slack**：作为团队成员发送了2000条消息。
+- **Dropbox**：上传并分享了至少一个文件。
+- **SaaS分析工具**：连接了数据源并查看了第一份报告。
+- **项目管理工具**：创建了一个项目并添加了3个任务。
+
+**如何确定你的激活指标：**
+1. 分析那些持续使用产品超过90天的客户（即留存客户）。
+2. 找出他们在前7天内做了哪些非留存客户没有做的事情。
+3. 这个行为（或这些行为的组合）就是你的激活指标。
+
+**规则：**当用户完成了你的激活指标，说明入职指导是成功的。所有入职指导环节都应朝着这个目标来设计。**
+
+---
+
+## 第二步：规划用户入职流程
+
+在制定具体策略之前，先规划从注册到激活的整个流程。
+
+**入职流程模板：**
 ```
 SIGNUP
   ↓ (What happens immediately after signup?)
@@ -49,12 +49,12 @@ ONGOING ENGAGEMENT
   ↓ (They use the product regularly)
 ```
 
-**For each stage, ask:**
-- What does the user need to do?
-- What's blocking them from doing it? (friction, confusion, missing information)
-- How can we make this easier or faster?
+**对于每个阶段，需要思考：**
+- 用户需要做什么？
+- 什么阻碍了他们完成这些步骤？（比如流程繁琐、信息不明确等）
+- 我们如何让这个过程变得更简单、更快捷？
 
-**Example (SaaS automation tool):**
+**示例（SaaS自动化工具）：**
 ```
 SIGNUP → Email confirmation
 
@@ -75,42 +75,41 @@ ONGOING ENGAGEMENT → Use weekly, add more workflows
 
 ---
 
-## Step 3: Reduce Friction at Every Step
+## 第三步：减少每个环节的阻碍
 
-Friction = anything that slows down or confuses the user. Every friction point increases the chance they abandon.
+“阻碍”指的是任何会减慢用户操作速度或让他们感到困惑的因素。每个阻碍都会增加用户放弃产品的概率。
 
-**Common friction points and fixes:**
+**常见的阻碍及解决方法：**
 
-| Friction | Impact | Fix |
+| 障碍 | 影响 | 解决方法 |
 |---|---|---|
-| **Too many fields on signup** | Users abandon mid-signup | Collect only email + password. Get everything else later. |
-| **Unclear next step** | Users sign up, then stare at a blank screen | Show a clear "Start here" CTA immediately after signup |
-| **Complex setup** | Users get overwhelmed and leave | Break setup into 3-5 small steps with progress bar. Let them skip non-essential steps. |
-| **Jargon or unclear labels** | Users don't understand what to do | Use plain language. Replace "Configure API endpoint" with "Connect your account" |
-| **Long time-to-value** | Takes 30+ min to see results | Create a fast "quick win" path — even if it's a simplified version of the full value |
+| **注册时填写的字段太多** | 用户在注册过程中放弃 | 只收集电子邮件地址和密码，其他信息可以稍后收集。 |
+| **下一步操作不明确** | 用户注册后看到空白屏幕 | 注册后立即显示一个明确的“从这里开始”的操作提示。 |
+| **设置流程过于复杂** | 用户感到不知所措而退出 | 将设置流程分解为3到5个小步骤，并提供进度条。允许用户跳过非必要的步骤。 |
+| **术语晦涩或标签不清晰** | 用户不明白该怎么做 | 使用简单明了的语言。例如，将“配置API端点”替换为“连接你的账户”。 |
+| **从注册到看到效果的时间过长** | 需要30分钟以上 | 创建一个快速体验路径，即使这个路径只是完整功能的一部分。 |
 
-**Rule:** Every step in onboarding should take < 2 minutes. If it takes longer, break it into smaller steps or defer it until later.
+**规则：**每个入职指导步骤的时间应控制在2分钟以内。如果超过这个时间，就将其分解为更小的步骤，或者推迟到后续环节。**
 
 ---
 
-## Step 4: Build Your Onboarding Sequence
+## 第四步：构建入职指导流程
 
-Onboarding is not just in-app. It's a multi-channel experience: in-app guidance + email + (optionally) human touch.
+入职指导不仅限于应用内，还应包括多渠道的体验：应用内引导 + 电子邮件 + （可选的）人工服务。
 
-### In-App Onboarding
-**Tactics:**
-- **Welcome modal:** Appears immediately after signup. "Welcome! Here's how to get started in 3 steps."
-- **Tooltips/hotspots:** Highlight key features as users explore ("This is where you create a new project")
-- **Checklist:** Show progress toward activation ("2 of 5 steps complete — you're almost there!")
-- **Empty states:** When a user sees a blank page, show helpful prompts ("No projects yet? Start your first one here.")
+### 应用内入职指导
+**策略：**
+- **欢迎弹窗**：注册后立即显示。“欢迎！以下是3个步骤来开始使用产品。”
+- **工具提示/热点提示**：用户在探索产品时显示关键功能（例如：“在这里你可以创建新项目”）
+- **进度条**：显示完成激活所需的步骤（“已完成2/5步——你快成功了！”）
+- **空白页面**：当用户看到空白页面时，显示有用的提示（“还没有项目？从这里开始创建吧。”）
 
-**Tools:** Intercom, Appcues, Userflow, or custom-built with plain JavaScript.
+**工具推荐：** Intercom、Appcues、Userflow，或使用纯JavaScript自定义实现。
 
-**Rule:** Don't overwhelm. Show 1-2 tips at a time, not 10.
+**规则：**不要一次性展示太多信息，每次只展示1到2个提示。**
 
-### Email Onboarding
-**Email sequence (5-7 emails over 14 days):**
-
+### 电子邮件入职指导
+**电子邮件序列（14天内发送5到7封邮件）：**
 ```
 EMAIL 1 (Day 0, immediately after signup):
   Subject: "Welcome to [Product]! Let's get you started."
@@ -141,65 +140,65 @@ EMAIL 7 (Day 14):
   Body: Ask how onboarding went, request feedback, link to survey
 ```
 
-**Personalization triggers:** Send different emails based on behavior:
-- If they completed activation → send "here's what to do next" content
-- If they didn't complete activation → send troubleshooting or offer help
+**个性化发送：** 根据用户的行为发送不同的邮件：
+- 如果用户完成了激活流程 → 发送“接下来该做什么”的内容
+- 如果用户未完成激活 → 发送故障排除信息或提供帮助
 
-### Human Touch (Optional, for High-Value Customers)
-For high-ticket SaaS or service businesses, add a human layer:
-- **Onboarding call:** Schedule a 15-30 min call to walk them through setup
-- **Check-in emails:** Personal email (not automated) asking how it's going
-- **Slack/community access:** Invite them to a private Slack or Circle community for direct support
+### 人工服务（针对高价值客户，可选）
+对于高价值的SaaS产品或服务，可以提供人工支持：
+- **入职指导电话**：安排15到30分钟的电话，指导用户完成设置。
+- **跟进邮件**：发送个性化的邮件询问使用情况。
+- **Slack/社区访问**：邀请用户加入私有的Slack群组或Circle社区以获得直接帮助。
 
-**When to use:** When LTV > $500 or when the product is complex.
+**适用场景：** 当用户生命周期价值（LTV）超过500美元，或者产品功能较为复杂时。
 
 ---
 
-## Step 5: Measure Onboarding Performance
+## 第五步：评估入职指导的效果
 
-Track these metrics to know if onboarding is working:
+通过以下指标来评估入职指导的效果：
 
-| Metric | What It Means | Healthy Benchmark |
+| 指标 | 含义 | 健康的基准值 |
 |---|---|---|
-| **Activation rate** | % of signups who hit activation metric | 30-60% (varies by product) |
-| **Time to activation** | Median days/hours from signup to activation | Under 24 hours is ideal |
-| **Day 7 retention** | % of signups still active after 7 days | 40-60% |
-| **Day 30 retention** | % of signups still active after 30 days | 25-40% |
-| **Onboarding email open/click rates** | Engagement with onboarding emails | Opens: 40-60%, Clicks: 10-20% |
+| **激活率** | 完成激活指标的注册用户比例 | 30-60%（因产品而异） |
+| **激活时间** | 从注册到激活的平均时间（以天或小时计） | 最佳为24小时以内 |
+| **第7天留存率** | 注册后7天内仍活跃的用户比例 | 40-60% |
+| **第30天留存率** | 注册后30天内仍活跃的用户比例 | 25-40% |
+| **入职指导邮件的打开/点击率** | 用户对入职指导邮件的互动情况 | 打开率：40-60%，点击率：10-20% |
 
-**Where to track:** Use your analytics tool (Mixpanel, Amplitude, or simple event tracking in Google Analytics) + email tool (ConvertKit, Mailchimp).
+**数据来源：** 使用分析工具（Mixpanel、Amplitude）或Google Analytics中的事件跟踪功能，以及邮件发送工具（ConvertKit、Mailchimp）。
 
-**Diagnose issues:**
-- **Low activation rate?** Too much friction in setup, or unclear value prop. Simplify first steps.
-- **Long time to activation?** Too many steps or too complex. Create a faster "quick win" path.
-- **High activation but low Day 30 retention?** They got initial value but didn't build a habit. Improve ongoing engagement (notifications, email reminders, new features).
-
----
-
-## Step 6: Iterate on Onboarding
-
-Onboarding is never "done." Continuously improve based on data and feedback.
-
-**Monthly onboarding review:**
-1. Check activation rate — is it improving?
-2. Review user feedback from surveys or support tickets — where are people getting stuck?
-3. Watch 2-3 user session recordings (tools: Hotjar, FullStory) — what confuses people?
-4. Test one improvement per month (e.g., simplify signup, add a tooltip, rewrite an email)
-
-**A/B testing ideas:**
-- Different welcome email subject lines
-- Checklist vs no checklist in-app
-- Video walkthrough vs text instructions
-- Length of signup form (fewer fields vs more upfront info)
-
-**Rule:** Focus on the biggest drop-off point first. If 50% of users abandon during setup, fixing that is 10x more valuable than optimizing a later step.
+**问题诊断：**
+- **激活率低？** 可能是设置流程太繁琐或产品价值描述不够清晰。简化初始步骤。
+- **激活时间过长？** 可能是流程步骤太多或太复杂。创建一个更快捷的体验路径。
+- **激活率高但第30天留存率低？** 用户虽然获得了初始价值，但未能养成使用习惯。需要提高持续互动（例如发送通知、邮件提醒或推出新功能）。
 
 ---
 
-## Onboarding Mistakes to Avoid
-- **Dumping everything on Day 1.** Don't explain every feature upfront. Guide them to one quick win, then introduce more over time.
-- **No clear next step after signup.** A blank screen or "Welcome!" with no guidance kills activation. Always show a clear "Do this first" CTA.
-- **Ignoring non-activated users.** If someone signs up and doesn't activate, don't give up. Re-engage them with helpful emails or a manual outreach.
-- **Making setup mandatory when it's optional.** Let users skip non-essential steps. Forcing them to fill out a profile or connect integrations before they see value creates friction.
-- **No human touch for high-value customers.** If your LTV is $1,000+, a 15-minute onboarding call is worth it. Don't over-automate at the high end.
-- **Not measuring time to activation.** If it takes 2 weeks for users to see value, you'll lose most of them. Aim for value in < 24 hours.
+## 第六步：持续优化入职指导
+
+入职指导是一个持续改进的过程。根据数据和用户反馈不断优化。
+
+**每月的入职指导评估：**
+1. 检查激活率是否有所提升。
+2. 查看用户调查或支持工单中的反馈，找出用户遇到困难的环节。
+3. 观看2到3个用户的使用记录（使用Hotjar、FullStory等工具），了解用户困惑的地方。
+4. 每月测试一项改进措施（例如简化注册流程、添加工具提示、重写邮件内容）。
+
+**A/B测试建议：**
+- 不同的欢迎邮件主题行
+- 应用内是否使用进度条或直接显示步骤列表
+- 视频教程与文本说明的对比
+- 注册表单的长度（减少字段数量或提前提供更多信息）
+
+**规则：** 先解决用户流失率最高的环节。如果50%的用户在设置过程中放弃，解决这个问题的效果远比优化后续步骤更有价值。**
+
+---
+
+## 需避免的入职指导错误：
+- **一次性讲解所有功能**：不要一开始就介绍所有功能。先引导用户完成一个简单的任务，再逐步介绍更多功能。
+- **注册后没有明确的下一步指示**：注册后出现空白屏幕或只有“欢迎！”的提示，这会阻碍用户继续使用产品。一定要显示明确的操作提示。
+- **忽视未激活的用户**：如果用户注册后没有开始使用产品，不要放弃。通过邮件或人工联系他们提供帮助。
+- **将非强制性的步骤设为必填项**：如果某个步骤不是必须的，允许用户跳过。强迫用户填写个人资料或连接第三方服务会增加他们的困扰。
+- **对高价值客户缺乏人工服务**：对于LTV超过1000美元的客户，安排15分钟的入职指导电话是非常有价值的。在高价值客户群体中，不要过度依赖自动化流程。
+- **不关注激活时间**：如果用户需要2周才能看到产品价值，那么你可能会失去大部分用户。目标应该是让用户在24小时内感受到产品价值。

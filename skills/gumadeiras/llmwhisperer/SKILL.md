@@ -1,33 +1,33 @@
 ---
 name: llmwhisperer
-description: Extract text and layout from images and PDFs using LLMWhisperer API. Good for handwriting and complex forms.
+description: 使用 LLMWhisperer API 从图像和 PDF 文件中提取文本和布局信息。该技术适用于处理手写内容以及结构复杂的表格。
 metadata: {"clawdbot":{"emoji":"📄","scripts":["scripts/llmwhisperer"]}}
 ---
 
 # LLMWhisperer
 
-Extract text from images and PDFs using the [LLMWhisperer API](https://unstract.com/llmwhisperer/) — great for handwriting and complex forms.
+使用 [LLMWhisperer API](https://unstract.com/llmwhisperer/) 从图片和 PDF 文件中提取文本——非常适合处理手写内容及复杂的表格。
 
-## Configuration
+## 配置
 
-Requires `LLMWHISPERER_API_KEY` in `~/.clawdbot/.env`:
+需要在 `~/.clawdbot/.env` 文件中设置 `LLMWHISPERER_API_KEY`：
 ```bash
 echo "LLMWHISPERER_API_KEY=your_key_here" >> ~/.clawdbot/.env
 ```
 
-### Get an API Key
-Get a free API key at [unstract.com/llmwhisperer](https://unstract.com/llmwhisperer/).
-- **Free Tier:** 100 pages/day
+### 获取 API 密钥
+您可以在 [unstract.com/llmwhisperer](https://unstract.com/llmwhisperer/) 免费获取 API 密钥。
+- **免费 tier：** 每天 100 页
 
-## Usage
+## 使用方法
 
 ```bash
 llmwhisperer <file>
 ```
 
-## Script Source
+## 脚本来源
 
-The executable script is located at `scripts/llmwhisperer`.
+可执行脚本位于 `scripts/llmwhisperer` 目录下。
 
 ```bash
 #!/bin/bash
@@ -57,19 +57,19 @@ curl -s -X POST "https://llmwhisperer-api.us-central.unstract.com/api/v2/whisper
   --data-binary "@$FILE"
 ```
 
-## Examples
+## 示例
 
-**Print text to terminal:**
+**将文本输出到终端：**
 ```bash
 llmwhisperer flyer.jpg
 ```
 
-**Save output to a text file:**
+**将输出结果保存到文本文件：**
 ```bash
 llmwhisperer invoice.pdf > invoice.txt
 ```
 
-**Process a handwritten note:**
+**处理手写笔记：**
 ```bash
 llmwhisperer notes.jpg
 ```

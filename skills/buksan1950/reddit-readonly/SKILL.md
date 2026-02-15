@@ -7,35 +7,34 @@ description: >-
 metadata: {"clawdbot":{"emoji":"🔎","requires":{"bins":["node"]}}}
 ---
 
-# Reddit Readonly
+# Reddit 只读功能
 
-Read-only Reddit browsing for Clawdbot.
+用于 Clawdbot 的只读 Reddit 浏览功能。
 
-## What this skill is for
+## 该功能的用途
 
-- Finding posts in one or more subreddits (hot/new/top/controversial/rising)
-- Searching for posts by query (within a subreddit or across all)
-- Pulling a comment thread for context
-- Producing a *shortlist of permalinks* so the user can open Reddit and reply manually
+- 在一个或多个子版块中查找帖子（热门/新帖/热门帖/有争议的帖/上升趋势的帖）
+- 根据查询条件搜索帖子（在某个子版块内或所有子版块中）
+- 获取帖子的评论信息以了解上下文
+- 生成一个永久链接列表，方便用户直接在 Reddit 上进行回复
 
-## Hard rules
+## 规则
 
-- **Read-only only.** This skill never posts, replies, votes, or moderates.
-- Be polite with requests:
-  - Prefer small limits (5–10) first.
-  - Expand only if needed.
-- When returning results to the user, always include **permalinks**.
+- **仅限只读操作**。该功能不允许发布帖子、回复、投票或执行管理操作。
+- 提出请求时请保持礼貌：
+  - 最初建议请求少量数据（5–10 条）。
+  - 仅在需要时扩展查询范围。
+- 在向用户返回结果时，务必包含永久链接。
 
-## Output format
+## 输出格式
 
-All commands print JSON to stdout.
+所有命令将以 JSON 格式输出到标准输出（stdout）：
+- 成功：`{"ok": true, "data": ... }`
+- 失败：`{"ok": false, "error": { "message": "...", "details": "..." }`
 
-- Success: `{ "ok": true, "data": ... }`
-- Failure: `{ "ok": false, "error": { "message": "...", "details": "..." } }`
+## 命令
 
-## Commands
-
-### 1) List posts in a subreddit
+### 1) 列出某个子版块中的帖子
 
 ```bash
 node {baseDir}/scripts/reddit-readonly.mjs posts <subreddit> \
@@ -45,7 +44,7 @@ node {baseDir}/scripts/reddit-readonly.mjs posts <subreddit> \
   --after <token>
 ```
 
-### 2) Search posts
+### 2) 搜索帖子
 
 ```bash
 # Search within a subreddit
@@ -55,29 +54,29 @@ node {baseDir}/scripts/reddit-readonly.mjs search <subreddit> "<query>" --limit 
 node {baseDir}/scripts/reddit-readonly.mjs search all "<query>" --limit 10
 ```
 
-### 3) Get comments for a post
+### 3) 获取帖子的评论信息
 
 ```bash
 # By post id or URL
 node {baseDir}/scripts/reddit-readonly.mjs comments <post_id|url> --limit 50 --depth 6
 ```
 
-### 4) Recent comments across a subreddit
+### 4) 获取某个子版块中的最新评论
 
 ```bash
 node {baseDir}/scripts/reddit-readonly.mjs recent-comments <subreddit> --limit 25
 ```
 
-### 5) Thread bundle (post + comments)
+### 5) 获取帖子及其评论的完整内容
 
 ```bash
 node {baseDir}/scripts/reddit-readonly.mjs thread <post_id|url> --commentLimit 50 --depth 6
 ```
 
-### 6) Find opportunities (multi-subreddit helper)
+### 6) 多子版块搜索辅助功能
 
-Use this when the user describes criteria like:
-"Find posts about X in r/a, r/b, and r/c posted in the last 48 hours, excluding Y".
+当用户提供如下条件时使用该功能：
+“在 r/a、r/b 和 r/c 子版块中查找过去 48 小时内发布的关于 X 的帖子，并排除 Y”
 
 ```bash
 node {baseDir}/scripts/reddit-readonly.mjs find \
@@ -92,21 +91,21 @@ node {baseDir}/scripts/reddit-readonly.mjs find \
   --rank new
 ```
 
-## Suggested agent workflow
+## 建议的代理工作流程
 
-1. **Clarify scope** if needed: subreddits + topic keywords + timeframe.
-2. Start with `find` (or `posts`/`search`) using small limits.
-3. For 1–3 promising items, fetch context via `thread`.
-4. Present the user a shortlist:
-   - title, subreddit, score, created time
-   - permalink
-   - a brief reason why it matched
-5. If asked, propose *draft reply ideas* in natural language, but remind the user to post manually.
+1. 如有需要，明确搜索范围：子版块 + 关键词 + 时间范围。
+2. 使用 `find`（或 `posts`/`search`）命令进行搜索，并设置较小的查询数量。
+3. 对于符合条件的 1–3 条帖子，使用 `thread` 命令获取其评论信息。
+4. 向用户展示以下内容：
+   - 帖子标题、子版块名称、得分、创建时间
+   - 永久链接
+   - 简要说明为何该帖子符合搜索条件
+5. 如用户需要，可以提供一些回复的草稿建议，但请提醒用户自行在 Reddit 上进行回复。
 
-## Troubleshooting
+## 故障排除
 
-- If Reddit returns HTML, re-run the command (the script detects this and returns an error).
-- If requests fail repeatedly, reduce `--limit` and/or set slower pacing via env vars:
+- 如果 Reddit 返回 HTML 内容，请重新运行命令（脚本会检测到这种情况并返回错误信息）。
+- 如果请求多次失败，请减少 `--limit` 的值，或通过环境变量设置更慢的请求速度：
 
 ```bash
 export REDDIT_RO_MIN_DELAY_MS=800

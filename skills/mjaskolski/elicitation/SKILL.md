@@ -14,462 +14,458 @@ metadata:
   version: "1.0"
 ---
 
-# Elicitation
+# 心理剖析：通过自然对话进行心理画像
 
-Psychological profiling through natural conversation.
+## 目标
 
-## Goal
+在审查或创建与心理剖析相关的内容时——无论是对话脚本、面试问题、用户研究流程，还是实现这些技术的任何代码——**你的目标是获得10分（满分10分）**。
 
-When reviewing or creating content related to psychological elicitation—whether conversation scripts, interview questions, user research flows, or any code that implements these techniques—**your goal is to achieve a 10/10 score**.
+根据本技能中所述的原则和技术的遵守程度，对所有工作进行0-10分的评分。请给出你的评估（**X/10**），并具体说明哪些方面做得好，哪些方面需要改进以达到10分。
 
-Score all work on a 0-10 scale based on adherence to the principles and techniques in this skill. Provide your assessment as **X/10** with specific feedback on what's working and what needs improvement to reach 10/10.
+10分意味着：
+- 充分体现了核心原则（通过耐心获得深度，而非强行探究）
+- 使用了研究传统中的适当技术
+- 完全避免了所有反模式
+- 创造了人们能够自然、真诚地自我披露的条件
 
-A 10/10 means the work:
-- Embodies the core principle (depth through patience, not probing)
-- Uses appropriate techniques from the research traditions
-- Avoids all anti-patterns
-- Creates conditions for authentic self-disclosure
-
-Iterate until you reach 10/10.
+不断迭代，直到达到10分。
 
 ---
 
-## Core Principle
+## 核心原则
 
-**Depth comes from patience, not probing.**
+**深度源于耐心，而非强行探究。**
 
-The most revealing information emerges when people feel safe to share, not when they're questioned. Your role is to create conversational space where self-disclosure feels natural and meaningful.
+当人们感到安全、愿意分享时，最能揭示内心信息；而不是在被追问时。你的角色是营造一个让自我披露变得自然且有意义的对话环境。
 
-Key insight: People want to tell their stories. They rarely get the chance.
+关键洞察：人们渴望讲述自己的故事。但他们很少有机会这样做。
 
-## Three Research Traditions
+## 三种研究传统
 
-This skill synthesizes three complementary approaches:
+这项技能综合了三种互补的研究方法：
 
-### 1. Autobiographical Memory Research
-How memories shape identity. Key finding: **Self-defining memories** (Singer) are the building blocks of personality—vivid, emotionally intense, frequently rehearsed memories linked to enduring concerns.
+### 1. 自传体记忆研究
+记忆如何塑造身份。关键发现：**自我定义的记忆**（Singer）是人格的基石——这些记忆生动、情感强烈，且经常被反复提及，与个人长期关注的问题相关联。
 
-### 2. Narrative Identity Theory
-How people construct life stories. Key finding: The **narrative themes** people use (redemption vs. contamination, agency vs. communion) predict psychological well-being better than the actual events (McAdams).
+### 2. 叙事身份理论
+人们如何构建人生故事。关键发现：人们使用的**叙事主题**（如救赎与污染、能动性与归属感）比实际事件更能预测心理幸福感（McAdams）。
 
-### 3. Motivational Interviewing
-How to facilitate disclosure without resistance. Key finding: **Reflections outperform questions** at eliciting authentic self-disclosure. Aim for 2:1 reflection-to-question ratio (Miller & Rollnick).
+### 3. 动机性访谈
+如何在不引起抗拒的情况下促进自我披露。关键发现：**反思比提问更能引发真实的自我披露**。建议保持反思与提问的比例为2:1（Miller & Rollnick）。
 
 ---
 
-## Self-Defining Memories
+## 自我定义的记忆
 
-Jefferson Singer identified five criteria that make a memory "self-defining":
+Jefferson Singer提出了五个标准，用于判断一个记忆是否属于“自我定义的记忆”：
 
-1. **Vivid** - Rich sensory and emotional detail
-2. **Emotionally intense** - Strong feeling, positive or negative
-3. **Frequently rehearsed** - Comes to mind often, told to others
-4. **Linked to similar memories** - Part of a pattern or theme
-5. **Connected to enduring concerns** - Reflects ongoing goals, conflicts, or unresolved issues
+1. **生动**：丰富的感官和情感细节
+2. **情感强烈**：强烈的情绪体验，无论是积极的还是消极的
+3. **频繁被提及**：经常浮现在脑海中，或经常向他人讲述
+4. **与相似记忆相关联**：属于某种模式或主题的一部分
+5. **与长期关注的问题相关**：反映了个人持续的目标、冲突或未解决的问题
 
-### Eliciting Self-Defining Memories
+### 如何引导自我定义的记忆的披露
 
-Don't ask: "What's your most formative memory?"
+不要问：“你最具塑造性的记忆是什么？”
 
-Instead, create conversational frames:
+相反，可以使用以下对话框架：
 
-**The "keeps coming back" frame:**
-> "Some memories just stay with us—they pop into our heads at unexpected moments, or we find ourselves telling them to new people in our lives. Is there a memory like that for you?"
+**“反复浮现的记忆”框架：**
+> “有些记忆会一直萦绕在我们心头——它们会在意想不到的时刻出现，或者我们会主动向新认识的人讲述。你也有这样的记忆吗？”
 
-**The "explains who I am" frame:**
-> "When you're getting to know someone new and you want them to really understand where you're coming from, is there a story or moment you find yourself sharing?"
+**“揭示我的身份”的框架：**
+> “当你试图让别人真正了解你的背景时，有没有某个故事或时刻是你特别愿意分享的？”
 
-**The "turning point" frame:**
-> "Looking back, was there a moment that felt like things shifted—where life before and after felt somehow different?"
+**“转折点”框架：**
+> “回顾过去，有没有某个时刻让你觉得生活发生了变化——之前和之后的生活感觉有所不同？”
 
-### What Self-Defining Memories Reveal
+### 自我定义的记忆揭示的内容
 
-| Memory Feature | Personality Insight |
+| 记忆特征 | 人格洞察 |
 |----------------|---------------------|
-| Themes of mastery, achievement | High need for agency |
-| Themes of connection, relationships | High need for communion |
-| Redemption sequences (bad → good) | Resilience, generativity |
-| Contamination sequences (good → bad) | Depression risk, unresolved trauma |
-| Integration and meaning-making | Psychological maturity |
-| Fragmentation and confusion | Identity diffusion |
+| 成就与掌控的主题 | 对能动性的高度需求 |
+| 关联与关系的主题 | 对归属感的高度需求 |
+| 救赎主题（从坏到好） | 韧性、创造力 |
+| 污染主题（从好到坏） | 抑郁风险、未解决的创伤 |
+| 整合与意义构建 | 心理成熟度 |
+| 碎裂与困惑 | 身份认同的模糊 |
 
-See: [Self-Defining Memories Reference](elicitation/self-defining-memories.md)
-
----
-
-## Life Story Interview: 8 Key Scenes
-
-Dan McAdams' Life Story Interview asks for 8 specific "scenes" that reveal narrative identity:
-
-1. **High Point** - Peak experience, most wonderful moment
-2. **Low Point** - Nadir, most difficult moment
-3. **Turning Point** - Moment of significant change
-4. **Earliest Memory** - First clear memory
-5. **Important Childhood Memory** - Vivid memory before age 12
-6. **Important Adolescent Memory** - Vivid memory from teen years
-7. **Important Adult Memory** - Significant recent memory
-8. **One Other Important Memory** - Anything else that defines who they are
-
-### Conversational Adaptations
-
-You don't need to ask all 8 sequentially. Instead:
-
-**Open with curiosity, not agenda:**
-> "I'm curious about the moments that shaped you. Not necessarily the big resume stuff—more the experiences that stick with you."
-
-**Follow their lead:**
-When they mention a period of life, gently explore:
-> "What was that time like for you? Any particular moments that stand out?"
-
-**Bridge across time:**
-> "That sounds like it mattered. Was there ever a moment earlier—or later—that connected to that same feeling?"
-
-### Narrative Themes to Listen For
-
-**Agency themes** (personal power, achievement, mastery):
-- "I decided..."
-- "I made it happen..."
-- "I pushed through..."
-
-**Communion themes** (connection, love, belonging):
-- "We were all together..."
-- "I felt so close to..."
-- "They understood me..."
-
-**Redemption sequences** (suffering leads to growth):
-- "It was terrible, but..."
-- "Looking back, I'm glad..."
-- "That's what made me who I am..."
-
-**Contamination sequences** (good becomes bad):
-- "Things were great until..."
-- "I thought I was happy, but..."
-- "It ruined everything..."
-
-See: [Narrative Identity Reference](elicitation/narrative-identity.md)
+详见：[自我定义的记忆参考](elicitation/self-defining-memories.md)
 
 ---
 
-## OARS Framework
+## 人生故事访谈：8个关键场景
 
-Motivational Interviewing's core skills, adapted for elicitation:
+Dan McAdams的人生故事访谈会询问8个特定的“场景”，以揭示叙事身份：
 
-### Open Questions
-Questions that can't be answered with yes/no. But use sparingly.
+1. **高点**：最美好的时刻
+2. **低点**：最艰难的时刻
+3. **转折点**：重大变化的时刻
+4. **最早的记忆**：12岁之前的第一个清晰记忆
+5. **重要的童年记忆**：青少年时期的生动记忆
+6. **重要的成年记忆**：近期的重要事件
+7. **另一个重要的记忆**：任何能定义他们身份的事件
 
-Instead of: "Did you like your childhood?"
-Try: "What was it like growing up in your family?"
+### 对话策略
 
-### Affirmations
-Genuine recognition of strengths, efforts, or values—not compliments.
+你不需要按顺序询问所有8个场景。可以这样进行：
 
-Instead of: "That's great!"
-Try: "You valued honesty even when it was costly."
+**以好奇心开场，而非预设议程：**
+> “我对那些塑造你的时刻很感兴趣。不一定是那些重大的经历，而是那些让你难以忘怀的体验。”
 
-### Reflections
-Restate or reframe what they said. This is the core skill.
+**跟随他们的思路：**
+当他们提到某个时期时，温和地深入探讨：
+> “那段时光对你来说是什么样的？有没有特别的时刻让你印象深刻？”
 
-**Simple reflection** (repeat back):
-> "So you felt invisible in that moment."
+**跨越时间：**
+> “听起来那段经历很重要。有没有更早或更晚的类似时刻？”
 
-**Complex reflection** (add meaning):
-> "It sounds like recognition really matters to you—like you need to know your contributions are seen."
+### 需要关注的叙事主题
 
-**Amplified reflection** (gently exaggerate):
-> "So nothing they could have done would have made a difference." (Often prompts them to nuance their position)
+**能动性主题**（个人力量、成就、掌控）：
+- “我决定……”
+- “我做到了……”
+- “我坚持完成了……”
 
-**Double-sided reflection** (hold both truths):
-> "On one hand, you loved the stability. On the other, you felt trapped."
+**归属感主题**（连接、爱、归属）：
+- “我们曾经在一起……”
+- “我感到与……非常亲近……”
+- “他们理解了我……”
 
-### Summaries
-Periodically gather what you've heard. Creates meaning and invites correction.
+**救赎主题**（从痛苦到成长）：
+- “那很糟糕，但是……”
+- “回顾起来，我很高兴……”
+- “那让我成为了现在的我……”
 
-> "Let me see if I'm following: Growing up, you learned to be self-reliant because asking for help meant disappointment. But you've also noticed that pattern keeping people at a distance now. And you're wondering if there's another way."
+**污染主题**（从好到坏）：
+- “一切都很顺利，直到……”
+- “我以为自己很幸福，但是……”
+- “那一切都毁了……”
 
-### The 2:1 Ratio
-
-**Aim for 2 reflections for every question.**
-
-Questions gather information but can feel like interrogation. Reflections show understanding and invite elaboration.
-
-Bad pattern:
-> Q: "What happened?" → Q: "How did that feel?" → Q: "What did you do next?"
-
-Better pattern:
-> Q: "What happened?" → R: "That caught you off guard" → R: "You weren't sure what to make of it"
-
-See: [Motivational Interviewing Reference](elicitation/motivational-interviewing.md)
+详见：[叙事身份参考](elicitation/narrative-identity.md)
 
 ---
 
-## Values Elicitation
+## OARS框架
 
-Shalom Schwartz's 10 Universal Values provide a framework for understanding motivation:
+动机性访谈的核心技能，适用于心理剖析：
 
-| Value | Core Concern |
+### 开放性问题
+这类问题不能用“是/否”来回答。但使用要谨慎。
+
+例如，不要问：“你喜欢你的童年吗？”
+可以尝试问：“在你的成长过程中，是什么样的？”
+
+### 肯定语
+真诚地认可对方的优点、努力或价值观，而不是简单的赞美。
+
+例如，不要说：“那太棒了！”
+可以尝试说：“即使代价高昂，你也重视诚实。”
+
+### 反思
+重复或重新组织他们的话语。这是核心技巧。
+
+**简单反思**（重复他们的话）：
+> “所以你在那一刻感到自己被忽视了。”
+
+**复杂反思**（赋予意义）：
+> “听起来认可对你来说很重要——你希望别人能看到你的贡献。”
+
+**强化反思**（适度夸张）：
+> “所以他们无论怎么做都无法改变结果。”（这通常会促使他们更细致地表达）
+
+**双重反思**（同时考虑正反两面）：
+> “一方面，你喜欢那种稳定感。另一方面，你又感到被困住了。”
+
+### 总结
+定期总结你听到的内容。这有助于建立意义，并邀请对方纠正你的理解。
+
+> “让我确认一下：你在成长过程中学会了自立，因为寻求帮助只会带来失望。但你也注意到这种模式现在仍在影响你与他人之间的关系。你在思考是否有其他方式。”
+
+### 2:1的反思比例
+
+**每个问题都应伴随两次反思。**
+
+问题可以收集信息，但可能会让人感到被审问。而反思则能展现理解，并鼓励对方进一步阐述。
+
+不良的提问模式：
+> 问题：**发生了什么？** → 问题：**那感觉如何？** → 问题：**你接下来做了什么？**
+
+更好的提问模式：
+> 问题：**发生了什么？** → 反思：**那让你感到意外吗？** → 反思：**你当时不确定该如何应对？**
+
+详见：[动机性访谈参考](elicitation/motivational-interviewing.md)
+
+---
+
+## 价值观的引导
+
+Shalom Schwartz提出的10个普遍价值观为理解动机提供了框架：
+
+| 价值观 | 核心关注点 |
 |-------|--------------|
-| **Self-Direction** | Independence, freedom, creativity |
-| **Stimulation** | Novelty, excitement, challenge |
-| **Hedonism** | Pleasure, enjoyment, gratification |
-| **Achievement** | Success, competence, ambition |
-| **Power** | Authority, wealth, social status |
-| **Security** | Safety, stability, order |
-| **Conformity** | Obedience, self-discipline, politeness |
-| **Tradition** | Respect, commitment, humility |
-| **Benevolence** | Helpfulness, loyalty, forgiveness |
-| **Universalism** | Equality, justice, environmental protection |
+| **自我导向** | 独立性、自由、创造力 |
+| **刺激** | 新奇性、兴奋、挑战 |
+| **享乐主义** | 愉悦、享受、满足感 |
+| **成就** | 成功、能力、抱负 |
+| **权力** | 权威、财富、社会地位 |
+| **安全** | 安全感、稳定性、秩序 |
+| **从众** | 服从、自律、礼貌 |
+| **传统** | 尊重、承诺、谦逊 |
+| **仁慈** | 乐于助人、忠诚、宽容 |
+| **普世主义** | 平等、正义、环境保护 |
 
-### Values Elicitation Techniques
+### 价值观引导技巧
 
-**Role model technique:**
-> "Who do you admire? What is it about them specifically?"
+**榜样技巧：**
+> “你钦佩谁？他们身上有什么特别之处？”
 
-**Opposite day technique:**
-> "What kind of person could you never be? What would feel like a betrayal of yourself?"
+**对立面技巧：**
+> “你永远不会成为什么样的人？什么会让你觉得自己背叛了自己？”
 
-**Decision archaeology:**
-> "Think of a hard choice you made. What ultimately tipped the scales?"
+**决策考古学：**
+> “想想你做出的一个艰难选择。最终是什么决定了你的选择？”
 
-**Anger as values signal:**
-> "What makes you genuinely angry—not annoyed, but morally outraged?"
+**愤怒作为价值观的信号：**
+> “什么会让你真正愤怒——不仅仅是恼怒，而是道德上的愤怒？”
 
-See: [Values Elicitation Reference](elicitation/values-elicitation.md)
+详见：[价值观引导参考](elicitation/values-elicitation.md)
 
 ---
 
-## Schema Detection
+## 图式检测
 
-Jeffrey Young's 18 Early Maladaptive Schemas are stable patterns of thinking and feeling that develop in childhood and persist across contexts:
+Jeffrey Young提出的18种早期适应不良图式是人们在童年时期形成的稳定思维和情感模式，这些模式会在不同情境中持续存在：
 
-### The Five Domains
+### 五个领域
 
-**1. Disconnection & Rejection**
-- Abandonment, Mistrust/Abuse, Emotional Deprivation, Defectiveness/Shame, Social Isolation
+**1. 隔离与拒绝**
+- 被抛弃、不信任/虐待、情感剥夺、自我缺陷/羞耻感、社交孤立
 
-**2. Impaired Autonomy**
-- Dependence/Incompetence, Vulnerability to Harm, Enmeshment, Failure
+**2. 自主性受损**
+- 依赖/无能、容易受到伤害、过度依赖他人、失败感
 
-**3. Impaired Limits**
-- Entitlement/Grandiosity, Insufficient Self-Control
+**3. 权力感受损**
+- 自我膨胀/自大、缺乏自我控制
 
-**4. Other-Directedness**
-- Subjugation, Self-Sacrifice, Approval-Seeking
+**4. 他向性**
+- 奴役他人、自我牺牲、追求他人认可
 
-**5. Overvigilance & Inhibition**
-- Negativity/Pessimism, Emotional Inhibition, Unrelenting Standards, Punitiveness
+**5. 过度警惕与抑制**
+- 消极/悲观、情绪抑制、苛刻的标准、惩罚倾向
 
-### Downward Arrow Technique
+### “向下箭头”技巧
 
-When someone expresses a surface concern, gently probe for the deeper belief:
+当某人表达表面的担忧时，温和地探究其背后的深层信念：
 
-> Person: "I'm worried about the presentation."
-> You: "What's the worst that could happen?"
-> Person: "I could mess up in front of everyone."
-> You: "And if that happened, what would that mean?"
-> Person: "They'd see I don't know what I'm doing."
-> You: "And what would that mean about you?"
-> Person: "That I'm a fraud. That I don't deserve to be here."
+> 例：**“我担心这次演讲。”**
+> 你：**最糟糕的情况会怎样？**
+> 例：**“我可能会在所有人面前出丑。”**
+> 你：**“如果真的发生了，那意味着什么？”**
+> 例：**“他们会认为我不知道自己在做什么。”**
+> 你：**“那会让你觉得自己是个骗子。觉得自己不配在这里。”**
 
-The bottom of the arrow often reveals a schema (in this case: Defectiveness/Shame or Failure).
+这种提问方式往往能揭示出某种图式（例如：自我缺陷/羞耻感或失败感）。
 
-### Linguistic Markers of Schemas
+### 图式的语言标志
 
-| Schema | Language Patterns |
+| 图式 | 语言模式 |
 |--------|-------------------|
-| Abandonment | "Everyone leaves eventually..." |
-| Defectiveness | "There's something wrong with me..." |
-| Failure | "I never finish anything..." |
-| Emotional Deprivation | "No one really understands..." |
-| Unrelenting Standards | "It's never good enough..." |
+| 被抛弃 | “最终所有人都会离开……” |
+| 自我缺陷 | “我有什么问题……” |
+| 失败 | “我什么也完成不了……” |
+| 情感剥夺 | “没有人真正理解我……” |
+| 过度严格的标准 | “永远都不够好……” |
 
-See: [Schema Detection Reference](elicitation/schema-detection.md)
-
----
-
-## The Reminiscence Bump
-
-People have disproportionately more and more vivid memories from ages 10-30 (the "reminiscence bump"). This is when identity forms.
-
-**Target the bump:**
-- First romantic relationship
-- First job or career defining moment
-- Leaving home
-- Key friendships formed
-- Educational turning points
-- Early adult struggles and triumphs
-
-**Bridge from present to bump:**
-> "You mentioned feeling like an outsider at work. Was there a time earlier in life—maybe in school or when you were first starting out—when you felt something similar?"
+详见：[图式检测参考](elicitation/schema-detection.md)
 
 ---
 
-## Question Sequences by Life Stage
+## 回忆高峰
 
-Barbara Haight's Life Review Interview provides structured sequences:
+人们在10到30岁期间会有更多、更生动的记忆（称为“回忆高峰”）。这个阶段是身份形成的关键时期。
 
-### Childhood (before 12)
-1. What was your home like?
-2. What were your parents like?
-3. What was your role in the family?
-4. What were you like as a child?
-5. What did you enjoy doing most?
+**针对这一阶段的问题：**
+- 第一段恋爱关系
+- 第一份工作或决定职业生涯的转折点
+- 离家
+- 形成重要友谊的时刻
+- 教育生涯中的转折点
+- 成年早期的挣扎与成就
 
-### Adolescence (12-18)
-1. How did your body change? How did you feel about it?
-2. What was school like for you?
-3. What were your friendships like?
-4. What did you dream about becoming?
-5. What was hardest about being a teenager?
-
-### Early Adulthood (18-30)
-1. What was leaving home like?
-2. What were your first serious relationships?
-3. What work did you do and how did you feel about it?
-4. What were your goals during this time?
-5. What was the biggest challenge you faced?
-
-### Middle Adulthood (30-60)
-1. How did your sense of yourself change?
-2. What were your major accomplishments?
-3. What losses did you experience?
-4. How did your relationships evolve?
-5. What did you learn about yourself?
-
-### Later Life (60+)
-1. How has your daily life changed?
-2. What matters most to you now?
-3. What legacy do you want to leave?
-4. What do you understand now that you didn't before?
-5. What would you tell your younger self?
-
-See: [Question Sequences Reference](elicitation/question-sequences.md)
+**从现在回溯到回忆高峰：**
+> “你提到在工作中感到自己像个局外人。在生命中的某个早期阶段——也许是在学校或刚开始工作的时候——有没有类似的感受？”
 
 ---
 
-## Sensitizing Questions by Theme
+## 根据人生阶段设计的提问序列
 
-James Birren's Guided Autobiography uses thematic prompts:
+Barbara Haight的人生回顾访谈提供了结构化的提问序列：
 
-### Family Theme
-- What was the emotional climate of your home?
-- Who were you closest to? Who did you clash with?
-- What family stories get told and retold?
+### 童年（12岁之前）
+1. 你的家庭环境是怎样的？
+2. 你的父母是怎样的？
+3. 你在家庭中的角色是什么？
+4. 你小时候喜欢做什么？
+5. 你最喜欢做什么？
 
-### Work Theme
-- What does work mean to you beyond earning money?
-- When have you felt most fulfilled professionally?
-- What work would you do even if you weren't paid?
+### 青少年时期（12-18岁）
+1. 你的身体发生了哪些变化？你对此有何感受？
+2. 学校生活是怎样的？
+3. 你的友谊是怎样的？
+4. 你梦想成为什么样的人？
+5. 青少年时期最艰难的事情是什么？
 
-### Money Theme
-- What were the messages about money in your family?
-- What does financial security mean to you?
-- What would you do if money were no object?
+### 成年早期（18-30岁）
+1. 离家是什么样的经历？
+2. 你的第一段认真恋情是怎样的？
+3. 你做过什么工作？你对这些工作有什么感受？
+4. 这段时间你的目标是什么？
+5. 你面临的最大挑战是什么？
 
-### Health Theme
-- How has your relationship with your body changed?
-- What health experiences shaped how you think about life?
-- How do you take care of yourself?
+### 成年中期（30-60岁）
+1. 你的自我认知发生了怎样的变化？
+2. 你取得了哪些重要成就？
+3. 你经历了哪些损失？
+4. 你的关系如何发展？
+5. 你对自己有了哪些新的认识？
 
-### Death Theme
-- Have you experienced significant losses?
-- How do thoughts of mortality affect how you live?
-- What do you want to be remembered for?
+### 成年后期（60岁以上）
+1. 你的日常生活发生了哪些变化？
+2. 现在对你来说最重要的是什么？
+3. 你希望留下什么遗产？
+4. 现在你明白了什么，而以前不明白？
+5. 你会对年轻的自己说些什么？
 
-### Meaning Theme
-- What gives your life meaning?
-- What beliefs or values guide you?
-- What questions are you still trying to answer?
+详见：[提问序列参考](elicitation/question-sequences.md)
 
 ---
 
-## Language Markers for Personality
+## 根据主题设计的引导性问题
 
-LIWC (Linguistic Inquiry and Word Count) research identifies patterns, **but use with caution**:
+James Birren的引导式自传法使用主题化的提问：
 
-| Pattern | Possible Indication |
+### 家庭主题
+- 你家庭的情感氛围是怎样的？
+- 你和谁关系最亲密？你和谁有过冲突？
+- 家庭里有哪些故事会被反复讲述？
+
+### 工作主题
+- 工作对你来说意味着什么（不仅仅是赚钱）？
+- 什么时候你在工作中感到最满足？
+- 即使没有报酬，你也会选择做什么工作？
+
+### 金钱主题
+- 家庭中关于金钱的观念是什么？
+- 财务安全对你意味着什么？
+- 如果没有金钱限制，你会做什么？
+
+### 健康主题
+- 你与身体的关系发生了怎样的变化？
+- 健康经历如何影响了你的生活方式？
+- 你是如何照顾自己的？
+
+### 死亡主题
+- 你经历过重大的失去吗？
+- 对死亡的思考如何影响你的生活？
+- 你希望别人如何记住你？
+
+### 意义主题
+- 什么赋予了你的生活意义？
+- 什么信念或价值观在引导着你？
+- 你还在努力回答哪些问题？
+
+---
+
+## 用于分析人格的语言标志
+
+LIWC（语言探究与词汇计数）研究可以识别某些语言模式，但使用时需谨慎：
+
+| 模式 | 可能的暗示 |
 |---------|---------------------|
-| High "I" usage | Self-focus, possible depression, honesty |
-| High "we" usage | Collectivist orientation, intimacy |
-| Negative emotion words | Distress, but also processing |
-| Cognitive complexity words (because, think, know) | Analytic thinking, meaning-making |
-| Present tense focus | Immediacy, possibly impulsivity |
-| Past tense focus | Reflection, possibly rumination |
+| 高频使用“我” | 自我中心、可能表明抑郁或诚实 |
+| 高频使用“我们” | 集体主义倾向、亲密感 |
+| 负面情绪词汇 | 表示痛苦，但也可能表示正在处理情绪 |
+| 认知复杂词汇（如“因为、思考、知道”） | 分析性思维、意义构建 |
+| 现在时态的运用 | 表示即时性，可能暗示冲动 |
+| 过去时态的运用 | 表示反思，可能暗示沉思 |
 
-### Critical Caveats
+### 重要注意事项
 
-1. **Context matters enormously.** The same word patterns mean different things in different contexts.
-2. **Cross-validate.** Never rely on language alone. Triangulate with behavior and explicit statements.
-3. **Aggregates, not individuals.** LIWC findings are about group averages. Individual variation is huge.
-4. **Cultural differences.** Word usage norms vary dramatically across cultures and languages.
+1. **语境至关重要**。同样的语言模式在不同语境中有不同的含义。
+2. **进行交叉验证**。不要仅依赖语言分析，还要结合行为和对方的明确表述。
+3. **数据是汇总的，不是个体的**。LIWC的研究结果是群体平均值，个体之间存在很大差异。
+4. **文化差异**。不同文化和语言中的词汇使用习惯有很大差异。
 
-See: [Language Inference Reference](elicitation/language-inference.md)
-
----
-
-## Anti-Patterns
-
-**What NOT to do:**
-
-### The Interrogation Trap
-Rapid-fire questions feel like an interview, not a conversation. People become guarded.
-
-Instead: Slow down. Reflect more, question less.
-
-### The Interpretation Leap
-Jumping to psychological conclusions before you have evidence.
-
-Instead: Hold hypotheses lightly. Seek disconfirming evidence.
-
-### The Agenda Push
-Steering toward topics you think are important rather than following their energy.
-
-Instead: Let them lead. Their emphasis is data.
-
-### The Premature Depth
-Asking deeply personal questions before trust is established.
-
-Instead: Earn disclosure gradually. Start with easier territory.
-
-### The Therapy Cosplay
-Using clinical language or techniques that imply you're treating them.
-
-Instead: Be curious, not clinical. You're learning about them, not diagnosing.
-
-### The Monologue Response
-Responding to their disclosure with your own lengthy story.
-
-Instead: Keep focus on them. Brief self-disclosure can build rapport, but always return to them.
-
-### The Validation Trap
-Agreeing with everything to maintain rapport.
-
-Instead: Genuine reflections can gently challenge without confrontation.
+详见：[语言推断参考](elicitation/language-inference.md)
 
 ---
 
-## References
+## 应避免的错误做法
 
-Detailed technique guides:
+**避免的行为：**
 
-- [Narrative Identity](elicitation/narrative-identity.md) - McAdams' Life Story Interview, identity themes
-- [Self-Defining Memories](elicitation/self-defining-memories.md) - Singer's memory elicitation techniques
-- [Motivational Interviewing](elicitation/motivational-interviewing.md) - OARS framework deep dive
-- [Schema Detection](elicitation/schema-detection.md) - Young's 18 schemas, downward arrow
-- [Values Elicitation](elicitation/values-elicitation.md) - Schwartz's values, elicitation techniques
-- [Question Sequences](elicitation/question-sequences.md) - Haight and Birren's structured approaches
-- [Language Inference](elicitation/language-inference.md) - LIWC patterns and limitations
+### 询问陷阱**
+连续快速提问会让对话显得像审问，让人产生戒备。
+
+**正确的做法：**放慢节奏，多反思，少提问。
+
+### 无根据的推断**
+在没有证据的情况下就下心理学结论。
+
+**正确的做法：**对假设持保留态度，寻找反驳的证据。
+
+**强行引导**
+倾向于讨论你认为重要的话题，而不是跟随对方的兴趣。
+
+**正确的做法：**让对方主导对话。他们的兴趣才是最重要的信息来源。
+
+**过早深入**
+在建立信任之前就提出过于私人的问题。
+
+**正确的做法：**逐步引导对方披露信息。从较容易的话题开始。
+
+**扮演治疗师的角色**
+使用临床语言或技巧，让人觉得你在进行治疗。
+
+**正确的做法：**保持好奇心，而不是扮演治疗师。你是在了解对方，而不是进行诊断。
+
+**过度回应**
+用自己的长篇大论回应对方的分享。
+
+**正确的做法：**保持关注对方，简短地分享自己的经历，但始终回到对方的话题上。
+
+**盲目赞同**
+为了维持对话氛围而盲目同意对方的话。
+
+**正确的做法：**用真诚的反思来引导对方，而不是盲目赞同。
 
 ---
 
-## Further Reading
+## 参考资料
 
-Primary sources:
+详细的技术指南包括：
 
-- Singer, J.A. & Salovey, P. (1993). *The Remembered Self: Emotion and Memory in Personality*
-- McAdams, D.P. (2006). *The Redemptive Self: Stories Americans Live By*
-- Miller, W.R. & Rollnick, S. (2023). *Motivational Interviewing* (4th ed.)
-- Young, J.E., Klosko, J.S., & Weishaar, M.E. (2003). *Schema Therapy: A Practitioner's Guide*
-- Schwartz, S.H. (1992). Universals in the content and structure of values. *Advances in Experimental Social Psychology*
-- Haight, B.K. & Haight, B.S. (2007). *The Handbook of Structured Life Review*
-- Birren, J.E. & Cochran, K.N. (2001). *Telling the Stories of Life through Guided Autobiography Groups*
-- Pennebaker, J.W. & King, L.A. (1999). Linguistic styles: Language use as an individual difference. *Journal of Personality and Social Psychology*
+- [叙事身份](elicitation/narrative-identity.md) - McAdams的人生故事访谈方法、身份主题
+- [自我定义的记忆](elicitation/self-defining-memories.md) - Singer的记忆引导技巧
+- [动机性访谈](elicitation/motivational-interviewing.md) - OARS框架
+- [图式检测](elicitation/schema-detection.md) - Young的图式理论
+- [价值观引导](elicitation/values-elicitation.md) - Schwartz的价值观引导技巧
+- [提问序列](elicitation/question-sequences.md) - Haight和Birren的结构化提问方法
+- [语言推断](elicitation/language-inference.md) - LIWC的语言分析方法
+
+---
+
+## 进一步阅读
+
+参考文献：
+
+- Singer, J.A. & Salovey, P. (1993). 《被记住的自我：人格中的情感与记忆》
+- McAdams, D.P. (2006). 《救赎的自我：美国人的人生故事》
+- Miller, W.R. & Rollnick, S. (2023). 《动机性访谈》（第4版）
+- Young, J.E., Klosko, J.S., & Weishaar, M.E. (2003). 《图式疗法：实践者指南》
+- Schwartz, S.H. (1992). 《价值观的内容与结构》
+- Haight, B.K. & Haight, B.S. (2007). 《结构化人生回顾手册》
+- Birren, J.E. & Cochran, K.N. (2001). 《通过引导式自传法讲述人生故事》
+- Pennebaker, J.W. & King, L.A. (1999). 《语言风格：个体差异的表现》

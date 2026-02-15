@@ -1,56 +1,56 @@
 ---
 name: deepbook-cli
-description: Operate the deepbook CLI for DeepBook reads (REST/SSE), global ~/.deepbook config/account management, on-chain spot trading, top-level swap execution, balance-manager ops, and margin trading.
+description: 使用 deepbook CLI 进行 DeepBook 的数据读取（支持 REST/SSE 协议）、全局配置文件（~/.deepbook）的编辑与管理、链上现货交易、顶层掉期交易（top-level swap execution）、余额管理（balance-manager operations）以及保证金交易（margin trading）等操作。
 ---
 
-# DeepBook CLI Skill
+# DeepBook CLI 技能
 
-Use this skill when the user wants to use `deepbook` end to end: market data, wallet/config setup, and on-chain execution (spot, swap, manager, margin).
+当用户希望端到端使用 `deepbook` 时，可以使用此技能：查询市场数据、配置钱包、以及执行链上操作（包括现货交易、掉期交易、管理交易和保证金交易）。
 
-# Installation
+## 安装
 
-Check if `deepbook` is installed:
+检查是否已安装 `deepbook`：
 
 ```bash
 deepbook --version
 ```
 
-If not, install it:
+如果未安装，请进行安装：
 
 ```bash
 npm install -g deepbook-cli
 ```
 
-## Setup
+## 设置
 
-1. Work from the `deepbook-cli` project directory.
-2. Ensure `~/.deepbook/config.json` exists (auto-created on first run).
-3. Configure global defaults in `~/.deepbook` (works from any path).
-4. Optional one-off overrides can still be provided via global flags.
+1. 在 `deepbook-cli` 项目目录下操作。
+2. 确保 `~/.deepbook/config.json` 文件存在（首次运行时会自动生成）。
+3. 在 `~/.deepbook` 目录中配置全局默认设置（从任何路径都可以使用这些设置）。
+4. 仍可以通过全局参数提供一次性的自定义设置。
 
-`mainnet`/`testnet` are aliases used consistently for both provider-side reads/streams and on-chain RPC.
+`mainnet` 和 `testnet` 是用于表示提供商端读取/数据流以及链上 RPC 的别名。
 
-## Global flags
+## 全局参数
 
 - `--json`
-- `--provider <name>`
-- `--base-url <url>`
-- `--stream-base-url <url>`
+- `--provider <名称>`
+- `--base-url <网址>`
+- `--stream-base-url <网址>`
 - `--network <mainnet|testnet>`
-- `--rpc-url <url>`
-- `--private-key <suiprivkey>`
-- `--address <address>`
-- `--manager <id>`
-- `--trade-cap <id>`
+- `--rpc-url <网址>`
+- `--private-key <私钥>`
+- `--address <地址>`
+- `--manager <ID>`
+- `--trade-cap <ID>`
 
-## Available commands
+## 可用命令
 
-- Top-level:
+- **顶层命令**：
   - `deepbook providers`
   - `deepbook pools`
-  - `deepbook orderbook <pool>` (alias: `deepbook book <pool>`)
-  - `deepbook trades <pool>`
-  - `deepbook ohlcv <pool>`
+  - `deepbook orderbook <池名称>` （别名：`deepbook book <池名称>`）
+  - `deepbook trades <池名称>`
+  - `deepbook ohlcv <池名称>`
   - `deepbook stream ...`
   - `deepbook spot ...`
   - `deepbook swap ...`
@@ -59,179 +59,176 @@ npm install -g deepbook-cli
   - `deepbook config ...`
   - `deepbook account ...`
 
-- `deepbook config`:
+- **`deepbook config` 命令**：
   - `show`
-  - `set-network <network>`
-  - `set-provider <provider>`
-  - `set-rpc-url <network> <url>`
-  - `set-address <address>`
-  - `set-trade-cap <id>`
-  - `set-read-key [apiKey]`
-  - `set-stream-key <pool> [apiKey]`
-  - `set-provider-base-url <network> <url>`
-  - `set-provider-stream-base-url <network> <url>`
-  - `import-key [privateKey]`
+  - `set-network <网络>`
+  - `set-provider <提供商>`
+  - `set-rpc-url <网络> <网址>`
+  - `set-address <地址>`
+  - `set-trade-cap <ID>`
+  - `set-read-key [API密钥]`
+  - `set-stream-key <池名称> [API密钥]`
+  - `set-provider-base-url <网络> <网址>`
+  - `set-provider-stream-base-url <网络> <网址>`
+  - `import-key [私钥]`
 
-- `deepbook account`:
+- **`deepbook account` 命令**：
   - `details`
   - `list`
   - `balance`
-  - `import <alias> [privateKey]`
-  - `use <alias>`
+  - `import <别名> [私钥]`
+  - `use <别名>`
 
-- `deepbook stream`:
-  - `trades <pool>`
+- **`deepbook stream` 命令**：
+  - `trades <池名称>`
 
-- `deepbook spot`:
+- **`deepbook spot` 命令**：
   - `pools`
-  - `buy <pool>`
-  - `sell <pool>`
-  - `limit <pool>`
+  - `buy <池名称>`
+  - `sell <池名称>`
+  - `limit <池名称>`
 
-- `deepbook swap`:
-  - `base-for-quote <pool>`
-  - `quote-for-base <pool>`
+- **`deepbook swap` 命令**：
+  - `base-for-quote <池名称>`
+  - `quote-for-base <池名称>`
 
-- `deepbook margin`:
+- **`deepbook margin` 命令**：
   - `pools`
   - `managers`
-  - `deposit <pool>`
-  - `market <pool>`
-  - `limit <pool>`
-  - `position <pool>`
-  - `close <pool>`
+  - `deposit <池名称>`
+  - `market <池名称>`
+  - `limit <池名称>`
+  - `position <池名称>`
+  - `close <池名称>`
 
-- `deepbook manager`:
+- **`deepbook manager` 命令**：
   - `ls`
   - `create`
   - `deposit`
   - `withdraw`
   - `balance`
 
-## Command cheat sheet (required args/options)
+## 命令速查表（必需参数/选项）
 
 - `deepbook providers`
 - `deepbook pools`
-- `deepbook orderbook <pool>`
-- `deepbook trades <pool>`
-- `deepbook ohlcv <pool>`
-- `deepbook stream trades <pool>`
+- `deepbook orderbook <池名称>`
+- `deepbook trades <池名称>`
+- `deepbook ohlcv <池名称>`
+- `deepbook stream trades <池名称>`
 - `deepbook spot pools`
-- `deepbook spot buy <pool> --quantity <value> [--price <value>] [--manager <id>]`
-- `deepbook spot sell <pool> --quantity <value> [--price <value>] [--manager <id>]`
-- `deepbook spot limit <pool> --side <buy|sell> --price <value> --quantity <value> [--manager <id>]`
-- `deepbook spot limit <pool> --cancel <id> [--manager <id>]`
+- `deepbook spot buy <池名称> --数量 <数量> [--价格 <价格>] [--manager <ID>]`
+- `deepbook spot sell <池名称> --数量 <数量> [--价格 <价格>] [--manager <ID>]`
+- `deepbook spot limit <池名称> --方向 <买入|卖出> --价格 <价格> --数量 <数量> [--manager <ID>]`
+- `deepbook spot limit <池名称> --取消 <ID> [--manager <ID>]`
 
 - `deepbook config show`
 - `deepbook config set-network <mainnet|testnet>`
-- `deepbook config set-provider <surflux>`
-- `deepbook config set-rpc-url <mainnet|testnet> <url>`
-- `deepbook config set-address <address>`
-- `deepbook config set-trade-cap <objectId>`
-- `deepbook config set-read-key [apiKey]` (or `--stdin`)
-- `deepbook config set-stream-key <pool> [apiKey]` (or `--stdin`)
-- `deepbook config set-provider-base-url <mainnet|testnet> <url>`
-- `deepbook config set-provider-stream-base-url <mainnet|testnet> <url>`
-- `deepbook config import-key [privateKey]` (or `--stdin`, optional `--alias`)
+- `deepbook config set-provider <提供商>`
+- `deepbook config set-rpc-url <mainnet|testnet> <网址>`
+- `deepbook config set-address <地址>`
+- `deepbook config set-trade-cap <对象ID>`
+- `deepbook config set-read-key [API密钥]`（或 `--stdin>`
+- `deepbook config set-stream-key <池名称> [API密钥]`（或 `--stdin>`
+- `deepbook config set-provider-base-url <mainnet|testnet> <网址>`
+- `deepbook config set-provider-stream-base-url <mainnet|testnet> <网址>`
+- `deepbook config import-key [私钥]`（或 `--stdin`，可选 `--别名`）
 
 - `deepbook account details`
 - `deepbook account list`
-- `deepbook account balance [--coin <SUI|USDC|DEEP|coinType>]`
-- `deepbook account import <alias> [privateKey]` (or `--stdin`)
-- `deepbook account use <alias>`
+- `deepbook account balance [--币种 <SUI|USDC|DEEP|币种类型>]`
+- `deepbook account import <别名> [私钥]`（或 `--stdin>`
+- `deepbook account use <别名>`
 
-
-- `deepbook swap base-for-quote <pool> --amount <value>`
-- `deepbook swap quote-for-base <pool> --amount <value>`
+- `deepbook swap base-for-quote <池名称> --金额 <数量>`
+- `deepbook swap quote-for-base <池名称> --金额 <数量>`
 
 - `deepbook margin pools`
 - `deepbook margin managers`
-- `deepbook margin deposit <pool> --coin <BASE|QUOTE|DEEP|coinKey> --amount <value> [--margin-manager <id>]`
-- `deepbook margin market <pool> --side <buy|sell> --quantity <value> [--margin-manager <id>]`
-- `deepbook margin limit <pool> --side <buy|sell> --price <value> --quantity <value> [--margin-manager <id>]`
-- `deepbook margin position <pool> [--margin-manager <id>]`
-- `deepbook margin close <pool> [--margin-manager <id>]` + either:
-  - `--full`
-  - OR `--side <buy|sell> --quantity <value>`
+- `deepbook margin deposit <池名称> --币种 <基础币|报价币|DEEP|币种键> --金额 <数量> [--保证金管理者 <ID>]`
+- `deepbook margin market <池名称> --方向 <买入|卖出> --数量 <数量> [--保证金管理者 <ID>]`
+- `deepbook margin limit <池名称> --方向 <买入|卖出> --价格 <数量> --数量 <数量> [--保证金管理者 <ID>]`
+- `deepbook margin position <池名称> --保证金管理者 <ID>`
+- `deepbook margin close <池名称> --保证金管理者 <ID>` + 可选参数：
+  - `--全额`
+  - 或 `--方向 <买入|卖出> --数量 <数量>`
 
 - `deepbook manager ls`
 - `deepbook manager create`
-- `deepbook manager deposit --coin <key> --amount <value> [--manager <id>]`
-- `deepbook manager withdraw --coin <key> --amount <value> [--manager <id>]`
-- `deepbook manager balance --coin <key> [--manager <id>]`
+- `deepbook manager deposit --币种 <密钥> --金额 <数量> [--保证金管理者 <ID>]`
+- `deepbook manager withdraw --币种 <密钥> --金额 <数量> [--保证金管理者 <ID>]`
+- `deepbook manager balance --币种 <密钥> --保证金管理者 <ID>`
 
-## Key margin close flags
+## 关键的保证金关闭参数
 
-- `deepbook margin close <pool> --full --withdraw`
-- `deepbook margin close <pool> --full --non-reduce-only`
-- `deepbook margin close <pool> --side <buy|sell> --quantity <q> --reduce-only --no-repay`
+- `deepbook margin close <池名称> --全额 --withdraw`
+- `deepbook margin close <池名称> --全额 --仅减少`
+- `deepbook margin close <池名称> --方向 <买入|卖出> --数量 <数量> --仅减少 --不偿还`
 
-## Swap vs spot market buy
+## 掉期市场与现货市场的区别
 
-- Swap (`deepbook swap quote-for-base`) is a direct pool swap with exact-input semantics.
-- Spot market buy (`deepbook spot buy <pool> --quantity ...`) is an orderbook market order and uses a balance manager.
-- CLI output now includes `execution.kind` and `execution.type/direction` so the mode is explicit.
+- 掉期交易（`deepbook swap quote-for-base`）是直接在池中进行的对等交易。
+- 现货市场买入（`deepbook spot buy <池名称> --数量 ...`）是通过订单簿进行的交易，并使用余额管理器来处理。
+- CLI 输出现在会显示 `execution.kind` 和 `execution.type/direction`，以便明确交易模式。
 
-## Safety defaults
+## 安全性默认设置
 
-- Prefer `--dry-run` first for all state-changing commands.
-- Validate pool key and manager object ID before placing/canceling orders.
-- SUI-involved deposit/collateral paths split from gas coin inside the transaction automatically.
-- Never print or log private keys.
-- Margin manager type safety:
-  - Margin managers are generic typed objects: `MarginManager<Base, Quote>`.
-  - The margin manager type must match the exact pool pair being traded.
-  - Example: `MarginManager<DEEP,USDC>` works with `DEEP_USDC`, not `DEEP_SUI`.
-- Margin manager resolution behavior:
-  - If `--margin-manager` is omitted, CLI auto-selects a compatible manager for that pool, or creates one in-transaction if none exists.
-  - If `--margin-manager` is provided, CLI treats it as explicit and strict: it must match signer + pool; no fallback or auto-create is performed.
-- Internal margin fee buffer behavior:
-  - Margin market/limit orders auto-deposit a fee buffer before placing the order.
-  - With `--no-pay-with-deep`, buffer is deposited in trade asset collateral (base for sell, quote for buy).
-  - Without `--no-pay-with-deep`, buffer is deposited as DEEP into the margin manager.
-- Full-close quantity normalization:
-  - `deepbook margin close <pool> --full` now auto-normalizes inferred quantity to pool lot-size/min-size.
-  - If reduce-only full close cannot satisfy lot-size exactly, CLI auto-switches to non-reduce-only and rounds up, then repays debt in the same transaction.
-  - If user explicitly passes `--reduce-only`, CLI keeps reduce-only semantics and errors when full close cannot be represented as a valid lot-size quantity.
+- 对于所有会改变状态的命令，建议先使用 `--dry-run` 运行以进行测试。
+- 在下达或取消订单之前，验证池的密钥和保证金管理器的 ID。
+- 涉及 SUI 的存款/抵押品路径会自动从交易中的gas币种中分离出来。
+- 绝不打印或记录私钥。
+- 保证金管理器的安全性：
+  - 保证金管理者是通用类型的对象：`MarginManager<Base, Quote>`。
+  - 保证金管理器的类型必须与交易的池对匹配。
+  - 例如：`MarginManager<DEEP,USDC>` 可用于 `DEEP_USDC`，但不能用于 `DEEP_SUI`。
+- 保证金管理器的处理方式：
+  - 如果省略了 `--margin-manager`，CLI 会自动为该池选择一个兼容的保证金管理者；如果不存在，则会在交易中创建一个。
+  - 如果提供了 `--margin-manager`，CLI 会严格匹配该参数：必须确保管理器的类型与池匹配；不会进行回退或自动创建。
+- 内部保证金费用缓冲区的处理方式：
+  - 保证金市场/限价订单在下达前会自动扣除费用缓冲区。
+  - 使用 `--no-pay-with-deep` 选项时，缓冲区会作为交易资产抵押品（卖出时的基础币种，买入时的报价币种）进行存放。
+  - 不使用 `--no-pay-with-deep` 选项时，缓冲区会以 DEEP 的形式存入保证金管理者。
+- 全额关闭时的数量处理：
+  - `deepbook margin close <池名称> --全额` 会自动将计算出的数量调整为池的最低交易量。
+  - 如果仅减少无法满足最低交易量，CLI 会切换到“仅减少”模式，并在同一个交易中偿还债务。
+  - 如果用户明确指定了 `--reduce-only`，CLI 会保持“仅减少”的模式；如果无法表示为有效的交易量，则会报错。
 
-## End-to-end spot trading flow (fund -> buy -> withdraw)
+## 端到端的现货交易流程（资金 -> 买入 -> 提取）
 
-Use this when executing a real spot trade through a balance manager.
+当通过余额管理者执行真实的现货交易时，请按照以下步骤操作：
 
-1. Discover balance managers:
+1. 查找余额管理者：
    - `deepbook manager ls`
-2. If none exist, create one:
+2. 如果没有找到，创建一个：
    - `deepbook manager create`
-3. Deposit quote coin to manager (for `DEEP_SUI` buy, fund `SUI`):
-   - `deepbook manager deposit --coin SUI --amount 1 --manager <id>`
-4. Optional balance check:
-   - `deepbook manager balance --coin SUI --manager <id>`
-5. Simulate buy first:
-   - `deepbook spot buy DEEP_SUI --quantity 38 --manager <id> --no-pay-with-deep --dry-run`
-6. Execute live buy:
-   - `deepbook spot buy DEEP_SUI --quantity 38 --manager <id> --no-pay-with-deep`
-7. Withdraw purchased asset to signer address (or explicit recipient):
-   - `deepbook manager withdraw --coin DEEP --amount 38 --manager <id>`
-   - optional recipient: `--recipient <address>`
-8. Verify manager balance:
-   - `deepbook manager balance --coin DEEP --manager <id>`
+3. 向管理者存入报价币种（例如，对于 `DEEP_SUI` 的买入操作，需要存入 SUI）：
+   - `deepbook manager deposit --币种 SUI --金额 1 --manager <ID>`
+4. 可选：检查余额：
+   - `deepbook manager balance --币种 SUI --manager <ID>`
+5. 先进行模拟买入：
+   - `deepbook spot buy DEEP_SUI --数量 38 --manager <ID> --no-pay-with-deep --dry-run`
+6. 执行实际买入：
+   - `deepbook spot buy DEEP_SUI --数量 38 --manager <ID> --no-pay-with-deep`
+7. 将购买的资产提取到签名者的地址（或指定的接收者地址）：
+   - `deepbook manager withdraw --币种 DEEP --金额 38 --manager <ID>`（可选接收者：`--recipient <地址>`）
+8. 验证管理者的余额：
+   - `deepbook manager balance --币种 DEEP --manager <ID>`
 
-## Spot trade troubleshooting
+## 现货交易故障排除
 
-- `MoveAbort ... balance_manager::withdraw_with_proof code=3` means manager available balance is too low.
-- This includes fees/reserved amounts, not just raw deposited balance.
-- For spot buys, ensure quote coin is funded in manager (for `DEEP_SUI`, quote is `SUI`).
-- If fees are attempted in DEEP and manager lacks DEEP, either deposit DEEP or pass `--no-pay-with-deep`.
-- When manager is omitted, CLI resolves dynamically:
-  - one manager found -> uses it
-  - none found -> error
-  - multiple found -> require `--manager <id>`
+- `MoveAbort ... balance_manager::withdraw_with_proof code=3` 表示管理者的可用余额过低。
+  - 这包括费用和预留金额，而不仅仅是实际存入的余额。
+  - 对于现货买入操作，确保报价币种已在管理者账户中充值（对于 `DEEP_SUI`，报价币种应为 SUI）。
+  - 如果尝试使用 DEEP 作为支付币种而管理者账户中没有 DEEP，可以选择存入 DEEP 或使用 `--no-pay-with-deep` 选项。
+  - 如果省略了管理者参数，CLI 会动态处理：
+    - 找到一个管理者 -> 使用该管理者
+    - 未找到管理者 -> 报错
+    - 找到多个管理者 -> 需要指定 `--manager <ID>`
 
+## 典型工作流程
 
-## Typical workflow
-
-1. Inspect pools/orderbook (`deepbook spot pools`, `deepbook margin pools`, `deepbook orderbook ...`).
-2. Confirm manager ID (`deepbook manager ls`).
-3. Simulate order (`deepbook spot buy ... --dry-run`).
-4. Execute live order (same command without `--dry-run`).
-5. Monitor with `deepbook orderbook --watch` and `deepbook stream trades ...`.
+1. 查看池和订单簿（`deepbook spot pools`、`deepbook margin pools`、`deepbook orderbook ...`）。
+2. 确认保证金管理器的 ID（`deepbook manager ls`）。
+3. 模拟订单（`deepbook spot buy ... --dry-run`）。
+4. 执行实际订单（去掉 `--dry-run` 参数）。
+5. 使用 `deepbook orderbook --watch` 和 `deepbook stream trades ...` 监控交易过程。

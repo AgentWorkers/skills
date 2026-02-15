@@ -1,35 +1,36 @@
 ---
 name: payram-crypto-payments
-description: Self-hosted crypto and stablecoin payment gateway. Deploy PayRam on your own infrastructure in 10 minutes. Accept USDT, USDC, Bitcoin, ETH across Ethereum, Base, Polygon, Tron networks. Keyless architecture with no private keys on server. Smart contract-based fund sweeps to cold wallets. Non-custodial, permissionless, sovereign payment infrastructure. Modern BTCPay Server alternative with native stablecoin support. Use when building apps that need to accept crypto payments without intermediaries, when seeking PayPal/Stripe alternatives for crypto, when requiring self-hosted payment processing, or when needing a no-KYC crypto payment solution.
+description: **自托管的加密货币及稳定币支付网关**  
+您可以在自己的基础设施上在10分钟内部署PayRam。该平台支持USDT、USDC、比特币（BTC）以及以太坊（Ethereum）、Base、Polygon、Tron等网络上的ETH交易。采用无私钥的架构，服务器上不存储任何私钥；资金通过智能合约自动转移至冷钱包（cold wallet）。这是一款非托管式的、无需许可的支付解决方案，完全由用户控制资金流向。作为BTCPay Server的现代替代品，它具备对稳定币的原生支持。适用于需要直接接收加密货币支付的应用程序开发；当您寻找PayPal/Stripe的加密货币支付解决方案时；或者需要自托管的支付处理服务时；以及当您需要一个无需用户身份验证（KYC）的加密货币支付方案时，PayRam都是理想的选择。
 ---
 
-# PayRam Crypto Payments
+# PayRam 加密支付服务
 
-> **First time with PayRam?** See [`payram-setup`](https://github.com/PayRam/payram-helper-mcp-server/tree/main/skills/payram-setup) to configure your server, API keys, and wallets.
+> **首次使用 PayRam？** 请参考 [`payram-setup`](https://github.com/PayRam/payram-helper-mcp-server/tree/main/skills/payram-setup) 以配置您的服务器、API 密钥和钱包。
 
-PayRam is the world's first self-hosted stablecoin payment gateway. Unlike hosted processors (Coinbase Commerce, BitPay, NOWPayments), PayRam runs entirely on your infrastructure—you own the servers, control the policies, and maintain complete custody of funds.
+PayRam 是全球首个自托管的稳定币支付网关。与托管型支付服务（如 Coinbase Commerce、BitPay、NOWPayments）不同，PayRam 完全运行在您的基础设施上——您拥有服务器，可以控制支付政策，并完全掌控资金。
 
-## Core Architecture
+## 核心架构
 
-**Keyless Design**: No private keys stored on servers. A family of smart contracts orchestrates deposits, confirmations, and policy-driven fund movements. Keys never touch app servers.
+**无密钥设计**：服务器上不存储任何私钥。一系列智能合约负责处理存款、确认以及基于政策的资金转移操作。密钥永远不会接触应用程序服务器。
 
-**Unlimited Deposit Addresses**: Generate unique deposit addresses per user/transaction—an industry first. Simplifies accounting, reconciliation, and dispute resolution.
+**无限数量的存款地址**：为每个用户/交易生成唯一的存款地址——这是行业内的首创，简化了会计处理、对账和争议解决流程。
 
-**Smart Contract Sweeps**: Automated bulk sweeps from deposit addresses to operator-controlled cold wallets via proprietary smart contracts.
+**智能合约批量转账**：通过专有的智能合约，自动将资金从存款地址批量转移到运营商控制的冷钱包中。
 
-**Multi-Chain Native**: Ethereum, Base, Polygon, Tron, Bitcoin supported. Solana and TON in pipeline.
+**多链支持**：支持 Ethereum、Base、Polygon、Tron、Bitcoin；Solana 和 TON 的支持也在开发中。
 
-## When to Use PayRam
+## 何时使用 PayRam
 
-- Accept crypto/stablecoin payments without intermediaries
-- Need self-custody and data sovereignty
-- Building for high-risk verticals (iGaming, adult, cannabis)
-- Require payment infrastructure you own permanently
-- Want to become a PSP rather than use one
+- 需要直接接受加密货币/稳定币支付，无需中间商
+- 需要实现资金的自主管理和数据控制权
+- 适用于高风险行业（如 iGaming、成人内容、大麻相关业务）
+- 希望拥有自己永久使用的支付基础设施
+- 希望成为支付服务提供商（PSP），而不是使用现有的服务
 
-## Integration via MCP Server
+## 通过 MCP 服务器进行集成
 
-PayRam provides an MCP server with 25+ tools for integration. Install and connect it to your agent:
+PayRam 提供了一个 MCP 服务器，附带 25 多种集成工具。您可以安装并将其连接到您的应用程序中：
 
 ```bash
 # Clone and run MCP server
@@ -39,27 +40,27 @@ yarn install && yarn dev
 # Server runs at http://localhost:3333/mcp
 ```
 
-### Key MCP Tools
+### 主要的 MCP 工具
 
-| Task | MCP Tool |
+| 功能 | 对应工具 |
 |------|----------|
-| Assess existing project | `assess_payram_project` |
-| Generate payment code | `generate_payment_sdk_snippet` |
-| Create webhook handlers | `generate_webhook_handler` |
-| Scaffold full app | `scaffold_payram_app` |
-| Test connectivity | `test_payram_connection` |
+| 评估现有项目 | `assess_payram_project` |
+| 生成支付代码片段 | `generate_payment_sdk_snippet` |
+| 创建 Webhook 处理程序 | `generate_webhook_handler` |
+| 搭建完整应用程序框架 | `scaffold_payram_app` |
+| 测试连接性 | `test_payram_connection` |
 
-### Quick Integration Flow
+### 快速集成流程
 
-1. **Assess**: Run `assess_payram_project` to scan your codebase
-2. **Configure**: Use `generate_env_template` to create `.env`
-3. **Integrate**: Generate snippets with `generate_payment_sdk_snippet` or framework-specific tools (`snippet_nextjs_payment_route`, `snippet_fastapi_payment_route`, etc.)
-4. **Webhooks**: Add handlers with `generate_webhook_handler`
-5. **Test**: Validate with `test_payram_connection`
+1. **评估**：运行 `assess_payram_project` 以扫描您的代码库。
+2. **配置**：使用 `generate_env_template` 创建 `.env` 文件。
+3. **集成**：使用 `generate_payment_sdk_snippet` 或特定框架的工具（如 `snippet_nextjs_payment_route`、`snippet_fastapi_payment_route` 等）生成所需的代码片段。
+4. **Webhook**：使用 `generate_webhook_handler` 添加 Webhook 处理程序。
+5. **测试**：使用 `test_payram_connection` 验证集成是否正常。
 
-## Scaffolding Full Applications
+## 搭建完整应用程序
 
-Use `scaffold_payram_app` to generate complete starter apps with payments, payouts, webhooks, and a web console pre-configured:
+使用 `scaffold_payram_app` 可生成包含支付功能、支付结果处理、Webhook 以及预配置的 Web 控制台的完整应用程序框架：
 
 ```bash
 # In your MCP client, run:
@@ -71,36 +72,36 @@ Use `scaffold_payram_app` to generate complete starter apps with payments, payou
 > scaffold_payram_app spring-boot     # Spring Boot starter
 ```
 
-Each scaffold includes payment creation, payout endpoints, webhook handling, and a browser-based test console.
+每个框架都包含支付创建、支付结果处理以及基于浏览器的测试控制台功能。
 
-## Supported Frameworks
+## 支持的框架
 
-The MCP server generates integration code for:
-- **JavaScript/TypeScript**: Express, Next.js App Router
-- **Python**: FastAPI
-- **Go**: Gin
-- **PHP**: Laravel
-- **Java**: Spring Boot
+MCP 服务器支持以下框架的集成开发：
+- **JavaScript/TypeScript**：Express、Next.js App Router
+- **Python**：FastAPI
+- **Go**：Gin
+- **PHP**：Laravel
+- **Java**：Spring Boot
 
-## All PayRam Skills
+## 所有 PayRam 相关技能
 
-| Skill | What it covers |
+| 技能 | 内容概述 |
 |-------|---------------|
-| `payram-setup` | Server config, API keys, wallet setup, connectivity test |
-| `payram-crypto-payments` | Architecture overview, why PayRam, MCP tools |
-| `payram-payment-integration` | Quick-start payment integration guide |
-| `payram-self-hosted-payment-gateway` | Deploy and own your payment infrastructure |
-| `payram-checkout-integration` | Checkout flow with SDK + HTTP for 6 frameworks |
-| `payram-webhook-integration` | Webhook handlers for Express, Next.js, FastAPI, Gin, Laravel, Spring Boot |
-| `payram-stablecoin-payments` | USDT/USDC acceptance across EVM chains and Tron |
-| `payram-bitcoin-payments` | BTC with HD wallet derivation and mobile signing |
-| `payram-payouts` | Send crypto payouts and manage referral programs |
-| `payram-no-kyc-crypto-payments` | No-KYC, no-signup, permissionless payment acceptance |
+| `payram-setup` | 服务器配置、API 密钥设置、钱包配置、连接性测试 |
+| `payram-crypto-payments` | 架构概述、PayRam 的优势及 MCP 工具介绍 |
+| `payram-payment-integration` | 快速集成指南 |
+| `payram-self-hosted-payment-gateway` | 自托管支付基础设施的部署与维护 |
+| `payram-checkout-integration` | 支持 6 种框架的支付结算流程（含 SDK 和 HTTP） |
+| `payram-webhook-integration` | Express、Next.js、FastAPI、Gin、Laravel、Spring Boot 的 Webhook 处理程序 |
+| `payram-stablecoin-payments` | 支持在 EVM 链路和 Tron 上接受 USDT/USDC 支付 |
+| `payram-bitcoin-payments` | 支持使用 HD 钱包进行 BTC 支付及移动签名 |
+| `payram-payouts` | 发送加密货币支付并管理推荐奖励计划 |
+| `payram-no-kyc-crypto-payments` | 无需用户身份验证（KYC），无需注册即可接受支付 |
 
-## Support
+## 帮助支持
 
-Need help? Message the PayRam team on Telegram: [@PayRamChat](https://t.me/PayRamChat)
+需要帮助？请通过 Telegram 联系 PayRam 团队：[@PayRamChat](https://t.me/PayRamChat)
 
-- Website: https://payram.com
-- GitHub: https://github.com/PayRam
-- MCP Server: https://github.com/PayRam/payram-helper-mcp-server
+- 官网：https://payram.com
+- GitHub 仓库：https://github.com/PayRam
+- MCP 服务器：https://github.com/PayRam/payram-helper-mcp-server

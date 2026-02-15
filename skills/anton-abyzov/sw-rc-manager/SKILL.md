@@ -1,18 +1,17 @@
 ---
 name: rc-manager
-description: Release Candidate (RC) workflow manager - pre-release tagging, alpha/beta/rc lifecycle, testing validation, production promotion.
+description: 发布候选版本（Release Candidate, RC）的工作流程管理器：包括预发布阶段的标签管理、alpha/beta/rc版本的生命周期管理、测试与验证，以及最终版本的生产推广流程。
 ---
 
-# Release Candidate Manager
+# 发布候选版本管理器（Release Candidate Manager）
 
-**Expertise**: Release Candidate (RC) lifecycle management, pre-release workflows, testing validation, and production promotion.
+**专业领域**：发布候选版本（Release Candidate, RC）的生命周期管理、发布前的工作流程、测试验证以及生产环境的推广。
 
-## Core Capabilities
+## 核心功能
 
-### 1. RC Version Tagging
+### 1. RC版本标记
 
-**Pre-Release Version Format**:
-
+**发布前版本格式**：
 ```yaml
 # Semantic Versioning Pre-Release
 MAJOR.MINOR.PATCH-PRERELEASE.ITERATION
@@ -30,7 +29,7 @@ Version Ordering:
   1.0.0-alpha.1 < 1.0.0-alpha.2 < 1.0.0-beta.1 < 1.0.0-rc.1 < 1.0.0
 ```
 
-**RC Iteration Rules**:
+**RC迭代规则**：
 ```yaml
 # First RC
 v1.0.0-rc.1
@@ -47,10 +46,9 @@ v1.0.0 (final)
 # Key Rule: Never modify existing RC tags (immutable)
 ```
 
-### 2. RC Lifecycle
+### 2. RC生命周期
 
-**Three-Stage Pre-Release**:
-
+**三阶段的发布前准备**：
 ```mermaid
 graph LR
     A[Development] -->|Feature Complete| B[Alpha]
@@ -63,7 +61,7 @@ graph LR
     D -->|Bug Fix| D
 ```
 
-**Alpha Release** (Early Development):
+**Alpha版本**（早期开发阶段）：
 ```yaml
 Purpose: Early feedback, API exploration
 Tag: v1.0.0-alpha.1, v1.0.0-alpha.2, ...
@@ -85,7 +83,7 @@ Exit Criteria:
   - Integration tests passing
 ```
 
-**Beta Release** (Feature Complete):
+**Beta版本**（功能完善阶段）：
 ```yaml
 Purpose: Broader testing, performance validation
 Tag: v1.0.0-beta.1, v1.0.0-beta.2, ...
@@ -108,7 +106,7 @@ Exit Criteria:
   - Security scan clean
 ```
 
-**Release Candidate (RC)** (Production Ready):
+**发布候选版本（RC）**（准备生产环境）：
 ```yaml
 Purpose: Final validation before production
 Tag: v1.0.0-rc.1, v1.0.0-rc.2, ...
@@ -131,7 +129,7 @@ Exit Criteria:
   - Chaos engineering passed
 ```
 
-**Production Release**:
+**正式发布版本**：
 ```yaml
 Purpose: Stable release for all users
 Tag: v1.0.0 (final)
@@ -147,10 +145,9 @@ Post-Release:
   - Hotfix branch created from tag
 ```
 
-### 3. RC Testing & Validation
+### 3. RC测试与验证
 
-**Multi-Level Testing Matrix**:
-
+**多层次测试矩阵**：
 ```yaml
 Alpha Testing:
   - Unit tests: 80%+ coverage
@@ -185,7 +182,7 @@ Production:
   - Synthetic monitoring (Pingdom, UptimeRobot)
 ```
 
-**Validation Checklist** (RC → Production):
+**RC到生产环境的验证检查清单**：
 ```markdown
 ## RC Promotion Checklist: v1.0.0-rc.3 → v1.0.0
 
@@ -230,10 +227,9 @@ Production:
 **Decision**: APPROVED for production release ✅
 ```
 
-### 4. RC Promotion Workflow
+### 4. RC推广工作流程
 
-**Step-by-Step RC → Production**:
-
+**从RC到正式发布的逐步流程**：
 ```bash
 # 1. Create initial RC
 git tag v1.0.0-rc.1
@@ -286,10 +282,9 @@ git push origin v1.0.0
 # }
 ```
 
-### 5. Multi-Repo RC Coordination
+### 5. 多仓库间的RC协调
 
-**Coordinated RC Across Repos**:
-
+**跨多个仓库协调RC的发布流程**：
 ```yaml
 # Scenario: Product v3.0.0-rc.1 spans 4 repos
 
@@ -320,7 +315,7 @@ RC Release Process:
      Product v3.0.0 = {frontend: v5.0.0, backend: v3.0.0, ...}
 ```
 
-**RC Dependency Validation**:
+**RC依赖关系验证**：
 ```yaml
 # Ensure RC versions are compatible
 
@@ -340,10 +335,9 @@ Check 3: Database schema compatible
 Result: All dependencies aligned ✓
 ```
 
-### 6. Channel-Based Releases
+### 6. 基于渠道的发布策略
 
-**Release Channels**:
-
+**发布渠道**：
 ```yaml
 # NPM-style channels
 Stable: v1.0.0, v1.1.0, v1.2.0
@@ -367,7 +361,7 @@ Canary: v1.1.0-canary.abc123 (commit-based)
   - npm install myapp@canary
 ```
 
-**Channel Deployment Strategy**:
+**渠道部署策略**：
 ```yaml
 # Kubernetes deployment channels
 
@@ -391,9 +385,9 @@ Canary Deployment (Production + Experimental):
   namespace: production
 ```
 
-### 7. RC Rollback Procedures
+### 7. RC回滚流程
 
-**When to Rollback RC**:
+**何时需要回滚RC**：
 ```yaml
 Immediate Rollback Triggers:
   - Error rate > 5% (critical)
@@ -414,7 +408,7 @@ Decision Matrix:
   - Minor issue + canary = Monitor and evaluate
 ```
 
-**Rollback Execution**:
+**回滚执行步骤**：
 ```bash
 # Rollback from v1.0.0-rc.2 to v1.0.0-rc.1
 
@@ -447,9 +441,9 @@ git tag v1.0.0-rc.3
 git push origin v1.0.0-rc.3
 ```
 
-### 8. RC Documentation
+### 8. RC文档记录
 
-**RC Status Tracking**:
+**RC状态跟踪**：
 ```markdown
 # RC Status: v1.0.0-rc.3
 
@@ -490,83 +484,82 @@ git push origin v1.0.0-rc.3
 - **Rollout Plan**: Gradual (10% → 25% → 50% → 100%)
 ```
 
-## When to Use This Skill
+## 适用场景
 
-**Ask me to**:
+**请使用此功能进行以下操作**：
 
-1. **Create RC**:
-   - "Create release candidate for v1.0.0"
-   - "Tag v2.0.0-rc.1"
-   - "Start RC workflow for multi-repo release"
+1. **创建RC版本**：
+   - “为v1.0.0创建发布候选版本”
+   - “为v2.0.0-rc.1添加版本标签”
+   - “启动多仓库发布的RC工作流程”
 
-2. **Manage RC lifecycle**:
-   - "What's the status of RC v1.0.0-rc.3?"
-   - "List all RCs for product v3.0.0"
-   - "Show RC testing checklist"
+2. **管理RC生命周期**：
+   - “v1.0.0-rc.3的当前状态是什么？”
+   - “列出产品v3.0.0的所有RC版本”
+   - “查看RC版本的测试验证清单”
 
-3. **Validate RC**:
-   - "Is RC ready for production?"
-   - "Run RC validation checks"
-   - "Check RC promotion criteria"
+3. **验证RC版本**：
+   - “RC版本是否准备好上线生产环境？”
+   - “运行RC版本的验证测试”
+   - “检查RC版本的推广条件”
 
-4. **Promote RC**:
-   - "Promote v1.0.0-rc.3 to production"
-   - "Deploy RC to canary"
-   - "Gradual rollout of RC"
+4. **推广RC版本**：
+   - “将v1.0.0-rc.3推广到生产环境”
+   - “将RC版本部署到测试环境（canary）”
+   - “逐步推进RC版本的部署”
 
-5. **Rollback RC**:
-   - "Rollback from rc.2 to rc.1"
-   - "RC deployment failed, rollback"
-   - "Undo canary deployment"
+5. **回滚RC版本**：
+   - “从rc.2回滚到rc.1”
+   - “RC版本部署失败，执行回滚操作”
+   - “撤销在测试环境的部署”
 
-## Best Practices
+## 最佳实践
 
-**RC Creation**:
-- Always start with rc.1 (never skip)
-- Tag immutable (never modify existing RC)
-- Document what changed since last release
+**RC版本创建**：
+- 必须从rc.1开始创建（切勿跳过）
+- 使用不可变的版本标签（切勿修改现有RC版本）
+- 记录自上次发布以来的所有变更内容
 
-**RC Testing**:
-- Run ALL tests for each RC iteration
-- Never skip validation steps
-- Use production-like data in staging
+**RC版本测试**：
+- 对每个RC版本执行所有测试
+- 严禁跳过任何验证步骤
+- 在测试环境中使用与生产环境相同的数据
 
-**RC Promotion**:
-- Gradual rollout (10% → 25% → 50% → 100%)
-- Monitor for 1+ hour at each stage
-- Have rollback plan ready
+**RC版本推广**：
+- 逐步推进部署（10% → 25% → 50% → 100%）
+- 在每个阶段持续监控至少1小时
+- 准备好回滚计划
 
-**RC Documentation**:
-- Track all RC iterations
-- Document bugs found and fixes
-- Record promotion decision rationale
+**RC版本文档记录**：
+- 记录所有RC版本的迭代过程
+- 记录发现的漏洞及修复情况
+- 记录推广决策的依据
 
-## Integration Points
+## 相关角色与工具
 
-**Release Coordinator**:
-- Creates RCs for coordinated releases
-- Validates RC dependencies
-- Promotes RCs in correct order
+**发布协调员（Release Coordinator）**：
+- 负责创建用于协调发布的RC版本
+- 验证RC版本之间的依赖关系
+- 按正确顺序推进RC版本的发布
 
-**Version Aligner**:
-- Manages RC version tags
-- Ensures RC compatibility
-- Updates version matrix with RC info
+**版本管理员（Version Aligner）**：
+- 管理RC版本的标签
+- 确保RC版本之间的兼容性
+- 使用RC版本信息更新版本矩阵
 
-**Living Docs**:
-- Documents RC status
-- Tracks RC history
-- Links to GitHub releases
+**实时文档系统（Living Docs）**：
+- 记录RC版本的状态
+- 跟踪RC版本的发布历史
+- 提供到GitHub发布的链接
 
-**CI/CD**:
-- Automates RC deployment
-- Runs validation tests
-- Monitors RC health
+**持续集成/持续部署（CI/CD）**：
+- 自动化RC版本的部署
+- 运行验证测试
+- 监控RC版本的运行状态
 
-## Example Workflows
+## 示例工作流程
 
-### Single-Repo RC
-
+### 单个仓库的RC管理流程
 ```bash
 # 1. Create RC
 /sw-release:rc create 1.0.0
@@ -584,8 +577,7 @@ git push origin v1.0.0-rc.3
 /sw-release:rc promote 1.0.0-rc.3
 ```
 
-### Multi-Repo RC
-
+### 多个仓库的RC管理流程
 ```bash
 # 1. Create coordinated RC
 /sw-release:rc create-multi product-v3.0.0
@@ -610,51 +602,52 @@ git push origin v1.0.0-rc.3
 /sw-release:rc promote-multi product-v3.0.0-rc.2
 ```
 
-## Commands Integration
+## 命令集成
 
-Works with release commands:
+支持的命令包括：
+- `/sw-release:rc create <version>` - 创建新的RC版本
+- `/sw-release:rc test <rc-version>` - 验证RC版本
+- `/sw-release:rc promote <rc-version>` - 将RC版本推广到生产环境
+- `/sw-release:rc rollback <rc-version>` - 回滚RC版本
+- `/sw-release:rc status <rc-version>` - 查看RC版本的状态
 
-- `/sw-release:rc create <version>` - Create new RC
-- `/sw-release:rc test <rc-version>` - Validate RC
-- `/sw-release:rc promote <rc-version>` - Promote to production
-- `/sw-release:rc rollback <rc-version>` - Rollback RC
-- `/sw-release:rc status <rc-version>` - Show RC status
+## 所需依赖工具
 
-## Dependencies
+**必备工具**：
+- Git（用于版本标签管理）
+- SpecWeave核心组件（用于管理生命周期）
 
-**Required**:
-- Git (version tags)
-- SpecWeave core (increment lifecycle)
+**可选工具**：
+- Kubernetes（`kubectl`）- 用于部署管理
+- Docker（`docker`）- 用于容器测试
+- GitHub CLI（`gh`）- 用于生成发布说明
+- 持续集成/持续部署工具（如GitHub Actions、GitLab CI）
 
-**Optional**:
-- Kubernetes (`kubectl`) - Deployment management
-- Docker (`docker`) - Container testing
-- GitHub CLI (`gh`) - Release notes
-- CI/CD (GitHub Actions, GitLab CI)
+## 输出结果
 
-## Output
+**生成/更新的内容**：
+- Git标签（如v1.0.0-rc.1、v1.0.0-rc.2等）
+- RC版本状态文档
+- 部署配置文件（适用于Kubernetes、Docker）
+- 测试报告
+- 推广验证结果
 
-**Creates/Updates**:
-- Git tags (v1.0.0-rc.1, v1.0.0-rc.2, ...)
-- RC status document (increment reports/)
-- Deployment manifests (K8s, Docker)
-- Test reports
-- Promotion checklist
-
-**Provides**:
-- RC version history
-- Testing validation status
-- Deployment timeline
-- Rollback procedures
-- Production readiness assessment
+**提供的信息**：
+- RC版本的完整历史记录
+- 测试验证结果
+- 部署时间线
+- 回滚操作指南
+- 生产环境准备情况评估
 
 ---
 
-**Remember**: Release Candidates are the final gate before production. Never rush RC validation. Always:
-- Test thoroughly (unit + integration + E2E + performance + security)
-- Deploy gradually (canary → 10% → 25% → 50% → 100%)
-- Monitor continuously (error rates, latency, user feedback)
-- Have rollback plan ready (test rollback procedure)
-- Document everything (bugs found, fixes applied, decisions made)
+**重要提示**：
+发布候选版本是通往生产环境的最后一道关卡。请务必谨慎处理RC版本的验证过程：
+- 彻底进行测试（包括单元测试、集成测试、端到端测试、性能测试和安全性测试）
+- 逐步推进部署（从测试环境开始，逐步扩大部署范围）
+- 持续监控系统运行状态（错误率、延迟、用户反馈等）
+- 准备好回滚计划（包括详细的回滚步骤）
+- 记录所有相关细节（发现的漏洞、应用的修复措施、做出的决策）
 
-**Goal**: Catch issues before production, deploy confidently, rollback quickly if needed.
+**目标**：
+在产品正式发布前及时发现潜在问题，确保部署的稳定性，并在必要时能够迅速回滚。

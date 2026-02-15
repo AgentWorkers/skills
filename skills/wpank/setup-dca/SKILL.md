@@ -17,52 +17,54 @@ allowed-tools:
   - mcp__uniswap__check_safety_status
 ---
 
-# Setup DCA
+# 设置自动定投（DCA）策略
 
-## Overview
+## 概述
 
-Sets up a complete non-custodial dollar-cost averaging strategy on Uniswap. Instead of manually executing swaps on a schedule, remembering to check prices, finding optimal routes, and managing approvals, this skill configures the entire DCA lifecycle in one command: validates the strategy, selects the best swap path, configures execution frequency, handles Permit2 approvals, executes the first swap, and sets up ongoing automation.
+该功能用于在 Uniswap 上设置完整的非托管式自动定投策略。无需手动执行交易、监控价格、寻找最优交易路径或管理审批流程，只需通过一条命令即可完成整个 DCA 策略的配置：验证策略、选择最佳交易路径、设置执行频率、处理 Permit2 审批、执行首次交易，并设置后续的自动化操作。
 
-**Why this is 10x better than doing it manually:**
+**为什么这比手动操作好十倍：**
 
-1. **Optimal path selection**: Automatically discovers the best swap route across all Uniswap pool versions and fee tiers for your token pair. Manual DCA often uses suboptimal routes, losing 0.1-0.5% per execution to unnecessary slippage.
-2. **Approval management**: Handles the Permit2 approval flow correctly -- a common source of failed DCA executions. One-time setup that covers all future executions.
-3. **Two automation modes**: Self-execute mode (agent triggers swaps) for development and testing, or Gelato keeper mode (on-chain automation) for trustless production execution. Without this skill, setting up Gelato keepers requires understanding task creation, resolver contracts, and fee funding.
-4. **Built-in safety**: Every execution routes through the safety pipeline with slippage guards, balance checks, and circuit breakers. Manual DCA has no guardrails -- a misconfigured bot can drain a wallet on a single bad swap.
-5. **Cost projection**: Before committing, shows projected total cost including gas, slippage, and keeper fees over the full DCA period. No surprises.
+1. **最优路径选择**：自动发现适用于您的代币对的所有 Uniswap 池版本和费用等级中的最佳交易路径。手动定投往往使用次优路径，每次交易会因不必要的滑点损失 0.1-0.5% 的费用。
+2. **审批管理**：正确处理 Permit2 审批流程——这是导致 DCA 执行失败的一个常见原因。一次设置即可覆盖未来的所有交易。
+3. **两种自动化模式**：自执行模式（由代理触发交易）适用于开发和测试；Gelato 保持器模式（链上自动化）适用于无需信任的环境。如果没有此功能，设置 Gelato 保持器需要了解任务创建、解析器合约和费用支付的相关知识。
+4. **内置安全机制**：每次交易都会经过安全检查，包括滑点防护、余额验证和断路器保护。手动定投没有这些安全机制——配置错误的机器人可能会因一次错误交易而耗尽钱包资金。
+5. **成本预测**：在执行前会显示包括 gas 费用、滑点和保持器费用在内的总成本预测，避免意外支出。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户提出以下需求时，可以使用此功能：
+- “在 Uniswap 上设置自动定投”
+- “创建定期交易”
+- “每周用 USDC 自动购买 ETH”
+- “构建自动定投机器人”
+- “每天用 100 美元自动购买 ETH”
+- “每周购买 WBTC”
+- “在未来 3 个月内积累 UNI”
+- “安排定期从 USDC 到 ETH 的交易”
 
-- "Set up dollar-cost averaging on Uniswap"
-- "Create a recurring swap"
-- "Auto-buy ETH with USDC weekly"
-- "Build a DCA bot"
-- "DCA into ETH every day with $100"
-- "Set up weekly buys of WBTC"
-- "Accumulate UNI over the next 3 months"
-- "Schedule recurring swaps from USDC to ETH"
+**不适用场景**：
+- 用户仅需要执行一次性交易（请使用 `execute-swap`）；
+- 用户需要管理现有的 DCA 策略（目前不支持，需取消并重新创建）；
+- 用户希望将资金投入 LP 位置（请使用 `full-lp-workflow`）。
 
-**Do NOT use** when the user wants a one-time swap (use `execute-swap` instead), wants to manage an existing DCA (not yet supported -- cancel and recreate), or wants to DCA into LP positions (use `full-lp-workflow` instead).
+## 参数
 
-## Parameters
+| 参数                | 是否必填 | 默认值       | 获取方式                                                                                   |
+|------------------|--------|------------|-----------------------------------------------------------------------------------------|
+| targetAsset           | 是       | --          | 需要积累的代币：“ETH”、“WBTC”、“UNI”、“SOL” 或 0x 地址                                      |
+| amountPerExecution    | 是       | --          | 每次交易的金额：“100 美元”、“100 USDC” 或 “相当于 0.1 ETH 的价值”                         |
+| inputToken          | 否       | USDC         | 需要支付的代币：“USDC”、“USDT”、“DAI”、“WETH”                                      |
+| frequency           | 否       | weekly       | 执行频率：“daily”、“weekly”、“biweekly”、“monthly”                                        |
+| totalExecutions      | 否       | --          | 执行次数：“52 周”、“12 个月” 或 “无限期”                                        |
+| chain              | 否       | ethereum     | 目标链：“ethereum”、“base”、“arbitrum”                                      |
+| slippageTolerance     | 否       | 50 (0.5%)      | 每次交易的最大滑点百分比（以基点计）                                        |
+| keeperMode           | 否       | self-execute    | “self-execute”（代理触发）或 “gelato”（链上自动化）                                    |
+| startImmediately       | 否       | true         | 是否立即执行首次交易                                                          |
 
-| Parameter            | Required | Default      | How to Extract                                                                  |
-| -------------------- | -------- | ------------ | ------------------------------------------------------------------------------- |
-| targetAsset          | Yes      | --           | Token to accumulate: "ETH", "WBTC", "UNI", "SOL", or 0x address               |
-| amountPerExecution   | Yes      | --           | Amount per swap: "$100", "100 USDC", "0.1 ETH worth"                           |
-| inputToken           | No       | USDC         | Token to spend: "USDC", "USDT", "DAI", "WETH"                                 |
-| frequency            | No       | weekly       | "daily", "weekly", "biweekly", "monthly"                                       |
-| totalExecutions      | No       | --           | Number of executions: "52 weeks", "12 months", "indefinite"                    |
-| chain                | No       | ethereum     | Target chain: "ethereum", "base", "arbitrum"                                   |
-| slippageTolerance    | No       | 50 (0.5%)    | Max slippage in basis points per execution                                     |
-| keeperMode           | No       | self-execute | "self-execute" (agent-triggered) or "gelato" (on-chain keeper automation)      |
-| startImmediately     | No       | true         | Whether to execute the first swap now                                          |
+如果用户未提供 `amountPerExecution` 或 `targetAsset`，**请询问用户这些信息**——切勿自行猜测 DCA 策略的参数。
 
-If the user doesn't provide `amountPerExecution` or `targetAsset`, **ask for them** -- never guess a DCA strategy.
-
-## Workflow
+## 工作流程
 
 ```
                            DCA SETUP PIPELINE
@@ -117,15 +119,14 @@ If the user doesn't provide `amountPerExecution` or `targetAsset`, **ask for the
   └──────────────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Validate & Analyze
+### 第 1 步：验证与分析
 
-Check prerequisites before committing to a strategy:
+在确认执行策略之前，请检查以下前提条件：
+1. 调用 `mcp__uniswap__get_agent_balance` 以验证钱包中有足够的 `inputToken` 余额（至少足够进行 3 次交易）。
+2. 调用 `mcp__uniswap__get_token_price` 获取 `targetAsset` 的价格基准。
+3. 调用 `mcp__uniswap__check_safety_status` 以确认支出限额是否满足 DCA 的需求。
 
-1. Call `mcp__uniswap__get_agent_balance` to verify the wallet has sufficient `inputToken` balance for at least 3 executions (safety buffer).
-2. Call `mcp__uniswap__get_token_price` for the `targetAsset` to establish a price baseline.
-3. Call `mcp__uniswap__check_safety_status` to verify spending limits can accommodate the DCA.
-
-**Present to user:**
+**向用户展示结果：**
 
 ```text
 Step 1/6: Validation
@@ -140,15 +141,15 @@ Step 1/6: Validation
   Proceeding to path selection...
 ```
 
-**Gate check:** If the wallet balance covers fewer than 3 executions, warn the user and ask if they want to proceed with a shorter DCA period.
+**检查提示：** 如果钱包余额不足以支持 3 次交易，请警告用户并询问是否希望缩短 DCA 周期。
 
-### Step 2: Find Optimal Swap Path
+### 第 2 步：寻找最优交易路径
 
-1. Call `mcp__uniswap__get_pools_by_token_pair` for `inputToken`/`targetAsset` on the target chain.
-2. Call `mcp__uniswap__get_quote` at the `amountPerExecution` size for the top 2-3 pools to compare price impact.
-3. Select the route with the lowest price impact at the DCA execution size.
+1. 调用 `mcp__uniswap__get_pools_by_token_pair` 获取目标链上 `inputToken`/`targetAsset` 对应的池信息。
+2. 调用 `mcp__uniswap__get_quote` 获取 `amountPerExecution` 数量下前 2-3 个池的价格信息，以便比较交易成本。
+3. 选择交易成本最低的路径。
 
-**Present to user:**
+**向用户展示结果：**
 
 ```text
 Step 2/6: Path Selection
@@ -161,9 +162,9 @@ Step 2/6: Path Selection
   Proceeding to cost projection...
 ```
 
-### Step 3: Cost Projection
+### 第 3 步：成本预测
 
-Calculate the full cost of the DCA strategy:
+计算 DCA 策略的总成本：
 
 ```text
 Step 3/6: Cost Projection
@@ -189,9 +190,9 @@ Step 3/6: Cost Projection
   Ready for your confirmation...
 ```
 
-### Step 4: User Confirmation
+### 第 4 步：用户确认
 
-Present the full strategy summary and ask for explicit confirmation:
+向用户展示完整的策略摘要，并请求明确确认：
 
 ```text
 DCA Strategy Confirmation
@@ -210,11 +211,11 @@ DCA Strategy Confirmation
   Proceed with this DCA strategy? (yes/no)
 ```
 
-**Only proceed to Step 5 if the user explicitly confirms.**
+**只有在用户明确确认后，才能进入第 5 步。**
 
-### Step 5: Configure & Execute
+### 第 5 步：配置与执行
 
-Delegate the first execution to `Task(subagent_type:trade-executor)`:
+将首次交易委托给 `Task(subagent_type:trade-executor)`：
 
 ```
 Execute this swap as the first DCA execution:
@@ -226,9 +227,9 @@ Execute this swap as the first DCA execution:
   Route through the {fee}% pool for optimal execution at this size.
 ```
 
-After execution, write the DCA configuration:
+执行完成后，保存 DCA 配置文件：
 
-**For self-execute mode**, write `.uniswap/dca-config.json`:
+**对于自执行模式**，将配置文件保存为 `.uniswap/dca-config.json`：
 
 ```json
 {
@@ -254,12 +255,12 @@ After execution, write the DCA configuration:
 }
 ```
 
-**For Gelato mode**, create a Gelato Automate task with:
-- Resolver: check if `block.timestamp >= nextExecution`
-- Executor: swap via Universal Router with the configured route
-- Fund the Gelato task with ETH for keeper fees
+**对于 Gelato 模式**，创建一个 Gelato 自动化任务，包括：
+- 解析器：检查 `block.timestamp` 是否大于下次执行时间；
+- 执行器：通过 Universal Router 使用配置的路径执行交易；
+- 用 ETH 为保持器支付费用。
 
-### Step 6: Monitoring Setup
+### 第 6 步：监控与设置
 
 ```text
 Step 6/6: DCA Active
@@ -278,9 +279,9 @@ Step 6/6: DCA Active
   Config: .uniswap/dca-config.json
 ```
 
-## Output Format
+## 输出格式
 
-### Successful Setup
+### 设置成功
 
 ```text
 DCA Strategy Active
@@ -310,7 +311,7 @@ DCA Strategy Active
   Status: ACTIVE -- 1/52 executions complete
 ```
 
-### Setup Without Immediate Execution
+### 未立即执行的设置
 
 ```text
 DCA Strategy Configured (Not Started)
@@ -328,28 +329,28 @@ DCA Strategy Configured (Not Started)
   Status: CONFIGURED -- awaiting first execution
 ```
 
-## Important Notes
+## 重要说明
 
-- **DCA is a long-term strategy.** This skill sets up the configuration and optionally executes the first swap. Subsequent executions depend on the keeper mode: self-execute requires the agent to be running, Gelato mode runs autonomously on-chain.
-- **Self-execute mode requires the agent to be online.** If the agent is offline when an execution is due, it will execute on the next run. Gelato mode is fully autonomous and does not require the agent.
-- **Gas costs matter for small DCA amounts.** At $2-5 per swap on Ethereum mainnet, a $10/week DCA loses 20-50% to gas. The skill warns if gas exceeds 5% of the execution amount and suggests Base or Arbitrum for cheaper execution.
-- **Slippage is typically negligible for DCA.** DCA amounts are usually small relative to pool TVL, so price impact is minimal. The skill still enforces the slippage tolerance as a safety guard.
-- **The DCA config file is the source of truth.** The `.uniswap/dca-config.json` file tracks execution history, next execution time, and strategy parameters. Deleting it effectively cancels the DCA.
-- **To cancel a DCA**, delete the config file or set `status` to `"cancelled"`. For Gelato mode, the Gelato task must also be cancelled on-chain.
-- **L2 chains are recommended for small DCA amounts.** Base and Arbitrum have gas costs 10-100x lower than Ethereum mainnet, making small DCA strategies viable.
+- **DCA 是一种长期策略。** 该功能仅设置配置，首次交易可选项由用户选择是否执行。后续交易取决于保持器模式：自执行模式需要代理运行；Gelato 模式则完全在链上自动执行。
+- **自执行模式需要代理在线。** 如果代理在交易执行时离线，交易将推迟到下次执行。Gelato 模式完全自动化，无需代理。
+- **对于小额 DCA，gas 费用很重要。** 在以太坊主网上，每次交易的 gas 费用约为 2-5 美元，因此每周 100 美元的 DCA 策略可能因 gas 而损失 20-50% 的费用。如果 gas 费用超过交易金额的 5%，系统会发出警告，并建议使用 Base 或 Arbitrum 进行交易。
+- **DCA 的滑点通常可以忽略不计。** DCA 的交易金额相对于池的总价值（TVL）来说通常较小，因此价格影响很小。尽管如此，系统仍会强制执行滑点容忍度作为安全措施。
+- **DCA 配置文件是核心依据。** `.uniswap/dca-config.json` 文件记录了交易历史、下次执行时间和策略参数。删除该文件将取消 DCA 策略。
+- **要取消 DCA，需删除配置文件或将 `status` 设置为 “cancelled”。对于 Gelato 模式，还需在链上取消相应的自动化任务。
+- **对于小额 DCA，建议使用 L2 链。** Base 和 Arbitrum 的 gas 费用比以太坊主网低 10-100 倍，适合小额定投策略。
 
-## Error Handling
+## 错误处理
 
-| Error                      | User-Facing Message                                                                | Suggested Action                                      |
-| -------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Insufficient balance       | "Wallet has {X} {inputToken} but DCA needs at least {Y} for 3 executions."        | Fund wallet or reduce amount per execution            |
-| Target asset not found     | "Could not find {targetAsset} on {chain}."                                         | Check spelling or provide contract address            |
-| No pools found             | "No Uniswap pools found for {inputToken}/{targetAsset} on {chain}."                | Try a different chain or token pair                   |
-| Gas too high               | "Gas cost (~${X}) exceeds 5% of execution amount (${Y}). Consider using Base."    | Switch to an L2 chain for cheaper execution           |
-| Safety check failed        | "Safety limits would be exceeded by this DCA strategy."                            | Adjust spending limits or reduce DCA amount           |
-| Approval failed            | "Could not approve {inputToken} for Permit2: {reason}."                            | Check wallet permissions and retry                    |
-| First execution failed     | "First DCA execution failed: {reason}. Strategy configured but not started."       | Fix the issue and manually trigger first execution    |
-| Gelato setup failed        | "Could not create Gelato automation task: {reason}."                               | Use self-execute mode instead                         |
-| Config write failed        | "Could not write DCA configuration: {reason}."                                     | Check file permissions                                |
-| Wallet not configured      | "No wallet configured. Cannot execute DCA."                                        | Set up wallet with setup-agent-wallet                 |
-| Spending limit exceeded    | "DCA total (${X}) exceeds daily spending limit (${Y})."                            | Adjust spending limits or reduce DCA frequency/amount |
+| 错误类型                | 向用户显示的提示              | 建议的操作                                      |
+|------------------|----------------------------------|-----------------------------------------------------|
+| 账户余额不足             | “钱包中有 {X} {inputToken}，但 DCA 需要至少 {Y} 来完成 3 次交易。”        | 为钱包充值或减少每次交易的金额                          |
+| 未找到目标资产             | “在 {chain} 上未找到 {targetAsset}。”                          | 检查拼写或提供合约地址                            |
+| 未找到交易池             | “在 {chain} 上未找到 {inputToken}/{targetAsset} 的交易池。”         | 尝试其他链或代币对                              |
+| Gas 费用过高             | “Gas 费用（约 ${X}）超过了交易金额的 5%（{Y}）。建议使用 Base 链。”        | 更换到成本更低的 L2 链                          |
+| 安全检查失败             | “该 DCA 策略会超出安全限制。”                          | 调整支出限额或减少交易金额                          |
+| 审批失败             | “无法批准 {inputToken} 的 Permit2 请求：{原因}。”                   | 检查钱包权限并重试                              |
+| 首次交易失败             | “首次 DCA 执行失败：{原因}。策略已配置但未启动。”                     | 解决问题并手动触发首次交易                          |
+| Gelato 设置失败             | “无法创建 Gelato 自动化任务：{原因}。”                         | 使用自执行模式                              |
+| 配置文件写入失败             | “无法写入 DCA 配置文件：{原因}。”                         | 检查文件权限                              |
+| 未配置钱包             | “未配置钱包。无法执行 DCA。”                          | 使用 `setup-agent-wallet` 功能配置钱包                    |
+| 超出支出限额             | “DCA 总金额（{X}）超过了每日支出限额（{Y}。”                     | 调整支出限额或减少交易频率/金额                          |

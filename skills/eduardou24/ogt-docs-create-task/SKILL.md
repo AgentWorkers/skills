@@ -1,15 +1,15 @@
 ---
 name: ogt-docs-create-task
-description: Create and manage task documents in the docs/todo/ workflow. Use when creating new tasks, updating task status, or moving tasks between workflow stages. Provides complete task lifecycle management with verification.
+description: 在 `docs/todo/` 工作流中创建和管理任务文档。适用于创建新任务、更新任务状态或在工作流的不同阶段之间移动任务。该系统提供了完整的任务生命周期管理功能，并支持任务状态的验证。
 ---
 
-# OGT Docs - Create Task
+# OGT 文档 - 任务创建
 
-Complete guide for creating and managing tasks in the docs-first workflow.
+本文档提供了在“文档优先”（docs-first）工作流程中创建和管理任务的完整指南。
 
-## Overview
+## 概述
 
-Tasks are the unit of work in the docs-first system. Each task is a **folder** that moves through workflow stages, accumulating documentation and signals as it progresses.
+任务是“文档优先”系统中的工作单元。每个任务都相当于一个文件夹，它会依次经历不同的工作流程阶段，在此过程中逐步积累文档和相关的信号（signals）。
 
 ```mermaid
 flowchart LR
@@ -36,7 +36,7 @@ flowchart LR
     style IMP fill:#a7f3d0
 ```
 
-## Folder Structure
+## 文件夹结构
 
 ```
 docs/todo/
@@ -109,11 +109,11 @@ docs/todo/
 
 ---
 
-## Stage: pending/
+## 阶段：待处理（pending）
 
-Tasks that are defined but not yet started.
+这些任务已被定义，但尚未开始执行。
 
-### Example: pending/fuzzy_search/
+### 示例：pending/fuzzy_search/
 
 ```
 pending/
@@ -200,11 +200,11 @@ high
 
 ---
 
-## Stage: in_progress/
+## 阶段：进行中（in_progress）
 
-Tasks actively being worked on.
+这些任务正在积极处理中。
 
-### Example: in_progress/card_variants/
+### 示例：in_progress/card_variants/
 
 ```
 in_progress/
@@ -299,11 +299,11 @@ Large (4-8 hours)
 
 ---
 
-## Stage: review/
+## 阶段：审核中（review）
 
-Tasks completed and awaiting review.
+这些任务已完成，正在等待审核。
 
-### Example: review/spell_routes/
+### 示例：review/spell_routes/
 
 ```
 review/
@@ -375,11 +375,11 @@ spell_detail: {
   label: 'Spell Detail',
 }
 ```
-````
+```
 
 ### front/app/App.tsx
 
-Added import and route:
+添加了导入语句和路由配置：
 
 ```typescript
 import SpellDetailView from './(main)/compendium/SpellDetailView';
@@ -387,18 +387,18 @@ import SpellDetailView from './(main)/compendium/SpellDetailView';
 <Route path="/spells/:slug" element={<SpellDetailView />} />
 ```
 
-## Testing
+## 测试
 
-- Manual test: /spells/fireball loads correctly
-- Manual test: /spells/magic-missile loads correctly
-- TypeScript: No errors
+- 手动测试：/spells/fireball 能正确加载
+- 手动测试：/spells/magic-missile 能正确加载
+- TypeScript 编译无误
 
 ```
 
 #### .ready_for_review
 ```
 
-(empty file)
+（空文件）
 
 ```
 
@@ -440,57 +440,48 @@ blocked/
 
 #### task.md
 ```markdown
-# Task: Auth Service Refactor
+# 任务：认证服务重构（Auth Service Refactor）
 
-## Summary
-Refactor AuthService to support multiple OAuth providers.
+## 目标
+- 重构 AuthService 以支持多种 OAuth 提供商
+- 添加 Steam OAuth 支持
+- 实现令牌刷新机制
+- 更新所有使用认证服务的组件
 
-## Objectives
-- Abstract provider-specific logic
-- Add Steam OAuth support
-- Implement token refresh flow
-- Update all auth consumers
+## 接受标准
+- [ ] Google OAuth 仍然可用
+- [ ] Discord OAuth 仍然可用
+- [ ] Steam OAuth 可用
+- [ ] 令牌刷新功能自动触发
+- [ ] API 不会发生任何破坏性变更
 
-## Acceptance Criteria
-- [ ] Google OAuth still works
-- [ ] Discord OAuth still works
-- [ ] Steam OAuth works
-- [ ] Token refresh is automatic
-- [ ] No breaking changes to API
-````
+## 进度
 
-#### progress.md
+## 2026-02-03 14:00 - 开始
+- 分析当前的 AuthService 实现
+- 确定了 3 个需要重构的代码路径
 
-```markdown
-# Progress: Auth Refactor
+## 2026-02-03 15:00 - 暂停
+- Steam OAuth 需要服务器端修改
+- 后端团队需要将 Steam 提供商添加到 Strapi 中
+- 在后端工作完成之前无法继续
 
-## 2026-02-03 14:00 - Started
+## 等待事项
+- 后端任务：“将 Steam OAuth 提供商添加到 Strapi”
 
-- Analyzed current AuthService implementation
-- Identified 3 provider-specific code paths
-
-## 2026-02-03 15:00 - BLOCKED
-
-- Steam OAuth requires server-side changes
-- Backend team needs to add Steam provider to Strapi
-- Cannot proceed until backend work is complete
-
-## Waiting For
-
-- Backend task: "Add Steam OAuth Provider to Strapi"
-- ETA: Unknown
 ```
 
 #### .blocked
 
 ```
-(empty file)
+（空文件）
 ```
 
 #### .blocked_reason
 
 ```
-Requires backend changes: Steam OAuth provider must be added to Strapi before frontend can implement Steam login flow. Backend task not yet created.
+**注意：** 在前端实现 Steam 登录功能之前，必须先在后端添加 Steam OAuth 提供商。
+
 ```
 
 #### .blocked_at
@@ -502,8 +493,9 @@ Requires backend changes: Steam OAuth provider must be added to Strapi before fr
 #### .depends_on
 
 ```
-- backend/steam_oauth_provider (not yet created)
-- Strapi plugin configuration
+- backend/steam.oauth_provider （尚未创建）
+- Strapi 插件配置
+
 ```
 
 ---
@@ -530,39 +522,36 @@ done/
 #### task.md
 
 ```markdown
-# Task: OGT CLI Check Commands
+# 任务：OGT 命令行工具（OGT CLI Commands）
 
-## Summary
+## 目标
 
-Create generic file/data validation CLI tools under `ogt check`.
+在 `ogt check` 下创建通用的文件和数据验证命令行工具。
 
-## Objectives
+## 目标
+- `ogt check assets`：检查缺失的文件
+- `ogt check slugs`：验证 slug 的格式
+- `ogt check indexed`：验证 `index.ts` 的导出内容
+- `ogt check data`：根据schema 验证数据
 
-- ogt check assets - Check for missing files
-- ogt check slugs - Verify slug conventions
-- ogt check indexed - Verify index.ts exports
-- ogt check data - Validate against schema
+## 接受标准
+- [x] 所有命令都支持 `--help` 参数
+- [x] 命令返回正确的退出代码
+- [x] 支持 JSON 输出格式
+- [x] TypeScript 编译无误
 
-## Acceptance Criteria
-
-- [x] All commands have --help
-- [x] Commands return proper exit codes
-- [x] JSON output option available
-- [x] TypeScript compiles clean
 ```
 
 #### verification.md
 
-````markdown
-# Verification: OGT CLI Commands
+```
+# 验证：OGT 命令行工具（Verification: OGT CLI Commands）
 
-## Verification Date
+## 验证日期：2026-01-30
 
-2026-01-30
+## 执行的测试
 
-## Tests Performed
-
-### Command Existence
+### 命令存在性测试
 
 ```bash
 $ ogt check --help
@@ -586,23 +575,25 @@ $ ogt check data --help
 
 ```bash
 $ ogt check indexed creatures
-# ✅ Returns JSON with 197 total, 197 passed
+# ✅ 返回 JSON，显示共有 197 个条目，全部通过验证
 
 $ ogt check slugs front/data/app-creatures -r
-# ✅ Returns JSON with slug validation results
+# ✅ 返回 slug 验证结果的 JSON
 
-$ ogt check assets static/public/creatures portrait.png -r
-# ✅ Returns JSON listing missing portraits
+$ ogt check assets static/public/creaturesportrait.png -r
+# ✅ 返回缺失的 portrait 文件列表的 JSON
+
 ```
 
 ### Exit Codes
 
 ```bash
 $ ogt check indexed creatures && echo "pass"
-# ✅ Exits 0, prints "pass"
+# ✅ 输出 "pass"
 
 $ ogt check indexed nonexistent || echo "fail"
-# ✅ Exits 1, prints "fail"
+# ✅ 输出 "fail"
+
 ```
 
 ## Verification Result
@@ -634,11 +625,11 @@ $ ogt check indexed nonexistent || echo "fail"
 
 ---
 
-## Stage: rejected/
+## 阶段：被拒绝（rejected）
 
-Tasks that were declined and will not be implemented.
+这些任务已被拒绝，不会被进一步实现。
 
-### Example: rejected/legacy_api_compat/
+### 示例：rejected/legacy_api_compat/
 
 ```
 
@@ -650,9 +641,10 @@ rejected/
 ├── .rejected_reason
 └── .rejected_at
 
-````
+```
 
 #### task.md
+
 ```markdown
 # Task: Legacy API Compatibility Layer
 
@@ -668,7 +660,7 @@ Create compatibility layer for v0 API endpoints.
 - [ ] All v0 endpoints work
 - [ ] Deprecation headers sent
 - [ ] Usage logging enabled
-````
+```
 
 #### .rejected
 
@@ -699,11 +691,11 @@ See: docs/guides/v0_to_v1_migration/
 
 ---
 
-## Stage: implemented/
+## 阶段：已实现（implemented）
 
-Tasks that are done AND deployed/released to production.
+这些任务已经完成，并部署到生产环境中。
 
-### Example: implemented/creatures_index/
+### 示例：implemented/creatures_index/
 
 ```
 implemented/
@@ -732,30 +724,18 @@ v1.2.0
 
 ---
 
-## Task Lifecycle Operations
+## 任务生命周期操作
 
-### Creating a New Task
+### 创建新任务
 
-```mermaid
-flowchart TD
-    A[User Request] --> B{Task Defined?}
-    B -->|No| C[Create task.md]
-    C --> D[Add context.md if needed]
-    D --> E[Set .priority]
-    E --> F[Add .version]
-    F --> G[Place in pending/]
-    B -->|Yes| H[Update existing task]
-```
+**步骤：**
+1. 创建文件夹：`docs/todo/pending/{task_slug}/`
+2. 创建 `task.md` 文件，包含任务摘要、目标、接受标准等信息
+3. （可选）添加 `context.md` 文件以记录背景信息
+4. 创建 `.priority` 文件，指定任务的优先级（紧急/高/中/低）
+5. 创建 `.version` 文件，记录任务的版本信息
 
-**Steps:**
-
-1. Create folder: `docs/todo/pending/{task_slug}/`
-2. Create `task.md` with Summary, Objectives, Acceptance Criteria
-3. Optionally add `context.md` for background
-4. Create `.priority` with level (critical/high/medium/low)
-5. Create `.version` with schema version
-
-### Starting a Task
+### 启动任务
 
 ```bash
 # Move from pending to in_progress
@@ -771,7 +751,7 @@ echo "$(date -Iseconds)" > docs/todo/in_progress/{task_slug}/.started_at
 touch docs/todo/in_progress/{task_slug}/progress.md
 ```
 
-### Blocking a Task
+### 暂停任务（Blocking a Task）
 
 ```bash
 # Move to blocked
@@ -783,7 +763,7 @@ echo "Reason here" > docs/todo/blocked/{task_slug}/.blocked_reason
 echo "$(date -Iseconds)" > docs/todo/blocked/{task_slug}/.blocked_at
 ```
 
-### Submitting for Review
+### 提交任务进行审核
 
 ```bash
 # Move to review
@@ -797,9 +777,9 @@ echo "$(date -Iseconds)" > docs/todo/review/{task_slug}/.review_requested_at
 # Create implementation.md documenting what was done
 ```
 
-### Completing a Task
+### 完成任务
 
-**CRITICAL: Must verify before marking done!**
+**重要提示：** 在标记任务为“完成”之前，必须先进行验证！
 
 ```bash
 # 1. Run ALL acceptance criteria checks
@@ -815,7 +795,7 @@ echo "$(date -Iseconds)" > docs/todo/done/{task_slug}/.completed_at
 touch docs/todo/done/{task_slug}/.verified_by_{agent}
 ```
 
-### Rejecting a Task
+### 拒绝任务（Rejecting a Task）
 
 ```bash
 # Move to rejected
@@ -829,45 +809,45 @@ echo "$(date -Iseconds)" > docs/todo/rejected/{task_slug}/.rejected_at
 
 ---
 
-## Signal Files Reference
+## 信号文件说明
 
-### Status Signals (empty files)
+### 状态信号（Status Signals，为空文件）
 
-| Signal              | Stage               | Meaning                                |
-| ------------------- | ------------------- | -------------------------------------- |
-| `.blocked`          | blocked/            | Task cannot proceed                    |
-| `.ready_for_review` | review/             | Ready for review                       |
-| `.verified`         | done/, implemented/ | **REQUIRED** - Implementation verified |
-| `.rejected`         | rejected/           | Task declined                          |
+| 信号                          | 阶段                | 含义                                      |
+| --------------------------- | ---------------------- | -------------------------------------- |
+| `.blocked`          | blocked/            | 任务无法继续执行                          |
+| `.ready_for_review`     | review/             | 已准备好接受审核                          |
+| `.verified`         | done/, implemented/       | 任务已实现并经过验证                         |
+| `.rejected`         | rejected/           | 任务被拒绝                              |
 
-### Assignment Signals (empty files)
+### 分配信号（Assignment Signals，为空文件）
 
-| Signal                 | Stage        | Meaning             |
-| ---------------------- | ------------ | ------------------- |
-| `.assigned_to_{agent}` | in_progress/ | Who's working on it |
-| `.verified_by_{agent}` | done/        | Who verified it     |
-| `.approved_by_{name}`  | any          | Who approved        |
+| 信号                          | 阶段                | 含义                                      |
+| --------------------------- | ---------------------- | -------------------------------------- |
+| `.assigned_to_{agent}`     | in_progress/           | 任务当前由 {agent} 负责处理                |
+| `.verified_by_{agent}`     | done/                | 任务已由 {agent} 验证                         |
+| `.approved_by_{name}`     | any                | 任务已由 {name} 批准                         |
 
-### Content Signals (contain text)
+### 内容信号（Content Signals，包含文本）
 
-| Signal             | Content             | Example                               |
-| ------------------ | ------------------- | ------------------------------------- |
-| `.version`         | JSON schema version | `{"schema": "1.0", "created": "..."}` |
-| `.priority`        | Priority level      | `high`                                |
-| `.blocked_reason`  | Why blocked         | Free text explanation                 |
-| `.rejected_reason` | Why rejected        | Free text explanation                 |
-| `.depends_on`      | Dependencies        | List of dependencies                  |
-| `.pr_link`         | PR URL              | `https://github.com/...`              |
-| `.started_at`      | ISO timestamp       | `2026-02-05T10:00:00Z`                |
-| `.completed_at`    | ISO timestamp       | `2026-02-05T14:00:00Z`                |
-| `.blocked_at`      | ISO timestamp       | `2026-02-05T12:00:00Z`                |
-| `.rejected_at`     | ISO timestamp       | `2026-02-05T09:00:00Z`                |
-| `.implemented_at`  | ISO timestamp       | `2026-02-05T16:00:00Z`                |
-| `.release_version` | Version string      | `v1.2.0`                              |
+| 信号                          | 内容                        | 示例                                      |
+| --------------------------- | -------------------------------------- | -------------------------------------- |
+| `.version`         | JSON 格式的版本信息          | `{"schema": "1.0", "created": "..."}`                |
+| `.priority`        | 任务的优先级                | `high`                                      |
+| `.blocked_reason`     | 任务被暂停的原因                | 详细说明原因                         |
+| `.rejected_reason`     | 任务被拒绝的原因                | 详细说明拒绝原因                         |
+| `.depends_on`      | 任务的依赖关系                | 任务所依赖的其他任务列表                         |
+| `.pr_link`        | 任务对应的 Pull Request URL         | `https://github.com/...`                         |
+| `.started_at`      | 任务开始的 ISO 时间戳           | `2026-02-05T10:00:00Z`                        |
+| `.completed_at`    | 任务完成的 ISO 时间戳           | `2026-02-05T14:00:00Z`                        |
+| `.blocked_at`      | 任务被暂停的 ISO 时间戳           | `2026-02-05T12:00:00Z`                        |
+| `.rejected_at`     | 任务被拒绝的 ISO 时间戳           | `2026-02-05T09:00:00Z`                        |
+| `.implemented_at`    | 任务完成的 ISO 时间戳           | `2026-02-05T16:00:00Z`                        |
+| `.release_version`     | 任务的发布版本              | `v1.2.0`                                |
 
 ---
 
-## Task.md Template
+## task.md 模板
 
 ```markdown
 # Task: {Title}
@@ -906,11 +886,11 @@ One paragraph describing what needs to be done and why.
 
 ---
 
-## Verification Rules
+## 验证规则
 
-**NEVER mark a task as done without verification.**
+**切勿在未经验证的情况下将任务标记为“完成”！**
 
-### Verification Checklist
+### 验证检查清单（Verification Checklist）
 
 ```markdown
 ## For each acceptance criterion:
@@ -955,13 +935,13 @@ One paragraph describing what needs to be done and why.
 
 ---
 
-## Common Mistakes
+## 常见错误
 
-| Mistake                           | Why It's Wrong              | Correct Approach              |
-| --------------------------------- | --------------------------- | ----------------------------- |
-| Moving to done/ without .verified | No proof of completion      | Verify first, then move       |
-| Trusting task.md checkboxes       | Checkboxes can be wrong     | Run actual verification       |
-| Skipping implementation.md        | No record of what changed   | Document all changes          |
-| Empty verification.md             | No proof of verification    | Record actual test output     |
-| Multiple tasks in progress        | Context switching waste     | Finish one, then start next   |
-| Editing task.md in done/          | History should be immutable | Create follow-up task instead |
+| 错误类型                        | 错误原因                          | 正确做法                                      |
+| -------------------------------------- | -------------------------------------- | ------------------------------------------------------ |
+| 在未完成验证的情况下将任务标记为“完成”        | 未完成验证就直接标记为完成                        | 先完成验证，再标记为完成                          |
+| 仅依赖任务.md 中的复选框来判断任务状态       | 复选框的状态可能不准确                         | 必须实际执行验证操作                          |
+| 跳过 implementation.md 文件的验证            | 无法记录实际发生的变更                         | 必须记录所有的变更                          |
+| verification.md 文件为空                    | 无法证明任务已经过验证                         | 必须记录验证的结果                         |
+| 同时处理多个进行中的任务                | 会导致工作效率下降                         | 完成一个任务后再开始下一个                         |
+| 在任务已被标记为“完成”的情况下编辑任务文件        | 任务的历史记录应该是不可变的                         | 应为每个任务创建单独的跟踪文件                         |

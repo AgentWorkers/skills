@@ -1,76 +1,76 @@
 ---
 name: ASO
-description: Optimize app store listings with keyword research, A/B testing, and conversion tactics for iOS and Android.
+description: 通过关键词研究、A/B测试以及针对iOS和Android平台的转化策略来优化应用商店的展示效果。
 metadata: {"clawdbot":{"emoji":"📲","os":["linux","darwin","win32"]}}
 ---
 
-# App Store Optimization Rules
+# 应用商店优化规则
 
-## Keyword Research
-- Competitor analysis: what keywords do top apps rank for?
-- Search volume vs difficulty: long-tail converts better than head terms
-- Seasonal keywords: plan metadata updates around trends
-- Localize keyword research per market — direct translation misses local search patterns
-- Track ranking changes weekly — ASO is continuous optimization
+## 关键词研究
+- 竞品分析：热门应用排名靠哪些关键词？
+- 搜索量与关键词难度：长尾关键词的转化效果更好
+- 季节性关键词：根据市场趋势规划元数据更新
+- 根据不同市场进行关键词研究——直接翻译可能忽略当地的搜索习惯
+- 每周跟踪排名变化——应用商店优化是一个持续的过程
 
-## iOS Metadata
-- Title (30 chars): primary keyword + brand, front-load keywords
-- Subtitle (30 chars): secondary keywords, benefit statement
-- Keyword field (100 chars): no spaces after commas, no duplicates from title/subtitle
-- Apple indexes title, subtitle, keyword field, and IAP names
-- Promotional text doesn't affect ranking — use for timely updates
+## iOS 元数据
+- 标题（30个字符）：主要关键词 + 品牌名称，将关键词放在前面
+- 副标题（30个字符）：次要关键词，突出产品优势
+- 关键词字段（100个字符）：逗号后不得有空格，避免与标题/副标题重复
+- Apple 会索引标题、副标题、关键词字段以及应用内购买（IAP）的名称
+- 促销文本不会影响排名——仅用于及时更新元数据
 
-## Android Metadata  
-- Title (30 chars): same rules as iOS
-- Short description (80 chars): high keyword density, hooks user
-- Long description (4000 chars): keywords in first and last paragraphs, 2-3% density
-- Google indexes all text including reviews
-- Developer name and URL affect rankings
+## Android 元数据
+- 标题（30个字符）：与 iOS 规则相同
+- 简短描述（80个字符）：高关键词密度，吸引用户注意
+- 详细描述（4000个字符）：关键词应出现在首段和末段，密度约为2-3%
+- Google 会索引所有文本，包括用户评价
+- 开发者名称和应用链接也会影响排名
 
-## Visual Optimization
-- First two screenshots = 80% of impression impact — make them count
-- Show outcomes and benefits, not UI — "Lost 20lbs" not "Calorie tracker"
-- Text overlays: large font, readable on small screens, localized
-- Video preview: 15-30 seconds, hook in first 3s, works without sound
-- Icon: simple, recognizable at 16px, stands out from competitors
+## 视觉优化
+- 前两张截图对用户印象影响最大——务必精心设计
+- 展示应用的实际效果和优势，而非仅仅展示用户界面——例如，标题可以是“减重20磅”而不是“卡路里追踪器”
+- 文本覆盖层：字体要大，便于在小屏幕上阅读，并进行本地化处理
+- 视频预览：时长15-30秒，前3秒内容要吸引人，即使没有声音也能有效传达信息
+- 图标：简单易识别，尺寸至少为16像素，以便在众多应用中脱颖而出
 
-## A/B Testing
-- iOS Custom Product Pages: test up to 35 variants per page
-- Google Store Listing Experiments: screenshots, descriptions, icons
-- Test one element at a time — multiple changes hide winners
-- Run tests to statistical significance — 7 days minimum
-- Winner replaces default, start next test
+## A/B测试
+- iOS 自定义产品页面：每个页面最多测试35个版本
+- Google 应用商店列表实验：可以测试截图、描述和图标
+- 每次只测试一个元素——同时进行多个更改可能会掩盖真正有效的方案
+- 测试需持续至少7天才能得出统计结果
+- 选定最佳方案后，替换默认设置，并开始下一次测试
 
-## Conversion Optimization
-- Ratings 4.0+ is table stakes — below kills conversion rate
-- Review count signals credibility — more installs = more reviews flywheel
-- "Editors' Choice" and featuring dramatically boost conversion
-- Size under 100MB avoids WiFi-only download friction
-- Recent updates signal active development
+## 转化率优化
+- 应用评分需达到4.0分以上——低于此分数会严重影响转化率
+- 用户评价数量能体现应用的可信度——安装量越多，获得的评价也越多
+- 被评为“编辑推荐”或被重点推广的应用转化率会显著提升
+- 应用大小应控制在100MB以内，以避免仅依赖WiFi下载的障碍
+- 定期更新能体现应用的活跃开发状态
 
-## Review Management
-- Respond to all negative reviews within 24 hours
-- Ask clarifying questions — often converts 1-star to 4-star after fix
-- Update response after shipping fixes — reviewers can update rating
-- Never argue, always empathize and offer solution
-- Report fake reviews through official channels
+## 评价管理
+- 在24小时内回复所有负面评价
+- 提出问题以获取更多信息——这通常能将1星评价提升为4星
+- 在修复问题后更新回复内容——用户可能会根据反馈调整评价
+- 绝不要争论，要表现出同理心并提供解决方案
+- 通过官方渠道举报虚假评价
 
-## Localization
-- Top 10 languages cover 80% of global downloads
-- Cultural adaptation > literal translation — local idioms, examples
-- Localize screenshots and video — text overlays must match language
-- Local keyword research per language — search behavior differs
-- Local pricing strategies — purchasing power varies
+## 本地化
+- 前10种语言的用户占全球下载量的80%
+- 本地化要注重文化适应——而非简单的文字翻译——要使用当地的习语和例子
+- 对截图和视频进行本地化处理——文本覆盖层的内容必须与目标语言一致
+- 根据不同语言进行关键词研究——不同语言的搜索习惯各不相同
+- 制定本地化的定价策略——考虑当地消费者的购买力
 
-## Seasonal and Event Strategy
-- Update metadata for holidays, events, seasons
-- iOS LiveOps and In-App Events boost visibility
-- Time updates to avoid review delays — submit 3+ days early
-- Coordinate with marketing campaigns — consistent messaging
+## 季节性和活动策略
+- 根据节日、活动或季节变化更新元数据
+- 使用iOS的实时运营（LiveOps）和应用程序内活动（In-App Events）来提高应用曝光度
+- 提前3天以上提交更新内容，以避免评价延迟
+- 与营销活动保持协调——确保信息传递的一致性
 
-## Tracking and Analytics
-- Impression to install conversion rate by source
-- Keyword rankings daily — catch drops early
-- Competitor tracking — their wins are your opportunities
-- Attribution: which keywords drive paying users, not just installs
-- Organic vs paid split — healthy apps have majority organic
+## 跟踪与分析
+- 按来源统计用户从看到应用到实际安装的转化率
+- 每日监控关键词的排名变化——及时发现潜在问题
+- 关注竞争对手的动态——他们的成功经验也是你的机会
+- 分析哪些关键词带来了付费用户——而不仅仅是安装量
+- 分析自然搜索和付费推广带来的流量——优质应用的主要流量通常来自自然搜索

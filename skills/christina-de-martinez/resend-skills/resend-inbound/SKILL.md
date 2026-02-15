@@ -1,72 +1,69 @@
 ---
 name: resend-inbound
-description: Use when receiving emails with Resend - setting up inbound domains, processing email.received webhooks, retrieving email content/attachments, or forwarding received emails.
+description: **使用场景：**  
+在接收包含“Resend”功能的电子邮件时，该功能可用于配置入站域名、处理 `email.received` Webhook、检索电子邮件内容/附件，或转发收到的电子邮件。
 ---
 
-# Receive Emails with Resend
+# 接收邮件并重新发送
 
-## Overview
+## 概述
 
-Resend processes incoming emails for your domain and sends webhook events to your endpoint. **Webhooks contain metadata only** - you must call separate APIs to retrieve email body and attachments.
+Resend 会为您的域名处理传入的邮件，并将 Webhook 事件发送到您的端点。**Webhook 仅包含元数据**——您需要调用单独的 API 来获取邮件正文和附件。
 
-## Quick Start
+## 快速入门
 
-1. **Configure receiving domain** - Use Resend's `.resend.app` domain or add MX record for custom domain
-2. **Set up webhook** - Subscribe to `email.received` event
-3. **Retrieve content** - Call Receiving API for body, Attachments API for files
+1. **配置接收域名**：使用 Resend 的 `.resend.app` 域名，或为自定义域名添加 MX 记录。
+2. **设置 Webhook**：订阅 `email.received` 事件。
+3. **获取邮件内容**：调用 Receiving API 获取邮件正文，调用 Attachments API 获取附件文件。
 
-## Domain Setup
+## 域名设置
 
-### Option 1: Resend-Managed Domain (Fastest)
+### 选项 1：Resend 管理的域名（最快）
 
-Use your auto-generated address: `<anything>@<your-id>.resend.app`
+使用自动生成的地址：`<anything>@<your-id>.resend.app`
 
-No DNS configuration needed. Find your address in Dashboard → Emails → Receiving → "Receiving address".
+无需进行 DNS 配置。您可以在仪表板 → 邮件 → 接收 → “接收地址” 中找到该地址。
 
-### Option 2: Custom Domain
+### 选项 2：自定义域名
 
-Add MX record to receive at `<anything>@yourdomain.com`.
+为 `<anything>@yourdomain.com` 添加 MX 记录以接收邮件。
 
-| Setting | Value |
+| 设置 | 值 |
 |---------|-------|
-| **Type** | MX |
-| **Host** | Your domain or subdomain |
-| **Value** | Provided in Resend dashboard |
-| **Priority** | 10 (**lowest number** wins a conflict, but typically only multiples of 10 are used) |
+| **类型** | MX |
+| **主机** | 您的域名或子域名 |
+| **值** | 在 Resend 仪表板中提供 |
+| **优先级** | 优先级越低（数字越小）越好（在冲突情况下优先级越低），但通常只使用 10 的倍数 |
 
-**Critical:** Your MX record must have the lowest priority value, or emails won't route to Resend.
+**重要提示：** 您的 MX 记录必须具有最低的优先级，否则邮件将不会被路由到 Resend。
 
-### Subdomain Recommendation
+### 子域名推荐
 
-If you already have MX records (e.g., Google Workspace, Microsoft 365):
+如果您已经有了 MX 记录（例如 Google Workspace、Microsoft 365）：
 
-| Approach | Result |
+| 方法 | 结果 |
 |----------|--------|
-| **Use subdomain** (recommended) | `support.acme.com` → Resend, `acme.com` → existing provider |
-| **Use root domain** | All email routes to Resend (breaks existing email) |
+| **使用子域名**（推荐） | `support.acme.com` → 转发到 Resend，`acme.com` → 继续发送到现有服务 |
+| **使用根域名** | 所有邮件都会被转发到 Resend（可能会中断现有的邮件服务） |
 
-```
-# Example: receive at support.acme.com without affecting acme.com
-support.acme.com.  MX  10  <resend-mx-value>
-```
+**注意：** 如果您在根域名上设置 Resend 来接收邮件，*所有* 邮件流量都将被路由到 Resend，而不会发送到其他邮箱。因此，建议使用子域名。
 
-If you set up Resend to receive email on a root domain, *all* traffic will be routed to Resend, not to any other mailbox. It's crucial, then, to use a subdomain with inbound emails.
+## Webhook 设置
 
-## Webhook Setup
+### 订阅 `email.received` 事件
 
-### Subscribe to `email.received`
+在仪表板 → Webhooks → 添加 Webhook → 选择 `email.received`。
 
-Dashboard → Webhooks → Add Webhook → Select `email.received`
+对于本地开发，可以使用隧道技术（如 ngrok 或 VS Code 的端口转发）：
 
-For local development, use tunneling (ngrok, VS Code Port Forwarding):
 ```bash
 ngrok http 3000
 # Use https://abc123.ngrok.io/api/webhook as endpoint
 ```
 
-### Webhook Payload Structure
+### Webhook 载荷结构
 
-**Important:** Payload contains metadata only, not email body or attachment content.
+**重要提示：** 载荷仅包含元数据，不包含邮件正文或附件内容。
 
 ```json
 {
@@ -90,9 +87,9 @@ ngrok http 3000
 }
 ```
 
-### Verify Webhook Signatures
+### 验证 Webhook 签名
 
-Always verify signatures to prevent spoofed events:
+始终验证 Webhook 签名，以防止伪造事件：
 
 ```typescript
 import { Resend } from 'resend';
@@ -120,9 +117,9 @@ export async function POST(req: Request) {
 }
 ```
 
-## Retrieving Email Content
+## 获取邮件内容
 
-Webhooks exclude email body and headers. Call the Receiving API to get them:
+Webhook 不包含邮件正文和头部信息。您需要调用 Receiving API 来获取这些信息：
 
 ```typescript
 if (event.type === 'email.received') {
@@ -136,11 +133,11 @@ if (event.type === 'email.received') {
 }
 ```
 
-**Why this design?** Serverless environments have request body size limits. Separating content retrieval supports large emails and attachments.
+**为什么这样设计？** 无服务器环境通常对请求正文的大小有限制。将内容获取过程分离出来可以更好地处理大型邮件和附件。
 
-## Handling Attachments
+## 处理附件
 
-### Get Attachment Metadata and Download URLs
+### 获取附件元数据和下载链接
 
 ```typescript
 const { data: attachments } = await resend.emails.receiving.attachments.list({
@@ -154,7 +151,7 @@ for (const attachment of attachments) {
 }
 ```
 
-### Download Attachment Content
+### 下载附件内容
 
 ```typescript
 const response = await fetch(attachment.download_url);
@@ -164,11 +161,11 @@ const buffer = await response.arrayBuffer();
 await saveToStorage(attachment.filename, buffer);
 ```
 
-**Important:** `download_url` expires after 1 hour. Call the API again for a fresh URL if needed.
+**重要提示：** `download_url` 在 1 小时后失效。如果需要，请再次调用 API 以获取新的下载链接。
 
-## Forwarding Emails
+## 转发邮件
 
-Complete workflow to receive and forward an email with attachments:
+以下是接收并转发带有附件的邮件的完整流程：
 
 ```typescript
 import { Resend } from 'resend';
@@ -217,9 +214,9 @@ export async function POST(req: Request) {
 }
 ```
 
-## Routing by Recipient
+## 根据收件人路由邮件
 
-All emails to your domain arrive at the same webhook. Route based on the `to` field:
+所有发送到您域名的邮件都会到达同一个 Webhook。您可以根据 `to` 字段来路由邮件：
 
 ```typescript
 if (event.type === 'email.received') {
@@ -235,21 +232,21 @@ if (event.type === 'email.received') {
 }
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Fix |
+| 错误 | 修复方法 |
 |---------|-----|
-| Expecting body in webhook payload | Webhook has metadata only - call `resend.emails.receiving.get()` for body |
-| MX record not lowest priority | Ensure Resend's MX has lowest number (highest priority) |
-| Adding MX to root domain with existing email | Use subdomain to avoid breaking existing email service |
-| Using expired download_url | URLs expire after 1 hour - call attachments API again for fresh URL |
-| Not verifying webhook signatures | Always verify - attackers can send fake events |
-| Forgetting to return 200 OK | Resend retries on non-200 responses |
+| 期望在 Webhook 载荷中获取邮件正文 | Webhook 仅包含元数据——请调用 `resend.emails.receiving.get()` 来获取正文 |
+| MX 记录的优先级过高 | 确保 Resend 的 MX 记录具有最低的优先级 |
+| 在现有邮件服务使用的根域名上添加 MX 记录 | 使用子域名以避免干扰现有邮件服务 |
+| 使用过期的下载链接 | 下载链接在 1 小时后失效——请再次调用附件 API 以获取新的链接 |
+| 未验证 Webhook 签名 | 必须始终验证签名，以防止攻击者发送伪造事件 |
+| 忘记返回 200 OK 状态码 | 如果响应状态码不是 200，Resend 会尝试重新发送 |
 
-## Storage Note
+## 存储注意事项
 
-Resend stores received emails even if:
-- Webhook isn't configured yet
-- Webhook endpoint is down
+即使以下情况发生，Resend 也会保留接收到的邮件：
+- Webhook 尚未配置
+- Webhook 端点不可用
 
-View all received emails in Dashboard → Emails → Receiving tab.
+您可以在仪表板 → 邮件 → 接收 页面查看所有接收到的邮件。

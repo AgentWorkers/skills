@@ -1,28 +1,28 @@
 ---
 name: refactor-assist
-description: Get refactoring suggestions with colored diffs. Use when improving code quality.
+description: 获取带有颜色差异显示的重构建议。在提升代码质量时可以使用此功能。
 ---
 
-# Refactor Assistant
+# 代码重构助手（Code Refactor Assistant）
 
-Code review yourself before anyone else does. Point this at a file and get specific refactoring suggestions with diffs.
+在其他人进行代码审查之前，先自己先进行一次代码审查。只需将此工具指向目标文件，它就会提供具体的重构建议及相应的代码差异（diffs）。
 
-**One command. Zero config. Just works.**
+**仅需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-refactor src/utils.ts
 ```
 
-## What It Does
+## 功能简介
 
-- Analyzes code for improvement opportunities
-- Shows colored diffs for suggested changes
-- Focuses on readability and patterns
-- Can apply changes automatically
+- 分析代码中的优化点
+- 以彩色差异的形式显示建议的修改内容
+- 重点关注代码的可读性和编程模式
+- 可自动应用修改建议
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # See suggestions
@@ -35,42 +35,42 @@ npx ai-refactor src/utils.ts --apply
 npx ai-refactor src/api.ts --focus "error handling"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Review before applying** - verify suggestions make sense
-- **Commit first** - have a clean state to diff against
-- **Focus on one thing** - don't refactor everything at once
-- **Run tests after** - make sure nothing broke
+- **应用修改前先进行审查**：确保建议合理可行
+- **先提交代码**：确保代码处于一个干净的状态，便于后续对比差异
+- **一次专注于一项重构任务**：不要一次性重构所有内容
+- **修改后运行测试**：确保代码功能正常
 
-## When to Use This
+## 适用场景
 
-- Code review prep
-- Cleaning up old code
-- Learning better patterns
-- Technical debt sprints
+- 代码审查前的准备工作
+- 清理旧代码
+- 学习更好的编程模式
+- 技术债务清理（Technical Debt Management）
 
-## Part of the LXGIC Dev Toolkit
+## 本工具属于 LXGIC 开发工具包（LXGIC Dev Toolkit）的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发者工具之一。免费版本无需支付费用、无需注册，也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行此工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-refactor --help
 ```
 
-## How It Works
+## 工作原理
 
-Reads your file, sends it to GPT-4o-mini for analysis, and shows refactoring suggestions as diffs. Looks at readability, duplication, modern patterns, performance, and type safety.
+该工具会读取你的代码文件，将其发送给 GPT-4o-mini 进行分析，并以代码差异的形式展示重构建议。分析内容涵盖代码的可读性、重复代码、现代编程模式、性能以及类型安全性等方面。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。你可以随心所欲地使用该工具。

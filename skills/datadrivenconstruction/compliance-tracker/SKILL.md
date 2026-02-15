@@ -1,18 +1,18 @@
 ---
 slug: "compliance-tracker"
 display_name: "Compliance Tracker"
-description: "Track regulatory compliance for construction projects. Monitor permits, certifications, inspections, and regulatory requirements with automated alerts and reporting."
+description: "跟踪建筑项目的合规性情况。通过自动化警报和报告功能，监控许可证、认证、检查以及相关监管要求。"
 ---
 
-# Compliance Tracker
+# 合规性追踪器
 
-## Overview
+## 概述
 
-Track and manage regulatory compliance across construction projects. Monitor permits, licenses, certifications, inspections, and regulatory requirements. Automated alerts for expirations and deadlines.
+用于跟踪和管理建筑项目的合规性情况，包括许可证、认证、检查以及各种监管要求。系统会自动提醒用户许可证或认证的到期日期。
 
-> "Proactive compliance tracking prevents costly project delays and penalties" — DDC Community
+> “主动进行合规性追踪可以避免项目延误和罚款带来的高昂成本”——DDC社区
 
-## Compliance Categories
+## 合规性类别
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -29,7 +29,7 @@ Track and manage regulatory compliance across construction projects. Monitor per
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -379,7 +379,7 @@ class ComplianceTracker:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize tracker
@@ -414,7 +414,7 @@ print(f"Critical Missing: {summary['critical_missing']}")
 print(tracker.generate_compliance_report())
 ```
 
-## Requirements
+## 系统要求
 
 ```bash
 pip install (no external dependencies)

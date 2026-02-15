@@ -1,44 +1,44 @@
 ---
 name: phoenix-shield
-description: Self-healing backup and update system with intelligent rollback. Protects against failed updates by automatically monitoring system health post-update and recovering from backups when needed. Features canary deployment testing, health baselines, smart rollback, and 24/7 automated monitoring. Use when performing critical system updates, managing production deployments, or ensuring high availability of services. Prevents downtime through pre-flight checks, integrity verification, and automatic recovery workflows.
+description: 自愈型备份与更新系统，具备智能回滚功能。该系统通过更新后自动监控系统健康状况，并在需要时从备份中恢复数据，从而有效防止更新失败带来的风险。其主要特性包括：金丝雀部署测试（canary deployment testing）、健康基线监控（health baselines）、智能回滚机制（smart rollback），以及全天候自动化监控（24/7 automated monitoring）。适用于执行关键系统更新、管理生产环境中的部署任务，或确保服务的高可用性（high availability）。通过预先检查（pre-flight checks）、数据完整性验证（integrity verification）及自动恢复流程（automatic recovery workflows），有效防止系统停机（downtime）。
 ---
 
 # PhoenixShield 🔥🛡️
 
-> *"Like the Phoenix, your system rises from its own backup"*
+> “就像凤凰一样，您的系统能够从自身的备份中重生。”
 
-Self-healing backup and update system with intelligent rollback capabilities.
+这是一个具备自我修复功能的备份与更新系统，同时支持智能回滚机制。
 
-## Why PhoenixShield?
+## 为什么选择PhoenixShield？
 
-**Problem:** System updates can fail, leaving services broken and causing downtime.
+**问题：**系统更新可能会出现故障，导致服务中断并引发停机时间。
 
-**Solution:** PhoenixShield provides a complete safety net with automatic rollback when things go wrong.
+**解决方案：**PhoenixShield提供了全面的安全保障机制，在出现问题时能够自动回滚到之前的状态。
 
-**Benefits:**
-- 🔄 **Automatic Recovery** - Self-heals when updates fail
-- 🧪 **Canary Testing** - Test updates before production
-- 📊 **Health Monitoring** - 24h post-update monitoring
-- ⚡ **Smart Rollback** - Only revert changed components
-- 🛡️ **Zero-Downtime** - Graceful degradation when possible
+**优势：**
+- 🔄 **自动恢复**：更新失败时系统能够自动自我修复
+- 🧪 **金丝雀测试**：在生产环境之前先测试更新内容
+- 📊 **健康监控**：更新后进行24小时持续监控
+- ⚡ **智能回滚**：仅恢复发生变更的组件
+- 🛡️ **零停机时间**：在可能的情况下实现平滑降级
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Initialize PhoenixShield
+### 1. 初始化PhoenixShield
 
 ```bash
 phoenix-shield init --project myapp --backup-dir /var/backups
 ```
 
-### 2. Create Pre-Update Snapshot
+### 2. 创建更新前的系统快照
 
 ```bash
 phoenix-shield snapshot --name "pre-update-$(date +%Y%m%d)"
 ```
 
-### 3. Safe Update with Auto-Recovery
+### 3. 安全更新并实现自动恢复
 
 ```bash
 phoenix-shield update \
@@ -47,7 +47,7 @@ phoenix-shield update \
   --auto-rollback
 ```
 
-### 4. Monitor Post-Update
+### 4. 更新后进行监控
 
 ```bash
 phoenix-shield monitor --duration 24h --interval 5m
@@ -55,47 +55,36 @@ phoenix-shield monitor --duration 24h --interval 5m
 
 ---
 
-## Core Features
+## 核心功能
 
-### 1. Pre-Flight Checks
+### 1. 更新前检查
 
-Before any update, PhoenixShield verifies:
+在开始任何更新之前，PhoenixShield会进行以下检查：
 
 ```bash
 phoenix-shield preflight
 ```
 
-**Checks:**
-- ✅ Disk space available
-- ✅ No critical processes running
-- ✅ Backup storage accessible
-- ✅ Network connectivity
-- ✅ Service health baseline
+**检查内容：**
+- ✅ 确保有足够的磁盘空间
+- ✅ 没有正在运行的关键进程
+- ✅ 备份存储可用
+- ✅ 网络连接正常
+- ✅ 服务运行状态正常
 
-### 2. Intelligent Backup
+### 2. 智能备份
 
-```bash
-# Full system snapshot
-phoenix-shield backup --full
+备份内容包括：
+- 配置文件
+- 数据库备份
+- 系统状态信息
+- 进程列表
+- 网络连接信息
+- 服务健康指标
 
-# Incremental (only changed files)
-phoenix-shield backup --incremental
+### 3. 金丝雀部署
 
-# Config-only backup
-phoenix-shield backup --config
-```
-
-**Backup includes:**
-- Configuration files
-- Database dumps
-- System state
-- Process list
-- Network connections
-- Health metrics baseline
-
-### 3. Canary Deployment
-
-Test updates on isolated environment first:
+首先在隔离环境中测试更新内容：
 
 ```bash
 phoenix-shield canary \
@@ -104,9 +93,9 @@ phoenix-shield canary \
   --test-command "systemctl status nginx"
 ```
 
-### 4. Production Update
+### 4. 生产环境更新
 
-Execute update with safety net:
+在安全机制的保护下执行更新：
 
 ```bash
 phoenix-shield deploy \
@@ -116,44 +105,34 @@ phoenix-shield deploy \
   --rollback-on-failure
 ```
 
-### 5. Post-Update Monitoring
+### 5. 更新后监控
 
-**Automatic monitoring stages:**
-
-| Timeframe | Checks |
+**自动监控阶段：**
+| 时间段 | 监控内容 |
 |-----------|--------|
-| 0-5 min | Critical services running |
-| 5-30 min | All services responding |
-| 30-120 min | Integration tests |
-| 2-24h | Stability monitoring |
+| 0-5分钟 | 关键服务是否正常运行 |
+| 5-30分钟 | 所有服务是否响应正常 |
+| 30-120分钟 | 集成测试 |
+| 24小时 | 系统稳定性监控 |
 
 ```bash
 phoenix-shield monitor --start
 ```
 
-### 6. Smart Rollback
+### 6. 智能回滚
 
-When update fails, PhoenixShield:
-
-1. **Attempts soft recovery** - Restart services
-2. **Config rollback** - Revert configuration
-3. **Package rollback** - Downgrade packages
-4. **Full restore** - Complete system restore
-5. **Emergency mode** - Minimal services, notify admin
-
-```bash
-# Manual rollback
-phoenix-shield rollback --to-snapshot "pre-update-20260205"
-
-# Check what would be rolled back (dry run)
-phoenix-shield rollback --dry-run
-```
+当更新失败时，PhoenixShield会：
+1. **尝试软恢复**：重启相关服务
+2. **配置回滚**：恢复配置文件
+3. **软件包回滚**：降级受影响的软件包
+4. **完全恢复**：彻底恢复系统状态
+5. **进入紧急模式**：仅保留最基本的服务，并通知管理员
 
 ---
 
-## Workflow Examples
+## 工作流程示例
 
-### Safe OpenClaw Update
+### 安全地更新OpenClaw
 
 ```bash
 #!/bin/bash
@@ -172,7 +151,7 @@ phoenix-shield deploy \
 phoenix-shield monitor --duration 2h
 ```
 
-### Ubuntu Server Update
+### 更新Ubuntu服务器
 
 ```bash
 phoenix-shield deploy \
@@ -184,7 +163,7 @@ phoenix-shield deploy \
   --auto-rollback
 ```
 
-### Multi-Server Update
+### 多服务器更新
 
 ```bash
 # Update multiple servers with PhoenixShield
@@ -201,9 +180,9 @@ done
 
 ---
 
-## Configuration
+## 配置
 
-Create `phoenix-shield.yaml`:
+创建 `phoenix-shield.yaml` 配置文件：
 
 ```yaml
 project: my-production-app
@@ -242,25 +221,25 @@ notifications:
 
 ---
 
-## Commands Reference
+## 命令参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `init` | Initialize PhoenixShield for project |
-| `snapshot` | Create system snapshot |
-| `backup` | Create backup (full/incremental) |
-| `preflight` | Run pre-update checks |
-| `canary` | Test update in isolated environment |
-| `deploy` | Execute update with protection |
-| `monitor` | Start post-update monitoring |
-| `rollback` | Rollback to previous state |
-| `status` | Show current status |
-| `history` | Show update history |
-| `verify` | Verify backup integrity |
+| `init` | 为项目初始化PhoenixShield |
+| `snapshot` | 创建系统快照 |
+| `backup` | 创建完整或增量备份 |
+| `preflight` | 执行更新前的检查 |
+| `canary` | 在隔离环境中测试更新 |
+| `deploy` | 在保护机制下执行更新 |
+| `monitor` | 启动更新后的监控 |
+| `rollback` | 回滚到之前的系统状态 |
+| `status` | 显示当前系统状态 |
+| `history` | 查看更新历史记录 |
+| `verify` | 验证备份文件的完整性 |
 
 ---
 
-## Integration with CI/CD
+## 与CI/CD集成
 
 ```yaml
 # GitHub Actions example
@@ -276,9 +255,9 @@ notifications:
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### 1. Always Use Preflight
+### 1. 必须执行更新前检查
 ```bash
 # Bad
 phoenix-shield deploy --command "apt upgrade"
@@ -288,20 +267,21 @@ phoenix-shield preflight && \
 phoenix-shield deploy --command "apt upgrade"
 ```
 
-### 2. Test Rollback Before Production
+### 2. 在生产环境前先测试回滚机制
 ```bash
 phoenix-shield snapshot --name test
 phoenix-shield deploy --command "echo test"
 phoenix-shield rollback --dry-run  # See what would happen
 ```
 
-### 3. Monitor Critical Updates
+### 3. 特别关注关键系统的更新
 ```bash
 phoenix-shield deploy --command "major-update.sh"
 phoenix-shield monitor --duration 48h  # Extended monitoring
 ```
 
-### 4. Maintain Backup Hygiene
+### 4. 保持备份的完整性
+
 ```bash
 # Regular cleanup
 phoenix-shield cleanup --keep-last 10 --older-than 30d
@@ -312,26 +292,26 @@ phoenix-shield verify --all
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "Preflight check failed"
-- Check disk space: `df -h`
-- Verify backup location exists
-- Ensure no critical processes running
+### “更新前检查失败”
+- 检查磁盘空间：`df -h`
+- 确认备份位置存在
+- 确保没有关键进程正在运行
 
-### "Rollback failed"
-- Check backup integrity: `phoenix-shield verify`
-- Manual restore from: `/var/backups/phoenix/`
-- Contact admin for emergency recovery
+### “回滚失败”
+- 验证备份文件的完整性：`phoenix-shield verify`
+- 从备份路径 `/var/backups/phoenix/` 手动恢复系统
+- 如需紧急恢复，请联系管理员
 
-### "Health checks failing"
-- Extend monitoring: `phoenix-shield monitor --duration 48h`
-- Check service logs: `journalctl -u myservice`
-- Consider partial rollback: `phoenix-shield rollback --config-only`
+### “健康检查失败”
+- 延长监控时间：`phoenix-shield monitor --duration 48h`
+- 查看服务日志：`journalctl -u myservice`
+- 考虑仅回滚部分配置：`phoenix-shield rollback --config-only`
 
 ---
 
-## Architecture
+## 架构概述
 
 ```
 ┌─────────────────────────────────────┐
@@ -349,35 +329,35 @@ phoenix-shield verify --all
 
 ---
 
-## Security
+## 安全性措施
 
-- Backups are encrypted at rest
-- Integrity verification with checksums
-- Secure handling of credentials
-- Audit trail for all operations
-
----
-
-## License
-
-MIT License - Free for personal and commercial use.
+- 备份数据在存储过程中会被加密
+- 使用校验和来验证备份文件的完整性
+- 对所有操作进行安全处理
+- 提供详细的操作审计记录
 
 ---
 
-## 🔗 Links
+## 许可证
 
-- **ClawHub:** https://clawhub.com/skills/phoenix-shield
-- **GitHub:** https://github.com/mig6671/phoenix-shield
-- **Documentation:** This file
-- **Author:** @mig6671 (OpenClaw Agent)
+采用MIT许可证，适用于个人和商业用途。
 
 ---
 
-**Like the Phoenix, your system rises from backup 🔥🛡️**
+## 🔗 相关链接
+
+- **ClawHub：** https://clawhub.com/skills/phoenix-shield
+- **GitHub仓库：** https://github.com/mig6671/phoenix-shield
+- **官方文档：** 本文件
+- **作者：** @mig6671（OpenClaw团队成员）
 
 ---
 
-## Credits
+**就像凤凰一样，您的系统能够从备份中重生 🔥🛡️**
 
-Created by OpenClaw Agent (@mig6671)  
-Inspired by the need for bulletproof system updates
+---
+
+## 致谢
+
+该工具由OpenClaw团队成员@mig6671开发  
+灵感来源于对系统更新过程的高可靠性需求。

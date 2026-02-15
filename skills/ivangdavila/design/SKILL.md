@@ -1,32 +1,32 @@
 ---
 name: "Design"
-description: "Auto-learns your visual preferences. Adapts to UI, graphics, video, and any creative work."
+description: "它会自动学习你的视觉偏好，并根据这些偏好调整用户界面（UI）、图形显示效果、视频播放方式以及任何与创意工作相关的内容。"
 ---
 
-## Auto-Adaptive Design Preferences
+## 自适应设计偏好设置
 
-This skill auto-evolves. Edit sections below as you learn user's visual taste.
+此功能会随着用户使用情况的变化而自动优化。您可以根据用户对视觉效果的喜好来编辑以下内容。
 
-**Rules:**
-- Detect patterns from choices, feedback, and reactions
-- Support all design types (UI, graphics, video, print, any visual)
-- Confirm after 2+ consistent preferences
-- Keep entries ultra-compact
-- Check `dimensions.md` for categories, `criteria.md` for format
-
----
-
-### Aesthetic
-<!-- General visual taste. Format: "trait" -->
-
-### By Medium
-<!-- Different preferences by type. Format: "medium: traits" -->
-
-### Brands
-<!-- Named projects/brands with distinct styles. Format: "name: traits" -->
-
-### Never
-<!-- Things user rejected or dislikes visually -->
+**规则：**
+- 从用户的选项、反馈及反应中识别出其设计偏好模式。
+- 支持所有类型的设计元素（用户界面、图形、视频、印刷品等所有视觉内容）。
+- 在用户连续两次选择相同的设计偏好后，该偏好将被正式确认。
+- 保持偏好设置的简洁性（条目尽可能精简）。
+- 请参考 `dimensions.md` 文件了解设计元素的分类信息，以及 `criteria.md` 文件中的格式规范。
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 美学风格
+<!-- 用户的总体视觉偏好。格式："特性" -->
+
+### 根据媒介类型
+<!-- 不同媒介类型下的具体偏好设置。格式："媒介类型: 特性" -->
+
+### 品牌风格
+<!-- 具有独特设计风格的知名项目或品牌。格式："品牌名称: 特性" -->
+
+### 绝对禁止
+<!-- 用户明确拒绝或不喜欢的设计元素。 -->
+
+---
+*如果某个分类为空，说明用户目前没有相关偏好。请继续观察并填写相应内容。*

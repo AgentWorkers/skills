@@ -1,21 +1,21 @@
 ---
 name: session-cleaner
-description: Convert raw OpenClaw session JSONL transcripts into clean, readable markdown. Strips tool calls, metadata, and system noise. Keeps the conversation.
+description: 将原始的 OpenClaw 会话 JSONL 转录内容转换为格式清晰、易于阅读的 Markdown 文本。移除工具调用、元数据以及系统生成的冗余信息，同时保留对话内容。
 ---
 
-# Session Cleaner
+# 会话清理器
 
-Converts raw OpenClaw/Clawdbot session JSONL files into clean markdown transcripts.
+该工具可将原始的 OpenClaw/Clawdbot 会话 JSONL 文件转换为格式规范的 Markdown 文本。
 
-## What it does
+## 功能介绍
 
-- Reads `.jsonl` session files
-- Strips tool calls, system metadata, and noise
-- Outputs clean human/assistant conversation markdown
-- Supports batch processing across agents
+- 读取 `.jsonl` 格式的会话文件
+- 删除工具调用记录、系统元数据以及无关内容
+- 仅保留人类用户与助手之间的对话内容
+- 支持跨多个代理（agent）进行批量处理
 
-## Scripts
+## 所需脚本
 
-- `session-cleaner.mjs` - Main cleaner (Node.js)
-- `session-cleaner-spock.sh` - Batch clean Spock sessions
-- `session-cleaner-scotty-remote.sh` - Clean Scotty sessions via SSH
+- `session-cleaner.mjs`：主要清理脚本（基于 Node.js）
+- `session-cleaner-spock.sh`：用于批量清理 Spock 会话的脚本
+- `session-cleaner-scotty-remote.sh`：通过 SSH 远程清理 Scotty 会话的脚本

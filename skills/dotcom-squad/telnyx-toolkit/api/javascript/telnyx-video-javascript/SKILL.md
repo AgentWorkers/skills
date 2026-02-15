@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Video - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,9 +30,9 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## View a list of room compositions.
+## 查看房间组合列表
 
 `GET /room_compositions`
 
@@ -43,9 +43,9 @@ for await (const roomComposition of client.roomCompositions.list()) {
 }
 ```
 
-## Create a room composition.
+## 创建房间组合
 
-Asynchronously create a room composition.
+异步创建房间组合。
 
 `POST /room_compositions`
 
@@ -55,7 +55,7 @@ const roomComposition = await client.roomCompositions.create();
 console.log(roomComposition.data);
 ```
 
-## View a room composition.
+## 查看房间组合信息
 
 `GET /room_compositions/{room_composition_id}`
 
@@ -67,9 +67,9 @@ const roomComposition = await client.roomCompositions.retrieve(
 console.log(roomComposition.data);
 ```
 
-## Delete a room composition.
+## 删除房间组合
 
-Synchronously delete a room composition.
+同步删除房间组合。
 
 `DELETE /room_compositions/{room_composition_id}`
 
@@ -77,7 +77,7 @@ Synchronously delete a room composition.
 await client.roomCompositions.delete('5219b3af-87c6-4c08-9b58-5a533d893e21');
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表
 
 `GET /room_participants`
 
@@ -88,7 +88,7 @@ for await (const roomParticipant of client.roomParticipants.list()) {
 }
 ```
 
-## View a room participant.
+## 查看房间参与者信息
 
 `GET /room_participants/{room_participant_id}`
 
@@ -100,7 +100,7 @@ const roomParticipant = await client.roomParticipants.retrieve(
 console.log(roomParticipant.data);
 ```
 
-## View a list of room recordings.
+## 查看房间录制列表
 
 `GET /room_recordings`
 
@@ -111,7 +111,7 @@ for await (const roomRecordingListResponse of client.roomRecordings.list()) {
 }
 ```
 
-## Delete several room recordings in a bulk.
+## 批量删除房间录制文件
 
 `DELETE /room_recordings`
 
@@ -121,7 +121,7 @@ const response = await client.roomRecordings.deleteBulk();
 console.log(response.data);
 ```
 
-## View a room recording.
+## 查看房间录制文件信息
 
 `GET /room_recordings/{room_recording_id}`
 
@@ -131,9 +131,9 @@ const roomRecording = await client.roomRecordings.retrieve('0ccc7b54-4df3-4bca-a
 console.log(roomRecording.data);
 ```
 
-## Delete a room recording.
+## 删除房间录制文件
 
-Synchronously delete a Room Recording.
+同步删除房间录制文件。
 
 `DELETE /room_recordings/{room_recording_id}`
 
@@ -141,7 +141,7 @@ Synchronously delete a Room Recording.
 await client.roomRecordings.delete('0ccc7b54-4df3-4bca-a65a-3da1ecc777f0');
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表
 
 `GET /room_sessions`
 
@@ -152,7 +152,7 @@ for await (const roomSession of client.rooms.sessions.list0()) {
 }
 ```
 
-## View a room session.
+## 查看房间会话信息
 
 `GET /room_sessions/{room_session_id}`
 
@@ -162,9 +162,9 @@ const session = await client.rooms.sessions.retrieve('0ccc7b54-4df3-4bca-a65a-3d
 console.log(session.data);
 ```
 
-## End a room session.
+## 结束房间会话
 
-Note: this will also kick all participants currently present in the room
+注意：此操作会同时将当前在房间中的所有参与者踢出。
 
 `POST /room_sessions/{room_session_id}/actions/end`
 
@@ -174,7 +174,7 @@ const response = await client.rooms.sessions.actions.end('0ccc7b54-4df3-4bca-a65
 console.log(response.data);
 ```
 
-## Kick participants from a room session.
+## 将参与者从房间会话中踢出
 
 `POST /room_sessions/{room_session_id}/actions/kick`
 
@@ -184,7 +184,7 @@ const response = await client.rooms.sessions.actions.kick('0ccc7b54-4df3-4bca-a6
 console.log(response.data);
 ```
 
-## Mute participants in room session.
+## 静音房间中的参与者
 
 `POST /room_sessions/{room_session_id}/actions/mute`
 
@@ -194,7 +194,7 @@ const response = await client.rooms.sessions.actions.mute('0ccc7b54-4df3-4bca-a6
 console.log(response.data);
 ```
 
-## Unmute participants in room session.
+## 恢复房间中参与者的麦克风权限
 
 `POST /room_sessions/{room_session_id}/actions/unmute`
 
@@ -204,7 +204,7 @@ const response = await client.rooms.sessions.actions.unmute('0ccc7b54-4df3-4bca-
 console.log(response.data);
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表
 
 `GET /room_sessions/{room_session_id}/participants`
 
@@ -217,7 +217,7 @@ for await (const roomParticipant of client.rooms.sessions.retrieveParticipants(
 }
 ```
 
-## View a list of rooms.
+## 查看房间列表
 
 `GET /rooms`
 
@@ -228,9 +228,9 @@ for await (const room of client.rooms.list()) {
 }
 ```
 
-## Create a room.
+## 创建房间
 
-Synchronously create a Room.
+同步创建房间。
 
 `POST /rooms`
 
@@ -240,7 +240,7 @@ const room = await client.rooms.create();
 console.log(room.data);
 ```
 
-## View a room.
+## 查看房间信息
 
 `GET /rooms/{room_id}`
 
@@ -250,9 +250,9 @@ const room = await client.rooms.retrieve('0ccc7b54-4df3-4bca-a65a-3da1ecc777f0')
 console.log(room.data);
 ```
 
-## Update a room.
+## 更新房间信息
 
-Synchronously update a Room.
+同步更新房间信息。
 
 `PATCH /rooms/{room_id}`
 
@@ -262,9 +262,9 @@ const room = await client.rooms.update('0ccc7b54-4df3-4bca-a65a-3da1ecc777f0');
 console.log(room.data);
 ```
 
-## Delete a room.
+## 删除房间
 
-Synchronously delete a Room.
+同步删除房间。
 
 `DELETE /rooms/{room_id}`
 
@@ -272,9 +272,9 @@ Synchronously delete a Room.
 await client.rooms.delete('0ccc7b54-4df3-4bca-a65a-3da1ecc777f0');
 ```
 
-## Create Client Token to join a room.
+## 创建客户端令牌以加入房间
 
-Synchronously create an Client Token to join a Room.
+同步生成客户端令牌以加入房间。
 
 `POST /rooms/{room_id}/actions/generate_join_client_token`
 
@@ -286,11 +286,11 @@ const response = await client.rooms.actions.generateJoinClientToken(
 console.log(response.data);
 ```
 
-## Refresh Client Token to join a room.
+## 刷新客户端令牌以加入房间
 
-Synchronously refresh an Client Token to join a Room.
+同步刷新客户端令牌以加入房间。
 
-`POST /rooms/{room_id}/actions/refresh_client_token` — Required: `refresh_token`
+`POST /rooms/{room_id}/actions/refresh_client_token` — 需要参数：`refresh_token`
 
 ```javascript
 const response = await client.rooms.actions.refreshClientToken(
@@ -304,7 +304,7 @@ const response = await client.rooms.actions.refreshClientToken(
 console.log(response.data);
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表
 
 `GET /rooms/{room_id}/sessions`
 

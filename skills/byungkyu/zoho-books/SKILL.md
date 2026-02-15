@@ -17,9 +17,9 @@ metadata:
 
 # Zoho Books
 
-Access the Zoho Books API with managed OAuth authentication. Manage invoices, contacts, bills, expenses, sales orders, purchase orders, and other accounting data with full CRUD operations.
+您可以使用托管的 OAuth 认证来访问 Zoho Books API。该 API 支持对发票、联系人、账单、费用、销售订单、采购订单以及其他会计数据进行完整的 CRUD 操作（创建、读取、更新、删除）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/zoho-books/books/v3/{endpoint}
 ```
 
-The gateway proxies requests to `www.zohoapis.com/books/v3` and automatically injects your OAuth token.
+该网关会将请求代理到 `www.zohoapis.com/books/v3`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho Books OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Zoho Books OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho Books connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Zoho Books 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,35 +140,35 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Available Modules
+### 可用模块
 
-Zoho Books organizes data into modules. Key modules include:
+Zoho Books 将数据组织成多个模块。主要模块包括：
 
-| Module | Endpoint | Description |
+| 模块 | 端点 | 描述 |
 |--------|----------|-------------|
-| Contacts | `/contacts` | Customers and vendors |
-| Invoices | `/invoices` | Sales invoices |
-| Bills | `/bills` | Vendor bills |
-| Expenses | `/expenses` | Business expenses |
-| Sales Orders | `/salesorders` | Sales orders |
-| Purchase Orders | `/purchaseorders` | Purchase orders |
-| Credit Notes | `/creditnotes` | Customer credit notes |
-| Recurring Invoices | `/recurringinvoices` | Automated recurring invoices |
-| Recurring Bills | `/recurringbills` | Automated recurring bills |
+| 联系人 | `/contacts` | 客户和供应商信息 |
+| 发票 | `/invoices` | 销售发票 |
+| 账单 | `/bills` | 供应商账单 |
+| 费用 | `/expenses` | 商业费用 |
+| 销售订单 | `/salesorders` | 销售订单 |
+| 采购订单 | `/purchaseorders` | 采购订单 |
+| 信用票据 | `/creditnotes` | 客户信用票据 |
+| 定期发票 | `/recurringinvoices` | 自动生成的定期发票 |
+| 定期账单 | `/recurringbills` | 自动生成的定期账单 |
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /zoho-books/books/v3/contacts
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -179,7 +179,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "code": 0,
@@ -195,13 +195,13 @@ EOF
 }
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /zoho-books/books/v3/contacts/{contact_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -212,7 +212,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /zoho-books/books/v3/contacts
@@ -224,18 +224,18 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `contact_name` - Display name for the contact
-- `contact_type` - Either `customer` or `vendor`
+**必填字段：**
+- `contact_name` - 联系人的显示名称
+- `contact_type` - `customer` 或 `vendor`（客户或供应商）
 
-**Optional Fields:**
-- `company_name` - Legal entity name
-- `email` - Email address
-- `phone` - Phone number
-- `billing_address` - Address object
-- `payment_terms` - Days for payment
+**可选字段：**
+- `company_name` - 法定实体名称
+- `email` - 电子邮件地址
+- `phone` - 电话号码
+- `billing_address` - 支付地址
+- `payment_terms` - 支付期限
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -254,7 +254,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "code": 0,
@@ -269,7 +269,7 @@ EOF
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PUT /zoho-books/books/v3/contacts/{contact_id}
@@ -281,7 +281,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -297,24 +297,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /zoho-books/books/v3/contacts/{contact_id}
 ```
 
-**Example:**
+**示例：**
 
-```bash
-python <<'EOF'
-import urllib.request, os, json
-req = urllib.request.Request('https://gateway.maton.ai/zoho-books/books/v3/contacts/8527119000000099001', method='DELETE')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
-
-**Response:**
+**响应：**
 ```json
 {
   "code": 0,
@@ -322,15 +313,15 @@ EOF
 }
 ```
 
-### Invoices
+### 发票
 
-#### List Invoices
+#### 列出发票
 
 ```bash
 GET /zoho-books/books/v3/invoices
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -341,13 +332,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Invoice
+#### 获取发票信息
 
 ```bash
 GET /zoho-books/books/v3/invoices/{invoice_id}
 ```
 
-#### Create Invoice
+#### 创建发票
 
 ```bash
 POST /zoho-books/books/v3/invoices
@@ -365,30 +356,30 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `customer_id` - Customer identifier
-- `line_items` - Array of items with `item_id` or manual entry
+**必填字段：**
+- `customer_id` - 客户标识符
+- `line_items` - 包含 `item_id` 的项目数组或手动输入的项目
 
-**Optional Fields:**
-- `invoice_number` - Auto-generated if not specified
-- `date` - Invoice date (yyyy-mm-dd format)
-- `due_date` - Payment due date
-- `discount` - Percentage or fixed amount
-- `payment_terms` - Days until due
+**可选字段：**
+- `invoice_number` - 如果未指定，则自动生成
+- `date` - 发票日期（格式为 yyyy-mm-dd）
+- `due_date` - 应付款日期
+- `discount` - 折扣百分比或固定金额
+- `payment_terms` - 到期付款天数
 
-#### Update Invoice
+#### 更新发票
 
 ```bash
 PUT /zoho-books/books/v3/invoices/{invoice_id}
 ```
 
-#### Delete Invoice
+#### 删除发票
 
 ```bash
 DELETE /zoho-books/books/v3/invoices/{invoice_id}
 ```
 
-#### Invoice Actions
+#### 发票操作
 
 ```bash
 # Mark as sent
@@ -401,15 +392,15 @@ POST /zoho-books/books/v3/invoices/{invoice_id}/status/void
 POST /zoho-books/books/v3/invoices/{invoice_id}/email
 ```
 
-### Bills
+### 账单
 
-#### List Bills
+#### 列出账单
 
 ```bash
 GET /zoho-books/books/v3/bills
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -420,7 +411,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Bill
+#### 创建账单
 
 ```bash
 POST /zoho-books/books/v3/bills
@@ -440,32 +431,32 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `vendor_id` - Vendor identifier
-- `bill_number` - Unique bill number
-- `date` - Bill date (yyyy-mm-dd)
+**必填字段：**
+- `vendor_id` - 供应商标识符
+- `bill_number` - 独立的账单编号
+- `date` - 账单日期（格式为 yyyy-mm-dd）
 
-#### Update Bill
+#### 更新账单
 
 ```bash
 PUT /zoho-books/books/v3/bills/{bill_id}
 ```
 
-#### Delete Bill
+#### 删除账单
 
 ```bash
 DELETE /zoho-books/books/v3/bills/{bill_id}
 ```
 
-### Expenses
+### 费用
 
-#### List Expenses
+#### 列出费用
 
 ```bash
 GET /zoho-books/books/v3/expenses
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -476,7 +467,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Expense
+#### 创建费用记录
 
 ```bash
 POST /zoho-books/books/v3/expenses
@@ -491,91 +482,91 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `account_id` - Expense account ID
-- `date` - Expense date (yyyy-mm-dd)
-- `amount` - Expense amount
-- `paid_through_account_id` - Payment account ID
+**必填字段：**
+- `account_id` - 费用账户 ID
+- `date` - 费用发生日期（格式为 yyyy-mm-dd）
+- `amount` - 费用金额
+- `paid_through_account_id` - 支付账户 ID
 
-**Optional Fields:**
-- `description` - Expense details
-- `customer_id` - Billable customer ID
-- `is_billable` - Boolean for billable expenses
-- `project_id` - Associated project
+**可选字段：**
+- `description` - 费用详情
+- `customer_id` - 可计费的客户 ID
+- `is_billable` - 是否可计费的费用
+- `project_id` - 关联的项目
 
-#### Update Expense
+#### 更新费用记录
 
 ```bash
 PUT /zoho-books/books/v3/expenses/{expense_id}
 ```
 
-#### Delete Expense
+#### 删除费用记录
 
 ```bash
 DELETE /zoho-books/books/v3/expenses/{expense_id}
 ```
 
-### Sales Orders
+### 销售订单
 
-#### List Sales Orders
+#### 列出销售订单
 
 ```bash
 GET /zoho-books/books/v3/salesorders
 ```
 
-#### Create Sales Order
+#### 创建销售订单
 
 ```bash
 POST /zoho-books/books/v3/salesorders
 ```
 
-### Purchase Orders
+### 采购订单
 
-#### List Purchase Orders
+#### 列出采购订单
 
 ```bash
 GET /zoho-books/books/v3/purchaseorders
 ```
 
-#### Create Purchase Order
+#### 创建采购订单
 
 ```bash
 POST /zoho-books/books/v3/purchaseorders
 ```
 
-### Credit Notes
+### 信用票据
 
-#### List Credit Notes
+#### 列出信用票据
 
 ```bash
 GET /zoho-books/books/v3/creditnotes
 ```
 
-### Recurring Invoices
+### 定期发票
 
-#### List Recurring Invoices
+#### 列出定期发票
 
 ```bash
 GET /zoho-books/books/v3/recurringinvoices
 ```
 
-### Recurring Bills
+### 定期账单
 
-#### List Recurring Bills
+#### 列出定期账单
 
 ```bash
 GET /zoho-books/books/v3/recurringbills
 ```
 
-## Pagination
+## 分页
 
-Zoho Books uses page-based pagination:
+Zoho Books 使用基于页面的分页机制：
 
 ```bash
 GET /zoho-books/books/v3/contacts?page=1&per_page=50
 ```
 
-Response includes pagination info in `page_context`:
+响应中包含 `page_context` 中的分页信息：
 
 ```json
 {
@@ -592,9 +583,9 @@ Response includes pagination info in `page_context`:
 }
 ```
 
-Continue fetching while `has_more_page` is `true`, incrementing `page` each time.
+当 `has_more_page` 为 `true` 时，继续获取数据，并每次迭代时递增 `page` 的值。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -623,70 +614,55 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项：
 
-- All successful responses have `code: 0` and a `message` field
-- Dates should be in `yyyy-mm-dd` format
-- Contact types are `customer` or `vendor`
-- Some modules (items, chart of accounts, bank accounts, projects) may require additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- Rate limits: 100 requests/minute per organization
-- Daily limits vary by plan: Free (1,000), Standard (2,000), Professional (5,000), Paid (10,000)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有成功的响应都会包含 `code: 0` 和 `message` 字段。
+- 日期应采用 `yyyy-mm-dd` 的格式。
+- 联系人类型可以是 `customer` 或 `vendor`。
+- 某些模块（如项目、银行账户等）可能需要额外的 OAuth 权限范围。如果您收到权限范围错误，请通过 support@maton.ai 联系 Maton 支持团队，提供所需的操作/API 以及您的使用场景。
+- 请求速率限制：每个组织每分钟 100 次请求。
+- 每日的请求限制因套餐而异：免费套餐（1,000 次）、标准套餐（2,000 次）、专业套餐（5,000 次）、高级套餐（10,000 次）。
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 选项来禁用全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho Books connection or invalid request |
-| 401 | Invalid or missing Maton API key, or OAuth scope mismatch |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho Books API |
+| 400 | 未找到 Zoho Books 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失，或者 OAuth 权限范围不匹配 |
+| 404 | 资源未找到 |
+| 429 | 请求超出速率限制 |
+| 4xx/5xx | 来自 Zoho Books API 的传递错误 |
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 0 | Success |
-| 57 | Not authorized (OAuth scope mismatch) |
-| 1 | Invalid value |
-| 2 | Mandatory field missing |
-| 3 | Resource does not exist |
-| 5 | Invalid URL |
+| 0 | 操作成功 |
+| 57 | 未授权（OAuth 权限范围不匹配） |
+| 1 | 输入的值无效 |
+| 2 | 必填字段缺失 |
+| 3 | 资源不存在 |
+| 5 | URL 错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+- **API 密钥问题：**
+  1. 确保设置了 `MATON_API_KEY` 环境变量。
+  2. 通过列出连接来验证 API 密钥是否有效。
 
-```bash
-echo $MATON_API_KEY
-```
+- **应用程序名称错误：**
+  1. 确保您的 URL 路径以 `zoho-books` 开头。例如：
+    - 正确的路径：`https://gateway.maton.ai/zoho-books/books/v3/contacts`
+    - 错误的路径：`https://gateway.maton.ai/books/v3/contacts`
 
-2. Verify the API key is valid by listing connections:
+## 资源：
 
-```bash
-python <<'EOF'
-import urllib.request, os, json
-req = urllib.request.Request('https://ctrl.maton.ai/connections')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
-
-### Troubleshooting: Invalid App Name
-
-1. Ensure your URL path starts with `zoho-books`. For example:
-
-- Correct: `https://gateway.maton.ai/zoho-books/books/v3/contacts`
-- Incorrect: `https://gateway.maton.ai/books/v3/contacts`
-
-## Resources
-
-- [Zoho Books API v3 Introduction](https://www.zoho.com/books/api/v3/introduction/)
-- [Zoho Books Invoices API](https://www.zoho.com/books/api/v3/invoices/)
-- [Zoho Books Contacts API](https://www.zoho.com/books/api/v3/contacts/)
-- [Zoho Books Bills API](https://www.zoho.com/books/api/v3/bills/)
-- [Zoho Books Expenses API](https://www.zoho.com/books/api/v3/expenses/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Zoho Books API v3 介绍](https://www.zoho.com/books/api/v3/introduction/)
+- [Zoho Books 发票 API](https://www.zoho.com/books/api/v3/invoices/)
+- [Zoho Books 联系人 API](https://www.zoho.com/books/api/v3/contacts/)
+- [Zoho Books 账单 API](https://www.zoho.com/books/api/v3/bills/)
+- [Zoho Books 费用 API](https://www.zoho.com/books/api/v3/expenses/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

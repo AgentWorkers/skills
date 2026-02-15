@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-data-validator"
 display_name: "CWICR Data Validator"
-description: "Validate CWICR data quality and estimate inputs. Check for errors, inconsistencies, outliers, and missing data."
+description: "验证 CWICR 数据的质量，并对输入数据进行评估。检查是否存在错误、不一致性、异常值以及缺失的数据。"
 ---
 
-# CWICR Data Validator
+# CWICR 数据验证器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Data quality issues cause:
-- Incorrect estimates
-- Budget overruns
-- Delayed projects
-- Rework costs
+### 问题描述
+数据质量问题会导致：
+- 估算不准确
+- 预算超支
+- 项目延误
+- 重新开发成本
 
-### Solution
-Systematic validation of CWICR data and estimate inputs to catch errors, outliers, and inconsistencies before they impact projects.
+### 解决方案
+对 CWICR 数据和估算输入进行系统化的验证，以便在这些问题影响项目之前发现错误、异常值和不一致之处。
 
-### Business Value
-- **Error prevention** - Catch issues early
-- **Data quality** - Ensure reliable estimates
-- **Consistency** - Standard validation rules
-- **Audit trail** - Document data issues
+### 商业价值
+- **错误预防** - 及时发现问题
+- **数据质量** - 确保估算的可靠性
+- **一致性** - 采用标准化的验证规则
+- **审计追踪** - 记录数据问题
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -389,8 +388,7 @@ class CWICRDataValidator:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR reference
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -409,15 +407,15 @@ print(f"Passed: {result.passed}")
 print(f"Errors: {result.error_count}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Data Quality Score
+### 1. 数据质量评分
 ```python
 quality = validator.get_data_quality_score(result)
 print(f"Score: {quality['score']} ({quality['grade']})")
 ```
 
-### 2. Validate DataFrame
+### 2. 验证 DataFrame
 ```python
 import_df = pd.read_excel("estimate_import.xlsx")
 result = validator.validate_dataframe(import_df)
@@ -427,11 +425,11 @@ for issue in result.issues:
         print(f"ERROR: {issue.message}")
 ```
 
-### 3. Export Report
+### 3. 导出报告
 ```python
 validator.export_validation_report(result, "validation_report.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 2.1 - Data Quality Management
+- **DDC 曲典**: 第 2.1 章 - 数据质量管理

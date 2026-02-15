@@ -1,21 +1,21 @@
 ---
 name: openclaw-auto-updater
-description: Schedule automatic OpenClaw and skill updates with reliable cron templates, timezone-safe scheduling, and clear summary outputs. Use for hands-off maintenance, scheduled upgrades, and concise update reports.
+description: 使用可靠的 cron 模板来安排 OpenClaw 和技能的自动更新，确保调度时间符合时区要求，并生成清晰的更新总结报告。这些工具适用于无人值守的维护工作、定期升级以及简洁的更新通知。
 ---
 
-# OpenClaw Auto-Updater
+# OpenClaw 自动更新器
 
-Run **scheduled updates** for OpenClaw and installed skills using cron messages (no scripts required). Focus: safe scheduling, predictable output, and minimal manual work.
+使用 cron 任务来运行 OpenClaw 及已安装技能的更新（无需编写脚本）。重点在于：安全的调度方式、可预测的更新结果以及最小化人工干预。
 
-## What it does
+## 功能介绍
 
-- Runs OpenClaw updates on a fixed schedule
-- Updates all installed skills via ClawHub
-- Sends a concise, readable summary (updated / unchanged / failed)
+- 按固定时间表运行 OpenClaw 的更新
+- 通过 ClawHub 更新所有已安装的技能
+- 提供简洁明了的更新状态报告（更新成功、未变化或更新失败）
 
-## Setup (daily updates)
+## 设置（每日更新）
 
-**Daily at 03:30 Europe/Berlin**:
+**欧洲/柏林时间，每天 03:30**：
 ```bash
 openclaw cron add \
   --name "OpenClaw Auto-Update" \
@@ -27,7 +27,7 @@ openclaw cron add \
   --message "Run daily auto-updates: 1) openclaw update --yes --json 2) clawdhub update --all 3) report versions updated + errors."
 ```
 
-### Weekly (Sunday 04:00)
+### 每周更新（周日 04:00）  
 ```bash
 openclaw cron add \
   --name "OpenClaw Auto-Update (Weekly)" \
@@ -39,9 +39,9 @@ openclaw cron add \
   --message "Run weekly auto-updates: openclaw update --yes --json; clawdhub update --all; summarize changes."
 ```
 
-## Safer modes
+## 更安全的更新模式
 
-**Dry run (no changes):**
+- **模拟运行（不进行任何更改）：**  
 ```bash
 openclaw cron add \
   --name "OpenClaw Auto-Update (Dry)" \
@@ -53,7 +53,7 @@ openclaw cron add \
   --message "Check updates only: openclaw update status; clawdhub update --all --dry-run; summarize what would change."
 ```
 
-**Core only (skip skills):**
+- **仅更新核心组件（跳过其他技能）：**  
 ```bash
 openclaw cron add \
   --name "OpenClaw Auto-Update (Core Only)" \
@@ -65,7 +65,7 @@ openclaw cron add \
   --message "Update OpenClaw only: openclaw update --yes --json; summarize version change."
 ```
 
-## Summary format (recommended)
+## 推荐的更新状态报告格式  
 ```
 🔄 OpenClaw Auto-Update
 
@@ -75,12 +75,12 @@ Skills unchanged: 12
 Errors: none
 ```
 
-## Troubleshooting
+## 故障排除
 
-- If updates fail, include the error in the summary.
-- Schedule off-hours; updates may restart the gateway.
-- Use explicit timezones to avoid surprises.
+- 如果更新失败，请在报告中记录错误信息。
+- 将更新任务安排在非工作时间执行，以避免影响系统运行。
+- 使用明确的时间区设置，以防出现意外。
 
-## References
-- `references/agent-guide.md` → deeper implementation notes
-- `references/summary-examples.md` → formatting examples
+## 参考资料
+- `references/agent-guide.md` → 更详细的实现说明  
+- `references/summary-examples.md` → 更新状态报告的格式示例

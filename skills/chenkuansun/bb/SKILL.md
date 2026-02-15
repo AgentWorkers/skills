@@ -1,6 +1,6 @@
 ---
 name: bb
-description: BullyBuddy - Control Claude Code sessions via slash command. Use /bb to manage multiple Claude Code instances. Commands: status, list, spawn, send, output, kill, audit, transcript.
+description: **BullyBuddy** – 通过斜杠（/）命令来控制 Claude Code 会话。使用 `/bb` 命令可以管理多个 Claude Code 实例。支持的命令包括：`status`（状态查询）、`list`（列表显示）、`spawn`（创建新实例）、`send`（发送数据）、`output`（输出结果）、`kill`（终止实例）、`audit`（审计日志）、`transcript`（会话记录）。
 user-invocable: true
 command-dispatch: tool
 command-tool: exec
@@ -23,29 +23,29 @@ metadata:
   }
 ---
 
-# BullyBuddy Slash Command
+# BullyBuddy 的 `/bb` 命令
 
-Control BullyBuddy Claude Code session manager directly via `/bb`.
+您可以通过 `/bb` 命令直接控制 BullyBuddy Claude 代码会话管理器。
 
-## Setup
+## 设置
 
-1. Install BullyBuddy:
+1. 安装 BullyBuddy：
 
 ```bash
 npm install -g openclaw-bullybuddy
 ```
 
-2. Start the server:
+2. 启动服务器：
 
 ```bash
 bullybuddy server
 ```
 
-Connection info is auto-saved to `~/.bullybuddy/connection.json` on startup. The `/bb` command reads it automatically — no env vars needed.
+服务器启动时，连接信息会自动保存到 `~/.bullybuddy/connection.json` 文件中。`/bb` 命令会自动读取该文件，无需设置环境变量。
 
-For remote access, start with `bullybuddy server --tunnel`. The tunnel URL is available via `/bb url`.
+如需远程访问，请使用 `bullybuddy server --tunnel` 命令。隧道地址可以通过 `/bb url` 查看。
 
-## Usage
+## 使用方法
 
 ```
 /bb status          - Server status & session summary
@@ -60,7 +60,7 @@ For remote access, start with `bullybuddy server --tunnel`. The tunnel URL is av
 /bb help            - Show help
 ```
 
-## Examples
+## 示例
 
 ```
 /bb status
@@ -71,9 +71,9 @@ For remote access, start with `bullybuddy server --tunnel`. The tunnel URL is av
 /bb kill abc123
 ```
 
-## Script
+## 脚本
 
-When invoked, run:
+当执行 `/bb` 命令时，系统会运行相应的脚本：
 ```bash
 {baseDir}/scripts/bb.sh $ARGUMENTS
 ```

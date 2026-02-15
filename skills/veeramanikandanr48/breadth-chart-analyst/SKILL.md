@@ -1,175 +1,175 @@
 ---
 name: breadth-chart-analyst
-description: This skill should be used when analyzing market breadth charts, specifically the S&P 500 Breadth Index (200-Day MA based) and the US Stock Market Uptrend Stock Ratio charts. Use this skill when the user provides breadth chart images for analysis, requests market breadth assessment, positioning strategy recommendations, or wants to understand medium-term strategic and short-term tactical market outlook based on breadth indicators. All analysis and output are conducted in English.
+description: 此技能适用于分析市场广度图表，特别是基于200日均线的标准普尔500指数广度指数（S&P 500 Breadth Index）以及美国股市上涨趋势股票比率图表（US Stock Market Uptrend Stock Ratio charts）。当用户提供广度图表图像以供分析、请求市场广度评估、定位策略建议，或希望根据广度指标了解中期战略和短期战术市场前景时，可使用此技能。所有分析和输出均以英语进行。
 ---
 
-# Breadth Chart Analyst
+# 广度图表分析师
 
-## Overview
+## 概述
 
-This skill enables specialized analysis of two complementary market breadth charts that provide strategic (medium to long-term) and tactical (short-term) market perspectives. Analyze breadth chart images to assess market health, identify trading signals based on backtested strategies, and develop positioning recommendations. All thinking and output are conducted exclusively in English.
+该技能能够对两种互补的市场宽度图表进行专业分析，这两种图表分别提供中长期的策略性视角和短期的战术性视角。通过分析宽度图表图像，可以评估市场健康状况，根据经过回测的策略识别交易信号，并制定投资建议。所有的分析和输出均使用英语进行。
 
-## Core Principles
+## 核心原则
 
-1. **Dual-Timeframe Analysis**: Combine strategic (Chart 1: 200MA Breadth) and tactical (Chart 2: Uptrend Ratio) perspectives
-2. **Backtested Strategy Focus**: Apply proven systematic strategies based on historical patterns
-3. **Objective Signal Identification**: Focus on clearly defined thresholds, transitions, and markers
-4. **English Communication**: Conduct all analysis and generate all reports in English
-5. **Actionable Recommendations**: Provide specific positioning guidance for different investor types
+1. **双时间框架分析**：结合战略性视角（图表1：200日均线宽度）和战术性视角（图表2：上升趋势比率）。
+2. **基于历史模式的回测策略**：应用经过验证的系统化策略。
+3. **明确的信号识别**：关注明确的阈值、转换点和标记。
+4. **英语沟通**：所有分析和报告均使用英语撰写。
+5. **可操作的建议**：为不同类型的投资者提供具体的投资建议。
 
-## Chart Types and Purposes
+## 图表类型和用途
 
-### Chart 1: S&P 500 Breadth Index (200-Day MA Based)
+### 图表1：标准普尔500指数宽度指数（基于200日均线）
 
-**Purpose**: Medium to long-term strategic market positioning
+**用途**：中长期的市场策略定位
 
-**Key Elements**:
-- **8-Day MA (Orange Line)**: Short-term breadth trend, primary entry signal generator
-- **200-Day MA (Green Line)**: Long-term breadth trend, primary exit signal generator
-- **Red Dashed Line (73%)**: Average peak level - market overheating threshold
-- **Blue Dashed Line (23%)**: Average 8MA trough level - extreme oversold, excellent buying opportunity
-- **Triangles**:
-  - Purple ▼ = 8MA troughs (buy signal when reverses)
-  - Blue ▼ = 200MA troughs (major cycle lows)
-  - Red ▲ = 200MA peaks (sell signal)
-- **Pink Background**: Downtrend periods
+**关键要素**：
+- **8日均线（橙色线）**：短期宽度趋势，主要的入场信号生成器。
+- **200日均线（绿色线）**：长期宽度趋势，主要的出场信号生成器。
+- **红色虚线（73%）**：平均峰值水平——市场过热阈值。
+- **蓝色虚线（23%）**：平均8日均线低点——极度超卖，绝佳的买入机会。
+- **三角形**：
+  - 紫色▼ = 8日均线低点（反转时买入信号）。
+  - 蓝色▼ = 200日均线低点（主要周期低点）。
+  - 红色▲ = 200日均线高点（卖出信号）。
+- **粉色背景**：下跌趋势时期。
 
-**Backtested Strategy**:
-- **BUY**: When 8MA reverses from a trough (especially below 23%)
-- **SELL**: When 200MA forms a peak (typically near/above 73%)
-- **Result**: Historically high performance, avoids bear markets
+**回测策略**：
+- **买入**：当8日均线从低点反转时（尤其是在23%以下）。
+- **卖出**：当200日均线形成高点时（通常在73%附近或以上）。
+- **结果**：历史表现优异，能够避开熊市。
 
-### Chart 2: US Stock Market - Uptrend Stock Ratio
+### 图表2：美国股市——上升趋势股票比率
 
-**Purpose**: Short-term tactical timing and swing trading
+**用途**：短期战术性时机选择和波段交易
 
-**Key Elements**:
-- **Uptrend Stock Definition**: Stocks above 200MA/50MA/20MA with positive 1-month performance
-- **Green Regions**: Market in uptrend phase
-- **Red Regions**: Market in downtrend phase
-- **~10% Level (Lower Orange Dashed)**: Short-term bottom, extreme oversold
-- **~40% Level (Upper Orange Dashed)**: Short-term top, market overheating
+**关键要素**：
+- **上升趋势股票**：股价高于200日均线/50日均线/20日均线且过去1个月表现积极。
+- **绿色区域**：市场处于上升趋势阶段。
+- **红色区域**：市场处于下跌趋势阶段。
+- **约10%水平（下方橙色虚线）**：短期底部，极度超卖。
+- **约40%水平（上方橙色虚线**：短期顶部，市场过热。
 
-**Swing Trading Strategy**:
-- **ENTER LONG**: When color changes from red to green (especially from <10-15% levels)
-- **EXIT LONG**: When color changes from green to red (especially from >35-40% levels)
-- **Timeframe**: Days to weeks
+**波段交易策略**：
+- **入场多头**：当颜色从红色变为绿色时（尤其是在10-15%以下时）。
+- **出场多头**：当颜色从绿色变为红色时（尤其是在35-40%以上时）。
+- **时间框架**：几天到几周。
 
-## Analysis Workflow
+## 分析工作流程
 
-### Step 1: Receive Chart Images and Prepare Analysis
+### 第1步：接收图表图像并准备分析
 
-When the user provides breadth chart images for analysis:
+当用户提供宽度图表图像进行分析时：
 
-1. Confirm receipt of chart image(s)
-2. Identify which chart(s) are provided:
-   - Chart 1 only (200MA Breadth)
-   - Chart 2 only (Uptrend Ratio)
-   - Both charts
-3. Note any specific focus areas or questions from the user
-4. Proceed with systematic analysis
+1. 确认收到图表图像。
+2. 识别提供的图表类型：
+   - 仅图表1（200日均线宽度）。
+   - 仅图表2（上升趋势比率）。
+   - 两个图表都提供。
+3. 记录用户的任何特定关注点或问题。
+4. 开始系统分析。
 
-**Language Note**: All subsequent thinking, analysis, and output will be in English.
+**语言说明**：后续的所有分析、思考和输出均使用英语。
 
-### Step 2: Load Breadth Chart Methodology
+### 第2步：加载宽度图表方法论
 
-Before beginning analysis, read the comprehensive breadth chart methodology:
+在开始分析之前，请阅读详细的宽度图表方法论：
 
 ```
 Read: references/breadth_chart_methodology.md
 ```
 
-This reference contains detailed guidance on:
-- Chart 1: 200MA-based breadth index interpretation and strategy
-- Chart 2: Uptrend stock ratio interpretation and strategy
-- Signal identification and threshold significance
-- Strategy rules and risk management
-- Combining both charts for optimal decision-making
-- Common pitfalls to avoid
+该参考资料包含以下内容：
+- 图表1：基于200日均线的宽度指数解读和策略。
+- 图表2：上升趋势股票比率解读和策略。
+- 信号识别和阈值的重要性。
+- 策略规则和风险管理。
+- 结合两个图表以做出最佳决策。
+- 需避免的常见错误。
 
-### Step 3: Examine Sample Charts (First Time or for Reference)
+### 第3步：查看示例图表（首次使用或参考）
 
-To understand the chart format and visual elements, review the sample charts included in this skill:
+为了理解图表格式和视觉元素，请查看本技能中包含的示例图表：
 
 ```
 View: assets/SP500_Breadth_Index_200MA_8MA.jpeg
 View: assets/US_Stock_Market_Uptrend_Ratio.jpeg
 ```
 
-These samples demonstrate:
-- Visual appearance and structure of each chart type
-- How signals and thresholds are displayed
-- Color coding and marker systems
-- Historical patterns and cycles
+这些示例展示了：
+- 每种图表类型的视觉外观和结构。
+- 信号和阈值的表现方式。
+- 颜色编码和标记系统。
+- 历史模式和周期。
 
-### Step 4: Analyze Chart 1 (200MA-Based Breadth Index)
+### 第4步：分析图表1（基于200日均线的宽度指数）
 
-If Chart 1 is provided, conduct systematic analysis:
+如果提供了图表1，请进行系统分析：
 
-#### 4.1 Extract Current Readings
+#### 4.1 提取当前读数
 
-From the chart image, identify:
-- **Current 8MA level** (orange line): Specific percentage
-- **Current 200MA level** (green line): Specific percentage
-- **8MA slope**: Rising, falling, or flat
-- **200MA slope**: Rising, falling, or flat
-- **Distance from 73% threshold**: How close to overheating
-- **Distance from 23% threshold**: How close to extreme oversold
-- **Most recent date** visible on the chart
+从图表图像中识别：
+- **当前8日均线水平**（橙色线）：具体百分比。
+- **当前200日均线水平**（绿色线）：具体百分比。
+- **8日均线的趋势**：上升、下降或持平。
+- **200日均线的趋势**：上升、下降或持平。
+- **与73%阈值的距离**：距离过热有多近。
+- **与23%阈值的距离**：距离极度超卖有多近。
+- 图表上可见的最新日期。
 
-#### 4.1.5 CRITICAL: Latest Data Point Detailed Trend Analysis
+#### 4.1.5 关键步骤：最新数据点的详细趋势分析
 
-**This step is MANDATORY to avoid misreading recent trend changes.**
+**此步骤是必须的，以避免误解最近的趋势变化。**
 
-**CRITICAL WARNING**: Charts can be deceptive. The MAJORITY of analysis errors occur because the analyst:
-1. Confuses the 8MA (orange) with the 200MA (green)
-2. Reads historical trends instead of the CURRENT rightmost data points
-3. Misidentifies which line is rising vs falling
+**重要警告**：图表可能会产生误导。大多数分析错误是由于分析师：
+1. 将8日均线（橙色）与200日均线（绿色）混淆。
+2. 读取历史趋势而不是最新的数据点。
+3. 误判哪条线在上升或下降。
 
-**BEFORE analyzing trend direction, FIRST confirm line colors**:
-- ✓ **8MA = ORANGE line** (fast-moving, more volatile)
-- ✓ **200MA = GREEN line** (slow-moving, smoother)
-- If unsure which is which, STOP and re-examine the chart legend/colors
+**在分析趋势方向之前，首先确认线条颜色**：
+- ✓ **8日均线 = 橙色线**（移动较快，波动较大）。
+- ✓ **200日均线 = 绿色线**（移动较慢，较为平稳）。
+- 如果不确定哪条线是哪条线，请停止并重新检查图表图例/颜色。
 
-Focus intensively on the **rightmost 3-5 data points** of the chart (most recent weeks):
+**重点关注图表最右边的3-5个数据点（最近几周）**：
 
-**For 8MA (Orange Line) - Analyze the very latest trajectory**:
-1. **Identify the absolute latest position**: Where is the 8MA at the rightmost edge of the chart?
-2. **Trace back 3-5 data points** (approximately 3-5 weeks):
-   - What was the 8MA level 1 week ago?
-   - What was the 8MA level 2 weeks ago?
-   - What was the 8MA level 3 weeks ago?
-3. **Calculate the directional change**:
-   - Is the latest value HIGHER or LOWER than 1 week ago?
-   - Is the latest value HIGHER or LOWER than 2 weeks ago?
-   - What is the trend: consistently rising, consistently falling, or mixed?
-4. **Determine the CURRENT slope** (not historical slope):
-   - **Rising**: Latest data point is higher than previous 2-3 points AND shows upward curvature
-   - **Falling**: Latest data point is lower than previous 2-3 points AND shows downward curvature
-   - **Flat**: Latest data point is approximately equal to previous points (within 2-3%)
+**对于8日均线（橙色线）——分析最新的趋势**：
+1. **确定最新的位置**：8日均线在图表的最右边在哪里？
+2. **回溯3-5个数据点**（大约3-5周）：
+   - 1周前的8日均线水平是多少？
+   - 2周前的8日均线水平是多少？
+   - 3周前的8日均线水平是多少？
+3. **确定趋势变化**：
+   - 最新值是高于还是低于1周前的值？
+   - 最新值是高于还是低于2周前的值？
+   - 趋势是持续上升、持续下降还是混合趋势？
+4. **确定当前的趋势**（不是历史趋势）：
+   - **上升**：最新数据点高于前2-3个数据点，并且呈现上升趋势。
+   - **下降**：最新数据点低于前2-3个数据点，并且呈现下降趋势。
+   - **持平**：最新数据点与前2-3个数据点大致相同。
 
-**Critical Questions to Answer**:
-- [ ] Is the 8MA currently moving UP or DOWN at the rightmost edge?
-- [ ] If there was a recent trough, has the 8MA **sustained** the upward move, or has it rolled over?
-- [ ] Count consecutive periods of increase: How many consecutive periods has 8MA risen? (Need 2-3 for confirmation)
-- [ ] Count consecutive periods of decrease: How many consecutive periods has 8MA fallen? (Indicates failed reversal if declining after trough)
+**需要回答的关键问题**：
+- [ ] 8日均线在图表的最右边是上升还是下降？
+- [ ] 如果最近出现了低点，8日均线是否持续上升，还是出现了反转？
+- [ ] 连续上升的周期有多少个？（需要2-3个周期才能确认）。
+- [ ] 连续下降的周期有多少个？（如果下降，则表示反转失败）。
 
-**For 200MA (Green Line) - Analyze the very latest trajectory**:
-1. **Identify the absolute latest position**: Where is the 200MA at the rightmost edge?
-2. **Trace back 4-6 weeks**:
-   - What was the 200MA level 2 weeks ago?
-   - What was the 200MA level 4 weeks ago?
-3. **Determine the CURRENT slope**:
-   - Is it rising, falling, or flat in the most recent period?
+**对于200日均线（绿色线）——分析最新的趋势**：
+1. **确定最新的位置**：200日均线在图表的最右边在哪里？
+2. **回溯4-6周**：
+   - 2周前的200日均线水平是多少？
+   - 4周前的200日均线水平是多少？
+3. **确定当前的趋势**：
+   - 在最近的一个周期内，趋势是上升、下降还是持平？
 
-**Failed Reversal Detection** (CRITICAL):
-If an 8MA trough (purple ▼) was recently identified:
-- [ ] Did the 8MA rise for only 1-2 periods and then turn back down?
-- [ ] Did the 8MA fail to reach 60% before turning down?
-- [ ] Is the 8MA currently declining again after the bounce?
-- **If YES to any**: This is a **FAILED REVERSAL** - DO NOT ENTER, signal is INVALID
+**失败的反转检测**（关键）：
+如果最近识别出8日均线的低点（紫色▼）：
+- [ ] 8日均线是否只上升了1-2个周期然后又下降？
+- [ ] 8日均线在下降之前是否没有达到60%？
+- [ ] 8日均线在反弹后是否再次下降？
+- **如果是上述任何一种情况**：这表示**反转失败**——不要入场，信号无效。
 
-**Example Analysis Format**:
+**示例分析格式**：
 ```
 Latest 8MA Data Points (rightmost to left):
 - Current (Week 0): 48%
@@ -182,273 +182,273 @@ This shows a failed reversal pattern - bounce was temporary, downtrend has resum
 SLOPE: Falling (not rising!)
 ```
 
-**MANDATORY CROSS-CHECK** (to catch misreadings):
-After determining the trend, ask yourself:
-- [ ] "If I claimed 8MA is RISING, but it's actually been FALLING for weeks, what would that look like?"
-  - Answer: The rightmost data points would be LOWER than previous points (confirming FALLING)
-- [ ] "Does my analysis match the visual slope of the orange line at the rightmost edge?"
-  - If orange line visually slopes DOWN at the right edge → It's FALLING
-  - If orange line visually slopes UP at the right edge → It's RISING
-- [ ] "Is there any pink background shading (downtrend) near the rightmost edge?"
-  - If YES → This confirms downtrend conditions, 8MA is likely FALLING
-- [ ] "Are the 8MA and 200MA converging (getting closer) or diverging?"
-  - Converging from below → Potential death cross forming → BEARISH
-  - Converging from above → Potential golden cross forming → BULLISH
+**必须进行交叉验证**（以避免误解）：
+在确定趋势后，问自己：
+- [ ] “如果我声称8日均线在上升，但实际上它已经连续下降了几周，那会是什么样子？”
+  - 答案：最右边的数据点会低于之前的数据点（确认下降）。
+- [ ] “我的分析与图表最右边的橙色线的趋势相符吗？”
+  - 如果橙色线在右边呈现下降趋势 → 表示下降。
+  - 如果橙色线在右边呈现上升趋势 → 表示上升。
+- [ ] “最右边是否有粉色背景阴影（下跌趋势）？”
+  - 如果有 → 这确认了下跌趋势，8日均线很可能在下降。
+- [ ] **8日均线和200日均线是否在靠近或分离？**
+  - 如果从下方靠近 → 可能形成死亡交叉 → 熊市信号。
+  - 如果从上方靠近 → 可能形成黄金交叉 → 牛市信号。
 
-#### 4.2 Identify Signal Markers
+#### 4.2 识别信号标记
 
-Look for and document:
-- **Most recent 8MA trough (purple ▼)**: Date and level
-- **Most recent 200MA trough (blue ▼)**: Date and level (if visible in timeframe)
-- **Most recent 200MA peak (red ▲)**: Date and level
-- **Days/weeks since most recent signals**
-- **Any pink background shading** (downtrend periods)
+寻找并记录：
+- **最新的8日均线低点（紫色▼）**：日期和水平。
+- **最新的200日均线低点（蓝色▼）**：日期和水平（如果在时间范围内可见）。
+- **最新的200日均线高点（红色▲）**：日期和水平。
+- **自最近信号以来的天数/周数**。
+- **任何粉色背景阴影**（下跌趋势时期）。
 
-#### 4.3 Assess Market Regime
+#### 4.3 评估市场状况**
 
-Based on readings and patterns, classify the current market as:
-- Healthy Bull Market
-- Overheated Bull Market
-- Market Top/Distribution Phase
-- Bear Market/Correction
-- Capitulation/Extreme Oversold
-- Early Recovery
+根据读数和模式，将当前市场分类为：
+- 健康的牛市。
+- 过热的牛市。
+- 市场顶峰/分布阶段。
+- 熊市/修正阶段。
+- 投盘投降/极度超卖。
+- 早期复苏。
 
-Support the classification with specific evidence from the chart.
+用图表中的具体证据支持分类。
 
-#### 4.4 Determine Strategy Position
+#### 4.4 确定策略位置
 
-Apply the backtested strategy rules with STRICT confirmation requirements:
+应用经过回测的策略规则，并严格遵守确认要求：
 
-**Check for BUY signal** (ALL criteria must be met):
-1. ✓ **Trough Formation**: Has 8MA formed a clear trough (purple ▼)?
-2. ✓ **Reversal Initiated**: Has 8MA begun to move upward from the trough?
-3. ✓ **Confirmation Achieved**: Has 8MA risen for 2-3 CONSECUTIVE periods after the trough?
-4. ✓ **No Recent Reversal**: Based on Step 4.1.5 analysis, is 8MA CURRENTLY rising (not falling)?
-5. ✓ **Sustained Move**: Has 8MA maintained the upward trajectory without rolling over?
-6. ⭐ **Optional but Strong**: Is 8MA below or near 23% (extreme oversold) at trough?
+**检查买入信号**（必须满足所有条件）：
+1. ✓ **低点形成**：8日均线是否形成了明确的低点（紫色▼）？
+2. ✓ **反转开始**：8日均线是否从低点开始上升？
+3. ✓ **确认达成**：8日均线在低点后是否连续上升了2-3个周期？
+4. ✓ **没有最近的反转**：根据步骤4.1.5的分析，8日均线是否当前在上升（而不是下降）？
+5. ✓ **持续上升**：8日均线是否保持了上升趋势而没有反转？
+6. ⭐ **可选但重要**：在低点时，8日均线是否低于或接近23%（极度超卖）？
 
-**BUY Signal Status**:
-- **CONFIRMED**: All 5 required criteria met → ENTER LONG
-- **DEVELOPING**: Trough formed, but < 2-3 consecutive increases → WAIT, MONITOR
-- **FAILED**: Trough formed, but 8MA has rolled over and is declining → DO NOT ENTER, WAIT FOR NEXT TROUGH
-- **NO SIGNAL**: No trough formed → WAIT
+**买入信号状态**：
+- **确认**：满足所有5个条件 → 入场多头。
+- **发展中**：低点形成，但连续上升少于2-3个周期 → 等待，观察。
+- **失败**：低点形成，但8日均线反转并下降 → 不要入场，等待下一个低点。
+- **无信号**：没有形成低点 → 等待。
 
-**Check for SELL signal**:
-- Has 200MA formed a peak (red ▲)?
-- Is 200MA near or above 73%?
-- Is this an active sell signal requiring position exit?
+**检查卖出信号**：
+- 200日均线是否形成了高点（红色▲）？
+- 200日均线是否接近或高于73%？
+- 这是否是一个需要出场的具体卖出信号？
 
-**Current position determination**:
-- **Long**: BUY signal confirmed, position entered and held
-- **Preparing to Enter**: BUY signal developing (trough formed, watching for confirmation)
-- **WAIT / Flat**: No valid signal OR failed reversal detected
-- **Preparing to Exit**: SELL signal developing (200MA approaching peak)
+**当前位置确定**：
+- **多头**：买入信号确认，入场并持有。
+- **准备入场**：买入信号正在形成（低点形成，等待确认）。
+- **等待/持平**：没有有效信号或反转失败。
+- **准备出场**：卖出信号正在形成（200日均线接近高点）。
 
-#### 4.5 Develop Scenarios
+#### 4.5 制定情景**
 
-Create 2-3 scenarios with probability estimates:
-- Base case scenario (highest probability)
-- Alternative scenario(s)
-- Each scenario includes: description, supporting factors, strategy implications, key levels
+创建2-3个情景，并估计其概率：
+- 基本情景（概率最高）。
+- 替代情景。
+- 每个情景包括：描述、支持因素、策略影响、关键水平。
 
-### Step 5: Analyze Chart 2 (Uptrend Stock Ratio)
+### 第5步：分析图表2（上升趋势股票比率）
 
-If Chart 2 is provided, conduct systematic analysis:
+如果提供了图表2，请进行系统分析：
 
-#### 5.1 Extract Current Readings
+#### 5.1 提取当前读数
 
-From the chart image, identify:
-- **Current uptrend stock ratio**: Specific percentage
-- **Current color**: Green (uptrend) or Red (downtrend)
-- **Ratio slope**: Rising, falling, or flat
-- **Distance from 10% threshold**: How close to extreme oversold
-- **Distance from 40% threshold**: How close to overbought
-- **Most recent date** visible on the chart
+从图表图像中识别：
+- **当前的上升趋势股票比率**：具体百分比。
+- **当前颜色**：绿色（上升趋势）或红色（下跌趋势）。
+- **比率趋势**：上升、下降或持平。
+- **与10%阈值的距离**：距离极度超卖有多近。
+- **与40%阈值的距离**：距离过度买入有多近。
+- 图表上可见的最新日期。
 
-#### 5.2 Identify Trend Transitions
+#### 5.2 识别趋势转换**
 
-Look for and document:
-- **Most recent red-to-green transition**: Date and ratio level at transition
-- **Most recent green-to-red transition**: Date and ratio level at transition
-- **Duration of current color phase**: How long in current trend
-- **Days/weeks since most recent transition**
+寻找并记录：
+- **最新的从红色到绿色的转换**：转换时的日期和比率水平。
+- **最新的从绿色到红色的转换**：转换时的日期和比率水平。
+- **当前颜色阶段的持续时间**：当前趋势持续了多久。
+- **自最近转换以来的天数/周数**。
 
-#### 5.3 Assess Market Condition
+#### 5.3 评估市场状况**
 
-Based on current ratio and color, classify as:
-- Extreme Oversold (<10%)
-- Moderate Bearish (10-20%, red)
-- Neutral/Transitional (20-30%)
-- Moderate Bullish (30-37%, green)
-- Extreme Overbought (>37-40%)
+根据当前的比率和颜色，将市场分类为：
+- 极度超卖（<10%）。
+- 中度熊市（10-20%，红色）。
+- 中性/过渡期（20-30%）。
+- 中度牛市（30-37%，绿色）。
+- 极度超买（>37-40%）。
 
-Support the classification with specific evidence from the chart.
+用图表中的具体证据支持分类。
 
-#### 5.4 Determine Trading Position
+#### 5.4 确定交易位置**
 
-Apply the swing trading strategy rules:
+应用波段交易策略规则：
 
-**Check for ENTER LONG signal**:
-- Has color changed from red to green?
-- Was the transition from an oversold level (<15%)?
-- Is the transition confirmed (2-3 days of green)?
+**检查入场多头信号**：
+- 颜色是否从红色变为绿色？
+- 转换是否发生在超卖水平（<15%）？
+- 转换是否得到确认（持续2-3天为绿色）？
 
-**Check for EXIT LONG signal**:
-- Has color changed from green to red?
-- Was the transition from an overbought level (>35%)?
-- Is momentum weakening?
+**检查出场多头信号**：
+- 颜色是否从绿色变为红色？
+- 转换是否发生在过度买入水平（>35%）？
+- 动量是否减弱？
 
-**Current position**: Long, Flat, Preparing to Enter, or Preparing to Exit
+**当前位置**：多头、持平、准备入场或准备出场。
 
-#### 5.5 Develop Scenarios
+#### 5.5 制定情景**
 
-Create 2-3 scenarios with probability estimates:
-- Base case scenario (highest probability)
-- Alternative scenario(s)
-- Each scenario includes: description, supporting factors, trading implications, key levels
+创建2-3个情景，并估计其概率：
+- 基本情景（概率最高）。
+- 替代情景。
+- 每个情景包括：描述、支持因素、交易影响、关键水平。
 
-### Step 6: Combined Analysis (When Both Charts Provided)
+### 第6步：结合分析（当提供两个图表时）
 
-If both charts are provided, integrate the strategic and tactical perspectives:
+如果提供了两个图表，请整合战略性和战术性视角：
 
-#### 6.1 Alignment Assessment
+#### 6.1 对齐评估**
 
-Create a positioning matrix:
-- **Chart 1 (Strategic)**: Bullish / Bearish / Neutral + signal status
-- **Chart 2 (Tactical)**: Bullish / Bearish / Neutral + signal status
-- **Combined Implication**: How do they align or conflict?
+创建一个定位矩阵：
+- **图表1（战略性）**：牛市/熊市/中性 + 信号状态。
+- **图表2（战术性）**：牛市/熊市/中性 + 信号状态。
+- **综合影响**：它们如何一致或冲突？
 
-#### 6.2 Scenario Classification
+#### 6.2 情景分类**
 
-Determine which of the four scenarios applies:
+确定以下四种情景中哪一种适用：
 
-**Scenario 1: Both Bullish**
-- Chart 1: 8MA rising, 200MA not yet peaked
-- Chart 2: Green (uptrend), ratio rising from oversold
-- Implication: Maximum bullish stance, aggressive positioning
+**情景1：两者均为牛市**
+- 图表1：8日均线上升，200日均线尚未达到高点。
+- 图表2：绿色（上升趋势），比率从超卖状态上升。
+- 影响：采取最大程度的牛市立场，积极入场。
 
-**Scenario 2: Strategic Bullish, Tactical Bearish**
-- Chart 1: 8MA rising, 200MA not yet peaked
-- Chart 2: Red (downtrend), ratio falling or elevated
-- Implication: Hold core long positions, wait for tactical entry
+**情景2：战略性牛市，战术性熊市**
+- 图表1：8日均线上升，200日均线尚未达到高点。
+- 图表2：红色（下跌趋势），比率下降或上升。
+- 影响：持有核心多头头寸，等待战术性入场。
 
-**Scenario 3: Strategic Bearish, Tactical Bullish**
-- Chart 1: 200MA peaked or declining
-- Chart 2: Green (uptrend), ratio rising
-- Implication: Short-term tactical trades only, tight stops
+**情景3：战略性熊市，战术性牛市**
+- 图表1：200日均线达到或下降。
+- 图表2：绿色（上升趋势），比率上升。
+- 影响：仅进行短期战术性交易，设置紧密止损。
 
-**Scenario 4: Both Bearish**
-- Chart 1: Both MAs declining
-- Chart 2: Red (downtrend), ratio falling
-- Implication: Defensive positioning, cash or shorts
+**情景4：两者均为熊市**
+- 图表1：两条均线都在下降。
+- 图表2：红色（下跌趋势），比率下降。
+- 影响：采取防御性立场，现金持有或卖出。
 
-#### 6.3 Unified Recommendation
+#### 6.3 综合建议**
 
-Provide integrated positioning guidance for:
-- **Long-term investors** (based primarily on Chart 1)
-- **Swing traders** (based primarily on Chart 2)
-- **Active tactical traders** (based on combination)
+为以下投资者提供综合投资建议：
+- **长期投资者**（主要基于图表1）。
+- **波段交易者**（主要基于图表2）。
+- **活跃的战术交易者**（基于两者结合）。
 
-Address any conflicts between charts and explain resolution.
+解决图表之间的任何冲突，并解释解决方案。
 
-### Step 7: Generate Analysis Report in English
+### 第7步：用英语生成分析报告
 
-Create a comprehensive markdown report using the template structure:
+使用模板结构创建一份全面的markdown报告：
 
 ```
 Read and use as template: assets/breadth_analysis_template.md
 ```
 
-**IMPORTANT**: All analysis and output must be in English.
+**重要提示**：所有分析和输出必须使用英语。
 
-The report structure varies based on which chart(s) are analyzed:
+报告的结构取决于分析的图表类型：
 
-**If Chart 1 only**:
-- Executive Summary
-- Chart 1 full analysis sections
-- Summary and Conclusion
-- Omit Chart 2 and Combined Analysis sections
+**如果仅分析图表1**：
+- 执行摘要。
+- 图表1的完整分析部分。
+- 总结和结论。
+- 省略图表2和综合分析部分。
 
-**If Chart 2 only**:
-- Executive Summary
-- Chart 2 full analysis sections
-- Summary and Conclusion
-- Omit Chart 1 and Combined Analysis sections
+**如果仅分析图表2**：
+- 执行摘要。
+- 图表2的完整分析部分。
+- 总结和结论。
+- 省略图表1和综合分析部分。
 
-**If Both Charts**:
-- Executive Summary
-- Chart 1 full analysis sections
-- Chart 2 full analysis sections
-- Combined Analysis section (mandatory)
-- Summary and Conclusion
+**如果分析两个图表**：
+- 执行摘要。
+- 图表1的完整分析部分。
+- 图表2的完整分析部分。
+- 综合分析部分（必填）。
+- 总结和结论。
 
-**File Naming Convention**: Save each analysis as:
-- Chart 1 only: `breadth_200ma_analysis_[YYYY-MM-DD].md`
-- Chart 2 only: `uptrend_ratio_analysis_[YYYY-MM-DD].md`
-- Both charts: `breadth_combined_analysis_[YYYY-MM-DD].md`
+**文件命名规范**：将每个分析文件保存为：
+- 仅图表1：`breadth_200ma_analysis_[YYYY-MM-DD].md`
+- 仅图表2：`uptrend_ratio_analysis_[YYYY-MM-DD].md`
+- 两个图表：`breadth_combined_analysis_[YYYY-MM-DD].md`
 
-### Step 8: Quality Assurance
+### 第8步：质量保证
 
-Before finalizing the report, verify:
+在最终确定报告之前，验证以下内容：
 
-1. ✓ **Language**: All content is in English (thinking and output)
-2. ✓ **Line Color Verification**: Explicitly confirmed 8MA = ORANGE, 200MA = GREEN before trend analysis
-3. ✓ **Latest Data Trend Analysis**: Step 4.1.5 was thoroughly completed - the most recent 3-5 data points were analyzed to determine CURRENT trend direction
-4. ✓ **Trend Direction Accuracy**: The stated 8MA slope (Rising/Falling/Flat) accurately reflects the RIGHTMOST data points, not historical movement
-5. ✓ **Cross-Check Completed**: MANDATORY CROSS-CHECK questions were answered to confirm trend direction matches visual slope
-6. ✓ **Death/Golden Cross Check**: If 8MA and 200MA are converging, explicitly identified whether death cross or golden cross is forming
-7. ✓ **Failed Reversal Check**: If a trough was identified, explicitly verified whether the reversal sustained or failed by analyzing latest trajectory
-8. ✓ **Specific Values**: All readings include specific percentages/levels, not vague descriptions
-9. ✓ **Signal Status**: Clear identification of active signals (CONFIRMED BUY / DEVELOPING / FAILED / SELL / WAIT)
-10. ✓ **Strategy Alignment**: Recommendations align with backtested strategies and confirmation requirements
-11. ✓ **Probabilities**: Scenario probabilities sum to 100%
-12. ✓ **Actionable**: Clear positioning recommendations for different trader types
-13. ✓ **Context**: Historical comparison and reference to similar past situations
-14. ✓ **Risk Management**: Invalidation levels and risk factors clearly stated
+1. ✓ **语言**：所有内容和输出均为英语。
+2. ✓ **线条颜色验证**：在趋势分析之前明确确认8日均线 = 橙色，200日均线 = 绿色。
+3. ✓ **最新数据趋势分析**：彻底完成步骤4.1.5——分析了最新的3-5个数据点以确定当前趋势方向。
+4. ✓ **趋势方向准确性**：所述的8日均线趋势（上升/下降/持平）准确反映了最新的数据点。
+5. ✓ **交叉验证完成**：必须回答了强制性的交叉验证问题，以确认趋势方向与视觉趋势一致。
+6. ✓ **死亡/黄金交叉检查**：如果8日均线和200日均线正在靠近，明确识别是死亡交叉还是黄金交叉。
+7. ✓ **失败反转检查**：如果识别出低点，通过分析最新趋势确认反转是否持续或失败。
+8. ✓ **具体数值**：所有读数都包含具体的百分比/水平，而不是模糊的描述。
+9. ✓ **信号状态**：明确识别活跃信号（确认买入/发展中/失败/卖出/等待）。
+10. ✓ **策略一致性**：建议与经过回测的策略和确认要求一致。
+11. ✓ **概率**：情景概率总和为100%。
+12. ✓ **可操作性**：为不同类型的投资者提供明确的投资建议。
+13. ✓ **背景信息**：提供历史比较和类似情况的参考。
+14. ✓ **风险管理**：明确说明验证水平和风险因素。
 
-**FINAL SANITY CHECK**:
-- [ ] If report claims "BUY signal" or "8MA rising", confirm this doesn't contradict user's chart showing death cross or downtrend
-- [ ] If report claims "bullish", confirm there's no pink background shading or death cross visible
-- [ ] If unsure about ANY trend direction, explicitly state uncertainty rather than guessing
+**最终检查**：
+- [ ] 如果报告声称“买入信号”或“8日均线上升”，确认这与用户图表显示的死亡交叉或下跌趋势不矛盾。
+- [ ] 如果报告声称“牛市”，确认没有粉色背景阴影或死亡交叉。
+- [ ] 如果对任何趋势方向不确定，明确表示不确定性，而不是猜测。
 
-## Quality Standards
+## 质量标准
 
-### Objectivity Requirements
+### 客观性要求
 
-- Base all analysis strictly on observable chart data
-- Do not incorporate external information (news, fundamentals) unless specifically relevant
-- Use precise technical terminology consistently
-- Distinguish clearly between factual observations and probabilistic forecasts
-- Acknowledge uncertainty when signals are ambiguous
+- 所有分析严格基于可观察的图表数据。
+- 除非特别相关，否则不纳入外部信息（新闻、基本面）。
+- 一致使用精确的技术术语。
+- 清晰区分事实观察和概率预测。
+- 当信号不明确时，承认不确定性。
 
-### Completeness Requirements
+### 完整性要求
 
-- Address all relevant sections of the analysis template
-- Provide specific numerical values for all key metrics
-- Justify probability estimates with technical factors
-- Include invalidation levels for each scenario
-- Compare current readings to historical patterns visible on the charts
+- 涵盖分析模板的所有相关部分。
+- 为所有关键指标提供具体的数值。
+- 用技术因素证明概率估计的合理性。
+- 包括每个情景的无效化水平。
+- 将当前读数与图表上的历史模式进行比较。
 
-### Clarity Requirements
+### 清晰度要求
 
-- Write in professional, analytical English
-- Use clear section headings and structure
-- Present information in tables where appropriate
-- Make recommendations specific and actionable
-- Avoid jargon without explanation
+- 用专业的分析性英语写作。
+- 使用清晰的章节标题和结构。
+- 在适当的地方使用表格呈现信息。
+- 提出的建议具体且可操作。
+- 避免使用未经解释的术语。
 
-### Strategy Adherence Requirements
+### 策略遵循要求
 
-- Apply backtested strategy rules correctly
-- Distinguish between strategic (Chart 1) and tactical (Chart 2) signals
-- Provide clear position status (Long/Flat/Entering/Exiting)
-- Include specific entry/exit levels when applicable
-- Address risk management (stop losses, position sizing)
+- 正确应用经过回测的策略规则。
+- 清晰区分战略性（图表1）和战术性（图表2）信号。
+- 明确位置状态（多头/持平/入场/出场）。
+- 包括具体的入场/出场水平（如适用）。
+- 包括风险管理（止损、头寸大小）。
 
-## Example Usage Scenarios
+## 示例使用场景
 
-### Example 1: Strategic Breadth Analysis (Chart 1 Only)
+### 示例1：战略性宽度分析（仅图表1）
 
 ```
 User: "Please analyze this S&P 500 breadth chart and tell me where we are in the market cycle."
@@ -476,7 +476,7 @@ Breadth Analyst (thinking in English):
 9. Generates comprehensive report in English: breadth_200ma_analysis_2025-11-02.md
 ```
 
-### Example 2: Tactical Uptrend Ratio Analysis (Chart 2 Only)
+### 示例2：战术性上升趋势比率分析（仅图表2）
 
 ```
 User: "Should I be buying or selling here? Analyze this uptrend ratio chart."
@@ -503,7 +503,7 @@ Breadth Analyst (thinking in English):
 9. Generates tactical report in English: uptrend_ratio_analysis_2025-11-02.md
 ```
 
-### Example 3: Combined Strategic + Tactical Analysis (Both Charts)
+### 示例3：综合战略性+战术性分析（两个图表）
 
 ```
 User: "Analyze both of these breadth charts and give me your overall market view."
@@ -536,127 +536,127 @@ Breadth Analyst (thinking in English):
 9. Generates comprehensive combined report in English: breadth_combined_analysis_2025-11-02.md
 ```
 
-## Common Analysis Errors and How to Avoid Them
+## 常见分析错误及避免方法
 
-### Error 1: Confusing 8MA with 200MA
+### 错误1：混淆8日均线与200日均线
 
-**Symptom**: Report claims 8MA is rising when it's actually the 200MA that's rising
+**症状**：报告称8日均线在上升，但实际上是200日均线在上升。
 
-**Prevention**:
-- ALWAYS verify: 8MA = ORANGE, 200MA = GREEN
-- Check line volatility: 8MA moves faster with more volatility
-- If unsure, state: "Based on line color, I identify the [orange/green] line as [8MA/200MA]"
+**预防措施**：
+- 始终确认：8日均线 = 橙色，200日均线 = 绿色。
+- 检查线条的波动性：8日均线波动更大。
+- 如果不确定，说明：“根据线条颜色，我将[橙色/绿色]线识别为[8日均线/200日均线]”。
 
-### Error 2: Reading Historical Trends Instead of Current Direction
+### 错误2：读取历史趋势而非当前趋势
 
-**Symptom**: Report describes what happened 1-2 months ago, not what's happening NOW
+**症状**：报告描述的是1-2个月前的情况，而不是当前的情况。
 
-**Prevention**:
-- Focus ONLY on rightmost 3-5 data points
-- Explicitly write: "At the CURRENT rightmost edge, 8MA is at X% and is [rising/falling]"
-- Ignore what happened in September if we're analyzing November
+**预防措施**：
+- 仅关注最右边的3-5个数据点。
+- 明确写出：“在当前的最右边，8日均线为X%，并且处于[上升/下降]状态”。
+- 如果我们分析的是11月的情况，忽略9月发生的情况。
 
-### Error 3: Missing Death Cross or Golden Cross Formation
+### 错误3：遗漏死亡交叉或黄金交叉的形成
 
-**Symptom**: Report is bullish when 8MA and 200MA are about to death cross (bearish)
+**症状**：报告称市场为牛市，而实际上8日均线和200日均线即将形成死亡交叉（熊市）。
 
-**Prevention**:
-- ALWAYS check: "Are 8MA and 200MA getting closer (converging) or further apart (diverging)?"
-- If converging with 8MA above 200MA → Potential death cross → BEARISH
-- If converging with 8MA below 200MA → Potential golden cross → BULLISH
-- Explicitly state: "8MA is currently [above/below] 200MA, and they are [converging/diverging]"
+**预防措施**：
+- 始终检查：“8日均线和200日均线是否在靠近（靠近）或分离（远离）？”
+- 如果8日均线在200日均线上方靠近 → 可能形成死亡交叉 → 熊市信号。
+- 如果8日均线在200日均线下方靠近 → 可能形成黄金交叉 → 牛市信号。
+- 明确说明：“8日均线当前位于[高于/低于]200日均线，并且它们正在[靠近/分离]”。
 
-### Error 4: Ignoring Pink Background Shading
+### 错误4：忽略粉色背景阴影
 
-**Symptom**: Report claims bullish setup when chart shows pink downtrend background
+**症状**：报告称市场为牛市，但图表显示粉色下跌趋势背景。
 
-**Prevention**:
-- Check for pink shading at the rightmost edge
-- Pink background = Downtrend period = Bearish conditions
-- If pink shading present, report MUST acknowledge bearish conditions
+**预防措施**：
+- 检查最右边的粉色阴影。
+- 粉色背景 = 下跌趋势时期 = 熊市信号。
+- 如果有粉色阴影，报告必须说明熊市状况。
 
-### Error 5: Claiming Reversal Too Early
+### 错误5：过早声称反转
 
-**Symptom**: Report says "BUY signal confirmed" after only 1 week of increase
+**症状**：在8日均线仅上升1周后，报告称“买入信号确认”。
 
-**Prevention**:
-- Require 2-3 CONSECUTIVE weeks of 8MA increase for confirmation
-- If only 1 week: Signal is "DEVELOPING", not "CONFIRMED"
-- If 8MA rises then falls again: Signal is "FAILED", not valid
+**预防措施**：
+- 需要8日均线连续上升2-3周才能确认。
+- 如果仅上升1周：信号为“发展中”，而不是“确认”。
+- 如果8日均线随后下降：信号为“失败”，无效。
 
-## Resources
+## 资源
 
-This skill includes the following bundled resources:
+该技能包含以下捆绑资源：
 
 ### references/breadth_chart_methodology.md
 
-Comprehensive methodology covering:
-- **Chart 1 (200MA Breadth)**: Components, interpretation, market regimes, backtested strategy, analysis checklist
-- **Chart 2 (Uptrend Ratio)**: Components, interpretation, market conditions, swing trading strategy, analysis checklist
-- **Combined Analysis**: Alignment scenarios, integrated decision-making
-- **Common Pitfalls**: Mistakes to avoid for each chart type
+包含以下内容的综合方法论：
+- **图表1（200日均线宽度）**：组成部分、解读、市场状况、经过回测的策略、分析检查清单。
+- **图表2（上升趋势比率）**：组成部分、解读、市场状况、波段交易策略、分析检查清单。
+- **综合分析**：情景对齐、综合决策。
+- **常见错误**：每种图表类型需要避免的错误。
 
-**Usage**: Read this file before conducting any breadth chart analysis to ensure systematic, accurate interpretation.
+**使用方法**：在进行任何宽度图表分析之前，请阅读此文件，以确保系统的、准确的解读。
 
 ### assets/breadth_analysis_template.md
 
-Structured template for breadth analysis reports in English:
-- Executive Summary
-- Chart 1 analysis sections (if applicable)
-- Chart 2 analysis sections (if applicable)
-- Combined Analysis section (when both charts analyzed)
-- Summary and Conclusion
-- All sections include tables, checklists, and structured formats
+用于宽度分析的报告的结构化模板（英语）：
+- 执行摘要。
+- 图表1的分析部分（如适用）。
+- 图表2的分析部分（如适用）。
+- 综合分析部分（当分析两个图表时）。
+- 总结和结论。
+- 所有部分包括表格、检查清单和结构化格式。
 
-**Usage**: Use this template structure for every analysis report. Adapt sections based on which chart(s) are being analyzed.
+**使用方法**：使用此模板结构编写每份分析报告。根据分析的图表类型调整相应部分。
 
 ### assets/SP500_Breadth_Index_200MA_8MA.jpeg
 
-Sample Chart 1 image showing:
-- 8-day MA (orange) and 200-day MA (green) lines
-- Threshold levels (73% red dashed, 23% blue dashed)
-- Signal markers (triangles for troughs and peaks)
-- Pink background downtrend shading
-- Historical patterns from 2016-2025
+示例图表1图像，显示：
+- 8日均线（橙色）和200日均线（绿色）。
+- 阈值水平（73%为红色虚线，23%为蓝色虚线）。
+- 信号标记（低点和高点处的三角形）。
+- 粉色背景表示下跌趋势。
+- 2016-2025年的历史模式。
 
-**Usage**: Reference this sample to understand Chart 1 visual format and identify similar patterns in user-provided charts.
+**使用方法**：参考此示例以了解图表1的视觉格式，并在用户提供的图表中识别类似的模式。
 
 ### assets/US_Stock_Market_Uptrend_Ratio.jpeg
 
-Sample Chart 2 image showing:
-- Green and red color-coded trend phases
-- Uptrend ratio percentage on y-axis
-- Threshold levels (~10% and ~40% orange dashed lines)
-- Short-term momentum patterns
-- Historical patterns from 2023-2025
+示例图表2图像，显示：
+- 绿色和红色编码的趋势阶段。
+- y轴上的上升趋势比率百分比。
+- 阈值水平（约10%和约40%的橙色虚线）。
+- 短期动量模式。
+- 2023-2025年的历史模式。
 
-**Usage**: Reference this sample to understand Chart 2 visual format and identify similar patterns in user-provided charts.
+**使用方法**：参考此示例以了解图表2的视觉格式，并在用户提供的图表中识别类似的模式。
 
-## Special Notes
+## 特殊说明
 
-### Language Requirement
+### 语言要求
 
-**CRITICAL**: All analysis, thinking, and output MUST be in English. This includes:
-- Internal analysis and reasoning
-- Report generation
-- Tables and data presentation
-- Scenario descriptions
-- Recommendations
+**关键**：所有分析、思考和输出必须使用英语。这包括：
+- 内部分析和推理。
+- 报告生成。
+- 表格和数据展示。
+- 情景描述。
+- 建议。
 
-Do not translate or use any other language. The user expects English output exclusively.
+不要翻译或使用任何其他语言。用户期望仅使用英语输出。
 
-### Strategy Focus
+### 策略重点
 
-This skill emphasizes backtested, systematic strategies rather than discretionary interpretation. Always:
-- Apply the strategy rules as documented
-- Reference historical performance patterns
-- Provide specific entry/exit criteria
-- Include risk management guidance
+该技能强调使用经过回测的、系统化的策略，而不是主观判断。始终：
+- 正确应用策略规则。
+- 参考历史表现模式。
+- 提供具体的入场/出场标准。
+- 包括风险管理指导。
 
-### Practical Application
+### 实际应用
 
-The goal is actionable intelligence. Every analysis should answer:
-- **Strategic**: Should I be long, flat, or short the market over the medium term?
-- **Tactical**: Should I enter or exit positions in the short term?
-- **Timing**: When should I act, and at what levels?
-- **Risk**: What would invalidate this view, and where should stops be?
+目标是提供可操作的情报。每个分析都应该回答以下问题：
+- **战略性**：我应该在中长期持有多头、持平或卖出？
+- **战术性**：我应该何时入场或出场？
+- **时机**：我应该何时行动，以及应在什么水平？
+- **风险**：什么会使得这种观点无效，止损应该设置在何处？

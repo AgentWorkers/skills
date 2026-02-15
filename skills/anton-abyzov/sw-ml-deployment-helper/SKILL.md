@@ -4,28 +4,27 @@ description: |
   Prepares ML models for production deployment with containerization, API creation, monitoring setup, and A/B testing. Activates for "deploy model", "production deployment", "model API", "containerize model", "docker ml", "serving ml model", "model monitoring", "A/B test model". Generates deployment artifacts and ensures models are production-ready with monitoring, versioning, and rollback capabilities.
 ---
 
-# ML Deployment Helper
+# 机器学习部署辅助工具
 
-## Overview
+## 概述
 
-Bridges the gap between trained models and production systems. Generates deployment artifacts, APIs, monitoring, and A/B testing infrastructure following MLOps best practices.
+本工具旨在弥合训练好的模型与生产系统之间的差距，遵循机器学习运维（MLOps）的最佳实践，生成部署所需的文件、API、监控系统以及A/B测试基础设施。
 
-## Deployment Checklist
+## 部署检查清单
 
-Before deploying any model, this skill ensures:
+在部署任何模型之前，本工具会确保以下事项：
+- ✅ 模型已进行版本化管理并可供追踪
+- ✅ 依赖关系已记录（requirements.txt/Dockerfile）
+- ✅ API端点已创建
+- ✅ 输入验证机制已实现
+- ✅ 监控系统已配置
+- ✅ A/B测试环境已准备就绪
+- ✅ 回滚计划已文档化
+- ✅ 模型性能已进行基准测试
 
-- ✅ Model versioned and tracked
-- ✅ Dependencies documented (requirements.txt/Dockerfile)
-- ✅ API endpoint created
-- ✅ Input validation implemented
-- ✅ Monitoring configured
-- ✅ A/B testing ready
-- ✅ Rollback plan documented
-- ✅ Performance benchmarked
+## 部署模式
 
-## Deployment Patterns
-
-### Pattern 1: REST API (FastAPI)
+### 模式1：REST API（FastAPI）
 
 ```python
 from specweave import create_model_api
@@ -47,7 +46,7 @@ api = create_model_api(
 #   └── tests/
 ```
 
-Generated `main.py`:
+生成的 `main.py` 文件：
 ```python
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -78,7 +77,7 @@ async def health():
     return {"status": "healthy", "model_loaded": model is not None}
 ```
 
-### Pattern 2: Batch Prediction
+### 模式2：批量预测
 
 ```python
 from specweave import create_batch_predictor
@@ -98,7 +97,7 @@ batch_predictor = create_batch_predictor(
 #   └── monitoring.py
 ```
 
-### Pattern 3: Real-Time Streaming
+### 模式3：实时流处理
 
 ```python
 from specweave import create_streaming_predictor
@@ -119,7 +118,7 @@ streaming = create_streaming_predictor(
 #   └── docker-compose.yaml
 ```
 
-## Containerization
+## 容器化
 
 ```python
 from specweave import containerize_model
@@ -133,7 +132,7 @@ dockerfile = containerize_model(
 )
 ```
 
-Generated `Dockerfile`:
+生成的 `Dockerfile` 文件：
 ```dockerfile
 FROM python:3.10-slim
 
@@ -157,7 +156,7 @@ HEALTHCHECK --interval=30s --timeout=3s \
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-## Monitoring Setup
+## 监控系统设置
 
 ```python
 from specweave import setup_model_monitoring
@@ -183,7 +182,7 @@ monitoring = setup_model_monitoring(
 #   └── drift-detector.py
 ```
 
-## A/B Testing Infrastructure
+## A/B测试基础设施
 
 ```python
 from specweave import create_ab_test
@@ -205,7 +204,7 @@ ab_test = create_ab_test(
 #   └── dashboard.py (real-time monitoring)
 ```
 
-A/B Test Router:
+A/B测试路由器：
 ```python
 import random
 
@@ -221,7 +220,7 @@ def route_prediction(user_id, control_model, treatment_model):
         return control_model.predict(features), "control"
 ```
 
-## Model Versioning
+## 模型版本管理
 
 ```python
 from specweave import ModelVersion
@@ -243,7 +242,7 @@ if production_metrics["error_rate"] > threshold:
     ModelVersion.rollback(to_version="0042-v2")
 ```
 
-## Load Testing
+## 负载测试
 
 ```python
 from specweave import load_test_model
@@ -257,24 +256,7 @@ results = load_test_model(
 )
 ```
 
-Output:
-```
-Load Test Results:
-==================
-
-| RPS  | Latency P50 | Latency P95 | Latency P99 | Error Rate |
-|------|-------------|-------------|-------------|------------|
-| 10   | 35ms        | 45ms        | 50ms        | 0.00%      |
-| 50   | 38ms        | 52ms        | 65ms        | 0.00%      |
-| 100  | 45ms        | 70ms        | 95ms        | 0.02%      |
-| 500  | 120ms       | 250ms       | 400ms       | 1.20%      |
-| 1000 | 350ms       | 800ms       | 1200ms      | 8.50%      |
-
-Recommendation: Deploy with max 100 RPS per instance
-Target: <100ms P95 latency (achieved at 100 RPS)
-```
-
-## Deployment Commands
+## 部署命令
 
 ```bash
 # Generate deployment artifacts
@@ -296,10 +278,9 @@ Target: <100ms P95 latency (achieved at 100 RPS)
 /ml:deploy 0042 --environment production
 ```
 
-## Deployment Increment
+## 部署增量
 
-The skill creates a deployment increment:
-
+本工具支持创建模型的部署增量版本：
 ```
 .specweave/increments/0043-deploy-recommendation-model/
 ├── spec.md (deployment requirements)
@@ -319,17 +300,17 @@ The skill creates a deployment increment:
 └── load-tests/ (Performance benchmarks)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always load test** before production
-2. **Start with 1-5% traffic** in A/B test
-3. **Monitor model drift** in production
-4. **Version everything** (model, data, code)
-5. **Document rollback plan** before deploying
-6. **Set up alerts** for anomalies
-7. **Gradual rollout** (canary deployment)
+1. **在生产环境部署前务必进行负载测试**
+2. **在A/B测试中从1-5%的流量开始测试**
+3. **在生产环境中监控模型的性能变化**
+4. **对所有组件（模型、数据、代码）进行版本化管理**
+5. **在部署前详细记录回滚计划**
+6. **为异常情况设置警报机制**
+7. **采用渐进式部署策略（例如“金丝雀部署”）
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
 ```bash
 # After training model (increment 0042)
@@ -342,4 +323,4 @@ The skill creates a deployment increment:
 /ml:deploy 0043 --environment production
 ```
 
-Model deployment is not the end—it's the beginning of the MLOps lifecycle.
+模型部署仅仅是机器学习运维生命周期的开始，而非终点。

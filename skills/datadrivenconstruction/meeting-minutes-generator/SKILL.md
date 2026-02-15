@@ -1,24 +1,24 @@
 ---
 slug: "meeting-minutes-generator"
 display_name: "Meeting Minutes Generator"
-description: "Generate structured construction meeting minutes. Track action items, decisions, and attendees."
+description: "生成结构化的施工会议纪要，记录行动项、决策内容以及参会人员信息。"
 ---
 
-# Meeting Minutes Generator
+# 会议记录生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Meeting documentation is inconsistent:
-- Minutes not standardized
-- Action items lost
-- Decisions not tracked
-- Poor distribution
+### 问题描述
+会议文档存在以下问题：
+- 会议记录格式不统一
+- 行动项容易被遗漏
+- 决议内容无法被有效追踪
+- 文档的分发效率低下
 
-### Solution
-Standardized meeting minutes generation with action item tracking, decision logging, and automatic distribution.
+### 解决方案
+提供标准化的会议记录生成功能，包括行动项的跟踪、决策内容的记录以及自动分发机制。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -294,7 +294,7 @@ class MeetingMinutesGenerator:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date, timedelta
@@ -332,5 +332,5 @@ minutes = generator.generate_minutes_document(meeting.meeting_id)
 print(minutes)
 ```
 
-## Resources
-- **DDC Book**: Chapter 4 - Project Communication
+## 资源推荐
+- **DDC手册**：第4章 - 项目沟通

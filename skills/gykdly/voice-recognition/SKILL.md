@@ -1,23 +1,23 @@
 ---
 name: voice-recognition
-description: Local speech-to-text with OpenAI Whisper CLI. Supports Chinese, English, 100+ languages with translation and summarization.
+description: 使用 OpenAI Whisper CLI 进行本地语音转文本功能。支持中文、英文以及 100 多种语言的语音转文本服务，同时提供翻译和摘要功能。
 version: 1.0.0
 ---
 
-# Voice Recognition (Whisper)
+# 语音识别（Whisper）
 
-Local speech-to-text with OpenAI Whisper CLI.
+使用 OpenAI Whisper CLI 进行本地语音转文本操作。
 
-## Features
+## 特点
 
-- **Local processing** - No API key needed, free
-- **Multi-language** - Chinese, English, 100+ languages
-- **Translation** - Translate to English
-- **Summarization** - Generate quick summary
+- **本地处理**：无需 API 密钥，完全免费
+- **多语言支持**：中文、英文及 100 多种语言
+- **翻译功能**：可将其转换为英文
+- **摘要生成**：可快速生成文本摘要
 
-## Usage
+## 使用方法
 
-### Basic
+### 基本用法
 
 ```bash
 # Chinese recognition
@@ -36,43 +36,43 @@ python3 /Users/liyi/.openclaw/workspace/scripts/voice识别_升级版.py audio.m
 python3 /Users/liyi/.openclaw/workspace/scripts/voice识别_升级版.py audio.m4a --summarize
 ```
 
-### Quick Command (add to ~/.zshrc)
+### 快速命令（添加到 ~/.zshrc 文件中）
 
 ```bash
 alias voice="python3 /Users/liyi/.openclaw/workspace/scripts/voice识别_升级版.py"
 ```
 
-Then use:
+之后，使用以下命令：
 
 ```bash
 voice ~/Downloads/audio.m4a --zh
 ```
 
-## Requirements
+## 系统要求
 
-- OpenAI Whisper CLI: `brew install openai-whisper`
-- Python 3.10+
+- OpenAI Whisper CLI：`brew install openai-whisper`
+- Python 3.10 或更高版本
 
-## Files
+## 相关文件
 
-- `scripts/voice识别_升级版.py` - Main script
-- `scripts/voice_tool_README.md` - Documentation
+- `scripts/voice识别_升级版.py`：主要脚本
+- `scripts/voice_tool_readME.md`：使用说明文档
 
-## Supported Formats
+## 支持的音频格式
 
-- MP3, M4A, WAV, OGG, FLAC, WebM
+- MP3、M4A、WAV、OGG、FLAC、WebM
 
-## Language Support
+## 语言支持
 
-100+ languages including:
-- Chinese (zh)
-- English (en)
-- Japanese (ja)
-- Korean (ko)
-- And more...
+支持 100 多种语言，包括：
+- 中文 (zh)
+- 英文 (en)
+- 日文 (ja)
+- 韩文 (ko)
+- 以及更多语言...
 
-## Notes
+## 注意事项
 
-- Default model: `medium` (balance of speed and accuracy)
-- First run downloads model to `~/.cache/whisper`
-- Processing time varies by audio length and model size
+- 默认模型：`medium`（在速度和准确性之间取得平衡）
+- 首次运行时，系统会将模型下载到 `~/.cache/whisper` 目录
+- 处理时间取决于音频长度和模型大小

@@ -1,52 +1,53 @@
 ---
 name: remove-analytics
-description: Safely remove Google Analytics from a project. Cleans up all tracking code, dependencies, and environment variables.
+description: **安全地从项目中移除 Google Analytics。**  
+会清除所有跟踪代码、依赖项以及环境变量。
 disable-model-invocation: true
 ---
 
-# Remove Analytics Skill
+# 移除分析功能（Remove Analytics Functionality）
 
-You are removing Google Analytics from this project. This is a destructive action - confirm with the user before proceeding.
+您将在此项目中移除 Google Analytics。这是一个具有破坏性的操作，请在继续之前先与用户确认。
 
-## Step 1: Confirm Intent
+## 第一步：确认操作意图
 
-Ask the user to confirm they want to remove analytics:
+请用户确认是否确实要移除分析功能：
 
-> "This will remove all Google Analytics tracking from your project. This action will:
-> - Remove gtag scripts and components
-> - Remove analytics utility files
-> - Remove related environment variables from .env.example
-> - Remove npm packages if any
+> “这将从您的项目中移除所有 Google Analytics 的跟踪代码。此操作将：
+> - 删除 `gtag` 脚本和组件
+> - 删除与分析相关的实用工具文件
+> - 从 `.env.example` 文件中移除相关环境变量
+> - （如果有的话）删除相关的 npm 包
 >
-> Type 'yes' to confirm."
+> 输入 ‘yes’ 以确认。”
 
-## Step 2: Find All Analytics Code
+## 第二步：查找所有与分析相关的代码
 
-Search for:
-- Files containing `gtag`, `dataLayer`, `GoogleAnalytics`
-- Import statements for analytics utilities
-- Script tags with `googletagmanager.com`
-- Environment variables: `GA_`, `GTAG_`, `MEASUREMENT_ID`
-- Package.json dependencies: `@types/gtag.js`, `react-ga4`, `vue-gtag`, etc.
+搜索以下内容：
+- 包含 `gtag`、`dataLayer`、`GoogleAnalytics` 的文件
+- 用于导入分析工具的导入语句
+- 包含 `googletagmanager.com` 的脚本标签
+- 环境变量：`GA_`、`GTAG_`、`MEASUREMENT_ID`
+- `package.json` 中的依赖项：`@types/gtag.js`、`react-ga4`、`vue-gtag` 等
 
-## Step 3: Remove Code
+## 第三步：删除相关代码
 
-For each finding:
-1. Show the file and code to be removed
-2. Remove the code or file
-3. Clean up any orphaned imports
+对于每一处找到的代码或文件：
+1. 显示需要删除的文件及其代码内容
+2. 实际删除该代码或文件
+3. 清理任何不再使用的导入语句（即那些不再引用的导入项）
 
-## Step 4: Clean Up
+## 第四步：进行清理
 
-- Remove analytics-related packages: `npm uninstall @types/gtag.js` (or equivalent)
-- Remove environment variables from `.env.example`
-- Update any documentation that references analytics
+- 删除与分析相关的 npm 包：`npm uninstall @types/gtag.js`（或相应的包）
+- 从 `.env.example` 文件中移除相关环境变量
+- 更新所有引用分析功能的文档
 
-## Step 5: Summary
+## 第五步：总结
 
-Provide a summary of:
-- Files deleted
-- Files modified
-- Packages removed
-- Environment variables removed
-- Any manual steps needed (like removing actual env values)
+提供以下内容的总结：
+- 被删除的文件
+- 被修改的文件
+- 被移除的包
+- 被移除的环境变量
+- 需要执行的任何手动操作（例如删除实际的环境变量值）

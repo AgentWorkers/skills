@@ -34,40 +34,40 @@ metadata:
 
 # YouTube Research Pro
 
-**The most comprehensive YouTube skill for AI agents.**
+**专为AI代理设计的最全面的YouTube功能集。**
 
-We analyzed 15+ YouTube MCP servers and found each does one thing well, but none does everything. So we built the skill we wished existed.
+我们分析了15款以上的YouTube MCP工具，发现每款工具都有其擅长的方面，但没有一款工具能同时满足所有需求。因此，我们开发出了这款我们梦寐以求的工具。
 
-## Why This Skill?
+## 为什么选择这款工具？
 
-| What Others Do | What We Do |
+| 其他工具的功能 | 我们的功能 |
 |----------------|------------|
-| Transcripts OR search OR downloads | **All three, unified** |
-| Burn API quota on transcripts | **FREE transcripts** (zero quota) |
-| Single video at a time | **Batch operations** (50 videos) |
-| Basic search | **Filtered search** (date, duration, order) |
-| Text output only | **JSON export** for pipelines |
+| 提取视频字幕或搜索或下载 | **三者合一** |
+| 使用API获取字幕会消耗大量配额 | **免费提供字幕**（无需任何API配额） |
+| 一次仅处理一个视频 | **支持批量操作**（最多处理50个视频） |
+| 基本搜索功能 | **具有过滤功能**（可按日期、时长、顺序搜索） |
+| 仅提供文本输出 | **支持JSON格式导出**，便于后续处理 |
 
-### The Killer Feature: FREE Transcripts
+### 最核心功能：免费提供字幕
 
-Most tools use the YouTube Data API for transcripts = **100 quota units per request**. Daily limit is 10,000 units = only ~100 transcripts/day.
+大多数工具都通过YouTube Data API来获取字幕，但每次请求会消耗100个API配额。每日配额限制为10,000个，因此每天最多只能获取约100条字幕。
 
-**We use `youtube-transcript-api`** — extracts directly from YouTube's frontend. **Zero API quota. Unlimited transcripts.**
+**我们使用`youtube-transcript-api`**——直接从YouTube的前端接口获取字幕，**完全不需要API配额**，可以无限量获取字幕。
 
-## Quick Reference
+## 快速参考
 
-| Command | Quota | What it does |
+| 命令 | 配额需求 | 功能说明 |
 |---------|-------|--------------|
-| `transcript VIDEO` | **FREE** | Get video transcript |
-| `transcript-list VIDEO` | **FREE** | List available languages |
-| `download VIDEO` | **FREE** | Download video (yt-dlp) |
-| `download-audio VIDEO` | **FREE** | Extract audio only |
-| `search QUERY` | 100 | Search videos |
-| `video ID [ID...]` | 1/video | Get details (batch!) |
-| `comments VIDEO` | 1 | Get comments + replies |
-| `channel [ID]` | 1-3 | Channel statistics |
+| `transcript VIDEO` | **免费** | 获取视频字幕 |
+| `transcript-list VIDEO` | **免费** | 显示可用的语言版本 |
+| `download VIDEO` | **免费** | 下载视频（使用yt-dlp工具） |
+| `download-audio VIDEO` | **免费** | 仅下载音频文件 |
+| `search QUERY` | 100个配额 | 搜索视频 |
+| `video ID [ID...]` | 1次请求 | 获取视频详情（支持批量操作） |
+| `comments VIDEO` | 1个配额 | 获取视频评论及回复 |
+| `channel [ID]` | 1-3个配额 | 获取频道统计信息 |
 
-## Setup (One Time)
+## 设置（只需一次操作）
 
 ```bash
 # 1. Get credentials from Google Cloud Console
@@ -82,7 +82,7 @@ mv ~/Downloads/client_secret*.json ~/.config/youtube-skill/credentials.json
 uv run {baseDir}/scripts/youtube.py auth
 ```
 
-## Transcripts (FREE!)
+## 免费提供字幕！
 
 ```bash
 # Plain text transcript
@@ -101,12 +101,13 @@ uv run {baseDir}/scripts/youtube.py transcript-list VIDEO_ID
 uv run {baseDir}/scripts/youtube.py transcript VIDEO_ID --json
 ```
 
-Works with URLs too:
+**该工具也支持通过URL直接调用相关功能：**
+
 ```bash
 uv run {baseDir}/scripts/youtube.py transcript "https://youtube.com/watch?v=dQw4w9WgXcQ"
 ```
 
-## Search
+## 搜索功能
 
 ```bash
 # Basic search
@@ -118,7 +119,7 @@ uv run {baseDir}/scripts/youtube.py search "lecture" --duration long
 uv run {baseDir}/scripts/youtube.py search "news" --published-after 2026-01-01T00:00:00Z
 ```
 
-## Video Details (Batch Supported)
+## 视频详情（支持批量处理）
 
 ```bash
 # Single video
@@ -131,7 +132,7 @@ uv run {baseDir}/scripts/youtube.py video id1 id2 id3 id4 id5
 uv run {baseDir}/scripts/youtube.py video id1 id2 --json
 ```
 
-## Comments
+## 视频评论
 
 ```bash
 # Top comments
@@ -144,7 +145,7 @@ uv run {baseDir}/scripts/youtube.py comments VIDEO_ID --replies
 uv run {baseDir}/scripts/youtube.py comments VIDEO_ID --order time -l 50
 ```
 
-## Downloads (requires yt-dlp)
+## 下载功能（需要yt-dlp工具）
 
 ```bash
 # Video (best quality)
@@ -163,7 +164,7 @@ uv run {baseDir}/scripts/youtube.py download-audio VIDEO_ID
 uv run {baseDir}/scripts/youtube.py download-audio VIDEO_ID -f m4a
 ```
 
-## User Data
+## 用户数据相关操作
 
 ```bash
 uv run {baseDir}/scripts/youtube.py subscriptions
@@ -173,9 +174,9 @@ uv run {baseDir}/scripts/youtube.py liked
 uv run {baseDir}/scripts/youtube.py channel
 ```
 
-## Command Aliases
+## 命令别名
 
-| Full | Alias |
+| 完整命令 | 别名 |
 |------|-------|
 | `transcript` | `tr` |
 | `search` | `s` |
@@ -184,41 +185,37 @@ uv run {baseDir}/scripts/youtube.py channel
 | `download` | `dl` |
 | `download-audio` | `dla` |
 
-## Use Cases
+## 使用场景
 
-**Research:** Fetch transcript → analyze with LLM → extract insights
+- **研究**：获取视频字幕后使用大型语言模型进行分析，提取有用信息。
+- **学习**：批量下载播放列表中的视频字幕，制作学习笔记。
+- **监控**：搜索近期发布的视频，提取字幕以追踪趋势。
+- **播客**：下载音频文件以便离线收听。
+- **分析**：获取频道统计信息，对比不同频道的表现。
 
-**Learning:** Batch transcripts from playlist → create study notes
-
-**Monitoring:** Search recent videos → extract transcripts → track trends
-
-**Podcasts:** Download audio for offline listening
-
-**Analysis:** Get channel stats → compare competitors
-
-## Multi-Account
+## 多账号支持
 
 ```bash
 uv run {baseDir}/scripts/youtube.py -a work subscriptions
 uv run {baseDir}/scripts/youtube.py -a personal liked
 ```
 
-## Why We Built This
+## 我们为何开发这款工具？
 
-We surveyed the landscape:
-- **kimtaeyoon83/mcp-server-youtube-transcript** (463⭐) — Great transcripts, no search
-- **kevinwatt/yt-dlp-mcp** (211⭐) — Great downloads, no transcripts
-- **dannySubsense/youtube-mcp-server** (9⭐) — Most functions, but uses paid API for transcripts
-- **kirbah/mcp-youtube** (9⭐) — Batch ops, but no free transcripts
+我们对比了市场上的多种工具：
+- **kimtaeyoon83/mcp-server-youtube-transcript**（463个赞）：字幕质量很高，但不支持搜索功能。
+- **kevinwatt/yt-dlp-mcp**（211个赞）：下载功能强大，但不提供字幕。
+- **dannySubsense/youtube-mcp-server**（9个赞）：功能较为齐全，但字幕需要付费API。
+- **kirbah/mcp-youtube**（9个赞）：支持批量操作，但不提供免费字幕。
 
-**None combined free transcripts + search + downloads + batch ops.**
+**目前市场上还没有一款工具能够同时提供免费字幕、搜索功能、下载功能以及批量处理功能。**
 
-Now one does.
+现在，这款工具实现了这一切。
 
 ---
 
-## Credits
+## 致谢
 
-Created by **Oscar Serra** with the help of **Claude** (Anthropic).
+本工具由**Oscar Serra**在**Claude**（Anthropic团队）的帮助下开发完成。
 
-*We analyzed 15+ YouTube tools and built the one that does everything.*
+*我们分析了15款以上的YouTube相关工具，最终打造出了这款功能齐全的工具。*

@@ -1,6 +1,6 @@
 ---
 name: dokploy
-description: "Manage Dokploy deployments, projects, applications, and domains via the Dokploy API."
+description: "通过 Dokploy API 管理 Dokploy 的部署、项目、应用程序和域名。"
 emoji: "🐳"
 metadata:
   clawdhub:
@@ -8,19 +8,19 @@ metadata:
       bins: ["curl", "jq"]
 ---
 
-# Dokploy Skill
+# Dokploy 技能
 
-Interact with Dokploy's API to manage projects, applications, domains, and deployments.
+通过与 Dokploy 的 API 交互，可以管理项目、应用程序、域名和部署任务。
 
-## Prerequisites
+## 先决条件
 
-1. **Dokploy instance** running with API access
-2. **API Key** generated from `/settings/profile` → "API/CLI Section"
-3. Set the `DOKPLOY_API_URL` environment variable (default: `http://localhost:3000`)
+1. 运行中的 Dokploy 实例，并且已启用 API 访问功能。
+2. 从 `/settings/profile` 的 “API/CLI” 部分生成 API 密钥。
+3. 设置 `DOKPLOY_API_URL` 环境变量（默认值：`http://localhost:3000`）。
 
-## Configuration
+## 配置
 
-Set these environment variables or use the config command:
+请设置以下环境变量，或使用 `config` 命令进行配置：
 
 ```bash
 # Dokploy instance URL
@@ -33,46 +33,46 @@ export DOKPLOY_API_KEY="your-generated-api-key"
 dokploy-config set --url "https://your-dokploy-instance.com" --key "your-api-key"
 ```
 
-## Projects
+## 项目
 
-### List all projects
+### 列出所有项目
 ```bash
 dokploy-project list
 ```
 
-### Get project details
+### 获取项目详情
 ```bash
 dokploy-project get <project-id>
 ```
 
-### Create a new project
+### 创建新项目
 ```bash
 dokploy-project create --name "My Project" --description "Description here"
 ```
 
-### Update a project
+### 更新项目
 ```bash
 dokploy-project update <project-id> --name "New Name" --description "Updated"
 ```
 
-### Delete a project
+### 删除项目
 ```bash
 dokploy-project delete <project-id>
 ```
 
-## Applications
+## 应用程序
 
-### List applications in a project
+### 列出项目中的应用程序
 ```bash
 dokploy-app list --project <project-id>
 ```
 
-### Get application details
+### 获取应用程序详情
 ```bash
 dokploy-app get <application-id>
 ```
 
-### Create an application
+### 创建应用程序
 ```bash
 dokploy-app create \
   --project <project-id> \
@@ -81,46 +81,46 @@ dokploy-app create \
   --image "nginx:latest"
 ```
 
-**Application types:** `docker`, `git`, `compose`
+**应用程序类型：** `docker`, `git`, `compose`
 
-### Trigger deployment
+### 触发部署
 ```bash
 dokploy-app deploy <application-id>
 ```
 
-### Get deployment logs
+### 获取部署日志
 ```bash
 dokploy-app logs <application-id> --deployment <deployment-id>
 ```
 
-### List deployments
+### 列出部署任务
 ```bash
 dokploy-app deployments <application-id>
 ```
 
-### Update application
+### 更新应用程序
 ```bash
 dokploy-app update <application-id> --name "new-name" --env "KEY=VALUE"
 ```
 
-### Delete an application
+### 删除应用程序
 ```bash
 dokploy-app delete <application-id>
 ```
 
-## Domains
+## 域名
 
-### List domains for an application
+### 列出应用程序所属的域名
 ```bash
 dokploy-domain list --application <application-id>
 ```
 
-### Get domain details
+### 获取域名详情
 ```bash
 dokploy-domain get <domain-id>
 ```
 
-### Add a domain to an application
+### 将域名添加到应用程序
 ```bash
 dokploy-domain create \
   --application <application-id> \
@@ -129,73 +129,73 @@ dokploy-domain create \
   --port 80
 ```
 
-### Update a domain
+### 更新域名
 ```bash
 dokploy-domain update <domain-id> --domain "new.example.com"
 ```
 
-### Delete a domain
+### 删除域名
 ```bash
 dokploy-domain delete <domain-id>
 ```
 
-## Environment Variables
+## 环境变量
 
-### List environment variables for an application
+### 列出应用程序的环境变量
 ```bash
 dokploy-app env list <application-id>
 ```
 
-### Set environment variable
+### 设置环境变量
 ```bash
 dokploy-app env set <application-id> --key "DATABASE_URL" --value "postgres://..."
 ```
 
-### Delete environment variable
+### 删除环境变量
 ```bash
 dokploy-app env delete <application-id> --key "DATABASE_URL"
 ```
 
-## Utility Commands
+## 实用命令
 
-### Check API connection
+### 检查 API 连接
 ```bash
 dokploy-status
 ```
 
-### View current config
+### 查看当前配置
 ```bash
 dokploy-config show
 ```
 
-## API Reference
+## API 参考
 
-Base URL: `$DOKPLOY_API_URL/api`
+基础 URL：`$DOKPLOY_API_URL/api`
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/project.all` | GET | List all projects |
-| `/project.create` | POST | Create project |
-| `/project.byId` | GET | Get project by ID |
-| `/project.update` | PATCH | Update project |
-| `/project.delete` | DELETE | Delete project |
-| `/application.all` | GET | List applications |
-| `/application.create` | POST | Create application |
-| `/application.byId` | GET | Get application by ID |
-| `/application.update` | PATCH | Update application |
-| `/application.delete` | DELETE | Delete application |
-| `/application.deploy` | POST | Trigger deployment |
-| `/deployment.all` | GET | List deployments |
-| `/deployment.byId` | GET | Get deployment by ID |
-| `/deployment.logs` | GET | Get deployment logs |
-| `/domain.all` | GET | List domains |
-| `/domain.create` | POST | Create domain |
-| `/domain.update` | PATCH | Update domain |
-| `/domain.delete` | DELETE | Delete domain |
+| 端点          | 方法        | 描述                                      |
+|----------------|------------|-----------------------------------------|
+| `/project.all`     | GET         | 列出所有项目                               |
+| `/project.create`    | POST         | 创建新项目                               |
+| `/projectById`    | GET         | 根据 ID 获取项目                         |
+| `/project.update`    | PATCH        | 更新项目                               |
+| `/project.delete`    | DELETE       | 删除项目                               |
+| `/application.all`    | GET         | 列出所有应用程序                         |
+| `/application.create`    | POST         | 创建新应用程序                         |
+| `/applicationById`    | GET         | 根据 ID 获取应用程序                         |
+| `/application.update`    | PATCH        | 更新应用程序                         |
+| `/application.delete`    | DELETE       | 删除应用程序                         |
+| `/application.deploy`    | POST         | 触发应用程序部署                         |
+| `/deployment.all`    | GET         | 列出所有部署任务                         |
+| `/deploymentById`    | GET         | 根据 ID 获取部署任务                         |
+| `/deployment.logs`    | GET         | 获取部署任务日志                         |
+| `/domain.all`     | GET         | 列出所有域名                             |
+| `/domain.create`    | POST         | 创建新域名                             |
+| `/domain.update`    | PATCH        | 更新域名                             |
+| `/domain.delete`    | DELETE       | 删除域名                             |
 
-## Notes
+## 注意事项
 
-- All API calls require the `x-api-key` header
-- Use `jq` for JSON parsing in scripts
-- Some operations require admin permissions
-- Deployment is asynchronous — use status endpoint to check progress
+- 所有 API 调用都需要在请求头中添加 `x-api-key`。
+- 在脚本中可以使用 `jq` 来解析 JSON 数据。
+- 某些操作需要管理员权限。
+- 部署是异步进行的——请使用相应的端点来查看部署进度。

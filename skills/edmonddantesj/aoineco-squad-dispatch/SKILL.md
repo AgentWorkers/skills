@@ -1,50 +1,50 @@
-# Aoineco Squad Dispatch — Multi-Agent Task Router
+# Aoineco Squad Dispatch — 多代理任务调度系统
 
-<!-- 🌌 Aoineco-Verified | S-DNA: AOI-2026-0213-SDNA-SD01 -->
+<!-- 🌌 经 Aoineco 验证 | S-DNA: AOI-2026-0213-SDNA-SD01 -->
 
-**Version:** 1.0.0  
-**Author:** Aoineco & Co.  
-**License:** MIT  
-**Tags:** multi-agent, orchestration, dispatch, parallel, squad, task-routing
+**版本:** 1.0.0  
+**作者:** Aoineco & Co.  
+**许可证:** MIT  
+**标签:** 多代理、编排、调度、并行、团队、任务路由
 
-## Description
+## 产品描述
 
-Routes tasks to the right agent based on skills, availability, cost, and priority. Evolved from the `dispatching-parallel-agents` pattern into a full squad orchestration engine for multi-agent teams.
+该系统根据代理的技能、可用性、成本和优先级将任务分配给合适的代理。它从 `dispatching-parallel-agents` 模式发展成为一个适用于多代理团队的完整任务调度引擎。
 
-**Core principle:** *Right agent for right job. Cheapest agent for simple tasks. Best agent for critical tasks.*
+**核心原则：** *为每个任务选择最合适的代理；简单任务使用成本最低的代理；关键任务使用能力最强的代理。*
 
-## Problem
+## 问题
 
-Multi-agent squads waste resources when:
-1. All tasks go to one expensive model
-2. Simple community posts use Claude Opus ($$$) instead of Gemini Flash ($)
-3. Tasks run sequentially when they could run in parallel
-4. No visibility into which agent costs what
+当出现以下情况时，多代理团队会浪费资源：
+1. 所有任务都被分配给一个成本较高的代理；
+2. 简单的社区任务使用昂贵的 `Claude Opus` 服务，而非更经济的 `Gemini Flash` 服务；
+3. 本可以并行执行的任务却按顺序处理；
+4. 无法了解各个代理的实际成本。
 
-## Features
+## 主要功能
 
-| Feature | Description |
+| 功能 | 详细描述 |
 |---------|-------------|
-| **Skill-Based Routing** | Matches task requirements to agent specializations |
-| **Cost-Aware Dispatch** | Prefers cheaper agents for normal tasks, best agents for critical |
-| **Dependency Detection** | Automatically groups parallel vs sequential tasks |
-| **Load Balancing** | Respects max concurrent tasks per agent |
-| **Named Roster** | Pre-configured 7-agent squad with specializations |
-| **Visual Plans** | Human-readable dispatch plans with cost estimates |
+| **基于技能的路由** | 根据任务需求匹配代理的专长 |
+| **成本敏感的调度** | 简单任务优先选择成本较低的代理，关键任务选择能力最强的代理 |
+| **依赖关系检测** | 自动区分需要并行处理和顺序处理的任务 |
+| **负载均衡** | 确保每个代理的最大并发任务数得到合理控制 |
+| **预配置的团队** | 提供包含特定专长的 7 个代理的预设团队配置 |
+| **可视化调度计划** | 提供易于理解的调度计划及成本估算 |
 
-## Pre-Configured Squad
+## 预配置的团队成员
 
-| Agent | Specialization | Model | Cost |
+| 代理 | 专长 | 服务类型 | 成本 |
 |-------|---------------|-------|------|
-| 🧿 Oracle | Governance, Strategy | claude-opus | $$$ |
-| ⚔️ Blue-Blade | Security, Audit | claude-sonnet | $$ |
-| 📢 Blue-Sound | Community, Content | gemini-flash | $ |
-| 👁️ Blue-Eye | Research, Data | gemini-flash | $ |
-| 🧠 Blue-Brain | Strategy, Analysis | gemini-pro | $$ |
-| ⚡ Blue-Flash | Build, Code | claude-sonnet | $$ |
-| 🗂️ Blue-Record | Records, Docs | gemini-flash | $ |
+| 🧿 Oracle | 治理、战略 | claude-opus | $$$ |
+| ⚔️ Blue-Blade | 安全、审计 | claude-sonnet | $$ |
+| 📢 Blue-Sound | 社区、内容 | gemini-flash | $ |
+| 👁️ Blue-Eye | 研究、数据 | gemini-flash | $ |
+| 🧠 Blue-Brain | 战略、分析 | gemini-pro | $$ |
+| ⚡ Blue-Flash | 开发、编程 | claude-sonnet | $$ |
+| 🗂️ Blue-Record | 记录、文档 | gemini-flash | $ |
 
-## Quick Start
+## 快速入门
 
 ```python
 from dispatch_engine import SquadDispatcher
@@ -60,7 +60,7 @@ plan = dispatcher.plan()
 print(dispatcher.format_plan(plan))
 ```
 
-## File Structure
+## 文件结构
 
 ```
 aoineco-squad-dispatch/
@@ -69,7 +69,7 @@ aoineco-squad-dispatch/
     └── dispatch_engine.py  # Main engine (zero external dependencies)
 ```
 
-## Zero Dependencies
+## 无依赖项
 
-Pure Python 3.10+. No pip install needed.
-Designed for the $7 Bootstrap Protocol — every byte counts.
+该系统完全基于 Python 3.10 及以上版本开发，无需安装任何第三方库（如 pip）。  
+系统采用轻量级的 $7 Bootstrap 协议设计，力求做到代码精简、资源高效利用。

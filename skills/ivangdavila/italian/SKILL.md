@@ -1,95 +1,86 @@
 ---
 name: Italian
-description: Write Italian that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的意大利语。既不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Italian is technically correct but sounds off. Too formal. Too complete. Too textbook. Natives write with more warmth, expressiveness, and personality. Match that.
+虽然AI生成的意大利语在语法上是正确的，但听起来很生硬、正式，缺乏自然感。意大利本地人在表达时更加热情、富有表现力，语言也更口语化。我们需要让AI生成的意大利语更贴近他们的表达方式。
 
-## Formality Default
+## 正式与非正式的平衡
 
-Default register is too high. Casual Italian is warm and direct. Unless explicitly formal: lean casual. "Ciao" not "Buongiorno" with peers. "Sì" not "Certamente". "Ok" not "D'accordo".
+意大利语中，非正式的表达方式更加亲切和直接。除非需要特别正式，否则应尽量使用非正式的语言。例如，与朋友或家人交流时，使用“Ciao”而不是“Buongiorno”，用“Sì”而不是“Certamente”，用“Ok”而不是“D’accordo”。
 
-## Tu vs Lei
+## “Tu”与“Lei”的使用
 
-Get this right—it defines everything:
-- Lei: strangers, professional, elderly, formal situations
-- Tu: friends, family, peers, casual
-- Italians switch to tu quickly in social settings
-- Overusing Lei = cold, distant, foreign
+正确使用“Tu”和“Lei”对于表达语境至关重要：
+- “Lei”用于指陌生人、专业人士、老年人或正式场合；
+- “Tu”用于指朋友、家人或同龄人。在社交场合中，意大利人会很快切换到“Tu”的称呼方式；
+- 过度使用“Lei”会让人感觉冷漠、疏远，仿佛说话者是外国人。
 
-## Expressiveness Is Expected
+## 表现力的重要性
 
-Italian amplifies. Use it:
-- Superlatives: "bellissimo", "buonissimo", "tantissimo"
-- Diminutives: "momentino", "pochino", "carino"
-- Augmentatives: "benone", "grandone"
-- Missing these = flat, un-Italian
+意大利语非常注重表达力：
+- 使用最高级（如“bellissimo”、“buonissimo”、“tantissimo”）和指小词（如“momentino”、“pochino”、“carino”）来增强语言的生动性；
+- 缺少这些表达方式会让语言显得平淡无味，缺乏意大利语的特色。
 
-## Fillers & Flow
+## 语言的流畅性
 
-Real Italian has fillers. Use them:
-- "Allora", "quindi", "insomma", "comunque"
-- "Cioè", "tipo", "praticamente"
-- "Boh", "mah", "beh", "eh"
-- "Senti", "guarda", "dai"
-- Missing these = textbook Italian
+真实的意大利语中会使用一些填充词来使对话更自然，如“Allora”、“quindi”、“insomma”、“comunque”、“cioè”、“tipo”、“praticamente”、“Boh”、“mah”、“beh”、“senti”、“guarda”、“dai”等；
+- 缺少这些词会让语言显得像教科书上的内容。
 
-## Sentence Fragments
+## 句子的完整性
 
-Don't always complete sentences:
-- "Vieni?" "Sì, un attimo."
-- "Tutto bene?" "Sì sì, tranquillo."
-- "Ti piace?" "Tantissimo!"
-- Let context and tone carry weight.
+不要总是把句子说完整：
+- “Vieni?” “Sì, un attimo.”（“你来吗？” “嗯，等一下。”）
+- “Tutto bene?” “Sì sì, tranquillo.”（“一切都好吗？” “是的，别担心。”）
+- “Ti piace?” “Tantissimo!”（“你喜欢吗？” “非常喜欢！”）
+- 应该让上下文和语气来传达完整的意思。
 
-## Common Expressions
+## 常见表达
 
-Use natural expressions:
-- "Non c'è problema", "figurati", "ma va"
-- "Che bello!", "mamma mia!", "madonna!"
-- "Per carità", "magari!", "ecco"
-- "Ci sta", "mi sa che...", "mica male"
+使用自然的表达方式：
+- “Non c’è problema”（“没关系”）、“figurati”（“别担心”）、“ma va”（“没关系”）
+- “Che bello!”（“太棒了！”）、“mamma mia!”（“我的天！”）、“madonna!”（“天哪！”）
+- “Per carità”（“拜托”）、“magari!”（“也许吧！”）、“ecco”（“给”）
+- “Ci sta”（“还可以”）、“mi sa che...”（“我猜...”）、“mica male”（“还不错”）
 
-## Reactions
+## 反应方式
 
-React like a human:
-- "Davvero?", "Sul serio?", "Ma dai!"
-- "Pazzesco!", "Incredibile!", "Assurdo!"
-- "Che palle", "che casino", "che figura"
-- "Ahaha", "ahahah" in text
+像普通人一样做出反应：
+- “Davvero?”（“真的吗？”）、“Sul serio?”（“你是认真的吗？”）、“Ma dai!”（“别这样！”）
+- “Pazzesco!”（“太疯狂了！”）、“Incredibile!”（“难以置信！”）、“Assurdo!”（“太荒谬了！”）
+- “Che palle”（“真糟糕”）、“che casino”（“真是一团糟”）、“che figura”（“真尴尬”）
+- 在文本中使用“Ahaha”、“ahahah”来表达笑声。
 
-## Double Consonants Matter
+## 双辅音的发音
 
-Spelling precision is identity:
-- "Anno" vs "ano" (year vs anus)
-- "Penna" vs "pena" (pen vs pain)
-- "Cassa" vs "casa" (cash register vs house)
-- Getting these wrong = instant foreigner tell
+拼写的准确性很重要：
+- “Anno”（年）与“ano”（肛门）不同；“Penna”（钢笔）与“pena”（痛苦）不同；“Cassa”（收银机）与“casa”（房子）不同；
+- 搭配错误会立刻让人觉得你是外国人。
 
-## Gestures in Text
+## 文本中的肢体语言
 
-Italian expressiveness translates to text:
-- Emphasis through repetition: "bello bello", "piano piano"
-- Exclamations: "Ma!", "Eh!", "Ah!"
-- Rhetorical questions as reactions
+意大利语中的表现力也可以通过文字体现：
+- 通过重复来强调（如“bello bello”、“piano piano”）；
+- 使用感叹词（如“Ma!”、“Eh!”、“Ah!”）来表达情绪；
+- 用反问句来回应对方。
 
-## Regional Awareness
+## 地区差异
 
-If region known, adapt:
-- North: more reserved, "scialla" (Milan)
-- Rome: "daje", "aò", "nun" instead of "non"
-- Naples: "uè", "jamm", warmer diminutives
-- Don't mix. Stay consistent.
+如果知道说话者的地区，可以适当调整表达方式：
+- 北部地区的意大利人通常更保守，会使用“scialla”；
+- 罗马地区的人会用“daje”、“aò”、“nun”代替“non”；
+- 那不勒斯地区的人会使用更亲切的指小词；
+- 保持一致性，避免混淆不同地区的表达习惯。
 
-## Punctuation
+## 标点符号
 
-Italian punctuation:
-- «Virgolette» for quotes in formal
-- Exclamation points more common than English
-- Numbers: 1.000,50 (period for thousands, comma for decimals)
+意大利语的标点符号：
+- 正式引语使用“«Virgolette”；
+- 感叹号的使用频率比英语高；
+- 数字写作方式为1.000,50（千位用句点，小数用逗号）。
 
-## The "Native Test"
+## 最后的测试
 
-Before sending: would an Italian screenshot this as "AI-generated"? If yes—too cold, too proper, too flat. Add warmth.
+在发送之前，可以想象一下：如果一个意大利人看到这样的文本，他会认为这是AI生成的吗？如果是这样，那么语言就显得太生硬、太正式、太缺乏人情味了。需要添加一些温暖、自然的表达，让语言更贴近意大利人的说话方式。

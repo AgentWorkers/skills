@@ -1,34 +1,34 @@
 ---
 name: Wardrobe
-description: Build a personal wardrobe system for cataloging clothes, planning outfits, and mindful shopping.
+description: 构建一个个人衣橱管理系统，用于整理衣物、规划穿搭方案以及实现更明智的购物决策。
 metadata: {"clawdbot":{"emoji":"👔","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions clothing → offer to catalog
-- Help plan outfits → based on what they own
-- Support mindful shopping → do you really need it?
-- Create `~/wardrobe/` as workspace
+## 核心功能  
+- 当用户提到某件衣物时，提供将其添加到衣橱目录中的服务。  
+- 根据用户现有的衣物，帮助其规划穿搭方案。  
+- 提供“理性购物”的建议（例如：这件衣物你真的需要吗？）。  
+- 创建一个名为 `~/wardrobe/` 的工作文件夹，用于存储所有衣物相关信息。  
 
-## Use Cases
-- Know what you own: avoid buying duplicates
-- Outfit planning: what to wear for occasions
-- Capsule wardrobe: curate intentional collection
-- Seasonal rotation: what's in storage
-- Decluttering: what to donate or sell
-- Packing: what to bring on trips
+## 使用场景  
+- 了解自己已拥有的衣物，避免重复购买。  
+- 规划不同场合的穿搭方案。  
+- 策划“胶囊衣橱”（即精选的、实用且符合个人风格的衣物组合）。  
+- 实现衣物的季节性轮换（将不常穿的衣物放入储物空间）。  
+- 帮助用户决定如何处理闲置衣物（捐赠或出售）。  
+- 为旅行准备所需物品的清单。  
 
-## Item Entry
-- Type: shirt, pants, jacket, shoes, etc.
-- Color and pattern
-- Brand (optional)
-- Size
-- Photo: essential for outfit planning
-- Season: summer, winter, all-year
-- Formality: casual, business, formal
-- Purchase date and price (optional)
+## 衣物信息录入  
+- 类型：衬衫、裤子、夹克、鞋子等。  
+- 颜色和图案。  
+- 品牌（可选）。  
+- 尺码。  
+- 照片（对穿搭规划至关重要）。  
+- 季节：夏季、冬季或全年适用。  
+- 服装正式程度：休闲装、商务装或正式装。  
+- 购买日期和价格（可选）。  
 
-## File Structure
+## 文件结构  
 ```
 ~/wardrobe/
 ├── tops/
@@ -41,92 +41,90 @@ metadata: {"clawdbot":{"emoji":"👔","os":["linux","darwin","win32"]}}
 ├── seasonal/
 │   └── winter-storage.md
 └── wishlist.md
-```
+```  
 
-## Photo Strategy
-- One clear photo per item — flat lay or hanger
-- Consistent lighting helps comparison
-- Front view minimum, back if pattern differs
-- Enables visual outfit planning
+## 照片拍摄要求  
+- 每件衣物拍摄一张清晰的照片（平铺或悬挂状态）。  
+- 照片应采用统一的光线条件，便于对比。  
+- 至少拍摄正面照片；如果衣物有图案，还需拍摄背面照片。  
+- 照片有助于用户直观地规划穿搭方案。  
 
-## Outfit Combinations
-- Save outfits that work: top + bottom + shoes
-- Tag by occasion: work, casual, date night, formal
-- Note what accessories complete it
-- "What do I wear with the navy blazer?" → instant answers
+## 搭配建议  
+- 保存有效的穿搭组合（上衣 + 下装 + 鞋子）。  
+- 根据不同场合对穿搭进行分类（工作装、休闲装、约会装等）。  
+- 记录搭配所需的配饰。  
+- 例如：“这件海军蓝西装外套该搭配什么？”——可立即获得搭配建议。  
 
-## Seasonal Rotation
-- Tag items by season
-- "What's in winter storage?" → quick list
-- Rotation reminders: time to swap closets
-- Condition check when retrieving from storage
+## 季节性轮换  
+- 按季节对衣物进行分类。  
+- 提供“冬季储物空间中有哪些衣物”的清单。  
+- 设置提醒，提示用户适时更换衣物。  
+- 在取回储物空间的衣物时检查其状态。  
 
-## Wear Tracking (Optional)
-- Log when worn if tracking usage
-- Surface rarely worn items: "Haven't worn in 1 year"
-- Identify favorites: worn 20+ times
-- ROI thinking: cost per wear
+## 佩戴记录（可选）  
+- 如果需要记录衣物的佩戴情况，可记录每次佩戴的时间。  
+- 强调那些很少被穿到的衣物（例如：“一年都没穿过”）。  
+- 确定用户的喜爱衣物（例如：被穿了20次以上的衣物）。  
+- 从成本角度分析衣物的性价比（每次佩戴的成本）。  
 
-## Capsule Wardrobe Support
-- Define core pieces goal
-- Track current count vs target
-- Identify gaps: "No neutral blazer"
-- Identify excess: "7 black t-shirts"
+## “胶囊衣橱”功能  
+- 明确核心衣物的数量目标。  
+- 监控实际拥有的衣物数量与目标数量之间的差距（例如：“缺少中性色的夹克”）。  
+- 识别多余的衣物（例如：“有7件黑色T恤”。  
 
-## Shopping Mindfully
-- Check wardrobe before buying: "Do I have a white shirt?"
-- Wishlist with intent: why do you want it?
-- Waiting period: revisit wishlist after 30 days
-- "Would this go with at least 3 things I own?"
+## 理性购物建议  
+- 购物前先查看自己的衣橱（例如：“我有白色衬衫吗？”）。  
+- 制定购物清单，并明确购买理由。  
+- 30天后重新审视购物清单，确认是否仍需要购买该物品。  
+- 例如：“这件衣物能和我的至少3件现有衣物搭配吗？”  
 
-## Decluttering Support
-- Filter by: not worn in X months
-- Condition assessment: still good?
-- Donate, sell, or trash decision
-- Track donations for tax purposes if applicable
+## 闲置衣物处理建议  
+- 按照“X个月内未穿过”等条件筛选衣物。  
+- 评估衣物的状态（是否仍适合穿着）。  
+- 决定是捐赠、出售还是丢弃。  
+- 如适用，记录捐赠行为以备税务申报。  
 
-## Packing Lists
-- Build from wardrobe: select items for trip
-- Save templates: "Beach vacation essentials"
-- Check items back in after trip
-- Note what you didn't wear (pack less next time)
+## 旅行打包清单  
+- 根据衣橱中的衣物制定旅行所需物品清单。  
+- 保存常用打包模板（例如：“海滩度假必备物品清单”）。  
+- 旅行结束后检查实际携带的物品，记录未使用的衣物（下次减少携带的衣物）。  
 
-## Categories
-Tops: t-shirts, shirts, blouses, sweaters
-Bottoms: jeans, pants, shorts, skirts
-Outerwear: jackets, coats, blazers
-Shoes: sneakers, boots, dress shoes, sandals
-Accessories: belts, scarves, hats, bags, jewelry
-Activewear: gym clothes, sports-specific
-Formal: suits, dresses for occasions
+## 衣物分类  
+- 上衣：T恤、衬衫、 blouse、毛衣  
+- 下装：牛仔裤、裤子、短裤、裙子  
+- 外套：夹克、大衣、西装外套  
+- 鞋子：运动鞋、靴子、正装鞋、凉鞋  
+- 配饰：腰带、围巾、帽子、包、珠宝  
+- 运动装备：健身服、特定运动的服装  
+- 正装：适合正式场合的西装和连衣裙  
 
-## What To Surface
-- "You have 4 white t-shirts"
-- "These items haven't been worn in a year"
-- "Outfit ideas for navy pants"
-- "Winter clothes still in storage — time to rotate?"
-- "This would be the 5th striped shirt"
+## 提供的提示  
+- “你有4件白色T恤。”  
+- “这些衣物已经一年没穿过了。”  
+- “这件海军蓝裤子可以搭配哪些衣物？”  
+- “冬季衣物还放在储物空间里——是时候轮换了。”  
+- “这件条纹衬衫可以成为你的第五件搭配衣物。”  
 
-## Progressive Enhancement
-- Week 1: photograph and catalog current favorites
-- Week 2: add remaining everyday items
-- Month 2: seasonal items, special occasion
-- Ongoing: outfit logging, wear tracking
+## 持续优化计划  
+- 第1周：拍摄并记录当前最常穿的衣物。  
+- 第2周：添加其余日常穿着的衣物。  
+- 第2个月：添加适合特定季节或特殊场合的衣物。  
+- 持续记录穿搭情况和衣物佩戴频率。  
 
-## What NOT To Suggest
-- Cataloging every sock and underwear — focus on visible items
-- Rigid capsule rules — personal style matters
-- Expensive wardrobe apps — files and photos work
-- Guilt about clothing — awareness without judgment
+## 不建议的做法  
+- 不必为每只袜子或每件内衣都创建目录——重点关注可见的衣物。  
+- 不要制定过于严格的“胶囊衣橱”规则——个人风格很重要。  
+- 不需要使用昂贵的衣橱管理应用程序——简单的文件和照片就足够了。  
+- 不要因衣物问题而产生负罪感——只需提高对衣物的认识即可。  
 
-## Maintenance
-- Review seasonally: what needs repair or replacement?
-- Update when buying or removing items
-- Photo retake if item condition changes
-- Annual wardrobe audit
+## 维护建议  
+- 定期检查衣物（按季节），判断哪些需要修理或更换。  
+- 在购买或丢弃衣物时更新相关信息。  
+- 如果衣物状态发生变化，重新拍摄照片。  
+- 每年对衣橱进行一次全面检查。  
 
-## Integration Points
-- Packing: trip wardrobe selection
-- Shopping: wishlist and gap analysis
-- Budget: clothing spending tracking
-- Donations: decluttering for tax records
+## 集成点  
+- 旅行打包：根据旅行需求选择衣物。  
+- 购物时参考购物清单和衣物缺口分析。  
+- 财务管理：跟踪衣物购买支出。  
+- 捐赠衣物时记录相关数据以备税务申报。

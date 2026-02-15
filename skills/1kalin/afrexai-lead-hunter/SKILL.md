@@ -1,6 +1,6 @@
 ---
 name: afrexai-lead-hunter
-description: "Enterprise-grade B2B lead generation, enrichment, scoring, and outreach sequencing for AI agents. Find ideal prospects, enrich with verified data, score against your ICP, and generate personalized outreach — all autonomously."
+description: "企业级B2B潜在客户生成、信息完善、评分以及自动化外联流程，专为AI代理设计。系统能够自动寻找理想的目标客户，利用经过验证的数据完善客户信息，根据您的业务指标（ICP）对客户进行评分，并生成个性化的营销策略。"
 tags: [leads, sales, b2b, prospecting, enrichment, outreach, pipeline, crm, cold-email, icp]
 author: AfrexAI
 version: 1.0.0
@@ -9,11 +9,11 @@ license: MIT
 
 # AfrexAI Lead Hunter Pro
 
-> Turn your AI agent into a full B2B sales development machine. Discovery → Enrichment → Scoring → Outreach → CRM. Zero manual work.
+> 将您的人工智能销售代理转变为一个完整的B2B销售开发工具：从发现潜在客户到跟进沟通，再到完成交易，全程无需人工干预。
 
 ---
 
-## Architecture
+## 架构
 
 ```
 DEFINE ICP ──▶ DISCOVER ──▶ ENRICH ──▶ SCORE ──▶ SEGMENT ──▶ OUTREACH ──▶ CRM
@@ -25,11 +25,11 @@ DEFINE ICP ──▶ DISCOVER ──▶ ENRICH ──▶ SCORE ──▶ SEGMENT
 
 ---
 
-## Phase 1: Define Your Ideal Customer Profile (ICP)
+## 第一阶段：定义理想客户画像（ICP）
 
-Before hunting, know WHO you're hunting. Answer these:
+在开始寻找潜在客户之前，首先要明确您要寻找的目标客户群体。请回答以下问题：
 
-### Company-Level ICP
+### 公司层面的ICP（Ideal Company Profile）
 ```yaml
 # Copy and customize this ICP template
 company:
@@ -48,7 +48,7 @@ company:
     - "document processing"
 ```
 
-### Buyer Persona
+### 买家画像（Buyer Persona）
 ```yaml
 persona:
   titles: [CEO, CTO, COO, VP Operations, Head of Innovation, Director of IT]
@@ -64,7 +64,7 @@ persona:
     - already has AI vendor (check for competitors in their stack)
 ```
 
-### Scoring Weights
+### 评分标准（Scoring Criteria）
 ```yaml
 scoring:
   icp_company_match: 30             # how well company matches
@@ -82,50 +82,49 @@ scoring:
 
 ---
 
-## Phase 2: Multi-Source Discovery
+## 第二阶段：多渠道信息收集
 
-### Source Priority Matrix
+### 来源优先级矩阵（Source Priority Matrix）
 
-| Source | Best For | How To Search | Data Quality | Cost |
+| 来源 | 适合对象 | 搜索方法 | 数据质量 | 成本 |
 |--------|----------|---------------|-------------|------|
-| **Web Search** | Any industry | `"[industry] companies" site:linkedin.com/company` | High | Free |
-| **GitHub** | Dev tools, tech companies | Search repos, org pages, contributor profiles | High | Free |
-| **Product Hunt** | Startups, SaaS | Browse launches, upvoters (they're buyers too) | Medium | Free |
-| **Industry Lists** | Targeted verticals | "Top 50 [industry] companies 2026", Clutch, G2 | High | Free |
-| **Job Boards** | Hiring = growing = buying | `"AI" OR "automation" site:lever.co OR site:greenhouse.io` | High | Free |
-| **Crunchbase** | Funded startups | Recently funded companies in target verticals | High | Freemium |
-| **Conference Speakers** | Active industry leaders | Speaker lists from industry events | Very High | Free |
-| **Podcast Guests** | Thought leaders with budget | Search "[industry] podcast" transcripts | High | Free |
+| **网络搜索** | 任何行业 | `"[行业] companies" site:linkedin.com/company` | 高 | 免费 |
+| **GitHub** | 开发工具公司、科技企业 | 搜索代码库、组织页面、贡献者资料 | 高 | 免费 |
+| **产品发布信息** | 初创企业、SaaS公司 | 浏览新产品发布信息、点赞用户（他们可能是潜在买家） | 中等 | 免费 |
+| **行业榜单** | 目标行业内的领先企业 | “2026年[行业]前50强企业”，Clutch、G2 | 高 | 免费 |
+| **招聘网站** | 招聘活跃的公司 | 搜索包含“AI”或“自动化”关键词的职位信息 | 高 | 免费 |
+| **Crunchbase** | 获得融资的初创企业 | 目标行业内的最新融资企业 | 高 | 免费/付费 |
+| **会议演讲者** | 行业内的知名人士 | 从行业活动中获取演讲者名单 | 非常高 | 免费 |
+| **播客嘉宾** | 有预算的思想领袖 | 搜索相关播客的文字记录 | 高 | 免费 |
 
-### Discovery Search Templates
+### 信息收集模板
 
-**Find companies by pain signal:**
+**通过业务痛点查找潜在客户：**
 ```
 "[industry]" "manual process" OR "time-consuming" OR "looking for solutions" site:linkedin.com
 ```
 
-**Find companies by hiring signal (they're growing = they're buying):**
+**通过招聘活动寻找潜在客户（招聘活跃的企业通常有购买需求）：**
 ```
 "[company type]" "hiring" "AI" OR "automation" OR "data" site:linkedin.com/jobs
 ```
 
-**Find recently funded companies (flush with cash):**
+**寻找最近获得融资的企业（资金充足）：**
 ```
 "[industry]" "raises" OR "Series A" OR "funding" OR "investment" 2026
 ```
 
-**Find companies using competitor tools (ripe for switching):**
+**寻找使用竞争对手产品的企业（适合推荐替代方案）：**
 ```
 "[competitor tool]" "alternative" OR "switching from" OR "replaced"
 ```
 
-**Find decision makers directly:**
+**直接联系决策者：**
 ```
 "[title]" "[industry]" "[city/region]" site:linkedin.com/in
 ```
 
-### Discovery Workflow
-
+### 信息收集工作流程（Discovery Workflow）
 ```
 FOR each search query:
   1. Run web_search with the query
@@ -141,30 +140,30 @@ FOR each search query:
 
 ---
 
-## Phase 3: Enrichment Engine
+## 第三阶段：数据补充（Enrichment）
 
-For each discovered lead, enrich with verified data:
+对每个发现的潜在客户进行数据补充，确保信息的准确性：
 
-### Company Enrichment Checklist
-- [ ] **Website** — Load homepage, extract value prop, tech stack (check `<meta>` tags, JS frameworks)
-- [ ] **Employee Count** — LinkedIn company page, Crunchbase, or website "About" page
-- [ ] **Revenue Estimate** — Funding amount × 3-5x multiplier, or industry benchmarks
-- [ ] **Tech Stack** — Check BuiltWith, Wappalyzer data, or job postings for tech mentions
-- [ ] **Recent News** — Last 90 days: funding, launches, executive changes, partnerships
-- [ ] **Pain Indicators** — Job postings mentioning problems you solve, blog posts about challenges
-- [ ] **Competitor Usage** — Do they use a competitor? Which one? (Check G2 reviews, case studies)
+### 公司信息补充 checklist
+- [ ] **网站** — 加载公司主页，提取核心价值主张和技术栈（检查`<meta>`标签、JavaScript框架）
+- [ ] **员工人数** — 从LinkedIn公司页面、Crunchbase或公司“关于”页面获取
+- [ ] **收入预估** — 根据融资金额乘以3-5的倍数估算，或参考行业平均水平
+- [ ] **技术栈** — 查看BuiltWith、Wappalyzer的数据，或招聘信息中的技术相关内容
+- [ ] **最新动态** — 过去90天内的融资、新产品发布、高管变动、合作伙伴关系
+- [ ] **业务痛点** — 招聘信息中提到的问题，或博客文章中讨论的挑战
+- **竞争对手使用情况** — 该公司是否使用竞争对手的产品？使用的是哪家？（参考G2的评论和案例研究）
 
-### Contact Enrichment Checklist
-- [ ] **Full Name** — First + Last from LinkedIn or company page
-- [ ] **Title** — Current role (verify it matches your buyer persona)
-- [ ] **Email Pattern** — Determine company pattern: first@, first.last@, firstlast@, f.last@
-- [ ] **Email Verification** — Test pattern with known format, check MX records
-- [ ] **LinkedIn URL** — Direct profile link
-- [ ] **Recent Activity** — What have they posted/shared in last 30 days?
-- [ ] **Mutual Connections** — Anyone in your network connected to them?
-- [ ] **Content Interests** — What topics do they engage with? (Use for personalization)
+### 联系人信息补充 checklist
+- [ ] **全名** — 从LinkedIn或公司页面获取名字和姓氏
+- [ ] **职位** — 当前职位（确认与买家画像匹配）
+- [ ] **电子邮件格式** — 分析公司常用的电子邮件格式（如first@、first.last@、firstlast@、f.last@）
+- [ ] **电子邮件验证** — 用已知格式测试邮件地址，检查MX记录
+- [ ] **LinkedIn链接** — 获取公司的LinkedIn个人资料链接
+- [ ] **近期活动** — 过去30天内发布或分享的内容
+- **共同联系人** — 您的人脉中是否有与该联系人关联的人？
+- **兴趣领域** — 他们关注哪些主题？（用于个性化沟通）
 
-### Email Pattern Detection
+### 电子邮件格式检测（Email Pattern Detection）
 ```
 Common patterns (test in order of likelihood):
 1. first.last@company.com     (most common, ~40%)
@@ -185,63 +184,63 @@ Verification approach:
 
 ---
 
-## Phase 4: Lead Scoring Algorithm
+## 第四阶段：潜在客户评分算法
 
-Score each lead 0-100 using this rubric:
+使用以下标准对每个潜在客户进行0-100分的评分：
 
-### Company Score (0-30 points)
+### 公司评分（0-30分）
 
-| Signal | Points | How to Check |
+| 评分标准 | 分数 | 检查方法 |
 |--------|--------|-------------|
-| Industry matches ICP exactly | +10 | Compare to ICP config |
-| Employee count in sweet spot | +5 | LinkedIn/website |
-| Revenue in target range | +5 | Crunchbase/estimate |
-| Located in target geography | +3 | Website/LinkedIn |
-| Uses compatible tech stack | +4 | Job posts, BuiltWith |
-| No competitor currently | +3 | Research, case studies |
+| 行业与理想客户画像完全匹配 | +10 | 与ICP配置对比 |
+| 员工人数在理想范围内 | +5 | 从LinkedIn或公司网站获取 |
+| 收入在目标范围内 | +5 | 根据Crunchbase数据或预估 |
+| 位于目标地理位置 | +3 | 从网站或LinkedIn获取 |
+| 使用兼容的技术栈 | +4 | 从招聘信息或BuiltWith工具获取 |
+| 当前没有使用竞争对手产品 | +3 | 通过调研和案例研究确认 |
 
-### Persona Score (0-20 points)
+### 买家画像评分（0-20分）
 
-| Signal | Points | How to Check |
+| 评分标准 | 分数 | 检查方法 |
 |--------|--------|-------------|
-| Title matches buyer persona | +8 | LinkedIn |
-| C-Suite or VP level | +5 | LinkedIn |
-| Has decision authority | +4 | Title + company size |
-| Active on LinkedIn (posts monthly) | +3 | LinkedIn activity |
+| 职位与买家画像匹配 | +8 | 从LinkedIn获取 |
+| 担任高管或副总裁级别 | +5 | 从LinkedIn获取 |
+| 具有决策权 | +4 | 根据职位和公司规模判断 |
+| 在LinkedIn上活跃（每月有发文） | +3 | 从LinkedIn活动记录判断 |
 
-### Intent Score (0-25 points)
+### 意图评分（0-25分）
 
-| Signal | Points | How to Check |
+| 评分标准 | 分数 | 检查方法 |
 |--------|--------|-------------|
-| Recently posted about relevant pain | +8 | LinkedIn/Twitter |
-| Company hiring for roles you'd replace | +7 | Job boards |
-| Attended relevant industry event | +5 | Conference lists |
-| Downloaded competitor content | +3 | Hard to verify, skip if unknown |
-| Searched for solution keywords | +2 | Hard to verify, skip if unknown |
+| 最近发布过与业务痛点相关的内容 | +8 | 从LinkedIn或Twitter获取 |
+| 公司正在招聘您提供的职位 | +7 | 从招聘网站获取 |
+| 参加过相关行业活动 | +5 | 从会议列表获取 |
+| 下载过竞争对手的产品资料 | +3 | 难以验证，可忽略 |
+| 搜索过相关解决方案 | +2 | 难以验证，可忽略 |
 
-### Timing Score (0-15 points)
+### 时间评分（0-15分）
 
-| Signal | Points | How to Check |
+| 评分标准 | 分数 | 检查方法 |
 |--------|--------|-------------|
-| New in role (< 90 days) | +5 | LinkedIn start date |
-| Company just raised funding | +4 | Crunchbase/news |
-| End of quarter (budget flush) | +3 | Calendar |
-| Company growing fast (hiring surge) | +3 | Job postings count |
+| 新上任（任职时间<90天） | +5 | 从LinkedIn获取任职日期 |
+| 公司刚获得融资 | +4 | 从Crunchbase或新闻获取 |
+| 季末（预算充足） | +3 | 根据日历判断 |
+| 公司发展迅速（招聘活跃） | +3 | 从招聘信息数量判断 |
 
-### Engagement Score (0-10 points)
+### 互动评分（0-10分）
 
-| Signal | Points | How to Check |
+| 评分标准 | 分数 | 检查方法 |
 |--------|--------|-------------|
-| Opened previous email | +4 | Email tracking |
-| Visited your website | +3 | Analytics |
-| Connected on LinkedIn | +2 | LinkedIn |
-| Referred by someone | +1 | CRM notes |
+| 打开了之前的邮件 | +4 | 通过邮件跟踪系统确认 |
+| 访问过您的网站 | +3 | 通过分析系统确认 |
+| 与您在LinkedIn上建立了联系 | +2 | 从LinkedIn记录确认 |
+| 由他人推荐 | +1 | 从CRM系统记录确认 |
 
 ---
 
-## Phase 5: Segmentation & Campaign Assignment
+## 第五阶段：客户分类与营销策略分配
 
-### Tier A (Score 80-100) — HOT LEADS
+### A级潜在客户（评分80-100分）—— 高价值潜在客户
 ```
 Action: Immediate personalized outreach
 Sequence: 5-touch hyper-personalized campaign
@@ -250,7 +249,7 @@ Channel: Email → LinkedIn → Phone (if available)
 Template: "CEO-to-CEO" or "Specific Pain" (see below)
 ```
 
-### Tier B (Score 60-79) — WARM LEADS
+### B级潜在客户（评分60-79分）—— 中等价值潜在客户
 ```
 Action: Nurture sequence
 Sequence: 7-touch value-first campaign  
@@ -259,7 +258,7 @@ Channel: Email → LinkedIn
 Template: "Value Insight" or "Case Study" (see below)
 ```
 
-### Tier C (Score 40-59) — COOL LEADS
+### C级潜在客户（评分40-59分）—— 低价值潜在客户
 ```
 Action: Add to newsletter + long-term nurture
 Sequence: Monthly value content
@@ -270,11 +269,11 @@ Template: "Industry Report" or "Educational" (see below)
 
 ---
 
-## Phase 6: Outreach Sequence Templates
+## 第六阶段：营销沟通模板
 
-### Template 1: The Specific Pain (Tier A)
+### 模板1：针对具体业务痛点的沟通策略（A级潜在客户）
 
-**Email 1 — Day 0 (The Hook)**
+**邮件1 — 第0天（吸引注意）**
 ```
 Subject: [specific pain point] at [Company]?
 
@@ -291,7 +290,7 @@ Worth a 15-min call to see if it fits [Company]?
 [Your name]
 ```
 
-**Email 2 — Day 3 (The Proof)**
+**邮件2 — 第3天（提供证据）**
 ```
 Subject: Re: [original subject]
 
@@ -306,7 +305,7 @@ Happy to walk through how this maps to [Company].
 [Your name]
 ```
 
-**Email 3 — Day 7 (The Angle)**
+**邮件3 — 第7天（深入探讨）**
 ```
 Subject: [industry trend] + [Company]
 
@@ -321,7 +320,7 @@ Open to a quick chat this week?
 [Your name]
 ```
 
-**Email 4 — Day 14 (The Breakup)**
+**邮件4 — 第14天（结束沟通）**
 ```
 Subject: Should I close your file?
 
@@ -336,9 +335,9 @@ Either way, I'll stop filling your inbox. Just reply "yes" if you'd like to chat
 [Your name]
 ```
 
-### Template 2: The Value-First (Tier B)
+### 模板2：以价值为导向的沟通策略（B级潜在客户）
 
-**Email 1 — Lead with insight, not a pitch**
+**邮件1 — 首先提供有价值的见解，而非直接推销产品**
 ```
 Subject: [number] [industry] companies are doing [thing] wrong
 
@@ -355,17 +354,17 @@ Thought it'd be useful given what [Company] is building.
 [Your name]
 ```
 
-### Template 3: The LinkedIn Warm-Up
+### 模板3：LinkedIn预热策略
 
-**Step 1:** View their profile (creates notification)
-**Step 2 (Day 2):** Like/comment on their recent post (genuine, not generic)
-**Step 3 (Day 4):** Send connection request with note:
+**步骤1：查看他们的个人资料（触发通知）**
+**步骤2（第2天）：对他们最近发布的帖子点赞/评论（真诚且非泛泛而谈）**
+**步骤3（第4天）：发送联系请求，并附上说明：**
 ```
 Hi [Name] — been following [Company]'s work in [space]. 
 Particularly liked your take on [specific post topic]. 
 Would love to connect.
 ```
-**Step 4 (Day 7, after accepted):** Send value message (NOT a pitch):
+**步骤4（收到回复后第7天）：发送有价值的信息（而非推销内容）：**
 ```
 [Name] — saw you mentioned [challenge] in your recent post. 
 We put together [free resource] that addresses exactly that. 
@@ -374,9 +373,9 @@ Thought you might find it useful: [link]
 
 ---
 
-## Phase 7: CRM & Pipeline Management
+## 第七阶段：客户关系管理（CRM）与销售流程管理
 
-### Lead Record Schema
+### 潜在客户记录结构（Lead Record Schema）
 ```json
 {
   "id": "lead-001",
@@ -440,26 +439,27 @@ Thought you might find it useful: [link]
 }
 ```
 
-### Pipeline Stages
+### 销售流程阶段（Pipeline Stages）
 ```
 PROSPECT → CONTACTED → REPLIED → MEETING_BOOKED → QUALIFIED → PROPOSAL → NEGOTIATION → CLOSED_WON / CLOSED_LOST
 ```
 
-### Tracking Metrics
-Track these weekly to optimize your machine:
-- **Discovery rate**: leads found per search session
-- **Enrichment completeness**: % of fields filled per lead
-- **Score distribution**: what % are Tier A vs B vs C?
-- **Response rate**: replies / emails sent (target: 5-15%)
-- **Meeting rate**: meetings / replies (target: 30-50%)
-- **Conversion rate**: deals / meetings (target: 20-30%)
-- **Pipeline velocity**: days from discovery → closed deal
+### 监控指标（Tracking Metrics）
+
+每周监控以下指标以优化销售流程：
+- **发现率**：每次搜索会话发现的潜在客户数量
+- **数据补充完成率**：每个潜在客户的字段填写完成率
+- **客户分类比例**：A级、B级、C级各占多少？
+- **回复率**：收到的回复数/发送的邮件数（目标：5-15%）
+- **会议转化率**：会议次数/收到的回复数（目标：30-50%）
+- **成交率**：达成交易的潜在客户数/会议次数（目标：20-30%）
+- **销售周期**：从发现潜在客户到完成交易的平均天数
 
 ---
 
-## Phase 8: Automation & Scheduling
+## 第八阶段：自动化与日程安排
 
-### Daily Autopilot Routine
+### 日常自动化流程（Daily Autopilot Routine）
 ```
 MORNING (agent runs autonomously):
   1. Run 3-5 discovery searches (rotate queries)
@@ -478,7 +478,7 @@ WEEKLY:
   5. Add new search queries based on wins
 ```
 
-### Agent Integration
+### 与销售代理的集成（Agent Integration）
 ```
 # In your agent's heartbeat or cron:
 1. Load ICP config
@@ -491,15 +491,15 @@ WEEKLY:
 
 ---
 
-## Output Formats
+## 输出格式
 
-### CSV Export
+### CSV导出（Export Formats）
 ```csv
 company,contact,title,email,linkedin,score,tier,industry,employees,pain_signal
 Acme Corp,Jane Smith,VP Ops,jane@acme.com,linkedin.com/in/jane,66,B,SaaS,150,hiring analysts
 ```
 
-### Weekly Report Template
+### 周报模板（Weekly Report Template）
 ```markdown
 # Lead Hunter Weekly Report — Week of [DATE]
 
@@ -527,17 +527,17 @@ Acme Corp,Jane Smith,VP Ops,jane@acme.com,linkedin.com/in/jane,66,B,SaaS,150,hir
 
 ---
 
-## Pro Tips
+## 专业建议
 
-1. **The 90-Day Window**: New executives are 10x more likely to buy in their first 90 days. Prioritize "new role" signals.
-2. **Hiring = Buying**: If a company is hiring for the role your product replaces, they have budget AND pain. These are your hottest leads.
-3. **Competitor's Customers**: Search for reviews/complaints about competitors. Unhappy customers switch fastest.
-4. **Conference Lists**: Speaker and attendee lists from industry events are gold. These people are actively engaged in the space.
-5. **The "Reply to Anything" Rule**: Any reply (even "not interested") is valuable. It confirms the email works and the person exists. Log it.
-6. **Personalization > Volume**: 20 hyper-personalized emails outperform 200 generic ones. Always reference something specific about the prospect.
-7. **Multi-Thread**: Don't rely on one contact per company. Find 2-3 decision-makers and approach from different angles.
-8. **Timing Matters**: Tuesday-Thursday, 8-10 AM local time gets the best open rates. Avoid Mondays and Fridays.
+1. **90天黄金期**：新上任的高管在入职前90天内购买产品的概率是平时的10倍。优先关注“新上任”这一信号。
+2. **招聘活动 = 购买需求**：如果一家公司正在招聘您产品所替代的职位，说明他们有购买意愿且预算充足。这些是最高价值的潜在客户。
+3. **竞争对手的客户**：搜索关于竞争对手的评论或投诉信息。不满意的客户最有可能更换产品。
+4. **行业会议名单**：行业活动的演讲者和参与者名单非常有用。这些人通常对该领域非常关注。
+5. **“回复任何信息”原则**：任何回复（即使表示“不感兴趣”）都很有价值。这可以确认邮件已送达且目标客户确实存在。请记录下来。
+6. **个性化沟通 > 数量**：20封高度个性化的邮件比200封泛泛而谈的邮件效果更好。务必在邮件中提及潜在客户的特定需求。
+7. **多渠道沟通**：不要只依赖与每个公司的单一联系人联系。寻找2-3位决策者，并从不同角度进行沟通。
+8. **沟通时机很重要**：当地时间周二至周四上午8-10点是打开邮件的高峰期。避免周一和周五。
 
 ---
 
-*Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI agents that actually sell.*
+*由[AfrexAI](https://afrexai-cto.github.io/context-packs/)开发——真正能促成销售的AI销售工具。*

@@ -1,80 +1,80 @@
 ---
 name: bridging
-description: Bridge assets to and from Celo. Use when transferring tokens between Celo and other chains like Ethereum.
+description: 将资产在 Celo 与其他区块链（如 Ethereum）之间进行桥接。适用于在 Celo 与其他区块链之间传输代币的场景。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# Bridging to Celo
+# 连接 Celo
 
-This skill covers bridging assets between Celo and other blockchains, including native bridges and third-party solutions.
+本技能涵盖了在 Celo 与其他区块链之间桥接资产的方法，包括原生桥接方案和第三方解决方案。
 
-## When to Use
+## 使用场景
 
-- Transferring assets from Ethereum to Celo
-- Bridging tokens from Celo to other chains
-- Integrating cross-chain functionality
-- Building multi-chain applications
+- 将资产从以太坊转移到 Celo
+- 将代币从 Celo 桥接到其他区块链
+- 集成跨链功能
+- 构建多链应用程序
 
-## Bridge Options
+## 桥接选项
 
-### Native Bridge
+### 原生桥接
 
-| Bridge | Mainnet | Testnet |
+| 桥接方式 | 主网 | 测试网 |
 |--------|---------|---------|
 | Superbridge | https://superbridge.app/celo | https://testnets.superbridge.app |
 
-Native bridge provides direct transfers between Celo L2 and Ethereum L1 via the OP Stack standard bridge.
+原生桥接通过 OP Stack 标准桥接方式，实现 Celo L2 与以太坊 L1 之间的直接转账。
 
-Source: https://docs.celo.org/tooling/bridges
+来源：https://docs.celo.org/tooling/bridges
 
-### Third-Party Bridges
+### 第三方桥接
 
-| Bridge | URL | Description |
+| 桥接方式 | URL | 描述 |
 |--------|-----|-------------|
-| Squid Router V2 | https://v2.app.squidrouter.com | Cross-chain routing via Axelar |
-| LayerZero | https://layerzero.network | Omnichain interoperability protocol |
-| Jumper Exchange | https://jumper.exchange | Multi-chain DEX aggregator |
-| Portal (Wormhole) | https://portalbridge.com | Decentralized interoperability layer |
-| AllBridge | https://app.allbridge.io/bridge | EVM and non-EVM chains |
-| Satellite (Axelar) | https://satellite.money | Axelar network bridge |
-| Transporter (CCIP) | https://www.transporter.io | Chainlink CCIP bridge |
-| Layerswap | https://layerswap.io/app | 60+ chains, 15+ CEX integrations |
-| Hyperlane Nexus | https://www.usenexus.org | Messaging and interoperability |
-| Mach Exchange | https://www.mach.exchange | Cross-chain exchange |
-| Galaxy | https://galaxy.exchange/swap | Native DEX on Celo |
-| SmolRefuel | https://smolrefuel.com | Gasless refueling |
-| USDT0 | https://usdt0.to | Native USDT via LayerZero OFT |
+| Squid Router V2 | https://v2.app.squidrouter.com | 通过 Axelar 实现跨链路由 |
+| LayerZero | https://layerzero.network | 提供跨链互操作性协议 |
+| Jumper Exchange | https://jumper.exchange | 多链去中心化交易所聚合器 |
+| Portal (Wormhole) | https://portalbridge.com | 提供去中心化互操作性服务 |
+| AllBridge | https://app.allbridge.io/bridge | 支持 EVM 和非 EVM 链路 |
+| Satellite (Axelar) | https://satellite.money | Axelar 网络桥接工具 |
+| Transporter (CCIP) | https://www.transporter.io | Chainlink 的 CCIP 桥接服务 |
+| Layerswap | https://layerswap.io/app | 支持 60 多个区块链和 15 多个去中心化交易所 |
+| Hyperlane Nexus | https://www.usenexus.org | 提供消息传递和互操作性服务 |
+| Mach Exchange | https://www.mach.exchange | 跨链交易服务 |
+| Galaxy | https://galaxy.exchange/swap | Celo 上的原生去中心化交易所 |
+| SmolRefuel | https://smolrefuel.com | 提供无需支付 gas 的资产转移服务 |
+| USDT0 | https://usdt0.to | 通过 LayerZero 提供原生 USDT 转换服务 |
 
-Source: https://docs.celo.org/home/bridged-tokens/bridges
+来源：https://docs.celo.org/home/bridged-tokens/bridges
 
-## Native ETH Bridging
+## 原生 ETH 桥接
 
-Bridge native ETH from Ethereum to Celo as WETH.
+可以将以太坊的 ETH 转换为 Celo 的 WETH。
 
-### Contract Addresses
+### 合同地址
 
-**Ethereum Mainnet → Celo:**
+**以太坊主网 → Celo:**
 
-| Contract | Address |
+| 合同 | 地址 |
 |----------|---------|
 | SuperBridgeETHWrapper (L1) | 0x3bC7C4f8Afe7C8d514c9d4a3A42fb8176BE33c1e |
 | L1 Standard Bridge | 0x9C4955b92F34148dbcfDCD82e9c9eCe5CF2badfe |
 | L1 WETH | 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 |
 | L2 WETH (Celo) | 0xD221812de1BD094f35587EE8E174B07B6167D9Af |
 
-**Sepolia Testnet → Celo Sepolia:**
+**Sepolia 测试网 → Celo Sepolia:**
 
-| Contract | Address |
+| 合同 | 地址 |
 |----------|---------|
 | SuperBridgeETHWrapper (L1) | 0x523e358dFd0c4e98F3401DAc7b1879445d377e37 |
 | L1 Standard Bridge | 0xec18a3c30131a0db4246e785355fbc16e2eaf408 |
 | L1 WETH | 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9 |
 | L2 WETH (Celo Sepolia) | 0x2cE73DC897A3E10b3FF3F86470847c36ddB735cf |
 
-### Bridge ETH to Celo
+### 将 ETH 桥接到 Celo
 
 ```typescript
 import { createWalletClient, custom, parseEther } from "viem";
@@ -115,11 +115,11 @@ async function bridgeETHToCelo(amount: string): Promise<string> {
 }
 ```
 
-## Natively Bridged Tokens
+## 可通过原生桥接转移的代币
 
-These tokens have official bridges from Ethereum via native bridge:
+以下代币可以通过原生桥接方式从以太坊转移到 Celo：
 
-| Token | L1 Address (Ethereum) | L2 Address (Celo) |
+| 代币 | 以太坊地址 (L1) | Celo 地址 (L2) |
 |-------|----------------------|-------------------|
 | WETH | 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 | 0xD221812de1BD094f35587EE8E174B07B6167D9Af |
 | WBTC | 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599 | 0x8aC2901Dd8A1F17a1A4768A6bA4C3751e3995B2D |
@@ -128,27 +128,27 @@ These tokens have official bridges from Ethereum via native bridge:
 | LINK | 0x514910771af9ca656af840dff83e8264ecf986ca | 0xf630876008a4ed9249fb4cac978ba16827f52e91 |
 | UNI | 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984 | 0xeE571697998ec64e32B57D754D700c4dda2f2a0e |
 | CRV | 0xD533a949740bb3306d119CC777fa900bA034cd52 | 0x75184c282e55a7393053f0b8F4F3E7BeAE067fdC |
-| rETH | 0xae78736cd615f374d3085123a210448e74fc6393 | 0x55f3d16e6bd2b8b8e6599df6ef4593ce9dcae9ed |
+| rETH | 0xae78736cd615f374d3085123a210448e74fc6393 | 0x55f3d16e6bd2b8b8e6599df6ef4593ce9dcae9 |
 
-Source: https://docs.celo.org/home/bridged-tokens
+来源：https://docs.celo.org/home/bridged-tokens
 
-## Cross-Chain Messaging Protocols
+## 跨链消息传递协议
 
-For building cross-chain dApps:
+用于构建跨链去中心化应用程序：
 
-| Protocol | URL | Celo Support |
+| 协议 | URL | Celo 支持情况 |
 |----------|-----|--------------|
-| Chainlink CCIP | https://chain.link/cross-chain | Mainnet |
-| Hyperlane | https://www.hyperlane.xyz | Mainnet, Sepolia |
-| Wormhole | https://wormhole.com | Mainnet |
-| LayerZero | https://layerzero.network | Mainnet |
-| Axelar Network | https://axelar.network | Mainnet |
+| Chainlink CCIP | https://chain.link/cross-chain | 支持主网 |
+| Hyperlane | https://www.hyperlane.xyz | 支持主网和 Sepolia |
+| Wormhole | https://wormhole.com | 支持主网 |
+| LayerZero | https://layerzero.network | 支持主网 |
+| Axelar Network | https://axelar.network | 支持主网 |
 
-Source: https://docs.celo.org/tooling/bridges/cross-chain-messaging
+来源：https://docs.celo.org/tooling/bridges/cross-chain-messaging
 
-## Using LI.FI SDK
+## 使用 LI.FI SDK
 
-For cross-chain swaps and bridges:
+用于实现跨链交易和桥接功能：
 
 ```typescript
 import { createConfig, getQuote, executeRoute } from "@lifi/sdk";
@@ -176,23 +176,23 @@ const result = await executeRoute(quote, {
 });
 ```
 
-## Bridge Considerations
+## 桥接注意事项
 
-### Security
-- Native bridges (Superbridge) are the most secure
-- Third-party bridges rely on their own security models
-- Always verify contract addresses before bridging
+### 安全性
+- 原生桥接（如 Superbridge）是最安全的
+- 第三方桥接方案的安全性取决于其自身的安全机制
+- 在进行桥接操作前，请务必验证相关合约地址的合法性
 
-### Timing
-- Native L1→L2 bridges: ~15-20 minutes
-- L2→L1 withdrawals: 7 days (challenge period)
-- Third-party bridges: varies (minutes to hours)
+### 时间消耗
+- 原生 L1→L2 桥接：约 15-20 分钟
+- L2→L1 提现：需要等待 7 天（挑战期）
+- 第三方桥接：时间各不相同（几分钟到几小时不等）
 
-### Fees
-- Native bridges: gas fees only
-- Third-party bridges: gas + bridge fees
+### 费用
+- 原生桥接：仅收取 gas 费用
+- 第三方桥接：除了 gas 费用外，还需支付额外的桥接费用
 
-## Dependencies
+## 依赖项
 
 ```json
 {
@@ -202,7 +202,7 @@ const result = await executeRoute(quote, {
 }
 ```
 
-For LI.FI integration:
+关于 LI.FI 的集成信息，请参阅相关文档：
 
 ```json
 {
@@ -212,7 +212,7 @@ For LI.FI integration:
 }
 ```
 
-## Additional Resources
+## 额外资源
 
-- [bridge-contracts.md](references/bridge-contracts.md) - All bridge contract addresses
-- [bridged-tokens.md](references/bridged-tokens.md) - Complete list of bridged tokens
+- [bridge-contracts.md](references/bridge-contracts.md) - 所有桥接相关合约的地址
+- [bridged-tokens.md](references/bridged-tokens.md) - 完整的桥接代币列表

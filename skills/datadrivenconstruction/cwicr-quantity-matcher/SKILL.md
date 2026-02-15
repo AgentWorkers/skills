@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-quantity-matcher"
 display_name: "CWICR Quantity Matcher"
-description: "Match BIM quantities to CWICR work items. Map element categories to cost codes, validate quantities, and generate cost-linked QTOs."
+description: "将 BIM 数量与 CWICR 工作项进行匹配；将元素类别映射到成本代码；验证数量；并生成与成本相关的 QTO（Quantities and Takeoff）文件。"
 ---
 
-# CWICR Quantity Matcher
+# CWICR 数量匹配器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-BIM exports contain quantities but:
-- Element categories don't match cost codes
-- Manual mapping is error-prone
-- Different naming conventions
-- Need consistent code assignment
+### 问题描述
+BIM 导出文件中包含工程量信息，但存在以下问题：
+- 元素类别与成本代码不匹配
+- 手动映射容易出错
+- 命名规范不一致
+- 需要统一的成本代码分配规则
 
-### Solution
-Intelligent matching of BIM element quantities to CWICR work items using category mapping, semantic matching, and rule-based assignment.
+### 解决方案
+通过类别映射、语义匹配和基于规则的分配方式，实现 BIM 元素数量与 CWICR 工作项的智能匹配。
 
-### Business Value
-- **Automation** - Reduce manual mapping effort
-- **Consistency** - Standard code assignment
-- **Accuracy** - Validated quantity linkage
-- **Integration** - BIM-to-cost data flow
+### 商业价值
+- **自动化**：减少手动映射的工作量
+- **一致性**：确保成本代码分配的标准化
+- **准确性**：保证工程量信息的准确性
+- **集成性**：实现 BIM 与成本数据之间的顺畅流转
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -430,7 +430,7 @@ class CWICRQuantityMatcher:
         return df
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load CWICR data
@@ -450,15 +450,15 @@ print(f"High Confidence: {result.high_confidence}")
 print(f"Needs Review: {result.needs_review}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Generate Cost-Linked QTO
+### 1. 生成与成本关联的工程量清单（QTO）
 ```python
 qto_with_costs = matcher.generate_cost_linked_qto(result)
 print(f"Total Cost: ${qto_with_costs['Total Cost'].sum():,.2f}")
 ```
 
-### 2. Custom Mapping Rules
+### 2. 自定义映射规则
 ```python
 custom_mapping = {
     'Walls': 'WALL-001',
@@ -468,11 +468,11 @@ custom_mapping = {
 result = matcher.apply_custom_mapping(result, custom_mapping)
 ```
 
-### 3. Export Results
+### 3. 导出结果
 ```python
 matcher.export_matches(result, "quantity_matching.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 2.3 - BIM-to-Cost Integration
+- **DDC 手册**: 第 2.3 章 - BIM 与成本的集成

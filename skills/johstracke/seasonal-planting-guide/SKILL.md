@@ -1,47 +1,52 @@
 ---
 name: seasonal-planting-guide
-description: Seasonal planting calendar for gardeners. Find what to plant each month in your growing zone. Use when planning your garden, checking planting schedules, or finding plants for the current season. Security: file exports restricted to safe directories. Perfect for home gardeners, small farmers, and anyone planning a productive garden.
+description: **园艺季节性种植日历**  
+帮助您了解在您的种植区域每月应种植哪些植物。适用于规划花园、查看种植时间表或寻找适合当前季节的植物。  
+
+**安全提示：**  
+文件导出仅限于受保护的目录中，确保数据安全。  
+非常适合家庭园艺爱好者、小型农场主以及任何希望打造高效花园的人士使用。
 ---
 
-# Seasonal Planting Guide
+# 季节性种植指南
 
-Plan your garden with region-specific planting schedules for every month.
+根据您所在地区的具体种植时间表来规划您的花园。
 
-## Quick Start
+## 快速入门
 
-### See what to plant this month
+### 了解本月应种植的植物
 ```bash
 seasonal_planting.py now --zone "8a"
 ```
 
-### Get planting calendar for a month
+### 获取某个月的种植日历
 ```bash
 seasonal_planting.py month --month "april" --zone "6b"
 ```
 
-### Get full year calendar
+### 获取全年种植日历
 ```bash
 seasonal_planting.py year --zone "7a"
 ```
 
-### Search for plants
+### 搜索植物
 ```bash
 seasonal_planting.py search "tomato"
 ```
 
-### Get plant details
+### 查看植物详情
 ```bash
 seasonal_planting.py show "tomato"
 ```
 
-### Add custom plants to your calendar
+### 将自定义植物添加到日历中
 ```bash
 seasonal_planting.py add "tomato" --planting "april,may" --zone "6a,6b,7a,7b,8a,8b"
 ```
 
-## Usage Patterns
+## 使用建议
 
-### For new gardeners
+### 面向新园艺爱好者
 ```bash
 # Check what to plant right now
 seasonal_planting.py now --zone "7a"
@@ -54,7 +59,7 @@ seasonal_planting.py show "lettuce"
 seasonal_planting.py show "tomato"
 ```
 
-### For experienced gardeners planning ahead
+### 面向有经验的园艺爱好者（提前规划）
 ```bash
 # Check what to plant next month
 seasonal_planting.py month --month "may" --zone "7a"
@@ -67,7 +72,7 @@ seasonal_planting.py month --month "june" --zone "7a"
 seasonal_planting.py add "local-corn" --planting "may,june" --zone "7a" --notes "Silver Queen variety"
 ```
 
-### For small farmers
+### 面向小型农户
 ```bash
 # Get full production schedule
 seasonal_planting.py year --zone "6b" > planting-schedule.txt
@@ -81,7 +86,7 @@ seasonal_planting.py month --month "may" --zone "6b"   # Late crops
 seasonal_planting.py year --zone "6b" --export "~/farm-calendar.md"
 ```
 
-### For container/indoor gardeners
+### 面向容器/室内园艺爱好者
 ```bash
 # Search for container-friendly plants
 seasonal_planting.py search "lettuce"
@@ -91,49 +96,49 @@ seasonal_planting.py search "herbs"
 seasonal_planting.py show "basil"
 ```
 
-## Planting Zones
+## 种植区域
 
-Understanding your **USDA Hardiness Zone** helps plan correctly:
+了解您的 **USDA 耐寒区** 有助于正确规划种植：
 
-| Zone | Temperature | Typical Plants |
+| 耐寒区 | 温度范围 | 常见植物 |
 |------|-------------|----------------|
-| 3-4 | Very cold | Kale, peas, lettuce, carrots |
-| 5-6 | Cold | Tomatoes, peppers, beans, squash |
-| 7-8 | Mild | Tomatoes, peppers, eggplant, corn |
-| 9-10 | Warm | Year-round growing, tropical plants |
-| 11+ | Tropical | Everything year-round |
+| 3-4 | 非常寒冷 | 羽衣甘蓝、豌豆、生菜、胡萝卜 |
+| 5-6 | 寒冷 | 番茄、辣椒、豆类、南瓜 |
+| 7-8 | 温和 | 番茄、辣椒、茄子、玉米 |
+| 9-10 | 温暖 | 全年均可种植，适合热带植物 |
+| 11+ | 热带气候 | 所有植物均可全年种植 |
 
-**How to find your zone:**
-- Search online for "USDA hardiness zone [your city]"
-- Most garden resources reference zones
-- Use neighboring zone if unsure
+**如何查找您的耐寒区：**
+- 在网上搜索 “USDA 耐寒区 [您的城市]”
+- 大多数园艺资源都会提供耐寒区信息
+- 如果不确定，可以参考相邻的耐寒区
 
-## Plant Categories
+## 植物分类
 
-### Cool-Season Crops
-Plant in spring (March-May) or fall (August-October):
-- Lettuce, spinach, kale, arugula
-- Peas, radishes, carrots
-- Broccoli, cauliflower, Brussels sprouts
+### 冷季作物
+在春季（3月至5月）或秋季（8月至10月）种植：
+- 生菜、菠菜、羽衣甘蓝、芝麻菜
+- 豌豆、萝卜、胡萝卜
+- 西兰花、花椰菜、布鲁塞尔芽菜
 
-### Warm-Season Crops
-Plant after last frost (May-June):
-- Tomatoes, peppers, eggplant
-- Beans, corn, squash
-- Cucumbers, melons, zucchini
+### 温季作物
+在最后一次霜冻过后种植（5月至6月）：
+- 番茄、辣椒、茄子
+- 豆类、玉米、南瓜
+- 黄瓜、甜瓜、西葫芦
 
-### Herbs (Year-Round or Seasonal)
-- Perennial: Rosemary, thyme, oregano, sage, chives
-- Annual: Basil, cilantro, dill, parsley
+### 草本植物（全年或季节性）
+- 多年生植物：迷迭香、百里香、牛至、鼠尾草、细香葱
+- 一年生植物：罗勒、香菜、莳萝、欧芹
 
-### Root Vegetables
-- Early spring: Radishes, turnips
-- Mid-season: Carrots, beets, parsnips
-- Late season: Garlic (fall planting), onions
+### 根茎类蔬菜
+- 早春种植：萝卜、芜菁
+- 中季种植：胡萝卜、甜菜、欧防风
+- 晚季种植：大蒜（秋季种植）、洋葱
 
-## Examples
+## 实例
 
-### Spring garden planning
+### 春季花园规划
 ```bash
 # Zone 6b - April
 seasonal_planting.py month --month "april" --zone "6b"
@@ -149,7 +154,7 @@ seasonal_planting.py month --month "may" --zone "6b"
 seasonal_planting.py month --month "june" --zone "6b"
 ```
 
-### Fall garden planning
+### 秋季花园规划
 ```bash
 # Zone 7a - August (fall crops)
 seasonal_planting.py month --month "august" --zone "7a"
@@ -160,7 +165,7 @@ seasonal_planting.py month --month "september" --zone "5a"
 # Output: lettuce, spinach, kale, garlic (for overwintering)
 ```
 
-### Year-round planning
+### 全年种植规划
 ```bash
 # Get full calendar for your zone
 seasonal_planting.py year --zone "7a"
@@ -169,7 +174,7 @@ seasonal_planting.py year --zone "7a"
 seasonal_planting.py year --zone "7a" --export "~/garden-calendar-2026.md"
 ```
 
-### Adding local knowledge
+### 结合本地知识
 ```bash
 # Add your region-specific advice
 seasonal_planting.py add "corn" --planting "may,june" --zone "7a" \
@@ -180,51 +185,51 @@ seasonal_planting.py add "heirloom-tomato" --planting "april,may" --zone "6b,7a"
   --notes "Brandywine, Cherokee Purple - start indoors 6 weeks before last frost"
 ```
 
-## Search Features
+## 搜索功能
 
-- Find plants by name or category
-- See planting windows for each plant
-- Get zone-specific recommendations
-- Find similar plants (e.g., "tomato" finds all tomato varieties)
+- 按名称或类别查找植物
+- 查看每种植物的种植时间
+- 获取针对特定耐寒区的种植建议
+- 查找相似植物（例如，输入 “番茄” 可找到所有番茄品种）
 
-## Security
+## 安全性
 
-### Path Validation
-The `export` function validates output paths to prevent malicious writes:
-- ✅ Allowed: `~/.openclaw/workspace/`, `/tmp/`, and home directory
-- ❌ Blocked: System paths (`/etc/`, `/usr/`, `/var/`, etc.)
-- ❌ Blocked: Sensitive dotfiles (`~/.bashrc`, `~/.ssh`, etc.)
+### 路径验证
+`export` 函数会验证输出路径，以防止恶意写入：
+- ✅ 允许的路径：`~/.openclaw/workspace/`、`/tmp/` 和用户主目录
+- ❌ 禁止的路径：系统路径（`/etc/`、`/usr/`、`/var/` 等）
+- ❌ 禁止的文件：敏感的配置文件（`~/.bashrc`、`~/.ssh` 等）
 
-## Data Storage
+## 数据存储
 
-- Planting calendar stored in: `~/.openclaw/workspace/planting_calendar.json`
-- Custom plants tracked alongside built-in database
-- JSON format makes it easy to backup or extend
-- Zone-specific recommendations for each plant
+- 种植日历存储在：`~/.openclaw/workspace/planting_calendar.json`
+- 自定义植物信息会与内置数据库一起记录
+- 数据采用 JSON 格式，便于备份或扩展
+- 每种植物都有针对特定耐寒区的种植建议
 
-## Best Practices
+## 最佳实践
 
-1. **Know your zone** - Determines planting windows
-2. **Watch last frost date** - Zone is guide, local weather matters
-3. **Plan succession planting** - Stagger plantings for continuous harvest
-4. **Use plant-tracker** - Combine with plant-tracker skill for full garden management
-5. **Add local knowledge** - Customize calendar with regional varieties
-6. **Export for reference** - Keep planting schedule handy
+1. **了解您的耐寒区** —— 这决定了最佳的种植时间
+2. **关注最后一次霜冻日期** —— 耐寒区只是一个参考，当地天气也很重要
+3. **规划轮作种植** —— 分批种植以确保持续收获
+4. **使用植物管理工具** —— 结合植物管理工具实现全面花园管理
+5. **结合本地知识** —— 根据当地品种调整日历
+6. **导出日历以备参考** —— 将种植计划保存下来方便查阅
 
-## Companion Planting Tips
+## 伴生种植技巧
 
-Combine with **companion planting** for better results:
+通过 **伴生种植** 可获得更好的种植效果：
 
-| Plant | Good Companions | Avoid |
+| 植物 | 适合搭配的植物 | 应避免搭配的植物 |
 |-------|----------------|--------|
-| Tomatoes | Basil, carrots, onions | Cabbage, potatoes |
-| Lettuce | Carrots, radishes, strawberries | Parsley |
-| Beans | Corn, carrots, cucumbers | Onions, garlic |
-| Peppers | Basil, onions, carrots | Fennel, kohlrabi |
+| 番茄 | 罗勒、胡萝卜、洋葱 | 卷心菜、土豆 |
+| 生菜 | 胡萝卜、萝卜、草莓 | 欧芹 |
+| 豆类 | 玉米、胡萝卜、黄瓜 | 洋葱、大蒜 |
+| 辣椒 | 罗勒、洋葱、胡萝卜 | 茴香、苤蓝 |
 
-## Related Skills
+## 相关技能
 
-- **plant-tracker** - Manage individual plants, care schedules, harvest tracking
-- **garden-layout-planner** (planned) - Design your garden layout
+- **植物管理工具** —— 用于管理单株植物、制定护理计划和跟踪收获情况
+- **花园布局规划工具** —— 用于设计花园布局
 
-Use together for complete garden management!
+结合使用这些工具，实现全面的花园管理！

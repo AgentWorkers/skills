@@ -1,23 +1,23 @@
 ---
-description: Analyze git repository statistics — contributor rankings, commit frequency, file churn, and activity patterns.
+description: 分析 Git 仓库的统计数据——包括贡献者排名、提交频率、文件变更情况以及活动模式。
 ---
 
-# Git Stats
+# Git 统计
 
-Analyze git repository statistics and generate visual reports.
+用于分析 Git 仓库的统计数据并生成可视化报告。
 
-**Use when** reviewing project activity, contributor rankings, or identifying hotspots.
+**适用场景**：审查项目活动、贡献者排名或识别代码热点区域。
 
-## Requirements
+## 前提条件**
 
-- Git repository
-- No API keys needed
+- 需要一个 Git 仓库。
+- 不需要 API 密钥。
 
-## Instructions
+## 操作步骤**
 
-1. **Verify repo**: `git rev-parse --is-inside-work-tree` — exit early if not a git repo.
+1. **验证仓库是否为 Git 仓库**：执行 `git rev-parse --is-inside-work-tree`；如果不是 Git 仓库，则立即退出程序。
 
-2. **Run analysis commands**:
+2. **运行分析命令**：
 
    ```bash
    # Project overview
@@ -47,7 +47,7 @@ Analyze git repository statistics and generate visual reports.
    git log --format='%aN' --numstat | awk '...'  # complex awk parsing
    ```
 
-3. **Output format**:
+3. **输出格式**：
    ```
    ## 📊 Git Repository Stats
    **Repo:** <name> | **Period:** <first> → <last> | **Age:** X months
@@ -75,16 +75,16 @@ Analyze git repository statistics and generate visual reports.
    | 2024-12 | ██████ 31 |
    ```
 
-4. **Custom date range**: Support `--since` and `--until` flags for filtered analysis.
+4. **自定义日期范围**：支持使用 `--since` 和 `--until` 标志来过滤分析结果。
 
-## Edge Cases
+## 特殊情况处理**
 
-- **Empty repo**: Report "No commits found."
-- **Single contributor**: Skip ranking, focus on activity patterns.
-- **Very large repos** (>100k commits): Use `--since="1 year ago"` by default and note the filter.
-- **Detached HEAD**: Use `--all` flag to include all branches.
+- **空仓库**：报告“未找到任何提交记录”。
+- **仅有一个贡献者**：跳过排名功能，重点关注代码活动模式。
+- **仓库规模非常大（超过 10 万条提交记录）**：默认使用 `--since="1 year ago"` 来限制分析范围，并在报告中注明这一限制。
+- **HEAD 指针指向的分支被分离（即该分支不再与其他分支关联）**：使用 `--all` 标志来包含所有分支。
 
-## Troubleshooting
+## 故障排除**
 
-- **Duplicate authors** (same person, different emails): Suggest `.mailmap` file for deduplication.
-- **Slow on large repos**: Add `--no-merges` and limit date range.
+- **作者重复**（同一人使用不同电子邮件地址）：建议使用 `.mailmap` 文件来消除重复记录。
+- **在大型仓库上分析速度较慢**：可以添加 `--no-merges` 标志，并适当缩小日期范围以加快分析速度。

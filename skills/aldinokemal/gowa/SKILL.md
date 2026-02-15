@@ -1,49 +1,47 @@
 ---
 name: gowa
-description: Interact with WhatsApp via GOWA (Go WhatsApp Web Multi-Device) REST API for personal automation. Supports sending messages with ghost mentions (@everyone), images, documents, group management, and more. Always use REST mode (http://localhost:3000) for production.
+description: 通过 GOWA（Go WhatsApp Web Multi-Device）REST API 与 WhatsApp 进行交互，以实现自动化操作。支持发送带有“@everyone”提及的消息、图片、文档，以及进行群组管理等功能。在生产环境中，请始终使用 REST 模式（http://localhost:3000）。
 user-invocable: true
 command-dispatch: model
 ---
 
-# GOWA - WhatsApp Automation via REST API
+# GOWA - 通过 REST API 实现 WhatsApp 自动化
 
-Interact with WhatsApp through GOWA (Go WhatsApp Web Multi-Device) REST API for personal automation tasks.
+使用 GOWA（Go WhatsApp Web Multi-Device）REST API 与 WhatsApp 进行交互，以完成自动化任务。
 
-## Installation & Setup
+## 安装与设置
 
-GOWA is available at: https://github.com/aldinokemal/go-whatsapp-web-multidevice
+GOWA 可在以下地址获取：https://github.com/aldinokemal/go-whatsapp-web-multidevice
 
-### Download
+### 下载
 
-Go to the [releases page](https://github.com/aldinokemal/go-whatsapp-web-multidevice/releases) and download the zip matching your OS and architecture.
+访问 [发布页面](https://github.com/aldinokemal/go-whatsapp-web-multidevice/releases)，下载适合您操作系统和架构的 zip 文件。  
+发布文件的命名格式为：`whatsapp_version_OS_arch.zip`  
+支持的平台：`linux` (amd64/arm64/386)、`darwin` (amd64/arm64)、`windows` (amd64/386)
 
-Release files are named: `whatsapp_VERSION_OS_ARCH.zip`
-
-Available platforms: `linux` (amd64/arm64/386), `darwin` (amd64/arm64), `windows` (amd64/386)
-
-### Run REST Server
+### 运行 REST 服务器
 
 ```bash
 ./gowa rest
 ```
 
-The server starts on `http://localhost:3000` by default.
+服务器默认运行在 `http://localhost:3000` 上。
 
-### Login (First Time)
+### 登录（首次使用）
 
-Open `http://localhost:3000` in a browser, scan the QR code with WhatsApp on your phone to link the device.
+在浏览器中打开 `http://localhost:3000`，使用手机上的 WhatsApp 扫描 QR 码以关联设备。
 
-## Production Setup
+## 生产环境设置
 
-**GOWA runs in REST mode:**
-- Base URL: `http://localhost:3000`
-- GOWA auto-connects to the device stored in the database — no `X-Device-Id` header needed for single-device setups.
+**GOWA 以 REST 模式运行：**
+- 基本 URL：`http://localhost:3000`
+- GOWA 会自动连接到数据库中存储的设备——单设备设置时不需要 `X-Device-Id` 头部信息。
 
-**⚠️ Important:** Use REST API (port 3000) only. Do NOT use MCP mode - all schedulers and automation depend on REST.
+**⚠️ 重要提示：** 仅使用 REST API（端口 3000），切勿使用 MCP 模式——所有调度器和自动化功能都依赖于 REST API。
 
-## Quick Examples
+## 快速示例
 
-### Ghost Mention (mention all without @)
+### 幽灵提及（@ 符号不显示）
 ```bash
 curl -X POST http://localhost:3000/send/message \
   -H "Content-Type: application/json" \
@@ -54,14 +52,14 @@ curl -X POST http://localhost:3000/send/message \
   }'
 ```
 
-### Send Text Message
+### 发送文本消息
 ```bash
 curl -X POST http://localhost:3000/send/message \
   -H "Content-Type: application/json" \
   -d '{"phone": "628123456789", "message": "Hello!"}'
 ```
 
-### Send Image
+### 发送图片
 ```bash
 curl -X POST http://localhost:3000/send/image \
   -F "phone=628xxx" \
@@ -69,212 +67,212 @@ curl -X POST http://localhost:3000/send/image \
   -F "image=@/path/to/image.jpg"
 ```
 
-### Check Status
+### 检查状态
 ```bash
 curl http://localhost:3000/app/status | jq .
 ```
 
-## Complete API Operations
+## 完整的 API 操作
 
-### Messages
+### 消息
 
-**Send Text with Ghost Mention:**
-- Endpoint: `POST /send/message`
-- Body: `{"phone": "group@g.us", "message": "text", "mentions": ["@everyone"]}`
-- **@everyone** mentions all members without showing @ in text ✅
+**发送带有幽灵提及的文本消息：**
+- 端点：`POST /send/message`
+- 请求体：`{"phone": "group@g.us", "message": "text", "mentions": ["@everyone"]}`  
+- `@everyone` 会提及所有成员，且消息文本中不会显示 @ 符号 ✅
 
-**Reply to Message:**
-- Body: `{"phone": "...", "message": "...", "reply_message_id": "msg_id"}`
+**回复消息：**
+- 请求体：`{"phone": "...", "message": "...", "reply_message_id": "msg_id"}`
 
-**Disappearing Message:**
-- Body: `{"phone": "...", "message": "...", "duration": 86400}` (seconds)
+**发送临时消息（86400 秒后自动消失）：**
+- 请求体：`{"phone": "...", "message": "...", "duration": 86400}`
 
-**Forward Message:**
-- Body: `{"phone": "...", "message": "...", "is_forwarded": true}`
+**转发消息：**
+- 请求体：`{"phone": "...", "message": "...", "is_forwarded": true}`
 
-### Media
+### 媒体文件
 
-**Send Image:**
-- Endpoint: `POST /send/image`
-- Form data: `phone`, `caption`, `image` (file), `compress` (bool)
+**发送图片：**
+- 端点：`POST /send/image`
+- 请求参数：`phone`、`caption`、`image`（文件路径）、`compress`（布尔值）
 
-**Send Document:**
-- Endpoint: `POST /send/file`
-- Form data: `phone`, `caption`, `file`
+**发送文档：**
+- 端点：`POST /send/file`
+- 请求参数：`phone`、`caption`、`file`（文件路径）
 
-**Send Video:**
-- Endpoint: `POST /send/video`
-- Form data: `phone`, `caption`, `video`, `compress` (bool)
+**发送视频：**
+- 端点：`POST /send/video`
+- 请求参数：`phone`、`caption`、`video`（文件路径）、`compress`（布尔值）
 
-**Send Audio:**
-- Endpoint: `POST /send/audio`
-- Form data: `phone`, `audio`
+**发送音频：**
+- 端点：`POST /send/audio`
+- 请求参数：`phone`、`audio`（音频文件路径）
 
-**Send Sticker:**
-- Endpoint: `POST /send/sticker`
-- Form data: `phone`, `sticker` (auto-converts to WebP)
+**发送贴纸：**
+- 端点：`POST /send/sticker`
+- 请求参数：`phone`、`sticker`（贴纸文件路径，会自动转换为 WebP 格式）
 
-**Send Contact:**
-- Endpoint: `POST /send/contact`
-- Body: `{"phone": "...", "contact_name": "...", "contact_phone": "..."}`
+**发送联系人信息：**
+- 端点：`POST /send/contact`
+- 请求体：`{"phone": "...", "contact_name": "...", "contact_phone": "..."}`
 
-**Send Location:**
-- Endpoint: `POST /send/location`
-- Body: `{"phone": "...", "latitude": 0.0, "longitude": 0.0}`
+**发送位置信息：**
+- 端点：`POST /send/location`
+- 请求体：`{"phone": "...", "latitude": 0.0, "longitude": 0.0}`
 
-**Send Link:**
-- Endpoint: `POST /send/link`
-- Body: `{"phone": "...", "link": "...", "caption": "..."}`
+**发送链接：**
+- 端点：`POST /send/link`
+- 请求体：`{"phone": "...", "link": "...", "caption": "..."}`
 
-**Send Poll:**
-- Endpoint: `POST /send/poll`
-- Body: `{"phone": "...", "question": "...", "options": ["A", "B"]}`
+**发送投票：**
+- 端点：`POST /send/poll`
+- 请求体：`{"phone": "...", "question": "...", "options": ["A", "B"]}`
 
-### Connection & Status
+### 连接与状态
 
-**Get Status:**
+**获取状态：**
 - `GET /app/status`
-- Returns: `{"is_connected": true, "is_logged_in": true}`
+- 返回值：`{"is_connected": true, "is_logged_in": true}`
 
-**Reconnect:**
+**重新连接：**
 - `GET /app/reconnect`
 
-**Logout:**
+**登出：**
 - `GET /app/logout`
 
-**Get QR Code (for login):**
+**获取 QR 码（用于登录）：**
 - `GET /app/login`
-- Returns: PNG image (QR code to scan)
+- 返回值：PNG 格式的 QR 码图片
 
-**Login with Pairing Code:**
+**使用配对码登录：**
 - `GET /app/login-with-code?phone=628xxx`
 
-### Groups
+### 组群
 
-**List My Groups:**
+**列出我的群组：**
 - `GET /user/my/groups`
-- Returns: `{results: {data: [...]}}` - groups array is at `.results.data`
-- Example: `curl ... | jq '.results.data[] | {Name, JID, Members: .Participants | length}'`
-- Max 500 groups (WhatsApp protocol limit)
+- 返回值：`{"results: {data: [...]}}` —— 群组信息存储在 `.results.data` 中  
+- 示例：`curl ... | jq '.results.data[] | {Name, JID, Members: .Participants | length}'`
+- 最多可列出 500 个群组（受 WhatsApp 协议限制）
 
-**Get Group Info:**
+**获取群组信息：**
 - `GET /group/info?group_jid=xxx@g.us`
 
-**Create Group:**
+**创建群组：**
 - `POST /group`
-- Body: `{"name": "Group Name", "participants": ["628xxx@s.whatsapp.net"]}`
+- 请求体：`{"name": "群组名称", "participants": ["628xxx@s.whatsapp.net"]`
 
-**Get Group Participants:**
+**获取群组成员：**
 - `GET /group/participants?group_jid=xxx@g.us`
 
-**Add Participant:**
+**添加成员：**
 - `POST /group/participants`
-- Body: `{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]}`
+- 请求体：`{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]`
 
-**Remove Participant:**
+**移除成员：**
 - `POST /group/participants/remove`
-- Body: `{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]}`
+- 请求体：`{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]`
 
-**Promote to Admin:**
+**提升成员为管理员：**
 - `POST /group/participants/promote`
-- Body: `{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]}`
+- 请求体：`{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]`
 
-**Demote from Admin:**
+**降级成员为普通成员：**
 - `POST /group/participants/demote`
-- Body: `{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]}`
+- 请求体：`{"group_jid": "...", "participants": ["628xxx@s.whatsapp.net"]`
 
-**Leave Group:**
+**离开群组：**
 - `POST /group/leave`
-- Body: `{"group_jid": "..."}`
+- 请求体：`{"group_jid": "..."`
 
-**Set Group Photo:**
+**设置群组图片：**
 - `POST /group/photo`
-- Form data: `group_jid`, `photo`
+- 请求参数：`group_jid`、`photo`（图片文件路径）
 
-**Set Group Name:**
+**设置群组名称：**
 - `POST /group/name`
-- Body: `{"group_jid": "...", "name": "..."}`
+- 请求体：`{"group_jid": "...", "name": "..."`
 
-**Set Group Description:**
+**设置群组描述：**
 - `POST /group/topic`
-- Body: `{"group_jid": "...", "topic": "..."}`
+- 请求体：`{"group_jid": "...", "topic": "..."`
 
-**Get Invite Link:**
+**获取群组邀请链接：**
 - `GET /group/invite-link?group_jid=xxx@g.us`
 
-**Join via Link:**
+**通过链接加入群组：**
 - `POST /group/join-with-link`
-- Body: `{"link": "https://chat.whatsapp.com/..."}`
+- 请求体：`{"link": "https://chat.whatsapp.com/..."}`
 
-### Contacts & Chats
+### 联系人与聊天记录
 
-**List Contacts:**
+**列出联系人：**
 - `GET /user/my/contacts`
 
-**Get Chats:**
+**获取聊天记录：**
 - `GET /chats`
 
-**Get User Info:**
+**获取用户信息：**
 - `GET /user/info?phone=628xxx`
 
-**Check if User Exists:**
+**检查用户是否存在：**
 - `GET /user/check?phone=628xxx`
 
-### Message Operations
+### 消息操作
 
-**Revoke/Delete Message:**
+**撤销/删除消息：**
 - `POST /message/{message_id}/revoke`
 
-**React to Message:**
+**对消息做出反应：**
 - `POST /message/{message_id}/reaction`
-- Body: `{"emoji": "👍"}`
+- 请求体：`{"emoji": "👍`）
 
-**Edit Message:**
+**编辑消息：**
 - `POST /message/{message_id}/update`
-- Body: `{"message": "edited text"}`
+- 请求体：`{"message": "编辑后的文本"}`
 
-**Mark as Read:**
+**标记消息为已读：**
 - `POST /message/{message_id}/read`
 
-**Star Message:**
+**将消息标记为星标：**
 - `POST /message/{message_id}/star`
 
-**Download Media:**
+**下载媒体文件：**
 - `GET /message/{message_id}/download`
 
-## Phone Number Format
+## 手机号码格式
 
-- **User JID:** `628123456789@s.whatsapp.net`
-- **Group JID:** `120363040656010581@g.us`
-- **Phone only:** `628123456789` (without +)
+- **用户 JID：** `628123456789@s.whatsapp.net`
+- **群组 JID：** `120363040656010581@g.us`
+- **仅包含电话号码：** `628123456789`（不包含 + 符号）
 
-## Ghost Mention Feature
+## 幽灵提及功能
 
-**How it works:**
-- Use `"mentions": ["@everyone"]` in `/send/message`
-- All group members get notification
-- **No @ symbol shown in message text** (true ghost mention)
-- Tested and confirmed working ✅
+**工作原理：**
+- 在 `/send/message` 请求中使用 `{"mentions": ["@everyone"]`  
+- 所有群组成员都会收到通知  
+- 消息文本中不会显示 @ 符号（实现真正的“幽灵提及”效果）  
+- 已经过测试并确认可用 ✅
 
-**Example for schedulers:**
+**调度器示例：**
 ```bash
 curl -s -X POST http://localhost:3000/send/message \
   -H 'Content-Type: application/json' \
   -d '{"phone": "120363040656010581@g.us", "message": "Reminder text", "mentions": ["@everyone"]}' | jq .
 ```
 
-## API Reference
+## API 参考文档
 
-Full OpenAPI 3.0 spec available at:
-- OpenAPI: https://raw.githubusercontent.com/aldinokemal/go-whatsapp-web-multidevice/refs/heads/main/docs/openapi.yaml
-- GitHub: https://github.com/aldinokemal/go-whatsapp-web-multidevice
+完整的 OpenAPI 3.0 规范请参考：
+- OpenAPI 文档：https://raw.githubusercontent.com/aldinokemal/go-whatsapp-web-multidevice/refs/heads/main/docs/openapi.yaml  
+- GitHub 项目：https://github.com/aldinokemal/go-whatsapp-web-multidevice
 
-## Notes
+## 注意事项：
 
-- Auto-compresses images and videos before sending
-- Auto-converts images to WebP for stickers
-- Max 500 groups can be retrieved (WhatsApp protocol limit)
-- All media files can be sent as file upload or URL
-- Supports disappearing messages with custom duration
-- Multi-device support available via `X-Device-Id` header when running multiple devices
-- Built by @aldinokemal: https://github.com/aldinokemal/go-whatsapp-web-multidevice
+- 发送前会自动压缩图片和视频  
+- 图片会自动转换为 WebP 格式以适应贴纸显示  
+- 最多可查询 500 个群组（受 WhatsApp 协议限制）  
+- 所有媒体文件可通过文件上传或 URL 发送  
+- 支持设置消息的可见时长（临时消息）  
+- 多设备支持（通过 `X-Device-Id` 头部信息实现）  
+- 由 @aldinokemal 开发：https://github.com/aldinokemal/go-whatsapp-web-multidevice

@@ -1,103 +1,73 @@
 ---
 name: netlify
-description: Use the Netlify CLI (netlify) to create/link Netlify sites and set up CI/CD (continuous deployment) from GitHub, especially for monorepos (multiple sites in one repo like Hugo sites under sites/<domain>). Use when Avery asks to deploy a new site, connect a repo to Netlify, configure build/publish settings, set environment variables, enable deploy previews, or automate Netlify site creation.
+description: 使用 Netlify CLI（`netlify`）来创建/链接 Netlify 网站，并配置持续集成/持续部署（CI/CD）流程，特别是对于单仓库项目（即一个仓库中包含多个网站，例如使用 Hugo 框架构建的网站，这些网站存储在 `sites/<domain>` 目录下）。当 Avery 提出部署新网站、将仓库连接到 Netlify、配置构建/发布设置、设置环境变量、启用部署预览功能或自动化 Netlify 网站创建流程时，可以使用该工具。
 ---
 
-# netlify
+# Netlify
 
-Use the `netlify` CLI to create projects (“sites”), link local folders, and configure CI/CD from GitHub.
+使用 `netlify` 命令行工具（CLI）来创建项目（“站点”），将本地文件夹与项目关联，并配置来自 GitHub 的持续集成/持续部署（CI/CD）流程。
 
-## Pre-reqs
+## 先决条件
 
-- `netlify --version`
-- Logged in (`netlify login`) **or** provide `--auth $NETLIFY_AUTH_TOKEN`.
-- Know the Netlify team/account slug you want to create sites under (optional but recommended).
+- 确保已安装 `netlify` 并知道其版本：`netlify --version`
+- 已登录 Netlify 账户（`netlify login`）；或者提供登录凭据 `--auth $NETLIFY_AUTH_TOKEN`。
+- 确定要在哪个 Netlify 团队/账户下创建站点（可选，但推荐）。
 
-Helpful checks:
+### 建议的代码示例（Monorepo 模式）
 
-```bash
-netlify status
-netlify sites:list
-```
+对于 **一个仓库中包含多个站点的情况**（例如 `sites/seattlecustomboatparts.com`、`sites/floridacustomerboatparts.com`）：
 
-## Monorepo pattern (recommended)
+- 为每个域名创建一个独立的 Netlify 站点。
+- 将站点的 **基础目录** 设置为对应的子文件夹。
+- 在该子文件夹内创建一个 `netlify.toml` 文件。
 
-For **one repo with multiple sites** (e.g. `sites/seattlecustomboatparts.com`, `sites/floridacustomerboatparts.com`):
+这样可以确保每个域名的构建配置都是独立管理的。
 
-- Create **one Netlify site per domain**.
-- Set the site’s **Base directory** to that subfolder.
-- Put a `netlify.toml` *inside that subfolder*.
+#### 在 Hugo 子文件夹中创建 `netlify.toml`
 
-This keeps each domain’s build config self-contained.
+在 `sites/<domain>/` 目录下创建 `netlify.toml` 文件：
 
-### Hugo subfolder `netlify.toml`
+（根据需要调整 `HUGO_VERSION` 的值。）
 
-Create `sites/<domain>/netlify.toml`:
+### 快速工作流程：创建站点 → 关联本地文件夹 → 配置 CI/CD
 
-```toml
-[build]
-  command = "hugo --minify"
-  publish = "public"
+### 1) 创建一个 Netlify 站点
 
-[build.environment]
-  HUGO_VERSION = "0.155.1"
-```
+在要部署的站点文件夹内运行以下命令：
 
-(Adjust HUGO_VERSION as needed.)
+（具体命令根据实际情况填写。）
 
-## Fast workflow: create + link + init CI/CD
+**注意：** `--with-ci` 选项用于启用 CI 钩子（持续集成流程）的设置。如果需要手动控制构建过程，可以添加 `--manual` 选项。
 
-### 1) Create a Netlify site (project)
-Run inside the site folder you want to deploy (base dir):
+### 2) 将本地文件夹与创建的站点关联
 
-```bash
-cd sites/<domain>
-netlify sites:create --name <netlify-site-name> --account-slug <team> --with-ci
-```
+如果本地文件夹尚未与站点关联，请执行以下操作：
 
-Notes:
-- `--with-ci` starts CI hooks setup.
-- If you need manual control, add `--manual`.
+（具体命令根据实际情况填写。）
 
-### 2) Link local folder to the created site
-If not linked already:
+### 3) 连接到 GitHub 以实现持续部署
 
-```bash
-netlify link
-```
+（通常需要交互式操作，选择 Git 远程仓库并进行构建配置。对于自动化部署，可以先创建 `netlify.toml` 文件，然后接受默认设置。）
 
-### 3) Connect to GitHub for continuous deployment
+## 环境变量
 
-```bash
-netlify init
-```
+可以为每个站点设置自定义环境变量：
 
-This is usually interactive (select Git remote/repo + build settings). For automation we can pre-create `netlify.toml` and then accept defaults.
+（具体环境变量根据实际需求填写。）
 
-## Environment variables
+### 对于单仓库多站点的场景：
 
-Set per-site vars:
+- `CONTACT_EMAIL`：用于联系 Netlify 支持团队（或其他共享配置信息）。
 
-```bash
-netlify env:set VAR_NAME value
-netlify env:list
-```
+### 部署
 
-Useful for monorepos:
-- `CONTACT_EMAIL` (or other shared config)
+**手动部署**（适用于快速预览）：
 
-## Deploy
+（具体部署命令根据实际情况填写。）
 
-Manual deploys (handy for quick preview):
+### 包含的脚本
 
-```bash
-netlify deploy            # draft deploy
-netlify deploy --prod     # production deploy
-```
+- `scripts/hugo_netlify_toml.sh`：用于在 Hugo 子文件夹中生成 `netlify.toml` 文件。
+- `scripts/netlify_monorepo_site.sh`：用于帮助创建站点、关联本地文件夹并配置 CI/CD 流程。
 
-## Included scripts
-
-- `scripts/hugo_netlify_toml.sh`: create a `netlify.toml` in a Hugo subfolder
-- `scripts/netlify_monorepo_site.sh`: helper to create/link/init a site for a subfolder
-
-When using scripts, prefer passing `NETLIFY_AUTH_TOKEN` via env for non-interactive runs.
+在使用脚本时，建议通过环境变量 `NETLIFY_AUTH_TOKEN` 传递登录凭据，以确保非交互式操作的安全性。

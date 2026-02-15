@@ -2,26 +2,26 @@
 name: TOEFL
 slug: toefl
 version: 1.0.0
-description: Prepare for the TOEFL iBT exam with progress tracking, weak area analysis, score prediction, and university targeting.
+description: 通过进度跟踪、薄弱环节分析、分数预测以及目标大学的选择功能，为TOEFL iBT考试做好准备。
 ---
 
-## When to Use
+## 使用场景
 
-User is preparing for TOEFL iBT (Test of English as a Foreign Language). Agent becomes a comprehensive study assistant handling scheduling, tracking, practice, score management, and university/immigration planning.
+用户正在准备TOEFL iBT（作为外语的英语测试）。该工具可作为全面的学习辅助工具，负责考试安排、进度跟踪、练习安排、分数管理以及大学申请和移民相关事宜的规划。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| Exam structure and scoring | `exam-config.md` |
-| Progress tracking system | `tracking.md` |
-| Study methods and practice | `study-methods.md` |
-| University and immigration targets | `targets.md` |
-| User type adaptations | `user-types.md` |
+| 考试结构与评分规则 | `exam-config.md` |
+| 进度跟踪系统 | `tracking.md` |
+| 学习方法与练习资源 | `study-methods.md` |
+| 目标大学与移民信息 | `targets.md` |
+| 用户类型与需求 | `user-types.md` |
 
-## Data Storage
+## 数据存储
 
-User data lives in `~/toefl/`:
+用户数据存储在 `~/toefl/` 目录下：
 ```
 ~/toefl/
 ├── profile.md       # Goals, target score, test date, target schools
@@ -32,29 +32,29 @@ User data lives in `~/toefl/`:
 └── feedback.md      # What works, what doesn't
 ```
 
-## Core Capabilities
+## 核心功能
 
-1. **Test scheduling** — Find optimal test dates based on application deadlines, track registration
-2. **Progress tracking** — Monitor scores, time spent, mastery levels across all sections
-3. **Weak area identification** — Analyze errors to find high-ROI question types
-4. **Score prediction** — Estimate current level and readiness to test
-5. **University research** — Look up TOEFL requirements, MyBest acceptance, waivers
-6. **Score sending management** — Track where to send scores, deadlines, costs
+1. **考试安排**：根据申请截止日期确定最佳考试日期，并跟踪注册进度。
+2. **进度跟踪**：监控各科目的分数、学习时间以及掌握程度。
+3. **薄弱环节分析**：通过分析错误来识别需要重点练习的题目类型。
+4. **分数预测**：预估当前的学习水平及考试准备情况。
+5. **大学信息查询**：查询各大学的TOEFL要求以及MyBest（最佳成绩）政策。
+6. **分数发送管理**：记录分数发送的途径、截止日期及相关费用。
 
-## Decision Checklist
+## 决策检查清单
 
-Before study planning, gather:
-- [ ] Test date and days remaining
-- [ ] Target universities/programs (each has different requirements)
-- [ ] Current estimated score range
-- [ ] User type (student, professional, tutor, retaker)
-- [ ] Time available for study per week
-- [ ] Previous TOEFL attempts (if any)
+在制定学习计划之前，请收集以下信息：
+- [ ] 考试日期及剩余备考时间
+- [ ] 目标大学/项目（不同学校有不同的要求）
+- [ ] 当前预估的分数范围
+- [ ] 用户类型（学生、专业人士或辅导老师）
+- [ ] 每周可用于学习的时间
+- [ ] 之前的TOEFL考试成绩（如有）
 
-## Critical Rules
+## 重要规则
 
-- **Deadlines first** — Work backwards from application deadline → score delivery → test date
-- **Track everything** — Log sessions, scores, errors to `~/toefl/`
-- **Adapt to user type** — Students need university research; professionals need immigration info; tutors need multi-student
-- **Score is composite** — Each section 0-30, total 0-120; some schools require minimums per section
-- **MyBest matters** — Some schools accept best scores across multiple tests; others require single-sitting
+- **优先考虑截止日期**：按照申请截止日期、分数提交时间、考试日期的顺序来安排学习计划。
+- **全面记录数据**：将学习过程、分数及错误情况记录到 `~/toefl/` 目录中。
+- **根据用户类型提供个性化服务**：学生需要查询大学信息；专业人士需要了解移民政策；辅导老师需要管理多名学生的学习进度。
+- **分数构成**：各科目的分数范围为0-30分，总分为0-120分；部分学校对单科分数有最低要求。
+- **MyBest政策需注意**：部分学校接受多次考试中的最佳成绩；部分学校则要求一次性考试取得理想分数。

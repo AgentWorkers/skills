@@ -1,15 +1,15 @@
 ---
 name: birthday-reminder
-description: Manage birthdays with natural language. Store birthdays in /home/clawd/clawd/data/birthdays.md, get upcoming reminders, calculate ages. Use when the user mentions birthdays, wants to add/remember someone's birthday, check upcoming birthdays, or asks about someone's age/birthday. Understands phrases like "X hat am DD.MM. Geburtstag", "Wann hat X Geburtstag?", "Nächste Geburtstage".
+description: 使用自然语言来管理生日信息。将生日数据存储在 `/home/clawd/clawd/data/birthdays.md` 文件中，可以获取即将到来的生日提醒，并计算年龄。当用户提到生日、想要添加或记住某人的生日、查看即将到来的生日，或者询问某人的年龄或生日时，都可以使用该功能。该系统能够理解以下短语：“X 的生日是 DD.MM。”、“X 的生日是什么时候？”以及“下一个生日是哪一天？”
 ---
 
-# Birthday Reminder Skill
+# 生日提醒功能
 
-Manage birthdays naturally. Store in `data/birthdays.md`, query with natural language.
+能够自然地管理用户的生日信息。生日数据存储在 `data/birthdays.md` 文件中，用户可以通过自然语言查询相关内容。
 
-## Storage
+## 数据存储
 
-Birthdays are stored in `/home/clawd/clawd/data/birthdays.md`:
+生日信息存储在 `/home/clawd/clawd/data/birthdays.md` 文件中：
 
 ```markdown
 # Geburtstage
@@ -18,91 +18,67 @@ Birthdays are stored in `/home/clawd/clawd/data/birthdays.md`:
 - **Max** - 15.03.1990
 ```
 
-## Natural Language Patterns
+## 自然语言处理规则
 
-### Adding Birthdays
-When user says things like:
-- "Valentina hat am 14. Februar Geburtstag"
-- "Füge hinzu: Max, 15.03.1990"
-- "X wurde am 10.05.1985 geboren"
+### 添加生日信息
+当用户输入如下内容时：
+- “Valentina 的生日是 2 月 14 日”
+- “添加一条记录：Max，出生日期是 1990 年 3 月 15 日”
+- “X 的出生日期是 1985 年 5 月 10 日”
 
-**Action:**
-1. Parse name and date
-2. Extract year if provided
-3. Calculate upcoming age: `birthday_year - birth_year`
-4. Append to `/home/clawd/clawd/data/birthdays.md`
-5. Confirm with age info
+**操作步骤：**
+1. 解析用户输入的姓名和日期
+2. 如果提供了年份，则提取该年份
+3. 计算用户的当前年龄：`当前年份 - 出生年份`
+4. 将新记录添加到 `/home/clawd/clawd/data/birthdays.md` 文件中
+5. 向用户确认用户的年龄信息
 
-### Querying Birthdays
-When user asks:
-- "Wann hat Valentina Geburtstag?"
-- "Welche Geburtstage kommen als Nächstes?"
-- "Wie alt wird Valentina?"
-- "Nächster Geburtstag"
+### 查询生日信息
+当用户询问时：
+- “Valentina 的生日是什么时候？”
+- “接下来的生日是什么时候？”
+- “Valentina 今年多大了？”
+- “下一个生日是哪一天？”
 
-**Action:**
-1. Read `/home/clawd/clawd/data/birthdays.md`
-2. Parse all entries
-3. Calculate days until each birthday
-4. Sort by upcoming date
-5. Show age turning if year is known
+**操作步骤：**
+1. 读取 `/home/clawd/clawd/data/birthdays.md` 文件
+2. 解析所有记录
+3. 计算每个生日距离现在的天数
+4. 按日期顺序对结果进行排序
+5. 如果知道用户的年龄，还会显示用户距离生日还有多少天
 
-### Listing All
-When user says:
-- "Zeige alle Geburtstage"
-- "Liste meine Geburtstage"
+### 显示所有生日信息
+当用户请求时：
+- “显示所有的生日信息”
+- “列出我的生日”
 
-**Action:**
-1. Read the file
-2. Show formatted list with days until each
+**操作步骤：**
+1. 读取文件内容
+2. 以格式化的方式显示每个生日的日期以及距离生日还剩的天数
 
-## Date Parsing
+## 日期解析支持多种格式：
+- “14. Februar” → 14.02
+- “14.02.” → 14.02
+- “14.02.2000” → 14.02.2000
+- “14.2.2000” → 14.02.2000
 
-Support various formats:
-- "14. Februar" → 14.02
-- "14.02." → 14.02
-- "14.02.2000" → 14.02.2000
-- "14.2.2000" → 14.02.2000
+## 年龄计算方法
+（具体计算逻辑请参见 **CODE_BLOCK_1___）
 
-## Age Calculation
+## 距离生日的天数计算方法
+（具体计算逻辑请参见 **CODE_BLOCK_2___）
 
-```python
-from datetime import datetime
+## 自动提醒功能
 
-def calculate_turning_age(birth_year, birthday_month, birthday_day):
-    today = datetime.now()
-    birthday_this_year = today.replace(month=birthday_month, day=birthday_day)
-    
-    if today.date() <= birthday_this_year.date():
-        birthday_year = today.year
-    else:
-        birthday_year = today.year + 1
-    
-    return birthday_year - birth_year
-```
+通过 cron 任务定期检查生日信息，并在以下时间点发送提醒：
+- 生日前的 7 天
+- 生日前的 1 天
+- 生日当天
 
-## Days Until Birthday
+具体实现逻辑请参考 `scripts/reminder.py` 文件中的 `check_reminders()` 函数。
 
-```python
-def days_until(month, day):
-    today = datetime.now()
-    birthday = today.replace(month=month, day=day)
-    if birthday < today:
-        birthday = birthday.replace(year=today.year + 1)
-    return (birthday - today).days
-```
+## 文件格式要求
 
-## Automatic Reminders
+每条记录的格式为：`- **姓名** - DD.MM.YYYY` 或 `- **姓名** - DD.MM.`
 
-For cron/reminders, check birthdays daily and notify if:
-- 7 days before
-- 1 day before  
-- On the day
-
-Use the `check_reminders()` logic from `scripts/reminder.py`.
-
-## File Format
-
-Each line: `- **Name** - DD.MM.YYYY (wird X)` or `- **Name** - DD.MM.`
-
-Keep the file sorted by date (month/day) for easier reading.
+为便于阅读，文件内容需按日期（月/日）顺序排序。

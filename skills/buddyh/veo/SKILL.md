@@ -1,6 +1,6 @@
 ---
 name: veo
-description: Generate video using Google Veo (Veo 3.1 / Veo 3.0).
+description: 使用 Google Veo（Veo 3.1 / Veo 3.0）生成视频。
 metadata:
   {
     "openclaw":
@@ -15,27 +15,27 @@ metadata:
   }
 ---
 
-# Veo (Google Video Generation)
+# Veo（Google 视频生成）
 
-Generate video clips using Google's Veo API.
+使用 Google 的 Veo API 生成视频片段。
 
-Generate video
+**生成视频**  
 ```bash
 uv run {baseDir}/scripts/generate_video.py --prompt "your video description" --filename "output.mp4"
 ```
 
-Options
-- `--duration` / `-d`: Video duration in seconds (default: 8, max varies by model)
-- `--aspect-ratio` / `-a`: Aspect ratio (16:9, 9:16, 1:1)
-- `--model`: Veo model to use (veo-2.0-generate-001, veo-3.0-generate-001, veo-3.1-generate-preview, etc.)
+**可选参数**  
+- `--duration` / `-d`：视频时长（以秒为单位，默认值：8 秒，具体时长取决于所使用的模型）  
+- `--aspect-ratio` / `-a`：宽高比（16:9、9:16、1:1）  
+- `--model`：要使用的 Veo 模型（例如：veo-2.0-generate-001、veo-3.0-generate-001、veo-3.1-generate-preview 等）  
 
-API key
-- `GEMINI_API_KEY` env var (preferred)
-- Or set `skills."veo".env.GEMINI_API_KEY` in `~/.clawdbot/clawdbot.json`
+**API 密钥**  
+- 推荐使用环境变量 `GEMINI_API_KEY`  
+- 或者在 `~/.clawdbot/clawdbot.json` 文件中设置 `skills."veo".env.GEMINI_API_KEY`  
 
-Notes
-- Veo 3.1 supports higher quality and longer durations
-- Output is MP4 format
-- Use `--model veo-3.1-generate-preview` for best results
-- Veo 3.0-fast-generate-001 is faster but lower quality
-- The script prints a `MEDIA:` line for Clawdbot to auto-attach on supported chat providers.
+**注意事项**  
+- Veo 3.1 支持更高的视频质量和更长的时长  
+- 输出格式为 MP4  
+- 使用 `--model veo-3.1-generate-preview` 可获得最佳效果  
+- `veo-3.0-fast-generate-001` 生成速度更快，但视频质量较低  
+- 脚本会输出 `MEDIA:` 行，以便 Clawdbot 在支持的聊天平台上自动嵌入视频。

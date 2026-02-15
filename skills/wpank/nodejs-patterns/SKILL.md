@@ -11,29 +11,29 @@ description: |
   jwt, validation, zod, postgres, mongodb, redis, caching, rate limiting, error handling
 ---
 
-# Node.js Backend Patterns
+# Node.js 后端开发模式
 
-Patterns for building scalable, maintainable Node.js backend applications with TypeScript.
+这些模式用于使用 TypeScript 构建可扩展、易于维护的 Node.js 后端应用程序。
 
-## NEVER
+## 绝对不要做的事情
 
-- **NEVER store secrets in code** - Use environment variables, never hardcode credentials
-- **NEVER skip input validation** - Validate all input at the middleware layer with Zod/Joi
-- **NEVER expose error details in production** - Return generic messages, log details server-side
-- **NEVER use `any` type** - TypeScript types prevent runtime errors
-- **NEVER skip error handling** - Always wrap async handlers, use global error middleware
-- **NEVER use sync operations** - Use async/await for I/O, never `fs.readFileSync` in handlers
-- **NEVER trust client input** - Sanitize, validate, and parameterize all queries
+- **绝不要将敏感信息存储在代码中**：使用环境变量，切勿硬编码凭证。
+- **绝不要跳过输入验证**：在中间件层使用 Zod/Joi 对所有输入进行验证。
+- **绝不要在生产环境中暴露错误细节**：返回通用错误信息，将错误日志记录在服务器端。
+- **绝不要使用 `any` 类型**：TypeScript 类型可以预防运行时错误。
+- **绝不要省略错误处理**：始终为异步处理函数添加错误处理逻辑，并使用全局错误中间件。
+- **绝不要使用同步操作**：对于 I/O 操作，使用 `async/await`；处理函数中切勿使用 `fs.readFileSync`。
+- **绝不要信任客户端输入**：对所有请求参数进行清洗、验证和参数化。
 
-## When to Use
+## 适用场景
 
-- Building REST APIs with Express or Fastify
-- Setting up middleware pipelines and error handling
-- Implementing authentication and authorization
-- Integrating databases with connection pooling and transactions
-- Adding validation, caching, and rate limiting
+- 使用 Express 或 Fastify 构建 REST API。
+- 设置中间件管道和错误处理机制。
+- 实现身份验证和授权功能。
+- 通过连接池和事务集成数据库。
+- 添加输入验证、缓存和速率限制功能。
 
-## Project Structure — Layered Architecture
+## 项目结构 — 分层架构
 
 ```
 src/
@@ -47,9 +47,9 @@ src/
 └── utils/           # Helpers, custom errors, response formatting
 ```
 
-Controllers handle HTTP concerns, services contain business logic, repositories abstract data access. Each layer only calls the layer below it.
+控制器负责处理 HTTP 请求，服务层包含业务逻辑，数据访问层负责抽象数据操作。每一层仅调用其下层的服务。
 
-## Express Setup
+## Express 的配置方式
 
 ```typescript
 import express from "express";
@@ -66,7 +66,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 ```
 
-## Fastify Setup
+## Fastify 的配置方式
 
 ```typescript
 import Fastify from "fastify";
@@ -102,9 +102,9 @@ fastify.post<{ Body: { name: string; email: string } }>(
 );
 ```
 
-## Error Handling
+## 错误处理
 
-### Custom Error Classes
+### 自定义错误类
 
 ```typescript
 export class AppError extends Error {
@@ -133,7 +133,7 @@ export class ForbiddenError extends AppError {
 }
 ```
 
-### Global Error Handler
+### 全局错误处理中间件
 
 ```typescript
 import { Request, Response, NextFunction } from "express";
@@ -166,7 +166,7 @@ export const asyncHandler = (
 };
 ```
 
-## Validation Middleware (Zod)
+## 输入验证（使用 Zod）
 
 ```typescript
 import { AnyZodObject, ZodError } from "zod";
@@ -206,9 +206,9 @@ const createUserSchema = z.object({
 router.post("/users", validate(createUserSchema), userController.createUser);
 ```
 
-## Authentication — JWT
+## 身份验证 — JWT（JSON Web Tokens）
 
-### Auth Middleware
+### 身份验证中间件
 
 ```typescript
 import jwt from "jsonwebtoken";
@@ -240,7 +240,7 @@ export const authorize = (...roles: string[]) => {
 };
 ```
 
-### Auth Service
+### 身份验证服务
 
 ```typescript
 export class AuthService {
@@ -269,9 +269,9 @@ export class AuthService {
 }
 ```
 
-## Database Patterns
+## 数据库相关模式
 
-### PostgreSQL Connection Pool
+### PostgreSQL 连接池
 
 ```typescript
 import { Pool, PoolConfig } from "pg";
@@ -295,7 +295,7 @@ pool.on("error", (err) => {
 export const closeDatabase = async () => { await pool.end(); };
 ```
 
-### Transaction Pattern
+### 事务处理模式
 
 ```typescript
 async createOrder(userId: string, items: OrderItem[]) {
@@ -331,7 +331,7 @@ async createOrder(userId: string, items: OrderItem[]) {
 }
 ```
 
-## Rate Limiting
+## 速率限制
 
 ```typescript
 import rateLimit from "express-rate-limit";
@@ -356,7 +356,7 @@ export const authLimiter = rateLimit({
 });
 ```
 
-## Caching with Redis
+## 使用 Redis 进行缓存
 
 ```typescript
 import Redis from "ioredis";
@@ -386,7 +386,7 @@ export class CacheService {
 }
 ```
 
-## API Response Helpers
+## API 响应辅助函数
 
 ```typescript
 export class ApiResponse {
@@ -404,15 +404,15 @@ export class ApiResponse {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use TypeScript** — type safety prevents runtime errors
-2. **Validate all input** — Zod or Joi at the middleware layer
-3. **Custom error classes** — map to HTTP status codes, use global handler
-4. **Never hardcode secrets** — use environment variables
-5. **Structured logging** — Pino or Winston with request context
-6. **Rate limiting** — Redis-backed for distributed deployments
-7. **Connection pooling** — always for databases
-8. **Dependency injection** — constructor injection for testability
-9. **Graceful shutdown** — close DB pools, drain connections on SIGTERM
-10. **Health checks** — `/health` endpoint for liveness/readiness probes
+1. **使用 TypeScript**：类型安全可以预防运行时错误。
+2. **对所有输入进行验证**：在中间件层使用 Zod 或 Joi 进行验证。
+3. **自定义错误类**：将错误映射到相应的 HTTP 状态码，并使用全局错误处理中间件。
+4. **切勿硬编码敏感信息**：始终使用环境变量。
+5. **结构化日志记录**：使用 Pino 或 Winston 并结合请求上下文记录日志。
+6. **实施速率限制**：在分布式部署环境中使用 Redis 进行速率限制。
+7. **使用连接池**：对数据库操作始终使用连接池。
+8. **依赖注入**：通过构造函数注入依赖项以提高代码的可测试性。
+9. **优雅地关闭系统**：在接收到 SIGTERM 信号时关闭数据库连接池并释放所有连接。
+10. **健康检查**：使用 `/health` 端点进行系统健康状况检查。

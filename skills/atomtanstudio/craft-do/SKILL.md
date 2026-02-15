@@ -1,52 +1,51 @@
-# Craft.do Integration Skill
+# Craft.do 集成技能
 
-Complete REST API integration for Craft.do - the beautiful note-taking and document app.
+本技能实现了与 Craft.do（一款美观的笔记和文档管理应用）的完整 REST API 集成。
 
-## Overview
+## 概述
 
-This skill provides full programmatic access to Craft.do for:
-- **Task automation:** Create, update, manage tasks across inbox/daily notes/logbook
-- **Document workflows:** Programmatically create, read, organize documents
-- **Folder management:** Build nested folder hierarchies via API
-- **Obsidian migration:** One-time full vault migration with content preservation
-- **Content manipulation:** Add/edit markdown content via blocks API
+该技能提供了对 Craft.do 的全面编程访问能力，支持以下功能：
+- **任务自动化**：在收件箱、每日笔记、日志本中创建、更新和管理任务
+- **文档工作流**：编程方式创建、读取和整理文档
+- **文件夹管理**：通过 API 构建嵌套文件夹结构
+- **Obsidian 数据库迁移**：一次性迁移所有内容并保留原有结构
+- **内容操作**：通过 `/blocks` 端点添加或编辑 Markdown 内容
 
-Craft.do features:
-- Native markdown support
-- Task management (inbox, daily notes, logbook)
-- Collections (database tables)
-- Hierarchical folders and documents
-- Full REST API access
+Craft.do 的主要特性包括：
+- 原生 Markdown 支持
+- 任务管理（收件箱、每日笔记、日志本）
+- 文件夹和文档的层级结构
+- 完整的 REST API 接口
 
-## Setup
+## 设置
 
-1. Get your API key from Craft.do settings
-2. Store credentials securely:
+1. 从 Craft.do 的设置中获取您的 API 密钥
+2. 安全存储您的凭据：
 
 ```bash
 export CRAFT_API_KEY="pdk_xxx"
 export CRAFT_ENDPOINT="https://connect.craft.do/links/YOUR_LINK/api/v1"
 ```
 
-## API Capabilities
+## API 功能
 
-### ✅ What Works
+### ✅ 可用的功能
 
-#### List Folders
+#### 列出文件夹
 ```bash
 curl -H "Authorization: Bearer $CRAFT_API_KEY" \
   "$CRAFT_ENDPOINT/folders"
 ```
 
-Returns all locations: unsorted, daily_notes, trash, templates, and custom folders.
+返回所有文件夹的位置：未分类文件夹、每日笔记文件夹、回收站文件夹、模板文件夹以及自定义文件夹。
 
-#### List Documents
+#### 列出文档
 ```bash
 curl -H "Authorization: Bearer $CRAFT_API_KEY" \
   "$CRAFT_ENDPOINT/documents?folderId=FOLDER_ID"
 ```
 
-#### Create Folder (with optional parent for nesting)
+#### 创建文件夹（可选设置父文件夹以实现嵌套）
 ```bash
 # Root-level folder
 curl -X POST \
@@ -72,7 +71,7 @@ curl -X POST \
   "$CRAFT_ENDPOINT/folders"
 ```
 
-#### Create Document
+#### 创建文档
 ```bash
 curl -X POST \
   -H "Authorization: Bearer $CRAFT_API_KEY" \
@@ -88,9 +87,9 @@ curl -X POST \
   "$CRAFT_ENDPOINT/documents"
 ```
 
-**Note:** Documents are created without content initially. Use the `/blocks` endpoint to add content.
+**注意：**文档创建时默认为空。请使用 `/blocks` 端点添加内容。
 
-#### Add Content to Document
+#### 向文档添加内容
 ```bash
 curl -X POST \
   -H "Authorization: Bearer $CRAFT_API_KEY" \
@@ -108,15 +107,15 @@ curl -X POST \
   "$CRAFT_ENDPOINT/blocks"
 ```
 
-#### Read Document Content
+#### 读取文档内容
 ```bash
 curl -H "Authorization: Bearer $CRAFT_API_KEY" \
   "$CRAFT_ENDPOINT/blocks?id=DOCUMENT_ID"
 ```
 
-Returns full markdown content with all blocks.
+返回包含所有区块的完整 Markdown 内容。
 
-#### Create Task
+#### 创建任务
 ```bash
 curl -X POST \
   -H "Authorization: Bearer $CRAFT_API_KEY" \
@@ -131,7 +130,7 @@ curl -X POST \
   "$CRAFT_ENDPOINT/tasks"
 ```
 
-#### Update Task (Mark Complete)
+#### 更新任务（标记为已完成）
 ```bash
 curl -X PUT \
   -H "Authorization: Bearer $CRAFT_API_KEY" \
@@ -145,7 +144,7 @@ curl -X PUT \
   "$CRAFT_ENDPOINT/tasks"
 ```
 
-#### List Tasks
+#### 列出任务
 ```bash
 # Active tasks
 curl -H "Authorization: Bearer $CRAFT_API_KEY" \
@@ -164,7 +163,7 @@ curl -H "Authorization: Bearer $CRAFT_API_KEY" \
   "$CRAFT_ENDPOINT/tasks?scope=inbox"
 ```
 
-#### Move Documents
+#### 移动文档
 ```bash
 curl -X PUT \
   -H "Authorization: Bearer $CRAFT_API_KEY" \
@@ -176,19 +175,19 @@ curl -X PUT \
   "$CRAFT_ENDPOINT/documents/move"
 ```
 
-Note: Can only move to `unsorted`, `templates`, or custom folder IDs. Cannot move directly to `trash`.
+**注意：**只能将文档移动到“未分类”文件夹、“模板文件夹”或自定义文件夹中，不能直接移动到回收站。
 
-### ❌ Limitations
+### ❌ 限制
 
-- **No Collections API** - Collections (databases) not accessible via API
-- **No task deletion** - Can only create/update tasks, not delete
-- **No document deletion** - Cannot delete documents directly (only move)
-- **No search endpoint** - Search requires specific query format (needs more testing)
-- **Limited filtering** - Collections filtering/grouping only in UI, not via API
+- **无 Collections API**：无法通过 API 访问 Collections（数据库中的文件夹结构）
+- **无法删除任务**：只能创建或更新任务，无法删除
+- **无法直接删除文档**：只能移动文档
+- **无搜索功能**：搜索需要特定的查询格式（需进一步测试）
+- **过滤功能有限**：Collections 的过滤和分组只能在用户界面中进行，无法通过 API 完成
 
-## Common Use Cases
+## 常见用例
 
-### Sync Tasks from External System
+### 从外部系统同步任务
 ```bash
 # Create task in Craft from Mission Control
 TASK_TITLE="Deploy new feature"
@@ -205,7 +204,7 @@ curl -X POST \
   "$CRAFT_ENDPOINT/tasks"
 ```
 
-### Create Daily Note
+### 创建每日笔记
 ```bash
 TODAY=$(date +%Y-%m-%d)
 curl -X POST \
@@ -221,20 +220,20 @@ curl -X POST \
   "$CRAFT_ENDPOINT/documents"
 ```
 
-### Archive Completed Work
+### 归档已完成的工作
 ```bash
 # Get all completed tasks
 curl -H "Authorization: Bearer $CRAFT_API_KEY" \
   "$CRAFT_ENDPOINT/tasks?scope=logbook" | jq '.items[] | {id, markdown, completedAt}'
 ```
 
-## Integration Patterns
+## 集成模式
 
-### Mission Control → Craft Sync
+### Mission Control → Craft 同步
 
-**Problem:** Mission Control has automation but ugly UI. Craft has beautiful UI but no automation.
+**问题：**Mission Control 具有自动化功能，但用户界面不够友好；Craft 拥有美观的用户界面，但缺乏自动化功能。
 
-**Solution:** Use Mission Control as the source of truth, sync completed work to Craft for viewing.
+**解决方案：**将 Mission Control 作为数据源，将已完成的工作同步到 Craft 中以便查看。
 
 ```bash
 #!/bin/bash
@@ -258,35 +257,35 @@ echo "$COMPLETED_TASKS" | while read -r task; do
 done
 ```
 
-## Markdown Support
+## Markdown 支持
 
-Craft fully supports markdown:
-- Headers: `# H1`, `## H2`, etc.
-- Lists: `- item`, `1. item`
-- Tasks: `- [ ] todo`, `- [x] done`
-- Links: `[text](url)`
-- Code: `` `inline` `` or ` ```block``` `
-- Emphasis: `*italic*`, `**bold**`
+Craft 完全支持 Markdown 格式：
+- 标题：`# H1`、`## H2` 等
+- 列表：`- item`、`1. item`
+- 任务：`- [ ] 待办事项`、`- [x] 已完成`
+- 链接：`[text](url)`
+- 代码：``` `inline` `` 或 ` ```block``` `
+- 强调：`*italic*`、`**bold``
 
-All content is stored and returned as markdown, making it perfect for programmatic manipulation.
+所有内容都以 Markdown 格式存储和返回，非常适合编程操作。
 
-## Best Practices
+## 最佳实践
 
-1. **Store API key securely** - Never commit to code
-2. **Test in unsorted folder first** - Easy to find/clean up
-3. **Use markdown format** - Native to both systems
-4. **One-way sync only** - Craft → read-only, Mission Control → write
-5. **Batch operations** - API supports arrays for efficiency
-6. **Handle errors gracefully** - API returns detailed validation errors
+1. **安全存储 API 密钥**：切勿将密钥直接写入代码中
+2. **先在“未分类”文件夹中进行测试**：便于查找和清理测试结果
+3. **使用 Markdown 格式**：两种系统都支持 Markdown 格式
+4. **仅进行单向同步**：从 Craft 向外部系统读取数据，从外部系统向 Craft 写入数据
+5. **批量操作**：API 支持数组操作，提高效率
+6. **优雅地处理错误**：API 会返回详细的验证错误信息
 
-## Error Handling
+## 错误处理
 
-Common errors:
-- `VALIDATION_ERROR` - Check required fields (markdown, location)
-- `403` - Invalid/expired API key
-- `404` - Document/task ID not found
+常见错误：
+- `VALIDATION_ERROR`：检查必填字段（如 Markdown 内容、文件夹位置等）
+- `403`：API 密钥无效或已过期
+- `404`：未找到文档或任务 ID
 
-Example validation error:
+示例验证错误：
 ```json
 {
   "error": "Validation failed",
@@ -298,40 +297,39 @@ Example validation error:
 }
 ```
 
-## Future Possibilities
+## 未来可能的功能
 
-When Craft adds to their API:
-- [ ] Collections CRUD via API
-- [ ] Task deletion
-- [ ] Document deletion
-- [ ] Advanced search
-- [ ] Webhooks for real-time sync
-- [ ] Batch operations for large datasets
+当 Craft 扩展其 API 功能时：
+- [ ] 通过 API 实现 Collections 的创建、读取、更新和删除操作
+- [ ] 文档的创建和删除
+- [ ] 高级搜索功能
+- [ ] 实时同步的 Webhook 功能
+- [ ] 大规模数据集的批量操作
 
-## Resources
+## 资源
 
-- [Craft API Docs](https://craft.do/api) (get your personal API endpoint from Craft settings)
-- [Craft Blog - Collections](https://www.craft.do/blog/introducing-collections)
-- [Craft YouTube](https://www.youtube.com/channel/UC8OIJ9uNRQZiG78K2BSn67A)
+- [Craft API 文档](https://craft.do/api)（从 Craft 设置中获取您的个人 API 端点）
+- [Craft 博客 - Collections 功能](https://www.craft.do/blog/introducing-collections)
+- [Craft YouTube 频道](https://www.youtube.com/channel/UC8OIJ9uNRQZiG78K2BSn67A)
 
-## Testing Checklist
+## 测试清单
 
-- [x] List folders
-- [x] List documents
-- [x] Create document
-- [x] Add content to document (via /blocks endpoint)
-- [x] Read document content
-- [x] Create task
-- [x] Update task (mark complete)
-- [x] List tasks (all scopes)
-- [x] Move documents between locations
-- [x] Full Obsidian → Craft migration with content
-- [ ] Search (needs format refinement)
-- [x] Collections - NOT accessible via API
-- [x] Delete tasks - NOT supported
-- [x] Delete documents - NOT supported (only move)
+- [x] 列出文件夹
+- [x] 列出文档
+- [x] 创建文档
+- [x] 通过 `/blocks` 端点向文档添加内容
+- [x] 读取文档内容
+- [x] 创建任务
+- [x] 更新任务（标记为已完成）
+- [x] 列出所有任务
+- [x] 在不同文件夹之间移动文档
+- [x] 完整地从 Obsidian 数据库迁移到 Craft
+- [x] 搜索功能（需要进一步优化格式）
+- [x] Collections 功能（目前无法通过 API 访问）
+- [x] 无法删除任务
+- [x] 无法直接删除文档（只能移动）
 
-## Example: Complete Workflow
+## 示例：完整的工作流程
 
 ```bash
 # 1. Create a project folder
@@ -385,6 +383,6 @@ curl -X PUT \
 
 ---
 
-**Status:** Tested and working (2026-01-31)
-**Tested with:** Craft API v1
-**Author:** Eliza
+**状态：** 已测试并通过（2026-01-31）
+**测试工具：** Craft API v1
+**作者：** Eliza

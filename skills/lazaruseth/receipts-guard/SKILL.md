@@ -1,755 +1,188 @@
 ---
 name: receipts-guard
-description: ERC-8004 identity, x402 payments, and arbitration protocol for autonomous agent commerce. The three rails for the machine economy.
+description: ERC-8004标准定义了身份验证（Identity）机制、x402支付协议以及仲裁（Arbitration）机制，这些是支持自主代理（Autonomous Agents）进行商业活动的三大基础框架。它们共同构成了机器经济（Machine Economy）的三大支柱。
 metadata: {"openclaw":{"emoji":"⚖️","requires":{"anyBins":["node"]},"version":"0.7.1"}}
 ---
 
-# RECEIPTS Guard v0.7.1 - The Three Rails
+# RECEIPTS Guard v0.7.1 - 机器经济的三大支柱
 
-> "The rails for the machine economy."
+> “机器经济的三大支柱。”
 
-ERC-8004 identity + x402 payments + arbitration protocol. The infrastructure for agent commerce.
+支持ERC-8004身份验证标准、x402支付协议以及仲裁机制，为代理之间的商业活动提供基础设施。
 
-**The Three Rails:**
-| Rail | Standard | Purpose |
+**三大支柱：**
+| 支柱 | 标准 | 功能 |
 |------|----------|---------|
-| **Identity** | ERC-8004 | On-chain agent identity anchoring |
-| **Trust** | ERC-8004 Reputation | Arbitration outcomes build reputation |
-| **Payment** | x402 | Paid arbitration, automated settlements |
+| **身份验证** | ERC-8004 | 在链上锚定代理的身份信息 |
+| **信任机制** | ERC-8004声誉系统 | 仲裁结果影响代理的声誉 |
+| **支付方式** | x402支付协议 | 支付仲裁费用，实现自动化结算 |
 
-**Local-first. Chain-anchored. Cloud-deployable. Security-hardened.**
+**本地优先、链上锚定、可云部署、安全性强化。**
 
-## What's New in v0.7.1 (Security Hardening)
+## v0.7.1的新功能（安全性强化）  
+- **🔐 HTTP认证**：支持API密钥和DID请求签名  
+- **🛡️ 权限验证**：对 `/accept` 端点进行交易对手方验证  
+- **🌐 CORS安全增强**：可配置的源地址白名单（默认禁止跨源请求）  
+- **⚡ 速率限制**：每个IP每分钟限制100次请求  
+- **✅ 输入验证**：验证支付地址、费用和截止日期的合法性  
 
-- **🔐 HTTP Authentication** - API Key and DID Request Signing
-- **🛡️ Authorization Checks** - Counterparty verification for /accept
-- **🌐 CORS Hardening** - Configurable origin whitelist (blocked by default)
-- **⚡ Rate Limiting** - 100 requests/minute per IP
-- **✅ Input Validation** - Payment address, cost, deadline validation
+## v0.7.0的新功能  
+- **⛓️ ERC-8004集成**：将代理身份信息锚定到以太坊/Base注册表  
+- **💰 x402支付**：支持使用USDC/ETH进行支付  
+- **☁️ 云部署**：支持Dockerfile和Fly.io Sprites部署  
+- **🌐 HTTP服务器模式**：为云代理提供REST API接口  
 
-## What's New in v0.7.0
+### 从v0.6.0开始的新功能：  
+- **🪪 自主身份系统**：基于DID的身份验证，使用Ed25519签名  
+- **🔑 密钥轮换**：旧密钥用于签署新密钥，确保签名链的连续性  
+- **👤 人工控制器**：提供基于Twitter的紧急恢复机制  
 
-- **⛓️ ERC-8004 Integration** - Anchor identity to Ethereum/Base registries
-- **💰 x402 Payments** - Paid arbitration with USDC/ETH
-- **☁️ Cloud Deployment** - Dockerfile + Fly.io Sprites support
-- **🌐 HTTP Server Mode** - REST API for cloud agents
+### 从v0.5.0开始的新功能：  
+- **⚖️ 完整的仲裁流程**：提出提案 → 接受提案 → 履行协议 → 仲裁 → 发布裁决  
+- **📜 可编程协议对象（PAO）**：包含协议的规范条款和双方签名  
+- **📊 法律来源审查（LPR）**：为仲裁员提供时间线可视化工具  
 
-### From v0.6.0:
-- **🪪 Self-Sovereign Identity** - DID-based identity with Ed25519 signatures
-- **🔑 Key Rotation** - Old key signs new key, creating unbroken proof chain
-- **👤 Human Controller** - Twitter-based recovery backstop
-
-### From v0.5.0:
-- **⚖️ Full Arbitration Protocol** - propose → accept → fulfill → arbitrate → ruling
-- **📜 PAO (Programmable Agreement Object)** - Canonical termsHash, mutual signatures
-- **📊 LPR (Legal Provenance Review)** - Timeline visualization for arbiters
-
-## Quick Start
-
-```bash
-# === ARBITRATION FLOW ===
-
-# 1. Create proposal
-node capture.js propose "I will deliver API docs by Friday" "AgentX" \
-  --arbiter="arbiter-prime" --deadline="2026-02-14"
-
-# 2. Accept proposal (as counterparty)
-node capture.js accept --proposalId=prop_abc123
-
-# 3. Fulfill agreement
-node capture.js fulfill --agreementId=agr_xyz789 \
-  --evidence="Docs delivered at https://docs.example.com"
-
-# --- OR if there's a dispute ---
-
-# 4. Open arbitration
-node capture.js arbitrate --agreementId=agr_xyz789 \
-  --reason="non_delivery" --evidence="No docs received by deadline"
-
-# 5. Submit evidence (both parties)
-node capture.js submit --arbitrationId=arb_def456 \
-  --evidence="Screenshot of empty inbox" --type=screenshot
-
-# 6. Issue ruling (as arbiter)
-node capture.js ruling --arbitrationId=arb_def456 \
-  --decision=claimant --reasoning="Evidence shows non-delivery past deadline"
-
-# 7. View timeline
-node capture.js timeline --agreementId=agr_xyz789
-```
-
-## Commands
-
-### Identity (v0.6.0)
-
-#### `identity init` - Create Identity
-```bash
-node capture.js identity init --namespace=remaster_io --name=receipts-guard \
-  --controller-twitter=@Remaster_io
-```
-
-Creates:
-- Ed25519 keypair
-- DID document: `did:agent:<namespace>:<name>`
-- Human controller configuration
-
-#### `identity show` - Display Identity
-```bash
-node capture.js identity show [--full]
-```
-
-Shows identity summary or full DID document with `--full`.
-
-#### `identity rotate` - Rotate Keys
-```bash
-node capture.js identity rotate [--reason=scheduled|compromise|device_change]
-```
-
-- Old key signs new key (proof chain)
-- Old key archived for historical signature verification
-- Unbroken chain = same identity
-
-#### `identity verify` - Verify Identity or Signature
-```bash
-# Verify DID key chain
-node capture.js identity verify --did=did:agent:acme:trade-bot
-
-# Verify signature
-node capture.js identity verify \
-  --signature="ed25519:xxx:timestamp" \
-  --termsHash="sha256:abc123..."
-```
-
-#### `identity set-controller` - Set Human Controller
-```bash
-node capture.js identity set-controller --twitter=@handle
-```
-
-Links a human controller for emergency recovery.
-
-#### `identity recover` - Emergency Recovery
-```bash
-node capture.js identity recover --controller-proof=<TWITTER_URL> --confirm
-```
-
-Human controller posts recovery authorization, all old keys revoked.
-
-#### `identity publish` - Publish DID Document
-```bash
-node capture.js identity publish [--platform=moltbook|ipfs|local]
-```
-
-#### `identity anchor` - Anchor to ERC-8004 (v0.7.0)
-```bash
-node capture.js identity anchor --chain=ethereum|base|sepolia
-```
-
-Registers identity on-chain to ERC-8004 Identity Registry:
-- Requires `RECEIPTS_WALLET_PRIVATE_KEY` environment variable
-- Stores transaction hash in DID document
-- Mainnet: credibility anchor
-- Base: x402-native, lower fees
-
-**Deployed Registries:**
-| Chain | Identity Registry | Status |
-|-------|-------------------|--------|
-| Ethereum | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | Live |
-| Sepolia | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | Testnet |
-| Base | Coming soon | TBD |
-
-#### `identity resolve` - Resolve DID (v0.7.0)
-```bash
-node capture.js identity resolve --did=did:agent:namespace:name [--chain=CHAIN]
-```
-
-Resolves DID from local storage or on-chain registry.
+## 快速入门  
 
 ---
 
-### ERC-8004 Integration (v0.7.0)
+### 命令  
 
-The ERC-8004 standard provides three registries for agent trust:
+#### 身份管理（v0.6.0）  
+- `identity init`：创建代理身份  
+  创建Ed25519密钥对、DID文档（格式：`did:agent:<namespace>:<name>`以及人工控制器配置  
 
-1. **Identity Registry** - NFT-based agent identifiers
-2. **Reputation Registry** - On-chain feedback and scores
-3. **Validation Registry** - Work verification by validators
+- `identity show`：显示代理身份信息（可选参数 `--full` 可查看完整DID文档）  
 
-RECEIPTS integrates with existing registries while providing superior off-chain agreement lifecycle management.
+- `identity rotate`：轮换代理密钥  
+  旧密钥用于生成签名链，旧密钥会被存档以供历史验证使用  
+  密钥轮换后，代理身份保持不变  
 
-**Chain Configuration:**
-```bash
-# Environment variables
-export ETHEREUM_RPC=https://eth.llamarpc.com
-export BASE_RPC=https://mainnet.base.org
-export RECEIPTS_WALLET_PRIVATE_KEY=0x... # Never commit this!
-```
+- `identity verify`：验证代理身份或签名合法性  
 
----
+- `identity set-controller`：设置人工控制器，用于紧急情况下的身份恢复  
 
-### x402 Payment Integration (v0.7.0)
+- `identity recover`：触发人工控制器进行身份恢复，所有旧密钥将被撤销  
 
-x402 enables paid arbitration - arbiters get compensated for their work.
+- `identity publish`：发布代理的DID文档  
 
-#### Proposal with Payment Terms
-```bash
-node capture.js propose "Service agreement" "counterparty" \
-  --arbiter="arbiter-prime" \
-  --arbitration-cost="10" \
-  --payment-token="USDC" \
-  --payment-chain="base" \
-  --payment-address="0x..." # Arbiter's address
-```
+- `identity anchor`：将代理身份信息锚定到ERC-8004注册表（v0.7.0版本）  
+  需要设置环境变量 `RECEIPTS_WALLET_PRIVATE_KEY`；交易哈希会存储在DID文档中  
+  主网环境：提供更高的可信度；基础环境：支持x402支付协议  
 
-#### Arbitration with Payment Proof
-```bash
-# Without payment proof (fails if x402 required)
-node capture.js arbitrate --agreementId=agr_xxx --reason="non_delivery"
-# Error: Payment required: 10 USDC
+**已部署的注册表：**  
+| 链路 | 注册表 | 状态 |  
+|------|-------------------|--------|  
+| 以太坊 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | 正式运行 |  
+| Sepolia | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | 测试网 |  
+| Base | 即将推出 | 待定 |  
 
-# With payment proof
-node capture.js arbitrate --agreementId=agr_xxx --reason="non_delivery" \
-  --evidence="..." --payment-proof="0x123..."
-```
-
-**x402 Schema:**
-```json
-{
-  "x402": {
-    "arbitrationCost": "10",
-    "arbitrationToken": "USDC",
-    "arbitrationChain": 8453,
-    "paymentAddress": "0x...",
-    "paymentProtocol": "x402",
-    "version": "1.0"
-  }
-}
-```
+- `identity resolve`：从本地存储或链上注册表中解析DID信息（v0.7.0版本）  
 
 ---
 
-### Cloud Deployment (v0.7.0)
+### ERC-8004集成（v0.7.0）  
+ERC-8004标准提供了三个用于管理代理信任的注册表：  
+1. **身份注册表**：基于NFT的代理标识符  
+2. **声誉注册表**：记录代理的在线反馈和评分  
+3. **验证注册表**：由验证者确认代理的工作成果  
 
-Run RECEIPTS Guard as a persistent cloud agent.
+RECEIPTS Guard与这些注册表集成，同时提供更完善的离链协议管理功能。  
 
-#### HTTP Server Mode
-```bash
-node capture.js serve [--port=3000]
-```
+### x402支付集成（v0.7.0）  
+x402支付协议支持付费仲裁，仲裁员可以获得报酬。  
 
-**Public Endpoints (no auth):**
-- `GET /` - Service info
-- `GET /health` - Health check
-- `GET /identity` - DID document
-- `GET /identity/chains` - Chain status
+#### 提交包含支付条款的提案  
+#### 进行仲裁并验证支付信息  
 
-**Protected Endpoints (auth required):**
-- `GET /list` - List all records
-- `GET /proposals` - List proposals
-- `GET /agreements` - List agreements
-- `POST /propose` - Create proposal
-- `POST /accept` - Accept proposal (counterparty only)
+### 云部署（v.0.7.0）  
+RECEIPTS Guard可作为持久化的云服务运行：  
+- **HTTP服务器模式**：提供REST API接口（无需认证）  
+  - 公共接口：`GET /`（服务信息）、`GET /health`（健康检查）、`GET /identity`（DID文档）、`GET /identity/chains`（链状态）  
+  - 需认证的接口：`GET /list`（记录列表）、`GET /proposals`（提案列表）、`GET /agreements`（协议列表）、`POST /propose`（创建提案）、`POST /accept`（仅限交易对手方接受提案）  
 
----
+### HTTP API安全（v.0.7.1）  
+HTTP服务器采用多重安全措施：  
+- **认证方式**：  
+  - **API密钥**  
+  - **DID请求签名**  
+- **CORS配置**：默认禁止跨源请求（增强安全性）  
+- **速率限制**：每个IP每分钟限制100次请求  
+- **响应头信息**：包含请求限制信息  
+- **输入验证**：验证支付地址、仲裁费用、截止日期等数据的合法性  
 
-### HTTP API Security (v0.7.1)
-
-The HTTP server implements multiple security layers:
-
-#### Authentication
-
-**Option 1: API Key**
-```bash
-# Generate a secure API key
-export RECEIPTS_API_KEY=$(openssl rand -hex 32)
-
-# Use in requests
-curl -H "X-API-Key: $RECEIPTS_API_KEY" https://your-agent.fly.dev/list
-```
-
-**Option 2: DID Request Signing**
-```bash
-# Sign each request with your Ed25519 key
-# Headers required:
-# - X-DID: your DID (e.g., did:agent:namespace:name)
-# - X-DID-Timestamp: Unix timestamp in milliseconds
-# - X-DID-Signature: ed25519:BASE64URL_SIGNATURE:TIMESTAMP
-
-# Signed message format: METHOD:PATH:TIMESTAMP
-# Example: POST:/propose:1707494400000
-```
-
-#### CORS Configuration
-
-By default, cross-origin requests are **blocked** for security.
-
-```bash
-# Allow specific origins
-export RECEIPTS_ALLOWED_ORIGINS=https://app.example.com,https://dashboard.example.com
-
-# Allow all origins (not recommended for production)
-export RECEIPTS_ALLOWED_ORIGINS=*
-```
-
-#### Rate Limiting
-
-Default: 100 requests per minute per IP.
-
-```bash
-# Customize rate limit
-export RECEIPTS_RATE_LIMIT=200
-```
-
-Response headers:
-- `X-RateLimit-Limit` - Max requests per window
-- `X-RateLimit-Remaining` - Remaining requests
-- `X-RateLimit-Reset` - Window reset timestamp
-
-#### Input Validation
-
-All POST endpoints validate:
-- **Payment addresses** - Must be valid Ethereum address format (0x + 40 hex chars)
-- **Arbitration costs** - Must be non-negative, max 1,000,000
-- **Deadlines** - Must be valid ISO date in the future
-- **Payment tokens** - Must be USDC, ETH, USDT, or DAI
-- **Payment chains** - Must be configured chain (ethereum, base, sepolia)
-
-#### Authorization
-
-- `/accept` endpoint verifies the requester is the designated counterparty (when using DID signing)
-- API key authentication trusts the server owner
-
-#### Environment Variables
-
-```bash
-# Security
-RECEIPTS_API_KEY=              # API key for authentication (generate with: openssl rand -hex 32)
-RECEIPTS_ALLOWED_ORIGINS=      # Comma-separated CORS origins (default: none/blocked)
-RECEIPTS_RATE_LIMIT=           # Requests per minute (default: 100)
-
-# Existing
-RECEIPTS_WALLET_PRIVATE_KEY=   # For on-chain transactions
-RECEIPTS_AGENT_ID=             # Agent identifier
-ETHEREUM_RPC=                  # Ethereum RPC endpoint
-BASE_RPC=                      # Base RPC endpoint
-```
+#### 环境变量  
+用于配置服务器行为和安全性设置  
 
 ---
 
-#### Fly.io Sprites Deployment
-```bash
-# Deploy
-fly launch
-fly deploy
+### 其他功能  
+- **Fly.io Sprites部署**：支持使用Fly.io Sprites进行部署  
+- **Docker部署**：提供Docker镜像  
+- **迁移**：支持将现有协议升级为使用DID格式  
 
-# Configure secrets
-fly secrets set RECEIPTS_WALLET_PRIVATE_KEY=...
-fly secrets set ETHEREUM_RPC=...
-
-# Create persistent volume
-fly volumes create receipts_data --size 1
-```
-
-#### Docker
-```bash
-docker build -t receipts-guard .
-docker run -p 3000:3000 -v receipts-data:/data receipts-guard
-```
+### 仲裁流程  
+- **propose**：创建包含协议条款、提案方签名和截止日期的PAO（可编程协议对象）  
+- **accept**：接受提案，并在相同条款哈希下添加交易对手方的签名  
+- **reject**：拒绝提案  
+- **fulfill**：提交完成证明  
+- **arbitrate**：启动仲裁流程  
+- **submit**：在指定时间内提交证据  
+- **ruling**：仲裁员发布最终裁决  
+- **timeline**：生成包含所有状态变化、证据提交记录和裁决结果的时间线  
 
 ---
 
-#### `migrate` - Migrate to DID
-```bash
-node capture.js migrate --to-did
-```
+### 其他命令  
+- **capture**：捕获协议相关数据  
+- **list**：列出所有记录  
+- **query**：查询特定信息  
+- **diff**：比较数据差异  
+- **dispute package**：处理争议相关操作  
+- **witness**：提供证据支持  
+- **rules**：查看相关规则  
+- **export**：导出数据  
 
-Upgrades existing agreements to use DID references (preserves legacy data).
-
+## 状态机设计  
 ---
 
-### Arbitration Protocol
-
-#### `propose` - Create Agreement Proposal
-```bash
-node capture.js propose "TERMS" "COUNTERPARTY" --arbiter="ARBITER" [options]
-
-Options:
-  --arbiter=AGENT         Required: mutually agreed arbiter
-  --deadline=ISO_DATE     Fulfillment deadline
-  --value=AMOUNT          Agreement value (for reference)
-  --channel=CHANNEL       Communication channel
-```
-
-Creates a PAO (Programmable Agreement Object) with:
-- `termsHash` - SHA-256 of canonical terms + parties + deadline
-- Proposer signature
-- Proposed arbiter
-- Status: `pending_acceptance`
-
-#### `accept` - Accept Proposal
-```bash
-node capture.js accept --proposalId=prop_xxx
-```
-
-- Adds counterparty signature to same termsHash
-- Creates active agreement in `agreements/`
-- Both parties have signed - agreement is binding
-
-#### `reject` - Reject Proposal
-```bash
-node capture.js reject --proposalId=prop_xxx --reason="REASON"
-```
-
-#### `fulfill` - Claim Fulfillment
-```bash
-node capture.js fulfill --agreementId=agr_xxx --evidence="PROOF"
-```
-
-- Evidence is required (proof of completion)
-- Status: `pending_confirmation`
-- Counterparty has 48-hour grace period to dispute
-
-#### `arbitrate` - Open Dispute
-```bash
-node capture.js arbitrate --agreementId=agr_xxx --reason="BREACH_TYPE" --evidence="PROOF"
-
-Valid reasons:
-  non_delivery      - Counterparty didn't deliver
-  partial_delivery  - Delivery was incomplete
-  quality           - Delivery didn't meet specs
-  deadline_breach   - Missed deadline
-  repudiation       - Counterparty denies agreement
-  other             - Other breach
-```
-
-#### `submit` - Submit Evidence
-```bash
-node capture.js submit --arbitrationId=arb_xxx --evidence="PROOF" [--type=TYPE]
-
-Types:
-  document    - Text evidence (default)
-  screenshot  - Visual proof
-  witness     - Third-party witness statement
-```
-
-Both parties can submit evidence during the evidence period (7 days default).
-
-#### `ruling` - Issue Ruling (Arbiter Only)
-```bash
-node capture.js ruling --arbitrationId=arb_xxx --decision=DECISION --reasoning="EXPLANATION"
-
-Decisions:
-  claimant    - Rule in favor of claimant
-  respondent  - Rule in favor of respondent
-  split       - Split responsibility
-```
-
-- Only the designated arbiter can issue rulings
-- Reasoning hash posted to Moltbook (optional)
-- Agreement closes with ruling recorded
-
-#### `timeline` - Generate LPR (Legal Provenance Review)
-```bash
-node capture.js timeline --agreementId=agr_xxx
-```
-
-Generates chronological timeline showing:
-- All state transitions
-- Evidence submissions with hashes
-- Signatures and timestamps
-- Ruling (if issued)
-
-### Capture Commands
-
-#### Capture Agreement (ToS)
-```bash
-node capture.js capture "TERMS_TEXT" "SOURCE_URL" "MERCHANT_NAME" [options]
-
-Options:
-  --consent-type=TYPE     explicit | implicit | continued_use
-  --element=SELECTOR      DOM element that triggered consent
-  --screenshot=BASE64     Screenshot at time of consent
-```
-
-#### Capture Promise (Agent-to-Agent)
-```bash
-node capture.js promise "COMMITMENT_TEXT" "COUNTERPARTY" [options]
-
-Options:
-  --direction=outbound    outbound (I promised) | inbound (they promised)
-  --channel=email         email | chat | moltbook | api
-```
-
-### Utility Commands
-
-#### List Records
-```bash
-node capture.js list [--type=TYPE]
-
-Types:
-  all          - Everything (default)
-  captures     - ToS captures and promises
-  proposals    - Pending proposals
-  agreements   - Active/closed agreements
-  arbitrations - Open/closed arbitrations
-  rulings      - Issued rulings
-```
-
-#### Query
-```bash
-node capture.js query --merchant="Company" --risk-level=high
-```
-
-#### Diff
-```bash
-node capture.js diff --capture1=ID --capture2=ID
-```
-
-#### Dispute Package
-```bash
-node capture.js dispute --captureId=local_xxx
-```
-
-#### Witness
-```bash
-node capture.js witness --captureId=ID [--anchor=moltbook|bitcoin|both]
-```
-
-#### Rules
-```bash
-node capture.js rules --list
-node capture.js rules --add="PATTERN" --flag="FLAG_NAME"
-```
-
-#### Export
-```bash
-node capture.js export --format=json|csv|pdf [--captureId=ID]
-```
-
-## State Machine
-
-```
-PROPOSAL:
-  pending_acceptance → accepted → (becomes agreement)
-                    → rejected
-                    → expired
-
-AGREEMENT:
-  active → pending_confirmation → fulfilled → closed
-        → disputed → (becomes arbitration)
-
-ARBITRATION:
-  open → evidence_period → deliberation → ruled → closed
-```
-
-## Data Structures
-
-### DID Document (`identity/did.json`) - v0.6.0
-```json
-{
-  "@context": ["https://www.w3.org/ns/did/v1"],
-  "id": "did:agent:remaster_io:receipts-guard",
-
-  "verificationMethod": [{
-    "id": "did:agent:remaster_io:receipts-guard#key-xxx",
-    "type": "Ed25519VerificationKey2020",
-    "controller": "did:agent:remaster_io:receipts-guard",
-    "publicKeyMultibase": "z6Mkf5rGMoatrSj1f..."
-  }],
-
-  "authentication": ["did:agent:remaster_io:receipts-guard#key-xxx"],
-
-  "keyHistory": [{
-    "keyId": "#key-xxx",
-    "activatedAt": "2026-02-09T00:00:00Z",
-    "rotatedAt": null,
-    "rotationProof": null,
-    "publicKeyMultibase": "z6Mkf5rGMoatrSj1f..."
-  }],
-
-  "controller": {
-    "type": "human",
-    "platform": "twitter",
-    "handle": "@Remaster_io"
-  },
-
-  "created": "2026-02-09T00:00:00Z",
-  "updated": "2026-02-09T00:00:00Z"
-}
-```
-
-### Signature Formats
-```
-# Ed25519 (v0.6.0) - cryptographically secure
-ed25519:<base64url-signature>:<timestamp>
-
-# Legacy HMAC (v0.5.0 and earlier) - still supported for backward compatibility
-sig:<hex-signature>:<timestamp>
-```
-
-### Proposal (`proposals/prop_xxx.json`)
-```json
-{
-  "proposalId": "prop_xxx",
-  "termsHash": "sha256:...",
-  "terms": { "text": "...", "canonical": "..." },
-  "proposer": "agent-a",
-  "counterparty": "agent-b",
-  "proposedArbiter": "arbiter-prime",
-  "deadline": "2026-02-15T00:00:00Z",
-  "value": "100 USD",
-  "proposerSignature": "ed25519:...",
-  "status": "pending_acceptance",
-  "createdAt": "...",
-  "expiresAt": "..."
-}
-```
-
-### Agreement (`agreements/agr_xxx.json`)
-```json
-{
-  "agreementId": "agr_xxx",
-  "termsHash": "sha256:...",
-  "parties": ["agent-a", "agent-b"],
-  "arbiter": "arbiter-prime",
-  "signatures": {
-    "agent-a": "ed25519:...",
-    "agent-b": "ed25519:..."
-  },
-  "status": "active",
-  "timeline": [
-    { "event": "proposed", "timestamp": "...", "actor": "agent-a" },
-    { "event": "accepted", "timestamp": "...", "actor": "agent-b" }
-  ]
-}
-```
-
-### Arbitration (`arbitrations/arb_xxx.json`)
-```json
-{
-  "arbitrationId": "arb_xxx",
-  "agreementId": "agr_xxx",
-  "claimant": "agent-a",
-  "respondent": "agent-b",
-  "arbiter": "arbiter-prime",
-  "reason": "non_delivery",
-  "status": "evidence_period",
-  "evidence": {
-    "claimant": [...],
-    "respondent": [...]
-  },
-  "evidenceDeadline": "..."
-}
-```
-
-### Ruling (`rulings/rul_xxx.json`)
-```json
-{
-  "rulingId": "rul_xxx",
-  "arbitrationId": "arb_xxx",
-  "arbiter": "arbiter-prime",
-  "decision": "claimant",
-  "reasoning": "...",
-  "reasoningHash": "sha256:...",
-  "issuedAt": "..."
-}
-```
-
-## Data Storage
-
-```
-~/.openclaw/receipts/
-├── identity/                   # v0.6.0 Self-Sovereign Identity
-│   ├── did.json                # DID document (public)
-│   ├── private/
-│   │   ├── key-current.json    # Current private key
-│   │   └── key-archive/        # Rotated keys (for verification)
-│   ├── key-history.json        # Rotation chain with proofs
-│   ├── controller.json         # Human controller config
-│   └── recovery/               # Recovery records
-├── index.json                  # Fast lookup index
-├── proposals/
-│   └── prop_xxx.json           # Proposal metadata
-├── agreements/
-│   ├── agr_xxx.json            # Agreement metadata
-│   └── agr_xxx.txt             # Terms text
-├── arbitrations/
-│   └── arb_xxx.json            # Arbitration record
-├── rulings/
-│   └── rul_xxx.json            # Ruling record
-├── witnesses/
-│   └── witness_xxx.json        # Witness anchors
-├── local_xxx.json              # ToS captures
-├── promise_xxx.json            # Promise captures
-└── custom-rules.json           # Custom rulesets
-```
-
-## Agent Instructions
-
-### Before Accepting Any Agreement
-
-1. **Review the termsHash** - Ensure you're signing what you expect
-2. **Verify the arbiter** - Must be mutually trusted
-3. **Check the deadline** - Ensure it's achievable
-4. **Run capture** on any ToS you encounter:
-   ```bash
-   node capture.js capture "TERMS" "URL" "MERCHANT"
-   ```
-
-### Before Making Commitments
-
-1. **Use propose** for formal commitments:
-   ```bash
-   node capture.js propose "I will deliver X by Y" "AgentZ" --arbiter="trusted-arbiter"
-   ```
-2. **Wait for acceptance** before acting
-3. **Document fulfillment** with evidence
-
-### During Arbitration
-
-1. **Submit all relevant evidence** before deadline
-2. **Use appropriate evidence types** (document, screenshot, witness)
-3. **Reference specific termsHash** in submissions
-
-## Environment Variables
-
-```bash
-RECEIPTS_AGENT_ID       # Your agent identifier
-RECEIPTS_MOLTBOOK_KEY   # API key for Moltbook witnessing
-RECEIPTS_CUSTOM_RULES   # Path to custom rules file
-```
-
-## Framework Integration
-
-```javascript
-const receipts = require('./capture.js');
-
-// Generate terms hash for verification
-const hash = receipts.generateTermsHash(
-  "I will deliver API docs",
-  ["agent-a", "agent-b"],
-  "2026-02-14"
-);
-
-// Sign terms
-const signature = receipts.signTerms(hash, "my-agent-id");
-
-// Verify signature
-const valid = receipts.verifySignature(hash, signature, "my-agent-id");
-
-// Access directories
-console.log(receipts.PROPOSALS_DIR);
-console.log(receipts.AGREEMENTS_DIR);
-console.log(receipts.ARBITRATIONS_DIR);
-console.log(receipts.RULINGS_DIR);
-```
-
-## Links
-
-- **GitHub**: https://github.com/lazaruseth/receipts-mvp
-- **ClawHub**: https://clawhub.ai/lazaruseth/receipts-guard
-- **Moltbook**: https://moltbook.com/u/receipts-guard
-- **Report Issues**: https://github.com/lazaruseth/receipts-mvp/issues
-
-## Disclaimer
-
-RECEIPTS Guard provides evidence capture and arbitration workflow tooling. It is NOT a substitute for legal review. The arbitration protocol provides structure but does not constitute legal arbitration. Always consult with a qualified attorney for actual disputes.
+## 数据结构  
+- **DID文档（`identity/did.json`，v.0.6.0版本）**  
+- **签名格式**  
+- **提案文件（`proposals/prop_xxx.json`）**  
+- **协议文件（`agreements/agr_xxx.json`）**  
+- **仲裁记录（`arbitrations/arb_xxx.json`）**  
+- **裁决文件（`rulings/rul_xxx.json`）**  
+
+## 数据存储方式  
+
+## 代理使用指南  
+- **接受协议前**：  
+  1. 确认协议条款；  
+  2. 验证仲裁员的可靠性；  
+  3. 检查截止日期的可行性；  
+  4. 对所有涉及的服务条款执行证据捕获操作。  
+
+- **做出承诺前**：  
+  1. 使用 `propose` 命令正式提出承诺；  
+  2. 等待对方接受后再执行；  
+  3. 用证据记录协议履行情况。  
+
+- **仲裁过程中**：  
+  1. 在截止日期前提交所有相关证据；  
+  2. 使用适当的证据类型（如文档、截图等）；  
+  3. 在提交材料中引用对应的条款哈希。  
+
+## 环境变量设置  
+
+## 框架集成信息  
+---
+
+## 链接资源  
+- **GitHub仓库**：https://github.com/lazaruseth/receipts-mvp  
+- **ClawHub**：https://clawhub.ai/lazaruseth/receipts-guard  
+- **Moltbook**：https://moltbook.com/u/receipts-guard  
+- **问题反馈**：https://github.com/lazaruseth/receipts-mvp/issues  
+
+## 免责声明  
+RECEIPTS Guard提供证据捕获和仲裁流程工具，但不能替代法律审查。仲裁协议仅提供结构化支持，不构成法律仲裁。在实际争议中，请务必咨询专业律师。

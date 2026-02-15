@@ -1,25 +1,25 @@
 ---
 name: volcengine-security-kms
-description: Key lifecycle management with Volcengine KMS. Use when users need key creation, rotation policies, encryption/decryption workflows, or key permission troubleshooting.
+description: 使用 Volcengine KMS 进行密钥生命周期管理。适用于需要创建密钥、制定密钥轮换策略、管理加密/解密流程或解决密钥权限问题的场景。
 ---
 
 # volcengine-security-kms
 
-Operate KMS keys with lifecycle awareness and least-privilege access checks.
+使用具有生命周期管理功能的KMS密钥，并实施最小权限访问控制。
 
-## Execution Checklist
+## 执行检查清单
 
-1. Confirm key purpose, algorithm, and usage scope.
-2. Create or select key and validate policy bindings.
-3. Execute encrypt/decrypt/sign task.
-4. Return key metadata, operation result, and audit hints.
+1. 确认密钥的用途、加密算法及使用范围。
+2. 创建或选择密钥，并验证相应的策略绑定。
+3. 执行加密/解密/签名操作。
+4. 返回密钥元数据、操作结果及审计信息。
 
-## Safety Rules
+## 安全规则
 
-- Never expose plaintext secrets in logs.
-- Rotate keys according to policy windows.
-- Validate caller permissions before key operations.
+- 绝不在日志中泄露明文密钥。
+- 按照策略规定的时间窗口定期轮换密钥。
+- 在执行密钥操作前验证调用者的权限。
 
-## References
+## 参考资料
 
 - `references/sources.md`

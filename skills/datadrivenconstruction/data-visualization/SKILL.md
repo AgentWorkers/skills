@@ -1,21 +1,21 @@
 ---
 slug: "data-visualization"
 display_name: "Data Visualization"
-description: "Create visualizations for construction data. Generate charts, graphs, heatmaps, and interactive dashboards using Matplotlib, Seaborn, and Plotly for project analysis and reporting."
+description: "为施工数据创建可视化图表。使用 Matplotlib、Seaborn 和 Plotly 生成图表、图形、热力图以及交互式仪表板，以用于项目分析和报告。"
 ---
 
-# Data Visualization for Construction
+# 建筑领域的数据可视化
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 4.1), this skill provides comprehensive data visualization techniques for construction analytics. Visual insights drive better decisions - from cost breakdowns to schedule analysis.
+本技能基于DDC方法论（第4.1章），提供了全面的数据可视化技术，用于建筑数据分析。通过可视化分析，可以更好地做出决策——无论是成本分解还是进度分析。
 
-**Book Reference:** "Аналитика данных и принятие решений" / "Data Analytics and Decision Making"
+**参考书籍**：《数据分析与决策制定》（"Аналитика данных и принятие решений"）
 
-> "Визуализация данных превращает сложные наборы данных в понятные графики, которые могут использоваться для принятия решений на всех уровнях проекта."
-> — DDC Book, Chapter 4.1
+> “数据可视化将复杂的数据集转化为易于理解的图表，这些图表可用于项目各个层面的决策制定。”
+—— DDC书籍，第4.1章
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -35,9 +35,9 @@ plt.savefig('volume_by_category.png', dpi=150)
 plt.show()
 ```
 
-## Matplotlib Fundamentals
+## Matplotlib基础
 
-### Basic Charts for Construction
+### 建筑领域的基本图表
 
 ```python
 import matplotlib.pyplot as plt
@@ -111,7 +111,7 @@ def create_level_comparison(df, value_col='Volume_m3', level_col='Level'):
     return fig
 ```
 
-### Time Series Visualization
+### 时间序列可视化
 
 ```python
 def create_progress_chart(df, date_col='Date', value_col='Cumulative_Progress'):
@@ -169,9 +169,9 @@ def create_gantt_chart(df, start_col='Start', end_col='End', task_col='Task'):
     return fig
 ```
 
-## Seaborn for Statistical Visualization
+## Seaborn用于统计可视化
 
-### Distribution Analysis
+### 分布分析
 
 ```python
 import seaborn as sns
@@ -226,7 +226,7 @@ def create_correlation_heatmap(df, numeric_cols=None):
     return fig
 ```
 
-### Category Analysis
+### 类别分析
 
 ```python
 def create_category_summary(df, category_col='Category',
@@ -264,9 +264,9 @@ def create_category_summary(df, category_col='Category',
     return fig
 ```
 
-## Plotly for Interactive Dashboards
+## Plotly用于交互式仪表板
 
-### Interactive Charts
+### 交互式图表
 
 ```python
 import plotly.express as px
@@ -334,7 +334,7 @@ def create_interactive_timeline(df, date_col='Date', value_col='Progress',
     return fig
 ```
 
-### Dashboard Layout
+### 仪表板布局
 
 ```python
 def create_project_dashboard(df):
@@ -390,9 +390,9 @@ def create_project_dashboard(df):
     return fig
 ```
 
-## Construction-Specific Visualizations
+## 建筑领域特有的可视化方式
 
-### Heatmaps for Level Analysis
+### 热力图（用于层次分析）
 
 ```python
 def create_level_heatmap(df, level_col='Level', category_col='Category',
@@ -440,7 +440,7 @@ def create_material_treemap(df, category_col='Category', material_col='Material'
     return fig
 ```
 
-### Cost Analysis Charts
+### 成本分析图表
 
 ```python
 def create_cost_analysis_dashboard(df):
@@ -489,9 +489,9 @@ def create_cost_analysis_dashboard(df):
     return fig
 ```
 
-## Export and Reporting
+## 导出与报告
 
-### Save Visualizations
+### 保存可视化结果
 
 ```python
 def save_all_visualizations(df, output_dir='reports/charts'):
@@ -545,21 +545,21 @@ def create_pdf_report(df, output_path='project_report.pdf'):
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Chart Type | Best For | Library |
+| 图表类型 | 适用场景 | 使用的库 |
 |------------|----------|---------|
-| Bar Chart | Category comparisons | Matplotlib/Seaborn |
-| Pie Chart | Cost breakdown | Matplotlib |
-| Heatmap | Level × Category matrix | Seaborn |
-| Box Plot | Distribution by group | Seaborn |
-| Scatter | Relationship analysis | Matplotlib/Plotly |
-| Treemap | Hierarchical data | Plotly |
-| Sunburst | Multi-level breakdown | Plotly |
-| Gantt | Schedule visualization | Matplotlib |
-| S-Curve | Progress tracking | Matplotlib |
+| 条形图 | 类别对比 | Matplotlib/Seaborn |
+| 饼图 | 成本分解 | Matplotlib |
+| 热力图 | 层级×类别矩阵 | Seaborn |
+| 盒形图 | 按组别分布 | Seaborn |
+| 散点图 | 关系分析 | Matplotlib/Plotly |
+| 树状图 | 分层数据展示 | Plotly |
+| 日光图 | 多层次数据展示 | Plotly |
+| 甘特图 | 进度可视化 | Matplotlib |
+| S曲线图 | 进度跟踪 | Matplotlib |
 
-## Color Palettes for Construction
+## 建筑领域常用的颜色方案
 
 ```python
 # Professional color palettes
@@ -581,16 +581,16 @@ CONSTRUCTION_COLORS = {
 }
 ```
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 4.1
-- **Website**: https://datadrivenconstruction.io
-- **Matplotlib**: https://matplotlib.org
-- **Seaborn**: https://seaborn.pydata.org
-- **Plotly**: https://plotly.com/python
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第4.1章
+- **网站**：https://datadrivenconstruction.io
+- **Matplotlib**：https://matplotlib.org
+- **Seaborn**：https://seaborn.pydata.org
+- **Plotly**：https://plotly.com/python
 
-## Next Steps
+## 下一步
 
-- See `pandas-construction-analysis` for data preparation
-- See `cost-prediction` for predictive analytics
-- See `qto-report` for quantity extraction
+- 请参阅`pandas-construction-analysis`了解数据准备方法
+- 请参阅`cost-prediction`了解预测分析方法
+- 请参阅`qto-report`了解数据提取方法

@@ -1,98 +1,98 @@
 ---
 name: Running
-description: Training principles, pacing strategy, injury prevention, and race preparation for runners.
+description: 跑步者的训练原则、节奏控制策略、伤病预防措施以及比赛准备。
 metadata:
   category: fitness
   skills: ["running", "endurance", "training", "marathon", "cardio"]
 ---
 
-## Training Fundamentals
+## 训练基础
 
-- 80/20 rule: 80% easy runs, 20% hard — most runners go too hard on easy days
-- Easy pace: can hold conversation, Zone 2 heart rate — feels too slow, but builds aerobic base
-- Weekly mileage increase: max 10% — exceeding causes injury, not faster adaptation
-- One quality session per week for beginners, two for experienced — more isn't better
-- Rest days are training days — adaptation happens during recovery, not during runs
+- **80/20法则**：80%的训练应该是轻松的，20%是高强度的——大多数跑者会在轻松的训练日过度用力。
+- **轻松的配速**：应该能够边跑边聊天；心率保持在第二区间（Zone 2）——虽然感觉较慢，但有助于建立有氧基础。
+- **每周里程增加量**：最多增加10%——超过这个比例容易导致受伤，而非更快地适应训练强度。
+- **初学者每周进行一次高质量训练，经验丰富的跑者每周进行两次**——训练次数过多并不一定更好。
+- **休息日也是训练日**——身体是在恢复期间适应训练强度的，而不是在跑步时。
 
-## Pacing Reality
+## 配速的实际应用
 
-- Start slower than goal pace — first mile should feel easy, last mile is where race happens
-- Negative splits: second half faster than first — optimal race execution
-- Heart rate drifts upward in heat — same effort costs more, adjust pace down
-- Don't chase pace on hills — maintain effort, let pace vary with terrain
-- Race day adrenaline adds 10-15 seconds/mile perceived "free speed" — it's borrowed, you'll pay later
+- **起跑时放慢速度**：第一英里应该感觉轻松，最后一英里才是真正考验体力的时候。
+- **“负分割配速”**：后半段的配速要比前半段快——这是最佳的比赛策略。
+- **高温环境下心率会上升**：同样的努力在高温下会消耗更多体力，因此需要适当降低配速。
+- **上坡时不要刻意追求配速**：保持稳定的努力强度，让配速随地形自然变化。
+- **比赛日的肾上腺素会提升感知速度**：比赛当天可能会感觉“速度变快了”，但这只是暂时现象，之后会付出代价。
 
-## Workout Types
+## 训练类型
 
-**Easy run:** 70-75% max HR, conversational — builds aerobic base, recovery
-**Tempo:** Comfortably hard, 20-40 minutes — lactate threshold improvement
-**Intervals:** 400m-1600m repeats with rest — VO2max, speed development
-**Long run:** 90+ minutes, easy effort — endurance, fat adaptation
-**Strides:** 20-30 second accelerations — form, leg turnover, not fitness
+- **轻松跑**：心率控制在最大心率的70-75%，可以边跑边聊天——有助于建立有氧基础和恢复体力。
+- **节奏跑**：强度适中，持续20-40分钟——有助于提高乳酸阈值。
+- **间歇跑**：400米到1600米的重复跑段，中间休息——有助于提高最大摄氧量（VO2max）和速度。
+- **长跑**：持续90分钟以上，保持轻松的配速——增强耐力和脂肪代谢能力。
+- **加速跑**：每20-30秒加速一次——主要目的是培养跑步姿势和腿部转动能力，而非单纯提高体能。
 
-## Injury Prevention
+## 预防受伤
 
-- Most injuries from too much, too soon — not from running itself
-- Strength train 2x/week: glutes, hips, core — weakness causes compensation injuries
-- Replace shoes every 400-500 miles — cushioning degrades before visible wear
-- Foam rolling and stretching: after runs, not before — pre-run dynamic warmup only
-- Pain that worsens during run: stop — pain that fades after warmup: monitor
+- **大多数受伤是因为训练过度或过早**——而非跑步本身造成的。
+- **每周进行两次力量训练**：锻炼臀部、髋部和核心肌肉——肌肉无力会导致身体代偿性受伤。
+- **每400-500英里更换一次跑鞋**：即使跑鞋没有明显磨损，缓冲性能也会下降。
+- **使用泡沫轴进行放松和拉伸**：应在跑步后进行，而不是跑步前；跑步前只需进行动态热身。
+- **如果在跑步过程中疼痛加剧，立即停止**；如果疼痛在热身后减轻，继续观察情况。
 
-## Common Form Errors
+## 常见的跑步姿势错误
 
-- Overstriding: landing ahead of center of mass — causes braking force, knee stress
-- Cadence target: 170-180 steps/minute — shorter, quicker steps reduce impact
-- Arms crossing midline — wastes energy on rotation, keep forward-back
-- Heel striking isn't automatically bad — where you land relative to body matters more
-- Head position: look 30 feet ahead, not down — posture follows head
+- **过度跨步**：落脚点位于身体重心前方——会导致制动力增加，增加膝盖负担。
+- **步频目标**：每分钟170-180步——较短的步频可以减少冲击力。
+- **手臂交叉**：会浪费能量，影响跑步效率，应保持手臂前后摆动。
+- **用脚后跟着地**：是否使用脚后跟着地并不一定有害，关键在于落脚点的位置。
+- **头部姿势**：应注视前方30英尺处的目标，而不是低头看地面——正确的姿势会自然影响跑步姿势。
 
-## Race Preparation
+## 比赛准备
 
-- Taper: reduce volume 40-60%, maintain intensity — 2 weeks for marathon, 1 week for half
-- Nothing new on race day: shoes, clothes, food, gels — tested in training only
-- Pre-race meal: 2-3 hours before, familiar foods, low fiber
-- Hydration: check urine is pale morning of — can't catch up race day
-- Arrive early: bathroom lines, warm-up time, corral positioning
+- **逐渐减少训练量**：马拉松前40-60天减少训练量，半程马拉松前1周减少训练量。
+- **比赛当天一切都要准备齐全**：跑鞋、衣物、食物、能量胶等——这些都在训练中测试过。
+- **比赛前2-3小时进食**：选择熟悉的食物，低纤维的食物。
+- **保持水分**：比赛当天早上检查尿液颜色是否呈淡色——比赛当天很难补充足够的水分。
+- **提前到达比赛现场**：预留时间使用洗手间、进行热身，并确定自己的位置。
 
-## Nutrition Timing
+## 营养摄入时机
 
-- Pre-run (1-2 hours): carbs, low fat/fiber — 200-300 calories
-- During run (<60 min): water only — no fuel needed
-- During run (60-90 min): optional 30g carbs — test in training
-- During run (>90 min): 60g carbs/hour — gels, chews, sports drink
-- Post-run (within 30 min): protein + carbs — 15-25g protein, 50g+ carbs
+- **跑步前1-2小时**：摄入碳水化合物，低脂肪、低纤维的食物——约200-300卡路里。
+- **跑步前60分钟内**：只喝水——不需要额外补充能量。
+- **跑步60-90分钟内**：可选性地摄入30克碳水化合物——在训练中测试过这种摄入方式的效果。
+- **跑步90分钟后**：每小时摄入60克碳水化合物——可以通过能量胶或咀嚼片、运动饮料来补充。
+- **跑步后30分钟内**：摄入蛋白质和碳水化合物——约15-25克蛋白质，50克以上的碳水化合物。
 
-## Heart Rate Zones
+## 心率区间
 
-| Zone | % Max HR | Feel | Purpose |
+| 区间 | 最大心率百分比 | 感觉 | 目的 |
 |------|----------|------|---------|
-| 1 | 50-60% | Very easy | Recovery |
-| 2 | 60-70% | Easy, conversational | Aerobic base |
-| 3 | 70-80% | Moderate, focused | Tempo |
-| 4 | 80-90% | Hard, short phrases | Threshold |
-| 5 | 90-100% | Maximum, unsustainable | VO2max |
+| 1 | 50-60% | 非常轻松 | 恢复体力 |
+| 2 | 60-70% | 轻松，可以聊天 | 建立有氧基础 |
+| 3 | 70-80% | 适度，需要集中注意力 | 提高跑步节奏 |
+| 4 | 80-90% | 较高强度，需要集中精力 | 提高乳酸阈值 |
+| 5 | 90-100% | 最高强度，难以持续 | 提高最大摄氧量（VO2max） |
 
-- Most runs should be Zone 2 — feels too easy but builds fitness without burnout
+- **大多数训练应保持在第二区间**：虽然感觉轻松，但能有效提升体能且不会导致过度疲劳。
 
-## Training Block Structure
+## 训练计划结构
 
-- Base phase (4-8 weeks): build mileage, all easy — aerobic foundation
-- Build phase (4-6 weeks): add workouts, increase long run — specific fitness
-- Peak phase (2-3 weeks): highest intensity, maintain volume — sharpening
-- Taper phase (1-3 weeks): reduce volume, short intense efforts — freshness
+- **基础阶段**（4-8周）：逐渐增加训练里程，全部采用轻松的训练方式——建立有氧基础。
+- **提升阶段**（4-6周）：增加训练强度和长跑距离——针对特定体能目标进行训练。
+- **巅峰阶段**（2-3周）：保持最高训练强度，同时减少训练量——提升整体表现。
+- **减量阶段**（1-3周）：减少训练量，进行高强度的间歇训练——保持训练效果。
 
-## Mental Strategies
+## 心理策略
 
-- Break race into segments — "just get to mile 6" beats thinking about full distance
-- Mantras: short, rhythmic phrases — "light and smooth", "I am strong"
-- Discomfort is temporary — the finish is coming whether you slow down or not
-- Run the mile you're in — don't borrow worry from future miles
-- Smile — physical cue that reduces perceived effort
+- **将比赛分成多个阶段**：专注于完成每一英里的目标，而不是整个比赛的距离。
+- **使用激励性口号**：简短、有节奏的口号，如“轻松平稳地跑”或“我很强壮”。
+- **不适是暂时的**：无论你是否减速，终点都在前方。
+- **专注于当前这一英里的表现**：不要把对未来英里的担忧带到当下。
+- **保持微笑**：微笑可以减轻身体的疲劳感。
 
-## Common Mistakes
+## 常见的错误
 
-- Running every run at medium effort — too hard to recover, too easy to improve
-- Skipping easy weeks — deload every 4th week, reduce volume 30%
-- Ignoring warning signs — small aches become injuries if pushed through
-- All running, no strength — runners need glute and hip work especially
-- Racing too often — peak performance needs 2-3 week recovery between hard efforts
+- **每次训练都保持相同的强度**：强度过高难以恢复，强度过低则难以取得进步。
+- **跳过轻松的训练日**：每四周应安排一次低强度的休息日，减少训练量30%。
+- **忽视身体的警告信号**：小伤如果被忽视，可能会发展成严重的伤害。
+- **只注重跑步而忽视力量训练**：跑者需要加强臀部、髋部的肌肉锻炼。
+- **比赛过于频繁**：高强度训练之间需要2-3周的休息时间来恢复体能。

@@ -1,6 +1,6 @@
 ---
 name: PDF Converter
-description: Convert PDF files to and from Word, Excel, Image, and other formats
+description: 将 PDF 文件转换为 Word、Excel、图片等格式，以及将其他格式的文件转换为 PDF 格式。
 author: claude-office-skills
 version: "1.0"
 tags: [pdf, conversion, document, format, export, import]
@@ -8,67 +8,67 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, file_operations]
 ---
 
-# PDF Converter
+# PDF转换工具
 
-Convert PDF files to various formats and vice versa while preserving formatting.
+能够将PDF文件转换为多种格式，反之亦然，同时保持文件原有的格式。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Convert PDFs to editable formats (Word, Excel)
-- Convert documents to PDF
-- Extract images from PDFs
-- Optimize conversion quality
-- Handle batch conversions
+本技能可帮助您：
+- 将PDF文件转换为可编辑的格式（如Word、Excel）
+- 将其他格式的文档转换为PDF
+- 从PDF文件中提取图片
+- 优化转换质量
+- 执行批量转换操作
 
-## Supported Conversions
+## 支持的转换类型
 
-### PDF to Other Formats
-| Target Format | Best For | Quality |
-|---------------|----------|---------|
-| **Word (.docx)** | Text-heavy documents | ⭐⭐⭐⭐ |
-| **Excel (.xlsx)** | Tables and data | ⭐⭐⭐⭐ |
-| **PowerPoint (.pptx)** | Presentations | ⭐⭐⭐ |
-| **Images (.png/.jpg)** | Visual snapshots | ⭐⭐⭐⭐⭐ |
-| **Text (.txt)** | Plain text extraction | ⭐⭐⭐⭐ |
-| **HTML** | Web content | ⭐⭐⭐ |
-| **Markdown (.md)** | Structured text | ⭐⭐⭐ |
+### PDF转换为其他格式
+| 目标格式 | 适用场景 | 转换质量 |
+|---------------|------------|---------|
+| **Word (.docx)** | 以文本为主的文档 | 非常出色 |
+| **Excel (.xlsx)** | 表格和数据 | 非常出色 |
+| **PowerPoint (.pptx)** | 演示文稿 | 非常出色 |
+| **图片 (.png/.jpg)** | 图片文件 | 非常出色 |
+| **文本 (.txt)** | 纯文本文件 | 非常出色 |
+| **HTML** | 网页内容 | 非常出色 |
+| **Markdown (.md)** | 结构化文本 | 非常出色 |
 
-### Other Formats to PDF
-| Source Format | Quality Notes |
-|---------------|---------------|
-| **Word (.docx)** | Excellent preservation |
-| **Excel (.xlsx)** | Good, check page breaks |
-| **PowerPoint (.pptx)** | Excellent with animations flat |
-| **Images** | Depends on resolution |
-| **HTML** | Variable, CSS may differ |
-| **Text (.txt)** | Perfect, but basic |
+### 其他格式转换为PDF
+| 源格式 | 转换质量说明 |
+|---------------|-------------------|
+| **Word (.docx)** | 保留格式效果非常好 |
+| **Excel (.xlsx)** | 保留格式效果较好，但需注意分页问题 |
+| **PowerPoint (.pptx)** | 动画效果会丢失，但格式基本保留 |
+| **图片** | 转换效果取决于图片分辨率 |
+| **HTML** | 转换效果因CSS样式不同而有所差异 |
+| **文本 (.txt)** | 转换效果完美，但格式较为简单 |
 
-## How to Use
+## 使用方法
 
-### Basic Conversion
+### 基本转换
 ```
 "Convert this PDF to Word"
 "Save this document as PDF"
 "Extract this PDF as images"
 ```
 
-### With Options
+### 带参数的转换
 ```
 "Convert PDF to Word, preserve exact formatting"
 "Export PDF pages 1-5 as PNG images at 300 DPI"
 "Convert Excel to PDF, fit all columns on one page"
 ```
 
-### Batch Conversion
+### 批量转换
 ```
 "Convert all PDFs in this folder to Word documents"
 "Create PDFs from these 10 Word files"
 ```
 
-## Conversion Guidelines
+## 转换注意事项
 
-### PDF to Word
+### PDF转换为Word
 ```markdown
 ## PDF to Word Conversion
 
@@ -100,7 +100,7 @@ This skill helps you:
 | Lost colors | Check color profile settings |
 ```
 
-### PDF to Excel
+### PDF转换为Excel
 ```markdown
 ## PDF to Excel Conversion
 
@@ -132,7 +132,7 @@ After conversion, check:
 - [ ] Header row detection
 ```
 
-### PDF to Images
+### PDF转换为图片
 ```markdown
 ## PDF to Image Conversion
 
@@ -158,7 +158,7 @@ After conversion, check:
 - Page range → batch export
 ```
 
-### Document to PDF
+### 将其他格式转换为PDF
 ```markdown
 ## Converting to PDF
 
@@ -190,9 +190,9 @@ After conversion, check:
 4. Verify hyperlinks work
 ```
 
-## Batch Processing
+## 批量处理
 
-### Batch Conversion Template
+### 批量转换模板
 ```markdown
 ## Batch Conversion Job
 
@@ -218,51 +218,51 @@ After conversion, check:
 - Failed: [Z]
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Common Issues
-| Problem | Cause | Solution |
-|---------|-------|----------|
-| Text not selectable | Scanned PDF | Apply OCR first |
-| Missing characters | Font issues | Embed fonts or convert |
-| Poor image quality | Low DPI | Use higher resolution |
-| Large file size | Uncompressed | Apply compression |
-| Lost formatting | Complex layout | Use "exact" mode |
+| 问题 | 原因 | 解决方法 |
+|---------|--------|-----------|
+| 文本无法选中 | 文件为扫描PDF | 先使用OCR软件进行文字识别 |
+| 部分字符缺失 | 字体问题 | 嵌入相应字体或重新转换文件 |
+| 图片质量较差 | 分辨率过低 | 提高图片分辨率 |
+| 文件体积过大 | 文件未压缩 | 对文件进行压缩 |
+| 格式丢失 | 文件布局复杂 | 选择“精确转换”模式 |
 
-### Quality Checklist
-After conversion, verify:
-- [ ] All text present and readable
-- [ ] Formatting approximately preserved
-- [ ] Images included and clear
-- [ ] Tables properly structured
-- [ ] Links functional (if applicable)
-- [ ] Page count matches
+## 转换质量检查
 
-## Tool Recommendations
+转换完成后，请检查以下内容：
+- 所有文本是否完整且可读 |
+- 格式是否基本保持不变 |
+- 图片是否正确嵌入 |
+- 表格结构是否清晰 |
+- 链接是否正常工作（如适用） |
+- 页数是否与源文件一致 |
 
-### Online Tools
-- Adobe Acrobat (best quality)
-- SmallPDF (easy to use)
-- ILovePDF (batch friendly)
-- PDF24 (free, good quality)
+## 工具推荐
 
-### Desktop Software
-- Adobe Acrobat Pro
-- Microsoft Office (built-in)
-- LibreOffice (free)
-- Foxit PDF Editor
+### 在线工具
+- Adobe Acrobat（转换质量最高） |
+- SmallPDF（易于使用） |
+- ILovePDF（支持批量转换） |
+- PDF24（免费，转换质量不错） |
 
-### Command Line
-- Pandoc (text formats)
-- ImageMagick (images)
-- pdftk (PDF manipulation)
-- Poppler utilities
+### 桌面软件
+- Adobe Acrobat Pro |
+- Microsoft Office（内置PDF转换功能） |
+- LibreOffice（免费软件） |
+- Foxit PDF Editor |
 
-## Limitations
+### 命令行工具
+- Pandoc（用于文本格式转换） |
+- ImageMagick（用于图片处理） |
+- pdftk（用于PDF文件操作） |
+- Poppler（相关转换工具）
 
-- Cannot perform actual file conversion (provides guidance)
-- Scanned PDFs require OCR preprocessing
-- Complex layouts may not convert perfectly
-- Password-protected PDFs need password
-- Some formatting always lost in conversion
-- Quality depends on source PDF type
+## 限制事项
+
+- 该工具本身不执行实际的文件转换，仅提供转换指导 |
+- 扫描生成的PDF文件需要先进行OCR处理 |
+- 复杂的文件布局可能无法完美转换 |
+- 加密保护的PDF文件需要输入密码 |
+- 某些格式在转换过程中可能会丢失 |
+- 转换质量受源PDF文件类型的影响

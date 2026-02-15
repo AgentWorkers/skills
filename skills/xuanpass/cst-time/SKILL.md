@@ -1,104 +1,104 @@
 ---
 name: cst-time
-description: "Provides methods and tools for obtaining local host CST (China Standard Time). Invoke when user needs to get current CST time, convert time zones, or work with China Standard Time in scripts and applications."
+description: "提供了用于获取本地主机中国标准时间（CST）的方法和工具。当用户需要获取当前CST时间、转换时区，或在脚本和应用程序中使用中国标准时间时，可以调用这些方法和工具。"
 ---
-# CST Time (China Standard Time)
+# 中国标准时间（CST）
 
-## Overview
+## 概述
 
-This skill provides comprehensive guidance for obtaining and working with China Standard Time (CST), which is UTC+8 and used throughout mainland China. It covers various methods for getting local CST time, time zone conversions, and integration with different programming languages and systems.
+本技能提供了关于如何获取和使用中国标准时间（CST）的全面指导。CST 为 UTC+8，适用于中国大陆地区。它涵盖了获取本地 CST 时间的各种方法、时区转换，以及如何将其集成到不同的编程语言和系统中。
 
-## Purpose
+## 目的
 
-CST Time skill helps in:
+CST 时间技能有助于：
 
-- Getting current CST time from local system
-- Converting between different time zones and CST
-- Integrating CST time handling in applications
-- Scheduling tasks based on CST
-- Displaying and formatting CST time correctly
-- Handling daylight saving time considerations (CST doesn't observe DST)
+- 从本地系统获取当前的 CST 时间
+- 在不同时区与 CST 之间进行转换
+- 在应用程序中处理 CST 时间
+- 根据 CST 来安排任务
+- 正确显示和格式化 CST 时间
+- 处理夏令时问题（CST 不采用夏令时）
 
-## CST Time Zone Information
+## CST 时区信息
 
-**Time Zone Details:**
+**时区详情：**
 
-- **Name**: China Standard Time (CST)
-- **UTC Offset**: UTC+8
-- **Daylight Saving Time**: Not observed
-- **Region**: Mainland China
-- **IANA Time Zone ID**: Asia/Shanghai
+- **名称**：中国标准时间（CST）
+- **UTC 偏移量**：UTC+8
+- **是否采用夏令时**：不采用
+- **地区**：中国大陆
+- **IANA 时区 ID**：Asia/Shanghai
 
-**Important Notes:**
+**重要说明：**
 
-- CST is 8 hours ahead of Coordinated Universal Time (UTC)
-- China does not observe daylight saving time
-- CST is used consistently year-round
-- Time zone ID for programming: Asia/Shanghai
+- CST 比协调世界时（UTC）快 8 小时
+- 中国不采用夏令时
+- CST 全年一致使用
+- 编程时使用的时区 ID：Asia/Shanghai
 
-## Getting CST Time
+## 获取 CST 时间
 
-### 1. Using System Commands
+### 1. 使用系统命令
 
-#### Windows (PowerShell)
+#### Windows（PowerShell）
 
-**Get current system time (assumed to be CST):**
+**获取当前系统时间（假设为 CST）：**
 
 ```powershell
 Get-Date
 ```
 
-**Get CST time with explicit time zone:**
+**明确指定时区获取 CST 时间：**
 
 ```powershell
 [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow, "China Standard Time")
 ```
 
-**Format CST time:**
+**格式化 CST 时间：**
 
 ```powershell
 Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 ```
 
-#### Linux/Unix (Bash)
+#### Linux/Unix（Bash）
 
-**Get current system time:**
+**获取当前系统时间：**
 
 ```bash
 date
 ```
 
-**Get CST time explicitly:**
+**明确获取 CST 时间：**
 
 ```bash
 TZ='Asia/Shanghai' date
 ```
 
-**Format CST time:**
+**格式化 CST 时间：**
 
 ```bash
 date +"%Y-%m-%d %H:%M:%S"
 ```
 
-#### macOS (Bash)
+#### macOS（Bash）
 
-**Get current system time:**
+**获取当前系统时间：**
 
 ```bash
 date
 ```
 
-**Get CST time explicitly:**
+**明确获取 CST 时间：**
 
 ```bash
 TZ='Asia/Shanghai' date
 ```
 
-### 2. Using Programming Languages
+### 2. 使用编程语言
 
 #### Python
 
-**Get current CST time:**
+**获取当前 CST 时间：**
 
 ```python
 from datetime import datetime
@@ -112,7 +112,7 @@ print(f"Current CST time: {cst_time}")
 print(f"Formatted: {cst_time.strftime('%Y-%m-%d %H:%M:%S')}")
 ```
 
-**Convert UTC to CST:**
+**将 UTC 转换为 CST：**
 
 ```python
 from datetime import datetime
@@ -128,7 +128,7 @@ print(f"UTC: {utc_time}")
 print(f"CST: {cst_time}")
 ```
 
-**Convert any timezone to CST:**
+**将任意时区转换为 CST：**
 
 ```python
 from datetime import datetime
@@ -145,9 +145,9 @@ print(f"New York: {ny_time}")
 print(f"CST: {cst_time}")
 ```
 
-#### JavaScript/Node.js
+#### JavaScript/Node.js**
 
-**Get current CST time:**
+**获取当前 CST 时间：**
 
 ```javascript
 // Using Intl API
@@ -163,7 +163,7 @@ const cstTime = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss');
 console.log('Current CST time:', cstTime);
 ```
 
-**Convert UTC to CST:**
+**将 UTC 转换为 CST：**
 
 ```javascript
 const moment = require('moment-timezone');
@@ -173,9 +173,9 @@ console.log('UTC:', utcTime.format());
 console.log('CST:', cstTime);
 ```
 
-#### Java
+#### Java**
 
-**Get current CST time:**
+**获取当前 CST 时间：**
 
 ```java
 import java.time.ZoneId;
@@ -189,7 +189,7 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 System.out.println("Current CST time: " + cstTime.format(formatter));
 ```
 
-**Convert UTC to CST:**
+**将 UTC 转换为 CST：**
 
 ```java
 import java.time.ZoneId;
@@ -204,9 +204,9 @@ System.out.println("UTC: " + utcTime);
 System.out.println("CST: " + cstTime);
 ```
 
-#### Go
+#### Go**
 
-**Get current CST time:**
+**获取当前 CST 时间：**
 
 ```go
 package main
@@ -223,9 +223,9 @@ func main() {
 }
 ```
 
-#### C#
+#### C**
 
-**Get current CST time:**
+**获取当前 CST 时间：**
 
 ```csharp
 using System;
@@ -237,37 +237,37 @@ DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, cstZone);
 Console.WriteLine($"Current CST time: {cstTime:yyyy-MM-dd HH:mm:ss}");
 ```
 
-### 3. Using Online APIs
+### 3. 使用在线 API
 
-**World Time API:**
+**World Time API：**
 
 ```bash
 curl "http://worldtimeapi.org/api/timezone/Asia/Shanghai"
 ```
 
-**TimezoneDB API:**
+**TimezoneDB API：**
 
 ```bash
 curl "http://api.timezonedb.com/v1/get-time-zone?key=YOUR_API_KEY&by=zone&zone=Asia/Shanghai"
 ```
 
-**Google Maps Time Zone API:**
+**Google Maps Time Zone API：**
 
 ```bash
 curl "https://maps.googleapis.com/maps/api/timezone/json?location=39.9042,116.4074&timestamp=1331161200&key=YOUR_API_KEY"
 ```
 
-## Time Zone Conversions
+## 时区转换
 
-### 1. UTC to CST
+### 1. UTC 转换为 CST
 
-**Formula:**
+**公式：**
 
 ```
 CST = UTC + 8 hours
 ```
 
-**Python Example:**
+**Python 示例：**
 
 ```python
 from datetime import datetime, timedelta
@@ -280,15 +280,15 @@ print(f"UTC: {utc_time}")
 print(f"CST: {cst_time}")
 ```
 
-### 2. CST to UTC
+### 2. CST 转换为 UTC
 
-**Formula:**
+**公式：**
 
 ```
 UTC = CST - 8 hours
 ```
 
-**Python Example:**
+**Python 示例：**
 
 ```python
 from datetime import datetime, timedelta
@@ -301,55 +301,53 @@ print(f"CST: {cst_time}")
 print(f"UTC: {utc_time}")
 ```
 
-### 3. Other Time Zones to CST
+### 3. 其他时区转换为 CST
 
-**Common conversions:**
+| 时区        | UTC 偏移量 | CST 偏移量 | 转换方式         |
+| ---------------- | ---------- | ---------- | ---------------------- |
+| EST（东部标准时间） | UTC-5      | +13 小时       | EST + 13 = CST         |
+| PST（太平洋标准时间） | UTC-8      | +16 小时       | PST + 16 = CST         |
+| GMT（格林尼治标准时间） | UTC+0      | +8 小时       | GMT + 8 = CST         |
+| JST（日本标准时间） | UTC+9      | -1 小时       | JST - 1 = CST         |
+| AEST（澳大利亚东部标准时间）| UTC+10     | -2 小时       | AEST - 2 = CST         |
 
-| Time Zone        | UTC Offset | CST Offset | Conversion     |
-| ---------------- | ---------- | ---------- | -------------- |
-| EST (Eastern)    | UTC-5      | +13 hours  | EST + 13 = CST |
-| PST (Pacific)    | UTC-8      | +16 hours  | PST + 16 = CST |
-| GMT (Greenwich)  | UTC+0      | +8 hours   | GMT + 8 = CST  |
-| JST (Japan)      | UTC+9      | -1 hour    | JST - 1 = CST  |
-| AEST (Australia) | UTC+10     | -2 hours   | AEST - 2 = CST |
+## CST 时间格式化
 
-## Formatting CST Time
+### 常见格式
 
-### Common Format Patterns
-
-**ISO 8601 Format:**
+**ISO 8601 格式：**
 
 ```
 2026-02-10T21:30:45+08:00
 ```
 
-**Standard Format:**
+**标准格式：**
 
 ```
 2026-02-10 21:30:45
 ```
 
-**Chinese Format:**
+**中文格式：**
 
 ```
 2026年2月10日 21:30:45
 ```
 
-**Time Only:**
+**仅显示时间：**
 
 ```
 21:30:45
 ```
 
-**Date Only:**
+**仅显示日期：**
 
 ```
 2026-02-10
 ```
 
-### Programming Language Formatting
+### 编程语言格式化
 
-**Python:**
+**Python：**
 
 ```python
 from datetime import datetime
@@ -367,7 +365,7 @@ for name, formatted in formats.items():
     print(f"{name}: {formatted}")
 ```
 
-**JavaScript:**
+**JavaScript：**
 
 ```javascript
 const moment = require('moment-timezone');
@@ -386,53 +384,53 @@ for (const [name, formatted] of Object.entries(formats)) {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Time Zone Handling
+### 1. 时区处理
 
-**Recommendations:**
+**建议：**
 
-- Always store times in UTC and convert to CST for display
-- Use IANA time zone IDs (e.g., Asia/Shanghai) instead of offsets
-- Handle daylight saving time properly (CST doesn't observe DST)
-- Test time zone conversions thoroughly
-- Document time zone assumptions in code
+- 始终以 UTC 存储时间，并在显示时将其转换为 CST
+- 使用 IANA 时区 ID（例如 Asia/Shanghai），而不是偏移量
+- 正确处理夏令时（CST 不采用夏令时）
+- 仔细测试时区转换
+- 在代码中记录时区假设
 
-### 2. Time Display
+### 2. 时间显示
 
-**Recommendations:**
+**建议：**
 
-- Display time in user's preferred format
-- Include time zone information when displaying CST
-- Use relative time (e.g., "2 hours ago") for recent events
-- Consider cultural preferences for time formatting
-- Provide options for 12-hour and 24-hour formats
+- 以用户偏好的格式显示时间
+- 显示 CST 时区信息
+- 对于近期事件，使用相对时间（例如“2 小时前”）
+- 考虑文化差异对时间格式的影响
+- 提供 12 小时制和 24 小时制的显示选项
 
-### 3. Time Storage
+### 3. 时间存储
 
-**Recommendations:**
+**建议：**
 
-- Store timestamps in UTC in databases
-- Include time zone information in data models
-- Use appropriate data types for timestamps (e.g., TIMESTAMP)
-- Consider time zone changes in historical data
-- Document time zone handling in data schemas
+- 在数据库中以 UTC 格式存储时间戳
+- 在数据模型中包含时区信息
+- 为时间戳使用适当的数据类型（例如 TIMESTAMP）
+- 考虑历史数据中的时区变化
+- 在数据模式中记录时区处理方式
 
-### 4. Error Handling
+### 4. 错误处理
 
-**Recommendations:**
+**建议：**
 
-- Validate time inputs
-- Handle invalid time zone IDs gracefully
-- Provide clear error messages for time-related failures
-- Test edge cases (leap years, time zone transitions)
-- Log time-related errors for debugging
+- 验证时间输入
+- 优雅地处理无效的时区 ID
+- 为时间相关的错误提供清晰的错误信息
+- 测试边界情况（闰年、时区转换）
+- 记录与时间相关的错误以供调试
 
-## Common Use Cases
+## 常见用例
 
-### 1. Scheduling Tasks
+### 1. 安排任务
 
-**Example: Schedule a task at specific CST time:**
+**示例：在特定的 CST 时间安排任务：**
 
 ```python
 from datetime import datetime, timedelta
@@ -449,9 +447,9 @@ print(f"Task scheduled for: {target_cst}")
 print(f"Time until task: {time_until}")
 ```
 
-### 2. Logging with CST Time
+### 2. 使用 CST 时间记录事件
 
-**Example: Log events with CST timestamps:**
+**示例：用 CST 时间戳记录事件：**
 
 ```python
 import logging
@@ -470,9 +468,9 @@ logging.basicConfig(
 logging.info("Event occurred at CST time")
 ```
 
-### 3. Displaying CST Time in Web Applications
+### 3. 在 Web 应用程序中显示 CST 时间
 
-**Example: Display current CST time on a webpage:**
+**示例：在网页上显示当前的 CST 时间：**
 
 ```html
 <!DOCTYPE html>
@@ -507,9 +505,9 @@ logging.info("Event occurred at CST time")
 </html>
 ```
 
-### 4. Converting User Input to CST
+### 4. 将用户输入转换为 CST
 
-**Example: Convert user-provided time to CST:**
+**示例：将用户提供的时间转换为 CST：**
 
 ```python
 from datetime import datetime
@@ -534,44 +532,44 @@ print(f"User time: {user_time}")
 print(f"CST time: {cst_time}")
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-| Issue                  | Possible Cause                  | Solution                                 |
+| 问题                  | 可能原因                  | 解决方案                                 |
 | ---------------------- | ------------------------------- | ---------------------------------------- |
-| Wrong time displayed   | System time zone not set to CST | Change system time zone to Asia/Shanghai |
-| Time off by 1 hour     | Daylight saving time confusion  | Remember CST doesn't observe DST         |
-| Time conversion errors | Incorrect time zone ID          | Use Asia/Shanghai instead of CST         |
-| Time not updating      | Caching or stale data           | Clear cache and refresh                  |
-| Time display issues    | Format string errors            | Verify format string syntax              |
+| 显示的时间错误           | 系统时区未设置为 CST           | 将系统时区更改为 Asia/Shanghai           |
+| 时间偏差 1 小时           | 混淆了夏令时             | 请记住 CST 不采用夏令时                   |
+| 时间转换错误             | 使用了错误的时区 ID             | 使用 Asia/Shanghai 而不是 CST                 |
+| 时间不更新             | 数据缓存或过时                 | 清除缓存并刷新                         |
+| 时间显示问题             | 格式字符串错误                 | 检查格式字符串的语法                     |
 
-### Debugging Tips
+### 调试技巧
 
-1. **Verify system time zone:**
+1. **验证系统时区：**
 
-   - Windows: Check Date & Time settings
-   - Linux: Check /etc/timezone or timedatectl
-   - macOS: Check System Preferences > Date & Time
-2. **Test time zone conversions:**
+   - Windows：检查“日期和时间”设置
+   - Linux：检查 `/etc/timezone` 或 `timedatectl`
+   - macOS：检查“系统偏好设置”>“日期和时间”
+2. **测试时区转换：**
 
-   - Use known reference times
-   - Verify conversions with multiple tools
-   - Check for daylight saving time issues
-3. **Monitor time-related logs:**
+   - 使用已知的参考时间
+   - 用多种工具验证转换结果
+   - 检查夏令时的影响
+3. **监控时间相关日志：**
 
-   - Look for time zone warnings
-   - Check for conversion errors
-   - Verify timestamp consistency
+   - 查找时区相关的警告
+   - 检查转换错误
+   - 确认时间戳的一致性
 
-## Conclusion
+## 结论
 
-Working with CST (China Standard Time) requires understanding of time zone handling, proper conversion methods, and careful attention to formatting and display. By following the guidance in this skill, you can:
+处理 CST（中国标准时间）需要了解时区处理方法、正确的转换方式，以及注意时间的格式化和显示。遵循本技能中的指导，您可以：
 
-- Accurately obtain and display CST time
-- Convert between different time zones and CST
-- Integrate CST time handling in applications
-- Schedule tasks based on CST
-- Handle time-related operations correctly and consistently
+- 准确地获取和显示 CST 时间
+- 在不同时区与 CST 之间进行转换
+- 在应用程序中处理 CST 时间
+- 根据 CST 来安排任务
+- 正确且一致地处理时间相关操作
 
-Remember that CST is UTC+8 year-round and does not observe daylight saving time, which simplifies time handling compared to many other time zones. Always test time-related functionality thoroughly and handle edge cases appropriately.
+请注意，CST 全年使用 UTC+8，不采用夏令时，这比许多其他时区更简单。务必彻底测试时间相关功能，并适当处理边界情况。

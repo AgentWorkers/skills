@@ -1,44 +1,43 @@
 ---
 name: Workouts
-description: Build a personal workout tracking system with exercises, routines, progression, and PRs.
+description: 构建一个个人锻炼跟踪系统，该系统应包括锻炼项目、锻炼计划、锻炼进度跟踪以及用户可以提交进度更新（Progress Reports, PRs）的功能。
 metadata: {"clawdbot":{"emoji":"💪","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User logs a workout → record exercises, sets, reps, weight
-- Track progression → surface PRs, trends, plateaus
-- Suggest based on history → "last time you did 3x8 at 60kg"
-- Create `~/workouts/` as workspace
+## 核心功能  
+- 用户记录锻炼内容：包括所进行的练习、组数、重复次数以及使用的重量  
+- 跟踪锻炼进展：展示个人最佳成绩（PRs）、趋势以及锻炼中的停滞期  
+- 根据历史数据提供建议：例如“上次你使用60公斤重量完成了3组8次”  
+- 创建`~/workouts/`作为存储锻炼记录的工作目录  
 
-## When User Logs a Workout
-- Date and type: strength, cardio, flexibility, sport
-- Exercises performed with details
-- How it felt: easy, moderate, hard, failed
-- Duration if relevant
-- Notes: energy, sleep, soreness
+## 用户记录锻炼时的操作  
+- 输入锻炼类型（力量训练、有氧运动、柔韧性训练或专项运动）及具体日期  
+- 详细记录每项练习的完成情况（是否轻松、中等难度或困难）  
+- 若适用，记录锻炼时长  
+- 添加备注（如精力状态、睡眠质量、肌肉酸痛情况）  
 
-## Strength Training Log
-- Exercise name (standardized)
-- Sets x reps x weight: "3x8 @ 60kg"
-- Rest periods if tracking
-- RPE (rate of perceived exertion) optional
-- Note failed reps: "3x8, failed last rep set 3"
+## 力量训练记录  
+- 练习名称（需统一格式）  
+- 组数 × 重复次数 × 重量（例如：“3组8次，每次60公斤”）  
+- 若需要，记录休息时间  
+- 可选择填写感知用力程度（RPE）  
+- 若有未完成的重复次数，需特别标注（例如：“3组8次，最后一次未完成”）  
 
-## Cardio Log
-- Activity: running, cycling, swimming, rowing
-- Duration and distance
-- Pace or heart rate if tracking
-- Route or location optional
-- Conditions: weather, terrain
+## 有氧运动记录  
+- 运动类型（跑步、骑行、游泳、划船等）  
+- 记录运动时长和距离  
+- 若适用，记录运动节奏或心率  
+- 可选择记录运动路线或地点  
+- 外部环境因素（如天气、地形）  
 
-## Exercise Database
-Build personal exercise list over time:
-- Name (consistent spelling matters for tracking)
-- Category: push, pull, legs, core, cardio
-- Equipment needed
-- Notes: cues, form reminders, variations
+## 练习数据库  
+- 随时间积累个人锻炼数据：  
+  - 练习名称（需保持拼写一致以便追踪）  
+  - 练习类别（推举类、拉举类、腿部训练、核心训练、有氧运动）  
+  - 所需装备  
+  - 备注（如动作提示、正确的练习形式、可尝试的变体）  
 
-## Routine/Program Structure
+## 训练计划/程序结构  
 ```
 ~/workouts/
 ├── logs/
@@ -49,65 +48,64 @@ Build personal exercise list over time:
 │   └── pull-day.md
 ├── exercises.md
 └── prs.md
-```
+```  
 
-## Personal Records
-- Track PRs automatically by exercise
-- 1RM, 3RM, 5RM for lifts
-- Distance/time PRs for cardio
-- Surface when broken: "New squat PR: 100kg!"
-- Historical PR list with dates
+## 个人最佳成绩记录  
+- 自动记录每项练习的个人最佳成绩  
+- 记录举重项目的1RM（最大一次可举重量）、3RM（最大三次可举重量）、5RM（最大五次可举重量）  
+- 有氧运动的距离/时间最佳成绩  
+- 当最佳成绩被打破时自动提醒（例如：“深蹲最佳成绩提升至100公斤！”）  
+- 提供历史最佳成绩列表及对应的日期  
 
-## Progression Tracking
-- Compare to last session: "Bench: last time 3x8@55kg"
-- Suggest next weight: "Try 57.5kg or add a rep"
-- Weekly volume trends: total sets, reps, tonnage
-- Spot plateaus: "Squat hasn't progressed in 4 weeks"
+## 进展跟踪  
+- 与上一次锻炼进行对比（例如：“上次卧推使用了55公斤重量完成了3组8次”）  
+- 提供下一步的重量建议（例如：“可以尝试使用57.5公斤重量，或增加重复次数”）  
+- 显示每周的训练量趋势（总组数、总重复次数、总重量）  
+- 发现锻炼停滞时给予提示（例如：“深蹲训练已4周没有进步”）  
 
-## Rest and Recovery
-- Track rest days between muscle groups
-- Flag overtraining signs: same muscle group too frequent
-- Note recovery quality: sleep, soreness, energy
-- "You've done 5 leg days in 8 days — consider rest"
+## 休息与恢复  
+- 记录不同肌肉群之间的休息间隔  
+- 识别过度训练的迹象（如同一肌肉群频繁训练）  
+- 记录恢复情况（如睡眠质量、肌肉酸痛程度、精力状态）  
+- 提醒用户适当休息（例如：“你已经连续8天进行了腿部训练，建议休息”）  
 
-## Progressive Enhancement
-- Week 1: simple log of what you did
-- Week 2: standardize exercise names
-- Month 2: add routines/programs
-- Month 3: PR tracking and progression analysis
-- Ongoing: adjust based on patterns
+## 逐步提升训练计划  
+- 第1周：简单记录锻炼内容  
+- 第2周：统一练习名称  
+- 第3个月：开始制定固定的训练计划  
+- 持续改进：根据训练情况调整计划  
 
-## Routine Templates
-- Define standard workout: exercises, sets, reps
-- Log actual vs planned: what you intended vs did
-- Modify routines based on what works
-- Multiple routines: PPL, upper/lower, full body
+## 训练计划模板  
+- 定义标准训练内容（包括练习项目、组数、重复次数）  
+- 记录实际完成的训练与计划内容的差异  
+- 根据实际效果调整训练计划  
+- 提供多种训练计划（针对上半身/下半身、全身训练）  
 
-## What To Surface Proactively
-- "Leg day? Last time: squats 3x5@90kg, RDL 3x10@60kg"
-- "Bench PR incoming — you did 3x5@80kg last time"
-- "Haven't done deadlifts in 3 weeks"
-- "Volume is up 20% this month — watch for fatigue"
+## 主动提醒功能  
+- 提供相关练习的提醒（例如：“今天是腿部训练日？上次使用90公斤重量完成了3组5次深蹲，硬拉使用了60公斤重量”）  
+- 当最佳成绩即将被打破时提醒（例如：“卧推最佳成绩即将提升——上次使用80公斤重量完成了3组5次”）  
+- 提醒用户未完成的练习（例如：“你已经3周没有进行硬拉训练了”）  
+- 提示训练量增加可能导致的疲劳风险（例如：“本月训练量增加了20%，注意疲劳情况”）  
 
-## Common Metrics
-- Volume: sets × reps × weight per muscle/week
-- Frequency: sessions per week, per muscle group
-- Progression: weight/reps increase over time
-- Consistency: workouts per week/month
+## 常见训练指标  
+- 训练量：每周每块肌肉群的组数×重复次数×重量  
+- 训练频率：每周每块肌肉群的训练次数  
+- 进展情况：重量/重复次数的增长趋势  
+- 训练规律性：每周/每月的训练频率  
 
-## What NOT To Suggest
-- Complex periodization before basics are consistent
-- Calorie/macro tracking in workout log — separate concern
-- App with features they won't use
-- Comparing to others — track personal progress only
+## 不建议的做法  
+- 在基础训练未稳定之前不建议使用复杂的训练周期化策略  
+- 不建议在锻炼记录中记录卡路里或营养摄入数据（这些属于单独管理的范畴）  
+- 不推荐使用用户可能不会使用的应用程序功能  
+- 不建议与他人比较训练成绩——只需关注个人进步  
 
-## Injury and Deload Notes
-- Log injuries with date, severity, affected exercises
-- Track modified exercises during recovery
-- Deload weeks: intentional reduced volume
-- "Left shoulder tweak March 2024 — avoided overhead pressing 3 weeks"
+## 伤病与减量训练  
+- 记录伤病情况（包括受伤日期、严重程度及受影响的练习）  
+- 在恢复期间记录调整后的练习内容  
+- 设定减量训练周（有意减少训练量）  
+- 例如：“2024年3月左肩受伤，因此3周内避免进行头顶推举动作”  
 
-## Integration Points
-- Habits: "workout 4x/week" as habit
-- Calendar: schedule workout days
-- Health: weight, measurements if tracking body composition
+## 集成功能  
+- 帮助用户养成每周锻炼4次的习惯  
+- 提供日历功能，方便安排锻炼时间  
+- 若用户关注身体成分，可记录体重等数据

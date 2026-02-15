@@ -17,9 +17,9 @@ metadata:
 
 # Jobber
 
-Access the Jobber API with managed OAuth authentication. Manage clients, jobs, invoices, quotes, properties, and team members for field service businesses.
+通过管理的OAuth认证访问Jobber API，该API用于管理现场服务企业的客户、任务、发票、报价单、属性和团队成员。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get account information
@@ -33,45 +33,45 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## API Type
+## API类型
 
-Jobber uses a **GraphQL API** exclusively. All requests are POST requests to the `/graphql` endpoint with a JSON body containing the `query` field.
+Jobber仅使用**GraphQL API**。所有请求均为POST请求，目标端点为`/graphql`，请求体中包含`query`字段（以JSON格式）。
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/jobber/graphql
 ```
 
-The gateway proxies requests to `api.getjobber.com/api/graphql` and automatically injects your OAuth token and API version header.
+代理服务器会将请求转发到`api.getjobber.com/apigraphql`，并自动插入您的OAuth令牌和API版本头。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-The gateway automatically injects the `X-JOBBER-GRAPHQL-VERSION` header (currently `2025-04-16`).
+代理服务器还会自动插入`X-JOBBER-GRAPHQL-VERSION`头部（当前版本为`2025-04-16`）。
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)登录或创建账户。
+2. 访问[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Jobber OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`管理您的Jobber OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -82,7 +82,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -95,7 +95,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -106,7 +106,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -121,9 +121,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -134,9 +134,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Jobber connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Jobber连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -150,13 +150,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果未指定，代理服务器将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Account Operations
+### 账户操作
 
-#### Get Account Information
+#### 获取账户信息
 
 ```bash
 POST /jobber/graphql
@@ -167,9 +167,9 @@ Content-Type: application/json
 }
 ```
 
-### Client Operations
+### 客户操作
 
-#### List Clients
+#### 列出客户
 
 ```bash
 POST /jobber/graphql
@@ -180,7 +180,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Client by ID
+#### 根据ID获取客户
 
 ```bash
 POST /jobber/graphql
@@ -192,7 +192,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Client
+#### 创建客户
 
 ```bash
 POST /jobber/graphql
@@ -211,7 +211,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Client
+#### 更新客户信息
 
 ```bash
 POST /jobber/graphql
@@ -228,9 +228,9 @@ Content-Type: application/json
 }
 ```
 
-### Job Operations
+### 任务操作
 
-#### List Jobs
+#### 列出任务
 
 ```bash
 POST /jobber/graphql
@@ -241,7 +241,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Job by ID
+#### 根据ID获取任务
 
 ```bash
 POST /jobber/graphql
@@ -253,7 +253,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Job
+#### 创建任务
 
 ```bash
 POST /jobber/graphql
@@ -271,9 +271,9 @@ Content-Type: application/json
 }
 ```
 
-### Invoice Operations
+### 发票操作
 
-#### List Invoices
+#### 列出发票
 
 ```bash
 POST /jobber/graphql
@@ -284,7 +284,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Invoice by ID
+#### 根据ID获取发票
 
 ```bash
 POST /jobber/graphql
@@ -296,7 +296,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Invoice
+#### 创建发票
 
 ```bash
 POST /jobber/graphql
@@ -320,9 +320,9 @@ Content-Type: application/json
 }
 ```
 
-### Quote Operations
+### 报价单操作
 
-#### List Quotes
+#### 列出报价单
 
 ```bash
 POST /jobber/graphql
@@ -333,7 +333,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Quote
+#### 创建报价单
 
 ```bash
 POST /jobber/graphql
@@ -357,9 +357,9 @@ Content-Type: application/json
 }
 ```
 
-### Property Operations
+### 属性操作
 
-#### List Properties
+#### 列出属性
 
 ```bash
 POST /jobber/graphql
@@ -370,9 +370,9 @@ Content-Type: application/json
 }
 ```
 
-### Request Operations
+### 请求操作
 
-#### List Requests
+#### 列出请求
 
 ```bash
 POST /jobber/graphql
@@ -383,9 +383,9 @@ Content-Type: application/json
 }
 ```
 
-### User/Team Operations
+### 用户/团队操作
 
-#### List Users
+#### 列出用户
 
 ```bash
 POST /jobber/graphql
@@ -396,9 +396,9 @@ Content-Type: application/json
 }
 ```
 
-### Custom Field Operations
+### 自定义字段操作
 
-#### List Custom Fields
+#### 列出自定义字段
 
 ```bash
 POST /jobber/graphql
@@ -409,9 +409,9 @@ Content-Type: application/json
 }
 ```
 
-## Pagination
+## 分页
 
-Jobber uses Relay-style cursor-based pagination:
+Jobber使用基于游标的分页机制（Relay风格）：
 
 ```bash
 # First page
@@ -427,7 +427,7 @@ POST /jobber/graphql
 }
 ```
 
-Response includes `pageInfo`:
+响应中包含`pageInfo`信息：
 ```json
 {
   "data": {
@@ -444,19 +444,19 @@ Response includes `pageInfo`:
 
 ## Webhooks
 
-Jobber supports webhooks for real-time event notifications:
+Jobber支持Webhooks以实现实时事件通知：
 
-- `CLIENT_CREATE` - New client created
-- `JOB_COMPLETE` - Job marked complete
-- `QUOTE_CREATE` - New quote created
-- `QUOTE_APPROVAL` - Quote approved
-- `REQUEST_CREATE` - New request created
-- `INVOICE_CREATE` - New invoice created
-- `APP_CONNECT` - App connected
+- `CLIENT_CREATE` - 新客户创建
+- `JOB_COMPLETE` - 任务完成
+- `QUOTE_CREATE` - 新报价单创建
+- `QUOTE_APPROVAL` - 报价单被批准
+- `REQUEST_CREATE` - 新请求创建
+- `INVOICE_CREATE` - 新发票创建
+- `APP_CONNECT` - 应用程序连接
 
-Webhooks include HMAC-SHA256 signatures for verification.
+Webhooks包含HMAC-SHA256签名以进行验证。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -500,32 +500,32 @@ response = requests.post(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Jobber uses GraphQL exclusively (no REST API)
-- The gateway automatically injects the `X-JOBBER-GRAPHQL-VERSION` header
-- Current gateway API version: `2025-04-16` (latest)
-- Old API versions are supported for 12-18 months from release
-- Use the GraphiQL explorer in Jobber's Developer Center for schema discovery
-- IDs use `EncodedId` type (base64 encoded) - pass as strings
-- Field naming: use `emails`/`phones` (arrays), `jobStatus`/`invoiceStatus`/`quoteStatus`/`requestStatus`
-- Rate limits:
-  - DDoS protection: 2,500 requests per 5 minutes per app/account
-  - Query cost: Points-based using leaky bucket algorithm (max 10,000 points, restore 500/sec)
-- Avoid deeply nested queries to reduce query cost
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- Jobber仅使用GraphQL API（不支持REST API）。
+- 代理服务器会自动插入`X-JOBBER-GRAPHQL-VERSION`头部。
+- 当前API版本为`2025-04-16`（最新版本）。
+- 旧版本的API在发布后仍支持12至18个月。
+- 可在Jobber的开发者中心使用GraphiQL浏览器来查看API架构。
+- ID使用`EncodedId`类型（Base64编码），需以字符串形式传递。
+- 字段命名规则：使用`emails`/`phones`（数组类型），`jobStatus`/`invoiceStatus`/`quoteStatus`/`requestStatus`等。
+- 速率限制：
+  - 防DDoS保护：每个应用程序/账户每5分钟最多2,500次请求。
+  - 查询费用：基于“漏桶算法”计算（最多10,000点，每秒恢复500点）。
+- 请避免使用深度嵌套的查询以降低查询成本。
+- 重要提示：当将curl输出传递给`jq`或其他命令时，在某些shell环境中环境变量（如`$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Jobber connection or malformed query |
-| 401 | Invalid or missing Maton API key |
-| 403 | Not authorized (check OAuth scopes) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Jobber API |
+| 400 | 未建立Jobber连接或查询格式错误 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 未授权（请检查OAuth权限范围） |
+| 429 | 超过速率限制 |
+| 4xx/5xx | 来自Jobber API的传递错误 |
 
-GraphQL errors appear in the response body:
+GraphQL错误会显示在响应体中：
 ```json
 {
   "errors": [
@@ -538,7 +538,7 @@ GraphQL errors appear in the response body:
 }
 ```
 
-Mutation errors appear in `userErrors`:
+mutation错误会显示在`userErrors`字段中：
 ```json
 {
   "data": {
@@ -555,15 +555,15 @@ Mutation errors appear in `userErrors`:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保`MATON_API_KEY`环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥的有效性：
 
 ```bash
 python <<'EOF'
@@ -574,17 +574,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称错误
 
-1. Ensure your URL path starts with `jobber`. For example:
+1. 确保您的URL路径以`jobber`开头。例如：
+  - 正确格式：`https://gateway.maton.ai/jobberGraphQL`
+  - 错误格式：`https://gateway.maton.aigraphql`
 
-- Correct: `https://gateway.maton.ai/jobber/graphql`
-- Incorrect: `https://gateway.maton.ai/graphql`
+## 资源
 
-## Resources
-
-- [Jobber Developer Documentation](https://developer.getjobber.com/docs/)
-- [Getting Started Guide](https://developer.getjobber.com/docs/getting_started/)
-- [API Support](mailto:api-support@getjobber.com)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Jobber开发者文档](https://developer.getjobber.com/docs/)
+- [快速入门指南](https://developer.getjobber.com/docs/getting_started/)
+- [API支持](mailto:api-support@getjobber.com)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

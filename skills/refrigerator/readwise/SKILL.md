@@ -1,70 +1,72 @@
 ---
 name: readwise
-description: Access Readwise highlights and Reader saved articles
+description: **Access Readwise：高亮显示内容及用户保存的文章**  
+
+Access Readwise 允许用户高亮标记阅读过程中的重点内容，并保存自己感兴趣的文章以供日后阅读。通过该功能，用户可以更高效地管理和组织自己的阅读材料。
 homepage: https://readwise.io
 metadata: {"clawdbot":{"emoji":"📚","requires":{"bins":["node"],"env":["READWISE_TOKEN"]},"primaryEnv":"READWISE_TOKEN"}}
 ---
 
-# Readwise & Reader Skill
+# Readwise 与 Reader 功能
 
-Access your Readwise highlights and Reader saved articles.
+您可以访问 Readwise 中的精彩内容以及 Reader 保存的文章。
 
-## Setup
+## 设置
 
-Get your API token from: https://readwise.io/access_token
+从以下链接获取您的 API 令牌：https://readwise.io/access_token
 
-Set the environment variable:
+将 API 令牌设置为您的环境变量：
 ```bash
 export READWISE_TOKEN="your_token_here"
 ```
 
-Or add to ~/.clawdbot/clawdbot.json under "env".
+或者将其添加到 ~/.clawdbot/clawdbot.json 文件的 "env" 部分中。
 
-## Readwise (Highlights)
+## Readwise（精彩内容）
 
-### List books/sources
+### 列出书籍/来源
 ```bash
 node {baseDir}/scripts/readwise.mjs books [--limit 20]
 ```
 
-### Get highlights from a book
+### 从书籍中获取精彩内容
 ```bash
 node {baseDir}/scripts/readwise.mjs highlights [--book-id 123] [--limit 20]
 ```
 
-### Search highlights
+### 搜索精彩内容
 ```bash
 node {baseDir}/scripts/readwise.mjs search "query"
 ```
 
-### Export all highlights (paginated)
+### 导出所有精彩内容（分页显示）
 ```bash
 node {baseDir}/scripts/readwise.mjs export [--updated-after 2024-01-01]
 ```
 
-## Reader (Saved Articles)
+## Reader（保存的文章）
 
-### List documents
+### 列出文档
 ```bash
 node {baseDir}/scripts/reader.mjs list [--location new|later|archive|feed] [--category article|book|podcast|...] [--limit 20]
 ```
 
-### Get document details
+### 获取文档详情
 ```bash
 node {baseDir}/scripts/reader.mjs get <document_id>
 ```
 
-### Save a URL to Reader
+### 将 URL 保存到 Reader
 ```bash
 node {baseDir}/scripts/reader.mjs save "https://example.com/article" [--location later]
 ```
 
-### Search Reader
+### 在 Reader 中搜索
 ```bash
 node {baseDir}/scripts/reader.mjs search "query"
 ```
 
-## Notes
-- Rate limits: 20 requests/minute for Readwise, varies for Reader
-- All commands output JSON for easy parsing
-- Use `--help` on any command for options
+## 注意事项：
+- Readwise 的请求限制为每分钟 20 次；Reader 的请求限制可能有所不同。
+- 所有命令的输出均为 JSON 格式，便于解析。
+- 对于任何命令，可以使用 `--help` 选项查看详细帮助信息。

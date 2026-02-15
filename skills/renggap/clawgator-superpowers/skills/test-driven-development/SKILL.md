@@ -1,371 +1,229 @@
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: 在实现任何功能或修复漏洞时使用，但在编写实际实现代码之前。
 ---
 
-# Test-Driven Development (TDD)
+# 面向测试的开发（Test-Driven Development, TDD）
 
-## Overview
+## 概述
 
-Write the test first. Watch it fail. Write minimal code to pass.
+首先编写测试用例，然后观察它们是否失败；接着编写最简短的代码来使这些测试通过。
 
-**Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
+**核心原则：** 如果你没有看到测试用例失败，你就无法确定它们是否真正测试了预期的功能。
 
-**Violating the letter of the rules is violating the spirit of the rules.**
+**违反规则的形式，实际上也是在违反规则的精神。**
 
-## When to Use
+## 适用场景
 
-**Always:**
-- New features
-- Bug fixes
-- Refactoring
-- Behavior changes
+**始终适用：**
+- 新功能的开发
+- 错误的修复
+- 代码重构
+- 行为的变更
 
-**Exceptions (ask your human partner):**
-- Throwaway prototypes
-- Generated code
-- Configuration files
+**例外情况（请咨询你的团队成员）：**
+- 临时性的原型代码
+- 生成的代码
+- 配置文件
 
-Thinking "skip TDD just this once"? Stop. That's rationalization.
+“这次就跳过TDD吧？”——别这么做，这只是在为自己的行为找借口。
 
-## The Iron Law
+## 铁律
 
+**如果在编写测试之前就先编写了代码，**请直接删除这些代码，并重新开始。
+
+**没有任何例外：**
+- 不要将其作为“参考”保留
+- 在编写测试时不要对其进行“修改”
+- 不要去看那些已经存在的代码
+- 删除就意味着彻底删除
+
+**必须严格按照“红-绿-重构”的流程来开发代码。**
+
+### 红色阶段（RED）——编写失败的测试用例
+
+编写一个最简短的测试用例，用来验证预期的功能是否能够正常工作。
+
+**好的示例：**
+```python
+# test('validates email and domain and whitespace')
 ```
-NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
+- 测试用例的名称应该清晰明了，且只针对一个具体的功能进行测试。
+
+**错误的示例：**
+```python
+# test('someRandomFunction')
 ```
+- 测试用例的名称应该具体明确，且应该测试真实的代码行为，而不是模拟代码。
 
-Write code before the test? Delete it. Start over.
+**要求：**
+- 只测试一个具体的功能
+- 测试用例的名称应该清晰明了
+- 使用真实的代码进行测试（除非确实有必要，否则不要使用模拟对象）
 
-**No exceptions:**
-- Don't keep it as "reference"
-- Don't "adapt" it while writing tests
-- Don't look at it
-- Delete means delete
+### 绿色阶段（GREEN）——编写最简短的代码来通过测试
 
-Implement fresh from tests. Period.
+编写最简短的代码来通过测试用例。
 
-## Red-Green-Refactor
-
-```dot
-digraph tdd_cycle {
-    rankdir=LR;
-    red [label="RED\nWrite failing test", shape=box, style=filled, fillcolor="#ffcccc"];
-    verify_red [label="Verify fails\ncorrectly", shape=diamond];
-    green [label="GREEN\nMinimal code", shape=box, style=filled, fillcolor="#ccffcc"];
-    verify_green [label="Verify passes\nAll green", shape=diamond];
-    refactor [label="REFACTOR\nClean up", shape=box, style=filled, fillcolor="#ccccff"];
-    next [label="Next", shape=ellipse];
-
-    red -> verify_red;
-    verify_red -> green [label="yes"];
-    verify_red -> red [label="wrong\nfailure"];
-    green -> verify_green;
-    verify_green -> refactor [label="yes"];
-    verify_green -> green [label="no"];
-    refactor -> verify_green [label="stay\ngreen"];
-    verify_green -> next;
-    next -> red;
-}
+**好的示例：**
+```python
+# 最简短的代码实现
 ```
+- 只编写足够通过测试的代码。
 
-### RED - Write Failing Test
-
-Write one minimal test showing what should happen.
-
-<Good>
-```typescript
-test('retries failed operations 3 times', async () => {
-  let attempts = 0;
-  const operation = () => {
-    attempts++;
-    if (attempts < 3) throw new Error('fail');
-    return 'success';
-  };
-
-  const result = await retryOperation(operation);
-
-  expect(result).toBe('success');
-  expect(attempts).toBe(3);
-});
+**错误的示例：**
+```python
+# 过度设计的代码实现
 ```
-Clear name, tests real behavior, one thing
-</Good>
+- 不要为新的功能添加代码，也不要对其他代码进行重构，更不要超出测试用例的范围去“改进”代码。
 
-<Bad>
-```typescript
-test('retry works', async () => {
-  const mock = jest.fn()
-    .mockRejectedValueOnce(new Error())
-    .mockRejectedValueOnce(new Error())
-    .mockResolvedValueOnce('success');
-  await retryOperation(mock);
-  expect(mock).toHaveBeenCalledTimes(3);
-});
-```
-Vague name, tests mock not code
-</Bad>
+### 重构阶段（REFactor）——优化代码
 
-**Requirements:**
-- One behavior
-- Clear name
-- Real code (no mocks unless unavoidable)
+**只有在代码通过测试之后，才可以进行重构：**
+- 删除重复的代码
+- 优化函数/方法的名称
+- 提取出可重用的辅助函数
 
-### Verify RED - Watch It Fail
+**重复上述流程，直到所有测试都通过。**
 
-**MANDATORY. Never skip.**
+## 优秀的测试用例的特点
 
-```bash
-npm test path/to/test.test.ts
-```
+| 特点 | 优秀测试 | 不优秀的测试 |
+|---------|---------|---------|
+| **简洁性** | 只测试一个具体的功能 | 测试用例的名称包含多个不相关的功能 |
+| **清晰性** | 测试用例的名称能够准确描述其测试的内容 | 测试用例的名称不明确 |
+| **目的性** | 测试用例能够清楚地展示代码应该实现的功能 | 测试用例无法体现代码的实际用途 |
 
-Confirm:
-- Test fails (not errors)
-- Failure message is expected
-- Fails because feature missing (not typos)
+## 为什么测试的编写顺序很重要
 
-**Test passes?** You're testing existing behavior. Fix test.
+**“我会在代码实现之后再编写测试用例来验证其正确性”**
 
-**Test errors?** Fix error, re-run until it fails correctly.
+如果在代码实现之后才编写测试用例，那么这些测试用例就无法立即证明代码的正确性：
+- 可能会测试到错误的功能
+- 可能只会测试到代码的实现细节，而无法验证实际的功能
+- 可能会遗漏一些边缘情况
+- 你可能永远无法发现某些错误
 
-### GREEN - Minimal Code
+**先编写测试用例**可以确保你看到测试用例失败，从而确认它们确实能够正确地验证代码的功能。
 
-Write simplest code to pass the test.
+**“我已经手动测试了所有的边缘情况”**
 
-<Good>
-```typescript
-async function retryOperation<T>(fn: () => Promise<T>): Promise<T> {
-  for (let i = 0; i < 3; i++) {
-    try {
-      return await fn();
-    } catch (e) {
-      if (i === 2) throw e;
-    }
-  }
-  throw new Error('unreachable');
-}
-```
-Just enough to pass
-</Good>
+手动测试往往是随意的、非系统化的：
+- 你无法记录自己测试了哪些内容
+- 当代码发生变化时，无法重新运行测试
+- 在压力下很容易忘记已经测试过的内容
+- “我当时测试时它运行正常”并不意味着代码就完全没有问题
 
-<Bad>
-```typescript
-async function retryOperation<T>(
-  fn: () => Promise<T>,
-  options?: {
-    maxRetries?: number;
-    backoff?: 'linear' | 'exponential';
-    onRetry?: (attempt: number) => void;
-  }
-): Promise<T> {
-  // YAGNI
-}
-```
-Over-engineered
-</Bad>
+**自动化测试是系统化的**，每次运行都会执行相同的测试流程。
 
-Don't add features, refactor other code, or "improve" beyond the test.
+**“删除已经编写好的测试用例是浪费时间”**
 
-### Verify GREEN - Watch It Pass
+这是一种“沉没成本谬误”——那些时间已经过去了。你现在可以选择：
+- 删除这些代码，并使用TDD重新编写测试（虽然可能需要更多的时间，但能提高代码的可靠性）
+- 保留那些代码，并在之后再编写测试（虽然效率较低，但风险也更高）
 
-**MANDATORY.**
+**“TDD过于僵化，实际开发中应该灵活应对”**
 
-```bash
-npm test path/to/test.test.ts
-```
+**TDD本身就是灵活的：**
+- 它可以在提交代码之前发现错误（比事后调试更快）
+- 防止代码退化（测试用例能立即发现错误）
+- 文档化了代码的功能（测试用例说明了代码的使用方法）
+- 便于代码重构（可以自由修改代码，而测试用例能确保修改后的代码仍然正常工作）
 
-Confirm:
-- Test passes
-- Other tests still pass
-- Output pristine (no errors, warnings)
+**“事后编写测试也能达到相同的目的”**
 
-**Test fails?** Fix code, not test.
+这种观点是错误的。事后编写测试只能验证代码的实现结果，而先编写测试用例才能确保代码符合预期的设计。
 
-**Other tests fail?** Fix now.
+**事后编写测试**会受到代码实现的影响；你测试的是自己已经编写好的代码，而不是代码应该实现的功能。而先编写测试用例则能确保你确实实现了预期的功能，并且能发现那些被遗忘的边缘情况。
 
-### REFACTOR - Clean Up
+**事后编写测试可能需要30分钟，但TDD能带来更高的效率**：通过TDD，你不仅能获得代码的覆盖率，还能确保代码的正确性。
 
-After green only:
-- Remove duplication
-- Improve names
-- Extract helpers
+## 常见的借口与现实
 
-Keep tests green. Don't add behavior.
-
-### Repeat
-
-Next failing test for next feature.
-
-## Good Tests
-
-| Quality | Good | Bad |
-|---------|------|-----|
-| **Minimal** | One thing. "and" in name? Split it. | `test('validates email and domain and whitespace')` |
-| **Clear** | Name describes behavior | `test('test1')` |
-| **Shows intent** | Demonstrates desired API | Obscures what code should do |
-
-## Why Order Matters
-
-**"I'll write tests after to verify it works"**
-
-Tests written after code pass immediately. Passing immediately proves nothing:
-- Might test wrong thing
-- Might test implementation, not behavior
-- Might miss edge cases you forgot
-- You never saw it catch the bug
-
-Test-first forces you to see the test fail, proving it actually tests something.
-
-**"I already manually tested all the edge cases"**
-
-Manual testing is ad-hoc. You think you tested everything but:
-- No record of what you tested
-- Can't re-run when code changes
-- Easy to forget cases under pressure
-- "It worked when I tried it" ≠ comprehensive
-
-Automated tests are systematic. They run the same way every time.
-
-**"Deleting X hours of work is wasteful"**
-
-Sunk cost fallacy. The time is already gone. Your choice now:
-- Delete and rewrite with TDD (X more hours, high confidence)
-- Keep it and add tests after (30 min, low confidence, likely bugs)
-
-The "waste" is keeping code you can't trust. Working code without real tests is technical debt.
-
-**"TDD is dogmatic, being pragmatic means adapting"**
-
-TDD IS pragmatic:
-- Finds bugs before commit (faster than debugging after)
-- Prevents regressions (tests catch breaks immediately)
-- Documents behavior (tests show how to use code)
-- Enables refactoring (change freely, tests catch breaks)
-
-"Pragmatic" shortcuts = debugging in production = slower.
-
-**"Tests after achieve the same goals - it's spirit not ritual"**
-
-No. Tests-after answer "What does this do?" Tests-first answer "What should this do?"
-
-Tests-after are biased by your implementation. You test what you built, not what's required. You verify remembered edge cases, not discovered ones.
-
-Tests-first force edge case discovery before implementing. Tests-after verify you remembered everything (you didn't).
-
-30 minutes of tests after ≠ TDD. You get coverage, lose proof tests work.
-
-## Common Rationalizations
-
-| Excuse | Reality |
+| 常见借口 | 实际情况 |
 |--------|---------|
-| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
-| "I'll test after" | Tests passing immediately prove nothing. |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
-| "Already manually tested" | Ad-hoc ≠ systematic. No record, can't re-run. |
-| "Deleting X hours is wasteful" | Sunk cost fallacy. Keeping unverified code is technical debt. |
-| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete. |
-| "Need to explore first" | Fine. Throw away exploration, start with TDD. |
-| "Test hard = design unclear" | Listen to test. Hard to test = hard to use. |
-| "TDD will slow me down" | TDD faster than debugging. Pragmatic = test-first. |
-| "Manual test faster" | Manual doesn't prove edge cases. You'll re-test every change. |
-| "Existing code has no tests" | You're improving it. Add tests for existing code. |
+| “代码太简单，不需要测试” | 即使代码很简单，也可能出错；测试只需要30秒而已。 |
+| “我会在之后再测试” | 事后编写的测试无法立即证明代码的正确性。 |
+| “事后编写测试也能达到相同的目的” | 事后编写测试只能验证代码的实现，而先编写测试用例才能确保代码符合设计要求。 |
+| “我已经手动测试过了” | 手动测试是非系统化的；没有记录，也无法重新运行。 |
+| “删除已经编写好的测试用例是浪费时间” | 保留未经验证的代码实际上是一种技术上的负担。 |
+| “先保留代码作为参考，之后再编写测试” | 你可能会修改这些代码；但这样做其实是在事后编写测试。删除代码才是正确的做法。 |
+| “需要先探索代码的功能” | 没关系，可以先使用TDD来探索代码。 |
+| “如果测试太难，说明设计有问题” | 如果测试难以编写，说明代码的设计本身就有问题。 |
+| “TDD会拖慢开发速度” | 实际上，TDD的效率更高。 |
+| “手动测试更快” | 手动测试无法覆盖所有的边缘情况；每次修改都需要重新测试。 |
+| “现有的代码没有测试用例” | 你正在改进这些代码，所以应该为它们添加测试用例。 |
 
-## Red Flags - STOP and Start Over
+## 需要立即停止并重新开始的信号
 
-- Code before test
-- Test after implementation
-- Test passes immediately
-- Can't explain why test failed
-- Tests added "later"
-- Rationalizing "just this once"
-- "I already manually tested it"
-- "Tests after achieve the same purpose"
-- "It's about spirit not ritual"
-- "Keep as reference" or "adapt existing code"
-- "Already spent X hours, deleting is wasteful"
-- "TDD is dogmatic, I'm being pragmatic"
-- "This is different because..."
+- 在编写测试之前就先编写了代码
+- 在代码实现之后才编写测试用例
+- 测试用例通过后立即就通过了
+- 无法解释测试失败的原因
+- 后来才添加的测试用例
+- 以“这次就跳过TDD”为借口
+- “我已经手动测试过了”
+- 认为“事后编写测试和先编写测试的目的相同”
+- 认为“TDD只是形式主义”
 
-**All of these mean: Delete code. Start over with TDD.**
+**遇到以上任何情况，都应该立即删除现有的代码，并重新开始使用TDD。**
 
-## Example: Bug Fix
+## 示例：修复错误**
 
-**Bug:** Empty email accepted
+**错误示例：** 程序接受空电子邮件地址
 
-**RED**
-```typescript
-test('rejects empty email', async () => {
-  const result = await submitForm({ email: '' });
-  expect(result.error).toBe('Email required');
-});
+**红色阶段（RED）——编写测试用例：**
+```python
+# test('email_is_empty')
 ```
 
-**Verify RED**
-```bash
-$ npm test
-FAIL: expected 'Email required', got undefined
+**验证测试用例是否通过：**
+```python
+# 测试用例是否能够正确地检测到空电子邮件地址**
 ```
 
-**GREEN**
-```typescript
-function submitForm(data: FormData) {
-  if (!data.email?.trim()) {
-    return { error: 'Email required' };
-  }
-  // ...
-}
+**绿色阶段（GREEN）——编写代码实现：**
+```python
+# 实现验证电子邮件地址是否为空的逻辑**
 ```
 
-**Verify GREEN**
-```bash
-$ npm test
-PASS
-```
+**重构阶段（REFactor）——根据需要，提取出用于验证多个字段的通用逻辑。**
 
-**REFACTOR**
-Extract validation for multiple fields if needed.
+## 验证完成后的检查清单
 
-## Verification Checklist
+在确认工作完成之前，请确保满足以下条件：
+- 每个新添加的函数/方法都有对应的测试用例
+- 在实现代码之前，确保每个测试用例都能正确地失败（即测试用例能够检测到预期的错误）
+- 每个测试用例都使用了最简短的代码来通过
+- 所有的测试用例都能通过
+- 测试的输出结果正常（没有错误或警告）
+- 测试用例使用的是真实的代码（只有在必要时才使用模拟对象）
+- 所有的边缘情况和错误都能被覆盖
 
-Before marking work complete:
+如果无法满足所有条件，说明你没有按照TDD的流程来编写测试用例，需要重新开始。
 
-- [ ] Every new function/method has a test
-- [ ] Watched each test fail before implementing
-- [ ] Each test failed for expected reason (feature missing, not typo)
-- [ ] Wrote minimal code to pass each test
-- [ ] All tests pass
-- [ ] Output pristine (no errors, warnings)
-- [ ] Tests use real code (mocks only if unavoidable)
-- [ ] Edge cases and errors covered
+## 遇到困难时的解决方法
 
-Can't check all boxes? You skipped TDD. Start over.
+| 遇到的问题 | 解决方法 |
+|---------|---------|
+| 不知道如何编写测试用例 | 先设计出你希望测试的功能接口，然后再编写测试用例；如果需要，可以咨询团队成员的帮助。 |
+| 测试用例太复杂 | 说明代码的设计过于复杂；简化接口。 |
+| 必须使用模拟对象 | 说明代码的耦合度过高；使用依赖注入来解耦代码。 |
+| 测试设置过于繁琐 | 提取出可重用的辅助函数；如果仍然复杂，再简化代码的设计。 |
 
-## When Stuck
+## 调试集成代码中的错误
 
-| Problem | Solution |
-|---------|----------|
-| Don't know how to test | Write wished-for API. Write assertion first. Ask your human partner. |
-| Test too complicated | Design too complicated. Simplify interface. |
-| Must mock everything | Code too coupled. Use dependency injection. |
-| Test setup huge | Extract helpers. Still complex? Simplify design. |
+发现错误后，首先编写一个能够重现该错误的测试用例，然后按照TDD的流程进行测试。测试用例不仅能验证修复后的代码是否正确，还能防止代码出现退化。
 
-## Debugging Integration
+**注意事项：** 在修复错误时，一定要先编写相应的测试用例。
 
-Bug found? Write failing test reproducing it. Follow TDD cycle. Test proves fix and prevents regression.
+## 避免常见的测试误区
 
-Never fix bugs without a test.
+在编写测试用例或使用测试辅助工具时，请参考 @testing-anti-patterns.md 来避免常见的错误：
+- 只测试模拟对象的行为，而不是实际的功能
+- 在生产代码中添加仅用于测试的辅助方法
+- 在不了解代码依赖关系的情况下使用模拟对象
 
-## Testing Anti-Patterns
+## 最后的规则
 
-When adding mocks or test utilities, read @testing-anti-patterns.md to avoid common pitfalls:
-- Testing mock behavior instead of real behavior
-- Adding test-only methods to production classes
-- Mocking without understanding dependencies
-
-## Final Rule
-
-```
-Production code → test exists and failed first
-Otherwise → not TDD
-```
-
-No exceptions without your human partner's permission.
+**在没有团队成员的许可下，**任何情况下都不得违反TDD的原则。

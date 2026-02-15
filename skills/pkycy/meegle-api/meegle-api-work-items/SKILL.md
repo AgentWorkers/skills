@@ -6,25 +6,25 @@ metadata:
   { "openclaw": {} }
 ---
 
-# Meegle API — Work Items
+# Meegle API — 工作项
 
-Create and manage work items (tasks, stories, bugs, etc.) in a Meegle space.
+在 Meegle 空间中创建和管理工作项（任务、故事、漏洞等）。
 
-**Prerequisites:** Obtain domain and access token first; see skill **meegle-api-users** for domain, plugin_access_token / user_access_token, and request headers.
+**先决条件：** 首先获取域名和访问令牌；有关域名、插件访问令牌（plugin_access_token）/ 用户访问令牌（user_access_token）以及请求头的详细信息，请参阅技能文档 **meegle-api-users**。
 
 ---
 
-## Create Work Item
+## 创建工作项
 
-Create a new work item in a Meegle space. Supports multiple work item types, templates, and custom fields. Requires permission: Work Items.
+在 Meegle 空间中创建一个新的工作项。支持多种工作项类型、模板和自定义字段。需要具备 “Work Items” 权限。
 
-### When to Use
+### 使用场景
 
-- When creating a new task, story, bug, or other work item
-- When persisting structured work into Meegle
-- When initializing workflows or planning items programmatically
+- 当需要创建新的任务、故事、漏洞或其他工作项时
+- 当需要将结构化的工作内容保存到 Meegle 中时
+- 当需要通过编程方式初始化工作流程或规划相关事项时
 
-### API Spec: create_work_item
+### API 规范：create_work_item
 
 ```yaml
 name: meegle.create_work_item
@@ -145,15 +145,15 @@ examples:
                 - testuser
 ```
 
-### Usage notes
+### 使用说明
 
-- **project_key**: Path parameter, required. Use space ID (project_key) or space domain (simple_name).
-- **name**: Work item name; do not also send name in field_value_pairs.
-- **field_value_pairs**: Send other fields (description, priority, assignees, etc.) here; use option ID for option-type fields, not display labels.
-- Before creating, call "Get Work Item Creation Metadata" to get field metadata for the type and template, then build field_value_pairs accordingly.
+- **project_key**：路径参数，必填。可以使用空间 ID（project_key）或空间域名（simple_name）。
+- **name**：工作项名称；请勿同时在 `field_value_pairs` 中重复发送该名称。
+- **field_value_pairs**：在此处发送其他字段（描述、优先级、分配者等）；对于选项类型的字段，请使用选项 ID，而不是显示标签。
+- 在创建工作项之前，请先调用 “Get Work Item Creation Metadata” 来获取该类型和模板的字段元数据，然后据此构建 `field_value_pairs`。
 
 ---
 
-## Other work item APIs (to be documented)
+## 其他工作项 API（待文档化）
 
-Get work item, update work item, list work items, and related endpoints will be documented here.
+获取工作项信息、更新工作项、列出工作项等相关接口的详细信息将在后续文档中提供。

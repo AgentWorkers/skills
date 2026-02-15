@@ -1,15 +1,15 @@
 ---
 name: clawdsense
-description: Real-time image analysis from ClawdSense ESP32 dongle. Monitors media receiver, captures photos from device, analyzes instantly with Groq Vision. Use when ClawdSense sends photos via /photo command or button controls. Provides instant room analysis, occupancy detection, and environmental awareness.
+description: 实时图像分析功能由ClawdSense ESP32扩展板实现：该扩展板可监控媒体接收器，从设备中捕获照片，并通过Groq Vision技术进行即时图像分析。当ClawdSense通过`/photo`命令或按钮控制发送照片时，该功能可立即对房间环境进行分析，包括检测房间内的人员数量及环境状况。
 ---
 
-# ClawdSense Skill
+# ClawdSense 技能
 
-Real-time image capture and analysis from ClawdSense ESP32 dongle.
+该技能支持通过 ClawdSense ESP32 适配器进行实时图像捕获与分析。
 
-## Quick Start
+## 快速入门
 
-### Start Services
+### 启动服务
 
 ```bash
 # Terminal 1: Media receiver (accepts photo uploads from ESP32)
@@ -22,75 +22,75 @@ node ~/clawd/clawdsense-skill/scripts/analyzer.js
 node ~/clawd/clawdsense-skill/scripts/health-monitor.js
 ```
 
-### Usage
+### 使用方法
 
-1. **Send `/photo` command to ClawdSense** via Telegram
-2. **Device captures and POSTs to media receiver** (port 5555)
-3. **Analyzer detects new photo** and analyzes with Groq Vision
-4. **Results printed to console**
+1. 通过 Telegram 向 ClawdSense 发送 `/photo` 命令。
+2. 设备会捕获图像并将其发送到媒体接收器（端口 5555）。
+3. 分析器会检测到新图像，并使用 Groq Vision 进行分析。
+4. 分析结果会显示在控制台。
 
-## Architecture
+## 架构
 
-### Three Components
+### 三个主要组件
 
-**Media Receiver** (port 5555)
-- Accepts multipart/form-data uploads from ESP32
-- Stores photos in `~/.clawdbot/media/inbound/`
-- Endpoints:
-  - POST `/inbound/photo` - JPEG photos
-  - POST `/inbound/audio` - WAV audio
-  - POST `/inbound/video` - AVI video
+**媒体接收器**（端口 5555）
+- 接收来自 ESP32 的 multipart/form-data 格式的数据上传。
+- 将捕获的图像存储在 `~/.clawdbot/media/inbound/` 目录中。
+- 提供以下接口：
+  - POST `/inbound/photo` - 用于上传 JPEG 格式的图像
+  - POST `/inbound/audio` - 用于上传 WAV 格式的音频
+  - POST `/inbound/video` - 用于上传 AVI 格式的视频
 
-**Analyzer** (real-time polling)
-- Polls inbound folder every 500ms
-- Detects new photos automatically
-- Sends to Groq Vision API for analysis
-- Uses pixtral-12b model for instant results
+**分析器**（实时轮询）
+- 每 500 毫秒轮询一次 `inbound` 目录。
+- 自动检测新上传的图像。
+- 将图像数据发送到 Groq Vision API 进行分析。
+- 使用 pixtral-12b 模型快速生成分析结果。
 
-**Health Monitor**
-- Checks both services every 30s
-- Restarts if either dies
-- Logs status to console
+**健康监控**
+- 每 30 秒检查两次两个服务的运行状态。
+- 如果任一服务出现故障，会自动重启。
+- 将服务状态记录到控制台。
 
-## Performance
+## 性能
 
-- **Detection latency:** ~500ms (polling interval)
-- **Analysis time:** 1-3s (Groq API)
-- **Total end-to-end:** ~2-5s from capture to results
+- **检测延迟**：约 500 毫秒（轮询间隔）
+- **分析时间**：1-3 秒（Groq API 处理时间）
+- **从图像捕获到结果输出的总时间**：约 2-5 秒
 
-## Configuration
+## 配置
 
-### ESP32 Firmware Settings
+### ESP32 固件配置
 
-Device must be configured with:
+设备需要按照以下要求进行配置：
 ```
 MEDIA_RECEIVER_URL = "http://localhost:5555"
 or for public: "https://your-ngrok-url"
 ```
 
-### Groq API Key
+### Groq API 密钥
 
-Stored in environment:
+API 密钥需存储在环境变量中：
 ```bash
 export GROQ_API_KEY="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"
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"Media receiver is DOWN"**
-- Check if port 5555 is in use
-- Restart: `node ~/clawd/clawdsense-skill/scripts/media-receiver.js`
+**“媒体接收器无法正常工作”**
+- 检查端口 5555 是否被占用。
+- 重启媒体接收器服务：`node ~/clawd/clawdsense-skill/scripts/media-receiver.js`
 
-**"No new photos detected"**
-- Is device sending to media receiver? Check device logs
-- Is media receiver running? Curl http://localhost:5555/health
-- Check inbound folder permissions
+**“未检测到新图像”**
+- 确认设备是否已向媒体接收器发送数据？查看设备日志。
+- 媒体接收器是否正在运行？通过curl命令检查 `http://localhost:5555/health`。
+- 检查 `inbound` 目录的访问权限。
 
-**"Groq API errors"**
-- Verify API key is set
-- Check account quota/billing
+**“Groq API 出现错误”**
+- 确认 API 密钥已正确设置。
+- 检查账户的配额或计费情况。
 
-## References
+## 参考资料
 
-- See `references/groq-vision-api.md` for Groq setup
-- See `references/esp32-setup.md` for device configuration
+- 有关 Groq Vision 的配置信息，请参阅 `references/groq-vision-api.md`。
+- 有关设备配置的详细信息，请参阅 `references/esp32-setup.md`。

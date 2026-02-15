@@ -7,39 +7,39 @@ description: >
   and Python (payments-py).
 ---
 
-# Nevermined Payments Integration
+# Nevermined支付集成
 
-## Overview
+## 概述
 
-Nevermined provides financial rails for AI agents — real-time monetization, access control, and payments. This skill gives you everything needed to:
+Nevermined为AI代理提供了金融支持功能，包括实时货币化、访问控制和支付处理。本文档将帮助您实现以下功能：
 
-- Protect API endpoints with the **x402 payment protocol**
-- Charge per-request using **credit-based billing**
-- Integrate with **Express.js**, **FastAPI**, **Strands agents**, **MCP servers**, or **Google A2A agents**
-- Support **subscriber-side** flows (purchase plans, generate tokens, call protected APIs)
-- Enable **agent-to-agent** payments via the Google A2A protocol
+- 使用**x402支付协议**保护API端点
+- 通过**基于信用的计费方式**按请求收费
+- 与**Express.js**、**FastAPI**、**Strands代理**、**MCP服务器**或**Google A2A代理**集成
+- 支持**订阅者端**的流程（购买计划、生成令牌、调用受保护的API）
+- 通过Google A2A协议实现**代理之间的支付**
 
-The x402 protocol uses HTTP 402 responses to advertise payment requirements. Clients acquire an access token and retry the request. The server verifies permissions, executes the workload, then settles (burns credits).
+x402协议利用HTTP 402响应来提示支付需求。客户端获取访问令牌后重新发起请求，服务器验证权限、执行任务并完成结算（消耗信用）。
 
-## Quick Start Checklist
+## 快速入门检查清单
 
-1. **Get an API key** at [nevermined.app](https://nevermined.app) → Settings → API Keys
-2. **Install the SDK** (`npm install @nevermined-io/payments` or `pip install payments-py`)
-3. **Register your agent and plan** (via the App UI or programmatically — see `references/payment-plans.md`)
-4. **Add payment protection** to your routes/tools (see framework-specific references below)
-5. **Test** — call without token (expect 402), then with token (expect 200)
+1. 在[nevermined.app](https://nevermined.app)的“设置”→“API密钥”处获取API密钥。
+2. 安装SDK（`npm install @nevermined-io/payments`或`pip install payments-py`）。
+3. 通过应用程序界面或编程方式注册您的代理和计划（详见`references/payment-plans.md`）。
+4. 为您的路由/工具添加支付保护（请参考相应的框架文档）。
+5. 进行测试：先尝试不带令牌的请求（应收到402响应），然后再尝试带令牌的请求（应收到200响应）。
 
-## Environment Setup
+## 环境设置
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 说明 |
 |---|---|---|
-| `NVM_API_KEY` | Yes | Your Nevermined API key (get it at [nevermined.app](https://nevermined.app) → Settings → API Keys) |
-| `NVM_ENVIRONMENT` | Yes | `sandbox` for testing, `live` for production |
-| `NVM_PLAN_ID` | Yes | The plan ID from registration |
-| `NVM_AGENT_ID` | Sometimes | Required for MCP servers and plans with multiple agents |
-| `BUILDER_ADDRESS` | For registration | Wallet address to receive payments |
+| `NVM_API_KEY` | 是 | 您的Nevermined API密钥（在[nevermined.app]的“设置”→“API密钥”处获取） |
+| `NVM_ENVIRONMENT` | 是 | `sandbox`用于测试，`live`用于生产环境 |
+| `NVM_PLAN_ID` | 是 | 注册时获得的计划ID |
+| `NVM_AGENT_ID` | 有时需要 | 对于MCP服务器和包含多个代理的计划而言 |
+| `BUILDER_ADDRESS` | 注册时需要 | 用于接收支付的钱包地址 |
 
-### `.env` Template
+### `.env`模板
 
 ```bash
 # Required
@@ -54,10 +54,10 @@ NVM_AGENT_ID=your-agent-id-here
 BUILDER_ADDRESS=0xYourWalletAddress
 ```
 
-### Prerequisites
+### 先决条件
 
-- **TypeScript/Express.js**: Node.js 18+. Your `package.json` must include `"type": "module"` for the `@nevermined-io/payments/express` subpath import to work.
-- **Python/FastAPI**: Python 3.9+. Install with `pip install payments-py[fastapi]` — the `[fastapi]` extra is required for the middleware.
+- **TypeScript/Express.js**：Node.js 18+版本。您的`package.json`中必须包含`"type": "module"`，以便导入`@nevermined-io/payments/express`模块。
+- **Python/FastAPI**：Python 3.9+版本。使用`pip install payments-py[fastapi`进行安装；`[fastapi]`插件是必需的。
 
 ### TypeScript
 
@@ -65,20 +65,13 @@ BUILDER_ADDRESS=0xYourWalletAddress
 npm install @nevermined-io/payments
 ```
 
-```typescript
-import { Payments } from '@nevermined-io/payments'
-
-const payments = Payments.getInstance({
-  nvmApiKey: process.env.NVM_API_KEY!,
-  environment: 'sandbox'
-})
-```
-
 ### Python
 
 ```bash
 pip install payments-py
 ```
+
+### Python（FastAPI）
 
 ```python
 import os
@@ -92,33 +85,33 @@ payments = Payments.get_instance(
 )
 ```
 
-## Core Workflow (All Integrations)
+## 核心工作流程（所有集成方式）
 
-Every Nevermined payment integration follows this 5-step pattern:
+所有Nevermined支付集成都遵循以下5个步骤：
 
-1. **Client sends request** without a payment token
-2. **Server returns 402** with `payment-required` header (base64-encoded JSON with plan info)
-3. **Client acquires x402 token** via `payments.x402.getX402AccessToken(planId, agentId)`
-4. **Client retries** with `payment-signature` header containing the token
-5. **Server verifies → executes → settles** (burns credits), returns response with `payment-response` header
+1. 客户端发送请求（不包含支付令牌）。
+2. 服务器返回402响应，并附带`payment-required`头部（包含计划的Base64编码JSON信息）。
+3. 客户端通过`payments.x402 getX402AccessToken(planId, agentId)`获取x402令牌。
+4. 客户端再次发送请求，并在请求头中包含`payment-signature`（即令牌）。
+5. 服务器验证请求、执行任务并完成结算（消耗信用），然后返回带有`payment-response`头部的响应。
 
-## Framework Decision Tree
+## 框架选择指南
 
-Choose the integration that matches your stack:
+根据您的开发环境选择合适的集成方式：
 
-| Framework | Language | Reference | Key Import |
+| 框架 | 语言 | 参考文档 | 关键导入项 |
 |---|---|---|---|
-| **Express.js** | TypeScript/JS | `references/express-integration.md` | `paymentMiddleware` from `@nevermined-io/payments/express` |
-| **FastAPI** | Python | `references/fastapi-integration.md` | `PaymentMiddleware` from `payments_py.x402.fastapi` |
-| **Strands Agent** | Python | `references/strands-integration.md` | `@requires_payment` from `payments_py.x402.strands` |
+| **Express.js** | TypeScript/JS | `references/express-integration.md` | `@nevermined-io/payments/express`中的`paymentMiddleware` |
+| **FastAPI** | Python | `references/fastapi-integration.md` | `payments_py.x402.fastapi`中的`PaymentMiddleware` |
+| **Strands Agent** | Python | `references/strands-integration.md` | `payments_py.x402.strands`中的`@requires_payment` |
 | **MCP Server** | TypeScript | `references/mcp-paywall.md` | `payments.mcp.start()` / `payments.mcp.registerTool()` |
-| **Google A2A** | TS / Python | `references/a2a-integration.md` | `payments.a2a.start()` / `payments.a2a.buildPaymentAgentCard()` |
-| **Any HTTP** | Any | `references/x402-protocol.md` | Manual verify/settle via facilitator API |
-| **Client-side** | TS / Python | `references/client-integration.md` | `payments.x402.getX402AccessToken()` |
+| **Google A2A** | TypeScript/Python | `references/a2a-integration.md` | `payments.a2a.start()` / `payments.a2a.buildPaymentAgentCard()` |
+| **任意HTTP框架** | 任意语言 | `references/x402-protocol.md` | 需通过自定义API进行手动验证和结算 |
+| **客户端** | TypeScript/Python | `references/client-integration.md` | `payments.x402 getX402AccessToken()` |
 
-## SDK Quick Reference
+## SDK快速参考
 
-### TypeScript (`@nevermined-io/payments`)
+### TypeScript（`@nevermined-io/payments`）
 
 ```typescript
 // Initialize
@@ -158,7 +151,7 @@ const client = payments.a2a.getClient({ agentBaseUrl, agentId, planId })
 await client.sendMessage("Hello", accessToken)
 ```
 
-### Python (`payments-py`)
+### Python（`payments-py`）
 
 ```python
 # Initialize
@@ -196,17 +189,17 @@ server = PaymentsA2AServer.start(agent_card=agent_card, executor=executor, payme
 client = payments.a2a.get_client(agent_base_url=url, agent_id=agent_id, plan_id=plan_id)
 ```
 
-## x402 Payment Headers
+## x402支付头部
 
-All x402 v2 integrations use these three HTTP headers:
+所有x402 v2集成都使用以下三个HTTP头部：
 
-| Header | Direction | Description |
+| 头部 | 方向 | 说明 |
 |---|---|---|
-| `payment-signature` | Client → Server | x402 access token |
-| `payment-required` | Server → Client (402) | Base64-encoded JSON with plan requirements |
-| `payment-response` | Server → Client (200) | Base64-encoded JSON settlement receipt |
+| `payment-signature` | 客户端 → 服务器 | x402访问令牌 |
+| `payment-required` | 服务器 → 客户端（402响应） | 包含计划要求的Base64编码JSON |
+| `payment-response` | 服务器 → 客户端（200响应） | 包含结算结果的Base64编码JSON |
 
-The `payment-required` payload structure:
+`payment-required`头部的数据结构：
 ```json
 {
   "x402Version": 2,
@@ -219,21 +212,21 @@ The `payment-required` payload structure:
 }
 ```
 
-## Payment Plan Types
+## 支付计划类型
 
-Nevermined supports several plan types:
+Nevermined支持多种支付计划类型：
 
-- **Credits-based**: prepaid balance, deducted per request (most common for APIs)
-- **Time-based**: access for a fixed duration (e.g., 30 days unlimited)
-- **Pay-as-you-go (PAYG)**: settle in USDC per request, no credit balance
-- **Trial**: free limited access, one-time claim per user
-- **Hybrid**: combine credits with time expiry
+- **基于信用的**：预付费余额，按请求次数扣费（最常见于API）
+- **基于时间的**：固定期限的访问权限（例如，30天无限访问）
+- **按使用量付费（PAYG）**：每次请求按USDC结算，无预付费余额 |
+- **试用版**：免费有限访问权限，用户可一次性申请 |
+- **混合型**：结合信用和时限
 
-See `references/payment-plans.md` for plan registration code.
+详细信息请参阅`references/payment-plans.md`。
 
-## Common Patterns
+## 常见集成模式
 
-### Express.js — Fixed credits per route
+### Express.js — 每个路由固定信用额度
 
 ```typescript
 import { paymentMiddleware } from '@nevermined-io/payments/express'
@@ -244,7 +237,7 @@ app.use(paymentMiddleware(payments, {
 }))
 ```
 
-### FastAPI — Fixed credits per route
+### FastAPI — 每个路由固定信用额度
 
 ```python
 from payments_py.x402.fastapi import PaymentMiddleware
@@ -259,7 +252,7 @@ app.add_middleware(
 )
 ```
 
-### Express.js — Dynamic credits based on response
+### Express.js — 根据响应动态分配信用额度
 
 ```typescript
 paymentMiddleware(payments, {
@@ -273,7 +266,7 @@ paymentMiddleware(payments, {
 })
 ```
 
-### FastAPI — Dynamic credits based on request
+### FastAPI — 根据请求动态分配信用额度
 
 ```python
 async def calculate_credits(request: Request) -> int:
@@ -288,7 +281,7 @@ app.add_middleware(
 )
 ```
 
-### MCP Server — Register tool with paywall
+### MCP服务器 — 使用支付墙进行注册
 
 ```typescript
 payments.mcp.registerTool(
@@ -307,7 +300,7 @@ const { info, stop } = await payments.mcp.start({
 })
 ```
 
-### Strands Agent — Decorator-based payment
+### Strands代理 — 基于装饰器的支付处理
 
 ```python
 from strands import Agent, tool
@@ -321,7 +314,7 @@ def analyze_data(query: str, tool_context=None) -> dict:
 agent = Agent(tools=[analyze_data])
 ```
 
-### Google A2A — Agent server with payment extension
+### Google A2A — 带有支付功能的代理服务器
 
 #### TypeScript
 
@@ -363,7 +356,7 @@ server = PaymentsA2AServer.start(
 )
 ```
 
-### Google A2A — Client sending a paid task
+### Google A2A — 客户端发送付费任务
 
 ```typescript
 const client = payments.a2a.getClient({
@@ -376,44 +369,44 @@ const { accessToken } = await payments.x402.getX402AccessToken(PLAN_ID, AGENT_ID
 const response = await client.sendMessage("Analyze this data", accessToken)
 ```
 
-## Gathering Developer Information Upfront
+## 提前收集开发人员信息
 
-When a developer asks you to integrate Nevermined payments, gather ALL required information in a single question before generating code. This avoids multiple back-and-forth interactions.
+当开发人员请求集成Nevermined支付功能时，请在生成代码之前收集所有必要的信息，以避免多次沟通。
 
-**Ask the developer once for:**
+**请一次性询问开发人员以下内容：**
 
-1. **Framework**: Express.js, FastAPI, MCP server, Strands agent, Google A2A, or generic HTTP?
-2. **Routes to protect**: Which endpoints need payment protection and how many credits each? (e.g., `POST /chat = 1 credit, POST /generate = 5 credits`)
-3. **Pricing model**: Fixed credits per request, or dynamic pricing based on request/response parameters?
-4. **Nevermined API Key**: Do they already have an `NVM_API_KEY`? If not, direct them to [nevermined.app](https://nevermined.app) → Settings → API Keys
-5. **Plan ID**: Do they already have a `NVM_PLAN_ID`? If not, do they need a registration script too?
-6. **Environment**: `sandbox` (testing) or `live` (production)?
+1. **使用的框架**：Express.js、FastAPI、MCP服务器、Strands代理、Google A2A还是通用HTTP？
+2. **需要保护的路由**：哪些API端点需要支付保护？每个端点需要多少信用额度？（例如，`POST /chat = 1信用额度`）
+3. **定价模式**：是按请求固定信用额度，还是根据请求/响应参数动态定价？
+4. **Nevermined API密钥**：他们是否已经有了`NVM_API_KEY`？如果没有，请引导他们访问[nevermined.app]的“设置”→“API密钥”。
+5. **计划ID**：他们是否已经有了`NVM_PLAN_ID`？如果需要，是否还需要注册脚本？
+6. **环境**：测试环境（`sandbox`）还是生产环境（`live`）？
 
-**If they need plan registration, also ask:**
+**如果需要注册计划，请进一步询问：**
 
-7. **Plan name and description**: e.g., "Starter Plan — 100 API requests"
-8. **Pricing**: How much in USDC? (e.g., 10 USDC for 100 credits)
-9. **Credits per plan**: Total credits included (e.g., 100)
-10. **Builder wallet address** (`BUILDER_ADDRESS`): The wallet that receives payments
+7. **计划名称和描述**：例如，“入门计划——100次API请求”
+8. **定价信息**：每次请求的费用是多少（以USDC计）？
+9. **每个计划的信用额度**：总共包含多少信用额度？
+10. **支付接收钱包地址**（`BUILDER_ADDRESS`）：用于接收支付的钱包地址
 
-**Example combined prompt to offer the developer:**
+**示例提示：**
 
-> I need to set up Nevermined payments. Here's my info:
-> - Framework: Express.js
-> - Routes: POST /chat (1 credit), POST /summarize (3 credits)
-> - I need a registration script too
-> - Plan: "Starter Plan", 100 credits for 10 USDC
-> - Environment: sandbox
-> - My API key is in the NVM_API_KEY env var
-> - My wallet: 0x1234...
+> 我需要设置Nevermined支付功能。以下是我的信息：
+> - 使用的框架：Express.js
+> - 需要保护的路由：`POST /chat`（1信用额度），`POST /generate`（3信用额度）
+> - 我也需要注册脚本
+- 计划名称：“入门计划”，100次API请求对应10 USDC
+- 环境：测试环境（`sandbox`）
+- 我的API密钥存储在`NVM_API_KEY`环境变量中
+- 支付接收钱包地址：0x1234...
 
-With this information, generate both the registration script and the payment-protected server in a single response.
+根据这些信息，您可以一次性生成注册脚本和具有支付保护的服务器代码。
 
-## Agent and Plan Registration
+## 代理和计划注册
 
-### Using the SDK (Recommended)
+### 推荐使用SDK进行注册
 
-Register your agent and plan programmatically — see `references/payment-plans.md` for complete code.
+建议通过编程方式注册您的代理和计划（详见`references/payment-plans.md`）。
 
 ```typescript
 // TypeScript
@@ -426,26 +419,15 @@ const { agentId, planId } = await payments.agents.registerAgentAndPlan(
 )
 ```
 
-```python
-# Python
-result = payments.agents.register_agent_and_plan(
-    agent_metadata={'name': 'My Agent', 'description': 'AI service', 'tags': ['ai']},
-    agent_api={'endpoints': [{'POST': 'https://your-api.com/query'}]},
-    plan_metadata={'name': 'Starter Plan', 'description': '100 requests for $10'},
-    price_config=get_erc20_price_config(10_000_000, USDC_ADDRESS, os.environ['BUILDER_ADDRESS']),
-    credits_config=get_fixed_credits_config(100, 1)
-)
-```
+### 使用Nevermined应用程序（无需编写代码）
 
-### Using the Nevermined App (No-Code)
+1. 访问[nevermined.app](https://nevermined.app)并登录。
+2. 点击“我的代理”，然后注册新的代理并设置元数据和端点。
+3. 创建支付计划（设置价格、信用额度和有效期）。
+4. 将计划与代理关联并发布。
+5. 复制`agentId`和`planId`，用于配置`.env`文件。
 
-1. Go to [nevermined.app](https://nevermined.app) and sign in
-2. Click "My agents" → register a new agent with metadata and endpoints
-3. Create a payment plan: set pricing, credits, and duration
-4. Link the plan to your agent and publish
-5. Copy the `agentId` and `planId` for your `.env` file
-
-### Using the CLI
+### 使用命令行工具（CLI）
 
 ```bash
 # 1. Install CLI
@@ -476,23 +458,23 @@ curl -X POST http://localhost:3000/chat \
   -d '{"message": "Hello"}'
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Symptom | Cause | Fix |
+| 现象 | 原因 | 解决方法 |
 |---|---|---|
-| HTTP 402 returned | No `payment-signature` header or invalid/expired token | Generate a fresh token via `getX402AccessToken` |
-| MCP error `-32003` | Payment Required — no token, invalid token, or insufficient credits | Check subscriber has purchased plan and has credits remaining |
-| MCP error `-32002` | Server misconfiguration | Verify `NVM_API_KEY`, `NVM_PLAN_ID`, and `NVM_AGENT_ID` are set correctly |
-| `verification.isValid` is false | Token expired, wrong plan, or insufficient credits | Re-order the plan or generate a new token |
-| Credits not deducting | Settlement not called after request | Ensure you call `settlePermissions` after processing (middleware does this automatically) |
-| `payment-required` header missing | Server not returning 402 properly | Use `buildPaymentRequired()` helper or framework middleware |
+| 返回HTTP 402响应 | 未设置`payment-signature`头部或令牌无效/过期 | 通过`getX402AccessToken()`生成新的令牌 |
+| MCP错误 `-32003` | 需要支付但未提供令牌、令牌无效或信用额度不足 | 确认订阅者已购买计划且仍有剩余信用额度 |
+| MCP错误 `-32002` | 服务器配置错误 | 检查`NVM_API_KEY`、`NVM_PLAN_ID`和`NVM_AGENT_ID`是否设置正确 |
+| `verification.isValid`为`false` | 令牌过期、计划错误或信用额度不足 | 重新选择计划或生成新的令牌 |
+| 信用额度未扣除 | 请求处理后未调用`settlePermissions`方法 | 确保在处理请求后调用了`settlePermissions`方法（中间件会自动执行此操作） |
+| 未显示`payment-required`头部 | 服务器未正确返回402响应 | 使用`buildPaymentRequired()`辅助函数或相应的框架中间件 |
 
-## Additional Resources
+## 额外资源
 
-- **Documentation**: [nevermined.ai/docs](https://nevermined.ai/docs)
-- **Nevermined App**: [nevermined.app](https://nevermined.app) — register agents, create plans, manage subscriptions
-- **MCP Search Server**: `https://docs.nevermined.app/mcp` — search Nevermined docs from any MCP client
-- **Tutorials**: [github.com/nevermined-io/tutorials](https://github.com/nevermined-io/tutorials)
-- **Discord**: [discord.com/invite/GZju2qScKq](https://discord.com/invite/GZju2qScKq)
-- **TypeScript SDK**: `@nevermined-io/payments` on npm
-- **Python SDK**: `payments-py` on PyPI
+- **文档**：[nevermined.ai/docs](https://nevermined.ai/docs)
+- **Nevermined应用程序**：[nevermined.app](https://nevermined.app)——用于注册代理、创建计划和管理订阅 |
+- **MCP搜索服务器**：`https://docs.nevermined.app/mcp`——可以从任何MCP客户端搜索Nevermined的文档 |
+- **教程**：[github.com/nevermined-io/tutorials](https://github.com/nevermined-io/tutorials) |
+- **Discord社区**：[discord.com/invite/GZju2qScKq](https://discord.com/invite/GZju2qScKq) |
+- **TypeScript SDK**：`@nevermined-io/payments`（在npm上可安装） |
+- **Python SDK**：`payments-py`（在PyPI上可安装）

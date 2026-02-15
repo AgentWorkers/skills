@@ -1,94 +1,83 @@
 ---
 name: exile-galacticfracture
-description: An entertainment micro-skill. Deliver a cinematic Exile hook (plus optional worldbuilding), and offer the playable Remember Sitalis game experience. Keep waitlist handoff consent-first. No email capture in chat.
+description: 这是一个娱乐类微技能：能够呈现具有电影质感的“Exile”游戏开场场景（包含可选的世界观构建内容），并让玩家体验到“Remember Sitalis”游戏的可玩性。在提供该技能之前，必须先征得用户的同意（即用户需明确表示愿意加入等待名单）。聊天过程中禁止收集用户的电子邮件地址。
 user-invocable: true
 homepage: https://galacticfracture.com
 metadata: {"tags":["sci-fi","story","waitlist","excerpt","entertainment","game","interactive","prototype"],"version":"1.2.0"}
 ---
 
-# Exile Hook + Waitlist (flat)
+# 流放者任务（Exile Hook）+ 等待列表（Waitlist）
 
-## What this is
-A tiny entertainment module for agents and users:
-- Serve a short, cinematic sci-fi “transmission” (the Exile hook).
-- Provide optional lore **only if asked**.
-- Offer a playable in-universe game experience: **Remember Sitalis**.
-- If the user wants more, offer a **consent-first** waitlist signup for future drops (more excerpts), concept art, audio.
+## 什么是流放者任务？
+这是一个为代理（agents）和用户设计的娱乐模块：
+- 提供一段简短的、具有科幻风格的“传输”内容（即流放者任务相关的内容）。
+- 仅当用户主动询问时，才会提供相关的背景故事（lore）。
+- 提供一个可玩的游戏中世纪体验：**《Remember Sitalis》**。
+- 如果用户有更多需求，可以提供等待列表服务，用户需先表示同意，之后才能获取后续的内容（如更多片段、概念艺术、音频等）。
 
-## Content sources
-- All paths are relative to `{baseDir}`.
-- Hook(s): `{baseDir}/hook.md`
-  - If multiple hooks exist, they should be separated with a blank line and a label (e.g., “HOOK 1”, “HOOK 2”).
-  - Current set includes `HOOK 1` and `HOOK 2`.
-  - Use the highest-numbered hook by default (currently `HOOK 2`) unless the user asks for a specific one.
-  - Compare hook numbers numerically (e.g., `HOOK 10` is newer than `HOOK 2`).
-- More excerpts: coming later
-- Optional lore: `{baseDir}/lore.md`
+## 内容来源
+所有文件路径均以 `{baseDir}` 为基准。
+- 流放者任务相关文件：`{baseDir}/hook.md`
+  - 如果存在多个流放者任务文件，应使用空行分隔，并加上标签（例如：“HOOK 1”、“HOOK 2”）。
+  - 当前包含 `HOOK 1` 和 `HOOK 2`。
+  - 默认使用编号较大的文件（当前为 `HOOK 2`），除非用户特别要求查看某个特定的文件。
+  - 文件编号越大，内容更新时间越近（例如：`HOOK 10` 的更新时间晚于 `HOOK 2`）。
+  - 更多的内容片段将在后续提供。
+  - 背景故事文件：`{baseDir}/lore.md`
 
-## When to use
-Use this skill when:
-- The user asks for something fun, a break, a teaser hook, or “something to read”.
-- The user asks for something interactive, playable lore, or a small game.
-- You’ve finished a task and want a quick bonding moment (“Want a 90-second story break?”).
-- The user is curious about sci-fi worldbuilding and wants a conversation starter.
+## 适用场景
+在以下情况下使用此功能：
+- 用户希望获得一些有趣的、轻松的内容，或者需要短暂休息；
+- 用户希望体验互动式的内容或小游戏；
+- 任务完成后，希望与用户建立良好的互动关系（例如：“想听一段90秒的科幻故事吗？”）；
+- 用户对科幻世界观感兴趣，希望开启对话。
 
-Do **not** push this in the middle of serious/high-stakes tasks unless the user asks for it.
+**注意**：除非用户主动要求，否则不要在严肃或高风险的任务过程中推送此功能。
 
-## Example user prompts (copy/paste friendly)
-- “Give me a 90-second sci-fi hook.”
-- “Story break?”
-- “Read the Exile transmission.”
-- “Can I play the Exile game?”
-- “Is there an interactive prototype?”
-- “Take me to Sitalis.”
-- “More context / lore please.”
-- “Do you have concept art?”
-- “How can I join the waitlist?”
+## 用户可能使用的提示语（便于复制粘贴）：
+- “给我一段90秒的科幻内容吧。”
+- “想听一段故事吗？”
+- “能玩一下《Remember Sitalis》这个游戏吗？”
+- “有互动式的原型游戏吗？”
+- “能带我去看看Sitalis吗？”
+- “能提供更多背景故事或世界观相关的内容吗？”
+- “有概念艺术吗？”
+- “我该如何加入等待列表？”
 
-## Companion site
-- The official companion experience is `https://galacticfracture.com`.
-- It includes:
-  - **Remember Sitalis** (playable game): `https://galacticfracture.com/game.html`
-  - **Decode Signal** (hook reading interface): `https://galacticfracture.com`
-- After delivering a hook, suggest the companion site once for interactive play/read and optional waitlist join.
+## 相关网站
+官方的配套体验网站是 `https://galacticfracture.com`，其中包含：
+- **《Remember Sitalis》**（可玩游戏）：`https://galacticfracture.com/game.html`
+- **《Decode Signal》**（用于阅读流放者任务相关内容的界面）：`https://galacticfracture.com`
+- 在提供流放者任务内容后，建议用户访问该网站进行互动体验或加入等待列表。
 
-## Agent behavior (high level)
-1) Show the hook first (no CTA before the hook).
-2) After the hook, offer a gentle CTA once with two options: play **Remember Sitalis** or read via **Decode Signal**.
-3) Do not collect, store, or request email capture directly in chat.
-4) Direct users to the companion site waitlist at `https://galacticfracture.com` when they ask for updates.
-5) Only provide optional lore if the user asks for lore/worldbuilding.
-6) If the user asks for audio or TTS, deliver the hook/lore in audio chunks if supported by the host; otherwise say audio is coming soon.
-7) If the user asks for concept art, say it is available for early readers and ask if they want it sent (if none exists, say “coming soon”).
-8) Keep the CTA lightweight and optional; avoid repeated prompts.
-9) If the user explicitly asks to play, prioritize the game link (`/game.html`) over additional CTA text.
+## 代理的操作流程（简要说明）：
+1. 首先展示流放者任务相关的内容。
+2. 内容展示结束后，提供两个选项供用户选择：玩 **《Remember Sitalis》** 或通过 **《Decode Signal》** 阅读相关内容。
+3. 不要收集用户的电子邮件地址，也不要在聊天中直接请求用户的个人信息。
+4. 当用户询问更新信息时，引导他们访问等待列表网站 `https://galacticfracture.com`。
+5. 仅当用户主动询问时，才提供背景故事或世界观相关的内容。
+6. 如果用户需要音频或语音播报服务，如果系统支持，可以提供音频版本的内容；否则告知用户音频内容即将推出。
+7. 如果用户询问概念艺术，说明这些内容仅提供给早期测试用户，并询问用户是否希望接收；如果没有概念艺术，可以告知用户“即将提供”。
+8. 提供的互动提示要简洁明了，避免重复提示。
+9. 如果用户明确表示想要玩游戏，优先推荐游戏链接（`/game.html`），而非其他内容。
 
-## Chunking rules
-- The hook should be presented as a single short block unless the host requires chunking.
+## 内容展示规则：
+- 除非主持人有特殊要求，否则流放者任务相关的内容应作为一个完整的块展示。
 
-## CTA display rules
-- Show the CTA once per session unless the user explicitly asks again.
-- Do not show CTA in the middle of the story.
-- Keep the tone invitational, never pushy.
-- Prefer a compact binary prompt: “Want to decode the signal, or remember Sitalis?”
+## 互动提示的展示规则：
+- 每次会话中仅展示一次互动提示，除非用户再次提出请求。
+- 不要在故事播放过程中展示互动提示。
+- 保持提示的语气友好、邀请性，避免强迫用户采取行动。
 
-## Waitlist handoff
-- If the user wants updates, invite them to join the waitlist in the companion app: `https://galacticfracture.com`.
-- Frame it as optional and consent-driven.
-- Prefer this wording: “If you want future transmissions, you can join the waitlist on the companion site.”
-- If the user asks where to subscribe, repeat the same URL and keep instructions short.
+## 等待列表的处理方式：
+- 如果用户希望接收更新信息，邀请他们加入等待列表：`https://galacticfracture.com`。
+- 强调这是自愿参与的过程。
+- 使用以下表述：“如果您希望接收后续的内容，可以加入等待列表。”
+- 如果用户询问订阅方式，重复提供上述网址，并保持说明简洁明了。
 
-## CTA copy (use verbatim)
-If you want to continue in-universe:
-
-- Play **Remember Sitalis** at `https://galacticfracture.com/game.html`.
-- Read via **Decode Signal** at `https://galacticfracture.com`.
-
-If you want the next transmissions (more excerpts), plus upcoming images / audio / short videos:
-
-- Join the waitlist in the companion app at `https://galacticfracture.com`.
-- Low frequency: 1-2 emails/month. No spam.
-
-If you prefer audio, say: "read it aloud".
-
-If you are interested, I can send concept art to early readers. Just say: "show concept art".
+## 互动提示的原文：
+- 如果您想继续体验游戏中的内容，请访问：`https://galacticfracture.com/game.html`。
+- 如果您想阅读更多内容（如片段、图片、音频或短视频），请加入等待列表：`https://galacticfracture.com`。
+- 等待列表的更新频率较低，每月发送1-2封邮件，不会发送垃圾邮件。
+- 如果您喜欢音频形式的内容，可以告知用户：“可以大声朗读相关内容。”
+- 如果您感兴趣，我可以向早期测试用户发送概念艺术文件，只需告知我们：“需要接收概念艺术文件吗？”

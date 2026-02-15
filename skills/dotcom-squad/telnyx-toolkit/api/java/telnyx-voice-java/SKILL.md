@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Voice - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Answer call
+## 接听来电
 
-Answer an incoming call.
+接听传入的电话。
 
 `POST /calls/{call_control_id}/actions/answer`
 
@@ -45,11 +45,11 @@ import com.telnyx.sdk.models.calls.actions.ActionAnswerResponse;
 ActionAnswerResponse response = client.calls().actions().answer("call_control_id");
 ```
 
-## Bridge calls
+## 桥接通话
 
-Bridge two call control calls.
+将两个通话连接桥接起来。
 
-`POST /calls/{call_control_id}/actions/bridge` — Required: `call_control_id`
+`POST /calls/{call_control_id}/actions/bridge` — 必需参数：`call_control_id`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionBridgeParams;
@@ -62,11 +62,11 @@ ActionBridgeParams params = ActionBridgeParams.builder()
 ActionBridgeResponse response = client.calls().actions().bridge(params);
 ```
 
-## Dial
+## 拨打电话
 
-Dial a number or SIP URI from a given connection.
+从指定的连接拨打一个号码或 SIP URI。
 
-`POST /calls` — Required: `connection_id`, `to`, `from`
+`POST /calls` — 必需参数：`connection_id`, `to`, `from`
 
 ```java
 import com.telnyx.sdk.models.calls.CallDialParams;
@@ -80,9 +80,9 @@ CallDialParams params = CallDialParams.builder()
 CallDialResponse response = client.calls().dial(params);
 ```
 
-## Hangup call
+## 结束通话
 
-Hang up the call.
+挂断通话。
 
 `POST /calls/{call_control_id}/actions/hangup`
 
@@ -93,11 +93,11 @@ import com.telnyx.sdk.models.calls.actions.ActionHangupResponse;
 ActionHangupResponse response = client.calls().actions().hangup("call_control_id");
 ```
 
-## Transfer call
+## 转接通话
 
-Transfer a call to a new destination.
+将通话转接到新的目的地。
 
-`POST /calls/{call_control_id}/actions/transfer` — Required: `to`
+`POST /calls/{call_control_id}/actions/transfer` — 必需参数：`to`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionTransferParams;
@@ -110,9 +110,9 @@ ActionTransferParams params = ActionTransferParams.builder()
 ActionTransferResponse response = client.calls().actions().transfer(params);
 ```
 
-## List all active calls for given connection
+## 列出指定连接的所有活跃通话
 
-Lists all active calls for given connection.
+列出指定连接的所有活跃通话。
 
 `GET /connections/{connection_id}/active_calls`
 
@@ -123,9 +123,9 @@ import com.telnyx.sdk.models.connections.ConnectionListActiveCallsParams;
 ConnectionListActiveCallsPage page = client.connections().listActiveCalls("1293384261075731461");
 ```
 
-## List call control applications
+## 列出通话控制应用程序
 
-Return a list of call control applications.
+返回通话控制应用程序的列表。
 
 `GET /call_control_applications`
 
@@ -136,11 +136,11 @@ import com.telnyx.sdk.models.callcontrolapplications.CallControlApplicationListP
 CallControlApplicationListPage page = client.callControlApplications().list();
 ```
 
-## Create a call control application
+## 创建通话控制应用程序
 
-Create a call control application.
+创建一个新的通话控制应用程序。
 
-`POST /call_control_applications` — Required: `application_name`, `webhook_event_url`
+`POST /call_control_applications` — 必需参数：`application_name`, `webhook_event_url`
 
 ```java
 import com.telnyx.sdk.models.callcontrolapplications.CallControlApplicationCreateParams;
@@ -153,9 +153,9 @@ CallControlApplicationCreateParams params = CallControlApplicationCreateParams.b
 CallControlApplicationCreateResponse callControlApplication = client.callControlApplications().create(params);
 ```
 
-## Retrieve a call control application
+## 查询通话控制应用程序的详细信息
 
-Retrieves the details of an existing call control application.
+获取现有通话控制应用程序的详细信息。
 
 `GET /call_control_applications/{id}`
 
@@ -166,11 +166,11 @@ import com.telnyx.sdk.models.callcontrolapplications.CallControlApplicationRetri
 CallControlApplicationRetrieveResponse callControlApplication = client.callControlApplications().retrieve("id");
 ```
 
-## Update a call control application
+## 更新通话控制应用程序
 
-Updates settings of an existing call control application.
+更新现有通话控制应用程序的设置。
 
-`PATCH /call_control_applications/{id}` — Required: `application_name`, `webhook_event_url`
+`PATCH /call_control_applications/{id}` — 必需参数：`application_name`, `webhook_event_url`
 
 ```java
 import com.telnyx.sdk.models.callcontrolapplications.CallControlApplicationUpdateParams;
@@ -184,9 +184,9 @@ CallControlApplicationUpdateParams params = CallControlApplicationUpdateParams.b
 CallControlApplicationUpdateResponse callControlApplication = client.callControlApplications().update(params);
 ```
 
-## Delete a call control application
+## 删除通话控制应用程序
 
-Deletes a call control application.
+删除通话控制应用程序。
 
 `DELETE /call_control_applications/{id}`
 
@@ -197,37 +197,29 @@ import com.telnyx.sdk.models.callcontrolapplications.CallControlApplicationDelet
 CallControlApplicationDeleteResponse callControlApplication = client.callControlApplications().delete("id");
 ```
 
-## List call events
+## 列出通话事件
 
-Filters call events by given filter parameters.
+根据指定的过滤参数筛选通话事件。
 
 `GET /call_events`
 
-```java
-import com.telnyx.sdk.models.callevents.CallEventListPage;
-import com.telnyx.sdk.models.callevents.CallEventListParams;
-
-CallEventListPage page = client.callEvents().list();
-```
-
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 头部信息以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callAnswered` | Call Answered |
-| `callStreamingStarted` | Call Streaming Started |
-| `callStreamingStopped` | Call Streaming Stopped |
-| `callStreamingFailed` | Call Streaming Failed |
-| `callBridged` | Call Bridged |
-| `callInitiated` | Call Initiated |
-| `callHangup` | Call Hangup |
-| `callRecordingSaved` | Call Recording Saved |
-| `callMachineDetectionEnded` | Call Machine Detection Ended |
-| `callMachineGreetingEnded` | Call Machine Greeting Ended |
-| `callMachinePremiumDetectionEnded` | Call Machine Premium Detection Ended |
-| `callMachinePremiumGreetingEnded` | Call Machine Premium Greeting Ended |
+| `callAnswered` | 电话被接听 |
+| `callStreamingStarted` | 通话流开始 |
+| `callStreamingStopped` | 通话流停止 |
+| `callStreamingFailed` | 通话流失败 |
+| `callBridged` | 通话被桥接 |
+| `callInitiated` | 通话开始 |
+| `callHangup` | 通话挂断 |
+| `callRecordingSaved` | 通话录音保存 |
+| `callMachineDetectionEnded` | 机器检测结束 |
+| `callMachineGreetingEnded` | 机器问候结束 |
+| `callMachinePremiumDetectionEnded` | 机器高级检测结束 |
+| `callMachinePremiumGreetingEnded` | 机器高级问候结束 |

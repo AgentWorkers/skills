@@ -1,6 +1,6 @@
 ---
 name: skanetrafiken
-description: Skåne public transport trip planner (Skånetrafiken). Plans bus/train journeys with real-time delays. Supports stations, addresses, landmarks, and cross-border trips to Copenhagen.
+description: 斯科讷地区公共交通行程规划器（Skånetrafiken）：可以规划公交/火车行程，并提供实时的延误信息。支持输入车站名称、地址、地标信息，同时支持跨境前往哥本哈根的行程规划。
 license: MIT
 compatibility: Requires curl, jq. Works with Claude Code and compatible agents.
 metadata:
@@ -9,75 +9,75 @@ metadata:
   region: sweden
 ---
 
-# Skånetrafiken Trip Planner
+# 斯科讷交通旅行规划器
 
-Plan public transport journeys in Skåne, Sweden with real-time departure information.
+使用实时出发信息规划瑞典斯科讷地区的公共交通行程。
 
-## Commands
+## 命令
 
-### 1. Search Location
+### 1. 搜索地点
 
-Search for stations, addresses, or points of interest.
+搜索车站、地址或兴趣点。
 
 ```bash
 ./search-location.sh <query> [limit]
 ```
 
-| Argument | Description |
+| 参数 | 描述 |
 |----------|-------------|
-| `query` | Location name to search for |
-| `limit` | Number of results to show (default: 3, max: 10) |
+| `query` | 要搜索的地点名称 |
+| `limit` | 显示的结果数量（默认：3，最大：10） |
 
-**Output includes:**
-- `ID` - The location identifier (use this in journey search)
-- `Name` - Official name of the location
-- `Type` - STOP_AREA (station), ADDRESS, or POI (point of interest)
-- `Area` - Region/municipality
-- `Coordinates` - Latitude, longitude
+**输出包括：**
+- `ID` - 地点标识符（用于行程搜索）
+- `Name` | 地点的官方名称 |
+- `Type` - `STOP_AREA`（车站）、`ADDRESS`或`POI`（兴趣点） |
+- `Area` | 地区/市镇 |
+- `Coordinates` | 纬度、经度 |
 
-**When to increase limit:**
-- First result doesn't match user's intent
-- User's query is ambiguous (e.g., "station", "centrum")
-- Need to show user multiple options to choose from
+**何时增加结果数量：**
+- 首个结果不符合用户意图 |
+- 用户的查询不明确（例如：“车站”、“中心”） |
+- 需要向用户展示多个选项供选择
 
-### 2. Journey Search
+### 2. 行程搜索
 
-Plan a journey between two locations using their IDs.
+使用两个地点的ID来规划行程。
 
 ```bash
 ./journey.sh <from-id> <from-type> <to-id> <to-type> [datetime] [mode]
 ```
 
-| Argument | Description |
+| 参数 | 描述 |
 |----------|-------------|
-| `from-id` | Origin location ID (from search) or coordinates (`lat#lon`) |
-| `from-type` | `STOP_AREA`, `ADDRESS`, `POI`, or `LOCATION` (for coordinates) |
-| `to-id` | Destination location ID or coordinates |
-| `to-type` | Type of destination |
-| `datetime` | Optional: `"18:30"`, `"tomorrow 09:00"`, `"2026-01-15 09:00"` |
-| `mode` | Optional: `"depart"` (default) or `"arrive"` |
+| `from-id` | 出发地点ID（来自搜索）或坐标（`lat#lon`） |
+| `from-type` | `STOP_AREA`、`ADDRESS`、`POI`或`LOCATION`（对于坐标） |
+| `to-id` | 目的地地点ID或坐标 |
+| `to-type` | 目的地类型 |
+| `datetime` | 可选：`"18:30"`、`"明天09:00"`、`"2026-01-15 09:00"` |
+| `mode` | 可选：`"depart"`（默认）或`"arrive"` |
 
-**Important:** The Journey API only accepts `STOP_AREA` and `LOCATION` types. For `ADDRESS` or `POI` results, use the coordinates as `lat#lon` with type `LOCATION`.
+**重要提示：** 行程API仅接受`STOP_AREA`和`LOCATION`类型。对于`ADDRESS`或`POI`结果，请使用`lat#lon`格式的坐标，并指定类型为`LOCATION`。
 
 ---
 
-## Understanding User Time Intent
+## 理解用户的时间意图
 
-Before searching, understand what the user wants:
+在搜索之前，先了解用户的真实需求：
 
-### Intent Types
+### 意图类型
 
-| User Says | Intent | How to Query |
+| 用户输入 | 意图 | 查询方式 |
 |-----------|--------|--------------|
-| "now", "next bus", "how do I get to" | **Travel Now** | No datetime parameter |
-| "in 30 minutes", "in 1 hour", "after lunch" | **Depart Later** | Calculate time, use `depart` mode |
-| "around 15:00", "sometime afternoon" | **Around Time** | Query with offset (see below) |
-| "arrive by 18:00", "need to be there at 9" | **Arrive By** | Use `arrive` mode |
-| "tomorrow morning", "on Friday at 10" | **Future Time** | Use specific datetime |
+| "现在"、"下一班公交车"、"我怎么去..." | **立即出行** | 不需要指定时间 |
+| "30分钟后"、"1小时后"、"午饭后" | **稍后出发** | 计算出发时间，使用`depart`模式 |
+| "大约15:00"、"下午某个时候" | **在某个时间段内出行** | 使用偏移时间进行查询 |
+| "在18:00之前到达"、"需要在9点到达" | **指定到达时间** | 使用`arrive`模式 |
+| "明天早上"、"周五10点" | **未来时间** | 使用具体时间 |
 
-### Handling "Around Time" Queries
+### 处理“在某个时间段内出行”的查询
 
-When user wants options "around" a time, query 15-30 minutes earlier to show options before and after:
+当用户希望查询某个时间段内的行程时，提前15-30分钟进行查询，以显示该时间段内的所有选项：
 
 ```bash
 # User: "I want to travel around 15:00"
@@ -85,56 +85,56 @@ When user wants options "around" a time, query 15-30 minutes earlier to show opt
 ./journey.sh ... "14:30" depart
 ```
 
-### Relative Time Calculations
+### 相对时间计算
 
-Convert relative times to absolute:
+将相对时间转换为绝对时间：
 
-| User Says | Current: 14:00 | Query Time |
+| 用户输入 | 当前时间 | 查询时间 |
 |-----------|----------------|------------|
-| "in 30m" | → | "14:30" |
-| "in 1h" | → | "15:00" |
-| "in 2 hours" | → | "16:00" |
+| "30分钟后" | → | "14:30" |
+| "1小时后" | → | "15:00" |
+| "2小时后" | → | "16:00" |
 
 ---
 
-## LLM Response Formatting
+## LLM响应格式
 
-When presenting journey results to users, use these emojis and formatting guidelines.
+在向用户展示行程结果时，请使用以下表情符号和格式规范。
 
-### Emoji Reference
+### 表情符号说明
 
-| Emoji | Use For |
+| 表情符号 | 代表含义 |
 |-------|---------|
-| 🚂 | Train (Pågatåg, Öresundståg) |
-| 🚌 | Bus |
-| 🚇 | Metro (Copenhagen) |
-| 🚋 | Tram |
-| ⛴️ | Ferry |
-| 🚶 | Walking segment |
-| ⏱️ | Time/duration |
-| 🕐 | Departure time |
-| 🏁 | Arrival time |
-| 📍 | Stop/station |
-| 🏠 | Origin (home/start) |
-| 🎯 | Destination |
-| ⚠️ | Delay or disruption |
-| ✅ | On time |
-| 🔄 | Transfer/change |
-| 🛤️ | Platform/track |
+| 🚂 | 火车（Pågatåg、Öresundståg） |
+| 🚌 | 公交车 |
+| 🚇 | 地铁（哥本哈根） |
+| 🚋 | 有轨电车 |
+| ⛴️ | 渡轮 |
+| 🚶 | 步行路段 |
+| ⏱️ | 时间/时长 |
+| 🕐 | 出发时间 |
+| 🏁 | 到达时间 |
+| 📍 | 车站 |
+| 🏠 | 出发地（起点） |
+| 🎯 | 目的地 |
+| ⚠️ | 延误或中断 |
+| ✅ | 准时 |
+| 🔄 | 中转/换乘 |
+| 🛤️ | 月台/轨道 |
 
-### Response Structure
+### 响应结构
 
-**Always include these key elements from the tool output:**
+**始终包含以下工具输出的关键元素：**
 
-1. **When to leave** - The actual time user needs to start (including walking)
-2. **Walking segments** - Distance and time for any walking
-3. **Transport departure** - When the bus/train actually leaves
-4. **Arrival time** - When user reaches destination
-5. **Any delays** - Show deviation from schedule
+1. **出发时间** - 用户实际需要出发的时间（包括步行时间） |
+2. **步行路段** - 步行的距离和时长 |
+3. **交通工具出发时间** - 公交车/火车的实际出发时间 |
+4. **到达时间** | 用户到达目的地的时间 |
+5. **任何延误** - 显示与计划的偏差
 
-### Example Response Format
+### 示例响应格式
 
-**For a simple direct journey:**
+**对于简单的直达行程：**
 ```
 🏠 **Leave home at 09:00**
 
@@ -147,7 +147,7 @@ When presenting journey results to users, use these emojis and formatting guidel
 ⏱️ Total: 18 min
 ```
 
-**For a journey with transfer:**
+**对于需要中转的行程：**
 ```
 🏠 **Leave at 08:45**
 
@@ -168,7 +168,7 @@ When presenting journey results to users, use these emojis and formatting guidel
 ⏱️ Total: 38 min | 🔄 1 change
 ```
 
-**With delays:**
+**存在延误时：**
 ```
 🕐 **Depart 14:30** from Triangeln
 
@@ -177,29 +177,29 @@ When presenting journey results to users, use these emojis and formatting guidel
 🏁 Arrives ~15:25 (normally 15:17)
 ```
 
-### Walking Segment Details
+### 步行路段详情
 
-**CRITICAL: Always show walking details from the tool output:**
+**重要提示：** 必须在工具输出中显示步行路段的详细信息：**
 
-- Distance in meters (from `line.distance`)
-- Include walking in the "leave time" calculation
-- Show walking at start AND end of journey
+- 距离（以米为单位，来自`line.distance`）
+- 将步行时间计入“出发时间”的计算中 |
+- 在行程的开始和结束时都显示步行时间
 
-Example tool output:
+示例工具输出：
 ```
 → WALK 450m from Kalendegatan to Möllevångstorget
 ```
 
-Format as:
+格式示例：
 ```
 🚶 Walk 450m to Möllevångstorget (~5 min)
 ```
 
-Walk time estimate: ~100m per minute (normal walking speed)
+步行时间估计：大约每分钟100米（正常步行速度）
 
-### Presenting Multiple Options
+### 显示多个选项
 
-When showing journey options, make timing crystal clear:
+在展示行程选项时，要确保时间信息清晰明了：
 
 ```
 I found 3 options for you:
@@ -217,55 +217,52 @@ I found 3 options for you:
 ⏱️ Total: 18 min | Faster but later departure
 ```
 
-### Time Offset Notation
+### 时间偏移表示法
 
-Use clear notation for departure times:
+使用明确的表示法来表示出发时间：
 
-| Notation | Meaning |
+| 表示法 | 含义 |
 |----------|---------|
-| "now" | Immediately |
-| "in 15m" | 15 minutes from now |
-| "in 1h" | 1 hour from now |
-| "at 14:30" | Specific time |
+| "现在" | 立即出发 |
+| "15分钟后" | 15分钟后 |
+| "1小时后" | 1小时后 |
+| "14:30" | 具体时间 |
 
 ---
 
-## LLM Workflow: How to Plan a Trip
+## LLM工作流程：如何规划行程
 
-Follow this workflow when a user asks for a trip:
+当用户请求行程时，请按照以下流程操作：
 
-### Step 1: Understand Time Intent
+### 第1步：理解用户的时间意图
 
-Parse what the user wants:
-- **"How do I get to..."** → Travel now
-- **"I need to be there at 18:00"** → Arrive mode
-- **"Sometime around 3pm"** → Query 14:30, show range
-- **"In about an hour"** → Calculate from current time
+解析用户的真实需求：
+- “我怎么去...” → 立即出行 |
+- “我需要在18:00之前到达” → 使用`arrive`模式 |
+- “大约下午3点” → 在14:00左右查询行程 |
+- “大约1小时后” → 根据当前时间计算行程时间 |
 
-### Step 2: Search for Both Locations
+### 第2步：分别搜索两个地点
 
-Search for origin and destination separately:
+分别搜索出发地和目的地：
 
 ```bash
 ./search-location.sh "Malmö C"
 ./search-location.sh "Emporia"
 ```
 
-### Step 3: Validate Search Results
+### 第3步：验证搜索结果
 
-**Check each result carefully:**
+**仔细检查每个结果：**
 
-1. **Exact or close match?** - If the name matches what the user asked for, proceed.
+1. **是否完全匹配？** 如果名称与用户请求一致，则继续下一步。
+2. **返回了多个结果？** 脚本最多显示10个结果。如果第一个结果不正确，请让用户确认。
+3. **名称差异较大？** 如果用户询问的是“Hyllie附近的购物中心”，而结果显示的是“Emporia”，请确认：“我找到了Hyllie附近的Emporia购物中心。这是正确的吗？”
+4. **没有找到结果？** 尝试其他搜索方法。
 
-2. **Multiple results returned?** - The script shows up to 10 matches. If the first result isn't clearly correct, ask the user to confirm.
+### 第4步：处理模糊或失败的搜索
 
-3. **Name significantly different?** - If user asked for "the mall near Hyllie" and result shows "Emporia", confirm with user: "I found Emporia shopping center near Hyllie. Is this correct?"
-
-4. **No results found?** - Try alternative strategies (see below).
-
-### Step 4: Handle Ambiguous or Failed Searches
-
-**When results don't match or are ambiguous, ask clarifying questions:**
+**当搜索结果不匹配或模糊时，提出澄清问题：**
 
 ```
 I searched for "centrum" and found multiple locations:
@@ -276,68 +273,68 @@ I searched for "centrum" and found multiple locations:
 Which one did you mean?
 ```
 
-**When no results are found, try these strategies:**
+**当没有找到结果时，尝试以下方法：**
 
-1. **Try with city name for addresses:**
+1. **使用城市名称搜索地址：**
    ```bash
    # If "Storgatan 10" fails, try:
    ./search-location.sh "Storgatan 10, Malmö"
    ```
 
-2. **Try official station names:**
+2. **使用官方车站名称：**
    ```bash
    # If "Malmö station" fails, try:
    ./search-location.sh "Malmö C"
    ```
 
-3. **Try landmark name only (without city):**
+3. **仅使用地标名称（不带城市名称）：**
    ```bash
    # If "Emporia, Malmö" fails, try:
    ./search-location.sh "Emporia"
    ```
 
-4. **Use coordinates as last resort:**
-   - If you know the approximate location, use `lat#lon` format directly
-   - Ask user: "I couldn't find that location. Can you provide the address or coordinates?"
+4. **最后使用坐标：**
+   - 如果知道大致位置，直接使用`lat#lon`格式的坐标
+   - 询问用户：“我找不到该地点。您能提供地址或坐标吗？”
 
-### Step 5: Convert Types for Journey API
+### 第5步：转换类型以供行程API使用
 
-The Journey API only accepts:
-- `STOP_AREA` - Bus/train stations (use ID directly)
-- `LOCATION` - GPS coordinates as `lat#lon`
+行程API仅接受：
+- `STOP_AREA` - 公交站/火车站（直接使用ID）
+- `LOCATION` - GPS坐标（格式为`lat#lon`）
 
-**If search returns ADDRESS or POI:**
-- Use the coordinates from search result
-- Format as `lat#lon` with type `LOCATION`
+**如果搜索结果为`ADDRESS`或`POI`：**
+- 使用搜索结果中的坐标
+- 格式化为`lat#lon`，并指定类型为`LOCATION`
 
-Example:
+示例：
 ```bash
 # Search returns: ID: 123, Type: ADDRESS, Coordinates: 55.605, 13.003
 # Use in journey as:
 ./journey.sh "55.605#13.003" LOCATION 9021012080000000 STOP_AREA
 ```
 
-### Step 6: Execute Journey Search
+### 第6步：执行行程搜索
 
-Once you have confirmed IDs/coordinates for both locations:
+确认出发地和目的地的ID/坐标后：
 
 ```bash
 ./journey.sh <from-id> <from-type> <to-id> <to-type> [datetime] [mode]
 ```
 
-### Step 7: Format Response with Emojis
+### 第7步：使用表情符号格式化响应
 
-Use the emoji guide above to present results clearly. **Always use actual numbers from the tool output - never speculate or estimate.**
+使用上述表情符号指南清晰地展示结果。**始终使用工具输出中的实际数值，不要猜测或估算。**
 
 ---
 
-## Query Formatting Rules
+## 查询格式规则
 
-**The search API is sensitive to formatting. Follow these rules:**
+**搜索API对格式非常敏感，请遵循以下规则：**
 
-### Landmarks and POIs: Name Only
+### 地标和兴趣点：仅使用名称
 
-Use the landmark name WITHOUT city name.
+搜索时只使用地标名称，不要包含城市名称。
 
 ```bash
 # CORRECT
@@ -350,9 +347,9 @@ Use the landmark name WITHOUT city name.
 ./search-location.sh "Triangeln, Malmö"      # Unnecessary, may fail
 ```
 
-### Street Addresses: Include City
+### 街道地址：包含城市名称
 
-Include city name for better accuracy.
+为了提高准确性，地址中必须包含城市名称。
 
 ```bash
 # CORRECT
@@ -364,9 +361,9 @@ Include city name for better accuracy.
 ./search-location.sh "Kalendegatan 12"       # Works if unambiguous
 ```
 
-### Train Stations: Use Official Names
+### 火车站：使用官方名称
 
-Use "C" suffix for central stations.
+中央车站使用“C”后缀。
 
 ```bash
 # CORRECT
@@ -382,9 +379,9 @@ Use "C" suffix for central stations.
 ./search-location.sh "Lund station"          # Not official name
 ```
 
-### Copenhagen (Cross-border)
+### 哥本哈根（跨境行程）**
 
-Use Danish names or common alternatives.
+使用丹麦名称或常用替代名称。
 
 ```bash
 # All work
@@ -396,11 +393,11 @@ Use Danish names or common alternatives.
 
 ---
 
-## Examples
+## 示例
 
-### Example 1: Travel Now
+### 示例1：立即出行
 
-User: "How do I get from Malmö C to Lund C?"
+用户：“我怎么从马尔默C站去隆德C站？”
 
 ```bash
 ./search-location.sh "Malmö C"
@@ -408,7 +405,7 @@ User: "How do I get from Malmö C to Lund C?"
 ./journey.sh 9021012080000000 STOP_AREA 9021012080040000 STOP_AREA
 ```
 
-**Response:**
+**响应：**
 ```
 🏠 **Leave now** from Malmö C
 
@@ -419,9 +416,9 @@ User: "How do I get from Malmö C to Lund C?"
 ⏱️ Total: 12 min | ✅ Direct, no changes
 ```
 
-### Example 2: Address with Walking
+### 示例2：包含步行路段的地址
 
-User: "I need to go from Kalendegatan 12 in Malmö to Emporia"
+用户：“我需要从马尔默的Kalendegatan 12号去Emporia购物中心。”
 
 ```bash
 ./search-location.sh "Kalendegatan 12, Malmö"
@@ -429,7 +426,7 @@ User: "I need to go from Kalendegatan 12 in Malmö to Emporia"
 ./journey.sh "55.595#13.001" LOCATION "55.563#12.973" LOCATION
 ```
 
-**Response:**
+**响应：**
 ```
 🏠 **Leave at 10:05**
 
@@ -444,9 +441,9 @@ User: "I need to go from Kalendegatan 12 in Malmö to Emporia"
 ⏱️ Total: 25 min
 ```
 
-### Example 3: Arrive By Time
+### 示例3：指定到达时间
 
-User: "I need to be at Copenhagen central by 18:00 tomorrow"
+用户：“我需要在明天18:00之前到达哥本哈根市中心。”
 
 ```bash
 ./search-location.sh "Malmö C"
@@ -454,7 +451,7 @@ User: "I need to be at Copenhagen central by 18:00 tomorrow"
 ./journey.sh 9021012080000000 STOP_AREA 9921000008600626 STOP_AREA "tomorrow 18:00" arrive
 ```
 
-**Response:**
+**响应：**
 ```
 🎯 **Arrive by 18:00** at København H
 
@@ -467,16 +464,16 @@ User: "I need to be at Copenhagen central by 18:00 tomorrow"
 💡 Leave Malmö C by 17:21 to arrive on time!
 ```
 
-### Example 4: Around Time Query
+### 示例4：在某个时间段内出行
 
-User: "I want to travel to Lund around 15:00"
+用户：“我想在15:00左右去隆德。”
 
 ```bash
 # Query 30 min earlier to show options around 15:00
 ./journey.sh 9021012080000000 STOP_AREA 9021012080040000 STOP_AREA "14:30"
 ```
 
-**Response:**
+**响应：**
 ```
 Options around 15:00 for Malmö C → Lund C:
 
@@ -495,16 +492,16 @@ Options around 15:00 for Malmö C → Lund C:
 Which works best for you?
 ```
 
-### Example 5: Relative Time
+### 示例5：相对时间
 
-User: "I want to leave in about an hour"
+用户：“我想大约1小时后出发。”
 
 ```bash
 # Current time: 13:00, so query for 14:00
 ./journey.sh ... "14:00"
 ```
 
-**Response:**
+**响应：**
 ```
 Options departing around 14:00 (in ~1h):
 
@@ -517,14 +514,15 @@ Options departing around 14:00 (in ~1h):
 Let me know which one works!
 ```
 
-### Example 6: Journey with Delays
+### 示例6：行程存在延误
 
-When tool output shows delays:
+当工具显示延误时：
+
 ```
 From: 14:30 Malmö C [+8 min late]
 ```
 
-**Response:**
+**响应：**
 ```
 📍 **Malmö C** → 🎯 **Lund C**
 🚂 Öresundståg 1042
@@ -535,46 +533,41 @@ From: 14:30 Malmö C [+8 min late]
 
 ---
 
-## When to Ask Clarifying Questions
+## 何时需要提出澄清问题
 
-**Always ask when:**
+**在以下情况下一定要提问：**
 
-1. **Search returns no results:**
-   - "I couldn't find [location]. Could you provide more details like the full address or nearby landmarks?"
-
-2. **Multiple plausible matches:**
-   - "I found several locations matching '[query]': [list]. Which one did you mean?"
-
-3. **Result name very different from query:**
-   - "You asked for '[user query]' but the closest match I found is '[result name]'. Is this correct?"
-
-4. **User request is vague:**
-   - "From Malmö" - "Which location in Malmö? The central station (Malmö C), or a specific address?"
-
-5. **Cross-border ambiguity:**
-   - "Copenhagen" could mean different stations - confirm if they want København H (central), Airport, or another station.
-
-6. **Time is unclear:**
-   - "When do you want to travel? Now, or at a specific time?"
+1. **搜索没有结果时：**
+   - “我找不到[地点]。您能提供更多详细信息，比如完整地址或附近的地标吗？”
+2. **返回了多个结果时：**
+   - “我找到了多个匹配项：[结果列表]。您指的是哪一个？”
+3. **结果名称与查询不符时：**
+   - “您查询的是'[查询内容]'，但我找到的最接近的结果是'[结果名称]'。这是正确的吗？”
+4. **用户请求不明确时：**
+   - “从马尔默出发” - “您指的是马尔默的哪个地点？是马尔默C站还是某个具体地址？”
+5. **涉及跨境行程时：**
+   - “哥本哈根”可能指多个车站——请确认用户是指København H（中央车站）、机场还是其他车站。
+6. **时间不明确时：**
+   - “您想什么时候出行？现在还是某个具体时间？”
 
 ---
 
-## DateTime Formats
+## 时间格式
 
-All times are Swedish local time (CET/CEST).
+所有时间均为瑞典当地时间（CET/CEST）。
 
-| Format | Example | Meaning |
+| 格式 | 例子 | 含义 |
 |--------|---------|---------|
-| _(empty)_ | | Travel now |
-| `HH:MM` | `"18:30"` | Today at 18:30 |
-| `tomorrow HH:MM` | `"tomorrow 09:00"` | Tomorrow at 09:00 |
-| `YYYY-MM-DD HH:MM` | `"2026-01-15 09:00"` | Specific date |
+| _(empty)_ | | 立即出行 |
+| `HH:MM` | `"18:30"` | 今天18:30 |
+| `tomorrow HH:MM` | `明天09:00` | 明天09:00 |
+| `YYYY-MM-DD HH:MM` | `2026-01-15 09:00` | 具体日期 |
 
 ---
 
-## Output Format
+## 输出格式
 
-### Journey Option (Raw Tool Output)
+### 行程选项（原始工具输出）
 
 ```
 ══════════════════════════════════════════════════════════════
@@ -592,60 +585,60 @@ LEGS:
     Direction: mot Helsingborg C
 ```
 
-### Transport Types
+### 交通工具类型
 
-| Type | Emoji | Description |
+| 类型 | 表情符号 | 描述 |
 |------|-------|-------------|
-| `TRAIN` | 🚂 | Pågatåg (regional train) |
-| `ORESUND` | 🚂 | Öresundståg (cross-border train) |
-| `BUS` | 🚌 | City or regional bus |
-| `WALK` | 🚶 | Walking segment |
-| `TRAM` | 🚋 | Tram/light rail |
-| `METRO` | 🚇 | Copenhagen Metro |
-| `FERRY` | ⛴️ | Ferry |
+| `TRAIN` | 🚂 | 地区火车 |
+| `ORESUND` | 🚂 | 跨境火车 |
+| `BUS` | 🚌 | 市内或地区公交车 |
+| `WALK` | 🚶 | 步行路段 |
+| `TRAM` | 🚋 | 有轨电车 |
+| `METRO` | 🚇 | 哥本哈根地铁 |
+| `FERRY` | ⛴️ | 渡轮 |
 
-### Status Indicators
+### 状态指示器
 
-| Indicator | Emoji | Meaning |
+| 指示器 | 表情符号 | 含义 |
 |-----------|-------|---------|
-| _(none)_ | ✅ | On time |
-| `[+X min late]` | ⚠️ | Delayed |
-| `[-X min early]` | ℹ️ | Running early |
-| `[PASSED]` | ❌ | Already departed |
-| `AVVIKELSE` | 🚨 | Service disruption |
+| _(none)_ | ✅ | 准时 |
+| `[+X min late]` | ⚠️ | 延误 |
+| `[-X min early]` | ℹ️ | 提前 |
+| `[PASSED]` | ❌ | 已经出发 |
+| `AVVIKELSE` | 🚨 | 服务中断 |
 
 ---
 
-## Error Handling
+## 错误处理
 
-### "No locations found"
+### “未找到地点”
 
-The search returned no results.
+搜索未返回任何结果。
 
-**Strategies:**
-1. Check spelling (Swedish: å, ä, ö)
-2. Try official station names with "C" for central
-3. For landmarks, remove city suffix
-4. For addresses, add city name
-5. Ask user for clarification
+**应对策略：**
+1. 检查拼写（瑞典语中的å、ä、ö）
+2. 尝试使用带有“C”后缀的官方车站名称（表示中央车站）
+3. 对于地标，去掉城市后缀
+4. 对于地址，添加城市名称
+5. 询问用户以获取更多信息
 
-### "No journeys found"
+### “未找到行程”
 
-No routes available.
+没有可用的路线。
 
-**Strategies:**
-1. Check if service operates at that hour (late night/early morning limited)
-2. Try different departure time
-3. Suggest alternative nearby stops
+**应对策略：**
+1. 检查该时间段内服务是否正常（夜间/清晨服务可能受限）
+2. 尝试不同的出发时间
+3. 建议附近的替代站点
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Location Type | Search Format | Journey Type |
+| 地点类型 | 搜索格式 | 行程类型 |
 |--------------|---------------|--------------|
-| Train station | `"Malmö C"` | STOP_AREA |
-| Bus stop | `"Möllevångstorget"` | STOP_AREA |
-| Address | `"Street 12, City"` | Use coords → LOCATION |
-| Landmark/POI | `"Emporia"` (no city!) | Use coords → LOCATION |
-| Coordinates | `55.605#13.003` | LOCATION |
+| 火车站 | `"Malmö C"` | `STOP_AREA` |
+| 公交车站 | `"Möllevångstorget"` | `STOP_AREA` |
+| 地址 | `"Street 12, City"` | 使用坐标 → `LOCATION` |
+| 地标/兴趣点 | `"Emporia"`（不含城市名称） | 使用坐标 → `LOCATION` |
+| 坐标 | `55.605#13.003` | `LOCATION` |

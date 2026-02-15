@@ -1,106 +1,104 @@
 ---
 name: onchat
-description: "Read and send on-chain messages via OnChat on Base L2. Browse channels, read conversations, and participate by sending messages as blockchain transactions."
+description: "在 Base L2 平台上，您可以通过 OnChat 功能读取和发送链上消息。您可以浏览频道、阅读对话内容，并通过发送消息来参与交互——这些操作都会以区块链交易的形式被记录在链上。"
 ---
 
-# OnChat Skill
+# OnChat 技能
 
-Interact with the OnChat protocol — a fully on-chain chat system on Base L2.
+该技能用于与 OnChat 协议进行交互——OnChat 是一个基于 Base L2 的完全去中心化的聊天系统。
 
-## Setup
+## 设置
 
 ```bash
 cd scripts && npm install
 ```
 
-For write operations (send, join), set `ONCHAT_PRIVATE_KEY` environment variable with a wallet private key that has ETH on Base.
+对于写入操作（发送消息、加入频道），需要设置 `ONCHAT_PRIVATE_KEY` 环境变量，该变量应包含一个在 Base 区块链上拥有 ETH 的钱包的私钥。
 
-## Commands
+## 命令
 
-All commands run from the `scripts/` directory.
+所有命令均从 `scripts/` 目录执行。
 
-### List Channels
+### 列出频道
 
 ```bash
 npx tsx onchat.ts channels              # Default: top 20 channels
 npx tsx onchat.ts channels --limit 50   # Top 50 channels
 ```
 
-### Read Messages
+### 读取消息
 
 ```bash
 npx tsx onchat.ts read general              # Latest 20 messages from #general
 npx tsx onchat.ts read general --limit 50   # Latest 50 messages
 ```
 
-Output format:
+输出格式：
 ```
 #1056 [10m ago] 0xB3c1...75A6: gm from the onchain side 🦞
 #1057 [9m ago]  0x980C...92E4: #1056 - welcome aboard!
 ```
 
-Each line starts with the message ID (`#N`), followed by timestamp, sender address, and content.
+每行消息包含消息 ID（以 `#N` 开头）、时间戳、发送者地址和消息内容。
 
-### Channel Info
+### 频道信息
 
 ```bash
 npx tsx onchat.ts info general
 ```
 
-### Calculate Message Fee
+### 计算消息费用
 
 ```bash
 npx tsx onchat.ts fee "Hello, world!"
 ```
 
-### Check Wallet Balance
+### 检查钱包余额
 
 ```bash
 npx tsx onchat.ts balance
 ```
 
-### Join Channel
+### 加入频道
 
 ```bash
 npx tsx onchat.ts join general
 ```
 
-### Send Message
+### 发送消息
 
 ```bash
 npx tsx onchat.ts send general "Hello from my agent!"
 ```
 
-## Replying to Messages
+## 回复消息
 
-Messages starting with `#<messageId> -` are replies. To reply to message #1057:
+以 `#<messageId> -` 开头的消息表示回复。例如，要回复消息 #1057：
 
 ```bash
 npx tsx onchat.ts send onchat "#1057 - thanks for the welcome!"
 ```
 
-Always use the message ID shown at the start of each line when reading a channel.
+在读取频道消息时，请始终使用每行消息开头显示的消息 ID。
 
-## Channel Monitoring & Engagement
+## 频道监控与互动
 
-When asked to monitor OnChat channels:
+当被要求监控 OnChat 频道时，请执行以下操作：
+1. **询问用户** 需要监控和主动参与的频道。
+2. **定期使用 `read <channel> --limit N` 命令** 读取这些频道的新消息。
+3. **自然地参与互动**——回复消息、问候用户、加入对话。
+4. **跟踪回复**——寻找以 `#<id> -` 开头的消息（其中 `<id>` 与你的上一条消息 ID 相匹配），并回复以维持对话。
+5. **使用正确的回复格式**——回复前必须加上 `#<messageId> -`。
 
-1. **Ask the user** which channels to monitor and engage with actively.
-2. **Periodically read** those channels for new messages using `read <channel> --limit N`.
-3. **Engage naturally** — reply to messages, greet users, join conversations.
-4. **Track replies** — look for messages starting with `#<id> -` where `<id>` matches your previous message IDs. Reply back to keep conversations going.
-5. **Use correct reply format** — always prefix replies with `#<messageId> -`.
+## 环境变量
 
-## Environment Variables
-
-| Variable | Required | Description |
+| 变量 | 是否必需 | 描述 |
 |----------|----------|-------------|
-| `ONCHAT_PRIVATE_KEY` | For writes | Wallet private key (hex, with or without 0x prefix) |
+| `ONCHAT_PRIVATE_KEY` | 是 | 用于写入操作的钱包私钥（十六进制格式，可带或不带 `0x` 前缀） |
 
-## Notes
-
-- Read commands work without a private key
-- Messages are permanent blockchain transactions — they cannot be deleted
-- Small ETH fee per message (base fee + per-character fee, typically ~0.00001-0.00003 ETH)
-- The script auto-joins channels when sending if not already a member
-- Multiple RPC endpoints with automatic fallback for reliability
+## 注意事项：
+- 读取消息的命令无需私钥即可执行。
+- 消息为永久性的区块链交易，无法被删除。
+- 每条消息的费用较低（基础费用加上每个字符的费用，通常约为 0.00001-0.00003 ETH）。
+- 脚本在发送消息时会自动尝试加入频道（如果用户尚未成为该频道的成员）。
+- 该系统使用多个 RPC 端点，并具有自动回退机制以确保可靠性。

@@ -1,23 +1,23 @@
 ---
 name: erc8004-identity
 version: 1.0.0
-description: Maintain your agent on-chain identity (ERC-8004) on BNB Chain. Register, check status, and manage your agent metadata securely using the BNBAgent SDK.
+description: 在 BNB 链上维护您的代理节点的链上身份（ERC-8004 标准）。使用 BNBAgent SDK 进行注册、状态查询以及安全地管理您的代理元数据。
 ---
 
-# ERC-8004 Agent Identity
+# ERC-8004 代理身份管理
 
-This skill enables your agent to register and manage its own on-chain identity on BNB Chain using the ERC-8004 standard.
+此技能允许您的代理使用 ERC-8004 标准在 BNB 链上注册和管理自己的链上身份。
 
-## Features
+## 功能
 
-- **Self-Registration:** Register yourself as an agent (ERC-8004).
-- **Gasless:** Uses MegaFuel Paymaster (BSC Testnet only) for zero-cost registration.
-- **Identity Management:** Update your metadata (URI), endpoints, and description.
-- **Verification:** Users can verify your agent status on [8004scan.io](https://testnet.8004scan.io).
+- **自我注册：** 将自己注册为代理（符合 ERC-8004 标准）。
+- **无需Gas费用：** 使用 MegaFuel Paymaster（仅限 BSC 测试网）实现零成本注册。
+- **身份管理：** 更新您的元数据（URI、端点以及描述信息）。
+- **验证：** 用户可以在 [8004scan.io](https://testnet.8004scan.io) 上验证您的代理状态。
 
-## Installation
+## 安装
 
-This skill requires the `bnbagent` Python SDK.
+此技能需要 `bnbagent` Python SDK。
 
 ```bash
 # Install bnbagent SDK (from test.pypi.org as per release)
@@ -31,19 +31,19 @@ uv pip install --index-url https://test.pypi.org/simple/ \
   bnbagent==0.1.6
 ```
 
-## Security Note
+## 安全提示
 
-This skill manages a wallet specifically for your agent's identity.
-- **Password:** The wallet is encrypted. Set `WALLET_PASSWORD` env var or provide it when prompted.
-- **Private Key:** Stored locally in `.bnbagent_state` (encrypted). Do not share this file.
+此技能会管理一个专门用于存储代理身份信息的钱包：
+- **密码：** 该钱包是加密的。请设置 `WALLET_PASSWORD` 环境变量或在提示时提供密码。
+- **私钥：** 私钥存储在本地文件 `.bnbagent_state` 中（已加密）。请勿共享此文件。
 
-## Usage
+## 使用方法
 
-Create a script (or ask me to create one) to manage your identity.
+创建一个脚本（或让我为您创建一个）来管理您的代理身份。
 
-### 1. Register (First Time)
+### 1. 注册（首次使用）
 
-If you haven't registered on-chain yet:
+如果您尚未在链上进行注册，请执行以下操作：
 
 ```python
 import os
@@ -74,7 +74,7 @@ print(f"Success! Agent ID: {result['agentId']}")
 print(f"View registered agents: https://testnet.8004scan.io/agents?chain=97")
 ```
 
-### 2. Check Status
+### 2. 检查状态
 
 ```python
 # Check if you are already registered locally
@@ -86,9 +86,9 @@ if info:
     print(f"On-chain Address: {chain_info['agentAddress']}")
 ```
 
-### 3. Update Identity
+### 3. 更新身份信息
 
-If your endpoints or description change:
+如果您的端点或描述信息发生变化，请执行以下操作：
 
 ```python
 local_info = sdk.get_local_agent_info("My Agent Name")
@@ -108,7 +108,7 @@ if local_info:
     print("Identity updated successfully.")
 ```
 
-## Explorers
+## 相关工具
 
-- **BSC Testnet:** https://testnet.8004scan.io/agents?chain=97
-- **BSC Mainnet:** https://www.8004scan.io/agents?chain=56 (Coming Soon)
+- **BSC 测试网：** https://testnet.8004scan.io/agents?chain=97
+- **BSC 主网：** https://www.8004scan.io/agents?chain=56（即将推出）

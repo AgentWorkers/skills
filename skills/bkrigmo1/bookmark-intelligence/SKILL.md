@@ -1,146 +1,144 @@
-# 🔖 Bookmark Intelligence
+# 🔖 书签智能
 
-**Turn your X (Twitter) bookmarks into actionable insights, automatically.**
+**将您在 X（Twitter）上的书签自动转化为可操作的见解。**
 
-Bookmark Intelligence watches your X bookmarks, fetches the full content from linked articles, analyzes everything with AI, and surfaces ideas relevant to YOUR projects. Stop letting great content sit in your bookmarks — let AI extract the value for you.
+书签智能会监控您的 X 书签，从链接的文章中获取完整内容，利用人工智能进行分析，并筛选出与您的项目相关的信息。不要再让优质内容闲置在书签里了——让人工智能为您提取价值吧。
 
 ---
 
-## 💎 Pricing & Tiers
+## 💎 价格与层级
 
-Bookmark Intelligence offers three tiers to fit your needs:
+书签智能提供三个层级，以满足您的需求：
 
-### 🆓 Free Tier
-**Perfect for trying it out**
-- **Price:** $0/month
-- **10 bookmarks** per month
-- Manual run only (no automation)
-- Basic keyword analysis (no AI)
-- No notifications
-- Rate limited: 1 run per hour
+### 🆓 免费层级
+**非常适合试用**
+- **价格：** 每月 $0
+- **每月 10 个书签**
+- 仅支持手动运行（无自动化）
+- 基本关键词分析（无人工智能）
+- 无通知
+- 使用频率限制：每小时 1 次
 
-### ⭐ Pro Tier - $9/month
-**Best for individuals**
-- **Unlimited bookmarks**
-- Automated monitoring (background daemon)
-- Full AI-powered analysis (GPT-4o-mini)
-- Telegram notifications
-- Priority support
+### ⭐ 专业层级 - 每月 $9
+**适合个人用户**
+- 无限书签数量
+- 自动监控（后台守护进程）
+- 全面的人工智能分析（使用 GPT-4o-mini）
+- Telegram 通知
+- 优先支持
 
-### 🚀 Enterprise Tier - $29/month
-**For teams and power users**
-- Everything in Pro, plus:
-- Team sharing & collaboration
-- Custom AI models (bring your own API keys)
-- API access for integrations
-- Slack & Discord notifications
-- Webhook support
-- Dedicated support
+### 🚀 企业层级 - 每月 $29
+**适合团队和高阶用户**
+- 专业层级所有功能，外加：
+- 团队共享与协作
+- 自定义人工智能模型（可携带自己的 API 密钥）
+- API 接口用于集成
+- Slack 和 Discord 通知
+- 专属支持
 
-**Annual plans available** - Save 2 months (16% off)!
+**提供年度套餐** - 可节省 2 个月费用（享受 16% 的折扣！**
 
-### How to Upgrade
+### 如何升级
 
-1. **Check your current tier:**
+1. **查看当前层级：**
    ```bash
    npm run license:check
    ```
 
-2. **View upgrade options:**
+2. **查看升级选项：**
    ```bash
    npm run license:upgrade
    ```
 
-3. **Choose payment method:**
-   - Credit Card (Stripe)
-   - Crypto (USDC on Polygon)
+3. **选择支付方式：**
+   - 信用卡（Stripe）
+   - 加密货币（Polygon 网络上的 USDC）
 
-4. **Activate your license:**
+4. **激活许可证：**
    ```bash
    node scripts/license.js activate YOUR-LICENSE-KEY
    ```
 
 ---
 
-## 📋 Quick Start
+## 📋 快速入门
 
-**Total setup time: ~5 minutes**
+**总设置时间：约 5 分钟**
 
-1. **Run the setup wizard:**
+1. **运行设置向导：**
    ```bash
    cd skills/bookmark-intelligence
    npm run setup
    ```
 
-2. **The wizard will:**
-   - ✅ Check if you have the required tools installed
-   - 🍪 Guide you through getting your X cookies (step-by-step)
-   - 🎯 Ask about your active projects & interests
-   - ⚙️ Configure notification preferences
-   - 🧪 Test your credentials
+2. **向导将：**
+   - ✅ 检查是否已安装所需工具
+   - 🍪 指导您获取 X 的 Cookie（分步操作）
+   - 🎯 询问您当前的项目和兴趣
+   - ⚙️ 配置通知偏好
+   - 🧪 测试您的凭据
 
-3. **Run it once to process your current bookmarks:**
+3. **运行一次以处理现有书签：**
    ```bash
    npm start
    ```
 
-4. **Set it up as a background daemon (optional but recommended):**
+4. **将其设置为后台守护进程（可选但推荐）：**
    ```bash
    npm run daemon
    ```
 
-That's it! You're done. 🎉
+就这样！您已经完成了。🎉
 
 ---
 
-## 🎯 What It Does
+## 🎯 功能介绍
 
-### The Problem
-You bookmark tons of great content on X, but:
-- You never go back to read it
-- The tweets link to articles you don't have time to read
-- You forget why you bookmarked something
-- You miss connections to your current projects
+### 问题
+您在 X 上收藏了大量优质内容，但：
+- 从未回过头去阅读它们
+- 推文链接的文章您没有时间阅读
+- 忘记了为什么收藏了这些内容
+- 错过了与当前项目的关联
 
-### The Solution
-Bookmark Intelligence:
-1. **Monitors** your X bookmarks automatically
-2. **Fetches** the full content from any linked articles (not just the tweets)
-3. **Analyzes** everything with AI to extract key concepts and actionable items
-4. **Relates** insights to YOUR specific projects and interests
-5. **Notifies** you (via Telegram) when it finds something valuable
-6. **Stores** everything in a searchable knowledge base
+### 解决方案
+书签智能：
+1. **自动监控** 您的 X 书签
+2. **获取** 链接文章的完整内容（而不仅仅是推文）
+3. **利用人工智能** 分析所有内容，提取关键概念和可操作的信息
+4. **将见解** 与您的具体项目和相关兴趣联系起来
+5. **在发现有价值的内容时** 通过 Telegram 通知您
+6. **将所有内容** 存储在可搜索的知识库中
 
-### Example Output
+### 示例输出
 
-You bookmark a tweet about "vector embeddings for AI memory" → The skill:
-- Fetches the linked article
-- Extracts: key concepts, actionable implementation steps, code patterns
-- Relates it to your "trading bot" and "agent memory" projects
-- Suggests: "Store market analysis as embeddings to find historical patterns"
-- Saves the full analysis to `life/resources/bookmarks/bookmark-123.json`
-- Sends you a Telegram notification with the summary
+您收藏了一条关于“AI 内存的向量嵌入”的推文 → 该工具会：
+- 获取链接的文章
+- 提取：关键概念、可操作的实现步骤、代码模式
+- 将其与您的“交易机器人”和“代理内存”项目关联起来
+- 建议：“将市场分析结果以嵌入形式保存到 `life/resources/bookmarks/bookmark-123.json` 中”
+- 通过 Telegram 发送摘要通知给您
 
-See [examples/sample-analysis.json](examples/sample-analysis.json) for a full example.
+请参阅 [examples/sample-analysis.json](examples/sample-analysis.json) 以获取完整示例。
 
 ---
 
-## 🍪 Getting Your X Cookies (Step-by-Step)
+## 🍪 获取 X 的 Cookie（分步操作）
 
-You need two cookies from X.com. Don't worry, this is safe and takes 2 minutes.
+您需要从 X.com 获取两个 Cookie。请放心，这个过程很安全，只需 2 分钟。
 
 ### Chrome / Edge / Brave
 
-1. Open https://x.com in your browser
-2. **Make sure you're logged in**
-3. Press **F12** (opens Developer Tools)
-4. Click the **Application** tab at the top
-5. In the left sidebar:
-   - Expand **Cookies**
-   - Click **https://x.com**
-6. You'll see a list of cookies. Find these two:
-   - `auth_token` → Copy the **Value** column
-   - `ct0` → Copy the **Value** column
+1. 在浏览器中打开 https://x.com
+2. **确保已登录**
+3. 按下 **F12**（打开开发者工具）
+4. 点击顶部的 **应用程序** 标签
+5. 在左侧边栏中：
+   - 展开 **Cookies**
+   - 点击 **https://x.com**
+6. 您会看到一个 Cookie 列表。找到以下两个：
+   - `auth_token` → 复制 **Value** 列
+   - `ct0` → 复制 **Value** 列
 
 ```
 ┌─────────────────────────────────────────┐
@@ -158,31 +156,31 @@ You need two cookies from X.com. Don't worry, this is safe and takes 2 minutes.
 
 ### Firefox
 
-1. Open https://x.com
-2. Press **F12**
-3. Click **Storage** tab (not "Application")
-4. Expand **Cookies** → **https://x.com**
-5. Copy `auth_token` and `ct0` values
+1. 打开 https://x.com
+2. 按下 **F12**
+3. 点击 **存储** 标签（不是“应用程序”）
+4. 展开 **Cookies** → **https://x.com**
+5. 复制 `auth_token` 和 `ct0` 的值
 
 ### Safari
 
-1. Enable Developer menu:
-   - Safari → Preferences → Advanced
-   - Check "Show Develop menu in menu bar"
-2. Go to https://x.com
-3. Develop → Show Web Inspector
-4. Storage tab → Cookies → x.com
-5. Copy `auth_token` and `ct0`
+1. 启用开发者菜单：
+   - Safari → 首选项 → 高级设置
+   - 勾选“在菜单栏显示开发者菜单”
+2. 访问 https://x.com
+3. 开发者 → 显示网络开发者工具
+4. 存储标签 → Cookies → x.com
+5. 复制 `auth_token` 和 `ct0`
 
-### ⚠️ Important Security Notes
+### ⚠️ 重要安全提示
 
-- **These cookies are like your password** - they give full access to your X account
-- **Never share them with anyone**
-- **Don't post them online or commit them to git**
-- They're stored locally in `.env` with strict permissions (600 = only you can read)
-- They expire periodically - you'll need to update them (the skill will tell you)
+- **这些 Cookie 就像您的密码** —— 它们可以完全访问您的 X 账户
+- **切勿与任何人共享**
+- **不要将它们发布到网上或提交到 git**
+- 它们存储在本地 `.env` 文件中，并具有严格的权限设置（600 = 仅您可以读取）
+- 它们会定期过期——您需要更新它们（该工具会提醒您）
 
-The setup wizard creates a `.env` file that looks like this:
+设置向导会创建一个如下所示的 `.env` 文件：
 ```bash
 AUTH_TOKEN=your_long_token_here
 CT0=your_other_token_here
@@ -190,37 +188,37 @@ CT0=your_other_token_here
 
 ---
 
-## 🛠️ Requirements
+## 🛠️ 要求
 
-### Required
-- **Node.js** v16+ ([download here](https://nodejs.org))
-- **bird CLI** - X/Twitter command-line tool
+### 必需软件
+- **Node.js** v16+（[在此处下载](https://nodejs.org)
+- **bird CLI** —— X/Twitter 命令行工具
   ```bash
   npm install -g bird
   ```
 
-### Optional (but recommended)
-- **PM2** - For running as a background daemon
+### 可选（但推荐）
+- **PM2** —— 用于作为后台守护进程运行
   ```bash
   npm install -g pm2
   ```
 
-The setup wizard checks all of this automatically!
+设置向导会自动检查这些软件是否已安装！
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-After running `npm run setup`, you'll have two files:
+运行 `npm run setup` 后，您将拥有两个文件：
 
-### 1. `.env` - Your Credentials
+### 1. `.env` - 您的凭据
 ```bash
 AUTH_TOKEN=your_token_here
 CT0=your_ct0_here
 ```
-**Never commit this file!** It's in `.gitignore`.
+**请勿提交此文件！** 它被包含在 `.gitignore` 文件中。
 
-### 2. `config.json` - Your Preferences
+### 2. `config.json` - 您的偏好设置
 ```json
 {
   "credentialsFile": ".env",
@@ -236,38 +234,38 @@ CT0=your_ct0_here
 }
 ```
 
-**Key settings:**
-- `bookmarkCount` - How many recent bookmarks to check (default: 50)
-- `checkIntervalMinutes` - How often to check for new bookmarks (default: 60)
-- `contextProjects` - **Your active projects** - the more specific, the better the AI analysis!
-- `notifyTelegram` - Get notified about high-value insights (requires OpenClaw)
+**关键设置：**
+- `bookmarkCount` - 检查的最近书签数量（默认：50 个）
+- `checkIntervalMinutes` - 检查新书签的频率（默认：60 分钟）
+- `contextProjects` - **您的活跃项目** —— 描述越具体，人工智能分析效果越好！
+- `notifyTelegram` - 在发现高价值见解时接收通知（需要 OpenClaw）
 
-You can edit `config.json` anytime. Changes take effect on next run.
+您可以随时编辑 `config.json`。更改将在下一次运行时生效。
 
 ---
 
-## 🚀 Usage
+## 🚀 使用方法
 
-### Run Once (Process Current Bookmarks)
+### 运行一次（处理现有书签）
 ```bash
 npm start
 ```
-Processes your recent bookmarks once and exits.
+处理一次您的最近书签后退出。
 
-### Test Mode (See What Would Happen)
+### 测试模式（查看实际效果）
 ```bash
 npm test
 ```
-Shows what it would process without actually doing it.
+显示在不实际执行操作时的处理过程。
 
-### Background Daemon (Recommended for Daily Use)
+### 后台守护进程（建议每日使用）
 ```bash
 npm run daemon
 ```
 
-This runs Bookmark Intelligence in the background, checking for new bookmarks every hour (configurable).
+这会将书签智能作为后台进程运行，每小时检查一次新书签（可配置）。
 
-**Managing the daemon:**
+**管理守护进程：**
 ```bash
 pm2 status bookmark-intelligence   # Check if it's running
 pm2 logs bookmark-intelligence     # View recent logs
@@ -278,7 +276,7 @@ pm2 delete bookmark-intelligence   # Remove it completely
 
 ---
 
-## 📂 Where Does Everything Go?
+## 📂 数据存储位置
 
 ```
 skills/bookmark-intelligence/
@@ -298,93 +296,93 @@ life/resources/bookmarks/   # ← Analyzed bookmarks saved here
 └── ...
 ```
 
-Each analyzed bookmark becomes a JSON file with:
-- The original tweet (author, text, engagement stats)
-- Full analysis (summary, key concepts, actionable items)
-- Implementation suggestions for YOUR projects
-- Priority level
-- Timestamp
+每个分析后的书签都会生成一个 JSON 文件，其中包含：
+- 原始推文（作者、文本、互动数据）
+- 完整分析结果（摘要、关键概念、可操作项）
+- 针对您项目的实施建议
+- 优先级
+- 时间戳
 
 ---
 
-## 🔔 Notifications (OpenClaw Integration)
+## 🔔 通知（与 OpenClaw 集成）
 
-If you're running this inside OpenClaw (not standalone), you can get Telegram notifications for high-value insights.
+如果您在 OpenClaw 中运行此工具（而非独立运行），您可以收到高价值见解的 Telegram 通知。
 
-**What triggers a notification:**
-- `priority: "high"` AND
+**触发通知的条件：**
+- `priority: "high"` 且
 - `hasActionableInsights: true`
 
-**What you get:**
-- 📚 Summary of the content
-- 🎯 List of actionable items
-- 💡 Key concepts
-- 🔨 Implementation suggestions for your projects
-- 🔗 Link to the original tweet
+**您将收到：**
+- 📚 内容摘要
+- 🎯 可操作项列表
+- 💡 关键概念
+- 🔨 针对您项目的实施建议
+- 🔗 原始推文的链接
 
-See [examples/sample-notification.md](examples/sample-notification.md) for a full example.
+请参阅 [examples/sample-notification.md](examples/sample-notification.md) 以获取完整示例。
 
 ---
 
-## 🧹 Uninstalling
+## 🧹 卸载
 
 ```bash
 npm run uninstall
 ```
 
-This will:
-1. Stop the PM2 daemon (if running)
-2. Delete your credentials (`.env`)
-3. Delete configuration (`config.json`)
-4. Delete processing state (`bookmarks.json`)
-5. **Ask** if you want to keep your analyzed bookmarks
+这将：
+1. 停止 PM2 守护进程（如果正在运行）
+2. 删除您的凭据（`.env` 文件）
+3. 删除配置文件（`config.json`）
+4. 删除处理状态文件（`bookmarks.json`）
+5. **询问** 是否希望保留已分析的书签
 
-To reinstall later, just run `npm run setup` again.
+如需重新安装，只需再次运行 `npm run setup` 即可。
 
 ---
 
-## 🔧 Troubleshooting
+## 🔧 故障排除
 
-### "Missing Twitter credentials" error
+### “缺少 Twitter 凭据” 错误
 
-**Problem:** The skill can't find your auth tokens.
+**问题：** 工具无法找到您的认证令牌。
 
-**Solution:**
-1. Make sure you ran `npm run setup`
-2. Check that `.env` exists in `skills/bookmark-intelligence/`
-3. Check that `.env` has both `AUTH_TOKEN=` and `CT0=` lines
+**解决方案：**
+1. 确保已运行 `npm run setup`
+2. 检查 `.env` 文件是否存在于 `skills/bookmark-intelligence/` 目录下
+3. 确保 `.env` 文件中包含 `AUTH_TOKEN=` 和 `CT0=` 这两行
 
-### "No bookmarks fetched" or "unauthorized" error
+### “未获取书签” 或 “未经授权” 错误
 
-**Problem:** Your cookies are invalid or expired.
+**问题：** 您的 Cookie 无效或已过期。
 
-**Solution:**
-1. Get fresh cookies from X.com (see instructions above)
-2. Update `.env` with new values
-3. Try running `npm test` to verify
+**解决方案：**
+1. 从 X.com 获取新的 Cookie（参见上述说明）
+2. 用新值更新 `.env` 文件
+3. 尝试运行 `npm test` 进行验证
 
-**To manually test your credentials:**
+**手动测试凭据的方法：**
 ```bash
 cd skills/bookmark-intelligence
 source .env
 bird whoami --json
 ```
-If this works, your credentials are valid.
+如果此方法有效，说明您的凭据是有效的。
 
-### "bird: command not found"
+### “bird: 命令未找到” 错误
 
-**Problem:** bird CLI isn't installed.
+**问题：** 未安装 bird CLI。
 
-**Solution:**
+**解决方案：**
 ```bash
 npm install -g bird
 ```
 
-### Daemon not running / stops unexpectedly
+### 守护进程未运行/意外停止
 
-**Problem:** PM2 might not be installed, or daemon crashed.
+**问题：** 可能是 PM2 未安装，或者守护进程崩溃了。
 
-**Solution:**
+**解决方案：**
 ```bash
 # Check PM2 is installed
 pm2 --version
@@ -402,13 +400,13 @@ pm2 logs bookmark-intelligence
 npm run daemon
 ```
 
-### Analysis seems generic / not relevant
+### 分析结果显得泛泛而谈/不相关
 
-**Problem:** The AI doesn't know what you care about.
+**问题：** 人工智能不了解您的关注点。
 
-**Solution:**
-1. Edit `config.json`
-2. Update `contextProjects` with **specific** project descriptions:
+**解决方案：**
+1. 编辑 `config.json`
+2. 使用更具体的项目描述更新 `contextProjects`：
    ```json
    "contextProjects": [
      "Building a crypto trading bot using Python and Binance API",
@@ -416,230 +414,230 @@ npm run daemon
      "Growing my SaaS to $10k MRR"
    ]
    ```
-3. Restart: `pm2 restart bookmark-intelligence`
+3. 重新启动：`pm2 restart bookmark-intelligence`
 
-The more specific you are, the better the AI can relate insights to your work!
-
----
-
-## 🔐 Privacy & Data
-
-**Where is your data stored?**
-- Credentials: `.env` (local file, permissions: 600)
-- Analyzed bookmarks: `life/resources/bookmarks/` (local files)
-- Nothing is sent to any third party except:
-  - X.com (to fetch your bookmarks)
-  - OpenAI/Anthropic (for AI analysis, if using OpenClaw LLM)
-  - Linked websites (to fetch article content)
-
-**Can I use this without OpenClaw?**
-- Yes! It works standalone
-- You won't get LLM analysis (falls back to keyword-based analysis)
-- You won't get Telegram notifications
-- Everything else works fine
-
-**Is it safe?**
-- Your credentials never leave your machine
-- `.env` is in `.gitignore` so you won't accidentally commit it
-- File permissions are set to 600 (owner read/write only)
-- No telemetry, no phone-home
+描述越具体，人工智能就越能将见解与您的工作联系起来！
 
 ---
 
-## 🎨 Customization Ideas
+## 🔐 隐私与数据
 
-Once you're comfortable with the basics, you can customize:
+**数据存储位置：**
+- 凭据：`.env` 文件（本地文件，权限设置为 600）
+- 分析后的书签：`life/resources/bookmarks/`（本地文件）
+- 除了以下情况外，不会向任何第三方发送数据：
+  - X.com（用于获取您的书签）
+  - OpenAI/Anthropic（用于人工智能分析，如果使用 OpenClaw LLM）
+  - 链接的网站（用于获取文章内容）
 
-### Change notification threshold
-Edit `monitor.js` line ~120 to notify on `medium` priority too:
+**没有 OpenClaw 也可以使用吗？**
+- 可以！它可以独立运行
+- 无法使用 LLM 分析（此时会使用基于关键词的分析）
+- 无法接收 Telegram 通知
+- 其他功能均正常使用
+
+**安全吗？**
+- 您的凭据不会离开您的设备
+- `.env` 文件被包含在 `.gitignore` 中，因此不会被意外提交
+- 文件权限设置为 600（仅所有者可读/写）
+- 无遥测数据，无日志记录
+
+---
+
+## 🎨 自定义选项
+
+熟悉基本功能后，您可以进行以下自定义：
+
+### 更改通知阈值
+编辑 `monitor.js` 文件中大约第 120 行的代码，以便在 **中等优先级** 时也接收通知：
 ```javascript
 if (config.notifyTelegram && (analysis.priority === 'high' || analysis.priority === 'medium')) {
 ```
 
-### Process more bookmarks
-Edit `config.json`:
+### 处理更多书签
+编辑 `config.json` 文件：
 ```json
 {
   "bookmarkCount": 100  // Check last 100 bookmarks
 }
 ```
 
-### Check more frequently
+### 更频繁地检查
 ```json
 {
   "checkIntervalMinutes": 30  // Check every 30 minutes
 }
 ```
 
-### Export to Notion / Obsidian
-Add your own export script in `scripts/export-to-notion.js` - each bookmark is already a clean JSON structure!
+### 导出到 Notion / Obsidian
+在 `scripts/export-to-notion.js` 中添加自己的导出脚本——每个书签都已经是格式化的 JSON 格式！
 
 ---
 
-## 📚 Examples
+## 📚 示例
 
-See the `examples/` folder:
-- **sample-analysis.json** - What a full analysis looks like
-- **sample-notification.md** - What you'll see in Telegram
-
----
-
-## 🐛 Found a Bug?
-
-Open an issue on ClawHub or submit a PR!
-
-Common issues:
-- Cookie expiration → Just update `.env` with fresh cookies
-- Rate limiting → Reduce `bookmarkCount` or increase `checkIntervalMinutes`
-- Analysis quality → Make `contextProjects` more specific
+请查看 `examples/` 文件夹：
+- **sample-analysis.json** —— 完整分析的示例
+- **sample-notification.md** —— 您在 Telegram 中会看到的通知内容
 
 ---
 
-## 📜 License
+## 🐛 发现漏洞？
 
-MIT - Do whatever you want with it!
+请在 ClawHub 上提交问题或拉取代码请求！
+
+常见问题：
+- Cookie 过期 → 只需用新的 Cookie 更新 `.env` 文件
+- 使用频率限制 → 减少 `bookmarkCount` 或增加 `checkIntervalMinutes`
+- 分析质量 → 使 `contextProjects` 的描述更具体
 
 ---
 
-## 💳 Payment & Licensing
+## 📜 许可证
 
-### Accepted Payment Methods
+MIT 许可证 —— 您可以自由使用此工具！
 
-**Credit Card (Stripe)**
-- All major credit cards accepted
-- Instant activation
-- Automatic recurring billing
-- Cancel anytime
+---
 
-**Cryptocurrency**
-- USDC on Polygon network
-- Low transaction fees (~$0.01)
-- Manual verification (24hr activation)
-- Send exact amount with payment ID as memo
+## 💳 支付与许可
 
-### How Payments Work
+### 接受的支付方式
 
-1. Run `npm run license:upgrade` to see options
-2. Choose your tier and payment method
-3. For Stripe: Click the link and complete checkout
-4. For Crypto: Send USDC to the provided address with the payment memo
-5. You'll receive a license key via email
-6. Activate: `node scripts/license.js activate <key>`
+**信用卡（Stripe）**
+- 支持所有主要信用卡
+- 即时激活
+- 自动续订
+- 随时取消
 
-### License Management
+**加密货币**
+- Polygon 网络上的 USDC
+- 低交易费用（约 $0.01）
+- 需手动验证（24 小时内激活）
+- 请在付款备注中注明付款金额
 
-**Check your status anytime:**
+### 支付流程
+
+1. 运行 `npm run license:upgrade` 查看可用选项
+2. 选择您的层级和支付方式
+3. 对于 Stripe：点击链接完成支付
+4. 对于加密货币：将 USDC 发送到提供的地址，并在备注中注明付款金额
+5. 您将通过电子邮件收到许可证密钥
+6. 激活许可证：`node scripts/license.js activate <key>`
+
+### 许可证管理
+
+**随时查看您的状态：**
 ```bash
 npm run license:check
 ```
 
-**Your license includes:**
-- Subscription tier and features
-- Usage stats (bookmarks processed this month)
-- Expiration date
-- Grace period (3 days after expiration)
+**您的许可证包含：**
+- 订阅层级和功能
+- 本月处理的书签数量
+- 到期日期
+- 续期期限（到期后 3 天）
 
-**Renewals:**
-- Monthly: Auto-renews every 30 days
-- Annual: Auto-renews every 365 days
-- You'll receive renewal reminders via email
+**续订：**
+- 每月：自动续订，每 30 天一次
+- 年度：自动续订，每 365 天一次
+- 您将收到续订提醒
 
-### Refund Policy
+### 退款政策
 
-- **30-day money-back guarantee** for annual plans
-- Monthly subscriptions: Refund available within 7 days of first payment
-- Contact support with your license key or payment ID
-- Refunds processed within 5-7 business days
+- **年度套餐提供 30 天退款保证**
+- 月度订阅：首次付款后 7 天内可退款
+- 请通过许可证密钥或付款信息联系客服
+- 退款将在 5-7 个工作日内处理
 
-### Privacy
+### 隐私政策
 
-- Payment processing: Stripe (PCI-DSS Level 1 certified)
-- We never store your credit card details
-- License keys are encrypted locally on your machine
-- Usage statistics are stored locally only
+- **支付处理：** 使用 Stripe（PCI-DSS 1 级认证）
+- 我们不会存储您的信用卡信息
+- 许可证密钥在您的设备上加密存储
+- 使用数据仅存储在本地
 
-### Support
+### 支持
 
-**Free Tier:** Community support via GitHub issues
-**Pro Tier:** Email support (48hr response time)
-**Enterprise Tier:** Priority support (8hr response time) + Slack channel
-
----
-
-## ❓ Frequently Asked Questions
-
-### General
-
-**Q: Do I need OpenClaw to use this?**  
-A: No! It works standalone. With OpenClaw you get LLM analysis and notifications, but it's optional.
-
-**Q: Can I try it before paying?**  
-A: Yes! Start with the Free tier (10 bookmarks/month). No credit card required.
-
-**Q: How do I upgrade or downgrade?**  
-A: Run `npm run license:upgrade` to upgrade. For downgrades, contact support before renewal.
-
-**Q: What happens if I exceed my Free tier limit?**  
-A: Processing stops at 10 bookmarks. You'll see a message prompting you to upgrade. Your data is safe.
-
-### Billing
-
-**Q: Can I cancel anytime?**  
-A: Yes! No commitments. Cancel before your next billing date and you won't be charged.
-
-**Q: Do you offer discounts?**  
-A: Annual plans save 2 months (16% off). Student/nonprofit discounts available - contact support.
-
-**Q: What if my payment fails?**  
-A: You'll get a 3-day grace period to update payment info. After that, you'll downgrade to Free tier.
-
-**Q: Can I get an invoice?**  
-A: Yes! Invoices are emailed automatically. Enterprise customers can request custom invoices.
-
-### Technical
-
-**Q: Does the Free tier use AI analysis?**  
-A: No, Free tier uses keyword-based heuristics. Upgrade to Pro for full AI-powered insights.
-
-**Q: How does automation work?**  
-A: Pro/Enterprise tiers can run as a background daemon (PM2) that checks bookmarks automatically.
-
-**Q: Can I use my own AI API keys?**  
-A: Enterprise tier only. Supports OpenAI, Anthropic, and custom endpoints.
-
-**Q: Is my data private?**  
-A: Yes! Everything runs locally. Your bookmarks never leave your machine except for AI analysis API calls.
-
-**Q: What if I change machines?**  
-A: Your license key works on one machine at a time. Contact support to transfer licenses.
-
-### For Sellers (if distributing via ClawHub)
-
-**Q: How do I configure payment for my wallet?**  
-A: Edit `payment-config.json` and add your Stripe keys and/or crypto wallet address.
-
-**Q: Can I change the pricing?**  
-A: Yes! Edit the `pricing` section in `payment-config.json`.
-
-**Q: How do I issue trial licenses?**  
-A: Use the admin dashboard: `node scripts/admin.js issue pro user@example.com trial`
-
-**Q: How do I track revenue?**  
-A: Run `npm run admin:revenue` to see stats.
+**免费层级：** 通过 GitHub 问题进行社区支持
+**专业层级：** 电子邮件支持（48 小时内回复）
+**企业层级：** 优先支持（8 小时内回复）+ Slack 频道
 
 ---
 
-## 🤝 Contributing
+## ❓ 常见问题
 
-Pull requests welcome! Areas for improvement:
-- Better content extraction (handle paywalls, PDFs, etc.)
-- Deduplication (don't re-analyze similar bookmarks)
-- Trend detection (spot recurring themes across bookmarks)
-- Interactive Telegram UI (implement/dismiss/save for later buttons)
-- Export integrations (Notion, Obsidian, Roam)
+### 通用问题
+
+**Q：使用此工具需要 OpenClaw 吗？**
+A：不需要！它可以独立使用。使用 OpenClaw 可以获得 LLM 分析和通知，但这不是必需的。
+
+**Q：可以在付费前试用吗？**
+A：可以！从免费层级开始（每月 10 个书签）。无需信用卡。
+
+**Q：如何升级或降级？**
+A：运行 `npm run license:upgrade` 升级。如需降级，请在续订前联系客服。
+
+**Q：如果超出免费层级限制怎么办？**
+A：处理将停止在 10 个书签处。系统会提示您升级。您的数据是安全的。
+
+### 计费
+
+**Q：可以随时取消吗？**
+A：可以！无需任何承诺。在下一个 billing 日之前取消即可，无需支付费用。
+
+**Q：提供折扣吗？**
+A：年度套餐可节省 2 个月费用（16% 的折扣）。学生和非营利组织可享受折扣——请联系客服。
+
+**Q：如果支付失败怎么办？**
+A：您有 3 天的退款期限来更新支付信息。之后将降级为免费层级。
+
+**Q：可以获取发票吗？**
+A：可以！发票会自动发送电子邮件。企业客户可以请求定制发票。
+
+### 技术问题
+
+**Q：免费层级使用人工智能分析吗？**
+A：不，免费层级使用基于关键词的启发式方法。升级到专业层级可享受全面的人工智能分析。
+
+**Q：自动化是如何工作的？**
+A：专业/企业层级可以作为后台守护进程（PM2）运行，自动检查书签。
+
+**Q：可以使用自己的 AI API 密钥吗？**
+A：仅企业层级支持。支持 OpenAI、Anthropic 和自定义 API。
+
+**Q：我的数据是否保密？**
+A：是的！所有数据都在本地处理。您的书签仅用于人工智能分析，不会离开您的设备。
+
+**Q：如果更换设备怎么办？**
+A：您的许可证密钥仅在一个设备上有效。如需转移许可证，请联系客服。
+
+### 对于销售商（如果通过 ClawHub 分发）
+
+**Q：如何配置支付方式？**
+A：编辑 `payment-config.json` 文件，添加您的 Stripe 密钥和/或加密货币钱包地址。
+
+**Q：可以更改价格吗？**
+A：可以！编辑 `payment-config.json` 文件中的价格设置。
+
+**Q：如何发放试用许可证？**
+A：使用管理员面板：`node scripts/admin.js issue pro user@example.com trial`
+
+**Q：如何跟踪收入？**
+A：运行 `npm run admin:revenue` 查看收入统计。
 
 ---
 
-**Made with ❤️ for OpenClaw**
+## 🤝 贡献
 
-Questions? Check the troubleshooting section above or ask in the OpenClaw community!
+欢迎提交代码请求！改进方向包括：
+- 更好的内容提取（处理付费墙、PDF 等）
+- 去重（避免重复分析相似的书签）
+- 模式检测（发现书签中的重复主题）
+- 交互式 Telegram 用户界面（实现/关闭/保存功能）
+- 导出到 Notion / Obsidian 的集成
+
+---
+
+**用心为您和 OpenClaw 制作**
+
+有问题？请查看上面的故障排除指南或在 OpenClaw 社区中提问！

@@ -1,6 +1,7 @@
 ---
 name: clawhub
-description: clawhub
+description: **clawhub**  
+ClawHub 是一个用于管理和协作开发开源软件的项目平台。它提供了丰富的工具和功能，帮助开发者更高效地组织代码、跟踪问题、进行代码审查以及与团队成员进行沟通。通过 ClawHub，开发者可以轻松创建新的项目、分配任务、设置权限，并监控项目的整体进度。此外，ClawHub 还支持集成各种版本控制系统（如 Git），以及自动化构建和部署流程，从而简化了软件的开发和管理过程。
 homepage: 
 metadata: 
 ---

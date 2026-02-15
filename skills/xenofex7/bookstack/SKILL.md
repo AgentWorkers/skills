@@ -1,6 +1,12 @@
 ---
 name: bookstack
-description: "BookStack Wiki & Documentation API integration. Manage your knowledge base programmatically: create, read, update, and delete books, chapters, pages, and shelves. Full-text search across all content. Use when you need to: (1) Create or edit wiki pages and documentation, (2) Organize content in books and chapters, (3) Search your knowledge base, (4) Automate documentation workflows, (5) Sync content between systems. Supports both HTML and Markdown content."
+description: "BookStack Wiki与文档API集成：通过编程方式管理您的知识库——可以创建、读取、更新和删除书籍、章节、页面以及分类目录。支持对所有内容进行全文搜索。适用于以下场景：  
+(1) 创建或编辑Wiki页面和文档；  
+(2) 对内容进行分类（放入不同的书籍或章节中）；  
+(3) 在知识库中搜索信息；  
+(4) 自动化文档处理流程；  
+(5) 在不同系统之间同步内容。  
+该集成同时支持HTML和Markdown格式的内容。"
 metadata:
   openclaw:
     requires:
@@ -10,19 +16,19 @@ metadata:
         - BOOKSTACK_TOKEN_SECRET
 ---
 
-# BookStack Skill
+# BookStack 技能
 
-**BookStack** is an open-source wiki and documentation platform. This skill lets you manage your entire knowledge base via API – perfect for automation and integration.
+**BookStack** 是一个开源的 wiki 和文档平台。通过这个技能，您可以使用 API 管理您的整个知识库——非常适合自动化和集成。
 
-## Features
+## 功能
 
-- 📚 **Books** – create, edit, delete
-- 📑 **Chapters** – organize content within books
-- 📄 **Pages** – create/edit with HTML or Markdown
-- 🔍 **Full-text search** – search across all content
-- 📁 **Shelves** – organize books into collections
+- 📚 **书籍** – 创建、编辑、删除书籍
+- 📑 **章节** – 在书籍中组织内容
+- 📄 **页面** – 使用 HTML 或 Markdown 创建/编辑页面
+- 🔍 **全文搜索** – 在所有内容中进行搜索
+- 📁 **书架** – 将书籍分类到不同的集合中
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all books
@@ -38,9 +44,9 @@ python3 scripts/bookstack.py get_page 123
 python3 scripts/bookstack.py create_page --book-id 1 --name "My Page" --markdown "# Title\n\nContent here..."
 ```
 
-## All Commands
+## 所有命令
 
-### Books
+### 书籍
 ```bash
 python3 scripts/bookstack.py list_books                    # List all books
 python3 scripts/bookstack.py get_book <id>                 # Book details
@@ -49,7 +55,7 @@ python3 scripts/bookstack.py update_book <id> [--name] [--description]
 python3 scripts/bookstack.py delete_book <id>
 ```
 
-### Chapters
+### 章节
 ```bash
 python3 scripts/bookstack.py list_chapters                 # List all chapters
 python3 scripts/bookstack.py get_chapter <id>              # Chapter details
@@ -58,7 +64,7 @@ python3 scripts/bookstack.py update_chapter <id> [--name] [--description]
 python3 scripts/bookstack.py delete_chapter <id>
 ```
 
-### Pages
+### 页面
 ```bash
 python3 scripts/bookstack.py list_pages                    # List all pages
 python3 scripts/bookstack.py get_page <id>                 # Page preview
@@ -74,23 +80,23 @@ python3 scripts/bookstack.py update_page <id> [--name] [--content] [--markdown]
 python3 scripts/bookstack.py delete_page <id>
 ```
 
-### Search
+### 搜索
 ```bash
 python3 scripts/bookstack.py search "query"                # Search everything
 python3 scripts/bookstack.py search "query" --type page    # Pages only
 python3 scripts/bookstack.py search "query" --type book    # Books only
 ```
 
-### Shelves
+### 书架
 ```bash
 python3 scripts/bookstack.py list_shelves                  # List all shelves
 python3 scripts/bookstack.py get_shelf <id>                # Shelf details
 python3 scripts/bookstack.py create_shelf "Name" ["Desc"]  # New shelf
 ```
 
-## Configuration
+## 配置
 
-Set the following environment variables:
+设置以下环境变量：
 
 ```bash
 export BOOKSTACK_URL="https://your-bookstack.example.com"
@@ -98,23 +104,23 @@ export BOOKSTACK_TOKEN_ID="your-token-id"
 export BOOKSTACK_TOKEN_SECRET="your-token-secret"
 ```
 
-Or configure via your gateway config file under `skills.entries.bookstack.env`.
+或者通过您的网关配置文件（位于 `skills.entries.bookstack.env` 下）进行配置。
 
-### Create an API Token
+### 创建 API 令牌
 
-1. Log in to your BookStack instance
-2. Go to **Edit Profile** → **API Tokens**
-3. Click **Create Token**
-4. Copy the Token ID and Secret
+1. 登录到您的 BookStack 实例
+2. 转到 **编辑个人资料** → **API 令牌**
+3. 点击 **创建令牌**
+4. 复制令牌 ID 和密钥
 
-⚠️ The user needs a role with **"Access System API"** permission!
+⚠️ 用户需要具有 **“访问系统 API”** 的权限！
 
-## API Reference
+## API 参考
 
-- **Base URL**: `{BOOKSTACK_URL}/api`
-- **Auth Header**: `Authorization: Token {ID}:{SECRET}`
-- **Official Docs**: https://demo.bookstackapp.com/api/docs
+- **基础 URL**：`{BOOKSTACK_URL}/api`
+- **认证头**：`Authorization: Token {ID}:{SECRET}`
+- **官方文档**：https://demo.bookstackapp.com/api/docs
 
 ---
 
-**Author**: xenofex7 | **Version**: 1.0.2
+**作者**：xenofex7 | **版本**：1.0.2

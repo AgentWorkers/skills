@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Press Release Writing
+# 新闻稿撰写
 
-Write professional press releases with research and fact-checking via [inference.sh](https://inference.sh) CLI.
+使用 [inference.sh](https://inference.sh) 命令行工具来撰写专业的新闻稿，并进行研究和事实核查。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,9 +25,9 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## AP Style Format
+## AP 样式格式
 
-### Structure
+### 结构
 
 ```
 HEADLINE IN TITLE CASE, PRESENT TENSE, NO PERIOD
@@ -61,9 +61,9 @@ Media Contact:
 [Phone]
 ```
 
-## Section-by-Section Guide
+## 分章节指南
 
-### Headline
+### 标题
 
 ```
 ❌ Company X Announces Revolutionary New Product That Will Change Everything!
@@ -75,15 +75,15 @@ Media Contact:
 ✅ Company X Partners With Acme Corp to Accelerate Cloud Migration
 ```
 
-**Rules:**
-- Present tense, active voice
-- No period at end
-- No superlatives ("revolutionary", "groundbreaking", "best-in-class")
-- No exclamation points
-- Include the key news element
-- Title case
+**规则：**
+- 使用现在时态，主动语态
+- 文末不要加句号
+- 避免使用最高级形容词（如“革命性的”、“开创性的”、“同类最佳的”）
+- 不要使用感叹号
+- 必须包含关键的新闻要素
+- 标题首字母大写
 
-### Dateline
+### 日期
 
 ```
 SAN FRANCISCO, Jan. 15, 2026 —
@@ -91,11 +91,11 @@ NEW YORK, March 3, 2026 —
 LONDON, Dec. 10, 2026 —
 ```
 
-**AP month abbreviations:** Jan., Feb., Aug., Sept., Oct., Nov., Dec. (March, April, May, June, July spelled out)
+**AP 月份缩写：** 一月（Jan.）、二月（Feb.）、八月（Aug.）、九月（Sept.）、十月（Oct.）、十一月（Nov.）、十二月（Dec.）（三月（March）、四月（April）、五月（May）、六月（June）、七月（July）需完整书写）
 
-### Lead Paragraph
+### 引言段落
 
-Answer WHO, WHAT, WHEN, WHERE, WHY in 25-35 words:
+用 25-35 个字回答“谁（WHO）、什么（WHAT）、何时（WHEN）、哪里（WHERE）、为什么（WHY）”这些问题：
 
 ```
 ❌ "We are thrilled to announce that after months of hard work, our talented
@@ -106,14 +106,14 @@ Answer WHO, WHAT, WHEN, WHERE, WHY in 25-35 words:
     engineering teams."
 ```
 
-### Quotes
+### 引用
 
-**Rules:**
-- 1-2 quotes maximum (CEO/founder + partner/customer)
-- Never start a quote with "I"
-- Attribution format: "Quote," said Full Name, Title at Company.
-- Quotes should add perspective, not repeat facts from the body
-- Forward-looking quotes work well: "We believe this will..."
+**规则：**
+- 最多使用 1-2 条引用（CEO/创始人 + 合作伙伴/客户）
+- 引用不要以“I”开头
+- 引用格式：「引用语，姓名，公司职位」
+- 引用应提供新的视角，而不是重复正文中的事实
+- 前瞻性的引用效果更好：「我们相信这将会……」
 
 ```
 ❌ "I am so excited about this launch," said John Smith.
@@ -127,7 +127,7 @@ Answer WHO, WHAT, WHEN, WHERE, WHY in 25-35 words:
     to three minutes," said Marcus Lee, VP of Engineering at Acme Corp.
 ```
 
-### Boilerplate (About Section)
+### 常见信息（关于公司/项目）
 
 ```
 About Company X
@@ -137,9 +137,9 @@ Founded in [year] and headquartered in [city], the company serves
 information, visit www.companyx.com.
 ```
 
-Keep to 3-4 sentences. Consistent across all press releases.
+保持 3-4 句的篇幅。所有新闻稿中应保持一致。
 
-### Media Contact
+### 媒体联系信息
 
 ```
 Media Contact:
@@ -149,9 +149,9 @@ jane@companyx.com
 (555) 123-4567
 ```
 
-## The Inverted Pyramid
+## 倒金字塔结构
 
-Most important information first. Each paragraph is less critical than the one before. Editors cut from the bottom.
+最重要的信息放在最前面。每个段落的重要性依次递减。编辑通常会从底部开始阅读。
 
 ```
 ┌─────────────────────────┐
@@ -172,9 +172,9 @@ Most important information first. Each paragraph is less critical than the one b
 └─────────────────────────┘
 ```
 
-## Research & Fact-Checking
+## 研究与事实核查
 
-### Verify Claims
+### 验证声明
 
 ```bash
 # Check market size claims
@@ -193,7 +193,7 @@ infsh app run exa/answer --input '{
 }'
 ```
 
-### Add Context
+### 添加背景信息
 
 ```bash
 # Industry trends for the "why now" angle
@@ -202,90 +202,90 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## Press Release Types
+## 新闻稿类型
 
-### Product Launch
+### 产品发布
 
-**Focus:** What it does, who it's for, why it matters, availability
-**Quote:** CEO or product lead on the vision
+**重点：** 产品功能、目标受众、重要性、上市时间
+**引用语：** CEO 或产品负责人关于产品愿景的讲话
 
-### Funding Announcement
+### 融资公告
 
-**Focus:** Amount, round, lead investor, what funds will be used for
-**Quote:** CEO on growth plans + lead investor on why they invested
+**重点：** 融资金额、轮次、主要投资者、资金用途
+**引用语：** CEO 关于公司增长计划的讲话 + 主要投资者关于投资理由的讲话
 
-### Partnership
+### 合作伙伴关系
 
-**Focus:** What the partnership enables, benefits to customers
-**Quote:** One from each company
+**重点：** 合作关系带来的好处、对客户的影响
+**引用语：** 两家公司的代表言论
 
-### Milestone / Achievement
+### 里程碑/成就
 
-**Focus:** The metric, growth trajectory, what it means
-**Quote:** CEO on the journey and what's next
+**重点：** 成就指标、增长趋势、意义
+**引用语：** CEO 关于公司的发展历程及下一步计划的讲话
 
-### Executive Hire
+### 高管任命
 
-**Focus:** Who, their background, what they'll lead
-**Quote:** CEO on why this hire + new exec on why they joined
+**重点：** 新任命的高管、背景信息、负责领域
+**引用语：** CEO 关于此次任命的原因 + 新高管加入公司的理由
 
-## Length Guidelines
+## 长度指南
 
-| Element | Length |
+| 元素 | 长度 |
 |---------|--------|
-| Headline | 10-15 words |
-| Subheadline (optional) | 15-25 words |
-| Total body | 400-600 words |
-| Quotes | 2-3 sentences each, max 2 quotes |
-| Boilerplate | 3-4 sentences |
-| **Total** | **500-800 words** |
+| 标题 | 10-15 个字 |
+| 子标题（可选） | 15-25 个字 |
+| 正文 | 400-600 个字 |
+| 引用 | 每条引用 2-3 句，最多 2 条 |
+| 常见信息 | 3-4 句 |
+| **总计** | **500-800 个字** |
 
-Over 800 words and editors won't read it. Under 400 and it lacks substance.
+如果超过 800 个字，编辑可能不会阅读；如果少于 400 个字，内容可能不够充实。
 
-## AP Style Quick Reference
+## AP 样式快速参考
 
-| Rule | Example |
+| 规则 | 例子 |
 |------|---------|
-| Numbers 1-9 spelled out, 10+ as digits | "nine employees" / "10 employees" |
-| Percent as one word | "15 percent" (not 15% in body text) |
-| Titles before names capitalized | "CEO Sarah Chen" |
-| Titles after names lowercase | "Sarah Chen, chief executive officer" |
-| Company names: no Inc./Corp. in body | "Company X" not "Company X, Inc." |
-| Dates: month day, year | "Jan. 15, 2026" |
-| States abbreviated in dateline | "SAN FRANCISCO, Calif." |
-| Serial comma: AP does NOT use it | "fast, simple and effective" |
+| 数字 1-9 用文字书写，10 及以上用数字表示 | “九名员工” / “10 名员工” |
+| 百分比用一个单词表示 | “15%”（正文不要写成 “15%”） |
+| 名字前的头衔首字母大写 | “CEO Sarah Chen” |
+| 名字后的头衔首字母小写 | “Sarah Chen，首席执行官” |
+| 公司名称：正文中不加 “Inc.”/“Corp.” | “Company X” 而不是 “Company X, Inc.” |
+| 日期：月日年 | “2026 年 1 月 15 日” |
+| 地点缩写：AP 标准格式 | “加利福尼亚州旧金山（SAN FRANCISCO, Calif.）” |
+| 逗号使用：AP 标准格式不使用逗号 | “快速、简洁、有效（fast, simple and effective）” |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 修正方法 |
 |---------|---------|-----|
-| Superlatives | "Revolutionary" = ignored by editors | State facts, let readers judge |
-| Exclamation points | Unprofessional | Never use in press releases |
-| Starting quotes with "I" | Informal, weak opening | Start with a fact or insight |
-| Burying the lead | Key news in paragraph 3 | Most important info first |
-| Too long | Won't be read | 500-800 words max |
-| Jargon | Alienates non-expert readers | Write for a general audience |
-| No fact-checking | Credibility risk | Verify all claims and statistics |
-| Missing contact info | Journalists can't follow up | Always include media contact |
+| 使用最高级形容词 | 编辑可能会忽略 | 仅陈述事实，让读者自行判断 |
+| 使用感叹号 | 不专业 | 新闻稿中禁止使用感叹号 |
+| 引用以 “I” 开头 | 语气不够正式 | 以事实或见解开头 |
+| 关键信息放在最后一段 | 最重要的信息应放在最前面 |
+| 文字过长 | 编辑可能不会阅读 | 最长 500-800 个字 |
+| 使用专业术语 | 会让非专业人士难以理解 | 用通俗的语言写作 |
+| 不进行事实核查 | 会影响可信度 | 所有声明和数据都必须经过核实 |
+| 缺少媒体联系信息 | 记者无法跟进 | 必须提供媒体联系信息 |
 
-## Checklist
+## 检查清单
 
-- [ ] Headline: present tense, active voice, no period, no superlatives
-- [ ] Dateline: correct AP format (CITY, STATE, date)
-- [ ] Lead: WHO, WHAT, WHEN, WHERE, WHY in first 25 words
-- [ ] Inverted pyramid: most important first
-- [ ] Quotes: attributed, don't start with "I", add perspective
-- [ ] All claims and statistics fact-checked
-- [ ] Boilerplate: consistent with other releases
-- [ ] Media contact: name, email, phone
-- [ ] 500-800 words total
-- [ ] Read aloud for flow
+- [ ] 标题：使用现在时态，主动语态，文末不要加句号，避免使用最高级形容词
+- [ ] 日期：遵循 AP 标准格式（城市、州、日期）
+- [ ] 引言段落：前 25 个字内包含“谁、什么、何时、哪里、为什么”
+- [ ] 倒金字塔结构：最重要的信息放在最前面 |
+- [ ] 引用：注明出处，不要以 “I” 开头，提供新的视角 |
+- [ ] 所有声明和数据都经过核实 |
+- [ ] 常见信息：与其他新闻稿保持一致 |
+- [ ] 媒体联系信息：包括姓名、电子邮件、电话 |
+- [ ] 总字数：500-800 个字 |
+- [ ] 朗读检查语句流畅度 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@web-search
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

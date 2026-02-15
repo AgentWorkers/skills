@@ -1,14 +1,14 @@
 ---
 name: backup-to-telnyx-storage
-description: Backup and restore your OpenClaw workspace to Telnyx Storage. Simple CLI-based scripts with no external dependencies.
+description: 将您的 OpenClaw 工作区备份并恢复到 Telnyx 存储空间。这些脚本基于简单的命令行界面（CLI），且不依赖于任何外部工具。
 metadata: {"openclaw":{"emoji":"💾","requires":{"bins":["telnyx"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
-# Backup to Telnyx Storage
+# 备份到 Telnyx 存储
 
-Backup and restore your OpenClaw workspace to Telnyx Storage (S3-compatible).
+您可以将 OpenClaw 工作区备份到 Telnyx 存储（兼容 S3）。
 
-## Setup (One-Time)
+## 设置（一次性操作）
 
 ```bash
 # 1. Install Telnyx CLI (if not already)
@@ -18,11 +18,11 @@ npm install -g @telnyx/api-cli
 telnyx auth setup
 ```
 
-That's it. No boto3, no AWS credentials, no environment variables.
+就这样。无需使用 boto3，也无需 AWS 凭据或环境变量。
 
-## Usage
+## 使用方法
 
-### Backup
+### 备份
 
 ```bash
 ./backup.sh
@@ -37,17 +37,17 @@ That's it. No boto3, no AWS credentials, no environment variables.
 # ✅ Backup complete: openclaw-backup/openclaw-backup-20260201-120000.tar.gz
 ```
 
-Custom bucket and workspace:
+自定义存储桶和工作区：
 ```bash
 ./backup.sh my-bucket ~/my-workspace
 ```
 
-Control backup retention (default: 48, ~24h of 30-min backups):
+控制备份保留策略（默认：每 30 分钟生成一次备份，共保留 48 小时）：
 ```bash
 MAX_BACKUPS=100 ./backup.sh
 ```
 
-### List Backups
+### 查看备份列表
 
 ```bash
 ./list.sh
@@ -61,7 +61,7 @@ MAX_BACKUPS=100 ./backup.sh
 #   • openclaw-backup-20260131-180000.tar.gz  1.1M  1/31/2026
 ```
 
-### Restore
+### 恢复
 
 ```bash
 # Restore latest backup
@@ -74,15 +74,15 @@ MAX_BACKUPS=100 ./backup.sh
 ./restore.sh latest my-bucket ~/restored-workspace
 ```
 
-## What Gets Backed Up
+## 被备份的文件包括：
 
 - `AGENTS.md`, `SOUL.md`, `USER.md`, `IDENTITY.md`, `TOOLS.md`
 - `MEMORY.md`, `HEARTBEAT.md`, `GUARDRAILS.md`
 - `memory/`, `knowledge/`, `scripts/`
 
-## Scheduling
+## 定时备份
 
-Automatic backups every 30 minutes:
+系统会每 30 分钟自动执行一次备份：
 
 ```bash
 crontab -e
@@ -90,13 +90,13 @@ crontab -e
 */30 * * * * ~/skills/backup-to-telnyx-storage/backup.sh >> /tmp/backup.log 2>&1
 ```
 
-## Pricing
+## 价格
 
-Telnyx Storage: **$0.023/GB/month** — typical workspace costs pennies.
+Telnix 存储的费用为：**0.023 美元/GB/月**——因此，通常情况下，备份工作区的成本非常低。
 
-## Legacy Python Script
+## 旧版 Python 脚本
 
-The original `backup.py` using boto3 is still available if you need AWS SDK compatibility:
+如果您需要兼容 AWS SDK，原始的 `backup.py` 脚本仍然可用：
 
 ```bash
 pip install boto3
@@ -104,4 +104,4 @@ export TELNYX_API_KEY=KEYxxxxx
 python3 backup.py
 ```
 
-Note: The CLI-based scripts (`backup.sh`, `list.sh`, `restore.sh`) are recommended as they require no additional dependencies and provide full backup/list/restore functionality.
+注意：推荐使用基于 CLI 的脚本（`backup.sh`, `list.sh`, `restore.sh`），因为它们不需要额外的依赖项，并且能够提供完整的备份、查看备份列表和恢复功能。

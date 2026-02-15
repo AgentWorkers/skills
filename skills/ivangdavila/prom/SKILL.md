@@ -1,87 +1,87 @@
 ---
 name: Prometheus
-description: Prometheus monitoring patterns, cardinality management, alerting best practices, and PromQL traps.
+description: Prometheus监控模式、基数管理、警报最佳实践以及PromQL陷阱（Prometheus monitoring patterns, cardinality management, alerting best practices, and PromQL traps）。
 metadata:
   category: infrastructure
   skills: ["prometheus", "monitoring", "alerting", "metrics", "observability"]
 ---
 
-## Cardinality Explosions
+## 数据量激增问题
 
-- Every unique label combination creates a new time series — `user_id` as label kills Prometheus
-- Avoid high-cardinality labels: user IDs, email addresses, request IDs, timestamps, UUIDs
-- Check cardinality: `prometheus_tsdb_head_series` metric — above 1M series needs attention
-- Use histograms for latency, not per-request labels — buckets are fixed cardinality
-- Relabeling can drop dangerous labels before ingestion: `labeldrop` in scrape config
+- 每个唯一的标签组合都会生成一个新的时间序列（例如，使用 `user_id` 作为标签时，Prometheus 会记录相应的时间序列数据）。
+- 应避免使用高数据量的标签，如用户 ID、电子邮件地址、请求 ID、时间戳、UUID 等。
+- 检查数据量：通过 `prometheus_tsdb_head_series` 指标来判断；如果时间序列数量超过 100 万，则需要特别注意。
+- 对于延迟数据，应使用直方图进行分析，而不是针对每个请求的标签进行分析（因为直方图的桶具有固定的数据量）。
+- 在数据摄入之前，可以通过配置文件中的 `labeldrop` 功能来移除不必要的标签。
 
-## Histogram vs Summary
+## 直方图与摘要统计的差异
 
-- Histograms: use for SLOs, aggregatable across instances, buckets defined upfront
-- Summaries: use when you need exact percentiles, cannot aggregate across instances
-- Histogram bucket boundaries must be defined before data arrives — wrong buckets = wrong percentiles
-- Default buckets (.005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5, 10) assume HTTP latency — adjust for your use case
+- **直方图**：适用于服务水平目标（SLO）的监控，可以在多个实例之间进行数据聚合；桶的大小需要事先定义。
+- **摘要统计**：适用于需要精确百分位数的情况，但不能在多个实例之间进行数据聚合。
+- 直方图的桶边界必须在数据到达之前就确定好；如果桶设置错误，计算出的百分位数也会不准确。
+- 默认的桶大小（.005、.01、.025、.05、.1、.25、.5、1、2.5、5、10）是基于 HTTP 延迟来设定的；根据实际需求进行调整。
 
-## Rate and Increase
+## 数据率的计算与显示
 
-- `rate()` requires range selector at least 4x scrape interval — `rate(metric[1m])` with 30s scrape misses data
-- `rate()` is per-second, `increase()` is total over range — don't confuse them
-- Counter resets on restart — `rate()` handles this, raw delta doesn't
-- `irate()` uses only last two samples — too spiky for alerting, use `rate()` for alerts
+- `rate()` 函数需要指定一个时间范围（至少是 scrape interval 的 4 倍）；例如 `rate(metric[1m])` 表示计算过去 1 分钟内的数据率。如果 scrape interval 为 30 秒，那么这个函数会错过部分数据。
+- `rate()` 表示每秒的数据率，而 `increase()` 表示指定时间范围内的累计数据量；两者不要混淆。
+- 计数器在重启后会重置；`rate()` 能自动处理这种情况，而原始的差值计算方法则不会。
+- `irate()` 函数仅使用最近的两个样本进行计算，因此不适合用于生成警报；如果数据波动剧烈，应使用 `rate()` 函数。
 
-## Alerting Mistakes
+## 警报设置中的常见错误
 
-- Alert on symptoms, not causes — "high latency" not "high CPU"
-- `for` clause prevents flapping: `for: 5m` means condition must hold 5 minutes before firing
-- Missing `for` clause = fires immediately on first match = noisy
-- Alerts need `runbook_url` label — on-call needs to know what to do, not just that something's wrong
-- Test alerts with `promtool check rules` — syntax errors discovered at 3am are bad
+- 应根据问题的“症状”而不是“原因”来设置警报；例如，应设置“高延迟”警报，而不是“高 CPU 使用率”警报。
+- 使用 `for` 子句可以防止警报频繁触发：`for: 5m` 表示条件必须持续 5 分钟才会触发警报。
+- 如果省略了 `for` 子句，警报会一有匹配就立即触发，这会导致误报。
+- 警报需要包含 `runbook_url` 标签，以便值班人员知道该如何处理问题。
+- 应使用 `promtool check rules` 来测试警报规则；语法错误可能在凌晨被发现，但后果很严重。
 
-## PromQL Traps
+## PromQL 中的常见陷阱
 
-- `and` is intersection by labels, not boolean AND — results must have matching label sets
-- `or` fills in missing series, doesn't do boolean OR on values
-- `{}` without metric name is expensive — scans all metrics
-- `offset` goes back in time: `metric offset 1h` is value from 1 hour ago
-- Comparison operators filter series: `http_requests > 100` drops series below 100, doesn't return boolean
+- `and` 运算符表示标签之间的交集，而不是逻辑上的 AND；结果中的标签集必须完全匹配。
+- `or` 运算符用于填充缺失的时间序列数据，但不对数值进行逻辑上的 OR 运算。
+- 如果 `{}` 没有指定指标名称，Prometheus 会扫描所有指标。
+- `offset` 用于回溯数据：`metric offset 1h` 表示获取 1 小时前的数据。
+- 比较运算符用于筛选时间序列：`http_requests > 100` 会筛选出数据量小于 100 的时间序列，但不会返回布尔值。
 
-## Scrape Configuration
+## 数据抓取配置
 
-- `honor_labels: true` trusts source labels — use only when source is authoritative (e.g., Pushgateway)
-- `scrape_timeout` must be less than `scrape_interval` — otherwise overlapping scrapes
-- Static configs don't reload without restart — use file_sd or service discovery for dynamic targets
-- TLS verification disabled (`insecure_skip_verify`) should be temporary, never permanent
+- `honor_labels: true` 选项表示信任源数据的标签；仅当数据来源具有权威性时才使用此选项（例如，使用 Pushgateway）。
+- `scrape_timeout` 必须小于 `scrape_interval`，否则会导致数据重复抓取。
+- 静态配置文件需要重启后才能重新加载；对于动态的目标，可以使用 file_sd 或服务发现机制。
+- 禁用 TLS 验证（`insecure_skip_verify`）应该是临时性的，不应永久使用。
 
-## Pushgateway Pitfalls
+## 使用 Pushgateway 时的注意事项
 
-- Pushgateway is for batch jobs, not services — services should expose /metrics
-- Metrics persist until deleted — stale metrics from dead jobs confuse dashboards
-- Add job and instance labels to distinguish sources — default grouping hides failures
-- Delete metrics when job completes: `curl -X DELETE http://pushgateway/metrics/job/myjob`
+- Pushgateway 适用于批量数据抓取，而不是实时服务；服务本身应该直接暴露 `/metrics` 端点。
+- 指标数据会一直保留，直到被删除；来自已停止任务的旧数据可能会干扰仪表盘的显示。
+- 为每个任务和实例添加标签以便区分数据来源；默认的聚合方式可能会掩盖故障信息。
+- 任务完成后，可以通过 `curl -X DELETE http://pushgateway/metrics/job/myjob` 来删除相关指标。
 
-## Recording Rules
+## 数据记录规则
 
-- Pre-compute expensive queries: `record: job:request_duration_seconds:rate5m`
-- Naming convention: `level:metric:operations` — helps identify what rules produce
-- Recording rules update every evaluation interval — not instant, plan for slight delay
-- Reduce cardinality with recording rules: aggregate away labels you don't need for alerting
+- 对于计算成本较高的查询，应提前进行预计算：例如 `record: job:request_duration_seconds:rate5m`。
+- 使用统一的命名规范（如 `level:metric:operations`）有助于识别规则的作用。
+- 数据记录规则会在每个评估周期更新一次；请注意可能会有轻微的延迟。
+- 通过数据记录规则来减少数据量：删除那些不用于警报计算的标签。
 
-## Federation and Remote Write
+## 数据联合与远程写入
 
-- Federation for pulling from other Prometheus — use sparingly, adds latency
-- Remote write for long-term storage — Prometheus local storage is not durable
-- Remote write can buffer during outages — but buffer is finite, data loss on extended outages
-- Prometheus is not highly available by default — run two instances scraping same targets
+- 数据联合（Federation）用于从其他 Prometheus 服务器获取数据，但使用时要谨慎，因为它会增加延迟。
+- 远程写入用于长期数据存储；Prometheus 的本地存储并不具备高可靠性。
+- 远程写入可以在系统故障期间缓存数据，但缓存空间是有限的；长时间故障可能导致数据丢失。
+- 默认情况下，Prometheus 的可用性不高；建议为相同的目标运行多个 Prometheus 实例。
 
-## Common Operational Issues
+## 常见操作问题
 
-- TSDB corruption on unclean shutdown — use `--storage.tsdb.wal-compression` and monitor disk space
-- Memory grows with series count — each series costs ~3KB RAM
-- Compaction pauses during high load — leave 40% disk headroom
-- Scrape targets stuck "Unknown" — check network, firewall, target actually exposing /metrics
+- 如果系统非正常关闭，TSDB 可能会损坏；可以使用 `--storage.tsdb.wal-compression` 选项来压缩数据，并定期监控磁盘空间。
+- 随着时间序列数量的增加，内存使用量也会增加；每个时间序列大约占用 3KB 的内存。
+- 在高负载情况下，数据压缩操作可能会暂停；请确保磁盘有 40% 的剩余空间。
+- 如果数据抓取目标显示为“Unknown”，请检查网络连接、防火墙设置以及目标服务器是否真的暴露了 `/metrics` 端点。
 
-## Label Best Practices
+## 标签使用的最佳实践
 
-- Use labels for dimensions you'll filter/aggregate by — environment, service, instance
-- Keep label values low-cardinality — tens or hundreds, not thousands
-- Consistent naming: `snake_case`, prefix with domain: `http_requests_total`, `node_cpu_seconds_total`
-- `le` label is reserved for histogram buckets — don't use for other purposes
+- 为需要过滤或聚合的数据维度设置标签（例如环境、服务、实例）。
+- 保持标签值的低数据量（几十到几百个即可），避免使用数千个标签。
+- 使用一致的命名规则（例如使用蛇形命名法，并加上域名前缀，如 `http_requests_total`、`node_cpu_seconds_total`）。
+- `le` 标签专门用于直方图桶的划分，不要将其用于其他用途。

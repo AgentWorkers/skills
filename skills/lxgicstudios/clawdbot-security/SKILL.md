@@ -1,20 +1,20 @@
 ---
 name: clawdbot-security
-description: Security audit and hardening for Clawdbot/Moltbot installations. Detects exposed gateways, fixes permissions, enables authentication, and guides firewall/Tailscale setup.
+description: Clawdbot/Moltbot 的安全审计与加固措施：检测暴露的网关、修复权限问题、启用身份验证功能，并指导用户配置防火墙及 Tailscale 系统。
 version: 1.0.0
 author: lxgicstudios
 keywords: clawdbot, moltbot, security, audit, hardening, firewall, tailscale, permissions
 ---
 
-# Clawdbot Security Audit
+# Clawdbot 安全审计
 
-Comprehensive security scanner and hardening guide for Clawdbot/Moltbot installations.
+针对 Clawdbot/Moltbot 安装的全面安全扫描工具及加固指南。
 
-**Why this matters**: 1,673+ Clawdbot gateways were found exposed on Shodan. If you installed Clawdbot on a server or VPS, you might be one of them.
+**为何这很重要**：在 Shodan 上发现了 1,673 多个暴露的 Clawdbot 网关。如果您在服务器或虚拟专用服务器（VPS）上安装了 Clawdbot，您也可能在其中之一。
 
 ---
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Scan for issues
@@ -29,39 +29,39 @@ npx clawdbot-security-audit --deep --fix
 
 ---
 
-## What Gets Checked
+## 检查内容
 
-### 1. Gateway Binding
-- **Safe**: `bind: "loopback"` (127.0.0.1)
-- **DANGER**: `bind: "lan"` or `bind: "0.0.0.0"`
+### 1. 网关绑定
+- **安全**：`bind: "loopback"`（127.0.0.1）
+- **危险**：`bind: "lan"` 或 `bind: "0.0.0.0"`
 
-### 2. File Permissions
-- Config directory: 700 (owner only)
-- Config file: 600 (owner read/write only)
-- Credentials: 700 (owner only)
+### 2. 文件权限
+- 配置目录：700（仅所有者可访问）
+- 配置文件：600（所有者可读写）
+- 凭据：700（仅所有者可访问）
 
-### 3. Authentication
-- Token auth or password auth should be enabled
-- Without auth, anyone who finds your gateway has full access
+### 3. 认证
+- 应启用令牌认证或密码认证
+- 未经认证的情况下，任何找到您的网关的人都可以获得完全访问权限
 
-### 4. Node.js Version
-- Minimum: 20.x
-- Recommended: 22.12.0+
-- Older versions have known vulnerabilities
+### 4. Node.js 版本
+- 最低要求：20.x
+- 推荐版本：22.12.0 及以上
+- 旧版本存在已知的安全漏洞
 
-### 5. mDNS Broadcasting
-- Clawdbot uses Bonjour for local discovery
-- On servers, this should be disabled
+### 5. mDNS 广播
+- Clawdbot 使用 Bonjour 进行本地发现
+- 在服务器上，应禁用此功能
 
-### 6. External Accessibility (--deep)
-- Checks if your gateway port is reachable from the internet
-- Uses your public IP to test
+### 6. 外部可访问性（--deep）
+- 检查您的网关端口是否可以从互联网访问
+- 使用您的公共 IP 进行测试
 
 ---
 
-## Manual Hardening Steps
+## 手动加固步骤
 
-### Step 1: Bind to Localhost Only
+### 第一步：仅绑定到本地主机
 
 ```json
 // ~/.clawdbot/clawdbot.json
@@ -73,7 +73,7 @@ npx clawdbot-security-audit --deep --fix
 }
 ```
 
-### Step 2: Lock File Permissions
+### 第二步：锁定文件权限
 
 ```bash
 chmod 700 ~/.clawdbot
@@ -81,7 +81,7 @@ chmod 600 ~/.clawdbot/clawdbot.json
 chmod 700 ~/.clawdbot/credentials
 ```
 
-### Step 3: Enable Authentication
+### 第三步：启用认证
 
 ```json
 {
@@ -93,18 +93,18 @@ chmod 700 ~/.clawdbot/credentials
 }
 ```
 
-Then set the token:
+然后设置令牌：
 ```bash
 export CLAWDBOT_GATEWAY_TOKEN=$(openssl rand -hex 32)
 ```
 
-### Step 4: Disable mDNS
+### 第四步：禁用 mDNS
 
 ```bash
 export CLAWDBOT_DISABLE_BONJOUR=1
 ```
 
-### Step 5: Set Up Firewall (UFW)
+### 第五步：配置防火墙（UFW）
 
 ```bash
 # Default deny incoming
@@ -123,7 +123,7 @@ sudo ufw enable
 # DO NOT allow port 18789 publicly!
 ```
 
-### Step 6: Set Up Tailscale (Recommended)
+### 第六步：配置 Tailscale（推荐）
 
 ```bash
 # Install
@@ -144,34 +144,33 @@ sudo tailscale up
 
 ---
 
-## What Gets Exposed When Vulnerable
+**当存在漏洞时，哪些信息会被暴露？**
 
-When a Clawdbot gateway is exposed:
+当 Clawdbot 网关被暴露时，以下信息可能会被泄露：
+- ❌ 完整的聊天记录（Telegram、WhatsApp、Signal、iMessage）
+- ❌ API 密钥（Claude、OpenAI 等）
+- ❌ OAuth 令牌和机器人凭证
+- ❌ 对主机机器的完全 shell 访问权限
+- ❌ 工作区中的所有文件
 
-- ❌ Complete conversation histories (Telegram, WhatsApp, Signal, iMessage)
-- ❌ API keys (Claude, OpenAI, etc.)
-- ❌ OAuth tokens and bot credentials
-- ❌ Full shell access to the host machine
-- ❌ All files in the workspace
-
-**Prompt injection attacks** can extract this data with a single email or message.
-
----
-
-## Checklist
-
-- [ ] Gateway bound to loopback only
-- [ ] File permissions locked down (700/600)
-- [ ] Authentication enabled (token or password)
-- [ ] Node.js 22.12.0+
-- [ ] mDNS disabled on servers
-- [ ] Firewall configured (UFW)
-- [ ] Tailscale for remote access (not port forwarding)
-- [ ] SSH key-only auth (no passwords)
+**提示注入攻击** 可以通过一封电子邮件或消息提取这些数据。
 
 ---
 
-## Installation
+## 清单
+
+- [ ] 网关仅绑定到本地主机
+- [ ] 文件权限已锁定（700/600）
+- [ ] 已启用认证（令牌或密码）
+- [ ] 使用 Node.js 22.12.0 及以上版本
+- [ ] 服务器上的 mDNS 功能已禁用
+- [ ] 防火墙已配置（UFW）
+- [ ] 使用 Tailscale 进行远程访问（不进行端口转发）
+- [ ] 仅使用 SSH 密钥进行认证（无密码）
+
+---
+
+## 安装
 
 ```bash
 # npm
@@ -183,4 +182,4 @@ clawdhub install lxgicstudios/clawdbot-security
 
 ---
 
-Built by **LXGIC Studios** - [@lxgicstudios](https://x.com/lxgicstudios)
+由 **LXGIC Studios** 开发 - [@lxgicstudios](https://x.com/lxgicstudios)

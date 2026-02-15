@@ -1,19 +1,19 @@
 ---
 name: pulse
-description: Query and control Pulse monitoring system via REST API. Use for checking infrastructure health, resource status (nodes/VMs/containers/storage), metrics, alerts, and system management. Supports authentication via API token or session. Use when user asks about Pulse status, infrastructure monitoring, or needs to interact with the Pulse dashboard programmatically.
+description: 通过 REST API 查询和控制 Pulse 监控系统。该 API 用于检查基础设施的健康状况、资源状态（节点/虚拟机/容器/存储设备）、各项指标、警报信息以及进行系统管理。支持使用 API 令牌或会话进行身份验证。当用户需要查询 Pulse 的运行状态、进行基础设施监控，或需要以编程方式与 Pulse 仪表板交互时，可以使用该 API。
 ---
 
-# Pulse Monitoring API
+# Pulse监控API
 
-CLI tool for interacting with Pulse infrastructure monitoring system.
+这是一个用于与Pulse基础设施监控系统交互的命令行工具（CLI）。
 
-## Configuration
+## 配置
 
-Set environment variables or pass flags:
-- `PULSE_URL` - Base URL (default: `https://demo.pulserelay.pro`)
-- `PULSE_TOKEN` - API token for authentication (pre-configured)
+设置环境变量或传递参数：
+- `PULSE_URL` - 基础URL（默认值：`https://demo.pulserelay.pro`）
+- `PULSE_TOKEN` - 用于身份验证的API令牌（已预先配置）
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Check system health
@@ -32,28 +32,28 @@ pulse resource <resource-id>
 pulse metrics --range 24h
 ```
 
-## Core Operations
+## 核心操作
 
-### System Health
+### 系统健康检查
 ```bash
 pulse health
 # Returns: status, uptime, timestamp
 ```
 
-### Infrastructure State
+### 基础设施状态
 ```bash
 pulse state
 # Complete state: Nodes, VMs, Containers, Storage, Alerts
 ```
 
-### Resources
+### 资源管理
 ```bash
 pulse resources              # List all resources
 pulse resources --stats      # Summary counts and health
 pulse resource <id>          # Single resource details
 ```
 
-### Metrics & Charts
+### 指标与图表
 ```bash
 pulse metrics --range 1h     # CPU, Memory, Storage charts
 pulse metrics --range 24h
@@ -65,45 +65,45 @@ pulse storage-stats          # Detailed storage usage
 pulse backups                # Unified backup history
 ```
 
-### Notifications
+### 通知设置
 ```bash
 pulse test-notification      # Send test alert
 pulse notification-health    # Check notification system
 ```
 
-### Updates
+### 更新通知
 ```bash
 pulse updates check          # Check for Pulse updates
 pulse updates status         # Current update status
 pulse updates apply          # Apply available updates
 ```
 
-## Advanced Features
+## 高级功能
 
-### Agent Management
+### 代理管理
 ```bash
 pulse agents list            # List all agents
 pulse agent <id> config      # Get agent configuration
 pulse agent <id> unlink      # Unlink agent from node
 ```
 
-### Security
+### 安全性
 ```bash
 pulse tokens list            # List API tokens
 pulse token create --name "automation" --scopes "monitoring:read"
 pulse token revoke <id>      # Revoke token
 ```
 
-### AI Features (Pro)
+### AI功能（专业版）
 ```bash
 pulse ai status              # AI patrol status
 pulse ai findings            # Current AI findings
 pulse ai run                 # Trigger AI patrol run
 ```
 
-## Environment Setup
+## 环境设置
 
-Create a helper script at `~/.local/bin/pulse`:
+在`~/.local/bin/pulse`目录下创建一个辅助脚本：
 
 ```bash
 #!/bin/bash
@@ -118,56 +118,56 @@ curl -s -H "X-API-Token: $PULSE_TOKEN" \
      "${PULSE_URL}/api/${endpoint}" "$@" | jq
 ```
 
-Make it executable:
+使其可执行：
 ```bash
 chmod +x ~/.local/bin/pulse
 ```
 
-## Common Patterns
+## 常见操作模式
 
-### Get RAM usage for a host
+### 获取主机的RAM使用情况
 ```bash
 pulse state | jq '.hosts[] | {name: .displayName, memory}'
 ```
 
-### List all containers with high CPU
+### 列出CPU使用率较高的所有容器
 ```bash
 pulse state | jq '.containers[] | select(.cpu > 80)'
 ```
 
-### Get alerts
+### 查看警报信息
 ```bash
 pulse state | jq '.alerts'
 ```
 
-### Export metrics to JSON
+### 将指标数据导出为JSON格式
 ```bash
 pulse metrics --range 24h > metrics-$(date +%Y%m%d).json
 ```
 
-## Authentication Methods
+## 身份验证方式
 
-### API Token (Recommended)
+### API令牌（推荐使用）
 ```bash
 curl -H "X-API-Token: your-token" http://pulse:7655/api/health
 ```
 
-### Bearer Token
+### 承载令牌（Bearer Token）
 ```bash
 curl -H "Authorization: Bearer your-token" http://pulse:7655/api/health
 ```
 
-### Session Cookie
-Used by web UI automatically.
+### 会话Cookie
+由Web UI自动使用。
 
-## Reference Files
+## 参考文件
 
-- **[API.md](references/API.md)** - Complete API endpoint reference
-- **[examples.sh](scripts/examples.sh)** - Common API usage examples
+- **[API.md](references/API.md)** - 完整的API端点参考文档
+- **[examples.sh](scripts/examples.sh)** - 常见的API使用示例
 
-## Notes
+## 注意事项
 
-- Most endpoints require authentication (except `/health`, `/version`)
-- Some endpoints require admin privileges or specific scopes
-- Pro features require a Pulse Pro license
-- Default base URL: `https://demo.pulserelay.pro/api`
+- 大多数API端点需要身份验证（`/health`和`/version`端点除外）
+- 部分API端点需要管理员权限或特定的访问权限范围
+- 专业版功能需要Pulse Pro许可证
+- 默认基础URL：`https://demo.pulserelay.pro/api`

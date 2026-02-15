@@ -1,109 +1,108 @@
 ---
 name: x-algorithm
-description: X (Twitter) algorithm rules & viral strategies for AI agents. Boost engagement, avoid reach death. Works with Cursor, Claude, ChatGPT, Copilot. Vibe-coding ready.
+description: X（Twitter）算法规则及AI代理的病毒式传播策略：提升用户参与度，避免传播效果衰减。适用于Cursor、Claude、ChatGPT、Copilot等AI工具。支持“Vibe-coding”功能。
 version: 1.0.3
 author: NextFrontierBuilds
 keywords: [x, twitter, algorithm, viral, engagement, social-media, growth, content-strategy, ai-agent, ai-coding, claude, cursor, copilot, github-copilot, chatgpt, openclaw, moltbot, vibe-coding, automation, ai-tools, developer-tools, devtools, typescript, llm]
 ---
 
-# X Algorithm Mastery
+# X算法精通指南
 
-Everything you need to know about the X (Twitter) algorithm. Based on X's open-source code, viral post analysis, and real engagement data.
+本指南涵盖了关于X（Twitter）算法的所有关键信息，内容基于X的开源代码、病毒式内容的分析以及真实的用户互动数据。
 
-## TL;DR - The Golden Rules
+## 核心要点
 
-1. **First 2 hours are critical** — replies/engagement in this window determine reach
-2. **No external links in main post** — X penalizes links that take users off-platform
-3. **Media > Text** — videos get 10x engagement, images get 2-3x
-4. **Reply to EVERYTHING** — replies are weighted higher than likes/retweets
-5. **Post when audience is awake** — 8 AM - 2 PM weekdays optimal
-6. **Controversy drives engagement** — but pick battles wisely
-7. **Threads outperform single tweets** — for long-form content
+1. **前2小时至关重要**：此时间段内的回复和互动情况将直接影响内容的传播范围。
+2. **主帖中禁止使用外部链接**：X平台会对引导用户离开平台的链接进行惩罚。
+3. **视频的互动效果优于文本**：视频的互动率是文本的10倍，图片的互动率为2-3倍。
+4. **务必回复所有内容**：回复的权重高于点赞和转发。
+5. **在目标受众活跃的时间段发布内容**：工作日的上午8点至下午2点是最理想的发布时间。
+6. **争议性话题能提升互动率**：但需谨慎选择争议性话题。
+7. **长篇内容更适合以话题形式发布**：相比单条推文，话题形式能获得更高的互动效果。
 
 ---
 
-## How the Algorithm Works
+## 算法工作原理
 
-### The 4-Step Process
+### 四步流程
 
-1. **Candidate Sourcing**: Pulls ~1,500 tweets from accounts you follow (~50%) and similar accounts
-2. **Ranking**: ML model scores likelihood you'll reply (highest), retweet, like, or report (negative)
-3. **Filtering**: Removes blocked/muted, balances in/out-network, limits single author
-4. **Serving**: Final mix with ads, 5B times/day, ~1.5 seconds
+1. **候选内容筛选**：从你关注的账户（约50%）及其类似账户中抽取约1,500条推文。
+2. **排名**：机器学习模型评估你回复、转发、点赞或举报这些推文的可能性（可能性最高的优先展示）。
+3. **内容过滤**：排除被屏蔽或禁言的账户；平衡不同网络内的内容分布；限制单一作者发布的推文数量。
+4. **内容推送**：将筛选后的内容与广告混合推送，每天推送50亿次，每次推送时长约1.5秒。
 
-### Engagement Weight Hierarchy
+### 互动效果的权重排序
 
-| Action | Weight |
+| 动作 | 权重 |
 |--------|--------|
-| Replies | Highest |
-| Retweets | High |
-| Quote Tweets | High (2x regular posts) |
-| Likes | Medium |
-| Bookmarks | Medium |
-| Views | Low |
-| Reports | Negative (kills reach) |
+| 回复 | 最高 |
+| 转发 | 高 |
+| 引用推文 | 高（是普通推文互动率的两倍） |
+| 点赞 | 中等 |
+| 收藏 | 中等 |
+| 浏览量 | 低 |
+| 举报 | 负面影响（会降低内容传播范围） |
 
 ---
 
-## Ranking Signals
+## 排名因素
 
-### 1. Recency
-- Fresh content prioritized
-- Peak visibility: first 2-3 hours
+### 1. 新鲜度
+- 新内容优先展示
+- 最初2-3小时的曝光率最高。
 
-### 2. Engagement Velocity
-- Speed matters more than total
-- 100 likes in 30 min > 500 likes over 24 hours
+### 2. 互动速度
+- 互动速度比总互动次数更重要
+- 30分钟内获得100个点赞比24小时内获得500个点赞更有效。
 
-### 3. Account Credibility
-- Verified (Premium) gets boost
-- Follower-to-following ratio matters
-- History of bans/strikes hurts
+### 3. 账户信誉
+- 经过验证的账户（高级账户）会获得更多优势。
+- 账户的粉丝数量与关注者数量的比例也很重要。
+- 被封禁或受到处罚的记录会对排名产生负面影响。
 
-### 4. Content Type
-- **Video**: 10x engagement
-- **Images**: 2-3x engagement
-- **Polls**: Drives replies
-- **Threads**: Higher total engagement
+### 4. 内容类型
+- **视频**：互动率最高（是文本的10倍）。
+- **图片**：互动率为文本的2-3倍。
+- **投票**：能引发更多回复。
+- **话题形式**：总互动率更高。
 
-### 5. Link Presence
-- **Links = REACH PENALTY**
-- Put links in replies, not main post
-- Quote tweeting a link > direct link
-
----
-
-## What Kills Your Reach
-
-### Instant Death
-- ❌ External links in main post
-- ❌ Getting reported/blocked
-- ❌ Posting same content repeatedly
-- ❌ Too many hashtags (>2)
-
-### Slow Death
-- ❌ Posting inconsistently
-- ❌ Not replying to comments
-- ❌ Off-topic from your niche
-- ❌ Corporate/formal tone
+### 5. 链接的使用
+- **使用链接会降低内容传播范围**：请将链接放在回复中，而非主帖中。
+- 引用包含链接的推文比直接发布链接更有效。
 
 ---
 
-## Posting Best Practices
+## 会降低内容传播范围的错误行为
 
-### Frequency
-| Goal | Posts/Day |
+### 立即导致失败的行为
+- 主帖中禁止使用外部链接。
+- 被举报或被屏蔽。
+- 重复发布相同内容。
+- 使用过多的标签（超过2个）。
+
+### 逐渐降低传播效果的行为
+- 发布内容不规律。
+- 不回复评论。
+- 发布的内容与你的专业领域不符。
+- 采用正式或枯燥的语气。
+
+---
+
+## 最佳发布实践
+
+### 发布频率
+| 目标 | 每天发布次数 |
 |------|-----------|
-| Minimum | 2-3 |
-| Growth | 5-10 |
-| Maximum | 15-30 |
+| 最低 | 2-3条 |
+| 增长 | 5-10条 |
+| 最高 | 15-30条 |
 
-### Timing (audience timezone)
-- **Best**: 8 AM - 2 PM weekdays
-- **Good**: 4 PM - 6 PM weekdays
-- **Worst**: 11 PM - 7 AM
+### 发布时间（根据目标受众的时区）
+- **最佳时间**：工作日的上午8点至下午2点。
+- **较好时间**：工作日的下午4点至6点。
+- **最差时间**：晚上11点至早上7点。
 
-### The No-Link Strategy
+### 不使用链接的策略
 ```
 ❌ Bad:  "Check out my article [link]"
 ✅ Good: "Here's what I learned (thread 🧵)"
@@ -112,30 +111,30 @@ Everything you need to know about the X (Twitter) algorithm. Based on X's open-s
 
 ---
 
-## Getting Replies (Most Important)
+## 如何获得更多回复（最重要）
 
-- **Ask questions** — open-ended or controversial
-- **Hot takes** — polarizing opinions get "actually..." replies
-- **Fill in the blank** — "The best movie ever is ___"
-- **Predictions** — people love to disagree
-- **Personal stories** — "This happened to me..."
+- **提出问题**：使用开放式问题或引发争议性的观点。
+- **发表尖锐的观点**：具有争议性的观点更容易引发回复。
+- **填空题**：例如“有史以来最棒的电影是……”。
+- **做出预测**：人们喜欢对预测提出不同意见。
+- **分享个人故事**：例如“这种事情发生在我身上……”。
 
 ---
 
-## X Article Best Practices
+## 在X平台上撰写文章的最佳实践
 
-### Hook Patterns That Work
+### 有效的吸引读者的开头方式
 
-**Insecurity/FOMO:**
-> "everyone's talking about X... and you're sitting there wondering if you missed the window"
+- **利用人们的焦虑或错失恐惧（FOMO）**：
+  > “大家都在谈论X……而你还在犹豫是否错过了机会。”
 
-**Big Opportunity:**
-> "this is the biggest opportunity of our lifetime"
+- **强调重大机会**：
+  > “这是我们一生中最大的机会。”
 
-**RIP Pattern:**
-> "RIP [profession]. This AI tool will [action] in seconds."
+- **表达惋惜或担忧**：
+  > “[某个行业]即将消亡。这款AI工具能在几秒钟内……”
 
-### Article Structure
+### 文章结构
 
 ```
 1. HOOK (insecurity or opportunity)
@@ -148,52 +147,47 @@ Everything you need to know about the X (Twitter) algorithm. Based on X's open-s
 8. CTA
 ```
 
-### Style Tips
-- Clear H2 section headers
-- Bullet lists for scanability
-- Bold key phrases
-- Time estimates for each step
-- Copy-paste commands/prompts
+### 文章格式建议
+- 使用清晰的H2标题。
+- 使用项目符号列表以便读者快速浏览。
+- 突出显示关键短语。
+- 为每个步骤提供时间估计。
+- 可以复制并粘贴相关的命令或提示。
 
 ---
 
-## Quick Checklist
+## 发布前的快速检查清单
 
-Before posting:
-- [ ] Under 280 chars? (If not, thread it)
-- [ ] First line hooks attention?
-- [ ] Reason to reply? (Question, hot take)
-- [ ] Good time to post?
-- [ ] No external links? (Move to reply)
-- [ ] Fits your niche?
-- [ ] Available to reply for 2 hours?
+- 文章长度是否少于280个字符？（如果超过，建议分成多个话题发布。）
+- 开头是否能够吸引读者的注意力？
+- 有需要回复的内容吗？（例如问题或尖锐的观点。）
+- 现在是否是发布的好时机？
+- 文章内容是否符合你的专业领域？
+- 你在接下来的2小时内是否有时间回复评论？
 
 ---
 
-## Growth Hacks
+## 提升内容传播效果的技巧
 
-### Reply Guy Strategy
-Turn on notifications for big accounts → be first with thoughtful reply → their audience discovers you
+### 回复策略
+- 关注大账号并开启通知，以便第一时间回复他们的内容，从而被他们的粉丝发现。
+- 找到在你所在领域内具有高互动率的推文，引用该推文并附上自己的解释，同时提供有价值的内容。
 
-### Thread Takeover
-Find viral post in your area → quote tweet with "Let me explain why..." → add genuine value
-
-### Personality Posts
-Every 5-10 posts, share something personal. Builds connection → higher engagement.
+### 个人化内容
+每发布5-10条推文后，分享一些个人经历或感受。这有助于建立与读者的联系，从而提高互动率。
 
 ---
 
-## Sources
-- X Algorithm GitHub (open source)
-- Hootsuite, Sprout Social, SocialBee guides
-- Analysis of viral articles (Damian Player, Alex Finn, Dan Koe)
+## 参考资料
+- X算法的GitHub开源代码
+- Hootsuite、Sprout Social、SocialBee提供的指南
+- 关于病毒式内容分析的文章（作者：Damian Player、Alex Finn、Dan Koe）
 
 ---
 
-## Installation
-
+## 文章发布工具的安装说明
 ```bash
 clawdhub install NextFrontierBuilds/x-algorithm
 ```
 
-Built by [@NextXFrontier](https://x.com/NextXFrontier)
+本文由[@NextXFrontier](https://x.com/NextXFrontier)制作。

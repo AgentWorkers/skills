@@ -1,42 +1,42 @@
 ---
 name: nofx
-description: NOFX AI Trading OS integration - crypto market data, AI trading signals, strategy management, trader control, and automated reporting. Use when working with NOFX platform (nofxai.com, nofxos.ai) for crypto trading, market analysis, AI500/AI300 signals, fund flow tracking, OI monitoring, strategy creation, trader management, backtesting, or AI debate arena.
+description: NOFX AI Trading OS集成：提供加密货币市场数据、AI交易信号、策略管理、交易员控制以及自动化报告功能。适用于使用NOFX平台（nofxai.com, nofxos.ai）进行加密货币交易、市场分析、AI500/AI300交易信号处理、资金流追踪、保证金监控、策略制定、交易员管理、回测等场景。
 ---
 
-# NOFX AI Trading Skill
+# NOFX AI交易技能
 
-Integrate with NOFX - the open-source AI-powered crypto trading operating system.
+本技能可与开源的AI驱动的加密货币交易操作系统NOFX集成。
 
-## Quick Reference
+## 快速参考
 
-| Resource | URL |
+| 资源 | URL |
 |----------|-----|
-| Web Dashboard | https://nofxai.com |
-| Data API | https://nofxos.ai |
-| API Docs | https://nofxos.ai/api-docs |
+| 网页仪表板 | https://nofxai.com |
+| 数据API | https://nofxos.ai |
+| API文档 | https://nofxos.ai/api-docs |
 | GitHub | https://github.com/NoFxAiOS/nofx |
 
-## Deployment
+## 部署
 
-For installation and deployment instructions, see `references/deployment.md`:
-- One-click install (Linux/macOS/Docker)
-- Windows installation (Docker Desktop / WSL2)
-- Railway cloud deployment
-- Manual installation for developers
-- Server deployment with HTTPS
+有关安装和部署的说明，请参阅`references/deployment.md`：
+- 一键安装（Linux/macOS/Docker）
+- Windows安装（Docker Desktop / WSL2）
+- Railway云平台部署
+- 开发者手动安装
+- 使用HTTPS进行服务器部署
 
-## Supported Exchanges
+## 支持的交易所
 
-For exchange registration links (with fee discounts) and API setup, see `references/exchanges.md`:
+有关交易所注册链接（含费用折扣）和API设置，请参阅`references/exchanges.md`：
 
-**CEX**: Binance, Bybit, OKX, Bitget, KuCoin, Gate.io
-**DEX**: Hyperliquid, Aster DEX, Lighter
+**中心化交易所（CEX）**：Binance、Bybit、OKX、Bitget、KuCoin、Gate.io
+**去中心化交易所（DEX）**：Hyperliquid、Aster DEX、Lighter
 
-**AI Models**: DeepSeek, Qwen, OpenAI, Claude, Gemini, Grok, Kimi
+**AI模型**：DeepSeek、Qwen、OpenAI、Claude、Gemini、Grok、Kimi
 
-## Configuration
+## 配置
 
-Store credentials in workspace `skills/nofx/config.json`:
+将凭据存储在工作区`skills/nofx/config.json`中：
 
 ```json
 {
@@ -46,12 +46,12 @@ Store credentials in workspace `skills/nofx/config.json`:
 }
 ```
 
-## 1. Market Data (API)
+## 1. 市场数据（API）
 
-Base URL: `https://nofxos.ai`
-Auth: `?auth=API_KEY` or `Authorization: Bearer API_KEY`
+基础URL：`https://nofxos.ai`
+认证方式：`?auth=API_KEY` 或 `Authorization: Bearer API_KEY`
 
-### AI Signals
+### AI信号
 
 ```bash
 # AI500 - High potential coins (score > 70)
@@ -64,7 +64,7 @@ curl "https://nofxos.ai/api/ai300/list?auth=$KEY&limit=10"
 curl "https://nofxos.ai/api/ai500/{symbol}?auth=$KEY"
 ```
 
-### Fund Flow
+### 资金流动
 
 ```bash
 # Institution inflow ranking
@@ -74,7 +74,7 @@ curl "https://nofxos.ai/api/netflow/top-ranking?auth=$KEY&limit=10&duration=1h&t
 curl "https://nofxos.ai/api/netflow/low-ranking?auth=$KEY&limit=10&duration=1h&type=institution"
 ```
 
-### Open Interest
+### 开仓利息（Open Interest）
 
 ```bash
 # OI increase ranking
@@ -87,7 +87,7 @@ curl "https://nofxos.ai/api/oi/low-ranking?auth=$KEY&limit=10&duration=1h"
 curl "https://nofxos.ai/api/oi-cap/ranking?auth=$KEY&limit=10"
 ```
 
-### Price & Rates
+### 价格与费率
 
 ```bash
 # Price ranking (gainers/losers)
@@ -103,7 +103,7 @@ curl "https://nofxos.ai/api/funding-rate/low?auth=$KEY&limit=10"
 curl "https://nofxos.ai/api/long-short/list?auth=$KEY&limit=10"
 ```
 
-### Single Coin Data
+### 单个币种数据
 
 ```bash
 # Comprehensive coin data
@@ -113,13 +113,13 @@ curl "https://nofxos.ai/api/coin/{symbol}?auth=$KEY&include=all"
 curl "https://nofxos.ai/api/heatmap/future/{symbol}?auth=$KEY"
 ```
 
-Duration options: `1m, 5m, 15m, 30m, 1h, 4h, 8h, 12h, 24h, 2d, 3d, 5d, 7d`
+时间选项：`1m、5m、15m、30m、1h、4h、8h、12h、24h、2d、3d、5d、7d`
 
-## 2. Strategy Management (Browser)
+## 2. 策略管理（浏览器）
 
-Use browser automation on https://nofxai.com/strategy
+在https://nofxai.com/strategy使用浏览器自动化工具进行操作：
 
-### Strategy Structure
+### 策略结构
 
 ```json
 {
@@ -154,27 +154,27 @@ Use browser automation on https://nofxai.com/strategy
 }
 ```
 
-### Natural Language Strategy Creation
+### 自然语言策略创建
 
-When user describes a strategy in natural language:
-1. Parse requirements (coins, indicators, entry/exit rules, risk)
-2. Generate StrategyConfig JSON
-3. Navigate to Strategy Studio
-4. Create new strategy and fill in fields
-5. Save and activate
+当用户用自然语言描述策略时：
+1. 解析策略要求（币种、指标、入场/出场规则、风险控制）
+2. 生成StrategyConfig JSON文件
+3. 进入策略编辑器
+4. 创建新策略并填写相关信息
+5. 保存并激活策略
 
-## 3. Trader Management (Browser)
+## 3. 交易者管理（浏览器）
 
-Use browser automation on https://nofxai.com/traders
+在https://nofxai.com/traders使用浏览器自动化工具进行操作：
 
-### Actions
+### 操作
 
-- **List**: Navigate to /traders, parse trader list
-- **Create**: Click "Create Trader", select model/exchange/strategy
-- **Start/Stop**: Click Start/Stop button on trader card
-- **View**: Click "View" for details and logs
+- **列表**：导航至/traders页面，查看交易者列表
+- **创建**：点击“Create Trader”，选择模型/交易所/策略
+- **开始/停止**：点击交易者卡片上的“Start/Stop”按钮
+- **查看**：点击“View”查看详细信息和交易记录
 
-### Trader Config
+### 交易者配置
 
 ```
 Model: claude|deepseek|gpt|gemini|grok|kimi|qwen
@@ -182,49 +182,49 @@ Exchange: binance|bybit|okx|bitget|kucoin|gate|hyperliquid|aster|lighter
 Strategy: Select from strategy list
 ```
 
-## 4. Dashboard (Browser)
+## 4. 仪表板（浏览器）
 
-Navigate to https://nofxai.com/dashboard
+导航至https://nofxai.com/dashboard
 
-### Available Data
+### 可用数据
 
-- Account equity and balance
-- Total P/L (absolute and percentage)
-- Current positions
-- Equity curve chart
-- Trade history
-- AI decision logs
+- 账户权益和余额
+- 总盈亏（绝对值和百分比）
+- 当前持仓
+- 权益曲线图
+- 交易历史
+- AI决策日志
 
-## 5. Arena - AI Debate (Browser)
+## 5. AI辩论（浏览器）
 
-Navigate to https://nofxai.com/debate
+导航至https://nofxai.com/debate
 
-### Create Debate
+### 创建辩论
 
-1. Click "New Debate"
-2. Select symbol
-3. Select AI models and roles:
-   - Bull (多头): Finds long opportunities
-   - Bear (空头): Finds short opportunities  
-   - Analyst (分析师): Neutral analysis
-4. Run debate rounds
-5. Get consensus recommendation
+1. 点击“New Debate”
+2. 选择交易币种
+3. 选择AI模型和角色：
+   - 多头（Bull）：寻找多头交易机会
+   - 空头（Bear）：寻找空头交易机会
+   - 分析师（Analyst）：提供中性分析
+4. 进行辩论轮次
+5. 获取共识推荐
 
-## 6. Backtest (Browser)
+## 6. 回测（浏览器）
 
-Navigate to https://nofxai.com/backtest
+导航至https://nofxai.com/backtest
 
-### Run Backtest
+### 运行回测
 
-1. Select AI model
-2. Select strategy (optional)
-3. Enter symbols (comma-separated)
-4. Set time range
-5. Run and analyze results
+1. 选择AI模型
+2. 选择策略（可选）
+3. 输入交易币种（用逗号分隔）
+4. 设置时间范围
+5. 运行回测并分析结果
 
-## 7. Monitoring & Alerts
+## 7. 监控与警报
 
-### Cron Job for Market Reports
+### 市场报告的Cron作业
 
 ```json
 {
@@ -241,49 +241,49 @@ Navigate to https://nofxai.com/backtest
 }
 ```
 
-### Report Contents
+### 报告内容
 
-- 🤖 AI500 signals (coin + score + gain)
-- 💰 Institution flow TOP10
-- 🚀 Price gainers TOP10
-- 📈 OI increase TOP10
-- 📉 OI decrease TOP10
-- ⚠️ Drop alerts
+- 🤖 AI500信号（币种 + 评分 + 盈利情况）
+- 💰 机构资金流动排名前十
+- 🚀 价格涨幅排名前十
+- 📈 开仓利息增加排名前十
+- 📉 开仓利息减少排名前十
+- ⚠️ 价格下跌警报
 
-## 8. Common Workflows
+## 8. 常见工作流程
 
-### Daily Market Check
+### 每日市场检查
 
-1. Fetch AI500/AI300 signals
-2. Check institution fund flow
-3. Monitor OI changes
-4. Identify opportunities
+1. 获取AI500/AI300信号
+2. 检查机构资金流动
+3. 监控开仓利息变化
+4. 识别交易机会
 
-### Strategy Development
+### 策略开发
 
-1. Analyze market data
-2. Define entry/exit rules
-3. Create strategy in Studio
-4. Backtest with historical data
-5. Create trader and start
+1. 分析市场数据
+2. 定义入场/出场规则
+3. 在策略编辑器中创建策略
+4. 使用历史数据回测
+5. 创建交易者并开始交易
 
-### Risk Monitoring
+### 风险监控
 
-1. Check dashboard P/L
-2. Review positions
-3. Monitor drawdown
-4. Adjust or stop traders if needed
+1. 查看仪表板上的盈亏情况
+2. 审查持仓情况
+3. 监控资金回撤情况
+4. 根据需要调整或停止交易
 
-## API Response Examples
+## API响应示例
 
-See `references/api-examples.md` for detailed response structures.
+有关详细的API响应结构，请参阅`references/api-examples.md`。
 
-## Additional References
+## 其他参考资料
 
-| Reference | Description |
+| 参考资料 | 说明 |
 |-----------|-------------|
-| `references/grid-trading.md` | Grid trading detailed guide with examples |
-| `references/market-charts.md` | Market page and chart analysis |
-| `references/multi-account.md` | Multi-account management |
-| `references/webhooks.md` | Telegram/Discord/Slack notifications |
-| `references/faq.md` | Frequently asked questions |
+| `references/grid-trading.md` | 带有示例的网格交易详细指南 |
+| `references/market-charts.md` | 市场页面和图表分析 |
+| `references/multi-account.md` | 多账户管理 |
+| `references/webhooks.md` | Telegram/Discord/Slack通知设置 |
+| `references/faq.md` | 常见问题解答 |

@@ -1,93 +1,91 @@
 ---
 name: Cosmos
-description: Assist with Cosmos ATOM transactions, IBC transfers, staking, and cross-chain ecosystem navigation.
+description: 协助处理 Cosmos ATOM 交易、IBC 转账、质押以及跨链生态系统的导航操作。
 metadata: {"clawdbot":{"emoji":"⚛️","os":["linux","darwin","win32"]}}
 ---
 
-## Ecosystem Overview
-- Cosmos is a network of blockchains — not a single chain
-- Cosmos Hub is the main chain — where ATOM lives
-- IBC connects all Cosmos chains — Inter-Blockchain Communication
-- Each chain is sovereign — own validators, own token, own governance
-- Same wallet works across chains — different addresses per chain
+## 生态系统概述  
+- Cosmos 是一个由多个区块链组成的网络，而不是单一的链。  
+- Cosmos Hub 是核心链，ATOM 代币存储于此。  
+- IBC（Inter-Blockchain Communication，区块链间通信）负责连接所有 Cosmos 链。  
+- 每个链都是独立的：拥有自己的验证者、代币和治理机制。  
+- 同一个钱包可以在多个链上使用，但每个链的地址不同。  
 
-## ATOM Token
-- Native token of Cosmos Hub — staking and governance
-- Used to secure the Hub — not other Cosmos chains
-- Inflationary — staking rewards come from inflation
-- Not used for gas on other chains — each chain has own token
+## ATOM 代币  
+- ATOM 是 Cosmos Hub 的原生代币，用于质押和参与治理。  
+- 它用于保障 Cosmos Hub 的安全，但不适用于其他 Cosmos 链。  
+- ATOM 具有通胀特性，质押奖励来源于链上的通胀机制。  
+- ATOM 不能在其他链上作为交易费用使用，因为每个链都有自己的代币。  
 
-## IBC Transfers (Critical)
-- Send tokens between Cosmos chains — native cross-chain
-- Recipient address differs per chain — same seed, different address
-- Channel/path matters — tokens take specific routes
-- Tokens may be wrapped — ATOM on Osmosis is IBC ATOM
-- Verify channel is active — some channels deprecated
+## IBC 转移（关键点）  
+- ATOM 可以在 Cosmos 链之间进行跨链转移。  
+- 接收地址因链而异，虽然使用相同的种子短语（seed phrase），但实际地址不同。  
+- 转移过程中需要选择正确的通道（channel）路径，因为代币会按照特定路径传输。  
+- 有些通道可能已经过时或不再支持跨链传输。  
 
-## Address Format
-- Bech32 format — human-readable prefix + data
-- cosmos1... for Cosmos Hub — other chains have different prefixes
-- osmo1... for Osmosis, juno1... for Juno — each chain unique
-- Same mnemonic gives different addresses — per chain derivation
-- Verify prefix matches destination chain — wrong prefix = wrong chain
+## 地址格式  
+- 地址采用 Bech32 格式，由易于识别的前缀和数据部分组成：  
+  - cosmos1... 用于 Cosmos Hub；其他链使用不同的前缀（如 osmo1...、juno1...）。  
+- 同一个种子短语会生成不同的地址，具体取决于目标链的规则。  
+- 确保前缀与目标链匹配，否则交易会失败。  
 
-## Staking
-- Delegate to validators — earn staking rewards
-- 21-day unbonding period — funds locked during unstake
-- Slashing risk — validators can lose stake for misbehavior
-- Redelegation instant — switch validators without unbonding
-- Liquid staking available — stATOM, qATOM maintain liquidity
+## 质押（Staking）  
+- 用户可以将自己的 ATOM 委托给验证者以获得奖励。  
+- 解绑质押资金需要 21 天的时间；在此期间资金会被锁定。  
+- 验证者若行为不当，可能会失去质押资格。  
+- 可以随时重新委托质押，无需等待解绑期。  
+- 提供了流动性质押（liquid staking）机制，STATOM 和 qATOM 都支持这种形式。  
 
-## Validators
-- Choose carefully — commission and uptime vary
-- Voting power concentration — avoid top validators for decentralization
-- Validator can vote on your behalf — unless you vote yourself
-- Check slashing history — past behavior indicates reliability
-- Community validators vs exchanges — support decentralization
+## 验证者（Validators）  
+- 应谨慎选择验证者，因为他们的佣金和在线时间各不相同。  
+- 为避免权力集中，应避免选择排名靠前的验证者。  
+- 验证者可以代表用户进行投票，除非用户自己投票。  
+- 查看验证者的历史表现以评估其可靠性。  
+- 社区验证者比交易所验证者更有利于维护去中心化。  
 
-## Governance
-- On-chain proposals — deposit, voting period, execution
-- Vote with staked ATOM — voting power = stake
-- Options: Yes, No, NoWithVeto, Abstain — veto can kill proposal
-- Validator votes if you don't — delegate your vote
-- Active participation encouraged — proposals affect chain direction
+## 治理（Governance）  
+- 治理提案在链上提出，包括提案的提交、投票和执行过程。  
+- 投票时使用质押的 ATOM 数量来决定投票权重。  
+- 投票选项包括：支持（Yes）、反对（No）、否决（NoWithVeto）或弃权（Abstain）；否决权可否决提案。  
+- 如果用户未投票，其投票权将由委托给它的验证者代为行使。  
+- 鼓励积极参与治理，因为提案会直接影响链的发展方向。  
 
-## Wallets
-- Keplr — most popular, browser extension + mobile
-- Leap — alternative to Keplr, similar features
-- Cosmostation — mobile and web
-- Ledger support — via Keplr or native app
-- One seed for all Cosmos chains — Keplr manages addresses
+## 钱包（Wallets）  
+- Keplr 是最受欢迎的钱包，支持浏览器扩展和移动端使用。  
+- Leap 是 Keplr 的替代品，功能类似。  
+- Cosmostation 也支持移动端和网页访问。  
+- 也可以通过 Ledger 进行交易，支持与 Keplr 或原生应用程序的连接。  
+- 使用同一个种子短语即可管理所有 Cosmos 链的账户。  
 
-## Gas and Fees
-- Fees paid in native token — ATOM on Hub, OSMO on Osmosis
-- Relatively low fees — fractions of a cent typically
-- Gas estimation usually automatic — wallets handle it
-- Can fail if gas too low — retry with higher gas
+## 交易费用（Gas and Fees）  
+- 交易费用以原生代币支付：Hub 上使用 ATOM，Osmosis 上使用 OSMO。  
+- 费用相对较低，通常仅为几分钱。  
+- 费用计算通常是自动完成的，钱包会处理相关细节。  
+- 如果交易费用过低，交易可能失败，需尝试提高费用后再试。  
 
-## DeFi on Cosmos
-- Osmosis — largest Cosmos DEX, AMM pools
-- Stride — liquid staking protocol
-- Mars Protocol — lending on Osmosis
-- Astroport — DEX on multiple chains
-- Kava — lending, originally separate, now IBC connected
+## Cosmos 上的 DeFi 服务  
+- Osmosis 是最大的 Cosmos DEX（去中心化交易所），提供自动市场机制（AMM）和流动性质押服务。  
+- Stride 是一种流动性质押协议。  
+- Mars Protocol 提供借贷服务。  
+- Astroport 是一个跨链操作的 DEX。  
+- Kava 最初是独立的借贷平台，现已通过 IBC 与 Cosmos 生态系统连接。  
 
-## Common Issues
-- "Account not found" — address exists but has no transactions yet
-- IBC transfer stuck — usually relayer delay, wait or try different path
-- "Sequence mismatch" — transaction sent twice, wait for first to confirm
-- Unbonding pending — 21 days is normal, not stuck
-- Wrong chain address — cosmos1 address won't work on Osmosis
+## 常见问题  
+- “账户未找到”：地址存在但尚未进行任何交易。  
+- IBC 转移失败：可能是中继节点延迟，可等待或尝试其他路径。  
+- “序列不匹配”：交易可能被重复发送，需等待首次交易确认。  
+- 解绑质押资金需要 21 天，属于正常现象。  
+- 使用错误的链地址：cosmos1 格式的地址无法在 Osmosis 上使用。  
 
-## Airdrops
-- Cosmos ecosystem has frequent airdrops — stakers rewarded
-- Stake with non-exchange validators — exchanges don't qualify
-- Check claiming requirements — some have expiration
-- Popular for early supporters — OSMO, JUNO, STARS all airdropped
+## airdrops（空投）  
+- Cosmos 生态系统经常进行 airdrops，质押者可获奖励。  
+- 非交易所验证者也可参与质押，但交易所通常不符合条件。  
+- 请仔细查看领奖要求，部分 airdrops 有时间限制。  
+- OSMO、JUNO、STARS 等项目都曾进行过 airdrops。  
 
-## Security
-- Same seed for all chains — secure it carefully
-- Verify Keplr connections — phishing sites common
-- IBC doesn't add security risk — but verify channels
-- Ledger recommended for large amounts — works with Keplr
-- Revoke unused permissions — wallet can audit connections
+## 安全性  
+- 所有链使用相同的种子短语，需妥善保管。  
+- 注意防范钓鱼网站，确保 Keplr 连接安全。  
+- IBC 不会增加额外的安全风险，但仍需验证通道的可靠性。  
+- 大额交易建议使用 Ledger 等安全工具，它支持与 Keplr 的配合使用。  
+- 可随时撤销未使用的权限，以便钱包审计连接状态。

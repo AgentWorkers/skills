@@ -1,79 +1,74 @@
 ---
 name: clawkey
 version: 1.0.0
-description: Verifiable human ownership for OpenClaw agents. Register your agent under your human owner via VeryAI palm verification.
+description: OpenClaw代理具有可验证的人类所有者身份。您可以通过VeryAI的掌纹验证功能，将您的代理注册到您本人名下。
 homepage: https://clawkey.ai
 metadata: { "category": "identity", "api_base": "https://api.clawkey.ai/v1" }
 ---
 
-# ClawKey — Verifiable Human Ownership
+# ClawKey — 可验证的人类所有权
 
-Register your agent under your human owner powered by VeryAI palm verification. The agent starts registration with a signed challenge showing it controls its key; the human opens a URL and completes VeryAI's palm verification. Once the human finishes, the agent is registered under their ownership and can be verified by third parties.
+通过 VeryAI 的手掌识别技术，将您的代理注册到相应的人类所有者名下。代理在开始注册时会生成一个签名过的挑战信息，以证明其对该密钥的控制权；随后人类需要访问一个 URL 并完成 VeryAI 的手掌识别验证。验证完成后，代理便正式归属于该人类所有者，并可接受第三方的验证。
 
-> **CRITICAL: Never open browsers**
->
-> Do **not** use `open`, `xdg-open`, `start`, or any command that opens a browser. Always output the **registration URL** as a text or markdown link for the user to click.
->
-> - WRONG: `open "https://api.very.org/oauth2/..."`
-> - CORRECT: "Open this link to complete verification: https://api.very.org/oauth2/..."
+> **重要提示：** **切勿打开浏览器**  
+> **禁止** 使用 `open`、`xdg-open`、`start` 或任何能够打开浏览器的命令。请始终以文本或 Markdown 链接的形式提供 **注册 URL**，供人类用户点击进行验证。  
+> - **错误示例：`open "https://api.very.org/oauth2/..."`  
+> - **正确示例：** “点击此链接完成验证：https://api.very.org/oauth2/...”  
 
-## Key files
+## 关键文件  
 
-| File         | Purpose                                                                                   |
+| 文件名          | 用途                                                                                   |
 | ------------ | ----------------------------------------------------------------------------------------- |
-| SKILL.md     | https://clawkey.ai/skill.md — registration flow, challenge generation, verification, API  |
-| HEARTBEAT.md | https://clawkey.ai/heartbeat.md — periodic checklist: registration status, etc            |
-| Identity     | `~/.openclaw/identity/device.json` — OpenClaw deviceId and keys (do not send private key) |
+| SKILL.md     | https://clawkey.ai/skill.md — 注册流程、挑战生成、验证、API  |
+| HEARTBEAT.md | https://clawkey.ai/heartbeat.md — 定期检查清单：注册状态等            |
+| Identity     | `~/.openclaw/identity/device.json` — OpenClaw 设备 ID 和密钥（切勿发送私钥） |
 
-## Security
+## 安全性  
 
-- **Private key**: Used to sign the challenge. Never send the private key to ClawKey or any server; only send `publicKey`, `message`, and `signature`.
-- **Registration URL**: Single-use and short-lived. Give it only to the human owner who will complete VeryAI palm verification.
-- **deviceId**: Use a stable identifier (e.g. from your identity store or hash of public key). It ties the agent to the registration and is used for lookup and verification.
+- **私钥**：用于生成签名。切勿将私钥发送给 ClawKey 或任何服务器；只需发送 `PublicKey`、`message` 和 `signature`。  
+- **注册 URL**：仅限一次性使用且具有较短的有效期。仅将 URL 提供给完成 VeryAI 验证的人类所有者。  
+- **deviceId**：使用一个稳定的标识符（例如来自您的身份验证系统或公钥的哈希值）。该标识符用于将代理与注册信息关联起来，并用于后续的查询和验证。  
 
-## Generating the AgentChallenge
+## 生成 AgentChallenge  
 
-The **AgentChallenge** is a signed payload that shows you control an Ed25519 key. It has the shape used by standard OpenClaw identity flows: `deviceId`, `publicKey`, `message`, `signature`, `timestamp`. Generate it once and send it to `/agent/register/init` or `/agent/verify/signature`.
+`AgentChallenge` 是一个签名过的数据包，用于证明您控制着一把 Ed25519 密钥。其结构遵循 OpenClaw 的标准身份验证流程：`deviceId`、`publicKey`、`message`、`signature`、`timestamp`。生成一次后，将其发送到 `/agent/register/init` 或 `/agent/verify/signature`。  
 
-### Where identity comes from (OpenClaw)
+### 身份信息的来源（OpenClaw）  
 
-If you run on OpenClaw, device identity is stored at:
+如果您使用 OpenClaw，设备身份信息存储在：  
+- **路径：`~/.openclaw/identity/device.json`  
 
-- **Path:** `~/.openclaw/identity/device.json`
-
-That file contains (never send `privateKeyPem` to any server):
-
-| Field           | Use                                                                      |
+该文件包含以下内容（切勿将 `privateKeyPem` 发送到任何服务器）：  
+| 字段           | 用途                                                                      |
 | --------------- | ------------------------------------------------------------------------ |
-| `deviceId`      | Use as `deviceId` in the challenge. Stable id for this agent/device.     |
-| `publicKeyPem`  | Use to derive `publicKey` (see below).                                   |
-| `privateKeyPem` | Use only locally to sign the message. **Never include in API requests.** |
+| `deviceId`      | 作为挑战信息中的 `deviceId` 使用。表示代理/设备的唯一标识符。     |
+| `publicKeyPem`  | 用于生成 `publicKey`（详见下文）。                                   |
+| `privateKeyPem` | 仅用于本地签名操作。**切勿包含在 API 请求中。**  
 
-If you don’t use OpenClaw, use your own identity store; ensure you have a stable `deviceId`, an Ed25519 key pair, and that you sign the **exact** string you send as `message`.
+如果您不使用 OpenClaw，请使用您自己的身份验证系统；确保您拥有一个稳定的 `deviceId`、一对 Ed25519 密钥，并确保您发送的 `message` 是经过签名的。  
 
-### Build the challenge (step-by-step)
+### 生成挑战信息的步骤  
 
-1. **Choose the message to sign**  
-   For registration, use a one-time challenge to avoid replay, e.g.:
-   - `clawkey-register-<unix_timestamp_ms>`  
-     Example: `clawkey-register-1738500000000`  
-     For verify/signature, the message is whatever you are proving (e.g. a nonce from a third party).
+1. **选择要签名的消息**  
+   注册时，使用一次性生成的挑战信息以防止重放，例如：`clawkey-register-<unix_timestamp_ms>`  
+   示例：`clawkey-register-1738500000000`  
+   在验证签名时，`message` 可以是您需要证明的内容（例如来自第三方的随机数）。  
 
-2. **Sign the message** with your Ed25519 **private** key. The signature must be over the **exact** UTF-8 bytes of `message` (no extra prefix/suffix).
+2. **使用您的 Ed25519 私钥对消息进行签名**。签名必须覆盖 `message` 的所有 UTF-8 字节（不得添加前缀或后缀）。  
 
-3. **Encode for the API:**
-   - **publicKey**: Ed25519 public key in **SPKI DER** form, then **base64** (no PEM wrapper).
-   - **signature**: Raw Ed25519 signature bytes, **base64**.
-   - **timestamp**: Unix time in **milliseconds** when the challenge was created (e.g. `Date.now()`).
+3. **编码以适应 API 格式**：  
+   - `publicKey`：以 SPKI DER 格式表示的 Ed25519 公钥，然后使用 Base64 编码。  
+   - `signature`：原始的 Ed25519 签名字节，同样使用 Base64 编码。  
+   - `timestamp`：挑战信息创建时的 Unix 时间（单位：毫秒，例如 `Date.now()`）。  
 
-4. **JSON body (AgentChallenge):**
-   - `deviceId` — from your identity (e.g. `device.json`)
-   - `publicKey` — base64 DER SPKI
-   - `message` — exact string that was signed
-   - `signature` — base64 signature
-   - `timestamp` — number (ms)
+4. **构建 JSON 数据包（AgentChallenge）**：  
+   - `deviceId`：来自您的身份验证系统（例如 `device.json`）。  
+   - `publicKey`：Base64 DER 格式的 Ed25519 公钥。  
+   - `message`：需要签名的原始字符串。  
+   - `signature`：Ed25519 签名的 Base64 表示形式。  
+   - `timestamp`：挑战信息创建时的 Unix 时间（单位：毫秒）。  
 
-### Example: Node.js
+### 示例（Node.js 代码）  
 
 ```javascript
 const crypto = require("crypto");
@@ -98,122 +93,83 @@ const challenge = {
   timestamp: Date.now(),
 };
 // POST challenge to https://api.clawkey.ai/v1/agent/register/init
-```
+```  
 
-### Using a script
+### 使用脚本  
 
-If you have a script that already produces an AgentChallenge (e.g. signs a message and outputs JSON with `deviceId`, `publicKey`, `message`, `signature`, `timestamp`), you can reuse it for ClawKey:
+如果您已有生成 AgentChallenge 的脚本（例如能够签名消息并输出包含 `deviceId`、`publicKey`、`message`、`signature`、`timestamp` 的 JSON 数据），可以将其直接用于 ClawKey：  
+1. 生成挑战信息字符串，例如 `clawkey-register-$(date +%s)000`（其中 `date +%s` 表示当前时间戳，`000` 表示毫秒）。  
+2. 运行脚本对消息进行签名并获取生成的 JSON 数据。  
+3. 将该 JSON 数据发送到 `https://api.clawkey.ai/v1/agent/register/init`。  
 
-1. Generate a challenge string, e.g. `clawkey-register-$(date +%s)000` (seconds + "000" for ms) or use your script’s convention.
-2. Run the script to sign that message and get the challenge JSON.
-3. POST that JSON to `https://api.clawkey.ai/v1/agent/register/init`.
+同样的挑战格式也适用于远程验证签名的请求（`POST /agent/verify/signature`）。  
 
-Same challenge format works for `POST /agent/verify/signature` when verifying a signature remotely.
+## 快速入门  
 
-## Quick start
+### 1. 开始注册（代理主动发起）  
+按照上述步骤生成 `AgentChallenge`，然后发送给 ClawKey 以创建会话并获取注册 URL。  
 
-### 1. Start registration (agent-initiated)
+**响应（201 状态码）：**  
+- `sessionId`：用于查询注册状态。  
+- `registrationUrl`：以链接形式提供给人类用户；**切勿在浏览器中打开该链接**。  
+- `expiresAt`：会话的有效期限（格式：ISO 8601）。  
 
-Build an **AgentChallenge** as above, then send it to ClawKey to create a session and get a registration URL.
+如果代理已经注册（`deviceId` 存在），API 会返回 **409 Conflict** 状态码。  
 
-```bash
-curl -X POST https://api.clawkey.ai/v1/agent/register/init \
-  -H "Content-Type: application/json" \
-  -d '{
-    "deviceId": "my-agent-device-id",
-    "publicKey": "<base64-DER-SPKI-Ed25519>",
-    "message": "clawkey-register-1738500000000",
-    "signature": "<base64-Ed25519-signature>",
-    "timestamp": 1738500000000
-  }'
-```
+### 2. 人类完成验证  
+要求人类用户在其浏览器中打开 `registrationUrl`，完成 VeryAI 的手掌识别验证。验证通过后，代理便归属于该用户。  
 
-**Response (201):**
+### 3. 查询注册状态  
+持续查询，直到人类完成验证或会话过期：  
 
-- `sessionId` — use to poll status
-- `registrationUrl` — **output this as a link for the human; do not open it in a browser**
-- `expiresAt` — session expiry (ISO 8601)
+**响应状态码：** `pending` | `completed` | `expired` | `failed`  
+当状态为 `completed` 时，响应中会包含 `deviceId` 和注册信息（例如 `publicKey`、`registeredAt`）。  
 
-If the agent is already registered (`deviceId` exists), the API returns **409 Conflict**.
+### 4. 验证签名或查询代理信息  
 
-### 2. Human completes verification
+- **验证签名**：检查消息是否由指定密钥签名，以及该代理是否归属于已验证的人类。  
 
-Tell the human owner to open the `registrationUrl` in their browser. They will go through VeryAI's palm verification via OAuth. When they finish, the agent is registered under their ownership.
+**响应示例：** `verified`（签名有效）；`registered`（代理已注册）。  
 
-### 3. Poll registration status
+- **按设备 ID 查询代理信息**：获取代理的注册和验证状态。  
 
-Poll until the human has completed or the session has expired:
+**响应示例：** `registered`、`verified`（代理已注册），可选字段 `registeredAt`。  
 
-```bash
-curl "https://api.clawkey.ai/v1/agent/register/SESSION_ID/status"
-```
+## API 参考  
 
-**Response:** `status` is one of `pending` | `completed` | `expired` | `failed`. When `status` is `completed`, the response includes `deviceId` and `registration` (e.g. `publicKey`, `registeredAt`).
+**基础 URL：** `https://api.clawkey.ai/v1`  
+**本地访问地址：** `http://localhost:3000/v1`  
 
-### 4. Verify signatures or look up an agent
+### API 端点  
 
-- **Verify a signature** — check that a message was signed by the given key and whether that agent is registered under a verified human:
+| 方法        | 端点                          | 认证方式 | 说明                                                                                   |
+|------------|------------------|---------|-----------------------------------------------------------------------------------------|
+| POST       | `/agent/register/init`       | 无       | 开始注册会话；返回 `sessionId`、`registrationUrl`、`expiresAt`。 |
+| GET        | `/agent/register/{sessionId}/status`    | 无       | 查询注册状态（`pending` / `completed` / `expired` / `failed`）。 |
+| POST       | `/agent/verify/signature`      | 无       | 验证签名以及代理的注册状态。            |
+| GET        | `/agent/verify/device/{deviceId}`     | 无       | 根据设备 ID 查询代理的注册和验证状态。           |
 
-```bash
-curl -X POST https://api.clawkey.ai/v1/agent/verify/signature \
-  -H "Content-Type: application/json" \
-  -d '{
-    "deviceId": "...",
-    "publicKey": "...",
-    "message": "...",
-    "signature": "...",
-    "timestamp": 1738500000000
-  }'
-```
+### 请求/响应格式  
 
-Response: `verified` (signature valid), `registered` (agent under verified human).
+**AgentChallenge**（用于 `register/init` 和 `verify/signature`）：  
+| 字段        | 类型         | 是否必填 | 说明                                                                                   |
+|---------------|-------------|---------|--------------------------------------------------------|
+| deviceId      | string       | 是        | 设备 ID（例如公钥哈希值或应用 ID）。                          |
+| publicKey     | string       | 是        | Ed25519 公钥（Base64 DER SPKI 格式）。                     |
+| message     | string       | 是        | 需要签名的原始字符串。                          |
+| signature    | string       | 是        | 对消息的 Ed25519 签名（Base64 编码）。                   |
+| timestamp    | int64        | 是        | 挑战信息创建时的 Unix 时间（单位：毫秒）。                     |
 
-- **Look up an agent by device id** — get registration and verification status:
-
-```bash
-curl "https://api.clawkey.ai/v1/agent/verify/device/DEVICE_ID"
-```
-
-Response: `registered`, `verified`, and optionally `registeredAt`.
-
-## API reference
-
-**Base URL:** `https://api.clawkey.ai/v1`  
-**Local:** `http://localhost:3000/v1`
-
-### Endpoints
-
-| Method | Endpoint                             | Auth | Description                                                                      |
-| ------ | ------------------------------------ | ---- | -------------------------------------------------------------------------------- |
-| POST   | `/agent/register/init`               | None | Start registration session; returns `sessionId`, `registrationUrl`, `expiresAt`. |
-| GET    | `/agent/register/{sessionId}/status` | None | Poll registration status: `pending` / `completed` / `expired` / `failed`.        |
-| POST   | `/agent/verify/signature`            | None | Verify a signature and whether the agent is registered under a verified human.   |
-| GET    | `/agent/verify/device/{deviceId}`    | None | Get agent registration and verification status by device id.                     |
-
-### Request/response schemas
-
-**AgentChallenge** (used in register/init and verify/signature):
-
-| Field     | Type   | Required | Description                                              |
-| --------- | ------ | -------- | -------------------------------------------------------- |
-| deviceId  | string | yes      | Key/device id (e.g. public key hash or app id).          |
-| publicKey | string | yes      | Ed25519 public key, base64 DER SPKI.                     |
-| message   | string | yes      | Exact message that was signed (e.g. challenge or nonce). |
-| signature | string | yes      | Ed25519 signature over message, base64.                  |
-| timestamp | int64  | yes      | Unix timestamp (ms) when the challenge was created.      |
-
-**Register init response (201):**
-
+**注册响应（201 状态码）：**  
 ```json
 {
   "sessionId": "uuid",
   "registrationUrl": "https://clawkey.ai/register/...",
   "expiresAt": "2026-02-02T12:00:00Z"
 }
-```
+```  
 
-**Register status response (200):**
-
+**注册状态响应（200 状态码）：**  
 ```json
 {
   "status": "completed",
@@ -223,61 +179,53 @@ Response: `registered`, `verified`, and optionally `registeredAt`.
     "registeredAt": "2026-02-02T12:00:00Z"
   }
 }
-```
+```  
 
-**Verify signature response (200):**
-
+**签名验证响应（200 状态码）：**  
 ```json
 {
   "verified": true,
   "registered": true
 }
-```
+```  
 
-**Device status response (200):**
-
+**设备状态响应（200 状态码）：**  
 ```json
 {
   "registered": true,
   "verified": true,
   "registeredAt": "2026-02-02T12:00:00Z"
 }
-```
+```  
 
-**Error (4xx/5xx):**
-
+**错误代码（4xx/5xx）：**  
 ```json
 {
   "error": "Human-readable message",
   "code": "optional_code",
   "details": {}
 }
-```
+```  
 
-### Error codes
+### 错误代码说明：  
+| 代码        | 含义                                                         |                                                                                   |
+|-------------|---------------------------------------------------------|                                                                                   |
+| 400         | 请求无效或缺少必要字段。                                      |                                                                                   |
+| 404         | 会话或设备未找到。                                      |                                                                                   |
+| 409         | 代理已注册（设备 ID 已存在）。                                   |                                                                                   |
+| 500         | 服务器错误。                                        |                                                                                   |  
 
-| Code | Meaning                                              |
-| ---- | ---------------------------------------------------- |
-| 400  | Bad request (invalid or missing fields).             |
-| 404  | Session or device not found.                         |
-| 409  | Agent already registered (device_id already exists). |
-| 500  | Server error.                                        |
+## 功能说明：**  
+注册完成后并通过 VeryAI 验证后：  
+- **人类所有权**：代理与通过验证的人类用户关联。  
+- **密钥绑定**：Ed25519 签名证明代理对该密钥的控制权；ClawKey 将该密钥与已验证的用户关联起来。  
+- **公开验证**：第三方可以通过 `/agent/verify/signature` 或 `/agent/verify/device/{deviceId}` 验证代理的注册状态。  
 
-## What this proves
+## 使用场景：**  
+- 将 OpenClaw（或其他类型）代理注册到人类所有者名下。  
+- 向第三方证明代理确实由已验证的人类用户拥有。  
+- 检查特定密钥或设备是否已注册并经过验证。  
 
-After registration and VeryAI verification:
-
-- **Human ownership** — The agent is bound to a human who passed palm verification.
-- **Key binding** — Ed25519 signatures prove the agent controls the key; ClawKey ties that key to the verified human.
-- **Public verification** — Third parties can call `/agent/verify/signature` or `/agent/verify/device/{deviceId}` to confirm an agent is registered and verified.
-
-## When to use this skill
-
-- Registering an OpenClaw (or other) agent under a human owner.
-- Proving to a third party that an agent is owned by a verified human (e.g. before granting access or privileges).
-- Checking whether a given key or device is registered and verified.
-
-## Need help?
-
-- API base: https://api.clawkey.ai/v1
-- Homepage: https://clawkey.ai
+## 需要帮助？  
+- API 基础文档：https://api.clawkey.ai/v1  
+- 官网：https://clawkey.ai

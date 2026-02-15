@@ -11,24 +11,24 @@ description: |
 effort: high
 ---
 
-# Pencil Renderer
+# PencilRenderer
 
-Translate aesthetic DNA codes into Pencil .pen frames via MCP.
+通过MCP将美学DNA代码转换为Pencil格式的 `.pen` 文件。
 
-## Interface
+## 接口
 
-**Input:**
-- DNA code: `[layout, color, typography, motion, density, background]`
-- Component type: `hero | card | form | nav | footer | section | button | input`
-- Optional: Name, dimensions, parent frame ID
+**输入：**
+- DNA代码：`[布局、颜色、字体样式、动画效果、元素间距、背景颜色]`
+- 组件类型：`hero` | `card` | `form` | `nav` | `footer` | `section` | `button` | `input`
+- 可选参数：组件名称、尺寸、父组件ID
 
-**Output:**
-- Frame ID in .pen file
-- Screenshot of rendered frame
+**输出：**
+- `.pen` 文件中的组件ID
+- 组件渲染后的截图
 
-## Workflow
+## 工作流程
 
-### 1. Ensure Document Ready
+### 1. 确保文档准备就绪
 
 ```javascript
 // Check if editor open
@@ -38,7 +38,7 @@ mcp__pencil__get_editor_state({ include_schema: false })
 mcp__pencil__open_document({ filePathOrTemplate: "new" })
 ```
 
-### 2. Get Style Foundation
+### 2. 获取样式基础信息
 
 ```javascript
 // Get available style guide tags
@@ -53,16 +53,16 @@ mcp__pencil__get_style_guide_tags()
 mcp__pencil__get_style_guide({ tags: [mapped_tags] })
 ```
 
-### 3. Translate DNA to Pencil Properties
+### 3. 将DNA代码转换为Pencil组件属性
 
-Reference: `references/dna-to-pencil.md`
+参考文档：`references/dna-to-pencil.md`
 
-DNA axis → Pencil property mapping is deterministic.
-Example: `centered` layout → `alignItems: "center"`, symmetric padding
+DNA代码中的各个属性与Pencil组件属性之间存在一一对应的映射关系。
+示例：`centered` 布局对应 `alignItems: "center"`；对称的间距对应 `padding: equal`。
 
-### 4. Execute Design Operations
+### 4. 执行设计操作
 
-Reference: `references/batch-design-patterns.md`
+参考文档：`references/batch-design-patterns.md`
 
 ```javascript
 mcp__pencil__batch_design({
@@ -75,68 +75,65 @@ mcp__pencil__batch_design({
 })
 ```
 
-### 5. Capture Result
+### 5. 捕获渲染结果
 
 ```javascript
 // Screenshot for visual verification
 mcp__pencil__get_screenshot({ nodeId: "frameId" })
 ```
 
-### 6. Return
+### 6. 返回结果
 
 ```markdown
 Frame ID: [id]
 DNA: [layout, color, typography, motion, density, background]
 ```
 
-Plus screenshot image.
+同时提供组件的截图。
 
-## Component Templates
+## 组件模板
 
-| Type | Structure |
+| 组件类型 | 结构组成 |
 |------|-----------|
-| `hero` | Container + headline + subhead + CTA buttons |
-| `card` | Container + image area + content + actions |
-| `form` | Container + labels + inputs + submit |
-| `nav` | Container + logo + links + actions |
-| `footer` | Container + columns + links + legal |
-| `section` | Container + heading + content grid |
-| `button` | Frame + text + icon slot |
-| `input` | Frame + label + field + validation |
+| `hero` | 容器 + 标题 + 子标题 + 呼叫行动的按钮 |
+| `card` | 容器 + 图片区域 + 内容 + 行动按钮 |
+| `form` | 容器 + 标签 + 输入框 + 提交按钮 |
+| `nav` | 容器 + 徽标 + 链接 | 行动按钮 |
+| `footer` | 容器 | 列表式布局 | 链接 | 法律声明 |
+| `section` | 容器 | 标题 | 内容网格 |
+| `button` | 带文本的框架 | 图标位置 |
+| `input` | 带标签的输入框 | 输入字段 | 校验功能 |
 
-## DNA Translation Quick Reference
+## DNA代码与Pencil属性的快速对照表
 
-| DNA Axis | Key Pencil Properties |
-|----------|----------------------|
-| Layout: centered | `alignItems: "center"`, equal padding |
-| Layout: asymmetric | Offset positions, varied gaps |
-| Layout: bento | Grid with varied spans |
-| Color: dark | Dark fill, light foreground |
-| Color: gradient | `fill: {type: "linear", stops: [...]}` |
-| Typography: display-heavy | Large heading sizes, high contrast |
-| Typography: minimal | Restrained scale, single family |
-| Density: spacious | gap: 24-48, generous padding |
-| Density: compact | gap: 8-16, tight padding |
-| Background: solid | Single fill color |
-| Background: textured | G() for patterns/images |
+| DNA代码中的属性 | 对应的Pencil组件属性 |
+|------------|-------------------------|
+| Layout: centered | `alignItems: "center"` | 对齐方式设置为“居中”，所有元素间距相等 |
+| Layout: asymmetric | `offsetPositions` | 元素位置有偏移，间距不等 |
+| Layout: bento | `grid` | 使用网格布局，各元素宽度不同 |
+| Color: dark | `fill: "dark"` | 背景颜色为深色，前景颜色较浅 |
+| Color: gradient | `fill: {type: "linear", stops: [...]}` | 使用线性渐变填充 |
+| Typography: display-heavy | `headingSize` | 标题字体大小较大，对比度较高 |
+| Typography: minimal | `fontFamily` | 使用简洁的字体系列 |
+| Density: spacious | `gap: 24-48` | 元素间距较大，填充较多 |
+| Density: compact | `gap: 8-16` | 元素间距较小，填充较少 |
+| Background: solid | `fill: singleColor` | 背景颜色为单一颜色 |
+| Background: textured | `G()` | 使用G()函数生成纹理或图片背景 |
 
-## Constraints
+## 限制条件
 
-- **Single concern**: Render DNA → frame. No interview, no iteration.
-- **Pencil MCP required**: Fails fast if unavailable
-- **Deterministic mapping**: Same DNA always produces same structure
-- **Composable**: Called by orchestrators, not users directly
+- **唯一目标**：将DNA代码渲染为对应的Pencil组件。
+- **必须使用Pencil MCP**：如果Pencil MCP不可用，转换将失败。
+- **映射关系是确定的**：相同的DNA代码总是生成相同的组件结构。
+- **组件是可组合的**：由系统调度器调用，用户无法直接操作。
 
-## References
+## 参考文档
 
-- `references/dna-to-pencil.md` — Complete axis mapping
-- `references/batch-design-patterns.md` — Common operation sequences
-- `aesthetic-system/references/dna-codes.md` — DNA axis definitions
+- `references/dna-to-pencil.md`：完整的属性映射关系
+- `references/batch-design-patterns.md`：常见的设计操作流程
+- `aesthetic-system/references/dna-codes.md`：DNA代码中各属性的定义
 
-## Integration
+## 集成方式
 
-**Called by:**
-- `design-exploration` orchestrator (when Pencil backend available)
-
-**Composes:**
-- `aesthetic-system` (for DNA interpretation)
+- **调用方**：`design-exploration`调度器（当Pencil后端可用时）
+- **组成模块**：`aesthetic-system`（负责解析DNA代码）

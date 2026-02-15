@@ -1,149 +1,139 @@
 ---
 name: bring-add
-description: Use when user wants to add items to Bring! shopping lists. For adding single items, batch items, or items from stdin/files. Supports dry-run preview and JSON output.
+description: **使用说明：**  
+当用户希望向 Bring! 购物清单中添加商品时，可以使用该工具。支持添加单个商品、批量添加商品，或从标准输入（stdin）/文件中导入商品信息。该工具还提供“干运行”预览功能（dry-run preview）以及 JSON 格式的输出结果。
 ---
 
-# Bring! Add Items CLI
+# Bring! 添加商品到购物清单的命令行工具（Bring! Add Items CLI）
 
-## Overview
+## 概述
 
-CLI for adding items to Bring! shopping lists. Supports quick single-item mode, batch mode, stdin/pipe input, and interactive mode.
+这是一个用于向 Bring! 购物清单中添加商品的命令行工具。支持单件商品添加、批量添加、通过标准输入（stdin）或管道输入，以及交互式添加模式。
 
-## When to Use
+## 使用场景
 
-**Use this skill when:**
-- User wants to add items to a Bring! shopping list
-- Adding single item with optional specification (e.g., "Milk 1L")
-- Adding multiple items at once (batch mode)
-- Piping items from a file or other command
-- Need to preview additions with dry-run
-- Need JSON output for scripting
+**适用情况：**
+- 用户希望向 Bring! 购物清单中添加商品。
+- 单个商品添加时可以指定详细信息（例如：“1升燕麦奶”）。
+- 一次性添加多个商品（批量模式）。
+- 从文件或其他命令中批量导入商品信息。
+- 需要预览添加操作的效果。
+- 需要将添加结果以 JSON 格式输出以便脚本处理。
 
-**Don't use when:**
-- User wants to browse recipes (use bring-recipes instead)
-- User wants to remove items from a list
-- User wants to view current list contents
+**不适用情况：**
+- 用户想要浏览食谱（请使用 `bring-recipes` 工具）。
+- 用户想要从清单中删除商品。
+- 用户想要查看当前的购物清单内容。
 
-## Quick Reference
+## 快速参考
 
-| Command | Purpose |
+| 命令 | 功能 |
 |---------|---------|
-| `bring-add "Item" "spec"` | Add single item with specification |
-| `bring-add --batch "A, B 1L, C"` | Add multiple comma-separated items |
-| `bring-add -` | Read items from stdin |
-| `bring-add` | Interactive mode (TTY only) |
-| `bring-add lists` | Show available shopping lists |
-| `bring-add --dry-run ...` | Preview without modifying |
+| `bring-add "商品名称 "详细信息"` | 添加单个商品并指定详细信息 |
+| `bring-add --batch "商品1, 商品2 1L, 商品3"` | 以逗号分隔的方式添加多个商品 |
+| `bring-add -` | 从标准输入读取商品信息 |
+| `bring-add` | 交互式添加模式（仅支持终端输入） |
+| `bring-add lists` | 显示可用的购物清单 |
+| `bring-add --dry-run ...` | 预览添加操作而不进行实际修改 |
 
-**Environment variables:**
+## 环境变量：**
 ```bash
 export BRING_EMAIL="your@email.com"
 export BRING_PASSWORD="yourpassword"
 export BRING_DEFAULT_LIST="Shopping"  # optional
 ```
 
-## Installation
-
+## 安装方法：**
 ```bash
 cd skills/bring-add
 npm install
 ```
 
-## Common Workflows
+## 常见操作流程
 
-**Add a single item:**
+- **添加单个商品：**  
 ```bash
 node index.js "Tomatoes" "500g"
 node index.js "Milk"
 ```
 
-**Add to specific list:**
+- **添加到特定清单：**  
 ```bash
 node index.js --list "Party" "Chips" "3 bags"
 ```
 
-**Batch add multiple items:**
+- **批量添加多个商品：**  
 ```bash
 node index.js --batch "Tomatoes 500g, Onions, Cheese 200g"
 ```
 
-**Pipe from file:**
+- **从文件中批量导入商品：**  
 ```bash
 cat shopping-list.txt | node index.js -
 echo -e "Milk 1L\nBread\nButter" | node index.js -
 ```
 
-**Preview before adding:**
+- **添加前预览：**  
 ```bash
 node index.js --dry-run --batch "Apples 1kg, Pears"
 ```
 
-**Get JSON output:**
+- **获取 JSON 输出：**  
 ```bash
 node index.js --json --batch "Milk, Bread" 2>/dev/null
 ```
 
-**List available lists:**
+- **列出所有可用清单：**  
 ```bash
 node index.js lists
 node index.js --json lists
 ```
 
-## Flags Reference
+## 常用参数说明
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-l, --list <name>` | Target list (name or UUID) |
-| `-b, --batch <items>` | Comma-separated items |
-| `-n, --dry-run` | Preview without modifying |
-| `-q, --quiet` | Suppress non-error output |
-| `-v, --verbose` | Show detailed progress |
-| `--json` | Output JSON to stdout |
-| `--no-color` | Disable colored output |
-| `--no-input` | Never prompt; fail if input required |
+| `-l, --list <清单名称>` | 目标清单的名称或 UUID |
+| `-b, --batch <商品列表>` | 以逗号分隔的商品列表 |
+| `-n, --dry-run` | 预览操作而不进行实际修改 |
+| `-q, --quiet` | 忽略非错误信息 |
+| `-v, --verbose` | 显示详细进度信息 |
+| `--json` | 将输出结果以 JSON 格式输出到标准输出 |
+| `--no-color` | 禁用颜色显示 |
+| `--no-input` | 不提示用户输入；如果需要输入则直接失败 |
 
-## Input Format
+## 输入格式
 
-Items follow the pattern: `ItemName [Specification]`
+商品信息的格式为：`商品名称 [详细信息]`  
+例如：  
+`Tomatoes 500g`  表示 “500克番茄”  
+`Oat milk 1L`  表示 “1升燕麦奶”  
+`Red onions 3`  表示 “3个红洋葱”  
+如果详细信息包含数字或单位（如 g、kg、L、ml、Stück、pck），则该部分将被视为商品的具体规格。
 
-| Input | Item | Spec |
-|-------|------|------|
-| `Tomatoes 500g` | Tomatoes | 500g |
-| `Oat milk 1L` | Oat milk | 1L |
-| `Red onions 3` | Red onions | 3 |
-| `Cheese` | Cheese | (empty) |
+## 错误代码
 
-Rule: Last word becomes specification if it contains a number or unit (g, kg, L, ml, Stück, pck).
-
-## Exit Codes
-
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| `0` | Success |
-| `1` | Generic failure (API error, network) |
-| `2` | Invalid usage (bad args, missing input) |
-| `3` | Authentication failed |
-| `4` | List not found |
-| `130` | Interrupted (Ctrl-C) |
+| `0` | 操作成功 |
+| `1` | 一般性错误（API 错误、网络问题） |
+| `2` | 使用方式错误（参数错误、缺少输入） |
+| `3` | 认证失败 |
+| `4` | 未找到相应的清单 |
+| `130` | 操作被中断（按下 Ctrl-C） |
 
-## Common Mistakes
+## 常见错误
 
-**Forgetting environment variables:**
-Set `BRING_EMAIL` and `BRING_PASSWORD` before running.
+- **注意事项：**
+  - 运行前请确保设置了 `BRING_EMAIL` 和 `BRING_PASSWORD` 环境变量。
+- 如果指定了错误的清单名称，请使用 `bring-add lists` 命令查看所有可用清单及其名称。
+- 请注意：只有当详细信息包含数量单位时（如 g、kg、L、ml 等），该部分才会被解析为实际的商品规格。例如，“Red onions” 会被视为一个商品，而 “Red onions 3” 会被解析为 “3个红洋葱”。
+- 在脚本中使用交互式添加模式时，请使用 `--no-input` 参数，以避免脚本因等待用户输入而挂起。
 
-**Wrong list name:**
-Use `bring-add lists` to see available lists and their exact names.
+## 实现细节
 
-**Specification parsing:**
-The last word is treated as specification only if it looks like a quantity. "Red onions" stays as one item, but "Red onions 3" splits into item "Red onions" with spec "3".
-
-**Interactive mode in scripts:**
-Use `--no-input` flag in scripts to fail explicitly rather than hang waiting for input.
-
-## Implementation Notes
-
-- Uses `node-bring-api` with `batchUpdateList()` API
-- Requires Node.js 18.0.0+
-- Outputs data to stdout, progress/errors to stderr
-- JSON mode available for automation
-- Interactive mode only when stdin is a TTY
+- 该工具基于 `node-bring-api` 和其中的 `batchUpdateList()` API 实现。
+- 需要 Node.js 18.0.0 或更高版本。
+- 所有输出（数据、进度信息及错误消息）都会显示在标准输出（stdout）中。
+- 支持 JSON 格式输出，便于自动化处理。
+- 交互式添加模式仅在通过终端（TTY）输入时生效。

@@ -1,22 +1,22 @@
 ---
 name: memorybox
-description: Zero-dependency memory maintenance CLI for OpenClaw. Keeps MEMORY.md lean with 3-tier hierarchical organization. Works alongside Mem0, Supermemory, QMD — or standalone. Install once, forget about memory management.
+description: OpenClaw的零依赖内存管理命令行工具（CLI）。通过三层层次结构保持MEMORY.md文件的简洁性。该工具可与Mem0、Supermemory、QMD配合使用，也可独立运行。只需安装一次，即可无需再担心内存管理问题。
 ---
 
 # MemoryBox
 
-Zero-dependency memory maintenance tool for OpenClaw agents.
+这是一个专为 OpenClaw 代理设计的、完全独立于其他组件的内存管理工具。
 
-## What It Does
+## 功能介绍
 
-Prevents MEMORY.md bloat by organizing memory into 3 tiers:
-- **Tier 1**: MEMORY.md (≤10KB, loaded every session)
-- **Tier 2**: memory/domains/*.md (searched on-demand)
-- **Tier 3**: memory/archive/ (old daily logs)
+通过将内存数据分为三个层级来防止 MEMORY.md 文件变得过于庞大：
+- **第一层级**：MEMORY.md（文件大小≤10KB，每次会话时都会被加载）
+- **第二层级**：memory/domains/*.md（按需查询）
+- **第三层级**：memory/archive/（存放旧的每日日志）
 
-Works alongside Mem0, Supermemory, QMD, or standalone. Only touches file structure — never configs or plugins.
+该工具可以与 Mem0、Supermemory、QMD 一起使用，也可以独立运行。它仅修改文件结构，而不会影响配置文件或插件。
 
-## Install
+## 安装方法
 
 ```bash
 git clone https://github.com/Ramsbaby/openclaw-memorybox.git
@@ -24,7 +24,7 @@ cd openclaw-memorybox && chmod +x bin/memorybox
 sudo ln -sf "$(pwd)/bin/memorybox" /usr/local/bin/memorybox
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 memorybox doctor ~/openclaw    # Full diagnostic (start here)
@@ -39,9 +39,9 @@ memorybox report ~/openclaw    # Before/after token savings
 memorybox init ~/openclaw      # Set up 3-tier directory structure
 ```
 
-## Teach Your Agent
+## 如何在代理中配置该工具
 
-Add to AGENTS.md:
+将相关配置添加到 AGENTS.md 文件中：
 
 ```markdown
 ## Memory Protocol
@@ -50,14 +50,14 @@ Add to AGENTS.md:
 - **memory/archive/**: Old logs. Rarely needed.
 ```
 
-## Results
+## 实际效果
 
-Tested on production (7 Discord channels, 48 crons):
-- MEMORY.md: 20KB → 3.5KB (-83%)
-- Context pressure: 98% → 7%
-- Setup time: 5 minutes
+在真实生产环境中进行了测试（7 个 Discord 频道，48 个定时任务）：
+- MEMORY.md 文件大小从 20KB 降至 3.5KB（减少了 83%）
+- 内存使用压力从 98% 降至 7%
+- 配置时间：5 分钟
 
-## Links
+## 链接
 
-- GitHub: https://github.com/Ramsbaby/openclaw-memorybox
-- Companion: https://github.com/Ramsbaby/openclaw-self-healing
+- GitHub 仓库：https://github.com/Ramsbaby/openclaw-memorybox
+- 相关项目：https://github.com/Ramsbaby/openclaw-self-healing

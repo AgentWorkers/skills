@@ -1,99 +1,100 @@
 ---
 name: send-email
-description: Use when sending transactional emails (welcome messages, order confirmations, password resets, receipts), notifications, or bulk emails via Resend API.
+description: **使用场景：**  
+在通过 Resend API 发送交易性电子邮件（欢迎邮件、订单确认邮件、密码重置邮件、收据）以及通知邮件或批量邮件时使用。
 ---
 
-# Send Email with Resend
+# 使用 Resend 功能发送电子邮件
 
-## Overview
+## 概述
 
-Resend provides two endpoints for sending emails:
+Resend 提供了两个用于发送电子邮件的接口：
 
-| Approach | Endpoint | Use Case |
+| 方法 | 接口 | 使用场景 |
 |----------|----------|----------|
-| **Single** | `POST /emails` | Individual transactional emails, emails with attachments, scheduled sends |
-| **Batch** | `POST /emails/batch` | Multiple distinct emails in one request (max 100), bulk notifications |
+| **单次发送** | `POST /emails` | 单个交易性邮件、带附件的邮件、定时发送的邮件 |
+| **批量发送** | `POST /emails/batch` | 一次请求中发送多封不同的邮件（最多 100 封） |
 
-**Choose batch when:**
-- Sending 2+ distinct emails at once
-- Reducing API calls is important (by default, rate limit is 2 requests per second)
-- No attachments or scheduling needed
+**在以下情况下选择批量发送：**
+- 同时发送 2 封或更多不同的邮件 |
+- 需要减少 API 调用次数（默认每秒限制为 2 次请求） |
+- 不需要附件或定时发送 |
 
-**Choose single when:**
-- Sending one email
-- Email needs attachments
-- Email needs to be scheduled
-- Different recipients need different timing
+**在以下情况下选择单次发送：**
+- 发送一封邮件 |
+- 邮件需要附件 |
+- 邮件需要定时发送 |
+- 不同收件人有不同的发送时间要求 |
 
-## Quick Start
+## 快速入门
 
-1. **Detect project language** from config files (package.json, requirements.txt, go.mod, etc.)
-2. **Install SDK** (preferred) or use cURL - See [references/installation.md](references/installation.md)
-3. **Choose single or batch** based on the decision matrix above
-4. **Implement best practices** - Idempotency keys, error handling, retries
+1. 从配置文件（`package.json`、`requirements.txt`、`go.mod` 等）中检测项目使用的语言 |
+2. 安装 SDK（推荐）或使用 cURL - 请参阅 [references/installation.md](references/installation.md) |
+3. 根据上述决策矩阵选择单次发送或批量发送 |
+4. 实施最佳实践 - 例如使用幂等性键、错误处理和重试机制 |
 
-## Best Practices (Critical for Production)
+## 最佳实践（生产环境必备）
 
-Always implement these for production email sending. See [references/best-practices.md](references/best-practices.md) for complete implementations.
+在生产环境中发送电子邮件时，请务必遵循这些最佳实践。详细实现方法请参阅 [references/best-practices.md](references/best-practices.md)。
 
-### Idempotency Keys
+### 幂等性键
 
-Prevent duplicate emails when retrying failed requests.
+在重试失败请求时，使用幂等性键可以防止邮件重复发送。
 
-| Key Facts | |
+| 关键信息 | |
 |-----------|---|
-| **Format (single)** | `<event-type>/<entity-id>` (e.g., `welcome-email/user-123`) |
-| **Format (batch)** | `batch-<event-type>/<batch-id>` (e.g., `batch-orders/batch-456`) |
-| **Expiration** | 24 hours |
-| **Max length** | 256 characters |
-| **Duplicate payload** | Returns original response without resending |
-| **Different payload** | Returns 409 error |
+| **格式（单次发送）** | `<事件类型>/<实体ID>`（例如：`welcome-email/user-123`） |
+| **格式（批量发送）** | `batch-<事件类型>/<批次ID>`（例如：`batch-orders/batch-456`） |
+| **有效期** | 24 小时 |
+| **最大长度** | 256 个字符 |
+| **重复的请求数据** | 会返回原始响应，不会重新发送邮件 |
+| **不同的请求数据** | 会返回 409 错误 |
 
-### Error Handling
+### 错误处理
 
-| Code | Action |
+| 错误代码 | 处理方式 |
 |------|--------|
-| 400, 422 | Fix request parameters, don't retry |
-| 401, 403 | Check API key / verify domain, don't retry |
-| 409 | Idempotency conflict - use new key or fix payload |
-| 429 | Rate limited - retry with exponential backoff (by default, rate limit is 2 requests/second) |
-| 500 | Server error - retry with exponential backoff |
+| 400, 422 | 修复请求参数，不要重试 |
+| 401, 403 | 检查 API 密钥/验证域名，不要重试 |
+| 409 | 幂等性冲突 - 使用新的键或修复请求数据 |
+| 429 | 超过速率限制 - 使用指数级退避策略重试（默认每秒限制为 2 次请求） |
+| 500 | 服务器错误 - 使用指数级退避策略重试 |
 
-### Retry Strategy
+### 重试策略
 
-- **Backoff:** Exponential (1s, 2s, 4s...)
-- **Max retries:** 3-5 for most use cases
-- **Only retry:** 429 (rate limit) and 500 (server error)
-- **Always use:** Idempotency keys when retrying
+- **退避策略**：指数级退避（1 秒、2 秒、4 秒……） |
+- **最大重试次数**：大多数情况下为 3-5 次 |
+- **仅重试的情况**：429（速率限制）和 500（服务器错误） |
+- **重试时必须使用**：幂等性键
 
-## Single Email
+## 单次发送邮件
 
-**Endpoint:** `POST /emails` (prefer SDK over cURL)
+**接口：`POST /emails`（推荐使用 SDK，而非 cURL）**
 
-### Required Parameters
+### 必需参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 说明 |
 |-----------|------|-------------|
-| `from` | string | Sender address. Format: `"Name <email@domain.com>"` |
-| `to` | string[] | Recipient addresses (max 50) |
-| `subject` | string | Email subject line |
-| `html` or `text` | string | Email body content |
+| `from` | 字符串 | 发件人地址。格式：`"Name <email@domain.com>"` |
+| `to` | 字符串数组 | 收件人地址（最多 50 个） |
+| `subject` | 字符串 | 邮件主题行 |
+| `html` 或 `text` | 字符串 | 邮件正文内容 |
 
-### Optional Parameters
+### 可选参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 说明 |
 |-----------|------|-------------|
-| `cc` | string[] | CC recipients |
-| `bcc` | string[] | BCC recipients |
-| `reply_to`* | string[] | Reply-to addresses |
-| `scheduled_at`* | string | Schedule send time (ISO 8601) |
-| `attachments` | array | File attachments (max 40MB total) |
-| `tags` | array | Key/value pairs for tracking (see [Tags](#tags)) |
-| `headers` | object | Custom headers |
+| `cc` | 字符串数组 | 抄送收件人地址 |
+| `bcc` | 字符串数组 | 密件抄送收件人地址 |
+| `reply_to`* | 字符串数组 | 回复收件人地址 |
+| `scheduled_at`* | 字符串 | 定时发送时间（ISO 8601 格式） |
+| `attachments` | 数组 | 文件附件（总大小不超过 40MB） |
+| `tags` | 数组 | 用于跟踪的键值对（请参阅 [Tags](#tags)） |
+| `headers` | 对象 | 自定义头部信息 |
 
-*Parameter naming varies by SDK (e.g., `replyTo` in Node.js, `reply_to` in Python).
+*参数名称可能因 SDK 而异（例如，在 Node.js 中为 `replyTo`，在 Python 中为 `reply_to`）。
 
-### Minimal Example (Node.js)
+### 最小示例（Node.js）
 
 ```typescript
 import { Resend } from 'resend';
@@ -117,28 +118,28 @@ if (error) {
 console.log('Sent:', data.id);
 ```
 
-See [references/single-email-examples.md](references/single-email-examples.md) for all SDK implementations with error handling and retry logic.
+有关包含错误处理和重试逻辑的所有 SDK 实现示例，请参阅 [references/single-email-examples.md](references/single-email-examples.md)。
 
-## Batch Email
+## 批量发送邮件
 
-**Endpoint:** `POST /emails/batch` (but prefer SDK over cURL)
+**接口：`POST /emails/batch`（推荐使用 SDK，而非 cURL）**
 
-### Limitations
+### 限制
 
-- **No attachments** - Use single sends for emails with attachments
-- **No scheduling** - Use single sends for scheduled emails
-- **Atomic** - If one email fails validation, the entire batch fails
-- **Max 100 emails** per request
-- **Max 50 recipients** per individual email in the batch
+- **不支持附件** - 带附件的邮件请使用单次发送 |
+- **不支持定时发送** - 定时发送的邮件请使用单次发送 |
+- **原子性**：如果有一封邮件验证失败，整个批次都会失败 |
+- **每次请求最多发送 100 封邮件** |
+- **每封批量邮件最多 50 个收件人**
 
-### Pre-validation
+### 预验证
 
-Since the entire batch fails on any validation error, validate all emails before sending:
-- Check required fields (from, to, subject, html/text)
-- Validate email formats
-- Ensure batch size <= 100
+由于任何验证错误都会导致整个批次失败，因此在发送前请验证所有邮件：
+- 检查必填字段（`from`、`to`、`subject`、`html`/`text`）
+- 验证邮件格式 |
+- 确保批次大小不超过 100 封邮件
 
-### Minimal Example (Node.js)
+### 最小示例（Node.js）
 
 ```typescript
 import { Resend } from 'resend';
@@ -170,80 +171,80 @@ if (error) {
 console.log('Sent:', data.map(e => e.id));
 ```
 
-See [references/batch-email-examples.md](references/batch-email-examples.md) for all SDK implementations with validation, error handling, and retry logic.
+有关包含验证、错误处理和重试逻辑的所有 SDK 实现示例，请参阅 [references/batch-email-examples.md](references/batch-email-examples.md)。
 
-## Large Batches (100+ Emails)
+## 大批量邮件（100 封以上）
 
-For sends larger than 100 emails, chunk into multiple batch requests:
+对于超过 100 封邮件的发送，请分批发送：
 
-1. **Split into chunks** of 100 emails each
-2. **Use unique idempotency keys** per chunk: `<batch-prefix>/chunk-<index>`
-3. **Send chunks in parallel** for better throughput
-4. **Track results** per chunk to handle partial failures
+1. **将邮件分成每批 100 封** |
+2. **为每批使用唯一的幂等性键**：`<batch-prefix>/chunk-<index>` |
+3. **并行发送各批邮件以提高吞吐量** |
+4. **跟踪每批的发送结果**，以便处理部分失败的情况 |
 
-See [references/batch-email-examples.md](references/batch-email-examples.md) for complete chunking implementations.
+有关分批发送的完整实现示例，请参阅 [references/batch-email-examples.md](references/batch-email-examples.md)。
 
-## Deliverability
+## 邮件送达率优化
 
-Follow these practices to maximize inbox placement.
+遵循以下最佳实践以提高邮件送达率。
 
-For more help with deliverability, install the email-best-practices skill with `npx skills add resend/email-best-practices`.
+如需更多关于邮件送达率的帮助，可以使用 `npx skills add resend/email-best-practices` 命令安装相关技能。
 
-### Required
+### 必须遵循的实践
 
-| Practice | Why |
+| 实践 | 原因 |
 |----------|-----|
-| **Valid SPF, DKIM, DMARC record** | authenticate the email and prevent spoofing |
-| **Links match sending domain** | If sending from `@acme.com`, link to `https://acme.com` - mismatched domains trigger spam filters |
-| **Include plain text version** | Use both `html` and `text` parameters for accessibility and deliverability (Resend generates a plain text version if not provided) |
-| **Avoid "no-reply" addresses** | Use real addresses (e.g., `support@`) - improves trust signals |
-| **Keep body under 102KB** | Gmail clips larger messages |
+| **有效的 SPF、DKIM、DMARC 记录** | 验证邮件真实性，防止伪造邮件 |
+| **链接与发送域名匹配** | 如果从 `@acme.com` 发送邮件，链接应指向 `https://acme.com`；域名不匹配会触发垃圾邮件过滤器 |
+| **提供纯文本版本** | 同时使用 `html` 和 `text` 参数，以提高可访问性和送达率（Resend 会在未提供纯文本版本时自动生成） |
+| **避免使用“no-reply”地址** | 使用真实地址（例如 `support@`）——这有助于提升信任度 |
+| **保持邮件正文大小在 102KB 以下** | Gmail 会截断过长的邮件 |
 
-### Recommended
+### 推荐的实践
 
-| Practice | Why |
+| 实践 | 原因 |
 |----------|-----|
-| **Use subdomains** | Send transactional from `notifications.acme.com`, marketing from `mail.acme.com` - protects reputation |
-| **Disable tracking for transactional** | Open/click tracking can trigger spam filters for password resets, receipts, etc. |
+| **使用子域名** | 交易性邮件从 `notifications.acme.com` 发送，营销邮件从 `mail.acme.com` 发送——这有助于维护发送者的声誉 |
+| **关闭交易性邮件的跟踪功能** | 对于密码重置、确认邮件等敏感邮件，关闭跟踪功能 |
 
-## Tracking (Opens & Clicks)
+## 跟踪（打开和点击）
 
-Tracking is configured at the **domain level** in the Resend dashboard, not per-email.
+跟踪功能在 Resend 的控制面板中按域名级别配置，而不是针对每封邮件单独配置。
 
-| Setting | How it works | Recommendation |
+| 设置 | 工作原理 | 建议 |
 |---------|--------------|----------------|
-| **Open tracking** | Inserts 1x1 transparent pixel | Disable for transactional emails - can hurt deliverability |
-| **Click tracking** | Rewrites links through redirect | Disable for sensitive emails (password resets, security alerts) |
+| **打开跟踪** | 插入 1x1 的透明像素 | 对于交易性邮件请关闭此功能——否则会影响送达率 |
+| **点击跟踪** | 通过重定向链接来跟踪点击行为 | 对于敏感邮件（如密码重置、安全提醒）请关闭此功能 |
 
-**When to enable tracking:**
-- Marketing emails where engagement metrics matter
-- Newsletters and announcements
+**何时启用跟踪：**
+- 需要跟踪用户互动情况的营销邮件 |
+- 新闻通讯和公告邮件
 
-**When to disable tracking:**
-- Transactional emails (receipts, confirmations, password resets)
-- Security-sensitive emails
-- When maximizing deliverability is priority
+**何时关闭跟踪：**
+- 交易性邮件（如确认邮件、密码重置邮件） |
+- 敏感安全邮件 |
+- 当优先考虑提高送达率时 |
 
-Configure via dashboard: Domain → Configuration → Click/Open Tracking
+通过控制面板进行配置：域名 → 配置 → 点击/打开跟踪
 
-## Webhooks (Event Notifications)
+## Webhook（事件通知）
 
-Track email delivery status in real-time using webhooks. Resend sends HTTP POST requests to your endpoint when events occur.
+使用 Webhook 实时跟踪邮件送达状态。当事件发生时，Resend 会向您的端点发送 HTTP POST 请求。
 
-| Event | When to use |
+| 事件 | 使用场景 |
 |-------|-------------|
-| `email.delivered` | Confirm successful delivery |
-| `email.bounced` | Remove from mailing list, alert user |
-| `email.complained` | Unsubscribe user (spam complaint) |
-| `email.opened` / `email.clicked` | Track engagement (marketing only) |
+| `email.delivered` | 确认邮件成功送达 |
+| `email.bounced` | 从邮件列表中移除该用户，并通知用户 |
+| `email.complained` | 用户投诉邮件（视为垃圾邮件） |
+| `email.opened` / `email.clicked` | 跟踪用户互动情况（仅限营销邮件） |
 
-**CRITICAL: Always verify webhook signatures.** Without verification, attackers can send fake events to your endpoint.
+**重要提示：** 必须验证 Webhook 签名。** 如果不进行验证，攻击者可能会向您的端点发送伪造的事件。
 
-See [references/webhooks.md](references/webhooks.md) for setup, signature verification code, and all event types.
+有关设置、签名验证代码和所有事件类型的详细信息，请参阅 [references/webhooks.md](references/webhooks.md)。
 
-## Tags
+## 标签
 
-Tags are key/value pairs that help you track and filter emails.
+标签是键值对，有助于您跟踪和过滤邮件。
 
 ```typescript
 tags: [
@@ -253,17 +254,17 @@ tags: [
 ]
 ```
 
-**Use cases:**
-- Associate emails with customers in your system
-- Categorize by email type (welcome, receipt, password-reset)
-- Filter emails in the Resend dashboard
-- Correlate webhook events back to your application
+**使用场景：**
+- 将邮件与系统中的客户关联 |
+- 按邮件类型分类（欢迎邮件、确认邮件、密码重置邮件） |
+- 在 Resend 控制面板中过滤邮件 |
+- 将 Webhook 事件与您的应用程序关联起来 |
 
-**Constraints:** Tag names and values can only contain ASCII letters, numbers, underscores, or dashes. Max 256 characters each.
+**注意事项：** 标签名称和值只能包含 ASCII 字母、数字、下划线或连字符。每个标签的最大长度为 256 个字符。
 
-## Templates
+## 模板
 
-Use pre-built templates instead of sending HTML with each request.
+请使用预构建的模板，而不是在每次请求时都发送 HTML 内容。
 
 ```typescript
 const { data, error } = await resend.emails.send({
@@ -280,117 +281,116 @@ const { data, error } = await resend.emails.send({
 });
 ```
 
-**IMPORTANT:** Variable names are **case-sensitive** and must match exactly as defined in the template editor. `USER_NAME` ≠ `user_name`.
+**重要提示：** 变量名称是区分大小写的，必须与模板编辑器中定义的名称完全匹配。例如，`USER_NAME` 与 `user_name` 不同。**
 
-| Fact | Detail |
+| 说明 | 详情 |
 |------|--------|
-| **Max variables** | 20 per template |
-| **Reserved names** | `FIRST_NAME`, `LAST_NAME`, `EMAIL`, `RESEND_UNSUBSCRIBE_URL`, `contact`, `this` |
-| **Fallback values** | Optional - if not set and variable missing, send fails |
-| **Can't combine with** | `html`, `text`, or `react` parameters |
+| **每个模板最多可使用的变量数量** | 20 个 |
+| **保留的变量名称** | `FIRST_NAME`、`LAST_NAME`、`EMAIL`、`RESEND_UNSUBSCRIBE_URL`、`contact`、`this` |
+| **默认值** | 可选——如果未设置且变量缺失，发送将失败 |
+| **不能与以下参数组合使用** | `html`、`text` 或 `react` |
 
-Templates must be **published** in the dashboard before use. Draft templates won't work.
+模板必须在控制面板中发布后才能使用。未发布的模板将无法使用。
 
-## Testing
+## 测试
 
-**WARNING: Never test with fake addresses at real email providers.**
+**警告：** 绝不要使用虚假地址进行测试。**
 
-Using addresses like `test@gmail.com`, `example@outlook.com`, or `fake@yahoo.com` will:
-- **Bounce** - These addresses don't exist
-- **Destroy your sender reputation** - High bounce rates trigger spam filters
-- **Get your domain blocklisted** - Providers flag domains with high bounce rates
+使用 `test@gmail.com`、`example@outlook.com` 或 `fake@yahoo.com` 等地址会导致以下问题：
+- 邮件被退回（因为这些地址不存在） |
+- 损害您的发送者声誉（高退回率会触发垃圾邮件过滤器） |
+- 您的域名可能被列入黑名单（因为发送者声誉较低） |
 
-### Safe Testing Options
+### 安全的测试选项
 
-| Method | Address | Result |
+| 方法 | 使用的地址 | 结果 |
 |--------|---------|--------|
-| **Delivered** | `delivered@resend.dev` | Simulates successful delivery |
-| **Bounced** | `bounced@resend.dev` | Simulates hard bounce |
-| **Complained** | `complained@resend.dev` | Simulates spam complaint |
-| **Your own email** | Your actual address | Real delivery test |
+| **Delivered** | `delivered@resend.dev` | 模拟成功送达 |
+| **Bounced** | `bounced@resend.dev` | 模拟邮件被退回 |
+| **Complained** | `complained@resend.dev` | 模拟收到投诉 |
+| **您的真实邮箱地址** | 使用您的实际邮箱地址 | 进行真实的送达测试 |
 
-**For development:** Use the `resend.dev` test addresses to simulate different scenarios without affecting your reputation.
+**开发环境：** 使用 `resend.dev` 测试地址来模拟不同场景，而不会影响您的发送者声誉。 |
+**测试环境：** 将邮件发送到您控制的真实地址（团队成员或测试账户）。 |
 
-**For staging:** Send to real addresses you control (team members, test accounts you own).
+## 域名预热
 
-## Domain Warm-up
+新域名在开始发送邮件前，必须逐步增加发送量以建立良好的声誉。
 
-New domains must gradually increase sending volume to establish reputation.
+**原因：** 新域名突然大量发送邮件会触发垃圾邮件过滤器。服务提供商通常要求逐步增加发送量。
 
-**Why it matters:** Sudden high volume from a new domain triggers spam filters. ISPs expect gradual growth.
+### 推荐的发送计划
 
-### Recommended Schedule
+**现有域名**
 
-**Existing domain**
-
-| Day | Messages per day    | Messages per hour   |
+| 第一天 | 每天发送的邮件数量 | 每小时发送的邮件数量 |
 |-----|---------------------|---------------------|
-| 1   | Up to 1,000 emails  | 100 Maximum         |
-| 2   | Up to 2,500 emails  | 300 Maximum         |
-| 3   | Up to 5,000 emails  | 600 Maximum         |
-| 4   | Up to 5,000 emails  | 800 Maximum         |
-| 5   | Up to 7,500 emails  | 1,000 Maximum       |
-| 6   | Up to 7,500 emails  | 1,500 Maximum       |
-| 7   | Up to 10,000 emails | 2,000 Maximum       |
+| 1   | 最多 1,000 封邮件 | 每小时最多 100 封 |
+| 2   | 最多 2,500 封邮件 | 每小时最多 300 封 |
+| 3   | 最多 5,000 封邮件 | 每小时最多 600 封 |
+| 4   | 最多 5,000 封邮件 | 每小时最多 800 封 |
+| 5   | 最多 7,500 封邮件 | 每小时最多 1,000 封 |
+| 6   | 最多 7,500 封邮件 | 每小时最多 1,500 封 |
+| 7   | 最多 10,000 封邮件 | 每小时最多 2,000 封 |
 
-**New domain**
+**新域名**
 
-| Day | Messages per day    | Messages per hour   |
+| 第一天 | 每天发送的邮件数量 | 每小时发送的邮件数量 |
 |-----|---------------------|---------------------|
-| 1   | Up to 150 emails    |                    |
-| 2   | Up to 250 emails    |                    |
-| 3   | Up to 400 emails    |                    |
-| 4   | Up to 700 emails    | 50 Maximum         |
-| 5   | Up to 1,000 emails  | 75 Maximum         |
-| 6   | Up to 1,500 emails  | 100 Maximum        |
-| 7   | Up to 2,000 emails  | 150 Maximum        |
+| 1   | 最多 150 封邮件 |                    |
+| 2   | 最多 250 封邮件 |                    |
+| 3   | 最多 400 封邮件 |                    |
+| 4   | 最多 700 封邮件 | 每小时最多 50 封 |
+| 5   | 最多 1,000 封邮件 | 每小时最多 75 封 |
+| 6   | 最多 1,500 封邮件 | 每小时最多 100 封 |
+| 7   | 最多 2,000 封邮件 | 每小时最多 150 封 |
 
-### Monitor These Metrics
+### 监控这些指标
 
-| Metric | Target | Action if exceeded |
+| 指标 | 目标值 | 超过目标值时的处理方式 |
 |--------|--------|-------------------|
-| **Bounce rate** | < 4% | Slow down, clean list |
-| **Spam complaint rate** | < 0.08% | Slow down, review content |
+| **退回率** | < 4% | 减慢发送速度，清理邮件列表 |
+| **垃圾邮件投诉率** | < 0.08% | 减慢发送速度，检查邮件内容 |
 
-**Don't use third-party warm-up services.** Focus on sending relevant content to real, engaged recipients.
+**请不要使用第三方预热服务。** 请确保向真实且愿意接收邮件的用户发送相关内容。
 
-## Suppression List
+## 抑制列表
 
-Resend automatically manages a suppression list of addresses that should not receive emails.
+Resend 会自动管理一个不应接收邮件的地址列表。
 
-**Addresses are added when:**
-- Email hard bounces (address doesn't exist)
-- Recipient marks email as spam
-- You manually add them via dashboard
+**地址会被添加到抑制列表的情况：**
+- 邮件被退回（地址不存在） |
+- 收件人将邮件标记为垃圾邮件 |
+- 您通过控制面板手动将地址添加到列表中 |
 
-**What happens:** Resend won't attempt delivery to suppressed addresses. The `email.suppressed` webhook event fires instead.
+**后果：** Resend 不会尝试向被抑制的地址发送邮件。此时会触发 `email.suppressed` Webhook 事件。
 
-**Why this matters:** Continuing to send to bounced/complained addresses destroys your reputation. The suppression list protects you automatically.
+**重要性：** 继续向被退回或投诉的地址发送邮件会损害您的发送者声誉。抑制列表可以自动保护您的发送者声誉。**
 
-**Management:** View and manage suppressed addresses in the Resend dashboard under Suppressions.
+**管理方式：** 在 Resend 控制面板的“Suppressions”部分查看和管理被抑制的地址。
 
-## Common Mistakes
+## 常见错误及解决方法
 
-| Mistake | Fix |
+| 错误 | 解决方法 |
 |---------|-----|
-| Retrying without idempotency key | Always include idempotency key - prevents duplicate sends on retry |
-| Using batch for emails with attachments | Batch doesn't support attachments - use single sends instead |
-| Not validating batch before send | Validate all emails first - one invalid email fails the entire batch |
-| Retrying 400/422 errors | These are validation errors - fix the request, don't retry |
-| Same idempotency key, different payload | Returns 409 error - use unique key per unique email content |
-| Tracking enabled for transactional emails | Disable open/click tracking for password resets, receipts - hurts deliverability |
-| Using "no-reply" sender address | Use real address like `support@` - improves trust signals with email providers |
-| Not verifying webhook signatures | Always verify - attackers can send fake events to your endpoint |
-| Testing with fake emails (test@gmail.com) | Use `delivered@resend.dev` - fake addresses bounce and hurt reputation |
-| Template variable name mismatch | Variable names are case-sensitive - `USER_NAME` ≠ `user_name` |
-| Sending high volume from new domain | Warm up gradually - sudden spikes trigger spam filters |
+| 重试时未使用幂等性键 | 必须使用幂等性键——以防止重复发送 |
+| 对带附件的邮件使用批量发送方式 | 批量发送不支持附件——请使用单次发送 |
+| 发送前未验证邮件内容 | 先验证所有邮件——如果有一封邮件无效，整个批次都会失败 |
+| 重试 400/422 错误** | 这些是验证错误——修复请求后不要重试 |
+| 使用相同的幂等性键但发送不同的邮件内容 | 会导致 409 错误——请为每封邮件使用唯一的键 |
+| 为交易性邮件启用跟踪功能 | 对于密码重置、确认邮件等敏感邮件，请关闭打开/点击跟踪功能——这会影响送达率 |
+| 使用“no-reply”作为发件人地址 | 使用真实的地址（如 `support@`）——这有助于提升信任度 |
+| 未验证 Webhook 签名 | 必须进行验证——否则攻击者可能会向您的端点发送伪造事件 |
+| 使用虚假地址进行测试（如 `test@gmail.com`） | 使用 `delivered@resend.dev` 进行测试——虚假地址会导致邮件被退回并损害您的声誉 |
+| 模板变量名称错误** | 变量名称是区分大小写的——`USER_NAME` 与 `user_name` 不同 |
+| 从新域名大量发送邮件** | 逐步增加发送量——突然增加发送量会触发垃圾邮件过滤器 |
 
-## Notes
+## 注意事项
 
-- The `from` address must use a verified domain
-- If the sending address cannot receive replies, set the `reply_to` parameter to a valid address.
-- Store API key in `RESEND_API_KEY` environment variable
-- Node.js SDK supports `react` parameter for React Email components
-- Resend returns `error`, `data`, `headers` in the response.
-- Data returns `{ id: "email-id" }` on success (single) or array of IDs (batch)
-- For marketing campaigns to large lists, use Resend Broadcasts instead
+- `from` 地址必须使用经过验证的域名 |
+- 如果发件人地址无法接收回复，请将 `reply_to` 参数设置为有效的地址 |
+- 将 API 密钥存储在 `RESEND_API_KEY` 环境变量中 |
+- Node.js SDK 支持用于 React 邮件组件的 `react` 参数 |
+- Resend 会在响应中返回 `error`、`data`、`headers` |
+- 成功发送时，数据返回 `{ id: "email-id" }`（单次发送）；批量发送时返回 ID 数组 |
+- 对于大规模营销活动，请使用 Resend Broadcasts 功能。

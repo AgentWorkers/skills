@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Access - Python
+# Telnyx 账户访问 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all addresses
+## 列出所有地址
 
-Returns a list of your addresses.
+返回您的地址列表。
 
 `GET /addresses`
 
@@ -46,11 +46,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Creates an address
+## 创建地址
 
-Creates an address.
+创建一个新的地址。
 
-`POST /addresses` — Required: `first_name`, `last_name`, `business_name`, `street_address`, `locality`, `country_code`
+`POST /addresses` — 必需参数：`first_name`（名字）、`last_name`（姓氏）、`business_name`（公司名称）、`street_address`（街道地址）、`locality`（地区）、`country_code`（国家代码）
 
 ```python
 address = client.addresses.create(
@@ -64,9 +64,9 @@ address = client.addresses.create(
 print(address.data)
 ```
 
-## Retrieve an address
+## 查取地址信息
 
-Retrieves the details of an existing address.
+获取现有地址的详细信息。
 
 `GET /addresses/{id}`
 
@@ -77,9 +77,9 @@ address = client.addresses.retrieve(
 print(address.data)
 ```
 
-## Deletes an address
+## 删除地址
 
-Deletes an existing address.
+删除现有的地址。
 
 `DELETE /addresses/{id}`
 
@@ -90,7 +90,7 @@ address = client.addresses.delete(
 print(address.data)
 ```
 
-## Accepts this address suggestion as a new emergency address for Operator Connect and finishes the uploads of the numbers associated with it to Microsoft.
+## 接受此地址建议作为新的紧急联系地址，并完成将其相关号码上传至 Microsoft 的操作。
 
 `POST /addresses/{id}/actions/accept_suggestions`
 
@@ -101,11 +101,11 @@ response = client.addresses.actions.accept_suggestions(
 print(response.data)
 ```
 
-## Validate an address
+## 验证地址
 
-Validates an address for emergency services.
+验证地址是否适合用于紧急服务。
 
-`POST /addresses/actions/validate` — Required: `country_code`, `street_address`, `postal_code`
+`POST /addresses/actions/validate` — 必需参数：`country_code`（国家代码）、`street_address`（街道地址）、`postal_code`（邮政编码）
 
 ```python
 response = client.addresses.actions.validate(
@@ -116,9 +116,9 @@ response = client.addresses.actions.validate(
 print(response.data)
 ```
 
-## List all SSO authentication providers
+## 列出所有 SSO（单点登录）认证提供者
 
-Returns a list of your SSO authentication providers.
+返回您的所有 SSO 认证提供者列表。
 
 `GET /authentication_providers`
 
@@ -128,11 +128,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Creates an authentication provider
+## 创建认证提供者
 
-Creates an authentication provider.
+创建一个新的认证提供者。
 
-`POST /authentication_providers` — Required: `name`, `short_name`, `settings`
+`POST /authentication_providers` — 必需参数：`name`（名称）、`short_name`（简称）、`settings`（设置）
 
 ```python
 authentication_provider = client.authentication_providers.create(
@@ -147,9 +147,9 @@ authentication_provider = client.authentication_providers.create(
 print(authentication_provider.data)
 ```
 
-## Retrieve an authentication provider
+## 查取认证提供者信息
 
-Retrieves the details of an existing authentication provider.
+获取现有认证提供者的详细信息。
 
 `GET /authentication_providers/{id}`
 
@@ -160,9 +160,9 @@ authentication_provider = client.authentication_providers.retrieve(
 print(authentication_provider.data)
 ```
 
-## Update an authentication provider
+## 更新认证提供者设置
 
-Updates settings of an existing authentication provider.
+更新现有认证提供者的设置。
 
 `PATCH /authentication_providers/{id}`
 
@@ -182,9 +182,9 @@ authentication_provider = client.authentication_providers.update(
 print(authentication_provider.data)
 ```
 
-## Deletes an authentication provider
+## 删除认证提供者
 
-Deletes an existing authentication provider.
+删除现有的认证提供者。
 
 `DELETE /authentication_providers/{id}`
 
@@ -195,7 +195,9 @@ authentication_provider = client.authentication_providers.delete(
 print(authentication_provider.data)
 ```
 
-## List all billing groups
+## 列出所有计费组
+
+获取您的所有计费组列表。
 
 `GET /billing_groups`
 
@@ -205,7 +207,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a billing group
+## 创建计费组
+
+创建一个新的计费组。
 
 `POST /billing_groups`
 
@@ -216,7 +220,9 @@ billing_group = client.billing_groups.create(
 print(billing_group.data)
 ```
 
-## Get a billing group
+## 获取计费组信息
+
+获取指定计费组的详细信息。
 
 `GET /billing_groups/{id}`
 
@@ -227,7 +233,9 @@ billing_group = client.billing_groups.retrieve(
 print(billing_group.data)
 ```
 
-## Update a billing group
+## 更新计费组设置
+
+更新现有计费组的设置。
 
 `PATCH /billing_groups/{id}`
 
@@ -239,7 +247,9 @@ billing_group = client.billing_groups.update(
 print(billing_group.data)
 ```
 
-## Delete a billing group
+## 删除计费组
+
+删除现有的计费组。
 
 `DELETE /billing_groups/{id}`
 
@@ -250,9 +260,9 @@ billing_group = client.billing_groups.delete(
 print(billing_group.data)
 ```
 
-## List integration secrets
+## 列出所有集成密钥
 
-Retrieve a list of all integration secrets configured by the user.
+获取用户配置的所有集成密钥列表。
 
 `GET /integration_secrets`
 
@@ -262,11 +272,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a secret
+## 创建集成密钥
 
-Create a new secret with an associated identifier that can be used to securely integrate with other services.
+创建一个新的集成密钥，并为其指定一个标识符，以便与其他服务安全地集成。
 
-`POST /integration_secrets` — Required: `identifier`, `type`
+`POST /integration_secrets` — 必需参数：`identifier`（标识符）、`type`（类型）
 
 ```python
 integration_secret = client.integration_secrets.create(
@@ -277,9 +287,9 @@ integration_secret = client.integration_secrets.create(
 print(integration_secret.data)
 ```
 
-## Delete an integration secret
+## 删除集成密钥
 
-Delete an integration secret given its ID.
+根据 ID 删除指定的集成密钥。
 
 `DELETE /integration_secrets/{id}`
 
@@ -289,7 +299,9 @@ client.integration_secrets.delete(
 )
 ```
 
-## List all Access IP Addresses
+## 列出所有访问 IP 地址
+
+获取您的所有访问 IP 地址列表。
 
 `GET /access_ip_address`
 
@@ -299,9 +311,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create new Access IP Address
+## 创建新的访问 IP 地址
 
-`POST /access_ip_address` — Required: `ip_address`
+创建一个新的访问 IP 地址。
+
+`POST /access_ip_address` — 必需参数：`ip_address`（IP 地址）
 
 ```python
 access_ip_address_response = client.access_ip_address.create(
@@ -310,7 +324,9 @@ access_ip_address_response = client.access_ip_address.create(
 print(access_ip_address_response.id)
 ```
 
-## Retrieve an access IP address
+## 查取访问 IP 地址信息
+
+获取指定访问 IP 地址的详细信息。
 
 `GET /access_ip_address/{access_ip_address_id}`
 
@@ -321,7 +337,9 @@ access_ip_address_response = client.access_ip_address.retrieve(
 print(access_ip_address_response.id)
 ```
 
-## Delete access IP address
+## 删除访问 IP 地址
+
+删除指定的访问 IP 地址。
 
 `DELETE /access_ip_address/{access_ip_address_id}`
 
@@ -332,7 +350,9 @@ access_ip_address_response = client.access_ip_address.delete(
 print(access_ip_address_response.id)
 ```
 
-## List all Access IP Ranges
+## 列出所有访问 IP 范围
+
+获取您的所有访问 IP 范围列表。
 
 `GET /access_ip_ranges`
 
@@ -342,9 +362,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create new Access IP Range
+## 创建新的访问 IP 范围
 
-`POST /access_ip_ranges` — Required: `cidr_block`
+创建一个新的访问 IP 范围。
+
+`POST /access_ip_ranges` — 必需参数：`cidr_block`（IP 范围）
 
 ```python
 access_ip_range = client.access_ip_ranges.create(
@@ -353,7 +375,9 @@ access_ip_range = client.access_ip_ranges.create(
 print(access_ip_range.id)
 ```
 
-## Delete access IP ranges
+## 删除访问 IP 范围
+
+删除指定的访问 IP 范围。
 
 `DELETE /access_ip_ranges/{access_ip_range_id}`
 

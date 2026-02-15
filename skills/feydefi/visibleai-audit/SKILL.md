@@ -1,14 +1,16 @@
 ---
 name: visibleai-audit
-description: GEO audit API for AI agents. Check brand visibility across ChatGPT, Perplexity, Gemini. Pay $0.99 USDC via x402. No API keys needed.
+description: **AI代理的GEO审计API**  
+用于检查ChatGPT、Perplexity、Gemini等平台上的品牌曝光度。  
+使用x402支付0.99美元（USDC），无需API密钥。
 version: 1.1.0
 ---
 
 # VisibleAI Audit
 
-Check how visible any brand is across AI search engines. Returns a GEO (Generative Engine Optimization) score with full optimization report.
+该服务用于检测品牌在人工智能搜索引擎中的可见度，并提供详细的优化报告（包括GEO（生成式引擎优化）评分）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Agent request → returns 402 with payment instructions
@@ -23,42 +25,42 @@ curl -X POST https://visibleai.space/api/v1/audit \
   -d '{"brand": "BRAND_NAME", "industry": "INDUSTRY"}'
 ```
 
-## Parameters
+## 参数
 
-| Field | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |-------|------|----------|-------------|
-| brand | string | Yes | Brand or company name |
-| website | string | No | Website URL to analyze |
-| industry | string | No | Industry or vertical (default: "general") |
-| competitors | string[] | No | Up to 5 competitor names |
+| brand | string | 是 | 品牌或公司名称 |
+| website | string | 否 | 需要分析的网站URL |
+| industry | string | 否 | 行业或领域（默认值：“general”） |
+| competitors | string[] | 否 | 最多可输入5个竞争对手的名称 |
 
-## Response
+## 响应结果
 
-Full optimization report (JSON):
-- `overall_score` (0-100) and letter `grade`
-- Per-engine scores (Gemini, Perplexity, and more)
-- Category breakdown (discovery, branded, comparison)
-- Site analysis (schema markup, meta tags)
-- Actionable `recommendations` — specific fixes to improve visibility
+优化报告（JSON格式）：
+- **整体评分**（0-100分）及对应的等级（如“A”或“B”等）
+- 各搜索引擎的评分（如Gemini、Perplexity等）
+- 分类统计结果（发现、品牌展示、对比等）
+- 网站分析信息（如结构标记、元标签等）
+- 可操作的**优化建议**——具体的改进措施以提高可见度
 
-## Payment
+## 支付方式
 
-- **Price:** $0.99 USDC per audit
-- **Network:** Base (chain ID 8453)
-- **Protocol:** x402
-- **Wallet:** `0xB33FF8b810670dFe8117E5936a1d5581A05f350D`
-- **No API keys required** — pay per query, no accounts
+- **价格：** 每次审计费用为0.99美元（USDC）
+- **网络：** Base（链ID：8453）
+- **协议：** x402
+- **钱包地址：** `0xB33FF8b810670dFe8117E5936a1d5581A05f350D`
+- **无需API密钥**——按查询次数付费，无需注册账户
 
-## Payment Flow
+## 支付流程
 
-1. POST to `/api/v1/audit` → receive 402 with payment details
-2. Send 0.99 USDC to wallet on Base
-3. Retry same request with `X-Payment-Tx: <tx_hash>` header
-4. Receive full audit response
+1. 向 `/api/v1/audit` 发送POST请求，接收包含支付详情的402响应。
+2. 将0.99美元（USDC）转账至Base链上的指定钱包。
+3. 重新发送请求，并在请求头中添加 `X-Payment-Tx: <tx_hash>` 字段。
+4. 接收完整的审计报告。
 
-## MCP Server
+## MCP工具
 
-Also available as an MCP tool:
+该服务也可作为MCP（Management Console）工具使用：
 
 ```json
 {
@@ -68,11 +70,11 @@ Also available as an MCP tool:
 }
 ```
 
-Tool: `visibleai_audit(brand, website?, industry?)`
+使用方式：`visibleai_audit(brand, website?, industry?)`
 
-## Links
+## 相关链接
 
-- Website: https://visibleai.space
-- API Docs: https://visibleai.space/api-docs
-- MCP: https://visibleai.space/api/mcp
-- ClawHub: visibleai-audit
+- 官网：https://visibleai.space
+- API文档：https://visibleai.space/api-docs
+- MCP管理界面：https://visibleai.space/api/mcp
+- ClawHub集成：visibleai-audit

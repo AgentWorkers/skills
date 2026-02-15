@@ -1,50 +1,44 @@
-# AnyCrawl Skill
+# AnyCrawl 技能
 
-AnyCrawl API integration for OpenClaw - Scrape, Crawl, and Search web content with high-performance multi-threaded crawling.
+AnyCrawl 提供了与 OpenClaw 的集成接口，支持高效的多线程网页抓取、爬取和搜索功能。
 
-## Setup
+## 设置
 
-### Method 1: Environment variable (Recommended)
+### 方法 1：环境变量（推荐）
 
+通过将以下内容添加到 `~/.bashrc` 或 `~/.zshrc` 文件中，使其生效：
 ```bash
 export ANYCRAWL_API_KEY="your-api-key"
 ```
 
-Make it permanent by adding to `~/.bashrc` or `~/.zshrc`:
-```bash
-echo 'export ANYCRAWL_API_KEY="your-api-key"' >> ~/.bashrc
-source ~/.bashrc
-```
+您可以在 [https://anycrawl.dev](https://anycrawl.dev) 获取 API 密钥。
 
-Get your API key at: https://anycrawl.dev
-
-### Method 2: OpenClaw gateway config
+### 方法 2：OpenClaw 网关配置
 
 ```bash
 openclaw config.patch --set ANYCRAWL_API_KEY="your-api-key"
 ```
 
-## Functions
+## 函数
 
-### 1. anycrawl_scrape
+### 1. `anycrawl_scrape`
 
-Scrape a single URL and convert to LLM-ready structured data.
+抓取单个 URL 并将其转换为适合大型语言模型 (LLM) 使用的结构化数据。
 
-**Parameters:**
-- `url` (string, required): URL to scrape
-- `engine` (string, optional): Scraping engine - `"cheerio"` (default), `"playwright"`, `"puppeteer"`
-- `formats` (array, optional): Output formats - `["markdown"]`, `["html"]`, `["text"]`, `["json"]`, `["screenshot"]`
-- `timeout` (number, optional): Timeout in milliseconds (default: 30000)
-- `wait_for` (number, optional): Delay before extraction in ms (browser engines only)
-- `wait_for_selector` (string/object/array, optional): Wait for CSS selectors
-- `include_tags` (array, optional): Include only these HTML tags (e.g., `["h1", "p", "article"]`)
-- `exclude_tags` (array, optional): Exclude these HTML tags
-- `proxy` (string, optional): Proxy URL (e.g., `"http://proxy:port"`)
-- `json_options` (object, optional): JSON extraction with schema/prompt
-- `extract_source` (string, optional): `"markdown"` (default) or `"html"`
+**参数：**
+- `url` (字符串，必填)：要抓取的 URL
+- `engine` (字符串，可选)：抓取引擎（默认值：`"cheerio"`、`"playwright"`、`"puppeteer"`
+- `formats` (数组，可选)：输出格式（`["markdown"]`、`["html"]`、`["text"]`、`["json"]`、`["screenshot"]`)
+- `timeout` (数字，可选)：超时时间（毫秒，默认值：30000）
+- `wait_for` (数字，可选)：提取前的延迟时间（仅适用于浏览器引擎）
+- `wait_for_selector` (字符串/对象/数组，可选)：等待匹配的 CSS 选择器
+- `include_tags` (数组，可选)：仅包含这些 HTML 标签（例如：`["h1", "p", "article"]`)
+- `exclude_tags` (数组，可选)：排除这些 HTML 标签
+- `proxy` (字符串，可选)：代理 URL（例如：`"http://proxy:port"`）
+- `json_options` (对象，可选)：带有模式的 JSON 提取选项
+- `extract_source` (字符串，可选)：输出格式（默认值：`"markdown"` 或 `"html"`）
 
-**Examples:**
-
+**示例：**
 ```javascript
 // Basic scrape with default cheerio
 anycrawl_scrape({ url: "https://example.com" })
@@ -75,22 +69,21 @@ anycrawl_scrape({
 })
 ```
 
-### 2. anycrawl_search
+### 2. `anycrawl_search`
 
-Search Google and return structured results.
+在 Google 上进行搜索并返回结构化结果。
 
-**Parameters:**
-- `query` (string, required): Search query
-- `engine` (string, optional): Search engine - `"google"` (default)
-- `limit` (number, optional): Max results per page (default: 10)
-- `offset` (number, optional): Number of results to skip (default: 0)
-- `pages` (number, optional): Number of pages to retrieve (default: 1, max: 20)
-- `lang` (string, optional): Language locale (e.g., `"en"`, `"zh"`, `"vi"`)
-- `safe_search` (number, optional): 0 (off), 1 (medium), 2 (high)
-- `scrape_options` (object, optional): Scrape each result URL with these options
+**参数：**
+- `query` (字符串，必填)：搜索查询
+- `engine` (字符串，可选)：搜索引擎（默认值：`"google"`）
+- `limit` (数字，可选)：每页的最大结果数（默认值：10）
+- `offset` (数字，可选)：跳过的结果数量（默认值：0）
+- `pages` (数字，可选)：要检索的页面数（默认值：1，最大值：20）
+- `lang` (字符串，可选)：语言设置（例如：`"en"`、`"zh"`、`"vi"`）
+- `safe_search` (数字，可选)：安全搜索级别（0：关闭，1：中等，2：高级）
+- `scrape_options` (对象，可选)：每个结果的抓取选项
 
-**Examples:**
-
+**示例：**
 ```javascript
 // Basic search
 anycrawl_search({ query: "OpenAI ChatGPT" })
@@ -113,23 +106,22 @@ anycrawl_search({
 })
 ```
 
-### 3. anycrawl_crawl_start
+### 3. `anycrawl_crawl_start`
 
-Start crawling an entire website (async job).
+开始爬取整个网站（异步任务）。
 
-**Parameters:**
-- `url` (string, required): Seed URL to start crawling
-- `engine` (string, optional): `"cheerio"` (default), `"playwright"`, `"puppeteer"`
-- `strategy` (string, optional): `"all"`, `"same-domain"` (default), `"same-hostname"`, `"same-origin"`
-- `max_depth` (number, optional): Max depth from seed URL (default: 10)
-- `limit` (number, optional): Max pages to crawl (default: 100)
-- `include_paths` (array, optional): Path patterns to include (e.g., `["/blog/*"]`)
-- `exclude_paths` (array, optional): Path patterns to exclude (e.g., `["/admin/*"]`)
-- `scrape_paths` (array, optional): Only scrape URLs matching these patterns
-- `scrape_options` (object, optional): Per-page scrape options
+**参数：**
+- `url` (字符串，必填)：用于开始爬取的起始 URL
+- `engine` (字符串，可选)：抓取引擎（默认值：`"cheerio"`、`"playwright"`、`"puppeteer"`
+- `strategy` (字符串，可选)：爬取策略（默认值：`"all"`、`"same-domain"`、`"same-hostname"`、`"same-origin"`）
+- `max_depth` (数字，可选)：从起始 URL 开始的最大爬取深度（默认值：10）
+- `limit` (数字，可选)：最大爬取页面数（默认值：100）
+- `include_paths` (数组，可选)：要包含的路径模式（例如：`["/blog/*"]`)
+- `exclude_paths` (数组，可选)：要排除的路径模式（例如：`["/admin/*"]`)
+- `scrape_paths` (数组，可选)：仅抓取匹配这些模式的 URL
+- `scrape_options` (对象，可选)：每页的抓取选项
 
-**Examples:**
-
+**示例：**
 ```javascript
 // Crawl entire website
 anycrawl_crawl_start({ 
@@ -159,27 +151,27 @@ anycrawl_crawl_start({
 })
 ```
 
-### 4. anycrawl_crawl_status
+### 4. `anycrawl_crawl_status`
 
-Check crawl job status.
+检查爬取任务的状态。
 
-**Parameters:**
-- `job_id` (string, required): Crawl job ID
+**参数：**
+- `job_id` (字符串，必填)：爬取任务 ID
 
-**Example:**
+**示例：**
 ```javascript
 anycrawl_crawl_status({ job_id: "7a2e165d-8f81-4be6-9ef7-23222330a396" })
 ```
 
-### 5. anycrawl_crawl_results
+### 5. `anycrawl_crawl_results`
 
-Get crawl results (paginated).
+获取爬取结果（分页显示）。
 
-**Parameters:**
-- `job_id` (string, required): Crawl job ID
-- `skip` (number, optional): Number of results to skip (default: 0)
+**参数：**
+- `job_id` (字符串，必填)：爬取任务 ID
+- `skip` (数字，可选)：要跳过的结果数量（默认值：0）
 
-**Example:**
+**示例：**
 ```javascript
 // Get first 100 results
 anycrawl_crawl_results({ job_id: "xxx", skip: 0 })
@@ -188,25 +180,25 @@ anycrawl_crawl_results({ job_id: "xxx", skip: 0 })
 anycrawl_crawl_results({ job_id: "xxx", skip: 100 })
 ```
 
-### 6. anycrawl_crawl_cancel
+### 6. `anycrawl_crawl_cancel`
 
-Cancel a running crawl job.
+取消正在运行的爬取任务。
 
-**Parameters:**
-- `job_id` (string, required): Crawl job ID
+**参数：**
+- `job_id` (字符串，必填)：爬取任务 ID
 
-### 7. anycrawl_search_and_scrape
+### 7. `anycrawl_search_and_scrape`
 
-Quick helper: Search Google then scrape top results.
+快速辅助功能：在 Google 上搜索并抓取顶部结果。
 
-**Parameters:**
-- `query` (string, required): Search query
-- `max_results` (number, optional): Max results to scrape (default: 3)
-- `scrape_engine` (string, optional): Engine for scraping (default: `"cheerio"`)
-- `formats` (array, optional): Output formats (default: `["markdown"]`)
-- `lang` (string, optional): Search language
+**参数：**
+- `query` (字符串，必填)：搜索查询
+- `max_results` (数字，可选)：要抓取的最大结果数（默认值：3）
+- `scrape_engine` (字符串，可选)：用于抓取的引擎（默认值：`"cheerio"`）
+- `formats` (数组，可选)：输出格式（默认值：`["markdown"]`)
+- `lang` (字符串，可选)：搜索语言
 
-**Example:**
+**示例：**
 ```javascript
 anycrawl_search_and_scrape({
   query: "latest AI news",
@@ -215,17 +207,17 @@ anycrawl_search_and_scrape({
 })
 ```
 
-## Engine Selection Guide
+## 引擎选择指南
 
-| Engine | Best For | Speed | JS Rendering |
+| 引擎 | 适用场景 | 速度 | 是否支持 JavaScript 渲染 |
 |--------|----------|-------|--------------|
-| `cheerio` | Static HTML, news, blogs | ⚡ Fastest | ❌ No |
-| `playwright` | SPAs, complex web apps | 🐢 Slower | ✅ Yes |
-| `puppeteer` | Chrome-specific, metrics | 🐢 Slower | ✅ Yes |
+| `cheerio` | 静态 HTML、新闻、博客 | ⚡ 最快 | ❌ 不支持 |
+| `playwright` | 单页应用程序、复杂网站 | 🐢 较慢 | ✅ 支持 |
+| `puppeteer` | 特定于 Chrome 的网站、数据收集 | 🐢 较慢 | ✅ 支持 |
 
-## Response Format
+## 响应格式
 
-All responses follow this structure:
+所有响应都遵循以下结构：
 
 ```json
 {
@@ -235,7 +227,7 @@ All responses follow this structure:
 }
 ```
 
-Error response:
+错误响应：
 ```json
 {
   "success": false,
@@ -244,23 +236,23 @@ Error response:
 }
 ```
 
-## Common Error Codes
+## 常见错误代码
 
-- `400` - Bad Request (validation errors)
-- `401` - Unauthorized (invalid API key)
-- `402` - Payment Required (insufficient credits)
-- `404` - Not Found
-- `429` - Rate limit exceeded
-- `500` - Internal server error
+- `400` - 请求错误（验证失败）
+- `401` - 未经授权（API 密钥无效）
+- `402` - 需要支付（信用不足）
+- `404` - 未找到
+- `429` - 超过速率限制
+- `500` - 服务器内部错误
 
-## API Limits
+## API 限制
 
-- Rate limits apply based on your plan
-- Crawl jobs expire after 24 hours
-- Max crawl limit: depends on credits
+- 爬取请求受您的订阅计划限制
+- 爬取任务在 24 小时后过期
+- 最大爬取次数受信用额度限制
 
-## Links
+## 链接
 
-- API Docs: https://docs.anycrawl.dev
-- Website: https://anycrawl.dev
-- Playground: https://anycrawl.dev/playground
+- API 文档：https://docs.anycrawl.dev
+- 官网：https://anycrawl.dev
+- 测试平台：https://anycrawl.dev/playground

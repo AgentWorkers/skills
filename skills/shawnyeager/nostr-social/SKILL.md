@@ -1,28 +1,28 @@
 ---
 name: Nostr
-description: Your agent wants a social life. Give it one. This skill gives your agent its own Nostr identity + ecash wallet. One mnemonic backs up everything (NIP-06). Not for you — for your agent. It owns its own keys, its own sats, posts as itself. One install, automatic bootstrap, no third parties.
+description: 你的代理需要一个社交生活。那就满足它的这个需求吧。这个技能会为你的代理提供一个独立的身份（Nostr）以及一个电子现金钱包。所有数据都通过一个助记词进行备份（NIP-06）。这个钱包不是为你使用的，而是为你的代理准备的；它拥有自己的私钥、自己的加密货币（satoshis），并且可以以自己的名义发布内容。只需安装一次，系统就会自动完成初始化，无需任何第三方参与。
 tags: nostr, bitcoin, lightning, cashu, identity, social, wallet
 ---
 
-# Nostr Skill
+# Nostr 技能
 
-Self-sovereign Nostr identity + ecash wallet. Complete bootstrap.
+这是一个具备自主身份管理和电子现金钱包功能的工具。已完成全部初始化设置。
 
-## Capabilities Disclosure
+## 功能介绍
 
-This skill grants these capabilities to the agent:
+该技能为代理程序提供以下功能：
 
-- **Key generation** — Creates Nostr keypair in `~/.nostr/secret.key`
-- **Wallet creation** — Cashu wallet in `~/.cocod/` (mnemonic in config.json — user backs up)
-- **Nostr posting** — Posts, DMs, zaps as the agent's identity
+- **密钥生成**：在 `~/.nostr/secret.key` 文件中生成 Nostr 密钥对。
+- **钱包创建**：在 `~/.cocod/` 文件中创建 Cashu 钱包（相关配置信息存储在 `config.json` 中，用户可自行备份）。
+- **信息发布**：以代理的身份发布内容、发送私信或执行转账操作。
 
-Agent runs wallet/identity setup silently. User is directed to back up `~/.cocod/config.json` (contains mnemonic). Agent does not read or display the mnemonic. Profile images use URLs only (no local file access).
+代理程序会自动完成钱包和身份的配置。系统会提示用户备份 `~/.cocod/config.json` 文件（其中包含钱包的助记词），但代理程序本身不会读取或显示该助记词。代理程序仅使用 URL 来加载用户的头像文件（不访问本地文件）。
 
-## On Install
+## 安装流程
 
-When skill is installed (user pastes ClawHub link), run this flow:
+当用户安装该技能（通过粘贴 ClawHub 链接）后，请按照以下步骤操作：
 
-### Step 1: Silent Setup
+### 第一步：静默设置
 
 ```bash
 # Install dependencies
@@ -42,116 +42,104 @@ LN_ADDR=$(npx cocod npc address)
 node {SKILL_DIR}/scripts/nostr.js profile-set '{"name":"<NAME>","about":"<ABOUT>","lud16":"'$LN_ADDR'"}'
 ```
 
-### Step 2: Report Results + Backup Warning
+### 第二步：通知安装结果及备份提示
 
-Reply to user:
-
----
-
-⚡ **Nostr identity ready!**
-
-**npub:** `npub1...`
-**Lightning address:** `npub1...@npubx.cash`
+回复用户：
 
 ---
 
-⚠️ **IMPORTANT: Back up your recovery phrase**
+⚡ **Nostr 身份已设置完成！**
 
-Your 24-word mnemonic is stored in:
+**公钥（npub）：** `npub1...`
+**Lightning 地址：** `npub1...@npubx.cash`
+
+---
+
+⚠️ **重要提示：请备份您的助记词！**
+
+您的 24 个单词助记词存储在：
 ```
 ~/.cocod/config.json
 ```
 
-This phrase recovers both your Nostr identity AND ecash wallet. Back it up securely and protect this file.
+该助记词可用于恢复您的 Nostr 身份和电子现金钱包，请务必妥善保管。
 
-Reply "done" when you've backed it up.
-
----
-
-### Step 3: Wait for "done"
-
-Do not proceed until user confirms backup.
-
-### Step 4: Ask for Owner's npub
+备份完成后，请回复 “done”。
 
 ---
 
-**What's your Nostr npub?**
+### 第三步：等待用户确认备份完成
 
-I'll follow you so we stay connected.
+在用户确认备份完成之前，请勿继续下一步操作。
 
-(Paste your npub1... or NIP-05 like you@domain.com)
-
----
-
-Then:
-```bash
-# If NIP-05, resolve first
-node {SKILL_DIR}/scripts/nostr.js lookup <nip05>
-
-# Follow owner
-node {SKILL_DIR}/scripts/nostr.js follow <owner_npub>
-```
-
-### Step 5: Ask for Profile Images
+### 第四步：询问用户的 Nostr 公钥（npub）
 
 ---
 
-**Do you have profile images for me?**
+**您的 Nostr 公钥是什么？**
 
-- **Avatar:** Paste URL (square, 400x400 recommended)
-- **Banner:** Paste URL (wide, 1500x500 recommended)
-
-Or say "skip" and I'll generate unique ones automatically.
+我需要您的公钥以便后续保持联系。
+（请粘贴您的 npub1... 或 NIP-05 格式的地址，例如：your@domain.com）
 
 ---
 
-If URLs provided:
+### 第五步：请求用户提供头像文件
+
+---
+
+**您有头像文件吗？**
+
+- **头像（400x400 像素）**：请粘贴头像文件的 URL。
+- **横幅（1500x500 像素）**：请粘贴横幅文件的 URL。
+- 或者选择 “skip”，系统会自动生成头像。
+
+---
+
+如果用户提供了头像文件：
 ```bash
 node {SKILL_DIR}/scripts/nostr.js profile-set '{"picture":"<avatar_url>","banner":"<banner_url>"}'
 ```
 
-If skipped, use DiceBear (deterministic, unique per npub):
+如果用户选择跳过此步骤，系统将使用 DiceBear 服务自动生成唯一的头像：
 ```bash
 AVATAR="https://api.dicebear.com/7.x/shapes/png?seed=${NPUB}&size=400"
 BANNER="https://api.dicebear.com/7.x/shapes/png?seed=${NPUB}-banner&size=1500x500"
 node {SKILL_DIR}/scripts/nostr.js profile-set '{"picture":"'$AVATAR'","banner":"'$BANNER'"}'
 ```
 
-### Step 6: First Post
+### 第六步：首次发布内容
 
 ---
 
-**Ready for your first post?**
+**准备好发布第一条消息了吗？**
 
-Tell me what to post, or say "skip".
+请告诉我您想发布的内容，或者选择 “skip”。
 
-Suggestion: "Hello Nostr! ⚡"
+建议内容：**“Hello Nostr! ⚡”**
 
 ---
 
-If user provides text (use stdin to avoid shell injection):
+如果用户提供了文本内容（为避免 shell 注入风险，内容将通过标准输入（stdin）传递）：
 ```bash
 echo "<user's message>" | node {SKILL_DIR}/scripts/nostr.js post -
 ```
 
-### Step 7: Done
+### 第七步：安装完成
 
 ---
 
-✅ **All set!**
+✅ **所有设置已完成！**
 
-- Following you ✓
-- First post live ✓ (if not skipped)
+- 已成功关注您 ✓
+- 首条消息已成功发布 ✓（如果用户未选择跳过此步骤）
 
-Try: "check my mentions" or "post <message>"
+您可以尝试输入 “check my mentions” 或 “post <message>” 来查看消息或发送新消息。
 
 ---
 
-## Commands Reference
+## 命令参考
 
-### Posting
-```bash
+- **发布内容**：```bash
 # Use stdin for content (prevents shell injection)
 echo "message" | node {SKILL_DIR}/scripts/nostr.js post -
 echo "reply text" | node {SKILL_DIR}/scripts/nostr.js reply <note1...> -
@@ -159,68 +147,50 @@ node {SKILL_DIR}/scripts/nostr.js react <note1...> 🔥
 node {SKILL_DIR}/scripts/nostr.js repost <note1...>
 node {SKILL_DIR}/scripts/nostr.js delete <note1...>
 ```
-
-### Reading
-```bash
+- **读取信息**：```bash
 node {SKILL_DIR}/scripts/nostr.js mentions 20
 node {SKILL_DIR}/scripts/nostr.js feed 20
 ```
-
-### Connections
-```bash
+- **建立连接**：```bash
 node {SKILL_DIR}/scripts/nostr.js follow <npub>
 node {SKILL_DIR}/scripts/nostr.js unfollow <npub>
 node {SKILL_DIR}/scripts/nostr.js mute <npub>
 node {SKILL_DIR}/scripts/nostr.js unmute <npub>
 node {SKILL_DIR}/scripts/nostr.js lookup <nip05>
 ```
-
-### DMs
-```bash
+- **发送私信**：```bash
 echo "message" | node {SKILL_DIR}/scripts/nostr.js dm <npub> -
 node {SKILL_DIR}/scripts/nostr.js dms 10
 ```
-
-### Zaps
-```bash
+- **执行转账**：```bash
 # Get invoice
 node {SKILL_DIR}/scripts/nostr.js zap <npub> 100 "comment"
 # Pay it
 npx cocod send bolt11 <invoice>
 ```
-
-### Wallet
-```bash
+- **查看钱包信息**：```bash
 npx cocod balance
 npx cocod receive bolt11 1000    # Create invoice
 npx cocod send bolt11 <invoice>  # Pay invoice
 npx cocod npc address            # Lightning address
 ```
-
-### Profile
-```bash
+- **编辑个人资料**：```bash
 node {SKILL_DIR}/scripts/nostr.js whoami
 node {SKILL_DIR}/scripts/nostr.js profile
 node {SKILL_DIR}/scripts/nostr.js profile "Name" "Bio"
 node {SKILL_DIR}/scripts/nostr.js profile-set '{"name":"X","picture":"URL","lud16":"addr"}'
 ```
-
-### Bookmarks
-```bash
+- **添加书签**：```bash
 node {SKILL_DIR}/scripts/nostr.js bookmark <note1...>
 node {SKILL_DIR}/scripts/nostr.js unbookmark <note1...>
 node {SKILL_DIR}/scripts/nostr.js bookmarks
 ```
-
-### Relays
-```bash
+- **中继功能**：```bash
 node {SKILL_DIR}/scripts/nostr.js relays
 node {SKILL_DIR}/scripts/nostr.js relays add <url>
 node {SKILL_DIR}/scripts/nostr.js relays remove <url>
 ```
-
-### Autoresponse (Heartbeat Integration)
-```bash
+- **自动回复功能（集成 Heartbeat）**：```bash
 # Get unprocessed mentions from WoT (JSON output)
 node {SKILL_DIR}/scripts/nostr.js pending-mentions [stateFile] [limit]
 
@@ -237,64 +207,61 @@ node {SKILL_DIR}/scripts/nostr.js rate-limit
 node {SKILL_DIR}/scripts/nostr.js autoresponse-status
 ```
 
-**State file:** `~/.openclaw/workspace/memory/nostr-autoresponse-state.json`
-**WoT source:** Owner's follow list (defined in nostr.js as OWNER_PUBKEY)
+**状态文件：** `~/.openclaw/workspace/memory/nostr-autoresponse-state.json`
+**通知来源（WoT）**：用户的关注列表（在 `nostr.js` 中通过 `OWNER_PUBKEY` 定义）
 
-## User Phrases → Actions
+## 用户指令与对应操作
 
-| User says | Action |
+| 用户指令 | 操作内容 |
 |-----------|--------|
-| "post X" | `echo "X" \| nostr.js post -` |
-| "reply to X with Y" | `echo "Y" \| nostr.js reply <note> -` |
-| "check mentions" | `nostr.js mentions` |
-| "my feed" | `nostr.js feed` |
-| "follow X" | Lookup if NIP-05 → `nostr.js follow` |
-| "DM X message" | `echo "message" \| nostr.js dm <npub> -` |
-| "zap X 100 sats" | `nostr.js zap` → `npx cocod send bolt11` |
-| "balance" | `npx cocod balance` |
-| "invoice for 1000" | `npx cocod receive bolt11 1000` |
-| "my npub" | `nostr.js whoami` |
-| "my lightning address" | `npx cocod npc address` |
+| “post X”     | `echo "X" \| nostr.js post -`         |
+| “回复 X 为 Y”   | `echo "Y" \| nostr.js reply <note> -`      |
+| “查看提及信息” | `nostr.js mentions`         |
+| “查看我的动态” | `nostr.js feed`         |
+| “关注 X”     | `nostr.js follow`           |
+| “给 X 发送私信” | `echo "message" \| nostr.js dm <npub> -`     |
+| “向 X 转账 100 sats” | `nostr.js zap` → `npx cocod send bolt11`   |
+| “查看余额”    | `npx cocod balance`         |
+| “请求 1000 单位货币” | `npx cocod receive bolt11 1000`     |
+| “查看我的公钥”   | `nostr.js whoami`         |
+| “查看我的 Lightning 地址” | `npx cocod npc address`     |
 
-## Defaults
+## 默认设置
 
-| Setting | Value |
-|---------|-------|
-| Mint | `https://mint.minibits.cash/Bitcoin` |
-| Lightning domain | `@npubx.cash` |
-| Avatar fallback | `https://api.dicebear.com/7.x/shapes/png?seed=<npub>` |
-| Nostr key | `~/.nostr/secret.key` |
-| Wallet data | `~/.cocod/` |
+| 设置项        | 默认值                |
+|--------------|----------------------|
+| 货币铸造地址    | `https://mint.minibits.cash/Bitcoin`     |
+| Lightning 地址    | `@npubx.cash`            |
+| 头像备用链接    | `https://api.dicebear.com/7.x/shapes/png?seed=<npub>` |
+| Nostr 密钥文件    | `~/.nostr/secret.key`         |
+| 钱包文件路径    | `~/.cocod/`            |
 
-## Integration
+## 集成说明
 
-### SOUL.md
-- Pull name/about from SOUL.md or IDENTITY.md
-- Match posting voice/tone to agent's personality
-- Don't be generic - posts should sound like the agent
+- **SOUL.md**：从 `SOUL.md` 或 `IDENTITY.md` 文件中获取用户信息。
+- 根据用户的个性调整发布内容的语气和风格，确保发布内容符合代理程序的特点。
+- 避免使用通用模板，让发布内容更具个性化。
 
-### HEARTBEAT.md
-Add to heartbeat rotation (every 2-4 hours):
-```bash
+- **Heartbeat.md**：将相关功能添加到心跳更新机制中（每 2-4 小时更新一次）：
+  ```bash
 # Check Nostr activity
 node {SKILL_DIR}/scripts/nostr.js mentions 10
 node {SKILL_DIR}/scripts/nostr.js dms 5
 ```
-If mentions from WoT or zaps received → notify user.
+  如果收到来自 WoT 的提及或转账请求，系统会通知用户。
 
-### TOOLS.md
-After setup, store for quick reference:
-```markdown
+- **TOOLS.md**：安装完成后，将该文件保存以供快速参考：
+  ```markdown
 ## Nostr
 - npub: npub1...
 - Lightning: npub1...@npubx.cash  
 - Owner: npub1... (followed)
 ```
 
-## Profile Sources
+## 个人资料来源
 
-- **Name**: IDENTITY.md or SOUL.md
-- **About**: SOUL.md description
-- **Picture**: User-provided URL, or DiceBear fallback
-- **Banner**: User-provided URL, or DiceBear fallback
-- **lud16**: From `npx cocod npc address`
+- **姓名**：来自 `IDENTITY.md` 或 `SOUL.md`
+- **简介**：来自 `SOUL.md` 的描述内容
+- **头像**：用户提供的 URL，或使用 DiceBear 生成的备用头像
+- **横幅**：用户提供的 URL，或使用 DiceBear 生成的备用横幅
+- **其他信息（如 lud16）**：来自 `npx cocod npc address`

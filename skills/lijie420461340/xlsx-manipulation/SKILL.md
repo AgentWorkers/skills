@@ -1,6 +1,6 @@
 ---
 name: xlsx-manipulation
-description: Create, edit, and manipulate Excel spreadsheets programmatically using openpyxl
+description: 使用 openpyxl 以编程方式创建、编辑和操作 Excel 电子表格。
 author: claude-office-skills
 version: "1.0"
 tags: [spreadsheet, excel, xlsx, openpyxl, data]
@@ -12,28 +12,27 @@ library:
   stars: 3.8k
 ---
 
-# XLSX Manipulation Skill
+# XLSX 操作技能
 
-## Overview
+## 概述
 
-This skill enables programmatic creation, editing, and manipulation of Microsoft Excel (.xlsx) spreadsheets using the **openpyxl** library. Create professional spreadsheets with formulas, formatting, charts, and data validation without manual editing.
+该技能允许使用 **openpyxl** 库以编程方式创建、编辑和操作 Microsoft Excel (.xlsx) 电子表格。无需手动编辑，即可制作包含公式、格式设置、图表和数据验证的专业电子表格。
 
-## How to Use
+## 使用方法
 
-1. Describe the spreadsheet you want to create or modify
-2. Provide data, formulas, or formatting requirements
-3. I'll generate openpyxl code and execute it
+1. 描述您想要创建或修改的电子表格。
+2. 提供数据、公式或格式要求。
+3. 我将生成 openpyxl 代码并执行它。
 
-**Example prompts:**
-- "Create a budget spreadsheet with monthly tracking"
-- "Add conditional formatting to highlight values above threshold"
-- "Generate a pivot-table-like summary from this data"
-- "Create a dashboard with charts and KPIs"
+**示例提示：**
+- “创建一个包含月度跟踪信息的预算电子表格”
+- “添加条件格式，以突出显示超过阈值的值”
+- “根据这些数据生成类似数据透视表的汇总表”
+- “创建一个包含图表和关键绩效指标 (KPI) 的仪表板”
 
-## Domain Knowledge
+## 领域知识
 
-### openpyxl Fundamentals
-
+### openpyxl 基础知识
 ```python
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, Fill, Border, Alignment
@@ -48,7 +47,7 @@ wb = load_workbook('existing.xlsx')
 ws = wb.active
 ```
 
-### Workbook Structure
+### 工作簿结构
 ```
 Workbook
 ├── worksheets (sheets/tabs)
@@ -60,9 +59,9 @@ Workbook
 └── styles (formatting templates)
 ```
 
-### Working with Cells
+### 单元格操作
 
-#### Basic Cell Operations
+#### 基本单元格操作
 ```python
 # By cell reference
 ws['A1'] = 'Header'
@@ -78,7 +77,7 @@ ws['A1:C1'] = [['Col1', 'Col2', 'Col3']]
 ws.append(['Row', 'Data', 'Here'])
 ```
 
-#### Reading Cells
+#### 读取单元格内容
 ```python
 # Single cell
 value = ws['A1'].value
@@ -94,7 +93,7 @@ for row in ws.iter_rows(min_row=1, max_row=10, min_col=1, max_col=3):
         print(cell.value)
 ```
 
-### Formulas
+### 公式
 ```python
 # Basic formulas
 ws['D1'] = '=SUM(A1:C1)'
@@ -111,9 +110,9 @@ wb.defined_names.add(defn)
 ws['F1'] = '=SUM(SalesData)'
 ```
 
-### Formatting
+### 格式设置
 
-#### Cell Styles
+#### 单元格样式
 ```python
 from openpyxl.styles import Font, Fill, PatternFill, Border, Side, Alignment
 
@@ -150,7 +149,7 @@ ws['A1'].alignment = Alignment(
 )
 ```
 
-#### Number Formats
+#### 数字格式
 ```python
 # Currency
 ws['B2'].number_format = '$#,##0.00'
@@ -165,7 +164,7 @@ ws['D2'].number_format = 'YYYY-MM-DD'
 ws['E2'].number_format = '#,##0.00 "units"'
 ```
 
-#### Conditional Formatting
+#### 条件格式
 ```python
 from openpyxl.formatting.rule import ColorScaleRule, CellIsRule, FormulaRule
 from openpyxl.styles import PatternFill
@@ -183,7 +182,7 @@ rule = CellIsRule(operator='greaterThan', formula=['100'], fill=red_fill)
 ws.conditional_formatting.add('B1:B10', rule)
 ```
 
-### Charts
+### 图表
 ```python
 from openpyxl.chart import BarChart, LineChart, PieChart, Reference
 
@@ -214,7 +213,7 @@ pie.set_categories(categories)
 ws.add_chart(pie, "M1")
 ```
 
-### Data Validation
+### 数据验证
 ```python
 from openpyxl.worksheet.datavalidation import DataValidation
 
@@ -240,7 +239,7 @@ ws.add_data_validation(dv_num)
 dv_num.add('B1:B100')
 ```
 
-### Sheet Operations
+### 工作表操作
 ```python
 # Create new sheet
 ws2 = wb.create_sheet("Data")
@@ -257,7 +256,7 @@ source = wb["Template"]
 target = wb.copy_worksheet(source)
 ```
 
-### Row/Column Operations
+### 行/列操作
 ```python
 # Set column width
 ws.column_dimensions['A'].width = 20
@@ -275,17 +274,17 @@ ws.freeze_panes = 'B2'  # Freeze row 1 and column A
 ws.auto_filter.ref = "A1:D100"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use Templates**: Start with a .xlsx template for complex formatting
-2. **Batch Operations**: Minimize cell-by-cell operations for speed
-3. **Named Ranges**: Use defined names for clearer formulas
-4. **Data Validation**: Add validation to prevent input errors
-5. **Save Incrementally**: For large files, save periodically
+1. **使用模板**：对于复杂的格式设置，从现有的 .xlsx 模板开始。
+2. **批量操作**：尽量减少逐个单元格的操作，以提高效率。
+3. **命名范围**：使用定义的名称使公式更易于理解。
+4. **数据验证**：添加验证机制以防止输入错误。
+5. **分阶段保存**：对于大型文件，定期进行保存。
 
-## Common Patterns
+## 常见模式
 
-### Data Import
+### 数据导入
 ```python
 def import_csv_to_xlsx(csv_path, xlsx_path):
     import csv
@@ -300,7 +299,7 @@ def import_csv_to_xlsx(csv_path, xlsx_path):
     wb.save(xlsx_path)
 ```
 
-### Report Template
+### 报告模板
 ```python
 def create_monthly_report(data, output_path):
     wb = Workbook()
@@ -332,9 +331,9 @@ def create_monthly_report(data, output_path):
     wb.save(output_path)
 ```
 
-## Examples
+## 示例
 
-### Example 1: Budget Tracker
+### 示例 1：预算跟踪器
 ```python
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -391,7 +390,7 @@ for col in range(2, 6):
 wb.save('budget_2024.xlsx')
 ```
 
-### Example 2: Sales Dashboard
+### 示例 2：销售仪表板
 ```python
 from openpyxl import Workbook
 from openpyxl.chart import BarChart, PieChart, Reference
@@ -436,22 +435,22 @@ ws.add_chart(pie, "J8")
 wb.save('sales_dashboard.xlsx')
 ```
 
-## Limitations
+## 限制
 
-- Cannot execute VBA macros
-- Complex pivot tables not fully supported
-- Limited sparkline support
-- External data connections not supported
-- Some advanced chart types unavailable
+- 无法执行 VBA 宏
+- 复杂的数据透视表功能支持有限
+- 小图表 (sparkline) 的支持不足
+- 不支持外部数据连接
+- 某些高级图表类型不可用
 
-## Installation
+## 安装
 
 ```bash
 pip install openpyxl
 ```
 
-## Resources
+## 资源
 
-- [openpyxl Documentation](https://openpyxl.readthedocs.io/)
-- [GitHub Repository](https://github.com/theorchard/openpyxl)
-- [Working with Styles](https://openpyxl.readthedocs.io/en/stable/styles.html)
+- [openpyxl 文档](https://openpyxl.readthedocs.io/)
+- [GitHub 仓库](https://github.com/theorchard/openpyxl)
+- [关于样式设置的使用](https://openpyxl.readthedocs.io/en/stable/styles.html)

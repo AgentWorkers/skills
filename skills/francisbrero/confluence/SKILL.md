@@ -1,129 +1,129 @@
 ---
 name: confluence
-description: Search and manage Confluence pages and spaces using confluence-cli. Read documentation, create pages, and navigate spaces.
+description: 使用 `confluence-cli` 搜索和管理 Confluence 页面及空间。阅读相关文档，创建新页面，并在各个空间之间进行导航。
 homepage: https://github.com/pchuri/confluence-cli
 metadata: {"clawdbot":{"emoji":"📄","primaryEnv":"CONFLUENCE_TOKEN","requires":{"bins":["confluence"],"env":["CONFLUENCE_TOKEN"]},"install":[{"id":"npm","kind":"node","package":"confluence-cli","bins":["confluence"],"label":"Install confluence-cli (npm)"}]}}
 ---
 
 # Confluence
 
-Search and manage Confluence pages using confluence-cli.
+使用 `confluence-cli` 搜索和管理 Confluence 页面。
 
-## REQUIRED: First-Time Setup
+## 必须完成的首次设置
 
-Before using this skill, complete these steps:
+在使用此功能之前，请完成以下步骤：
 
-**Step 1: Install the CLI**
+**步骤 1：安装 CLI**
 
 ```bash
 npm install -g confluence-cli
 ```
 
-**Step 2: Get an API token**
+**步骤 2：获取 API 令牌**
 
-1. Go to https://id.atlassian.com/manage-profile/security/api-tokens
-2. Click "Create API token"
-3. Give it a label (e.g., "confluence-cli")
-4. Copy the token
+1. 访问 https://id.atlassian.com/manage-profile/security/api-tokens
+2. 点击 “Create API token”（创建 API 令牌）
+3. 为令牌命名（例如：“confluence-cli”）
+4. 复制令牌内容
 
-**Step 3: Configure the CLI**
+**步骤 3：配置 CLI**
 
 ```bash
 confluence init
 ```
 
-When prompted, enter:
-- **Domain**: `yourcompany.atlassian.net` (without https://)
-- **Email**: Your Atlassian account email
-- **API token**: Paste the token from Step 2
+按照提示输入：
+- **域名**：`yourcompany.atlassian.net`（不包括 `https://`）
+- **电子邮件**：您的 Atlassian 账户邮箱
+- **API 令牌**：粘贴步骤 2 中复制的令牌内容
 
-**Step 4: Verify setup**
+**步骤 4：验证设置**
 
 ```bash
 confluence spaces
 ```
 
-If you see your spaces listed, you're ready to use Confluence.
+如果看到自己的空间（spaces）被列出，那么您就可以开始使用 Confluence 了。
 
 ---
 
-## Search Pages
+## 搜索页面
 
 ```bash
 confluence search "deployment guide"
 ```
 
-## Read Page
+## 阅读页面内容
 
 ```bash
 confluence read <page-id>
 ```
 
-Page IDs are in the URL: `https://yoursite.atlassian.net/wiki/spaces/SPACE/pages/123456/Title` → ID is `123456`
+页面 ID 存在于 URL 中，例如：`https://yoursite.atlassian.net/wiki/spaces/SPACE/pages/123456/Title`，其中 ID 为 `123456`。
 
-## Get Page Info
+## 获取页面信息
 
 ```bash
 confluence info <page-id>
 ```
 
-## Find Page by Title
+## 按标题查找页面
 
 ```bash
 confluence find "Page Title"
 ```
 
-## List Spaces
+## 列出所有空间
 
 ```bash
 confluence spaces
 ```
 
-## Create Page
+## 创建新页面
 
 ```bash
 confluence create "Page Title" SPACEKEY --body "Page content here"
 ```
 
-## Create Child Page
+## 创建子页面
 
 ```bash
 confluence create-child "Child Page Title" <parent-page-id> --body "Content"
 ```
 
-Or from a file:
+**或者通过文件创建页面：**
 
 ```bash
 confluence create-child "Page Title" <parent-id> --file content.html --format storage
 ```
 
-## Update Page
+## 更新页面内容
 
 ```bash
 confluence update <page-id> --body "Updated content"
 ```
 
-Or from a file:
+**或者通过文件更新页面内容：**
 
 ```bash
 confluence update <page-id> --file content.html --format storage
 ```
 
-## List Child Pages
+## 列出子页面
 
 ```bash
 confluence children <page-id>
 ```
 
-## Export Page with Attachments
+## 导出包含附件的页面
 
 ```bash
 confluence export <page-id> --output ./exported-page/
 ```
 
-## Tips
+## 提示：
 
-- Domain in config should NOT include `https://` - just `yourcompany.atlassian.net`
-- Use `--format storage` when content is in Confluence storage format (HTML-like)
-- Page IDs are numeric and found in page URLs
-- Config is stored at `~/.confluence-cli/config.json`
+- 配置文件中的域名不应包含 `https://`，只需输入 `yourcompany.atlassian.net`
+- 当页面内容采用 Confluence 的存储格式（类似 HTML 的格式）时，请使用 `--format storage` 选项
+- 页面 ID 是数字形式的，可以在页面 URL 中找到
+- 配置文件存储在 `~/.confluence-cli/config.json` 中

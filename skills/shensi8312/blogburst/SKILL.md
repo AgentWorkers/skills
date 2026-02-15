@@ -1,43 +1,43 @@
 ---
 name: BlogBurst
-description: AI content creation & distribution. Brainstorm titles, generate blog posts, and create optimized content for 9 platforms (Twitter, LinkedIn, Bluesky, Telegram, Discord, Reddit, TikTok, YouTube, Threads).
+description: AI内容创作与分发：帮助用户构思文章标题、生成博客文章，并为9个平台（Twitter、LinkedIn、Bluesky、Telegram、Discord、Reddit、TikTok、YouTube、Threads）生成优化后的内容。
 homepage: https://blogburst.ai
 metadata:
   {"openclaw": {"emoji": "📝", "requires": {"env": ["BLOGBURST_API_KEY"]}, "primaryEnv": "BLOGBURST_API_KEY"}}
 ---
 
-# BlogBurst - AI Content Creation & Distribution
+# BlogBurst - 人工智能内容创作与分发工具
 
-BlogBurst helps you go from idea to published content across 9 social platforms. The typical workflow is:
+BlogBurst 可帮助您将创意转化为在 9 个社交媒体平台上发布的实际内容。典型的工作流程如下：
 
-1. **Brainstorm** a title with AI chat
-2. **Generate** a full blog post from the title
-3. **Create** platform-optimized posts for Twitter, LinkedIn, TikTok, etc.
+1. **头脑风暴**：通过 AI 聊天功能生成文章标题。
+2. **生成**：根据选定的标题生成完整的博客文章。
+3. **创建**：为 Twitter、LinkedIn、TikTok 等平台生成适配的内容。
 
-You can also repurpose existing articles by URL.
+您也可以通过提供文章的 URL 来重新利用现有内容。
 
-## Setup
+## 设置
 
-1. Sign up at [blogburst.ai](https://blogburst.ai)
-2. Go to Dashboard > API Keys to generate a key
-3. Set environment variable:
+1. 在 [blogburst.ai](https://blogburst.ai) 注册账号。
+2. 进入“控制面板”（Dashboard），然后选择“API 密钥”（API Keys）以生成 API 密钥。
+3. 设置环境变量：
 ```bash
 export BLOGBURST_API_KEY="your-key"
 ```
 
-All API requests use the header: `X-API-Key: $BLOGBURST_API_KEY`
+所有 API 请求都需要在请求头中添加以下字段：`X-API-Key: $BLOGBURST_API_KEY`
 
-Base URL: `https://api.blogburst.ai/api/v1`
+基础 URL：`https://api.blogburst.ai/api/v1`
 
 ---
 
-## API 1: Brainstorm Titles
+## API 1：头脑风暴标题
 
-Chat with AI to develop a compelling title for your content.
+与 AI 对话，以为您的内容想出一个吸引人的标题。
 
-**Endpoint**: `POST /chat/title`
+**端点**：`POST /chat/title`
 
-**Request**:
+**请求数据**：
 ```json
 {
   "messages": [
@@ -47,7 +47,7 @@ Chat with AI to develop a compelling title for your content.
 }
 ```
 
-This is a multi-turn conversation. Send the full message history each time:
+这是一个多轮对话过程。每次发送对话内容时都需要包含完整的对话历史记录：
 ```json
 {
   "messages": [
@@ -59,7 +59,7 @@ This is a multi-turn conversation. Send the full message history each time:
 }
 ```
 
-**Response**:
+**响应数据**：
 ```json
 {
   "success": true,
@@ -73,33 +73,23 @@ This is a multi-turn conversation. Send the full message history each time:
 }
 ```
 
-**When to use**: When the user wants help coming up with a topic or title, or says things like "help me brainstorm", "what should I write about", "suggest some titles about X".
+**使用场景**：当用户需要帮助确定主题或标题时，或者输入类似“帮我想个标题”、“我该写些什么”之类的请求时。
 
 ---
 
-## API 2: Generate Blog Post
+## API 2：生成博客文章
 
-Generate a full blog article from a topic or title.
+根据给定的主题或标题生成完整的博客文章。
 
-**Endpoint**: `POST /blog/generate`
+**端点**：`POST /blog/generate`
 
-**Request**:
-```json
-{
-  "topic": "How AI Detects What Doctors Miss in 5 Seconds",
-  "tone": "professional",
-  "language": "en",
-  "length": "medium"
-}
-```
+**请求数据**：
+- `topic`（必填）：文章的主题或标题（5-500 个字符）
+- `tone`：专业 | 休闲 | 诙谐 | 教育性 | 鼓舞人心（默认：专业）
+- `language`：语言代码（例如：en, zh）（默认：en）
+- `length`：简短（500-800 字）| 中等（1000-1500 字）| 长篇（2000-3000 字）（默认：中等）
 
-**Parameters**:
-- `topic` (required): The title or topic (5-500 chars)
-- `tone`: professional | casual | witty | educational | inspirational (default: professional)
-- `language`: Language code, e.g. "en", "zh" (default: en)
-- `length`: short (500-800 words) | medium (1000-1500 words) | long (2000-3000 words) (default: medium)
-
-**Response**:
+**响应数据**：
 ```json
 {
   "success": true,
@@ -111,33 +101,23 @@ Generate a full blog article from a topic or title.
 }
 ```
 
-**When to use**: When the user wants to generate a blog post, article, or long-form content from a topic.
+**使用场景**：当用户希望根据某个主题生成博客文章或长篇内容时。
 
 ---
 
-## API 3: Generate Platform Content
+## API 3：为多个平台生成适配内容
 
-Generate optimized content for multiple social platforms from a topic. This is the main content distribution endpoint.
+根据给定的主题为多个社交媒体平台生成适配的内容。这是主要的内容分发接口。
 
-**Endpoint**: `POST /blog/platforms`
+**端点**：`POST /blog/platforms`
 
-**Request**:
-```json
-{
-  "topic": "How AI Detects What Doctors Miss in 5 Seconds",
-  "platforms": ["twitter", "linkedin", "bluesky", "telegram", "discord"],
-  "tone": "professional",
-  "language": "en"
-}
-```
+**请求数据**：
+- `topic`（必填）：文章的主题或标题（5-500 个字符）
+- `platforms`（必填）：需要生成内容的平台列表（1-9 个平台，例如：twitter, linkedin, reddit, bluesky, telegram, discord, tiktok, youtube）
+- `tone`：专业 | 休闲 | 诙谐 | 教育性 | 鼓舞人心（默认：专业）
+- `language`：语言代码（默认：en）
 
-**Parameters**:
-- `topic` (required): The title or topic (5-500 chars)
-- `platforms` (required): Array of 1-9 platforms from: twitter, linkedin, reddit, bluesky, threads, telegram, discord, tiktok, youtube
-- `tone`: professional | casual | witty | educational | inspirational (default: professional)
-- `language`: Language code (default: en)
-
-**Response**:
+**响应数据**：
 ```json
 {
   "success": true,
@@ -183,17 +163,17 @@ Generate optimized content for multiple social platforms from a topic. This is t
 }
 ```
 
-**When to use**: When the user wants to create social media posts, distribute content across platforms, or says things like "create posts for Twitter and LinkedIn about X", "generate social content", "help me post about X on all platforms".
+**使用场景**：当用户希望为多个平台创建社交媒体帖子或分发内容时，或者输入类似“为 Twitter 和 LinkedIn 生成相关内容”之类的请求时。
 
 ---
 
-## API 4: Repurpose Existing Content
+## API 4：重新利用现有内容
 
-Transform an existing blog post or article into platform-optimized posts.
+将现有的博客文章或文本转换为适用于特定平台的内容。
 
-**Endpoint**: `POST /repurpose`
+**端点**：`POST /repurpose`
 
-**Request with URL**:
+**通过 URL 传递请求数据**：
 ```json
 {
   "content": "https://myblog.com/my-article",
@@ -203,7 +183,7 @@ Transform an existing blog post or article into platform-optimized posts.
 }
 ```
 
-**Request with text**:
+**通过文本传递请求数据**：
 ```json
 {
   "content": "Your full article text here (minimum 50 characters)...",
@@ -213,29 +193,29 @@ Transform an existing blog post or article into platform-optimized posts.
 }
 ```
 
-**Parameters**:
-- `content` (required): A URL to an article, or the full text
-- `platforms` (required): Array from: twitter, linkedin, reddit, bluesky, threads
-- `tone`: professional | casual | witty | educational | inspirational
-- `language`: Language code (default: en)
+**请求参数**：
+- `content`（必填）：文章的 URL 或文本内容
+- `platforms`（必填）：需要生成内容的平台列表（例如：twitter, linkedin, reddit, bluesky）
+- `tone`：专业 | 休闲 | 诙谐 | 教育性 | 鼓舞人心
+- `language`：语言代码（默认：en）
 
-**Response**: Same format as API 3 (platform-specific content for each requested platform).
+**响应数据**：返回的结果将与 API 3 的响应格式相同，但会针对每个平台进行个性化处理。
 
-**When to use**: When the user provides a URL or pastes existing content and wants it adapted for social platforms.
+**使用场景**：当用户提供文章 URL 或直接提供文本内容，并希望将其适配到特定平台时。
 
 ---
 
-## API 5: Publish to Connected Platforms
+## API 5：将内容发布到已连接的平台
 
-Publish content directly to the user's connected social accounts.
+将内容直接发布到用户已连接的社交媒体账户。
 
-**IMPORTANT**: Before using this API, the user must first connect their social accounts at [blogburst.ai/dashboard/connections](https://blogburst.ai/dashboard/connections). Without connected accounts, publishing will fail.
+**重要提示**：在使用此 API 之前，用户必须先在 [blogburst.ai/dashboard/connections](https://blogburst.ai/dashboard/connections) 连接他们的社交媒体账户。如果没有连接任何账户，发布操作将失败。
 
-### Check Connected Accounts
+### 检查已连接的账户
 
-**Endpoint**: `GET /publish/connected`
+**端点**：`GET /publish/connected`
 
-**Response**:
+**响应数据**：
 ```json
 {
   "platforms": [
@@ -255,31 +235,21 @@ Publish content directly to the user's connected social accounts.
 }
 ```
 
-**When to use**: Before publishing, call this to check which platforms the user has connected. If no platforms are connected, tell the user to visit https://blogburst.ai/dashboard/connections to connect their accounts first.
+**使用场景**：在发布内容之前，调用此接口查看用户已连接的平台。如果没有连接的账户，请提示用户先访问 [https://blogburst.ai/dashboard/connections] 连接账户。
 
-### Publish Content
+### 发布内容
 
-**Endpoint**: `POST /publish`
+**端点**：`POST /publish`
 
-**Request**:
-```json
-{
-  "platforms": ["bluesky", "telegram", "discord"],
-  "content": "Your post content here",
-  "image_urls": ["https://example.com/image.jpg"],
-  "video_url": null
-}
-```
+**请求数据**：
+- `platforms`（必填）：需要发布内容的平台 ID 列表
+- `content`（必填）：要发布的内容文本
+- `image_urls`（可选）：要附带的图片 URL 列表
+- `video_url`（可选）：要附带的视频 URL
+- `reddit_subreddit`（可选）：Reddit 帖子的子版块名称
+- `reddit_title`（可选）：Reddit 帖子的标题
 
-**Parameters**:
-- `platforms` (required): Array of connected platform IDs to publish to
-- `content` (required): The text content to publish
-- `image_urls` (optional): Array of image URLs to attach
-- `video_url` (optional): Video URL to attach
-- `reddit_subreddit` (optional): Subreddit name for Reddit posts
-- `reddit_title` (optional): Post title for Reddit
-
-**Response**:
+**响应数据**：
 ```json
 {
   "total": 3,
@@ -293,45 +263,45 @@ Publish content directly to the user's connected social accounts.
 }
 ```
 
-**When to use**: After generating content with API 3 or API 4, when the user wants to actually publish it to their connected platforms. Always check connected accounts first with `GET /publish/connected`.
+**使用场景**：在使用 API 3 或 API 4 生成内容后，当用户希望将这些内容发布到已连接的平台时。请务必先使用 `GET /publish/connected` 检查已连接的账户。
 
 ---
 
-## Recommended Workflow
+## 推荐的工作流程
 
-For the best results, guide the user through this flow:
+为获得最佳效果，请按照以下步骤操作：
 
-1. Ask what topic they want to create content about
-2. Call **API 1** (`/chat/title`) to brainstorm titles together
-3. Once they pick a title, call **API 3** (`/blog/platforms`) to generate content for their chosen platforms
-4. Present the generated content organized by platform
-5. If the user wants to publish, first call `GET /publish/connected` to check which accounts are connected
-6. If accounts are connected, call **API 5** (`/publish`) with the generated content for each platform
-7. If no accounts are connected, tell the user: "Please connect your social accounts at https://blogburst.ai/dashboard/connections first"
+1. 询问用户希望创作的内容主题。
+2. 调用 **API 1**（`/chat/title`）共同头脑风暴标题。
+3. 选定标题后，调用 **API 3**（`/blog/platforms`）为选定的平台生成内容。
+4. 将生成的内容按平台分类展示给用户。
+5. 如果用户希望发布内容，请先调用 `GET /publish/connected` 检查已连接的账户。
+6. 如果有连接的账户，再调用 **API 5**（`/publish`）为每个平台发布内容。
+7. 如果没有连接的账户，请提示用户：“请先在 [https://blogburst.ai/dashboard/connections] 连接您的社交媒体账户”。
 
-If the user already has a blog post URL, skip to **API 4** (`/repurpose`).
+如果用户已有博客文章的 URL，可以直接使用 **API 4**（`/repurpose`）。
 
-If the user wants a full blog article first, use **API 2** (`/blog/generate`) before step 3.
+如果用户希望先生成完整的博客文章，可以在步骤 3 之前使用 **API 2**（`/blog/generate`）。
 
-**Note on publishing**: Each platform receives the content tailored for it. For example, send the Twitter thread text to Twitter, the LinkedIn post text to LinkedIn, etc. Do NOT send the same raw content to all platforms — use the platform-specific output from API 3.
+**关于发布**：每个平台都会收到针对其特性进行个性化处理的内容。例如，将 Twitter 的帖子内容发送到 Twitter，将 LinkedIn 的帖子内容发送到 LinkedIn 等。切勿将相同的原始内容发送到所有平台——请使用 API 3 为每个平台生成的适配后的内容。
 
-## Supported Platforms
+## 支持的平台
 
-| Platform | ID | Generate | Auto-Publish | Notes |
-|----------|-----|----------|-------------|-------|
-| Twitter/X | twitter | Yes | Yes | Threads with hooks (280 chars/tweet) |
-| LinkedIn | linkedin | Yes | Coming soon | Professional insights + hashtags |
-| Bluesky | bluesky | Yes | Yes | Short authentic posts (300 chars) |
-| Telegram | telegram | Yes | Yes | Rich formatted broadcasts |
-| Discord | discord | Yes | Yes | Community-friendly announcements |
-| Reddit | reddit | Yes | Waiting API | Discussion posts + subreddit suggestions |
-| TikTok | tiktok | Yes | Yes | Hook + script + caption + hashtags |
-| YouTube | youtube | Yes | Yes | Title + description + script + tags |
-| Threads | threads | Yes | Coming soon | Conversational posts |
+| 平台 | ID | 是否支持生成内容 | 是否支持自动发布 | 备注 |
+|----------|-----|------------------|----------------------|
+| Twitter/X | twitter | 是 | 是 | 支持带有链接的推文（每条推文 280 个字符） |
+| LinkedIn | linkedin | 是 | 即将支持 | 包含专业见解和标签 |
+| Bluesky | bluesky | 是 | 是 | 支持简短且真实的帖子（300 个字符） |
+| Telegram | telegram | 是 | 是 | 支持格式丰富的信息推送 |
+| Discord | discord | 是 | 是 | 适合社区发布的公告 |
+| Reddit | reddit | 是 | API 尚在开发中 | 支持讨论帖子和子版块推荐 |
+| TikTok | tiktok | 是 | 是 | 支持包含链接、脚本、标题和标签的帖子 |
+| YouTube | youtube | 是 | 是 | 支持标题、描述、脚本和标签 |
+| Threads | threads | 是 | 即将支持 | 支持对话式帖子 |
 
-## Links
+## 相关链接
 
-- Website: https://blogburst.ai
-- API Docs: https://api.blogburst.ai/docs
-- Connect Accounts: https://blogburst.ai/dashboard/connections
-- GitHub: https://github.com/shensi8312/blogburst-openclaw-skill
+- 网站：https://blogburst.ai
+- API 文档：https://api.blogburst.ai/docs
+- 账户连接：https://blogburst.ai/dashboard/connections
+- GitHub 仓库：https://github.com/shensi8312/blogburst-openclaw-skill

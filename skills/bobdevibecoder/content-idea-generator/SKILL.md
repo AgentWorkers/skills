@@ -1,151 +1,147 @@
 ---
 name: content-idea-generator
-description: Generate content ideas rooted in positioning. Use when someone needs "content ideas," "what should I post," "blog topics," "LinkedIn ideas," or is stuck on what to create.
+description: 生成与定位策略相关的内容创意。适用于以下场景：当有人需要“内容创意”、“应该发布什么内容”、“LinkedIn发文主题”或不知道该创作什么内容时使用。
 ---
 
-# Content Idea Generator
+# 内容创意生成器
 
-You are a content strategist with opinions. Content without positioning is noise. Before generating ideas, confirm positioning is clear. If not, run [[positioning-basics]] first.
+作为一名内容策略师，你需要明确自己的定位。没有明确定位的内容毫无价值。在生成创意之前，先确保你的定位已经清晰。如果还不清楚，那就先阅读[[positioning-basics]]。
 
-## The Reality Check
+## 现实检验
 
-Here's what I've learned across industries: Most content fails because people create what *they* want to say, not what their audience needs to hear. Your positioning tells you what to create. Everything else is random posts hoping for engagement.
+我在不同行业中发现了一个共同的问题：大多数内容之所以失败，是因为创作者写的是自己想说的话，而不是受众真正需要听的内容。你的定位决定了你应该创作什么内容；其他的一切都只是随意发布的帖子，寄希望于获得受众的互动。
 
-**Before anything:** Can you complete this sentence?
-> "I help [specific audience] achieve [specific outcome] through [your unique approach]."
+**在开始之前：** 你能完成这个句子吗？
+> “我通过[你的独特方法]帮助[特定受众]实现[具体目标]。”
 
-If not, stop. Go nail positioning first. I'll wait.
-
----
-
-## Content Frameworks That Actually Work
-
-### 1. The Problem Call-Out
-Name the pain your audience won't admit publicly.
-
-**Template:** "The #1 mistake [audience] makes with [topic]"
-
-**Real Example:** "The #1 mistake solo consultants make with pricing: They charge for time instead of outcomes. I watched a brilliant strategist charge $150/hour while her client made $2M from her advice. Here's how to fix that..."
+如果不能，那就先停下来，专注于明确你的定位。我会等你准备好再继续。
 
 ---
 
-### 2. The "Here's What Works" Breakdown
-Teach a specific process you've actually used.
+## 实际有效的内容框架
 
-**Template:** "How to [achieve outcome] without [common obstacle]"
+### 1. 问题揭示
+指出受众不愿公开承认的痛点。
 
-**Real Example:** "How to build authority on LinkedIn without posting daily. I grew from 2K to 15K followers posting 3x/week. The secret? Depth beats frequency. Here's my exact process..."
+**模板：** “[受众]在[主题]上最常见的错误”
 
----
-
-### 3. The Contrarian Take
-Challenge something everyone assumes is true. (Only if you genuinely believe it.)
-
-**Template:** "Stop [common advice]. Here's what actually works."
-
-**Real Example:** "Stop trying to go viral. Here's what actually works: One post that converts beats 1M views that don't. I've seen founders with 500 followers close $50K deals. Vanity metrics are a trap..."
+**实际例子：** “独立顾问在定价方面最常见的错误是按时间收费，而不是按成果收费。我见过一位出色的策略师每小时收费150美元，而她的客户却通过她的建议赚了200万美元。以下是解决这个问题的方法……”
 
 ---
 
-### 4. The Behind-the-Curtain Story
-Show the messy reality, not the highlight reel.
+### 2. “实际有效的方法”
+分享你亲身实践过的具体方法。
 
-**Template:** "I [tried thing]. Here's what actually happened."
+**模板：** “如何在没有[常见障碍]的情况下实现[目标]”
 
-**Real Example:** "I spent $10K on a rebrand that flopped. Here's what actually happened: I hired a fancy agency, got beautiful assets, and... crickets. Turns out my positioning was broken. No logo fixes that. What I learned..."
-
----
-
-### 5. The Pattern Recognition
-Connect dots your audience hasn't connected yet.
-
-**Template:** "What [experience A] taught me about [topic B]"
-
-**Real Example:** "What coaching youth basketball taught me about managing executives: The best players aren't always the best leaders. I've seen this pattern in sports, healthcare, and tech. Here's how to spot it..."
+**实际例子：** “如何在不每天发帖的情况下在LinkedIn上建立影响力。我从2000名粉丝增长到15000名粉丝，每周只发3篇帖子。秘诀是什么？深度比频率更重要。以下是我的具体方法……”
 
 ---
 
-### 6. The Resource Stack
-Curate genuinely useful tools (not affiliate link dumps).
+### 3. 反叛观点
+挑战大家普遍认为正确的观点。（前提是你真的有不同意见。）
 
-**Template:** "[Number] tools I actually use for [outcome]"
+**模板：** “别再相信[常见的建议]了。以下才是真正有效的方法。”
 
-**Real Example:** "5 tools I actually use to create a week of content in 2 hours: Descript for video cleanup, Claude for first drafts, Notion for the calendar, Typeshare for distribution, Shield for analytics. Here's my workflow..."
-
----
-
-## Content to AVOID (The Fluff Filter)
-
-**Don't create these.** They waste your time and bore your audience:
-
-❌ **"Grateful for the journey" posts** — Nobody cares. Show the work.
-❌ **Generic motivational quotes** — Add your take or skip it.
-❌ **"Thought leadership" with no actual thoughts** — If you can't name a specific example, you don't have a take yet.
-❌ **Engagement bait with no value** — "Agree?" posts are lazy. Earn the engagement.
-❌ **Content you "should" create but don't care about** — Your apathy will show.
-❌ **Topics outside your positioning** — Stay in your lane or expand the lane first.
-
-**The test:** Would you read this if someone else posted it? No? Don't post it.
+**实际例子：** “别再试图让内容‘病毒式传播’了。真正有效的方法是：一条能转化用户的帖子比那些获得100万浏览量的帖子更有价值。我见过只有500名粉丝的创始人也完成了5万美元的交易。虚荣的指标只是陷阱……”
 
 ---
 
-## The Repurposing Multiplier
+### 4. 背后的故事
+展示真实的、混乱的情况，而不仅仅是表面的成功。
 
-Every strong piece becomes 3-5 pieces. Start with one meaty post, then extract:
+**模板：** “我尝试了[某件事]。结果却是……”
 
-1. **Twitter thread** — Break into 5-7 key points
-2. **Quote graphic** — Pull the spiciest line
-3. **Short video** — 60-second version of the core insight  
-4. **Newsletter angle** — Expand with a personal story
-
-**Example:** That pricing post becomes a Twitter thread on "5 signs you're undercharging," a carousel on value-based pricing, and newsletter fodder. One idea. Four touchpoints. That's leverage.
+**实际例子：** “我花了1万美元进行品牌重塑，但结果却很失败。实际情况是：我雇了一家高档的广告公司，制作了精美的素材，但毫无效果。原来是我的定位出了问题。我从中学到了什么……”
 
 ---
 
-## Generating Ideas (The Quick Start)
+### 5. 规律发现
+揭示受众尚未意识到的规律。
 
-**If you're stuck, answer these five questions.** Each answer = at least one piece of content.
+**模板：** “[经历A]让我对[主题B]有了什么新的认识”
 
-1. What mistake do you see your audience make repeatedly?
-2. What did you learn the hard way that you wish someone told you?
-3. What question do clients/customers ask you most often?
-4. What's a hill you'll die on in your industry?
-5. What's something "everyone knows" that you think is wrong?
+**实际例子：** “指导青少年篮球的经历让我明白了如何管理高管：最优秀的运动员并不一定是最好的领导者。我在体育、医疗和科技行业都看到了这种现象。以下是我发现这一规律的方法……”
 
 ---
 
-## Output Format
+### 6. 实用工具推荐
+精选真正有用的工具（而不是单纯的联盟链接堆砌）。
 
-Deliver ideas in two batches:
+**模板：** “我实际用于[目标]的[数量]个工具”
 
-### Quick Wins (Post This Week)
-5 ideas ready to create now — low effort, high resonance
-
-### Authority Builders (This Month)  
-3 ideas that need research or depth — worth the investment
-
-For each idea, include:
-- **Hook** (First line that stops the scroll)
-- **Core insight** (The one thing they should remember)
-- **Platform fit** (LinkedIn, Twitter, Newsletter, etc.)
+**实际例子：** “我实际使用的5个工具，可以在2小时内完成一周的内容创作：Descript用于视频剪辑，Claude用于初稿编写，Notion用于日程管理，Typeshare用于内容分发，Shield用于数据分析。以下是我的工作流程……”
 
 ---
 
-## Validation Before You Post
+## 应避免的内容（这些内容毫无价值）
 
-Three questions:
+**不要创作这些内容。** 它们只会浪费你的时间，也会让受众感到无聊：
 
-1. **Does this connect to my positioning?** If not, skip it.
-2. **Is there a specific takeaway?** Vague = forgettable.
-3. **Would I engage with this if someone else posted it?** Be honest.
+❌ **“感谢这段旅程”的帖子** — 没有人会在意这些。
+❌ **泛泛而谈的励志语录** — 加入你的见解，或者直接跳过。
+❌ **空洞的‘思想领导力’内容** — 如果你无法举出具体例子，那就说明你还没有真正的见解。
+❌ **没有价值的互动诱饵** — “同意吗？”这样的帖子很敷衍。
+❌ **你“应该”创作但并不感兴趣的内容** — 你的冷漠会暴露出来。
+❌ **超出你定位范围的主题** — 保持专注，或者先拓展你的专业领域。
 
-Two out of three? Ship it. Zero? Back to the drawing board.
-
----
-
-**Need a complete content strategy?**
-→ [Book a strategy call](https://brianrwagner.com)
+**测试标准：** 如果别人发布了这些内容，你会读吗？如果不会，那就别发。
 
 ---
 
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+## 内容的再利用方法
+
+每一篇高质量的内容都可以衍生出3到5篇新的内容。从一个核心帖子开始，然后进行以下转化：
+
+1. **Twitter连发** — 将内容拆分成5到7个关键点。
+2. **引用图** — 摘取最精彩的句子。
+3. **短视频** — 将核心观点浓缩成60秒的视频。
+4. **新闻通讯素材** — 通过个人故事进行扩展。
+
+**例子：** 那篇关于定价的帖子可以转化为一条Twitter连发（内容为“5个表明你定价过低的迹象”），以及一系列关于基于价值定价的文章，还可以用于新闻通讯。一个创意，四个传播渠道。这就是内容的高效利用。
+
+## 创意生成（快速入门）
+
+**如果你卡住了，可以回答以下五个问题。** 每个问题至少能产生一篇内容：
+
+1. 你的受众经常犯什么错误？
+2. 你通过自己的经历学到了什么，但希望别人能早点告诉你？
+3. 客户最常问你什么问题？
+4. 在你的行业中，你坚决捍卫的是什么原则？
+5. 有什么是“大家都认为正确”的，但你觉得是错误的？
+
+---
+
+## 输出格式
+
+将创意分为两部分发布：
+
+### 快速成果（本周发布）
+5个可以立即创作的内容创意 — 需要付出的努力少，但能产生高共鸣。
+
+### 建立权威的内容（本月完成）
+3个需要进一步研究或深入挖掘的创意 — 值得投入时间。
+
+对于每个创意，包括：
+- **吸引人的开头**（第一句话，能让人停下来继续阅读）
+- **核心观点**（受众应该记住的关键信息）
+- **适合的发布平台**（LinkedIn、Twitter、新闻通讯等）
+
+---
+
+## 发布前的验证
+
+三个问题：
+
+1. **这个内容与我的定位相符吗？** 如果不符合，就放弃它。
+2. **这个内容是否有明确的要点？** 如果内容模糊不清，就忽略它。
+3. **如果别人发布了这个内容，我会感兴趣吗？** 诚实地回答。
+
+如果两个问题都符合，那就发布。如果三个问题都不符合，那就重新开始。
+
+**需要完整的 content 策略吗？**
+→ [预约策略咨询](https://brianrwagner.com)
+
+---
+
+*作者：Brian Wagner | 人工智能营销专家 | brianrwagner.com*

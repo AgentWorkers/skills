@@ -17,9 +17,9 @@ metadata:
 
 # SignNow
 
-Access the SignNow API with managed OAuth authentication. Upload documents, send signature invites, manage templates, and automate e-signature workflows.
+使用管理的OAuth认证来访问SignNow API。您可以上传文件、发送签名邀请、管理模板，并自动化电子签名工作流程。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user info
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/signnow/{resource}
 ```
 
-The gateway proxies requests to `api.signnow.com` and automatically injects your OAuth token.
+该网关会将请求代理到`api.signnow.com`，并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)登录或创建账户。
+2. 访问[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your SignNow OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`管理您的SignNow OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple SignNow connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个SignNow连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### User Operations
+### 用户操作
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /signnow/user
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "59cce130e93a4e9488522ca67e3a6779f3e48a72",
@@ -169,13 +169,13 @@ GET /signnow/user
 }
 ```
 
-#### Get User Documents
+#### 获取用户文档
 
 ```bash
 GET /signnow/user/documents
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -194,11 +194,11 @@ GET /signnow/user/documents
 ]
 ```
 
-### Document Operations
+### 文档操作
 
-#### Upload Document
+#### 上传文档
 
-Documents must be uploaded as multipart form data with a PDF file:
+文档必须以multipart表单数据的形式上传，且文件格式应为PDF：
 
 ```bash
 python <<'EOF'
@@ -230,20 +230,20 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "c63a7bc73f03449c987bf0feaa36e96212408352"
 }
 ```
 
-#### Get Document
+#### 获取文档
 
 ```bash
 GET /signnow/document/{document_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "c63a7bc73f03449c987bf0feaa36e96212408352",
@@ -264,7 +264,7 @@ GET /signnow/document/{document_id}
 }
 ```
 
-#### Update Document
+#### 更新文档
 
 ```bash
 PUT /signnow/document/{document_id}
@@ -275,7 +275,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "c63a7bc73f03449c987bf0feaa36e96212408352",
@@ -285,24 +285,22 @@ Content-Type: application/json
 }
 ```
 
-#### Download Document
+#### 下载文档
 
 ```bash
 GET /signnow/document/{document_id}/download?type=collapsed
 ```
 
-Returns the PDF file as binary data.
+以二进制数据形式返回PDF文件。
+- `type` 参数：`collapsed`（扁平化的PDF），`zip`（所有页面作为图片）
 
-Query parameters:
-- `type` - Download type: `collapsed` (flattened PDF), `zip` (all pages as images)
-
-#### Get Document History
+#### 获取文档历史记录
 
 ```bash
 GET /signnow/document/{document_id}/historyfull
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -316,7 +314,7 @@ GET /signnow/document/{document_id}/historyfull
 ]
 ```
 
-#### Move Document to Folder
+#### 将文档移动到文件夹
 
 ```bash
 POST /signnow/document/{document_id}/move
@@ -327,16 +325,16 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "result": "success"
 }
 ```
 
-#### Merge Documents
+#### 合并文档
 
-Combines multiple documents into a single PDF:
+将多个文档合并为一个PDF：
 
 ```bash
 POST /signnow/document/merge
@@ -348,24 +346,24 @@ Content-Type: application/json
 }
 ```
 
-Returns the merged PDF as binary data.
+以二进制数据形式返回合并后的PDF。
 
-#### Delete Document
+#### 删除文档
 
 ```bash
 DELETE /signnow/document/{document_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success"
 }
 ```
 
-### Template Operations
+### 模板操作
 
-#### Create Template from Document
+#### 从文档创建模板
 
 ```bash
 POST /signnow/template
@@ -377,14 +375,14 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "47941baee4f74784bc1d37c25e88836fc38ed501"
 }
 ```
 
-#### Create Document from Template
+#### 从模板创建文档
 
 ```bash
 POST /signnow/template/{template_id}/copy
@@ -395,7 +393,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "08f5f4a2cc1a4d6c8a986adbf90be2308807d4ae",
@@ -403,11 +401,11 @@ Content-Type: application/json
 }
 ```
 
-### Signature Invite Operations
+### 签名邀请操作
 
-#### Send Freeform Invite
+#### 发送自由格式的邀请
 
-Send a document for signature:
+发送文档以供签名：
 
 ```bash
 POST /signnow/document/{document_id}/invite
@@ -419,7 +417,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "result": "success",
@@ -428,11 +426,11 @@ Content-Type: application/json
 }
 ```
 
-**Note:** Custom subject and message require a paid subscription plan.
+**注意：** 自定义主题和消息需要付费订阅计划。
 
-#### Create Signing Link
+#### 创建签名链接
 
-Create an embeddable signing link (requires document fields):
+创建一个可嵌入的签名链接（需要文档中包含签名字段）：
 
 ```bash
 POST /signnow/link
@@ -443,17 +441,17 @@ Content-Type: application/json
 }
 ```
 
-**Note:** Document must have signature fields added before creating a signing link.
+**注意：** 在创建签名链接之前，文档必须已添加签名字段。
 
-### Folder Operations
+### 文件夹操作
 
-#### Get All Folders
+#### 获取所有文件夹
 
 ```bash
 GET /signnow/folder
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "2ea71a3a9d06470d8e5ec0df6122971f47db7706",
@@ -483,13 +481,13 @@ GET /signnow/folder
 }
 ```
 
-#### Get Folder by ID
+#### 通过ID获取文件夹
 
 ```bash
 GET /signnow/folder/{folder_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "5e2798bdd3d642c3aefebe333bb5b723d6db01a4",
@@ -503,15 +501,15 @@ GET /signnow/folder/{folder_id}
 }
 ```
 
-### Webhook (Event Subscription) Operations
+### Webhook（事件订阅）操作
 
-#### List Event Subscriptions
+#### 列出事件订阅
 
 ```bash
 GET /signnow/event_subscription
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "subscriptions": [
@@ -525,7 +523,7 @@ GET /signnow/event_subscription
 }
 ```
 
-#### Create Event Subscription
+#### 创建事件订阅
 
 ```bash
 POST /signnow/event_subscription
@@ -537,7 +535,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "b1d6700dfb0444ed9196e913b2515ae8d5f731a7",
@@ -545,21 +543,21 @@ Content-Type: application/json
 }
 ```
 
-**Available Events:**
-- `document.create` - Document created
-- `document.update` - Document updated
-- `document.delete` - Document deleted
-- `document.complete` - Document signed by all parties
-- `invite.create` - Invite sent
-- `invite.update` - Invite updated
+**可用的事件：**
+- `document.create` - 文档创建
+- `document.update` - 文档更新
+- `document.delete` - 文档删除
+- `document.complete` - 所有方均已签名
+- `invite.create` - 发送邀请
+- `invite.update` - 邀请更新
 
-#### Delete Event Subscription
+#### 删除事件订阅
 
 ```bash
 DELETE /signnow/event_subscription/{subscription_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "b1d6700dfb0444ed9196e913b2515ae8d5f731a7",
@@ -567,7 +565,7 @@ DELETE /signnow/event_subscription/{subscription_id}
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -596,7 +594,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Python (Upload Document)
+### Python（上传文档）
 
 ```python
 import os
@@ -612,7 +610,7 @@ doc = response.json()
 print(f"Uploaded document: {doc['id']}")
 ```
 
-### Python (Send Invite)
+### Python（发送邀请）
 
 ```python
 import os
@@ -634,29 +632,29 @@ result = response.json()
 print(f"Invite sent: {result['id']}")
 ```
 
-## Notes
+## 注意事项
 
-- Documents must be in PDF format for upload
-- Supported file types: PDF, DOC, DOCX, ODT, RTF, PNG, JPG
-- System folders (Documents, Templates, Archive, Trash Bin) cannot be renamed or deleted
-- Creating signing links requires documents to have signature fields
-- Custom invite subject/message requires a paid subscription
-- Rate limit in development mode: 500 requests/hour per application
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 上传的文档必须是PDF格式。
+- 支持的文件类型：PDF、DOC、DOCX、ODT、RTF、PNG、JPG。
+- 系统文件夹（Documents、Templates、Archive、Trash Bin）不能被重命名或删除。
+- 创建签名链接之前，文档必须包含签名字段。
+- 自定义邀请主题和消息需要付费订阅。
+- 开发模式下的请求限制：每个应用程序每小时500次请求。
+- 重要提示：当将curl输出传递给`jq`或其他命令时，在某些shell环境中，环境变量（如`$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing SignNow connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions or subscription required |
-| 404 | Resource not found |
-| 405 | Method not allowed |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from SignNow API |
+| 400 | 未找到SignNow连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 权限不足或需要订阅 |
+| 404 | 资源未找到 |
+| 405 | 方法不允许 |
+| 429 | 请求次数达到限制 |
+| 4xx/5xx | 来自SignNow API的传递错误 |
 
-SignNow errors include detailed messages:
+SignNow的错误会包含详细的错误信息：
 ```json
 {
   "errors": [
@@ -668,15 +666,15 @@ SignNow errors include detailed messages:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了`MATON_API_KEY`环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -687,18 +685,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `signnow`. For example:
+1. 确保您的URL路径以`signnow`开头。例如：
+- 正确：`https://gateway.maton.ai/signnow/user`
+- 错误：`https://gateway.maton.ai/user`
 
-- Correct: `https://gateway.maton.ai/signnow/user`
-- Incorrect: `https://gateway.maton.ai/user`
+## 资源
 
-## Resources
-
-- [SignNow API Reference](https://docs.signnow.com/docs/signnow/reference)
-- [SignNow Developer Portal](https://www.signnow.com/developers)
-- [SignNow Postman Collection](https://github.com/signnow/postman-collection)
+- [SignNow API参考](https://docs.signnow.com/docs/signnow/reference)
+- [SignNow开发者门户](https://www.signnow.com/developers)
+- [SignNow Postman集合](https://github.com/signnow/postman-collection)
 - [SignNow SDKs](https://github.com/signnow)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

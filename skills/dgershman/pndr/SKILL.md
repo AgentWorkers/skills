@@ -1,73 +1,72 @@
 ---
 name: pndr
-description: Personal productivity app with Ideas/Tasks, Journal, Habits, Package tracking, Lists, and more via MCP
+description: 这是一款个人生产力应用程序，通过MCP功能支持创意/任务管理、日记记录、习惯养成、包裹跟踪、列表创建等多种功能。
 homepage: https://pndr.io
 metadata: {"openclaw":{"emoji":"📝","requires":{"bins":["mcporter"]}}}
 ---
 
 # Pndr
 
-Pndr is your personal productivity command center, now accessible to AI agents via MCP (Model Context Protocol).
+Pndr 是您的个人生产力管理中心，现在可以通过 MCP（Model Context Protocol）与 AI 助手进行交互。
 
-## What You Can Do
+## 您可以做什么
 
-With Pndr's MCP integration, AI assistants like Claude can:
+通过 Pndr 与 MCP 的集成，像 Claude 这样的 AI 助手可以：
 
-- **Manage your tasks** - Add, edit, complete, and organize ideas with tags and priorities
-- **Track your habits** - Create daily habits and mark them complete automatically
-- **Journal** - Record thoughts and retrieve them with fuzzy search
-- **Track packages** - Monitor deliveries with tracking numbers and carriers
-- **Manage lists** - Create checklists, shopping lists, or any collection of items
-- **Get insights** - View today's focus items, kanban boards, accomplishments, and patterns
+- **管理您的任务**：添加、编辑、完成任务，并为任务添加标签和设置优先级
+- **跟踪您的习惯**：创建日常习惯并自动标记完成情况
+- **写日记**：记录想法，并通过模糊搜索快速查找
+- **追踪包裹**：监控包裹的运输状态和物流信息
+- **管理清单**：创建待办事项清单、购物清单或任何项目集合
+- **获取洞察**：查看当天的重点任务、看板、已完成的任务以及工作模式
 
-All of this happens in your own private Pndr account - the AI just provides a natural language interface to your data.
+所有这些功能都在您自己的 Pndr 账户中实现——AI 只提供了对您数据的自然语言接口。
 
-## How It Works
+## 工作原理
 
-Pndr exposes your personal productivity data through the Model Context Protocol (MCP), allowing AI assistants to interact with your tasks, habits, and journal on your behalf.
+Pndr 通过 Model Context Protocol (MCP) 公开您的个人生产力数据，使 AI 助手能够代表您与您的任务、习惯和日记进行交互。
 
-**Example conversations:**
-- "Add a task to call mom tomorrow with high priority"
-- "What's on my plate today?"
-- "Mark my exercise habit as complete"
-- "Show me my accomplishments this week"
-- "Add a journal entry about today's meeting"
+**示例对话：**
+- “添加一个高优先级的任务，明天要给妈妈打电话”
+- “我今天有哪些任务？”
+- “将我的锻炼习惯标记为已完成”
+- “显示我本周的完成事项”
+- “添加一条关于今天会议的日记记录”
 
-The AI uses Pndr's MCP tools behind the scenes to read and write your data securely.
+AI 在后台使用 Pndr 的 MCP 工具安全地读取和写入您的数据。
 
-## Who Is This For?
+## 适合谁？
 
-This integration is perfect if you:
-- Use an AI assistant (Claude, OpenClaw, etc.) and want it to manage your tasks
-- Want natural language access to your productivity data
-- Like the idea of saying "add this to my todo list" instead of opening an app
-- Already use Pndr and want to access it through AI conversations
+如果您符合以下条件，这个集成非常适合您：
+- 使用 AI 助手（如 Claude、OpenClaw 等）并希望它帮助您管理任务
+- 希望以自然语言的方式访问您的生产力数据
+- 喜欢说“把这个添加到我的待办事项列表中”，而不是打开应用程序
+- 已经在使用 Pndr 并希望通过 AI 对话来访问它
 
-## Prerequisites
+## 先决条件
 
-- A Pndr account (sign up at https://pndr.io)
-- An AI assistant that supports MCP (like Claude Desktop or OpenClaw)
-- For manual setup: `mcporter` CLI tool
+- 拥有一个 Pndr 账户（在 https://pndr.io 注册）
+- 使用支持 MCP 的 AI 助手（如 Claude Desktop 或 OpenClaw）
+- 如需手动设置，请使用 `mcporter` CLI 工具
 
-## Setup
+## 设置
 
-### For OpenClaw Users
+### 对于 OpenClaw 用户
 
-OpenClaw can set this up automatically! Just ask your assistant:
+OpenClaw 可以自动完成设置！只需告诉您的助手：
+> “连接到我的 Pndr 账户”
 
-> "Connect to my Pndr account"
+然后在提示时提供您的 Pndr OAuth 凭据。
 
-Then provide your Pndr OAuth credentials when prompted.
+### 手动设置
 
-### Manual Setup
+1. **获取 Pndr API 凭据：**
+   - 登录 https://pndr.io
+   - 转到设置 → API → 创建 OAuth 客户端
+   - 为其命名（例如：“我的 AI 助手”）
+   - 复制您的 `client_id` 和 `client_secret`
 
-1. **Get Pndr API credentials:**
-   - Log in to https://pndr.io
-   - Go to Settings → API → Create OAuth Client
-   - Give it a name (e.g., "My AI Assistant")
-   - Copy your `client_id` and `client_secret`
-
-2. **Get an access token:**
+2. **获取访问令牌：**
    ```bash
    curl -X POST https://pndr.io/oauth/token \
      -H "Content-Type: application/json" \
@@ -78,11 +77,11 @@ Then provide your Pndr OAuth credentials when prompted.
      }'
    ```
 
-   This returns a JSON response with an `access_token`. Copy it.
+   这将返回一个包含 `access_token` 的 JSON 响应。请复制它。
 
-3. **Add to your MCP client config:**
+3. **添加到您的 MCP 客户端配置中：**
 
-   For **mcporter** (`config/mcporter.json`):
+   对于 `mcporter`（`config/mcporter.json`）：
    ```json
    {
      "mcpServers": {
@@ -96,7 +95,7 @@ Then provide your Pndr OAuth credentials when prompted.
    }
    ```
 
-   For **Claude Desktop** (`claude_desktop_config.json`):
+   对于 `Claude Desktop`（`claude_desktop_config.json`）：
    ```json
    {
      "mcpServers": {
@@ -110,118 +109,118 @@ Then provide your Pndr OAuth credentials when prompted.
    }
    ```
 
-4. **Test the connection:**
+4. **测试连接：**
    ```bash
    mcporter list pndr --schema
    ```
 
-   You should see 47 available tools!
+   您应该会看到 47 个可用的工具！
 
-## Available Tools
+## 可用的工具
 
-### Ideas & Tasks
-- `add_idea` - Create a new idea/task
-- `list_ideas` - List and filter ideas
-- `edit_idea` - Edit an existing idea
-- `complete_idea` - Mark an idea as completed
-- `delete_idea` - Delete an idea
-- `categorize_idea` - Update tags on an idea
-- `set_work_status` - Set work status (not started, in progress, blocked)
-- `get_kanban` - Get kanban board view
-- `get_today` - Get today's focus items
+### 想法与任务
+- `add_idea` - 创建新的想法/任务
+- `list_ideas` - 列出并筛选想法
+- `edit_idea` - 编辑现有的想法
+- `complete_idea` - 将想法标记为已完成
+- `delete_idea` - 删除想法
+- `categorize_idea` - 更新想法的标签
+- `set_work_status` - 设置工作状态（未开始、进行中、已阻止）
+- `get_kanban` - 查看看板视图
+- `get_today` - 获取当天的重点任务
 
-### Journal & Thoughts
-- `add_thought` - Record a journal/diary entry
-- `get_thoughts` - Retrieve thoughts with fuzzy search
-- `delete_thought` - Delete a thought
+### 日记与想法
+- `add_thought` - 记录日记条目
+- `get_thoughts` - 通过模糊搜索查找想法
+- `delete_thought` - 删除想法
 
-### Habits
-- `add_habit` - Create a new daily habit
-- `list_habits` - List all habits with completion status
-- `complete_habit` - Mark a habit as completed for today
-- `uncomplete_habit` - Undo a habit completion
-- `update_habit` - Update habit text or resources
-- `archive_habit` - Archive (delete) a habit
+### 习惯
+- `add_habit` - 创建新的日常习惯
+- `list_habits` - 列出所有习惯及其完成状态
+- `complete_habit` - 将今天的习惯标记为已完成
+- `uncomplete_habit` - 取消习惯的完成状态
+- `update_habit` - 更新习惯的文本或资源
+- `archive_habit` - 将习惯归档（删除）
 
-### Checklists
-- `add_checklist_item` - Add a checklist item to an idea
-- `complete_checklist_item` - Mark checklist item as completed
-- `uncomplete_checklist_item` - Mark checklist item as not completed
-- `get_checklist` - Get all checklist items for an idea
-- `edit_checklist_item` - Edit checklist item text
-- `delete_checklist_item` - Delete a checklist item
+### 待办事项清单
+- `add_checklist_item` - 将待办事项添加到想法中
+- `complete_checklist_item` - 将待办事项标记为已完成
+- `uncomplete_checklist_item` - 将待办事项标记为未完成
+- `get_checklist` - 获取某个想法的所有待办事项
+- `edit_checklist_item` - 编辑待办事项的文本
+- `delete_checklist_item` - 删除待办事项
 
-### Lists
-- `add_list` - Create a new list
-- `list_lists` - Get all lists with optional filtering
-- `get_list` - Get a single list with items
-- `update_list` - Update list name, description, or tags
-- `delete_list` - Delete a list and all its items
-- `add_list_item` - Add an item to a list
-- `update_list_item` - Update list item text, notes, or completion
-- `toggle_list_item` - Toggle list item completion
-- `delete_list_item` - Remove an item from a list
-- `reorder_list_items` - Change item order in a list
+### 清单
+- `add_list` - 创建新的清单
+- `list_lists` - 列出所有清单（可选过滤）
+- `get_list` - 获取单个清单及其项目
+- `update_list` - 更新清单的名称、描述或标签
+- `delete_list` - 删除清单及其所有项目
+- `add_list_item` - 向清单中添加项目
+- `update_list_item` - 更新清单项目的文本、备注或完成状态
+- `toggle_list_item` - 切换清单项目的完成状态
+- `delete_list_item` - 从清单中删除项目
+- `reorder_list_items` - 更改清单项目的顺序
 
-### Packages
-- `add_package` - Track a new package delivery
-- `list_packages` - List tracked packages
-- `update_package` - Update package information
-- `mark_package_delivered` - Mark a package as delivered
-- `delete_package` - Delete a package from tracking
+### 包裹
+- `add_package` - 跟踪新的包裹运输
+- `list_packages` - 列出被追踪的包裹
+- `update_package` - 更新包裹信息
+- `mark_package_delivered` - 将包裹标记为已送达
+- `delete_package` - 从追踪中删除包裹
 
-### Tags
-- `list_tags` - List all available tags
-- `create_tag` - Create a new tag
-- `delete_tag` - Delete a tag
+### 标签
+- `list_tags` - 列出所有可用的标签
+- `create_tag` - 创建新的标签
+- `delete_tag` - 删除标签
 
-### Comments
-- `add_comment` - Add a comment to an idea
-- `list_comments` - List comments on an idea
-- `delete_comment` - Delete a comment
+### 评论
+- `add_comment` - 为想法添加评论
+- `list_comments` - 查看想法的评论
+- `delete_comment` - 删除评论
 
-### Attachments
-- `list_attachments` - List attachments for an idea
-- `get_attachment` - Get attachment metadata
-- `download_attachment` - Download attachment with base64 data
+### 附件
+- `listattachments` - 查看想法的附件
+- `get_attachment` - 获取附件的元数据
+- `download_attachment` - 使用 base64 数据下载附件
 
-### Analytics
-- `get_accomplishments` - Get summary of completed tasks and habits
-- `get_patterns` - Analyze patterns in ideas and thoughts over time
+### 分析
+- `get_accomplishments` - 获取已完成任务和习惯的总结
+- `get_patterns` - 分析想法和想法随时间的变化模式
 
-## Usage Examples
+## 使用示例
 
-Once connected, you can interact with Pndr naturally through your AI assistant:
+连接成功后，您可以通过 AI 助手自然地与 Pndr 进行交互：
 
-**Task Management:**
-- "Add a high-priority task to finish the presentation by Friday"
-- "Show me all my work tasks that are in progress"
-- "Mark task [ID] as complete"
-- "What should I focus on today?"
+**任务管理：**
+- “添加一个高优先级的任务，周五前完成演示文稿”
+- “显示我所有正在进行中的工作任务”
+- “将任务 [ID] 标记为已完成”
+- “我今天应该关注什么？”
 
-**Habits:**
-- "Did I complete my exercise habit today?"
-- "Mark my reading habit as done"
-- "What's my current streak for meditation?"
+**习惯：**
+- “我今天完成了锻炼习惯吗？”
+- “将我的阅读习惯标记为已完成”
+- “我目前的冥想连贯性是多少天？”
 
-**Journaling:**
-- "Add a journal entry: Had a breakthrough on the project today"
-- "What was I thinking about last week around this topic?"
-- "Show me my thoughts from January"
+**日记记录：**
+- “添加一条日记：今天在项目中取得了突破”
+- “上周关于这个话题我在想什么？”
+- “显示我一月的想法”
 
-**Package Tracking:**
-- "Track a package from Amazon, tracking number 1Z999..."
-- "What packages am I expecting?"
-- "Mark my laptop package as delivered"
+**包裹追踪：**
+- “追踪一个亚马逊的包裹，追踪号码是 1Z999...”
+- “我还在等待哪些包裹？”
+- “将我的笔记本电脑包裹标记为已送达”
 
-**Lists:**
-- "Create a grocery list"
-- "Add milk and eggs to my shopping list"
-- "Show me my reading list"
+**清单：**
+- “创建一个购物清单”
+- “在我的购物清单中添加牛奶和鸡蛋”
+- “显示我的阅读清单”
 
-### Direct CLI Usage (Advanced)
+### 直接使用 CLI（高级）
 
-If you're using mcporter directly:
+如果您直接使用 `mcporter`：
 
 ```bash
 # Add a task
@@ -240,22 +239,22 @@ mcporter call pndr.add_thought content="Had a great day working on the project"
 mcporter call pndr.get_kanban tags:work
 ```
 
-## Authentication
+## 认证
 
-Pndr uses OAuth 2.0 client credentials flow. Access tokens expire after 1 year (365 days).
+Pndr 使用 OAuth 2.0 客户端凭证流程。访问令牌在 1 年（365 天）后过期。
 
-To refresh your token, repeat the `curl` command from step 2 and update your mcporter config with the new Bearer token.
+要刷新令牌，请重复步骤 2 中的 `curl` 命令，并用新的 Bearer 令牌更新您的 mcporter 配置。
 
-## Source Code
+## 源代码
 
-Open source at https://github.com/Dgershman/pndr
+开源代码位于 https://github.com/Dgershman/pndr
 
-## Pricing
+## 定价
 
-- Free tier: Read-only access
-- Pro ($5/mo or $48/year): Full read/write access
+- 免费 tier：仅限读取权限
+- Pro 订阅（每月 5 美元或每年 48 美元）：提供完整的读写权限
 
-## Support
+## 支持
 
-- Documentation: https://pndr.io/docs
-- Issues: https://github.com/Dgershman/pndr/issues
+- 文档：https://pndr.io/docs
+- 问题反馈：https://github.com/Dgershman/pndr/issues

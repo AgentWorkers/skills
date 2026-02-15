@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Conferencing - Python
+# Telnyx 语音会议 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,13 +33,13 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Enqueue call
+## 将呼叫放入队列
 
-Put the call in a queue.
+将呼叫放入队列中。
 
-`POST /calls/{call_control_id}/actions/enqueue` — Required: `queue_name`
+`POST /calls/{call_control_id}/actions/enqueue` — 必需参数：`queue_name`
 
 ```python
 response = client.calls.actions.enqueue(
@@ -48,9 +49,9 @@ response = client.calls.actions.enqueue(
 print(response.data)
 ```
 
-## Remove call from a queue
+## 从队列中移除呼叫
 
-Removes the call from a queue.
+从队列中移除呼叫。
 
 `POST /calls/{call_control_id}/actions/leave_queue`
 
@@ -61,9 +62,9 @@ response = client.calls.actions.leave_queue(
 print(response.data)
 ```
 
-## List conferences
+## 列出会议
 
-Lists conferences.
+列出所有会议。
 
 `GET /conferences`
 
@@ -73,11 +74,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create conference
+## 创建会议
 
-Create a conference from an existing call leg using a `call_control_id` and a conference name.
+使用 `call_control_id` 和会议名称从现有的通话中创建会议。
 
-`POST /conferences` — Required: `call_control_id`, `name`
+`POST /conferences` — 必需参数：`call_control_id`, `name`
 
 ```python
 conference = client.conferences.create(
@@ -87,9 +88,9 @@ conference = client.conferences.create(
 print(conference.data)
 ```
 
-## Retrieve a conference
+## 查询会议信息
 
-Retrieve an existing conference
+查询已存在的会议信息。
 
 `GET /conferences/{id}`
 
@@ -100,9 +101,9 @@ conference = client.conferences.retrieve(
 print(conference.data)
 ```
 
-## Hold conference participants
+## 暂停会议参与者的发言
 
-Hold a list of participants in a conference call
+暂停会议中参与者的发言。
 
 `POST /conferences/{id}/actions/hold`
 
@@ -113,11 +114,11 @@ response = client.conferences.actions.hold(
 print(response.data)
 ```
 
-## Join a conference
+## 加入会议
 
-Join an existing call leg to a conference.
+加入现有的会议。
 
-`POST /conferences/{id}/actions/join` — Required: `call_control_id`
+`POST /conferences/{id}/actions/join` — 必需参数：`call_control_id`
 
 ```python
 response = client.conferences.actions.join(
@@ -127,11 +128,11 @@ response = client.conferences.actions.join(
 print(response.data)
 ```
 
-## Leave a conference
+## 退出会议
 
-Removes a call leg from a conference and moves it back to parked state.
+将通话从会议中移除并恢复到待机状态。
 
-`POST /conferences/{id}/actions/leave` — Required: `call_control_id`
+`POST /conferences/{id}/actions/leave` — 必需参数：`call_control_id`
 
 ```python
 response = client.conferences.actions.leave(
@@ -141,9 +142,9 @@ response = client.conferences.actions.leave(
 print(response.data)
 ```
 
-## Mute conference participants
+## 静音会议参与者
 
-Mute a list of participants in a conference call
+静音会议中的所有参与者。
 
 `POST /conferences/{id}/actions/mute`
 
@@ -154,9 +155,9 @@ response = client.conferences.actions.mute(
 print(response.data)
 ```
 
-## Play audio to conference participants
+## 播放音频给会议参与者
 
-Play audio to all or some participants on a conference call.
+向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/play`
 
@@ -167,11 +168,11 @@ response = client.conferences.actions.play(
 print(response.data)
 ```
 
-## Conference recording pause
+## 暂停会议录制
 
-Pause conference recording.
+暂停会议录制。
 
-`POST /conferences/{id}/actions/record_pause`
+`POST /conferences/{id}/actions/record_PAUSE`
 
 ```python
 response = client.conferences.actions.record_pause(
@@ -180,9 +181,9 @@ response = client.conferences.actions.record_pause(
 print(response.data)
 ```
 
-## Conference recording resume
+## 恢复会议录制
 
-Resume conference recording.
+恢复会议录制。
 
 `POST /conferences/{id}/actions/record_resume`
 
@@ -193,11 +194,11 @@ response = client.conferences.actions.record_resume(
 print(response.data)
 ```
 
-## Conference recording start
+## 开始会议录制
 
-Start recording the conference.
+开始会议录制。
 
-`POST /conferences/{id}/actions/record_start` — Required: `format`
+`POST /conferences/{id}/actions/record_start` — 必需参数：`format`
 
 ```python
 response = client.conferences.actions.record_start(
@@ -207,9 +208,9 @@ response = client.conferences.actions.record_start(
 print(response.data)
 ```
 
-## Conference recording stop
+## 停止会议录制
 
-Stop recording the conference.
+停止会议录制。
 
 `POST /conferences/{id}/actions/record_stop`
 
@@ -220,11 +221,11 @@ response = client.conferences.actions.record_stop(
 print(response.data)
 ```
 
-## Speak text to conference participants
+## 向会议参与者朗读文本
 
-Convert text to speech and play it to all or some participants.
+将文本转换为语音并播放给所有或部分参与者。
 
-`POST /conferences/{id}/actions/speak` — Required: `payload`, `voice`
+`POST /conferences/{id}/actions/speak` — 必需参数：`payload`, `voice`
 
 ```python
 response = client.conferences.actions.speak(
@@ -235,9 +236,9 @@ response = client.conferences.actions.speak(
 print(response.data)
 ```
 
-## Stop audio being played on the conference
+## 停止会议中的音频播放
 
-Stop audio being played to all or some participants on a conference call.
+停止向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/stop`
 
@@ -248,11 +249,11 @@ response = client.conferences.actions.stop(
 print(response.data)
 ```
 
-## Unhold conference participants
+## 恢复会议参与者的发言权限
 
-Unhold a list of participants in a conference call
+恢复会议中参与者的发言权限。
 
-`POST /conferences/{id}/actions/unhold` — Required: `call_control_ids`
+`POST /conferences/{id}/actions/unhold` — 必需参数：`call_control_ids`
 
 ```python
 response = client.conferences.actions.unhold(
@@ -262,9 +263,9 @@ response = client.conferences.actions.unhold(
 print(response.data)
 ```
 
-## Unmute conference participants
+## 取消对会议参与者的静音
 
-Unmute a list of participants in a conference call
+取消对会议中参与者的静音。
 
 `POST /conferences/{id}/actions/unmute`
 
@@ -275,11 +276,11 @@ response = client.conferences.actions.unmute(
 print(response.data)
 ```
 
-## Update conference participant
+## 更新会议参与者信息
 
-Update conference participant supervisor_role
+更新会议参与者的角色。
 
-`POST /conferences/{id}/actions/update` — Required: `call_control_id`, `supervisor_role`
+`POST /conferences/{id}/actions/update` — 必需参数：`call_control_id`, `supervisor_role`
 
 ```python
 action = client.conferences.actions.update(
@@ -290,9 +291,9 @@ action = client.conferences.actions.update(
 print(action.data)
 ```
 
-## List conference participants
+## 列出会议参与者
 
-Lists conference participants
+列出会议中的所有参与者。
 
 `GET /conferences/{conference_id}/participants`
 
@@ -306,26 +307,27 @@ print(page.id)
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callEnqueued` | Call Enqueued |
-| `callLeftQueue` | Call Left Queue |
-| `conferenceCreated` | Conference Created |
-| `conferenceEnded` | Conference Ended |
-| `conferenceFloorChanged` | Conference Floor Changed |
-| `conferenceParticipantJoined` | Conference Participant Joined |
-| `conferenceParticipantLeft` | Conference Participant Left |
-| `conferenceParticipantPlaybackEnded` | Conference Participant Playback Ended |
-| `conferenceParticipantPlaybackStarted` | Conference Participant Playback Started |
-| `conferenceParticipantSpeakEnded` | Conference Participant Speak Ended |
-| `conferenceParticipantSpeakStarted` | Conference Participant Speak Started |
-| `conferencePlaybackEnded` | Conference Playback Ended |
-| `conferencePlaybackStarted` | Conference Playback Started |
-| `conferenceRecordingSaved` | Conference Recording Saved |
-| `conferenceSpeakEnded` | Conference Speak Ended |
-| `conferenceSpeakStarted` | Conference Speak Started |
+| `callEnqueued` | 呼叫被放入队列 |
+| `callLeftQueue` | 呼叫离开队列 |
+| `conferenceCreated` | 会议创建 |
+| `conferenceEnded` | 会议结束 |
+| `conferenceFloorChanged` | 会议发言权变更 |
+| `conferenceParticipantJoined` | 会议参与者加入 |
+| `conferenceParticipantLeft` | 会议参与者离开 |
+| `conferenceParticipantPlaybackEnded` | 会议参与者播放结束 |
+| `conferenceParticipantPlaybackStarted` | 会议参与者开始播放 |
+| `conferenceParticipantSpeakEnded` | 会议参与者发言结束 |
+| `conferenceParticipantSpeakStarted` | 会议参与者开始发言 |
+| `conferencePlaybackEnded` | 会议播放结束 |
+| `conferencePlaybackStarted` | 会议播放开始 |
+| `conferenceRecordingSaved` | 会议录制保存 |
+| `conferenceSpeakEnded` | 会议发言结束 |
+| `conferenceSpeakStarted` | 会议发言开始 |
+```
+```

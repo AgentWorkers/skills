@@ -1,13 +1,13 @@
 ---
 name: pscale-branch
-description: Create, delete, promote, diff, and manage PlanetScale database branches. Use when creating development branches for schema changes, viewing schema diffs, promoting branches to production, or managing branch lifecycle. Essential for schema migration workflows. Triggers on branch, create branch, schema diff, promote branch, development branch, database branch.
+description: 创建、删除、推送（Promote）、比较差异（Diff）以及管理 PlanetScale 数据库分支。这些操作适用于为数据库模式变更创建开发分支、查看模式差异、将分支推送到生产环境，或管理分支的生命周期。这些功能对于数据库模式迁移的工作流程至关重要。相关事件包括：分支创建（Branch Create）、分支创建操作（Branch Create）、模式差异更新（Schema Diff）、分支推送操作（Branch Promote）、开发分支（Development Branch）以及数据库分支（Database Branch）。
 ---
 
-# pscale branch
+# `pscale` 分支管理
 
-Create, delete, diff, and manage database branches.
+用于创建、删除、比较分支以及管理数据库分支。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Create branch from main
@@ -35,9 +35,9 @@ pscale branch delete <database> <branch-name>
 pscale branch promote <database> <branch-name>
 ```
 
-## Workflows
+## 工作流程
 
-### Schema Migration Workflow (Standard)
+### 模式迁移流程（标准）
 
 ```bash
 # 1. Create development branch
@@ -56,7 +56,7 @@ pscale deploy-request create my-database feature-migration
 # 5. Deploy via deploy request (see pscale-deploy-request)
 ```
 
-### Quick Branch for MR/PR
+### 用于合并请求（MR/PR）的快速分支创建流程
 
 ```bash
 # Match PlanetScale branch to your MR/PR branch
@@ -64,9 +64,9 @@ BRANCH_NAME="feature-add-user-preferences"
 pscale branch create my-database $BRANCH_NAME --from main
 ```
 
-See `scripts/create-branch-for-mr.sh` for automation.
+有关自动化流程，请参见 `scripts/create-branch-for-mr.sh`。
 
-### Schema Comparison
+### 模式比较
 
 ```bash
 # Compare branch schema with main
@@ -79,7 +79,7 @@ pscale branch schema <database> <branch-name>
 pscale branch schema <database> <branch-name> > schema.sql
 ```
 
-### Branch Cleanup
+### 分支清理
 
 ```bash
 # List all branches
@@ -89,9 +89,9 @@ pscale branch list <database>
 pscale branch delete <database> <old-branch-name>
 ```
 
-## Decision Trees
+## 决策树
 
-### Should I promote directly or use deploy request?
+### 是应该直接推送更改，还是使用部署请求？
 
 ```
 What's your environment?
@@ -101,7 +101,7 @@ What's your environment?
 └─ Experimental changes → Keep as branch, don't promote
 ```
 
-### When to create a new branch?
+### 何时创建新分支？
 
 ```
 What's your goal?
@@ -112,11 +112,11 @@ What's your goal?
 └─ Working on existing schema → Use existing branch
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Branch already exists"
+### “分支已存在”
 
-**Solution:**
+**解决方案：**
 ```bash
 # Check existing branches
 pscale branch list <database>
@@ -125,14 +125,14 @@ pscale branch list <database>
 pscale branch delete <database> <existing-branch>
 ```
 
-### Schema diff shows no changes
+### 模式比较结果显示没有变化
 
-**Causes:**
-- No schema changes made yet
-- Changes not committed in database session
-- Comparing branch to itself
+**原因：**
+- 尚未进行任何模式更改
+- 更改未提交到数据库会话中
+- 比较的是同一个分支
 
-**Solution:**
+**解决方案：**
 ```bash
 # Verify schema was modified
 pscale branch schema <database> <branch-name>
@@ -141,11 +141,11 @@ pscale branch schema <database> <branch-name>
 pscale shell <database> <branch-name>
 ```
 
-### Cannot delete branch
+### 无法删除分支
 
-**Error:** "Branch is protected" or "Branch is a production branch"
+**错误信息：** “分支受保护” 或 “分支是生产环境分支”
 
-**Solution:**
+**解决方案：**
 ```bash
 # Demote production branch first
 pscale branch demote <database> <branch-name>
@@ -154,14 +154,14 @@ pscale branch demote <database> <branch-name>
 pscale branch delete <database> <branch-name>
 ```
 
-### Branch creation fails
+### 分支创建失败
 
-**Common causes:**
-- Invalid branch name (spaces, special chars)
-- Source branch doesn't exist
-- Insufficient permissions
+**常见原因：**
+- 分支名称无效（包含空格或特殊字符）
+- 源分支不存在
+- 权限不足
 
-**Solution:**
+**解决方案：**
 ```bash
 # Use valid branch name (alphanumeric, hyphens, underscores)
 pscale branch create <database> my-feature-branch --from main
@@ -170,18 +170,18 @@ pscale branch create <database> my-feature-branch --from main
 pscale branch list <database> | grep main
 ```
 
-## Related Skills
+## 相关技能
 
-- **pscale-deploy-request** - Create deploy requests from branches (safer than direct promotion)
-- **pscale-database** - Database management
-- **drizzle-kit** - ORM-based schema migrations (generates SQL for pscale shell)
-- **gitlab-cli-skills** - MR/PR integration (match branch names across tools)
+- **`pscale-deploy-request`**：从分支创建部署请求（比直接推送更安全）
+- **`pscale-database`**：数据库管理工具
+- **`drizzle-kit`**：基于 ORM 的模式迁移工具（为 `pscale` shell 生成 SQL 语句）
+- **`gitlab-cli-skills`**：合并请求（MR/PR）集成工具（跨工具统一分支名称）
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete `pscale branch` command reference.
+有关 `pscale` 分支管理的完整命令参考，请参见 `references/commands.md`。
 
-## Branch Lifecycle
+## 分支生命周期
 
 ```
 main (production)
@@ -195,11 +195,11 @@ main (production)
   └─ Deploy ←──────────────────────┘
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always create branches from main** for schema changes
-2. **Use descriptive branch names** matching MR/PR numbers when applicable
-3. **Run diff before deploy request** to review changes
-4. **Delete merged branches** to keep branch list clean
-5. **Use deploy requests** instead of direct promotion (reviewable, revertable)
-6. **Test schema changes** in branch before deploying
+1. **始终从 `main` 分支创建用于模式更改的分支**
+2. **使用描述性强的分支名称**（在适用的情况下与合并请求/拉取请求（MR/PR）的编号相匹配）
+3. **在提交部署请求之前运行 `diff` 命令以审核更改**
+4. **删除已合并的分支** 以保持分支列表的整洁
+5. **使用部署请求** 而不是直接推送更改（便于审核和回滚）
+6. **在部署之前在分支中测试模式更改**

@@ -1,19 +1,19 @@
 ---
 name: pm2
-description: Manage Node.js applications with PM2 process manager. Use for deploying, monitoring, and auto-restarting Node apps in production. Covers starting apps, viewing logs, setting up auto-start on boot, and managing multiple processes.
+description: 使用 PM2 进程管理器来管理 Node.js 应用程序。它可用于在生产环境中部署、监控以及自动重启 Node.js 应用程序。内容包括：启动应用程序、查看日志、设置应用程序在系统启动时自动运行，以及管理多个进程。
 ---
 
-# PM2 Process Manager
+# PM2 进程管理器
 
-Production process manager for Node.js with built-in load balancer.
+这是一个专为 Node.js 开发的生产环境进程管理器，内置了负载均衡功能。
 
-## Install
+## 安装
 
 ```bash
 npm install -g pm2
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Start an app
@@ -26,7 +26,7 @@ pm2 start npm --name "my-app" -- start -- --port 3000
 PORT=3000 pm2 start npm --name "my-app" -- start
 ```
 
-## Common Commands
+## 常用命令
 
 ```bash
 # List processes
@@ -49,7 +49,7 @@ pm2 show my-app
 pm2 monit             # Real-time monitor
 ```
 
-## Auto-Start on Boot
+## 启动时自动启动
 
 ```bash
 # Save current process list
@@ -62,7 +62,7 @@ pm2 startup
 # sudo env PATH=$PATH:/opt/homebrew/bin pm2 startup launchd -u username --hp /Users/username
 ```
 
-## Next.js / Production Builds
+## Next.js / 生产环境构建
 
 ```bash
 # Build first
@@ -75,7 +75,7 @@ pm2 start npm --name "my-app" -- start
 pm2 start ecosystem.config.js
 ```
 
-## Ecosystem File (ecosystem.config.js)
+## 生态系统配置文件（ecosystem.config.js）
 
 ```javascript
 module.exports = {
@@ -92,17 +92,17 @@ module.exports = {
 }
 ```
 
-## Useful Flags
+## 有用的参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `--name` | Process name |
-| `--watch` | Restart on file changes |
-| `-i max` | Cluster mode (all CPUs) |
-| `--max-memory-restart 200M` | Auto-restart on memory limit |
-| `--cron "0 * * * *"` | Scheduled restart |
+| `--name` | 进程名称 |
+| `--watch` | 文件更改时自动重启 |
+| `-i max` | 集群模式（使用所有 CPU） |
+| `--max-memory-restart 200M` | 内存限制达到时自动重启 |
+| `--cron "0 * * * *"` | 定时重启 |
 
-## Cleanup
+## 清理
 
 ```bash
 pm2 delete all        # Remove all processes

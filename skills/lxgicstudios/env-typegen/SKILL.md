@@ -1,21 +1,22 @@
 ---
 name: Env Typegen - TypeScript Types from .env
-description: Generate TypeScript types from .env files with smart inference. Type-safe environment variables. Optional Zod schema. Free CLI tool.
+description: **从 `.env` 文件生成 TypeScript 类型（具备智能推断功能）**  
+类型安全的环境变量；支持可选的 Zod 模式定义；提供免费的命令行工具（CLI）。
 ---
 
 # Env Typegen
 
-Generate TypeScript types from your .env file. Smart type inference for numbers, booleans, URLs.
+该工具能够从 `.env` 文件中生成 TypeScript 类型定义，针对数字、布尔值和 URL 等数据类型提供智能的类型推断功能。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @lxgicstudios/env-typegen
 ```
 
-## Commands
+## 命令
 
-### Generate Types
+### 生成类型定义
 
 ```bash
 npx @lxgicstudios/env-typegen
@@ -23,15 +24,15 @@ npx @lxgicstudios/env-typegen .env.local
 npx @lxgicstudios/env-typegen -o src/types/env.d.ts
 ```
 
-### With Zod Schema
+### 使用 Zod Schema 生成类型定义
 
 ```bash
 npx @lxgicstudios/env-typegen --zod
 ```
 
-## Example
+## 示例
 
-Input `.env`:
+输入 `.env` 文件内容：
 ```env
 # Database
 DATABASE_URL=postgresql://localhost:5432/db
@@ -45,7 +46,7 @@ DEBUG=true
 API_KEY=sk_live_abc123
 ```
 
-Output:
+输出结果：
 ```typescript
 export interface Env {
   /** Database */
@@ -81,39 +82,39 @@ declare global {
 }
 ```
 
-## Type Inference
+## 类型推断规则：
 
-| Pattern | Type |
-|---------|------|
-| `PORT=3000` | number |
-| `DEBUG=true` | boolean |
-| `API_URL=https://...` | string (URL) |
-| `EMAIL=a@b.com` | string (email) |
-| Everything else | string |
+| 模式          | 类型                |
+|---------------|-------------------|
+| `PORT=3000`      | number             |
+| `DEBUG=true`     | boolean            |
+| `API_URL=https://...`   | string (URL)          |
+| `EMAIL=a@b.com`     | string (email)          |
+| 其他所有内容      | string               |
 
-## Options
+## 选项
 
-| Option | Description |
-|--------|-------------|
-| `-i, --input` | Input file (default: .env) |
-| `-o, --output` | Output file (default: env.d.ts) |
-| `--zod` | Generate Zod schema too |
-| `--name` | Interface name (default: Env) |
+| 选项            | 描述                        |
+|-----------------|---------------------------|
+| `-i, --input`     | 输入文件（默认：.env）            |
+| `-o, --output`     | 输出文件（默认：env.d.ts）         |
+| `--zod`        | 同时生成 Zod Schema             |
+| `--name`        | 接口名称（默认：Env）           |
 
-## Common Use Cases
+## 常见使用场景：
 
-**Generate for project:**
-```bash
+- 为项目生成类型定义：  
+  ```bash
 npx @lxgicstudios/env-typegen -o src/types/env.d.ts
 ```
 
-**With runtime validation:**
-```bash
+- 结合运行时验证功能使用：  
+  ```bash
 npx @lxgicstudios/env-typegen --zod -o src/env.ts
 ```
 
 ---
 
-**Built by [LXGIC Studios](https://lxgicstudios.com)**
+**由 [LXGIC Studios](https://lxgicstudios.com) 开发**
 
 🔗 [GitHub](https://github.com/lxgicstudios/env-typegen) · [Twitter](https://x.com/lxgicstudios)

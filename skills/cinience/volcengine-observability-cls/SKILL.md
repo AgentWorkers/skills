@@ -1,25 +1,25 @@
 ---
 name: volcengine-observability-cls
-description: Log query and troubleshooting workflows with Volcengine CLS. Use when users need error analysis, time-range queries, aggregation dashboards, or incident diagnostics.
+description: 使用 Volcengine CLS 进行日志查询和故障排除。适用于用户需要进行错误分析、时间范围查询、数据汇总（仪表盘展示）或事件诊断的场景。
 ---
 
 # volcengine-observability-cls
 
-Run structured log investigations and summarize actionable findings.
+执行结构化的日志分析，并汇总可操作的发现结果。
 
-## Execution Checklist
+## 执行检查清单
 
-1. Confirm project/logset/topic and time window.
-2. Build query with filters, parse fields, and aggregations.
-3. Execute and summarize top errors and anomaly dimensions.
-4. Return follow-up actions and reusable query templates.
+1. 确认项目、日志集、主题以及时间范围。
+2. 使用过滤器构建查询语句，解析字段数据，并进行数据聚合。
+3. 执行查询并汇总最常见的错误类型及异常情况。
+4. 提供后续需要执行的操作建议以及可重复使用的查询模板。
 
-## Output Requirements
+## 输出要求
 
-- Include query statement.
-- Include affected services and counts.
-- Include concrete remediation suggestions.
+- 包含查询语句。
+- 显示受影响的服务及其数量。
+- 提供具体的修复建议。
 
-## References
+## 参考资料
 
 - `references/sources.md`

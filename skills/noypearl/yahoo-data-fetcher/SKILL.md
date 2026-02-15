@@ -1,6 +1,6 @@
 ---
 name: yahoo-data-fetcher
-description: Fetch real-time stock quotes from Yahoo Finance.
+description: 从 Yahoo Finance 获取实时股票报价。
 user-invocable: true
 metadata:
   moltbot:
@@ -10,27 +10,27 @@ metadata:
     homepage: https://query1.finance.yahoo.com/v7/finance/quote
 ---
 
-# Yahoo Data Fetcher – Stock Quote
+# Yahoo 数据获取器 – 股票报价
 
-Get current stock price data from Yahoo Finance.
+从 Yahoo Finance 获取当前的股票价格数据。
 
-This skill fetches the latest market quote for one or more stock symbols and returns normalized JSON output.
+该功能可以获取一个或多个股票代码的最新市场报价，并返回格式化后的 JSON 数据。
 
 ---
 
-## Command
+## 命令
 
 ### `/stock quote`
 
-Fetch the latest quote for one or more stock symbols.
+获取一个或多个股票代码的最新报价。
 
 ---
 
-## Input
+## 输入参数
 
-- `symbols` (string or array of strings)
+- `symbols`（字符串或字符串数组）
 
-Examples:
+示例：
 - `"AAPL"`
 - `"AAPL MSFT TSLA"`
 - `"AAPL,MSFT,TSLA"`
@@ -39,18 +39,18 @@ Examples:
 
 ---
 
-## Output
+## 输出结果
 
-For each symbol:
+对于每个股票代码：
 
-- `symbol` – stock ticker
-- `price` – latest market price
-- `change` – absolute price change
-- `changePercent` – percentage change
-- `currency` – trading currency
-- `marketState` – market status (e.g. `REGULAR`, `CLOSED`)
+- `symbol` – 股票代码
+- `price` – 最新市场价格
+- `change` – 绝对价格变化额
+- `changePercent` – 百分比变化率
+- `currency` – 交易货币
+- `marketState` – 市场状态（例如：`REGULAR`、`CLOSED`）
 
-Example output:
+示例输出：
 
 ```json
 [
@@ -63,3 +63,4 @@ Example output:
     "marketState": "REGULAR"
   }
 ]
+```

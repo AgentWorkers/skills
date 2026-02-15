@@ -1,13 +1,13 @@
 ---
 name: atxp
-description: Access ATXP paid API tools for web search, AI image generation, music creation, video generation, and X/Twitter search. Use when users need real-time web search, AI-generated media (images, music, video), or X/Twitter search. Requires authentication via `npx atxp login`.
+description: 您可以访问 ATXP 的付费 API 工具，这些工具支持网页搜索、AI 图像生成、音乐创作、视频制作以及 X/Twitter 搜索功能。当用户需要实时网页搜索、AI 生成的媒体内容（图片、音乐、视频），或进行 X/Twitter 搜索时，可以使用这些工具。使用前需通过 `npx atxp login` 进行身份验证。
 ---
 
-# ATXP Tools
+# ATXP 工具
 
-Access ATXP's paid API tools via CLI.
+通过命令行界面（CLI）访问 ATXP 的付费 API 工具。
 
-## Authentication
+## 认证
 
 ```bash
 # Check if authenticated
@@ -18,23 +18,23 @@ npx atxp login
 source ~/.atxp/config
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `npx atxp search <query>` | Real-time web search |
-| `npx atxp image <prompt>` | AI image generation |
-| `npx atxp music <prompt>` | AI music generation |
-| `npx atxp video <prompt>` | AI video generation |
-| `npx atxp x <query>` | X/Twitter search |
+| `npx atxp search <查询>` | 实时网络搜索 |
+| `npx atxp image <提示>` | 人工智能图像生成 |
+| `npx atxp music <提示>` | 人工智能音乐生成 |
+| `npx atxp video <提示>` | 人工智能视频生成 |
+| `npx atxp x <查询>` | X/Twitter 搜索 |
 
-## Usage
+## 使用方法
 
-1. Verify `$ATXP_CONNECTION` is set
-2. Run the appropriate command
-3. Parse and present results
+1. 确保 `$ATXP_CONNECTION` 变量已设置；
+2. 运行相应的命令；
+3. 解析并显示搜索结果。
 
-## Programmatic Access
+## 程序化访问
 
 ```typescript
 import { atxpClient, ATXPAccount } from '@atxp/client';
@@ -50,9 +50,9 @@ const result = await client.callTool({
 });
 ```
 
-## MCP Servers
+## MCP 服务器
 
-| Server | Tool |
+| 服务器 | 工具 |
 |--------|------|
 | `search.mcp.atxp.ai` | `search_search` |
 | `image.mcp.atxp.ai` | `image_create_image` |

@@ -1,11 +1,12 @@
 ---
 name: glab-job
-description: Use when working with glab job commands.
+description: **使用说明：**  
+在处理 Glab 的作业命令时，请参考以下说明。
 ---
 
 # glab job
 
-## Overview
+## 概述
 
 ```
 
@@ -25,12 +26,12 @@ description: Use when working with glab job commands.
     -R --repo                               Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab job --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令帮助信息，请参阅 [references/commands.md](references/commands.md)。

@@ -1,13 +1,13 @@
 ---
 name: web-monitor
-description: Monitor web pages for content changes and get alerts. Track URLs, detect updates, view diffs. Use when asked to watch a website, track changes on a page, monitor for new posts/content, set up page change alerts, or check if a site has been updated. Supports CSS selectors for targeted monitoring.
+description: 监控网页内容的变化并接收警报。可以跟踪URL、检测更新、查看差异。适用于需要监视网站、跟踪页面变化、监控新帖子/内容、设置页面变更警报或检查网站是否更新的场景。支持使用CSS选择器进行有针对性的监控。
 ---
 
-# Web Monitor
+# 网页监控器
 
-Track web pages for changes. Stores snapshots, computes diffs, supports CSS selectors.
+用于跟踪网页的变化，存储快照，计算差异，并支持CSS选择器。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Add a URL to watch
@@ -35,33 +35,33 @@ uv run --with beautifulsoup4 python scripts/monitor.py snapshot "Example" --line
 uv run --with beautifulsoup4 python scripts/monitor.py remove "Example"
 ```
 
-## Commands
+## 命令
 
-| Command | Args | Description |
+| 命令 | 参数 | 说明 |
 |---------|------|-------------|
-| `add` | `<url> [-n name] [-s selector]` | Add URL to watch, take initial snapshot |
-| `remove` | `<url-or-name>` | Stop watching a URL |
-| `list` | `[-f json]` | List all watched URLs with stats |
-| `check` | `[url-or-name] [-f json]` | Check for changes (all or one) |
-| `diff` | `<url-or-name>` | Show last recorded diff |
-| `snapshot` | `<url-or-name> [-l lines]` | Show current snapshot |
+| `add` | `<url> [-n name] [-s selector]` | 添加要监控的URL，并生成初始快照 |
+| `remove` | `<url-or-name>` | 停止监控某个URL |
+| `list` | `[-f json]` | 列出所有被监控的URL及其统计信息 |
+| `check` | `[url-or-name] [-f json]` | 检查是否有变化（全部或单个URL） |
+| `diff` | `<url-or-name>` | 显示最后一次记录的差异 |
+| `snapshot` | `<url-or-name> [-l lines]` | 显示当前的快照 |
 
-## Output Symbols
+## 输出符号
 
-- 🔔 CHANGED — page content changed (shows diff preview)
-- ✅ No changes
-- 📸 Initial snapshot taken
-- ❌ Error fetching
+- 🔔 页面内容已更改（显示差异预览）
+- ✅ 无变化
+- 📸 生成了初始快照
+- ❌ 获取数据时出错
 
-## Data
+## 数据存储位置
 
-Stored in `~/.web-monitor/` (override with `WEB_MONITOR_DIR` env var):
-- `watches.json` — watch list config
-- `snapshots/` — stored page content + diffs
+数据存储在`~/.web-monitor/`目录下（可通过`WEB_monitor_DIR`环境变量进行覆盖）：
+- `watches.json` — 监控列表配置文件
+- `snapshots/` — 存储的网页内容及差异文件
 
-## Tips
+## 提示
 
-- Use `--selector` to monitor specific elements (prices, article lists, etc.)
-- Use `--format json` for programmatic checking (heartbeat integration)
-- CSS selectors require beautifulsoup4 (included via `--with` flag)
-- Text is normalized to reduce noise from timestamps, whitespace, ads
+- 使用`--selector`来监控特定元素（如价格、文章列表等）
+- 使用`--format json`进行程序化检查（例如集成心跳检测功能）
+- CSS选择器的使用需要`beautifulsoup4`库（通过`--with`标志进行配置）
+- 文本会经过处理，以减少时间戳、空白字符和广告等不必要的信息对结果的影响

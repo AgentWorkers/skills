@@ -1,6 +1,6 @@
 ---
 name: anxiety-relief
-description: Manage anxiety with grounding exercises, breathing techniques, and thought reframing
+description: 通过“接地练习”（grounding exercises）、呼吸技巧以及“思维重构”（thought reframing）来管理焦虑情绪。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,108 +11,99 @@ triggers:
   - "anxiety relief"
 ---
 
-# Anxiety Relief
+# 缓解焦虑
 
-Manage anxiety in the moment with evidence-based grounding, breathing, and reframing techniques.
+通过基于证据的“接地”（grounding）技巧、呼吸练习和思维重构（reframing）方法，即时缓解焦虑。
 
-## What it does
+## 功能介绍
 
-- **Grounding Exercises** - Anchor yourself to the present using sensory techniques
-- **Breathing Techniques** - Activate your parasympathetic nervous system with structured patterns
-- **Thought Reframing** - Challenge anxious thoughts with cognitive tools
-- **Anxiety Logging** - Track patterns, triggers, and what helps over time
+- **接地练习**：利用感官体验将自己锚定在当下。
+- **呼吸技巧**：通过有结构的呼吸模式激活副交感神经系统。
+- **思维重构**：运用认知工具来挑战焦虑情绪。
+- **焦虑记录**：长期追踪焦虑的发作模式、触发因素以及有效的缓解方法。
 
-## Usage
+## 使用方法
 
-### Quick Relief
-Fastest tools when you need immediate calm.
-- *4-7-8 breathing* - 2 minutes, very effective
-- *5-4-3-2-1 grounding* - Engages all senses, breaks the cycle
-- *Box breathing* - Military-grade calming technique
+### 快速缓解
+在需要立即平静时，这些方法最为有效：
+- **4-7-8呼吸法**：持续2分钟，效果显著。
+- **5-4-3-2-1接地法**：调动所有感官，打破焦虑循环。
+- **盒子呼吸法**：源自军事训练的放松技巧。
 
-### Breathing Exercises
-Structured patterns that signal safety to your nervous system.
-- Slow, deep breathing activates the vagus nerve
-- Rhythm matters more than depth
-- 5-10 minutes typical duration
+### 呼吸练习
+有结构的呼吸模式能够向神经系统传递“安全”的信号：
+- 缓慢而深长的呼吸可以激活迷走神经。
+- 呼吸的节奏比深度更重要。
+- 通常建议练习5-10分钟。
 
-### Ground Me
-Sensory anchoring to pull you out of anxious thoughts.
-- Physical grounding (feet on floor, ice cube in hand)
-- Sensory grounding (name what you see, hear, feel)
-- Environmental grounding (movement, cold water)
+### “让我平静下来”（Ground Me）
+通过感官体验帮助你从焦虑思绪中抽离：
+- **身体上的锚定**（双脚着地、手中握住冰块）。
+- **感官上的锚定**（描述你所看到、听到、感受到的事物）。
+- **环境上的锚定**（进行简单的动作或接触冷水）。
 
-### Log Anxiety
-Track episodes to identify patterns.
-- When it started and what triggered it
-- Intensity (1-10 scale)
-- What helped and how long recovery took
-- Physical symptoms (heart racing, sweating, tension)
+### 记录焦虑
+记录焦虑发作的具体情况，以识别规律：
+- 焦虑何时开始、由什么触发。
+- 焦虑程度（1-10分制）。
+- 有效的缓解方法及恢复所需时间。
+- 身体症状（心跳加速、出汗、紧张感）。
 
-### Pattern Review
-Weekly or monthly check-in to spot trends.
-- Which techniques work best for you
-- Common triggers and early warning signs
-- Time of day, stress levels, sleep quality
-- What reduces frequency over time
+### 定期回顾
+每周或每月进行一次回顾，以发现规律：
+- 哪些技巧对你最有效。
+- 常见的触发因素和早期预警信号。
+- 不同时间段的焦虑状况、压力水平及睡眠质量。
+- 随时间推移，哪些方法能减少焦虑的发作频率。
 
-## Techniques
+## 具体技巧
 
-### 4-7-8 Breathing
-The most powerful single technique. Works in 2 minutes.
+### 4-7-8呼吸法
+最有效的单一技巧，仅需2分钟即可生效：
+1. 通过鼻子吸气，数到4。
+2. 屏住呼吸，数到7。
+3. 通过嘴巴呼气，数到8。
+4. 重复4次。
 
-1. Breathe in through your nose for 4 counts
-2. Hold for 7 counts
-3. Exhale through your mouth for 8 counts
-4. Repeat 4 cycles
+**原理**：延长的呼气时间能激活副交感神经系统。当呼气时间超过吸气时间时，身体难以保持焦虑状态。
 
-*Why it works:* Extended exhale activates parasympathetic nervous system. Your body can't stay anxious when exhales are longer than inhales.
+### 盒子呼吸法
+海豹突击队和应急响应人员常用此方法：
+1. 吸气，数到4。
+2. 屏住呼吸，数到4。
+3. 呼气，数到4。
+4. 再屏住呼吸，数到4。
+5. 重复5-10次。
 
-### Box Breathing
-Used by Navy SEALs and emergency responders.
+**原理**：这种有规律的呼吸节奏能让神经系统感受到“安全”，从而产生镇静效果。
 
-1. Breathe in for 4 counts
-2. Hold for 4 counts
-3. Breathe out for 4 counts
-4. Hold for 4 counts
-5. Repeat 5-10 cycles
+### 5-4-3-2-1接地法
+在3-5分钟内实现全面的感官重置：
+- 列出5件你“看到”的事物、4件你能“触摸”的事物、3件你“听到”的事物、2件你“闻到”的事物、1件你“尝到”的事物。
 
-*Why it works:* Perfect balance signals your nervous system that you're safe. Predictable rhythm is calming.
+**原理**：大量的感官信息能覆盖前额叶皮层，从而抑制焦虑思绪，增强对当下的专注力。
 
-### 5-4-3-2-1 Grounding
-Full sensory reset in 3-5 minutes.
+### 身体扫描法
+通过渐进式肌肉放松来缓解紧张：
+1. 从脚趾开始，观察身体各部位的紧张感。
+2. 慢慢向上放松：脚、腿、腹部、胸部、手臂、颈部、头部。
+3. 对感到紧张的部位进行深呼吸并放松。
+**建议时间**：5-10分钟。
 
-Name 5 things you **see**, 4 things you can **touch**, 3 things you **hear**, 2 things you **smell**, 1 thing you **taste**.
+**原理**：焦虑其实存在于身体中，通过扫描可以释放紧张情绪，打破“焦虑→紧张→更多焦虑”的循环。
 
-*Why it works:* Floods your prefrontal cortex with sensory data, crowding out anxious thoughts. Forces present-moment awareness.
+## 使用建议
 
-### Body Scan
-Progressive muscle relaxation to release tension.
+1. **提前练习**：在需要使用这些技巧之前先进行练习，让神经系统将它们视为安全的行为。这样在焦虑出现时，它们就能立即发挥作用。
+2. **坚持比强度更重要**：每天练习5分钟比一次30分钟的练习更有效。养成习惯，让这些技巧在恐慌时自动生效。
+3. **找到适合自己的方法**：不同的人适合不同的技巧。尝试所有方法，然后选择2-3种最自然、最有效的作为常用工具。
+4. **记录有效的方法**：并非每种方法每次都能奏效。记录下哪些方法有效以及所需时间。你的个人数据是最可靠的参考依据。
+5. **数据安全存储**：所有焦虑记录、触发因素和规律都保存在你的设备上，不进行云同步，也不允许第三方访问。
 
-1. Start at your toes. Notice any tension without judgment.
-2. Move slowly up through your body: feet, legs, stomach, chest, arms, neck, head.
-3. Breathe into any tight areas. Consciously relax on exhale.
-4. Total time: 5-10 minutes
+## 如遇危机
 
-*Why it works:* Anxiety lives in your body. Scanning releases trapped tension and breaks the anxiety→tension→more anxiety loop.
+请注意：这些技巧不能替代专业帮助：
+- **988**（自杀与危机热线）：随时拨打或发送短信至988，24小时全天候服务。
+- **发送短信至741741**（危机短信支持）：提供免费的危机援助服务。
 
-## Tips
-
-1. **Practice before you need it.** Use these techniques when calm so your nervous system recognizes them as safe. Then they work instantly when anxiety hits.
-
-2. **Consistency beats intensity.** 5 minutes daily is better than one 30-minute session. Build the habit so it's automatic when panic strikes.
-
-3. **Find your anchor.** Different techniques work for different people. Try all of them, then pick 2-3 that feel most natural. Use those as your go-to toolkit.
-
-4. **Track what works.** Not every technique helps every time. Log which one ended the episode and how long it took. Your own data is your best guide.
-
-5. **All data stays local on your machine.** Your anxiety logs, triggers, and patterns never leave your device. No cloud sync, no third-party access.
-
-## If You're in Crisis
-
-This skill is not a substitute for professional help.
-
-- **988** (Suicide & Crisis Lifeline) - Call or text 988 anytime, 24/7
-- **Text HOME to 741741** (Crisis Text Line) - Free crisis support via text
-
-If you're having thoughts of self-harm, please reach out to one of these resources immediately.
+如果你有自伤的念头，请立即联系上述资源。

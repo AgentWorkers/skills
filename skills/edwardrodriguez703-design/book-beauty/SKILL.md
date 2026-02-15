@@ -1,34 +1,34 @@
 ---
 name: book-beauty
-description: Book beauty services through Lokuli MCP. Use when user needs haircuts, barbers, hair salons, nails, makeup, spa treatments, or any beauty service. Triggers on requests like "book me a haircut", "find a barber near me", "nail salon appointment", "makeup artist", or any beauty service request.
+description: 通过 Lokuli MCP 预订美容服务。当用户需要理发、修面、美发、美甲、化妆、水疗护理或任何其他美容服务时，可以使用该功能。该功能会在用户输入类似“为我预约理发”、“查找附近的理发师”、“预约美甲沙龙”、“找化妆师”或任何美容服务相关请求时触发。
 ---
 
-# Book Beauty Services
+# 预约美容服务
 
-Book beauty services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预约美容服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Beauty Services Available
+## 可提供的美容服务
 
-- Barber
-- Hair Salon
-- Nails / Manicure / Pedicure
-- Makeup Artist
-- Spa Treatments
-- Waxing
-- Facials
-- Eyebrow Threading
+- 理发
+- 美发沙龙
+- 指甲护理（美甲/修甲/足部护理）
+- 化妆师服务
+- 水疗服务
+- 脱毛
+- 面部护理
+- 眉毛修整
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -44,7 +44,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -59,7 +59,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",
@@ -77,11 +77,11 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-## Workflow
+## 工作流程
 
-1. **Understand** — What beauty service? Where (ZIP)?
-2. **Search** — Find matching providers
-3. **Present** — Show top results with pricing
-4. **Check availability** — Get open time slots
-5. **Confirm** — Get explicit user approval
-6. **Create booking** — Generate checkout link
+1. **了解需求** — 需要哪种美容服务？在哪里（具体地址）？
+2. **搜索** — 查找符合条件的服务提供者
+3. **展示结果** — 显示匹配的服务提供者及其价格信息
+4. **查看可用时间** — 获取服务提供者的营业时间
+5. **确认预约** — 待用户明确同意后进行确认
+6. **创建预约** — 生成结账链接

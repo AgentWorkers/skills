@@ -1,15 +1,15 @@
 ---
 name: aavegotchi-traits
-description: Retrieve Aavegotchi NFT data by gotchi ID or name from Base mainnet. Fetches traits (BRS, Kinship, XP, Energy, Aggression, Spookiness, Brain Size, Eye Shape, Eye Color), equipped wearables, haunt number, level, and age. Use when users ask about specific Aavegotchi stats, traits, wearables, rarity scores, or any gotchi-specific information on Base chain. Supports instant ID lookup and name search via The Graph subgraph (when available) or on-chain fallback.
+description: 从 Base 主网中根据 Aavegotchi 的 ID 或名称检索其 NFT 数据。可以获取以下信息：特性（BRS、亲缘关系、经验值、能量值、攻击性、恐惧程度、大脑大小、眼睛形状、眼睛颜色）、佩戴的饰品、被“纠缠”的次数（haunt number）、等级以及年龄。当用户询问特定 Aavegotchi 的统计数据、特性、佩戴的饰品、稀有度评分或与 Aavegotchi 相关的任何信息时，可以使用此功能。支持通过 The Graph 子图（如果可用）进行即时 ID 查找或名称搜索；在无法使用 The Graph 时，会采用链上查询方式作为备用方案。
 ---
 
-# Aavegotchi Traits
+# Aavegotchi 特性
 
-Fetch detailed on-chain data for Aavegotchi NFTs on Base mainnet with optional subgraph support for instant name lookups.
+该脚本可以从 Base 主网上获取 Aavegotchi NFT 的详细链上数据，并支持通过子图（subgraph）快速查找 NFT 的名称。
 
-## Quick Start
+## 快速入门
 
-Fetch data for a gotchi by ID or name:
+- 通过 ID 或名称获取 Aavegotchi 的数据：
 
 ```bash
 # By ID
@@ -19,38 +19,38 @@ cd scripts && node get-gotchi.js 9638  # aaigotchi
 cd scripts && node get-gotchi.js "aaigotchi"
 ```
 
-The script outputs:
-1. Human-readable formatted display
-2. JSON object for programmatic use
+脚本输出：
+1. 适合人类阅读的格式化结果
+2. 用于编程的 JSON 对象
 
-## Subgraph Support (The Graph)
+## 子图支持（The Graph）
 
-The skill includes **The Graph subgraph integration** for instant name lookups:
+该脚本支持 **The Graph** 子图，可以快速查找 NFT 的名称：
 
-### Current Status (Feb 2026)
+### 当前状态（2026 年 2 月）
 
-⚠️ **No Base subgraph available yet.** Aavegotchi migrated to Base in July 2025, but an official subgraph hasn't been deployed. The script automatically falls back to on-chain scanning.
+⚠️ **目前尚无 Base 子图可用。** Aavegotchi 于 2025 年 7 月迁移到了 Base 主网，但官方的子图尚未部署。因此，脚本会自动回退到链上扫描方式。
 
-### When Subgraph Becomes Available
+### 子图可用时
 
-Set the subgraph endpoint via environment variable:
+- 通过环境变量设置子图端点：
 
 ```bash
 export AAVEGOTCHI_SUBGRAPH_URL=https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-base
 ```
 
-Or in your shell config (~/.bashrc, ~/.zshrc):
+- 或在您的 shell 配置文件（`~/.bashrc` 或 `~/.zshrc`）中设置：
 
 ```bash
 echo 'export AAVEGOTCHI_SUBGRAPH_URL=https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-base' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-With subgraph configured:
-- **Name lookups:** Instant (GraphQL query)
-- **ID lookups:** Still use on-chain (most reliable for full trait data)
+配置子图后：
+- **名称查找：** 可以通过 GraphQL 查询立即完成
+- **ID 查找：** 仍然依赖链上数据（获取完整特性信息最可靠）
 
-### Lookup Strategy
+### 查找策略
 
 ```
 ID lookup (#9638 - aaigotchi)
@@ -61,54 +61,54 @@ Name lookup ("aaigotchi" - #9638)
   └─> Fall back to on-chain scan (30-60s)
 ```
 
-## What It Fetches
+## 获取的数据
 
-For any Aavegotchi token ID, the script retrieves:
+对于任何 Aavegotchi 代币 ID，脚本会获取以下信息：
 
-**Core Stats:**
-- Base Rarity Score (BRS)
-- Modified Rarity Score (with wearable bonuses)
-- Kinship level
-- Experience points (XP)
-- Level
+**核心数据：**
+- Base 稀有度得分（BRS）
+- 经过可穿戴物品修改后的稀有度得分
+- 亲缘关系等级
+- 经验值（XP）
+- 等级
 
-**Traits (6 numeric values):**
-- ⚡ Energy (NRG)
-- 💥 Aggression (AGG)
-- 👻 Spookiness (SPK)
-- 🧠 Brain Size (BRN)
-- 👁️ Eye Shape (EYS)
-- 🎨 Eye Color (EYC)
+**特性（6 个数值）：**
+- ⚡ 能量（NRG）
+- 💥 攻击性（AGG）
+- 👻 可怖程度（SPK）
+- 🧠 大脑大小（BRN）
+- 👁️ 眼睛形状（EYS）
+- 🎨 眼睛颜色（EYC）
 
-Each trait shows both base and modified (with wearables) values.
+每个特性的值都会显示基础值和经过可穿戴物品修改后的值。
 
-**Wearables:**
-- List of all equipped wearables with IDs and names
-- Format: `ID: Name` (e.g., "50: GldnXross Robe")
-- Empty slots filtered out
-- Includes count of equipped items
+**可穿戴物品：**
+- 列出所有已装备的可穿戴物品及其 ID 和名称
+- 格式：`ID: 名称`（例如：“50: GldnXross Robe”
+- 空闲的装备槽会被过滤掉
+- 包括装备的数量
 
-**Identity:**
-- Token ID
-- Name (if set)
-- Owner address
-- Haunt number
+**身份信息：**
+- 代币 ID
+- 名称（如果已设置）
+- 所有者地址
+- 出没地点（Haunt）
 
-**Staking:**
-- Collateral token address
-- Staked amount
-- Last interaction timestamp
-- Age (days since last interaction)
+**质押信息：**
+- 抵押代币地址
+- 抵押金额
+- 最后交互时间戳
+- 年龄（自上次交互以来的天数）
 
-## Usage
+## 使用方法
 
-### By Gotchi ID
+- **按 ID 查找：**
 
 ```bash
 cd scripts && node get-gotchi.js 9638  # aaigotchi
 ```
 
-### By Name
+- **按名称查找：**
 
 ```bash
 cd scripts && node get-gotchi.js "aaigotchi"
@@ -116,13 +116,13 @@ cd scripts && node get-gotchi.js "Slide"
 cd scripts && node get-gotchi.js "XIBOT"
 ```
 
-**Performance:**
-- With subgraph (when available): **Instant** ⚡
-- Without subgraph (current): **30-60 seconds** (on-chain scan of all gotchis)
+**性能：**
+- 使用子图时：**立即完成**
+- 不使用子图时：**需要 30-60 秒（扫描所有 Aavegotchi）
 
-💡 **Tip:** Use gotchi ID when possible for guaranteed instant results.
+💡 **提示：** 尽可能使用代币 ID，以确保立即获得结果。
 
-## Example Output
+## 示例输出
 
 ```
 ============================================================
@@ -165,60 +165,48 @@ JSON OUTPUT:
 }
 ```
 
-## Contract Details
+## 合同详情
 
-**Contract:** `0xa99c4b08201f2913db8d28e71d020c4298f29dbf` (Base mainnet)
+- **合同地址：** `0xa99c4b08201f2913db8d28e71d020c4298f29dbf`（Base 主网）
+- **网络：** Base（链 ID：8453）
+- **RPC 请求地址：** `https://mainnet.base.org`
 
-**Network:** Base (Chain ID: 8453)
+## 数据解析
 
-**RPC:** `https://mainnet.base.org`
+有关特性的详细解释、BRS、亲缘关系、可穿戴物品、出没地点等 Aavegotchi 机制的更多信息，请参阅：
 
-## Understanding the Data
+**参考文档：** [references/aavegotchi-data.md](references/aavegotchi-data.md)
 
-For detailed explanations of traits, BRS, kinship, wearables, haunts, and other Aavegotchi mechanics:
+## 所需环境：
 
-**See:** [references/aavegotchi-data.md](references/aavegotchi-data.md)
+- Node.js（版本 18 及以上）
+- npm 包：`ethers`、`node-fetch`（通过 `package.json` 安装）
+- 互联网连接（用于查询 Base RPC 和可选的 The Graph）
+- 可穿戴物品数据文件（包含 400 多个物品的 `wearables-data.json`）
 
-## Requirements
+依赖项和数据文件已预先安装在脚本目录中。
 
-- Node.js (v18+)
-- npm packages: `ethers`, `node-fetch` (installed via package.json)
-- Internet connection (queries Base RPC and optionally The Graph)
-- Wearables data file (included: `wearables-data.json` with 400+ items)
+## 故障排除：
 
-Dependencies and data files are pre-installed in the skill's scripts directory.
+- **“无效的代币 ID”错误：**
+  - 该 Aavegotchi 代币在 Base 主网上不存在，请检查 ID 是否正确。
+- **网络错误：**
+  - 检查互联网连接是否正常
+  - Base 的 RPC 服务可能暂时不可用，请稍后再试。
+- **名称查找耗时过长：**
+  - **使用子图时：** 确保 `AAVEGOTCHI_SUBGRAPH_URL` 设置正确。
+  - **不使用子图时：** 名称搜索会顺序扫描所有 23,000 多个 Aavegotchi（耗时 30-60 秒）。
+  - 使用代币 ID 可以立即获得结果。
+  - 确保互联网连接稳定。
 
-## Troubleshooting
+## 未来改进计划：
 
-**"Invalid token ID" error:**
-- Gotchi doesn't exist on Base
-- Verify the ID is correct
-
-**Network errors:**
-- Check internet connection
-- Base RPC may be temporarily down
-- Try again in a few moments
-
-**Name lookup taking too long:**
-- **With subgraph:** Check AAVEGOTCHI_SUBGRAPH_URL is set correctly
-- **Without subgraph (current):** Name search scans all 23,000+ gotchis sequentially (30-60s)
-- Use gotchi ID for instant results
-- Ensure stable internet connection
-
-**"Subgraph unavailable" message:**
-- Expected behavior (no Base subgraph deployed yet)
-- Script automatically falls back to on-chain scan
-- No action needed
-
-## Future Enhancements
-
-Potential additions:
-- ✅ **The Graph subgraph support** (implemented, awaiting Base subgraph deployment)
-- ✅ **Wearable name resolution** (implemented: 400+ wearables mapped)
-- Batch queries for multiple gotchis
-- Historical trait/kinship tracking
-- Wearable rarity/stats display
-- Pocket/inventory queries
-- Guild/lending data
-- Real-time petting status
-- Trait rarity percentiles
+- ✅ **The Graph 子图支持**（已实现，等待 Base 子图正式部署）
+- ✅ **可穿戴物品名称的解析**（已实现，已映射 400 多种可穿戴物品）
+- 批量查询多个 Aavegotchi
+- 历史特性/亲缘关系记录
+- 可穿戴物品的稀有度/统计信息显示
+- 查看口袋/库存中的物品
+- 公会/借贷信息
+- 实时显示宠物的状态
+- 特性的稀有度百分位数

@@ -1,28 +1,28 @@
 ---
 name: xmtp-cli-debug
-description: Get debug and diagnostic information from the XMTP CLI. Use when resolving address, inspecting inbox, or getting general info.
+description: 从 XMTP CLI 获取调试和诊断信息。适用于解决地址问题、检查收件箱内容或获取一般信息时使用。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# CLI debug
+# CLI调试
 
-Get debug and diagnostic information: general info, resolve address to inbox ID, inspect address or inbox.
+获取调试和诊断信息：包括一般信息、将地址解析为收件箱ID、检查地址或收件箱内容。
 
-## When to apply
+## 使用场景
 
-- Getting general CLI/client info
-- Resolving an Ethereum address to an inbox ID
-- Inspecting address or inbox details
-- Checking installations or key package
+- 获取CLI/客户端的一般信息
+- 将以太坊地址解析为收件箱ID
+- 检查地址或收件箱的详细信息
+- 验证安装情况或密钥包的状态
 
-## Rules
+## 使用规则
 
-- `info-resolve-address-inbox` – `debug info` / `address` / `inbox` / `resolve` / `installations` / `key-package` and options
+- 命令格式：`info-resolve-address-inbox`，后跟参数 `debug info`、`address`、`inbox`、`resolve`、`installations` 或 `key-package` 及相关选项
 
-## Quick start
+## 快速入门
 
 ```bash
 xmtp debug info
@@ -31,4 +31,4 @@ xmtp debug address --address 0x1234...
 xmtp debug inbox --inbox-id abc...
 ```
 
-Read `rules/info-resolve-address-inbox.md` for details.
+详情请参阅 `rules/info-resolve-address-inbox.md` 文件。

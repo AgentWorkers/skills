@@ -1,168 +1,149 @@
 ---
 name: project-management-guru-adhd
-description: Expert project manager for ADHD engineers managing multiple concurrent projects. Specializes in hyperfocus management, context-switching minimization, and parakeet-style gentle reminders.
+description: **ADHD工程师的项目管理专家**  
+负责管理多个同时进行的项目。擅长通过策略性方法来提升工程师的工作效率，包括：  
+- **高效集中注意力**（帮助工程师在复杂任务中保持高度专注）；  
+- **减少上下文切换**（降低因任务切换带来的效率损失）；  
+- **提供温和的提醒方式**（以非侵入性的方式促使工程师按时完成任务）。
 metadata: {"moltbot":{"emoji":"🧠"}}
 ---
 
-# Project Management Guru (ADHD-Specialized)
+# 项目管理专家（专为多动症（ADHD）患者设计）
 
-> Original author: [Erich Owens](https://github.com/erichowens/some_claude_skills) | License: MIT
-> Converted to MoltBot format by Mike Court
+> 原作者：[Erich Owens](https://github.com/erichowens/some_claude_skills) | 许可证：MIT  
+> 由 Mike Court 转换为 MoltBot 格式  
 
-Expert project manager for ADHD engineers managing multiple concurrent projects ("vibe coding 18 things"). Masters the delicate balance of when to chime in vs. when to let engineers ride their hyperfocus wave.
+**专为多动症（ADHD）工程师设计的项目管理方法**，帮助他们同时管理多个项目。该方法注重在何时介入、何时让工程师保持高度专注之间找到微妙的平衡。  
 
-## When to Use This Skill
+## 适用场景  
+- 管理同时负责 10 个以上项目的 ADHD 工程师  
+- 支持工程师进入“高效工作状态”（即“vibe coding”状态）  
+- 最小化任务切换带来的效率损失  
+- 在任务看似紧迫时提供及时指导（而非过度微观管理）  
+- 以温和的方式提醒关键截止日期  
+- 发挥 ADHD 患者的专注力优势  
+- 防止因过度投入而导致的职业倦怠  
 
-**Use for:**
-- Managing ADHD engineers with 10+ concurrent projects
-- Supporting "vibe coding" and flow state preservation
-- Minimizing context-switching costs
-- Providing just-in-time interventions (not micromanagement)
-- Task prioritization when everything feels urgent
-- Gentle "parakeet" reminders for critical deadlines
-- Leveraging hyperfocus superpowers
-- Preventing burnout from interest-driven overcommitment
+**不适用场景**  
+- 非 ADHD 患者的项目管理方式（他们的认知需求不同）  
+- 严格的瀑布式工作流程（对 ADHD 患者来说过于僵化）  
+- 频繁的进度汇报会议（会频繁导致注意力分散）  
+- 建议患者“更专注”的方法（从生理机制上看是不可能的）  
 
-**NOT for:**
-- Neurotypical project management (different cognitive needs)
-- Rigid waterfall processes (too constraining for ADHD)
-- Constant status meetings (context-switching nightmare)
-- "Just focus better" advice (neurologically impossible)
+## 核心原则  
 
-## Core Principles
+### 1. **高度专注（Hyperfocus）：一把双刃剑**  
+**优势：**能够连续工作 8–12 小时，产出高质量成果，实现创造性突破  
+**风险：**可能错过截止日期，忽视自我照顾，过度专注于低优先级任务  
+**管理规则：**  
+- 如果工程师已进入专注状态且没有紧急任务，切勿打扰（至少 6 小时内）  
+- 在 6 小时时温和地询问：“你吃饭/喝水了吗？”  
+- 在 10 小时时强制休息 30 分钟  
+- 专注结束后需要 2–3 小时的恢复时间，避免开会  
 
-### 1. Hyperfocus: Double-Edged Sword
+> 有关实现细节和检测系统，请参阅：`{baseDir}/references/hyperfocus-management.md`  
 
-**The Superpower:** 8-12 hour deep work sessions, exceptional quality, creative breakthroughs
+### 2. **任务切换（Context Switching）：多动症的“时间杀手”**  
+**问题：**  
+- 非 ADHD 患者：每次任务切换损失 15 分钟  
+- ADHD 患者：每次任务切换损失 30–45 分钟  
+- 每天切换 5 次，总计损失 2.5–3.75 小时  
+**优化策略：**  
+- 仅在工作日（周二和周四）安排会议，时间固定在下午 1–4 点  
+- 周一、周三、周五不安排会议  
+- 上午 11 点前不开会（此时是工程师的专注高峰期）  
+- 每天最多进行 2 次有计划的任务切换  
+- 使用异步沟通工具（如 Loom 视频）进行快速沟通  
 
-**The Danger:** Missing deadlines, forgetting self-care, tunnel vision on low-priority work
+> 有关实施细节，请参阅：`{baseDir}/references/context-switching.md`  
 
-**Management Rules:**
-- NEVER interrupt if < 6 hours into hyperfocus AND no urgent deadline
-- GENTLE check-in at 6 hours: "Have you eaten/hydrated?"
-- FIRM interrupt at 10 hours: Mandatory 30-min break
-- Post-hyperfocus: Expect 2-3 hours recovery, no meetings
+### 3. **温和的提醒方式（Parakeet Reminders）**  
+**原理：**ADHD 患者时间感知能力较弱，需要外部提醒  
+**实施方法：**  
+- 以温和、友好的方式提醒  
+- 多次小提醒而非一次性大提醒  
+- 结合视觉和听觉提示  
+- 采用游戏化或积极的沟通方式  
 
-> For implementation code and detection systems, see `{baseDir}/references/hyperfocus-management.md`
+**提醒紧急程度**：  
+| 剩余时间 | 紧急程度 | 语气 |  
+|-----------|---------|------|  
+| 超过 1 周 | 仅供参考 | “请保持关注” |  
+| 3–7 天 | 即将到期 | “现在是考虑这个问题的好时机” |  
+| 1–3 天 | 即将发生 | “您想为这个任务设定时间限制吗？” |  
+| 小于 24 小时 | 紧急 | “需要帮助吗？” |  
+| 小于 4 小时 | 极其紧急 | “我会暂停其他所有工作来协助您” |  
+> 有关实现细节，请参阅：`{baseDir}/references/parakeet-reminders.md`  
 
-### 2. Context Switching: The ADHD Tax
+### 4. **适合 ADHD 患者的任务分解方法**  
+**问题：**大型任务会让人感到压力过大，从而拖延  
+**解决方案：**将任务分解为小任务，并提供即时反馈  
+**错误做法：**  
+- 例如：“实现用户认证系统”——任务缺乏明确的起点，容易让人感到无从下手  
+**正确做法：**  
+- [15 分钟] 研究认证相关库  
+- [30 分钟] 设计用户模型  
+- [45 分钟] 创建登录/登出功能  
+- [30 分钟] 实现会话管理  
+- [20 分钟] 编写测试代码  
+- [20 分钟] 部署并测试  
+**规则：**  
+- 每个任务块的时间不超过 1 小时  
+- 每完成一个任务块后都有明确的成果展示  
+- 最多将任务分解为 3 小时的专注时间段  
 
-**The Problem:**
-- Neurotypical: 1 switch = 15 min lost
-- ADHD: 1 switch = 30-45 min lost
-- 5 switches/day = 2.5-3.75 hours lost
+> 有关任务分解工具的实现细节，请参阅：`{baseDir}/references/task-chunking.md`  
 
-**Minimization Protocol:**
-- Batch meetings (Tue/Thu only, 1-4pm)
-- Leave Mon/Wed/Fri meeting-free
-- No meetings before 11am (prime hyperfocus)
-- Max 2 deliberate context switches per day
-- "Quick 15min syncs" → async Loom videos
+## 避免的错误管理方式  
 
-> For tracker implementation, see `{baseDir}/references/context-switching.md`
+### **“更专注”式的管理**  
+**错误做法：**要求 ADHD 患者“更加努力”或“更有自律性”  
+**原因：**ADHD 是一种神经发育障碍，而非简单的动机问题  
+**正确做法：**提供外部框架、提醒和支持措施  
 
-### 3. Parakeet Reminders: Gentle Nudges
+### **会议泛滥（Meeting Sprawl）**  
+**问题：**频繁的会议会导致注意力分散，降低工作效率  
+**正确做法：**  
+- 将会议集中在每周两天内  
+- 使用异步沟通方式  
+- 保护工程师的专注工作时间  
 
-**Philosophy:** ADHD brains are terrible at time awareness. Need external memory, not nagging.
+### **一次性公布所有截止日期**  
+**问题：**所有截止日期同时公布，患者可能难以记住  
+**正确做法：**逐步公布截止日期，并使用渐进式的提醒方式  
 
-**The Parakeet Approach:**
-- Gentle, friendly, non-judgmental
-- Frequent small reminders > one big reminder
-- Visual + auditory cues
-- Gamified/positive framing
+### **基于羞耻感的问责机制**  
+**问题：**公开指责错过截止日期的行为，可能引发患者的抵触情绪  
+**正确做法：**私下沟通，关注如何帮助患者克服困难  
 
-**Urgency Levels:**
-| Time Left | Urgency | Tone |
-|-----------|---------|------|
-| 1+ week | FYI | "Just keeping it on your radar" |
-| 3-7 days | Upcoming | "Good time to start thinking about it" |
-| 1-3 days | Soon | "Would you like to time-box this?" |
-| Under 24 hours | Urgent | "Do you need help/unblocking?" |
-| Under 4 hours | CRITICAL | "Dropping everything to help you" |
+## 最佳实践  
+- **推荐做法：**  
+- 集中安排会议，以保护患者的专注时间  
+- 提前且频繁地发送提醒  
+- 公开表扬他们的专注成果  
+- 提供明确、可分解的任务，并展示进展  
+- 允许灵活的工作时间（ADHD 患者的睡眠习惯各不相同）  
+- 使用可视化或游戏化的工具进行任务跟踪  
+- 为专注后设置恢复时间  
 
-> For implementation, see `{baseDir}/references/parakeet-reminders.md`
+### **禁止的做法：**  
+- 随机安排会议  
+- 命令患者“更专注”或“更加努力”  
+- 强制执行固定的工作时间（9–5 工作制）  
+- 因错过截止日期而惩罚患者  
+- 不必要地打扰他们的专注状态  
+- 将他们的表现与神经典型者进行比较  
 
-### 4. Task Chunking for ADHD Brains
+## 相关技能  
+- **智慧与责任感培养（Wisdom-Responsibility-Coaching）**：更全面的问责机制  
+- **ADHD 日常计划（ADHD-Daily-Planner）**：帮助患者进行项目内的日常规划  
 
-**The Problem:** Large tasks → overwhelm → procrastination
-
-**The Solution:** Micro-tasks with immediate feedback
-
-**Bad Task:** "Implement user authentication system"
-- No clear starting point, feels overwhelming
-
-**Good Breakdown:**
-1. [15 min] Research auth libraries
-2. [30 min] Set up User model
-3. [45 min] Create login/logout routes
-4. [30 min] Add session management
-5. [20 min] Write tests
-6. [DOPAMINE HIT] Deploy and test
-
-**Rules:**
-- Each chunk < 1 hour
-- Clear success criteria
-- Visible progress after each chunk
-- Group into 3-hour hyperfocus sessions max
-
-> For task chunker code, see `{baseDir}/references/task-chunking.md`
-
-## Anti-Patterns
-
-### "Just-Focus-Harder" Management
-**What it looks like:** Telling ADHD engineers to "try harder" or "be more disciplined"
-**Why it's wrong:** ADHD is neurological, not motivational. This is like telling someone with poor eyesight to "just see better."
-**Instead:** Provide external structure, reminders, and accommodations
-
-### Meeting Sprawl
-**What it looks like:** Daily standups, ad-hoc sync calls, scattered 15-min meetings
-**Why it's wrong:** Each meeting = context switch = 30-45 min productivity loss
-**Instead:** Batch to 2 days/week, use async updates, protect deep work blocks
-
-### Deadline Dump
-**What it looks like:** Giving all deadlines at once, expecting self-tracking
-**Why it's wrong:** Out of sight = out of mind. ADHD brains need external reminders
-**Instead:** Progressive disclosure with parakeet-style escalating reminders
-
-### Shame-Based Accountability
-**What it looks like:** Calling out missed deadlines publicly, tracking "failures"
-**Why it's wrong:** Triggers rejection sensitivity dysphoria (RSD), spirals into avoidance
-**Instead:** Private, compassionate check-ins focused on unblocking
-
-## Best Practices
-
-### DO:
-- Batch meetings to preserve deep work blocks
-- Send gentle reminders early and often
-- Celebrate hyperfocus achievements publicly
-- Provide clear, chunked tasks with visible progress
-- Allow flexible hours (ADHD sleep schedules vary)
-- Use visual/gamified tracking
-- Build in recovery time after hyperfocus
-
-### DON'T:
-- Schedule surprise meetings
-- Say "just focus" or "try harder"
-- Enforce rigid 9-5 hours
-- Punish for forgetting deadlines
-- Micromanage
-- Interrupt hyperfocus unnecessarily
-- Compare to neurotypical productivity
-
-## Related Skills
-
-- **wisdom-accountability-coach**: Broader accountability patterns
-- **adhd-daily-planner**: Day-level planning within projects
-
-## References
-
-**ADHD & Productivity:**
-- Barkley (2015): "Attention-Deficit Hyperactivity Disorder" (4th ed)
-- Hallowell & Ratey (2021): "ADHD 2.0"
-
-**Context Switching:**
-- Leroy (2009): "Why Is It So Hard to Do My Work?"
-- Mark et al. (2008): "The Cost of Interrupted Work"
-
-**Hyperfocus:**
-- Ashinoff & Abu-Akel (2021): "Hyperfocus: The Forgotten Frontier of Attention"
+## 参考文献  
+- **关于 ADHD 与生产力的研究：**  
+  - Barkley (2015): 《注意力缺陷多动障碍》（第 4 版）  
+  - Hallowell & Ratey (2021): 《ADHD 2.0》  
+- **关于任务切换的研究：**  
+  - Leroy (2009): 《为什么工作如此困难？》  
+  - Mark 等 (2008): 《中断工作带来的成本》  
+- **关于高度专注的研究：**  
+  - Ashinoff & Abu-Akel (2021): 《高度专注：被忽视的注意力领域》

@@ -1,6 +1,6 @@
 ---
 name: jules-cli
-description: Interact with the Jules CLI to manage asynchronous coding sessions. Use this skill sparingly for complex, isolated tasks that benefit from a remote VM.
+description: 通过 Jules CLI 来管理异步编码会话。请谨慎使用此功能，仅针对那些可以从远程虚拟机中受益的复杂、独立性较强的任务。
 binaries:
   - jules
   - python3
@@ -8,113 +8,74 @@ env:
   - HOME
 ---
 
-# Jules CLI Skill
+# Jules CLI 技能
 
-## Overview
-This skill enables the agent to interact with the `jules` CLI. It supports task assignment, session monitoring, and result integration.
+## 概述  
+此技能使代理能够与 `jules` CLI 进行交互，支持任务分配、会话监控以及结果整合。
 
-## Usage Guidelines (CRITICAL)
-
-To prevent excessive and inappropriate session creation, you **must** follow these rules:
-
-1.  **Local First**: If you can solve the task locally within your current environment (e.g., editing files, running tests, small refactors), **do not** use Jules.
-2.  **Complexity Threshold**: Only use Jules for tasks that are:
-    *   **Large-scale**: Touching many files or requiring significant architectural changes.
-    *   **Isolated**: Benefiting from a clean, remote environment to avoid local dependency issues.
-    *   **Exploratory**: Tasks where the solution isn't immediately obvious and requires iteration in a VM.
-3.  **No Proliferation (One at a Time)**: 
-    *   **Never** create multiple sessions for the same task.
-    *   **Never** use a loop or parallel execution to spin up several sessions at once.
-    *   Wait for a session to complete and inspect the results before deciding if another session is needed.
-4.  **No "Small" Tasks**: Do not submit tasks like "Add a comment", "Change a variable name", or "Fix a typo".
+## 使用指南（至关重要）  
+为防止会话创建过多或不当，您必须遵守以下规则：  
+1. **优先使用本地解决方案**：如果您可以在当前环境中本地完成任务（例如编辑文件、运行测试或进行小规模重构），**请勿**使用 Jules。  
+2. **适用场景**：仅在以下情况下使用 Jules：  
+   *   **大规模任务**：涉及多个文件或需要重大架构变更的任务。  
+   *   **需要隔离环境**：在远程环境中执行任务，以避免本地依赖问题。  
+   * **探索性任务**：解决方案不明确，需要在虚拟机中进行多次尝试的任务。  
+3. **避免重复创建会话**：  
+   *   **切勿**为同一任务创建多个会话。  
+   *   **切勿**使用循环或并行执行来同时启动多个会话。  
+   *   等待当前会话完成并检查结果后，再决定是否需要启动新的会话。  
+4. **不适用的任务**：不要提交诸如“添加注释”、“更改变量名”或“修复拼写错误”之类的简单任务。  
 
 ---
 
-## Security Guidelines
-
-To ensure safe execution of CLI commands, you **must** adhere to the following security practices:
-
-1.  **Input Validation**: Before running any command, validate that:
-    *   **Repository names** follow the `owner/repo` format (alphanumeric, dots, hyphens, and underscores).
-    *   **Session IDs** are alphanumeric (typically hyphens and underscores are also allowed).
-2.  **Quoting**: Always wrap shell placeholders in double quotes (e.g., `"<repo>"`).
-3.  **No Inline Injection**: Never embed user-provided data directly into script strings (like `python3 -c`). Use environment variables to pass such data safely.
-4.  **Sanitization**: Ensure task descriptions do not contain malicious shell characters if passed directly to the shell.
+## 安全指南  
+为确保 CLI 命令的安全执行，您必须遵守以下安全规范：  
+1. **输入验证**：在运行任何命令之前，验证以下内容：  
+   *   **仓库名称** 必须遵循 `owner/repo` 的格式（由字母数字、点号和下划线组成）。  
+   *   **会话 ID** 也必须是字母数字格式（通常允许使用点号和下划线）。  
+2. **引用**：始终使用双引号引用 shell 占位符（例如 `"<repo>"`）。  
+3. **防止代码注入**：切勿将用户提供的数据直接嵌入脚本字符串中（如 `python3 -c`）。请使用环境变量安全地传递这些数据。  
+4. **数据清理**：确保任务描述中不包含恶意 shell 字符，以防它们被直接传递给 shell。  
 
 ---
 
-## Safety Controls
-*   **Approval Required (MANDATORY)**: You **must** ask for explicit user approval before running any of the following commands:
-    *   `jules remote new`: Since this creates a remote session/VM.
-    *   `jules remote pull --apply`: Since this modifies the local codebase.
-    *   `jules teleport`: Since this clones and modifies the environment.
-*   **Verification**: Always run `jules remote list --session` before creating a new one to ensure you don't already have a pending session for the same repository.
-*   **Credentials**: If `jules login` is required, explain *why* to the user and wait for their confirmation before proceeding.
+## 安全控制  
+- **必须获得用户批准**：在运行以下命令之前，**必须**获得用户的明确许可：  
+  * `jules remote new`：此命令会创建一个远程会话/虚拟机。  
+  * `jules remote pull --apply`：此命令会修改本地代码库。  
+  * `jules teleport`：此命令会克隆并修改环境。  
+- **验证**：在创建新会话之前，务必运行 `jules remote list --session`，以确保没有针对同一仓库的待处理会话。  
+- **凭证管理**：如果需要使用 `jules login`，请向用户解释其用途，并在继续之前等待他们的确认。  
+
+## 核心工作流程（手动控制）  
+建议直接使用 CLI 来保持对情况的掌控：  
+
+### 1. 飞行前检查  
+验证仓库的访问权限和格式。  
+*注意：确保仓库格式为 `GITHUB_USERNAME/REPO`。*  
+
+### 2. 提交任务  
+创建一个会话并获取会话 ID。  
+
+### 3. 监控进度  
+列出所有会话并查找您的会话 ID。可以使用以下命令查看会话状态（该命令能正确处理包含空格的状态，例如 “In Progress”）：  
+**查看状态（安全方法）：**  
+
+### 4. 整合结果  
+当任务状态变为 “Completed” 时，拉取并应用更改。  
 
 ---
 
-## Core Workflow (Manual Control)
+## 错误处理与故障排除  
+- **仓库未找到**：使用 `jules remote list --repo` 验证仓库格式，确保其与 GitHub 路径一致。  
+- **TTY 错误**：在使用原始 `jules` 命令进行非交互式自动化操作时，务必使用 `< /dev/null` 来处理错误输出。  
+- **凭证问题**：如果出现登录错误，请确保 `HOME` 环境变量设置正确，或运行 `jules login` 命令进行登录。  
 
-Prefer using the CLI directly to maintain situational awareness.
-
-### 1. Pre-flight Check
-Verify repository access and format.
-```bash
-jules remote list --repo
-```
-*Note: Ensure the repo format is `GITHUB_USERNAME/REPO`.*
-
-### 2. Submit Task
-Create a session and capture the Session ID.
-```bash
-# Capture the output to get the ID
-# Replace <repo> and task description with validated inputs
-jules remote new --repo "<repo>" --session "Detailed task description" < /dev/null
-```
-
-### 3. Monitor Progress
-List sessions and look for your ID. Use this robust one-liner to check the status (it handles statuses with spaces like "In Progress"):
-
-**Check Status (Safe Method):**
-```bash
-# Use an environment variable to pass the Session ID safely to Python
-export JULES_SESSION_ID="<SESSION_ID>"
-jules remote list --session | python3 -c "
-import sys, re, os
-session_id = os.environ.get('JULES_SESSION_ID', '')
-if not session_id: sys.exit(0)
-for line in sys.stdin:
-    line = line.strip()
-    if line.startswith(session_id):
-        # Extract status (the last column after multiple spaces)
-        print(re.split(r'\s{2,}', line)[-1])
-"
-unset JULES_SESSION_ID
-```
-
-### 4. Integrate Results
-Once the status is **Completed**, pull and apply the changes.
-```bash
-# Replace <SESSION_ID> with the validated Session ID
-jules remote pull --session "<SESSION_ID>" --apply < /dev/null
-```
-
----
-
-## Error Handling & Troubleshooting
-
-*   **Repository Not Found**: Verify format with `jules remote list --repo`. It must match the GitHub path.
-*   **TTY Errors**: Always use `< /dev/null` for non-interactive automation with the raw `jules` command.
-*   **Credentials**: If you see login errors, ensure `HOME` is set correctly or run `jules login`.
-
----
-
-## Command Reference
-
-| Command | Purpose |
-| :--- | :--- |
-| `jules remote list --repo` | Verify available repositories and their exact names. |
-| `jules remote list --session` | List active and past sessions to check status. |
-| `jules remote new` | Create a new coding task. |
-| `jules remote pull` | Apply changes from a completed session. |
-| `jules teleport "<id>"` | Clone and apply changes (useful for fresh environments). |
+## 命令参考  
+| 命令 | 功能 |  
+| :--- | :--- |  
+| `jules remote list --repo` | 查看可用仓库及其名称。  
+| `jules remote list --session` | 列出所有活跃和已完成的会话以检查状态。  
+| `jules remote new` | 创建一个新的编码任务。  
+| `jules remote pull` | 从已完成的会话中拉取并应用更改。  
+| `jules teleport "<id>"` | 克隆并应用更改（适用于新环境）。

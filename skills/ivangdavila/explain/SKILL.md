@@ -1,71 +1,78 @@
 ---
 name: "Explain"
-description: "Auto-learns how to explain things to your human. Adapts format, depth, and style by topic."
+description: "它会自动学习如何向人类解释各种内容，并根据不同的主题调整解释的格式、深度和风格。"
 ---
 
-## Auto-Adaptive Explanation Preferences
+## 自适应解释偏好设置
 
-This skill auto-evolves. Observe what explanations land and which miss, then adapt.
+该技能会随着使用情况进行自动优化。通过观察用户对解释内容的接受程度（是理解了还是感到困惑），从而调整解释方式。
 
-**Scope:** Only human-facing explanations. Agent-to-agent communication doesn't apply.
+**适用范围：** 仅适用于面向人类的解释内容；代理之间的通信不在此范围内。
 
-**Core Loop:**
-1. **Observe** — Notice when explanations work vs confuse
-2. **Signals** — "Got it" = worked. "Wait, what?" / follow-ups = missed.
-3. **Pattern** — After 2+ consistent signals per topic, propose confirmation
-4. **Confirm** — Ask: "For [topic], should I explain with [style]?"
-5. **Store** — Only after explicit yes, add below
-
----
-
-## Entry Format
-
-One line: `topic: preference (level)`
-
-Levels: `pattern` (2+ signals), `confirmed` (explicit yes), `locked` (reinforced)
-
-Dimensions to track (see `dimensions.md` for full list):
-- **format:** bullets | prose | numbered | headers
-- **depth:** tldr | summary | standard | deep
-- **examples:** none | one | multiple | analogies
-- **jargon:** avoid | define | assume-knowledge
-- **pacing:** upfront | progressive | chunked
-
-Examples:
-- `code/errors: fix first, explain after (confirmed)`
-- `finance: bullets, no jargon (pattern)`
-- `ai-concepts: use analogies (locked)`
-- `quick-tasks: just the answer (confirmed)`
+**核心流程：**
+1. **观察**：记录解释内容是否有效（用户是否理解了），或者是否引发了混淆。
+2. **接收用户反馈**：用户表示“明白了”表示解释有效；用户提出疑问或需要进一步说明则表示解释失败。
+3. **形成模式**：当某个主题连续收到多次正面反馈时，建议确认用户的理解情况。
+4. **确认用户需求**：询问用户：“对于[主题]，我应该用[哪种解释方式]来进行讲解？”
+5. **记录决策**：只有在用户明确表示同意后，才将解释方式记录下来。
 
 ---
 
-### Format
-<!-- bullets vs prose, headers, length. Format: "topic: preference (level)" -->
+## 输入格式
 
-### Depth
-<!-- which topics need more/less detail. Format: "topic: depth-level (level)" -->
+每行格式：`主题: 偏好设置 (偏好级别)`
 
-### Examples
-<!-- when examples help vs noise. Format: "topic: example-style (level)" -->
+偏好级别：
+- `pattern`（收到2次或以上正面反馈）
+- `confirmed`（用户明确表示同意）
+- `locked`（用户持续认可当前解释方式）
 
-### Jargon
-<!-- technical terms by domain. Format: "domain: jargon-level (level)" -->
+需要跟踪的维度（详见`dimensions.md`）：
+- **格式**：项目符号 | 散文 | 编号 | 标题
+- **深度**：简明扼要 | 总结 | 标准 | 详细
+- **示例**：无 | 一个示例 | 多个示例 | 用类比解释
+- **专业术语**：避免使用 | 定义专业术语 | 假设用户已了解相关知识
+- **讲解节奏**：一次性讲解全部内容 | 分阶段讲解
 
-### Pacing
-<!-- all at once vs incremental. Format: "topic: pacing-style (level)" -->
-
-### Never
-<!-- approaches that consistently fail -->
-
----
-
-## Defaults (Until Learned)
-
-- Lead with direct answer, context after
-- Match question length (short Q = short A)
-- One concept at a time for complex topics
-- Ask "want me to go deeper?" rather than dumping
+示例：
+- `code/errors: 先修复错误，再解释原因（用户确认后执行）`
+- `finance: 使用项目符号列表进行讲解（偏好设置：pattern）`
+- `ai-concepts: 用类比帮助用户理解（偏好设置：locked）`
+- `quick-tasks: 直接给出答案（用户确认后执行）`
 
 ---
 
-*Empty sections = still learning. Observe, propose, confirm.*
+### 格式说明
+- **格式示例**：`code/errors: fix first, explain after (confirmed)`  
+  （说明：对于“代码错误”这一主题，先修复错误，用户确认理解后再进行解释。）
+
+### 深度说明
+- **深度示例**：`ai-concepts: use analogies (locked)`  
+  （说明：对于“人工智能概念”这一主题，偏好使用类比进行讲解。）
+
+### 示例说明
+- **示例说明**：`quick-tasks: just the answer (confirmed)`  
+  （说明：对于“快速任务”这类主题，偏好直接给出答案。）
+
+### 专业术语说明
+- **专业术语示例**：`domain: jargon-level (level)`  
+  （说明：不同领域的专业术语需要根据具体级别进行标注。）
+
+### 解释节奏说明
+- **节奏示例**：`quick-tasks: pacing-style (level)`  
+  （说明：对于“快速任务”这类主题，偏好采用分阶段讲解的节奏。）
+
+### 应避免的方法（始终避免使用）
+- 一贯无效的解释方法
+
+---
+
+## 默认设置（在用户学习过程中）
+- 首先直接给出答案，之后再提供背景信息。
+- 解释内容的长度应与问题长度相匹配（问题简短则解释也简短）。
+- 对于复杂主题，一次讲解一个概念。
+- 询问用户“需要我深入讲解吗？”，而不是直接灌输所有内容。
+
+---
+
+*如果某个设置为空，说明该设置仍在学习中。持续观察用户反馈，提出新的解释方案，并等待用户确认。*

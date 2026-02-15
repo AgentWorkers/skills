@@ -1,34 +1,34 @@
 ---
 name: multi-project-spec-mapper
-description: Intelligent multi-project specification splitting that maps user stories to correct projects (FE, BE, MOBILE, INFRA). Use when working with multiple JIRA/GitHub projects, microservices architecture, or brownfield projects with multiple teams. Analyzes content and tech stack for automatic classification.
+description: 智能的多项目规范分割功能，能够将用户故事自动分配到对应的项目中（前端开发、后端开发、移动应用开发、基础设施维护）。适用于处理多个 JIRA/GitHub 项目、微服务架构，或由多个团队共同开发的旧有项目（brownfield projects）的场景。该功能通过分析项目内容和所使用的技术栈来实现自动分类。
 ---
 
-# Multi-Project Spec Mapper - Intelligent Project Organization
+# 多项目规范映射器 - 智能项目组织
 
-**Purpose**: Automatically detect multiple projects in SpecWeave setup, analyze user stories to map them to the correct project (FE, BE, MOBILE, INFRA), and organize specs into project-specific folders with proper JIRA/GitHub sync.
+**功能**：自动检测 SpecWeave 设置中的多个项目，分析用户故事并将其映射到相应的项目（前端、后端、移动端、基础设施），并将规范文件组织到特定项目的文件夹中，并实现与 JIRA/GitHub 的双向同步。
 
-**When to Use**:
-- User has multiple JIRA projects configured (e.g., FE, BE, MOBILE)
-- User has multiple GitHub repos to sync
-- Brownfield projects with multiple teams/services
-- Microservices architecture with separate frontend/backend/mobile codebases
-- Need to split monolithic spec into project-specific specs
+**适用场景**：
+- 用户配置了多个 JIRA 项目（例如前端、后端、移动端项目）
+- 需要同步多个 GitHub 仓库
+- 涉及多个团队/服务的旧项目（Brownfield projects）
+- 采用微服务架构，具有独立的前端/后端/移动端代码库
+- 需要将单一的规范文件拆分为针对不同项目的文件
 
-**Key Capabilities**:
-1. ✅ **Intelligent Project Detection** - Analyze config.json to detect multi-project setup
-2. ✅ **User Story Classification** - Map user stories to projects based on keywords, tech stack, components
-3. ✅ **Spec Splitting** - Split monolithic specs into project-specific files
-4. ✅ **Folder Organization** - Create `specs/FE/`, `specs/BE/`, `specs/MOBILE/` structure
-5. ✅ **JIRA Item Type Mapping** - Suggest Epic/Story/Task hierarchy based on scope
-6. ✅ **Bidirectional Sync** - Configure hooks for GitHub/JIRA sync per project
+**核心功能**：
+1. ✅ **智能项目检测**：分析 `config.json` 文件以识别多项目设置
+2. ✅ **用户故事分类**：根据关键词、技术栈和组件将用户故事映射到相应项目
+3. ✅ **规范文件拆分**：将单一的规范文件拆分为针对特定项目的文件
+4. ✅ **文件夹组织**：创建 `specs/FE/`, `specs/BE/`, `specs/MOBILE/` 等文件夹结构
+5. ✅ **JIRA 项目类型映射**：根据项目范围建议使用 Epic/Story/Task 等项目类型
+6. ✅ **双向同步**：为每个项目配置 GitHub/JIRA 的同步规则
 
 ---
 
-## How It Works
+## 工作原理
 
-### Step 1: Detect Multi-Project Setup
+### 第一步：检测多项目设置
 
-**Check config.json** for:
+检查 `config.json` 文件中的配置：
 ```json
 {
   "sync": {
@@ -45,18 +45,18 @@ description: Intelligent multi-project specification splitting that maps user st
 }
 ```
 
-**If multiple projects found** → Activate multi-project mode
+**如果检测到多个项目** → 启用多项目模式
 
 ---
 
-### Step 2: Analyze User Stories
+### 第二步：分析用户故事
 
-For each user story, analyze:
-- **Keywords**: "UI", "chart", "API", "mobile", "database", "deployment"
-- **Tech Stack**: "React", "Node.js", "React Native", "PostgreSQL", "Kubernetes"
-- **Components**: "component", "service", "screen", "controller", "pipeline"
+对每个用户故事进行分析：
+- **关键词**：如 “UI”、“chart”、“API”、“mobile”、“database”、“deployment”
+- **技术栈**：如 “React”、“Node.js”、“React Native”、“PostgreSQL”、“Kubernetes”
+- **组件**：如 “component”、“service”、“screen”、“controller”、“pipeline”
 
-**Example**:
+**示例**：
 ```
 US-001: Log a Workout (Web UI)
 → Keywords: "UI", "web", "chart"
@@ -76,9 +76,9 @@ US-005: Cross-Platform Data Sync (Mobile)
 
 ---
 
-### Step 3: Create Project-Specific Specs
+### 第三步：创建特定项目的规范文件
 
-**Folder Structure**:
+**文件夹结构**：
 ```
 .specweave/docs/internal/specs/
 ├── FE/
@@ -95,8 +95,7 @@ US-005: Cross-Platform Data Sync (Mobile)
     └── README.md
 ```
 
-**spec.md YAML Frontmatter (MANDATORY)**:
-
+**spec.md 文件的 YAML 前言（必填）**：
 ```yaml
 # For 1-level structure (projects only)
 ---
@@ -116,19 +115,19 @@ status: planned
 ---
 ```
 
-**Detection**: Use `detectStructureLevel()` from `src/utils/structure-level-detector.ts`
+**检测过程**：使用 `src/utils/structure-level-detector.ts` 中的 `detectStructureLevel()` 函数
 
-**Each spec contains**:
-- YAML frontmatter with `project:` (and `board:` for 2-level) fields - MANDATORY
-- User stories mapped to that project
-- Project-specific acceptance criteria
-- Links to shared infrastructure/requirements
+**每个规范文件包含**：
+- 必填的 YAML 前言，其中包含 `project:`（以及二级分类的 `board:`）字段
+- 映射到该项目的用户故事
+- 该项目特定的验收标准
+- 链接到共享的基础设施/需求文档
 
 ---
 
-### Step 4: JIRA Sync with Project Mapping
+### 第四步：实现与 JIRA 的同步
 
-**Hierarchical JIRA Structure**:
+**JIRA 的项目层次结构**：
 ```
 JIRA Project: FE
 ├── Epic: Fitness Tracker Web UI (SPEC-0001)
@@ -160,9 +159,9 @@ JIRA Project: MOBILE
 
 ---
 
-### Step 5: Configure Bidirectional Sync
+### 第五步：配置双向同步
 
-**GitHub Hooks** (`.specweave/config.json`):
+**GitHub 同步配置**（位于 `.specweave/config.json` 文件中）：
 ```json
 {
   "hooks": {
@@ -201,120 +200,112 @@ JIRA Project: MOBILE
 
 ---
 
-## Project Mapping Rules
+## 项目分类规则
 
-### Frontend (FE)
+### 前端（FE）
 
-**Keywords**:
-- UI/UX: button, form, input, page, view, screen, modal, dropdown
-- Visualization: chart, graph, dashboard, widget
-- Styling: CSS, theme, dark mode, responsive
-- State: Redux, Zustand, context, state management
+**关键词**：
+- UI/UX：按钮、表单、输入框、页面、视图、模态框、下拉菜单
+- 可视化：图表、图形、仪表盘、小部件
+- 样式：CSS、主题、暗黑模式、响应式布局
+- 状态管理：Redux、Zustand、上下文管理
 
-**Tech Stack**:
-- React, Vue, Angular, Next.js, Svelte
-- TypeScript, JavaScript
-- Tailwind, Material-UI, Chakra, Ant Design
-- Recharts, D3, Chart.js
+**技术栈**：
+- React、Vue、Angular、Next.js、Svelte
+- TypeScript、JavaScript
+- Tailwind CSS、Material-UI、Chakra UI、Ant Design
+- Recharts、D3、Chart.js
 
-**Components**:
-- Component, hook, context, provider, page, layout
+**组件**：
+- 组件、钩子、上下文管理、页面布局相关组件
 
-**Confidence**: 30%+ for primary match
-
----
-
-### Backend (BE)
-
-**Keywords**:
-- API: endpoint, REST, GraphQL, route
-- Database: query, migration, schema, model
-- Auth: authentication, JWT, session, token
-- Processing: queue, job, worker, cron, batch
-
-**Tech Stack**:
-- Node.js (Express, Fastify, NestJS)
-- Python (FastAPI, Django, Flask)
-- Java (Spring Boot), .NET (ASP.NET)
-- PostgreSQL, MySQL, MongoDB, Redis
-
-**Components**:
-- Controller, service, repository, middleware, handler
-
-**Confidence**: 30%+ for primary match
+**匹配要求**：关键词匹配度达到 30% 以上
 
 ---
 
-### Mobile (MOBILE)
+### 后端（BE）
 
-**Keywords**:
-- Mobile: native, iOS, Android, cross-platform
-- Device: camera, GPS, push notification, offline
-- Navigation: tab bar, drawer, stack, screen transition
-- Storage: AsyncStorage, local database
+**关键词**：
+- API：端点、REST、GraphQL、路由
+- 数据库：查询、迁移、数据库模式、模型
+- 认证：身份验证、JWT、会话、令牌
+- 处理流程：队列、作业、工作进程、定时任务、批量处理
 
-**Tech Stack**:
-- React Native, Expo, Flutter
-- Swift, Kotlin
-- React Navigation
+**技术栈**：
+- Node.js（Express、Fastify、NestJS）
+- Python（FastAPI、Django、Flask）
+- Java（Spring Boot）、.NET（ASP.NET）
+- PostgreSQL、MySQL、MongoDB、Redis
 
-**Components**:
-- Screen, navigator, bottom-sheet, drawer
+**组件**：
+- 控制器、服务、数据仓库、中间件、处理程序
 
-**Exclude**: "web" keyword (penalty)
-
-**Confidence**: 30%+ for primary match
-
----
-
-### Infrastructure (INFRA)
-
-**Keywords**:
-- DevOps: deployment, CI/CD, Docker, Kubernetes
-- Monitoring: logging, metrics, alerting, SLO
-- Security: SSL, TLS, firewall, VPC
-- Scalability: load balancing, CDN, backup
-
-**Tech Stack**:
-- AWS, Azure, GCP
-- Kubernetes, Docker, Terraform
-- Jenkins, GitHub Actions, GitLab CI
-- Prometheus, Grafana, Datadog
-
-**Components**:
-- Pipeline, manifest, Helm chart, Terraform module
-
-**Confidence**: 30%+ for primary match
+**匹配要求**：关键词匹配度达到 30% 以上
 
 ---
 
-## JIRA Item Type Hierarchy
+### 移动端（MOBILE）
 
-**Epic** (> 13 story points):
-- Large feature area spanning multiple stories
-- Example: "Fitness Tracker MVP" (29 story points total)
+**关键词**：
+- 移动端开发：原生应用、iOS、Android、跨平台应用
+- 设备相关：摄像头、GPS、推送通知、离线功能
+- 导航：标签栏、抽屉菜单、页面切换
+- 数据存储：LocalStorage、本地数据库
 
-**Story** (3-13 story points):
-- Standard user story with clear value
-- Example: "US-001: Log a Workout" (8 story points)
+**技术栈**：
+- React Native、Expo、Flutter
+- Swift、Kotlin
+- React Navigation 库
 
-**Task** (1-2 story points):
-- Small implementation task
-- Example: "T-001: Create Workout Form Component" (2 story points)
+**注意事项**：排除 “web” 关键词（会降低匹配准确性）
 
-**Subtask** (< 1 story point):
-- Granular work item
-- Example: "Create POST /api/workouts endpoint" (0.5 story points)
+**匹配要求**：关键词匹配度达到 30% 以上
 
 ---
 
-## Usage Examples
+### 基础设施（INFRA）
 
-### Example 1: Fitness Tracker (Multi-Project)
+**关键词**：
+- DevOps：部署、持续集成/持续部署（CI/CD）、Docker、Kubernetes
+- 监控：日志记录、指标监控、警报系统、服务水平协议（SLO）
+- 安全性：SSL、TLS、防火墙、虚拟私有网络（VPC）
+- 可扩展性：负载均衡、内容分发网络（CDN）、数据备份
 
-**Input**: Monolithic spec with 35 user stories
+**技术栈**：
+- AWS、Azure、GCP
+- Kubernetes、Docker、Terraform
+- Jenkins、GitHub Actions、GitLab CI
+- Prometheus、Grafana、Datadog
 
-**Detection**:
+**组件**：部署流程、配置文件（manifest）、Terraform 模块
+
+**匹配要求**：关键词匹配度达到 30% 以上
+
+---
+
+## JIRA 项目类型分类
+
+- **Epic**（大于 13 个故事点）：涵盖多个用户故事的大型功能模块
+  **示例**：“健身追踪器 MVP”（总故事点数 29）
+
+- **Story**（3-13 个故事点）：具有明确价值的常规用户故事
+  **示例**：“US-001：记录锻炼记录”（8 个故事点）
+
+- **Task**（1-2 个故事点）：小型实现任务
+  **示例**：“T-001：创建锻炼记录表单组件”（2 个故事点）
+
+- **Subtask**（小于 1 个故事点）：细粒度的工作任务
+  **示例**：“创建 /api/workouts 端点”（0.5 个故事点）
+
+---
+
+## 使用示例
+
+### 示例 1：健身追踪器（多项目场景）
+
+**输入**：包含 35 个用户故事的单一规范文件
+
+**检测结果**：
 ```
 ✓ Multi-project setup detected:
   - FE (Frontend Web)
@@ -322,7 +313,7 @@ JIRA Project: MOBILE
   - MOBILE (React Native)
 ```
 
-**Classification**:
+**分类结果**：
 ```
 Analyzing 35 user stories...
 ✓ US-001: Log a Workout → FE (90% confidence: React, UI, chart)
@@ -337,7 +328,7 @@ Project Distribution:
 - SHARED: 2 user stories (6%)
 ```
 
-**Output**:
+**最终输出**：
 ```
 Creating project-specific specs...
 ✓ specs/FE/spec-0001-fitness-tracker-web.md (12 user stories)
@@ -353,11 +344,11 @@ JIRA Sync Configuration:
 
 ---
 
-### Example 2: Microservices E-Commerce
+### 示例 2：微服务电商平台
 
-**Input**: Spec for multi-service platform
+**输入**：针对多服务平台的规范文件
 
-**Detection**:
+**检测结果**：
 ```
 ✓ Multi-project setup detected:
   - FRONTEND (Web storefront)
@@ -367,7 +358,7 @@ JIRA Sync Configuration:
   - INFRA (Kubernetes + monitoring)
 ```
 
-**Classification**:
+**分类结果**：
 ```
 Analyzing 50 user stories...
 ✓ US-010: Product Catalog UI → FRONTEND (95%)
@@ -386,9 +377,9 @@ Project Distribution:
 
 ---
 
-## Configuration
+## 配置说明
 
-**Enable Multi-Project Mode** in `.specweave/config.json`:
+在 `.specweave/config.json` 文件中启用多项目模式：
 ```json
 {
   "multiProject": {
@@ -407,15 +398,14 @@ Project Distribution:
 
 ---
 
-## Related Skills
-
-- **spec-generator**: Creates comprehensive specs (uses this skill for multi-project splitting)
-- **increment-planner**: Plans increments (uses this skill to assign work to projects)
-- **jira-sync**: Syncs to JIRA (uses project mappings from this skill)
-- **github-sync**: Syncs to GitHub (uses project mappings from this skill)
-
----
+**相关技能**：
+- **spec-generator**：用于生成完整的规范文件（用于规范文件的分割）
+- **increment-planner**：用于规划开发计划（将任务分配到相应项目）
+- **jira-sync**：用于与 JIRA 进行同步（利用项目分类信息）
+- **github-sync**：用于与 GitHub 进行同步（利用项目分类信息）
 
 ---
 
-Based on: Increment 0020-multi-project-intelligent-sync
+---
+
+基于：Increment 0020-multi-project-intelligent-sync

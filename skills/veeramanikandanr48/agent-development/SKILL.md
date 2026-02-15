@@ -10,15 +10,15 @@ description: |
 license: MIT
 ---
 
-# Agent Development for Claude Code
+# Claude Code的代理开发
 
-Build effective custom agents for Claude Code with proper delegation, tool access, and prompt design.
+使用适当的任务分配、工具访问权限和提示设计，为Claude Code构建高效的定制代理。
 
-## Agent Description Pattern
+## 代理描述模式
 
-The description field determines whether Claude will automatically delegate tasks.
+描述字段决定了Claude是否自动分配任务。
 
-### Strong Trigger Pattern
+### 强触发模式
 
 ```yaml
 ---
@@ -32,40 +32,40 @@ model: sonnet
 ---
 ```
 
-### Weak vs Strong Descriptions
+### 弱描述与强描述的对比
 
-| Weak (won't auto-delegate) | Strong (auto-delegates) |
+| 弱描述（不会自动分配任务） | 强描述（会自动分配任务） |
 |---------------------------|-------------------------|
-| "Analyzes screenshots for issues" | "Visual QA specialist. MUST BE USED when analyzing screenshots. Use PROACTIVELY for visual QA." |
-| "Runs Playwright scripts" | "Playwright specialist. MUST BE USED when running Playwright scripts. Use PROACTIVELY for browser automation." |
+| “分析截图以查找问题”       | “视觉质量检查专家。分析截图时必须使用此代理。应主动使用它进行视觉质量检查。” |
+| “运行Playwright脚本”      | “Playwright脚本专家。运行Playwright脚本时必须使用此代理。应主动使用它进行浏览器自动化。” |
 
-**Key phrases**:
-- "MUST BE USED when..."
-- "Use PROACTIVELY for..."
-- Include trigger keywords
+**关键短语**：
+- “必须使用此代理时...” |
+- “应主动使用它进行...” |
+- 包含触发关键词
 
-### Delegation Mechanisms
+### 任务分配机制
 
-1. **Explicit**: `Task tool subagent_type: "agent-name"` - always works
-2. **Automatic**: Claude matches task to agent description - requires strong phrasing
+1. **显式分配**：`Task tool subagent_type: "agent-name"` – 总是有效的方法
+2. **自动分配**：Claude根据代理描述来匹配任务 – 需要使用明确的描述
 
-**Session restart required** after creating/modifying agents.
+创建或修改代理后，**需要重启会话**。
 
-## Tool Access Principle
+## 工具访问权限原则
 
-**If an agent doesn't need Bash, don't give it Bash.**
+**如果代理不需要Bash，就不要给它Bash权限。**
 
-| Agent needs to... | Give tools | Don't give |
+| 代理需要的功能 | 提供的工具 | 不提供的工具 |
 |-------------------|------------|------------|
-| Create files only | Read, Write, Edit, Glob, Grep | Bash |
-| Run scripts/CLIs | Read, Write, Edit, Glob, Grep, Bash | — |
-| Read/audit only | Read, Glob, Grep | Write, Edit, Bash |
+| 仅创建文件       | 读取、写入、编辑、全局搜索、grep | Bash |
+| 运行脚本/命令行接口   | 读取、写入、编辑、全局搜索、grep、Bash | — |
+| 仅读取/审计       | 读取、全局搜索、grep | 写入、编辑、Bash |
 
-**Why?** Models default to `cat > file << 'EOF'` heredocs instead of Write tool. Each bash command requires approval, causing dozens of prompts per agent run.
+**为什么？** 模型默认使用`cat > file << 'EOF'`这样的命令，而不是写入文件。每个Bash命令都需要人工审批，这会导致每个代理运行时出现大量提示信息。
 
-### Allowlist Pattern
+### 允许列表模式
 
-Instead of restricting Bash, allowlist safe commands in `.claude/settings.json`:
+在`.claude/settings.json`文件中列出允许使用的安全命令，而不是限制Bash命令的使用：
 
 ```json
 {
@@ -80,51 +80,51 @@ Instead of restricting Bash, allowlist safe commands in `.claude/settings.json`:
 }
 ```
 
-## Model Selection (Quality First)
+## 模型选择（质量优先）
 
-Don't downgrade quality to work around issues - fix root causes instead.
+不要为了解决问题而降低模型质量——应该从根本上解决问题。
 
-| Model | Use For |
+| 模型 | 适用场景 |
 |-------|---------|
-| **Opus** | Creative work (page building, design, content) - quality matters |
-| **Sonnet** | Most agents - content, code, research (default) |
-| **Haiku** | Only script runners where quality doesn't matter |
+| **Opus** | 创意工作（页面构建、设计、内容创作）——质量至关重要 |
+| **Sonnet** | 大多数代理——内容处理、代码编写、研究（默认模型） |
+| **Haiku** | 仅适用于脚本执行任务，对质量要求不高 |
 
-## Memory Limits
+## 内存限制
 
-### Root Cause Fix (REQUIRED)
+### 根本问题解决方法（必须执行）
 
-Add to `~/.bashrc` or `~/.zshrc`:
+将以下代码添加到`~/.bashrc`或`~/.zshrc`中：
 ```bash
 export NODE_OPTIONS="--max-old-space-size=16384"
 ```
 
-Increases Node.js heap from 4GB to 16GB.
+将Node.js的内存堆从4GB增加到16GB。
 
-### Parallel Limits (Even With Fix)
+### 并发限制（即使进行了优化）
 
-| Agent Type | Max Parallel | Notes |
+| 代理类型 | 最大并发数量 | 备注 |
 |------------|--------------|-------|
-| Any agents | 2-3 | Context accumulates; batch then pause |
-| Heavy creative (Opus) | 1-2 | Uses more memory |
+| 所有代理 | 2-3 | 任务执行过程中会积累上下文数据，需要分批处理并适当暂停 |
+| 高度创意型代理（如Opus） | 1-2 | 这类代理需要更多内存 |
 
-### Recovery
+### 故障恢复方法
 
-1. `source ~/.bashrc` or restart terminal
-2. `NODE_OPTIONS="--max-old-space-size=16384" claude`
-3. Check what files exist, continue from there
+1. 执行`source ~/.bashrc`或重启终端
+2. 使用`NODE_OPTIONS="--max-old-space-size=16384" claude`命令
+3. 检查现有文件，然后继续执行任务
 
-## Sub-Agent vs Remote API
+## 子代理与远程API
 
-**Always prefer Task sub-agents over remote API calls.**
+**始终优先选择使用子代理而不是远程API调用。**
 
-| Aspect | Remote API Call | Task Sub-Agent |
+| 方面 | 远程API调用 | 子代理 |
 |--------|-----------------|----------------|
-| Tool access | None | Full (Read, Grep, Write, Bash) |
-| File reading | Must pass all content in prompt | Can read files iteratively |
-| Cross-referencing | Single context window | Can reason across documents |
-| Decision quality | Generic suggestions | Specific decisions with rationale |
-| Output quality | ~100 lines typical | 600+ lines with specifics |
+| 工具访问权限 | 无 | 全部权限（读取、grep、写入、Bash） |
+| 文件读取 | 必须在提示中提供所有文件内容 | 可以迭代读取文件 |
+| 文件间的关联处理 | 只能处理单一上下文数据 | 可以跨多个文件进行推理 |
+| 决策质量 | 提供一般性建议 | 提供具体决策及理由 |
+| 输出质量 | 通常为100行左右 | 可以输出600行以上的内容 |
 
 ```typescript
 // ❌ WRONG - Remote API call
@@ -134,11 +134,11 @@ const response = await fetch('https://api.anthropic.com/v1/messages', {...})
 // Invoke Task with subagent_type: "general-purpose"
 ```
 
-## Declarative Over Imperative
+## 声明式编程 vs 命令式编程
 
-Describe **what** to accomplish, not **how** to use tools.
+应该描述**要完成的任务**，而不是**如何使用工具**。
 
-### Wrong (Imperative)
+### 错误的命令式编程示例
 
 ```markdown
 ### Check for placeholders
@@ -147,7 +147,7 @@ grep -r "PLACEHOLDER:" build/*.html
 ```
 ```
 
-### Right (Declarative)
+### 正确的声明式编程示例
 
 ```markdown
 ### Check for placeholders
@@ -159,52 +159,52 @@ Search all HTML files in build/ for:
 Any match = incomplete content.
 ```
 
-### What to Include
+## 需要包含的内容
 
-| Include | Skip |
+| 应包含的内容 | 不应包含的内容 |
 |---------|------|
-| Task goal and context | Explicit bash/tool commands |
-| Input file paths | "Use X tool to..." |
-| Output file paths and format | Step-by-step tool invocations |
-| Success/failure criteria | Shell pipeline syntax |
-| Blocking checks (prerequisites) | Micromanaged workflows |
-| Quality checklists | |
+| 任务目标和上下文信息 | 明确的Bash命令或工具指令 |
+| 输入文件路径 | “使用X工具来...” |
+| 输出文件路径和格式 | 详细的工具使用步骤 |
+| 成功/失败标准 | 使用Shell管道语法来定义 |
+| 阻碍因素检查 | 过度细化的流程控制 |
+| 质量检查清单 | |
 
-## Self-Documentation Principle
+## 自我文档化原则
 
-> "Agents that won't have your context must be able to reproduce the behaviour independently."
+> “没有上下文信息的代理必须能够独立复现所需的行为。”
 
-Every improvement must be encoded into the agent's prompt, not left as implicit knowledge.
+所有的改进都应通过代理的提示来明确展示，而不能作为隐含的知识。
 
-### What to Encode
+### 需要记录的内容
 
-| Discovery | Where to Capture |
+| 需要记录的信息 | 记录的位置 |
 |-----------|------------------|
-| Bug fix pattern | Agent's "Corrections" or "Common Issues" section |
-| Quality requirement | Agent's "Quality Checklist" section |
-| File path convention | Agent's "Output" section |
-| Tool usage pattern | Agent's "Process" section |
-| Blocking prerequisite | Agent's "Blocking Check" section |
+| 错误修复方法 | 代理的“错误修复”或“常见问题”部分 |
+| 质量要求 | 代理的“质量检查清单”部分 |
+| 文件路径规范 | 代理的“输出结果”部分 |
+| 工具使用方法 | 代理的“执行流程”部分 |
+| 阻碍因素 | 代理的“障碍检查”部分 |
 
-### Test: Would a Fresh Agent Succeed?
+### 测试新代理是否有效：
 
-Before completing any agent improvement:
-1. Read the agent prompt as if you have no context
-2. Ask: Could a new session follow this and produce the same quality?
-3. If no: Add missing instructions, patterns, or references
+在改进代理之前：
+1. 像没有上下文信息一样阅读代理的提示内容
+2. 询问：新会话是否能够按照这些提示完成相同的工作，并且达到相同的质量标准？
+3. 如果不能：添加缺失的指令、模式或参考信息
 
-### Anti-Patterns
+## 应避免的错误做法
 
-| Anti-Pattern | Why It Fails |
+| 错误做法 | 原因 |
 |--------------|--------------|
-| "As we discussed earlier..." | No prior context exists |
-| Relying on files read during dev | Agent may not read same files |
-| Assuming knowledge from errors | Agent won't see your debugging |
-| "Just like the home page" | Agent hasn't built home page |
+| “正如我们之前讨论的...” | 由于没有预先提供的上下文信息，新代理可能无法正确执行任务 |
+| 依赖开发过程中读取的文件 | 新代理可能无法读取相同的文件 |
+| 基于错误信息进行假设 | 新代理可能无法理解你的调试步骤 |
+| “就像主页一样简单” | 新代理可能还没有生成相应的主页内容 |
 
-## Agent Prompt Structure
+## 代理提示的设计
 
-Effective agent prompts include:
+有效的代理提示应该包含以下内容：
 
 ```markdown
 ## Your Role
@@ -229,34 +229,34 @@ Effective agent prompts include:
 [Patterns discovered during development]
 ```
 
-## Pipeline Agents
+## 管道代理
 
-When inserting a new agent into a numbered pipeline (e.g., `HTML-01` → `HTML-05` → `HTML-11`):
+在将新代理添加到编号顺序的管道中（例如`HTML-01` → `HTML-05` → `HTML-11`）时：
 
-| Must Update | What |
+| 需要更新的内容 | 更新内容 |
 |-------------|------|
-| New agent | "Workflow Position" diagram + "Next" field |
-| **Predecessor agent** | Its "Next" field to point to new agent |
+| 新代理 | “工作流程位置”图示 + “下一个任务”字段 |
+| **前一个代理** | 前一个代理的“下一个任务”字段，用于指向新代理 |
 
-**Common bug**: New agent is "orphaned" because predecessor still points to old next agent.
+**常见错误**：新代理可能因为前一个代理的配置仍然指向旧代理而“孤立”。
 
-**Verification**:
+**验证方法**：
 ```bash
 grep -n "Next:.*→\|Then.*runs next" .claude/agents/*.md
 ```
 
-## The Sweet Spot
+## 最佳使用场景
 
-**Best use case**: Tasks that are **repetitive but require judgment**.
+**最适合使用代理的场景**：那些**重复性高但需要判断力的任务**。
 
-Example: Auditing 70 skills manually = tedious. But each audit needs intelligence (check docs, compare versions, decide what to fix). Perfect for parallel agents with clear instructions.
+例如：手动审核70个技能项非常繁琐，但每个审核步骤都需要智能判断（如检查文档、比较版本、决定需要修复的内容）。这种场景非常适合使用并行处理的代理，并且需要明确的操作指导。
 
-**Not good for**:
-- Simple tasks (just do them)
-- Highly creative tasks (need human direction)
-- Tasks requiring cross-file coordination (agents work independently)
+**不适合使用代理的场景**：
+- 简单的任务（可以直接手动完成）
+- 需要高度创造性的任务（需要人工指导）
+- 需要跨文件协调的任务（代理无法独立完成任务）
 
-## Effective Prompt Template
+## 有效的提示模板
 
 ```
 For each [item]:
@@ -267,13 +267,13 @@ For each [item]:
 5. FIX issues found ← Critical instruction
 ```
 
-**Key elements**:
-- **"FIX issues found"** - Without this, agents only report. With it, they take action.
-- **Exact file paths** - Prevents ambiguity
-- **Output format template** - Ensures consistent, parseable reports
-- **Batch size ~5 items** - Enough work to be efficient, not so much that failures cascade
+**提示的关键要素**：
+- “修复发现的问题”——有了这个提示，代理不仅可以报告问题，还能采取行动。
+- **准确的文件路径**——避免歧义
+- **输出格式模板**——确保输出结果的一致性和可解析性
+- **每次处理的文件数量**——数量适中，既能保证效率，又不会导致任务失败
 
-## Workflow Pattern
+## 工作流程模式
 
 ```
 1. ME: Launch 2-3 parallel agents with identical prompt, different item lists
@@ -284,26 +284,26 @@ For each [item]:
 6. ME: Push and update progress tracking
 ```
 
-**Why agents don't commit**: Allows human review, batching, and clean commit history.
+**为什么不建议使用命令行脚本直接执行任务**：这样可以方便人工审核、批量处理任务，并保持提交历史记录的清晰性。
 
-## Signs a Task Fits This Pattern
+## 判断任务是否适合使用代理的依据
 
-**Good fit**:
-- Same steps repeated for many items
-- Each item requires judgment (not just transformation)
-- Items are independent (no cross-item dependencies)
-- Clear success criteria (score, pass/fail, etc.)
-- Authoritative source exists to verify against
+**适合使用代理的场景**：
+- 多个任务步骤相同
+- 每个任务都需要判断力（而不仅仅是简单的转换）
+- 任务之间没有相互依赖关系
+- 有明确的成功标准（如得分、通过/失败等）
+- 有权威的参考资料可以进行验证
 
-**Bad fit**:
-- Items depend on each other's results
-- Requires creative/subjective decisions
-- Single complex task (use regular agent instead)
-- Needs human input mid-process
+**不适合使用代理的场景**：
+- 任务结果相互依赖
+- 需要创造性的或主观的决策
+- 单个复杂的任务（适合使用常规的代理）
+- 在执行过程中需要人工输入
 
-## Quick Reference
+## 代理提示的编写指南
 
-### Agent Frontmatter Template
+### 代理提示的编写模板
 
 ```yaml
 ---
@@ -317,13 +317,13 @@ model: sonnet
 ---
 ```
 
-### Fix Bash Approval Spam
+### 避免不必要的Bash命令
 
-1. Remove Bash from tools if not needed
-2. Put critical instructions FIRST (right after frontmatter)
-3. Use allowlists in `.claude/settings.json`
+1. 如果不需要使用Bash命令，就将其从提示中删除
+2. 将关键指令放在提示的最前面
+3. 在`.claude/settings.json`文件中设置允许使用的工具列表
 
-### Memory Crash Recovery
+### 避免内存崩溃
 
 ```bash
 export NODE_OPTIONS="--max-old-space-size=16384"

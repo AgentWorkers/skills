@@ -1,151 +1,109 @@
 ---
 name: casual-cron
-description: "Create Clawdbot cron jobs from natural language with strict run-guard rules. Use when: users ask to schedule reminders or messages (recurring or one-shot), especially via Telegram, or when they use /at or /every. Examples: 'Create a daily reminder at 8am', 'Remind me in 20 minutes', 'Send me a Telegram message at 3pm', '/every 2h'."
+description: "**使用自然语言创建 Clawdbot 定时任务（Cron Jobs），并设置严格的运行规则**  
+**适用场景**：当用户请求安排提醒或消息（无论是定期还是一次性）时，尤其是通过 Telegram 发送请求，或者当用户使用 `@` 或 `every` 等指令时。  
+**示例**：  
+- “创建一个每天早上 8 点的提醒”  
+- “20 分钟后提醒我”  
+- “下午 3 点给我发送一条 Telegram 消息”  
+- “每 2 小时发送一次消息”"
 metadata: {"openclaw":{"emoji":"⏰","requires":{"bins":["python3","openclaw"],"env":["CRON_DEFAULT_CHANNEL"]}}}
 ---
 
 # Casual Cron
 
-Create Clawdbot cron jobs from natural language. Supports one-shot and repeating schedules with safe run-guard rules.
+该工具支持从自然语言生成用于Clawdbot的Cron作业（定时任务），支持一次性执行或重复执行的调度任务，并具备安全运行保障机制。
 
-## Cron Run Guard (Hard Rules)
+## Cron作业的运行规则（硬性规定）：
 
-- When running inside a cron job: do NOT troubleshoot, do NOT restart gateway, and do NOT check time.
-- Do NOT send acknowledgements or explanations.
-- Output ONLY the exact message payload and then stop.
-
----
-
-## How It Works
-
-1. Agent detects scheduling intent from user message (or `/at` / `/every` command)
-2. Parses: time, frequency, channel, destination, message
-3. Builds `openclaw cron add` command with correct flags
-4. Confirms parsed time, job name, and job id with user before executing
+- 在执行Cron作业期间：禁止进行故障排查、禁止重启网关，也禁止检查时间。
+- 禁止发送任何确认信息或解释性内容。
+- 作业执行完毕后，仅输出指定的消息内容，然后立即停止。
 
 ---
 
-## Scheduling Rules
+## 工作原理：
 
-When a message starts with `/at` or `/every`, schedule via the CLI (NOT the cron tool API).
-
-Use: `openclaw cron add`
-
-### /at (one-shot)
-
-- If user gives a clock time (e.g., "3pm"), convert to ISO with offset computed for America/New_York on that date (DST-safe).
-- Prefer relative times for near-term reminders (e.g., `--at "20m"`).
-- Use `--session isolated --message "Output exactly: <task>"`.
-- Always include `--delete-after-run`.
-- Always include `--deliver --channel <channel> --to <destination>`.
-
-### /every (repeating)
-
-- If interval: use `--every "<duration>"` (no timezone needed).
-- If clock time: use `--cron "<expr>" --tz "America/New_York"`.
-- Use `--session isolated --message "Output exactly: <task>"`.
-- Always include `--deliver --channel <channel> --to <destination>`.
-
-### Confirmation
-
-- Always confirm parsed time, job name, and job id with the user before finalizing.
+1. 代理程序从用户输入的消息中检测到调度意图（或通过`/at`/`/every`命令触发）。
+2. 解析用户输入的时间、执行频率、目标渠道以及要发送的消息内容。
+3. 根据解析结果生成正确的`openclaw cron add`命令。
+4. 在执行作业前，会与用户再次确认解析出的时间、作业名称和作业ID。
 
 ---
 
-## Command Reference
+## 调度规则：
 
-One-shot (clock time, DST-aware):
-```
-openclaw cron add \
-  --name "Reminder example" \
-  --at "2026-01-28T15:00:00-05:00" \
-  --session isolated \
-  --message "Output exactly: <TASK>" \
-  --deliver --channel telegram --to <TELEGRAM_CHAT_ID> \
-  --delete-after-run
-```
+当用户输入以`/at`或`/every`开头的命令时，调度任务需通过命令行界面（CLI）完成，而非Cron工具的API。
 
-One-shot (relative time):
-```
-openclaw cron add \
-  --name "Reminder in 20m" \
-  --at "20m" \
-  --session isolated \
-  --message "Output exactly: <TASK>" \
-  --deliver --channel telegram --to <TELEGRAM_CHAT_ID> \
-  --delete-after-run
-```
+**使用示例：`openclaw cron add`**
 
-Repeating (clock time, DST-aware):
-```
-openclaw cron add \
-  --name "Daily 3pm reminder" \
-  --cron "0 15 * * *" --tz "America/New_York" \
-  --session isolated \
-  --message "Output exactly: <TASK>" \
-  --deliver --channel telegram --to <TELEGRAM_CHAT_ID>
-```
+### 一次性执行（指定时间）：
+- 如果用户提供了具体时间（例如“3pm”），系统会将其转换为美国/纽约时区的ISO格式时间（考虑夏令时）。
+- 对于短期提醒，建议使用相对时间表示（例如`--at "20m"`）。
+- 必须包含`--delete-after-run`选项，以确保作业执行完成后自动删除。
+- 必须包含`--deliver --channel <channel> --to <destination>`选项，以指定消息发送渠道和接收者。
 
-Repeating (interval):
-```
-openclaw cron add \
-  --name "Every 2 hours" \
-  --every "2h" \
-  --session isolated \
-  --message "Output exactly: <TASK>" \
-  --deliver --channel telegram --to <TELEGRAM_CHAT_ID>
-```
+### 重复执行：
+- 如果需要设置执行间隔，使用`--every "<duration>"`（无需指定时区）。
+- 如果需要指定具体时间，使用`--cron "<expr>" --tz "America/New_York"`。
+- 同样需要包含`--deliver --channel <channel> --to <destination>`选项。
+
+### 执行前确认：
+- 在最终执行作业前，系统会再次与用户确认解析出的时间、作业名称和作业ID。
 
 ---
 
-## Configuration
+## 命令参考：
 
-| Setting | Value |
+- **一次性执行（指定时间，考虑夏令时）：** [示例代码]  
+- **一次性执行（相对时间）：** [示例代码]  
+- **重复执行（指定时间，考虑夏令时）：** [示例代码]  
+- **重复执行（固定间隔）：** [示例代码]  
+
+---
+
+## 配置选项：
+
+| 配置项 | 默认值 |
 |---------|-------|
-| Default timezone | `America/New_York` (DST-aware) |
-| Default channel | `telegram` (override via `CRON_DEFAULT_CHANNEL` env var) |
-| Supported channels | telegram, whatsapp, slack, discord, signal |
+| 默认时区 | `America/New_York`（考虑夏令时） |
+| 默认发送渠道 | `telegram`（可通过环境变量`CRON_DEFAULT_CHANNEL`修改） |
+| 支持的发送渠道 | `telegram`, `whatsapp`, `slack`, `discord`, `signal` |
 
 ---
 
-## Supported Patterns
+## 支持的时间格式和频率：
 
-### Time Formats
+| 时间格式 | Cron表达式示例 |
+|---------|-------------------|
+| `8am`     | `0 8 * * *`       |
+| `8:45pm`    | `45 20 * * *`       |
+| `noon`     | `0 12 * * *`       |
+| `midnight`   | `0 0 * * *`       |
+| `14:30`    | `30 14 * * *`       |
 
-| Input | Cron |
-|-------|------|
-| `8am` | `0 8 * * *` |
-| `8:45pm` | `45 20 * * *` |
-| `noon` | `0 12 * * *` |
-| `midnight` | `0 0 * * *` |
-| `14:30` | `30 14 * * *` |
+| 执行频率 | 表示方式           |
+|---------|-------------------|
+| `daily`    | 每天指定时间         |
+| `weekdays`   | 周一至周五指定时间      |
+| `mondays`   | 每周一            |
+| `hourly`    | 每小时            |
+| `every 2 hours` | 每两小时          |
+| `weekly`    | 每周（默认为周一）       |
+| `monthly`   | 每月1日          |
 
-### Frequencies
-
-| Input | Behavior |
-|-------|----------|
-| `daily` / `every day` | Daily at specified time |
-| `weekdays` / `mon-fri` | Mon-Fri at specified time |
-| `mondays` / `every monday` | Weekly on Monday |
-| `hourly` / `every hour` | Every hour at :00 |
-| `every 2 hours` | `0 */2 * * *` |
-| `weekly` | Weekly (defaults to Monday) |
-| `monthly` | Monthly (1st of month) |
-
-### Channels
-
-Mention the channel in your request:
-- "on telegram" / "on whatsapp" / "on slack" / "on discord" / "on signal"
+## 调度渠道：
+- 请在请求中指定消息发送渠道：`on telegram` / `on whatsapp` / `on slack` / `on discord` / `on signal`
 
 ---
 
-## Default Messages
+## 默认发送的消息内容：
 
-| Type | Default Message |
-|------|-----------------|
-| Ikigai | Morning journal with purpose, food, movement, connection, gratitude |
-| Water | "Time to drink water! Stay hydrated!" |
-| Morning | "Good morning! Time for your daily check-in." |
-| Evening | "Evening check-in! How was your day?" |
-| Weekly | Weekly goals review |
-| Default | "Your scheduled reminder is here!" |
+| 消息类型 | 默认内容                |
+|---------|----------------------|
+| Ikigai    | 早晨日记：记录目标、饮食、日常活动、感恩事项 |
+| Water    | “该喝水了！保持水分！”           |
+| Morning   | “早上好！是时候进行每日汇报了。”       |
+| Evening   | “晚上好！今天过得怎么样？”         |
+| Weekly   | 周度目标回顾           |
+| Default   | “您的定时提醒已发送！”           |

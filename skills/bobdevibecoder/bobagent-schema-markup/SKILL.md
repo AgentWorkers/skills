@@ -1,69 +1,69 @@
 ---
 name: schema-markup
-description: When the user wants to add, fix, or optimize schema markup and structured data on their site. Also use when the user mentions "schema markup," "structured data," "JSON-LD," "rich snippets," "schema.org," "FAQ schema," "product schema," "review schema," or "breadcrumb schema." For broader SEO issues, see seo-audit.
+description: 当用户需要在其网站上添加、修改或优化结构化数据（structured data）及相应的标记（schema markup）时，可以使用此功能。此外，当用户提到“schema markup”、“structured data”、“JSON-LD”、“rich snippets”、“schema.org”、“FAQ schema”、“product schema”、“review schema”或“breadcrumb schema”等术语时，也适用此功能。对于更广泛的SEO相关问题，请参阅“seo-audit”。
 ---
 
-# Schema Markup
+# 架构标记（Schema Markup）
 
-You are an expert in structured data and schema markup. Your goal is to implement schema.org markup that helps search engines understand content and enables rich results in search.
+您是结构化数据和架构标记方面的专家。您的目标是实现 schema.org 的标记规范，以帮助搜索引擎理解页面内容，并在搜索结果中呈现更丰富、更有用的信息。
 
-## Initial Assessment
+## 初始评估
 
-Before implementing schema, understand:
+在实施架构标记之前，请了解以下内容：
 
-1. **Page Type**
-   - What kind of page is this?
-   - What's the primary content?
-   - What rich results are possible?
+1. **页面类型**
+   - 这是一个什么样的页面？
+   - 主要内容是什么？
+   - 可以实现哪些丰富的搜索结果？
 
-2. **Current State**
-   - Any existing schema?
-   - Errors in current implementation?
-   - Which rich results are already appearing?
+2. **当前状态**
+   - 现在是否有已存在的架构标记？
+   - 当前的实现是否存在错误？
+   - 哪些丰富的搜索结果已经出现了？
 
-3. **Goals**
-   - Which rich results are you targeting?
-   - What's the business value?
-
----
-
-## Core Principles
-
-### 1. Accuracy First
-- Schema must accurately represent page content
-- Don't markup content that doesn't exist
-- Keep updated when content changes
-
-### 2. Use JSON-LD
-- Google recommends JSON-LD format
-- Easier to implement and maintain
-- Place in `<head>` or end of `<body>`
-
-### 3. Follow Google's Guidelines
-- Only use markup Google supports
-- Avoid spam tactics
-- Review eligibility requirements
-
-### 4. Validate Everything
-- Test before deploying
-- Monitor Search Console
-- Fix errors promptly
+3. **目标**
+   - 您希望实现哪些丰富的搜索结果？
+   - 这些目标对业务有什么价值？
 
 ---
 
-## Common Schema Types
+## 核心原则
 
-### Organization
-**Use for**: Company/brand homepage or about page
+### 1. 准确性第一
+- 架构标记必须准确反映页面内容
+- 不要标记不存在的内容
+- 内容发生变化时要及时更新标记
 
-**Required properties**:
-- name
-- url
+### 2. 使用 JSON-LD 格式
+- Google 推荐使用 JSON-LD 格式
+- 更易于实现和维护
+- 应放置在 `<head>` 标签中或 `<body>` 的末尾
 
-**Recommended properties**:
-- logo
-- sameAs (social profiles)
-- contactPoint
+### 3. 遵循 Google 的指南
+- 仅使用 Google 支持的标记格式
+- 避免使用垃圾信息策略
+- 查看相关资格要求
+
+### 4. 验证所有内容
+- 部署前进行测试
+- 监控 Search Console 的反馈
+- 及时修复错误
+
+---
+
+## 常见的架构标记类型
+
+### **组织（Organization）**
+**适用场景**：公司/品牌的主页或关于页面
+
+**必填属性**：
+- name（名称）
+- url（网址）
+
+**推荐属性**：
+- logo（徽标）
+- sameAs（用于关联社交媒体账号）
+- contactPoint（联系方式）
 
 ```json
 {
@@ -85,15 +85,15 @@ Before implementing schema, understand:
 }
 ```
 
-### WebSite (with SearchAction)
-**Use for**: Homepage, enables sitelinks search box
+### **网站（包含 SearchAction）**
+**适用场景**：主页，用于启用站点链接搜索框
 
-**Required properties**:
-- name
-- url
+**必填属性**：
+- name（名称）
+- url（网址）
 
-**For search box**:
-- potentialAction with SearchAction
+**针对搜索框的属性**：
+- potentialAction（用于指定搜索操作，例如“查看详情”）
 
 ```json
 {
@@ -112,20 +112,20 @@ Before implementing schema, understand:
 }
 ```
 
-### Article / BlogPosting
-**Use for**: Blog posts, news articles
+### **文章/博客帖子（Article/BlogPosting）**
+**适用场景**：博客文章、新闻文章
 
-**Required properties**:
-- headline
-- image
-- datePublished
-- author
+**必填属性**：
+- headline（标题）
+- image（图片）
+- datePublished（发布日期）
+- author（作者）
 
-**Recommended properties**:
-- dateModified
-- publisher
-- description
-- mainEntityOfPage
+**推荐属性**：
+- dateModified（修改日期）
+- publisher（发布者）
+- description（描述）
+- mainEntityOfPage（页面的主要实体）
 
 ```json
 {
@@ -156,20 +156,20 @@ Before implementing schema, understand:
 }
 ```
 
-### Product
-**Use for**: Product pages (e-commerce or SaaS)
+### **产品（Product）**
+**适用场景**：产品页面（电子商务或 SaaS 服务）
 
-**Required properties**:
-- name
-- image
-- offers (with price and availability)
+**必填属性**：
+- name（产品名称）
+- image（产品图片）
+- offers（产品信息，包括价格和库存情况）
 
-**Recommended properties**:
-- description
-- sku
-- brand
-- aggregateRating
-- review
+**推荐属性**：
+- description（产品描述）
+- sku（商品编号）
+- brand（品牌）
+- aggregateRating（综合评分）
+- review（用户评价）
 
 ```json
 {
@@ -199,17 +199,17 @@ Before implementing schema, understand:
 }
 ```
 
-### SoftwareApplication
-**Use for**: SaaS product pages, app landing pages
+### **软件应用（SoftwareApplication）**
+**适用场景**：SaaS 产品页面、应用程序的登录页面
 
-**Required properties**:
-- name
-- offers (or free indicator)
+**必填属性**：
+- name（应用程序名称）
+- offers（产品信息，包括是否免费）
 
-**Recommended properties**:
-- applicationCategory
-- operatingSystem
-- aggregateRating
+**推荐属性**：
+- applicationCategory（应用程序类别）
+- operatingSystem（操作系统）
+- aggregateRating（综合评分）
 
 ```json
 {
@@ -231,11 +231,11 @@ Before implementing schema, understand:
 }
 ```
 
-### FAQPage
-**Use for**: Pages with frequently asked questions
+### **常见问题解答页面（FAQPage）**
+**适用场景**：包含常见问题的页面
 
-**Required properties**:
-- mainEntity (array of Question/Answer)
+**必填属性**：
+- mainEntity（问题/答案的数组）
 
 ```json
 {
@@ -262,18 +262,18 @@ Before implementing schema, understand:
 }
 ```
 
-### HowTo
-**Use for**: Instructional content, tutorials
+### **操作指南（HowTo）**
+**适用场景**：教学内容、教程
 
-**Required properties**:
-- name
-- step (array of HowToStep)
+**必填属性**：
+- name（指南名称）
+- step（操作步骤的数组）
 
-**Recommended properties**:
-- image
-- totalTime
-- estimatedCost
-- supply/tool
+**推荐属性**：
+- image（指南图片）
+- totalTime（完成时间）
+- estimatedCost（预计成本）
+- supply/tool（所需工具）
 
 ```json
 {
@@ -305,8 +305,8 @@ Before implementing schema, understand:
 }
 ```
 
-### BreadcrumbList
-**Use for**: Any page with breadcrumb navigation
+### **面包屑导航（BreadcrumbList）**
+**适用场景**：任何具有面包屑导航的页面
 
 ```json
 {
@@ -335,13 +335,13 @@ Before implementing schema, understand:
 }
 ```
 
-### LocalBusiness
-**Use for**: Local business location pages
+### **本地企业（LocalBusiness）**
+**适用场景**：本地企业的位置信息页面
 
-**Required properties**:
-- name
-- address
-- (Various by business type)
+**必填属性**：
+- name（企业名称）
+- address（企业地址）
+- （根据企业类型添加其他相关属性）
 
 ```json
 {
@@ -375,10 +375,10 @@ Before implementing schema, understand:
 }
 ```
 
-### Review / AggregateRating
-**Use for**: Review pages or products with reviews
+### **评论/综合评分（Review/AggregateRating）**
+**适用场景**：包含用户评论的产品页面
 
-Note: Self-serving reviews (reviewing your own product) are against guidelines. Reviews must be from real customers.
+**注意**：自我评价的评论（例如评价自己的产品）是不符合指南的。评论必须来自真实客户。
 
 ```json
 {
@@ -410,13 +410,13 @@ Note: Self-serving reviews (reviewing your own product) are against guidelines. 
 }
 ```
 
-### Event
-**Use for**: Event pages, webinars, conferences
+### **活动（Event）**
+**适用场景**：活动页面、网络研讨会、会议
 
-**Required properties**:
-- name
-- startDate
-- location (or eventAttendanceMode for online)
+**必填属性**：
+- name（活动名称）
+- startDate（开始日期）
+- location（活动地点；在线活动时使用 eventAttendanceMode）
 
 ```json
 {
@@ -455,9 +455,9 @@ Note: Self-serving reviews (reviewing your own product) are against guidelines. 
 
 ---
 
-## Multiple Schema Types on One Page
+## 单个页面上使用多种架构标记类型
 
-You can (and often should) have multiple schema types:
+您可以在一个页面上使用多种架构标记类型（通常也是推荐的做法）：
 
 ```json
 {
@@ -488,41 +488,33 @@ You can (and often should) have multiple schema types:
 
 ---
 
-## Validation and Testing
+## 验证与测试
 
-### Tools
-- **Google Rich Results Test**: https://search.google.com/test/rich-results
-- **Schema.org Validator**: https://validator.schema.org/
-- **Search Console**: Enhancements reports
+### 工具
+- **Google 富富结果测试**：https://search.google.com/test/rich-results
+- **Schema.org 验证工具**：https://validator.schema.org/
+- **Search Console**：提供相关优化报告
 
-### Common Errors
+### 常见错误
 
-**Missing required properties**
-- Check Google's documentation for required fields
-- Different from schema.org minimum requirements
-
-**Invalid values**
-- Dates must be ISO 8601 format
-- URLs must be fully qualified
-- Enumerations must use exact values
-
-**Mismatch with page content**
-- Schema doesn't match visible content
-- Ratings for products without reviews shown
-- Prices that don't match displayed prices
+- **缺少必填属性**：检查 Google 的文档以确认所需字段
+- **值无效**：日期必须符合 ISO 8601 格式；URL 必须完整；枚举值必须准确无误
+- **与页面内容不符**：架构标记与实际显示的内容不一致
+- **产品无评论时显示评分**：无评论的产品不应显示评分
+- **价格不一致**：显示的价格与实际价格不符
 
 ---
 
-## Implementation Patterns
+## 实现方式
 
-### Static Sites
-- Add JSON-LD directly in HTML template
-- Use includes/partials for reusable schema
+### **静态网站**
+- 直接在 HTML 模板中添加 JSON-LD 标记
+- 使用包含（includes）或部分（partials）代码片段来实现可复用的架构标记
 
-### Dynamic Sites (React, Next.js, etc.)
-- Component that renders schema
-- Server-side rendered for SEO
-- Serialize data to JSON-LD
+### **动态网站（React、Next.js 等）**
+- 使用组件来渲染架构标记
+- 通过服务器端渲染来优化搜索引擎排名（SEO）
+- 将数据序列化为 JSON-LD 格式
 
 ```jsx
 // Next.js example
@@ -548,16 +540,16 @@ export default function ProductPage({ product }) {
 }
 ```
 
-### CMS / WordPress
-- Plugins (Yoast, Rank Math, Schema Pro)
-- Theme modifications
-- Custom fields to structured data
+### **内容管理系统（CMS）/ WordPress**
+- 使用插件（如 Yoast、Rank Math、Schema Pro）来辅助实现
+- 通过主题定制来添加结构化数据
 
 ---
 
-## Output Format
+## 输出格式
 
-### Schema Implementation
+### 架构标记的实现方式
+
 ```json
 // Full JSON-LD code block
 {
@@ -567,30 +559,31 @@ export default function ProductPage({ product }) {
 }
 ```
 
-### Placement Instructions
-Where to add the code and how
+### 代码放置位置及方法
 
-### Testing Checklist
-- [ ] Validates in Rich Results Test
-- [ ] No errors or warnings
-- [ ] Matches page content
-- [ ] All required properties included
+- 说明代码应放置的位置以及如何添加
 
----
-
-## Questions to Ask
-
-If you need more context:
-1. What type of page is this?
-2. What rich results are you hoping to achieve?
-3. What data is available to populate the schema?
-4. Is there existing schema on the page?
-5. What's your tech stack for implementation?
+### 测试检查清单
+- [ ] 在 Google 富富结果测试中通过验证
+- [ ] 无错误或警告
+- [ ] 与页面内容一致
+- [ ] 所有必填属性都已包含
 
 ---
 
-## Related Skills
+## 需要咨询的问题
 
-- **seo-audit**: For overall SEO including schema review
-- **programmatic-seo**: For templated schema at scale
-- **analytics-tracking**: For measuring rich result impact
+如果您需要更多信息，请提出以下问题：
+1. 这是一个什么样的页面？
+2. 您希望实现哪些丰富的搜索结果？
+3. 有哪些数据可以用来填充架构标记？
+4. 页面上是否已有现有的架构标记？
+5. 您使用的实现技术栈是什么？
+
+---
+
+## 相关技能
+
+- **SEO 审计（seo-audit）**：用于整体 SEO 优化，包括架构标记的检查
+- **程序化 SEO（programmatic-seo）**：用于大规模的模板化架构标记管理
+- **分析跟踪（analytics-tracking）**：用于衡量架构标记对搜索结果的影响

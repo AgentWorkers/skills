@@ -1,13 +1,19 @@
 ---
 name: youtube-shorts-automation
-description: YouTube Shorts 자동 생성 및 업로드 파이프라인. Deevid AI Agent로 이미지→영상(BGM+음성 포함) 생성 후 YouTube에 업로드. 크론잡으로 매일 자동 실행 가능. Use when generating short-form vertical videos, creating AI-generated video content, uploading to YouTube Shorts, or automating daily video content pipelines.
+description: **YouTube Shorts 自动生成与上传流程：**  
+利用 Deevid AI Agent 将图片转换为包含背景音乐和语音的视频，随后将其上传至 YouTube。该流程可通过 Cron Job 每日自动执行。  
+**适用场景：**  
+- 生成短视频（竖版视频）  
+- 创作 AI 生成的视频内容  
+- 上传视频至 YouTube Shorts  
+- 自动化日常视频内容的生成与上传流程
 ---
 
-# YouTube Shorts Automation
+# YouTube Shorts 自动化
 
-Deevid AI로 이미지/영상 생성 → YouTube Shorts 업로드 자동화 스킬.
+使用 Deevid AI 生成图片/视频，然后自动上传到 YouTube Shorts 的自动化流程。
 
-## 전체 파이프라인
+## 整体工作流程
 
 ```
 1. 이미지 생성 (Deevid AI)
@@ -17,38 +23,38 @@ Deevid AI로 이미지/영상 생성 → YouTube Shorts 업로드 자동화 스�
 5. (선택) Telegram으로 결과 전송
 ```
 
-## 핵심 규칙
+## 核心规则
 
-- **⚠️ "이미지를 동영상으로" 도구 사용 금지** → 무음 영상만 나옴
-- **✅ Deevid Agent** (`https://deevid.ai/ko/agent`) 사용 → BGM+대사 포함
-- 영상 비율: **9:16** (세로, Shorts 필수)
-- 영상 길이: **60초 이하** (8~10초 권장)
+- **⚠️ 禁止使用“将图片转换为视频”的工具**：否则生成的视频将没有声音。
+- **✅ 使用 Deevid Agent**（`https://deevid.ai/ko/agent`）：生成的视频包含背景音乐和对话。
+- 视频比例：**9:16**（竖屏格式，符合 YouTube Shorts 的要求）。
+- 视频时长：**60 秒以内**（建议 8–10 秒）。
 
-## 설정 파일 구조
+## 设置文件结构
 
-채널별 설정을 JSON으로 관리. 예시: [references/config_example.json](references/config_example.json)
+各频道的相关设置以 JSON 格式进行管理。示例：[references/config_example.json](references/config_example.json)
 
-필수 필드:
-- `channel`: 채널명
-- `deevid_prompt`: 이미지 생성 프롬프트 (영어, 9:16 명시)
-- `youtube.title_template`: 업로드 제목 (`#shorts` 포함)
-- `youtube.description_template`: 업로드 설명
-- `youtube.tags`: 쉼표 구분 태그
+必填字段：
+- `channel`：频道名称
+- `deevid.prompt`：用于生成图片的提示语（需指定为 9:16 纵屏格式）
+- `youtube.title_template`：上传视频的标题（包含 `#shorts` 标签）
+- `youtube.description_template`：上传视频的描述
+- `youtube.tags`：用逗号分隔的标签
 
-## 단계별 실행
+## 分步执行流程
 
-### 1. 이미지 생성
-Deevid AI 웹에서 이미지 생성. 프롬프트에 `9:16 vertical format` 포함.
-- 비용: 6 크레딧/장
-- 상세: [references/deevid-agent-workflow.md](references/deevid-agent-workflow.md)
+### 1. 生成图片
+在 Deevid AI 的网站上生成图片。提示语中必须包含 “9:16 vertical format”。
+- 费用：每张图片需要 6 个信用点。
+- 详情：[references/deevid-agent-workflow.md](references/deevid-agent-workflow.md)
 
-### 2. Agent 영상 생성
-Deevid Agent에 이미지 업로드 + 프롬프트 → 영상 생성 (2-5분 소요).
-- 비용: 20 크레딧/8초
-- 모델: Start Image Master V2.0
-- 상세: [references/deevid-agent-workflow.md](references/deevid-agent-workflow.md)
+### 2. 使用 Deevid Agent 生成视频
+将生成的图片上传到 Deevid Agent，并提供相应的提示语，然后生成视频（生成时间约为 2–5 分钟）。
+- 费用：每 8 秒视频需要 20 个信用点。
+- 使用的模型：Start Image Master V2.0
+- 详情：[references/deevid-agent-workflow.md](references/deevid-agent-workflow.md)
 
-### 3. YouTube 업로드
+### 3. 上传视频到 YouTube
 ```bash
 python3 scripts/youtube_upload.py \
   --file video.mp4 \
@@ -56,18 +62,18 @@ python3 scripts/youtube_upload.py \
   --description "설명" \
   --tags "tag1,tag2"
 ```
-- 사전 설정: OAuth `client_secret.json` + `token.json` 필요
-- 상세: [references/youtube-upload.md](references/youtube-upload.md)
+- 需要预先设置 `client_secret.json` 和 `token.json` 文件。
+- 详情：[references/youtube-upload.md](references/youtube-upload.md)
 
-### 4. 크론잡 등록 (OpenClaw)
-매일 정해진 시간에 isolated session으로 파이프라인 실행.
-크론잡 payload에 전체 워크플로 설명 + 환경 경로 포함.
+### 4. 注册 Cronjob（使用 OpenClaw）
+设置定时任务，在指定时间通过 isolated session 运行整个工作流程。
+Cronjob 的 payload 中需要包含整个工作流程的描述以及相关环境路径。
 
-## 트러블슈팅
+## 故障排除
 
-| 문제 | 원인 | 해결 |
+| 问题 | 原因 | 解决方法 |
 |------|------|------|
-| 무음 영상 | "이미지를 동영상으로" 도구 사용 | Agent 사용으로 전환 |
-| 업로드 실패 | token.json 만료 | 재인증 또는 refresh |
-| Deevid 로그인 풀림 | 세션 만료 | 브라우저에서 재로그인 |
-| 영상 URL 추출 실패 | SPA 렌더링 지연 | 대기 시간 늘리기 |
+| 视频没有声音 | 使用了“将图片转换为视频”的工具 | 更改为使用 Deevid Agent 生成视频 |
+| 上传失败 | `token.json` 过期 | 重新认证或刷新 token |
+| Deevid 登录失效 | 会话过期 | 重新在浏览器中登录 |
+| 无法提取视频 URL | SPA 渲染延迟 | 增加等待时间 |

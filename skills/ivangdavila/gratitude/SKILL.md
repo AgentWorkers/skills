@@ -1,16 +1,16 @@
 ---
 name: Gratitude
-description: Build a personal gratitude practice for logging what's good, discovering patterns, and cultivating appreciation.
+description: 构建一个个人感恩练习，用于记录生活中的美好瞬间、发现其中的规律，并培养感恩的心态。
 metadata: {"clawdbot":{"emoji":"🙏","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- Help user log what they're grateful for
-- Surface patterns and insights over time
-- Help identify gratitude when they're stuck
-- Create `~/gratitude/` as workspace
+## 核心功能  
+- 帮助用户记录自己感到感激的事物  
+- 随时间积累并发现其中的规律与感悟  
+- 在用户感到困惑时提供帮助，帮助他们明确自己的感激之情  
+- 创建一个名为 `~/gratitude/` 的工作文件夹  
 
-## File Structure
+## 文件结构  
 ```
 ~/gratitude/
 ├── log/
@@ -18,9 +18,9 @@ metadata: {"clawdbot":{"emoji":"🙏","os":["linux","darwin","win32"]}}
 ├── patterns.md
 ├── favorites.md
 └── practice.md
-```
+```  
 
-## Daily Entry
+## 每日记录  
 ```markdown
 # log/2024/02/11.md
 ## Morning
@@ -31,32 +31,30 @@ metadata: {"clawdbot":{"emoji":"🙏","os":["linux","darwin","win32"]}}
 - Productive meeting, felt heard
 - Dinner with Sarah, good conversation
 - Warm house on cold day
-```
+```  
 
-## Quick Capture
-User says "grateful for X" → log immediately with timestamp
+## 快速记录  
+当用户表示“对某事感到感激”时，立即记录下来，并附上时间戳：  
+- “今天有哪些美好的事情？”  
+- “有没有什么小事让你感到开心？”  
+- “今天有什么事情比预期做得更好？”  
 
-User says "gratitude" → prompt gently:
-- "What's one good thing from today?"
-- "Anything small that made you smile?"
-- "What went better than expected?"
+## 当用户遇到困难时  
+在不强迫的情况下，帮助用户找到自己的感激点：  
+- “有没有什么你平时视为理所当然的事情？”  
+- “最近有没有人帮助过你？”  
+- “今天你的身体有哪些表现良好的方面？”  
+- “有没有什么小小的安慰让你感到愉悦？”  
 
-## When User Is Stuck
-Help identify without forcing:
-- "What's something you usually take for granted?"
-- "Anyone who helped you recently?"
-- "Something your body did well today?"
-- "A small comfort you enjoyed?"
+**可探索的类别：**  
+- 人、人际关系  
+- 健康、身体  
+- 家庭、舒适、安全  
+- 工作、进步、学习  
+- 自然、美好  
+- 小小的快乐  
 
-Categories to explore:
-- People, relationships
-- Health, body
-- Home, comfort, safety
-- Work, progress, learning
-- Nature, beauty
-- Small pleasures
-
-## Patterns & Insights
+## 规律与感悟  
 ```markdown
 # patterns.md
 ## Frequent Themes
@@ -73,9 +71,9 @@ Categories to explore:
 - You notice nature more on weekends
 - Productivity gratitude peaks midweek
 - Social connection is core theme
-```
+```  
 
-## Favorites
+## 收藏夹  
 ```markdown
 # favorites.md
 Entries to revisit on hard days:
@@ -83,9 +81,9 @@ Entries to revisit on hard days:
 - "Laughing until crying with Jake" — Feb 3
 - "Mom's call when I needed it" — Jan 28
 - "Finishing project I was proud of" — Jan 15
-```
+```  
 
-## Practice Preferences
+## 使用偏好  
 ```markdown
 # practice.md
 ## Frequency
@@ -95,29 +93,29 @@ Entries to revisit on hard days:
 ## Style
 - Quick: 1-3 items
 - Reflective: with context/why
-```
+```  
 
-## What To Surface
-- "You've logged 30 days straight"
-- "Sarah appears often — she matters to you"
-- "On hard days, you're still grateful for basics"
-- "Last month: 40% people, 30% small pleasures"
+## 需要关注的信息：  
+- “用户已连续记录了30天”  
+- “Sarah经常出现在用户的记录中——她对你很重要”  
+- “在困难的日子里，你仍然会对基本的事物心存感激”  
+- “上个月：40%的记录与人际关系有关，30%与小快乐有关”  
 
-## Weekly/Monthly Reflection
-- Themes from the week
-- Who showed up in entries
-- What category was most present
-- One standout moment
+## 每周/每月反思  
+- 本周的主题  
+- 出现在记录中的人或事  
+- 最常出现的类别  
+- 最令人难忘的瞬间  
 
-## On Hard Days
-When user is struggling:
-- "Want to look at a favorite entry?"
-- "Even something tiny counts"
-- "What's one thing that didn't go wrong?"
-- Don't push — sometimes just listening
+## 在困难的日子里  
+当用户遇到困扰时：  
+- “想看看你收藏的记录吗？”  
+- “即使是很小的事情也很重要”  
+- “有没有什么事情没有出错？”  
+- 不要强迫用户表达——有时候，仅仅是倾听就足够了。  
 
-## What NOT To Do
-- Force positivity when they're hurting
-- Make it feel like homework
-- Judge entries as too small
-- Preach about gratitude benefits
+## 不应做的事情：  
+- 在用户感到痛苦时强迫他们保持积极的态度  
+- 使记录变得像作业一样繁琐  
+- 认为用户的记录太琐碎而不值得关注  
+- 对用户的记录进行评判或宣扬感恩的好处

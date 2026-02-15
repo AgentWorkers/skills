@@ -1,15 +1,15 @@
 ---
 name: proton-pass
-description: Manage Proton Pass vaults, items (logins, SSH keys, aliases, notes), passwords, SSH agent integration, and secret injection into applications. Use when working with Proton Pass for password management, SSH key storage, secret injection (run commands with secrets, inject into templates), environment variable injection, or generating secure passwords. Supports vault/item CRUD, sharing, member management, SSH agent operations, TOTP generation, secret references (pass://vault/item/field), template injection, and command execution with secrets.
+description: 管理 Proton Pass 的保管库（vault）中的项目（包括登录信息、SSH 密钥、别名、备注等），以及密码的存储和安全管理。支持与 Proton Pass 集成，实现密码管理、SSH 密钥存储、秘密数据注入（使用秘密信息执行命令、将秘密数据注入模板中）、环境变量配置等功能。此外，还提供保管库/项目的创建、读取、更新和删除（CRUD）操作、成员管理、SSH 代理配置、一次性密码（TOTP）生成、秘密数据引用（格式为 `pass://vault/item/field`）、模板注入以及使用秘密信息执行命令等功能。
 ---
 
 # Proton Pass CLI
 
-Comprehensive password and secret management via the Proton Pass CLI. Manage vaults, items, SSH keys, share credentials, inject secrets, and integrate with SSH workflows.
+Proton Pass CLI 提供了全面的密码和秘密管理功能，支持管理密码库、项目、SSH 密钥、共享凭证、注入秘密以及与 SSH 工作流程的集成。
 
-## Installation
+## 安装
 
-### Quick install
+### 快速安装
 
 macOS/Linux:
 ```bash
@@ -27,34 +27,34 @@ Invoke-WebRequest -Uri https://proton.me/download/pass-cli/install.ps1 -OutFile 
 brew install protonpass/tap/pass-cli
 ```
 
-**Note:** Package manager installations (Homebrew, etc.) do not support `pass-cli update` command or track switching.
+**注意：** 包管理器（如 Homebrew）不支持 `pass-cli update` 命令，也无法切换版本。
 
-### Verify installation
+### 验证安装
 
 ```bash
 pass-cli --version
 ```
 
-## Authentication
+## 认证
 
-### Web login (recommended)
+### 网页登录（推荐）
 
-Default authentication method supporting all login flows (SSO, U2F):
+支持所有登录方式的默认认证方法（包括 SSO 和 U2F）：
 
 ```bash
 pass-cli login
 # Open the URL displayed in your browser and complete authentication
 ```
 
-### Interactive login
+### 交互式登录
 
-Terminal-based authentication (supports password + TOTP, but not SSO or U2F):
+基于终端的认证方式（支持密码 + TOTP，但不支持 SSO 或 U2F）：
 
 ```bash
 pass-cli login --interactive user@proton.me
 ```
 
-#### Environment variables for automation
+#### 自动化所需的环境变量
 
 ```bash
 # Credentials as plain text (less secure)
@@ -70,36 +70,36 @@ export PROTON_PASS_EXTRA_PASSWORD_FILE='/secure/extra-password.txt'
 pass-cli login --interactive user@proton.me
 ```
 
-### Verify session
+### 验证会话
 
 ```bash
 pass-cli info          # Show session info
 pass-cli test          # Test connection
 ```
 
-### Logout
+### 注销
 
 ```bash
 pass-cli logout        # Normal logout
 pass-cli logout --force  # Force local cleanup if remote fails
 ```
 
-## Vault Management
+## 密码库管理
 
-### List vaults
+### 列出密码库
 
 ```bash
 pass-cli vault list
 pass-cli vault list --output json
 ```
 
-### Create vault
+### 创建密码库
 
 ```bash
 pass-cli vault create --name "Vault Name"
 ```
 
-### Update vault
+### 更新密码库
 
 ```bash
 # By share ID
@@ -109,9 +109,9 @@ pass-cli vault update --share-id "abc123def" --name "New Name"
 pass-cli vault update --vault-name "Old Name" --name "New Name"
 ```
 
-### Delete vault
+### 删除密码库
 
-⚠️ **Warning:** Permanently deletes vault and all items.
+⚠️ **警告：** 删除密码库及其所有内容将不可恢复。
 
 ```bash
 # By share ID
@@ -121,7 +121,7 @@ pass-cli vault delete --share-id "abc123def"
 pass-cli vault delete --vault-name "Old Vault"
 ```
 
-### Share vault
+### 共享密码库
 
 ```bash
 # Share with viewer access (default)
@@ -133,7 +133,7 @@ pass-cli vault share --vault-name "Team Vault" colleague@company.com --role edit
 # Roles: viewer, editor, manager
 ```
 
-### Manage vault members
+### 管理密码库成员
 
 ```bash
 # List members
@@ -147,16 +147,16 @@ pass-cli vault member update --share-id "abc123def" --member-share-id "member123
 pass-cli vault member remove --share-id "abc123def" --member-share-id "member123"
 ```
 
-### Transfer vault ownership
+### 转移密码库所有权
 
 ```bash
 pass-cli vault transfer --share-id "abc123def" "member_share_id_xyz"
 pass-cli vault transfer --vault-name "My Vault" "member_share_id_xyz"
 ```
 
-## Item Management
+## 项目管理
 
-### List items
+### 列出项目
 
 ```bash
 # List from specific vault
@@ -167,7 +167,7 @@ pass-cli item list --share-id "abc123def"
 pass-cli item list
 ```
 
-### View item
+### 查看项目
 
 ```bash
 # By IDs
@@ -188,7 +188,7 @@ pass-cli item view --share-id "abc123def" --item-id "item456" --field "username"
 pass-cli item view --share-id "abc123def" --item-id "item456" --output json
 ```
 
-### Create login item
+### 创建登录项目
 
 ```bash
 # Basic login
@@ -232,7 +232,7 @@ pass-cli item create login \
   --url "https://example.com"
 ```
 
-#### Login template
+#### 登录模板
 
 ```bash
 # Get template structure
@@ -246,7 +246,7 @@ echo '{"title":"Test","username":"user","password":"pass","urls":["https://test.
   pass-cli item create login --share-id "abc123def" --from-template -
 ```
 
-Template format:
+模板格式：
 ```json
 {
   "title": "Item Title",
@@ -257,9 +257,9 @@ Template format:
 }
 ```
 
-### Create SSH key items
+### 创建 SSH 密钥项目
 
-#### Generate new SSH key
+#### 生成新的 SSH 密钥
 
 ```bash
 # Generate Ed25519 key (recommended)
@@ -295,7 +295,7 @@ PROTON_PASS_SSH_KEY_PASSWORD="my-passphrase" \
   --password
 ```
 
-#### Import existing SSH key
+#### 导入现有的 SSH 密钥
 
 ```bash
 # Import unencrypted key
@@ -326,7 +326,7 @@ PROTON_PASS_SSH_KEY_PASSWORD="my-key-passphrase" \
   --password
 ```
 
-**Recommendation:** For importing passphrase-protected keys, consider removing the passphrase first since keys will be encrypted in your vault:
+**建议：** 在导入受密码保护的密钥时，建议先删除密码，因为密钥将在密码库中被加密。
 
 ```bash
 # Create unencrypted copy
@@ -344,7 +344,7 @@ shred -u /tmp/id_ed25519_temp  # Linux
 rm -P /tmp/id_ed25519_temp     # macOS
 ```
 
-### Create email alias
+### 创建电子邮件别名
 
 ```bash
 # Create alias
@@ -355,7 +355,7 @@ pass-cli item alias create --vault-name "Personal" --prefix "shopping"
 pass-cli item alias create --vault-name "Personal" --prefix "temp" --output json
 ```
 
-### Update item
+### 更新项目
 
 ```bash
 # Update single field
@@ -392,17 +392,17 @@ pass-cli item update \
   --field "environment=production"
 ```
 
-**Note:** Item update does not support TOTP or time fields. Use another Proton Pass client for those.
+**注意：** 项目更新不支持 TOTP 或时间字段。请使用其他 Proton Pass 客户端进行这些操作。
 
-### Delete item
+### 删除项目
 
-⚠️ **Warning:** Permanent deletion.
+⚠️ **警告：** 删除项目将不可恢复。
 
 ```bash
 pass-cli item delete --share-id "abc123def" --item-id "item456"
 ```
 
-### Share item
+### 共享项目
 
 ```bash
 # Share with viewer access (default)
@@ -412,7 +412,7 @@ pass-cli item share --share-id "abc123def" --item-id "item456" colleague@company
 pass-cli item share --share-id "abc123def" --item-id "item456" colleague@company.com --role editor
 ```
 
-### Generate TOTP codes
+### 生成 TOTP 代码
 
 ```bash
 # Generate all TOTPs for an item
@@ -428,9 +428,9 @@ pass-cli item totp "pass://TOTP vault/WithTOTPs" --output json
 pass-cli item totp "pass://TOTP vault/WithTOTPs/TOTP 1" --output json | jq -r '.["TOTP 1"]'
 ```
 
-## Password Generation & Analysis
+## 密码生成与分析
 
-### Generate passwords
+### 生成密码
 
 ```bash
 # Random password (default settings)
@@ -451,7 +451,7 @@ pass-cli password generate passphrase --count 4 --separator hyphens
 pass-cli password generate passphrase --count 4 --capitalize true --numbers true
 ```
 
-### Analyze password strength
+### 分析密码强度
 
 ```bash
 # Score a password
@@ -461,7 +461,7 @@ pass-cli password score "mypassword123"
 pass-cli password score "MySecureP@ssw0rd*" --output json
 ```
 
-Example JSON output:
+示例 JSON 输出：
 ```json
 {
   "numeric_score": 51.666666666666664,
@@ -473,11 +473,11 @@ Example JSON output:
 }
 ```
 
-## SSH Agent Integration
+## SSH 代理集成
 
-### Load SSH keys into existing agent
+### 将 Proton Pass SSH 密钥加载到现有代理中
 
-Load Proton Pass SSH keys into your existing SSH agent:
+将 Proton Pass 的 SSH 密钥加载到现有的 SSH 代理中：
 
 ```bash
 # Load all SSH keys
@@ -488,11 +488,11 @@ pass-cli ssh-agent load --share-id MY_SHARE_ID
 pass-cli ssh-agent load --vault-name MySshKeysVault
 ```
 
-**Prerequisite:** Ensure `SSH_AUTH_SOCK` environment variable is defined.
+**前提条件：** 确保 `SSH_AUTH_SOCK` 环境变量已定义。
 
-### Run Proton Pass CLI as SSH agent
+### 以 SSH 代理的方式运行 Proton Pass CLI
 
-Start Proton Pass CLI as a standalone SSH agent:
+将 Proton Pass CLI 作为独立的 SSH 代理运行：
 
 ```bash
 # Start agent
@@ -509,14 +509,14 @@ pass-cli ssh-agent start --socket-path /custom/path/agent.sock
 pass-cli ssh-agent start --refresh-interval 7200  # 2 hours
 ```
 
-After starting, export the socket:
+运行后，导出代理的套接字：
 ```bash
 export SSH_AUTH_SOCK=/Users/youruser/.ssh/proton-pass-agent.sock
 ```
 
-#### Auto-create SSH key items (v1.3.0+)
+#### 自动创建 SSH 密钥项目（v1.3.0 及更高版本）
 
-Automatically save SSH keys added via `ssh-add`:
+通过 `ssh-add` 命令添加的 SSH 密钥会自动保存：
 
 ```bash
 # Enable auto-creation
@@ -528,30 +528,30 @@ ssh-add ~/.ssh/my_new_key
 # Key is now automatically saved to Proton Pass!
 ```
 
-### Troubleshooting SSH
+### SSH 故障排除
 
-#### ssh-copy-id fails with many keys
+#### 当使用多个密钥时 `ssh-copy-id` 失败
 
-Force password authentication:
+强制使用密码认证：
 ```bash
 ssh-copy-id -o PreferredAuthentications=password -o PubkeyAuthentication=no user@server
 ```
 
-## Pass URI Syntax (Secret References)
+## Pass URI 语法（秘密引用）
 
-Reference secrets using the format: `pass://vault/item/field`
+使用以下格式引用秘密：`pass://vault/item/field`
 
-### Syntax
+### 语法
 
 ```
 pass://<vault-identifier>/<item-identifier>/<field-name>
 ```
 
-- **vault-identifier:** Vault's Share ID or name
-- **item-identifier:** Item's ID or title
-- **field-name:** Specific field to retrieve (required)
+- **vault-identifier：** 密码库的共享 ID 或名称
+- **item-identifier：** 项目的 ID 或标题
+- **field-name：** 需要检索的特定字段
 
-### Examples
+### 示例
 
 ```bash
 # By names
@@ -570,56 +570,56 @@ pass://Work/API Keys/api_key
 pass://Production/Database/connection_string
 ```
 
-### Common fields
+### 常见字段
 
-- `username` - Username/login name
-- `password` - Password
-- `email` - Email address
-- `url` - Website URL
-- `note` - Additional notes
-- `totp` - TOTP secret (for 2FA)
-- Custom fields with any name (case-sensitive)
+- `username` - 用户名/登录名
+- `password` - 密码
+- `email` - 电子邮件地址
+- `url` - 网站 URL
+- `note` - 附加说明
+- `totp` - TOTP 密码（用于双因素认证）
+- 自定义字段（名称任意）
 
-### Rules
+### 规则
 
-- All three components (vault/item/field) are required
-- Names with spaces are supported
-- Resolution is case-sensitive
-- If duplicates exist, first match is used (prefer IDs for precision)
+- 三个组成部分（vault/item/field）都是必需的
+- 名称中可以包含空格
+- 名称区分大小写
+- 如果存在重复项，使用第一个匹配项（为了准确性）
 
-**Invalid formats:**
+**无效格式：**
 ```bash
 pass://vault/item              # Missing field name
 pass://vault/item/             # Trailing slash
 pass://vault/                  # Missing item and field
 ```
 
-## Secret Injection
+## 秘密注入
 
-### Run commands with secrets (`run`)
+### 使用 Proton Pass 中的秘密执行命令（`run`）
 
-Execute commands with secrets from Proton Pass injected as environment variables.
+使用 Proton Pass 中的秘密作为环境变量来执行命令。
 
-**Synopsis:**
+**概述：**
 ```bash
 pass-cli run [--env-file FILE]... [--no-masking] -- COMMAND [ARGS...]
 ```
 
-**How it works:**
-1. Collects environment variables from current process and `.env` files
-2. Scans for `pass://` URIs in variable values
-3. Resolves secrets from Proton Pass
-4. Replaces URIs with actual secret values
-5. Masks secrets in output (unless `--no-masking`)
-6. Executes command with resolved environment
-7. Forwards stdin/stdout/stderr and signals (SIGTERM/SIGINT)
+**工作原理：**
+1. 从当前进程和 `.env` 文件中收集环境变量
+2. 检查变量值中是否包含 `pass://` 格式的 URI
+3. 从 Proton Pass 中获取相应的秘密
+4. 用实际的秘密值替换 URI
+5. 在输出中隐藏秘密（除非指定了 `--no-masking`）
+6. 使用处理后的环境变量执行命令
+7. 将标准输入/输出/标准错误和信号（SIGTERM/SIGINT）传递给命令
 
-**Arguments:**
-- `--env-file FILE` - Load environment variables from dotenv file (can specify multiple, processed in order)
-- `--no-masking` - Disable automatic masking of secrets in output
-- `COMMAND [ARGS...]` - Command to execute (must come after `--`)
+**参数：**
+- `--env-file FILE` - 从 `.env` 文件中加载环境变量（可以指定多个文件，按顺序处理）
+- `--no-masking` - 禁用输出中的秘密隐藏功能
+- `COMMAND [ARGS...]` - 要执行的命令（必须放在 `--` 之后）
 
-#### Basic usage
+#### 基本用法
 
 ```bash
 # Set secret reference in environment
@@ -629,9 +629,9 @@ export DB_PASSWORD='pass://Production/Database/password'
 pass-cli run -- ./my-app
 ```
 
-#### Using .env files
+#### 使用 `.env` 文件
 
-Create `.env`:
+创建 `.env` 文件：
 ```bash
 DB_HOST=localhost
 DB_PORT=5432
@@ -640,7 +640,7 @@ DB_PASSWORD=pass://Production/Database/password
 API_KEY=pass://Work/External API/api_key
 ```
 
-Run:
+执行命令：
 ```bash
 pass-cli run --env-file .env -- ./my-app
 
@@ -652,7 +652,7 @@ pass-cli run \
   -- ./my-app
 ```
 
-#### Multiple secrets in single value
+#### 在单个值中包含多个秘密
 
 ```bash
 # Mix secrets with plain text
@@ -660,27 +660,27 @@ DATABASE_URL="postgresql://user:pass://vault/db/password@localhost/db"
 API_ENDPOINT="https://api.example.com?key=pass://vault/api/key"
 ```
 
-#### Secret masking
+#### 秘密隐藏
 
-**Default (masked):**
+**默认设置（隐藏秘密）：**
 ```bash
 pass-cli run -- ./my-app
 # If app logs: API_KEY: sk_live_abc123
 # Output shows: API_KEY: <concealed by Proton Pass>
 ```
 
-**Unmasked:**
+**显示秘密：**
 ```bash
 pass-cli run --no-masking -- ./my-app
 ```
 
-#### Running with arguments
+#### 带参数执行命令
 
 ```bash
 pass-cli run -- ./my-app --config production --verbose
 ```
 
-#### CI/CD integration
+#### 集成到持续集成/持续部署（CI/CD）流程中
 
 ```bash
 #!/bin/bash
@@ -688,32 +688,32 @@ pass-cli run -- ./my-app --config production --verbose
 pass-cli run --env-file .env.production -- ./deploy.sh
 ```
 
-### Inject secrets into templates (`inject`)
+### 将秘密注入模板（`inject`）
 
-Process template files and replace secret references with actual values using handlebars-style syntax.
+使用 Handlebars 风格的语法处理模板文件，并将秘密引用替换为实际值。
 
-**Synopsis:**
+**概述：**
 ```bash
 pass-cli inject [--in-file FILE] [--out-file FILE] [--force] [--file-mode MODE]
 ```
 
-**How it works:**
-1. Reads template from `--in-file` or stdin
-2. Finds `{{ pass://vault/item/field }}` patterns
-3. Resolves secrets from Proton Pass
-4. Replaces references with actual values
-5. Outputs to `--out-file` or stdout
-6. Sets file permissions (Unix)
+**工作原理：**
+1. 从 `--in-file` 或标准输入读取模板文件
+2. 查找 `{{ pass://vault/item/field }}` 模式
+3. 从 Proton Pass 中获取相应的秘密
+4. 用实际值替换模板中的引用
+5. 将结果输出到 `--out-file` 或标准输出
+6. 设置文件的权限（Unix 环境）
 
-**Arguments:**
-- `--in-file`, `-i` - Path to template file (or stdin)
-- `--out-file`, `-o` - Path to write output (or stdout)
-- `--force`, `-f` - Overwrite output file without prompting
-- `--file-mode` - Set file permissions (Unix, default: `0600`)
+**参数：**
+- `--in-file`, `-i` - 模板文件的路径（或标准输入）
+- `--out-file`, `-o` - 输出文件的路径（或标准输出）
+- `--force`, `-f` - 不提示地覆盖输出文件
+- `--file-mode` - 设置文件的权限（Unix，默认为 `0600`）
 
-#### Template syntax
+#### 模板语法
 
-**Important:** Use double braces `{{ }}` (unlike `run` which uses bare `pass://`)
+**注意：** 使用双大括号 `{{ }}`（与 `run` 命令使用的简单 `pass://` 不同）
 
 ```yaml
 # config.yaml.template
@@ -730,13 +730,13 @@ api:
 # Only {{ }} wrapped references are processed
 ```
 
-#### Inject to stdout
+#### 将秘密输出到标准输出
 
 ```bash
 pass-cli inject --in-file config.yaml.template
 ```
 
-#### Inject to file
+#### 将秘密写入文件
 
 ```bash
 pass-cli inject \
@@ -750,7 +750,7 @@ pass-cli inject \
   --force
 ```
 
-#### Read from stdin
+#### 从标准输入读取
 
 ```bash
 cat template.txt | pass-cli inject
@@ -765,7 +765,7 @@ pass-cli inject << EOF
 EOF
 ```
 
-#### Custom file permissions
+#### 自定义文件权限
 
 ```bash
 pass-cli inject \
@@ -774,7 +774,7 @@ pass-cli inject \
   --file-mode 0644
 ```
 
-#### JSON template example
+#### JSON 模板示例
 
 ```json
 {
@@ -788,17 +788,17 @@ pass-cli inject \
 }
 ```
 
-## Settings Management
+## 设置管理
 
-Configure persistent preferences:
+配置持久化的偏好设置：
 
-### View settings
+### 查看设置
 
 ```bash
 pass-cli settings view
 ```
 
-### Set default vault
+### 设置默认密码库
 
 ```bash
 # By name
@@ -808,95 +808,95 @@ pass-cli settings set default-vault --vault-name "Personal Vault"
 pass-cli settings set default-vault --share-id "3GqM1RhVZL8uXR_abc123"
 ```
 
-**Affected commands:** `item list`, `item view`, `item totp`, `item create`, `item update`, etc.
+**受影响的命令：** `item list`, `item view`, `item totp`, `item create`, `item update` 等
 
-### Set default output format
+### 设置默认输出格式
 
 ```bash
 pass-cli settings set default-format human
 pass-cli settings set default-format json
 ```
 
-**Affected commands:** `item list`, `item view`, `item totp`, `vault list`, etc.
+**受影响的命令：** `item list`, `item view`, `item totp`, `vault list` 等
 
-### Unset defaults
+### 取消默认设置
 
 ```bash
 pass-cli settings unset default-vault
 pass-cli settings unset default-format
 ```
 
-## Share Management
+## 共享管理
 
-### List all shares
+### 列出所有共享内容
 
 ```bash
 pass-cli share list
 pass-cli share list --output json
 ```
 
-Shows all resources (vaults and items) shared with you and your role.
+显示与您和您的角色共享的所有资源（密码库和项目）。
 
-## Invitation Management
+## 邀请管理
 
-### List pending invitations
+### 列出待处理的邀请
 
 ```bash
 pass-cli invite list
 pass-cli invite list --output json
 ```
 
-### Accept invitation
+### 接受邀请
 
 ```bash
 pass-cli invite accept --invite-token "abc123def456"
 ```
 
-### Reject invitation
+### 拒绝邀请
 
 ```bash
 pass-cli invite reject --invite-token "abc123def456"
 ```
 
-## User & Session Info
+## 用户和会话信息
 
-### View session info
+### 查看会话信息
 
 ```bash
 pass-cli info
 ```
 
-Shows: Release track, User ID, Username, Email.
+显示：版本跟踪、用户 ID、用户名、电子邮件。
 
-### View detailed user info
+### 查看用户详细信息
 
 ```bash
 pass-cli user info
 pass-cli user info --output json
 ```
 
-Shows: Account details, subscription, storage usage.
+显示：账户详情、订阅信息、存储使用情况。
 
-### Test connection
+### 测试连接
 
 ```bash
 pass-cli test
 ```
 
-Verifies session validity and API connectivity.
+验证会话的有效性和 API 连接性。
 
-## Updates
+## 更新
 
-**Note:** Only for manual installations (not package managers).
+**注意：** 仅适用于手动安装（不适用于包管理器）。
 
-### Update to latest version
+### 升级到最新版本
 
 ```bash
 pass-cli update
 pass-cli update --yes  # Skip confirmation
 ```
 
-### Change release track
+### 更改版本跟踪
 
 ```bash
 # Switch to beta
@@ -908,76 +908,76 @@ pass-cli update --set-track stable
 pass-cli update
 ```
 
-### Disable automatic update checks
+### 禁用自动更新检查
 
 ```bash
 export PROTON_PASS_NO_UPDATE_CHECK=1
 ```
 
-## Object Types
+## 对象类型
 
-### Share
+### 共享
 
-A Share represents the relationship between a user and a resource (vault or item). Defines access and permissions.
+共享表示用户与资源（密码库或项目）之间的关系。它定义了访问权限：
 
-- **Vault shares:** Access to entire vault and all items within it
-- **Item shares:** Access to a single specific item only
-- **Roles:**
-  - **Viewer:** Read-only access
-  - **Editor:** Read and write, can manage items (but not share or manage members)
-  - **Manager:** Full control including sharing and member management
-  - **Owner:** Created the vault, only one who can delete it
+- **密码库共享：** 允许访问整个密码库及其内的所有项目
+- **项目共享：** 仅允许访问单个特定项目
+- **角色：**
+  - **查看者：** 只有读取权限
+  - **编辑者：** 具有读取和写入权限，可以管理项目（但不能共享或管理成员）
+  - **管理员：** 具有完全控制权，包括共享和管理员权限
+  - **所有者：** 创建密码库的人，只有所有者可以删除密码库
 
-### Vault
+### 密码库
 
-A container that organizes items. Items exist in exactly one vault.
+密码库用于组织项目。项目只能存在于一个密码库中。
 
-### Item Types
+### 项目类型
 
-- **Login:** Username/password credentials with URLs, TOTP support
-- **Note:** Secure text notes
-- **Credit Card:** Payment card information (encrypted)
-- **Identity:** Personal information about a person
-- **Alias:** Email aliases for privacy protection
-- **SSH Key:** SSH private keys for authentication
-- **Wifi:** Credentials to access a WiFi network
+- **登录：** 包含用户名/密码凭证以及 URL，支持 TOTP
+- **备注：** 安全文本笔记
+- **信用卡：** 加密后的支付卡信息
+- **身份：** 个人身份信息
+- **别名：** 用于保护隐私的电子邮件别名
+- **SSH 密钥：** 用于身份验证的 SSH 私钥
+- **WiFi：** 访问 WiFi 网络的凭证
 
-**Note:** Items are identified by Item ID, but this ID is only unique when combined with Share ID (ShareID + ItemID = globally unique).
+**注意：** 项目通过项目 ID 进行标识，但该 ID 仅在结合共享 ID 时才具有唯一性（ShareID + ItemID = 全局唯一）。
 
-## Best Practices
+## 最佳实践
 
-### Security
+### 安全性
 
-- Use web login for maximum compatibility (SSO, U2F)
-- Generate unique passwords for each account
-- Use SSH keys stored in Pass instead of local filesystem
-- Logout on shared systems
-- Regularly review share permissions
+- 使用网页登录以实现最大程度的兼容性（包括 SSO 和 U2F）
+- 为每个账户生成唯一的密码
+- 将 SSH 密钥存储在 Proton Pass 中，而不是本地文件系统中
+- 在共享系统上注销
+- 定期审查共享权限
 
-### Organization
+### 组织管理
 
-- Create separate vaults for different contexts (work, personal)
-- Use descriptive titles for items and vaults
-- Set default vault for frequently used vault
-- Configure default output format (JSON for scripts, human for interactive)
+- 为不同的场景创建单独的密码库（工作用和个人用）
+- 为项目和密码库设置描述性标题
+- 为常用密码库设置默认值
+- 配置默认的输出格式（脚本使用 JSON，交互式使用人类可读格式）
 
-### Automation
+### 自动化
 
-- Store credentials in files (not env vars) for better security
-- Use Pass URIs for programmatic secret access
-- Leverage JSON output for scripting
-- Include `pass-cli logout` in automation cleanup
+- 将凭证存储在文件中（而不是环境变量中）以增强安全性
+- 使用 Proton Pass 的 URI 进行程序化的秘密访问
+- 利用 JSON 格式进行脚本编写
+- 在自动化脚本中包含 `pass-cli logout` 命令以完成清理
 
-### Sharing
+### 共享
 
-- Use principle of least privilege (start with viewer)
-- Prefer vault shares for ongoing collaboration
-- Use item shares for specific, limited access
-- Regularly audit members and permissions
+- 遵循最小权限原则（从查看者权限开始）
+- 对于持续协作，优先使用密码库共享
+- 对于特定且有限的访问需求，使用项目共享
+- 定期审核成员和权限
 
-## Docker Usage
+## Docker 使用
 
-Running in Docker containers requires filesystem key storage (keyring unavailable):
+在 Docker 容器中运行 Proton Pass 时需要文件系统密钥存储（Docker 容器不支持 Keyring）：
 
 ```bash
 # 1. Ensure logged out
@@ -990,16 +990,16 @@ export PROTON_PASS_KEY_PROVIDER=fs
 pass-cli login
 ```
 
-**Why filesystem storage?**
-- Containers cannot access kernel secret service
-- D-Bus unavailable in headless environments
-- Filesystem storage is the only option
+**为什么需要文件系统存储？**
+- 容器无法访问内核的秘密服务
+- 无头环境中无法使用 D-Bus
+- 文件系统存储是唯一的选择
 
-⚠️ **Security note:** Key stored side-by-side with encrypted data. Secure your container environment.
+⚠️ **安全提示：** 密钥会与加密数据存储在同一位置。请确保容器环境的安全。
 
-## Troubleshooting
+## 故障排除
 
-### Authentication issues
+### 认证问题
 
 ```bash
 # Check session status
@@ -1011,153 +1011,147 @@ pass-cli logout
 pass-cli login
 ```
 
-### Network issues
+### 网络问题
 
-- Verify internet connectivity
-- Check firewall settings for Proton domains
-- Test with `pass-cli test`
+- 检查互联网连接
+- 检查防火墙设置是否允许 Proton Pass 的域名
+- 使用 `pass-cli test` 命令进行测试
 
-### Permission errors
+### 权限问题
 
-- Verify your role: `pass-cli share list`
-- Ensure you have required permissions for the operation
-- Contact vault owner to adjust permissions
+- 查看您的角色：`pass-cli share list`
+- 确保您具有执行操作的必要权限
+- 联系密码库的所有者以调整权限
 
-### Missing resources
+### 资源丢失
 
-- Check you're looking in the right vault
-- Verify resource hasn't been deleted
-- Confirm access hasn't been revoked
-- Check pending invitations: `pass-cli invite list`
+- 确认您正在查看正确的密码库
+- 验证资源是否已被删除
+- 确认访问权限是否已被撤销
+- 检查待处理的邀请：`pass-cli invite list`
 
-### Secret reference resolution errors
+### 秘密引用解析错误
 
-**"Invalid reference format":**
-- Ensure format is `pass://vault/item/field`
-- Check for trailing slashes
-- Verify all three components present
+**“无效的引用格式”：**
+- 确保格式为 `pass://vault/item/field`
+- 检查是否缺少尾随的斜杠
+- 确保三个组成部分都存在
 
-**"Secret reference requires a field name":**
-- Add field name: `pass://vault/item/field` (not `pass://vault/item`)
+**“引用需要字段名”：**
+- 添加字段名：`pass://vault/item/field`（而不是 `pass://vault/item`）
 
-**"Field not found":**
-- Verify field exists: `pass-cli item view --share-id <id> --item-id <id>`
-- Check field name spelling (case-sensitive)
+**“字段未找到”：**
+- 确认字段存在：`pass-cli item view --share-id <id> --item-id <id>`
+- 检查字段名的拼写（区分大小写）
 
-**Reference not found:**
-1. Check vault access: `pass-cli vault list`
-2. Verify item exists: `pass-cli item list --share-id <id>`
-3. Confirm field name: `pass-cli item view <uri>`
+**引用未找到：**
+1. 检查密码库访问权限：`pass-cli vault list`
+2. 确认项目存在：`pass-cli item list --share-id <id>`
+3. 确认字段名：`pass-cli item view <uri>`
 
-## Configuration
+## 配置
 
-### Logging
+### 日志记录
 
-```bash
-# Levels: trace, debug, info, warn, error, off
-export PASS_LOG_LEVEL=debug
-```
+**注意：** 日志会被发送到 `stderr`（不会干扰管道或命令集成）。
 
-**Note:** Logs are sent to `stderr` (won't interfere with piping/command integration).
+### 会话存储
 
-### Session storage
+**默认位置：**
+- macOS：`~/Library/Application Support/proton-pass-cli/.session/`
+- Linux：`~/.local/share/proton-pass-cli/.session/`
 
-**Default locations:**
-- macOS: `~/Library/Application Support/proton-pass-cli/.session/`
-- Linux: `~/.local/share/proton-pass-cli/.session/`
-
-**Override:**
+**自定义设置：**
 ```bash
 export PROTON_PASS_SESSION_DIR='/custom/path'
 ```
 
-### Key storage providers
+### 密钥存储方式
 
-Control how encryption keys are stored with `PROTON_PASS_KEY_PROVIDER`:
+使用 `PROTON_PASS_KEY_PROVIDER` 控制加密密钥的存储方式：
 
-#### 1. Keyring storage (default, most secure)
+#### 1. Keyring 存储（默认，最安全）
 
 ```bash
 export PROTON_PASS_KEY_PROVIDER=keyring  # or unset
 ```
 
-Uses OS secure storage:
-- **macOS:** macOS Keychain
-- **Linux:** Kernel-based secret storage (kernel keyring)
-- **Windows:** Windows Credential Manager
+**使用操作系统的安全存储方式：**
+- **macOS：** macOS Keychain
+- **Linux：** 基于内核的秘密存储（内核 Keyring）
+- **Windows：** Windows 凭据管理器
 
-**How it works:**
-- Generates random 256-bit key on first run
-- Stores in system keyring
-- Retrieves on subsequent runs
-- If keyring unavailable but session exists, forces logout for security
+**工作原理：**
+- 首次运行时生成一个 256 位的随机密钥
+- 存储在系统 Keyring 中
+- 在后续运行时从中获取密钥
+- 如果 Keyring 无法使用但会话存在，为了安全起见，系统会强制用户注销
 
-**Linux note:** Uses kernel keyring (no D-Bus required), works in headless environments. **Secrets cleared on reboot.**
+**Linux 注意：** 使用内核 Keyring（不需要 D-Bus），适用于无头环境。**密钥在重启时会清除。**
 
-**Docker limitation:** Containers cannot access kernel secret service. Use filesystem storage instead.
+**Docker 限制：** 容器无法使用内核的秘密服务，因此需要使用文件系统存储。**
 
-#### 2. Filesystem storage
+#### 2. 文件系统存储
 
-⚠️ **Warning:** Less secure - key stored side-by-side with encrypted data.
+⚠️ **警告：** 存储方式安全性较低——密钥会与加密数据存储在同一位置。
 
 ```bash
 export PROTON_PASS_KEY_PROVIDER=fs
 ```
 
-Stores key in `<session-dir>/local.key` with permissions `0600`.
+将密钥存储在 `<session-dir>/local.key` 文件中，权限设置为 `0600`。
 
-**Advantages:**
-- Works in all environments (headless, containers)
-- Survives reboots
-- No dependency on system services
+**优点：**
+- 适用于所有环境（包括无头环境和容器）
+- 在重启后仍能保留密钥
+- 不依赖于系统服务
 
-**When to use:**
-- Docker containers
-- Development/testing
-- When system keyring unavailable
+**适用场景：**
+- Docker 容器
+- 开发/测试环境
+- 当系统 Keyring 不可用时
 
-#### 3. Environment variable storage
+#### 3. 环境变量存储
 
-⚠️ **Warning:** Key visible to other processes in same session.
+⚠️ **警告：** 密钥会对同一会话中的其他进程可见。
 
 ```bash
 export PROTON_PASS_KEY_PROVIDER=env
 export PROTON_PASS_ENCRYPTION_KEY=your-secret-key
 ```
 
-Derives encryption key from `PROTON_PASS_ENCRYPTION_KEY` (must be set and non-empty).
+密钥的生成依赖于 `PROTON_PASS_ENCRYPTION_KEY`（必须设置且不能为空）。
 
-**Generate safe key:**
+**生成安全密钥：**
 ```bash
 dd if=/dev/urandom bs=1 count=2048 2>/dev/null | sha256sum | awk '{print $1}'
 ```
 
-**Advantages:**
-- Portable across all environments
-- No filesystem/keyring dependency
-- User controls key value
-- Works in CI/CD, containers, headless
+**优点：**
+- 可在所有环境中使用
+- 不依赖于文件系统或 Keyring
+- 用户可以控制密钥的可见性
+- 适用于 CI/CD 流程和容器环境
 
-**When to use:**
-- CI/CD pipelines
-- Containers where filesystem persistence undesirable
-- Automation scripts
-- Explicit control over encryption key needed
+**适用场景：**
+- CI/CD 流程
+- 需要避免使用文件系统存储的容器
+- 需要明确控制密钥管理的自动化脚本
 
-### Telemetry
+### 隐私设置
 
-**Disable telemetry:**
+**禁用遥测：**
 ```bash
 export PROTON_PASS_DISABLE_TELEMETRY=1
 ```
 
-Or globally: [Account security settings](https://account.proton.me/pass/security) → Disable "Collect usage diagnostics"
+或者全局禁用：[账户安全设置](https://account.proton.me/pass/security) → 禁用“收集使用数据”
 
-**What's sent:** Anonymized usage data (e.g., "item created of type note") - **never** personal/sensitive data.
+**发送的数据：** 包含匿名化的使用数据（例如，“创建了类型为 ‘note’ 的项目”）——**绝不包含个人敏感信息**。
 
-## Environment Variables
+## 环境变量
 
-### Login credentials (interactive login)
+### 登录凭证（交互式登录）
 
 ```bash
 export PROTON_PASS_PASSWORD='password'
@@ -1168,29 +1162,29 @@ export PROTON_PASS_EXTRA_PASSWORD='extra-password'
 export PROTON_PASS_EXTRA_PASSWORD_FILE='/path/to/file'
 ```
 
-### SSH key passphrase
+### SSH 密钥密码
 
 ```bash
 export PROTON_PASS_SSH_KEY_PASSWORD='passphrase'
 export PROTON_PASS_SSH_KEY_PASSWORD_FILE='/path/to/file'
 ```
 
-### Update checks
+### 更新设置
 
 ```bash
 export PROTON_PASS_NO_UPDATE_CHECK=1
 ```
 
-### Installation
+### 安装
 
 ```bash
 export PROTON_PASS_CLI_INSTALL_DIR=/custom/path
 export PROTON_PASS_CLI_INSTALL_CHANNEL=beta
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Create and populate a new vault
+### 创建并填充新的密码库
 
 ```bash
 # Create vault
@@ -1211,7 +1205,7 @@ pass-cli item create login \
 pass-cli vault share --share-id "new_vault_id" alice@team.com --role editor
 ```
 
-### Import and use SSH keys
+### 导入和使用 SSH 密钥
 
 ```bash
 # Import existing key
@@ -1228,7 +1222,7 @@ pass-cli ssh-agent start --vault-name "SSH Keys"
 export SSH_AUTH_SOCK=$HOME/.ssh/proton-pass-agent.sock
 ```
 
-### Scripted access to secrets
+### 通过脚本访问秘密
 
 ```bash
 #!/bin/bash
@@ -1246,7 +1240,7 @@ connect-to-db --password "$DB_PASSWORD"
 pass-cli logout
 ```
 
-### Application deployment with secrets
+### 在应用程序部署中使用秘密
 
 ```bash
 #!/bin/bash
@@ -1271,7 +1265,7 @@ pass-cli inject \
 ./app --config config.yaml
 ```
 
-### CI/CD pipeline integration
+### 集成到持续集成/持续部署（CI/CD）流程中
 
 ```bash
 #!/bin/bash
@@ -1292,49 +1286,49 @@ pass-cli run --env-file .env.production -- ./deploy.sh
 pass-cli logout
 ```
 
-## Notes
+## 注意事项
 
-- **Beta status:** Proton Pass CLI is currently in beta
-- **Track switching:** Only available for manual installations (not package managers)
-- **Item update limitations:** Cannot update TOTP or time fields via CLI
-- **Passphrase recommendations:** Passphrases optional for generated keys (already encrypted in vault)
-- **SSH agent refresh:** Default 1 hour, customizable with `--refresh-interval`
-- **Docker containers:** Must use filesystem key storage (`PROTON_PASS_KEY_PROVIDER=fs`)
-- **Linux keyring:** Uses kernel keyring (no D-Bus), secrets cleared on reboot
-- **Telemetry:** Anonymized only (no personal data), can be disabled
-- **Secret masking:** Automatically masks secrets in `run` command output
-- **Template syntax:** `inject` requires `{{ }}` braces, `run` uses bare `pass://` URIs
-- **Item ID uniqueness:** Item ID only unique when combined with Share ID
+- **测试阶段：** Proton Pass CLI 目前仍处于测试阶段
+- **版本切换：** 仅适用于手动安装（不适用于包管理器）
+- **项目更新限制：** 无法通过 CLI 更新 TOTP 或时间字段
+- **密码建议：** 生成的密钥可以不设置密码（因为密钥已在密码库中加密）
+- **SSH 代理刷新：** 默认刷新间隔为 1 小时，可通过 `--refresh-interval` 参数进行自定义
+- **Docker 容器：** 必须使用文件系统密钥存储（`PROTON_PASS_KEY_PROVIDER=fs`）
+- **Linux 下使用 Keyring：** 使用内核 Keyring（不使用 D-Bus），密钥在重启时会清除
+- **遥测：** 仅发送匿名化数据（不包含个人敏感信息），可以禁用
+- **秘密隐藏：** 在 `run` 命令的输出中自动隐藏秘密
+- **模板语法：** `inject` 命令需要使用 `{{ }}` 括号，`run` 命令使用简单的 `pass://` 格式
+- **项目 ID 的唯一性：** 项目 ID 仅在结合共享 ID 时才具有唯一性
 
-## Command Reference Quick List
+## 命令参考快速列表
 
-**Authentication:**
+**认证相关命令：**
 - `login`, `logout`, `info`, `test`
 
-**Vault:**
+**密码库相关命令：**
 - `vault list`, `vault create`, `vault update`, `vault delete`, `vault share`, `vault member`, `vault transfer`
 
-**Item:**
+**项目相关命令：**
 - `item list`, `item view`, `item create`, `item update`, `item delete`, `item share`, `item totp`, `item alias`, `item attachment`
 
-**Secret Injection:**
-- `run` - Execute commands with secrets injected as environment variables
-- `inject` - Process template files with secret references
+**秘密注入相关命令：**
+- `run` - 使用 Proton Pass 中的秘密作为环境变量执行命令
+- `inject` - 处理包含秘密引用的模板文件
 
-**Password:**
+**密码相关命令：**
 - `password generate`, `password score`
 
-**SSH:**
+**SSH 相关命令：**
 - `ssh-agent load`, `ssh-agent start`
 
-**Settings:**
+**设置相关命令：**
 - `settings view`, `settings set`, `settings unset`
 
-**Share & Invite:**
+**共享与邀请相关命令：**
 - `share list`, `invite list`, `invite accept`, `invite reject`
 
-**User:**
+**用户相关命令：**
 - `user info`
 
-**Update:**
+**更新相关命令：**
 - `update`

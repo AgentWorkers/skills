@@ -1,30 +1,30 @@
 ---
 name: seo-competitor-analysis
-description: Perform deep SEO competitor analysis, including keyword research, backlink checking, and content strategy mapping. Use when the user wants to analyze a website's competitors or improve their own SEO ranking by studying the competition.
+description: 执行深入的SEO竞争对手分析，包括关键词研究、反向链接检查以及内容策略规划。当用户希望分析网站的竞争对手或通过研究竞争对手来提升自身网站的SEO排名时，可以使用此功能。
 ---
 
-# SEO Competitor Analysis Skill
+# SEO竞争对手分析技能
 
-This skill automates the process of identifying and analyzing SEO competitors to inform content and ranking strategies.
+该技能可自动化识别和分析SEO竞争对手的过程，为内容创作和排名策略提供参考。
 
-## Workflow
+## 工作流程
 
-1. **Identify Competitors**: If not provided, search for the target domain and identify top-ranking sites for similar keywords.
-2. **Analyze Keywords**: Use `web_search` to find ranking keywords and search volume (if available via snippets).
-3. **Content Gap Analysis**: Compare the user's content with competitors to identify missing topics.
-4. **Report Generation**: Summarize findings into a structured report.
+1. **识别竞争对手**：如果未提供相关信息，可通过搜索目标域名来找到使用相似关键词排名较高的网站。
+2. **分析关键词**：使用`web_search`工具查找关键词及其搜索量（如果片段中提供了相关数据）。
+3. **内容差距分析**：将用户自己的内容与竞争对手的内容进行对比，找出缺失的主题或内容。
+4. **生成报告**：将分析结果整理成结构化的报告。
 
-## Tools to Use
+## 需要使用的工具
 
-- `web_search`: To find competitors and their ranking content.
-- `web_fetch`: To extract content from competitor pages for deep analysis.
-- `browser`: For complex pages that require JavaScript or manual navigation patterns.
+- `web_search`：用于查找竞争对手及其排名内容。
+- `web_fetch`：用于从竞争对手的页面中提取内容以进行深入分析。
+- `browser`：用于处理需要JavaScript支持或需要手动导航的复杂页面。
 
-## Scripts
+## 脚本
 
-- `scripts/competitor_finder.py`: (Optional) Logic to automate the discovery of competitors using search APIs.
+- `scripts/competitor_finder.py`：（可选）使用搜索API自动识别竞争对手的脚本。
 
-## References
+## 参考资料
 
-- `references/seo_metrics_guide.md`: Definition of SEO terms and how to interpret them.
-- `references/report_template.md`: A standard structure for the final SEO analysis report.
+- `references/seo_metrics_guide.md`：SEO相关术语的定义及其解读方法。
+- `references/report_template.md`：SEO分析报告的标准格式模板。

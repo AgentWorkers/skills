@@ -1,26 +1,34 @@
 ---
 name: digitalocean
-description: Manage DigitalOcean resources via API — Droplets (create/destroy/resize/power), DNS zones and records, Spaces (object storage), Databases, Firewalls, Load Balancers, Kubernetes, and account/billing info.
+description: 通过 API 管理 DigitalOcean 资源：  
+- Droplets（创建/销毁/调整大小/重启）  
+- DNS 区域及记录  
+- Spaces（对象存储服务）  
+- 数据库  
+- 防火墙  
+- 负载均衡器  
+- Kubernetes 集群  
+- 以及账户和计费信息。
 ---
 
-# DigitalOcean API Skill
+# DigitalOcean API 技能
 
-Control DigitalOcean infrastructure programmatically: droplets, DNS, databases, storage, networking.
+通过编程方式控制 DigitalOcean 的基础设施：包括虚拟机（Droplets）、DNS、数据库、存储和网络设置。
 
-## Authentication
+## 认证
 
-API token required. Get one from: https://cloud.digitalocean.com/account/api/tokens
-
-Store in `~/.config/digitalocean/token` (just the token, no newline):
+需要使用 API 令牌。请从以下链接获取令牌：  
+https://cloud.digitalocean.com/account/api/tokens  
+将令牌保存在 `~/.config/digitalocean/token` 文件中（仅保存令牌内容，不要添加换行符）：  
 ```bash
 mkdir -p ~/.config/digitalocean
 echo -n "YOUR_API_TOKEN" > ~/.config/digitalocean/token
 chmod 600 ~/.config/digitalocean/token
 ```
 
-## Quick Reference
+## 快速参考
 
-### Droplets (VMs)
+### 虚拟机（Droplets）
 
 ```bash
 # List all droplets
@@ -47,7 +55,7 @@ python3 scripts/digitalocean.py droplets snapshot <droplet_id> --name "backup-20
 python3 scripts/digitalocean.py droplets destroy <droplet_id>
 ```
 
-### DNS Management
+### DNS 管理
 
 ```bash
 # List domains
@@ -69,7 +77,7 @@ python3 scripts/digitalocean.py dns delete <domain> <record_id>
 python3 scripts/digitalocean.py dns create <domain>
 ```
 
-### Firewalls
+### 防火墙
 
 ```bash
 # List firewalls
@@ -82,7 +90,7 @@ python3 scripts/digitalocean.py firewalls create <name> --inbound tcp:22:0.0.0.0
 python3 scripts/digitalocean.py firewalls add-droplet <firewall_id> <droplet_id>
 ```
 
-### Spaces (Object Storage)
+### 对象存储（Spaces）
 
 ```bash
 # List spaces (requires spaces key)
@@ -92,7 +100,7 @@ python3 scripts/digitalocean.py spaces list
 python3 scripts/digitalocean.py spaces create <name> --region nyc3
 ```
 
-### Databases
+### 数据库
 
 ```bash
 # List database clusters
@@ -102,7 +110,7 @@ python3 scripts/digitalocean.py databases list
 python3 scripts/digitalocean.py databases get <db_id>
 ```
 
-### Account & Billing
+### 账户与计费
 
 ```bash
 # Account info
@@ -115,7 +123,7 @@ python3 scripts/digitalocean.py billing balance
 python3 scripts/digitalocean.py billing history
 ```
 
-### SSH Keys
+### SSH 密钥
 
 ```bash
 # List SSH keys
@@ -125,7 +133,7 @@ python3 scripts/digitalocean.py ssh-keys list
 python3 scripts/digitalocean.py ssh-keys add <name> --key "ssh-ed25519 AAAA..."
 ```
 
-### Images & Snapshots
+### 镜像与快照
 
 ```bash
 # List available images
@@ -138,7 +146,7 @@ python3 scripts/digitalocean.py images snapshots
 python3 scripts/digitalocean.py images delete <image_id>
 ```
 
-### Regions & Sizes
+### 地区与实例规格
 
 ```bash
 # List regions
@@ -148,21 +156,21 @@ python3 scripts/digitalocean.py regions
 python3 scripts/digitalocean.py sizes
 ```
 
-## DNS Record Types
+## DNS 记录类型
 
-Supported record types:
-- `A` — IPv4 address
-- `AAAA` — IPv6 address
-- `CNAME` — Canonical name (alias)
-- `MX` — Mail exchange (requires priority)
-- `TXT` — Text record
-- `NS` — Nameserver
-- `SRV` — Service record
-- `CAA` — Certificate Authority Authorization
+支持的 DNS 记录类型：  
+- `A` — IPv4 地址  
+- `AAAA` — IPv6 地址  
+- `CNAME` — 典型名称（别名）  
+- `MX` — 邮件交换记录（需要指定优先级）  
+- `TXT` — 文本记录  
+- `NS` — 名称服务器  
+- `SRV` — 服务记录  
+- `CAA` — 证书颁发机构授权记录  
 
-## Common Workflows
+## 常见工作流程
 
-### Deploy a New Server
+### 部署新服务器
 
 ```bash
 # 1. Create droplet
@@ -179,7 +187,7 @@ python3 scripts/digitalocean.py firewalls create web-server --inbound tcp:22:0.0
 python3 scripts/digitalocean.py firewalls add-droplet <fw_id> <droplet_id>
 ```
 
-### Migrate DNS to DigitalOcean
+### 将 DNS 服务迁移到 DigitalOcean
 
 ```bash
 # 1. Add domain
@@ -195,9 +203,9 @@ python3 scripts/digitalocean.py dns add example.com --type CNAME --name www --da
 #    ns3.digitalocean.com
 ```
 
-## Direct API Access
+## 直接使用 API 进行操作
 
-For operations not covered by the script:
+对于脚本未涵盖的操作，可以直接通过 API 进行操作：  
 ```bash
 TOKEN=$(cat ~/.config/digitalocean/token)
 curl -H "Authorization: Bearer $TOKEN" \
@@ -205,32 +213,32 @@ curl -H "Authorization: Bearer $TOKEN" \
      https://api.digitalocean.com/v2/droplets
 ```
 
-## API Documentation
+## API 文档
 
-- Full API reference: https://docs.digitalocean.com/reference/api/
-- API v2 base URL: https://api.digitalocean.com/v2/
+- 完整的 API 参考文档：https://docs.digitalocean.com/reference/api/  
+- API v2 的基础 URL：https://api.digitalocean.com/v2/  
 
-## Common Droplet Sizes
+## 常见虚拟机规格
 
-| Slug | vCPUs | RAM | Disk | Price/mo |
-|------|-------|-----|------|----------|
-| s-1vcpu-512mb-10gb | 1 | 512MB | 10GB | $4 |
-| s-1vcpu-1gb | 1 | 1GB | 25GB | $6 |
-| s-1vcpu-2gb | 1 | 2GB | 50GB | $12 |
-| s-2vcpu-2gb | 2 | 2GB | 60GB | $18 |
-| s-2vcpu-4gb | 2 | 4GB | 80GB | $24 |
-| s-4vcpu-8gb | 4 | 8GB | 160GB | $48 |
+| 规格名称 | CPU 核心数 | 内存（RAM） | 磁盘空间（Disk） | 每月价格（Price/mo） |
+|------------|-------------|----------------|------------------|----------------------|
+| s-1vcpu-512mb-10gb | 1          | 512MB           | 10GB             | $4                   |
+| s-1vcpu-1gb      | 1          | 1GB             | 25GB             | $6                   |
+| s-1vcpu-2gb      | 1          | 2GB             | 50GB             | $12                   |
+| s-2vcpu-2gb      | 2          | 2GB             | 60GB             | $18                   |
+| s-2vcpu-4gb      | 2          | 4GB             | 80GB             | $24                   |
+| s-4vcpu-8gb      | 4          | 8GB             | 160GB             | $48                   |
 
-## Common Regions
+## 常见地区
 
-| Slug | Location |
-|------|----------|
-| nyc1, nyc3 | New York |
-| sfo3 | San Francisco |
-| ams3 | Amsterdam |
-| sgp1 | Singapore |
-| lon1 | London |
-| fra1 | Frankfurt |
-| tor1 | Toronto |
-| blr1 | Bangalore |
-| syd1 | Sydney |
+| 地区名称       | 所在位置       |
+|--------------|-------------|
+| nyc1, nyc3      | 纽约          |
+| sfo3         | 旧金山        |
+| ams3         | 阿姆斯特丹        |
+| sgp1         | 新加坡        |
+| lon1         | 伦敦          |
+| fra1         | 法兰克福        |
+| tor1         | 多伦多         |
+| blr1         | 班加罗尔        |
+| syd1         | 悉尼          |

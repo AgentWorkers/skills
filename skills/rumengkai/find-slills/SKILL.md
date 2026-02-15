@@ -1,61 +1,60 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
+description: 该功能帮助用户在提出诸如“我该如何做某事？”、“如何找到适用于某任务的技能？”或“是否有可以用于实现某功能的技能？”等问题时，发现并安装相应的技能。当用户需要查找可通过安装来获得的特定功能时，应使用该功能。
 ---
 
-# Find Skills
+# 查找技能
 
-This skill helps you discover and install skills from the open agent skills ecosystem.
+此技能可帮助您从 open agent 技能生态系统中发现并安装所需的技能。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user:
+当用户遇到以下情况时，请使用此技能：
 
-- Asks "how do I do X" where X might be a common task with an existing skill
-- Says "find a skill for X" or "is there a skill for X"
-- Asks "can you do X" where X is a specialized capability
-- Expresses interest in extending agent capabilities
-- Wants to search for tools, templates, or workflows
-- Mentions they wish they had help with a specific domain (design, testing, deployment, etc.)
+- 提问“我该如何完成某项任务？”（其中“某项任务”可能是可以通过现有技能完成的常见操作）
+- 询问“有没有适用于某项任务的技能”或“是否有专门用于某项任务的工具”
+- 表示希望扩展代理的功能
+- 希望搜索工具、模板或工作流程
+- 提到他们在某个特定领域（如设计、测试、部署等）需要帮助
 
-## What is the Skills CLI?
+## 什么是 Skills CLI？
 
-The Skills CLI (`npx skills`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
+Skills CLI (`npx skills`) 是 open agent 技能生态系统的包管理器。这些技能是以模块化形式存在的包，它们通过提供专业知识、工作流程和工具来扩展代理的功能。
 
-**Key commands:**
+**常用命令：**
 
-- `npx skills find [query]` - Search for skills interactively or by keyword
-- `npx skills add <package>` - Install a skill from GitHub or other sources
-- `npx skills check` - Check for skill updates
-- `npx skills update` - Update all installed skills
+- `npx skills find [查询关键词]` - 通过关键词交互式地搜索技能
+- `npx skills add <包名>` - 从 GitHub 或其他来源安装技能
+- `npx skills check` - 检查技能是否有更新
+- `npx skills update` - 更新所有已安装的技能
 
-**Browse skills at:** https://skills.sh/
+**访问技能列表的网址：** https://skills.sh/
 
-## How to Help Users Find Skills
+## 如何帮助用户查找技能
 
-### Step 1: Understand What They Need
+### 第一步：了解用户的需求
 
-When a user asks for help with something, identify:
+当用户寻求帮助时，需要明确以下信息：
 
-1. The domain (e.g., React, testing, design, deployment)
-2. The specific task (e.g., writing tests, creating animations, reviewing PRs)
-3. Whether this is a common enough task that a skill likely exists
+1. 所需技能涉及的领域（例如：React、测试、设计、部署）
+2. 具体的任务（例如：编写测试用例、创建动画、审核 Pull Request）
+3. 该任务是否属于常见任务（即是否存在相应的技能）
 
-### Step 2: Search for Skills
+### 第二步：搜索技能
 
-Run the find command with a relevant query:
+使用相应的查询关键词运行 `npx skills find` 命令：
 
 ```bash
 npx skills find [query]
 ```
 
-For example:
+例如：
 
-- User asks "how do I make my React app faster?" → `npx skills find react performance`
-- User asks "can you help me with PR reviews?" → `npx skills find pr review`
-- User asks "I need to create a changelog" → `npx skills find changelog`
+- 用户询问：“如何让我的 React 应用运行得更快？” → `npx skills find react performance`
+- 用户询问：“你能帮我审核 Pull Request 吗？” → `npx skills find pr review`
+- 用户询问：“我需要创建一个变更日志。” → `npx skills find changelog`
 
-The command will return results like:
+命令执行后会返回相关结果：
 
 ```
 Install with npx skills add <owner/repo@skill>
@@ -64,15 +63,15 @@ vercel-labs/agent-skills@vercel-react-best-practices
 └ https://skills.sh/vercel-labs/agent-skills/vercel-react-best-practices
 ```
 
-### Step 3: Present Options to the User
+### 第三步：向用户展示搜索结果
 
-When you find relevant skills, present them to the user with:
+找到相关技能后，向用户展示以下信息：
 
-1. The skill name and what it does
-2. The install command they can run
-3. A link to learn more at skills.sh
+1. 技能的名称及其功能
+2. 可以执行的安装命令
+3. 访问 skills.sh 以获取更多信息的链接
 
-Example response:
+示例回答：
 
 ```
 I found a skill that might help! The "vercel-react-best-practices" skill provides
@@ -84,45 +83,45 @@ npx skills add vercel-labs/agent-skills@vercel-react-best-practices
 Learn more: https://skills.sh/vercel-labs/agent-skills/vercel-react-best-practices
 ```
 
-### Step 4: Offer to Install
+### 第四步：提供安装帮助
 
-If the user wants to proceed, you can install the skill for them:
+如果用户同意安装技能，您可以代为完成安装操作：
 
 ```bash
 npx skills add <owner/repo@skill> -g -y
 ```
 
-The `-g` flag installs globally (user-level) and `-y` skips confirmation prompts.
+`-g` 标志表示全局安装（用户级别），`-y` 标志表示跳过确认提示。
 
-## Common Skill Categories
+## 常见技能分类
 
-When searching, consider these common categories:
+搜索时可以参考以下分类：
 
-| Category        | Example Queries                          |
-| --------------- | ---------------------------------------- |
-| Web Development | react, nextjs, typescript, css, tailwind |
-| Testing         | testing, jest, playwright, e2e           |
-| DevOps          | deploy, docker, kubernetes, ci-cd        |
-| Documentation   | docs, readme, changelog, api-docs        |
-| Code Quality    | review, lint, refactor, best-practices   |
-| Design          | ui, ux, design-system, accessibility     |
-| Productivity    | workflow, automation, git                |
+| 分类            | 常见查询关键词                          |
+| ---------------------- | ---------------------------------------- |
+| Web 开发          | react, nextjs, typescript, css, tailwind         |
+| 测试              | testing, jest, playwright, e2e                   |
+| DevOps            | deploy, docker, kubernetes, ci-cd                |
+| 文档编写          | docs, readme, changelog, api-docs                |
+| 代码质量          | review, lint, refactor, best-practices           |
+| 设计              | ui, ux, design-system, accessibility             |
+| 提高效率          | workflow, automation, git                        |
 
-## Tips for Effective Searches
+## 提高搜索效率的技巧：
 
-1. **Use specific keywords**: "react testing" is better than just "testing"
-2. **Try alternative terms**: If "deploy" doesn't work, try "deployment" or "ci-cd"
-3. **Check popular sources**: Many skills come from `vercel-labs/agent-skills` or `ComposioHQ/awesome-claude-skills`
+1. **使用具体的关键词**：例如使用“react testing”而非“testing”
+2. **尝试替代词汇**：如果“deploy”无法找到合适的技能，可以尝试“deployment”或“ci-cd”
+3. **查看热门来源**：许多技能来自 `vercel-labs/agent-skills` 或 `ComposioHQ/awesome-claude-skills`
 
-## When No Skills Are Found
+## 未找到相关技能时的处理方式
 
-If no relevant skills exist:
+如果未找到合适的技能：
 
-1. Acknowledge that no existing skill was found
-2. Offer to help with the task directly using your general capabilities
-3. Suggest the user could create their own skill with `npx skills init`
+1. 告知用户没有找到相应的技能
+2. 表示可以使用您自身的能力直接帮助用户完成任务
+3. 建议用户使用 `npx skills init` 命令创建自己的技能
 
-Example:
+示例：
 
 ```
 I searched for skills related to "xyz" but didn't find any matches.

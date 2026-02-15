@@ -1,11 +1,11 @@
 ---
 name: glab-alias
-description: Create, list, and delete GitLab CLI command aliases and shortcuts. Use when creating custom glab commands, managing CLI shortcuts, or viewing existing aliases. Triggers on alias, shortcut, custom command, CLI alias.
+description: 创建、列出和删除 GitLab CLI 命令的别名（aliases）和快捷方式（shortcuts）。这些功能可用于创建自定义的 GitLab 命令、管理 CLI 快捷方式，或查看现有的别名。相关操作会在别名、快捷方式或自定义命令被使用时触发。
 ---
 
-# glab alias
+# glab 别名
 
-## Overview
+## 概述
 
 ```
 
@@ -26,12 +26,12 @@ description: Create, list, and delete GitLab CLI command aliases and shortcuts. 
     -h --help                               Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab alias --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

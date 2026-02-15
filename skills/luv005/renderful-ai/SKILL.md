@@ -9,26 +9,26 @@ allowed-tools: Bash(curl), Web(fetch)
 
 # Renderful AI
 
-Generate AI images and videos using the renderful.ai API. Pay with crypto (Base/Polygon/Solana).
+使用 renderful.ai API 生成 AI 图像和视频。支持使用加密货币（Base/Polygon/Solana）进行支付。
 
-## API Base URL
+## API 基本 URL
 
 ```
 https://api.renderful.ai/v1
 ```
 
-## Authentication
+## 认证
 
-Get API key from https://renderful.ai/dashboard
+从 https://renderful.ai/dashboard 获取 API 密钥
 
 ```bash
 # Set as environment variable
 export RENDERFUL_API_KEY="rf_your_api_key"
 ```
 
-## Quick Start
+## 快速入门
 
-### Generate an Image
+### 生成图像
 
 ```bash
 curl -X POST https://api.renderful.ai/v1/generate \
@@ -43,7 +43,7 @@ curl -X POST https://api.renderful.ai/v1/generate \
   }'
 ```
 
-### Generate a Video
+### 生成视频
 
 ```bash
 curl -X POST https://api.renderful.ai/v1/generate \
@@ -58,35 +58,35 @@ curl -X POST https://api.renderful.ai/v1/generate \
   }'
 ```
 
-## Available Models
+## 可用模型
 
-### Image Models
+### 图像模型
 
-| Model | Description | Best For |
+| 模型 | 描述 | 适用场景 |
 |-------|-------------|----------|
-| `flux-dev` | FLUX.1 Dev | General purpose, high quality |
-| `flux-schnell` | FLUX.1 Schnell | Fast generation |
-| `flux-pro` | FLUX.1 Pro | Highest quality |
-| `sdxl` | Stable Diffusion XL | Classic diffusion |
-| `gemini-3` | Gemini 3 Pro Image | Google image gen |
-| `grok-imagine` | Grok Imagine | X/Twitter integration |
-| `seedream` | Seedream 4.5 | Asian aesthetic |
-| `reve` | Reve Image | Artistic styles |
+| `flux-dev` | FLUX.1 Dev | 通用用途，高质量图像 |
+| `flux-schnell` | FLUX.1 Schnell | 快速生成模型 |
+| `flux-pro` | FLUX.1 Pro | 最高质量图像 |
+| `sdxl` | Stable Diffusion XL | 经典的扩散生成模型 |
+| `gemini-3` | Gemini 3 Pro | 由 Google 提供的图像生成服务 |
+| `grok-imagine` | Grok Imagine | 支持与 X/Twitter 的集成 |
+| `seedream` | Seedream 4.5 | 适用于亚洲风格的图像生成 |
+| `reve` | Reve Image | 提供艺术风格的图像生成 |
 
-### Video Models
+### 视频模型
 
-| Model | Description | Duration |
+| 模型 | 描述 | 视频时长 |
 |-------|-------------|----------|
-| `kling-1.6` | Kling 1.6 | Up to 10s |
-| `kling-1.5` | Kling 1.5 | Up to 10s |
-| `veo-3` | Google Veo 3 | Up to 8s |
-| `veo-2` | Google Veo 2 | Up to 8s |
-| `seedance` | Seedance 1.5 | Up to 10s |
-| `wan-2.5` | Wan 2.5 | Up to 10s |
-| `ltx` | LTX Video | Up to 10s |
-| `omnihuman` | OmniHuman | Portrait videos |
+| `kling-1.6` | Kling 1.6 | 视频时长最长 10 秒 |
+| `kling-1.5` | Kling 1.5 | 视频时长最长 10 秒 |
+| `veo-3` | Google Veo 3 | 视频时长最长 8 秒 |
+| `veo-2` | Google Veo 2 | 视频时长最长 8 秒 |
+| `seedance` | Seedance 1.5 | 视频时长最长 10 秒 |
+| `wan-2.5` | Wan 2.5 | 视频时长最长 10 秒 |
+| `ltx` | LTX Video | 视频时长最长 10 秒 |
+| `omnihuman` | OmniHuman | 用于生成肖像视频 |
 
-## Image Generation Options
+## 图像生成选项
 
 ```json
 {
@@ -101,7 +101,7 @@ curl -X POST https://api.renderful.ai/v1/generate \
 }
 ```
 
-## Video Generation Options
+## 视频生成选项
 
 ```json
 {
@@ -115,14 +115,14 @@ curl -X POST https://api.renderful.ai/v1/generate \
 }
 ```
 
-## Check Generation Status
+## 检查生成状态
 
 ```bash
 curl https://api.renderful.ai/v1/status/{task_id} \
   -H "Authorization: Bearer $RENDERFUL_API_KEY"
 ```
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -133,13 +133,13 @@ curl https://api.renderful.ai/v1/status/{task_id} \
 }
 ```
 
-## Pricing
+## 价格
 
-Pay with USDC on Base, Polygon, or Solana. Check current rates at https://renderful.ai/pricing
+支持使用 USDC 在 Base、Polygon 或 Solana 上进行支付。当前价格信息请访问：https://renderful.ai/pricing
 
-## x402 Integration
+## x402 集成
 
-Renderful supports x402 payments for agent autonomy:
+Renderful 支持使用 x402 协议进行支付，以实现代理的自主性：
 
 ```bash
 # Agent can pay directly without human approval
@@ -147,25 +147,25 @@ export RENDERFUL_X402_WALLET="your_agent_wallet"
 export RENDERFUL_PREFER_X402="true"
 ```
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 200 | Success |
-| 402 | Payment required (x402 flow) |
-| 429 | Rate limit |
-| 500 | Generation failed |
+| 200 | 操作成功 |
+| 402 | 需要支付（使用 x402 协议） |
+| 429 | 超过请求频率限制 |
+| 500 | 生成失败 |
 
-## Examples
+## 示例
 
-### Simple Image
+### 简单图像生成示例
 ```bash
 curl -X POST https://api.renderful.ai/v1/generate \
   -H "Authorization: Bearer $RENDERFUL_API_KEY" \
   -d '{"model":"flux-dev","prompt":"a cute cat","width":512,"height":512}'
 ```
 
-### Video with Specific Settings
+### 使用特定设置生成视频的示例
 ```bash
 curl -X POST https://api.renderful.ai/v1/generate \
   -H "Authorization: Bearer $RENDERFUL_API_KEY" \
@@ -178,9 +178,9 @@ curl -X POST https://api.renderful.ai/v1/generate \
   }'
 ```
 
-## Tips
+## 提示
 
-- Use detailed prompts for better results
-- Include style descriptors ("cinematic", "photorealistic", "anime")
-- Negative prompts help avoid unwanted elements
-- Check status for video generation (takes 30-120s)
+- 使用详细的描述性提示以获得更好的结果 |
+- 添加风格描述（如 “cinematic”（电影风格）、“photorealistic”（写实风格）等 |
+- 使用否定性提示（如 “no background”）可避免生成不需要的元素 |
+- 请等待 30-120 秒，以查看视频生成进度 |

@@ -1,17 +1,17 @@
 ---
 name: extract
-description: "Extract content from specific URLs using Tavily's extraction API. Returns clean markdown/text from web pages. Use when you have specific URLs and need their content without writing code."
+description: "使用 Tavily 的提取 API 从特定 URL 中提取内容。该 API 可从网页中获取干净的 Markdown 或纯文本格式的数据。当您拥有具体的 URL 并且需要获取其内容（而无需编写代码）时，可以使用此方法。"
 ---
 
-# Extract Skill
+# 技能提取
 
-Extract clean content from specific URLs. Ideal when you know which pages you want content from.
+从特定 URL 中提取干净的内容。当你知道需要从哪些页面获取内容时，这个功能非常实用。
 
-## Prerequisites
+## 先决条件
 
-**Tavily API Key Required** - Get your key at https://tavily.com
+**需要 Tavily API 密钥** – 请在 https://tavily.com 获取您的密钥。
 
-Add to `~/.claude/settings.json`:
+将密钥添加到 `~/.claude/settings.json` 文件中：
 ```json
 {
   "env": {
@@ -20,15 +20,15 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-## Quick Start
+## 快速入门
 
-### Using the Script
+### 使用脚本
 
 ```bash
 ./scripts/extract.sh '<json>'
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Single URL
 ./scripts/extract.sh '{"urls": ["https://example.com/article"]}'
@@ -43,7 +43,7 @@ Add to `~/.claude/settings.json`:
 ./scripts/extract.sh '{"urls": ["https://app.example.com"], "extract_depth": "advanced", "timeout": 60}'
 ```
 
-### Basic Extraction
+### 基本提取
 
 ```bash
 curl --request POST \
@@ -55,7 +55,7 @@ curl --request POST \
   }'
 ```
 
-### Multiple URLs with Query Focus
+### 带有查询参数的多个 URL
 
 ```bash
 curl --request POST \
@@ -72,34 +72,34 @@ curl --request POST \
   }'
 ```
 
-## API Reference
+## API 参考
 
-### Endpoint
+### 端点
 
 ```
 POST https://api.tavily.com/extract
 ```
 
-### Headers
+### 请求头
 
-| Header | Value |
-|--------|-------|
+| 头部字段 | 值         |
+|---------|-------------|
 | `Authorization` | `Bearer <TAVILY_API_KEY>` |
 | `Content-Type` | `application/json` |
 
-### Request Body
+### 请求体
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `urls` | array | Required | URLs to extract (max 20) |
-| `query` | string | null | Reranks chunks by relevance |
-| `chunks_per_source` | integer | 3 | Chunks per URL (1-5, requires query) |
-| `extract_depth` | string | `"basic"` | `basic` or `advanced` (for JS pages) |
-| `format` | string | `"markdown"` | `markdown` or `text` |
-| `include_images` | boolean | false | Include image URLs |
-| `timeout` | float | varies | Max wait (1-60 seconds) |
+| 字段        | 类型         | 默认值     | 描述                |
+|------------|-------------|------------|-------------------|
+| `urls`      | array       | Required    | 需要提取的 URL 列表（最多 20 个）   |
+| `query`     | string       | null       | 根据相关性重新排序提取的内容     |
+| `chunks_per_source` | integer     | 3         | 每个 URL 的提取块数量（1-5，需要使用 `query` 参数） |
+| `extract_depth` | string       | `"basic"`     | 提取方式：基本或高级（针对 JavaScript 页面） |
+| `format`     | string       | `"markdown"`     | 输出格式：Markdown 或文本       |
+| `include_images` | boolean     | false       | 是否包含图片 URL           |
+| `timeout`     | float        | 可变       | 最大等待时间（1-60 秒）         |
 
-### Response Format
+### 响应格式
 
 ```json
 {
@@ -114,16 +114,16 @@ POST https://api.tavily.com/extract
 }
 ```
 
-## Extract Depth
+## 提取深度
 
-| Depth | When to Use |
-|-------|-------------|
-| `basic` | Simple text extraction, faster |
-| `advanced` | Dynamic/JS-rendered pages, tables, structured data |
+| 提取深度 | 使用场景       |
+|---------|-------------------|
+| `basic`     | 简单文本提取，速度更快       |
+| `advanced` | 动态渲染的页面、表格、结构化数据 |
 
-## Examples
+## 示例
 
-### Single URL Extraction
+### 单个 URL 的提取
 
 ```bash
 curl --request POST \
@@ -136,7 +136,7 @@ curl --request POST \
   }'
 ```
 
-### Targeted Extraction with Query
+### 带有查询参数的针对性提取
 
 ```bash
 curl --request POST \
@@ -153,7 +153,7 @@ curl --request POST \
   }'
 ```
 
-### JavaScript-Heavy Pages
+### 含大量 JavaScript 代码的页面
 
 ```bash
 curl --request POST \
@@ -167,7 +167,7 @@ curl --request POST \
   }'
 ```
 
-### Batch Extraction
+### 批量提取
 
 ```bash
 curl --request POST \
@@ -186,10 +186,10 @@ curl --request POST \
   }'
 ```
 
-## Tips
+## 提示
 
-- **Max 20 URLs per request** - batch larger lists
-- **Use `query` + `chunks_per_source`** to get only relevant content
-- **Try `basic` first**, fall back to `advanced` if content is missing
-- **Set longer `timeout`** for slow pages (up to 60s)
-- **Check `failed_results`** for URLs that couldn't be extracted
+- **每次请求最多 20 个 URL** – 如需处理更多 URL，请分批处理。
+- **使用 `query` 和 `chunks_per_source` 参数** 仅提取相关内容。
+- **先尝试 `basic` 模式**，如果内容缺失再使用 `advanced` 模式。
+- **对于加载缓慢的页面，设置较长的 `timeout` 值（最长 60 秒）。
+- **检查 `failed_results` 列表**，了解哪些 URL 无法成功提取。

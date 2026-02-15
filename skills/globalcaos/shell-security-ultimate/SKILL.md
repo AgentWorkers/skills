@@ -1,110 +1,110 @@
 ---
 name: shell-security-ultimate
 version: 1.0.2
-description: Shell command security, execution risk classification, and audit for AI agents. Classifies commands by risk level (SAFE→CRITICAL), enforces transparency, prevents dangerous operations. Includes enforcement scripts and agent integration patterns.
+description: AI代理的Shell命令安全、执行风险分类及审计功能：根据命令的风险等级（从“安全”到“危急”）对命令进行分类，确保操作的透明度，并防止危险操作的发生。该系统包含相应的执行脚本以及代理集成方案。
 homepage: https://github.com/globalcaos/clawdbot-moltbot-openclaw
 repository: https://github.com/globalcaos/clawdbot-moltbot-openclaw
 ---
 
 # Shell Security Ultimate
 
-Security-first command execution for AI agents. Classify, audit, and control every shell command.
+为AI代理提供以安全为先的命令执行机制，对每个shell命令进行分类、审计和控制。
 
 ---
 
-## The Problem
+## 问题所在
 
-AI agents with shell access can:
-- Run destructive commands (`rm -rf /`)
-- Leak sensitive data (`cat ~/.ssh/id_rsa`)
-- Modify system state without oversight
-- Execute commands without explaining why
+拥有shell访问权限的AI代理可以：
+- 运行破坏性命令（如 `rm -rf /`）
+- 泄露敏感数据（如 `cat ~/.ssh/id_rsa`）
+- 在未经监督的情况下修改系统状态
+- 在不说明原因的情况下执行命令
 
-**This skill solves it** by enforcing security classification, transparency, and auditability for every command.
+**本技能通过强制实施命令的安全分类、透明性和可审计性来解决这些问题。**
 
 ---
 
-## Coded vs Prompted Behaviors
+## 代码控制与提示控制
 
-There are two ways to control agent behavior:
+有两种方式可以控制代理的行为：
 
-| Approach | Enforcement | Reliability | Example |
+| 方法 | 实施方式 | 可靠性 | 示例 |
 |----------|-------------|-------------|---------|
-| **Prompted** | Instructions in MD files | ~80% | "Don't run dangerous commands" in SOUL.md |
-| **Coded** | Actual code/hooks | ~100% | Plugin that blocks `rm -rf` before execution |
+| **提示控制** | 通过MD文件中的指令 | 约80% | 在 `SOUL.md` 中提示“不要运行危险命令” |
+| **代码控制** | 通过实际代码或钩子 | 约100% | 插件会在执行前阻止 `rm -rf` 命令 |
 
-### Why This Matters
+### 为什么这很重要
 
-- **Prompted behaviors decay** — Agents can forget instructions during long sessions
-- **Coded behaviors persist** — Code doesn't forget, can't be talked out of rules
-- **Defense in depth** — Use both: prompts for guidance, code for enforcement
+- **提示控制的效果会减弱** — 代理在长时间运行过程中可能会忘记指令
+- **代码控制的效果更持久** — 代码不会被遗忘，也无法通过口头劝说改变规则
+- **深度防御** — 应同时使用提示进行引导和代码进行强制执行
 
-### Current State of This Skill
+### 该技能的当前状态
 
-| Component | Type | Status |
+| 组件 | 类型 | 状态 |
 |-----------|------|--------|
-| Classification guide | Prompted | ✅ In SKILL.md |
-| Display script | Coded | ✅ `scripts/cmd_display.py` |
-| SOUL.md integration | Prompted | ✅ Template provided |
-| OpenClaw plugin hook | Coded | ❌ Not yet — requires `before_tool_call` hook |
-| Blocklist enforcement | Coded | ❌ Planned — would reject commands matching patterns |
+| 分类指南 | 提示控制 | ✅ 已包含在 `SKILL.md` 中 |
+| 显示脚本 | 代码控制 | ✅ `scripts/cmd_display.py` 已编写 |
+| 与 `SOUL.md` 的集成 | 提示控制 | ✅ 提供了模板 |
+| OpenClaw插件钩子 | 代码控制 | ❌ 尚未实现 — 需要 `before_tool_call` 钩子 |
+| 命令拦截功能 | 代码控制 | ❌ 计划中 — 将阻止符合特定模式的命令 |
 
-**Where we are:** Mixed approach. The display script provides structure, but true enforcement (blocking dangerous commands before execution) requires an OpenClaw plugin. The current implementation relies on the agent *choosing* to use the wrapper.
+**现状**：采用混合控制方式。显示脚本提供了结构，但真正的强制执行（在执行前阻止危险命令）需要依赖OpenClaw插件。当前实现依赖于代理自行选择是否使用这些安全机制。
 
-**Where we're going:** Full coded enforcement via plugin that intercepts `exec` tool calls and applies security policy before execution.
+**未来目标**：通过插件完全实现代码控制，拦截 `exec` 工具调用并在执行前应用安全策略。
 
 ---
 
-## Security Levels
+## 安全级别
 
-| Level | Emoji | Risk | Examples |
+| 级别 | 表情符号 | 风险 | 示例 |
 |-------|-------|------|----------|
-| 🟢 SAFE | None | `ls`, `cat`, `git status`, `pwd` |
-| 🔵 LOW | Reversible | `touch`, `mkdir`, `git commit` |
-| 🟡 MEDIUM | Moderate | `npm install`, `git push`, config edits |
-| 🟠 HIGH | Significant | `sudo`, service restarts, global installs |
-| 🔴 CRITICAL | Destructive | `rm -rf`, database drops, credential access |
+| 🟢 安全 | 无 | `ls`, `cat`, `git status`, `pwd` |
+| 🔵 低风险 | 可逆操作 | `touch`, `mkdir`, `git commit` |
+| 🟡 中等风险 | 中等风险 | `npm install`, `git push`, 配置文件修改 |
+| 🟠 高风险 | 高风险操作 | `sudo`, 服务重启, 全局安装 |
+| 🔴 极高风险 | 破坏性操作 | `rm -rf`, 数据库删除, 访问凭证 |
 
 ---
 
-## Usage
+## 使用方法
 
-### Basic Format
+### 基本格式
 
 ```bash
 python3 scripts/cmd_display.py <level> "<command>" "<purpose>" "$(<command>)"
 ```
 
-### Examples
+### 示例
 
-**🟢 SAFE — Read-only:**
+**🟢 安全级别（仅读取）：**
 ```bash
 python3 scripts/cmd_display.py safe "git status" "Check repo state" "$(git status --short)"
 ```
 
-**🔵 LOW — File changes:**
+**🔵 低风险级别（允许修改文件）：**
 ```bash
 python3 scripts/cmd_display.py low "touch notes.md" "Create file" "$(touch notes.md && echo '✓')"
 ```
 
-**🟡 MEDIUM — Dependencies:**
+**🟡 中等风险级别（需要谨慎操作）：**
 ```bash
 python3 scripts/cmd_display.py medium "npm install axios" "Add HTTP client" "$(npm install axios 2>&1 | tail -1)"
 ```
 
-**🟠 HIGH — Show only, don't execute:**
+**🟠 高风险级别（仅显示，禁止执行）：**
 ```bash
 python3 scripts/cmd_display.py high "sudo systemctl restart nginx" "Restart server" "⚠️ Manual execution required"
 ```
 
-**🔴 CRITICAL — Never auto-execute:**
+**🔴 极高风险级别（禁止自动执行）：**
 ```bash
 python3 scripts/cmd_display.py critical "rm -rf node_modules" "Clean deps" "🛑 Blocked - requires human confirmation"
 ```
 
 ---
 
-## Output Format
+## 输出格式
 
 ```
 🟢 SAFE ✓ git status --short │ Check repo state
@@ -116,9 +116,9 @@ python3 scripts/cmd_display.py critical "rm -rf node_modules" "Clean deps" "🛑
 
 ---
 
-## Agent Integration
+## 代理集成方法
 
-Add to your `SOUL.md` or `AGENTS.md`:
+将以下内容添加到您的 `SOUL.md` 或 `AGENTS.md` 文件中：
 
 ```markdown
 ## Command Execution Protocol
@@ -132,46 +132,45 @@ Add to your `SOUL.md` or `AGENTS.md`:
 
 ---
 
-## Classification Quick Reference
+## 分类快速参考
 
-**🟢 SAFE (auto-execute):**
+**🟢 安全级别（可自动执行）：**
 `ls`, `cat`, `head`, `grep`, `find`, `git status`, `git log`, `pwd`, `whoami`, `date`
 
-**🔵 LOW (execute, log):**
-`touch`, `mkdir`, `cp`, `mv` (in project), `git add`, `git commit`
+**🔵 低风险级别（允许执行，但需记录日志）：**
+`touch`, `mkdir`, `cp`, `mv`（在项目内部使用），`git add`, `git commit`
 
-**🟡 MEDIUM (execute with caution):**
-`npm/pip install`, `git push/pull`, config file edits
+**🟡 中等风险级别（需谨慎执行）：**
+`npm/pip install`, `git push/pull`, 配置文件修改`
 
-**🟠 HIGH (show, ask first):**
-`sudo *`, service commands, global installs, network config
+**🟠 高风险级别（执行前需确认）：**
+`sudo *`, 服务相关命令, 全局安装, 网络配置修改`
 
-**🔴 CRITICAL (never auto-execute):**
-`rm -rf`, `DROP DATABASE`, credential files, system directories
-
----
-
-## Roadmap
-
-- [x] Classification guidelines
-- [x] Display wrapper script
-- [x] Agent integration template
-- [ ] OpenClaw plugin for `before_tool_call` enforcement
-- [ ] Configurable blocklist patterns
-- [ ] Audit log persistence
+**🔴 极高风险级别（禁止自动执行）：**
+`rm -rf`, `DROP DATABASE`, 访问凭证文件, 系统目录操作`
 
 ---
 
-## Philosophy
+## 开发计划
 
-> *"If you can enforce it with code, don't rely on documentation."*
-
-Prompted behaviors are suggestions. Coded behaviors are laws. This skill provides both — use the prompts now, upgrade to coded enforcement when the plugin is ready.
+- [x] 制定分类指南
+- [x] 编写显示脚本
+- [x] 开发 `before_tool_call` 插件以实现代码控制
+- [ ] 提供可配置的命令拦截规则
+- [ ] 实现审计日志记录功能
 
 ---
 
-## Credits
+## 设计理念
 
-Created by **Oscar Serra** with the help of **Claude** (Anthropic).
+> “如果可以通过代码来实现安全控制，就不要依赖文档。”
 
-*Security is not optional. Every command an agent runs should be classified, justified, and auditable.*
+提示控制只是建议；代码控制才是真正的安全保障。本技能同时提供了这两种方式——现在可以先使用提示，等插件准备好后再升级到代码控制。
+
+---
+
+## 致谢
+
+本技能由 **Oscar Serra** 在 **Claude**（Anthropic团队）的帮助下开发完成。
+
+*安全是不可或缺的。代理执行的每一个命令都应进行分类、理由说明，并且必须能够被审计。*

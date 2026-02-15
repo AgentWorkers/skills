@@ -1,6 +1,6 @@
 ---
 name: eachlabs-music
-description: Generate songs, instrumentals, lyrics, and podcasts using EachLabs Mureka AI models. Also supports song extension, stem separation, and song recognition. Use when the user wants to create music, lyrics, or audio content.
+description: 使用 EachLabs 的 Mureka AI 模型可以生成歌曲、器乐曲、歌词以及播客内容。该工具还支持歌曲的扩展处理、音频元素的提取（如旋律、和声等）以及歌曲的识别功能。非常适合用户需要创作音乐、歌词或音频内容时使用。
 metadata:
   author: eachlabs
   version: "1.0"
@@ -8,51 +8,51 @@ metadata:
 
 # EachLabs Music
 
-Generate songs, instrumentals, lyrics, podcasts, and more using Mureka AI models via the EachLabs Predictions API.
+通过 EachLabs 的 Predictions API，利用 Mureka AI 模型生成歌曲、器乐曲、歌词、播客等内容。
 
-## Authentication
+## 认证
 
 ```
 Header: X-API-Key: <your-api-key>
 ```
 
-Set the `EACHLABS_API_KEY` environment variable. Get your key at [eachlabs.ai](https://eachlabs.ai).
+请设置 `EACHLABS_API_KEY` 环境变量。您可以在 [eachlabs.ai](https://eachlabs.ai) 获取该密钥。
 
-## Available Capabilities
+## 可用功能
 
-### Mureka Models
+### Mureka 模型
 
-| Capability | Slug | Description |
+| 功能 | Slug | 描述 |
 |-----------|------|-------------|
-| Generate Song | `mureka-generate-song` | Create a full song with vocals from a prompt |
-| Generate Instrumental | `mureka-generate-instrumental` | Create instrumental tracks |
-| Generate Lyrics | `mureka-generate-lyrics` | Generate lyrics from a prompt |
-| Extend Lyrics | `mureka-extend-lyrics` | Continue/extend existing lyrics |
-| Extend Song | `mureka-extend-song` | Continue an existing song |
-| Create Speech | `mureka-create-speech` | Generate speech audio |
-| Create Podcast | `mureka-create-podcast` | Generate multi-speaker podcast |
-| Recognize Song | `mureka-recognize-song` | Identify a song from audio |
-| Describe Song | `mureka-describe-song` | Analyze and describe a song |
-| Stem Song | `mureka-stem-song` | Separate audio into stems |
-| Upload File | `mureka-upload-file` | Upload audio for other operations |
+| 生成歌曲 | `mureka-generate-song` | 根据提示生成包含人声的完整歌曲 |
+| 生成器乐曲 | `mureka-generate-instrumental` | 生成器乐曲 |
+| 生成歌词 | `mureka-generate-lyrics` | 根据提示生成歌词 |
+| 扩展歌词 | `mureka-extend-lyrics` | 继续/扩展现有歌词 |
+| 扩展歌曲 | `mureka-extend-song` | 继续现有歌曲的内容 |
+| 生成语音 | `mureka-create-speech` | 生成语音音频 |
+| 创建播客 | `mureka-create-podcast` | 创建多声道播客 |
+| 识别歌曲 | `mureka-recognize-song` | 从音频中识别歌曲 |
+| 描述歌曲 | `mureka-describe-song` | 分析并描述歌曲 |
+| 分离音频元素 | `mureka-stem-song` | 将音频分解为独立的声音元素 |
+| 上传文件 | `mureka-upload-file` | 上传音频文件以进行其他操作 |
 
 ### Minimax Music
 
-| Capability | Slug | Description |
+| 功能 | Slug | 描述 |
 |-----------|------|-------------|
-| Music v2 | `minimax-music-v2` | Latest Minimax music generation |
-| Music v1.5 | `minimax-music-v1-5` | Stable Minimax music generation |
+| Music v2 | `minimax-music-v2` | 最新的 Minimax 音乐生成服务 |
+| Music v1.5 | `minimax-music-v1-5` | 稳定的 Minimax 音乐生成服务 |
 
-## Prediction Flow
+## 预测流程
 
-1. **Check model** `GET https://api.eachlabs.ai/v1/model?slug=<slug>` — validates the model exists and returns the `request_schema` with exact input parameters. Always do this before creating a prediction to ensure correct inputs.
-2. **POST** `https://api.eachlabs.ai/v1/prediction` with model slug, version `"0.0.1"`, and input matching the schema
-3. **Poll** `GET https://api.eachlabs.ai/v1/prediction/{id}` until status is `"success"` or `"failed"`
-4. **Extract** the output from the response
+1. **检查模型**：`GET https://api.eachlabs.ai/v1/model?slug=<slug>` — 确认模型存在，并返回包含完整输入参数的 `request_schema`。在创建预测请求之前，请务必执行此操作以确保输入正确。
+2. **发送请求**：`POST https://api.eachlabs.ai/v1/prediction`，提供模型 slug、版本 `"0.0.1"` 以及符合 schema 的输入数据。
+3. **查询结果**：`GET https://api.eachlabs.ai/v1/prediction/{id}`，直到状态变为 `"success"` 或 `"failed"`。
+4. **提取结果**：从响应中提取最终结果。
 
-## Examples
+## 示例
 
-### Generate a Song
+### 生成歌曲
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -68,7 +68,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Generate Instrumental
+### 生成器乐曲
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -83,7 +83,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Generate Lyrics
+### 生成歌词
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -98,7 +98,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Create a Podcast
+### 创建播客
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -114,9 +114,9 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Extend an Existing Song
+### 扩展现有歌曲
 
-First upload the song, then extend it:
+首先上传歌曲文件，然后对其进行扩展：
 
 ```bash
 # Step 1: Upload the audio file
@@ -146,7 +146,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Separate Audio Stems
+### 分离音频元素
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -161,14 +161,14 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-## Prompt Tips
+## 提示建议
 
-- Specify genre: "indie pop", "lo-fi hip hop", "classical orchestral", "EDM"
-- Include mood: "upbeat", "melancholic", "energetic", "relaxing"
-- Mention instruments: "acoustic guitar", "piano", "synthesizer", "drums"
-- Describe tempo: "slow ballad", "fast-paced", "medium tempo groove"
-- For lyrics, mention theme and structure: "verse-chorus-verse about..."
+- 指定音乐类型：例如 “indie pop”、“lo-fi hip hop”、“classical orchestral”、“EDM”
+- 描述音乐情绪：如 “upbeat”（欢快）、“melancholic”（忧郁）、“energetic”（充满活力）或 “relaxing”（放松）
+- 提及使用的乐器：如 “acoustic guitar”（原声吉他）、“piano”（钢琴）、“synthesizer”（合成器）、“drums”（鼓）
+- 描述音乐节奏：如 “slow ballad”（慢节奏民谣）、“fast-paced”（快节奏）、“medium tempo groove”（中等节奏）
+- 对于歌词，可说明主题和结构，例如：“verse-chorus-verse”（主歌-副歌-主歌）
 
-## Parameter Reference
+## 参数参考
 
-See [references/MODELS.md](references/MODELS.md) for complete parameter details for each model.
+有关每个模型的完整参数详情，请参阅 [references/MODELS.md](references/MODELS.md)。

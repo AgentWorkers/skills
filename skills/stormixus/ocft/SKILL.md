@@ -1,29 +1,28 @@
 ---
 name: ocft
-description: P2P file transfer between AI agents via message channels. Supports chunked transfer, IPFS fallback for large files, and trusted peer management.
+description: AI代理之间通过消息通道进行P2P文件传输。支持分块传输，对于大文件可使用IPFS作为备用方案，并具备可信对等体管理功能。
 homepage: https://github.com/stormixus/ocft
 ---
 
-# OCFT - OpenClaw File Transfer Protocol
+# OCFT - OpenClaw 文件传输协议
 
-P2P file transfer between AI agents via message channels.
+一种用于 AI 代理之间通过消息通道进行点对点文件传输的协议。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- Transferring files between AI agents over chat channels
-- Setting up peer-to-peer file sharing with trusted agents
-- Sending files through Telegram, Discord, Slack, or any text-based channel
-- Need chunked transfer with integrity verification
-- Transferring large files using IPFS fallback
+- 通过聊天通道在 AI 代理之间传输文件
+- 与可信代理建立点对点文件共享
+- 通过 Telegram、Discord、Slack 或任何基于文本的通道发送文件
+- 需要分块传输并验证文件完整性
+- 使用 IPFS 作为备用方案来传输大文件
 
-## Installation
+## 安装
 
 ```bash
 npm install -g ocft
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize your node (generates unique ID and secret)
@@ -42,71 +41,71 @@ ocft add-peer <nodeId> <secret> --name "Friend"
 ocft import ocft://eyJub2RlSWQ...
 ```
 
-## CLI Commands
+## 命令行接口 (CLI) 命令
 
-### Core Commands
+### 核心命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `ocft init` | Initialize node with unique ID and secret |
-| `ocft status` | Show node status and configuration |
-| `ocft show-secret` | Display full secret (careful!) |
-| `ocft export` | Export connection info as URI |
-| `ocft import <uri>` | Import peer from ocft:// URI |
-| `ocft verify <secret>` | Verify if a secret matches yours |
+| `ocft init` | 初始化节点，生成唯一的 ID 和密钥 |
+| `ocft status` | 显示节点状态和配置信息 |
+| `ocft show-secret` | 显示完整的密钥（请谨慎操作！） |
+| `ocft export` | 将连接信息导出为 URI 格式 |
+| `ocft import <uri>` | 从指定的 URI 导入节点信息 |
+| `ocft verify <secret>` | 验证提供的密钥是否与本地密钥匹配 |
 
-### Peer Management
+### 对等体管理
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `ocft add-peer <id> <secret>` | Add a trusted peer |
-| `ocft remove-peer <id>` | Remove a trusted peer |
-| `ocft list-peers` | List all trusted peers |
-| `ocft extend-peer <nodeId> <hours>` | Extend a peer's trust expiry |
-| `ocft set-ttl <hours>` | Set default secret TTL (0 = no expiry) |
+| `ocft add-peer <id> <secret>` | 添加一个可信的对等体 |
+| `ocft remove-peer <id>` | 移除一个可信的对等体 |
+| `ocft list-peers` | 列出所有可信的对等体 |
+| `ocft extend-peer <nodeId> <hours>` | 延长对等体的信任有效期 |
+| `ocft set-ttl <hours>` | 设置密钥的过期时间（0 表示无过期限制） |
 
-### Configuration
+### 配置选项
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `ocft set-download <dir>` | Set download directory |
-| `ocft set-max-size <size>` | Set max file size (e.g., `100MB`, `1GB`) |
+| `ocft set-download <dir>` | 设置下载目录 |
+| `ocft set-max-size <size>` | 设置最大文件大小（例如：`100MB`、`1GB`） |
 
-### IPFS Fallback (for large files)
+### IPFS 备用方案（用于大文件传输）
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `ocft ipfs-enable` | Enable IPFS fallback for large files |
-| `ocft ipfs-disable` | Disable IPFS fallback |
-| `ocft set-ipfs-provider <provider>` | Set provider: `pinata`, `filebase`, `kubo` |
-| `ocft set-ipfs-key <key>` | Set IPFS API key |
-| `ocft set-kubo-url <url>` | Set Kubo node API URL |
-| `ocft set-ipfs-threshold <size>` | Size threshold for IPFS (e.g., `50MB`) |
-| `ocft set-ipfs-gateway <url>` | Set custom public IPFS gateway |
+| `ocft ipfs-enable` | 启用 IPFS 作为大文件的传输备用方案 |
+| `ocft ipfs-disable` | 禁用 IPFS 备用方案 |
+| `ocft set-ipfs-provider <provider>` | 设置 IPFS 提供商（如 `pinata`、`filebase`、`kubo`） |
+| `ocft set-ipfs-key <key>` | 设置 IPFS API 密钥 |
+| `ocft set-ipfs-url <url>` | 设置 Kubo 节点的 API 地址 |
+| `ocft set-ipfs-threshold <size>` | 设置 IPFS 文件传输的阈值（例如：`50MB`） |
+| `ocft set-ipfs-gateway <url>` | 设置自定义的 IPFS 公共网关 |
 
-## Features
+## 主要特性
 
-- 🔗 **Message-based**: Transfer files through existing chat channels
-- 📦 **Chunked transfer**: Split large files into small pieces (48KB chunks)
-- ✅ **Integrity verification**: SHA-256 hash for chunks and files
-- 🤝 **Request/Accept**: Explicit acceptance or auto-accept policy
-- 🔒 **Security**: Trusted peer whitelist with secrets
-- ⏰ **Secret TTL**: Set expiry time for trust relationships
-- 🔄 **Resume**: Resume interrupted transfers from last chunk
-- 🌐 **IPFS Fallback**: Use IPFS for files exceeding chunk threshold
+- 🔗 **基于消息的传输**：通过现有的聊天通道传输文件 |
+- 📦 **分块传输**：将大文件分割成 48KB 的小块进行传输 |
+- ✅ **文件完整性验证**：对每个文件块和整个文件使用 SHA-256 进行哈希验证 |
+- 🤝 **请求/接受机制**：支持显式请求或自动接受文件传输 |
+- 🔒 **安全性**：仅允许可信的对等体进行文件传输，并使用密钥进行身份验证 |
+- ⏰ **密钥过期机制**：为信任关系设置过期时间 |
+- 🔄 **传输恢复**：能够从上次传输中断的地方继续传输 |
+- 🌐 **IPFS 备用**：对于超过文件传输阈值的大文件，使用 IPFS 进行传输
 
-## Protocol
+## 协议细节
 
-OCFT messages use a `🔗OCFT:` prefix with Base64-encoded JSON, allowing file transfers over any text-based channel.
+OCFT 协议的消息以 `🔗OCFT:` 为前缀，采用 Base64 编码的 JSON 格式，因此可以通过任何基于文本的通道进行文件传输。
 
-## Limitations
+## 限制
 
-- Chunk size: 48KB (safe for Base64 in messages)
-- Default max file size: 100MB (configurable via `set-max-size`)
-- Designed for text-based channels
-- IPFS fallback requires provider setup (Pinata, Filebase, or local Kubo)
+- 每个文件块的最大大小为 48KB（适合通过消息传递）
+- 默认的最大文件传输大小为 100MB（可通过 `set-max-size` 命令进行配置）
+- 该协议专为基于文本的通信渠道设计
+- 使用 IPFS 作为备用方案时，需要预先配置相应的 IPFS 提供商（如 Pinata、Filebase 或 Kubo）
 
-## Links
+## 链接
 
-- **GitHub**: https://github.com/stormixus/ocft
-- **npm**: https://www.npmjs.com/package/ocft
+- **GitHub 仓库**：https://github.com/stormixus/ocft
+- **npm 包**：https://www.npmjs.com/package/ocft

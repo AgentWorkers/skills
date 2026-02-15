@@ -1,63 +1,60 @@
 ---
 name: plaud-api
-description: Use when accessing Plaud voice recorder data (recordings, transcripts, AI summaries) - guides credential setup and provides patterns for plaud_client.py
+description: **使用说明：**  
+本文档用于指导用户如何访问 Plaud 语音记录器的数据（包括录音文件、文字记录以及 AI 生成的摘要）。它详细介绍了凭证（credentials）的设置方法，并提供了 `plaud_client.py` 脚本的编写示例。
 aliases:
   - plaud
   - plaud-recordings
 ---
 
-# Plaud API Skill
+# Plaud API 技能
 
-Access Plaud voice recorder data including recordings, transcripts, and AI-generated summaries.
+该技能允许您访问 Plaud 语音记录器的数据，包括录音文件、文字记录以及人工智能生成的摘要。
 
-## Overview
+## 概述
 
-The Plaud API provides access to:
-- **Audio files**: MP3 recordings from your Plaud device
-- **Transcripts**: Full text transcriptions with speaker diarization
-- **AI summaries**: Auto-generated notes and summaries
+Plaud API 提供以下功能：
+- **音频文件**：来自您的 Plaud 设备的 MP3 录音文件
+- **文字记录**：包含说话人信息的完整文本转录
+- **人工智能摘要**：自动生成的笔记和总结
 
-**Core principle**: Use `plaud_client.py` (included in this skill), not raw API calls. The client handles authentication, error handling, and response parsing.
+**核心原则**：请使用 `plaud_client.py`（包含在该技能中）来调用 API，而非直接进行原始 API 调用。该客户端负责处理身份验证、错误处理和响应解析。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when:
-- User mentions "Plaud", "Plaud recording", or "transcript from Plaud"
-- Need to access voice recorder data
-- Working with recordings, transcripts, or AI notes from a Plaud device
+在以下情况下使用此技能：
+- 用户提到 “Plaud”、“Plaud 录音” 或 “Plaud 的文字记录”
+- 需要访问语音记录器的数据
+- 需要处理来自 Plaud 设备的录音文件、文字记录或人工智能生成的摘要
 
-## Interactive Credential Tutorial
+## 交互式凭证教程
 
-Before using the Plaud API, you need to extract credentials from the web app.
+在使用 Plaud API 之前，您需要从 Web 应用程序中提取凭证。
 
-### Step 1: Navigate to Plaud Web App
+### 第 1 步：访问 Plaud Web 应用程序
 
-Open Chrome and go to: https://web.plaud.ai
+打开 Chrome 浏览器，并访问：https://web.plaud.ai
+如果尚未登录，请使用您的 Plaud 账户登录。
 
-Log in with your Plaud account if not already logged in.
+### 第 2 步：打开 Chrome 开发工具
 
-### Step 2: Open Chrome DevTools
+按 `F12`（或在 Mac 上按 `Cmd+Option+I`）打开开发工具。
 
-Press `F12` (or `Cmd+Option+I` on Mac) to open DevTools.
+### 第 3 步：查找 localStorage 的值
 
-### Step 3: Find localStorage Values
+1. 在开发工具中点击 **应用程序** 标签
+2. 在左侧边栏中展开 **本地存储**
+3. 点击 `https://web.plaud.ai`
 
-1. Click the **Application** tab in DevTools
-2. In the left sidebar, expand **Local Storage**
-3. Click on `https://web.plaud.ai`
+### 第 4 步：复制所需的值
 
-### Step 4: Copy Required Values
+找到并复制以下两个值：
+- `tokenstr`：您的承载令牌（以 “bearer eyJ...” 开头）
+- `plaud_user_api_domain`：API 端点（例如：“https://api-euc1.plaud.ai”）
 
-Find and copy these two values:
+### 第 5 步：创建 `.env` 文件
 
-| Key | Description |
-|-----|-------------|
-| `tokenstr` | Your bearer token (starts with "bearer eyJ...") |
-| `plaud_user_api_domain` | API endpoint (e.g., "https://api-euc1.plaud.ai") |
-
-### Step 5: Create .env File
-
-Create or update the `.env` file in the skill directory (`~/.claude/skills/plaud-api/`):
+在技能目录（`~/.claude/skills/plaud-api/`）中创建或更新 `.env` 文件：
 
 ```bash
 # In the skill directory
@@ -66,7 +63,7 @@ cp .env.example .env
 # Edit .env with your actual credentials
 ```
 
-Or create it directly:
+或者直接创建文件：
 
 ```bash
 cat > ~/.claude/skills/plaud-api/.env << 'EOF'
@@ -75,53 +72,53 @@ PLAUD_API_DOMAIN=https://api-euc1.plaud.ai
 EOF
 ```
 
-**Important**: Include the full token including the "bearer " prefix.
+**注意**：请确保令牌中包含 “bearer ” 前缀。
 
-### Step 6: Verify Setup
+### 第 6 步：验证设置
 
-Test that credentials work:
+测试凭证是否有效：
 
 ```bash
 cd ~/.claude/skills/plaud-api
 python3 plaud_client.py list
 ```
 
-If successful, you'll see a list of your recordings with file IDs, durations, and names.
+如果成功，您将看到包含文件 ID、时长和名称的录音列表。
 
-**First-time setup**: Install dependencies if needed:
+**首次设置**：如有需要，请安装依赖项：
 ```bash
 pip install -r ~/.claude/skills/plaud-api/requirements.txt
 ```
 
-## .env File Format
+## `.env` 文件格式
 
 ```
 PLAUD_TOKEN=bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 PLAUD_API_DOMAIN=https://api-euc1.plaud.ai
 ```
 
-**Notes**:
-- The token includes the "bearer " prefix
-- API domain is region-specific (EU users: `api-euc1`, US users may differ)
+**注意事项**：
+- 令牌中包含 “bearer ” 前缀
+- API 域名因地区而异（欧盟用户：`api-euc1`，美国用户可能有所不同）
 
-## Quick Reference
+## 快速参考
 
-All commands should be run from the skill directory (`~/.claude/skills/plaud-api`):
+所有命令都应在技能目录（`~/.claude/skills/plaud-api`）中执行：
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| List all recordings | `python3 plaud_client.py list` |
-| List as JSON | `python3 plaud_client.py list --json` |
-| Get file details | `python3 plaud_client.py details <file_id>` |
-| Get details as JSON | `python3 plaud_client.py details <file_id> --json` |
-| Download audio | `python3 plaud_client.py download <file_id>` |
-| Download to path | `python3 plaud_client.py download <file_id> -o output.mp3` |
-| Download all files | `python3 plaud_client.py download-all -o ./recordings` |
-| Get file tags/folders | `python3 plaud_client.py tags` |
+| 列出所有录音 | `python3 plaud_client.py list` |
+| 以 JSON 格式列出 | `python3 plaud_client.py list --json` |
+| 获取文件详细信息 | `python3 plaud_client.py details <file_id>` |
+| 以 JSON 格式获取详细信息 | `python3 plaud_client.py details <file_id> --json` |
+| 下载音频文件 | `python3 plaud_client.py download <file_id>` |
+| 下载到指定路径 | `python3 plaud_client.py download <file_id> -o output.mp3` |
+| 下载所有文件 | `python3 plaud_client.py download-all -o ./recordings` |
+| 获取文件标签/文件夹信息 | `python3 plaud_client.py tags` |
 
-## Common Patterns
+## 常用操作模式
 
-### Fetch Recent Transcripts
+### 获取最近的文字记录
 
 ```bash
 cd ~/.claude/skills/plaud-api
@@ -133,20 +130,20 @@ python3 plaud_client.py list
 python3 plaud_client.py details <file_id> --json | jq '.data.trans_result'
 ```
 
-### File ID Discovery
+### 查找文件 ID
 
-File IDs are 32-character hex strings. Find them from:
-1. **URLs**: `https://web.plaud.ai/file/{file_id}`
-2. **List output**: First column in `python3 plaud_client.py list`
-3. **JSON output**: `python3 plaud_client.py list --json | jq '.[].id'`
+文件 ID 是 32 个字符的十六进制字符串。您可以通过以下方式获取它们：
+- **URL**：`https://web.plaud.ai/file/{file_id}`
+- **列表输出**：`python3 plaud_client.py list` 的第一列
+- **JSON 输出**：`python3 plaud_client.py list --json | jq '.[].id'`
 
-### Get AI Summary
+### 获取人工智能摘要
 
 ```bash
 python3 plaud_client.py details <file_id> --json | jq '.data.ai_content'
 ```
 
-### Batch Operations
+### 批量操作
 
 ```bash
 # Download all recordings to a folder
@@ -156,46 +153,45 @@ python3 plaud_client.py download-all -o ./all_recordings
 python3 plaud_client.py list --json | jq -r '.[].id'
 ```
 
-### Extract Transcript Text Only
+### 仅提取文字记录
 
 ```bash
 # Get plain transcript text (all segments concatenated)
 python3 plaud_client.py details <file_id> --json | jq -r '.data.trans_result.segments[].text' | tr '\n' ' '
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Fix |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|-----|
-| `401 Unauthorized` | Token expired or invalid | Re-extract token from localStorage |
-| `Empty response` | Invalid file_id format | Verify file_id is 32 hex characters |
-| `Connection error` | Wrong API domain | Check PLAUD_API_DOMAIN in .env |
-| `Token required` | Missing .env or PLAUD_TOKEN | Follow credential tutorial above |
+| `401 Unauthorized` | 令牌过期或无效 | 从 localStorage 中重新获取令牌 |
+| 空响应 | 文件 ID 格式无效 | 确保文件 ID 是 32 个十六进制字符 |
+| 连接错误 | API 域名错误 | 检查 `.env` 文件中的 `PLAUD_API_DOMAIN` |
+| 需要令牌 | 缺少 `.env` 文件或 `PLAUD_TOKEN` | 按照上述凭证教程操作 |
 
-## Token Refresh
+## 令牌刷新
 
-Plaud tokens are long-lived (~10 months), but when they expire:
+Plaud 令牌的有效期较长（约 10 个月），但当令牌过期时，请执行以下操作：
+1. 登录 https://web.plaud.ai
+2. 打开开发工具 > 应用程序 > 本地存储
+3. 复制新的 `tokenstr` 值
+4. 更新您的 `.env` 文件
 
-1. Log into https://web.plaud.ai
-2. Open DevTools > Application > Local Storage
-3. Copy the new `tokenstr` value
-4. Update your `.env` file
+## API 参考
 
-## API Reference
+有关详细的 API 文档，请参阅包含在该技能目录中的 `PLAUD_API.md` 文件。
 
-For detailed API documentation, see `PLAUD_API.md` included in this skill directory.
+`plaud_client.py` 使用的主要 API 端点：
+- `GET /file/simple/web` - 列出所有文件
+- `GET /file/detail/{file_id}` - 获取包含文字记录的文件详细信息
+- `GET /file/download/{file_id}` - 下载 MP3 音频文件
+- `GET /filetag/` - 获取文件标签/文件夹信息
 
-Key endpoints used by plaud_client.py:
-- `GET /file/simple/web` - List all files
-- `GET /file/detail/{file_id}` - Get file details with transcript
-- `GET /file/download/{file_id}` - Download MP3 audio
-- `GET /filetag/` - Get file tags/folders
+## 包含的文件
 
-## Included Files
-
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `plaud_client.py` | CLI tool for all Plaud API operations |
-| `PLAUD_API.md` | Detailed API endpoint documentation |
-| `requirements.txt` | Python dependencies |
-| `.env.example` | Template for credentials |
+| `plaud_client.py` | 用于所有 Plaud API 操作的命令行工具 |
+| `PLAUD_API.md` | 详细的 API 端点文档 |
+| `requirements.txt` | Python 依赖项 |
+| `.env.example` | 凭证模板 |

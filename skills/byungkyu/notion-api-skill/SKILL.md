@@ -15,9 +15,9 @@ metadata:
 
 # Notion
 
-Access the Notion API with managed OAuth authentication. Query databases, create pages, manage blocks, and search your workspace.
+您可以使用受管理的 OAuth 认证来访问 Notion API。该 API 允许您查询数据库、创建页面、管理区块以及搜索您的工作区内容。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Search for pages
@@ -32,47 +32,47 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基础 URL
 
 ```
 https://gateway.maton.ai/notion/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Notion API endpoint path. The gateway proxies requests to `api.notion.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Notion API 端点路径。该网关会将请求代理到 `api.notion.com`，并自动插入您的 OAuth 令牌。
 
-## Required Headers
+## 必需的请求头
 
-All Notion API requests require the version header:
+所有 Notion API 请求都需要包含以下版本头：
 
 ```
 Notion-Version: 2025-09-03
 ```
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Notion OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Notion OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -83,7 +83,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -107,7 +107,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -122,9 +122,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -135,9 +135,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Notion connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Notion 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -152,18 +152,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## Key Concept: Databases vs Data Sources
+## 关键概念：数据库与数据源
 
-In API version 2025-09-03, databases and data sources are separate:
+在 API 版本 2025-09-03 中，数据库和数据源是分开的：
 
-| Concept | Use For |
+| 概念 | 用途 |
 |---------|---------|
-| **Database** | Creating databases, getting data source IDs |
-| **Data Source** | Querying, updating schema, updating properties |
+| **数据库** | 创建数据库、获取数据源 ID |
+| **数据源** | 查询数据、更新数据源结构、修改数据源属性 |
 
-Use `GET /databases/{id}` to get the `data_sources` array, then use `/data_sources/` endpoints:
+使用 `GET /databases/{id}` 来获取 `data_sources` 数组，然后使用 `/data_sources/` 端点来操作数据源：
 
 ```json
 {
@@ -175,11 +175,11 @@ Use `GET /databases/{id}` to get the `data_sources` array, then use `/data_sourc
 }
 ```
 
-## API Reference
+## API 参考
 
-### Search
+### 搜索
 
-Search for pages:
+搜索页面：
 
 ```bash
 POST /notion/v1/search
@@ -192,7 +192,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-Search for data sources:
+搜索数据源：
 
 ```bash
 POST /notion/v1/search
@@ -204,16 +204,16 @@ Notion-Version: 2025-09-03
 }
 ```
 
-### Data Sources
+### 数据源
 
-#### Get Data Source
+#### 获取数据源信息
 
 ```bash
 GET /notion/v1/data_sources/{dataSourceId}
 Notion-Version: 2025-09-03
 ```
 
-#### Query Data Source
+#### 查询数据源
 
 ```bash
 POST /notion/v1/data_sources/{dataSourceId}/query
@@ -232,7 +232,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### Update Data Source
+#### 更新数据源
 
 ```bash
 PATCH /notion/v1/data_sources/{dataSourceId}
@@ -247,16 +247,16 @@ Notion-Version: 2025-09-03
 }
 ```
 
-### Databases
+### 数据库
 
-#### Get Database
+#### 获取数据库信息
 
 ```bash
 GET /notion/v1/databases/{databaseId}
 Notion-Version: 2025-09-03
 ```
 
-#### Create Database
+#### 创建数据库
 
 ```bash
 POST /notion/v1/databases
@@ -273,16 +273,16 @@ Notion-Version: 2025-09-03
 }
 ```
 
-### Pages
+### 页面
 
-#### Get Page
+#### 获取页面信息
 
 ```bash
 GET /notion/v1/pages/{pageId}
 Notion-Version: 2025-09-03
 ```
 
-#### Create Page
+#### 创建页面
 
 ```bash
 POST /notion/v1/pages
@@ -297,7 +297,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### Create Page in Data Source
+#### 在数据源中创建页面
 
 ```bash
 POST /notion/v1/pages
@@ -313,7 +313,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### Update Page Properties
+#### 更新页面属性
 
 ```bash
 PATCH /notion/v1/pages/{pageId}
@@ -327,7 +327,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### Update Page Icon
+#### 更改页面图标
 
 ```bash
 PATCH /notion/v1/pages/{pageId}
@@ -339,7 +339,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### Archive Page
+#### 将页面归档
 
 ```bash
 PATCH /notion/v1/pages/{pageId}
@@ -351,16 +351,16 @@ Notion-Version: 2025-09-03
 }
 ```
 
-### Blocks
+### 区块
 
-#### Get Block Children
+#### 获取区块的子元素
 
 ```bash
 GET /notion/v1/blocks/{blockId}/children
 Notion-Version: 2025-09-03
 ```
 
-#### Append Block Children
+#### 向区块中添加子元素
 
 ```bash
 PATCH /notion/v1/blocks/{blockId}/children
@@ -380,44 +380,56 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### Delete Block
+#### 删除区块
 
 ```bash
 DELETE /notion/v1/blocks/{blockId}
 Notion-Version: 2025-09-03
 ```
 
-### Users
+### 用户
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /notion/v1/users
 Notion-Version: 2025-09-03
 ```
 
-#### Get Current User
+#### 获取当前用户信息
 
 ```bash
 GET /notion/v1/users/me
 Notion-Version: 2025-09-03
 ```
 
-## Filter Operators
+## 过滤操作符
 
-- `equals`, `does_not_equal`
-- `contains`, `does_not_contain`
-- `starts_with`, `ends_with`
-- `is_empty`, `is_not_empty`
-- `greater_than`, `less_than`
+- `equals`（等于）
+- `does_not_equal`（不等于）
+- `contains`（包含）
+- `does_not_contain`（不包含）
+- `starts_with`（以...开头）
+- `ends_with`（以...结尾）
+- `is_empty`（为空）
+- `is_not_empty`（不为空）
+- `greater_than`（大于）
+- `less_than`（小于）
 
-## Block Types
+## 区块类型
 
-- `paragraph`, `heading_1`, `heading_2`, `heading_3`
-- `bulleted_list_item`, `numbered_list_item`
-- `to_do`, `code`, `quote`, `divider`
+- `paragraph`（段落）
+- `heading_1`（标题 1）
+- `heading_2`（标题 2）
+- `heading_3`（标题 3）
+- `bulleted_list_item`（项目列表项）
+- `numbered_list_item`（编号列表项）
+- `to_do`（待办事项）
+- `code`（代码块）
+- `quote`（引用）
+- `divider`（分隔符）
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -449,33 +461,33 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- All IDs are UUIDs (with or without hyphens)
-- Use `GET /databases/{id}` to get the `data_sources` array containing data source IDs
-- Creating databases requires `POST /databases` endpoint
-- Delete blocks returns the block with `archived: true`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 所有的 ID 都是 UUID（可能包含或不包含连字符）。
+- 使用 `GET /databases/{id}` 可以获取包含数据源 ID 的 `data_sources` 数组。
+- 创建数据库需要使用 `POST /databases` 端点。
+- 删除区块时，返回的区块会带有 `archived: true` 的标志。
+- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以避免全局解析问题。
+- **重要提示：** 在将 `curl` 的输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效的 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Notion connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Notion API |
+| 400 | 未建立 Notion 连接 |
+| 401 | API 密钥无效或缺失 |
+| 429 | 每个账户的请求频率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Notion API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -486,23 +498,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `notion`. For example:
+1. 确保您的 URL 路径以 `notion` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/notion/v1/search`
+- 错误的路径：`https://gateway.maton.ai/v1/search`
 
-- Correct: `https://gateway.maton.ai/notion/v1/search`
-- Incorrect: `https://gateway.maton.ai/v1/search`
+## 资源
 
-## Resources
-
-- [Notion API Introduction](https://developers.notion.com/reference/intro)
-- [Search](https://developers.notion.com/reference/post-search.md)
-- [Query Database](https://developers.notion.com/reference/post-database-query.md)
-- [Get Page](https://developers.notion.com/reference/retrieve-a-page.md)
-- [Create Page](https://developers.notion.com/reference/post-page.md)
-- [Update Page](https://developers.notion.com/reference/patch-page.md)
-- [Append Block Children](https://developers.notion.com/reference/patch-block-children.md)
-- [Filter Reference](https://developers.notion.com/reference/post-database-query-filter.md)
-- [LLM Reference](https://developers.notion.com/llms.txt)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Notion API 介绍](https://developers.notion.com/reference/intro)
+- [搜索](https://developers.notion.com/reference/post-search.md)
+- [查询数据库](https://developers.notion.com/reference/post-database-query.md)
+- [获取页面信息](https://developers.notion.com/reference/retrieve-a-page.md)
+- [创建页面](https://developers.notion.com/reference/post-page.md)
+- [更新页面信息](https://developers.notion.com/reference/patch-page.md)
+- [向区块中添加子元素](https://developers.notion.com/reference/patch-block-children.md)
+- [过滤参考](https://developers.notion.com/reference/post-database-query-filter.md)
+- [大语言模型参考](https://developers.notion.com/llms.txt)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

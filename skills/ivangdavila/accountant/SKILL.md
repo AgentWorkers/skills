@@ -1,76 +1,75 @@
 ---
 name: Accountant
-description: Manage bookkeeping, financial statements, and tax planning with sound accounting practices.
+description: 通过规范的会计实践来管理账务、财务报表和税务规划。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-# Accounting Rules
+# 会计规则
 
-## Important Boundaries
-- This is financial information, not professional advice — recommend CPA for complex tax situations
-- Tax laws vary by jurisdiction and change frequently — verify current rules
-- Audited financials require licensed accountants — internal tracking differs from official statements
-- Material decisions need professional review — DIY works for basics, not for high stakes
+## 重要注意事项
+- 本文档仅提供财务信息，并不构成专业建议；对于复杂的税务问题，请咨询注册会计师（CPA）。
+- 税法因地区而异且经常变动，请务必核实当前的税收法规。
+- 经过审计的财务报表需要由持证会计师编制；内部财务记录与官方报表可能存在差异。
+- 对于重大决策，应寻求专业意见；对于简单的财务操作，自行处理可能可行，但对于高风险情况则应谨慎对待。
 
-## Core Principles
-- Double-entry: every transaction has equal debit and credit — books must balance
-- Accrual vs cash basis: accrual records when earned/owed, cash when money moves — pick one consistently
-- Matching principle: record expenses in same period as related revenue — timing matters
-- Conservatism: recognize losses immediately, gains only when realized — err toward understating
-- Materiality: small errors don't matter, significant ones do — focus effort proportionally
+## 核心原则
+- **复式记账**：每笔交易都包含相等的借方和贷方金额，账目必须保持平衡。
+- **权责发生制**：在收入或费用发生时进行记录；选择一种记账方法并保持一致。
+- **配比原则**：将费用与相应的收入在同一会计期间进行记录；时间安排非常重要。
+- **谨慎性原则**：立即确认损失，只有在收益实现时才确认利润；倾向于保守估计。
+- **重要性原则**：小额错误通常无关紧要，但重大错误则会影响财务结果；应根据错误的影响程度投入相应的精力进行处理。
 
-## Financial Statements
-- Balance sheet: assets = liabilities + equity at a point in time — snapshot of position
-- Income statement: revenue - expenses = profit over a period — performance summary
-- Cash flow statement: where cash came from and went — profitability doesn't mean liquidity
-- These three are interconnected — changes in one affect others
-- Read all three together — each tells part of the story
+## 财务报表
+- **资产负债表**：某一时间点的资产 = 负债 + 所有者权益——反映企业的财务状况。
+- **利润表**：收入 - 费用 = 该期间的利润——展示企业的经营成果。
+- **现金流量表**：显示现金的来源和去向——盈利能力并不等同于流动性。
+- 这三份报表相互关联，其中一项的变化会影响到其他两项。
 
-## Bookkeeping Basics
-- Record transactions as they happen — catching up creates errors
-- Keep receipts and documentation — proof matters for taxes and audits
-- Reconcile bank accounts monthly — catch errors and fraud early
-- Separate business and personal finances — mixing creates legal and tax problems
-- Chart of accounts organizes categories — set up properly at the start
+## 记账基础
+- 交易发生时立即进行记录；延迟记录可能导致错误。
+- 保留收据和相关文件——这些资料对税务申报和审计至关重要。
+- 每月核对银行账户——及时发现错误和欺诈行为。
+- 将个人财务与企业财务分开处理；混淆两者会引发法律和税务问题。
+- **账户分类表**用于整理各类财务项目——在开始时务必正确设置。
 
-## Cash Flow Management
-- Profit isn't cash — you can be profitable and run out of money
-- Accounts receivable is money owed to you — track aging, follow up on late payments
-- Accounts payable is money you owe — manage timing strategically
-- Cash flow forecast: project inflows and outflows weekly — avoid surprises
-- Keep cash reserves — 3-6 months of expenses minimum for stability
+## 现金流管理
+- 盈利并不等同于现金储备；即使盈利也可能出现资金短缺的情况。
+- **应收账款**是指客户欠企业的款项——需要跟踪账款的逾期情况并及时催收。
+- **应付账款**是指企业欠他人的款项——需策略性地管理付款时间。
+- **现金流预测**：每周预测现金的流入和流出情况——避免意外支出。
+- 保持至少3-6个月的现金储备以确保财务稳定。
 
-## Tax Fundamentals
-- Track deductible expenses throughout year — reconstructing at tax time misses items
-- Estimated taxes quarterly for self-employed — underpayment triggers penalties
-- Depreciation spreads asset costs over useful life — immediate deduction vs long-term
-- Understand the difference between tax avoidance (legal) and evasion (illegal)
-- Deadlines are real — extensions to file aren't extensions to pay
+## 税务基础知识
+- 全年跟踪可抵扣的费用；如果在报税时才重新整理这些信息，可能会遗漏一些可抵扣的项目。
+- 自雇人士需每季度预估税款；税款缴纳不足可能会产生罚款。
+- **折旧**是将资产成本分摊到其使用寿命内；可以选择立即抵扣或长期抵扣。
+- 区分“避税”（合法）和“逃税”（非法）的行为。
+- 税务申报的截止日期是严格的；延期申报并不意味着可以延期付款。
 
-## Common Mistakes
-- Mixing personal and business accounts — destroys liability protection and complicates taxes
-- Not tracking small cash expenses — they add up to significant deductions
-- Ignoring accounts receivable aging — old invoices rarely get paid
-- Forgetting to reconcile — errors compound when not caught early
-- Waiting until year-end for tax planning — many strategies require advance action
+## 常见错误
+- 混淆个人账户和企业账户——会破坏责任保护机制并使税务处理变得复杂。
+- 不记录小额现金支出——这些支出累积起来可能会形成可抵扣的税额。
+- 忽视应收账款的逾期情况——旧发票往往难以收回。
+- 忘记进行对账——错误如果未能及时发现，会逐渐累积。
+- 等到年底才进行税务规划——许多税务策略需要提前制定。
 
-## Key Ratios
-- Current ratio (current assets / current liabilities) — can you pay short-term debts?
-- Gross margin (gross profit / revenue) — efficiency of core operations
-- Net margin (net income / revenue) — bottom line profitability
-- Debt to equity — financial leverage and risk
-- Days sales outstanding — how fast you collect receivables
+## 关键财务比率
+- **流动比率**（流动资产 / 流动负债）——企业是否有能力偿还短期债务？
+- **毛利率**（毛利润 / 收入）——反映核心业务的盈利能力。
+- **净利润率**（净利润 / 收入）——体现企业的最终盈利能力。
+- **债务与所有者权益比率**——反映企业的财务杠杆和风险水平。
+- **应收账款周转天数**——反映企业收回应收账款的速度。
 
-## Budgeting
-- Start with revenue projections — be realistic, not optimistic
-- Fixed vs variable costs — know which expenses scale with revenue
-- Compare actual vs budget monthly — variance analysis reveals problems
-- Zero-based budgeting: justify all expenses, not just increases — prevents bloat
-- Budget for unexpected expenses — something will go wrong
+## 预算编制
+- 从收入预测开始制定预算——要现实一些，不要过于乐观。
+- 区分固定成本和可变成本——了解哪些费用会随着收入的变化而变化。
+- 每月比较实际支出与预算——差异分析有助于发现问题。
+- **零基预算**：为所有支出提供合理依据，而不仅仅是增加支出——避免预算膨胀。
+- 预留应对意外支出的资金——因为总会有意外发生。
 
-## Working with Accountants
-- Organize documents before meetings — billable hours add up fast
-- Ask questions until you understand — it's your money and liability
-- Provide complete information — surprises during audit are expensive
-- Regular check-ins, not just at tax time — proactive planning beats reactive filing
-- Understand what they're filing on your behalf — you sign, you're responsible
+## 与会计师的合作
+- 在会议前整理好所有相关文件——可计费的工作时间会迅速累积。
+- 直到完全理解为止再提出问题——因为这是你的钱，也是你的责任。
+- 提供完整的信息——审计过程中的任何意外情况都可能带来高昂的代价。
+- 定期与会计师沟通——而不仅仅是在报税时；主动规划比被动应对更为有效。
+- 了解会计师为你提交的申报内容——因为你签署了相关文件，你就负有责任。

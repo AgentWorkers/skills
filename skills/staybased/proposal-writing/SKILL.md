@@ -1,229 +1,166 @@
-# Proposal Writing — Confirmation-First Closing Framework
+# 提案写作——以确认为先的成交框架
 
-Write proposals that confirm verbal agreements and close deals, not proposals that try to sell.
-Sources: Consulting Success (reviewed 100s of proposals, 60%+ win rate benchmark), Aura/Prosal (2024 survey: 30% RFP win rate), McKinsey SCR framework, Melisa Liberman.
-All outputs go to `workspace/artifacts/`.
+撰写旨在确认口头协议并促成交易的提案，而非试图销售的提案。
 
-## Use when
-- Writing a proposal after a discovery call where the client verbally agreed
-- Crafting Upwork proposals for fixed-price or hourly jobs
-- Formalizing a service agreement (like Alfred's automation)
-- Responding to an RFP with a structured bid
-- Reviewing/improving an existing proposal before sending
+**参考来源：**  
+- Consulting Success（审核了数百份提案，中标率超过60%）  
+- Aura/Prosal（2024年调查：RFP中标率为30%）  
+- McKinsey的SCR框架  
+- Melisa Liberman  
 
-## Don't use when
-- You haven't done discovery yet (use client-discovery skill first)
-- Cold outreach (use cold-outreach skill — proposals come after interest)
-- Pricing strategy (use pricing-psychology skill for the pricing, this skill for the wrapper)
-- Writing internal project plans (different audience, different format)
+所有生成的提案文件都会保存在`workspace/artifacts/`目录下。  
 
-## Negative examples
-- "Help me find clients" → No. This is for closing, not finding.
-- "Write a business plan" → No. Business plans and proposals are different documents.
-- "Send a follow-up email" → Borderline. Use cold-outreach for follow-ups.
+## 适用场景：  
+- 在发现会议后（客户已口头同意合作时）撰写提案  
+- 为Upwork平台上的固定价格或按小时计费的任务撰写提案  
+- 正式化服务协议（例如Alfred自动化服务）  
+- 根据RFP要求提交结构化的投标方案  
+- 在发送提案前对其进行审查或改进  
 
-## Edge cases
-- Upwork cover letter → YES. It's a micro-proposal. Same principles, compressed format.
-- "They haven't said yes yet" → STOP. Get a verbal yes first, then send the proposal to confirm it.
-- Informal text/email agreement → YES. Even a brief "Here's what we discussed + next steps" is a proposal.
+## 不适用场景：  
+- 尚未完成客户信息收集（应先使用客户发现相关技巧）  
+- 冷启动式的外联活动（应在客户表现出兴趣后再发送提案）  
+- 定价策略（相关技巧用于定价环节，而非提案编写）  
+- 编写内部项目计划（目标受众和格式不同）  
+
+## 错误示例：  
+- “帮我寻找客户”——不合适。此框架用于促成交易，而非寻找客户。  
+- “撰写商业计划书”——不合适。商业计划书和提案是不同的文档。  
+- “发送跟进邮件”——勉强适用。跟进应使用专门的冷启动式外联方式。  
+
+## 特殊情况：  
+- Upwork平台的求职信——适用。它属于微型提案，遵循相同的原则，但格式更为简洁。  
+- “他们还没有明确同意”——请先获得口头确认，再发送提案。  
+- 非正式的文字或邮件沟通——适用。即使只是简单说明“这是我们的讨论内容及后续步骤”，也算是一种提案。  
 
 ---
 
-## The #1 Mistake: Proposals That Sell
+## 最常见的错误：试图销售的提案  
 
-**Consulting Success (from reviewing hundreds of proposals):**
+**Consulting Success（基于对数百份提案的总结）：**  
+> “你的咨询提案不是销售工具，而是一种确认工具。销售行为应在提案发送之前完成。”  
 
-> "Your consulting proposal isn't a sales tool. It's a confirmation tool. The selling happens before the proposal."
+大多数咨询师的提案中标率低于60%，而表现最佳的咨询师中标率能达到80%-90%。原因在于：他们只在获得客户口头同意后才会发送提案。  
 
-Most consultants win less than 60% of their proposals. The top performers win 80-90%. The difference? Top performers only send proposals after getting a **verbal yes**.
-
-### The Right Sequence
+### 正确的提案撰写顺序  
 ```
 Discovery call → verbal agreement → proposal confirms → signed
-```
+```  
 
-### The Wrong Sequence
+### 错误的提案撰写顺序  
 ```
 Discovery call → send proposal hoping it convinces them → silence
-```
+```  
 
-If you're sending proposals to people who haven't said "yes" yet, you're wasting time. Go back to discovery.
-
----
-
-## The SCR Proposal Framework
-
-**Situation → Complication → Resolution** (used by McKinsey, BCG, Bain)
-
-This mirrors how decisions are made naturally:
-
-1. **Situation**: "Here's where you are" (recap their context)
-2. **Complication**: "Here's what's in the way" (the problem + cost of inaction)
-3. **Resolution**: "Here's how we fix it" (your solution + expected outcomes)
+如果你在客户尚未明确同意的情况下就发送提案，那只是在浪费时间。请回到客户信息收集阶段。  
 
 ---
 
-## Proposal Structure (7 Sections)
+## McKinsey的SCR提案框架  
+**问题 → 困难 → 解决方案**（McKinsey、BCG、Bain等机构采用的方法）  
 
-### 1. Executive Summary (3-5 sentences)
-The most important section. Many decision-makers read ONLY this.
-
-**Formula:**
-```
-[Client name] is facing [specific problem] which is costing [quantified impact].
-Our proposed approach [brief method] will deliver [specific outcome] within [timeframe].
-Investment: [price]. Next step: [action].
-```
-
-**Rules:**
-- Write it LAST (after you've written everything else)
-- No jargon
-- Must stand alone — if they read nothing else, this closes
-- Include the price here (don't make them hunt for it)
-
-### 2. Understanding of the Problem
-Prove you listened during discovery. Use their exact words.
-
-```
-Based on our conversation on [date], [Client] is experiencing:
-- [Problem 1 — in their language]
-- [Problem 2 — quantified if possible]
-- [Impact: what this costs them in time/money/customers]
-```
-
-**Why this works:** When a client reads their own words back to them, trust skyrockets. They feel understood.
-
-### 3. Proposed Solution
-What you'll do, step by step. Be specific but not overwhelming.
-
-```
-Phase 1: [Deliverable] — [Timeline]
-Phase 2: [Deliverable] — [Timeline]
-Phase 3: [Deliverable] — [Timeline]
-```
-
-**Rules:**
-- 3-5 phases maximum
-- Each phase has a clear deliverable (noun, not verb — "Automated SMS system" not "Working on SMS")
-- Include what's NOT included (prevents scope creep)
-
-### 4. Expected Outcomes / ROI
-Quantify the value of your solution in their terms.
-
-```
-Based on [data from discovery]:
-- [Outcome 1]: Save [X hours/week] = $[Y/month]
-- [Outcome 2]: Capture [X additional clients/month] = $[Y/month]
-- Total projected value: $[Z/month]
-- Investment: $[price/month]
-- ROI: [X]x return
-```
-
-**Anchoring trick (from pricing-psychology):** Always show the value before the price. $500/month in captured bookings makes $149/month feel like a no-brainer.
-
-### 5. Investment (Pricing)
-State the price clearly. No hiding, no apologizing.
-
-**Options structure (from pricing-psychology):**
-
-| Option | What's Included | Price |
-|--------|----------------|-------|
-| Starter | Core solution only | $X |
-| Growth (recommended) | Core + extras | $Y |
-| Scale | Everything + premium | $Z |
-
-**Rules:**
-- Use the word "investment," not "cost" or "fee" (frames as value, not expense)
-- If offering tiers, bold or highlight the recommended option
-- Include payment terms (monthly, milestone-based, upfront discount)
-
-### 6. Timeline & Next Steps
-```
-Week 1: [Setup/onboarding]
-Week 2-3: [Build/implement]
-Week 4: [Launch/go-live]
-Ongoing: [Support/optimization]
-```
-
-End with a clear call to action:
-"To proceed, [sign below / reply to this email / schedule kickoff call]. We can begin as early as [date]."
-
-### 7. About Us / Credibility (Brief)
-Keep this SHORT. 2-3 sentences + one relevant result.
-
-```
-[Your name/company] specializes in [relevant expertise].
-Recent result: [Specific client outcome with numbers].
-```
-
-**Don't:** Write a full company history. They don't care. They care about results.
+该框架遵循人们做决策的自然流程：  
+1. **问题**：“当前的情况是怎样的？”（总结客户的背景和需求）  
+2. **困难**：“有哪些障碍？”（分析问题及不采取行动的后果）  
+3. **解决方案**：“我们如何解决这些问题？”（提出你的方案及预期成果）  
 
 ---
 
-## Upwork Proposal Template (Micro-Format)
+## 提案的结构（共7个部分）  
 
-Upwork proposals are mini-proposals. Same principles, 150-300 words:
+### 1. 执行摘要（3-5句话）  
+这是最重要的部分。许多决策者只会阅读这一部分。  
 
-```
-[Opening — reference THEIR job post specifically, not generic]
+**撰写要点：**  
+- 最后撰写（在完成其他所有内容后再写）  
+- 避免使用专业术语  
+- 即使读者不阅读其他内容，仅凭这一部分也应能促成交易  
+- 必须包含价格信息（避免让读者额外查找）  
 
-Hi [name if visible],
+### 2. 对问题的理解  
+证明你在沟通过程中认真听取了客户的需求，并使用了他们的原话。  
 
-I read your post about [specific need]. [One sentence proving you understand the problem.]
+**这样做的原因：**当客户看到自己的需求被复述时，信任感会大幅提升。  
 
-[Credibility — one relevant result]
-I recently built [similar thing] for [type of client] — [specific outcome].
+### 3. 提出的解决方案  
+详细说明你将采取的具体步骤。内容要具体且易于理解。  
 
-[Approach — 2-3 sentences on HOW you'd do it]
-For your project, I'd [step 1], then [step 2], delivering [outcome] within [timeframe].
+**撰写要点：**  
+- 最多分为3-5个阶段  
+- 每个阶段都要明确具体的交付成果（使用名词，而非动词，例如“自动化短信系统”而非“正在开发短信功能”）  
+- 明确说明不包括哪些内容（防止项目范围扩大）  
 
-[De-risk]
-Happy to start with [small milestone] so you can evaluate before committing to the full scope.
+### 4. 预期成果/投资回报率（ROI）  
+用客户能理解的方式量化你的解决方案的价值。  
 
-[CTA]
-Can we hop on a quick call to clarify [1 specific question from the post]?
+**定价心理学技巧：**  
+始终先展示价值，再提及价格。例如：“每月500美元的新增预订量能让每月149美元的费用显得非常划算。”  
 
-[Name]
-```
+### 5. 价格说明  
+清晰地列出价格。不要隐瞒或道歉。  
 
-**Upwork-specific tips:**
-- First 2 lines are visible before "Read more" — make them count
-- Ask a question (shows engagement, invites response)
-- Reference the budget range (shows you read the post)
-- Keep under 250 words (long proposals get skimmed)
+**价格选项结构（基于定价心理学）：**  
+| 选项 | 包含内容 | 价格 |
+|--------|----------------|-------|  
+| 基础版 | 仅包含核心服务 | $X |
+| 成长版（推荐） | 核心服务+额外功能 | $Y |
+| 扩展版 | 所有服务+高级功能 | $Z |
 
----
+**撰写要点：**  
+- 使用“投资”一词，而非“费用”或“收费”  
+- 如果提供多个价格选项，用粗体或高亮显示推荐方案  
+- 明确支付方式（按月支付、分阶段支付或一次性折扣）  
 
-## Proposal Delivery Checklist
+### 6. 时间表及下一步行动  
+以明确的行动号召结束提案：  
+“如需继续合作，请在下方签字/回复此邮件/安排启动会议。我们最早可以在[日期]开始。”  
 
-Before sending any proposal:
+### 7. 关于我们/信誉简介（简短说明）  
+保持简短（2-3句话，并提及一个具体的成果案例）。  
 
-- [ ] Verbal "yes" obtained (or at minimum, strong buying signal)
-- [ ] Problem statement uses client's exact words from discovery
-- [ ] Price appears after value/ROI section (anchoring)
-- [ ] Clear next step with specific date
-- [ ] Scope boundaries defined (what's NOT included)
-- [ ] Proofread — typos kill credibility
-- [ ] Sent within 24-48 hours of discovery call (momentum matters)
-- [ ] Follow-up scheduled for 3 days after sending
-
----
-
-## Common Proposal Killers (Consulting Success)
-
-1. **Too long** — 2-3 pages max for freelance/small consulting. Enterprise RFPs are different.
-2. **Written for you, not them** — Every section should answer "so what?" from the client's perspective.
-3. **No price** — Burying or omitting the price wastes everyone's time.
-4. **No timeline** — "We'll figure it out" is not a plan.
-5. **Sent without verbal agreement** — Win rate plummets from 80%+ to <30%.
-6. **No follow-up** — 50% of deals are won in the follow-up, not the initial send.
-7. **Scope creep baked in** — If you promise everything, you'll deliver nothing well.
+**注意：**  
+不要撰写冗长的公司历史。客户关心的是实际成果。  
 
 ---
 
-## Key Numbers
-- Average RFP win rate: ~30% (Prosal 2024 survey)
-- Top consultants with verbal-first approach: 80-90% win rate
-- Proposals sent within 24 hours of call convert significantly better than 48+ hours
-- Optimal proposal length: 2-3 pages (freelance), 5-10 pages (enterprise)
-- Follow-up within 3 days increases close rate substantially
+## Upwork平台的提案模板（微型格式）  
+Upwork上的提案属于微型提案，遵循相同的原则，字数控制在150-300字以内：  
+
+**Upwork平台专属建议：**  
+- 前两行内容应在“阅读更多”之前显示，以引起读者的注意  
+- 提出一个问题（展示你的关注度并鼓励客户回复）  
+- 提及预算范围（表明你已仔细阅读了客户的需求）  
+- 保持字数在250字以内（过长的提案容易被忽略）  
+
+---
+
+## 提案发送前的检查清单：  
+在发送任何提案之前，请确保：  
+- 已获得客户的口头同意（或至少有明确的购买信号）  
+- 问题描述使用了客户在沟通过程中使用的原话  
+- 价格信息在价值/ROI部分之后展示  
+- 明确下一步行动及具体日期  
+- 明确项目范围（不包括哪些内容）  
+- 校对无误（错别字会损害提案的信誉）  
+- 在发现会议后的24-48小时内发送提案（及时性很重要）  
+- 发送提案后3天内安排跟进  
+
+---
+
+## 常见的提案失败原因（根据Consulting Success的研究）：  
+1. **提案过长**——自由职业者或小型咨询项目的提案长度应控制在2-3页以内。企业级的RFP可能有所不同。  
+2. **提案是为自己写的，而非为客户写的**——每个部分都应从客户的角度回答“那又怎样？”这个问题。  
+3. **未提及价格**——隐藏或省略价格会浪费双方的时间。  
+4. **没有时间表**——“我们会再商量”并不是一个可行的计划。  
+5. **在未获得口头同意的情况下发送提案**——中标率会从80%以上骤降至30%以下。  
+6. **未进行跟进**——50%的交易是在发送提案后的跟进环节中获得的。  
+7. **项目范围不明确**——如果承诺包含所有内容，最终可能无法很好地完成项目。  
+
+---
+
+## 关键数据：  
+- 平均RFP中标率：约30%（Prosal 2024年调查数据）  
+- 采用“先获得口头同意”策略的顶尖咨询师中标率可达80%-90%  
+- 在发现会议后24小时内发送的提案中标率明显高于48小时后的提案  
+- 最佳提案长度：自由职业者项目2-3页，企业项目5-10页  
+- 发送提案后3天内进行跟进能显著提高成交率

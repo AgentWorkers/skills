@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Voice Media - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +31,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Play audio URL
+## 播放音频 URL
 
-Play an audio file on the call.
+在通话中播放音频文件。
 
 `POST /calls/{call_control_id}/actions/playback_start`
 
@@ -45,9 +46,9 @@ import com.telnyx.sdk.models.calls.actions.ActionStartPlaybackResponse;
 ActionStartPlaybackResponse response = client.calls().actions().startPlayback("call_control_id");
 ```
 
-## Stop audio playback
+## 停止音频播放
 
-Stop audio being played on the call.
+停止通话中的音频播放。
 
 `POST /calls/{call_control_id}/actions/playback_stop`
 
@@ -58,11 +59,11 @@ import com.telnyx.sdk.models.calls.actions.ActionStopPlaybackResponse;
 ActionStopPlaybackResponse response = client.calls().actions().stopPlayback("call_control_id");
 ```
 
-## Record pause
+## 暂停录音
 
-Pause recording the call.
+暂停通话的录音。
 
-`POST /calls/{call_control_id}/actions/record_pause`
+`POST /calls/{call_control_id}/actions/record_PAUSE`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionPauseRecordingParams;
@@ -71,9 +72,9 @@ import com.telnyx.sdk.models.calls.actions.ActionPauseRecordingResponse;
 ActionPauseRecordingResponse response = client.calls().actions().pauseRecording("call_control_id");
 ```
 
-## Record resume
+## 恢复录音
 
-Resume recording the call.
+恢复通话的录音。
 
 `POST /calls/{call_control_id}/actions/record_resume`
 
@@ -84,11 +85,11 @@ import com.telnyx.sdk.models.calls.actions.ActionResumeRecordingResponse;
 ActionResumeRecordingResponse response = client.calls().actions().resumeRecording("call_control_id");
 ```
 
-## Recording start
+## 开始录音
 
-Start recording the call.
+开始通话的录音。
 
-`POST /calls/{call_control_id}/actions/record_start` — Required: `format`, `channels`
+`POST /calls/{call_control_id}/actions/record_start` — 必需参数：`format`、`channels`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionStartRecordingParams;
@@ -102,9 +103,9 @@ ActionStartRecordingParams params = ActionStartRecordingParams.builder()
 ActionStartRecordingResponse response = client.calls().actions().startRecording(params);
 ```
 
-## Recording stop
+## 停止录音
 
-Stop recording the call.
+停止通话的录音。
 
 `POST /calls/{call_control_id}/actions/record_stop`
 
@@ -120,11 +121,11 @@ ActionStopRecordingParams params = ActionStopRecordingParams.builder()
 ActionStopRecordingResponse response = client.calls().actions().stopRecording(params);
 ```
 
-## Speak text
+## 语音合成
 
-Convert text to speech and play it back on the call.
+将文本转换为语音并在通话中播放。
 
-`POST /calls/{call_control_id}/actions/speak` — Required: `payload`, `voice`
+`POST /calls/{call_control_id}/actions/speak` — 必需参数：`payload`、`voice`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionSpeakParams;
@@ -140,17 +141,18 @@ ActionSpeakResponse response = client.calls().actions().speak(params);
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 webhook 事件会被发送到您配置的 webhook URL。所有 webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 头部字段以供验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callPlaybackStarted` | Call Playback Started |
-| `callPlaybackEnded` | Call Playback Ended |
-| `callSpeakEnded` | Call Speak Ended |
-| `callRecordingSaved` | Call Recording Saved |
-| `callRecordingError` | Call Recording Error |
-| `callRecordingTranscriptionSaved` | Call Recording Transcription Saved |
-| `callSpeakStarted` | Call Speak Started |
+| `callPlaybackStarted` | 通话录音开始 |
+| `callPlaybackEnded` | 通话录音结束 |
+| `callSpeakEnded` | 通话语音合成结束 |
+| `callRecordingSaved` | 通话录音保存 |
+| `callRecordingError` | 通话录音出现错误 |
+| `callRecordingTranscriptionSaved` | 通话录音转录文件保存 |
+| `callSpeakStarted` | 通话语音合成开始 |
+```
+```

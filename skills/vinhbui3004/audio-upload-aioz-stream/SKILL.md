@@ -1,6 +1,6 @@
 ---
 name: aioz-stream-audio-upload
-description: Quick upload audio to AIOZ Stream API. Create audio objects with default or custom encoding configurations, upload the file, complete the upload, then return the audio link to the user.
+description: 快速将音频文件上传至 AIOZ Stream API。可以使用默认或自定义的编码配置创建音频对象，上传文件，完成上传过程后，将音频文件的链接返回给用户。
 metadata:
   openclaw:
     emoji: "🎵"
@@ -11,49 +11,45 @@ metadata:
         - md5sum
 ---
 
-# AIOZ Stream Audio Upload
+# AIOZ流媒体音频上传
 
-Upload audio to AIOZ Stream API quickly with API key authentication. The full upload flow requires 3 API calls: Create → Upload Part → Complete.
+使用API密钥认证，快速将音频文件上传到AIOZ Stream平台。整个上传流程需要执行3次API调用：创建音频对象 → 上传文件部分 → 完成上传。
 
-## When to use this skill
+## 适用场景
 
-- User wants to upload or create an audio on AIOZ Stream
-- User mentions "upload audio", "create audio", "aioz stream audio"
-- User wants to get an HLS streaming link for their audio
+- 用户希望在AIOZ Stream平台上上传或创建音频文件
+- 用户请求“上传音频”、“创建音频”或“获取音频的HLS流媒体链接”
 
-## Authentication
+## 认证方式
 
-This skill uses API key authentication. The user must provide:
+本功能采用API密钥认证。用户需要提供以下密钥：
+- `stream-public-key`：AIOZ Stream平台的公钥
+- `stream-secret-key`：AIOZ Stream平台的私钥
+如果用户未提供这些密钥，请向他们索取。这些密钥将作为HTTP请求头的一部分被发送到所有API调用中。
 
-- `stream-public-key`: their AIOZ Stream public key
-- `stream-secret-key`: their AIOZ Stream secret key
+## 使用选项
 
-Ask the user for these keys if not provided. They will be sent as HTTP headers on ALL API calls.
+当用户需要上传音频时，可以选择以下两种方式之一：
 
-## Usage Options
+### 选项1：默认上传（快速）
 
-When the user wants to upload audio, ask them to choose:
+仅使用基本配置（如文件标题）创建音频对象，然后上传文件。
 
-### Option 1: Default Upload (Quick)
+**示例用户提示：**
+> “将音频文件 /path/to/audio.mp3 以‘My Podcast’为标题上传”
 
-Creates an audio object with minimal config — just a title. Then uploads the file.
+### 选项2：自定义上传（高级）
 
-Example user prompt:
-> "Upload audio file /path/to/audio.mp3 with title My Podcast"
+使用完整的编码配置（包括质量预设、比特率、采样率、元数据等）创建音频对象，然后上传文件。
 
-### Option 2: Custom Upload (Advanced)
+**示例用户提示：**
+> “使用自定义配置上传音频：标题为‘My Podcast’，选择最高质量的HLS流媒体格式，比特率为320kbps，采样率为48000Hz，并添加标签‘podcast,tech’”
 
-Creates an audio object with full encoding configuration including quality presets, bitrate, sample rate, tags, metadata, etc. Then uploads the file.
+## 完整上传流程（3个步骤）
 
-Example user prompt:
-> "Upload audio with custom config: title My Podcast, highest quality HLS, 320kbps, 48000Hz, tags podcast,tech"
+### 第1步：创建音频对象
 
-## Full Upload Flow (3 Steps)
-
-### Step 1: Create Audio Object
-
-**Default:**
-
+**默认方式：**
 ```bash
 curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -65,8 +61,7 @@ curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   }'
 ```
 
-**Custom (with encoding config):**
-
+**自定义方式（包含编码配置）：**
 ```bash
 curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -112,14 +107,13 @@ curl -s -X POST 'https://api-w3stream.attoaioz.cyou/api/videos/create' \
   }'
 ```
 
-Response: Extract `data.id` — this is the `AUDIO_ID` used in the next steps.
+**注意：** 获取`data.id`，该ID将在后续步骤中用于识别音频对象。
 
-### Step 2: Upload File Part
+### 第2步：上传文件部分
 
-Upload the actual audio file binary to the created audio object.
+将音频文件的二进制数据上传到已创建的音频对象中。
 
-First, get the file size and compute the MD5 hash:
-
+首先，获取文件大小并计算其MD5哈希值：
 ```bash
 # Get file size (cross-platform compatible)
 FILE_SIZE=$(stat -f%z /path/to/audio.mp3 2>/dev/null || stat -c%s /path/to/audio.mp3)
@@ -129,8 +123,7 @@ END_POS=$((FILE_SIZE - 1))
 HASH=$(md5sum /path/to/audio.mp3 | awk '{print $1}')
 ```
 
-Then upload via multipart form-data with the Content-Range header:
-
+然后通过multipart form-data方式上传文件，同时设置`Content-Range`头部：
 ```bash
 curl -s -X POST "https://api-w3stream.attoaioz.cyou/api/videos/AUDIO_ID/part" \
   -H 'stream-public-key: PUBLIC_KEY' \
@@ -141,19 +134,18 @@ curl -s -X POST "https://api-w3stream.attoaioz.cyou/api/videos/AUDIO_ID/part" \
   -F "hash=$HASH"
 ```
 
-**Important:** The `Content-Range` header is required for the upload to succeed. Format: `bytes {start}-{end}/{total_size}` where:
-- For single-part uploads: `start=0`, `end=file_size-1`, `total_size=file_size`
-- For multi-part uploads: adjust start/end positions for each chunk
+**重要提示：** 必须设置`Content-Range`头部才能成功上传文件。格式为：`bytes {start}-{end}/{total_size}`，其中：
+- 对于单部分上传：`start=0`，`end=file_size-1`，`total_size=file_size`
+- 对于多部分上传：需要为每个文件部分调整`start`和`end`的值
 
-Form-data fields:
-- `file`: the audio file binary (use `@/path/to/file`)
-- `index`: 0 (for single-part upload, increment for multi-part)
-- `hash`: MD5 hash of the file part
+**multipart form-data`字段说明：**
+- `file`：音频文件的二进制数据（使用`@/path/to/file`路径）
+- `index`：0（单部分上传时使用；多部分上传时递增）
+- `hash`：文件部分的MD5哈希值
 
-### Step 3: Complete Upload
+### 第3步：完成上传
 
-After the file part is uploaded, call the complete endpoint to finalize:
-
+上传文件部分后，调用完成上传的API接口以完成整个上传过程：
 ```bash
 curl -s -X GET "https://api-w3stream.attoaioz.cyou/api/videos/AUDIO_ID/complete" \
   -H 'accept: application/json' \
@@ -161,77 +153,73 @@ curl -s -X GET "https://api-w3stream.attoaioz.cyou/api/videos/AUDIO_ID/complete"
   -H 'stream-secret-key: SECRET_KEY'
 ```
 
-This triggers transcoding. The upload is now considered successful.
+此时系统将开始对音频文件进行转码，上传操作视为成功完成。
 
-## After Upload — Get Audio Link
+## 上传完成后：获取音频链接
 
-After completing the upload, fetch the audio detail to get the streaming URL:
-
+上传完成后，获取音频文件的详细信息以获取流媒体链接：
 ```bash
 curl -s 'https://api-w3stream.attoaioz.cyou/api/videos/AUDIO_ID' \
   -H 'stream-public-key: PUBLIC_KEY' \
   -H 'stream-secret-key: SECRET_KEY'
 ```
 
-Parse the response to find the HLS URL from the `assets` or `hls` field and return it to the user.
+从响应中解析`assets`或`hls`字段，将流媒体链接返回给用户。
 
-**Important:** Audio outputs do NOT have an `mp4_url` field. Only HLS/DASH streaming links are available.
+**重要提示：** 音频文件不包含`mp4_url`字段，仅提供HLS/DASH格式的流媒体链接。
 
-## Custom Upload Config Reference
+## 自定义上传配置参考
 
-### Quality Presets (`resolution` field):
-- `standard` — Standard quality
-- `good` — Good quality
-- `highest` — Highest quality
-- `lossless` — Lossless quality
+### 质量预设（`resolution`字段）：
+- `standard`：标准质量
+- `good`：较好质量
+- `highest`：最高质量
+- `lossless`：无损质量
 
-### Streaming Formats (`type` field):
-- `hls` — HTTP Live Streaming (container: `mpegts` or `mp4`)
-- `dash` — Dynamic Adaptive Streaming (container: `fmp4`)
+### 流媒体格式（`type`字段）：
+- `hls`：HTTP Live Streaming（容器格式：`mpegts`或`mp4`）
+- `dash`：Dynamic Adaptive Streaming（容器格式：`fmp4`）
 
-### Audio Config:
-- `codec`: `aac` (only supported codec)
-- `bitrate`: integer in bits/sec (e.g., 128000, 256000, 320000)
-- `channels`: "2" (stereo)
-- `sample_rate`: 8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000
-- `language`: BCP 47 code (e.g., `en`, `vi`)
-- `index`: 0
+### 音频配置：
+- `codec`：仅支持`aac`编码格式
+- `bitrate`：以比特/秒为单位（例如：128000、256000、320000）
+- `channels`：“2”（立体声）
+- `sample_rate`：8000、11025、16000、22050、32000、44100、48000、88200、96000
+- `language`：BCP 47编码语言（例如：`en`、`vi`）
+- `index`：0
 
-### Recommended bitrates:
-- Podcast/Voice: 64000 - 128000 bps
-- Music standard: 128000 - 192000 bps
-- Music high quality: 192000 - 256000 bps
-- Music highest: 256000 - 320000 bps
+### 推荐的比特率：
+- 播客/语音：64000 - 128000 bps
+- 标准音乐：128000 - 192000 bps
+- 高质量音乐：192000 - 256000 bps
+- 最高质量音乐：256000 - 320000 bps
 
-### Recommended sample rates:
-- Voice: 22050 or 32000
-- Music: 44100 or 48000
+### 推荐的采样率：
+- 语音：22050或32000 Hz
+- 音乐：44100或48000 Hz
 
-## Response Handling
+## 响应处理流程：
+1. 解析创建音频对象的API响应，提取`data.id`
+2. 计算音频文件的MD5哈希值
+3. 使用该哈希值上传文件部分
+4. 调用完成上传的API接口
+5. 获取音频文件的详细信息以获取流媒体链接
+6. 将流媒体链接返回给用户
+7. 如果音频文件仍在转码中（状态为“transcoding”），通知用户并建议稍后再尝试
 
-1. Parse the JSON response from the create call → extract `data.id`
-2. Compute MD5 hash of the audio file
-3. Upload the file part with the hash
-4. Call complete endpoint
-5. Fetch audio detail to get streaming URL
-6. Return the audio link to the user
-7. If the audio is still transcoding (status: transcoding), inform the user and suggest checking back later
+## 错误处理：
+- **401**：API密钥无效——请用户重新验证公钥和私钥
+- **400**：请求格式错误——检查请求体格式
+- **500**：服务器错误——建议用户重试
 
-## Error Handling
-
-- **401**: Invalid API keys — ask user to verify their public and secret keys
-- **400**: Bad request — check the request body format
-- **500**: Server error — suggest retrying
-
-## Example Interaction Flow
-
-1. User: "Upload my audio to AIOZ Stream"
-2. Ask for API keys (public + secret) if not known
-3. Ask for the audio file path
-4. Ask: "Default upload (quick) or custom config?"
-   - If default: ask for title only
-   - If custom: ask for title, quality preset, bitrate, sample rate, tags, etc.
-5. **Step 1:** Create audio object → get `AUDIO_ID`
-6. **Step 2:** Compute file hash, upload file part
-7. **Step 3:** Call complete endpoint
-8. Fetch audio detail → return streaming URL to user
+## 示例交互流程：
+1. 用户：“将我的音频文件上传到AIOZ Stream”
+2. 如果用户未提供API密钥，请求用户提供公钥和私钥
+3. 询问用户音频文件的路径
+4. 询问用户选择上传方式：“默认上传（快速）”或“自定义配置？”
+   - 如果选择默认方式，仅询问文件标题
+   - 如果选择自定义配置，询问文件标题、质量预设、比特率、采样率等参数
+5. **步骤1**：创建音频对象 → 获取`AUDIO_ID`
+6. **步骤2**：计算文件哈希值并上传文件部分
+7. **步骤3**：调用完成上传的API接口
+8. 获取音频文件的流媒体链接并返回给用户

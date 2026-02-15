@@ -1,20 +1,20 @@
 ---
 name: sendgrid
-description: Send transactional and marketing emails via SendGrid API. Supports templates, attachments, and email analytics.
+description: 通过 SendGrid API 发送交易相关的邮件和营销邮件。支持使用模板、附件以及进行邮件分析。
 metadata: {"clawdbot":{"emoji":"📧","requires":{"env":["SENDGRID_API_KEY"]}}}
 ---
 
 # SendGrid
 
-Send emails at scale.
+用于大规模发送电子邮件。
 
-## Environment
+## 环境配置
 
 ```bash
 export SENDGRID_API_KEY="SG.xxxxxxxxxx"
 ```
 
-## Send Email
+## 发送电子邮件
 
 ```bash
 curl -X POST "https://api.sendgrid.com/v3/mail/send" \
@@ -28,7 +28,7 @@ curl -X POST "https://api.sendgrid.com/v3/mail/send" \
   }'
 ```
 
-## Send with Template
+## 使用模板发送邮件
 
 ```bash
 curl -X POST "https://api.sendgrid.com/v3/mail/send" \
@@ -44,20 +44,20 @@ curl -X POST "https://api.sendgrid.com/v3/mail/send" \
   }'
 ```
 
-## List Templates
+## 模板列表
 
 ```bash
 curl "https://api.sendgrid.com/v3/templates?generations=dynamic" \
   -H "Authorization: Bearer $SENDGRID_API_KEY"
 ```
 
-## Get Email Stats
+## 获取邮件统计信息
 
 ```bash
 curl "https://api.sendgrid.com/v3/stats?start_date=2024-01-01" \
   -H "Authorization: Bearer $SENDGRID_API_KEY"
 ```
 
-## Links
-- Console: https://app.sendgrid.com
-- Docs: https://docs.sendgrid.com
+## 链接
+- 控制台：https://app.sendgrid.com
+- 文档：https://docs.sendgrid.com

@@ -1,6 +1,6 @@
 ---
 name: finnhub
-description: Access Finnhub API for real-time stock quotes, company news, market data, financial statements, and trading signals. Use when you need current stock prices, company news, earnings data, or market analysis.
+description: 您可以访问Finnhub的API来获取实时股票报价、公司新闻、市场数据、财务报表以及交易信号。当您需要当前的股票价格、公司新闻、收益数据或市场分析时，可以使用该API。
 homepage: https://finnhub.io
 metadata:
   {
@@ -14,13 +14,13 @@ metadata:
 
 # Finnhub API
 
-Access real-time and historical stock market data, company news, financial statements, and market indicators via the Finnhub API.
+通过Finnhub API，您可以获取实时和历史股票市场数据、公司新闻、财务报表以及市场指标。
 
-## Quick Start
+## 快速入门
 
-Get your API key from [finnhub.io](https://finnhub.io) (free tier available).
+从 [finnhub.io](https://finnhub.io) 获取您的API密钥（免费 tier 可用）。
 
-Configure in OpenClaw:
+在 OpenClaw 中进行配置：
 
 ```json5
 {
@@ -38,31 +38,31 @@ Configure in OpenClaw:
 }
 ```
 
-Or add to `~/.openclaw/.env`:
+或者将其添加到 `~/.openclaw/.env` 文件中：
 
 ```
 FINNHUB_API_KEY=your-api-key-here
 ```
 
-## API Endpoints
+## API 端点
 
-Base URL: `https://finnhub.io/api/v1`
+基础 URL：`https://finnhub.io/api/v1`
 
-All requests require `?token=${FINNHUB_API_KEY}` parameter.
+所有请求都需要包含 `?token=${FINNHUB_API_KEY}` 参数。
 
-### Stock Quotes (Real-time)
+### 股票报价（实时）
 
-Get current stock price:
+获取当前股票价格：
 
 ```bash
 curl "https://finnhub.io/api/v1/quote?symbol=AAPL&token=${FINNHUB_API_KEY}"
 ```
 
-Returns: `c` (current price), `h` (high), `l` (low), `o` (open), `pc` (previous close), `t` (timestamp)
+返回值：`c`（当前价格），`h`（最高价），`l`（最低价），`o`（开盘价），`pc`（前收盘价），`t`（时间戳）
 
-### Company News
+### 公司新闻
 
-Get latest company news:
+获取最新的公司新闻：
 
 ```bash
 # News for a symbol
@@ -72,17 +72,17 @@ curl "https://finnhub.io/api/v1/company-news?symbol=AAPL&from=2025-01-01&to=2025
 curl "https://finnhub.io/api/v1/news?category=general&token=${FINNHUB_API_KEY}"
 ```
 
-### Company Profile
+### 公司概况
 
-Get company information:
+获取公司信息：
 
 ```bash
 curl "https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=${FINNHUB_API_KEY}"
 ```
 
-### Financial Statements
+### 财务报表
 
-Get company financials:
+获取公司的财务报表：
 
 ```bash
 # Income statement
@@ -99,9 +99,9 @@ curl "https://finnhub.io/api/v1/stock/financials-reported?symbol=AAPL&statement=
 curl "https://finnhub.io/api/v1/stock/search-in-filing?symbol=AAPL&query=revenue&token=${FINNHUB_API_KEY}"
 ```
 
-### Market Data
+### 市场数据
 
-Get market indicators:
+获取市场指标：
 
 ```bash
 # Stock candles (OHLCV)
@@ -114,9 +114,9 @@ curl "https://finnhub.io/api/v1/search?q=apple&token=${FINNHUB_API_KEY}"
 curl "https://finnhub.io/api/v1/stock/market-status?exchange=US&token=${FINNHUB_API_KEY}"
 ```
 
-### Trading Signals
+### 交易信号
 
-Get technical indicators and signals:
+获取技术指标和交易信号：
 
 ```bash
 # Technical indicators (may require premium tier)
@@ -129,11 +129,11 @@ curl "https://finnhub.io/api/v1/scan/support-resistance?symbol=AAPL&resolution=D
 curl "https://finnhub.io/api/v1/scan/pattern?symbol=AAPL&resolution=D&token=${FINNHUB_API_KEY}"
 ```
 
-**Note:** Some technical indicator endpoints may require a premium subscription. Free tier includes basic market data and quotes.
+**注意：**部分技术指标端点可能需要高级订阅才能使用。免费 tier 提供基本的市场数据和报价。
 
-### Earnings & Calendar
+### 收益与日历
 
-Get earnings data:
+获取收益数据：
 
 ```bash
 # Earnings calendar
@@ -143,33 +143,33 @@ curl "https://finnhub.io/api/v1/calendar/earnings?from=2025-02-01&to=2025-02-28&
 curl "https://finnhub.io/api/v1/stock/earnings?symbol=AAPL&token=${FINNHUB_API_KEY}"
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### Find Trading Opportunities
+### 寻找交易机会
 
-1. Search for stocks: `GET /search?q=keyword`
-2. Get current quote: `GET /quote?symbol=SYMBOL`
-3. Check recent news: `GET /company-news?symbol=SYMBOL&from=DATE&to=DATE`
-4. Analyze technical indicators: `GET /indicator?symbol=SYMBOL&indicator=rsi`
-5. Review financials: `GET /stock/financials-reported?symbol=SYMBOL`
-6. Search SEC filings: `GET /stock/search-in-filing?symbol=SYMBOL&query=KEYWORD`
+1. 搜索股票：`GET /search?q=关键词`
+2. 获取当前报价：`GET /quote?symbol=股票代码`
+3. 查看最新新闻：`GET /company-news?symbol=股票代码&from=日期&to=日期`
+4. 分析技术指标：`GET /indicator?symbol=股票代码&indicator=rsi`
+5. 查看财务报表：`GET /stock/financials-reported?symbol=股票代码`
+6. 搜索 SEC 文件：`GET /stock/search-in-filing?symbol=股票代码&query=关键词`
 
-### Monitor Stock Performance
+### 监控股票表现
 
-1. Get real-time quote: `GET /quote?symbol=SYMBOL`
-2. Get historical candles: `GET /stock/candle?symbol=SYMBOL&resolution=D`
-3. Check company profile: `GET /stock/profile2?symbol=SYMBOL`
-4. Review earnings: `GET /stock/earnings?symbol=SYMBOL`
+1. 获取实时报价：`GET /quote?symbol=股票代码`
+2. 获取历史K线图：`GET /stock/candle?symbol=股票代码&resolution=时间分辨率`
+3. 查看公司概况：`GET /stock/profile2?symbol=股票代码`
+4. 查看收益报告：`GET /stock/earnings?symbol=股票代码`
 
-### Research Company News
+### 研究公司新闻
 
-1. Company-specific news: `GET /company-news?symbol=SYMBOL`
-2. General market news: `GET /news?category=general`
-3. Sector news: `GET /news?category=technology`
+1. 公司特定新闻：`GET /company-news?symbol=股票代码`
+2. 通用市场新闻：`GET /news?category=通用`
+3. 行业新闻：`GET /news?category=科技`
 
-### Search SEC Filings
+### 搜索 SEC 文件
 
-Search within company SEC filings (10-K, 10-Q, 8-K, etc.):
+在公司的 SEC 文件（10-K、10-Q、8-K 等）中搜索：
 
 ```bash
 # Search for specific terms in filings
@@ -183,22 +183,21 @@ curl "https://finnhub.io/api/v1/stock/search-in-filing?symbol=AAPL&query=risk&to
 curl "https://finnhub.io/api/v1/stock/search-in-filing?symbol=AAPL&query=EBITDA&token=${FINNHUB_API_KEY}"
 ```
 
-This endpoint searches through SEC filings (10-K, 10-Q, 8-K, etc.) for specific keywords or phrases, useful for finding mentions of specific topics, risks, or financial metrics in official company documents.
+该端点可以在公司的 SEC 文件中搜索特定关键词或短语，有助于查找官方文件中关于特定主题、风险或财务指标的提及。
 
-## Rate Limits
+## 速率限制
 
-Free tier:
-- 60 API calls/minute
-- Real-time data: limited
-- Historical data: available
+免费 tier：
+- 每分钟 60 次 API 调用
+- 实时数据访问有限
+- 历史数据可获取
 
-Paid tiers offer higher limits and additional features.
+付费 tier 提供更高的调用次数和更多功能。
 
-## Notes
+## 注意事项
 
-- Always include `token=${FINNHUB_API_KEY}` in query parameters
-- Use proper date formats: `YYYY-MM-DD` for date ranges
-- Timestamps are Unix epoch seconds
-- Symbol format: use exchange prefix if needed (e.g., `US:AAPL` for US stocks)
-- For paper trading, combine Finnhub data with Alpaca API for execution
-
+- 确保在查询参数中始终包含 `token=${FINNHUB_API_KEY}`
+- 使用正确的日期格式：日期范围使用 `YYYY-MM-DD`
+- 时间戳为 Unix 纪元秒
+- 股票代码格式：如有需要，请加上交易所前缀（例如，`US:AAPL` 表示美国股票）
+- 对于纸面交易，可将 Finnhub 数据与 Alpaca API 结合使用以执行交易指令

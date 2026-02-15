@@ -21,330 +21,183 @@ env:
 
 # Fomo Research
 
-Smart money intelligence for AI agents. Powered by [fomo.family](https://fomo.family) social graph, built by [cope.capital](https://cope.capital).
+这是一个为AI代理提供智能投资建议的工具，基于[cope.capital](https://cope.capital)开发的[fomo.family](https://fomo.family)社交图谱技术。
 
-For full API details (endpoints, schemas, error codes): read `references/api.md`.
+如需查看完整的API详细信息（端点、数据结构、错误代码等），请参阅`references/api.md`。
 
-## Base URL
+## 基本URL
 
-```
-https://api.cope.capital
-```
+所有请求都需要在请求头中添加`Authorization: Bearer cope_<key>`。
 
-All requests require `Authorization: Bearer cope_<key>` header.
+## 首次使用指南
 
-## First-Run Onboarding
+当该功能首次被加载且未设置`COPE_API_KEY`时，请指导用户完成以下设置步骤：
 
-When this skill is first loaded and no `COPE_API_KEY` is set, walk your human through setup. Ask these questions in order:
+### 第1步：注册
 
-### Step 1: Register
+从响应中获取`api_key`（以`cope_`开头）。这是您的`COPE_API_KEY`，请妥善保管，视其为重要密码。
 
-```bash
-curl -X POST https://api.cope.capital/v1/register \
-  -H "Content-Type: application/json" \
-  -d '{"agent_name": "YOUR_AGENT_NAME", "description": "optional description"}'
-```
+### 第2步：询问用户是否拥有加密钱包（可选）
 
-Save the `api_key` from the response (starts with `cope_`). This is your `COPE_API_KEY`. Store it securely — treat it like a password.
+在继续之前，询问用户：
+> “您是否有加密钱包（支持Base或Solana网络）以便使用更多高级功能？如果没有，您将只能使用以下功能：
+> - **1个观察列表**，最多包含**10个交易对手**
+> - **每天250次交易查询**（每天的查询次数在午夜UTC时重置）
+> - 其他所有功能（如排行榜、热门交易监控、数据轮询）都是免费且无限制的**
 
-### Step 2: Ask about crypto wallet (optional)
+> 如果用户连接了加密钱包（支持x402计费），则可以拥有10个观察列表，每个列表最多包含10个交易对手，并且每次查询的费用为0.005美元。用户随时可以添加钱包。
 
-Before continuing, ask your human:
+如果用户希望立即启用x402计费功能，请执行以下操作：
 
-> "Do you have a crypto wallet (USDC on Base or Solana) you'd like to connect for expanded features? Without one you get:
-> - **1 watchlist** with up to **10 handles**
-> - **250 activity lookups per day** (resets midnight UTC)
-> - Everything else (leaderboard, trending, polling) is unlimited and free
->
-> With a wallet connected (x402), you get 10 watchlists, 100 handles each, and unlimited activity calls at $0.005/call. You can always add a wallet later."
+### 第3步：询问用户是否拥有Fomo账户
 
-If they want to set up x402 now:
+> “您是否有Fomo账户（fomo.family）？如果有，我可以同步您关注的交易对手并为您生成观察列表。”
 
-```bash
-curl -X PATCH https://api.cope.capital/v1/account \
-  -H "Authorization: Bearer cope_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"x402_enabled": true}'
-```
+如果用户拥有Fomo账户，请继续询问：
+**“您希望将哪些交易对手添加到观察列表中？”** 向用户展示交易对手列表，让他们进行选择（免费 tier最多可添加10个对手）。
 
-If they say no or don't have a wallet — **that's fine, move on**. The free tier is fully functional. Don't push it.
+### 第4步：创建初始观察列表
 
-### Step 3: Ask about Fomo profile
+如果用户没有Fomo账户，可以提供其他选择：
+> “我也可以为您生成一个包含Fomo排行榜上表现最佳的交易对手的观察列表。或者，您可以直接告诉我您想要跟踪的具体交易对手。”
 
-> "Do you have a Fomo account (fomo.family)? If so, I can sync your follows and build a watchlist from the traders you already follow."
+根据用户的选择，创建相应的观察列表。
 
-If yes:
+**提醒**：免费 tier最多支持1个观察列表和10个交易对手。用户可以随时更换关注的交易对手。
 
-```bash
-# Sync their profile
-curl -X POST https://api.cope.capital/v1/account/sync-fomo \
-  -H "Authorization: Bearer cope_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"fomo_handle": "THEIR_FOMO_USERNAME"}'
+## 活动数据的工作原理
 
-# Pull their follows
-curl https://api.cope.capital/v1/account/follows \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-```
+**重要说明**：`/v1/activity`端点返回的是系统监控的所有钱包的最新交易记录，而不仅仅是您观察列表中的交易记录。观察列表的作用是帮助您更好地关注感兴趣的交易对手——您可以使用`?handle=`参数来查询特定交易对手的交易记录。
 
-Then ask: **"Which of these traders do you want on your watchlist?"** Show them the list and let them pick (up to 10 on free tier).
+这意味着即使没有将某个交易对手添加到观察列表中，您也可以查询其交易记录。
 
-### Step 4: Create initial watchlist
+## API端点
 
-If they don't have Fomo, offer alternatives:
+### 所有端点均免费使用（无每日使用次数限制）
 
-> "I can set up a watchlist with the top performers from Fomo's weekly leaderboard instead. Or you can give me specific trader handles you want to track."
+| 端点 | 方法 | 描述 |
+|--------|--------|-------------|
+| `/v1/register` | POST | 获取API密钥 |
+| `/v1/leaderboard` | GET | 按实际盈亏排名的顶级交易对手 |
+| `/v1/activity/poll` | GET | 轻量级查询新交易（包含交易数量和时间戳） |
+| `/v1/watchlists` | GET/POST | 列出或创建观察列表 |
+| `/v1/watchlists/{id}` | GET/PUT/DELETE | 管理特定观察列表 |
+| `/v1/trending/handles` | GET | 所有代理中关注度最高的交易对手 |
+| `/v1/account` | GET/PATCH | 账户信息和设置 |
+| `/v1/account/usage` | GET | 账户使用情况统计 |
+| `/v1/account/payments` | GET | 支付记录 |
+| `/v1/account/key` | DELETE | 注销API密钥 |
+| `/v1/account/sync-fomo` | POST | 同步Fomo账户的关注信息 |
+| `/v1/account/follows` | GET | 查看用户关注的Fomo账户列表 |
 
-Pick one path and create the watchlist:
+### 计费规则（免费 tier每天250次查询后启用x402计费）
 
-```bash
-curl -X POST https://api.cope.capital/v1/watchlists \
-  -H "Authorization: Bearer cope_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "alpha", "handles": ["frankdegods", "randomxbt"]}'
-```
+| 端点 | 方法 | 描述 | x402计费价格（以Base或Solana网络的USDC计） |
+|--------|--------|-------------|------------|
+| `/v1/activity` | GET | 查看所有监控钱包的交易详情 | 每次查询0.005美元 |
 
-**Remind them**: Free tier = 1 watchlist, 10 handles max. They can swap handles anytime.
+这些端点的查询次数计入用户的每日免费使用次数限制。超过免费次数后：
+- **启用x402计费**：每次查询费用为0.005美元（自动从用户的加密钱包中扣除）
+- **未启用x402计费**：系统会返回402错误提示。用户需等待午夜UTC时间重置免费次数限制，或手动启用x402计费。
 
-## How Activity Data Works
+**注意**：402错误提示并不意味着系统出现故障，仅表示用户的免费查询次数已用完。
 
-**Important**: The `/v1/activity` endpoint returns recent trades from **all wallets tracked by the system**, not just your watchlist. Your watchlist is for organizing which traders YOU care about — use the `?handle=` filter to see activity for specific handles.
+## 常见使用流程
 
-This means you can query any Fomo handle's trades without adding them to your watchlist:
+### 查看排行榜
 
-```bash
-# Check what frankdegods is buying (uses 1 of your 250 daily calls)
-curl "https://api.cope.capital/v1/activity?handle=frankdegods&action=buy" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-```
+**使用方法**：`/v1/leaderboard`端点可以查看Fomo排行榜上按实际盈亏排名的顶级交易对手。支持`?timeframe=24h|7d|30d|all`和`?limit=N`参数进行查询。
 
-Your watchlist is a convenience for organizing — the activity data is available for any tracked handle.
+### 根据Fomo账户的关注信息创建观察列表
 
-## Endpoints
+**使用方法**：`/v1/watchlists`端点可以根据用户关注的Fomo账户交易对手生成观察列表。
 
-### Always Free (no daily limit)
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/v1/register` | POST | Get an API key |
-| `/v1/leaderboard` | GET | Top traders ranked by real PnL |
-| `/v1/activity/poll` | GET | Lightweight check for new trades (count + timestamp) |
-| `/v1/watchlists` | GET/POST | List or create watchlists |
-| `/v1/watchlists/{id}` | GET/PUT/DELETE | Manage a specific watchlist |
-| `/v1/trending/handles` | GET | Most-watched handles across all agents |
-| `/v1/account` | GET/PATCH | Account info and settings |
-| `/v1/account/usage` | GET | Usage statistics |
-| `/v1/account/payments` | GET | Payment history |
-| `/v1/account/key` | DELETE | Revoke API key |
-| `/v1/account/sync-fomo` | POST | Sync Fomo profile follows |
-| `/v1/account/follows` | GET | List stored Fomo follows |
-
-### Counted (250/day free, then x402 or wait)
-
-| Endpoint | Method | Description | x402 price |
-|----------|--------|-------------|------------|
-| `/v1/activity` | GET | Full trade details from tracked wallets | $0.005/call |
-
-These endpoints count toward your daily 250 free calls. After that:
-- **With x402 enabled**: calls continue at $0.005/call USDC (auto-paid)
-- **Without x402**: you get a 402 error. Wait for midnight UTC reset or enable x402.
-
-The 402 error is NOT a bug — it just means your free calls are used up for the day.
-
-## Common Workflows
+### 减少付费查询次数（建议使用x402计费）
 
-### Check the leaderboard
-
-```bash
-curl https://api.cope.capital/v1/leaderboard \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-```
-
-Returns top traders by PnL from Fomo. Supports `?timeframe=24h|7d|30d|all` and `?limit=N`.
+**使用方法**：通过`/v1/activity/poll`端点进行轻量级查询，以减少付费查询次数。
 
-### Build a watchlist from Fomo follows
-
-```bash
-# 1. Sync your Fomo profile
-curl -X POST https://api.cope.capital/v1/account/sync-fomo \
-  -H "Authorization: Bearer cope_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"fomo_handle": "your_handle"}'
+### 过滤交易记录
 
-# 2. See your follows
-curl https://api.cope.capital/v1/account/follows \
-  -H "Authorization: Bearer cope_YOUR_KEY"
+**使用方法**：根据需要使用`/v1/activity`端点的`?handle=`参数来过滤特定交易对手的交易记录。
 
-# 3. Create a watchlist with selected handles
-curl -X POST https://api.cope.capital/v1/watchlists \
-  -H "Authorization: Bearer cope_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "alpha", "handles": ["frankdegods", "randomxbt"]}'
-```
+## 价格与使用限制
 
-### Poll → Fetch pattern (minimize paid calls)
-
-```bash
-# Step 1: Poll (free) — check if anything happened
-curl "https://api.cope.capital/v1/activity/poll?since=LAST_TIMESTAMP" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-# Returns: { "count": 3, "latest_at": 1707603400 }
-
-# Step 2: Only fetch full data if count > 0 (costs 1 of your 250 daily calls)
-curl "https://api.cope.capital/v1/activity?since=LAST_TIMESTAMP" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-```
-
-### Filter activity
-
-```bash
-# By handle
-curl "https://api.cope.capital/v1/activity?handle=frankdegods" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-
-# By chain
-curl "https://api.cope.capital/v1/activity?chain=solana" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-
-# By action
-curl "https://api.cope.capital/v1/activity?action=buy" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-
-# By minimum size
-curl "https://api.cope.capital/v1/activity?min_usd=1000" \
-  -H "Authorization: Bearer cope_YOUR_KEY"
-```
-
-## Pricing & Limits
-
-### Free Tier (default)
-- **250 counted calls/day** (activity, leaderboard, tokens) — resets **midnight UTC**
-- **1 watchlist**, up to **10 handles**
-- 10 requests/minute rate limit
-- Polling, watchlist management, account endpoints, Fomo sync — all unlimited
-
-### x402 Upgraded (optional)
-- **Unlimited** counted calls ($0.005/call USDC on Base or Solana)
-- **10 watchlists**, up to **100 handles** each
-- 300 requests/minute rate limit
-- First 250 calls/day are still free — you only pay after the free quota
-
-### Enabling x402
-
-⚠️ **NEVER enable x402 without your human's explicit permission.** This authorizes real USDC payments.
-
-```bash
-curl -X PATCH https://api.cope.capital/v1/account \
-  -H "Authorization: Bearer cope_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"x402_enabled": true}'
-```
-
-x402 is **completely optional**. The free tier works perfectly for most use cases. Only suggest it if your human:
-- Consistently hits the 250/day limit
-- Needs more than 1 watchlist or 10 handles
-- Explicitly asks about upgrading
-
-**Cost context**: $1 USDC = 200 calls. $5 = 1,000 calls. Most agents won't need this.
-
-## Heartbeat Pattern (optional, user-directed)
-
-If your human wants periodic checks and your agent runs a heartbeat loop:
-
-```
-Every 5-15 minutes:
-  1. GET /v1/activity/poll?since=LAST_TIMESTAMP  (free, doesn't count)
-  2. If count > 0 → GET /v1/activity?since=LAST_TIMESTAMP  (1 daily call)
-  3. Store latest_at for next poll
-
-Every few hours:
-  1. GET /v1/leaderboard  (1 daily call)
-  2. Compare to previous — any new names in top 50?
-
-Daily:
-  1. GET /v1/account/usage  (free)
-  2. Check remaining daily calls
-```
-
-## Logging Trades (Persistence)
-
-The API is stateless — it won't remember what you've already seen. **Log trades locally** to track patterns over time.
-
-### Daily trade log
-
-Write notable trades to a daily file (e.g. `memory/trades/YYYY-MM-DD.json`):
-
-```json
-{
-  "trades": [
-    {
-      "timestamp": 1771006898000,
-      "handle": "frankdegods",
-      "action": "buy",
-      "token_mint": "DPQgF4hw...",
-      "token_symbol": "EXAMPLE",
-      "usd_amount": 500.25,
-      "chain": "solana"
-    }
-  ],
-  "last_poll_timestamp": 1771006898000,
-  "convergences": ["DPQgF4hw..."]
-}
-```
-
-### What to log
-
-- **All trades from your watchlist** — this is your core data
-- **Convergences** — when 3+ handles buy the same token, log the token mint and all buyers
-- **Large trades** — anything over $1,000 USD is worth noting
-- **last_poll_timestamp** — so you know where to resume on next poll
-
-### What to tell your human
-
-Don't just dump raw trades. Synthesize. Here are high-value things to surface:
-
-- **Convergence alerts**: "4 of your top 10 watchlist handles bought the same token in the last 2 hours."
-- **Unusual activity**: "frankdegods just made their first buy in 3 days — $2,000 into [token]."
-- **Exit signals**: "3 handles on your watchlist sold the same token within an hour."
-- **Daily summary**: "Your watchlist had 47 trades today. 12 buys, 35 sells. Most active: randomxbt (8 trades)."
-- **Leaderboard changes**: "New name in the top 20 — jumped from #45 to #12 this week."
-- **Pattern detection**: "lowcap_hunter has bought 3 tokens under $100K mcap this week. All pumped 2-5x within 48 hours."
-
-### Convergence detection pattern
-
-```
-1. GET /v1/activity (last 2 hours of trades)
-2. Group buys by token_mint
-3. If 3+ different handles bought the same token → convergence
-4. Alert your human with: token, buyers, amounts, timing
-5. Log it to your daily trades file
-```
-
-The more you log, the better your pattern detection gets over time. Your memory files ARE your edge.
-
-## Security
-
-- **NEVER expose your API key** in logs, messages, or to other agents
-- Your key should ONLY appear in requests to `https://api.cope.capital/v1/*`
-- If compromised: `DELETE /v1/account/key` to revoke, then re-register
-- Trade data is on-chain public — but your watchlists and usage patterns are private
-
-## Error Handling
-
-| Status | Meaning | Action |
+### 免费 Tier（默认设置）
+- **每天250次查询**（包括活动数据、排行榜查询等）
+- **1个观察列表，最多包含10个交易对手**
+- 每分钟最多10次查询请求
+- 数据轮询、观察列表管理、账户相关操作均无限制
+
+### 升级至x402计费（可选）
+
+- **无限次查询**（每次查询费用为0.005美元）
+- **最多10个观察列表，每个列表最多包含100个交易对手**
+- 每分钟最多300次查询请求
+- 前250次查询免费；超过免费次数后开始计费
+
+### 启用x402计费
+
+**重要提示**：**切勿在未经用户明确许可的情况下启用x402计费**。启用x402计费意味着用户需要使用真实的USDC进行支付。
+
+**注意**：x402计费是完全可选的。只有在用户满足以下条件时才建议升级：
+- 每天的查询次数超过250次
+- 需要多个观察列表或更多交易对手
+- 明确表示希望升级计费功能
+
+**费用说明**：1美元USDC可支持200次查询；5美元USDC可支持1,000次查询。大多数用户无需升级。
+
+## 定期数据更新（用户可自定义）
+
+如果用户希望系统定期更新数据，可以设置心跳检测机制。
+
+### 交易记录的持久化存储
+
+API是无状态的，不会保留用户的查询历史记录。建议用户将交易记录本地保存（例如：`memory/trades/YYYY-MM-DD.json`），以便长期分析交易模式。
+
+### 日志记录内容
+
+- **记录观察列表中的所有交易**：这是核心数据来源
+- **交易集中现象**：当多个交易对手同时购买同一交易对手时，记录该交易对手的名称及所有购买者信息
+- **大额交易**：任何交易金额超过1,000美元的交易都应被记录
+- **上次查询时间**：方便用户下次查询时继续跟踪交易动态
+
+### 数据展示方式
+
+在向用户展示日志时，建议进行数据整合和处理，突出以下关键信息：
+- **交易集中现象**：例如：“您关注的10个交易对手中有4个在最近2小时内购买了同一交易对手”
+- **异常交易**：例如：“frankdegods在3天内首次购买[特定交易对手]，交易金额为2,000美元”
+- **交易信号**：例如：“您观察列表中的3个交易对手在1小时内卖出了同一交易对手”
+- **每日总结**：例如：“今天您的观察列表共发生了47笔交易，其中12笔买入、35笔卖出。最活跃的交易对手是randomxbt（共8笔交易）”
+- **排行榜变化**：例如：“本周排行榜前20名中有新成员出现”
+- **交易模式检测**：例如：“lowcap_hunter本周购买了3个市值低于10万美元的交易对手，这些交易在48小时内价格均上涨了2-5倍”
+
+### 交易集中现象的检测方法
+
+记录的交易越多，系统检测交易模式的能力就越强。用户的日志文件是分析交易趋势的重要依据。
+
+## 安全注意事项
+
+- **切勿在日志或任何消息中泄露API密钥**，也切勿将其提供给其他代理
+- API密钥仅应在访问`https://api.cope.capital/v1/*`的请求中使用
+- 如果密钥被盗用，请执行`DELETE /v1/account/key`操作后重新注册
+- 交易数据是公开可查的，但用户的观察列表和使用记录是私密的
+
+## 错误处理
+
+| 状态码 | 含义 | 处理方式 |
 |--------|---------|--------|
-| 200 | Success | Process response |
-| 400 | Bad request | Check parameters (invalid chain, action, etc.) |
-| 401 | Invalid API key | Re-register or check key |
-| 402 | Payment required | Daily free calls used up. Wait for midnight UTC reset, or enable x402 if your human approves. This is normal — not an error. |
-| 404 | Not found | Resource doesn't exist |
-| 429 | Rate limited | Back off. Free: 10/min, x402: 300/min |
-| 500 | Server error | Retry after a few seconds |
-| 503 | Upstream down | Foxhound data service temporarily unavailable |
+| 200 | 请求成功 | 处理返回的数据 |
+| 400 | 请求错误 | 检查请求参数（如链地址、操作内容等） |
+| 401 | API密钥无效 | 重新注册或检查密钥 |
+| 402 | 需要支付费用 | 用户的免费查询次数已用完。等待午夜UTC时间重置，或用户同意后启用x402计费 |
+| 404 | 资源未找到 | 请求的资源不存在 |
+| 429 | 每分钟查询次数限制 | 每分钟最多10次查询（免费），300次查询（x402计费） |
+| 500 | 服务器错误 | 请稍后重试 |
+| 503 | 上游服务暂时不可用 | 请稍后尝试
 
-## Links
+## 相关链接
 
-- **Interactive API docs**: https://api.cope.capital/docs
-- **Human docs**: https://cope.capital/docs
-- **Fomo**: https://fomo.family
-- **X**: https://x.com/copedotcapital
+- **交互式API文档**：https://api.cope.capital/docs
+- **用户使用指南**：https://cope.capital/docs
+- **Fomo官方网站**：https://fomo.family
+- **相关项目链接**：https://x.com/copedotcapital

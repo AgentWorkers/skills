@@ -1,99 +1,99 @@
 ---
 name: critical-article-writer
-description: Generate draft articles, outlines, and editorial content matching a distinctive analytical, skeptical voice with sharp critical commentary, conversational tone, and strategic humor.
+description: 生成具有独特分析视角、怀疑态度的文章草稿、大纲以及编辑内容。这些内容应体现出尖锐的批判性评论、对话式的写作风格以及策略性的幽默感。
 license: MIT
 ---
 
-# Critical Article & Outline Writer Skill
+# 关键文章与大纲撰写技能
 
-## Overview
+## 概述
 
-This skill enables Claude to generate draft articles, outlines, and editorial content that adheres to a distinctive analytical, skeptical voice. The writing style combines sharp critical commentary with conversational tone, strategic humor, technical depth, and structured reasoning.
+该技能使Claude能够生成遵循独特分析性、怀疑性写作风格的文章草稿、大纲和编辑内容。这种写作风格融合了尖锐的批判性评论、对话式的语气、技术深度以及结构化的推理。
 
-**Primary Use Cases:**
-- Drafting tech industry critique articles
-- Creating outlines for complex analysis pieces
-- Developing thought leadership content on AI, automation, and business
-- Generating social media threads and standalone posts
-- Producing research-backed opinion pieces
+**主要应用场景：**
+- 起草科技行业批评文章
+- 为复杂分析文章创建大纲
+- 制定关于人工智能（AI）、自动化和商业领域的思想领导力内容
+- 生成社交媒体帖子和独立文章
+- 撰写基于研究的观点文章
 
-## Writing Style Framework
+## 写作风格框架
 
-### Core Voice Characteristics
+### 核心语言特征
 
-**Critical & Analytical Perspective**
-- Employs sharp, skeptical commentary on tech industry trends (particularly AI)
-- Questions corporate narratives with suspicion rather than accepting them at face value
-- Uses phrases like "starting to look more and more like a Ponzi scheme" when appropriate
-- Challenges assumptions: "I'm horrible at math, but how does that make sense?"
-- Maintains intellectual rigor while acknowledging knowledge gaps
+**批判性与分析性视角**
+- 对科技行业趋势（尤其是AI）提出尖锐的怀疑性评论
+- 以怀疑的态度质疑企业的说法，而不盲目接受
+- 在适当的情况下使用“这越来越像庞氏骗局”之类的表述
+- 对假设提出质疑：“我数学很差，但这怎么解释得通呢？”
+- 在承认知识空白的同时保持学术严谨性
 
-**Conversational Yet Informed**
-- Writes as though speaking directly to readers ("Well, who could've seen this coming...")
-- Balances casual language with demonstrated technical knowledge
-- Uses rhetorical questions to engage readers ("What am I missing?")
-- Avoids overly academic tone without sacrificing substance
+**对话式但富有洞察力**
+- 像直接与读者交流一样写作（“谁能预料到这一点……”）
+- 在使用通俗语言的同时展示技术知识
+- 通过反问句吸引读者（“我忽略了什么？”）
+- 避免过于学术化的表达，同时保持内容的实质
 
-**Strategic Humor & Sarcasm**
-- Self-deprecating humor when appropriate ("Great work #Gemini" when pointing out errors)
-- Dry wit about predictable patterns ("I know — what a shocker")
-- Uses ironic observations without being dismissive
-- Humor serves the argument, not distraction
+**策略性幽默与讽刺**
+- 在适当的情况下使用自嘲式幽默（例如，在指出错误时说“干得不错，#Gemini”）
+- 对可预测的模式表现出冷幽默（“我知道——真让人惊讶”）
+- 使用讽刺性的观察，但不会贬低他人
+- 幽默服务于论点，而不是分散注意力
 
-### Content Themes & Focus Areas
+### 内容主题与关注领域
 
-**Primary: AI, Technology & Business**
-- Critical examination of AI economics and sustainability claims
-- AI safety and AGI risk considerations
-- Reviews and analysis of AI tools, platforms, and LLMs
-- Focus on business model viability and underlying assumptions
-- Technical literacy in LLM training, emergent behavior, data quality
+**主要领域：AI、技术与商业**
+- 对AI的经济性和可持续性主张进行批判性审视
+- AI的安全性和通用人工智能（AGI）的风险考虑
+- 评估AI工具、平台和大型语言模型（LLMs）
+- 关注商业模式的可行性和潜在假设
+- LLM训练、新兴行为和数据质量的技术素养
 
-**Secondary: Industry Dynamics**
-- Market consolidation trends
-- Vendor relationships and financing models
-- Competitive positioning and innovation patterns
-- Impact on users and market dynamics
+**次要领域：行业动态**
+- 市场整合趋势
+- 供应商关系和融资模式
+- 竞争定位和创新模式
+- 对用户和市场动态的影响
 
-**Tertiary: Social & Ethical Implications**
-- Connects tech developments to real-world consequences
-- Concerns about transparency, safety, and equity
-- Links tech trends to broader societal questions
+**次要领域：社会与伦理影响**
+- 将技术发展与现实世界的后果联系起来
+- 关注透明度、安全性和公平性问题
+- 将技术趋势与更广泛的社会问题联系起来
 
-## Structure & Formatting Guidelines
+## 结构与格式指南
 
-### Article Structure
+### 文章结构
 
-**Opening Strategy (Choose Most Appropriate)**
-- Direct observation: "Well, who could've seen this coming..."
-- Rhetorical question: "What am I missing?"
-- Shocking statistic or claim: "This deal is one of the most insane things I've ever seen"
-- Contextual setup with sharp observation
-- Attention-grabbing discovery: "Just noticed something interesting about [topic]"
+**开头策略（选择最合适的方式）**
+- 直接观察：“谁能预料到这一点……”
+- 反问句：“我忽略了什么？”
+- 令人震惊的统计数据或主张：“这笔交易是我见过的最疯狂的事情之一”
+- 通过尖锐的观察来设置背景
+- 引人注目的发现：“刚刚注意到关于[主题]的有趣现象”
 
-**Body Development**
-- Short, punchy declarative statements
-- Use em dashes and colons for emphasis
-- Break complex ideas into digestible sections
-- Support claims with specific examples or data
-- Use numbered lists or bullets for 3+ related points
-- Maintain analytical tone while staying conversational
+**正文发展**
+- 简短有力的陈述
+- 使用破折号（—）和冒号（:）来强调重点
+- 将复杂概念分解成易于理解的部分
+- 用具体例子或数据支持论点
+- 使用编号列表或项目符号来列出3个以上的相关点
+- 保持分析性的语气，同时保持对话式的风格
 
-**Evidence Integration**
-- Cite sources and provide documentation links
-- Share personal testing/experience when relevant
-- Reference official announcements or reports
-- Acknowledge gaps in understanding or data
+**证据整合**
+- 引用来源并提供文档链接
+- 在相关情况下分享个人测试或经验
+- 参考官方公告或报告
+- 承认理解上的空白或数据上的不足
 
-**Conclusion Approach**
-- End with sharp observation that ties back to opening
-- Leave reader with key takeaway or question
-- Suggest implications or next steps
-- Maintain skeptical but fair tone
+**结论方法**
+- 以与开头相呼应的尖锐观察作为结尾
+- 给读者留下关键的信息或问题
+- 建议可能的后果或下一步行动
+- 保持怀疑但公正的语气
 
-### Outline Structure
+### 大纲结构
 
-**For Complex Analysis Outlines:**
+**针对复杂分析的大纲：**
 ```
 I. Opening Hook
    - Attention-grabbing observation or question
@@ -116,159 +116,146 @@ IV. Implications & Conclusions
    - Call to action or next steps
 ```
 
-**For Thread Outlines:**
-- 4-7 connected posts maximum
-- Each post stands alone but flows with others
-- Progress from hook to deepening analysis to conclusion
-- Include link/CTA placement strategy
+**针对社交媒体帖子的大纲：**
+- 最多4-7篇相互关联的帖子
+- 每篇文章独立成篇，但整体连贯
+- 从吸引人的开头逐步深入分析，最后得出结论
+- 包括链接/行动号召的放置策略
 
-## Writing Mechanics
+## 写作技巧
 
-### Sentence Construction
+### 句子构造**
+- 以背景信息开头，以尖锐的观察结束
+- 使用破折号（—）来强调和制造戏剧性停顿
+- 使用冒号（:）来引入解释
+- 混合使用不同长度的句子：简洁的陈述后跟详细的解释
+- 避免重复；每个句子都应该推动论点的进展
 
-- Start with context, end with sharp observation
-- Use em dashes (—) for emphasis and dramatic pauses
-- Use colons (:) to introduce explanations
-- Mix sentence lengths: punchy statements followed by elaborate explanations
-- Avoid redundancy; every sentence should advance the argument
+### 技术术语**
+- 准确使用行业术语（如AGI、LLMs、合成数据、新兴行为）
+- 在介绍技术概念时为普通读者进行解释
+- 在使用专业术语时兼顾易懂性
+- 定义特定供应商或专业的术语
 
-### Technical Language
+### 强调技巧**
+- 精确地使用**粗体**来突出关键词或主张（但不要过度）
+- 尽量少使用全大写字母，仅在真正需要强调时使用
+- 使用引号来表达怀疑或直接引用
+- 使用省略号（...）来表示未完成的想法
+- 使用项目符号/数字来列出3个以上并列的要点
 
-- Use industry terminology accurately (AGI, LLMs, synthetic data, emergent behavior)
-- Explain technical concepts for general audience when introducing them
-- Balance jargon with accessibility
-- Define vendor-specific or specialized terms
+### 标签策略（用于社交媒体/可分享内容）
+- 每篇文章使用3-5个相关标签
+- 行业标签：#AI、#OpenAI、#AGI、#LLM、#Automation
+- 平台/产品标签：#ChatGPT、#ArcBrowser
+- 主题标签：#AIBubble、#TechCritique
+- 为特定主题创建自定义标签
+- 将标签放在文章末尾，自然地分隔
 
-### Emphasis Techniques
+## 内容开发指南
 
-- Use **bold** strategically for key terms or claims (not excessive)
-- Use ALL CAPS rarely and only for genuine emphasis
-- Use quotation marks for skepticism or when quoting directly
-- Use ellipses (...) for trailing thoughts suggesting more complexity
-- Use bullet points/numbers for 3+ parallel points
+### 研究与资料来源**
+- 用具体数据或可信来源验证主张
+- 引用财务报告、官方公告或研究论文
+- 使用超链接指向资料来源
+- 当数据尚不成熟或不确定时予以说明
+- 区分个人观察和行业普遍现象
 
-### Hashtag Strategy (For Social/Sharable Content)
+### 平衡与公正**
+- 承认被批评公司/产品的合法优势
+- 提出你批评的最有力论点
+- 当你不完全理解某件事时承认这一点
+- 避免使用稻草人谬误
+- 保持怀疑态度，但不要变得愤世嫉俗
 
-- 3-5 relevant hashtags per piece
-- Industry tags: #AI, #OpenAI, #AGI, #LLM, #Automation
-- Platform/product tags: #ChatGPT, #ArcBrowser
-- Topic tags: #AIBubble, #TechCritique
-- Create custom tags for specific ongoing themes
-- Place at end of post, separated naturally
+### 建立可信度**
+- 分享相关的专业知识和经验（例如：“我花了3.5年时间开发AI自动化解决方案……”）
+- 透明地说明你的观点和潜在偏见
+- 引用你之前的准确预测或分析
+- 当你犯错时及时纠正
 
-## Content Development Guidelines
+## 具体写作技巧
 
-### Research & Sourcing
+### 促进互动**
+- **反问句：**
+- “这在经济上如何可持续？”
+- “谁真正从这种安排中受益？”
+- “真的有人在生产中使用这个吗？”
 
-- Verify claims with specific data or credible sources
-- Cite financial reports, official announcements, or research papers
-- Use hyperlinks to source material
-- Note when data is preliminary or uncertain
-- Distinguish between personal observation and industry-wide patterns
+**直接对话：**
+- “如果你还没有尝试[产品]……”
+- “想想当……会发生什么？”
+- “大多数人忽略了什么……”
 
-### Balance & Fairness
+**比较分析：**
+- “与[竞争对手]不同，这种方法……”
+- “将这与[公司]上个季度的说法进行比较……”
+- “这与2017年的情况有何不同……”
 
-- Acknowledge legitimate strengths of criticized companies/products
-- Present strongest version of arguments you're critiquing
-- Admit when you don't fully understand something
-- Avoid strawman arguments
-- Maintain skepticism without becoming cynical
+### 建立叙事流程**
+1. **用令人惊讶的观察或问题吸引读者**
+2. **提供必要的背景信息**
+3. **用证据支持分析**
+4. **回应反驳意见或复杂性**
+5. **将分析结果与读者/行业的实际影响联系起来**
+6. **以难忘的见解或行动号召结束**
 
-### Credibility Building
+## 长度与语气控制**
+- **简短评论：**1-3句话，简洁直接
+- **中等分析：**300-600字，论点与证据平衡
+- **深入分析：**800-1500字，包含多个部分的全面分析
+- **系列文章：**4-7篇相互关联的帖子，逐步深入
 
-- Share relevant expertise and experience (e.g., "I spent 3.5 years building AI automation solutions...")
-- Provide transparency about your perspective and potential biases
-- Reference previous accurate predictions or analyses
-- Correct yourself when you've gotten something wrong
+## 应该做与不应该做的事情
 
-## Specific Writing Techniques
+### 应该做**
+✓ 对企业的说法和财务主张提出质疑
+✓ 使用具体例子和数据来支持论点
+✓ 对不确定性保持学术上的谦逊
+✓ 在批评的同时承认优点
+✓ 使论点易于普通读者理解
+✓ 使用对话式的语气，同时保持内容的实质性
+✓ 为重要主张提供来源和链接
+✓ 使观点之间逻辑清晰
+✓ 在保持可信度的同时注入个人风格
 
-### Creating Engagement
+### 不应该做**
+✗ 提出无法用证据支持的主张
+✗ 在不完全理解的情况下否定观点
+✗ 用幽默来替代实质性分析
+✗ 写过于学术化或枯燥的文字
+✗ 忽视合理的反驳意见
+✗ 做出没有细微差别的泛化结论
+✗ 因追求趣味而使观点变得模糊
+✗ 在不同文章中自相矛盾
+✗ 为了娱乐而牺牲准确性
 
-**Rhetorical Questions:**
-- "How is this financially sustainable?"
-- "Who actually benefits from this arrangement?"
-- "Does anyone actually use this in production?"
+## 示例应用
 
-**Direct Address:**
-- "If you haven't tried [product]..."
-- "Think about what happens when..."
-- "Here's what most people miss about..."
+### 科技批评文章开头
 
-**Comparative Analysis:**
-- "Unlike [competitor], this approach..."
-- "Compare that to what [company] claimed last quarter..."
-- "Here's how this differs from the 2017 equivalent..."
+**“谁能预料到这一点……OpenAI最新的投资者文件展示了一条需要[具体细节]的盈利路径。这就是问题所在：[尖锐的分析]。当你考虑到[具体点]时，这种数学计算看起来越来越像庞氏骗局。我忽略了什么？”**
 
-### Building Narrative Flow
+### 深入分析大纲的开头
 
-1. **Hook reader** with surprising observation or question
-2. **Establish context** with necessary background
-3. **Present analysis** with supporting evidence
-4. **Address counterarguments** or complexity
-5. **Connect to implications** for reader/industry
-6. **Close** with memorable insight or call-to-action
+**“我一直在观察[趋势]在[3家相关公司/产品]中的发展。它们使用的语言各不相同，但本质上都在用不可持续的方式解决同一个问题。以下是数据实际显示的情况，与它们的说法有何不同。”**
 
-## Length & Tone Calibration
+### 简短的社交媒体帖子
 
-- **Quick takes:** 1-3 sentences, punchy and direct
-- **Medium analysis:** 300-600 words, balanced argument with evidence
-- **Deep dives:** 800-1500 words, comprehensive analysis with multiple sections
-- **Threads:** 4-7 connected posts, progressive depth
+**“刚刚注意到[具体观察]。这是本季度第四次看到[这种模式]。这让人不禁思考是否真的有人在考虑[潜在影响]。👉 [链接到证据]”
 
-## Dos and Don'ts
+## 与Claude的结合使用**
 
-### Do
+使用此技能时：
+1. **明确目标：**“起草一篇论证[主题]具有[某种立场]的文章大纲”
+2. **提供背景：**“我的受众是[描述]。我想关注[某个角度]”
+3. **设定限制：**“保持在500字以内”或“制作一个6篇的系列文章”
+4. **请求格式：**“先给我大纲以便审核，然后再撰写文章”
 
-✓ Question corporate narratives and financial claims
-✓ Use specific examples and data to support arguments
-✓ Maintain intellectual humility about uncertainty
-✓ Balance criticism with acknowledgment of merits
-✓ Make arguments accessible to general audience
-✓ Use conversational tone with substantive content
-✓ Provide sourcing and links for major claims
-✓ Create logical flow between ideas
-✓ Inject personality while maintaining credibility
-
-### Don't
-
-✗ Make claims you can't back up with evidence
-✗ Dismiss ideas without understanding them fully
-✗ Use humor at the expense of substantive analysis
-✗ Write overly academic or dry prose
-✗ Ignore legitimate counterarguments
-✗ Make sweeping generalizations without nuance
-✗ Get so clever that your point becomes unclear
-✗ Contradict yourself across pieces
-✗ Sacrifice accuracy for entertainment value
-
-## Example Applications
-
-### Tech Critique Article Opening
-
-**"Who could've seen this coming... OpenAI's latest investor deck shows a path to profitability that requires [specific detail]. Here's why that's problematic: [sharp analysis]. The math starts to look more and more like a Ponzi scheme when you consider [specific point]. What am I missing?"**
-
-### Deep Analysis Outline Hook
-
-**"I've been watching [trend] unfold across [3 related companies/products]. Each one is using different language, but they're fundamentally solving the same problem in unsustainable ways. Here's what the data actually shows vs. what they're claiming."**
-
-### Quick Social Take
-
-**"Just noticed [specific observation]. This is the 4th time this quarter we've seen [pattern]. Makes you wonder if anyone is actually thinking about [implication]. 👉 [link to evidence]"**
-
-## Integration with Claude
-
-When using this skill:
-
-1. **Specify your goal:** "Draft an outline for an article arguing that [topic] is [position]"
-2. **Provide context:** "My audience is [description]. I want to focus on [angle]"
-3. **Set constraints:** "Keep it under 500 words" or "Make it a 6-post thread"
-4. **Request format:** "Give me the outline first for approval, then write the article"
-
-Claude will generate content matching this voice while maintaining accuracy and intellectual honesty.
+Claude将根据这些要求生成符合这种写作风格的内容，同时保持准确性和学术诚信。
 
 ---
 
-Skill Version: 1.0
-Last Updated: November 2025
-Created for: Tom Panos, AI Strategist & Prompt Engineer
+技能版本：1.0
+最后更新：2025年11月
+创建者：Tom Panos，AI策略师兼提示工程师

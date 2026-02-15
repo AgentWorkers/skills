@@ -1,11 +1,11 @@
 ---
 name: glab-ssh-key
-description: Manage SSH keys for GitLab account including add, list, and delete operations. Use when setting up SSH authentication, managing SSH keys, or configuring Git over SSH. Triggers on SSH key, add SSH key, SSH authentication, Git SSH.
+description: 管理 GitLab 账户的 SSH 密钥，包括添加、列出和删除操作。适用于设置 SSH 认证、管理 SSH 密钥或配置通过 SSH 进行的 Git 传输。相关操作会触发 SSH 密钥的添加、SSH 认证以及 Git 的 SSH 配置相关事件。
 ---
 
 # glab ssh-key
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +28,12 @@ description: Manage SSH keys for GitLab account including add, list, and delete 
     -R --repo                  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab ssh-key --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 信息，请参阅 [references/commands.md](references/commands.md)。

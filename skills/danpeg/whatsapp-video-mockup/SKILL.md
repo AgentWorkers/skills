@@ -1,52 +1,52 @@
-# WhatsApp Video Skill
+# WhatsApp 视频功能
 
-Create animated WhatsApp-style chat videos using Remotion. Perfect for X, TikTok, Instagram Reels.
+使用 Remotion 工具创建具有 WhatsApp 风格的动画聊天视频，非常适合在 X、TikTok 和 Instagram Reels 上使用。
 
-## Features
+## 主要功能
 
-- 📱 Realistic iPhone frame with Dynamic Island
-- 💬 WhatsApp dark mode UI (accurate colors, bubbles, timestamps)
-- 📜 Auto-scrolling as messages extend
-- 🔤 Large, readable fonts (optimized for mobile viewing)
-- 🎵 Message notification sounds
-- ✨ Spring animations on message appearance
-- ⌨️ Typing indicator ("..." bubbles)
-- 🔗 Link preview cards
-- ✅ Read receipts (blue checkmarks)
-- **Bold** and `code` formatting support
+- 📱 具有动态岛（Dynamic Island）功能的真实 iPhone 界面
+- 💬 WhatsApp 暗黑模式 UI（颜色、气泡和时间戳均精确还原）
+- 📜 消息滚动时自动滚动
+- 🔤 大字号、易读的字体（专为移动设备优化）
+- 🎵 消息通知音效
+- ✨ 消息出现时的弹簧动画效果
+- ⌨️ 打字指示器（显示“...”气泡）
+- 🔗 链接预览卡片
+- ✅ 已读标记（蓝色对勾）
+- **支持粗体**和代码格式
 
-## Default Settings
+## 默认设置
 
-- **Aspect ratio:** 4:5 (1080×1350) - optimal for X/Instagram feed
-- **No intro/outro** - starts and ends with the chat
-- **2x fonts** - readable on mobile devices
-- **Auto-scroll** - keeps all messages visible
+- **宽高比：** 4:5（1080×1350）——最适合 X/Instagram 的信息流显示
+- **无开场/结尾动画**——视频直接从聊天内容开始和结束
+- **字体大小：** 2 倍——在移动设备上更易阅读
+- **自动滚动**——确保所有消息都能显示
 
-## Prerequisites
+## 先决条件
 
-This skill requires the **Remotion Best Practices** skill:
+此功能需要具备 **Remotion Best Practices** 技能：
 
 ```bash
 npx skills add remotion-dev/skills -a claude-code -y -g
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd ~/Projects/remotion-test
 ```
 
-Edit the conversation in `src/WhatsAppVideo.tsx`, then render:
+在 `src/WhatsAppVideo.tsx` 中编辑聊天内容，然后进行渲染：
 
 ```bash
 npx remotion render WhatsAppDemo out/my-video.mp4 --concurrency=4
 ```
 
-## How to Create a New Video
+## 如何创建新视频
 
-### 1. Define Your Messages
+### 1. 定义消息内容
 
-Edit the `ChatMessages` component in `src/WhatsAppVideo.tsx`:
+编辑 `src/WhatsAppVideo.tsx` 中的 `ChatMessages` 组件：
 
 ```tsx
 // Incoming message (from assistant)
@@ -70,23 +70,23 @@ Edit the `ChatMessages` component in `src/WhatsAppVideo.tsx`:
 <TypingIndicator delay={80} duration={45} />
 ```
 
-### 2. Timing Guide
+### 2. 时间控制
 
-- **30 fps** = 30 frames per second
-- `delay={30}` = appears at 1 second
-- `delay={60}` = appears at 2 seconds
-- `duration={45}` = lasts 1.5 seconds
+- **30 fps** = 每秒 30 帧
+- `delay={30}` = 消息在 1 秒后显示
+- `delay={60}` = 消息在 2 秒后显示
+- `duration={45}` = 消息持续 1.5 秒
 
-**Typical flow:**
-1. First message: `delay={20}` (~0.7s)
-2. Typing indicator: `delay={80}`, `duration={45}`
-3. Response: `delay={125}` (after typing ends)
-4. Next typing: `delay={175}`, `duration={45}`
-5. Next response: `delay={220}`
+**典型流程：**
+1. 第一条消息：`delay={20}`（约 0.7 秒）
+2. 打字指示器：`delay={80}`，`duration={45}`（显示打字过程）
+3. 回复：`delay={125}`（打字结束后）
+4. 下一条消息：`delay={175}`，`duration={45}`（回复内容）
+5. 下一条回复：`delay={220}`
 
-### 3. Adjust Scrolling
+### 3. 调整滚动效果
 
-In `ChatMessages`, update the scroll interpolation based on your message count:
+在 `ChatMessages` 组件中，根据消息数量更新滚动效果：
 
 ```tsx
 const scrollAmount = interpolate(
@@ -97,30 +97,30 @@ const scrollAmount = interpolate(
 );
 ```
 
-Increase scroll values if messages overflow.
+如果消息过多，可以适当增加滚动速度。
 
-### 4. Text Formatting
+### 4. 文本格式
 
-Messages support:
-- **Bold**: `**bold text**`
-- `Code`: backticks around text
-- Line breaks: `\n` in the string
-- Emojis: just use them directly 🎬
+支持以下文本格式：
+- **粗体**：`**bold text**
+- **代码**：使用反引号 `**` 包围代码
+- 换行：在字符串中使用 `\n`
+- 表情符号：直接使用即可 🎬
 
-### 5. Customizing the Header
+### 5. 自定义标题
 
-In `ChatHeader` component, change:
-- Name: `Pokey 🐡` → your assistant name
-- Status: `online`
-- Avatar emoji
+在 `ChatHeader` 组件中，可以修改以下内容：
+- 名称：`Pokey 🐡` → 更改为你的助手名称
+- 状态：`online`（在线）
+- 头像表情符号
 
-### 6. Update Duration
+### 6. 更新视频时长
 
-In `Root.tsx`, set `durationInFrames` to match your video length:
-- Count frames until last message appears + ~100 frames buffer
-- At 30fps: 450 frames = 15 seconds
+在 `Root.tsx` 中设置 `durationInFrames` 以匹配视频长度：
+- 计算从第一条消息出现到视频结束所需的帧数，并加上约 100 帧的缓冲时间
+- 以 30 fps 计算：450 帧 = 15 秒
 
-### 7. Render
+### 7. 渲染视频
 
 ```bash
 # Standard render
@@ -133,18 +133,18 @@ npx remotion render WhatsAppDemo out/video.mp4 --codec h264 --crf 18
 npm run dev
 ```
 
-## Platform Dimensions
+## 平台适配
 
-Edit `Root.tsx` to change dimensions:
+编辑 `Root.tsx` 以适应不同平台的尺寸：
 
-| Platform | Dimensions | Aspect Ratio | Use Case |
+| 平台 | 尺寸 | 宽高比 | 适用场景 |
 |----------|------------|--------------|----------|
-| **X/Instagram feed** | 1080×1350 | 4:5 | Default, most visible |
-| **X/TikTok/Reels** | 1080×1920 | 9:16 | Full vertical |
-| **X square** | 1080×1080 | 1:1 | Universal |
-| **YouTube/X landscape** | 1920×1080 | 16:9 | Horizontal |
+| **X/Instagram 信息流** | 1080×1350 | 4:5 | 默认设置，显示效果最佳 |
+| **X/TikTok/Reels** | 1080×1920 | 9:16 | 全屏垂直显示 |
+| **X 平方屏** | 1080×1080 | 1:1 | 通用尺寸 |
+| **YouTube/X 横屏** | 1920×1080 | 16:9 | 横屏显示 |
 
-## Project Structure
+## 项目结构
 
 ```
 ~/Projects/remotion-test/
@@ -158,26 +158,27 @@ Edit `Root.tsx` to change dimensions:
 └── out/                    # Rendered videos
 ```
 
-## Sound Effects
+## 音效
 
-Sounds are triggered with Sequence:
+音效通过 `Sequence` 模块触发：
+
 ```tsx
 <Sequence from={125}>
   <Audio src={staticFile("sounds/pop.mp3")} volume={0.5} />
 </Sequence>
 ```
 
-## Tips
+## 使用技巧
 
-1. **Preview while editing**: Run `npm run dev` to see changes live
-2. **Frame-by-frame**: Use timeline scrubber to check timing
-3. **Keep messages concise**: Long messages may need scroll adjustment
-4. **Test on mobile**: Check readability at actual size
+1. **编辑时预览**：运行 `npm run dev` 可实时查看效果
+2. **逐帧检查**：使用时间轴工具调整动画时机
+3. **保持消息简洁**：过长的消息可能需要调整滚动效果
+4. **在移动设备上测试**：检查视频在真实尺寸下的可读性
 
-## Asking Pokey to Generate
+## 使用 Pokey 生成视频
 
-Just describe the conversation:
-- "WhatsApp video: me asking you to [X]"
-- "Make a chat video showing [conversation]"
+只需描述对话内容：
+- “创建一个 WhatsApp 视频，内容是我请求你[执行某事]”
+- “制作一个展示[对话内容的聊天视频”
 
-Pokey will write the messages, set timing, render, and send the MP4.
+Pokey 会负责编写消息内容、设置动画时机、渲染视频，并生成 MP4 文件。

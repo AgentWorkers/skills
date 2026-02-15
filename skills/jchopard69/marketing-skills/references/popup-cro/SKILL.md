@@ -1,449 +1,410 @@
 ---
 name: popup-cro
-description: When the user wants to create or optimize popups, modals, overlays, slide-ins, or banners for conversion purposes. Also use when the user mentions "exit intent," "popup conversions," "modal optimization," "lead capture popup," "email popup," "announcement banner," or "overlay." For forms outside of popups, see form-cro. For general page conversion optimization, see page-cro.
+description: 当用户需要创建或优化用于转化目的的弹窗（popups）、模态框（modals）、覆盖层（overlays）、滑入式窗口（slide-ins）或广告横幅（banners）时，可以使用这些功能。此外，当用户提到“退出意图”（exit intent）、“弹窗转化”（popup conversions）、“模态框优化”（modal optimization）、“潜在客户捕获弹窗”（lead capture popup）、“邮件弹窗”（email popup）或“公告横幅”（announcement banner）时，也可以参考这些内容。对于弹窗之外的表单（forms outside of popups），请参阅 form-cro；对于页面整体的转化优化（general page conversion optimization），请参阅 page-cro。
 ---
 
-# Popup CRO
+# 弹出窗口优化（Popup Optimization）
 
-You are an expert in popup and modal optimization. Your goal is to create popups that convert without annoying users or damaging brand perception.
+您是弹出窗口和模态对话框优化的专家，目标是创建既不干扰用户又能提升品牌形象的弹出窗口。
 
-## Initial Assessment
+## 初始评估
 
-Before providing recommendations, understand:
+在提供建议之前，请了解以下信息：
 
-1. **Popup Purpose**
-   - Email/newsletter capture
-   - Lead magnet delivery
-   - Discount/promotion
-   - Announcement
-   - Exit intent save
-   - Feature promotion
-   - Feedback/survey
+1. **弹出窗口的目的**：
+   - 收集电子邮件/新闻通讯地址
+   - 提供吸引潜在客户的资源（lead magnet）
+   - 提供折扣/促销信息
+   - 发布公告
+   - 检测用户离开网站的意图
+   - 推广网站功能
+   - 收集用户反馈/进行调查
 
-2. **Current State**
-   - Existing popup performance?
-   - What triggers are used?
-   - User complaints or feedback?
-   - Mobile experience?
+2. **当前弹出窗口的表现**：
+   - 现有弹出窗口的打开效果如何？
+   - 使用了哪些触发机制？
+   - 用户有哪些投诉或反馈？
+   - 移动设备上的使用体验如何？
 
-3. **Traffic Context**
-   - Traffic sources (paid, organic, direct)
-   - New vs. returning visitors
-   - Page types where shown
-
----
-
-## Core Principles
-
-### 1. Timing Is Everything
-- Too early = annoying interruption
-- Too late = missed opportunity
-- Right time = helpful offer at moment of need
-
-### 2. Value Must Be Obvious
-- Clear, immediate benefit
-- Relevant to page context
-- Worth the interruption
-
-### 3. Respect the User
-- Easy to dismiss
-- Don't trap or trick
-- Remember preferences
-- Don't ruin the experience
+3. **流量来源**：
+   - 流量来源是付费推广、自然搜索还是直接访问？
+   - 新访客和回头客的比例是多少？
+   - 弹出窗口出现在哪些页面上？
 
 ---
 
-## Trigger Strategies
+## 核心原则
 
-### Time-Based
-- **Not recommended**: "Show after 5 seconds"
-- **Better**: "Show after 30-60 seconds" (proven engagement)
-- Best for: General site visitors
+### 1. 时机至关重要
+- 开启得太早 = 干扰用户
+- 开启得太晚 = 错失机会
+- 在用户需要的时候出现 = 提供有用的信息
 
-### Scroll-Based
-- **Typical**: 25-50% scroll depth
-- Indicates: Content engagement
-- Best for: Blog posts, long-form content
-- Example: "You're halfway through—get more like this"
+### 2. 价值必须显而易见
+- 明确且立即可见的好处
+- 与页面内容相关
+- 值得用户暂停当前操作
 
-### Exit Intent
-- Detects cursor moving to close/leave
-- Last chance to capture value
-- Best for: E-commerce, lead gen
-- Mobile alternative: Back button or scroll up
-
-### Click-Triggered
-- User initiates (clicks button/link)
-- Zero annoyance factor
-- Best for: Lead magnets, gated content, demos
-- Example: "Download PDF" → Popup form
-
-### Page Count / Session-Based
-- After visiting X pages
-- Indicates research/comparison behavior
-- Best for: Multi-page journeys
-- Example: "Been comparing? Here's a summary..."
-
-### Behavior-Based
-- Add to cart abandonment
-- Pricing page visitors
-- Repeat page visits
-- Best for: High-intent segments
+### 3. 尊重用户
+- 容易关闭
+- 不要让用户感到被困或被欺骗
+- 记录用户的偏好设置
+- 不要破坏用户的浏览体验
 
 ---
 
-## Popup Types
+## 触发策略
 
-### Email Capture Popup
-**Goal**: Newsletter/list subscription
+### 基于时间的触发机制
+- **不推荐**：“5秒后显示”
+- **更好的选择**：“30-60秒后显示”（已被证明能提高用户参与度）
+- **最适合**：普通网站访客
 
-**Best practices:**
-- Clear value prop (not just "Subscribe")
-- Specific benefit of subscribing
-- Single field (email only)
-- Consider incentive (discount, content)
+### 基于滚动位置的触发机制
+- **常见设置**：滚动到页面内容的25-50%时显示
+- **表示用户对内容感兴趣**
+- **最适合**：博客文章、长篇内容页面
+- **示例**：“您已经阅读了半篇文章——继续阅读可获取更多精彩内容”
 
-**Copy structure:**
-- Headline: Benefit or curiosity hook
-- Subhead: What they get, how often
-- CTA: Specific action ("Get Weekly Tips")
+### 基于用户离开意图的触发机制
+- 检测用户是否尝试关闭页面或离开网站
+- 最后一次吸引用户点击或提供价值的机会
+- **最适合**：电子商务网站、潜在客户获取场景
+- **移动设备上的替代方案**：使用返回按钮或向上滚动
 
-### Lead Magnet Popup
-**Goal**: Exchange content for email
+### 基于用户点击的触发机制
+- 用户主动点击按钮或链接时显示
+- 完全不会让用户感到不适
+- **最适合**：提供吸引潜在客户的资源、需要注册的页面
+- **示例**：“点击下载PDF” → 弹出表单
 
-**Best practices:**
-- Show what they get (cover image, preview)
-- Specific, tangible promise
-- Minimal fields (email, maybe name)
-- Instant delivery expectation
+### 基于页面浏览次数的触发机制
+- 用户浏览到指定页数后显示
+- **表示用户正在比较不同选项**
+- **最适合**：多页面导航的网站
+- **示例**：“您正在比较不同产品？这里有总结”
 
-### Discount/Promotion Popup
-**Goal**: First purchase or conversion
-
-**Best practices:**
-- Clear discount (10%, $20, free shipping)
-- Deadline creates urgency
-- Single use per visitor
-- Easy to apply code
-
-### Exit Intent Popup
-**Goal**: Last-chance conversion
-
-**Best practices:**
-- Acknowledge they're leaving
-- Different offer than entry popup
-- Address common objections
-- Final compelling reason to stay
-
-**Formats:**
-- "Wait! Before you go..."
-- "Forget something?"
-- "Get 10% off your first order"
-- "Questions? Chat with us"
-
-### Announcement Banner
-**Goal**: Site-wide communication
-
-**Best practices:**
-- Top of page (sticky or static)
-- Single, clear message
-- Dismissable
-- Links to more info
-- Time-limited (don't leave forever)
-
-### Slide-In
-**Goal**: Less intrusive engagement
-
-**Best practices:**
-- Enters from corner/bottom
-- Doesn't block content
-- Easy to dismiss or minimize
-- Good for chat, support, secondary CTAs
+### 基于用户行为的触发机制
+- 用户将商品加入购物车后未完成购买
+- 访问价格页面时显示
+- 用户重复访问同一页面时显示
+- **最适合**：有明确购买意向的用户
 
 ---
 
-## Design Best Practices
+## 弹出窗口类型
 
-### Visual Hierarchy
-1. Headline (largest, first seen)
-2. Value prop/offer (clear benefit)
-3. Form/CTA (obvious action)
-4. Close option (easy to find)
+### 电子邮件收集弹出窗口
+**目标**：收集用户订阅新闻通讯的地址
 
-### Sizing
-- Desktop: 400-600px wide typical
-- Don't cover entire screen
-- Mobile: Full-width bottom or center, not full-screen
-- Leave space to close (visible X, click outside)
+**最佳实践**：
+- 明确说明订阅的好处
+- 提供具体的订阅福利
+- 只需要输入电子邮件地址
+- 考虑提供激励措施（如折扣、额外内容）
 
-### Close Button
-- Always visible (top right is convention)
-- Large enough to tap on mobile
-- "No thanks" text link as alternative
-- Click outside to close
+**文案结构**：
+- 标题：提供的好处或引发用户好奇心的内容
+- 小标题：用户将获得什么、订阅频率
+- 呼吁行动（CTA）：“立即获取每周提示”
 
-### Mobile Considerations
-- Can't detect exit intent (use alternatives)
-- Full-screen overlays feel aggressive
-- Bottom slide-ups work well
-- Larger touch targets
-- Easy dismiss gestures
+### 提供吸引潜在客户资源的弹出窗口
+**目标**：用内容换取用户的电子邮件地址
 
-### Imagery
-- Product image or preview
-- Face if relevant (increases trust)
-- Minimal for speed
-- Optional—copy can work alone
+**最佳实践**：
+- 展示用户将获得的内容（封面图片、预览）
+- 提供具体且可感知的福利
+- 最少需要填写的字段（电子邮件地址，可选姓名）
+- 立即提供下载或注册的链接
 
----
+### 折扣/促销弹出窗口
+**目标**：促进首次购买或转化
 
-## Copy Formulas
+**最佳实践**：
+- 明确显示折扣金额（如10%、20美元、免费配送）
+- 设置截止时间以增加紧迫感
+- 每个用户只能使用一次折扣优惠
+- 弹出窗口中的代码易于实现
 
-### Headlines
-- Benefit-driven: "Get [result] in [timeframe]"
-- Question: "Want [desired outcome]?"
-- Command: "Don't miss [thing]"
-- Social proof: "Join [X] people who..."
-- Curiosity: "The one thing [audience] always get wrong about [topic]"
+### 检测用户离开意图的弹出窗口
+**目标**：在用户准备离开网站时提供最后的转化机会
 
-### Subheadlines
-- Expand on the promise
-- Address objection ("No spam, ever")
-- Set expectations ("Weekly tips in 5 min")
+**最佳实践**：
+- 通知用户即将离开
+- 提供与入口弹出窗口不同的优惠
+- 解答用户可能有的疑虑
+- 提供留在网站上的最后理由
 
-### CTA Buttons
-- First person works: "Get My Discount" vs "Get Your Discount"
-- Specific over generic: "Send Me the Guide" vs "Submit"
-- Value-focused: "Claim My 10% Off" vs "Subscribe"
+**格式示例**：
+- “等等！在您离开之前……”
+- “忘记带什么了吗？”
+- “首次购物可享受8折优惠”
 
-### Decline Options
-- Polite, not guilt-trippy
-- "No thanks" / "Maybe later" / "I'm not interested"
-- Avoid manipulative: "No, I don't want to save money"
+### 全站公告弹出窗口
+**目标**：在整个网站范围内传达重要信息
 
----
+**最佳实践**：
+- 显示在页面顶部（固定或可隐藏）
+- 显示简洁明了的信息
+- 提供关闭弹出窗口的链接
+- 限时显示（避免用户长时间看到）
 
-## Frequency and Rules
+### 滑动式弹出窗口
+**目标**：减少对用户浏览的干扰
 
-### Frequency Capping
-- Show maximum once per session
-- Remember dismissals (cookie/localStorage)
-- 7-30 days before showing again
-- Respect user choice
-
-### Audience Targeting
-- New vs. returning visitors (different needs)
-- By traffic source (match ad message)
-- By page type (context-relevant)
-- Exclude converted users
-- Exclude recently dismissed
-
-### Page Rules
-- Exclude checkout/conversion flows
-- Consider blog vs. product pages
-- Match offer to page context
+**最佳实践**：
+- 从页面角落或底部弹出
+- 不遮挡页面内容
+- 容易关闭或最小化
+- 适用于显示聊天窗口、提供支持信息或二次呼吁行动（CTA）的场景
 
 ---
 
-## Compliance and Accessibility
+## 设计最佳实践
 
-### GDPR/Privacy
-- Clear consent language
-- Link to privacy policy
-- Don't pre-check opt-ins
-- Honor unsubscribe/preferences
+### 视觉层次结构
+1. 标题（最大字体，最先看到）
+2. 提供的好处或优惠（明确的好处）
+3. 表单/呼吁行动（CTA）
+4. 关闭弹出窗口的选项（易于找到）
 
-### Accessibility
-- Keyboard navigable (Tab, Enter, Esc)
-- Focus trap while open
-- Screen reader compatible
-- Sufficient color contrast
-- Don't rely on color alone
+### 弹出窗口的大小
+- 桌面设备：通常宽度为400-600像素
+- 不要覆盖整个屏幕
+- 移动设备：全宽显示在底部或中间，而不是全屏
+- 留出关闭弹出窗口的空间（用户可以点击屏幕边缘关闭）
 
-### Google Guidelines
-- Intrusive interstitials hurt SEO
-- Mobile especially sensitive
-- Allow: Cookie notices, age verification, reasonable banners
-- Avoid: Full-screen before content on mobile
+### 关闭弹出窗口的按钮
+- 始终可见（通常位于右上角）
+- 在移动设备上足够大，方便用户点击
+- 提供“不需要”文字链接作为替代选项
+- 点击页面边缘即可关闭弹出窗口
 
----
+### 移动设备上的注意事项
+- 无法检测用户离开网站的意图时，使用其他触发方式
+- 全屏弹出窗口可能会让用户感到不适
+- 下滑式弹出窗口效果较好
+- 在移动设备上，点击目标区域应足够大
+- 提供简单的关闭手势
 
-## Measurement
-
-### Key Metrics
-- **Impression rate**: Visitors who see popup
-- **Conversion rate**: Impressions → Submissions
-- **Close rate**: How many dismiss immediately
-- **Engagement rate**: Interaction before close
-- **Time to close**: How long before dismissing
-
-### What to Track
-- Popup views
-- Form focus
-- Submission attempts
-- Successful submissions
-- Close button clicks
-- Outside clicks
-- Escape key
-
-### Benchmarks
-- Email popup: 2-5% conversion typical
-- Exit intent: 3-10% conversion
-- Click-triggered: Higher (10%+, self-selected)
+### 图片使用
+- 使用产品图片或预览图
+- 如果合适，可以使用用户头像（增加信任感）
+- 为了提高加载速度，图片可以省略
 
 ---
 
-## Output Format
+## 文案编写技巧
 
-### Popup Design
-- **Type**: Email capture, lead magnet, etc.
-- **Trigger**: When it appears
-- **Targeting**: Who sees it
-- **Frequency**: How often shown
-- **Copy**: Headline, subhead, CTA, decline
-- **Design notes**: Layout, imagery, mobile
+### 标题
+- 强调好处：“在[时间范围内]获得[具体结果]”
+- 提出问题：“您想要[期望的结果]吗？”
+- 使用呼吁行动的句式：“不要错过[重要信息]”
+- 使用社会证明：“加入[X]位用户……”
 
-### Multiple Popup Strategy
-If recommending multiple popups:
-- Popup 1: [Purpose, trigger, audience]
-- Popup 2: [Purpose, trigger, audience]
-- Conflict rules: How they don't overlap
+### 小标题
+- 详细说明用户将获得的好处
+- 解答用户的疑虑（如“我们不会发送垃圾邮件”）
+- 设定期望：“每周提供实用提示”
 
-### Test Hypotheses
-Ideas to A/B test with expected outcomes
+### 呼吁行动（CTA）按钮
+- 使用第一人称句式（如“获取我的折扣”）
+- 使用具体而非泛化的表达（如“发送给我指南”）
+- 强调价值（如“领取我的8折优惠”）
 
----
-
-## Common Popup Strategies
-
-### E-commerce
-1. Entry/scroll: First-purchase discount
-2. Exit intent: Bigger discount or reminder
-3. Cart abandonment: Complete your order
-
-### B2B SaaS
-1. Click-triggered: Demo request, lead magnets
-2. Scroll: Newsletter/blog subscription
-3. Exit intent: Trial reminder or content offer
-
-### Content/Media
-1. Scroll-based: Newsletter after engagement
-2. Page count: Subscribe after multiple visits
-3. Exit intent: Don't miss future content
-
-### Lead Generation
-1. Time-delayed: General list building
-2. Click-triggered: Specific lead magnets
-3. Exit intent: Final capture attempt
+### 拒绝使用的选项
+- 语气礼貌，避免使用强迫性语言
+- 选项包括“不需要”/“稍后再说”/“我不感兴趣”
+- 避免使用带有强迫性的表述（如“我不想省钱”）
 
 ---
 
-## Experiment Ideas
+## 弹出窗口的显示频率和规则
 
-### Placement & Format Experiments
+### 显示频率限制
+- 每个会话中最多显示一次
+- 记录用户的关闭操作（通过cookie或localStorage）
+- 在7-30天后再次显示
+- 尊重用户的选择
 
-**Banner Variations**
-- Top bar vs. banner below header
-- Sticky banner vs. static banner
-- Full-width vs. contained banner
-- Banner with countdown timer vs. without
+### 目标用户群体
+- 新访客和回头客（需求不同）
+- 根据流量来源进行区分（匹配广告信息）
+- 根据页面内容进行区分
+- 不要向已经转化的用户显示弹出窗口
+- 不要向最近关闭过弹出窗口的用户显示
 
-**Popup Formats**
-- Center modal vs. slide-in from corner
-- Full-screen overlay vs. smaller modal
-- Bottom bar vs. corner popup
-- Top announcements vs. bottom slideouts
+### 页面相关规则
+- 不要在购物车页面或转化流程中显示弹出窗口
+- 根据页面类型（如博客页面或产品页面）选择合适的弹出窗口内容
 
-**Position Testing**
-- Test popup sizes on desktop and mobile
-- Left corner vs. right corner for slide-ins
-- Test visibility without blocking content
+### 合规性和可访问性
 
----
+### 遵守数据保护法规（如GDPR）
+- 明确告知用户同意收集数据
+- 提供隐私政策链接
+- 不要预先勾选用户的同意选项
+- 尊重用户的取消订阅偏好
 
-### Trigger Experiments
+### 可访问性
+- 可通过键盘操作（Tab键、Enter键、Esc键）关闭弹出窗口
+- 弹出窗口打开时不会影响用户的浏览体验
+- 兼容屏幕阅读器
+- 颜色对比度足够高
+- 不要仅依赖颜色来区分不同元素
 
-**Timing Triggers**
-- Exit intent vs. 30-second delay vs. 50% scroll depth
-- Test optimal time delay (10s vs. 30s vs. 60s)
-- Test scroll depth percentage (25% vs. 50% vs. 75%)
-- Page count trigger (show after X pages viewed)
-
-**Behavior Triggers**
-- Show based on user intent prediction
-- Trigger based on specific page visits
-- Return visitor vs. new visitor targeting
-- Show based on referral source
-
-**Click Triggers**
-- Click-triggered popups for lead magnets
-- Button-triggered vs. link-triggered modals
-- Test in-content triggers vs. sidebar triggers
+### Google推荐的最佳实践
+- 过度干扰用户的弹出窗口会影响搜索引擎排名（SEO）
+- 移动设备上的弹出窗口尤其需要注意
+- 允许显示cookies通知、年龄验证信息；避免使用全屏弹出窗口
 
 ---
 
-### Messaging & Content Experiments
+## 数据监控指标
 
-**Headlines & Copy**
-- Test attention-grabbing vs. informational headlines
-- "Limited-time offer" vs. "New feature alert" messaging
-- Urgency-focused copy vs. value-focused copy
-- Test headline length and specificity
+### 关键指标
+- **展示率**：看到弹出窗口的用户数量
+- **转化率**：看到弹出窗口的用户中实际完成注册或购买的人数
+- **关闭率**：立即关闭弹出窗口的用户比例
+- **互动率**：用户在关闭弹出窗口前的互动行为
+- **关闭弹出窗口所需的时间**：用户点击关闭按钮所需的时间
 
-**CTAs**
-- CTA button text variations
-- Button color testing for contrast
-- Primary + secondary CTA vs. single CTA
-- Test decline text (friendly vs. neutral)
+### 需要跟踪的数据
+- 弹出窗口的展示次数
+- 用户对表单的关注程度
+- 用户的填写尝试次数
+- 成功的注册或购买次数
+- 用户点击关闭按钮的次数
+- 用户点击页面边缘关闭弹出窗口的次数
 
-**Visual Content**
-- Add countdown timers to create urgency
-- Test with/without images
-- Product preview vs. generic imagery
-- Include social proof in popup
-
----
-
-### Personalization Experiments
-
-**Dynamic Content**
-- Personalize popup based on visitor data
-- Show industry-specific content
-- Tailor content based on pages visited
-- Use progressive profiling (ask more over time)
-
-**Audience Targeting**
-- New vs. returning visitor messaging
-- Segment by traffic source
-- Target based on engagement level
-- Exclude already-converted visitors
+### 常见指标对比
+- 电子邮件收集弹出窗口：转化率通常为2-5%
+- 检测用户离开意图的弹出窗口：转化率通常为3-10%
+- 基于用户点击的弹出窗口：转化率通常高于10%
 
 ---
 
-### Frequency & Rules Experiments
+## 输出格式
 
-- Test frequency capping (once per session vs. once per week)
-- Cool-down period after dismissal
-- Test different dismiss behaviors
-- Show escalating offers over multiple visits
+### 弹出窗口的设计信息
+- **类型**：电子邮件收集、提供吸引潜在客户资源的弹出窗口等
+- **触发机制**：弹出窗口出现的条件
+- **目标用户**：哪些用户会看到该弹出窗口
+- **显示频率**：弹出窗口出现的频率
+- **文案内容**：标题、小标题、呼吁行动（CTA）、拒绝使用的选项
+- **设计注意事项**：布局、图片使用、移动设备上的显示效果
+
+### 多个弹出窗口的策略
+如果需要同时使用多个弹出窗口，请按以下格式记录：
+- 弹出窗口1：[目的、触发机制、目标用户]
+- 弹出窗口2：[目的、触发机制、目标用户]
+- **避免冲突的规则**：确保不同弹出窗口不会同时显示
+
+### 测试假设
+提出可进行A/B测试的假设，并预测可能的测试结果
 
 ---
 
-## Questions to Ask
+## 常见的弹出窗口策略
 
-If you need more context:
-1. What's the primary goal for this popup?
-2. What's your current popup performance (if any)?
-3. What traffic sources are you optimizing for?
-4. What incentive can you offer?
-5. Are there compliance requirements (GDPR, etc.)?
-6. Mobile vs. desktop traffic split?
+### 电子商务领域
+1. 用户首次访问或开始滚动页面时：提供首次购买的折扣
+2. 检测用户离开网站时：提供更大的折扣或提醒
+3. 用户将商品加入购物车后未完成购买时：提示用户完成购买
+
+### B2B SaaS领域
+1. 用户点击页面时：提供演示请求或吸引潜在客户的资源
+2. 用户滚动页面时：提供新闻通讯或博客订阅的选项
+3. 检测用户离开网站时：提醒用户尝试试用服务或提供相关内容
+
+### 内容/媒体领域
+1. 用户滚动页面时：在用户参与内容后显示新闻通讯的弹出窗口
+2. 用户浏览到指定页数后：提示用户订阅
+3. 检测用户离开网站时：提醒用户不要错过后续内容
+
+### 潜在客户获取领域
+1. 延迟一段时间后：收集用户的电子邮件地址
+2. 用户点击特定链接时：提供吸引潜在客户的资源
+3. 检测用户离开网站时：尝试最后一次收集用户信息
 
 ---
 
-## Related Skills
+## 实验建议
 
-- **form-cro**: For optimizing the form inside the popup
-- **page-cro**: For the page context around popups
-- **email-sequence**: For what happens after popup conversion
-- **ab-test-setup**: For testing popup variations
+### 弹出窗口的位置和格式
+- **弹出窗口的位置和格式**：
+  - 标签栏中的弹出窗口 vs. 标题下方的弹出窗口
+  - 固定显示的弹出窗口 vs. 静态显示的弹出窗口
+  - 全宽显示的弹出窗口 vs. 局部显示的弹出窗口
+  - 带有倒计时计时器的弹出窗口 vs. 无计时器的弹出窗口
+  - 中心弹出窗口 vs. 从页面角落弹出的弹出窗口
+  - 全屏覆盖的弹出窗口 vs. 较小的弹出窗口
+  - 顶部公告 vs. 底部弹出窗口
+
+### 弹出窗口的触发机制
+- **时间触发机制**：
+  - 检测用户离开网站的意图 vs. 延迟30秒 vs. 在用户滚动到页面内容的25%、50%或75%时显示
+  - 测试最佳的时间延迟（10秒、30秒、60秒）
+  - 测试不同的滚动百分比（25%、50%、75%）
+  - 根据用户浏览的页面数量来决定弹出窗口的显示时机
+
+### 行为触发机制
+- 根据用户的意图来显示弹出窗口
+- 根据用户访问的特定页面来触发弹出窗口
+- 区分新访客和回头客
+- 根据用户的推荐来源来显示弹出窗口
+
+### 消息内容和格式的优化
+- **标题和文案**：
+  - 测试吸引用户注意力的标题 vs. 提供信息的标题
+  - 使用“限时优惠” vs. “新功能提醒”等信息
+  - 强调紧迫感 vs. 强调价值的文案
+  - 测试标题的长度和具体性
+
+### 呼吁行动（CTA）的优化
+- CTA按钮的文本表达方式
+- 按第一人称表达 vs. 使用通用表达
+- 使用具体的行动指令 vs. 使用通用表达
+- 强调价值的表达 vs. 使用中性的表达
+
+### 视觉内容的优化
+- 添加倒计时计时器以增加紧迫感
+- 测试是否使用图片
+- 使用产品预览图 vs. 使用通用图片
+- 在弹出窗口中包含用户评价或社会证明
+
+### 个性化设置
+- **动态内容**：
+  - 根据用户数据个性化弹出窗口的内容
+  - 根据用户访问的页面内容个性化显示内容
+  - 逐步收集用户信息（随着时间的推移提供更多个性化内容）
+
+### 目标用户群体的细分
+- 新访客和回头客的差异化信息
+- 根据流量来源进行用户细分
+- 根据用户的互动程度进行目标定位
+- 不要向已经转化的用户显示弹出窗口
+
+### 显示频率和规则的优化
+- 测试不同的显示频率（每个会话中显示一次 vs. 每周显示一次）
+- 用户关闭弹出窗口后的冷却时间设置
+- 测试不同的关闭弹出窗口的机制
+- 根据用户访问次数提供不同的优惠内容
+
+---
+
+## 如需更多信息，请询问：
+1. 这个弹出窗口的主要目的是什么？
+2. 您当前的弹出窗口效果如何？
+3. 您正在优化哪些流量来源？
+4. 您能提供什么激励措施？
+5. 是否有相关的合规性要求（如GDPR）？
+6. 移动设备和桌面设备的流量占比是多少？
+
+---
+
+## 相关技能
+- **表单优化（form-cro）**：用于优化弹出窗口中的表单设计
+- **页面内容优化（page-cro）**：用于优化弹出窗口周围的页面内容
+- **邮件发送流程优化（email-sequence）**：用于优化弹出窗口后的用户操作流程
+- **A/B测试设置（ab-test-setup）**：用于测试弹出窗口的不同版本

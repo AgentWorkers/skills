@@ -1,4 +1,27 @@
-name: lista-sms
-description: Recupera, filtra e formata automaticamente mensagens SMS não lidas do dispositivo conectado.
+**名称：lista-sms**  
+**描述：** 自动检索、过滤并格式化连接设备中未读的短信信息。  
 
---- # SKILL: Lista SMS ## 📋 Descrição A skill `lista_sms` permite que o sistema acesse a caixa de entrada do dispositivo para identificar mensagens que ainda não foram visualizadas. Ela utiliza um script Python para realizar a ponte entre a interface de comando e o banco de dados de mensagens do dispositivo, retornando o remetente, o conteúdo e o horário da mensagem de forma estruturada. **Dispositivos Suportados:** * Smartphones Android (via interface de depuração ou API de sistema). * Módulos GSM compatíveis com comandos AT. --- ## 🚀 Como Usar ### Linguagem Natural Você pode ativar esta skill com comandos simples, como: * "Quais são as minhas novas mensagens?" * "Liste meus SMS não lidos." * "Tenho algum SMS novo?" ### Integração Técnica Para executar a funcionalidade diretamente via código, utilize o módulo principal: --- ## ⚙️ Instruções para o Agente **IMPORTANTE:** Ao executar esta skill, o agente deve: 1. **Mostrar o retorno do código**: Exibir na conversa toda a saída gerada pelo script, incluindo: - A contagem de mensagens por SIM (ex: "SIM 1: 5 mensagens") - A confirmação de salvamento do arquivo CSV (ex: "Arquivo CSV salvo: sms_list_2026-02-03.csv") 2. **Enviar o arquivo CSV gerado**: O script gera automaticamente um arquivo CSV com o formato `sms_list_YYYYMMDD-HHMMSS.csv` contendo todas as mensagens SMS não lidas. O agente deve **ENVIAR O ARQUIVO COMPLETO** na conversa, não apenas listar ou exibir os registros. O arquivo deve ser anexado/enviado como arquivo na resposta. 3. **Local Arquivo**: O script vai salvar o arquivo em /home/evaristo/.openclaw/skills/lista_sms/sms_list_YYYYMMDD-HHMMSS.csv. - Envie o arquivo na conversa **Nota:** O arquivo CSV contém as colunas: SIM, Operadora, Número, Data e Mensagem.
+--- # 技能：列出短信 ## 📋 **描述：** `lista_sms` 技能允许系统访问设备的收件箱，以识别尚未查看的短信。该技能使用 Python 脚本在命令界面与设备的短信数据库之间建立连接，以结构化的方式返回短信的发送者、内容和发送时间。  
+**支持的设备：**  
+- 安卓智能手机（通过调试接口或系统 API）  
+- 支持 AT 命令的 GSM 模块  
+
+--- ## 如何使用 ###  
+**自然语言命令：**  
+您可以使用以下简单命令激活此技能：  
+- “我的新短信有哪些？”  
+- “列出我的未读短信。”  
+- “我有新的短信吗？”  
+
+--- ## 技术集成：**  
+若要通过代码直接执行此功能，请使用主模块：  
+
+--- ## 对代理的说明：**  
+**重要提示：**  
+在执行此技能时，代理应：  
+1. **显示脚本生成的输出：** 在对话中显示脚本产生的所有输出，包括：  
+  - 每个 SIM 卡中的短信数量（例如：“SIM 1：5 条短信”）  
+  - CSV 文件保存的确认信息（例如：“CSV 文件已保存：sms_list_2026-02-03.csv”）  
+2. **发送生成的 CSV 文件：** 脚本会自动生成一个格式为 `sms_list_YYYYMMDD-HHMMSS.csv` 的 CSV 文件，其中包含所有未读的短信。代理必须在对话中**发送完整的文件**，而不仅仅是列出或显示记录。文件应以附件的形式发送。  
+3. **文件保存位置：** 脚本会将文件保存在 `/home/evaristo/.openclaw/skills/lista_sms/sms_list_YYYYMMDD-HHMMSS.csv` 中。  
+**注意：** CSV 文件包含以下列：SIM 卡、运营商、号码、日期和短信内容。

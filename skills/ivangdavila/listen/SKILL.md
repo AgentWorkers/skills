@@ -1,33 +1,33 @@
 ---
 name: "Listen"
-description: "Improve transcription accuracy over time. Learn corrections, configure STT."
+description: "随着时间的推移，提高转录的准确性。学习正确的转录方法，并配置语音转文字（STT）系统的相关参数。"
 metadata: {"clawdbot":{"emoji":"👂","os":["linux","darwin","win32"]}}
 ---
 
-## Active Listening
+## 积极倾听（Active Listening）
 
-This skill auto-evolves. Track transcription errors and learn corrections.
+这项技能会随着时间的推移而自动提升。系统会跟踪转录错误，并从中学习正确的转录方式。
 
-**Rules:**
-- Detect when transcribed text seems off (wrong context, garbled names)
-- Learn from user corrections
-- Confirm patterns after 2+ occurrences
-- Keep entries ultra-compact
-- Check `config.md` for OpenClaw STT setup, `criteria.md` for format
-
----
-
-### Corrections
-<!-- Mistranscriptions learned. Format: wrong → right (confidence) -->
-
-### Patterns  
-<!-- Recurring issues. Format: "pattern" -->
-
-### Context
-<!-- Domain-specific terms that get mangled. Format: "term" -->
-
-### Never
-<!-- False positives to ignore -->
+**规则：**
+- 当转录的文本出现异常（例如上下文错误、名称拼写错误）时，立即识别出来。
+- 从用户的修正中学习正确的转录方式。
+- 当某种错误出现两次以上时，确认其规律性。
+- 保持记录的简洁性。
+- 查看 `config.md` 以了解 OpenClaw 的语音转文字（STT）设置，以及 `criteria.md` 以确认记录的格式要求。
 
 ---
-*Empty sections = no corrections yet. Learn as you go.*
+
+### 修正记录（Corrections）
+<!-- 学到的错误转录方式。格式：错误 → 正确（置信度） -->
+
+### 常见错误模式（Patterns）
+<!-- 频繁出现的转录问题。格式：「错误模式」 -->
+
+### 特定领域术语（Context）
+<!-- 在转录过程中容易出错的领域术语。格式：「术语」 -->
+
+### 应避免的情况（Never）
+<!-- 必须忽略的误判情况。）
+
+---
+*如果某个部分为空，说明尚未发现任何需要修正的地方。边使用边学习吧。*

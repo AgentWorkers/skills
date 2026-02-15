@@ -1,6 +1,12 @@
 ---
 name: hardcover
-description: Query reading lists and book data from Hardcover.app via GraphQL API. Triggers when user mentions Hardcover, asks about their reading list/library, wants book progress, searches for books/authors/series, or references "currently reading", "want to read", or "books I've read". Also use for syncing reading data to other systems (Obsidian, etc.) or tracking reading goals.
+description: 通过 GraphQL API 从 Hardcover.app 查询阅读列表和书籍数据。以下情况会触发该功能：  
+- 用户提及 Hardcover 时；  
+- 用户询问自己的阅读列表或图书馆信息时；  
+- 用户想了解书籍的阅读进度时；  
+- 用户搜索书籍、作者或系列时；  
+- 用户查询“正在阅读的书籍”、“想阅读的书籍”或“已读过的书籍”时。  
+此外，该功能还可用于将阅读数据同步到其他系统（如 Obsidian 等），或帮助用户跟踪阅读目标。
 homepage: https://hardcover.app
 metadata:
   {
@@ -14,17 +20,17 @@ metadata:
 
 # Hardcover GraphQL API
 
-Query your reading library, book metadata, and search Hardcover's catalog.
+您可以查询自己的阅读库、书籍元数据，以及Hardcover的图书目录。
 
-## Configuration
+## 配置
 
-- **Env variable:** `HARDCOVER_API_TOKEN` from https://hardcover.app/settings
-- **Endpoint:** `https://api.hardcover.app/v1/graphql`
-- **Rate limit:** 60 req/min, 30s timeout, max 3 query depth
+- **环境变量：** `HARDCOVER_API_TOKEN`（从 https://hardcover.app/settings 获取）
+- **端点：** `https://api.hardcover.app/v1graphql`
+- **速率限制：** 每分钟60次请求，超时时间为30秒，查询深度最多为3层
 
-## Authentication
+## 认证
 
-All queries require `Authorization: Bearer {token}` header (token from settings, add `Bearer ` prefix):
+所有请求都需要包含 `Authorization: Bearer {token}` 头部（`token` 从设置中获取，需在请求前加上 `Bearer ` 前缀）：
 
 ```bash
 curl -X POST https://api.hardcover.app/v1/graphql \
@@ -33,25 +39,25 @@ curl -X POST https://api.hardcover.app/v1/graphql \
   -d '{"query": "query { me { id username } }"}'
 ```
 
-## Workflow
+## 工作流程
 
-1. **Get user ID first** — most queries need it:
+1. **首先获取用户ID** — 大多数查询都需要用户ID：
    ```graphql
    query { me { id username } }
    ```
 
-2. **Query by status** — use `status_id` filter:
-   - `1` = Want to Read
-   - `2` = Currently Reading  
-   - `3` = Read
-   - `4` = Paused
-   - `5` = Did Not Finish
+2. **按状态查询** — 使用 `status_id` 进行过滤：
+   - `1` = 想阅读
+   - `2` = 正在阅读
+   - `3` = 已读
+   - `4` = 暂停
+   - `5` = 未读完
 
-3. **Paginate large results** — use `limit`/`offset`, add `distinct_on: book_id`
+3. **分页显示大量结果** — 使用 `limit` 和 `offset` 参数，并添加 `distinct_on: book_id` 以确保结果唯一：
 
-## Common Queries
+## 常用查询
 
-### Currently Reading with Progress
+### 显示当前正在阅读的书籍及其阅读进度
 
 ```graphql
 query {
@@ -69,7 +75,7 @@ query {
 }
 ```
 
-### Library by Status
+### 按状态查询书籍
 
 ```graphql
 query ($userId: Int!, $status: Int!) {
@@ -90,7 +96,7 @@ query ($userId: Int!, $status: Int!) {
 }
 ```
 
-### Search Books/Authors/Series
+### 搜索书籍/作者/系列
 
 ```graphql
 query ($q: String!, $type: String!) {
@@ -100,9 +106,9 @@ query ($q: String!, $type: String!) {
 }
 ```
 
-`query_type`: `Book`, `Author`, `Series`, `Character`, `List`, `Publisher`, `User`
+`query_type`：`Book`, `Author`, `Series`, `Character`, `List`, `Publisher`, `User`
 
-### Book Details by Title
+### 按书名查询书籍详情
 
 ```graphql
 query {
@@ -120,21 +126,21 @@ query {
 }
 ```
 
-## Limitations
+## 限制
 
-- Read-only (no mutations yet)
-- No text search operators (`_like`, `_ilike`, `_regex`)
-- Access limited to: your data, public data, followed users' data
-- Tokens expire after 1 year
+- 仅支持读取操作（目前不支持数据修改）
+- 不支持文本搜索操作（如 `_like`, `_ilike`, `_regex`）
+- 访问权限仅限于：您的个人数据、公开数据以及您关注的用户的数据
+- API令牌的有效期为1年
 
-## Entity Reference
+## 实体参考
 
-For detailed field documentation on Books, Editions, Authors, Series, User Books, Activities, Lists, Goals, and other entities, see [references/entities.md](references/entities.md).
+有关书籍、版本、作者、系列、用户书籍、活动、列表、目标等实体的详细字段说明，请参阅 [references/entities.md](references/entities.md)。
 
-## Response Codes
+## 响应代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 200 | Success |
-| 401 | Invalid/expired token |
-| 429 | Rate limited |
+| 200 | 请求成功 |
+| 401 | 令牌无效或已过期 |
+| 429 | 超过速率限制 |

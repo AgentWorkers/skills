@@ -1,6 +1,6 @@
 ---
 name: pubmed-edirect
-description: Search and retrieve literature from PubMed using NCBI's EDirect command-line tools.
+description: 使用 NCBI 的 EDirect 命令行工具从 PubMed 中搜索并检索文献。
 requires:
   bins:
     - esearch
@@ -35,81 +35,81 @@ metadata:
         description: Email address to identify yourself to NCBI (recommended)
 ---
 
-# PubMed EDirect Skill
+# PubMed EDirect 技能
 
-Search and retrieve literature from PubMed using NCBI's EDirect command-line tools.
+使用 NCBI 的 EDirect 命令行工具从 PubMed 中搜索和检索文献。
 
-## Overview
+## 概述
 
-This skill provides access to PubMed and other NCBI databases through the official EDirect (Entrez Direct) utilities. EDirect is a suite of programs that provide access to the NCBI's suite of interconnected databases (publication, sequence, structure, gene, variation, expression, etc.) from Unix terminals.
+该技能通过官方的 EDirect（Entrez Direct）工具提供对 PubMed 以及其他 NCBI 数据库的访问。EDirect 是一套程序，允许从 Unix 终端访问 NCBI 的各种互连数据库（包括出版物、序列、结构、基因、变异、表达等信息）。
 
-**Note: This is a local installation skill** – all tools run directly on your system without Docker or containerization. Follow the [INSTALL.md](INSTALL.md) guide for local setup.
+**注意：这是一个本地安装技能**——所有工具都在您的系统上直接运行，无需 Docker 或容器化。请按照 [INSTALL.md](INSTALL.md) 文档进行本地设置。
 
-## Structure
+## 结构
 
-The skill is organized into the following files:
+该技能包含以下文件：
 
-- **`INSTALL.md`** - Installation and configuration guide
-- **`BASICS.md`** - Basic usage and common commands
-- **`ADVANCED.md`** - Advanced techniques and complex queries
-- **`EXAMPLES.md`** - Practical usage examples
-- **`REFERENCE.md`** - Quick reference (field qualifiers, formats, etc.)
-- **`OPENCLAW_INTEGRATION.md`** - OpenClaw-specific usage guide
-- **`scripts/`** - Useful bash scripts for common tasks
+- **`INSTALL.md`** - 安装和配置指南
+- **`BASICS.md`** - 基本用法和常用命令
+- **`ADVANCED.md`** - 高级技术和复杂查询
+- **`EXAMPLES.md`** - 实用示例
+- **`REFERENCE.md`** - 快速参考（字段限定符、格式等）
+- **`OPENCLAW_INTEGRATION.md`** - 专门针对 OpenClaw 的使用指南
+- **`scripts/`** - 用于常见任务的有用 bash 脚本
 
-## Quick Start
+## 快速入门
 
-1. **Install EDirect** (see [INSTALL.md](INSTALL.md))
-2. **Try a basic search**:
+1. **安装 EDirect**（请参阅 [INSTALL.md](INSTALL.md)）
+2. **尝试基本搜索**：
    ```bash
    esearch -db pubmed -query "CRISPR [TIAB]" | efetch -format abstract
    ```
-3. **Explore examples** in [EXAMPLES.md](EXAMPLES.md)
+3. **查看 [EXAMPLES.md](EXAMPLES.md) 中的示例**
 
-## Core Tools
+## 核心工具
 
-The skill provides access to EDirect tools through OpenClaw's `exec` capability:
+该技能通过 OpenClaw 的 `exec` 功能提供对 EDirect 工具的访问：
 
-- `esearch` - Search databases
-- `efetch` - Retrieve records
-- `elink` - Find related records
-- `efilter` - Filter results
-- `xtract` - Extract data from XML
-- `einfo` - Get database information
+- `esearch` - 搜索数据库
+- `efetch` - 检索记录
+- `elink` - 查找相关记录
+- `efilter` - 筛选结果
+- `xtract` - 从 XML 中提取数据
+- `einfo` - 获取数据库信息
 
-## Databases Supported
+## 支持的数据库
 
-EDirect supports numerous NCBI databases including:
+EDirect 支持众多 NCBI 数据库，包括：
 
-- `pubmed` - Biomedical literature
-- `pmc` - PubMed Central full-text articles
-- `gene` - Gene information
-- `nuccore` - Nucleotide sequences
-- `protein` - Protein sequences
-- `mesh` - Medical Subject Headings
-- And many more...
+- `pubmed` - 生物医学文献
+- `pmc` - PubMed Central 的全文文章
+- `gene` - 基因信息
+- `nuccore` - 核苷酸序列
+- `protein` - 蛋白质序列
+- `mesh` - 医学主题词
+- 以及更多……
 
-## Key Features
+## 主要特点
 
-- **Command-line access** to NCBI databases
-- **Pipeline architecture** using Unix pipes
-- **Structured data extraction** with XML parsing
-- **Batch processing** capabilities
-- **Cross-database linking** between records
+- **命令行访问** NCBI 数据库
+- **使用 Unix 管道（pipe）的流程化架构**
+- **通过 XML 解析进行结构化数据提取**
+- **批处理功能**
+- **记录之间的跨数据库链接**
 
-## Getting Help
+## 获取帮助
 
-- Use `-help` with any EDirect command: `esearch -help`
-- Consult the [official documentation](https://www.ncbi.nlm.nih.gov/books/NBK179288/)
-- Check troubleshooting in installation guide
+- 对任何 EDirect 命令使用 `-help`：`esearch -help`
+- 查阅 [官方文档](https://www.ncbi.nlm.nih.gov/books/NBK179288/)
+- 查看安装指南中的故障排除方法
 
-## Included Scripts
+## 包含的脚本
 
-The `scripts/` directory contains ready-to-use bash scripts:
+`scripts/` 目录中包含一些可用的 bash 脚本：
 
 ### `batch_fetch_abstracts.sh`
 
-Fetch abstracts for a list of PMIDs with error handling and rate limiting.
+批量获取 PMID 列表的摘要，并具有错误处理和速率限制功能。
 
 ```bash
 ./scripts/batch_fetch_abstracts.sh pmids.txt abstracts/ 0.5
@@ -117,7 +117,7 @@ Fetch abstracts for a list of PMIDs with error handling and rate limiting.
 
 ### `search_export_csv.sh`
 
-Search PubMed and export results to CSV with metadata.
+搜索 PubMed 并将结果连同元数据导出为 CSV 文件。
 
 ```bash
 ./scripts/search_export_csv.sh "CRISPR [TIAB]" 100 results.csv
@@ -125,14 +125,14 @@ Search PubMed and export results to CSV with metadata.
 
 ### `publication_trends.sh`
 
-Analyze publication trends over time with visualization.
+分析随时间变化的出版物趋势，并提供可视化展示。
 
 ```bash
 ./scripts/publication_trends.sh "machine learning" 2010 2023 trends.csv
 ```
 
-## Notes
+## 注意事项
 
-This skill requires EDirect to be installed and configured on your system. It provides command templates and examples that can be executed through OpenClaw's `exec` tool.
+使用该技能之前，需要在您的系统上安装并配置 EDirect。它提供了可以通过 OpenClaw 的 `exec` 工具执行的命令模板和示例。
 
-For complex workflows, consider creating reusable shell scripts or using the included scripts.
+对于复杂的工作流程，可以考虑创建可重用的 shell 脚本或使用这些内置脚本。

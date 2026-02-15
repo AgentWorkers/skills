@@ -1,22 +1,22 @@
 ---
 slug: "risk-assessment-ml"
 display_name: "Risk Assessment ML"
-description: "Apply machine learning for construction project risk assessment. Predict schedule delays, cost overruns, and safety incidents using historical data and project characteristics."
+description: "应用机器学习技术进行建设项目风险评估。利用历史数据及项目特性，预测进度延误、成本超支以及安全事故的发生。"
 ---
 
-# Risk Assessment with Machine Learning
+# 利用机器学习进行风险评估
 
-## Overview
+## 概述
 
-This skill implements ML-based risk assessment for construction projects. Predict potential risks before they occur and prioritize mitigation strategies based on data-driven insights.
+本技能实现了基于机器学习（ML）的建筑项目风险评估机制。能够在潜在风险发生之前进行预测，并根据数据驱动的洞察结果来优先选择风险缓解策略。
 
-**Risk Categories:**
-- **Schedule Risk**: Delays, critical path impacts
-- **Cost Risk**: Budget overruns, change orders
-- **Safety Risk**: Incident probability, hazard identification
-- **Quality Risk**: Defects, rework probability
+**风险类别：**
+- **进度风险**：项目延误、关键路径受影响
+- **成本风险**：预算超支、变更订单
+- **安全风险**：事故发生概率、危险源识别
+- **质量风险**：缺陷出现概率、返工可能性
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -47,9 +47,9 @@ risk_probability = model.predict_proba(new_project)[0][1]
 print(f"Delay Risk: {risk_probability:.1%}")
 ```
 
-## Comprehensive Risk Model
+## 全面风险模型
 
-### Risk Assessment Framework
+### 风险评估框架
 
 ```python
 import pandas as pd
@@ -361,9 +361,9 @@ class ConstructionRiskAssessor:
         self.feature_importance = data['feature_importance']
 ```
 
-## Feature Engineering
+## 特征工程
 
-### Project Risk Features
+### 项目风险特征
 
 ```python
 def engineer_risk_features(project_data: pd.DataFrame) -> pd.DataFrame:
@@ -405,7 +405,7 @@ def count_winter_months(start_date, end_date):
     return sum(1 for m in months if m.month in winter_months)
 ```
 
-## Risk Report Generation
+## 风险报告生成
 
 ```python
 def generate_risk_report(assessor: ConstructionRiskAssessor,
@@ -440,22 +440,22 @@ def generate_risk_report(assessor: ConstructionRiskAssessor,
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Risk Type | Key Features | Model Type |
+| 风险类型 | 关键特征 | 模型类型 |
 |-----------|--------------|------------|
-| Schedule | Duration, complexity, weather | Random Forest |
-| Cost | Budget, scope changes, market | Gradient Boosting |
-| Safety | Work type, team experience | Random Forest |
-| Quality | Supervision, materials | Logistic Regression |
+| 进度风险 | 项目持续时间、复杂性、天气条件 | 随机森林（Random Forest） |
+| 成本风险 | 预算、项目范围变更、市场因素 | 梯度提升算法（Gradient Boosting） |
+| 安全风险 | 工作类型、团队经验 | 随机森林（Random Forest） |
+| 质量风险 | 监控过程、材料质量 | 逻辑回归（Logistic Regression） |
 
-## Resources
+## 资源推荐
 
-- **Scikit-learn**: https://scikit-learn.org
-- **DDC Website**: https://datadrivenconstruction.io
+- **Scikit-learn**：https://scikit-learn.org
+- **DDC 网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `cost-prediction` for detailed cost modeling
-- See `4d-simulation` for schedule analysis
-- See `data-visualization` for risk dashboards
+- 详情请参阅 `cost-prediction`（成本预测相关内容）
+- 详情请参阅 `4d-simulation`（进度分析相关内容）
+- 详情请参阅 `data-visualization`（风险仪表盘相关内容）

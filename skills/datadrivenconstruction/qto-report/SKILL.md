@@ -1,28 +1,28 @@
 ---
 slug: "qto-report"
 display_name: "QTO Report"
-description: "Generate Quantity Take-Off (QTO) reports from BIM/CAD data. Extract volumes, areas, counts by category. Group elements, apply calculation rules, and create cost estimates automatically."
+description: "根据BIM/CAD数据生成数量清单（QTO）报告。提取体积、面积以及按类别分类的计数结果。对元素进行分组，应用计算规则，并自动生成成本估算。"
 ---
 
-# Quantity Take-Off (QTO) Report Generation
+# 数量统计（QTO）报告生成
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 3.2), this skill automates the extraction and grouping of quantities from BIM/CAD data. QTO is the foundation for cost estimation, scheduling, and project planning in construction.
+基于DDC方法论（第3.2章），此功能可自动从BIM/CAD数据中提取并分类各项数量信息。数量统计（QTO）是建筑项目中成本估算、进度安排和项目规划的基础。
 
-**Book Reference:** "Quantity Take-Off и автоматическое создание смет" / "QTO and Automated Estimates"
+**参考书籍**：《数量统计与自动估算》（"Quantity Take-Off и автоматическое создание смет"）
 
-> "QTO Quantity Take-Off: группировка данных по атрибутам позволяет автоматически извлекать объемы и количества из BIM-моделей для расчета стоимости."
-> — DDC Book, Chapter 3.2
+> “通过按属性对数据进行分组，可以自动从BIM模型中提取数量和体积信息，从而用于成本计算。”
+> — DDC手册，第3.2章
 
-## 5D BIM Concept
+## 5D BIM概念
 
-The QTO process is central to 5D BIM:
-- **3D**: Geometry (volume, area, length)
-- **4D**: Time (schedule integration)
-- **5D**: Cost (quantity × unit price)
+数量统计（QTO）过程是5D BIM的核心组成部分：
+- **3D**：几何形状（体积、面积、长度）
+- **4D**：时间（进度整合）
+- **5D**：成本（数量 × 单价）
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -44,9 +44,9 @@ qto['Total_Cost'] = qto['Volume'] * qto['Unit_Price']
 qto.to_excel("qto_report.xlsx")
 ```
 
-## Core QTO Functions
+## 核心QTO功能
 
-### Basic QTO by Category
+### 按类别进行基本数量统计
 
 ```python
 import pandas as pd
@@ -88,7 +88,7 @@ qto = generate_qto(df, group_by='Category')
 print(qto)
 ```
 
-### Multi-Level QTO
+### 多层级数量统计
 
 ```python
 def generate_multi_level_qto(df):
@@ -112,7 +112,7 @@ qto = generate_multi_level_qto(df)
 qto.to_excel("qto_multi_level.xlsx")
 ```
 
-### QTO with Pivot Table
+### 使用数据透视表进行数量统计
 
 ```python
 def generate_qto_pivot(df, values='Volume', index='Level', columns='Category'):
@@ -135,9 +135,9 @@ qto_pivot = generate_qto_pivot(df, values='Volume')
 qto_pivot.to_excel("qto_pivot.xlsx")
 ```
 
-## Cost Calculation from QTO
+## 从数量统计结果计算成本
 
-### Apply Unit Prices
+### 应用单价
 
 ```python
 def calculate_cost_from_qto(qto_df, prices_df, quantity_col='Volume'):
@@ -177,7 +177,7 @@ cost_estimate = calculate_cost_from_qto(qto, prices)
 cost_estimate.to_excel("cost_estimate.xlsx", index=False)
 ```
 
-### Apply Rules from Excel
+### 应用Excel中的规则
 
 ```python
 def apply_excel_rules(df, rules_path):
@@ -217,9 +217,9 @@ def apply_excel_rules(df, rules_path):
 df_with_quantities = apply_excel_rules(df, "calculation_rules.xlsx")
 ```
 
-## BIM Data Extraction Patterns
+## BIM数据提取方式
 
-### From Revit Export (CSV)
+### 从Revit导出（CSV格式）
 
 ```python
 def process_revit_export(csv_path):
@@ -253,7 +253,7 @@ df = process_revit_export("revit_schedule.csv")
 qto = generate_qto(df)
 ```
 
-### From IFC Export
+### 从IFC导出
 
 ```python
 # Using IfcOpenShell
@@ -296,9 +296,9 @@ df = extract_qto_from_ifc("model.ifc")
 qto = generate_qto(df, group_by='Type')
 ```
 
-## Advanced QTO Reports
+## 高级QTO报告
 
-### Detailed Material Breakdown
+### 详细材料分解
 
 ```python
 def material_breakdown_qto(df):
@@ -328,7 +328,7 @@ material_qto = material_breakdown_qto(df)
 material_qto.to_excel("material_breakdown.xlsx")
 ```
 
-### QTO with Waste Factors
+### 考虑损耗因素的数量统计
 
 ```python
 def qto_with_waste(df, waste_factors):
@@ -355,7 +355,7 @@ waste = {'Concrete': 1.05, 'Brick': 1.08, 'Steel': 1.03}
 qto = qto_with_waste(df, waste)
 ```
 
-### QTO Comparison (Design vs As-Built)
+### 设计与实际施工情况的数量对比
 
 ```python
 def compare_qto(design_df, asbuilt_df, group_by='Category'):
@@ -381,9 +381,9 @@ comparison = compare_qto(design_df, asbuilt_df)
 print(comparison)
 ```
 
-## Export Functions
+## 导出功能
 
-### Export to Multiple Formats
+### 导出多种格式
 
 ```python
 def export_qto_report(qto_df, base_name, include_charts=True):
@@ -416,26 +416,26 @@ def export_qto_report(qto_df, base_name, include_charts=True):
 export_qto_report(qto, "project_qto")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Task | Code |
+| 任务 | 代码示例 |
 |------|------|
-| Basic QTO | `df.groupby('Category')['Volume'].sum()` |
-| Multi-column QTO | `df.groupby(['Level', 'Category']).agg({...})` |
-| Pivot QTO | `pd.pivot_table(df, values='Volume', ...)` |
-| Apply prices | `qto.merge(prices, on='Category')` |
-| Calculate cost | `df['Cost'] = df['Volume'] * df['Unit_Price']` |
-| Add waste factor | `df['Gross'] = df['Net'] * waste_factor` |
+| 基本数量统计 | `df.groupby('Category')['Volume'].sum()` |
+| 多列数量统计 | `df.groupby(['Level', 'Category']).agg {...})` |
+| 使用数据透视表 | `pd.pivot_table(df, values='Volume', ...)` |
+| 应用单价 | `qto.merge(prices, on='Category')` |
+| 计算成本 | `df['Cost'] = df['Volume'] * df['Unit_Price']` |
+| 加入损耗因素 | `df['Gross'] = df['Net'] * waste_factor` |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 3.2
-- **Website**: https://datadrivenconstruction.io
-- **IfcOpenShell**: https://ifcopenshell.org
+- **参考书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第3.2章
+- **官方网站**：https://datadrivenconstruction.io
+- **IfcOpenShell**：https://ifcopenshell.org
 
-## Next Steps
+## 下一步操作
 
-- See `cost-estimation-resource` for detailed cost calculations
-- See `auto-estimate-generator` for automated estimate creation
-- See `gantt-chart` for 4D scheduling integration
-- See `co2-estimation` for carbon footprint calculations
+- 详情请参阅`cost-estimation-resource`以了解成本计算方法
+- 详情请参阅`auto-estimate-generator`以了解自动估算工具的使用方法
+- 详情请参阅`gantt-chart`以了解4D进度安排功能
+- 详情请参阅`co2-estimation`以了解碳足迹计算方法

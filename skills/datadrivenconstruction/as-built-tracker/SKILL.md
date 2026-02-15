@@ -1,25 +1,24 @@
 ---
 slug: "as-built-tracker"
 display_name: "As Built Tracker"
-description: "Track as-built documentation and record drawings. Monitor submission status, manage revisions, and ensure completeness for handover."
+description: "跟踪实际构建的文档和记录相关图纸。监控提交状态，管理修订内容，并确保所有文件在移交时都是完整的。"
 ---
 
-# As-Built Documentation Tracker
+# 已建成文档跟踪系统
 
-## Business Case
+## 业务需求
 
-### Problem Statement
-As-built documentation challenges:
-- Tracking hundreds of drawings
-- Managing revisions
-- Ensuring completeness
-- Meeting handover deadlines
+### 问题描述
+现有的建成文档管理方式面临以下挑战：
+- 需要跟踪数百份图纸文件
+- 需要管理文档的修订版本
+- 确保文档的完整性
+- 需要按时完成文档的移交工作
 
-### Solution
-Systematic tracking of as-built documentation submissions, revisions, and approval status.
+### 解决方案
+通过系统化的方式跟踪建成文档的提交、修订过程以及审批状态。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -373,8 +372,7 @@ class AsBuiltTracker:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date, timedelta
 
@@ -405,26 +403,26 @@ tracker.record_submission("DOC-0001", revision="A", submitted_by="John Smith")
 tracker.review_submission("DOC-0001", approved=True, reviewer="PM", comments="Approved")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Status Summary
+### 1. 状态概览
 ```python
 summary = tracker.get_summary()
 print(f"Completion: {summary['completion_rate']}%")
 print(f"Overdue: {summary['overdue']}")
 ```
 
-### 2. Contractor Report
+### 2. 承包商报告
 ```python
 status = tracker.get_contractor_status("ABC Architects")
 print(f"Pending: {status['pending']}")
 ```
 
-### 3. Forecast
+### 3. 预测分析
 ```python
 forecast = tracker.forecast_completion()
 print(f"On Track: {forecast['on_track']}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 5.1 - Documentation Management
+## 相关资源
+- **DDC手册**：第5.1章 - 文档管理

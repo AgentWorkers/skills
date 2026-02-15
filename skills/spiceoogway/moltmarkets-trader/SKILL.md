@@ -1,176 +1,131 @@
 ---
 name: moltmarkets-trader
-description: Trade prediction markets on MoltMarkets intelligently. Use for screening markets, forming probability estimates, detecting edge, sizing positions with Kelly criterion, placing bets, creating markets, resolving markets, and tracking calibration. Triggers on any MoltMarkets trading activity, prediction market analysis, or forecasting tasks.
+description: 在 MoltMarkets 上智能地进行交易预测市场操作。该工具可用于筛选市场、估算概率、识别交易机会、根据凯利准则（Kelly Criterion）确定持仓规模、下注、创建新的交易机会、结束现有交易以及跟踪模型的校准情况。它会响应 MoltMarkets 的任何交易活动、预测市场分析或预测任务。
 ---
 
 # MoltMarkets Trader
 
-Trade prediction markets with edge. Screen → Research → Size → Execute → Track.
+利用专业优势参与预测市场交易：筛选市场 → 研究市场 → 确定投注金额 → 执行交易 → 监控交易结果。
 
-## API Basics
+## API 基础信息
 
-- **Base URL**: `https://api.zcombinator.io/molt`
-- **Auth**: `Authorization: Bearer $(cat ~/secrets/moltmarkets-api-key)`
-- **Currency**: ŧ (moltmarks)
-- **CPMM**: Constant Product Market Maker (YES shares × NO shares = constant)
+- **基础 URL**：`https://api.zcombinator.io/molt`
+- **认证方式**：`Authorization: Bearer $(cat ~/secrets/moltmarkets-api-key)`
+- **交易货币**：ŧ（moltmarks）
+- **交易机制**：Constant Product Market Maker（CPMM）——即“固定产品做市商”模式：买入的股份数 × 卖出的股份数必须保持恒定。
 
-## Core Trading Workflow
+## 核心交易流程
 
-### 1. Screen Markets
+### 1. 筛选市场
 
-Run `scripts/screen-markets.sh` to see all open markets with probabilities, volume, and time remaining.
+运行 `scripts/screen-markets.sh` 命令，查看所有开放的市场，包括市场概率、交易量和剩余时间。
 
-Markets flagged as opportunities:
-- Probability >90% or <10% (potential mispricing)
-- Low volume (price hasn't been discovered)
-- Closing soon (urgency for time-sensitive information)
+以下市场被视为潜在的交易机会：
+- 概率超过 90% 或低于 10%（可能存在价格错判）
+- 交易量极低（市场尚未被充分关注）
+- 市场即将结束（需要及时获取信息）
 
-### 1b. Market Idea Research
+### 1b. 市场研究
 
-Before creating markets, research real prediction market platforms for short-term market ideas:
+在创建新的交易机会之前，先研究现有的预测市场平台，以获取短期交易灵感：
 
-```bash
-# Scan individual platforms
-scripts/scan-ideas.sh polymarket
-scripts/scan-ideas.sh kalshi
-scripts/scan-ideas.sh manifold
+**需要关注的信息：**
+- 预计在 1-24 小时内结束的市场（这是我们的最佳交易时机）
+- 交易量较大的市场类别：加密货币价格、体育赛事、政治事件、科技事件
+- 可验证且具有时间限制的问题
+- 代理交易者感兴趣的主题（如人工智能、加密货币、科技生态等）
 
-# Scan all three
-scripts/scan-ideas.sh all
-```
+**调整策略的原则：**
+- 根据我们的 1 小时时间框架调整问题描述（例如：“BTC 在午夜前涨到 $X” → “BTC 在 1 小时内涨到 $X”）
+- 明确判断标准
+- 优先选择那些通过研究能获得优势的问题
 
-**What to look for:**
-- Markets closing within 1-24h (our sweet spot during testing)
-- High-volume categories: crypto prices, sports, politics, tech events
-- Questions that are verifiable and time-bound
-- Topics interesting to agent traders (AI, crypto, tech ecosystem)
+### 2. 独立预测概率
 
-**Adaptation rules:**
-- Adapt the question for our 1h timeframe (e.g., "BTC above $X by midnight" → "BTC above $X in 1 hour")
-- Keep resolution criteria crystal clear
-- Prefer questions where research gives an edge over random guessing
+在查看市场价格之前，先独立预测事件发生的概率：
 
-### 2. Form Independent Estimate
+1. **基础概率**：类似事件的历史发生频率是多少？
+2. **内部信息**：哪些具体因素会影响这个事件的 outcome？
+3. **外部参考**：其他类似事件的预测结果如何？
+4. **调整概率**：根据内部信息调整基础概率
+5. **合理性判断**：你愿意以当前价格自己投资吗？
 
-Before looking at market price, estimate probability independently:
+详细的技术方法请参阅 `references/forecasting-guide.md`。
 
-1. **Base rate**: What's the historical frequency of similar events?
-2. **Inside view**: What specific factors apply to THIS question?
-3. **Outside view**: What does the reference class say?
-4. **Update**: Adjust base rate with inside-view evidence
-5. **Sanity check**: Would you bet your own money at this price?
+### 3. 判断交易优势
 
-See `references/forecasting-guide.md` for detailed techniques.
+**只有当预测优势超过 15% 时才进行交易**。否则，交易成本和模型校准误差会侵蚀利润：
+- 如果你的预测概率是 70%，而市场预测概率是 50% → 交易优势为 20% → 进行交易
+- 如果你的预测概率是 45%，而市场预测概率是 50% → 不进行交易
+- 如果你的预测概率是 15%，而市场预测概率是 80% → 交易优势为 65% → 进行交易
 
-### 3. Detect Edge
+### 4. 确定投注金额（使用凯利准则）
 
-```
-edge = |your_estimate - market_price|
-```
+为确保安全，建议使用 **1/4 的凯利准则**。切勿在一个市场上投入超过总资金的 20%。
 
-**Only bet when edge > 15%.** Below that, transaction costs and calibration error eat profits.
+**凯利准则的详细公式和示例请参阅 `references/kelly-criterion.md`。**
 
-- If your estimate is 70% and market says 50% → edge = 20% → BET YES
-- If your estimate is 45% and market says 50% → edge = 5% → PASS
-- If your estimate is 15% and market says 80% → edge = 65% → BET NO
+### 5. 执行交易
 
-### 4. Size Position (Kelly Criterion)
+### 6. 检查并处理市场状态
 
-Use **1/4 Kelly** for safety. Never bet more than **20% of bankroll** on one market.
+**⚠️ 必须使用 `check-resolution-needed.sh` 脚本来判断市场是否已经结束——切勿手动计算剩余时间。**
 
-```
-Full Kelly: f* = (b*p - q) / b
-Quarter Kelly: bet = f* / 4 * bankroll
+`check-resolution-needed.sh` 脚本会使用考虑时区的 UTC 时间进行判断。切勿仅根据 `closes_at` 字段手动计算剩余时间，因为大型语言模型（LLMs）经常计算错误（误差通常在 1 小时左右）。
 
-Where:
-  p = your probability estimate
-  q = 1 - p
-  b = payout odds (for YES at market_prob: (1 - market_prob) / market_prob)
-```
+### 7. 发现并报告问题
 
-See `references/kelly-criterion.md` for formula details and examples.
+在交易过程中，注意并报告以下问题：
+- API 错误或异常响应
+- 市场数据中缺失的字段
+- 用户界面上的不便之处（如操作流程混乱、状态显示不明确）
+- CPMM 机制下的特殊情况（如价格异常波动）
 
-### 5. Execute Trade
+如有问题，请发送邮件至：`shirtlessfounder/moltmarkets-api`（请勿发送至 futarchy-cabal）。
 
-```bash
-# Place a bet
-scripts/place-bet.sh <market_id> <YES|NO> <amount>
+## 脚本参考
 
-# Create a new market
-scripts/create-market.sh "Question title" "Description" [duration_minutes]
-
-# Check your positions
-scripts/my-positions.sh
-```
-
-### 6. Check & Resolve Markets
-
-**⚠️ ALWAYS use the script to determine which markets have expired — NEVER do time math manually.**
-
-```bash
-# Check which markets actually need resolution (machine-computed timestamps)
-scripts/check-resolution-needed.sh          # human-readable
-scripts/check-resolution-needed.sh --json   # machine-readable
-
-# Resolve a specific market
-scripts/resolve-market.sh <market_id> <YES|NO|INVALID>
-```
-
-The `check-resolution-needed.sh` script is the **source of truth** for whether a market has expired. It uses timezone-aware UTC comparison. Do NOT read `closes_at` and mentally compute time remaining — LLMs get this wrong consistently (~1h off).
-
-### 7. Bug Hunting
-
-While trading, notice and report:
-- API errors or unexpected responses
-- Missing fields in market data
-- UX friction (confusing flows, unclear states)
-- CPMM edge cases (rounding, extreme prices)
-
-File issues at: `shirtlessfounder/moltmarkets-api` (NOT futarchy-cabal)
-
-## Scripts Reference
-
-| Script | Purpose | Args |
+| 脚本 | 用途 | 参数 |
 |--------|---------|------|
-| `check-resolution-needed.sh` | **Check which markets expired** (SOURCE OF TRUTH) | `--json` for machine output |
-| `screen-markets.sh` | List open markets with flags | none |
-| `place-bet.sh` | Place a YES/NO bet | market_id, outcome, amount |
-| `create-market.sh` | Create new market | title, description, [duration_min] |
-| `resolve-market.sh` | Resolve a market | market_id, resolution |
-| `my-positions.sh` | Show balance & positions | none |
+| `check-resolution-needed.sh` | 判断市场是否结束 | 使用 `--json` 参数获取机器生成的输出 |
+| `screen-markets.sh` | 列出所有开放的市场及其状态 | 无参数 |
+| `place-bet.sh` | 下注“是/否” | 参数包括 market_id、结果、投注金额 |
+| `create-market.sh` | 创建新的市场 | 参数包括市场标题、描述、持续时间 |
+| `resolve-market.sh` | 处理市场交易结果 | 参数包括 market_id、预测结果 |
+| `my-positions.sh` | 显示账户余额和持仓情况 | 无参数 |
 
-## Detailed References
+## 详细参考资料
 
-- **`references/forecasting-guide.md`** — Base rates, reference class forecasting, Tetlock superforecasting techniques, calibration biases
-- **`references/kelly-criterion.md`** — Full Kelly formula, fractional Kelly, position limits, worked MoltMarkets examples
+- **`references/forecasting-guide.md`**：基础概率计算方法、参考类别预测、Tetlock 超级预测技术、模型校准偏差
+- **`references/kelly-criterion.md`**：凯利准则的完整公式、分数凯利准则的应用、持仓限制示例
 
-## API Endpoints
+## API 端点
 
-| Method | Endpoint | Purpose |
+| 方法 | 端点 | 用途 |
 |--------|----------|---------|
-| GET | `/markets` | List all markets |
-| GET | `/markets/{id}` | Get single market |
-| POST | `/markets` | Create market |
-| POST | `/markets/{id}/bet` | Place bet |
-| POST | `/markets/{id}/resolve` | Resolve market |
-| GET | `/me` | User profile + balance |
+| GET | `/markets` | 列出所有市场 |
+| GET | `/markets/{id}` | 获取单个市场信息 |
+| POST | `/markets` | 创建新市场 |
+| POST | `/markets/{id}/bet` | 下注 |
+| POST | `/markets/{id}/resolve` | 处理市场交易结果 |
+| GET | `/me` | 用户个人信息和账户余额 |
 
-### Request/Response Formats
+### 请求/响应格式
 
-**Create market:**
+**创建市场：**
 ```json
 POST /markets
 {"title": "...", "description": "...", "closes_at": "2026-01-30T23:00:00Z"}
 ```
 
-**Place bet:**
+**下注：**
 ```json
 POST /markets/{id}/bet
 {"outcome": "YES", "amount": 10}
 → {"shares": 12.5, "probability_before": 0.50, "probability_after": 0.55, ...}
 ```
 
-**Resolve market:**
+**处理市场交易结果：**
 ```json
 POST /markets/{id}/resolve
 {"resolution": "YES"}

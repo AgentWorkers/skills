@@ -13,11 +13,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Google Ads
+# 谷歌广告（Google Ads）
 
-Access the Google Ads API with managed OAuth authentication. Query campaigns, ad groups, keywords, and performance metrics using GAQL.
+通过管理的 OAuth 认证来访问谷歌广告 API。可以使用 GAQL 查询广告活动（campaigns）、广告组（ad groups）、关键词（keywords）以及性能指标（performance metrics）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List accessible customers
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-ads/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Ads API endpoint path. The gateway proxies requests to `googleads.googleapis.com` and automatically injects OAuth and developer tokens.
+请将 `{native-api-path}` 替换为实际的谷歌广告 API 端点路径。该网关会将请求代理到 `googleads.googleapis.com`，并自动插入 OAuth 令牌和开发者令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google Ads OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的谷歌广告 OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Ads connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个谷歌广告连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,17 +140,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### List Accessible Customers
+### 列出可访问的客户
 
 ```bash
 GET /google-ads/v23/customers:listAccessibleCustomers
 ```
 
-### Search (GAQL Query)
+### 搜索（GAQL 查询）
 
 ```bash
 POST /google-ads/v23/customers/{customerId}/googleAds:search
@@ -161,7 +161,7 @@ Content-Type: application/json
 }
 ```
 
-### Search Stream (for large results)
+### 搜索流（用于处理大量结果）
 
 ```bash
 POST /google-ads/v23/customers/{customerId}/googleAds:searchStream
@@ -172,9 +172,9 @@ Content-Type: application/json
 }
 ```
 
-## Common GAQL Queries
+## 常用 GAQL 查询
 
-### List Campaigns
+### 列出广告活动
 
 ```sql
 SELECT campaign.id, campaign.name, campaign.status, campaign.advertising_channel_type
@@ -183,7 +183,7 @@ WHERE campaign.status != 'REMOVED'
 ORDER BY campaign.name
 ```
 
-### Campaign Performance
+### 广告活动性能
 
 ```sql
 SELECT campaign.id, campaign.name, metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.conversions
@@ -192,7 +192,7 @@ WHERE segments.date DURING LAST_30_DAYS
 ORDER BY metrics.impressions DESC
 ```
 
-### List Ad Groups
+### 列出广告组
 
 ```sql
 SELECT ad_group.id, ad_group.name, ad_group.status, campaign.id, campaign.name
@@ -200,7 +200,7 @@ FROM ad_group
 WHERE ad_group.status != 'REMOVED'
 ```
 
-### List Keywords
+### 列出关键词
 
 ```sql
 SELECT ad_group_criterion.keyword.text, ad_group_criterion.keyword.match_type, metrics.impressions, metrics.clicks
@@ -208,7 +208,7 @@ FROM keyword_view
 WHERE segments.date DURING LAST_30_DAYS
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -251,34 +251,34 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Use `listAccessibleCustomers` first to get customer IDs
-- Customer IDs are 10-digit numbers (remove dashes)
-- Monetary values are in micros (divide by 1,000,000)
-- Date ranges: `LAST_7_DAYS`, `LAST_30_DAYS`, `THIS_MONTH`
-- Status values: `ENABLED`, `PAUSED`, `REMOVED`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 首先使用 `listAccessibleCustomers` 获取客户 ID。
+- 客户 ID 是 10 位数字（请删除破折号）。
+- 货币值以微秒（micros）为单位（需除以 1,000,000）。
+- 日期范围：`LAST_7_DAYS`、`LAST_30_days`、`THIS_MONTH`。
+- 状态值：`ENABLED`、`PAUSED`、`REMOVED`。
+- 重要提示：当 URL 包含方括号（`fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Ads connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Ads API |
+| 400 | 缺少谷歌广告连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自谷歌广告 API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥的有效性：
 
 ```bash
 python <<'EOF'
@@ -289,18 +289,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `google-ads`. For example:
+1. 确保您的 URL 路径以 `google-ads` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/google-ads/v23/customers:listAccessibleCustomers`
+- 错误格式：`https://gateway.maton.ai/v23/customers:listAccessibleCustomers`
 
-- Correct: `https://gateway.maton.ai/google-ads/v23/customers:listAccessibleCustomers`
-- Incorrect: `https://gateway.maton.ai/v23/customers:listAccessibleCustomers`
+## 资源
 
-## Resources
-
-- [Google Ads API Overview](https://developers.google.com/google-ads/api/docs/start)
-- [GAQL Reference](https://developers.google.com/google-ads/api/docs/query/overview)
-- [Metrics Reference](https://developers.google.com/google-ads/api/fields/v23/metrics)
-- [Search](https://developers.google.com/google-ads/api/reference/rpc/v23/GoogleAdsService/Search)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [谷歌广告 API 概述](https://developers.google.com/google-ads/api/docs/start)
+- [GAQL 参考](https://developers.google.com/google-ads/api/docs/query/overview)
+- [指标参考](https://developers.google.com/google-ads/api/fields/v23/metrics)
+- [搜索功能](https://developers.google.com/google-ads/api/reference/rpc/v23/GoogleAdsService/Search)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

@@ -1,45 +1,45 @@
 ---
 name: mog
-description: Microsoft Ops Gadget — CLI for Microsoft 365 (Mail, Calendar, Drive, Contacts, Tasks, Word, PowerPoint, Excel, OneNote).
+description: Microsoft Ops Gadget — 用于 Microsoft 365（邮件、日历、驱动器、联系人、任务、Word、PowerPoint、Excel、OneNote）的命令行界面（CLI）。
 ---
 
 # mog — Microsoft Ops Gadget
 
-CLI for Microsoft 365: Mail, Calendar, OneDrive, Contacts, Tasks, Word, PowerPoint, Excel, OneNote.
+这是一个用于管理 Microsoft 365 服务的命令行工具（CLI），支持 Mail、Calendar、OneDrive、Contacts、Tasks、Word、PowerPoint、Excel 和 OneNote 等服务。
 
-The Microsoft counterpart to `gog` (Google Ops Gadget). Same patterns, different cloud.
+它是 `gog`（Google Ops Gadget）的 Microsoft 对应版本，使用相同的操作模式，但针对不同的云服务。
 
-## Quick Reference
+## 快速参考
 
-For comprehensive usage, run:
+如需详细使用说明，请运行：
 ```bash
 mog --ai-help
 ```
 
-This outputs the full dashdash-compliant documentation including:
-- Setup/Prerequisites
-- All commands and options
-- Date/time formats
-- Examples (positive and negative)
-- Troubleshooting
-- Slug system explanation
-- gog compatibility notes
+该命令会输出符合 dashdash 格式的完整文档，内容包括：
+- 安装/前置要求
+- 所有命令及选项
+- 日期/时间格式
+- 使用示例
+- 故障排除方法
+- 关于 Slug 系统的说明
+- 与 `gog` 的兼容性说明
 
-## Modules
+## 模块
 
-| Module | Commands |
-|--------|----------|
-| **mail** | search, get, send, folders, drafts, attachment |
-| **calendar** | list, create, get, update, delete, calendars, respond, freebusy, acl |
-| **drive** | ls, search, download, upload, mkdir, move, rename, copy, rm |
-| **contacts** | list, search, get, create, update, delete, directory |
-| **tasks** | lists, list, add, done, undo, delete, clear |
-| **word** | list, export, copy |
-| **ppt** | list, export, copy |
-| **excel** | list, get, update, append, create, metadata, tables, add-sheet, clear, copy, export |
-| **onenote** | notebooks, sections, pages, get, create-notebook, create-section, create-page, delete, search |
+| 模块 | 命令        |
+|--------|------------|
+| **mail**  | search、get、send、folders、drafts、attachment |
+| **calendar** | list、create、get、update、delete、calendars、respond、freebusy、acl |
+| **drive** | ls、search、download、upload、mkdir、move、rename、copy、rm |
+| **contacts** | list、search、get、create、update、delete、directory |
+| **tasks** | list、add、done、undo、delete、clear |
+| **word**  | list、export、copy |
+| **ppt**  | list、export、copy |
+| **excel** | list、get、update、append、create、metadata、tables、add-sheet、clear、copy、export |
+| **onenote** | notebooks、sections、pages、get、create-notebook、create-section、create-page、delete、search |
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Mail
@@ -79,34 +79,34 @@ mog onenote notebooks
 mog onenote search "meeting notes"
 ```
 
-## Slugs
+## Slug 生成
 
-mog generates 8-character slugs for Microsoft's long GUIDs:
-- `a3f2c891` instead of `AQMkADAwATMzAGZmAS04MDViLTRiNzgt...`
-- All commands accept slugs or full IDs
-- Use `--verbose` to see full IDs
+mog 会为 Microsoft 的长 GUID 生成 8 个字符的 Slug：
+- 例如：`a3f2c891`（而非 `AQMkADAwATMzAGZmAS04MDViLTRiNzgt...`）
+- 所有命令都支持使用 Slug 或完整的 GUID 格式
+- 使用 `--verbose` 选项可查看完整的 GUID
 
-## Aliases
+## 别名
 
-- `mog cal` → `mog calendar`
-- `mog todo` → `mog tasks`
+- `mog cal` → `mog calendar`（用于调用 calendar 模块）
+- `mog todo` → `mog tasks`（用于调用 tasks 模块）
 
-## Credential Storage
+## 凭据存储
 
-OAuth tokens stored in config directory (0600 permissions):
+OAuth 令牌存储在配置目录中（权限设置为 0600）：
 
-| Platform | Location |
-|----------|----------|
-| **macOS** | `~/.config/mog/` |
-| **Linux** | `~/.config/mog/` |
+| 平台 | 存储位置       |
+|--------|--------------|
+| **macOS** | `~/.config/mog/`     |
+| **Linux** | `~/.config/mog/`     |
 | **Windows** | `%USERPROFILE%\.config\mog\` |
 
-Files:
-- `tokens.json` - OAuth tokens (encrypted at rest by OS)
-- `settings.json` - Client ID
-- `slugs.json` - Slug cache
+配置文件包括：
+- `tokens.json`：OAuth 令牌（由操作系统加密存储）
+- `settings.json`：客户端 ID
+- `slugs.json`：Slug 缓存文件
 
-## See Also
+## 相关文档
 
-- `mog --ai-help` - Full documentation
-- `mog <command> --help` - Command-specific help
+- `mog --ai-help`：查看完整文档
+- `mog <command> --help`：查看特定命令的帮助信息

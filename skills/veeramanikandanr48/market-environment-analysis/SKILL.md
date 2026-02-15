@@ -1,33 +1,33 @@
 ---
 name: market-environment-analysis
-description: Comprehensive market environment analysis and reporting tool. Analyzes global markets including US, European, Asian markets, forex, commodities, and economic indicators. Provides risk-on/risk-off assessment, sector analysis, and technical indicator interpretation. Triggers on keywords like market analysis, market environment, global markets, trading environment, market conditions, investment climate, market sentiment, forex analysis, stock market analysis, 相場環境, 市場分析, マーケット状況, 投資環境.
+description: 这是一个全面的市场环境分析与报告工具。它能够分析全球市场，包括美国、欧洲和亚洲市场，以及外汇、商品和经济指标。该工具提供风险偏好/风险厌恶评估、行业分析和技术指标解读功能，并能根据诸如“市场分析”、“市场环境”、“全球市场”、“交易环境”、“市场状况”、“投资氛围”、“外汇分析”、“股市分析”等关键词触发相应的功能。
 ---
 
-# Market Environment Analysis
+# 市场环境分析
 
-Comprehensive analysis tool for understanding market conditions and creating professional market reports anytime.
+这是一个全面的市场状况分析工具，可帮助您随时了解市场情况并生成专业的市场报告。
 
-## Core Workflow
+## 核心工作流程
 
-### 1. Initial Data Collection
-Collect latest market data using web_search tool:
-1. Major stock indices (S&P 500, NASDAQ, Dow, Nikkei 225, Shanghai Composite, Hang Seng)
-2. Forex rates (USD/JPY, EUR/USD, major currency pairs)
-3. Commodity prices (WTI crude, Gold, Silver)
-4. US Treasury yields (2-year, 10-year, 30-year)
-5. VIX index (Fear gauge)
-6. Market trading status (open/close/current values)
+### 1. 初始数据收集
+使用 `web_search` 工具收集最新的市场数据：
+- 主要股票指数（标准普尔500指数、纳斯达克指数、道琼斯指数、日经225指数、上证综合指数、恒生指数）
+- 外汇汇率（美元/日元、欧元/美元、主要货币对）
+- 商品价格（WTI原油、黄金、白银）
+- 美国国债收益率（2年期、10年期、30年期）
+- VIX指数（市场恐慌情绪指标）
+- 市场交易状态（开盘/收盘/当前价格）
 
-### 2. Market Environment Assessment
-Evaluate the following from collected data:
-- **Trend Direction**: Uptrend/Downtrend/Range-bound
-- **Risk Sentiment**: Risk-on/Risk-off
-- **Volatility Status**: Market anxiety level from VIX
-- **Sector Rotation**: Where capital is flowing
+### 2. 市场环境评估
+根据收集到的数据，评估以下方面：
+- **趋势方向**：上升趋势/下降趋势/盘整
+- **风险情绪**：风险偏好/风险规避
+- **波动性状况**：通过 VIX 指数判断市场焦虑程度
+- **行业资金流向**
 
-### 3. Report Structure
+### 3. 报告结构
 
-#### Standard Report Format:
+#### 标准报告格式：
 ```
 1. Executive Summary (3-5 key points)
 2. Global Market Overview
@@ -40,10 +40,10 @@ Evaluate the following from collected data:
 6. Investment Strategy Implications
 ```
 
-## Script Usage
+## 脚本使用
 
 ### market_utils.py
-Provides common functions for report creation:
+提供用于报告制作的常用功能：
 ```bash
 # Generate report header
 python scripts/market_utils.py
@@ -55,24 +55,24 @@ python scripts/market_utils.py
 - format_percentage_change(value): Format price changes
 ```
 
-## Reference Documentation
+## 参考文档
 
-### Key Indicators Interpretation (references/indicators.md)
-Reference when you need:
-- Important levels for each index
-- Technical analysis key points
-- Sector-specific focus areas
+### 主要指标解读（references/indicators.md）
+在需要时参考以下内容：
+- 各指数的关键水平
+- 技术分析要点
+- 各行业的重点关注领域
 
-### Analysis Patterns (references/analysis_patterns.md)
-Reference when analyzing:
-- Risk-on/Risk-off criteria
-- Economic indicator interpretation
-- Inter-market correlations
-- Seasonality and market anomalies
+### 分析模式（references/analysis_patterns.md）
+在进行分析时参考以下内容：
+- 风险偏好/风险规避的标准
+- 经济指标解读
+- 市场间的相关性
+- 季节性规律和市场异常现象
 
-## Output Examples
+## 输出示例
 
-### Quick Summary Version
+### 快速总结版本
 ```
 📊 Market Summary [2025/01/15 14:00]
 ━━━━━━━━━━━━━━━━━━━━━
@@ -88,52 +88,50 @@ Reference when analyzing:
 📈 Environment: Risk-On Continues
 ```
 
-### Detailed Analysis Version
-Start with executive summary, then analyze each section in detail.
-Key clarifications:
-1. Current market phase (Bullish/Bearish/Neutral)
-2. Short-term direction (1-5 days outlook)
-3. Risk events to monitor
-4. Recommended position adjustments
+### 详细分析版本
+首先提供执行摘要，然后详细分析每个部分：
+- 当前市场阶段（牛市/熊市/中性）
+- 短期走势（1-5天展望）
+- 需要关注的风险事件
+- 建议的持仓调整策略
 
-## Important Considerations
+## 重要注意事项
 
-### Timezone Awareness
-- Consider all major market timezones
-- US markets: Evening to early morning (Asian time)
-- European markets: Afternoon to evening (Asian time)
-- Asian markets: Morning to afternoon (Local time)
+### 时区意识
+- 考虑所有主要市场的时区差异：
+  - 美国市场：晚上到凌晨（亚洲时间）
+  - 欧洲市场：下午到晚上（亚洲时间）
+  - 亚洲市场：早上到下午（当地时间）
 
-### Economic Calendar Priority
-Categorize by importance:
-- ⭐⭐⭐ Critical (FOMC, NFP, CPI, etc.)
-- ⭐⭐ Important (GDP, Retail Sales, etc.)
-- ⭐ Reference level
+### 经济日历的优先级
+按重要性分类：
+- ⭐⭐⭐ 关键事件（联邦公开市场委员会（FOMC）会议、非农就业数据（NFP）、消费者价格指数（CPI）等）
+- ⭐⭐ 重要事件（国内生产总值（GDP）、零售销售数据等）
+- ⭐ 参考性事件
 
-### Data Source Priority
-1. Official releases (Central banks, Government statistics)
-2. Major financial media (Bloomberg, Reuters)
-3. Broker reports
-4. Analyst consensus estimates
+### 数据来源的优先级
+1. 官方发布的数据（中央银行、政府统计部门）
+2. 主要财经媒体（彭博社、路透社）
+3. 经纪商报告
+4. 分析师的一致预测
 
-## Troubleshooting
+## 故障排除
 
-### Data Collection Notes
-- Check market holidays (holiday calendars)
-- Be aware of daylight saving time changes
-- Distinguish between flash and final data
+### 数据收集注意事项
+- 查看市场节假日安排（节假日日历）
+- 注意夏令时的变化
+- 区分初步数据和最终数据
 
-### Market Volatility Response
-1. First organize the facts
-2. Reference historical similar events
-3. Verify with multiple sources
-4. Maintain objective analysis
+### 市场波动应对策略
+1. 首先整理相关事实
+2. 参考历史类似事件
+3. 通过多个来源验证数据
+4. 保持客观的分析态度
 
-## Customization Options
-
-Adjust based on user's investment style:
-- **Day Traders**: Intraday charts, order flow focus
-- **Swing Traders**: Daily/weekly technicals emphasis
-- **Long-term Investors**: Fundamentals, macro economics focus
-- **Forex Traders**: Currency correlations, interest rate differentials
-- **Options Traders**: Volatility analysis, Greeks monitoring
+## 定制选项
+根据用户的投资风格进行调整：
+- **日内交易者**：关注盘中图表和订单流
+- **波段交易者**：强调日/周级别的技术分析
+- **长期投资者**：关注基本面和宏观经济
+- **外汇交易者**：关注货币间的相关性及利率差异
+- **期权交易者**：关注波动性分析及希腊字母（期权相关参数）

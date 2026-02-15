@@ -1,68 +1,68 @@
 ---
 name: Analyst
-description: Extract insights from data with SQL, visualization, and clear communication of findings.
+description: 使用 SQL 从数据中提取有价值的见解，通过可视化工具展示结果，并清晰地传达分析结果。
 metadata: {"clawdbot":{"emoji":"🔍","os":["linux","darwin","win32"]}}
 ---
 
-# Data Analysis Rules
+# 数据分析规则
 
-## Framing Questions
-- Clarify the decision being made — analysis without action is trivia
-- "What would change your mind?" surfaces the real question
-- Scope before diving in — infinite data, limited time
-- Hypothesis first, then test — fishing expeditions waste time
+## 提出问题
+- 明确需要做出的决策——没有行动的分析只是无意义的琐事。
+- “什么能改变你的想法？”这个问题能揭示真正的问题所在。
+- 在开始分析之前先明确分析的范围——数据量可能无限，但时间有限。
+- 先提出假设，再进行测试——随意的探索会浪费时间。
 
-## Data Quality
-- Validate data before analyzing — garbage in, garbage out
-- Check row counts, date ranges, null rates first
-- Duplicates hide in joins — always verify uniqueness
-- Source definitions matter — revenue means different things to different teams
-- Document assumptions — future you needs context
+## 数据质量
+- 在分析之前验证数据的质量——输入的数据质量直接影响分析结果。
+- 首先检查数据行数、日期范围以及空值的占比。
+- 在进行数据合并时要注意数据重复的情况——务必验证数据的唯一性。
+- 数据的来源定义非常重要——不同团队对“收入”等概念的理解可能不同。
+- 记录分析过程中的所有假设——未来的你可能需要这些信息作为参考。
 
-## SQL Patterns
-- CTEs over nested subqueries — readable beats clever
-- Aggregate before joining when possible — performance matters
-- Window functions for running totals, ranks, comparisons
-- CASE statements for categorization — clean logic
-- Comment non-obvious filters — why are we excluding these?
+## SQL 编写技巧
+- 尽量使用公共表表达式（CTE）而非嵌套子查询——这样代码更易阅读。
+- 在进行数据合并之前先进行聚合操作——性能是关键因素。
+- 使用窗口函数来计算累计值、排名或进行数据比较。
+- 使用 `CASE` 语句进行数据分类——逻辑更清晰易懂。
+- 对那些不显而易见的过滤条件进行注释——解释为什么需要排除这些数据。
 
-## Analysis Approach
-- Start with the simplest cut — don't overcomplicate early
-- Cohorts reveal what aggregates hide — when did users join?
-- Time series need seasonality awareness — don't compare Dec to Jan
-- Segmentation surfaces patterns — average obscures variation
-- Correlation isn't causation — but it's where to look
+## 分析方法
+- 从最简单的数据处理方式开始——不要过早地使分析变得复杂。
+- 通过分析用户群体（cohort analysis）来发现聚合数据所隐藏的信息——用户是什么时候加入的？
+- 对于时间序列数据，需要考虑季节性因素——不要简单地将12月的数据与1月的数据进行比较。
+- 数据分段有助于发现数据中的规律——平均值可能会掩盖数据的变化。
+- 相关性并不等于因果关系——但这是分析的重要方向。
 
-## Visualization
-- Chart type matches data: trends (line), comparison (bar), distribution (histogram)
-- One message per chart — don't overload
-- Label axes, title clearly — standalone comprehension
-- Color with purpose — highlight, don't decorate
-- Tables for precision, charts for patterns
+## 数据可视化
+- 选择合适的图表类型来展示数据：趋势用折线图，对比用柱状图，分布用直方图。
+- 每个图表只表达一个主要信息——避免信息过载。
+- 清晰标注轴和图表标题——确保他人能够独立理解图表内容。
+- 使用颜色要有明确的目的——用于突出重点，而非仅仅为了美观。
+- 使用表格来展示精确的数据，使用图表来展示数据模式。
 
-## Communicating Findings
-- Lead with the insight, not the methodology
-- So what? Now what? — always answer these
-- Confidence levels matter — don't oversell noisy data
-- Recommendations are opinions — label them as such
-- Executive summary first, details available — respect their time
+## 传达分析结果
+- 首先呈现分析结果中的关键洞察，而不是分析方法本身。
+- “那么接下来该怎么办？”——一定要回答这个问题。
+- 置信度水平很重要——不要过分夸大那些包含大量噪声的数据。
+- 分析建议只是个人观点——请明确标注这一点。
+- 先提供执行摘要，再提供详细信息——尊重听众的时间。
 
-## Stakeholder Relationship
-- Understand their mental model before presenting
-- Regular check-ins prevent surprise requests
-- Push back on bad questions — help them ask better ones
-- Data literacy varies — adjust explanation depth
-- Their intuition is data too — triangulate
+## 与利益相关者的沟通
+- 在展示分析结果之前，先了解他们的思维模式。
+- 定期与他们沟通，避免他们提出意外的问题。
+- 对于不合理的问题要予以回应——帮助他们提出更合适的问题。
+- 不同人对数据的理解程度不同——要根据实际情况调整解释的深度。
+- 他们的直觉也是重要的数据来源——多方面的信息有助于更全面地理解问题。
 
-## Tools
-- Right tool for the job: SQL for querying, spreadsheets for ad-hoc, BI for dashboards
-- Reproducibility matters — scripts over clicking
-- Version control analysis code — changes need history
-- Automate recurring reports — manual refresh doesn't scale
+## 使用的工具
+- 根据任务选择合适的工具：使用 SQL 进行数据查询，使用电子表格进行临时数据分析，使用商业智能（BI）工具制作数据仪表盘。
+- 可重复性非常重要——编写脚本比手动操作更可靠。
+- 对分析代码进行版本控制——记录所有的修改历史。
+- 自动化生成重复性的报告——手动更新数据量太大且效率低下。
 
-## Common Mistakes
-- Answering the wrong question precisely
-- Cherry-picking data that confirms expectations
-- Overfitting: explaining noise as signal
-- Death by dashboard: metrics nobody checks
-- Analysis paralysis: perfect insight never delivered
+## 常见错误
+- 精确地回答了错误的问题。
+- 仅选择那些符合预期的数据来进行分析。
+- 过拟合：将噪声数据误认为是有意义的信息。
+- 过度依赖数据仪表盘——很多指标根本没人会去查看。
+- 分析结果过于复杂导致决策困难：完美的分析结果可能永远无法及时呈现。

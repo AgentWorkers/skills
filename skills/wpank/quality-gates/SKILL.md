@@ -2,42 +2,42 @@
 name: quality-gates
 model: fast
 category: testing
-description: Quality checkpoints at every development stage — pre-commit through post-deploy — with configuration examples, threshold tables, bypass protocols, and CI/CD integration. Use when setting up quality automation, configuring CI pipelines, establishing coverage thresholds, or defining deployment requirements.
+description: 在开发的每个阶段都设置质量检查点——从提交代码（pre-commit）到部署完成（post-deploy）——并提供相应的配置示例、阈值表、绕过规则（bypass protocols），以及与持续集成/持续部署（CI/CD）系统的集成方案。这些内容可用于设置质量自动化流程、配置CI管道、制定代码覆盖率阈值，或定义部署要求。
 version: 1.0
 ---
 
-# Quality Gates
+# 质量检查机制
 
-Enforce quality checkpoints at every stage of the development lifecycle. Each gate defines what is checked, when it runs, and whether it blocks progression.
-
----
-
-## When to Use
-
-- **Before committing** — catch lint errors, formatting issues, type errors, and secrets before they enter history
-- **Before merging** — ensure full test suites pass, coverage thresholds are met, and code has been reviewed
-- **Before deploying** — validate integration tests, security scans, and performance budgets in staging
-- **During code review** — verify that all automated gates have passed and manual review criteria are satisfied
-- **After deploying** — monitor health checks, error rates, and performance baselines
+在开发的每个阶段都要实施质量检查。每个检查点都明确了需要检查的内容、执行的时间点，以及是否会导致开发流程的停滞。
 
 ---
 
-## Gate Overview
+## 使用场景
 
-| Gate | When | Checks | Blocking? |
+- **提交代码前**：在代码被记录到版本历史之前，捕获代码格式错误、类型错误以及敏感信息（如密码）等问题。
+- **合并代码前**：确保所有测试用例都通过，代码覆盖率达到最低要求，并且代码已经过审查。
+- **部署前**：验证集成测试的结果、进行安全扫描，并检查性能指标是否符合标准。
+- **代码审查期间**：确认所有自动化检查都通过，并满足人工审查的要求。
+- **部署后**：监控系统的运行状态、错误率以及性能指标。
+
+---
+
+## 检查点概述
+
+| 检查点 | 执行时间 | 检查内容 | 是否会阻止开发流程继续？ |
 |------|------|--------|-----------|
-| Pre-commit | `git commit` | Lint, format, type-check, secrets scan | Yes |
-| Pre-push | `git push` | Unit tests, build verification | Yes |
-| Pre-merge | PR/MR approval | Full test suite, code review, coverage threshold | Yes |
-| Pre-deploy (staging) | Deploy to staging | Integration tests, smoke tests, security scan | Yes |
-| Pre-deploy (production) | Deploy to production | Staging verification, load test, rollback plan | Yes |
-| Post-deploy | After production deploy | Health checks, error rate monitoring, perf baselines | Alerting |
+| 提交前 | `git commit` | 代码格式检查、类型检查、敏感信息扫描 | 是 |
+| 推送前 | `git push` | 单元测试、构建验证 | 是 |
+| 合并前 | 提交请求（PR/MR）的审批 | 全部测试用例通过、代码审查完成、代码覆盖率达标 | 是 |
+| 部署前（测试环境） | 将代码部署到测试环境 | 集成测试、性能测试、安全扫描 | 是 |
+| 部署前（生产环境） | 将代码部署到生产环境 | 测试环境验证、负载测试、回滚计划准备 | 是 |
+| 部署后 | 部署完成后 | 系统健康状况检查、错误率监控、性能基准测试 | 发出警报 |
 
 ---
 
-## Pre-commit Setup
+## 提交前检查的配置方法
 
-### Husky + lint-staged (Node.js)
+### 使用 Husky 和 lint-staged（Node.js）
 
 ```json
 {
@@ -48,12 +48,7 @@ Enforce quality checkpoints at every stage of the development lifecycle. Each ga
 }
 ```
 
-```bash
-npx husky init
-echo "npx lint-staged" > .husky/pre-commit
-```
-
-### Pre-commit framework (Python)
+### 使用其他工具进行提交前检查（Python）
 
 ```yaml
 # .pre-commit-config.yaml
@@ -77,7 +72,7 @@ repos:
       - id: mypy
 ```
 
-### Secrets Scanning (pre-commit hook)
+### 敏感信息扫描（提交前钩子）
 
 ```bash
 #!/bin/sh
@@ -91,9 +86,9 @@ fi
 
 ---
 
-## CI/CD Gate Configuration
+## 持续集成/持续部署（CI/CD）中的检查点配置
 
-### GitHub Actions
+### 使用 GitHub Actions
 
 ```yaml
 name: Quality Gates
@@ -143,20 +138,20 @@ jobs:
       - run: npm run build
 ```
 
-Set these as **required status checks** in branch protection rules so PRs cannot merge until all gates pass.
+将这些检查点设置为**必需的状态检查**，确保只有在所有检查都通过后才能合并代码。
 
 ---
 
-## Coverage Gates
+## 代码覆盖率检查
 
-| Type | Minimum Threshold | Notes |
+| 检查类型 | 最低要求 | 备注 |
 |------|-------------------|-------|
-| Unit tests | 80% line coverage | Per-file and aggregate |
-| Integration tests | 60% of integration points | API endpoints, DB queries |
-| E2E tests | 100% of critical paths | Auth, checkout, core workflows |
-| No decrease rule | 0% regression allowed | New code must not lower overall coverage |
+| 单元测试 | 80% 的代码覆盖率 | 包括每个文件和整体代码 |
+| 集成测试 | 60% 的集成点被覆盖 | 包括 API 接口和数据库查询 |
+| 端到端测试 | 所有关键路径都必须被覆盖 | 包括认证逻辑和核心业务流程 |
+| **不允许覆盖率下降**：新代码不能降低整体覆盖率 |
 
-### Enforcing Thresholds
+### 强制执行覆盖率要求
 
 ```json
 // jest.config.js or vitest.config.ts
@@ -172,35 +167,35 @@ Set these as **required status checks** in branch protection rules so PRs cannot
 }
 ```
 
-For the **no decrease rule**, compare coverage against the base branch in CI and fail if the delta is negative.
+对于“不允许覆盖率下降”的规则，需要在持续集成（CI）过程中将当前分支的覆盖率与基准分支进行比较，如果覆盖率下降则拒绝合并。
 
 ---
 
-## Security Gates
+## 安全检查
 
-### Dependency Scanning
+### 依赖项扫描
 
-| Ecosystem | Tool | Command |
+| 开发框架 | 使用工具 | 命令 |
 |-----------|------|---------|
 | Node.js | npm audit | `npm audit --audit-level=high` |
 | Python | pip-audit | `pip-audit --strict` |
 | Rust | cargo audit | `cargo audit` |
 | Go | govulncheck | `govulncheck ./...` |
-| Universal | Trivy | `trivy fs --severity HIGH,CRITICAL .` |
+| 通用工具 | Trivy | `trivy fs --severity HIGH,CRITICAL .` |
 
-### Secret Detection
+### 敏感信息检测
 
-| Tool | Use Case | Command |
+| 工具 | 适用场景 | 命令 |
 |------|----------|---------|
-| gitleaks | Pre-commit and CI | `gitleaks protect --staged` |
-| TruffleHog | Deep history scan | `trufflehog git file://. --only-verified` |
-| detect-secrets | Baseline-aware scanning | `detect-secrets scan --baseline .secrets.baseline` |
+| gitleaks | 提交前和持续集成过程中 | `gitleaks protect --staged` |
+| TruffleHog | 深度历史代码扫描 | `trufflehog git file://. --only-verified` |
+| detect-secrets | 基线对比扫描 | `detect-secrets scan --baseline .secrets.baseline` |
 
 ---
 
-## Performance Gates
+## 性能检查
 
-### Bundle Size Budgets
+### 包大小控制
 
 ```json
 {
@@ -212,7 +207,7 @@ For the **no decrease rule**, compare coverage against the base branch in CI and
 }
 ```
 
-### Lighthouse CI Thresholds
+### Lighthouse 持续集成（CI）中的性能阈值
 
 ```json
 {
@@ -231,30 +226,30 @@ For the **no decrease rule**, compare coverage against the base branch in CI and
 }
 ```
 
-### API Response Time Limits
+### API 响应时间限制
 
-| Endpoint Type | P50 | P95 | P99 |
+| API 类型 | P50% 响应时间 | P95% 响应时间 | P99% 响应时间 |
 |---------------|-----|-----|-----|
-| Read (GET) | < 100ms | < 300ms | < 500ms |
-| Write (POST/PUT) | < 200ms | < 500ms | < 1000ms |
-| Search/aggregate | < 300ms | < 800ms | < 2000ms |
-| Health check | < 50ms | < 100ms | < 200ms |
+| 读取（GET 请求） | < 100 毫秒 | < 300 毫秒 | < 500 毫秒 |
+| 写入（POST/PUT 请求） | < 200 毫秒 | < 500 毫秒 | < 1000 毫秒 |
+| 搜索/聚合请求 | < 300 毫秒 | < 800 毫秒 | < 2000 毫秒 |
+| 系统健康检查 | < 50 毫秒 | < 100 毫秒 | < 200 毫秒 |
 
-Enforce via load testing tools (k6, Artillery) in CI with pass/fail thresholds.
+通过负载测试工具（如 k6、Artillery）在持续集成过程中执行这些检查，并设置通过/失败的阈值。
 
 ---
 
-## Review Gates
+## 代码审查
 
-### Required Approvals
+### 所需的审批流程
 
-| Change Scope | Approvals Required |
+| 修改范围 | 所需的审批流程 |
 |--------------|--------------------|
-| Standard code changes | 1 approval minimum |
-| Infrastructure, auth, payments, data models | 2 approvals |
-| Dependency updates, cryptographic changes | Security team approval |
+| 标准代码修改 | 至少需要 1 个审批 |
+| 基础设施相关、认证机制、支付逻辑、数据模型修改 | 需要 2 个审批 |
+| 依赖项更新、加密相关修改 | 需要安全团队的审批 |
 
-### CODEOWNERS
+### 代码所有者（CODEOWNERS）
 
 ```text
 # .github/CODEOWNERS
@@ -268,30 +263,29 @@ Dockerfile           @team/platform
 
 ---
 
-## Gate Bypass Protocol
+## 检查点豁免机制
 
-### When Bypass Is Acceptable
+### 何时可以豁免检查
 
-- Hotfixes for production incidents with active user impact
-- Trivial changes (typos, comments) where automated checks are overkill
-- Dependency updates that break CI due to upstream issues (not your code)
+- 针对对用户产生影响的紧急修复操作。
+- 对于简单的修改（如拼写错误或注释修改），如果自动化检查过于繁琐，可以豁免。
+- 由于上游代码问题导致持续集成（CI）流程失败时的依赖项更新（非由当前团队代码引起）。
 
-### Required Documentation for Every Bypass
+### 每次豁免检查时需要提供的文档
 
-1. **Reason** — why the gate cannot pass right now
-2. **Risk assessment** — what could go wrong by skipping
-3. **Follow-up ticket** — link to an issue that tracks resolving the bypass
-4. **Approver** — name of the senior engineer or lead who authorized the bypass
+1. **豁免理由**：说明为什么当前检查点无法通过。
+2. **风险评估**：说明跳过检查可能带来的潜在问题。
+3. **后续处理流程**：提供跟踪问题解决过程的 ticket 链接。
+4. **审批人**：批准豁免的资深工程师或团队负责人的姓名。
 
 ---
 
-## NEVER Do
+## 绝对禁止的行为
 
-1. **NEVER disable gates permanently** — fix the root cause, don't remove the guardrail
-2. **NEVER commit secrets** — even to "test" branches; git history is forever
-3. **NEVER skip tests to unblock a deploy** — if tests fail, the code is not ready
-4. **NEVER merge with failing required checks** — admin merge bypasses erode team trust
-5. **NEVER set coverage thresholds to 0%** — even a low threshold is better than none
-6. **NEVER bypass security scans for speed** — vulnerabilities in production cost far more than CI minutes
-7. **NEVER rely solely on post-deploy gates** — catching issues after users are impacted is damage control, not quality
-8. **NEVER treat alerting gates as optional** — post-deploy monitoring exists because pre-deploy gates cannot catch everything; ignoring alerts defeats the purpose
+- **绝不要**永久关闭任何检查点——必须解决根本问题，不能移除这些安全保障措施。
+- **绝不要**将敏感信息提交到任何代码分支——即使只是用于测试；代码历史记录是永久保存的。
+- **绝不要**为了通过部署而跳过测试——如果测试失败，说明代码尚未准备好。
+- **绝不要**合并那些未通过必要检查的代码——这样做会损害团队的信任。
+- **绝不要**将覆盖率阈值设置为 0%——即使覆盖率很低，也比没有好。
+- **绝不要**为了加快速度而跳过安全扫描——生产环境中的安全漏洞造成的损失远大于持续集成（CI）所花费的时间。
+- **绝不要**仅依赖部署后的检查——部署后的监控只能发现已经发生的问题，而无法预防问题；忽略警报会违背检查机制的初衷。

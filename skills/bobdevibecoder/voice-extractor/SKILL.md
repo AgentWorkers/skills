@@ -1,128 +1,91 @@
 ---
 name: voice-extractor
-description: Extract and document someone's authentic writing voice from samples. Use when someone needs a "voice guide," wants to capture their writing DNA, or needs to train AI to write in their style. Also useful for ghostwriting, brand voice documentation, or onboarding writers.
+description: 从样本中提取并记录某人的真实写作风格。适用于需要“写作指导”的情况，或者希望捕捉某人的写作特点以训练AI模仿其写作风格时。此外，该方法也适用于代笔服务、品牌写作风格文档的制定，以及新员工的写作培训。
 ---
 
-# Voice Extractor
+# 语音提取器
 
-Here's the thing about AI-generated content: it all sounds the same.
+关于人工智能生成的内容，有一个共同的特点：它们听起来都差不多。内容千篇一律、缺乏个性，也容易让人遗忘。
 
-Generic. Safe. Forgettable.
+解决问题的关键不在于改进提示语，而在于教会人工智能如何模仿你的真实沟通方式。
 
-The fix isn't better prompts. It's teaching the AI how YOU actually communicate.
+这就是这个工具的作用：你提供一些写作样本，它就会为你生成一份“语音指南”——这份指南记录了你的沟通风格，随时可以投入使用。
 
-That's what this skill does. You give it writing samples, it gives you back a Voice Guide — your communication DNA, documented and ready to use.
-
-**Why this matters:** Once you have a Voice Guide, every piece of AI output sounds like you. Not like ChatGPT. Not like every other founder on LinkedIn. *You.*
-
----
-
-## What You Need to Start
-
-Get me 3-5 writing samples. More is better. Could be:
-- Emails you've sent
-- LinkedIn posts
-- Articles or blog posts
-- Transcripts of you speaking (podcasts, calls)
-- Slack messages (often more authentic than polished writing)
-
-The messier and more authentic, the better. Transcripts of you talking are gold — that's where your real voice lives.
-
-Also tell me:
-- What's this voice guide for? (AI training, ghostwriter, team alignment)
-- Any topics where you want to sound MORE confident vs. more exploratory?
+**为什么这很重要？** 一旦你有了这份语音指南，人工智能生成的所有内容都会带有你的个人特色，不再像ChatGPT或其他人那样。它完全就是“你”的声音。
 
 ---
 
-## How I Extract Your Voice
+## 开始使用前需要准备的材料
 
-### Step 1: Find Your Core Energy
+请提供3到5篇你的写作样本，样本越多越好。可以是：
+- 你发送过的电子邮件
+- 在LinkedIn上发布的帖子
+- 文章或博客文章
+- 你的讲话录音（比如播客或电话录音）
+- Slack聊天记录（通常比精心撰写的文字更真实）
 
-Every person has a natural communication mode. I'm looking for:
+样本越“杂乱无章”、越具有真实性，效果越好。尤其是你的讲话录音，因为它们最能体现你的真实沟通风格。
 
-**What role do you naturally play?**
-- The teacher who breaks things down?
-- The challenger who pushes back?
-- The cheerleader who builds confidence?
-- The straight-shooter who cuts through BS?
-
-**What's your default energy?**
-- Calm authority ("Here's what works")
-- High enthusiasm ("This is exciting, let me show you")
-- Understated confidence ("I've seen this a hundred times")
-
-**What do you actually care about?**
-I'll look for themes that repeat across your samples. The stuff you can't help but talk about.
+同时，请告诉我：
+- 这份语音指南是用于什么目的？（例如：AI训练、代写稿件、团队沟通协调）
+- 有哪些话题上你希望自己的表达更加自信，还是更加探索性？
 
 ---
 
-### Step 2: Steal Your Phrases
+## 我如何提取你的沟通风格
 
-This is where it gets specific. I'm hunting for:
+### 第一步：找出你的核心沟通风格
 
-**Your transition phrases** — How do you shift topics?
-- "Here's the thing..."
-- "What I've learned is..."
-- "Let me put it this way..."
+每个人都有自己自然的沟通方式。我会关注以下几点：
+- 你通常扮演什么角色？（例如：是善于解释问题的老师？还是敢于提出质疑的挑战者？）
+- 你的默认沟通风格是怎样的？（是冷静权威的？还是充满热情的？）
+- 你真正关心的是什么？
 
-**Your emphasis phrases** — How do you land a point?
-- "The reality is..."
-- "What that actually means..."
-- "This is the part people miss..."
-
-**Your closers** — How do you wrap up?
-- "That's the move."
-- "Start there."
-- "You've got this."
-
-These become the cheat codes for anyone (or any AI) writing as you.
+我会分析这些样本中反复出现的主题和话题，这些都是你自然而然会谈论的内容。
 
 ---
 
-### Step 3: Map Your Confidence Zones
+### 第二步：提取你的常用表达方式
 
-Not every topic deserves the same energy. I'll figure out:
+接下来，我会具体分析你的表达习惯：
+- **过渡语**：你如何在不同话题之间切换？（例如：“事情是这样的……”）
+- **强调语**：你如何突出重点？（例如：“实际情况是……”）
+- **结束语**：你如何结束对话？（例如：“这就是关键所在。”）
 
-**Where you're an expert** (write with full authority):
-- Zero hedging
-- "Here's what works" energy
-- Definitive statements
-
-**Where you're experienced but not the expert** (write with earned opinion):
-- "What I've found..."
-- "In my experience..."
-- Still confident, just not absolute
-
-**Where you're actively learning** (write with curiosity):
-- "What I'm seeing..."
-- "I'm testing this right now..."
-- Excited but exploratory
-
-This calibration is what makes the voice feel real, not like a one-note character.
+这些表达方式将成为任何人（或任何AI）模仿你写作时的关键要素。
 
 ---
 
-### Step 4: Document the Anti-Patterns
+### 第三步：划分你的自信表达区间
 
-Just as important as what you DO say is what you'd NEVER say.
+不同的主题适合使用不同的沟通风格。我会区分以下几种情况：
+- **你擅长表达的领域**：你可以充满自信地表达自己的观点（例如：“这就是有效的做法。”）
+- **你有经验但并非专家的领域**：你可以基于自己的经验来表达（例如：“根据我的经验……”）
+- **你还在学习中的领域**：你可以带着好奇心来表达（例如：“我正在测试这个方法……”）
 
-I'll identify:
-- Words that would feel wrong coming from you
-- Phrases that make you cringe
-- Tones you avoid
-- Jargon you hate (even industry-standard jargon)
-
-**Example from my own voice guide:**
-- Never use "synergy" or "leverage" as verbs
-- Avoid hedging words like "maybe" or "possibly"
-- Don't start sentences with "So," when writing (fine when talking)
-- Cut "I think" — just say the thing
+通过这种区分，可以让你的声音听起来更加真实，而不是千篇一律。
 
 ---
 
-## What You Get Back
+### 第四步：记录需要避免的表达方式
 
-A complete Voice Guide document:
+同样重要的是，也要记录那些你不应该使用的表达方式：
+- 你觉得不适合自己使用的词汇
+- 会让你感到尴尬的短语
+- 你避免使用的语气
+- 你讨厌的行话（即使是行业内的标准术语）
+
+**以我的语音指南为例：**
+- 绝不要用“synergy”或“leverage”作为动词
+- 避免使用“maybe”或“possibly”这样的模糊词汇
+- 写作时不要以“So”开头（口语中可以使用）
+- 直接说重点，不要用“I think”
+
+---
+
+## 你将获得什么
+
+一份完整的语音指南文档：
 
 ```
 # [Name]'s Voice Guide
@@ -165,42 +128,36 @@ A complete Voice Guide document:
 
 ---
 
-## How to Use the Voice Guide
+## 如何使用语音指南
 
-**For AI training:** Paste the Voice Guide into your system prompt. Every output gets filtered through your style.
-
-**For ghostwriters:** Hand it over on day one. Cuts revision cycles in half.
-
-**For your team:** Now everyone knows what "on brand" actually sounds like.
-
-**For yourself:** When you're stuck, read it. It reminds you how you actually communicate when you're not overthinking it.
+- **用于AI训练**：将语音指南内容输入到AI系统中，所有生成的文本都会带有你的沟通风格。
+- **用于代写稿件**：从第一天开始就提供这份指南，可以大大缩短修订周期。
+- **用于团队沟通**：让团队成员了解什么是“符合公司风格的”表达方式。
+- **对你自己来说**：当你写作时遇到困难，可以参考这份指南，它会提醒你自己的真实沟通方式。
 
 ---
 
-## The 10-Minute Version
+## 十分钟快速提取方法
 
-Short on time? I can do a quick extraction:
+时间紧张？我可以快速完成提取：
+1. 快速阅读3篇样本
+2. 提取10个你的标志性表达方式
+3. 记下3个你不应该使用的表达
+4. 用一句话描述你的沟通风格
 
-1. Read 3 samples fast
-2. Pull 10 signature phrases
-3. Note 3 things you'd never say
-4. One sentence describing your energy
-
-That's a minimum viable voice guide. Better than nothing by a mile.
-
----
-
-## Real Talk
-
-The best voice guides come from messy, authentic content. Not your polished website copy — the email you fired off at 11pm. Not the edited article — the podcast where you riffed for an hour.
-
-Give me the real stuff. I'll find the patterns.
+这样就能快速生成一份基本的语音指南。总比没有好得多。
 
 ---
 
-**Want a custom voice guide built for your business?**
-→ [Book a strategy call](https://brianrwagner.com)
+**真实建议**
+
+最好的语音指南来源于真实、自然的素材——不是你精心修改过的网站文案，也不是经过编辑的正式文章，而是那些即兴创作的素材（比如晚上11点发出的电子邮件或长达一小时的播客内容）。
+
+请提供最真实的素材，我会从中找出你的沟通模式。
+
+**想要为你的业务定制一份语音指南吗？**
+→ [预约策略咨询](https://brianrwagner.com)
 
 ---
 
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+*作者：Brian Wagner | 人工智能营销专家 | brianrwagner.com*

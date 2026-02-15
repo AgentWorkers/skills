@@ -1,227 +1,226 @@
 ---
 name: terminal-ui-design-system
-description: Create terminal-inspired UI interfaces with macOS-style window decorations, monospace typography, and a warm color palette. Use this skill when building developer tools, code marketplaces, technical documentation sites, or any interface that benefits from a terminal/command-line aesthetic. Provides complete design system specifications including color palette, typography, spacing, components, and CSS implementation details.
+description: 创建具有终端风格的UI界面，采用macOS风格的窗口装饰、等宽字体（monospace typography）以及温暖的色彩调色板。这种技能适用于开发工具、代码市场、技术文档网站，或任何需要终端/命令行美感的界面设计。提供完整的设计系统规范，包括色彩调色板、字体样式、间距设置、组件设计以及CSS实现细节。
 ---
 
-# Terminal UI Design System
+# 终端用户界面设计系统
 
-A comprehensive design system for creating terminal-inspired user interfaces with macOS-style window decorations, monospace typography, and a warm, developer-friendly color palette. This design system is optimized for developer tools, code marketplaces, technical documentation, and any interface that benefits from a command-line aesthetic.
+这是一个全面的设计系统，用于创建具有 macOS 风格窗口装饰、等宽字体和温暖、对开发者友好的颜色调性的终端风格用户界面。该设计系统专为开发工具、代码市场、技术文档以及任何受益于命令行美学的界面而优化。
 
-## Design Philosophy
+## 设计理念
 
-**Core Principles:**
-- **Terminal Aesthetic**: Mimics macOS terminal windows with colored dots, monospace fonts, and command-line syntax
-- **Developer-First**: Uses syntax highlighting colors, code-like structures, and terminal metaphors
-- **Warm & Approachable**: Warm terracotta primary color (#cc7a60) creates a friendly, non-intimidating feel
-- **High Contrast**: Clear visual hierarchy with distinct text colors and backgrounds
-- **Functional Beauty**: Every design element serves a purpose while maintaining visual appeal
+**核心原则：**
+- **终端美学**：模仿 macOS 终端窗口，使用彩色圆点、等宽字体和命令行语法。
+- **以开发者为中心**：使用语法高亮颜色、类似代码的结构和终端隐喻。
+- **温暖且易于接近**：使用温暖的赤褐色 (#cc7a60) 作为主色调，营造出友好且不令人生畏的感觉。
+- **高对比度**：通过明显的文本颜色和背景实现清晰的视觉层次结构。
+- **功能性与美感并重**：每个设计元素都有其用途，同时保持视觉吸引力。
 
-## Color System
+## 颜色系统
 
-### Primary Palette
+### 主要调色板
 
-**Main Brand Color:**
-- `--primary: #cc7a60` - Warm terracotta/orange-brown, used for primary actions, accents, and highlights
-- `--primary-foreground: #fff` - White text on primary backgrounds
-- `--primary-dark: #b56850` - Darker shade for hover states
-- `--primary-light: #d8907a` - Lighter shade for subtle accents
-- `--ring: #cc7a60` - Focus ring color (same as primary)
+**主要品牌颜色：**
+- `--primary: #cc7a60` - 温暖的赤褐色/橙棕色，用于主要操作、强调和高亮部分。
+- `--primary-foreground: #fff` - 主要背景上的白色文本。
+- `--primary-dark: #b56850` - 鼠标悬停状态时的深色调。
+- `--primary-light: #d8907a` - 微妙强调时的浅色调。
+- `--ring: #cc7a60` - 焦点环颜色（与主要颜色相同）。
 
-**Warm Accent:**
-- `--warm-red: #c85a3f` - Used for code block borders and warm accents
+**温暖色调：**
+- `--warm-red: #c85a3f` - 用于代码块边框和温暖色调的强调。
 
-### Semantic Colors
+### 语义颜色
 
-**Backgrounds:**
-- `--background: #fff` - Pure white for main backgrounds
-- `--bg-main: #f8f8f8` - Light gray for page background (with subtle grid pattern)
-- `--bg-card: #fff` - White for card components
-- `--bg-code: #fafafa` - Very light gray for code blocks and window headers
-- `--secondary: #f9fafb` - Light gray for secondary backgrounds
-- `--muted: #f3f4f6` - Muted gray for subtle backgrounds
+**背景：**
+- `--background: #fff` - 纯白色，用于主要背景。
+- `--bg-main: #f8f8f8` - 浅灰色，用于页面背景（带有微妙的网格图案）。
+- `--bg-card: #fff` - 白色，用于卡片组件。
+- `--bg-code: #fafafa` - 非常浅的灰色，用于代码块和窗口标题。
+- `--secondary: #f9fafb` - 浅灰色，用于次要背景。
+- `--muted: #f3f4f6` - 淡灰色，用于较不重要的背景。
 
-**Text Colors:**
-- `--foreground: #111827` - Near-black for primary text (excellent readability)
-- `--text-primary: #111827` - Primary text color
-- `--text-secondary: #666666` - Medium gray for secondary text
-- `--text-muted: #5b6370` - Muted gray for less important text
-- `--muted-foreground: #5b6370` - Foreground on muted backgrounds
+**文本颜色：**
+- `--foreground: #111827` - 接近黑色的主要文本（易于阅读）。
+- `--text-primary: #111827` - 主要文本颜色。
+- `--text-secondary: #666666` - 中等灰色，用于次要文本。
+- `--text-muted: #5b6370` - 较不重要的文本的淡灰色背景。
+- `--muted-foreground: #5b6370` - 淡灰色背景上的主要文本。
 
-**Borders:**
-- `--border: #8b929e` - Medium gray for main borders
-- `--border-light: #e5e7eb` - Light gray for subtle dividers
-- `--input: #8b929e` - Input border color
+**边框：**
+- `--border: #8b929e` - 中等灰色，用于主要边框。
+- `--border-light: #e5e7eb` - 浅灰色，用于细微的分隔线。
+- `--input: #8b929e` - 输入框边框颜色。
 
-**Status Colors:**
-- `--success: #22c55e` - Green for success states
-- `--warning: #f59e0b` - Amber for warnings
-- `--danger: #ef4444` - Red for errors/destructive actions
-- `--accent: #f59e0b` - Amber accent color
+**状态颜色：**
+- `--success: #22c55e` - 绿色，表示成功状态。
+- `--warning: #f59e0b` - 琥珀色，表示警告。
+- `--danger: #ef4444` - 红色，表示错误/破坏性操作。
+- `--accent: #f59e0b` - 琥珀色强调色。
 
-### Syntax Highlighting Colors
+### 语法高亮颜色
 
-**Code Syntax:**
-- `--syntax-keyword: #cc7a60` - Primary color for keywords (const, export, etc.)
-- `--syntax-string: #22c55e` - Green for strings
-- `--syntax-number: #cc7a60` - Primary color for numbers
-- `--syntax-comment: #6a9955` - Muted green for comments
-- `--syntax-function: #dcdcaa` - Light yellow for function names
+**代码语法：**
+- `--syntax-keyword: #cc7a60` - 关键字的主要颜色（如 const、export 等）。
+- `--syntax-string: #22c55e` - 字符串的绿色。
+- `--syntax-number: #cc7a60` - 数字的主要颜色。
+- `--syntax-comment: #6a9955` - 评论的淡绿色。
+- `--syntax-function: #dcdcaa` - 函数名称的浅黄色。
 
-**Command Prefix:**
-- Command prefix (`$`) uses fluorescent green: `#39ff14` - Creates terminal-like appearance
+**命令前缀：**
+- 命令前缀（`$`）使用荧光绿色：`#39ff14` - 以营造终端风格。
 
-**Code Elements:**
-- `--text-comment: #6a9955` - Comment text color
+**代码元素：**
+- `--text-comment: #6a9955` - 评论文本的颜色。
 
-### macOS Window Dots
+### macOS 窗口圆点
 
-**Terminal Window Controls:**
-- `--dot-red: #ff5f57` - Close button (macOS red)
-- `--dot-yellow: #febc2e` - Minimize button (macOS yellow)
-- `--dot-green: #28c840` - Maximize button (macOS green)
+**终端窗口控件：**
+- `--dot-red: #ff5f57` - 关闭按钮（macOS 红色）。
+- `--dot-yellow: #febc2e` - 最小化按钮（macOS 黄色）。
+- `--dot-green: #28c840` - 最大化按钮（macOS 绿色）。
 
-### Color Usage Guidelines
+### 颜色使用指南**
 
-**Primary Color (#cc7a60) Usage:**
-- Command keywords in navigation
-- Prompt symbols (`>`)
-- Active states and highlights
-- Focus rings
-- Hover borders
-- Primary buttons when active
-- Chart lines and data visualization
+**主要颜色 (#cc7a60) 的使用：**
+- 导航中的命令关键字。
+- 提示符号（`>`）。
+- 活动状态和高亮部分。
+- 焦点环。
+- 活动时的主要按钮。
+- 图表线条和数据可视化。
 
-**Fluorescent Green (#39ff14) Usage:**
-- Command prefix (`$`) - creates authentic terminal feel
-- Only used for dollar signs, never for other elements
+**荧光绿色 (#39ff14) 的使用：**
+- 命令前缀（`$`） - 以营造真实的终端感觉。
+- 仅用于美元符号，不得用于其他元素。
 
-**Green (#22c55e) Usage:**
-- Success indicators
-- Status dots (online/ready)
-- String literals in code
-- Positive actions
+**绿色 (#22c55e) 的使用：**
+- 成功指示器。
+- 状态圆点（在线/准备就绪）。
+- 代码中的字符串字面量。
+- 正面操作。
 
-**Blue (#3b82f6) Usage:**
-- Command keywords (cd, watch, man, api)
-- Code keywords (const, let, var)
-- Links and interactive elements
+**蓝色 (#3b82f6) 的使用：**
+- 命令关键字（cd、watch、man、api）。
+- 代码关键字（const、let、var）。
+- 链接和交互元素。
 
-## Typography System
+## 字体系统
 
-### Font Families
+### 字体系列
 
-**Primary Font Stack:**
+**主要字体堆栈：**
 ```css
 --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", 'Fira Code', 'Consolas', monospace;
 ```
-- **Primary**: JetBrains Mono (400-800 weights)
-- **Fallbacks**: Fira Code, Consolas, system monospace
-- Used for: All UI text, navigation, buttons, code blocks
+- **Primary**: JetBrains Mono（400-800 粗细）
+- **备用字体**: Fira Code、Consolas、系统等宽字体
+- 用于：所有 UI 文本、导航、按钮、代码块。
 
-**Sans-serif Fallback:**
+**无衬线备用字体：**
 ```css
 --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 ```
-- Used as fallback only, monospace is preferred
+- 仅作为备用，优先使用等宽字体。
 
-### Font Size Scale
+### 字体大小比例
 
-**Base Unit System:**
-- `--text-xs: 0.75rem` (12px) - Small labels, hints, window status
-- `--text-sm: 0.875rem` (14px) - Secondary text, descriptions
-- `--text-base: 1rem` (16px) - Body text, default size
-- `--text-lg: 1.125rem` (18px) - Slightly emphasized text
-- `--text-xl: 1.25rem` (20px) - Subheadings
-- `--text-2xl: 1.5rem` (24px) - Section titles
-- `--text-3xl: 1.875rem` (30px) - Large numbers, stats
-- `--text-4xl: 2.25rem` (36px) - Hero numbers
-- `--text-5xl: 3rem` (48px) - Large headings
-- `--text-6xl: 3.75rem` (60px) - Extra large headings
+**基本单位系统：**
+- `--text-xs: 0.75rem` (12px) - 小标签、提示、窗口状态。
+- `--text-sm: 0.875rem` (14px) - 次要文本、描述。
+- `--text-base: 1rem` (16px) - 正文文本，默认大小。
+- `--text-lg: 1.125rem` (18px) - 稍加强调的文本。
+- `--text-xl: 1.25rem` (20px) - 标题。
+- `--text-2xl: 1.5rem` (24px) - 大标题。
+- `--text-3xl: 1.875rem` (30px) - 大数字、统计数据。
+- `--text-4xl: 2.25rem` (36px) - 特大标题。
+- `--text-5xl: 3rem` (48px) - 特大标题。
+- `--text-6xl: 3.75rem` (60px) - 超大标题。
 
-**Font Weights:**
-- `--font-weight-normal: 400` - Body text
-- `--font-weight-medium: 500` - Medium emphasis
-- `--font-weight-semibold: 600` - Semibold (keywords, labels)
-- `--font-weight-bold: 700` - Bold (headings, important text)
-- `--font-weight-extrabold: 800` - Extra bold (hero text)
+**字体粗细：**
+- `--font-weight-normal: 400` - 正文文本。
+- `--font-weight-medium: 500` - 中等强调。
+- `--font-weight-semibold: 600` - 粗体（关键字、标签）。
+- `--font-weight-bold: 700` - 粗体（标题、重要文本）。
+- `--font-weight-extrabold: 800` - 特粗体（标题文本）。
 
-**Line Heights:**
-- `--leading-tight: 1.25` - Tight spacing for headings
-- `--leading-relaxed: 1.625` - Relaxed spacing for body text
+**行高：**
+- `--leading-tight: 1.25` - 标题的紧密间距。
+- `--leading-relaxed: 1.625` - 正文文本的宽松间距。
 
-### Typography Usage
+### 字体使用**
 
-**Headings:**
-- Hero titles: 3.5rem, weight 700, line-height 1.1
-- Section titles: 2.5rem, weight 700
-- FAQ titles: 2rem, weight 700
+**标题：**
+- 标题：3.5rem，粗细 700，行高 1.1。
+- 部分标题：2.5rem，粗细 700。
+- 常见问题标题：2rem，粗细 700。
 
-**Body Text:**
-- Default: 1rem, weight 400, line-height 1.5
-- Secondary: 0.875rem, color `--text-secondary`
-- Muted: 0.75rem, color `--text-muted`
+**正文文本：**
+- 默认：1rem，粗细 400，行高 1.5。
+- 次要文本：0.875rem，颜色 `--text-secondary`。
+- 淡色文本：0.75rem，颜色 `--text-muted`。
 
-**Code/Command Text:**
-- Always use monospace font
-- Command prefix: fluorescent green (#39ff14)
-- Keywords: primary color (#cc7a60) or blue (#3b82f6)
-- Flags/arguments: default foreground color
+**代码/命令文本：**
+- 始终使用等宽字体。
+- 命令前缀：荧光绿色 (#39ff14)。
+- 关键字：主要颜色 (#cc7a60) 或蓝色 (#3b82f6)。
+- 标志/参数：默认前景颜色。
 
-## Spacing System
+## 间距系统
 
-**Base Unit:** `--spacing: 0.25rem` (4px)
+**基本单位：`--spacing: 0.25rem` (4px)**
 
-**Spacing Scale:**
-- `--spacing-xs: 4px` (0.25rem) - Tight spacing, icon padding
-- `--spacing-sm: 8px` (0.5rem) - Small gaps, button padding
-- `--spacing-md: 16px` (1rem) - Standard spacing, card padding
-- `--spacing-lg: 24px` (1.5rem) - Large gaps, section spacing
-- `--spacing-xl: 32px` (2rem) - Extra large gaps, major sections
-- `--spacing-2xl: 48px` (3rem) - Maximum spacing, page sections
+**间距比例：**
+- `--spacing-xs: 4px` (0.25rem) - 紧密间距，图标内边距。
+- `--spacing-sm: 8px` (0.5rem) - 小间隙，按钮内边距。
+- `--spacing-md: 16px` (1rem) - 标准间距，卡片内边距。
+- `--spacing-lg: 24px` (1.5rem) - 大间隙，部分间距。
+- `--spacing-xl: 32px` (2rem) - 特大间隙，主要部分。
+- `--spacing-2xl: 48px` (3rem) - 最大间距，页面部分。
 
-**Usage Guidelines:**
-- Use consistent spacing multiples (4px base)
-- Card padding: `--spacing-md` to `--spacing-lg`
-- Section margins: `--spacing-xl` to `--spacing-2xl`
-- Button padding: `--spacing-sm` to `--spacing-md`
-- Gap between related elements: `--spacing-sm` to `--spacing-md`
+**使用指南：**
+- 使用一致的间距倍数（以 4px 为基准）。
+- 卡片内边距：`--spacing-md` 至 `--spacing-lg`。
+- 部分边距：`--spacing-xl` 至 `--spacing-2xl`。
+- 按钮内边距：`--spacing-sm` 至 `--spacing-md`。
+- 相关元素之间的间距：`--spacing-sm` 至 `--spacing-md`。
 
-## Border Radius System
+## 边框半径系统
 
-**Radius Scale:**
-- `--radius-xs: 2px` (0.125rem) - Minimal rounding
-- `--radius-sm: 4px` (0.25rem) - Small elements
-- `--radius-md: 6px` (0.375rem) - Buttons, inputs
-- `--radius-lg: 8px` (0.5rem) - Cards, windows (most common)
-- `--radius-xl: 12px` (0.75rem) - Large cards
-- `--radius-2xl: 16px` (1rem) - Extra large elements
-- `--radius: 10px` (0.625rem) - Default radius
+**半径比例：**
+- `--radius-xs: 2px` (0.125rem) - 最小圆角。
+- `--radius-sm: 4px` (0.25rem) - 小元素。
+- `--radius-md: 6px` (0.375rem) - 按钮、输入框。
+- `--radius-lg: 8px` (0.5rem) - 卡片、窗口（最常见）。
+- `--radius-xl: 12px` (1rem) - 特大元素。
+- `--radius-2xl: 16px` (1rem) - 特大元素。
+- `--radius: 10px` (0.625rem) - 默认半径。
 
-**Usage:**
-- Terminal windows: `--radius-lg` (8px)
-- Buttons: `--radius-lg` (8px)
-- Cards: `--radius-lg` (8px)
-- Inputs: `--radius-md` (6px)
-- Avatar: `9999px` (fully rounded)
+**使用：**
+- 终端窗口：`--radius-lg` (8px)。
+- 按钮：`--radius-lg` (8px)。
+- 卡片：`--radius-lg` (8px)。
+- 输入框：`--radius-md` (6px)。
+- 头像：`9999px`（完全圆角）。
 
-## Shadow System
+## 阴影系统**
 
-**Shadow Scale:**
-- `--shadow-sm: 0 1px 2px rgba(0,0,0,0.05)` - Subtle elevation
-- `--shadow-md: 0 4px 6px rgba(0,0,0,0.07)` - Medium elevation (cards on hover)
-- `--shadow-lg: 0 10px 25px rgba(0,0,0,0.1)` - Large elevation (floating buttons)
+**阴影比例：**
+- `--shadow-sm: 0 1px 2px rgba(0,0,0,0.05)` - 微妙的凸起效果。
+- `--shadow-md: 0 4px 6px rgba(0,0,0,0.07)` - 中等凸起效果（卡片悬停时）。
+- `--shadow-lg: 0 10px 25px rgba(0,0,0,0.1)` - 大凸起效果（浮动按钮）。
 
-**Usage:**
-- Default cards: `--shadow-sm`
-- Hover states: `--shadow-md`
-- Floating elements: `--shadow-lg`
-- Primary-colored shadows: `rgba(204, 122, 96, 0.1)` for primary-themed elements
+**使用：**
+- 默认卡片：`--shadow-sm`。
+- 悬停状态：`--shadow-md`。
+- 浮动元素：`--shadow-lg`。
+- 主要颜色的阴影：`rgba(204, 122, 96, 0.1)`（用于主要主题元素）。
 
-## Component Specifications
+## 组件规范
 
-### Terminal Window Component
+### 终端窗口组件
 
-**Structure:**
+**结构：**
 ```html
 <div class="terminal-window">
   <div class="window-header">
@@ -239,35 +238,35 @@ A comprehensive design system for creating terminal-inspired user interfaces wit
 </div>
 ```
 
-**Styling:**
-- Background: `--bg-card` (#fff)
-- Border: `1px solid --border` (#8b929e)
-- Border radius: `--radius-lg` (8px)
-- Box shadow: `--shadow-sm`
-- Header background: `--bg-code` (#fafafa)
-- Header border-bottom: `1px solid --border-light` (#e5e7eb)
-- Header padding: `--spacing-sm --spacing-md` (8px 16px)
-- Content padding: `--spacing-lg` (24px)
+**样式：**
+- 背景：`--bg-card` (#fff)`。
+- 边框：`1px solid --border` (#8b929e)`。
+- 边框半径：`--radius-lg` (8px)`。
+- 卡片阴影：`--shadow-sm`。
+- 标题背景：`--bg-code` (#fafafa)`。
+- 标题底部边框：`1px solid --border-light` (#e5e7eb)`。
+- 标题内边距：`--spacing-sm --spacing-md` (8px 16px)`。
+- 内容内边距：`--spacing-lg` (24px)`。
 
-**Window Dots:**
-- Size: `12px × 12px`
-- Gap: `6px`
-- Colors: Red (#ff5f57), Yellow (#febc2e), Green (#28c840)
-- Fully rounded (border-radius: 50%)
+**窗口圆点：**
+- 大小：`12px × 12px`。
+- 间距：`6px`。
+- 颜色：红色 (#ff5f57)、黄色 (#febc2e)、绿色 (#28c840)。
+- 完全圆角（边框半径：50%）。
 
-**Window Title:**
-- Font size: `0.85rem`
-- Color: `--text-secondary` (#666666)
-- Font: Monospace
+**窗口标题：**
+- 字体大小：`0.85rem`。
+- 颜色：`--text-secondary` (#666666)`。
+- 字体：等宽字体。
 
-**Window Status:**
-- Font size: `0.75rem`
-- Color: `--text-muted` (#5b6370)
-- Position: Right side of header
+**窗口状态：**
+- 字体大小：`0.75rem`。
+- 颜色：`--text-muted` (#5b6370)`。
+- 位置：标题右侧。
 
-### Navigation Bar
+### 导航栏**
 
-**Structure:**
+**结构：**
 ```html
 <nav class="navbar">
   <div class="navbar-container">
@@ -278,28 +277,28 @@ A comprehensive design system for creating terminal-inspired user interfaces wit
 </nav>
 ```
 
-**Styling:**
-- Position: `sticky`, `top: 0`
-- Background: `rgba(255, 255, 255, 0.8)` with `backdrop-filter: blur(8px)`
-- Border-bottom: `1px solid --border`
-- Height: `64px` (desktop), `56px` (mobile)
-- Max width: `80rem` (1280px), centered
+**样式：**
+- 位置：`sticky`，`top: 0`。
+- 背景：`rgba(255, 255, 255, 0.8)`，带 `backdrop-filter: blur(8px)`。
+- 下边框：`1px solid --border`。
+- 高度：`64px`（桌面），`56px`（移动设备）。
+- 最大宽度：`80rem`（1280px），居中显示。
 
-**Logo:**
-- Status indicator: Green dot (8px) + "ready" text
-- Path prefix: `~/` in primary color (#cc7a60)
-- Path name: Bold, foreground color
-- Cursor blink: 2px width, primary color, animated
+**Logo：**
+- 状态指示器：绿色圆点（8px）+ “ready” 文本。
+- 路径前缀：`~/`，颜色为 `#cc7a60`。
+- 路径名称：加粗，前景颜色。
+- 光标闪烁：2px 宽度，主要颜色，动画效果。
 
-**Navigation Commands:**
-- Display: Flex, gap `--spacing-md`
-- Button style: Monospace font, small padding (6px 12px)
-- Border: `1px solid --border`
-- Border radius: `--radius-lg`
-- Active state: Primary border color with pulse animation
-- Hover: Border color changes to primary with 50% opacity
+**导航命令：**
+- 显示方式：Flex，间距 `--spacing-md`。
+- 按钮样式：等宽字体，小内边距（6px 12px）。
+- 边框：`1px solid --border`。
+- 边框半径：`--radius-lg`。
+- 活动状态：边框颜色变为主要颜色，并带有脉动动画。
+- 悬停状态：边框颜色变为主要颜色，透明度降低 50%。
 
-**Command Button Structure:**
+**命令按钮结构：**
 ```html
 <button class="nav-cmd">
   <span class="cmd-prefix">$</span>
@@ -308,158 +307,155 @@ A comprehensive design system for creating terminal-inspired user interfaces wit
 </button>
 ```
 
-**Command Colors:**
-- Prefix (`$`): Fluorescent green (#39ff14)
-- Keyword: Primary color (#cc7a60) or blue (#3b82f6)
-- Flag: Default foreground color
+**命令颜色：**
+- 前缀（`$`）：荧光绿色 (#39ff14)。
+- 关键字：主要颜色 (#cc7a60) 或蓝色 (#3b82f6)。
+- 标志：默认前景颜色。
 
-### Card Components
+### 卡片组件
 
-**Skill Card:**
-- Background: `--bg-card` (#fff in light, #111 in dark)
-- Border: `1px solid --border`
-- Border radius: `--radius-xl` (12px)
-- Height: `100%` with flex column layout
-- Hover: Border changes to primary with 50% opacity, shadow increases (`0 25px 50px -12px rgba(204, 122, 96, 0.1)`), `translateY(-4px)`
-- Active: `translateY(0) scale(0.99)`
-- Transition: `all 0.3s ease`
-- **Line Numbers**: Absolute positioned on left, `2rem` width, subtle background
-- **Avatar**: 24px × 24px, bordered, scales on hover
-- **Star Icon**: 10px × 10px, warning color
-- **Like Button**: SVG heart icon, changes color on hover
+**技能卡片：**
+- 背景：`--bg-card` （浅色为 #fff，深色为 #111）。
+- 边框：`1px solid --border`。
+- 边框半径：`--radius-xl` (12px)`。
+- 高度：`100%`，采用 flex 列布局。
+- 悬停状态：边框颜色变为主要颜色，透明度降低 50%，阴影增加（`0 25px 50px rgba(204, 122, 96, 0.1)`，`translateY(-4px)`。
+- 活动状态：`translateY(0) scale(0.99)`。
+- 过渡效果：`all 0.3s ease`。
+- **行号**：绝对定位在左侧，宽度 `2rem`，带有微妙的背景。
+- **头像**：24px × 24px，带边框，悬停时缩放。
+- **星形图标**：10px × 10px，警告颜色。
+- **点赞按钮**：SVG 心形图标，悬停时颜色变化。
 
-**Category Card:**
-- Same base styling as skill card
-- **Color Themes**: Cyan, Blue, Purple, Amber variants
-- **Folder Icon**: SVG icon, color varies by theme, scales on hover
-- **Category Dot**: Small indicator dot, changes on hover
-- **Arrow Icon**: Appears on hover, positioned bottom-right
-- **JSON Display**: Key-value pairs with theme-colored hover effects
-- **Command Line**: Footer with command-style text
+**类别卡片：**
+- 与技能卡片相同的基样式。
+- **颜色主题**：青色、蓝色、紫色、琥珀色变体。
+- **文件夹图标**：SVG 图标，颜色随主题变化，悬停时缩放。
+- **类别圆点**：小指示圆点，悬停时变化。
+- **箭头图标**：悬停时出现。
+- **JSON 显示**：键值对，带有主题颜色的悬停效果。
+- **命令行**：底部显示命令风格文本。
 
-**Mention Card:**
-- Same base styling
-- Blockquote styling with quotation marks
-- Source attribution with border-top separator
+**提及卡片：**
+- 与技能卡片相同的基样式。
+- 引用样式，带有引号。
+- 来源引用，带有顶部边框分隔线。
 
-### Button Components
+### 按钮组件
 
-**Primary Button (Active):**
-- Background: `--primary` (#cc7a60)
-- Color: `--primary-foreground` (#fff)
-- Border: `1px solid --primary`
-- Border radius: `--radius-lg`
-- Padding: `6px 12px` (small) or `--spacing-md --spacing-lg` (medium)
-- Font: Monospace, `--text-xs` or `--text-sm`
+**主要按钮（活动状态）：**
+- 背景：`--primary` (#cc7a60)`。
+- 颜色：`--primary-foreground` (#fff)`。
+- 边框：`1px solid --border`。
+- 边框半径：`--radius-lg`。
+- 内边距：`6px 12px`（小）或 `--spacing-md --spacing-lg`（中）。
+- 字体：等宽字体，`--text-xs` 或 `--text-sm`。
 
-**Secondary Button:**
-- Background: `--bg-card`
-- Border: `1px solid --border`
-- Color: `--foreground`
-- Hover: Border color changes to primary with 50% opacity
-- Active: `transform: scale(0.95)`
+**次要按钮：**
+- 背景：`--bg-card`。
+- 边框：`1px solid --border`。
+- 颜色：`--foreground`。
+- 悬停状态：边框颜色变为主要颜色，透明度降低 50%。
+- 活动状态：`transform: scale(0.95)`。
 
-**Icon Button:**
-- Square or rounded
-- Padding: `6px 12px`
-- Icon size: `14px` or `16px`
-- Same hover/active states as secondary button
+**图标按钮：**
+- 方形或圆形。
+- 内边距：`6px 12px`。
+- 图标大小：`14px` 或 `16px`。
+- 悬停/活动状态与次要按钮相同。
 
-### Input Components
+### 输入组件**
 
-**Search Input:**
-- Background: Transparent
-- Border: None
-- Font: Monospace
-- Placeholder: `--text-muted` color
-- Focus: No visible border (minimal design)
+**搜索输入：**
+- 背景：透明。
+- 边框：无。
+- 字体：等宽字体。
+- 占位符：`--text-muted` 颜色。
+- 焦点：无可见边框（极简设计）。
 
-**Text Input:**
-- Background: `--bg-card`
-- Border: `1px solid --border`
-- Border radius: `--radius-sm` or `--radius-md`
-- Padding: `--spacing-sm`
-- Font: Monospace
+**文本输入：**
+- 背景：`--bg-card`。
+- 边框：`1px solid --border`。
+- 边框半径：`--radius-sm` 或 `--radius-md`。
+- 内边距：`--spacing-sm`。
 
-### Code Display Components
+**代码显示组件**
 
-**Code Block:**
-- Background: `rgba(255, 255, 255, 0.5)` with backdrop blur
-- Border: `1px solid --border`
-- Border radius: `--radius-lg`
-- Padding: `--spacing-md`
-- Font: Monospace
-- Line height: `--leading-relaxed`
+**代码块：**
+- 背景：`rgba(255, 255, 255, 0.5)`，带背景模糊效果。
+- 边框：`1px solid --border`。
+- 边框半径：`--radius-lg`。
+- 内边距：`--spacing-md`。
+- 字体：等宽字体。
+- 行高：`--leading-relaxed`。
 
-**Code Line:**
-- Display: Flex, align baseline
-- Gap: `--spacing-sm`
-- Syntax colors applied to different elements
+**代码行：**
+- 显示方式：Flex，对齐基线。
+- 间距：`--spacing-sm`。
 
-**Description Block (Comment Style):**
-- Border-left: `4px solid rgba(204, 122, 96, 0.5)`
-- Background: `rgba(204, 122, 96, 0.05)`
-- Padding-left: `--spacing-md`
-- Border-radius: Right side only (`--radius-lg`)
-- Font: Monospace
+**描述块（评论样式）：**
+- 左边边框：`4px solid rgba(204, 122, 96, 0.5)`。
+- 背景：`rgba(204, 122, 96, 0.05)`。
+- 左边内边距：`--spacing-md`。
+- 右边边框半径：`--radius-lg`。
 
-### Grid Layouts
+**网格布局**
 
-**Skills Grid:**
-- Display: Grid
-- Columns: `repeat(3, 1fr)` (desktop), `repeat(2, 1fr)` (tablet), `1fr` (mobile)
-- Gap: `--spacing-lg` (24px)
+**技能网格：**
+- 显示方式：Grid。
+- 列数：`repeat(3, 1fr)`（桌面），`repeat(2, 1fr)`（平板），`1fr`（移动设备）。
+- 间距：`--spacing-lg` (24px)`。
 
-**Categories Grid:**
-- Display: Grid
-- Columns: `repeat(4, 1fr)` (desktop), `repeat(2, 1fr)` (tablet), `1fr` (mobile)
-- Gap: `--spacing-lg`
+**类别网格：**
+- 显示方式：Grid。
+- 列数：`repeat(4, 1fr)`（桌面），`repeat(2, 1fr)`（平板），`1fr`（移动设备）。
+- 间距：`--spacing-lg`。
 
-**Mentions Grid:**
-- Display: Grid
-- Columns: `1fr 1fr` (desktop), `1fr` (mobile)
-- Gap: `--spacing-lg`
+**提及网格：**
+- 显示方式：Grid。
+- 列数：`1fr 1fr`（桌面），`1fr`（移动设备）。
+- 间距：`--spacing-lg`。
 
-## Animation System
+## 动画系统**
 
-### Transitions
+**过渡效果**
 
-**Default Transition:**
-- Duration: `0.15s` or `0.2s`
-- Timing: `cubic-bezier(.4,0,.2,1)` (ease-in-out)
-- Properties: `all` or specific properties
+**默认过渡：**
+- 持续时间：`0.15s` 或 `0.2s`。
+- 时间设置：`cubic-bezier(.4,0,.2,1)`（缓入效果）。
+- 属性：`all` 或特定属性。
 
-**Common Transitions:**
-- Hover states: `all 0.2s ease`
-- Active states: `transform 0.2s ease`
-- Color changes: `color 0.2s ease` or `background-color 0.2s ease`
+**常见过渡效果：**
+- 悬停状态：`all 0.2s ease`。
+- 活动状态：`transform 0.2s ease`。
+- 颜色变化：`color 0.2s ease` 或 `background-color 0.2s ease`。
 
-### Keyframe Animations
+**关键帧动画**
 
-**Blink Animation (Cursor):**
+**光标闪烁动画：**
 ```css
 @keyframes blink {
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0; }
 }
 ```
-- Duration: `1s`
-- Iteration: `infinite`
-- Used for: Cursor blink effect
+- 持续时间：`1s`。
+- 重复次数：`infinite`。
+- 用于：光标闪烁效果。
 
-**Pulse Border Animation:**
+**脉动边框动画：**
 ```css
 @keyframes pulse-border {
   0%, 100% { border-color: rgba(204, 122, 96, 0.5); }
   50% { border-color: var(--ring); }
 }
 ```
-- Duration: `2s`
-- Timing: `ease-in-out`
-- Iteration: `infinite`
-- Used for: Active navigation items
+- 持续时间：`2s`。
+- 时间设置：`ease-in-out`。
+- 重复次数：`infinite`。
+- 用于：活动导航项。
 
-**Fade In Up Animation:**
+**淡入上动画：**
 ```css
 @keyframes fadeInUp {
   from {
@@ -472,118 +468,116 @@ A comprehensive design system for creating terminal-inspired user interfaces wit
   }
 }
 ```
-- Duration: `0.5s`
-- Timing: `ease`
-- Used for: Card entrance animations
-- Staggered delays: 0.1s increments for grid items
+- 持续时间：`0.5s`。
+- 时间设置：`ease`。
+- 用于：卡片进入动画。
+- 格子项的延迟：`0.1s` 递增。
 
-### Interactive States
+**交互状态**
 
-**Hover States:**
-- Buttons: Border color changes, background lightens
-- Cards: Border changes to primary, shadow increases, slight lift
-- Links: Color changes to primary
-- Scale: No scaling on hover (maintains stability)
+**悬停状态：**
+- 按钮：边框颜色变化，背景变亮。
+- 卡片：边框变为主要颜色，阴影增加，略微凸起。
+- 链接：颜色变为主要颜色。
+- 规模：悬停时不变（保持稳定性）。
 
-**Active States:**
-- Buttons: `transform: scale(0.95)` - subtle press effect
-- Duration: `0.2s`
+**活动状态：**
+- 按钮：`transform: scale(0.95)` - 微妙的按压效果。
+- 持续时间：`0.2s`。
 
-**Focus States:**
-- Outline: `2px solid --ring` with `2px` offset
-- Used for: Accessibility, keyboard navigation
+**焦点状态：**
+- 外框：`2px solid --ring`，带有 `2px` 的偏移。
+- 用于：可访问性，键盘导航。
 
-## Background Patterns
+## 背景图案**
 
-### Grid Pattern (Page Background)
-
+**网格图案（页面背景）**
 ```css
 background-image: 
   linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
   linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 background-size: 20px 20px;
 ```
+- 非常微妙的网格（2% 不透明度，黑色）。
+- 20px × 20px 的网格单元。
+- 创建纹理，不会分散注意力。
+- 应用于 `body` 背景。
 
-- Very subtle grid (2% opacity black)
-- 20px × 20px grid cells
-- Creates texture without distraction
-- Applied to `body` background
+**渐变背景**
 
-### Gradient Backgrounds
-
-**Avatar Gradient:**
+**头像渐变：**
 ```css
 background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
 ```
-- Warm peach gradient
-- 135-degree angle
-- Used for: User avatars
+- 温暖的桃色渐变。
+- 135 度角。
+- 用于：用户头像。
 
-**Chart Gradient:**
+**图表渐变：**
 ```css
 linearGradient: #cc7a60 with opacity stops (0%: 0.6, 100%: 0)
 ```
-- Primary color gradient
-- Used for: Area charts, data visualization
+- 主要颜色的渐变。
+- 用于：面积图、数据可视化。
 
-## Responsive Design
+## 响应式设计**
 
-### Breakpoints
+### 分界点**
 
-**Mobile:** `< 640px`
-- Single column layouts
-- Reduced font sizes
-- Simplified navigation
-- Stacked grids
+**移动设备：** `< 640px`
+- 单列布局。
+- 减小字体大小。
+- 简化导航。
+- 堆叠网格。
 
-**Tablet:** `640px - 1024px`
-- Two column layouts
-- Medium font sizes
-- Collapsed navigation menu
+**平板设备：`640px - 1024px`
+- 双列布局。
+- 中等字体大小。
+- 收叠导航菜单。
 
-**Desktop:** `1024px - 1200px`
-- Three column layouts
-- Full navigation visible
-- Standard spacing
+**桌面设备：`1024px - 1200px`
+- 三列布局。
+- 完整导航可见。
+- 标准间距。
 
-**Large Desktop:** `> 1200px`
-- Four column layouts (where applicable)
-- Maximum content width: `1400px`
-- Generous spacing
+**大屏幕设备：`> 1200px`
+- 四列布局（如适用）。
+- 最大内容宽度：`1400px`。
+- 丰富的间距。
 
-### Responsive Adjustments
+**响应式调整**
 
-**Navigation:**
-- Desktop (>1024px): Full command menu visible
-- Tablet/Mobile: Hamburger menu, simplified layout
-- Status indicator: Hidden on mobile, visible on tablet+
+**导航：**
+- 桌面设备（>1024px）：显示完整命令菜单。
+- 平板设备/移动设备：汉堡菜单，简化布局。
+- 状态指示器：在移动设备上隐藏，在平板设备上显示。
 
-**Hero Section:**
-- Desktop: Two column grid (text + chart)
-- Mobile: Single column, stacked
+**标题部分：**
+- 桌面设备：两列网格（文本 + 图表）。
+- 移动设备：单列，堆叠。
 
-**Grids:**
-- Skills: 3 → 2 → 1 columns
-- Categories: 4 → 2 → 1 columns
-- Mentions: 2 → 1 columns
+**网格：**
+- 技能：3 → 2 → 1 列。
+- 类别：4 → 2 → 1 列。
+- 提及：2 → 1 列。
 
-**Typography:**
-- Hero title: 3.5rem → 2.5rem (mobile)
-- Section titles: 2.5rem → 2rem (mobile)
-- Body text: Maintains readability
+**字体：**
+- 标题：3.5rem → 2.5rem（移动设备）。
+- 部分标题：2.5rem → 2rem（移动设备）。
+- 正文文本：保持可读性。
 
-## Implementation Guidelines
+## 实现指南**
 
-### CSS Variable Usage
+### CSS 变量使用**
 
-**Always use CSS variables** for:
-- Colors (never hardcode hex values)
-- Spacing (use spacing scale)
-- Typography (use text size scale)
-- Border radius (use radius scale)
-- Shadows (use shadow scale)
+**始终使用 CSS 变量**：
+- 颜色（不要硬编码十六进制值）。
+- 间距（使用间距比例）。
+- 字体（使用文本大小比例）。
+- 边框半径（使用半径比例）。
+- 阴影（使用阴影比例）。
 
-**Example:**
+**示例：**
 ```css
 .button {
   background: var(--bg-card);
@@ -595,74 +589,74 @@ linearGradient: #cc7a60 with opacity stops (0%: 0.6, 100%: 0)
 }
 ```
 
-### Component Structure
+### 组件结构**
 
-**Terminal Window Pattern:**
-1. Container with border and radius
-2. Header with dots, title, status
-3. Content area with padding
-4. Consistent spacing throughout
+**终端窗口样式：**
+1. 带有边框和半径的容器。
+2. 带有圆点、标题和状态的标题。
+3. 带有内边距的内容区域。
+4. 一致的间距。
 
-**Command-Line Pattern:**
-1. Prefix (`$`) in fluorescent green
-2. Keyword in primary or blue
-3. Flags/arguments in default color
-4. Monospace font throughout
+**命令行样式：**
+1. 命令前缀（`$`）使用荧光绿色。
+2. 关键字使用主要颜色或蓝色。
+3. 标志/参数使用默认颜色。
+4. 全部使用等宽字体。
 
-### Color Application Rules
+### 颜色应用规则**
 
-**Primary Color (#cc7a60):**
-- Use for: Active states, highlights, keywords, prompts
-- Avoid: Large background areas (too intense)
-- Opacity variants: Use `rgba(204, 122, 96, 0.5)` for borders, `rgba(204, 122, 96, 0.05)` for backgrounds
+**主要颜色 (#cc7a60)：**
+- 用于：活动状态、高亮部分、关键字、提示。
+- 避免：大面积背景（过于强烈）。
+- 不透明度变体：使用 `rgba(204, 122, 96, 0.5)` 用于边框，`rgba(204, 122, 96, 0.05)` 用于背景。
 
-**Fluorescent Green (#39ff14):**
-- Use ONLY for: Command prefix (`$`)
-- Never use for: Other text, backgrounds, or accents
+**荧光绿色 (#39ff14)：**
+- 仅用于：命令前缀（`$`）。
+- 不得用于：其他文本、背景或强调色。
 
-**Green (#22c55e):**
-- Use for: Success states, positive indicators, string literals
-- Avoid: Primary actions (use primary color instead)
+**绿色 (#22c55e)：**
+- 用于：成功状态、正面指示器、字符串字面量。
+- 避免：主要操作（使用主要颜色）。
 
-### Typography Rules
+**字体规则**
 
-**Always use monospace font** for:
-- Navigation elements
-- Buttons
-- Code blocks
-- Command-line interfaces
-- Window titles
-- Status text
+**始终使用等宽字体**：
+- 导航元素。
+- 按钮。
+- 代码块。
+- 命令行界面。
+- 窗口标题。
+- 状态文本。
 
-**Font weight guidelines:**
-- Body text: 400 (normal)
-- Labels/keywords: 600 (semibold)
-- Headings: 700 (bold)
-- Hero text: 700-800 (bold-extrabold)
+**字体粗细指南：**
+- 正文文本：400（正常）。
+- 标签/关键字：600（粗体）。
+- 标题：700（粗体）。
+- 标题：700-800（特别粗体）。
 
-### Spacing Consistency
+**间距一致性**
 
-**Use spacing scale:**
-- Never use arbitrary values (e.g., `13px`, `27px`)
-- Stick to: 4px, 8px, 16px, 24px, 32px, 48px
-- For gaps between related items: `--spacing-sm` to `--spacing-md`
-- For section separation: `--spacing-xl` to `--spacing-2xl`
+**使用间距比例：**
+- 不要使用任意值（例如，`13px`、`27px`）。
+- 保持：4px、8px、16px、24px、32px、48px。
+- 相关元素之间的间距：`--spacing-sm` 至 `--spacing-md`。
+- 部分之间的间距：`--spacing-xl` 至 `--spacing-2xl`。
 
-### Animation Best Practices
+**动画最佳实践**
 
-**Keep animations subtle:**
-- Duration: 0.15s - 0.3s maximum
-- Easing: Use provided cubic-bezier curves
-- Avoid: Bouncy animations, long durations
-- Prefer: Fade, translate, scale (small amounts)
+**保持动画微妙：**
+- 持续时间：0.15s - 最大 0.3s。
+- 使用提供的立方贝塞尔曲线（cubic-bezier）。
+- 避免：跳跃式动画、长时间动画。
+- 优先使用：淡入、平移、缩放（小幅度的动画）。
 
-**Performance:**
-- Use `transform` and `opacity` for animations (GPU accelerated)
-- Avoid animating `width`, `height`, `margin`, `padding`
+**性能：**
+- 使用 `transform` 和 `opacity` 进行动画（GPU 加速）。
+- 避免动画 `width`、`height`、`margin`、`padding`。
 
-## Common Patterns
+## 常见样式**
 
-### Terminal Window Card
+### 终端窗口卡片**
 
 ```html
 <div class="terminal-window">
@@ -681,7 +675,7 @@ linearGradient: #cc7a60 with opacity stops (0%: 0.6, 100%: 0)
 </div>
 ```
 
-### Command Button
+### 命令按钮**
 
 ```html
 <button class="nav-cmd">
@@ -691,7 +685,7 @@ linearGradient: #cc7a60 with opacity stops (0%: 0.6, 100%: 0)
 </button>
 ```
 
-### Code Block Display
+### 代码块显示**
 
 ```html
 <div class="stats-code-block">
@@ -708,7 +702,7 @@ linearGradient: #cc7a60 with opacity stops (0%: 0.6, 100%: 0)
 </div>
 ```
 
-### Description Block (Comment Style)
+### 描述块（评论样式）
 
 ```html
 <div class="description-block">
@@ -720,75 +714,74 @@ linearGradient: #cc7a60 with opacity stops (0%: 0.6, 100%: 0)
 </div>
 ```
 
-## Accessibility Considerations
+## 可访问性考虑**
 
-**Color Contrast:**
-- Primary text (#111827) on white: WCAG AAA compliant
-- Secondary text (#666666) on white: WCAG AA compliant
-- Primary color (#cc7a60) on white: WCAG AA compliant for large text
+**颜色对比度：**
+- 主要文本 (#111827) 在白色上：符合 WCAG AAA 标准。
+- 次要文本 (#666666) 在白色上：符合 WCAG AA 标准。
+- 主要颜色 (#cc7a60) 在白色上：对于大文本，符合 WCAG AA 标准。
 
-**Focus States:**
-- All interactive elements have visible focus indicators
-- Focus ring: 2px solid primary color with 2px offset
+**焦点状态：**
+- 所有交互元素都有可见的焦点指示器。
+- 焦点环：2px 实心的主要颜色，带有 2px 的偏移。
 
-**Keyboard Navigation:**
-- All interactive elements are keyboard accessible
-- Tab order follows visual hierarchy
-- Enter/Space activate buttons
+**键盘导航：**
+- 所有交互元素都可以通过键盘访问。
+- 切换顺序遵循视觉层次结构。
+- Enter/Space 键激活按钮。
 
-**Screen Readers:**
-- Semantic HTML structure
-- ARIA labels where needed
-- Status indicators use appropriate roles
+**屏幕阅读器：**
+- 使用语义 HTML 结构。
+- 在需要时添加 ARIA 标签。
+- 状态指示器使用适当的角色。
 
-## Dark Mode Implementation
+## 暗色模式实现**
 
-The design system includes a complete dark mode implementation using `[data-theme="dark"]` attribute selector. Dark mode is fully integrated with smooth transitions and maintains all design principles.
+该设计系统包括使用 `[data-theme="dark"]` 属性选择器的完整暗色模式实现。暗色模式与平滑的过渡效果完全集成，并保持所有设计原则。
 
-### Dark Mode Color System
+### 暗色模式颜色系统**
 
-**Primary Colors (Dark Mode):**
-- `--primary: #d99178` - Lighter terracotta for better contrast on dark backgrounds
-- `--primary-foreground: #0a0a0a` - Dark text on primary backgrounds
-- `--primary-dark: #c57f66` - Darker shade for hover states
-- `--primary-light: #e5a890` - Lighter shade for subtle accents
-- `--ring: #d99178` - Focus ring color (lighter primary)
+**主要颜色（暗色模式）：**
+- `--primary: #d99178` - 在深色背景上提供更好的对比度。
+- `--primary-foreground: #0a0a0a` - 主要背景上的深色文本。
+- `--primary-dark: #c57f66` - 悬停状态时的深色调。
+- `--primary-light: #e5a890` - 微妙强调时的浅色调。
+- `--ring: #d99178` - 焦点环的颜色（较浅的主要颜色）。
 
-**Backgrounds (Dark Mode):**
-- `--background: #0a0a0a` - Deep black for main backgrounds
-- `--bg-main: #0a0a0a` - Dark background with subtle white grid pattern
-- `--bg-card: #111` - Slightly lighter black for card components
-- `--bg-code: #18181b` - Dark gray for code blocks and window headers
-- `--secondary: #1a1a1a` - Dark gray for secondary backgrounds
-- `--muted: #262626` - Muted dark gray for subtle backgrounds
+**背景（暗色模式）：**
+- `--background: #0a0a0a` - 深色背景。
+- `--bg-main: #0a0a0a` - 带有微妙白色网格图案的深色背景。
+- `--bg-card: #111` - 卡片组件的浅灰色背景。
+- `--bg-code: #18181b` - 代码块和窗口标题的深灰色背景。
+- `--secondary: #1a1a1a` - 较浅的灰色背景。
+- `--muted: #262626` - 较暗的灰色背景。
 
-**Text Colors (Dark Mode):**
-- `--foreground: #ededed` - Light gray for primary text
-- `--text-primary: #ededed` - Primary text color
-- `--text-secondary: #a3a3a3` - Medium gray for secondary text
-- `--text-muted: #a3a3a3` - Muted gray for less important text
-- `--muted-foreground: #a3a3a3` - Foreground on muted backgrounds
+**文本颜色（暗色模式）：**
+- `--foreground: #ededed` - 主要文本的浅灰色。
+- `--text-primary: #ededed` - 主要文本颜色。
+- `--text-secondary: #a3a3a3` - 较不重要的文本的浅灰色背景。
+- `--text-muted: #a3a3a3` - 淡灰色背景上的主要文本。
 
-**Borders (Dark Mode):**
-- `--border: #606068` - Lighter gray for visibility on dark backgrounds
-- `--border-light: #27272a` - Subtle dark gray for dividers
+**边框（暗色模式）：**
+- `--border: #606068` - 在深色背景上更明显的浅灰色。
+- `--border-light: #27272a` - 分隔线的浅灰色。
 
-**Syntax Highlighting (Dark Mode):**
-- `--syntax-keyword: #d99178` - Lighter primary for keywords
-- `--syntax-string: #22c55e` - Green (same as light mode)
-- `--syntax-number: #d99178` - Lighter primary for numbers
-- `--syntax-comment: #6a9955` - Muted green (same as light mode)
-- Blue keywords: `#60a5fa` (blue-400) - Brighter blue for better contrast
-- Purple keywords: `#c084fc` (purple-400) - Brighter purple for better contrast
+**语法高亮（暗色模式）：**
+- `--syntax-keyword: #d99178` - 关键字的主要颜色（较浅的主要颜色）。
+- `--syntax-string: #22c55e` - 绿色（与亮色模式相同）。
+- `--syntax-number: #d99178` - 数字的主要颜色（较浅的主要颜色）。
+- `--syntax-comment: #6a9955` - 淡绿色的评论（与亮色模式相同）。
+- 蓝色关键字：`#60a5fa`（更亮的蓝色）。
+- 紫色关键字：`#c084fc`（更亮的紫色）。
 
-**Shadows (Dark Mode):**
-- `--shadow-sm: 0 1px 2px rgba(0,0,0,0.3)` - Stronger shadows for depth
-- `--shadow-md: 0 4px 6px rgba(0,0,0,0.4)` - Medium shadows
-- `--shadow-lg: 0 10px 25px rgba(0,0,0,0.5)` - Large shadows
+**阴影（暗色模式）：**
+- `--shadow-sm: 0 1px 2px rgba(0,0,0,0.3)` - 更强的阴影效果。
+- `--shadow-md: 0 4px 6px rgba(0,0,0,0.07)` - 中等阴影效果。
+- `--shadow-lg: 0 10px 25px rgba(0,0,0,0.1)` - 大阴影效果。
 
-### Dark Mode Background Pattern
+### 暗色模式背景图案**
 
-Dark mode uses a subtle white grid pattern instead of black:
+暗色模式使用微妙的白色网格图案：
 
 ```css
 [data-theme="dark"] body {
@@ -798,9 +791,9 @@ Dark mode uses a subtle white grid pattern instead of black:
 }
 ```
 
-### Theme Toggle Implementation
+### 主题切换实现**
 
-**HTML Structure:**
+**HTML 结构：**
 ```html
 <button class="theme-toggle-btn theme-toggle" title="切换主题" aria-label="切换主题">
   <svg class="icon-sun theme-icon"><!-- Sun icon --></svg>
@@ -808,64 +801,64 @@ Dark mode uses a subtle white grid pattern instead of black:
 </button>
 ```
 
-**JavaScript Implementation:**
-- Uses `localStorage` to persist theme preference
-- Detects system preference on first load
-- Smoothly transitions between themes
-- Updates icon visibility (sun/moon)
-- Listens to system theme changes (when no manual preference set)
+**JavaScript 实现：**
+- 使用 `localStorage` 保存主题偏好设置。
+- 在首次加载时检测系统偏好设置。
+- 在主题之间平滑过渡。
+- 自动更新图标可见性（太阳/月亮）。
+- 监听系统主题变化（当没有手动设置时）。
 
-**Key Features:**
-- Automatic system preference detection
-- Manual override with localStorage persistence
-- Smooth CSS transitions (0.2s ease-in-out)
-- Icon state management (sun for light, moon for dark)
+**关键特性：**
+- 自动检测系统偏好设置。
+- 使用 `localStorage` 保存手动偏好设置。
+- 平滑的 CSS 过渡效果（0.2s 缓入效果）。
+- 图标状态管理（太阳代表亮色模式，月亮代表暗色模式）。
 
-### Dark Mode Component Adaptations
+**暗色模式组件调整：**
 
-**Navigation Bar:**
-- Background: `rgba(10, 10, 10, 0.8)` with backdrop blur
-- Status indicator: Darker background with adjusted border
+**导航栏：**
+- 背景：`rgba(10, 10, 10, 0.8)`，带背景模糊效果。
+- 状态指示器：背景较深，边框调整。
 
-**Terminal Windows:**
-- Card background: `#111` (slightly lighter than main background)
-- Window headers: `rgba(38, 38, 38, 0.3)` for subtle contrast
-- All borders use darker mode colors
+**终端窗口：**
+- 卡片背景：`#111`（比主背景稍浅）。
+- 窗口标题：`rgba(38, 38, 38, 0.3)`，以获得微妙的对比度。
+- 所有边框使用暗色模式的颜色。
 
-**Skill Cards:**
-- Line numbers background: `rgba(38, 38, 38, 0.2)`
-- Footer background: `rgba(38, 38, 38, 0.2)`
-- Hover effects maintain same behavior with adjusted colors
+**技能卡片：**
+- 行号背景：`rgba(38, 38, 38, 0.2)`。
+- 底部背景：`rgba(38, 38, 38, 0.2)`。
+- 悬停效果保持相同的行为，但颜色调整。
 
-**Category Cards:**
-- Each category has theme-specific hover colors:
-  - Cyan: `#22d3ee` (dark) vs `#06b6d4` (light)
-  - Blue: `#60a5fa` (dark) vs `#3b82f6` (light)
-  - Purple: `#c084fc` (dark) vs `#a855f7` (light)
-  - Amber: `#fbbf24` (dark) vs `#f59e0b` (light)
+**类别卡片：**
+- 每个类别都有特定的悬停颜色：
+  - 青色：`#22d3ee`（暗色）对比 `#06b6d4`（亮色）。
+  - 蓝色：`#60a5fa`（暗色）对比 `#3b82f6`（亮色）。
+  - 紫色：`#c084fc`（暗色）对比 `#a855f7`（亮色）。
+  - 琥珀色：`#c084fc`（暗色）对比 `#f59e0b`（亮色）。
 
-**Charts:**
-- Grid lines: `#27272a` with 0.5 opacity
-- Chart container: `rgba(17, 17, 17, 0.3)`
-- All text colors adapt to dark mode
+**图表：**
+- 网格线条：`#27272a`，透明度 0.5。
+- 图表容器：`rgba(17, 17, 17, 0.3)`。
+- 所有文本颜色适应暗色模式。
 
-**FAB Button:**
-- Light mode: Dark background `#1a1a1a` with white icon
-- Dark mode: White background with dark icon (inverted)
+**FAB 按钮：**
+- 亮色模式：背景 `#1a1a1a`，图标为白色。
+- 暗色模式：背景为白色，图标为深色。
 
-### Dark Mode Best Practices
+**暗色模式最佳实践：**
 
-**Color Contrast:**
-- All text maintains WCAG AA compliance in dark mode
-- Primary color is lightened for better visibility
-- Borders are lighter for clear definition
+**颜色对比度：**
+- 所有文本在暗色模式下保持 WCAG AA 标准。
+- 主要颜色变得更亮，以便更好的可见性。
+- 边框更浅，以便更好的区分度。
 
-**Transitions:**
-- All color changes use `transition: color 0.2s ease-in-out`
-- Background changes use `transition: background-color 0.2s ease-in-out`
-- Smooth theme switching without jarring changes
+**过渡效果：**
+- 所有颜色变化使用 `transition: color 0.2s ease-in-out`。
+- 背景变化使用 `transition: background-color 0.2s ease-in-out`。
+- 过渡效果平滑，无突兀感。
 
-**Implementation Pattern:**
+**实现模式：**
 ```css
 /* Light mode (default) */
 .component {
@@ -880,46 +873,43 @@ Dark mode uses a subtle white grid pattern instead of black:
 }
 ```
 
-**Maintains:**
-- Same spacing system
-- Same typography scale
-- Same component structure
-- Same animation timing
-- Enhanced shadows for depth perception
+**保持：**
+- 保持相同的间距系统。
+- 保持相同的字体比例。
+- 保持相同的组件结构。
+- 保持相同的动画效果。
+- 增强阴影效果，以增强深度感。
 
-## Performance Optimization
+## 性能优化**
 
-**CSS Variables:**
-- All colors/spacing use CSS variables for easy theming
-- Variables defined in `:root` for global access
+**CSS 变量：**
+- 所有颜色/间距使用 CSS 变量，以便于主题设置。
+- 在 `:root` 中定义变量，以便全局访问。
 
-**Animations:**
-- Use `transform` and `opacity` (GPU accelerated)
-- Avoid layout-triggering properties
-- Keep durations short (0.15s - 0.3s)
+**动画：**
+- 使用 `transform` 和 `opacity` 进行动画（GPU 加速）。
+- 避免使用 `width`、`height`、`margin`、`padding` 的动画。
 
-**Font Loading:**
-- Preconnect to Google Fonts
-- Use `font-display: swap` for better performance
-- Provide fallback fonts in stack
+**字体加载：**
+- 预先连接 Google Fonts。
+- 使用 `font-display: swap` 以获得更好的性能。
+- 提供备用字体。
 
-## Browser Support
+**浏览器支持：**
+- **现代浏览器**：完全支持。
+- **Chrome/Edge**：完全支持。
+- **Firefox**：完全支持。
+- **Safari**：完全支持（需要 `-webkit-` 前缀）。
 
-**Modern Browsers:**
-- Chrome/Edge: Full support
-- Firefox: Full support
-- Safari: Full support (with `-webkit-` prefixes for backdrop-filter)
+**使用的特性：**
+- CSS Grid：在现代浏览器中完全支持。
+- CSS 变量：完全支持。
+- Backdrop Filter：需要 `-webkit-` 前缀。
+- Flexbox：完全支持。
 
-**Features Used:**
-- CSS Grid: Full support in modern browsers
-- CSS Variables: Full support
-- Backdrop Filter: Requires `-webkit-` prefix for Safari
-- Flexbox: Full support
+## 设计元素总结**
 
-## Design Tokens Summary
-
-**Quick Reference:**
-
+**快速参考：**
 ```css
 /* Colors - Light Mode */
 Primary: #cc7a60
@@ -959,9 +949,9 @@ md: 0 4px 6px rgba(0,0,0,0.4)
 lg: 0 10px 25px rgba(0,0,0,0.5)
 ```
 
-## Theme Toggle JavaScript Implementation
+## 主题切换 JavaScript 实现**
 
-**Complete Implementation:**
+**完整实现：**
 ```javascript
 (function() {
   const themeToggles = document.querySelectorAll('.theme-toggle');
@@ -1030,26 +1020,25 @@ lg: 0 10px 25px rgba(0,0,0,0.5)
 })();
 ```
 
-**Key Features:**
-- Persists theme preference in localStorage
-- Detects system preference on first load
-- Smoothly transitions between themes
-- Updates icon visibility automatically
-- Listens to system theme changes (when no manual override)
+**关键特性：**
+- 在 `localStorage` 中保存主题偏好设置。
+- 在首次加载时检测系统偏好设置。
+- 在主题之间平滑过渡。
+- 自动更新图标可见性。
+- 监听系统主题变化（当没有手动设置时）。
 
-## Usage Examples
+**使用示例：**
 
-When implementing this design system:
+在实现此设计系统时，请遵循以下步骤：
+1. **从 CSS 变量开始** - 导入或定义所有颜色/间距变量（包括暗色模式）。
+2. **使用终端窗口样式** - 将内容包裹在终端窗口组件中。
+3. **应用等宽字体** - 对所有 UI 文本使用 JetBrains Mono 字体。
+4. **遵循间距比例** - 一致使用定义的间距值。
+5. **使用语义颜色** - 根据含义而不是外观应用颜色。
+6. **实现主题切换** - 添加主题切换按钮和 JavaScript 代码。
+7. **保持一致性** - 在整个项目中重复使用组件样式。
+8. **测试响应性** - 确保布局在所有分界点上都能正常工作。
+9. **测试两种主题** - 确保亮色和暗色模式都能正确显示。
+10. **优化动画** - 保持过渡效果平滑且性能良好。
 
-1. **Start with CSS variables** - Import or define all color/spacing variables (including dark mode)
-2. **Use terminal window pattern** - Wrap content in terminal-window component
-3. **Apply monospace font** - Use JetBrains Mono for all UI text
-4. **Follow spacing scale** - Use defined spacing values consistently
-5. **Use semantic colors** - Apply colors based on meaning, not appearance
-6. **Implement theme toggle** - Add theme toggle button and JavaScript
-7. **Maintain consistency** - Reuse component patterns throughout
-8. **Test responsiveness** - Ensure layouts work at all breakpoints
-9. **Test both themes** - Verify light and dark modes work correctly
-10. **Optimize animations** - Keep transitions smooth and performant
-
-This design system creates a cohesive, developer-friendly interface that feels both modern and familiar to users comfortable with terminal interfaces. The complete dark mode implementation ensures the interface works beautifully in any lighting condition.
+该设计系统创建了一个连贯的、对开发者友好的界面，让用户感觉既现代又熟悉终端界面。完整的暗色模式实现确保界面在任何光照条件下都能完美显示。

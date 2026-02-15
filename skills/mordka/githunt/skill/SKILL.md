@@ -1,192 +1,100 @@
 ---
 name: githunt
-description: Find and rank GitHub developers by location, technology, and role. Search for candidates, get scored profiles with tech stack matches, activity, and contact info.
+description: 根据地理位置、技术背景和职位对 GitHub 开发者进行筛选和排名。可以搜索合适的候选人，查看他们的个人资料（包括所使用的技术栈、活跃度以及联系方式），并获取相应的评分结果。
 version: 1.0.0
 author: mordka
 ---
 
-# GitHunt - GitHub Developer Discovery
+# GitHunt – 一款用于发现 GitHub 开发者的工具
 
-Find top developers on GitHub by location, tech stack, and role. Get scored, ranked candidates with detailed profiles.
+通过地理位置、技术栈和角色来查找 GitHub 上的顶尖开发者。系统会对候选人进行评分并排名，并提供详细的个人资料。
 
-**Website:** https://githunt.ai
+**官方网站：** https://githunt.ai
 
-## When to Use
+## 使用场景
 
-- Finding developers/candidates in a specific location
-- Searching for developers with specific tech stacks
-- Recruiting/sourcing engineers
-- Building talent pipelines
+- 在特定地点寻找开发者/候选人  
+- 搜索具有特定技术栈的开发者  
+- 招聘/寻找工程师人才  
+- 建立人才筛选流程  
 
-## API Endpoints
+## API 端点  
 
-Base URL: `https://api.githunt.ai/v1`
+基础 URL：`https://api.githunt.ai/v1`  
 
-### Rank Users (Main Endpoint)
+### 用户排名（主要端点）  
+根据地理位置和技术栈对 GitHub 开发者进行搜索和排名。  
 
-Search and rank GitHub developers by location and tech stack.
+**请求参数：**  
+| 参数 | 是否必填 | 说明 |  
+|-------|----------|-------------|  
+| `location` | 是 | 地点（城市、国家或地区，例如：“berlin”、“germany”、“san francisco”） |  
+| `role` | 否 | 角色类型（如：“frontend”、“backend”、“fullstack”、“devops”、“mobile”、“data”） |  
+| `skills` | 否 | 需要匹配的技术关键词数组 |  
+| `maxUsers` | 否 | 返回的最大用户数量（默认：100，最大值：1000） |  
 
-```bash
-curl -X POST "https://api.githunt.ai/v1/rank/users" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "location": "berlin",
-    "role": "frontend",
-    "skills": ["react", "typescript"],
-    "maxUsers": 50
-  }'
-```
+### 实时用户排名（流式数据）  
+与上述端点相同，但通过服务器发送的事件（Server-Sent Events）实时返回结果。  
 
-**Body Parameters:**
-| Param | Required | Description |
-|-------|----------|-------------|
-| `location` | Yes | City, country, or region (e.g., "berlin", "germany", "san francisco") |
-| `role` | No | Role type: "frontend", "backend", "fullstack", "devops", "mobile", "data" |
-| `skills` | No | Array of technology keywords to match |
-| `maxUsers` | No | Max users to return (default: 100, max: 1000) |
+### 单个用户排名  
+获取特定 GitHub 用户的详细评分信息。  
 
-### Rank Users Streaming
+## 使用示例  
 
-Same as above but returns results via Server-Sent Events for real-time updates.
+- **在柏林查找 React 开发者**  
+- **在欧洲查找后端工程师**  
+- **对某个候选人进行评分**  
 
-```bash
-curl -X POST "https://api.githunt.ai/v1/rank/users/stream" \
-  -H "Content-Type: application/json" \
-  -H "Accept: text/event-stream" \
-  -d '{
-    "location": "london",
-    "skills": ["python", "django"],
-    "maxUsers": 100
-  }'
-```
+## 响应格式  
+搜索结果包含以下信息：  
 
-### Rank Single User
+## 评分系统  
+候选人的评分范围为 0-100 分，评分依据如下：  
 
-Get detailed score for a specific GitHub user.
+1. **技术栈匹配度**（权重最高）  
+   - 仓库中使用的语言与所需技能相匹配  
+   - 个人简介或项目说明中提到了相关技术  
+   - 智能关键词匹配（例如：“k8s” → “kubernetes”）  
 
-```bash
-curl -X POST "https://api.githunt.ai/v1/rank/user" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "torvalds",
-    "skills": ["c", "linux"]
-  }'
-```
+2. **活跃度评分**  
+   - 最近的提交和贡献记录  
+   - 提交请求（PR）和问题处理活动  
+   - 贡献行为的分析  
 
-## Usage Examples
+3. **仓库质量**  
+   - 仓库的星标数量和被克隆次数  
+   - 公开仓库的数量  
+   - 代码质量指标  
 
-### Find React Developers in Berlin
-```bash
-curl -s -X POST "https://api.githunt.ai/v1/rank/users" \
-  -H "Content-Type: application/json" \
-  -d '{"location": "berlin", "skills": ["react", "typescript"], "maxUsers": 10}' \
-  | gunzip | jq '.results[:5] | .[] | {login, name, score, location}'
-```
+4. **个人资料完整性**  
+   - 是否有个人简介  
+   是否设置了“可雇佣”标志  
+   是否提供了联系方式（电子邮件、网站、Twitter）  
 
-### Find Backend Engineers in Europe
-```bash
-curl -s -X POST "https://api.githunt.ai/v1/rank/users" \
-  -H "Content-Type: application/json" \
-  -d '{"location": "europe", "role": "backend", "skills": ["go", "kubernetes"], "maxUsers": 20}' \
-  | gunzip | jq '.results'
-```
+## 角色预设  
+使用 `role` 参数可匹配预设的技术栈组合：  
 
-### Score a Specific Candidate
-```bash
-curl -s -X POST "https://api.githunt.ai/v1/rank/user" \
-  -H "Content-Type: application/json" \
-  -d '{"username": "DHH", "skills": ["ruby", "rails"]}' | jq
-```
+| 角色 | 自动包含的技术栈 |  
+|------|---------------|  
+| `frontend` | react, vue, angular, typescript, css |  
+| `backend` | node, python, java, go, rust |  
+| `fullstack` | react, node, typescript, postgresql |  
+| `devops` | kubernetes, docker, terraform, aws |  
+| `mobile` | swift, kotlin, react-native, flutter |  
+| `data` | python, sql, spark, tensorflow |  
 
-## Response Format
+## 使用技巧：  
+- 结合地理位置和技术栈进行搜索以获得更准确的结果  
+- 响应数据会被压缩（格式为 `.gz`），可通过 `gunzip` 命令解压，或使用 `curl` 的 `--compressed` 选项进行下载  
+- 对于大量用户（100 人以上）的搜索，建议使用流式数据接口  
+- 明确指定地理位置（例如：“san francisco”比“usa”更具体）  
 
-Results include:
-```json
-{
-  "results": [
-    {
-      "login": "username",
-      "name": "Full Name",
-      "bio": "Developer bio",
-      "location": "Berlin, Germany",
-      "company": "@company",
-      "email": "dev@example.com",
-      "websiteUrl": "https://...",
-      "twitterUsername": "handle",
-      "isHireable": true,
-      "score": 85,
-      "followers": 1234,
-      "repositories": 45,
-      "primaryLanguage": "TypeScript",
-      "languages": ["TypeScript", "Python", "Go"],
-      "technologies": ["react", "node", "aws"],
-      "avatarUrl": "https://avatars.githubusercontent.com/...",
-      "scoreDetails": {
-        "totalScore": 85,
-        "activityScore": 9,
-        "techStackScore": 8,
-        "profileScore": 7,
-        "matchedTechnologies": ["react", "typescript"]
-      }
-    }
-  ],
-  "totalCount": 150,
-  "dataSource": "github-api"
-}
-```
+## 访问限制：  
+- 免费账户：仅可预览前 15 个结果  
+- 支付账户：可查看全部搜索结果（需登录 githunt.ai）  
 
-## Scoring System
-
-Candidates are scored 0-100 based on:
-
-1. **Tech Stack Match** (weighted highest)
-   - Languages in repos match requested skills
-   - Bio/readme mentions relevant technologies
-   - Smart keyword matching (e.g., "k8s" → "kubernetes")
-
-2. **Activity Score**
-   - Recent commits and contributions
-   - PR and issue activity
-   - Contribution calendar analysis
-
-3. **Repository Quality**
-   - Stars and forks on repos
-   - Number of public repositories
-   - Code quality indicators
-
-4. **Profile Completeness**
-   - Bio present
-   - Hireable flag set
-   - Contact info available (email, website, Twitter)
-
-## Role Presets
-
-Use `role` parameter for pre-configured skill sets:
-
-| Role | Auto-includes |
-|------|---------------|
-| `frontend` | react, vue, angular, typescript, css |
-| `backend` | node, python, java, go, rust |
-| `fullstack` | react, node, typescript, postgresql |
-| `devops` | kubernetes, docker, terraform, aws |
-| `mobile` | swift, kotlin, react-native, flutter |
-| `data` | python, sql, spark, tensorflow |
-
-## Tips
-
-1. **Combine location + skills** for best results
-2. **Response is gzipped** - pipe through `gunzip` or use `--compressed` with curl
-3. **Use streaming endpoint** for large searches (100+ users)
-4. **Be specific with location** - "san francisco" works better than "usa"
-
-## Rate Limits
-
-- Free tier: Limited preview (first 15 results)
-- Paid: Full results via githunt.ai checkout
-
-## Integration Ideas
-
-- **Recruiting pipeline**: Search → Filter by score → Export contacts
-- **Talent mapping**: Analyze developer density by location/tech
-- **Competitive intel**: Track where top talent is concentrated
-- **Outreach automation**: Get emails for high-score hireable candidates
+## 集成建议：  
+- **招聘流程**：搜索 → 按评分筛选 → 导出联系人信息  
+- **人才分析**：按地理位置或技术栈分析开发者分布  
+- **竞争情报**：追踪顶尖人才的聚集地  
+- **自动化联系**：获取评分较高的可雇佣候选人的电子邮件地址

@@ -17,9 +17,9 @@ metadata:
 
 # Cognito Forms
 
-Access the Cognito Forms API with managed OAuth authentication. List forms, manage entries (create, read, update, delete), and retrieve documents.
+您可以使用托管的 OAuth 认证来访问 Cognito Forms API。该 API 允许您列出表单、管理表单中的条目（创建、读取、更新、删除）以及检索相关文档。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all forms
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/cognito-forms/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Cognito Forms API endpoint path (starting with `api/`). The gateway proxies requests to `www.cognitoforms.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Cognito Forms API 端点路径（以 `api/` 开头）。Maton 代理会将请求转发到 `www.cognitoforms.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Cognito Forms OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Cognito Forms OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Cognito Forms connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Cognito Forms 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,31 +140,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，Maton 代理将使用默认的（最旧的）活跃连接。
 
-## API Reference
+## API 参考
 
-### Forms
+### 表单
 
-#### List Forms
+#### 列出表单
 
 ```bash
 GET /cognito-forms/api/forms
 ```
 
-Returns all forms in the organization.
+返回组织中的所有表单。
 
-### Entries
+### 表单条目
 
-#### Get Entry
+#### 获取条目信息
 
 ```bash
 GET /cognito-forms/api/forms/{formId}/entries/{entryId}
 ```
 
-Returns a specific entry by ID or entry number.
+根据 ID 或条目编号获取特定条目的信息。
 
-#### Create Entry
+#### 创建条目
 
 ```bash
 POST /cognito-forms/api/forms/{formId}/entries
@@ -180,9 +180,9 @@ Content-Type: application/json
 }
 ```
 
-Field names match your form's field names. Complex fields like Name and Address use nested objects.
+字段名称与表单中的字段名称一致。对于名称（Name）和地址（Address）等复杂字段，需要使用嵌套对象进行表示。
 
-#### Update Entry
+#### 更新条目
 
 ```bash
 PATCH /cognito-forms/api/forms/{formId}/entries/{entryId}
@@ -197,27 +197,27 @@ Content-Type: application/json
 }
 ```
 
-Updates an existing entry. Uses PATCH method (not PUT). Fails if the entry includes a paid order.
+更新现有条目。使用 `PATCH` 方法（而非 `PUT`）。如果条目包含已支付的订单，操作将失败。
 
-#### Delete Entry
+#### 删除条目
 
 ```bash
 DELETE /cognito-forms/api/forms/{formId}/entries/{entryId}
 ```
 
-Deletes an entry. Requires Read/Write/Delete API scope.
+删除条目。需要具有 `Read/Write/Delete` 的 API 权限。
 
-### Documents
+### 文档
 
-#### Get Document
+#### 获取文档
 
 ```bash
 GET /cognito-forms/api/forms/{formId}/entries/{entryId}/documents/{templateNumber}
 ```
 
-Generates and returns a document from an entry using the specified template number.
+根据指定的模板编号从条目中生成并返回文档。
 
-**Response:**
+**响应：**
 ```json
 {
   "Id": "abc123",
@@ -228,17 +228,17 @@ Generates and returns a document from an entry using the specified template numb
 }
 ```
 
-### Files
+### 文件
 
-#### Get File
+#### 获取文件
 
 ```bash
 GET /cognito-forms/api/files/{fileId}
 ```
 
-Retrieves a file uploaded to a form entry.
+检索上传到表单条目中的文件。
 
-**Response:**
+**响应：**
 ```json
 {
   "Id": "file-id",
@@ -249,9 +249,9 @@ Retrieves a file uploaded to a form entry.
 }
 ```
 
-## Field Format Examples
+## 字段格式示例
 
-### Name Fields
+### 名称字段
 
 ```json
 {
@@ -262,7 +262,7 @@ Retrieves a file uploaded to a form entry.
 }
 ```
 
-### Address Fields
+### 地址字段
 
 ```json
 {
@@ -276,23 +276,23 @@ Retrieves a file uploaded to a form entry.
 }
 ```
 
-### Choice Fields
+### 单选字段
 
-Single choice:
 ```json
 {
   "PreferredContact": "Email"
 }
 ```
 
-Multiple choice:
+### 多选字段
+
 ```json
 {
   "Interests": ["Sports", "Music", "Travel"]
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -321,7 +321,7 @@ response = requests.get(
 forms = response.json()
 ```
 
-### Create Entry Example (Python)
+### Python 示例：创建条目
 
 ```python
 import os
@@ -343,38 +343,38 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- List Entries: The Cognito Forms API does not support bulk listing of all entries. Use webhooks or OData for syncing entries.
-- Get Form: Returns 404 - use List Forms to get form information instead.
-- Form Availability: This endpoint may not be available depending on your Cognito Forms plan.
-- Entry IDs can be either the entry number or entry ID (format: `{formId}-{entryNumber}`)
-- Complex fields (Name, Address) use nested JSON objects
-- File uploads return temporary download URLs
-- Document generation creates PDFs from form templates
-- API scopes control access: Read, Read/Write, or Read/Write/Delete
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- **条目列表：** Cognito Forms API 不支持批量列出所有条目。建议使用 Webhook 或 OData 进行条目同步。
+- **获取表单信息：** 如果请求返回 404 错误，请使用 `List Forms` 方法获取表单信息。
+- **表单可用性：** 该 API 端点可能因您的 Cognito Forms 计划而不可用。
+- **条目 ID：** 条目 ID 可以是条目编号或 `{formId}-{entryNumber}` 的格式。
+- **复杂字段（如名称和地址）：** 使用嵌套的 JSON 对象进行表示。
+- **文件上传：** 上传的文件会返回临时下载链接。
+- **文档生成：** 会根据表单模板生成 PDF 文件。
+- **API 权限：** 控制访问权限（读取、读写或读写/删除）。
+- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含括号，请使用 `curl -g` 以避免全局解析问题。
+- **重要提示：** 在将 `curl` 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析 `$MATON_API_KEY` 环境变量。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Cognito Forms connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Form or entry not found |
-| 429 | Rate limited (100 requests per 60 seconds) |
-| 4xx/5xx | Passthrough error from Cognito Forms API |
+| 400 | 未找到 Cognito Forms 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 未找到表单或条目 |
+| 429 | 每 60 秒请求次数限制（100 次） |
+| 4xx/5xx | 来自 Cognito Forms API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -385,17 +385,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `cognito-forms`. For example:
+1. 确保您的 URL 路径以 `cognito-forms` 开头。例如：
+  - 正确：`https://gateway.maton.ai/cognito-forms/api/forms`
+  - 错误：`https://gateway.maton.ai/api/forms`
 
-- Correct: `https://gateway.maton.ai/cognito-forms/api/forms`
-- Incorrect: `https://gateway.maton.ai/api/forms`
+## 资源
 
-## Resources
-
-- [Cognito Forms API Overview](https://www.cognitoforms.com/support/475/data-integration/cognito-forms-api)
-- [REST API Reference](https://www.cognitoforms.com/support/476/data-integration/cognito-forms-api/rest-api-reference)
-- [API Reference](https://www.cognitoforms.com/support/476/data-integration/cognito-forms-api/api-reference)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Cognito Forms API 概述](https://www.cognitoforms.com/support/475/data-integration/cognito-forms-api)
+- [REST API 参考](https://www.cognitoforms.com/support/476/data-integration/cognito-forms-api/rest-api-reference)
+- [API 参考文档](https://www.cognitoforms.com/support/476/data-integration/cognito-forms-api/api-reference)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

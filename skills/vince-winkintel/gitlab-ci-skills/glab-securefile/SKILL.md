@@ -1,11 +1,12 @@
 ---
 name: glab-securefile
-description: Use when working with glab securefile commands.
+description: **使用说明：**  
+在操作 glab 的 `securefile` 命令时，请遵循以下说明。
 ---
 
 # glab securefile
 
-## Overview
+## 概述
 
 ```
 
@@ -33,12 +34,12 @@ description: Use when working with glab securefile commands.
     -R --repo                          Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab securefile --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 的完整输出，请参阅 [references/commands.md](references/commands.md)。

@@ -1,52 +1,52 @@
 ---
 name: Raspberry Pi
-description: Set up and maintain Raspberry Pi avoiding common hardware and configuration pitfalls.
+description: 如何设置和维护树莓派（Raspberry Pi），同时避免常见的硬件和配置问题。
 metadata: {"clawdbot":{"emoji":"🍓","os":["linux","darwin"]}}
 ---
 
-## Power Supply Issues
-- Lightning bolt icon = undervoltage — random crashes, corruption, weird behavior until fixed
-- Pi 4/5 needs 3A+ supply — older 2A adapters cause instability
-- USB peripherals draw from Pi's power budget — use powered hub for multiple devices
-- Official power supply recommended — cheap adapters often can't sustain required amperage
+## 电源问题  
+- **闪电图标** 表示电压过低：会导致设备随机崩溃、数据损坏或出现异常行为，需及时解决。  
+- **Raspberry Pi 4/5** 需要3A以上的电源供应；使用旧款2A适配器可能导致系统不稳定。  
+- **USB外设** 会消耗Raspberry Pi的电量，建议使用带电源的集线器来同时连接多个设备。  
+- **官方推荐的电源** 更可靠，因为廉价适配器可能无法提供足够的电流。  
 
-## Storage Reliability
-- SD cards fail under heavy writes — databases and logs kill them within months
-- USB boot with SSD for reliability — SD for bootloader only, root on SSD
-- Quality SD cards matter — Samsung EVO, SanDisk Extreme; not generic cards
-- Read-only filesystem for kiosks — prevents corruption on power loss
+## 存储可靠性  
+- **SD卡** 在大量数据写入的情况下容易损坏：数据库和日志文件可能导致SD卡在几个月内失效。  
+- **建议使用USB接口启动系统并连接SSD** 以提高可靠性；仅将引导加载程序存储在SD卡上，系统数据则存储在SSD中。  
+- **选择质量好的SD卡**（如Samsung EVO、SanDisk Extreme），避免使用普通品牌。  
+- **对于信息展示终端（kiosks）**，应使用只读文件系统以防止断电时数据丢失。  
 
-## GPIO Dangers
-- 3.3V logic only — 5V input permanently damages the Pi, no protection
-- Check operating voltage of sensors/modules — many Arduino accessories are 5V
-- Some GPIO used by default — I2C, SPI, UART pins need dtparam to free up
-- Hardware PWM only on GPIO 18 — software PWM on others is less precise
+## GPIO接口的安全使用  
+- **注意电压限制**：GPIO接口仅支持3.3V电压，使用5V电压会永久损坏设备（无保护机制）。  
+- **检查传感器/模块的电压需求**：许多Arduino配件使用5V电压，需确保使用兼容的接口。  
+- **部分GPIO接口被默认占用**（如I2C、SPI、UART接口），需通过配置文件（`dtparam`）释放这些接口。  
+- **PWM功能**：仅在GPIO 18上支持硬件PWM；在其他接口上使用软件PWM可能会导致精度下降。  
 
-## Network Setup Traps
-- WiFi country code required — won't connect without proper regulatory setting
-- Headless SSH: empty file named `ssh` in boot partition — not `ssh.txt`
-- Static IP via `/etc/dhcpcd.conf` — editing wrong file does nothing
-- Don't port forward SSH — use Tailscale, Cloudflare Tunnel, or WireGuard
+## 网络设置注意事项  
+- **WiFi连接** 需设置正确的国家代码；否则无法正常连接。  
+- **无屏幕版本的Raspberry Pi**：需在启动分区中创建一个名为`ssh`的空文件（而非`ssh.txt`）。  
+- **静态IP地址**：需通过`/etc/dhcpcd.conf`文件配置；编辑错误的文件不会产生效果。  
+- **不建议使用SSH端口转发**：建议使用Tailscale、Cloudflare Tunnel或WireGuard等安全工具。  
 
-## Docker on Pi
-- ARM images only — `linux/arm64` or `linux/arm/v7`, many images unavailable
-- 32-bit OS limits to 3GB RAM — use 64-bit for 4GB+ models
-- SD card unsuitable for Docker — volume writes accelerate card death
-- Install via `curl -fsSL https://get.docker.com | sh` — apt version is outdated
+## 在Raspberry Pi上运行Docker  
+- **仅支持ARM架构的Docker镜像**（`linux/arm64`或`linux/arm/v7`），部分镜像可能不可用。  
+- **32位操作系统** 对内存容量有限（最多3GB），建议使用64位操作系统（适用于4GB及以上内存的型号）。  
+- **SD卡不适合用于Docker**：频繁的读写操作会加速SD卡损坏。  
+- **安装Docker**：使用命令`curl -fsSL https://get.docker.com | sh`；注意apt包管理器的版本可能已过时。  
 
-## Headless Setup
-- Configure hostname, WiFi, user in Raspberry Pi Imager — before first boot
-- Username `pi` with default password deprecated — create custom user
-- First boot takes 2-3 minutes — filesystem resize, don't panic
+## 无屏幕版本的Raspberry Pi设置  
+- **首次启动前**：需通过Raspberry Pi Imager工具配置主机名、WiFi网络和用户名。  
+- **默认用户名`pi`及密码已过时**，建议创建自定义用户名。  
+- **首次启动时间较长（约2-3分钟）**，这是由于系统正在调整文件系统大小，请耐心等待。  
 
-## Performance Tuning
-- `gpu_mem=16` for headless — frees RAM when no display connected
-- ZRAM for swap on low-RAM models — better than SD swap
-- Disable Bluetooth and GUI if unused — saves resources
+## 性能优化  
+- **无屏幕版本**：设置`gpu_mem=16`以释放内存（当没有显示器连接时）。  
+- **低内存版本**：可使用ZRAM作为交换空间（比SD卡更高效）。  
+- **关闭不必要的功能**（如蓝牙和图形界面）以节省资源。  
 
-## Troubleshooting Patterns
-- Red light only = power issue — no boot attempt, check supply
-- Green light blinking patterns = specific boot failures — check documentation
-- No HDMI output — connect before powering, Pi doesn't hot-plug HDMI
-- Kernel panic on boot = corrupted SD — reflash image
-- SSH refused — verify SSH enabled, check IP, check firewall
+## 常见故障排除方法  
+- **红灯亮起**：表示电源问题，需检查电源供应是否正常。  
+- **绿灯闪烁**：表示特定的启动故障，需查阅相关文档进行排查。  
+- **无HDMI输出**：请确保设备已正确连接电源，并注意Raspberry Pi不支持HDMI热插拔。  
+- **启动时出现内核崩溃**：可能是SD卡损坏，需重新刷入系统镜像。  
+- **SSH连接失败**：确认SSH功能已启用，检查IP地址和防火墙设置。

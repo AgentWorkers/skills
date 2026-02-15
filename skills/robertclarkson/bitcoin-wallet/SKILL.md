@@ -1,7 +1,7 @@
 ---
 slug: breezclaw
 name: BreezClaw
-description: "Self-custodial Bitcoin and Lightning wallet for AI agents. Send and receive sats via Lightning Network, Spark, or on-chain Bitcoin. Use when: checking bitcoin balance, sending/receiving payments, generating Lightning invoices, managing wallet operations. Requires the BreezClaw plugin and a Breez API key."
+description: "适用于AI代理的自托管比特币及Lightning网络钱包。支持通过Lightning Network、Spark或链上比特币进行资金发送与接收。功能包括：查询比特币余额、支付操作、生成Lightning网络发票以及管理钱包相关事务。使用该钱包需要安装BreezClaw插件并拥有Breez API密钥。"
 version: 1.0.0
 author: onesandzeros-nz
 keywords: bitcoin, lightning, wallet, breez, spark, sats, payments, self-custodial, breezclaw
@@ -10,9 +10,9 @@ homepage: https://github.com/onesandzeros-nz/BreezClaw
 
 # BreezClaw
 
-Self-custodial Bitcoin and Lightning wallet for AI agents. Powered by Breez SDK Spark.
+这是一个专为AI代理设计的、支持自我管理的比特币和Lightning网络钱包。该钱包由Breez SDK Spark提供技术支持。
 
-## Install
+## 安装
 
 ```bash
 # Clone plugin
@@ -25,15 +25,15 @@ npm install
 npm run build
 ```
 
-## Configure
+## 配置
 
-### 1. Get Breez API Key
+### 1. 获取Breez API密钥
 
-Sign up at https://breez.technology/sdk/
+请访问 https://breez.technology/sdk/ 进行注册。
 
-### 2. Add to OpenClaw Config
+### 2. 添加到OpenClaw配置文件中
 
-Edit `~/.openclaw/openclaw.json`:
+编辑 `~/.openclaw/openclaw.json` 文件：
 
 ```json
 {
@@ -51,49 +51,49 @@ Edit `~/.openclaw/openclaw.json`:
 }
 ```
 
-### 3. Restart
+### 3. 重启OpenClaw
 
 ```bash
 openclaw gateway restart
 ```
 
-## Tools
+## 工具
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `wallet_status` | Check wallet exists and connection state |
-| `wallet_connect` | Connect or create wallet from mnemonic |
-| `wallet_balance` | Get balance in sats and BTC |
-| `wallet_receive` | Generate payment request |
-| `wallet_prepare_send` | Prepare payment with fee estimate |
-| `wallet_send` | Execute confirmed payment |
-| `wallet_transactions` | List transaction history |
-| `wallet_info` | Detailed wallet info |
-| `wallet_backup` | Retrieve mnemonic (sensitive!) |
-| `wallet_disconnect` | Clean disconnect |
+| `wallet_status` | 检查钱包是否存在及其连接状态 |
+| `wallet_connect` | 通过助记词连接或创建钱包 |
+| `wallet_balance` | 查看余额（单位：sats或BTC） |
+| `wallet.receive` | 生成支付请求 |
+| `wallet_prepare_send` | 准备支付请求并估算费用 |
+| `wallet_send` | 执行已确认的支付 |
+| `wallet_transactions` | 查看交易历史记录 |
+| `wallet_info` | 查看钱包详细信息 |
+| `wallet_backup` | 备份钱包数据（注意：此操作涉及敏感信息！） |
+| `walletdisconnect` | 断开钱包连接 |
 
-## Receive Methods
+## 支付方式
 
-- `spark` — Reusable Spark address (default)
-- `spark_invoice` — Spark invoice with amount
-- `lightning` — BOLT11 invoice
-- `bitcoin` — On-chain address
+- `spark` — 可重用的Spark地址（默认方式） |
+- `sparkinvoice` — 包含金额的Spark发票 |
+- `lightning` — BOLT11发票 |
+- `bitcoin` — 在链上的比特币地址 |
 
-## Payment Flow
+## 支付流程
 
-**Always two-step:**
+**始终需要两步：**
 
-1. `wallet_prepare_send` → Show fees
-2. User confirms → `wallet_send(confirmed=true)`
+1. 使用 `wallet_prepare_send` 准备支付请求并查看费用；
+2. 用户确认后，使用 `wallet_send(confirmed=true)` 执行支付。
 
-## Security
+## 安全性注意事项：
 
-- Never expose mnemonic unless explicitly requested
-- Always show fees before sending
-- Require explicit confirmation for sends
-- Wallet data: `~/.openclaw/breezclaw/`
+- 除非用户明确要求，否则切勿泄露助记词；
+- 在发送任何交易之前，务必向用户显示费用信息；
+- 所有支付操作均需用户明确确认；
+- 钱包数据存储在 `~/.openclaw/breezclaw/` 目录下。
 
-## Examples
+## 示例
 
 ```
 "What's my balance?" → wallet_balance

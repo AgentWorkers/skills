@@ -1,16 +1,16 @@
 ---
 name: alter-action-trigger
-description: Trigger Alter macOS app actions via x-callback-urls. Catalog of 84+ actions including ask-anything, translate, summarize, grammar correction, and more.
+description: 通过 `x-callback-urls` 触发 macOS 应用程序的相应操作。提供了 84 种以上的操作选项，包括“询问任何信息”、“翻译”、“总结文本”以及“语法纠错”等。
 metadata: {"clawdbot":{"requires":{"os":["darwin"]},"emoji":"🌀"}}
 user-invocable: true
 homepage: https://alterhq.com/blog/alter-callback-urls-guide
 ---
 
-# Alter Action Trigger
+# 修改操作触发器
 
-Trigger Alter actions via x-callback-urls from Clawdbot or the command line.
+可以通过Clawdbot的x-callback-urls或命令行来触发修改（Alter）操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Trigger an action directly
@@ -23,215 +23,215 @@ node index.js find "summarize video"
 node index.js list --category writing
 ```
 
-## URL Format
+## URL格式
 
-All Alter actions use the x-callback-url format:
+所有修改操作都使用x-callback-url格式：
 ```
 alter://action/{action-id}?input={encoded-text}&param={value}
 ```
 
-## Functions
+## 函数
 
 ### `triggerAction(actionId, input, params)`
-Triggers an Alter action via x-callback-url.
+通过x-callback-url触发一个修改操作。
 
 ### `findActions(query)`
-Finds actions matching a natural language query.
+查找与自然语言查询匹配的操作。
 
 ### `listActions(category)`
-Lists all actions, optionally filtered by category.
+列出所有操作，可选地按类别过滤。
 
 ### `getActionInfo(actionId)`
-Returns detailed information about a specific action.
+返回特定操作的详细信息。
 
 ### `buildCallbackUrl(actionId, input, params)`
-Builds an x-callback-url without executing it.
+构建x-callback-url，但不执行该操作。
 
 ---
 
-## Available Actions Reference
+## 可用操作参考
 
-### 📝 Writing Actions
+### 📝 写作相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `analyze-prose` | Analyze Prose | Evaluates writing for quality with ratings and recommendations | None |
-| `aphorisms` | Aphorisms | Finds and prints existing, known aphorisms | None |
-| `change-tone` | Change the Tone | Changes text tone while preserving meaning | `tone`: Assertive, Friendly, Informal, Professional, Simple and direct |
-| `correct-grammar` | Correct Grammar & Spelling | Fixes grammar and spelling errors | None |
-| `cut-filler-words` | Cut filler words | Removes filler words for confident text | None |
-| `fill-in` | Fill in | Completes partial text intelligently | None |
-| `improve-writing` | Improve Writing | Refines text for clarity, coherence, grammar | None |
-| `lengthen` | Lengthen | Expands text with additional details | None |
-| `poll` | Poll | Generates engaging polls | None |
-| `rewrite` | Rewrite | Rewrites text with fresh perspectives | None |
-| `shorten` | Shorten | Condenses text while retaining essentials | None |
-| `write-essay` | Write essay | Crafts well-structured essays | `input`: Topic/Instructions |
+| `analyze-prose` | 分析散文 | 评估文本质量，并提供评分和建议 | 无参数 |
+| `aphorisms` | 格言 | 查找并打印现有的格言 | 无参数 |
+| `change-tone` | 改变语气 | 在保持意义的同时改变文本语气 | `tone`：坚定、友好、非正式、专业、简洁直接 |
+| `correct-grammar` | 更正语法和拼写 | 修正语法和拼写错误 | 无参数 |
+| `cut-filler-words` | 删除填充词 | 去除文本中的填充词 | 无参数 |
+| `fill-in` | 补全内容 | 智能地补充缺失的文本 | 无参数 |
+| `improve-writing` | 提高写作质量 | 优化文本的清晰度、连贯性和语法 | 无参数 |
+| `lengthen` | 延长文本 | 通过添加细节来扩展文本 | 无参数 |
+| `poll` | 创建投票 | 生成有趣的投票内容 | 无参数 |
+| `rewrite` | 重写文本 | 从新的角度重写文本 | 无参数 |
+| `shorten` | 缩短文本 | 在保留核心内容的同时压缩文本 | 无参数 |
+| `write-essay` | 撰写文章 | 撰写结构良好的文章 | `input`：主题/说明 |
 
-### 💻 Code Actions
+### 💻 代码相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `act-code` | Act On Code | Modifies and improves code | `input`: Instructions |
-| `document` | Document code | Documents code with comments | None |
-| `explain-code` | Explain Code | Explains code and documentation | None |
-| `fill-code` | Fill Code | Fills in missing code | None |
-| `fix-code` | Fix Code | Fixes code errors | `input`: Error message |
-| `language-gpt` | Language-GPT | Expert insights for programming languages | `input`: Question |
-| `suggest-improvements` | Suggest code improvements | Analyzes code for enhancements | None |
-| `transcode` | Transcode to other language | Converts code between languages | `language`: Target language |
+| `act-code` | 修改代码 | 修改并优化代码 | `input`：修改说明 |
+| `document` | 文档化代码 | 为代码添加注释 | 无参数 |
+| `explain-code` | 解释代码 | 解释代码及其文档 | 无参数 |
+| `fill-code` | 补充代码 | 补充缺失的代码片段 | 无参数 |
+| `fix-code` | 修复代码 | 修复代码错误 | `input`：错误信息 |
+| `language-gpt` | Language-GPT | 提供编程语言方面的专业建议 | `input`：问题 |
+| `suggest-improvements` | 建议代码改进 | 分析代码以提出优化方案 | 无参数 |
+| `transcode` | 转换语言 | 在不同语言之间转换代码 | `language`：目标语言 |
 
-### 🌐 Translation Actions
+### 🌐 翻译相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `translate` | Translate | Translates text between languages | `language`: Arabic, Chinese, Dutch, English, Filipino, French, German, Indonesian, Italian, Japanese, Korean, Portuguese, Russian, Spanish, Vietnamese |
-| `translate-to-english` | Translate to English | Translates any language to English | None |
-| `translate-to-french` | Translate to French | Translates any language to French | None |
-| `translate-to-spanish` | Translate to Spanish | Translates any language to Spanish | None |
+| `translate` | 翻译 | 在不同语言之间翻译文本 | `language`：阿拉伯语、中文、荷兰语、英语、菲律宾语、法语、德语、印尼语、意大利语、日语、韩语、葡萄牙语、俄语、西班牙语、越南语 |
+| `translate-to-english` | 翻译成英语 | 将任何语言翻译成英语 | 无参数 |
+| `translate-to-french` | 翻译成法语 | 将任何语言翻译成法语 | 无参数 |
+| `translate-to-spanish` | 翻译成西班牙语 | 将任何语言翻译成西班牙语 | 无参数 |
 
-### 📊 Summarize Actions
+### 📊 摘要相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `summarize-detailed` | Detailed | Comprehensive summary with overview, points, takeaways | None |
-| `summarize-micro` | Micro | Concise, focused summaries | None |
-| `summarize-newsletter` | Newsletter Summary | Extracts key newsletter updates | None |
+| `summarize-detailed` | 详细摘要 | 提供全面的摘要、要点和结论 | 无参数 |
+| `summarize-micro` | 简洁摘要 | 提供简洁的摘要 | 无参数 |
+| `summarize-newsletter` | 通讯摘要 | 提取通讯中的关键信息 | 无参数 |
 
-### 🔍 Extract Actions
+### 🔍 提取相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `extract-mails` | Mails | Extracts email addresses | None |
-| `extract-names` | Names | Extracts personal names | None |
-| `extract-any` | People/Companies | Extracts personal/business info | None |
-| `extract-predictions` | Predictions | Extracts predictions | None |
-| `extract-recommendations` | Recommendations | Extracts recommendations | None |
-| `extract-todo` | Tasks | Extracts actionable tasks | None |
-| `extract-trends` | Trends | Extracts trends | None |
-| `extract-wisdom` | Extract Wisdom | Extracts insights and interesting info | None |
+| `extract-mails` | 提取邮件地址 | 从邮件中提取地址 | 无参数 |
+| `extract-names` | 提取姓名 | 从文本中提取姓名 | 无参数 |
+| `extract-any` | 提取个人信息/公司信息 | 从文本中提取个人或公司信息 | 无参数 |
+| `extract-predictions` | 提取预测结果 | 从文本中提取预测内容 | 无参数 |
+| `extract-recommendations` | 提取建议 | 从文本中提取建议内容 | 无参数 |
+| `extract-todo` | 提取待办事项 | 从文本中提取可执行的任务 | 无参数 |
+| `extract-trends` | 提取趋势 | 从文本中提取趋势信息 | 无参数 |
+| `extract-wisdom` | 提取智慧内容 | 从文本中提取有价值的见解 | 无参数 |
 
-### 📋 Format Actions
+### 📋 格式化相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `format-to-bullet-list` | Bullet list | Converts text to bullet list | None |
-| `format-to-markdown-checklist` | Markdown checklist | Converts text to checklist | None |
-| `format-to-markdown-table` | Markdown table | Converts text to table | None |
-| `format-to-numbered-list` | Numbered list | Converts text to numbered list | None |
-| `sort-az` | Sort A-Z | Sorts alphabetically ascending | None |
-| `sort-za` | Sort Z-A | Sorts alphabetically descending | None |
+| `format-to-bullet-list` | 转换为项目列表 | 将文本转换为项目列表 | 无参数 |
+| `format-to-markdown-checklist` | 转换为Markdown检查列表 | 将文本转换为Markdown格式的检查列表 | 无参数 |
+| `format-to-markdown-table` | 转换为Markdown表格 | 将文本转换为Markdown表格 | 无参数 |
+| `format-to-numbered-list` | 转换为编号列表 | 将文本转换为编号列表 | 无参数 |
+| `sort-az` | 按字母顺序排序 | 按字母顺序升序排序 | 无参数 |
+| `sort-za` | 按字母顺序降序排序 | 按字母顺序降序排序 | 无参数 |
 
-### 🎨 Create Actions
+### 🎨 创建相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `create-alter-action` | Alter Action | Creates Alter Actions | `input`: Instructions |
-| `create-charts` | Charts | Creates Recharts visualizations | `input`: Instructions |
-| `create-diagrams` | Diagrams | Generates Mermaid diagrams | `input`: Instructions |
-| `create-html` | HTML page | Creates HTML pages | `input`: Instructions |
-| `create-images` | Images | Generates AI images (Flux, Ideogram) | `input`: Instructions |
-| `create-maps` | Maps | Creates LeafletJS maps | `input`: Instructions |
-| `create-presentations` | HTML Presentations | Generates slide presentations | `input`: Instructions |
-| `create-react-app` | Tailwind React App | Creates React apps | `input`: Instructions |
+| `create-alter-action` | 创建修改操作 | 创建新的修改操作 | `input`：修改说明 |
+| `create-charts` | 创建图表 | 创建Recharts可视化图表 | `input`：图表制作说明 |
+| `create-diagrams` | 创建图表 | 生成Mermaid图表 | `input`：图表制作说明 |
+| `create-html` | 创建HTML页面 | 创建HTML页面 | `input`：页面制作说明 |
+| `create-images` | 创建图片 | 生成AI生成的图片（Flux、Ideogram格式） | `input`：图片制作说明 |
+| `create-maps` | 创建地图 | 创建LeafletJS地图 | `input`：地图制作说明 |
+| `create-presentations` | 创建HTML演示文稿 | 生成幻灯片演示文稿 | `input`：演示文稿制作说明 |
+| `create-react-app` | 创建React应用程序 | 创建React应用程序 | `input`：应用程序开发说明 |
 
-### 🔎 Explain Actions
+### 🔎 解释相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `analyze-paper` | Analyze Paper | Analyzes research papers | None |
-| `explain-selection` | Explain | Explains complex concepts simply | None |
-| `hidden-message` | Hidden message | Uncovers hidden messages in text | None |
+| `analyze-paper` | 分析论文 | 分析研究论文 | 无参数 |
+| `explain-selection` | 解释复杂概念 | 简单易懂地解释复杂概念 | 无参数 |
+| `hidden-message` | 发现隐藏信息 | 从文本中发现隐藏的信息 | 无参数 |
 
-### 🔀 Git Actions
+### 🔀 Git相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `git-commit` | Commit message | Generates commit messages | None |
-| `git-review` | Review | Reviews code changes | None |
-| `git-summarize` | Summarize | Summarizes Git commits | None |
-| `pull-request` | Pull Request | Creates PR descriptions | None |
+| `git-commit` | 提交代码 | 生成提交信息 | 无参数 |
+| `git-review` | 代码审查 | 审查代码更改 | 无参数 |
+| `git-summarize` | 提交总结 | 总结Git提交记录 | 无参数 |
+| `pull-request` | 创建拉取请求 | 生成拉取请求的描述 | 无参数 |
 
-### 🧠 Co-Intelligence Actions (Expert GPTs)
+### 🧠 协同智能相关操作（专家级GPT）
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `business-strategist-gpt` | Business Strategy Expert | Business strategy advice | `input`: Question |
-| `children-educator` | Children Educator | Early childhood education guidance | `input`: Question |
-| `e-commerce-strategist-gpt` | E-commerce Strategy Expert | E-commerce strategy advice | `input`: Question |
-| `hrmanager-gpt` | HR Manager Expert | HR management guidance | `input`: Question |
-| `marketer-gpt` | Marketing Expert | Marketing strategy advice | `input`: Question |
-| `mental-models-gpt` | Mental Models Expert | Mental models for decision-making | `input`: Question |
-| `software-architect-gpt` | Software Architect Expert | Software architecture guidance | `input`: Question |
+| `business-strategist-gpt` | 业务策略专家 | 提供业务策略建议 | `input`：问题 |
+| `children-educator` | 儿童教育专家 | 提供早期儿童教育指导 | `input`：问题 |
+| `e-commerce-strategist-gpt` | 电子商务策略专家 | 提供电子商务策略建议 | `input`：问题 |
+| `hrmanager-gpt` | 人力资源管理专家 | 提供人力资源管理建议 | `input`：问题 |
+| `marketer-gpt` | 营销专家 | 提供营销策略建议 | `input`：问题 |
+| `mental-models-gpt` | 心智模型专家 | 提供决策制定的心智模型建议 | `input`：问题 |
+| `software-architect-gpt` | 软件架构专家 | 提供软件架构建议 | `input`：问题 |
 
-### 💬 General Actions
+### 💬 通用操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `ask-anything` | Ask Anything | Open-ended AI conversation | `input`: Instructions |
-| `ask-web` | Search the web | Web search with sources | `input`: Question |
+| `ask-anything` | 随意提问 | 开放式AI对话 | `input`：提问内容 |
+| `ask-web` | 在网上搜索 | 使用网络资源进行搜索 | `input`：搜索内容 |
 
-### 📧 Email Actions
+### 📧 邮件相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `mail-draft` | Mail Draft | Creates email drafts | `input`: Instructions |
-| `mail-multi-summary` | Multiconversation summary | Summarizes multiple email threads | None |
-| `mail-reply` | Mail Reply | Generates email replies | `answerType`: Any updates?, Doesn't work, I don't know, etc. |
-| `mail-summary` | Thread summary | Summarizes email threads | None |
+| `mail-draft` | 起草邮件 | 创建邮件草稿 | `input`：邮件起草说明 |
+| `mail-multi-summary` | 多邮件线程总结 | 总结多条邮件内容 | 无参数 |
+| `mail-reply` | 回复邮件 | 生成邮件回复 | `answerType`：例如：有任何更新？、无法使用、我不清楚等 |
+| `mail-summary` | 邮件线程总结 | 总结邮件对话内容 | 无参数 |
 
-### 📱 Social Media Actions
+### 📱 社交媒体相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `linkedin-post` | Linkedin Post | Creates LinkedIn posts | None |
-| `linkedin-reply` | Linkedin Reply | Generates LinkedIn replies | None |
-| `twitter-post` | Twitter Post | Creates engaging tweets | None |
-| `twitter-reply` | Twitter Reply | Generates tweet replies | None |
-| `twitter-thread` | Twitter Thread | Creates Twitter threads | None |
+| `linkedin-post` | 在LinkedIn上发布内容 | 在LinkedIn上发布帖子 | 无参数 |
+| `linkedin-reply` | 在LinkedIn上回复帖子 | 生成LinkedIn回复内容 | 无参数 |
+| `twitter-post` | 在Twitter上发布内容 | 在Twitter上发布推文 | 无参数 |
+| `twitter-reply` | 在Twitter上回复推文 | 生成Twitter回复内容 | 无参数 |
+| `twitter-thread` | 在Twitter上创建话题帖 | 在Twitter上创建话题帖 | 无参数 |
 
-### 📺 YouTube Actions
+### 📺 YouTube相关操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `youtube-hidden-message` | Youtube hidden message | Analyzes videos for hidden messages | None |
-| `youtube-summarize-detailed` | Youtube detailed Summary | Comprehensive video summaries | None |
-| `youtube-summarize-micro` | Youtube micro summary | Quick video summaries | None |
+| `youtube-hidden-message` | 分析视频中的隐藏信息 | 分析视频中的隐藏内容 | 无参数 |
+| `youtube-summarize-detailed` | 生成详细的YouTube视频摘要 | 生成详细的视频摘要 | 无参数 |
+| `youtube-summarize-micro` | 生成简洁的YouTube视频摘要 | 生成简洁的视频摘要 | 无参数 |
 
-### 🎯 Other Actions
+### 🎯 其他操作
 
-| Action ID | Name | Description | Parameters |
+| 操作ID | 名称 | 描述 | 参数 |
 |-----------|------|-------------|------------|
-| `create-a-keynote-deck` | Generate Keynote slides | Generates Keynote presentations | `input`: Instructions |
-| `edit-a-keynote-deck` | Edit Keynote slide | Edits Keynote slides | `input`: Instructions |
-| `translate-the-deck` | Translate the deck | Translates Keynote presentations | `language`: Target language |
-| `write-presenter-notes` | Write presenter notes | Creates presenter notes | None |
-| `meeting-scribe` | Meeting Report | Converts transcripts to notes | None |
-| `spreadsheet-formula` | Spreadsheet Formula | Creates spreadsheet formulas | `input`: Instructions |
-| `user-story` | User Story | Creates agile user stories | None |
+| `create-a-keynote-deck` | 生成Keynote演示文稿 | 生成Keynote演示文稿 | `input`：演示文稿制作说明 |
+| `edit-a-keynote-deck` | 编辑Keynote演示文稿 | 编辑Keynote演示文稿内容 | `input`：编辑说明 |
+| `translate-the-deck` | 翻译Keynote演示文稿 | 翻译Keynote演示文稿内容 | `language`：目标语言 |
+| `write-presenter-notes` | 编写演讲者备注 | 生成演讲者备注 | 无参数 |
+| `meeting-scribe` | 会议记录 | 将会议记录转换为文本 | 无参数 |
+| `spreadsheet-formula` | 创建电子表格公式 | 创建电子表格公式 | `input`：公式设置说明 |
+| `user-story` | 创建用户故事 | 创建敏捷用户故事 | 无参数 |
 
 ---
 
-## Categories
+## 分类
 
-| Category | Description | Action Count |
+| 分类 | 描述 | 操作数量 |
 |----------|-------------|--------------|
-| `code` | Programming and development | 8 |
-| `writing` | Text editing and creation | 12 |
-| `translate` | Language translation | 4 |
-| `summarize` | Content summarization | 2 |
-| `extract` | Information extraction | 7 |
-| `format` | Text formatting | 6 |
-| `create` | Content creation | 8 |
-| `explain` | Explanation and analysis | 4 |
-| `git` | Git version control | 4 |
-| `co-intelligences` | Expert AI assistants | 7 |
+| `code` | 编程与开发 | 8 |
+| `writing` | 文本编辑与创作 | 12 |
+| `translate` | 翻译 | 4 |
+| `summarize` | 内容摘要 | 2 |
+| `extract` | 信息提取 | 7 |
+| `format` | 文本格式化 | 6 |
+| `create` | 内容创建 | 8 |
+| `explain` | 解释与分析 | 4 |
+| `git` | Git版本控制 | 4 |
+| `co-intelligences` | 专家级AI助手 | 7 |
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### From Clawdbot
+### 通过Clawdbot触发操作
 
 ```javascript
 // Trigger ask-anything with a question
@@ -249,7 +249,7 @@ const url = buildCallbackUrl('translate', null, { language: 'French' });
 // -> alter://action/translate?language=French
 ```
 
-### From Command Line
+### 通过命令行触发操作
 
 ```bash
 # Ask a question
@@ -273,9 +273,9 @@ node index.js info create-images
 
 ---
 
-## Notes
+## 注意事项
 
-- Actions operate on currently selected text/files in Alter
-- Parameters are URL-encoded automatically
-- Actions with `hasParameters: false` typically need selected content in Alter
-- The `open` command is used on macOS to trigger x-callback-urls
+- 操作作用于当前选中的文本或文件。
+- 参数会自动进行URL编码。
+- 对于标记为`hasParameters: false`的操作，通常需要提供选中的内容。
+- 在macOS系统中，可以使用`open`命令来触发x-callback-urls。

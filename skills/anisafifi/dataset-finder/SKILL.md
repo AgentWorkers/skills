@@ -1,16 +1,17 @@
 ---
 name: dataset-finder
-description: "Use this skill when users need to search for datasets, download data files, or explore data repositories. Triggers include: requests to \"find datasets\", \"search for data\", \"download dataset from Kaggle\", \"get data from Hugging Face\", \"find ML datasets\", or mentions of data repositories like Kaggle, UCI ML Repository, Data.gov, or Hugging Face. Also use for previewing dataset statistics, generating data cards, or discovering datasets for machine learning projects. Requires OpenClawCLI installation from clawhub.ai."
+description: "当用户需要搜索数据集、下载数据文件或探索数据仓库时，请使用此技能。触发条件包括：请求“查找数据集”、“搜索数据”、“从Kaggle下载数据集”、“从Hugging Face获取数据”、“查找机器学习数据集”，或提及Kaggle、UCI机器学习仓库、Data.gov或Hugging Face等数据仓库。此外，该技能还用于预览数据集统计信息、生成数据卡片，或为机器学习项目发现合适的数据集。使用此技能前，需先从clawhub.ai安装OpenClawCLI。"
 license: Proprietary
 ---
 
-# Dataset Finder
+# 数据集查找工具
 
-Search, download, and explore datasets from multiple repositories including Kaggle, Hugging Face, UCI ML Repository, and Data.gov. Preview statistics, generate data cards, and manage datasets for machine learning projects.
+该工具支持从多个数据仓库（包括Kaggle、Hugging Face、UCI ML Repository和Data.gov）搜索、下载和探索数据集。用户可以预览数据集的统计信息，生成数据集文档（数据卡），并管理这些数据集以用于机器学习项目。
 
-⚠️ **Prerequisite:** Install [OpenClawCLI](https://clawhub.ai/) (Windows, MacOS)
+**重要提示：**  
+请先安装[OpenClawCLI](https://clawhub.ai/)（适用于Windows和Mac系统）。
 
-**Installation:**
+**安装步骤：**  
 ```bash
 # Standard installation
 pip install kaggle datasets pandas huggingface-hub requests beautifulsoup4
@@ -21,111 +22,82 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install kaggle datasets pandas huggingface-hub requests beautifulsoup4
 ```
 
-**Never use `--break-system-packages`** as it can damage your system's Python installation.
+**注意：**  
+切勿使用`--break-system-packages`选项，因为它可能会损坏您的Python安装环境。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Command |
+| 功能 | 命令示例 |
 |------|---------|
-| Search Kaggle | `python scripts/dataset.py kaggle search "housing prices"` |
-| Download Kaggle dataset | `python scripts/dataset.py kaggle download "username/dataset-name"` |
-| Search Hugging Face | `python scripts/dataset.py huggingface search "sentiment"` |
-| Download HF dataset | `python scripts/dataset.py huggingface download "dataset-name"` |
-| Search UCI ML | `python scripts/dataset.py uci search "classification"` |
-| Preview dataset | `python scripts/dataset.py preview dataset.csv` |
-| Generate data card | `python scripts/dataset.py datacard dataset.csv --output README.md` |
-| List local datasets | `python scripts/dataset.py list` |
+| 在Kaggle上搜索数据集 | `python scripts/dataset.py kaggle search "housing prices"` |
+| 下载Kaggle数据集 | `python scripts/dataset.py kaggle download "username/dataset-name"` |
+| 在Hugging Face上搜索数据集 | `python scripts/dataset.py huggingface search "sentiment"` |
+| 下载Hugging Face数据集 | `python scripts/dataset.py huggingface download "dataset-name"` |
+| 在UCI ML Repository上搜索数据集 | `python scripts/dataset.py uci search "classification"` |
+| 预览数据集 | `python scripts/dataset.py preview dataset.csv` |
+| 生成数据集文档 | `python scripts/dataset.py datacard dataset.csv --output README.md` |
+| 列出本地数据集 | `python scripts/dataset.py list` |
 
 ---
 
-## Core Features
+## 核心功能
 
-### 1. Multi-Repository Search
+### 1. 多数据源搜索  
+通过一个界面搜索多个数据仓库中的数据集。  
+**支持的数据源：**  
+- **Kaggle**：机器学习竞赛和社区数据集  
+- **Hugging Face**：自然语言处理、视觉和音频数据集  
+- **UCI ML Repository**：经典机器学习数据集  
+- **Data.gov**：美国政府公开数据  
+- **本地数据集**：管理已下载的数据集  
 
-Search across multiple data repositories from a single interface.
+### 2. 数据集下载  
+支持自动检测数据集格式并下载。  
+**支持的格式：**  
+- CSV、TSV  
+- JSON、JSONL  
+- Parquet  
+- Excel（XLSX、XLS）  
+- ZIP文件  
+- HDF5  
+- Feather  
 
-**Supported Sources:**
-- **Kaggle** - ML competitions and community datasets
-- **Hugging Face** - NLP, vision, and audio datasets
-- **UCI ML Repository** - Classic ML datasets
-- **Data.gov** - US government open data
-- **Local** - Manage downloaded datasets
+### 3. 数据集预览  
+无需加载整个数据集即可快速查看统计信息和概览。  
+**预览内容：**  
+- 数据集结构（行数 × 列数）  
+- 列名及类型  
+- 缺失值数量  
+- 基本统计信息（平均值、标准差、最小值、最大值）  
+- 内存使用情况  
+- 数据样本  
 
-### 2. Dataset Download
-
-Download datasets with automatic format detection.
-
-**Supported formats:**
-- CSV, TSV
-- JSON, JSONL
-- Parquet
-- Excel (XLSX, XLS)
-- ZIP archives
-- HDF5
-- Feather
-
-### 3. Dataset Preview
-
-Get quick statistics and insights without loading entire datasets.
-
-**Preview features:**
-- Shape (rows × columns)
-- Column names and types
-- Missing value counts
-- Basic statistics (mean, std, min, max)
-- Memory usage
-- Sample rows
-
-### 4. Data Card Generation
-
-Automatically generate dataset documentation.
-
-**Includes:**
-- Dataset description
-- Schema information
-- Statistics summary
-- Usage examples
-- License information
-- Citation details
+### 4. 生成数据集文档  
+自动生成标准化的数据集文档，包含以下内容：  
+- 数据集描述  
+- 数据结构信息  
+- 统计摘要  
+- 使用示例  
+- 许可证信息  
+- 引用详情  
 
 ---
 
-## Repository-Specific Commands
+## 特定数据源的命令  
 
-### Kaggle
-
-Search and download datasets from Kaggle.
-
-**Setup:**
-1. Get Kaggle API credentials from https://www.kaggle.com/settings
-2. Place `kaggle.json` in `~/.kaggle/` (Linux/Mac) or `%USERPROFILE%\.kaggle\` (Windows)
-
-```bash
-# Search datasets
-python scripts/dataset.py kaggle search "house prices"
-
-# Search with filters
-python scripts/dataset.py kaggle search "NLP" --file-type csv --sort-by hotness
-
-# Download dataset
-python scripts/dataset.py kaggle download "zillow/zecon"
-
-# Download specific files
-python scripts/dataset.py kaggle download "username/dataset" --file "train.csv"
-
-# List dataset files
-python scripts/dataset.py kaggle list "username/dataset-name"
-```
-
-**Search options:**
-- `--file-type` - Filter by file type (csv, json, etc.)
-- `--license` - Filter by license type
-- `--sort-by` - Sort by hotness, votes, updated, or relevance
-- `--max-results` - Limit number of results
-
-**Output:**
+### Kaggle  
+在Kaggle上搜索和下载数据集。  
+**设置步骤：**  
+1. 从https://www.kaggle.com/settings获取Kaggle API凭据。  
+2. 将`kaggle.json`文件保存到`~/.kaggle/`（Linux/Mac）或`%USERPROFILE%\.kaggle\`（Windows）目录下。  
+**搜索选项：**  
+- `--file-type`：按文件类型过滤  
+- `--license`：按许可证类型过滤  
+- `--sort-by`：按热门程度、投票数、更新时间或相关性排序  
+- `--max-results`：限制搜索结果数量  
+**输出格式：**  
 ```
 1. House Prices - Advanced Regression Techniques
    Owner: zillow/zecon
@@ -140,12 +112,17 @@ python scripts/dataset.py kaggle list "username/dataset-name"
    Last updated: 2023-08-20
    Downloads: 50,000+
    URL: https://www.kaggle.com/datasets/username/housing-data
-```
+```  
 
-### Hugging Face Datasets
-
-Search and download datasets from Hugging Face Hub.
-
+### Hugging Face数据集  
+在Hugging Face Hub上搜索和下载数据集。  
+**搜索选项：**  
+- `--task`：按任务类型过滤（如文本分类、翻译等）  
+- `--language`：按语言代码过滤  
+- `--multimodal`：包含多模态数据集  
+- `--benchmark`：仅下载基准数据集  
+- `--max-results`：限制搜索结果数量  
+**输出格式：**  
 ```bash
 # Search datasets
 python scripts/dataset.py huggingface search "sentiment analysis"
@@ -164,38 +141,16 @@ python scripts/dataset.py huggingface download "glue" --config mrpc
 
 # Stream large datasets
 python scripts/dataset.py huggingface download "large-dataset" --streaming
-```
+```  
 
-**Search options:**
-- `--task` - Filter by task (text-classification, translation, etc.)
-- `--language` - Filter by language code
-- `--multimodal` - Include multimodal datasets
-- `--benchmark` - Only benchmark datasets
-- `--max-results` - Limit results
-
-**Output:**
-```
-1. IMDB Movie Reviews
-   Dataset ID: imdb
-   Tasks: sentiment-classification
-   Languages: en
-   Size: 84.1 MB
-   Downloads: 1M+
-   URL: https://huggingface.co/datasets/imdb
-
-2. Stanford Sentiment Treebank
-   Dataset ID: sst2
-   Tasks: sentiment-classification
-   Languages: en
-   Size: 7.4 MB
-   Downloads: 500K+
-   URL: https://huggingface.co/datasets/sst2
-```
-
-### UCI ML Repository
-
-Search and download classic ML datasets.
-
+### UCI ML Repository  
+在UCI ML Repository上搜索和下载经典机器学习数据集。  
+**搜索选项：**  
+- `--task-type`：分类、回归、聚类等  
+- `--min-samples`：最小样本数量  
+- `--min-features`：最小特征数量  
+- `--data-type`：表格数据、文本数据、图像数据、时间序列数据  
+**输出格式：**  
 ```bash
 # Search datasets
 python scripts/dataset.py uci search "classification"
@@ -208,59 +163,16 @@ python scripts/dataset.py uci download "iris"
 
 # Download with metadata
 python scripts/dataset.py uci download "wine-quality" --include-metadata
-```
+```  
 
-**Search options:**
-- `--task-type` - classification, regression, clustering
-- `--min-samples` - Minimum number of instances
-- `--min-features` - Minimum number of features
-- `--data-type` - tabular, text, image, time-series
-
-**Output:**
-```
-1. Iris Dataset
-   ID: iris
-   Task: classification
-   Samples: 150
-   Features: 4
-   Classes: 3
-   Missing values: No
-   URL: https://archive.ics.uci.edu/ml/datasets/iris
-
-2. Wine Quality
-   ID: wine-quality
-   Task: classification/regression
-   Samples: 6497
-   Features: 11
-   Missing values: No
-   URL: https://archive.ics.uci.edu/ml/datasets/wine+quality
-```
-
-### Data.gov
-
-Search US government open data.
-
-```bash
-# Search datasets
-python scripts/dataset.py datagov search "census"
-
-# Search with organization filter
-python scripts/dataset.py datagov search "health" --organization "cdc.gov"
-
-# Search by topic
-python scripts/dataset.py datagov search "education" --tags "schools,students"
-
-# Download dataset
-python scripts/dataset.py datagov download "dataset-id"
-```
-
-**Search options:**
-- `--organization` - Filter by publishing organization
-- `--tags` - Filter by tags (comma-separated)
-- `--format` - Filter by format (csv, json, xml, etc.)
-- `--max-results` - Limit results
-
-**Output:**
+### Data.gov  
+在Data.gov上搜索美国政府公开数据。  
+**搜索选项：**  
+- `--organization`：按发布机构过滤  
+- `--tags`：按标签过滤（用逗号分隔）  
+- `--format`：按文件格式过滤（CSV、JSON、XML等）  
+- `--max-results`：限制搜索结果数量  
+**输出格式：**  
 ```
 1. 2020 Census Demographic Data
    Organization: census.gov
@@ -269,31 +181,15 @@ python scripts/dataset.py datagov download "dataset-id"
    Last updated: 2023-01-15
    Tags: census, demographics, population
    URL: https://catalog.data.gov/dataset/...
-```
+```  
 
 ---
 
-## Dataset Management
+## 数据集管理  
 
-### Preview Datasets
-
-Get quick insights without loading entire datasets.
-
-```bash
-# Basic preview
-python scripts/dataset.py preview data.csv
-
-# Detailed statistics
-python scripts/dataset.py preview data.csv --detailed
-
-# Custom sample size
-python scripts/dataset.py preview data.csv --sample 20
-
-# Multiple files
-python scripts/dataset.py preview train.csv test.csv
-```
-
-**Output:**
+### 预览数据集  
+无需加载整个数据集即可快速了解其基本信息。  
+**输出示例：**  
 ```
 Dataset: train.csv
 Shape: 1000 rows × 15 columns
@@ -325,37 +221,19 @@ Sample (first 5 rows):
 1   2  Jane Doe   28   55000.0        B
 2   3  Bob Smith  42   85000.0        A
 ...
-```
+```  
 
-### Generate Data Cards
+### 生成数据集文档  
+自动生成标准化的数据集文档，包含以下内容：  
+- 数据集描述  
+- 文件信息（大小、格式、行数、列数）  
+- 数据结构（列名、类型、描述）  
+- 统计信息  
+- 使用示例  
+- 许可证和引用信息  
+- 已知问题/限制  
 
-Create standardized dataset documentation.
-
-```bash
-# Generate data card
-python scripts/dataset.py datacard dataset.csv --output DATACARD.md
-
-# Include statistics
-python scripts/dataset.py datacard dataset.csv --include-stats --output README.md
-
-# Custom template
-python scripts/dataset.py datacard dataset.csv --template custom_template.md
-
-# Multiple datasets
-python scripts/dataset.py datacard train.csv test.csv --output-dir datacards/
-```
-
-**Generated data card includes:**
-- Dataset description
-- File information (size, format, rows, columns)
-- Schema (column names, types, descriptions)
-- Statistics (distributions, missing values, correlations)
-- Sample data
-- Usage examples
-- License and citation
-- Known issues/limitations
-
-**Example output (DATACARD.md):**
+**数据集文档示例（DATACARD.md）：**  
 ```markdown
 # Dataset Card: Housing Prices
 
@@ -384,19 +262,21 @@ This dataset contains housing prices and features for regression analysis.
 - Target variable: SalePrice (range: $34,900 - $755,000)
 
 ## Usage
+```  
 ```python
 import pandas as pd
 df = pd.read_csv('housing_prices.csv')
+```  
+**输出示例：**  
 ```
 
 ## License
 Creative Commons
-```
+```  
 
-### List Local Datasets
-
-Manage downloaded datasets.
-
+### 列出本地数据集  
+管理已下载的数据集。  
+**输出示例：**  
 ```bash
 # List all datasets
 python scripts/dataset.py list
@@ -409,39 +289,14 @@ python scripts/dataset.py list --source kaggle
 
 # Filter by size
 python scripts/dataset.py list --min-size 100MB --max-size 1GB
-```
-
-**Output:**
-```
-Local Datasets (5 total, 2.5 GB):
-
-1. zillow/zecon (Kaggle)
-   Downloaded: 2024-01-15
-   Size: 1.5 MB
-   Files: train.csv, test.csv
-   Location: datasets/kaggle/zillow/zecon/
-
-2. imdb (Hugging Face)
-   Downloaded: 2024-01-20
-   Size: 84.1 MB
-   Splits: train, test, unsupervised
-   Location: datasets/huggingface/imdb/
-
-3. iris (UCI ML)
-   Downloaded: 2024-01-18
-   Size: 4.5 KB
-   Files: iris.data, iris.names
-   Location: datasets/uci/iris/
-```
+```  
 
 ---
 
-## Common Workflows
+## 常见工作流程  
 
-### Machine Learning Project Setup
-
-Find and download datasets for a new ML project.
-
+### 机器学习项目设置  
+为新机器学习项目查找并下载所需数据集。  
 ```bash
 # Step 1: Search for relevant datasets
 python scripts/dataset.py kaggle search "house prices" --max-results 10 --output search_results.json
@@ -454,12 +309,10 @@ python scripts/dataset.py preview datasets/kaggle/zillow/zecon/train.csv --detai
 
 # Step 4: Generate documentation
 python scripts/dataset.py datacard datasets/kaggle/zillow/zecon/train.csv --output DATACARD.md
-```
+```  
 
-### NLP Project Dataset Collection
-
-Gather text datasets for NLP tasks.
-
+### NLP项目数据集收集  
+收集用于NLP任务的数据集。  
 ```bash
 # Search Hugging Face for sentiment datasets
 python scripts/dataset.py huggingface search "sentiment" --task text-classification --language en
@@ -471,12 +324,10 @@ python scripts/dataset.py huggingface download "yelp_polarity"
 
 # Preview each dataset
 python scripts/dataset.py list --source huggingface
-```
+```  
 
-### Dataset Comparison
-
-Compare multiple datasets for selection.
-
+### 数据集比较  
+对比多个数据集以选择合适的数据集。  
 ```bash
 # Search across repositories
 python scripts/dataset.py kaggle search "titanic" --output kaggle_results.json
@@ -488,12 +339,10 @@ python scripts/dataset.py preview candidate2.csv --output stats2.txt
 
 # Generate comparison data cards
 python scripts/dataset.py datacard candidate1.csv candidate2.csv --output-dir comparison/
-```
+```  
 
-### Building a Dataset Library
-
-Organize datasets for team use.
-
+### 构建数据集库  
+整理数据集以供团队使用。  
 ```bash
 # Create organized structure
 mkdir -p datasets/{kaggle,huggingface,uci,custom}
@@ -507,12 +356,10 @@ python scripts/dataset.py datacard datasets/**/*.csv --output-dir datacards/
 
 # Create inventory
 python scripts/dataset.py list --detailed --output inventory.json
-```
+```  
 
-### Data Quality Assessment
-
-Assess dataset quality before use.
-
+### 数据质量评估  
+在使用数据集前进行质量检查。  
 ```bash
 # Preview with detailed statistics
 python scripts/dataset.py preview dataset.csv --detailed --output quality_report.txt
@@ -522,16 +369,14 @@ python scripts/dataset.py validate dataset.csv --check-missing --check-duplicate
 
 # Generate comprehensive data card
 python scripts/dataset.py datacard dataset.csv --include-stats --include-quality --output QA_REPORT.md
-```
+```  
 
 ---
 
-## Advanced Features
+## 高级功能  
 
-### Batch Download
-
-Download multiple datasets at once.
-
+### 批量下载  
+一次性下载多个数据集。  
 ```bash
 # Create download list
 cat > datasets.txt << EOF
@@ -543,12 +388,10 @@ EOF
 
 # Batch download
 python scripts/dataset.py batch-download datasets.txt --output-dir datasets/
-```
+```  
 
-### Dataset Conversion
-
-Convert between formats.
-
+### 数据集转换  
+支持在不同格式之间转换数据集。  
 ```bash
 # CSV to Parquet
 python scripts/dataset.py convert data.csv --format parquet --output data.parquet
@@ -558,12 +401,10 @@ python scripts/dataset.py convert data.xlsx --format csv --output data.csv
 
 # JSON to CSV
 python scripts/dataset.py convert data.json --format csv --output data.csv
-```
+```  
 
-### Dataset Splitting
-
-Split datasets for ML workflows.
-
+### 数据集分割  
+根据需求分割数据集以适应不同的机器学习流程。  
 ```bash
 # Train/test split
 python scripts/dataset.py split data.csv --train 0.8 --test 0.2
@@ -573,59 +414,50 @@ python scripts/dataset.py split data.csv --train 0.7 --val 0.15 --test 0.15
 
 # Stratified split
 python scripts/dataset.py split data.csv --stratify target_column --train 0.8 --test 0.2
-```
+```  
 
-### Dataset Merging
-
-Combine multiple datasets.
-
+### 数据集合并  
+合并多个数据集以整合资源。  
 ```bash
 # Concatenate datasets
 python scripts/dataset.py merge file1.csv file2.csv --output combined.csv
 
 # Join on key
 python scripts/dataset.py merge left.csv right.csv --on id --how inner --output joined.csv
-```
+```  
+
+## 最佳实践  
+
+### 搜索策略  
+1. **广泛搜索**：先使用通用关键词  
+2. **逐步细化**：根据搜索结果添加筛选条件  
+3. **多源查询**：不同数据仓库各有优势  
+4. **查看元数据**：在下载前确认数据集的大小、格式和许可证  
+
+### 下载管理  
+1. **先查看大小**：使用搜索功能查看数据集大小  
+2. **下载前预览**：尽可能预览数据样本  
+3. **按来源分类**：保持数据源的清晰结构  
+4. **管理下载记录**：使用`list`命令管理本地数据集  
+
+### 数据质量检查  
+1. **务必预览**：使用前检查数据质量  
+2. **生成文档**：为所有数据集生成文档  
+3. **验证数据**：检查缺失值和异常值  
+4. **保留元数据**：保存原始描述和许可证信息  
+
+### 数据存储  
+1. **使用版本控制**：跟踪数据集的版本信息  
+2. **压缩文件**：对于大型数据集，使用Parquet或HDF5格式  
+3. **定期清理**：删除不再使用的数据集  
+4. **备份重要数据**：备份关键数据集  
 
 ---
 
-## Best Practices
+## 常见问题及解决方法  
 
-### Search Strategy
-
-1. **Start broad** - Use general keywords first
-2. **Refine iteratively** - Add filters based on results
-3. **Check multiple sources** - Different repositories have different strengths
-4. **Review metadata** - Check size, format, license before downloading
-
-### Download Management
-
-1. **Check size first** - Use search to see dataset size
-2. **Preview before download** - When possible, preview samples
-3. **Organize by source** - Keep repository structure clear
-4. **Track downloads** - Use list command to manage local datasets
-
-### Data Quality
-
-1. **Always preview** - Check data before using
-2. **Generate data cards** - Document all datasets
-3. **Validate data** - Check for missing values, outliers
-4. **Keep metadata** - Save original descriptions and licenses
-
-### Storage
-
-1. **Use version control** - Track dataset versions
-2. **Compress when possible** - Use Parquet or HDF5 for large datasets
-3. **Clean regularly** - Remove unused datasets
-4. **Backup important data** - Keep copies of critical datasets
-
----
-
-## Troubleshooting
-
-### Installation Issues
-
-**"Missing required dependency"**
+### 安装问题  
+**“缺少所需依赖项”**  
 ```bash
 # Install all dependencies
 pip install kaggle datasets pandas huggingface-hub requests beautifulsoup4
@@ -634,72 +466,68 @@ pip install kaggle datasets pandas huggingface-hub requests beautifulsoup4
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
+```  
 
-**"Kaggle API credentials not found"**
-1. Go to https://www.kaggle.com/settings
-2. Click "Create New API Token"
-3. Save `kaggle.json` to:
-   - Linux/Mac: `~/.kaggle/`
-   - Windows: `%USERPROFILE%\.kaggle\`
-4. Set permissions: `chmod 600 ~/.kaggle/kaggle.json`
+**“未找到Kaggle API凭据”**  
+1. 访问https://www.kaggle.com/settings  
+2. 点击“创建新的API令牌”  
+3. 将`kaggle.json`文件保存到：  
+   - Linux/Mac：`~/.kaggle/`  
+   - Windows：`%USERPROFILE%\.kaggle\`  
+4. 设置权限：`chmod 600 ~/.kaggle/kaggle.json`  
 
-**"Hugging Face authentication required"**
+**“需要Hugging Face认证”**  
 ```bash
 # Login to Hugging Face
 huggingface-cli login
 
 # Or set token
 export HF_TOKEN="your_token_here"
-```
+```  
 
-### Search Issues
+### 搜索问题  
+**“未找到结果”**  
+- 尝试使用更宽泛的搜索词  
+- 移除限制性筛选条件  
+- 检查拼写  
+- 尝试其他数据源  
 
-**"No results found"**
-- Try broader search terms
-- Remove restrictive filters
-- Check spelling
-- Try different repository
+**“搜索超时”**  
+- 检查网络连接  
+- 数据源可能暂时不可用  
+- 几分钟后重试  
 
-**"Search timeout"**
-- Check internet connection
-- Repository may be down temporarily
-- Try again in a few minutes
+### 下载问题  
+**“下载失败”**  
+- 检查网络连接  
+- 确认数据集是否存在  
+- 检查可用磁盘空间  
+- 尝试下载特定文件  
 
-### Download Issues
+**“权限问题”**  
+- 部分数据集需要用户同意使用条款  
+- 可能需要API凭据  
+- 检查数据集的许可证  
 
-**"Download failed"**
-- Check internet connection
-- Verify dataset still exists
-- Check available disk space
-- Try downloading specific files
+**“内存不足”**  
+- 对于大型数据集，使用流式下载方式  
+- 分块下载数据集  
+- 选择Parquet格式而非CSV  
 
-**"Permission denied"**
-- Some datasets require accepting terms
-- May need API credentials
-- Check dataset license
+**预览问题**  
+**“无法加载数据集”**  
+- 检查文件格式  
+- 确保文件未损坏  
+- 尝试指定编码格式（例如`--encoding utf-8`）  
 
-**"Out of memory"**
-- Use streaming for large datasets
-- Download in chunks
-- Use Parquet instead of CSV
-
-### Preview Issues
-
-**"Cannot load dataset"**
-- Check file format
-- Verify file is not corrupted
-- Try specifying encoding: `--encoding utf-8`
-
-**"Preview too slow"**
-- Use smaller sample size
-- Preview first N rows only
-- Use format-specific tools
+**“预览速度过慢”**  
+- 减少预览的数据量  
+- 仅预览前几行数据  
+- 使用适用于该格式的工具进行预览  
 
 ---
 
-## Command Reference
-
+## 命令参考  
 ```bash
 python scripts/dataset.py <command> [OPTIONS]
 
@@ -763,14 +591,13 @@ LIST:
 
 HELP:
   --help              Show help
-```
+```  
 
 ---
 
-## Examples by Use Case
+## 按使用场景划分的示例  
 
-### Quick Dataset Search
-
+### 快速搜索数据集  
 ```bash
 # Find housing datasets
 python scripts/dataset.py kaggle search "housing"
@@ -780,10 +607,9 @@ python scripts/dataset.py huggingface search "sentiment" --task text-classificat
 
 # Find classic ML datasets
 python scripts/dataset.py uci search "classification"
-```
+```  
 
-### Download and Preview
-
+### 下载并预览数据集  
 ```bash
 # Download from Kaggle
 python scripts/dataset.py kaggle download "zillow/zecon"
@@ -793,10 +619,9 @@ python scripts/dataset.py preview datasets/kaggle/zillow/zecon/train.csv --detai
 
 # Generate documentation
 python scripts/dataset.py datacard datasets/kaggle/zillow/zecon/train.csv
-```
+```  
 
-### Multi-Source Search
-
+### 多数据源搜索  
 ```bash
 # Search all repositories
 python scripts/dataset.py kaggle search "titanic" --output kaggle.json
@@ -805,10 +630,9 @@ python scripts/dataset.py uci search "classification" --output uci.json
 
 # Compare results
 cat kaggle.json hf.json uci.json
-```
+```  
 
-### Dataset Management
-
+### 数据集管理  
 ```bash
 # List all downloaded datasets
 python scripts/dataset.py list --detailed
@@ -818,21 +642,20 @@ python scripts/dataset.py preview *.csv
 
 # Generate data cards for all
 python scripts/dataset.py datacard *.csv --output-dir datacards/
-```
+```  
 
 ---
 
-## Support
+## 帮助资源  
+如遇到问题或需要更多信息，请：  
+1. 查阅本文档  
+2. 运行`python scripts/dataset.py --help`  
+3. 确保已设置API凭据  
+4. 查看相关数据源的官方文档  
 
-For issues or questions:
-1. Check this documentation
-2. Run `python scripts/dataset.py --help`
-3. Verify API credentials are set
-4. Check repository-specific documentation
-
-**Resources:**
-- OpenClawCLI: https://clawhub.ai/
-- Kaggle API: https://github.com/Kaggle/kaggle-api
-- Hugging Face Datasets: https://huggingface.co/docs/datasets/
-- UCI ML Repository: https://archive.ics.uci.edu/ml/
-- Data.gov API: https://www.data.gov/developers/apis
+**相关资源：**  
+- OpenClawCLI：https://clawhub.ai/  
+- Kaggle API：https://github.com/Kaggle/kaggle-api  
+- Hugging Face数据集：https://huggingface.co/docs/datasets/  
+- UCI ML Repository：https://archive.ics.uci.edu/ml/  
+- Data.gov API：https://www.data.gov/developers/apis

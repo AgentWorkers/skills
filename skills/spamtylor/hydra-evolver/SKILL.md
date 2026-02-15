@@ -1,7 +1,7 @@
 ---
 name: hydra-evolver
 version: 1.0.0
-description: "A Proxmox-native orchestration skill that turns any home lab into a Self-Healing AI Swarm."
+description: "这是一种基于 Proxmox 的原生编排技术，能够将任何家庭实验室转变为具备自我修复功能的 AI 集群（即能够自动修复故障并持续运行的 AI 系统）。"
 author: bradfromtherealworld
 metadata:
   requires:
@@ -11,25 +11,25 @@ metadata:
 
 # 🐉 Hydra Mesh Evolver
 
-**Weaponize your infrastructure. Decentralize your brain.**
+**让您的基础设施更具战斗力。实现系统的去中心化管理。**
 
-The Hydra Mesh Evolver is a specialized skill for the OpenClaw Mesh. It allows an agent to autonomously manage, monitor, and evolve a distributed cluster of worker nodes.
+Hydra Mesh Evolver 是专为 OpenClaw Mesh 设计的一项专业工具，它允许代理自主管理、监控并优化分布式的工作节点集群。
 
-## Features
-- **Node Injection:** Automatically deploy OpenClaw agents to Windows, Mac, and Linux nodes.
-- **Proxmox Telemetry:** Real-time hardware health and VM management.
-- **Self-Evolution Loop:** Scans project files (`PROJECTS.md`) and proposes code fixes/resume-plans for stalled work.
-- **ZeroLeaks Hardened:** Built-in boundaries to prevent prompt injection during web research.
+## 主要功能
+- **节点部署：** 自动将 OpenClaw 代理部署到 Windows、Mac 和 Linux 系统的节点上。
+- **Proxmox 监控功能：** 实时监控硬件状态和虚拟机运行情况。
+- **自我进化机制：** 扫描项目文件（`PROJECTS.md`），针对停滞的工作任务提出代码修复方案或恢复计划。
+- **安全防护机制：** 内置防护机制，防止在网络研究中被恶意代码注入。
 
-## Tools
-### `mesh_scan`
-Scan the network for new nodes and update the mesh topology.
+## 所含工具
+### `mesh_scan`  
+扫描网络中的新节点，并更新网格拓扑结构。
 
-### `mesh_evolve`
-Analyze `MEMORY.md` and `PROJECTS.md` to identify blockers and generate an `evolution_plan.json`.
+### `mesh_evolve`  
+分析 `MEMORY.md` 和 `PROJECTS.md` 文件，识别潜在问题，并生成优化方案（`evolution_plan.json`）。
 
-### `mesh_provision`
-One-click setup for new hardware (Docker, OpenClaw, Tailscale).
+### `mesh_provision`  
+一键完成新硬件的配置（支持 Docker、OpenClaw 和 Tailscale 等平台）。
 
 ---
-*Created for the 2026 OpenClaw Hackathon on Moltbook.*
+*该工具专为 2026 年 Moltbook 上举办的 OpenClaw 霸客赛开发。*

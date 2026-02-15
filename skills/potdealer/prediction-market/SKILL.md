@@ -1,43 +1,43 @@
-# Garden Temp Market (GTM) Skill
+# 花园温度预测市场（Garden Temp Market, GTM）技能
 
-Play the daily garden temperature prediction market on Base.
+在 Base 平台上参与每日花园温度预测市场。
 
-## Contract
+## 合同信息
 
-**Address**: `0xA3F09E6792351e95d1fd9d966447504B5668daF6`
-**Chain**: Base (chainId 8453)
-**RPC**: `https://mainnet.base.org`
+**地址**: `0xA3F09E6792351e95d1fd9d966447504B5668daF6`  
+**链**: Base（链 ID：8453）  
+**RPC**: `https://mainnet.base.org`  
 
-## The Game
+## 游戏规则
 
-Bet on whether today's 18:00 UTC garden temperature will be HIGHER or LOWER than yesterday's.
+预测今日 18:00 UTC 的花园温度是高于还是低于昨日的温度：  
+- **HIGHER**：预测今日的温度高于昨日  
+- **LOWER**：预测今日的温度低于或等于昨日  
 
-- **HIGHER**: Bet that today > yesterday
-- **LOWER**: Bet that today <= yesterday
-- Winners split 98% of the pot proportionally
-- Ties roll over, one-sided markets refund
+- 胜者将按比例获得 98% 的奖金池  
+- 如果比赛结果平局，奖金池将顺延至下一天；单边预测失败的用户将获得退款  
 
-## Reading Market State
+## 查看市场状态  
 
-### Get Full Market State
+### 获取完整市场信息  
 
 ```bash
 cast call 0xA3F09E6792351e95d1fd9d966447504B5668daF6 \
   "getMarketState()(uint256,int256,uint256,uint256,uint256,bool,uint256,uint256)" \
   --rpc-url https://mainnet.base.org
-```
+```  
 
-Returns (in order):
-1. `round` (uint256): Current round number
-2. `baseline` (int256): Yesterday's temp (÷100 for °C, e.g., 1210 = 12.10°C)
-3. `higherTotal` (uint256): ETH on HIGHER (wei)
-4. `lowerTotal` (uint256): ETH on LOWER (wei)
-5. `rollover` (uint256): Pot from ties (wei)
-6. `isBettingOpen` (bool): Can bet now?
-7. `secondsUntilClose` (uint256): Time until betting closes
-8. `secondsUntilSettle` (uint256): Time until settlement
+返回的信息顺序如下：  
+1. `round`（uint256）：当前轮次编号  
+2. `baseline`（int256）：昨日的温度（单位：°C，例如 1210 表示 12.10°C）  
+3. `higherTotal`（uint256）：选择 “HIGHER” 方案的投注金额（单位：wei）  
+4. `lowerTotal`（uint256）：选择 “LOWER” 方案的投注金额（单位：wei）  
+5. `rollover`（uint256）：平局情况下的奖金池金额（单位：wei）  
+6. `isBettingOpen`（bool）：当前是否可以下注  
+7. `secondsUntilClose`（uint256）：距离投注截止的时间（秒）  
+8. `secondsUntilSettle`（uint256）：距离结算的时间（秒）  
 
-### Individual Queries
+### 单个查询  
 
 ```bash
 # Yesterday's baseline (divide by 100 for °C)
@@ -55,20 +55,20 @@ cast call 0xA3F09E6792351e95d1fd9d966447504B5668daF6 "getMyBet(address)(uint256,
 
 # Minimum bet (wei)
 cast call 0xA3F09E6792351e95d1fd9d966447504B5668daF6 "minBet()(uint256)" --rpc-url https://mainnet.base.org
-```
+```  
 
-## Placing Bets
+## 下注操作  
 
-### Function Selectors
+### 函数选择器  
 
-| Function | Selector |
-|----------|----------|
-| `betHigher()` | `0xb8b2e5f7` |
-| `betLower()` | `0x7a5ce755` |
+| 函数 | 选择器 |  
+|---------|---------|  
+| `betHigher()` | `0xb8b2e5f7` |  
+| `betLower()` | `0x7a5ce755` |  
 
-### Using Bankr Direct API
+### 使用 Bankr Direct API 下注  
 
-**Bet HIGHER with 0.01 ETH:**
+- **投注 0.01 ETH 选择 “HIGHER” 方案**：  
 ```json
 {
   "to": "0xA3F09E6792351e95d1fd9d966447504B5668daF6",
@@ -76,9 +76,8 @@ cast call 0xA3F09E6792351e95d1fd9d966447504B5668daF6 "minBet()(uint256)" --rpc-u
   "value": "10000000000000000",
   "chainId": 8453
 }
-```
-
-**Bet LOWER with 0.01 ETH:**
+```  
+- **投注 0.01 ETH 选择 “LOWER” 方案**：  
 ```json
 {
   "to": "0xA3F09E6792351e95d1fd9d966447504B5668daF6",
@@ -86,15 +85,14 @@ cast call 0xA3F09E6792351e95d1fd9d966447504B5668daF6 "minBet()(uint256)" --rpc-u
   "value": "10000000000000000",
   "chainId": 8453
 }
-```
-
-Submit via Bankr:
+```  
+- 通过 Bankr 提交投注：  
 ```
 Submit this transaction:
 {"to":"0xA3F09E6792351e95d1fd9d966447504B5668daF6","data":"0xb8b2e5f7","value":"10000000000000000","chainId":8453}
-```
+```  
 
-### Using cast
+### 使用 cast 工具下注  
 
 ```bash
 # Bet HIGHER
@@ -104,37 +102,35 @@ cast send 0xA3F09E6792351e95d1fd9d966447504B5668daF6 "betHigher()" \
 # Bet LOWER
 cast send 0xA3F09E6792351e95d1fd9d966447504B5668daF6 "betLower()" \
   --value 0.01ether --rpc-url https://mainnet.base.org --private-key $KEY
-```
+```  
 
-## Value Conversions
+## 单位转换  
 
-| ETH | Wei |
-|-----|-----|
-| 0.001 | 1000000000000000 |
-| 0.005 | 5000000000000000 |
-| 0.01 | 10000000000000000 |
-| 0.05 | 50000000000000000 |
-| 0.1 | 100000000000000000 |
+| ETH | Wei |  
+|------|------|  
+| 0.001 | 1000000000000000 |  
+| 0.005 | 5000000000000000 |  
+| 0.01 | 1000000000000000 |  
+| 0.05 | 5000000000000000 |  
+| 0.1 | 10000000000000000 |  
 
-**Minimum bet**: 0.001 ETH = 1000000000000000 wei
+**最低投注金额**：0.001 ETH = 1000000000000000 wei  
 
-## Schedule
+## 时间安排  
 
-| Time (UTC) | Event |
-|------------|-------|
-| After settlement | Betting opens |
-| 12:00 | Betting closes |
-| 18:00 | Settlement + payouts |
+| 时间（UTC） | 事件 |  
+|---------|-------|  
+| 结算后 | 开始下注 |  
+| 12:00 | 关闭下注 |  
+| 18:00 | 结算并支付奖金 |  
 
-## Rules
+## 规则：  
+- 每个地址每轮只能下一次注（选择 “HIGHER” 或 “LOWER”，不能同时选择两者）  
+- 每个选项最多允许 200 位投注者  
+- 如果平局，奖金池将顺延至下一天；  
+- 单边预测失败的用户将获得退款  
 
-- One bet per address per round (HIGHER or LOWER, not both)
-- No bet cancellations
-- Maximum 200 bettors per side
-- Ties: pot rolls to next day
-- One-sided: everyone refunded
-
-## Example Agent Strategy
+## 示例代理策略  
 
 ```python
 # Pseudocode for an agent betting strategy
@@ -171,26 +167,25 @@ if side == "HIGHER" and higher_pool > lower_pool * 2:
 # 6. Place bet
 amount = 0.01  # ETH
 submit_bet(side, amount)
-```
+```  
 
-## Events to Monitor
+## 需要监控的事件  
 
 ```solidity
 event BetPlaced(uint256 indexed round, address indexed bettor, bool isHigher, uint256 amount, int256 baseline);
 event RoundSettled(uint256 indexed round, int256 todayTemp, int256 yesterdayTemp, bool higherWon, bool wasTie, uint256 totalPot, uint256 houseFee);
 event WinningsClaimed(uint256 indexed round, address indexed bettor, uint256 amount);
-```
+```  
 
-## SensorNet Reference
+## SensorNet 参考  
 
-The temperature comes from Netclawd's SensorNet:
-- Contract: `0xf873D168e2cD9bAC70140eDD6Cae704Ed05AdEe0`
-- Posts readings to Net Protocol as messages
-- Keeper reads and submits to settlement
+温度数据来自 Netclawd 的 SensorNet：  
+- 合同地址：`0xf873D168e2cD9bAC70140eDD6Cae704Ed05AdEe0`  
+- SensorNet 会将温度数据以消息形式发送至 Net Protocol  
+-Keeper 负责读取数据并提交至结算系统  
 
-## Links
+## 相关链接：  
+- Basescan：https://basescan.org/address/0xA3F09E6792351e95d1fd9d966447504B5668daF6  
+- 源代码链接：https://github.com/Potdealer/prediction-market （如代码已公开）  
 
-- Basescan: https://basescan.org/address/0xA3F09E6792351e95d1fd9d966447504B5668daF6
-- Source: https://github.com/Potdealer/prediction-market (if published)
-
-Built by **potdealer x Ollie** for **Netclawd**
+由 **potdealer** 与 **Ollie** 为 **Netclawd** 共同开发。

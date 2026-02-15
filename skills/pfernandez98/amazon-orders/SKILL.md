@@ -1,43 +1,42 @@
 ---
 name: amazon-orders
-description: Download and query your Amazon order history via an unofficial Python API and CLI.
+description: 通过一个非官方的 Python API 和 CLI 下载并查询您的亚马逊订单历史记录。
 homepage: https://github.com/alexdlaird/amazon-orders
 metadata: {"clawdbot":{"emoji":"📦","requires":{"bins":["python3","pip3"],"env":["AMAZON_USERNAME", "AMAZON_PASSWORD", "AMAZON_OTP_SECRET_KEY"]}}}
 ---
 
-# amazon-orders Skill
+# amazon-orders 技能
 
-Interact with your Amazon.com order history using the unofficial `amazon-orders` Python package and CLI.
+使用非官方的 `amazon-orders` Python 包和命令行界面（CLI）来查询您的 Amazon.com 订单历史记录。
 
-> Note: `amazon-orders` works by scraping/parsing Amazon's consumer website, so it can break if Amazon changes their pages. Only the English Amazon **.com** site is officially supported. 
+> 注意：`amazon-orders` 通过抓取/解析 Amazon 的消费者网站来获取数据，因此如果 Amazon 更改了页面结构，该工具可能会失效。目前仅支持英文版的 Amazon.com 网站。
 
-## Setup
+## 设置
 
-### Install / upgrade
+### 安装/升级
 ```bash
 python3 -m pip install --upgrade amazon-orders
 ```
-(Install details and version pinning guidance are in the project README.) 
+（安装详情和版本固定指南请参见项目的 README 文件。）
 
-### Authentication options
+### 认证方式
 
-`amazon-orders` can get credentials from (highest precedence first): environment variables, parameters passed to `AmazonSession`, or a local config. 
+`amazon-orders` 可以从以下来源获取认证信息（优先级从高到低）：环境变量、传递给 `AmazonSession` 的参数，或本地配置文件。
 
-Environment variables:
+环境变量：
 ```bash
 export AMAZON_USERNAME="you@example.com"
 export AMAZON_PASSWORD="your-password"
 # Optional: for accounts with OTP/TOTP enabled
 export AMAZON_OTP_SECRET_KEY="BASE32_TOTP_SECRET"
 ```
-(OTP secret key usage is documented by the project.) 
+（关于 OTP 密钥的使用方法，请参考项目的文档。）
 
-## Usage
+## 使用方法
 
-You can use `amazon-orders` either as a **Python library** or from the **command line**. 
+您可以将 `amazon-orders` 作为 **Python 库** 使用，也可以通过 **命令行** 来调用它。
 
-### Python: basic usage
-
+### Python：基本用法
 ```python
 from amazonorders.session import AmazonSession
 from amazonorders.orders import AmazonOrders
@@ -59,13 +58,12 @@ for order in orders:
 ```
 
 
-#### Full details (slower, more fields)
-Some order fields only populate when you request full details; enable it when you need richer order data:
-- Python: `full_details=True`
-- CLI: `--full-details` on `history` 
+#### 完整信息（获取速度较慢，包含更多字段）
+某些订单字段仅在您请求完整信息时才会显示；如需更详细的订单数据，请使用以下参数：
+- Python：`full_details=True`
+- CLI：在 `history` 命令后添加 `--full-details`
 
-### CLI: common commands
-
+### CLI：常用命令
 ```bash
 # Authenticate (interactive / uses env vars if set)
 amazon-orders login
@@ -77,24 +75,24 @@ amazon-orders history --last-3-months
 ```
 
 
-### Tips
+### 提示
 
-- If your account has MFA enabled, prefer setting `AMAZON_OTP_SECRET_KEY` for automated runs. 
-- When automating, keep credentials out of shell history: use environment variables and a secret manager (1Password, Vault, GitHub Actions secrets, etc.).
+- 如果您的账户启用了多因素认证（MFA），建议在自动化脚本中设置 `AMAZON_OTP_SECRET_KEY`。
+- 在自动化过程中，请将认证信息存储在安全的地方，避免泄露到 shell 历史记录中：可以使用环境变量或密钥管理工具（如 1Password、Vault、GitHub Actions 的 secrets 等）。
 
-## Examples
+## 示例
 
-### Export yearly history to JSON
+### 将年度订单历史记录导出为 JSON 格式
 ```bash
 amazon-orders history --year 2023 --full-details > orders_2023.json
 ```
 
-### Quick totals check (requires jq)
+### 快速查看订单总额（需要使用 jq 工具）
 ```bash
 amazon-orders history --last-30-days --full-details   | jq -r '.[] | [.order_number, .grand_total] | @tsv'
 ```
 
-## Notes
+## 注意事项
 
-- This is an unofficial scraper-based tool (no official Amazon API). 
-- Official docs are hosted on Read the Docs for advanced usage and APIs (Orders, Transactions, etc.). 
+- 这是一个基于抓取技术的非官方工具，并非官方提供的 Amazon API。
+- 官方文档请访问 [Read the Docs](https://docs.amazon.com/) 以获取高级用法和 API 的详细信息（如订单、交易等）。

@@ -1,34 +1,34 @@
 ---
 name: stripe-payments
-description: Best practices for Stripe payment integration. Use when implementing payments, subscriptions, checkout flows, or any monetization feature in games or web apps. Covers CheckoutSessions, Payment Element, subscriptions, and Connect.
+description: Stripe支付集成的最佳实践。适用于在游戏或Web应用中实现支付、订阅、结账流程或任何货币化功能时使用。内容涵盖了CheckoutSessions、Payment Element、订阅服务以及Connect接口的相关用法。
 metadata:
   author: misskim
   version: "1.0"
   origin: Concept from Stripe official best practices, adapted for our game/app monetization
 ---
 
-# Stripe Payments Integration
+# Stripe支付集成
 
-게임/웹앱 수익화를 위한 Stripe 결제 통합 가이드.
+本指南介绍了如何将Stripe支付集成到您的游戏或Web应用程序中，以实现收入化。
 
-## 핵심 원칙
+## 核心原则
 
-### 반드시 사용
-- **CheckoutSessions API** — 원타임 결제 + 구독의 기본
-- **Stripe 호스트 체크아웃** 또는 **임베디드 체크아웃** 우선
-- **동적 결제 수단** — 대시보드에서 활성화 (payment_method_types 하드코딩 금지)
-- **최신 API 버전 + SDK** 사용
+### 必须使用的功能：
+- **CheckoutSessions API**：用于处理一次性支付和订阅功能。
+- **Stripe提供的主机式结账（Hosted Checkout）**或**嵌入式结账（Embedded Checkout）**方式优先选择。
+- **动态支付方式**：需在控制台中进行配置（禁止直接在代码中硬编码`payment_method_types`）。
+- 使用最新版本的API和SDK。
 
-### 절대 금지
-- ❌ Charges API (레거시, PaymentIntents로 마이그레이션)
-- ❌ Card Element / Payment Element card 모드 (레거시)
-- ❌ Sources API (deprecated)
-- ❌ Tokens API (SetupIntents 사용)
-- ❌ payment_method_types 하드코딩 (동적 결제 수단 사용)
+### 绝对禁止的功能：
+- ❌ `Charges API`（已过时，建议迁移到`PaymentIntents`）。
+- ❌ `Card Element`/`Payment Element`的卡片支付方式（已过时）。
+- ❌ `Sources API`（已被弃用）。
+- ❌ `Tokens API`（建议使用`SetupIntents`）。
+- ❌ 禁止在代码中硬编码`payment_method_types`（应使用动态支付方式）。
 
-## 우리 게임/앱에 적용
+## 如何应用于我们的游戏/应用程序
 
-### 시나리오별 선택
+### 根据不同场景的选择方案
 
 ```
 수익화 유형 → 무엇을 파는가?
@@ -39,7 +39,7 @@ metadata:
 └─ 마켓플레이스 → Stripe Connect (destination charges)
 ```
 
-### 기본 구현 패턴
+### 基本实现模式
 
 ```javascript
 // 서버 (Node.js)
@@ -59,26 +59,24 @@ const session = await stripe.checkout.sessions.create({
 // session.url로 리다이렉트
 ```
 
-### 구독 모델 (SaaS/게임 프리미엄)
-- Billing API → 구독 설계 가이드: docs.stripe.com/billing/subscriptions/designing-integration
-- CheckoutSessions + Billing 조합 우선
-- 웹훅으로 구독 상태 변경 감지
+### 订阅模式（SaaS/游戏高级会员）
+- 使用`Billing API`来设计订阅功能：[参考文档](docs.stripe.com/billing/subscriptions/designing-integration)。
+- 优先选择`CheckoutSessions`与`Billing`的组合。
+- 通过Webhook实时检测订阅状态的变化。
 
-### 플랫폼 (여러 게임 개발자) → Connect
-- **destination charges** — 우리가 liability 수용
-- **on_behalf_of** 파라미터로 merchant of record 제어
-- charge type 혼합 금지
+### 多个游戏开发者共享的解决方案（使用Stripe Connect）：
+- **责任承担方（Liability）**：由我们负责处理相关费用。
+- 使用`on_behalf_of`参数来指定交易的商户信息。
+- 禁止混合使用不同的支付类型。
 
-## 보안 체크리스트
+## 安全性检查清单：
+- [ ] 仅在使用服务器端时才使用Secret Key。
+- [ ] 对Webhook签名进行验证。
+- [ ] 禁止在客户端代码中硬编码金额或价格信息（金额应在服务器端生成）。
+- [ ] 完成上线前的检查清单：[参考文档](docs.stripe.com/get-started/checklist/go-live)。
+- [ ] 必须使用HTTPS协议。
 
-- [ ] 서버사이드에서만 시크릿 키 사용
-- [ ] 웹훅 시그니처 검증
-- [ ] 클라이언트에 금액/가격 하드코딩 금지 (서버에서 생성)
-- [ ] Go-live 체크리스트 완료: docs.stripe.com/get-started/checklist/go-live
-- [ ] HTTPS 필수
-
-## 참고 문서
-
-- 통합 옵션: docs.stripe.com/payments/payment-methods/integration-options
-- API 투어: docs.stripe.com/payments-api/tour
-- Go-live 체크리스트: docs.stripe.com/get-started/checklist/go-live
+## 参考文档：
+- 集成选项：[查看文档](docs.stripe.com/payments/payment-methods/integration-options)。
+- API使用指南：[查看文档](docs.stripe.com/payments-api/tour)。
+- 上线前的检查清单：[查看文档](docs.stripe.com/get-started/checklist/go-live)。

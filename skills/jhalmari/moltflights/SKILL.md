@@ -1,6 +1,6 @@
 ---
 name: moltflights
-description: Search cheap flights via the MoltFlights API. Find deals, compare prices, track routes, and set up price alerts.
+description: 通过 MoltFlights API 搜索廉价航班。查找优惠信息、比较价格、追踪航线，并设置价格提醒。
 homepage: https://moltflights.com
 metadata:
   openclaw:
@@ -49,53 +49,53 @@ tools:
       required: [term]
 ---
 
-# MoltFlights — Flight Search Skill
+# MoltFlights — 航班搜索技能
 
-Search cheap flights using the [MoltFlights API](https://moltflights.com/agents). Returns structured JSON with real-time prices and direct booking links.
+使用 [MoltFlights API](https://moltflights.com/agents) 搜索廉价航班。该 API 返回包含实时价格和直接预订链接的结构化 JSON 数据。
 
-No API key required. No authentication. Just call the endpoint.
+无需 API 密钥，也无需身份验证，只需调用相应的接口即可。
 
 ---
 
-## Tools
+## 工具
 
-### `moltflights_search` — Search Flights
+### `moltflights_search` — 搜索航班
 
 ```
 GET https://moltflights.com/api/search?origin=HEL&destination=BKK&date=2026-03-15
 ```
 
-| Parameter     | Required | Type    | Description                          |
-|---------------|----------|---------|--------------------------------------|
-| `origin`      | yes      | string  | IATA airport code (e.g. `HEL`)      |
-| `destination` | yes      | string  | IATA airport code (e.g. `NRT`)      |
-| `date`        | no       | string  | Departure date `YYYY-MM-DD`          |
-| `returnDate`  | no       | string  | Return date `YYYY-MM-DD` (round-trip)|
-| `adults`      | no       | integer | Number of adults, 1–9 (default: 1)   |
-| `children`    | no       | integer | Children ages 2–12, 0–8 (default: 0) |
-| `infants`     | no       | integer | Infants under 2, 0–8 (default: 0)    |
+| 参数          | 是否必填 | 类型     | 描述                                      |
+|---------------|---------|--------|-----------------------------------------|
+| `origin`      | 是      | 字符串    | IATA 机场代码（例如：`HEL`）                      |
+| `destination` | 是      | 字符串    | IATA 机场代码（例如：`NRT`）                      |
+| `date`        | 否       | 字符串    | 出发日期（格式：`YYYY-MM-DD`）                      |
+| `returnDate`  | 否       | 字符串    | 返回日期（格式：`YYYY-MM-DD`，往返行程）             |
+| `adults`      | 否       | 整数     | 成年乘客人数（1–9 人，默认值：1）                   |
+| `children`    | 否       | 整数     | 2–12 岁儿童人数（0–8 人，默认值：0）                   |
+| `infants`     | 否       | 整数     | 2 岁以下婴儿人数（0–8 人，默认值：0）                   |
 
-If `date` is omitted, the API returns the cheapest flights for the upcoming month.
+如果省略 `date` 参数，API 会返回下个月最便宜的航班信息。
 
-### `moltflights_autocomplete` — Look Up Airport Codes
+### `moltflights_autocomplete` — 查找机场代码
 
 ```
 GET https://moltflights.com/api/autocomplete?term=bangkok
 ```
 
-| Parameter | Required | Type   | Description                              |
-|-----------|----------|--------|------------------------------------------|
-| `term`    | yes      | string | City or airport name (min 2 characters)  |
+| 参数          | 是否必填 | 类型     | 描述                                      |
+|---------------|---------|--------|-----------------------------------------|
+| `term`        | 是      | 字符串    | 城市或机场名称（至少 2 个字符）                         |
 
 ---
 
-## Example: Search Flights
+## 示例：搜索航班
 
 ```bash
 curl "https://moltflights.com/api/search?origin=HEL&destination=BKK&date=2026-03-15"
 ```
 
-### Response
+### 响应数据
 
 ```json
 {
@@ -126,33 +126,33 @@ curl "https://moltflights.com/api/search?origin=HEL&destination=BKK&date=2026-03
 }
 ```
 
-Each result includes a `book_link` — a direct booking URL the user can open.
+每个搜索结果都包含一个 `book_link`，用户可以直接使用该链接进行预订。
 
 ---
 
-## Example: Round-Trip with Passengers
+## 示例：包含乘客的往返行程
 
 ```bash
 curl "https://moltflights.com/api/search?origin=JFK&destination=CDG&date=2026-06-01&returnDate=2026-06-15&adults=2&children=1"
 ```
 
-The `price` field shows the **total** for all seat-occupying passengers. `price_per_person` shows the per-person price.
+`price` 字段显示所有乘客的总票价，`price_per_person` 字段显示每位乘客的单价。
 
 ---
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Find the cheapest flight to a destination
+### 1. 查找前往目的地的最便宜航班
 
-Search without a specific date to get the cheapest options for the whole month:
+不指定具体日期，即可获取整个月内最便宜的航班选项：
 
 ```bash
 curl "https://moltflights.com/api/search?origin=LHR&destination=TYO"
 ```
 
-### 2. Compare prices across dates
+### 2. 比较不同日期的票价
 
-Run multiple searches for different dates and compare:
+对多个日期进行搜索并比较价格：
 
 ```bash
 for date in 2026-04-01 2026-04-08 2026-04-15; do
@@ -161,9 +161,9 @@ for date in 2026-04-01 2026-04-08 2026-04-15; do
 done
 ```
 
-### 3. Price monitoring / alerts (cron job)
+### 3. 价格监控/提醒（定时任务）
 
-Check a route daily and alert when price drops below a threshold:
+每天检查某条航线的价格，当价格低于设定阈值时发送提醒：
 
 ```bash
 # Run daily via cron: 0 8 * * * /path/to/check-price.sh
@@ -175,9 +175,9 @@ if [ "$PRICE" -lt 400 ]; then
 fi
 ```
 
-### 4. Multi-city search
+### 4. 多城市搜索
 
-Search several routes and pick the cheapest:
+搜索多条航线并选择最便宜的航班：
 
 ```bash
 for dest in BKK TYO BCN LIS; do
@@ -189,20 +189,20 @@ done
 
 ---
 
-## Common IATA Codes
+## 常见 IATA 机场代码
 
-| Code | City            | Code | City          |
-|------|-----------------|------|---------------|
-| HEL  | Helsinki        | LHR  | London        |
-| JFK  | New York        | CDG  | Paris         |
-| NRT  | Tokyo Narita    | BKK  | Bangkok       |
-| BCN  | Barcelona       | FCO  | Rome          |
-| SIN  | Singapore       | DXB  | Dubai         |
-| LAX  | Los Angeles     | SFO  | San Francisco |
-| BER  | Berlin          | AMS  | Amsterdam     |
-| IST  | Istanbul        | LIS  | Lisbon        |
+| 代码       | 所在城市    | 代码       | 所在城市    |
+|------------|---------|---------|-----------|
+| HEL        | 赫尔辛基    | LHR       | 伦敦        |
+| JFK        | 纽约      | CDG       | 巴黎        |
+| NRT        | 成田机场   | BKK       | 曼谷        |
+| BCN        | 巴塞罗那   | FCO       | 罗马        |
+| SIN        | 新加坡     | DXB       | 迪拜        |
+| LAX        | 洛杉矶     | SFO       | 旧金山      |
+| BER        | 柏林      | AMS       | 阿姆斯特丹     |
+| IST        | 伊斯坦布尔   | LIS       | 里斯本        |
 
-Don't know the code? Use the `moltflights_autocomplete` tool:
+不知道机场代码？可以使用 `moltflights_autocomplete` 工具查询：
 
 ```bash
 curl "https://moltflights.com/api/autocomplete?term=bangkok"
@@ -210,17 +210,17 @@ curl "https://moltflights.com/api/autocomplete?term=bangkok"
 
 ---
 
-## Error Handling
+## 错误处理
 
-- **400** — Missing `origin` or `destination` parameter
-- **Empty `data` array** — No flights found for this route/date. Try a different date or omit the date for flexible search.
+- **400**：缺少 `origin` 或 `destination` 参数
+- **`data` 数组为空**：未找到该航线/日期的航班信息。请尝试其他日期或省略日期以进行灵活搜索。
 
 ---
 
-## Tips
+## 提示
 
-- Prices are in EUR (€)
-- Results are sorted: exact date matches first, then nearby dates by price
-- Omitting `date` gives you the cheapest flights across the whole upcoming month
-- The API is free and requires no authentication
-- Responses are cached for 5 minutes
+- 价格以欧元（€）为单位
+- 结果按日期排序：首先显示匹配的日期，然后按价格排序相近的日期
+- 省略 `date` 参数可获取下个月内最便宜的航班
+- 该 API 免费使用，无需身份验证
+- 响应数据会缓存 5 分钟

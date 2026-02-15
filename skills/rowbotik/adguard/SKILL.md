@@ -1,19 +1,19 @@
 ---
 name: adguard
-description: Control AdGuard Home DNS filtering via HTTP API. Use when managing blocklists/allowlists, checking domain filtering status, toggling protection, or clearing DNS cache. Supports blocking/allowing domains, viewing statistics, and protecting/disabling DNS filtering.
+description: 通过 HTTP API 控制 AdGuard Home 的 DNS 过滤功能。适用于管理阻止列表/允许列表、检查域名过滤状态、切换保护模式或清除 DNS 缓存等操作。支持阻止/允许特定域名、查看统计信息，以及启用/禁用 DNS 过滤功能。
 ---
 
-# AdGuard Home Controller
+# AdGuard Home 控制器
 
-Manage AdGuard Home DNS filtering from the command line via the REST API.
+通过 REST API 从命令行管理 AdGuard Home 的 DNS 过滤功能。
 
-## Requirements
+## 前提条件
 
-- AdGuard Home running with web interface
-- Admin username and password
-- `curl` installed (usually default on macOS/Linux)
+- AdGuard Home 已经启动并启用了 Web 界面
+- 拥有管理员用户名和密码
+- 安装了 `curl`（在 macOS/Linux 上通常已默认安装）
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Set password once
@@ -26,9 +26,9 @@ export ADGUARD_PASSWORD=your_admin_password
 ./adguard.sh block malware.ru
 ```
 
-## Configuration
+## 配置
 
-Set environment variables for your AdGuard instance:
+为你的 AdGuard 实例设置环境变量：
 
 ```bash
 export ADGUARD_URL="http://192.168.1.100:3000"      # Your AdGuard IP and port
@@ -36,11 +36,11 @@ export ADGUARD_USERNAME="admin"                     # Usually 'admin' (default)
 export ADGUARD_PASSWORD="your_admin_password"       # REQUIRED
 ```
 
-Add to `~/.bashrc` or `~/.zshrc` for persistence.
+将配置添加到 `~/.bashrc` 或 `~/.zshrc` 文件中，以便永久生效。
 
-### Config File Alternative
+### 配置文件替代方案
 
-Create `~/.adguard/config.json` (optional):
+（可选）创建 `~/.adguard/config.json` 文件：
 
 ```json
 {
@@ -49,13 +49,13 @@ Create `~/.adguard/config.json` (optional):
 }
 ```
 
-Then set `ADGUARD_PASSWORD` separately for security.
+然后单独设置 `ADGUARD_PASSWORD` 以确保安全。
 
-## Commands
+## 命令
 
 ### check `<domain>`
 
-Check if a domain is currently blocked or allowed.
+检查某个域名当前是否被阻止或允许访问。
 
 ```bash
 ./adguard.sh check doubleclick.net
@@ -68,7 +68,7 @@ Check if a domain is currently blocked or allowed.
 
 ### allow `<domain>` | whitelist `<domain>`
 
-Add a domain to the allowlist (whitelist). Creates an exception rule that overrides blocklists.
+将域名添加到允许列表（白名单）中。此操作会创建一个例外规则，覆盖原有的阻止规则。
 
 ```bash
 ./adguard.sh allow broken-site.com
@@ -79,7 +79,7 @@ Add a domain to the allowlist (whitelist). Creates an exception rule that overri
 
 ### block `<domain>` | blacklist `<domain>`
 
-Add a domain to the blocklist. Creates a custom blocking rule.
+将域名添加到阻止列表中。此操作会创建一个自定义的阻止规则。
 
 ```bash
 ./adguard.sh block spyware-domain.ru
@@ -90,7 +90,7 @@ Add a domain to the blocklist. Creates a custom blocking rule.
 
 ### status | stats
 
-Display DNS filtering statistics and protection state.
+显示 DNS 过滤统计信息和保护状态。
 
 ```bash
 ./adguard.sh status
@@ -109,7 +109,7 @@ Display DNS filtering statistics and protection state.
 
 ### toggle | protection
 
-Enable or disable DNS protection. Useful for temporarily disabling filtering.
+启用或禁用 DNS 保护功能。这有助于暂时关闭过滤功能以进行故障排查。
 
 ```bash
 ./adguard.sh toggle
@@ -119,7 +119,7 @@ Enable or disable DNS protection. Useful for temporarily disabling filtering.
 
 ### cache-clear
 
-Clear the DNS cache to apply rule changes immediately.
+清除 DNS 缓存，以便立即应用规则更改。
 
 ```bash
 ./adguard.sh cache-clear
@@ -127,98 +127,93 @@ Clear the DNS cache to apply rule changes immediately.
 # ✓ Cache cleared
 ```
 
-## Finding Your AdGuard Home Device
+## 查找 AdGuard Home 设备
 
-If you don't know your AdGuard URL:
+如果你不知道 AdGuard 的 URL：
 
-1. **Router admin panel** — Look for a device named "AdGuard Home" or check for port 3000
-2. **Local network scan** — Use `nmap` or check "Connected Devices"
-3. **If running on same machine** — Default is `http://localhost:3000`
-4. **mDNS/Bonjour** — Try `http://adguard-home.local:3000` (depends on network)
+1. **路由器管理面板** — 查找名为 “AdGuard Home” 的设备，或检查端口 3000 是否被占用
+2. **本地网络扫描** — 使用 `nmap` 或查看 “连接设备” 列表
+3. **如果设备运行在同一台机器上** — 默认地址是 `http://localhost:3000`
+4. **使用 mDNS/Bonjour** — 尝试 `http://adguard-home.local:3000`（具体取决于网络配置）
 
-## Filtering Rules Syntax
+## 过滤规则语法
 
-AdGuard uses a DNS filtering rule syntax:
+AdGuard 使用以下 DNS 过滤规则语法：
 
-| Rule | Effect |
+| 规则 | 功能 |
 |------|--------|
-| `\|\|example.com^` | Block example.com and subdomains |
-| `@@\|\|example.com^` | Allow example.com (exception/whitelist) |
-| `example.com` | Block exact domain only |
-| `\|\|ad.example.com^` | Block only ad.example.com |
+| `\|\|example.com^` | 阻止 example.com 及其子域名 |
+| `@@\|\|example.com^` | 允许 example.com 访问（作为例外/白名单） |
+| `example.com` | 仅阻止 example.com 这个域名 |
+| `\|\|ad.example.com^` | 仅阻止 ad.example.com 这个域名 |
 
-See [API Reference](references/api.md) for complete syntax.
+有关完整的语法说明，请参阅 [API 参考文档](references/api.md)。
 
-## Common Scenarios
+## 常见场景
 
-### Allow a site that's blocked by accident
+### 允许被误阻止的网站访问
 
 ```bash
 adguard.sh allow my-bank.com
 ```
 
-### Block a known malware domain
+### 阻止已知的恶意软件域名
 
 ```bash
 adguard.sh block malicious-tracker.xyz
 ```
 
-### Check if a domain is being filtered
+### 检查某个域名是否被过滤
 
 ```bash
 adguard.sh check ads.google.com
 ```
 
-### View today's statistics
+### 查看今日的统计信息
 
 ```bash
 adguard.sh status
 ```
 
-### Temporarily disable filtering (e.g., for troubleshooting)
+### 暂时关闭过滤功能（例如用于故障排查）
 
 ```bash
 adguard.sh toggle
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Error: Failed to authenticate**
-→ Check `ADGUARD_PASSWORD` is correct and set
-→ Verify `ADGUARD_URL` points to the right IP and port
+**错误：身份验证失败**
+→ 确保 `ADGUARD_PASSWORD` 设置正确
+→ 验证 `ADGUARD_URL` 是否指向正确的 IP 和端口
 
-**Error: API call failed (HTTP 401)**
-→ Authentication failed, check credentials
+**错误：API 调用失败（HTTP 401）**
+→ 身份验证失败，请检查凭据
 
-**Rules don't take effect**
-→ Run `adguard.sh cache-clear` to flush DNS cache
-→ Wait 5+ minutes for clients to refresh their cache
-→ Restart your device's network connection
+**规则未生效**
+→ 运行 `adguard.sh cache-clear` 清除 DNS 缓存
+→ 等待 5 分钟以上，让客户端刷新缓存
+→ 重启设备的网络连接
 
-**Can't connect to AdGuard**
-→ Verify device is on the same network
-→ Check firewall isn't blocking port 3000
-→ Ping the device: `ping <ip>`
+**无法连接到 AdGuard**
+→ 确认设备在同一网络内
+→ 检查防火墙是否阻止了端口 3000
+→ 使用 `ping <ip>` 测试设备是否可访问
 
-## Advanced: Batch Operations
+## 高级功能：批量操作
 
-Block multiple domains:
-
-```bash
+- 批量阻止多个域名：```bash
 for domain in tracker1.com tracker2.com tracker3.com; do
     adguard.sh block "$domain"
 done
 ```
-
-Check multiple domains:
-
-```bash
+- 批量检查多个域名：```bash
 for domain in example.com test.org my-site.net; do
     echo "Checking $domain..."
     adguard.sh check "$domain"
 done
 ```
 
-## API Reference
+## API 参考文档
 
-See [references/api.md](references/api.md) for complete AdGuard Home API documentation.
+有关 AdGuard Home 的完整 API 文档，请参阅 [references/api.md]。

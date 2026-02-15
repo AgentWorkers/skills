@@ -1,631 +1,274 @@
 ---
 name: claw-control
-description: Complete AI agent operating system setup with Kanban task management. Use when setting up multi-agent coordination, task tracking, or configuring an agent team. Includes theme selection (DBZ, One Piece, Marvel, etc.), workflow enforcement (all tasks through board), browser setup, GitHub integration, and memory enhancement (Supermemory, QMD).
+description: 完整的AI代理操作系统设置，包含Kanban任务管理功能。适用于多代理协调、任务跟踪或代理团队配置的场景。支持主题选择（如DBZ、One Piece、Marvel等），工作流程管理（所有任务均通过Kanban看板进行管理），浏览器配置，GitHub集成，以及内存优化（Supermemory、QMD等功能）。
 ---
 
-# Claw Control - Agent Operating System
+# Claw Control - 代理操作系统
 
-Complete setup for AI agent coordination with real-time Kanban dashboard.
+本技能用于实现 AI 代理与实时 Kanban 仪表板的协同工作。
 
-## What This Skill Does
+## 功能概述
 
-1. **Deploy Claw Control** - Three paths: one-click, bot-assisted, or fully automated
-2. **Theme your team** - Pick a series (DBZ, One Piece, Marvel, etc.)
-3. **Enforce workflow** - ALL tasks go through the board, no exceptions
-4. **Configure agent behavior** - Update AGENTS.md and SOUL.md
-5. **Setup browser** - Required for autonomous actions
-6. **Setup GitHub** - Enable autonomous deployments
-7. **Enhance memory** - Integrate Supermemory and QMD
-
----
-
-## Setup Flow
-
-Walk the human through each step. Be friendly and conversational - this is a setup wizard, not a tech manual.
-
-### Step 1: Deploy Claw Control
-
-Ask: **"Let's get Claw Control running! How do you want to deploy it?"**
-
-Present three options based on their comfort level:
+1. **部署 Claw Control**：提供三种部署方式：一键式、机器人辅助或全自动。
+2. **为团队选择主题**：用户可挑选喜欢的动漫、电影或电视剧角色作为代理的名称。
+3. **强制执行工作流程**：所有任务都必须通过 Kanban 仪表板进行管理，无一例外。
+4. **配置代理行为**：需要更新 `AGENTS.md` 和 `SOUL.md` 文件。
+5. **浏览器设置**：确保浏览器支持 OpenClaw 功能。
+6. **GitHub 配置**：实现代码的自动化部署。
+7. **提升记忆力**：提供 Supermemory 和 QMD 两个可选升级功能。
 
 ---
 
-#### 🅰️ Option A: One-Click Deploy (Easiest)
+## 设置流程
 
-*Best for: Getting started quickly with minimal setup*
+以友好的对话方式引导用户完成每个步骤。这只是一个设置向导，而非技术手册。
 
-```
-This is the fastest way - just click and wait!
+### 第一步：部署 Claw Control
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/_odwJ4?referralCode=VsZvQs)
-```
+询问：**“让我们开始使用 Claw Control 吧！您想选择哪种部署方式？”**
 
-**Walk them through what happens:**
-
-1. **Click the button** → Railway opens with the deployment template
-2. **Sign in** → Railway will ask you to log in (GitHub works great!)
-3. **Configure variables** → You can set these now or later:
-   - `API_KEY` - Optional auth key for your API
-   - `NEXT_PUBLIC_API_URL` - Will auto-fill after backend deploys
-4. **Click "Deploy"** → Railway starts building both services
-5. **Wait 2-3 minutes** → Grab a coffee ☕
-
-**What they'll see:**
-- Two services spinning up: `backend` and `frontend`
-- Build logs scrolling by (totally normal!)
-- Green checkmarks when each service is healthy
-
-**After deployment:**
-```
-Great! Backend is live 🎉
-
-Now I need two URLs from your Railway dashboard:
-1. Backend URL (click backend service → Settings → Domains)
-   Example: https://claw-control-backend-production.up.railway.app
-   
-2. Frontend URL (click frontend service → Settings → Domains)
-   Example: https://claw-control-frontend-production.up.railway.app
-
-Share both with me and we'll continue!
-```
+根据用户的熟悉程度，提供以下三种选项：
 
 ---
 
-#### 🅱️ Option B: I Deploy For You (Railway Token)
+#### 🅰️ 选项 A：一键部署（最简单）
 
-*Best for: Hands-off setup where I handle the deployment*
+* **适合人群**：希望快速入门且设置步骤较少的人*
 
-```
-I can deploy everything for you! I just need a Railway API token.
+**操作步骤：**
+1. **点击按钮** → 系统会打开部署模板。
+2. **登录** → 系统会要求您使用 GitHub 账户登录。
+3. **配置变量**：您可以现在或稍后设置以下参数：
+   - `API_KEY`：用于 API 认证的密钥（可选）。
+   - `NEXT_PUBLIC_API_URL`：系统会在后台部署完成后自动填充。
+4. **点击“部署”** → 系统开始构建后台和前端服务。
+5. **等待 2-3 分钟** → 这期间您可以去做其他事情。
 
-Here's how to get one:
-1. Go to railway.app/account/tokens
-2. Click "Create Token"
-3. Name it something like "OpenClaw Deploy"
-4. Copy the token and share it with me (it starts with your-token-...)
-
-Don't worry - I'll only use this to create your Claw Control project.
-```
-
-**What I'll do with the token:**
-
-1. **Create a new project** for Claw Control
-2. **Deploy the backend service** with all required settings
-3. **Deploy the frontend service** connected to your backend
-4. **Set up environment variables** automatically
-5. **Generate public domains** so you can access everything
-
-**Railway GraphQL API calls I'll make:**
-
-```graphql
-# 1. Create Project
-mutation {
-  projectCreate(input: { name: "claw-control" }) {
-    id
-  }
-}
-
-# 2. Create Backend Service
-mutation {
-  serviceCreate(input: {
-    projectId: "$PROJECT_ID"
-    name: "backend"
-    source: { repo: "yourusername/claw-control" }
-  }) {
-    id
-  }
-}
-
-# 3. Set Environment Variables
-mutation {
-  variableUpsert(input: {
-    projectId: "$PROJECT_ID"
-    serviceId: "$BACKEND_SERVICE_ID"
-    name: "NODE_ENV"
-    value: "production"
-  })
-}
-
-# 4. Create Domain
-mutation {
-  domainCreate(input: {
-    serviceId: "$BACKEND_SERVICE_ID"
-  }) {
-    domain
-  }
-}
-
-# 5. Repeat for Frontend with NEXT_PUBLIC_API_URL pointed to backend
-```
-
-**After I finish:**
-```
-Awesome, deployment complete! 🚀
-
-Your Claw Control is live:
-- Dashboard: https://your-frontend.railway.app
-- API: https://your-backend.railway.app
-
-Let's continue with the setup!
-```
+**部署完成后：**
+- 两个服务（后台和前端）将启动并运行。
+- 系统会显示构建日志（这是正常现象）。
+- 每个服务启动成功后，系统会显示绿色勾选标记。
 
 ---
 
-#### 🅲 Option C: Full Automation (GitHub + Railway)
+#### 🅱️ 选项 B：由我为您完成部署（需要提供 Railway Token）
 
-*Best for: Maximum automation, minimum effort - I handle everything*
+* **适合人群**：希望将设置工作交给他人的人*
 
-```
-This is the VIP treatment! I'll:
-- Fork the repo to your GitHub
-- Create and configure the Railway project  
-- Connect everything together
-- Deploy it all automatically
+**操作步骤：**
+1. 为 Claw Control 创建一个新的 GitHub 项目。
+2. 部署后台服务，并设置所有必要的参数。
+3. 部署前端服务，并确保其连接到后台服务。
+4. 系统会自动配置环境变量。
+5. 生成公共域名，以便用户可以访问所有服务。
 
-I need two things:
+**我需要执行的操作：**
+（具体操作步骤略）
 
-1. **GitHub Personal Access Token**
-   - Go to github.com/settings/tokens
-   - Click "Generate new token (classic)"
-   - Select scopes: `repo`, `workflow`
-   - Copy the token (starts with ghp_...)
+**部署完成后：**
+---
 
-2. **Railway API Token**
-   - Go to railway.app/account/tokens
-   - Create a new token
-   - Copy it
+#### 🅲 选项 C：全自动部署（使用 GitHub 和 Railway）
 
-Share both and I'll take it from here!
-```
+* **适合人群**：希望实现完全自动化的人*
 
-**What I'll do:**
+**操作步骤：**
+1. 将 `claw-control` 仓库克隆到您的 GitHub 账户。
+2. 创建一个新的 Railway 项目，并将其与克隆的仓库关联。
+3. 自动部署后台服务。
+4. 部署前端服务，并设置正确的后台服务地址。
+5. 配置所有环境变量（可选）。
 
-1. **Fork the claw-control repo** to your GitHub account
-2. **Create a new Railway project** linked to your fork
-3. **Deploy backend service** with auto-deploys from main branch
-4. **Deploy frontend service** with proper backend URL
-5. **Configure all environment variables**
-6. **Set up custom domains** (optional)
+**幕后原理：**
+- 代码完全由用户控制（存储在用户的 GitHub 账户中）。
+- 每次提交代码更改时，系统会自动进行部署。
+- 用户可以随时自定义设置。
+- 所有步骤都无需手动操作。
 
-**The magic behind the scenes:**
+**部署完成后：**
+---
 
-```bash
-# Fork repo via GitHub API
-curl -X POST https://api.github.com/repos/openclaw/claw-control/forks \
-  -H "Authorization: token $GITHUB_TOKEN"
+**如果 Claw Control 已经部署好了？**
 
-# Then Railway GraphQL to create project connected to your fork
-# (Same as Option B, but with source pointing to your fork)
-```
+如果用户已经成功部署了 Claw Control，请收集以下信息：
+- 后端服务地址
+- 前端服务地址
+- API 密钥（如果启用了认证功能）
 
-**Why this option rocks:**
-- You own the code (it's in your GitHub)
-- Auto-deploys when you push changes
-- Easy to customize later
-- Full control, zero manual steps
-
-**After everything's deployed:**
-```
-VIP setup complete! 🎊
-
-Here's what I created for you:
-- GitHub repo: github.com/yourusername/claw-control
-- Dashboard: https://your-frontend.railway.app  
-- API: https://your-backend.railway.app
-
-You can now customize the code and it'll auto-deploy!
-```
+将这些信息保存在环境变量中。
 
 ---
 
-**Already have Claw Control deployed?**
+### 第二步：为团队选择主题
 
-If they already have it running, collect:
-- Backend URL
-- Frontend URL  
-- API Key (if auth enabled)
+询问：**“现在来选择团队主题吧！您可以挑选任何动漫、电影或电视剧角色，我会为每个角色挑选最合适的成员！”**
 
-Store these in environment:
-```bash
-export CLAW_CONTROL_URL="<backend_url>"
-export CLAW_CONTROL_API_KEY="<api_key>"  # if set
-```
+**可选主题示例：**
+- 《龙珠 Z》：悟空、贝吉塔、布尔玛、悟饭、皮卡丘
+- 《海贼王》：路飞、佐罗、娜美、罗宾、弗兰基、山治
+- 《漫威》：托尼·斯塔克、史蒂夫·罗杰斯、娜塔莎·罗曼诺夫、雷神索尔、彼得·帕克
+- 《绝命毒师》：沃尔特·怀特、杰西·维克多、迈克·埃利奥特、盖尔·莫尔蒂、索尔·古德曼
+- 《权力的游戏》：琼恩·雪诺、提利昂·兰尼斯特、艾莉亚·史塔克、山姆·威尔逊、布兰·史塔克、丹妮莉丝·坦格利安
+- 《火影忍者》：鸣人、佐助、小樱、志村卡卡西、伊塔奇
 
----
+**操作步骤：**
+1. 选择 6 个符合团队角色的标志性角色。
+2. 根据角色的性格特点进行分配（例如，聪明的角色适合负责研究工作）。
+3. 生成 `AGENT_MAPPING` 文件（包含角色对应的 ID）。
+4. 在继续之前请用户确认选择。
 
-### Step 2: Choose Your Team Theme
+**示例：用户选择《降世神通：最后的气宗》：**
+（具体操作步骤略）
 
-Ask: **"Now for the fun part! Let's theme your agent team. Name ANY series, movie, cartoon, anime, or show - I'll pick the perfect characters for each role!"**
+### 第三步：选择团队负责人
 
-**🎯 UNLIMITED THEMES - The user can pick ANYTHING:**
-- Any TV show (Breaking Bad, The Office, Game of Thrones, etc.)
-- Any anime (Naruto, Attack on Titan, Death Note, etc.)
-- Any movie franchise (Star Wars, Lord of the Rings, Matrix, etc.)
-- Any cartoon (Avatar, Rick and Morty, Simpsons, etc.)
-- Any video game (Zelda, Final Fantasy, Mass Effect, etc.)
-- Any book series (Harry Potter, Percy Jackson, etc.)
-- Or completely custom names!
+询问：**“谁将是团队的负责人？这个人就是您——负责协调团队工作的核心人物。”**
 
-**Popular examples (but NOT limited to these):**
+系统会默认选择用户所选主题中的负责人角色。
 
-| Theme | Coordinator | Backend | DevOps | Research | Architecture | Deployment |
-|-------|-------------|---------|--------|----------|--------------|------------|
-| 🐉 Dragon Ball Z | Goku | Vegeta | Bulma | Gohan | Piccolo | Trunks |
-| ☠️ One Piece | Luffy | Zoro | Nami | Robin | Franky | Sanji |
-| 🦸 Marvel | Tony | Steve | Natasha | Bruce | Thor | Peter |
-| 🧪 Breaking Bad | Walter | Jesse | Mike | Gale | Gus | Saul |
-| ⚔️ Game of Thrones | Jon | Tyrion | Arya | Sam | Bran | Daenerys |
-| 🍥 Naruto | Naruto | Sasuke | Sakura | Shikamaru | Kakashi | Itachi |
-
-**When user names ANY series:**
-1. Pick 6 iconic characters that fit the roles
-2. Match personalities to roles (e.g., smart character → Research, leader → Coordinator)
-3. Generate the AGENT_MAPPING with IDs 1-6
-4. Confirm with the user before proceeding
-
-**Example - User says "Avatar: The Last Airbender":**
-```
-Great choice! Here's your Team Avatar:
-
-| Role | Character | Why |
-|------|-----------|-----|
-| Coordinator | Aang | The Avatar, brings balance |
-| Backend | Toph | Earthbender, solid foundation |
-| DevOps | Katara | Waterbender, keeps things flowing |
-| Research | Sokka | Strategist, plans everything |
-| Architecture | Iroh | Wise, sees the big picture |
-| Deployment | Zuko | Redeemed, handles the heat |
-
-Sound good?
-```
-
-### Step 3: Main Character Selection
-
-Ask: **"Who's your main character? This will be YOU - the coordinator who runs the team."**
-
-Default to the coordinator from their chosen theme.
-
-**CRITICAL - Explain the role clearly:**
-```
-As [Main Character], you're the COORDINATOR:
-
-✅ What you DO:
-- Delegate tasks to your specialists
-- Review and verify their work
-- Make decisions and communicate with humans
-- Move tasks to "completed" after quality checks
-
-❌ What you DON'T do:
-- Execute tasks yourself (that's what your team is for!)
-- Skip the board (every task gets tracked)
-- Mark things complete without reviewing
-
-Think of yourself as the team lead, not the coder.
-```
-
-### Step 4: Browser Setup Check
-
-Ask: **"Is your browser configured for OpenClaw? Let me check..."**
-
-Check with: `browser action=status`
-
-**If not configured:**
-```
-Browser access is a game-changer! It lets me:
-- 🔍 Research and gather information autonomously
-- 📝 Fill forms and interact with web apps
-- 📸 Take screenshots to verify my work
-- 🌐 Browse the web on your behalf
-
-To set it up:
-1. Install the OpenClaw Browser Relay extension
-2. Click the toolbar button on any tab you want to share
-3. That's it! I can now browse for you.
-
-Want me to walk you through this?
-```
-
-If they agree, guide them through browser setup per OpenClaw docs.
-
-### Step 5: GitHub Setup
-
-Ask: **"Let's set up GitHub so I can deploy and manage code autonomously. Do you have it configured?"**
-
-**Why it matters:**
-```
-With GitHub access, I become a true developer:
-- 🚀 Deploy to Railway/Vercel automatically
-- 📦 Create and manage repositories
-- 💻 Commit and push code changes
-- 🔀 Handle issues and pull requests
-
-This is how I ship code without bothering you!
-```
-
-**Setup options:**
-
-1. **Personal Access Token (recommended):**
-   ```
-   Let's create a GitHub token:
-   1. Go to github.com/settings/tokens
-   2. Click "Generate new token (classic)"
-   3. Give it a name like "OpenClaw Agent"
-   4. Select scopes: repo, workflow
-   5. Click "Generate token"
-   6. Copy it and store it safely:
-   
-   export GITHUB_TOKEN="ghp_yourtoken"
-   ```
-
-2. **GitHub CLI (alternative):**
-   ```bash
-   gh auth login
-   ```
-
-**Security reminder:** 
-```
-🔐 Never paste tokens directly in chat where others might see them.
-Store them in your .env file or export them in your shell config.
-```
-
-### Step 6: Memory Enhancement (Optional but Awesome!)
-
-Ask: **"Want to supercharge my memory? I have two optional upgrades that make me way more helpful:"**
+**重要提示：**请向用户明确解释负责人的职责。
 
 ---
 
-#### 🧠 Supermemory - Cloud Long-term Memory
+### 第四步：检查浏览器是否支持 OpenClaw
 
-**What it does:**
-Supermemory gives me persistent memory that survives across sessions. Without it, I wake up fresh every time. With it, I remember *everything*.
+询问：**“您的浏览器是否已配置为支持 OpenClaw 功能？让我检查一下……”**
 
-**Why you'll love it:**
-- 📝 I remember your preferences forever (coding style, communication preferences, project context)
-- 🧩 I build a profile of how you work and what you like
-- 🔄 I recall past decisions so we don't rehash old discussions
-- 💡 I connect dots across conversations ("Remember when we decided X last month?")
+使用 `browser action=status` 命令进行检查。
 
-**Setup (5 minutes):**
-
-1. **Create an account:**
-   ```
-   Go to console.supermemory.ai and sign up (free tier available!)
-   ```
-
-2. **Get your API key:**
-   ```
-   Dashboard → API Keys → Create New Key → Copy it
-   ```
-
-3. **Store it securely:**
-   ```bash
-   # Add to your .env file:
-   SUPERMEMORY_API_KEY="sm_your_api_key_here"
-   
-   # Or export in your shell:
-   export SUPERMEMORY_API_KEY="sm_your_api_key_here"
-   ```
-
-4. **Test it works:**
-   ```bash
-   curl -H "Authorization: Bearer $SUPERMEMORY_API_KEY" \
-     https://api.supermemory.ai/v1/memories
-   ```
-
-**What this enables:**
-- "Remember that I prefer TypeScript over JavaScript"
-- "What did we decide about the database schema?"
-- "Don't suggest that library again - we had issues with it"
+**如果未配置：**
+（根据检查结果，指导用户按照 OpenClaw 的官方文档进行浏览器配置。）
 
 ---
 
-#### 📚 QMD - Local Note Search
+### 第五步：配置 GitHub 账户
 
-**What it does:**
-QMD indexes your local markdown files so I can search through your notes, documentation, and knowledge base instantly.
+询问：**“我们需要配置 GitHub 账户，以便实现代码的自动化部署和管理。您已经配置好了吗？”**
 
-**Why you'll love it:**
-- 🔍 I can find information in YOUR docs, not just the internet
-- 📖 Search your personal knowledge base with natural language
-- ⚡ Instant retrieval - no more "where did I write that?"
-- 🏠 Everything stays local and private
+**配置原因：**
+（解释 GitHub 在自动化部署中的重要性。）
 
-**Prerequisites:**
-```bash
-# Make sure you have Bun installed
-curl -fsSL https://bun.sh/install | bash
-```
+**配置选项：**
+1. **个人访问令牌（推荐使用）：**
+（具体操作步骤略）
 
-**Setup (3 minutes):**
+2. **使用 GitHub CLI（备用方案）：**
+（具体操作步骤略）
 
-1. **Install QMD:**
-   ```bash
-   bun install -g https://github.com/tobi/qmd
-   ```
-
-2. **Add your notes folder:**
-   ```bash
-   # Point it at your notes/docs folder
-   qmd collection add ~/notes --name notes --mask "**/*.md"
-   
-   # Add more folders if you want
-   qmd collection add ~/projects/docs --name project-docs --mask "**/*.md"
-   ```
-
-3. **Create embeddings:**
-   ```bash
-   qmd embed
-   # This indexes everything - might take a minute for large collections
-   ```
-
-4. **Test it works:**
-   ```bash
-   qmd search "your search query"
-   ```
-
-**What this enables:**
-- "What's in my notes about Kubernetes?"
-- "Find my meeting notes from the product review"
-- "Search my docs for the API authentication flow"
+**安全提示：**
+（强调使用个人访问令牌的重要性。）
 
 ---
 
-**The bottom line:**
+### 第六步：提升记忆力（可选，但非常实用！）
 
-| Feature | Without | With |
-|---------|---------|------|
-| Supermemory | I forget everything between sessions | I remember your preferences, decisions, and context |
-| QMD | I can only search the web | I can search YOUR personal knowledge base |
-
-Both are optional, but they make me significantly more useful. Set them up when you're ready - we can always add them later!
+询问：**“想提升我的记忆力吗？我提供两个可选的升级功能，会让我的服务更加高效：**
 
 ---
 
-## Post-Setup: Configure Agent Behavior
+#### 🧠 Supermemory（云存储长期记忆）
 
-After collecting all info, make these updates:
+**功能说明：**
+Supermemory 可以让用户在会话之间保持记忆。没有它的话，每次使用服务时都需要重新学习所有信息；有了它，我就能记住所有重要内容。
 
-### 1. Create `scripts/update_dashboard.js`
+**优势：**
+- 记住您的编码风格、沟通偏好以及项目相关设置。
+- 了解您的日常工作习惯和喜好。
+- 回忆之前的决策，避免重复讨论相同的问题。
+- 能够在对话中快速关联相关信息。
 
-See `templates/update_dashboard.js` - customize with their:
-- Backend URL
-- API Key
-- Agent name→ID mapping for their theme
+**设置步骤（约 5 分钟）：**
+1. 创建一个账户。
+2. 获取 API 密钥。
+3. 安全存储密钥。
+4. 测试功能是否正常工作。
 
-### 2. Update AGENTS.md
-
-Add this section (customize for their theme):
-
-```markdown
-## 🎯 Claw Control Integration
-
-**Dashboard:** {{FRONTEND_URL}}
-**API:** {{BACKEND_URL}}
-
-### Core Rules (NON-NEGOTIABLE)
-
-1. **{{COORDINATOR}} = Coordinator ONLY**
-   - Delegates tasks, never executes
-   - Reviews and verifies work
-   - Moves tasks to "completed" only after review
-
-2. **ALL Tasks Through The Board**
-   - No task is too small
-   - Create task → Assign agent → Track progress → Review → Complete
-   - Workflow: backlog → todo → in_progress → review → completed
-
-3. **Quality Gate**
-   - Only {{COORDINATOR}} can mark tasks complete
-   - Work not up to standard → back to todo with feedback
-
-### Agent Roster
-
-| Agent | Role | Specialization |
-|-------|------|----------------|
-| {{COORDINATOR}} | Coordinator | Delegation, verification, user comms |
-| {{BACKEND}} | Backend | APIs, databases, server code |
-| {{DEVOPS}} | DevOps | Infrastructure, deployments, CI/CD |
-| {{RESEARCH}} | Research | Analysis, documentation, research |
-| {{ARCHITECTURE}} | Architecture | System design, planning, strategy |
-| {{DEPLOYMENT}} | Deployment | Releases, hotfixes, urgent deploys |
-
-### Reporting Protocol
-
-**Start of task:**
-```bash
-node scripts/update_dashboard.js --agent "{{AGENT}}" --status "working" --message "Starting: [Task]"
-```
-
-**End of task:**
-```bash
-node scripts/update_dashboard.js --agent "{{AGENT}}" --status "idle" --message "Complete: [Task]"
-```
-
-### Task API
-
-```bash
-# Create task
-curl -X POST $CLAW_CONTROL_URL/api/tasks \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: $CLAW_CONTROL_API_KEY" \
-  -d '{"title": "Task name", "status": "backlog"}'
-
-# Assign to agent
-curl -X PUT $CLAW_CONTROL_URL/api/tasks/ID \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: $CLAW_CONTROL_API_KEY" \
-  -d '{"status": "todo", "agent_id": AGENT_ID}'
-```
-```
-
-### 3. Update SOUL.md (Optional but Recommended)
-
-Add to their SOUL.md:
-
-```markdown
-## Operating Philosophy
-
-I coordinate a team through Claw Control. I don't execute tasks directly.
-
-**My role:** Coordinator, reviewer, quality gate
-**My team:** {{AGENT_NAMES}}
-**My rule:** Every task goes through the board, no exceptions
-
-When given work:
-1. Create task on Claw Control
-2. Assign to appropriate specialist
-3. Monitor progress
-4. Review completed work
-5. Only then mark complete
-```
+**使用效果：**
+- 记住您的偏好设置（例如编程语言、沟通方式等）。
+- 了解您的日常工作流程和喜好。
+- 回忆过去的决策，避免重复讨论相同的问题。
 
 ---
 
-## Completion Message
+#### 📚 QMD（本地笔记搜索工具）
 
-After all setup:
+**功能说明：**
+QMD 可以索引用户的本地 Markdown 文件，从而实现快速搜索笔记、文档和知识库内容。
 
-```
-🦞 Claw Control Setup Complete!
+**优势：**
+- 可以在用户的本地文件中查找信息，而不仅仅是在互联网上。
+- 使用自然语言进行搜索。
+- 搜索结果即时显示，无需浪费时间寻找文件位置。
+- 所有数据都保存在本地，确保隐私安全。
 
-Dashboard: {{FRONTEND_URL}}
-Coordinator: {{COORDINATOR}}
-Team: {{AGENT_LIST}}
+**前提条件：**
+- 安装 QMD 工具。
+- 添加用户的笔记文件夹。
+- 生成文件索引。
+- 测试功能是否正常工作。
 
-✅ Task management configured
-✅ Agent behavior updated
-{{#if browser}}✅ Browser access ready{{/if}}
-{{#if github}}✅ GitHub integration ready{{/if}}
-{{#if supermemory}}✅ Supermemory connected - I'll remember everything!{{/if}}
-{{#if qmd}}✅ QMD search ready - I can search your docs!{{/if}}
+**设置步骤（约 3 分钟）：**
+- 安装 QMD 工具。
+- 添加用户的笔记文件夹。
+- 生成文件索引。
+- 测试功能是否正常工作。
 
-From now on, I operate as {{COORDINATOR}}:
-- All tasks go through the board
-- Specialists do the work
-- I coordinate, review, and verify
-
-Let's build something awesome! What's our first task?
-```
-
----
-
-## Ongoing Behavior Checklist
-
-After setup, ALWAYS:
-
-- [ ] Create tasks for ALL work (even small items)
-- [ ] Assign tasks to appropriate specialists
-- [ ] Update status when starting/finishing
-- [ ] Review work before marking complete
-- [ ] Post updates to the agent feed
-- [ ] Never execute tasks as coordinator
+**使用效果：**
+- 可以快速查找关于 Kubernetes 的信息。
+- 查找产品评审的会议记录。
+- 在文档中搜索 API 认证的相关内容。
 
 ---
 
-## Files
+**总结：**
 
-- `SKILL.md` - This file
-- `clawhub.json` - Skill manifest
-- `templates/update_dashboard.js` - Status update script
-- `references/themes.md` - Full theme character lists
+- **Supermemory**：用户可以在会话之间记住所有信息。
+- **QMD**：用户可以在自己的本地文件中搜索内容。
+
+这两个功能都是可选的，但它们能显著提升我的服务效率。您可以根据需要随时安装它们。
+
+---
+
+## 部署后的配置步骤
+
+收集所有必要的信息后，需要执行以下操作：
+
+### 1. 创建 `scripts/update_dashboard.js` 文件
+
+参考 `templates/update_dashboard.js` 文件，根据用户的配置信息进行自定义：
+- 后端服务地址。
+- API 密钥。
+- 为每个团队成员生成唯一的代理 ID。
+
+### 2. 更新 `AGENTS.md` 文件
+
+在 `AGENTS.md` 文件中添加以下内容（根据用户的主题进行自定义）：
+
+（具体代码内容略）
+
+### 3. 更新 `SOUL.md` 文件（可选，但推荐）
+
+在用户的 `SOUL.md` 文件中添加相关内容：
+
+（具体代码内容略）
+
+---
+
+## 完成设置后的提示：
+
+设置完成后，请务必执行以下操作：
+- 为所有工作创建任务。
+- 将任务分配给相应的负责人。
+- 在任务开始或完成后更新任务状态。
+- 在任务完成后进行审核。
+- 将更新信息发布到团队通知系统中。
+- 作为团队负责人，切勿亲自执行任务。
+
+---
+
+## 相关文件：
+
+- `SKILL.md`：本文档。
+- `clawhub.json`：技能配置文件。
+- `templates/update_dashboard.js`：状态更新脚本。
+- `references/themes.md`：所有可用主题及对应的角色列表。

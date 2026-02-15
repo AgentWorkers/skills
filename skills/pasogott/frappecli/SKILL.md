@@ -1,30 +1,30 @@
 ---
 name: frappecli
 version: 0.1.0
-description: CLI for Frappe Framework / ERPNext instances. Use when user asks about "Frappe", "ERPNext", "doctypes", "Frappe API", or needs to manage documents, files, reports, or call RPC methods on a Frappe site.
+description: Frappe Framework/ERPNext实例的命令行界面（CLI）。当用户询问关于“Frappe”、“ERPNext”、“文档类型（doctypes）”、“Frappe API”的信息，或者需要管理文档、文件、报告，或者在Frappe站点上调用RPC方法时，可以使用该CLI。
 tools: [bash]
 ---
 
 # frappecli
 
-CLI for managing Frappe Framework instances via REST API.
+这是一个用于通过 REST API 管理 Frappe Framework 实例的命令行工具（CLI）。
 
-## Installation
+## 安装
 
 ```bash
 brew tap pasogott/tap
 brew install frappecli
 ```
 
-Or from source:
+或者通过源代码安装：
 ```bash
 git clone https://github.com/pasogott/frappecli.git
 cd frappecli && uv sync && uv pip install -e .
 ```
 
-## Configuration
+## 配置
 
-Create `~/.config/frappecli/config.yaml`:
+创建 `~/.config/frappecli/config.yaml` 文件：
 
 ```yaml
 sites:
@@ -40,16 +40,16 @@ sites:
 default_site: production
 ```
 
-## Commands
+## 命令
 
-### Site Management
+### 站点管理
 ```bash
 frappecli site doctypes                    # List all doctypes
 frappecli site doctypes --module "Core"    # Filter by module
 frappecli site info "User"                 # Get doctype details
 ```
 
-### Document CRUD
+### 文档的创建、读取、更新和删除（CRUD 操作）
 ```bash
 # List documents
 frappecli doc list Customer
@@ -69,7 +69,7 @@ frappecli doc update Customer CUST-001 --data '{"status":"Inactive"}'
 frappecli doc delete Customer CUST-001
 ```
 
-### File Management
+### 文件管理
 ```bash
 # Upload file (private by default)
 frappecli file upload invoice.pdf --doctype "Sales Invoice" --docname "INV-001"
@@ -84,7 +84,7 @@ frappecli file download /private/files/invoice.pdf -o ./downloads/
 frappecli file list --doctype "Sales Invoice" --docname "INV-001"
 ```
 
-### Reports
+### 报告生成
 ```bash
 # Run report (JSON output)
 frappecli report run "General Ledger" --filters '{"company":"My Company"}'
@@ -93,7 +93,7 @@ frappecli report run "General Ledger" --filters '{"company":"My Company"}'
 frappecli report run "Accounts Receivable" --format csv -o report.csv
 ```
 
-### RPC Methods
+### RPC 方法（Remote Procedure Call）
 ```bash
 # Call custom method
 frappecli rpc frappe.ping
@@ -102,7 +102,7 @@ frappecli rpc frappe.ping
 frappecli rpc myapp.api.process_data --args '{"doc_id":"DOC-001"}'
 ```
 
-### Multi-Site
+### 多站点管理
 ```bash
 # Use specific site
 frappecli --site staging doc list Customer
@@ -111,7 +111,7 @@ frappecli --site staging doc list Customer
 frappecli config set default_site staging
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 frappecli doc list Customer --format table   # Pretty table (default)
@@ -119,9 +119,9 @@ frappecli doc list Customer --format json    # JSON
 frappecli doc list Customer --format csv     # CSV
 ```
 
-## Examples
+## 示例
 
-### Bulk Operations
+### 批量操作
 ```bash
 # Export all active customers
 frappecli doc list Customer --filters '{"status":"Active"}' --format csv > customers.csv
@@ -130,7 +130,7 @@ frappecli doc list Customer --filters '{"status":"Active"}' --format csv > custo
 frappecli doc get "Sales Invoice" INV-001 --fields '*'
 ```
 
-### Integration with jq
+### 与 jq 的集成
 ```bash
 # Get customer names only
 frappecli doc list Customer --format json | jq -r '.[].customer_name'
@@ -139,7 +139,7 @@ frappecli doc list Customer --format json | jq -r '.[].customer_name'
 frappecli doc list Customer --format json | jq 'group_by(.status) | map({status: .[0].status, count: length})'
 ```
 
-## Links
+## 链接
 
-- **Repository:** https://github.com/pasogott/frappecli
-- **Homebrew:** `brew install pasogott/tap/frappecli`
+- **仓库地址：** https://github.com/pasogott/frappecli
+- **通过 Homebrew 安装：** `brew install pasogott/tap/frappecli`

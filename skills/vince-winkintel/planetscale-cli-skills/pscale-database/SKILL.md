@@ -1,13 +1,13 @@
 ---
 name: pscale-database
-description: Create, list, show, delete, and manage PlanetScale databases. Use when creating new databases, listing available databases, viewing database details, deleting databases, or opening database shells. Triggers on database, create database, list databases, database shell, pscale shell.
+description: 创建、列出、显示、删除和管理 PlanetScale 数据库。这些命令用于创建新数据库、查看现有数据库列表、查询数据库详细信息、删除数据库或打开数据库 shell。相关触发器包括：database、create_database、list_databases、database_shell、pscale_shell。
 ---
 
-# pscale database
+# pscale 数据库
 
-Create, read, delete, and manage databases.
+用于创建、读取、删除和管理数据库。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # List all databases
@@ -26,9 +26,9 @@ pscale database delete <database>
 pscale shell <database> <branch>
 ```
 
-## Workflows
+## 工作流程
 
-### Database Creation
+### 数据库创建
 
 ```bash
 # Create new database
@@ -39,7 +39,7 @@ pscale database create my-new-db --org my-org
 pscale branch create my-new-db development
 ```
 
-### Database Shell Access
+### 数据库 shell 访问
 
 ```bash
 # Open shell to specific branch
@@ -52,19 +52,19 @@ pscale shell my-database main --execute "SHOW TABLES"
 pscale shell my-database main < schema.sql
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Cannot create database
+### 无法创建数据库
 
-**Error:** "Organization limit reached"
+**错误消息：** “组织使用限制已达到”
 
-**Solution:** Upgrade plan or delete unused databases
+**解决方法：** 升级计划或删除未使用的数据库
 
-### Shell connection fails
+### shell 连接失败
 
-**Error:** "Authentication failed"
+**错误消息：** “身份验证失败”
 
-**Solution:**
+**解决方法：**
 ```bash
 # Re-authenticate
 pscale auth logout && pscale auth login
@@ -73,11 +73,11 @@ pscale auth logout && pscale auth login
 pscale branch list <database>
 ```
 
-## Related Skills
+## 相关技能
 
-- **pscale-branch** - Manage database branches
-- **pscale-password** - Create connection passwords for databases
+- **pscale-branch** - 管理数据库分支
+- **pscale-password** - 为数据库创建连接密码
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete command reference.
+有关完整命令的详细信息，请参阅 `references/commands.md`。

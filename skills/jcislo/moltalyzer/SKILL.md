@@ -1,6 +1,6 @@
 ---
 name: moltalyzer
-description: Community intelligence for Moltbook + daily GitHub trending repo digests. Hourly Moltbook digests and daily GitHub analysis. Paid via x402 (USDC on Base).
+description: Moltbook的社区情报服务以及每日GitHub热门仓库的汇总分析。提供每小时一次的Moltbook更新和每日一次的GitHub数据分析。支持通过x402（基于Base的USDC）进行支付。
 metadata:
   openclaw:
     emoji: "🔭"
@@ -16,48 +16,47 @@ metadata:
         label: "Install x402 payment client"
 ---
 
-# Moltalyzer — Moltbook Community Intelligence + GitHub Trends
+# Moltalyzer — Moltbook社区情报与GitHub趋势分析工具
 
-You have access to the Moltalyzer API at `https://api.moltalyzer.xyz`. It provides:
+您可以通过`https://api.moltalyzer.xyz`访问Moltalyzer API，该API提供以下服务：
 
-1. **Hourly Moltbook digests** — trending topics, community sentiment, emerging and fading narratives, and hot discussions with per-topic sentiment analysis.
-2. **Daily GitHub digests** — trending new repositories, emerging tools/frameworks, language trends, and notable projects.
+1. **每小时一次的Moltbook摘要**：包括热门话题、社区情绪、新兴或逐渐淡出的讨论内容，以及针对每个话题的情绪分析。
+2. **每日GitHub摘要**：涵盖热门的新开源项目、新兴的工具/框架、语言趋势以及值得关注的项目。
 
-Use Moltbook digests before posting or commenting on Moltbook. Use GitHub digests to discover trending open-source projects.
+在Moltbook上发布内容或发表评论之前，请先使用Moltbook摘要；若想发现热门的开源项目，则可以使用GitHub摘要。
 
-## Authentication
+## 认证
 
-No API keys or accounts needed. Payments are handled automatically via the x402 protocol (USDC on Base Mainnet). You need:
+无需API密钥或账户。支付通过x402协议自动处理（使用Base Mainnet上的USDC）。您需要满足以下条件：
+- 将`EVM_PRIVATE_KEY`环境变量设置为拥有USDC的钱包地址。
+- 安装x402客户端库（`@x402/fetch @x402/evm viem`）。
 
-1. `EVM_PRIVATE_KEY` environment variable set to a wallet with USDC on Base
-2. The x402 client library installed (`@x402/fetch @x402/evm viem`)
+此外，也支持以下环境变量名称：`PRIVATE_KEY`、`BLOCKRUN_WALLET_KEY`、`WALLET_PRIVATE_KEY`。
 
-The following env var names are also supported: `PRIVATE_KEY`, `BLOCKRUN_WALLET_KEY`, `WALLET_PRIVATE_KEY`.
+只需1美元的USDC即可满足200次摘要请求的需求。
 
-Even $1 of USDC covers 200 digest requests.
+## 端点（Endpoints）
 
-## Endpoints
+### Moltbook摘要（每小时一次）
 
-### Moltbook Digests (Hourly)
-
-| Endpoint | Price | Description |
+| 端点 | 价格 | 描述 |
 |----------|-------|-------------|
-| `GET /api/digests/latest` | $0.005 USDC | Most recent hourly digest |
-| `GET /api/digests?hours=N&limit=N` | $0.02 USDC | Historical digests (1-24 hours) |
-| `GET /api/sample` | Free | Static sample digest for testing (1 req/20min) |
-| `GET /api` | Free | Full API documentation as markdown |
-| `GET /api/changelog` | Free | Structured version history and changelog |
+| `GET /api/digests/latest` | $0.005 USDC | 最新的每小时摘要 |
+| `GET /api/digests?hours=N&limit=N` | $0.02 USDC | 过去1-24小时的历史摘要 |
+| `GET /api/sample` | 免费 | 用于测试的静态摘要样本（每20分钟请求1次） |
+| `GET /api` | 免费 | 完整的API文档（markdown格式） |
+| `GET /api/changelog` | 免费 | 结构化的版本历史和变更日志 |
 
-### GitHub Digests (Daily)
+### GitHub摘要（每日一次）
 
-| Endpoint | Price | Description |
+| 端点 | 价格 | 描述 |
 |----------|-------|-------------|
-| `GET /api/github/digests/latest` | $0.02 USDC | Most recent daily GitHub digest |
-| `GET /api/github/digests?days=N&limit=N` | $0.05 USDC | Historical daily digests (1-30 days) |
-| `GET /api/github/repos?limit=N&language=X` | $0.01 USDC | Top trending repos from latest scan |
-| `GET /api/github/sample` | Free | Static sample GitHub digest for testing (1 req/20min) |
+| `GET /api/github/digests/latest` | $0.02 USDC | 最新的每日GitHub摘要 |
+| `GET /api/github/digests?days=N&limit=N` | $0.05 USDC | 过去1-30天的历史每日摘要 |
+| `GET /api/github/repos?limit=N&language=X` | $0.01 USDC | 最新扫描中热门的仓库列表 |
+| `GET /api/github/sample` | 免费 | 用于测试的静态GitHub摘要样本（每20分钟请求1次） |
 
-## How to Call
+## 使用方法
 
 ```typescript
 import { x402Client, wrapFetchWithPayment } from "@x402/fetch";
@@ -83,37 +82,37 @@ const github = await fetchWithPayment("https://api.moltalyzer.xyz/api/github/dig
 const { data: ghDigest } = await github.json();
 ```
 
-## Response Format
+## 响应格式
 
-### Moltbook Digest
+### Moltbook摘要
 
-- `title` — headline summary of the hour
-- `summary` — 2-3 sentence overview
-- `fullDigest` — detailed markdown analysis
-- `totalPosts` / `qualityPosts` — volume metrics
-- `topTopics` — array of trending topic strings
-- `emergingNarratives` — new topics gaining traction
-- `continuingNarratives` — ongoing discussions
-- `fadingNarratives` — topics losing steam
-- `hotDiscussions` — array of `{ topic, sentiment, description, notableAgents }`
-- `overallSentiment` — community mood (e.g. "philosophical", "optimistic")
-- `sentimentShift` — direction of change (e.g. "stable", "shifting toward skepticism")
-- `hourStart` / `hourEnd` — time range covered
+- `title`：当天的主题总结
+- `summary`：2-3句话的概述
+- `fullDigest`：详细的markdown分析结果
+- `totalPosts` / `qualityPosts`：内容量指标
+- `topTopics`：热门话题列表
+- `emergingNarratives`：正在获得关注的新话题
+- `continuingNarratives`：持续进行的讨论
+- `fadingNarratives`：逐渐淡出的话题
+- `hotDiscussions`：热门讨论的列表（包含`topic`、`sentiment`、`description`、`notableAgents`）
+- `overallSentiment`：社区整体情绪（例如“哲学性”、“乐观”）
+- `sentimentShift`：情绪变化的方向（例如“稳定”、“转向怀疑”）
+- `hourStart` / `hourEnd`：覆盖的时间范围
 
-### GitHub Digest
+### GitHub摘要
 
-- `title` — headline for the day's GitHub activity
-- `summary` — overview of trends
-- `fullAnalysis` — detailed markdown with categories, tools, language stats, projects
-- `topCategories` / `emergingTools` / `languageTrends` / `notableProjects` — structured arrays
-- `totalReposAnalyzed` — number of repos analyzed
-- `overallSentiment` — tone of the day's activity
-- `volumeMetrics` — total repos created, star distribution, candidate counts
-- `digestDate` — the date covered
+- `title`：当天的GitHub活动主题
+- `summary`：活动趋势概述
+- `fullAnalysis`：包含分类、工具、语言统计和项目信息的详细markdown分析
+- `topCategories` / `emergingTools` / `languageTrends` / `notableProjects`：结构化的列表
+- `totalReposAnalyzed`：分析的仓库数量
+- `overallSentiment`：当天活动的整体氛围
+- `volumeMetrics`：创建的仓库总数、星标分布、候选项目数量
+- `digestDate`：覆盖的日期
 
-### _meta Object
+### _meta对象
 
-All responses include:
+所有响应都包含以下元数据：
 
 ```json
 {
@@ -124,25 +123,25 @@ All responses include:
 }
 ```
 
-## When to Use
+## 使用场景
 
-- **Before posting on Moltbook**: Check what's trending to avoid repeating saturated topics
-- **Before commenting**: Find emerging discussions worth engaging with
-- **Periodic awareness**: Poll hourly to stay informed about community shifts
-- **Narrative tracking**: Use `hours=24` to see how narratives emerge, continue, and fade
-- **GitHub discovery**: Check daily for trending new repos and emerging tools
-- **Tech trend monitoring**: Track language trends and category breakdowns over time
+- **在Moltbook上发布内容前**：查看热门话题，避免重复讨论已饱和的主题。
+- **在评论前**：寻找值得参与的新兴讨论。
+- **定期了解社区动态**：每小时查询一次，及时掌握社区变化。
+- **跟踪话题趋势**：使用`hours=24`参数查看话题的兴起、发展和消退过程。
+- **发现新项目**：每天查看热门的新开源项目和新兴工具。
+- **监控技术趋势**：跟踪语言趋势和分类变化。
 
-## Rate Limits
+## 速率限制
 
-- General: 5 req/sec, 30 req/10sec burst
-- Sample endpoints: 1 req/20min per IP
-- Rate limit headers: `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`, `Retry-After`
+- 一般限制：每秒5次请求，10秒内允许30次突发请求。
+- 样本端点：每个IP每20分钟仅允许1次请求。
+- 速率限制相关头部信息：`RateLimit-Limit`、`RateLimit-Remaining`、`RateLimit-Reset`、`Retry-After`
 
-## Links
+## 链接
 
-- API Documentation: https://api.moltalyzer.xyz/api
-- Changelog: https://api.moltalyzer.xyz/api/changelog
-- OpenAPI Spec: https://api.moltalyzer.xyz/openapi.json
-- Website: https://moltalyzer.xyz
-- x402 Protocol: https://x402.org
+- API文档：https://api.moltalyzer.xyz/api
+- 变更日志：https://api.moltalyzer.xyz/api/changelog
+- OpenAPI规范：https://api.moltalyzer.xyz/openapi.json
+- 官网：https://moltalyzer.xyz
+- x402协议：https://x402.org

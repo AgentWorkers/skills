@@ -1,419 +1,130 @@
 ---
 name: skill-search-optimizer
-description: Optimize agent skills for discoverability on ClawdHub/MoltHub. Use when improving search ranking, writing descriptions for semantic search, understanding how the registry indexes skills, testing search visibility, or analyzing why a skill isn't being found.
+description: 优化代理技能以提高其在 ClawdHub/MoltHub 上的可见性。此操作适用于提升搜索排名、编写语义搜索的描述、了解注册表如何索引技能、测试技能的搜索可见性，或分析技能为何无法被找到等情况。
 metadata: {"clawdbot":{"emoji":"🔎","requires":{"anyBins":["npx"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Skill Search Optimizer
-
-Optimize skills for discoverability on the ClawdHub registry. Covers how search works, how to write descriptions that rank well, content strategies for semantic matching, testing visibility, and competitive positioning.
+# 技能搜索优化器
 
-## When to Use
-
-- A published skill isn't appearing in relevant searches
-- Writing a skill description for maximum discoverability
-- Understanding how ClawdHub's search indexes and ranks skills
-- Comparing your skill's visibility against competitors
-- Improving an existing skill's search performance
-
-## How ClawdHub Search Works
-
-### Architecture
-
-ClawdHub uses **vector-based semantic search**, not keyword matching:
-
-```
-User query → OpenAI embedding → Vector similarity search → Ranked results
-             (text-embedding-*)    (Convex vector index)
-```
-
-Key implications:
-1. **Meaning matters more than exact keywords** — "container debugging" matches "Docker troubleshooting"
-2. **But keywords still help** — the embedding model encodes specific terms with high signal
-3. **Description is the primary indexed field** — content may contribute but description is dominant
-4. **Short queries match broad descriptions** — "docker" matches skills about containers generally
-5. **Specific queries match specific descriptions** — "debug crashed Docker container" favors skills that mention debugging and crashes
-
-### What Gets Indexed
-
-```
-PRIMARY:   description field (frontmatter)
-SECONDARY: name/slug field
-TERTIARY:  skill content (body markdown) — likely summarized or truncated before embedding
-
-The description field is your search ranking. Everything else is secondary.
-```
-
-### Search API
-
-```bash
-# How search is called internally
-# POST https://clawdhub.com/api/cli/search
-# Body: { "query": "user search terms", "limit": 10 }
-# Returns: ranked list of skills with similarity scores
-
-# CLI search
-npx molthub@latest search "your query"
-```
-
-## Description Optimization
-
-### The anatomy of a high-ranking description
-
-```yaml
-# Pattern:
-# [Action verb] + [specific scope]. Use when [trigger 1], [trigger 2], [trigger 3].
-# Also covers [related topic].
-
-# Example (strong):
-description: >-
-  Schedule and manage recurring tasks with cron and systemd timers.
-  Use when setting up cron jobs, writing systemd timer units,
-  handling timezone-aware scheduling, monitoring failed jobs,
-  implementing retry patterns, or debugging why a scheduled task didn't run.
-
-# Why it works:
-# - "Schedule and manage recurring tasks" → broad match for scheduling queries
-# - "cron and systemd timers" → exact match for specific tool queries
-# - "Use when..." triggers → matches natural-language questions
-# - "debugging why a scheduled task didn't run" → matches troubleshooting queries
-```
-
-### Description formulas
-
-#### Formula 1: Tool-focused skill
-
-```yaml
-description: >-
-  [Verb] with [tool/technology]. Use when [task 1], [task 2], [task 3].
-  Covers [sub-topic 1], [sub-topic 2], and [sub-topic 3].
-```
-
-Example:
-```yaml
-description: >-
-  Debug Docker containers and Compose stacks. Use when inspecting
-  container logs, diagnosing networking issues, troubleshooting
-  build failures, or investigating resource usage. Covers exec,
-  health checks, multi-stage builds, and distroless containers.
-```
-
-#### Formula 2: Pattern/reference skill
-
-```yaml
-description: >-
-  [Topic] patterns for [scope]. Use when [task 1], [task 2], [task 3].
-  Also covers [related scope].
-```
-
-Example:
-```yaml
-description: >-
-  Regex patterns for validation, parsing, and text extraction across
-  JavaScript, Python, Go, and grep. Use when writing regex for emails,
-  URLs, IPs, dates, or custom formats. Also covers lookahead,
-  lookbehind, and search-and-replace for code refactoring.
-```
-
-#### Formula 3: Workflow/process skill
-
-```yaml
-description: >-
-  [Process description] from [start] to [end]. Use when [scenario 1],
-  [scenario 2], [scenario 3].
-```
-
-Example:
-```yaml
-description: >-
-  CI/CD pipeline configuration from commit to deployment. Use when
-  setting up GitHub Actions, creating matrix builds, caching
-  dependencies, building Docker images, or managing deployment secrets.
-```
-
-### Keyword strategy
-
-Semantic search understands synonyms, but being explicit helps:
-
-```yaml
-# Include both the formal term AND common synonyms
-description: >-
-  SSH tunneling and port forwarding for remote access.
-  Use when creating SSH tunnels, setting up port forwards,
-  connecting through jump hosts (bastion hosts), managing
-  SSH keys, or transferring files with scp and rsync.
-
-# "tunneling" and "port forwarding" are related but distinct queries
-# "jump hosts" and "bastion hosts" are synonyms — include both
-# "scp and rsync" catches file transfer queries
-```
-
-Terms to include:
-- **Primary tool names**: `docker`, `git`, `curl`, `make`
-- **Action verbs**: `debug`, `test`, `deploy`, `monitor`, `parse`
-- **Common synonyms**: `container` / `Docker`, `CI/CD` / `pipeline` / `GitHub Actions`
-- **Problem descriptions**: `debugging why X doesn't work`, `troubleshooting Y`
-
-### Description length
-
-```
-TOO SHORT (< 50 chars):
-  "Make things with Makefiles"
-  → Not enough semantic surface for the embedding model
-
-SWEET SPOT (80-200 chars):
-  "Write Makefiles for any project type. Use when setting up build
-   automation, defining multi-target builds, or using Make for Go,
-   Python, Docker, and Node.js. Also covers Just and Task."
-  → Rich semantic content, multiple match angles
-
-TOO LONG (> 250 chars):
-  [Long paragraph trying to list everything]
-  → Gets truncated in search results display
-  → Dilutes the embedding with low-signal words
-  → Harder to read in listings
-```
-
-## Content Optimization
-
-### How body content affects search
-
-The skill body (markdown content after frontmatter) likely contributes to search in two ways:
-
-1. **Skill preview/summary**: The registry may extract or summarize content for display
-2. **Secondary embedding signal**: Full content may be embedded separately or appended to description
-
-Optimization strategy:
-- **Front-load important terms** in the first paragraph after the title
-- **Use headings that match search queries** — "## Encode and Decode" matches better than "## Section 2"
-- **Repeat key terms naturally** throughout the document (don't stuff, but don't avoid them either)
-
-```markdown
-# GOOD: Heading matches likely search query
-## Port Forwarding
-## Key Management
-## Connection Debugging
-
-# BAD: Generic headings with no search value
-## Getting Started
-## Advanced Usage
-## Miscellaneous
-```
+本文档旨在优化技能在ClawdHub注册库中的可发现性。内容包括搜索机制的原理、如何编写能够提高排名效果的技能描述、用于语义匹配的内容策略、搜索可见性的测试方法以及如何提升技能的竞争力。
 
-### First paragraph optimization
+## 适用场景
 
-The first paragraph after the title is prime search real estate:
+- 已发布的技能未在相关搜索结果中显示；
+- 需要编写能够最大化技能可见性的描述；
+- 需要了解ClawdHub的搜索系统如何对技能进行索引和排名；
+- 需要对比自己的技能与竞争对手的可见性；
+- 需要提升现有技能的搜索表现。
 
-```markdown
-# GOOD
-# SSH Tunnel
+## ClawdHub的搜索机制
 
-Create and manage SSH tunnels for secure remote access. Covers local,
-remote, and dynamic port forwarding, jump hosts, key management,
-agent forwarding, and file transfers with scp and rsync.
+### 架构
 
-# BAD
-# SSH Tunnel
+ClawdHub采用**基于向量的语义搜索**而非简单的关键词匹配：
 
-This skill provides information about SSH.
-```
-
-## Testing Search Visibility
+**关键点说明：**
+1. **语义比精确的关键词更重要**——例如，“container debugging”（容器调试）与“Docker troubleshooting”（Docker故障排除）能够被正确匹配；
+2. **关键词仍然有帮助**——嵌入模型会为特定术语赋予较高的权重；
+3. **技能描述是主要的索引字段**——虽然内容也会影响排名，但描述起决定性作用；
+4. **简短的查询词会匹配广泛的描述**——例如，“docker”会匹配到与容器相关的所有技能；
+5. **具体的查询词会匹配具体的描述**——例如，“debug crashed Docker container”（调试崩溃的Docker容器）会优先显示相关技能。
 
-### Manual testing
-
-```bash
-# Test with the exact queries users would type
+### 被索引的内容
 
-# Broad query (should your skill appear?)
-npx molthub@latest search "docker"
-npx molthub@latest search "testing"
-npx molthub@latest search "build automation"
-
-# Specific query (should your skill rank #1?)
-npx molthub@latest search "debug docker container"
-npx molthub@latest search "write makefile for go project"
-npx molthub@latest search "cron job not running"
+### 搜索API
 
-# Problem-oriented query (does your skill match troubleshooting?)
-npx molthub@latest search "container networking not working"
-npx molthub@latest search "why is my cron job not executing"
-
-# Synonym query (does your skill match alternative terms?)
-npx molthub@latest search "bastion host" # should match ssh-tunnel
-npx molthub@latest search "scheduled task" # should match cron-scheduling
-```
-
-### Test matrix
-
-Build a test matrix for your skill:
-
-```
-SEARCH VISIBILITY MATRIX
-Skill: [your-skill-slug]
+### 技能描述优化
 
-Query                              | Appears? | Rank | Competitor
-─────────────────────────────────────────────────────────────────
-[broad term]                       | Y/N      | #__  | [who ranks above]
-[specific use case]                | Y/N      | #__  | [who ranks above]
-[problem/troubleshooting query]    | Y/N      | #__  | [who ranks above]
-[synonym for main topic]           | Y/N      | #__  | [who ranks above]
-[related but different topic]      | Y/N      | #__  | [expected?]
+### 高排名描述的结构
 
-TARGET: Appear in top 3 for specific queries, top 10 for broad queries
-```
+### 描述编写公式
 
-### Iterative improvement
+#### 公式1：以工具为中心的技能
 
-```bash
-# 1. Publish initial version
-npx molthub@latest publish ./skills/my-skill \
-  --slug my-skill --name "My Skill" --version 1.0.0
+#### 示例：
 
-# 2. Test search visibility
-npx molthub@latest search "primary query"
-npx molthub@latest search "secondary query"
+#### 公式2：以模式或参考内容为中心的技能
 
-# 3. If ranking is poor, update the description
-# Edit SKILL.md frontmatter
+#### 示例：
 
-# 4. Publish updated version
-npx molthub@latest publish ./skills/my-skill \
-  --slug my-skill --name "My Skill" --version 1.0.1 \
-  --changelog "Improve description for search visibility"
+#### 公式3：以工作流程或步骤为中心的技能
 
-# 5. Re-test (embeddings update on publish)
-npx molthub@latest search "primary query"
-```
+#### 示例：
 
-## Competitive Positioning
+### 关键词策略
 
-### Analyzing competing skills
+语义搜索能够理解同义词，但明确使用关键词会更有帮助：
 
-```bash
-# Find skills in your category
-npx molthub@latest search "your topic"
+- **常用工具名称**：`docker`、`git`、`curl`、`make`；
+- **动作动词**：`debug`（调试）、`test`（测试）、`deploy`（部署）、`monitor`（监控）、`parse`（解析）；
+- **常见同义词**：`container` / `Docker`、`CI/CD` / `pipeline` / `GitHub Actions`；
+- **问题描述**：`debugging why X doesn't work`（调试X为何无法正常工作）、`troubleshooting Y`（排查Y的问题）。
 
-# For each competing skill:
-# 1. Install it
-npx molthub@latest install competitor-skill
-
-# 2. Read the description
-head -10 skills/competitor-skill/SKILL.md
+### 描述长度
 
-# 3. Compare:
-#    - Does their description cover queries yours doesn't?
-#    - Are they using terms you should add?
-#    - What's their content depth vs. yours?
-```
+技能描述的长度也会影响搜索结果。
 
-### Differentiation strategies
+### 内容优化
 
-```
-STRATEGY 1: Broader scope
-  Competitor covers Docker. You cover Docker + Podman + containerd.
-  Your description mentions all three → matches more queries.
-
-STRATEGY 2: Deeper specificity
-  Competitor covers "git commands". You cover "git workflows" with
-  specific scenarios like bisect, worktree, and reflog recovery.
-  Your description matches specific troubleshooting queries.
-
-STRATEGY 3: Problem-oriented framing
-  Competitor: "Docker container management"
-  You: "Debug Docker containers — logs, networking, crashes, resource issues"
-  Problem-oriented descriptions match how people actually search.
-
-STRATEGY 4: Cross-tool coverage
-  Competitor covers Make only. You cover Make + Just + Task.
-  Your description mentions all three → broader match surface.
-```
-
-### Filling gaps vs. competing head-on
-
-```
-MARKET ANALYSIS:
-
-1. Search for your intended topic
-2. Count results:
-   0 results → Blue ocean. Any reasonable skill will rank #1.
-   1-2 results → Low competition. A better skill wins easily.
-   3+ results → Competitive. Need clear differentiation.
-
-For competitive categories, check the existing skills' quality:
-- Are their descriptions optimized? (Many aren't)
-- Are their examples working? (Test a few)
-- Do they cover the full scope? (Often they're narrow)
-
-A well-written skill with an optimized description will outrank
-a mediocre skill even in a competitive category.
-```
-
-## Registry Dynamics
-
-### Search behavior patterns
-
-```
-COMMON SEARCH PATTERNS:
-
-1. Tool name: "docker", "git", "terraform"
-   → Match with explicit tool name in description
-
-2. Task description: "deploy to production", "parse CSV"
-   → Match with action verbs and task phrases
-
-3. Problem statement: "container not starting", "cron job failed"
-   → Match with troubleshooting language in description
-
-4. Comparison: "jest vs vitest", "make vs just"
-   → Match by mentioning multiple tools in description
-
-5. How-to: "how to set up CI/CD", "how to forward ports"
-   → Match with "Use when setting up..." pattern
-```
-
-### Timing and freshness
-
-```
-- New skills get indexed immediately on publish
-- Updated skills get re-indexed on version bump
-- No known freshness bias (older skills don't rank lower)
-- The registry is young — early publishers have first-mover advantage
-- Slug ownership is permanent — claim good slugs early
-```
-
-## Optimization Checklist
-
-```
-PRE-PUBLISH SEARCH OPTIMIZATION:
-
-[ ] Description follows the [Action] + [Scope] + [Use when] pattern
-[ ] Description is 80-200 characters
-[ ] Primary tool/topic names are in the description explicitly
-[ ] Common synonyms are included (jump host / bastion host)
-[ ] Troubleshooting/problem language is included
-[ ] Action verbs match how users search (debug, test, deploy, parse)
-[ ] First paragraph after title reinforces key terms
-[ ] Section headings use searchable phrases, not generic labels
-[ ] Slug is descriptive and matches the primary search term
-[ ] No competing skill has a clearly better description for the same queries
-
-POST-PUBLISH VERIFICATION:
-
-[ ] Skill appears in top 3 for its primary specific query
-[ ] Skill appears in top 10 for its broad category query
-[ ] Skill appears for at least one synonym/alternative query
-[ ] Skill appears for at least one problem-oriented query
-```
-
-## Tips
-
-- The description field is worth more than the entire rest of the skill for search ranking. Spend 30% of your optimization effort on those 1-2 sentences.
-- "Use when..." phrases in descriptions are powerful because they match how users naturally frame searches: "I need something for when X happens."
-- Include both the specific tool name AND the general category. "Docker containers" matches both "docker" queries and "container" queries. Just "Docker" misses people searching for "container debugging."
-- Problem-oriented language ("debugging why X fails", "troubleshooting Y") matches a huge category of searches that purely descriptive skills miss entirely.
-- Test with at least 5 different search queries before publishing. If your skill doesn't appear for its own primary topic, the description needs work.
-- Slug names contribute to search matching. `container-debug` is better than `cd-tool` because the slug itself contains searchable terms.
-- Don't optimize for queries your skill can't actually answer. Ranking for a query and then disappointing the user is worse than not ranking at all — it leads to reports and uninstalls.
-- The registry is young. First-mover advantage is real — claim descriptive slugs and publish quality content now while competition is low.
-- Re-publish with a version bump after optimizing your description. The embedding is regenerated on each publish, so description changes take effect immediately.
+技能的正文内容（标题后的Markdown格式内容）主要通过两种方式影响搜索结果：
+1. **技能预览/摘要**：注册库可能会提取或总结部分内容进行展示；
+2. **额外的嵌入信息**：完整的内容可能会被单独嵌入或添加到描述中。
+
+优化建议：
+- 在标题后的第一段中突出显示关键术语；
+- 使用与搜索查询匹配的标题（例如，“## Encode and Decode”比“## 第2节”更符合搜索习惯）；
+- 在文档中自然地重复使用关键词。
+
+### 第一段的优化
+
+标题后的第一段是搜索结果展示的关键位置。
+
+## 搜索可见性测试
+
+### 手动测试
+
+### 测试矩阵
+
+为你的技能构建一个测试矩阵，以评估其搜索效果。
+
+### 迭代优化
+
+通过多次测试和调整来不断提升技能的搜索表现。
+
+## 竞争力提升
+
+### 分析竞争对手的技能
+
+了解竞争对手的技能特点，以便制定有效的差异化策略。
+
+### 差异化策略
+
+通过创新或独特的内容来区分自己的技能，避免与竞争对手直接竞争。
+
+### 注册库的动态变化
+
+关注注册库的更新机制和搜索行为的变化。
+
+### 优化检查清单
+
+请遵循以下优化 checklist 来提升技能的搜索排名：
+
+- 技能描述的权重远高于文档的其他部分，建议将30%的优化精力放在描述上；
+- 在描述中使用“当……时使用”这样的短语，因为用户通常会这样表达他们的搜索需求；
+- 同时包含具体的工具名称和通用类别，例如“Docker containers”可以匹配“docker”和“container”相关的搜索；
+- 使用问题导向的语言（如“debugging why X fails”），这类描述能够覆盖大量常规搜索需求；
+- 在发布前使用至少5个不同的搜索词进行测试；如果技能未能在其主要主题下被显示，说明描述需要改进；
+- 使用包含可搜索关键词的slug名称（例如“container-debug”比“cd-tool”更合适）；
+- 不要优化那些你的技能无法解决的查询；如果优化后仍无法满足用户需求，反而会降低用户满意度；
+- 注册库仍处于发展阶段，尽早发布高质量的内容以获得先发优势；
+- 优化描述后重新发布技能，因为每次发布都会更新嵌入信息，从而立即看到效果。
+
+## 小贴士
+
+- 描述字段对搜索排名至关重要，建议将30%的优化精力用于描述部分；
+- 使用“当……时使用”这样的短语，因为用户通常会这样表达他们的搜索需求；
+- 同时包含具体的工具名称和通用类别；
+- 使用问题导向的语言；
+- 在发布前进行充分测试；
+- 使用包含可搜索关键词的slug名称；
+- 避免优化那些你的技能无法解决的查询；否则不仅无法提升排名，还可能引发用户反馈和卸载行为。

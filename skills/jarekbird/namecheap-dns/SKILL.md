@@ -1,6 +1,6 @@
 ---
 name: namecheap-dns
-description: Safe DNS record management for Namecheap domains. Fetch, add, remove, backup, and restore DNS records with automatic safety checks and dry-run mode. Prevents accidental DNS record wipeout via the Namecheap API's destructive setHosts method.
+description: Namecheap 域名的安全 DNS 记录管理功能：支持查询、添加、删除和备份 DNS 记录，并提供自动安全检查及试运行模式。有效防止因使用 Namecheap API 的 `setHosts` 方法而导致的 DNS 记录意外删除。
 homepage: https://www.namecheap.com/support/api/
 metadata:
   {
@@ -14,38 +14,37 @@ metadata:
 
 # Namecheap DNS Management
 
-Safe wrapper around the Namecheap API for DNS operations. **Prevents accidental record wipeout** by always fetching existing records first and merging changes.
+这是一个用于操作Namecheap DNS服务的安全封装工具，通过先获取现有DNS记录并合并更改来**防止意外删除记录**。
 
-## ⚠️ Why This Skill Exists
+## ⚠️ 为什么需要这个工具
 
-The Namecheap API's `setHosts` method **replaces ALL DNS records** for a domain. One wrong API call = your entire DNS config is gone. This skill:
+Namecheap的`setHosts`方法会**替换一个域名的所有DNS记录**。一旦API调用出错，你的整个DNS配置就会丢失。而这个工具可以：
+- ✅ 总是先获取现有记录
+- ✅ 将新记录与现有记录合并（除非明确要求替换）
+- ✅ 在应用更改前显示差异预览
+- ✅ 在每次更改前自动备份
+- ✅ 支持模拟测试模式
+- ✅ 通过一个命令从备份中恢复更改
 
-- ✅ Always fetches existing records first
-- ✅ Merges new records with existing ones (unless explicitly replacing)
-- ✅ Shows a diff preview before applying changes
-- ✅ Auto-backups before every change
-- ✅ Supports dry-run mode for safe testing
-- ✅ One-command rollback from backups
+## 设置
 
-## Setup
-
-### 1. Install dependencies
+### 1. 安装依赖项
 
 ```bash
 cd ~/.openclaw/workspace/skills/namecheap-dns
 npm install
 ```
 
-### 2. Enable Namecheap API access
+### 2. 启用Namecheap API访问
 
-1. Go to https://ap.www.namecheap.com/settings/tools/apiaccess/
-2. Toggle "API Access" ON
-3. Whitelist your IP address
-4. Copy your API key
+1. 访问 https://ap.www.namecheap.com/settings/tools/apiaccess/
+2. 打开“API Access”选项
+3. 将你的IP地址添加到白名单中
+4. 复制你的API密钥
 
-### 3. Set environment variables
+### 3. 设置环境变量
 
-Add to `~/.zshrc` or `~/.bashrc`:
+将以下内容添加到`~/.zshrc`或`~/.bashrc`文件中：
 
 ```bash
 export NAMECHEAP_API_KEY="your-api-key-here"
@@ -53,27 +52,27 @@ export NAMECHEAP_USERNAME="your-username"
 export NAMECHEAP_API_USER="your-username"  # Usually same as username
 ```
 
-## Usage
+## 使用方法
 
-### Verify DNS and detect ghost records
+### 验证DNS记录并检测“幽灵记录”
 
-**⚠️ IMPORTANT: Run this first!**
+**⚠️ 重要：请先运行此命令！**
 
 ```bash
 ./namecheap-dns.js verify example.com
 ```
 
-This command compares DNS records visible to the Namecheap API with actual live DNS records (via `dig`). It will warn you about "ghost records" that exist in DNS but are invisible to the API (email forwarding, URL redirects, etc.).
+该命令会比较Namecheap API显示的DNS记录与实际的DNS记录（通过`dig`获取）。它会警告你那些存在于DNS中但API无法检测到的“幽灵记录”（例如邮件转发、URL重定向等）。
 
-### List current DNS records
+### 列出当前的DNS记录
 
 ```bash
 ./namecheap-dns.js list example.com
 ```
 
-**Note:** This only shows records visible to the API. Use `verify` to see ALL records including those managed by Namecheap subsystems.
+**注意：** 这仅显示API能看到的记录。使用`verify`命令可以查看所有记录，包括Namecheap子系统管理的记录。
 
-### Add records (safe merge)
+### 添加记录（安全合并）
 
 ```bash
 # Add a single TXT record
@@ -97,9 +96,9 @@ This command compares DNS records visible to the Namecheap API with actual live 
   --force
 ```
 
-**Safety:** The skill automatically checks for "ghost records" before making changes. If detected, it will refuse to proceed unless you use `--force`.
+**安全性：** 该工具会在进行更改前自动检查“幽灵记录”。如果检测到幽灵记录，除非使用`--force`选项，否则不会继续执行操作。
 
-### Remove records
+### 删除记录
 
 ```bash
 # Remove by host + type
@@ -114,7 +113,7 @@ This command compares DNS records visible to the Namecheap API with actual live 
   --dry-run
 ```
 
-### Backup & Restore
+### 备份与恢复
 
 ```bash
 # Create manual backup
@@ -131,63 +130,63 @@ This command compares DNS records visible to the Namecheap API with actual live 
   --backup "example.com-20260213-114500.json"
 ```
 
-## Record Format
+## 记录格式
 
-### TXT Records
+### TXT记录
 ```
 --txt "subdomain=value"
 --txt "@=value"  # Root domain
 ```
 
-### CNAME Records
+### CNAME记录
 ```
 --cname "subdomain=target.com"
 ```
 
-### MX Records
+### MX记录
 ```
 --mx "subdomain=10 mx.target.com"
 --mx "@=10 mx.target.com"  # Root domain
 ```
 
-### A Records
+### A记录
 ```
 --a "subdomain=192.168.1.1"
 --a "@=192.168.1.1"  # Root domain
 ```
 
-## Backup Location
+## 备份位置
 
-**Default:** `./backups/` (relative to skill directory)
+**默认路径：** `./backups/`（相对于工具目录）
 
-**Configurable via environment variable:**
+**可通过环境变量配置：**
 ```bash
 export NAMECHEAP_BACKUP_DIR="/custom/path/to/backups"
 ```
 
-Format: `{domain}-{timestamp}.json`
+备份文件格式：`{domain}-{timestamp}.json`
 
-Each backup includes:
-- `apiHosts`: Records visible to Namecheap API
-- `liveDNS`: Actual DNS records captured via `dig`
-- Timestamp and domain metadata
+每个备份文件包含：
+- `apiHosts`：Namecheap API能看到的记录
+- `liveDNS`：通过`dig`获取的实际DNS记录
+- 时间戳和域名元数据
 
-This allows you to see what was ACTUALLY live in DNS, not just what the API knew about.
+这样你可以看到DNS中实际存在的记录，而不仅仅是API所知的记录。
 
-## Safety Features
+## 安全特性
 
-1. **Ghost record detection** — automatic check for records invisible to API
-2. **Auto-backup before changes** — every `add` or `remove` creates a timestamped backup (includes DNS snapshot)
-3. **Dry-run mode** — `--dry-run` shows what will change without applying
-4. **Diff preview** — see exactly what records will be added/removed
-5. **Fetch-first** — always gets current DNS state before changes
-6. **Merge logic** — adds to existing records instead of replacing
-7. **Rollback** — one command to restore from backup
-8. **Safety override** — `--force` flag for when you need to bypass ghost record warnings
+1. **幽灵记录检测** — 自动检查API无法检测到的记录
+2. **更改前自动备份** — 每次添加或删除记录时都会创建带有时间戳的备份
+3. **模拟测试模式** — 使用`--dry-run`可以查看更改内容而不会实际应用
+4. **差异预览** — 明确显示哪些记录将被添加或删除
+5. **先获取数据** — 在进行更改前总是先获取当前的DNS状态
+6. **合并逻辑** — 将新记录添加到现有记录中，而不是替换它们
+7. **恢复功能** — 通过一个命令从备份中恢复数据
+8. **安全覆盖** — 使用`--force`标志可以忽略幽灵记录的警告
 
-## Examples
+## 示例
 
-### Mailgun Setup
+### 配置Mailgun
 
 ```bash
 ./namecheap-dns.js add menuhq.ai \
@@ -200,72 +199,69 @@ This allows you to see what was ACTUALLY live in DNS, not just what the API knew
   --dry-run
 ```
 
-Review the diff, then run without `--dry-run` to apply.
+查看差异后，不使用`--dry-run`选项直接执行命令以应用更改。
 
-## Known Limitations
+## 已知限制
 
-### ⚠️ The Namecheap API is Destructive
+### ⚠️ Namecheap API的破坏性
 
-The Namecheap `domains.dns.setHosts` API method **replaces ALL DNS records** for a domain. There is no "add one record" or "update one record" endpoint. Every change requires:
+Namecheap的`domains.dns.setHosts`方法会**替换一个域名的所有DNS记录**。没有单独的“添加一条记录”或“更新一条记录”的接口。每次更改都需要：
+1. 获取所有现有记录（`getHosts`）
+2. 修改记录列表
+3. 上传整个记录列表（`setHosts`）
 
-1. Fetch all existing records (`getHosts`)
-2. Modify the list
-3. Upload the entire list (`setHosts`)
+这个工具通过先获取记录并合并更改来避免这些问题。
 
-**This skill handles this for you** by always fetching first and merging changes.
+### 🔍 幽灵记录：隐藏的危险
 
-### 🔍 Ghost Records: The Hidden Danger
+**问题：** `domains.dns.hosts`方法不会返回所有DNS记录。Namecheap子系统管理的记录对API是不可见的，例如：
+- **邮件转发** — MX、SPF和DKIM记录
+- **URL重定向** — 用于域名停放/重定向的A/CNAME记录
+- **第三方集成** — 通过Namecheap控制台添加的记录
 
-**Problem:** `domains.dns.getHosts` does NOT return all DNS records. Records managed by Namecheap subsystems are invisible to the API:
+由于`setHosts`方法会替换所有记录，使用API可能会无意中删除这些隐藏的记录。
 
-- **Email Forwarding** — MX, SPF, and DKIM records
-- **URL Redirect** — A/CNAME records for domain parking/redirects
-- **Third-party integrations** — Records added through Namecheap's dashboard for services
+### 🛡️ 该工具如何保护你
 
-Since `setHosts` **replaces all records**, using the API can silently delete these hidden records.
+1. **`verify`命令** — 将API记录与实际DNS记录进行比较（通过`dig`），并警告幽灵记录的存在
+2. **自动安全检查** — 在执行任何添加、删除或恢复操作前，该工具会检查是否存在幽灵记录
+3. **阻止操作** — 如果检测到幽灵记录，操作将被阻止（除非使用`--force`）
+4. **明确显示警告** — 显示如果继续操作将会丢失哪些记录
+5. **备份中的DNS快照** — 通过`dig`获取实际的DNS状态，而不仅仅是API的状态
 
-### 🛡️ How This Skill Protects You
+### 何时使用`--force`选项
 
-1. **`verify` command** — Compares API records with actual live DNS (via `dig`) and warns about ghost records
-2. **Automatic safety check** — Before any `add`, `remove`, or `restore`, the skill checks for ghost records
-3. **Refuses to proceed** — If ghost records are detected, the operation is blocked (unless `--force` is used)
-4. **Clear warnings** — Shows exactly which records will be lost if you proceed
-5. **DNS snapshots in backups** — Captures actual DNS state via `dig`, not just API state
+只有在以下情况下才使用`--force`选项：
+- 你已手动确认不再需要这些幽灵记录
+- 你明确要删除邮件转发或URL重定向功能
+- 你理解并接受这些记录会被删除
 
-### When to Use `--force`
+**切勿盲目使用`--force`选项。** 必须先使用`verify`命令确认哪些记录会被删除。
 
-Only use the `--force` flag when:
+### 示例：生产环境中的事故
 
-- You've manually verified the ghost records are no longer needed
-- You're intentionally removing email forwarding or URL redirects
-- You understand and accept that those records will be deleted
+这个工具是在通过API添加Mailgun DNS记录后，导致Namecheap的邮件转发记录被删除的情况下开发的。由于`getHosts`方法无法检测到这些邮件转发记录，因此原来的操作模式会直接删除它们。
 
-**Never use `--force` blindly.** Always run `verify` first to see what will be lost.
+现在，这个工具会在执行操作前：
+1. 在`verify`步骤中检测到幽灵记录
+2. 拒绝执行操作（除非使用`--force`）
+3. 明确显示哪些邮件转发记录会被删除
+4. 创建包含DNS快照的备份
 
-### Example: The Production Incident
+## 故障排除
 
-This skill was created after adding Mailgun DNS records via the API wiped out Namecheap's email forwarding records. The email forwarding MX/SPF/TXT records were invisible to `getHosts`, so the fetch-merge-write pattern deleted them.
+### “API请求失败：IP未添加到白名单”
+- 将你的IP地址添加到 https://ap.www.namecheap.com/settings/tools/apiaccess/
+- 使用`curl ifconfig.me`检查IP地址是否在白名单中
 
-Now, the skill would have:
-1. Detected the ghost records during `verify`
-2. Refused to proceed without `--force`
-3. Shown exactly which email forwarding records would be deleted
-4. Created a backup including the DNS snapshot
+### “API密钥无效”
+- 确保`NAMECHEAP_API_KEY`设置正确
+- 如有需要，重新启用API访问
 
-## Troubleshooting
+### “域名未找到”
+- 确保域名存在于你的Namecheap账户中
+- 检查拼写（区分大小写）
 
-### "API request failed: IP not whitelisted"
-- Add your current IP to https://ap.www.namecheap.com/settings/tools/apiaccess/
-- Check with: `curl ifconfig.me`
+## API参考
 
-### "Invalid API key"
-- Verify `NAMECHEAP_API_KEY` is set correctly
-- Re-enable API access if needed
-
-### "Domain not found"
-- Ensure domain is in your Namecheap account
-- Check spelling (case-sensitive)
-
-## API Reference
-
-Namecheap API docs: https://www.namecheap.com/support/api/methods/domains-dns/
+Namecheap API文档：https://www.namecheap.com/support/api/methods/domains-dns/

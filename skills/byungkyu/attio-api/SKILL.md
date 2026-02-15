@@ -17,9 +17,9 @@ metadata:
 
 # Attio
 
-Access the Attio REST API with managed OAuth authentication. Manage CRM objects, records, tasks, comments, and workspace data.
+通过管理的 OAuth 认证来访问 Attio REST API。您可以管理 CRM 对象、记录、任务、评论和工作区数据。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all objects in workspace
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/attio/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Attio API endpoint path. The gateway proxies requests to `api.attio.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Attio API 端点路径。该网关会将请求代理到 `api.attio.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Attio OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Attio OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Attio connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Attio 连接，请使用 `Maton-Connection` 头指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,47 +140,47 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Objects
+### 对象
 
-Objects are the schema definitions (like People, Companies, or custom objects).
+对象是数据结构的定义（例如人员、公司或自定义对象）。
 
-#### List Objects
+#### 列出对象
 
 ```bash
 GET /attio/v2/objects
 ```
 
-Returns all system-defined and custom objects in your workspace.
+返回工作区中所有系统定义和自定义的对象。
 
-#### Get Object
+#### 获取对象信息
 
 ```bash
 GET /attio/v2/objects/{object}
 ```
 
-Get a specific object by slug (e.g., `people`, `companies`) or UUID.
+通过 slug（例如 `people`、`companies`）或 UUID 获取特定对象。
 
-### Attributes
+### 属性
 
-Attributes define the fields on objects.
+属性定义了对象上的字段。
 
-#### List Attributes
+#### 列出属性
 
 ```bash
 GET /attio/v2/objects/{object}/attributes
 ```
 
-Returns all attributes for an object.
+返回对象的所有属性。
 
-### Records
+### 记录
 
-Records are the actual data entries (people, companies, etc.).
+记录是实际的数据条目（例如人员、公司等）。
 
-#### Query Records
+#### 查询记录
 
 ```bash
 POST /attio/v2/objects/{object}/records/query
@@ -194,19 +194,19 @@ Content-Type: application/json
 }
 ```
 
-Query parameters in body:
-- `limit`: Maximum results (default 500)
-- `offset`: Number of results to skip
-- `filter`: Filter criteria object
-- `sorts`: Array of sort specifications
+查询参数：
+- `limit`：最大结果数量（默认为 500）
+- `offset`：要跳过的记录数量
+- `filter`：过滤条件对象
+- `sorts`：排序规则数组
 
-#### Get Record
+#### 获取记录信息
 
 ```bash
 GET /attio/v2/objects/{object}/records/{record_id}
 ```
 
-#### Create Record
+#### 创建记录
 
 ```bash
 POST /attio/v2/objects/{object}/records
@@ -222,9 +222,9 @@ Content-Type: application/json
 }
 ```
 
-Note: For `personal-name` type attributes (like `name` on people), you must include `full_name` along with `first_name` and `last_name`.
+注意：对于 `personal-name` 类型的属性（例如人员中的 `name`），在创建记录时必须同时提供 `full_name`、`first_name` 和 `last_name`。
 
-#### Update Record
+#### 更新记录
 
 ```bash
 PATCH /attio/v2/objects/{object}/records/{record_id}
@@ -239,36 +239,36 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Record
+#### 删除记录
 
 ```bash
 DELETE /attio/v2/objects/{object}/records/{record_id}
 ```
 
-### Tasks
+### 任务
 
-#### List Tasks
+#### 列出任务
 
 ```bash
 GET /attio/v2/tasks?limit=50
 ```
 
-Query parameters:
-- `limit`: Maximum results (default 500)
-- `offset`: Number to skip
-- `sort`: `created_at:asc` or `created_at:desc`
-- `linked_object`: Filter by object type (e.g., `people`)
-- `linked_record_id`: Filter by specific record
-- `assignee`: Filter by assignee email/ID
-- `is_completed`: Filter by completion status (true/false)
+查询参数：
+- `limit`：最大结果数量（默认为 500）
+- `offset`：要跳过的记录数量
+- `sort`：`created_at:asc` 或 `created_at:desc`
+- `linked_object`：按对象类型过滤（例如 `people`）
+- `linked_record_id`：按特定记录过滤
+- `assignee`：按分配者的电子邮件/ID 过滤
+- `is_completed`：按完成状态过滤（true/false）
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /attio/v2/tasks/{task_id}
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /attio/v2/tasks
@@ -291,9 +291,9 @@ Content-Type: application/json
 }
 ```
 
-Required fields: `content`, `format`, `assignees`
+必填字段：`content`、`format`、`assignees`
 
-#### Update Task
+#### 更新任务
 
 ```bash
 PATCH /attio/v2/tasks/{task_id}
@@ -306,39 +306,39 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Task
+#### 删除任务
 
 ```bash
 DELETE /attio/v2/tasks/{task_id}
 ```
 
-### Workspace Members
+### 工作区成员
 
-#### List Workspace Members
+#### 列出工作区成员
 
 ```bash
 GET /attio/v2/workspace_members
 ```
 
-#### Get Workspace Member
+#### 获取工作区成员信息
 
 ```bash
 GET /attio/v2/workspace_members/{workspace_member_id}
 ```
 
-### Self (Token Info)
+### 自我（令牌信息）
 
-#### Identify Current Token
+#### 识别当前令牌
 
 ```bash
 GET /attio/v2/self
 ```
 
-Returns workspace info and OAuth scopes for the current access token.
+返回当前访问令牌的工作区信息和 OAuth 权限范围。
 
-### Comments
+### 评论
 
-#### Create Comment
+#### 创建评论
 
 ```bash
 POST /attio/v2/comments
@@ -360,33 +360,33 @@ Content-Type: application/json
 }
 ```
 
-### Lists (Requires list_configuration:read scope)
+### 列表（需要 `list_configuration:read` 权限范围）
 
-#### List All Lists
+#### 列出所有列表
 
 ```bash
 GET /attio/v2/lists
 ```
 
-### Notes (Requires note:read scope)
+### 备注（需要 `note:read` 权限范围）
 
-#### List Notes
+#### 列出备注
 
 ```bash
 GET /attio/v2/notes?limit=50
 ```
 
-Query parameters:
-- `limit`: Maximum results (default 10, max 50)
-- `offset`: Number to skip
-- `parent_object`: Object slug containing notes
-- `parent_record_id`: Filter by specific record
+查询参数：
+- `limit`：最大结果数量（默认为 10，最大为 50）
+- `offset`：要跳过的记录数量
+- `parent_object`：包含备注的对象的 slug
+- `parent_record_id`：按特定记录过滤
 
-## Pagination
+## 分页
 
-Attio supports two pagination methods:
+Attio 支持两种分页方法：
 
-### Limit/Offset Pagination
+### Limit/Offset 分页
 
 ```bash
 GET /attio/v2/tasks?limit=50&offset=0
@@ -394,16 +394,16 @@ GET /attio/v2/tasks?limit=50&offset=50
 GET /attio/v2/tasks?limit=50&offset=100
 ```
 
-### Cursor-Based Pagination (for some endpoints)
+### 基于游标的分页（针对某些端点）
 
 ```bash
 GET /attio/v2/meetings?limit=50
 GET /attio/v2/meetings?limit=50&cursor={next_cursor}
 ```
 
-Response includes `pagination.next_cursor` when more results exist.
+当还有更多结果时，响应中会包含 `pagination.next_cursor`。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -438,37 +438,37 @@ response = requests.post(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Object slugs are lowercase snake_case (e.g., `people`, `companies`)
-- Record IDs and other IDs are UUIDs
-- For personal-name attributes, always include `full_name` when creating records
-- Task creation requires `format: "plaintext"` and `assignees` array (can be empty)
-- Some endpoints require additional OAuth scopes (lists, notes, webhooks)
-- Rate limits: 100 read requests/second, 25 write requests/second
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 对象的 slug 采用小写蛇形命名法（例如 `people`、`companies`）。
+- 记录 ID 和其他 ID 都是 UUID。
+- 对于 `personal-name` 类型的属性，在创建记录时必须包含 `full_name`。
+- 创建任务时需要指定 `format: "plaintext"` 和 `assignees` 数组（可以为空）。
+- 某些端点需要额外的 OAuth 权限范围（列表、备注、Webhook）。
+- 请求速率限制：每秒 100 次读取请求，25 次写入请求。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Attio connection or validation error |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient OAuth scopes |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Attio API |
+| 400 | 未找到 Attio 连接或验证错误 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | OAuth 权限范围不足 |
+| 404 | 资源未找到 |
+| 429 | 请求速率受限 |
+| 4xx/5xx | 来自 Attio API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -479,25 +479,24 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Insufficient Scopes
+### 故障排除：权限范围不足
 
-If you receive a 403 error about missing scopes, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case.
+如果收到关于权限范围不足的 403 错误，请联系 Maton 支持团队（support@maton.ai），并提供您需要的具体操作/API 和使用场景。
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `attio`. For example:
+1. 确保您的 URL 路径以 `attio` 开头。例如：
+- 正确：`https://gateway.maton.ai/attio/v2/objects`
+- 错误：`https://gateway.maton.ai/v2/objects`
 
-- Correct: `https://gateway.maton.ai/attio/v2/objects`
-- Incorrect: `https://gateway.maton.ai/v2/objects`
+## 资源
 
-## Resources
-
-- [Attio API Overview](https://docs.attio.com/rest-api/overview)
-- [Attio API Reference](https://docs.attio.com/rest-api/endpoint-reference)
-- [Records API](https://docs.attio.com/rest-api/endpoint-reference/records)
-- [Objects API](https://docs.attio.com/rest-api/endpoint-reference/objects)
-- [Tasks API](https://docs.attio.com/rest-api/endpoint-reference/tasks)
-- [Rate Limiting](https://docs.attio.com/rest-api/guides/rate-limiting)
-- [Pagination](https://docs.attio.com/rest-api/guides/pagination)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Attio API 概述](https://docs.attio.com/rest-api/overview)
+- [Attio API 参考](https://docs.attio.com/rest-api/endpoint-reference)
+- [记录 API](https://docs.attio.com/rest-api/endpoint-reference/records)
+- [对象 API](https://docs.attio.com/rest-api/endpoint-reference/objects)
+- [任务 API](https://docs.attio.com/rest-api/endpoint-reference/tasks)
+- [速率限制](https://docs.attio.com/rest-api/guides/rate-limiting)
+- [分页](https://docs.attio.com/rest-api/guides/pagination)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

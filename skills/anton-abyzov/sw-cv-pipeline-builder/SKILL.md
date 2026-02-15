@@ -4,15 +4,15 @@ description: |
   Computer vision ML pipelines for image classification, object detection, semantic segmentation, and image generation. Activates for "computer vision", "image classification", "object detection", "CNN", "ResNet", "YOLO", "image segmentation", "image preprocessing", "data augmentation". Builds end-to-end CV pipelines with PyTorch/TensorFlow, integrated with SpecWeave increments.
 ---
 
-# Computer Vision Pipeline Builder
+# 计算机视觉管道构建器
 
-## Overview
+## 概述
 
-Specialized ML pipelines for computer vision tasks. Handles image preprocessing, data augmentation, CNN architectures, transfer learning, and deployment for production CV systems.
+专为计算机视觉任务设计的机器学习（ML）管道。支持图像预处理、数据增强、卷积神经网络（CNN）架构、迁移学习以及生产环境中的部署。
 
-## CV Tasks Supported
+## 支持的计算机视觉任务
 
-### 1. Image Classification
+### 1. 图像分类
 
 ```python
 from specweave import CVPipeline
@@ -35,7 +35,7 @@ pipeline = CVPipeline(
 pipeline.fit(train_images, train_labels)
 ```
 
-### 2. Object Detection
+### 2. 目标检测
 
 ```python
 # Detect multiple objects in images
@@ -49,7 +49,7 @@ pipeline = CVPipeline(
 # Returns: Bounding boxes + class labels + confidence scores
 ```
 
-### 3. Semantic Segmentation
+### 3. 语义分割
 
 ```python
 # Pixel-level classification
@@ -63,9 +63,9 @@ pipeline = CVPipeline(
 # Returns: Segmentation mask for each pixel
 ```
 
-## Best Practices for CV
+## 计算机视觉的最佳实践
 
-### Data Augmentation
+### 数据增强
 
 ```python
 from specweave import ImageAugmentation
@@ -89,7 +89,7 @@ aug.add_advanced([
 ])
 ```
 
-### Transfer Learning
+### 迁移学习
 
 ```python
 # Start from pre-trained ImageNet models
@@ -109,22 +109,22 @@ pipeline.use_pretrained(
 )
 ```
 
-### Model Selection
+### 模型选择
 
-**Image Classification**:
-- Small datasets (<10K): ResNet18, MobileNetV2
-- Medium datasets (10K-100K): ResNet50, EfficientNet-B0
-- Large datasets (>100K): EfficientNet-B3, Vision Transformer
+**图像分类**：
+- 小型数据集（<10K样本）：ResNet18、MobileNetV2
+- 中型数据集（10K-100K样本）：ResNet50、EfficientNet-B0
+- 大型数据集（>100K样本）：EfficientNet-B3、Vision Transformer
 
-**Object Detection**:
-- Real-time (>30 FPS): YOLOv8, SSDLite
-- High accuracy: Faster R-CNN, RetinaNet
+**目标检测**：
+- 实时检测（>30 FPS）：YOLOv8、SSDLite
+- 高精度检测：Faster R-CNN、RetinaNet
 
-**Segmentation**:
-- Medical imaging: U-Net
-- Scene segmentation: DeepLabV3, SegFormer
+**语义分割**：
+- 医学成像：U-Net
+- 场景分割：DeepLabV3、SegFormer
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
 ```python
 # CV increment structure
@@ -146,7 +146,7 @@ pipeline.use_pretrained(
     └── inference.py
 ```
 
-## Commands
+## 命令
 
 ```bash
 /ml:cv-pipeline --task classification --model resnet50
@@ -154,4 +154,4 @@ pipeline.use_pretrained(
 /ml:cv-deploy 0042    # Export to ONNX
 ```
 
-Quick setup for CV projects with production-ready pipelines.
+提供快速设置功能，帮助您构建适用于生产环境的计算机视觉项目。

@@ -10,79 +10,79 @@ tags:
   - wallet
 ---
 
-# Zerion API Skill
+# Zerion API 技能
 
-Query crypto wallet data using the Zerion API MCP server.
+使用 Zerion API MCP 服务器查询加密钱包数据。
 
-## Overview
+## 概述
 
-This skill provides access to Zerion's interpreted crypto wallet data through MCP tools. Supports **EVM chains** (Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, and 50+ more) and **Solana**.
+该技能允许通过 MCP 工具访问 Zerion 提供的加密钱包数据。支持 **EVM 链路**（以太坊、Polygon、Arbitrum、Optimism、Base、BSC 等）和 **Solana**。
 
-**Note**: API key required for authentication - get yours at https://developers.zerion.io
+**注意**：需要 API 密钥进行身份验证 - 请在 [https://developers.zerion.io](https://developers.zerion.io) 获取您的 API 密钥。
 
-## Available Data
+## 可用数据
 
-| Data Type | Description |
+| 数据类型 | 描述 |
 |-----------|-------------|
-| Portfolio | Total wallet value, breakdown by chain |
-| Transactions | Full transaction history with parsed actions |
-| PnL | Profit/loss calculations |
-| Positions | DeFi positions, staking, lending |
-| Token Prices | Real-time pricing and historical charts |
-| NFTs | Collections and individual NFT data |
-| Gas Prices | Current gas prices across chains |
+| 财产组合 | 钱包总价值，按链路分类 |
+| 交易记录 | 包含详细操作信息的完整交易历史 |
+| 盈亏情况 | 盈利/亏损计算结果 |
+| DeFi 位置 | DeFi 交易情况（质押、借贷等） |
+| 代币价格 | 实时价格及历史图表 |
+| NFT 数据 | NFT 收藏及单个 NFT 的详细信息 |
+| 燃气价格 | 各链路的当前燃气价格 |
 
-## Common Queries
+## 常见查询
 
-### Portfolio Analysis
+### 财产组合分析
 ```
 Get the portfolio for wallet 0x1234...
 Show total value and breakdown by chain for 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 ```
 
-### Transaction History
+### 交易记录
 ```
 Show recent transactions for 0x1234...
 Get transaction history for 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 in the last 30 days
 ```
 
-### DeFi Positions
+### DeFi 位置
 ```
 Show all DeFi positions for 0x1234...
 What protocols is 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 using?
 ```
 
-### Token Analysis
+### 代币分析
 ```
 Get current price of ETH
 Show price chart for USDC over the last 7 days
 Compare ETH price to SOL
 ```
 
-### NFT Data
+### NFT 数据
 ```
 Show NFT collections owned by 0x1234...
 Get details for Bored Ape #1234
 List all NFTs in wallet 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 ```
 
-### Gas Prices
+### 燃气价格
 ```
 What are current gas prices on Ethereum?
 Compare gas prices across all EVM chains
 Show Solana transaction fees
 ```
 
-## Tips
+## 提示
 
-1. **Address Format**: Use 0x addresses only (e.g., 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045)
-2. **Multi-Chain**: Supports EVM chains (Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, etc.) and Solana
-3. **Real-Time**: All data is real-time from Zerion's indexed data
-4. **Auth Required**: API key needed - configure in MCP settings
+1. **地址格式**：仅使用 0x 格式的地址（例如：0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045）
+2. **多链支持**：支持 EVM 链路（以太坊、Polygon、Arbitrum、Optimism、Base、BSC 等）和 Solana
+3. **实时数据**：所有数据均来自 Zerion 的实时索引
+4. **身份验证要求**：需要 API 密钥 - 请在 MCP 设置中配置
 
-## Example Workflows
+## 示例工作流程
 
-### Customer Research
+### 客户研究
 ```
 Analyze the portfolio composition of 0x1234...
 What DeFi protocols are they using?
@@ -90,14 +90,14 @@ Show their transaction patterns over the last month
 Calculate their PnL across all positions
 ```
 
-### Token Analysis
+### 代币分析
 ```
 Get the current price of our governance token
 Compare it to historical prices
 Show top holders by wallet address
 ```
 
-### Competitive Analysis
+### 竞争分析
 ```
 What wallets are using Protocol X?
 What's the average portfolio size?
@@ -105,24 +105,24 @@ What other protocols do they use?
 Show cross-chain activity patterns
 ```
 
-### Multi-Chain Analysis
+### 多链分析
 ```
 Compare wallet activity on Ethereum vs Solana
 Show portfolio breakdown across all EVM chains
 Which chains have the most DeFi activity?
 ```
 
-## MCP Server Details
+## MCP 服务器详情
 
-**URL**: `https://developers.zerion.io/mcp`
-**Type**: Remote HTTP MCP server
-**Auth**: API key required (get at https://developers.zerion.io)
-**Docs**: https://developers.zerion.io/reference/building-with-ai
+**URL**：`https://developers.zerion.io/mcp`
+**类型**：远程 HTTP MCP 服务器
+**身份验证**：需要 API 密钥（请在 [https://developers.zerion.io](https://developers.zerion.io) 获取）
+**文档**：https://developers.zerion.io/reference/building-with-ai
 
-## Setup
+## 设置
 
-1. Get your API key at https://developers.zerion.io
-2. Add to your MCP configuration:
+1. 请在 [https://developers.zerion.io](https://developers.zerion.io) 获取您的 API 密钥。
+2. 将 API 密钥添加到您的 MCP 配置中：
    ```json
    {
      "zerion": {
@@ -134,20 +134,19 @@ Which chains have the most DeFi activity?
    }
    ```
 
-## Related Resources
+## 相关资源
 
-- API Docs: https://developers.zerion.io
-- Zerion Dashboard: https://dashboard.zerion.io
-- llms.txt: https://developers.zerion.io/llms.txt (for keeping AI tools current)
+- API 文档：https://developers.zerion.io
+- Zerion 仪表板：https://dashboard.zerion.io
+- llms.txt：[https://developers.zerion.io/llms.txt](https://developers.zerion.io/llms.txt)（用于保持 AI 工具的更新）
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- Researching wallet addresses (0x format)
-- Analyzing DeFi positions and protocols
-- Getting real-time token prices across chains
-- Investigating transaction patterns
-- Exploring NFT holdings
-- Checking gas prices across EVM chains and Solana
-- Validating customer or competitor data
-- Calculating portfolio PnL
+- 研究钱包地址（0x 格式）
+- 分析 DeFi 交易及协议
+- 获取各链路的实时代币价格
+- 调查交易模式
+- 查看 NFT 持有情况
+- 查阅 EVM 链路和 Solana 的燃气价格
+- 验证客户或竞争对手的数据
+- 计算资产组合的盈亏情况

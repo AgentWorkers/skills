@@ -1,26 +1,26 @@
 ---
 name: todoist
-description: Manage Todoist tasks via the `todoist` CLI (list, add, modify, complete, delete). Supports filters, projects, labels, and priorities.
+description: 通过 `todoist` CLI 管理 Todoist 任务（列出、添加、修改、完成、删除）。支持过滤、项目、标签和优先级设置。
 homepage: https://github.com/sachaos/todoist
 metadata: {"clawdbot":{"emoji":"✅","requires":{"bins":["todoist"]},"install":[{"id":"brew","kind":"brew","formula":"todoist-cli","bins":["todoist"],"label":"Install todoist-cli via Homebrew"}]}}
 ---
 
 # Todoist CLI
 
-Use `todoist` to manage Todoist tasks directly from the terminal.
+使用 `todoist` 命令行工具直接从终端管理 Todoist 任务。
 
-## Setup
+## 设置
 
-1. Install: `brew install todoist-cli`
-2. Get your API token from https://app.todoist.com/app/settings/integrations/developer
-3. Create config:
+1. 安装：`brew install todoist-cli`
+2. 从 https://app.todoist.com/app/settings/integrations/developer 获取你的 API 令牌
+3. 创建配置文件：
 ```bash
 mkdir -p ~/.config/todoist
 echo '{"token": "YOUR_API_TOKEN"}' > ~/.config/todoist/config.json
 ```
-4. Sync: `todoist sync`
+4. 同步任务：`todoist sync`
 
-## List Tasks
+## 列出任务
 
 ```bash
 todoist list                           # All tasks
@@ -33,7 +33,7 @@ todoist list --filter "#Project"       # By project
 todoist list --filter "(today | overdue) & p1"  # Combined filters
 ```
 
-## Add Tasks
+## 添加任务
 
 ```bash
 todoist add "Buy milk"                                    # Simple task
@@ -44,7 +44,7 @@ todoist add "Review" --label-names "urgent,review"        # With labels
 todoist quick "Buy eggs tomorrow p1 #Shopping @errands"   # Natural language
 ```
 
-## Modify Tasks
+## 修改任务
 
 ```bash
 todoist modify TASK_ID --content "New title"
@@ -52,20 +52,20 @@ todoist modify TASK_ID --priority 2
 todoist modify TASK_ID --date "next monday"
 ```
 
-## Complete Tasks
+## 完成任务
 
 ```bash
 todoist close TASK_ID              # Complete a task
 todoist close TASK_ID TASK_ID2     # Complete multiple tasks
 ```
 
-## Delete Tasks
+## 删除任务
 
 ```bash
 todoist delete TASK_ID
 ```
 
-## View Details
+## 查看任务详情
 
 ```bash
 todoist show TASK_ID               # Show task details
@@ -73,13 +73,13 @@ todoist projects                   # List all projects
 todoist labels                     # List all labels
 ```
 
-## Sync
+## 同步任务
 
 ```bash
 todoist sync                       # Sync local cache with Todoist
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 todoist list --csv                 # CSV output for scripting
@@ -88,31 +88,31 @@ todoist list --namespace           # Show parent tasks as namespace
 todoist list --indent              # Indent subtasks
 ```
 
-## Filter Syntax
+## 过滤语法
 
-Todoist CLI supports the [official Todoist filter syntax](https://todoist.com/help/articles/introduction-to-filters-V98wIH):
+Todoist CLI 支持官方的 Todoist 过滤语法（https://todoist.com/help/articles/introduction-to-filters-V98wIH）：
 
-| Filter | Description |
+| 过滤条件 | 描述 |
 |--------|-------------|
-| `today` | Due today |
-| `tomorrow` | Due tomorrow |
-| `overdue` | Past due date |
-| `no date` | No due date |
-| `p1`, `p2`, `p3`, `p4` | Priority level |
-| `@label` | By label |
-| `#Project` | By project |
-| `assigned to: me` | Assigned to you |
-| `7 days` | Due in next 7 days |
+| `today`   | 今天到期的任务 |
+| `tomorrow` | 明天到期的任务 |
+| `overdue` | 过期未完成的任务 |
+| `no date` | 无截止日期的任务 |
+| `p1`, `p2`, `p3`, `p4` | 优先级级别 |
+| `@label`   | 按标签筛选 |
+| `#Project` | 按项目筛选 |
+| `assigned to: me` | 分配给你的任务 |
+| `7 days` | 7 天内到期的任务 |
 
-Combine with `&` (and), `|` (or), `!` (not):
+可以使用 `&`（与）、`|`（或）、`!`（不）组合过滤条件：
 ```bash
 todoist list --filter "(today | overdue) & p1"
 todoist list --filter "#Work & !@done"
 ```
 
-## Notes
+## 注意事项
 
-- Run `todoist sync` after making changes in the web/mobile app
-- Task IDs are numeric (e.g., `12345678`)
-- Config stored in `~/.config/todoist/config.json`
-- Cache stored in `~/.config/todoist/cache.json`
+- 在网页或移动应用中进行更改后，请运行 `todoist sync` 以同步数据
+- 任务 ID 为数字格式（例如：`12345678`）
+- 配置文件存储在 `~/.config/todoist/config.json` 中
+- 缓存文件存储在 `~/.config/todoist/cache.json` 中

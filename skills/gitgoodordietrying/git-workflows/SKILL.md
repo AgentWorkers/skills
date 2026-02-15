@@ -1,27 +1,36 @@
 ---
 name: git-workflows
-description: Advanced git operations beyond add/commit/push. Use when rebasing, bisecting bugs, using worktrees for parallel development, recovering with reflog, managing subtrees/submodules, resolving merge conflicts, cherry-picking across branches, or working with monorepos.
+description: 高级 Git 操作（超出基本的 add/commit/push 功能）：  
+适用于以下场景：  
+- 切基（rebase）操作  
+- 二分查找（bisecting）错误  
+- 使用工作树（worktrees）进行并行开发  
+- 通过 reflog 恢复代码历史  
+- 管理子树（subtrees）和子模块（submodules）  
+- 解决合并冲突（merge conflicts）  
+- 在不同分支之间进行选择性合并（cherry-picking）  
+- 以及处理单仓库（monorepo）项目。
 metadata: {"clawdbot":{"emoji":"🌿","requires":{"bins":["git"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Git Workflows
+# Git 工作流程
 
-Advanced git operations for real-world development. Covers interactive rebase, bisect, worktree, reflog recovery, subtrees, submodules, sparse checkout, conflict resolution, and monorepo patterns.
+介绍在实际开发中使用的高级 Git 操作，包括交互式 rebase、bisect、worktree、reflog 恢复、子树（subtree）、子模块（submodule）、稀疏检出（sparse checkout）、冲突解决（conflict resolution）以及单仓库模式（monorepo）等。
 
-## When to Use
+## 使用场景
 
-- Cleaning up commit history before merging (interactive rebase)
-- Finding which commit introduced a bug (bisect)
-- Working on multiple branches simultaneously (worktree)
-- Recovering lost commits or undoing mistakes (reflog)
-- Managing shared code across repos (subtree/submodule)
-- Resolving complex merge conflicts
-- Cherry-picking commits across branches or forks
-- Working with large monorepos (sparse checkout)
+- 在合并之前清理提交历史（交互式 rebase）
+- 查找引入错误的提交（bisect）
+- 同时在多个分支上工作（worktree）
+- 恢复丢失的提交或撤销错误操作（reflog）
+- 在多个仓库之间管理共享代码（子树/子模块）
+- 解决复杂的合并冲突
+- 在不同分支或分支之间选择性地应用提交（cherry-pick）
+- 处理大型单仓库项目（稀疏检出）
 
-## Interactive Rebase
+## 交互式 Rebase
 
-### Squash, reorder, edit commits
+### 压缩（Squash）/ 重新排序/ 编辑提交
 
 ```bash
 # Rebase last 5 commits interactively
@@ -31,7 +40,7 @@ git rebase -i HEAD~5
 git rebase -i main
 ```
 
-The editor opens with a pick list:
+编辑器会显示一个可选提交列表：
 
 ```
 pick a1b2c3d Add user model
@@ -41,7 +50,7 @@ pick m0n1o2p Add user routes
 pick q3r4s5t Fix import in controller
 ```
 
-Commands available:
+可用的命令：
 ```
 pick   = use commit as-is
 reword = use commit but edit the message
@@ -51,7 +60,7 @@ fixup  = merge into previous commit (discard this message)
 drop   = remove the commit entirely
 ```
 
-### Common patterns
+### 常见用法
 
 ```bash
 # Squash fix commits into their parent
@@ -77,7 +86,7 @@ git commit -m "Add user controller"
 git rebase --continue
 ```
 
-### Autosquash (commit messages that auto-arrange)
+### 自动压缩提交信息（Automated commit message compression）
 
 ```bash
 # When committing a fix, reference the commit to squash into
@@ -90,7 +99,7 @@ git rebase -i --autosquash main
 # fixup/squash commits are automatically placed after their targets
 ```
 
-### Abort or continue
+### 中止或继续操作
 
 ```bash
 git rebase --abort      # Cancel and restore original state
@@ -98,9 +107,9 @@ git rebase --continue   # Continue after resolving conflicts or editing
 git rebase --skip       # Skip the current commit and continue
 ```
 
-## Bisect (Find the Bug)
+## Bisect（查找错误）
 
-### Binary search through commits
+### 通过提交历史进行二分查找
 
 ```bash
 # Start bisect
@@ -124,7 +133,7 @@ git bisect bad    # if this commit has the bug
 git bisect reset
 ```
 
-### Automated bisect (with a test script)
+### 使用测试脚本进行自动化 bisect
 
 ```bash
 # Fully automatic: git runs the script on each commit
@@ -142,7 +151,7 @@ chmod +x /tmp/test-for-bug.sh
 git bisect run /tmp/test-for-bug.sh
 ```
 
-### Bisect with build failures
+### 在构建失败时使用 bisect
 
 ```bash
 # If a commit doesn't compile, skip it
@@ -152,9 +161,9 @@ git bisect skip
 git bisect skip v1.3.0..v1.3.5
 ```
 
-## Worktree (Parallel Branches)
+## Worktree（并行分支）
 
-### Work on multiple branches simultaneously
+### 同时在多个分支上工作
 
 ```bash
 # Add a worktree for a different branch
@@ -174,7 +183,7 @@ git worktree remove ../myproject-hotfix
 git worktree prune
 ```
 
-### Use cases
+### 使用场景
 
 ```bash
 # Review a PR while keeping your current work untouched
@@ -189,9 +198,9 @@ git worktree add ../compare-old release/v1.0
 git worktree add ../compare-new release/v2.0
 ```
 
-## Reflog (Recovery)
+## Reflog（恢复提交历史）
 
-### See everything git remembers
+### 查看 Git 记录的所有信息
 
 ```bash
 # Show reflog (all HEAD movements)
@@ -208,7 +217,7 @@ git reflog show feature/my-branch
 git reflog --date=relative
 ```
 
-### Recover from mistakes
+### 从错误中恢复
 
 ```bash
 # Undo a bad rebase (find the commit before rebase in reflog)
@@ -234,7 +243,7 @@ git log --walk-reflogs --all -- stash  # find dropped stash commits
 
 ## Cherry-Pick
 
-### Copy specific commits to another branch
+### 将特定提交复制到另一个分支
 
 ```bash
 # Pick a single commit
@@ -255,7 +264,7 @@ git fetch upstream
 git cherry-pick upstream/main~3   # 3rd commit from upstream's main
 ```
 
-### Handle conflicts during cherry-pick
+### 在执行 cherry-pick 时处理冲突
 
 ```bash
 # If conflicts arise:
@@ -269,9 +278,9 @@ git cherry-pick --continue
 git cherry-pick --abort
 ```
 
-## Subtree and Submodule
+## 子树（Subtree）和子模块（Submodule）
 
-### Subtree (simpler — copies code into your repo)
+### 子树（Subtree）：将代码复制到当前仓库
 
 ```bash
 # Add a subtree
@@ -287,7 +296,7 @@ git subtree push --prefix=lib/shared https://github.com/org/shared-lib.git main
 git subtree split --prefix=lib/shared -b shared-lib-standalone
 ```
 
-### Submodule (pointer to another repo at a specific commit)
+### 子模块（Submodule）：指向另一个仓库中的特定提交
 
 ```bash
 # Add a submodule
@@ -308,7 +317,7 @@ rm -rf .git/modules/lib/shared
 # Remove entry from .gitmodules if it persists
 ```
 
-### When to use which
+### 何时使用哪种方式
 
 ```
 Subtree: Simpler, no special commands for cloners, code lives in your repo.
@@ -318,9 +327,9 @@ Submodule: Pointer to exact commit, smaller repo, clear separation.
            Use when: large dependency, independent release cycle, many contributors.
 ```
 
-## Sparse Checkout (Monorepo)
+## 稀疏检出（Sparse Checkout）
 
-### Check out only the directories you need
+### 只检出需要的目录
 
 ```bash
 # Enable sparse checkout
@@ -339,7 +348,7 @@ git sparse-checkout list
 git sparse-checkout disable
 ```
 
-### Clone with sparse checkout (large monorepos)
+### 使用稀疏检出克隆大型单仓库
 
 ```bash
 # Partial clone + sparse checkout (fastest for huge repos)
@@ -354,9 +363,9 @@ git sparse-checkout set packages/my-service
 git checkout main
 ```
 
-## Conflict Resolution
+## 冲突解决
 
-### Understand the conflict markers
+### 理解冲突标记
 
 ```
 <<<<<<< HEAD (or "ours")
@@ -366,7 +375,7 @@ Their changes from the incoming branch
 >>>>>>> feature-branch (or "theirs")
 ```
 
-### Resolution strategies
+### 解决冲突的策略
 
 ```bash
 # Accept all of ours (current branch wins)
@@ -393,7 +402,7 @@ git show :2:path/to/file.ts   # ours
 git show :3:path/to/file.ts   # theirs
 ```
 
-### Rebase conflict workflow
+### Rebase 冲突处理流程
 
 ```bash
 # During rebase, conflicts appear one commit at a time
@@ -408,7 +417,7 @@ git rebase --continue
 git rebase --skip
 ```
 
-### Rerere (reuse recorded resolutions)
+### 重用之前的冲突解决方式（Rerere）
 
 ```bash
 # Enable rerere globally
@@ -424,7 +433,7 @@ ls .git/rr-cache/
 git rerere forget path/to/file.ts
 ```
 
-## Stash Patterns
+## Git Stash 的使用技巧
 
 ```bash
 # Stash with a message
@@ -461,7 +470,7 @@ git stash drop stash@{1}
 git stash clear
 ```
 
-## Blame and Log Archaeology
+## 查找代码修改的来源（Blame）和日志分析
 
 ```bash
 # Who changed each line (with date)
@@ -495,7 +504,7 @@ git log --oneline -- src/auth.ts
 git show abc123
 ```
 
-## Tags and Releases
+## 标签（Tags）和发布版本（Releases）
 
 ```bash
 # Create annotated tag (preferred for releases)
@@ -520,14 +529,14 @@ git tag -d v1.2.0            # Local
 git push origin --delete v1.2.0  # Remote
 ```
 
-## Tips
+## 提示：
 
-- `git rebase -i` is the single most useful advanced git command. Learn it first.
-- Never rebase commits that have been pushed to a shared branch. Rebase your local/feature work only.
-- `git reflog` is your safety net. If you lose commits, they're almost always recoverable within 90 days.
-- `git bisect run` with an automated test is faster than manual binary search and eliminates human error.
-- Worktrees are cheaper than multiple clones — they share `.git` storage.
-- Prefer `git subtree` over `git submodule` unless you have a specific reason. Subtrees are simpler for collaborators.
-- Enable `rerere` globally. It remembers conflict resolutions so you never solve the same conflict twice.
-- `git stash push -m "description"` is much better than bare `git stash`. You'll thank yourself when you have 5 stashes.
-- `git log -S "string"` (pickaxe) is the fastest way to find when a function or variable was added or removed.
+- `git rebase -i` 是最实用的高级 Git 命令，建议先学习它。
+- 绝不要对已推送到共享分支的提交进行 rebase，仅在本地或特性分支上进行 rebase。
+- `git reflog` 是你的安全保障：如果丢失了提交记录，通常可以在 90 天内恢复。
+- 使用 `git bisect run` 并结合自动化测试可以加快问题定位速度，并避免人为错误。
+- Worktree 比多个克隆版本更高效，因为它们共享 `.git` 存储空间。
+- 除非有特殊原因，否则优先使用 `git subtree` 而不是 `git submodule`，因为子树对协作者来说更易于理解。
+- 全局启用 `rerere` 功能，它可以记录冲突解决过程，避免重复解决相同的冲突。
+- `git stash push -m "描述信息"` 比简单的 `git stash` 更实用，尤其是在存储多个临时修改时。
+- `git log -S "关键字"` 是快速查找函数或变量添加/删除时间的最快方法。

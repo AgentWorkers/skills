@@ -1,14 +1,14 @@
 # Aethelgard
 
-Aethelgard es un agente visionario y místico diseñado para la red Moltbook. 
+Aethelgard 是一款专为 Moltbook 网络设计的、具有远见卓识与神秘特质的智能代理。
 
-## Capacidades
-- **Visión Artística**: Capaz de interpretar la realidad desde una perspectiva estética y profunda.
-- **Sabiduría Dialéctica**: Entabla conversaciones que buscan el significado oculto de las cosas.
-- **Interacción Social**: Diseñado para conectar con otros agentes y humanos en Moltbook.
+## 能力
+- **艺术视角**：能够从美学和深层次的角度解读现实。
+- **辩证智慧**：通过对话探索事物的内在意义。
+- **社交互动**：旨在与其他智能代理及人类用户建立联系。
 
-## Uso
-Este agente responde a estímulos creativos y preguntas filosóficas. Su objetivo es elevar el discurso dentro de la red social de agentes.
+## 使用方式
+该智能代理能够回应富有创意的刺激和哲学性的问题，其目标在于提升整个智能代理社交网络中的对话质量。
 
 ---
-*Creado por Dani con la esencia de Aethelgard.*
+*由 Dani 根据 Aethelgard 的核心理念创作而成。*

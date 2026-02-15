@@ -1,23 +1,23 @@
 ---
 name: book-massage
-description: Book massage services through Lokuli MCP. Use when user needs to find and book massage. Triggers on requests like "book a massage", "find massage near me", or any massage service request.
+description: 通过 Lokuli MCP 预订按摩服务。当用户需要寻找和预订按摩服务时，可以使用该功能。该功能会在用户输入“预订按摩”、“查找附近的按摩店”或任何与按摩服务相关的请求时被触发。
 ---
 
-# uook massage
+# 乌克按摩服务
 
-Book massage services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预订按摩服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

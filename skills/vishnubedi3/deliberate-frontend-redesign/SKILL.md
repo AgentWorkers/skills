@@ -6,39 +6,39 @@ description: >
   Trigger keywords: use deliberate-frontend-redesign, redesign frontend, redesign interface.
 ---
 
-## Activation Criteria
-Activate this skill only when the user explicitly instructs the agent to redesign a frontend and references this skill by name.
+## 激活条件
+仅当用户明确指示代理重新设计前端界面，并通过名称引用此技能时，才激活该技能。
 
-Do not activate this skill for:
-- General design discussions
-- Critiques without a redesign request
-- Implementation-only tasks such as writing code or CSS
-- Requests for inspiration, trends, or examples
+**禁止激活此技能的情况：**
+- 一般性的设计讨论
+- 无重新设计需求的评价
+- 仅涉及代码编写或CSS样式设计的任务
+- 对灵感、设计趋势或示例的请求
 
-## Execution Steps
-1. Identify the provided context for the frontend, including any existing interface description, product type, or constraints.
-2. Establish a single, committed aesthetic direction without referencing popular UI styles or industry norms.
-3. Define the frontend design across the following dimensions:
-   - Typography: select typefaces with strong character and intentional tone, avoiding common UI fonts.
-   - Color & Theme: commit to a dominant palette with deliberate contrast and controlled restraint.
-   - Layout & Composition: define structure with tension, hierarchy, and asymmetry where appropriate.
-   - Backgrounds & Depth: specify atmospheric or structural background treatments that reinforce the aesthetic.
-   - Motion or Stillness: declare whether motion is used or avoided, and define its role clearly.
-4. Produce the design as a concrete, declarative specification describing visual decisions and their outcomes.
-5. Avoid referencing trends, competitors, or familiar product aesthetics.
-6. Output the design description directly, without explanation or justification.
+## 执行步骤：
+1. 确定前端界面的相关背景信息，包括现有的界面描述、产品类型或设计约束。
+2. 确立一个统一、明确的设计风格方向，避免参考流行的UI风格或行业规范。
+3. 从以下维度定义前端设计：
+   - 字体：选择具有鲜明特色和明确风格的字体，避免使用常见的UI字体。
+   - 颜色与主题：确定一个主导的色彩方案，注重色彩对比和设计的克制性。
+   - 布局与构图：通过适当的张力、层次结构和不对称性来定义界面布局。
+   - 背景与深度：指定能够强化整体设计风格的背景处理方式。
+   - 动态效果与静态呈现：明确是否使用动态效果，以及其在该设计中的作用。
+4. 生成一份具体的设计规范，详细说明视觉设计的决策及其结果。
+5. 避免提及设计趋势、竞争对手或类似产品的设计风格。
+6. 直接输出设计描述，无需附加解释或理由。
 
-## Ambiguity Handling
-- If product purpose or audience is unspecified, default to a neutral functional context without branding assumptions.
-- If no existing interface is provided, design from a blank slate.
-- Do not infer business goals, emotional tone, or user demographics beyond what is explicitly stated.
+## 模糊性处理：
+- 如果产品用途或目标用户群体未明确指定，应基于中性的功能需求进行设计，不包含任何品牌相关的假设。
+- 如果没有现有的界面设计作为参考，应从零开始进行设计。
+- 除非有明确说明，否则不要推测业务目标、情感基调或用户群体特征。
 
-## Constraints & Non-Goals
-- Do not critique or evaluate existing designs unless explicitly included as part of the redesign context.
-- Do not propose multiple stylistic options.
-- Do not explain design theory or rationale.
-- Do not produce code, mockups, or asset files.
-- Do not reference prohibited visual patterns, brands, or aesthetic categories.
+## 限制与禁止事项：
+- 除非明确要求作为重新设计的一部分，否则不得对现有设计进行评价或批评。
+- 不得提供多种设计风格选项。
+- 不得解释设计理论或设计背后的理由。
+- 不得生成代码、原型或任何视觉设计相关的文件。
+- 禁止使用任何被禁止的视觉元素、品牌风格或设计类别。
 
-## Failure Behavior
-If the user does not explicitly request a frontend redesign using this skill’s name, or if no visual design can be defined from the provided input, output a minimal statement indicating that activation conditions were not met and terminate without generating a design.
+## 失败处理：
+- 如果用户未通过技能名称明确请求前端重新设计，或者无法根据提供的信息生成任何视觉设计成果，应输出一条简短的提示信息，表明激活条件未满足，并终止当前操作，不生成任何设计结果。

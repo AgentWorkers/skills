@@ -1,11 +1,12 @@
 ---
 name: glab-completion
-description: Use when working with glab completion commands.
+description: **使用说明：**  
+在配合 `glab` 完成命令（completion commands）使用时，请遵循以下规则。
 ---
 
-# glab completion
+# glab 完成补全功能
 
-## Overview
+## 概述
 
 ```
 
@@ -20,7 +21,7 @@ description: Use when working with glab completion commands.
   source <(glab completion -s bash)                                                                                     
   ```                                                                                                                   
                                                                                                                         
-  To load completions for every new session, run this command one time:                                                 
+  要在每个新会话中加载完成补全功能，请运行此命令一次：                                                 
                                                                                                                         
   #### Linux                                                                                                            
                                                                                                                         
@@ -36,21 +37,19 @@ description: Use when working with glab completion commands.
                                                                                                                         
   ### Zsh                                                                                                               
                                                                                                                         
-  If shell completion is not already enabled in your environment you must                                               
-  enable it. Run this command one time:                                                                                 
+  如果您的环境中尚未启用 shell 完成补全功能，您需要先启用它。运行此命令一次：                                                                                 
                                                                                                                         
   ```shell                                                                                                              
   echo "autoload -U compinit; compinit" >> ~/.zshrc                                                                     
   ```                                                                                                                   
                                                                                                                         
-  To load completions in your current shell session:                                                                    
+  要在当前 shell 会话中加载完成补全功能，请执行以下操作：                                                                    
                                                                                                                         
   ```shell                                                                                                              
   source <(glab completion -s zsh); compdef _glab glab                                                                  
   ```                                                                                                                   
                                                                                                                         
-  To load completions for every new session, run this command one time:                                                 
-                                                                                                                        
+  要在每个新会话中加载完成补全功能，请运行此命令一次：                                                                                                                        
   #### Linux                                                                                                            
                                                                                                                         
   ```shell                                                                                                              
@@ -59,53 +58,50 @@ description: Use when working with glab completion commands.
                                                                                                                         
   #### macOS                                                                                                            
                                                                                                                         
-  For older versions of macOS, you might need this command:                                                             
+  对于较旧版本的 macOS，您可能需要运行以下命令：                                                             
                                                                                                                         
   ```shell                                                                                                              
   glab completion -s zsh > /usr/local/share/zsh/site-functions/_glab                                                    
   ```                                                                                                                   
                                                                                                                         
-  The Homebrew version of glab should install completions automatically.                                                
+  使用 Homebrew 安装的 glab 会自动配置完成补全功能。                                                
                                                                                                                         
   ### fish                                                                                                              
                                                                                                                         
-  To load completions in your current shell session:                                                                    
+  要在当前 shell 会话中加载完成补全功能，请执行以下操作：                                                                    
                                                                                                                         
   ```shell                                                                                                              
   glab completion -s fish | source                                                                                      
   ```                                                                                                                   
                                                                                                                         
-  To load completions for every new session, run this command one time:                                                 
-                                                                                                                        
+  要在每个新会话中加载完成补全功能，请运行此命令一次：                                                                                                                        
   ```shell                                                                                                              
   glab completion -s fish > ~/.config/fish/completions/glab.fish                                                        
   ```                                                                                                                   
                                                                                                                         
   ### PowerShell                                                                                                        
                                                                                                                         
-  To load completions in your current shell session:                                                                    
+  要在当前 shell 会话中加载完成补全功能，请执行以下操作：                                                                    
                                                                                                                         
   ```shell                                                                                                              
   glab completion -s powershell | Out-String | Invoke-Expression                                                        
   ```                                                                                                                   
                                                                                                                         
-  To load completions for every new session, add the output of the above command                                        
-  to your PowerShell profile.                                                                                           
+  要在每个新会话中加载完成补全功能，只需将上述命令的输出添加到您的 PowerShell 配置文件中即可。                                                                                           
                                                                                                                         
-  When installing glab through a package manager, however, you might not need                                           
-  more shell configuration to support completions.                                                                      
-  For Homebrew, see [brew shell completion](https://docs.brew.sh/Shell-Completion)                                      
+  但是，如果您是通过包管理器安装 glab 的，可能不需要再进行额外的 shell 配置。                                                                      
+  关于 Homebrew 的详细信息，请参阅 [brew shell completion](https://docs.brew.sh/Shell-Completion)                                      
                                                                                                                         
          
-  USAGE  
+  **用法**  
          
     glab completion [--flags]  
          
-  FLAGS  
+  **参数说明**  
          
-    -h --help   Show help for this command.
-    --no-desc   Do not include shell completion description.
-    -s --shell  Shell type: bash, zsh, fish, powershell. (bash)
+    -h        --help     显示此命令的帮助信息。  
+    --no-desc    不显示 shell 完成补全功能的描述。  
+    -s        --shell     指定 shell 类型：bash、zsh、fish 或 powershell。 （默认为 bash）  
 ```
 
 ## Quick start
@@ -114,6 +110,6 @@ description: Use when working with glab completion commands.
 glab completion --help
 ```
 
-## Subcommands
-
-This command has no subcommands.
+## 子命令  
+   
+此命令没有子命令。

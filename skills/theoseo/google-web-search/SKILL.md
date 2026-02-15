@@ -1,6 +1,6 @@
 ---
 name: google-web-search
-description: Enables grounded question answering by automatically executing the Google Search tool within Gemini models. Use when the required information is recent (post knowledge cutoff) or requires verifiable citation.
+description: 该功能通过自动在 Gemini 模型中执行 Google 搜索工具，实现了基于事实的问答。当所需信息属于最新内容（即在知识更新截止日期之后发布的）或需要可验证的引用来源时，应使用此功能。
 metadata:
   {
     "openclaw":
@@ -21,40 +21,39 @@ metadata:
   }
 ---
 
-# Google Web Search
+# 谷歌网页搜索
 
-## Overview
+## 概述
 
-This skill provides the capability to perform real-time web searches via the Gemini API's `google_search` grounding tool. It is designed to fetch the most current information available on the web to provide grounded, citable answers to user queries.
+该技能通过 Gemini API 的 `google_search` 工具提供实时网页搜索功能。它旨在获取网络上最新的信息，以提供有根据的、可引用的回答来满足用户查询需求。
 
-**Key Features:**
-- Real-time web search via Gemini API
-- Grounded responses with verifiable citations
-- Configurable model selection
-- Simple Python API
+**主要特点：**
+- 通过 Gemini API 进行实时网页搜索
+- 提供带有可验证引用的有根据的回答
+- 支持模型选择
+- 使用简单的 Python API
 
-## Usage
+## 使用方法
 
-This skill exposes the Gemini API's `google_search` tool. It should be used when the user asks for **real-time information**, **recent events**, or requests **verifiable citations**.
+该技能提供了 Gemini API 的 `google_search` 工具。当用户需要 **实时信息**、**最近的事件** 或 **可验证的引用** 时，应使用该工具。
 
-### Execution Context
+### 执行环境
 
-The core logic is in `scripts/example.py`. This script requires the following environment variables:
+核心逻辑位于 `scripts/example.py` 文件中。此脚本需要以下环境变量：
+- **GEMINI_API_KEY**（必填）：您的 Gemini API 密钥
+- **GEMINI_MODEL**（可选）：要使用的模型（默认值：`gemini-2.5-flash-lite`）
 
-- **GEMINI_API_KEY** (required): Your Gemini API key
-- **GEMINI_MODEL** (optional): Model to use (default: `gemini-2.5-flash-lite`)
+**支持的模型：**
+- `gemini-2.5-flash-lite`（默认）：快速且经济高效
+- `gemini-3-flash-preview`：最新的闪存模型
+- `gemini-3-pro-preview`：功能更强大，但速度较慢
+- `gemini-2.5-flash-lite-preview-09-2025`：特定版本
 
-**Supported Models:**
-- `gemini-2.5-flash-lite` (default) - Fast and cost-effective
-- `gemini-3-flash-preview` - Latest flash model
-- `gemini-3-pro-preview` - More capable, slower
-- `gemini-2.5-flash-lite-preview-09-2025` - Specific version
+### Python 工具实现方式
 
-### Python Tool Implementation Pattern
+在将此技能集成到更大的工作流程中时，辅助脚本应在安装了 `google-genai` 库的环境中执行，并且需要设置 `GEMINI_API_KEY`。
 
-When integrating this skill into a larger workflow, the helper script should be executed in an environment where the `google-genai` library is available and the `GEMINI_API_KEY` is exposed.
-
-Example Python invocation structure:
+示例 Python 调用结构：
 ```python
 from skills.google-web-search.scripts.example import get_grounded_response
 
@@ -74,11 +73,11 @@ response_text = get_grounded_response(prompt)
 print(response_text)
 ```
 
-### Troubleshooting
+### 故障排除
 
-If the script fails:
-1. **Missing API Key**: Ensure `GEMINI_API_KEY` is set in the execution environment.
-2. **Library Missing**: Verify that the `google-genai` library is installed (`pip install google-generativeai`).
-3. **API Limits**: Check the API usage limits on the Google AI Studio dashboard.
-4. **Invalid Model**: If you set `GEMINI_MODEL`, ensure it's a valid Gemini model name.
-5. **Model Not Supporting Grounding**: Some models may not support the `google_search` tool. Use flash or pro variants.
+如果脚本失败，请检查以下原因：
+1. **缺少 API 密钥**：确保在执行环境中设置了 `GEMINI_API_KEY`。
+2. **缺少库**：确认已安装 `google-genai` 库（使用 `pip install google-generativeai` 安装）。
+3. **API 使用限制**：查看 Google AI Studio 仪表板上的 API 使用限制。
+4. **无效的模型**：如果设置了 `GEMINI_MODEL`，请确保它是有效的 Gemini 模型名称。
+5. **模型不支持搜索功能**：某些模型可能不支持 `google_search` 工具。请使用 `gemini-2.5-flash-lite` 或 `gemini-3-flash-preview` 等模型。

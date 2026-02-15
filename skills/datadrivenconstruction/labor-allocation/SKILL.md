@@ -1,25 +1,24 @@
 ---
 slug: "labor-allocation"
 display_name: "Labor Allocation"
-description: "Allocate and track labor resources across project activities. Balance workload, track attendance, and optimize crew assignments."
+description: "在项目活动中分配和跟踪劳动力资源。平衡工作量，记录出勤情况，并优化人员分配。"
 ---
 
-# Labor Allocation Manager
+# 劳动力分配管理系统
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Labor management challenges:
-- Assigning workers to activities
-- Balancing workload
-- Tracking attendance
-- Optimizing productivity
+### 问题描述
+劳动力管理面临的挑战：
+- 如何将工人分配到相应的任务中
+- 如何平衡工作量
+- 如何跟踪工人的出勤情况
+- 如何提高生产效率
 
-### Solution
-Systematic labor allocation and tracking to optimize resource utilization and maintain project schedule.
+### 解决方案
+通过系统化的劳动力分配和跟踪机制，优化资源利用并确保项目进度按计划进行。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -386,8 +385,7 @@ class LaborAllocation:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date, timedelta
 
@@ -414,21 +412,21 @@ labor.assign_worker(
 labor.record_attendance(date.today(), "W001", "A-101", hours_worked=10, overtime_hours=2)
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Daily Roster
+### 1. 日常排班
 ```python
 roster = labor.get_daily_roster(date.today())
 print(roster)
 ```
 
-### 2. Labor Cost
+### 2. 劳动力成本核算
 ```python
 cost = labor.calculate_labor_cost(activity_id="A-101")
 print(f"Total Cost: ${cost['total_cost']:,.2f}")
 ```
 
-### 3. Forecast Needs
+### 3. 需求预测
 ```python
 activities = [
     {'trade': 'concrete', 'manhours': 400, 'duration_days': 5},
@@ -438,5 +436,5 @@ needs = labor.forecast_labor_needs(activities)
 print(needs)
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Labor Management
+## 参考资源
+- **DDC手册**：第3.1章 - 劳动力管理

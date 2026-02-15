@@ -10,9 +10,9 @@ metadata:
 
 # Google Analytics
 
-Access Google Analytics with managed OAuth authentication. This skill covers both the Admin API (manage accounts, properties, data streams) and the Data API (run reports on metrics).
+您可以使用管理的 OAuth 认证来访问 Google Analytics。本文档涵盖了 Admin API（用于管理账户、属性和数据流）和 Data API（用于运行报告）的功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List account summaries (Admin API)
@@ -22,51 +22,50 @@ curl -s -X GET "https://gateway.maton.ai/google-analytics-admin/v1beta/accountSu
 curl -s -X POST "https://gateway.maton.ai/google-analytics-data/v1beta/properties/{propertyId}:runReport" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}], "dimensions": [{"name": "city"}], "metrics": [{"name": "activeUsers"}]}'
 ```
 
-## Base URLs
+## 基本 URL
 
-**Admin API** (manage accounts, properties, data streams):
+**Admin API**（用于管理账户、属性和数据流）：
 ```
 https://gateway.maton.ai/google-analytics-admin/{native-api-path}
 ```
 
-**Data API** (run reports):
+**Data API**（用于运行报告）：
 ```
 https://gateway.maton.ai/google-analytics-data/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Analytics API endpoint path. The gateway proxies requests to `analyticsadmin.googleapis.com` and `analyticsdata.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google Analytics API 端点路径。Maton 代理会将请求转发到 `analyticsadmin.googleapis.com` 和 `analyticsdata.googleapis.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-**Important:** The Admin API and Data API use separate connections:
-- `google-analytics-admin` - Required for Admin API endpoints (manage accounts, properties, data streams)
-- `google-analytics-data` - Required for Data API endpoints (run reports)
+**注意：** Admin API 和 Data API 使用不同的连接：
+- `google-analytics-admin`：用于 Admin API 端点（管理账户、属性和数据流）。
+- `google-analytics-data`：用于 Data API 端点（运行报告）。
+根据您要使用的 API 创建相应的连接。
 
-Create the connection(s) you need based on which API you want to use.
-
-### List Connections
+### 列出连接
 
 ```bash
 # List Admin API connections
@@ -76,7 +75,7 @@ curl -s -X GET "https://ctrl.maton.ai/connections?app=google-analytics-admin&sta
 curl -s -X GET "https://ctrl.maton.ai/connections?app=google-analytics-data&status=ACTIVE" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 # Create Admin API connection (for managing accounts, properties, data streams)
@@ -86,13 +85,13 @@ curl -s -X POST "https://ctrl.maton.ai/connections" -H "Content-Type: applicatio
 curl -s -X POST "https://ctrl.maton.ai/connections" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"app": "google-analytics-data"}'
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 curl -s -X GET "https://ctrl.maton.ai/connections/{connection_id}" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -107,27 +106,27 @@ curl -s -X GET "https://ctrl.maton.ai/connections/{connection_id}" -H "Authoriza
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 curl -s -X DELETE "https://ctrl.maton.ai/connections/{connection_id}" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Analytics connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Analytics 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/google-analytics-admin/v1beta/accountSummaries" -H "Authorization: Bearer $MATON_API_KEY" -H "Maton-Connection: 21fd90f9-5935-43cd-b6c8-bde9d915ca80"
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，Maton 代理将使用默认的（最旧的）活动连接。
 
-## Admin API Reference
+## Admin API 参考
 
-### Accounts
+### 账户
 
 ```bash
 GET /google-analytics-admin/v1beta/accounts
@@ -135,14 +134,14 @@ GET /google-analytics-admin/v1beta/accounts/{accountId}
 GET /google-analytics-admin/v1beta/accountSummaries
 ```
 
-### Properties
+### 属性
 
 ```bash
 GET /google-analytics-admin/v1beta/properties?filter=parent:accounts/{accountId}
 GET /google-analytics-admin/v1beta/properties/{propertyId}
 ```
 
-#### Create Property
+#### 创建属性
 
 ```bash
 POST /google-analytics-admin/v1beta/properties
@@ -156,13 +155,13 @@ Content-Type: application/json
 }
 ```
 
-### Data Streams
+### 数据流
 
 ```bash
 GET /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams
 ```
 
-#### Create Web Data Stream
+#### 创建 Web 数据流
 
 ```bash
 POST /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams
@@ -175,13 +174,13 @@ Content-Type: application/json
 }
 ```
 
-### Custom Dimensions
+### 自定义维度
 
 ```bash
 GET /google-analytics-admin/v1beta/properties/{propertyId}/customDimensions
 ```
 
-#### Create Custom Dimension
+#### 创建自定义维度
 
 ```bash
 POST /google-analytics-admin/v1beta/properties/{propertyId}/customDimensions
@@ -194,16 +193,16 @@ Content-Type: application/json
 }
 ```
 
-### Conversion Events
+### 转换事件
 
 ```bash
 GET /google-analytics-admin/v1beta/properties/{propertyId}/conversionEvents
 POST /google-analytics-admin/v1beta/properties/{propertyId}/conversionEvents
 ```
 
-## Data API Reference
+## Data API 参考
 
-### Run Report
+### 运行报告
 
 ```bash
 POST /google-analytics-data/v1beta/properties/{propertyId}:runReport
@@ -216,7 +215,7 @@ Content-Type: application/json
 }
 ```
 
-### Run Realtime Report
+### 运行实时报告
 
 ```bash
 POST /google-analytics-data/v1beta/properties/{propertyId}:runRealtimeReport
@@ -228,7 +227,7 @@ Content-Type: application/json
 }
 ```
 
-### Batch Run Reports
+### 批量运行报告
 
 ```bash
 POST /google-analytics-data/v1beta/properties/{propertyId}:batchRunReports
@@ -245,15 +244,15 @@ Content-Type: application/json
 }
 ```
 
-### Get Metadata
+### 获取元数据
 
 ```bash
 GET /google-analytics-data/v1beta/properties/{propertyId}/metadata
 ```
 
-## Common Report Examples
+## 常见报告示例
 
-### Page Views by Page
+### 按页面显示的页面浏览量
 
 ```json
 {
@@ -265,7 +264,7 @@ GET /google-analytics-data/v1beta/properties/{propertyId}/metadata
 }
 ```
 
-### Users by Country
+### 按国家显示的用户
 
 ```json
 {
@@ -275,7 +274,7 @@ GET /google-analytics-data/v1beta/properties/{propertyId}/metadata
 }
 ```
 
-### Traffic Sources
+### 流量来源
 
 ```json
 {
@@ -285,24 +284,24 @@ GET /google-analytics-data/v1beta/properties/{propertyId}/metadata
 }
 ```
 
-## Common Dimensions
+## 常见维度
 
-- `date`, `country`, `city`, `deviceCategory`
-- `pagePath`, `pageTitle`, `landingPage`
-- `sessionSource`, `sessionMedium`, `sessionCampaignName`
+- `date`（日期）、`country`（国家）、`city`（城市）、`deviceCategory`（设备类型）
+- `pagePath`（页面路径）、`pageTitle`（页面标题）、`landingPage`（着陆页）
+- `sessionSource`（会话来源）、`sessionMedium`（会话媒介）、`sessionCampaignName`（会话活动名称）
 
-## Common Metrics
+## 常见指标
 
-- `activeUsers`, `newUsers`, `sessions`
-- `screenPageViews`, `bounceRate`, `averageSessionDuration`
-- `conversions`, `eventCount`
+- `activeUsers`（活跃用户）、`newUsers`（新用户）、`sessions`（会话数）
+- `screenPageViews`（屏幕页面浏览量）、`bounceRate`（跳出率）、`averageSessionDuration`（平均会话时长）
+- `conversions`（转化次数）、`eventCount`（事件数量）
 
-## Date Formats
+## 日期格式
 
-- Relative: `today`, `yesterday`, `7daysAgo`, `30daysAgo`
-- Absolute: `2026-01-01`
+- 相对日期：`today`（今天）、`yesterday`（昨天）、`7daysAgo`（7 天前）、`30daysAgo`（30 天前）
+- 绝对日期：`2026-01-01`（2026 年 1 月 1 日）
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -359,31 +358,31 @@ report = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- GA4 properties only (Universal Analytics not supported)
-- Property IDs are numeric (e.g., `properties/521310447`)
-- Use `accountSummaries` to quickly list all accessible properties
-- Use `updateMask` for PATCH requests in Admin API
-- Use metadata endpoint to discover available dimensions/metrics
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 仅支持 GA4 属性（不支持 Universal Analytics）。
+- 属性 ID 为数字格式（例如：`properties/521310447`）。
+- 使用 `accountSummaries` 快速列出所有可访问的属性。
+- 在 Admin API 中使用 `updateMask` 进行 PATCH 请求。
+- 使用元数据端点来查询可用的维度/指标。
+- **重要提示：** 当 URL 包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- **重要提示：** 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致“无效 API 密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Analytics connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Analytics API |
+| 400 | 未建立 Google Analytics 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求限制（每秒 10 次请求） |
+| 4xx/5xx | 来自 Google Analytics API 的传递错误 |
 
-## Resources
+## 资源
 
-- [Admin API Overview](https://developers.google.com/analytics/devguides/config/admin/v1)
-- [Accounts](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1beta/accounts)
-- [Properties](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1beta/properties)
-- [Data Streams](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1beta/properties.dataStreams)
-- [Data API Overview](https://developers.google.com/analytics/devguides/reporting/data/v1)
-- [Run Report](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runReport)
-- [Realtime Report](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport)
+- [Admin API 概述](https://developers.google.com/analytics/devguides/config/admin/v1)
+- [账户](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1beta/accounts)
+- [属性](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1beta/properties)
+- [数据流](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1beta/properties.dataStreams)
+- [Data API 概述](https://developers.google.com/analytics/devguides/reporting/data/v1)
+- [运行报告](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runReport)
+- [实时报告](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport)

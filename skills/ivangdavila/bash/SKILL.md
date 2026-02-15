@@ -1,58 +1,58 @@
 ---
 name: Bash
-description: Avoid common Bash mistakes — quoting traps, word splitting, and subshell gotchas.
+description: 避免常见的 Bash 错误：引号使用错误、单词分割问题以及子shell（subshell）中的陷阱。
 metadata: {"clawdbot":{"emoji":"🖥️","requires":{"bins":["bash"]},"os":["linux","darwin"]}}
 ---
 
-## Quoting
-- Always quote variables — `"$var"` not `$var`, spaces break unquoted
-- `"${arr[@]}"` preserves elements — `${arr[*]}` joins into single string
-- Single quotes are literal — `'$var'` doesn't expand
-- Quote command substitution — `"$(command)"` not `$(command)`
+## 引用
+- 始终使用引号来引用变量，即 `"$var"` 而不是 `$var`；空格会导致未引用的变量被拆分。
+- `${arr[@]}` 可以保留数组中的所有元素，而 `${arr[*]}` 会将数组元素连接成一个字符串。
+- 单引号用于表示字面值，`'$var'` 不会进行任何扩展操作。
+- 命令替换需要使用引号，即 `"""$(command)"` 而不是 `$(command)`。
 
-## Word Splitting and Globbing
-- Unquoted `$var` splits on whitespace — `file="my file.txt"; cat $file` fails
-- Unquoted `*` expands to files — quote or escape if literal: `"*"` or `\*`
-- `set -f` disables globbing — or quote everything properly
+## 单词分割与通配符
+- 未加引号的 `$var` 会按照空白字符进行分割，例如 `file="my file.txt"; cat $file` 会出错。
+- 未加引号的 `*` 会匹配所有文件；如果需要表示字面值，需要使用引号或转义字符，例如 `"*"` 或 ``\*`。
+- 使用 `set -f` 可以禁用通配符匹配功能；否则需要正确地使用引号。
 
-## Test Brackets
-- `[[ ]]` preferred over `[ ]` — no word splitting, supports `&&`, `||`, regex
-- `[[ $var == pattern* ]]` — glob patterns without quotes on right side
-- `[[ $var =~ regex ]]` — regex match, don't quote the regex
-- `-z` is empty, `-n` is non-empty — `[[ -z "$var" ]]` tests if empty
+## 测试括号
+- 推荐使用 `[[ ]]` 而不是 `[ ]`，因为 `[[ ]]` 不会进行单词分割，并且支持 `&&`、`||` 和正则表达式。
+- `[[ $var == pattern* ]]` 可以在右侧不加引号的情况下使用通配符模式。
+- `[[ $var =~ regex ]]` 可以进行正则表达式匹配，不需要对正则表达式本身加引号。
+- `-z` 表示字符串为空，`-n` 表示字符串非空，例如 `[[ -z "$var" ]]` 可以判断字符串是否为空。
 
-## Subshell Traps
-- Pipes create subshells — `cat file | while read; do ((count++)); done` — count lost
-- Use `while read < file` or process substitution — `while read; do ...; done < <(command)`
-- `( )` is subshell, `{ }` is same shell — variables in `( )` don't persist
+## 子shell 捕获
+- 管道操作会创建子shell，例如 `cat file | while read; do ((count++)); done` 可能会导致 `count` 变量的值丢失。
+- 应该使用 `while read < file` 或进程替换来处理输入，例如 `while read; do ...; done < <(command)`。
+- `()` 表示子shell，`{ }` 表示当前 shell；在 `()` 中定义的变量不会在子shell 中保留。
 
-## Exit Handling
-- `set -e` exits on error — but not in `if`, `||`, `&&` conditions
-- `set -u` errors on undefined vars — catches typos
-- `set -o pipefail` — pipeline fails if any command fails, not just last
-- `trap cleanup EXIT` — runs on any exit, even errors
+## 错误处理
+- 使用 `set -e` 可以在遇到错误时退出脚本，但在 `if`、`||`、`&&` 条件语句中无效。
+- `set -u` 可以在变量未定义时触发错误提示。
+- `set -o pipefail` 可以确保整个命令管道在任何一个命令失败时都会终止执行，而不仅仅是最后一个命令。
+- `trap cleanup EXIT` 可以在任何情况下（包括错误）执行清理操作。
 
-## Arrays
-- Declare: `arr=(one two three)` — or `arr=()` then `arr+=(item)`
-- Length: `${#arr[@]}` — not `${#arr}`
-- All elements: `"${arr[@]}"` — always quote
-- Indices: `${!arr[@]}` — useful for sparse arrays
+## 数组
+- 声明数组时可以使用 `arr=(one two three)`，也可以先声明 `arr=()` 然后使用 `arr+=(item)` 来添加元素。
+- 获取数组长度时使用 `${#arr[@]`，而不是 `${#arr}`。
+- 引用数组元素时始终需要使用引号，例如 `${arr[@]`。
+- 使用 `${!arr[@]` 可以获取数组的索引（适用于稀疏数组）。
 
-## Parameter Expansion
-- Default value: `${var:-default}` — use default if unset/empty
-- Assign default: `${var:=default}` — also assigns to var
-- Error if unset: `${var:?error message}` — exits with message
-- Substring: `${var:0:5}` — first 5 chars
-- Remove prefix: `${var#pattern}` — `##` for greedy
+## 参数扩展
+- 获取变量的默认值时使用 `${var:-default}`；如果变量未定义或为空，则使用默认值。
+- 可以使用 `${var:=default}` 来为变量赋值默认值。
+- 如果变量未定义，可以使用 `${var:?error message}` 来输出错误信息并退出脚本。
+- 可以使用 `${var:0:5}` 来提取字符串的前 5 个字符。
+- 可以使用 `${var#pattern}` 来删除字符串的前缀；`##` 可以用于删除所有前缀。
 
-## Arithmetic
-- `$(( ))` for math — `result=$((a + b))`
-- `(( ))` for conditions — `if (( count > 5 )); then`
-- No `$` needed inside `$(( ))` — `$((count + 1))` not `$(($count + 1))`
+## 算术运算
+- 使用 `$(( ))` 进行数学运算，例如 `result=$((a + b))`。
+- 使用 `(( ))` 来进行条件判断，例如 `if ((count > 5)); then`。
+- 在 `$(( ))` 内部不需要使用 `$` 符号，例如 `$(count + 1)` 应该写成 `$(($count + 1))`。
 
-## Common Mistakes
-- `[ $var = "value" ]` fails if var empty — use `[ "$var" = "value" ]` or `[[ ]]`
-- `if [ -f $file ]` with spaces — always quote: `if [[ -f "$file" ]]`
-- `local` in functions — without it, variables are global
-- `read` without `-r` — backslashes interpreted as escapes
-- `echo` portability — use `printf` for reliable formatting
+## 常见错误
+- 如果变量为空，使用 `[ $var = "value" ]` 会出错；应该使用 `[ "$var" = "value" ]` 或 `[[ ]]`。
+- 在使用 `if [ -f $file ]` 时，如果 `$file` 中包含空格，必须使用引号，例如 `if [[ -f "$file" ]]`。
+- 在函数中使用 `local` 关键字可以防止变量成为全局变量。
+- 使用 `read` 命令时如果没有 `-r` 选项，反斜杠会被解释为转义字符。
+- 为了保证格式的可靠性，建议使用 `printf` 而不是 `echo`。

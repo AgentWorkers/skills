@@ -1,165 +1,164 @@
 ---
 name: amplitude-automation
-description: "Automate Amplitude tasks via Rube MCP (Composio): events, user activity, cohorts, user identification. Always search tools first for current schemas."
+description: "通过 Rube MCP (Composio) 自动化 Amplitude 任务：处理事件、用户活动、用户分组以及用户识别。在使用任何工具之前，请务必先查询当前的架构（schema）信息。"
 requires:
   mcp: [rube]
 ---
 
-# Amplitude Automation via Rube MCP
+# 通过 Rube MCP 实现 Amplitude 自动化
 
-Automate Amplitude product analytics through Composio's Amplitude toolkit via Rube MCP.
+通过 Composio 的 Amplitude 工具包和 Rube MCP 来自动化 Amplitude 产品分析。
 
-## Prerequisites
+## 先决条件
 
-- Rube MCP must be connected (RUBE_SEARCH_TOOLS available)
-- Active Amplitude connection via `RUBE_MANAGE_CONNECTIONS` with toolkit `amplitude`
-- Always call `RUBE_SEARCH_TOOLS` first to get current tool schemas
+- Rube MCP 必须已连接（可使用 `RUBE_SEARCH_TOOLS`）
+- 通过 `RUBE_MANAGE_CONNECTIONS` 使用 `amplitude` 工具包建立有效的 Amplitude 连接
+- 在执行任何工作流之前，务必先调用 `RUBE_SEARCH_TOOLS` 以获取当前的工具架构信息
 
-## Setup
+## 设置
 
-**Get Rube MCP**: Add `https://rube.app/mcp` as an MCP server in your client configuration. No API keys needed — just add the endpoint and it works.
+**添加 Rube MCP**：在客户端配置中添加 `https://rube.app/mcp` 作为 MCP 服务器。无需 API 密钥——只需添加该端点即可。
 
+1. 通过确认 `RUBE_SEARCH_TOOLS` 是否有响应来验证 Rube MCP 是否可用。
+2. 调用 `RUBE_MANAGE_CONNECTIONS` 并使用 `amplitude` 工具包。
+3. 如果连接状态不是 `ACTIVE`，请按照返回的认证链接完成 Amplitude 认证。
+4. 在运行任何工作流之前，确保连接状态显示为 `ACTIVE`。
 
-1. Verify Rube MCP is available by confirming `RUBE_SEARCH_TOOLS` responds
-2. Call `RUBE_MANAGE_CONNECTIONS` with toolkit `amplitude`
-3. If connection is not ACTIVE, follow the returned auth link to complete Amplitude authentication
-4. Confirm connection status shows ACTIVE before running any workflows
+## 核心工作流
 
-## Core Workflows
+### 1. 发送事件
 
-### 1. Send Events
+**使用场景**：用户希望跟踪事件或将事件数据发送到 Amplitude
 
-**When to use**: User wants to track events or send event data to Amplitude
+**工具顺序**：
+1. `AMPLITUDE_SEND_events` - 向 Amplitude 发送一个或多个事件 [必需]
 
-**Tool sequence**:
-1. `AMPLITUDE_SEND_EVENTS` - Send one or more events to Amplitude [Required]
+**关键参数**：
+- `events`：事件对象数组，每个对象包含：
+  - `event_type`：事件类型（例如：`page_view`、`purchase`）
+  - `user_id`：唯一用户标识符（如果没有 `device_id` 则必需）
+  - `device_id`：设备标识符（如果没有 `user_id` 则必需）
+  - `event_properties`：包含自定义事件属性的对象
+  - `user_properties`：包含要设置的用户属性的对象
+  - `time`：自纪元以来的事件时间戳（以毫秒为单位）
 
-**Key parameters**:
-- `events`: Array of event objects, each containing:
-  - `event_type`: Name of the event (e.g., 'page_view', 'purchase')
-  - `user_id`: Unique user identifier (required if no `device_id`)
-  - `device_id`: Device identifier (required if no `user_id`)
-  - `event_properties`: Object with custom event properties
-  - `user_properties`: Object with user properties to set
-  - `time`: Event timestamp in milliseconds since epoch
+**注意事项**：
+- 每个事件至少需要 `user_id` 或 `device_id` 中的一个。
+- 每个事件都必须指定 `event_type`，不能为空。
+- `time` 必须以毫秒为单位（13 位纪元时间）。
+- 有批量限制；请查看架构以了解每次请求的最大事件数量。
+- 事件是异步处理的；成功的 API 响应并不意味着数据可以立即查询。
 
-**Pitfalls**:
-- At least one of `user_id` or `device_id` is required per event
-- `event_type` is required for every event; cannot be empty
-- `time` must be in milliseconds (13-digit epoch), not seconds
-- Batch limit applies; check schema for maximum events per request
-- Events are processed asynchronously; successful API response does not mean data is immediately queryable
+### 2. 获取用户活动
 
-### 2. Get User Activity
+**使用场景**：用户希望查看特定用户的事件历史记录
 
-**When to use**: User wants to view event history for a specific user
+**工具顺序**：
+1. `AMPLITUDE_FIND_USER` - 通过 ID 或属性查找用户 [先决条件]
+2. `AMPLITUDE_GET_USER_activity` - 获取用户的事件流 [必需]
 
-**Tool sequence**:
-1. `AMPLITUDE_FIND_USER` - Find user by ID or property [Prerequisite]
-2. `AMPLITUDE_GET_USER_ACTIVITY` - Retrieve user's event stream [Required]
+**关键参数**：
+- `user`：Amplitude 内部用户 ID（来自 `FIND_USER`）
+- `offset`：事件列表的分页偏移量
+- `limit`：返回的最大事件数量
 
-**Key parameters**:
-- `user`: Amplitude internal user ID (from FIND_USER)
-- `offset`: Pagination offset for event list
-- `limit`: Maximum number of events to return
+**注意事项**：
+- `user` 参数需要使用 Amplitude 的内部用户 ID，而不是您应用程序的用户 ID。
+- 必须先调用 `FIND_USER` 将您的用户 ID 转换为 Amplitude 的内部 ID。
+- 活动默认按时间倒序返回。
+- 如果活动历史记录很长，需要使用 `offset` 进行分页。
 
-**Pitfalls**:
-- `user` parameter requires Amplitude's internal user ID, NOT your application's user_id
-- Must call FIND_USER first to resolve your user_id to Amplitude's internal ID
-- Activity is returned in reverse chronological order by default
-- Large activity histories require pagination via `offset`
+### 3. 查找和识别用户
 
-### 3. Find and Identify Users
+**使用场景**：用户希望查找用户或设置用户属性
 
-**When to use**: User wants to look up users or set user properties
+**工具顺序**：
+1. `AMPLITUDE_FIND_USER` - 通过各种标识符搜索用户 [必需]
+2. `AMPLITUDE_IDENTIFY` - 设置或更新用户属性 [可选]
 
-**Tool sequence**:
-1. `AMPLITUDE_FIND_USER` - Search for a user by various identifiers [Required]
-2. `AMPLITUDE_IDENTIFY` - Set or update user properties [Optional]
+**关键参数**：
+- 对于 `FIND_USER`：
+  - `user`：搜索词（user_id、email 或 Amplitude ID）
+- 对于 `IDENTIFY`：
+  - `user_id`：您应用程序的用户标识符
+  - `device_id`：设备标识符（作为 `user_id` 的替代选项）
+  - `user_properties`：包含 `$set`、`$unset`、`$add`、`$append` 操作的对象
 
-**Key parameters**:
-- For FIND_USER:
-  - `user`: Search term (user_id, email, or Amplitude ID)
-- For IDENTIFY:
-  - `user_id`: Your application's user identifier
-  - `device_id`: Device identifier (alternative to user_id)
-  - `user_properties`: Object with `$set`, `$unset`, `$add`, `$append` operations
+**注意事项**：
+- `FIND_USER` 可以通过 `user_id`、`device_id` 和 Amplitude ID 进行搜索。
+- `IDENTIFY` 支持特殊的属性操作（`$set`、`$unset`、`$add`、`$append`）。
+- `$set` 会覆盖现有值；`$setOnce` 仅在属性未设置时才设置。
+- `IDENTIFY` 需要 `user_id` 或 `device_id` 中的至少一个。
+- 用户属性的更改是最终一致的，但不是立即生效的。
 
-**Pitfalls**:
-- FIND_USER searches across user_id, device_id, and Amplitude ID
-- IDENTIFY uses special property operations (`$set`, `$unset`, `$add`, `$append`)
-- `$set` overwrites existing values; `$setOnce` only sets if not already set
-- At least one of `user_id` or `device_id` is required for IDENTIFY
-- User property changes are eventually consistent; not immediate
+### 4. 管理用户群体
 
-### 4. Manage Cohorts
+**使用场景**：用户希望列出用户群体、查看群体详情或更新群体成员资格
 
-**When to use**: User wants to list cohorts, view cohort details, or update cohort membership
+**工具顺序**：
+1. `AMPLITUDE_LIST_COHORTS` - 列出所有保存的用户群体 [必需]
+2. `AMPLITUDE_GET_COHORT` - 获取详细的群体信息 [可选]
+3. `AMPLITUDE_UPDATE_COHORT_MEMBERSHIP` - 向群体中添加/移除用户 [可选]
+4. `AMPLITUDE_CHECK_COHORT_STATUS` - 检查群体操作的异步状态 [可选]
 
-**Tool sequence**:
-1. `AMPLITUDE_LIST_COHORTS` - List all saved cohorts [Required]
-2. `AMPLITUDE_GET_COHORT` - Get detailed cohort information [Optional]
-3. `AMPLITUDE_UPDATE_COHORT_MEMBERSHIP` - Add/remove users from a cohort [Optional]
-4. `AMPLITUDE_CHECK_COHORT_STATUS` - Check async cohort operation status [Optional]
+**关键参数**：
+- 对于 `LIST_COHORTS`：无需参数
+- 对于 `GET_COHORT`：`cohort_id`（来自列表结果）
+- 对于 `UPDATE_COHORT_MEMBERSHIP`：
+  - `cohort_id`：目标群体 ID
+  - `memberships`：包含用户 ID 的数组（用于添加或移除成员）
+- 对于 `CHECK_COHORT_STATUS`：更新响应中的 `request_id`
 
-**Key parameters**:
-- For LIST_COHORTS: No required parameters
-- For GET_COHORT: `cohort_id` (from list results)
-- For UPDATE_COHORT_MEMBERSHIP:
-  - `cohort_id`: Target cohort ID
-  - `memberships`: Object with `add` and/or `remove` arrays of user IDs
-- For CHECK_COHORT_STATUS: `request_id` from update response
+**注意事项**：
+- 所有与群体相关的操作都需要群体 ID。
+- `UPDATE_COHORT_MEMBERSHIP` 是异步的；请使用 `CHECK_COHORT_STATUS` 来验证状态。
+- 需要更新响应中的 `request_id` 来检查状态。
+- 每次请求的成员变更次数可能有限；请分批处理大量更新。
+- 仅行为群体支持 API 成员资格更新。
 
-**Pitfalls**:
-- Cohort IDs are required for all cohort-specific operations
-- UPDATE_COHORT_MEMBERSHIP is asynchronous; use CHECK_COHORT_STATUS to verify
-- `request_id` from the update response is needed for status checking
-- Maximum membership changes per request may be limited; chunk large updates
-- Only behavioral cohorts support API membership updates
+### 5. 浏览事件类别
 
-### 5. Browse Event Categories
+**使用场景**：用户希望查看 Amplitude 中可用的事件类型和类别
 
-**When to use**: User wants to discover available event types and categories in Amplitude
+**工具顺序**：
+1. `AMPLITUDE_GET_EVENT_CATEGORIES` - 列出所有事件类别 [必需]
 
-**Tool sequence**:
-1. `AMPLITUDE_GET_EVENT_CATEGORIES` - List all event categories [Required]
+**关键参数**：
+- 无需参数；返回所有配置的事件类别
 
-**Key parameters**:
-- No required parameters; returns all configured event categories
+**注意事项**：
+- 类别在 Amplitude UI 中进行配置；API 提供读取访问权限。
+- 类别中的事件名称区分大小写。
+- 在发送事件之前，请使用这些类别来验证 `event_type` 的值。
 
-**Pitfalls**:
-- Categories are configured in Amplitude UI; API provides read access
-- Event names within categories are case-sensitive
-- Use these categories to validate event_type values before sending events
+## 常见模式
 
-## Common Patterns
+### ID 转换
 
-### ID Resolution
-
-**Application user_id -> Amplitude internal ID**:
+**应用程序用户 ID -> Amplitude 内部 ID**：
 ```
 1. Call AMPLITUDE_FIND_USER with user=your_user_id
 2. Extract Amplitude's internal user ID from response
 3. Use internal ID for GET_USER_ACTIVITY
 ```
 
-**Cohort name -> Cohort ID**:
+**群体名称 -> 群体 ID**：
 ```
 1. Call AMPLITUDE_LIST_COHORTS
 2. Find cohort by name in results
 3. Extract id for cohort operations
 ```
 
-### User Property Operations
+### 用户属性操作
 
-Amplitude IDENTIFY supports these property operations:
-- `$set`: Set property value (overwrites existing)
-- `$setOnce`: Set only if property not already set
-- `$add`: Increment numeric property
-- `$append`: Append to list property
-- `$unset`: Remove property entirely
+Amplitude 的 `IDENTIFY` 支持以下属性操作：
+- `$set`：设置属性值（覆盖现有值）
+- `$setOnce`：仅在属性未设置时设置
+- `$add`：增加数值属性
+- `$append`：将值添加到列表中
+- `$unset`：完全删除属性
 
-Example structure:
+示例结构：
 ```json
 {
   "user_properties": {
@@ -169,48 +168,48 @@ Example structure:
 }
 ```
 
-### Async Operation Pattern
+### 异步操作模式
 
-For cohort membership updates:
+对于群体成员资格的更新：
 ```
 1. Call AMPLITUDE_UPDATE_COHORT_MEMBERSHIP -> get request_id
 2. Call AMPLITUDE_CHECK_COHORT_STATUS with request_id
 3. Repeat step 2 until status is 'complete' or 'error'
 ```
 
-## Known Pitfalls
+## 已知问题
 
-**User IDs**:
-- Amplitude has its own internal user IDs separate from your application's
-- FIND_USER resolves your IDs to Amplitude's internal IDs
-- GET_USER_ACTIVITY requires Amplitude's internal ID, not your user_id
+**用户 ID**：
+- Amplitude 有自己的内部用户 ID，与您的应用程序的用户 ID 不同。
+- `FIND_USER` 会将您的 ID 转换为 Amplitude 的内部 ID。
+- `GET_USER_activity` 需要 Amplitude 的内部 ID，而不是您的用户 ID。
 
-**Event Timestamps**:
-- Must be in milliseconds since epoch (13 digits)
-- Seconds (10 digits) will be interpreted as very old dates
-- Omitting timestamp uses server receive time
+**事件时间戳**：
+- 必须以毫秒为单位（13 位纪元时间）。
+- 如果使用秒（10 位），会被解释为非常旧的日期。
+- 如果省略时间戳，将使用服务器接收时间。
 
-**Rate Limits**:
-- Event ingestion has throughput limits per project
-- Batch events where possible to reduce API calls
-- Cohort membership updates have async processing limits
+**速率限制**：
+- 每个项目都有事件摄入的吞吐量限制。
+- 尽可能批量发送事件以减少 API 调用次数。
+- 群体成员资格的更新具有异步处理限制。
 
-**Response Parsing**:
-- Response data may be nested under `data` key
-- User activity returns events in reverse chronological order
-- Cohort lists may include archived cohorts; check status field
-- Parse defensively with fallbacks for optional fields
+**响应解析**：
+- 响应数据可能嵌套在 `data` 键下。
+- 用户活动按时间倒序返回。
+- 群体列表可能包含已归档的群体；请检查 `status` 字段。
+- 对于可选字段，请采取防御性解析措施。
 
-## Quick Reference
+## 快速参考
 
-| Task | Tool Slug | Key Params |
+| 任务 | 工具名称 | 关键参数 |
 |------|-----------|------------|
-| Send events | AMPLITUDE_SEND_EVENTS | events (array) |
-| Find user | AMPLITUDE_FIND_USER | user |
-| Get user activity | AMPLITUDE_GET_USER_ACTIVITY | user, offset, limit |
-| Identify user | AMPLITUDE_IDENTIFY | user_id, user_properties |
-| List cohorts | AMPLITUDE_LIST_COHORTS | (none) |
-| Get cohort | AMPLITUDE_GET_COHORT | cohort_id |
-| Update cohort members | AMPLITUDE_UPDATE_COHORT_MEMBERSHIP | cohort_id, memberships |
-| Check cohort status | AMPLITUDE_CHECK_COHORT_STATUS | request_id |
-| List event categories | AMPLITUDE_GET_EVENT_CATEGORIES | (none) |
+| 发送事件 | AMPLITUDE_SEND_events | events (array) |
+| 查找用户 | AMPLITUDE_FIND_USER | user |
+| 获取用户活动 | AMPLITUDE_GET_USER_activity | user, offset, limit |
+| 识别用户 | AMPLITUDE_IDENTIFY | user_id, user_properties |
+| 列出群体 | AMPLITUDE_LIST_COHORTS | (none) |
+| 获取群体 | AMPLITUDE_GET_COHORT | cohort_id |
+| 更新群体成员 | AMPLITUDE_UPDATE_COHORT_MEMBERSHIP | cohort_id, memberships |
+| 检查群体状态 | AMPLITUDE_CHECK_COHORT_STATUS | request_id |
+| 列出事件类别 | AMPLITUDE_GET_EVENT_CATEGORIES | (none) |

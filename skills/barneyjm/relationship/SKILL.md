@@ -1,12 +1,12 @@
 ---
 name: relationship
-description: "Calculate spatial relationships between two points including distance, direction, travel time, and human-readable descriptions. Use when you need to understand how locations relate to each other."
+description: "计算两点之间的空间关系，包括距离、方向、旅行时间以及易于理解的描述。当需要了解各个位置之间的相对关系时，可以使用此功能。"
 metadata: {"clawdbot":{"emoji":"📐","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅程、房地产、酒店查找器、电动汽车充电站查找器、学校查找器、停车场查找器、健身设施查找器、安全检查器、旅行规划器），以实现全面的功能覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill relationship
 ```
 
-**Via clawhub:**
+**通过 clawhub 安装：**
 ```bash
 npx clawhub@latest install relationship
 # or: pnpm dlx clawhub@latest install relationship
 # or: bunx clawhub@latest install relationship
 ```
 
-# Relationship - Spatial Calculations
+# 关系 - 空间计算
 
-Calculate distance, direction, travel time, and human-readable descriptions between two points.
+计算两点之间的距离、方向、行驶时间以及易于人类理解的描述信息。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）：** 获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回格式：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月享受 1,000 次免费调用，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+将密钥添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,12 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
-
+### 通过 Shell 脚本使用
 ```bash
 # Calculate relationship between two points
 ./scripts/relationship.sh '{
@@ -74,8 +73,7 @@ Restart Claude Code.
 }'
 ```
 
-### Via curl
-
+### 通过 curl 使用
 ```bash
 curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   -H "Content-Type: application/json" \
@@ -83,15 +81,15 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/relationship"
 ```
 
-## Parameters
+## 参数
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| start | object | Yes | Starting point with lat/lon |
-| end | object | Yes | Ending point with lat/lon |
-| include | array | No | What to include: distance, direction, travel_time, description |
+| 参数名 | 类型 | 是否必填 | 描述 |
+|---------|--------|---------|-------------|
+| start    | object   | 是       | 起始点（包含经纬度） |
+| end     | object   | 是       | 终点（包含经纬度） |
+| include | array   | 否       | 需要返回的信息类型：距离、方向、行驶时间、描述 |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -114,9 +112,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Simple distance check
+### 简单的距离查询
 ```bash
 ./scripts/relationship.sh '{
   "start": {"lat": 51.5074, "lon": -0.1278},
@@ -124,7 +122,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### Get only distance and direction
+### 仅获取距离和方向
 ```bash
 ./scripts/relationship.sh '{
   "start": {"lat": 40.7128, "lon": -74.0060},
@@ -133,9 +131,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-## Use Cases
+## 使用场景
 
-- **Proximity checks**: Determine if two locations are within a certain distance
-- **Direction guidance**: Provide cardinal direction context (north, southeast, etc.)
-- **Travel planning**: Estimate travel times for different transport modes
-- **Location context**: Generate human-readable descriptions of spatial relationships
+- **距离判断**：确定两个地点是否在指定范围内
+- **方向指引**：提供方向信息（如北、东南等）
+- **旅行规划**：估算不同交通方式的行驶时间
+- **位置描述**：生成易于理解的空间关系描述

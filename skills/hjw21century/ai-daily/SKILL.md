@@ -1,13 +1,13 @@
 ---
 name: ai-daily
-description: Fetches AI news from smol.ai RSS. Use when user asks about AI news or daily tech updates.
+description: 从 smol.ai 的 RSS 源中获取 AI 相关的新闻。当用户询问 AI 新闻或每日科技动态时可以使用该功能。
 ---
 
-# AI Daily News
+# AI每日新闻
 
-Fetch AI industry news from smol.ai RSS feed.
+从smol.ai的RSS源获取AI行业新闻。
 
-## Quick Start
+## 快速入门
 
 ```
 # Basic queries
@@ -16,15 +16,15 @@ Fetch AI industry news from smol.ai RSS feed.
 2026-01-13的资讯
 ```
 
-## Query Types
+## 查询类型
 
-| Type | Examples | Description |
+| 类型 | 示例 | 描述 |
 |------|----------|-------------|
-| Relative date | `昨天AI资讯` `今天的新闻` `前天` | Yesterday, today, day before |
-| Absolute date | `2026-01-13的新闻` | YYYY-MM-DD format |
-| Date range | `有哪些日期的新闻` | Show available dates |
+| 相对日期 | `昨天AI资讯` `今天的新闻` `前天` | 昨天、今天、前天 |
+| 绝对日期 | `2026-01-13的新闻` | 使用YYYY-MM-DD格式 |
+| 日期范围 | `有哪些日期的新闻` | 显示可用的日期 |
 
-## Workflow
+## 工作流程
 
 ```
 - [ ] Step 1: Parse date from user request
@@ -35,26 +35,26 @@ Fetch AI industry news from smol.ai RSS feed.
 
 ---
 
-## Step 1: Parse Date
+## 第一步：解析日期
 
-| User Input | Target Date | Calculation |
+| 用户输入 | 目标日期 | 计算方式 |
 |------------|-------------|-------------|
-| `昨天` | Yesterday | today - 1 day |
-| `前天` | Day before | today - 2 days |
-| `今天` | Today | Current date |
-| `2026-01-13` | 2026-01-13 | Direct parse |
+| `昨天` | 昨天 | 当前日期 - 1天 |
+| `前天` | 前天 | 当前日期 - 2天 |
+| `今天` | 今天 | 当前日期 |
+| `2026-01-13` | 2026-01-13 | 直接解析 |
 
-**Format**: Always use `YYYY-MM-DD`
+**格式要求**：始终使用`YYYY-MM-DD`格式。
 
 ---
 
-## Step 2: Fetch RSS
+## 第二步：获取RSS数据
 
 ```bash
 python skills/ai-daily/scripts/fetch_news.py --date YYYY-MM-DD
 ```
 
-**Available commands**:
+**可用命令**：
 
 ```bash
 # Get specific date
@@ -67,13 +67,13 @@ python skills/ai-daily/scripts/fetch_news.py --date-range
 python skills/ai-daily/scripts/fetch_news.py --relative yesterday
 ```
 
-**Requirements**: `pip install feedparser requests`
+**安装依赖**：`pip install feedparser requests`
 
 ---
 
-## Step 3: Check Content
+## 第三步：检查内容
 
-### When NOT Found
+### 如果未找到数据
 
 ```markdown
 Sorry, no news available for 2026-01-14
@@ -87,9 +87,9 @@ Suggestions:
 
 ---
 
-## Step 4: Format Results
+## 第四步：格式化结果
 
-**Example Output**:
+**示例输出**：
 
 ```markdown
 # AI Daily · 2026年1月13日
@@ -106,27 +106,27 @@ Source: smol.ai
 
 ---
 
-## Configuration
+## 配置参数
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| RSS_URL | RSS feed URL | `https://news.smol.ai/rss.xml` |
+| 参数 | 描述 | 默认值 |
+|---------|-------------|---------|
+| RSS_URL | RSS源URL | `https://news.smol.ai/rss.xml` |
 
-No API keys required.
+无需使用API密钥。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| RSS fetch fails | Check network connectivity |
-| Invalid date | Use YYYY-MM-DD format |
-| No content | Check available date range |
+| RSS数据获取失败 | 检查网络连接 |
+| 日期格式错误 | 使用YYYY-MM-DD格式 |
+| 未找到内容 | 检查指定的日期范围是否有效 |
 
 ---
 
-## References
+## 参考资料
 
-- [Output Format](references/output-format.md) - Markdown template
-- [HTML Themes](references/html-themes.md) - Webpage theme specifications
+- [输出格式](references/output-format.md) - Markdown输出格式模板
+- [HTML主题](references/html-themes.md) - 网页主题规范

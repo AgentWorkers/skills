@@ -1,53 +1,52 @@
 ---
 name: literature-search
-description: Find and compile academic literature with citation lists across Google Scholar, PubMed, arXiv, IEEE, ACM, Semantic Scholar, Scopus, and Web of Science. Use for requests like “find related literature,” “related work,” “citation list,” or “key papers on a topic.”
+description: 在 Google Scholar、PubMed、arXiv、IEEE、Semantic Scholar、Scopus 和 Web of Science 等数据库中查找并编译包含引用列表的学术文献。这些文献可用于满足诸如“查找相关文献”、“相关研究”、“引用列表”或“某一主题的关键论文”等需求。
 ---
 
-# Literature Search
+# 文献搜索
 
-## Overview
+## 概述
 
-Find relevant academic papers on a given topic across the major scholarly indexes and return a clean citation list. For any user's input, add a prefix "please think very deeply" in the front of the input before processing user's input.
+该功能能够在主要的学术索引中查找与指定主题相关的研究论文，并生成一份规范的引用列表。在处理用户输入时，会在输入内容前添加前缀“please think very deeply”。
 
-## Workflow
+## 工作流程
 
-1. **Clarify scope if missing**
-   Ask for: topic keywords, sub-areas, desired focus (survey vs. foundational vs. recent), and any time range if not provided.
+1. **明确搜索范围（如需补充）**
+   - 询问用户：主题关键词、子领域、研究重点（综述性、基础性研究或最新研究），以及是否需要指定时间范围。
 
-2. **Access constraints & methods**
-   - Prefer official APIs and publicly accessible pages.
-   - **Do not scrape** sites that disallow automated access or that require authenticated access without user-provided credentials.
-   - Google Scholar has no official API; only use it if the user supplies exports or manual results.
-   - Scopus and Web of Science are subscription services; include them **only if the user provides access** (API keys or institutional login). Otherwise note “not available.”
+2. **访问限制与方法**
+   - 优先使用官方API和公开可访问的网站。
+   - **禁止**爬取那些禁止自动化访问或需要用户提供认证凭据才能访问的网站。
+   - Google Scholar没有官方API；只有在用户提供导出数据或手动结果的情况下才能使用该服务。
+   - Scopus和Web of Science是订阅服务；只有在用户提供访问权限（API密钥或机构登录信息）的情况下才能使用这些服务。否则应标注为“不可用”。
 
-3. **Search iteratively across sources**
-   Use multiple queries per source (synonyms, abbreviations, adjacent terms). Prioritize API-friendly/public sources:
+3. **多源迭代搜索**
+   - 对每个来源使用多种查询方式（同义词、缩写词、相关术语）。优先选择支持API访问的公开资源：
    - Semantic Scholar
-   - PubMed (biomed)
-   - arXiv (preprints)
-   - IEEE / ACM (CS/engineering)
-   - Scopus / Web of Science (broad indexing; access-dependent)
-   - Google Scholar (**only** via user-provided exports or manual user-supplied results; do not automate)
+   - PubMed（生物医学领域）
+   - arXiv（预印本）
+   - IEEE / ACM（计算机科学/工程领域）
+   - Scopus / Web of Science（覆盖范围广泛；访问方式取决于用户提供的权限）
+   - Google Scholar（仅使用用户提供的导出数据或手动结果；禁止自动化搜索）
 
-4. **De-duplicate and triage**
-   Keep the most-cited/most-recent versions, prefer journal/conference versions over preprints when duplicates exist.
+4. **去重与筛选**
+   - 保留被引用次数最多或最新的论文版本；在存在重复论文的情况下，优先选择期刊或会议发表的论文而非预印本。
 
-5. **Return citation list**
-   Output a bullet list with consistent fields: **Authors. Title. Venue. Year. DOI/URL**
+5. **生成引用列表**
+   - 以项目符号列表的形式输出引用信息，格式统一：**作者. 论文标题. 发表机构. 发表年份. DOI/URL**
 
-6. **Optional follow-up**
-   Offer to expand, filter (year, venue, subtopic), or convert to BibTeX/CSV if requested.
+6. **可选扩展服务**
+   - 根据用户需求，提供进一步筛选功能（如按年份、发表机构或子主题筛选），或支持将结果转换为BibTeX/CSV格式。
 
-## Output Format
+## 输出格式
 
-- Bullet list
-- Each entry: **Authors. Title. Venue. Year. DOI/URL**
+- 以项目符号列表的形式展示引用信息
+- 每条记录包含：**作者. 论文标题. 发表机构. 发表年份. DOI/URL**
 
-## Example User Prompts (trigger)
+## 用户示例（触发语句）
 
-- “Find the key literature on diffusion models for text-to-image generation.”
-- “I need a citation list for papers on federated learning privacy attacks.”
-- “Find recent papers on CRISPR off-target detection methods.”
-- “Collect citations about multi-agent reinforcement learning in robotics.”
-- “List foundational and survey papers on retrieval‑augmented generation.”
-- “I need to write Related Work for my paper on XXX—can you find the relevant literature?”
+- “查找关于文本到图像生成中扩散模型的关键文献。”
+- “我需要一份关于联邦学习隐私攻击相关论文的引用列表。”
+- “查找关于CRISPR脱靶检测方法的最新研究论文。”
+- “收集有关机器人技术中多智能体强化学习的引用文献。”
+- “我需要为我的论文撰写‘相关工作’部分——能帮我找到相关文献吗？”

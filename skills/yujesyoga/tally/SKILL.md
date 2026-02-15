@@ -1,31 +1,31 @@
 ---
 name: tally
 version: 1.0.0
-description: Create and edit Tally forms via API. Use when building surveys, feedback forms, or questionnaires programmatically. Supports all question types including text inputs, multiple choice, checkboxes, ratings (via workaround), and more.
+description: 通过 API 创建和编辑 Tally 表单。适用于编程方式构建调查问卷、反馈表单或问题表单。支持所有类型的问题，包括文本输入、单选、复选框、评分（通过变通方法实现）等。
 ---
 
 # Tally Forms API
 
-Create and edit Tally.so forms programmatically via their REST API.
+通过 REST API 可以编程方式创建和编辑 Tally.so 表单。
 
-## Authentication
+## 认证
 
 ```bash
 TALLY_KEY=$(cat ~/.config/tally/api_key)
 ```
 
-## Endpoints
+## 端点
 
-| Action | Method | Endpoint |
+| 操作 | 方法 | 端点 |
 |--------|--------|----------|
-| List forms | GET | `https://api.tally.so/forms` |
-| Get form | GET | `https://api.tally.so/forms/{id}` |
-| Update form | PATCH | `https://api.tally.so/forms/{id}` |
-| Get submissions | GET | `https://api.tally.so/forms/{id}/submissions` |
+| 列出表单 | GET | `https://api.tally.so/forms` |
+| 获取表单 | GET | `https://api.tally.so/forms/{id}` |
+| 更新表单 | PATCH | `https://api.tally.so/forms/{id}` |
+| 获取提交记录 | GET | `https://api.tally.so/forms/{id}/submissions` |
 
-## Block Structure
+## 表单结构
 
-Tally forms are composed of **blocks**. Questions require **multiple blocks grouped by `groupUuid`**:
+Tally 表单由多个 **块（blocks）** 组成。问题需要通过 `groupUuid` 将多个块组合在一起：
 
 ```json
 {
@@ -46,39 +46,39 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-**Key:** TITLE block + input block must share the same `groupUuid`.
+**注意：** 标题（TITLE）块和输入（INPUT）块必须使用相同的 `groupUuid`。
 
-## Block Types
+## 块类型
 
-### Structure
-- `FORM_TITLE` - Form title and submit button
-- `TEXT` - Paragraph text
-- `HEADING_1`, `HEADING_2`, `HEADING_3` - Section headers
-- `TITLE` - Question label (inside QUESTION group)
-- `DIVIDER` - Separator line
+### 结构
+- `FORM_TITLE` - 表单标题和提交按钮
+- `TEXT` - 段落文本
+- `HEADING_1`, `HEADING_2`, `HEADING_3` - 节标题
+- `TITLE` - 问题标签（位于 QUESTION 组内）
+- `DIVIDER` - 分隔线
 
-### Inputs
-- `INPUT_TEXT` - Short text
-- `INPUT_NUMBER` - Number
-- `INPUT_EMAIL` - Email
-- `INPUT_DATE` - Date picker
-- `INPUT_PHONE_NUMBER` - Phone
-- `TEXTAREA` - Long text
+### 输入类型
+- `INPUT_TEXT` - 短文本输入
+- `INPUT_NUMBER` - 数字输入
+- `INPUT_EMAIL` - 电子邮件输入
+- `INPUT_DATE` - 日期选择器
+- `INPUT_PHONE_NUMBER` - 电话号码输入
+- `TEXTAREA` - 长文本输入
 
-### Selection
-- `MULTIPLE_CHOICE_OPTION` - Single select (groupType: MULTIPLE_CHOICE)
-- `CHECKBOX` - Multi select (groupType: CHECKBOXES)
-- `DROPDOWN_OPTION` - Dropdown option
+### 选择类型
+- `MULTIPLE_CHOICE_OPTION` - 单选（groupType: MULTIPLE_CHOICE）
+- `CHECKBOX` - 多选（groupType: CHECKBOXES）
+- `DROPDOWN_OPTION` - 下拉菜单
 
-### ⚠️ Types that don't render well via API
-- `RATING` - Stars don't display
-- `LINEAR_SCALE` - Scale doesn't display
+### 注意：**某些类型无法通过 API 正确显示**
+- `RATING` - 评分（星星）无法显示
+- `LINEAR_SCALE` - 线性评分量表无法显示
 
-**Workaround:** Use `MULTIPLE_CHOICE_OPTION` with star emojis.
+**解决方法：** 使用 `MULTIPLE_CHOICE_OPTION` 并添加星星表情符号来表示评分。
 
-## Examples
+## 示例
 
-### Form title
+### 表单标题
 ```json
 {
   "uuid": "title-001",
@@ -92,7 +92,7 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-### Section header
+### 节标题
 ```json
 {
   "uuid": "sec1-head",
@@ -105,7 +105,7 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-### Text input question
+### 文本输入问题
 ```json
 {
   "uuid": "q1-title",
@@ -125,7 +125,7 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-### Multiple choice (single answer)
+### 单选问题
 ```json
 {
   "uuid": "q2-title",
@@ -152,7 +152,7 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-### Checkboxes (multiple answers)
+### 多选问题（可有多个答案）
 ```json
 {
   "uuid": "q3-title",
@@ -179,7 +179,7 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-### Rating scale (workaround with stars)
+### 评分量表（使用星星表情符号替代）
 ```json
 {
   "uuid": "q4-title",
@@ -227,7 +227,7 @@ Tally forms are composed of **blocks**. Questions require **multiple blocks grou
 }
 ```
 
-## Update Command
+## 更新表单的命令
 
 ```bash
 TALLY_KEY=$(cat ~/.config/tally/api_key)
@@ -248,10 +248,9 @@ curl -s "https://api.tally.so/forms/{ID}" \
   -H "Authorization: Bearer $TALLY_KEY" | jq '.blocks | length'
 ```
 
-## Best Practices
-
-1. **Always backup** before modifying a form
-2. **Use descriptive UUIDs** (q1-title, q1-input, sec1-head)
-3. **Section titles:** Use lowercase with emoji prefix (📊 General feedback)
-4. **For ratings:** Use MULTIPLE_CHOICE with ⭐ emojis instead of RATING type
-5. **Verify after update:** Check block count matches expected
+## 最佳实践
+1. **修改表单前务必备份**
+2. **使用描述性的 UUID**（例如：q1-title, q1-input, sec1-head）
+3. **节标题**：使用小写字母，并加上表情符号前缀（例如：📊 一般反馈）
+4. **对于评分**：使用 `MULTIPLE_CHOICE` 并添加星星表情符号（⭐）代替 `RATING` 类型
+5. **更新后进行验证**：确认块的数量与预期一致

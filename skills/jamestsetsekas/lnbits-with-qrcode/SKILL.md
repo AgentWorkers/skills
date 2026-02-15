@@ -1,49 +1,51 @@
 ---
 name: lnbits
-description: Manage LNbits Lightning Wallet (Balance, Pay, Invoice)
+description: 管理 LNbits Lightning 钱包（查看余额、进行支付、生成发票）
 homepage: https://lnbits.com
 metadata: {"clawdbot":{"emoji":"⚡","requires":{"bins":["python3"],"pip":["qrcode[pil]"],"env":["LNBITS_API_KEY", "LNBITS_BASE_URL"]},"primaryEnv":"LNBITS_API_KEY"}}
 ---
 
-# LNbits Wallet Manager
+# LNbits 钱包管理器
 
-Enable the assistant to safely and effectively manage an LNbits Lightning Network wallet.
+该工具可帮助用户安全、高效地管理 LNbits Lightning Network 钱包。
 
-## 🛑 CRITICAL PROTOCOLS 🛑
+## 🛑 重要协议 🛑
 
-1.  **NEVER Expose Secrets**: Do NOT display Admin Keys, User IDs, or Wallet IDs.
-2.  **Explicit Confirmation**: You MUST ask for "Yes/No" confirmation before paying.
-    *   *Format*: "I am about to send **[Amount] sats** to **[Memo/Dest]**. Proceed? (y/n)"
-3.  **Check Balance First**: Always call `balance` before `pay` to prevent errors.
-4.  **ALWAYS Include Invoice + QR**: When generating an invoice, you MUST: (a) show the `payment_request` text for copying, and (b) output `MEDIA:` followed by the `qr_file` path on ONE line. NEVER skip this.
+1. **切勿泄露敏感信息**：严禁显示管理员密钥（admin_key）、用户 ID 或钱包 ID。
+2. **明确确认**：在支付前必须获取用户的确认（“是/否”）。
+    *   **格式示例**：“我即将向 **[收款地址/备注]** 发送 **[金额] 萨托希**。继续吗？(y/n)”
+3. **先检查余额**：在执行支付操作前，请务必先调用 `balance` 函数以确认余额是否足够。
+4. **务必包含发票和二维码**：生成发票时，必须：
+    (a) 显示 `payment_request` 字符串以便用户复制；
+    (b) 在同一行输出 `MEDIA:` 后跟 `qr_file` 的路径。切勿省略此步骤。
 
-## Usage
+## 使用方法
 
-### 0. Setup / Create Wallet
-If the user does not have an LNbits wallet, you can create one for them on the demo server.
+### 0. 设置/创建钱包
+如果用户尚未拥有 LNbits 钱包，您可以在演示服务器上为他们创建一个钱包。
 
 ```bash
 python3 {baseDir}/scripts/lnbits_cli.py create --name "My Wallet"
 ```
 
-**Action**:
-1.  Run the command. The CLI prints JSON containing `adminkey` and `base_url` to stdout (visible in the terminal).
-2.  **NEVER Expose Secrets (applies here)**: Do NOT repeat, quote, or display the `adminkey` or any secret from the output in your chat response. The user sees the command output in their terminal; that is the only place the key should appear.
-3.  Instruct the user in plain language only, e.g.:
-    > "A new wallet was created. The command output above contains your **adminkey** and **base_url**. Copy those values from the terminal and add them to your configuration or `.env` as `LNBITS_API_KEY` and `LNBITS_BASE_URL`. Do not paste the adminkey here or in any chat."
+**操作步骤**：
+1. 运行相应命令。命令行工具（CLI）会将包含 `adminkey` 和 `base_url` 的 JSON 数据输出到终端。
+2. **切勿泄露敏感信息**：切勿在聊天中重复、引用或显示 `adminkey` 或任何其他敏感信息。用户只能通过终端看到命令的输出结果；这是这些信息唯一应该出现的地方。
+3. 用简单的语言向用户说明操作步骤，例如：
+    > “已创建一个新的钱包。命令输出中包含了您的 **adminkey** 和 **base_url**。请将这些信息从终端复制到您的配置文件或 `.env` 文件中，分别设置为 `LNBITS_API_KEY` 和 `LNBITS_BASE_URL`。切勿将这些信息粘贴到聊天中。”
 
-### 1. Check Balance
-Get the current wallet balance in Satoshis.
+### 1. 查看余额
+获取钱包当前的余额（单位：萨托希）。
 
 ```bash
 python3 {baseDir}/scripts/lnbits_cli.py balance
 ```
 
-### 2. Create Invoice (Receive)
-Generate a Bolt11 invoice to receive funds. **QR code is always included by default.**
-*   **amount**: Amount in Satoshis (Integer).
-*   **memo**: Optional description.
-*   **--no-qr**: Skip QR code generation (if not needed).
+### 2. 生成发票（接收资金）
+生成一个 Bolt11 格式的发票以接收资金。**系统会自动生成二维码**。
+*   **金额**：以萨托希为单位的金额（整数）。
+*   **备注**：可选的收款说明。
+*   **--no-qr**：如果不需要二维码，则省略该选项。
 
 ```bash
 # Invoice with QR code (default)
@@ -53,12 +55,12 @@ python3 {baseDir}/scripts/lnbits_cli.py invoice --amount 1000 --memo "Pizza"
 python3 {baseDir}/scripts/lnbits_cli.py invoice --amount 1000 --memo "Pizza" --no-qr
 ```
 
-**⚠️ MANDATORY RESPONSE FORMAT**: When generating an invoice, your response MUST include:
+**⚠️ 必须包含的响应格式**：
+生成发票时，您的回复必须包含以下内容：
+1. **可供用户复制的发票文本**：显示完整的 `payment_request` 字符串。
+2. **二维码图像**：在同一行输出 `MEDIA:` 后跟 `qr_file` 的路径。
 
-1. **Invoice text for copying**: Show the full `payment_request` string so user can copy it
-2. **QR code image**: Output `MEDIA:` followed by the `qr_file` path on ONE line
-
-**EXACT FORMAT** (follow precisely):
+**格式要求**：
 ```
 Here is your 100 sat invoice:
 
@@ -67,19 +69,19 @@ lnbc1u1p5abc123...
 MEDIA:./clawd/.lnbits_qr/invoice_xxx.png
 ```
 
-**CRITICAL**: The `MEDIA:` and file path MUST be on the SAME LINE. This sends the QR code image to the user.
+**重要提示**：`MEDIA:` 和文件路径必须在同一行显示，这样才能将二维码图像正确发送给用户。
 
-### 2b. Generate QR Code from Existing Invoice
-Convert any Bolt11 string to a QR code image file.
+### 2b. 从现有发票生成二维码
+将任何 Bolt11 格式的字符串转换为二维码图像文件。
 
 ```bash
 python3 {baseDir}/scripts/lnbits_cli.py qr <bolt11_string>
 ```
 
-Returns: `{"qr_file": "./.lnbits_qr/invoice_xxx.png", "bolt11": "..."}`
+返回结果：`{"qr_file": "./.lnbits_qr/invoice_xxx.png", "bolt11": "..."}`
 
-### 3. Pay Invoice (Send)
-**⚠️ REQUIRES CONFIRMATION**: Decode first, verify balance, ask user, then execute.
+### 3. 支付发票（发送资金）
+**⚠️ 需要用户确认**：先解码发票信息，确认余额，再征求用户同意后执行支付操作。
 
 ```bash
 # Step 1: Decode to verify amount/memo
@@ -89,5 +91,5 @@ python3 {baseDir}/scripts/lnbits_cli.py decode <bolt11_string>
 python3 {baseDir}/scripts/lnbits_cli.py pay <bolt11_string>
 ```
 
-## Error Handling
-If the CLI returns a JSON error (e.g., `{"error": "Insufficient funds"}`), summarize it clearly for the user. Do not show raw stack traces.
+## 错误处理
+如果 CLI 返回错误信息（例如 `{"error": "Insufficient funds"}`），请向用户清晰地说明问题原因。切勿直接显示原始的错误堆栈跟踪信息。

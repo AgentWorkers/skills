@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Compliance - JavaScript
+# Telnyx 数字合规性 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Retrieve Bundles
+## 获取捆绑包
 
-Get all allowed bundles.
+获取所有允许使用的捆绑包。
 
 `GET /bundle_pricing/billing_bundles`
 
@@ -45,9 +45,9 @@ for await (const billingBundleSummary of client.bundlePricing.billingBundles.lis
 }
 ```
 
-## Get Bundle By Id
+## 根据 ID 获取捆绑包
 
-Get a single bundle by ID.
+根据 ID 获取单个捆绑包。
 
 `GET /bundle_pricing/billing_bundles/{bundle_id}`
 
@@ -59,9 +59,9 @@ const billingBundle = await client.bundlePricing.billingBundles.retrieve(
 console.log(billingBundle.data);
 ```
 
-## Get User Bundles
+## 获取用户捆绑包
 
-Get a paginated list of user bundles.
+获取用户捆绑包的分页列表。
 
 `GET /bundle_pricing/user_bundles`
 
@@ -72,9 +72,9 @@ for await (const userBundle of client.bundlePricing.userBundles.list()) {
 }
 ```
 
-## Create User Bundles
+## 创建用户捆绑包
 
-Creates multiple user bundles for the user.
+为用户创建多个捆绑包。
 
 `POST /bundle_pricing/user_bundles/bulk`
 
@@ -84,9 +84,9 @@ const userBundle = await client.bundlePricing.userBundles.create();
 console.log(userBundle.data);
 ```
 
-## Get Unused User Bundles
+## 获取未使用的用户捆绑包
 
-Returns all user bundles that aren't in use.
+返回所有未使用的用户捆绑包。
 
 `GET /bundle_pricing/user_bundles/unused`
 
@@ -96,9 +96,9 @@ const response = await client.bundlePricing.userBundles.listUnused();
 console.log(response.data);
 ```
 
-## Get User Bundle by Id
+## 根据 ID 获取用户捆绑包
 
-Retrieves a user bundle by its ID.
+根据 ID 获取用户捆绑包。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -110,9 +110,9 @@ const userBundle = await client.bundlePricing.userBundles.retrieve(
 console.log(userBundle.data);
 ```
 
-## Deactivate User Bundle
+## 取消激活用户捆绑包
 
-Deactivates a user bundle by its ID.
+根据 ID 取消激活用户捆绑包。
 
 `DELETE /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -124,9 +124,9 @@ const response = await client.bundlePricing.userBundles.deactivate(
 console.log(response.data);
 ```
 
-## Get User Bundle Resources
+## 获取用户捆绑包的资源
 
-Retrieves the resources of a user bundle by its ID.
+根据 ID 获取用户捆绑包的资源。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}/resources`
 
@@ -138,9 +138,9 @@ const response = await client.bundlePricing.userBundles.listResources(
 console.log(response.data);
 ```
 
-## List all document links
+## 列出所有文档链接
 
-List all documents links ordered by created_at descending.
+按创建时间降序列出所有文档链接。
 
 `GET /document_links`
 
@@ -151,9 +151,9 @@ for await (const documentLinkListResponse of client.documentLinks.list()) {
 }
 ```
 
-## List all documents
+## 列出所有文档
 
-List all documents ordered by created_at descending.
+按创建时间降序列出所有文档。
 
 `GET /documents`
 
@@ -164,9 +164,9 @@ for await (const docServiceDocument of client.documents.list()) {
 }
 ```
 
-## Upload a document
+## 上传文档
 
-Upload a document.<br /><br />Uploaded files must be linked to a service within 30 minutes or they will be automatically deleted.
+上传文档。<br /><br />上传的文件必须在 30 分钟内关联到某个服务，否则将被自动删除。
 
 `POST /documents`
 
@@ -176,9 +176,9 @@ const response = await client.documents.uploadJson({ document: {} });
 console.log(response.data);
 ```
 
-## Retrieve a document
+## 获取文档
 
-Retrieve a document.
+获取文档。
 
 `GET /documents/{id}`
 
@@ -188,9 +188,9 @@ const document = await client.documents.retrieve('6a09cdc3-8948-47f0-aa62-74ac94
 console.log(document.data);
 ```
 
-## Update a document
+## 更新文档
 
-Update a document.
+更新文档。
 
 `PATCH /documents/{id}`
 
@@ -200,9 +200,9 @@ const document = await client.documents.update('6a09cdc3-8948-47f0-aa62-74ac943d
 console.log(document.data);
 ```
 
-## Delete a document
+## 删除文档
 
-Delete a document.<br /><br />A document can only be deleted if it's not linked to a service.
+删除文档。<br /><br />只有未关联到任何服务的文档才能被删除。
 
 `DELETE /documents/{id}`
 
@@ -212,9 +212,9 @@ const document = await client.documents.delete('6a09cdc3-8948-47f0-aa62-74ac943d
 console.log(document.data);
 ```
 
-## Download a document
+## 下载文档
 
-Download a document.
+下载文档。
 
 `GET /documents/{id}/download`
 
@@ -227,9 +227,9 @@ const content = await response.blob();
 console.log(content);
 ```
 
-## Generate a temporary download link for a document
+## 生成文档的临时下载链接
 
-Generates a temporary pre-signed URL that can be used to download the document directly from the storage backend without authentication.
+生成一个临时预签名 URL，可以直接从存储后端下载文档，无需身份验证。
 
 `GET /documents/{id}/download_link`
 
@@ -241,9 +241,9 @@ const response = await client.documents.generateDownloadLink(
 console.log(response.data);
 ```
 
-## List all requirements
+## 列出所有需求
 
-List all requirements with filtering, sorting, and pagination
+支持过滤、排序和分页功能，列出所有需求。
 
 `GET /requirements`
 
@@ -254,9 +254,9 @@ for await (const requirementListResponse of client.requirements.list()) {
 }
 ```
 
-## Retrieve a document requirement
+## 获取文档需求
 
-Retrieve a document requirement record
+获取文档需求记录。
 
 `GET /requirements/{id}`
 
@@ -266,9 +266,9 @@ const requirement = await client.requirements.retrieve('a9dad8d5-fdbd-49d7-aa23-
 console.log(requirement.data);
 ```
 
-## List all requirement types
+## 列出所有需求类型
 
-List all requirement types ordered by created_at descending
+按创建时间降序列出所有需求类型。
 
 `GET /requirement_types`
 
@@ -278,9 +278,9 @@ const requirementTypes = await client.requirementTypes.list();
 console.log(requirementTypes.data);
 ```
 
-## Retrieve a requirement types
+## 根据 ID 获取需求类型
 
-Retrieve a requirement type by id
+根据 ID 获取需求类型。
 
 `GET /requirement_types/{id}`
 
@@ -292,7 +292,7 @@ const requirementType = await client.requirementTypes.retrieve(
 console.log(requirementType.data);
 ```
 
-## Retrieve regulatory requirements
+## 获取监管要求
 
 `GET /regulatory_requirements`
 
@@ -302,7 +302,7 @@ const regulatoryRequirement = await client.regulatoryRequirements.retrieve();
 console.log(regulatoryRequirement.data);
 ```
 
-## List requirement groups
+## 列出需求组
 
 `GET /requirement_groups`
 
@@ -312,9 +312,9 @@ const requirementGroups = await client.requirementGroups.list();
 console.log(requirementGroups);
 ```
 
-## Create a new requirement group
+## 创建新的需求组
 
-`POST /requirement_groups` — Required: `country_code`, `phone_number_type`, `action`
+`POST /requirement_groups` — 必需参数：`country_code`、`phone_number_type`、`action`
 
 ```javascript
 const requirementGroup = await client.requirementGroups.create({
@@ -326,7 +326,9 @@ const requirementGroup = await client.requirementGroups.create({
 console.log(requirementGroup.id);
 ```
 
-## Get a single requirement group by ID
+## 根据 ID 获取单个需求组
+
+根据 ID 获取单个需求组。
 
 `GET /requirement_groups/{id}`
 
@@ -336,7 +338,7 @@ const requirementGroup = await client.requirementGroups.retrieve('id');
 console.log(requirementGroup.id);
 ```
 
-## Update requirement values in requirement group
+## 更新需求组中的需求值
 
 `PATCH /requirement_groups/{id}`
 
@@ -346,7 +348,7 @@ const requirementGroup = await client.requirementGroups.update('id');
 console.log(requirementGroup.id);
 ```
 
-## Delete a requirement group by ID
+## 根据 ID 删除需求组
 
 `DELETE /requirement_groups/{id}`
 
@@ -356,7 +358,7 @@ const requirementGroup = await client.requirementGroups.delete('id');
 console.log(requirementGroup.id);
 ```
 
-## Submit a Requirement Group for Approval
+## 提交需求组以供审批
 
 `POST /requirement_groups/{id}/submit_for_approval`
 
@@ -366,9 +368,9 @@ const requirementGroup = await client.requirementGroups.submitForApproval('id');
 console.log(requirementGroup.id);
 ```
 
-## List all Verified Numbers
+## 列出所有已验证的号码
 
-Gets a paginated list of Verified Numbers.
+获取已验证号码的分页列表。
 
 `GET /verified_numbers`
 
@@ -379,11 +381,11 @@ for await (const verifiedNumber of client.verifiedNumbers.list()) {
 }
 ```
 
-## Request phone number verification
+## 请求电话号码验证
 
-Initiates phone number verification procedure.
+启动电话号码验证流程。
 
-`POST /verified_numbers` — Required: `phone_number`, `verification_method`
+`POST /verified_numbers` — 必需参数：`phone_number`、`verification_method`
 
 ```javascript
 const verifiedNumber = await client.verifiedNumbers.create({
@@ -394,7 +396,7 @@ const verifiedNumber = await client.verifiedNumbers.create({
 console.log(verifiedNumber.phone_number);
 ```
 
-## Retrieve a verified number
+## 获取已验证的号码
 
 `GET /verified_numbers/{phone_number}`
 
@@ -404,7 +406,7 @@ const verifiedNumberDataWrapper = await client.verifiedNumbers.retrieve('+155512
 console.log(verifiedNumberDataWrapper.data);
 ```
 
-## Delete a verified number
+## 删除已验证的号码
 
 `DELETE /verified_numbers/{phone_number}`
 
@@ -414,9 +416,9 @@ const verifiedNumberDataWrapper = await client.verifiedNumbers.delete('+15551234
 console.log(verifiedNumberDataWrapper.data);
 ```
 
-## Submit verification code
+## 提交验证码
 
-`POST /verified_numbers/{phone_number}/actions/verify` — Required: `verification_code`
+`POST /verified_numbers/{phone_number}/actions/verify` — 必需参数：`verification_code`
 
 ```javascript
 const verifiedNumberDataWrapper = await client.verifiedNumbers.actions.submitVerificationCode(

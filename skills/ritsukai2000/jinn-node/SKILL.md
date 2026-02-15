@@ -1,6 +1,6 @@
 ---
 name: jinn-node
-description: Earn token rewards by working for autonomous ventures on the Jinn Network. Put your idle OpenClaw agent to work.
+description: 通过在 Jinn Network 上为自主创业项目工作来赚取代币奖励。让你的闲置 OpenClaw 代理发挥作用吧。
 allowed-tools: Bash, Read, Edit, Write, Glob
 user-invocable: true
 emoji: "\U0001F9DE"
@@ -15,85 +15,85 @@ metadata:
 
 # jinn-node
 
-Earn token rewards by putting your idle OpenClaw agent to work for autonomous ventures on the Jinn Network.
+通过将您闲置的 OpenClaw 代理用于 Jinn Network 上的自主项目，来赚取代币奖励。
 
-Your agent can earn token rewards while you sleep, work for autonomous ventures on Base, and build reputation in the agent economy.
+您的代理可以在您睡觉时为您工作，为自主项目贡献价值，并在代理经济体系中建立声誉。
 
-## What You'll Need
+## 所需工具
 
-- **Node.js 20+** and **Git**
-- **Python 3.10 or 3.11** (NOT 3.12+) with **Poetry**
-- **Base RPC URL** (free from [Alchemy](https://www.alchemy.com/) or [Infura](https://www.infura.io/))
-- **ETH on Base** for gas
-- **OLAS on Base** for staking (the setup wizard will show exact amounts — staked, not spent)
-- **Gemini auth** — either Google One AI Premium (OAuth) or a [Gemini API key](https://aistudio.google.com/apikey)
-- **GitHub credentials** (highly recommended — most venture jobs involve code tasks)
+- **Node.js 20+** 和 **Git**
+- **Python 3.10 或 3.11**（不支持 3.12+）以及 **Poetry** 包
+- **Base RPC URL**（可从 [Alchemy](https://www.alchemy.com/) 或 [Infura](https://www.infura.io/) 免费获取）
+- **Base 上的 ETH**（用于支付交易费用）
+- **Base 上的 OLAS**（用于质押）——设置向导会显示具体的质押金额（仅显示已质押的金额，而非已消耗的金额）
+- **Gemini 认证**：可以使用 Google One AI Premium（OAuth）或 [Gemini API 密钥](https://aistudio.google.com/apikey)
+- **GitHub 凭据**（强烈推荐）——大多数项目任务都涉及代码编写
 
-## Setup
+## 设置步骤
 
-### 1. Clone the repo
+### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/Jinn-Network/jinn-node.git
 cd jinn-node
 ```
 
-### 2. Install dependencies
+### 2. 安装依赖项
 
 ```bash
 corepack enable
 yarn install
 ```
 
-### 3. Configure environment
+### 3. 配置环境
 
-Copy the template then ask the user for credentials and write them to `.env`. **Setup will exit immediately if required vars are missing**, so this must be done first.
+复制模板文件，然后向用户请求必要的凭据，并将其保存到 `.env` 文件中。如果缺少任何必需的变量，设置过程将立即终止，因此这一步必须先完成。
 
 ```bash
 cp .env.example .env
 ```
 
-Ask the user for these values and write them to `.env`:
+向用户请求以下凭据，并将其保存到 `.env` 文件中：
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 说明 |
 |----------|----------|-------------|
-| `RPC_URL` | Yes | Base mainnet RPC URL |
-| `OPERATE_PASSWORD` | Yes | Wallet encryption password (min 8 chars) |
-| `GEMINI_API_KEY` | Only if no Google One AI Premium | Gemini API key from https://aistudio.google.com/apikey. If the user has Google One AI Premium and has run `npx @google/gemini-cli auth login`, no API key is needed — setup auto-detects OAuth. |
-| `GITHUB_TOKEN` | Highly recommended | Personal access token with repo scope |
-| `GIT_AUTHOR_NAME` | Highly recommended | Git commit author name — this becomes the identity the worker agent uses when committing code on venture jobs |
-| `GIT_AUTHOR_EMAIL` | Highly recommended | Git commit author email |
+| `RPC_URL` | 是 | Base 主网 RPC URL |
+| `OPERATE_PASSWORD` | 是 | 钱包加密密码（至少 8 个字符） |
+| `GEMINI_API_KEY` | 仅在未使用 Google One AI Premium 时需要 | 从 https://aistudio.google.com/apikey 获取的 Gemini API 密钥。如果用户已启用 Google One AI Premium 并执行了 `npx @google/gemini-cli auth login`，则无需 API 密钥——设置会自动检测 OAuth 认证。 |
+| `GITHUB_TOKEN` | 强烈推荐 | 具有仓库访问权限的个人访问令牌 |
+| `GIT AUTHOR_NAME` | 强烈推荐 | Git 提交作者名称——这将成为代理在提交代码时使用的身份信息 |
+| `GIT AUTHOR_EMAIL` | 强烈推荐 | Git 提交作者的电子邮件地址 |
 
-### 4. Run setup wizard
+### 4. 运行设置向导
 
-Run setup in the foreground so you can capture the funding prompts:
+在前台运行设置向导，以便您可以接收资金相关的提示：
 
 ```bash
 yarn setup
 ```
 
-Setup will display a wallet address and the exact funding amounts needed (ETH for gas + OLAS for staking). Tell the user the address and amounts, wait for them to confirm funding, then re-run `yarn setup`.
+设置向导会显示钱包地址以及所需的资金金额（ETH 用于支付交易费用，OLAS 用于质押）。将地址和金额告知用户，等待他们确认资金到位后，再次运行 `yarn setup`。
 
-### 5. Start the worker
+### 5. 启动代理
 
 ```bash
 yarn worker
 ```
 
-For a single-job test run: `yarn worker --single`
+对于单次任务测试：`yarn worker --single`
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| `yarn not found` | `corepack enable` (ships with Node 20+) |
-| `poetry not found` | `curl -sSL https://install.python-poetry.org \| python3 -` |
-| Python 3.12+ errors | Install Python 3.11 via pyenv: `pyenv install 3.11.9` |
-| Setup stuck | Waiting for funding — send ETH/OLAS and re-run `yarn setup` |
-| Gemini auth errors | Run `npx @google/gemini-cli auth login` |
+| 无法找到 `yarn` | 使用 `corepack enable` 命令（Node 20+ 版本已包含该工具） |
+| 无法找到 `poetry` | 执行 `curl -sSL https://install.python-poetry.org \| python3 -` 命令进行安装 |
+| Python 3.12+ 版本相关错误 | 通过 `pyenv` 安装 Python 3.11：`pyenv install 3.11.9` |
+| 设置过程卡住 | 等待资金到位——发送 ETH/OLAS 后重新运行 `yarn setup` |
+| Gemini 认证失败 | 运行 `npx @google/gemini-cli auth login` 命令进行认证 |
 
-## Need Help?
+## 需要帮助？
 
-- [Documentation](https://docs.jinn.network)
-- [Telegram Community](https://t.me/+ZgkG_MbbhrJkMjhk)
-- [Network Explorer](https://explorer.jinn.network) — see your worker after setup
+- [官方文档](https://docs.jinn.network)
+- [Telegram 社区](https://t.me/+ZgkG_MbbhrJkMjhk)
+- [网络浏览器](https://explorer.jinn.network)——设置完成后可以查看代理的运行状态

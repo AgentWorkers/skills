@@ -1,64 +1,68 @@
 ---
 name: recruiter
-description: "Help recruiters publish job postings to the job matching system. Use when users want to: (1) post a job, (2) publish a position, (3) hire someone, (4) recruit candidates, (5) find employees, or (6) advertise job openings. Supports flexible information collection - users can provide all details at once or be guided through step-by-step. Automatically creates recruiter account, generates job vectors, and enables AI-powered candidate matching."
+description: "帮助招聘人员将职位信息发布到职位匹配系统中。适用于以下场景：  
+(1) 发布职位信息；  
+(2) 招聘人员；  
+(3) 寻找候选人；  
+(4) 宣传职位空缺。  
+该系统支持灵活的信息收集方式——用户可以一次性提供所有详细信息，也可以按照步骤逐步填写。  
+系统会自动创建招聘人员账户，生成职位描述，并利用人工智能技术进行候选人匹配。"
 ---
 
-# Recruiter
+# 招聘专员
 
-Publish, update, and manage job postings in the AI-powered job matching system, and view matched candidates.
+在基于人工智能的职位匹配系统中发布、更新和管理职位信息，并查看匹配到的候选人。
 
-## Overview
+## 概述
 
-This skill helps recruiters manage job postings through an interactive conversation. Provide information flexibly - share everything at once or answer questions step-by-step. The system supports:
+该技能帮助招聘专员通过交互式对话来管理职位发布。可以灵活地提供信息——一次性提供所有信息，也可以逐步回答问题。系统支持以下操作：
 
-1. **Publish job** - Create a recruiter account, publish a job posting, and trigger AI matching
-2. **Update job** - Modify job details (title, requirements, salary, etc.)
-3. **Delete job** - Soft-delete job posting (mark as INACTIVE, preserving match history)
-4. **View jobs** - Check all your published jobs
-5. **List matched candidates** - View candidates matched by the AI system with similarity scores
+1. **发布职位**：创建招聘专员账户，发布职位信息，并触发人工智能匹配。
+2. **更新职位**：修改职位详情（职位名称、要求、薪资等）。
+3. **删除职位**：将职位信息标记为“不活跃”状态（soft-delete），同时保留匹配历史记录。
+4. **查看职位**：查看所有已发布的职位。
+5. **查看匹配到的候选人**：查看人工智能系统推荐的候选人及其相似度评分。
 
-## Available Scripts
+## 可用脚本
 
-- **publish_job.py** - Publish, update, delete jobs, and list matches for a specific job
-- **get_profile.py** - View all your jobs and matched candidates (read-only)
+- **publish_job.py**：发布、更新、删除职位信息，并列出特定职位的匹配结果。
+- **get_profile.py**：查看所有已发布的职位和匹配到的候选人（只读）。
 
-## Workflow
+## 工作流程
 
-### Publish Job (action: publish)
+### 发布职位（操作：publish）
 
-#### Step 1: Gather Job Posting Information
+#### 第一步：收集职位发布信息
 
-Collect the following required fields. Users can provide them in any order or all at once:
+收集以下必填字段。用户可以按任意顺序提供这些信息，或一次性全部提供：
 
-**Required fields:**
+**必填字段：**
 
-- **Job title**: Position name (e.g., "Senior Python Backend Engineer")
-- **Company name**: Employer name
-- **Job requirements**: Detailed requirements including skills, responsibilities, and qualifications
-- **Salary range**: Compensation range (e.g., "25k-40k", "30k-50k")
-- **Work location**: Office location (e.g., "Shanghai-Changning District", "Beijing-Chaoyang District")
-- **Job type**: Employment type (e.g., "Full-time", "Part-time", "Contract")
-- **Education requirement**: Minimum education level (e.g., "Bachelor's degree or above")
-- **Experience requirement**: Required years of experience (e.g., "3-5 years", "5+ years")
+- **职位名称**：职位名称（例如：“高级Python后端工程师”）
+- **公司名称**：雇主名称
+- **职位要求**：包括技能、职责和资格要求的详细信息
+- **薪资范围**：薪资区间（例如：“2.5万-4万”，“3万-5万”
+- **工作地点**：办公地点（例如：“上海长宁区”，“北京朝阳区”）
+- **职位类型**：就业类型（例如：“全职”，“兼职”，“合同制”）
+- **教育要求**：最低教育水平（例如：“学士学位或以上”）
+- **工作经验要求**：所需的工作经验年限（例如：“3-5年”，“5年以上”）
 
-**Example user inputs:**
+**用户输入示例：**
 
-_All at once:_
+- **一次性提供所有信息：**
+  > “我想在上海市长宁区的拼多多发布一个Python后端工程师的职位。薪资2.5万-4万。要求：熟悉Python、Django/Flask框架，具有RESTful API开发经验。了解MySQL、Redis数据库。优先考虑有电子商务或支付系统经验的人。全职职位，学士学位或以上，3-5年工作经验。”
 
-> "I want to post a job for a Python Backend Engineer at Pinduoduo in Shanghai Changning District. Salary 25k-40k. Requirements: Familiar with Python, Django/Flask frameworks, RESTful API development experience. Knowledge of MySQL, Redis databases. E-commerce or payment system experience preferred. Full-time position, bachelor's degree or above, 3-5 years experience."
+- **逐步提供信息：**
+  > “我需要招聘一名开发人员。”
+  > [Claude询问职位名称]
+  > “Python后端工程师”
+  > [Claude询问公司名称、职位要求、薪资、工作地点等]
 
-_Step by step:_
+#### 第二步：验证信息完整性
 
-> "I need to hire a developer"
-> [Claude asks for job title]
-> "Python Backend Engineer"
-> [Claude asks for company, requirements, salary, location, etc.]
+在提交之前，确认所有必填字段都已填写。如果有任何字段缺失，请让用户补充。
 
-#### Step 2: Validate Completeness
-
-Before submission, verify all required fields are present. If any are missing, ask the user to provide them.
-
-#### Step 3: Publish Job Posting
+#### 第三步：发布职位信息
 
 ```bash
 cat <<EOF | python3 scripts/publish_job.py
@@ -77,34 +81,23 @@ cat <<EOF | python3 scripts/publish_job.py
 EOF
 ```
 
-#### Step 4: Confirm Success
+#### 第四步：确认发布成功
 
-After successful publication, inform the user and **save the returned job ID** for future operations (update, delete, list matches). The token is automatically saved.
-
----
-
-### Update Job (action: update)
-
-Requires the **jobId** from a previous publish. Only changed fields need to be provided. The script will automatically use the saved token.
-
-```bash
-cat <<EOF | python3 scripts/publish_job.py
-{
-  "action": "update",
-  "jobId": "<job id>",
-  "salary": "<new salary range>",
-  "requirement": "<updated requirements>"
-}
-EOF
-```
-
-Updatable fields: `title`, `companyName`, `requirement`, `salary`, `location`, `jobType`, `education`, `experience`, `status`.
+发布成功后，通知用户，并保存返回的职位ID，以便后续操作（更新、删除、查看匹配结果）。系统会自动保存该ID。
 
 ---
 
-### Delete Job (action: delete)
+### 更新职位（操作：update）
 
-Soft-deletes the job posting by marking it as INACTIVE. Match history is preserved.
+需要之前发布的职位的**职位ID**。只需提供需要修改的字段。脚本会自动使用保存的ID。
+
+**可更新字段：`title`（职位名称），`companyName`（公司名称），`requirement`（职位要求），`salary`（薪资），`location`（工作地点），`jobType`（职位类型），`education`（教育要求），`experience`（工作经验），`status`（职位状态）。
+
+---
+
+### 删除职位（操作：delete）
+
+通过将职位信息标记为“不活跃”状态来删除职位。匹配历史记录会被保留。
 
 ```bash
 cat <<EOF | python3 scripts/publish_job.py
@@ -117,11 +110,11 @@ EOF
 
 ---
 
-### View Jobs and Matches (get_profile.py)
+### 查看职位和匹配结果（get_profile.py）
 
-Check your published jobs and matched candidates without making any changes.
+查看已发布的职位和匹配到的候选人，无需进行任何修改。
 
-#### View All Jobs
+#### 查看所有职位
 
 ```bash
 cat <<EOF | python3 scripts/get_profile.py
@@ -131,7 +124,7 @@ cat <<EOF | python3 scripts/get_profile.py
 EOF
 ```
 
-#### View Specific Job Details
+#### 查看特定职位的详细信息
 
 ```bash
 cat <<EOF | python3 scripts/get_profile.py
@@ -142,7 +135,7 @@ cat <<EOF | python3 scripts/get_profile.py
 EOF
 ```
 
-#### View Matches for Specific Job
+#### 查看特定职位的匹配结果
 
 ```bash
 cat <<EOF | python3 scripts/get_profile.py
@@ -153,7 +146,7 @@ cat <<EOF | python3 scripts/get_profile.py
 EOF
 ```
 
-#### View All Matches Across All Jobs
+#### 查看所有职位的匹配结果
 
 ```bash
 cat <<EOF | python3 scripts/get_profile.py
@@ -163,7 +156,7 @@ cat <<EOF | python3 scripts/get_profile.py
 EOF
 ```
 
-#### View Full Information (all jobs + all matches)
+#### 查看所有职位的完整信息
 
 ```bash
 cat <<EOF | python3 scripts/get_profile.py
@@ -173,18 +166,18 @@ cat <<EOF | python3 scripts/get_profile.py
 EOF
 ```
 
-**When to use get_profile.py:**
+**何时使用get_profile.py：**
 
-- User asks "What jobs have I published?" or "Show me my jobs"
-- User wants to check matches across all jobs
-- User wants to review job details before updating
-- User asks "Do I have any candidates?"
+- 用户询问“我发布了哪些职位？”或“显示我的职位信息”。
+- 用户希望查看所有职位的匹配结果。
+- 用户希望在更新职位信息前查看详细信息。
+- 用户询问“我有匹配到的候选人吗？”
 
 ---
 
-### List Matched Candidates (action: matches)
+### 查看匹配到的候选人（操作：matches）
 
-Retrieve candidates matched by the AI system for a specific job posting and provide comprehensive multi-dimensional analysis.
+检索特定职位发布的匹配候选人，并提供全面的分析。
 
 ```bash
 cat <<EOF | python3 scripts/publish_job.py
@@ -195,179 +188,176 @@ cat <<EOF | python3 scripts/publish_job.py
 EOF
 ```
 
-#### Step 1: Retrieve Matched Candidates
+#### 第一步：检索匹配到的候选人
 
-The API returns a list of matched candidates with similarity scores. Each match includes:
+API会返回一份包含相似度评分的候选人列表。每个匹配结果包括：
 
-- Candidate details (name, resume, skills, experience, etc.)
-- Similarity score (0-1 range, based on vector matching)
-- Match metadata
+- 候选人信息（姓名、简历、技能等）
+- 相似度评分（0-1范围）
+- 匹配元数据
 
-#### Step 2: Provide Comparative Summary
+#### 第二步：提供对比总结
 
-After analyzing individual candidates, provide a comparative summary:
+分析完每个候选人后，提供以下对比总结：
 
-**Top 3 Recommendations:**
-Rank the top 3 candidates with brief rationale for each.
+**前三名推荐：**
+  - 对前三名候选人进行排名，并简要说明推荐理由。
 
-**Candidate Distribution:**
+**候选人分布：**
+  - 非常匹配的候选人（评分 > 0.85）：X人
+  - 较好匹配的候选人（评分 0.75-0.85）：Y人
+  - 一般匹配的候选人（评分 0.65-0.75）：Z人
 
-- Excellent matches (score > 0.85): X candidates
-- Good matches (score 0.75-0.85): Y candidates
-- Moderate matches (score 0.65-0.75): Z candidates
+**招聘策略建议：**
+  - 哪些候选人应优先安排面试
+  - 建议的面试小组组成
+  - 时间安排建议
+  - 备选候选人策略
 
-**Hiring Strategy Advice:**
+**输出格式指南**
 
-- Which candidates to prioritize for interviews
-- Suggested interview panel composition
-- Timeline recommendations
-- Backup candidate strategy
+**重要提示：**始终使用用户的语言进行回复。如果用户使用中文，请用中文回复；如果使用英文，则用英文回复。调整所有章节标题、标签和内容以匹配用户的语言。
 
-#### Output Format Guidelines
+**分析报告的结构如下：**
 
-**IMPORTANT: Always respond in the user's language.** If the user communicates in Chinese, respond in Chinese. If in English, respond in English. Adapt all section headers, labels, and content to match the user's language.
+**报告标题：**
 
-**Structure your analysis report as follows:**
+- 显示这是候选人匹配分析报告的标题
+- 职位名称和公司名称
 
-**Report Header:**
+**每个匹配候选人的内容：**
 
-- Title indicating this is a candidate match analysis report
-- Job position and company name
-- Visual separators (lines, emojis) to organize sections
+1. **候选人信息部分**
+   - 候选人姓名/标识符及编号
+   - 分隔线
 
-**For Each Matched Candidate:**
+2. **整体匹配评分**（📈）
+   - 显示相似度评分（例如：0.89）并解释评分含义（非常匹配/较好匹配/一般匹配/不太匹配）
+   - 简要说明为什么该候选人匹配或不匹配
 
-1. **Candidate Header Section**
-   - Candidate name/identifier and number
-   - Visual separator line
+3. **技能匹配分析**（🔧）
+   - ✅ 列出匹配的技能及对应的工作经验
+   💡 强调额外的优势技能
+   ⚠️ 指出技能差距（虽然符合要求但实际缺乏）
+   - 提供技能匹配百分比的估计
 
-2. **Overall Match Score** (📈)
-   - Display the similarity score (e.g., 0.89) with interpretation (excellent/good/moderate/fair)
-   - Brief summary of why this candidate matches or doesn't match
+4. **工作经验匹配分析**（💼）
+   - 比较所需工作经验与实际工作经验
+   - 评估行业/领域经验的相关性
+   - 评估项目复杂性和规模匹配度
+   - 确定职位的匹配等级
+   - 评估职业发展轨迹
 
-3. **Skill Alignment Analysis** (🔧)
-   - ✅ List matching skills with experience levels
-   - 💡 Highlight bonus skills (beyond requirements)
-   - ⚠️ Identify skill gaps (required but missing)
-   - Provide skill match percentage estimate
+5. **教育与资格**（🎓）
+   - 教育水平匹配情况
+   - 相关证书
+   - 学术背景的相关性
 
-4. **Experience Fit Analysis** (💼)
-   - Compare required vs. actual years of experience
-   - Assess industry/domain experience relevance
-   - Evaluate project complexity and scale alignment
-   - Determine seniority level match
-   - Review career progression trajectory
+6. **文化与团队契合度**（🤝）
+   - 从简历中判断的工作风格
+   - 团队协作经验
+   - 领导潜力（如适用）
+   - 沟通能力
 
-5. **Education & Qualifications** (🎓)
-   - Education level match
-   - Relevant certifications
-   - Academic background relevance
+7. **薪资期望**（💰）
+   - 候选人的薪资期望与职位提供的薪资
+   - 谈判空间评估
+   - 总体薪资考量
 
-6. **Cultural & Team Fit** (🤝)
-   - Work style indicators from resume
-   - Team collaboration experience
-   - Leadership potential (if applicable)
-   - Communication skills evidence
+8. **优势与劣势**（✅ ⚠️）
+   - 列出该候选人的3-5个主要优点
+   - 列出2-4个潜在的不足或问题
+   - 保持客观和平衡
 
-7. **Compensation Expectations** (💰)
-   - Candidate's salary expectations vs. job offer
-   - Negotiation room assessment
-   - Total compensation considerations
+9. **招聘建议**（🎯）
+   - 优先级：🔥 高优先级 / ⭐ 中等优先级 / 💭 需考虑
+   - 建议的行动计划及理由
+   - 建议的面试重点
+   - 入职准备事项
 
-8. **Advantages & Disadvantages** (✅ ⚠️)
-   - List 3-5 key strengths of this candidate
-   - List 2-4 potential concerns or gaps
-   - Be objective and balanced
+10. **面试策略**（📝）
+    - 面试中需要探讨的关键点
+    - 技术评估建议
+    - 应该提出的问题
+    - 需注意的警示信号
 
-9. **Hiring Recommendation** (🎯)
-   - Priority level: 🔥 High Priority / ⭐ Medium Priority / 💭 Consider
-   - Recommended action with clear reasoning
-   - Suggested interview focus areas
-   - Onboarding considerations
+11. **保留与成长潜力**（🚀）
+    - 长期匹配度评估
+    - 在公司内的成长潜力
+    - 保留风险因素
+    - 所需的发展机会
 
-10. **Interview Strategy** (📝)
-    - Key areas to probe during interview
-    - Technical assessment recommendations
-    - Behavioral questions to ask
-    - Red flags to watch for
+**每个候选人分析后：**
 
-11. **Retention & Growth Potential** (🚀)
-    - Long-term fit assessment
-    - Growth trajectory within the company
-    - Retention risk factors
-    - Development opportunities needed
+**对比总结部分：**
 
-**After Individual Candidate Analysis:**
+1. **前三名推荐**（🏆）
+   - 用徽章emoji（🥇🥈🥉）标记前三名候选人
+   - 简要说明每个推荐的理由
 
-**Comparative Summary Section:**
+2. **候选人分布**（📈）
+   - 非常匹配的候选人数量（评分 > 0.85）
+   - 较好匹配的候选人数量（评分 0.75-0.85）
+   - 一般匹配的候选人数量（评分 0.65-0.75）
 
-1. **Top 3 Recommendations** (🏆)
-   - Rank top 3 candidates with medal emojis (🥇🥈🥉)
-   - Brief rationale for each ranking
+3. **招聘策略建议**（💡）
+   - 哪些候选人应优先安排面试
+   - 建议的面试小组组成
+   - 时间安排建议
+   - 备选候选人策略
+   - 风险缓解策略
 
-2. **Candidate Distribution** (📈)
-   - Count of excellent matches (score > 0.85)
-   - Count of good matches (score 0.75-0.85)
-   - Count of moderate matches (score 0.65-0.75)
+4. **行动清单**（🎯）
+   - 立即的下一步行动（联系候选人、安排面试）
+   - 准备工作（面试问题、评估标准）
+   - 预算/薪资考量
+   - 流程安排（offer模板、入职计划）
 
-3. **Hiring Strategy Advice** (💡)
-   - Which candidates to prioritize for interviews
-   - Suggested interview panel composition
-   - Timeline recommendations
-   - Backup candidate strategy
-   - Risk mitigation strategies
+**格式指南：**
 
-4. **Action Checklist** (🎯)
-   - Immediate next steps (contact candidates, schedule interviews)
-   - Preparation tasks (interview questions, evaluation criteria)
-   - Budget/compensation considerations
-   - Process setup (offer templates, onboarding plans)
+- 使用emoji使各部分视觉上易于区分
+- 使用项目符号和编号列表提高清晰度
+- 在主要部分之间使用分隔线（━━━）
+- 语言保持专业和客观
+- 建议具体且具有可操作性
+- 在指出不足的同时，也要认可候选人的优势
 
-**Formatting Guidelines:**
+#### 重要说明
 
-- Use emojis to make sections visually distinct
-- Use bullet points and numbered lists for clarity
-- Include visual separators (━━━) between major sections
-- Keep language professional and objective
-- Be specific and actionable in all recommendations
-- Balance honesty about gaps with recognition of potential
-
-#### Important Notes
-
-- **Always provide detailed analysis**: Don't just list candidates with scores. Hiring managers need actionable insights.
-- **Be objective about gaps**: Help identify areas where candidates might need support or training.
-- **Consider total value**: Match score is just one factor; potential, cultural fit, and long-term growth matter too.
-- **Prioritize actionability**: Every analysis should lead to clear hiring decisions and interview strategies.
-- **Personalize recommendations**: Reference specific details from the job requirements in your analysis.
-- **Think long-term**: Consider not just immediate fit, but retention and growth potential.
+- **始终提供详细分析**：不要仅仅列出候选人的评分。招聘经理需要可操作的见解。
+- **客观评估不足之处**：帮助识别候选人可能需要支持的领域或培训。
+- **考虑整体价值**：匹配评分只是一个因素；潜力、文化契合度和长期发展也很重要。
+- **优先考虑可操作性**：每个分析都应有助于做出明确的招聘决策和面试策略。
+- **个性化建议**：在分析中引用职位要求的具体细节。
+- **考虑长期发展**：不仅要考虑当前的匹配度，还要考虑候选人的长期发展潜力。
 
 ---
 
-## API Configuration
+## API配置
 
-Default API endpoint: `https://api.jobclaw.ai`
+默认API端点：`https://api.jobclaw.ai`
 
-To use a different endpoint, modify the `apiUrl` parameter when calling the script.
+如需使用其他端点，请在调用脚本时修改`apiUrl`参数。
 
-## Error Handling
+## 错误处理
 
-If any operation fails:
+如果任何操作失败：
 
-- Check if the API server is running
-- Verify all required fields are provided
-- Ensure the API endpoint is correct
-- For update/delete/matches: ensure a valid **jobId** is provided
-- Review the error message and guide the user accordingly
+- 检查API服务器是否运行正常
+- 确认所有必填字段是否都已提供
+- 确保API端点正确
+- 对于更新/删除/查看匹配结果的操作：确保提供了有效的**职位ID**
+- 查看错误信息并相应地指导用户
 
-## Resources
+## 资源
 
 ### scripts/publish_job.py
 
-Python script supporting four actions (`publish`, `update`, `delete`, `matches`):
+这是一个Python脚本，支持四种操作（`publish`、`update`、`delete`、`matches`）：
 
-- Creating new recruiter accounts (auto-created on publish)
-- Publishing and updating job postings
-- Soft-deleting job postings (mark INACTIVE)
-- Listing AI-matched candidates
+- 创建新的招聘专员账户（发布职位时会自动创建）
+- 发布和更新职位信息
+- 将职位信息标记为“不活跃”
+- 列出人工智能匹配的候选人
 
-The script uses Python's built-in `urllib` library (no external dependencies required).
+该脚本使用Python内置的`urllib`库（无需外部依赖）。

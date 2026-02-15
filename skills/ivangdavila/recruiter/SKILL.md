@@ -1,82 +1,82 @@
 ---
 name: Recruiter
-description: Source candidates, screen resumes, and manage hiring pipelines with effective recruiting practices.
+description: 通过有效的招聘流程，筛选求职者的简历，并管理招聘流程。
 metadata: {"clawdbot":{"emoji":"🎯","os":["linux","darwin","win32"]}}
 ---
 
-# Recruiting Assistance Rules
+# 招聘辅助规则
 
-## Role Understanding
-- Internal recruiter vs agency recruiter have different incentives — agencies paid on placement, internal on fit
-- Recruiting is sales with humans — both selling the role to candidates and candidates to hiring managers
-- Time-to-hire matters but quality matters more — bad hires cost 2-3x salary to fix
+## 角色理解  
+- 内部招聘人员和外部招聘机构（代理）的激励机制不同：外部机构按招聘结果收费，内部招聘人员则根据候选人与职位的匹配度来获得报酬。  
+- 招聘工作本质上是一种与人打交道的销售活动——既要向候选人推销职位，也要向招聘经理推销候选人。  
+- 虽然招聘周期很重要，但质量更为关键：错误的招聘决策可能会让企业付出高达薪资2-3倍的代价来弥补损失。  
 
-## Job Descriptions
-- Requirements vs nice-to-haves must be clearly separated — overloaded requirements scare good candidates
-- "Years of experience" is a poor proxy — focus on demonstrated skills and outcomes
-- Salary range transparency attracts better candidates — hiding it wastes everyone's time
-- Avoid gendered language and unnecessary requirements — "rockstar" and "must lift 50lbs" narrow pools
-- Include what the role actually does daily — not just responsibilities, but reality
+## 职位描述  
+- 必需满足的要求与“建议具备的技能”必须明确区分——过高的要求会吓跑优秀的候选人。  
+- “多年工作经验”并不是衡量能力的可靠标准，应重点关注候选人的实际技能和成果。  
+- 公开薪资范围能吸引更优秀的候选人；隐瞒薪资信息只会浪费双方的时间。  
+- 避免使用带有性别歧视的表述，以及不必要的招聘条件（如“必须是‘摇滚明星’类型的人”或“必须能举起50磅的重物”）。  
+- 详细描述职位的日常职责，而不仅仅是书面上的责任范围。  
 
-## Sourcing Candidates
-- LinkedIn is obvious but saturated — good candidates get 50+ messages weekly
-- Personalized outreach beats templates — reference specific work, projects, or posts
-- Referrals have higher success rates — incentivize and track them
-- Passive candidates need compelling reasons — they're not looking, give them a reason to listen
-- Diverse sourcing requires intentional effort — same channels produce same candidate profiles
+## 招聘渠道  
+- LinkedIn是一个常见的招聘平台，但竞争激烈——优秀的候选人每周会收到50多条招聘信息。  
+- 个性化的沟通方式比使用模板更有效；可以提及具体的工作经历、项目或相关帖子。  
+- 通过推荐人寻找候选人效果更好——应对推荐人给予适当的激励并记录他们的推荐行为。  
+- 被动的候选人需要被给予充分的理由才会考虑应聘；他们可能并没有主动寻找工作机会，因此需要为他们提供吸引他们的理由。  
+- 为了吸引多样化的候选人，需要付出额外的努力——同样的招聘渠道往往只能得到相似类型的候选人信息。  
 
-## Resume Screening
-- Look for impact, not just responsibilities — "managed team" vs "grew team from 3 to 12"
-- Job hopping context matters — industry, company health, growth trajectory
-- Gaps aren't automatic disqualifiers — ask, don't assume
-- Side projects and open source show initiative — especially for technical roles
-- Education requirements exclude capable candidates — evaluate when truly necessary
+## 简历筛选  
+- 评估候选人的实际贡献，而不仅仅是他们承担的职责；例如，“管理团队”与“将团队规模从3人扩大到12人”等描述。  
+- 候选人的跳槽经历很重要——要考虑行业背景、公司的经营状况以及其发展轨迹。  
+- 职业空白期并不一定是自动的淘汰理由——需要主动询问，不要想当然地判断。  
+- 侧面项目或开源经历能体现候选人的主动性（尤其是技术岗位）。  
+- 教育背景要求不应成为排除候选人的理由，只有在确实必要时才考虑这一因素。  
 
-## Interview Process
-- Define evaluation criteria before interviews — consistency enables comparison
-- Structured interviews reduce bias — same questions, same order, scoring rubric
-- Take-home tests respect candidate time limits — 2-4 hours max, paid if longer
-- Interview loops shouldn't exceed 4-5 rounds — respect for candidates' time signals culture
-- Interviewers need training — untrained interviewers make poor decisions and create legal risk
+## 面试流程  
+- 在面试前明确评估标准，以便进行公平的比较。  
+- 采用结构化的面试流程以减少偏见——使用相同的问题、相同的顺序和评分标准。  
+- 面试中的测试应控制在合理的时间内（最长2-4小时），如果时间过长应提供报酬。  
+- 面试环节不应超过4-5轮，尊重候选人的时间是非常重要的企业文化体现。  
+- 面试官需要接受培训——未经培训的面试官可能会做出错误的决策，甚至引发法律风险。  
 
-## Candidate Experience
-- Respond to all applicants — ghosting damages employer brand
-- Communicate timeline upfront — "you'll hear back in X days" then actually do it
-- Feedback after rejection helps when possible — legal concerns are often overstated
-- Keep candidates warm during slow processes — silence feels like rejection
-- Rejected candidates may return or refer — treat everyone as future relationship
+## 候选人管理  
+- 回复所有申请者的邮件；忽视申请者会损害雇主的品牌形象。  
+- 提前告知候选人反馈时间——务必按照承诺的时间回复他们。  
+- 在拒绝候选人后，如果可能的话，给予他们反馈；虽然法律上对此有争议，但提供反馈有助于建立良好的关系。  
+- 在招聘流程较慢时，要与候选人保持联系——沉默可能会让他们觉得被拒绝。  
+- 被拒绝的候选人可能会再次联系你或为你推荐其他人；将所有候选人视为未来的潜在合作伙伴。  
 
-## Compensation
-- Know market rates for the role — underpaying attracts desperate, not best
-- Total compensation includes equity, benefits, flexibility — don't just compare base
-- Negotiation isn't adversarial — find mutually acceptable terms
-- Internal equity matters — new hires shouldn't out-earn existing employees unfairly
-- Be prepared to walk away — desperation leads to bad deals
+## 薪酬待遇  
+- 了解该职位的市场薪酬水平；支付过低的薪酬只会吸引那些 desperate（ desperation 可理解为“ desperation，此处根据语境译为“ desperation”更合适，但也可保留英文）的候选人，而非真正适合的人。  
+- 总薪酬应包括股权、福利和灵活性等因素，而不仅仅是基本工资。  
+- 薪酬谈判不应是对抗性的，应寻求双方都能接受的方案。  
+- 内部员工的股权分配也很重要——新员工的薪酬不应不公平地高于现有员工。  
+- 准备好放弃某些机会——过于急切的招聘决策可能会导致不公平的薪资协议。  
 
-## Pipeline Management
-- Track candidates through stages — lost candidates are wasted sourcing effort
-- Speed matters — good candidates have options, slow processes lose them
-- Bottlenecks are usually hiring manager availability — surface and solve
-- Rejection reasons inform future sourcing — pattern recognition improves targeting
-- Keep pipelines warm for future roles — relationship building pays off
+## 招聘流程管理  
+- 跟踪候选人的招聘进展；失去的候选人意味着招聘工作的浪费。  
+- 招聘效率很重要——优秀的候选人有很多选择，缓慢的流程会让他们流失。  
+- 常见的瓶颈通常是招聘经理的时间安排问题——需要及时发现并解决。  
+- 了解拒绝候选人的原因，以便改进未来的招聘策略。  
+- 为未来的招聘机会保留候选人的信息——建立良好的关系会有长远的好处。  
 
-## Legal Considerations
-- Consistent process protects against discrimination claims — document everything
-- Questions about age, family, religion, disability are off-limits — focus on job requirements
-- Background checks require consent and compliance — laws vary by jurisdiction
-- Offer letters should be reviewed by legal — verbal offers can create issues
-- Non-competes and NDAs in offers need explanation — candidates should understand
+## 法律考量  
+- 保持一致的招聘流程可以避免歧视指控——所有招聘环节都应做好记录。  
+- 禁止询问关于年龄、家庭、宗教或残疾等敏感问题——重点应放在职位要求上。  
+- 背景调查需要候选人的同意，并遵守相关法律法规。  
+- 发放录用通知前应经过法律部门的审核；口头录用通知可能会引发法律问题。  
+- 在录用通知中应明确说明竞业禁止条款和保密协议的内容，确保候选人理解这些条款。  
 
-## Red Flags in Candidates
-- Badmouthing previous employers — pattern will continue
-- Vague answers about accomplishments — may not have been responsible
-- Inability to explain gaps or moves — evasion suggests problems
-- Different story in different interviews — consistency matters
-- Unwillingness to provide references — hiding something
+## 候选人的潜在问题  
+- 诋毁前雇主的行为可能会在新的工作中再次出现。  
+- 对工作成果的描述含糊不清——可能说明候选人缺乏责任感。  
+- 无法解释职业空白期或跳槽原因——这种逃避态度可能暗示存在问题。  
+- 在不同面试中的回答不一致——说明候选人可能没有提供真实的信息。  
+- 不愿意提供推荐人——这可能暗示候选人有所隐瞒。  
 
-## Common Mistakes
-- Hiring for culture fit that's actually bias — "fit" can exclude diversity
-- Rushing to fill headcount — empty seat better than wrong person
-- Ignoring hiring manager feedback patterns — some reject everyone, some accept everyone
-- Not selling the role actively — interviewing is two-way evaluation
-- Over-relying on credentials — pedigree doesn't guarantee performance
+## 常见的招聘错误  
+- 以“文化契合度”作为招聘标准，但实际上这可能隐藏了歧视行为。  
+- 为了填补职位空缺而仓促招聘——空缺职位总比雇佣不合适的人要好。  
+- 忽视招聘经理的反馈——有些招聘经理会拒绝所有候选人，有些则会接受所有人。  
+- 没有积极地向候选人推销职位——面试是一个双向的评估过程。  
+- 过度依赖候选人的学历或资历证明——学历并不能保证其工作表现。

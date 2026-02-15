@@ -1,44 +1,44 @@
 ---
 name: Markdown
-description: Generate clean, portable Markdown that renders correctly across parsers.
+description: 生成格式清晰、可移植的 Markdown 文本，确保其在各种解析器中都能正确显示。
 metadata: {"clawdbot":{"emoji":"📝","os":["linux","darwin","win32"]}}
 ---
 
-## Whitespace Traps
+## 空白问题
 
-- Blank line required before lists, code blocks, and blockquotes—without it, many parsers continue the previous paragraph
-- Nested lists need 4 spaces (not 2) for GitHub/CommonMark; 2 spaces breaks nesting in strict parsers
-- Two trailing spaces for `<br>` break—invisible and often stripped by editors; prefer blank line or `<br>` tag
-- Lines with only spaces still break paragraphs—trim trailing whitespace
+- 列表、代码块和块引用前必须使用空行；否则，许多解析器会继续解析前一段内容。
+- 在 GitHub 和 CommonMark 中，嵌套列表需要使用 4 个空格（而不是 2 个空格）；某些严格的解析器会认为 2 个空格会导致嵌套结构失效。
+- 使用 `<br>` 标签时，末尾添加两个空格可能会导致格式问题（这些空格通常是不可见的，且经常会被编辑器删除）；建议使用空行或 `<br>` 标签。
+- 仅包含空格的行仍然会被视为段落的一部分——请删除行尾的多余空白字符。
 
-## Links & Images
+## 链接与图片
 
-- Parentheses in URLs break `[text](url)`—use `%28` `%29` or angle brackets: `[text](<url with (parens)>)`
-- Spaces in URLs need `%20` or angle bracket syntax
-- Reference-style links `[text][ref]` fail silently if `[ref]: url` is missing—verify all refs exist
-- Images without alt text: always provide `![alt](url)` even if empty `![]()` for accessibility tools
+- URL 中的括号会导致 `[text](url)` 格式失效——请使用 `%28` 或 `%29` 以及尖括号：`[text](<url with (parens)>)`。
+- URL 中的空白字符需要使用 `%20` 或尖括号来正确表示路径。
+- 引用风格的链接 `[text][ref]` 如果缺少 `[ref]: url` 会无法正常显示——请确保所有引用都存在。
+- 无 alt 文本的图片：即使 alt 文本为空，也请添加 `![alt](url)`，以便辅助工具能够正确显示图片。
 
-## Code
+## 代码
 
-- Triple backticks inside fenced blocks—use 4+ backticks for outer fence or indent method
-- Inline backticks containing backtick—wrap with double backticks and pad: ``` `` `code` `` ```
-- Language hint after fence affects syntax highlighting—omit only when truly plain text
+- 在代码块中使用三重反引号 `"""`；如果外部代码块需要缩进，请使用 4 个或更多的反引号。
+- 如果内层反引号中包含反引号，需要用双反引号将其括起来：``` `` `code` ```
+- 代码块后的语言提示会影响语法高亮显示——只有在纯文本的情况下才省略该提示。
 
-## Tables
+## 表格
 
-- Alignment colons go in separator row: `:---` left, `:---:` center, `---:` right
-- Pipe `|` in cell content needs backslash escape: `\|`
-- No blank line before table—some parsers fail
-- Empty cells need at least one space or break rendering
+- 列对齐方式通过分隔符行来指定：`:---` 表示左对齐，`:---:` 表示居中对齐，`---:` 表示右对齐。
+- 单元格内容中的竖线 `|` 需要使用反斜杠 `\` 进行转义：`|`。
+- 表格前不应有空行——否则某些解析器可能无法正确解析表格。
+- 空单元格至少需要包含一个空格，否则会导致渲染问题。
 
-## Escaping
+## 转义字符
 
-- Characters needing escape in text: `\*`, `\_`, `\[`, `\]`, `\#`, `\>`, `\``, `\\`
-- Escape not needed inside code spans/blocks
-- Ampersand only needs escape as `&amp;` when it could form an HTML entity
+- 在文本中需要转义的字符包括：`\*`、`_`、`[`、`]`、`#`、`>`、`"`、`\\`。
+- 在代码块内部不需要对这些字符进行转义。
+- 只有当 ampersand (`&`) 可能被解析为 HTML 实体时，才需要将其转义为 `&`。
 
-## Portability
+## 兼容性
 
-- HTML tags work in GitHub but stripped in many renderers—prefer pure Markdown
-- Extended syntax (footnotes, task lists, emoji shortcodes) not universal—check target parser
-- YAML frontmatter needs `---` fences and only at file start; some parsers render it as text
+- HTML 标签在 GitHub 中可以正常使用，但在许多渲染器中可能会被删除——建议使用纯 Markdown 格式。
+- 扩展语法（如脚注、任务列表、表情符号代码）并非在所有环境中都可用——请根据目标解析器的要求进行使用。
+- YAML 文件的头部需要使用 `---` 标识，并且只能放在文件的开头；某些解析器可能会将这些内容视为普通文本。

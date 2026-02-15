@@ -1,61 +1,61 @@
 ---
 name: pipedream-connect
-description: Connect 2,000+ APIs with managed OAuth via Pipedream. Includes full UI integration for Clawdbot Gateway dashboard.
+description: 通过 Pipedream，您可以连接 2,000 多个 API，并使用托管的 OAuth 进行身份验证。该解决方案还支持与 Clawdbot Gateway 仪表板的完全集成。
 metadata: {"clawdbot":{"emoji":"🔌","requires":{"bins":["mcporter"],"clawdbot":">=2026.1.0"},"category":"integrations"}}
 ---
 
 # Pipedream Connect
 
-Connect your AI agent to 2,000+ APIs with managed OAuth via Pipedream. This skill provides:
+通过 Pipedream，您可以将您的 AI 代理连接到 2,000 多个 API，并使用托管的 OAuth 进行身份验证。该功能提供以下优势：
 
-- **Full UI Dashboard** — Configure credentials, connect apps, manage tokens
-- **Automatic Token Refresh** — Cron job keeps tokens fresh
-- **MCP Integration** — Apps become tools your agent can use via mcporter
+- **完整的 UI 仪表盘**：配置凭据、连接应用程序、管理令牌。
+- **自动令牌刷新**：通过 Cron 作业保持令牌的有效性。
+- **MCP 集成**：应用程序可通过 `mcporter` 成为代理可使用的工具。
 
-## Overview
+## 概述
 
-Pipedream Connect handles OAuth flows for thousands of APIs, so your agent can access Gmail, Google Calendar, Slack, GitHub, and more without managing tokens manually.
+Pipedream Connect 可处理数千个 API 的 OAuth 流程，因此您的代理无需手动管理令牌即可访问 Gmail、Google 日历、Slack、GitHub 等服务。
 
-## Prerequisites
+## 先决条件
 
-1. **Pipedream Account** — Sign up at [pipedream.com](https://pipedream.com)
-2. **mcporter** — MCP tool runner (`npm install -g mcporter`)
-3. **Clawdbot Gateway** — v2026.1.0 or later with UI enabled
+1. **Pipedream 账户**：在 [pipedream.com](https://pipedream.com) 注册。
+2. **mcporter**：MCP 工具运行器（`npm install -g mcporter`）。
+3. **Clawdbot Gateway**：版本需为 v2026.1.0 或更高，并且启用了 UI 功能。
 
-## Quick Start
+## 快速入门
 
-### Step 1: Create Pipedream OAuth Client
+### 第 1 步：创建 Pipedream OAuth 客户端
 
-1. Go to [pipedream.com/settings/api](https://pipedream.com/settings/api)
-2. Click **"New OAuth Client"**
-3. Copy the **Client ID** and **Client Secret**
+1. 访问 [pipedream.com/settings/api](https://pipedream.com/settings/api)。
+2. 点击 “新建 OAuth 客户端”。
+3. 复制 **客户端 ID** 和 **客户端密钥**。
 
-### Step 2: Create a Pipedream Project
+### 第 2 步：创建 Pipedream 项目
 
-1. Go to [pipedream.com/projects](https://pipedream.com/projects)
-2. Create a new project (e.g., "clawdbot")
-3. Copy the **Project ID** (starts with `proj_`)
+1. 访问 [pipedream.com/projects](https://pipedream.com/projects)。
+2. 创建一个新项目（例如：“clawdbot”）。
+3. 复制 **项目 ID**（以 `proj_` 开头）。
 
-### Step 3: Configure in Clawdbot UI
+### 第 3 步：在 Clawdbot UI 中进行配置
 
-1. Open Clawdbot Dashboard → **Tools** → **Pipedream**
-2. Click **Configure** and enter:
-   - Client ID
-   - Client Secret
-   - Project ID
-   - Environment (development/production)
-   - External User ID (e.g., "clawdbot")
-3. Click **Save Credentials**
+1. 打开 Clawdbot 仪表盘 → **工具** → **Pipedream**。
+2. 点击 **配置**，并输入以下信息：
+   - 客户端 ID
+   - 客户端密钥
+   - 项目 ID
+   - 环境（开发/生产）
+   - 外部用户 ID（例如：“clawdbot”）。
+3. 点击 **保存凭据**。
 
-### Step 4: Connect Apps
+### 第 4 步：连接应用程序
 
-1. In the Pipedream UI, click **Connect** on any app (e.g., Gmail, Google Calendar)
-2. Complete the OAuth flow in the popup
-3. Click **Connect** again to finalize
+1. 在 Pipedream UI 中，点击任何应用程序（例如 Gmail、Google 日历）上的 “连接” 按钮。
+2. 完成弹出的 OAuth 流程。
+3. 再次点击 “连接” 以完成连接。
 
-### Step 5: Set Up Token Refresh (Recommended)
+### 第 5 步：设置令牌刷新（推荐）
 
-Pipedream tokens expire after 1 hour. Set up automatic refresh:
+Pipedream 令牌在 1 小时后过期。请设置自动刷新：
 
 ```bash
 # Copy the token refresh script
@@ -65,9 +65,9 @@ cp ~/clawd/skills/pipedream-connect/scripts/pipedream-token-refresh.py ~/clawd/s
 (crontab -l 2>/dev/null; echo "*/45 * * * * /usr/bin/python3 $HOME/clawd/scripts/pipedream-token-refresh.py >> $HOME/clawd/logs/pipedream-cron.log 2>&1") | crontab -
 ```
 
-## Usage
+## 使用方法
 
-Once connected, your agent can use app tools via mcporter:
+连接成功后，您的代理可以通过 `mcporter` 使用这些应用程序工具：
 
 ```bash
 # Gmail
@@ -89,50 +89,50 @@ mcporter call pipedream-clawdbot-slack.slack-send-message \
   instruction="Send 'Hello team!' to the #general channel"
 ```
 
-## Architecture
+## 架构
 
-### Files Created
+### 创建的文件
 
-| Location | Purpose |
+| 位置 | 用途 |
 |----------|---------|
-| `~/clawd/config/pipedream-credentials.json` | Encrypted credential storage |
-| `~/clawd/config/mcporter.json` | MCP server configurations |
-| `~/clawd/scripts/pipedream-token-refresh.py` | Token refresh script |
-| `~/clawd/logs/pipedream-token-refresh.log` | Refresh logs |
+| `~/clawd/config/pipedream-credentials.json` | 加密后的凭据存储 |
+| `~/clawd/config/mcporter.json` | MCP 服务器配置 |
+| `~/clawd/scripts/pipedream-token-refresh.py` | 令牌刷新脚本 |
+| `~/clawd/logs/pipedream-token-refresh.log` | 令牌刷新日志 |
 
-### Backend Endpoints
+### 后端端点
 
-The skill adds these gateway RPC methods:
+该功能添加了以下 gateway RPC 方法：
 
-| Method | Purpose |
+| 方法 | 用途 |
 |--------|---------|
-| `pipedream.status` | Get connection status and configured apps |
-| `pipedream.saveCredentials` | Validate and store credentials |
-| `pipedream.getToken` | Get fresh access token |
-| `pipedream.getConnectUrl` | Get OAuth URL for an app |
-| `pipedream.connectApp` | Save app config to mcporter |
-| `pipedream.disconnectApp` | Remove app from mcporter |
-| `pipedream.refreshToken` | Update stored token |
+| `pipedream.status` | 获取连接状态和已配置的应用程序 |
+| `pipedream.saveCredentials` | 验证并存储凭据 |
+| `pipedream.token` | 获取新的访问令牌 |
+| `pipedream.getConnectUrl` | 获取应用程序的 OAuth URL |
+| `pipedream.connectApp` | 将应用程序配置保存到 mcporter |
+| `pipedream.disconnectApp` | 从 mcporter 中删除应用程序 |
+| `pipedream.refreshToken` | 更新存储的令牌 |
 
-### UI Components
+### UI 组件
 
-The Pipedream page in the Clawdbot dashboard provides:
+Clawdbot 仪表板中的 Pipedream 页面提供：
 
-- Credential configuration form
-- Connected apps list with test/disconnect buttons
-- App browser with 100+ popular apps
-- Manual app slug entry for any Pipedream-supported app
+- 凭据配置表单
+- 已连接的应用程序列表，带有测试/断开连接按钮
+- 支持 100 多个流行应用程序的应用程序浏览器
+- 用于输入任何受 Pipedream 支持的应用程序 slug 的手动输入框
 
-## App Slug Reference
+## 应用程序 slug 参考
 
-Find app slugs at [mcp.pipedream.com](https://mcp.pipedream.com). Common ones:
+可以在 [mcp.pipedream.com](https://mcp.pipedream.com) 查找应用程序 slug。常见示例：
 
-| App | Slug |
+| 应用程序 | Slug |
 |-----|------|
 | Gmail | `gmail` |
-| Google Calendar | `google-calendar` |
-| Google Sheets | `google-sheets` |
-| Google Drive | `google-drive` |
+| Google 日历 | `google-calendar` |
+| Google 表格 | `google-sheets` |
+| Google 驱动 | `google-drive` |
 | Slack | `slack` |
 | Discord | `discord` |
 | GitHub | `github` |
@@ -142,80 +142,80 @@ Find app slugs at [mcp.pipedream.com](https://mcp.pipedream.com). Common ones:
 | OpenAI | `openai` |
 | Stripe | `stripe` |
 
-## Troubleshooting
+## 故障排除
 
-### "No tools available"
-- The OAuth flow wasn't completed. Click Connect again and complete the popup.
-- Check Pipedream dashboard → Connect → Users to verify the app is linked.
+### “没有可用工具”
+- OAuth 流程未完成。请再次点击 “连接” 并完成弹出窗口中的操作。
+- 检查 Pipedream 仪表板 → “连接” → “用户” 以确认应用程序已链接。
 
-### "Token expired" / 401 errors
-- Run the token refresh script manually: `python3 ~/clawd/scripts/pipedream-token-refresh.py`
-- Verify cron job is running: `crontab -l | grep pipedream`
+### “令牌过期”/401 错误
+- 手动运行令牌刷新脚本：`python3 ~/clawd/scripts/pipedream-token-refresh.py`。
+- 确认 Cron 作业正在运行：`crontab -l | grep pipedream`。
 
-### "Failed to fetch" / CORS errors
-- Ensure you're running Clawdbot v2026.1.0+ with the Pipedream backend fixes
-- All API calls should go through the gateway backend, not browser
+### “无法获取数据”/CORS 错误
+- 确保您使用的 Clawdbot 版本为 v2026.1.0 或更高，并且启用了 Pipedream 后端修复功能。
+- 所有 API 调用都应通过 gateway 后端进行，而不是浏览器。
 
-### App not showing in Pipedream dashboard
-- Use `google_calendar` (underscore) format for MCP calls
-- UI uses `google-calendar` (hyphen), backend converts automatically
+### 应用程序未显示在 Pipedream 仪表板上
+- 对于 MCP 调用，请使用 `google_calendar`（带下划线的格式）。
+- UI 使用 `google-calendar`（带连字符的格式），后端会自动转换。
 
-### OAuth popup blocked
-- Allow popups for localhost:18789 in your browser
-- Or copy the connect URL and open manually
+### OAuth 弹窗被阻止
+- 在浏览器中允许来自 `localhost:18789` 的弹窗。
+- 或者手动复制连接 URL 并打开它。
 
-## Multi-Agent Setup
+## 多代理设置
 
-Each agent can have their own connected accounts using different `externalUserId` values:
+每个代理可以使用不同的 `externalUserId` 值来拥有自己的连接账户：
 
 ```
 User ID: koda      → Apps connected for Koda
 User ID: assistant → Apps connected for Assistant
 ```
 
-Each creates separate mcporter server entries:
+这将为每个代理创建单独的 mcporter 服务器条目：
 - `pipedream-koda-gmail`
 - `pipedream-assistant-gmail`
 
-## Development Notes
+## 开发说明
 
-### Token Expiry
+### 令牌过期
 
-Pipedream access tokens expire after **1 hour**. The refresh script should run at least every 50 minutes.
+Pipedream 访问令牌在 1 小时后过期。刷新脚本应至少每 50 分钟运行一次。
 
-### MCP Endpoint
+### MCP 端点
 
-All MCP calls go to `https://remote.mcp.pipedream.net` with headers:
+所有 MCP 调用都发送到 `https://remote.mcp.pipedream.net`，并包含以下头部信息：
 - `Authorization: Bearer <access_token>`
 - `x-pd-project-id: <project_id>`
 - `x-pd-environment: development|production`
 - `x-pd-external-user-id: <user_id>`
-- `x-pd-app-slug: <app_slug>` (underscores, not hyphens)
+- `x-pd-app-slug: <app_slug>`（使用下划线，而非连字符）
 - `Accept: application/json, text/event-stream`
 
-### SSE Responses
+### SSE 响应
 
-The MCP endpoint may return Server-Sent Events format:
+MCP 端点可能返回 Server-Sent Events 格式的数据：
 ```
 event: message
 data: {"result":{"tools":[...]},"jsonrpc":"2.0","id":1}
 ```
 
-Parse the `data:` line to extract JSON.
+解析 `data:` 行以提取 JSON 数据。
 
-## Reference Files
+## 参考文件
 
-This skill includes reference implementations:
+该功能包含以下参考实现文件：
 
-- `reference/pipedream-backend.ts` — Gateway RPC handlers
-- `reference/pipedream-controller.ts` — UI controller logic
-- `reference/pipedream-views.ts` — UI rendering (Lit)
-- `scripts/pipedream-token-refresh.py` — Token refresh script
+- `reference/pipedream-backend.ts` — gateway RPC 处理程序
+- `reference/pipedream-controller.ts` — UI 控制器逻辑
+- `reference/pipedream-views.ts` — UI 渲染代码
+- `scripts/pipedream-token-refresh.py` — 令牌刷新脚本
 
-These are for reference when building custom integrations or debugging.
+这些文件可用于构建自定义集成或进行调试。
 
-## Support
+## 支持资源
 
-- **Pipedream Docs**: [pipedream.com/docs](https://pipedream.com/docs)
-- **MCP Apps**: [mcp.pipedream.com](https://mcp.pipedream.com)
-- **Clawdbot Discord**: [discord.com/invite/clawd](https://discord.com/invite/clawd)
+- **Pipedream 文档**：[pipedream.com/docs](https://pipedream.com/docs)
+- **MCP 应用程序**：[mcp.pipedream.com](https://mcp.pipedream.com)
+- **Clawdbot Discord**：[discord.com/invite/clawd](https://discord.com/invite/clawd)

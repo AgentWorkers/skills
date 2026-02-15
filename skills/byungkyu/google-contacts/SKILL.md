@@ -17,9 +17,9 @@ metadata:
 
 # Google Contacts
 
-Access the Google People API with managed OAuth authentication. Manage contacts, contact groups, and search your address book.
+您可以使用托管的 OAuth 认证来访问 Google People API，从而管理联系人、联系人组，并搜索您的通讯录。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-contacts/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google People API endpoint path. The gateway proxies requests to `people.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google People API 端点路径。该网关会将请求代理到 `people.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google Contacts OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google Contacts OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Contacts connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Contacts 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,25 +140,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Contact Operations
+### 联系人操作
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /google-contacts/v1/people/me/connections?personFields=names,emailAddresses,phoneNumbers&pageSize=100
 ```
 
-**Query Parameters:**
-- `personFields` (required): Comma-separated list of fields to return (see Person Fields section)
-- `pageSize`: Number of contacts to return (max 1000, default 100)
-- `pageToken`: Token for pagination
-- `sortOrder`: `LAST_MODIFIED_ASCENDING`, `LAST_MODIFIED_DESCENDING`, `FIRST_NAME_ASCENDING`, or `LAST_NAME_ASCENDING`
+**查询参数：**
+- `personFields`（必填）：需要返回的字段列表（详见“联系人字段”部分）
+- `pageSize`：返回的联系人数（最多 1000 人，默认为 100 人）
+- `pageToken`：分页令牌
+- `sortOrder`：`LAST_MODIFIED_ASCENDING`、`LAST_MODIFIED_DESCENDING`、`FIRST_NAME_ASCENDING` 或 `LAST_NAME_ASCENDING`
 
-**Response:**
+**响应：**
 ```json
 {
   "connections": [
@@ -175,15 +175,15 @@ GET /google-contacts/v1/people/me/connections?personFields=names,emailAddresses,
 }
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /google-contacts/v1/people/{resourceName}?personFields=names,emailAddresses,phoneNumbers
 ```
 
-Use the resource name from list or create operations (e.g., `people/c1234567890`).
+使用列表或创建操作返回的资源名称（例如：`people/c1234567890`）。
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /google-contacts/v1/people:createContact
@@ -197,7 +197,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PATCH /google-contacts/v1/people/{resourceName}:updateContact?updatePersonFields=names,emailAddresses
@@ -210,21 +210,21 @@ Content-Type: application/json
 }
 ```
 
-**Note:** Include the `etag` from the get/list response to ensure you're updating the latest version.
+**注意：** 请包含从获取/列出响应中得到的 `etag`，以确保更新的是最新版本的信息。
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /google-contacts/v1/people/{resourceName}:deleteContact
 ```
 
-#### Batch Get Contacts
+#### 批量获取联系人信息
 
 ```bash
 GET /google-contacts/v1/people:batchGet?resourceNames=people/c123&resourceNames=people/c456&personFields=names,emailAddresses
 ```
 
-#### Batch Create Contacts
+#### 批量创建联系人信息
 
 ```bash
 POST /google-contacts/v1/people:batchCreateContacts
@@ -249,7 +249,7 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Delete Contacts
+#### 批量删除联系人信息
 
 ```bash
 POST /google-contacts/v1/people:batchDeleteContacts
@@ -260,23 +260,23 @@ Content-Type: application/json
 }
 ```
 
-#### Search Contacts
+#### 搜索联系人
 
 ```bash
 GET /google-contacts/v1/people:searchContacts?query=John&readMask=names,emailAddresses
 ```
 
-**Note:** Search results may have a slight delay for newly created contacts due to indexing.
+**注意：** 对于新创建的联系人，搜索结果可能会有延迟，因为系统需要对其进行索引。
 
-### Contact Group Operations
+### 联系人组操作
 
-#### List Contact Groups
+#### 列出联系人组
 
 ```bash
 GET /google-contacts/v1/contactGroups?pageSize=100
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "contactGroups": [
@@ -298,15 +298,15 @@ GET /google-contacts/v1/contactGroups?pageSize=100
 }
 ```
 
-#### Get Contact Group
+#### 获取联系人组信息
 
 ```bash
 GET /google-contacts/v1/contactGroups/{resourceName}?maxMembers=100
 ```
 
-Use `contactGroups/starred`, `contactGroups/family`, etc. for system groups, or the resource name for user groups.
+可以使用 `contactGroups/starred`、`contactGroups/family` 等来表示系统联系人组，或使用资源名称来表示用户联系人组。
 
-#### Create Contact Group
+#### 创建联系人组
 
 ```bash
 POST /google-contacts/v1/contactGroups
@@ -319,23 +319,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact Group
+#### 删除联系人组
 
 ```bash
 DELETE /google-contacts/v1/contactGroups/{resourceName}?deleteContacts=false
 ```
 
-Set `deleteContacts=true` to also delete the contacts in the group.
+设置 `deleteContacts=true` 以同时删除该联系人组中的所有联系人。
 
-#### Batch Get Contact Groups
+#### 批量获取联系人组信息
 
 ```bash
 GET /google-contacts/v1/contactGroups:batchGet?resourceNames=contactGroups/starred&resourceNames=contactGroups/family
 ```
 
-#### Modify Group Members
+#### 修改联系人组成员
 
-Add or remove contacts from a group:
+向联系人组中添加或删除联系人：
 
 ```bash
 POST /google-contacts/v1/contactGroups/{resourceName}/members:modify
@@ -347,17 +347,17 @@ Content-Type: application/json
 }
 ```
 
-### Other Contacts
+### 其他联系人
 
-Other contacts are people you've interacted with (e.g., via email) but haven't explicitly added to your contacts.
+其他联系人是指您通过电子邮件等方式有过互动但尚未明确添加到您的联系人列表中的人。
 
-#### List Other Contacts
+#### 列出其他联系人
 
 ```bash
 GET /google-contacts/v1/otherContacts?readMask=names,emailAddresses&pageSize=100
 ```
 
-#### Copy Other Contact to My Contacts
+#### 将其他联系人复制到我的联系人列表中
 
 ```bash
 POST /google-contacts/v1/{resourceName}:copyOtherContactToMyContactsGroup
@@ -368,35 +368,35 @@ Content-Type: application/json
 }
 ```
 
-## Person Fields
+## 联系人字段
 
-Use these fields with `personFields` or `readMask` parameters:
+您可以使用以下字段与 `personFields` 或 `readMask` 参数一起使用：
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `names` | Display name, given name, family name |
-| `emailAddresses` | Email addresses with type |
-| `phoneNumbers` | Phone numbers with type |
-| `addresses` | Postal addresses |
-| `organizations` | Company, title, department |
-| `biographies` | Bio/notes about the person |
-| `birthdays` | Birthday information |
-| `urls` | Website URLs |
-| `photos` | Profile photos |
-| `memberships` | Contact group memberships |
-| `metadata` | Source and update information |
+| `names` | 显示名称（包括名和姓） |
+| `emailAddresses` | 带类型的电子邮件地址 |
+| `phoneNumbers` | 带类型的电话号码 |
+| `addresses` | 邮政地址 |
+| `organizations` | 公司、职位、部门 |
+| `biographies` | 有关此人的简介/备注 |
+| `birthdays` | 生日信息 |
+| `urls` | 个人网站链接 |
+| `photos` | 个人资料照片 |
+| `memberships` | 所在的联系人组 |
+| `metadata` | 来源和更新信息 |
 
-Multiple fields: `personFields=names,emailAddresses,phoneNumbers,organizations`
+多个字段的示例：`personFields=names,emailAddresses,phoneNumbers,organizations`
 
-## Pagination
+## 分页
 
-Use `pageSize` and `pageToken` for pagination:
+使用 `pageSize` 和 `pageToken` 进行分页：
 
 ```bash
 GET /google-contacts/v1/people/me/connections?personFields=names&pageSize=100&pageToken=NEXT_PAGE_TOKEN
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -407,9 +407,9 @@ Response includes pagination info:
 }
 ```
 
-Continue fetching with `pageToken` until `nextPageToken` is not returned.
+继续使用 `pageToken` 进行请求，直到不再返回 `nextPageToken`。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -442,37 +442,37 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Resource names for contacts follow the pattern `people/c{id}` (e.g., `people/c1234567890`)
-- Resource names for contact groups follow the pattern `contactGroups/{id}` (e.g., `contactGroups/abc123`)
-- System contact groups include: `starred`, `friends`, `family`, `coworkers`, `myContacts`, `all`, `blocked`
-- The `personFields` parameter is required for most read operations
-- When updating contacts, include the `etag` to prevent overwriting concurrent changes
-- Mutate requests for the same user should be sent sequentially to avoid increased latency and failures
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 联系人的资源名称遵循 `people/c{id}` 的模式（例如：`people/c1234567890`）
+- 联系人组的资源名称遵循 `contactGroups/{id}` 的模式（例如：`contactGroups/abc123`）
+- 系统联系人组包括：`starred`、`friends`、`family`、`coworkers`、`myContacts`、`all`、`blocked`
+- 对于大多数读取操作，`personFields` 参数是必需的
+- 在更新联系人信息时，请包含 `etag` 以避免覆盖其他用户的更改
+- 对同一用户进行多次修改时，应依次发送请求，以避免延迟增加和失败
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 选项来禁用全局解析
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确解析
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Contacts connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Permission denied (check OAuth scopes) |
-| 404 | Contact or group not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Google People API |
+| 400 | 未找到 Google Contacts 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限被拒绝（请检查 OAuth 权限范围） |
+| 404 | 未找到联系人或联系人组 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Google People API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -483,18 +483,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-contacts`. For example:
+1. 确保您的 URL 路径以 `google-contacts` 开头。例如：
+  - 正确的路径：`https://gateway.maton.ai/google-contacts/v1/people/me/connections`
+  - 错误的路径：`https://gateway.maton.ai/v1/people/me/connections`
 
-- Correct: `https://gateway.maton.ai/google-contacts/v1/people/me/connections`
-- Incorrect: `https://gateway.maton.ai/v1/people/me/connections`
+## 资源
 
-## Resources
-
-- [Google People API Overview](https://developers.google.com/people/api/rest)
-- [People Resource](https://developers.google.com/people/api/rest/v1/people)
-- [Contact Groups Resource](https://developers.google.com/people/api/rest/v1/contactGroups)
-- [Person Fields Reference](https://developers.google.com/people/api/rest/v1/people#Person)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Google People API 概述](https://developers.google.com/people/api/rest)
+- [联系人资源](https://developers.google.com/people/api/rest/v1/people)
+- [联系人组资源](https://developers.google.com/people/api/rest/v1/contactGroups)
+- [联系人字段参考](https://developers.google.com/people/api/rest/v1/people#Person)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

@@ -1,21 +1,21 @@
-# voice-devotional Skill
+# voice-devotional 技能
 
-Generate scripture readings and lessons in the user's voice using ElevenLabs TTS.
+使用 ElevenLabs 的文本转语音（TTS）功能，以用户的声音生成圣经阅读内容和灵修课程。
 
-## Overview
+## 概述
 
-The **voice-devotional** skill creates audio devotionals, scripture readings, and spiritual lessons using professional text-to-speech. Perfect for daily spiritual practice, meditation, or sharing teachings.
+**voice-devotional** 技能利用专业的文本转语音技术，制作音频形式的灵修内容，包括圣经阅读和灵性教导，非常适合日常灵修、冥想或分享教义。
 
-## Features
+## 特点
 
-1. **Daily Devotionals** — Scripture + reflection + prayer (3-5 min audio)
-2. **Scripture Reading** — Extended passages read aloud with context
-3. **Multi-Day Plans** — Reading plans in audio format (weekly/monthly)
-4. **Voice Modes** — Devotional, teaching, meditation tones
-5. **MP3 Output** — Ready to share or play locally
-6. **Metadata** — Transcripts, references, duration tracking
+1. **每日灵修** — 圣经阅读 + 反思 + 祈祷（3-5 分钟音频）
+2. **圣经阅读** — 带有背景信息的完整经文朗读
+3. **多日计划** — 以音频形式提供的阅读计划（每周/每月）
+4. **语音模式** — 适合灵修、教导或冥想的多种音调
+5. **MP3 输出** — 可以直接分享或在本地播放
+6. **元数据** — 包含文字记录、参考文献和时长统计
 
-## Installation
+## 安装
 
 ```bash
 # Copy to skills directory
@@ -30,9 +30,9 @@ cp .env.example .env
 # Edit .env with your ELEVEN_LABS_API_KEY
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
 ```bash
 ELEVEN_LABS_API_KEY=sk_your_api_key_here
@@ -40,16 +40,16 @@ ELEVEN_LABS_MODEL_ID=eleven_monolingual_v1  # or eleven_turbo_v2
 OUTPUT_DIR=~/clawd/voice-devotional/output
 ```
 
-### Voice Settings
+### 语音设置
 
-See `config/voice-settings.json` for voice configurations:
-- **Josh** (ID: pNInz6obpgDQGcFmaJgB) — Deep, calm devotional voice
-- **Chris** (ID: iP95p4xoKVk53GoZ742B) — Teaching/explanatory tone
-- **Bella** (ID: EXAVITQu4EsNXjlNFYcV) — Meditation/contemplative tone
+请参阅 `config/voice-settings.json` 以配置语音选项：
+- **Josh**（ID: pNInz6obpgDQGcFmaJgB）—— 深沉、平静的灵修语音
+- **Chris**（ID: iP95p4xoKVk53GoZ742B）—— 教导/解释性的语调
+- **Bella**（ID: EXAVITQu4EsNXjlNFYcV）—— 适合冥想的语调
 
-## Usage
+## 使用方法
 
-### Command Line
+### 命令行
 
 ```bash
 # Daily devotional on a theme
@@ -68,7 +68,7 @@ voice-devotional roman-road --voice josh --format audio
 voice-devotional generate --template daily-devotional --topic faith --voice josh
 ```
 
-### Programmatic Usage
+### 程序化使用
 
 ```javascript
 const VoiceDevotion = require('./scripts/voice-devotional');
@@ -88,41 +88,41 @@ console.log(result.audioPath);  // ~/clawd/voice-devotional/output/devotional-20
 console.log(result.metadata);   // { duration, transcript, references, ... }
 ```
 
-## Lesson Types
+## 课程类型
 
-### 1. Daily Devotional
-- **Duration:** 3-5 minutes
-- **Structure:** Scripture excerpt + reflection + prayer
-- **Best for:** Morning/evening spiritual practice
-- **Example:** Daily peace meditation with Psalm 4:8
+### 1. 每日灵修
+- **时长：** 3-5 分钟
+- **结构：** 圣经摘录 + 反思 + 祈祷
+- **适用场景：** 早晨/晚上的灵修时间
+- **示例：** 以诗篇 4:8 为主题的每日平静冥想
 
-### 2. Scripture Reading
-- **Duration:** 5-10 minutes
-- **Structure:** Full passage with introductory context
-- **Best for:** In-depth study, meditation
-- **Example:** Romans 8:1-17 with theological notes
+### 2. 圣经阅读
+- **时长：** 5-10 分钟
+- **结构：** 带有背景信息的完整经文朗读
+- **适用场景：** 深入学习或冥想
+- **示例：** 带有神学注释的罗马书 8:1-17
 
-### 3. Meditation
-- **Duration:** 5-15 minutes
-- **Structure:** Contemplative reading with strategic pauses
-- **Pacing:** Slower, more deliberate
-- **Best for:** Deep reflection, bedtime spiritual practice
+### 3. 冥想
+- **时长：** 5-15 分钟
+- **结构：** 有策略性停顿的冥想式朗读
+- **节奏：** 更慢、更专注
+- **适用场景：** 深度反思或睡前灵修
 
-### 4. Teaching
-- **Duration:** 10-20 minutes
-- **Structure:** Topic explanation + scripture support + application
-- **Best for:** Learning, group study
-- **Example:** "Hope in Crisis" with supporting scriptures
+### 4. 教导
+- **时长：** 10-20 分钟
+- **结构：** 主题讲解 + 圣经支持 + 应用指导
+- **适用场景：** 学习或小组讨论
+- **示例：** 以“危机中的希望”为主题的教导内容，附带相关圣经经文
 
-### 5. Roman Road
-- **Duration:** 8-12 minutes
-- **Structure:** Romans 3:23 → 6:23 → 10:9 presentation
-- **Best for:** Gospel presentation, evangelism
-- **Includes:** Invitation and call to commitment
+### 5. 罗马书系列课程
+- **时长：** 8-12 分钟
+- **结构：** 依次朗读罗马书 3:23 → 6:23 → 10:9 的内容
+- **适用场景：** 福音宣讲或传道
+- **包含：** 邀请听众做出承诺的环节
 
-## Output
+## 输出结果
 
-All outputs saved to `~/clawd/voice-devotional/output/`:
+所有输出文件保存在 `~/clawd/voice-devotional/output/` 目录下：
 
 ```
 devotional-2024-01-15-peace.mp3          # Audio file
@@ -138,18 +138,18 @@ devotional-2024-01-15-peace.json         # Metadata
 └── _links: { download, share, ... }
 ```
 
-## ElevenLabs Integration
+## 与 ElevenLabs 的集成
 
-### API Configuration
+### API 配置
 
-- **Endpoint:** `https://api.elevenlabs.io/v1/text-to-speech/{voice_id}`
-- **Model:** `eleven_monolingual_v1` (or `eleven_turbo_v2` for faster processing)
-- **Settings:**
-  - `stability: 0.3` — Balanced variability for natural speech
-  - `similarity_boost: 0.75` — Close voice resemblance
-  - `style: 0.5` — Professional, clear delivery
+- **端点：** `https://api.elevenlabs.io/v1/text-to-speech/{voice_id}`
+- **模型：** `eleven_monolingual_v1`（或 `eleven_turbo_v2` 以获得更快的处理速度）
+- **设置：**
+  - `stability: 0.3` — 保持自然的语音表现
+  - `similarity_boost: 0.75` — 使语音更加相似
+  - `style: 0.5` — 专业、清晰的发音
 
-### Voice Presets
+### 语音预设
 
 ```json
 {
@@ -180,64 +180,56 @@ devotional-2024-01-15-peace.json         # Metadata
 }
 ```
 
-## Scripture Data Integration
+## 圣经数据集成
 
-Integrates with **scripture-curated** skill data when available:
+当外部圣经数据可用时，该功能会与其集成；否则会使用内置的圣经库。
 
-```javascript
-// Auto-pull scripture references
-const scripture = await scriptureData.lookup('Romans 8:1-17');
-// Returns: { text, context, commentary, themes }
-```
+## 示例
 
-Falls back to built-in scripture library if external data unavailable.
-
-## Examples
-
-### Example 1: Morning Peace Devotional
+### 示例 1：早晨平静灵修
 
 ```bash
 voice-devotional daily --theme peace --voice josh
 ```
 
-**Output Structure:**
-1. **Opening** (10s) — "Good morning. Today's devotional: Peace"
-2. **Scripture** (30s) — Psalm 4:8, John 14:27
-3. **Reflection** (90s) — Meditation on peace amid chaos
-4. **Prayer** (60s) — Guided closing prayer
+**输出结构：**
+1. **开场**（10 秒）—— “早上好。今天的灵修主题是‘和平’。”
+2. **圣经阅读**（30 秒）—— 诗篇 4:8 和约翰福音 14:27
+3. **反思**（90 秒）—— 关于在混乱中寻找和平的冥想
+4. **祈祷**（60 秒）—— 引导性的结束祷告
 
-### Example 2: Weekly Hope Study Plan
+### 示例 2：每周希望学习计划
 
 ```bash
 voice-devotional plan --topic hope --days 7 --voice josh
 ```
 
-**Generates:** 7 individual MP3s + manifest.json
-- Day 1: Hope Defined (Romans 15:13)
-- Day 2: Hope Through Trials (1 Peter 1:3-7)
-- Day 3: Hope and Faith (Hebrews 11:1)
-- Day 4: Living Hope (1 Peter 1:3)
-- Day 5: Hope's Anchor (Hebrews 6:19)
-- Day 6: Sharing Hope (1 Peter 3:15)
-- Day 7: Hope's Fulfillment (Revelation 21:4)
+**生成内容：** 7 个独立的 MP3 文件 + `manifest.json` 文件
+- 第 1 天：希望的定义（罗马书 15:13）
+- 第 2 天：试炼中的希望（彼得前书 1:3-7）
+- 第 3 天：希望与信心（希伯来书 11:1）
+- 第 4 天：活出希望（彼得前书 1:3）
+- 第 5 天：希望的依靠（希伯来书 6:19）
+- 第 6 天：分享希望（彼得前书 3:15）
+- 第 7 天：希望的实现（启示录 21:4）
 
-### Example 3: Extended Scripture Reading
+### 示例 3：扩展圣经阅读
 
 ```bash
 voice-devotional scripture --passage "Romans 8:1-17" --voice josh
 ```
 
-**Includes:**
-- Context setting (Paul's letter to Romans, historical background)
-- Full passage reading with natural pacing
-- Key verse callouts
-- Closing reflection
+**包含：**
+- 经文背景信息（保罗写给罗马人的书信及其历史背景）
+- 以自然节奏朗读完整经文
+- 关键经文的标注
+- 结束时的反思
 
-## Advanced Features
+## 高级功能
 
-### Custom Templates
+### 自定义模板
 
-Create devotionals with custom structure:
+可以创建具有自定义结构的灵修内容：
 
 ```javascript
 const template = {
@@ -251,9 +243,9 @@ const template = {
 const result = await vd.generateCustom(template, { voiceId });
 ```
 
-### Batch Generation
+### 批量生成
 
-Generate multiple devotionals:
+可以一次性生成多个灵修内容：
 
 ```javascript
 const themes = ['peace', 'hope', 'faith', 'love', 'strength'];
@@ -263,9 +255,9 @@ const results = await vd.generateBatch(themes, {
 });
 ```
 
-### Background Music
+### 背景音乐
 
-Add optional ambient music under voice (low volume):
+可以选择在语音播放时添加背景音乐（音量较低）：
 
 ```javascript
 const result = await vd.generateDaily({
@@ -275,39 +267,38 @@ const result = await vd.generateDaily({
 });
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Issue: API rate limit exceeded
+### 问题：API 使用次数超出限制
 
-**Solution:** 
-- Add delay between requests: `--delay 2000`
-- Batch process during off-peak hours
-- Check ElevenLabs account limits
+**解决方法：**
+- 在请求之间添加延迟：`--delay 2000`
+- 在非高峰时段批量处理
+- 检查 ElevenLabs 账户的使用限制
 
-### Issue: Audio quality sounds robotic
+### 问题：音频质量听起来像机器人声音
 
-**Solution:**
-- Lower `stability` value (0.1-0.3 for more variance)
-- Adjust `similarity_boost` (0.5-0.95 range)
-- Try different voice: `--voice chris` or `--voice bella`
+**解决方法：**
+- 降低 `stability` 值（0.1-0.3 以增加语音变化）
+- 调整 `similarity_boost` 值（0.5-0.95）
+- 尝试使用其他语音选项：`--voice chris` 或 `--voice bella`
 
-### Issue: Output file is too long
+### 问题：输出文件过长
 
-**Solution:**
-- Use shorter scripture passages
-- Reduce reflection length
-- Remove optional sections like music/outro
+**解决方法：**
+- 使用较短的圣经段落
+- 缩短反思部分
+- 删除背景音乐等可选内容
 
-## API Reference
+## API 参考
 
-See `README.md` for command-line reference.
+命令行使用的 API 详情请参阅 `README.md`。
+程序化 API 的相关代码请参见：
+- `scripts/voice-devotional.js` — 主要处理类
+- `scripts/lesson-generator.js` — 内容生成逻辑
+- `scripts/tts-generator.js` — ElevenLabs TTS 模块
 
-For programmatic API, see JSDoc in:
-- `scripts/voice-devotional.js` — Main class
-- `scripts/lesson-generator.js` — Content generation
-- `scripts/tts-generator.js` — ElevenLabs TTS
-
-## File Structure
+## 文件结构
 
 ```
 voice-devotional/
@@ -330,25 +321,25 @@ voice-devotional/
     └── voice-devotional.test.js     # Unit tests
 ```
 
-## Performance Notes
+## 性能说明
 
-- **Generation time:** 30-120 seconds depending on audio length
-- **File size:** ~500KB per minute of audio (MP3 128kbps)
-- **API cost:** ~$0.30 per devotional (1000 chars)
-- **Caching:** Automatically caches voice IDs and settings
+- **生成时间：** 根据音频长度不同，大约需要 30-120 秒
+- **文件大小：** 每分钟音频约 500KB（MP3 128kbps 格式）
+- **API 费用：** 每条灵修内容约 0.30 美元（基于 1000 个字符）
+- **缓存机制：** 自动缓存语音 ID 和配置信息
 
-## License
+## 许可证
 
-Part of Clawdbot ecosystem. See root LICENSE.
+该功能属于 Clawdbot 生态系统的一部分。详细许可信息请参见根目录下的 `LICENSE` 文件。
 
-## Related Skills
+## 相关技能
 
-- **scripture-curated** — Scripture data source
-- **telegram-integration** — Send audio to Telegram
-- **meditation-guide** — Meditation scheduling
+- **scripture-curated** — 提供圣经数据的源
+- **telegram-integration** — 将音频发送到 Telegram
+- **meditation-guide** — 管理冥想时间表
 
 ---
 
-**Version:** 1.0.0  
-**Last Updated:** 2024-01-15  
-**Status:** Active
+**版本：** 1.0.0  
+**最后更新时间：** 2024-01-15  
+**状态：** 正在维护中

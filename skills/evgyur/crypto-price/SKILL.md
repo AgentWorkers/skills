@@ -1,50 +1,52 @@
 ---
 name: crypto-price
-description: Get cryptocurrency token price and generate candlestick charts via CoinGecko API or Hyperliquid API. Use when user asks for token price, crypto price, price chart, or cryptocurrency market data.
+description: 通过 CoinGecko API 或 Hyperliquid API 获取加密货币代币的价格，并生成蜡烛图。当用户请求代币价格、加密货币价格、价格图表或加密货币市场数据时，可以使用此功能。
 metadata: {"clawdbot":{"emoji":"📈","requires":{"bins":["python3"]}}}
 ---
 
-# Crypto Price & Chart
+# 加密货币价格与图表
 
-Get cryptocurrency token price and generate candlestick charts.
+该脚本用于获取加密货币的价格并生成蜡烛图。
 
-## Usage
+## 使用方法
 
-Execute the script with token symbol and optional duration:
+执行脚本时，需要提供加密货币的符号以及可选的时间范围：
 
 ```bash
 python3 {baseDir}/scripts/get_price_chart.py <SYMBOL> [duration]
 ```
 
-**Examples:**
+**示例：**
 - `python3 {baseDir}/scripts/get_price_chart.py HYPE`
 - `python3 {baseDir}/scripts/get_price_chart.py HYPE 12h`
 - `python3 {baseDir}/scripts/get_price_chart.py BTC 3h`
 - `python3 {baseDir}/scripts/get_price_chart.py ETH 30m`
 - `python3 {baseDir}/scripts/get_price_chart.py SOL 2d`
 
-**Duration format:** `30m`, `3h`, `12h`, `24h` (default), `2d`
+**时间范围格式：** `30m`（30分钟）、`3h`（3小时）、`12h`（12小时）、`24h`（默认值）、`2d`（2天）
 
-## Output
+## 输出结果
 
-Returns JSON with:
-- `price` - Current price in USD/USDT
-- `change_period_percent` - Price change percentage for the period
-- `chart_path` - Path to generated PNG chart (if available)
-- `text_plain` - Formatted text description
+脚本返回以下内容的JSON格式数据：
+- `price`：当前价格（单位：USD/USDT）
+- `change_period_percent`：该时间段内的价格变化百分比
+- `chart_path`：生成的PNG图表文件路径（如果有的话）
+- `text/plain`：格式化的文本描述
 
-**Chart as image (always when chart_path is present):**  
-You must send the chart as a **photo**, not as text. In your reply, output `text_plain` and on a new line: `MEDIA: ` followed by the exact `chart_path` value (e.g. `MEDIA: /tmp/crypto_chart_HYPE_1769204734.png`). Clawdbot will attach that file as an image. Do **not** write `[chart: path]` or any other text placeholder — only the `MEDIA: <chart_path>` line makes the image appear.
+**图表格式：**  
+当 `chart_path` 存在时，图表将以图片形式输出。在回复中，需要以如下格式输出 `text/plain` 和 `chart_path`：
+```
+MEDIA: /tmp/crypto_chart_HYPE_1769204734.png
+```
+Clawdbot 会将此文件作为图片附件发送。**请勿** 使用 `[chart: path]` 或其他文本占位符，只需使用 `MEDIA: <chart_path>` 即可。
 
-## Chart Details
+## 图表详情：
+- **图表格式：** 蜡烛图（8x8像素的方形图表）
+- **主题颜色：** 深色（背景颜色：#0f141c）
+- **输出路径：** `/tmp/crypto_chart_{SYMBOL}_{timestamp}.png`
 
-- Format: Candlestick chart (8x8 square)
-- Theme: Dark (#0f141c background)
-- Output: `/tmp/crypto_chart_{SYMBOL}_{timestamp}.png`
+## 数据来源：**
+1. **Hyperliquid API**：主要用于 HYPE 及其他 Hyperliquid 平台支持的加密货币
+2. **CoinGecko API**：用于其他加密货币的备用数据源
 
-## Data Sources
-
-1. **Hyperliquid API** - For HYPE and other Hyperliquid tokens (preferred)
-2. **CoinGecko API** - Fallback for other tokens
-
-Price data cached for 300 seconds (5 minutes) in `/tmp/crypto_price_*.json`.
+价格数据会缓存 300 秒（5 分钟），缓存文件保存在 `/tmp/crypto_price_*.json` 目录中。

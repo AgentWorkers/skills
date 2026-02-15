@@ -1,18 +1,18 @@
 ---
 slug: "multi-agent-estimation"
 display_name: "Multi Agent Estimation"
-description: "Build multi-agent AI systems for construction estimation. Use CrewAI/LangGraph to orchestrate specialized agents: QTO agent, pricing agent, validation agent. Automate complex estimation workflows."
+description: "构建用于建筑估算的多智能体AI系统。使用CrewAI/LangGraph来协调各个专用智能体（如QTO智能体、定价智能体、验证智能体），以实现复杂估算工作流程的自动化。"
 ---
 
-# Multi-Agent Estimation System
+# 多智能体估算系统
 
-## Overview
+## 概述
 
-In 2026, AI agents are moving from single-task assistants to orchestrated multi-agent systems. This skill enables building a crew of specialized AI agents that work together to automate construction estimation.
+到2026年，人工智能（AI）代理已从单一任务的助手发展为协同工作的多智能体系统。这一技术使得构建由专门化AI代理组成的团队成为可能，这些代理共同协作以实现建筑估算的自动化。
 
-> "Thanks to LLM nodes, you can simply ask ChatGPT, Claude, or any advanced AI assistant to generate n8n automation pipelines — whether for extracting tables from PDFs, validating parameters, or producing custom QTO tables — and get ready-to-run workflows in seconds." — Artem Boiko
+> “得益于大型语言模型（LLM）节点，你可以简单地请求ChatGPT、Claude或任何先进的AI助手生成n8n自动化流程——无论是从PDF文件中提取数据、验证参数，还是生成定制的报价表（QTO表）——并在几秒钟内获得即可运行的工作流程。” —— Artem Boiko
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -31,7 +31,7 @@ In 2026, AI agents are moving from single-task assistants to orchestrated multi-
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Quick Start with CrewAI
+## 使用CrewAI快速入门
 
 ```python
 from crewai import Agent, Task, Crew
@@ -84,7 +84,7 @@ report_agent = Agent(
 )
 ```
 
-## Define Tasks
+## 定义任务
 
 ```python
 # Task 1: Extract quantities from IFC
@@ -152,7 +152,7 @@ report_task = Task(
 )
 ```
 
-## Run the Crew
+## 运行团队（Crew）
 
 ```python
 # Create the crew
@@ -172,7 +172,7 @@ result = estimation_crew.kickoff(inputs={
 print(result)
 ```
 
-## n8n Integration
+## n8n集成
 
 ```json
 {
@@ -215,23 +215,23 @@ print(result)
 }
 ```
 
-## Why Multi-Agent in 2026?
+## 为什么在2026年需要多智能体系统？
 
-| Single Agent | Multi-Agent |
+| 单一智能体 | 多智能体 |
 |--------------|-------------|
-| One prompt, one task | Specialized experts collaborate |
-| Context limits | Distributed memory |
-| Single point of failure | Redundancy and validation |
-| Hard to debug | Clear responsibility |
-| Generic output | Domain-specific quality |
+| 一个请求，一个任务 | 专业专家协同工作 |
+| 上下文限制 | 分布式内存 |
+| 单点故障 | 冗余性和验证机制 |
+| 难以调试 | 责任明确 |
+| 通用输出 | 针对特定领域的质量结果 |
 
-## Requirements
+## 需求
 
 ```bash
 pip install crewai langchain-openai ifcopenshell pandas qdrant-client
 ```
 
-## Resources
+## 资源
 
 - CrewAI: https://www.crewai.com
 - LangGraph: https://langchain-ai.github.io/langgraph/

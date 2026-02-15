@@ -1,47 +1,46 @@
 ---
 name: VPN
-description: Configure and troubleshoot VPN connections for privacy and remote access.
+description: 配置和排查 VPN 连接问题，以实现隐私保护和远程访问功能。
 metadata: {"clawdbot":{"emoji":"🔒","os":["linux","darwin","win32"]}}
 ---
 
-## Privacy Misconceptions
-- VPN shifts trust from ISP to VPN provider — provider sees all traffic, not eliminated
-- "No logs" claims are marketing — unverifiable without independent audits
-- VPN doesn't provide anonymity — browser fingerprinting, account logins, payment methods still identify
-- Free VPNs monetize traffic data — if not paying, you're the product
-- Self-hosted VPN exits from your IP — no privacy benefit, services see your home address
+## 对隐私的误解  
+- 使用VPN后，信任对象从互联网服务提供商（ISP）转移到了VPN服务提供商；实际上，VPN服务提供商仍然能够看到所有网络流量。  
+- 所谓“无日志记录”的声明只是营销手段，没有独立审计就无法验证其真实性。  
+- VPN并不能实现完全的匿名性：浏览器指纹识别、账户登录信息以及支付方式仍可能暴露用户的身份。  
+- 免费VPN服务通常会通过分析用户的网络流量来盈利；如果用户不付费，用户本身就成为了这些服务的“产品”。  
 
-## DNS Leaks
-- DNS queries can bypass tunnel — reveals visited sites despite encrypted traffic
-- Test after every setup — leak test sites show if DNS goes through ISP instead of tunnel
-- System DNS settings may override VPN — force DNS through tunnel in client settings
+## DNS泄露问题  
+- 即使使用了VPN，DNS查询仍然可能绕过VPN隧道，从而泄露用户访问的网站信息。  
+- 每次使用VPN后都应进行DNS泄露测试，以确保DNS请求确实通过VPN隧道传输。  
+- 系统的DNS设置可能会覆盖VPN的配置；用户需要在客户端设置中强制让DNS请求通过VPN隧道。  
 
-## Kill Switch
-- Brief VPN disconnects expose real IP — happens without user noticing
-- Kill switch blocks all traffic when tunnel drops — essential for privacy use cases
-- Test by forcing disconnect — traffic should stop completely, not fall back to direct
+## “Kill Switch”功能  
+- 当VPN连接突然中断时，用户的真实IP地址可能会被暴露，而用户可能毫无察觉。  
+- “Kill Switch”功能在保护用户隐私方面至关重要，它会在VPN连接中断时立即阻断所有网络流量。  
+- 可以通过强制断开VPN连接来测试该功能：此时网络流量应完全停止，而不会自动切换回原始的网络连接方式。  
 
-## Split Tunneling Risks
-- Misconfiguration sends sensitive traffic direct — defeats VPN purpose
-- Full tunnel safer default — split only when deliberately excluding specific apps
-- Local network access often requires split — printing, casting break with full tunnel
+## 分裂隧道（Split Tunneling）的风险  
+- 如果配置不当，敏感数据可能会直接通过非VPN隧道传输，从而违背了使用VPN的目的。  
+- 最安全的做法是使用全隧道模式；只有在需要排除特定应用程序时才使用分裂隧道模式。  
+- 访问本地网络时通常需要使用分裂隧道模式，因为全隧道模式可能会影响打印或视频流传输等功能。  
 
-## Protocol Traps
-- PPTP encryption is broken — trivially cracked, never use regardless of convenience
-- UDP blocked on some networks — TCP fallback needed for restrictive firewalls
-- WireGuard uses fixed ports — easier to block than OpenVPN on 443
+## 协议相关的问题  
+- PPTP加密方式已被破解，无论其使用是否方便，都应避免使用。  
+- 在某些网络环境中，UDP协议可能被禁止使用，此时需要使用TCP协议作为替代方案。  
+- WireGuard使用固定的端口，因此比OpenVPN更容易被网络防火墙阻断。  
 
-## Mobile Issues
-- WiFi calling fails through most VPNs — carrier limitation, not fixable
-- Banking apps detect and block VPN — may need exclusion in split tunnel
-- Battery drain varies significantly — WireGuard most efficient by large margin
+## 移动设备使用VPN时的问题  
+- 大多数VPN服务无法支持通过WiFi进行语音通话（这是运营商的限制，无法通过VPN解决）。  
+- 银行应用程序能够检测并阻止VPN连接，因此在分裂隧道模式下可能需要将这些应用程序排除在外。  
+- 使用VPN可能会导致电池电量消耗显著增加；其中WireGuard在节能方面表现最为出色。  
 
-## Connection Failures
-- "Connected" but no internet — usually DNS misconfigured, not routing issue
-- Works on phone not laptop — local firewall or antivirus interfering
-- Constant reconnects — try TCP instead of UDP, increase keepalive interval
+## 连接失败的问题  
+- 即使显示“已连接”，也可能无法访问互联网——这通常是由于DNS配置错误导致的，而非路由问题。  
+- 在手机上VPN可能可以正常使用，但在笔记本电脑上可能无法正常工作——可能是本地防火墙或杀毒软件的干扰所致。  
+- 如果VPN连接频繁中断，可以尝试使用TCP协议，并增加连接的保持时间（keepalive interval）。  
 
-## Self-Hosted Traps
-- Exit IP is your home IP — services see where you live, no geo-bypass benefit
-- Requires static IP or dynamic DNS — clients can't find changing endpoints
-- Unmaintained server becomes liability — security updates are your responsibility
+## 自主托管VPN服务器的陷阱  
+- 使用自主托管的VPN服务器时，用户的IP地址会暴露给外部服务，因此无法实现地理位置的伪装。  
+- 这种方式通常需要使用静态IP地址或动态DNS服务；否则客户端可能无法找到正确的服务器地址。  
+- 如果服务器维护不当，可能会带来安全风险——用户需要自行负责更新服务器的安全设置。

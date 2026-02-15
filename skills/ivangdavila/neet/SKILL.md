@@ -2,27 +2,27 @@
 name: NEET
 slug: neet
 version: 1.0.0
-description: Prepare for India's medical entrance exam with progress tracking, weak area analysis, spaced repetition, and college targeting.
+description: 通过进度跟踪、薄弱环节分析、间隔重复练习以及明确目标大学的方式，为印度的医学入学考试做好准备。
 ---
 
-## When to Use
+## 使用场景
 
-User is preparing for NEET (National Eligibility cum Entrance Test), India's medical/dental entrance exam. Agent becomes a comprehensive study assistant handling scheduling, tracking, practice, and college planning.
+用户正在准备NEET（National Eligibility cum Entrance Test），这是印度的医学/牙科入学考试。Agent作为全面的学习助手，负责协助用户安排学习计划、跟踪学习进度、进行练习以及规划升学目标。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| Exam structure and scoring | `exam-config.md` |
-| Progress tracking system | `tracking.md` |
-| Study methods and spaced repetition | `study-methods.md` |
-| Stress management and wellbeing | `wellbeing.md` |
-| College and seat targeting | `targets.md` |
-| User type adaptations | `user-types.md` |
+| 考试结构与评分规则 | `exam-config.md` |
+| 进度跟踪系统 | `tracking.md` |
+| 学习方法与间隔重复学习 | `study-methods.md` |
+| 压力管理与身心健康 | `wellbeing.md` |
+| 大学与专业选择 | `targets.md` |
+| 用户类型与学习策略 | `user-types.md` |
 
-## Data Storage
+## 数据存储
 
-User data lives in `~/neet/`:
+用户数据存储在 `~/neet/` 目录下：
 ```
 ~/neet/
 ├── profile.md       # Goals, target score, exam date, category
@@ -33,30 +33,30 @@ User data lives in `~/neet/`:
 └── feedback.md      # What works, what doesn't
 ```
 
-## Core Capabilities
+## 核心功能
 
-1. **Daily scheduling** — Generate study plans based on exam countdown and weak areas
-2. **Progress tracking** — Monitor scores, time spent, mastery levels across Physics, Chemistry, Biology
-3. **Weak area identification** — Analyze errors to find high-ROI chapters
-4. **Spaced repetition** — Manage flashcards for diagrams, reactions, biological processes
-5. **Mock exam analysis** — Score prediction, error pattern recognition, NEET rank estimation
-6. **College targeting** — Match scores/ranks to admission cutoffs across categories
+1. **每日学习计划** — 根据考试倒计时及用户的薄弱科目生成学习计划。
+2. **进度跟踪** — 监控用户在物理、化学、生物科目上的得分、学习时间以及掌握程度。
+3. **薄弱科目识别** — 分析错误，找出需要重点复习的章节。
+4. **间隔重复学习** — 管理用于复习图表、化学反应及生物过程的闪卡。
+5. **模拟考试分析** — 预测考试成绩、识别错误类型，并估算NEET考试排名。
+6. **大学与专业匹配** — 根据用户的成绩/排名匹配合适的大学和专业。
 
-## Decision Checklist
+## 决策检查清单
 
-Before study planning, gather:
-- [ ] Exam date and days remaining
-- [ ] Category (General/OBC/SC/ST/EWS/PwD)
-- [ ] State domicile (affects state quota seats)
-- [ ] Target colleges (AIIMS, government, private)
-- [ ] Current estimated score range
-- [ ] User type (student, parent, dropper, repeater)
+在制定学习计划之前，请收集以下信息：
+- [ ] 考试日期及剩余备考天数
+- [ ] 用户所属类别（普通考生/OBC/SC/ST/EWS/PwD）
+- [ ] 用户的户籍所在地（影响大学招生名额）
+- [ ] 目标大学（AIIMS、公立大学、私立大学）
+- [ ] 当前预估的考试成绩范围
+- [ ] 用户类型（学生、家长、中途放弃学习的学生、复读生）
 
-## Critical Rules
+## 重要规则
 
-- **ROI-first** — Prioritize chapters with highest marks-per-hour potential
-- **Track everything** — Log sessions, scores, errors to `~/neet/`
-- **Adapt to user type** — Students need scheduling; parents need monitoring; droppers need efficiency
-- **NCERT is bible** — 90% of questions come from NCERT; supplement only after mastering it
-- **Negative marking matters** — Accuracy over attempts; -1 for wrong answers
-- **Wellbeing matters** — Monitor for burnout; suggest breaks
+- **优先考虑高性价比的学习内容** — 优先选择每小时能带来最高分数提升的章节。
+- **全面记录学习数据** — 将学习时间、得分及错误记录到 `~/neet/` 目录中。
+- **根据用户类型调整学习策略** — 学生需要具体的学习计划；家长需要监督学习进度；中途放弃学习的学生需要高效的学习方法。
+- **以NCERT教材为核心** — 90%的考试题目来自NCERT教材；只有在掌握NCERT内容后，再补充其他教材。
+- **负分制度需重视** — 错误答案会被扣分；正确答案才能加分。
+- **关注身心健康** — 监控用户的压力状态，建议适当休息。

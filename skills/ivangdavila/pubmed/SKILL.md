@@ -1,80 +1,79 @@
 ---
 name: PubMed
-description: Search and evaluate biomedical literature with effective queries, filters, and critical appraisal.
+description: 使用有效的查询语句、筛选条件以及严谨的评估方法来搜索和评估生物医学文献。
 metadata: {"clawdbot":{"emoji":"🔬","os":["linux","darwin","win32"]}}
 ---
 
-# PubMed Research Rules
+# PubMed 研究指南
 
-## Query Construction
-- Use MeSH terms for precise searching — controlled vocabulary ensures you find related concepts regardless of wording
-- Boolean operators must be uppercase: AND, OR, NOT — lowercase is ignored
-- Phrase searching with quotes: "heart failure" not heart failure — unquoted searches terms separately
-- Field tags narrow searches: [Title], [Author], [MeSH Terms] — example: aspirin[Title] AND prevention[MeSH]
-- Truncation with asterisk: therap* finds therapy, therapies, therapeutic
+## 查询构建
+- 使用 MeSH 术语进行精确搜索——受控词汇表能确保您找到相关的概念，而无需担心用词差异。
+- 布尔运算符必须大写：AND、OR、NOT——小写会被忽略。
+- 使用引号进行短语搜索：“heart failure”（心脏衰竭），而非“heart failure”（心脏衰竭）——不加引号的搜索会将术语分开处理。
+- 使用字段标签来缩小搜索范围：[Title]（标题）、[Author]（作者）、[MeSH Terms]（MeSH 术语）——例如：aspirin[Title] AND prevention[MeSH]（阿司匹林[标题] AND 预防）。
+- 使用星号（*）进行截断搜索：therap* 会匹配 “therapy”（疗法）、“therapies”（疗法们）或 “therapeutic”（治疗性的）等词。
 
-## Essential Filters
-- Article type matters: Clinical Trial, Systematic Review, Meta-Analysis — filter by study design
-- Publication date for recent evidence — older studies may be superseded
-- Free full text filter if access is limited — but don't ignore paywalled high-quality studies
-- Humans filter excludes animal studies — relevant for clinical questions
-- Language filter if translation isn't feasible
+## 必备过滤条件
+- 文章类型很重要：临床试验（Clinical Trial）、系统评价（Systematic Review）、荟萃分析（Meta-Analysis）——根据研究设计进行筛选。
+- 出版日期用于获取最新证据——较旧的研究可能已被更新。
+- 如果访问受限，可以使用免费全文过滤功能——但不要忽略那些需要付费才能获取的高质量研究。
+- “Humans”（人类）过滤条件可排除动物研究——这对临床问题来说非常重要。
+- 如果无法获取翻译版本，可以使用语言过滤功能。
 
-## Study Hierarchy
-- Systematic reviews and meta-analyses synthesize multiple studies — start here for established topics
-- Randomized controlled trials (RCTs) are gold standard for interventions — but not all questions are answerable by RCT
-- Cohort studies for long-term outcomes and rare exposures
-- Case-control for rare diseases
-- Case reports are lowest evidence — interesting but not generalizable
-- Guidelines synthesize evidence into recommendations — check who wrote them and when
+## 研究层次
+- 系统评价和荟萃分析整合了多项研究结果——对于已确立的研究主题，应从这些资源开始查找。
+- 随机对照试验（Randomized Controlled Trials, RCT）是评估干预措施的金标准——但并非所有问题都能通过 RCT 得到解答。
+- 队列研究（Cohort Studies）适用于长期结果和罕见情况的分析。
+- 病例对照研究（Case-Control Studies）适用于罕见疾病的研究。
+- 病例报告（Case Reports）的证据等级最低——虽然有趣，但普遍性较低。
+- 指南（Guidelines）将证据汇总成建议——请查看其编写者和发布时间。
 
-## Critical Appraisal
-- Sample size matters — small studies may show effects that don't replicate
-- Check confidence intervals, not just p-values — narrow CI with meaningful effect size beats p<0.05
-- Funding source and conflicts of interest affect interpretation — industry-funded studies favor sponsors
-- Primary vs secondary outcomes — cherry-picking significant secondary outcomes is common
-- Intention-to-treat vs per-protocol analysis — ITT is more conservative and realistic
+## 严格评估研究质量
+- 样本量很重要——小样本研究可能显示出的效果在其他研究中无法得到重复。
+- 请查看置信区间（Confidence Intervals），而不仅仅是 p 值——当置信区间较窄且效应量有实际意义时，其可靠性更高（优于 p<0.05）。
+- 资金来源和利益冲突会影响研究结果的解读——由行业资助的研究可能偏向于资助方。
+- 主要结果（Primary Outcomes）与按方案分析（Per-Protocol Analysis）——选择主要结果更为严谨和客观。
 
-## Common Traps
-- Abstract conclusions may oversell results — read methods and results sections
-- Single studies rarely settle questions — look for replication and systematic reviews
-- Statistical significance isn't clinical significance — 1% improvement may not matter to patients
-- Retracted papers still appear in searches — check Retraction Watch for controversial papers
-- Predatory journals publish low-quality research — verify journal reputation
-- Preprints haven't been peer-reviewed — useful for speed but not vetted
+## 常见误区
+- 摘要中的结论可能夸大了研究结果——请阅读方法（Methods）和结果（Results）部分。
+- 单个研究很少能完全解答问题——需要寻找重复实验或系统评价来验证结果。
+- 统计显著性并不等同于临床显著性——1% 的改善可能对患者没有实际意义。
+- 被撤回的论文仍会出现在搜索结果中——请查看 Retraction Watch 来了解有争议的论文。
+- 恶性期刊可能会发表低质量的研究——请核实期刊的声誉。
+- 预印本（Preprints）尚未经过同行评审——虽然获取速度快，但可靠性较低。
 
-## Search Strategy
-- PICO framework: Patient/Population, Intervention, Comparison, Outcome — structures clinical questions
-- Start broad, then narrow with filters — missing relevant papers worse than sorting through extras
-- Save searches for ongoing monitoring — PubMed can email when new papers match
-- Related Articles feature finds similar papers — useful after finding one good paper
-- Citation tracking: who cited this paper? — follow research forward in time
+## 搜索策略
+- 使用 PICO 框架（Patient/Population, Intervention, Comparison, Outcome）来构建临床问题。
+- 先进行广泛搜索，再使用过滤条件缩小范围——错过相关论文比筛选大量无关内容更糟糕。
+- 保存搜索结果以便后续跟踪——PubMed 会在有新论文匹配时发送邮件通知。
+- “Related Articles”（相关文章）功能可以帮助您找到类似的论文——在找到一篇有价值的论文后非常有用。
+- 引用追踪（Citation Tracking）功能可以追踪该论文被哪些文献引用——从而进一步了解研究进展。
 
-## Evaluating Sources
-- Impact factor indicates journal prestige, not individual paper quality
-- First and last authors typically did the work and led the project
-- Corresponding author handles questions — contact for clarifications
-- Check author affiliations — institutional reputation matters
-- Methods section determines if results are trustworthy — results are only as good as methods
+## 评估研究来源
+- 影响因子（Impact Factor）反映的是期刊的声誉，并非单篇论文的质量。
+- 第一作者和最后作者通常负责研究工作并主导项目。
+- 通讯作者（Corresponding Author）负责解答问题——如有疑问请联系他们。
+- 请查看作者的所属机构——机构的声誉也会影响研究的可靠性。
+- 方法部分（Methods）决定了研究结果的可靠性——研究结果的质量取决于方法的质量。
 
-## For Specific Questions
-- Treatment efficacy: RCTs and systematic reviews first
-- Diagnosis accuracy: sensitivity/specificity studies
-- Prognosis: cohort studies with long follow-up
-- Etiology/harm: cohort or case-control studies
-- Prevention: RCTs when available, cohort otherwise
+## 针对特定问题的搜索方法
+- 治疗效果：优先查找 RCT 和系统评价。
+- 诊断准确性：查找敏感性/特异性研究。
+- 预后：选择有长期随访的队列研究。
+- 病因/危害：选择队列研究或病例对照研究。
+- 预防措施：优先查找 RCT，如果没有 RCT 则选择队列研究。
 
-## Practical Tips
-- PubMed is free but full text often isn't — check institutional access, Unpaywall, or request from authors
-- PMID is the unique identifier — use it for precise citations
-- Export to reference manager (EndNote, Zotero) — manual citation is error-prone
-- Clinical Queries filter pre-filters for clinical relevance — therapy, diagnosis, prognosis, etiology
-- Similar Articles and Cited By expand discovery — algorithm finds related work
+## 实用技巧
+- PubMed 是免费的，但全文通常需要付费才能查看——请查看您的机构是否提供访问权限，或者直接联系作者获取全文。
+- PMID 是论文的唯一标识符——请使用它来进行精确引用。
+- 将搜索结果导出到参考管理工具（如 EndNote、Zotero）——手动引用容易出错。
+- “Clinical Queries”（临床查询）预过滤器可以帮助您筛选出具有临床相关性的论文。
+- “Similar Articles”（相关文章）和 “Cited By”（被引用文献）功能可以帮助您发现更多相关研究。
 
-## Red Flags in Papers
-- No control group for intervention studies
-- Conclusions not supported by data presented
-- Missing or inadequate statistical analysis
-- Selective reporting of outcomes
-- Conflicts of interest not disclosed
-- Extraordinary claims without extraordinary evidence
+## 研究论文中的警示信号
+- 干预性研究中缺少对照组。
+- 结论与所呈现的数据不符。
+- 统计分析缺失或不充分。
+- 结果的选择性报告。
+- 利益冲突未公开。
+- 未经充分证据支持的极端主张。

@@ -1,166 +1,150 @@
 ---
 name: business-plan
-description: Write, structure, and update a business plan for a solopreneur. Use when creating a plan from scratch, updating an existing plan after a pivot or new phase, or preparing a plan to share with investors, partners, or even just to clarify your own strategy. Covers executive summary, market analysis, competitive positioning, revenue model, operations plan, financial projections, and risk assessment — all adapted for a one-person business. Trigger on "write a business plan", "business plan", "create my plan", "business plan template", "update my business plan", "plan for my business", "investor pitch plan".
+description: 为个人创业者撰写、整理并更新商业计划书。这适用于从零开始制定计划、在业务方向调整或进入新阶段后更新现有计划，或是为了与投资者、合作伙伴分享计划，甚至是为了明确自己的经营策略。商业计划书应涵盖执行摘要、市场分析、竞争定位、收入模式、运营计划、财务预测以及风险评估等内容——所有内容均需针对个人创业企业的实际情况进行调整。相关关键词包括：“撰写商业计划书”、“商业计划书”、“创建我的计划书”、“商业计划书模板”、“更新我的商业计划书”、“为我的业务制定计划”、“投资者推介计划”。
 ---
 
-# Business Plan
+# 商业计划
 
-## Overview
-A business plan is not a static document you write once and file away. For solopreneurs, it is a living strategy document — a forcing function that makes you think clearly about your business and a reference you update as reality proves or disproves your assumptions. This playbook builds it section by section, in the order that makes each section easier to write because the previous one is already done.
-
----
-
-## Section 1: Executive Summary (Write This LAST)
-
-Even though it appears first, write this after everything else is done. It is a 1-page distillation of the entire plan.
-
-**Include exactly these five elements:**
-1. What the business does (one sentence)
-2. The problem it solves and for whom (two sentences max)
-3. The solution and why it's different (two sentences)
-4. The market opportunity (one sentence with a number — market size)
-5. What you need / what you're asking for (one sentence — funding amount, partnership, or simply your own plan of action)
-
-**Rule:** If someone reads only the executive summary, they should understand the entire business. If they want details, the rest of the plan delivers them.
+## 概述
+商业计划并不是一份写完就束之高阁的静态文件。对于独立创业者来说，它是一份动态的战略性文档——它迫使你清晰地思考自己的业务，并根据实际情况不断更新其中的假设。本指南将按照逐步构建的顺序来编写每个部分，因为前一部分的完成会为后续部分的撰写提供便利。
 
 ---
 
-## Section 2: Company Overview
+## 第1部分：执行摘要（最后编写）
+尽管执行摘要位于文件的开头，但实际上应在所有内容都完成后才进行编写。它是对整个计划的精简概括，仅用一页纸就能传达核心信息。
 
-Brief, factual, no fluff.
+**必须包含以下五个要素：**
+1. 你的业务是什么（一句话）
+2. 你的业务解决了什么问题，以及针对哪些客户群体（最多两句话）
+3. 你的解决方案是什么，以及它为何与众不同（两句话）
+4. 市场机会（一句话，并附上具体数字——市场规模）
+5. 你的需求或期望（一句话——资金需求、合作伙伴关系，或是你自己的行动计划）
 
-- Business name and legal structure (sole proprietorship, LLC, etc. — or planned structure)
-- What stage you're at: Idea / Pre-revenue / Early revenue / Growing
-- Mission statement (pull from your brand foundations)
-- Location and operational model (remote, local, hybrid)
-- Founding date or planned launch date
-
----
-
-## Section 3: Problem and Solution
-
-This is the heart of the plan. If this section is weak, everything after it is built on sand.
-
-**3.1 The Problem**
-- Describe the specific problem with concrete detail. Who feels it? When? How often? What does it cost them (time, money, stress)?
-- Back it up with evidence: customer discovery quotes, forum posts, market data. Not just your opinion.
-- Quantify the pain wherever possible: "Freelancers in this space spend an average of 6 hours/week on [X], costing them ~$15K/year in lost billable time."
-
-**3.2 The Solution**
-- Describe what your product or service does. Be specific about the user experience — not just features, but what happens from the customer's perspective.
-- Explain the "before and after." Before: the painful status quo. After: what life looks like with your solution.
-- Identify your core innovation or insight — the non-obvious thing that makes your solution work where others have failed.
-
-**3.3 Why Now**
-- What has changed (in technology, regulation, market behavior, or customer expectations) that makes this the right time to build this?
-- This is important: investors and partners want to know why this hasn't been done before and why now is different.
+**规则：** 如果有人只阅读执行摘要，他们应该能够理解整个业务的核心内容。如果他们想要详细信息，计划的其余部分会提供详细解答。
 
 ---
 
-## Section 4: Market Analysis
-
-Pull directly from your market-research skill output. Summarize into:
-
-- **Market size:** TAM, SAM, SOM with sources and methodology
-- **Market trends:** Top 3 trends affecting this space and how they impact your opportunity
-- **Customer segments:** Your 1-2 primary personas with key characteristics
-- **Target segment size:** How many of your specific target customers exist and how reachable they are
-
-**Keep this section data-driven.** Every claim should have a source or a clear methodology behind it.
+## 第2部分：公司概况
+简洁明了，避免冗余内容。
+- 公司名称和法律结构（个体经营者、有限责任公司等）
+- 你目前所处的业务阶段：创意阶段、无收入阶段、早期收入阶段、成长阶段
+- 使命宣言（基于你的品牌理念撰写）
+- 公司所在地和运营模式（远程办公、本地办公、混合办公）
+- 成立日期或计划推出的时间
 
 ---
 
-## Section 5: Competitive Landscape
+## 第3部分：问题与解决方案
+这是计划的核心部分。如果这一部分不够扎实，后续的所有内容都将建立在不可靠的基础上。
 
-Pull from your competitive-analysis skill output. Include:
+**3.1 问题**
+- 详细描述具体问题：谁会遇到这个问题？何时发生？频率如何？这个问题给他们带来了多大的成本（时间、金钱、压力）？
+- 用证据支持你的观点：客户反馈、论坛帖子、市场数据等，而不仅仅是你的主观看法。
+- 尽可能量化问题带来的影响：“该领域的自由职业者平均每周在[某项任务]上花费6小时，每年因此损失约1.5万美元的计费时间。”
 
-- A comparison matrix of top 3-5 competitors across the dimensions that matter most
-- Your competitive wedge — the specific position you occupy that competitors don't
-- Table stakes you match (things you must do as well as everyone else)
-- Gaps you fill (things competitors miss that you solve)
-- Honest assessment of competitor strengths — pretending they're weak makes your plan less credible, not more
+**3.2 解决方案**
+- 说明你的产品或服务具体能做什么。不仅要描述功能，还要从客户的角度出发，解释使用后的实际体验。
+- 解释“使用前后的变化”：使用前的困境，以及使用解决方案后的改善情况。
+- 强调你的核心创新点或独特之处——正是这些创新使你的解决方案能够在其他竞争者失败的地方取得成功。
 
----
-
-## Section 6: Business and Revenue Model
-
-Pull from your business-model-canvas output. Translate into narrative form:
-
-- How customers find you (channels and acquisition strategy)
-- How they buy (sales flow: discovery → evaluation → purchase)
-- Revenue streams (what you charge, how, and at what price points)
-- Revenue projections for Year 1 (monthly) and Years 2-3 (quarterly). Be conservative. Use bottom-up math: "If I acquire X customers per month at Y price, revenue = Z."
-- Unit economics: CAC, LTV, payback period (even if estimated)
+**3.3 为何现在行动**
+- 说明是什么因素（技术、法规、市场行为或客户期望的变化）使得现在正是启动这项业务的最佳时机。
+- 投资者和合作伙伴需要了解为什么之前没有人尝试过这个想法，以及为什么现在才适合行动。
 
 ---
 
-## Section 7: Operations Plan
+## 第4部分：市场分析
+基于你的市场调研结果进行总结，内容包括：
+- **市场规模**：总市场容量（TAM）、可服务市场容量（SAM）、目标市场容量（SOM），并附上数据来源和调研方法
+- **市场趋势**：影响该领域的三大趋势及其对你的业务机会的影响
+- **客户群体**：1-2个主要客户群体及其特征
+- **目标客户数量**：你的目标客户群体有多少人，以及他们是否容易接触
 
-How does the business actually run day-to-day?
-
-- **Product/service delivery:** What does fulfillment look like? How does a customer go from purchase to outcome?
-- **Technology stack:** What tools, platforms, or infrastructure do you use or plan to use?
-- **Key processes:** The 3-5 recurring processes that keep the business running (e.g., onboarding new customers, generating invoices, publishing content)
-- **Automation plan:** Which of these processes can be automated, and with what tools?
-- **Outsourcing plan:** Which tasks will you eventually delegate, and what's the trigger (revenue level, time constraint)?
-
----
-
-## Section 8: Marketing and Sales Plan
-
-- **Positioning:** Your positioning statement (from positioning-strategy)
-- **Marketing channels:** Which 2-3 channels you'll focus on first and why
-- **Content strategy:** What content you'll create and how often
-- **Sales approach:** How you close deals — direct outreach, inbound, self-serve checkout, etc.
-- **Customer acquisition targets:** How many customers you need per month to hit revenue goals
-- **Customer acquisition cost budget:** How much you'll spend per acquired customer
+**确保这一部分的数据来源可靠**。每个结论都应有相应的依据或明确的研究方法。
 
 ---
 
-## Section 9: Financial Projections
-
-Build a simple but honest financial model:
-
-**Monthly for Year 1, quarterly for Years 2-3:**
-- Revenue (customers × price)
-- Cost of goods / delivery
-- Marketing spend
-- Tools and infrastructure costs
-- Contractor costs (if any)
-- Gross profit
-- Net profit (or loss)
-
-**Key thresholds to calculate:**
-- Break-even point: What revenue level covers all costs?
-- Runway: If you're investing personal savings, how many months can you sustain at current burn before hitting break-even?
-- Cash flow timing: Are there months where expenses spike (launch, seasonal)?
-
-**Honesty rule:** Projections are guesses. Label them as such. Include a "conservative" and an "optimistic" scenario. The conservative scenario should still be a viable business.
+## 第5部分：竞争分析
+基于你的竞争分析结果，包括：
+- 根据最重要维度对前3-5个竞争对手进行对比
+- 你的竞争优势——即竞争对手所没有的优势
+- 你需要达到的基本要求（与其他竞争对手相同的部分）
+- 你填补的空白——竞争对手未解决但你能提供的价值
+- 客观评估竞争对手的优势——假装竞争对手有弱点只会降低你的计划可信度。
 
 ---
 
-## Section 10: Risk Assessment
-
-Every business has risks. Identifying them doesn't make them go away — it lets you plan around them.
-
-**For each risk, write:**
-1. What the risk is
-2. How likely it is (Low / Medium / High)
-3. How bad it would be if it happened (Low / Medium / High)
-4. Your mitigation plan (what you'll do to reduce probability or impact)
-
-**Common solopreneur risks to cover:**
-- Single-person dependency (you get sick, burn out, or want to take time off)
-- Platform/API dependency (a tool you rely on changes terms or shuts down)
-- Customer concentration (too much revenue from one client)
-- Market timing (too early or too late)
-- Pricing risk (customers won't pay what you planned)
-- Competition risk (a well-funded player enters your niche)
+## 第6部分：商业模式与收入模式
+根据你的商业模式设计文档，用叙述的形式表达如下内容：
+- 客户如何找到你的产品或服务（渠道和获取策略）
+- 客户的购买流程（发现需求 → 评估 → 购买）
+- 收入来源（收费方式、价格设定）
+- 第一年的收入预测（按月）以及第二年和第三年的收入预测（按季度）。预测要保守一些，使用自下而上的计算方法：“如果每月获得X位客户，每位客户的收入为Y元，那么总收入为Z元。”
+- 单位经济指标：客户获取成本（CAC）、客户生命周期价值（LTV）、回收期（即使只是估算值）
 
 ---
 
-## Plan Maintenance Rules
-- **Update monthly** during the first 6 months. Reality will differ from your plan constantly.
-- **Mark assumptions clearly.** Highlight every assumption in the plan. When reality proves one right or wrong, update it and note what changed.
-- **Version it.** Keep old versions. Comparing your plan from 3 months ago to today is one of the best ways to learn and improve your forecasting.
-- **Share it.** Show it to 2-3 trusted people (advisors, fellow founders, mentors). Outside eyes catch blind spots.
+## 第7部分：运营计划
+你的业务日常是如何运作的？
+- **产品/服务交付**：交付流程是怎样的？客户从购买到最终获得产品/服务的过程是什么？
+- **技术栈**：你目前使用或计划使用的工具、平台或基础设施
+- **关键流程**：维持业务运转的3-5个重复性流程（例如新客户入职、发票生成、内容发布）
+- **自动化计划**：哪些流程可以自动化，以及使用哪些工具实现自动化？
+- **外包计划**：哪些任务会外包，以及外包的触发条件（收入水平、时间限制）
+
+---
+
+## 第8部分：市场营销与销售计划
+- **市场定位**：根据你的市场定位策略进行阐述
+- **营销渠道**：首先会重点关注哪2-3个营销渠道，原因是什么
+- **内容策略**：将创建哪些内容，以及发布频率
+- **销售方式**：如何完成销售——直接联系客户、通过网站自服务等方式
+- **客户获取目标**：每月需要获得多少客户才能达到收入目标
+- **客户获取成本预算**：每个客户的获取成本是多少
+
+---
+
+## 第9部分：财务预测
+建立一个简单但准确的财务模型：
+- **第一年的每月预测，第二年和第三年的季度预测：**
+  - 收入（客户数量 × 单价）
+  - 商品/交付成本
+  - 营销支出
+  - 工具和基础设施成本
+  - 外包成本（如有）
+  - 毛利润
+  - 净利润（或亏损）
+
+**需要计算的关键指标：**
+  - 盈亏平衡点：达到多少收入才能覆盖所有成本？
+  **持续运营时间**：如果你依靠个人储蓄投资，当前的资金消耗情况下还能维持运营多少个月才能达到盈亏平衡？
+  **现金流时间表**：是否有费用激增的时期（如产品发布、季节性因素）
+
+**诚实原则：** 预测只是基于假设的估计。请明确标注这一点，并提供“保守”和“乐观”的两种预测方案。即使是最保守的预测，也应该是一个可行的商业模式。
+
+---
+
+## 第10部分：风险评估
+每个企业都存在风险。识别风险并不能消除风险，但可以帮助你提前做好应对措施。
+
+**对于每个风险，需记录：**
+1. 风险是什么
+2. 风险发生的可能性（低 / 中等 / 高）
+3. 如果风险发生，后果会有多严重（低 / 中等 / 高）
+4. 你的应对措施（如何降低风险发生的概率或减轻影响）
+
+**常见的独立创业者需要考虑的风险包括：**
+- 个人依赖性（你生病、精疲力尽或需要休假）
+- 平台/API依赖性（你依赖的工具变更条款或停止服务）
+- 客户集中（过多收入来自单一客户）
+- 市场时机（过早或过晚进入市场）
+- 定价风险（客户不愿意按照你的定价支付）
+- 竞争风险（有资金实力的竞争对手进入你的市场）
+
+---
+
+## 计划维护规则
+- **前6个月内每月更新一次**。实际情况会不断变化。
+- **明确标注所有假设**。在计划中突出所有假设。当实际情况证明某个假设正确或错误时，及时更新并记录变化。
+- **版本管理**：保留旧版本。将三个月前的计划与现在的计划进行对比，是学习和改进预测能力的有效方法。
+- **分享计划**：向2-3位可信赖的人（顾问、联合创始人、导师）展示你的计划。外部意见有助于发现潜在问题。

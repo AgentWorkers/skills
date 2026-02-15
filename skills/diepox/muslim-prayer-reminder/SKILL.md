@@ -1,48 +1,50 @@
 ---
 name: prayer-times
-description: Get accurate Islamic prayer times (Fajr, Dhuhr, Asr, Maghrib, Isha) for any location worldwide using official calculation methods. Use when users ask about prayer times, Salat schedules, next prayer, or need to set up automated prayer reminders. Includes automated background reminder system that alerts users 10 minutes before, at prayer time, and 5 minutes after - even during conversations. Supports 20+ country-specific calculation methods including Morocco, Saudi Arabia, Egypt, Turkey, UAE, and more.
+description: 使用官方计算方法，获取全球任何地点的准确伊斯兰教祈祷时间（晨礼（Fajr）、正午礼（Dhuhr）、下午礼（Asr）、昏礼（Maghrib）和宵礼（Isha）信息。当用户询问祈祷时间、礼拜安排、下一次祈祷时间，或需要设置自动祈祷提醒时，可参考此功能。系统包含自动背景提醒功能：在祈祷时间前10分钟以及祈祷时间结束后5分钟向用户发送提醒——即使在用户进行对话时也能触发提醒。支持20多个国家/地区的特定计算方法，包括摩洛哥、沙特阿拉伯、埃及、土耳其、阿联酋等。
 ---
 
-# Prayer Times Skill
+# 祈祷时间技能
 
-Get accurate Islamic prayer times for any location using the AlAdhan API with region-specific calculation methods, plus automated reminders that work in the background.
+使用 AlAdhan API 和针对不同地区的计算方法，可以获取任何位置的准确伊斯兰祈祷时间，并提供后台运行的自动提醒功能。
 
-## Two Ways to Use This Skill
+## 使用该技能的两种方式
 
-### 1. Query Prayer Times (Instant)
-Ask about prayer times for any location, get next prayer info, or check specific dates.
+### 1. 查询祈祷时间（即时）
+- 询问任何位置的祈祷时间；
+- 获取下一次祈祷的信息；
+- 查看特定日期的祈祷时间。
 
-### 2. Automated Reminders (Background)
-Set up cron jobs that fetch daily prayer times and check periodically for reminders. Alerts you:
-- **10 minutes before** prayer time
-- **At prayer time** ("Salat First")
-- **5 minutes after** (if you're still chatting)
+### 2. 自动提醒（后台运行）
+- 设置定时任务，定期获取每日祈祷时间并发送提醒：
+  - **祈祷时间前10分钟**；
+  - **祈祷时间**；
+  - **祈祷时间后5分钟**（如果您仍在聊天中）。
 
-**To set up reminders:** See [references/setup-reminders.md](references/setup-reminders.md) for complete guide.
+**设置提醒的详细步骤：**请参阅 [references/setup-reminders.md](references/setup-reminders.md)。
 
-## Quick Start
+## 快速入门
 
-### Get today's prayer times
+### 获取今天的祈祷时间
 
-**By city and country:**
-```bash
+- **按城市和国家查询**：
+  ```bash
 cd scripts/
 python3 get_prayer_times.py --city Mecca --country "Saudi Arabia"
 python3 get_prayer_times.py --city Istanbul --country Turkey
 python3 get_prayer_times.py --city Cairo --country Egypt
 ```
 
-**By coordinates:**
-```bash
+- **按坐标查询**：
+  ```bash
 python3 get_prayer_times.py --lat 21.4225 --lon 39.8262  # Mecca
 ```
 
-**With next prayer info:**
-```bash
+- **包含下一次祈祷的信息**：
+  ```bash
 python3 get_prayer_times.py --city Istanbul --country Turkey --next --timezone 3
 ```
 
-### Output
+### 输出结果
 ```
 📍 Mecca, Saudi Arabia
 📆 10 Feb 2026
@@ -59,75 +61,75 @@ python3 get_prayer_times.py --city Istanbul --country Turkey --next --timezone 3
 ⏳ Next: Maghrib at 18:16 (in 15 minutes)
 ```
 
-## Calculation Methods
+## 计算方法
 
-The script **automatically selects** the correct calculation method based on country:
+脚本会**自动选择**适合该国家的正确计算方法：
 
-- **Morocco** → Method 21 (official)
-- **Saudi Arabia** → Method 4 (Umm Al-Qura)
-- **Egypt** → Method 5 (Egyptian Authority)
-- **Turkey** → Method 13 (Diyanet)
-- **UAE** → Method 16 (Dubai)
-- And 15+ more countries...
+- **摩洛哥** → 方法21（官方方法）；
+- **沙特阿拉伯** → 方法4（Umm Al-Qura）；
+- **埃及** → 方法5（埃及宗教事务部）；
+- **土耳其** → 方法13（Diyanet）；
+- **阿联酋** → 方法16（迪拜）；
+- 以及更多国家……
 
-**When to override:** Only specify `--method` if you need a different calculation than the country default.
+**何时需要手动指定计算方法：**只有在需要使用与国家默认方法不同的计算方式时，才需要使用 `--method` 参数。
 
-For full method list and details, see [references/methods.md](references/methods.md).
+有关所有计算方法的详细信息，请参阅 [references/methods.md](references/methods.md)。
 
-## Script Reference
+## 脚本参考
 
 ### `get_prayer_times.py`
 
-**Location:** `scripts/get_prayer_times.py`
+**文件位置：** `scripts/get_prayer_times.py`
 
-**Purpose:** Fetch prayer times for any location.
+**功能：** 获取任何位置的祈祷时间。
 
-**Arguments:**
-- `--city <name>` - City name (e.g., "Rabat")
-- `--country <name>` - Country name (e.g., "Morocco")
-- `--lat <float>` - Latitude coordinate
-- `--lon <float>` - Longitude coordinate
-- `--method <id>` - Calculation method ID (1-24, optional)
-- `--date <DD-MM-YYYY>` - Specific date (optional, defaults to today)
-- `--timezone <hours>` - Timezone offset from UTC for "next prayer" calculation
-- `--next` - Show next prayer and time remaining
-- `--json` - Output as JSON
+**参数：**
+- `--city <名称>` - 城市名称（例如：“Rabat”）；
+- `--country <名称>` - 国家名称（例如：“Morocco”）；
+- `--lat <浮点数>` - 纬度坐标；
+- `--lon <浮点数>` - 经度坐标；
+- `--method <ID>` - 计算方法ID（1-24，可选）；
+- `--date <DD-MM-YYYY>` - 特定日期（可选，默认为今天）；
+- `--timezone <小时数>` - 用于计算“下一次祈祷时间”的时区偏移量（以UTC为单位）；
+- `--next` - 显示下一次祈祷时间和剩余时间；
+- `--json` - 以JSON格式输出结果。
 
-**Returns:**
-- Exit code 0 on success
-- Exit code 1 on failure
-- JSON or formatted text output
+**返回值：**
+- 成功时返回退出代码0；
+- 失败时返回退出代码1；
+- 输出结果为JSON或格式化文本。
 
 ### `check_prayer_reminder.py`
 
-**Location:** `scripts/check_prayer_reminder.py`
+**文件位置：** `scripts/check_prayer_reminder.py`
 
-**Purpose:** Check if it's time to send a prayer reminder. Designed for periodic cron execution.
+**功能：** 检查是否需要发送祈祷提醒。专为定时任务设计。
 
-**Arguments:**
-- `--prayer-times <path>` - Path to prayer_times.json file (required)
-- `--timezone <hours>` - Timezone offset from UTC (required)
-- `--json` - Output as JSON
+**参数：**
+- `--prayer-times <路径>` - 包含祈祷时间数据的JSON文件路径（必需）；
+- `--timezone <小时数>` - 时区偏移量（以UTC为单位）；
+- `--json` - 以JSON格式输出结果。
 
-**Returns:**
-- Exit code 0 - No reminder needed
-- Exit code 1 - Reminder needed (message printed to stdout)
-- Exit code 2 - Error loading prayer times
+**返回值：**
+- 0：无需提醒；
+- 1：需要提醒（提醒信息会输出到标准输出）；
+- 2：加载祈祷时间时出错。
 
-**Reminder Windows:**
-- **Before:** 9-11 minutes before prayer time
-- **Now:** -1 to +2 minutes from prayer time
-- **After:** 4-6 minutes after prayer time
+**提醒时间窗口：**
+- **祈祷时间前**：祈祷时间前9-11分钟；
+- **祈祷时间**：祈祷时间前后1-2分钟；
+- **祈祷时间后**：祈祷时间后4-6分钟。
 
-## Common Usage Patterns
+## 常见使用场景
 
-### 1. Get prayer times for user's city
-```bash
+- **获取用户所在城市的祈祷时间**：
+  ```bash
 python3 get_prayer_times.py --city "User's City" --country "User's Country" --next --timezone <offset>
 ```
 
-### 2. Set up automated daily fetch
-```python
+- **设置每日自动获取祈祷时间**：
+  ```python
 from get_prayer_times import get_prayer_times
 import json
 
@@ -137,8 +139,8 @@ with open('prayer_times.json', 'w') as f:
     json.dump(times, f)
 ```
 
-### 3. Check next prayer
-```python
+- **查看下一次祈祷时间**：
+  ```python
 from get_prayer_times import get_prayer_times, get_next_prayer
 
 times = get_prayer_times(city="Rabat", country="Morocco")
@@ -147,21 +149,19 @@ next_prayer = get_next_prayer(times, timezone_offset=1)  # GMT+1 for Morocco
 print(f"Next: {next_prayer['name']} in {next_prayer['hours_until']}h {next_prayer['minutes_until']}m")
 ```
 
-### 4. Set up automated reminders (recommended)
+- **设置自动提醒**（推荐）：
+  [参考文档：](references/setup-reminders.md)
 
-**Complete setup guide:** [references/setup-reminders.md](references/setup-reminders.md)
+**快速设置步骤：**
+1. 创建每日获取祈祷时间的任务（在午夜运行）：
+  - 获取今天的祈祷时间；
+  - 保存到 `prayer_times.json` 文件中。
+2. 创建提醒检查任务（每5分钟运行一次）：
+  - 检查是否需要发送提醒；
+  - 向当前会话发送提醒；
+  - 提醒分为三个阶段：祈祷前、祈祷中和祈祷后。
 
-**Quick setup:**
-1. Create daily fetch job (runs at midnight):
-   - Fetches today's prayer times
-   - Saves to `prayer_times.json`
-
-2. Create reminder check job (runs every 5 min):
-   - Checks if it's time to remind
-   - Sends alert to active session
-   - Three-stage reminders: before, during, after
-
-**Example prompts to set up:**
+**示例命令：**
 ```
 Set up prayer time reminders for Mecca, Saudi Arabia (GMT+3). 
 Fetch daily at midnight and check every 5 minutes.
@@ -177,16 +177,15 @@ Set up prayer time reminders for Cairo, Egypt (GMT+2).
 Fetch daily at midnight and check every 5 minutes.
 ```
 
-This enables background reminders even while chatting - you'll never miss Salat!
+即使在聊天过程中，该功能也能提供后台提醒——您永远不会错过祈祷！
 
-## Important Notes
+## 重要说明
 
-### Network Requirements
-The AlAdhan API (api.aladhan.com) may be unreachable from some datacenter IPs (e.g., DigitalOcean → Hetzner routing issues).
+### 网络要求
+- 从某些数据中心IP（例如DigitalOcean或Hetzner）可能无法访问AlAdhan API（api.aladhan.com）。
+**解决方案：** 使用Cloudflare WARP或类似的VPN服务，将流量路由到Cloudflare的网络。
 
-**Solution:** Use Cloudflare WARP or similar VPN to route traffic through Cloudflare's network.
-
-**Quick fix:**
+**快速解决方法：**
 ```bash
 # Install Cloudflare WARP
 curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
@@ -196,50 +195,50 @@ warp-cli register
 warp-cli connect
 ```
 
-### Accuracy
-- Always use country-specific methods when available (e.g., method 21 for Morocco)
-- Coordinates provide more accurate results than city names
-- Times are in 24-hour format (HH:MM)
+### 准确性
+- 在有相应方法的情况下，始终使用针对该国家的计算方法（例如，摩洛哥使用方法21）；
+- 使用坐标比使用城市名称能获得更准确的结果；
+- 时间以24小时制（HH:MM）显示。
 
-### Timezones
-The API returns times in **local time** for the queried location. When calculating "time until next prayer", use the appropriate timezone offset.
+### 时区
+- API返回的是查询位置的**当地时间**。在计算“下一次祈祷时间”时，请使用相应的时区偏移量。
 
-## API Source
-- **Provider:** AlAdhan (Islamic Network)
-- **Endpoint:** https://api.aladhan.com
-- **Documentation:** https://aladhan.com/prayer-times-api
-- **Free tier:** No API key required, rate limited
-- **Reliability:** High (99%+ uptime)
+## API信息
 
-## Examples
+- **提供者：** AlAdhan（伊斯兰网络服务）；
+- **端点：** https://api.aladhan.com；
+- **文档：** https://aladhan.com/prayer-times-api；
+- **免费 tier：** 不需要API密钥，但存在使用限制；
+- **可靠性：** 高（99%以上的正常运行时间）。
 
-### Example 1: User asks "What are the prayer times in Mecca?"
-```bash
+## 示例
+
+- **示例1：** 用户询问“麦加的祈祷时间是多少？”
+  ```bash
 python3 get_prayer_times.py --city Mecca --country "Saudi Arabia"
 ```
 
-### Example 2: User asks "When is the next prayer?"
-```bash
+- **示例2：** 用户询问“下一次祈祷时间是什么时候？”
+  ```bash
 python3 get_prayer_times.py --city Istanbul --country Turkey --next --timezone 3
 ```
 
-### Example 3: User provides coordinates
-```bash
+- **示例3：** 用户提供坐标
+  ```bash
 python3 get_prayer_times.py --lat 40.7128 --lon -74.0060 --next --timezone -5
 # New York coordinates
 ```
 
-### Example 4: User wants specific date
-```bash
+- **示例4：** 用户指定具体日期
+  ```bash
 python3 get_prayer_times.py --city Cairo --country Egypt --date 15-03-2026
 ```
 
-## Testing the Skill
-
-Test the script locally:
-```bash
+## 测试该技能
+- 请在本地测试该脚本：
+  ```bash
 cd scripts/
 python3 get_prayer_times.py --city Rabat --country Morocco --next --timezone 1
 ```
 
-Expected output should show 5 prayer times (Fajr, Dhuhr, Asr, Maghrib, Isha) plus Sunrise, and indicate the next upcoming prayer if `--next` is used.
+预期输出应显示5次祈祷时间（晨礼、正午礼、晡礼、昏礼、宵礼）以及日出时间；如果使用了 `--next` 参数，还会显示下一次祈祷的时间。

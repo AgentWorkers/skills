@@ -1,83 +1,88 @@
 ---
 name: warden-app
-description: Use the Warden App (agentic wallet) via browser automation to execute crypto tasks (swap, bridge, deposit/withdraw, perps, portfolio/research) and to build an OpenClaw skill wrapper other agents can use. Use when you need to (1) navigate the Warden UI, (2) connect a wallet, (3) place trades/swaps, (4) check balances/positions, or (5) document repeatable Warden workflows safely (no key leakage, explicit confirmations).
+description: 使用 Warden 应用程序（代理钱包）通过浏览器自动化来执行加密任务（如交易对换、资产桥接、存取款等操作），并构建一个可供其他代理使用的 OpenClaw 技能封装。在以下情况下可以使用该工具：  
+1. 导航 Warden 用户界面；  
+2. 连接钱包；  
+3. 进行交易或对换操作；  
+4. 查看余额或持仓情况；  
+5. 安全地记录可重复的 Warden 工作流程（确保不会泄露密钥，并获得明确的操作确认）。
 ---
 
-# Warden App
+# Warden 应用程序
 
-Automate common actions in the Warden App through a safe, repeatable workflow that other agents can follow.
+通过一个安全、可重复的工作流程自动化 Warden 应用程序中的常见操作，以便其他代理可以遵循。
 
-## Safety & constraints (non-negotiable)
+## 安全性与限制（不可协商）
 
-- Never request or store seed phrases / private keys.
-- Treat all onchain actions as **high-risk**: confirm chain, token, amount, slippage, fees **before** signing.
-- Prefer read-only actions unless the user explicitly authorizes execution (e.g., they say: "yes, execute").
-- Do not reveal any private info (local files, credentials, IPs, internal logs).
-- Public comms: do not claim any affiliation or relationship unless it is publicly disclosed and the user explicitly asks you to state it.
+- **严禁** 请求或存储种子短语/私钥。
+- 将所有链上操作视为**高风险**操作：在签名之前，必须确认链路、代币、金额、滑点以及费用。
+- 除非用户明确授权执行，否则默认执行只读操作（例如，用户表示“是的，执行”）。
+- **严禁** 泄露任何私人信息（本地文件、凭证、IP 地址、内部日志）。
+- 在公开通信中：除非已公开披露且用户明确要求，否则不得声明任何关联或关系。
 
-## Workflow (UI automation)
+## 工作流程（UI 自动化）
 
-### 0) Preconditions
+### 0) 前提条件
 
-1. A Chromium browser is available (Chrome/Brave/Edge/Chromium). (Firefox not supported.)
-2. User is logged into the Warden App (and any required email/2FA is completed).
-3. Wallet connection method is clear:
-   - embedded Warden wallet, or
-   - external wallet (e.g., MetaMask/Rabby/etc.).
+- 必须有 Chromium 浏览器可用（Chrome/Brave/Edge/Chromium，Firefox 不受支持）。
+- 用户已登录 Warden 应用程序（并完成所有必要的电子邮件/双因素认证）。
+- 需要明确钱包连接方式：
+  - 内置的 Warden 钱包，或
+  - 外部钱包（例如 MetaMask/Rabby 等）。
 
-If any of the above is missing, stop and ask the user to do that step.
+如果缺少上述任何一项，请停止操作并让用户完成相应的步骤。
 
-### 1) Open + stabilize the UI
+### 1) 打开并稳定 UI
 
-- Open the Warden App URL (user-provided).
-- Wait for the dashboard/home view to load.
-- Take a snapshot and identify:
-  - current network
-  - wallet/account label
-  - balances overview / portfolio view
+- 打开用户提供的 Warden 应用程序 URL。
+- 等待仪表板/主页视图加载完成。
+- 截取屏幕截图并确认以下信息：
+  - 当前网络
+  - 钱包/账户名称
+  - 账户余额概览/投资组合视图
 
-### 2) Read-only actions (default)
+### 2) 只读操作（默认）
 
-Use these first when the user asks “what do we have / what’s going on?”
+当用户询问“我们有什么资产/发生了什么？”时，首先执行这些操作：
 
-- Portfolio: balances, chains, token list
-- Positions (perps): open positions, PnL, leverage
-- Activity/history: recent swaps/trades, deposits/withdrawals
-- Rewards/points (if applicable): PUMPs / quests / referrals
+- 投资组合：账户余额、支持的链路、代币列表
+- 持仓情况：未平仓头寸、盈亏、杠杆率
+- 活动/历史记录：最近的交换/交易、存取款操作
+- 奖励/积分（如适用）：PUMPs（奖励计划）/任务/推荐奖励
 
-### 3) Transactional actions (requires explicit approval each time)
+### 3) 交易操作（每次都需要明确授权）
 
-**Execution gate:** Do not click the final confirm button unless the user explicitly replies with **"yes, execute"** (or an unambiguous equivalent).
+**执行前的确认步骤：** 除非用户明确回复“是的，执行”（或类似的明确指令），否则切勿点击最终的确认按钮。
 
-Before clicking a final “Confirm/Swap/Trade” button, summarize:
-- chain + token in/out + amount
-- slippage + fees
-- expected execution (market/limit; leverage if perps)
-- what could go wrong (MEV, thin liquidity, liquidation)
+在点击最终的“确认/交换/交易”按钮之前，需总结以下信息：
+- 交易的链路、涉及的代币、交易金额
+- 滑点及费用
+- 预期的交易结果（市场价/限价；如果涉及未平仓头寸，则需考虑杠杆率）
+- 可能出现的问题（例如市场价值损失、流动性不足、强制平仓等）
 
-Then proceed.
+然后继续执行操作。
 
-Supported action patterns:
-- Swap token A → token B
-- Deposit/withdraw to/from a protocol
-- Open/close perp position
-- Set stop / TP (if available)
+支持的操作模式：
+- 将代币 A 交换为代币 B
+- 向某个协议存入/提取资金
+- 开启/关闭未平仓头寸
+- 设置止损/止盈（如果支持的话）
 
-### 4) Post-action verification
+### 4) 操作后的验证
 
-After execution:
-- confirm status (submitted/confirmed)
-- confirm updated balances/positions
-- capture transaction id/link if shown
+操作完成后：
+- 确认交易状态（是否已提交/确认）
+- 确认账户余额和持仓情况是否更新
+- 如果显示了交易 ID 或链接，请将其记录下来
 
-## Building the OpenClaw wrapper skill
+## 构建 OpenClaw 包装技能
 
-When asked to "create a skill that allows other agents to use the Warden App":
+当被要求“创建一个允许其他代理使用 Warden 应用程序的技能”时，请按照以下步骤操作：
 
-1. Record the minimal set of repeatable workflows (URLs + UI landmarks) in `references/warden-ui-notes.md`.
-2. Create small deterministic scripts only when they reduce errors (e.g., parsing a transaction summary or normalizing a confirmation checklist).
-3. Keep SKILL.md lean; put volatile UI selectors / screenshots / step-by-step clickpaths in references.
+1. 将最小化的、可重复的工作流程（包括 URL 和 UI 相关信息）记录在 `references/warden-ui-notes.md` 文件中。
+2. 仅在这些流程能够减少错误的情况下，才编写简单的确定性脚本（例如解析交易摘要或标准化确认流程）。
+3. 保持 SKILL.md 文件的简洁性；将易变的 UI 选择器、截图以及详细的操作步骤放在参考文档中。
 
-## References
+## 参考资料
 
-- Read `references/warden-ui-notes.md` when you need the latest app URL(s), nav map, and known UI landmarks.
+- 需要最新的应用程序 URL、导航结构及 UI 界面信息时，请查阅 `references/warden-ui-notes.md` 文件。

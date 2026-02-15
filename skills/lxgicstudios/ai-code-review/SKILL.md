@@ -1,22 +1,22 @@
-# Code Reviewer
+# 代码审核工具
 
-AI-powered code review for staged git changes. Catches bugs, security issues, and code smells before you push.
+这是一个基于人工智能的代码审核工具，专门用于检查Git中的待提交更改。它能在您提交代码之前发现潜在的错误、安全问题以及代码质量问题。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-code-review
 ```
 
-## What It Does
+## 功能介绍
 
-- Reviews your staged git changes automatically
-- Identifies bugs, logic errors, and anti-patterns
-- Flags potential security issues
-- Suggests concrete improvements with explanations
-- Color-coded output (critical/warning/suggestion/good)
+- 自动审核您在Git中准备提交的更改
+- 识别代码中的错误、逻辑错误以及不良编程习惯
+- 标记可能存在的安全风险
+- 提出具体的改进建议，并附有详细解释
+- 采用颜色编码来区分审核结果（严重问题、警告、建议、良好代码）
 
-## Usage
+## 使用方法
 
 ```bash
 # Stage your changes first
@@ -26,30 +26,30 @@ git add -A
 npx ai-code-review
 ```
 
-## When to Use
+## 适用场景
 
-- Right before opening a pull request
-- Working solo without a reviewer
-- Late night coding when your brain is tired
-- Quick sanity check on tricky refactors
+- 在提交Pull Request之前使用
+- 单独工作且没有其他审核人员时使用
+- 在深夜编程时（当您头脑疲劳时）
+- 对复杂的代码重构进行快速检查
 
-## Part of the LXGIC Dev Toolkit
+## 作为LXGIC开发工具包的一部分
 
-One of 110+ free developer tools from LXGIC Studios. No paywalls, no sign-ups.
+LXGIC Studios提供了110多种免费开发者工具，此工具是其中之一。无需支付费用，也无需注册。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/lxgic-studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**由LXGIC Studios开发**
 
-- GitHub: [github.com/lxgicstudios/ai-code-review](https://github.com/lxgicstudios/ai-code-review)
+- GitHub: [github.com/lxgic-studios/ai-code-review](https://github.com/lxgic-studios/ai-code-review)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

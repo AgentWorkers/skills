@@ -1,31 +1,31 @@
 ---
 name: Code
-description: Plan, execute, and verify code implementations end-to-end.
+description: 从开始到结束，规划、执行并验证代码实现的过程。
 metadata: {"clawdbot":{"emoji":"💻","os":["linux","darwin","win32"]}}
 ---
 
-## Workflow
+## 工作流程
 
 ```
 Request → Plan → Execute → Verify → Deliver
 ```
 
-**Rules:**
-- Delegate all implementation to sub-agents — main stays free to receive new requests
-- Break multi-step requests into testable steps before coding
-- Execute steps without asking "should I continue?" — only stop on blockers
-- Verify each step works before proceeding (test, screenshot, output)
-- Never deliver untested code
+**规则：**
+- 将所有实现工作委托给子代理——主要负责人可以专注于接收新的请求。
+- 在编写代码之前，将多步骤的请求分解为可测试的单独步骤。
+- 执行步骤时无需反复询问“是否继续”——只有在遇到障碍时才停止。
+- 在继续执行之前，验证每个步骤是否正常工作（进行测试、截图并记录输出结果）。
+- 绝不交付未经测试的代码。
 
-Check `planning.md` for steps, `execution.md` for running, `verification.md` for screenshots, `state.md` for multi-request orchestration, `criteria.md` for preferences.
-
----
-
-### Preferences
-<!-- User's coding workflow preferences. Format: "preference" -->
-
-### Never
-<!-- Things that don't work for this user -->
+有关具体步骤，请参阅 `planning.md`；有关执行过程，请参阅 `execution.md`；有关截图记录，请参阅 `verification.md`；有关多请求的协调管理，请参阅 `state.md`；有关编码工作流程的偏好设置，请参阅 `criteria.md`。
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 编码工作流程偏好设置
+<!-- 用户的编码工作流程偏好设置。格式：`preference` -->
+
+### 绝不执行
+<!-- 用户明确禁止执行的操作或流程 -->
+
+---
+*空白部分表示尚未设置偏好。请根据实际情况进行观察并填写。*

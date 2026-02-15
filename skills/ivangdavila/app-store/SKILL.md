@@ -1,148 +1,144 @@
 ---
 name: App Store
-description: Publish and manage iOS and Android apps with account setup, submission workflows, review compliance, and rejection handling.
+description: 发布和管理 iOS 与 Android 应用程序，包括账户设置、提交流程、审核合规性以及处理应用被拒绝的情况。
 ---
 
-## Scope
+## 使用范围
 
-App Store Connect (iOS) and Google Play Console (Android). Covers the full publishing lifecycle from account creation to updates. For keyword optimization, see `app-store-optimization` skill.
-
----
-
-## Account Setup
-
-| Platform | Cost | Time | Key Steps |
-|----------|------|------|-----------|
-| Apple Developer Program | $99/year | 1-7 days | Enroll → D-U-N-S (orgs) → Payment → Agreements |
-| Google Play Console | $25 once | Minutes-48h | Register → Identity verification → Payment profile |
-
-**Apple gotchas:**
-- D-U-N-S number required for organizations (free, takes 1-2 weeks)
-- Legal entity name must match D-U-N-S exactly
-- Agreements (Paid Apps, Apple Pay) must be accepted before features work
-
-**Google gotchas:**
-- Identity verification can take 48h+ for new accounts
-- Closed testing track required before production (20+ testers, 14+ days for new apps since 2023)
+本文档涵盖了App Store Connect（针对iOS平台）和Google Play Console（针对Android平台）的完整发布流程，包括从账户创建到应用更新的整个过程。关于关键词优化的相关内容，请参阅`app-store-optimization`技能文档。
 
 ---
 
-## iOS Signing (The Hard Part)
+## 账户设置
 
-| Asset | What It Is | Where Created | Expires |
-|-------|------------|---------------|---------|
-| Distribution Certificate | Your signing identity | Keychain → App Store Connect | 1 year |
-| Provisioning Profile | Links cert + app ID + devices | App Store Connect | 1 year |
-| App ID | Unique identifier (bundle ID) | App Store Connect | Never |
+| 平台 | 费用 | 所需时间 | 关键步骤 |
+|---------|--------|---------|-----------|
+| Apple开发者计划 | 每年99美元 | 1-7天 | 注册 → 获取D-U-N-S号码（适用于组织）→ 支付费用 → 签署协议 |
+| Google Play Console | 一次性费用25美元 | 几分钟至48小时 | 注册 → 身份验证 → 设置支付信息 |
 
-**When Xcode says "No signing identity":**
-1. Check certificate exists in Keychain Access (login keychain)
-2. Check provisioning profile includes that certificate
-3. Check bundle ID in Xcode matches App ID exactly
-4. Revoke and recreate if nothing else works
+**Apple开发者计划需要注意的事项：**
+- 组织必须获取D-U-N-S号码（免费，办理时间约为1-2周）；
+- 法定实体名称必须与D-U-N-S号码完全一致；
+- 在启用某些功能之前，必须接受相关协议（尤其是针对付费应用和Apple Pay功能的协议）。
 
-**Automatic vs Manual Signing:**
-- Automatic: Xcode manages everything (fine for solo devs)
-- Manual: Required for CI/CD, teams, or multiple apps
-- Never mix — pick one approach per project
+**Google Play Console需要注意的事项：**
+- 新账户的身份验证可能需要48小时以上；
+- 在正式发布前，需要开启封闭测试模式（新应用至少需要20名测试人员，测试周期为14天）。
 
 ---
 
-## Submission Checklist
+## iOS应用的签名流程（难点部分）
 
-Pre-submit verification (both platforms):
+| 所需文件 | 作用 | 创建位置 | 有效期 |
+|---------|--------|-------------|---------|
+| 分发证书（Distribution Certificate） | 用于应用签名 | Keychain → App Store Connect | 有效期为1年 |
+| 配置文件（Provisioning Profile） | 将证书、应用ID与设备关联起来 | App Store Connect | 有效期为1年 |
+| 应用ID（App ID） | 应用的唯一标识符 | App Store Connect | 无限期有效 |
 
-- [ ] Privacy policy URL live and accessible
-- [ ] All required permissions have usage descriptions
-- [ ] App works without network (or handles offline gracefully)
-- [ ] No placeholder content, "lorem ipsum", or test data
-- [ ] Screenshots match actual app UI (no misleading marketing)
-- [ ] Contact support email valid and monitored
+**当Xcode提示“没有签名身份”时，请检查：**
+1. 确保证书存在于Keychain Access中；
+2. 确保配置文件中包含了正确的证书；
+3. 确认Xcode中的应用ID与App Store Connect中的应用ID完全一致；
+4. 如果其他方法均无效，请撤销证书并重新生成。
 
-**iOS-specific:**
-- [ ] Export Compliance (ITSAppUsesNonExemptEncryption in Info.plist)
-- [ ] App Tracking Transparency if using IDFA
-- [ ] Privacy manifest (PrivacyInfo.xcprivacy) for required APIs
-
-**Android-specific:**
-- [ ] Target SDK meets current requirement (currently API 34)
-- [ ] Data safety form completed
-- [ ] Content rating questionnaire filled
-- [ ] 20+ testers on closed track for 14+ days (new apps)
+**自动签名与手动签名：**
+- **自动签名**：Xcode会自动处理所有签名相关操作（适合个人开发者）；
+- **手动签名**：适用于持续集成/持续部署（CI/CD）环境、团队协作或管理多个应用的情况；
+- **注意**：每个项目只能选择一种签名方式，切勿混用。
 
 ---
 
-## Common Rejections
+## 提交应用前的检查清单（两个平台均需执行）：
 
-| Code | Meaning | Fix |
-|------|---------|-----|
-| **4.2** (iOS) | Minimum functionality | Add features, or argue value proposition in appeal |
-| **4.3** (iOS) | Spam/duplicate | Differentiate significantly from your other apps |
-| **5.1.1** (iOS) | Data collection | Implement App Tracking Transparency, update privacy manifest |
-| **2.1** (iOS) | Crashes/bugs | Test on real devices, check Crashlytics |
-| Deceptive behavior (Android) | Misleading metadata | Match screenshots to real functionality |
-| Broken functionality (Android) | App doesn't work as described | Full QA on production build |
+- [ ] 隐私政策链接已更新且可访问；
+- [ ] 所有需要的权限均已明确说明其用途；
+- [ ] 应用能够在无网络环境下正常运行（或能够优雅地处理离线情况）；
+- [ ] 应用中不含占位内容（如“lorem ipsum”或测试数据）；
+- [ ] 屏幕截图与实际应用界面一致（避免误导用户）；
+- [ ] 联系支持人员的电子邮件地址有效且能被及时回复。
 
-**Appeal strategy:**
-1. Read rejection reason carefully (don't assume)
-2. If misunderstanding: Explain with screenshots, video if needed
-3. If valid: Fix issue, note what changed in resolution notes
-4. Never resubmit identical binary hoping for different reviewer
+**iOS平台特有的注意事项：**
+- [ ] 在`Info.plist`中设置`ITSAppUsesNonExemptEncryption`以符合苹果的合规要求；
+- **如果使用IDFA**，需设置应用跟踪透明度；
+- 为所需API提供`PrivacyInfo.xcprivacy`文件以展示隐私政策。
 
----
-
-## Review Timeline
-
-| Platform | Typical | Expedited | Slower Periods |
-|----------|---------|-----------|----------------|
-| Apple | 24-48h | Request via App Review form | New iOS launches, holidays |
-| Google | 2-6h | N/A | Initial submissions, policy violations |
-
-**Apple expedited review:** Only for critical bugs, time-sensitive events. Overuse = ignored.
+**Android平台特有的注意事项：**
+- [ ] 确保目标SDK版本符合当前要求（目前为API 34）；
+- 填写数据安全相关表格；
+- 完成内容评级问卷；
+- 新应用需要在封闭测试模式下由至少20名测试人员测试14天以上。
 
 ---
 
-## Monetization Setup
+## 常见审核拒绝原因及解决方法
 
-**In-app purchases (IAP):**
-1. Create products in App Store Connect / Play Console
-2. Implement StoreKit (iOS) / BillingClient (Android)
-3. Set up server-side receipt validation (don't trust client)
-4. Handle sandbox vs production environments
+| 拒绝代码 | 拒绝原因 | 解决方法 |
+|---------|----------------|-------------------|
+| **4.2**（iOS） | 应用功能不足 | 添加所需功能，并在申诉中说明应用的价值主张； |
+| **4.3**（iOS） | 应用内容重复或属于垃圾信息 | 强调应用与其他应用的差异化； |
+| **5.1.1**（iOS） | 应用存在数据收集问题 | 实施应用跟踪透明度机制，并更新隐私政策文件； |
+| **2.1**（iOS） | 应用存在崩溃或漏洞 | 在真实设备上进行测试，并查看Crashlytics报告； |
+- **Android平台**：应用存在误导用户的元数据问题 | 确保截图展示的实际功能与应用实际功能一致； |
+- **Android平台**：应用无法按描述正常运行 | 对正式发布版本进行全面的测试。
 
-**Subscriptions:**
-- Configure introductory offers, free trials, grace periods
-- Implement subscription lifecycle: renewal, cancellation, billing retry
-- Server notifications endpoint for real-time status updates
-- Test with sandbox accounts (both platforms have quirks)
-
-**Revenue splits:** Apple/Google take 15-30% (15% for Small Business Program or after year 1 of subscription).
-
----
-
-## Multi-App Management
-
-**Organization structure:**
-- Apple: One enrollment, multiple apps, team roles per app
-- Google: One developer account, multiple apps, user permissions
-
-**Team roles (critical):**
-- Separate "submit builds" from "release to production"
-- Marketing should access metadata only
-- Finance sees revenue, not code
-
-**Cross-platform releases:**
-- Submit iOS first (longer review)
-- Hold Android release until iOS approved
-- Use phased rollout to catch issues early
+**申诉策略：**
+1. 仔细阅读拒绝原因（不要主观猜测）；
+2. 如存在误解，通过截图或视频进行解释；
+3. 如果问题确实存在，修复问题并在申诉说明中记录修改内容；
+**注意**：切勿提交相同的二进制文件，以免被不同的审核人员重复审查。
 
 ---
 
-## When to Load More
+## 审核周期
 
-| Situation | Reference |
-|-----------|-----------|
-| Keyword optimization, A/B testing | `app-store-optimization` skill |
-| Generating release notes from git | `app-store-changelog` skill |
-| TestFlight/internal testing setup | `testing.md` |
-| CI/CD automation (fastlane, APIs) | `automation.md` |
+| 平台 | 通常审核时间 | 加急审核时间 | 特殊情况（审核周期延长） |
+|---------|-----------------|-------------------------|-------------------|
+| Apple | 24-48小时 | 通过App Review表格提交申请 | 新iOS版本发布期间或节假日期间 |
+| Google | 2-6小时 | 无特殊规定 | 首次提交或违反政策的情况 |
+
+**Apple平台的加急审核**：仅针对严重漏洞或时间敏感的情况。频繁提交加急请求可能会被忽略。
+
+---
+
+## 收益化设置
+
+**应用内购买（IAP）：**
+1. 在App Store Connect或Google Play Console中创建商品；
+2. 在iOS应用中实现StoreKit，在Android应用中实现BillingClient；
+3. 设置服务器端的收据验证机制（不要依赖客户端验证）；
+4. 处理沙盒环境与正式发布环境之间的差异。
+
+**订阅服务：**
+- 配置试用期优惠、免费试用期及退款政策；
+- 管理订阅的生命周期（包括续订、取消、账单重试等）；
+- 设置服务器通知端点以实时获取状态更新；
+- 使用沙盒账户进行测试（两个平台可能存在差异）。
+
+**收入分成**：Apple和Google分别收取15%-30%的佣金（小型企业计划或订阅满一年后佣金比例可能有所不同）。
+
+---
+
+## 多应用管理
+
+**组织结构：**
+- **Apple平台**：一个开发者账户可管理多个应用，每个应用可分配不同的团队角色；
+- **Google平台**：一个开发者账户可管理多个应用，用户权限需根据应用进行分配。
+
+**团队角色（关键职责）：**
+- 负责“提交应用构建文件”与“将应用发布到正式环境”之间的流程分离；
+- 营销团队仅应有权访问应用的元数据；
+- 财务团队负责查看收入数据，但不应直接修改代码。
+
+**跨平台发布策略：**
+- 先提交iOS版本（审核周期较长）；
+- 在iOS版本获得批准后再发布Android版本；
+- 采用分阶段发布策略以尽早发现潜在问题。
+
+---
+
+## 需要进一步了解的内容
+
+- 关键词优化方法：请参阅`app-store-optimization`技能文档；
+- 从Git生成发布日志的技巧：请参阅`app-store-changelog`技能文档；
+- TestFlight或内部测试的设置方法：请参阅`testing.md`文档；
+- 持续集成/持续部署（CI/CD）自动化流程：请参阅`automation.md`文档。

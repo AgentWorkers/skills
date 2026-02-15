@@ -1,13 +1,13 @@
-# Observability Skill
+# 可观测性技能
 
-Tools for monitoring OpenClaw health, costs, and logs.
+用于监控 OpenClaw 的运行状态、成本及日志的工具。
 
-## Tools
+## 工具
 
 ### get_cost_report
-Get a report of estimated API costs for sessions active in the last 24 hours.
-- Returns: Markdown table of costs per model.
+获取过去 24 小时内活跃会话的 API 成本估算报告。
+- 返回值：包含每种模型成本的 Markdown 表格。
 
 ### get_recent_errors
-Get a list of recent sessions that failed or were aborted (checks last 50 sessions).
-- Returns: List of problematic sessions with IDs and status.
+获取最近失败或中断的会话列表（检查最近 50 个会话）。
+- 返回值：包含会话 ID 和状态的错误会话列表。

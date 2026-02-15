@@ -1,39 +1,39 @@
 ---
 name: azure-infra
-description: Chat-based Azure infrastructure assistance using Azure CLI and portal context. Use for querying, auditing, and monitoring Azure resources (VMs, Storage, IAM, Functions, AKS, App Service, Key Vault, Azure Monitor, billing, etc.), and for proposing safe changes with explicit confirmation before any write/destructive action.
+description: 基于聊天的Azure基础设施辅助服务，利用Azure CLI和门户功能。该服务可用于查询、审计和监控Azure资源（如虚拟机、存储服务、身份与访问管理（IAM）、函数、Kubernetes服务（AKS）、应用服务（App Service）、密钥库（Key Vault）、Azure Monitor、账单信息等），并在执行任何写入或破坏性操作之前，通过明确确认来提出安全变更建议。
 ---
 
-# Azure Infra
+# Azure 基础设施
 
-## Overview
-Use the local Azure CLI to answer questions about Azure resources. Default to read‑only queries. Only propose or run write/destructive actions after explicit user confirmation.
+## 概述
+使用本地的 Azure CLI 来查询有关 Azure 资源的信息。默认操作为只读查询。只有在用户明确确认后，才会执行写入或破坏性操作。
 
-## Quick Start
-1. Ensure login: `az account show` (if not logged in, run `az login --use-device-code`).
-2. If multiple subscriptions exist, ask the user to pick one; otherwise use the default subscription.
-3. Use read‑only commands to answer the question.
-4. If the user asks for changes, outline the exact command and ask for confirmation before running.
+## 快速入门
+1. 确保已登录：`az account show`（如果未登录，请运行 `az login --use-device-code`）。
+2. 如果存在多个订阅，请让用户选择一个；否则使用默认订阅。
+3. 使用只读命令来回答问题。
+4. 如果用户要求进行更改，请在执行前详细说明所需的命令并获取用户的确认。
 
-## Safety Rules (must follow)
-- Treat all actions as **read‑only** unless the user explicitly requests a change **and** confirms it.
-- For any potentially destructive change (delete/terminate/destroy/modify/scale/billing/IAM credentials), require a confirmation step.
-- Prefer `--dry-run` when available and show the plan before execution.
-- Never reveal or log secrets (keys, client secrets, tokens).
+## 安全规则（必须遵守）
+- 除非用户明确请求更改并确认，否则所有操作都应视为**只读**操作。
+- 对于任何可能具有破坏性的操作（删除、终止、修改、扩展、计费或管理 Azure 身份凭证），都必须要求用户确认。
+- 在可能的情况下，优先使用 `--dry-run` 选项，并在执行前展示操作计划。
+- 绝不要泄露或记录任何敏感信息（如密钥、客户端密钥、令牌）。
 
-## Task Guide (common requests)
-- **Inventory / list**: use `list`/`show`/`get` commands.
-- **Health / errors**: use Azure Monitor metrics/logs queries.
-- **Security checks**: RBAC roles, public storage, NSG exposure, Key Vault access.
-- **Costs**: Cost Management (read‑only).
-- **Changes**: show exact CLI command and require confirmation.
+## 任务指南（常见请求）
+- **资源清单**：使用 `list`/`show`/`get` 命令。
+- **资源状态/错误信息**：使用 Azure Monitor 的指标和日志查询功能。
+- **安全检查**：检查角色分配（RBAC）、公共存储设置、网络安全组（NSG）配置以及 Key Vault 的访问权限。
+- **成本管理**：仅提供只读的计费信息。
+- **资源更改**：在执行任何更改前，需显示具体的 CLI 命令并获取用户的确认。
 
-## Subscription & Tenant Handling
-- If the user specifies a subscription/tenant, honor it.
-- Otherwise use the default subscription from `az account show`.
-- When results are subscription‑scoped, state the subscription used.
+## 订阅与租户管理
+- 如果用户指定了特定的订阅或租户，请按照其要求进行操作。
+- 如果用户未指定，使用 `az account show` 命令显示的默认订阅。
+- 当查询结果与特定订阅相关时，需明确说明所使用的订阅。
 
-## References
-See `references/azure-cli-queries.md` for common command patterns.
+## 参考资料
+有关常见的 CLI 命令模式，请参阅 `references/azure-cli-queries.md`。
 
-## Assets
-- `assets/icon.svg` — custom icon (dark cloud + terminal prompt, Azure‑blue accent)
+## 图标
+- `assets'icon.svg` — 自定义图标（深蓝色云朵图案加上终端提示符，采用 Azure 的配色方案）

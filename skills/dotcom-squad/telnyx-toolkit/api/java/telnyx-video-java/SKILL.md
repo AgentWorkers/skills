@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Video - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,9 +29,9 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## View a list of room compositions.
+## 查看房间组成列表。
 
 `GET /room_compositions`
 
@@ -42,9 +42,9 @@ import com.telnyx.sdk.models.roomcompositions.RoomCompositionListParams;
 RoomCompositionListPage page = client.roomCompositions().list();
 ```
 
-## Create a room composition.
+## 创建房间组成。
 
-Asynchronously create a room composition.
+异步创建房间组成。
 
 `POST /room_compositions`
 
@@ -55,7 +55,7 @@ import com.telnyx.sdk.models.roomcompositions.RoomCompositionCreateResponse;
 RoomCompositionCreateResponse roomComposition = client.roomCompositions().create();
 ```
 
-## View a room composition.
+## 查看房间组成。
 
 `GET /room_compositions/{room_composition_id}`
 
@@ -66,9 +66,9 @@ import com.telnyx.sdk.models.roomcompositions.RoomCompositionRetrieveResponse;
 RoomCompositionRetrieveResponse roomComposition = client.roomCompositions().retrieve("5219b3af-87c6-4c08-9b58-5a533d893e21");
 ```
 
-## Delete a room composition.
+## 删除房间组成。
 
-Synchronously delete a room composition.
+同步删除房间组成。
 
 `DELETE /room_compositions/{room_composition_id}`
 
@@ -78,7 +78,7 @@ import com.telnyx.sdk.models.roomcompositions.RoomCompositionDeleteParams;
 client.roomCompositions().delete("5219b3af-87c6-4c08-9b58-5a533d893e21");
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表。
 
 `GET /room_participants`
 
@@ -89,7 +89,7 @@ import com.telnyx.sdk.models.roomparticipants.RoomParticipantListParams;
 RoomParticipantListPage page = client.roomParticipants().list();
 ```
 
-## View a room participant.
+## 查看房间参与者。
 
 `GET /room_participants/{room_participant_id}`
 
@@ -100,7 +100,7 @@ import com.telnyx.sdk.models.roomparticipants.RoomParticipantRetrieveResponse;
 RoomParticipantRetrieveResponse roomParticipant = client.roomParticipants().retrieve("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## View a list of room recordings.
+## 查看房间录制列表。
 
 `GET /room_recordings`
 
@@ -111,7 +111,7 @@ import com.telnyx.sdk.models.roomrecordings.RoomRecordingListParams;
 RoomRecordingListPage page = client.roomRecordings().list();
 ```
 
-## Delete several room recordings in a bulk.
+## 批量删除多个房间录制。
 
 `DELETE /room_recordings`
 
@@ -122,7 +122,7 @@ import com.telnyx.sdk.models.roomrecordings.RoomRecordingDeleteBulkResponse;
 RoomRecordingDeleteBulkResponse response = client.roomRecordings().deleteBulk();
 ```
 
-## View a room recording.
+## 查看房间录制。
 
 `GET /room_recordings/{room_recording_id}`
 
@@ -133,9 +133,9 @@ import com.telnyx.sdk.models.roomrecordings.RoomRecordingRetrieveResponse;
 RoomRecordingRetrieveResponse roomRecording = client.roomRecordings().retrieve("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## Delete a room recording.
+## 删除房间录制。
 
-Synchronously delete a Room Recording.
+同步删除房间录制。
 
 `DELETE /room_recordings/{room_recording_id}`
 
@@ -145,7 +145,7 @@ import com.telnyx.sdk.models.roomrecordings.RoomRecordingDeleteParams;
 client.roomRecordings().delete("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表。
 
 `GET /room_sessions`
 
@@ -156,7 +156,7 @@ import com.telnyx.sdk.models.rooms.sessions.SessionList0Params;
 SessionList0Page page = client.rooms().sessions().list0();
 ```
 
-## View a room session.
+## 查看房间会话。
 
 `GET /room_sessions/{room_session_id}`
 
@@ -167,9 +167,9 @@ import com.telnyx.sdk.models.rooms.sessions.SessionRetrieveResponse;
 SessionRetrieveResponse session = client.rooms().sessions().retrieve("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## End a room session.
+## 结束房间会话。
 
-Note: this will also kick all participants currently present in the room
+注意：这也会将当前在房间中的所有参与者踢出。
 
 `POST /room_sessions/{room_session_id}/actions/end`
 
@@ -180,7 +180,7 @@ import com.telnyx.sdk.models.rooms.sessions.actions.ActionEndResponse;
 ActionEndResponse response = client.rooms().sessions().actions().end("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## Kick participants from a room session.
+## 将参与者从房间会话中踢出。
 
 `POST /room_sessions/{room_session_id}/actions/kick`
 
@@ -196,7 +196,7 @@ ActionKickParams params = ActionKickParams.builder()
 ActionKickResponse response = client.rooms().sessions().actions().kick(params);
 ```
 
-## Mute participants in room session.
+## 静音房间会话中的参与者。
 
 `POST /room_sessions/{room_session_id}/actions/mute`
 
@@ -212,7 +212,7 @@ ActionMuteParams params = ActionMuteParams.builder()
 ActionMuteResponse response = client.rooms().sessions().actions().mute(params);
 ```
 
-## Unmute participants in room session.
+## 恢复房间会话中参与者的音量。
 
 `POST /room_sessions/{room_session_id}/actions/unmute`
 
@@ -228,7 +228,7 @@ ActionUnmuteParams params = ActionUnmuteParams.builder()
 ActionUnmuteResponse response = client.rooms().sessions().actions().unmute(params);
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表。
 
 `GET /room_sessions/{room_session_id}/participants`
 
@@ -239,7 +239,7 @@ import com.telnyx.sdk.models.rooms.sessions.SessionRetrieveParticipantsParams;
 SessionRetrieveParticipantsPage page = client.rooms().sessions().retrieveParticipants("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## View a list of rooms.
+## 查看房间列表。
 
 `GET /rooms`
 
@@ -250,9 +250,9 @@ import com.telnyx.sdk.models.rooms.RoomListParams;
 RoomListPage page = client.rooms().list();
 ```
 
-## Create a room.
+## 创建房间。
 
-Synchronously create a Room.
+同步创建房间。
 
 `POST /rooms`
 
@@ -263,7 +263,7 @@ import com.telnyx.sdk.models.rooms.RoomCreateResponse;
 RoomCreateResponse room = client.rooms().create();
 ```
 
-## View a room.
+## 查看房间信息。
 
 `GET /rooms/{room_id}`
 
@@ -274,9 +274,9 @@ import com.telnyx.sdk.models.rooms.RoomRetrieveResponse;
 RoomRetrieveResponse room = client.rooms().retrieve("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## Update a room.
+## 更新房间信息。
 
-Synchronously update a Room.
+同步更新房间信息。
 
 `PATCH /rooms/{room_id}`
 
@@ -287,9 +287,9 @@ import com.telnyx.sdk.models.rooms.RoomUpdateResponse;
 RoomUpdateResponse room = client.rooms().update("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## Delete a room.
+## 删除房间。
 
-Synchronously delete a Room.
+同步删除房间。
 
 `DELETE /rooms/{room_id}`
 
@@ -299,9 +299,9 @@ import com.telnyx.sdk.models.rooms.RoomDeleteParams;
 client.rooms().delete("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## Create Client Token to join a room.
+## 创建客户端令牌以加入房间。
 
-Synchronously create an Client Token to join a Room.
+同步创建客户端令牌以加入房间。
 
 `POST /rooms/{room_id}/actions/generate_join_client_token`
 
@@ -312,11 +312,11 @@ import com.telnyx.sdk.models.rooms.actions.ActionGenerateJoinClientTokenResponse
 ActionGenerateJoinClientTokenResponse response = client.rooms().actions().generateJoinClientToken("0ccc7b54-4df3-4bca-a65a-3da1ecc777f0");
 ```
 
-## Refresh Client Token to join a room.
+## 刷新客户端令牌以加入房间。
 
-Synchronously refresh an Client Token to join a Room.
+同步刷新客户端令牌以加入房间。
 
-`POST /rooms/{room_id}/actions/refresh_client_token` — Required: `refresh_token`
+`POST /rooms/{room_id}/actions/refresh_client_token` — 需要参数：`refresh_token`
 
 ```java
 import com.telnyx.sdk.models.rooms.actions.ActionRefreshClientTokenParams;
@@ -329,7 +329,7 @@ ActionRefreshClientTokenParams params = ActionRefreshClientTokenParams.builder()
 ActionRefreshClientTokenResponse response = client.rooms().actions().refreshClientToken(params);
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表。
 
 `GET /rooms/{room_id}/sessions`
 

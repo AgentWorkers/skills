@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Automation Workflows
+# 人工智能自动化工作流
 
-Build automated AI workflows via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具（CLI）构建自动化的人工智能工作流。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,11 +26,11 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-## Automation Patterns
+## 自动化模式
 
-### Pattern 1: Batch Processing
+### 模式 1：批量处理
 
-Process multiple items with the same workflow.
+使用相同的工作流处理多个项目。
 
 ```bash
 #!/bin/bash
@@ -52,9 +52,9 @@ for prompt in "${PROMPTS[@]}"; do
 done
 ```
 
-### Pattern 2: Sequential Pipeline
+### 模式 2：顺序流程
 
-Chain multiple AI operations.
+将多个人工智能操作串联起来。
 
 ```bash
 #!/bin/bash
@@ -89,9 +89,9 @@ SOCIAL=$(infsh app run openrouter/claude-haiku-45 --input "{
 echo "Pipeline complete!"
 ```
 
-### Pattern 3: Parallel Processing
+### 模式 3：并行处理
 
-Run multiple operations simultaneously.
+同时运行多个操作。
 
 ```bash
 #!/bin/bash
@@ -112,9 +112,9 @@ wait $PID1 $PID2 $PID3
 echo "All images generated!"
 ```
 
-### Pattern 4: Conditional Workflow
+### 模式 4：条件分支工作流
 
-Branch based on results.
+根据结果进行分支处理。
 
 ```bash
 #!/bin/bash
@@ -145,9 +145,9 @@ case "$ANALYSIS" in
 esac
 ```
 
-### Pattern 5: Retry with Fallback
+### 模式 5：带回退机制的重试
 
-Handle failures gracefully.
+优雅地处理失败情况。
 
 ```bash
 #!/bin/bash
@@ -181,9 +181,9 @@ generate_with_retry() {
 generate_with_retry "A beautiful sunset over mountains"
 ```
 
-## Scheduled Automation
+## 计划自动化
 
-### Cron Job Setup
+### Cron 作业设置
 
 ```bash
 # Edit crontab
@@ -199,7 +199,7 @@ crontab -e
 0 */6 * * * /path/to/social_content.sh >> /var/log/ai-automation.log 2>&1
 ```
 
-### Daily Content Script
+### 每日内容脚本
 
 ```bash
 #!/bin/bash
@@ -225,9 +225,9 @@ infsh app run openrouter/claude-haiku-45 --input '{
 echo "Daily content generated: $DATE"
 ```
 
-## Monitoring and Logging
+## 监控与日志记录
 
-### Logging Wrapper
+### 日志记录框架
 
 ```bash
 #!/bin/bash
@@ -260,7 +260,7 @@ DURATION=$((END_TIME - START_TIME))
 log "Completed in ${DURATION}s"
 ```
 
-### Error Alerting
+### 错误警报
 
 ```bash
 #!/bin/bash
@@ -285,7 +285,7 @@ run_with_alert() {
 run_with_alert infsh app run falai/flux-dev --input '{"prompt": "test"}'
 ```
 
-## Python SDK Automation
+## Python SDK 自动化
 
 ```python
 #!/usr/bin/env python3
@@ -329,9 +329,9 @@ if __name__ == "__main__":
     daily_content_pipeline()
 ```
 
-## Workflow Templates
+## 工作流模板
 
-### Content Calendar Automation
+### 内容日历自动化
 
 ```bash
 #!/bin/bash
@@ -358,7 +358,7 @@ for i in "${!DAYS[@]}"; do
 done
 ```
 
-### Data Processing Pipeline
+### 数据处理流程
 
 ```bash
 #!/bin/bash
@@ -378,17 +378,17 @@ for file in "$INPUT_DIR"/*.txt; do
 done
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Rate limiting** - Add delays between API calls
-2. **Error handling** - Always check return codes
-3. **Logging** - Track all operations
-4. **Idempotency** - Design for safe re-runs
-5. **Monitoring** - Alert on failures
-6. **Backups** - Save intermediate results
-7. **Timeouts** - Set reasonable limits
+1. **速率限制** - 在 API 调用之间添加延迟
+2. **错误处理** - 始终检查返回代码
+3. **日志记录** - 记录所有操作
+4. **幂等性** - 设计可安全重运行的功能
+5. **监控** - 在发生故障时发出警报
+6. **备份** - 保存中间结果
+7. **超时** - 设置合理的超时限制
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Content pipelines
@@ -404,4 +404,4 @@ npx skills add inference-sh/agent-skills@ai-social-media-content
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

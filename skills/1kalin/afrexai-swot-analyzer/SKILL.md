@@ -1,54 +1,54 @@
-# SWOT Analyzer
+# SWOT 分析工具
 
-Run a structured SWOT analysis for any business, product, or strategic decision.
+该工具可用于对任何企业、产品或战略决策进行结构化的 SWOT 分析。
 
-## Trigger
-User asks for a SWOT analysis, competitive assessment, or strategic evaluation.
+## 使用场景
+当用户需要 SWOT 分析、竞争对手评估或战略评估时，可使用该工具。
 
-## Instructions
+## 使用说明
 
-1. **Gather context** — Ask for (or infer from conversation):
-   - Business/product name
-   - Industry or market
-   - Specific decision or initiative (optional)
-   - Key competitors (optional)
+1. **收集相关信息** — 询问用户（或从对话中推断）以下内容：
+   - 企业/产品的名称
+   - 所属行业或市场
+   - 需要分析的具体决策或举措（可选）
+   - 主要竞争对手（可选）
 
-2. **Research** — If web_search is available, look up:
-   - Recent industry trends and market conditions
-   - Competitor moves and positioning
-   - Regulatory or macro factors
+2. **进行研究** — 如果允许进行网络搜索，请查阅以下信息：
+   - 最近的行业趋势和市场状况
+   - 竞争对手的动向和定位
+   - 相关的监管政策或宏观经济因素
 
-3. **Build the SWOT matrix**:
+3. **构建 SWOT 矩阵**：
 
-### Strengths (Internal, Positive)
-- What advantages does this business/product have?
-- What do they do better than competitors?
-- What unique resources or capabilities exist?
+### 优势（内部因素，正面因素）
+- 该企业/产品具有哪些优势？
+- 它们在哪些方面比竞争对手表现得更好？
+- 它们拥有哪些独特的资源或能力？
 
-### Weaknesses (Internal, Negative)
-- Where are the gaps in capability or resources?
-- What do competitors do better?
-- What limitations exist (team, tech, capital)?
+### 劣势（内部因素，负面因素）
+- 在能力或资源方面存在哪些不足？
+- 竞争对手在哪些方面表现更出色？
+- 存在哪些限制（如团队、技术、资金等方面的问题）？
 
-### Opportunities (External, Positive)
-- What market trends favor this business?
-- What underserved segments or needs exist?
-- What partnerships or channels are untapped?
+### 机会（外部因素，正面因素）
+- 哪些市场趋势对该企业有利？
+- 是否存在未被满足的市场需求或空白领域？
+- 哪些合作伙伴关系或渠道尚未被利用？
 
-### Threats (External, Negative)
-- What competitive pressures are increasing?
-- What regulatory, economic, or tech shifts pose risk?
-- What could disrupt the current model?
+### 威胁（外部因素，负面因素）
+- 哪些竞争压力正在增加？
+- 哪些监管政策、经济变化或技术发展可能带来风险？
+- 有哪些因素可能扰乱当前的业务模式？
 
-4. **Score each item** — Rate impact (1-5) and likelihood (1-5). Calculate priority = impact × likelihood.
+4. **对每个因素进行评分** — 评估其影响（1-5 分）和发生的可能性（1-5 分），然后计算优先级 = 影响 × 可能性。
 
-5. **Strategic recommendations**:
-   - **SO strategies** (use Strengths to capture Opportunities)
-   - **WO strategies** (address Weaknesses to unlock Opportunities)
-   - **ST strategies** (use Strengths to mitigate Threats)
-   - **WT strategies** (address Weaknesses to reduce Threat exposure)
+5. **制定战略建议**：
+   - **SO 战略**（利用优势抓住机会）
+   - **WO 战略**（通过改进劣势来抓住机会）
+   **ST 战略**（利用优势减轻威胁）
+   **WT 战略**（通过改进劣势来降低威胁）
 
-6. **Output format**:
+6. **输出格式**：
 
 ```
 ## SWOT Analysis: [Business/Product]
@@ -77,8 +77,8 @@ User asks for a SWOT analysis, competitive assessment, or strategic evaluation.
 One paragraph: what's the single most important strategic move right now and why.
 ```
 
-## Tips
-- Be specific, not generic. "Strong brand" is weak. "73% unaided brand recall in target demo" is strong.
-- Challenge assumptions. If the user says "no weaknesses," push back.
-- Prioritize ruthlessly. 3 high-priority items beat 15 medium ones.
-- Time-bound where possible. "Opportunity window closes Q3 2026" is actionable.
+## 使用提示：
+- 表述要具体，避免使用笼统的描述。例如，“品牌知名度高”这样的表述不够具体；而“在目标受众中，品牌知名度达到 73%”则更具参考价值。
+- 对假设提出质疑。如果用户声称“没有劣势”，请提出质疑。
+- 严格区分优先级。3 个高优先级的策略比 15 个中等优先级的策略更重要。
+- 尽可能设定时间限制。例如，“机会窗口将在 2026 年第三季度关闭”这样的信息更具可操作性。

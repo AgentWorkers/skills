@@ -1,988 +1,573 @@
 ---
 name: ai-meeting-notes
 version: 1.0.3
-description: "Messy notes → Clear action items. Instantly. Paste any meeting notes, transcript, or text. Get summaries, action items with owners and deadlines. Auto-saved, searchable, with integrated to-do tracking. No bot. No subscription. No setup."
+description: "杂乱无章的笔记 → 清晰明了的行动项。只需瞬间粘贴会议记录、文字记录或任何文本，系统便会自动生成摘要及相应的行动项，同时会标明负责人和截止日期。支持自动保存、快速搜索，并内置待办事项跟踪功能。无需使用机器人，无需订阅，也无需任何复杂设置。"
 author: Jeff J Hunter
 homepage: https://jeffjhunter.com
 tags: [meeting-notes, action-items, meeting-assistant, productivity, notes-to-tasks, meeting-summary, transcript, notetaker, follow-up, task-extraction, todo, task-tracker]
 ---
 
-# 📋 AI Meeting Notes
+# 📋 人工智能会议记录工具
 
-**Messy notes → Clear action items. Instantly.**
+**将杂乱无章的会议笔记转化为清晰的任务清单。**  
+只需粘贴会议记录、文字记录或任何文本，即可立即获得包含任务、负责人和截止日期的简洁摘要。
 
-Paste any meeting notes, transcript, or text. Get a clean summary with action items, owners, and deadlines.
-
-No bot. No subscription. No setup.
+无需使用机器人，无需订阅，也无需任何设置。
 
 ---
 
-## ⚠️ CRITICAL: RESPONSE FORMAT (READ FIRST)
+## ⚠️ 重要提示：回复格式（请务必先阅读）
 
-**When extracting meeting notes, you MUST respond with ALL of the following in ONE SINGLE MESSAGE:**
+**在提取会议记录时，您必须用一条消息回复以下所有内容：**
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 [MEETING TITLE] — [YYYY-MM-DD]
-Duration: [X min] | Attendees: [Names]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+---
 
-SUMMARY
-[2-3 sentence overview]
+### 强制性规则
 
-⚡ ACTION ITEMS ([X] of [Total])
-1. [ ] @Owner: Task — Deadline
-2. [ ] @Owner: Task — Deadline
-3. [ ] @Owner: Task — Deadline
-4. [ ] @Owner: Task — Deadline
-5. [ ] @Owner: Task — Deadline
-[Show up to 10, note "(+X more in file)" if more exist]
-
-✅ KEY DECISIONS
-• Decision 1
-• Decision 2
-
-📎 Saved: meeting-notes/YYYY-MM-DD_topic-name.md
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Add to your to-do list?
-• "all" — Add all [X] items
-• "1,2,4" — Add specific items
-• "none" — Skip
-```
-
-### MANDATORY RULES
-
-| Rule | Requirement |
+| 规则 | 要求 |
 |------|-------------|
-| **ONE response** | NEVER split into multiple messages. Display + file + to-do prompt in SINGLE response. |
-| **Filename format** | MUST be `YYYY-MM-DD_topic.md` — Date FIRST, always. Example: `2026-02-02_anne-call.md` |
-| **Action items numbered** | ALWAYS show numbered list (1, 2, 3...) in chat for easy selection |
-| **To-do prompt** | ALWAYS include the "Add to your to-do list?" prompt if action items exist |
-| **File attachment** | ALWAYS attach/save the full .md file |
-
-### ❌ NEVER DO THIS
-
-- ❌ Send file first, then "Processing...", then "Done" (THREE messages)
-- ❌ Filename without date: `anne-call-notes.md`
-- ❌ Say "includes action items" without showing them
-- ❌ Skip the to-do list prompt
-- ❌ Ask user to request display separately
-
-### ✅ ALWAYS DO THIS
-
-- ✅ ONE message with everything
-- ✅ Filename: `2026-02-02_anne-call.md` (date first)
-- ✅ Show numbered action items in chat
-- ✅ Include to-do prompt
-- ✅ Attach full file
+| **一条消息** | 绝不要分成多条消息。在一条消息中显示文件内容和待办事项提示。 |
+| **文件命名格式** | 必须为 `YYYY-MM-DD_主题.md` — 日期在前。例如：`2026-02-02_anne-call.md` |
+| **任务编号** | 在聊天中始终使用编号列表（1, 2, 3...）以便于选择 |
+| **待办事项提示** | 如果有任务，请务必包含“添加到您的待办清单？”的提示 |
+| **文件附件** | 必须附加/保存完整的.md文件 |
 
 ---
 
-## Why This Exists
+### 绝对不要这样做：
 
-You have notes. They're messy. You need to figure out who's doing what by when.
+- 绝不要先发送文件，然后发送“正在处理...”，再发送“已完成”（三条消息）
+- 文件名中不能缺少日期：`anne-call-notes.md`
+- 不能只说“包含任务事项”而不展示它们
+- 忽略待办事项提示
+- 不要要求用户单独请求显示内容
 
-You could:
-- Spend 20 minutes organizing manually
-- Pay $240/year for Otter or Fireflies
-- Just... not follow up (again)
+### 必须这样做：
 
-Or paste your notes and get clean action items in 10 seconds.
+- 使用一条消息回复所有内容
+- 文件名格式：`2026-02-02_anne-call.md`（日期在前）
+- 在聊天中显示编号任务
+- 包含待办事项提示
+- 附加完整文件
 
 ---
 
-## What It Does
+## 为什么需要这个工具？
 
-| Input | Output |
+您可能有会议记录，但它们可能杂乱无章。您需要明确每个人的任务和截止日期。
+
+您可以：
+- 花20分钟手动整理
+- 每年支付240美元使用Otter或Fireflies
+- 或者...不再跟进这些任务
+
+或者，只需粘贴您的笔记，10秒内就能得到清晰的待办事项清单。
+
+---
+
+## 工具功能
+
+| 输入 | 输出 |
 |-------|--------|
-| Messy meeting notes | ✅ Clean summary |
-| Otter/Fireflies transcript | ✅ Action items with owners |
-| Voice memo transcription | ✅ Deadlines extracted |
-| Email thread | ✅ Decisions captured |
-| Slack conversation | ✅ Follow-ups identified |
-| Any unstructured text | ✅ Saved & searchable |
+| 杂乱的会议记录 | ✅ 简洁的摘要 |
+| Otter/Fireflies的文字记录 | ✅ 带有负责人的任务清单 |
+| 语音备忘录的文字记录 | ✅ 提取的截止日期 |
+- 邮件对话记录 | ✅ 捕获的决策内容 |
+- Slack对话记录 | ✅ 确定的后续行动 |
+| 任何非结构化的文本 | ✅ 保存并可搜索 |
 
 ---
 
-## File Storage System
+## 文件存储系统
 
-Every extraction is automatically saved for future reference.
+每次提取的记录都会自动保存，以供将来参考。
 
-### Folder Structure
-```
-meeting-notes/
-├── 2025-01-27_product-sync.md
-├── 2025-01-28_client-call-acme.md
-├── 2025-01-29_weekly-standup.md
-└── ...
-```
-
-### Naming Convention
-```
-YYYY-MM-DD_meeting-topic.md
-```
-
-- Date first (sorts chronologically)
-- Lowercase, hyphens for spaces
-- Topic extracted from content or asked
-
-### What Gets Saved
-
-Each file includes:
-- **Metadata**: Date, title, attendees, source
-- **Summary**: Quick overview
-- **Action Items**: With owners and deadlines
-- **Decisions**: What was agreed
-- **Open Questions**: Unresolved items
-- **Raw Notes**: Original input preserved
-
-### Reference Previous Meetings
-
-Ask things like:
-- "What did we decide about the budget?"
-- "What action items does Sarah have?"
-- "Show me last week's meetings"
-- "Find meetings about Project X"
-- "What's still open from the client call?"
+### 文件夹结构
 
 ---
 
-## To-Do List Tracker
+### 命名规则
 
-After extracting action items, you'll be asked which ones to track.
+- 日期在前（按时间顺序排序）
+- 使用连字符分隔单词
+- 标题从内容中提取或根据用户要求生成
 
-### Adding Items
+### 保存的内容
 
-```
-ACTION ITEMS EXTRACTED (5 items):
+每个文件包含：
+- **元数据**：日期、标题、参会人员、来源
+- **摘要**：简要概述
+- **任务清单**：包含负责人和截止日期
+- **决策内容**：达成的共识
+- **未解决的问题**：需要跟进的事项
+- **原始笔记**：保留原始输入
 
-1. [ ] @Sarah: Share mockups — Friday
-2. [ ] @Mike: Call Acme Corp — Tomorrow
-3. [ ] @John: Handle social campaigns
-4. [ ] @Lisa: Coordinate with agency — Today
-5. [ ] @Team: Resolve vendor situation
+### 查看之前的会议记录
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+可以询问：
+- “我们关于预算做出了什么决定？”
+- “Sarah有哪些任务？”
+- “显示上周的会议记录”
+- “查找关于项目X的会议记录”
+- “客户会议中还有哪些未完成的事项？”
 
-Add to your to-do list?
-• "all" — Add all 5 items
-• "1,2,4" — Add specific items
-• "none" — Skip
-```
+---
 
-### Managing Your To-Dos
+## 待办事项清单管理
 
-| Command | What It Does |
+提取任务后，系统会询问您要跟踪哪些任务。
+
+### 添加任务
+
+---
+
+### 管理待办事项
+
+| 命令 | 功能 |
 |---------|--------------|
-| "show todos" | Display full to-do list |
-| "todo check" | Daily review of status |
-| "done 3" or "completed 3" | Mark item #3 complete |
-| "remove 5" | Delete item #5 |
-| "add deadline to 3: Friday" | Set/update deadline |
-| "what's overdue?" | Show overdue items |
-| "Sarah's tasks" | Filter by owner |
+| “显示所有待办事项” | 显示完整的待办事项清单 |
+| “检查待办事项” | 每日查看状态 |
+| “完成3项” | 将编号为3的任务标记为已完成 |
+| “删除5项” | 删除编号为5的任务 |
+| “为3项设置截止日期为周五” | 为任务3设置/更新截止日期 |
+| “哪些任务逾期了？” | 显示逾期的任务 |
+| “Sarah的任务” | 按负责人筛选任务 |
 
-### Daily Check
+### 每日检查
 
-Run "todo check" (or include in your daily routine) to see:
-
-```
-📋 TO-DO CHECK — Jan 28, 2025
-
-⚠️ OVERDUE (1 item):
-#3 @Sarah: Send proposal — was due Jan 25 (3 days ago)
-
-📅 DUE TODAY (2 items):
-#5 @Mike: Call Acme Corp
-#7 @Lisa: Follow up with vendor
-
-📋 NO DEADLINE (2 items):
-#4 @John: Handle social campaigns
-#8 @Team: Review server costs
-
-Any updates? ("done 3,5" / "move 3 to Friday" / "remove 4")
-```
-
-### To-Do File Location
-
-```
-todo.md              ← Your active to-do list
-meeting-notes/       ← Saved meeting notes
-```
+运行“检查待办事项”（或将其纳入日常流程）以查看待办事项清单：
 
 ---
 
-## How to Use
-
-**Just paste your notes and ask:**
-
-- "Extract action items from this..."
-- "Summarize this meeting..."
-- "What are the tasks from this..."
-- "Parse these notes..."
-
-That's it. No commands. No setup. Just paste and go.
+## 文件存储位置
 
 ---
 
-## Output Formats
+## 使用方法
 
-Request any format:
+**只需粘贴您的笔记，然后请求：**
 
-| Say | Get |
+- “从这些记录中提取任务”
+- “总结这次会议的内容”
+- “这些记录中的任务有哪些？”
+- “解析这些笔记...”
+
+就这么简单。无需命令，无需设置，只需粘贴即可。
+
+---
+
+## 输出格式
+
+可以请求以下任何格式：
+
+| 请求格式 | 输出格式 |
 |-----|-----|
-| *(default)* | Plain text |
-| "as markdown" | Markdown formatted |
-| "as a table" | Table format |
-| "as JSON" | Structured JSON |
-| "for Slack" | Copy-paste ready |
-| "for email" | Send to attendees |
+| （默认） | 纯文本 |
+| “以Markdown格式” | Markdown格式 |
+| “以表格形式” | 表格格式 |
+| “以JSON格式” | 结构化JSON |
+| “用于Slack” | 可直接复制粘贴 |
+| “用于邮件” | 发送给参会人员 |
 
 ---
 
-## What Gets Extracted
+## 提取的内容
 
-| Section | Description |
+| 部分 | 描述 |
 |---------|-------------|
-| **Summary** | 2-3 sentence overview of the meeting |
-| **Action Items** | Tasks with owners and deadlines |
-| **Decisions** | What was agreed upon |
-| **Open Questions** | Unresolved items needing follow-up |
-| **Next Steps** | What happens after this meeting |
+| **摘要** | 2-3句话的会议概述 |
+| **任务清单** | 带有负责人和截止日期的任务 |
+| **决策内容** | 达成的共识 |
+| **未解决的问题** | 需要跟进的事项 |
+| **下一步行动** | 会议后的安排 |
 
 ---
 
-<ai_instructions>
+<aiinstructions>
 
-## For the AI: How to Extract and Save Meeting Notes
+## 对人工智能的建议：如何提取和保存会议记录
 
-**⚠️ FIRST: Review the CRITICAL RESPONSE FORMAT section above. Your response MUST follow that exact format.**
+**⚠️ 重要提示：请务必遵循上述回复格式。**
 
-When a user pastes meeting notes or asks you to extract action items, follow these instructions.
+当用户粘贴会议记录或请求提取任务时，请按照以下步骤操作。
 
-### Step 0: Pre-Flight Checklist
+### 第0步：准备工作
 
-Before responding, confirm you will:
-- [ ] Respond in ONE single message (not multiple)
-- [ ] Use filename format: `YYYY-MM-DD_topic.md` (date FIRST)
-- [ ] Display numbered action items in chat
-- [ ] Attach the full .md file
-- [ ] Include the to-do list prompt
+在回复之前，请确认：
+- [ ] 用一条消息回复（不要分多条）
+- [ ] 使用文件命名格式：`YYYY-MM-DD_主题.md`（日期在前）
+- [ ] 在聊天中显示编号任务
+- [ ] 附加完整的.md文件
+- [ ] 包含待办事项提示
 
-### Step 1: Setup Check
+### 第1步：检查设置
 
-On first use, ensure the `meeting-notes/` folder exists in the workspace:
-- If it doesn't exist, create it
-- All meeting note files go here
+首次使用时，请确保工作区中存在`meeting-notes/`文件夹：
+- 如果不存在，请创建它
+- 所有的会议记录文件都应保存在这里
 
-### Step 2: Identify the Content Type
+### 第2步：确定输入类型
 
-Determine what kind of input you received:
-- Raw meeting notes (bullets, fragments, messy)
-- Transcript (speaker labels, timestamps)
-- VTT/SRT subtitle files (video captions with timestamps)
-- Otter.ai / Fireflies / Zoom transcript exports
-- Email thread (Re:, Fw:, signatures)
-- Chat export (usernames, timestamps)
-- Mixed/other unstructured text
+判断您收到的输入类型：
+- 原始会议记录（项目符号、片段、杂乱无章的文字）
+- 文本记录（发言者标签、时间戳）
+- VTT/SRT字幕文件（视频字幕）
+- Otter.ai / Fireflies / Zoom的文字记录导出
+- 邮件对话记录（Re:, Fw:, 签名）
+- Chat记录的导出内容（用户名、时间戳）
+- 混合类型或其他非结构化文本
 
-**Supported file formats:**
-- `.md`, `.txt` — Plain text/markdown
-- `.vtt`, `.srt` — Video caption files (common from Zoom, Teams, etc.)
-- Pasted text — Any format
+**支持的文件格式：**
+- `.md`, `.txt` — 纯文本/Markdown
+- `.vtt`, `.srt` — 视频字幕文件（常见于Zoom、Teams等）
+- 粘贴的文本 — 任何格式
 
-Adapt your extraction based on the format, but output should always be consistent.
+根据文件格式调整提取内容，但输出格式必须保持一致。
 
-### Step 3: Extract These Elements
+### 第3步：提取以下信息
 
-**ALWAYS extract:**
+**必须提取的信息：**
 
-1. **Meeting Title/Topic** (for filename)
-   - Extract from content if obvious
-   - If unclear, ask: "What should I call this meeting?"
-   - Use generic if needed: "meeting", "sync", "call"
+1. **会议标题/主题**（用于文件命名）
+   - 如果内容中明确提及，请提取
+   - 如果不明确，请询问：“我应该给这次会议起什么名字？”
+   - 如有必要，可以使用通用名称：“会议”、“同步”、“电话”
 
-2. **Date**
-   - Extract from content if mentioned
-   - If not mentioned, use today's date
-   - Format: YYYY-MM-DD
+2. **日期**
+   - 如果内容中提到了日期，请提取
+   - 如果没有提到，使用当天日期
+   - 格式：YYYY-MM-DD
 
-3. **Summary** (2-3 sentences max)
-   - What was this meeting about?
-   - What was the main outcome?
+3. **摘要**（最多2-3句话）
+   - 会议讨论了什么？
+   - 主要成果是什么？
 
-4. **Action Items** (most important)
-   - Format: `- [ ] @Owner: Task — Deadline`
-   - If no owner mentioned: `- [ ] @Team: Task`
-   - If no deadline mentioned: `- [ ] @Owner: Task — TBD`
-   - Be specific about the task
-   - Extract ALL action items, even implicit ones
+4. **任务清单**（最重要的内容）
+   - 格式：`- [ ] @负责人: 任务 — 截止日期`
+   - 如果没有提到负责人：`- [ ] @团队: 任务`
+   - 如果没有提到截止日期：`- [ ] @负责人: 任务 — 待定`
+   - 任务内容要具体明确
+   - 提取所有任务，包括隐含的任务
 
-**EXTRACT IF PRESENT:**
+**如果存在以下内容，请提取：**
 
-5. **Decisions Made**
-   - What was agreed upon?
-   - What choices were finalized?
+5. **决策内容**
+   - 达成了哪些共识？
+   - 哪些选择已经确定？
 
-6. **Open Questions**
-   - What wasn't resolved?
-   - What needs more information?
+6. **未解决的问题**
+   - 有哪些问题尚未解决？
+   - 需要更多信息的是什么？
 
-7. **Next Steps**
-   - When's the next meeting?
-   - What happens after this?
+7. **下一步行动**
+   - 下次会议是什么时候？
+   - 会议之后应该做什么？
 
-8. **Attendees** (if detectable)
-   - Who was mentioned?
-   - Who spoke?
+8. **参会人员**（如果可以识别）
+   - 谁参与了会议？
+   - 谁发表了意见？
 
-### Step 4: Save the File
+### 第4步：保存文件
 
-**⚠️ FILENAME FORMAT IS CRITICAL:**
+**文件命名格式非常重要：**
 
-```
-YYYY-MM-DD_topic.md
-```
+---
 
-**Examples:**
-| Meeting | Correct Filename |
+**示例：**
+| 会议名称 | 正确的文件名 |
 |---------|------------------|
-| Anne call on Feb 2, 2026 | `2026-02-02_anne-call.md` |
-| Product sync on Jan 27 | `2025-01-27_product-sync.md` |
-| Client call with Acme | `2025-01-27_client-call-acme.md` |
-| 1-on-1 with Sarah | `2025-01-27_1on1-sarah.md` |
+| 2026年2月2日的Anne会议 | `2026-02-02_anne-call.md` |
+| 1月27日的产品同步会议 | `2025-01-27_product-sync.md` |
+| 与Acme的客户会议 | `2025-01-27_client-call-acme.md` |
+| 与Sarah的1对1会议 | `2025-01-27_1on1-sarah.md` |
 
-**❌ WRONG (never do these):**
-- `anne-call-notes.md` — Missing date prefix!
-- `meeting-notes-2026-02-02.md` — Date not first!
-- `2026-02-02-anne-call.md` — Use underscore after date, not hyphen!
-- `Anne Call Notes.md` — No spaces, no caps!
+**错误的文件名示例：**
+- `anne-call-notes.md` — 缺少日期前缀！
+- `meeting-notes-2026-02-02.md` — 日期不在前面！
+- `2026-02-02-anne-call.md` — 日期后使用下划线，而不是连字符！
+- `Anne Call Notes.md` — 没有空格，也没有大写字母！
 
-**Validation checklist:**
-- [ ] Starts with `YYYY-MM-DD_` (date + underscore)
-- [ ] All lowercase
-- [ ] Hyphens for spaces in topic
-- [ ] No special characters
-- [ ] Ends with `.md`
+**验证规则：**
+- 文件名以`YYYY-MM-DD_`开头
+- 所有字母均为小写
+- 用连字符分隔单词
+- 不使用特殊字符
+- 文件名以`.md`结尾
 
-**CRITICAL — Encoding & Characters:**
-- Always use UTF-8 encoding
-- Use proper Unicode characters: `—` (em dash), `→` (arrow), `📅`, `✅`, `⚠️`, `❓`
-- Do NOT use ASCII approximations that render as garbled text
-- Test: If you see `â€"` or `ðŸ"…` in output, encoding is broken
+**编码和字符注意事项：**
+- 始终使用UTF-8编码
+- 使用正确的Unicode字符：`—`（短横线）、`→`（箭头）、`📅`、`✅`、`⚠️`、`❓`
+- 不要使用可能显示为乱码的ASCII替代字符
+- 测试：如果输出中出现`â€"`或`ðŸ"……`，说明编码有问题
 
-**File template:**
-
-```markdown
----
-date: YYYY-MM-DD
-title: Meeting Title
-attendees: [Name1, Name2, Name3]
-source: pasted notes | transcript | email | chat
----
-
-# Meeting Title
-
-**Date:** YYYY-MM-DD
-**Attendees:** Name1, Name2, Name3
+**文件模板：**
 
 ---
 
-## Summary
+**保存文件后，务必在一条消息中完成以下三件事：**
 
-[2-3 sentence overview]
+1. 在聊天中显示简要摘要
+2. 附加完整的.md文件
+3. 显示待办事项提示
 
----
+**重要提示：这三步必须同时完成。用户不应需要分别请求。**
 
-## Action Items
-
-- [ ] **@Owner**: Task description — *Deadline*
-- [ ] **@Owner**: Task description — *Deadline*
-
----
-
-## Decisions
-
-- Decision 1
-- Decision 2
+**聊天中的显示格式：**
 
 ---
 
-## Open Questions
+**智能截断规则：**
 
-- Question 1
-- Question 2
-
----
-
-## Next Steps
-
-- Next meeting: [date/time if known]
-- [Other next steps]
-
----
-
-<details>
-<summary>📝 Raw Notes (click to expand)</summary>
-
-[Preserve the original input exactly as pasted]
-
-</details>
-```
-
-**After saving, ALWAYS do all three in ONE response:**
-
-1. **Display condensed summary in chat**
-2. **Attach the full .md file**
-3. **Show to-do list prompt**
-
-**CRITICAL: All three must happen in a single response. User should never need to ask separately.**
-
-**Response format (display in chat):**
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 [MEETING TITLE] — [Date]
-Duration: [X min] | Attendees: [Names...]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-SUMMARY
-[2-3 sentence overview of the meeting]
-
-⚡ CRITICAL ACTION ITEMS ([X] of [Total])
-1. [ ] @Owner: Task — Deadline
-2. [ ] @Owner: Task — Deadline
-3. [ ] @Owner: Task — Deadline
-4. [ ] @Owner: Task — Deadline
-5. [ ] @Owner: Task — Deadline
-
-✅ KEY DECISIONS
-• Decision 1
-• Decision 2
-
-📎 Full notes attached: [filename.md]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Add to your to-do list?
-• "all" — Add all [X] items
-• "1,2,4" — Add specific items
-• "none" — Skip
-```
-
-**Smart truncation rules:**
-
-| Action Items | Display in Chat | In File |
+| 任务数量 | 在聊天中显示 | 在文件中显示 |
 |--------------|-----------------|---------|
-| 1-10 items | Show all | All |
-| 11-20 items | Show top 10 + "(+X more in file)" | All |
-| 21+ items | Show top 10 critical + "(+X more in file)" | All |
+| 1-10项 | 显示全部 | 显示全部 |
+| 11-20项 | 显示前10项 + “（文件中还有X项）” | 显示全部 |
+| 21项以上 | 显示前10项关键任务 + “（文件中还有X项）” | 显示全部 |
 
-**Prioritize for chat display:**
-1. Items with explicit deadlines (especially "today", "tomorrow", "ASAP")
-2. Items marked critical/urgent in the notes
-3. Items with clear owners
-4. Remaining items by order of mention
+**聊天显示的优先级：**
+1. 有明确截止日期的任务（尤其是“今天”、“明天”、“尽快”）
+2. 标记为紧急的任务
+3. 有明确负责人的任务
+4. 按提及顺序显示剩余任务
 
-**File attachment is mandatory:**
-- Always attach the full .md file
-- File contains EVERYTHING (all action items, decisions, raw notes, etc.)
-- Chat display is the highlight reel, file is the complete record
+**文件附件是必需的：**
+- 必须附加完整的.md文件
+- 文件包含所有内容（所有任务、决策、原始笔记等）
+- 聊天显示的是精华部分，文件是完整记录
 
-### Step 5: To-Do List Management
+### 第5步：管理待办事项
 
-**File location:** `todo.md` in workspace root
+**文件存储位置：`todo.md`（位于工作区根目录）
 
-**To-do file format:**
-
-```markdown
-# To-Do List
-
-Last updated: YYYY-MM-DD
+**待办事项文件的格式：**
 
 ---
 
-## ⚠️ Overdue
+**添加任务到待办事项清单：**
 
-| # | Task | Owner | Due | Source |
-|---|------|-------|-----|--------|
-| 3 | Send proposal | @Sarah | Jan 25 | client-call.md |
+当用户回复提示时：
+- “all” → 添加所有提取的任务
+- “1,3,5” → 仅添加编号为1、3、5的任务
+- “none” → 跳过，不添加任何任务
 
----
+对于每个添加的任务：
+1. 自动分配下一个可用的编号
+2. 根据截止日期将其放入正确的类别
+3. 记录来源会议文件
+4. 更新“最后更新”日期
 
-## 📅 Due Today
-
-| # | Task | Owner | Source |
-|---|------|-------|--------|
-| 5 | Coordinate with agency | @Lisa | product-sync.md |
-
----
-
-## 📆 This Week
-
-| # | Task | Owner | Due | Source |
-|---|------|-------|-----|--------|
-| 1 | Share mockups | @Sarah | Fri | product-sync.md |
+**添加任务后的确认：**
 
 ---
 
-## 📋 No Deadline
+**处理待办事项相关命令：**
 
-| # | Task | Owner | Source |
-|---|------|-------|--------|
-| 4 | Handle social campaigns | @John | product-sync.md |
-
----
-
-## ✅ Completed
-
-| # | Task | Owner | Completed |
-|---|------|-------|-----------|
-| 2 | Schedule meeting | @Sarah | Jan 26 |
-```
-
-**Adding items to to-do list:**
-
-When user responds to the prompt:
-- "all" → Add all extracted items
-- "1,3,5" → Add only those numbered items
-- "none" → Skip, don't add any
-
-For each added item:
-1. Assign next available # (auto-increment)
-2. Place in correct section based on deadline
-3. Record source meeting file
-4. Update "Last updated" date
-
-**Confirm after adding:**
-```
-✅ Added 5 items to todo.md (#12-#16)
-
-#12 @Sarah: Share mockups — Friday
-#13 @Sarah: Update timeline — No deadline
-#14 @Lisa: Coordinate with agency — Today
-#15 @Mike: Call Acme Corp — Tomorrow
-#16 @Sarah: Post job listing — EOW
-
-View full list: "show todos"
-```
-
-**Handling to-do commands:**
-
-| User Says | Action |
+| 用户指令 | 功能 |
 |-----------|--------|
-| "show todos" / "my todos" | Display full todo.md organized by section |
-| "todo check" / "check todos" | Run daily review (see below) |
-| "done 3" / "completed 3" / "finished 3" | Move #3 to Completed section with today's date |
-| "done 3,5,7" | Mark multiple as complete |
-| "remove 5" / "delete 5" | Remove item entirely from list |
-| "add deadline to 4: Friday" | Update item #4 with deadline, move to correct section |
-| "move 3 to Monday" | Update deadline |
-| "what's overdue?" | Show only Overdue section |
-| "due today" | Show only Due Today section |
-| "Sarah's tasks" / "@Sarah todos" | Filter all items where owner is Sarah |
-| "no deadline" | Show items without deadlines |
+| “显示所有待办事项” / “我的待办事项” | 显示按类别组织的完整待办事项清单 |
+| “检查待办事项” | 每日查看待办事项状态 |
+| “完成3项” / “已完成3项” | 将编号为3的任务标记为已完成 |
+| “删除5项” | 从列表中删除编号为5的任务 |
+| “为4项设置截止日期为周五” | 为任务4设置截止日期，并更新其位置 |
+| “将3项移动到周一” | 更新任务的截止日期 |
+| “哪些任务逾期了？” | 显示逾期的任务 |
+| “今天的任务” | 显示仅限今天的任务 |
+| “Sarah的任务” | 过滤出Sarah负责的任务 |
+| “无截止日期” | 显示没有截止日期的任务 |
 
-**Daily check ("todo check"):**
+**每日检查（“检查待办事项”）：**
 
-```
-📋 TO-DO CHECK — [Today's Date]
+---
 
-⚠️ OVERDUE ([X] items):
-#3 @Sarah: Send proposal — was due Jan 25 (3 days ago)
-#7 @Mike: Review contract — was due Jan 26 (2 days ago)
+**章节组织规则：**
 
-📅 DUE TODAY ([X] items):
-#5 @Lisa: Coordinate with agency
-#9 @John: Send assets
-
-📆 COMING UP ([X] items due this week):
-#12 @Sarah: Share mockups — Friday
-#15 @Mike: Call Acme — Tomorrow
-
-📋 NO DEADLINE ([X] items):
-#4 @John: Handle social campaigns
-#8 @Team: Review server costs
-→ Consider adding deadlines to these items
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Any updates?
-• "done 3,5" — Mark as complete
-• "move 3 to Friday" — Update deadline  
-• "remove 4" — Delete item
-```
-
-**Section organization rules:**
-
-| Section | Criteria |
+| 章节 | 判断标准 |
 |---------|----------|
-| ⚠️ Overdue | Due date is before today |
-| 📅 Due Today | Due date is today |
-| 📆 This Week | Due date is within 7 days |
-| 📋 No Deadline | No due date specified |
-| ✅ Completed | Marked as done |
+| ⚠️ 过期任务 | 截止日期在今天之前 |
+| 📅 今天到期的任务 | 截止日期是今天 |
+| 📆 本周内到期的任务 | 截止日期在7天内 |
+| 📋 无截止日期 | 未指定截止日期 |
+| ✅ 已完成 | 标记为已完成 |
 
-**When marking complete:**
-1. Move item from current section to Completed
-2. Add completion date
-3. Keep the original # for reference
-4. Confirm: "✅ Marked #3 complete"
+**标记为已完成时：**
+1. 将任务从当前章节移动到已完成部分
+2. 添加完成日期
+3. 保留原始编号以供参考
+4. 确认：“✅ 已完成编号3”
 
-**When removing:**
-1. Delete item entirely
-2. Do NOT reuse the # (prevents confusion)
-3. Confirm: "🗑️ Removed #5 from to-do list"
+**删除任务时：**
+1. 完全删除任务
+2. 不要重复使用编号（避免混淆）
+3. 确认：“🗑️ 从待办事项清单中删除了编号5”
 
-### Step 6: Handle Display Requests
+### 第6步：处理显示请求
 
-If user just wants to see the output (not save), show it in their requested format.
+如果用户仅希望查看结果（不保存文件），则按其要求显示结果。
 
-If user wants both, save the file AND display the output.
+如果用户既希望保存文件又希望查看结果，系统会同时保存文件并显示摘要。
 
-**Default behavior:** Save the file, offer to-do list prompt, then display summary.
+### 第7步：查看之前的会议记录
 
-### Step 7: Reference Previous Meetings
+当用户询问之前的会议记录时：
 
-When user asks about previous meetings:
+**“我们关于X做出了什么决定？”**
+- 在`meeting-notes/`文件夹中搜索相关文件
+- 查看“决策”部分
+- 返回包含文件来源的决策内容
 
-**"What did we decide about X?"**
-- Search `meeting-notes/` for relevant files
-- Look in Decisions sections
-- Return the decision with source file
+**“Sarah有哪些任务？”**
+- 在所有文件中搜索包含`@Name`的任务
+- 返回包含文件和日期的列表
 
-**"What action items does @Name have?"**
-- Search all files for `@Name` in Action Items
-- Return list with source files and dates
+**“显示上周的会议记录”**
+- 根据日期范围列出文件
+- 显示每个文件的标题和摘要
 
-**"Show me last week's meetings"**
-- List files from date range
-- Show title and summary for each
+**“查找关于X的会议记录”**
+- 根据文件名和内容搜索
+- 返回匹配的文件及相关内容
 
-**"Find meetings about X"**
-- Search filenames and content
-- Return matching files with relevant excerpts
+**搜索方法：**
+1. 先检查文件名（快速查找）
+2. 如有必要，再搜索内容
+3. 返回包含文件链接的结果
+4. 提供完整的详细信息
 
-**Search approach:**
-1. Check filenames first (fast)
-2. Search content if needed
-3. Return results with file references
-4. Offer to show full details
+### 处理特殊情况**
 
-### Step 8: Handle Edge Cases
+**如果会议记录非常简短：**
+- 仍需提取可提取的信息
+- 仍需保存文件
+- 说明：“会议记录很简短，捕获的信息有限”
 
-**If notes are very short:**
-- Still extract what you can
-- Still save the file
-- Note: "Brief meeting, limited details captured"
+**如果会议主题不明确：**
+- 询问：“我应该给这次会议起什么名字？”
+- 或者使用`YYYY-MM-DD_会议.md`作为文件名
 
-**If no clear topic:**
-- Ask: "What should I call this meeting?"
-- Or use: `YYYY-MM-DD_meeting.md`
+**如果日期不明确：**
+- 询问：“这次会议是什么时候举行的？”
+- 或者使用当天的日期
 
-**If date is ambiguous:**
-- Ask: "When was this meeting?"
-- Or use today's date with note
+**如果一次粘贴中包含多个会议记录：**
+- 询问：“这看起来像是多个会议。需要分开处理吗？”
+- 如果确认需要，创建单独的文件
 
-**If multiple meetings in one paste:**
-- Ask: "This looks like multiple meetings. Should I separate them?"
-- Create separate files if confirmed
+**如果输入不是会议记录：**
+- 仍尝试提取可执行的任务
+- 调整文件名：`YYYY-MM-DD_笔记主题.md`
 
-**If it's not meeting notes:**
-- Still try to extract actionable items
-- Adjust filename: `YYYY-MM-DD_notes-topic.md`
+### 第8步：最终回复格式**
 
-### Step 9: Final Response Format
+**这是最重要的步骤。您的整个回复必须是一条消息。**
 
-**⚠️ THIS IS THE MOST IMPORTANT STEP. YOUR ENTIRE RESPONSE MUST BE ONE SINGLE MESSAGE.**
-
-**Complete response template (copy this structure exactly):**
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 [MEETING TITLE] — [YYYY-MM-DD]
-Duration: [X min] | Attendees: [Names]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-SUMMARY
-[2-3 sentence overview of the meeting]
-
-⚡ ACTION ITEMS ([X] of [Total])
-1. [ ] @Owner: Task — Deadline
-2. [ ] @Owner: Task — Deadline
-3. [ ] @Owner: Task — Deadline
-4. [ ] @Owner: Task — Deadline
-5. [ ] @Owner: Task — Deadline
-
-(+[X] more in attached file)
-
-✅ KEY DECISIONS
-• Decision 1
-• Decision 2
-
-📎 Saved: meeting-notes/YYYY-MM-DD_topic.md
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Add to your to-do list?
-• "all" — Add all [X] items
-• "1,2,4" — Add specific items
-• "none" — Skip
-```
-
-**Checklist before sending (ALL must be true):**
-- [ ] Is this ONE message? (not split into multiple)
-- [ ] Does filename start with `YYYY-MM-DD_`?
-- [ ] Are action items NUMBERED (1, 2, 3...)?
-- [ ] Is the to-do prompt included?
-- [ ] Is the file attached/saved?
-
-**If ANY checkbox is false, FIX IT before responding.**
-
-### Tone
-
-- ONE response only (never send "Processing..." then "Done" separately)
-- Lead with summary and critical items
-- Be concise in chat, comprehensive in file
-- Always show the to-do list prompt if action items exist
-
-</ai_instructions>
+**完整的回复模板（请严格按照此结构回复）：**
 
 ---
 
-## Customization (Optional)
+**发送前的检查（所有条件都必须满足）：**
+- [ ] 这是一条消息吗？（不要分多条发送）
+- [ ] 文件名是否以`YYYY-MM-DD_`开头？
+- [ ] 任务是否已编号（1, 2, 3...）？
+- [ ] 是否包含待办事项提示？
+- [ ] 文件是否已附加/保存？
 
-Want to customize the output? Create a `PREFERENCES.md` file:
+**如果有任何条件不满足，请在回复前修复。**
 
-```markdown
-# Meeting Notes Preferences
+### 语气建议**
 
-## Output Format
-default: markdown
-
-## Always Include
-- [x] Summary
-- [x] Action Items
-- [x] Decisions
-- [ ] Open Questions
-- [ ] Attendees
-
-## Action Item Format
-style: "[ ] @{owner}: {task} — {deadline}"
-
-## Additional Instructions
-- Always bold owner names
-- Group by deadline if more than 5 items
-```
-
-If this file exists, the AI will follow your preferences. If not, smart defaults apply.
+- 只回复一条消息（不要分多次发送“正在处理...”和“已完成”）
+- 首先提供摘要和关键内容
+- 在聊天中简洁明了，在文件中提供详细信息
+- 如果有任务，务必显示待办事项提示
 
 ---
 
-## Examples
+## 自定义选项
 
-### Input: Messy Notes
-
-```
-marketing sync 1/27
-
-sarah - need to finalize the q1 campaign, she said friday
-budget discussion - mike thinks we need 50k, approved
-delay on product launch - 2 weeks, waiting for legal
-john will send assets by wed
-need to figure out vendor situation still
-next sync thursday 2pm
-```
-
-### Output: Saved File
-
-**File:** `meeting-notes/2025-01-27_marketing-sync.md`
-
-```markdown
----
-date: 2025-01-27
-title: Marketing Sync
-attendees: [Sarah, Mike, John]
-source: pasted notes
----
-
-# Marketing Sync
-
-**Date:** 2025-01-27
-**Attendees:** Sarah, Mike, John
+**想要自定义输出格式吗？**  
+创建一个`PREFERENCES.md`文件：
 
 ---
 
-## Summary
-
-Marketing sync covering Q1 campaign finalization, budget approval ($50k), and product launch timeline adjustments due to legal review.
+如果存在该文件，AI会根据您的偏好进行输出。如果没有，系统会使用默认设置。
 
 ---
 
-## Action Items
+## 示例
 
-- [ ] **@Sarah**: Finalize Q1 campaign — *Friday*
-- [ ] **@John**: Send assets — *Wednesday*
-- [ ] **@Mike**: Confirm budget allocation ($50k approved)
-- [ ] **@Team**: Resolve vendor situation — *TBD*
+### 输入：杂乱的会议记录
 
 ---
 
-## Decisions
+### 输出：保存后的文件
 
-- Budget approved at $50k
-- Product launch delayed 2 weeks (waiting for legal)
-
----
-
-## Open Questions
-
-- Vendor situation still unresolved
+**文件名：`meeting-notes/2025-01-27_marketing-sync.md`
 
 ---
 
-## Next Steps
-
-- Next sync: Thursday 2pm
+### 确认回复**
 
 ---
 
-<details>
-<summary>📝 Raw Notes (click to expand)</summary>
+## 查看之前的会议记录
 
-marketing sync 1/27
-
-sarah - need to finalize the q1 campaign, she said friday
-budget discussion - mike thinks we need 50k, approved
-delay on product launch - 2 weeks, waiting for legal
-john will send assets by wed
-need to figure out vendor situation still
-next sync thursday 2pm
-
-</details>
-```
-
-### Confirmation Message
-
-```
-✅ Saved: meeting-notes/2025-01-27_marketing-sync.md
-
-SUMMARY
-Marketing sync covering Q1 campaign, budget approval, and launch delay.
-
-ACTION ITEMS
-- [ ] @Sarah: Finalize Q1 campaign — Friday
-- [ ] @John: Send assets — Wednesday
-- [ ] @Mike: Confirm budget allocation
-- [ ] @Team: Resolve vendor situation — TBD
-
-DECISIONS
-• Budget approved at $50k
-• Launch delayed 2 weeks
-
-Full details in saved file.
-```
+### “Sarah有哪些任务？”
 
 ---
 
-## Referencing Previous Meetings
-
-### "What action items does Sarah have?"
-
-```
-📋 Sarah's Action Items (across all meetings)
-
-From 2025-01-27_marketing-sync.md:
-- [ ] Finalize Q1 campaign — Friday
-
-From 2025-01-25_product-planning.md:
-- [ ] Review design mockups — Monday
-- [x] Send timeline to team — Done
-
-2 open items, 1 completed
-```
-
-### "What did we decide about the budget?"
-
-```
-📌 Decisions about "budget" found:
-
-2025-01-27_marketing-sync.md:
-• Budget approved at $50k
-
-2025-01-20_quarterly-planning.md:
-• Q1 budget set at $150k total
-• Marketing allocated $50k
-
-Want me to show the full context from either meeting?
-```
-
-### "Show me last week's meetings"
-
-```
-📅 Meetings from Jan 20-27, 2025:
-
-1. 2025-01-27_marketing-sync.md
-   Q1 campaign, budget approval, launch delay
-   
-2. 2025-01-25_product-planning.md
-   Roadmap review, design decisions
-   
-3. 2025-01-23_client-call-acme.md
-   Requirements review, timeline discussion
-   
-4. 2025-01-20_quarterly-planning.md
-   Q1 priorities, budget allocation
-
-Want details on any of these?
-```
+### “我们关于预算做出了什么决定？”
 
 ---
 
-## Works With
-
-- **Otter.ai exports** — Paste the transcript
-- **Fireflies exports** — Paste the summary or transcript  
-- **Zoom transcripts** — Paste the auto-generated notes
-- **Voice memos** — Use any transcription, paste the text
-- **Manual notes** — However messy, just paste
-- **Email threads** — Copy the chain, paste it
-- **Slack threads** — Export or copy, paste it
-
-Basically: If it's text, it works.
+### “显示上周的会议记录”
 
 ---
 
-## Comparison
+## 支持的输入类型：
 
-| Feature | Otter.ai | Fireflies | This Skill |
+- **Otter.ai的文字记录** — 粘贴文字记录
+- **Fireflies的文字记录** — 粘贴摘要或文字记录
+- **Zoom的文字记录** — 粘贴自动生成的会议记录
+- **语音备忘录** — 使用任何形式的文字记录
+- **手写笔记** — 无论多么杂乱，都可以粘贴
+- **邮件对话记录** — 复制粘贴
+- **Slack对话记录** — 导出或复制粘贴
+
+**基本上：只要是文本，都可以处理。**
+
+---
+
+## 功能对比
+
+| 功能 | Otter.ai | Fireflies | 本工具 |
 |---------|----------|-----------|------------|
-| Price | $20/mo | $18/mo | Free |
-| Requires bot in meeting | Yes | Yes | No |
-| Works with existing notes | No | No | Yes |
-| Setup time | 10+ min | 10+ min | 0 min |
-| Platform lock-in | Yes | Yes | No |
+| 价格 | 每月20美元 | 每月18美元 | 免费 |
+| 需要在会议中使用机器人 | 是 | 是 | 否 |
+| 是否支持现有笔记 | 否 | 否 | 是 |
+| 设置时间 | 超过10分钟 | 超过10分钟 | 0分钟 |
+| 平台绑定 | 是 | 是 | 否 |
 
 ---
 
-## FAQ
+## 常见问题**
 
-**Q: Does this record my meetings?**
-No. This only processes text you paste. No recording, no bot, no audio.
+**Q：这个工具会记录我的会议吗？**
+不会。该工具仅处理您粘贴的文本，不进行录音，也不使用机器人或音频。
 
-**Q: What if my notes are really messy?**
-That's the point. Paste them anyway.
+**Q：如果我的笔记非常杂乱怎么办？**
+正因如此，请直接粘贴笔记。
 
-**Q: Can I use this with Otter/Fireflies transcripts?**
-Yes. Export or copy your transcript, paste it here.
+**Q：我可以将其与Otter/Fireflies的文字记录一起使用吗？**
+可以。导出或复制您的文字记录，然后粘贴到这里。
 
-**Q: What about privacy?**
-Your notes are processed in the conversation. Nothing is stored or sent elsewhere.
+**Q：关于隐私问题？**
+您的笔记会在聊天中处理，不会被存储或发送到其他地方。
 
-**Q: Can I customize the output?**
-Yes. Create a PREFERENCES.md file or just ask for a different format.
+**Q：我可以自定义输出格式吗？**
+可以。创建一个`PREFERENCES.md`文件，或直接请求不同的输出格式。
 
 ---
 
-*Built by Jeff J Hunter — https://jeffjhunter.com*
+*由Jeff J Hunter开发 — https://jeffjhunter.com*
 
-*Part of the OpenClaw skills ecosystem. More at https://clawhub.org*
+*属于OpenClaw技能生态系统的一部分。更多信息请访问：https://clawhub.org*

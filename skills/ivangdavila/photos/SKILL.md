@@ -1,63 +1,63 @@
 ---
 name: Photos
-description: Organize, index, and search local photo libraries with AI-powered metadata and safe file handling.
+description: 使用基于人工智能的元数据管理功能，对本地照片库进行组织、索引和搜索；同时确保文件处理的安全性。
 metadata: {"clawdbot":{"emoji":"🖼️","requires":{"bins":["exiftool"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Safety First
+## 安全第一
 
-- **Never delete photos directly** — move to `.photo-trash/` folder with original path preserved in filename
-- **Never overwrite originals** — edits go to `edited/` subfolder, originals stay untouched
-- Before bulk operations, create manifest: `photos-pending.json` with planned actions for user review
-- When user says "delete duplicates", move to trash and report count — let them empty trash manually
+- **切勿直接删除照片**——将照片移动到`.photo-trash/`文件夹，并在文件名中保留原始路径。
+- **切勿覆盖原始文件**——编辑后的文件会被保存到`edited/`子文件夹中，原始文件保持不变。
+- 在执行批量操作之前，创建一个名为`photos-pending.json`的清单文件，列出计划中的操作以供用户审核。
+- 当用户要求“删除重复文件”时，只需将文件移动到垃圾箱，并告知用户文件数量，由他们手动清空垃圾箱。
 
-## Indexing Strategy
+## 索引策略
 
-- Create `.photo-index/` in library root with one JSON sidecar per photo
-- Sidecar filename: `{original-hash}.json` — survives renames and moves
-- Index fields: `hash`, `path`, `date_taken`, `camera`, `gps`, `description`, `tags`, `indexed_at`
-- Run indexing incrementally — skip files with matching hash already indexed
-- Store description from vision analysis in sidecar, not in EXIF (non-destructive)
+- 在库的根目录下创建`.photo-index/`文件夹，每张照片对应一个JSON文件（称为“sidecar”文件）。
+- “sidecar”文件的名称格式为`{original-hash}.json`，这种格式在文件重命名或移动时仍然有效。
+- 索引字段包括：`hash`、`path`、`date_taken`、`camera`、`gps`、`description`、`tags`、`indexed_at`。
+- 索引过程是增量式的，会跳过已经索引过的文件。
+- 视觉分析的结果会存储在“sidecar”文件中（而非EXIF标签中），这样不会破坏文件数据。
 
-## Vision Analysis (Token-Efficient)
+## 视觉分析（高效处理）
 
-- Don't analyze every photo upfront — index on-demand when user searches or asks
-- Cache vision results permanently in sidecar JSON — never re-analyze same photo
-- For bulk analysis, process in batches of 20 with progress updates
-- Use concise prompts: "Describe this photo in 2-3 sentences. List people, objects, location, activity."
-- Skip screenshots and memes (detect by aspect ratio + lack of EXIF) unless explicitly requested
+- 不要预先分析所有照片——仅在用户搜索或请求时才进行索引。
+- 将视觉分析的结果永久缓存到“sidecar”文件中，避免重复分析同一张照片。
+- 对于批量分析，每次处理20张照片，并实时更新处理进度。
+- 使用简洁的提示语，例如：“用2-3句话描述这张照片。请列出照片中的人、物体、地点和活动。”
+- 除非用户明确要求，否则跳过截图和表情包（通过宽高比和是否包含EXIF标签来识别）。
 
-## Duplicate Detection
+## 重复文件检测
 
-- Generate perceptual hash (pHash) alongside content hash — catches near-duplicates and resized copies
-- Group duplicates by pHash similarity, keep highest resolution as "original"
-- Report duplicates with thumbnails/paths, never auto-delete
-- Consider EXIF date — oldest is likely the original, newer copies are backups
+- 为每张照片生成一个感知哈希（pHash）和内容哈希，以便识别相似或调整大小的重复文件。
+- 根据pHash的相似度对重复文件进行分组，保留分辨率最高的文件作为“原始文件”。
+- 在报告重复文件时，会提供缩略图和文件路径，但不会自动删除这些文件。
+- 会考虑EXIF标签中的日期信息——通常日期最早的文件是原始文件，较新的文件是备份。
 
-## Search Patterns
+## 搜索方式
 
-- **By content**: Search sidecar descriptions with simple text match first, vision re-analysis if no hits
-- **By date**: Parse EXIF DateTimeOriginal, fall back to file mtime
-- **By location**: Reverse geocode GPS once, store city/country in sidecar for text search
-- **By person**: If user identifies someone once ("that's Maria"), tag all similar faces in index
+- **按内容搜索**：首先通过“sidecar”文件中的描述进行简单文本匹配，如果没有匹配结果，则进行视觉分析。
+- **按日期搜索**：解析EXIF标签中的`DateTimeOriginal`字段，如果无法匹配则使用文件的修改时间（mtime）。
+- **按地点搜索**：对GPS坐标进行反地理编码，将城市/国家信息存储在“sidecar”文件中，以便进行文本搜索。
+- **按人物搜索**：如果用户指认了某个人（例如“那是玛丽亚”），则在该人的索引中标记所有相似的面孔。
 
-## EXIF Handling
+## EXIF标签处理
 
-- Read: `exiftool -json photo.jpg` — returns all metadata as JSON
-- Write date: `exiftool -DateTimeOriginal="2024:03:15 14:30:00" photo.jpg`
-- Strip GPS before sharing: `exiftool -gps:all= photo.jpg` (operates on copy, not original)
-- Batch read: `exiftool -json -r /photos/` — recursive, outputs array
+- 读取文件元数据：`exiftool -json photo.jpg`——将所有元数据以JSON格式返回。
+- 修改文件日期：`exiftool -DateTimeOriginal="2024:03:15 14:30:00" photo.jpg`。
+- 在共享文件之前删除GPS信息：`exiftool -gps:all= photo.jpg`（操作的是副本，而非原始文件）。
+- 批量读取元数据：`exiftool -json -r /photos/`——递归读取所有文件，并将结果存储在数组中。
 
-## File Organization
+## 文件组织
 
-- Propose structure, don't impose: `YYYY/MM/` or `YYYY/MM-DD/` based on user preference
-- Rename pattern: `YYYYMMDD_HHMMSS_originalname.ext` — preserves original name, adds sortable prefix
-- Handle timezone: EXIF dates are local time — ask user's timezone once, store in `.photo-index/config.json`
-- HEIC to JPEG: `sips -s format jpeg input.heic --out output.jpg` (macOS) or `heif-convert` (Linux)
+- 提供文件组织结构建议，但不强制使用特定格式（如`YYYY/MM/`或`YYYY/MM-DD/`），具体取决于用户偏好。
+- 文件重命名规则：`YYYYMMDD_HHMMSS_originalname.ext`——保留原始文件名，并添加便于排序的前缀。
+- 处理时区问题：EXIF标签中的日期是本地时间，需询问用户所在的时区，并将结果存储在`.photo-index/config.json`文件中。
+- 将HEIC格式文件转换为JPEG格式：在macOS上使用`sips -s format jpeg input.heic --out output.jpg`，在Linux上使用`heif-convert`。
 
-## NAS/Remote Libraries
+## NAS/远程库
 
-- For Synology/NAS: work with mounted paths, don't assume local speeds
-- Test connection before bulk operations: `ls /Volumes/photos | head -1`
-- For slow connections, build local index cache that syncs periodically
-- Respect `@eaDir` (Synology thumbnails) and `.DS_Store` — skip in indexing
+- 对于Synology/NAS设备，使用挂载的文件路径进行操作，不要假设本地系统的传输速度很快。
+- 在执行批量操作之前，请先测试网络连接：`ls /Volumes/photos | head -1`。
+- 对于网络速度较慢的情况，可以构建本地索引缓存，并定期同步数据。
+- 遵循系统设置：尊重Synology的`@eaDir`文件夹（用于存储缩略图）和`.DS_Store`文件，避免在索引过程中处理这些文件。

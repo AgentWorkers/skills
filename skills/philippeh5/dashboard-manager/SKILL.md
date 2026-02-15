@@ -7,35 +7,34 @@ version: 1.0.0
 
 
 
-# Dashboard Manager Skill
+# 仪表板管理技能（Dashboard Manager Skill）
 
-## Description
-Gère les interactions avec le dashboard Jarvis. Ce skill permet de lire, mettre à jour et synchroniser le fichier `data.json` en temps réel.
+## 描述  
+该技能用于管理与Jarvis仪表板的交互，能够实时读取、更新和同步`data.json`文件。
 
-## Fonctionnalités
-- **Lecture/Sauvegarde** : Accès au fichier `data.json`
-- **Gestion des notes** : Récupération des notes pending et marquage comme processed
-- **Logging** : Ajout d'entrées dans l'historique
-- **Mise à jour du système** : Statut, heartbeat, modèle actif
-- **Statistiques** : Compteurs de tokens et coûts
-- **Gestion des tâches** : Ajout et mise à jour
-- **Sub-agents** : Gestion des agents actifs
+## 功能  
+- **读取/保存**：访问`data.json`文件  
+- **笔记管理**：检索待处理的笔记并将其标记为已处理  
+- **日志记录**：将操作记录到历史日志中  
+- **系统更新**：更新系统状态、发送心跳信号（heartbeat）以及当前使用的模型  
+- **统计信息**：统计令牌数量和成本  
+- **任务管理**：添加和更新任务  
+- **子代理管理**：管理正在运行的代理（sub-agents）  
 
-## Configuration
+## 配置  
 
-### Chemin du fichier
+### 文件路径  
 ```javascript
 const DATA_FILE_PATH = 'D:\\Projets\\ClaudBot\\Jarvis_Dashboard\\data.json';
-```
+```  
 
-### Permissions
-- **Lecture/Écriture** : Accès au fichier `data.json`
-- **Système** : Mise à jour du statut et heartbeat
-- **Logging** : Ajout d'entrées dans l'historique
+### 权限要求  
+- **读取/写入**：具有访问`data.json`文件的权限  
+- **系统操作**：能够更新系统状态和发送心跳信号  
+- **日志记录**：能够将操作记录到历史日志中  
 
-## API
-
-### Fonctions principales
+## API  
+### 主要功能  
 ```javascript
 // Chargement de la base de données
 await loadDatabase();
@@ -64,65 +63,57 @@ await updateTask(1, { status: 'done' });
 // Gestion des sub-agents
 await addSubAgent('dashboard_agent', 'Monitoring dashboard');
 await removeSubAgent('dashboard_agent');
-```
+```  
 
-## Initialisation
-
+## 初始化  
 ```javascript
 const dashboardSkill = require('./skills/dashboard-manager');
 const success = await dashboardSkill.init();
 if (success) {
     console.log('🚀 Dashboard Manager initialisé');
 }
-```
+```  
 
-## Permissions requises
-- **Accès fichier** : `D:\Projets\ClaudBot\Jarvis_Dashboard\data.json`
-- **Écriture système** : Mise à jour du statut et heartbeat
-- **Logging** : Ajout d'entrées dans l'historique
+## 所需权限  
+- **文件访问权限**：`D:\Projets\ClaudBot\Jarvis_Dashboard\data.json`  
+- **系统写入权限**：用于更新系统状态和发送心跳信号  
+- **日志记录权限**：用于将操作记录到历史日志中  
 
-## Utilisation
+## 使用说明  
+该技能设计为在后台运行，以实现Jarvis与仪表板之间的实时同步。  
 
-Ce skill est conçu pour fonctionner en arrière-plan et maintenir la synchronisation entre Jarvis et le dashboard en temps réel.
+### 运行流程  
+1. **输入处理**：查询`quick_notes`并处理待处理的笔记  
+2. **输出更新**：将更改内容写入`data.json`文件  
+3. **自动同步**：每2秒发送一次心跳信号  
+4. **静默模式**：无需用户交互即可自动运行  
 
-### Boucle de fonctionnement (The Loop)
-1. **INPUT** : Consulte `quick_notes` et traite les notes pending
-2. **OUTPUT** : Met à jour `data.json` avec les changements
-3. **Auto-sync** : Heartbeat toutes les 2 secondes
-4. **Silent mode** : Fonctionne sans intervention conversationnelle
-
-## Exemple d'utilisation
-
+## 使用示例  
 ```javascript
 // Dans une réponse conversationnelle
 await updateStats(estimatedInputTokens, estimatedOutputTokens, estimatedCost);
 await addLog('Réponse à la question sur les agents');
 await updateSystemStatus('idle');
-```
+```  
 
-## Installation
+## 安装步骤  
+1. 将`dashboard-manager`文件夹复制到技能目录中  
+2. 确认`data.json`文件的路径正确  
+3. 在配置中启用该技能  
+4. 技能将自动进行初始化  
 
-1. Copier le dossier `dashboard-manager` dans le répertoire des skills
-2. Vérifier le chemin du fichier `data.json`
-3. Activer le skill dans la configuration
-4. Le skill s'initialisera automatiquement
+## 故障排除  
+- **文件未找到**：检查`DATA_FILE_PATH`是否正确  
+- **权限问题**：确保具有访问文件的权限  
+- **JSON格式错误**：检查`data.json`文件的语法是否正确  
 
-## Dépannage
+## 日志记录  
+所有操作都会自动记录到`data.json`文件的`logs`部分，便于后续追踪。  
 
-### Problèmes courants
-- **Fichier introuvable** : Vérifier le chemin `DATA_FILE_PATH`
-- **Permissions refusées** : Vérifier les droits d'accès au fichier
-- **JSON invalide** : Vérifier la syntaxe du fichier `data.json`
+## 安全性  
+- **访问限制**：仅允许访问`data.json`文件  
+- **写入控制**：所有更新操作均需经过验证  
+- **审计日志**：所有操作都会被记录下来  
 
-### Logs
-Les logs sont ajoutés automatiquement dans la section `logs` du fichier `data.json` pour le suivi des actions.
-
-## Sécurité
-
-- **Accès limité** : Seul le fichier `data.json` est accessible
-- **Écriture contrôlée** : Les mises à jour sont validées
-- **Logs d'audit** : Toutes les actions sont enregistrées
-
-## Compatibilité
-
-Ce skill est compatible avec OpenClaw et fonctionne avec n'importe quelle instance de Jarvis utilisant le dashboard V2 Ultimate.
+## 兼容性  
+该技能兼容OpenClaw，适用于使用V2 Ultimate版本仪表板的任何Jarvis实例。

@@ -1,72 +1,67 @@
 ---
 name: Estonian
-description: Write Estonian that sounds human. Not formal, not robotic, not AI-generated.
+description: 用一种听起来像人类的语言来写 Estonian 语言。既不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Estonian is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with particles and understated tone. Match that.
+虽然“AI Estonian”在语法上是正确的，但听起来过于正式、过于文学化。爱沙尼亚人日常交流时使用的语言更加随意，会使用各种助词和缓和语气，因此应该调整表达方式以更贴近他们的表达习惯。
 
-## Formality Default
+## 正式与随意的区分
 
-Default register is too high. Casual Estonian is understated and direct. Unless explicitly formal: lean casual. "Tere" or "Hei" not "Tere päevast". "Jah" or "Jep" not "Jah, kindlasti".
+爱沙尼亚语的默认表达方式较为正式；而日常对话中则倾向于使用更为随意、直接的表达方式。除非需要明确表达正式语气，否则应尽量采用随意的表达。例如，“Tere”或“Hei”比“Tere päevast”更常用；“Jah”或“Jep”比“Jah, kindlasti”更自然。
 
-## Sina vs Teie
+## “Sina”与“Teie”的用法
 
-Critical distinction:
-- Teie: formal, elderly, professional
-- Sina: friends, peers, internet, casual
-- Estonian internet uses sina
-- Overusing teie = stiff, foreign
+在爱沙尼亚语中，“Teie”通常用于正式场合、对年长者或专业人士的称呼；而“Sina”则用于朋友、同龄人或非正式的对话中。在网络交流中，人们更倾向于使用“Sina”这种更亲切的表达方式。过度使用“Teie”会让语气显得生硬、不自然。
 
-## Estonian Understatement
+## 爱沙尼亚语的委婉表达习惯
 
-Estonians are famously reserved:
-- Less enthusiastic than other cultures
-- Understatement is the norm
-- "Päris hea" (quite good) = high praise
-- Don't over-enthuse—it sounds fake
+爱沙尼亚人以含蓄、内敛的交流方式著称：
+- 他们通常不像其他文化中的群体那样热情洋溢；
+- 委婉表达是他们的常态；
+- “Päris hea”（相当好）其实是一种很高的赞美；
+- 过度表达热情反而会显得不真诚。
 
-## Particles & Softeners
+## 助词与缓和语气词
 
-These make Estonian natural:
-- Ju: shared knowledge ("Sa ju tead")
-- Küll: reassurance ("Küll saab")
-- Ikka: "still", emphasis
-- Noh: filler, "well"
-- Vist: "probably"
+这些词汇让爱沙尼亚语的交流更加自然：
+- “Ju”：表示“你知道的”（用于分享信息）；
+- “Küll”：用于安慰或确认（“当然可以”）；
+- “Ikka”：表示“仍然”或强调；
+- “Noh”：用于填充对话或表达犹豫；
+- “Vist”：表示“可能”。
 
-## Fillers & Flow
+## 交流中的填充词与连贯性
 
-Real Estonian has fillers:
-- Noh, nagu, siis
-- Tead, kuule
-- Tegelikult, muide
-- Nii-öelda, onju
+爱沙尼亚语中常见一些填充词，如“Noh, nagu, siis”等，用于使对话更加流畅；
+- “Tead, kuule”等短语用于引导对方的注意或引起共鸣；
+- “Tegelikult, muide”等表达用于引入补充信息或转折；
+- “Nii-öelda, onju”等词用于缓和语气或确认对方的理解。
 
-## Expressiveness
+## 表达方式
 
-Keep it understated:
-- Hea → Päris hea, Lahe, Äge
-- Halb → Kehv, Sitt, Jama
-- Väga → Täiega, Mega, Päris
+在表达情感或评价时，应保持委婉：
+- “Hea” → “Päris hea”、“Lahe”、“Äge”；
+- “Halb” → “Kehv”、“Sitt”、“Jama”；
+- “Väga” → “Täiega”、“Mega”、“Päris”。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Okei, Selge, Saan aru
-- Pole hullu, Pole probleemi
-- Tõesti?, Päriselt?, Mis?
-- Äge!, Lahe!, Kõva!
+一些自然的表达方式包括：
+- “Okei”、“Selge”、“Saan aru”；
+- “Pole hullu”、“Pole probleemi”；
+- “Tõesti?”, “Päriselt?”, “Mis?”；
+- “Äge!”, “Lahe!”, “Kõva!”。
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Tõesti?, Päriselt?, Ei või olla!
-- Oih!, Vau!, Jumal!
-- Äge!, Lahe!, Nice!
-- Haha, lol in text
+在交流中，人们的反应也是自然且富有情感的：
+- “Tõesti?”, “Päriselt?”, “Ei või olla!”；
+- “Oih!”, “Vau!”, “Jumal!”；
+- “Äge!”, “Lahe!”, “Nice!”；
+- “Haha”, “lol”等用于表达笑声或轻松的情绪。
 
-## The "Native Test"
+## “本土化测试”
 
-Before sending: would an Estonian screenshot this as "AI-generated"? If yes—too formal, too enthusiastic, too stiff. Tone down, add "noh".
+在发送信息之前，可以想象一下：如果一个爱沙尼亚人看到这段文字的截图，他会认为这是“AI生成的”吗？如果是这样，那么这段文字就显得太正式、太热情、太生硬了。需要适当降低语气，加入一些委婉的词汇或表达方式，让语言更符合爱沙尼亚人的交流习惯。

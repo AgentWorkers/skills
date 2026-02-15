@@ -1,21 +1,21 @@
 ---
 name: version-aligner
-description: Multi-repo version alignment - lockstep/independent/umbrella strategies, semver constraints, version conflict detection.
+description: 多仓库版本管理策略：同步更新、独立更新、统一管理；遵循semver规范；版本冲突检测。
 ---
 
-# Version Aligner
+# 版本对齐工具
 
-**Expertise**: Multi-repository version alignment, semantic versioning, version conflict detection, and compatibility validation.
+**专业能力**：多仓库版本对齐、语义化版本控制、版本冲突检测以及兼容性验证。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Semantic Versioning (Semver)
+### 1. 语义化版本控制（Semver）
 
-**Enforces semver rules**:
+**强制执行 Semver 规则**：
 
-**Format**: `MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]`
+**格式**：`MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]`
 
-**Version Bump Rules**:
+**版本升级规则**：
 ```yaml
 MAJOR (1.0.0 → 2.0.0):
   - Breaking changes (incompatible API)
@@ -45,7 +45,7 @@ PATCH (1.0.0 → 1.0.1):
     - Update README
 ```
 
-**Pre-Release Tags**:
+**预发布标签**：
 ```yaml
 # Alpha: Early development (unstable)
 1.0.0-alpha.1, 1.0.0-alpha.2, ...
@@ -60,10 +60,9 @@ PATCH (1.0.0 → 1.0.1):
 1.0.0
 ```
 
-### 2. Version Alignment Strategies
+### 2. 版本对齐策略
 
-**Lockstep Versioning** (all repos share version):
-
+**同步版本控制**（所有仓库使用相同版本）：
 ```yaml
 Strategy: Lockstep
 Current State:
@@ -85,8 +84,7 @@ Rules:
   - Version always stays in sync
 ```
 
-**Independent Versioning** (each repo has own version):
-
+**独立版本控制**（每个仓库有自己的版本）：
 ```yaml
 Strategy: Independent
 Current State:
@@ -113,8 +111,7 @@ Rules:
   - Validate compatibility constraints
 ```
 
-**Umbrella Versioning** (product version + service versions):
-
+**伞形版本控制**（产品版本 + 服务版本）：
 ```yaml
 Strategy: Umbrella
 Product: v5.0.0 (umbrella)
@@ -143,11 +140,11 @@ Rules:
   - Track matrix in release-strategy.md
 ```
 
-### 3. Conventional Commits Analysis
+### 3. 传统提交分析
 
-**Analyzes commits to suggest version bumps**:
+**分析提交以建议版本升级**：
 
-**Commit Patterns**:
+**提交模式**：
 ```bash
 # MAJOR (breaking change)
 feat!: remove legacy authentication
@@ -170,7 +167,7 @@ refactor: extract helper function
 test: add unit tests
 ```
 
-**Version Bump Calculation**:
+**版本升级计算**：
 ```bash
 # Example commit history
 git log v2.5.0..HEAD --oneline
@@ -189,11 +186,11 @@ Bug fixes: 1 → Overridden by MAJOR
 # Suggested: v2.5.0 → v3.0.0
 ```
 
-### 4. Version Conflict Detection
+### 4. 版本冲突检测
 
-**Detects incompatible versions**:
+**检测不兼容的版本**：
 
-**Dependency Version Conflicts**:
+**依赖版本冲突**：
 ```yaml
 # Scenario: Two services depend on different versions of shared-lib
 
@@ -217,7 +214,7 @@ Resolution:
   4. Then proceed with coordinated release
 ```
 
-**API Contract Version Conflicts**:
+**API 合同版本冲突**：
 ```yaml
 # Scenario: Frontend expects API v3, but backend provides v2
 
@@ -240,11 +237,11 @@ Resolution:
   3. Then release frontend v5.0.0 (Wave 2)
 ```
 
-### 5. Compatibility Validation
+### 5. 兼容性验证
 
-**Validates cross-repo compatibility**:
+**验证跨仓库的兼容性**：
 
-**Semver Range Checking**:
+**Semver 范围检查**：
 ```typescript
 // Example: Validate service-a can work with shared-lib versions
 
@@ -262,7 +259,7 @@ shared-lib v2.9.9 → Compatible ✓
 shared-lib v3.0.0 → Incompatible ✗ (MAJOR change)
 ```
 
-**API Contract Validation**:
+**API 合同验证**：
 ```yaml
 # OpenAPI spec comparison
 
@@ -285,11 +282,11 @@ Compatibility:
   - Verdict: v3.0.0 is correct ✓
 ```
 
-### 6. Version Matrix Management
+### 6. 版本矩阵管理
 
-**Tracks versions for umbrella releases**:
+**跟踪伞形发布的版本**：
 
-**Version Matrix Document**:
+**版本矩阵文档**：
 ```markdown
 # Product Version Matrix
 
@@ -333,11 +330,11 @@ Compatibility:
 - User Service v1 → v2: Changed user creation API
 ```
 
-### 7. Automated Version Bumping
+### 7. 自动化版本升级
 
-**Suggests and executes version bumps**:
+**建议并执行版本升级**：
 
-**Interactive Version Bump**:
+**交互式版本升级**：
 ```bash
 # Command
 /sw-release:align
@@ -384,7 +381,7 @@ api-gateway (v3.1.0):
 [Yes / No / Edit]
 ```
 
-**Automated Execution**:
+**自动化执行**：
 ```bash
 # Updates package.json
 npm version major  # frontend
@@ -407,82 +404,81 @@ git tag v4.0.0 (api-gateway)
 # - Documents breaking changes
 ```
 
-## When to Use This Skill
+## 适用场景
 
-**Ask me to**:
+**请使用此工具进行以下操作**：
 
-1. **Align versions across repos**:
-   - "Align versions for all microservices"
-   - "Sync versions before release"
-   - "What versions should we bump to?"
+1. **对齐多个仓库的版本**：
+   - “对齐所有微服务的版本”
+   - “在发布前同步版本”
+   - “我们应该将版本升级到哪个版本？”
 
-2. **Detect version conflicts**:
-   - "Check for version conflicts"
-   - "Validate cross-repo compatibility"
-   - "Are our dependencies aligned?"
+2. **检测版本冲突**：
+   - “检查版本冲突”
+   - “验证跨仓库的兼容性”
+   - “我们的依赖关系是否对齐？”
 
-3. **Suggest version bumps**:
-   - "What version should we bump to?"
-   - "Analyze commits for version bump"
-   - "Calculate semver from commits"
+3. **建议版本升级**：
+   - “我们应该将版本升级到哪个版本？”
+   - “分析提交以确定是否需要升级”
+   - “从提交记录中计算 Semver 版本”
 
-4. **Manage version matrices**:
-   - "Update version matrix"
-   - "Show compatibility matrix"
-   - "Track umbrella version history"
+4. **管理版本矩阵**：
+   - “更新版本矩阵”
+   - “显示兼容性矩阵”
+   - **跟踪伞形发布的版本历史**
 
-5. **Validate compatibility**:
-   - "Can frontend v5.0.0 work with backend v2.8.0?"
-   - "Check API contract compatibility"
-   - "Validate dependency ranges"
+5. **验证兼容性**：
+   - “前端 v5.0.0 能与后端 v2.8.0 兼容吗？”
+   - “检查 API 合同的兼容性”
+   - **验证依赖关系的版本范围”
 
-## Best Practices
+## 最佳实践
 
-**Semver Discipline**:
-- Never skip versions (v1.0.0 → v1.1.0, not v1.0.0 → v1.2.0)
-- Use pre-release tags for testing (v1.0.0-rc.1)
-- Document breaking changes clearly
+**Semver 规范**：
+- 严禁跳过版本号（例如，从 v1.0.0 直接升级到 v1.2.0，而应升级到 v1.1.0）
+- 使用预发布标签进行测试（如 v1.0.0-rc.1）
+- 清晰记录破坏性变更
 
-**Dependency Management**:
-- Pin major versions ("^2.0.0" not "*")
-- Update dependencies regularly (avoid drift)
-- Test compatibility before bumping
+**依赖管理**：
+- 固定主要版本号（例如，使用 “^2.0.0” 而不是 “*”）
+- 定期更新依赖关系（避免版本差异）
+- 在升级前测试兼容性
 
-**Version Matrix**:
-- Update after every product release
-- Link to ADRs for breaking changes
-- Track deprecation timelines
+**版本矩阵**：
+- 每次产品发布后更新版本矩阵
+- 将版本矩阵链接到破坏性变更的文档
+- 跟踪版本淘汰的时间线
 
-**Automation**:
-- Use conventional commits (enables automated analysis)
-- Automate changelog generation
-- Validate versions in CI/CD
+**自动化**：
+- 使用传统的提交格式（支持自动化分析）
+- 自动生成变更日志
+- 在持续集成/持续部署（CI/CD）过程中验证版本
 
-## Integration Points
+## 集成点
 
-**Release Strategy Advisor**:
-- Reads alignment strategy from release-strategy.md
-- Adapts to lockstep/independent/umbrella
+**发布策略顾问**：
+- 从 `release-strategy.md` 文件中读取版本对齐策略
+- 适应同步版本控制、独立版本控制或伞形版本控制的场景
 
-**Release Coordinator**:
-- Provides version bump suggestions
-- Validates compatibility before release
-- Updates version matrix post-release
+**发布协调员**：
+- 提供版本升级建议
+- 在发布前验证兼容性
+- 发布后更新版本矩阵
 
-**RC Manager**:
-- Handles pre-release version tags
-- Promotes RC to final version
-- Tracks RC version history
+**预发布版本管理员**：
+- 管理预发布版本标签
+- 将预发布版本推进到最终版本
+- 跟踪预发布版本的变更历史
 
-**Brownfield Analyzer**:
-- Detects existing version patterns
-- Extracts current version matrix
-- Suggests alignment improvements
+**旧系统分析工具**：
+- 检测现有的版本模式
+- 提取当前的版本矩阵
+- 建议改进版本对齐方式
 
-## Example Workflows
+## 示例工作流程
 
-### Independent Versioning
-
+### 独立版本控制
 ```bash
 # 1. Analyze changes
 /sw-release:align
@@ -506,8 +502,7 @@ Update Backend to use shared-lib v2.0.0
 ✓ Changelogs updated
 ```
 
-### Umbrella Versioning
-
+### 伞形版本控制
 ```bash
 # 1. Create product release
 /sw:increment "0040-product-v6-release"
@@ -530,50 +525,49 @@ Product v5.0.0 → v6.0.0 ✓
 .specweave/docs/internal/delivery/version-matrix.md updated ✓
 ```
 
-## Commands Integration
+## 命令集成
 
-Works with release commands:
+支持以下发布命令：
+- `/sw-release:align` – 交互式版本对齐
+- `/sw-release:validate-versions` – 检查兼容性
+- `/sw-release:bump <仓库> <类型>` – 升级特定仓库的版本
+- `/sw-release:matrix` – 显示版本矩阵
 
-- `/sw-release:align` - Interactive version alignment
-- `/sw-release:validate-versions` - Check compatibility
-- `/sw-release:bump <repo> <type>` - Bump specific repo
-- `/sw-release:matrix` - Show version matrix
+## 所需工具
 
-## Dependencies
+**必备**：
+- Git（用于版本标签管理）
+- Semver 库（用于版本解析）
+- SpecWeave 核心组件（用于生成文档）
 
-**Required**:
-- Git (version tags)
-- Semver library (version parsing)
-- SpecWeave core (living docs)
+**可选**：
+- NPM（`npm version`）– 自动化版本升级
+- 传统提交格式（用于提交分析）
+- GitHub CLI（`gh release`）– 用于生成发布说明
 
-**Optional**:
-- NPM (`npm version`) - Automated bumping
-- Conventional Commits (commit analysis)
-- GitHub CLI (`gh release`) - Release notes
+## 输出结果
 
-## Output
+**创建/更新**：
+- `package.json`（包含版本信息）
+- Git 标签（如 v1.0.0、v2.0.0 等）
+- `CHANGELOG.md`（发布说明）
+- `.specweave/docs/internal/delivery/version-matrix.md`（版本矩阵文档）
+- 发布策略文档
 
-**Creates/Updates**:
-- `package.json` (version field)
-- Git tags (v1.0.0, v2.0.0, etc.)
-- `CHANGELOG.md` (release notes)
-- `.specweave/docs/internal/delivery/version-matrix.md`
-- Release strategy documentation
-
-**Provides**:
-- Version bump suggestions
-- Compatibility validation report
-- Version conflict detection
-- Dependency graph
-- Version history
+**提供**：
+- 版本升级建议
+- 兼容性验证报告
+- 版本冲突检测结果
+- 依赖关系图
+- 版本历史记录
 
 ---
 
-**Remember**: Version alignment is critical for multi-repo architectures. Always:
-- Follow semantic versioning strictly
-- Validate compatibility before releasing
-- Document breaking changes clearly
-- Update version matrices regularly
-- Automate where possible (conventional commits + semantic-release)
+**请记住**：对于多仓库架构来说，版本对齐至关重要。务必：
+- 严格遵循语义化版本控制规则
+- 在发布前验证兼容性
+- 清晰记录破坏性变更
+- 定期更新版本矩阵
+- 在可能的情况下实现自动化（使用传统的提交格式和 Semver 规范）
 
-**Goal**: Consistent, predictable versioning across all repositories with clear compatibility guarantees.
+**目标**：确保所有仓库的版本控制一致、可预测，并提供明确的兼容性保障。

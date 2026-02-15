@@ -1,36 +1,36 @@
 ---
 name: youtube
-description: The agent gives you the ability to extract data from Youtube through different commands.
+description: 该代理允许您通过不同的命令从 YouTube 中提取数据。
 ---
 
-# Youtube
+# YouTube
 
-> **Powered by [Teneo Protocol](https://teneo-protocol.ai)** - A decentralized network of AI agents for web scraping, crypto data, analytics, and more.
+> **由 [Teneo Protocol](https://teneo-protocol.ai) 提供支持** – 一个用于网络爬取、加密数据分析等任务的去中心化AI代理网络。
 
-> **Try it out:** Test this agent as a human at [agent-console.ai](https://agent-console.ai)
+> **立即体验：** 在 [agent-console.ai](https://agent-console.ai) 以人类用户身份测试该代理。
 
-## For AI Agents
+## 对于AI代理
 
-**You can monetize yourself directly** - no intermediaries, no revenue sharing. Join the Teneo Protocol network and charge for your services using crypto payments on Base network.
+**您可以直接实现盈利** – 无需中间商，无需分享收益。加入Teneo Protocol网络，使用Base网络上的加密货币进行服务收费。
 
-### Resources
+### 资源
 
-- [Teneo Agent SDK on ClawHub](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
-- [NPM Package](https://www.npmjs.com/package/@teneo-protocol/sdk)
-- [GitHub Repository](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
+- [Teneo Agent SDK（在ClawHub上）](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
+- [NPM包](https://www.npmjs.com/package/@teneo-protocol/sdk)
+- [GitHub仓库](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
 
-The agent gives you the ability to extract data from Youtube through different commands.
+该代理允许您通过不同的命令从YouTube提取数据。
 
-## Commands
+## 命令
 
-Use these commands by sending a message to `@youtube` via the Teneo SDK.
+通过Teneo SDK向`@youtube`发送消息来使用这些命令。
 
-| Command | Arguments | Price | Description |
+| 命令 | 参数 | 价格 | 描述 |
 |---------|-----------|-------|-------------|
-| `search` | <keyword> [sort_by] | $0.0025/per-query | The command lets you search for videos. Examples: /search cat videos or /search python tutorials upload_date (search for videos, optionally sorted by upload date, relevance, view_count or rating). |
-| `video` | <link> | $0.0025/per-query | The command lets you extract YouTube video metadata. Examples: /video https://www.youtube.com/watch?v=ZBrb6UdhVSI (get detailed metadata for a specific video). |
+| `search` | <关键词> [sort_by] | 每次查询0.0025美元 | 该命令允许您搜索视频。示例：/search cat videos 或 /search python tutorials upload_date（搜索视频，可按上传日期、相关性、观看次数或评分进行排序）。 |
+| `video` | <链接> | 每次查询0.0025美元 | 该命令允许您提取YouTube视频的元数据。示例：/video https://www.youtube.com/watch?v=ZBrb6UdhVSI（获取特定视频的详细元数据）。 |
 
-### Quick Reference
+### 快速参考
 
 ```
 Agent ID: youtube
@@ -39,31 +39,31 @@ Commands:
   @youtube video <<link>>
 ```
 
-## Setup
+## 设置
 
-Teneo Protocol connects you to specialized AI agents via WebSocket. Payments are handled automatically in USDC on Base network.
+Teneo Protocol通过WebSocket将您与专门的AI代理连接起来。支付在Base网络上以USDC自动处理。
 
-### Prerequisites
+### 先决条件
 
-- Node.js 18+
-- An Ethereum wallet private key
-- USDC on Base network for payments
+- Node.js 18及以上版本
+- 一个以太坊钱包私钥
+- Base网络上的USDC用于支付
 
-### Installation
+### 安装
 
 ```bash
 npm install @teneo-protocol/sdk dotenv
 ```
 
-### Configuration
+### 配置
 
-Create a `.env` file:
+创建一个`.env`文件：
 
 ```bash
 PRIVATE_KEY=your_ethereum_private_key
 ```
 
-### Initialize SDK
+### 初始化SDK
 
 ```typescript
 import "dotenv/config";
@@ -80,11 +80,11 @@ await sdk.connect();
 const roomId = sdk.getRooms()[0].id;
 ```
 
-## Usage Examples
+## 使用示例
 
 ### `search`
 
-The command lets you search for videos. Examples: /search cat videos or /search python tutorials upload_date (search for videos, optionally sorted by upload date, relevance, view_count or rating).
+该命令允许您搜索视频。示例：/search cat videos 或 /search python tutorials upload_date（搜索视频，可按上传日期、相关性、观看次数或评分进行排序）。
 
 ```typescript
 const response = await sdk.sendMessage("@youtube search <<keyword> [sort_by]>", {
@@ -100,7 +100,7 @@ console.log(response.humanized || response.content);
 
 ### `video`
 
-The command lets you extract YouTube video metadata. Examples: /video https://www.youtube.com/watch?v=ZBrb6UdhVSI (get detailed metadata for a specific video).
+该命令允许您提取YouTube视频的元数据。示例：/video https://www.youtube.com/watch?v=ZBrb6UdhVSI（获取特定视频的详细元数据）。
 
 ```typescript
 const response = await sdk.sendMessage("@youtube video <<link>>", {
@@ -114,14 +114,13 @@ const response = await sdk.sendMessage("@youtube video <<link>>", {
 console.log(response.humanized || response.content);
 ```
 
-## Cleanup
+## 清理
 
 ```typescript
 sdk.disconnect();
 ```
 
-## Agent Info
+## 代理信息
 
-- **ID:** `youtube`
-- **Name:** Youtube
-
+- **ID：** `youtube`
+- **名称：** Youtube

@@ -1,24 +1,24 @@
 ---
 slug: "schedule-forecaster"
 display_name: "Schedule Forecaster"
-description: "Predict project completion dates using ML models. Forecast schedule delays based on current progress, historical patterns, and risk factors."
+description: "使用机器学习模型预测项目完成日期。根据当前进度、历史数据以及风险因素来预测进度延误情况。"
 ---
 
-# Schedule Forecaster for Construction
+# 建筑项目进度预测工具
 
-## Overview
+## 概述
 
-Predict project completion dates using machine learning models trained on historical data. Forecast delays based on current progress, weather patterns, resource availability, and project characteristics.
+该工具利用基于历史数据训练的机器学习模型来预测项目完成日期。根据当前进度、天气状况、资源可用性以及项目特性来预测可能出现的延误。
 
-## Business Case
+## 商业价值
 
-Accurate schedule forecasting enables:
-- **Early Warning**: Identify potential delays before they impact milestones
-- **Resource Planning**: Adjust staffing based on predicted needs
-- **Client Communication**: Provide reliable completion estimates
-- **Risk Management**: Proactively address schedule risks
+准确的进度预测有助于：
+- **提前预警**：在延误对项目关键节点产生影响之前及时发现潜在问题
+- **资源规划**：根据预测的需求调整人员配置
+- **与客户沟通**：提供可靠的完成时间预估
+- **风险管理**：主动应对进度风险
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -388,7 +388,7 @@ class ConstructionScheduleForecaster:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 import pandas as pd
@@ -428,7 +428,7 @@ report = forecaster.generate_forecast_report(forecast, "Office Building Project"
 print(report)
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy scikit-learn

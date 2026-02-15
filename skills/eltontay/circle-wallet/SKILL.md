@@ -1,18 +1,18 @@
-# Circle Wallet Skill
+# Circle Wallet 技能
 
-USDC wallet operations for OpenClaw agents via Circle Developer-Controlled Wallets.
+通过 Circle 开发者控制的钱包，为 OpenClaw 代理提供 USDC 钱包操作功能。
 
-## Features
+## 主要功能
 
-- Create SCA wallets (Smart Contract Accounts)
-- Check USDC balances across multiple chains
-- Send USDC to any address
-- Gas-free transactions via Circle Gas Station
-- Multi-wallet management with address or ID
-- Address validation and balance checking
-- 21 supported blockchains (mainnets + testnets)
+- 创建 SCA（智能合约账户）
+- 查看多个链上的 USDC 余额
+- 向任意地址发送 USDC
+- 通过 Circle Gas Station 进行无需 gas 费用的交易
+- 支持多钱包管理（可通过地址或 ID 进行管理）
+- 地址验证和余额查询
+- 支持 21 个区块链（主网 + 测试网）
 
-## Installation
+## 安装
 
 ```bash
 clawhub install circle-wallet
@@ -21,36 +21,36 @@ npm install
 npm link
 ```
 
-## Quick Start
+## 快速入门
 
-### 1. Get API Key
-Get your API key from https://console.circle.com
+### 1. 获取 API 密钥
+从 https://console.circle.com 获取您的 API 密钥。
 
-### 2. Setup
+### 2. 设置
 
-**New users:**
+**新用户：**
 ```bash
 circle-wallet setup --api-key your-api-key
 ```
 
-**Existing users:**
+**现有用户：**
 ```bash
 circle-wallet configure --api-key your-key --entity-secret your-secret
 ```
 
-### 3. Create Wallet & Get Funds
+### 3. 创建钱包并获取资金
 ```bash
 circle-wallet create "My Wallet"
 circle-wallet drip                    # Testnet only
 circle-wallet balance
 ```
 
-### 4. Send USDC
+### 4. 发送 USDC
 ```bash
 circle-wallet send 0x... 10 --from 0x...
 ```
 
-## All Commands
+## 所有命令
 
 ```bash
 # Setup
@@ -74,19 +74,19 @@ circle-wallet send <to> <amount> [--from <wallet-id-or-address>]  # Auto-detects
 circle-wallet drip [address]                                       # Get testnet USDC (sandbox only)
 ```
 
-## Supported Chains
+## 支持的区块链
 
-**Mainnets (10):**
+**主网（10 个）：**
 APTOS, ARB, AVAX, BASE, ETH, MONAD, OP, MATIC, SOL, UNI
 
-**Testnets (11):**
+**测试网（11 个）：**
 APTOS-TESTNET, ARB-SEPOLIA, ARC-TESTNET, AVAX-FUJI, BASE-SEPOLIA, ETH-SEPOLIA, MONAD-TESTNET, OP-SEPOLIA, MATIC-AMOY, SOL-DEVNET, UNI-SEPOLIA
 
-Use `circle-wallet chains --show-tokens` to see USDC token IDs for each chain.
+使用 `circle-wallet chains --show-tokens` 命令可查看每个链上的 USDC 代币 ID。
 
-## Usage Examples
+## 使用示例
 
-### Multi-Chain Wallets
+### 多链钱包管理
 ```bash
 # Create wallets on different chains (default: ARC-TESTNET for sandbox)
 circle-wallet create "Arc Wallet" --chain ARC-TESTNET
@@ -98,7 +98,7 @@ circle-wallet send 0xRecipient... 5 --from 0xArcWallet...
 circle-wallet send 0xRecipient... 3 --from 0xPolygonWallet...
 ```
 
-### Send Between Wallets
+### 在不同钱包之间转账
 ```bash
 # Create two wallets
 circle-wallet create "Wallet 1"
@@ -111,7 +111,7 @@ circle-wallet drip
 circle-wallet send 0xWallet2Address... 5 --from 0xWallet1Address...
 ```
 
-### Agent Usage
+### 代理使用
 ```
 User: "Check my wallet balance"
 Agent: [circle-wallet balance] "You have 42.5 USDC"
@@ -120,45 +120,32 @@ User: "Send 10 USDC to 0x123..."
 Agent: [circle-wallet send 0x123... 10] "Sent! TX: 0xabc..."
 ```
 
-## Configuration
+## 配置
 
-Credentials stored in: `~/.openclaw/circle-wallet/`
+凭据存储位置：`~/.openclaw/circle-wallet/`
 
-**Environment variables:**
-- `CIRCLE_API_KEY` - Required for setup command
-- `CIRCLE_ENV` - Optional: `sandbox` or `production` (default: sandbox)
+**环境变量：**
+- `CIRCLE_API_KEY` - 设置命令所需
+- `CIRCLE_ENV` - 可选：`sandbox` 或 `production`（默认：sandbox）
 
-## Troubleshooting
+## 故障排除
 
-**"No wallet configured"**
-```bash
-circle-wallet create "My Wallet"
-```
+- **“未配置钱包”**  
+- **“余额不足”**  
+- **“实体密钥已注册”**  
+- **“以太坊地址格式无效”**  
+  地址必须以 `0x` 开头，后跟 40 个十六进制字符。
 
-**"Insufficient balance"**
-```bash
-circle-wallet drip              # Testnet only
-# Or fund wallet externally for mainnet
-```
+## 资源
 
-**"Entity secret already registered"**
-```bash
-circle-wallet configure --api-key <key> --entity-secret <secret>
-```
+- Circle 开发者文档：https://developers.circle.com
+- Circle 控制台：https://console.circle.com
+- GitHub 仓库：https://github.com/eltontay/clawhub_circle_wallet_skill
 
-**"Invalid Ethereum address format"**
-Address must be `0x` followed by 40 hexadecimal characters.
-
-## Resources
-
-- Circle Developer Docs: https://developers.circle.com
-- Circle Console: https://console.circle.com
-- GitHub: https://github.com/eltontay/clawhub_circle_wallet_skill
-
-## License
+## 许可证
 
 MIT
 
 ---
 
-**Personal project for the OpenClaw community. Not officially endorsed by Circle.**
+**此项目为 OpenClaw 社区个人开发，未获得 Circle 的官方支持。**

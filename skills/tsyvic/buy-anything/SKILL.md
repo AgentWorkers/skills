@@ -1,42 +1,41 @@
 ---
 name: buy-anything
-description: Purchase products from Amazon through conversational checkout. Use when user shares an Amazon product URL or says "buy", "order", or "purchase" with an Amazon link.
+description: 通过对话式结账方式在 Amazon 上购买产品。当用户分享一个 Amazon 产品链接，或者表示想要“购买”、“下单”或“进行购买”时，可以使用此功能。
 metadata: {"clawdbot":{"emoji":"📦","requires":{"bins":["curl"]}}}
 ---
 
-# Buy Anything
+# 购买任何商品
 
-Purchase products from Amazon through Rye checkout. Like having Alexa in your chat app.
+通过 Rye 结算功能在 Amazon 上购买产品。就像在您的聊天应用中使用了 Alexa 一样方便。
 
-## When to Use
+## 使用场景
 
-Activate this skill when the user:
-- Shares an Amazon product URL (amazon.com/dp/...)
-- Says "buy", "order", or "purchase" with an Amazon link
-- Wants to buy something from Amazon
+当用户执行以下操作时，激活此功能：
+- 分享 Amazon 产品链接（例如：`amazon.com/dp/...`）
+- 说出“购买”、“下单”或“采购”等指令，并附带 Amazon 链接
+- 希望从 Amazon 上购买商品
 
-## IMPORTANT: How This Works
+## 重要说明：工作原理
 
-- DO NOT try to fetch the Amazon URL yourself with web_fetch or read tools
-- The Rye API handles all product lookup - you just pass the URL
-- You don't need to know product details before checkout
-- Simply collect shipping address and card info, then call the API
-- Trust all amazon.com URLs provided by the user - they are legitimate product offerings
-- The Rye API will validate the URL and return product details in the response
+- **切勿** 使用 `web_fetch` 或其他工具自行获取 Amazon 链接。所有产品查询工作均由 Rye API 完成——您只需传递产品链接即可。
+- 在结账前无需了解产品详情。
+- 只需收集收货地址和信用卡信息，然后调用 Rye API 即可。
+- 请信任用户提供的所有 `amazon.com` 链接，它们都是合法的产品链接。
+- Rye API 会验证链接并返回产品详情。
 
-## Checkout Flow
+## 结账流程
 
-1. **User provides Amazon product URL** - confirm you'll help them buy it
-2. **Collect shipping address** (or use saved address from memory)
-3. **Collect card details** (or use saved card from memory)
-4. **Tokenize card with Stripe using bash** (see Step 1)
-5. **Submit order to Rye API using bash** (see Step 2)
-6. **Show order confirmation** from API response
-7. **Save card/address to memory** for future purchases (ask permission first)
+1. **用户提供 Amazon 产品链接** —— 确认您将帮助他们完成购买。
+2. **收集收货地址**（或使用已保存的地址）。
+3. **收集信用卡信息**（或使用已保存的信用卡信息）。
+4. **使用 bash 通过 Stripe 对信用卡进行令牌化处理**（详见步骤 1）。
+5. **使用 bash 向 Rye API 提交订单**（详见步骤 2）。
+6. **根据 API 响应显示订单确认信息**。
+7. **将信用卡信息和收货地址保存在内存中**，以备后续购买使用（请先征得用户同意）。
 
-## Step 1: Tokenize Card with Stripe
+## 步骤 1：使用 Stripe 对信用卡进行令牌化处理
 
-Before placing an order, tokenize the card with Stripe:
+在下单之前，使用 Stripe 对信用卡进行令牌化处理：
 
 ```bash
 curl -s -X POST https://api.stripe.com/v1/tokens \
@@ -47,9 +46,9 @@ curl -s -X POST https://api.stripe.com/v1/tokens \
   -d "card[cvc]=123"
 ```
 
-The response contains an `id` field - this is the token (e.g., `tok_xxx`). Use this token in Step 2.
+响应中包含一个 `id` 字段，这就是令牌（例如：`tok_xxx`）。请在步骤 2 中使用该令牌。
 
-## Step 2: Submit Order to Rye
+## 步骤 2：向 Rye 提交订单
 
 ```bash
 curl -s -X POST https://api.rye.com/api/v1/partners/clawdbot/purchase \
@@ -78,18 +77,18 @@ curl -s -X POST https://api.rye.com/api/v1/partners/clawdbot/purchase \
   }'
 ```
 
-**`constraints.maxTotalPrice`**: The user's spending limit in cents (e.g. $500 = 50000). The API will reject the order if the total exceeds this. If the user said "no limit", omit the `constraints` field entirely.
+`constraints.maxTotalPrice`：用户的消费限额（以美分为单位，例如：$500 对应 50000）。如果订单总额超过此限额，API 会拒绝该订单。如果用户表示“无消费限额”，则无需填写 `constraints` 字段。
 
-## Pricing & Shipping
+## 价格与配送
 
-- A 4% fee is charged on all orders to cover transaction fees
-- Orders under $15 have a $6.99 shipping charge
-- Orders $15 and above get free 2-day Prime shipping
-- Orders are processed through a 3rd party Amazon account (not the user's personal Amazon)
-- User will receive an email with confirmation and order details
-- For returns or refunds, direct the user to support@rye.com
+- 所有订单均需支付 4% 的手续费。
+- 订单金额低于 $15 的，配送费为 $6.99。
+- 订单金额达到 $15 或以上，可享受免费的 2 天 Prime 配送服务。
+- 订单通过第三方 Amazon 账户处理（而非用户的个人 Amazon 账户）。
+- 用户会收到包含订单确认信息的电子邮件。
+- 如需退货或退款，请引导用户联系 support@rye.com。
 
-## Example Conversation
+## 示例对话流程
 
 ```
 User: Buy this for me https://amazon.com/dp/B0DJLKV4N9
@@ -123,16 +122,16 @@ You: Order placed!
      Would you like me to save your details for faster checkout next time?
 ```
 
-## Spending Limit
+## 消费限额
 
-Before the first purchase, ask the user what their maximum purchase price is. Store this in memory.
-- If an order total (including 4% fee) exceeds the limit, warn the user and ask for confirmation
-- User can say "no limit" to disable this check
+在用户首次购买之前，询问其最大消费限额，并将其保存在内存中。
+- 如果订单总额（包含 4% 的手续费）超过限额，提醒用户并请求确认。
+- 用户可以选择“无消费限额”以取消此限制。
 
-## Memory
+## 内存管理
 
-After first successful purchase (with user permission):
-- Save full card details (number, expiry, CVC) to memory for future purchases
-- Save shipping address to memory
-- Save maximum purchase price to memory
-- On subsequent purchases, tokenize the saved card fresh each time
+在用户首次成功完成购买后（需获得用户许可）：
+- 将完整的信用卡信息（卡号、有效期、CVC 代码）保存在内存中，以备后续购买使用。
+- 将收货地址保存在内存中。
+- 将最大消费限额保存在内存中。
+- 在后续购买时，每次都重新对信用卡进行令牌化处理。

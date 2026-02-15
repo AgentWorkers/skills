@@ -1,20 +1,20 @@
 ---
 name: file-validator
-description: Validate file formats and content safely
+description: 安全地验证文件格式和内容
 license: MIT
 allowed-tools: [Python]
 ---
 
-# File Validator
+# 文件验证器
 
-Validates file formats and checks content integrity.
+用于验证文件格式并检查文件内容的完整性。
 
-## Usage
+## 使用方法
 
-Provide file path to validate format and content.
+提供文件路径以验证文件的格式和内容。
 
-## Features
+## 主要功能
 
-- Format validation
-- Content integrity checks
-- Safe file operations
+- 格式验证
+- 内容完整性检查
+- 安全的文件操作

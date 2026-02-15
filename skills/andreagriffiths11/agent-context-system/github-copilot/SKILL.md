@@ -1,6 +1,6 @@
 ---
 name: agent-context-system
-description: Persistent local-only memory for AI coding agents. AGENTS.md (committed) + .agents.local.md (gitignored) = context that persists across sessions. Read both at start, update scratchpad at end, promote stable patterns over time.
+description: 专为AI编码代理设计的持久化本地内存机制。文件结构如下：`AGENTS.md`（已提交到版本控制系统）和`.agents.local.md`（被Git忽略）。这种机制确保了上下文信息在会话之间得以保留：在程序启动时需要同时读取这两个文件，在程序结束时更新临时存储的数据（scratchpad），从而逐步形成稳定的开发模式。
 license: See LICENSE file in repository root
 metadata:
   author: AndreaGriffiths11
@@ -8,73 +8,68 @@ metadata:
 allowed-tools: file_reader, file_writer, terminal
 ---
 
-# Agent Context System
+# 代理上下文系统
 
-Agents start from zero every session. This skill solves that with two markdown files: one committed (`AGENTS.md`), one gitignored (`.agents.local.md`). You read both at session start, update the scratchpad at session end, and promote stable patterns over time.
+每次会话开始时，代理的状态都归零。本解决方案通过两个 Markdown 文件来解决这个问题：一个文件被提交到版本控制系统中（`AGENTS.md`），另一个文件被 Git 忽略（`.agents.local.md`）。在会话开始时读取这两个文件，在会话结束时更新 `agents.local.md`，并逐步将稳定的使用模式纳入其中。
 
-## The Two-File System
+## 两文件系统
 
-- **`AGENTS.md`** — Project source of truth. Committed and shared. Under 120 lines. Contains compressed project knowledge (patterns, boundaries, gotchas, commands, architecture).
-- **`.agents.local.md`** — Personal scratchpad. Gitignored. Grows over time as you log what you learn each session. Session notes, dead ends, preferences, patterns waiting for promotion.
+- **`AGENTS.md`**：项目的官方知识库。该文件已被提交到版本控制系统中，并可供所有代理共享。文件内容不超过 120 行，包含了项目的核心知识（使用模式、操作规则、注意事项、常用命令以及系统架构）。
+- **`.agents.local.md`**：个人的临时记录本。该文件被 Git 忽略，会随着每次会话的学习内容逐渐增长，其中记录了会话笔记、遇到的问题、个人偏好以及需要推广的使用模式。
 
-## Workflow
+## 工作流程
 
-### 1. Initialize
+### 1. 初始化
+运行 `./scripts/init-agent-context.sh` 命令，根据模板创建 `.agents.local.md` 文件，并确保该文件被 Git 忽略；同时配置代理的相关工具设置。
 
-Run `./scripts/init-agent-context.sh` to create `.agents.local.md` from template, ensure it's gitignored, and wire up agent tool configs.
+### 2. 工作
+在会话开始时读取 `AGENTS.md` 和 `.agents.local.md`。`AGENTS.md` 提供项目的核心知识，`.agents.local.md` 则记录了之前会话中的学习内容。
 
-### 2. Work
+### 3. 更新记录
+在会话结束时，将以下内容添加到 `agents.local.md` 的会话日志中：
+- 发生了哪些变化
+- 哪些方法有效
+- 哪些方法无效
+- 你做出了哪些决策
+- 你学到了哪些新的使用模式
 
-Read both files at session start. `AGENTS.md` gives compressed project knowledge. `.agents.local.md` gives accumulated learnings from past sessions.
+### 4. 压缩文件
+当 `agents.local.md` 的内容超过 300 行时，对其进行压缩处理：
+- 删除重复的内容
+- 合并相关的记录
+- 保持文件结构的简洁性
 
-### 3. Grow
+### 5. 提升模式到官方知识库
+在压缩过程中，如果某个使用模式在多个会话中反复出现，请在该文件的“Ready to Promote”（准备推广）部分进行标记。最终由人工决定是否将该模式正式纳入 `AGENTS.md`。
 
-At session end, append to the scratchpad's Session Log: what changed, what worked, what didn't, decisions made, patterns learned.
+## 入门指南
+当用户询问如何设置代理上下文时，请按照以下步骤操作：
+1. **检查 `AGENTS.md` 是否存在**。如果不存在，需要从模板中复制该文件或从头开始创建。请参考该仓库根目录下的模板文件。
+2. **检查 `.agents.local.md` 是否存在**。如果不存在，运行 `./scripts/init-agent-context.sh` 命令进行初始化。
+3. **确认 `.agents.local.md` 是否被 Git 忽略**。如果未被忽略，请将其添加到 `.gitignore` 文件中。
+4. **询问用户使用的是哪些代理工具**。初始化脚本可以配置 Claude Code（`CLAUEDE.md` 符号链接）、Cursor（`.cursorrules` 文件）或 Copilot（`copilot-instructions.md` 文件）等工具。
 
-### 4. Compress
+## 关键资源
+- **完整知识库**：`../SKILL.md`（项目根目录）——包含全面的研究基础和指南。
+- **项目模板**：`../AGENTS.md`——官方的文件结构和格式规范。
+- **脚本**：`../scripts/`——用于初始化、压缩、推广、验证和发布文件内容的脚本。
+- **详细文档**：`../agent_docs/`——包含使用规范、系统架构及注意事项等详细信息（按需加载）。
 
-When the scratchpad hits 300 lines, compress: deduplicate, merge related entries, keep it tight.
+## 重要提示：
+- **指令使用量**：Frontier 类的大语言模型通常会接收约 150–200 条指令；Claude Code 的系统提示最多使用 50 条指令。请确保 `AGENTS.md` 的内容不超过 120 行。
+- **被动上下文的优势**：使用嵌入的上下文时，Vercel 的评估通过率为 100%；而如果让代理自行查找信息，评估通过率仅为 53%。
+- **子代理的设置**：子代理不会继承会话历史记录，它们只能获取主代理的指令文件。需要明确告知它们也阅读 `.agents.local.md`。
+- **压缩格式**：使用管道分隔的格式来记录信息（例如：`pattern | where-to-see-it`、`rule | reason`、`trap | fix`），这样能更高效地存储信息。
 
-### 5. Promote
+## 会话规范
+1. 在开始任何任务之前，先读取 `AGENTS.md` 和 `.agents.local.md`（如果存在的话）。
+2. 遵循项目中定义的规则和使用规范。
+3. **在会话结束时，将会话的详细信息添加到 `.agents.local.md` 的会话日志中**。这是最容易被忽略的步骤。如果用户似乎要结束会话却没有要求你记录日志，请主动提出更新 `agents.local.md`。
+   - 发生了哪些变化
+   - 哪些方法有效
+   - 哪些方法无效
+   - 你做出了哪些决策
+   - 你学到了哪些新的使用模式
+4. 当 `agents.local.md` 超过 300 行时，对其进行压缩处理，并标记在多个会话中反复出现的模式，以便将其提升到官方知识库中。
 
-During compression, if a pattern recurs across 3+ sessions, flag it in the scratchpad's "Ready to Promote" section. The human decides when to move it into `AGENTS.md`.
-
-## Get Started
-
-When a user asks about setting up agent context:
-
-1. **Check if `AGENTS.md` exists.** If not, they need to copy it from this template or create from scratch. Read the template at the root of this repo for reference.
-
-2. **Check if `.agents.local.md` exists.** If not, run `./scripts/init-agent-context.sh` to set it up from template.
-
-3. **Check if `.agents.local.md` is gitignored.** If not, add `.agents.local.md` to `.gitignore`.
-
-4. **Ask which agents they use.** The init script can wire up Claude Code (CLAUDE.md symlink), Cursor (.cursorrules), Windsurf (.windsurfrules), or Copilot (copilot-instructions.md).
-
-## Key Resources
-
-- **Full knowledge base:** `../SKILL.md` (root level) — comprehensive guide with research foundation
-- **Project template:** `../AGENTS.md` — the committed file structure and format
-- **Scripts:** `../scripts/` — init, compress, promote, validate, publish
-- **Deep docs:** `../agent_docs/` — conventions, architecture, gotchas (load on demand)
-
-## Important Context
-
-- **Instruction budget:** Frontier LLMs follow ~150-200 instructions. Claude Code's system prompt uses ~50. Keep `AGENTS.md` under 120 lines.
-- **Passive context wins:** Vercel evals: 100% pass rate with embedded context vs 53% when agents decide to look things up.
-- **Subagent-ready:** Subagents don't inherit conversation history. They only get the root instruction file. Tell them explicitly to read `.agents.local.md` too.
-- **Compressed format:** Use pipe-delimited patterns (`pattern | where-to-see-it`), boundaries (`rule | reason`), gotchas (`trap | fix`). Dense beats verbose.
-
-## Session Protocol
-
-1. Read `AGENTS.md` and `.agents.local.md` (if it exists) before starting any task
-2. Follow project conventions and boundaries defined in compressed format
-3. **At session end, append to `.agents.local.md` Session Log.** This is the most commonly missed step. If the user appears to be ending the session without asking you to log, proactively offer to update the scratchpad.
-   - Done: (what changed)
-   - Worked: (reuse this)
-   - Didn't work: (avoid this)
-   - Decided: (choices and reasoning)
-   - Learned: (new patterns or gotchas)
-4. When scratchpad exceeds 300 lines, compress and flag recurring patterns (3+ sessions) for promotion
-
-> **Known gap:** Most agent tools (Copilot Chat, Cursor, Windsurf) end sessions silently — no hook fires. Session logging depends on the agent seeing Rule 7 in AGENTS.md and acting on it, or the user prompting "log this session." Claude Code's auto memory handles this automatically.
+> **已知问题**：大多数代理工具（如 Copilot Chat、Cursor、Windsurf）在会话结束时不会自动记录日志。会话日志的记录依赖于代理是否看到了 `AGENTS.md` 中的相应规则并采取行动，或者用户是否主动要求记录会话内容。Claude Code 的自动记忆功能会自动处理这部分逻辑。

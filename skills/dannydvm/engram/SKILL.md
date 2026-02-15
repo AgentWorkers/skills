@@ -1,6 +1,13 @@
 ---
 name: engram
-description: Persistent semantic memory layer for AI agents. Local-first storage (SQLite+LanceDB) with Ollama embeddings. Store and recall facts, decisions, preferences, events, relationships across sessions. Supports memory decay, deduplication, typed memories (5 types), memory relationships (7 graph relation types), agent/user scoping, semantic search, context-aware recall, auto-extraction from text (rules/LLM/hybrid), import/export, REST API, MCP protocol. Solves context window and compaction amnesia. Server at localhost:3400, dashboard at /dashboard. Install via npm (engram-memory), requires Ollama with nomic-embed-text model.
+description: **用于AI代理的持久性语义记忆层**  
+该系统采用“本地优先”的存储策略（SQLite + LanceDB），并结合Ollama模型进行数据存储与检索。能够存储和调用事实、决策、偏好、事件以及跨会话的相关信息。系统支持记忆内容的衰减处理、数据去重功能，支持多种类型的数据存储（共5种类型），以及多种类型的数据关系（共7种图关系）。同时具备代理/用户级别的数据访问控制、语义搜索功能，并能根据上下文自动从文本中提取相关信息（支持规则驱动、大型语言模型或混合方法）。支持数据的导入/导出操作，提供REST API接口以及MCP协议。该系统有效解决了“上下文窗口”相关的问题以及数据存储的压缩/恢复问题。  
+
+**服务器地址及界面**：  
+服务器运行在本地（localhost:3400），管理界面位于 `/dashboard`。  
+
+**安装方式**：  
+可通过npm包 `engram-memory` 进行安装。安装时需要确保已安装Ollama模型以及 `nomic-embed-text` 插件。
 requires:
   bins:
     - engram
@@ -15,24 +22,28 @@ install:
     engram serve
 ---
 
-# Engram: Persistent Memory for AI Agents
+# Engram：为AI代理提供持久性记忆系统
 
-Engram gives you **durable semantic memory** that survives sessions, compaction, crashes. All local, no cloud, no token cost.
+Engram能够为您的AI代理提供持久且语义明确的内存存储，这种记忆能够在会话结束、数据压缩或系统崩溃后依然保留。所有数据都存储在本地，无需依赖云服务，也不会产生任何token费用。
 
-## Boot Sequence (MANDATORY)
+## 启动序列（必填）
 
-**On every session start**, run:
+**在每次会话开始时**，请运行以下命令：
 ```bash
 engram search "<current task context>" --limit 10
 ```
 
-Example: `engram search "client onboarding status churn risk" --limit 10`
+示例：`engram search "client onboarding status churn risk" --limit 10`
+该命令会从之前的会话中检索与“客户入职状态及流失风险”相关的信息，以便您在开始新工作之前能够快速获取所需信息。
 
-This recalls relevant memories from previous sessions before you start work.
+## 存储记忆
 
-## Storing Memories
-
-**5 memory types:** `fact` | `decision` | `preference` | `event` | `relationship`
+Engram支持五种类型的内存：
+- `fact`（事实）
+- `decision`（决策）
+- `preference`（偏好）
+- `event`（事件）
+- `relationship`（关系）
 
 ```bash
 # Facts — objective information
@@ -51,15 +62,16 @@ engram add "Launched v2.0 on January 15, 2026" --type event --tags launch,milest
 engram add "Mia is client manager, reports to Danny" --type relationship --tags team,roles
 ```
 
-**When to store:**
-- Client status changes (churn risk, upsell opportunity, complaints)
-- Important decisions made about projects/clients
-- Facts learned during work (credentials, preferences, dates)
-- Milestones completed (onboarding steps, launches)
+**何时存储记忆？**
+- 客户状态发生变化时（例如流失风险、潜在的追加销售机会、客户投诉等）
+- 关于项目或客户的重要决策
+- 工作过程中获取的事实信息（如凭证、客户偏好、日期等）
+- 完成的里程碑（如入职流程、产品发布等）
 
-## Searching
+## 搜索
 
-**Semantic search** (finds meaning, not just keywords):
+Engram支持**语义搜索**，能够理解记忆内容的实际含义而不仅仅是关键词。
+
 ```bash
 # Basic search
 engram search "database choice" --limit 5
@@ -71,37 +83,36 @@ engram search "user preferences" --type preference --limit 10
 engram search "project status" --agent theo --limit 10
 ```
 
-## Context-Aware Recall
+## 基于上下文的记忆检索
 
-**Recall** ranks by: semantic similarity × recency × salience × access frequency
+Engram会根据以下因素对记忆进行排序：
+- 语义相似度
+- 最近访问时间
+- 重要性
+- 访问频率
 
 ```bash
 engram recall "Setting up new client deployment" --limit 10
 ```
 
-Better than search when you need **the most relevant memories for a specific context**.
+当您需要根据特定上下文找到最相关的记忆时，这种检索方式会更加高效。
 
-## Memory Relationships
+## 记忆之间的关系
 
-**7 relation types:** `related_to` | `supports` | `contradicts` | `caused_by` | `supersedes` | `part_of` | `references`
+Engram支持七种类型的关系：
+- `related_to`（与...相关）
+- `supports`（支持...）
+- `contradicts`（与...矛盾）
+- `caused_by`（由...引起）
+- `supersedes`（被...取代）
+- `part_of`（是...的一部分）
+- `references`（引用...）
 
-```bash
-# Manual relation
-engram relate <memory-id-1> <memory-id-2> --type supports
+这些关系有助于提高记忆的检索效率——关系紧密的记忆会在检索结果中占据更靠前的位置。
 
-# Auto-detect relations via semantic similarity
-engram auto-relate <memory-id>
+## 从文本中自动提取记忆
 
-# List relations for a memory
-engram relations <memory-id>
-```
-
-Relations boost recall scoring — well-connected memories rank higher.
-
-## Auto-Extract from Text
-
-**Ingest** extracts memories from raw text (rules-based by default, optionally LLM):
-
+Engram能够从原始文本中自动提取记忆信息（默认基于规则进行提取，也可选择使用大型语言模型LLM进行提取）：
 ```bash
 # From stdin
 echo "Mia confirmed client is happy. We decided to upsell SEO." | engram ingest
@@ -110,9 +121,9 @@ echo "Mia confirmed client is happy. We decided to upsell SEO." | engram ingest
 engram extract "Sarah joined as CTO last Tuesday. Prefers async communication."
 ```
 
-Uses memory types, tags, confidence scoring automatically.
+系统会自动识别记忆的类型、添加标签，并对其进行重要性评分。
 
-## Management
+## 系统管理
 
 ```bash
 # Stats (memory count, types, storage size)
@@ -134,28 +145,30 @@ engram forget <memory-id> --reason "outdated"
 engram decay
 ```
 
-## Memory Decay
+## 记忆衰减
 
-Inspired by biological memory:
-- Every memory has **salience** (0.0 → 1.0)
-- Daily decay: `salience *= 0.99` (configurable)
-- Accessing a memory boosts salience
-- Low-salience memories fade from search results
-- Nothing deleted — archived memories can be recovered
+Engram的设计灵感来源于生物记忆机制：
+- 每条记忆都有一个重要性评分（范围从0.0到1.0）。
+- 每天记忆的重要性会以0.99的速率衰减（可配置）。
+- 访问某条记忆会提升其重要性评分。
+- 重要性较低的记忆会逐渐从搜索结果中消失。
+- 所有记忆都不会被删除，只是被归档，需要时可以重新检索。
 
-## Agent Scoping
+## 记忆的访问范围
 
-**4 scope levels:** `global` → `agent` → `user` → `session`
+Engram支持四种访问范围：
+- `global`（全局）
+- `agent`（代理）
+- `user`（用户）
+- `session`（会话）
 
-By default:
-- Agents see their own memories + global memories
-- `--agent <agentId>` filters to specific agent
-- Scope isolation prevents memory bleed between agents
+默认情况下，代理可以查看自己的记忆以及全局记忆；
+使用`--agent <agentId>`命令可以过滤出特定代理的记忆。
+这种范围隔离机制可以防止不同代理之间的记忆相互干扰。
 
 ## REST API
 
-Server runs at `http://localhost:3400` (start with `engram serve`).
-
+Engram的服务器运行地址为`http://localhost:3400`，可以通过`engram serve`命令启动服务。
 ```bash
 # Add memory
 curl -X POST http://localhost:3400/api/memories \
@@ -174,12 +187,11 @@ curl -X POST http://localhost:3400/api/recall \
 curl http://localhost:3400/api/stats
 ```
 
-**Dashboard:** `http://localhost:3400/dashboard` (visual search, browse, delete, export)
+**控制台**：`http://localhost:3400/dashboard`（支持可视化搜索、浏览、删除和导出记忆数据）。
 
-## MCP Integration
+## 与MCP系统的集成
 
-Engram works as an MCP server. Add to your MCP client config:
-
+Engram可以作为MCP（Memory and Context Platform）的服务器使用。您可以在MCP客户端配置中添加Engram的相关功能：
 ```json
 {
   "mcpServers": {
@@ -190,12 +202,15 @@ Engram works as an MCP server. Add to your MCP client config:
 }
 ```
 
-**MCP tools:** `engram_add`, `engram_search`, `engram_recall`, `engram_forget`
+**MCP相关工具**：
+- `engram_add`：用于添加新的记忆
+- `engram_search`：用于搜索记忆
+- `engram_recall`：用于检索记忆
+- `engram_forget`：用于删除记忆
 
-## Configuration
+## 配置文件
 
-`~/.engram/config.yaml`:
-
+配置文件位于`~/.engram/config.yaml`：
 ```yaml
 storage:
   path: ~/.engram
@@ -219,38 +234,23 @@ dedup:
   threshold: 0.95            # cosine similarity for dedup
 ```
 
-## Best Practices
+## 使用建议：
+1. **启动时进行检索**：每次会话开始时，务必执行`engram search "<context>" --limit 10`以获取相关记忆。
+2. **正确分类记忆类型**：使用正确的记忆类型有助于提高检索效果。
+3. **合理添加标签**：标签有助于过滤和跨记忆之间的关联。
+4. **自动提取对话内容**：在重要的对话发生后，使用`engram ingest`命令将对话内容存储到记忆系统中。
+5. **让记忆自然衰减**：不要存储无关紧要的信息，让重要的记忆保持较高的重要性。
+6. **利用关系结构**：在添加相互关联的记忆后，使用`auto-relate`命令建立它们之间的关系。
+7. **按代理划分记忆**：将不同代理的记忆分开存储，以保持清晰的上下文。
 
-1. **Boot with recall** — Always `engram search "<context>" --limit 10` at session start
-2. **Type everything** — Use correct memory types for better recall ranking
-3. **Tag generously** — Tags enable filtering and cross-referencing
-4. **Ingest conversations** — Use `engram ingest` after important exchanges
-5. **Let decay work** — Don't store trivial facts; let important memories naturally stay salient
-6. **Use relations** — `auto-relate` after adding interconnected memories
-7. **Scope by agent** — Keep agent memories separate for clean context
+## 常见问题排查：
 
-## Troubleshooting
-
-**Server not running?**
-```bash
-engram serve &
-# or install as daemon: see ~/.engram/daemon/install.sh
-```
-
-**Embeddings failing?**
-```bash
-ollama pull nomic-embed-text
-curl http://localhost:11434/api/tags  # verify Ollama running
-```
-
-**Want to reset?**
-```bash
-rm -rf ~/.engram/memories.db ~/.engram/vectors.lance
-engram serve  # rebuilds from scratch
-```
+- **服务器未运行？**请检查服务器是否正常启动。
+- **嵌入功能失败？**请检查相关的代码实现是否正确。
+- **需要重置配置？**可以使用相应的命令进行重置。
 
 ---
 
-**Created by:** Danny Veiga ([@dannyveigatx](https://x.com/dannyveigatx))  
-**Source:** https://github.com/Dannydvm/engram-memory  
-**Docs:** https://github.com/Dannydvm/engram-memory/blob/main/README.md
+**创建者：** Danny Veiga ([@dannyveigatx](https://x.com/dannyveigatx))  
+**来源代码：** https://github.com/Dannydvm/engram-memory  
+**文档：** https://github.com/Dannydvm/engram-memory/blob/main/README.md

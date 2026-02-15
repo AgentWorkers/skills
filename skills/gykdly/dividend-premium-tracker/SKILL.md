@@ -1,50 +1,49 @@
 ---
 name: dividend-premium-tracker
-description: Track the dividend premium (dividend yield minus 10-year bond yield) for CSI Dividend Low Volatility Index. Monitor dividend yield, 10-year bond yield, and calculate the premium for investment decisions.
+description: 跟踪 CSI 股息低波动指数的股息溢价（股息收益率减去 10 年期债券收益率）。监控股息收益率和 10 年期债券收益率，并根据这些数据计算股息溢价，以辅助投资决策。
 version: 1.0.1
 ---
 
-# Dividend Premium Tracker
+# 股息溢价追踪器
 
-Track the dividend premium (dividend yield minus 10-year bond yield) for CSI Dividend Low Volatility Index.
+该工具用于追踪CSI股息低波动指数（CSI Dividend Low Volatility Index, H30269）的股息溢价（股息收益率减去10年期国债收益率）。
 
-## Description
+## 说明
 
-This skill tracks the dividend premium for the CSI Dividend Low Volatility Index (H30269), which is crucial for investment decisions in China's dividend-focused market. The dividend premium represents the excess return of dividend-paying stocks over risk-free bonds.
+该工具主要用于监控CSI股息低波动指数（H30269）的股息溢价，这一指标对中国以股息收益为主的投资决策具有重要意义。股息溢价反映了分红股票的超额回报相对于无风险债券的表现。
 
-## What It Tracks
+## 监控内容：
 
-- **CSI Dividend Low Volatility Index Dividend Yield** - From China Securities Index
-- **10-Year China Government Bond Yield** - From Ministry of Finance
-- **Dividend Premium** = Dividend Yield - Bond Yield
+- **CSI股息低波动指数股息收益率**：来自中国证券指数（China Securities Index）
+- **10年期中国国债收益率**：来自财政部（Ministry of Finance）
+- **股息溢价** = 股息收益率 - 国债收益率
 
-## Features
+## 功能特点：
 
-- 📊 Auto-download and track dividend and bond yield data
-- 📈 Generate Excel reports with clean charts
-- 🔔 Alert when bond yield rises for 3 consecutive days
-- 🔔 Alert when premium drops below 1%
-- 📅 Support for historical data backfill
+- 📊 自动下载并跟踪股息收益率和国债收益率数据
+- 📈 生成包含清晰图表的Excel报告
+- 🔔 当国债收益率连续3天上升时发出警报
+- 🔔 当股息溢价降至1%以下时发出警报
+- 📅 支持历史数据回填（backfill historical data）
 
-## Commands
+## 命令：
 
-### Update Today's Data
+### 更新今日数据
 ```bash
 python3 scripts/update_dividend_premium.py --update
 ```
 
-### Check Monitoring Alerts
+### 检查监控警报
 ```bash
 python3 scripts/monitor_dividend_premium.py --check
 ```
 
-### Backfill Historical Data
+### 回填历史数据
 ```bash
 python3 scripts/update_dividend_premium.py --backfill 2026-01-01 2026-01-31
 ```
 
-## Files
-
+## 相关文件
 ```
 dividend-premium-tracker/
 ├── SKILL.md              # This file
@@ -55,54 +54,46 @@ dividend-premium-tracker/
 └── assets/              # Output files (optional)
 ```
 
-## Setup
+## 设置：
 
-### Telegram Alerts (Optional)
+### Telegram警报（可选）
 
-Set Telegram Bot Token for alerts:
+设置Telegram机器人Token以接收警报：
 ```bash
 export TELEGRAM_BOT_TOKEN="your_bot_token_here"
 ```
 
-### Cron Job (Daily Update)
-
+### Cron作业（每日更新）
 ```bash
 crontab -e
 # Add line:
 0 17 * * * cd /path/to/skill && python3 scripts/update_dividend_premium.py --update
 ```
 
-## Data Sources
+## 数据来源：
 
-| Data | Source | URL |
+| 数据类型 | 来源 | URL |
 |------|--------|-----|
-| Dividend Yield | China Securities Index | [H30269 Indicator XLS](https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/file/autofile/indicator/H30269indicator.xls) |
-| Bond Yield | Ministry of Finance | [ChinaBond](https://yield.chinabond.com.cn/cbweb-czb-web/czb/moreInfo?locale=cn_ZH&nameType=1) |
+| 股息收益率 | 中国证券指数 | [H30269指标数据文件](https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/file/autofile/indicator/H30269indicator.xls) |
+| 国债收益率 | 财政部 | [ChinaBond数据网站](https://yield.chinabond.com.cn/cbweb-czb-web/czb/moreInfo?locale=cn_ZH&nameType=1) |
 
-## Alert Thresholds
+## 需求系统配置：
 
-| Condition | Action |
-|-----------|--------|
-| Bond yield rises 3 consecutive days | Telegram alert |
-| Premium < 1% | Telegram alert |
+- Python 3.10及以上版本
+- pandas库
+- openpyxl库
+- xlrd库
+- curl工具（用于数据下载）
 
-## Requirements
+## 使用说明：
 
-- Python 3.10+
-- pandas
-- openpyxl
-- xlrd
-- curl (for data download)
-
-## Usage Notes
-
-- Premium is calculated as: `Dividend Yield (%) - Bond Yield (%)`
-- Premium < 1% suggests potential buying opportunity
-- Premium < 0 indicates dividend stocks are cheaper than bonds
-- Historical data from 2026-01-14 to present included
+- 股息溢价计算公式：`股息收益率 (%) - 国债收益率 (%)`
+- 当股息溢价低于1%时，表示可能存在买入机会
+- 当股息溢价为负数时，说明分红股票的性价比高于债券
+- 支持从2026年1月14日至今的历史数据
 
 ---
 
-**Related Indices:**
-- CSI Dividend Low Volatility Index (H30269/000966)
-- 10-Year China Government Bond
+**相关指数：**
+- CSI股息低波动指数（H30269/000966）
+- 10年期中国国债

@@ -1,11 +1,11 @@
 ---
 name: glab-opentofu
-description: Work with OpenTofu state management in GitLab. Use when managing Terraform/OpenTofu state, configuring state backends, or working with infrastructure as code. Triggers on OpenTofu, Terraform, state management, infrastructure as code, IaC.
+description: 在 GitLab 中使用 OpenTofu 的状态管理功能。适用于管理 Terraform/OpenTofu 的状态、配置状态后端，或处理基础设施即代码（Infrastructure as Code, IaC）相关的工作。该功能会在 OpenTofu、Terraform、状态管理以及基础设施即代码相关操作触发时执行。
 ---
 
 # glab opentofu
 
-## Overview
+## 概述
 
 ```
 
@@ -26,12 +26,12 @@ description: Work with OpenTofu state management in GitLab. Use when managing Te
     -R --repo                            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab opentofu --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

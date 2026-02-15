@@ -1,480 +1,297 @@
 ---
 name: orchata-rag
-description: Knowledge management and RAG platform with tree-based document indexing. Use this skill to search, browse, and manage Orchata knowledge bases via MCP tools.
+description: 知识管理及RAG（Research, Access, and Governance）平台，具备基于树的文档索引功能。利用该技能，可通过MCP（Knowledge Management Platform）工具搜索、浏览和管理Orchata知识库中的内容。
 metadata:
   version: 1.0.0
   author: Orchata AI
 ---
 
-# Orchata Skills
+# Orchata 技能指南
 
-This document describes how to effectively use Orchata, a RAG (Retrieval-Augmented Generation) platform with tree-based document indexing. Load this into your context to interact with Orchata knowledge bases.
+本文档介绍了如何高效使用 Orchata——这是一个基于树形索引的 RAG（检索增强生成）平台。请将此文档加载到您的环境中，以便与 Orchata 知识库进行交互。
 
-## What is Orchata?
+## 什么是 Orchata？
 
-Orchata is a knowledge management platform that:
+Orchata 是一个知识管理平台，具有以下特点：
 
-- **Organizes documents into Spaces** - Logical containers for related content
-- **Uses tree-based indexing** - Documents are parsed into hierarchical structures with sections, summaries, and page ranges
-- **Provides semantic search** - Find relevant content using natural language queries
-- **Exposes MCP tools** - AI assistants can directly manage and query knowledge bases
+- **将文档组织到“空间”中**：这些空间是包含相关内容的逻辑容器。
+- **使用基于树的索引**：文档被解析为包含章节、摘要和页面范围的分层结构。
+- **提供语义搜索**：可以使用自然语言查询找到相关内容。
+- **支持 MCP 工具**：AI 助手可以直接管理和查询知识库。
 
-## Core Concepts
+## 核心概念
 
-### Spaces
+### 空间（Spaces）
 
-A **Space** is a container for related documents. Think of it as a folder with semantic search capabilities.
+**空间** 是用于存放相关文档的容器。可以将其视为具有语义搜索功能的文件夹。
 
-- Each space has a `name`, `description`, and optional `icon`
-- Descriptions are used by `smart_query` to recommend relevant spaces
-- Spaces can be archived (soft-deleted)
+- 每个空间都有一个 `名称`、`描述` 和可选的 `图标`。
+- `描述` 被 `smart_query` 功能用来推荐相关的空间。
+- 空间可以被归档（即软删除）。
 
-### Documents
+### 文档（Documents）
 
-A **Document** is content within a space. Supported formats include:
+**文档** 是空间内的内容。支持的格式包括：
+- PDF（基于文本的文档和通过 OCR 扫描的文档）
+- Word 文档（.docx）
+- Excel 电子表格（.xlsx）
+- PowerPoint 演示文稿（.pptx）
+- Markdown 文件（.md）
+- 普通文本文件（.txt）
+- 图片（PNG、JPG 等）
 
-- PDF (text-based and scanned with OCR)
-- Word documents (.docx)
-- Excel spreadsheets (.xlsx)
-- PowerPoint presentations (.pptx)
-- Markdown files (.md)
-- Plain text files (.txt)
-- Images (PNG, JPG, etc.)
+**文档状态：**
 
-**Document Status:**
-
-| Status | Description |
+| 状态 | 描述 |
 | ------ | ----------- |
-| `PENDING` | Uploaded, waiting for processing |
-| `PROCESSING` | Being parsed and indexed |
-| `COMPLETED` | Ready for queries |
-| `FAILED` | Processing error occurred |
+| `PENDING` | 已上传，等待处理 |
+| `PROCESSING` | 正在解析和索引 |
+| `COMPLETED` | 可以查询 |
+| `FAILED` | 处理过程中出现错误 |
 
-**Important:** Only query documents with `status: "COMPLETED"`. Other statuses won't return results.
+**注意：** 仅查询状态为 `COMPLETED` 的文档。其他状态的文档将不会返回结果。
 
-### Document Trees
+### 文档树（Document Trees）
 
-Documents are indexed into **hierarchical tree structures**:
+文档被索引成 **分层树结构**：
 
-- Each tree has nodes representing sections/chapters
-- Nodes contain: `title`, `summary`, `startPage`, `endPage`, `textContent`
-- Trees enable precise navigation of large documents
+- 每棵树都有表示章节/部分的节点。
+- 节点包含：`title`（标题）、`summary`（摘要）、`startPage`（起始页码）、`endPage`（结束页码）、`textContent`（文本内容）。
+- 这种结构使得大型文档的导航更加方便。
 
-### Queries
+### 查询（Queries）
 
-Two types of queries are available:
+有两种类型的查询：
 
-1. **`query_spaces`** - Search document content using tree-based reasoning
-2. **`smart_query`** - Discover which spaces are relevant for a query
-
----
-
-## MCP Tools Reference
-
-### Space Management
-
-#### list_spaces
-
-List all knowledge spaces in the organization.
-
-```text
-list_spaces
-list_spaces with status="active"
-list_spaces with page=1 pageSize=20
-```
-
-**Parameters:**
-
-- `page` (number, optional): Page number (default: 1)
-- `pageSize` (number, optional): Items per page (default: 10)
-- `status` (string, optional): Filter by `active`, `archived`, or `all`
+1. **`query_spaces`**：使用基于树的推理来搜索文档内容。
+2. **`smart_query`**：发现与查询相关的空间。
 
 ---
 
-#### manage_space
+## MCP 工具参考
 
-Create, get, update, or delete a space.
+### 空间管理（Space Management）
 
-```text
-manage_space with action="create" name="Product Docs" description="Technical documentation"
-manage_space with action="create" name="Legal" description="Case files" icon="briefcase"
-manage_space with action="get" id="space_abc123"
-manage_space with action="update" id="space_abc123" description="Updated description"
-manage_space with action="delete" id="space_abc123"
-```
+#### `list_spaces`
 
-**Parameters:**
+列出组织中的所有知识空间。
 
-- `action` (string, required): `create`, `get`, `update`, or `delete`
-- `id` (string): Space ID (required for get/update/delete)
-- `name` (string): Space name (required for create)
-- `description` (string, optional): Space description
-- `icon` (string, optional): Icon name. Defaults to "folder"
-- `slug` (string, optional): URL-friendly identifier
-- `isArchived` (boolean, optional): Archive status (for update)
-
-**Valid Icons:**
-`folder`, `book`, `file-text`, `database`, `package`, `archive`, `briefcase`, `inbox`, `layers`, `box`
-
-If an invalid icon is provided, the tool returns an error with the list of valid options.
+**参数：**
+- `page`（数字，可选）：页码（默认值：1）
+- `pageSize`（数字，可选）：每页显示的条目数量（默认值：10）
+- `status`（字符串，可选）：按 `active`、`archived` 或 `all` 进行过滤
 
 ---
 
-### Document Management
+#### `manage_space`
 
-#### list_documents
+创建、获取、更新或删除空间。
 
-List documents in a space.
+**参数：**
+- `action`（字符串，必填）：`create`、`get`、`update` 或 `delete`
+- `id`（字符串）：空间 ID（获取/更新/删除时必需）
+- `name`（字符串）：空间名称（创建时必需）
+- `description`（字符串，可选）：空间描述
+- `icon`（字符串，可选）：图标名称。默认值为 “folder”
+- `slug`（字符串，可选）：适合 URL 的标识符
+- `isArchived`（布尔值，可选）：归档状态（用于更新）
 
-```text
-list_documents with spaceId="space_abc123"
-list_documents with spaceId="space_abc123" status="completed"
-list_documents with spaceId="space_abc123" status="all"
-```
+**有效的图标：**
+`folder`、`book`、`file-text`、`database`、`package`、`archive`、`briefcase`、`inbox`、`layers`、`box`
 
-**Parameters:**
-
-- `spaceId` (string, required): Space ID
-- `page` (number, optional): Page number
-- `pageSize` (number, optional): Items per page (max: 100)
-- `status` (string, optional): Filter by status. Values: `pending`, `processing`, `completed`, `failed`, or `all`. Omitting returns all documents.
-
-**Note:** Status values are case-insensitive (`completed` and `COMPLETED` both work).
+如果提供了无效的图标，工具会返回一个错误，并列出有效的选项。
 
 ---
 
-#### save_document
+### 文档管理（Document Management）
 
-Upload or upsert documents (single or batch).
+#### `list_documents`
 
-**Single document:**
+列出空间中的文档。
 
-```text
-save_document with spaceId="space_abc123" filename="guide.md" content="# Guide\n\nContent here..."
-```
+**参数：**
+- `spaceId`（字符串，必需）：空间 ID
+- `page`（数字，可选）：页码
+- `pageSize`（数字，可选）：每页显示的条目数量（最大值：100）
+- `status`（字符串，可选）：按状态过滤。可选值：`pending`、`processing`、`completed`、`failed` 或 `all`。省略该参数将返回所有文档。
 
-**Batch upload:**
-
-```text
-save_document with spaceId="space_abc123" documents=[{"filename": "doc1.md", "content": "..."}, {"filename": "doc2.md", "content": "..."}]
-```
-
-**Parameters:**
-
-- `spaceId` (string, required): Space ID
-- `filename` (string): Filename (required for single)
-- `content` (string): Content (required for single)
-- `documents` (array, optional): Array of `{filename, content, metadata}` for batch
-- `metadata` (object, optional): Custom key-value pairs
+**注意：** 状态值不区分大小写（`completed` 和 `COMPLETED` 都有效）。
 
 ---
 
-#### get_document
+#### `save_document`
 
-Get document content by ID or filename. Returns processed markdown text.
+上传或更新文档（单个或批量）。
 
-```text
-get_document with spaceId="space_abc123" id="doc_xyz789"
-get_document with spaceId="space_abc123" filename="guide.md"
-get_document with spaceId="*" filename="guide.md"
-```
+**单个文档：**
 
-**Parameters:**
-
-- `spaceId` (string, required): Space ID, or `*` to search all spaces (requires filename)
-- `id` (string, optional): Document ID
-- `filename` (string, optional): Filename
-
-**Notes:**
-
-- Either `id` or `filename` is required
-- Use `spaceId="*"` to search all spaces when you know the filename but not the space
-- For completed documents, returns the extracted markdown text (not raw PDF binary)
-- When using `*`, the response includes the `spaceId` where the document was found
+**批量上传：**
 
 ---
 
-#### update_document
+#### `get_document`
 
-Update document content or metadata.
+通过 ID 或文件名获取文档内容。返回处理后的 Markdown 文本。
 
-```text
-update_document with spaceId="space_abc123" id="doc_xyz789" content="New content..."
-update_document with spaceId="space_abc123" id="doc_xyz789" append=true content="Additional content"
-```
+**参数：**
+- `spaceId`（字符串，必需）：空间 ID；或使用 `*` 来搜索所有空间（需要提供文件名）
+- `id`（字符串，可选）：文档 ID
+- `filename`（字符串，可选）：文件名
 
-**Parameters:**
-
-- `spaceId` (string, required): Space ID
-- `id` (string, required): Document ID
-- `content` (string, optional): New content
-- `metadata` (object, optional): New metadata
-- `append` (boolean, optional): Append instead of replace
-- `separator` (string, optional): Separator for append mode
+**注意：**
+- 必须提供 `id` 或 `filename` 中的一个。
+- 如果知道文件名但不知道空间名称，可以使用 `spaceId="*"` 来搜索所有空间。
+- 对于已完成的文档，返回提取的 Markdown 文本（而不是原始的 PDF 二进制文件）。
+- 使用 `*` 时，响应中会包含文档所在的 `spaceId`。
 
 ---
 
-#### delete_document
+#### `update_document`
 
-Permanently delete a document.
+更新文档内容或元数据。
 
-```text
-delete_document with spaceId="space_abc123" id="doc_xyz789"
-```
-
-**Parameters:**
-
-- `spaceId` (string, required): Space ID
-- `id` (string, required): Document ID
+**参数：**
+- `spaceId`（字符串，必需）：空间 ID
+- `id`（字符串，必需）：文档 ID
+- `content`（字符串，可选）：新内容
+- `metadata`（对象，可选）：自定义键值对
 
 ---
 
-### Query Tools
+#### `delete_document`
 
-#### query_spaces
+永久删除文档。
 
-Search documents across one or more spaces using tree-based reasoning.
+---
 
-```text
-query_spaces with query="How do I authenticate API requests?"
-query_spaces with query="installation guide" spaceIds="space_abc123"
-query_spaces with query="error handling" spaceIds=["space_abc", "space_def"] topK=10
-```
+### 查询工具（Query Tools）
 
-**Parameters:**
+#### `query_spaces`
 
-- `query` (string, required): Natural language search query
-- `spaceIds` (string or array, optional): Space ID(s) to search. Omit or use `*` for all spaces
-- `topK` (number, optional): Maximum results (default: 10)
-- `compact` (boolean, optional): Use compact format (default: false). See **When to Use Compact** below.
+使用基于树的推理在一个或多个空间中搜索文档。
 
-**When to Use Compact:**
+**参数：**
+- `query`（字符串，必需）：自然语言搜索查询
+- `spaceIds`（字符串或数组，可选）：要搜索的空间 ID。省略或使用 `*` 来搜索所有空间
+- `topK`（数字，可选）：最大返回结果数量（默认值：10）
+- `compact`（布尔值，可选）：是否使用紧凑格式（默认值：false）。详见下文 **何时使用紧凑格式**。
 
-| Mode | When to use | What you get |
+**何时使用紧凑格式：**
+
+| 模式 | 适用场景 | 返回内容 |
 | ---- | ----------- | ------------ |
-| `compact=false` (default) | **Most queries.** Any time you need actual data, facts, numbers, dates, or details from documents. | Full results with document metadata, tree context, page ranges, and complete content. |
-| `compact=true` | Broad discovery queries where you only need to know *which* documents are relevant, not their content. | Minimal results: just content snippet, source filename, and score. |
+| `compact=false`（默认）**大多数查询**。当您需要文档的实际数据、事实、数字、日期或详细信息时。** | 包含完整结果、文档元数据、树结构、页面范围和全部内容。 |
+| `compact=true` | 在需要了解哪些文档相关（而不需要具体内容）时。** | 返回最少的结果：仅包含内容片段、源文件名和评分。 |
 
-**Rule of thumb:** Default to `compact=false`. Only use `compact=true` when you're browsing/surveying and don't need the actual content yet.
+**经验法则：** 默认使用 `compact=false`。仅在浏览/调查时且不需要具体内容时使用 `compact=true`。
 
-**Response (compact=true format):**
-
-```json
-{
-  "results": [
-    {
-      "content": "Relevant text content...",
-      "source": "filename.pdf",
-      "score": 0.95
-    }
-  ],
-  "total": 5
-}
-```
+**紧凑格式下的响应：**
 
 ---
 
-#### smart_query
+#### `smart_query`
 
-Discover which spaces are relevant for a query using LLM reasoning.
+使用 LLM（大型语言模型）推理来发现与查询相关的空间。
 
-```text
-smart_query with query="How do I install the SDK?"
-smart_query with query="billing questions" maxSpaces=3
-```
+**参数：**
+- `query`（字符串，必需）：用于查找相关空间的查询
+- `maxSpaces`（数字，可选）：返回的最大空间数量（默认值：5）
 
-**Parameters:**
-
-- `query` (string, required): Query to find relevant spaces for
-- `maxSpaces` (number, optional): Maximum spaces to return (default: 5)
-
-**Response:**
-
-```json
-{
-  "query": "How do I install the SDK?",
-  "relevantSpaces": [
-    {"spaceId": "space_abc123", "relevance": "Contains SDK installation guides"},
-    {"spaceId": "space_def456", "relevance": "Has developer tutorials"}
-  ],
-  "totalFound": 2
-}
-```
-
-**Use case:** When you don't know which space to search, use `smart_query` first to discover relevant spaces, then use `query_spaces` with those space IDs.
+**响应：**
 
 ---
 
-### Tree Visibility Tools
+**使用场景：** 当不知道从哪个空间开始搜索时，先使用 `smart_query` 来发现相关空间，然后使用这些空间 ID 来执行 `query_spaces`。
 
-These tools let you explore the hierarchical structure of indexed documents.
+### 树结构探索工具（Tree Structure Exploration Tools）
 
-#### get_document_tree
+这些工具允许您探索索引文档的分层结构。
 
-Get the tree structure of a document showing sections, summaries, and page ranges.
+#### `get_document_tree`
 
-```text
-get_document_tree with spaceId="space_abc123" documentId="doc_xyz789"
-```
+获取文档的树结构，显示章节、摘要和页面范围。
 
-**Parameters:**
+**参数：**
+- `spaceId`（字符串，必需）：空间 ID
+- `documentId`（字符串，必需）：文档 ID
 
-- `spaceId` (string, required): Space ID
-- `documentId` (string, required): Document ID
-
-**Response:**
-
-```json
-{
-  "documentId": "doc_xyz789",
-  "totalPages": 45,
-  "totalNodes": 12,
-  "nodes": [
-    {
-      "nodeId": "0001",
-      "title": "Introduction",
-      "summary": "Overview of the system architecture...",
-      "pages": "1-5",
-      "depth": 0
-    },
-    {
-      "nodeId": "0002",
-      "title": "Installation",
-      "summary": "Step-by-step installation guide...",
-      "pages": "6-12",
-      "depth": 0
-    }
-  ]
-}
-```
-
-**Use case:** Use this to understand a document's structure before drilling into specific sections.
+**响应：**
 
 ---
 
-#### get_tree_node
-
-Get the full text content of a specific tree node/section.
-
-```text
-get_tree_node with documentId="doc_xyz789" nodeId="0002"
-```
-
-**Parameters:**
-
-- `documentId` (string, required): Document ID
-- `nodeId` (string, required): Node ID from the tree structure
-
-**Response:**
-
-```json
-{
-  "documentId": "doc_xyz789",
-  "filename": "manual.pdf",
-  "nodeId": "0002",
-  "title": "Installation",
-  "summary": "Step-by-step installation guide...",
-  "pages": "6-12",
-  "depth": 0,
-  "content": "## Installation\n\nTo install the software, follow these steps:\n\n1. Download the installer...\n\n..."
-}
-```
-
-**Use case:** After viewing the tree structure, use this to read the full content of a specific section.
+**使用场景：** 在深入查看特定章节之前，先使用此功能了解文档的结构。
 
 ---
 
-## Workflow Patterns
+#### `get_tree_node`
 
-### Pattern 1: Search for Information (Default Approach)
+获取特定树节点/部分的完整文本内容。
 
-**For most questions, a single `query_spaces` call is all you need.** Start here before trying multi-step workflows.
+**参数：**
+- `documentId`（字符串，必需）：文档 ID
+- `nodeId`（字符串，必需）：树结构中的节点 ID
 
-```text
-query_spaces with query="your question"
-```
-
-This searches all spaces with full details (compact=false by default). One call, done.
-
-**If you want to narrow to specific spaces:**
-
-```text
-query_spaces with query="your question" spaceIds="known_space_id"
-```
-
-**If you truly don't know which spaces exist:**
-
-```text
-smart_query with query="your question"
-# Then use the returned spaceIds:
-query_spaces with query="your question" spaceIds=["returned_space_id"]
-```
-
-> **Avoid over-searching.** The multi-step workflow (`smart_query` -> `query_spaces` -> `get_document_tree` -> `get_tree_node`) is rarely necessary. For most questions, a single `query_spaces` call returns the answer directly. Only escalate to tree browsing if results are insufficient.
-
-### Pattern 2: Look Up Specific Data
-
-When looking for specific facts, numbers, dates, names, or details:
-
-**Just query directly -- one call:**
-
-```text
-query_spaces with query="total amount on invoice #1234"
-```
-
-The default `compact=false` returns full content with document metadata, so you get the actual data you need in one step. Do **not** use `compact=true` for data lookups -- it strips the detail you need.
-
-### Pattern 3: Browse a Large Document
-
-When you need to navigate a large document's structure:
-
-1. **Get the document structure:**
-
-   ```text
-   get_document_tree with spaceId="space_id" documentId="doc_id"
-   ```
-
-2. **Identify relevant sections** from the node titles and summaries
-
-3. **Read specific sections:**
-
-   ```text
-   get_tree_node with documentId="doc_id" nodeId="relevant_node_id"
-   ```
-
-### Pattern 4: Add New Content
-
-When adding documents to a knowledge base:
-
-1. **Find or create the appropriate space:**
-
-   ```text
-   list_spaces
-   # or
-   manage_space with action="create" name="New Space" description="..."
-   ```
-
-2. **Upload the content:**
-
-   ```text
-   save_document with spaceId="space_id" filename="document.md" content="..."
-   ```
-
-3. **Wait for processing** (status will change from PENDING -> PROCESSING -> COMPLETED)
-
-4. **Verify it's ready:**
-
-   ```text
-   list_documents with spaceId="space_id" status="COMPLETED"
-   ```
+**响应：**
 
 ---
 
-## manage_space - Valid Icons
+## 工作流程模式（Workflow Patterns）
 
-When creating or updating a space, use one of these icon values:
+### 模式 1：搜索信息（默认方法）
 
-- `folder` (default)
+**对于大多数问题，只需调用一次 `query_spaces` 即可**。在尝试多步骤工作流程之前，请先从这里开始。
+
+**如果需要缩小搜索范围：**
+
+---
+
+**如果您真的不知道存在哪些空间：**
+
+---
+
+> **避免过度搜索**。多步骤工作流程（`smart_query` -> `query_spaces` -> `get_document_tree` -> `get_tree_node`）很少是必要的。对于大多数问题，一次 `query_spaces` 调用即可直接得到答案。只有在结果不足时才需要进一步使用树结构探索。
+
+### 模式 2：查找特定数据**
+
+当需要查找特定的事实、数字、日期、名称或详细信息时：
+
+**直接查询即可——只需一次调用：**
+
+---
+
+默认的 `compact=false` 会返回包含文档元数据的完整内容，因此您可以一步获取所需的数据。**不要** 在数据查找时使用 `compact=true`，因为它会省略所需的详细信息。
+
+### 模式 3：浏览大型文档**
+
+当需要导航大型文档的结构时：
+
+1. **获取文档结构：**
+
+2. **从节点标题和摘要中识别相关章节**
+
+3. **阅读特定章节：**
+
+---
+
+### 模式 4：添加新内容**
+
+在向知识库中添加文档时：
+
+1. **找到或创建合适的空间：**
+
+2. **上传内容：**
+
+3. **等待处理**（状态会从 `PENDING` 变为 `PROCESSING` 再变为 `COMPLETED`）
+
+4. **验证是否已完成：**
+
+---
+
+## `manage_space` - 有效图标
+
+在创建或更新空间时，可以使用以下图标之一：
+
+- `folder`（默认）
 - `book`
 - `file-text`
 - `database`
@@ -485,137 +302,125 @@ When creating or updating a space, use one of these icon values:
 - `layers`
 - `box`
 
-Invalid icons will return a helpful error message with the list of valid options.
+如果提供了无效的图标，工具会返回一个错误信息，并列出有效的选项。
 
 ---
 
-## list_documents - Status Parameter
+## `list_documents` - 状态参数
 
-The `status` parameter accepts the following values (case-insensitive):
+`status` 参数接受以下值（不区分大小写）：
 
-- `"all"` - Returns documents in any status (COMPLETED, FAILED, PENDING, PROCESSING)
-- `"completed"` - Returns only successfully processed documents
-- `"failed"` - Returns only documents that failed processing (includes `errorMessage` field)
-- `"pending"` - Returns documents waiting to be processed
-- `"processing"` - Returns documents currently being processed
+- `"all"`：返回所有状态的文档（COMPLETED、FAILED、PENDING、PROCESSING）
+- `"completed"`：仅返回已成功处理的文档
+- `"failed"`：仅返回处理失败的文档（包含 `errorMessage` 字段）
+- `"pending"`：返回等待处理的文档
+- `"processing"`：返回正在处理的文档
 
-Documents with `status="FAILED"` will include an `errorMessage` field explaining what went wrong during processing.
-
----
-
-## save_document - Processing Workflow
-
-Documents are processed asynchronously:
-
-1. `save_document` returns immediately with `status="PROCESSING"`
-2. Background job generates embeddings and indexes the document (typically 1-3 seconds)
-3. Status changes to `"COMPLETED"` when ready
-4. Document becomes searchable via `query_spaces`
-
-**To check completion status:**
-
-- Use `get_document` to check a specific document's status
-- Use `list_documents` with `status="processing"` to see all processing documents
-- Use `list_documents` with `status="failed"` to see any failures
-
-**Example:**
-
-```javascript
-// Save document
-const result = await save_document({...});
-// result.document.status === "PROCESSING"
-
-// Check status after a moment
-const doc = await get_document({id: result.document.id});
-// doc.status === "COMPLETED" (when ready)
-```
+状态为 `FAILED` 的文档会包含一个 `errorMessage` 字段，说明处理过程中出现了什么问题。
 
 ---
 
-## get_tree_node - Content Availability
+## `save_document` - 处理流程
 
-`get_tree_node` may return `"(No text content cached for this node)"` for certain nodes. This occurs for:
+文档是异步处理的：
 
-- Structural/organizational nodes without associated text content
-- Nodes that serve as section headers in the tree hierarchy
+1. `save_document` 会立即返回 `status="PROCESSING"` 的状态。
+2. 后台任务会生成文档的嵌入信息并对其进行索引（通常需要 1-3 秒）。
+3. 当索引完成后，状态会变为 `"COMPLETED"`。
+4. 文档可以通过 `query_spaces` 进行搜索。
 
-**This is expected behavior.**
+**检查完成状态：**
 
-**To read actual document content:**
+- 使用 `get_document` 来检查特定文档的状态。
+- 使用 `list_documents` 且 `status="processing"` 来查看所有正在处理的文档。
+- 使用 `list_documents` 且 `status="failed"` 来查看所有处理失败的文档。
 
-- Use `get_document` to retrieve the full processed markdown
-- Use `query_spaces` to search and retrieve relevant content chunks
-
-The tree structure (via `get_document_tree`) is always available and shows document organization, summaries, and page ranges.
-
----
-
-## Best Practices
-
-### DO
-
-- **Start with a single `query_spaces` call** - it usually has the answer in one step
-- **Use `compact=false` (the default) for most queries** - you get full content and context
-- **Check document status** before querying - only `COMPLETED` documents are searchable
-- **Use descriptive queries** - natural language works best
-- **Use tree tools for large documents** - navigate structure instead of reading everything
-- **Write good space descriptions** - they're used by `smart_query` for discovery
-
-### DON'T
-
-- **Don't over-search** - avoid multi-step workflows (`smart_query` -> `query_spaces` -> `get_document_tree` -> `get_tree_node`) when a single `query_spaces` call suffices
-- **Don't use `compact=true` for data lookups** - it strips the content you need; only use it for broad discovery
-- **Don't query PENDING/PROCESSING documents** - they won't return results
-- **Don't use very short queries** - more context = better results
-- **Don't forget to check processing status** after uploading new documents
+**示例：**
 
 ---
 
-## Error Handling
+## `get_tree_node` - 内容可用性
 
-Common errors and solutions:
+`get_tree_node` 可能会返回 `"No text content cached for this node"`（此节点没有缓存文本内容）。这种情况发生在以下情况：
 
-| Error | Cause | Solution |
+- 没有关联文本内容的结构/组织节点
+- 作为树结构中章节标题的节点
+
+**这是正常现象。**
+
+**要读取实际的文档内容：**
+
+- 使用 `get_document` 来获取完整的处理后的 Markdown 文本。
+- 使用 `query_spaces` 来搜索并获取相关的内容片段。
+
+通过 `get_document_tree` 可以始终获取文档的结构，包括章节和页面范围。
+
+## 最佳实践（Best Practices）
+
+### 应该做的（What to Do）
+
+- **从一次 `query_spaces` 调用开始**——通常一步即可得到答案。
+- **对于大多数查询，使用 `compact=false`（默认设置）**——这样可以获取完整的内容和上下文。
+- **在查询之前检查文档状态**——只有状态为 `COMPLETED` 的文档才能被搜索。
+- **使用描述性强的查询**——自然语言查询效果最佳。
+- **对于大型文档，使用树结构工具**——通过结构进行导航，而不是阅读所有内容。
+- **编写详细的空间描述**——这些描述会被 `smart_query` 用于推荐相关空间。
+
+### 不应该做的（What not to Do）
+
+- **不要过度搜索**——当一次 `query_spaces` 调用就足够时，避免使用多步骤工作流程（`smart_query` -> `query_spaces` -> `get_document_tree` -> `get_tree_node`）。
+- **不要在数据查找时使用 `compact=true`——它会省略所需的详细信息；仅在需要广泛搜索时使用。
+- **不要查询 `PENDING`/`PROCESSING` 状态的文档**——这些文档不会返回结果。
+- **不要使用过短的查询**——更多的上下文有助于获得更好的搜索结果。
+- **上传新文档后不要忘记检查处理状态**。
+
+---
+
+## 错误处理（Error Handling）
+
+常见错误及其解决方法：
+
+| 错误 | 原因 | 解决方法 |
 | ----- | ----- | -------- |
-| "Document not found" | Wrong ID or no access | Verify the document ID with `list_documents` |
-| "Space not found" | Wrong ID or archived | Use `list_spaces` to find valid space IDs |
-| Empty search results | Document not COMPLETED or no matches | Check document status; try broader query |
-| "Tree not found" | Document uses vector indexing or not processed | Check if document status is COMPLETED |
-| "Invalid icon" | Icon name not in allowed list | Use one of: folder, book, file-text, database, package, archive, briefcase, inbox, layers, box |
-| "No text content cached" | Tree node content not cached | This is normal for structural nodes; use `get_document` for full content |
+| “Document not found” | 文档 ID 错误或无法访问 | 使用 `list_documents` 验证文档 ID |
+| “Space not found” | 文档 ID 错误或空间已被归档 | 使用 `list_spaces` 查找有效的空间 ID |
+| 空搜索结果 | 文档未完成处理或没有匹配项 | 检查文档状态；尝试使用更宽泛的查询 |
+| “Tree not found” | 文档使用向量索引或未处理 | 检查文档的状态是否为 `COMPLETED` |
+| “Invalid icon” | 图标名称不在允许的列表中 | 使用以下图标之一：folder、book、file-text、database、package、archive、briefcase、inbox、layers、box |
+| “No text content cached” | 树节点没有缓存文本内容 | 对于结构节点，这是正常现象；使用 `get_document` 来获取完整内容 |
 
-### Troubleshooting Tips
+### 故障排除提示（Troubleshooting Tips）
 
-**If `save_document` fails:**
+**如果 `save_document` 失败：**
 
-1. Verify the space exists with `manage_space with action="get" id="..."`
-2. Ensure content is valid text/markdown
-3. Check that the space is not archived
+1. 使用 `manage_space with action="get" id="..."` 验证空间是否存在。
+2. 确保内容是有效的文本/Markdown 格式。
+3. 检查空间是否已被归档。
 
-**If `list_documents` returns 0 results:**
+**如果 `list_documents` 返回 0 个结果：**
 
-1. Try `status="all"` or omit the status parameter entirely
-2. Verify the spaceId is correct with `list_spaces`
-3. Check if documents are still processing (status="processing")
+1. 尝试使用 `status="all"` 或完全省略 `status` 参数。
+2. 使用 `list_spaces` 验证 `spaceId` 是否正确。
+3. 检查文档是否仍在处理中（状态是否为 `processing`）。
 
-**If `get_tree_node` returns no content:**
+**如果 `get_tree_node` 返回无内容：**
 
-- Some nodes are structural and don't have cached text content
-- Use `get_document` to get the full processed document text instead
-- Or use `query_spaces` to search for specific content
+- 有些节点是结构性的节点，没有缓存文本内容。
+- 使用 `get_document` 来获取完整的处理后的文档文本。
+- 或者使用 `query_spaces` 来搜索特定内容。
 
 ---
 
-## Quick Reference
+## 快速参考（Quick Reference）
 
-| Task | Tool | Example |
+| 任务 | 工具 | 示例 |
 | ---- | ---- | ------- |
-| List all spaces | `list_spaces` | `list_spaces with status="active"` |
-| Create a space | `manage_space` | `manage_space with action="create" name="Docs"` |
-| List documents | `list_documents` | `list_documents with spaceId="..."` |
-| Upload content | `save_document` | `save_document with spaceId="..." content="..."` |
-| Get document text | `get_document` | `get_document with spaceId="..." id="..."` |
-| Search content | `query_spaces` | `query_spaces with query="..."` |
-| Find relevant spaces | `smart_query` | `smart_query with query="..."` |
-| View doc structure | `get_document_tree` | `get_document_tree with spaceId="..." documentId="..."` |
-| Read a section | `get_tree_node` | `get_tree_node with documentId="..." nodeId="..."` |
+| 列出所有空间 | `list_spaces` | `list_spaces with status="active"` |
+| 创建空间 | `manage_space` | `manage_space with action="create" name="Docs"` |
+| 列出文档 | `list_documents` | `list_documents with spaceId="..."` |
+| 上传内容 | `save_document` | `save_document with spaceId="..." content="..."` |
+| 获取文档文本 | `get_document` | `get_document with spaceId="..." id="..."` |
+| 搜索内容 | `query_spaces` | `query_spaces with query="..."` |
+| 查找相关空间 | `smart_query` | `smart_query with query="..."` |
+| 查看文档结构 | `get_document_tree` | `get_document_tree with spaceId="..." documentId="..."` |
+| 阅读章节 | `get_tree_node` | `get_tree_node with documentId="..." nodeId="..."` |

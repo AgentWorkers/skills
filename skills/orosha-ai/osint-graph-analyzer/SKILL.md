@@ -1,120 +1,57 @@
-# OSINT Graph Analyzer 🕵️
+# OSINT 图形分析工具 🕵️  
+利用 Neo4j 图形算法从开源情报（OSINT）数据中构建知识图谱，并发现隐藏的模式。  
 
-Build knowledge graphs from OSINT data and discover hidden patterns using Neo4j graph algorithms.
+## 功能概述  
+该工具从多个来源收集 OSINT 数据，并生成 Neo4j 知识图谱，用于：  
+- **实体关联**：跨平台连接同一人物；  
+- **社区检测**：识别相关实体的群体；  
+- **中心性分析**：确定网络中的关键影响者；  
+- **路径分析**：追踪实体间的连接关系；  
+- **模式识别**：发现异常现象和隐藏的联系。  
 
-## What It Does
+## 应用场景  
+- **调查工作流程**：在复杂案件中梳理关系脉络；  
+- **威胁情报**：识别攻击网络中的核心节点；  
+- **社交网络分析**：发现社群及影响力模式；  
+- **反开源情报**：评估自身的信息暴露风险。  
 
-Ingests OSINT data from multiple sources and creates a Neo4j knowledge graph for:
-- **Entity linking** — Connect same person across platforms
-- **Community detection** — Find clusters of related entities
-- **Centrality analysis** — Identify key influencers in networks
-- **Path analysis** — Trace connections between entities
-- **Pattern recognition** — Detect anomalies and hidden relationships
+## 系统要求  
+- Neo4j 5.x（本地或远程版本）；  
+- Python 3.9 及以上版本；  
+- neo4j-driver 包。  
 
-## Use Cases
+## 使用方法  
+（具体使用方法请参见下方代码块。）  
 
-- **Investigation workflows** — Map relationships in complex cases
-- **Threat intelligence** — Identify central nodes in attack networks
-- **Social network analysis** — Discover communities and influence patterns
-- **Counter-OSINT** — Understand your own exposure surface
+## 数据格式  
+支持的输入格式：  
+- CSV（包含节点和边的数据文件）；  
+- JSON（用于 Cypher 查询）；  
+- 直接通过 API（如 Telegram、Twitter 等平台）导入数据。  
+（CSV 格式示例请参见下方代码块。）  
 
-## Requirements
+## 图形算法  
+| 算法          | 功能                | 应用场景             |  
+|----------------|------------------|------------------|  
+| **Louvain**       | 社区聚类            | 发现协同工作的群体           |  
+| **PageRank**      | 影响力中心性分析        | 识别关键影响者           |  
+| **Betweenness**    | 中间节点分析          | 找到社群间的连接点         |  
+| **Shortest Path**   | 最短路径算法        | 追踪间接关系           |  
+| **Weakly Connected** | 弱连接子图分析        | 发现孤立的社群           |  
 
-- Neo4j 5.x (local or remote)
-- Python 3.9+
-- neo4j-driver package
+## 系统架构  
+（系统架构详情请参见下方代码块。）  
 
-## Usage
+## 技术灵感来源  
+- **CRIS**：基于 Neo4j 的多智能体犯罪情报系统；  
+- **Context Graphs**：语义搜索与结构分析技术；  
+- **osint-analyser**：基于大型语言模型（LLM）的开源情报自动化工具。  
 
-```bash
-# Start Neo4j instance (local)
-docker run -d \
-  --name neo4j \
-  -p 7474:7474 -p 7687:7687 \
-  -e NEO4J_AUTH=neo4j/password \
-  neo4j:5.23
+## 系统特性  
+- **数据本地化**：所有数据存储在本地 Neo4j 实例中；  
+- **无需外部 API**：分析过程无需外部 API 调用；  
+- **支持离线模式**：可选的离线分析功能。  
 
-# Ingest data
-python3 scripts/osint-graph.py --ingest data/sources.csv
-
-# Run community detection
-python3 scripts/osint-graph.py --community-detection
-
-# Find most central entities
-python3 scripts/osint-graph.py --centrality --top 10
-
-# Trace path between two entities
-python3 scripts/osint-graph.py --path "Entity A" "Entity B"
-
-# Export graph as visualization
-python3 scripts/osint-graph.py --export graph.json
-```
-
-## Data Format
-
-Supported formats:
-- CSV (node + edge files)
-- JSON (Cypher queries)
-- Direct API ingestion (Telegram, Twitter, etc.)
-
-CSV example:
-```csv
-nodes.csv:
-id,name,type,properties
-1,@target_account,person,"{country:US,verified:true}"
-2,@associated_handle,person,"{country:RU}"
-
-edges.csv:
-source,target,relationship,timestamp
-1,2,MENTIONED,2026-01-31
-```
-
-## Graph Algorithms
-
-| Algorithm | What It Finds | Use Case |
-|------------|----------------|-----------|
-| **Louvain** | Community clusters | Find groups working together |
-| **PageRank** | Influence centrality | Identify key influencers |
-| **Betweenness** | Bridge nodes | Find connection points between communities |
-| **Shortest Path** | Connection chains | Trace indirect relationships |
-| **Weakly Connected** | Disconnected subgraphs | Find isolated clusters |
-
-## Architecture
-
-```
-┌─────────────────┐
-│  Ingestion      │  ← CSV/JSON/API sources
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Neo4j Graph    │  ← Nodes + Relationships
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Algorithms     │  ← GraphX / Neo4j Graph Algorithms
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Visualization  │  ← JSON export + D3.js / Cytoscape
-└─────────────────┘
-```
-
-## Inspiration
-
-- **CRIS** — Multi-agent criminal intelligence system with Neo4j
-- **Context Graphs** — Semantic search + structural analysis
-- **osint-analyser** — LLM-powered OSINT automation
-
-## Local-Only Promise
-
-- Data stays local (Neo4j instance)
-- No external API calls for analysis
-- Optional offline mode
-
-## Version History
-
-- **v0.1** — MVP: CSV ingest, basic algorithms, JSON export
-- Roadmap: API integration, ML anomaly detection, real-time updates
+## 版本历史  
+- **v0.1**：最小可行产品（MVP）版本，支持 CSV 导入、基础算法及 JSON 导出；  
+- **后续计划**：集成 API、引入机器学习进行异常检测、实现实时更新功能。

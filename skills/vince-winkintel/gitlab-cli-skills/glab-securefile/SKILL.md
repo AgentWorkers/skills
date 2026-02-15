@@ -1,11 +1,11 @@
 ---
 name: glab-securefile
-description: Manage secure files for CI/CD including upload, download, list, and delete operations. Use when storing sensitive files for pipelines, managing certificates, or handling secure configuration files. Triggers on secure file, CI secrets, certificates, secure config.
+description: 用于管理 CI/CD 过程中的安全文件，包括上传、下载、列出和删除等操作。适用于存储敏感文件（如用于管道处理的文件）、管理证书或处理安全配置文件的场景。该工具会在安全文件、CI 密钥或证书发生变化时自动触发相应的操作。
 ---
 
 # glab securefile
 
-## Overview
+## 概述
 
 ```
 
@@ -33,12 +33,12 @@ description: Manage secure files for CI/CD including upload, download, list, and
     -R --repo                          Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab securefile --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令帮助信息，请参阅 [references/commands.md](references/commands.md)。

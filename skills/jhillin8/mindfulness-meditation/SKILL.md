@@ -1,6 +1,6 @@
 ---
 name: mindfulness-meditation
-description: Build a meditation practice with guided sessions, streaks, and mindfulness reminders
+description: 构建一个包含引导式冥想练习、连续冥想时间记录以及正念提醒功能的冥想练习系统。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,55 +11,43 @@ triggers:
   - "be present"
 ---
 
-# Mindfulness & Meditation
+# 正念与冥想
 
-Build a consistent meditation practice with guided sessions, progress tracking, and daily mindfulness reminders.
+通过引导式冥想练习、进度跟踪以及每日正念提醒，帮助你养成持续的冥想习惯。
 
-## What it does
+## 功能介绍
 
-This skill transforms your device into a personal meditation coach. It guides you through structured meditation sessions, tracks your practice streaks, logs sessions for long-term insights, and sends mindfulness reminders to keep you anchored throughout your day.
+该功能将你的设备变成了一位个人冥想导师：它会引导你进行结构化的冥想练习，记录你的冥想时长，为你提供长期的数据分析，并在一天中的关键时刻发送正念提醒，帮助你保持专注。
 
-## Usage
+## 使用方法
 
-### Start Meditation
-Initiate a guided meditation session. Choose your meditation type and duration, then follow along with step-by-step guidance.
+### 开始冥想
+- 选择你喜欢的冥想类型和时长，然后按照逐步指导进行冥想。
+- **快速正念**：进行2-5分钟的呼吸练习。非常适合在压力大或任务转换时使用。无需长时间投入，只需专注于当下。
+- **查看冥想记录**：查看你的当前冥想习惯和历史记录，了解自己的练习规律及累计时长。
+- **设置提醒**：配置每日或自定义的正念提醒，提醒你暂停、深呼吸并反思自己。
+- **回顾冥想日志**：详细查看过去的冥想记录（包括类型、时长、日期和个人笔记），并可导出数据用于自我反思或分享。
 
-### Quick Mindfulness
-Take a 2-5 minute breathing pause. Perfect for stressful moments or transitions between tasks. No commitment, just presence.
+## 冥想类型
 
-### Check Streak
-View your current meditation streak and session history. See weekly/monthly breakdowns of your practice consistency and total minutes logged.
+- **身体扫描**：系统地观察从头到脚的身体感觉，释放紧张情绪，增强身体意识。
+- **呼吸专注**：将注意力集中在呼吸的自然节奏上，当思绪飘忽时轻轻引导它们回归。
+- **慈爱冥想**：通过向自己和他人传递善意来培养 compassion（同情心）。
+- **行走冥想**：在行走时进行冥想，让呼吸与步伐同步，全神贯注地观察周围环境。
+- **开放意识**：不加评判地观察自己的思绪和感受，培养观照意识和内心的宁静。
 
-### Set Reminders
-Configure daily or custom mindfulness reminders. Get gentle notifications to pause, breathe, and check in with yourself.
+## 冥想时长建议
 
-### Session Log
-Review detailed logs of past sessions: type, duration, date, and personal notes. Export your practice data for reflection or sharing.
+- **2分钟**：短暂练习，适合在一天中随时进行，帮助你重新集中注意力。
+- **5分钟**：适合初学者，帮助建立冥想习惯。
+- **10分钟**：标准时长，足以让你进入深度冥想状态。
+- **20分钟**：深度冥想，帮助你超越表面的杂念。
+- **自定义**：你可以根据自己的需求设置任意时长。
 
-## Meditation Types
+## 使用建议
 
-**Body Scan** — Systematically observe sensations from head to toe, releasing tension and building bodily awareness.
-
-**Breath Focus** — Anchor attention to the natural rhythm of your breath. Redirect your mind gently when it wanders.
-
-**Loving-Kindness** — Cultivate compassion by sending well-wishes to yourself and others in expanding circles.
-
-**Walking** — Meditate while moving. Synchronize breath with steps and notice your surroundings with full attention.
-
-**Open Awareness** — Observe thoughts and sensations without judgment. Develop witness consciousness and mental spaciousness.
-
-## Session Lengths
-
-- **2 min** — Micro-practice. Reset focus in the middle of your day.
-- **5 min** — Short sits. Build the habit without time friction.
-- **10 min** — Standard practice. Enough depth to settle your mind.
-- **20 min** — Deep work. Move beyond the surface chatter.
-- **Custom** — Set your own duration. Practice at your pace.
-
-## Tips
-
-- **Start small:** 2-3 minutes daily beats sporadic hour-long sessions. Consistency compounds over time.
-- **Pick one type:** Master breath focus before exploring other techniques. Foundation first.
-- **Meditate at the same time:** Morning sits anchor your day. Neural pathways strengthen with repetition.
-- **Don't aim for blank mind:** Thoughts are normal. The skill is noticing them without judgment—that's the practice.
-- **All data stays local on your machine:** Your meditation history, preferences, and reminders are stored securely on your device. Nothing leaves your control.
+- **从小处开始**：每天练习2-3分钟比偶尔进行长时间的冥想更有效。坚持才能带来持久的效果。
+- **先掌握一种类型**：在尝试其他技巧之前，先熟练掌握呼吸专注法。
+- **固定时间冥想**：每天在相同的时间进行冥想，有助于巩固神经连接。
+- **不必追求“空白思维”**：思绪是正常的，关键在于不加评判地观察它们。
+- **所有数据都存储在设备上**：你的冥想记录、偏好设置和提醒都安全地保存在设备中，完全由你控制。

@@ -1,59 +1,57 @@
 ---
 name: cursor-cloud-agents
-description: "Deploy Cursor AI agents to GitHub repos. Automatically write code, generate tests, create documentation, and open PRs using your existing Cursor subscription."
+description: "将 Cursor AI 代理部署到 GitHub 仓库中。利用您现有的 Cursor 订阅服务，自动编写代码、生成测试用例、创建文档，并提交 Pull Request（PR）。"
 ---
 
-# Cursor Cloud Agents Skill
+# Cursor Cloud Agents 技能
 
-## Overview
+## 概述
 
-This skill wraps the Cursor Cloud Agents HTTP API, allowing OpenClaw to dispatch coding tasks to Cursor's cloud agents, monitor their progress, and incorporate results.
+此技能封装了 Cursor Cloud Agents 的 HTTP API，允许 OpenClaw 向 Cursor 的云代理分发编码任务、监控它们的进度并整合结果。
 
-### When to Use
+### 适用场景
 
-Use this skill when you need to:
+在以下情况下使用此技能：
+- 将编码任务委托给运行在 GitHub 仓库中的 Cursor 代理
+- 在现有代码库上生成代码、测试或文档
+- 异步执行重构或功能实现
+- 对代码更改获取“第二意见”
 
-- Delegate coding tasks to Cursor agents running on GitHub repositories
-- Generate code, tests, or documentation on existing codebases
-- Perform refactoring or feature implementation asynchronously
-- Get a "second opinion" on code changes
+### 不适用场景
 
-### When NOT to Use
+- 对于不需要代码更改的简单问题
+- 需要实时流式响应的情况（请使用本地 Cursor CLI）
+- 适用于非 GitHub 仓库的任务
 
-- For simple questions that don't require code changes
-- When you need real-time streaming responses (use local Cursor CLI instead)
-- For tasks outside of GitHub repositories
+## 认证
 
-## Authentication
+该技能会自动从以下位置查找您的 Cursor API 密钥（按顺序）：
+1. **环境变量：** `CURSOR_API_KEY`
+2. **OpenClaw 环境文件：** `~/.openclaw/.env`
+3. **OpenClaw 本地环境：** `~/.openclaw/.env.local`
+4. **项目环境变量：** 当前目录下的 `.env` 文件
+5. **Cursor 配置文件：** `~/.cursor/config.json`
 
-The skill automatically discovers your Cursor API key from these locations (in order):
-
-1. **Environment variable:** `CURSOR_API_KEY`
-2. **OpenClaw env file:** `~/.openclaw/.env`
-3. **OpenClaw local env:** `~/.openclaw/.env.local`
-4. **Project env:** `.env` in current directory
-5. **Cursor config:** `~/.cursor/config.json`
-
-**Recommended:** Add to `~/.openclaw/.env`:
+**建议：** 将 API 密钥添加到 `~/.openclaw/.env` 文件中：
 ```bash
 CURSOR_API_KEY=your_cursor_api_key_here
 ```
 
-To get your API key:
-1. Open Cursor IDE
-2. Go to Settings → General
-3. Copy your API key
+获取 API 密钥的步骤：
+1. 打开 Cursor IDE
+2. 转到设置 → 通用设置
+3. 复制您的 API 密钥
 
-**Verify it's working:**
+**验证其是否正常工作：**
 ```bash
 cursor-api.sh me
 ```
 
-## Workflow Patterns
+## 工作流程模式
 
-### Pattern A: Fire-and-Forget
+### 模式 A：一次性启动后忽略
 
-Launch an agent and let it work independently. Check back later.
+启动代理并让其独立运行，之后再进行检查。
 
 ```bash
 # Launch agent (uses default model: gpt-5.2)
@@ -68,13 +66,13 @@ cursor-api.sh launch --repo owner/repo --prompt "Add tests" --model claude-4-opu
 cursor-api.sh status agent_123
 ```
 
-**Note:** If no `--model` is specified, the default model (`gpt-5.2`) will be used automatically. You'll see a message indicating which model is being used.
+**注意：** 如果未指定 `--model`，系统将自动使用默认模型（`gpt-5.2`）。您会看到一条提示信息显示所使用的模型。
 
-**Best for:** Tasks that don't need immediate attention, exploratory work
+**适用场景：** 不需要立即关注的任务、探索性工作
 
-### Pattern B: Supervised Dispatch
+### 模式 B：监督式调度
 
-Launch, monitor, and report results when complete.
+启动代理，监控其运行过程，并在完成后报告结果。
 
 ```bash
 # 1. Launch
@@ -93,11 +91,11 @@ done
 cursor-api.sh conversation agent_123 | jq -r '.messages[] | select(.role == "assistant") | .content'
 ```
 
-**Best for:** Important tasks where you want to report completion
+**适用场景：** 需要报告完成情况的任务
 
-### Pattern C: Iterative Collaboration
+### 模式 C：迭代协作
 
-Launch, review, and send follow-ups to refine work.
+启动代理，审查结果后发送后续指令以优化工作。
 
 ```bash
 # 1. Launch initial task
@@ -113,194 +111,188 @@ cursor-api.sh followup agent_123 --prompt "Also add form validation and error ha
 cursor-api.sh conversation agent_123
 ```
 
-**Best for:** Complex tasks requiring multiple iterations
+**适用场景：** 需要多次迭代的复杂任务
 
-## Commands Reference
+## 命令参考
 
-### List Agents
+### 列出代理
 
 ```bash
 cursor-api.sh list
 ```
 
-Returns all agents with status, repo, and creation time.
+返回所有代理的信息，包括状态、仓库和创建时间。
 
-### Launch Agent
+### 启动代理
 
 ```bash
 cursor-api.sh launch --repo owner/repo --prompt "Your task description" [--model model-name] [--branch branch-name] [--no-pr]
 ```
 
-Options:
-- `--repo` (required): Repository in `owner/repo` format
-- `--prompt` (required): Initial instructions for the agent
-- `--model` (optional): Model to use (defaults to `gpt-5.2` if not specified)
-- `--branch` (optional): Target branch name (auto-generated if omitted)
-- `--no-pr` (optional): Don't auto-create a PR
+选项：
+- `--repo`（必选）：仓库地址（格式为 `owner/repo`）
+- `--prompt`（必选）：代理的初始指令
+- `--model`（可选）：要使用的模型（未指定时默认为 `gpt-5.2`）
+- `--branch`（可选）：目标分支名称（省略时自动生成）
+- `--no-pr`（可选）：不自动创建 Pull Request
 
-**Note:** When launched without `--model`, the skill automatically uses `gpt-5.2` and displays a message indicating which model is being used.
+**注意：** 如果未指定 `--model`，系统将自动使用 `gpt-5.2` 并显示所使用的模型。
 
-### Check Status
+### 检查状态
 
 ```bash
 cursor-api.sh status <agent-id>
 ```
 
-Returns:
-- `status`: CREATING, RUNNING, FINISHED, STOPPED, ERROR
-- `summary`: Summary of work done (if finished)
-- `prUrl`: URL to created PR (if any)
+返回：
+- `status`：CREATING（创建中）、RUNNING（运行中）、FINISHED（已完成）、STOPPED（已停止）、ERROR（出错）
+- `summary`：已完成工作的总结
+- `prUrl`：生成的 Pull Request 的 URL（如有）
 
-### Get Conversation
+### 获取对话记录
 
 ```bash
 cursor-api.sh conversation <agent-id>
 ```
 
-Returns full message history including all prompts and responses.
+返回完整的对话历史记录，包括所有提示和响应。
 
-### Send Follow-up
+### 发送后续指令
 
 ```bash
 cursor-api.sh followup <agent-id> --prompt "Additional instructions"
 ```
 
-Resumes a stopped or finished agent with new instructions.
+重新启动已停止或已完成的代理，并发送新的指令。
 
-### Stop Agent
+### 停止代理
 
 ```bash
 cursor-api.sh stop <agent-id>
 ```
 
-Stops a running agent gracefully.
+优雅地停止正在运行的代理。
 
-### Delete Agent
+### 删除代理
 
 ```bash
 cursor-api.sh delete <agent-id>
 ```
 
-Permanently deletes an agent and its conversation history.
+永久删除代理及其对话记录。
 
-### List Models
+### 列出可用模型
 
 ```bash
 cursor-api.sh models
 ```
 
-Returns available models for agent tasks.
+返回可用于代理任务的模型列表。
 
-### Account Info
+### 账户信息
 
 ```bash
 cursor-api.sh me
 ```
 
-Returns account information including subscription tier.
+返回账户信息，包括订阅层级。
 
-### Verify Repository
+### 验证仓库访问权限
 
 ```bash
 cursor-api.sh verify owner/repo
 ```
 
-Checks if the specified repository is accessible by Cursor agents.
+检查指定的仓库是否可供 Cursor 代理访问。如果仓库无法访问，返回代码 4。
 
-Exit code 4 if repository not accessible.
-
-### Usage/Cost Tracking
+### 使用情况/成本跟踪
 
 ```bash
 cursor-api.sh usage
 ```
 
-Returns usage information including:
-- Agents used vs. limit
-- Compute consumption
-- Subscription tier
+返回使用情况信息，包括：
+- 使用的代理数量与限制
+- 计算资源消耗
+- 订阅层级
 
-### Clear Cache
+### 清除缓存
 
 ```bash
 cursor-api.sh clear-cache
 ```
 
-Clears the response cache.
+清除响应缓存。
 
-## Rate Limiting
+## 速率限制
 
-The skill enforces a **1 request per second** rate limit locally to avoid API rate limits. This is applied automatically to all API calls.
+该技能在本地实施 **每秒 1 个请求** 的速率限制，以避免违反 API 的速率限制。此限制会自动应用于所有 API 调用。
 
-If you hit Cursor's API rate limit (HTTP 429), the script exits with code 3.
+如果达到 Cursor 的 API 速率限制（HTTP 429），脚本将以代码 3 结束执行。
 
-## Caching
+## 缓存
 
-GET requests (`list`, `status`, `conversation`, `models`, `me`) are cached for 60 seconds by default. To disable caching for a command:
-
+GET 请求（`list`、`status`、`conversation`、`models`、`me`）默认缓存 60 秒。要禁用某个命令的缓存，请执行以下操作：
 ```bash
 cursor-api.sh --no-cache status agent_123
 ```
 
-To change the cache TTL, set the environment variable:
-
+要更改缓存过期时间，请设置环境变量：
 ```bash
 export CURSOR_CACHE_TTL=120  # 2 minutes
 cursor-api.sh status agent_123
 ```
 
-## Exit Codes
+## 错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 0 | Success |
-| 1 | API error (including non-existent resources) |
-| 2 | Authentication missing or invalid |
-| 3 | Rate limited |
-| 4 | Repository not accessible |
-| 5 | Invalid arguments |
+| 0 | 成功 |
+| 1 | API 错误（包括资源不存在） |
+| 2 | 认证信息缺失或无效 |
+| 3 | 超出速率限制 |
+| 4 | 仓库无法访问 |
+| 5 | 参数无效 |
 
-## Testing
+## 测试
 
-The skill includes a comprehensive test suite (`cca-comprehensive-test.sh`) that validates:
+该技能包含一个全面的测试套件（`cca-comprehensive-test.sh`），用于验证以下内容：
+- **认证**：自动发现密钥、处理密钥缺失或无效的情况
+- **账户相关命令**：`me`、`usage`、`models`
+- **代理生命周期**：`list`、`launch`（是否使用模型）、`status`、`conversation`、`followup`、`stop`
+- **错误处理**：处理无效格式、参数缺失、代理不存在等情况（所有情况都会返回正确的退出代码）
 
-- **Authentication**: Auto-discovery, missing key, invalid key handling
-- **Account Commands**: me, usage, models
-- **Agent Lifecycle**: list, launch (with/without model), status, conversation, followup, stop
-- **Error Handling**: Invalid formats, missing args, non-existent agents (all return correct exit codes)
-- **Options**: --verbose, --no-cache, pagination
+所有测试都会以正确的退出代码通过。错误情况会被正确处理并返回相应的退出代码。
 
-All tests pass with proper exit codes. Error conditions are correctly handled and return appropriate exit codes.
+## 并发代理限制
 
-## Concurrent Agent Limits
+根据现有文档和 API 行为，Cursor Cloud Agents 有以下并发限制：
 
-Based on available documentation and API behavior, Cursor Cloud Agents have the following limits:
-
-| Tier | Concurrent Agents | Notes |
+| 订阅层级 | 并发代理数量 | 备注 |
 |------|-------------------|-------|
-| Free | 1 | Limited to basic models |
-| Pro | 3 | Access to most models |
-| Ultra | 5 | Full model access, priority queue |
+| 免费 | 1 | 仅限基本模型 |
+| 专业版 | 3 | 可访问大多数模型 |
+| 超级版 | 5 | 可访问所有模型，并享有优先处理权 |
 
-These limits are enforced at the account level across all agents. If you exceed the limit, the API returns HTTP 429 with code `CONCURRENT_LIMIT`.
+这些限制在账户级别对所有代理统一适用。如果超出限制，API 会返回代码 429 和错误信息 `CONCURRENT_LIMIT`。
 
-**To check your current usage:**
+**查看当前使用情况：**
 ```bash
 cursor-api.sh usage | jq '.usage.agentsUsed, .limits.concurrentAgents'
 ```
 
-**Best practices:**
-1. Stop finished agents when no longer needed
-2. Use `cursor-api.sh list` to monitor active agents
-3. Consider batching work into fewer, larger agents rather than many small ones
+**最佳实践：**
+1. 当不再需要时停止已完成的代理
+2. 使用 `cursor-api.sh list` 监控活跃代理
+3. 将任务分批处理，使用较少但规模较大的代理，而不是大量小型代理
 
-> **Note:** Concurrent limits are subject to change. Check `cursor-api.sh usage` for your current account limits.
+> **注意：** 并发限制可能会更改。请查看 `cursor-api.sh usage` 以获取您当前账户的限制。
 
-## Best Practices
+## 最佳实践
 
-### 1. Always Verify Repository Access
+### 1. 始终验证仓库访问权限
 
-Before launching, verify the repository is accessible:
+在启动代理之前，确保仓库可访问：
 
 ```bash
 if cursor-api.sh verify owner/repo >/dev/null 2>&1; then
@@ -310,25 +302,25 @@ else
 fi
 ```
 
-### 2. Use Clear, Specific Prompts
+### 2. 使用清晰、具体的指令
 
-Good prompt:
-> "Add comprehensive unit tests for the auth module in src/auth/, covering login, logout, and token refresh. Use Jest and mock external API calls."
+示例指令：
+> “为 `src/auth/` 目录下的认证模块添加全面的单元测试，涵盖登录、登出和令牌刷新功能。使用 Jest 并模拟外部 API 调用。”
 
-Bad prompt:
-> "Add some tests"
+示例错误指令：
+> “添加一些测试”
 
-### 3. Check Usage Before Launching
+### 3. 启动前检查使用情况
 
-Monitor your quota:
+在启动代理之前，检查您的使用额度：
 
 ```bash
 cursor-api.sh usage | jq '.usage'
 ```
 
-### 4. Clean Up Finished Agents
+### 4. 清理不再需要的代理
 
-Delete agents you no longer need:
+删除不再需要的代理：
 
 ```bash
 cursor-api.sh list | jq -r '.[] | select(.status == "FINISHED") | .id' | while read id; do
@@ -336,9 +328,9 @@ cursor-api.sh list | jq -r '.[] | select(.status == "FINISHED") | .id' | while r
 done
 ```
 
-### 5. Handle Errors Gracefully
+### 5. 优雅地处理错误
 
-Always check exit codes in scripts:
+始终检查脚本中的退出代码：
 
 ```bash
 if ! response=$(cursor-api.sh launch --repo owner/repo --prompt "..." 2>&1); then
@@ -351,33 +343,33 @@ if ! response=$(cursor-api.sh launch --repo owner/repo --prompt "..." 2>&1); the
 fi
 ```
 
-## Follow-up Templates
+## 后续操作模板
 
-Use these templates for common follow-up scenarios:
+使用以下模板处理常见的后续操作场景：
 
-### "Add more tests"
+### “添加更多测试”
 ```
 Also add tests for edge cases: empty input, null values, and maximum length limits.
 ```
 
-### "Fix the implementation"
+### “修复实现”
 ```
 The current implementation doesn't handle [specific case]. Please update it to [requirement].
 ```
 
-### "Add documentation"
+### “添加文档”
 ```
 Add comprehensive JSDoc comments to all public functions and a brief README section explaining the feature.
 ```
 
-### "Refactor for clarity"
+### “重构以提高代码清晰度”
 ```
 Refactor the code to use more descriptive variable names and extract complex logic into helper functions.
 ```
 
-## Companion Setup: CLI Backend
+## 配置 CLI 后端
 
-For local tasks (not on GitHub repos), also configure the Cursor Agent CLI as a `cliBackend`:
+对于本地任务（非 GitHub 仓库），还需配置 Cursor Agent CLI 作为 `cliBackend`：
 
 ```json5
 // In your OpenClaw config
@@ -396,31 +388,31 @@ For local tasks (not on GitHub repos), also configure the Cursor Agent CLI as a 
 }
 ```
 
-This enables `cursor-agent` as a backend for local file operations, while this skill handles Cloud Agents for GitHub repos.
+这样 `cursor-agent` 可用于处理本地文件操作，而此技能则负责处理 GitHub 仓库的云代理任务。
 
-## Troubleshooting
+## 故障排除
 
-### "Repository not accessible" (exit code 4)
+### “仓库无法访问”（退出代码 4）
 
-1. Ensure the Cursor GitHub App is installed on the repository
-2. Check that you have admin/write access to the repo
-3. Verify the repo name is correct (`owner/repo` format)
+1. 确保仓库已安装 Cursor GitHub 应用
+2. 检查您是否具有仓库的管理员/写入权限
+3. 验证仓库名称是否正确（格式为 `owner/repo`）
 
-### "Authentication failed" (exit code 2)
+### “认证失败”（退出代码 2）
 
-1. Check that `CURSOR_API_KEY` is set in your environment
-2. Verify the API key is valid in Cursor IDE settings
-3. Ensure the key hasn't expired
+1. 检查环境变量中是否设置了 `CURSOR_API_KEY`
+2. 验证 API 密钥在 Cursor IDE 设置中是否有效
+3. 确保密钥未过期
 
-### "Rate limited" (exit code 3)
+### “超出速率限制”（退出代码 3）
 
-1. Wait a few seconds and retry
-2. Check your usage with `cursor-api.sh usage`
-3. Consider stopping unused agents
+1. 等待几秒钟后重试
+2. 使用 `cursor-api.sh usage` 检查使用情况
+3. 考虑停止未使用的代理
 
-### Agent stuck in "CREATING" status
+### 代理处于 “CREATING” 状态且无法启动
 
-Agents may take 1-2 minutes to start. If stuck longer:
-1. Check Cursor status page for outages
-2. Try stopping and relaunching
-3. Contact Cursor support if persistent
+代理可能需要 1-2 分钟才能启动。如果长时间无法启动：
+1. 查看 Cursor 的状态页面，确认是否存在故障
+2. 尝试停止并重新启动代理
+3. 如果问题持续存在，请联系 Cursor 客服支持

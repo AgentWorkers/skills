@@ -43,7 +43,7 @@ Three ways:
 3. **Search Engine Shortcut**  
 ```
 
-site:newshelp.org/tag climate
+网站：newshelp.org/tag climate
 
 ```
 Let Google jog the memory.
@@ -119,4 +119,3 @@ Example:
 
 ```
 ```
-

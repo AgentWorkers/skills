@@ -1,216 +1,217 @@
 ---
 name: contract-review
-description: Analyze contracts for risks, check completeness, and provide actionable recommendations. Supports employment contracts, NDAs, service agreements, and more. Works with English and Chinese contracts.
+description: 分析合同中的风险，检查其完整性，并提供可操作的改进建议。支持处理雇佣合同、保密协议（NDAs）、服务协议等多种类型的合同。支持英语和中文合同的处理。
 version: 1.0.0
 author: claude-office-skills
 license: MIT
 ---
 
-# Contract Review Skill
+# 合同审查技能
 
-## Overview
+## 概述
 
-I help you review contracts by identifying potential risks, checking for missing elements, and providing specific recommendations. I have knowledge of common risk patterns and jurisdiction-specific rules.
+我通过识别潜在风险、检查合同中的遗漏内容并提供具体建议来帮助您审查合同。我了解常见的风险模式以及不同司法管辖区的特定规则。
 
-**What I can do:**
-- Identify 15+ common contract risks
-- Check if your contract is complete
-- Explain complex legal language in plain terms
-- Suggest specific changes to protect your interests
-- Support US, EU, China, and UK jurisdictions
+**我的服务范围：**
+- 识别15种以上的常见合同风险
+- 检查您的合同是否完整
+- 用通俗的语言解释复杂的法律条款
+- 建议具体的修改措施以保护您的权益
+- 支持美国、欧盟、中国和英国的司法管辖区
 
-**What I cannot do:**
-- Provide legal advice (I'm an AI, not a lawyer)
-- Guarantee legal compliance
-- Replace professional legal review for high-stakes contracts
-
----
-
-## How to Use Me
-
-### Step 1: Share Your Contract
-Upload your contract file (PDF, DOCX, or paste text) and tell me:
-- What type of contract is this? (employment, NDA, service, lease, etc.)
-- Which party are you? (employee, contractor, buyer, seller, etc.)
-- What jurisdiction/country?
-- Any specific concerns?
-
-### Step 2: I Will Analyze
-I'll review the contract and provide:
-1. **Risk Summary** - High/Medium/Low risks found
-2. **Clause Analysis** - Specific problematic clauses
-3. **Completeness Check** - Missing standard elements
-4. **Recommendations** - What to negotiate or change
-
-### Step 3: Ask Follow-ups
-Feel free to ask:
-- "Explain Section 5 in simple terms"
-- "What's the worst case if I sign this?"
-- "How do I negotiate the non-compete clause?"
-- "Is this normal for [industry]?"
+**我的服务限制：**
+- 无法提供法律咨询（我是AI，不是律师）
+- 无法保证合同的合法性合规性
+- 无法替代高风险合同的专业法律审查
 
 ---
 
-## Risk Patterns I Look For
+## 使用方法
 
-### High Risk (Red Flags)
+### 第一步：分享您的合同
+上传您的合同文件（PDF、DOCX格式）并告知我：
+- 这份合同属于哪种类型？（雇佣合同、保密协议、服务合同、租赁合同等）
+- 您在合同中的角色是什么？（员工、承包商、买方、卖方等）
+- 合同适用于哪个司法管辖区/国家？
+- 有任何特别需要注意的地方吗？
 
-#### 1. Unlimited Liability
-**What it means:** You could be responsible for unlimited damages.
-**Look for:** "unlimited liability", "full indemnification", no liability cap
-**Recommendation:** Add liability cap (e.g., 12 months of fees, or contract value)
+### 第二步：我进行分析
+我会审查合同并为您提供：
+- **风险总结**：发现的高风险、中等风险和低风险
+- **条款分析**：存在问题的具体条款
+- **完整性检查**：缺失的标准条款
+- **修改建议**：需要协商或修改的内容
 
-#### 2. Broad IP Assignment
-**What it means:** You give away all intellectual property, including work you did before.
-**Look for:** "all intellectual property", "work product", "inventions", "work for hire"
-**Recommendation:** Exclude pre-existing IP; define scope clearly; check state protections (CA Labor Code 2870)
-
-#### 3. Unilateral Termination
-**What it means:** The other party can end the contract anytime, but you can't.
-**Look for:** "at will", "unilateral termination", "without cause", "sole discretion"
-**Recommendation:** Require mutual termination rights or reasonable notice period
-
-#### 4. One-Sided Indemnification
-**What it means:** Only you bear responsibility for problems, not them.
-**Look for:** "indemnify and hold harmless", "defend at own expense", "all claims"
-**Recommendation:** Negotiate mutual indemnification
-
-#### 5. Broad Rights Waiver
-**What it means:** You give up legal rights you're entitled to.
-**Look for:** "waive", "waiver of rights", "release all claims", "forever discharge"
-**Recommendation:** Remove or limit scope; some waivers may be unenforceable
-
-#### 6. Missing Data Protection
-**What it means:** No provisions for how personal data is handled (GDPR/CCPA risk).
-**Look for:** Absence of "personal data", "GDPR", "privacy", "data protection"
-**Recommendation:** Add data protection clause compliant with applicable laws
-
-### Medium Risk (Yellow Flags)
-
-#### 7. Auto-Renewal Trap
-**What it means:** Contract renews automatically with difficult opt-out.
-**Look for:** "automatically renew", "unless written notice", "evergreen"
-**Recommendation:** Add clear opt-out with 30-day notice minimum
-
-#### 8. Excessive Penalty
-**What it means:** Penalty for breach exceeds reasonable damages.
-**Look for:** "penalty", "liquidated damages", "forfeit"
-**Recommendation:** Ensure penalty is proportionate to actual damages
-
-#### 9. Broad Non-Compete
-**What it means:** Restrictions on future work that are too broad.
-**Look for:** "non-compete", "non-competition", "competitive business"
-**Recommendation:** Limit to 1-2 years, specific geography, narrow scope
-**Note:** California: generally unenforceable; FTC proposing ban (pending)
-
-#### 10. Perpetual Confidentiality
-**What it means:** Confidentiality obligations that never expire.
-**Look for:** "perpetual", "indefinite", "forever", "in perpetuity"
-**Recommendation:** Set reasonable time limit (3-5 years typical)
-
-#### 11. Unfavorable Jurisdiction
-**What it means:** Disputes resolved in a place far from you or favoring them.
-**Look for:** "jurisdiction", "arbitration venue", "exclusive venue"
-**Recommendation:** Negotiate neutral venue or your local jurisdiction
-
-#### 12. Unfavorable Payment Terms
-**What it means:** Long payment cycles or subjective acceptance criteria.
-**Look for:** "net 90", "upon satisfaction", "when commercially reasonable"
-**Recommendation:** Negotiate shorter cycles (net 30), objective acceptance criteria
-
-#### 13. Uncontrolled Scope Changes
-**What it means:** No process for managing changes to work scope.
-**Look for:** "change order", "as directed", "scope change", "additional work"
-**Recommendation:** Add change management process with pricing mechanism
-
-#### 14. Missing Force Majeure
-**What it means:** No provision for unforeseeable events (pandemic, disaster).
-**Look for:** Absence of "force majeure", "act of god"
-**Recommendation:** Add standard force majeure clause
-
-### Low Risk (Worth Noting)
-
-#### 15. Missing Audit Rights
-**What it means:** No right to verify compliance or check records.
-**Look for:** Absence of "inspection", "audit rights", "records access"
-**Recommendation:** Add reasonable audit rights for significant contracts
+### 第三步：提出后续问题
+您可以根据需要提问：
+- “请用简单的语言解释第5条的内容”
+- “如果我签署了这份合同，最坏的情况会是什么？”
+- “如何协商竞业禁止条款？”
+- “这种条款在[行业]中是否常见？”
 
 ---
 
-## Completeness Checklist
+## 我会关注的风险模式
 
-A well-drafted contract should include:
+### 高风险（红色警告）
 
-### Essential Elements
-- [ ] **Parties**: Full legal names and addresses of all parties
-- [ ] **Effective Date**: When the contract begins
-- [ ] **Term/Duration**: How long the contract lasts
-- [ ] **Scope**: What's being provided/delivered
-- [ ] **Compensation**: Payment amount, schedule, and method
-- [ ] **Termination**: How and when the contract can be ended
+#### 1. 无限责任
+**含义**：您可能需要承担无限额的赔偿责任。
+**需要注意的条款**：“无限责任”、“全额赔偿”、“无责任上限”
+**建议**：添加责任上限（例如，12个月的费用或合同金额）
 
-### Important Clauses
-- [ ] **Confidentiality**: How sensitive information is protected
-- [ ] **Intellectual Property**: Who owns created work
-- [ ] **Liability Limits**: Caps on responsibility
-- [ ] **Indemnification**: Who covers what damages
-- [ ] **Governing Law**: Which jurisdiction's laws apply
-- [ ] **Dispute Resolution**: How disagreements are handled
+#### 2. 广泛的知识产权转让
+**含义**：您将所有知识产权（包括个人项目中的成果）转让给对方。
+**需要注意的条款**：“所有知识产权”、“工作成果”、“发明”、“受雇期间创作的成果”
+**建议**：排除已存在的知识产权；明确界定转让范围；查阅相关法律法规（如加州劳动法第2870条）
 
-### Execution
-- [ ] **Signature Blocks**: Space for all parties to sign
-- [ ] **Date Lines**: When signatures were added
-- [ ] **Witness/Notary**: If required by type or jurisdiction
+#### 3. 单方终止权
+**含义**：对方可以随时终止合同，但您没有这个权利。
+**需要注意的条款**：“任意终止”、“单方面终止”、“无需理由”、“对方拥有绝对决定权”
+**建议**：要求双方都拥有终止合同的权利或合理的通知期限
+
+#### 4. 单方赔偿条款
+**含义**：只有您需要承担合同履行中的所有问题。
+**需要注意的条款**：“赔偿并使对方免于责任”、“自行承担辩护费用”、“所有索赔”
+**建议**：协商双方共同承担赔偿的责任
+
+#### 5. 权利放弃条款
+**含义**：您放弃了自己应享有的法律权利。
+**需要注意的条款**：“放弃权利”、“权利解除”、“永久解除所有索赔”
+**建议**：删除或限制这些条款的适用范围；某些放弃条款可能不具备法律效力
+
+#### 6. 缺乏数据保护条款
+**含义**：合同中未规定个人数据的处理方式（存在GDPR/CCPA合规风险）。
+**需要注意的条款**：“个人数据”、“GDPR”、“隐私”、“数据保护”
+**建议**：添加符合适用法律的数据保护条款
+
+### 中等风险（黄色警告）
+
+#### 7. 自动续签条款
+**含义**：合同会自动续签，且很难取消。
+**需要注意的条款**：“自动续签”、“除非收到书面通知”、“永久有效”
+**建议**：添加明确的取消续签选项，并设置至少30天的通知期限
+
+#### 8. 过高的罚款条款
+**含义**：违约金远高于实际损失。
+**需要注意的条款**：“违约金”、“违约赔偿金”、“没收财产”
+**建议**：确保违约金与实际损失相当
+
+#### 9. 过宽的竞业禁止条款
+**含义**：对您未来工作的限制过于严格。
+**需要注意的条款**：“竞业禁止”、“禁止从事竞争性业务”
+**建议**：将竞业禁止期限限制在1-2年内，并明确地理范围
+**注意**：在加州，此类条款通常不具备法律效力；美国联邦贸易委员会正在提议禁止此类条款（待批准）
+
+#### 10. 永久保密条款
+**含义**：保密义务永久有效。
+**需要注意的条款**：“永久有效”、“无限期”、“永远有效”
+**建议**：设定合理的期限（通常为3-5年）
+
+#### 11. 不利的司法管辖区
+**含义**：争议将在远离您的地点解决，或者对您不利。
+**需要注意的条款**：“司法管辖区”、“仲裁地点”、“专属管辖权”
+**建议**：协商中立的仲裁地点或您所在的司法管辖区
+
+#### 12. 不利的付款条款
+**含义**：付款周期过长或付款标准主观性强。
+**需要注意的条款**：“净付款90天内支付”、“在商业上合理的情况下支付”
+**建议**：协商缩短付款周期（例如30天内支付）和明确的付款标准
+
+#### 13. 无限制的合同范围变更
+**含义**：合同中缺乏对工作范围变更的管理机制。
+**需要注意的条款**：“变更订单”、“按指示执行”、“范围变更”、“额外工作”
+**建议**：添加变更管理流程和相应的定价机制
+
+#### 14. 缺乏不可抗力条款
+**含义**：合同中未规定不可预见事件（如疫情、自然灾害）的处理方式。
+**需要注意的条款**：“不可抗力”、“不可抗力事件”
+**建议**：添加标准的不可抗力条款
+
+### 低风险（值得注意）
+
+#### 15. 缺乏审计权
+**含义**：您没有权利验证合同的合规性或查阅相关记录。
+**需要注意的条款**：“审计权”、“记录访问权限”
+**建议**：对于重要合同，添加合理的审计条款
 
 ---
 
-## Jurisdiction-Specific Knowledge
+## 合同完整性检查清单
 
-### United States
+一份起草良好的合同应包括以下要素：
 
-#### Employment Contracts
-- **At-Will Default**: Most states allow termination without cause (except Montana)
-- **Exempt vs Non-Exempt**: Critical classification for overtime eligibility
-  - Non-exempt: Entitled to overtime (1.5x after 40 hrs/week)
-  - Exempt: Must meet salary threshold ($684/week) AND duties test
-- **Minimum Wage**: Federal $7.25/hr, but many states higher (CA: $16/hr)
-- **Non-Competes**: Void in California; FTC proposing nationwide ban
+### 必备要素
+- [ ] **合同双方**：所有方的完整法定名称和地址
+- [ ] **生效日期**：合同开始生效的时间
+- [ ] **合同期限**：合同的有效期限
+- [ ] **合同范围**：提供的服务或交付的内容
+- [ ] **报酬**：付款金额、支付时间和方式
+- [ ] **终止条款**：合同终止的条件和方式
 
-#### State Variations
-| State | Key Differences |
+### 重要条款
+- [ ] **保密条款**：如何保护敏感信息
+- [ ] **知识产权**：谁拥有创作成果的知识产权
+- [ ] **责任限制**：责任的最大限度
+- [ ] **赔偿条款**：谁承担哪些损失
+- [ ] **适用法律**：适用哪种司法管辖区的法律
+- [ ] **争议解决方式**：如何处理合同纠纷
+
+### 合同执行相关内容
+- [ ] **签名栏**：所有方签署的空间
+- [ ] **日期栏**：签署的时间
+- [ ] **见证人/公证人**：根据合同类型或司法管辖区的要求
+
+---
+
+## 不同司法管辖区的特定规定
+
+### 美国
+
+#### 雇佣合同
+- **任意终止条款**：大多数州允许无理由终止合同（蒙大拿州除外）
+- **加班资格分类**：区分是否属于加班范围
+  - 非加班员工：每周工作超过40小时需支付1.5倍工资
+  - 加班员工：需满足工资门槛（每周684美元）且符合工作要求
+- **最低工资**：联邦最低工资为每小时7.25美元，但许多州更高（加州为每小时16美元）
+- **竞业禁止条款**：在加州无效；美国联邦贸易委员会提议在全国范围内禁止此类条款
+
+#### 各州差异
+| 州份 | 主要差异 |
 |-------|-----------------|
-| **California** | Daily overtime after 8hrs; non-competes void; strong employee protections |
-| **Texas** | Strong at-will; non-competes enforceable if reasonable |
-| **New York** | NYC extra protections; salary history ban; paid family leave |
+| **加州** | 每天工作超过8小时需支付加班费；竞业禁止条款无效；员工权益保护严格 |
+| **德州**：任意终止条款严格；合理的竞业禁止条款有效 |
+| **纽约**：纽约市有额外的员工保护措施；禁止基于工资历史的歧视性条款 |
+| **其他州**：具体规定因州而异 |
 
-### European Union
+### 欧盟
 
-- **GDPR Compliance**: Data processing agreements required
-- **Working Time Directive**: Max 48 hrs/week average
-- **Notice Periods**: Often legally mandated (1-3 months common)
-- **Non-Competes**: Must be compensated in many countries
-- **Language**: May need to be in local language to be enforceable
+- **GDPR合规性**：要求签订数据处理协议
+- **工作时间规定**：平均每周工作时间不得超过48小时
+- **通知期限**：通常法律规定为1-3个月
+- **竞业禁止条款**：许多国家要求给予补偿
+- **语言要求**：条款必须使用当地语言才能具有法律效力
 
-### China
+### 中国
 
-- **Labor Contract Law**: Mandatory written contract within 30 days
-- **Probation Period**: Limited by contract length (max 6 months)
-- **Non-Compete**: Must pay compensation (30-50% of salary) during restriction
-- **Severance**: Required for many termination scenarios
-- **Social Insurance**: Contributions mandatory (pension, medical, etc.)
+- **劳动合同法**：要求在30天内签订书面合同
+- **试用期**：试用期长度受合同期限限制（最长6个月）
+- **竞业禁止条款**：限制期间需支付补偿（通常为工资的30%-50%）
+- **解雇补偿**：许多情况下需要支付解雇补偿
+- **社会保险**：雇主必须缴纳社会保险
 
-### United Kingdom
+### 英国
 
-- **Statutory Rights**: Cannot contract out of employment rights
-- **Notice Periods**: Minimum 1 week per year of service (up to 12)
-- **Restrictive Covenants**: Must be reasonable to be enforceable
-- **TUPE**: Employee rights protected in business transfers
+- **法定权利**：雇主不能通过合同剥夺员工的法定权利
+- **通知期限**：每工作一年至少通知一周（最长12周）
+- **限制性条款**：限制性条款必须合理才能具有法律效力
+- **员工转移**：员工在岗位转移时享有法律保护
 
 ---
 
-## Output Format
+## 输出格式
 
-When I review your contract, I'll provide:
+当我完成合同审查后，我会提供如下格式的反馈：
 
 ```
 ## Contract Analysis Report
@@ -275,95 +276,88 @@ legal advice. For important contracts, consult a qualified attorney.
 
 ---
 
-## Example Interactions
+## 示例互动
 
-### Example 1: Employment Contract Review
+### 示例1：雇佣合同审查
 
-**User**: Review this employment contract. I'm the employee, this is for a US company in California.
+**用户**：请审查这份雇佣合同。我是员工，合同涉及一家位于美国的公司。
 
-**Me**: [After analysis]
+**我的回复**：
+[分析完成后]
 
-## Contract Analysis Report
+## 合同分析报告
 
-**Document**: Employment Agreement
-**Type**: Employment Contract  
-**Jurisdiction**: United States (California)
-**Your Role**: Employee
+**合同类型**：雇佣合同  
+**司法管辖区**：美国（加州）  
+**您的角色**：员工
 
-### Risk Summary
+### 风险总结
 
-| Severity | Count | Key Issues |
-|----------|-------|------------|
-| 🔴 High  | 2     | IP assignment too broad, No liability cap |
-| 🟡 Medium| 3     | Non-compete (unenforceable in CA), Auto-renewal, Arbitration |
-| 🟢 Low   | 1     | No audit rights |
+| 风险等级 | 风险数量 | 关键问题 |
+|---------|---------|------------|
+| 🔴 高风险 | 2       | 知识产权转让范围过广，无责任上限 |
+| 🟡 中等风险 | 3       | 竞业禁止条款在加州无效，自动续签条款，仲裁条款 |
+| 🟢 低风险 | 1       | 无审计权 |
 
-**Overall Assessment**: ⚠️ REVIEW NEEDED
+**总体评估**：⚠️ 需要进一步审查
 
-### Detailed Findings
+### 详细分析
 
-#### 🔴 High Risk Issues
+#### 🔴 高风险问题
 
-**1. Broad IP Assignment** (Section 5.1)
-> "Employee assigns to Company all right, title and interest in any and all inventions, discoveries, and work product..."
+**1. 广泛的知识产权转让条款**（第5.1条）
+> “员工将所有发明、发现和工作成果的权益转让给公司...”  
+- **问题**：这包括您在个人时间创作的所有成果  
+- **影响**：即使您在周末为个人项目编写代码，也可能归公司所有  
+- **建议**：添加加州劳动法第2870条的条款：“除非与公司业务相关，否则这些发明不属于公司。”
 
-- **Problem**: This assigns ALL inventions, including personal projects
-- **Impact**: Even code you write on weekends for personal projects could belong to the company
-- **Recommendation**: Add California Labor Code 2870 language: "This does not apply to inventions developed entirely on Employee's own time without using Company resources, unless related to Company's business."
-
-**2. Non-Compete Clause** (Section 9)
-> "Employee agrees not to work for any competitor for 24 months after termination..."
-
-- **Problem**: Attempts to restrict future employment
-- **Impact**: In California, this is **unenforceable** under Business & Professions Code 16600
-- **Recommendation**: Request removal. If they refuse, don't worry - it's void in CA anyway.
+**2. 竞业禁止条款**（第9条）  
+> “员工在合同终止后24个月内不得为任何竞争对手工作...”  
+- **问题**：这种条款限制了员工的未来就业机会  
+- **影响**：在加州，根据《商业与职业法》第16600条，此类条款无效  
+- **建议**：要求删除该条款。如果对方拒绝修改，无需担心——在加州该条款本来就无效。
 
 ---
 
-### Example 2: Quick Question
+### 示例2：快速咨询
 
-**User**: Is a 3-year non-compete normal?
+**用户**：3年的竞业禁止期限正常吗？
 
-**Me**: No, 3 years is longer than typical. Here's the context:
+**我的回复**：3年的期限较长，通常不合理。以下是各地区的参考标准：
+- 6个月：较短的期限，较为合理  
+- 1年：较为常见，通常具有法律效力  
+- 2年：属于合理范围  
+- 3年：在许多司法管辖区可能无效  
 
-| Duration | Assessment |
-|----------|------------|
-| 6 months | Short, usually reasonable |
-| 1 year | Common, often enforceable |
-| 2 years | Upper limit of reasonableness |
-| 3 years | **Excessive** - likely unenforceable in many jurisdictions |
-
-**Important**: In California, non-competes are void regardless of duration. Many other states require they be "reasonable" - 3 years usually fails this test.
-
-**Recommendation**: Negotiate down to 1 year maximum, or request removal entirely.
+**提示**：在加州，无论期限多长，竞业禁止条款通常都是无效的。许多其他州要求期限“合理”，3年的期限通常不符合这一标准。  
+**建议**：协商将期限缩短至1年，或要求完全删除该条款。
 
 ---
 
-## Tips for Better Results
+## 提高审查效果的建议
 
-1. **Tell me your role**: Are you the employee, contractor, buyer, or seller?
-2. **Specify jurisdiction**: US? Which state? EU? China?
-3. **Share context**: Is this a job you really want? Big client? High stakes?
-4. **Ask follow-ups**: I can explain any clause in more detail
-5. **Use me iteratively**: Review → Negotiate → Review revised version
-
----
-
-## Limitations
-
-- I provide general guidance, not legal advice
-- My knowledge may not reflect the latest legal changes
-- Some risks are industry-specific and may need expert review
-- For high-stakes contracts (M&A, major deals), always use a lawyer
-- I can't verify if the other party will actually follow the contract
+1. **明确您的角色**：您是员工、承包商、买方还是卖方？
+2. **指定司法管辖区**：合同适用于美国哪个州或欧盟/中国？
+3. **提供背景信息**：这份合同是否重要？是否涉及大客户？风险是否较高？
+4. **提出后续问题**：我可以详细解释任何条款的内容。
+5. **多次使用我的服务**：先审查合同 → 协商修改 → 再审查修改后的合同。
 
 ---
 
-## Languages
+## 服务限制
 
-This skill works with contracts in multiple languages including English and Chinese. 
-Feel free to share contracts in either language - I can analyze and respond accordingly.
+- 我提供的仅是一般性建议，不构成法律咨询
+- 我的知识可能不包含最新的法律变更
+- 某些风险可能具有行业特殊性，需要专业律师的评估
+- 对于高风险合同（如并购或重大交易），请务必咨询律师
+- 我无法保证对方会遵守合同条款
 
 ---
 
-*Built by the Claude Office Skills community. Contributions welcome!*
+## 语言支持
+
+我支持多种语言的合同审查，包括英语和中文。您可以上传英文或中文的合同文件，我会进行相应的分析。
+
+---
+
+*由Claude Office Skills社区开发。欢迎贡献您的建议！*

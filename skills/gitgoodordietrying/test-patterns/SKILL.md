@@ -1,26 +1,26 @@
 ---
 name: test-patterns
-description: Write and run tests across languages and frameworks. Use when setting up test suites, writing unit/integration/E2E tests, measuring coverage, mocking dependencies, or debugging test failures. Covers Node.js (Jest/Vitest), Python (pytest), Go, Rust, and Bash.
+description: 编写并运行跨语言和框架的测试。这些工具可用于设置测试套件、编写单元测试/集成测试/端到端测试、衡量代码覆盖率、模拟依赖关系以及调试测试失败。支持的语言和框架包括 Node.js（Jest/Vitest）、Python（pytest）、Go、Rust 和 Bash。
 metadata: {"clawdbot":{"emoji":"🧪","requires":{"anyBins":["node","python3","go","cargo","bash"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Test Patterns
+# 测试模式
 
-Write, run, and debug tests across languages. Covers unit tests, integration tests, E2E tests, mocking, coverage, and TDD workflows.
+跨语言编写、运行和调试测试。涵盖单元测试、集成测试、端到端测试（E2E测试）、模拟（mocking）、代码覆盖率（coverage）以及测试驱动开发（TDD）的工作流程。
 
-## When to Use
+## 使用场景
 
-- Setting up a test suite for a new project
-- Writing unit tests for functions or modules
-- Writing integration tests for APIs or database interactions
-- Setting up code coverage measurement
-- Mocking external dependencies (APIs, databases, file system)
-- Debugging flaky or failing tests
-- Implementing test-driven development (TDD)
+- 为新项目设置测试套件
+- 为函数或模块编写单元测试
+- 为API或数据库交互编写集成测试
+- 设置代码覆盖率监控
+- 模拟外部依赖项（API、数据库、文件系统）
+- 调试不稳定或失败的测试
+- 实施测试驱动开发（TDD）
 
-## Node.js (Jest / Vitest)
+## Node.js（Jest / Vitest）
 
-### Setup
+### 设置
 
 ```bash
 # Jest
@@ -32,7 +32,7 @@ npm install -D vitest
 # Add to package.json: "scripts": { "test": "vitest" }
 ```
 
-### Unit Tests
+### 单元测试
 
 ```javascript
 // math.js
@@ -74,7 +74,7 @@ describe('divide', () => {
 });
 ```
 
-### Async Tests
+### 异步测试
 
 ```javascript
 // api.test.js
@@ -92,7 +92,7 @@ test('throws on missing user', async () => {
 });
 ```
 
-### Mocking
+### 模拟（Mocking）
 
 ```javascript
 // Mock a module
@@ -132,7 +132,7 @@ expect(consoleSpy).toHaveBeenCalledWith('expected message');
 consoleSpy.mockRestore();
 ```
 
-### Coverage
+### 代码覆盖率（Coverage）
 
 ```bash
 # Jest
@@ -145,15 +145,15 @@ npx vitest --coverage
 # coverageThreshold: { global: { branches: 80, functions: 80, lines: 80, statements: 80 } }
 ```
 
-## Python (pytest)
+## Python（pytest）
 
-### Setup
+### 设置
 
 ```bash
 pip install pytest pytest-cov
 ```
 
-### Unit Tests
+### 单元测试
 
 ```python
 # calculator.py
@@ -186,7 +186,7 @@ def test_divide_float():
     assert divide(1, 3) == pytest.approx(0.333, abs=0.001)
 ```
 
-### Parametrized Tests
+### 参数化测试
 
 ```python
 @pytest.mark.parametrize("a,b,expected", [
@@ -199,7 +199,7 @@ def test_add_cases(a, b, expected):
     assert add(a, b) == expected
 ```
 
-### Fixtures
+### 固定装置（Fixtures）
 
 ```python
 import pytest
@@ -244,7 +244,7 @@ def temp_config_file():
     os.unlink(path)
 ```
 
-### Mocking
+### 模拟（Mocking）
 
 ```python
 from unittest.mock import patch, MagicMock, AsyncMock
@@ -277,7 +277,7 @@ def test_file_reader():
         assert result["key"] == "val"
 ```
 
-### Coverage
+### 代码覆盖率（Coverage）
 
 ```bash
 # Run with coverage
@@ -293,7 +293,7 @@ pytest --cov=mypackage --cov-fail-under=80
 
 ## Go
 
-### Unit Tests
+### 单元测试
 
 ```go
 // math.go
@@ -356,7 +356,7 @@ func TestDivideByZero(t *testing.T) {
 }
 ```
 
-### Run Tests
+### 运行测试
 
 ```bash
 # All tests
@@ -385,7 +385,7 @@ go test -bench=. ./...
 
 ## Rust
 
-### Unit Tests
+### 单元测试
 
 ```rust
 // src/math.rs
@@ -432,9 +432,9 @@ cargo test test_add        # Run specific test
 cargo tarpaulin            # Coverage (install: cargo install cargo-tarpaulin)
 ```
 
-## Bash Tests
+## Bash 测试
 
-### Simple Test Runner
+### 简单测试运行器
 
 ```bash
 #!/bin/bash
@@ -488,9 +488,9 @@ echo "Results: $PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ] && exit 0 || exit 1
 ```
 
-## Integration Testing Patterns
+## 集成测试模式
 
-### API Integration Test (any language)
+### API 集成测试（任何语言）
 
 ```bash
 #!/bin/bash
@@ -511,7 +511,7 @@ EXIT_CODE=$?
 exit $EXIT_CODE
 ```
 
-### Database Integration Test (Python)
+### 数据库集成测试（Python）
 
 ```python
 import pytest
@@ -536,13 +536,13 @@ def test_empty_table(db):
     assert count == 0
 ```
 
-## TDD Workflow
+## TDD 工作流程
 
-The red-green-refactor cycle:
+红-绿-重构（Red-Green-Refactor）循环：
 
-1. **Red**: Write a failing test for the next piece of behavior
-2. **Green**: Write the minimum code to make it pass
-3. **Refactor**: Clean up without changing behavior (tests stay green)
+1. **红**：为下一个需要测试的功能编写一个失败的测试用例。
+2. **绿**：编写最少的代码使测试通过。
+3. **重构**：在不改变功能的前提下优化代码（测试用例仍应保持绿色状态）。
 
 ```bash
 # Tight feedback loop
@@ -560,27 +560,27 @@ ptw
 ls *.go | entr -c go test ./...
 ```
 
-## Debugging Failed Tests
+## 调试失败的测试
 
-### Common Issues
+### 常见问题
 
-**Test passes alone, fails in suite** → shared state. Check for:
-- Global variables modified between tests
-- Database not cleaned up
-- Mocks not restored (`afterEach` / `teardown`)
+- **单个测试通过，但在测试套件中失败** → 可能存在共享状态的问题。检查以下内容：
+  - 测试之间是否修改了全局变量
+  - 数据库是否没有被正确清理
+  - 模拟对象是否在测试结束后没有被恢复（需要使用 `afterEach` 或 `teardown` 等机制）
 
-**Test fails intermittently (flaky)** → timing or ordering issue:
-- Async operations without proper `await`
-- Tests depending on execution order
-- Time-dependent logic (use clock mocking)
-- Network calls in unit tests (should be mocked)
+- **测试结果不稳定（间歇性失败）** → 可能是时间依赖或执行顺序的问题：
+  - 异步操作没有正确使用 `await`
+  - 测试结果依赖于特定的执行顺序
+  - 包含时间依赖的逻辑（可以使用时间模拟工具）
+  - 单元测试中包含网络调用（应该对这些调用进行模拟）
 
-**Coverage shows uncovered branches** → missing edge cases:
-- Error paths (what if the API returns 500?)
-- Empty inputs (empty string, null, empty array)
-- Boundary values (0, -1, MAX_INT)
+- **代码覆盖率显示有未覆盖的代码路径** → 可能存在边缘情况：
+  - 错误处理路径（例如API返回500状态码时）
+  - 空输入（空字符串、null、空数组）
+  - 边界值（如0、-1、最大整数）
 
-### Run Single Test
+### 运行单个测试
 
 ```bash
 # Jest
@@ -596,12 +596,12 @@ go test -run TestDivideByZero ./...
 cargo test test_divide
 ```
 
-## Tips
+## 提示
 
-- Test behavior, not implementation. Tests should survive refactors.
-- One assertion per concept (not necessarily one `assert` per test, but one logical check).
-- Name tests descriptively: `test_returns_empty_list_when_no_users_exist` beats `test_get_users_2`.
-- Don't mock what you don't own — write thin wrappers around external libraries, mock the wrapper.
-- Integration tests catch bugs unit tests miss. Don't skip them.
-- Use `tmp_path` (pytest), `t.TempDir()` (Go), or `tempfile` (Node) for file-based tests.
-- Snapshot tests are great for detecting unintended changes, bad for evolving formats.
+- 测试的是功能行为，而不是实现细节。测试用例应该能够在代码重构后仍然有效。
+- 每个功能点都应该有一个对应的测试用例（不一定每个测试都包含一个 `assert` 语句，但每个逻辑判断都应该有对应的测试）。
+- 为测试用例起描述性强的名称：例如 `test_returns_empty_list_when_no_users_exist` 比 `test_get_users_2` 更易于理解。
+- 不要模拟你无法控制的组件——只需对外部库编写薄层的封装层，并对这些封装层进行模拟。
+- 集成测试能够发现单元测试可能遗漏的错误，不要跳过它们。
+- 对于基于文件的测试，可以使用 `tmp_path`（Python）、`t.TempDir()`（Go）或 `tempfile`（Node.js）等工具来管理临时文件。
+- 快照测试（snapshot tests）有助于检测意外的代码更改，但不适合处理格式变化的情况。

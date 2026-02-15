@@ -1,49 +1,49 @@
 ---
 name: baidu-search
-description: Search the web using Baidu AI Search Engine (BDSE). Use for live information, documentation, or research topics.
+description: 使用百度AI搜索引擎（BDSE）在互联网上搜索信息。该搜索引擎适用于获取实时数据、查阅文档或进行相关研究。
 metadata: { "openclaw": { "emoji": "🔍︎",  "requires": { "bins": ["python3"], "env":["BAIDU_API_KEY"]},"primaryEnv":"BAIDU_API_KEY" } }
 ---
 
-# Baidu Search
+# 百度搜索
 
-Search the web via Baidu AI Search API.
+通过百度AI搜索API在网页上进行搜索。
 
-## Usage
+## 使用方法
 
 ```bash
 python3 skills/baidu-search/scripts/search.py '<JSON>'
 ```
 
-## Request Parameters
+## 请求参数
 
-| Param | Type | Required | Default | Description |
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 |-------|------|----------|---------|-------------|
-| query | str | yes | - | Search query |
-| edition | str | no | standard | `standard` (full) or `lite` (light) |
-| resource_type_filter | list[obj] | no | web:20, others:0 | Resource types: web (max 50), video (max 10), image (max 30), aladdin (max 5) |
-| search_filter | obj | no | - | Advanced filters (see below) |
-| block_websites | list[str] | no | - | Sites to block, e.g. ["tieba.baidu.com"] |
-| search_recency_filter | str | no | - | Time filter: `week`, `month`, `semiyear`, `year` |
-| safe_search | bool | no | false | Enable strict content filtering |
+| query | str | 是 | - | 搜索查询内容 |
+| edition | str | 否 | standard | `standard`（完整版）或 `lite`（简化版） |
+| resource_type_filter | list[obj] | 否 | web:20, others:0 | 资源类型：网页（最多50个）、视频（最多10个）、图片（最多30个）、其他（最多5个） |
+| search_filter | obj | 否 | - | 高级过滤条件（见下文） |
+| block_websites | list[str] | 否 | - | 需要屏蔽的网站列表，例如 ["tieba.baidu.com"] |
+| search_recency_filter | str | 否 | - | 时间过滤条件：`week`（周）、`month`（月）、`semiyear`（半年）、`year`（年） |
+| safe_search | bool | 否 | false | 是否启用严格的内容过滤 |
 
-## SearchFilter
+## SearchFilter（高级过滤条件）
 
-| Param | Type | Description |
+| 参数 | 类型 | 描述 |
 |-------|------|-------------|
-| match.site | list[str] | Limit search to specific sites, e.g. ["baike.baidu.com"] |
-| range.pageTime | obj | Date range for page_time field (see below) |
+| match.site | list[str] | 将搜索范围限制在特定网站内，例如 ["baike.baidu.com"] |
+| range.pageTime | obj | `page_time` 字段的日期范围（见下文） |
 
-### Date Range Format
+### 日期范围格式
 
-Fixed date: `YYYY-MM-DD`
-Relative time (from current day): `now-1w/d`, `now-1M/d`, `now-1y/d`
+固定日期：`YYYY-MM-DD`
+相对时间（从当前日期起）：`now-1w/d`（过去1周）、`now-1M/d`（过去1个月）、`now-1y/d`（过去1年）
 
-| Operator | Meaning |
+| 运算符 | 含义 |
 |----------|---------|
-| gte | Greater or equal (start) |
-| lte | Less or equal (end) |
+| gte | 大于或等于（开始时间） |
+| lte | 小于或等于（结束时间） |
 
-## Examples
+## 示例
 
 ```bash
 # Basic search
@@ -63,6 +63,6 @@ python3 skills/baidu-search/scripts/search.py '{
 }'
 ```
 
-## Current Status
+## 当前状态
 
-Fully functional.
+该功能已完全实现。

@@ -1,77 +1,76 @@
 ---
 name: manage-liquidity
-description: Add liquidity, remove liquidity, or collect fees on Uniswap V2/V3/V4 pools. Handles the full flow including pool selection, range optimization, approvals, safety checks, and transaction execution. Use when the user wants to LP, provide liquidity, remove a position, or collect accumulated fees.
+description: 在 Uniswap V2/V3/V4 的交易池中，可以添加流动性、移除流动性，或者收取费用。该功能涵盖了整个流程，包括交易池的选择、参数优化、审批流程、安全检查以及交易执行。适用于用户希望参与流动性提供（LP）、移除已持有的头寸（position），或收取累计费用的情况。
 model: opus
 allowed-tools: [Task(subagent_type:liquidity-manager), Task(subagent_type:pool-researcher), mcp__uniswap__get_positions_by_owner, mcp__uniswap__get_position, mcp__uniswap__check_safety_status]
 ---
 
-# Manage Liquidity
+# 管理流动性
 
-## Overview
+## 概述
 
-This is the primary skill for all liquidity operations on Uniswap. It handles three distinct actions:
+这是Uniswap上所有流动性操作的核心功能。它主要处理三种操作：
 
-1. **Add liquidity** — Find the best pool, recommend a range, handle approvals, deposit tokens
-2. **Remove liquidity** — Withdraw tokens from an existing position (partial or full)
-3. **Collect fees** — Claim accumulated trading fees from a position
+1. **添加流动性**：寻找最佳的流动性池，推荐合适的范围，处理用户确认流程，并将代币存入池中。
+2. **移除流动性**：从现有持仓中提取代币（部分或全部）。
+3. **收取费用**：从持仓中提取累积的交易费用。
 
-Each action delegates to the `liquidity-manager` agent for execution, with optional `pool-researcher` delegation for intelligent pool selection. This skill extracts the user's intent, validates parameters, and orchestrates the right agent workflow.
+每种操作都会委托给`liquidity-manager`代理执行，用户可以选择是否使用`pool-researcher`代理来辅助选择更合适的流动性池。该功能会解析用户的意图，验证参数，并协调相应的代理流程。
 
-## When to Use
+## 使用场景
 
-Activate when the user says anything related to providing, removing, or managing Uniswap liquidity:
+当用户提及与提供、移除或管理Uniswap流动性相关的操作时，应激活此功能：
 
-**Adding liquidity:**
-- "Add liquidity to ETH/USDC"
-- "Provide LP for WETH/USDC on Base"
-- "LP into the best pool for ETH/USDC"
-- "Open a position in UNI/WETH"
-- "I want to LP $5000 into ETH/USDC"
-- "Deposit liquidity into the 0.05% pool"
-- "Add $10K to my WETH/USDC position"
+**添加流动性：**
+- “为ETH/USDC添加流动性”
+- “在Base平台上为WETH/USDC提供流动性”
+- “将代币加入ETH/USDC的最佳流动性池”
+- “开设UNI/WETH的持仓”
+- “我想向ETH/USDC的流动性池中投入5000美元”
+- “将代币存入费用率为0.05%的流动性池”
+- “向我的WETH/USDC持仓中投入1万美元”
 
-**Removing liquidity:**
-- "Remove my liquidity"
-- "Close my ETH/USDC position"
-- "Withdraw 50% from position #12345"
-- "Exit my LP position"
+**移除流动性：**
+- “移除我的流动性”
+- “关闭我的ETH/USDC持仓”
+- “从持仓#12345中提取50%的代币”
+- “退出我的流动性持仓”
 
-**Collecting fees:**
-- "Collect my fees"
-- "Claim accumulated fees from position #12345"
-- "How much in fees have I earned?" (check first, then offer to collect)
+**收取费用：**
+- “收取我的交易费用”
+- “从持仓#12345中提取累积的费用”
+- “我赚了多少钱？”（先查询费用金额，再询问用户是否需要收取）
 
-## Parameters
+## 参数
 
-### For Adding Liquidity
+### 添加流动性时的参数
 
-| Parameter | Required | Default      | How to Extract                                                |
-| --------- | -------- | ------------ | ------------------------------------------------------------- |
-| action    | Yes      | —            | Always "add" for this sub-flow                                |
-| token0    | Yes      | —            | First token: "ETH", "WETH", "USDC", or 0x address            |
-| token1    | Yes      | —            | Second token                                                  |
-| amount    | Yes      | —            | Dollar amount ("$5000"), token amount ("2.5 ETH"), or both    |
-| chain     | No       | ethereum     | "ethereum", "base", "arbitrum", "optimism", "polygon"         |
-| version   | No       | v3           | "v2" (passive), "v3" (concentrated), "v4" (hooks)            |
-| range     | No       | medium       | "narrow" (±5%), "medium" (±15%), "wide" (±50%), "full" (±∞)  |
-| feeTier   | No       | Auto-detect  | "0.01%", "0.05%", "0.3%", "1%"  or bps: 100, 500, 3000, 10000 |
+| 参数          | 是否必填 | 默认值 | 提取方式                                      |
+|---------------|--------|---------|-------------------------------------------|
+| action         | 是      | —        | 对于此子流程，始终使用“add”                    |
+| token0         | 是      | —        | 第一种代币（例如：ETH、WETH、USDC或0x地址）                   |
+| token1         | 是      | —        | 第二种代币                                      |
+| amount         | 是      | —        | 金额（美元：“$5000”），代币数量（“2.5 ETH”）或同时指定           |
+| chain          | 否      | ethereum    | “ethereum”、“base”、“arbitrum”、“optimism”、“polygon”           |
+| version        | 否      | v3        | “v2”（被动模式），“v3”（主动管理模式），“v4”（高级管理模式）         |
+| range         | 否      | medium      | “narrow”（±5%）、“medium”（±15%）、“wide”（±50%）、“full”（±∞）        |
+| feeTier        | 否      | 自动检测    | “0.01%”、“0.05%”、“0.3%”或bps：100、500、3000、10000           |
 
-### For Removing Liquidity / Collecting Fees
+### 移除流动性/收取费用时的参数
 
-| Parameter  | Required | Default    | How to Extract                                          |
-| ---------- | -------- | ---------- | ------------------------------------------------------- |
-| action     | Yes      | —          | "remove" or "collect"                                   |
-| positionId | Yes*     | —          | NFT token ID ("position #12345") or found via search    |
-| chain      | No       | ethereum   | Chain where the position exists                          |
-| percentage | No       | 100        | "50%", "all", "half" — only for remove                   |
-| collectFees| No       | true       | Whether to also collect fees when removing               |
+| 参数          | 是否必填 | 默认值 | 提取方式                                      |
+|---------------|--------|----------|-------------------------------------------------------|
+| action         | 是      | —        | “remove”或“collect”                                  |
+| positionId      | 是*     | —        | NFT代币ID（例如：“position #12345”）或通过搜索获取         |
+| chain          | 否      | ethereum    | 持仓所在的链                         |
+| percentage     | 否      | 100       | “50%”、“all”、“half”（仅用于移除操作）                   |
+| collectFees     | 是      | true       | 是否在移除时同时收取费用                         |
 
-*If the user doesn't provide a position ID (e.g., "remove my ETH/USDC position"), search for it using `get_positions_by_owner` and confirm with the user before proceeding.
+*如果用户未提供持仓ID（例如：“移除我的ETH/USDC持仓”），则使用`get_positions_by_owner`函数进行搜索，并在继续操作前确认用户信息。*
 
-## Workflow
+## 工作流程
 
-### Add Liquidity Flow
-
+### 添加流动性流程
 ```
 Step 1: PARSE INTENT
 ├── Extract: tokens, amount, chain, version, range, fee tier
@@ -110,8 +109,7 @@ Step 5: PRESENT RESULT
 └── Tip: "Monitor with /track-performance"
 ```
 
-### Remove Liquidity Flow
-
+### 移除流动性流程
 ```
 Step 1: IDENTIFY POSITION
 ├── If position ID given → use directly
@@ -134,8 +132,7 @@ Step 3: PRESENT RESULT
 └── If partial removal: remaining position details
 ```
 
-### Collect Fees Flow
-
+### 收取费用流程
 ```
 Step 1: IDENTIFY POSITION (same as remove)
 
@@ -154,23 +151,22 @@ Step 4: PRESENT RESULT
 └── Tip: "Your position is still active and earning more fees"
 ```
 
-## Critical Decision Points
+## 关键决策点
 
-These are the moments where the skill must **stop and ask** rather than assume:
+在以下情况下，系统必须**停止操作并询问用户**，而不是自动执行：
 
-| Situation                          | Action                                                        |
-| ---------------------------------- | ------------------------------------------------------------- |
-| Multiple positions match           | List all matches, ask user to pick one                        |
-| Amount exceeds wallet balance      | Show balance, ask if they want a smaller amount               |
-| Pool TVL < $10,000                 | Warn about low liquidity risk, ask to confirm                 |
-| Range strategy not specified        | Default to "medium" but mention the tradeoffs                |
-| First time LPing                   | Briefly explain IL risk before proceeding                     |
-| Remove > 50% of pool liquidity    | Warn about price impact on exit                               |
+| 情况                          | 应采取的行动                                      |
+|----------------------------------|-----------------------------------------------------------|
+| 找到多个符合条件的流动性池     | 列出所有选项，让用户选择一个                             |
+| 金额超过钱包余额       | 显示余额，询问用户是否希望减少投入金额                         |
+| 流动性池的总价值（TVL）低于1万美元 | 警告流动性风险较低，请求用户确认                         |
+| 未指定范围策略         | 默认使用“medium”策略，但需说明相关风险                         |
+| 用户首次进行流动性操作       | 在执行前简要说明潜在风险                             |
+| 移除的流动性超过池总价值的50%     | 警告移除操作可能对价格产生影响                         |
 
-## Output Format
+## 输出格式
 
-### Successful Add
-
+### 添加流动性成功
 ```text
 Liquidity Added Successfully
 
@@ -198,8 +194,7 @@ Liquidity Added Successfully
   - Collect fees anytime: "Collect fees from position #456789"
 ```
 
-### Successful Remove
-
+### 移除流动性成功
 ```text
 Liquidity Removed
 
@@ -220,22 +215,22 @@ Liquidity Removed
   Tx: https://etherscan.io/tx/0x...
 ```
 
-## Important Notes
+## 重要说明
 
-- **IL risk**: Always mention impermanent loss risk when adding liquidity to volatile pairs. Don't bury it.
-- **Gas costs**: On Ethereum mainnet, LP operations cost $15-50 in gas. Mention this for small positions.
-- **Range tradeoffs**: Narrow = higher fees but more rebalancing. Wide = lower fees but less maintenance. Always explain.
-- **V2 vs V3**: V2 is "set and forget" with lower returns. V3 requires active management but earns more. Help the user choose.
-- **Never auto-execute**: For remove and rebalance, always confirm with the user before executing.
+- **临时性损失风险**：在为波动性较大的货币对添加流动性时，务必提醒用户存在临时性损失的风险。
+- **Gas费用**：在Ethereum主网上，添加流动性操作的Gas费用为15-50美元。对于小额交易，需特别说明。
+- **范围选择的影响**：选择较窄的范围会导致更高的费用，但需要更频繁的重新平衡；选择较宽的范围则费用较低，但维护成本也较低。务必向用户解释这些差异。
+- **V2与V3模式**：V2模式为“设置一次即可长期使用”的模式，但收益较低；V3模式需要用户主动管理，但收益较高。帮助用户根据需求做出选择。
+- **禁止自动执行**：对于移除流动性或重新平衡的操作，必须在使用前获得用户的确认。
 
-## Error Handling
+## 错误处理
 
-| Error                         | User-Facing Message                                       | Suggested Action                          |
-| ----------------------------- | --------------------------------------------------------- | ----------------------------------------- |
-| Wallet not configured         | "No wallet configured for transactions."                  | Set WALLET_TYPE + PRIVATE_KEY in .env     |
-| Insufficient balance          | "You have X but need Y to add liquidity."                 | Reduce amount or swap for needed tokens   |
-| Pool not found                | "No pool found for X/Y at this fee tier."                 | Try different fee tier or check token names|
-| Position not found            | "Position #ID not found on this chain."                   | Check chain and position ID               |
-| Safety check failed           | "Transaction blocked by safety: {reason}"                 | Adjust parameters or check safety config  |
-| Transaction reverted          | "Transaction failed: {reason}"                            | Check slippage, amounts, or try again     |
-| liquidity-manager unavailable | "Liquidity agent is not available."                       | Check agent configuration                 |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+|-------------------|---------------------------------------------------------|---------------------------------------------------------|
+| 未配置钱包             | “未配置用于交易的钱包。”                                    | 在`.env`文件中设置WALLET_TYPE和PRIVATE_KEY                         |
+| 钱包余额不足             | “您的余额为X，但需要Y才能完成操作。”                             | 减少投入金额或更换所需的代币                         |
+| 未找到合适的流动性池         | “在当前费用等级下未找到对应的流动性池。”                         | 尝试其他费用等级或检查代币名称                         |
+| 未找到相关持仓           | “在当前链上未找到指定的持仓。”                             | 检查链和持仓ID                               |
+| 安全检查失败             | “交易因安全原因被阻止：{原因}”                               | 调整参数或检查安全配置                             |
+| 交易失败             | “交易失败：{原因}”                                    | 检查交易细节或重试                               |
+| liquidity-manager不可用       | “流动性管理代理当前不可用。”                                 | 检查代理的配置情况                               |

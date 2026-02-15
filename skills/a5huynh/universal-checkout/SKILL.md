@@ -1,59 +1,59 @@
 ---
 name: zinc-orders
-description: Place, list, and retrieve orders via the Zinc API (zinc.com). Use when the user wants to buy a product from an online retailer, check order status, list recent orders, or anything involving the Zinc e-commerce ordering API. Requires ZINC_API_KEY environment variable.
+description: 通过 Zinc API (zinc.com) 来放置、列出和检索订单。当用户想要从在线零售商购买产品、查看订单状态、列出最近的交易记录，或执行任何与 Zinc 电子商务订单 API 相关的操作时，可以使用此功能。需要设置 ZINC_API_KEY 环境变量。
 ---
 
-# Zinc Orders
+# 使用 Zinc API 下单与管理订单
 
-Place and manage orders on online retailers through the Zinc API (`https://api.zinc.com`).
+您可以通过 Zinc API (`https://api.zinc.com`) 在在线零售商上下单和管理订单。
 
-## Prerequisites
+## 先决条件
 
-- `ZINC_API_KEY` env var must be set. Get one from <https://app.zinc.com>.
+- 必须设置环境变量 `ZINC_API_KEY`。您可以从 <https://app.zinc.com> 获取该密钥。
 
-## Authentication
+## 认证
 
-All requests use Bearer token auth:
+所有请求均使用 Bearer Token 进行认证：
 
 ```
 Authorization: Bearer $ZINC_API_KEY
 ```
 
-## Endpoints
+## API 端点
 
-### Create Order — `POST /orders`
+### 创建订单 — `POST /orders`
 
-Place a new order. Orders process asynchronously.
+提交新订单。订单处理是异步进行的。
 
-**Required fields:**
+**必填字段：**
 
-- `products` — array of `{ url, quantity?, variant? }` objects
-  - `url`: direct product page URL on a supported retailer
-  - `quantity`: integer (default 1)
-  - `variant`: array of `{ label, value }` for size/color/etc.
-- `shipping_address` — object with `first_name`, `last_name`, `address_line1`, `address_line2`, `city`, `state` (2-letter), `postal_code`, `phone_number`, `country` (ISO alpha-2, e.g. "US")
-- `max_price` — integer, maximum price **in cents**
+- `products` — 一个包含 `{ url, quantity?, variant? }` 对象的数组
+  - `url`：支持零售商上的产品页面直接链接
+  - `quantity`：整数（默认值为 1）
+  - `variant`：一个包含 `{ label, value }` 的数组，用于表示尺寸/颜色等信息
+- `shipping_address` — 一个对象，包含 `first_name`、`last_name`、`address_line1`、`address_line2`、`city`、`state`（两位字母的州名）、`postal_code`、`phone_number`、`country`（ISO 2 位国家代码，例如 "US"）等字段
+- `max_price` — 整数，表示订单的最高价格（单位：分）
 
-**Optional fields:**
+**可选字段：**
 
-- `idempotency_key` — string (max 36 chars) to prevent duplicates
-- `retailer_credentials_id` — short ID like `zn_acct_XXXXXXXX`
-- `metadata` — arbitrary key-value object
-- `po_number` — purchase order number string
+- `idempotency_key` — 一个字符串（最长 36 个字符），用于防止重复下单
+- `retailer_credentials_id` — 一个简短的 ID，例如 `zn_acct_XXXXXXXX`
+- `metadata` — 随意的键值对对象
+- `po_number` — 采购订单编号字符串
 
-**Response:** order object with `id` (UUID), `status`, `items`, `shipping_address`, `created_at`, `tracking_numbers`, etc.
+**响应：** 包含订单信息的对象，包括 `id`（UUID）、`status`、`items`、`shipping_address`、`created_at`、`tracking_numbers` 等字段
 
-**Order statuses:** `pending` → `in_progress` → `order_placed` | `order_failed` | `cancelled`
+**订单状态：** `pending` → `in_progress` → `order_placed` | `order_failed` | `cancelled`
 
-### List Orders — `GET /orders`
+### 列出订单 — `GET /orders`
 
-Returns `{ orders: [...] }` array of order objects.
+返回一个包含订单对象的数组 `{ orders: [...] }`。
 
-### Get Order — `GET /orders/{id}`
+### 获取订单详情 — `GET /orders/{id}`
 
-Retrieve a single order by UUID.
+根据订单的 UUID 获取单个订单的详细信息。
 
-## Example: Place an Order
+## 示例：下单
 
 ```bash
 curl -X POST https://api.zinc.com/orders \
@@ -75,29 +75,29 @@ curl -X POST https://api.zinc.com/orders \
   }'
 ```
 
-## Error Handling
+## 错误处理
 
-See [references/errors.md](references/errors.md) for the full error code reference.
+有关完整的错误代码参考，请参阅 [references/errors.md](references/errors.md)。
 
-Key points:
+**关键点：**
 
-- HTTP errors return `{ code, message, details }`
-- Order processing failures appear in webhook/order response as `error_type`
-- Common issues: `max_price_exceeded`, `product_out_of_stock`, `invalid_shipping_address`
+- HTTP 错误会返回 `{ code, message, details }` 的格式
+- 订单处理失败会在 Webhook 的订单响应中以 `error_type` 的形式显示
+- 常见错误原因包括：`max_price_exceeded`（价格超出限制）、`product_out_of_stock`（商品缺货）、`invalid_shipping_address`（地址无效）
 
-## Order Status Tracking
+## 订单状态跟踪
 
-Orders process asynchronously and typically take **5–10 minutes**. After placing an order:
+订单处理是异步进行的，通常需要 **5–10 分钟**。下单后：
 
-1. Schedule a cron job to check the order status ~7 minutes after creation.
-2. Use `GET /orders/{id}` to poll.
-3. Report the result back to the user in the same channel.
-4. If still pending/in_progress, schedule another check in 5 minutes.
+1. 在订单创建后约 7 分钟，安排一个 cron 作业来检查订单状态。
+2. 使用 `GET /orders/{id}` 来查询订单状态。
+3. 将查询结果通过相同的方式反馈给用户。
+4. 如果订单仍处于 `pending` 或 `in_progress` 状态，再次安排检查（间隔 5 分钟）。
 
-**Terminal statuses:** `order_placed`, `order_failed`, `cancelled` — stop polling.
-**Non-terminal:** `pending`, `in_progress` — schedule another check in 3–5 minutes.
+**终端状态：** `order_placed`、`order_failed`、`cancelled` — 停止检查。
+**非终端状态：** `pending`、`in_progress` — 间隔 3–5 分钟再次检查。
 
-Example cron job (isolated, announce back to the channel):
+**示例 cron 作业（用于通知用户）：**
 
 ```json
 {
@@ -116,8 +116,8 @@ Example cron job (isolated, announce back to the channel):
 }
 ```
 
-## Safety
+## 安全性注意事项**
 
-- **Always confirm with the user** before placing an order (`POST /orders`). This spends real money.
-- Reading orders (GET) is always safe.
-- Validate that `max_price` is reasonable before submitting.
+- 在提交订单（`POST /orders`）之前，务必先与用户确认。
+- 查看订单信息（`GET` 请求）是安全的。
+- 在提交订单前，请确保 `max_price` 的设置合理。

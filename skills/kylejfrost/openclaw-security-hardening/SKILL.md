@@ -1,28 +1,28 @@
 ---
 name: openclaw-security-hardening
-description: Protect OpenClaw installations from prompt injection, data exfiltration, malicious skills, and workspace tampering
+description: 保护 OpenClaw 安装环境，防止提示框注入（prompt injection）、数据泄露、恶意操作以及工作区的篡改。
 version: 1.0.0
 author: openclaw-community
 tags: [security, hardening, audit, protection]
 ---
 
-# OpenClaw Security Hardening
+# OpenClaw 安全加固
 
-A comprehensive security toolkit for protecting OpenClaw installations from attacks via malicious skill files, prompt injection, data exfiltration, and workspace tampering.
+这是一套全面的安全工具包，用于保护 OpenClaw 安装环境免受恶意技能文件、提示注入、数据泄露和工作区篡改等攻击的威胁。
 
-## Threat Model
+## 威胁模型
 
-This skill protects against:
+本工具包可防御以下威胁：
 
-| Threat | Description | Tool |
+| 威胁 | 描述 | 使用工具 |
 |--------|-------------|------|
-| **Prompt Injection** | Malicious skills containing instructions to override system prompts, ignore safety rules, or manipulate agent behavior | `scan-skills.sh` |
-| **Data Exfiltration** | Skills that instruct the agent to send sensitive data (credentials, memory, config) to external endpoints | `audit-outbound.sh` |
-| **Skill Tampering** | Unauthorized modification of installed skills after initial review | `integrity-check.sh` |
-| **Workspace Exposure** | Sensitive files with wrong permissions, missing .gitignore rules, insecure gateway config | `harden-workspace.sh` |
-| **Supply Chain** | Installing a new skill that contains hidden malicious patterns | `install-guard.sh` |
+| **提示注入** | 恶意技能文件包含用于覆盖系统提示、忽略安全规则或操控代理行为的指令 | `scan-skills.sh` |
+| **数据泄露** | 恶意技能文件指示代理将敏感数据（如凭证、内存内容、配置信息）发送到外部服务器 | `audit-outbound.sh` |
+| **技能文件篡改** | 安装后的技能文件被未经授权地修改 | `integrity-check.sh` |
+| **工作区安全漏洞** | 敏感文件的权限设置不当、`.gitignore` 规则缺失或网关配置不安全 | `harden-workspace.sh` |
+| **供应链攻击** | 安装的技能文件中隐藏了恶意代码 | `install-guard.sh` |
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Run a full security scan of all installed skills
@@ -41,13 +41,13 @@ This skill protects against:
 ./scripts/install-guard.sh /path/to/new-skill/
 ```
 
-## Tools
+## 工具介绍
 
-### 1. `scan-skills.sh` — Skill File Scanner
+### 1. `scan-skills.sh` — 技能文件扫描器
 
-Scans all installed skill files for malicious patterns including prompt injection, data exfiltration attempts, suspicious URLs, hidden unicode, obfuscated commands, and social engineering.
+扫描所有已安装的技能文件，检测是否存在提示注入、数据泄露尝试、可疑 URL、隐藏的 Unicode 字符、混淆的命令以及社会工程学攻击的迹象。
 
-**Usage:**
+**使用方法：**
 ```bash
 # Scan all skill directories
 ./scripts/scan-skills.sh
@@ -62,29 +62,29 @@ Scans all installed skill files for malicious patterns including prompt injectio
 ./scripts/scan-skills.sh --help
 ```
 
-**What it detects:**
-- Prompt injection patterns (override instructions, new system prompts, admin overrides)
-- Data exfiltration (curl/wget to external URLs, sending file contents)
-- Suspicious URLs (webhooks, pastebin, requestbin, ngrok, etc.)
-- Base64-encoded content that could hide instructions
-- Hidden unicode characters (zero-width spaces, RTL override, homoglyphs)
-- References to sensitive files (.env, credentials, API keys, tokens)
-- Instructions to modify system files (AGENTS.md, SOUL.md)
-- Obfuscated commands (hex encoded, unicode escaped)
-- Social engineering ("don't tell the user", "secretly", "without mentioning")
+**检测内容：**
+- 覆盖系统提示的恶意指令
+- 用于发送敏感数据的 HTTP/HTTPS 请求
+- 可能用于窃取数据的 URL（如 webhooks、pastebin、requestbin、ngrok 等）
+- 可能隐藏恶意指令的 Base64 编码内容
+- 隐藏的 Unicode 字符（零宽度空格、RTL 文字顺序反转等）
+- 对敏感文件（如 `.env`、凭证、API 密钥、令牌）的引用
+- 用于修改系统文件的指令（如 `AGENTS.md`、`SOUL.md`）
+- 被混淆的命令（如十六进制编码、Unicode 转义等）
+- 社会工程学攻击的提示（如“不要告知用户”、“秘密执行”等）
 
-**Severity levels:**
-- 🔴 **CRITICAL** — Likely malicious, immediate action needed
-- 🟡 **WARNING** — Suspicious, review manually
-- 🔵 **INFO** — Noteworthy but probably benign
+**严重程度：**
+- 🔴 **严重** — 可能具有恶意性，需立即采取行动
+- 🟡 **警告** — 值得怀疑，需手动检查
+- 🔵 **信息提示** — 虽然值得关注，但通常为良性行为
 
 ---
 
-### 2. `integrity-check.sh` — Skill Integrity Monitor
+### 2. `integrity-check.sh` — 技能文件完整性监控器
 
-Creates SHA256 hash baselines of all skill files and detects unauthorized modifications.
+为所有技能文件生成 SHA256 哈希值，并检测文件是否被未经授权地修改。
 
-**Usage:**
+**使用方法：**
 ```bash
 # Initialize baseline (first run)
 ./scripts/integrity-check.sh --init
@@ -102,13 +102,14 @@ Creates SHA256 hash baselines of all skill files and detects unauthorized modifi
 ./scripts/integrity-check.sh --help
 ```
 
-**Reports:**
-- ✅ Unchanged files
-- ⚠️ Modified files (hash mismatch)
-- 🆕 New files (not in baseline)
-- ❌ Removed files (in baseline but missing)
+**报告结果：**
+- ✅ 未修改的文件
+- ⚠️ 被修改的文件（哈希值不一致）
+- 🆕 新添加的文件（不在哈希值基准中）
+- ❌ 被删除的文件（在基准中存在但实际已删除）
 
-**Automation:** Add to your heartbeat or cron to run daily:
+**自动化建议：** 将该脚本添加到系统的心跳脚本或 cron 任务中，每天执行一次：
+
 ```bash
 # In HEARTBEAT.md or cron
 0 8 * * * /path/to/scripts/integrity-check.sh 2>&1 | grep -E '(MODIFIED|NEW|REMOVED)'
@@ -116,11 +117,11 @@ Creates SHA256 hash baselines of all skill files and detects unauthorized modifi
 
 ---
 
-### 3. `audit-outbound.sh` — Outbound Data Flow Auditor
+### 3. `audit-outbound.sh` — 出站数据流审计器
 
-Scans skill files for patterns that could cause data to leave your machine.
+监控技能文件中可能导致数据泄露的代码行为。
 
-**Usage:**
+**使用方法：**
 ```bash
 # Audit all skills
 ./scripts/audit-outbound.sh
@@ -138,20 +139,20 @@ Scans skill files for patterns that could cause data to leave your machine.
 ./scripts/audit-outbound.sh --help
 ```
 
-**Detects:**
-- HTTP/HTTPS URLs embedded in skill instructions
-- References to curl, wget, fetch, web_fetch, browser navigate
-- Email/message/webhook sending instructions
-- Raw IP addresses in instructions
-- Non-whitelisted external domains
+**检测内容：**
+- 技能文件中包含的 HTTP/HTTPS URL
+- 对 `curl`、`wget`、`fetch`、`web_fetch`、浏览器导航等操作的引用
+- 用于发送数据的电子邮件/消息/Webhook 功能
+- 指令中包含的原始 IP 地址
+- 未被允许访问的外部域名
 
 ---
 
-### 4. `harden-workspace.sh` — Workspace Hardener
+### 4. `harden-workspace.sh` — 工作区安全加固工具
 
-Checks and fixes common security misconfigurations in your OpenClaw workspace.
+检查并修复 OpenClaw 工作区中的常见安全配置问题。
 
-**Usage:**
+**使用方法：**
 ```bash
 # Check only (report issues)
 ./scripts/harden-workspace.sh
@@ -163,20 +164,20 @@ Checks and fixes common security misconfigurations in your OpenClaw workspace.
 ./scripts/harden-workspace.sh --help
 ```
 
-**Checks:**
-- File permissions on sensitive files (MEMORY.md, USER.md, SOUL.md, credentials)
-- .gitignore coverage for sensitive patterns
-- Gateway auth configuration
-- DM policy settings
-- Sensitive content in version-controlled files
+**检查内容：**
+- 敏感文件（如 `MEMORY.md`、`USER.md`、`SOUL.md`、凭证文件）的权限设置
+- `.gitignore` 文件中是否包含对敏感文件的屏蔽规则
+- 网关认证配置
+- 数据库管理（DM）策略设置
+- 版本控制文件中的敏感内容
 
 ---
 
-### 5. `install-guard.sh` — Pre-Install Security Gate
+### 5. `install-guard.sh** — 安装前安全检查工具
 
-Run before installing any new skill to check for malicious content.
+在安装新技能之前运行此脚本，以检测文件中是否存在恶意内容。
 
-**Usage:**
+**使用方法：**
 ```bash
 # Check a skill before installing
 ./scripts/install-guard.sh /path/to/new-skill/
@@ -188,25 +189,23 @@ Run before installing any new skill to check for malicious content.
 ./scripts/install-guard.sh --help
 ```
 
-**Checks:**
-- All patterns from scan-skills.sh
-- Dangerous shell patterns in scripts (rm -rf, curl|bash, eval, etc.)
-- Suspicious npm dependencies (if package.json exists)
-- Exit code 0 = safe, 1 = suspicious (for CI/automation)
+**检查内容：**
+- `scan-skills.sh` 中检测到的所有恶意模式
+- 脚本中的危险命令（如 `rm -rf`、`curl|bash`、`eval` 等）
+- 如果存在 `package.json` 文件，则检查其中的 npm 依赖项
+- 执行结果：0 表示安全；1 表示存在可疑内容（适用于持续集成/自动化流程）
 
----
+## 安全规则模板
 
-## Security Rules Template
-
-Copy `assets/security-rules-template.md` into your `AGENTS.md` to add runtime security rules for your agent. These rules instruct the agent to refuse prompt injection attempts and protect sensitive data.
+将 `assets/security-rules-template.md` 复制到 `AGENTS.md` 文件中，为代理添加运行时的安全规则。这些规则会指示代理拒绝提示注入请求并保护敏感数据。
 
 ```bash
 cat assets/security-rules-template.md >> /path/to/AGENTS.md
 ```
 
-## Recommended Setup
+## 推荐的设置流程：
 
-1. **Initial setup:**
+1. **初始设置：**
    ```bash
    ./scripts/scan-skills.sh              # Scan existing skills
    ./scripts/audit-outbound.sh           # Audit outbound patterns
@@ -214,14 +213,9 @@ cat assets/security-rules-template.md >> /path/to/AGENTS.md
    ./scripts/harden-workspace.sh --fix   # Fix workspace issues
    ```
 
-2. **Add security rules to AGENTS.md** from the template
-
-3. **Before installing new skills:**
-   ```bash
-   ./scripts/install-guard.sh /path/to/new-skill/
-   ```
-
-4. **Periodic checks** (add to heartbeat or cron):
+2. 从模板中将安全规则添加到 `AGENTS.md` 文件中。
+3. 在安装新技能之前，执行 `install-guard.sh` 脚本进行安全检查。
+4. 定期执行安全检查（可通过心跳脚本或 cron 任务实现）：
    ```bash
    ./scripts/integrity-check.sh          # Detect tampering
    ./scripts/scan-skills.sh              # Re-scan for new patterns

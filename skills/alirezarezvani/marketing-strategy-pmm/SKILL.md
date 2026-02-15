@@ -1,6 +1,6 @@
 ---
 name: marketing-strategy-pmm
-description: Product marketing skill for positioning, GTM strategy, competitive intelligence, and product launches. Covers April Dunford positioning, ICP definition, competitive battlecards, launch playbooks, and international market entry.
+description: 产品营销技能包括市场定位、营销策略（GTM，即 Growth, Targeting, and Marketing）、竞争情报分析以及产品发布流程。内容涵盖 April Dunford 的市场定位理论、ICP（Integrated Competitive Positioning）的定义、竞争分析工具、产品发布计划以及国际市场进入策略。
 triggers:
   - product marketing
   - PMM
@@ -15,89 +15,89 @@ triggers:
   - win loss analysis
 ---
 
-# Marketing Strategy & PMM
+# 营销策略与产品市场管理（PMM）
 
-Product marketing patterns for positioning, GTM strategy, and competitive intelligence.
-
----
-
-## Table of Contents
-
-- [ICP Definition Workflow](#icp-definition-workflow)
-- [Positioning Development](#positioning-development)
-- [Competitive Intelligence](#competitive-intelligence)
-- [Product Launch Planning](#product-launch-planning)
-- [Sales Enablement](#sales-enablement)
-- [International Expansion](#international-expansion)
-- [Reference Documentation](#reference-documentation)
+产品营销模式包括市场定位、销售漏斗管理（GTM）策略以及竞争情报的收集与分析。
 
 ---
 
-## ICP Definition Workflow
+## 目录
 
-Define ideal customer profile for targeting:
-
-1. Analyze existing customers (top 20% by LTV)
-2. Identify common firmographics (size, industry, revenue)
-3. Map technographics (tools, maturity, integrations)
-4. Document psychographics (pain level, motivation, risk tolerance)
-5. Define 3-5 buyer personas (economic, technical, user)
-6. Validate against sales cycle and churn data
-7. Score prospects A/B/C/D based on ICP fit
-8. **Validation:** A-fit customers have lowest churn and fastest close
-
-### Firmographics Template
-
-| Dimension | Target Range | Rationale |
-|-----------|--------------|-----------|
-| Employees | 50-5000 | Series A sweet spot |
-| Revenue | $5M-$500M | Budget available |
-| Industry | SaaS, Tech, Services | Product fit |
-| Geography | US, UK, DACH | Market priority |
-| Funding | Seed to Growth | Willing to adopt |
-
-### Buyer Personas
-
-**Economic Buyer** (signs contract):
-- Title: VP, Director, Head of [Department]
-- Goals: ROI, team productivity, cost reduction
-- Messaging: Business outcomes, ROI, case studies
-
-**Technical Buyer** (evaluates product):
-- Title: Engineer, Architect, Tech Lead
-- Goals: Technical fit, easy integration
-- Messaging: Architecture, security, documentation
-
-**User/Champion** (advocates internally):
-- Title: Manager, Team Lead, Power User
-- Goals: Makes job easier, quick wins
-- Messaging: UX, ease of use, time savings
-
-### ICP Validation Checklist
-
-- [ ] 5+ paying customers match this profile
-- [ ] Fastest sales cycles (< median)
-- [ ] Highest LTV (> median)
-- [ ] Lowest churn (< 5% annual)
-- [ ] Strong product engagement
-- [ ] Willing to do case studies
+- [ICP 定义工作流程](#icp-definition-workflow)
+- [市场定位开发](#positioning-development)
+- [竞争情报](#competitive-intelligence)
+- [产品发布规划](#product-launch-planning)
+- [销售支持](#sales-enablement)
+- [国际扩张](#international-expansion)
+- [参考文档](#reference-documentation)
 
 ---
 
-## Positioning Development
+## ICP 定义工作流程
 
-Develop positioning using April Dunford methodology:
+定义目标客户群体：
 
-1. List competitive alternatives (direct, adjacent, status quo)
-2. Isolate unique attributes (features only you have)
-3. Map attributes to customer value (why it matters)
-4. Define best-fit customers (who cares most)
-5. Choose market category (head-to-head, niche, new category)
-6. Layer on relevant trends (timing justification)
-7. Test with 10+ customer interviews
-8. **Validation:** 7+ customers describe value unprompted
+1. 分析现有客户（按生命周期价值 LTV 排名前 20% 的客户）
+2. 确定客户的共同特征（公司规模、行业、收入）
+3. 分析客户的技术需求（使用的工具、技术成熟度、系统集成情况）
+4. 记录客户的行为特征（痛点、购买动机、风险承受能力）
+5. 创建 3-5 个买家角色模型（经济因素、技术需求、使用习惯）
+6. 根据 ICP 模型验证潜在客户
+7. 根据潜在客户与 ICP 模型的匹配程度，将客户分为 A、B、C、D 四个等级
+8. **验证结果：** 与 ICP 模型匹配的客户流失率最低，成交速度最快
 
-### Positioning Statement Template
+### 客户特征模板
+
+| 特征 | 目标范围 | 原因 |
+|---------|--------------|-----------|
+| 员工人数 | 50-5000 人 | A 轮投资的理想规模 |
+| 收入 | 500 万至 5000 万美元 | 能够承担产品费用 |
+| 行业 | SaaS、科技、服务 | 产品适用的行业 |
+| 地理位置 | 美国、英国、德国、奥地利、瑞士 | 优先考虑的市场 |
+| 融资阶段 | 种子轮到成长轮 | 有意愿采用新产品 |
+
+### 买家角色模型
+
+**经济型买家**（愿意签约）：
+- 职位：副总裁、总监、[部门] 负责人
+- 目标：提高投资回报率（ROI）、提升团队效率、降低成本
+- 信息传递重点：业务成果、投资回报率、案例研究
+
+**技术型买家**（评估产品）：
+- 职位：工程师、架构师、技术负责人
+- 目标：确保产品的技术适用性、易于集成
+- 信息传递重点：产品架构、安全性、文档支持
+
+**用户/倡导者**（在内部推广产品）：
+- 职位：经理、团队负责人、资深用户
+- 目标：简化工作流程、快速见到实际效果
+- 信息传递重点：用户体验（UX）、易用性、节省时间
+
+### ICP 验证 checklist
+
+- [ ] 5 名以上付费客户符合该角色模型
+- [ ] 销售周期最短（低于平均水平）
+- [ ] 生命周期价值（LTV）最高（高于平均水平）
+- [ ] 流失率最低（每年低于 5%）
+- [ ] 对产品有高度参与度
+- [ ] 愿意参与案例研究
+
+---
+
+## 市场定位开发
+
+使用 April Dunford 方法进行市场定位：
+
+1. 列出竞争对手产品（直接竞争者、相关替代产品、现有市场解决方案）
+2. 确定产品的独特优势（仅你的产品具备的功能）
+3. 将这些优势与客户价值联系起来（解释这些优势为何重要）
+4. 确定最符合产品定位的目标客户群体
+5. 选择市场定位方向（直接竞争、细分市场或新市场领域）
+6. 结合市场趋势进行定位调整
+7. 通过 10 次以上客户访谈进行验证
+8. **验证结果：** 7 名以上客户能主动提及产品的价值
+
+### 市场定位声明模板
 
 ```
 FOR [target customer]
@@ -108,46 +108,46 @@ UNLIKE [competitive alternative]
 OUR PRODUCT [primary differentiation]
 ```
 
-### Value Proposition Formula
+### 价值主张公式
 
-Template: `[Product] helps [Target Customer] [Achieve Goal] by [Unique Approach]`
+模板：`[产品名称] 通过 [独特方式] 帮助 [目标客户] [实现目标]`
 
-Example: "Acme helps mid-market SaaS teams ship 2x faster by automating project workflows with AI"
+示例：“Acme 通过人工智能自动化项目工作流程，帮助中型 SaaS 团队将发布速度提升 2 倍”
 
-### Messaging Hierarchy
+### 信息传递层次结构
 
-| Level | Content | Example |
+| 层级 | 内容 | 示例 |
 |-------|---------|---------|
-| Headline | 5-7 words | "Ship faster with AI automation" |
-| Subhead | 1 sentence | "Automate workflows so teams focus on what matters" |
-| Benefits | 3-4 bullets | Speed, quality, collaboration, cost |
-| Features | Supporting evidence | AI automation → 10 hrs/week saved |
-| Proof | Social proof | Customer logos, stats, case studies |
+| 标题 | 5-7 个词 | “通过人工智能自动化，提升发布速度” |
+| 子标题 | 1 句话 | “自动化工作流程，让团队专注于关键任务” |
+| 优势 | 3-4 个要点 | 速度、质量、协作、成本优势 |
+| 功能 | 支持证据 | 人工智能自动化可节省每周 10 小时的工作时间 |
+| 证明 | 客户评价 | 客户案例、数据统计 |
 
 ---
 
-## Competitive Intelligence
+## 竞争情报
 
-Build competitive knowledge base:
+建立竞争情报数据库：
 
-1. Identify tier 1 (direct), tier 2 (adjacent), tier 3 (status quo)
-2. Sign up for competitor products (hands-on evaluation)
-3. Monitor competitor websites, pricing, messaging
-4. Analyze sales call recordings for competitor mentions
-5. Read G2/Capterra reviews (pros and cons)
-6. Track competitor job postings (roadmap signals)
-7. Update battlecards monthly
-8. **Validation:** Sales team uses battlecards in 80%+ competitive deals
+1. 识别一级竞争对手（直接竞争者）、二级竞争对手（相关替代产品）和三级竞争对手（现有市场解决方案）
+2. 注册使用竞争对手的产品进行实际体验
+3. 监控竞争对手的网站、定价策略和信息传递内容
+4. 分析销售通话记录中关于竞争对手的讨论
+5. 阅读 G2/Capterra 等平台的用户评价（优缺点）
+6. 关注竞争对手的招聘信息（了解产品开发计划）
+7. 每月更新竞争情报资料
+8. **验证结果：** 销售团队在 80% 以上的交易中使用这些竞争情报资料
 
-### Competitive Tier Structure
+### 竞争对手分类结构
 
-| Tier | Definition | Examples |
+| 竞争对手等级 | 定义 | 例子 |
 |------|------------|----------|
-| 1 | Direct competitor, same category | [Competitor A, B] |
-| 2 | Adjacent solution, overlapping use case | [Alt Solution C, D] |
-| 3 | Status quo (what they do today) | Spreadsheets, manual, in-house |
+| 1 | 直接竞争者（同一市场领域） | [竞争对手 A、B] |
+| 2 | 相关替代产品 | [替代方案 C、D] |
+| 3 | 现有市场解决方案 | 传统的手动工具或内部系统 |
 
-### Battlecard Template
+### 竞争情报资料模板
 
 ```
 COMPETITOR: [Name]
@@ -180,85 +180,84 @@ Objection: "[Common objection]"
 Response: "[Your response]"
 ```
 
-### Win/Loss Analysis
+### 胜利/失败分析
 
-Track monthly:
-- Win rate by competitor
-- Top win reasons (product fit, ease of use, price)
-- Top loss reasons (missing feature, price, relationship)
-- Action items for product, sales, marketing
+每月跟踪以下数据：
+- 各竞争对手的成交率
+- 成功的关键因素（产品适用性、易用性、价格）
+- 失败的主要原因（缺少功能、价格问题、合作关系）
+- 产品、销售、营销方面的改进措施
 
 ---
 
-## Product Launch Planning
+## 产品发布规划
 
-Plan launches by tier:
+按竞争对手等级制定发布计划：
 
-| Tier | Scope | Prep Time | Budget |
+| 竞争对手等级 | 发布内容 | 准备时间 | 预算 |
 |------|-------|-----------|--------|
-| 1 | New product, major feature | 6-8 weeks | $50-100k |
-| 2 | Significant feature, integration | 3-4 weeks | $10-25k |
-| 3 | Small improvement | 1 week | <$5k |
+| 1 | 新产品或重要功能更新 | 6-8 周 | 5 万至 10 万美元 |
+| 2 | 重要功能改进或系统集成 | 3-4 周 | 1 万至 2.5 万美元 |
+| 3 | 小幅功能优化 | 1 周 | 5000 美元以下 |
 
-### Tier 1 Launch Workflow
+### 一级竞争对手发布工作流程
 
-Execute major product launch:
+执行产品发布流程：
 
-1. Kickoff meeting with Product, Marketing, Sales, CS
-2. Define goals (pipeline $, MQLs, press coverage)
-3. Develop positioning and messaging
-4. Create sales enablement (deck, demo, battlecard)
-5. Build campaign assets (landing page, emails, ads)
-6. Train sales and CS teams
-7. Execute launch day (press, email, ads, outbound)
-8. Monitor and optimize for 30 days
-9. **Validation:** Pipeline on track to goal by week 2
+1. 与产品团队、营销团队、销售团队和客户支持团队召开启动会议
+2. 明确发布目标（潜在客户数量、潜在销售机会数量、媒体报道目标）
+3. 制定市场定位和信息传递策略
+4. 准备销售支持材料（销售演示文稿、演示脚本、竞争情报资料）
+5. 创建营销素材（登录页面、电子邮件、广告）
+6. 培训销售和客户支持团队
+7. 在发布当天执行各项活动（媒体宣传、电子邮件发送、广告投放）
+8. 在 30 天内持续监控和优化效果
+9. **验证结果：** 第二周时销售线索数量达到目标
 
-### Launch Day Checklist
+### 发布日 checklist
 
-- [ ] Press release distributed
-- [ ] Email announcement sent
-- [ ] Social media posts live
-- [ ] Paid ads at full budget
-- [ ] Sales outbound blitz launched
-- [ ] In-app notification active
-- [ ] Metrics monitored every 2 hours
+- [ ] 发布新闻稿 |
+- [ ] 发送电子邮件通知 |
+- [ ] 在社交媒体上发布内容 |
+- [ ] 按预算投放广告 |
+- [ ] 启动销售推广活动 |
+- [ ] 在应用内发送通知 |
+- [ ] 每 2 小时监控关键指标
 
-### Launch Metrics
+### 发布指标
 
-| Metric | Leading (Daily) | Lagging (Weekly) |
+| 指标 | 主要指标（每日） | 次要指标（每周） |
 |--------|-----------------|------------------|
-| Traffic | Landing page visitors | - |
-| Engagement | Demo requests, signups | Feature adoption % |
-| Pipeline | MQLs generated | SQLs, pipeline $ |
-| Revenue | - | Deals closed, revenue |
+| 流量 | 登录页面访问量 | - |
+| 参与度 | 演示请求数量、新用户注册数量 | 功能采用率 |
+| 销售线索数量 | 生成的潜在销售机会数量 | 销售线索价值 |
+| 收入 | - | 成交数量、收入 |
 
 ---
 
-## Sales Enablement
+## 销售支持
 
-Equip sales team with PMM assets:
+为销售团队提供产品市场管理所需的资料：
 
-1. Create sales deck (15-20 slides, visual-first)
-2. Build one-pagers (product, competitive, case study)
-3. Develop demo script (30-45 min with discovery)
-4. Write email templates (outreach, follow-up, closing)
-5. Create ROI calculator (input costs, output savings)
-6. Conduct monthly enablement calls
-7. Deliver quarterly training (positioning, competitive)
-8. **Validation:** Sales uses assets in 80%+ of opportunities
+1. 制作销售演示文稿（15-20 张幻灯片，以视觉效果为主）
+2. 编写产品介绍、竞争对手对比和案例研究的单页资料
+3. 准备演示脚本（30-45 分钟，包含产品介绍）
+4. 编写电子邮件模板（用于联系潜在客户、跟进和促成销售）
+5. 开发投资回报率计算器（输入成本，输出节省金额）
+6. 每月进行销售支持培训
+7. **验证结果：** 销售团队在 80% 以上的销售机会中使用这些资料
 
-### Sales Deck Structure
+### 销售演示文稿结构
 
-| Slide | Content |
+| 幻灯片 | 内容 |
 |-------|---------|
-| 1-2 | Title, agenda |
-| 3-4 | Company intro, problem statement |
-| 5-7 | Solution, key benefits, demo |
-| 8-10 | Differentiation, case study, pricing |
-| 11-12 | Implementation, support, next steps |
+| 1-2 | 标题、议程 |
+| 3-4 | 公司介绍、问题描述 |
+| 5-7 | 解决方案、主要优势、演示内容 |
+| 8-10 | 产品差异化、案例研究、定价策略 |
+| 11-12 | 实施步骤、客户支持、后续行动 |
 
-### Demo Flow
+### 演示流程
 
 ```
 1. Intro (2 min): Who we are, agenda
@@ -268,111 +267,106 @@ Equip sales team with PMM assets:
 5. Next steps (3 min): Trial, POC, proposal
 ```
 
-### Sales-Marketing Handoff
+### 销售与营销的协作
 
-| Handoff | Frequency | Content |
+| 协作方式 | 频率 | 内容 |
 |---------|-----------|---------|
-| Weekly sync | 30 min | Win/loss, competitive, new assets |
-| Monthly enablement | 60 min | Product updates, training |
-| Quarterly review | Half-day | Results, strategy, planning |
+| 每周沟通 | 30 分钟 | 分析销售情况、分享竞争情报、新资料 |
+| 每月培训 | 60 分钟 | 产品更新、销售策略分享 |
+| 每季度总结 | 半天 | 分析销售结果、制定下阶段计划 |
 
 ---
 
-## International Expansion
+## 国际扩张
 
-Enter new markets systematically:
+系统性地进入新市场：
 
-1. Validate market demand (inbound leads, TAM analysis)
-2. Localize website, pricing, legal
-3. Establish sales coverage (hire or agency)
-4. Adapt messaging for cultural fit
-5. Build local partnerships and references
-6. Launch localized campaigns
-7. Monitor CAC and conversion by market
-8. **Validation:** 3+ paying customers from market in first 90 days
+1. 验证市场需求（分析潜在客户、确定目标市场）
+2. 对网站、定价策略和法律条款进行本地化调整
+3. 建立销售团队（雇佣本地员工或外包代理）
+4. 根据当地文化调整信息传递内容
+5. 建立本地合作伙伴关系和获取客户推荐
+6. 推动本地化营销活动
+7. 监控各市场的客户获取成本（CAC）和转化率
+8. **验证结果：** 在发布后的 90 天内获得 3 名以上付费客户
 
-### Market Priority (Series A)
+### 市场优先级（A 轮投资阶段）
 
-| Market | Timeline | Budget % | Target ARR |
+| 市场 | 时间表 | 预算占比 | 目标年收入（ARR） |
 |--------|----------|----------|------------|
-| US | Months 1-6 | 50% | $1M |
-| UK | Months 4-9 | 20% | $500k |
-| DACH | Months 7-12 | 15% | $300k |
-| France | Months 10-15 | 10% | $200k |
-| Canada | Months 7-12 | 5% | $100k |
+| 美国 | 第 1-6 个月 | 50% | 100 万美元 |
+| 英国 | 第 4-9 个月 | 20% | 50 万美元 |
+| 德国、奥地利、瑞士 | 第 7-12 个月 | 15% | 30 万美元 |
+| 法国 | 第 10-15 个月 | 10% | 20 万美元 |
+| 加拿大 | 第 7-12 个月 | 5% | 10 万美元 |
 
-### Localization Checklist
+### 本地化 checklist
 
-- [ ] Website translation (professional, not machine)
-- [ ] Currency and pricing localized
-- [ ] Local phone number and address
-- [ ] Legal compliance (GDPR, PIPEDA)
-- [ ] Local payment methods
-- [ ] Sales coverage during local hours
-- [ ] Local case studies and references
-
----
-
-## Reference Documentation
-
-### Positioning Frameworks
-
-`references/positioning-frameworks.md` contains:
-
-- April Dunford 5-step positioning process
-- Geoffrey Moore positioning statement template
-- Positioning validation interview protocol
-- Competitive positioning map construction
-
-### Launch Checklists
-
-`references/launch-checklists.md` contains:
-
-- Tier 1/2/3 launch checklists
-- Week-by-week launch timeline
-- Launch day runbook
-- Post-launch metrics dashboard
-
-### International GTM
-
-`references/international-gtm.md` contains:
-
-- US, UK, DACH, France, Canada playbooks
-- Market-specific channel mix and messaging
-- Localization requirements per market
-- Entry timeline and budget allocation
-
-### Messaging Templates
-
-`references/messaging-templates.md` contains:
-
-- Value proposition formulas
-- Persona-specific messaging
-- Competitive response scripts
-- Objection handling templates
-- Channel-specific copy (landing pages, emails, ads)
+- [ ] 网站翻译（专业翻译，非机器翻译） |
+- [ ] 货币和价格设置本地化 |
+- [ ] 提供本地电话号码和地址 |
+- [ ] 遵守当地法律法规（GDPR、PIPEDA） |
+- [ ] 支持本地支付方式 |
+- [ ] 在当地工作时间提供销售支持 |
+- [ ] 提供本地化的案例研究和客户推荐 |
 
 ---
 
-## PMM KPIs
+## 参考文档
 
-| Metric | Target | Measurement |
+### 市场定位框架
+
+`references/positioning-frameworks.md` 包含：
+- April Dunford 的五步市场定位流程
+- Geoffrey Moore 的市场定位声明模板
+- 市场定位验证访谈流程
+- 竞争对手定位分析方法
+
+### 发布 checklist
+
+`references/launch-checklists.md` 包含：
+- 一级、二级、三级竞争对手的发布 checklist
+- 分阶段的发布时间表
+- 发布当天的执行指南
+- 发布后的指标监控表
+
+### 国际市场销售漏斗管理（GTM）
+
+`references/international-gtm.md` 包含：
+- 美国、英国、德国、奥地利、法国、加拿大的市场策略和信息传递模板
+- 各市场的渠道选择和信息传递策略
+- 各市场的本地化要求
+
+### 信息传递模板
+
+`references/messaging-templates.md` 包含：
+- 价值主张公式模板
+- 针对不同买家角色的信息传递内容
+- 应对竞争对手的回应模板
+- 处理客户异议的模板
+- 针对不同渠道的信息传递内容（登录页面、电子邮件、广告）
+
+---
+
+## 产品市场管理 KPI
+
+| 指标 | 目标值 | 测量方法 |
 |--------|--------|-------------|
-| Product adoption | >40% in 90 days | Feature usage after launch |
-| Win rate | >30% competitive | Deals won vs. competitors |
-| Sales velocity | -20% YoY | Days from SQL to close |
-| Deal size | +25% YoY | Average contract value |
-| Launch pipeline | 3:1 ROMI | Pipeline $ : marketing spend |
+| 产品采用率 | 发布后 90 天内超过 40% | 功能使用情况 |
+| 成交率 | 高于竞争对手 30% | 相比竞争对手的成交数量 |
+| 销售速度 | 年度增长 20% | 从潜在销售机会到成交所需的天数 |
+| 合同金额 | 年度增长 25% | 平均合同金额 |
+| 销售线索转化率 | 销售线索与营销投入的比率（ROMI）为 3:1 |
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### PMM Monthly Rhythm
+### 产品市场管理月度工作流程
 
-| Week | Focus |
+| 周期 | 重点任务 |
 |------|-------|
-| 1 | Review metrics, update battlecards |
-| 2 | Create assets, publish content |
-| 3 | Support launches, optimize campaigns |
-| 4 | Monthly report, plan next month |
+| 第 1 周 | 审查指标、更新竞争情报资料 |
+| 第 2 周 | 制作营销素材、发布内容 |
+| 第 3 周 | 支持产品发布、优化营销活动 |
+| 第 4 周 | 编写月度报告、规划下个月的工作 |

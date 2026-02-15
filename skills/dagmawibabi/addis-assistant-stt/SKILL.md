@@ -1,51 +1,51 @@
 ---
 name: addis-assistant
-description: Provides Speech-to-Text (STT) and text Translation using the Addis Assistant API (api.addisassistant.com). Use when the user needs to convert an audio file to text (specifically Amharic), or translate text between languages (e.g., Amharic to English). Requires 'x-api-key'.
+description: 通过 Addis Assistant API (api.addisassistant.com) 提供语音转文本（STT）和文本翻译功能。当用户需要将音频文件转换为文本（尤其是阿姆哈拉语），或在不同语言之间进行文本翻译（例如从阿姆哈拉语翻译成英语）时，可以使用该服务。使用该服务需要 'x-api-key' 这个访问密钥。
 ---
 
 # Addis Assistant
 
-## Overview
+## 概述
 
-This skill enables the use of the Addis Assistant API for both Speech-to-Text (STT) and text Translation.
+该技能支持使用 Addis Assistant API 进行语音转文本（STT）和文本翻译操作。
 
-## Using This Skill
+## 使用方法
 
-This skill provides two primary functions:
+该技能提供两个主要功能：
 
-1.  **Speech-to-Text (STT):** Convert an audio file (e.g., Amharic) into text.
-2.  **Translation:** Translate text from a source language to a target language.
+1. **语音转文本（STT）：** 将音频文件（例如阿姆哈拉语）转换为文本。
+2. **翻译：** 将文本从源语言翻译成目标语言。
 
-### Authentication
+### 认证
 
-Both functions require an `x-api-key`. This key should be provided as an argument to the respective scripts.
+这两个功能都需要一个 `x-api-key`。该密钥应作为参数传递给相应的脚本。
 
-### STT Function
+### 语音转文本（STT）功能
 
--   **Endpoint:** `api.addisassistant.com/api/v2/stt`
--   **Method:** `POST`
--   **Parameters:**
-    -   `audio`: Path to the audio file (e.g., `"@/path/to/file"`)
-    -   `request_data`: JSON string with `"language_code": "am"` (Amharic is the default and only supported language for now).
+- **端点：** `api.addisassistant.com/api/v2/stt`
+- **方法：** `POST`
+- **参数：**
+    - `audio`：音频文件的路径（例如：`"@/path/to/file"`）
+    - `request_data`：包含 `"language_code": "am"` 的 JSON 字符串（目前仅支持阿姆哈拉语）。
 
-### Translation Function
+### 翻译功能
 
--   **Endpoint:** `api.addisassistant.com/api/v1/translate`
--   **Method:** `POST`
--   **Parameters:**
-    -   `text`: The text to be translated.
-    -   `source_language`: The language of the input text (e.g., `"am"`).
-    -   `target_language`: The language to translate the text into (e.g., `"en"`).
+- **端点：** `api.addisassistant.com/api/v1/translate`
+- **方法：** `POST`
+- **参数：**
+    - `text`：需要翻译的文本。
+    - `source_language`：输入文本的语言（例如：`"am"`）。
+    - `target_language`：目标语言（例如：`"en"`）。
 
-## Resources
+## 资源
 
-This skill includes `scripts/` for direct execution and `references/` for API details.
+该技能包含用于直接执行的 `scripts/` 文件和 API 详细信息的 `references/` 文件。
 
 ### scripts/
 
--   `stt.py`: Python script for Speech-to-Text.
--   `translate.py`: Python script for text Translation.
+- `stt.py`：用于语音转文本的 Python 脚本。
+- `translate.py`：用于文本翻译的 Python 脚本。
 
 ### references/
 
--   `api_spec.md`: Detailed API specifications and curl examples.
+- `api_spec.md`：详细的 API 规范和 curl 示例。

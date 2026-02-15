@@ -1,6 +1,6 @@
 ---
 name: moltflow
-description: "WhatsApp Business automation API for sessions, messaging, groups, labels, and webhooks. Use when: whatsapp, send message, create session, qr code, monitor group, label contacts, webhook."
+description: "WhatsApp Business自动化API，支持会话管理、消息发送、群组管理、联系人标记以及Webhook功能。适用场景包括：发送消息、创建会话、生成二维码、监控群组动态、为联系人添加标签以及设置Webhook触发器。"
 source: "MoltFlow Team"
 version: "2.0.0"
 risk: safe
@@ -10,106 +10,91 @@ primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
 
-> **MoltFlow** -- WhatsApp Business automation for teams. Connect, monitor, and automate WhatsApp at scale.
-> [Save up to 17% with yearly billing](https://molt.waiflow.app/checkout?plan=free) -- Free tier available, no credit card required.
+> **MoltFlow** – 专为团队设计的 WhatsApp Business 自动化工具。支持大规模连接、监控和自动化 WhatsApp 操作。  
+> [年费订阅可节省高达 17% 的费用](https://molt.waiflow.app/checkout?plan=free)；提供免费试用计划，无需信用卡。  
 
-# MoltFlow Core API
+# MoltFlow 核心 API  
 
-Manage WhatsApp sessions, send messages, monitor groups, organize with labels, and receive real-time events via webhooks.
+用于管理 WhatsApp 会话、发送消息、监控群组、使用标签进行分类，并通过 Webhook 接收实时事件。  
 
-## When to Use
+## 使用场景  
 
-- "Connect WhatsApp" or "create a session"
-- "Send a WhatsApp message" or "send text to contact"
-- "Monitor a WhatsApp group" or "list groups"
-- "Label contacts" or "sync labels from WhatsApp"
-- "Set up a webhook" or "listen for WhatsApp events"
-- "Get QR code" or "start session"
-- "List chats" or "get chat history"
+- 连接 WhatsApp 或创建新会话  
+- 向联系人发送文本消息  
+- 监控 WhatsApp 群组  
+- 为联系人添加标签  
+- 设置 Webhook 以接收 WhatsApp 事件  
+- 生成 QR 码  
+- 查看聊天记录  
 
-## Prerequisites
+## 前提条件  
 
-1. **MOLTFLOW_API_KEY** -- Generate from the [MoltFlow Dashboard](https://molt.waiflow.app) under Settings > API Keys
-2. All requests require authentication via `Authorization: Bearer <token>` or `X-API-Key: <key>`
-3. Base URL: `https://apiv2.waiflow.app/api/v2`
+1. **MOLTFLOW_API_KEY**：在 [MoltFlow 控制台](https://molt.waiflow.app) 的“设置”>“API 密钥”中生成。  
+2. 所有请求都需要通过 `Authorization: Bearer <token>` 或 `X-API-Key: <key>` 进行身份验证。  
+3. 基本 URL：`https://apiv2.waiflow.app/api/v2`  
 
-## Authentication
+## 身份验证  
 
-Every request must include one of:
-
+每个请求都必须包含以下身份验证信息之一：  
 ```
 Authorization: Bearer <jwt_token>
-```
-
-or
-
+```  
+或  
 ```
 X-API-Key: <your_api_key>
-```
+```  
 
 ---
 
-## Sessions
+## 会话管理  
 
-Manage WhatsApp connections. Each session represents one WhatsApp account linked via QR code.
+会话表示通过 QR 码关联的 WhatsApp 账户。  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/sessions` | List all sessions |
-| POST | `/sessions` | Create a new session |
-| GET | `/sessions/{id}` | Get session details |
-| DELETE | `/sessions/{id}` | Delete a session |
-| POST | `/sessions/{id}/start` | Start session (triggers QR scan) |
-| POST | `/sessions/{id}/stop` | Stop a running session |
-| POST | `/sessions/{id}/restart` | Restart a session |
-| POST | `/sessions/{id}/logout` | Logout and clear auth state |
-| GET | `/sessions/{id}/qr` | Get QR code for pairing |
-| GET | `/sessions/{id}/events` | SSE stream of session events |
+| 方法 | 端点 | 描述 |  
+|--------|----------|-------------|  
+| GET | `/sessions` | 查看所有会话 |  
+| POST | `/sessions` | 创建新会话 |  
+| GET | `/sessions/{id}` | 获取会话详情 |  
+| DELETE | `/sessions/{id}` | 删除会话 |  
+| POST | `/sessions/{id}/start` | 启动会话（触发 QR 码扫描） |  
+| POST | `/sessions/{id}/stop` | 停止正在运行的会话 |  
+| POST | `/sessions/{id}/restart` | 重新启动会话 |  
+| POST | `/sessions/{id}/logout` | 登出并清除认证状态 |  
+| GET | `/sessions/{id}/qr` | 获取用于配对的 QR 码 |  
+| GET | `/sessions/{id}/events` | 获取会话事件的流式数据（SSE） |  
 
-### Session Status Values
+### 会话状态  
 
-Sessions progress through these states: `stopped` -> `starting` -> `qr_code` -> `working` -> `failed`
+会话的状态变化顺序为：`stopped` -> `starting` -> `qr_code` -> `working` -> `failed`  
 
-### Create Session
+### 创建会话  
 
-**POST** `/sessions`
+**POST** `/sessions`  
 
 ```json
 {
   "name": "My WhatsApp"
 }
-```
+```  
 
-**Response** `201 Created`:
+**响应** `201 Created`：会话创建成功。  
 
-```json
-{
-  "id": "a1b2c3d4-...",
-  "name": "My WhatsApp",
-  "status": "stopped",
-  "phone_number": null,
-  "is_business": false,
-  "created_at": "2026-02-11T10:00:00Z"
-}
-```
+### 启动会话并获取 QR 码  
 
-### Start Session and Get QR
+创建会话后，需要启动会话并获取其 QR 码：  
+1. `POST /sessions/{id}/start` – 启动会话  
+2. 等待状态变为 `qr_code`（可以通过 SSE 事件或轮询获取）  
+3. `GET /sessions/{id}/qr` – 获取 QR 码图像  
 
-After creating a session, start it and retrieve the QR code:
+### 会话事件（SSE）  
 
-1. `POST /sessions/{id}/start` -- begins the WAHA engine
-2. Wait for status to become `qr_code` (use SSE events or poll)
-3. `GET /sessions/{id}/qr` -- returns the QR code image
+`GET /sessions/{id}/events?token=<jwt>` 可获取服务器发送的事件流。事件包括会话状态变化、收到的消息和连接更新。  
 
-### SSE Events
+### 会话设置  
 
-`GET /sessions/{id}/events?token=<jwt>` returns a Server-Sent Events stream. Events include session status changes, incoming messages, and connection updates.
+**PATCH** `/sessions/{id}/settings`  
 
-### Session Settings
-
-**PATCH** `/sessions/{id}/settings`
-
-Configure per-session behavior. Settings are stored in the session's `config` JSON field.
+配置会话的特定行为。设置信息存储在会话的 `config` JSON 字段中。  
 
 ```json
 // Request
@@ -124,31 +109,31 @@ Configure per-session behavior. Settings are stored in the session's `config` JS
     "auto_transcribe": true
   }
 }
-```
+```  
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `auto_transcribe` | boolean | Automatically transcribe incoming voice messages |
+| 字段 | 类型 | 描述 |  
+|-------|------|-------------|  
+| `auto_transcribe` | boolean | 自动转录收到的语音消息 |  
 
 ---
 
-## Messages
+## 消息发送与接收  
 
-Send and retrieve WhatsApp messages through connected sessions.
+通过已连接的会话发送和接收 WhatsApp 消息。  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/messages/send` | Send a text message |
-| POST | `/messages/send/poll` | Send a poll message |
-| POST | `/messages/send/sticker` | Send a sticker |
-| POST | `/messages/send/gif` | Send a GIF |
-| GET | `/messages/chats/{session_id}` | List all chats for a session |
-| GET | `/messages/chat/{session_id}/{chat_id}` | Get chat message history |
-| GET | `/messages/{message_id}` | Get a single message |
+| 方法 | 端点 | 描述 |  
+|--------|----------|-------------|  
+| POST | `/messages/send` | 发送文本消息 |  
+| POST | `/messages/send/poll` | 发送投票消息 |  
+| POST | `/messages/send/sticker` | 发送贴纸 |  
+| POST | `/messages/send/gif` | 发送 GIF 图片 |  
+| GET | `/messages/chats/{session_id}` | 查看会话中的所有聊天记录 |  
+| GET | `/messages/chat/{session_id}/{chat_id}` | 获取特定聊天的消息历史 |  
+| GET | `/messages/{message_id}` | 获取单条消息 |  
 
-### Send Text Message
+### 发送文本消息  
 
-**POST** `/messages/send`
+**POST** `/messages/send`  
 
 ```json
 {
@@ -156,32 +141,18 @@ Send and retrieve WhatsApp messages through connected sessions.
   "chat_id": "5511999999999@c.us",
   "message": "Hello from MoltFlow!"
 }
-```
+```  
 
-**Response** `201 Created`:
+**响应** `201 Created`：消息发送成功。  
 
-```json
-{
-  "id": "msg-uuid-...",
-  "chat_id": "chat-uuid-...",
-  "wa_message_id": "ABCD1234",
-  "direction": "outbound",
-  "message_type": "text",
-  "content_preview": "Hello from MoltFlow!",
-  "status": "sent",
-  "sent_at": "2026-02-11T10:05:00Z",
-  "created_at": "2026-02-11T10:05:00Z"
-}
-```
+### 聊天 ID 格式  
 
-### Chat ID Format
+- 单个联系人：`<phone>@c.us`（例如：`5511999999999@c.us`）  
+- 群组：`<group_id>@g.us`（例如：`120363012345678901@g.us`）  
 
-- Individual contacts: `<phone>@c.us` (e.g., `5511999999999@c.us`)
-- Groups: `<group_id>@g.us` (e.g., `120363012345678901@g.us`)
+### 发送投票消息  
 
-### Send Poll
-
-**POST** `/messages/send/poll`
+**POST** `/messages/send/poll`  
 
 ```json
 {
@@ -191,71 +162,63 @@ Send and retrieve WhatsApp messages through connected sessions.
   "options": ["Morning", "Afternoon", "Evening"],
   "allow_multiple": false
 }
-```
+```  
 
 ---
 
-## Groups
+## 群组管理  
 
-Monitor WhatsApp groups for keywords, messages, and activity.
+监控 WhatsApp 群组中的关键词、消息和活动。  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/groups` | List monitored groups |
-| GET | `/groups/available/{session_id}` | List available WA groups |
-| POST | `/groups` | Add group to monitoring |
-| GET | `/groups/{id}` | Get monitored group details |
-| PATCH | `/groups/{id}` | Update monitoring settings |
-| DELETE | `/groups/{id}` | Remove from monitoring |
-| POST | `/groups/create` | Create a new WA group |
-| POST | `/groups/{wa_group_id}/participants/add` | Add participants |
-| POST | `/groups/{wa_group_id}/participants/remove` | Remove participants |
-| POST | `/groups/{wa_group_id}/admin/promote` | Promote to admin |
-| POST | `/groups/{wa_group_id}/admin/demote` | Demote from admin |
+| 方法 | 端点 | 描述 |  
+|--------|----------|-------------|  
+| GET | `/groups` | 查看所有被监控的群组 |  
+| GET | `/groups/available/{session_id}` | 查看可监控的群组 |  
+| POST | `/groups` | 将群组添加到监控列表 |  
+| GET | `/groups/{id}` | 获取群组详情 |  
+| PATCH | `/groups/{id}` | 更新监控设置 |  
+| DELETE | `/groups/{id}` | 从监控列表中移除群组 |  
+| POST | `/groups/create` | 创建新的 WhatsApp 群组 |  
+| POST | `/groups/{wa_group_id}/participants/add` | 添加群组成员 |  
+| POST | `/groups/{wa_group_id}/participants/remove` | 移除群组成员 |  
+| POST | `/groups/{wa_group_id}/admin/promote` | 提升群组管理员权限 |  
+| POST | `/groups/{wa_group_id}/admin/demote` | 降低群组管理员权限 |  
 
-### Add Group to Monitoring
+### 将群组添加到监控列表  
 
-**POST** `/groups`
+**POST** `/groups`  
 
-```json
-{
-  "session_id": "a1b2c3d4-...",
-  "wa_group_id": "120363012345678901@g.us",
-  "monitor_mode": "keywords",
-  "monitor_keywords": ["urgent", "support", "help"]
-}
-```
+---  
 
-### Monitor Modes
+## 监控模式  
 
-- `all` -- Capture every message in the group
-- `keywords` -- Only capture messages matching specified keywords
-- `mentions` -- Only when your account is mentioned
-- `first_message` -- Only first messages from new users (default for new groups)
+- `all`：捕获群组中的所有消息  
+- `keywords`：仅捕获包含指定关键词的消息  
+- `mentions`：仅当您的账户被提及时捕获消息  
+- `first_message`：仅捕获新用户的初始消息（新群组的默认设置）  
 
 ---
 
-## Labels
+## 标签管理  
 
-Organize contacts and chats with color-coded labels. Supports sync with WhatsApp Business native labels.
+使用彩色标签对联系人和聊天记录进行分类。支持与 WhatsApp Business 的原生标签同步。  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/labels` | List all labels |
-| POST | `/labels` | Create a label |
-| GET | `/labels/{id}` | Get label details |
-| PATCH | `/labels/{id}` | Update a label |
-| DELETE | `/labels/{id}` | Delete a label |
-| POST | `/labels/{id}/sync` | Sync label to WhatsApp |
-| POST | `/labels/sync-from-whatsapp` | Import labels from WA |
-| GET | `/labels/business-check` | Check WA Business status |
-| GET | `/labels/{id}/chats` | List chats with this label |
-| GET | `/labels/chat/{chat_id}` | Get labels for a chat |
-| PUT | `/labels/chat/{chat_id}` | Set labels for a chat |
+| 方法 | 端点 | 描述 |  
+|--------|----------|-------------|  
+| GET | `/labels` | 查看所有标签 |  
+| POST | `/labels` | 创建新标签 |  
+| GET | `/labels/{id}` | 获取标签详情 |  
+| PATCH | `/labels/{id}` | 更新标签 |  
+| DELETE | `/labels/{id}` | 删除标签 |  
+| POST | `/labels/{id}/sync` | 将标签同步到 WhatsApp |  
+| POST | `/labels/sync-from-whatsapp` | 从 WhatsApp 导入标签 |  
+| GET | `/labels/business-check` | 检查 WhatsApp Business 账户的状态 |  
+| GET | `/labels/{id}/chats` | 查看带有该标签的聊天记录 |  
+| PUT | `/labels/chat/{chat_id}` | 为聊天记录设置标签 |  
 
-### Create Label
+### 创建标签  
 
-**POST** `/labels`
+**POST** `/labels`  
 
 ```json
 {
@@ -263,53 +226,41 @@ Organize contacts and chats with color-coded labels. Supports sync with WhatsApp
   "color": "#FF6B35",
   "description": "High-value accounts"
 }
-```
+```  
 
-**Response** `201 Created`:
+**响应** `201 Created`：标签创建成功。  
 
-```json
-{
-  "id": "label-uuid-...",
-  "name": "VIP Customer",
-  "color": "#FF6B35",
-  "description": "High-value accounts",
-  "chat_count": 0,
-  "synced": false,
-  "created_at": "2026-02-11T10:00:00Z"
-}
-```
-
-> **Note:** Syncing labels to WhatsApp requires a WhatsApp Business account. Use `GET /labels/business-check` to verify.
+> **注意：** 将标签同步到 WhatsApp 需要拥有 WhatsApp Business 账户。请使用 `GET /labels/business-check` 进行验证。  
 
 ---
 
-## Webhooks
+## Webhook  
 
-Receive real-time notifications when events occur in your WhatsApp sessions.
+在 WhatsApp 会话中发生事件时接收实时通知。  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/webhooks` | List all webhooks |
-| POST | `/webhooks` | Create a webhook |
-| GET | `/webhooks/{id}` | Get webhook details |
-| PATCH | `/webhooks/{id}` | Update a webhook |
-| DELETE | `/webhooks/{id}` | Delete a webhook |
-| POST | `/webhooks/{id}/test` | Send a test delivery |
+| 方法 | 端点 | 描述 |  
+|--------|----------|-------------|  
+| GET | `/webhooks` | 查看所有 Webhook |  
+| POST | `/webhooks` | 创建新的 Webhook |  
+| GET | `/webhooks/{id}` | 获取 Webhook 详情 |  
+| PATCH | `/webhooks/{id}` | 更新 Webhook 设置 |  
+| DELETE | `/webhooks/{id}` | 删除 Webhook |  
+| POST | `/webhooks/{id}/test` | 测试 Webhook 的发送功能 |  
 
-### Supported Events
+### 支持的事件类型  
 
-| Event | Description |
-|-------|-------------|
-| `message.received` | Inbound message received |
-| `message.sent` | Outbound message sent |
-| `session.connected` | Session connected to WhatsApp |
-| `session.disconnected` | Session disconnected |
-| `lead.detected` | New lead detected |
-| `group.message` | Message in a monitored group |
+| 事件 | 描述 |  
+|-------|-------------|  
+| `message.received` | 收到新消息 |  
+| `message.sent` | 发送消息 |  
+| `session.connected` | 会话连接到 WhatsApp |  
+| `session.disconnected` | 会话断开连接 |  
+| `lead-detected` | 检测到新潜在客户 |  
+| `group.message` | 监控群组中的消息 |  
 
-### Create Webhook
+### 创建 Webhook  
 
-**POST** `/webhooks`
+**POST** `/webhooks`  
 
 ```json
 {
@@ -318,24 +269,13 @@ Receive real-time notifications when events occur in your WhatsApp sessions.
   "events": ["message.received", "lead.detected"],
   "secret": "whsec_mysecretkey123"
 }
-```
+```  
 
-**Response** `201 Created`:
+**响应** `201 Created`：Webhook 创建成功。  
 
-```json
-{
-  "id": "wh-uuid-...",
-  "name": "CRM Integration",
-  "url": "https://example.com/webhooks/moltflow",
-  "events": ["message.received", "lead.detected"],
-  "is_active": true,
-  "created_at": "2026-02-11T10:00:00Z"
-}
-```
+### Webhook 数据传输  
 
-### Webhook Payload
-
-Deliveries include an HMAC-SHA256 signature in the `X-Webhook-Signature` header (if a secret is configured). Verify this to ensure authenticity.
+Webhook 的响应数据中包含 `X-Webhook-Signature` 头部，其中包含 HMAC-SHA256 签名（如果配置了密钥）。请验证该签名以确保数据真实性。  
 
 ```json
 {
@@ -348,116 +288,59 @@ Deliveries include an HMAC-SHA256 signature in the `X-Webhook-Signature` header 
     "direction": "inbound"
   }
 }
-```
+```  
 
 ---
 
-## Examples
+## 示例  
 
-### Full workflow: Create session and send first message
-
-```bash
-# 1. Create a session
-curl -X POST https://apiv2.waiflow.app/api/v2/sessions \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Sales Team"}'
-
-# 2. Start the session (triggers QR)
-curl -X POST https://apiv2.waiflow.app/api/v2/sessions/{session_id}/start \
-  -H "X-API-Key: $MOLTFLOW_API_KEY"
-
-# 3. Get QR code (scan with WhatsApp)
-curl https://apiv2.waiflow.app/api/v2/sessions/{session_id}/qr \
-  -H "X-API-Key: $MOLTFLOW_API_KEY"
-
-# 4. Send a message (after session status is "working")
-curl -X POST https://apiv2.waiflow.app/api/v2/messages/send \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "session_id": "{session_id}",
-    "chat_id": "5511999999999@c.us",
-    "message": "Hello from MoltFlow!"
-  }'
-```
-
-### Set up a webhook for incoming messages
-
-```bash
-curl -X POST https://apiv2.waiflow.app/api/v2/webhooks \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Incoming Messages",
-    "url": "https://myapp.com/webhooks/whatsapp",
-    "events": ["message.received", "session.connected"],
-    "secret": "whsec_my_secret"
-  }'
-```
-
-### Monitor a group for keywords
-
-```bash
-# List available groups from a connected session
-curl https://apiv2.waiflow.app/api/v2/groups/available/{session_id} \
-  -H "X-API-Key: $MOLTFLOW_API_KEY"
-
-# Add a group to monitoring
-curl -X POST https://apiv2.waiflow.app/api/v2/groups \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "session_id": "{session_id}",
-    "wa_group_id": "120363012345678901@g.us",
-    "monitor_mode": "keywords",
-    "monitor_keywords": ["urgent", "support"]
-  }'
-```
+- **完整工作流程：** 创建会话并发送第一条消息  
+- **为收到的消息设置 Webhook**  
+- **监控群组中的特定关键词**  
 
 ---
 
-## Error Responses
+## 错误响应  
 
-All endpoints return standard error responses:
+所有 API 端点都会返回标准错误响应：  
 
 ```json
 {
   "detail": "Session not found"
 }
-```
+```  
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Bad request (invalid input) |
-| 401 | Unauthorized (missing or invalid auth) |
-| 403 | Forbidden (plan limit or permission) |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 500 | Internal server error |
-
----
-
-## Rate Limits
-
-API requests are rate-limited per tenant. Limits vary by plan:
-
-| Plan | Requests/min |
-|------|-------------|
-| Free | 10 |
-| Starter | 20 |
-| Pro | 40 |
-| Business | 60 |
-
-Rate limit headers are included in every response: `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
+| 状态码 | 含义 |  
+|--------|---------|  
+| 400 | 请求无效 |  
+| 401 | 未经授权（缺少或无效的认证信息） |  
+| 403 | 被禁止（超出使用限制或权限问题） |  
+| 404 | 资源未找到 |  
+| 429 | 请求频率限制 |  
+| 500 | 服务器内部错误 |  
 
 ---
 
-## Related Skills
+## 请求频率限制  
 
-- **moltflow-outreach** -- Bulk Send, Scheduled Messages, Custom Groups
-- **moltflow-leads** -- Lead detection, pipeline tracking, bulk operations, CSV/JSON export
-- **moltflow-ai** -- AI-powered auto-replies, voice transcription, RAG knowledge base, style profiles
-- **moltflow-a2a** -- Agent-to-Agent protocol, encrypted messaging, content policy
-- **moltflow-reviews** -- Review collection and testimonial management
-- **moltflow-admin** -- Platform administration, user management, plan configuration
+API 请求受到每个租户的使用频率限制。不同套餐的频率限制如下：  
+
+| 套餐 | 每分钟请求次数 |  
+|------|-------------|  
+| 免费 | 10 |  
+| 初级 | 20 |  
+| 专业 | 40 |  
+| 商业 | 60 |  
+
+每个响应中都会包含频率限制相关信息：`X-RateLimit-Remaining` 和 `X-RateLimit-Reset`。  
+
+---
+
+## 相关服务  
+
+- **moltflow-outreach**：批量发送消息、定时发送消息、自定义群组管理  
+- **moltflow-leads**：潜在客户检测、流程跟踪、批量操作、CSV/JSON 导出  
+- **moltflow-ai**：基于 AI 的自动回复功能、语音转录、知识库管理  
+- **moltflow-a2a**：代理间通信协议、加密消息传输、内容策略管理  
+- **moltflow-reviews**：评论收集与评价管理  
+- **moltflow-admin**：平台管理、用户管理、套餐配置

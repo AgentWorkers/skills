@@ -1,25 +1,25 @@
 ---
 slug: "contractor-matching-ai"
 display_name: "Contractor Matching AI"
-description: "AI-powered contractor matching and selection for construction projects. Analyze contractor capabilities, past performance, certifications, and project requirements to recommend optimal matches."
+description: "基于人工智能的承包商匹配与选择服务，专为建筑项目设计。该服务通过分析承包商的能力、过往表现、资质认证以及项目需求，来推荐最合适的承包商合作伙伴。"
 ---
 
-# AI Contractor Matching
+# 人工智能承包商匹配系统
 
-## Overview
+## 概述
 
-This skill implements AI-powered contractor matching for construction projects. Analyze project requirements against contractor capabilities, track historical performance, and generate recommendations based on multiple criteria.
+该技能利用人工智能技术为建筑项目匹配合适的承包商。系统会分析项目需求与承包商的能力，追踪承包商的历史表现，并根据多种标准生成推荐结果。
 
-**Matching Criteria:**
-- Technical capabilities & expertise
-- Past performance scores
-- Certifications & licenses
-- Geographic availability
-- Capacity & current workload
-- Pricing competitiveness
-- Safety records
+**匹配标准：**
+- 技术能力与专业背景
+- 过往表现评分
+- 证书与资质
+- 地理位置（是否可提供服务）
+- 承包能力及当前工作负荷
+- 价格竞争力
+- 安全记录
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -102,9 +102,9 @@ for m in matches:
     print(f"{m['contractor'].name}: Score {m['score']:.1f}")
 ```
 
-## Comprehensive Matching System
+## 全面匹配系统
 
-### Contractor Profile Management
+### 承包商资料管理
 
 ```python
 from dataclasses import dataclass, field
@@ -236,7 +236,7 @@ class ContractorProfile:
         return 100 - self.current_workload_pct
 ```
 
-### AI Matching Engine
+### 人工智能匹配引擎
 
 ```python
 from sklearn.metrics.pairwise import cosine_similarity
@@ -500,7 +500,7 @@ class ContractorMatchingEngine:
         return pd.DataFrame(data)
 ```
 
-### Bid Analysis and Prediction
+### 投标分析与预测
 
 ```python
 from sklearn.ensemble import RandomForestRegressor
@@ -653,7 +653,7 @@ class BidEvaluator:
             return "Review Required"
 ```
 
-### Contractor Recommendation Report
+### 承包商推荐报告
 
 ```python
 def generate_recommendation_report(engine: ContractorMatchingEngine,
@@ -718,24 +718,24 @@ def generate_recommendation_report(engine: ContractorMatchingEngine,
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Criterion | Weight Range | Data Sources |
-|-----------|--------------|--------------|
-| Performance | 20-30% | Project references, ratings |
-| Safety | 15-25% | OSHA records, certifications |
-| Price | 15-25% | Historical bids |
-| Capacity | 10-20% | Current workload |
-| Experience | 10-15% | Similar projects |
-| Financial | 10-15% | Credit rating, bonding |
+| 标准 | 权重范围 | 数据来源 |
+|---------|-----------|-----------|
+| 表现    | 20-30%    | 项目参考信息、客户评价 |
+| 安全    | 15-25%    | OSHA（职业安全与健康管理局）记录、相关证书 |
+| 价格    | 15-25%    | 历史投标价格 |
+| 承包能力 | 10-20%    | 当前工作负荷 |
+| 经验    | 10-15%    | 类似项目的完成情况 |
+| 财务状况 | 10-15%    | 信用评级、保证金情况 |
 
-## Resources
+## 资源参考
 
-- **DDC Website**: https://datadrivenconstruction.io
-- **Construction contractor databases**: BuildingConnected, PlanHub
+- **DDC 网站**：https://datadrivenconstruction.io
+- **建筑承包商数据库**：BuildingConnected、PlanHub
 
-## Next Steps
+## 下一步操作
 
-- See `risk-assessment-ml` for contractor risk analysis
-- See `document-classification-nlp` for proposal analysis
-- See `open-construction-estimate` for bid validation
+- 请参考 `risk-assessment-ml` 了解承包商风险分析方法
+- 请参考 `document-classification-nlp` 了解提案分析流程
+- 请参考 `open-construction-estimate` 了解投标验证流程

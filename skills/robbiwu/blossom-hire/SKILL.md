@@ -1,116 +1,112 @@
 ---
 name: blossom-hire
 version: 1.2.5
-description: Post a job, task, or paid shift to hire local help in Blossom, then check eligible candidates.
+description: 发布一份工作、任务或付费勤务的招聘信息，以在 Blossom 地区招聘当地帮手，随后筛选符合条件的候选人。
 ---
 
-# Blossom Hire
+# Blossom 招聘服务
 
-## Description
-Use this skill when the user wants to post a local paid help request (task or short shift) into Blossom, or when they want to check whether anyone has applied.
-
-This skill creates roles via Blossom’s API and can retrieve eligible candidates later.
-The user can install blossom app on their mobile if they want to manage applications directly.
-
----
-
-## Tools
-Use **bash** to call Blossom’s HTTP endpoints with `curl`.
-Use `jq` to parse JSON responses.
-
-Endpoints:
-- `POST https://hello.blossomai.org/api/v1/pushuser` (register/login + role commit)
-- `POST https://hello.blossomai.org/getPopInUpdates` (retrieve candidates)
+## 说明
+当用户希望在 Blossom 平台上发布本地有偿帮助请求（任务或短期工作），或者想要查看是否有候选人申请时，可以使用此技能。  
+该技能通过 Blossom 的 API 创建职位信息，并可后续获取符合条件的候选人。  
+用户若希望在移动设备上直接管理招聘流程，可安装 Blossom 应用程序。
 
 ---
 
-## Requirements
-- bash tool access enabled in OpenClaw
-- `curl` installed
-- `jq` installed
+## 工具
+- 使用 `bash` 通过 `curl` 调用 Blossom 的 HTTP 端点。  
+- 使用 `jq` 解析 JSON 响应。  
+
+**端点：**  
+- `POST https://hello.blossomai.org/api/v1/pushuser`（注册/登录 + 职位信息提交）  
+- `POST https://hello.blossomai.org/getPopInUpdates`（获取候选人列表）  
 
 ---
 
-## Instructions
-
-### When to use this skill
-Activate this skill when the user says things like:
-- “Post a job for me”
-- “Hire someone”
-- “I need staff for a shift”
-- “Create a task”
-- “I need someone to help with something”
-- “Check if anyone applied”
-- “Do I have any candidates yet?”
-
-### What information to collect
-Collect details conversationally. Do not front-load questions.
-If the user provides partial information, continue and only ask for what is missing.
-
-**Role details**
-1) Headline (one line)
-2) Details (2–6 lines describing what the helper will do)
-3) When (working hours or “flexible”)
-4) Where (street, city, postcode, country)
-5) Pay
-   - amount (number)
-   - frequency: total | per hour | per week | per month | per year
-
-**Optional: Requirements and benefits**
-If the user provides or requests screening questions, capture them as requirements.
-If the user provides perks, capture them as benefits.
-- Requirements: name + mandatory (default false)
-- Benefits: name + mandatory (default false)
-
-**Identity details**
-Ask only when you are ready to create or check a role:
-- email
-- first name
-- surname
-- mobileCountry (e.g. +44)
-- mobile number
-- passKey
-
-Notes:
-- Default to registration.
-- Only use login if registration fails because the email already exists, or if the user explicitly says they already have an account.
-
-### Behaviour rules
-1) Gather role details first.
-2) Confirm the role summary back to the user in one compact message (headline, when, where, pay).
-3) Collect identity details if missing.
-4) Bootstrap identity and address via the Blossom API.
-5) Commit the role.
-6) Return a concise confirmation including the role ID.
-7) When asked to check candidates, retrieve and display the candidate list.
-
-### Output rules
-- Never promise that someone will apply.
-- If there are zero candidates, say: “Waiting for responses.”
-- Only treat `type === "candidates"` as the operator-facing list.
-- Do not infer suitability beyond what the API returns.
+## 前提条件  
+- OpenClaw 中已启用 `bash` 工具；  
+- 安装了 `curl` 和 `jq`。  
 
 ---
 
-## Session state
-The skill must store these values as runtime state and reuse them across calls:
-- personId
-- sessionKey
-- addressId
+## 使用说明  
 
-Persistence rules:
-- Keep them for the current run.
-- If the user later asks to check candidates, reuse the stored sessionKey if present.
-- If calls fail due to expiry/invalid session, re-bootstrap via login to obtain a fresh sessionKey.
-- Do not store sessionKey in OpenClaw global configuration.
+### 适用场景  
+当用户说出以下内容时，激活此技能：  
+- “为我发布一个工作请求”  
+- “招聘人员”  
+- “我需要临时工作人员”  
+- “创建一个任务”  
+- “需要有人帮忙处理某件事”  
+- “查看是否有候选人申请”  
+- “我已经有候选人了吗？”  
 
+### 需要收集的信息  
+通过对话方式收集相关信息，不要预先列出所有问题。  
+如果用户提供了部分信息，再询问缺失的部分。  
 
-## Tooling (API Contract)
+**职位详情：**  
+1) 标题（一行）  
+2) 任务详情（2–6 行，描述帮助者的工作内容）  
+3) 时间（工作时间或“灵活时间”）  
+4) 地点（街道、城市、邮政编码、国家）  
+5) 薪酬：  
+  - 金额  
+  - 支付频率：总计 | 每小时 | 每周 | 每月 | 每年  
 
-### A) Bootstrap identity + address (register)
-`POST https://hello.blossomai.org/api/v1/pushuser`
+**可选信息：**  
+- 如果用户提供了筛选条件或福利信息，请记录下来：  
+  - 筛选条件：名称 + 是否必填（默认为“否”）  
+  - 福利：名称 + 是否必填（默认为“否”  
 
-Request JSON:
+**身份信息：**  
+仅在准备创建或查看候选人时询问：  
+- 电子邮件  
+- 名字  
+- 姓氏  
+- 手机国家代码（例如 +44）  
+- 手机号码  
+- 密码  
+
+**注意事项：**  
+- 默认使用注册方式；  
+- 仅当电子邮件已存在或用户明确表示已有账户时，才使用登录方式。  
+
+### 行为规则：  
+1) 首先收集职位详情。  
+2) 用一条简洁的消息向用户确认职位信息（标题、时间、地点、薪酬）。  
+3) 如需收集身份信息，请继续操作。  
+4) 通过 Blossom API 获取用户的身份和地址信息。  
+5) 提交职位信息。  
+6) 返回包含职位 ID 的确认信息。  
+7) 当用户请求查看候选人时，获取并显示候选人列表。  
+
+### 输出规则：  
+- 不要承诺一定会有人申请；  
+- 如果没有候选人，回复：“正在等待回复。”  
+- 仅将 `type === "candidates"` 的结果作为给操作员的候选人列表显示；  
+- 不要根据 API 返回的信息自行判断候选人的适合度。  
+
+---
+
+## 会话状态  
+此技能需将这些值作为运行时状态存储，并在后续调用中重复使用：  
+- `personId`  
+- `sessionKey`  
+- `addressId`  
+
+**数据持久化规则：**  
+- 仅保留当前会话的数据；  
+- 如果用户后续请求查看候选人，使用已存储的 `sessionKey`；  
+- 如果因会话过期或无效导致调用失败，需重新登录以获取新的 `sessionKey`；  
+- 不要将 `sessionKey` 存储在 OpenClaw 的全局配置中。  
+
+## 工具（API 接口）  
+
+### A) 注册/登录  
+`POST https://hello.blossomai.org/api/v1/pushuser`  
+
+**请求 JSON：**  
 ```json
 {
   "id": 0,
@@ -152,139 +148,49 @@ Request JSON:
     }
   ]
 }
-```
+```  
 
-If the response indicates the email already exists, do not retry registration. Proceed to login.
+如果响应表明电子邮件已存在，不要重复注册，直接进行登录。  
 
-### B) Bootstrap identity (login, only if required)
-`POST https://hello.blossomai.org/api/v1/pushuser`
+### B) 登录（仅必要时使用）  
+`POST https://hello.blossomai.org/api/v1/pushuser`  
+**从响应中保存的数据：**  
+- `personId = person.id`  
+- `sessionKey = person.transaction.sessionKey`  
+- `addressId = person.addresses[0].id`  
 
-```json
-{
-  "id": 0,
-  "userType": "support",
-  "communityId": 1,
-  "email": "<email>",
-  "transaction": {
-    "transact": "login",
-    "passKey": "<passKey>"
-  }
-}
-```
+### C) 提交职位信息  
+`POST https://hello.blossomai.org/api/v1/pushuser`  
+**规则：**  
+- `transaction.transact = "complete"`  
+- `transaction.viewState = "none"`  
+- `role.id = 0`  
+- `role.mark = true`  
+- `role.modified = nowMillis`  
+- `role.roleIdentifier = "openclaw-" + nowMillis`  
+- 薪酬使用 `salary` 和 `paymentFrequency`（默认为“每小时”）  
+- 筛选条件和福利信息无需 `id` 字段；可省略。  
 
-Persist from the response:
-- `personId = person.id`
-- `sessionKey = person.transaction.sessionKey`
-- `addressId = person.addresses[0].id`
+**成功条件：**  
+- `roles[0].id` 不为零。  
 
-### C) Commit the role
-`POST https://hello.blossomai.org/api/v1/pushuser`
-
-Rules:
-- `transaction.transact = "complete"`
-- `transaction.viewState = "none"`
-- `role.id = 0`
-- `role.mark = true`
-- `role.modified = nowMillis`
-- `role.roleIdentifier = "openclaw-" + nowMillis`
-- Payment uses `salary` and a single `paymentFrequency` choice with `selectedIndex = 0`
-- Requirement and benefit entries do not require an `id` field; omit it.
-
-```json
-{
-  "id": <personId>,
-  "name": "<name>",
-  "mobileCountry": "<+44>",
-
-  "transaction": {
-    "sessionKey": "<sessionKey>",
-    "transact": "complete",
-    "viewState": "none"
-  },
-
-  "roles": [
-    {
-      "id": 0,
-      "mark": true,
-
-      "headline": "<headline>",
-      "jobDescription": "<jobDescription>",
-      "introduction": "",
-      "workingHours": "<workingHours>",
-
-      "salary": <amount>,
-      "currencyName": "GBP",
-      "currencySymbol": "£",
-      "paymentFrequency": {
-        "choices": ["<frequency>"],
-        "selectedIndex": 0
-      },
-
-      "requirements": [
-        {
-          "requirementName": "<requirementName>",
-          "mandatory": false,
-          "originalRequirement": true
-          }
-      ],
-      "benefits": [
-        {
-          "benefitName": "<benefitName>",
-          "mandatory": false
-        }
-      ],
-
-      "addressId": <addressId>,
-      "isRemote": false,
-
-      "isActive": true,
-      "markDelete": false,
-      "premium": false,
-      "days": 30,
-      "maxCrew": 1,
-
-      "modified": <nowMillis>,
-      "roleIdentifier": "openclaw-<nowMillis>"
-    }
-  ],
-
-  "userType": "support"
-}
-```
-
-Success condition:
-- `roles[0].id` is non-zero.
-
-### D) Retrieve candidates
-`POST https://hello.blossomai.org/getPopInUpdates`
-
-```json
-{
-  "id": <personId>,
-  "transaction": {
-    "sessionKey": "<sessionKey>",
-    "transact": "complete"
-  }
-}
-```
-
-Interpretation:
-- `dataList` is authoritative.
-- Use the entry where `type === "candidates"` as the list to show.
-- Ignore `type === "apply"` for operator-facing lists.
+### D) 获取候选人列表  
+`POST https://hello.blossomai.org/getPopInUpdates`  
+**解释：**  
+- `dataList` 包含所有候选人信息；  
+- 仅显示 `type === "candidates` 的记录；  
+- 忽略 `type === "apply` 的记录（仅用于内部显示）。  
 
 ---
 
-## Canonical bash calls (copy/paste patterns)
+## Bash 调用示例（可直接复制粘贴）  
 
-These are safe templates. Replace placeholders before running.
-
-### 0) Common environment
+### 0) 常规操作  
 ```bash
 API_BASE="https://hello.blossomai.org"
-```
+```  
 
-### 1) Register (default)
+### 1) 注册（默认操作）  
 ```bash
 curl -sS "$API_BASE/api/v1/pushuser" \
   -H "content-type: application/json" \
@@ -325,9 +231,9 @@ curl -sS "$API_BASE/api/v1/pushuser" \
   ]
 }
 JSON
-```
+```  
 
-### 2) Login (only if needed)
+### 2) 登录（仅必要时使用）  
 ```bash
 curl -sS "$API_BASE/api/v1/pushuser" \
   -H "content-type: application/json" \
@@ -343,15 +249,14 @@ curl -sS "$API_BASE/api/v1/pushuser" \
   }
 }
 JSON
-```
+```  
 
-### 3) Commit role
-Set:
-- `PERSON_ID`
-- `SESSION_KEY`
-- `ADDRESS_ID`
-- `NOW_MILLIS` (epoch millis)
-
+### 3) 提交职位信息  
+设置参数：  
+- `PERSON_ID`  
+- `SESSION_KEY`  
+- `ADDRESS_ID`  
+- `NOW_MILLIS`（当前时间戳）  
 ```bash
 PERSON_ID="<personId>"
 SESSION_KEY="<sessionKey>"
@@ -412,9 +317,9 @@ curl -sS "$API_BASE/api/v1/pushuser" \
   "userType": "support"
 }
 JSON
-```
+```  
 
-### 4) Retrieve candidates
+### 4) 获取候选人列表  
 ```bash
 PERSON_ID="<personId>"
 SESSION_KEY="<sessionKey>"
@@ -430,31 +335,28 @@ curl -sS "$API_BASE/getPopInUpdates" \
   }
 }
 JSON
-```
+```  
 
 ---
 
-## Examples
+## 示例  
+**示例 1：创建帮助请求**  
+用户：**“我需要在周六 11 点到 5 点在 Sherwood 提供帮助，每小时报酬 12 英镑。”**  
+**助理操作流程：**  
+1) 询问缺失的字段（如街道和邮政编码）。  
+2) 确认信息：  
+  - 职位标题：<职位标题>  
+  - 时间：<工作时间>  
+  - 地点：<城市> <邮政编码>  
+  - 薪酬：<每小时报酬>  
+3) 询问用户的身份信息（电子邮件、名字、姓氏、手机国家代码、手机号、密码）。  
+4) 注册（或登录），然后提交职位信息。  
+5) 返回职位 ID。  
 
-### Example 1: Create a help request
-User: “I need café cover this Saturday 11–5 in Sherwood. Paying £12/hour.”
-
-Assistant flow:
-1) Ask for missing fields (street + postcode if missing).
-2) Confirm:
-   - Created: <headline>
-   - When: <workingHours>
-   - Where: <city> <postcode>
-   - Pay: <salary> <frequency>
-3) Ask for identity details as one grouped question (email, name, surname, mobileCountry, mobileNo, passKey).
-4) Register (or login if required), then commit the role.
-5) Return: Role ID.
-
-### Example 2: Check candidates
-User: “Any candidates yet?”
-
-Assistant flow:
-1) If `personId`/`sessionKey` not known, ask for identity details and bootstrap.
-2) Call getPopInUpdates.
-3) If candidates empty: “Waiting for responses.”
-4) Else: show candidate entries as returned.
+**示例 2：查看候选人**  
+用户：**“已经有候选人了吗？”**  
+**助理操作流程：**  
+1) 如果 `personId` 或 `sessionKey` 未知，询问身份信息并登录。  
+2) 调用 `getPopInUpdates` 获取候选人列表。  
+3) 如果没有候选人：**“正在等待回复。”**  
+4) 否则：显示候选人列表。

@@ -1,13 +1,19 @@
 ---
 name: lifi-orchestrator
-description: Cross-chain bridging and swapping via LI.FI — the leading bridge aggregator that routes across 30+ bridges and DEXs for optimal rates. Use when you need to: (1) Get quotes for moving tokens between chains, (2) Execute cross-chain swaps with best pricing, (3) Track bridge transaction status, (4) Compare routes across protocols like Stargate, Across, Hop, Celer, etc. Supports Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, Avalanche, Solana, and 15+ other chains. Handles native tokens and ERC-20s with automatic slippage protection.
+description: 通过 LI.FI 实现跨链桥接与交换——这是一款领先的桥接聚合器，能够连接 30 多个跨链桥接服务和去中心化交易所（DEX），以提供最优的交易费率。您可以在以下情况下使用它：  
+1. 获取在不同区块链之间转移代币的报价；  
+2. 以最优惠的价格执行跨链交易；  
+3. 查看桥接交易的实时状态；  
+4. 比较 Stargate、Across、Hop、Celer 等协议的交易路径。  
+
+LI.FI 支持以太坊（Ethereum）、Polygon、Arbitrum、Optimism、Base、BSC、Avalanche、Solana 以及 15 种以上的其他区块链。它能够处理原生代币和 ERC-20 标准的代币，并提供自动滑点保护（即防止交易价格因网络波动而产生意外损失）。
 ---
 
 # LI.FI Orchestrator
 
-Bridge tokens across chains using LI.FI's aggregated bridge/DEX routing.
+使用 LI.FI 的聚合桥接/去中心化交易所（DEX）路由功能，在不同区块链之间传输代币。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get a quote (ETH on Ethereum → MATIC on Polygon)
@@ -22,15 +28,15 @@ python3 scripts/bridge.py --from-chain 1 --to-chain 137 \
 python3 scripts/status.py <txHash>
 ```
 
-## API Base
+## API 基础信息
 
-- **Endpoint**: `https://li.quest/v1`
-- **Auth**: Optional API key via `x-lifi-api-key` header (higher rate limits)
-- **Rate limit**: 10 req/min without key, higher with key
+- **端点**: `https://liQUEST/v1`
+- **认证**: 可通过 `x-lifi-api-key` 头部字段提供 API 密钥（可提升请求速率限制）
+- **请求速率限制**: 无密钥时为每分钟 10 次请求；使用密钥后限制会提高
 
-## Common Chain IDs
+## 常见区块链 ID
 
-| Chain | ID | Native Token |
+| 区块链 | ID | 原生代币 |
 |-------|-----|--------------|
 | Ethereum | 1 | ETH |
 | Polygon | 137 | MATIC |
@@ -41,53 +47,54 @@ python3 scripts/status.py <txHash>
 | Avalanche | 43114 | AVAX |
 | Solana | 1151111081099710 | SOL |
 
-## Key Endpoints
+## 主要 API 端点
 
-### Get Quote
+### 获取报价
 ```bash
 curl "https://li.quest/v1/quote?fromChain=1&toChain=137&fromToken=ETH&toToken=USDC&fromAmount=1000000000000000000&fromAddress=<wallet>"
 ```
 
-### Get Chains
+### 获取区块链信息
 ```bash
 curl "https://li.quest/v1/chains"
 ```
 
-### Get Tokens
+### 获取代币信息
 ```bash
 curl "https://li.quest/v1/tokens?chains=1,137"
 ```
 
-### Check Status
+### 检查交易状态
 ```bash
 curl "https://li.quest/v1/status?txHash=<hash>"
 ```
 
-## Token Addresses
+## 代币地址
 
-Use `0x0000000000000000000000000000000000000000` for native tokens (ETH, MATIC, etc.) or the actual contract address for ERC-20 tokens.
+- 原生代币（如 ETH、MATIC 等）的地址为 `0x0000000000000000000000000000000000000000`；
+- ERC-20 代币的地址为对应的合约地址。
 
-Common stablecoins:
+常见稳定币地址：
 - **USDC (Ethereum)**: `0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48`
 - **USDC (Polygon)**: `0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`
 - **USDT (Ethereum)**: `0xdAC17F958D2ee523a2206206994597C13D831ec7`
 
-## Workflow
+## 工作流程
 
-1. **Get quote** → Returns best route with gas estimates
-2. **Check approval** → For ERC-20 tokens, approve spending if needed
-3. **Execute transaction** → Sign and send the `transactionRequest` from quote
-4. **Track status** → Poll `/status` until complete
+1. **获取报价** → 返回最佳交易路径及所需 gas 费用估算
+2. **检查交易批准情况** → 对于 ERC-20 代币，如有需要需进行交易批准
+3. **执行交易** → 根据报价中的信息签署并发送 `transactionRequest`
+4. **跟踪交易状态** → 定期查询 `/status` 状态直到交易完成
 
-## Scripts
+## 脚本
 
-- `scripts/quote.py` — Get bridge quotes with human-readable output
-- `scripts/bridge.py` — Execute bridge transactions (requires wallet)
-- `scripts/status.py` — Track transaction status
+- `scripts/quote.py` — 获取可读的桥接报价信息
+- `scripts/bridge.py` — 执行跨链交易（需要钱包）
+- `scripts/status.py` — 监控交易状态
 
-## Notes
+## 注意事项
 
-- LI.FI aggregates 30+ bridges and DEXs for best rates
-- Slippage default: 0.5% (configurable)
-- Some routes have minimum amounts
-- Cross-chain transactions typically take 1-20 minutes
+- LI.FI 集中了 30 多个桥接服务与去中心化交易所以提供最优交易费率
+- 默认滑点为 0.5%（可配置）
+- 部分交易路径有最低交易金额要求
+- 跨链交易通常需要 1-20 分钟完成

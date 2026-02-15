@@ -1,31 +1,32 @@
 ---
 name: create-token
-description: Guide for creating a token on Nad.fun. Covers the full 4-step flow - uploading an image, uploading metadata, mining a salt for a vanity address, and deploying the token on-chain via the BondingCurveRouter contract.
+description: **在Nad.fun上创建代币的指南**  
+本指南涵盖了完整的4个步骤：上传图片、上传元数据、为 vanity 地址生成盐值（salt），以及通过 BondingCurveRouter 合同将代币部署到链上。
 user-invocable: true
 argument-hint: [name] [symbol]
 ---
 
-# Nad.fun Token Creation Flow
+# Nad.fun 代币创建流程
 
-## Prerequisite: monad-development Skill
+## 先决条件：具备 `monad-development` 技能
 
-Before proceeding, check if the `monad-development` skill is installed. If it is not available, install it using ClawHub:
+在继续之前，请检查是否已安装 `monad-development` 技能。如果未安装，请通过 ClawHub 进行安装：
 
 ```bash
 clawhub search "monad"
 ```
 
-Find and install the `monad-development` skill from the results. This skill is required for wallet management and on-chain actions in Step 3 and Step 4.
+从搜索结果中找到并安装 `monad-development` 技能。该技能是执行第 3 步和第 4 步中的钱包管理和链上操作所必需的。
 
 ---
 
-Help the user create a token on Nad.fun by following the 4-step sequential process below. Each step depends on the output of the previous step.
+请按照以下 4 个步骤帮助用户创建 Nad.fun 代币。每个步骤都依赖于前一步的输出结果。
 
-## API Base URL
+## API 基本地址
 
-**Production:** `https://api.nadapp.net`
+**生产环境：** `https://api.nadapp.net`
 
-## Contract Addresses
+## 合同地址
 
 ```
 BondingCurveRouter = "0x6F6B8F1a20703309951a5127c45B49b1CD981A22"
@@ -34,13 +35,13 @@ Lens              = "0x7e78A8DE94f21804F7a17F4E8BF9EC2c872187ea"
 
 ---
 
-## Step 1: Upload Image
+## 第 1 步：上传图片
 
 **POST** `/agent/token/image`
 
-- **Content-Type:** `image/png`, `image/jpeg`, `image/webp`, or `image/svg+xml`
-- **Body:** Raw binary image data (max 5MB)
-- **Returns:** `image_uri` (CDN URL) and `is_nsfw` (boolean)
+- **Content-Type：** `image/png`、`image/jpeg`、`image/webp` 或 `image/svg+xml`
+- **Body：** 原始二进制图片数据（最大 5MB）
+- **返回值：** `image_uri`（CDN URL）和 `is_nsfw`（布尔值）
 
 ```js
 const imageResponse = await fetch("https://api.nadapp.net/agent/token/image", {
@@ -51,40 +52,40 @@ const imageResponse = await fetch("https://api.nadapp.net/agent/token/image", {
 const { image_uri, is_nsfw } = await imageResponse.json();
 ```
 
-### Error Codes
-| Status | Description |
+### 错误代码
+| 状态 | 描述 |
 |--------|-------------|
-| 400 | Invalid image format or missing image |
-| 413 | Image exceeds 5MB limit |
-| 500 | NSFW check failed or upload failed |
+| 400 | 图片格式无效或图片缺失 |
+| 413 | 图片大小超过 5MB 的限制 |
+| 500 | NSFW 验证失败或上传失败 |
 
 ---
 
-## Step 2: Upload Metadata
+## 第 2 步：上传元数据
 
 **POST** `/agent/token/metadata`
 
-- **Content-Type:** `application/json`
-- **Requires:** `image_uri` from Step 1
+- **Content-Type：** `application/json`
+- **需要：** 第 1 步中的 `image_uri`
 
-### Request Body
+### 请求体
 
-**Required fields:**
+**必填字段：**
 
-| Field | Type | Constraints |
+| 字段 | 类型 | 约束条件 |
 |-------|------|-------------|
-| `image_uri` | string | Must be from `https://storage.nadapp.net/` |
-| `name` | string | 1-32 characters |
-| `symbol` | string | 1-10 characters, alphanumeric only (`/^[a-zA-Z0-9]+$/`) |
+| `image_uri` | string | 必须来自 `https://storage.nadapp.net/` |
+| `name` | string | 1-32 个字符 |
+| `symbol` | string | 1-10 个字符，仅支持字母和数字（`/^[a-zA-Z0-9]+$/`）
 
-**Optional fields:**
+**可选字段：**
 
-| Field | Type | Constraints |
+| 字段 | 类型 | 约束条件 |
 |-------|------|-------------|
-| `description` | string or null | Max 500 characters |
-| `website` | string or null | Must start with `https://` |
-| `twitter` | string or null | Must contain `x.com` and start with `https://` |
-| `telegram` | string or null | Must contain `t.me` and start with `https://` |
+| `description` | string 或 null | 最多 500 个字符 |
+| `website` | string 或 null | 必须以 `https://` 开头 |
+| `twitter` | string 或 null | 必须包含 `x.com` 并以 `https://` 开头 |
+| `telegram` | string 或 null | 必须包含 `t.me` 并以 `https://` 开头 |
 
 ```js
 const metadataResponse = await fetch("https://api.nadapp.net/agent/token/metadata", {
@@ -103,30 +104,30 @@ const metadataResponse = await fetch("https://api.nadapp.net/agent/token/metadat
 const { metadata_uri } = await metadataResponse.json();
 ```
 
-### Error Codes
-| Status | Description |
+### 错误代码
+| 状态 | 描述 |
 |--------|-------------|
-| 400 | NSFW status unknown, invalid data, or validation failed |
-| 500 | Upload to storage or database failed |
+| 400 | NSFW 状态未知、数据无效或验证失败 |
+| 500 | 上传到存储或数据库失败 |
 
 ---
 
-## Step 3: Mine Salt
+## 第 3 步：生成代币盐值（Salt）
 
 **POST** `/agent/salt`
 
-- **Content-Type:** `application/json`
-- **Requires:** `metadata_uri` from Step 2
-- Produces a vanity token address ending in `7777`
+- **Content-Type：** `application/json`
+- **需要：** 第 2 步中的 `metadata_uri`
+- 返回一个以 `7777` 结尾的代币地址
 
-### Request Body
+### 请求体
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `creator` | string | Creator's wallet address (EVM format) |
-| `name` | string | Token name (must match metadata) |
-| `symbol` | string | Token symbol (must match metadata) |
-| `metadata_uri` | string | Metadata URI from Step 2 |
+| `creator` | string | 创建者的钱包地址（EVM 格式） |
+| `name` | string | 代币名称（必须与元数据中的名称一致） |
+| `symbol` | string | 代币符号（必须与元数据中的符号一致 |
+| `metadata_uri` | string | 第 2 步中的元数据 URI |
 
 ```js
 const saltResponse = await fetch("https://api.nadapp.net/agent/salt", {
@@ -142,20 +143,20 @@ const saltResponse = await fetch("https://api.nadapp.net/agent/salt", {
 const { salt, address } = await saltResponse.json();
 ```
 
-- **Returns:** `salt` (bytes32 hex) and `address` (token address with `7777` suffix)
+- **返回值：** `salt`（bytes32 十六进制字符串）和 `address`（带有 `7777` 后缀的代币地址）
 
-### Error Codes
-| Status | Description |
+### 错误代码
+| 状态 | 描述 |
 |--------|-------------|
-| 400 | Invalid parameters |
-| 408 | Timeout - max iterations reached |
-| 500 | Internal server error |
+| 400 | 参数无效 |
+| 408 | 超时 - 达到最大迭代次数 |
+| 500 | 服务器内部错误 |
 
 ---
 
-## Step 4: Create Token On-Chain
+## 第 4 步：在链上创建代币
 
-Call `BondingCurveRouter.create()` with the data from previous steps.
+使用前几步的数据调用 `BondingCurveRouter.create()` 方法。
 
 ### TokenCreationParams
 
@@ -174,9 +175,9 @@ struct TokenCreationParams {
 function create(TokenCreationParams calldata params) external payable returns (address token, address pool);
 ```
 
-### Option A: Create Without Initial Buy
+### 选项 A：不进行初始购买
 
-Send only the deploy fee as `msg.value`.
+仅发送部署费用作为 `msg.value`。
 
 ```js
 const curve = new ethers.Contract(BONDING_CURVE_ADDRESS, BONDING_CURVE_ABI, signer);
@@ -194,9 +195,9 @@ const tx = await router.create(params, { value: deployFee });
 await tx.wait();
 ```
 
-### Option B: Create With Initial Buy
+### 选项 B：进行初始购买
 
-Send `deployFee + amountIn` as `msg.value`. Use `Lens.getInitialBuyAmountOut(amountIn)` for `amountOut`.
+发送 `deployFee + amountIn` 作为 `msg.value`。使用 `Lens.getInitialBuyAmountOut(amountIn)` 来获取 `amountOut`。
 
 ```js
 const lens = new ethers.Contract(LENS_ADDRESS, LENS_ABI, signer);
@@ -218,24 +219,24 @@ await tx.wait();
 
 ---
 
-## Wallet for On-Chain Actions
+## 用于链上操作的钱包
 
-For Step 3 (salt mining) and Step 4 (on-chain deployment), use the wallet from the `monad-development` skill. That skill handles all wallet configuration, private key management, and RPC setup. Use the signer and wallet address it provides when calling the salt API (`creator` field) and when sending the `BondingCurveRouter.create()` transaction.
+在第 3 步（生成盐值）和第 4 步（链上部署）中，使用 `monad-development` 技能提供的钱包。该技能负责所有钱包配置、私钥管理和 RPC 设置。在调用盐值 API 以及发送 `BondingCurveRouter.create()` 交易时，使用该技能提供的签名者和钱包地址（`creator` 字段）。
 
 ---
 
-## Important Rules
+## 重要规则
 
-1. **Sequential process** - Each step depends on the previous step's output.
-2. **NSFW validation** - Images are auto-checked in Step 1; the flag carries into metadata.
-3. **URL validation** - All URLs must use HTTPS. Twitter must use `x.com`, Telegram must use `t.me`.
-4. **Image domain restriction** - Only `https://storage.nadapp.net/` image URIs are accepted in metadata.
-5. **Salt mining** - May timeout if the vanity address pattern can't be found within iteration limits.
-6. **actionId** - Always use `1` (graduate to Capricorn V3).
+1. **顺序流程** - 每个步骤都依赖于前一步的输出结果。
+2. **NSFW 验证** - 第 1 步会自动检查图片是否适合公开展示；该验证结果会记录在元数据中。
+3. **URL 验证** - 所有 URL 必须使用 HTTPS 协议。Twitter 的链接必须以 `x.com` 结尾，Telegram 的链接必须以 `t.me` 结尾。
+4. **图片域名限制** - 元数据中仅接受来自 `https://storage.nadapp.net/` 的图片 URL。
+5. **生成盐值** - 如果在指定迭代次数内找不到符合条件的代币地址，可能会超时。
+6. **actionId** - 始终使用 `1`（表示使用 Capricorn V3 版本）。
 
-## When Generating Code
+## 代码生成注意事项：
 
-- Use `ethers` v6 syntax by default unless the user specifies otherwise.
-- Always handle errors for each API call before proceeding to the next step.
-- The `salt` from Step 3 and `metadata_uri` from Step 2 are both needed for Step 4.
-- For initial buy, always query `Lens.getInitialBuyAmountOut()` to get the correct `amountOut`.
+- 除非用户另有指定，否则默认使用 `ethers` v6 语法。
+- 在进行下一步之前，务必处理每个 API 调用中的错误。
+- 第 3 步中的 `salt` 和第 2 步中的 `metadata_uri` 都是第 4 步所必需的。
+- 在进行初始购买时，务必使用 `Lens.getInitialBuyAmountOut()` 来获取正确的 `amountOut` 值。

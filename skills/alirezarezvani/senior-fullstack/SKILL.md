@@ -1,50 +1,50 @@
 ---
 name: senior-fullstack
-description: Fullstack development toolkit with project scaffolding for Next.js/FastAPI/MERN/Django stacks and code quality analysis. Use when scaffolding new projects, analyzing codebase quality, or implementing fullstack architecture patterns.
+description: 这是一个全栈开发工具包，提供了针对 Next.js、FastAPI、MERN（MongoDB、Express、React）以及 Django 等技术栈的项目框架，并具备代码质量分析功能。适用于新项目的搭建、代码库质量的评估，以及全栈架构模式的实现。
 ---
 
-# Senior Fullstack
+# 高级全栈开发技能
 
-Fullstack development skill with project scaffolding and code quality analysis tools.
-
----
-
-## Table of Contents
-
-- [Trigger Phrases](#trigger-phrases)
-- [Tools](#tools)
-- [Workflows](#workflows)
-- [Reference Guides](#reference-guides)
+具备使用项目脚手架和代码质量分析工具进行全栈开发的技能。
 
 ---
 
-## Trigger Phrases
+## 目录
 
-Use this skill when you hear:
-- "scaffold a new project"
-- "create a Next.js app"
-- "set up FastAPI with React"
-- "analyze code quality"
-- "check for security issues in codebase"
-- "what stack should I use"
-- "set up a fullstack project"
-- "generate project boilerplate"
+- [常用术语](#常用术语)
+- [工具](#工具)
+- [工作流程](#工作流程)
+- [参考指南](#参考指南)
 
 ---
 
-## Tools
+## 常用术语
 
-### Project Scaffolder
+当听到以下需求时，请使用此技能：
+- “搭建一个新的项目”
+- “创建一个 Next.js 应用”
+- “使用 React 配置 FastAPI”
+- “分析代码质量”
+- “检查代码库中的安全问题”
+- “应该使用哪种技术栈”
+- “设置一个全栈项目”
+- “生成项目模板”
 
-Generates fullstack project structures with boilerplate code.
+---
 
-**Supported Templates:**
-- `nextjs` - Next.js 14+ with App Router, TypeScript, Tailwind CSS
-- `fastapi-react` - FastAPI backend + React frontend + PostgreSQL
-- `mern` - MongoDB, Express, React, Node.js with TypeScript
-- `django-react` - Django REST Framework + React frontend
+## 工具
 
-**Usage:**
+### 项目脚手架
+
+用于生成包含模板代码的全栈项目结构。
+
+**支持的模板：**
+- `nextjs` - 支持 Next.js 14 及更高版本，包含 App Router、TypeScript 和 Tailwind CSS
+- `fastapi-react` - FastAPI 后端 + React 前端 + PostgreSQL
+- `mern` - 使用 MongoDB、Express、React 和 TypeScript 的全栈框架
+- `django-react` - Django REST Framework + React 前端
+
+**使用方法：**
 
 ```bash
 # List available templates
@@ -69,38 +69,37 @@ python scripts/project_scaffolder.py nextjs my-app --output ./projects
 python scripts/project_scaffolder.py nextjs my-app --json
 ```
 
-**Parameters:**
+**参数：**
+| 参数 | 说明 |
+|---------|--------|
+| `template` | 模板名称（nextjs, fastapi-react, mern, django-react） |
+| `project_name` | 新项目目录的名称 |
+| `--output, -o` | 输出目录（默认：当前目录） |
+| `--list-templates, -l` | 列出所有可用模板 |
+| `--json` | 以 JSON 格式输出 |
 
-| Parameter | Description |
-|-----------|-------------|
-| `template` | Template name (nextjs, fastapi-react, mern, django-react) |
-| `project_name` | Name for the new project directory |
-| `--output, -o` | Output directory (default: current directory) |
-| `--list-templates, -l` | List all available templates |
-| `--json` | Output in JSON format |
-
-**Output includes:**
-- Project structure with all necessary files
-- Package configurations (package.json, requirements.txt)
-- TypeScript configuration
-- Docker and docker-compose setup
-- Environment file templates
-- Next steps for running the project
+**输出内容：**
+- 包含所有必要文件的项目结构 |
+- 包配置（package.json, requirements.txt） |
+- TypeScript 配置 |
+- Docker 和 docker-compose 设置 |
+- 环境文件模板 |
+- 运行项目的下一步指导
 
 ---
 
-### Code Quality Analyzer
+### 代码质量分析工具
 
-Analyzes fullstack codebases for quality issues.
+用于分析全栈代码库中的质量问题。
 
-**Analysis Categories:**
-- Security vulnerabilities (hardcoded secrets, injection risks)
-- Code complexity metrics (cyclomatic complexity, nesting depth)
-- Dependency health (outdated packages, known CVEs)
-- Test coverage estimation
-- Documentation quality
+**分析类别：**
+- 安全漏洞（硬编码的密钥、注入风险） |
+- 代码复杂性指标（圈复杂度、嵌套深度） |
+- 依赖项健康状况（过时的包、已知的 CVE） |
+- 测试覆盖率估算 |
+- 文档质量
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Analyze current directory
@@ -119,25 +118,24 @@ python scripts/code_quality_analyzer.py . --json
 python scripts/code_quality_analyzer.py . --output report.json
 ```
 
-**Parameters:**
+**参数：**
+| 参数 | 说明 |
+|---------|--------|
+| `project_path` | 项目目录路径（默认：当前目录） |
+| `--verbose, -v` | 显示详细分析结果 |
+| `--json` | 以 JSON 格式输出 |
+| `--output, -o` | 将报告写入文件 |
 
-| Parameter | Description |
-|-----------|-------------|
-| `project_path` | Path to project directory (default: current directory) |
-| `--verbose, -v` | Show detailed findings |
-| `--json` | Output in JSON format |
-| `--output, -o` | Write report to file |
+**输出内容：**
+- 总分（0-100 分，附带等级评定） |
+- 按严重程度划分的安全问题（关键、高、中、低） |
+- 复杂度较高的文件 |
+- 存在 CVE 的脆弱依赖项 |
+- 测试覆盖率估算 |
+- 文档完整性 |
+- 优先级建议
 
-**Output includes:**
-- Overall score (0-100) with letter grade
-- Security issues by severity (critical, high, medium, low)
-- High complexity files
-- Vulnerable dependencies with CVE references
-- Test coverage estimate
-- Documentation completeness
-- Prioritized recommendations
-
-**Sample Output:**
+**示例输出：**
 
 ```
 ============================================================
@@ -165,14 +163,14 @@ Total Lines: 12,500
 
 ---
 
-## Workflows
+## 工作流程
 
-### Workflow 1: Start New Project
+### 工作流程 1：启动新项目
 
-1. Choose appropriate stack based on requirements
-2. Scaffold project structure
-3. Run initial quality check
-4. Set up development environment
+1. 根据需求选择合适的技术栈 |
+2. 搭建项目结构 |
+3. 进行初步的质量检查 |
+4. 设置开发环境 |
 
 ```bash
 # 1. Scaffold project
@@ -192,12 +190,12 @@ python ../scripts/code_quality_analyzer.py .
 npm run dev
 ```
 
-### Workflow 2: Audit Existing Codebase
+### 工作流程 2：审计现有代码库
 
-1. Run code quality analysis
-2. Review security findings
-3. Address critical issues first
-4. Plan improvements
+1. 运行代码质量分析 |
+2. 查看安全问题 |
+3. 先解决关键问题 |
+4. 制定改进计划 |
 
 ```bash
 # 1. Full analysis
@@ -210,72 +208,72 @@ python scripts/code_quality_analyzer.py /path/to/project --json --output audit.j
 # 4. Create tickets for P1/P2 issues
 ```
 
-### Workflow 3: Stack Selection
+### 工作流程 3：技术栈选择
 
-Use the tech stack guide to evaluate options:
+使用技术栈指南来评估不同的选项：
 
-1. **SEO Required?** → Next.js with SSR
-2. **API-heavy backend?** → Separate FastAPI or NestJS
-3. **Real-time features?** → Add WebSocket layer
-4. **Team expertise** → Match stack to team skills
+1. **需要 SEO 吗？** → 使用支持服务器端渲染（SSR）的 Next.js |
+2. **后端需要处理大量 API 吗？** → 选择 FastAPI 或 NestJS |
+3. **需要实时功能吗？** → 添加 WebSocket 层 |
+4. **团队技能如何？** → 选择与团队技能相匹配的技术栈 |
 
-See `references/tech_stack_guide.md` for detailed comparison.
-
----
-
-## Reference Guides
-
-### Architecture Patterns (`references/architecture_patterns.md`)
-
-- Frontend component architecture (Atomic Design, Container/Presentational)
-- Backend patterns (Clean Architecture, Repository Pattern)
-- API design (REST conventions, GraphQL schema design)
-- Database patterns (connection pooling, transactions, read replicas)
-- Caching strategies (cache-aside, HTTP cache headers)
-- Authentication architecture (JWT + refresh tokens, sessions)
-
-### Development Workflows (`references/development_workflows.md`)
-
-- Local development setup (Docker Compose, environment config)
-- Git workflows (trunk-based, conventional commits)
-- CI/CD pipelines (GitHub Actions examples)
-- Testing strategies (unit, integration, E2E)
-- Code review process (PR templates, checklists)
-- Deployment strategies (blue-green, canary, feature flags)
-- Monitoring and observability (logging, metrics, health checks)
-
-### Tech Stack Guide (`references/tech_stack_guide.md`)
-
-- Frontend frameworks comparison (Next.js, React+Vite, Vue)
-- Backend frameworks (Express, Fastify, NestJS, FastAPI, Django)
-- Database selection (PostgreSQL, MongoDB, Redis)
-- ORMs (Prisma, Drizzle, SQLAlchemy)
-- Authentication solutions (Auth.js, Clerk, custom JWT)
-- Deployment platforms (Vercel, Railway, AWS)
-- Stack recommendations by use case (MVP, SaaS, Enterprise)
+详细比较请参阅 `references/tech_stack_guide.md`。
 
 ---
 
-## Quick Reference
+## 参考指南
 
-### Stack Decision Matrix
+### 架构模式（`references/architecture_patterns.md`）
 
-| Requirement | Recommendation |
-|-------------|---------------|
-| SEO-critical site | Next.js with SSR |
-| Internal dashboard | React + Vite |
-| API-first backend | FastAPI or Fastify |
-| Enterprise scale | NestJS + PostgreSQL |
-| Rapid prototype | Next.js API routes |
-| Document-heavy data | MongoDB |
-| Complex queries | PostgreSQL |
+- 前端组件架构（原子设计、容器/表现层设计）
+- 后端架构模式（清晰架构、仓库模式）
+- API 设计（REST 规范、GraphQL 模式设计）
+- 数据库模式（连接池、事务、读复制）
+- 缓存策略（缓存策略、HTTP 缓存头）
+- 认证架构（JWT + 刷新令牌、会话）
 
-### Common Issues
+### 开发工作流程（`references/development_workflows.md`）
 
-| Issue | Solution |
-|-------|----------|
-| N+1 queries | Use DataLoader or eager loading |
-| Slow builds | Check bundle size, lazy load |
-| Auth complexity | Use Auth.js or Clerk |
-| Type errors | Enable strict mode in tsconfig |
-| CORS issues | Configure middleware properly |
+- 本地开发环境设置（Docker Compose、环境配置）
+- Git 工作流程（基于主分支的提交）
+- CI/CD 流程（GitHub Actions 示例）
+- 测试策略（单元测试、集成测试、端到端测试）
+- 代码审查流程（PR 模板、检查清单）
+- 部署策略（蓝绿部署、金丝雀部署、功能开关）
+- 监控与可观测性（日志记录、指标监控、健康检查）
+
+### 技术栈指南（`references/tech_stack_guide.md`）
+
+- 前端框架比较（Next.js、React+Vite、Vue）
+- 后端框架（Express、Fastify、NestJS、FastAPI、Django）
+- 数据库选择（PostgreSQL、MongoDB、Redis）
+- 对象关系映射（ORM）工具（Prisma、Drizzle、SQLAlchemy）
+- 认证解决方案（Auth.js、Clerk、自定义 JWT）
+- 部署平台（Vercel、Railway、AWS）
+- 根据使用场景推荐的技术栈（MVP、SaaS、企业级应用）
+
+---
+
+## 快速参考
+
+### 技术栈决策矩阵
+
+| 需求 | 推荐技术栈 |
+|---------|-------------------|
+| 需要 SEO 支持的网站 | 使用支持服务器端渲染的 Next.js |
+| 内部仪表盘 | 使用 React + Vite |
+| 以 API 为主的后端 | FastAPI 或 Fastify |
+| 企业级应用 | NestJS + PostgreSQL |
+| 快速原型开发 | Next.js + API 路由 |
+| 需要大量文档的数据存储 | MongoDB |
+| 复杂查询 | 使用 PostgreSQL |
+
+### 常见问题及解决方案
+
+| 问题 | 解决方案 |
+|------|-------------------|
+| 多次查询 | 使用 DataLoader 或懒加载机制 |
+| 构建速度慢 | 检查打包大小、采用懒加载 |
+| 认证逻辑复杂 | 使用 Auth.js 或 Clerk |
+| 类型错误 | 在 tsconfig 中启用严格模式 |
+| CORS 问题 | 正确配置中间件 |

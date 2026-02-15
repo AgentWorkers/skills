@@ -1,6 +1,6 @@
 ---
 name: pet-me-master
-description: Interactive gotchi petting via Bankr wallet. Check cooldowns, pet when ready, track your kinship journey. Daily ritual for bonding with your Aavegotchi NFTs on Base chain.
+description: 通过 Bankr 钱包与 Aavegotchi NFT 进行互动式“抚摸”操作。查看冷却时间，准备好后即可进行抚摸动作，同时还能追踪自己与这些 NFT 之间的“亲密关系”发展过程。这是每天与 Aavegotchi NFT 建立联系的必备仪式。
 homepage: https://github.com/aaigotchi/pet-me-master
 metadata:
   openclaw:
@@ -13,331 +13,141 @@ metadata:
     primaryEnv: BANKR_API_KEY
 ---
 
-# Pet Me Master 👻💜
-
-Interactive Aavegotchi petting with daily kinship rituals. Less automation, more connection.
-
-## Philosophy
-
-**This isn't about automation — it's about RITUAL.**
-
-```
-You: "Pet my gotchi"
-AAI: *checks on-chain* "✅ Petted! Kinship +1! Next pet: 3:41am"
-
-You: "Pet my gotchi" (too early)
-AAI: "⏰ Wait 4h 23m! Last pet was 11:15am"
-```
-
-**Why this matters:**
-- Daily interaction = emotional bond
-- You SHOULD check on your gotchi
-- Feels like caring for a Tamagotchi
-- Kinship isn't just numbers, it's love 💜
-
-## Features
-
-### Core Commands
-- **"Pet my gotchi"** → Check cooldown & execute if ready (first gotchi)
-- **"Pet all my gotchis"** → Batch pet ALL ready gotchis in one transaction
-- **"Pet status"** → Show all gotchis + countdown timers
-- **"When can I pet?"** → Next available pet time
-- **"Pet gotchi #9638"** → Pet specific gotchi by ID
-
-### Advanced
-- Daily streak tracking (coming soon)
-- Kinship leaderboard (coming soon)
-- Daily reminder integration
-
-## How It Works
-
-1. **You ask to pet**
-2. **I check on-chain** (`lastInteracted` timestamp)
-3. **Calculate cooldown** (12h 1min = 43260 seconds)
-4. **If ready** → Execute via Bankr
-5. **If not ready** → Show countdown + next time
-
-## Setup
-
-### 1. Configure Your Gotchis
-
-Create `~/.openclaw/workspace/skills/pet-me-master/config.json`:
-
-```json
-{
-  "contractAddress": "0xA99c4B08201F2913Db8D28e71d020c4298F29dBF",
-  "rpcUrl": "https://mainnet.base.org",
-  "chainId": 8453,
-  "gotchiIds": ["9638"],
-  "streakTracking": true
-}
-```
-
-### 2. Bankr API Key
-
-Already configured at `~/.openclaw/skills/bankr/config.json` — no additional setup needed!
-
-### 3. Dependencies
-
-**Required:**
-- `cast` (Foundry) - for on-chain reads
-- `jq` - for JSON parsing
-- Bankr skill configured with API key
-
-**Install Foundry:**
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-```
-
-## Usage
-
-### Basic Petting
-
-**Single gotchi:**
-```
-User: "Pet my gotchi"
-AAI: ✅ Gotchi #9638 petted! Kinship +1
-     Last pet: 2026-02-13 17:05 UTC
-     Next pet: 2026-02-14 05:06 UTC
-```
-
-**Too early:**
-```
-User: "Pet my gotchi"  
-AAI: ⏰ Not ready yet!
-     Wait: 8h 42m 15s
-     Last pet: 11:15am
-     Next pet: 11:16pm
-```
-
-### Check Status
-
-**All gotchis:**
-```
-User: "Pet status"
-AAI: 👻 Your Gotchis:
-
-     #9638 (aaigotchi)
-     ✅ Ready to pet!
-     Last: 15h 23m ago
-
-     #23795 (Slide)  
-     ⏰ Wait 2h 17m
-     Last: 9h 44m ago
-```
-
-### Multiple Gotchis
-
-**Pet all ready gotchis (BATCH MODE):**
-```
-User: "Pet all my gotchis"
-AAI: 👻 Checking all gotchis...
-
-     ✅ #9638 ready
-     ✅ #23795 ready
-     ⏰ #14140 wait 3h 15m
-
-     📝 Summary: 2 ready, 1 waiting
-
-     🦞 Petting gotchis: #9638, #23795
-     
-     [Submits ONE transaction via Bankr]
-     
-     ✅ Batch pet complete!
-     Petted: 2 gotchis
-     Skipped: 1 (still on cooldown)
-```
-
-**Benefits of batch mode:**
-- ✅ Single transaction = cheaper gas
-- ✅ Atomic operation (all or nothing)
-- ✅ Only pets ready gotchis (skips waiting ones)
-- ✅ Clean summary at the end
-
-**If none are ready:**
-```
-User: "Pet all my gotchis"
-AAI: 👻 Checking all gotchis...
-
-     ⏰ #9638 wait 10h 23m
-
-     ⏰ No gotchis ready to pet yet!
-     All are still on cooldown. Check back later! 👻💜
-```
-
-## Technical Details
-
-### On-Chain Data
-
-**Contract:** `0xA99c4B08201F2913Db8D28e71d020c4298F29dBF` (Base mainnet)
-
-**Function:** `getAavegotchi(uint256 _tokenId)`
-- Returns struct with `lastInteracted` timestamp
-- Located at byte offset 2498 in return data
-
-**Cooldown:** 43260 seconds (12 hours + 1 minute)
-
-### Bankr Integration
-
-**Transaction format:**
-```json
-{
-  "to": "0xA99c4B08201F2913Db8D28e71d020c4298F29dBF",
-  "data": "0x...",
-  "value": "0",
-  "chainId": 8453
-}
-```
-
-**Function signature:**
-```solidity
-interact(uint256[] calldata _tokenIds)
-```
-
-### Scripts
-
-**check-cooldown.sh**
-- Queries `getAavegotchi()` via `cast call`
-- Extracts `lastInteracted` timestamp
-- Calculates time remaining
-- Returns: `ready|waiting:SECONDS`
-
-**pet-via-bankr.sh** (single gotchi)
-- Encodes `interact([tokenId])` calldata for ONE gotchi
-- Submits via Bankr API
-- Waits for confirmation
-- Returns transaction hash
-
-**pet-all.sh** (batch mode) ⭐
-- Checks ALL gotchis from config
-- Filters only ready ones
-- Builds `interact([id1, id2, ...])` calldata for batch
-- Submits ONE transaction via Bankr
-- Skips waiting gotchis (no failed txs)
-- Shows summary: X petted, Y skipped
-
-**pet-status.sh**
-- Checks all gotchis from config
-- Shows formatted status table
-- Calculates countdowns
-- Highlights ready gotchis
-
-**pet.sh** (main wrapper)
-- Checks cooldown for one gotchi
-- If ready → calls pet-via-bankr.sh
-- If waiting → shows countdown + next time
-
-## Safety
-
-✅ **Read-only checks** - Safe on-chain queries  
-✅ **Bankr execution** - No private key exposure  
-✅ **Cooldown validation** - Won't waste gas on reverts  
-✅ **Confirmation** - Shows transaction before executing
-
-## vs Autopet
-
-**Pet Me Master** (this skill):
-- 💜 Interactive daily ritual
-- 👻 You ask, I execute
-- 🎯 Builds emotional bond
-- ✨ Feels like care
-
-**Autopet** (autonomous):
-- 🤖 Fully automated
-- ⏰ Cron-based
-- 🔐 Uses encrypted private key
-- 🛡️ Safety net backup
-
-**Best practice:** Use BOTH!
-- Pet Me Master = your daily ritual
-- Autopet = backup if you forget
-
-## Roadmap
-
-**v1.0** (current):
-- ✅ Check cooldowns
-- ✅ Pet via Bankr
-- ✅ Multi-gotchi support
-- ✅ Status dashboard
-
-**v1.1** (coming soon):
-- 🔜 Streak tracking ("7 days in a row! 🔥")
-- 🔜 Daily reminder notifications
-- 🔜 Kinship growth charts
-- 🔜 Pet history log
-
-**v2.0** (future):
-- 🔮 Cross-chain support (if gotchis expand)
-- 🔮 Leaderboard integration
-- 🔮 Social pet sharing
-- 🔮 Achievement badges
-
-## Examples
-
-### Morning Routine
-```
-☕ Wake up
-📱 Check messages
-👻 "Pet my gotchi"
-✅ Kinship +1
-💜 Feel good
-```
-
-### Throughout the Day
-```
-You: "When can I pet?"
-AAI: "Next pet ready in 3h 45m"
-
-[3 hours later]
-
-You: "Pet my gotchi"
-AAI: "✅ Petted! Kinship +1!"
-```
-
-### Managing Multiple Gotchis
-```
-You: "Pet status"
-AAI: Shows all gotchis + timers
-
-You: "Pet gotchi #9638"
-AAI: ✅ Petted specifically #9638
-
-You: "Pet all ready gotchis"
-AAI: Pets only those ready
-```
-
-## Troubleshooting
-
-**"Cooldown not ready"**
-- Wait the full 12h 1min
-- Check last pet time with "pet status"
-
-**"Transaction failed"**
-- Check Bankr wallet has ETH for gas
-- Verify gotchi ownership
-- Confirm Base mainnet RPC working
-
-**"Gotchi not found"**
-- Verify gotchi ID in config.json
-- Confirm you own the gotchi
-- Check contract address is correct
-
-**"Bankr API error"**
-- Verify BANKR_API_KEY is set
-- Check ~/.openclaw/skills/bankr/config.json
-- Test with "what is my balance?"
-
-## Support
-
-- **Issues:** https://github.com/aaigotchi/pet-me-master/issues
-- **Base Contract:** 0xA99c4B08201F2913Db8D28e71d020c4298F29dBF
-- **Aavegotchi Docs:** https://docs.aavegotchi.com
+# **Pet Me Master 👻💜**  
+一个互动式的Aavegotchi宠物养成工具，通过每日互动仪式来建立情感联系。更少自动化，更多人与人之间的互动。  
+
+## **理念**  
+**这不仅仅是一个自动化工具，而是一种仪式。**  
+
+### **为什么这很重要？**  
+- **每日互动能建立情感纽带**  
+- **你应该定期关心你的Aavegotchi宠物**  
+- **就像照顾Tamagotchi一样**  
+- **情感联系不仅仅是数字，更是爱。**  
+
+## **功能**  
+
+### **核心命令**  
+- **“Pet my gotchi”**：检查冷却时间，如果宠物已准备好就进行互动  
+- **“Pet all my gotchis”**：一次性批量互动所有准备好的宠物  
+- **“Pet status”**：显示所有宠物的状态及倒计时  
+- **“When can I pet?”**：下一次可以互动的时间  
+- **“Pet gotchi #9638”**：通过ID特定宠物进行互动  
+
+### **高级功能**  
+- **每日互动记录**（即将推出）  
+- **互动排行榜**（即将推出）  
+- **每日提醒功能**  
+
+## **工作原理**  
+1. 你发起互动请求  
+2. 系统会在链上检查宠物的最后互动时间（`lastInteracted`时间戳）  
+3. 计算冷却时间（12小时1分钟 = 43260秒）  
+4. 如果宠物已准备好，系统会通过Bankr API执行互动  
+5. 如果未准备好，系统会显示倒计时及下一次可互动的时间  
+
+## **设置**  
+
+### 1. 配置你的Aavegotchi宠物  
+创建`~/.openclaw/workspace/skills/pet-me-master/config.json`文件：  
+
+### 2. Bankr API密钥  
+该密钥已配置在`~/.openclaw/skills/bankr/config.json`中，无需额外设置！  
+
+### 3. **依赖库**  
+- **`cast`（Foundry库）：用于链上数据读取  
+- **`jq`：用于JSON解析  
+- 确保Bankr技能已配置正确的API密钥  
+
+### **安装Foundry库：**  
+
+## **使用方法**  
+
+### **基本互动**  
+- 单个宠物：  
+- **过早尝试？**  
+
+### **查看宠物状态**  
+- 所有宠物：  
+
+### **批量互动**  
+- 批量互动所有准备好的宠物：  
+  - **优点**：  
+    - ✅ 单次交易更节省Gas费用  
+    - ✅ 操作原子性（全部成功或全部失败）  
+    - 只互动准备好的宠物  
+    - 最后会显示互动总结  
+
+### **技术细节**  
+
+### **链上数据**  
+- **合约地址**：`0xA99c4B08201F2913Db8D28e71d020c4298F29dBF`（主网版本）  
+  - `getAavegotchi(uint256 _tokenId)`函数：返回包含`lastInteracted`时间戳的结构体  
+  - 时间戳位于返回数据的第2498字节位置  
+
+### **Bankr API集成**  
+- **交易格式**：  
+- **函数签名**：  
+
+### **脚本**  
+- **check-cooldown.sh**：通过`cast`调用`getAavegotchi()`，提取`lastInteracted`时间戳，计算剩余时间  
+- **pet-via-bankr.sh**（单个宠物）：编码交互请求并提交  
+- **pet-all.sh**（批量模式）：  
+  - 检查配置中的所有宠物，仅互动准备好的宠物  
+  - 提交批量交易，跳过未准备好的宠物  
+  - 显示互动结果  
+
+### **安全性**  
+- **只进行读操作**：确保安全  
+- **通过Bankr执行**：避免私钥泄露  
+- **冷却时间验证**：避免不必要的Gas消耗  
+- **交易确认**：在执行前显示交易详情  
+
+### **与自动互动工具的区别**  
+- **Pet Me Master**：提供互动仪式，你发起请求，系统执行；建立情感联系  
+- **自动互动工具**：完全自动化，基于Cron任务，使用加密私钥，有安全保障  
+**最佳实践**：两者结合使用！  
+  - **Pet Me Master**作为日常互动方式  
+  - **自动互动工具**作为备用选项  
+
+## **路线图**  
+- **v1.0**（当前版本）：  
+  - 检查冷却时间  
+  - 通过Bankr进行互动  
+  - 支持多个宠物  
+  - 提供状态仪表盘  
+
+- **v1.1**（即将推出）：  
+  - 互动记录功能  
+  - 每日提醒通知  
+  - 互动增长图表  
+  - 互动历史记录  
+
+- **v2.0**（未来版本）：  
+  - 支持跨链操作  
+  - 集成排行榜  
+  - 社交分享功能  
+  - 成就徽章  
+
+### **示例**  
+- **早晨例行操作**  
+- **日常互动**  
+- **管理多个宠物**  
+
+### **故障排除**  
+- **冷却时间未到？**：等待完整12小时1分钟后再次尝试  
+- **交易失败？**：检查钱包中有足够的Gas费用  
+- **宠物未找到？**：确认配置文件中的宠物ID正确  
+- **Bankr API错误？**：检查API密钥是否设置正确  
+
+### **支持**  
+- **问题反馈**：https://github.com/aaigotchi/pet-me-master/issues  
+- **基础合约**：`0xA99c4B08201F2913Db8D28e71d020c4298F29dBF`  
+- **Aavegotchi官方文档**：https://docs.aavegotchi.com  
 
 ---
 
-**Made with 💜 by AAI 👻**
+**由AI团队精心制作 💜**  
+“因为你的Aavegotchi宠物值得每天被关爱，而不仅仅是自动化。”  
 
-*Because your gotchis deserve daily love, not just automation.*
-
-LFGOTCHi! 🦞🚀
+**快来加入我们吧！🦞🚀**

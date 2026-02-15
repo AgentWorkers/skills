@@ -1,7 +1,7 @@
 ---
 name: stitch-ui-designer
 version: 1.0.0
-description: Design, preview, and generate UI code using Google Stitch (via MCP). Helps developers choose the best UI by generating previews first, allowing iteration, and then exporting code.
+description: 使用 Google Stitch（通过 MCP）进行 UI 设计、预览和代码生成。该工具通过首先生成预览图来帮助开发者选择最佳的 UI 设计方案，支持迭代修改，最后可导出相应的 UI 代码。
 metadata:
   openclaw:
     emoji: 🎨
@@ -11,59 +11,57 @@ metadata:
 
 # Stitch UI Designer
 
-This skill allows you to design high-quality user interfaces using Google Stitch.
+此技能允许您使用 Google Stitch 设计高质量的用户界面。
 
-## Workflow
+## 工作流程
 
-Follow this process to help the user design a UI:
+请按照以下步骤帮助用户设计用户界面：
 
-1.  **Setup (First Time Only)**
-    -   Check if the `stitch` server is configured in `mcporter`.
-    -   If not, configure it: `mcporter config add stitch --command "npx" --args "-y stitch-mcp-auto"`
-    -   Ensure the user is authenticated with Google Cloud (the tool may prompt for `gcloud auth`).
+1. **设置（仅首次使用）**
+   - 检查 `mcporter` 中是否配置了 `stitch` 服务器。
+   - 如果未配置，请执行以下操作：`mcporter config add stitch --command "npx" --args "-y stitch-mcp-auto"`
+   - 确保用户已使用 Google Cloud 进行身份验证（工具可能会提示您执行 `gcloud auth`）。
 
-2.  **Generate & Preview**
-    -   Ask for a description of the interface (e.g., "Login screen for a crypto app").
-    -   Use `stitch.generate_screen_from_text` with the prompt.
-    -   **Important**: This returns a `screenId`.
-    -   Immediately fetch the preview image using `stitch.fetch_screen_image(screenId)`.
-    -   Show the image to the user. Do **not** fetch the code yet.
+2. **生成并预览**
+   - 询问用户对界面的需求（例如：“一个加密应用的登录界面”）。
+   - 使用 `stitch.generate_screen_from_text` 根据用户的描述生成界面。
+   - **重要提示**：此操作会返回一个 `screenId`。
+   - 立即使用 `stitch.fetch_screen_image(screenId)` 获取预览图像，并将其展示给用户。此时**不要**获取界面的代码。
 
-3.  **Iterate & Customize**
-    -   Ask the user for feedback on the preview.
-    -   If changes are needed, use `stitch.generate_screen_from_text` again (potentially using `stitch.extract_design_context` from the previous screen to maintain style) or just refine the prompt.
-    -   Show the new preview.
+3. **迭代与定制**
+   - 向用户征求对预览效果的反馈。
+   - 如果需要修改，再次使用 `stitch.generate_screen_from_text`（可以根据前一个界面的设计内容使用 `stitch.extract_design_context` 以保持样式一致），或直接优化提示内容。
+   - 将新的预览结果展示给用户。
 
-4.  **Export Code**
-    -   Once the user approves the design ("This looks great"), fetch the code.
-    -   Use `stitch.fetch_screen_code(screenId)`.
-    -   Present the HTML/CSS code or save it to a file as requested.
+4. **导出代码**
+   - 当用户确认设计满意后（例如：“这个设计很棒”），获取界面的代码。
+   - 使用 `stitch.fetch_screen_code(screenId)` 获取 HTML/CSS 代码，并根据用户的要求将其保存到文件中。
 
-## Tools (via mcporter)
+## 工具（通过 `mcporter` 调用）
 
-Call these using `mcporter call stitch.<tool_name> <args>`:
+使用 `mcporter call stitch.<tool_name> <args>` 来调用这些工具：
 
--   **generate_screen_from_text**
-    -   Args: `prompt` (string), `projectId` (optional, usually auto-detected by `stitch-mcp-auto`)
-    -   Returns: `screenId`, `name`, `url`
-    -   *Use this to start a design.*
+- **generate_screen_from_text**
+  - 参数：`prompt`（字符串），`projectId`（可选，通常由 `stitch-mcp-auto` 自动检测）
+  - 返回值：`screenId`、`name`、`url`
+  - **用途**：用于开始界面设计。
 
--   **fetch_screen_image**
-    -   Args: `screenId` (string)
-    -   Returns: Image data (display this to the user).
-    -   *Use this to show the preview.*
+- **fetch_screen_image**
+  - 参数：`screenId`（字符串）
+  - 返回值：界面图像数据（用于展示给用户）
+  - **用途**：用于展示预览图像。
 
--   **fetch_screen_code**
-    -   Args: `screenId` (string)
-    -   Returns: `html` (string), `css` (string), etc.
-    -   *Use this ONLY after user approval.*
+- **fetch_screen_code**
+  - 参数：`screenId`（字符串）
+  - 返回值：HTML、CSS 等代码
+  - **用途**：仅在用户确认设计后使用。
 
--   **create_project**
-    -   Args: `name` (string)
-    -   *Use if no project exists.*
+- **create_project**
+  - 参数：`name`（字符串）
+  - **用途**：在项目不存在时使用。
 
-## Tips
+## 提示
 
--   **Project Context**: `stitch-mcp-auto` tries to manage the project ID automatically. If you get errors about missing project IDs, ask the user to create or select a Google Cloud project first using `create_project` or by setting the `GOOGLE_CLOUD_PROJECT` env var.
--   **Preview First**: Always prioritize the visual preview. Generating code for a bad design wastes tokens and time.
--   **Stitch MCP Auto**: We use `stitch-mcp-auto` because it handles the complex Google auth setup more gracefully than the standard package.
+- **项目上下文**：`stitch-mcp-auto` 会尝试自动管理项目 ID。如果出现项目 ID 缺失的错误，请让用户先使用 `create_project` 创建项目，或通过设置 `GOOGLE_CLOUD_PROJECT` 环境变量来指定项目 ID。
+- **优先预览**：始终优先考虑界面的视觉效果。为糟糕的设计生成代码会浪费令牌和时间。
+- **使用 `stitch-mcp-auto`**：我们选择使用 `stitch-mcp-auto`，因为它比标准包更优雅地处理复杂的 Google 认证流程。

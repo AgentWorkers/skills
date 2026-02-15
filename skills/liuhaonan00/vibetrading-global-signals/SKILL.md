@@ -1,6 +1,6 @@
 ---
 name: vibetrading-global-signals
-description: Query AI-generated trading signals from vibetrading-datahub. Signals are produced by autonomous agents analyzing whale activity, news, funding rates, and technical indicators.
+description: 从 vibetrading-datahub 查询由 AI 生成的交易信号。这些信号是由自主代理根据鲸鱼投资者（大型交易者）的活动、新闻、资金利率以及技术指标进行分析后生成的。
 metadata:
   {
     "openclaw":
@@ -11,22 +11,22 @@ metadata:
   }
 ---
 
-# VibeTrading Global Signals
+# VibeTrading 全球交易信号
 
-Query AI-generated trading signals from vibetrading-datahub. Signals are produced by autonomous agents analyzing whale activity, news, funding rates, and technical indicators.
+从 vibetrading-datahub 查询由 AI 生成的交易信号。这些信号由自主代理根据鲸鱼投资者（whale investors）的活动、新闻、资金费率以及技术指标进行分析后生成。
 
-## Setup
+## 设置
 
-No authentication required! The API is now open and accessible without any API token.
+无需身份验证！该 API 现已开放，无需 API 令牌即可使用。
 
-Simply run the scripts directly:
+只需直接运行相应的脚本即可：
 
-## API Endpoints
+## API 端点
 
-### 1. Get Latest Signals (Multi-Symbol)
-Fetch latest signals for multiple symbols, grouped by symbol.
+### 1. 获取最新信号（多符号）
+获取多个符号的最新信号，并按符号进行分组。
 
-**Example Usage**:
+**示例用法**：
 ```bash
 # Get latest signals for BTC and ETH, all types
 curl 'https://vibetrading.dev/api/v1/signals/latest?symbols=BTC,ETH'
@@ -35,60 +35,60 @@ curl 'https://vibetrading.dev/api/v1/signals/latest?symbols=BTC,ETH'
 curl 'https://vibetrading.dev/api/v1/signals/latest?symbols=BTC,ETH,SOL&signal_types=WHALE_ACTIVITY,NEWS_ANALYSIS&hours=24'
 ```
 
-### 2. Get Signals by Symbol
-Fetch signals for a single symbol.
+### 2. 按符号获取信号
+获取单个符号的交易信号。
 
-**Example Usage**:
+**示例用法**：
 ```bash
 curl 'https://vibetrading.dev/api/v1/signals/BTC?signal_types=TECHNICAL_INDICATOR&limit=5&hours=48'
 ```
 
-### 3. Get Signals by Symbol and Type
-Fetch signals for a specific symbol and signal type combination.
+### 3. 按符号和类型获取信号
+获取特定符号及其信号类型的交易信号。
 
-**Example Usage**:
+**示例用法**：
 ```bash
 curl 'https://vibetrading.dev/api/v1/signals/ETH/FUNDING_RATE?limit=3'
 ```
 
-## Signal Types
+## 信号类型
 
-| signal_type | Description |
+| 信号类型 | 描述 |
 |-------------|-------------|
-| `WHALE_ACTIVITY` | Whale wallet movement analysis |
-| `NEWS_ANALYSIS` | Crypto news sentiment |
-| `FUNDING_RATE` | Perpetual funding rate signals |
-| `TECHNICAL_INDICATOR` | Multi-timeframe technical analysis |
+| `WHALE_ACTIVITY` | 鲸鱼投资者钱包活动分析 |
+| `NEWS_ANALYSIS` | 加密货币新闻情绪分析 |
+| `FUNDING_RATE` | 永续合约资金费率信号 |
+| `TECHNICAL_INDICATOR` | 多时间框架的技术分析 |
 
-## Workflow
+## 工作流程
 
-### 1. Query Signals
-Use the provided scripts to query signals:
-- `scripts/get_latest_signals.js` - Get latest signals for multiple symbols
-- `scripts/get_signals_by_symbol.js` - Get signals for a specific symbol
-- `scripts/get_signals_by_type.js` - Get signals by symbol and type
+### 1. 查询信号
+使用提供的脚本查询信号：
+- `scripts/get_latest_signals.js` - 获取多个符号的最新信号
+- `scripts/get_signals_by_symbol.js` - 获取单个符号的交易信号
+- `scripts/get_signals_by_type.js` - 按符号和类型获取信号
 
-### 3. Analyze Results
-Review the signal payloads for:
-- **Sentiment**: BULLISH, BEARISH, or NEUTRAL
-- **Analysis**: Detailed markdown analysis
-- **Timestamp**: When the analysis was performed
+### 3. 分析结果
+查看信号内容，包括：
+- **情绪**：看涨、看跌或中性
+- **分析**：详细的 Markdown 分析报告
+- **时间戳**：分析执行的日期和时间
 
-### 4. Schedule Monitoring
-Set up cron jobs for regular signal monitoring:
+### 4. 安排监控
+设置定时任务以定期监控信号：
 ```bash
 # Example: Check BTC/ETH signals every hour
 0 * * * * /path/to/scripts/get_latest_signals.js BTC,ETH
 ```
 
-## Scripts
-- `scripts/get_latest_signals.js` - Query latest signals for multiple symbols
-- `scripts/get_signals_by_symbol.js` - Query signals for a single symbol
-- `scripts/get_signals_by_type.js` - Query signals by symbol and type
+## 脚本
+- `scripts/get_latest_signals.js` - 获取多个符号的最新信号
+- `scripts/get_signals_by_symbol.js` - 获取单个符号的交易信号
+- `scripts/get_signals_by_type.js` - 按符号和类型获取信号
 
-## Examples
+## 示例
 
-### Quick Signal Check
+### 快速信号检查
 ```bash
 # Check BTC signals
 node scripts/get_signals_by_symbol.js BTC
@@ -100,7 +100,7 @@ node scripts/get_latest_signals.js BTC,ETH
 node scripts/get_signals_by_type.js ETH FUNDING_RATE
 ```
 
-### Advanced Filtering
+### 高级过滤
 ```bash
 # Get whale activity signals from last 48 hours
 node scripts/get_latest_signals.js BTC,ETH,SOL WHALE_ACTIVITY 48
@@ -109,37 +109,37 @@ node scripts/get_latest_signals.js BTC,ETH,SOL WHALE_ACTIVITY 48
 node scripts/get_latest_signals.js BTC "WHALE_ACTIVITY,NEWS_ANALYSIS" 24
 ```
 
-## Response Format
+## 响应格式
 
-All API responses include:
-- `symbols`: Array of symbols queried
-- `signals`: Object with signals grouped by symbol
-- `metadata`: Query metadata (time window, signal types, etc.)
+所有 API 响应包含：
+- `symbols`：查询的符号数组
+- `signals`：按符号分组的信号对象
+- `metadata`：查询元数据（时间窗口、信号类型等）
 
-Each signal contains:
-- `id`: Unique signal ID
-- `symbol`: Trading symbol
-- `signal_type`: Type of signal
-- `author`: Agent that generated the signal
-- `signal_payload`: Detailed analysis with sentiment and markdown
-- `created_at`: Timestamp
+每个信号包含以下信息：
+- `id`：唯一的信号 ID
+- `symbol`：交易符号
+- `signal_type`：信号类型
+- `author`：生成信号的代理
+- `signal_payload`：包含情绪分析和 Markdown 详细内容的信号数据
+- `created_at`：信号创建的时间戳
 
-## Integration with Trading Strategies
+## 与交易策略集成
 
-Use these signals to:
-1. **Confirm trade ideas** with AI-generated analysis
-2. **Monitor market sentiment** across multiple dimensions
-3. **Set alerts** for specific signal types
-4. **Combine with other data** for comprehensive analysis
+可以使用这些信号来：
+1. **利用 AI 生成的分析来确认交易想法**
+2. **从多个维度监控市场情绪**
+3. **为特定信号类型设置警报**
+4. **结合其他数据进行全面分析**
 
-## Troubleshooting
+## 故障排除
 
-**Common Issues**:
-1. **404 Not Found**: No signals available for the query parameters
-2. **Rate limiting**: API may have rate limits, adjust query frequency
-3. **Network issues**: Check your internet connection
+**常见问题**：
+1. **404 Not Found**：查询参数对应的信号不存在
+2. **速率限制**：API 可能存在速率限制，请调整查询频率
+3. **网络问题**：检查网络连接
 
-**Debug Commands**:
+**调试命令**：
 ```bash
 # Test API connectivity
 curl 'https://vibetrading.dev/api/v1/signals/latest?symbols=BTC' -v
@@ -148,8 +148,8 @@ curl 'https://vibetrading.dev/api/v1/signals/latest?symbols=BTC' -v
 curl -I 'https://vibetrading.dev/api/v1/signals/latest?symbols=BTC'
 ```
 
-## Notes
-- API responses are cached for performance
-- Signal timestamps are in UTC
-- Always verify signals with other data sources
-- Use appropriate risk management with any trading decisions
+## 注意事项
+- 为提高性能，API 响应会被缓存
+- 信号的时间戳采用 UTC 格式
+- 始终使用其他数据源验证信号信息
+- 在任何交易决策中都要采取适当的风险管理措施

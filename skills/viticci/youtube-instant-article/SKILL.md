@@ -1,56 +1,56 @@
 ---
 name: youtube-instant-article
-description: Transform YouTube videos into Telegraph Instant View articles with visual slides and timestamped summaries. Use this skill whenever a user shares a YouTube URL (youtube.com or youtu.be) and asks to summarize, explain, or process the video. This is the DEFAULT skill for all YouTube video requests - do NOT use the generic summarize tool for YouTube.
+description: 将 YouTube 视频转换为 Telegraph Instant View 文章，其中包含可视化幻灯片和带有时间戳的摘要。每当用户分享一个 YouTube URL（如 youtube.com 或 youtu.be）并请求对视频进行总结、解释或处理时，都使用此技能。这是处理所有 YouTube 视频请求的默认方式——请勿使用通用的 YouTube 总结工具。
 argument-hint: <youtube-url>
 allowed-tools: Bash(summarize:*), Bash(curl:*), Bash(jq:*)
 ---
 
-# YouTube Instant Article
+# YouTube即时文章生成器
 
-Transform YouTube videos into Telegraph Instant View articles with visual slides and timestamped summaries.
+将YouTube视频转换为Telegraph即时视图文章，包含视觉幻灯片和带时间戳的摘要。
 
-## When to Use
+## 使用场景
 
-**ALWAYS use this skill when:**
-- User shares a YouTube URL (any youtube.com or youtu.be link)
-- "Summarize this video"
-- "What's this video about?"
-- "Turn this into an article"
-- "Give me the gist of this video"
+**在以下情况下务必使用此功能：**
+- 用户分享YouTube链接（无论是youtube.com还是youtu.be格式的链接）
+- 请求“总结这个视频”
+- 询问“这个视频是关于什么的？”
+- 要求将视频转换为文章
+- 需要了解视频的要点
 
-**Only use generic `summarize` for:**
-- Non-YouTube URLs (articles, websites, PDFs)
-- Explicit "just give me the transcript" requests
+**仅适用于以下情况时使用通用的`summarize`命令：**
+- 非YouTube链接（如文章、网站、PDF文件）
+- 明确要求仅提供视频文字记录的情况
 
-## Quick Start
+## 快速入门
 
 ```bash
 source /Users/viticci/clawd/.env && {baseDir}/scripts/generate.sh "$ARGUMENTS"
 ```
 
-## Options
+## 配置选项
 
-| Flag | Default | Description |
+| 选项 | 默认值 | 说明 |
 |------|---------|-------------|
-| `--slides-max N` | 6 | Maximum slides to extract |
-| `--debug` | off | Keep temp files for debugging |
+| `--slides-max N` | 6 | 最多提取的幻灯片数量 |
+| `--debug` | off | 保留临时文件以供调试 |
 
-## Environment Variables
+## 环境变量
 
-Required environment variables are loaded from `/Users/viticci/clawd/.env`:
-- `TELEGRAPH_TOKEN` - Telegraph API access token
-- `OPENAI_API_KEY` - For GPT-5.2 summarization
+所需的环境变量从`/Users/viticci/clawd/.env`文件中加载：
+- `TELEGRAPH_TOKEN` - Telegraph API访问令牌 |
+- `OPENAI_API_KEY` - 用于GPT-5.2摘要生成 |
 
-## Output
+## 输出结果
 
-Telegraph Instant View article with:
-- 📺 Video link at top
-- 🖼️ Slides interleaved with timestamped sections
-- ⏱️ Key moments with timestamps
-- 💬 Notable quotes as blockquotes
-- ✨ Proper title from YouTube
+生成的Telegraph即时视图文章包含：
+- 顶部的视频链接 |
+- 带时间戳的幻灯片 |
+- 标注了关键时刻的时间戳 |
+- 重要的引文以块引用形式呈现 |
+- 来自YouTube的准确标题 |
 
-## Architecture
+## 技术架构
 
 ```
 YouTube URL
@@ -66,68 +66,69 @@ YouTube URL
     └─► Telegraph API (create article)
 ```
 
-## Key Features
+## 主要特性
 
-### Image Hosting: catbox.moe
-- No API key required
-- No expiration
-- Reliable CDN
-- Direct URL embedding
+### 图片托管：catbox.moe
+- 无需API密钥 |
+- 无过期限制 |
+- 提供可靠的CDN服务 |
+- 支持直接嵌入图片链接
 
-### LLM: OpenAI GPT-5.2
-- Fast (~4-5 seconds)
-- High quality summaries
-- Automatic timestamp extraction
+### 大语言模型（LLM）：OpenAI GPT-5.2
+- 生成速度快（约4-5秒） |
+- 摘要质量高 |
+- 自动提取时间戳
 
-### Layout: Interleaved Images
-- Images distributed across timestamp sections
-- Not grouped at top
-- Each major section gets a relevant slide
+### 布局设计
+- 幻灯片与时间戳内容交错显示 |
+- 图片不集中显示在页面顶部 |
+- 每个主要部分都配有相应的幻灯片
 
-## ⚠️ Important Notes
+## 注意事项
 
-### Instant View Timing
-Telegram needs **1-2 minutes** to generate Instant View for new pages. If the ⚡ button doesn't appear immediately, wait and try again.
+### 即时视图生成时间
+Telegram生成即时视图需要**1-2分钟**。如果“⚡”按钮没有立即出现，请稍后再试。
 
-### Script Requirements
-- Uses **zsh** (not bash) for associative array support
-- Requires: `summarize`, `jq`, `curl`
-- Optional: `ffmpeg` (for local video processing)
+### 脚本要求
+- 本脚本使用**zsh**（而非bash）来支持关联数组功能 |
+- 必需安装`summarize`、`jq`、`curl`工具 |
+- 可选：`ffmpeg`（用于本地视频处理）
 
-### Always Use the Script
-**NEVER manually create Telegraph content.** Always use `generate.sh`:
-- Ensures proper h4 headers (required for Instant View)
-- Distributes images correctly
-- Extracts video title automatically
+### 建议始终使用脚本
 
-## Dependencies
+**切勿手动创建Telegraph内容。**始终使用`generate.sh`脚本，因为它：
+- 确保使用正确的H4标题格式（即时视图所需） |
+- 正确展示图片 |
+- 自动提取视频标题
 
-- `summarize` v0.10.0+ (`brew install steipete/tap/summarize`)
-- `jq` (`brew install jq`)
-- `curl` (pre-installed on macOS)
-- OpenAI API key with GPT-5.2 access
+## 依赖库
 
-## Processing Time
+- `summarize` v0.10.0及以上版本（使用`brew install steipete/tap/summarize`安装） |
+- `jq`（使用`brew install jq`安装） |
+- `curl`（macOS系统已预装） |
+- OpenAI API令牌（用于访问GPT-5.2服务）
 
-| Video Length | Approx. Time |
+## 处理时间
+
+| 视频时长 | 处理时间（大约） |
 |--------------|--------------|
-| < 15 min | 20-30s |
-| 15-30 min | 30-45s |
-| 30+ min | 45-60s+ |
+| < 15分钟 | 20-30秒 |
+| 15-30分钟 | 30-45秒 |
+| 30分钟以上 | 45秒以上 |
 
-## Troubleshooting
+## 常见问题解决方法
 
-### "Failed to get summary"
-- Check `OPENAI_API_KEY` is set
-- Verify API key has GPT-5.2 access
-- Try with `--debug` flag
+### “无法生成摘要”
+- 确认`OPENAI_API_KEY`已正确设置 |
+- 验证API密钥是否具有GPT-5.2的访问权限 |
+- 尝试使用`--debug`选项进行调试
 
-### No Instant View button
-- Wait 1-2 minutes for Telegram to process
-- Verify article has content (not empty)
-- Check images loaded (visit Telegraph URL directly)
+### 无法显示即时视图按钮
+- 等待1-2分钟，直到Telegram完成处理 |
+- 确认文章内容是否已生成（非空） |
+- 直接访问Telegraph链接查看图片是否已加载
 
-### Images not showing
-- catbox.moe might be temporarily down
-- Check upload succeeded in debug output
-- Verify URLs are HTTPS
+### 图片无法显示
+- 可能是catbox.moe服务器暂时不可用 |
+- 查看调试日志确认图片上传是否成功 |
+- 确保链接为HTTPS格式

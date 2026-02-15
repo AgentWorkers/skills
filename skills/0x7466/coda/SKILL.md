@@ -1,37 +1,37 @@
 ---
 name: coda
-description: General-purpose Coda document manager via REST API v1. Supports listing/creating/updating/deleting docs, managing tables/rows/pages, triggering automations, and exploring doc structure. Requires CODA_API_TOKEN environment variable. Delete operations require explicit confirmation; publishing and permission changes require explicit user intent.
+description: 通用型 Coda 文档管理器（通过 REST API v1 提供支持）：支持列出/创建/更新/删除文档，管理表格/行/页面，触发自动化操作，以及浏览文档结构。使用 `CODA_API_TOKEN` 环境变量进行身份验证。删除操作需要用户明确确认；发布文档或更改权限也需要用户的明确指令。
 ---
 
-# Coda API Skill
+# Coda API 技能
 
-Interact with the Coda REST API v1 to manage docs, tables, rows, pages, and automations.
+该技能用于与 Coda REST API v1 进行交互，以管理文档、表格、数据行、页面以及自动化任务。
 
-## When to Use
+## 使用场景
 
-Use this skill when the user wants to:
-- List, search, create, or delete Coda docs
-- Read from or write to tables (insert, upsert, update, delete rows)
-- Explore doc structure (pages, tables, columns, formulas, controls)
-- Trigger automations (push buttons)
-- Export doc content or analytics
+当用户需要执行以下操作时，请使用此技能：
+- 列出、搜索、创建或删除 Coda 文档
+- 读取或写入表格数据（插入、更新、删除数据行）
+- 探索文档结构（页面、表格、列、公式、控件）
+- 触发自动化任务（例如按钮操作）
+- 导出文档内容或分析数据
 
-## When NOT to Use
+## 不适用场景
 
-- **Do NOT use** for general document editing advice unrelated to the API
-- **Do NOT use** for Pack development (this skill covers Doc management, not Pack creation)
-- **Do NOT use** for operations requiring Doc Maker permissions unless confirmed the user has them
+- **请勿** 用于与 API 无关的常规文档编辑建议
+- **请勿** 用于 Pack 开发（此技能仅涵盖文档管理，不涉及 Pack 的创建）
+- **请勿** 在未确认用户具有相应权限的情况下执行需要 Doc Maker 权限的操作
 
-## Prerequisites
+## 先决条件
 
-1. **API Token**: Set environment variable `CODA_API_TOKEN` with your Coda API token
-   - Get token at: https://coda.io/account -> API Settings
-2. **Python 3.7+** with `requests` library installed
-3. **Permissions**: Some operations (create doc, update doc title, create page) require Doc Maker role in the workspace
+1. **API Token**：将环境变量 `CODA_API_TOKEN` 设置为您的 Coda API 令牌
+   - 从以下链接获取令牌：https://coda.io/account -> API Settings
+2. 安装了 `requests` 库的 Python 3.7 或更高版本
+3. **权限要求**：某些操作（创建文档、更新文档标题、创建页面）需要用户具有 Doc Maker 角色
 
-## CLI Tool Usage
+## CLI 工具使用
 
-The skill includes a Python CLI tool at `scripts/coda_cli.py`:
+该技能包含一个名为 `scripts/coda_cli.py` 的 Python CLI 工具：
 
 ```bash
 # Setup
@@ -71,55 +71,59 @@ python scripts/coda_cli.py automations trigger <doc-id> <button-id>
 python scripts/coda_cli.py docs delete <doc-id> --force
 ```
 
-## Workflow Guidelines
+## 工作流程指南
 
-### 1. Doc ID Extraction
-Coda doc IDs can be extracted from browser URLs:
-- URL: `https://coda.io/d/_dAbCDeFGH/Project-Tracker`
-- Doc ID: `AbCDeFGH` (remove `_d` prefix)
+### 1. 文档 ID 提取
 
-The CLI tool accepts both full URLs and raw IDs.
+Coda 文档 ID 可以从浏览器 URL 中提取：
+- URL 示例：`https://coda.io/d/_dAbCDeFGH/Project-Tracker`
+- 文档 ID：`AbCDeFGH`（去掉前缀 `_d`）
 
-### 2. Rate Limit Handling
-The API has strict rate limits:
-- **Read**: 100 requests per 6 seconds
-- **Write (POST/PUT/PATCH)**: 10 requests per 6 seconds
-- **Write doc content**: 5 requests per 10 seconds
-- **List docs**: 4 requests per 6 seconds
+CLI 工具支持完整的 URL 和原始 ID。
 
-The CLI tool automatically implements exponential backoff for 429 responses.
+### 2. 速率限制处理
 
-### 3. Asynchronous Operations
-Write operations return HTTP 202 with a `requestId`. The CLI tool optionally polls for completion using `--wait` flag.
+API 有严格的速率限制：
+- **读取操作**：每 6 秒 100 次请求
+- **写入操作（POST/PUT/PATCH）**：每 6 秒 10 次请求
+- **写入文档内容**：每 10 秒 5 次请求
+- **列出文档**：每 6 秒 4 次请求
 
-### 4. Safety Guardrails
+CLI 工具会自动对 429 错误响应实施指数级退避策略。
 
-**Delete Operations** (rows, docs, pages, folders):
-- Always requires explicit user confirmation in interactive mode
-- Use `--force` flag only in automation/scripts
-- Shows preview of what will be deleted
+### 3. 异步操作
 
-**Publishing** (`docs publish`):
-- Requires explicit `--confirm-publish` flag
-- Cannot be combined with `--force`
+写入操作会返回 HTTP 202 状态码，并附带一个 `requestId`。CLI 工具可以通过 `--wait` 标志选择性地等待操作完成。
 
-**Permissions** (`acl` commands):
-- Requires explicit `--confirm-permissions` flag for any changes
-- Read operations (list permissions) are always allowed
+### 4. 安全防护措施
 
-**Automation Triggers**:
-- Allowed without special flags but logged
-- User should be aware that automations may trigger notifications or external actions
+**删除操作**（删除数据行、文档、页面或文件夹）：
+- 必须在交互模式下获得用户的明确确认
+- 仅在自动化脚本中使用 `--force` 标志
+- 会显示即将被删除的内容的预览
 
-### 5. Pagination
-List commands support:
-- `--limit`: Maximum results (default 25, max varies by endpoint)
-- `--page-token`: For fetching subsequent pages
-- CLI auto-follows pages with `--all` flag
+**发布操作**（`docs publish`）：
+- 必须使用 `--confirm-publish` 标志
+- 不能与 `--force` 标志同时使用
 
-## Common Patterns
+**权限操作**（`acl` 命令）：
+- 对任何更改操作，都必须使用 `--confirm-permissions` 标志
+- 读取操作（列出权限）始终被允许
 
-### Batch Row Operations
+**自动化触发**：
+- 可以在没有特殊标志的情况下执行，但会生成日志记录
+- 用户应注意自动化操作可能会触发通知或外部动作
+
+### 5. 分页
+
+列表命令支持以下参数：
+- `--limit`：最大结果数量（默认为 25，具体数量取决于端点）
+- `--page-token`：用于获取后续页面
+- 使用 `--all` 标志时，CLI 会自动遍历所有页面
+
+## 常见用法模式
+
+### 批量操作数据行
 ```bash
 # Insert multiple rows from JSON file
 python scripts/coda_cli.py rows insert-batch <doc-id> <table-id> --file rows.json
@@ -128,7 +132,7 @@ python scripts/coda_cli.py rows insert-batch <doc-id> <table-id> --file rows.jso
 python scripts/coda_cli.py rows upsert <doc-id> <table-id> --file rows.json --keys "Email"
 ```
 
-### Sync Between Docs
+### 在文档之间同步数据
 ```bash
 # Export from source
 python scripts/coda_cli.py rows list <source-doc> <table-id> --format json > export.json
@@ -137,7 +141,7 @@ python scripts/coda_cli.py rows list <source-doc> <table-id> --format json > exp
 python scripts/coda_cli.py rows insert-batch <dest-doc> <table-id> --file export.json
 ```
 
-### Explore Structure
+### 探索文档结构
 ```bash
 # Get full doc structure
 python scripts/coda_cli.py docs structure <doc-id>
@@ -149,55 +153,55 @@ python scripts/coda_cli.py formulas list <doc-id>
 python scripts/coda_cli.py controls list <doc-id>
 ```
 
-## Error Handling
+## 错误处理
 
-Common HTTP status codes:
-- `400`: Bad request (invalid parameters)
-- `401`: Invalid/expired API token
-- `403`: Insufficient permissions (need Doc Maker role)
-- `404`: Resource not found
-- `429`: Rate limited (implement backoff)
-- `202`: Accepted but not yet processed (async operation)
+常见的 HTTP 状态码：
+- `400`：请求错误（参数无效）
+- `401`：API 令牌无效或已过期
+- `403`：权限不足（需要 Doc Maker 角色）
+- `404`：资源未找到
+- `429`：达到速率限制（需实施退避策略）
+- `202`：请求已接受，但尚未处理（异步操作）
 
-## Security Considerations
+## 安全注意事项
 
-1. **Token Storage**: Never commit `CODA_API_TOKEN` to version control
-2. **Token Scope**: The token has full access to all docs the user can access
-3. **Workspace Restrictions**: Creating docs requires Doc Maker role in target workspace
-4. **Data Exposure**: Row data may contain sensitive information; handle exports carefully
+1. **令牌存储**：切勿将 `CODA_API_TOKEN` 存储在版本控制系统中
+2. **令牌权限**：该令牌允许用户访问其有权访问的所有文档
+3. **工作空间限制**：创建文档需要目标工作空间中的 Doc Maker 角色
+4. **数据安全**：数据行可能包含敏感信息，请谨慎处理导出操作
 
-## Examples
+## 示例
 
-### List and Filter Docs
+- **列出并过滤文档**
 ```bash
 python scripts/coda_cli.py docs list --is-owner --query "Project"
 ```
 
-### Create Doc from Template
+- **根据模板创建文档**
 ```bash
 python scripts/coda_cli.py docs create --title "Q4 Planning" --source-doc "template-doc-id"
 ```
 
-### Update Row Status
+- **更新数据行状态**
 ```bash
 python scripts/coda_cli.py rows update AbCDeFGH grid-xyz row-123 \
   --data '{"Status": "Complete", "Completed Date": "2024-01-15"}'
 ```
 
-### Delete Multiple Rows (with confirmation)
+- **确认后删除多行数据**
 ```bash
 python scripts/coda_cli.py rows delete-batch AbCDeFGH grid-xyz \
   --filter '{"Status": "Archived"}' \
   --confirm "Delete all archived rows?"
 ```
 
-### Export Table to CSV
+- **将表格数据导出为 CSV 文件**
 ```bash
 python scripts/coda_cli.py rows list AbCDeFGH grid-xyz --format csv > export.csv
 ```
 
-## Reference
+## 参考资料
 
-- API Documentation: https://coda.io/developers/apis/v1
-- OpenAPI Spec: https://coda.io/apis/v1/openapi.yaml
-- Rate Limits: https://coda.io/developers/apis/v1#section/Rate-Limiting
+- API 文档：https://coda.io/developers/apis/v1
+- OpenAPI 规范：https://coda.io/apis/v1/openapi.yaml
+- 速率限制：https://coda.io/developers/apis/v1#section/Rate-Limiting

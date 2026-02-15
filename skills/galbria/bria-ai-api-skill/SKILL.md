@@ -1,48 +1,49 @@
 ---
 name: bria-ai
-description: Use when generating visual assets with Bria.ai - product photos, hero images, icons, backgrounds. Includes batch generation (multiple images concurrently), pipeline workflows (generate → edit → remove background), and parallel API patterns. Use for websites, presentations, e-commerce catalogs, or any task needing multiple AI-generated images.
+description: **使用说明：**  
+Bria.ai 提供了一套强大的工具，可用于生成各种视觉素材，包括产品照片、封面图片、图标以及背景图片等。该工具支持批量处理（同时生成多张图片），并提供了完整的工作流程（生成 → 编辑 → 去除背景），同时支持并行 API 调用模式。适用于网站、演示文稿、电子商务产品目录等场景，适用于任何需要大量 AI 生成图片的任务。
 ---
 
-# Bria Visual Asset Generator
+# Bria视觉资产生成器
 
-Generate production-ready visual assets for websites, presentations, documents, and applications using Bria's commercially-safe AI models.
+使用Bria商业级安全的AI模型，为网站、演示文稿、文档和应用程序生成可用于实际发布的视觉资产。
 
-## When to Use This Skill
+## 适用场景
 
-- **Website/App Development**: Hero images, product photos, backgrounds, illustrations
-- **Presentations**: Slides visuals, diagrams, icons, cover images
-- **Documents**: Report graphics, infographics, headers, decorative elements
-- **Marketing**: Social media assets, banners, promotional images
-- **E-commerce**: Product photography, lifestyle shots, catalog images
-- **Batch Generation**: Multiple images with different prompts concurrently
-- **Pipeline Workflows**: Chained operations (generate → edit → remove background → lifestyle shot)
+- **网站/应用程序开发**：用于制作标题图片、产品照片、背景图和插图
+- **演示文稿**：用于制作幻灯片视觉元素、图表、图标和封面图片
+- **文档**：用于生成报告图表、信息图、标题和装饰性元素
+- **市场营销**：用于制作社交媒体素材、横幅和宣传图片
+- **电子商务**：用于拍摄产品照片和展示产品使用场景的图片
+- **批量生成**：可以同时根据不同提示生成多张图片
+- **工作流程集成**：支持一系列连续的操作（生成 → 编辑 → 去除背景 → 调整场景）
 
-## Core Capabilities
+## 核心功能
 
-| Need | Capability | Use Case |
-|------|------------|----------|
-| Create new images | FIBO Generate | Hero images, product shots, illustrations |
-| Edit by text | FIBO-Edit | Change colors, modify objects, transform scenes |
-| Edit with mask | GenFill/Erase | Precise inpainting, add/replace specific regions |
-| Add/Replace/Remove objects | Text-based editing | Add vase, replace apple with pear, remove table |
-| Transparent backgrounds | RMBG-2.0 | Extract subjects for overlays, logos, cutouts |
-| Background operations | Replace/Blur/Erase | Change, blur, or remove backgrounds |
-| Expand images | Outpainting | Extend boundaries, change aspect ratios |
-| Upscale images | Super Resolution | Increase resolution 2x or 4x |
-| Enhance quality | Enhancement | Improve lighting, colors, details |
-| Transform style | Restyle | Oil painting, anime, cartoon, 3D render |
-| Change lighting | Relight | Golden hour, spotlight, dramatic lighting |
-| Change season | Reseason | Spring, summer, autumn, winter |
-| Blend/composite | Image Blending | Apply textures, logos, merge images |
-| Text replacement | Rewrite | Change text in images |
-| Restore photos | Restoration | Fix old/damaged photos |
-| Colorize | Colorization | Add color to B&W, or convert to B&W |
-| Sketch to photo | Sketch2Image | Convert drawings to realistic photos |
-| Product photography | Lifestyle Shot | Place products in scenes |
+| 功能 | 用途示例 |
+|------|------------|
+| 创建新图片 | 生成产品标题图片、产品照片和插图 |
+| 通过文本编辑 | 修改图片颜色、对象和场景 |
+| 带有遮罩的编辑 | 进行精确的图像修复，添加或替换特定区域 |
+| 添加/替换/删除对象 | 通过文本指令添加或删除对象（例如：添加花瓶、将苹果替换为梨、移除桌子） |
+| 透明背景 | 提供RMBG-2.0功能，用于提取图片中的主体部分以用于叠加或制作Logo |
+| 背景处理 | 可以替换、模糊或删除图片背景 |
+| 扩展图片尺寸 | 改变图片的尺寸或宽高比 |
+| 图像放大 | 将图片分辨率提高2倍或4倍 |
+| 图像质量优化 | 改善图片的亮度、色彩和细节 |
+| 图像风格转换 | 可以将图片转换为油画、动漫、卡通或3D渲染风格 |
+| 调整光线效果 | 可以模拟不同的光照效果（如黄金时刻、聚光灯等） |
+| 更改季节效果 | 可以调整图片中的季节场景（如春夏秋冬） |
+| 图像合成 | 可以将多张图片合并或应用纹理、Logo等效果 |
+| 文本替换 | 可以修改图片中的文字内容 |
+| 图像修复 | 可以修复旧照片或损坏的图片 |
+| 上色处理 | 可以为黑白图片添加颜色，或将彩色图片转换为黑白 |
+| 从草图生成照片 | 可以将手绘草图转换为逼真的照片 |
+| 产品摄影 | 可以拍摄产品使用场景的图片 |
 
-## Quick Reference
+## 快速参考
 
-### Generate an Image (FIBO)
+### 生成图片（FIBO）
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/generate" \
@@ -54,11 +55,11 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/generate" \
   }'
 ```
 
-**Aspect ratios**: `1:1` (square), `16:9` (hero/banner), `4:3` (presentation), `9:16` (mobile/story), `3:4` (portrait)
+**支持的图片尺寸比例**：`1:1`（正方形）、`16:9`（标题图片/横幅）、`4:3`（演示文稿）、`9:16`（手机/故事图片）、`3:4`（竖屏图片）
 
-> **Advanced**: For precise, deterministic control over generation, use **[VGL structured prompts](../vgl/SKILL.md)** instead of natural language. VGL defines every visual attribute (objects, lighting, composition) as explicit JSON.
+> **高级用法**：如需对生成过程进行精确的控制，建议使用**[VGL结构化提示语言](../vgl/SKILL.md)**，而不是自然语言描述。VGL允许以JSON格式明确指定所有视觉元素（如对象、光线效果和构图）。
 
-### Remove Background (RMBG-2.0)
+### 去除背景（RMBG-2.0）
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/remove_background" \
@@ -67,11 +68,11 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/remove_background" 
   -d '{"image": "https://..."}'
 ```
 
-Returns PNG with transparency.
+返回带有透明背景的PNG图片。
 
-### Edit Image (FIBO-Edit) - No Mask Required
+### 图像编辑（FIBO-Edit） - 无需遮罩
 
-Edit any image with natural language instructions:
+可以使用自然语言指令编辑图片：
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/edit" \
@@ -83,7 +84,7 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/edit" \
   }'
 ```
 
-**Python example:**
+**Python示例：**
 ```python
 from bria_client import BriaClient
 client = BriaClient()
@@ -91,9 +92,9 @@ result = client.edit_image(image_url, "change the mug to red")
 print(result['result']['image_url'])
 ```
 
-### Edit Image Region with Mask (FIBO-Edit)
+### 带有遮罩的图像编辑（FIBO-Edit）
 
-For precise control over which region to edit:
+如需精确控制编辑区域：
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/gen_fill" \
@@ -106,9 +107,9 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/gen_fill" \
   }'
 ```
 
-### Expand Image (Outpainting)
+### 扩展图片尺寸
 
-Extend image boundaries to new aspect ratio:
+可以调整图片的尺寸以适应新的宽高比：
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/expand" \
@@ -121,9 +122,9 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/expand" \
   }'
 ```
 
-### Upscale Image
+### 图像放大
 
-Increase image resolution 2x or 4x:
+可以将图片分辨率提高2倍或4倍：
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/increase_resolution" \
@@ -132,9 +133,9 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/increase_resolution
   -d '{"image": "https://...", "scale": 2}'
 ```
 
-### Product Lifestyle Shot
+### 产品使用场景拍摄
 
-Place a product in a lifestyle scene:
+可以将产品放入特定的场景中：
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/lifestyle_shot_by_text" \
@@ -148,11 +149,11 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/edit/lifestyle_shot_by_t
 
 ---
 
-## Asset Generation Workflows
+## 资产生成工作流程
 
-### Website Hero Images
+### 网站标题图片
 
-Generate wide banner images for landing pages:
+生成适合首页的宽幅横幅图片：
 
 ```json
 {
@@ -162,15 +163,15 @@ Generate wide banner images for landing pages:
 }
 ```
 
-**Tips for hero images:**
-- Use `16:9` for full-width banners
-- Describe lighting and mood explicitly
-- Include "professional", "high quality", "commercial" for polished results
-- Specify "clean background" or "minimal" for text overlay space
+**生成标题图片的提示建议：**
+- 使用`16:9`的比例制作全宽横幅
+- 明确描述光线效果和整体氛围
+- 使用“专业”、“高质量”、“适合商业用途”等描述词以获得更好的效果
+- 指定“干净背景”或“简洁背景”，以便添加文字
 
-### Product Photography
+### 产品摄影
 
-Generate e-commerce style product shots:
+生成适合电子商务使用的产品照片：
 
 ```json
 {
@@ -179,15 +180,15 @@ Generate e-commerce style product shots:
 }
 ```
 
-**Then remove background** for transparent PNG to composite anywhere:
+**之后可以使用RMBG-2.0去除背景，以便将图片用于其他场景：**
 
 ```json
 {"image": "generated_image_url"}
 ```
 
-### Presentation Visuals
+### 演示文稿视觉元素
 
-Generate slides-ready images:
+生成适合幻灯片的图片：
 
 ```json
 {
@@ -196,15 +197,15 @@ Generate slides-ready images:
 }
 ```
 
-**Common presentation themes:**
-- "Abstract technology background" - tech slides
-- "Business team collaboration" - culture slides
-- "Growth chart visualization" - metrics slides
-- "Minimalist geometric patterns" - section dividers
+**常见的演示文稿主题：**
+- “抽象科技背景” - 适用于技术类幻灯片
+- “团队协作” - 适用于展示企业文化
+- “增长图表” - 适用于展示数据指标的幻灯片
+- “极简几何图案” - 适用于分隔不同内容的幻灯片
 
-### Document Graphics
+### 文档图片
 
-Generate report or article images:
+生成报告或文章中使用的图片：
 
 ```json
 {
@@ -213,9 +214,9 @@ Generate report or article images:
 }
 ```
 
-### Icons and Illustrations
+### 图标和插图
 
-For icons, generate then remove background:
+先生成图标，然后去除背景：
 
 ```json
 {
@@ -224,11 +225,11 @@ For icons, generate then remove background:
 }
 ```
 
-Then use RMBG-2.0 to get transparent PNG.
+之后使用RMBG-2.0得到透明背景的PNG图片。
 
-### Social Media Assets
+### 社交媒体素材
 
-**Instagram post (1:1):**
+**Instagram帖子（1:1比例）：**
 ```json
 {
   "prompt": "Lifestyle photo of coffee and laptop on wooden desk, morning light, cozy atmosphere",
@@ -236,7 +237,7 @@ Then use RMBG-2.0 to get transparent PNG.
 }
 ```
 
-**Story/Reel (9:16):**
+**Instagram故事/视频（9:16比例）：**
 ```json
 {
   "prompt": "Vertical product showcase of smartphone, floating in gradient background, tech aesthetic",
@@ -246,35 +247,33 @@ Then use RMBG-2.0 to get transparent PNG.
 
 ---
 
-## Prompt Engineering Tips
+## 提示编写技巧
 
-### Be Specific About Style
-- "professional product photography" vs "casual snapshot"
-- "flat design illustration" vs "3D rendered"
-- "corporate modern" vs "playful colorful"
+### 明确指定风格
+- 如何描述图片的风格（例如：“专业的产品照片” vs “随意的快照”）
+- 如何描述插图的风格（例如：“平面设计插图” vs “3D渲染图”）
+- 如何描述整体设计风格（例如：“现代企业风格” vs “活泼多彩的风格”）
 
-### Specify Technical Details
-- Lighting: "soft natural light", "studio lighting", "dramatic shadows"
-- Background: "white studio", "gradient", "blurred office", "transparent"
-- Composition: "centered", "rule of thirds", "negative space on left for text"
+### 指定技术细节
+- 详细说明光线效果（例如：“柔和的自然光”、“摄影棚灯光”、“戏剧性的阴影”）
+- 说明背景类型（例如：“白色摄影棚背景”、“渐变背景”、“模糊的办公室背景”、“透明背景”）
+- 说明构图方式（例如：“居中构图”、“三分法则”、“左侧留白用于文字）
 
-### Quality Keywords
-Add these for polished results:
-- "high quality", "professional", "commercial grade"
-- "4K", "detailed", "sharp focus"
-- "award-winning photography" (for photos)
+### 用于提升质量的关键词
+- 使用这些关键词以获得更好的效果：**“高质量”、“专业级”、“适合商业用途”**
+- 如需高质量图片，可以使用“4K分辨率”、“清晰的对焦”等描述
+- 对于照片，可以使用“获奖摄影”等描述
 
-### Negative Prompts
-Exclude unwanted elements:
-- "blurry, low quality, pixelated"
-- "text, watermark, logo"
-- "cluttered, busy, messy"
+### 需要避免的描述
+- 避免使用负面或模糊的描述（例如：“模糊的图片”、“低质量的图片”、“像素化的图片”）
+- 避免包含不需要的元素（例如：“文字、水印、Logo”）
+- 避免使用混乱或杂乱的描述
 
 ---
 
-## Async Response Handling
+## 异步响应处理
 
-All endpoints return async responses:
+所有API接口返回异步响应：
 
 ```json
 {
@@ -283,7 +282,7 @@ All endpoints return async responses:
 }
 ```
 
-Poll the status_url until `status: "COMPLETED"`, then get `result.image_url`.
+需要不断检查`status_url`的状态，直到状态变为“COMPLETED”，然后获取`result.image_url`。
 
 ```python
 import requests, time
@@ -301,11 +300,11 @@ def get_result(status_url, api_key):
 
 ---
 
-## Batch & Parallel Image Generation
+## 批量与并行图像生成
 
-### Generating Multiple Images Concurrently
+### 同时生成多张图片
 
-For generating many images efficiently, launch requests in parallel and poll concurrently:
+为了高效生成多张图片，可以并行发送请求并同时检查响应：
 
 ```python
 import asyncio
@@ -358,12 +357,12 @@ prompts = [
 image_urls = asyncio.run(generate_batch("YOUR_API_KEY", prompts, max_concurrent=3))
 ```
 
-**Key points:**
-- Use `asyncio.Semaphore` to limit concurrent requests (recommended: 3-5)
-- `return_exceptions=True` prevents one failure from canceling all requests
-- Each result is either a URL string or an Exception object
+**关键点：**
+- 使用`asyncio.Semaphore`来限制并发请求的数量（建议限制在3-5个）
+- 设置`return_exceptions=True`可以防止某个请求失败导致所有请求被取消
+- 每个请求的结果可能是URL字符串或异常对象
 
-### TypeScript/Node.js Parallel Generation
+### TypeScript/Node.js并行生成示例
 
 ```typescript
 type AspectRatio = "1:1" | "4:3" | "16:9" | "3:4" | "9:16";
@@ -461,19 +460,19 @@ Chain multiple operations on images (generate → edit → remove background).
 ```python
 async def product_pipeline(api_key, product_descriptions, scene_prompt):
     """
-    Pipeline: Generate product → Remove background → Place in lifestyle scene
+    生成产品图片 → 去除背景 → 将图片放入特定场景中
     """
     async with aiohttp.ClientSession() as session:
         results = []
 
         for desc in product_descriptions:
-            # Step 1: Generate product image
+            # 第一步：生成产品图片
             gen_result = await generate_image(session, api_key,
                 f"Professional product photo of {desc} on white background, studio lighting",
                 aspect_ratio="1:1")
             product_url = await poll_status(session, api_key, gen_result["status_url"])
 
-            # Step 2: Remove background
+            # 第二步：去除背景
             async with session.post(
                 "https://engine.prod.bria-api.com/v2/image/edit/remove_background",
                 headers={"api_token": api_key, "Content-Type": "application/json"},
@@ -482,7 +481,7 @@ async def product_pipeline(api_key, product_descriptions, scene_prompt):
                 rmbg_result = await resp.json()
             transparent_url = await poll_status(session, api_key, rmbg_result["status_url"])
 
-            # Step 3: Place in lifestyle scene
+            # 第三步：将图片放入场景中
             async with session.post(
                 "https://engine.prod.bria-api.com/v2/image/edit/lifestyle_shot_by_text",
                 headers={"api_token": api_key, "Content-Type": "application/json"},
@@ -500,7 +499,7 @@ async def product_pipeline(api_key, product_descriptions, scene_prompt):
 
         return results
 
-# Usage
+# 使用示例
 products = ["coffee mug", "water bottle", "notebook"]
 scene = "modern minimalist desk, natural morning light, plants in background"
 results = asyncio.run(product_pipeline("YOUR_API_KEY", products, scene))
@@ -510,9 +509,13 @@ results = asyncio.run(product_pipeline("YOUR_API_KEY", products, scene))
 
 Process multiple products through the pipeline concurrently:
 
-```python
+```
+
+### 并行处理多个产品的示例
+
+### TypeScript示例
 async def parallel_pipeline(api_key, products, scene_prompt, max_concurrent=3):
-    """Run full pipeline for multiple products in parallel."""
+    """并行处理多个产品的生成流程."""
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def process_one(product):
@@ -538,15 +541,17 @@ async def parallel_pipeline(api_key, products, scene_prompt, max_concurrent=3):
 
 ### React/Next.js Component
 
-```jsx
-// Generate and display a hero image
+```
+
+### JavaScript示例
+// 生成并显示标题图片
 const [imageUrl, setImageUrl] = useState(null);
 
 async function generateHero(prompt) {
   const res = await fetch('/api/bria/generate', {
     method: 'POST',
     body: JSON.stringify({ prompt, aspect_ratio: '16:9' })
-  });
+  );
   const { image_url } = await res.json();
   setImageUrl(image_url);
 }
@@ -554,10 +559,12 @@ async function generateHero(prompt) {
 
 ### Python Script for Batch Generation
 
-```python
+```
+
+### Python示例
 import asyncio
 
-# See "Batch & Parallel Image Generation" section for generate_batch function
+# 详见“批量与并行图像生成”部分的示例代码
 
 async def main():
     api_key = "YOUR_API_KEY"
@@ -646,12 +653,6 @@ See `references/api-endpoints.md` for complete endpoint documentation.
 
 All requests need `api_token` header:
 ```
+
+### API密钥示例
 api_token: YOUR_BRIA_API_KEY
-```
-
----
-
-## Related Skills
-
-- **[vgl](../vgl/SKILL.md)** - Write structured VGL (Visual Generation Language) JSON prompts for precise, deterministic control over FIBO image generation. Use VGL for reproducible outputs with explicit visual attributes.
-- **[image-utils](../image-utils/SKILL.md)** - Classic image manipulation (resize, crop, composite, watermarks) for post-processing Bria outputs

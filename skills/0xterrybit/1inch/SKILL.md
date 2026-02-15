@@ -1,45 +1,45 @@
 ---
 name: 1inch
-description: 1inch DEX aggregator. Find the best swap rates across 400+ liquidity sources on 12+ blockchains.
+description: 1inch DEX（去中心化交易所）聚合器：在12个以上的区块链平台上，从400多个流动性提供者中寻找最优的交易汇率。
 metadata: {"clawdbot":{"emoji":"🦄","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # 1inch DEX Aggregator 🦄
 
-The most popular DEX aggregator. Best rates across 400+ liquidity sources on 12+ blockchains.
+这是最受欢迎的DEX聚合器，能够提供来自12个以上区块链上400多个流动性提供者的最佳交易费率。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `ONEINCH_API_KEY` | 1inch API Key | Yes |
+| `ONEINCH_API_KEY` | 1inch API密钥 | 是 |
 
-## 💎 Referral Fee Configuration
+## 💎 推荐费配置
 
-This skill includes a referral fee (0.3%) to support development. The fee is transparently disclosed to users.
+为了支持开发，本工具会收取0.3%的推荐费，该费用会向用户透明披露。
 
-| Variable | Value | Description |
+| 变量 | 值 | 描述 |
 |----------|-------|-------------|
-| `REFERRER_ADDRESS` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | EVM wallet to receive fees |
-| `FEE_PERCENT` | 0.3 | 0.3% referral fee |
+| `REFERRER_ADDRESS` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | 收费用的EVM钱包地址 |
+| `FEE_PERCENT` | 0.3 | 推荐费率（0.3%） |
 
-> 💡 For high-volume integrations ($10M+), contact 1inch for custom revenue share agreements.
+> 💡 对于交易量较大的集成项目（超过1000万美元），请联系1inch以协商定制的收入分成协议。
 
-## Features
+## 主要功能
 
-- 🔄 **400+ Liquidity Sources** - Uniswap, SushiSwap, Curve, Balancer, etc.
-- ⛓️ **12+ Chains** - Ethereum, BSC, Polygon, Arbitrum, Optimism, etc.
-- 🛡️ **Fusion Mode** - Gasless swaps with MEV protection
-- 📊 **Pathfinder Algorithm** - Optimal routing across DEXs
-- 💰 **Limit Orders** - Set price targets
+- 🔄 **400多个流动性提供者**：Uniswap、SushiSwap、Curve、Balancer等
+- ⛓️ **12个以上的区块链**：Ethereum、BSC、Polygon、Arbitrum、Optimism等
+- 🛡️ **Fusion模式**：无gas交易，并提供MEV保护
+- 📊 **Pathfinder算法**：实现跨DEX的最优交易路径选择
+- 💰 **限价单**：允许设置交易价格目标
 
-## API Base URL
+## API基础URL
 
 ```
 https://api.1inch.dev
 ```
 
-## Get Swap Quote
+## 获取交易报价
 
 ```bash
 API_KEY="${ONEINCH_API_KEY}"
@@ -72,7 +72,7 @@ curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/swap" \
   }'
 ```
 
-## Get Quote Only (No Transaction)
+## 仅获取报价（不执行交易）
 
 ```bash
 curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/quote" \
@@ -89,7 +89,7 @@ curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/quote" \
   }'
 ```
 
-## Fusion Mode (Gasless Swap)
+## Fusion模式（无gas交易）
 
 ```bash
 # Get Fusion quote
@@ -104,14 +104,14 @@ curl -s "https://api.1inch.dev/fusion/quoter/v2.0/${CHAIN_ID}/quote/receive" \
   --data-urlencode "walletAddress=${FROM_ADDRESS}" | jq '.'
 ```
 
-## Get Token List
+## 获取代币列表
 
 ```bash
 curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/tokens" \
   -H "Authorization: Bearer ${API_KEY}" | jq '.tokens | to_entries[:10] | .[] | {symbol: .value.symbol, address: .key, decimals: .value.decimals}'
 ```
 
-## Check Allowance
+## 检查账户余额
 
 ```bash
 TOKEN_ADDRESS="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"  # USDC
@@ -124,7 +124,7 @@ curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/approve/allowance" \
   --data-urlencode "walletAddress=${WALLET_ADDRESS}" | jq '.allowance'
 ```
 
-## Get Approval Transaction
+## 获取交易批准
 
 ```bash
 curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/approve/transaction" \
@@ -134,9 +134,9 @@ curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/approve/transaction" \
   --data-urlencode "amount=${AMOUNT}" | jq '{to: .to, data: .data, value: .value}'
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | ID | Native Token |
+| 区块链 | ID | 原生代币 |
 |-------|-----|--------------|
 | Ethereum | 1 | ETH |
 | BSC | 56 | BNB |
@@ -151,16 +151,16 @@ curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/approve/transaction" \
 | Aurora | 1313161554 | ETH |
 | Klaytn | 8217 | KLAY |
 
-## Common Token Addresses
+## 常见代币的以太坊地址与Polygon地址
 
-| Token | Ethereum | Polygon |
+| 代币 | 以太坊地址 | Polygon地址 |
 |-------|----------|---------|
-| Native | 0xEeee...EEeE | 0xEeee...EEeE |
+| ETH | 0xEeee...EEeE | 0xEeee...EEeE |
 | USDC | 0xA0b8...1d0F | 0x2791...1ec7 |
 | USDT | 0xdAC1...1ec7 | 0xc2132...1ec7 |
 | WETH | 0xC02a...6Cc2 | 0x7ceB...6Cc2 |
 
-## Limit Orders
+## 限价单功能
 
 ```bash
 # Create limit order
@@ -180,24 +180,24 @@ curl -s -X POST "https://api.1inch.dev/orderbook/v4.0/${CHAIN_ID}/order" \
   }'
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** display swap details before execution
-2. **WARN** if price impact > 1%
-3. **CHECK** token allowance before swap
-4. **VERIFY** slippage settings
-5. **NEVER** execute without user confirmation
+1. **执行交易前** **务必** 显示交易详情。
+2. 如果价格变动超过1%，系统会发出**警告**。
+3. 在执行交易前**必须** 检查账户的代币余额。
+4. **确认** 交易滑点设置。
+5. **未经用户确认** **严禁** 执行交易。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误类型 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `insufficient funds` | Low balance | Check wallet balance |
-| `cannot estimate` | Route not found | Try different amount |
-| `allowance` | Token not approved | Approve token first |
+| `insufficient funds` | 账户余额不足 | 请检查钱包余额。 |
+| `cannot estimate` | 无法找到交易路径 | 请尝试调整交易金额。 |
+| `allowance` | 代币未被批准 | 请先批准相关代币。 |
 
-## Links
+## 链接
 
-- [1inch Docs](https://docs.1inch.io/)
-- [API Portal](https://portal.1inch.dev/)
-- [Developer Hub](https://1inch.io/page-api/)
+- [1inch官方文档](https://docs.1inch.io/)
+- [API门户](https://portal.1inch.dev/)
+- [开发者中心](https://1inch.io/page-api/)

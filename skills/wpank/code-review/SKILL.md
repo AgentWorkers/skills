@@ -2,16 +2,15 @@
 name: code-review
 model: reasoning
 category: testing
-description: Systematic code review patterns covering security, performance, maintainability, correctness, and testing — with severity levels, structured feedback guidance, review process, and anti-patterns to avoid. Use when reviewing PRs, establishing review standards, or improving review quality.
+description: 系统化的代码审查模式，涵盖安全性、性能、可维护性、正确性以及测试等方面——包括问题的严重等级、结构化的反馈指导、审查流程以及需要避免的常见错误（反模式）。这些模式可用于审查 Pull Request（PR）、制定审查标准或提升代码审查的质量。
 version: 1.0
 ---
 
-# Code Review Checklist
+# 代码审查检查清单
 
-Thorough, structured approach to reviewing code. Work through each dimension systematically rather than scanning randomly.
+本清单提供了一种系统化、全面的代码审查方法，确保每个方面都得到妥善处理，而非随意浏览代码。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -22,204 +21,204 @@ npx clawhub@latest install code-review
 
 ---
 
-## Review Dimensions
+## 审查维度
 
-| Dimension | Focus | Priority |
+| 维度 | 重点 | 优先级 |
 |-----------|-------|----------|
-| Security | Vulnerabilities, auth, data exposure | Critical |
-| Performance | Speed, memory, scalability bottlenecks | High |
-| Correctness | Logic errors, edge cases, data integrity | High |
-| Maintainability | Readability, structure, future-proofing | Medium |
-| Testing | Coverage, quality, reliability of tests | Medium |
-| Accessibility | WCAG compliance, keyboard nav, screen readers | Medium |
-| Documentation | Comments, API docs, changelog entries | Low |
+| 安全性 | 漏洞、身份验证、数据泄露 | 关键 |
+| 性能 | 速度、内存使用、可扩展性瓶颈 | 高 |
+| 正确性 | 逻辑错误、边界情况、数据完整性 | 高 |
+| 可维护性 | 代码可读性、结构合理性、未来扩展性 | 中等 |
+| 测试 | 测试覆盖率、测试质量、可靠性 | 中等 |
+| 可访问性 | WCAG合规性、键盘导航、屏幕阅读器支持 | 中等 |
+| 文档 | 注释、API文档、变更日志 | 低 |
 
 ---
 
-## Security Checklist
+## 安全性检查清单
 
-Review every change for these vulnerabilities:
+审查每一处更改，确保不存在以下安全漏洞：
 
-- [ ] **SQL Injection** — All queries use parameterized statements or an ORM; no string concatenation with user input
-- [ ] **XSS** — User-provided content is escaped/sanitized before rendering; `dangerouslySetInnerHTML` or equivalent is justified and safe
-- [ ] **CSRF Protection** — State-changing requests require valid CSRF tokens; SameSite cookie attributes are set
-- [ ] **Authentication** — Every protected endpoint verifies the user is authenticated before processing
-- [ ] **Authorization** — Resource access is scoped to the requesting user's permissions; no IDOR vulnerabilities
-- [ ] **Input Validation** — All external input (params, headers, body, files) is validated for type, length, format, and range on the server side
-- [ ] **Secrets Management** — No API keys, passwords, tokens, or credentials in source code; secrets come from environment variables or a vault
-- [ ] **Dependency Safety** — New dependencies are from trusted sources, actively maintained, and free of known CVEs
-- [ ] **Sensitive Data** — PII, tokens, and secrets are never logged, included in error messages, or returned in API responses
-- [ ] **Rate Limiting** — Public and auth endpoints have rate limits to prevent brute-force and abuse
-- [ ] **File Upload Safety** — Uploaded files are validated for type and size, stored outside the webroot, and served with safe Content-Type headers
-- [ ] **HTTP Security Headers** — Content-Security-Policy, X-Content-Type-Options, Strict-Transport-Security are set
-
----
-
-## Performance Checklist
-
-- [ ] **N+1 Queries** — Database access patterns are batched or joined; no loops issuing individual queries
-- [ ] **Unnecessary Re-renders** — Components only re-render when their relevant state/props change; memoization is applied where measurable
-- [ ] **Memory Leaks** — Event listeners, subscriptions, timers, and intervals are cleaned up on unmount/disposal
-- [ ] **Bundle Size** — New dependencies are tree-shakeable; large libraries are loaded dynamically; no full-library imports for a single function
-- [ ] **Lazy Loading** — Heavy components, routes, and below-the-fold content use lazy loading / code splitting
-- [ ] **Caching Strategy** — Expensive computations and API responses use appropriate caching (memoization, HTTP cache headers, Redis)
-- [ ] **Database Indexing** — Queries filter/sort on indexed columns; new queries have been checked with EXPLAIN
-- [ ] **Pagination** — List endpoints and queries use pagination or cursor-based fetching; no unbounded SELECT *
-- [ ] **Async Operations** — Long-running tasks are offloaded to background jobs or queues rather than blocking request threads
-- [ ] **Image & Asset Optimization** — Images are properly sized, use modern formats (WebP/AVIF), and leverage CDN delivery
+- [ ] **SQL注入** — 所有查询都使用参数化语句或ORM；避免将用户输入直接拼接到字符串中
+- [ ] **XSS** — 用户提供的内容在渲染前已进行转义/消毒；`dangerouslySetInnerHTML` 或类似方法的使用是合理且安全的
+- [ ] **CSRF保护** — 改变状态的请求需要有效的CSRF令牌；设置了SameSite cookie属性
+- [ ] **身份验证** — 每个受保护的端点在处理前都会验证用户身份
+- [ ] **授权** | 资源访问权限基于用户的权限；不存在IDOR漏洞
+- [ ] **输入验证** — 所有外部输入（参数、头部信息、请求体、文件）在服务器端都会进行类型、长度、格式和范围的验证
+- **秘密管理** | 源代码中不包含API密钥、密码、令牌或凭证；秘密信息来自环境变量或安全存储库
+- **依赖安全性** | 新依赖项来自可信来源，定期维护，且无已知的CVE漏洞
+- **敏感数据** | 个人身份信息（PII）、令牌和秘密信息不会被记录在日志中、包含在错误消息中或通过API响应返回
+- **速率限制** | 公共接口和受保护的接口都设置了速率限制，以防止暴力攻击和滥用
+- **文件上传安全** | 上传的文件会进行类型和大小验证，存储在Web根目录之外，并使用安全的Content-Type头部信息
+- **HTTP安全头部** | 设置了Content-Security-Policy、X-Content-Type-Options、Strict-Transport-Security等头部信息
 
 ---
 
-## Correctness Checklist
+## 性能检查清单
 
-- [ ] **Edge Cases** — Empty arrays, empty strings, zero values, negative numbers, and maximum values are handled
-- [ ] **Null/Undefined Handling** — Nullable values are checked before access; optional chaining or guards prevent runtime errors
-- [ ] **Off-by-One Errors** — Loop bounds, array slicing, pagination offsets, and range calculations are verified
-- [ ] **Race Conditions** — Concurrent access to shared state uses locks, transactions, or atomic operations
-- [ ] **Timezone Handling** — Dates are stored in UTC; display conversion happens at the presentation layer
-- [ ] **Unicode & Encoding** — String operations handle multi-byte characters; text encoding is explicit (UTF-8)
-- [ ] **Integer Overflow / Precision** — Arithmetic on large numbers or currency uses appropriate types (BigInt, Decimal)
-- [ ] **Error Propagation** — Errors from async calls and external services are caught and handled; promises are never silently swallowed
-- [ ] **State Consistency** — Multi-step mutations are transactional; partial failures leave the system in a valid state
-- [ ] **Boundary Validation** — Values at the boundaries of valid ranges (min, max, exactly-at-limit) are tested
-
----
-
-## Maintainability Checklist
-
-- [ ] **Naming Clarity** — Variables, functions, and classes have descriptive names that reveal intent
-- [ ] **Single Responsibility** — Each function/class/module does one thing; changes to one concern don't ripple through unrelated code
-- [ ] **DRY** — Duplicated logic is extracted into shared utilities; copy-pasted blocks are consolidated
-- [ ] **Cyclomatic Complexity** — Functions have low branching complexity; deeply nested chains are refactored
-- [ ] **Error Handling** — Errors are caught at appropriate boundaries, logged with context, and surfaced meaningfully
-- [ ] **Dead Code Removal** — Commented-out code, unused imports, unreachable branches, and obsolete feature flags are removed
-- [ ] **Magic Numbers & Strings** — Literal values are extracted into named constants with clear semantics
-- [ ] **Consistent Patterns** — New code follows the conventions already established in the codebase
-- [ ] **Function Length** — Functions are short enough to understand at a glance; long functions are decomposed
-- [ ] **Dependency Direction** — Dependencies point inward (infrastructure to domain); core logic does not import from UI or framework layers
+- [ ] **N+1查询** — 数据库访问模式采用批量处理或联合查询；避免单独发送多次查询
+- [ ] **不必要的重新渲染** — 组件仅在其相关状态或属性发生变化时才重新渲染；可应用缓存机制
+- **内存泄漏** | 事件监听器、订阅、定时器和间隔任务在组件卸载或销毁时会被清理
+- **包大小** | 新依赖项是按需加载的；大型库动态加载；避免为单个功能导入整个库
+- **懒加载** | 重载组件、路由和不在页面可见的内容采用懒加载/代码分割技术
+- **缓存策略** | 计算密集型操作和API响应使用适当的缓存机制（如缓存、HTTP缓存头部、Redis）
+- **数据库索引** | 查询基于索引列进行过滤/排序；新查询会使用EXPLAIN进行优化
+- **分页** | 列表接口和查询使用分页或基于游标的获取方式；避免使用无限制的SELECT *
+- **异步操作** | 长时间运行的任务会被转移到后台作业或队列中，避免阻塞请求线程
+- **图片与资源优化** | 图片大小合适，使用现代格式（如WebP/AVIF），并通过CDN传输
 
 ---
 
-## Testing Checklist
+## 正确性检查清单
 
-- [ ] **Test Coverage** — New logic paths have corresponding tests; critical paths have both happy-path and failure-case tests
-- [ ] **Edge Case Tests** — Tests cover boundary values, empty inputs, nulls, and error conditions
-- [ ] **No Flaky Tests** — Tests are deterministic; no reliance on timing, external services, or shared mutable state
-- [ ] **Test Independence** — Each test sets up its own state and tears it down; test order does not affect results
-- [ ] **Meaningful Assertions** — Tests assert on behavior and outcomes, not implementation details
-- [ ] **Test Readability** — Tests follow Arrange-Act-Assert; test names describe the scenario and expected outcome
-- [ ] **Mocking Discipline** — Only external boundaries (network, DB, filesystem) are mocked
-- [ ] **Regression Tests** — Bug fixes include a test that reproduces the original bug and proves it is resolved
+- [ ] **边界情况** | 正确处理空数组、空字符串、零值、负数和最大值
+- [ ] **空值/未定义值处理** | 访问前检查空值；使用可选链或防护机制防止运行时错误
+- [ ] **边界错误** | 循环边界、数组切片、分页偏移量和范围计算都经过验证
+- **竞态条件** | 对共享状态的并发访问使用锁、事务或原子操作
+- **时区处理** | 日期存储为UTC格式；显示时进行转换
+- **Unicode与编码** | 字符串操作支持多字节字符；明确指定文本编码（UTF-8）
+- **整数溢出/精度** | 大数运算或货币处理使用适当的类型（如BigInt、Decimal）
+- **错误传播** | 异步调用和外部服务的错误会被捕获并处理；避免错误被默默忽略
+- **状态一致性** | 多步骤操作是原子性的；部分失败后系统仍保持有效状态
+- **边界值验证** | 在有效范围的边界值（最小值、最大值）上进行测试
 
 ---
 
-## Review Process
+## 可维护性检查清单
 
-Work through the code in three passes. Do not try to catch everything in one read.
+- **命名清晰** | 变量、函数和类具有描述性的名称，能清晰表达其用途
+- **单一职责原则** | 每个函数/类/模块只负责一个功能；对某部分的修改不会影响到无关代码
+- **代码复用** | 重复的逻辑被提取到共享工具函数中；避免复制粘贴代码
+- **循环复杂度** | 函数的分支结构简单；深度嵌套的逻辑被重构
+- **错误处理** | 错误在适当的位置被捕获并记录，同时提供有意义的反馈
+- **删除无用代码** | 移除注释掉的代码、未使用的导入项、无法到达的分支和过时的功能
+- **常量化** | 字面值被提取为具有明确含义的常量
+- **代码规范** | 新代码遵循代码库中已建立的规范
+- **函数长度** | 函数长度适中，便于快速理解；长函数会被拆分
+- **依赖关系** | 依赖关系从基础设施层指向业务逻辑层
 
-| Pass | Focus | Time | What to Look For |
+---
+
+## 测试检查清单
+
+- **测试覆盖率** | 新逻辑路径都有对应的测试用例；关键路径既有正常情况测试也有异常情况测试
+- **边界情况测试** | 测试覆盖边界值、空输入和错误条件
+- **测试稳定性** | 测试结果具有确定性；不依赖时间、外部服务或共享的可变状态
+- **测试独立性** | 每个测试都会创建自己的状态并清理自身；测试顺序不影响结果
+- **断言清晰** | 测试关注行为和结果，而非实现细节
+- **测试可读性** | 测试遵循“Arrange-Act-Assert”流程；测试名称描述测试场景和预期结果
+- **模拟测试** | 仅模拟外部接口（网络、数据库、文件系统）
+- **回归测试** | 修复漏洞时包含重现原始问题的测试用例，确保问题已解决
+
+---
+
+## 审查流程
+
+分三步进行代码审查。不要试图一次看完所有内容。
+
+| 第一步 | 重点 | 时间 | 审查内容 |
 |------|-------|------|------------------|
-| First | High-level structure | 2-5 min | Architecture fit, file organization, API design, overall approach |
-| Second | Line-by-line detail | Bulk | Logic errors, security issues, performance problems, edge cases |
-| Third | Edge cases & hardening | 5 min | Failure modes, concurrency, boundary values, missing tests |
+| 第一步 | 高层结构 | 2-5分钟 | 架构合理性、文件组织结构、API设计、整体方法 |
+| 第二步 | 逐行细节 | 整体代码 | 逻辑错误、安全问题、性能问题、边界情况 |
+| 第三步 | 边界情况与安全加固 | 5分钟 | 可能出现的错误情况、并发问题、边界值、缺失的测试用例 |
 
-### First Pass (2-5 minutes)
+### 第一步（2-5分钟）
 
-1. Read the PR description and linked issue
-2. Scan the file list — does the change scope make sense?
-3. Check the overall approach — is this the right solution to the problem?
-4. Verify the change does not introduce architectural drift
+1. 阅读Pull Request（PR）描述和关联的问题
+2. 浏览文件列表——变更范围是否合理？
+3. 检查整体解决方案是否合适
+4. 确认变更不会导致架构上的偏离
 
-### Second Pass (bulk of review time)
+### 第二步（主要审查时间）
 
-1. Read each file diff top to bottom
-2. Check every function change against the checklists above
-3. Verify error handling at every I/O boundary
-4. Flag anything that makes you pause — trust your instincts
+1. 从上到下阅读每个文件的差异
+2. 根据上述检查清单检查每个函数的变更
+3. 验证每个输入/输出边界处的错误处理逻辑
+4. 遇到可疑之处请暂停并仔细思考
 
-### Third Pass (5 minutes)
+### 第三步（5分钟）
 
-1. Think about what could go wrong in production
-2. Check for missing tests on the code paths you flagged
-3. Verify rollback safety — can this change be reverted without data loss?
-4. Confirm documentation and changelog are updated if needed
+1. 考虑在生产环境中可能出现的错误
+2. 检查你标记的代码路径中是否缺少测试用例
+3. 确认变更是否可以安全回滚（不会导致数据丢失）
+4. 如有必要，更新文档和变更日志
 
 ---
 
-## Severity Levels
+## 严重性分级
 
-Classify every comment by severity so the author knows what blocks merge.
+对每条评论进行分级，以便作者了解哪些代码块可以合并：
 
-| Level | Label | Meaning | Blocks Merge? |
+| 严重性 | 标签 | 含义 | 是否可以合并 |
 |-------|-------|---------|---------------|
-| Critical | `[CRITICAL]` | Security vulnerability, data loss, or crash in production | Yes |
-| Major | `[MAJOR]` | Bug, logic error, or significant performance regression | Yes |
-| Minor | `[MINOR]` | Improvement that would reduce future maintenance cost | No |
-| Nitpick | `[NIT]` | Style preference, naming suggestion, or trivial cleanup | No |
+| 关键 | `[CRITICAL]` | 存在安全漏洞、数据丢失或导致生产环境崩溃 | 可以合并 |
+| 重大 | `[MAJOR]` | 存在漏洞、逻辑错误或性能严重下降 | 可以合并 |
+| 轻微 | `[MINOR] | 能降低未来维护成本的改进 | 不需要合并 |
+| 无关紧要 | `[NIT] | 仅涉及代码风格或命名建议 | 不需要合并 |
 
-Always prefix your review comment with the severity label. This removes ambiguity about what matters.
+在评论前加上相应的严重性标签，以避免歧义。
 
 ---
 
-## Giving Feedback
+## 提供反馈
 
-### Principles
+### 原则
 
-- **Be specific** — Point to the exact line and explain the issue, not just "this is wrong"
-- **Explain why** — State the risk or consequence, not just the rule
-- **Suggest a fix** — Offer a concrete alternative or code snippet when possible
-- **Ask, don't demand** — Use questions for subjective points: "What do you think about...?"
-- **Acknowledge good work** — Call out clean solutions, clever optimizations, or thorough tests
-- **Separate blocking from non-blocking** — Use severity labels so the author knows what matters
+- **具体说明** — 指出具体错误位置并解释问题，而不仅仅是“这里有错误”
+- **解释原因** — 说明风险或后果，而不仅仅是指出问题
+- **提出解决方案** — 如有可能，提供具体的改进建议或代码示例
+- **提出问题** — 对于主观性意见，使用疑问句提问：“你对此有什么看法？”
+- **认可优秀的工作** | 表扬合理的解决方案、巧妙的优化或全面的测试
+- **区分关键问题与非关键问题** | 使用严重性标签，让作者明确哪些问题需要关注
 
-### Example Comments
+### 示例评论
 
-**Bad:**
-> This is wrong. Fix it.
+**错误示例：**
+> 这个代码有错误，请修复。
 
-**Good:**
-> `[MAJOR]` This query interpolates user input directly into the SQL string (line 42), which is vulnerable to SQL injection. Consider using a parameterized query:
+**正确示例：**
+> `[MAJOR]` 这条查询直接将用户输入插入SQL字符串（第42行），容易导致SQL注入。建议使用参数化查询：
 > ```sql
 > SELECT * FROM users WHERE id = $1
 > ```
 
-**Bad:**
-> Why didn't you add tests?
+**错误示例：**
+> 为什么没有添加测试用例？
 
-**Good:**
-> `[MINOR]` The new `calculateDiscount()` function has a few branching paths — could we add tests for the zero-quantity and negative-price edge cases to prevent regressions?
+**正确示例：**
+> `[MINOR]` 新的`calculateDiscount()`函数包含多个分支路径——是否可以为零数量和负价格的情况添加测试用例，以防止代码回归？
 
-**Bad:**
-> I would have done this differently.
+**错误示例：**
+> 我会用不同的方式实现这个功能。
 
-**Good:**
-> `[NIT]` This works well. An alternative approach could be extracting the retry logic into a shared `withRetry()` wrapper — but that's optional and could be a follow-up.
+**正确示例：**
+> `[NIT]` 这个实现已经很好。另一种方法是将重试逻辑提取到一个共享的`withRetry()`函数中——但这不是强制性的，可以后续再处理。
 
 ---
 
-## Review Anti-Patterns
+## 避免的常见审查误区
 
-Avoid these common traps that waste time and damage team trust:
+避免以下常见的误区，这些误区会浪费时间并损害团队信任：
 
-| Anti-Pattern | Description |
+| 应避免的误区 | 描述 |
 |--------------|-------------|
-| **Rubber-Stamping** | Approving without reading. Creates false confidence and lets bugs through. |
-| **Bikeshedding** | Spending 30 minutes debating a variable name while ignoring a race condition. |
-| **Blocking on Style** | Refusing to approve over formatting that a linter should enforce automatically. |
-| **Gatekeeping** | Requiring your personal preferred approach when the submitted one is correct. |
-| **Drive-by Reviews** | Leaving one vague comment and disappearing. Commit to following through. |
-| **Scope Creep Reviews** | Requesting unrelated refactors that should be separate PRs. |
-| **Stale Reviews** | Letting PRs sit for days. Review within 24 hours or hand off to someone else. |
-| **Emotional Language** | "This is terrible" or "obviously wrong." Critique the code, not the person. |
+| **形式主义审查** | 不阅读代码就直接批准。这会给人虚假的安全感，反而可能导致漏洞遗漏。 |
+| **无意义的争论** | 花30分钟讨论变量名，却忽视了潜在的竞态条件。 |
+| **过度关注代码格式** | 因格式问题而拒绝批准代码。 |
+| **坚持个人偏好** | 强制使用个人偏好的代码格式。 |
+- **敷衍了事的审查** | 只留下模糊的评论就不再跟进。请确保完成审查。 |
+- **范围过大的审查** | 将本应单独提交的代码重构请求合并到同一个PR中。 |
+- **延迟审查** | 让PR等待数天再处理。请在24小时内完成审查或转交给他人。 |
+- **情绪化的语言** | 用“这太糟糕了”或“显然错了”来评价代码。批评代码本身，而非开发者。 |
 
 ---
 
-## NEVER Do
+## 绝对禁止的行为
 
-1. **NEVER approve without reading every changed line** — rubber-stamping is worse than no review
-2. **NEVER block a PR solely for style preferences** — use a linter; humans review logic
-3. **NEVER leave feedback without a severity level** — ambiguity causes wasted cycles
-4. **NEVER request changes without explaining why** — "fix this" teaches nothing
-5. **NEVER review more than 400 lines in one sitting** — comprehension drops sharply; break large PRs into sessions
-6. **NEVER skip the security checklist** — one missed vulnerability outweighs a hundred style nits
-7. **NEVER make it personal** — review the code, never the coder; assume good intent
+- **未经阅读所有更改就批准** — 形式主义的批准比不进行任何审查更糟糕
+- **仅因代码格式问题就拒绝PR** — 使用代码检查工具；逻辑问题应由人工审核
+- **不标注严重性就给出反馈** — 模糊的反馈会导致重复工作
+- **不说明原因就要求修改** — 仅仅要求“修复这个问题”毫无帮助
+- **一次审查超过400行代码** — 一次审查难以理解所有内容；将大型PR分成多个部分处理
+- **忽略安全检查** — 单个遗漏的安全漏洞比一百个格式问题更重要
+- **个人化批评** — 评论代码本身，而非开发者；假设开发者的意图是好的

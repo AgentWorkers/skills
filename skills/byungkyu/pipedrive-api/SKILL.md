@@ -15,9 +15,9 @@ metadata:
 
 # Pipedrive
 
-Access the Pipedrive API with managed OAuth authentication. Manage deals, persons, organizations, activities, pipelines, and more for sales CRM workflows.
+通过管理的 OAuth 认证来访问 Pipedrive API。您可以管理销售 CRM 工作流程中的交易、人员、组织、活动、管道等。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List deals
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/pipedrive/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Pipedrive API endpoint path. The gateway proxies requests to `api.pipedrive.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Pipedrive API 端点路径。该网关会将请求代理到 `api.pipedrive.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Pipedrive OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Pipedrive OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Pipedrive connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Pipedrive 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,28 +138,28 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Deals
+### 交易
 
-#### List Deals
+#### 列出交易
 
 ```bash
 GET /pipedrive/api/v1/deals
 ```
 
-Query parameters:
-- `status` - Filter by status: `open`, `won`, `lost`, `deleted`, `all_not_deleted`
-- `filter_id` - Filter ID to use
-- `stage_id` - Filter by stage
-- `user_id` - Filter by user
-- `start` - Pagination start (default 0)
-- `limit` - Items per page (default 100)
-- `sort` - Sort field and order (e.g., `add_time DESC`)
+查询参数：
+- `status` - 按状态筛选：`open`（未完成）、`won`（已赢得）、`lost`（已丢失）、`deleted`（已删除）、`all_not_deleted`（所有未删除的交易）
+- `filter_id` - 要使用的筛选 ID
+- `stage_id` - 按阶段筛选
+- `user_id` - 按用户筛选
+- `start` - 分页起始位置（默认为 0）
+- `limit` - 每页显示的条数（默认为 100）
+- `sort` - 排序字段和顺序（例如，`add_time DESC`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -170,13 +170,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Deal
+#### 获取交易信息
 
 ```bash
 GET /pipedrive/api/v1/deals/{id}
 ```
 
-#### Create Deal
+#### 创建交易
 
 ```bash
 POST /pipedrive/api/v1/deals
@@ -193,7 +193,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Deal
+#### 更新交易
 
 ```bash
 PUT /pipedrive/api/v1/deals/{id}
@@ -206,39 +206,39 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Deal
+#### 删除交易
 
 ```bash
 DELETE /pipedrive/api/v1/deals/{id}
 ```
 
-#### Search Deals
+#### 搜索交易
 
 ```bash
 GET /pipedrive/api/v1/deals/search?term=enterprise
 ```
 
-### Persons (Contacts)
+### 人员（联系人）
 
-#### List Persons
+#### 列出人员
 
 ```bash
 GET /pipedrive/api/v1/persons
 ```
 
-Query parameters:
-- `filter_id` - Filter ID
-- `start` - Pagination start
-- `limit` - Items per page
-- `sort` - Sort field and order
+查询参数：
+- `filter_id` - 筛选 ID
+- `start` - 分页起始位置
+- `limit` - 每页显示的条数
+- `sort` - 排序字段和顺序
 
-#### Get Person
+#### 获取人员信息
 
 ```bash
 GET /pipedrive/api/v1/persons/{id}
 ```
 
-#### Create Person
+#### 创建人员
 
 ```bash
 POST /pipedrive/api/v1/persons
@@ -253,7 +253,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Person
+#### 更新人员信息
 
 ```bash
 PUT /pipedrive/api/v1/persons/{id}
@@ -265,33 +265,33 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Person
+#### 删除人员
 
 ```bash
 DELETE /pipedrive/api/v1/persons/{id}
 ```
 
-#### Search Persons
+#### 搜索人员
 
 ```bash
 GET /pipedrive/api/v1/persons/search?term=john
 ```
 
-### Organizations
+### 组织
 
-#### List Organizations
+#### 列出组织
 
 ```bash
 GET /pipedrive/api/v1/organizations
 ```
 
-#### Get Organization
+#### 获取组织信息
 
 ```bash
 GET /pipedrive/api/v1/organizations/{id}
 ```
 
-#### Create Organization
+#### 创建组织
 
 ```bash
 POST /pipedrive/api/v1/organizations
@@ -304,7 +304,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Organization
+#### 更新组织信息
 
 ```bash
 PUT /pipedrive/api/v1/organizations/{id}
@@ -315,34 +315,34 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Organization
+#### 删除组织
 
 ```bash
 DELETE /pipedrive/api/v1/organizations/{id}
 ```
 
-### Activities
+### 活动
 
-#### List Activities
+#### 列出活动
 
 ```bash
 GET /pipedrive/api/v1/activities
 ```
 
-Query parameters:
-- `type` - Activity type (e.g., `call`, `meeting`, `task`, `email`)
-- `done` - Filter by completion (0 or 1)
-- `user_id` - Filter by user
-- `start_date` - Filter by start date
-- `end_date` - Filter by end date
+查询参数：
+- `type` - 活动类型（例如，`call`（电话）、`meeting`（会议）、`task`（任务）、`email`（邮件）
+- `done` - 按完成状态筛选（0 或 1）
+- `user_id` - 按用户筛选
+- `start_date` - 按开始日期筛选
+- `end_date` - 按结束日期筛选
 
-#### Get Activity
+#### 获取活动信息
 
 ```bash
 GET /pipedrive/api/v1/activities/{id}
 ```
 
-#### Create Activity
+#### 创建活动
 
 ```bash
 POST /pipedrive/api/v1/activities
@@ -360,7 +360,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Activity
+#### 更新活动信息
 
 ```bash
 PUT /pipedrive/api/v1/activities/{id}
@@ -372,57 +372,57 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Activity
+#### 删除活动
 
 ```bash
 DELETE /pipedrive/api/v1/activities/{id}
 ```
 
-### Pipelines
+### 管道
 
-#### List Pipelines
+#### 列出管道
 
 ```bash
 GET /pipedrive/api/v1/pipelines
 ```
 
-#### Get Pipeline
+#### 获取管道信息
 
 ```bash
 GET /pipedrive/api/v1/pipelines/{id}
 ```
 
-### Stages
+### 阶段
 
-#### List Stages
+#### 列出阶段
 
 ```bash
 GET /pipedrive/api/v1/stages
 ```
 
-Query parameters:
-- `pipeline_id` - Filter by pipeline
+查询参数：
+- `pipeline_id` - 按管道筛选
 
-#### Get Stage
+#### 获取阶段信息
 
 ```bash
 GET /pipedrive/api/v1/stages/{id}
 ```
 
-### Notes
+### 备注
 
-#### List Notes
+#### 列出备注
 
 ```bash
 GET /pipedrive/api/v1/notes
 ```
 
-Query parameters:
-- `deal_id` - Filter by deal
-- `person_id` - Filter by person
-- `org_id` - Filter by organization
+查询参数：
+- `deal_id` - 按交易筛选
+- `person_id` - 按人员筛选
+- `org_id` - 按组织筛选
 
-#### Create Note
+#### 创建备注
 
 ```bash
 POST /pipedrive/api/v1/notes
@@ -435,21 +435,21 @@ Content-Type: application/json
 }
 ```
 
-### Users
+### 用户
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /pipedrive/api/v1/users
 ```
 
-#### Get Current User
+#### 获取当前用户信息
 
 ```bash
 GET /pipedrive/api/v1/users/me
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -506,36 +506,36 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- IDs are integers
-- Email and phone fields accept arrays for multiple values
-- `visible_to` values: 1 (owner only), 3 (entire company), 5 (owner's visibility group), 7 (entire company and visibility group)
-- Deal status: `open`, `won`, `lost`, `deleted`
-- Use `start` and `limit` for pagination
-- Custom fields are supported via their API key (e.g., `abc123_custom_field`)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- ID 为整数。
+- 电子邮件和电话字段支持多个值的数组。
+- `visible_to` 的值：1（仅所有者可见）、3（整个公司可见）、5（所有者和指定可见组可见）、7（整个公司和指定可见组可见）。
+- 交易状态：`open`（未完成）、`won`（已赢得）、`lost`（已丢失）、`deleted`（已删除）。
+- 使用 `start` 和 `limit` 进行分页。
+- 支持通过 API 密钥访问自定义字段（例如，`abc123_custom_field`）。
+- 重要提示：当 URL 包含方括号（`fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以防止全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 可能无法正确展开，可能会导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Pipedrive connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Pipedrive API |
+| 400 | 缺少 Pipedrive 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 Pipedrive API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -546,22 +546,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `pipedrive`. For example:
+1. 确保您的 URL 路径以 `pipedrive` 开头。例如：
+- 正确：`https://gateway.maton.ai/pipedrive/api/v1/deals`
+- 错误：`https://gateway.maton.ai/api/v1/deals`
 
-- Correct: `https://gateway.maton.ai/pipedrive/api/v1/deals`
-- Incorrect: `https://gateway.maton.ai/api/v1/deals`
+## 资源
 
-## Resources
-
-- [Pipedrive API Overview](https://developers.pipedrive.com/docs/api/v1)
-- [Deals](https://developers.pipedrive.com/docs/api/v1/Deals)
-- [Persons](https://developers.pipedrive.com/docs/api/v1/Persons)
-- [Organizations](https://developers.pipedrive.com/docs/api/v1/Organizations)
-- [Activities](https://developers.pipedrive.com/docs/api/v1/Activities)
-- [Pipelines](https://developers.pipedrive.com/docs/api/v1/Pipelines)
-- [Stages](https://developers.pipedrive.com/docs/api/v1/Stages)
-- [Notes](https://developers.pipedrive.com/docs/api/v1/Notes)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Pipedrive API 概述](https://developers.pipedrive.com/docs/api/v1)
+- [交易](https://developers.pipedrive.com/docs/api/v1/Deals)
+- [人员](https://developers.pipedrive.com/docs/api/v1/Persons)
+- [组织](https://developers.pipedrive.com/docs/api/v1/Organizations)
+- [活动](https://developers.pipedrive.com/docs/api/v1/Activities)
+- [管道](https://developers.pipedrive.com/docs/api/v1/Pipelines)
+- [阶段](https://developers.pipedrive.com/docs/api/v1/Stages)
+- [备注](https://developers.pipedrive.com/docs/api/v1/Notes)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

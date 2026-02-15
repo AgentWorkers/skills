@@ -1,6 +1,6 @@
 ---
 name: video-cog
-description: "Long-form AI video production: the frontier of multi-agent coordination. CellCog orchestrates 6-7 foundation models to produce up to 4-minute videos from a single prompt — scripted, filmed, voiced, lipsync'd, scored, and edited automatically. Create marketing videos, product demos, explainer videos, educational content, spokesperson videos, training materials, UGC content, news reports."
+description: "长格式AI视频制作：多智能体协作的前沿技术。CellCog能够整合6-7个基础模型，根据用户提供的单一提示自动完成视频制作，包括脚本编写、拍摄、配音、对口型同步、音效添加以及视频编辑等全流程。该技术可用于制作营销视频、产品演示视频、教学视频、代言人视频、培训材料以及用户生成的内容（UGC）和新闻报道等。"
 metadata:
   openclaw:
     emoji: "🎬"
@@ -8,173 +8,146 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Video Cog - The Frontier of Multi-Agent Video Production
+# Video Cog – 多智能体视频制作的前沿技术
 
-**Long-form AI video production is the hardest challenge in multi-agent coordination.** CellCog may be the only platform that pulls it off.
+**长篇人工智能视频制作是多智能体协作领域中最具挑战性的任务。** CellCog可能是唯一能够实现这一目标的平台。
 
-6-7 foundation models orchestrated to produce up to 4-minute videos from a single prompt: script writing, scene generation, voice synthesis, lipsync, music scoring, and editing — all automatic. Marketing videos, product demos, explainers, educational content, AI spokesperson videos, UGC, news reports, and more.
-
----
-
-## Prerequisites
-
-This skill requires the `cellcog` skill for SDK setup and API calls.
-
-```bash
-clawhub install cellcog
-```
-
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
-
-**Quick pattern (v1.0+):**
-```python
-# Fire-and-forget - returns immediately
-result = client.create_chat(
-    prompt="[your video request]",
-    notify_session_key="agent:main:main",
-    task_label="video-task",
-    chat_mode="agent team"
-)
-# Daemon notifies you when complete - do NOT poll
-```
+通过整合6-7个基础模型，CellCog能够根据单个提示生成长达4分钟的视频：剧本编写、场景生成、语音合成、口型同步、音乐配乐以及视频编辑——所有这些过程都是自动完成的。适用场景包括营销视频、产品演示、教育视频、AI代言人视频、用户生成内容（UGC）、新闻报道等。
 
 ---
 
-## What Videos You Can Create
+## 先决条件
 
-### Marketing Videos
+使用该功能需要具备`cellcog`技能，以便进行SDK设置和API调用。
 
-Promotional content for products and services:
+**请先阅读`cellcog`技能的相关内容**，以了解如何进行SDK设置。该技能将向您展示该工具的强大功能。
 
-- **Product Demos**: "Create a 30-second product demo video for our new fitness app showing key features"
-- **Brand Videos**: "Generate a 60-second brand story video for an eco-friendly clothing company"
-- **Social Ads**: "Create a 15-second Instagram ad for a coffee subscription service"
-- **Launch Videos**: "Make a product launch announcement video for a new AI writing tool"
-
-### Explainer Videos
-
-Educational content that breaks down complex topics:
-
-- **Product Explainers**: "Create an explainer video showing how our SaaS platform works"
-- **Concept Explanations**: "Make a video explaining how blockchain works for beginners"
-- **Process Walkthroughs**: "Generate a video explaining the mortgage application process"
-- **Feature Tours**: "Create a video tour of our app's new dashboard features"
-
-### Educational Videos
-
-Learning content for courses and training:
-
-- **Tutorial Videos**: "Create a tutorial video on Python list comprehensions"
-- **Course Content**: "Generate a lesson video on the causes of World War I"
-- **Training Materials**: "Make an employee onboarding video about our company values"
-- **How-To Guides**: "Create a how-to video for setting up a home studio for podcasting"
-
-### Documentary Style
-
-Informative, story-driven content:
-
-- **Mini Documentaries**: "Create a 3-minute documentary-style video about the rise of electric vehicles"
-- **Company Stories**: "Generate a documentary about our startup journey"
-- **Industry Deep Dives**: "Make a documentary exploring the future of space tourism"
-- **Historical Content**: "Create a documentary-style video about the history of Silicon Valley"
-
-### Cinematic / Creative
-
-Artistic and visually striking content:
-
-- **Short Films**: "Create a 2-minute cinematic short about a day in Tokyo"
-- **Mood Pieces**: "Generate a cinematic video capturing the energy of a busy coffee shop"
-- **Music Video Style**: "Create a visually dynamic video for an electronic music track"
-- **Artistic Showcases**: "Make a cinematic portfolio video for a photographer"
-
-### UGC (User Generated Content) Style
-
-Authentic, relatable content that feels personal:
-
-- **Testimonial Style**: "Create a UGC-style testimonial video for a skincare product"
-- **Unboxing Style**: "Generate an unboxing-style video for a new tech gadget"
-- **Day-in-the-Life**: "Make a day-in-the-life style video featuring a remote worker using our app"
-- **Review Style**: "Create a casual review-style video for a meal delivery service"
-
-### News / Reporting Style
-
-Professional news-format content:
-
-- **News Reports**: "Create a news-style report video about the latest AI developments"
-- **Market Updates**: "Generate a financial news video about tech stock earnings"
-- **Industry News**: "Make a news report about new regulations in the fintech space"
-- **Analysis Pieces**: "Create a news analysis video about the state of remote work"
+**快速使用指南（v1.0及以上版本）：**
 
 ---
 
-## Lipsync & Spokesperson Videos
+## 可制作的视频类型
 
-CellCog can generate videos with AI characters speaking your script:
+### 营销视频
 
-- **AI Spokesperson**: "Create a video with a professional spokesperson explaining our product"
-- **Avatar Presentations**: "Generate a video with an AI presenter delivering our quarterly update"
-- **Character Narration**: "Make a video with a friendly character explaining our children's app"
+用于产品和服务的推广内容：
+- **产品演示**：为我们的新健身应用制作一段30秒的产品演示视频，展示其主要功能。
+- **品牌故事**：为一家环保服装公司生成一段60秒的品牌故事视频。
+- **社交媒体广告**：为咖啡订阅服务制作一段15秒的Instagram广告。
+- **产品发布**：为新的AI写作工具制作一段产品发布视频。
 
-For lipsync videos:
-1. The starting frame should show only one human face prominently
-2. Provide the script/dialogue
-3. CellCog handles voice synthesis and lip synchronization
+### 教育视频
+
+用于解释复杂概念的教育内容：
+- **产品说明**：制作一段解释性视频，展示我们的SaaS平台是如何工作的。
+- **概念讲解**：制作一段视频，向初学者解释区块链的工作原理。
+- **流程指南**：生成一段视频，讲解抵押贷款的申请流程。
+- **功能介绍**：制作一段视频，介绍我们应用程序的新功能。
+
+### 教育类课程内容
+
+用于课程和培训的学习资料：
+- **教程视频**：制作一段关于Python列表推导式的教程视频。
+- **课程内容**：生成一段关于第一次世界大战原因的课程视频。
+- **员工入职培训**：制作一段关于公司价值观的员工入职培训视频。
+- **操作指南**：制作一段关于如何在家中设置播客工作室的操作指南视频。
+
+### 纪录片风格
+
+信息丰富、以故事为主导的内容：
+- **迷你纪录片**：制作一段3分钟的视频，讲述电动汽车的兴起。
+- **公司历程**：制作一段关于我们创业历程的纪录片。
+- **行业深度分析**：制作一段探讨太空旅游未来的纪录片。
+- **历史内容**：制作一段关于硅谷历史的纪录片风格视频。
+
+### 电影/创意视频
+
+艺术性强、视觉效果出色的内容：
+- **短片**：制作一段2分钟的电影短片，描绘东京的一天。
+- **氛围捕捉**：制作一段捕捉繁忙咖啡店氛围的电影风格视频。
+- **音乐视频**：为电子音乐作品制作一段视觉效果动感的视频。
+- **艺术作品集**：为摄影师制作一段电影风格的个人作品集视频。
+
+### 用户生成内容（UGC）风格
+
+真实、具有共鸣性的内容：
+- **用户评价**：为某款护肤产品制作一段UGC风格的评价视频。
+- **开箱视频**：为新的科技产品生成一段开箱视频。
+- **日常生活**：制作一段展示远程工作者使用我们应用程序的日常生活视频。
+- **产品评测**：为某款外卖服务制作一段轻松的评测视频。
+
+### 新闻/报道风格
+
+专业新闻格式的内容：
+- **新闻报道**：制作一段关于最新AI发展的新闻报道视频。
+- **市场动态**：生成一段关于科技股票收益的财经新闻视频。
+- **行业新闻**：制作一段关于金融科技领域新法规的新闻报道。
+- **分析视频**：制作一段关于远程工作现状的分析视频。
 
 ---
 
-## Video Specifications
+## 口型同步与代言人视频
 
-| Aspect | Options |
+CellCog可以生成由AI角色根据您提供的剧本进行配音的视频：
+- **AI代言人**：制作一段由专业代言人介绍我们产品的视频。
+- **虚拟形象演示**：生成一段由AI主持人发布我们季度更新的视频。
+- **角色解说**：制作一段由友好角色介绍我们儿童应用程序的视频。
+
+对于口型同步视频：
+1. 开始画面应突出显示一个人的面部。
+2. 提供剧本/对话内容。
+3. CellCog会负责语音合成和口型同步。
+
+---
+
+## 视频规格
+
+| 规格 | 选项 |
 |--------|---------|
-| **Duration** | 15 seconds to 5+ minutes |
-| **Aspect Ratios** | 16:9 (landscape), 9:16 (portrait/mobile), 1:1 (square) |
-| **Styles** | Photorealistic, animated, cinematic, documentary, casual |
-| **Audio** | Background music, voiceover, sound effects, or silent |
+| **时长** | 15秒至5分钟以上 |
+| **画面比例** | 16:9（横向）、9:16（纵向/移动设备）、1:1（正方形） |
+| **风格** | 真实感强、动画、电影风格、纪录片风格、休闲风格 |
+| **音频** | 背景音乐、旁白、音效或无声 |
 
 ---
 
-## When to Use Agent Team Mode
+## 何时使用智能体团队模式
 
-For video generation, **always use `chat_mode="agent team"`** (the default).
+在视频制作过程中，**始终使用`chat_mode="agent team"`**（默认设置）。
 
-Video creation involves:
-- Script writing
-- Scene planning
-- Image generation for frames
-- Audio generation
-- Video synthesis
-- Quality review
+视频制作涉及多个步骤：
+- 剧本编写
+- 场景规划
+- 图像生成
+- 音频制作
+- 视频合成
+- 质量审核
 
-This multi-step process requires the full agent team for best results.
-
----
-
-## Example Video Prompts
-
-**Marketing video:**
-> "Create a 30-second marketing video for 'FreshBrew' - a premium coffee subscription. Show beautiful coffee preparation scenes, happy customers, and end with our tagline 'Freshness Delivered Daily'. Upbeat background music, no voiceover. 16:9 for YouTube."
-
-**Explainer with voiceover:**
-> "Create a 90-second explainer video for our project management tool. Walk through: 1) Creating a project, 2) Adding team members, 3) Tracking progress. Professional female voiceover, clean animated style, include captions. 16:9 format."
-
-**Educational content:**
-> "Generate a 3-minute educational video explaining photosynthesis for middle school students. Use engaging animations, clear narration, and include a summary at the end. Friendly, approachable style."
-
-**Spokesperson video:**
-> "Create a 60-second video with an AI spokesperson (professional male, 30s) announcing our Series B funding. Script: 'Today, we're thrilled to announce...' [provide full script]. Business casual setting, confident tone."
+这个多步骤的过程需要整个智能体团队的协作才能达到最佳效果。
 
 ---
 
-## Tips for Better Videos
+## 视频制作示例提示
 
-1. **Specify duration**: "30 seconds" or "2 minutes" helps scope the content appropriately.
+**营销视频示例：**
+> “为‘FreshBrew’这款高端咖啡订阅服务制作一段30秒的营销视频。视频中应展示咖啡制作过程、快乐的顾客，并以我们的标语‘每日新鲜送达’作为结尾。使用欢快的背景音乐，无需旁白。画面比例为16:9，适合在YouTube上播放。”
 
-2. **Define aspect ratio**: 16:9 for YouTube/web, 9:16 for TikTok/Reels/Shorts, 1:1 for Instagram feed.
+**带旁白的解释视频示例：**
+> “为我们的项目管理工具制作一段90秒的解释视频，内容包括：1）创建项目；2）添加团队成员；3）跟踪进度。使用专业的女性旁白，采用简洁的动画风格，并添加字幕。画面比例为16:9。”
 
-3. **Describe the style**: "Cinematic", "casual UGC", "corporate professional", "playful animated".
+**教育类视频示例：**
+> “生成一段3分钟的教育视频，向中学生解释光合作用的原理。使用引人入胜的动画，清晰地讲解内容，并在结尾处进行总结。采用友好、易于理解的讲解风格。”
 
-4. **Audio preferences**: "Upbeat music", "calm narration", "no audio", "sound effects only".
+**代言人视频示例：**
+> “制作一段60秒的视频，由一位30多岁的AI代言人宣布我们的B轮融资。剧本内容如下：‘今天，我们非常高兴地宣布……’[提供完整剧本]。场景设定为商务休闲环境，语气要自信。”
 
-5. **Include key moments**: Describe the scenes or beats you want to hit.
+---
 
-6. **Provide scripts**: For spokesperson/voiceover videos, write out exactly what should be said.
+## 提高视频质量的建议
+
+1. **明确时长**：指定“30秒”或“2分钟”等具体时长，有助于合理规划内容。
+2. **确定画面比例**：YouTube/网页使用16:9比例，TikTok/Reels/Shorts使用9:16比例，Instagram动态使用1:1比例。
+3. **描述视频风格**：选择“电影风格”、“休闲UGC风格”、“企业专业风格”或“趣味动画风格”。
+4. **选择音频类型**：选择“欢快的背景音乐”、“平静的旁白”或“仅使用音效”。
+5. **标注关键场景**：详细说明您希望视频中包含的场景或重点内容。
+6. **提供剧本**：对于代言人/旁白视频，务必准确写出需要表达的文字内容。

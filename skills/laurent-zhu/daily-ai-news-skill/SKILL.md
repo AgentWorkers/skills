@@ -1,26 +1,26 @@
 ---
 name: daily-ai-news
-description: "Aggregates and summarizes the latest AI news from multiple sources including AI news websites and web search. Provides concise news briefs with direct links to original articles. Activates when user asks for 'today's AI news', 'AI updates', 'latest AI developments', or mentions wanting a 'daily AI briefing'."
+description: "该工具从多个来源（包括AI新闻网站和网络搜索）收集并汇总最新的AI新闻，提供简洁的新闻摘要，并附有指向原始文章的直接链接。当用户查询“今天的AI新闻”、“AI更新”、“最新的AI发展”或表示需要“每日AI简报”时，该工具便会自动启动并开始工作。"
 ---
 
-# Daily AI News Briefing
+# 每日AI新闻简报
 
-> Aggregates the latest AI news from multiple sources and delivers concise summaries with direct links
+> 从多个来源汇总最新的AI新闻，并提供带有直接链接的简洁摘要
 
-## When to Use This Skill
+## 何时使用此技能
 
-Activate this skill when the user:
-- Asks for today's AI news or latest AI developments
-- Requests a daily AI briefing or updates
-- Mentions wanting to know what's happening in AI
-- Asks for AI industry news, trends, or breakthroughs
-- Wants a summary of recent AI announcements
-- Says: "给我今天的AI资讯" (Give me today's AI news)
-- Says: "AI有什么新动态" (What's new in AI)
+当用户以下情况时，可激活此技能：
+- 询问当天的AI新闻或最新的AI发展动态
+- 请求每日AI简报或更新
+- 表示想了解AI领域的最新动态
+- 询问AI行业的新闻、趋势或突破性进展
+- 希望获取最近的AI公告摘要
+- 说：“给我今天的AI资讯”
+- 说：“AI有什么新动态”
 
-## Workflow Overview
+## 工作流程概述
 
-This skill uses a 4-phase workflow to gather, filter, categorize, and present AI news:
+此技能通过4个阶段来收集、筛选、分类和呈现AI新闻：
 
 ```
 Phase 1: Information Gathering
@@ -38,13 +38,13 @@ Phase 4: Output Formatting
   └─ Present with links and structure
 ```
 
-## Phase 1: Information Gathering
+## 第1阶段：信息收集
 
-### Step 1.1: Fetch from Primary AI News Sources
+### 步骤1.1：从主要AI新闻来源获取内容
 
-Use `mcp__web_reader__webReader` to fetch content from 3-5 major AI news websites:
+使用`mcp__web_reader__webReader`从3-5个主要的AI新闻网站获取内容：
 
-**Recommended Primary Sources** (choose 3-5 per session):
+**推荐的主要来源**（每次会话选择3-5个）：
 - VentureBeat AI: https://venturebeat.com/category/ai/
 - TechCrunch AI: https://techcrunch.com/category/artificial-intelligence/
 - The Verge AI: https://www.theverge.com/ai-artificial-intelligence
@@ -52,16 +52,16 @@ Use `mcp__web_reader__webReader` to fetch content from 3-5 major AI news website
 - AI News: https://artificialintelligence-news.com/
 - AI Hub Today: https://ai.hubtoday.app/
 
-**Parameters**:
+**参数**：
 - `return_format`: markdown
-- `with_images_summary`: false (focus on text content)
-- `timeout`: 20 seconds per source
+- `with_images_summary`: false（仅关注文本内容）
+- `timeout`: 每个来源20秒
 
-### Step 1.2: Execute Web Search Queries
+### 步骤1.2：执行带有日期过滤的网页搜索查询
 
-Use `WebSearch` with date-filtered queries to discover additional news:
+使用`WebSearch`执行带有日期过滤的查询，以发现更多新闻：
 
-**Query Template** (adjust dates dynamically):
+**查询模板**（动态调整日期）：
 ```
 General: "AI news today" OR "artificial intelligence breakthrough" after:[2025-12-23]
 Research: "AI research paper" OR "machine learning breakthrough" after:[2025-12-23]
@@ -69,79 +69,79 @@ Industry: "AI startup funding" OR "AI company news" after:[2025-12-23]
 Products: "AI application launch" OR "new AI tool" after:[2025-12-23]
 ```
 
-**Best Practices**:
-- Always use current date or yesterday's date in filters
-- Execute 2-3 queries across different categories
-- Limit to top 10-15 results per query
-- Prioritize sources from last 24-48 hours
+**最佳实践**：
+- 始终使用当前日期或昨天的日期作为过滤条件
+- 在不同类别中执行2-3次查询
+- 每次查询限制结果数量为10-15条
+- 优先选择过去24-48小时内的来源
 
-### Step 1.3: Fetch Full Articles
+### 步骤1.3：获取完整文章
 
-For the top 10-15 most relevant stories from search results:
-- Extract URLs from search results
-- Use `mcp__web_reader__webReader` to fetch full article content
-- This ensures accurate summarization vs. just using snippets
+对于搜索结果中排名前10-15条最相关的文章：
+- 从搜索结果中提取URL
+- 使用`mcp__web_reader__webReader`获取文章的完整内容
+- 这样可以确保摘要的准确性，而不仅仅是片段
 
-## Phase 2: Content Filtering
+## 第2阶段：内容筛选
 
-### Filter Criteria
+### 筛选标准
 
-**Keep**:
-- News from last 24-48 hours (preferably today)
-- Major announcements (product launches, model releases, research breakthroughs)
-- Industry developments (funding, partnerships, regulations, acquisitions)
-- Technical advances (new models, techniques, benchmarks)
-- Significant company updates (OpenAI, Google, Anthropic, etc.)
+**保留**：
+- 过去24-48小时内的新闻（最好是今天的）
+- 重要公告（产品发布、模型发布、研究突破）
+- 行业发展（融资、合作、法规、收购）
+- 技术进展（新模型、新技术、基准测试）
+- 重要公司的更新（如OpenAI、Google、Anthropic等）
 
-**Remove**:
-- Duplicate stories (same news across multiple sources)
-- Minor updates or marketing fluff
-- Content older than 3 days unless highly significant
-- Non-AI content or tangentially related articles
+**删除**：
+- 重复的文章（多个来源中的相同新闻）
+- 较小的更新或营销性内容
+- 超过3天的内容（除非非常重要）
+- 与AI无关的内容或间接相关的文章
 
-### Deduplication Strategy
+### 去重策略
 
-When the same story appears in multiple sources:
-- Keep the most comprehensive version
-- Note alternative sources in the summary
-- Prioritize authoritative sources (company blogs > news aggregators)
+当同一篇文章出现在多个来源时：
+- 保留最全面的版本
+- 在摘要中注明其他来源
+- 优先选择权威来源（公司博客 > 新闻聚合平台）
 
-## Phase 3: Categorization
+## 第3阶段：分类
 
-Organize news into 5 categories:
+将新闻分为5个类别：
 
-### 🔥 Major Announcements
-- Product launches (new AI tools, services, features)
-- Model releases (GPT updates, Claude features, Gemini capabilities)
-- Major company announcements (OpenAI, Google, Anthropic, Microsoft, Meta)
+### 🔥 重要公告
+- 产品发布（新的AI工具、服务、功能）
+- 模型发布（GPT更新、Claude功能、Gemini能力）
+- 重要公司公告（OpenAI、Google、Anthropic、Microsoft、Meta）
 
-### 🔬 Research & Papers
-- Academic breakthroughs
-- New research papers from top conferences
-- Novel techniques or methodologies
-- Benchmark achievements
+### 🔬 研究与论文
+- 学术突破
+- 来自顶级会议的新研究论文
+- 新技术或方法论
+- 基准测试成果
 
-### 💰 Industry & Business
-- Funding rounds and investments
-- Mergers and acquisitions
-- Partnerships and collaborations
-- Market trends and analysis
+### 💰 行业与商业
+- 融资轮次和投资
+- 合并和收购
+- 合作与协作
+- 市场趋势和分析
 
-### 🛠️ Tools & Applications
-- New AI tools and frameworks
-- Practical AI applications
-- Open source releases
-- Developer resources
+### 🛠️ 工具与应用
+- 新的AI工具和框架
+- 实用的AI应用
+- 开源发布
+- 开发者资源
 
-### 🌍 Policy & Ethics
-- AI regulations and policies
-- Safety and ethics discussions
-- Social impact studies
-- Government initiatives
+### 🌍 政策与伦理
+- AI法规和政策
+- 安全与伦理讨论
+- 社会影响研究
+- 政府倡议
 
-## Phase 4: Output Formatting
+## 第4阶段：输出格式
 
-Use the following template for consistent output:
+使用以下模板进行一致的输出：
 
 ```markdown
 # 📰 Daily AI News Briefing
@@ -220,108 +220,108 @@ Use the following template for consistent output:
 **Next update**: Check back tomorrow for the latest AI news
 ```
 
-## Customization Options
+## 定制选项
 
-After providing the initial briefing, offer customization:
+在提供初始简报后，提供以下定制选项：
 
-### 1. Focus Areas
-"Would you like me to focus on specific topics?"
-- Research papers only
-- Product launches and tools
-- Industry news and funding
-- Specific companies (OpenAI/Google/Anthropic)
-- Technical tutorials and guides
+### 1. 关注领域
+“您希望我关注特定主题吗？”
+- 仅限研究论文
+- 产品发布和工具
+- 行业新闻和融资
+- 特定公司（OpenAI/Google/Anthropic）
+- 技术教程和指南
 
-### 2. Depth Level
-"How detailed should I go?"
-- **Brief**: Headlines only (2-3 bullet points per story)
-- **Standard**: Summaries + key points (default)
-- **Deep**: Include analysis and implications
+### 2. 详细程度
+“我希望详细到什么程度？”
+- **简略**：仅显示标题（每条新闻2-3个要点）
+- **标准**：摘要 + 关键点（默认）
+- **详细**：包括分析和影响
 
-### 3. Time Range
-"What timeframe?"
-- Last 24 hours (default)
-- Last 3 days
-- Last week
-- Custom range
+### 3. 时间范围
+“您希望的时间范围是什么？”
+- 过去24小时（默认）
+- 过去3天
+- 上周
+- 自定义时间范围
 
-### 4. Format Preference
-"How would you like this organized?"
-- By category (default)
-- Chronological
-- By company
-- By significance
+### 4. 格式偏好
+“您希望如何组织这些内容？”
+- 按类别（默认）
+- 按时间顺序
+- 按公司
+- 按重要性
 
-## Follow-up Interactions
+## 后续交互
 
-### User: "Tell me more about [story X]"
-**Action**: Use `mcp__web_reader__webReader` to fetch the full article, provide detailed summary + analysis
+### 用户：“请告诉我更多关于[文章X]的信息”
+**操作**：使用`mcp__web_reader__webReader`获取完整文章，并提供详细摘要和分析
 
-### User: "What are experts saying about [topic Y]?"
-**Action**: Search for expert opinions, Twitter reactions, analysis pieces
+### 用户：“专家对[主题Y]有什么看法？”
+**操作**：搜索专家意见、Twitter上的反应和分析文章
 
-### User: "Find similar stories to [story Z]"
-**Action**: Search related topics, provide comparative summary
+### 用户：“找到与[文章Z]类似的故事”
+**操作**：搜索相关主题，并提供对比摘要
 
-### User: "Only show research papers"
-**Action**: Filter and reorganize output, exclude industry news
+### 用户：“仅显示研究论文”
+**操作**：过滤并重新组织输出，排除行业新闻
 
-## Quality Standards
+## 质量标准
 
-### Validation Checklist
-- All links are valid and accessible
-- No duplicate stories across categories
-- All items have timestamps (preferably today)
-- Summaries are accurate (not hallucinated)
-- Links lead to original sources, not aggregators
-- Mix of sources (not all from one publication)
-- Balance between hype and substance
+### 验证 checklist
+- 所有链接都是有效且可访问的
+- 各类别中没有重复的文章
+- 所有内容都有时间戳（最好是今天的）
+- 摘要准确无误
+- 链接指向原始来源，而非新闻聚合平台
+- 来源多样化（不全部来自同一出版物）
+- 平衡新闻的热度和实质内容
 
-### Error Handling
-- If `webReader` fails for a URL → Skip and try next source
-- If search returns no results → Expand date range or try different query
-- If too many results → Increase threshold for significance
-- If content is paywalled → Use available excerpt and note limitation
+### 错误处理
+- 如果`webReader`无法访问某个URL → 跳过该来源并尝试下一个
+- 如果搜索没有结果 → 扩大时间范围或尝试不同的查询
+- 如果结果太多 → 提高重要性的判断标准
+- 如果内容需要付费才能访问 → 使用可用的摘录并注明限制
 
-## Examples
+## 示例
 
-### Example 1: Basic Request
+### 示例1：基本请求
 
-**User**: "给我今天的AI资讯"
+**用户**：“给我今天的AI资讯”
 
-**AI Response**:
-[Executes 4-phase workflow and presents formatted briefing with 5-10 stories across categories]
-
----
-
-### Example 2: Time-specific Request
-
-**User**: "What's new in AI this week?"
-
-**AI Response**:
-[Adjusts date filters to last 7 days, presents weekly summary]
+**AI响应**：
+[执行4个阶段的工作流程，并按类别呈现5-10篇新闻的格式化简报]
 
 ---
 
-### Example 3: Category-specific Request
+### 示例2：特定时间范围的请求
 
-**User**: "Any updates on AI research?"
+**用户**：“这周AI领域有什么新动态？”
 
-**AI Response**:
-[Focuses on Research & Papers category, includes recent papers and breakthroughs]
+**AI响应**：
+[调整日期过滤器为过去7天，呈现每周的总结]
 
 ---
 
-### Example 4: Follow-up Deep Dive
+### 示例3：特定主题的请求
 
-**User**: "Tell me more about the GPT-5 announcement"
+**用户**：“有关AI研究的最新更新吗？”
 
-**AI Response**:
-[Fetches full article, provides detailed summary, offers to find expert reactions]
+**AI响应**：
+[专注于“研究与论文”类别，包括最近的研究论文和突破性进展]
 
-## Additional Resources
+---
 
-For comprehensive lists of news sources, search queries, and output templates, refer to:
-- `references/news_sources.md` - Complete database of AI news sources
-- `references/search_queries.md` - Search query templates by category
-- `references/output_templates.md` - Alternative output format templates
+### 示例4：深入探讨
+
+**用户**：“请告诉我更多关于GPT-5的公告”
+
+**AI响应**：
+[获取完整文章，提供详细摘要，并提供专家意见]
+
+## 额外资源
+
+有关新闻来源的完整列表、搜索查询和输出模板，请参考：
+- `references/news_sources.md` - 完整的AI新闻来源数据库
+- `references/search_queries.md` - 按类别划分的搜索查询模板
+- `references/output_templates.md` - 替代输出格式模板

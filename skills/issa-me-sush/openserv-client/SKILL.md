@@ -1,28 +1,32 @@
 ---
 name: openserv-client
-description: Complete guide to using @openserv-labs/client for managing agents, workflows, triggers, and tasks on the OpenServ Platform. Covers provisioning, authentication, x402 payments, ERC-8004 on-chain identity, and the full Platform API. IMPORTANT - Always read the companion skill openserv-agent-sdk alongside this skill, as both packages are required to build any agent. Read reference.md for the full API reference.
+description: **@openserv-labs/client 使用指南：在 OpenServ 平台上管理代理、工作流、触发器及任务**  
+本指南详细介绍了如何使用 @openserv-labs/client 来管理 OpenServ 平台上的代理、工作流、触发器及任务，涵盖了资源配置、身份验证、x402 支付、基于 ERC-8004 的链上身份验证机制，以及完整的平台 API 接口。  
+
+**重要提示：**  
+在使用本指南时，请务必同时阅读配套的 `openserv-agent-sdk` 文档，因为这两个包是构建任何代理功能所必需的。如需查看完整的 API 参考信息，请参阅 `reference.md` 文件。
 ---
 
-# OpenServ Client
+# OpenServ 客户端
 
-The `@openserv-labs/client` package is the TypeScript client for the OpenServ Platform API. You use it whenever your code needs to talk to the platform—to register an agent, create workflows, set up triggers, or run tasks.
+`@openserv-labs/client` 包是 OpenServ 平台 API 的 TypeScript 客户端。每当您的代码需要与平台进行交互时（例如注册代理、创建工作流、设置触发器或运行任务），都可以使用它。
 
-## Why you need this package
+## 为什么需要这个包
 
-Your agent (built with `@openserv-labs/sdk`) runs on your machine or server. The platform doesn’t know about it until you tell it: what the agent is, where it’s reachable, and how it can be triggered. The client is how you do that. It lets you create a platform account (or reuse one), register your agent, define workflows and triggers (webhook, cron, manual, or x402 paid), and bind credentials so your agent can accept tasks. Without it, your agent would have no way to get onto the platform or receive work.
+您使用的代理（使用 `@openserv-labs/sdk` 构建）运行在您的机器或服务器上。在您告诉平台代理的类型、可访问位置以及触发方式之前，平台并不知道它的存在。客户端就是实现这些操作的工具。它允许您创建平台账户（或重用现有账户）、注册代理、定义工作流和触发器（包括 Webhook、Cron、手动触发或 x402 支付方式），并绑定凭证，以便代理能够接收任务。没有这个客户端，代理将无法连接到平台或接收任务。
 
-## What you can do with it
+## 使用它的功能
 
-- **Provision** — One-shot setup: create or reuse an account (via wallet), register the agent, create a workflow with trigger and task, and get API key and auth token. Typically you call `provision()` once per app startup; it’s idempotent.
-- **Platform API** — Full control via `PlatformClient`: create and list agents, workflows, triggers, and tasks; fire triggers; run workflows; manage credentials. Use this when you need more than the default provision flow.
-- **Model Parameters** — Configure which LLM model and parameters the platform uses for your agent's tasks. Set `model_parameters` on agent creation/update or via `provision()`.
-- **Models API** — Discover available LLM models and their parameter schemas via `client.models.list()`.
-- **x402 payments** — Expose your agent behind a paywall; callers pay per request (e.g. USDC) before the task runs. Provision can set up an x402 trigger and return a paywall URL.
-- **ERC-8004 on-chain identity** — Register your agent on-chain (Base), mint an identity NFT, and publish service metadata to IPFS so others can discover and pay your agent in a standard way.
+- **配置**：一次性设置——创建或重用账户（通过钱包）、注册代理、创建带有触发器和工作流的任务，并获取 API 密钥和授权令牌。通常每个应用程序启动时只需调用一次 `provision()`；该操作是幂等的（即多次调用结果相同）。
+- **平台 API**：通过 `PlatformClient` 实现对平台的完全控制——创建和列出代理、工作流、触发器和任务；触发触发器；运行工作流；管理凭证。当您需要超出默认配置的功能时，可以使用这个客户端。
+- **模型参数**：配置平台为您的代理任务使用的 LLM 模型及其参数。可以在创建/更新代理时设置 `model_parameters`，也可以通过 `provision()` 来设置。
+- **模型 API**：通过 `client.models.list()` 查找可用的 LLM 模型及其参数格式。
+- **x402 支付**：将您的代理设置为需要付费的服务；调用者需要在任务执行前支付费用（例如使用 USDC）。`provision()` 可以设置 x402 触发器并返回支付墙的 URL。
+- **ERC-8004 在链上身份**：在链上注册您的代理（使用 Base 链），铸造一个身份 NFT，并将服务元数据发布到 IPFS，以便其他人能够以标准方式发现和支付您的代理服务。
 
-**Reference:** `reference.md` (full API) · `troubleshooting.md` (common issues) · `examples/` (runnable code)
+**参考文档：** `reference.md`（完整 API 文档）· `troubleshooting.md`（常见问题解答）· `examples/`（可运行的示例代码）
 
-## Installation
+## 安装
 
 ```bash
 npm install @openserv-labs/client
@@ -30,34 +34,34 @@ npm install @openserv-labs/client
 
 ---
 
-## Quick Start: Just `provision()` + `run()`
+## 快速入门：只需调用 `provision()` 和 `run()`
 
-**The simplest deployment is just two calls: `provision()` and `run()`.** That's it.
+**最简单的部署方式就是调用 `provision()` 和 `run()`。** 就这些。
 
-You need an account on the platform to register agents and workflows. The easiest way is to let `provision()` create one for you: it creates a wallet and signs you up with it (no email required). That account is reused on every run.
+您需要在平台上有一个账户才能注册代理和工作流。最简单的方法是让 `provision()` 为您创建一个账户：它会为您创建一个钱包并完成注册过程（无需电子邮件）。每次运行应用程序时都会使用这个账户。
 
-See `examples/agent.ts` for a complete runnable example.
+请参阅 `examples/agent.ts` 以获取完整的可运行示例。
 
-> **Key Point:** `provision()` is **idempotent**. Call it every time your app starts - no need to check `isProvisioned()` first.
+> **关键点：** `provision()` 是幂等的。每次应用程序启动时都可以调用它——无需先检查 `isProvisioned()` 的状态。
 
-### What `provision()` Does
+### `provision()` 的功能
 
-1. Creates or reuses an Ethereum wallet (and platform account if new)
-2. Authenticates with the OpenServ platform
-3. Creates or updates the agent (idempotent)
-4. Generates API key and auth token
-5. **Binds credentials to agent instance** (if `agent.instance` is provided)
-6. Creates or updates the workflow with trigger and task
-7. Creates workflow graph (edges linking trigger to task)
-8. Activates trigger and sets workflow to running
-9. Persists state to `.openserv.json`
+1. 创建或重用一个以太坊钱包（如果不存在，则创建平台账户）。
+2. 与 OpenServ 平台进行身份验证。
+3. 创建或更新代理（操作是幂等的）。
+4. 生成 API 密钥和授权令牌。
+5. （如果提供了 `agent.instance`）将凭证绑定到代理实例。
+6. 创建或更新带有触发器和工作流的任务。
+7. 创建工作流图（连接触发器和任务的边）。
+8. 激活触发器并启动工作流。
+9. 将状态保存到 `.openserv.json` 文件中。
 
-### Workflow Name & Goal
+### 工作流名称和目标
 
-The `workflow` config requires two important properties:
+工作流配置需要两个重要的属性：
 
-- **`name`** (string) - This becomes the **agent name in ERC-8004**. Make it polished, punchy, and memorable — this is the public-facing brand name users see. Think product launch, not variable name. Examples: `'Viral Content Engine'`, `'Crypto Alpha Scanner'`, `'Life Catalyst Pro'`.
-- **`goal`** (string, required) - A detailed description of what the workflow accomplishes. Must be descriptive and thorough — short or vague goals will cause API calls to fail. Write at least a full sentence explaining the workflow's purpose.
+- **`name`**（字符串）——这将成为 ERC-8004 中的代理名称。请确保名称简洁、易记且具有品牌感——这是用户看到的公开名称。例如：`'Viral Content Engine'`、`'Crypto Alpha Scanner'`、`'Life Catalyst Pro'`。
+- **`goal`**（字符串，必填）——对工作流功能的详细描述。描述必须清晰详尽——过于简短或模糊的目标会导致 API 调用失败。请至少写一个完整的句子来说明工作流的用途。
 
 ```typescript
 workflow: {
@@ -68,9 +72,9 @@ workflow: {
 }
 ```
 
-### Agent Instance Binding (v1.1+)
+### 代理实例绑定（v1.1 及更高版本）
 
-Pass your agent instance to `provision()` for automatic credential binding:
+将您的代理实例传递给 `provision()` 以自动绑定凭证：
 
 ```typescript
 const agent = new Agent({ systemPrompt: '...' })
@@ -89,11 +93,11 @@ await provision({
 await run(agent)
 ```
 
-This eliminates the need to manually set `OPENSERV_API_KEY` environment variables.
+这样就不需要手动设置 `OPENSERV_API_KEY` 环境变量了。
 
-### Model Parameters
+### 模型参数
 
-The optional `model_parameters` field controls which LLM model and parameters the platform uses when executing tasks for your agent (including runless capabilities and `generate()` calls). If not provided, the platform default is used.
+可选的 `model_parameters` 字段用于控制平台在为代理执行任务时使用的 LLM 模型及其参数（包括无运行能力的任务和 `generate()` 调用）。如果未提供此参数，平台会使用默认设置。
 
 ```typescript
 await provision({
@@ -111,7 +115,7 @@ await provision({
 })
 ```
 
-Discover available models and their parameters:
+查找可用的模型及其参数：
 
 ```typescript
 const { models, default: defaultModel } = await client.models.list()
@@ -119,7 +123,7 @@ const { models, default: defaultModel } = await client.models.list()
 // default: 'gpt-5-mini'
 ```
 
-### Provision Result
+### 配置结果
 
 ```typescript
 interface ProvisionResult {
@@ -136,9 +140,9 @@ interface ProvisionResult {
 
 ---
 
-## PlatformClient: Full API Access
+## PlatformClient：完整的 API 访问
 
-For advanced use cases, use `PlatformClient` directly:
+对于高级用例，可以直接使用 `PlatformClient`：
 
 ```typescript
 import { PlatformClient } from '@openserv-labs/client'
@@ -153,22 +157,22 @@ const client = new PlatformClient()
 await client.authenticate(process.env.WALLET_PRIVATE_KEY)
 ```
 
-See `reference.md` for full API documentation on:
+请参阅 `reference.md` 以获取完整的 API 文档：
 
-- `client.agents.*` - Agent management
-- `client.workflows.*` - Workflow management
-- `client.triggers.*` - Trigger management
-- `client.tasks.*` - Task management
-- `client.models.*` - Available LLM models and parameters
-- `client.integrations.*` - Integration connections
-- `client.payments.*` - x402 payments
-- `client.web3.*` - Credits top-up
+- `client.agents.*`——代理管理
+- `client.workflows.*`——工作流管理
+- `client.triggers.*`——触发器管理
+- `client.tasks.*`——任务管理
+- `client.models.*`——可用的 LLM 模型及其参数
+- `client.integrations.*`——集成连接
+- `client.payments.*`——x402 支付
+- `client.web3.*`——信用额充值
 
 ---
 
-## Triggers Factory
+## 触发器工厂
 
-Use the `triggers` factory for type-safe trigger configuration:
+使用 `triggers` 工厂来安全地配置触发器：
 
 ```typescript
 import { triggers } from '@openserv-labs/client'
@@ -205,13 +209,13 @@ triggers.cron({
 triggers.manual()
 ```
 
-### Timeout
+### 超时设置
 
-> **Important:** Always set `timeout` to at least **600 seconds** (10 minutes) for webhook and x402 triggers. Agents often take significant time to process requests — especially in multi-agent workflows or when performing research, content generation, or other complex tasks. A low timeout (e.g., 180s) will cause premature failures. When in doubt, err on the side of a longer timeout. For multi-agent pipelines with many sequential steps, consider 900 seconds or more.
+> **重要提示：** 对于 Webhook 和 x402 触发器，始终将 `timeout` 设置为至少 600 秒（10 分钟）。代理处理请求通常需要较长时间——尤其是在多代理工作流中，或者在执行研究、内容生成或其他复杂任务时。如果设置过短的超时时间（例如 180 秒），可能会导致任务提前失败。如有疑问，建议设置较长的超时时间。对于包含多个顺序步骤的多代理流程，建议设置 900 秒或更长的超时时间。
 
-### Input Schema
+### 输入格式
 
-Define fields for webhook/x402 paywall UI:
+定义 Webhook/x402 支付墙所需的输入字段：
 
 ```typescript
 triggers.x402({
@@ -234,22 +238,16 @@ triggers.x402({
 })
 ```
 
-### Cron Expressions
+### Cron 表达式
 
-```
-┌───────────── minute (0-59)
-│ ┌───────────── hour (0-23)
-│ │ ┌───────────── day of month (1-31)
-│ │ │ ┌───────────── month (1-12)
-│ │ │ │ ┌───────────── day of week (0-6, Sunday=0)
-* * * * *
-```
-
-Common: `0 9 * * *` (daily 9 AM), `*/5 * * * *` (every 5 min), `0 9 * * 1-5` (weekdays 9 AM)
+**常见格式：**
+- `0 9 * * *`（每天上午 9 点）
+- `*/5 * * * *`（每 5 分钟）
+- `0 9 * * 1-5`（工作日每天上午 9 点）
 
 ---
 
-## State Management
+## 状态管理
 
 ```typescript
 import { getProvisionedInfo, clearProvisionedState } from '@openserv-labs/client'
@@ -263,11 +261,11 @@ clearProvisionedState()
 
 ---
 
-## Discovering & Firing x402 Services
+## 发现和触发 x402 服务
 
-### Discover Available Services (No Auth Required)
+### 发现可用的服务（无需认证）
 
-`discoverServices()` lists all public x402-enabled workflows. **No authentication is needed** — you can call it on a bare `PlatformClient`:
+`discoverServices()` 可以列出所有支持 x402 支付的工作流。**无需认证**——您可以直接在 `PlatformClient` 上调用此方法：
 
 ```typescript
 import { PlatformClient } from '@openserv-labs/client'
@@ -281,7 +279,7 @@ for (const service of services) {
 }
 ```
 
-### Firing Triggers
+### 触发器的触发
 
 #### Webhook
 
@@ -299,7 +297,7 @@ const result = await client.triggers.fireWebhook({
 })
 ```
 
-#### x402 (Programmatic)
+#### x402（编程方式）
 
 ```typescript
 // By workflow ID (recommended)
@@ -317,60 +315,36 @@ const result = await client.payments.payWorkflow({
 
 ---
 
-## Environment Variables
+## 环境变量
 
-| Variable                | Description                  | Required |
+| 变量                | 描述                          | 是否必填 |
 | ----------------------- | ---------------------------- | -------- |
-| `OPENSERV_USER_API_KEY` | User API key (from platform) | Yes\*    |
-| `WALLET_PRIVATE_KEY`    | Wallet for SIWE auth         | Yes\*    |
-| `OPENSERV_API_URL`      | Custom API URL               | No       |
+| `OPENSERV_USER_API_KEY` | 用户 API 密钥（来自平台）           | 是\*     |
+| `WALLET_PRIVATE_KEY`    | 用于 SIWE 认证的钱包密钥            | 是\*     |
+| `OPENSERV_API_URL`      | 自定义 API URL                        | 否        |
 
-\*Either API key or wallet key required
-
----
-
-## ERC-8004: On-Chain Agent Identity
-
-Register your agent on-chain after provisioning. This mints an NFT on the Identity Registry and publishes your agent's service endpoints to IPFS.
-
-> **Requires ETH on Base.** The wallet created by `provision()` starts with zero balance. Fund it with a small amount of ETH on Base mainnet before registration. Always wrap in try/catch so failures don't prevent `run(agent)` from starting.
-
-> **Reload `.env` after `provision()`.** `provision()` writes `WALLET_PRIVATE_KEY` to `.env` at runtime, but `process.env` already loaded the empty value at startup. Use `dotenv.config({ override: true })` after `provision()` to pick up the freshly written key. See **openserv-agent-sdk** skill for the full dotenv pattern.
-
-```typescript
-import { PlatformClient } from '@openserv-labs/client'
-
-// Reload .env to pick up WALLET_PRIVATE_KEY written by provision()
-dotenv.config({ override: true })
-
-try {
-  const client = new PlatformClient()
-  await client.authenticate(process.env.WALLET_PRIVATE_KEY)
-
-  const erc8004 = await client.erc8004.registerOnChain({
-    workflowId: result.workflowId,
-    privateKey: process.env.WALLET_PRIVATE_KEY!,
-    name: 'My Agent',
-    description: 'What this agent does',
-  })
-
-  console.log(`Agent ID: ${erc8004.agentId}`)         // "8453:42"
-  console.log(`Explorer: ${erc8004.blockExplorerUrl}`)
-  console.log(`Scan: ${erc8004.scanUrl}`)              // "https://www.8004scan.io/agents/base/42"
-} catch (error) {
-  console.warn('ERC-8004 registration skipped:', error instanceof Error ? error.message : error)
-}
-```
-
-- **First run** mints a new NFT. **Re-runs update the URI** — agent ID stays the same.
-- Default chain is Base mainnet (8453). Pass `chainId` and `rpcUrl` for other chains.
-- **Never clear the wallet state** unless you intentionally want a new agent ID.
-
-See `reference.md` for the full ERC-8004 API (wallet management, chain helpers, troubleshooting).
+\*至少需要 API 密钥或钱包密钥中的一个。
 
 ---
 
-## Cleanup
+## ERC-8004：链上代理身份
+
+在完成配置后，需要在链上注册您的代理。这会在身份注册处铸造一个 NFT，并将代理的服务端点发布到 IPFS。
+
+> **需要在 Base 链上使用 ETH**。`provision()` 创建的钱包初始余额为零。在注册之前，请在 Base 主网上为其充值少量 ETH。请使用 `try/catch` 语句来确保即使发生错误，`run(agent)` 也能正常启动。
+
+> **在 `provision()` 后重新加载 `.env` 文件**。`provision()` 会在运行时将 `WALLET_PRIVATE_KEY` 写入 `.env` 文件，但 `process.env` 在程序启动时可能已经加载了空值。请在 `provision()` 之后使用 `dotenv.config({ override: true })` 来获取新生成的密钥。有关完整的 `.env` 配置方式，请参阅 `openserv-agent-sdk` 文档。
+
+**注意：**
+- **首次运行时会铸造一个新的 NFT。** 重新运行时会更新 URI——代理 ID 保持不变。
+- 默认链为 Base 主网（8453）。如果需要使用其他链，请传递 `chainId` 和 `rpcUrl`。
+- **除非您有意更换代理 ID，否则不要清除钱包状态**。
+
+请参阅 `reference.md` 以获取完整的 ERC-8004 API 文档（包括钱包管理、链相关帮助和故障排除信息）。
+
+---
+
+## 清理操作
 
 ```typescript
 await client.workflows.delete({ id: workflowId })
@@ -380,9 +354,9 @@ clearProvisionedState()
 
 ---
 
-## Updating This Skill
+## 更新本技能
 
-This skill may be outdated. The OpenServ team ships updates regularly—new features, API changes, and bug fixes won't be reflected here until you update. **If something isn't working as expected, or you want to make sure you have the latest information, update the skill before proceeding.**
+本技能可能会过时。OpenServ 团队会定期发布更新——新的功能、API 变更和 bug 修复不会在这里立即反映。**如果某些功能无法正常使用，或者您希望确保使用最新信息，请在继续之前更新本技能。**
 
 ```bash
 # Check if updates are available
@@ -392,7 +366,7 @@ npx skills check
 npx skills update
 ```
 
-Or reinstall the OpenServ skills directly:
+或者直接重新安装 OpenServ 相关的技能：
 
 ```bash
 npx skills add openserv-labs/skills
@@ -400,9 +374,9 @@ npx skills add openserv-labs/skills
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **openserv-agent-sdk** - Building agents with capabilities
-- **openserv-multi-agent-workflows** - Multi-agent collaboration patterns
-- **openserv-launch** - Launch tokens on Base blockchain
-- **openserv-ideaboard-api** - Find ideas and ship agent services on the Ideaboard
+- **openserv-agent-sdk**——用于构建具有特定功能的代理
+- **openserv-multi-agent-workflows**——多代理协作模式
+- **openserv-launch**——在 Base 区块链上发布代币
+- **openserv-ideaboard-api**——在 Ideaboard 上查找创意并发布代理服务

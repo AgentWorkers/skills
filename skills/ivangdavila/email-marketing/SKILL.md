@@ -1,116 +1,115 @@
 ---
 name: Email Marketing
-description: Email deliverability, list management, sequences, segmentation, and campaign optimization.
+description: 电子邮件送达率、列表管理、发送顺序、用户细分以及活动优化。
 metadata:
   category: marketing
   skills: ["email", "newsletters", "sequences", "deliverability", "automation"]
 ---
 
-## Deliverability Foundations
+## 邮件发送的基础要求
 
-- Authenticate all sending domains: SPF, DKIM, and DMARC — missing any one tanks deliverability
-- Warm up new domains/IPs: start with 50-100 emails/day, increase 20% daily over 2-4 weeks
-- Never buy email lists — purchased lists destroy sender reputation permanently
-- Clean list regularly: remove bounces immediately, unengaged after 90 days
-- Monitor blacklists: MXToolbox, Google Postmaster Tools — problems compound if not caught early
+- 对所有发送域进行身份验证：SPF、DKIM 和 DMARC；缺少其中任何一个都会影响邮件的送达率。
+- 对新域名/IP进行逐步测试：最初每天发送 50-100 封邮件，之后每天增加 20%，持续 2-4 周。
+- 绝不要购买邮件列表——购买的邮件列表会永久损害发送者的声誉。
+- 定期清理邮件列表：立即删除无法送达的邮件，并在 90 天后移除未互动的订阅者。
+- 监控黑名单：使用 MXToolbox 或 Google Postmaster Tools 等工具——问题若不及时发现会越来越严重。
 
-## List Health Metrics
+## 邮件列表的健康指标
 
-| Metric | Healthy | Warning | Critical |
+| 指标 | 健康 | 警告 | 危险 |
 |--------|---------|---------|----------|
-| Open rate | >20% | 10-20% | <10% |
-| Click rate | >2% | 1-2% | <1% |
-| Bounce rate | <2% | 2-5% | >5% |
-| Unsubscribe | <0.5% | 0.5-1% | >1% |
-| Spam complaints | <0.1% | 0.1-0.3% | >0.3% |
+| 开启率 | >20% | 10-20% | <10% |
+| 点击率 | >2% | 1-2% | <1% |
+| 退信率 | <2% | 2-5% | >5% |
+| 退订率 | <0.5% | 0.5-1% | >1% |
+| 垃圾邮件投诉率 | <0.1% | 0.1-0.3% | >0.3% |
+- 每 1000 封邮件中有 1 条垃圾邮件投诉属于危险范围——超过这个比例，邮件在收件箱中的显示率会急剧下降。
 
-- One spam complaint per 1000 emails is the danger zone — above this, inbox placement drops sharply
+## 主题行设计
 
-## Subject Lines
+- 最佳长度为 40-50 个字符——在移动设备上超过 40 个字符会被截断。
+- 个性化主题行有效：包含收件人的名字或公司名称可以提高开启率 10-20%。
+- 对于开启率来说，引起好奇心可能比内容清晰度更重要；但对于点击率来说，内容清晰度更关键——根据目标进行平衡。
+- 避免使用可能触发垃圾邮件警报的元素：全部大写、过多的标点符号、"免费"、"立即行动"等。
+- 测试表情符号的效果：对某些受众有效，但对另一些受众可能无效——在正式使用前进行 A/B 测试。
+- 预览文本可以作为第二条主题行——不要用 "在浏览器中查看" 这样的文字浪费它。
 
-- 40-50 characters optimal — truncates on mobile after 35-40
-- Personalization works: name or company in subject increases opens 10-20%
-- Curiosity beats clarity for opens, but clarity wins for clicks — balance based on goal
-- Avoid spam triggers: ALL CAPS, excessive punctuation!!!, "free", "act now"
-- Test emoji: works for some audiences, hurts others — A/B test before committing
-- Preview text is second subject line — don't waste it with "View in browser"
+## 邮件发送序列
 
-## Email Sequences
+**欢迎邮件序列（2 周内发送 5-7 封邮件）：**
+1. 第一封邮件：立即提供价值并设定预期。
+2. 第一天：发送最优质的内容或快速产生效果的内容。
+3. 第三天：介绍产品背景和价值。
+4. 第五天：提供社交证明或案例研究。
+5. 第七天：提出温和的优惠或进一步加深互动。
+6. 第十天：解决常见的疑虑。
+7. 第十四天：明确提示下一步行动（CTA）。
 
-**Welcome sequence (5-7 emails over 2 weeks):**
-1. Immediate: Deliver promised value + set expectations
-2. Day 1: Best content or quick win
-3. Day 3: Story/origin + values
-4. Day 5: Social proof + case study
-5. Day 7: Soft offer or deeper engagement
-6. Day 10: Address common objection
-7. Day 14: Clear CTA
+- 序列中的第一封邮件开启率最高——务必充分利用它。
+- 邮件发送间隔应为 1-3 天——对大多数受众来说，每天发送过于频繁。
 
-- First email in sequence has highest open rate — make it count
-- Space emails 1-3 days apart — daily is too aggressive for most audiences
+## 用户细分
 
-## Segmentation
+- 根据用户行为进行细分，而不仅仅是根据人口统计信息——用户的行为比他们的职位更重要。
+- 最基本的细分类别包括：新订阅者、在 30 天内打开邮件的用户、未互动的用户以及现有客户。
+- 每次点击都添加标签——自动建立用户的行为档案。
+- 对 90 天内未互动的订阅者进行重新联系，之后将其移除。
+- 为互动最频繁的用户创建 VIP 组别——给予他们优先访问权和独家内容。
 
-- Segment by behavior, not just demographics — what they clicked matters more than job title
-- Minimum viable segments: new subscribers, engaged (opened in 30 days), unengaged, customers
-- Tag on every click — builds behavioral profile automatically
-- Sunset unengaged subscribers after 90 days — send re-engagement, then remove
-- VIP segment for highest engagement — reward them with early access, exclusives
+## 发送时间和频率
 
-## Timing and Frequency
+- 平均而言，周二至周四上午发送效果最佳——但要根据目标受众进行测试。
+- B2B 邮件：在工作时间内发送；B2C 邮件：晚上或周末发送也可以。
+- 发送频率取决于邮件的价值：如果邮件有价值，每天发送效果较好；如果内容枯燥，每周发送可能效果不佳。
+- 允许订阅者自行选择发送频率——这可以显著减少退订率。
+- 大多数邮件发送平台都提供发送时间优化功能，务必利用这一功能。
 
-- Tuesday-Thursday mid-morning performs best on average — but test your audience
-- B2B: business hours. B2C: evenings and weekends can work
-- Frequency depends on value: daily works if valuable, weekly fails if boring
-- Let subscribers choose frequency — reduces unsubscribes significantly
-- Send time optimization: most ESPs offer this, use it
+## 邮件活动类型
 
-## Campaign Types
+- **新闻通讯**：定期提供有价值的内容，建立长期关系，转化率较低。
+- **促销邮件**：提供明确的优惠，强调紧迫性，注重直接转化。
+- **交易邮件**：发送收据、确认信息等，开启率较高。
+- **重新联系邮件**：发送“我们想念您”的信息并提供激励，同时提供便捷的退订方式。
+- **公告邮件**：发布产品更新或重要信息——仅发送给感兴趣的订阅者。
 
-- **Newsletter**: regular value, builds relationship, low direct conversion
-- **Promotional**: clear offer, urgency, direct conversion focus
-- **Transactional**: receipts, confirmations — highest open rates, add value here
-- **Re-engagement**: "We miss you" + incentive + easy unsubscribe
-- **Announcement**: product launches, major updates — segment to interested only
+## 邮件写作技巧
 
-## Writing for Email
+- 每封邮件只有一个主要目标——多个 CTA 会分散用户的注意力。
+- 为快速阅读的受众写作：使用粗体关键短语、短段落和项目符号。
+- 附言部分也要被阅读——可以在那里放置次要的 CTA 或关键信息。
+- 对于个人风格的邮件，纯文本通常比 HTML 格式更有效。
+- 优先考虑移动设备的显示效果：超过 60% 的邮件在移动设备上被打开——使用单栏布局和大的点击目标。
 
-- One goal per email — multiple CTAs dilute response
-- Write for skimmers: bold key phrases, short paragraphs, bullet points
-- P.S. lines get read — put secondary CTA or key point there
-- Plain text often outperforms HTML for personal-style emails
-- Mobile-first: 60%+ open on mobile — single column, large tap targets
+## 自动化触发机制
 
-## Automation Triggers
+- 新订阅者 → 发送欢迎邮件序列。
+- 购买商品 → 发送入职引导和交叉销售邮件。
+- 购物车放弃 → 发送三封恢复邮件（1 小时、24 小时、72 小时后）。
+- 30 天内未打开邮件 → 发送重新联系邮件。
+- 点击链接 → 标记用户并触发相应的后续操作。
+- 基于日期的触发事件：生日、续订提醒、周年纪念等。
 
-- Sign up → Welcome sequence
-- Purchase → Onboarding + cross-sell sequence
-- Abandoned cart → 3-email recovery (1h, 24h, 72h)
-- No open in 30 days → Re-engagement sequence
-- Link click → Tag and trigger relevant follow-up
-- Date-based → Birthday, renewal reminder, anniversary
+## A/B 测试
 
-## A/B Testing
+- 每次只测试一个变量：主题行、发送时间、CTA、发件人名称等。
+- 每个变体需要至少 1000 名接收者才能获得统计显著性。
+- 主题行测试：先对列表中的 20% 的用户进行测试，然后将成功的方案应用于剩余的 80% 用户。
+- 测量真正重要的指标：主题行的开启率、内容的点击率、优惠活动的转化率。
+- 记录所有的测试结果——系统化的学习可以避免重复实验。
 
-- Test one variable at a time: subject, send time, CTA, from name
-- Need 1000+ recipients per variant for statistical significance
-- Subject line tests: 20% of list first, winner to remaining 80%
-- Measure what matters: opens for subject, clicks for content, conversions for offers
-- Document every test — institutional learning prevents repeat experiments
+## 常见错误
 
-## Common Mistakes
+- 一律向整个列表发送邮件——会导致用户互动率下降。
+- 不使用双确认机制（double opt-in）——会导致垃圾邮件和用户投诉。
+- 忽视移动设备的预览效果——错误的布局会损害邮件的可信度。
+- 对所有用户发送相同的邮件——现在用户期望个性化内容。
+- 过早进行强行推销——先提供价值，再提供优惠。
+- 忽视用户的退订反馈——用户会告诉你哪里出了问题。
 
-- Sending to entire list always — segment or face declining engagement
-- No double opt-in — leads to fake emails and spam traps
-- Ignoring mobile preview — broken layouts kill credibility
-- Same email to all segments — personalization is expected now
-- Hard selling too early — value first, offer later
-- Ignoring unsubscribe feedback — they tell you what's wrong
+## 合规性要求
 
-## Compliance
-
-- Include physical address in every email — required by CAN-SPAM, GDPR
-- Unsubscribe must work within 10 days — one-click preferred
-- Honor opt-outs immediately — delayed removal is illegal in many jurisdictions
-- GDPR: explicit consent required, document it, allow data deletion
-- Separate consent for different email types — marketing vs transactional
+- 每封邮件都必须包含收件者的实际地址——这是 CAN-SPAM 和 GDPR 的强制要求。
+- 退订功能必须在 10 天内生效——最好支持一键退订。
+- 立即处理用户的退订请求——在许多地区，延迟处理退订是违法的。
+- 遵守 GDPR 规定：明确获取用户的同意，并记录相关信息，允许用户删除数据。
+- 对不同类型的邮件使用不同的同意方式——营销邮件和交易邮件需要不同的同意流程。

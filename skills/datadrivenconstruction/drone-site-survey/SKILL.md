@@ -1,25 +1,25 @@
 ---
 slug: "drone-site-survey"
 display_name: "Drone Site Survey"
-description: "Process drone survey data for construction sites. Generate orthomosaics, DEMs, point clouds, calculate volumes, track progress, and integrate with BIM models for comparison."
+description: "处理建筑工地的无人机调查数据：生成正射影像图（orthomosaics）、数字高程模型（DEMs）、点云数据（point clouds），计算体积（calculate volumes），跟踪施工进度（track progress），并将这些数据与建筑信息模型（BIM models）集成以进行对比分析。"
 ---
 
-# Drone Site Survey Processing
+# 无人机现场调查数据处理
 
-## Overview
+## 概述
 
-This skill implements drone data processing for construction site monitoring. Process aerial imagery to generate maps, measure volumes, track progress, and compare with design models.
+本技能实现了用于建筑工地监控的无人机数据处理功能。通过处理航拍图像，可以生成地图、测量体积、跟踪施工进度，并与设计模型进行对比。
 
-**Capabilities:**
-- Orthomosaic generation
-- Digital Elevation Model (DEM) creation
-- Point cloud processing
-- Volume calculations
-- Progress monitoring
-- BIM comparison
-- Stockpile measurement
+**功能包括：**
+- 正射影像拼接（Orthomosaic生成）
+- 数字高程模型（DEM）创建
+- 点云处理
+- 体积计算
+- 施工进度监控
+- 建筑信息模型（BIM）对比
+- 堆料体积测量
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass
@@ -102,9 +102,9 @@ result = calculate_volume_simple(point_cloud)
 print(f"Volume: {result.volume_m3:.2f} m³, Area: {result.area_m2:.2f} m²")
 ```
 
-## Comprehensive Drone Survey System
+## 全面无人机调查系统
 
-### Image Processing Pipeline
+### 图像处理流程
 
 ```python
 from dataclasses import dataclass, field
@@ -229,7 +229,7 @@ class DroneDataProcessor:
         return comparison
 ```
 
-### Volume Calculation Engine
+### 体积计算引擎
 
 ```python
 from scipy.spatial import Delaunay
@@ -369,7 +369,7 @@ class VolumeCalculator:
         return contours
 ```
 
-### Progress Monitoring
+### 施工进度监控
 
 ```python
 from datetime import date
@@ -531,7 +531,7 @@ class ConstructionProgressMonitor:
         return output_path
 ```
 
-### BIM Comparison
+### 建筑信息模型（BIM）对比
 
 ```python
 class BIMDroneComparator:
@@ -620,25 +620,25 @@ class BIMDroneComparator:
         return deviations
 ```
 
-## Quick Reference
+## 快速参考
 
-| Measurement | Method | Accuracy |
+| 测量项目 | 方法 | 精度 |
 |-------------|--------|----------|
-| Stockpile Volume | Triangulated | ±2-5% |
-| Cut/Fill Volume | Grid comparison | ±5% |
-| Area Measurement | Orthomosaic | <1cm GSD |
-| Elevation (DEM) | Photogrammetry | ±2-5cm |
-| Progress Tracking | Multi-temporal | Relative |
+| 堆料体积 | 三角测量法 | ±2-5% |
+| 开挖/回填体积 | 网格对比法 | ±5% |
+| 面积测量 | 正射影像拼接法 | <1厘米（地面采样距离，GSD） |
+| 高程测量（DEM） | 摄影测量法 | ±2-5厘米 |
+| 施工进度跟踪 | 多时相图像分析 | 相对精度 |
 
-## Resources
+## 资源推荐
 
 - **OpenDroneMap**: https://www.opendronemap.org
 - **Pix4D**: https://www.pix4d.com
 - **LAStools**: https://rapidlasso.com/lastools/
 - **DDC Website**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `progress-monitoring-cv` for image-based progress
-- See `bim-validation-pipeline` for model comparison
-- See `data-visualization` for 3D visualization
+- 有关基于图像的施工进度监控，请参阅 `progress-monitoring-cv`；
+- 有关模型对比，请参阅 `bim-validation-pipeline`；
+- 有关3D可视化，请参阅 `data-visualization`。

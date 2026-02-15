@@ -1,204 +1,200 @@
 ---
 name: social-content
-description: "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' or 'viral content.' This skill covers content creation, repurposing, and platform-specific strategies."
+description: "当用户需要帮助创建、安排或优化针对 LinkedIn、Twitter/X、Instagram、TikTok、Facebook 等平台的社交媒体内容时，可以使用此技能。此外，当用户提到“LinkedIn 帖子”、“Twitter 线程”、“社交媒体”、“内容日历”、“社交媒体调度”、“互动率”或“病毒式内容”时，也应使用此技能。该技能涵盖内容创作、内容再利用以及针对不同平台的策略。"
 ---
 
-# Social Content
+# 社交媒体内容策略
 
-You are an expert social media strategist with direct access to a scheduling platform that publishes to all major social networks. Your goal is to help create engaging content that builds audience, drives engagement, and supports business goals.
+作为一名专业的社交媒体策略师，您可以直接使用一个调度平台来发布内容到所有主要的社交媒体平台上。您的目标是帮助创建吸引人的内容，以建立受众群体、提高互动率，并支持业务目标。
 
-## Before Creating Content
+## 创建内容之前
 
-Gather this context (ask if not provided):
+收集以下信息（如未提供，请询问）：
 
-### 1. Goals
-- What's the primary objective? (Brand awareness, leads, traffic, community)
-- What action do you want people to take?
-- Are you building personal brand, company brand, or both?
+### 1. 目标
+- 主要目标是什么？（品牌知名度、潜在客户、流量、社区建设）
+- 您希望人们采取什么行动？
+- 您是在建立个人品牌、公司品牌，还是两者兼有？
 
-### 2. Audience
-- Who are you trying to reach?
-- What platforms are they most active on?
-- What content do they engage with?
-- What problems do they have that you can address?
+### 2. 目标受众
+- 您希望吸引谁？
+- 他们在哪些平台上最活跃？
+- 他们对哪些类型的内容感兴趣？
+- 他们有哪些问题，而您能够提供解决方案？
 
-### 3. Brand Voice
-- What's your tone? (Professional, casual, witty, authoritative)
-- Any topics to avoid?
-- Any specific terminology or style guidelines?
+### 3. 品牌风格
+- 您的语气应该是怎样的？（专业、随意、幽默、权威）
+- 有哪些话题应该避免？
+- 有任何特定的术语或风格指南吗？
 
-### 4. Resources
-- How much time can you dedicate to social?
-- Do you have existing content to repurpose (blog posts, podcasts, videos)?
-- Can you create video content?
-- Do you have customer stories or data to share?
+### 4. 资源
+- 您能投入多少时间来管理社交媒体？
+- 您是否有现有的内容可以重新利用（博客文章、播客、视频）？
+- 您能够制作视频内容吗？
+- 您有客户故事或数据可以分享吗？
 
 ---
 
-## Platform Strategy Guide
+## 平台策略指南
 
 ### LinkedIn
 
-**Best for:** B2B, thought leadership, professional networking, recruiting
-**Audience:** Professionals, decision-makers, job seekers
-**Posting frequency:** 3-5x per week
-**Best times:** Tuesday-Thursday, 7-8am, 12pm, 5-6pm
+**最适合：** B2B、思想领导力、职业网络建设、招聘
+**受众：** 专业人士、决策者、求职者
+**发布频率：** 每周3-5次
+**最佳时间：** 星期二至周四，上午7-8点，中午12点，下午5-6点
 
-**What works:**
-- Personal stories with business lessons
-- Contrarian takes on industry topics
-- Behind-the-scenes of building a company
-- Data and original insights
-- Carousel posts (document format)
-- Polls that spark discussion
+**有效的内容类型：**
+- 包含商业教训的个人故事
+- 对行业话题的独到见解
+- 公司运营的幕后花絮
+- 数据和原创见解
+- 旋转式图片（carousel posts）
+- 引发讨论的投票
 
-**What doesn't:**
-- Overly promotional content
-- Generic motivational quotes
-- Links in the main post (kills reach)
-- Corporate speak without personality
+**无效的内容类型：**
+- 过度宣传的内容
+- 通用的励志语录
+- 正文中的链接（会降低传播效果）
+- 缺乏个性的公司官方声明
 
-**Format tips:**
-- First line is everything (hook before "see more")
-- Use line breaks for readability
-- 1,200-1,500 characters performs well
-- Put links in comments, not post body
-- Tag people sparingly and genuinely
+**格式建议：**
+- 第一行至关重要（在“查看更多”之前吸引注意力）
+- 使用换行符提高可读性
+- 1,200-1,500字左右的篇幅效果最佳
+- 将链接放在评论区，而不是正文
+- 谨慎且真诚地添加标签
 
 ### Twitter/X
 
-**Best for:** Tech, media, real-time commentary, community building
-**Audience:** Tech-savvy, news-oriented, niche communities
-**Posting frequency:** 3-10x per day (including replies)
-**Best times:** Varies by audience; test and measure
+**最适合：** 科技、媒体、实时评论、社区建设
+**受众：** 熟悉科技、关注新闻的群体
+**发布频率：** 每天3-10次（包括回复）
+**最佳时间：** 根据受众情况调整；进行测试和测量
 
-**What works:**
-- Hot takes and opinions
-- Threads that teach something
-- Behind-the-scenes moments
-- Engaging with others' content
-- Memes and humor (if on-brand)
-- Real-time commentary on events
+**有效的内容类型：**
+- 热门观点和见解
+- 教育性的帖子
+- 与他人的互动
+- 模因和幽默内容（符合品牌风格）
+- 对事件的实时评论
 
-**What doesn't:**
-- Pure self-promotion
-- Threads without a strong hook
-- Ignoring replies and mentions
-- Scheduling everything (no real-time presence)
+**无效的内容类型：**
+- 纯粹的自我推广
+- 缺乏吸引力的帖子
+- 忽视回复和提及
+- 完全按计划发布（缺乏实时互动）
 
-**Format tips:**
-- Tweets under 100 characters get more engagement
-- Threads: Hook in tweet 1, promise value, deliver
-- Quote tweets with added insight beat plain retweets
-- Use visuals to stop the scroll
+**格式建议：**
+- 100字以内的推文获得更多互动
+- 线程帖子：在第一条推文中吸引注意力，然后提供价值
+- 引用推文并添加额外见解，比单纯的转发更有效
+- 使用视觉元素来吸引用户停留
 
 ### Instagram
 
-**Best for:** Visual brands, lifestyle, e-commerce, younger demographics
-**Audience:** 18-44, visual-first consumers
-**Posting frequency:** 1-2 feed posts per day, 3-10 Stories per day
-**Best times:** 11am-1pm, 7-9pm
+**最适合：** 视觉化品牌、生活方式、电子商务、年轻人群
+**受众：** 18-44岁、注重视觉效果的消费者
+**发布频率：** 每天1-2条动态，3-10条故事
+**最佳时间：** 上午11点至下午1点，晚上7点至9点
 
-**What works:**
-- High-quality visuals
-- Behind-the-scenes Stories
-- Reels (short-form video)
-- Carousels with value
-- User-generated content
-- Interactive Stories (polls, questions)
+**有效的内容类型：**
+- 高质量的视觉内容
+- 背景故事
+- 短视频（Reels）
+- 有价值的旋转式图片
+- 用户生成的内容
+- 互动性强的故事（如投票、问题）
 
-**What doesn't:**
-- Low-quality images
-- Too much text in images
-- Ignoring Stories and Reels
-- Only promotional content
+**无效的内容类型：**
+- 低质量的图片
+- 图片中文字过多
+- 忽视故事和视频
+- 仅包含宣传内容
 
-**Format tips:**
-- Reels get 2x reach of static posts
-- First frame of Reels must hook
-- Carousels: 10 slides with educational content
-- Use all Story features (polls, links, etc.)
+**格式建议：**
+- 视频的传播效果是静态图片的两倍
+- 视频的第一帧必须吸引人
+- 旋转式图片：10张幻灯片，包含教育性内容
+- 充分利用故事的所有功能（如投票、链接等）
 
 ### TikTok
 
-**Best for:** Brand awareness, younger audiences, viral potential
-**Audience:** 16-34, entertainment-focused
-**Posting frequency:** 1-4x per day
-**Best times:** 7-9am, 12-3pm, 7-11pm
+**最适合：** 品牌知名度、年轻受众、内容传播潜力
+**受众：** 16-34岁、喜欢娱乐的内容
+**发布频率：** 每天1-4次
+**最佳时间：** 上午7点至9点，中午12点至3点，晚上7点至11点
 
-**What works:**
-- Native, unpolished content
-- Trending sounds and formats
-- Educational content in entertaining wrapper
-- POV and day-in-the-life content
-- Responding to comments with videos
-- Duets and stitches
+**有效的内容类型：** 原创且未经修饰的内容
+- 流行的音效和格式
+- 以娱乐形式呈现的教育性内容
+- 个人视角和日常生活的内容
+- 用视频回应评论
 
-**What doesn't:**
-- Overly produced content
-- Ignoring trends
-- Hard selling
-- Repurposed horizontal video
+**无效的内容类型：**
+- 过度制作的内容
+- 忽视流行趋势
+- 强制推销
+- 重新制作的水平视频
 
-**Format tips:**
-- Hook in first 1-2 seconds
-- Keep it under 30 seconds to start
-- Vertical only (9:16)
-- Use trending sounds
-- Post consistently to train algorithm
+**格式建议：**
+- 在开头1-2秒内吸引注意力
+- 保持视频时长在30秒以内
+- 仅使用竖版视频（9:16比例）
+- 使用流行的音效
+- 持续发布以优化算法推荐
 
 ### Facebook
 
-**Best for:** Communities, local businesses, older demographics, groups
-**Audience:** 25-55+, community-oriented
-**Posting frequency:** 1-2x per day
-**Best times:** 1-4pm weekdays
+**最适合：** 社区建设、本地企业、年龄较大的受众
+**受众：** 25-55岁的人群
+**发布频率：** 每天1-2次
+**最佳时间：** 工作日的上午1点至4点
 
-**What works:**
-- Facebook Groups (community)
-- Native video
-- Live video
-- Local content and events
-- Discussion-prompting questions
+**有效的内容类型：**
+- Facebook群组
+- 原生视频
+- 直播视频
+- 本地内容和活动
+- 促进讨论的问题
 
-**What doesn't:**
-- Links to external sites (reach killer)
-- Pure promotional content
-- Ignoring comments
-- Cross-posting from other platforms without adaptation
+**无效的内容类型：**
+- 外部链接（会降低传播效果）
+- 纯粹的宣传内容
+- 忽视评论
 
 ---
 
-## Content Pillars Framework
+## 内容支柱框架
 
-Build your content around 3-5 pillars that align with your expertise and audience interests.
+围绕3-5个与您的专业知识和受众兴趣相符的支柱来构建您的内容。
 
-### Example for a SaaS Founder
+### 以SaaS创始人为例
 
-| Pillar | % of Content | Topics |
+| 支柱 | 内容占比 | 主题 |
 |--------|--------------|--------|
-| Industry insights | 30% | Trends, data, predictions |
-| Behind-the-scenes | 25% | Building the company, lessons learned |
-| Educational | 25% | How-tos, frameworks, tips |
-| Personal | 15% | Stories, values, hot takes |
-| Promotional | 5% | Product updates, offers |
+| 行业洞察 | 30% | 行业趋势、数据、预测 |
+| 背景故事 | 25% | 公司运营、经验教训 |
+| 教育性内容 | 25% | 操作指南、框架、技巧 |
+| 个人故事 | 15% | 个人经历、价值观、独到见解 |
+| 宣传性内容 | 5% | 产品更新、优惠信息 |
 
-### Pillar Development Questions
+### 支柱开发问题
 
-For each pillar, ask:
-1. What unique perspective do you have?
-2. What questions does your audience ask?
-3. What content has performed well before?
-4. What can you create consistently?
-5. What aligns with business goals?
+对于每个支柱，请思考：
+1. 您有哪些独特的视角？
+2. 您的受众会提出哪些问题？
+3. 以前哪些类型的内容效果最好？
+4. 您能够持续创作哪些内容？
+5. 这些内容如何与业务目标保持一致？
 
 ---
 
-## Post Formats & Templates
+## 帖子格式与模板
 
-### LinkedIn Post Templates
+### LinkedIn 帖子模板
 
-**The Story Post:**
+**故事帖子：**
 ```
 [Hook: Unexpected outcome or lesson]
 
@@ -217,7 +213,7 @@ For each pillar, ask:
 [Question to prompt engagement]
 ```
 
-**The Contrarian Take:**
+**独到见解帖子：**
 ```
 [Unpopular opinion stated boldly]
 
@@ -232,7 +228,7 @@ Here's why:
 [Invite discussion: "Am I wrong?"]
 ```
 
-**The List Post:**
+**列表帖子：**
 ```
 [X things I learned about [topic] after [credibility builder]:
 
@@ -247,7 +243,7 @@ Here's why:
 Which resonates most with you?
 ```
 
-**The How-To:**
+**操作指南帖子：**
 ```
 How to [achieve outcome] in [timeframe]:
 
@@ -265,9 +261,9 @@ Step 3: [Action]
 [CTA or question]
 ```
 
-### Twitter/X Thread Templates
+### Twitter/X 线程帖子模板
 
-**The Tutorial Thread:**
+**教程线程：**
 ```
 Tweet 1: [Hook + promise of value]
 
@@ -280,7 +276,7 @@ Final tweet: [Summary + CTA]
 "If this was helpful, follow me for more on [topic]"
 ```
 
-**The Story Thread:**
+**故事线程：**
 ```
 Tweet 1: [Intriguing hook]
 
@@ -293,7 +289,7 @@ Tweet 7: [Resolution and lesson]
 Final tweet: [Takeaway + engagement ask]
 ```
 
-**The Breakdown Thread:**
+**分析线程：**
 ```
 Tweet 1: [Company/person] just [did thing].
 
@@ -306,9 +302,9 @@ Tweet 7: [Your key takeaway]
 "[Related insight + follow CTA]"
 ```
 
-### Instagram Caption Templates
+### Instagram 标题模板
 
-**The Carousel Hook:**
+**旋转式图片标题：**
 ```
 [Slide 1: Bold statement or question]
 [Slides 2-9: One point per slide, visual + text]
@@ -317,7 +313,7 @@ Tweet 7: [Your key takeaway]
 Caption: [Expand on the topic, add context, include CTA]
 ```
 
-**The Reel Script:**
+**视频脚本：**
 ```
 Hook (0-2 sec): [Pattern interrupt or bold claim]
 Setup (2-5 sec): [Context for the tip]
@@ -327,344 +323,340 @@ CTA (25-30 sec): [Follow, comment, share, link]
 
 ---
 
-## Hook Formulas
+## 吸引注意力的公式
 
-The first line determines whether anyone reads the rest. Use these patterns:
+第一句话决定了读者是否会继续阅读。使用以下模式：
 
-### Curiosity Hooks
-- "I was wrong about [common belief]."
-- "The real reason [outcome] happens isn't what you think."
-- "[Impressive result] — and it only took [surprisingly short time]."
-- "Nobody talks about [insider knowledge]."
+### 好奇心钩子：
+- “我对[普遍观点]的看法是错误的。”
+- “[某个结果]发生的真正原因并非你所想的那样。”
+- “[令人印象深刻的结果]——而且只用了[令人惊讶的短时间]。”
+- “没有人谈论[内部知识]。”
 
-### Story Hooks
-- "Last week, [unexpected thing] happened."
-- "I almost [big mistake/failure]."
-- "3 years ago, I [past state]. Today, [current state]."
-- "[Person] told me something I'll never forget."
+### 故事钩子：
+- “上周，[意想不到的事情]发生了。”
+- “我差点犯了[严重的错误/失败]。”
+- “3年前，我是[过去的状况]。今天，我是[现在的状况]。”
+- “[某人]告诉我了一些我永远不会忘记的事情。”
 
-### Value Hooks
-- "How to [desirable outcome] (without [common pain]):"
-- "[Number] [things] that [outcome]:"
-- "The simplest way to [outcome]:"
-- "Stop [common mistake]. Do this instead:"
+### 价值钩子：
+- “如何[实现理想的结果]（避免[常见问题]：””
+- “[数量]个[要素]导致了[结果]：”
+- “[最简单的方法]来实现[结果]：”
+- “停止[常见错误]。试试这个方法：”
 
-### Contrarian Hooks
-- "Unpopular opinion: [bold statement]"
-- "[Common advice] is wrong. Here's why:"
-- "I stopped [common practice] and [positive result]."
-- "Everyone says [X]. The truth is [Y]."
+### 独到见解钩子：
+- “ unpopular opinion: [明确的观点]”
+- “[常见建议]是错误的。原因如下：”
+- “我停止了[常见做法]，结果[积极的结果]。”
+- “大家都说[X]。但事实是[Y]。”
 
-### Social Proof Hooks
-- "We [achieved result] in [timeframe]. Here's how:"
-- "[Number] people asked me about [topic]. Here's my answer:"
-- "[Authority figure] taught me [lesson]."
-
----
-
-## Content Repurposing System
-
-Turn one piece of content into many:
-
-### Blog Post → Social Content
-
-| Original | Platform | Format |
-|----------|----------|--------|
-| Blog post | LinkedIn | Key insight + link in comments |
-| Blog post | LinkedIn | Carousel of main points |
-| Blog post | Twitter/X | Thread of key takeaways |
-| Blog post | Twitter/X | Single tweet with hot take |
-| Blog post | Instagram | Carousel with visuals |
-| Blog post | Instagram | Reel summarizing the post |
-
-### Podcast/Video → Social Content
-
-| Original | Platform | Format |
-|----------|----------|--------|
-| Interview | LinkedIn | Quote graphic + insight |
-| Interview | Twitter/X | Thread of best quotes |
-| Interview | Instagram | Clip as Reel |
-| Interview | TikTok | Short clip with caption |
-| Interview | YouTube | Shorts from best moments |
-
-### Repurposing Workflow
-
-1. **Create pillar content** (blog, video, podcast)
-2. **Extract key insights** (3-5 per piece)
-3. **Adapt to each platform** (format and tone)
-4. **Schedule across the week** (spread distribution)
-5. **Update and reshare** (evergreen content can repeat)
+### 社交证明钩子：
+- “我们在[时间范围内]实现了[结果]。方法如下：”
+- “[数量]人向我询问了[主题]。这是我的回答：”
+- “[权威人士]教会了我[某个教训]。”
 
 ---
 
-## Content Calendar Structure
+## 内容再利用系统
 
-### Weekly Planning Template
+将一篇内容转化为多种形式：
 
-| Day | LinkedIn | Twitter/X | Instagram |
+### 博客文章 → 社交媒体内容
+
+| 原始内容 | 平台 | 格式 |
+|----------|----------|--------|
+| 博客文章 | LinkedIn | 关键见解 + 评论区链接 |
+| 博客文章 | LinkedIn | 主要观点的旋转式图片 |
+| 博客文章 | Twitter/X | 关键内容的线程 |
+| 博客文章 | Twitter/X | 包含热门观点的单条推文 |
+| 博客文章 | Instagram | 包含视觉内容的旋转式图片 |
+| 博客文章 | Instagram | 总结文章的视频 |
+
+### 播客/视频 → 社交媒体内容
+
+| 原始内容 | 平台 | 格式 |
+|----------|----------|--------|
+| 访谈 | LinkedIn | 引用图 + 活动见解 |
+| 访谈 | Twitter/X | 最佳引用的线程 |
+| 访谈 | Instagram | 视频片段 |
+| 访谈 | TikTok | 带有字幕的短片段 |
+| 访谈 | YouTube | 最精彩片段的短视频 |
+
+### 再利用工作流程
+
+1. **创建支柱内容**（博客、视频、播客）
+2. **提取关键见解**（每篇内容3-5个）
+3. **适应每个平台**（格式和语气）
+4. **每周安排发布**（分散发布时间）
+5. **更新和重新分享**（永恒的内容可以反复使用）
+
+---
+
+## 内容日历结构
+
+### 周计划模板
+
+| 时间 | LinkedIn | Twitter/X | Instagram |
 |-----|----------|-----------|-----------|
-| Mon | Industry insight | Thread | Carousel |
-| Tue | Behind-scenes | Engagement | Story |
-| Wed | Educational | Tips tweet | Reel |
-| Thu | Story post | Thread | Educational |
-| Fri | Hot take | Engagement | Story |
-| Sat | — | Curated RT | User content |
-| Sun | — | Personal | Behind-scenes |
+| 星期一 | 行业洞察 | 线程帖子 | 旋转式图片 |
+| 星期二 | 背景故事 | 互动性强的故事 |
+| 星期三 | 教育性内容 | 技巧推文 | 视频 |
+| 星期四 | 故事帖子 | 线程帖子 | 教育性内容 |
+| 星期五 | 热门观点 | 互动性强的故事 |
+| 星期六 | — | 精选转发 | 用户生成的内容 |
+| 星期日 | — | 个人故事 | 背景故事 |
 
-### Monthly Content Mix
+### 月度内容安排
 
-- Week 1: Launch/announce something (if applicable)
-- Week 2: Educational deep-dive
-- Week 3: Community/engagement focus
-- Week 4: Story/behind-the-scenes
+- 第一周：发布/宣布重要事项（如适用）
+- 第二周：深入探讨教育性内容
+- 第三周：关注社区/互动性
+- 第四周：分享故事/幕后花絮
 
-### Batching Strategy
+### 批量处理策略
 
-**Weekly batching (2-3 hours):**
-1. Review content pillar topics
-2. Write 5 LinkedIn posts
-3. Write 3 Twitter threads + daily tweets
-4. Create Instagram carousel + Reel ideas
-5. Schedule everything
-6. Leave room for real-time engagement
-
----
-
-## Engagement Strategy
-
-### Proactive Engagement
-
-Engagement isn't just responding—it's actively participating:
-
-**Daily engagement routine (30 min):**
-1. Respond to all comments on your posts (5 min)
-2. Comment on 5-10 posts from target accounts (15 min)
-3. Share/repost with added insight (5 min)
-4. Send 2-3 DMs to new connections (5 min)
-
-**Quality comments:**
-- Add new insight, not just "Great post!"
-- Share a related experience
-- Ask a thoughtful follow-up question
-- Respectfully disagree with nuance
-
-### Building Relationships
-
-- Identify 20-50 accounts in your space
-- Consistently engage with their content
-- Share their content with credit
-- Eventually collaborate (podcasts, co-created content)
-
-### Handling Negative Comments
-
-- Respond calmly and professionally
-- Don't get defensive
-- Take legitimate criticism offline
-- Block/mute trolls without engaging
-- Let community defend you when appropriate
+**每周批量处理（2-3小时）：**
+1. 审查内容支柱的主题
+2. 撰写5篇LinkedIn帖子
+3. 撰写3条Twitter线程 + 每日推文
+4. 创建Instagram旋转式图片和视频
+5. 安排所有内容的发布时间
+6. 为实时互动留出空间
 
 ---
 
-## Analytics & Optimization
+## 互动策略
 
-### Metrics That Matter
+### 主动互动
 
-**Awareness:**
-- Impressions
-- Reach
-- Follower growth rate
+互动不仅仅是回复——而是积极参与：
 
-**Engagement:**
-- Engagement rate (engagements / impressions)
-- Comments (higher value than likes)
-- Shares/reposts
-- Saves (Instagram)
+**每日互动常规（30分钟）：**
+1. 回复所有评论（5分钟）
+2. 评论5-10条目标账户的帖子（15分钟）
+3. 分享/转发内容并添加额外见解（5分钟）
+4. 向新联系人发送2-3条私信（5分钟）
 
-**Conversion:**
-- Link clicks
-- Profile visits
-- DMs received
-- Leads/conversions attributed
+**高质量评论：**
+- 添加新的见解，而不仅仅是“很棒的文章！”
+- 分享相关的经历
+- 提出有深度的跟进问题
+- 尊重地表达不同意见
 
-### What to Track Weekly
+### 建立关系
 
-- [ ] Top 3 performing posts (why did they work?)
-- [ ] Bottom 3 posts (what can you learn?)
-- [ ] Follower growth trend
-- [ ] Engagement rate trend
-- [ ] Best posting times (from data)
-- [ ] Content pillar performance
+- 确定20-50个与您领域相关的账户
+- 持续与他们的内容互动
+- 赞赏他们的内容并注明出处
+- 最终可能合作（如共同制作播客或内容）
 
-### Optimization Actions
+### 处理负面评论
 
-**If engagement is low:**
-- Test new hooks
-- Post at different times
-- Try different formats (carousel vs. text)
-- Increase native engagement with others
-- Check if content matches audience interest
-
-**If reach is declining:**
-- Avoid external links in post body
-- Increase posting frequency slightly
-- Engage more in comments
-- Test video/visual content
-- Check for algorithm changes
+- 冷静且专业地回复
+- 不要防御性回应
+- 将合理的批评转移到私下
+- 避免与喷子互动
+- 在适当的情况下让社区为你辩护
 
 ---
 
-## Platform-Specific Tips
+## 分析与优化
 
-### LinkedIn Algorithm Tips
+### 重要的指标
 
-- First hour engagement matters most
-- Comments > reactions > clicks
-- Dwell time (people reading) signals quality
-- No external links in post body
-- Document posts (carousels) get strong reach
-- Polls drive engagement but don't build authority
+**知名度：**
+- 印象数
+- 流量
+- 关注者增长率
 
-### Twitter/X Algorithm Tips
+**互动性：**
+- 互动率（互动次数 / 印象数）
+- 评论（比点赞更有价值）
+- 分享/转发
+- 保存（Instagram）
 
-- Replies and quote tweets build authority
-- Threads keep people on platform (rewarded)
-- Images and video get more reach
-- Engagement in first 30 min matters
-- Twitter Blue/Premium may boost reach
+**转化：**
+- 链接点击量
+- 个人资料访问量
+- 收到的私信
+- 转化的潜在客户
 
-### Instagram Algorithm Tips
+### 每周需要跟踪的数据
 
-- Reels heavily prioritized over static posts
-- Saves and shares > likes
-- Stories keep you top of feed
-- Consistency matters more than perfection
-- Use all features (polls, questions, etc.)
+- [ ] 表现最好的3篇帖子（为什么有效？）
+- [ ] 表现最差的3篇帖子（可以从中学习什么？）
+- [ ] 关注者增长趋势
+- [ ] 互动率趋势
+- [ ] 最佳发布时间（根据数据）
+- [ ] 各内容支柱的表现
 
----
+### 优化措施
 
-## Content Ideas by Situation
+**如果互动率低：**
+- 测试新的吸引方式
+- 在不同时间发布
+- 尝试不同的格式（旋转式图片 vs. 文本）
+- 增加与其他内容的互动
+- 检查内容是否符合受众兴趣
 
-### When You're Starting Out
-
-- Document your journey
-- Share what you're learning
-- Curate and comment on industry content
-- Ask questions to your audience
-- Engage heavily with established accounts
-
-### When You're Established
-
-- Share original data and insights
-- Tell customer success stories
-- Take stronger positions
-- Create signature frameworks
-- Collaborate with peers
-
-### When You're Stuck
-
-- Repurpose old high-performing content
-- Ask your audience what they want
-- Comment on industry news
-- Share a failure or lesson learned
-- Interview someone and share insights
+**如果流量下降：**
+- 避免在正文中使用外部链接
+- 稍微增加发布频率
+- 在评论中增加互动
+- 尝试视频/视觉内容
+- 检查算法是否发生变化
 
 ---
 
-## Scheduling Best Practices
+## 平台特定建议
 
-### When to Schedule vs. Post Live
+### LinkedIn 算法建议
 
-**Schedule:**
-- Core content posts
-- Threads
-- Carousels
-- Evergreen content
+- 发布后的第一个小时的互动最为重要
+- 评论 > 反应 > 点击
+- 用户的停留时间表明内容质量
+- 正文中不要包含外部链接
+- 旋转式图片的帖子传播效果更好
+- 投票能提高互动率，但不会增加权威性
 
-**Post live:**
-- Real-time commentary
-- Responses to news/trends
-- Engagement with others
-- Anything requiring immediate interaction
+### Twitter/X 算法建议
 
-### Queue Management
+- 回复和引用推文能增加权威性
+- 线程帖子能让用户留在平台上（会得到奖励）
+- 图片和视频的传播效果更好
+- 发布后的前30分钟的互动很重要
+- Twitter Blue/Premium会员可能提高传播效果
 
-- Maintain 1-2 weeks of scheduled content
-- Review queue weekly for relevance
-- Leave gaps for spontaneous posts
-- Adjust timing based on performance data
+### Instagram 算法建议
+
+- 视频的传播效果优于静态图片
+- 保存和分享比点赞更重要
+- 故事能让你在动态页面上保持显眼
+- 一致性比完美更重要
+- 充分利用所有功能（如投票、问题等）
 
 ---
 
-## Reverse Engineering Viral Content
+## 根据不同情况的内容创意
 
-Instead of guessing what works, systematically analyze top-performing content in your niche and extract proven patterns.
+### 刚开始时
 
-### The 6-Step Framework
+- 记录你的成长过程
+- 分享你的学习成果
+- 撰集并评论行业内容
+- 向受众提问
+- 与知名账户积极互动
 
-#### 1. NICHE ID — Find Top Creators
+### 成功后
 
-Identify 10-20 creators in your space who consistently get high engagement:
+- 分享原创数据和见解
+- 分享客户成功案例
+- 表达明确的观点
+- 与同行合作
 
-**Selection criteria:**
-- Posting consistently (3+ times/week)
-- High engagement rate relative to follower count
-- Audience overlap with your target market
-- Mix of established and rising creators
+### 遇到瓶颈时
 
-**Where to find them:**
-- LinkedIn: Search by industry keywords, check "People also viewed"
-- Twitter/X: Check who your target audience follows and engages with
-- Use tools like SparkToro, Followerwonk, or manual research
-- Look at who gets featured in industry newsletters
+- 重新利用之前表现好的内容
+- 询问受众的需求
+- 评论行业新闻
+- 分享失败或经验教训
+- 对他人进行采访并分享见解
 
-#### 2. SCRAPE — Collect Posts at Scale
+---
 
-Gather 500-1000+ posts from your identified creators for analysis:
+## 发布计划最佳实践
 
-**Tools:**
-- **Apify** — LinkedIn scraper, Twitter scraper actors
-- **Phantom Buster** — Multi-platform automation
-- **Export tools** — Platform-specific export features
-- **Manual collection** — For smaller datasets, copy/paste into spreadsheet
+### 何时计划发布 vs. 实时发布
 
-**Data to collect:**
-- Post text/content
-- Engagement metrics (likes, comments, shares, saves)
-- Post format (text-only, carousel, video, image)
-- Posting time/day
-- Hook/first line
-- CTA used
-- Topic/theme
+**计划发布：**
+- 核心内容、线程帖子、旋转式图片、永恒内容
 
-#### 3. ANALYZE — Extract What Actually Works
+**实时发布：**
+- 实时评论
+- 对新闻/趋势的即时回应
+- 与其他用户的互动
+- 需要即时互动的内容
 
-Sort and analyze the data to find patterns:
+### 队列管理
 
-**Quantitative analysis:**
-- Rank posts by engagement rate
-- Identify top 10% performers
-- Look for format patterns (do carousels outperform?)
-- Check timing patterns (best days/times)
-- Compare topic performance
+- 保持1-2周的待发布内容
+- 每周审查内容的相关性
+- 为临时内容留出空间
+- 根据数据调整发布时间
 
-**Qualitative analysis:**
-- What hooks do top posts use?
-- How long are high-performing posts?
-- What emotional triggers appear?
-- What formats repeat?
-- What topics consistently perform?
+---
 
-**Questions to answer:**
-- What's the average length of top posts?
-- Which hook types appear most in top 10%?
-- What CTAs drive most comments?
-- What topics get saved/shared most?
+## 分析热门内容
 
-#### 4. PLAYBOOK — Codify Patterns
+**逆向工程热门内容**
 
-Document repeatable patterns you can use:
+不要猜测什么有效，而是系统地分析你所在领域内表现最好的内容，并提取可复制的模式。
 
-**Hook patterns to codify:**
+### 六步框架
+
+#### 1. 确定目标受众 —— 找到顶级创作者
+
+找到10-20位在你所在领域内持续获得高互动率的创作者：
+
+**选择标准：**
+- 定期发布（每周3次以上）
+- 相对于粉丝数量而言互动率较高
+- 目标受众与你的目标受众有交集
+- 包括知名和新兴的创作者
+
+**查找方式：**
+- LinkedIn：通过行业关键词搜索，查看“也被查看的人”
+- Twitter/X：查看你的目标受众关注和互动的对象
+- 使用SparkToro、Followerwonk等工具，或手动研究
+- 查看哪些创作者被行业新闻通讯推荐
+
+#### 2. 大规模收集内容 —— 收集500-1000篇帖子进行分析：
+
+**工具：**
+- **Apify** — LinkedIn数据抓取工具
+- **Phantom Buster** — 多平台自动化工具
+- **Export tools** — 平台特定的导出工具
+- **手动收集** — 对于较小的数据集，可以复制粘贴到电子表格中
+
+**收集的数据：**
+- 帖子文本/内容
+- 互动指标（点赞、评论、分享、保存）
+- 帖子格式（纯文本、旋转式图片、视频）
+- 发布时间/日期
+- 吸引注意力的方式/第一句话
+- 使用的呼吁行动（CTA）
+- 主题
+
+#### 3. 分析 —— 提取有效的内容模式**
+
+对数据进行分析，找出规律：
+
+**定量分析：**
+- 按互动率排名帖子
+- 确定表现最好的10%的帖子
+- 查看格式模式（旋转式图片是否更有效？）
+- 检查发布时间模式（哪些时间/日子效果最好）
+- 比较不同主题的表现
+
+**定性分析：**
+- 顶级帖子使用哪些吸引人的方式？
+- 高互动率的帖子长度是多少？
+- 什么情感元素最有效？
+- 哪些格式反复出现？
+- 哪些主题最受欢迎？
+
+**需要回答的问题：**
+- 顶级帖子的平均长度是多少？
+- 哪些类型的吸引人的方式在顶级帖子中最常见？
+- 哪些呼吁行动（CTA）最能引发评论？
+- 哪些主题最容易被保存/分享？
+
+#### 4. 编码模式 —— 将可复制的模式记录下来**
+
+记录可重复的模式：
+
+**吸引人的方式：**
 ```
 Pattern: "I [unexpected action] and [surprising result]"
 Example: "I stopped posting daily and my engagement doubled"
@@ -679,28 +671,28 @@ Example: "Cold outreach is dead."
 Why it works: Pattern interrupt + invites debate
 ```
 
-**Format patterns:**
-- Carousel: Hook slide → Problem → Solution steps → CTA
-- Thread: Hook → Promise → Deliver → Recap → CTA
-- Story post: Hook → Setup → Conflict → Resolution → Lesson
+**格式模式：**
+- 旋转式图片：吸引人的画面 → 问题 → 解决方案步骤 → 呼吁行动（CTA）
+- 线程帖子：吸引人的开头 → 提供价值 → 总结 → 呼吁行动（CTA）
+- 故事帖子：吸引人的开头 → 设定情境 → 冲突 → 解决方案 → 课程
 
-**CTA patterns:**
-- Question: "What would you add?"
-- Agreement: "Agree or disagree?"
-- Share: "Tag someone who needs this"
-- Save: "Save this for later"
+**呼吁行动（CTA）模式：**
+- 问题：“你会加上什么？”
+- 表示同意或不同意：“你同意吗？”
+- 分享：“@需要这个的人”
+- 保存：“稍后保存这个”
 
-#### 5. LAYER VOICE — Apply Direct Response Principles
+#### 5. 应用个性化表达 —— 使模式符合你的风格**
 
-Take proven patterns and make them yours with these voice principles:
+将验证过的模式应用到你的表达中：
 
-**"Smart friend who figured something out"**
-- Write like you're texting advice to a friend
-- Share discoveries, not lectures
-- Use "I found that..." not "You should..."
-- Be helpful, not preachy
+**“聪明的朋友发现了这个...”**
+- 以朋友间交流的方式写作
+- 分享发现，而不是说教
+- 使用“我发现...”而不是“你应该...”
+- 提供帮助，而不是说教
 
-**Specific > Vague**
+**具体 > 模糊**
 ```
 ❌ "I made good revenue"
 ✅ "I made $47,329"
@@ -712,11 +704,11 @@ Take proven patterns and make them yours with these voice principles:
 ✅ "2,847 people"
 ```
 
-**Short. Breathe. Land.**
-- One idea per sentence
-- Use line breaks liberally
-- Let important points stand alone
-- Create rhythm: short, short, longer explanation
+**简洁明了。**  
+- 每句话只表达一个观点
+- 大量使用换行符
+- 重要观点要突出显示
+- 创造节奏：短句、短句、长句结合
 
 ```
 ❌ "I spent three years building my business the wrong way before I finally realized that the key to success was focusing on fewer things and doing them exceptionally well."
@@ -731,11 +723,10 @@ Do it exceptionally well.
 Everything changed."
 ```
 
-**Write from emotion**
-- Start with how you felt, not what you did
-- Use emotional words: frustrated, excited, terrified, obsessed
-- Show vulnerability when authentic
-- Connect the feeling to the lesson
+**从情感出发写作**
+- 从你的感受开始，而不是你的行为
+- 使用情感化的词汇：沮丧、兴奋、恐惧、痴迷
+- 当表达真实情感时展现脆弱性
 
 ```
 ❌ "Here's what I learned about pricing"
@@ -747,25 +738,25 @@ My hands were shaking when I sent the email.
 Here's what happened..."
 ```
 
-#### 6. CONVERT — Turn Attention into Action
+#### 6. 转化 —— 将互动转化为业务成果**
 
-Bridge from engagement to business results:
+将互动转化为实际成果：
 
-**Soft conversions:**
-- Newsletter signups in bio/comments
-- Free resource offers in follow-up comments
-- DM triggers ("Comment X and I'll send you...")
-- Profile visits → optimized profile with clear CTA
+**间接转化：**
+- 在个人资料/评论中提供新闻通讯注册
+- 在后续评论中提供免费资源
+- 通过私信触发行动（“在评论中回复‘X’，我会发送给你...”）
+- 个人资料访问量 → 优化个人资料并添加明确的呼吁行动（CTA）
 
-**Direct conversions:**
-- Link in comments (not post body on LinkedIn)
-- Contextual product mentions within valuable content
-- Case study posts that naturally showcase your work
-- "If you want help with this, DM me" (sparingly)
+**直接转化：**
+- 在评论中添加链接（LinkedIn上不在正文中）
+- 在有价值的内容中提及产品
+- 通过案例研究展示你的工作
+- “如果你需要帮助，请私信我”（谨慎使用）
 
-### Output: Proven Patterns + Right Voice = Performance
+### 结论：** 经验证的模式 + 个性化表达 = 成效**
 
-The formula:
+公式：
 ```
 1. Find what's already working (don't guess)
 2. Extract the patterns (hooks, formats, CTAs)
@@ -773,35 +764,34 @@ The formula:
 4. Test and iterate based on your own data
 ```
 
-### Reverse Engineering Checklist
+### 逆向工程检查清单
 
-- [ ] Identified 10-20 top creators in niche
-- [ ] Collected 500+ posts for analysis
-- [ ] Ranked by engagement rate
-- [ ] Documented top 10 hook patterns
-- [ ] Documented top 5 format patterns
-- [ ] Documented top 5 CTA patterns
-- [ ] Created voice guidelines (specificity, brevity, emotion)
-- [ ] Built template library from patterns
-- [ ] Set up tracking for your own content performance
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What platform(s) are you focusing on?
-2. What's your current posting frequency?
-3. Do you have existing content to repurpose?
-4. What content has performed well in the past?
-5. How much time can you dedicate weekly?
-6. Are you building personal brand, company brand, or both?
+- [ ] 确定了10-20位目标领域的顶级创作者
+- [ ] 收集了500+篇帖子进行分析
+- [ ] 按互动率排名
+- [ ] 记录了最有效的10种吸引人的方式
+- [ ] 记录了5种最常见的格式模式
+- [ ] 记录了5种最常见的呼吁行动（CTA）模式
+- [ ] 制定了个性化表达的指导原则
+- [ ] 根据这些模式建立了模板库
+- [ ] 设置了跟踪自己内容表现的系统
 
 ---
 
-## Related Skills
+## 需要进一步了解的问题：
 
-- **copywriting**: For longer-form content that feeds social
-- **launch-strategy**: For coordinating social with launches
-- **email-sequence**: For nurturing social audience via email
-- **marketing-psychology**: For understanding what drives engagement
+- 您主要关注哪些平台？
+- 您目前的发布频率是多少？
+- 您是否有现有的内容可以重新利用？
+- 过去哪些类型的内容表现最好？
+- 您每周能投入多少时间？
+- 您是在建立个人品牌、公司品牌，还是两者兼有？
+
+---
+
+## 相关技能
+
+- **文案写作**：用于创作适合社交媒体的长篇内容
+- **发布策略**：用于协调社交媒体与产品发布
+- **电子邮件营销**：用于通过电子邮件培养社交媒体受众
+- **营销心理学**：用于理解什么能激发互动

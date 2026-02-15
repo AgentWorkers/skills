@@ -1,34 +1,34 @@
 ---
 name: migrator
-description: Securely migrate OpenClaw Agent (config, memory, skills) to a new machine.
+description: 将 OpenClaw Agent（包括配置文件、内存数据以及用户技能数据）安全地迁移到新机器上。
 ---
 
 # OpenClaw Migrator
 
-A utility to package an Agent's state into a portable, encrypted archive (`.oca`) for migration.
+这是一个用于将代理（Agent）的状态打包成便携式、加密的归档文件（`.oca`）以方便迁移的工具。
 
-## Features
+## 特点
 
-- **Encrypted Archive**: Uses AES-256-GCM + auth tag for confidentiality and integrity.
-- **Path Normalization**: Restores workspace path using `manifest.json` metadata.
-- **Dependency Manifest**: Captures system dependencies (Brewfile) to ensure the new environment matches.
+- **加密归档**：使用 AES-256-GCM 加密算法，并添加认证标签（auth tag）来确保数据的安全性和完整性。
+- **路径规范化**：根据 `manifest.json` 元数据恢复工作区的路径。
+- **依赖项清单**：记录系统的依赖关系（Brewfile），以确保新环境与旧环境一致。
 
-## Usage
+## 使用方法
 
-### Export (On Old Machine)
+### 导出（在旧机器上）
 
 ```bash
 migrator export --out my-agent.oca --password "secret"
 ```
 
-### Import (On New Machine)
+### 导入（在新机器上）
 
 ```bash
 migrator import --in my-agent.oca --password "secret"
 ```
 
-## Security
+## 安全性
 
-This skill handles sensitive data (`openclaw.json`, `auth.token`). 
-The export process **always** requires a password to encrypt the archive.
-Unencrypted exports are **disabled** by design.
+该工具处理敏感数据（`openclaw.json`、`auth.token`）。  
+导出过程 **始终** 需要密码来加密归档文件。  
+设计上禁止生成未加密的导出文件。

@@ -1,60 +1,59 @@
 ---
 name: Domains
-description: Register, manage, and protect domain names with practical DNS and security guidance.
+description: 通过实用的DNS（域名系统）和安全指南，您可以注册、管理并保护您的域名。
 metadata: {"clawdbot":{"emoji":"🌐","os":["linux","darwin","win32"]}}
 ---
 
-# Domain Management Rules
+# 域名管理规则
 
-## Before Registration
-- Check availability on the registrar directly — WHOIS lookups from third parties can trigger front-running (someone registers it before you)
-- Search for the domain name + "scam" or "controversy" — previous owners leave reputation baggage
-- Verify trademark conflicts before investing in branding — legal disputes are expensive
+## 注册前
+- 直接在域名注册商处检查域名是否可用——通过第三方进行WHOIS查询可能会导致他人抢先注册
+- 搜索该域名加上“scam”或“controversy”（骗局/争议）——前所有者可能会留下不良声誉
+- 在进行品牌建设之前，先核实是否存在商标冲突——法律纠纷成本高昂
 
-## Choosing Extensions
-- .com still has highest trust for general audiences — alternatives work but require more brand building
-- Country TLDs (.co.uk, .de) rank better in local search — use them for geo-targeted businesses
-- New TLDs (.io, .ai, .dev) work for tech audiences but confuse mainstream users
-- Premium domains have recurring premium renewal fees, not just higher initial cost — check yearly price
+## 选择域名扩展名
+- .com仍然受到大多数用户的信任——虽然其他扩展名也可以使用，但需要更多品牌推广工作
+- 国家代码顶级域名（如.co.uk、.de）在本地搜索中排名更高——适用于针对特定地区的目标用户
+- 新兴顶级域名（如.io、.ai、.dev）适合技术类用户，但可能让普通用户感到困惑
+- 高端域名的续费费用较高，不仅仅是初始成本高——请每年查看价格
 
-## Registration Practices
-- Enable auto-renewal immediately — domains lost to expiration get scooped by squatters within hours
-- Buy WHOIS privacy — public registration data leads to endless spam and social engineering attempts
-- Register for multiple years if the domain is important — shows search engines you're serious
-- Use a dedicated email for registrar accounts — losing access to that email means losing the domain
+## 注册流程
+- 立即启用自动续费功能——否则域名会在过期后几小时内被他人抢注
+- 购买WHOIS隐私保护服务——公开注册信息容易导致垃圾邮件和社交工程攻击
+- 如果域名非常重要，请注册多年——这会让搜索引擎认为您是认真的用户
+- 为域名注册账户使用专用邮箱——一旦失去对该邮箱的访问权限，域名也可能随之丢失
 
-## DNS Fundamentals
-- DNS changes take 24-48 hours to fully propagate — plan migrations accordingly
-- TTL (Time To Live) should be lowered before migrations, raised after — low TTL during normal operation wastes resources
-- A records point to IP addresses, CNAME points to another domain — never CNAME the root domain
-- MX records for email are separate from web hosting — moving hosts doesn't require changing email if MX stays
+## DNS基础知识
+- DNS更改需要24-48小时才能完全生效——请相应地规划域名迁移
+- 迁移前应降低TTL（生存时间），迁移后应提高TTL——正常运行时TTL过低会浪费系统资源
+- A记录用于指向IP地址，CNAME记录用于指向其他域名——切勿将根域名设置为CNAME
+- 用于邮箱的MX记录与网站托管服务分开——即使更换网站托管商，只要MX记录不变，邮箱地址也不会改变
 
-## Security
-- Enable registrar lock (clientTransferProhibited) — prevents unauthorized transfers
-- DNSSEC adds cryptographic verification — worth enabling but breaks if misconfigured
-- Two-factor on registrar account is mandatory — domain hijacking is common attack vector
-- Authorization/EPP code is the password for transfers — treat it like a credential
+## 安全性
+- 启用域名注册商的锁定功能（clientTransferProhibited）——防止未经授权的域名转移
+- DNSSEC提供加密验证——虽然值得启用，但配置错误可能导致问题
+- 域名注册账户必须启用双因素认证——域名劫持是一种常见的攻击手段
+- 转移域名时需要提供授权码（Authorization/EPP code）——请将其视为重要凭证
 
-## Transfers
-- 60-day lock after registration or previous transfer — plan ahead, can't transfer immediately
-- Transfers extend registration by one year — not wasted money
-- Unlock domain and get auth code before initiating — missing either blocks the transfer
-- Some TLDs have special transfer rules — .uk, .de, and others differ from standard process
+## 域名转移
+- 注册或上次转移后域名会有60天的锁定期——请提前规划，无法立即转移
+- 域名转移会自动延长注册期限一年——避免不必要的费用浪费
+- 在开始转移前，请先解锁域名并获取授权码——缺少其中任何一项都会导致转移失败
+- 一些顶级域名有特殊的转移规则——.uk、.de等域名的转移流程与标准流程不同
 
-## Expiration
-- Grace period (usually 30 days) allows renewal at normal price — but risky, site goes down
-- Redemption period costs 10-20x normal renewal — expensive mistake
-- After redemption, domain goes to auction or open registration — you've lost it
-- Expired domains with backlinks get bought by spammers — protect your brand's domains even if unused
+## 域名过期
+- 域名过期后有30天的宽限期，期间可以以正常价格续费——但存在风险，否则网站可能会无法访问
+- 续费失败后，域名将进入拍卖或公开注册状态——您将失去该域名
+- 已过期的域名如果有外部链接，可能会被垃圾邮件发送者购买——即使不使用，也要保护好自己的品牌域名
 
-## Multi-Domain Strategy
-- Register common misspellings and redirect — typosquatters will otherwise profit from your traffic
-- Consider .com + main country TLD at minimum — others only if brand is valuable
-- Subdomains are free and instant — don't buy domains for every project, use subdomains for experiments
-- Consolidate domains at one registrar — easier management, less credential sprawl
+## 多域名策略
+- 注册常见的拼写错误版本并设置重定向——否则拼写错误者可能会利用您的流量获利
+- 至少注册.com加上对应国家的顶级域名——只有在品牌价值较高的情况下才考虑其他扩展名
+- 子域名是免费且可以立即创建的——不要为每个项目都购买单独的域名，可以使用子域名进行测试
+- 将所有域名集中在一个域名注册商处管理——便于管理，减少凭证分散带来的风险
 
-## Common Mistakes
-- Registering through web host instead of dedicated registrar — harder to move later, often more expensive
-- Letting domains expire assuming no one cares — competitors and squatters monitor expirations
-- Using registrar's free email forwarding for critical accounts — tied to domain renewal, single point of failure
-- Not documenting which domains exist where — large organizations lose track and lose domains
+## 常见错误
+- 通过网站托管商而非专用域名注册商进行注册——后续转移会更加困难，且费用可能更高
+- 认为没人会关心域名过期而任由其过期——竞争对手和域名抢注者会密切关注域名过期情况
+- 为重要账户使用域名注册商提供的免费邮箱转发服务——这种服务与域名续费绑定，存在单点故障风险
+- 不记录域名的具体注册信息——大型组织可能会因此丢失对域名的管理权限

@@ -1,56 +1,56 @@
 ---
 name: Website
-description: Build fast, accessible, and SEO-friendly websites with modern best practices.
+description: 使用现代的最佳实践来构建快速、易于访问且符合搜索引擎优化（SEO）要求的网站。
 metadata: {"clawdbot":{"emoji":"🌐","os":["linux","darwin","win32"]}}
 ---
 
-# Website Development Rules
+# 网站开发规范
 
-## Performance
-- Images are the #1 cause of slow sites — use WebP/AVIF, lazy-load below-the-fold, and set explicit width/height to prevent layout shift
-- Render-blocking CSS delays first paint — inline critical CSS in `<head>`, defer the rest
-- Third-party scripts (analytics, chat widgets) often add 500ms+ — load them with `async` or `defer`, audit regularly
-- Fonts cause invisible text flash (FOIT) — use `font-display: swap` and preload critical fonts
-- Measure with Lighthouse in incognito mode — extensions skew results
+## 性能优化
+- 图片是导致网站加载缓慢的首要原因——使用 WebP/AVIF 格式，采用懒加载技术，并为图片设置明确的宽高值以防止布局错位。
+- 阻碍页面渲染的 CSS 代码会延迟页面的首次显示——将关键 CSS 代码放在 `<head>` 标签中内联显示，其余 CSS 代码则使用 `defer` 属性延迟加载。
+- 第三方脚本（如分析工具、聊天插件）通常会增加 500 毫秒以上的加载时间——使用 `async` 或 `defer` 属性加载这些脚本，并定期进行性能审计。
+- 字体可能导致文本闪烁（FOIT 问题）——使用 `font-display: swap` 属性，并预加载关键字体。
+- 使用 Lighthouse 工具在隐私模式下测试网站性能——浏览器扩展程序可能会影响测试结果。
 
-## Mobile First
-- Start CSS with mobile styles, add complexity with `min-width` media queries — easier to scale up than strip down
-- Touch targets need 44x44px minimum — fingers are imprecise, small buttons frustrate users
-- Test on real devices, not just browser DevTools — throttling simulation misses real-world jank
-- Horizontal scroll is a critical bug — test every page at 320px width minimum
-- `viewport` meta tag is required: `<meta name="viewport" content="width=device-width, initial-scale=1">`
+## 以移动设备优先（Mobile First）
+- CSS 规则应从移动设备样式开始编写，通过 `min-width` 媒体查询逐步增加复杂性——这样更容易进行后续的适配和扩展。
+- 触控目标元素的尺寸至少应为 44x44px——手指操作不够精确，过小的按钮会让用户感到不适。
+- 必须在真实设备上进行测试，而不仅仅是使用浏览器的开发者工具——模拟器无法完全模拟实际使用场景中的问题。
+- 水平滚动功能是常见的错误之一——所有页面都应在最小宽度为 320px 的情况下进行测试。
+- 必须设置 `viewport` 元标签：`<meta name="viewport" content="width=device-width, initial-scale=1">`。
 
-## Accessibility
-- Every `<img>` needs `alt` text — empty `alt=""` for decorative images, descriptive text for meaningful ones
-- Color contrast ratio 4.5:1 minimum for body text — use WebAIM contrast checker
-- Form inputs must have associated `<label>` elements — placeholders alone are not accessible
-- Keyboard navigation must work — test every interactive element with Tab key
-- Screen readers announce heading hierarchy — use H1-H6 in logical order, never skip levels
+## 可访问性（Accessibility）
+- 每张图片都需要设置 `alt` 文本——装饰性图片可以使用空字符串 `alt=""`，而有意义的图片则需要提供描述性文字。
+- 正文文本的对比度至少应为 4.5:1——可以使用 WebAIM 对比度检查工具进行验证。
+- 表单输入框必须配有相应的 `<label>` 元素——仅使用占位符无法满足可访问性要求。
+- 必须支持键盘导航——使用 Tab 键测试所有交互式元素的功能。
+- 屏幕阅读器能够正确读取页面的标题结构——按照逻辑顺序使用 H1-H6 标签，切勿跳过任何层级。
 
-## HTML Structure
-- One `<h1>` per page only — it's the page title, not a styling tool
-- Use semantic elements: `<nav>`, `<main>`, `<article>`, `<aside>`, `<footer>` — they communicate structure to browsers and assistive tech
-- `<button>` for actions, `<a>` for navigation — don't use divs with click handlers
-- External links should have `rel="noopener"` — prevents security vulnerability with `target="_blank"`
-- Validate HTML — broken markup causes unpredictable rendering across browsers
+## HTML 结构
+- 每个页面只能使用一个 `<h1>` 标签——它代表页面的标题，而非用于样式设置。
+- 使用语义化标签（如 `<nav>`, `<main>`, `<article>`, `<aside>`, `<footer>`）——这些标签能向浏览器和辅助技术工具传达页面结构。
+- 使用 `<button>` 标签表示可执行的操作，`<a>` 标签用于导航——不要用 `<div>` 标签来模拟点击功能。
+- 外部链接应添加 `rel="noopener"` 属性——这可以避免使用 `target="_blank"` 时可能引发的安全漏洞。
+- 需要对 HTML 代码进行验证——错误的标记会导致不同浏览器之间的渲染结果不一致。
 
-## CSS Patterns
-- Avoid `!important` — it breaks cascade and makes debugging painful. Fix specificity instead
-- Use relative units (`rem`, `em`, `%`) over fixed `px` for text — respects user font size preferences
-- CSS custom properties (variables) reduce repetition — define colors and spacing once, use everywhere
-- Flexbox for 1D layouts, Grid for 2D — don't force one to do the other's job
-- Test without CSS loading — content should still be readable in plain HTML
+## CSS 编写规范
+- 避免使用 `!important` 属性——它会破坏 CSS 的层级规则，使调试变得困难。应通过调整选择器的具体性来解决样式问题。
+- 对于文本样式，优先使用相对单位（`rem`, `em`, `%`）而非固定单位 `px`——这样可以适应用户的字体大小设置。
+- 使用 CSS 自定义属性（变量）来减少代码重复——只需定义一次颜色和间距设置，然后在整个项目中统一使用。
+- 对于一维布局使用 Flexbox，对于二维布局使用 Grid——不要强行将一种布局方式应用于另一种场景。
+- 在不加载 CSS 的情况下测试页面——即使没有 CSS，内容也应该是可读的。
 
-## Common Mistakes
-- Missing favicon causes 404 spam in server logs — always include one, even a simple PNG
-- Not setting `<html lang="en">` breaks screen reader pronunciation
-- Hardcoded `http://` links break on HTTPS sites — use protocol-relative `//` or always `https://`
-- Assuming JavaScript is available — core content should work without JS (progressive enhancement)
-- Forgetting print styles — add `@media print` for pages users might print (receipts, articles)
+## 常见错误
+- 网站缺少 favicon 会导致服务器日志中出现 404 错误——即使是一个简单的 PNG 图片也要添加。
+- 不设置 `<html lang="en">` 会导致屏幕阅读器无法正确读取页面语言。
+- 硬编码的 `http://` 链接在支持 HTTPS 的网站上无法正常工作——应使用协议相对路径 `//` 或始终使用 `https://`。
+- 假设用户一定会使用 JavaScript——核心内容应该能够在不依赖 JavaScript 的情况下正常显示（渐进式增强设计）。
+- 忘记为需要打印的页面（如收据、文章）添加打印样式——需要使用 `@media print` 规则。
 
-## Before Launch
-- Test all forms actually submit — broken contact forms lose leads silently
-- Check 404 page exists and is helpful — default server 404 looks unprofessional
-- Verify social sharing previews with Open Graph tags — test in Facebook/Twitter debuggers
-- Submit sitemap to Google Search Console — speeds up indexing
-- Set up uptime monitoring — know when your site goes down before users tell you
+## 上线前的准备工作
+- 确保所有表单都能正常提交——有问题的联系表单会默默地失去潜在客户。
+- 检查是否存在 404 错误页面以及这些页面是否提供了有用的信息——默认的服务器 404 错误页面看起来很不专业。
+- 使用 Open Graph 标签验证网站的社交分享预览效果——在 Facebook/Twitter 的调试工具中进行测试。
+- 将站点地图提交给 Google Search Console——有助于加快网站的索引速度。
+- 设置服务器运行时间监控——在用户发现问题之前就能及时了解网站是否出现故障。

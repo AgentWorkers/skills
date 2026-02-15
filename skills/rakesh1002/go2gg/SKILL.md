@@ -1,372 +1,158 @@
 ---
 name: go2gg
-description: Use Go2.gg API for URL shortening, link analytics, QR code generation, webhooks, and link-in-bio pages. Use when the user needs to create short links, track clicks, generate QR codes, set up link-in-bio pages, or manage branded URLs. Free tier includes short links, QR codes, and analytics. Requires GO2GG_API_KEY env var. QR code generation is free without auth.
+description: 使用 Go2.gg API 进行 URL 缩短、链接分析、二维码生成、Webhook 设置以及链接显示在个人简介页面的功能。当用户需要创建短链接、跟踪点击次数、生成二维码、设置个人简介页面或管理品牌化链接时，可以使用该服务。免费 tier 包含短链接、二维码和基本分析功能。使用该服务需要设置 `GO2GG_API_KEY` 环境变量；二维码生成功能无需身份验证即可免费使用。
 ---
 
-# Go2.gg — Edge-Native URL Shortener
+# Go2.gg — 一款基于边缘计算的URL缩短服务
 
-URL shortening, analytics, QR codes, webhooks, galleries (link-in-bio). Built on Cloudflare's edge network with sub-10ms redirects globally.
+Go2.gg 提供 URL 缩短、数据分析、二维码生成、Webhook 配置以及个人简介中的链接插入等功能。该服务依托 Cloudflare 的边缘网络运行，实现全球范围内低于 10 毫秒的快速重定向。
 
-## Setup
+## 设置
 
-Get API key from: https://go2.gg/dashboard/api-keys (free, no credit card required)
+请从以下链接获取 API 密钥：  
+https://go2.gg/dashboard/api-keys （免费，无需信用卡）
 
 ```bash
 export GO2GG_API_KEY="go2_your_key_here"
 ```
 
-**API base:** `https://api.go2.gg/api/v1`
-**Auth:** `Authorization: Bearer $GO2GG_API_KEY`
-**Docs:** https://go2.gg/docs/api/links
+**API 基础地址：** `https://api.go2.gg/api/v1`  
+**认证方式：** `Authorization: Bearer $GO2GG_API_KEY`  
+**文档：** https://go2.gg/docs/api/links
 
 ---
 
-## Short Links
+## 短链接管理
 
-Create, manage, and track short links with custom slugs, tags, expiration, passwords, and geo/device targeting.
+支持创建、管理和追踪短链接，可自定义链接别名（slug）、标签、过期时间、密码设置，并支持按地理位置或设备类型进行定向。
 
-### Create a Link
+### 创建链接  
+（具体代码块请参考 **CODE_BLOCK_1___**）
 
-```bash
-curl -X POST "https://api.go2.gg/api/v1/links" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "destinationUrl": "https://example.com/landing-page",
-    "slug": "my-link",
-    "title": "My Campaign Link",
-    "tags": ["marketing", "q1-2025"]
-  }'
-```
+**注意：** 必须填写的字段是 `destinationUrl`（而非 `url`），链接别名（slug）是可选的（如未提供则自动生成）。
 
-**Important:** Field is `destinationUrl` (not `url`). Slug is optional (auto-generated if omitted).
+### 响应数据  
+（具体代码块请参考 **CODE_BLOCK_2___**）
 
-### Response
+### 查看链接列表  
+（具体代码块请参考 **CODE_BLOCK_3___**）
 
-```json
-{
-  "success": true,
-  "data": {
-    "id": "lnk_abc123",
-    "shortUrl": "https://go2.gg/my-link",
-    "destinationUrl": "https://example.com/landing-page",
-    "slug": "my-link",
-    "domain": "go2.gg",
-    "title": "My Campaign Link",
-    "tags": ["marketing", "q1-2025"],
-    "clickCount": 0,
-    "createdAt": "2025-01-01T10:30:00Z"
-  }
-}
-```
+**查询参数：** `page`、`perPage`（最多 100 条）、`search`、`domain`、`tag`、`archived`、`sort`（按创建时间/点击次数/更新时间排序）
 
-### List Links
+### 更新链接  
+（具体代码块请参考 **CODE_BLOCK_4___**）
 
-```bash
-# List all links (paginated)
-curl "https://api.go2.gg/api/v1/links?perPage=20&sort=clicks" \
-  -H "Authorization: Bearer $GO2GG_API_KEY"
+### 删除链接  
+（具体代码块请参考 **CODE_BLOCK_5___**）
 
-# Search links
-curl "https://api.go2.gg/api/v1/links?search=marketing&tag=q1-2025" \
-  -H "Authorization: Bearer $GO2GG_API_KEY"
-```
+### 链接数据分析  
+（具体代码块请参考 **CODE_BLOCK_6___**）
 
-**Query params:** `page`, `perPage` (max 100), `search`, `domain`, `tag`, `archived`, `sort` (created/clicks/updated)
+返回数据包括：`totalClicks`（总点击次数）、`byCountry`（按国家统计的点击数）、`byDevice`（按设备类型统计的点击数）、`byBrowser`（按浏览器统计的点击数）、`byReferrer`（来源链接统计的点击数）、`overTime`（按时间区间统计的点击数）。
 
-### Update a Link
+### 高级链接设置  
+（具体代码块请参考 **CODE_BLOCK_7___**）
 
-```bash
-curl -X PATCH "https://api.go2.gg/api/v1/links/lnk_abc123" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"destinationUrl": "https://example.com/updated-page", "tags": ["updated"]}'
-```
-
-### Delete a Link
-
-```bash
-curl -X DELETE "https://api.go2.gg/api/v1/links/lnk_abc123" \
-  -H "Authorization: Bearer $GO2GG_API_KEY"
-# Returns 204 No Content
-```
-
-### Link Analytics
-
-```bash
-curl "https://api.go2.gg/api/v1/links/lnk_abc123/stats" \
-  -H "Authorization: Bearer $GO2GG_API_KEY"
-```
-
-Returns: `totalClicks`, `byCountry`, `byDevice`, `byBrowser`, `byReferrer`, `overTime`
-
-### Advanced Link Options
-
-```bash
-# Password-protected link
-curl -X POST "https://api.go2.gg/api/v1/links" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"destinationUrl": "https://example.com/secret", "slug": "exclusive", "password": "secure123"}'
-
-# Link with expiration + click limit
-curl -X POST "https://api.go2.gg/api/v1/links" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"destinationUrl": "https://example.com/flash", "expiresAt": "2025-12-31T23:59:59Z", "clickLimit": 1000}'
-
-# Geo-targeted link (different URLs per country)
-curl -X POST "https://api.go2.gg/api/v1/links" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "destinationUrl": "https://example.com/default",
-    "geoTargets": {"US": "https://example.com/us", "GB": "https://example.com/uk", "IN": "https://example.com/in"}
-  }'
-
-# Device-targeted link + app deep links
-curl -X POST "https://api.go2.gg/api/v1/links" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "destinationUrl": "https://example.com/default",
-    "deviceTargets": {"mobile": "https://m.example.com"},
-    "iosUrl": "https://apps.apple.com/app/myapp",
-    "androidUrl": "https://play.google.com/store/apps/details?id=com.myapp"
-  }'
-
-# Link with UTM parameters
-curl -X POST "https://api.go2.gg/api/v1/links" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "destinationUrl": "https://example.com/product",
-    "slug": "summer-sale",
-    "utmSource": "email",
-    "utmMedium": "newsletter",
-    "utmCampaign": "summer-sale"
-  }'
-```
-
-### Create Link Parameters
-
-| Field | Type | Required | Description |
+### 创建链接时可设置的参数  
+| 参数 | 类型 | 是否必填 | 说明 |
 |-------|------|----------|-------------|
-| destinationUrl | string | yes | Target URL to redirect to |
-| slug | string | no | Custom slug (auto-generated if omitted) |
-| domain | string | no | Custom domain (default: go2.gg) |
-| title | string | no | Link title |
-| description | string | no | Link description |
-| tags | string[] | no | Tags for filtering |
-| password | string | no | Password protection |
-| expiresAt | string | no | ISO 8601 expiration date |
-| clickLimit | number | no | Max clicks allowed |
-| geoTargets | object | no | Country → URL mapping |
-| deviceTargets | object | no | Device → URL mapping |
-| iosUrl | string | no | iOS app deep link |
-| androidUrl | string | no | Android app deep link |
-| utmSource/Medium/Campaign/Term/Content | string | no | UTM parameters |
+| destinationUrl | string | 是 | 需要重定向的目标 URL |
+| slug | string | 否 | 自定义链接别名（未提供时自动生成） |
+| domain | string | 否 | 自定义域名（默认：go2.gg） |
+| title | string | 否 | 链接标题 |
+| description | string | 否 | 链接描述 |
+| tags | string[] | 否 | 用于过滤的标签 |
+| password | string | 否 | 链接的密码保护设置 |
+| expiresAt | string | 否 | ISO 8601 格式的过期时间 |
+| clickLimit | number | 否 | 允许的最大点击次数 |
+| geoTargets | object | 否 | 国家与 URL 的映射关系 |
+| deviceTargets | object | 否 | 设备与 URL 的映射关系 |
+| iosUrl | string | 否 | iOS 应用程序的深度链接 |
+| androidUrl | string | 否 | Android 应用程序的深度链接 |
+| utmSource/Medium/Campaign/Term/Content | string | 否 | UTM 参数 |
 
 ---
 
-## QR Codes
+## 二维码生成  
 
-Generate customizable QR codes. **QR generation is free and requires no auth.**
+支持生成可自定义的二维码。二维码生成功能免费且无需认证。
 
-### Generate QR Code (No Auth Required)
+### 生成二维码（无需认证）  
+（具体代码块请参考 **CODE_BLOCK_8___**）
 
-```bash
-# Generate SVG QR code (free, no API key needed)
-curl -X POST "https://api.go2.gg/api/v1/qr/generate" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://go2.gg/my-link",
-    "size": 512,
-    "foregroundColor": "#1a365d",
-    "backgroundColor": "#FFFFFF",
-    "cornerRadius": 10,
-    "errorCorrection": "H",
-    "format": "svg"
-  }' -o qr-code.svg
-
-# PNG format
-curl -X POST "https://api.go2.gg/api/v1/qr/generate" \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://example.com", "format": "png", "size": 1024}' -o qr-code.png
-```
-
-### QR Parameters
-
-| Field | Type | Default | Description |
+### 二维码参数  
+| 参数 | 类型 | 默认值 | 说明 |
 |-------|------|---------|-------------|
-| url | string | required | URL to encode |
-| size | number | 256 | Size in pixels (64-2048) |
-| foregroundColor | string | #000000 | Hex color for modules |
-| backgroundColor | string | #FFFFFF | Hex color for background |
-| cornerRadius | number | 0 | Module corner radius (0-50) |
-| errorCorrection | string | M | L (7%), M (15%), Q (25%), H (30%) |
-| format | string | svg | svg or png |
+| url | string | 是 | 需要编码的 URL |
+| size | number | 256 | 图像尺寸（64-2048 像素） |
+| foregroundColor | string | #000000 | 图像前景颜色（十六进制代码） |
+| backgroundColor | string | #FFFFFF | 图像背景颜色（十六进制代码） |
+| cornerRadius | number | 0 | 图像边框半径（0-50） |
+| errorCorrection | string | M | L（7%）、M（15%）、Q（25%）、H（30%） | 编码错误校正级别 |
+| format | string | svg | 图像格式（svg 或 png） |
 
-### Save & Track QR Codes (Auth Required)
-
-```bash
-# Save QR config for tracking
-curl -X POST "https://api.go2.gg/api/v1/qr" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Business Card QR", "url": "https://go2.gg/contact", "linkId": "lnk_abc123"}'
-
-# List saved QR codes
-curl "https://api.go2.gg/api/v1/qr" -H "Authorization: Bearer $GO2GG_API_KEY"
-
-# Download saved QR
-curl "https://api.go2.gg/api/v1/qr/qr_abc123/download?format=svg" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" -o qr.svg
-
-# Delete QR
-curl -X DELETE "https://api.go2.gg/api/v1/qr/qr_abc123" -H "Authorization: Bearer $GO2GG_API_KEY"
-```
+### 保存和追踪二维码（需要认证）  
+（具体代码块请参考 **CODE_BLOCK_9___**）
 
 ---
 
-## Webhooks
+## Webhook 功能  
 
-Receive real-time notifications for link clicks, creations, and updates.
+支持实时接收链接点击、创建和更新的事件通知。
 
-```bash
-# Create webhook
-curl -X POST "https://api.go2.gg/api/v1/webhooks" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Click Tracker", "url": "https://your-server.com/webhook", "events": ["click", "link.created"]}'
+**可触发事件：** `click`（链接被点击）、`link.created`（链接创建）、`link.updated`（链接更新）、`linkdeleted`（链接删除）、`domain.verified`（自定义域名验证通过）、`qr.scanned`（二维码被扫描）、`*`（所有事件）。
 
-# List webhooks
-curl "https://api.go2.gg/api/v1/webhooks" -H "Authorization: Bearer $GO2GG_API_KEY"
-
-# Test webhook
-curl -X POST "https://api.go2.gg/api/v1/webhooks/wh_abc123/test" \
-  -H "Authorization: Bearer $GO2GG_API_KEY"
-
-# Delete webhook
-curl -X DELETE "https://api.go2.gg/api/v1/webhooks/wh_abc123" \
-  -H "Authorization: Bearer $GO2GG_API_KEY"
-```
-
-**Events:** `click`, `link.created`, `link.updated`, `link.deleted`, `domain.verified`, `qr.scanned`, `*` (all)
-
-Webhook payloads include `X-Webhook-Signature` (HMAC SHA256) for verification. Retries: 5s → 30s → 2m → 10m.
+Webhook 的响应数据中包含 `X-Webhook-Signature`（HMAC SHA256 签名）用于验证。重试间隔：5 秒 → 30 秒 → 2 分钟 → 10 分钟。
 
 ---
 
-## Galleries (Link-in-Bio)
+## 个人简介中的链接插入  
 
-Create link-in-bio pages programmatically.
+支持通过编程方式在个人简介中插入链接。
 
-```bash
-# Create gallery
-curl -X POST "https://api.go2.gg/api/v1/galleries" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"slug": "myprofile", "title": "My Name", "bio": "Creator & developer", "theme": "gradient"}'
-
-# Add link item
-curl -X POST "https://api.go2.gg/api/v1/galleries/gal_abc123/items" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"type": "link", "title": "My Website", "url": "https://example.com"}'
-
-# Add YouTube embed
-curl -X POST "https://api.go2.gg/api/v1/galleries/gal_abc123/items" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"type": "embed", "title": "Latest Video", "embedType": "youtube", "embedData": {"videoId": "dQw4w9WgXcQ"}}'
-
-# Publish gallery (makes it live at go2.gg/bio/myprofile)
-curl -X POST "https://api.go2.gg/api/v1/galleries/gal_abc123/publish" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"isPublished": true}'
-
-# Reorder items
-curl -X PATCH "https://api.go2.gg/api/v1/galleries/gal_abc123/items/reorder" \
-  -H "Authorization: Bearer $GO2GG_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"itemIds": ["item_3", "item_1", "item_2"]}'
-
-# List galleries
-curl "https://api.go2.gg/api/v1/galleries" -H "Authorization: Bearer $GO2GG_API_KEY"
-```
-
-**Themes:** default, minimal, gradient, dark, neon, custom (with customCss)
-**Item types:** link, header, divider, embed (youtube), image
+**可用主题：** 默认、极简、渐变、暗黑、霓虹、自定义（支持自定义 CSS）  
+**链接类型：** 链接、标题栏链接、分隔符、嵌入式链接（如 YouTube 链接）、图片链接
 
 ---
 
-## Python Example
-
-```python
-import requests
-
-API_KEY = "go2_your_key_here"  # or os.environ["GO2GG_API_KEY"]
-BASE = "https://api.go2.gg/api/v1"
-headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
-
-# Create short link
-resp = requests.post(f"{BASE}/links", headers=headers, json={
-    "destinationUrl": "https://example.com/product",
-    "slug": "my-product",
-    "title": "Product Link",
-    "tags": ["product"]
-})
-link = resp.json()["data"]
-print(f"Short URL: {link['shortUrl']}")
-
-# Get analytics
-stats = requests.get(f"{BASE}/links/{link['id']}/stats", headers=headers).json()["data"]
-print(f"Clicks: {stats['totalClicks']}")
-
-# Generate QR (no auth needed)
-qr = requests.post(f"{BASE}/qr/generate", json={"url": link["shortUrl"], "size": 512, "format": "png"})
-with open("qr.png", "wb") as f:
-    f.write(qr.content)
-```
+## Python 示例  
+（具体代码块请参考 **CODE_BLOCK_12___**）
 
 ---
 
-## API Endpoint Summary
+## API 端点概览  
 
-| Service | Endpoint | Method | Auth |
+| 服务 | 端点 | 方法 | 认证方式 |
 |---------|----------|--------|------|
-| **Links** create | `/api/v1/links` | POST | yes |
-| Links list | `/api/v1/links` | GET | yes |
-| Links get | `/api/v1/links/:id` | GET | yes |
-| Links update | `/api/v1/links/:id` | PATCH | yes |
-| Links delete | `/api/v1/links/:id` | DELETE | yes |
-| Links stats | `/api/v1/links/:id/stats` | GET | yes |
-| **QR** generate | `/api/v1/qr/generate` | POST | **no** |
-| QR save | `/api/v1/qr` | POST | yes |
-| QR list | `/api/v1/qr` | GET | yes |
-| QR download | `/api/v1/qr/:id/download` | GET | yes |
-| **Webhooks** | `/api/v1/webhooks` | CRUD | yes |
-| Webhook test | `/api/v1/webhooks/:id/test` | POST | yes |
-| **Galleries** | `/api/v1/galleries` | CRUD | yes |
-| Gallery items | `/api/v1/galleries/:id/items` | CRUD | yes |
-| Gallery publish | `/api/v1/galleries/:id/publish` | POST | yes |
+| **链接管理** | `/api/v1/links` | POST | 是 |
+| 查看链接列表 | `/api/v1/links` | GET | 是 |
+| 获取链接详情 | `/api/v1/links/:id` | GET | 是 |
+| 更新链接 | `/api/v1/links/:id` | PATCH | 是 |
+| 删除链接 | `/api/v1/links/:id` | DELETE | 是 |
+| 查看链接统计 | `/api/v1/links/:id/stats` | GET | 是 |
+| **二维码生成** | `/api/v1/qr/generate` | POST | 不需要认证 |
+| 保存二维码 | `/api/v1/qr` | POST | 是 |
+| 查看二维码列表 | `/api/v1/qr` | GET | 是 |
+| 下载二维码 | `/api/v1/qr/:id/download` | GET | 是 |
+| **Webhook** | `/api/v1/webhooks` | 创建/读取/更新/删除 Webhook | 是 |
+| **图片库** | `/api/v1/galleries` | 创建/读取/更新图片库内容 | 是 |
+| 添加图片库项目 | `/api/v1/galleries/:id/items` | 创建/读取/更新图片库项目 | 是 |
+| 发布图片库内容 | `/api/v1/galleries/:id/publish` | POST | 是 |
 
-## Rate Limits
+## 使用限制  
 
-| Plan | Requests/min |
+| 订阅计划 | 每分钟请求次数 |
 |------|-------------|
-| Free | 60 |
-| Pro | 300 |
-| Business | 1000 |
+| 免费 | 60 次 |
+| 专业版 | 300 次 |
+| 商业版 | 1000 次 |
 
-## Error Codes
+## 错误代码  
 
-| Code | Description |
+| 代码 | 说明 |
 |------|-------------|
-| SLUG_RESERVED | Slug is reserved |
-| SLUG_EXISTS | Slug already in use on this domain |
-| INVALID_URL | Destination URL is invalid |
-| LIMIT_REACHED | Plan's link limit reached |
-| DOMAIN_NOT_VERIFIED | Custom domain not verified |
+| SLUG RESERVED | 链接别名已被占用 |
+| SLUG_EXISTS | 该域名已使用相同的链接别名 |
+| INVALID_URL | 目标 URL 不合法 |
+| LIMIT_REACHED | 当前订阅计划的请求次数已达到上限 |
+| DOMAIN_NOT_VERIFIED | 自定义域名未通过验证 |

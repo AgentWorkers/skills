@@ -1,37 +1,37 @@
 ---
 name: postfast
-description: Schedule and manage social media posts across TikTok, Instagram, Facebook, X (Twitter), YouTube, LinkedIn, Threads, Bluesky, and Pinterest using the PostFast API. Use when the user wants to schedule social media posts, manage social media content, upload media for social posting, list connected social accounts, check scheduled posts, delete scheduled posts, cross-post content to multiple platforms, or automate their social media workflow. PostFast is a SaaS tool — no self-hosting required.
+description: 使用 PostFast API 来安排和管理在 TikTok、Instagram、Facebook、X（Twitter）、YouTube、LinkedIn、Threads、Bluesky 和 Pinterest 上的社交媒体帖子。当用户需要安排社交媒体发布、管理社交媒体内容、上传用于发布的媒体文件、列出已连接的社交媒体账户、查看已安排的帖子、删除已安排的帖子、将内容跨多个平台发布，或自动化其社交媒体工作流程时，可以使用该工具。PostFast 是一款 SaaS 工具，无需自行托管。
 homepage: https://postfa.st
 metadata: {"openclaw":{"emoji":"⚡","primaryEnv":"POSTFAST_API_KEY","requires":{"env":["POSTFAST_API_KEY"]}}}
 ---
 
 # PostFast
 
-Schedule social media posts across 9 platforms from one API. SaaS — no self-hosting needed.
+通过一个API在9个平台上安排社交媒体发布。属于SaaS服务，无需自行托管。
 
-## Setup
+## 设置
 
-1. Sign up at https://app.postfa.st/register
-2. Go to Workspace Settings → generate an API key
-3. Set the environment variable:
+1. 在 [https://app.postfa.st/register](https://app.postfa.st/register) 注册。
+2. 进入“工作区设置”（Workspace Settings），生成API密钥。
+3. 设置环境变量：
    ```bash
    export POSTFAST_API_KEY="your-api-key"
    ```
 
-Base URL: `https://api.postfa.st`
-Auth header: `pf-api-key: $POSTFAST_API_KEY`
+基础URL：`https://api.postfa.st`
+认证头：`pf-api-key: $POSTFAST_API_KEY`
 
-## Core Workflow
+## 核心工作流程
 
-### 1. List connected accounts
+### 1. 列出已连接的账户
 
 ```bash
 curl -s -H "pf-api-key: $POSTFAST_API_KEY" https://api.postfa.st/social-media/my-social-accounts
 ```
 
-Returns array of `{ id, platform, platformUsername, displayName }`. Save the `id` — it's the `socialMediaId` for posting.
+返回一个包含 `{ id, platform, platformUsername, displayName }` 的数组。保存 `id`，它将用作发布的 `socialMediaId`。
 
-### 2. Schedule a text post (no media)
+### 2. 安排纯文本帖子（无需媒体）
 
 ```bash
 curl -X POST https://api.postfa.st/social-posts \
@@ -48,25 +48,25 @@ curl -X POST https://api.postfa.st/social-posts \
   }'
 ```
 
-### 3. Schedule a post with media (3-step flow)
+### 3. 安排带媒体的帖子（三步流程）
 
-**Step A** — Get signed upload URLs:
+**步骤A** — 获取签名上传URL：
 ```bash
 curl -X POST https://api.postfa.st/file/get-signed-upload-urls \
   -H "pf-api-key: $POSTFAST_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{ "contentType": "image/png", "count": 1 }'
 ```
-Returns `[{ "key": "image/uuid.png", "signedUrl": "https://..." }]`.
+返回 `[{ "key": "image/uuid.png", "signedUrl": "https://..." }]`。
 
-**Step B** — Upload file to S3:
+**步骤B** — 将文件上传到S3：
 ```bash
 curl -X PUT "SIGNED_URL_HERE" \
   -H "Content-Type: image/png" \
   --data-binary @/path/to/file.png
 ```
 
-**Step C** — Create post with media key:
+**步骤C** — 使用媒体键创建帖子：
 ```bash
 curl -X POST https://api.postfa.st/social-posts \
   -H "pf-api-key: $POSTFAST_API_KEY" \
@@ -82,71 +82,71 @@ curl -X POST https://api.postfa.st/social-posts \
   }'
 ```
 
-For video: use `contentType: "video/mp4"`, `type: "VIDEO"`, key prefix `video/`.
+对于视频：使用 `contentType: "video/mp4"`，`type: "VIDEO"`，键前缀为 `video/`。
 
-### 4. List scheduled posts
+### 4. 列出已安排的帖子
 
 ```bash
 curl -s -H "pf-api-key: $POSTFAST_API_KEY" https://api.postfa.st/social-posts
 ```
 
-### 5. Delete a scheduled post
+### 5. 删除已安排的帖子
 
 ```bash
 curl -X DELETE -H "pf-api-key: $POSTFAST_API_KEY" https://api.postfa.st/social-posts/POST_ID
 ```
 
-### 6. Cross-post to multiple platforms
+### 6. 跨平台发布
 
-Include multiple entries in the `posts` array, each with a different `socialMediaId`. They share the same `controls` and `mediaItems` keys.
+在 `posts` 数组中包含多个条目，每个条目都有不同的 `socialMediaId`。它们共享相同的 `controls` 和 `mediaItems` 键。
 
-## Platform-Specific Controls
+## 平台特定的控制参数
 
-Pass these in the `controls` object. See [references/platform-controls.md](references/platform-controls.md) for full details.
+将这些参数传递给 `controls` 对象。详细信息请参见 [references/platform-controls.md](references/platform-controls.md)。
 
-| Platform | Key Controls |
+| 平台 | 控制参数 |
 |---|---|
 | **TikTok** | `tiktokPrivacy`, `tiktokAllowComments`, `tiktokAllowDuet`, `tiktokAllowStitch`, `tiktokIsDraft`, `tiktokBrandContent`, `tiktokAutoAddMusic` |
-| **Instagram** | `instagramPublishType` (TIMELINE/STORY/REEL), `instagramPostToGrid`, `instagramCollaborators` |
-| **Facebook** | `facebookContentType` (POST/REEL/STORY) |
+| **Instagram** | `instagramPublishType`（TIMELINE/STORY/REEL），`instagramPostToGrid`, `instagramCollaborators` |
+| **Facebook** | `facebookContentType`（POST/REEL/STORY） |
 | **YouTube** | `youtubeIsShort`, `youtubeTitle`, `youtubePrivacy`, `youtubePlaylistId`, `youtubeTags`, `youtubeMadeForKids` |
-| **LinkedIn** | `linkedinAttachmentKey`, `linkedinAttachmentTitle` (for document posts) |
-| **X (Twitter)** | `xQuoteTweetUrl` (for quote tweets) |
-| **Pinterest** | `pinterestBoardId` (required), `pinterestLink` |
-| **Bluesky** | No platform-specific controls — text + images only |
-| **Threads** | No platform-specific controls — text + images/video |
+| **LinkedIn** | `linkedinAttachmentKey`, `linkedinAttachmentTitle`（用于文档帖子） |
+| **X (Twitter)** | `xQuoteTweetUrl`（用于引用推文） |
+| **Pinterest** | `pinterestBoardId`（必填），`pinterestLink` |
+| **Bluesky** | 无平台特定控制参数 — 仅支持文本和图片 |
+| **Threads** | 无平台特定控制参数 — 仅支持文本和图片/视频 |
 
-## Helper Endpoints
+## 帮助端点
 
-- **Pinterest boards**: `GET /social-media/{id}/pinterest-boards` → returns `[{ boardId, name }]`
-- **YouTube playlists**: `GET /social-media/{id}/youtube-playlists` → returns `[{ playlistId, title }]`
+- **Pinterest板块**：`GET /social-media/{id}/pinterest-boards` → 返回 `[{ boardId, name }]`
+- **YouTube播放列表**：`GET /social-media/{id}/youtube-playlists` → 返回 `[{ playlistId, title }]`
 
-## Rate Limits
+## 速率限制
 
-- 60/min, 150/5min, 300/hour, 2000/day per API key
-- Check `X-RateLimit-Remaining-*` headers
-- 429 = rate limited, check `Retry-After-*` header
+- 每个API密钥的速率限制为：60次/分钟，150次/5分钟，300次/小时，2000次/天
+- 查看 `X-RateLimit-Remaining-*` 头部字段
+- 如果达到速率限制，返回429状态码，请查看 `Retry-After-*` 头部字段
 
-## Media Specs Quick Reference
+## 媒体格式快速参考
 
-| Platform | Images | Video | Carousel |
+| 平台 | 图片 | 视频 | 轮播图 |
 |---|---|---|---|
-| TikTok | Carousels only | ≤250MB, MP4/MOV, 3s-10min | 2-35 images |
-| Instagram | JPEG/PNG | ≤1GB, 3-90s (Reels) | Up to 10 |
-| Facebook | ≤30MB, JPG/PNG | 1 per post | Up to 10 images |
-| YouTube | — | Shorts ≤3min, H.264 | — |
-| LinkedIn | Up to 9 | ≤10min | Up to 9, or documents (PDF/PPTX/DOCX) |
-| X (Twitter) | Up to 4 | — | — |
-| Pinterest | 2:3 ratio ideal | Supported | 2-5 images |
-| Bluesky | Up to 4 | Not supported | — |
-| Threads | Supported | Supported | Up to 10 |
+| TikTok | 仅支持轮播图 | 大小≤250MB，格式MP4/MOV，时长3秒至10分钟 | 最多2-35张图片 |
+| Instagram | 格式JPEG/PNG | 大小≤1GB，时长3-90秒（Reels） | 最多10张图片 |
+| Facebook | 大小≤30MB，格式JPG/PNG | 每条帖子最多1张图片 | 最多10张图片 |
+| YouTube | 不支持图片 | 视频时长≤3分钟，格式H.264 | — |
+| LinkedIn | 最多9张图片 | 视频时长≤10分钟 | 最多9张图片，或支持文档（PDF/PPTX/DOCX） |
+| X (Twitter) | 最多4张图片 | 不支持图片 | — |
+| Pinterest | 建议使用2:3的比例 | 支持轮播图 | 最多2-5张图片 |
+| Bluesky | 不支持图片 | 仅支持文本和视频 |
+| Threads | 支持图片和视频 | 最多10张图片 |
 
-## Tips for the Agent
+## 代理使用提示
 
-- Always call `my-social-accounts` first to get valid `socialMediaId` values.
-- For media posts, complete the full 3-step upload flow (signed URL → S3 PUT → create post).
-- `scheduledAt` must be ISO 8601 UTC and in the future.
-- Pinterest always requires `pinterestBoardId` — fetch boards first.
-- LinkedIn documents use `linkedinAttachmentKey` instead of `mediaItems`.
-- For carousels, include multiple items in `mediaItems` with sequential `sortOrder`.
-- TikTok video thumbnails: set `coverTimestamp` (seconds) in `mediaItems`.
+- 在使用其他功能前，务必先调用 `my-social-accounts` 以获取有效的 `socialMediaId` 值。
+- 对于带媒体的帖子，请完成完整的上传流程（获取签名URL → 上传到S3 → 创建帖子）。
+- `scheduledAt` 必须为ISO 8601 UTC格式，并且表示未来的时间。
+- Pinterest始终需要 `pinterestBoardId` — 请先获取相关板块信息。
+- LinkedIn的文档帖子使用 `linkedinAttachmentKey` 而不是 `mediaItems`。
+- 对于轮播图，需要在 `mediaItems` 中包含多个图片，并指定顺序（`sortOrder`）。
+- TikTok视频缩略图：在 `mediaItems` 中设置 `coverTimestamp`（以秒为单位）。

@@ -1,6 +1,6 @@
 ---
 name: marketing-mode
-description: "Marketing Mode combines 23 comprehensive marketing skills covering strategy, psychology, content, SEO, conversion optimization, and paid growth. Use when users need marketing strategy, copywriting, SEO help, conversion optimization, paid advertising, or any marketing tactic."
+description: "“Marketing Mode”整合了23项全面的营销技能，涵盖了策略、心理学、内容创作、搜索引擎优化（SEO）、转化优化以及付费推广等方面。当用户需要营销策略、文案撰写、SEO支持、转化优化服务、付费广告支持，或任何其他营销策略时，都可以使用该工具。"
 metadata:
   version: 1.0.0
   tags: ["marketing", "growth", "seo", "copywriting", "cro", "paid-ads", "strategy", "psychology", "launch", "pricing", "email", "social"]
@@ -22,672 +22,644 @@ metadata:
         label: "Activate Marketing Mode"
 ---
 
-# Marketing Mode - Complete Marketing Knowledge Base
+# 营销模式 - 完整的营销知识库
 
-You are a marketing strategist with expertise across 23 comprehensive marketing disciplines. Your goal is to help users find the right strategies, tactics, and frameworks for their specific situation, stage, and resources.
+您是一位拥有23个综合营销领域专业知识的营销策略师，您的目标是帮助用户根据他们的具体情况、阶段和资源找到合适的策略、战术和框架。
 
-## Mode Activation
+## 模式激活
 
-When users need marketing help, activate this mode. Ask clarifying questions about their product, audience, stage, budget, and goals. Then recommend specific skills and tactics from this knowledge base.
-
----
-
-# PART 1: MARKETING STRATEGY & FRAMEWORKS
-
-## Marketing Ideas (140+ Proven Approaches)
-
-### Content & SEO
-- Easy Keyword Ranking
-- SEO Audit
-- Glossary Marketing
-- Programmatic SEO
-- Content Repurposing
-- Proprietary Data Content
-- Internal Linking
-- Content Refreshing
-- Knowledge Base SEO
-- Parasite SEO
-
-### Competitor & Comparison
-- Competitor Comparison Pages
-- Marketing Jiu-Jitsu
-- Competitive Ad Research
-
-### Free Tools & Engineering
-- Side Projects as Marketing
-- Engineering as Marketing
-- Importers as Marketing
-- Quiz Marketing
-- Calculator Marketing
-- Chrome Extensions
-- Microsites
-- Scanners
-- Public APIs
-
-### Paid Advertising
-- Podcast Advertising
-- Pre-targeting Ads
-- Facebook Ads
-- Instagram Ads
-- Twitter/X Ads
-- LinkedIn Ads
-- Reddit Ads
-- Quora Ads
-- Google Ads
-- YouTube Ads
-- Cross-Platform Retargeting
-- Click-to-Messenger Ads
-
-### Social Media & Community
-- Community Marketing
-- Quora Marketing
-- Reddit Keyword Research
-- Reddit Marketing
-- LinkedIn Audience
-- Instagram Audience
-- X Audience
-- Short Form Video
-- Engagement Pods
-- Comment Marketing
-
-### Email Marketing
-- Mistake Email Marketing
-- Reactivation Emails
-- Founder Welcome Email
-- Dynamic Email Capture
-- Monthly Newsletters
-- Inbox Placement
-- Onboarding Emails
-- Win-back Emails
-- Trial Reactivation
-
-### Partnerships & Programs
-- Affiliate Discovery Through Backlinks
-- Influencer Whitelisting
-- Reseller Programs
-- Expert Networks
-- Newsletter Swaps
-- Article Quotes
-- Pixel Sharing
-- Shared Slack Channels
-- Affiliate Program
-- Integration Marketing
-- Community Sponsorship
-
-### Events & Speaking
-- Live Webinars
-- Virtual Summits
-- Roadshows
-- Local Meetups
-- Meetup Sponsorship
-- Conference Speaking
-- Conferences
-- Conference Sponsorship
-
-### PR & Media
-- Media Acquisitions as Marketing
-- Press Coverage
-- Fundraising PR
-- Documentaries
-
-### Launches & Promotions
-- Black Friday Promotions
-- Product Hunt Launch
-- Early-Access Referrals
-- New Year Promotions
-- Early Access Pricing
-- Product Hunt Alternatives
-- Twitter Giveaways
-- Giveaways
-- Vacation Giveaways
-- Lifetime Deals
-
-### Product-Led Growth
-- Powered By Marketing
-- Free Migrations
-- Contract Buyouts
-- One-Click Registration
-- In-App Upsells
-- Newsletter Referrals
-- Viral Loops
-- Offboarding Flows
-- Concierge Setup
-- Onboarding Optimization
-
-### Unconventional & Creative
-- Awards as Marketing
-- Challenges as Marketing
-- Reality TV Marketing
-- Controversy as Marketing
-- Moneyball Marketing
-- Curation as Marketing
-- Grants as Marketing
-- Product Competitions
-- Cameo Marketing
-- OOH Advertising
-- Marketing Stunts
-- Guerrilla Marketing
-- Humor Marketing
-
-### Platforms & Marketplaces
-- Open Source as Marketing
-- App Store Optimization
-- App Marketplaces
-- YouTube Reviews
-- YouTube Channel
-- Source Platforms
-- Review Sites
-- Live Audio
-- International Expansion
-- Price Localization
-
-### Developer & Technical
-- Investor Marketing
-- Certifications
-- Support as Marketing
-- Developer Relations
-
-### Audience-Specific
-- Two-Sided Referrals
-- Podcast Tours
-- Customer Language
+当用户需要营销帮助时，激活此模式。请询问有关他们的产品、目标受众、营销阶段、预算和目标的具体问题。然后从本知识库中推荐相应的技能和战术。
 
 ---
 
-## Launch Strategy (5-Phase Framework)
+# 第1部分：营销策略与框架
 
-### Phase 1: Internal (Pre-Launch)
-- Use product internally first
-- Find bugs in real use cases
-- Build initial case studies
-- Create launch content
-- Set up analytics and tracking
+## 营销理念（140多种经过验证的方法）
 
-### Phase 2: Alpha (Private Beta)
-- Invite existing customers and warm leads
-- Get feedback and testimonials
-- Refine positioning based on response
-- Build waitlist
+### 内容与SEO
+- 简单的关键词排名
+- SEO审计
+- 术语表营销
+- 程序化SEO
+- 内容再利用
+- 专有数据内容
+- 内部链接
+- 内容更新
+- 知识库SEO
+- 副本SEO
 
-### Phase 3: Beta (Public Preview)
-- Broader access with invite codes
-- Collect more testimonials
-- Refine pricing and packaging
-- Build SEO content
+### 竞争对手分析与比较
+- 竞争对手比较页面
+- 营销策略研究
+- 竞争广告分析
 
-### Phase 4: Early Access (Launch Prep)
-- Public waitlist opening
-- Special launch pricing
-- Affiliate/partner outreach
-- Press and analyst outreach
+### 免费工具与工程
+- 将副业项目作为营销手段
+- 将工程技能用于营销
+- 利用工具进行营销
+- 通过测验进行营销
+- 使用Chrome扩展程序
+- 微网站
+- 数据扫描工具
+- 公开API
 
-### Phase 5: Full Launch
-- General availability
-- Full promotional push
-- Customer success stories
-- Ongoing optimization
+### 付费广告
+- 播客广告
+- 预定向广告
+- Facebook广告
+- Instagram广告
+- Twitter/X广告
+- LinkedIn广告
+- Reddit广告
+- Quora广告
+- Google广告
+- YouTube广告
+- 跨平台再营销
+- 点击即发送消息的广告
 
----
+### 社交媒体与社区
+- 社区营销
+- Quora营销
+- Reddit关键词研究
+- Reddit营销
+- LinkedIn受众定位
+- Instagram受众定位
+- X平台受众定位
+- 短视频
+- 互动式内容
+- 评论营销
 
-## Pricing Strategy
+### 电子邮件营销
+- 避免常见的电子邮件营销错误
+- 重新激活用户的邮件
+- 新用户欢迎邮件
+- 动态邮件收集
+- 月度新闻通讯
+- 收件箱展示
+- 新用户引导邮件
+- 保留用户邮件
+- 试用产品重新激活邮件
 
-### Research Methods
-- Competitor pricing analysis
-- Value-based pricing models
-- Willingness-to-pay surveys
-- A/B testing for optimization
+### 合作伙伴关系与项目
+- 通过反向链接发现合作伙伴
+- 品牌影响者合作
+- 经销商计划
+- 专家网络
+- 新闻通讯交换
+- 文章引用
+- 共享Slack频道
+- 会员计划
+- 集成营销
+- 社区赞助
 
-### Tier Structure
-- Free tier (awareness)
-- Pro tier (core value)
-- Enterprise tier (scale + support)
+### 活动与演讲
+- 实时网络研讨会
+- 虚拟峰会
+- 地区性聚会
+- 聚会赞助
+- 会议演讲
+- 会议赞助
 
-### Value Metrics
-- Per-seat pricing
-- Usage-based pricing
-- Feature-based tiers
-- Outcome-based pricing
+### 公关与媒体
+- 利用媒体进行营销
+- 获得媒体报道
+- 筹款公关
+- 制作纪录片
 
-### Monetization Optimization
-- Annual vs. monthly discounts
-- Upgrade paths
-- Churn prevention pricing
-- Revenue recovery
+### 产品发布与推广
+- 黑色星期五促销活动
+- 产品抢先体验活动
+- 新年促销活动
+- 早期访问定价
+- 产品试用活动
+- Twitter赠品活动
+- 赠品活动
+- 假期赠品活动
+- 终身会员优惠
 
----
+### 以产品为导向的增长策略
+- 利用营销推动产品增长
+- 免费迁移服务
+- 一键购买选项
+- 应用内购买
+- 通过新闻通讯推荐产品
+- 病毒式传播策略
+- 退订流程优化
+- 一站式服务设置
+- 新用户引导优化
 
-# PART 2: PSYCHOLOGY & MENTAL MODELS
+### 非传统与创意营销
+- 利用奖项进行营销
+- 通过挑战进行营销
+- 利用争议事件进行营销
+- 利用资金营销
+- 通过精选内容进行营销
+- 申请资助进行营销
+- 产品竞赛
+- 通过名人效应进行营销
+- 广告投放
+- 游击式营销
+- 幽默营销
 
-## Foundational Thinking Models
+### 平台与市场
+- 利用开源技术进行营销
+- 应用商店优化
+- 应用市场推广
+- YouTube评论
+- YouTube频道
+- 来源平台
+- 评论网站
+- 实时音频内容
+- 国际市场扩展
+- 价格本地化
 
-### First Principles
-Break problems down to basic truths. Don't copy competitors—ask "why" repeatedly to find root causes.
+### 开发者与技术支持
+- 对开发者进行营销
+- 提供认证服务
+- 提供技术支持
 
-**Marketing application**: Don't do content marketing because competitors do. Ask why, what problem it solves, if there's a better solution.
-
-### Jobs to Be Done (JTBD)
-People "hire" products to get a job done. Focus on outcomes, not features.
-
-**Marketing application**: A drill buyer wants a hole, not a drill. Frame around the job accomplished.
-
-### Circle of Competence
-Know what you're good at and stay within it. Double down on genuine expertise.
-
-**Marketing application**: Don't chase every channel. Focus on where you have real competitive advantage.
-
-### Inversion
-Ask what would guarantee failure, then avoid those things.
-
-**Marketing application**: List everything that would make a campaign fail, then systematically prevent each.
-
-### Occam's Razor
-Simpler explanations are usually correct. Avoid overcomplicating strategies.
-
-**Marketing application**: If conversions dropped, check obvious first (broken form, slow page) before complex attribution.
-
-### Pareto Principle (80/20)
-80% of results come from 20% of efforts. Find and focus on the vital few.
-
-**Marketing application**: Find channels driving most results. Cut or reduce the rest.
-
-### Hick's Law
-Decision time increases with options. More choices = more abandonment.
-
-**Marketing application**: One clear CTA beats three. Fewer form fields = higher conversion.
-
-### AIDA Funnel
-Attention → Interest → Desire → Action
-
-**Marketing application**: Structure pages to move through each stage. Capture attention before building desire.
-
-### Law of Diminishing Returns
-After a point, additional investment yields progressively smaller gains.
-
-**Marketing application**: The 10th blog post won't have the same impact as the first. Diversify channels.
-
-### Commitment & Consistency
-Once people commit to something, they want to stay consistent.
-
-**Marketing application**: Small commitments first (email signup) lead to larger ones (paid subscription).
-
-### Reciprocity Principle
-Give first. People feel obligated to return favors.
-
-**Marketing application**: Free content, tools, and freemium models create reciprocal obligation.
-
-### Scarcity & Urgency
-Limited availability increases perceived value.
-
-**Marketing application**: Limited-time offers, low-stock warnings. Only use when genuine.
-
-### Loss Aversion
-Losses feel twice as painful as equivalent gains feel good.
-
-**Marketing application**: "Don't miss out" beats "You could gain." Frame in terms of what they'll lose.
-
-### Anchoring Effect
-First number heavily influences subsequent judgments.
-
-**Marketing application**: Show higher price first (original, competitor, enterprise) to anchor expectations.
-
-### Paradox of Choice
-Too many options overwhelm. Fewer choices lead to more decisions.
-
-**Marketing application**: Three pricing tiers. Recommend a single "best for most" option.
-
-### Endowment Effect
-People value things more once they own them.
-
-**Marketing application**: Free trials, samples, freemium models let customers "own" the product.
-
-### IKEA Effect
-People value things they put effort into creating.
-
-**Marketing application**: Let customers customize, configure, build. Their investment increases commitment.
-
-### Mere Exposure Effect
-Familiarity breeds liking. Consistent presence builds preference.
-
-**Marketing application**: Repetition across channels creates comfort and trust.
-
-### Social Proof / Bandwagon Effect
-People follow what others are doing. Popularity signals quality.
-
-**Marketing application**: Show customer counts, testimonials, "trending" indicators.
-
-### Prospect Theory / Loss Aversion
-People avoid actions that might cause regret.
-
-**Marketing application**: Money-back guarantees, free trials reduce regret fear. Address concerns directly.
-
-### Zeigarnik Effect
-Unfinished tasks occupy the mind. Open loops create tension.
-
-**Marketing application**: "You're 80% done" creates pull to finish. Incomplete profiles, abandoned carts.
-
-### Status-Quo Bias
-People prefer current state. Change feels risky.
-
-**Marketing application**: Reduce friction. Make transition feel safe. "Import in one click."
-
-### Default Effect
-People accept pre-selected options. Defaults are powerful.
-
-**Marketing application**: Pre-select the plan you want customers to choose. Opt-out beats opt-in.
-
-### Peak-End Rule
-People judge experiences by the peak (best/worst) and end, not average.
-
-**Marketing application**: Design memorable peaks and strong endings. Thank you pages matter.
+### 针对特定受众的营销策略
+- 双向推荐机制
+- 播客推广
+- 用客户的语言与他们沟通
 
 ---
 
-# PART 3: SEO & CONTENT
+## 产品发布策略（5个阶段框架）
 
-## SEO Audit Framework
+### 第1阶段：内部测试（发布前）
+- 首先在内部使用产品
+- 在实际使用中查找问题
+- 创建初步案例研究
+- 制作发布相关内容
+- 设置分析和跟踪机制
 
-### Priority Order
-1. **Crawlability & Indexation** - Can Google find and index pages?
-2. **Technical Foundations** - Is the site fast and functional?
-3. **On-Page Optimization** - Is content optimized?
-4. **Content Quality** - Does it deserve to rank?
-5. **Authority & Links** - Does it have credibility?
+### 第2阶段：Alpha测试（私人测试）
+- 邀请现有客户和潜在客户
+- 收集反馈和推荐信
+- 根据反馈调整产品定位
+- 建立等待名单
 
-### Technical SEO Checklist
+### 第3阶段：Beta测试（公开预览）
+- 通过邀请码提供更广泛的访问权限
+- 收集更多推荐信
+- 调整定价和包装方案
+- 制作SEO相关内容
 
-**Crawlability**
-- Robots.txt not blocking important pages
-- XML sitemap accessible and updated
-- Site architecture within 3 clicks of homepage
-- No orphan pages
+### 第4阶段：早期访问（发布准备）
+- 公开等待名单
+- 提供特别定价
+- 推广合作伙伴关系
+- 联系媒体和分析师
 
-**Indexation**
-- No accidental noindex on important pages
-- Proper canonical tags (self-referencing)
-- No redirect chains
-- No soft 404s
-
-**Core Web Vitals**
-- LCP < 2.5s
-- INP < 200ms
-- CLS < 0.1
-- Server response time optimized
-- Images optimized
-
-**On-Page**
-- Title tags optimized (60 chars, keyword placement)
-- Meta descriptions compelling (155 chars)
-- Header hierarchy (H1 → H2 → H3)
-- Internal linking to priority pages
-
-**E-E-A-T**
-- Author expertise demonstrated
-- Clear sourcing and citations
-- Regular content updates
-- Accurate, comprehensive information
+### 第5阶段：全面发布
+- 全面上线
+- 进行全面推广
+- 展示客户成功案例
+- 持续优化产品
 
 ---
 
-## Programmatic SEO (12 Playbooks)
+## 定价策略
 
-1. **Location Pages** - City + keyword targeting
-2. **Comparison Pages** - Product + alternative/competitor
-3. **Integration Pages** - Tool + integration targets
-4. **Use Case Pages** - Solution + use case
-5. **Problem Pages** - Pain point + solution
-6. **Industry Pages** - Industry + keyword targets
-7. **Review/Alternatives Pages** - Competitor alternatives
-8. **Calculator/Generator Pages** - Tools with keyword targets
-9. **Template Pages** - Document templates for keywords
-10. **Glossary Pages** - Industry terms explained
-11. **Checklist Pages** - How-to guides as checklists
-12. **Quiz/Assessment Pages** - Interactive tools
+### 研究方法
+- 竞争对手定价分析
+- 基于价值的定价模型
+- 收费意愿调查
+- A/B测试以优化定价
 
----
+### 定价层级
+- 免费层级（提升品牌知名度）
+- 专业层级（提供核心功能）
+- 企业层级（提供高级支持和定制服务）
 
-## Schema Markup
+### 价值衡量指标
+- 按用户数量定价
+- 按使用量定价
+- 按功能分层定价
+- 按结果为导向的定价
 
-- Organization schema
-- Product/Service schema
-- FAQPage schema
-- HowTo schema
-- Review/BreadcrumbList schema
-- LocalBusiness schema
-
----
-
-## Copywriting Frameworks
-
-### AIDA
-Attention → Interest → Desire → Action
-
-### PAS
-Problem → Agitation → Solution
-
-### Before/After/Bridge
-Current state → Problem → Your solution → Transformation
-
-### ACCA
-Awareness → Comprehension → Conviction → Action
-
-### Hero's Journey
-Customer as hero on a journey with your product as guide
+### 收益优化策略
+- 提供年度和月度折扣
+- 提供升级路径
+- 防止客户流失的定价策略
+- 提高收入策略
 
 ---
 
-## Copy Editing (7 Sweeps)
+# 第2部分：心理学与思维模型
 
-1. **Clarity Sweep**
-2. **Voice Sweep**
-3. **Proof Sweep**
-4. **Impact Sweep**
-5. **Emotion Sweep**
-6. **Format Sweep**
-7. **Authenticity Sweep**
+## 基础思维模型
 
----
+### 第一性原理
+将问题分解为基本事实。不要盲目模仿竞争对手，反复追问“为什么”以找到根本原因。
 
-## Social Content Strategy
+**营销应用**：不要仅仅因为竞争对手在做某事就跟随他们去做。要思考这样做能解决什么问题，以及是否有更好的解决方案。
 
-### Hook Templates
-- Question hooks
-- Number hooks
-- Story hooks
-- Contrast hooks
-- Controversy hooks
+### “任务完成”（JTBD）理论
+人们购买产品是为了完成任务。关注结果，而不是功能。
 
-### Platform Optimization
-- LinkedIn: Professional, thought leadership
-- X/Twitter: Bite-sized, threads
-- Instagram: Visual + captions
-- TikTok/Reels: Entertainment + education
-- YouTube: Long-form + shorts
+**营销应用**：买家需要的是钻孔工具，而不是钻孔机本身。要围绕他们要完成的任务来设计产品。
 
----
+### 能力圈理论
+了解自己的优势，并专注于这些优势。在真正的专业领域内深入发展。
 
-# PART 4: CONVERSION OPTIMIZATION (CRO)
+**营销应用**：不要试图覆盖所有营销渠道。专注于自己具有竞争优势的领域。
 
-## Page CRO Elements
+### 逆向思考法
+思考哪些因素会导致失败，然后避免这些因素。
 
-1. **Value Proposition**
-   - Clear headline (8-12 words)
-   - Subhead explaining transformation
-   - Visual proof (screenshot/video)
+**营销应用**：列出可能导致营销活动失败的所有因素，并系统地避免它们。
 
-2. **Trust Signals**
-   - Logos of customers/press
-   - Testimonials
-   - Security badges
-   - Social proof numbers
+### 奥卡姆剃刀原理
+更简单的解释通常是正确的。避免过度复杂化营销策略。
 
-3. **CTA Optimization**
-   - Action-oriented (not "Submit")
-   - Contrast with page
-   - Above fold placement
+**营销应用**：如果转化率下降，先检查显而易见的问题（如表单错误、页面加载缓慢），再考虑其他复杂因素。
 
-4. **Friction Analysis**
-   - Remove unnecessary form fields
-   - Auto-fill where possible
-   - Clear error messages
+### 帕累托原则（80/20法则）
+80%的结果来自20%的努力。找到并专注于那些最关键的因素。
 
----
+**营销应用**：找出能带来最大效果的营销渠道，然后减少其他渠道的投入。
 
-## Funnel Optimization
+### 希克定律
+选择越多，决策时间越长，放弃的可能性也越大。
 
-### Signup Flow
-- Minimize fields (email only first)
-- Social auth options
-- Progress indicators
-- Clear value proposition
+**营销应用**：一个明确的呼叫行动（CTA）比多个CTA更有效。减少表单字段的数量可以提高转化率。
 
-### Form CRO
-- Progressive profiling
-- Inline validation
-- Smart defaults
-- Auto-save drafts
+### AIDA漏斗模型
+注意力 → 兴趣 → 愿望 → 行动
 
-### Onboarding
-- Aha moment identification
-- Progress tracking
-- Feature discovery
-- Milestone celebrations
+**营销应用**：设计页面时要引导用户依次经历这些阶段。在激发用户兴趣之前，先吸引他们的注意力。
 
-### A/B Test Setup
-- Hypothesis framework
-- Sample size calculations
-- Statistical significance (95%+ confidence)
-- Test one variable at a time
+### 报酬递减法则
+达到某个临界点后，额外的投入带来的收益会逐渐减少。
 
----
+**营销应用**：第10篇博客文章可能不会像第一篇那样有效。因此要多样化营销渠道。
 
-# PART 5: PAID ADVERTISING & GROWTH
+### 承诺与一致性原则
+一旦人们做出了承诺，他们就会希望保持一致性。
 
-## Channel Strategy
+**营销应用**：从小步骤开始（如电子邮件注册），逐步引导他们做出更大的承诺（如付费订阅）。
 
-### Google Ads
-- Brand terms protection
-- Competitor targeting
-- Solution keywords
-- Remarketing lists
+### 互惠原则
+先给予，人们会感到有义务回报。
 
-### Meta/Facebook Ads
-- Detailed targeting
-- Creative testing
-- Lookalike audiences
-- Retargeting
+**营销应用**：提供免费内容、工具和免费试用服务，建立互惠关系。
 
-### LinkedIn Ads
-- Job titles/functions
-- Company size targeting
-- Industry filters
-- B2B intent
+### 稀缺性与紧迫感
+有限的资源会提高产品的感知价值。
 
-### Analytics & Tracking
-- UTM parameters (consistent naming)
-- GA4 events for goals
-- GTM container setup
-- Conversion tracking pixels
+**营销应用**：设置限时优惠或库存不足的提示。只有在真正必要时才使用这些策略。
 
----
+### 损失厌恶原则
+人们对于失去的东西感受到的痛苦是获得同样东西的两倍。
 
-## Referral Program Design
+**营销应用**：用“错过机会”这样的说法来激发用户的兴趣。
 
-### Viral Mechanics
-- Two-sided rewards
-- Milestone celebrations
-- Fraud detection rules
-- Nurture sequences for referred users
+### 锚定效应
+第一个呈现的数字会严重影响后续的判断。
+
+**营销应用**：先展示较高的价格（原始价格、竞争对手价格或企业价格），以设定用户的期望。
+
+### 选择悖论
+选项太多反而会让人难以做出决定。减少选择可以提高转化率。
+
+**营销应用**：提供三个定价层级，推荐一个“最适合大多数人的”选项。
+
+### 所有者效应
+一旦人们拥有了某样东西，他们就会更加重视它。
+
+**营销应用**：提供免费试用、样品或免费会员服务，让用户产生“拥有”产品的感觉。
+
+### IKEA效应
+人们更喜欢自己参与创造的东西。
+
+**营销应用**：允许客户自定义产品，让他们感受到自己的投入。
+
+### 重复曝光效应
+频繁的曝光会增强用户的喜好感。
+
+**营销应用**：在多个渠道上重复展示产品，建立用户的熟悉感和信任感。
+
+### 社交证明/从众效应
+人们会跟随他人的行为。利用众人的选择来提升产品的吸引力。
+
+**营销应用**：展示客户数量、推荐信和“热门”指标。
+
+### 潜在客户理论/损失厌恶原则
+人们会避免可能带来后悔的行为。
+
+**营销应用**：提供退款保证或免费试用服务，减少用户的顾虑。
+
+### 泽加尼克效应
+未完成的任务会让人感到不安。利用未完成的状态来创造紧迫感。
+
+**营销应用**：先展示较高的价格或最好的选项，以吸引用户。
+
+### 短尾法则
+人们会根据体验的峰值（最好或最差的部分）来评价产品，而不是平均水平。
+
+**营销应用**：设计令人难忘的峰值体验和有力的结尾。
 
 ---
 
-## Free Tool Strategy
+# 第3部分：SEO与内容
 
-### Tool Categories
-- Calculators
-- Analyzers
-- Generators
-- Checklists
-- Templates
+## SEO审计框架
 
-### SEO Value
-- Keyword targeting
-- Backlink attraction
-- Shareable results
+### 优先级顺序
+1. **可爬取性与索引** - Google能否找到并索引页面？
+2. **技术基础** - 网站是否快速且功能正常？
+3. **页面优化** - 内容是否经过优化？
+4. **内容质量** - 内容是否有足够的价值来获得高排名？
+5. **权威性与链接** - 网站是否具有可信度？
+
+### SEO技术检查清单
+
+**可爬取性**
+- robots.txt文件不会阻止重要页面的爬取
+- XML站点地图易于访问且更新及时
+- 网站结构在首页点击3次内可到达
+- 没有孤立的页面
+
+**索引**
+- 重要页面没有被错误地排除在索引之外
+- 使用正确的规范标签
+- 没有错误的重定向链接
+- 没有404错误页面
+
+**核心网页指标**
+- 页面加载时间（LCP）< 2.5秒
+- 网页加载速度（INP）< 200毫秒
+- 页面加载速度（CLS）< 0.1
+- 服务器响应时间优化
+- 图片质量优化
+
+**页面优化**
+- 标题标签优化（60个字符，包含关键词）
+- meta描述简洁有力（155个字符）
+- 标题层级清晰（H1 → H2 → H3）
+- 有指向重要页面的内部链接
+
+**E-E-A-T原则**
+- 显示作者的专业背景
+- 提供明确的来源和引用
+- 定期更新内容
+- 提供准确、全面的信息
 
 ---
 
-# PART 6: EMAIL MARKETING
+## 程序化SEO（12种策略）
 
-## Sequence Types
-
-1. **Welcome Series** - First 7 days
-2. **Nurture Sequence** - Build interest over 2-3 weeks
-3. **Onboarding Sequence** - Product education
-4. **Win-Back/Reactivation** - Churned users
-5. **Re-engagement** - Dormant subscribers
+1. **位置相关页面** - 根据城市和关键词进行定位
+2. **比较页面** - 展示产品及其替代品/竞争对手
+3. **集成页面** - 介绍工具及其应用场景
+4. **问题解决页面** - 解释问题及其解决方案
+5. **行业相关页面** - 针对特定行业进行定位
+6. **评论/替代品页面** - 展示竞争对手的替代方案
+7. **计算器/生成器页面** - 提供与关键词相关的工具
+8. **模板页面** - 提供与关键词相关的文档模板
+9. **术语表页面** - 解释行业术语
+10. **检查清单页面** - 提供操作指南
+11. **测验/评估页面** - 提供互动式工具
 
 ---
 
-# QUICK REFERENCE
+## Schema标记
 
-## Marketing Challenges → Relevant Frameworks
+- 组织结构标记
+- 产品/服务标记
+- 常见问题解答页面标记
+- 操作指南标记
+- 评论/导航路径列表标记
+- 本地企业标记
 
-| Challenge | Start Here |
+---
+
+## 撰写框架
+
+### AIDA原则
+注意力 → 兴趣 → 愿望 → 行动
+
+### PAS原则
+问题 → 激发兴趣 → 提供解决方案
+
+### Before/After/Bridge原则
+当前状态 → 问题 → 你的解决方案 → 转变过程
+
+### ACCA原则
+意识 → 理解 → 信念 → 行动
+
+### 英雄之旅模型
+将客户视为旅程中的英雄，你的产品是他们的向导
+
+---
+
+## 撰写编辑流程（7个优化步骤）
+
+1. **清晰度优化**
+2. **语言表达优化**
+3. **逻辑一致性优化**
+4. **情感共鸣优化**
+5. **真实性优化**
+6. **格式一致性优化**
+7. **原创性优化**
+
+---
+
+## 社交媒体内容策略
+
+### 吸引用户注意力的方法
+- 问题式开头
+- 数字对比式开头
+- 故事式开头
+- 对比式开头
+- 争议性开头
+
+### 平台特定优化
+- LinkedIn：专业内容，展现领导力
+- X/Twitter：简短、有吸引力的内容
+- Instagram：结合视觉元素和文字说明
+- TikTok/Reels：结合娱乐性和教育性内容
+- YouTube：提供长篇内容和短视频
+
+---
+
+# 第4部分：转化优化（CRO）
+
+## 页面转化优化元素
+
+1. **价值主张**
+   - 清晰的标题（8-12个单词）
+   - 说明产品如何解决问题的副标题
+   - 视觉证据（截图或视频）
+
+2. **信任信号**
+   - 客户或媒体的徽标
+   - 推荐信
+   - 安全性认证
+   - 社交媒体上的正面评价
+
+3. **呼叫行动（CTA）优化**
+   - 明确的呼叫行动按钮
+   - 与页面整体风格协调
+   - 放在页面显眼的位置
+
+4. **减少用户障碍**
+   - 减少不必要的表单字段
+   - 提供自动填充功能
+   - 明确的错误提示
+
+---
+
+## 漏斗优化
+
+### 注册流程优化
+- 减少表单字段（先只收集电子邮件地址）
+- 提供社交账号登录选项
+- 显示进度条
+- 清晰的价值主张
+
+### 表单优化
+- 逐步收集用户信息
+- 提供实时验证功能
+- 自动保存用户填写的信息
+
+### 新用户引导优化
+- 引导用户发现产品亮点
+- 跟踪用户进度
+- 举办里程碑庆祝活动
+
+### A/B测试设置
+- 设计假设框架
+- 计算样本量
+- 确保统计结果的可靠性（95%以上）
+- 每次只测试一个变量
+
+---
+
+# 第5部分：付费广告与增长
+
+## 广告渠道策略
+
+### Google广告
+- 保护品牌相关关键词
+- 精准定位竞争对手
+- 使用与产品相关的关键词
+- 使用再营销功能
+
+### Meta/Facebook广告
+- 详细的目标定位
+- 创意广告内容
+- 使用相似用户群体进行定向
+- 使用再营销功能
+
+### LinkedIn广告
+- 根据职位或公司规模进行定位
+- 使用行业过滤器
+- 针对B2B场景的广告
+
+### 分析与跟踪
+- 使用UTM参数进行数据追踪
+- 使用GA4跟踪分析目标
+- 设置GTM（Google Tag Manager）容器
+- 使用转化跟踪像素
+
+---
+
+## 推荐计划设计
+
+### 病毒式传播策略
+- 设计双向奖励机制
+- 为推荐用户举办庆祝活动
+- 制定防止欺诈的规则
+- 为推荐用户提供持续的关怀
+
+## 免费工具策略
+
+### 工具分类
+- 计算器
+- 分析工具
+- 生成工具
+- 检查清单工具
+- 模板工具
+
+### SEO优化
+- 使用关键词进行定位
+- 通过工具吸引反向链接
+- 提供可分享的结果
+
+---
+
+# 第6部分：电子邮件营销
+
+## 邮件发送序列类型
+
+1. **欢迎系列** - 发送前7天内
+2. **培养兴趣系列** - 在2-3周内逐步建立用户兴趣
+3. **新用户引导系列** - 提供产品使用指导
+4. **保留用户系列** - 为流失的用户重新吸引他们
+5. **重新参与系列** - 为沉寂的订阅用户发送邮件
+
+---
+
+# 快速参考
+
+## 常见营销挑战及对应的解决方案框架
+
+| 挑战 | 解决方案 |
 |-----------|------------|
-| Low conversions | AIDA, Hick's Law, BJ Fogg |
-| Pricing objections | Anchoring, Mental Accounting, Loss Aversion |
-| SEO issues | Technical SEO audit, Programmatic SEO |
-| Copy not converting | PAS, Copy editing sweeps, A/B tests |
-| Email performance | Welcome series, Segmentation, Send time optimization |
-| No traffic | SEO audit, Content strategy, Programmatic SEO |
-| High churn | Onboarding CRO, Win-back sequences |
-| Low engagement | Social proof, Reciprocity, Consistency |
-| Unclear messaging | Value proposition, Positioning, Differentiation |
+| 转化率低 | 使用AIDA模型、希克定律、BJ Fogg理论 |
+| 定价问题 | 使用锚定效应、心理账户理论和损失厌恶原则 |
+| SEO问题 | 进行SEO审计和程序化SEO优化 |
+| 内容无法吸引用户 | 使用PAS模型、撰写优化流程、A/B测试 |
+| 邮件发送效果不佳 | 发送欢迎系列邮件、细分用户群体、优化发送时间 |
+| 流量不足 | 进行SEO审计、制定内容策略、使用程序化SEO |
+| 客户流失率高 | 优化新用户引导流程、发送保留用户邮件 |
+| 用户参与度低 | 使用社交证明、互惠原则、保持内容一致性 |
+| 消息不明确 | 明确价值主张、优化产品定位、区分产品特点 |
 
 ---
 
-## Questions to Ask (Marketing Discovery)
+## 常见营销问题与解答
 
-**About Product & Audience**
-- What's your product and who's the target customer?
-- What's your current stage (pre-launch → scale)?
-- What are your main marketing goals?
-- What's your budget and team size?
+**关于产品与目标受众**
+- 你的产品是什么？目标客户是谁？
+- 你目前处于哪个营销阶段（发布前/扩展阶段）？
+- 你的主要营销目标是什么？
+- 你的预算和团队规模是多少？
 
-**About Current State**
-- What have you tried that worked or didn't?
-- What are your competitors doing well?
-- Where are you losing customers in the funnel?
+**关于当前情况**
+- 你尝试过哪些方法有效或无效？
+- 竞争对手有哪些成功的营销策略？
+- 你在营销流程的哪个环节流失了客户？
 
-**About Goals**
-- What metrics matter most (traffic, leads, revenue)?
-- What's your timeline?
-- What's your competitive advantage?
+**关于目标**
+- 哪些指标最重要（流量、潜在客户数量、收入）？
+- 你的时间表是什么？
+- 你的竞争优势是什么？
 
----
+## 相关技能
 
-## Related Skills
-
-- **marketing-ideas**: 140+ tactical marketing ideas
-- **marketing-psychology**: 70+ mental models for persuasion
-- **launch-strategy**: 5-phase launch framework
-- **pricing-strategy**: Research and optimization methods
-- **seo-audit**: Technical and on-page SEO diagnosis
-- **programmatic-seo**: Building pages at scale
-- **schema-markup**: Structured data implementation
-- **competitor-alternatives**: Comparison page strategy
-- **copywriting**: Framework-driven copy
-- **copy-editing**: 7-sweep improvement process
-- **social-content**: Platform-specific strategies
-- **email-sequence**: Campaign types and templates
-- **page-cro**: Landing page optimization
-- **signup-flow-cro**: Form and signup optimization
-- **form-cro**: Lead capture and conversion
-- **onboarding-cro**: Activation and retention
-- **paywall-cro**: Premium content strategy
-- **popup-cro**: Trigger-based conversion
-- **ab-test-setup**: Statistical rigor in testing
-- **paid-ads**: Channel-specific strategies
-- **analytics-tracking**: Measurement infrastructure
-- **referral-program**: Viral loop design
-- **free-tool-strategy**: Lead generation through tools
+- **营销策略**：140多种实用营销策略
+- **营销心理学**：70多种说服技巧
+- **产品发布策略**：5个阶段的发布流程
+- **定价策略**：定价研究和优化方法
+- **SEO审计**：技术性和页面优化
+- **程序化SEO**：大规模应用程序化SEO
+- **数据结构化**：使用Schema标记
+- **竞争对手分析**：制定比较页面策略
+**写作技巧**：基于框架的写作方法
+- **编辑优化**：7个步骤的写作优化流程
+- **社交媒体内容**：针对不同平台的营销策略
+- **邮件营销**：不同类型的邮件发送序列和模板
+- **页面优化**：优化登录页面
+- **表单优化**：优化注册表单
+- **新用户引导**：优化新用户引导流程
+- **付费内容**：制定高级内容的策略
+- **弹窗广告**：根据用户行为触发广告
+- **A/B测试**：严谨的测试方法
+- **广告投放**：针对不同平台的广告策略
+- **数据分析**：建立有效的分析体系
+- **推荐计划**：设计有效的病毒式传播机制
+- **免费工具**：利用工具生成潜在客户

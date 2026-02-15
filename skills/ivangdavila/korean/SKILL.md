@@ -1,108 +1,107 @@
 ---
 name: Korean
-description: Write Korean that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的韩语。既不是正式的，也不是机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Korean is technically correct but sounds off. Too formal. Too textbook. Too stiff. Natives write with contractions, particles, and casual endings. Match that.
+虽然AI生成的韩语在语法上是正确的，但听起来很正式、刻板，缺乏自然感。母语者通常会使用缩略语、助词以及随意的句尾表达方式，因此需要调整语言风格以更贴近自然表达。
 
-## Formality Default
+## 形式化的语言习惯
 
-Default register is too high. Casual Korean is the norm online. Unless explicitly formal: lean casual. 반말 is normal among peers. 존댓말 isn't always needed.
+默认的语言风格过于正式。在网络上，人们更倾向于使用随意的韩语表达方式。除非需要特别正式的表达，否则应尽量选择更随意的语气。在朋友或同龄人之间，使用非正式的语言（“반말”）是很常见的，而且并不总是需要使用敬语。
 
-## Speech Levels
+## 语言的正式程度
 
-Know the levels:
-- 합쇼체 (-습니다): very formal, news, presentations
-- 해요체 (-아/어요): polite, safe default, strangers
-- 해체/반말 (-아/어): casual, friends, peers
-- Online/texting: mostly 반말 or 해요체
-- Don't mix levels awkwardly
+了解不同的语言正式程度：
+- **합쇼체 (-습니다)**：非常正式，适用于新闻报道或正式演讲
+- **해요체 (-아/어요)**：礼貌且较为安全的语言风格，适用于陌生人
+- **해체/반말 (-아/어)**：非正式的语言风格，适用于朋友或同龄人
+- **在线交流/短信**：通常使用非正式或“해요체”
+- **注意不要随意混合不同的语言风格**
 
-## Contractions
+## 缩略语的使用
 
-Casual Korean contracts heavily:
-- 하는 것 → 하는 거
-- 무엇 → 뭐
-- 그것 → 그거
-- 나는 → 난
-- 너는 → 넌
-- 것이 → 게
-- 아니야 → 아냐
+韩语中经常使用缩略语来使表达更自然：
+- **하는 것** → **하는 거**
+- **무엇** → **뭐**
+- **그것** → **그거**
+- **나는** → **난**
+- **너는** → **넌**
+- **것이** → **게**
+- **아니야** → **아냐**
 
-## Sentence Endings
+## 句尾表达
 
-These add nuance:
-- ㅋㅋㅋ: laughter (more ㅋ = funnier)
-- ㅎㅎ: softer laugh
-- ㅠㅠ/ㅜㅜ: crying, sad
-- ~: softening (밥 먹었어~)
-- ㄱㄱ: 고고 (let's go)
-- ㅇㅇ: 응응 (yeah yeah)
+这些表达方式可以增加语言的趣味性：
+- **ㅋㅋㅋ**：表示笑声（数字越多，表示越有趣）
+- **ㅎㅎ**：表示轻微的笑声
+- **ㅠㅠ/ㅜㅜ**：表示哭泣或悲伤
+- **~**：用于缓和语气（例如：**밥 먹었어~**）
+- **ㄱㄱ**：表示“我们走吧”
+- **ㅇㅇ**：表示同意或兴奋（例如：**응응**）
 
-## Particles
+## 助词的使用
 
-Don't over-formal particles:
-- 을/를 often dropped in casual speech
-- 이/가 often dropped too
-- 은/는 sometimes dropped
-- Keep when needed for clarity
+在非正式的对话中，可以适当省略助词：
+- **을/를** 通常可以省略
+- **이/가** 也经常可以省略
+- **은/는** 有时也可以省略
+- 但在需要明确表达时请保留助词
 
-## Fillers & Flow
+## 语言的填充词与流畅性
 
-Real Korean has fillers:
-- 음, 어, 그
-- 아니 (sentence starter)
-- 근데, 그래서, 그러니까
-- 막, 좀, 되게
-- 진짜, 완전, 레알
+韩语中常用一些填充词来使对话更自然：
+- **음, 어, 그** 等
+- **아니**：用于句首
+- **근데, 그래서, 그러니까** 等连接词
+- **막, 좀, 되게** 等表达方式
+- **진짜, 완전, 레알** 等强调词
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- 좋다 → 대박, 미쳤다, 쩐다
-- 나쁘다 → 별로, 최악, 구리다
-- 많이 → 완전, 개, 존나 (crude)
-- 예쁘다 → 이쁘다, 존예
+不要总是选择最“安全”的表达方式：
+- **좋다** → 可以用 **대박, 미쳤다, 쩐다**
+- **나쁘다** → 可以用 **별로, 최악, 구리다**
+- **많이** → 可以用 **완전, 개, 존나**（这些表达更口语化）
+- **예쁘다** → 可以用 **이쁘다, 존예**
 
-## Internet Slang
+## 网络俚语
 
-Modern Korean uses:
-- ㅋㅋㅋ, ㄹㅇ (레알/리얼)
-- 개 (intensifier): 개웃김, 개맛있어
-- 존나 (crude intensifier)
-- 헐, 대박, 미쳤다
-- 인정, 공감
-- ㄴㄴ (노노), ㅇㅋ (오케이)
+现代韩语中常用的网络俚语包括：
+- **ㅋㅋㅋ, ㄹㅇ**（表示“真的/真的”）
+- **개**（加强语气）：例如 **개웃김, 개맛있어**
+- **존나**（加强语气）
+- **헐, 대박, 미쳤다**（表示惊讶或兴奋）
+- **인정, 공감**（表示认同或共鸣）
+- **ㄴㄴ (노노), ㅇㅋ (오케이)**（表示否定或同意）
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- 알겠어/알았어, ㅇㅇ
-- 뭐해?, 밥 먹었어?
-- 그치?, 맞아맞아
-- 별로야, 그냥 그래
-- 대박, 헐, 미쳤다
+自然的表达方式：
+- **알겠어/알았어, ㅇㅇ**（表示理解或同意）
+- **뭐해?, 밥 먹었어?**（询问或问候）
+- **그치?, 맞아맞아**（表示同意或反驳）
+- **별로야, 그냥 그래**（表示无所谓）
+- **대박, 헐, 미쳤다**（表示惊讶或兴奋）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- 진짜?, 헐, 대박
-- 미쳤어?, 뭐야?
-- ㅋㅋㅋㅋ, ㅎㅎㅎ
-- 아 ㅋㅋ, 엌ㅋㅋ
-- 슬프다 ㅠㅠ, 귀여워 ㅠㅠ
+反应时要自然：
+- **진짜?, 헐, 대박**（表示惊讶或赞叹）
+- **미쳤어?, 뭐야?**（表示疑问或困惑）
+- **ㅋㅋㅋㅋ, ㅎㅎㅎ**（表示笑声）
+- **아 ㅋㅋ, 엌ㅋㅋ**（表示尴尬或无奈）
+- **슬프다 ㅠㅠ, 귀여워 ㅠㅠ**（表示同情或喜爱）
 
-## Aegyo/Cute Writing
+## 非正式写作中的表达
 
-Common in casual contexts:
-- 네 → 넹, 넵
-- 응 → 웅
-- 안녕 → 안뇽
-- Adding ㅎ: 좋아용, 고마워용
-- Use appropriately for context
+在非正式的写作中，常用的表达包括：
+- **네** → **넹, 넵**（表示同意）
+- **응** → **웅**（表示应答）
+- **안녕** → **안뇽**（表示问候）
+- 根据语境适当添加 **ㅎ**（例如：**좋아용, 고마워용**）
 
-## The "Native Test"
+## “母语者测试”
 
-Before sending: would a Korean screenshot this as "AI-generated"? If yes—too formal, missing ㅋㅋ, no contractions. Casualize.
+在发送内容之前，可以问问韩语母语者：如果他们看到这段文字，会认为这是AI生成的吗？如果是的话，说明这段文字太正式了，缺少笑声表达（如 **ㅋㅋ**），也没有使用缩略语。需要调整语言风格，使其更符合韩语的日常表达习惯。

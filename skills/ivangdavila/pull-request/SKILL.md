@@ -2,80 +2,80 @@
 name: Pull Request
 slug: pull-request
 version: 1.0.1
-description: Create high-quality pull requests with pre-submission validation, maintainer-friendly formatting, and automated quality checks.
+description: 创建高质量的 Pull Request（合并请求），这些请求需要经过提交前的验证、采用对维护者友好的格式，并包含自动化的质量检查。
 ---
 
-## When to Use
+## 适用场景
 
-Before creating or suggesting a pull request to ANY repository. Acts as a quality filter to prevent wasting maintainer time and embarrassing the contributor.
+在向任何仓库创建或提交拉取请求（Pull Request, PR）之前，请先参考本文档。这有助于确保代码质量，避免浪费维护者的时间，同时也能避免给贡献者带来不必要的麻烦。
 
-## Quick Reference
+## 快速参考
 
-| Domain | File |
+| 分类 | 对应文件 |
 |--------|------|
-| Pre-submission checklist | `checklist.md` |
-| Red flags to avoid | `red-flags.md` |
-| Repository context gathering | `repo-context.md` |
-| PR description templates | `templates.md` |
+| 提交前的检查清单 | `checklist.md` |
+| 需避免的错误/风险 | `red-flags.md` |
+| 收集仓库相关信息 | `repo-context.md` |
+| PR描述模板 | `templates.md` |
 
-## Critical Rules
+## 重要规则
 
-- **Read CONTRIBUTING.md first** — Adapt to project's workflow, not a fixed pattern
-- **Issue policy depends on scope** — Small fixes may PR directly; features need discussion first
-- **Disclose AI involvement** — Mark AI-assisted PRs in title/description
-- **Run checks if possible** — If you can't run tests, say so explicitly
-- **Match existing style** — Check for `.editorconfig`, `prettier`, `eslint` configs
-- **Small and focused** — One logical change per PR
-- **No secrets ever** — Use `<PLACEHOLDER>` syntax
+- **务必先阅读 **CONTRIBUTING.md** — 请根据项目的工作流程来操作，不要机械地遵循固定模式。**
+- **问题处理策略因项目而异** — 小型修复可以直接提交 PR；涉及功能性的更改则需要先进行讨论。**
+- **明确标注 AI 辅助生成的 PR** — 在 PR 的标题或描述中注明。**
+- **尽可能进行代码测试** — 如果无法执行测试，请明确说明原因。**
+- **保持代码格式的一致性** — 检查项目是否使用了 `.editorconfig`、`prettier` 或 `eslint` 等代码格式化工具。**
+- **每次 PR 应只包含一个逻辑上的修改。**
+- **切勿包含任何敏感信息** — 使用 `<PLACEHOLDER>` 作为占位符来替换敏感内容。
 
-## Issue Policy (Contextual)
+## 问题处理策略（根据项目具体情况而定）
 
-**NOT all projects require issues first.** Check CONTRIBUTING.md, then:
+**并非所有项目都要求必须先创建问题。** 请先阅读 `CONTRIBUTING.md`，然后按照以下规则操作：
 
-| Change Type | Default Action |
+| 更改类型 | 默认处理方式 |
 |-------------|----------------|
-| Typo, small bug fix | PR directly (unless CONTRIBUTING.md says otherwise) |
-| New feature | Open Discussion/Issue first, wait for approval |
-| Architecture change | RFC or Discussion required |
-| When in doubt | Ask in issue before coding |
+| 拼写错误、小错误修复 | 直接提交 PR（除非 `CONTRIBUTING.md` 有特别规定）。 |
+| 新功能 | 先开启讨论或创建问题，等待审批。 |
+| 架构变更 | 需要提交 RFC（Request for Comment）或进行讨论。 |
+- 有疑问时 | 在开始编码前先在问题区提问。 |
 
-## AI-Assisted PRs
+## AI 辅助生成的 PR
 
-If this PR was created with AI assistance:
+如果此 PR 是由 AI 助助生成的，请遵循以下规则：
 
-1. **Mark it** — Add `[AI-assisted]` to PR title or note in description
-2. **Testing level** — State: `untested` / `lightly tested` / `fully tested`
-3. **Include context** — Prompts or session logs if available and helpful
-4. **Confirm understanding** — "I have reviewed this code and understand what it does"
-5. **Human accountable** — Link to the human directing the contribution
+1. **明确标注** — 在 PR 标题或描述中添加 `[AI-assisted]`。  
+2. **说明测试情况** — 标明代码的测试状态（`未测试`、`部分测试` 或 `完全测试`）。  
+3. **提供相关背景信息** — 如果有相关提示或会议记录，请一并提供。  
+4. **确认理解** — 说明“我已经审阅了代码，并理解其功能”。  
+5. **指定负责人** — 提供负责此次贡献的团队成员的联系方式。  
 
-## Rate Limiting (Avoid Spam)
+## 限制提交频率（防止垃圾邮件）
 
-- MAX 1 open PR per repo at a time
-- Wait 24h between PRs to same repo
-- If 2 PRs rejected consecutively → STOP and escalate to human
-- Check repo's PR velocity first (don't flood low-activity projects)
+- 每个仓库同一时间最多只能有一个未处理的 PR。  
+- 同一仓库的 PR 之间至少间隔 24 小时。  
+- 如果连续两次提交被拒绝，请停止提交并联系人工审核。  
+- 提交前请先了解仓库的 PR 提交频率（避免频繁打扰活跃度较低的项目）。  
 
-## Abandonment Prevention
+## 防止项目被弃用
 
-- MUST respond to review feedback within 48h
-- If unable to address feedback, close with: "I cannot continue; @human please take over or close"
-- Never leave PRs to rot
+- 必须在 48 小时内回复审阅者的反馈。  
+- 如果无法处理反馈，请以“我无法继续处理；请 @human 接管或关闭此 PR”为由关闭该请求。  
+- 绝不要让未处理的 PR 漫长地悬而未决。  
 
-## Scope Boundaries — STOP and Discuss First If:
+## 修改范围限制
 
-- Change touches >5 files OR >200 lines
-- Change modifies public API
-- Change involves security, auth, or crypto
-- Change is in governance, licensing, or CoC
-- Maintainer requested discussion in issue
-- You're unsure if this aligns with project philosophy
+- 如果修改涉及 5 个以上文件或 200 行以上代码，请先停止操作并进行讨论：  
+  - 修改了公共 API；  
+  - 涉及安全、认证或加密相关内容；  
+  - 修改了项目的治理结构、许可协议或行为准则（Code of Conduct, CoC）；  
+  - 维护者要求在问题区进行讨论；  
+  - 你不确定该修改是否符合项目的发展方向。  
 
-## Human Escalation Required
+## 需要人工介入的情况
 
-Escalate to human when:
-- Reviewer asks clarifying questions about design intent
-- CI fails in non-obvious way
-- Any pushback beyond "fix this typo"
-- Reviewer seems confused or frustrated
-- You can't run the test suite locally
+在以下情况下，请联系人工进行审核：  
+- 审阅者对代码设计意图有疑问；  
+- 代码审查工具（CI）以非显而易见的方式报错；  
+- 出现超出“修正拼写错误”范围的问题；  
+- 审阅者表现出困惑或不满；  
+- 你无法在本地运行测试套件。

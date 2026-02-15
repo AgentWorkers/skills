@@ -1,60 +1,58 @@
-# Grant Writer
+# Grant Writing服务
 
-Write winning grant proposals and funding applications. Works for government grants (SBIR, Innovate UK, Horizon Europe), foundation grants, and corporate funding programs.
+帮助您撰写成功的资助提案和资金申请。适用于政府资助项目（如SBIR、Innovate UK、Horizon Europe）、基金会资助以及企业融资计划。
 
-## What It Does
+## 服务内容
 
-Takes your project details and produces a complete, submission-ready grant application:
+根据您的项目详情，为您生成一份完整的、可直接提交的资助申请文件，包括以下内容：
+- **需求陈述**：基于数据的问题定义，并附有相关引用；
+- **项目概述**：项目方法、时间表、里程碑及交付成果；
+- **预算说明**：详细的预算列表及成本合理性分析；
+- **评估计划**：可衡量的项目成果、关键绩效指标（KPIs）及成功标准；
+- **可持续性计划**：项目在获得资助后的持续发展方案；
+- **支持函**：为合作伙伴或利益相关者准备的模板文件。
 
-- **Needs Statement** — data-backed problem definition with citations
-- **Project Narrative** — methodology, timeline, milestones, deliverables
-- **Budget Justification** — line-item budget with cost rationale
-- **Evaluation Plan** — measurable outcomes, KPIs, success criteria
-- **Sustainability Plan** — how the project continues post-funding
-- **Letters of Support** — draft templates for partners/stakeholders
+## 使用方法
 
-## Usage
+请告知代理以下信息：
+1. **资助项目**：您希望申请的资助机构及其具体要求（例如：“SBIR第一阶段”、“Innovate UK智能资助计划”）；
+2. **组织信息**：您的机构背景、业务范围及团队规模；
+3. **项目详情**：您计划开发的产品或服务、解决的问题以及受益对象；
+4. **预算情况**：总申请金额及主要费用支出类别；
+5. **项目时间表**：项目持续时间及关键节点。
 
-Tell the agent:
-1. **Grant program** — which funder and call (e.g., "SBIR Phase I", "Innovate UK Smart Grant")
-2. **Organization** — who you are, what you do, team size
-3. **Project** — what you want to build, the problem it solves, who benefits
-4. **Budget** — total ask, major cost categories
-5. **Timeline** — project duration and key milestones
+代理将研究该资助机构的优先事项，将您的项目与其要求相匹配，并根据最佳写作规范为您起草每个部分。
 
-The agent will research the funder's priorities, match your project to their criteria, and draft each section using grant-writing best practices.
+## 资助申请撰写框架
 
-## Grant-Writing Framework
+### 结构（遵循联邦/基金会的标准格式）：
+1. **封面信**：1页内容，用于吸引评审人员的注意；
+2. **执行摘要**：250字以内，概述问题、解决方案及预期影响；
+3. **需求陈述**：基于数据的需求分析，引用3-5个权威来源，量化问题严重性；
+4. **目标与目的**：采用SMART原则（具体、可衡量、可实现、相关、有时间限制）；
+5. **方法与步骤**：详细说明项目实施的具体方法及理由；
+6. **评估机制**：说明如何衡量项目成功以及需要收集的数据；
+7. **预算与合理性**：对每一笔预算支出进行详细解释，并将其与项目活动关联起来；
+8. **组织能力**：说明您的团队具备完成项目的能力；
+9. **可持续性计划**：阐述项目在资助结束后如何持续运作。
 
-### Structure (follows standard federal/foundation format)
-1. **Cover Letter** — 1 page, hooks the reviewer
-2. **Executive Summary** — 250 words, problem → solution → impact → ask
-3. **Statement of Need** — data-driven, cites 3-5 sources, quantifies the gap
-4. **Goals & Objectives** — SMART format (Specific, Measurable, Achievable, Relevant, Time-bound)
-5. **Methods & Approach** — what you'll do, step by step, with justification
-6. **Evaluation** — how you'll measure success, what data you'll collect
-7. **Budget & Justification** — every dollar explained, tied to activities
-8. **Organizational Capacity** — why your team can deliver
-9. **Sustainability** — life after the grant ends
+### 评分建议（每个草稿中均包含）：
+- 以项目的影响力作为开头，而非技术细节；
+- 使用资助机构的语言风格，与他们的战略规划保持一致；
+- 所有数据都要具体量化（如服务人数、节省的成本、改善的结果等）；
+- 强调项目合作性——资助机构更看重项目生态系统的构建，而非孤立的项目；
+- 预算金额应约为申请文本长度的10%-15%；
+- 如果资助机构有特定的评估模型，请务必包含其中。
 
-### Scoring Tips (built into every draft)
-- Lead with impact, not technology
-- Use the funder's language — mirror their strategic plan
-- Quantify everything: people served, dollars saved, outcomes improved
-- Show collaboration — funders want ecosystems, not islands
-- Budget should be 10-15% of narrative length
-- Include a logic model if the funder uses one
+### 代理应避免的常见错误：
+- 目标表述模糊（例如：“改善项目成果”应改为“在12个月内将处理时间缩短40%”）；
+- 无理由地夸大预算金额；
+- 忽视评估标准的权重；
+- 为了追求高分而写作，而非基于实际需求进行撰写；
+- 缺少与资助机构优先事项的关联。
 
-### Common Mistakes the Agent Avoids
-- Vague objectives ("improve outcomes" → "reduce processing time by 40% within 12 months")
-- Budget padding without justification
-- Ignoring the evaluation criteria weights
-- Writing to impress instead of writing to score
-- Missing the "so what?" — always connect to funder priorities
-
-## Tips
-
-- Run this skill once per grant program — it tailors language to each funder
-- Paste the actual RFP/call text for best results
-- Ask the agent to score your draft against the rubric before submitting
-- Use with the [AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/) for industry-specific data and language
+## 使用提示：
+- 每个资助项目都请使用此服务，因为系统会根据不同机构的要求调整写作语言；
+- 请将官方的招标文件或申请指南内容粘贴给代理，以获得最佳效果；
+- 提交前请让代理根据评分标准对您的草稿进行评估；
+- 可结合[AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/)获取行业特定的数据和语言资源。

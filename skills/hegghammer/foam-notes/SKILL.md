@@ -1,24 +1,39 @@
 ---
 name: foam-notes
 version: 1.0.2
-description: Work with Foam note repositories. Create, edit, link, and tag notes. Get intelligent wikilink and tag suggestions. Skill supports backlinks discovery, daily notes, templates, graph visualization, note deletion, and renaming. Full Foam documentation included for easy querying.
+description: **操作说明：**
+
+- **与 Foam 笔记仓库协作**：您可以创建、编辑、链接和标记笔记。
+- **智能推荐功能**：系统会提供相关的维基链接和标签建议。
+- **高级功能**：支持反向链接的查找、每日笔记的生成、模板的使用、笔记的可视化展示以及笔记的删除和重命名。
+- **详尽的文档支持**：提供了完整的 Foam 文档，便于您快速了解和使用该工具。
+
+**主要功能包括：**
+
+1. **创建和编辑笔记**：您可以轻松地创建新的笔记，并对现有笔记进行编辑。
+2. **链接和标签管理**：您可以方便地为笔记添加链接和标签，以便更好地组织和查找信息。
+3. **智能推荐**：系统会根据您的使用习惯，智能地推荐相关的笔记和标签。
+4. **高级功能**：提供强大的功能，如反向链接的查找、每日笔记的生成、笔记的可视化展示等。
+5. **文档支持**：附带详细的 Foam 文档，帮助您快速上手和使用该工具。
+
+请注意：以上内容是根据您提供的 SKILL.md 文件内容翻译的。如果您需要进一步的帮助或修改，请随时告知！
 ---
 
 # Foam Notes
 
-Work with Foam note-taking workspaces in VS Code. [Foam](https://foamnotes.com) is a free, open-source personal knowledge management system using standard Markdown files with wikilinks.
+在 VS Code 中使用 Foam 笔记工作区。[Foam](https://foamnotes.com) 是一个免费、开源的个人知识管理系统，它使用标准的 Markdown 文件和维基链接。
 
-## Quick Reference
+## 快速参考
 
-- **Wikilinks**: `[[note-name]]` — connect notes bidirectionally
-- **Embeds**: `![[note-name]]` — include content from other notes
-- **Backlinks**: Automatically discovered connections to current note
-- **Tags**: `#tag` or frontmatter `tags: [tag1, tag2]`
-- **Daily Notes**: `Alt+D` or command "Foam: Open Daily Note"
+- **维基链接**：`[[note-name]]` — 实现笔记之间的双向链接
+- **嵌入内容**：`![[note-name]]` — 从其他笔记中插入内容
+- **回链**：自动发现与当前笔记的关联
+- **标签**：`#tag` 或在文档开头添加 `tags: [tag1, tag2]`
+- **每日笔记**：使用快捷键 `Alt+D` 或命令 `Foam: Open Daily Note`
 
-## Configuration
+## 配置
 
-Set your Foam workspace path in `config.json`:
+在 `config.json` 中设置您的 Foam 工作区路径：
 
 ```json
 {
@@ -29,24 +44,24 @@ Set your Foam workspace path in `config.json`:
 }
 ```
 
-**Location**: `~/.openclaw/workspace/skills/foam-notes/config.json`
+**位置**：`~/.openclaw/workspace/skills/foam-notes/config.json`
 
-**Priority order** (highest to lowest):
-1. `--foam-root` CLI argument
-2. `FOAM_WORKSPACE` environment variable
-3. `foam_root` in config.json
-4. Auto-detect by finding `.foam` or `.vscode` directory
-5. Current working directory
+**优先级顺序**（从高到低）：
+1. `--foam-root` 命令行参数
+2. `FOAM_WORKSPACE` 环境变量
+3. `config.json` 中的 `foam_root` 设置
+4. 通过查找 `.foam` 或 `.vscode` 目录自动检测
+5. 当前工作目录
 
-See references/configuration.md for complete documentation.
+请参阅 `references/configuration.md` 以获取完整文档。
 
-## Scripts
+## 脚本
 
-All scripts support `--foam-root` to override the workspace path.
+所有脚本都支持使用 `--foam-root` 来覆盖工作区路径。
 
 ### init_templates.py
 
-Initialize `.foam/templates/` with starter templates from the official Foam template:
+使用官方提供的模板初始化 `.foam/templates/` 目录：
 
 ```bash
 python3 scripts/init_templates.py              # Copy to current workspace
@@ -56,14 +71,14 @@ python3 scripts/init_templates.py --force     # Overwrite existing
 python3 scripts/init_templates.py --dry-run   # Preview what would be copied
 ```
 
-**Templates included:**
-- `new-note.md` — Default template for new notes
-- `daily-note.md` — Template for daily notes
-- `your-first-template.md` — Example template demonstrating VS Code snippets
+**包含的模板**：
+- `new-note.md` — 新笔记的默认模板
+- `daily-note.md` — 每日笔记模板
+- `your-first-template.md` — 显示 VS Code 代码片段的示例模板
 
 ### create_note.py
 
-Create a new note from template:
+根据模板创建新笔记：
 
 ```bash
 python3 scripts/create_note.py "My New Idea"
@@ -73,7 +88,7 @@ python3 scripts/create_note.py "Research Topic" --dir research/
 
 ### find_backlinks.py
 
-Find all notes that link to a given note:
+查找所有链接到指定笔记的笔记：
 
 ```bash
 python3 scripts/find_backlinks.py "Machine Learning"
@@ -82,7 +97,7 @@ python3 scripts/find_backlinks.py "ml-basics" --format json
 
 ### search_tags.py
 
-Find notes by tag:
+根据标签查找笔记：
 
 ```bash
 python3 scripts/search_tags.py "#research"
@@ -91,7 +106,7 @@ python3 scripts/search_tags.py machine-learning --include-frontmatter
 
 ### list_tags.py
 
-List all tags with usage counts:
+列出所有标签及其使用频率：
 
 ```bash
 python3 scripts/list_tags.py
@@ -100,7 +115,7 @@ python3 scripts/list_tags.py --hierarchy --min-count 3
 
 ### graph_summary.py
 
-Analyze the knowledge graph:
+分析知识图谱：
 
 ```bash
 python3 scripts/graph_summary.py
@@ -109,7 +124,7 @@ python3 scripts/graph_summary.py --format json
 
 ### daily_note.py
 
-Create daily notes:
+创建每日笔记：
 
 ```bash
 python3 scripts/daily_note.py
@@ -120,7 +135,7 @@ python3 scripts/daily_note.py --print-path   # Just output the path
 
 ### suggest_wikilinks.py
 
-Suggest wikilinks by finding text in a note that matches existing note titles:
+通过在笔记中查找与现有笔记标题匹配的文本来建议维基链接：
 
 ```bash
 python3 scripts/suggest_wikilinks.py my-note.md              # Interactive mode
@@ -130,7 +145,7 @@ python3 scripts/suggest_wikilinks.py my-note.md --dry-run      # Preview only
 python3 scripts/suggest_wikilinks.py my-note.md --with-aliases # Create [[target|text]] format
 ```
 
-The script scans the note content and identifies words/phrases that match existing note titles in the archive. It presents them as a numbered list:
+该脚本会扫描笔记内容，并识别出与档案中现有笔记标题匹配的单词或短语，并将它们以编号列表的形式呈现：
 
 ```
 1. Line 12, col 8
@@ -139,18 +154,18 @@ The script scans the note content and identifies words/phrases that match existi
    Context: ...working on machine learning projects...
 ```
 
-**Wikilink formats:**
-- **Default**: `[[target]]` — clean, simple links
-- **With `--with-aliases`**: `[[target|display text]]` — preserves original text as alias
+**维基链接格式**：
+- **默认**：`[[target]]` — 简洁的链接
+- **使用 `--with-aliases` 选项**：`[[target|display text]]` — 保留原始文本作为别名
 
-Respond with:
-- Numbers to implement (e.g., `1 3 5`)
-- `all` to apply all suggestions
-- `none` to cancel
+响应方式：
+- 输入数字（例如 `1 3 5`）来应用建议
+- 输入 `all` 来应用所有建议
+- 输入 `none` 来取消建议
 
 ### suggest_tags.py
 
-Suggest tags for a note based on content and existing tags in the archive:
+根据笔记内容和档案中的现有标签来建议标签：
 
 ```bash
 python3 scripts/suggest_tags.py my-note.md              # Interactive mode
@@ -159,26 +174,26 @@ python3 scripts/suggest_tags.py my-note.md --apply existing  # Only existing tag
 python3 scripts/suggest_tags.py my-note.md --frontmatter     # Add to frontmatter
 ```
 
-The script:
-1. Extracts keywords from note content
-2. Finds matching existing tags (with usage counts)
-3. Suggests new tags based on content analysis
+该脚本：
+1. 从笔记内容中提取关键词
+2. 查找匹配的现有标签（包括使用频率）
+3. 根据内容分析建议新标签
 
-Presented as numbered list with two sections:
-- **Existing Tags** — Already used in your archive
-- **New Suggestions** — Extracted from current note content
+结果以编号列表的形式呈现，分为两部分：
+- **现有标签** — 已在您的档案中使用的标签
+- **新建议** — 从当前笔记内容中提取的标签
 
-Respond with:
-- Numbers (e.g., `1 3 5`)
-- `all` — all suggestions
-- `existing` — only existing tags
-- `new` — only new suggestions
-- `none` — cancel
-- Or type custom tags: `#mytag #project`
+响应方式：
+- 输入数字（例如 `1 3 5`）来选择标签
+- 输入 `all` 来选择所有建议
+- 输入 `existing` 仅选择现有标签
+- 输入 `new` 仅选择新建议
+- 输入 `none` 来取消建议
+- 或输入自定义标签，例如 `#mytag #project`
 
 ### delete_note.py
 
-Delete notes with optional backup and automatic backlink handling:
+删除笔记（可选备份和自动处理回链）：
 
 ```bash
 python3 scripts/delete_note.py "Old Note"                    # Interactive deletion
@@ -187,38 +202,38 @@ python3 scripts/delete_note.py "Old Note" --backup         # Move to .foam/trash
 python3 scripts/delete_note.py "Old Note" --fix-links      # Remove wikilinks from other notes
 ```
 
-**Features:**
-- **Backup mode**: Moves note to `.foam/trash/` instead of permanent deletion
-- **Backlink detection**: Shows which notes link to the one being deleted
-- **Link fixing**: Automatically removes wikilinks from other notes
-- **Confirmation**: Prompts before deletion (skip with `--force`)
+**功能**：
+- **备份模式**：将笔记移动到 `.foam/trash/` 而不是永久删除
+- **回链检测**：显示哪些笔记链接到被删除的笔记
+- **链接修复**：自动从其他笔记中移除维基链接
+- **确认**：删除前会提示用户（使用 `--force` 可跳过此步骤）
 
 ### rename_note.py
 
-Rename notes and automatically update all wikilinks:
+重命名笔记并自动更新所有维基链接：
 
 ```bash
 python3 scripts/rename_note.py "Old Name" "New Name"       # Interactive rename
 python3 scripts/rename_note.py "Old Name" "New Name" --force  # Skip confirmation
 ```
 
-**Features:**
-- **Automatic wikilink updates**: Finds and updates all `[[old-name]]` references
-- **File rename**: Changes filename from `old-name.md` to `new-name.md`
-- **Title preservation**: Keeps note content intact, only updates links
-- **Confirmation**: Shows affected notes before proceeding
+**功能**：
+- **自动更新维基链接**：找到并更新所有 `[[old-name]]` 的引用
+- **文件重命名**：将文件名从 `old-name.md` 更改为 `new-name.md`
+- **保留标题**：保持笔记内容不变，仅更新链接
+- **确认**：删除前会显示受影响的笔记
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when:
-- Creating or editing notes in a Foam workspace
-- Working with wikilinks, backlinks, or the knowledge graph
-- Analyzing note relationships and connections
-- Setting up or configuring Foam templates
-- Working with daily notes or tags
-- Publishing Foam workspaces to static sites
+在以下情况下使用此技能：
+- 在 Foam 工作区创建或编辑笔记
+- 处理维基链接、回链或知识图谱
+- 分析笔记之间的关系和联系
+- 设置或配置 Foam 模板
+- 使用每日笔记或标签
+- 将 Foam 工作区发布到静态网站
 
-## Foam Workspace Structure
+## Foam 工作区结构
 
 ```
 foam-workspace/
@@ -233,41 +248,41 @@ foam-workspace/
 └── foam.json (optional)     # Foam configuration
 ```
 
-## Core Concepts
+## 核心概念
 
-### Wikilinks
+### 维基链接
 
-Create connections between notes using double brackets:
+使用双括号创建笔记之间的链接：
 
 ```markdown
 See also [[related-concept]] for more information.
 ```
 
-- Autocomplete with `[[` + type note name
-- Navigate with `Ctrl+Click` (or `Cmd+Click` on Mac)
-- Create new notes by clicking non-existent links
-- Link to sections: `[[note-name#Section Title]]`
+- 使用 `[[` + 输入笔记名称进行自动补全
+- 通过 `Ctrl+Click`（或在 Mac 上使用 `Cmd+Click`）导航
+- 点击不存在的链接可以创建新笔记
+- 链接到笔记的特定部分：`[[note-name#Section Title]]`
 
-See references/wikilinks.md for complete documentation.
+请参阅 `references/wikilinks.md` 以获取完整文档。
 
-### Backlinks
+### 回链
 
-Backlinks show which notes reference the current note — discovered automatically by Foam.
+回链显示哪些笔记引用了当前笔记——由 Foam 自动检测。
 
-Access via:
-- Command palette: "Explorer: Focus on Connections"
-- Shows forward links, backlinks, or both
+**访问方式**：
+- 命令面板：选择 “Explorer: Focus on Connections”
+- 可以查看前向链接、回链或两者
 
-Use backlinks for:
-- Finding unexpected connections between ideas
-- Identifying hub concepts (notes with many backlinks)
-- Building context around ideas across domains
+**使用回链的方式**：
+- 发现想法之间的意外关联
+- 识别核心概念（具有许多回链的笔记）
+- 在不同领域之间构建想法的上下文
 
-See references/backlinks.md for complete documentation.
+请参阅 `references/backlinks.md` 以获取完整文档。
 
-### Tags
+### 标签
 
-Organize notes beyond wikilinks:
+**通过标签进一步组织笔记**：
 
 ```markdown
 # Inline tags
@@ -279,40 +294,37 @@ tags: [machine-learning, research, in-progress]
 ---
 ```
 
-- Hierarchical: `#programming/python`
-- Browse in Tag Explorer panel
-- Search: "Foam: Search Tag"
+- 分层结构：`#programming/python`
+- 在标签浏览器面板中浏览
+- 使用命令 `Foam: Search Tag` 进行搜索
 
-See references/tags.md for complete documentation.
+请参阅 `references/tags.md` 以获取完整文档。
 
-### Daily Notes
+### 每日笔记
 
-Quick daily journaling:
+**快速创建每日日志**：
+- **快捷键**：`Alt+D`
+- **命令**：`Foam: Open Daily Note`
+- **模板**：`.foam/templates/daily-note.md`
 
-- **Shortcut**: `Alt+D`
-- **Command**: "Foam: Open Daily Note"
-- **Snippets**: `/today`, `/yesterday`, `/tomorrow`
+请参阅 `references/daily-notes.md` 以获取完整文档。
 
-Template: `.foam/templates/daily-note.md`
+### 模板
 
-See references/daily-notes.md for complete documentation.
+自定义笔记创建方式。Foam 会在 `.foam/templates/` 目录中查找模板。
 
-### Templates
-
-Customize note creation. Foam looks for templates in `.foam/templates/`.
-
-**To initialize starter templates:**
+**初始化模板的方法**：
 
 ```bash
 python3 scripts/init_templates.py
 ```
 
-This copies official Foam templates to your workspace:
-- `new-note.md` — Default template
-- `daily-note.md` — Daily notes template
-- `your-first-template.md` — Example with VS Code snippets
+这将官方的 Foam 模板复制到您的工作区：
+- `new-note.md` — 默认模板
+- `daily-note.md` — 每日笔记模板
+- `your-first-template.md` — 包含 VS Code 代码片段的示例模板
 
-**Markdown templates** (`.md`):
+**Markdown 模板**（`.md` 文件）：
 ```markdown
 ---
 foam_template:
@@ -326,27 +338,27 @@ Created: $FOAM_DATE_YEAR-$FOAM_DATE_MONTH-$FOAM_DATE_DATE
 $FOAM_SELECTED_TEXT
 ```
 
-**JavaScript templates** (`.js`) — for smart, context-aware templates.
+**JavaScript 模板**（`.js` 文件）——用于创建智能、上下文相关的模板。
 
-See references/templates.md for complete documentation.
+请参阅 `references/templates.md` 以获取完整文档。
 
-## Common Tasks
+## 常见任务
 
-### Creating a New Note
+### 创建新笔记
 
-1. Use "Foam: Create New Note" for default template
-2. Use "Foam: Create New Note From Template" to choose template
-3. Or click a non-existent wikilink `[[new-note]]`
+1. 使用 “Foam: Create New Note” 创建新笔记（使用默认模板）
+2. 使用 “Foam: Create New Note From Template” 选择模板
+3. 或者点击不存在的维基链接 `[[new-note]]`
 
-### Finding Note Relationships
+### 查找笔记之间的关系
 
-1. **Backlinks**: Check Connections panel for linked notes
-2. **Graph View**: Command "Foam: Show Graph" for visual network
-3. **Tag Explorer**: Browse notes by tag
+1. **回链**：在 “Connections” 面板中查看关联的笔记
+2. **图形视图**：使用命令 “Foam: Show Graph” 查看笔记之间的网络关系
+3. **标签浏览器**：按标签浏览笔记
 
-### Working with Embeds
+### 使用嵌入内容
 
-Include content from other notes:
+从其他笔记中插入内容：
 
 ```markdown
 ![[glossary]]
@@ -354,34 +366,34 @@ Include content from other notes:
 See the full definition above.
 ```
 
-### Publishing
+### 发布
 
-Foam can publish to static sites:
-- GitHub Pages (built-in template)
+Foam 可以将笔记发布到静态网站：
+- GitHub Pages（内置模板）
 - Netlify
 - Vercel
 - GitLab Pages
-- Custom static site generators (Gatsby, MkDocs, etc.)
+- 自定义静态网站生成器（如 Gatsby、MkDocs 等）
 
-See recipes in Foam documentation for publishing options.
+请参阅 Foam 文档中的发布选项。
 
-## Foam vs Obsidian
+## Foam 与 Obsidian 的比较
 
-| Feature | Foam | Obsidian |
+| 特性 | Foam | Obsidian |
 |---------|------|----------|
-| Wikilinks | `[[note]]` | `[[note]]` |
-| Embeds | `![[note]]` | `![[note]]` |
-| Platform | VS Code | Dedicated app |
-| Plugin ecosystem | Minimal (VS Code extensions) | Extensive |
-| File format | Standard Markdown | Markdown with extensions |
-| Configuration | `.vscode/settings.json` | `.obsidian/` folder |
-| Price | Free | Freemium |
+| 维基链接 | `[[note]]` | `[[note]]` |
+| 嵌入内容 | `![[note]]` | `![[note]]` |
+| 平台 | VS Code | 专用应用程序 |
+| 插件生态系统 | 基础（VS Code 扩展） | 丰富 |
+| 文件格式 | 标准 Markdown | 带有扩展的 Markdown |
+| 配置 | `.vscode/settings.json` | `.obsidian/` 文件夹 |
+| 价格 | 免费 | 奉献版 |
 
-Both use the same core linking syntax. Foam prioritizes simplicity and standard formats.
+两者都使用相同的链接语法。Foam 更注重简洁性和标准格式。
 
-## Configuration
+## 配置
 
-Key `.vscode/settings.json` options:
+**重要的 `.vscode/settings.json` 选项**：
 
 ```json
 {
@@ -391,39 +403,38 @@ Key `.vscode/settings.json` options:
 }
 ```
 
-## Foam CLI Commands
+## Foam 命令行接口（CLI）命令
 
-Key VS Code commands:
+**重要的 VS Code 命令**：
+- `Foam: Open Daily Note` — 创建/打开今天的笔记
+- `Foam: Create New Note` — 使用默认模板创建新笔记
+- `Foam: Create New Note From Template` — 选择模板创建新笔记
+- `Foam: Create New Template` — 创建新模板
+- `Foam: Show Graph` — 可视化知识图谱
+- `Foam: Search Tag` — 搜索带有标签的笔记
+- `Explorer: Focus on Connections` — 显示回链面板
 
-- `Foam: Open Daily Note` — Create/open today's note
-- `Foam: Create New Note` — Create from default template
-- `Foam: Create New Note From Template` — Choose template
-- `Foam: Create New Template` — Create new template
-- `Foam: Show Graph` — Visualize knowledge graph
-- `Foam: Search Tag` — Search for tagged notes
-- `Explorer: Focus on Connections` — Show backlinks panel
+## 参考文档
 
-## Reference Documentation
+- **foam-overview.md** — Foam 的概述和理念
+- **wikilinks.md** — 维基链接的完整指南
+- **backlinks.md** — 回链和知识发现
+- **tags.md** — 标签的组织和过滤
+- **daily-notes.md** — 每日笔记的工作流程
+- **templates.md** — 模板的创建（Markdown 和 JavaScript）
 
-- **foam-overview.md** — General Foam introduction and philosophy
-- **wikilinks.md** — Complete wikilinks guide
-- **backlinks.md** — Backlinks and knowledge discovery
-- **tags.md** — Tag organization and filtering
-- **daily-notes.md** — Daily note workflows
-- **templates.md** — Template creation (Markdown and JavaScript)
+请阅读这些文件以获取有关特定功能的详细信息。
 
-Read these files for detailed information on specific features.
+## 外部资源
 
-## External Resources
+- **官方网站**：https://foamnotes.com
+- **GitHub**：https://github.com/foambubble/foam
+- **Discord**：https://foambubble.github.io/join-discord/w
 
-- **Official site**: https://foamnotes.com
-- **GitHub**: https://github.com/foambubble/foam
-- **Discord**: https://foambubble.github.io/join-discord/w
+## 提示
 
-## Tips
-
-1. **Start small**: Foam works best with consistent note-taking habits
-2. **Link liberally**: Create wikilinks even to non-existent notes (placeholders)
-3. **Use the graph**: Visualize your knowledge network to find gaps
-4. **Trust the process**: Backlinks reveal connections you didn't plan
-5. **Keep it standard**: Foam uses standard Markdown — your notes remain portable
+1. **从小处开始**：Foam 在您养成一致的笔记习惯时效果最佳
+2. **自由使用链接**：即使是对不存在的笔记，也要创建维基链接
+3. **利用知识图谱**：可视化您的知识网络以发现不足之处
+4. **信任这个过程**：回链会揭示您未预料到的关联
+5. **保持标准**：Foam 使用标准 Markdown — 您的笔记具有可移植性

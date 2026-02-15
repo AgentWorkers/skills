@@ -7,22 +7,22 @@ description: |
   Requires DEX_API_KEY environment variable.
 ---
 
-# Dex Personal CRM
+# Dex 个人 CRM
 
-Manage your Dex CRM directly from Clawdbot. Search contacts, add notes, manage reminders.
+您可以直接通过 Clawdbot 管理您的 Dex CRM 系统，执行诸如搜索联系人、添加备注、管理提醒等操作。
 
-## Authentication
+## 认证
 
-Set `DEX_API_KEY` in gateway config env vars.
+请在网关配置的环境变量中设置 `DEX_API_KEY`。
 
-## API Base
+## API 基础信息
 
-- **Base URL:** `https://api.getdex.com/api/rest`
-- **Headers:** `Content-Type: application/json` and `x-hasura-dex-api-key: $DEX_API_KEY`
+- **基础 URL：** `https://api.getdex.com/api/rest`
+- **请求头：** `Content-Type: application/json` 以及 `x-hasura-dex-api-key: $DEX_API_KEY`
 
-## Quick Reference
+## 快速参考
 
-### Contacts
+### 联系人
 
 ```bash
 # List contacts (paginated)
@@ -58,7 +58,7 @@ curl -s -X DELETE -H "Content-Type: application/json" \
   "https://api.getdex.com/api/rest/contacts/{contactId}"
 ```
 
-### Notes (Timeline Items)
+### 备注（时间线项目）
 
 ```bash
 # List notes
@@ -89,7 +89,7 @@ curl -s -X DELETE -H "Content-Type: application/json" \
   "https://api.getdex.com/api/rest/timeline_items/{noteId}"
 ```
 
-### Reminders
+### 提醒
 
 ```bash
 # List reminders
@@ -115,23 +115,36 @@ curl -s -X DELETE -H "Content-Type: application/json" \
   "https://api.getdex.com/api/rest/reminders/{reminderId}"
 ```
 
-## Contact Fields
+## 联系人字段
 
-- `first_name`, `last_name`, `job_title`, `description`
-- `emails` (array of `{email}`)
-- `phones` (array of `{phone_number}`)
-- `education`, `website`, `linkedin`, `facebook`, `twitter`, `instagram`, `telegram`
-- `birthday`, `image_url`
-- `last_seen_at`, `next_reminder_at`
-- `is_archived`, `created_at`, `updated_at`
+- `first_name`（名字）
+- `last_name`（姓氏）
+- `job_title`（职位）
+- `description`（备注）
+- `emails`（`{email}` 类型的数组）
+- `phones`（`{phone_number}` 类型的数组）
+- `education`（教育背景）
+- `website`（网站）
+- `linkedin`（领英链接）
+- `facebook`（Facebook 账号）
+- `twitter`（Twitter 账号）
+- `instagram`（Instagram 账号）
+- `telegram`（Telegram 账号）
+- `birthday`（生日）
+- `image_url`（头像链接）
+- `last_seen_at`（最后查看时间）
+- `next_reminder_at`（下一个提醒时间）
+- `is_archived`（是否已归档）
+- `created_at`（创建时间）
+- `updated_at`（更新时间）
 
-## Searching Contacts
+## 搜索联系人
 
-The API only supports search by email. For name-based search, fetch contacts in batches and filter locally. Use a reasonable limit (50-100) for browsing.
+该 API 仅支持通过电子邮件进行搜索。如需通过姓名搜索联系人，请分批次获取结果并在本地进行过滤。建议设置合理的搜索数量限制（50-100条）以便于浏览。
 
-## Notes
+## 备注
 
-- Always confirm before creating, updating, or deleting contacts/notes/reminders
-- Contact search by name requires local filtering (API only supports email search)
-- Use pagination (limit/offset) for large result sets
-- The `event_time` field on notes is when the interaction happened, not when the note was created
+- 在创建、更新或删除联系人/备注/提醒之前，请务必先进行确认。
+- 通过姓名搜索联系人时需要在本地进行过滤（API 仅支持电子邮件搜索）。
+- 对于大量结果，建议使用分页功能（通过 `limit` 和 `offset` 参数进行分页显示）。
+- 备注中的 `event_time` 字段表示交互发生的时间，而非备注创建的时间。

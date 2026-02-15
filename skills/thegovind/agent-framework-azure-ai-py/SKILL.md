@@ -1,14 +1,14 @@
 ---
 name: agent-framework-azure-ai-py
-description: Build Azure AI Foundry agents using the Microsoft Agent Framework Python SDK (agent-framework-azure-ai). Use when creating persistent agents with AzureAIAgentsProvider, using hosted tools (code interpreter, file search, web search), integrating MCP servers, managing conversation threads, or implementing streaming responses. Covers function tools, structured outputs, and multi-tool agents.
+description: 使用 Microsoft Agent Framework Python SDK（agent-framework-azure-ai）构建 Azure AI Foundry 代理。该 SDK 适用于创建使用 AzureAIAgentsProvider 的持久化代理，这些代理可以执行托管工具（如代码解释器、文件搜索、网络搜索）的功能，集成 MCP 服务器，管理对话线程，以及实现流式响应。文档涵盖了相关功能工具、结构化输出以及多工具代理的实现方法。
 package: agent-framework-azure-ai
 ---
 
-# Agent Framework Azure Hosted Agents
+# Azure 托管代理（Agent Framework）
 
-Build persistent agents on Azure AI Foundry using the Microsoft Agent Framework Python SDK.
+使用 Microsoft Agent Framework Python SDK 在 Azure AI Foundry 上构建持久化代理。
 
-## Architecture
+## 架构
 
 ```
 User Query → AzureAIAgentsProvider → Azure AI Agent Service (Persistent)
@@ -20,7 +20,7 @@ User Query → AzureAIAgentsProvider → Azure AI Agent Service (Persistent)
               AgentThread (conversation persistence)
 ```
 
-## Installation
+## 安装
 
 ```bash
 # Full framework (recommended)
@@ -30,7 +30,7 @@ pip install agent-framework --pre
 pip install agent-framework-azure-ai --pre
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 export AZURE_AI_PROJECT_ENDPOINT="https://<project>.services.ai.azure.com/api/projects/<project-id>"
@@ -38,7 +38,7 @@ export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-4o-mini"
 export BING_CONNECTION_ID="your-bing-connection-id"  # For web search
 ```
 
-## Authentication
+## 认证
 
 ```python
 from azure.identity.aio import AzureCliCredential, DefaultAzureCredential
@@ -50,9 +50,9 @@ credential = AzureCliCredential()
 credential = DefaultAzureCredential()
 ```
 
-## Core Workflow
+## 核心工作流程
 
-### Basic Agent
+### 基本代理（Basic Agent）
 
 ```python
 import asyncio
@@ -75,7 +75,7 @@ async def main():
 asyncio.run(main())
 ```
 
-### Agent with Function Tools
+### 带有功能工具的代理（Agent with Function Tools）
 
 ```python
 from typing import Annotated
@@ -109,7 +109,7 @@ async def main():
         print(result.text)
 ```
 
-### Agent with Hosted Tools
+### 带有托管工具的代理（Agent with Hosted Tools）
 
 ```python
 from agent_framework import (
@@ -138,7 +138,7 @@ async def main():
         print(result.text)
 ```
 
-### Streaming Responses
+### 流式响应（Streaming Responses）
 
 ```python
 async def main():
@@ -158,7 +158,7 @@ async def main():
         print()
 ```
 
-### Conversation Threads
+### 对话线程（Conversation Threads）
 
 ```python
 from agent_framework.azure import AzureAIAgentsProvider
@@ -190,7 +190,7 @@ async def main():
         print(f"Conversation ID: {thread.conversation_id}")
 ```
 
-### Structured Outputs
+### 结构化输出（Structured Outputs）
 
 ```python
 from pydantic import BaseModel, ConfigDict
@@ -221,25 +221,25 @@ async def main():
         print(f"{weather.location}: {weather.temperature}°{weather.unit}")
 ```
 
-## Provider Methods
+## 提供者方法（Provider Methods）
 
-| Method | Description |
-|--------|-------------|
-| `create_agent()` | Create new agent on Azure AI service |
-| `get_agent(agent_id)` | Retrieve existing agent by ID |
-| `as_agent(sdk_agent)` | Wrap SDK Agent object (no HTTP call) |
+| 方法                | 描述                                      |
+|-------------------|-------------------------------------------|
+| `create_agent()`       | 在 Azure AI 服务上创建新代理                   |
+| `get_agent(agent_id)`     | 通过 ID 获取现有代理                         |
+| `as_agent(sdk_agent)`     | 将 SDK 代理对象封装（无需 HTTP 调用）                   |
 
-## Hosted Tools Quick Reference
+## 托管工具快速参考（Hosted Tools Quick Reference）
 
-| Tool | Import | Purpose |
-|------|--------|---------|
-| `HostedCodeInterpreterTool` | `from agent_framework import HostedCodeInterpreterTool` | Execute Python code |
-| `HostedFileSearchTool` | `from agent_framework import HostedFileSearchTool` | Search vector stores |
-| `HostedWebSearchTool` | `from agent_framework import HostedWebSearchTool` | Bing web search |
-| `HostedMCPTool` | `from agent_framework import HostedMCPTool` | Service-managed MCP |
-| `MCPStreamableHTTPTool` | `from agent_framework import MCPStreamableHTTPTool` | Client-managed MCP |
+| 工具                | 导入方式                                      | 用途                                      |
+|-------------------|-------------------------------------------|-------------------------------------------|
+| `HostedCodeInterpreterTool` | `from agent_framework import HostedCodeInterpreterTool` | 执行 Python 代码                         |
+| `HostedFileSearchTool` | `from agent_framework import HostedFileSearchTool` | 搜索向量存储                         |
+| `HostedWebSearchTool` | `from agent_framework import HostedWebSearchTool` | 使用 Bing 进行网页搜索                         |
+| `HostedMCPTool` | `from agent_framework import HostedMCPTool` | 由服务管理的 MCP 工具                         |
+| `MCPStreamableHTTPTool` | `from agent_framework import MCPStreamableHTTPTool` | 由客户端管理的 MCP 工具                         |
 
-## Complete Example
+## 完整示例（Complete Example）
 
 ```python
 import asyncio
@@ -317,17 +317,17 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Conventions
+## 规范（Conventions）
 
-- Always use async context managers: `async with provider:`
-- Pass functions directly to `tools=` parameter (auto-converted to AIFunction)
-- Use `Annotated[type, Field(description=...)]` for function parameters
-- Use `get_new_thread()` for multi-turn conversations
-- Prefer `HostedMCPTool` for service-managed MCP, `MCPStreamableHTTPTool` for client-managed
+- 始终使用异步上下文管理器：`async with provider:`  
+- 直接将函数传递给 `tools=` 参数（会自动转换为 AIFunction 类型）  
+- 使用 `Annotated[type, Field(description=...)]` 标记函数参数  
+- 使用 `get_new_thread()` 进行多轮对话管理  
+- 对于服务管理的 MCP，优先使用 `HostedMCPTool`；对于客户端管理的 MCP，优先使用 `MCPStreamableHTTPTool`  
 
-## Reference Files
+## 参考文件（Reference Files）
 
-- [references/tools.md](references/tools.md): Detailed hosted tool patterns
-- [references/mcp.md](references/mcp.md): MCP integration (hosted + local)
-- [references/threads.md](references/threads.md): Thread and conversation management
-- [references/advanced.md](references/advanced.md): OpenAPI, citations, structured outputs
+- [references/tools.md](references/tools.md)：托管工具的详细使用模式  
+- [references/mcp.md](references/mcp.md)：MCP 集成（托管 + 本地）  
+- [references/threads.md](references/threads.md)：线程与对话管理  
+- [references/advanced.md](references/advanced.md)：OpenAPI、引用格式、结构化输出

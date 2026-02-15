@@ -1,40 +1,40 @@
 ---
 name: imsg-autoresponder
-description: Monitor iMessage/SMS conversations and auto-respond based on configurable rules, AI prompts, and rate-limiting conditions. Use when you need to automatically reply to specific contacts with AI-generated responses based on conversation context. Also use when the user asks to manage auto-responder settings, contacts, prompts, or view status/history.
+description: 监控 iMessage/SMS 对话，并根据可配置的规则、AI 提示以及速率限制条件自动回复。当您需要根据对话上下文为特定联系人自动生成回复时，可以使用该功能。同时，当用户请求管理自动回复设置、联系人信息、提示内容或查看对话状态/历史记录时，该功能也同样适用。
 ---
 
-# iMessage Auto-Responder
+# iMessage 自动回复器
 
-Automatically respond to iMessages/SMS from specific contacts using AI-generated replies that match your voice and conversation context.
+使用 AI 生成的回复自动响应来自特定联系人的 iMessage/SMS 消息，这些回复会匹配你的语音和对话上下文。
 
-## ⚠️ Requirements Checklist
+## ⚠️ 需求清单
 
-Before using this skill, ensure you have:
+在使用此功能之前，请确保你已满足以下条件：
 
-- [ ] **macOS** with Messages.app signed in to iMessage
-- [ ] **imsg CLI** installed: `brew install steipete/tap/imsg`
-- [ ] **OpenAI API key** configured in Clawdbot config
-- [ ] **Full Disk Access** granted to Terminal/iTerm
-- [ ] **Messages automation permission** (macOS will prompt on first use)
+- [ ] 安装了 macOS 并登录了 Messages.app 以使用 iMessage
+- [ ] 安装了 `imsg CLI`：`brew install steipete/tap/imsg`
+- [ ] 在 Clawdbot 配置文件中配置了 OpenAI API 密钥
+- [ ] 给 Terminal/iTerm 授予了“全盘访问”权限
+- [ ] 已获得 Messages 的自动化操作权限（macOS 在首次使用时会提示）
 
-## Features
+## 特点
 
-- 🤖 **AI-powered responses** using OpenAI GPT-4
-- 📱 **Contact-based prompts** - different AI personality per contact
-- ⏱️ **Rate limiting** - configurable delays between auto-responses
-- 💬 **Context-aware** - AI sees recent conversation history
-- 📊 **Telegram management** - slash commands + natural language
-- 🔄 **Background monitoring** - continuous polling for new messages
-- 🔧 **Auto-cleanup** - clears stale locks on restart (prevents stuck contacts)
-- 🧪 **Test mode** - generate real AI responses without sending
-- ⏰ **Time windows** - only respond during specific hours (e.g., 9 AM - 10 PM)
-- 🔑 **Keyword triggers** - only respond if message contains specific keywords (e.g., "urgent", "help")
-- 📊 **Statistics tracking** - track total responses, daily counts, and averages per contact
-- 🚦 **Daily cap** - limit max replies per day per contact (safety feature)
+- 🤖 **基于 AI 的回复**：使用 OpenAI GPT-4
+- 📱 **联系人自定义提示**：每个联系人都有不同的 AI 语音风格
+- ⏱️ **速率限制**：可配置自动回复之间的延迟时间
+- 💬 **上下文感知**：AI 会参考最近的对话记录
+- 📊 **Telegram 管理**：支持使用斜杠命令或自然语言进行操作
+- 🔄 **后台监控**：持续检查新消息
+- 🔧 **自动清理**：重启时清除旧的未回复消息（防止某些联系人被长时间占用）
+- 🧪 **测试模式**：生成 AI 回复但不实际发送
+- ⏰ **时间窗口**：仅在工作时间（例如上午 9 点至晚上 10 点）响应
+- 🔑 **关键词触发**：仅当消息包含特定关键词（如“urgent”或“help”）时才响应
+- 📊 **统计跟踪**：记录总回复次数、每日回复数量及每个联系人的平均回复数
+- 🚦 **每日上限**：限制每个联系人每天的最大回复次数（安全功能）
 
-## Quick Start
+## 快速入门
 
-### 1. Add contacts to watch list
+### 1. 将联系人添加到监控列表
 
 ```bash
 cd ~/clawd/imsg-autoresponder/scripts
@@ -42,15 +42,15 @@ node manage.js add "+15551234567" "Reply with a middle finger emoji" "Best Frien
 node manage.js add "+15559876543" "You are my helpful assistant. Reply warmly and briefly, as if I'm responding myself. Keep it under 160 characters." "Mom"
 ```
 
-### 2. Start the watcher
+### 2. 启动自动回复器
 
 ```bash
 node watcher.js
 ```
 
-The watcher runs in the foreground and logs to `~/clawd/logs/imsg-autoresponder.log`.
+自动回复器会在前台运行，并将日志记录到 `~/clawd/logs/imsg-autoresponder.log` 文件中。
 
-### 3. Run in background (recommended)
+### 3. 推荐：在后台运行
 
 ```bash
 # Start in background
@@ -62,9 +62,9 @@ node ~/clawd/imsg-autoresponder/scripts/watcher.js
 # Ctrl+A, D to detach
 ```
 
-## Configuration
+## 配置
 
-Config file: `~/clawd/imsg-autoresponder.json`
+配置文件：`~/clawd/imsg-autoresponder.json`
 
 ```json
 {
@@ -82,13 +82,13 @@ Config file: `~/clawd/imsg-autoresponder.json`
 }
 ```
 
-## Management via Telegram (Recommended)
+## 通过 Telegram 进行管理（推荐）
 
-The auto-responder can be managed directly through Telegram using **slash commands** or **natural language**.
+你可以直接通过 Telegram 使用斜杠命令或自然语言来管理自动回复器。
 
-### Slash Commands
+### 斜杠命令
 
-Both space and underscore formats are supported:
+支持空格和下划线两种格式：
 
 ```
 /autorespond list              OR  /autorespond_list
@@ -121,7 +121,7 @@ Statistics & Limits:
 /autorespond set-daily-cap     OR  /autorespond_set_daily_cap <number> <max>
 ```
 
-**Examples:**
+**示例：**
 ```
 /autorespond_list
 /autorespond_status
@@ -141,20 +141,20 @@ Statistics & Limits:
 /autorespond_restart
 ```
 
-### Natural Language
+### 自然语言命令
 
-You can also just ask naturally:
+你也可以这样自然地提问：
 
-- "Show me the auto-responder status"
-- "Add +15551234567 to the watch list with prompt: be sarcastic"
-- "Change Scott's prompt to be nicer"
-- "Disable auto-replies for Mom"
-- "What has the auto-responder sent to Foxy recently?"
-- "Restart the auto-responder"
+- “显示自动回复器的状态”
+- “将 +15551234567 添加到监控列表，并设置提示为‘讽刺’”
+- “将 Scott 的提示改为更友好的语气”
+- “禁用对 Mom 的自动回复”
+- “自动回复器最近给 Foxy 发送了什么？”
+- “重启自动回复器”
 
-The agent will understand and execute the command using the `telegram-handler.js` script.
+代理会通过 `telegram-handler.js` 脚本理解并执行你的命令。
 
-## Command-Line Management (Advanced)
+## 命令行管理（高级用法）
 
 ```bash
 cd ~/clawd/imsg-autoresponder/scripts
@@ -179,19 +179,19 @@ node manage.js set-delay "+15551234567" 30
 node manage.js toggle
 ```
 
-## How It Works
+## 工作原理
 
-1. **Watcher** monitors all incoming messages via `imsg watch`
-2. **Checks watch list** to see if sender is configured for auto-response
-3. **Rate limiting** ensures we don't spam (configurable minutes between replies)
-4. **Fetches message history** for the conversation (last 20 messages)
-5. **Generates AI response** using Clawdbot + the contact's configured prompt
-6. **Sends reply** via `imsg send`
-7. **Logs everything** to `~/clawd/logs/imsg-autoresponder.log`
+1. **自动回复器** 通过 `imsg watch` 监控所有收到的消息
+2. **检查监控列表**，判断发件人是否被设置为自动回复
+3. **实施速率限制**，防止发送过多消息（可配置回复间隔时间）
+4. **获取对话记录**（最近 20 条消息）
+5. **使用 Clawdbot 和联系人的自定义提示生成 AI 回复**
+6. **通过 `imsg send` 发送回复**
+7. **将所有操作记录**到 `~/clawd/logs/imsg-autoresponder.log` 文件中
 
-## State Tracking
+## 状态跟踪
 
-Response times are tracked in `~/clawd/data/imsg-autoresponder-state.json`:
+回复时间记录在 `~/clawd/data/imsg-autoresponder-state.json` 文件中：
 
 ```json
 {
@@ -201,13 +201,13 @@ Response times are tracked in `~/clawd/data/imsg-autoresponder-state.json`:
 }
 ```
 
-This ensures rate limiting works correctly across restarts.
+这确保了重启后速率限制功能仍能正常工作。
 
-## Prompts
+## 提示设置
 
-Prompts define how the AI should respond to each contact. Be specific!
+提示决定了 AI 对每个联系人的回复方式。请设置具体内容！
 
-**Examples:**
+**示例：**
 
 ```
 "Reply with a middle finger emoji"
@@ -219,119 +219,120 @@ Prompts define how the AI should respond to each contact. Be specific!
 "Politely decline any requests and say I'm busy. Be brief but friendly."
 ```
 
-The AI will see:
-- The contact's custom prompt
-- Recent message history (last 5 messages)
-- The latest incoming message
+AI 会参考以下信息：
+- 联人的自定义提示
+- 最近的对话记录（最近 5 条消息）
+- 最新的接收消息
 
-## Requirements
+## 需求条件
 
-- macOS with Messages.app signed in
-- `imsg` CLI installed (`brew install steipete/tap/imsg`)
-- Full Disk Access for Terminal
-- Clawdbot installed and configured
-- Anthropic API key (configured in `~/.clawdbot/clawdbot.json` or `ANTHROPIC_API_KEY` env var)
-- `curl` (pre-installed on macOS)
+- 安装了 macOS 并登录了 Messages.app
+- 安装了 `imsg` CLI（`brew install steipete/tap/imsg`）
+- 给 Terminal 授予了“全盘访问”权限
+- 安装并配置了 Clawdbot
+- 配置了 Anthropic API 密钥（在 `~/.clawdbot/clawdbot.json` 或环境变量 `ANTHROPIC_API_KEY` 中）
+- macOS 上预装了 `curl`
 
-## Safety
+## 安全性
 
-- **Rate limiting** prevents spam (default: 15 minutes between replies per contact)
-- **Manual override** via `enabled: false` in config or `node manage.js disable <number>`
-- **System toggle** to disable all auto-responses: `node manage.js toggle`
-- **Logs** track all activity for review
+- **速率限制**：防止发送过多消息（默认每联系人每 15 分钟回复一次）
+- **手动禁用**：通过配置文件中的 `enabled: false` 或 `node manage.js disable <number>` 实现
+- **系统级禁用**：通过 `node manage.js toggle` 禁用所有自动回复
+- **日志记录**：所有操作都会被记录以便查看
 
-## Troubleshooting
+## 故障排除
 
-**Watcher not responding:**
-- Check `~/clawd/logs/imsg-autoresponder.log` for errors
-- Verify `imsg watch` works manually: `imsg watch --json`
-- Ensure contact is in watch list: `node manage.js list`
+**自动回复器未响应：**
+- 检查 `~/clawd/logs/imsg-autoresponder.log` 文件中的错误信息
+- 手动测试 `imsg watch` 命令是否正常工作：`imsg watch --json`
+- 确认联系人已在监控列表中：`node manage.js list`
 
-**Rate limited too aggressively:**
-- Adjust delay: `node manage.js set-delay "+15551234567" 5`
-- Or edit `defaultMinMinutesBetweenReplies` in config
+**自动回复过于频繁：**
+- 调整回复间隔时间：`node manage.js set-delay "+15551234567" 5`
+- 或修改配置文件中的 `defaultMinMinutesBetweenReplies`
 
-**AI responses are off:**
-- Refine the prompt for that contact
-- Check message history is being captured correctly (see logs)
+**AI 回复未生效：**
+- 优化该联系人的提示设置
+- 确认对话记录是否被正确捕获（查看日志）
 
-## Agent Command Handling
+## 代理命令处理
 
-When the user uses slash commands or natural language about the auto-responder, use the `telegram-handler.js` script.
+当用户使用斜杠命令或自然语言与自动回复器交互时，系统会调用 `telegram-handler.js` 脚本。
 
-### Command Mapping (Both Formats Supported)
+### 命令映射（支持两种格式）
 
-| User Input | Normalize To | Handler Call |
+| 用户输入 | 处理后的输入 | 调用的处理函数 |
 |------------|--------------|--------------|
-| `/autorespond list` or `/autorespond_list` | list | `node telegram-handler.js list` |
-| `/autorespond status` or `/autorespond_status` | status | `node telegram-handler.js status` |
-| `/autorespond add` or `/autorespond_add <args>` | add | `node telegram-handler.js add <number> <name> <prompt>` |
-| `/autorespond remove` or `/autorespond_remove <num>` | remove | `node telegram-handler.js remove <number>` |
-| `/autorespond edit` or `/autorespond_edit <args>` | edit | `node telegram-handler.js edit <number> <prompt>` |
-| `/autorespond delay` or `/autorespond_delay <args>` | delay | `node telegram-handler.js delay <number> <minutes>` |
-| `/autorespond history` or `/autorespond_history <num>` | history | `node telegram-handler.js history <number> [limit]` |
-| `/autorespond test` or `/autorespond_test <num> <msg>` | test | `node telegram-handler.js test <number> <message>` |
-| `/autorespond toggle` or `/autorespond_toggle` | toggle | `node telegram-handler.js toggle` |
-| `/autorespond restart` or `/autorespond_restart` | restart | `node telegram-handler.js restart` |
-| `/autorespond set-all-delays` or `/autorespond_set_all_delays <min>` | set-all-delays | `node telegram-handler.js set-all-delays <minutes>` |
-| `/autorespond enable-all` or `/autorespond_enable_all` | enable-all | `node telegram-handler.js enable-all` |
-| `/autorespond disable-all` or `/autorespond_disable_all` | disable-all | `node telegram-handler.js disable-all` |
-| `/autorespond set-time-window` or `/autorespond_set_time_window <num> <s> <e>` | set-time-window | `node telegram-handler.js set-time-window <number> <start> <end>` |
-| `/autorespond clear-time-windows` or `/autorespond_clear_time_windows <num>` | clear-time-windows | `node telegram-handler.js clear-time-windows <number>` |
-| `/autorespond add-keyword` or `/autorespond_add_keyword <num> <word>` | add-keyword | `node telegram-handler.js add-keyword <number> <keyword>` |
-| `/autorespond remove-keyword` or `/autorespond_remove_keyword <num> <word>` | remove-keyword | `node telegram-handler.js remove-keyword <number> <keyword>` |
-| `/autorespond clear-keywords` or `/autorespond_clear_keywords <num>` | clear-keywords | `node telegram-handler.js clear-keywords <number>` |
-| `/autorespond stats` or `/autorespond_stats [<num>]` | stats | `node telegram-handler.js stats [<number>]` |
-| `/autorespond set-daily-cap` or `/autorespond_set_daily_cap <num> <max>` | set-daily-cap | `node telegram-handler.js set-daily-cap <number> <max>` |
+| `/autorespond list` 或 `/autorespond_list` | `list` | `node telegram-handler.js list` |
+| `/autorespond status` 或 `/autorespond_status` | `status` | `node telegram-handler.js status` |
+| `/autorespond add` 或 `/autorespond_add <args>` | `add` | `node telegram-handler.js add <number> <name> <prompt>` |
+| `/autorespond remove` 或 `/autorespond_remove <num>` | `remove` | `node telegram-handler.js remove <number>` |
+| `/autorespond edit` 或 `/autorespond_edit <args>` | `edit` | `node telegram-handler.js edit <number> <prompt>` |
+| `/autorespond delay` 或 `/autorespond_delay <args>` | `delay` | `node telegram-handler.js delay <number> <minutes>` |
+| `/autorespond history` 或 `/autorespond_history <num>` | `history` | `node telegram-handler.js history <number> [limit]` |
+| `/autorespond test` 或 `/autorespond_test <num> <msg>` | `test` | `node telegram-handler.js test <number> <message>` |
+| `/autorespond toggle` 或 `/autorespond_toggle` | `toggle` | `node telegram-handler.js toggle` |
+| `/autorespond restart` 或 `/autorespond_restart` | `restart` | `node telegram-handler.js restart` |
+| `/autorespond set-all-delays` 或 `/autorespond_set_all_delays <min>` | `set-all-delays` | `node telegram-handler.js set-all-delays <minutes>` |
+| `/autorespond enable-all` 或 `/autorespond_enable_all` | `enable-all` | `node telegram-handler.js enable-all` |
+| `/autorespond disable-all` 或 `/autorespond_disable_all` | `disable-all` | `node telegram-handler.js disable-all` |
+| `/autorespond set-time-window` 或 `/autorespond_set_time_window <num> <s> <e>` | `set-time-window` | `node telegram-handler.js set-time-window <number> <start> <end>` |
+| `/autorespond clear-time-windows` 或 `/autorespond_clear_time_windows <num>` | `clear-time-windows` | `node telegram-handler.js clear-time-windows <number>` |
+| `/autorespond add-keyword` 或 `/autorespond_add_keyword <num> <word>` | `add-keyword` | `node telegram-handler.js add-keyword <number> <keyword>` |
+| `/autorespond remove-keyword` 或 `/autorespond_remove_keyword <num> <word>` | `node telegram-handler.js remove-keyword <number> <keyword>` |
+| `/autorespond clear-keywords` 或 `/autorespond_clear_keywords <num>` | `node telegram-handler.js clear-keywords <number>` |
+| `/autorespond stats` 或 `/autorespond_stats [<num>]` | `node telegram-handler.js stats [<number>]` |
+| `/autorespond set-daily-cap` 或 `/autorespond_set_daily_cap <num> <max>` | `set-daily-cap` | `node telegram-handler.js set-daily-cap <number> <max>` |
 
-**Processing steps:**
-1. Detect `/autorespond` or `/autorespond_` prefix
-2. Extract subcommand (normalize underscores to spaces)
-3. Parse remaining arguments
-4. Call telegram-handler.js with appropriate parameters
+**处理流程：**
+1. 检测以 `/autorespond` 或 `/autorespond_` 开头的命令
+2. 将下划线替换为空格
+3. 解析剩余参数
+4. 调用 `telegram-handler.js` 并传递相应的参数
 
-### Natural Language Pattern Matching
+## 自然语言命令解析
 
-- "show/list/view auto-responder" → `node telegram-handler.js list`
-- "add [contact] to auto-responder" → `node telegram-handler.js add <number> <name> <prompt>`
-- "change/edit/update [contact]'s prompt" → `node telegram-handler.js edit <number> <prompt>`
-- "set delay for [contact]" → `node telegram-handler.js delay <number> <minutes>`
-- "disable/remove [contact] from auto-responder" → `node telegram-handler.js remove <number>`
-- "auto-responder status" → `node telegram-handler.js status`
-- "what has auto-responder sent to [contact]" → `node telegram-handler.js history <number>`
-- "restart auto-responder" → `node telegram-handler.js restart`
-- "enable/disable auto-responder" → `node telegram-handler.js toggle`
+- “show/list/view auto-responder” → `node telegram-handler.js list`
+- “add [contact] to auto-responder” → `node telegram-handler.js add <number> <name> <prompt>`
+- “change/edit/update [contact]'s prompt” → `node telegram-handler.js edit <number> <prompt>`
+- “set delay for [contact]” → `node telegram-handler.js delay <number> <minutes>`
+- “disable/remove [contact] from auto-responder” → `node telegram-handler.js remove <number>`
+- “autorespond status” → `node telegram-handler.js status`
+- “what has auto-responder sent to [contact]” → `node telegram-handler.js history <number>`
+- “restart auto-responder” → `node telegram-handler.js restart`
+- “enable/disable auto-responder” → `node telegram-handler.js toggle`
 
-**Contact resolution:**
-- When user refers to contact names, look up their phone number from the config
-- Always use the full E.164 format (e.g., `+15551234567`)
+**联系人信息处理：**
+- 当用户提到联系人名称时，系统会从配置文件中查找其电话号码
+- 确保使用完整的 E.164 格式（例如 `+15551234567`）
 
-**After config changes:**
-Always remind the user to restart the watcher if the command output mentions it.
+**配置更改后：**
 
-## Troubleshooting
+如果命令输出提示需要重启自动回复器，请务必提醒用户执行重启操作。
 
-### Watcher Not Responding
+## 故障排除
 
-**Check status:**
+### 自动回复器未响应
+
+**检查状态：**
 ```
 /autorespond_status
 ```
 
-**View logs:**
+**查看日志：**
 ```bash
 tail -f ~/clawd/logs/imsg-autoresponder.log
 ```
 
-**Restart:**
+**重启自动回复器：**
 ```
 /autorespond_restart
 ```
 
-### Common Issues
+### 常见问题
 
-**"OPENAI_API_KEY not found"**
-- Add API key to `~/.clawdbot/clawdbot.json`:
+**“OPENAI_API_KEY 未找到”**
+- 将 API 密钥添加到 `~/.clawdbot/clawdbot.json` 文件中：
   ```json
   {
     "skills": {
@@ -341,50 +342,45 @@ tail -f ~/clawd/logs/imsg-autoresponder.log
     }
   }
   ```
-- Restart watcher after adding key
+- 添加密钥后重启自动回复器
 
-**Permission errors**
-- Grant Full Disk Access to Terminal in System Settings
-- Restart Terminal after granting access
-- Verify `imsg chats --json` works manually
+**权限问题**
+- 在系统设置中授予 Terminal “全盘访问”权限
+- 授予权限后重启 Terminal
+- 手动测试 `imsg chats --json` 命令是否正常工作
 
-**Messages not detected**
-- Check Messages.app is signed in
-- Verify contact is in watch list: `/autorespond_list`
-- Ensure watcher is running: `/autorespond_status`
+**消息未被检测到**
+- 确保 Messages.app 已登录
+- 检查联系人是否在监控列表中：`/autorespond_list`
+- 确认自动回复器正在运行：`/autorespond_status`
 
-**Duplicate responses**
-- Fixed in current version via processing locks
-- Restart watcher to apply fix: `/autorespond_restart`
+**重复回复**：
+- 当前版本已修复此问题
+- 重启自动回复器以应用修复：`/autorespond_restart`
 
-### Testing
+### 测试
 
-Generate actual AI responses without sending (preview mode):
-```
-/autorespond_test +15551234567 Hey what's up?
-```
+**预览模式**：生成 AI 回复但不实际发送：
 
-This will:
-- Use the contact's actual prompt
-- Generate a real AI response via OpenAI
-- Show exactly what would be sent
-- **NOT actually send** the message
+- 使用联系人的自定义提示
+- 通过 OpenAI 生成真实的 AI 回复
+- 显示实际会发送的内容
+- **不会实际发送** 消息
 
-Perfect for testing new prompts before going live!
+非常适合在正式启用前测试新的提示内容！
 
-## Privacy & Safety
+## 隐私与安全
 
-⚠️ **Important:** This tool sends messages on your behalf automatically.
+⚠️ **重要提示：** 此工具会自动代表你发送消息。
 
-- Only add contacts who know they're texting an AI or won't mind
-- Review responses regularly via `/autorespond_history`
-- Use rate limiting to avoid spam
-- Be transparent when appropriate
-- Disable instantly if needed: `/autorespond_toggle`
+- 仅添加知道正在与 AI 对话且不介意的联系人
+- 定期查看 `autorespond_history` 中的回复内容
+- 使用速率限制防止发送过多消息
+- 在必要时立即禁用自动回复功能：`/autorespond_toggle`
 
-## Future Enhancements
+## 未来改进计划
 
-- Smart rate limiting based on conversation patterns
-- Group chat support
-- Web dashboard
-- Voice message transcription
+- 根据对话内容智能调整回复频率
+- 支持群组聊天
+- 提供 Web 界面进行管理
+- 支持语音消息的转录功能

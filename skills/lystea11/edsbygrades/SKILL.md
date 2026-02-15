@@ -1,15 +1,27 @@
-# Edsby Student Integration Skill
+# Edsby学生集成技能
 
-Author: Lysandre Stone-Bourgeois
-Version: 1.0.0
-Description: Integrates with Edsby via browser relay to fetch classes/grades/assignments, generate reports/summaries, and sync due dates to Google Calendar. Includes scheduled checks.
-Tools: 
-- edsby_fetch_data: Fetches raw data from Edsby.
-- edsby_generate_report: Creates personalized report.
-- edsby_sync_assignments: Syncs due dates to Google Calendar.
-- edsby_generate_summary_improvements: Bi-weekly grade summary with tips.
-- edsby_daily_check: Daily assignment check and sync.
+作者：Lysandre Stone-Bourgeois  
+版本：1.0.0  
+描述：通过浏览器代理与Edsby集成，用于获取课程信息、成绩数据、作业详情，并将截止日期同步到Google日历中。同时支持定期检查功能。  
 
-Dependencies: playwright, googleapis
-Config: EDSBY_HOST, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_CALENDAR_ID, BROWSER_CONTEXT_PATH
-Security: Uses persistent browser sessions; handle creds securely.
+**使用的工具：**  
+- `edsby_fetch_data`：从Edsby获取原始数据。  
+- `edsby_generate_report`：生成个性化报告。  
+- `edsby_sync_assignments`：将作业截止日期同步到Google日历。  
+- `edsby_generate_summary_improvements`：每两周生成一次包含学习建议的成绩总结。  
+- `edsby_daily_check`：每日检查作业进度并进行同步。  
+
+**依赖库：**  
+- `playwright`  
+- `googleapis`  
+
+**配置参数：**  
+- `EDSBY_HOST`：Edsby服务器地址  
+- `GOOGLE_CLIENT_ID`：Google客户端ID  
+- `GOOGLE_CLIENT_SECRET`：Google客户端密钥  
+- `GOOGLE_REDIRECT_URI`：重定向URL  
+- `GOOGLE_CALENDAR_ID`：Google日历ID  
+- `BROWSER_CONTEXT_PATH`：浏览器上下文路径  
+
+**安全性说明：**  
+该工具使用持久的浏览器会话，并确保用户凭证的安全存储与传输。

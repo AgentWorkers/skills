@@ -1,53 +1,53 @@
 ---
 name: notion
 version: 0.1.0
-description: Integrate with Notion workspaces to read pages, query databases, create entries, and manage content. Perfect for knowledge bases, project tracking, content calendars, CRMs, and collaborative documentation. Works with any Notion page or database you explicitly share with the integration.
+description: **与 Notion 工作区集成**  
+您可以利用该功能读取页面内容、查询数据库、创建新条目以及管理各类内容。这一集成方案非常适合用于构建知识库、项目跟踪系统、内容日程管理工具、客户关系管理系统（CRM）以及协作式文档系统。它支持与任何您明确共享给该集成服务的 Notion 页面或数据库进行交互。
 ---
 
-# Notion Integration
+# Notion 集成
 
-Connect your Notion workspace to OpenClaw for seamless knowledge management and project tracking.
+将您的 Notion 工作区与 OpenClaw 连接起来，实现无缝的知识管理和项目跟踪。
 
-## When to Use This Skill
+## 何时使用此功能
 
-Use Notion when the user wants to:
-- **Add items to a database** (backlog, todos, tracking)
-- **Create new pages** in a database or as children of existing pages  
-- **Query/search** their Notion workspace for information
-- **Update existing pages** (status, notes, properties)
-- **Read page content** or database entries
+当用户需要执行以下操作时，可以使用 Notion：
+- **向数据库中添加项目**（待办事项、任务列表等）
+- **在数据库中创建新页面** 或将新页面设置为现有页面的子页面
+- **查询/搜索** 自己的 Notion 工作区中的信息
+- **更新现有页面**（状态、备注、属性等）
+- **读取页面内容** 或数据库条目
 
-## Setup
+## 设置
 
-### 1. Create Notion Integration
-1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
-2. Click **New integration**
-3. Name it (e.g., "OpenClaw")
-4. Select your workspace
-5. Copy the **Internal Integration Token** (starts with `secret_`)
-6. Save this token securely in OpenClaw config or environment: `NOTION_TOKEN=secret_...`
+### 1. 创建 Notion 集成
+1. 访问 [notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. 点击 **新建集成**
+3. 为其命名（例如：“OpenClaw”）
+4. 选择您的工作区
+5. 复制 **内部集成令牌**（以 `secret_` 开头）
+6. 将此令牌安全地保存在 OpenClaw 的配置文件或环境变量中：`NOTION_TOKEN=secret_...`
 
-### 2. Share Pages with Integration
-**Important:** Notion integrations have NO access by default. You must explicitly share:
+### 2. 通过集成共享页面
+**重要提示：** 默认情况下，Notion 集成没有访问权限。您必须明确共享页面：
+1. 进入 Notion 中的任意页面或数据库
+2. 点击 **共享** → **添加连接**
+3. 选择您的 “OpenClaw” 集成
+4. 之后，该功能就可以读取/写入该特定页面/数据库了
 
-1. Go to any page or database in Notion
-2. Click **Share** → **Add connections**
-3. Select your "OpenClaw" integration
-4. The skill can now read/write to that specific page/database
+### 3. 获取数据库/页面 ID
 
-### 3. Get Database/Page IDs
+**通过 URL 获取：**
+- 数据库：`https://www.notion.so/workspace/XXXXXXXX?v=...` → ID 为 `XXXXXXXX`（32 个字符）
+- 页面：`https://www.notion.so/workspace/XXXXXXXX` → ID 为 `XXXXXXXX`
 
-**From URL:**
-- Database: `https://www.notion.so/workspace/XXXXXXXX?v=...` → ID is `XXXXXXXX` (32 chars)
-- Page: `https://www.notion.so/workspace/XXXXXXXX` → ID is `XXXXXXXX`
+**注意：** 使用 ID 时请删除连字符，仅使用 32 个字符的字符串。
 
-**Note:** Remove hyphens when using IDs. Use the 32-character string.
+## 核心操作
 
-## Core Operations
+### 查询数据库
 
-### Query Database
-
-Retrieve entries from any database you've shared.
+从您共享的任何数据库中检索条目。
 
 ```typescript
 // Using the Notion skill via exec
@@ -61,11 +61,11 @@ await exec({
 });
 ```
 
-**Returns:** Array of pages with properties as configured in your database.
+**返回值：** 包含数据库中配置的属性的页面数组。
 
-### Add Database Entry
+### 添加数据库条目
 
-Create a new row in a database.
+在数据库中创建新行。
 
 ```typescript
 // Add entry with multiple properties
@@ -81,9 +81,9 @@ await exec({
 });
 ```
 
-### Get Page Content
+### 获取页面内容
 
-Read the content of any page (including database entries).
+读取任何页面的内容（包括数据库条目）。
 
 ```typescript
 await exec({
@@ -91,11 +91,11 @@ await exec({
 });
 ```
 
-**Returns:** Page title, properties, and block content (text, headings, lists, etc.).
+**返回值：** 页面标题、属性以及块内容（文本、标题、列表等）。
 
-### Update Page
+### 更新页面
 
-Modify properties or append content to an existing page.
+修改现有页面的属性或添加内容。
 
 ```typescript
 // Update properties
@@ -113,9 +113,9 @@ await exec({
 });
 ```
 
-### Search Notion
+### 在 Notion 中搜索
 
-Find pages across your shared workspace.
+在整个共享的工作区中查找页面。
 
 ```typescript
 await exec({
@@ -123,19 +123,19 @@ await exec({
 });
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Content Pipeline (Content Creator Workflow)
+### 内容处理流程（内容创建者工作流程）
 
-**Database Structure:**
-- Title (title)
-- Status (select: Idea → Draft → Scheduled → Posted)
-- Platform (multi_select: X/Twitter, YouTube, MakerWorld, Blog)
-- Publish Date (date)
-- Tags (multi_select)
-- Draft Content (rich_text)
+**数据库结构：**
+- 标题（title）
+- 状态（可选：想法 → 草稿 → 计划中 → 已发布）
+- 平台（多选：X/Twitter、YouTube、MakerWorld、博客）
+- 发布日期（date）
+- 标签（多选）
+- 草稿内容（rich_text）
 
-**OpenClaw Integration:**
+**OpenClaw 集成：**
 ```typescript
 // Research scout adds findings to Notion
 await exec({
@@ -158,19 +158,19 @@ await exec({
 });
 ```
 
-### Project Management (Solo Entrepreneur)
+### 项目管理（个体创业者）
 
-**Database Structure:**
-- Name (title)
-- Status (select: Not Started → In Progress → Blocked → Done)
-- Priority (select: Low → Medium → High → Critical)
-- Due Date (date)
-- Estimated Hours (number)
-- Actual Hours (number)
-- Links (url)
-- Notes (rich_text)
+**数据库结构：**
+- 名称（title）
+- 状态（可选：未开始 → 进行中 → 已阻止 → 完成）
+- 优先级（可选：低 → 中等 → 高 → 关键）
+- 截止日期（date）
+- 预计耗时（number）
+- 实际耗时（number）
+- 链接（url）
+- 备注（rich_text）
 
-**Weekly Review Integration:**
+**每周回顾集成：**
 ```typescript
 // Query all "In Progress" projects
 await exec({
@@ -178,18 +178,18 @@ await exec({
 });
 ```
 
-### Customer/Quote CRM (3D Printing Business)
+### 客户/报价 CRM（3D 打印业务）
 
-**Database Structure:**
-- Customer Name (title)
-- Status (select: Lead → Quote Sent → Ordered → Printing → Shipped)
-- Email (email)
-- Quote Value (number)
-- Filament Type (select)
-- Due Date (date)
-- Shopify Order ID (rich_text)
+**数据库结构：**
+- 客户名称（title）
+- 状态（可选：潜在客户 → 发送报价 → 下单 → 打印 → 已发货）
+- 电子邮件（email）
+- 报价金额（number）
+- 线材类型（可选）
+- 截止日期（date）
+- Shopify 订单 ID（rich_text）
 
-**Shopify Integration:**
+**Shopify 集成：**
 ```typescript
 // New order → create CRM entry
 await exec({
@@ -203,16 +203,16 @@ await exec({
 });
 ```
 
-### Knowledge Base (Wiki Replacement for MEMORY.md)
+### 知识库（替代 MEMORY.md 的 Wiki）
 
-**Structure:** Hub page with nested pages:
-- 🏠 Home (shared with integration)
-  - SOPs
-  - Troubleshooting
-  - Design Patterns
-  - Resource Links
+**结构：** 包含嵌套页面的 Hub 页面：
+- 🏠 首页（通过集成共享）
+  - 标准操作流程（SOPs）
+  - 故障排除
+  - 设计模式
+  - 资源链接
 
-**Query for quick reference:**
+**快速查询：**
 ```typescript
 // Search for "stringing" to find 3D print troubleshooting
 await exec({
@@ -220,9 +220,9 @@ await exec({
 });
 ```
 
-## Property Types Reference
+## 属性类型参考
 
-When creating/updating database entries, use these property value formats:
+在创建/更新数据库条目时，请使用以下属性值格式：
 
 ```typescript
 // Title (always required for new pages)
@@ -263,73 +263,73 @@ When creating/updating database entries, use these property value formats:
 { "relation": [{ "id": "related-page-id-32chars" }] }
 ```
 
-## Security & Permissions
+## 安全性与权限
 
-**Critical Security Model:**
-- ✅ Integration ONLY sees pages you explicitly share
-- ✅ You control access per page/database
-- ✅ Token stored securely in `~/.openclaw/.env` (never in code)
-- ❌ Never commit `NOTION_TOKEN` to git
-- ❌ Integration cannot access private teamspaces or other users' private pages
+**关键安全模型：**
+- ✅ 集成仅能访问您明确共享的页面
+- ✅ 您可以控制每个页面/数据库的访问权限
+- ✅ 令牌安全存储在 `~/.openclaw/.env` 中（切勿写入代码）
+- ❌ 绝不要将 `NOTION_TOKEN` 提交到 git
+- ❌ 集成无法访问私有团队空间或其他用户的私有页面
 
-**Best Practices:**
-1. Use a dedicated integration (don't reuse personal integrations)
-2. Share minimum necessary pages (granular > broad)
-3. Rotate token if compromised via Notion integration settings
-4. Review shared connections periodically
+**最佳实践：**
+1. 使用专用的集成（不要重复使用个人集成）
+2. 仅共享必要的页面（精确控制权限）
+3. 如果集成令牌被泄露，请通过 Notion 集成设置重新生成令牌
+4. 定期检查共享的连接
 
-## Environment Setup
+## 环境设置
 
-Add to `~/.openclaw/.env`:
+将以下内容添加到 `~/.openclaw/.env` 文件中：
 ```bash
 NOTION_TOKEN=secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-Or set per-command:
+或者通过命令行设置：
 ```bash
 NOTION_TOKEN=secret_xxx node notion-cli.js ...
 ```
 
-## Error Handling
+## 错误处理
 
-Common errors and fixes:
+常见错误及解决方法：
 
-| Error | Cause | Fix |
+| 错误 | 原因 | 解决方法 |
 |-------|-------|-----|
-| "API token is invalid" | Wrong token or integration deleted | Check token at notion.so/my-integrations |
-| "object_not_found" | Page not shared with integration | Share page: Share → Add connections |
-| "validation_error" | Property format incorrect | Check property type in database |
-| "rate_limited" | Too many requests | Add delay between requests |
+| “API 令牌无效” | 令牌错误或集成已被删除 | 在 [notion.so/my-integrations] 中检查令牌 |
+| “对象未找到” | 页面未与集成共享 | 共享页面：选择 “共享” → “添加连接” |
+| “验证错误” | 属性格式不正确 | 检查数据库中的属性类型 |
+| “请求次数过多” | 请求次数过多 | 在请求之间添加延迟 |
 
-## Quick Install (One Command)
+## 快速安装（一个命令）
 
 ```bash
 cd ~/.agents/skills/notion
 ./install.sh
 ```
 
-**Manual install (if above fails):**
+**如果上述方法失败，请手动安装：**
 ```bash
 cd ~/.agents/skills/notion
 npm install
 ```
 
-That's it! No build step required for the standalone version.
+独立版本无需构建步骤。
 
-## Quick Test
+## 快速测试
 
 ```bash
 # After setting NOTION_TOKEN in ~/.openclaw/.env
 node notion-cli.js test
 ```
 
-## Smart ID Resolution
+## 智能 ID 解决方案
 
-Reference entries by **Notion auto-ID** (e.g., `#3`) or **direct UUID**.
+可以通过 **Notion 自动 ID**（例如 `#3`）或 **直接 UUID** 来引用条目。
 
-### By Notion ID (Recommended for Manual Use)
+### 通过 Notion ID（推荐手动使用）
 
-Use the number you see in your database's ID column:
+使用数据库 ID 列中显示的数字：
 
 ```bash
 # Get entry #3
@@ -344,7 +344,7 @@ node notion-cli.js append-body '#3' --database DATABASE_ID \
   --text "Key finding" --type bullet
 ```
 
-### By Direct UUID (For Automation)
+### 通过直接 UUID（用于自动化）
 
 ```bash
 # Using full UUID from Notion URL
@@ -353,15 +353,15 @@ node notion-cli.js append-body 2fb3e4ac... \
   --text "Content" --type paragraph
 ```
 
-**Auto-detection:** Starts with `#` = Notion ID lookup. 32-char hex = Direct UUID.
+**自动检测：** 以 `#` 开头的为 Notion ID；32 个字符的十六进制字符串为直接 UUID。
 
-**Pro Tip:** Add an `ID` property (type: unique ID) to auto-number entries as #1, #2, #3...
+**专业提示：** 为条目添加一个 `ID` 属性（类型：唯一 ID），例如 #1、#2、#3 等。
 
-## Page Body Editing
+## 页面内容编辑
 
-Add rich content to page bodies, not just properties.
+除了属性外，还可以向页面主体中添加富文本内容。
 
-### Append Content Blocks
+### 添加内容块
 
 ```bash
 # Add heading
@@ -386,34 +386,34 @@ node notion-cli.js append-body PAGE_ID --text "Important quote from source" --ty
 node notion-cli.js append-body PAGE_ID --text "const result = optimizeSupports();" --type code --lang javascript
 ```
 
-### Supported Block Types
+### 支持的块类型
 
-| Type | Description | Example Use |
+| 类型 | 描述 | 使用示例 |
 |------|-------------|-------------|
-| `paragraph` | Regular text (default) | Descriptions, explanations |
-| `h1`, `h2`, `h3` | Headings | Section organization |
-| `bullet` | Bulleted list | Key findings, features |
-| `numbered` | Numbered list | Step-by-step instructions |
-| `todo` | Checkbox item | Action items, tasks |
-| `quote` | Blockquote | Source citations |
-| `code` | Code block | Snippets, commands |
-| `divider` | Horizontal line | Section separation |
+| `paragraph` | 普通文本（默认） | 用于描述或解释 |
+| `h1`, `h2`, `h3` | 标题 | 用于组织内容结构 |
+| `bullet` | 列表 | 用于列出关键内容 |
+| `numbered` | 编号列表 | 用于逐步说明 |
+| `todo` | 复选框项 | 用于标记待办事项 |
+| `quote` | 引用块 | 用于插入来源引用 |
+| `code` | 代码块 | 用于插入代码片段 |
+| `divider` | 水平线 | 用于分隔不同部分 |
 
-### Get Page with Body Content
+### 获取包含内容的页面
 
 ```bash
 # Get full page including formatted body
 node notion-cli.js get-page PAGE_ID
 ```
 
-Returns:
-- Page properties
-- Formatted body blocks (type + content preview)
-- Block count
+返回值：
+- 页面属性
+- 格式化的块内容（类型 + 内容预览）
+- 块的数量
 
-### Advanced: Raw JSON Blocks
+### 高级：原始 JSON 块
 
-For complex layouts, use raw Notion block JSON:
+对于复杂的布局，可以使用原始的 Notion 块 JSON 格式：
 
 ```bash
 node notion-cli.js append-body PAGE_ID --blocks '[
@@ -423,23 +423,22 @@ node notion-cli.js append-body PAGE_ID --blocks '[
 ]'
 ```
 
-## Advanced: Webhook Sync
+## 高级：Webhook 同步
 
-For bidirectional sync (Notion changes → OpenClaw):
+实现双向同步（Notion 的更改 → OpenClaw）：
+1. 设置 Notion 的 webhook 集成（需要 Notion 合作伙伴账户）
+2. 将 webhook 端点配置到您的 OpenClaw Gateway
+3. 该功能会处理传入的 webhook 并更新内存文件
 
-1. Set up Notion webhook integration (requires Notion partner account)
-2. Configure webhook endpoint to your OpenClaw Gateway
-3. Skill processes incoming webhooks and updates memory files
-
-See [references/webhooks.md](references/webhooks.md) for implementation details.
+详细信息请参阅 [references/webhooks.md](references/webhooks.md)。
 
 ---
 
-**Need help?** Check your Notion integration settings at https://www.notion.so/my-integrations
+**需要帮助？** 请查看您的 Notion 集成设置：[https://www.notion.so/my-integrations]
 
-## Using in OpenClaw
+## 在 OpenClaw 中使用
 
-### Quick Setup
+### 快速设置
 
 ```bash
 # 1. Install
@@ -453,7 +452,7 @@ echo "NOTION_TOKEN=secret_xxxxxxxxxx" >> ~/.openclaw/.env
 node notion-cli.js test
 ```
 
-### From OpenClaw Agent
+### 通过 OpenClaw Agent 使用
 
 ```typescript
 // Query database
@@ -474,9 +473,9 @@ await exec({
 });
 ```
 
-### Cron Job Usage
+### 使用 Cron 作业
 
-Update your Research Topic Scout to push to Notion:
+更新您的 Research Topic Scout 以将数据推送到 Notion：
 
 ```typescript
 "message": "Research trends and add to Notion: 

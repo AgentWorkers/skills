@@ -1,20 +1,20 @@
-# ClawRAG Connector
+# ClawRAG 连接器
 
-**The Brain for OpenClaw** - Self-hosted RAG engine with hybrid search.
+**OpenClaw 的核心组件**——一个支持混合搜索的自托管 RAG（Retrieval, Association, and Generation）引擎。
 
-> ⚠️ This skill requires Docker. It connects OpenClaw to your local ClawRAG instance.
+> ⚠️ 本组件需要 Docker 来运行。它用于将 OpenClaw 与您的本地 ClawRAG 实例连接起来。
 
-## What is ClawRAG?
+## 什么是 ClawRAG？
 
-Production-ready RAG infrastructure that keeps your data local:
-- 🔒 **Privacy-first**: Vector DB runs on your machine
-- 🔍 **Hybrid Search**: Semantic + Keyword (BM25) + RRF ranking
-- 📄 **Smart Ingestion**: PDFs, Office docs, Markdown via Docling
-- 🧠 **MCP-native**: Seamless OpenClaw integration
+一个可用于生产环境的 RAG 架构，能够将数据存储在本地：
+- 🔒 **隐私优先**：所有数据都存储在您的机器上
+- 🔍 **混合搜索**：结合语义搜索和关键词搜索（使用 BM25 算法进行排名）
+- 📄 **智能数据导入**：支持 PDF、Office 文档以及 Markdown 格式的文件导入（通过 Docling 工具）
+- 🧠 **与 MCP（Memory-Based Computing Platform）无缝集成**：支持与 OpenClaw 的紧密协作
 
-## Installation
+## 安装
 
-### Step 1: Start ClawRAG (Docker)
+### 第一步：启动 ClawRAG（使用 Docker）
 ```bash
 git clone https://github.com/2dogsandanerd/ClawRag.git
 cd ClawRag
@@ -22,36 +22,35 @@ cp .env.example .env
 docker compose up -d
 ```
 
-Wait for http://localhost:8080/health to return OK.
+等待 `http://localhost:8080/health` 返回 “OK” 状态。
 
-### Step 2: Connect OpenClaw
+### 第二步：将 OpenClaw 与 ClawRAG 连接
 ```bash
 openclaw mcp add --transport stdio clawrag npx -y @clawrag/mcp-server
 ```
 
-### Verification
-Test your setup:
+### 验证
+测试您的安装配置：
 ```bash
 curl http://localhost:8080/api/v1/rag/collections
 ```
 
-## Features
+## 主要功能
 
-| Capability | Description |
-|------------|-------------|
-| Document Upload | PDF, DOCX, TXT, MD via API or folder |
-| Hybrid Query | Vector similarity + keyword matching |
-| Citations | Source tracking for all answers |
-| Multi-Collection | Organize knowledge by project |
+| 功能            | 描述                                      |
+|------------------|-----------------------------------------|
+| 文档上传        | 支持通过 API 或文件夹上传 PDF、DOCX、TXT、MD 格式的文件           |
+| 混合搜索        | 结合向量相似度和关键词匹配进行搜索                   |
+| 引用功能        | 为所有搜索结果提供来源信息                         |
+| 多集合管理      | 可按项目对知识内容进行分类和组织                   |
 
-## Requirements
+## 系统要求
 
-- Docker + Docker Compose
-- 4GB+ RAM (8GB recommended for local LLM)
-- Or: OpenAI/Anthropic API key for cloud LLM
+- Docker 及 Docker Compose 工具
+- 至少 4GB 的内存（推荐使用 8GB 内存以支持本地大语言模型）
+- 或者：需要 OpenAI/Anthropic 的 API 密钥以使用云端大语言模型
 
-## Architecture
-
+## 架构概述
 ```
 OpenClaw ◄──MCP──► @clawrag/mcp-server ◄──HTTP──► ClawRAG API (localhost:8080)
                                            │
@@ -62,33 +61,33 @@ OpenClaw ◄──MCP──► @clawrag/mcp-server ◄──HTTP──► ClawRA
                                     └─────────────┘
 ```
 
-## Links
+## 相关链接
 
-- 📚 Full Docs: https://github.com/2dogsandanerd/ClawRag#readme
-- 🔧 API Reference: http://localhost:8080/docs (when running)
-- 🐛 Issues: https://github.com/2dogsandanerd/ClawRag/issues
-- 📦 MCP Package: https://www.npmjs.com/package/@clawrag/mcp-server
+- 📚 官方文档：https://github.com/2dogsandanerd/ClawRag#readme
+- 🔧 API 参考文档：http://localhost:8080/docs （在应用程序运行时访问）
+- 🐛 问题反馈：https://github.com/2dogsandanerd/ClawRag/issues
+- MCP 包：https://www.npmjs.com/package/@clawrag/mcp-server
 
-## Tags
+## 标签
 
 rag, vector, memory, search, documents, self-hosted, privacy, mcp, local-ai
 
 ---
 
-## Metadata für ClawHub-Upload:
+## ClawHub 上传所需的元数据
 
-| Feld | Wert |
-|------|------|
-| **Slug** | `clawrag` |
-| **Display name** | `ClawRAG - Self-hosted RAG & Memory` |
-| **Version** | `1.2.0` |
-| **Tags** | `rag`, `vector`, `memory`, `search`, `documents`, `self-hosted`, `privacy`, `mcp`, `local-ai` |
+| 字段            | 值                                      |
+|------------------|-----------------------------------------|
+| **slug**           | `clawrag`                                      |
+| **显示名称**        | `ClawRAG - 自托管 RAG 与内存管理工具`                   |
+| **版本**           | `1.2.0`                                      |
+| **标签**           | `rag`, `vector`, `memory`, `search`, `documents`, `self-hosted`, `privacy`, `mcp`, `local-ai` |
 
-## Changelog für Version 1.2.0
+## 版本 1.2.0 的更新日志
 
-### 1.2.0 - Initial ClawHub Release
+### 1.2.0 版本更新内容
 
-- Connector skill for OpenClaw integration
-- MCP server support (@clawrag/mcp-server v1.1.0)
-- Docker-first deployment
-- Hybrid search (Vector + BM25)
+- 新增了用于 OpenClaw 集成的连接器组件
+- 支持 MCP 服务器（版本 @clawrag/mcp-server v1.1.0）
+- 采用 Docker 作为主要部署方式
+- 引入了混合搜索功能（结合向量相似度和 BM25 算法进行搜索）

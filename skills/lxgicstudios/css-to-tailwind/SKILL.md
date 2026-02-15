@@ -1,29 +1,29 @@
 ---
 name: css-to-tailwind
-description: Convert CSS files to Tailwind utility classes. Use when migrating from vanilla CSS to Tailwind.
+description: 将 CSS 文件转换为 Tailwind 公用类。在从传统 CSS 迁移到 Tailwind 时使用此方法。
 ---
 
-# CSS to Tailwind Converter
+# CSS 到 Tailwind 的转换工具
 
-Migrating to Tailwind means rewriting hundreds of CSS rules as utility classes. Nobody wants to do that by hand. This tool reads your CSS files and converts them to equivalent Tailwind classes. It handles the tedious conversion so you can focus on the tricky edge cases.
+将 CSS 代码迁移到 Tailwind 框架意味着需要将数百条 CSS 规则重写为相应的实用类（utility classes）。没人愿意手动完成这项工作。这款工具可以读取您的 CSS 文件，并将其转换为等效的 Tailwind 类，从而让您能够专注于处理那些复杂或边缘性的问题。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可完成转换。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-css-to-tailwind styles.css
 ```
 
-## What It Does
+## 工具功能
 
-- Reads CSS files and converts rules to Tailwind utility classes
-- Handles common properties like padding, margin, colors, typography, and flexbox
-- Preserves your class structure so you can map old classes to new utilities
-- Handles media queries by converting to Tailwind responsive prefixes
-- Outputs a mapping file showing old CSS to new Tailwind equivalents
+- 读取 CSS 文件，并将其中的规则转换为 Tailwind 实用类
+- 支持常见的属性，如内边距（padding）、外边距（margin）、颜色（colors）、字体样式（typography）以及弹性布局（flexbox）
+- 保留原有的类结构，便于您将旧类映射到新的 Tailwind 类中
+- 处理媒体查询（media queries），将其转换为 Tailwind 的响应式前缀（responsive prefixes）
+- 生成一个映射文件，显示旧 CSS 规则与新的 Tailwind 类之间的对应关系
 
-## Usage Examples
+## 使用示例
 
 ```bash
 npx ai-css-to-tailwind styles.css
@@ -31,36 +31,36 @@ npx ai-css-to-tailwind src/styles/
 npx ai-css-to-tailwind "src/**/*.css"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Convert one file at a time** - Easier to verify the output
-- **Check custom values** - Tailwind has specific scales. Custom pixel values might need theme config updates.
-- **Keep your old CSS as backup** - Don't delete until you've verified everything works
+- **一次转换一个文件**：这样更容易验证转换结果
+- **检查自定义值**：Tailwind 有固定的单位规范，自定义的像素值可能需要更新主题配置（theme config）
+- **保留旧 CSS 代码作为备份**：在确认所有内容都正常工作之前，请勿删除旧代码
 
-## When to Use This
+## 适用场景
 
-- Migrating an existing project to Tailwind
-- Converting a component library from CSS to utility classes
-- Learning what Tailwind classes correspond to your CSS
+- 将现有项目迁移到 Tailwind 框架
+- 将组件库中的 CSS 代码转换为 Tailwind 实用类
+- 了解您的 CSS 代码对应的 Tailwind 类
 
-## Part of the LXGIC Dev Toolkit
+## 本工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发工具之一。免费版本无需支付费用、注册账号或使用 API 密钥，只需使用命令行工具即可。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
-## How It Works
+## 工作原理
 
-Parses your CSS files and maps each property-value pair to the closest Tailwind utility class. AI handles ambiguous conversions and custom values that don't have direct Tailwind equivalents.
+该工具会解析您的 CSS 文件，将每一对属性值（property-value pair）映射到最接近的 Tailwind 实用类。对于存在歧义的转换或没有直接对应关系的自定义值，工具会利用人工智能进行处理。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。

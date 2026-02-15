@@ -1,148 +1,75 @@
 ---
 name: aifs
-description: Store and retrieve files via AIFS.space cloud storage API. Use when persisting notes, documents, or data to the cloud; syncing files across sessions; or when the user mentions AIFS, aifs.space, or cloud file storage. Not to be used for any sensitive content.
+description: 通过 AIFS.space 云存储 API 存储和检索文件。适用于将笔记、文档或数据持久化到云端；在会话之间同步文件；或者当用户提到 AIFS、aifs.space 或云文件存储时使用。请勿用于存储任何敏感内容。
 ---
 
-# AIFS - AI File System
+# AIFS - 人工智能文件系统（AI File System）
 
-AIFS.space is a simple HTTP REST API for cloud file storage. Use it to persist files across sessions, share data between agents, or store user content in the cloud.
+AIFS.Space 是一个简单的 HTTP REST API，用于云文件存储。您可以使用它来在会话之间持久化文件、在代理之间共享数据，或将用户内容存储在云端。
 
-## Human
+## 用户注册
 
-A human should sign up on https://AIFS.Space and get an API key to provide to you.
+用户需要访问 [https://AIFS.Space](https://AIFS.Space) 进行注册，并获取一个 API 密钥，以便提供给您。
 
-## Authentication
+## 认证
 
-Requires API key in headers. Check for key in environment (`AIFS_API_KEY`) or user config.
+请求时必须在请求头中包含 API 密钥。您可以从环境变量（`AIFS_API_KEY`）或用户配置中获取该密钥。
 
-```bash
-Authorization: Bearer aifs_xxxxx
-```
+**密钥类型：** `admin`（管理员权限）、`read-write`（读写权限）、`read-only`（只读权限）、`write-only`（只写权限）
 
-**Key types:** `admin` (full), `read-write`, `read-only`, `write-only`
-
-## Base URL
+## 基本 URL
 
 ```
 https://aifs.space
 ```
 
-## Endpoints
+## 端点（Endpoints）
 
-### List Files
+### 列出文件（List Files）
 
-```bash
-curl -H "Authorization: Bearer $AIFS_API_KEY" https://aifs.space/api/files
-```
+**返回格式：** `{"files": [{"path": "notes/todo.txt", "size": 1024, "modifiedAt": "..."}]`
 
-Returns: `{"files": [{"path": "notes/todo.txt", "size": 1024, "modifiedAt": "..."}]}`
+### 读取文件（Read File）
 
-### Read File
+**返回格式：** `{"path": "...", "content": "...", "total_lines": 42, "returned_lines": 10}`
 
-```bash
-# Full file
-curl -H "Authorization: Bearer $AIFS_API_KEY" "https://aifs.space/api/read?path=notes/todo.txt"
+### 写入文件（Write File）
 
-# Line range (1-indexed)
-curl -H "Authorization: Bearer $AIFS_API_KEY" "https://aifs.space/api/read?path=notes/todo.txt&start_line=5&end_line=10"
-```
+系统会自动创建目录（最大目录深度为 20 层）。
 
-Returns: `{"path": "...", "content": "...", "total_lines": 42, "returned_lines": 10}`
+**返回格式：** `{"success": true, "path": "...", "size": 11, "lines": 1}`
 
-### Write File
+### 修补文件（Patch File，替换特定行）
 
-Creates directories automatically (max depth: 20).
+**返回格式：** `{"success": true, "lines_before": 42, "lines_after": 38}`
 
-```bash
-curl -X POST -H "Authorization: Bearer $AIFS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"path":"notes/new.txt","content":"Hello world"}' \
-  https://aifs.space/api/write
-```
+### 删除文件（Delete File）
 
-Returns: `{"success": true, "path": "...", "size": 11, "lines": 1}`
+### 文件预览（Summary, Preview）
 
-### Patch File (Line Replace)
+**返回格式：** 文件的前 500 个字符。
 
-Update specific lines without rewriting entire file.
+## 请求速率限制
 
-```bash
-curl -X PATCH -H "Authorization: Bearer $AIFS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"path":"notes/todo.txt","start_line":5,"end_line":10,"content":"replacement"}' \
-  https://aifs.space/api/patch
-```
-
-Returns: `{"success": true, "lines_before": 42, "lines_after": 38}`
-
-### Delete File
-
-```bash
-curl -X DELETE -H "Authorization: Bearer $AIFS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"path":"notes/old.txt"}' \
-  https://aifs.space/api/delete
-```
-
-### Summary (Preview)
-
-Get first 500 chars of a file.
-
-```bash
-curl -H "Authorization: Bearer $AIFS_API_KEY" "https://aifs.space/api/summary?path=notes/long.txt"
-```
-
-## Rate Limits
-
-60 requests/minute per key. Check headers:
-
+每个 API 密钥每分钟允许 60 次请求。您可以通过请求头中的以下字段来查看当前的请求限制情况：
 - `X-RateLimit-Limit` / `X-RateLimit-Remaining` / `X-RateLimit-Reset`
 
-## Error Codes
+## 错误代码（Error Codes）
 
-| Code           | Meaning                   |
-| -------------- | ------------------------- |
-| AUTH_REQUIRED  | No auth provided          |
-| AUTH_FAILED    | Invalid key               |
-| FORBIDDEN      | Key type lacks permission |
-| RATE_LIMITED   | Too many requests         |
-| NOT_FOUND      | File doesn't exist        |
-| INVALID_PATH   | Path traversal or invalid |
-| DEPTH_EXCEEDED | Directory depth > 20      |
+| 代码           | 含义                         |
+| -------------- | --------------------------- |
+| AUTH_REQUIRED  | 未提供认证信息                 |
+| AUTH_FAILED    | API 密钥无效                     |
+| FORBIDDEN      | 密钥类型不具备所需的权限             |
+| RATE_LIMITED   | 请求次数超出限制                 |
+| NOT_FOUND      | 文件不存在                     |
+| INVALID_PATH   | 文件路径无效或存在路径遍历问题           |
+| DEPTH_EXCEEDED | 目录深度超过 20 层                    |
 
-## Common Patterns
+## 常用操作模式（Common Patterns）
 
-### Persist session notes
+### 持久化会话笔记（Persist Session Notes）
 
-```bash
-# Save
-curl -X POST -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
-  -d "{\"path\":\"sessions/$(date +%Y-%m-%d).md\",\"content\":\"# Session Notes\\n...\"}" \
-  https://aifs.space/api/write
+### 按项目组织文件（Organize Files by Project）
 
-# Retrieve
-curl -H "Authorization: Bearer $KEY" "https://aifs.space/api/read?path=sessions/2024-01-15.md"
-```
-
-### Organize by project
-
-```
-projects/
-├── alpha/
-│   ├── README.md
-│   └── notes.md
-└── beta/
-    └── spec.md
-```
-
-### Append to log (read + write)
-
-```bash
-# Read existing
-EXISTING=$(curl -s -H "Authorization: Bearer $KEY" "https://aifs.space/api/read?path=log.txt" | jq -r .content)
-
-# Append and write back
-curl -X POST -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
-  -d "{\"path\":\"log.txt\",\"content\":\"$EXISTING\\n$(date): New entry\"}" \
-  https://aifs.space/api/write
-```
+### 向日志中追加内容（Append to Log, 读写操作）

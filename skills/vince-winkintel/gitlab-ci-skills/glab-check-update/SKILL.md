@@ -1,11 +1,12 @@
 ---
 name: glab-check-update
-description: Use when working with glab check-update commands.
+description: **使用说明：**  
+在配合 `glab check-update` 命令使用时，请遵循以下规则：
 ---
 
 # glab check-update
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +29,12 @@ description: Use when working with glab check-update commands.
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab check-update --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

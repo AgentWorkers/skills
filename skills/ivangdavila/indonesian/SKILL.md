@@ -1,89 +1,89 @@
 ---
 name: Indonesian
-description: Write Indonesian that sounds human. Not formal, not robotic, not AI-generated.
+description: 请用自然、流畅的印尼语来表达。不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Indonesian is technically correct but sounds off. Too formal. Too baku (standard). Natives write more casually, mixing informal patterns. Match that.
+虽然印尼语在语法上完全正确，但听起来过于正式、刻板。本地人说话时通常更随意，会混合使用非正式的表达方式。因此，我们需要调整语言风格以更贴近本地人的表达习惯。
 
-## Formality Default
+## 默认的正式程度
 
-Default register is too high. Casual Indonesian is warm and relaxed. Unless explicitly formal: lean casual. Bahasa gaul over bahasa baku.
+印尼语的正式程度通常较高。在日常交流中，人们更倾向于使用非正式的语言，这样更加亲切和自然。除非有明确的正式场合，否则应尽量使用非正式的表达方式。比起标准用语，俚语和口语化的表达更受欢迎。
 
-## Formal vs Informal
+## 正式与非正式
 
-Two registers:
-- Baku (formal): news, official documents, academia
-- Gaul/Sehari-hari (casual): daily life, social media, texting
-- Online is almost entirely informal
-- Pure baku in casual = robotic
+印尼语有两种表达风格：
+- **正式**：用于新闻、官方文件、学术场合
+- **非正式**：用于日常生活、社交媒体、短信交流
+- 在线交流几乎完全采用非正式语言
+- 如果在非正式场合使用过于正式的语言，反而会显得生硬、像机器人一样机械。
 
-## Pronoun Choices
+## 代词的选择
 
-Pronouns set the tone:
-- Saya: formal I
-- Aku/Gue: casual I (gue = Jakarta slang)
-- Kamu/Lo: casual you
-- Anda: formal you (rare in casual)
-- Lu-gue is very Jakarta
+代词的使用会影响到整个语言的基调：
+- **Saya**：正式的“我”
+- **Aku/Gue**：非正式的“我”（“Gue”是雅加达地区的俚语）
+- **Kamu/Lo**：非正式的“你”
+- **Anda**：正式的“你”（在非正式场合很少使用）
+- **Lu-gue**：非常具有雅加达特色的表达方式
 
-## Casual Shortcuts
+## 非正式的缩写和简化表达
 
-Spoken patterns in writing:
-- Tidak → Nggak/Gak/Ga
-- Sudah → Udah
-- Belum → Belom
-- Apa → Apa/Pa
-- Bagaimana → Gimana
+在书面语中，口语中的表达方式也会被简化：
+- **Tidak** → **Nggak/Gak/Ga**
+- **Sudah** → **Udah**
+- **Belum** → **Belom**
+- **Apa** → **Apa/Pa**
+- **Bagaimana** → **Gimana**
 
-## Particles & Softeners
+## 粒子和缓和词
 
-These make Indonesian natural:
-- Dong: urging, please ("Bantuin dong")
-- Sih: emphasis ("Apa sih?")
-- Deh: softening ("Iya deh")
-- Kok: surprise/question ("Kok bisa?")
-- Lah: emphasis ("Ya udah lah")
+这些词语能让印尼语表达更加自然：
+- **Dong**：表示请求或恳求（例如：“Bantuin dong”）
+- **Sih**：用于强调（例如：“Apa sih?”）
+- **Deh**：用于缓和语气（例如：“Iya deh”）
+- **Kok**：表示惊讶或疑问（例如：“Kok bisa?”）
+- **Lah**：用于强调或表示无奈（例如：“Ya udah lah”）
 
-## Fillers & Flow
+## 填充词和语调
 
-Real Indonesian has fillers:
-- Ya, nih, tuh, kan
-- Gitu, kayak, kek
-- Terus, jadi, soalnya
-- Emang, masa, serius
+真实的印尼语中会使用一些填充词来调节语速和语气：
+- **Ya, nih, tuh, kan**：用于强调或引导话题
+- **Gitu, kayak, kek**：用于描述或举例
+- **Terus, jadi, soalnya**：用于过渡或解释原因
+- **Emang, masa, serius**：用于加强语气或表达犹豫
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Bagus → Keren, Mantap, Gokil, Asik
-- Jelek → Payah, Ancur, Parah
-- Sangat → Banget, Super, Bener-bener
+不要总是使用过于中性的词汇：
+- **Bagus** → **Keren, Mantap, Gokil, Asik**：表示“好”、“棒”、“酷”
+- **Jelek** → **Payah, Ancur, Parah**：表示“糟糕”、“失败”、“严重”
+- **Sangat** → **Banget, Super, Bener-bener**：表示“非常”、“超级”、“确实”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Santai, Oke, Sip
-- Gapapa, Gpp, Gamasalah
-- Serius?, Masa?, Beneran?
-- Yaudah, Terserah
+自然的表达方式包括：
+- **Santai, Oke, Sip**：表示“放松、可以”
+- **Gapapa, Gpp, Gamasalah**：表示“没关系、不用在意”
+- **Serius?, Masa?, Beneran?**：表示“认真吗？、真的吗？”
+- **Yaudah, Terserah**：表示“好吧、随你”
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Wah!, Gila!, Anjir!
-- Serius?, Beneran?, Masa sih?
-- Keren!, Mantap!, Gokil!
-- Wkwkwk, haha, awkwkw
+在交流时，反应要自然：
+- **Wah!, Gila!, Anjir!**：表示惊讶或赞叹
+- **Serius?, Beneran?, Masa sih?**：表示怀疑或惊讶
+- **Keren!, Mantap!, Gokil!**：表示赞赏或兴奋
+- **Wkwkwk, haha, awkwkw**：表示笑声或尴尬
 
-## Jakarta vs Regions
+## 雅加达与其他地区的语言差异
 
-Jakarta slang dominates online:
-- Gue/lo, gokil, anjir
-- But other regions have their own
-- Stay consistent if region known
+雅加达地区的俚语在网络交流中非常流行：
+- **Gue/lo, gokil, anjir**：雅加达常见的表达
+- 但其他地区也有自己独特的表达方式
+- 如果知道说话者的地区背景，应保持语言风格的一致性
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would an Indonesian screenshot this as "AI-generated"? If yes—too baku, no slang, too formal. Add gaul flavor.
+在发送内容之前，可以想象一下：如果一个印尼人看到这段文字，他会认为这是“AI生成的”吗？如果是这样，那么语言就太正式了，缺乏俚语和地方特色。需要添加一些雅加达地区的非正式表达来提升语言的亲切感。

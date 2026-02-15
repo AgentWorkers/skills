@@ -1,6 +1,6 @@
 ---
 name: research-cog
-description: "#1 on DeepResearch Bench (Feb 2026). Deep research agent powered by CellCog. Market research, competitive analysis, stock analysis, investment research, academic research with citations."
+description: "在 DeepResearch Bench 上排名第一（2026 年 2 月）。该工具由 CellCog 提供支持，可进行市场研究、竞争分析、股票分析、投资研究以及带有引用的学术研究。"
 author: CellCog
 metadata:
   openclaw:
@@ -8,25 +8,25 @@ metadata:
 dependencies: [cellcog]
 ---
 
-# Research Cog - Deep Research Powered by CellCog
+# Research Cog - 由 CellCog 提供支持的深度研究服务
 
-**#1 on DeepResearch Bench (Feb 2026).** Your AI research analyst for comprehensive, citation-backed research on any topic.
+在 DeepResearch Bench 上排名第一（2026 年 2 月）。作为您的人工智能研究分析师，我们能够针对任何主题提供全面且基于引用的研究成果。
 
-Leaderboard: https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard
+排行榜：https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用该功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 cellcog 技能文档** 以了解 SDK 的安装方法。该文档将向您展示该功能的全部功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,140 +40,133 @@ result = client.create_chat(
 
 ---
 
-## What You Can Research
+## 可以进行的研究类型
 
-### Competitive Analysis
+### 竞争分析
 
-Analyze companies against their competitors with structured insights:
+通过结构化的分析来对比不同公司及其竞争对手：
+- **公司对比**：例如：“对比 Stripe、Square 和 Adyen——市场定位、定价、功能以及优缺点”
+- **SWOT 分析**：例如：“为 Shopify 制作一份电子商务平台市场的 SWOT 分析”
+- **市场定位**：例如：“Notion 与 Confluence、Coda 和 Obsidian 的市场定位有何不同？”
+- **功能对比**：例如：“对比 Salesforce、HubSpot 和 Zoho CRM 的人工智能功能”
 
-- **Company vs. Competitors**: "Compare Stripe vs Square vs Adyen - market positioning, pricing, features, strengths/weaknesses"
-- **SWOT Analysis**: "Create a SWOT analysis for Shopify in the e-commerce platform market"
-- **Market Positioning**: "How does Notion position itself against Confluence, Coda, and Obsidian?"
-- **Feature Comparison**: "Compare the AI capabilities of Salesforce, HubSpot, and Zoho CRM"
+### 市场研究
 
-### Market Research
+深入了解市场、行业及发展趋势：
+- **行业分析**：例如：“分析欧洲的电动汽车市场——市场规模、增长趋势、主要参与者及行业动态”
+- **市场规模估算**：例如：“北美地区基于人工智能的客户服务工具的市场规模（TAM/SAM/SOM）是多少？”
+- **趋势分析**：例如：“2026 年可持续包装领域有哪些新兴趋势？”
+- **客户群体分析**：例如：“识别并分析高端宠物食品的主要客户群体”
+- **监管环境**：例如：“研究 FDA 对人工智能医疗设备的监管规定”
 
-Understand markets, industries, and trends:
+### 股票与投资分析
 
-- **Industry Analysis**: "Analyze the electric vehicle market in Europe - size, growth, key players, trends"
-- **Market Sizing**: "What's the TAM/SAM/SOM for AI-powered customer service tools in North America?"
-- **Trend Analysis**: "What are the emerging trends in sustainable packaging for 2026?"
-- **Customer Segments**: "Identify and profile the key customer segments for premium pet food"
-- **Regulatory Landscape**: "Research FDA regulations for AI-powered medical devices"
+利用数据和分析进行财务研究：
+- **公司基本面分析**：例如：“分析 NVIDIA 的财务状况——收入增长、利润率及竞争优势”
+- **投资策略制定**：例如：“为 Microsoft 的人工智能战略制定投资分析报告”
+- **行业分析**：例如：“对比半导体股票——NVDA、AMD、INTC、TSM”
+- **风险评估**：例如：“2026 年特斯拉投资者面临的主要风险有哪些？”
+- **收益分析**：例如：“总结 Apple 2025 年第四季度的收益情况及其未来展望”
 
-### Stock & Investment Analysis
+### 学术与技术研究
 
-Financial research with data and analysis:
+通过引用相关文献进行深入研究：
+- **文献综述**：例如：“研究当前量子纠错技术的进展”
+- **技术深度剖析**：例如：“解释 Transformer 架构及其从注意力机制演变的过程”
+- **科学课题**：例如：“CRISPR 基因编辑技术在癌症治疗领域的最新研究进展”
+- **历史分析**：例如：“研究布雷顿森林体系的历史及其影响”
 
-- **Company Fundamentals**: "Analyze NVIDIA's financials - revenue growth, margins, competitive moat"
-- **Investment Thesis**: "Build an investment thesis for Microsoft's AI strategy"
-- **Sector Analysis**: "Compare semiconductor stocks - NVDA, AMD, INTC, TSM"
-- **Risk Assessment**: "What are the key risks for Tesla investors in 2026?"
-- **Earnings Analysis**: "Summarize Apple's Q4 2025 earnings and forward guidance"
+### 尽职调查
 
-### Academic & Technical Research
-
-Deep dives with proper citations:
-
-- **Literature Review**: "Research the current state of quantum error correction techniques"
-- **Technology Deep Dive**: "Explain transformer architectures and their evolution from attention mechanisms"
-- **Scientific Topics**: "What's the latest research on CRISPR gene editing for cancer treatment?"
-- **Historical Analysis**: "Research the history and impact of the Bretton Woods system"
-
-### Due Diligence
-
-Comprehensive research for decision-making:
-
-- **Startup Due Diligence**: "Research [Company Name] - founding team, funding, product, market, competitors"
-- **Vendor Evaluation**: "Compare AWS, GCP, and Azure for enterprise AI/ML workloads"
-- **Partnership Analysis**: "Research potential risks and benefits of partnering with [Company]"
+为决策提供全面的研究支持：
+- **初创企业尽职调查**：例如：“研究 [公司名称]——创始团队、资金来源、产品、市场情况以及竞争对手”
+- **供应商评估**：例如：“对比 AWS、GCP 和 Azure 在企业人工智能/机器学习场景下的适用性”
+- **合作伙伴关系分析**：例如：“分析与 [公司] 合作的潜在风险与收益”
 
 ---
 
-## Research Output Formats
+## 研究输出格式
 
-CellCog can deliver research in multiple formats:
-
-| Format | Best For |
+CellCog 可以提供多种形式的研究成果：
+| 格式 | 适用场景 |
 |--------|----------|
-| **Interactive HTML Report** | Explorable dashboards with charts, expandable sections |
-| **PDF Report** | Shareable, printable professional documents |
-| **Markdown** | Integration into your docs/wikis |
-| **Plain Response** | Quick answers in chat |
+| **交互式 HTML 报告** | 包含图表和可扩展内容的可探索式仪表盘 |
+| **PDF 报告** | 可共享、可打印的专业文档 |
+| **Markdown 格式** | 可集成到您的文档或维基系统中 |
+| **纯文本回复** | 适用于聊天中的快速查询 |
 
-Specify your preferred format in the prompt:
-- "Create an interactive HTML report on..."
-- "Generate a PDF research report analyzing..."
-- "Give me a markdown summary of..."
-
----
-
-## When to Use Agent Team Mode
-
-For research, **always use `chat_mode="agent team"`** (the default).
-
-Agent team mode enables:
-- Multi-source research and cross-referencing
-- Citation verification
-- Deeper analysis with multiple reasoning passes
-- Higher quality, more comprehensive outputs
-
-Use `chat_mode="agent"` only for trivial lookups like "What's Apple's stock ticker?"
+请在请求中指定您偏好的输出格式：
+- “生成一份关于……的交互式 HTML 报告”
+- “生成一份关于……的 PDF 研究报告”
+- “提供关于……的 Markdown 摘要”
 
 ---
 
-## Research Quality Features
+## 何时使用“代理团队模式”
 
-### Citations (On Request)
+在进行研究时，**始终使用 `chat_mode="agent team"`（默认设置）**。
 
-**Citations are NOT automatic.** CellCog focuses on delivering accurate, well-researched content by default.
+代理团队模式具备以下优势：
+- 多源数据整合与交叉引用
+- 引用验证
+- 通过多轮分析提升研究深度
+- 提供更高质量、更全面的研究结果
 
-If you need citations:
-- **Explicitly request them**: "Include citations for all factual claims with source URLs"
-- **Specify format**: "Provide citations as footnotes" or "Include a references section at the end"
-- **Indicate placement**: "Citations inline" vs "Citations in appendix"
-
-Without explicit citation requests, CellCog prioritizes delivering accurate information efficiently.
-
-### Data Accuracy
-CellCog cross-references multiple sources for financial and statistical data, ensuring accuracy even without explicit citations.
-
-### Structured Analysis
-Complex research is organized with clear sections, executive summaries, and actionable insights.
-
-### Visual Elements
-Research reports can include:
-- Charts and graphs
-- Comparison tables
-- Timeline visualizations
-- Market maps
+仅对于简单查询（如“Apple 的股票代码是什么？”）才使用 `chat_mode="agent"`。
 
 ---
 
-## Example Research Prompts
+## 研究质量特性
 
-**Quick competitive intel:**
-> "Compare Figma vs Sketch vs Adobe XD for enterprise UI design teams. Focus on collaboration features, pricing, and Figma's position after the Adobe acquisition failed."
+### 引用（按需提供）
 
-**Deep market research:**
-> "Create a comprehensive market research report on the AI coding assistant market. Include market size, growth projections, key players (GitHub Copilot, Cursor, Codeium, etc.), pricing models, and enterprise adoption trends. Deliver as an interactive HTML report."
+**CellCog 默认不会自动添加引用**。我们致力于提供准确、经过充分研究的内容。
 
-**Investment analysis:**
-> "Build an investment analysis for Palantir (PLTR). Cover business model, government vs commercial revenue mix, AI product strategy, valuation metrics, and key risks. Include relevant charts."
+如果您需要引用：
+- **明确提出要求**：例如：“请为所有事实性陈述提供来源链接”
+- **指定引用格式**：例如：“以脚注形式提供引用”或“在文档末尾添加参考文献部分”
+- **指定引用位置**：例如：“将引用放在正文内”或“将引用放在附录中”
 
-**Academic deep dive:**
-> "Research the current state of nuclear fusion energy. Cover recent breakthroughs (NIF, ITER, private companies like Commonwealth Fusion), technical challenges remaining, timeline to commercial viability, and investment landscape."
+在没有明确引用要求的情况下，CellCog 会优先保证信息的准确性。
+
+### 数据准确性
+
+CellCog 会跨多个来源验证财务和统计数据，从而确保结果的准确性（即使没有明确要求引用）。
+
+### 结构化分析
+
+复杂的研究报告会包含清晰的章节划分、执行摘要和实用的建议。
+
+### 可视化元素
+
+研究报告可以包含：
+- 图表和图形
+- 对比表格
+- 时间线可视化
+- 市场地图
 
 ---
 
-## Tips for Better Research
+## 研究示例
 
-1. **Be specific**: "AI market" is vague. "Enterprise AI automation market in healthcare" is better.
+**快速竞争分析：**
+> “对比 Figma、Sketch 和 Adobe XD 在企业 UI 设计领域的表现。重点关注协作功能、定价情况，以及 Figma 在被 Adobe 收购后的市场地位。”
 
-2. **Specify timeframe**: "Recent" is ambiguous. "2025-2026" or "last 6 months" is clearer.
+**深入市场研究：**
+> “生成一份关于人工智能编码助手市场的综合研究报告。内容包括市场规模、增长预测、主要参与者（GitHub Copilot、Cursor、Codeium 等）、定价模式及企业采用趋势。以交互式 HTML 报告的形式呈现。”
 
-3. **Define scope**: "Compare everything about X and Y" leads to bloat. "Compare X and Y on pricing, features, and market positioning" is focused.
+**投资分析：**
+> **为 Palantir (PLTR) 制定投资分析报告**。涵盖其商业模式、政府收入与商业收入的占比、人工智能产品策略、估值指标及主要风险。报告中需包含相关图表。**
 
-4. **Request structure**: "Include executive summary, key findings, and recommendations" helps organize output.
+**学术深度研究：**
+> **研究核聚变能源的现状**。内容包括最新进展（NIF、ITER、Commonwealth Fusion 等私营公司）、技术挑战、实现商业化的时间表以及投资环境。
 
-5. **Mention output format**: "Deliver as PDF" or "Create interactive HTML dashboard" gets you the right format.
+---
+
+## 更佳研究技巧
+
+1. **明确研究主题**：笼统的描述（如“人工智能市场”）可能导致结果不明确。具体说明研究范围（例如“医疗保健领域的企业人工智能自动化市场”）会更有针对性。
+2. **指定时间范围**：“近期”这样的表述不够具体。明确指出时间范围（如“2025-2026 年”或“过去 6 个月”）会更有帮助。
+3. **明确研究范围**：笼统的请求（如“对比 X 和 Y 的所有方面”）可能导致结果冗长。具体说明比较内容（例如“从定价、功能和市场定位方面对比 X 和 Y”）会更有条理。
+4. **请求报告结构**：要求报告中包含执行摘要、关键发现及建议，有助于整理研究成果。
+5. **指定输出格式**：明确说明需要以何种格式呈现结果（例如“以 PDF 报告的形式提供”或“生成交互式 HTML 仪表盘”）。

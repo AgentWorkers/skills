@@ -1,6 +1,6 @@
 ---
 name: WalletPilot-7715
-description: Execute on-chain transactions with user-granted permissions. Built on MetaMask ERC-7715. No private keys, full guardrails.
+description: 使用用户授予的权限在链上执行交易。基于 MetaMask 和 ERC-7715 标准开发。无需私钥，具备全面的安全防护机制。
 tags:
   - crypto
   - wallet
@@ -16,28 +16,28 @@ tags:
 
 # WalletPilot-7715
 
-Give your AI agent crypto superpowers with MetaMask ERC-7715 permissions.
+通过 MetaMask 的 ERC-7715 权限，为您的 AI 代理赋予加密技术的超级能力。
 
-## Overview
+## 概述
 
-WalletPilot enables AI agents to execute on-chain transactions using MetaMask's ERC-7715 permission standard. Users grant scoped permissions (spend limits, chain restrictions) once, then agents can execute freely within those limits.
+WalletPilot 允许 AI 代理使用 MetaMask 的 ERC-7715 权限标准在链上执行交易。用户只需一次性授予代理相应的权限（如消费限额、链限制等），之后代理便可以在这些限制范围内自由操作。
 
-**Key Features:**
-- No private keys shared - users keep their MetaMask
-- Configurable guardrails (spend limits, chain allowlists)
-- Multi-chain support (Ethereum, Polygon, Arbitrum, Optimism, Base)
-- Built on MetaMask's official Smart Accounts Kit
+**主要特性：**
+- **无需共享私钥**：用户仍可完全控制自己的 MetaMask 账户。
+- **可配置的安全机制**：支持设置消费限额和允许使用的链。
+- **多链支持**：支持 Ethereum、Polygon、Arbitrum 和 Base 等链。
+- **基于 MetaMask 官方智能账户框架开发**。
 
-## Setup
+## 设置
 
-1. Get an API key at [walletpilot.xyz](https://walletpilot.xyz)
-2. Install the SDK: `npm install @walletpilot/sdk`
+1. 在 [walletpilot.xyz](https://walletpilot.xyz) 获取 API 密钥。
+2. 安装 SDK：`npm install @walletpilot/sdk`
 
-## Available Actions
+## 可用的操作
 
 ### connect
 
-Request wallet permissions from user.
+向用户请求钱包权限。
 
 ```typescript
 import { WalletPilot, PermissionBuilder } from '@walletpilot/sdk';
@@ -57,7 +57,7 @@ console.log('User should open:', deepLink);
 
 ### execute
 
-Execute a transaction using granted permissions.
+使用已授予的权限执行交易。
 
 ```typescript
 const result = await pilot.execute({
@@ -72,7 +72,7 @@ console.log('Transaction hash:', result.hash);
 
 ### balance
 
-Check token balances (uses standard RPC, no permission needed).
+查询代币余额（使用标准 RPC 请求，无需权限）。
 
 ```typescript
 import { createPublicClient, http } from 'viem';
@@ -88,7 +88,7 @@ const balance = await client.getBalance({ address: '0x...' });
 
 ### swap
 
-Execute a token swap via DEX aggregator.
+通过 DEX 代理器执行代币交换。
 
 ```typescript
 // Get swap quote from 1inch, 0x, or similar
@@ -106,7 +106,7 @@ await pilot.execute({
 
 ### send
 
-Send tokens to an address.
+将代币发送到指定地址。
 
 ```typescript
 import { encodeFunctionData, erc20Abi } from 'viem';
@@ -127,7 +127,7 @@ await pilot.execute({
 
 ### history
 
-Get transaction history.
+获取交易历史记录。
 
 ```typescript
 const state = pilot.getState();
@@ -141,45 +141,45 @@ const { data } = await response.json();
 console.log('Recent transactions:', data);
 ```
 
-## Permission Types
+## 权限类型
 
-| Permission | Example | Description |
-|------------|---------|-------------|
-| `spend` | `{ token: 'USDC', limit: '100', period: 'day' }` | Max token spend per period |
-| `chains` | `[1, 137, 42161]` | Allowed chain IDs |
-| `contracts` | `['0x...']` | Allowed contract addresses |
-| `expiry` | `'30d'` | Permission expiration |
+| 权限类型 | 示例 | 说明 |
+|---------|------|-----------|
+| `spend` | `{ token: 'USDC', limit: '100', period: 'day' }` | 每个周期内的最大代币消费限额 |
+| `chains` | `[1, 137, 42161]` | 允许使用的链 ID 列表 |
+| `contracts` | `['0x...']` | 允许使用的合约地址 |
+| `expiry` | `'30d'` | 权限的有效期限 |
 
-## Supported Chains
+## 支持的链
 
-| Chain | ID | Name |
-|-------|-----|------|
-| Ethereum | 1 | mainnet |
-| Polygon | 137 | polygon |
-| Arbitrum | 42161 | arbitrum |
-| Optimism | 10 | optimism |
-| Base | 8453 | base |
+| 链      | ID     | 名称       |
+|---------|--------|-----------|
+| Ethereum | 1      | mainnet     |
+| Polygon | 137      | polygon     |
+| Arbitrum | 42161    | arbitrum     |
+| Optimism | 10      | optimism    |
+| Base     | 8453    | base       |
 
-## Security
+## 安全性
 
-- **No Private Keys**: Users keep full custody via MetaMask
-- **Scoped Permissions**: Agents can only act within granted limits
-- **Time-Limited**: Permissions automatically expire
-- **Revocable**: Users can revoke permissions anytime
-- **Auditable**: All transactions logged and visible
+- **无需共享私钥**：用户通过 MetaMask 保持对账户的完全控制权。
+- **权限范围限制**：代理只能在授权的范围内操作。
+- **权限自动过期**：权限具有时效性。
+- **可撤销**：用户可随时撤销权限。
+- **交易透明化**：所有交易记录均会被记录并公开。
 
-## API Reference
+## API 参考
 
-**Base URL:** `https://api.walletpilot.xyz`
+**基础 URL：** `https://api.walletpilot.xyz`
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/v1/permissions/request` | POST | Request new permission |
-| `/v1/permissions/:id` | GET | Get permission details |
-| `/v1/tx/execute` | POST | Execute transaction |
-| `/v1/tx/:hash` | GET | Get transaction status |
+| 端点        | 方法        | 说明                |
+|-------------|-----------|-------------------|
+| `/v1/permissions/request` | POST       | 请求新的权限            |
+| `/v1/permissions/:id` | GET       | 获取权限详情            |
+| `/v1/tx/execute` | POST       | 执行交易              |
+| `/v1/tx/:hash` | GET       | 获取交易状态            |
 
-## Example: DeFi Agent
+## 示例：DeFi 代理的应用场景
 
 ```typescript
 import { WalletPilot, PermissionBuilder } from '@walletpilot/sdk';
@@ -217,8 +217,8 @@ async function defiAgent() {
 }
 ```
 
-## Links
+## 链接
 
-- [Documentation](https://docs.walletpilot.xyz)
-- [GitHub](https://github.com/andreolf/walletpilot)
-- [API Reference](https://api.walletpilot.xyz)
+- [文档](https://docs.walletpilot.xyz)
+- [GitHub 仓库](https://github.com/andreolf/walletpilot)
+- [API 参考文档](https://api.walletpilot.xyz)

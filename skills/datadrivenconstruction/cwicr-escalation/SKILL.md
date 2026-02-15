@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-escalation"
 display_name: "CWICR Escalation"
-description: "Apply price escalation to CWICR estimates over time. Calculate inflation adjustments, material price indices, and labor rate increases."
+description: "随着时间的推移，对 CWICR 的估算值应用价格上涨因素。计算通货膨胀调整、材料价格指数以及劳动力成本的增加。"
 ---
 
-# CWICR Escalation Calculator
+# CWICR 价格 escalation 计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction costs change over time:
-- Inflation affects all costs
-- Material prices fluctuate
-- Labor rates increase annually
-- Long projects need escalation
+### 问题描述
+建筑成本会随时间变化：
+- 通货膨胀会影响所有成本
+- 材料价格会波动
+- 劳动力成本每年都会上涨
+- 长期项目需要考虑成本上升的因素
 
-### Solution
-Time-based cost escalation using historical indices, projected rates, and category-specific escalation factors.
+### 解决方案
+通过使用历史指数、预测的费率以及特定类别的涨价因子，来实现基于时间的成本估算。
 
-### Business Value
-- **Future pricing** - Estimate costs at construction time
-- **Budget planning** - Account for inflation
-- **Contract pricing** - Escalation clauses
-- **Historical analysis** - Adjust past costs to current
+### 商业价值
+- **未来定价**：在施工阶段估算成本
+- **预算规划**：考虑通货膨胀的影响
+- **合同定价**：包含价格调整条款
+- **历史数据分析**：将过去的成本调整到当前水平
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -335,8 +334,7 @@ class CWICREscalation:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date
 
@@ -355,9 +353,9 @@ print(f"Escalated: ${result.escalated_cost:,.2f}")
 print(f"Escalation: {result.escalation_rate}%")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Project Future Costs
+### 1. 项目未来成本估算
 ```python
 projections = esc.project_future_costs(
     base_cost=5000000,
@@ -367,7 +365,7 @@ projections = esc.project_future_costs(
 print(projections)
 ```
 
-### 2. Escalate Estimate
+### 2. 成本上升预测
 ```python
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
 esc = CWICREscalation(cwicr)
@@ -384,7 +382,7 @@ escalated = esc.escalate_estimate(
 )
 ```
 
-### 3. De-escalate Historical Cost
+### 3. 历史成本下调
 ```python
 base_cost = esc.de_escalate_cost(
     current_cost=1200000,
@@ -394,6 +392,6 @@ base_cost = esc.de_escalate_cost(
 print(f"2020 equivalent: ${base_cost['base_cost']:,.2f}")
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Cost Escalation Methods
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 - 成本上涨方法

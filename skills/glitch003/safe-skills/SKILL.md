@@ -1,25 +1,25 @@
-# SafeSkills - Secure Secret Management for AI Agents
+# SafeSkills – 为AI代理提供安全的秘密管理服务
 
-SafeSkills is a secure secret management service. It stores secrets (like wallet private keys) and executes actions using them so that **you (the agent) never see the raw secret values**. The first supported skill is an EVM wallet -- you can create wallets, transfer tokens, send transactions, check balances, and more.
+SafeSkills 是一款安全的秘密管理工具。它用于存储秘密信息（例如钱包私钥），并利用这些秘密执行相应的操作，确保**您（作为代理）永远不会看到原始的秘密值**。该工具支持的首个功能是EVM钱包管理：您可以创建钱包、转移代币、发送交易、查询余额等。
 
-**CRITICAL: Never attempt to access or request raw secret values. All operations are performed server-side through the API.**
+**重要提示：****切勿尝试访问或请求原始的秘密值。所有操作均通过API在服务器端完成。**
 
-## Configuration
+## 配置
 
-- **Base API URL:** Use the `SAFESKILLS_API_URL` environment variable if set, otherwise default to `https://safeskill-production.up.railway.app`
-- **Frontend URL:** Use the `SAFESKILLS_FRONTEND_URL` environment variable if set, otherwise default to `https://safeskill-production.up.railway.app`
+- **基础API地址：** 如果设置了`SAFESKILLS_API_URL`环境变量，请使用该地址；否则默认为`https://safeskill-production.up.railway.app`。
+- **前端地址：** 如果设置了`SAFESKILLS_FRONTEND_URL`环境变量，请使用该地址；否则默认为`https://safeskill-production.up.railway.app`。
 
-All API requests require a Bearer token (the API key returned when creating a secret).
+所有API请求都需要一个Bearer令牌（即创建钱包时返回的API密钥）。
 
 ```
 Authorization: Bearer <API_KEY>
 ```
 
-## Workflow
+## 工作流程
 
-### 1. Create a Wallet
+### 1. 创建钱包
 
-Create an EVM wallet secret. Store the returned API key for all subsequent calls. Share the claim URL with the user so they can manage policies for the wallet.
+创建一个EVM钱包的秘密信息，并保存返回的API密钥以供后续请求使用。将钱包的声明URL（claim URL）分享给用户，以便他们能够管理钱包的相关设置。
 
 ```bash
 curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/secrets" \
@@ -31,32 +31,32 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-Response includes:
-- `apiKey` -- store this securely; use it as the Bearer token for all future requests
-- `claimUrl` -- share this with the user so they can view and manage policies for this wallet
-- `address` -- the smart account address of the created wallet
+响应内容包括：
+- `apiKey`：请妥善保管此密钥，将其用作后续请求的Bearer令牌。
+- `claimUrl`：分享给用户，以便他们查看和管理钱包的设置。
+- `address`：创建的钱包的智能合约地址。
 
-After creating, tell the user: "Here is your wallet claim URL: <claimUrl>. You can use this to manage spending policies and monitor the wallet."
+创建完成后，告知用户：“这是您的钱包声明URL：<claimUrl>。您可以使用它来管理支出策略和监控钱包状态。”
 
-### 2. Get Secret Info
+### 2. 获取秘密信息
 
-Retrieve metadata about the secret associated with the current API key.
+检索与当前API密钥关联的秘密元数据。
 
 ```bash
 curl -X GET "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/secrets/info" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### 3. Get Wallet Address
+### 3. 获取钱包地址
 
 ```bash
 curl -X GET "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/skills/evm-wallet/address" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### 4. Check Balances
+### 4. 查询余额
 
-Check native token balance and optionally ERC-20 token balances by passing token contract addresses as a comma-separated query parameter.
+查询钱包中的原生代币余额，以及可选的ERC-20代币余额（只需将代币合约地址作为逗号分隔的查询参数传递）。
 
 ```bash
 # Native balance only
@@ -68,9 +68,9 @@ curl -X GET "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### 5. Transfer ETH or Tokens
+### 5. 转移ETH或代币
 
-Transfer native ETH or an ERC-20 token to a recipient address.
+将原生ETH或ERC-20代币转移到指定地址。
 
 ```bash
 # Transfer native ETH
@@ -93,9 +93,9 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-### 6. Send Arbitrary Transaction
+### 6. 发送任意交易
 
-Send a raw transaction with custom calldata. Useful for interacting with smart contracts.
+发送带有自定义调用数据的交易。此功能适用于与智能合约进行交互。
 
 ```bash
 curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/skills/evm-wallet/send-transaction" \
@@ -108,10 +108,10 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-## Important Notes
+## 重要注意事项
 
-- **Never try to access raw secret values.** The whole point of SafeSkills is that secrets stay server-side.
-- Always store the API key returned from wallet creation -- it is the only way to authenticate subsequent requests.
-- Always share the claim URL with the user after creating a wallet.
-- The default chain ID `11155111` is Ethereum Sepolia testnet. Adjust as needed.
-- If a transfer or transaction fails, check that the wallet has sufficient balance and that any required policies have been approved by the user via the claim URL.
+- **切勿尝试访问原始的秘密值。** SafeSkills的核心优势就在于所有秘密信息都存储在服务器端。
+- 请务必保存创建钱包时返回的API密钥，因为这是验证后续请求的唯一依据。
+- 创建钱包后，务必将钱包的声明URL分享给用户。
+- 默认的链ID为`11155111`（Ethereum Sepolia测试网）。根据需要可进行调整。
+- 如果转账或交易失败，请检查钱包是否有足够的余额，并确认用户已通过声明URL批准了所有必要的操作。

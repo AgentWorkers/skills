@@ -1,6 +1,6 @@
 ---
 name: tautulli
-description: Monitor Plex activity and stats via Tautulli API. Check who's watching, view history, get library stats, and see server info.
+description: 通过 Tautulli API 监控 Plex 的活动及统计数据。可以查看正在观看的人、浏览历史记录、获取库的统计信息以及服务器详情。
 metadata:
   openclaw:
     emoji: 📊
@@ -15,70 +15,70 @@ metadata:
 
 # Tautulli
 
-Monitor Plex Media Server activity via Tautulli API.
+通过 Tautulli API 监控 Plex 媒体服务器的活动。
 
-## Setup
+## 设置
 
-Set environment variables:
-- `TAUTULLI_URL` – Tautulli instance URL (e.g., `http://192.168.1.100:8181`)
-- `TAUTULLI_API_KEY` – Settings → Web Interface → API Key
+配置环境变量：
+- `TAUTULLI_URL` – Tautulli 实例的 URL（例如：`http://192.168.1.100:8181`）
+- `TAUTULLI_API_KEY` – 在“设置” → “Web 界面”中获取的 API 密钥
 
-## Commands
+## 命令
 
-### Current Activity
+### 当前活动
 
 ```bash
 bash {baseDir}/scripts/activity.sh
 ```
 
-Shows active streams with user, title, progress, quality, and player.
+显示活跃的流媒体信息，包括用户、标题、进度、质量和播放器。
 
-### Watch History
+### 观看历史
 
 ```bash
 bash {baseDir}/scripts/history.sh [limit]
 ```
 
-Default: last 10 items. Pass a number for more.
+默认显示最近 10 条记录；可以通过传递数字来查看更多记录。
 
-### Library Stats
+### 库统计
 
 ```bash
 bash {baseDir}/scripts/libraries.sh
 ```
 
-Lists library sections with item counts.
+列出库中的各个部分及其对应的媒体数量。
 
-### Recently Added
+### 最新添加的媒体
 
 ```bash
 bash {baseDir}/scripts/recent.sh [limit]
 ```
 
-Shows recently added media. Default: 10 items.
+显示最近添加的媒体文件；默认显示 10 条记录。
 
-### User Stats
+### 用户统计
 
 ```bash
 bash {baseDir}/scripts/users.sh
 ```
 
-Lists users with total watch time and last seen date.
+列出用户的总观看时长以及最后登录日期。
 
-### Server Info
+### 服务器信息
 
 ```bash
 bash {baseDir}/scripts/server.sh
 ```
 
-Shows Plex server name, version, platform, and connection status.
+显示 Plex 服务器的名称、版本、平台以及连接状态。
 
-## API Reference
+## API 参考
 
-All Tautulli API calls use:
+所有 Tautulli API 调用都使用以下格式：
 
 ```
 $TAUTULLI_URL/api/v2?apikey=$TAUTULLI_API_KEY&cmd=<command>
 ```
 
-Common commands: `get_activity`, `get_history`, `get_libraries`, `get_recently_added`, `get_users`, `get_server_info`.
+常用命令：`get_activity`、`get_history`、`get_libraries`、`get_recently_added`、`get_users`、`get_server_info`。

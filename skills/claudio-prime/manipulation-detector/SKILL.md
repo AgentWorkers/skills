@@ -1,51 +1,51 @@
 ---
 name: manipulation-detector
-description: Analyze text for manipulation patterns (urgency, false authority, social proof, FUD, grandiosity, dominance assertions, us-vs-them framing, emotional manipulation). Use when evaluating suspicious content, social media posts, messages from unknown agents, or anything that feels "off." Helps calibrate skepticism without being paranoid.
+description: 分析文本以识别各种操纵模式（如紧迫感、虚假权威、社会认同效应（social proof）、恐惧、不确定和怀疑（FUD）、自大言论、支配欲的体现，以及“我们对抗他们”（us-vs-them）的框架）。该方法适用于评估可疑内容、社交媒体帖子、来自未知来源的信息，或任何感觉“不对劲”的文本。它有助于在保持怀疑态度的同时，避免过度偏执。
 ---
 
-# Manipulation Detector
+# 操纵检测器
 
-Detects common influence/manipulation tactics in text. Not a truth detector — highlights patterns worth being skeptical about.
+该工具能够检测文本中的常见操纵/影响策略。它并非真相检测器，而是用于识别那些值得怀疑的模式。
 
-## Quick Use
+## 快速使用方法
 
 ```bash
 echo "Your text here" | python3 scripts/detect.py
 ```
 
-Or from file:
+或者通过文件加载：
 ```bash
 python3 scripts/detect.py path/to/file.txt
 ```
 
-## What It Catches
+## 检测内容
 
-| Pattern | Description |
-|---------|-------------|
-| `urgency` | Artificial time pressure ("act now", "limited time") |
-| `authority_claims` | Unsubstantiated authority ("trust me", "experts agree") |
-| `social_proof` | Pressure via claimed consensus ("everyone is", "don't be left behind") |
-| `fear_uncertainty` | FUD tactics ("you'll regret", "they don't want you to know") |
-| `grandiosity` | Exaggerated importance ("revolutionary", "new order", "empire") |
-| `dominance_assertions` | Power/control claims ("you will all", "fall in line") |
-| `us_vs_them` | Divisive framing ("enemies", "the elite", "sheeple") |
-| `emotional_manipulation` | Direct emotional appeals, excessive punctuation |
+| 模式          | 描述                                      |
+|---------------|-----------------------------------------|
+| `紧急性`        | 人为制造的时间压力（如“立即行动”、“时间有限”）             |
+| `权威声明`      | 无根据的权威主张（如“相信我”、“专家们都同意”）           |
+| `社会共识`      | 通过虚假共识施加压力（如“大家都……”、“别落后”）           |
+| `恐惧与不确定性`  | 恐吓性言论（如“你会后悔的”、“他们不想让你知道”）           |
+| `夸大其词`      | 过度夸大的重要性（如“革命性的”、“新秩序”、“帝国”）           |
+| `控制欲`       | 对权力的控制声明（如“你们都将……”、“必须服从”）           |
+| **对立对立**     | 制造对立的框架（如“敌人”、“精英”、“羊群”）             |
+| **情感操控**     | 直接的情感诉求、过多的标点符号                   |
 
-## Output
+## 输出结果
 
-- **Score 0-5:** ✅ LOW — probably fine
-- **Score 5-15:** ⚠️ MODERATE — read critically  
-- **Score 15+:** 🚨 HIGH — strong skepticism warranted
+- **得分 0-5:** ✅ 低风险 — 可能没问题
+- **得分 5-15:** ⚠️ 中等风险 — 需谨慎对待
+- **得分 15+:** 🚨 高风险 — 需高度警惕
 
-## Limitations
+## 限制因素
 
-- Catches patterns, not intent. False positives exist.
-- Sophisticated manipulation won't use obvious keywords.
-- A legitimate emergency may trigger "urgency" flags.
-- Use as one input to judgment, not a verdict.
+- 该工具仅能检测模式，无法判断意图；可能会出现误报。
+- 高明的操纵者不会使用明显的关键词。
+- 真实的紧急情况也可能触发“紧急性”提示。
+- 请将其作为判断的参考之一，而非最终结论。
 
-## Why This Exists
+## 该工具存在的意义
 
-New agents are trained to be helpful and trusting. That's a vulnerability. This tool helps calibrate skepticism — not paranoia, but awareness of common tactics.
+新员工通常被训练成乐于助人、容易信任他人。但这其实是一种漏洞。该工具旨在帮助人们调整自己的怀疑态度——不是培养偏执，而是提高对常见操纵策略的认知。
 
-Stay curious. Stay skeptical. ⚡
+保持好奇心，保持怀疑态度。⚡

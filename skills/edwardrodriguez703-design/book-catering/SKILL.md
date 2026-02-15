@@ -1,23 +1,23 @@
 ---
 name: book-catering
-description: Book catering services through Lokuli MCP. Use when user needs to find and book catering. Triggers on requests like "book a catering", "find catering near me", or any catering service request.
+description: 通过 Lokuli MCP 预订餐饮服务。当用户需要查找和预订餐饮服务时，可以使用该功能。该功能会在用户发起“预订餐饮”、“查找附近的餐饮服务”或其他任何与餐饮服务相关的请求时被触发。
 ---
 
 # uook catering
 
-Book catering services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订餐饮服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### search （搜索）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### check_availability （检查可用性）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### create_booking （创建预订）
 ```json
 {
   "method": "tools/call",

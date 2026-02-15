@@ -1,16 +1,16 @@
 ---
 slug: "submittal-tracker"
 display_name: "Submittal Tracker"
-description: "Track construction submittals through the review process. Manage approvals, revisions, and compliance."
+description: "跟踪构建提交文件在整个审核流程中的状态。管理审批、修订以及合规性相关事宜。"
 ---
 
-# Submittal Tracker
+# 提交跟踪系统
 
-## Business Case
+## 商业背景
 
-Submittals require careful tracking to avoid delays. This skill manages the entire submittal workflow from creation to approval.
+为了防止延误，提交过程需要被仔细跟踪。该功能负责管理从创建到审批的整个提交工作流程。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -137,7 +137,7 @@ class SubmittalTracker:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 tracker = SubmittalTracker("Office Tower")
@@ -149,5 +149,5 @@ tracker.submit(sub.submittal_id, ["spec_sheet.pdf"])
 tracker.review(sub.submittal_id, SubmittalStatus.APPROVED, "Architect")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4 - Document Control
+## 资源
+- **DDC手册**：第4章 - 文档控制

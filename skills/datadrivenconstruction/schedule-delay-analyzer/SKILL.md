@@ -1,12 +1,12 @@
 ---
 slug: "schedule-delay-analyzer"
 display_name: "Schedule Delay Analyzer"
-description: "Analyze schedule delays, identify causes, and calculate time impacts using delay analysis methods."
+description: "使用延迟分析方法来分析计划中的延误情况，确定延误原因，并计算这些延误对项目时间的影响。"
 ---
 
-# Schedule Delay Analyzer
+# 时间表延迟分析器
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -168,7 +168,7 @@ class ScheduleDelayAnalyzer:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 analyzer = ScheduleDelayAnalyzer("Office Tower", date(2024, 12, 31))
@@ -192,5 +192,5 @@ claim = analyzer.calculate_time_extension_claim()
 print(f"Recommended extension: {claim['recommended_extension']} days")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.3 - Schedule Management
+## 资源
+- **DDC手册**：第3.3章 - 时间表管理

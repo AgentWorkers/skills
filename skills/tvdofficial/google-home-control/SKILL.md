@@ -1,33 +1,33 @@
 ---
 name: google-home
-description: Control smart home devices (lights, TV, etc.) via the Google Assistant SDK. Use when the user wants to trigger home automation commands.
+description: 通过 Google Assistant SDK 控制智能家居设备（如灯光、电视等）。当用户希望触发家庭自动化命令时，可以使用此功能。
 author: Mathew Pittard (Mat)
 ---
 
-# Google Home Control (N.O.V.A.)
+# Google Home 控制（新功能）
 
-Created by: **Mathew Pittard (Mat)**  
-Portfolio: [mathewpittard.vercel.app](https://mathewpittard.vercel.app)
+创建者：**Mathew Pittard (Mat)**  
+个人作品集：[mathewpittard.vercel.app](https://mathewpittard.vercel.app)
 
-This skill allows **Clawdbot** to control your smart home devices (lights, TVs, appliances) directly using a Python-based bridge to the Google Assistant SDK.
+此技能允许 **Clawdbot** 通过基于 Python 的桥接层直接使用 Google Assistant SDK 来控制您的智能家居设备（灯光、电视、家电等）。
 
-## 🛠️ Step-by-Step Setup
+## 🛠️ 分步设置
 
-To get this skill working, you'll need to link it to your own Google account. Follow these steps:
+要使此技能正常工作，您需要将其与自己的 Google 账户关联。请按照以下步骤操作：
 
-### 1. Create a Google Cloud Project
-1.  Go to the [Google Cloud Console](https://console.developers.google.com/).
-2.  Create a new project (e.g., "My Smart Home").
-3.  Enable the **Google Assistant API**.
+### 1. 创建一个 Google Cloud 项目
+1. 访问 [Google Cloud 控制台](https://console.developers.google.com/)。
+2. 创建一个新项目（例如：“My Smart Home”）。
+3. 启用 **Google Assistant API**。
 
-### 2. Configure OAuth
-1.  Go to **APIs & Services > Credentials**.
-2.  Configure your **OAuth Consent Screen** (set User Type to "External" and add yourself as a test user).
-3.  Create an **OAuth 2.0 Client ID** with the type **Desktop app**.
-4.  Download the JSON file and rename it to `client_secret.json`.
+### 2. 配置 OAuth
+1. 转到 **APIs & Services > Credentials**。
+2. 配置您的 **OAuth 同意页面**（将用户类型设置为“External”，并将自己添加为测试用户）。
+3. 创建一个类型为 **Desktop app** 的 **OAuth 2.0 客户端 ID**。
+4. 下载 JSON 文件，并将其重命名为 `client_secret.json`。
 
-### 3. Prepare the Python Environment
-This skill requires a Python virtual environment with specific dependencies:
+### 3. 准备 Python 环境
+此技能需要一个包含特定依赖项的 Python 虚拟环境：
 ```bash
 # Create and activate environment
 python3 -m venv google_home_env
@@ -37,22 +37,22 @@ source google_home_env/bin/activate
 pip install google-assistant-sdk[samples] google-auth-oauthlib[tool] tenacity
 ```
 
-### 4. Authorize and Generate Credentials
-Run the following command in your terminal to authorize the SDK:
+### 4. 授权并生成凭证
+在终端中运行以下命令以授权 SDK：
 ```bash
 google-oauthlib-tool --client-secrets /path/to/your/client_secret.json --scope https://www.googleapis.com/auth/assistant-sdk-prototype --save
 ```
-*   This will open a browser window. Log in and grant permissions.
-*   It will save a `credentials.json` file to `~/.config/google-oauthlib-tool/credentials.json`.
+*   这将打开一个浏览器窗口。登录并授予权限。
+*   系统会将生成的凭证文件保存到 `~/.config/google-oauthlib-tool/credentials.json`。
 
-### 5. Final Configuration
-Ensure the `google_home_env` is accessible to Clawdbot. When Clawdbot runs the skill, it will look for your credentials in the standard `~/.config` path automatically.
+### 5. 最终配置
+确保 Clawdbot 可以访问 `google_home_env` 环境。当 Clawdbot 运行此技能时，它会自动在标准的 `~/.config` 路径下查找您的凭证文件。
 
 ---
 
-## 🚀 Usage
-Simply tell the agent what to do:
-- "Turn off the office lights."
-- "Set the TV volume to 20."
+## 🚀 使用方法
+只需告诉代理您想要执行的操作：
+- “关闭办公室的灯光。”
+- “将电视音量设置为 20。”
 
-The agent will use the `control.py` script inside this skill to execute the command via Google Assistant.
+代理将使用此技能中的 `control.py` 脚本来通过 Google Assistant 执行相应的命令。

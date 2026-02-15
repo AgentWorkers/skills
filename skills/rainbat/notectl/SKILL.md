@@ -1,24 +1,24 @@
 ---
 name: notectl
-description: Manage Apple Notes via AppleScript CLI
+description: 通过 AppleScript CLI 管理 Apple Notes
 ---
 
-# notectl - Apple Notes CLI
+# notectl - Apple Notes 命令行工具
 
-Manage Apple Notes from the command line using AppleScript.
+使用 AppleScript 通过命令行管理 Apple Notes。
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `notectl folders` | List all folders with note counts |
-| `notectl list [folder]` | List notes in a folder (default: Notes) |
-| `notectl show <title>` | Show note content by title |
-| `notectl add <title>` | Create a new note |
-| `notectl search <query>` | Search notes by title or content |
-| `notectl append <title>` | Append text to an existing note |
+| `notectl folders` | 列出所有包含笔记的文件夹 |
+| `notectl list [folder]` | 列出指定文件夹中的笔记（默认文件夹：Notes） |
+| `notectl show <title>` | 按标题显示笔记内容 |
+| `notectl add <title>` | 创建新笔记 |
+| `notectl search <query>` | 按标题或内容搜索笔记 |
+| `notectl append <title>` | 向现有笔记中添加文本 |
 
-## Examples
+## 示例
 
 ```bash
 # List all folders
@@ -46,23 +46,23 @@ notectl search "API"
 notectl append "Daily Log" --text "- Completed feature X"
 ```
 
-## Options for `add`
+## `add` 命令的选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `-f, --folder <name>` | Folder to create note in | Notes |
-| `-b, --body <text>` | Note body content | empty |
+| `-f, --folder <name>` | 创建笔记的文件夹 | Notes |
+| `-b, --body <text>` | 笔记内容 | 空 |
 
-## Options for `append`
+## `append` 命令的选项
 
-| Option | Description |
-|--------|-------------|
-| `-t, --text <text>` | Text to append to the note |
+| 选项 | 描述 | |
+|--------|-------------|---------|
+| `-t, --text <text>` | 要添加到笔记中的文本 |
 
-## Available Folders
+## 可用的文件夹
 
-Folders on this system:
-- Notes (default)
+本系统上的可用文件夹：
+- Notes（默认文件夹）
 - research
 - rainbat-projects
 - Papi

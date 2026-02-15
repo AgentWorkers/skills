@@ -1,25 +1,19 @@
 ---
 name: lnd
-description: Install and run Lightning Terminal (litd) which bundles lnd, loop, pool, tapd, and faraday in a single Docker container. Defaults to neutrino backend with SQLite storage on testnet. Supports watch-only mode with remote signer, standalone mode, and regtest development. Use when setting up a Lightning node for payments, channel management, liquidity management (loop), channel marketplace (pool), taproot assets (tapd), or enabling agent L402 commerce.
+description: 安装并运行 Lightning Terminal (litd)——该工具将 lnd、loop、pool、tapd 和 faraday 集合在一个 Docker 容器中。默认使用 neutrino 后端，并在测试网络 (testnet) 上采用 SQLite 作为存储方式。支持仅查看模式 (watch-only mode) 以及远程签名器 (remote signer) 的功能；同时具备独立运行模式 (standalone mode) 和用于 Regtest 开发的功能。适用于设置 Lightning 节点以进行支付、通道管理、流动性管理 (loop)、通道市场 (pool)、Taproot 资产管理 (tapd)，或启用 L402 商业功能。
 ---
 
-# Lightning Terminal (litd) — Lightning Network Node
+# Lightning Terminal (litd) — Lightning Network 节点
 
-Install and operate a Lightning Terminal (litd) node for agent-driven payments.
-litd bundles lnd with loop, pool, tapd, and faraday — giving agents access to
-liquidity management, channel marketplace, and taproot assets in a single
-container.
+安装并运行 Lightning Terminal (litd) 节点，以实现代理驱动的支付功能。litd 将 lnd 与 loop、pool、tapd 和 faraday 集成在一起，使代理能够在一个容器中访问流动性管理、通道市场以及 Taproot 资产。
 
-**Default:** Docker container, neutrino backend, SQLite storage, testnet. No full
-Bitcoin node required. Use `--network mainnet` for real coins.
+**默认配置：** 使用 Docker 容器、neutrino 后端、SQLite 数据库，并连接到测试网络 (testnet)。无需完整的 Bitcoin 节点。如需使用主网络 (mainnet)，请使用 `--network mainnet` 参数。
 
-**Default mode: watch-only with remote signer.** Private keys stay on a separate
-signer container — the agent never touches key material. For quick testing, use
-`--mode standalone` (keys on disk, less secure).
+**默认模式：** 仅用于监控 (watch-only)，签名操作由远程签名器 (remote signer) 完成。私钥存储在单独的签名器容器中，代理无法直接访问这些私钥。如需快速测试，可使用 `--mode standalone` 模式（私钥存储在本地磁盘上，但安全性较低）。
 
-## Quick Start (Container — Recommended)
+## 快速入门（推荐使用容器）
 
-### Watch-Only with Remote Signer (Production)
+### 仅用于监控（生产环境）
 
 ```bash
 # 1. Install litd image
@@ -39,7 +33,7 @@ skills/lnd/scripts/create-wallet.sh
 skills/lnd/scripts/lncli.sh getinfo
 ```
 
-### Standalone (Testing Only)
+### 独立运行（仅用于测试）
 
 ```bash
 # 1. Install litd image
@@ -55,10 +49,9 @@ skills/lnd/scripts/create-wallet.sh --mode standalone
 skills/lnd/scripts/lncli.sh getinfo
 ```
 
-> **Warning:** Standalone mode stores the seed mnemonic and wallet passphrase on
-> disk. Do not use for mainnet funds you cannot afford to lose.
+> **警告：** 独立运行模式会将助记词 (seed mnemonic) 和钱包密码存储在本地磁盘上。请勿在主网络环境中使用此模式，因为丢失这些信息可能导致资金损失。
 
-### Regtest Development
+### Regtest 开发模式
 
 ```bash
 # Start litd + bitcoind for local development
@@ -69,17 +62,17 @@ skills/lnd/scripts/create-wallet.sh --container litd --mode standalone
 docker exec litd-bitcoind bitcoin-cli -regtest -generate 101
 ```
 
-## Container Modes
+## 容器运行模式
 
-| Mode | Command | Containers | Use Case |
-|------|---------|-----------|----------|
-| Standalone | `start-lnd.sh` | litd | Testing, development |
-| Watch-only | `start-lnd.sh --watchonly` | litd + litd-signer | Production |
-| Regtest | `start-lnd.sh --regtest` | litd + litd-bitcoind | Local dev |
+| 模式          | 命令                | 容器组成              | 适用场景                |
+|---------------|------------------|------------------|----------------------|
+| 独立运行        | `start-lnd.sh`         | litd                | 测试、开发                |
+| 仅用于监控       | `start-lnd.sh --watchonly`     | litd + litd-signer         | 生产环境                |
+| Regtest        | `start-lnd.sh --regtest`     | litd + litd-bitcoind         | 本地开发环境              |
 
-## Profiles
+## 配置文件（Profiles）
 
-Profiles customize litd behavior without editing compose files:
+配置文件允许在不修改原始 compose 文件的情况下自定义 litd 的行为：
 
 ```bash
 # List available profiles
@@ -90,17 +83,17 @@ skills/lnd/scripts/start-lnd.sh --profile taproot
 skills/lnd/scripts/start-lnd.sh --profile debug
 ```
 
-| Profile | Purpose |
-|---------|---------|
-| `default` | Standard operation (info logging) |
-| `debug` | Trace logging, verbose subsystems |
-| `taproot` | Simple taproot channels enabled |
-| `wumbo` | Large channels up to 10 BTC |
-| `regtest` | Regtest network preset |
+| 配置文件名     | 功能                        |
+|--------------|-------------------------|
+| `default`      | 标准运行模式                    |
+| `debug`      | 详细日志记录                  |
+| `taproot`      | 启用简单的 Taproot 通道           |
+| `wumbo`      | 支持最大 10 BTC 的大容量通道         |
+| `regtest`      | 配置为 Regtest 网络环境         |
 
-## Network Selection
+## 网络选择
 
-Default is testnet. Override with `--network`:
+默认使用测试网络 (testnet)。可通过 `--network` 参数进行更改：
 
 ```bash
 # Testnet (default — no real coins)
@@ -113,9 +106,9 @@ skills/lnd/scripts/start-lnd.sh --network mainnet --watchonly
 skills/lnd/scripts/start-lnd.sh --network signet
 ```
 
-## litd Sub-Daemons
+## litd 的子进程（Sub-Daemons）
 
-litd integrates multiple daemons. Access them via the `--cli` flag:
+litd 包含多个子进程，可以通过 `--cli` 参数进行管理：
 
 ```bash
 # lnd CLI (default)
@@ -137,29 +130,21 @@ skills/lnd/scripts/lncli.sh --cli litcli getinfo
 skills/lnd/scripts/lncli.sh --cli frcli revenue
 ```
 
-## Installation
+## 安装
 
-Default: pulls the litd Docker image.
+默认情况下，litd 会从 Docker Hub 下载 `lightninglabs/lightning-terminal:v0.16.0-alpha` 镜像，并对其进行验证。该镜像包含了 lncli、litcli、loop、pool 和 frcli 等组件。
 
-```bash
-skills/lnd/scripts/install.sh
-```
-
-This pulls `lightninglabs/lightning-terminal:v0.16.0-alpha` from Docker Hub and
-verifies the image. The litd image includes lncli, litcli, loop, pool, tapcli,
-and frcli.
-
-### Build from Source (Fallback)
+### 从源代码构建（备用方案）
 
 ```bash
 skills/lnd/scripts/install.sh --source
 ```
 
-Requires Go toolchain. Builds lnd and lncli with all build tags.
+需要 Go 开发环境。可以从源代码构建 lnd 和 lncli，并设置相应的构建标签。
 
-## Native Mode
+## 本地运行模式（Native Mode）
 
-For running without Docker, use `--native`:
+如需不使用 Docker 运行 litd，可使用 `--native` 参数：
 
 ```bash
 # Start natively
@@ -169,12 +154,11 @@ skills/lnd/scripts/start-lnd.sh --native --mode standalone
 skills/lnd/scripts/stop-lnd.sh --native
 ```
 
-Native mode uses the config template at `skills/lnd/templates/lnd.conf.template`
-and runs lnd as a background process.
+本地运行模式会使用 `skills/lnd/templates/lnd.conf.template` 配置文件，并将 lnd 作为后台进程运行。
 
-## Remote Nodes
+## 远程节点连接
 
-Connect to a remote lnd node with connection credentials:
+可以使用连接凭据连接到远程的 lnd 节点：
 
 ```bash
 skills/lnd/scripts/lncli.sh \
@@ -186,10 +170,7 @@ skills/lnd/scripts/lncli.sh \
 
 ## MCP / Lightning Node Connect
 
-For read-only access without direct gRPC connectivity, use the
-`lightning-mcp-server` skill with Lightning Node Connect (LNC). LNC uses
-encrypted WebSocket tunnels — no TLS certs, macaroons, or open ports needed.
-Just a pairing phrase from Lightning Terminal.
+如需仅进行读取操作（无需直接使用 gRPC），可以使用 `lightning-mcp-server` 技能与 Lightning Node Connect (LNC) 连接。LNC 支持加密的 WebSocket 隧道，无需 TLS 证书、macaroons 或开放端口，只需提供 Lightning Terminal 提供的配对短语即可。
 
 ```bash
 skills/lightning-mcp-server/scripts/install.sh
@@ -197,12 +178,11 @@ skills/lightning-mcp-server/scripts/configure.sh
 skills/lightning-mcp-server/scripts/setup-claude-config.sh
 ```
 
-## Wallet Setup
+## 钱包设置
 
-### Watch-Only Wallet (Default)
+### 仅用于监控的钱包（默认配置）
 
-Imports account xpubs from the remote signer — no seed or private keys on this
-machine.
+从远程签名器导入账户的公钥（xpub），本地设备上不存储助记词或私钥：
 
 ```bash
 # Import credentials bundle from signer
@@ -212,41 +192,35 @@ skills/lnd/scripts/import-credentials.sh --bundle <credentials-bundle>
 skills/lnd/scripts/create-wallet.sh
 ```
 
-### Standalone Wallet
+### 独立运行的钱包
 
-Generates a seed locally. Use only for testing.
+在本地生成助记词，仅用于测试环境。
 
 ```bash
 skills/lnd/scripts/create-wallet.sh --mode standalone
 ```
 
-Handles the full wallet creation flow via REST API:
-1. Generates a secure random wallet passphrase
-2. Calls `/v1/genseed` to generate a 24-word seed mnemonic
-3. Calls `/v1/initwallet` with the passphrase and seed
-4. Stores credentials securely:
-   - `~/.lnget/lnd/wallet-password.txt` (mode 0600)
-   - `~/.lnget/lnd/seed.txt` (mode 0600)
+钱包的创建流程通过 REST API 完成：
+1. 生成安全的随机密码短语
+2. 调用 `/v1/genseed` 生成 24 个字符的助记词
+3. 使用密码短语和助记词调用 `/v1/initwallet` 函数
+4. 安全存储凭据：
+   - `~/.lnget/lnd/wallet-password.txt`（权限设置为 0600）
+   - `~/.lnget/lnd/seed.txt`（权限设置为 0600）
 
-### Unlock Wallet
+### 解锁钱包
 
-```bash
-skills/lnd/scripts/unlock-wallet.sh
-```
+默认情况下，容器会自动解锁钱包（通过 `--wallet-unlock-password-file` 参数）。只有在自动解锁功能被禁用时才需要手动解锁。
 
-Auto-unlock is enabled by default in the container via
-`--wallet-unlock-password-file`. Manual unlock is only needed if auto-unlock
-is disabled.
-
-### Recover Wallet from Seed (Standalone Only)
+### 从助记词恢复钱包（仅适用于独立运行模式）
 
 ```bash
 skills/lnd/scripts/create-wallet.sh --mode standalone --recover --seed-file ~/.lnget/lnd/seed.txt
 ```
 
-## Starting and Stopping
+## 启动与停止
 
-### Start
+### 启动 litd
 
 ```bash
 # Docker standalone (default)
@@ -262,7 +236,7 @@ skills/lnd/scripts/start-lnd.sh --profile taproot
 skills/lnd/scripts/start-lnd.sh --network mainnet
 ```
 
-### Stop
+### 停止 litd
 
 ```bash
 # Stop (preserve data)
@@ -275,11 +249,11 @@ skills/lnd/scripts/stop-lnd.sh --clean
 skills/lnd/scripts/stop-lnd.sh --all
 ```
 
-## Node Operations
+## 节点操作
 
-All commands auto-detect the litd container:
+所有相关命令都能自动识别 litd 容器。
 
-### Node Info
+### 节点信息
 
 ```bash
 skills/lnd/scripts/lncli.sh getinfo
@@ -287,14 +261,14 @@ skills/lnd/scripts/lncli.sh walletbalance
 skills/lnd/scripts/lncli.sh channelbalance
 ```
 
-### Funding
+### 资金注入（Funding）
 
 ```bash
 skills/lnd/scripts/lncli.sh newaddress p2tr
 skills/lnd/scripts/lncli.sh walletbalance
 ```
 
-### Channel Management
+### 通道管理
 
 ```bash
 skills/lnd/scripts/lncli.sh connect <pubkey>@<host>:9735
@@ -303,7 +277,7 @@ skills/lnd/scripts/lncli.sh listchannels
 skills/lnd/scripts/lncli.sh closechannel --funding_txid=<txid> --output_index=<n>
 ```
 
-### Payments
+### 支付操作
 
 ```bash
 skills/lnd/scripts/lncli.sh addinvoice --amt=1000 --memo="test payment"
@@ -312,9 +286,9 @@ skills/lnd/scripts/lncli.sh sendpayment --pay_req=<bolt11_invoice>
 skills/lnd/scripts/lncli.sh listpayments
 ```
 
-### Macaroon Bakery
+### 使用 `macaroon-bakery` 技能
 
-Use the `macaroon-bakery` skill for least-privilege agent credentials:
+`macaroon-bakery` 技能允许代理使用最低权限进行操作：
 
 ```bash
 skills/macaroon-bakery/scripts/bake.sh --role pay-only
@@ -322,74 +296,71 @@ skills/macaroon-bakery/scripts/bake.sh --role invoice-only
 skills/macaroon-bakery/scripts/bake.sh --inspect <path-to-macaroon>
 ```
 
-## Configuration
+## 配置设置
 
-### Container Config
+### 容器配置
 
-The Docker compose templates pass configuration via command-line arguments. For
-advanced customization, mount a custom `litd.conf`:
+Docker compose 模板通过命令行参数传递配置信息。如需进行高级定制，可以挂载自定义的 `litd.conf` 文件：
+- **litd 配置文件：** `skills/lnd/templates/litd.conf.template`
+- **lnd 配置文件（本地运行模式）：** `skills/lnd/templates/lnd.conf.template`
 
-- **litd template:** `skills/lnd/templates/litd.conf.template`
-- **lnd template (native):** `skills/lnd/templates/lnd.conf.template`
+**注意：** 在 lnd 的配置参数前需要加上 `lnd.` 前缀（例如 `lnd.bitcoin.active`）。独立运行的 lnd 不需要使用此前缀。
 
-Note: litd requires `lnd.` prefix for lnd flags (e.g., `lnd.bitcoin.active`).
-Standalone lnd does not use the prefix.
+### 默认配置参数
 
-### Key Defaults
+- **后端服务：** neutrino（BIP 157/158 轻量级客户端）
+- **数据库：** SQLite
+- **网络：** 测试网络（可通过 `--network mainnet` 修改）
+- **自动解锁：** 通过密码文件启用
 
-- **Backend:** neutrino (BIP 157/158 light client)
-- **Database:** SQLite
-- **Network:** testnet (override with `--network mainnet`)
-- **Auto-unlock:** enabled via password file
+## 容器命名与端口设置
 
-## Container Naming & Ports
+| 容器名称       | 功能                          | 使用的端口                |
+|--------------|------------------|----------------------|
+| `litd`         | 主 Lightning Terminal            | 8443, 10009, 9735, 8080         |
+| `litd-signer`     | 远程签名器容器                | 10012, 10013               |
+| `litd-bitcoind`     | Bitcoin Core（仅用于 Regtest 环境）    | 18443, 28332, 28333            |
 
-| Container | Purpose | Ports |
-|-----------|---------|-------|
-| `litd` | Main Lightning Terminal | 8443, 10009, 9735, 8080 |
-| `litd-signer` | Remote signer (lnd) | 10012, 10013 |
-| `litd-bitcoind` | Bitcoin Core (regtest only) | 18443, 28332, 28333 |
+## 端口说明
 
-### Port Reference
+| 端口           | 服务                          | 功能描述                        |
+|---------------|------------------|-----------------------------------|
+| 8443          | Lightning Terminal 用户界面        | Web 界面                          |
+| 9735          | Lightning Network             | 对等点对点通信                    |
+| 10009          | lncli 和程序化接口                | 用于与 lnd 通信                   |
+| 8080          | REST API                        | 钱包管理等接口                      |
+| 10012          | 远程签名器 RPC                    | 用于与签名器通信                   |
+| 10013          | 远程签名器 REST API                | 用于与签名器通信                   |
 
-| Port  | Service   | Description                    |
-|-------|-----------|--------------------------------|
-| 8443  | litd UI   | Lightning Terminal web UI      |
-| 9735  | Lightning | Peer-to-peer Lightning Network |
-| 10009 | gRPC      | lncli and programmatic access  |
-| 8080  | REST      | REST API (wallet, etc.)        |
-| 10012 | Signer gRPC | Remote signer RPC            |
-| 10013 | Signer REST | Signer REST API              |
+## 文件位置
 
-## File Locations
+| 文件路径        | 功能                          | 说明                          |
+|----------------|------------------|--------------------------------------------|
+| `~/.lnget/lnd/wallet-password.txt` | 钱包解锁密码（权限设置为 0600）          |
+| `~/.lnget/lnd/seed.txt` | 24 个字符的助记词备份文件（仅适用于独立运行模式） |
+| `~/.lnget/lnd/signer-credentials/` | 远程签名器的凭据文件（仅用于监控模式）     |
+| `versions.env`     | 容器镜像版本信息                  |
+| `skills/lnd/templates/`     | Docker compose 和配置文件模板           |
+| `skills/lnd/profiles/`     | 配置文件模板                      |
 
-| Path | Purpose |
-|------|---------|
-| `~/.lnget/lnd/wallet-password.txt` | Wallet unlock passphrase (0600) |
-| `~/.lnget/lnd/seed.txt` | 24-word mnemonic backup (0600, standalone only) |
-| `~/.lnget/lnd/signer-credentials/` | Imported signer credentials (watch-only) |
-| `versions.env` | Pinned container image versions |
-| `skills/lnd/templates/` | Docker compose and config templates |
-| `skills/lnd/profiles/` | Profile .env files |
+## 镜像版本管理
 
-## Version Pinning
-
-Container image versions are pinned in `versions.env` at the repo root:
+容器镜像的版本信息存储在仓库根目录下的 `versions.env` 文件中：
 
 ```bash
 LITD_VERSION=v0.16.0-alpha
 LND_VERSION=v0.20.0-beta
 ```
 
-Override at runtime:
+运行时也可以手动修改版本信息：
 
 ```bash
 LITD_VERSION=v0.17.0-alpha skills/lnd/scripts/start-lnd.sh
 ```
 
-## Integration with lnget
+## 与 lnget 的集成
 
-Once litd is running with a funded wallet and open channels:
+在 litd 正常运行且钱包已充值、通道已建立的情况下，可以与其进行集成：
 
 ```bash
 lnget config init
@@ -397,44 +368,44 @@ lnget ln status
 lnget --max-cost 1000 https://api.example.com/paid-data
 ```
 
-## Security Considerations
+## 安全性注意事项
 
-See [references/security.md](references/security.md) for detailed guidance.
+请参阅 [references/security.md](references/security.md) 以获取详细的安全指南。
 
-**Default model (watch-only with remote signer):**
-- No seed or private keys on the agent machine
-- Signing delegated to signer container via gRPC
-- Set up with the `lightning-security-module` skill
+**默认配置（仅用于监控，使用远程签名器）：**
+- 代理设备上不存储助记词或私钥
+- 签名操作由远程签名器容器通过 gRPC 完成
+- 需要使用 `lightning-security-module` 技能进行安全配置
 
-**Standalone model (testing only):**
-- Wallet passphrase and seed stored on disk (0600)
-- Suitable for testnet and quick testing
+**独立运行模式（仅用于测试）：**
+- 钱包密码和助记词存储在本地磁盘上
+- 适用于测试环境和快速测试
 
-**Macaroon security:**
-- Never give agents the admin macaroon in production
-- Bake scoped macaroons with the `macaroon-bakery` skill
+**关于 Macaroon 的安全性：**
+- 在生产环境中严禁将管理员权限的 macaroon 提供给代理
+- 使用 `macaroon-bakery` 技能生成受限权限的 macaroon
 
-## Troubleshooting
+## 常见问题解决方法
 
-### "wallet not found"
-Run `skills/lnd/scripts/create-wallet.sh` to create the wallet.
+### “钱包未找到”
+运行 `skills/lnd/scripts/create-wallet.sh` 命令来创建钱包。
 
-### "wallet locked"
-Run `skills/lnd/scripts/unlock-wallet.sh`. Auto-unlock is enabled by default.
+### “钱包被锁定”
+运行 `skills/lnd/scripts/unlock-wallet.sh` 命令。默认情况下钱包是自动解锁的。
 
-### "chain backend is still syncing"
-Neutrino needs time to sync headers:
+### “链后端仍在同步”
+Neutrino 需要时间来同步数据：
+
 ```bash
 skills/lnd/scripts/lncli.sh getinfo | jq '{synced_to_chain, block_height}'
 ```
 
-### Container not starting
-```bash
-docker logs litd
-docker logs litd-signer
-```
+### 容器无法启动
+检查 Docker 配置和网络连接是否正确。
 
-### "remote signer not reachable"
+### “无法连接到远程签名器”
+确认远程签名器的地址和端口是否正确设置。
+
 ```bash
 docker ps | grep litd-signer
 docker logs litd-signer

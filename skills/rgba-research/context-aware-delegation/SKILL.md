@@ -1,6 +1,6 @@
 ---
 name: context-aware-delegation
-description: Give isolated sessions (cron jobs, sub-agents, event handlers) full conversation context from your main session using sessions_history. Run cheap background tasks (Haiku) with expensive context (Sonnet-level awareness) — best of both worlds.
+description: 使用 `sessions_history` 为孤立的会话（如 Cron 作业、子代理、事件处理器）提供来自主会话的完整对话上下文。这样可以在后台执行成本较低的任务（如 Haiku），同时仍能享受到高级别的上下文感知（类似 Sonnet 级别的处理能力）——实现了两全其美的效果。
 homepage: https://gitlab.com/rgba_research/context-aware-delegation
 author: RGBA Research
 metadata:
@@ -13,99 +13,80 @@ metadata:
   }
 ---
 
-# Context-Aware Delegation
-## (aka "SmartBeat")
+# 上下文感知的委托机制  
+## （又称“SmartBeat”）  
 
-**Problem:** Isolated sessions (cron jobs, sub-agents) can't see your main session conversation history. They're cheap (use Haiku) but blind to context.
+**问题：** 隔离会话（如定时任务、子代理）无法查看主会话的对话历史记录。虽然这些隔离会话的成本较低（可以使用Haiku工具），但它们无法了解上下文信息。  
 
-**Solution:** Use `sessions_history` to give isolated sessions full awareness of what happened in your main chat — at a fraction of the cost of running everything in main session.
+**解决方案：** 使用`sessions_history`功能，让隔离会话能够全面了解主会话中的所有对话内容——而且成本仅为在主会话中执行相同操作的几分之一。  
 
-## Quick Start
+## 快速入门  
 
-### Morning Report Example
+### 早晨报告示例  
+您需要一份每日报告，其中包含“昨晚完成了哪些工作”——但在主会话中使用Sonnet工具生成这样的报告需要约0.30美元的成本。而使用Haiku工具的隔离会话虽然成本仅约0.03美元，但无法查看对话历史记录。  
 
-You want a daily report that includes "what we accomplished last night" — but running that in main session with Sonnet costs ~$0.30/report. Using an isolated session with Haiku costs ~$0.03, but can't see conversation history.
+**解决方案：** 隔离会话首先会查询主会话的历史记录。  
 
-**Solution:** Isolated session queries main session history first.
+**成本：** 使用Haiku工具约0.03美元（比使用Sonnet工具便宜10倍）  
+**优势：** 可全面了解整个晚上的工作内容。  
 
-```javascript
-// Inside your cron payload.message:
-"1. Query main session history: sessions_history('agent:main:telegram:direct:{userId}', limit=50)
-2. Read memory files: memory/YYYY-MM-DD.md
-3. Fetch weather for Austin 78721
-4. Generate report combining:
-   - Recent conversation highlights
-   - Memory file summaries
-   - Current conditions
-5. Send via Telegram + email"
-```
+## 模式概述  
 
-**Cost:** ~$0.03 with Haiku (10x cheaper than Sonnet main session)
-**Context:** Full awareness of overnight work
-
-## Pattern Overview
-
-### 1. Identify Main Session Key
-
+### 1. 确定主会话的标识符  
 ```bash
 # List sessions to find main
 sessions_list(limit=10)
 # Typical main session key format:
 # agent:main:telegram:direct:{userId}
 # agent:main:main
-```
+```  
 
-### 2. Query History from Isolated Session
-
+### 2. 从隔离会话中查询历史记录  
 ```javascript
 // In cron job, sub-agent, or event handler:
 sessions_history({
   sessionKey: "agent:main:telegram:direct:8264585335",
   limit: 50  // Last 50 messages
 })
-```
+```  
+即使处于隔离会话中，也能获取对话历史记录。  
 
-Returns conversation history even though you're in an isolated session.
+### 3. 结合上下文信息执行任务  
+现在，隔离会话具备了以下功能：  
+- ✅ 对话历史记录（讨论的内容）  
+- ✅ 持久性记忆文件（保存的笔记）  
+- ✅ 低成本的工具（Haiku）  
+- ✅ 完整的工具访问权限  
 
-### 3. Use Context + Execute Task
+## 使用场景  
 
-Your isolated session now has:
-- ✅ Conversation history (what was discussed)
-- ✅ Memory files (persistent notes)
-- ✅ Cheap model (Haiku)
-- ✅ Full tool access
-
-## Use Cases
-
-### Cron Jobs with Context
-
-**Morning reports:**
+### 带有上下文的定时任务  
+**早晨报告：**  
 ```bash
 Schedule: 8 AM daily
 Model: Haiku (~$0.03/run)
 Task: Read overnight work, check email, send summary
 Context: Last 50 messages from main session
-```
+```  
 
-**End-of-day summaries:**
+**每日总结：**  
 ```bash
 Schedule: 9 PM daily
 Model: Haiku
 Task: What got done today? What's pending?
 Context: Today's full conversation
-```
+```  
 
-**Periodic check-ins:**
+**定期检查：**  
 ```bash
 Schedule: Every 2 hours (9 AM - 9 PM)
 Model: Haiku
 Task: Anything urgent in email/calendar?
 Context: Recent discussion about priorities
-```
+```  
 
-### Sub-Agent Delegation
-
-**Background builds:**
+### 子代理的委托机制  
+**后台构建任务：**  
 ```javascript
 sessions_spawn({
   task: "Build the AREF product page based on our discussion",
@@ -113,73 +94,59 @@ sessions_spawn({
   // In the task prompt:
   // "First, query main session history to see our conversation about AREF requirements..."
 })
-```
+```  
 
-**Research tasks:**
+**研究任务：**  
 ```javascript
 sessions_spawn({
   task: "Research Unreal Engine integration patterns. Reference our earlier discussion about AREF goals.",
   model: "haiku"
 })
-```
+```  
 
-### Event-Driven Handlers
-
-**Webhook arrives → isolated session handles it:**
+### 基于事件的处理器  
+**Webhook触发 → 由隔离会话处理：**  
 ```javascript
 // Webhook payload triggers isolated session
 // Session logic:
 "1. Query main session to see: what did J and I agree about this client?
 2. Process webhook based on that context
 3. Take action or notify"
-```
+```  
 
-## Cost Comparison
+## 成本对比  
+| 方法 | 工具 | 上下文支持 | 每次执行成本 | 适用场景 |  
+|----------|-------|---------|----------|-------------|  
+| 主会话 | Sonnet | 完整上下文支持 | 约0.30美元 | 复杂的交互式任务 |  
+| 隔离会话（无上下文支持） | Haiku | 无上下文支持 | 约0.03美元 | 简单的定时任务 |  
+| **上下文感知的委托机制** | Haiku | 完整上下文支持 | 约0.03美元 | 需要上下文的后台任务 |  
 
-| Approach | Model | Context | Cost/Run | When to Use |
-|----------|-------|---------|----------|-------------|
-| Main session | Sonnet | Full | ~$0.30 | Complex interactive work |
-| Isolated (blind) | Haiku | None | ~$0.03 | Simple scheduled tasks |
-| **Context-aware delegation** | **Haiku** | **Full** | **~$0.03** | **Background tasks needing context** |
+**节省成本：** 比使用主会话便宜约10倍，同时仍能保持完整的上下文信息。  
 
-**Savings:** ~10x cheaper than main session, with same context awareness.
+## 实现技巧  
 
-## Implementation Tips
-
-### Finding Your Main Session Key
-
+### 如何找到主会话的标识符  
 ```javascript
 sessions_list({ kinds: ["main"], limit: 5 })
 // Or:
 sessions_list({ limit: 10 })
 // Look for: agent:main:telegram:direct:{yourUserId}
-```
+```  
 
-### How Much History?
+### 需要查询多少历史记录？  
+- **10条消息：** 仅显示最近的对话内容（约2KB）  
+- **50条消息：** 昨几小时的工作记录（约10KB）  
+- **100条消息：** 全天的或跨会话的对话记录（约20KB）  
+根据实际需求进行调整。  
 
-- **10 messages:** Just recent context (~2KB)
-- **50 messages:** Last few hours of work (~10KB)
-- **100 messages:** Full day or multi-session context (~20KB)
+### 结合历史记录与记忆文件  
+最佳效果来自：  
+1. **会话历史记录**：最近的交互式对话内容  
+2. **记忆文件**：保存的决策和笔记  
 
-Start with 50, adjust based on needs.
-
-### Combining History + Memory
-
-Best results come from:
-1. **Sessions history:** Recent interactive work
-2. **Memory files:** Persistent decisions/notes
-
-```javascript
-"1. sessions_history(limit=30) → what we discussed today
-2. read memory/2026-02-13.md → decisions logged
-3. Combine both sources for complete picture"
-```
-
-## Morning Report Recipe
-
-Complete example for daily morning report:
-
-**Cron Job Setup:**
+**早晨报告示例**  
+完整的每日早晨报告生成流程：  
+**定时任务设置：**  
 ```javascript
 {
   schedule: { kind: "cron", expr: "0 8 * * *", tz: "America/Chicago" },
@@ -207,73 +174,57 @@ Send to Telegram (8264585335) and email using message tool.`
   },
   delivery: { mode: "announce", to: "8264585335", channel: "telegram" }
 }
-```
+```  
+**成本：** 每份报告约0.03美元（每月约1美元）  
+**上下文支持：** 全面的夜间工作记录  
+**执行时间：** 每天上午8点  
 
-**Cost:** ~$0.03/report (~$1/month)
-**Context:** Full overnight work awareness
-**Timing:** Exact (8 AM every day)
+## 限制因素  
 
-## Limitations
+**历史记录的截断：**  
+- `sessions_history`仅返回有限的内容（通常是最近N条消息）  
+- 非常长的消息可能会被截断  
+- 对于长期保存的记录，需依赖记忆文件  
 
-**History truncation:**
-- `sessions_history` returns limited content (typically last N messages)
-- Very long messages may be truncated
-- For deep archives, rely on memory files
+**注意事项：**  
+- **主会话必须存在**：如果主会话是新创建的（没有消息），则历史记录为空  
+- 隔离会话只能读取历史记录，无法创建新的历史记录  
+- **非实时性：** 历史记录反映的是查询时的状态；如果主会话正在运行中，最新的消息可能不会立即显示  
 
-**Main session must exist:**
-- If main session is brand new (no messages), history is empty
-- Isolated sessions can't create main session history, only read it
+**最佳实践：**  
+1. **编写详细的记忆总结**：  
+即使可以访问会话历史记录，持久性的记忆文件仍然非常重要，不要仅依赖对话记录。  
+2. **按需查询**：  
+   - `limit=10`：快速获取基本上下文  
+   - `limit=50`：查询较多内容  
+   - `limit=100`：深入查询  
+3. **有效结合工具使用**：  
+   先获取上下文信息，再执行相应操作。  
+4. **使用Haiku进行委托，Sonnet进行决策**：  
+   - 背景任务：使用Haiku  
+   - 交互式问题解决：使用Sonnet  
+   - 早晨报告/总结：使用Haiku  
+   - 架构讨论：使用Sonnet  
 
-**Not real-time:**
-- History reflects state when queried
-- If main session is actively running, very latest messages might not appear immediately
+## 常见问题及解决方法：  
+- **“会话历史记录为空”**：  
+  - 确认会话标识符是否正确（使用`sessions_list()`函数）  
+  - 主会话可能是新创建的（尚未有消息）  
+  - 使用`limit`参数来限制查询结果的数量。  
+- **内容被截断**：  
+  - 减少`limit`的值（查询更多消息可获取更完整的内容）  
+  - 对于长期保存的数据，依赖记忆文件。  
+- **隔离会话无法发送消息**：  
+  - 使用`message`工具，而非`sessions_send`函数  
+  - 确保在定时任务配置中设置了正确的`delivery.mode`参数，或直接使用`message`工具发送消息。  
 
-## Best Practices
+**相关模式：**  
+- **心跳机制**：主会话的定期检查（提供完整上下文）  
+- **子代理**：长时间运行的后台任务  
+- **定时任务**：计划好的隔离会话任务  
+- **记忆文件**：跨会话的持久化存储方案  
 
-**1. Write good memory summaries**
-Even with session history access, persistent memory files are gold. Don't rely solely on conversation history.
-
-**2. Query only what you need**
-`limit=10` for quick context, `limit=50` for substantial work, `limit=100` for deep dives.
-
-**3. Chain tools effectively**
-```javascript
-sessions_history → memory_get → web_search → message
-```
-Context first, then action.
-
-**4. Use Haiku for delegation, Sonnet for decisions**
-- Isolated background work: Haiku
-- Interactive problem-solving: Sonnet
-- Morning reports/summaries: Haiku
-- Architecture discussions: Sonnet
-
-## Troubleshooting
-
-**"Empty session history"**
-- Check session key is correct: `sessions_list()`
-- Main session might be new (no messages yet)
-- Use `limit` parameter
-
-**"Content truncated"**
-- Reduce `limit` (fewer messages = more complete content)
-- Rely on memory files for archival data
-
-**"Isolated session can't send messages"**
-- Use `message` tool, not sessions_send
-- Ensure delivery.mode is set in cron config OR use message tool directly
-
-## Related Patterns
-
-- **Heartbeats:** Main session periodic checks (full context, main model)
-- **Sub-agents:** Long-running background tasks
-- **Cron jobs:** Scheduled isolated work
-- **Memory files:** Persistent cross-session storage
-
-## Credits
-
-Discovered by RGBA Research during OpenClaw optimization work.
-Published to ClawHub as open pattern for the community.
-
-**Contact:** https://rgbaresearch.com
-**License:** MIT (free to use, adapt, share)
+**致谢：**  
+该机制由RGBA Research在OpenClaw优化过程中发现，并作为开源模式发布在ClawHub上供社区使用。  
+**联系方式：** https://rgbaresearch.com  
+**许可协议：** MIT许可（免费使用、修改和分享）

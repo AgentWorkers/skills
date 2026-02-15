@@ -1,84 +1,88 @@
 ---
 name: Spanish
-description: Write Spanish that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的西班牙语。不要太正式，也不要有机器人或人工智能生成的感觉。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Spanish is technically correct but sounds off. Too formal. Too complete. Too "perfect." Natives write messier, warmer, more direct. Match that.
+虽然AI生成的西班牙语在语法上是正确的，但听起来很生硬、过于正式，甚至有些“完美”。而母语者说话时通常更随意、更温暖、更直接。我们需要让AI生成的语言更贴近母语者的表达方式。
 
-## Formality Default
+## 形式的使用
 
-Default register is too high. Casual Spanish is the norm—formal is the exception. Unless explicitly formal context: lean casual. "Vale" not "De acuerdo". "Bueno" not "Bien".
+默认的语言风格过于正式。在西班牙语中，随意、非正式的表达才是常态；只有在一些明确需要正式的语境下才应该使用正式语言。例如，应该用“Vale”而不是“De acuerdo”，用“Bueno”而不是“Bien”。
 
-## Sentence Completeness
+## 句子的完整性
 
-Don't always complete sentences. Natives fragment:
-- "¿Vienes?" "Sí, ahora." (not "Sí, voy ahora mismo.")
-- "¿Qué tal?" "Bien, ¿y tú?" "Tirando."
-- Let context carry weight. Less is more.
+不要总是把句子说完整。母语者说话时常常会省略一些成分：
+- “¿Vienes?”（“你要来吗？”）→ “Sí, ahora.”（“是的，我现在就来。”）
+- “¿Qué tal?”（“最近怎么样？”）→ “Bien, ¿y tú?”（“我很好，你呢？”）→ “Tirando.”（“还行。”）
+- 应该让语境本身传达更多信息，少说为妙。
 
-## Diminutives
+## 形容词和副词的指小形式
 
-Use them—they're warmth, not childishness:
-- "Un momentito", "cerquita", "poquito"
-- "Ahora mismo" → "Ahorita" (Latin America)
-- Missing diminutives = cold, distant, robotic
+使用这些指小形式会让语言更亲切、更自然：
+- “Un momentito”（“等一下”）、“cerquita”（“靠近一点”）、“poquito”（“一点点”）
+- “Ahora mismo”在拉丁美洲通常说成“Ahorita”。
 
-## Connectors
+## 连词的使用
 
-Swap formal for natural:
-- "Sin embargo" → "Pero bueno" / "Aunque"
-- "Por lo tanto" → "Así que" / "Entonces"
-- "Además" → "Y encima" / "Aparte"
-- "No obstante" → almost never in casual speech
+用更自然的表达方式代替正式的连词：
+- “Sin embargo”（“然而”）→ “Pero bueno”或“Aunque”
+- “Por lo tanto”（“因此”）→ “Así que”或“Entonces”
+- “Además”（“此外”）→ “Y encima”或“Aparte”
+- “No obstante”在日常对话中几乎从不使用
 
-## Filler & Flow
+## 语言的流畅性
 
-Real Spanish has muletillas. Use them:
-- "Bueno, es que..." / "Pues mira..." / "O sea..."
-- "¿Sabes?" / "¿Entiendes?" / "¿No?"
-- "La verdad es que..." / "Lo que pasa es que..."
-- Missing these = textbook Spanish
+真正的西班牙语中有很多习惯性的表达方式（muletillas），使用它们会让语言更自然：
+- “Bueno, es que...”（“嗯，问题是...”）
+- “Pues mira...”（“你看...”）
+- “O sea...”（“也就是说...”）
+- “¿Sabes?”（“你知道吗？”）
+- “¿Entiendes?”（“你明白吗？”）
+- “La verdad es que...”（“事实上...”）
+- 如果省略这些表达方式，语言就会显得很生硬、像教科书一样。
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word. Spanish is expressive:
-- "Bien" → "Genial" / "De puta madre" / "Guay" (casual)
-- "Mal" → "Fatal" / "Una mierda" / "Horrible"
-- "Grande" → "Enorme" / "Tremendo" / "Bestial"
-- Amplify when the context calls for it
+不要总是选择最中立的词汇。西班牙语本身就很富有表现力：
+- “Bien”可以表达“很好”、“太棒了”或“糟糕透顶”
+- “Mal”可以表达“非常糟糕”、“一团糟”或“极其糟糕”
+- “Grande”可以表达“巨大的”、“惊人的”或“极好的”
+- 根据语境适当夸张表达。
 
-## Emphatic Patterns
+## 强调方式
 
-Spanish doubles for emphasis—use it:
-- "A mí me parece..." (not just "Me parece")
-- "Lo que pasa es que..." (not just the fact)
-- "Es que no puedo" (the "es que" matters)
-- "Sí que lo hice" (emphatic affirmation)
+西班牙语中有很多通过重复来强调的方式，要充分利用：
+- “A mí me parece...”（“在我看来...”）
+- “Lo que pasa es que...”（“问题是...”）
+- “Es que no puedo”（“问题是...我做不到”）
+- “Sí que lo hice”（“我确实做了”）
 
-## Interjections
+## 感叹词
 
-Sprinkle naturally:
-- "¡Joder!" / "¡Hostia!" (Spain) / "¡Órale!" (Mexico) / "¡Che!" (Argentina)
-- "Uf", "Buf", "Bah", "Anda", "Venga"
-- Context-appropriate—don't force them, but don't avoid them
+自然地使用感叹词：
+- “¡Joder!”（西班牙）、“¡Hostia!”（墨西哥）、“¡Órale!”（阿根廷）
+- “Uf”、“Buf”、“Bah”、“Anda”、“Venga”
+- 选择符合语境的感叹词，不要刻意使用，但也不要完全避免。
 
-## Questions & Reactions
+## 提问和反应
 
-React like a human:
-- "¿En serio?" / "¿De verdad?" / "¡No me digas!"
-- "¡Qué fuerte!" / "¡Qué pasada!" / "¡Flipante!"
-- "Madre mía" / "Dios mío" / "No jodas"
+像母语者一样做出反应：
+- “¿En serio?”（“真的吗？”）
+- “¡No me digas!”（“别告诉我！”）
+- “¡Qué fuerte!”（“太厉害了！”）
+- “¡Qué pasada!”（“太棒了！”）
+- “Madre mía”（“我的天啊”）
 
-## Regional Awareness
+## 地区差异
 
-If region known, commit to it:
-- Spain: vale, tío, mola, flipar, currar
-- Mexico: órale, chido, padre, güey, chamba  
-- Argentina: che, boludo, re copado, laburar, morfar
-- Don't mix. Pick one, stay consistent.
+如果知道使用的是哪个地区的西班牙语，就要使用该地区的表达方式：
+- 西班牙：vale、tío、mola、flipar、currar
+- 墨西哥：órale、chido、padre、güey、chamba
+- 阿根廷：che、boludo、re copado、laburar、morfar
+- 不要混用这些表达方式，要保持一致性。
 
-## The "Native Test"
+## 最后的测试
 
-Before sending: would someone screenshot this as "AI-generated"? If yes—too clean, too formal, too perfect. Rough it up.
+在发送之前，可以让别人把这个文本截图，看看它看起来是否像AI生成的。如果看起来太干净、太正式、太完美，那就需要调整一下，让它更自然一些。

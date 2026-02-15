@@ -1,20 +1,20 @@
 ---
 name: npm-proxy
-description: Manage Nginx Proxy Manager (NPM) hosts, certificates, and access lists. Use when the user wants to add a new domain, point a domain to a server/port, enable SSL, or check the status of proxy hosts.
+description: 管理 Nginx Proxy Manager（NPM）的主机、证书和访问列表。当用户需要添加新域名、将域名指向某个服务器/端口、启用 SSL 或检查代理主机的状态时，可以使用该功能。
 ---
 
-# NPM Proxy Skill
+# NPM 代理技能
 
-Manage Nginx Proxy Manager (NPM) via its REST API.
+通过 Nginx 代理管理器（NPM）的 REST API 进行管理。
 
-## Configuration
+## 配置
 
-Set the following environment variables:
-- `NPM_URL`: The URL of your NPM instance (e.g., `https://npm.example.com`)
-- `NPM_EMAIL`: Your NPM admin email
-- `NPM_PASSWORD`: Your NPM admin password
+设置以下环境变量：
+- `NPM_URL`：您的 NPM 实例的 URL（例如：`https://npm.example.com`）
+- `NPM_EMAIL`：您的 NPM 管理员邮箱
+- `NPM_PASSWORD`：您的 NPM 管理员密码
 
-## Usage
+## 使用方法
 
 ```bash
 # List all proxy hosts
@@ -34,11 +34,11 @@ python scripts/npm_client.py delete <host_id>
 python scripts/npm_client.py certs
 ```
 
-## Workflows
+## 工作流程
 
-### Adding a new Proxy Host
-To add a new host, use `curl` directly (the script is currently minimal).
-Example payload for `POST /api/nginx/proxy-hosts`:
+### 添加新的代理主机
+要添加新的主机，可以直接使用 `curl` 命令（当前脚本较为简单）。
+`POST /api/nginx/proxy-hosts` 的示例请求数据：
 ```json
 {
   "domain_names": ["sub.example.com"],
@@ -64,6 +64,6 @@ Example payload for `POST /api/nginx/proxy-hosts`:
 }
 ```
 
-### Enabling SSL (Let's Encrypt)
-1. List certs with `certs` to see if one exists.
-2. Update the host with `certificate_id` and `ssl_forced: true`.
+### 启用 SSL（Let's Encrypt）
+1. 使用 `certs` 命令列出现有的证书。
+2. 使用 `certificate_id` 和 `ssl_forced: true` 参数更新主机配置。

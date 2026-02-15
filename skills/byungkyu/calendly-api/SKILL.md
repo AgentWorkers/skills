@@ -15,9 +15,9 @@ metadata:
 
 # Calendly
 
-Access the Calendly API with managed OAuth authentication. Retrieve event types, scheduled events, invitees, availability data, and manage webhook subscriptions for scheduling automation.
+您可以使用管理的 OAuth 认证来访问 Calendly API。该 API 允许您检索事件类型、已安排的事件、受邀者信息、可用时间数据，并管理用于自动化日程安排的 Webhook 订阅。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/calendly/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Calendly API endpoint path. The gateway proxies requests to `api.calendly.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Calendly API 端点路径。Gateway 会将请求代理到 `api.calendly.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Calendly OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Calendly OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Calendly connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Calendly 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,19 +138,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，Gateway 将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Users
+### 用户
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /calendly/users/me
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -161,7 +161,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "resource": {
@@ -179,29 +179,29 @@ EOF
 }
 ```
 
-#### Get a User
+#### 获取用户信息
 
 ```bash
 GET /calendly/users/{uuid}
 ```
 
-### Event Types
+### 事件类型
 
-#### List Event Types
+#### 列出事件类型
 
 ```bash
 GET /calendly/event_types
 ```
 
-Query parameters:
-- `user` - User URI to filter event types
-- `organization` - Organization URI to filter event types
-- `active` - Filter by active status (true/false)
-- `count` - Number of results to return (default 20, max 100)
-- `page_token` - Token for pagination
-- `sort` - Sort order (e.g., `name:asc`, `created_at:desc`)
+查询参数：
+- `user` - 用于过滤事件类型的用户 URI
+- `organization` - 用于过滤事件类型的组织 URI
+- `active` - 按活动状态过滤（true/false）
+- `count` - 返回的结果数量（默认 20，最大 100）
+- `page_token` - 分页令牌
+- `sort` - 排序方式（例如，`name:asc`，`created_at:desc`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -212,7 +212,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "collection": [
@@ -244,32 +244,32 @@ EOF
 }
 ```
 
-#### Get an Event Type
+#### 获取事件类型详细信息
 
 ```bash
 GET /calendly/event_types/{uuid}
 ```
 
-### Scheduled Events
+### 已安排的事件
 
-#### List Scheduled Events
+#### 列出已安排的事件
 
 ```bash
 GET /calendly/scheduled_events
 ```
 
-Query parameters:
-- `user` - User URI to filter events
-- `organization` - Organization URI to filter events
-- `invitee_email` - Filter by invitee email
-- `status` - Filter by status (`active`, `canceled`)
-- `min_start_time` - Filter events starting after this time (ISO 8601)
-- `max_start_time` - Filter events starting before this time (ISO 8601)
-- `count` - Number of results (default 20, max 100)
-- `page_token` - Token for pagination
-- `sort` - Sort order (e.g., `start_time:asc`)
+查询参数：
+- `user` - 用于过滤事件的用户 URI
+- `organization` - 用于过滤事件的组织 URI
+- `invitee_email` - 用于过滤受邀者的电子邮件
+- `status` - 按状态过滤（`active`，`canceled`）
+- `min_start_time` - 过滤在此时间之后开始的事件（ISO 8601 格式）
+- `max_start_time` - 过滤在此时间之前开始的事件（ISO 8601 格式）
+- `count` - 返回的结果数量（默认 20，最大 100）
+- `page_token` - 分页令牌
+- `sort` - 排序方式（例如，`start_time:asc`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -280,7 +280,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "collection": [
@@ -316,13 +316,13 @@ EOF
 }
 ```
 
-#### Get a Scheduled Event
+#### 获取已安排的事件详细信息
 
 ```bash
 GET /calendly/scheduled_events/{uuid}
 ```
 
-#### Cancel a Scheduled Event
+#### 取消已安排的事件
 
 ```bash
 POST /calendly/scheduled_events/{uuid}/cancellation
@@ -333,7 +333,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -346,22 +346,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Invitees
+### 邀请者
 
-#### List Event Invitees
+#### 列出事件受邀者
 
 ```bash
 GET /calendly/scheduled_events/{event_uuid}/invitees
 ```
 
-Query parameters:
-- `status` - Filter by status (`active`, `canceled`)
-- `email` - Filter by invitee email
-- `count` - Number of results (default 20, max 100)
-- `page_token` - Token for pagination
-- `sort` - Sort order (e.g., `created_at:asc`)
+查询参数：
+- `status` - 按状态过滤（`active`，`canceled`）
+- `email` - 用于过滤受邀者的电子邮件
+- `count` - 返回的结果数量（默认 20，最大 100）
+- `page_token` - 分页令牌
+- `sort` - 排序方式（例如，`created_at:asc`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -372,7 +372,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "collection": [
@@ -408,15 +408,15 @@ EOF
 }
 ```
 
-#### Get an Invitee
+#### 获取受邀者信息
 
 ```bash
 GET /calendly/scheduled_events/{event_uuid}/invitees/{invitee_uuid}
 ```
 
-#### Create Event Invitee (Scheduling API)
+#### 创建事件受邀者（日程安排 API）
 
-Schedule a meeting programmatically by creating an invitee. Requires a paid Calendly plan.
+通过创建受邀者来程序化地安排会议。这需要使用付费的 Calendly 计划。
 
 ```bash
 POST /calendly/event_types/{event_type_uuid}/invitees
@@ -439,7 +439,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -452,22 +452,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Note:** The `start_time` must correspond to a valid available slot. Use the `/event_type_available_times` endpoint to find available times.
+**注意：** `start_time` 必须对应一个有效的可用时间段。请使用 `/event_type_available_times` 端点来查找可用时间。
 
-### Availability
+### 可用性
 
-#### Get Event Type Available Times
+#### 获取事件类型的可用时间
 
 ```bash
 GET /calendly/event_type_available_times
 ```
 
-Query parameters:
-- `event_type` - Event type URI (required)
-- `start_time` - Start of time range (ISO 8601, required)
-- `end_time` - End of time range (ISO 8601, required, max 7 days from start)
+查询参数：
+- `event_type` - 事件类型 URI（必需）
+- `start_time` - 时间范围的开始时间（ISO 8601 格式，必需）
+- `end_time` - 时间范围的结束时间（ISO 8601 格式，最长为开始后的 7 天）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -478,7 +478,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "collection": [
@@ -498,18 +498,18 @@ EOF
 }
 ```
 
-#### Get User Busy Times
+#### 获取用户的忙碌时间
 
 ```bash
 GET /calendly/user_busy_times
 ```
 
-Query parameters:
-- `user` - User URI (required)
-- `start_time` - Start of time range (ISO 8601, required)
-- `end_time` - End of time range (ISO 8601, required, max 7 days from start)
+查询参数：
+- `user` - 用户 URI（必需）
+- `start_time` - 时间范围的开始时间（ISO 8601 格式，必需）
+- `end_time` - 时间范围的结束时间（ISO 8601 格式，最长为开始后的 7 天）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -520,7 +520,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "collection": [
@@ -538,16 +538,16 @@ EOF
 }
 ```
 
-#### Get User Availability Schedules
+#### 获取用户的可用时间表
 
 ```bash
 GET /calendly/user_availability_schedules
 ```
 
-Query parameters:
-- `user` - User URI (required)
+查询参数：
+- `user` - 用户 URI（必需）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -558,22 +558,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Organization
+### 组织
 
-#### List Organization Memberships
+#### 列出组织成员
 
 ```bash
 GET /calendly/organization_memberships
 ```
 
-Query parameters:
-- `organization` - Organization URI (required)
-- `user` - User URI to filter
-- `email` - Email to filter
-- `count` - Number of results (default 20, max 100)
-- `page_token` - Token for pagination
+查询参数：
+- `organization` - 组织 URI（必需）
+- `user` - 用于过滤的用户 URI
+- `email` - 用于过滤的电子邮件
+- `count` - 返回的结果数量（默认 20，最大 100）
+- `page_token` - 分页令牌
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -584,7 +584,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "collection": [
@@ -608,24 +608,24 @@ EOF
 }
 ```
 
-### Webhooks
+### Webhook
 
-Webhooks require a paid Calendly plan (Standard, Teams, or Enterprise).
+Webhook 需要使用付费的 Calendly 计划（Standard、Teams 或 Enterprise）。
 
-#### List Webhook Subscriptions
+#### 列出 Webhook 订阅
 
 ```bash
 GET /calendly/webhook_subscriptions
 ```
 
-Query parameters:
-- `organization` - Organization URI (required)
-- `scope` - Filter by scope (`user`, `organization`)
-- `user` - User URI to filter (when scope is `user`)
-- `count` - Number of results (default 20, max 100)
-- `page_token` - Token for pagination
+查询参数：
+- `organization` - 组织 URI（必需）
+- `scope` - 按范围过滤（`user`，`organization`）
+- `user` - 用于过滤的用户 URI（当 scope 为 `user` 时）
+- `count` - 返回的结果数量（默认 20，最大 100）
+- `page_token` - 分页令牌
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -636,7 +636,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Webhook Subscription
+#### 创建 Webhook 订阅
 
 ```bash
 POST /calendly/webhook_subscriptions
@@ -651,12 +651,12 @@ Content-Type: application/json
 }
 ```
 
-Available events:
-- `invitee.created` - Triggered when an invitee schedules an event
-- `invitee.canceled` - Triggered when an invitee cancels an event
-- `routing_form_submission.created` - Triggered when a routing form is submitted
+可用事件：
+- `invitee.created` - 当受邀者安排事件时触发
+- `invitee.canceled` - 当受邀者取消事件时触发
+- `routing_form_submission.created` - 当路由表单提交时触发
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -669,7 +669,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "resource": {
@@ -688,34 +688,25 @@ EOF
 }
 ```
 
-#### Get a Webhook Subscription
+#### 获取 Webhook 订阅信息
 
 ```bash
 GET /calendly/webhook_subscriptions/{uuid}
 ```
 
-#### Delete a Webhook Subscription
+#### 删除 Webhook 订阅
 
 ```bash
 DELETE /calendly/webhook_subscriptions/{uuid}
 ```
 
-**Example:**
+**示例：**
 
-```bash
-python <<'EOF'
-import urllib.request, os, json
-req = urllib.request.Request('https://gateway.maton.ai/calendly/webhook_subscriptions/GGGGGGGGGGGGGGGG', method='DELETE')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
+**成功时返回 `204 No Content`。**
 
-Returns `204 No Content` on success.
+## 分页
 
-## Pagination
-
-Use `page_token` for pagination. Response includes `pagination.next_page_token` when more results exist:
+使用 `page_token` 进行分页。如果存在更多结果，响应中会包含 `pagination.next_page_token`：
 
 ```bash
 python <<'EOF'
@@ -726,7 +717,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -759,37 +750,37 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Resource identifiers are URIs (e.g., `https://api.calendly.com/users/AAAAAAAAAAAAAAAA`)
-- Timestamps are in ISO 8601 format
-- The Scheduling API (Create Event Invitee) requires a paid Calendly plan
-- Webhooks are not available on Calendly's free plan
-- Availability endpoints have a 7-day maximum range per request and `start_time` must be in the future
-- The API does not support creating or managing event types programmatically
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 资源标识符是 URI（例如，`https://api.calendly.com/users/AAAAAAAAAAAAAAAA`）
+- 时间戳采用 ISO 8601 格式
+- 日程安排 API（创建事件受邀者）需要使用付费的 Calendly 计划
+- Calendly 的免费计划不支持 Webhook
+- 可用性端点的每次请求的最大时间范围为 7 天，且 `start_time` 必须在未来
+- 该 API 不支持程序化地创建或管理事件类型
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）在某些 shell 环境中可能无法正确展开。这可能会导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing Calendly connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions or plan restrictions |
-| 404 | Resource not found |
-| 424 | External calendar error (calendar integration issue on Calendly side) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Calendly API |
+| 400 | 请求错误或缺少 Calendly 连接 |
+| 401 | 无效或缺少 Maton API 密钥 |
+| 403 | 禁止访问 - 权限不足或计划限制 |
+| 404 | 资源未找到 |
+| 424 | 外部日历错误（Calendly 侧的问题） |
+| 429 | 请求速率限制 |
+| 4xx/5xx | 来自 Calendly API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -800,17 +791,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `calendly`. For example:
+1. 确保您的 URL 路径以 `calendly` 开头。例如：
+- 正确：`https://gateway.maton.ai/calendly/users/me`
+- 错误：`https://gateway.maton.ai/users/me`
 
-- Correct: `https://gateway.maton.ai/calendly/users/me`
-- Incorrect: `https://gateway.maton.ai/users/me`
+## 资源
 
-## Resources
-
-- [Calendly Developer Portal](https://developer.calendly.com/)
-- [API Reference](https://developer.calendly.com/api-docs)
-- [API Use Cases](https://developer.calendly.com/api-use-cases)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Calendly 开发者门户](https://developer.calendly.com/)
+- [API 参考](https://developer.calendly.com/api-docs)
+- [API 使用案例](https://developer.calendly.com/api-use-cases)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

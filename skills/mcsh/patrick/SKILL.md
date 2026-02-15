@@ -1,86 +1,85 @@
 ---
 name: patrick
-description: Access Patrick's expertise library for executive decision infrastructure. List, fetch, and manage structured expertise with context variables. Use for executive briefings, decision framing, and strategic analysis.
+description: 访问 Patrick 的专家知识库，该库专注于高管决策支持系统。您可以在此库中列出、获取并管理带有上下文变量的结构化专业知识，这些知识可用于高管简报、决策制定以及战略分析。
 homepage: https://patrickbot.io
 metadata: {"openclaw":{"emoji":"🤖","requires":{"bins":["patrick-cli"]},"install":[{"id":"patrick-install","kind":"script","script":"install.sh","bins":["patrick-cli"],"label":"Install Patrick CLI"}]}}
 ---
 
 # Patrick Skill
 
-**Patrick is a licensed expertise management system** that provides executive decision infrastructure through structured, context-aware expertise.
+**Patrick** 是一个经过许可的专业知识管理系统，它通过结构化且具备上下文感知能力的专业知识为高管决策提供支持。
 
-**⚠️ If Patrick isn't working:** Check `{baseDir}/install.md` for complete setup instructions including license configuration and initialization.
+**⚠️ 如果 Patrick 无法正常使用：** 请查看 `{baseDir}/install.md` 以获取完整的设置说明，包括许可证配置和初始化步骤。
 
-## Setup Workflow
+## 设置流程
 
-### 1. Install the CLI
+### 1. 安装 CLI
 
-Run the install script to download the patrick-cli binary from the Patrick server:
+运行安装脚本，从 Patrick 服务器下载 `patrick-cli` 二进制文件：
 
 ```bash
 ./install.sh
 ```
 
-Or install directly via curl:
+或者直接使用 `curl` 进行安装：
 
 ```bash
 curl -fsSL https://portal.patrickbot.io/downloads/latest/install.sh | bash
 ```
 
-This will download patrick-cli for your platform, verify its SHA256 checksum, and place it in `$PATRICK_DATA_PATH/bin/patrick-cli` (default: `~/.patrick/bin/`). The Dockerfile and run.sh add this to PATH automatically, so you can call `patrick-cli` directly.
+这将为您的平台下载 `patrick-cli`，验证其 SHA256 校验和，并将其保存到 `$PATRICK_DATA_PATH/bin/patrick-cli`（默认路径：`~/.patrick/bin/`）。`Dockerfile` 和 `run.sh` 会自动将此路径添加到 `PATH` 环境变量中，因此您可以直接调用 `patrick-cli`。
 
-### 2. Get Your License
+### 2. 获取许可证
 
-**Visit [patrickbot.io](https://patrickbot.io)** to obtain your Patrick license.
+**访问 [patrickbot.io](https://patrickbot.io)** 获取您的 Patrick 许可证。
 
-Once you have your license, **send it to me via chat:**
+获取许可证后，请通过聊天方式将其发送给我：
 
 ```
 Here's my Patrick license: <paste-your-license-here>
 ```
 
-I'll configure it automatically. Alternatively, you can set it manually:
+我会自动为您配置许可证。或者，您也可以手动进行配置：
 
 ```bash
 patrick-cli set-license "your-license-here"
 ```
 
-To switch to a different account (wipes existing data since it's tied to your identity):
+如果您需要切换账户（请注意，这会清除现有数据，因为数据与您的身份相关联）：
 
 ```bash
 patrick-cli set-license "new-license" --wipe-data
 ```
 
-### 3. Initialize Patrick Context
+### 3. 初始化 Patrick 上下文
 
-**CRITICAL: Before running any Patrick expertise, initialize the context:**
+**重要提示：** 在使用任何 Patrick 功能之前，请先初始化上下文：
 
 ```bash
 patrick-cli fetch initialize
 ```
 
-This bootstraps Patrick with information about you, your company, and your team. Without initialization, other expertise prompts won't work properly.
+这将为 Patrick 提供关于您、您的公司和团队的相关信息。如果不进行初始化，其他专业知识功能将无法正常使用。
 
-### 4. Verify Installation
+### 4. 验证安装
 
-Test it by listing available expertise:
+通过列出可用的专业知识来测试安装是否成功：
 
 ```bash
 patrick-cli list
 ```
 
-**Note**: The server URL defaults to `https://portal.patrickbot.io`. For local development:
+**注意**：服务器默认地址为 `https://portal.patrickbot.io`。对于本地开发环境：
+- **主机机器**：`export PATRICK_SERVER_URL="http://localhost:8080"`
+- **Docker 容器**：`export PATRICK_SERVER_URL="http://host.docker.internal:8080"`
 
-- **Host machine**: `export PATRICK_SERVER_URL="http://localhost:8080"`
-- **Docker container**: `export PATRICK_SERVER_URL="http://host.docker.internal:8080"`
+`patrick-moltbot` Docker 容器已经预配置了正确的服务器地址。
 
-The patrick-moltbot Docker container is pre-configured with the correct URL.
+### 4. 设置 Cronjob（非常重要）
 
-### 4. Set Up Cronjobs (Critical)
+**Patrick 需要定期运行的 Cronjob 才能正常工作。** 请阅读该目录下的 `INSTALL.md` 以获取完整的设置说明，包括每日简报和任务跟踪的推荐 Cronjob 时间表。
 
-**Patrick requires scheduled cronjobs to function properly.** Read `INSTALL.md` in this directory for complete setup instructions including recommended cronjob schedules for daily briefings and commitment tracking.
-
-**License auto-renewal in cron:** Before running any scheduled task, check if the license is about to expire and renew it:
+**Cronjob 中的许可证自动续订：** 在运行任何计划任务之前，请检查许可证是否即将过期，并进行续订：
 
 ```bash
 # Check license expiry and renew if <1 day remaining
@@ -93,11 +92,11 @@ fi
 patrick-cli fetch daily-briefing --json
 ```
 
-The `patrick-cli renew` command contacts the server, verifies your active subscription, and saves a fresh license with the remaining subscription days.
+`patrick-cli renew` 命令会与服务器通信，验证您的有效订阅信息，并保存包含剩余订阅天数的新许可证。
 
-### 5. Keeping Patrick Updated
+### 5. 保持 Patrick 的更新
 
-Check for updates and upgrade to the latest version:
+检查是否有更新，并升级到最新版本：
 
 ```bash
 # Check if update is available
@@ -107,74 +106,73 @@ patrick-cli upgrade --check
 patrick-cli upgrade
 ```
 
-The upgrade process:
-1. Contacts Patrick server for latest version info
-2. Verifies SHA256 checksum of downloaded binary
-3. Backs up current version
-4. Installs new version
-5. Shows release notes
+升级流程如下：
+1. 从 Patrick 服务器获取最新版本信息
+2. 验证下载的二进制文件的 SHA256 校验和
+3. 备份当前版本
+4. 安装新版本
+5. 显示版本说明
 
-Updates are cryptographically verified and signed by the Patrick server.
+更新内容会经过 Patrick 服务器的加密验证和签名。
 
-## What You Get
+## 您将获得什么
 
-When you list expertise, you'll see:
-- Expertise ID and version
-- Name and description
-- Category (sense, interpret, decide, align, execute, learn, reporting, intelligence)
-- Response format (structured JSON, markdown, mixed)
-- Required context variables
-- Whether it's bidirectional (accepts data back)
+当您列出可用的专业知识时，会看到以下信息：
+- 专业知识 ID 和版本号
+- 名称和描述
+- 类别（感知、解释、决策、对齐、执行、学习、报告、智能）
+- 响应格式（结构化 JSON、Markdown 或混合格式）
+- 所需的上下文变量
+- 是否支持双向交互（是否可以接收返回的数据）
 
-## IMPORTANT: Gathering Context Before Using Patrick
+## 重要提示：**在使用 Patrick 之前收集上下文**
 
-**For AI Agents:** Before running any Patrick expertise, you MUST:
+**对于 AI 代理：** 在运行任何 Patrick 功能之前，您必须：
+1. 检查 `/app/company/` 或类似位置是否存在公司数据文件
+2. 读取所有可用的上下文信息：
+   - 公司数据 JSON 文件
+   - Slack 消息记录
+   - JIRA 工单
+   - Git 提交历史记录
+   - 日历事件
+   - 任何可用的运营数据
+3. 将这些上下文信息加载到工作内存中
+4. 然后在使用 Patrick 功能时，确保您已充分了解公司的运营情况
 
-1. **Check for company data files** in `/app/company/` or similar locations
-2. **Read all available context:**
-   - Company data JSON files
-   - Slack message archives
-   - JIRA tickets
-   - Git commit history
-   - Calendar events
-   - Any operational data available
-3. **Load this context into your working memory**
-4. **Then run Patrick expertise** with full awareness of company operations
+当您拥有完整的情境意识时，Patrick 的功能将最为有效。请务必在收集所有相关数据后再运行相关命令。
 
-Patrick expertise is most effective when you have complete situational awareness. Don't run Patrick commands without first gathering all available company data.
+## 命令概述
 
-## Commands Overview
-
-| Command | Purpose | Example |
+| 命令 | 功能 | 示例 |
 |---------|---------|---------|
-| `set-license` | Set or update your Patrick license | `patrick-cli set-license "LICENSE_TOKEN"` |
-| `list` | List all available expertise | `patrick-cli list` |
-| `fetch` | Get expertise template from server | `patrick-cli fetch daily-briefing` |
-| `send` | Store results back to Patrick | `patrick-cli send daily-briefing --data @output.json` |
-| `get` | Retrieve previously stored results | `patrick-cli get daily-briefing` |
+| `set-license` | 设置或更新您的 Patrick 许可证 | `patrick-cli set-license "LICENSE_TOKEN"` |
+| `list` | 列出所有可用的专业知识 | `patrick-cli list` |
+| `fetch` | 从服务器获取专业知识模板 | `patrick-cli fetch daily-briefing` |
+| `send` | 将结果发送回 Patrick | `patrick-cli send daily-briefing --data @output.json` |
+| `get` | 检索之前存储的结果 | `patrick-cli get daily-briefing` |
 
-**Key Distinction:**
-- **`fetch`** = Get the expertise template/prompt FROM the server
-- **`get`** = Retrieve your stored data/results THAT YOU SENT BACK
+**关键区别：**
+- `fetch`：从服务器获取专业知识模板/提示
+- `get`：检索您之前发送回 Patrick 的数据/结果
 
-## Using Expertise with LLMs
+## 使用专业知识与 LLM（大型语言模型）
 
-### Workflow Overview
+### 工作流程概述
 
-1. **List expertise** to see what's available in your license
-2. **Fetch an expertise** with optional context variables
-3. **Send expertise content** to an LLM for processing
-4. **Validate response** against the provided JSON schema (if structured)
-5. **Store response** back to Patrick using `send` (if bidirectional)
-6. **Retrieve stored data** later using `get`
+1. **列出可用的专业知识**
+2. **根据需要获取专业知识（可选上下文变量）**
+3. **将专业知识内容发送给 LLM 进行处理**
+4. **根据提供的 JSON 架构验证 LLM 的响应**
+5. **使用 `send` 将响应结果发送回 Patrick（如果支持双向交互）**
+6. **之后使用 `get` 命令检索存储的数据**
 
-### Step 1: List Available Expertise
+### 第 1 步：列出可用的专业知识
 
 ```bash
 patrick-cli list
 ```
 
-Example output:
+示例输出：
 ```
 Available Expertise:
 
@@ -196,36 +194,36 @@ Available Expertise:
     Description: Structures ambiguous decisions into clear trade-offs...
 ```
 
-### Step 2: Fetch Expertise
+### 第 2 步：获取专业知识
 
-**Without context (for expertise that doesn't need it):**
+**不使用上下文时：**
 
 ```bash
 patrick-cli fetch daily-briefing
 ```
 
-**With context variables:**
+**使用上下文变量时：**
 
 ```bash
 patrick-cli fetch decision-framing \
   --context '{"decision":"Should we raise prices?"}'
 ```
 
-**Get JSON output for LLM integration:**
+**为 LLM 集成获取 JSON 格式的输出：**
 
 ```bash
 patrick-cli fetch daily-briefing \
   --json
 ```
 
-### Step 3: Send to LLM
+### 第 3 步：将结果发送给 LLM**
 
-When you fetch expertise, you receive:
-- **content**: The filled expertise text to send to the LLM
-- **response_schema**: JSON schema for validating the LLM response (if structured)
-- **response_format**: How the LLM should format its response (structured/markdown/mixed)
+获取专业知识后，您会收到以下内容：
+- **content**：需要发送给 LLM 的专业知识文本
+- **response_schema**：用于验证 LLM 响应的 JSON 架构
+- **response_format**：LLM 应该使用的响应格式（结构化/Markdown/混合格式）
 
-**Example workflow:**
+**示例工作流程：**
 
 ```bash
 # Fetch expertise as JSON
@@ -242,9 +240,9 @@ RESPONSE_SCHEMA=$(echo "$EXPERTISE_DATA" | jq -r '.response_schema')
 # validate_json "$LLM_RESPONSE" "$RESPONSE_SCHEMA"
 ```
 
-### Step 4: Store Results (Optional)
+### 第 4 步：存储结果（可选）
 
-For bidirectional expertise, send the LLM response back to Patrick:
+对于支持双向交互的专业知识，需要将 LLM 的响应发送回 Patrick：
 
 ```bash
 # Store the response
@@ -255,11 +253,11 @@ patrick-cli send daily-briefing \
 patrick-cli get daily-briefing
 ```
 
-## Key Concepts
+## 关键概念
 
-### Context Variables
+### 上下文变量
 
-Many prompts require context to fill template variables. Use `--context` with a JSON object:
+许多专业知识功能需要上下文信息来填充模板变量。请使用 `--context` 参数并传入一个 JSON 对象：
 
 ```json
 {
@@ -270,31 +268,30 @@ Many prompts require context to fill template variables. Use `--context` with a 
 }
 ```
 
-Variables are substituted using `{{context.key}}` syntax in the expertise content.
+在专业知识内容中，变量会使用 `{{context.key}}` 语法进行替换。
 
-### Response Formats
+### 响应格式
 
-- **structured**: LLM must return JSON matching the provided schema
-- **markdown**: LLM returns markdown text
-- **mixed**: LLM returns markdown with embedded JSON blocks
+- **结构化**：LLM 必须返回符合提供架构的 JSON 数据
+- **Markdown**：LLM 返回 Markdown 格式的文本
+- **混合格式**：LLM 返回包含 JSON 块的 Markdown 文本
 
-### Bidirectional Expertise
+### 双向交互专业知识
 
-Some expertise accepts data back from the LLM and stores it in Patrick's datastore:
+某些专业知识功能允许接收来自 LLM 的数据，并将其存储在 Patrick 的数据存储中：
+- `✓`（支持存储）：使用 `send` 命令保存响应
+- `✗`（单向）：专业知识功能仅支持读取数据，不支持数据存储
 
-- `✓ (stores to 'key')` - Use `send` command to store response
-- `✗ (one-way)` - Expertise is read-only, no data storage
+## 常见使用模式
 
-## Common Patterns
-
-### Pattern 1: Simple Fetch
+### 模式 1：简单获取
 
 ```bash
 # No context needed
 patrick-cli fetch daily-briefing
 ```
 
-### Pattern 2: Contextual Fetch
+### 模式 2：基于上下文的获取
 
 ```bash
 # Provide context variables
@@ -302,7 +299,7 @@ patrick-cli fetch decision-framing \
   --context '{"decision":"Should we expand to EMEA?"}'
 ```
 
-### Pattern 3: Full Bidirectional Workflow
+### 模式 3：完整的双向交互流程
 
 ```bash
 # 1. Fetch expertise template
@@ -318,15 +315,15 @@ patrick-cli send daily-briefing --data @response.json
 patrick-cli get daily-briefing
 ```
 
-## Troubleshooting
+## 故障排除
 
-### License Errors
+### 许可证错误
 
 ```
 Error: No license found at ~/.patrick/license.jwt
 ```
 
-**Solution**: Get a license from [patrickbot.io](https://patrickbot.io) and save it:
+**解决方法**：从 [patrickbot.io](https://patrickbot.io) 获取许可证并保存：
 
 ```bash
 patrick-cli set-license "YOUR_LICENSE_HERE"
@@ -336,117 +333,111 @@ patrick-cli set-license "YOUR_LICENSE_HERE"
 Error: Expertise 'X' not in license
 ```
 
-**Solution**: Visit [patrickbot.io](https://patrickbot.io) to upgrade your license or add the expertise
+**解决方法**：访问 [patrickbot.io](https://patrickbot.io) 以升级许可证或添加新的专业知识功能
 
-### Fetch Errors
+### 获取数据错误
 
 ```
 Error fetching expertise: 401 Unauthorized
 ```
 
-**Solution**: Check your license is valid and not expired
+**解决方法**：检查许可证是否有效且未过期
 
 ```
 Expertise 'X' not found
 ```
 
-**Solution**: List available expertise with `list` to see what's accessible
+**解决方法**：使用 `list` 命令列出可用的专业知识，确认哪些功能可用
 
-### Context Errors
+### 上下文错误
 
 ```
 Warning: Missing required context variables
 ```
 
-**Solution**: Check `list-prompts` output for required context fields and provide them via `--context`
+**解决方法**：检查 `list-prompts` 的输出，确认所需的上下文字段，并通过 `--context` 参数提供这些字段
 
-### Signature Verification Errors
+### 签名验证错误
 
-```
-Error: HMAC signature verification failed for 'storage_key'
-```
+**原因**：`~/.patrick/data/` 目录中的文件被手动编辑、损坏或由非 Patrick CLI 程序修改
 
-**Cause**: Files in `~/.patrick/data/` were manually edited, corrupted, or modified outside of Patrick CLI.
-
-**Solution**: Delete the corrupted file and regenerate the data:
+**解决方法**：删除损坏的文件并重新生成数据：
 
 ```bash
 rm ~/.patrick/data/storage_key.json
 # Re-run the command that generates this data
 ```
 
-**Prevention**: Never manually edit files in `~/.patrick/` - all data is signed with HMAC-SHA256 tied to your customer identity.
+**预防措施**：切勿手动编辑 `~/.patrick/` 目录中的文件——所有数据都使用与您客户身份关联的 HMAC-SHA256 签名进行保护
 
-### Switching Licenses
+### 切换许可证
 
 ```
 Error: License belongs to a different account.
 ```
 
-**Cause**: You're trying to set a license for a different account. Stored data is signed with your current customer identity and cannot be read under a different account.
+**原因**：您尝试为不同账户设置许可证。由于存储的数据已使用当前客户身份进行签名，因此无法在另一个账户下访问
 
-**Solution**: Use `set-license` with `--wipe-data` to switch accounts:
+**解决方法**：使用 `set-license` 命令并添加 `--wipe-data` 选项来切换账户：
 
 ```bash
 patrick-cli set-license "NEW_LICENSE" --wipe-data
 ```
 
-This deletes all stored data in `~/.patrick/data/` and saves the new license. You'll need to re-initialize afterwards.
+这将删除 `~/.patrick/data/` 目录中的所有数据并保存新许可证。之后您需要重新初始化系统。
 
-## Security
+## 安全性注意事项
 
-- Never commit `license.jwt` or environment files with real credentials
-- Licenses are authenticated on every API call
-- Expertise content is verified with SHA256 checksums
-- Only expertise listed in your license are accessible
+- **切勿将 `licensejwt` 或环境文件与真实凭据一起提交**  
+- 每次 API 调用时都会对许可证进行验证  
+- 专业知识内容会通过 SHA256 校验和进行验证  
+- 只有许可证中列出的专业知识功能才能被访问  
 
-**⚠️ IMPORTANT: Do not manually edit files in `~/.patrick/`**
+**⚠️ 重要提示：切勿手动编辑 `~/.patrick/` 目录中的文件**
 
-All data stored in `~/.patrick/` is signed with HMAC-SHA256 tied to your verified customer identity:
-- **`license.jwt`** - Your license token
-- **`jwks_cache.json`** - Public key cache for license verification
-- **`data/`** - Stored expertise responses (if using bidirectional expertise)
+`~/.patrick/` 目录中存储的所有数据都使用与您验证过的客户身份关联的 HMAC-SHA256 签名进行保护：
+- `licensejwt`：您的许可证令牌  
+- `jwks_cache.json`：用于许可证验证的公钥缓存  
+- `data/`：存储的专业知识响应（如果支持双向交互）
 
-Manual modifications will break signature verification and cause errors like:
-```
+手动修改这些文件会导致签名验证失败，从而引发错误（如：```
 Error: Stored data signature verification failed
-```
+```）。  
+如果您需要重置数据，请删除相关文件并重新运行命令——切勿手动编辑文件。
 
-If you need to reset your data, delete the specific file and re-run the command - don't edit it manually.
+有关 Patrick 的加密签名模型的详细信息，请参阅 `{baseDir}/references/security.md`。
 
-See `{baseDir}/references/security.md` for detailed information on Patrick's cryptographic signing model.
+## 参考文档
 
-## Reference Documentation
+请查看 `{baseDir}/references/` 目录中的以下文档：
+- `prompts-api.md`：完整的 API 文档（现在使用 `/v1/expertise` 端点）
+- `prompt-format.md`：专业知识结构规范  
+- `llm-integration.md`：LLM 集成模式  
+- `security.md`：加密签名和数据完整性模型  
 
-See `{baseDir}/references/` for:
-- `prompts-api.md` - Full API documentation (now uses /v1/expertise endpoints)
-- `prompt-format.md` - Expertise structure specification
-- `llm-integration.md` - LLM integration patterns
-- `security.md` - Cryptographic signing and data integrity model
+## 高级用法
 
-## Advanced Usage
+### 自定义服务器地址
 
-### Custom Server URL
-
-Point to a self-hosted Patrick server:
+您可以指向自己托管的 Patrick 服务器：
 
 ```bash
 export PATRICK_SERVER_URL="https://patrick.mycompany.com"
 ```
 
-### Data Storage Path
+### 数据存储路径
 
-Configure where Patrick stores local data (directory, not file):
+配置 Patrick 保存本地数据的路径（指定目录，而非单个文件）：
 
 ```bash
 export PATRICK_DATA_PATH=~/.patrick  # Default location
 ```
 
-Patrick will store customer data files in `$PATRICK_DATA_PATH/data/<storage_key>.json`
+Patrick 会将客户数据文件保存在 `$PATRICK_DATA_PATH/data/<storage_key>.json` 中。
 
-### Debug Logging
+### 启用详细日志记录
 
-Enable detailed logging:
+启用详细日志记录功能：
 
 ```bash
 export RUST_LOG="patrick_cli=debug"

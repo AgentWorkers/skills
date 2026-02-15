@@ -1,74 +1,73 @@
 ---
 name: clawlist
-description: "MUST use for any multi-step project, long-running task, or infinite monitoring workflow. Plan, execute, track, and verify tasks with checkpoint validation. For projects, automation, and ongoing operations."
+description: "必须用于任何多步骤项目、长时间运行的任务或需要持续监控的工作流程中。通过设置检查点来规划、执行、跟踪和验证任务。适用于项目自动化以及需要持续进行的操作。"
 ---
 
-# Clawlist - Task Mastery
+# Clawlist – 任务管理工具
 
-A systematic workflow for planning, executing, and tracking any task — from one-off projects to infinite monitoring loops.
+这是一个系统化的任务规划、执行和跟踪工具，适用于从一次性项目到持续监控循环的各种任务。
 
-## When to Use This Skill
+## 何时使用该工具
 
-**ALWAYS use clawlist when:**
-- Starting any new project or initiative
-- Setting up long-running monitoring
-- Breaking down complex goals
-- You need to track progress across sessions
-- Managing infinite tasks (research, monitoring, engagement)
+**在以下情况下务必使用 Clawlist：**
+- 开始任何新项目或计划
+- 设置长期运行的监控任务
+- 分解复杂的目标
+- 需要在不同会话中跟踪任务进度
+- 管理无限循环的任务（如研究、监控、用户互动等）
 
-## Long-Running & Infinite Task Examples
+## 长期运行或无限循环的任务示例
 
-### Example: Moltbook Engagement (Infinite)
-- **Type:** Infinite loop
-- **Schedule:** Every 30 minutes
-- **Goal:** Engage with community, build presence
-- **Checkpoints:** Check feed, check DMs, create content
+### 示例：Moltbook 用户互动（无限循环）
+- **类型：** 无限循环
+- **调度频率：** 每 30 分钟
+- **目标：** 与社区互动，提升品牌知名度
+- **检查点：** 查看动态信息、查看私信、创建新内容
 
-### Example: GitHub Monitoring (Long-Running)
-- **Type:** Continuous
-- **Schedule:** Every 4 hours
-- **Goal:** Monitor repos, triage issues, implement
-- **Checkpoints:** Inbox zero, PR review, implementation
+### 示例：GitHub 监控（长期运行）
+- **类型：** 持续性任务
+- **调度频率：** 每 4 小时
+- **目标：** 监控仓库、分类问题、实施修复
+- **检查点：** 收件箱清空、代码审查、问题解决
 
-## The Clawlist Workflow
+## Clawlist 的工作流程
 
-Uses standalone skills in sequence:
+该工具按顺序使用以下独立技能：
+1. **头脑风暴** → 明确任务目标，探索执行方法
+2. **制定计划** → 创建包含检查点的详细计划
+3. **执行任务** → 有条不紊地完成任务
+4. **验证任务完成情况** → 确认任务是否已完成
 
-1. **brainstorming** → Clarify intent, explore approaches
-2. **write-plan** → Create detailed plan with checkpoints  
-3. **doing-tasks** → Execute with skill discipline
-4. **verify-task** → Confirm completion
+对于需要并行执行的任务，可以在“制定计划”和“执行任务”之间添加 “dispatch-multiple-agents” 功能。
 
-For parallel work, insert **dispatch-multiple-agents** between write-plan and doing-tasks.
+## 进行中任务文件
 
-## Ongoing Tasks File
+**文件位置：`memory/tasks/ongoing-tasks.md`
 
-**Location:** `memory/tasks/ongoing-tasks.md`
+该文件用于记录所有长期运行或无限循环的任务。通过心跳（Heartbeat）系统定期更新，以：
+- 检查任务状态
+- 发现潜在障碍
+- 执行到期的任务
+- 总结任务进度
 
-Tracks all long-running and infinite tasks. Updated by heartbeat to:
-- Check task health
-- Detect blockers
-- Execute due tasks
-- Summarize status
+## 任务类型
 
-## Task Types
-
-| Type | Duration | Tracking | Example |
+| 类型 | 持续时间 | 跟踪方式 | 示例 |
 |------|----------|----------|---------|
-| **One-off** | Minutes-hours | Context only | Fix a bug |
-| **Project** | Days-weeks | Context + completion doc | Build feature |
-| **Long-running** | Ongoing | `ongoing-tasks.md` | GitHub monitoring |
-| **Infinite** | Forever | `ongoing-tasks.md` | Moltbook engagement |
+| **一次性任务** | 几分钟至几小时 | 仅记录任务上下文 | 修复漏洞 |
+| **项目任务** | 几天至几周 | 记录任务背景及完成情况 | 开发新功能 |
+| **长期运行任务** | 持续进行 | 保存在 `ongoing-tasks.md` 中 | GitHub 监控 |
+| **无限循环任务** | 永久执行 | 保存在 `ongoing-tasks.md` 中 | Moltbook 用户互动 |
 
-## Integration with Heartbeat
+## 与 Heartbeat 的集成
 
-Heartbeat reads `ongoing-tasks.md` every check to:
-- Execute due infinite tasks
-- Detect and report blockers
-- Update health status (🟢🟡🔴)
-- Ping user if intervention needed
+Heartbeat 每次检查时会读取 `ongoing-tasks.md` 文件，以：
+- 执行到期的无限循环任务
+- 发现并报告潜在障碍
+- 更新任务状态（用颜色标记：🟢 表示正常，🟡 表示待处理，🔴 表示失败）
+- 在需要用户介入时发送通知
 
-## Quick Reference
+## 快速参考
 
 ```
 New Task
@@ -80,10 +79,10 @@ brainstorming → write-plan → doing-tasks → verify-task
             update ongoing-tasks.md (if long-running)
 ```
 
-## Sub-Skills
+## 子技能
 
-- **brainstorming** - Phase 1: Clarify
-- **write-plan** - Phase 2: Plan
-- **doing-tasks** - Phase 3: Execute
-- **dispatch-multiple-agents** - Parallel execution
-- **verify-task** - Phase 4: Verify
+- **头脑风暴** – 第一阶段：明确任务目标
+- **制定计划** – 第二阶段：详细规划
+- **执行任务** – 第三阶段：有条不紊地完成任务
+- **并行执行任务** – 使用 “dispatch-multiple-agents” 功能
+- **验证任务完成情况** – 第四阶段：确认任务是否已完成

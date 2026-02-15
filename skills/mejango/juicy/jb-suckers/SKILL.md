@@ -8,39 +8,38 @@ description: |
   Covers JBSucker, JBOptimismSucker, JBArbitrumSucker, JBCCIPSucker, and JBSuckerRegistry.
 ---
 
-# Juicebox V5 Suckers - Cross-Chain Token Bridging
+# Juicebox V5 Suckers - 跨链代币桥接
 
-## Problem
+## 问题
 
-Bridging project tokens between chains while maintaining their proportional treasury backing requires understanding a complex three-phase protocol with merkle proofs, chain-specific AMBs, and careful state management.
+要在不同区块链之间桥接项目代币，并同时保持它们对应的储备金比例，需要理解一个复杂的三阶段协议，该协议涉及默克尔证明（Merkle proofs）、特定于区块链的地址映射表（AMBs）以及精细的状态管理。
 
-## Context / Trigger Conditions
+## 使用场景
 
-Apply this knowledge when:
-- Building cross-chain bridging UIs
-- Encoding `prepare()`, `toRemote()`, or `claim()` transactions
-- Querying pending/claimable bridge transactions
-- Fetching merkle proofs from Juicerkle
-- Understanding why a bridge is "stuck" in pending state
-- Implementing emergency exit flows
-- Working with JBSuckerRegistry to find bridge routes
+在以下情况下需要运用这些知识：
+- 构建跨链桥接用户界面（UIs）
+- 编码 `prepare()`、`toRemote()` 或 `claim()` 交易
+- 查询待处理或可领取的桥接交易
+- 从 Juicerkle 获取默克尔证明
+- 查明桥接为何处于“待处理”状态
+- 实现紧急退出机制
+- 使用 JBSuckerRegistry 查找桥接路径
 
-## Solution
+## 解决方案
 
-### What Are Suckers?
+### 什么是 Suckers？
 
-Suckers are specialized bridge contracts that **link Juicebox projects across chains** and move project tokens AND their proportional treasury backing between them.
+Suckers 是专门的桥接合约，用于**连接不同区块链上的 Juicebox 项目**，并在它们之间传输项目代币及其对应的储备金。
 
-**Why Suckers are necessary:** Project IDs cannot be coordinated across chains—each chain assigns the next available ID independently. If you deploy to Ethereum you might get project #42, and deploying to Optimism might give you project #17. Suckers connect these separate projects so they function as a single "omnichain project" with unified token bridging.
+**为什么需要 Suckers？**：项目 ID 在不同区块链上是独立分配的——例如，在以太坊上可能分配到项目 ID #42，在 Optimism 上可能分配到项目 ID #17。Suckers 将这些独立的项目连接起来，使它们能够作为一个统一的“多链项目”进行代币桥接。
 
-Unlike standard token bridges:
+与标准代币桥接器不同：
+- 代币在源链上通过“现金提取”（cash-out）方式被销毁
+- 代币转移时，相应的 ETH/USDC 也会按比例转移
+- 接收方会在目标链上收到新生成的代币
+- 储备金价值会随代币的转移而变化
 
-- Tokens are burned on source chain via cash-out
-- Proportional ETH/USDC moves with the tokens
-- Recipient receives newly minted tokens on destination
-- Treasury value follows the tokens
-
-### The Three-Phase Bridge Flow
+### 三阶段桥接流程
 
 ```
 PHASE 1: PREPARE (Source Chain)
@@ -104,17 +103,17 @@ PHASE 3: CLAIM (Destination Chain)
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Key Contracts
+### 关键合约
 
-| Contract | Purpose |
+| 合约 | 功能 |
 |----------|---------|
-| `JBSucker` | Abstract base with core bridging logic |
-| `JBOptimismSucker` | OP Stack bridges (Optimism, Base) |
-| `JBArbitrumSucker` | Arbitrum Inbox/Outbox messaging |
-| `JBCCIPSucker` | Chainlink CCIP for L2↔L2 |
-| `JBSuckerRegistry` | Deploys and tracks sucker pairs |
+| `JBSucker` | 包含核心桥接逻辑的抽象基类 |
+| `JBOptimismSucker` | 用于 Optimism 和 Base 链路的桥接 |
+| `JBArbitrumSucker` | 用于 Arbitrum 链路的消息传递 |
+| `JBCCIPSucker` | 用于 L2 链路之间的跨链通信（CCIP） |
+| `JBSuckerRegistry` | 负责部署和跟踪桥接对（bridge pairs） |
 
-### Querying Sucker Pairs
+### 查询桥接对信息
 
 ```javascript
 // Get all bridge destinations for a project
@@ -145,9 +144,9 @@ const pairs = await publicClient.readContract({
 // ]
 ```
 
-### Encoding Transactions
+### 编码交易
 
-**Prepare (Step 1):**
+**准备阶段（Step 1）：**
 ```javascript
 import { encodeFunctionData } from 'viem';
 
@@ -180,7 +179,7 @@ await walletClient.sendTransaction({
 });
 ```
 
-**Execute (Step 2):**
+**执行阶段（Step 2）：**
 ```javascript
 // Estimate fee via simulation (binary search)
 async function estimateBridgeFee(sucker, token) {
@@ -226,7 +225,7 @@ await walletClient.sendTransaction({
 });
 ```
 
-**Claim (Step 3):**
+**领取阶段（Step 3）：**
 ```javascript
 // Fetch proof from Juicerkle
 const JUICERKLE_API = 'https://juicerkle-production.up.railway.app';
@@ -298,7 +297,7 @@ await walletClient.sendTransaction({
 });
 ```
 
-### Querying Bridge Status (Bendystraw)
+### 查询桥接状态（Bendystraw）
 
 ```graphql
 query SuckerTransactions($suckerGroupId: String!, $status: suckerTransactionStatus) {
@@ -326,17 +325,17 @@ query SuckerTransactions($suckerGroupId: String!, $status: suckerTransactionStat
 }
 ```
 
-### State Transitions
+### 状态转换
 
-| Status | Meaning | Next Action |
+| 状态 | 含义 | 下一步操作 |
 |--------|---------|-------------|
-| `pending` | Prepared but not sent | Call `toRemote()` |
-| `claimable` | Root arrived, awaiting claim | Call `claim()` with proof |
-| `claimed` | Complete | None |
+| `pending` | 准备完成但尚未发送 | 调用 `toRemote()` 方法 |
+| `claimable` | 根节点已到达，等待领取 | 提供证明后调用 `claim()` 方法 |
+| `claimed` | 桥接完成 | 无需进一步操作 |
 
-### Emergency Exit
+### 紧急退出机制
 
-If a bridge becomes non-functional:
+如果桥接系统出现故障：
 
 ```javascript
 // 1. Project owner enables emergency hatch
@@ -357,9 +356,9 @@ await userClient.writeContract({
 });
 ```
 
-### Token Mapping
+### 代币映射
 
-Projects must map which tokens can be bridged:
+项目需要明确指定哪些代币可以进行桥接：
 
 ```javascript
 const mapping = {
@@ -377,43 +376,43 @@ await ownerClient.writeContract({
 });
 ```
 
-### Chain-Specific Notes
+### 特定链路的注意事项
 
-**OP Stack (Optimism, Base):**
-- Uses native OP Messenger
-- Lowest fees (~0.0005-0.002 ETH)
-- Fast finality
+**OP Stack（Optimism, Base）：**
+- 使用原生的 OP Messenger 协议
+- 费用最低（约 0.0005-0.002 ETH）
+- 交易最终确认速度快
 
-**Arbitrum:**
-- Uses Retryable Tickets
-- Dynamic gas pricing
-- Requires calculating `maxSubmissionCost`
+**Arbitrum：**
+- 使用可重试的提交机制（Retryable Tickets）
+- 动态计算交易费用（gas pricing）
+- 需要计算 `maxSubmissionCost`
 
-**CCIP (L2↔L2):**
-- Highest fees but most flexible
-- Works between any CCIP-supported chains
-- Good for Optimism↔Arbitrum, Base↔Arbitrum
+**CCIP（L2↔L2）：**
+- 费用最高，但灵活性最高
+- 支持任意支持 CCIP 的区块链之间的通信
+- 适用于 Optimism ↔ Arbitrum、Base ↔ Arbitrum 之间的桥接
 
-### Sucker Deprecation
+### Suckers 的退役计划
 
 ```
 ENABLED → DEPRECATION_PENDING → SENDING_DISABLED → DEPRECATED
 ```
 
-- `DEPRECATION_PENDING`: Warning state, still functional
-- `SENDING_DISABLED`: Cannot prepare new bridges, can still claim
-- `DEPRECATED`: Only emergency exits allowed
+- `DEPRECATION_PENDING`：警告状态，仍可正常使用
+- `SENDING_DISABLED`：无法创建新的桥接，但仍可领取代币
+- `DEPRECATED`：仅允许使用紧急退出机制
 
-## Verification
+## 验证步骤
 
-1. Check sucker state before bridging: `sucker.state()`
-2. Verify token is mapped: `sucker.remoteTokenFor(localToken)`
-3. Check outbox balance: `sucker.outboxOf(token).balance`
-4. Verify claim proof via Juicerkle before submitting
+1. 在桥接前检查 Sucker 的状态：`sucker.state()`
+2. 验证代币是否已正确映射：`sucker.remoteTokenFor(localToken)`
+3. 检查接收方的代币余额：`sucker.outboxOf(token).balance`
+4. 在提交交易前通过 Juicerkle 验证领取证明
 
-## Example
+## 示例
 
-**Complete bridge flow from React:**
+**使用 React 完整实现桥接流程：**
 
 ```typescript
 async function bridgeTokens({
@@ -454,17 +453,17 @@ async function bridgeTokens({
 }
 ```
 
-## Notes
+## 其他注意事项：
 
-- Merkle tree depth is 32 - proofs are always `bytes32[32]`
-- Nonces are monotonically increasing - prevents replay attacks
-- Each token has independent outbox/inbox trees
-- `addToBalanceMode` can be `MANUAL` or `ON_CLAIM`
-- Double-spend prevention via executed leaf bitmap
-- Emergency hatch uses separate execution namespace
+- 默克尔树的深度为 32，证明数据始终为 `bytes32[32]` 格式
+- 随机数（nonces）是单调递增的，以防止重放攻击
+- 每种代币都有独立的发送/接收树结构
+- `addToBalanceMode` 可设置为 `MANUAL` 或 `ON_CLAIM`
+- 通过执行叶子节点的位图（leaf bitmap）来防止双重支付
+- 紧急退出机制使用独立的执行命名空间（execution namespace）
 
-## Related Skills
+## 相关技能
 
-- `/jb-omnichain-ui` - Building omnichain UIs with Relayr and Bendystraw
-- `/jb-v5-currency-types` - Currency handling for cross-chain projects
-- `/jb-bendystraw` - Querying cross-chain data
+- `/jb-omnichain-ui`：使用 Relayr 和 Bendystraw 构建多链 UI
+- `/jb-v5-currency-types`：处理跨链项目的货币相关逻辑
+- `/jb-bendystraw`：用于查询跨链数据

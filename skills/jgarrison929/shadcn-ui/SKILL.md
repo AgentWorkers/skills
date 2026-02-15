@@ -1,7 +1,8 @@
 ---
 name: shadcn-ui
 version: 1.0.0
-description: Use when building UI with shadcn/ui components, Tailwind CSS layouts, form patterns with react-hook-form and zod, theming, dark mode, sidebar layouts, mobile navigation, or any shadcn component question.
+description: **使用场景：**  
+适用于使用 `shadcn/ui` 组件构建用户界面（UI）、`Tailwind CSS` 布局、结合 `react-hook-form` 和 `zod` 创建表单结构、实现主题切换（theming）、暗黑模式（dark mode）、侧边栏布局（sidebar layouts）、移动端导航（mobile navigation），或任何与 `shadcn` 组件相关的问题或需求。
 triggers:
   - shadcn
   - shadcn/ui
@@ -24,15 +25,15 @@ scope: implementation
 output-format: code
 ---
 
-# shadcn/ui Expert
+# shadcn/ui 专家指南
 
-Comprehensive guide for building production UIs with shadcn/ui, Tailwind CSS, react-hook-form, and zod.
+本指南详细介绍了如何使用 shadcn/ui、Tailwind CSS、react-hook-form 和 zod 来构建高质量的生产级用户界面（UI）。
 
-## Core Concepts
+## 核心概念
 
-shadcn/ui is **not** a component library — it's a collection of copy-paste components built on Radix UI primitives. You own the code. Components are added to your project, not installed as dependencies.
+shadcn/ui 并不是一个组件库，而是一组基于 Radix UI 原语构建的、可以直接复用的组件。这些组件的代码所有权属于您，您可以将它们直接添加到您的项目中，而无需将其作为依赖项进行安装。
 
-## Installation
+## 安装
 
 ```bash
 # Initialize shadcn/ui in a Next.js project
@@ -58,74 +59,74 @@ npx shadcn@latest add button card input label textarea select checkbox
 
 ---
 
-## Component Categories & When to Use
+## 组件分类及使用场景
 
-### Layout & Navigation
-| Component | Use When |
-|-----------|----------|
-| `sidebar` | App-level navigation with collapsible sections |
-| `navigation-menu` | Top-level site navigation with dropdowns |
-| `breadcrumb` | Showing page hierarchy/location |
-| `tabs` | Switching between related views in same context |
-| `separator` | Visual divider between content sections |
-| `sheet` | Slide-out panel (mobile nav, filters, detail views) |
-| `resizable` | Adjustable panel layouts |
+### 布局与导航
+| 组件 | 使用场景 |
+|---------|---------|
+| `sidebar` | 具有可折叠部分的 app 级导航 |
+| `navigation-menu` | 带有下拉菜单的顶级站点导航 |
+| `breadcrumb` | 显示页面层次结构/位置 |
+| `tabs` | 在同一上下文中切换相关视图 |
+| `separator` | 用于分隔内容区域的视觉分隔符 |
+| `sheet` | 可滑出的面板（用于移动导航、筛选器、详细信息显示） |
+| `resizable` | 可调整大小的面板布局 |
 
-### Forms & Input
-| Component | Use When |
-|-----------|----------|
-| `form` | Any form with validation (wraps react-hook-form) |
-| `input` | Text, email, password, number inputs |
-| `textarea` | Multi-line text input |
-| `select` | Choosing from a list (native-like) |
-| `combobox` | Searchable select (uses `command` + `popover`) |
-| `checkbox` | Boolean or multi-select toggles |
-| `radio-group` | Single selection from small set |
-| `switch` | On/off toggle (settings, preferences) |
-| `slider` | Numeric range selection |
-| `date-picker` | Date selection (uses `calendar` + `popover`) |
-| `toggle` | Pressed/unpressed state (toolbar buttons) |
+### 表单与输入
+| 组件 | 使用场景 |
+|---------|---------|
+| `form` | 需要验证的表单（用于包裹 react-hook-form） |
+| `input` | 文本、电子邮件、密码、数字输入框 |
+| `textarea` | 多行文本输入框 |
+| `select` | 从列表中选择（类似原生选择框） |
+| `combobox` | 可搜索的选择框（结合了 `command` 和 `popover` 功能） |
+| `checkbox` | 布尔值或多选状态的切换 |
+| `radio-group` | 从少量选项中选择单个选项 |
+| `switch` | 开/关状态的切换（用于设置或偏好设置） |
+| `slider` | 数值范围选择器 |
+| `date-picker` | 日期选择器（结合了 `calendar` 和 `popover` 功能） |
+| `toggle` | 表示按钮被按下/释放的状态 |
 
-### Feedback & Overlay
-| Component | Use When |
-|-----------|----------|
-| `dialog` | Modal confirmation, forms, or detail views |
-| `alert-dialog` | Destructive action confirmation ("Are you sure?") |
-| `sheet` | Side panel for forms, filters, mobile nav |
-| `toast` | Brief non-blocking notifications (via `sonner`) |
-| `alert` | Inline status messages (info, warning, error) |
-| `tooltip` | Hover hints for icons/buttons |
-| `popover` | Rich content on click (color pickers, date pickers) |
-| `hover-card` | Preview content on hover (user profiles, links) |
-| `skeleton` | Loading placeholders |
-| `progress` | Task completion indicators |
+### 反馈与提示
+| 组件 | 使用场景 |
+|---------|---------|
+| `dialog` | 弹出式确认框、表单或详细信息显示 |
+| `alert-dialog` | 表示破坏性操作的确认提示（“你确定吗？”） |
+| `sheet` | 用于显示表单、筛选器或移动导航的侧边面板 |
+| `toast` | 短暂的非阻塞通知（通过 `sonner` 实现） |
+| `alert` | 表示状态的消息（信息、警告、错误） |
+| `tooltip` | 图标/按钮上的悬停提示 |
+| `popover` | 点击时显示的丰富内容（如颜色选择器、日期选择器） |
+| `hover-card` | 鼠标悬停时显示的内容预览（如用户资料、链接） |
+| `skeleton` | 加载中的占位符 |
+| `progress` | 任务完成进度指示器 |
 
-### Data Display
-| Component | Use When |
-|-----------|----------|
-| `table` | Tabular data display |
-| `data-table` | Tables with sorting, filtering, pagination (uses `@tanstack/react-table`) |
-| `card` | Content containers with header, body, footer |
-| `badge` | Status labels, tags, counts |
-| `avatar` | User profile images |
-| `accordion` | Collapsible FAQ or settings sections |
-| `carousel` | Image/content slideshows |
-| `scroll-area` | Custom scrollable containers |
+### 数据显示
+| 组件 | 使用场景 |
+|---------|---------|
+| `table` | 表格形式的数据展示 |
+| `data-table` | 具有排序、筛选和分页功能的表格（基于 `@tanstack/react-table` 实现） |
+| `card` | 包含标题、正文和脚注的内容容器 |
+| `badge` | 表示状态、标签或计数的标签 |
+| `avatar` | 用户资料图片 |
+| `accordion` | 可折叠的常见问题解答或设置部分 |
+| `carousel` | 图片/内容的轮播展示 |
+| `scroll-area` | 可自定义滚动的容器 |
 
-### Actions
-| Component | Use When |
-|-----------|----------|
-| `button` | Primary actions, form submissions |
-| `dropdown-menu` | Context menus, action menus |
-| `context-menu` | Right-click menus |
-| `menubar` | Application menu bars |
-| `command` | Command palette / search (⌘K) |
+### 动作组件
+| 组件 | 使用场景 |
+|---------|---------|
+| `button` | 主要操作按钮、表单提交 |
+| `dropdown-menu` | 上下文菜单、动作菜单 |
+| `context-menu` | 右键菜单 |
+| `menubar` | 应用程序菜单栏 |
+| `command` | 命令面板/搜索功能（使用 ⌘K 键调用）
 
 ---
 
-## Form Patterns (react-hook-form + zod)
+## 表单设计模式（react-hook-form + zod）
 
-### Complete Form Example
+### 完整的表单示例
 
 ```bash
 npx shadcn@latest add form input select textarea checkbox button
@@ -284,7 +285,7 @@ export function UserForm() {
 }
 ```
 
-### Form with Server Action
+### 带有服务器处理的表单
 
 ```tsx
 'use client'
@@ -316,9 +317,9 @@ export function ContactForm() {
 
 ---
 
-## Theming & Dark Mode
+## 主题设置与暗模式
 
-### Setup with next-themes
+### 使用 next-themes 进行主题配置
 
 ```bash
 npm install next-themes
@@ -373,7 +374,7 @@ export function ThemeToggle() {
 }
 ```
 
-### Custom Colors in `globals.css`
+### 在 `globals.css` 中自定义颜色
 
 ```css
 @layer base {
@@ -407,9 +408,9 @@ export function ThemeToggle() {
 
 ---
 
-## Common Layouts
+## 常见布局
 
-### App Shell with Sidebar
+### 带侧边栏的应用界面
 
 ```tsx
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
@@ -431,7 +432,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 }
 ```
 
-### Responsive Header with Mobile Nav
+### 具有移动导航的响应式页眉
 
 ```tsx
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -475,7 +476,7 @@ export function Header() {
 }
 ```
 
-### Card Grid
+### 卡片网格布局
 
 ```tsx
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -502,9 +503,9 @@ export function StatsGrid({ stats }: { stats: Stat[] }) {
 
 ---
 
-## Tailwind CSS Patterns
+## Tailwind CSS 设计模式
 
-### Common Utility Patterns
+### 常用实用组件
 
 ```tsx
 // Centering
@@ -534,7 +535,7 @@ export function StatsGrid({ stats }: { stats: Stat[] }) {
 <div className="transition-all duration-200 hover:scale-105">
 ```
 
-### Button Variants
+### 按钮样式变体
 
 ```tsx
 <Button>Default</Button>
@@ -552,7 +553,7 @@ export function StatsGrid({ stats }: { stats: Stat[] }) {
 
 ---
 
-## Toast Notifications
+## 通知提示
 
 ```bash
 npx shadcn@latest add sonner
@@ -584,7 +585,7 @@ toast.promise(asyncAction(), {
 
 ---
 
-## Command Palette (⌘K)
+## 命令面板（⌘K）
 
 ```tsx
 'use client'

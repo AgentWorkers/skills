@@ -1,28 +1,28 @@
 ---
 name: animation-gen
-description: Generate CSS and Framer Motion animations from plain English. Use when you need smooth animations without the math.
+description: 将普通的英文描述转换为 CSS 和 Framer Motion 动画代码。当你需要无需数学计算即可实现平滑动画效果时，可以使用这种方法。
 ---
 
-# Animation Generator
+# 动画生成器
 
-Describing animations is easy. Writing the keyframes and easing functions is not. Tell this tool what you want to see and it'll give you the CSS or Framer Motion code to make it happen.
+描述动画很容易，但编写关键帧和缓动函数却并非易事。只需告诉这个工具你想要的效果，它就会为你生成相应的CSS或Framer Motion代码来实现它。
 
-**One command. Zero config. Just works.**
+**一个命令，零配置，立即可用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-animation "fade in from left with bounce"
 ```
 
-## What It Does
+## 功能介绍
 
-- Converts plain English descriptions to actual animation code
-- Supports CSS keyframes and Framer Motion variants
-- Handles complex multi-step animations
-- Outputs production-ready code you can drop in
+- 将简单的文字描述转换为实际的动画代码
+- 支持CSS关键帧和Framer Motion格式
+- 能处理复杂的多步骤动画
+- 生成可直接使用的成品代码
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Get CSS keyframes
@@ -38,42 +38,42 @@ npx ai-animation "smooth slide up reveal" -f both -o animations.ts
 npx ai-animation "shake horizontally three times then settle"
 ```
 
-## Best Practices
+## 使用建议
 
-- **Be descriptive** - "bounce twice then fade" beats "make it move"
-- **Mention timing** - include "slow", "fast", "0.5s" if timing matters
-- **Specify direction** - "from left", "upward", "diagonal" helps a lot
-- **Test on device** - animations feel different on mobile
+- **描述具体效果**：例如“先弹跳两次，然后渐隐”，比“让它动起来”更清晰
+- **标注时间**：如果时间控制很重要，请注明“慢速”、“快速”或“0.5秒”
+- **指定方向**：如“从左侧开始”、“向上移动”或“对角线移动”等详细信息会很有帮助
+- **在设备上测试**：动画在移动设备上的显示效果可能与桌面不同
 
-## When to Use This
+## 适用场景
 
-- Building landing pages and need attention-grabbing effects
-- Adding micro-interactions to your UI
-- You can picture the animation but can't write the math
-- Prototyping quickly before fine-tuning manually
+- 制作吸引注意力的网站页面
+- 为用户界面添加微交互效果
+- 当你能够想象动画效果但无法编写代码时
+- 在手动微调之前快速进行原型设计
 
-## Part of the LXGIC Dev Toolkit
+## 属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发工具之一。免费版本无付费门槛、无需注册，也不需要API密钥。这些工具都能直接使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。运行时需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 npx ai-animation --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your natural language description and translates it into animation primitives. The AI understands common animation terms like "bounce", "ease", "stagger" and converts them to proper timing functions and keyframe values.
+该工具会将你的自然语言描述转换为动画所需的原始数据。它能够理解“弹跳”、“缓动”、“交错”等常见的动画术语，并将其转换为正确的计时函数和关键帧值。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以随意使用这个工具。

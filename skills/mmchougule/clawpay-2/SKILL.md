@@ -1,7 +1,7 @@
 ---
 name: clawpay
 version: 1.1.0
-description: Private payments for AI agents - no on-chain link between sender and recipient
+description: AI代理的私人支付：发送方与接收方之间没有链上的直接关联（即没有在区块链上记录的交易信息）。
 author: clawpay
 homepage: https://clawpay.dev
 tags: [privacy, payments, railgun, usdt, agents, tips]
@@ -13,13 +13,13 @@ metadata:
 
 # ClawPay 🦞
 
-**Send money privately. Recipient sees funds from Railgun - can't trace back to you.**
+**私密转账服务。收款人会看到资金来自 Railgun，无法追踪到您的账户。**
 
-## Just Run It
+## 使用方法
 
-**Prerequisites:** You need a wallet private key with USDT on BSC.
+**前提条件：** 您需要一个在 BSC 上拥有 USDT 的钱包私钥。
 
-Save this as `send-private.mjs` and run with `node send-private.mjs`:
+将以下代码保存为 `send-private.mjs`，并通过 `node send-private.mjs` 命令运行它：
 
 ```javascript
 // send-private.mjs - Copy this entire file and run it
@@ -93,7 +93,7 @@ async function sendPrivate() {
 sendPrivate().catch(console.error);
 ```
 
-**Run it:**
+**运行方式：**
 ```bash
 npm install ethers
 WALLET_KEY=0xYourPrivateKey node send-private.mjs
@@ -101,7 +101,7 @@ WALLET_KEY=0xYourPrivateKey node send-private.mjs
 
 ---
 
-## How It Works
+## 工作原理
 
 ```
 YOU                    CLAWPAY API                 RECIPIENT
@@ -121,18 +121,18 @@ YOU                    CLAWPAY API                 RECIPIENT
 
 ---
 
-## API Reference
+## API 参考
 
-**Base URL:** `https://clawpay.dev`
+**基础 URL：** `https://clawpay.dev`
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/health` | GET | API status |
-| `/invoice?eoa=...&signature=...` | GET | Get your invoice address |
-| `/transfer` | POST | Send private payment |
-| `/status/:id` | GET | Check transfer status |
-| `/balance?eoa=...&signature=...&token=USDT` | GET | Check shielded balance |
-| `/faucet` | POST | Get BNB for gas (testnet) |
+| `/health` | GET | API 状态 |
+| `/invoice?eoa=...&signature=...` | GET | 获取您的发票地址 |
+| `/transfer` | POST | 进行私密转账 |
+| `/status/:id` | GET | 查看转账状态 |
+| `/balance?eoa=...&signature=...&token=USDT` | GET | 查看受保护的余额 |
+| `/faucet` | POST | 获取用于支付 gas 的 BNB（测试网） |
 
 ### POST /transfer
 
@@ -146,7 +146,7 @@ YOU                    CLAWPAY API                 RECIPIENT
 }
 ```
 
-Response:
+响应：
 ```json
 {
   "transferId": "tx_123...",
@@ -155,13 +155,13 @@ Response:
 }
 ```
 
-Status flow: `pending` → `shielding` → `proving` → `complete`
+转账状态：`pending` → `shielding` → `proving` → `complete`
 
 ---
 
-## No Private Key? Use Bankr Wallet
+## 没有私钥？使用 Bankr 钱包
 
-If you're an agent without direct wallet access, use Bankr:
+如果您没有直接访问钱包的权限，可以使用 Bankr：
 
 ```javascript
 // 1. Get your wallet from Bankr
@@ -176,16 +176,16 @@ const signature = await bankr.signMessage('b402 Incognito EOA Derivation');
 
 ---
 
-## Supported Tokens (BSC)
+## 支持的代币（BSC）
 
-| Token | Address |
+| 代币 | 地址 |
 |-------|---------|
 | USDT | `0x55d398326f99059fF775485246999027B3197955` |
 | USDC | `0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d` |
 
 ---
 
-## Need Gas?
+## 需要 gas 吗？
 
 ```bash
 curl -X POST https://clawpay.dev/faucet \
@@ -195,14 +195,14 @@ curl -X POST https://clawpay.dev/faucet \
 
 ---
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Error | Fix |
+| 错误 | 解决方案 |
 |-------|-----|
-| "Insufficient balance" | Transfer USDT to invoice first |
-| "Signature does not match" | Sign exact message: `b402 Incognito EOA Derivation` |
-| "No spendable UTXOs" | Wait 2 min after funding invoice |
+| “余额不足” | 先向发票地址转账 USDT |
+| “签名不匹配” | 确保签名内容为：`b402 Incognito EOA Derivation` |
+| “没有可花费的 UTXO” | 资金转入发票地址后等待 2 分钟 |
 
 ---
 
-**Privacy for the agent economy** | Built on Railgun | https://clawpay.dev
+**为代理经济提供隐私保护** | 基于 Railgun 构建 | https://clawpay.dev

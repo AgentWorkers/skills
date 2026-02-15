@@ -1,40 +1,52 @@
 ---
 name: pi-health
-description: Raspberry Pi health monitor. Check CPU temperature, throttling status, voltage levels, memory/disk usage, fan RPM, overclock detection, and power issues. Use when monitoring Pi health, diagnosing thermal throttling, checking for under-voltage, or verifying system stability on any Raspberry Pi (Pi 3/4/5, arm64/armhf).
+description: **Raspberry Pi 健康监测工具**  
+该工具可用于检查 Raspberry Pi 的各项运行状态：  
+- CPU 温度  
+- 动态调频（throttling）状态  
+- 电压水平  
+- 内存/磁盘使用情况  
+- 风扇转速（RPM）  
+- 过频检测  
+- 电源问题  
+
+适用于监控 Raspberry Pi 的整体运行状况、诊断因高温导致的性能下降、检测电压是否过低，以及验证系统的稳定性。  
+支持以下型号的 Raspberry Pi：Pi 3/4/5，以及基于 arm64/armhf 架构的系统。
 ---
 
-# Pi Health
+# Raspberry Pi 系统健康检查
 
-Run the health check script:
+运行健康检查脚本：
 
 ```bash
 bash scripts/health.sh
 ```
 
-## What It Checks
+## 检查项目
 
-| Check | Source | Warning | Critical |
-|-------|--------|---------|----------|
-| CPU Temperature | thermal_zone0 | >70°C | >80°C |
-| Throttling | vcgencmd get_throttled | any flag set | under-voltage |
-| Voltages | vcgencmd measure_volts | — | — |
-| Memory | free -m | >75% | >90% |
-| Disk | df / | >75% | >90% |
-| CPU Frequency | cpufreq sysfs | — | — |
-| Load Average | /proc/loadavg | >nCPU | >2×nCPU |
-| Fan | hwmon sysfs | — | — |
-| Overclock | config.txt | detected | — |
-| Power | dmesg | — | under-voltage |
+| 检查项 | 来源           | 警告等级 | 严重等级 |
+|-------|---------------|---------|----------|
+| CPU 温度 | thermal_zone0     | >70°C   | >80°C   |
+| 节能策略 | vcgencmd get_throttled | 任何节能策略被启用 | 电压过低 |
+| 电压     | vcgencmd measure_volts | —      | —      |
+| 内存使用率 | free -m        | >75%    | >90%    |
+| 磁盘空间 | df /           | >75%    | >90%    |
+| CPU 频率   | cpufreq sysfs     | —      | —      |
+| 平均负载   | /proc/loadavg     | >nCPU   | >2×nCPU   |
+| 风扇状态 | hwmon sysfs     | —      | —      |
+| 超频设置 | config.txt       | 检测到超频   | —      |
+| 电源状态 | dmesg          | —      | 电压过低 |
 
-## Exit Codes
+## 返回代码
 
-- `0` — Healthy (all checks passed)
-- `1` — Warnings (non-critical issues)
-- `2` — Critical (needs immediate attention)
+- `0` — 系统健康（所有检查项均通过）
+- `1` — 存在警告（非严重问题）
+- `2` — 存在严重问题（需要立即处理）
 
-## Requirements
+## 所需软件
 
-- Raspberry Pi OS (Bookworm or later)
-- `vcgencmd` (optional but recommended — comes with `libraspberrypi-bin`)
-- `bc` (standard on Pi OS)
-- No external dependencies or API keys
+- Raspberry Pi 操作系统（Bookworm 或更高版本）
+- `vcgencmd`（可选，但推荐使用——包含在 `libraspberrypi-bin` 中）
+- `bc`（Raspberry Pi 操作系统的标准工具）
+
+**注：** 本脚本不依赖于任何外部依赖项或 API 密钥。

@@ -1,25 +1,25 @@
 ---
 name: senior-computer-vision
-description: Computer vision engineering skill for object detection, image segmentation, and visual AI systems. Covers CNN and Vision Transformer architectures, YOLO/Faster R-CNN/DETR detection, Mask R-CNN/SAM segmentation, and production deployment with ONNX/TensorRT. Includes PyTorch, torchvision, Ultralytics, Detectron2, and MMDetection frameworks. Use when building detection pipelines, training custom models, optimizing inference, or deploying vision systems.
+description: 计算机视觉工程技能，专注于目标检测、图像分割和视觉人工智能系统。涵盖卷积神经网络（CNN）与视觉变换器（Vision Transformer）架构，以及YOLO/Faster R-CNN/DETR等目标检测算法、Mask R-CNN/SAM等图像分割技术，并涉及使用ONNX/TensorRT进行系统部署。相关工具包括PyTorch、torchvision、Ultralytics、Detectron2和MMDetection等框架。这些技能适用于构建目标检测流程、训练自定义模型、优化推理性能或部署视觉系统。
 ---
 
-# Senior Computer Vision Engineer
+# 高级计算机视觉工程师
 
-Production computer vision engineering skill for object detection, image segmentation, and visual AI system deployment.
+具备用于对象检测、图像分割以及视觉AI系统部署的生产级计算机视觉工程技术。
 
-## Table of Contents
+## 目录
 
-- [Quick Start](#quick-start)
-- [Core Expertise](#core-expertise)
-- [Tech Stack](#tech-stack)
-- [Workflow 1: Object Detection Pipeline](#workflow-1-object-detection-pipeline)
-- [Workflow 2: Model Optimization and Deployment](#workflow-2-model-optimization-and-deployment)
-- [Workflow 3: Custom Dataset Preparation](#workflow-3-custom-dataset-preparation)
-- [Architecture Selection Guide](#architecture-selection-guide)
-- [Reference Documentation](#reference-documentation)
-- [Common Commands](#common-commands)
+- [快速入门](#quick-start)
+- [核心专长](#core-expertise)
+- [技术栈](#tech-stack)
+- [工作流程1：对象检测流程](#workflow-1-object-detection-pipeline)
+- [工作流程2：模型优化与部署](#workflow-2-model-optimization-and-deployment)
+- [工作流程3：自定义数据集准备](#workflow-3-custom-dataset-preparation)
+- [架构选择指南](#architecture-selection-guide)
+- [参考文档](#reference-documentation)
+- [常用命令](#common-commands)
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate training configuration for YOLO or Faster R-CNN
@@ -32,38 +32,38 @@ python scripts/inference_optimizer.py model.pt --target onnx --benchmark
 python scripts/dataset_pipeline_builder.py images/ --format coco --augment
 ```
 
-## Core Expertise
+## 核心专长
 
-This skill provides guidance on:
+本技能涵盖以下方面的指导：
 
-- **Object Detection**: YOLO family (v5-v11), Faster R-CNN, DETR, RT-DETR
-- **Instance Segmentation**: Mask R-CNN, YOLACT, SOLOv2
-- **Semantic Segmentation**: DeepLabV3+, SegFormer, SAM (Segment Anything)
-- **Image Classification**: ResNet, EfficientNet, Vision Transformers (ViT, DeiT)
-- **Video Analysis**: Object tracking (ByteTrack, SORT), action recognition
-- **3D Vision**: Depth estimation, point cloud processing, NeRF
-- **Production Deployment**: ONNX, TensorRT, OpenVINO, CoreML
+- **对象检测**：YOLO系列（v5-v11）、Faster R-CNN、DETR、RT-DETR
+- **实例分割**：Mask R-CNN、YOLOACT、SOLOv2
+- **语义分割**：DeepLabV3+、SegFormer、SAM（任意对象分割）
+- **图像分类**：ResNet、EfficientNet、视觉变换器（ViT、DeiT）
+- **视频分析**：对象跟踪（ByteTrack、SORT）、动作识别
+- **3D视觉**：深度估计、点云处理、NeRF
+- **生产环境部署**：ONNX、TensorRT、OpenVINO、CoreML
 
-## Tech Stack
+## 技术栈
 
-| Category | Technologies |
-|----------|--------------|
-| Frameworks | PyTorch, torchvision, timm |
-| Detection | Ultralytics (YOLO), Detectron2, MMDetection |
-| Segmentation | segment-anything, mmsegmentation |
-| Optimization | ONNX, TensorRT, OpenVINO, torch.compile |
-| Image Processing | OpenCV, Pillow, albumentations |
-| Annotation | CVAT, Label Studio, Roboflow |
-| Experiment Tracking | MLflow, Weights & Biases |
-| Serving | Triton Inference Server, TorchServe |
+| 类别 | 技术                |
+|----------|-------------------|
+| 框架        | PyTorch、vision torchvision、timm       |
+| 检测        | Ultralytics（YOLO）、Detectron2、MMDetection |
+| 分割        | segment-anything、mmsegmentation     |
+| 优化        | ONNX、TensorRT、OpenVINO、torch.compile   |
+| 图像处理      | OpenCV、Pillow、albumentations     |
+| 注释        | CVAT、Label Studio、Roboflow       |
+| 实验跟踪      | MLflow、Weights & Biases       |
+| 服务        | Triton推理服务器、TorchServe       |
 
-## Workflow 1: Object Detection Pipeline
+## 工作流程1：对象检测流程
 
-Use this workflow when building an object detection system from scratch.
+当从零开始构建对象检测系统时，请使用此流程。
 
-### Step 1: Define Detection Requirements
+### 第1步：定义检测需求
 
-Analyze the detection task requirements:
+分析检测任务的具体要求：
 
 ```
 Detection Requirements Analysis:
@@ -74,21 +74,21 @@ Detection Requirements Analysis:
 - Dataset size: [number of images, annotations per class]
 ```
 
-### Step 2: Select Detection Architecture
+### 第2步：选择检测架构
 
-Choose architecture based on requirements:
+根据需求选择合适的架构：
 
-| Requirement | Recommended Architecture | Why |
-|-------------|-------------------------|-----|
-| Real-time (>30 FPS) | YOLOv8/v11, RT-DETR | Single-stage, optimized for speed |
-| High accuracy | Faster R-CNN, DINO | Two-stage, better localization |
-| Small objects | YOLO + SAHI, Faster R-CNN + FPN | Multi-scale detection |
-| Edge deployment | YOLOv8n, MobileNetV3-SSD | Lightweight architectures |
-| Transformer-based | DETR, DINO, RT-DETR | End-to-end, no NMS required |
+| 需求                | 推荐架构                | 原因                          |
+|------------------|------------------|-------------------------------------------|
+| 实时性（>30 FPS）       | YOLOv8/v11、RT-DETR           | 单阶段架构，优化速度                   |
+| 高精度            | Faster R-CNN、DINO           | 双阶段架构，更精确的定位                 |
+| 小对象检测        | YOLO + SAHI、Faster R-CNN + FPN     | 多尺度检测                     |
+| 边缘设备部署        | YOLOv8n、MobileNetV3-SSD       | 轻量级架构                     |
+| 基于Transformer的架构    | DETR、DINO、RT-DETR           | 端到端架构，无需NMS                   |
 
-### Step 3: Prepare Dataset
+### 第3步：准备数据集
 
-Convert annotations to required format:
+将注释转换为所需格式：
 
 ```bash
 # COCO format (recommended)
@@ -102,9 +102,9 @@ python scripts/dataset_pipeline_builder.py data/images/ \
 python -c "from pycocotools.coco import COCO; coco = COCO('data/coco/train.json'); print(f'Images: {len(coco.imgs)}, Categories: {len(coco.cats)}')"
 ```
 
-### Step 4: Configure Training
+### 第4步：配置训练
 
-Generate training configuration:
+生成训练配置：
 
 ```bash
 # For Ultralytics YOLO
@@ -124,7 +124,7 @@ python scripts/vision_model_trainer.py data/coco/ \
     --output configs/
 ```
 
-### Step 5: Train and Validate
+### 第5步：训练与验证
 
 ```bash
 # Ultralytics training
@@ -137,23 +137,23 @@ python train_net.py --config-file configs/faster_rcnn.yaml --num-gpus 1
 yolo detect val model=runs/detect/train/weights/best.pt data=data.yaml
 ```
 
-### Step 6: Evaluate Results
+### 第6步：评估结果
 
-Key metrics to analyze:
+关键评估指标：
 
-| Metric | Target | Description |
-|--------|--------|-------------|
-| mAP@50 | >0.7 | Mean Average Precision at IoU 0.5 |
-| mAP@50:95 | >0.5 | COCO primary metric |
-| Precision | >0.8 | Low false positives |
-| Recall | >0.8 | Low missed detections |
-| Inference time | <33ms | For 30 FPS real-time |
+| 指标        | 目标值                | 描述                          |
+|-------------|------------------|-------------------------------------------|
+| mAP@50       | >0.7                | IoU为0.5时的平均精度                     |
+| mAP@50:95       | >0.5                | COCO主要评估指标                     |
+| 精确度        | >0.8                | 低误报率                         |
+| 召回率        | >0.8                | 低漏检率                         |
+| 推理时间        | <33ms                | 以实现30 FPS的实时性                   |
 
-## Workflow 2: Model Optimization and Deployment
+## 工作流程2：模型优化与部署
 
-Use this workflow when preparing a trained model for production deployment.
+当准备将训练好的模型用于生产环境部署时，请使用此流程。
 
-### Step 1: Benchmark Baseline Performance
+### 第1步：基准测试基线性能
 
 ```bash
 # Measure current model performance
@@ -165,7 +165,7 @@ python scripts/inference_optimizer.py model.pt \
     --iterations 100
 ```
 
-Expected output:
+预期输出：
 
 ```
 Baseline Performance (PyTorch FP32):
@@ -176,18 +176,18 @@ Baseline Performance (PyTorch FP32):
 - Parameters: 25.9M
 ```
 
-### Step 2: Select Optimization Strategy
+### 第2步：选择优化策略
 
-| Deployment Target | Optimization Path |
-|-------------------|-------------------|
-| NVIDIA GPU (cloud) | PyTorch → ONNX → TensorRT FP16 |
-| NVIDIA GPU (edge) | PyTorch → TensorRT INT8 |
-| Intel CPU | PyTorch → ONNX → OpenVINO |
-| Apple Silicon | PyTorch → CoreML |
-| Generic CPU | PyTorch → ONNX Runtime |
-| Mobile | PyTorch → TFLite or ONNX Mobile |
+| 部署目标        | 优化路径                        |
+|-------------------|-------------------------------------------|
+| NVIDIA GPU（云端）     | PyTorch → ONNX → TensorRT FP16                |
+| NVIDIA GPU（边缘设备）     | PyTorch → TensorRT INT8                   |
+| Intel CPU        | PyTorch → OpenVINO                     |
+| Apple Silicon     | PyTorch → CoreML                     |
+| 通用CPU        | PyTorch → ONNX Runtime                   |
+| 移动设备        | PyTorch → TFLite或ONNX Mobile                |
 
-### Step 3: Export to ONNX
+### 第3步：导出为ONNX格式
 
 ```bash
 # Export with dynamic batch size
@@ -202,9 +202,9 @@ python scripts/inference_optimizer.py model.pt \
 python -c "import onnx; model = onnx.load('model.onnx'); onnx.checker.check_model(model); print('ONNX model valid')"
 ```
 
-### Step 4: Apply Quantization (Optional)
+### 第4步：应用量化（可选）
 
-For INT8 quantization with calibration:
+进行INT8量化并校准：
 
 ```bash
 # Generate calibration dataset
@@ -215,15 +215,15 @@ python scripts/inference_optimizer.py model.onnx \
     --output model_int8.onnx
 ```
 
-Quantization impact analysis:
+量化对性能的影响：
 
-| Precision | Size | Speed | Accuracy Drop |
-|-----------|------|-------|---------------|
-| FP32 | 100% | 1x | 0% |
-| FP16 | 50% | 1.5-2x | <0.5% |
-| INT8 | 25% | 2-4x | 1-3% |
+| 精确度        | 大小                  | 速度                      | 精确度下降                      |
+|-------------|------------------|-----------------------------------------|
+| FP32          | 100%                    | 1倍                         | 0%                          |
+| FP16          | 50%                    | 1.5-2倍                         | <0.5%                        |
+| INT8          | 25%                    | 2-4倍                         | 1-3%                        |
 
-### Step 5: Convert to Target Runtime
+### 第5步：转换为目标运行时格式
 
 ```bash
 # TensorRT (NVIDIA GPU)
@@ -236,7 +236,7 @@ mo --input_model model.onnx --output_dir openvino/
 python -c "import coremltools as ct; model = ct.convert('model.onnx'); model.save('model.mlpackage')"
 ```
 
-### Step 6: Benchmark Optimized Model
+### 第6步：基准测试优化后的模型
 
 ```bash
 python scripts/inference_optimizer.py model.engine \
@@ -245,7 +245,7 @@ python scripts/inference_optimizer.py model.engine \
     --compare model.pt
 ```
 
-Expected speedup:
+预期加速效果：
 
 ```
 Optimization Results:
@@ -255,11 +255,11 @@ Optimization Results:
 - Accuracy change: -0.3% mAP
 ```
 
-## Workflow 3: Custom Dataset Preparation
+## 工作流程3：自定义数据集准备
 
-Use this workflow when preparing a computer vision dataset for training.
+当为训练准备计算机视觉数据集时，请使用此流程。
 
-### Step 1: Audit Raw Data
+### 第1步：审核原始数据
 
 ```bash
 # Analyze image dataset
@@ -268,7 +268,7 @@ python scripts/dataset_pipeline_builder.py data/raw/ \
     --output analysis/
 ```
 
-Analysis report includes:
+分析报告包括：
 
 ```
 Dataset Analysis:
@@ -286,7 +286,7 @@ Annotation Analysis:
 - Empty images: 234
 ```
 
-### Step 2: Clean and Validate
+### 第2步：数据清洗与验证
 
 ```bash
 # Remove corrupted and duplicate images
@@ -297,7 +297,7 @@ python scripts/dataset_pipeline_builder.py data/raw/ \
     --output data/cleaned/
 ```
 
-### Step 3: Convert Annotation Format
+### 第3步：转换注释格式
 
 ```bash
 # Convert VOC to COCO format
@@ -308,17 +308,17 @@ python scripts/dataset_pipeline_builder.py data/cleaned/ \
     --output data/coco/
 ```
 
-Supported format conversions:
+支持的格式转换：
 
-| From | To |
-|------|-----|
-| Pascal VOC XML | COCO JSON |
-| YOLO TXT | COCO JSON |
-| COCO JSON | YOLO TXT |
-| LabelMe JSON | COCO JSON |
-| CVAT XML | COCO JSON |
+| 来源格式       | 目标格式                     |
+|-------------|-------------------------|
+| Pascal VOC XML    | COCO JSON                     |
+| YOLO TXT       | COCO JSON                     |
+| COCO JSON     | YOLO TXT                     |
+| LabelMe JSON     | COCO JSON                     |
+| CVAT XML     | COCO JSON                     |
 
-### Step 4: Apply Augmentations
+### 第4步：应用数据增强
 
 ```bash
 # Generate augmentation config
@@ -328,7 +328,7 @@ python scripts/dataset_pipeline_builder.py data/coco/ \
     --output data/augmented/
 ```
 
-Recommended augmentations for detection:
+推荐的检测数据增强方法：
 
 ```yaml
 # configs/augmentation.yaml
@@ -350,7 +350,7 @@ augmentations:
     - cutout: { num_holes: 8, max_h_size: 32, max_w_size: 32, p: 0.3 }
 ```
 
-### Step 5: Create Train/Val/Test Splits
+### 第5步：创建训练/验证/测试数据集划分
 
 ```bash
 python scripts/dataset_pipeline_builder.py data/augmented/ \
@@ -360,15 +360,15 @@ python scripts/dataset_pipeline_builder.py data/augmented/ \
     --output data/final/
 ```
 
-Split strategy guidelines:
+数据集划分指南：
 
-| Dataset Size | Train | Val | Test |
-|--------------|-------|-----|------|
-| <1,000 images | 70% | 15% | 15% |
-| 1,000-10,000 | 80% | 10% | 10% |
-| >10,000 | 90% | 5% | 5% |
+| 数据集规模       | 训练集 | 验证集 | 测试集                         |
+|--------------|--------|--------|---------------------------|
+| <1,000张图片     | 70%     | 15%     | 15%                         |
+| 1,000-10,000张图片 | 80%     | 10%     | 10%                         |
+| >10,000张图片     | 90%     | 5%     | 5%                         |
 
-### Step 6: Generate Dataset Configuration
+### 第6步：生成数据集配置
 
 ```bash
 # For Ultralytics YOLO
@@ -382,76 +382,76 @@ python scripts/dataset_pipeline_builder.py data/final/ \
     --output detectron2_config.py
 ```
 
-## Architecture Selection Guide
+## 架构选择指南
 
-### Object Detection Architectures
+### 对象检测架构
 
-| Architecture | Speed | Accuracy | Best For |
-|--------------|-------|----------|----------|
-| YOLOv8n | 1.2ms | 37.3 mAP | Edge, mobile, real-time |
-| YOLOv8s | 2.1ms | 44.9 mAP | Balanced speed/accuracy |
-| YOLOv8m | 4.2ms | 50.2 mAP | General purpose |
-| YOLOv8l | 6.8ms | 52.9 mAP | High accuracy |
-| YOLOv8x | 10.1ms | 53.9 mAP | Maximum accuracy |
-| RT-DETR-L | 5.3ms | 53.0 mAP | Transformer, no NMS |
-| Faster R-CNN R50 | 46ms | 40.2 mAP | Two-stage, high quality |
-| DINO-4scale | 85ms | 49.0 mAP | SOTA transformer |
+| 架构         | 速度        | 精确度      | 最适合的应用场景                   |
+|--------------|-----------|-----------|---------------------------|
+| YOLOv8n       | 1.2ms     | 37.3 mAP     | 边缘设备、移动设备、实时应用             |
+| YOLOv8s       | 2.1ms     | 44.9 mAP     | 平衡速度与精确度                 |
+| YOLOv8m       | 4.2ms     | 50.2 mAP     | 通用用途                     |
+| YOLOv8l       | 6.8ms     | 52.9 mAP     | 高精度应用                   |
+| YOLOv8x       | 10.1ms     | 53.9 mAP     | 最高精度应用                   |
+| RT-DETR-L      | 5.3ms     | 53.0 mAP     | 基于Transformer的架构，无需NMS             |
+| Faster R-CNN R50    | 46ms     | 40.2 mAP     | 双阶段架构，高质量检测                 |
+| DINO-4scale    | 85ms     | 49.0 mAP     | 当前最佳Transformer架构               |
 
-### Segmentation Architectures
+### 分割架构
 
-| Architecture | Type | Speed | Best For |
-|--------------|------|-------|----------|
-| YOLOv8-seg | Instance | 4.5ms | Real-time instance seg |
-| Mask R-CNN | Instance | 67ms | High-quality masks |
-| SAM | Promptable | 50ms | Zero-shot segmentation |
-| DeepLabV3+ | Semantic | 25ms | Scene parsing |
-| SegFormer | Semantic | 15ms | Efficient semantic seg |
+| 架构         | 类型        | 速度        | 最适合的应用场景                   |
+|--------------|-----------|-----------|---------------------------|
+| YOLOv8-seg     | 实例分割    | 4.5ms     | 实时实例分割                   |
+| Mask R-CNN     | 实例分割    | 67ms     | 高质量掩膜生成                   |
+| SAM          | 提示式分割    | 50ms     | 零样本分割技术                   |
+| DeepLabV3+      | 语义分割    | 25ms     | 场景解析                     |
+| SegFormer     | 语义分割    | 15ms     | 高效语义分割                   |
 
-### CNN vs Vision Transformer Trade-offs
+### CNN与视觉变换器的权衡
 
-| Aspect | CNN (YOLO, R-CNN) | ViT (DETR, DINO) |
-|--------|-------------------|------------------|
-| Training data needed | 1K-10K images | 10K-100K+ images |
-| Training time | Fast | Slow (needs more epochs) |
-| Inference speed | Faster | Slower |
-| Small objects | Good with FPN | Needs multi-scale |
-| Global context | Limited | Excellent |
-| Positional encoding | Implicit | Explicit |
+| 对比项       | CNN（YOLO、R-CNN） | ViT（DETR、DINO）                |
+|-------------|------------------|-----------------------------------------|
+| 所需训练数据量    | 1K-10K张图片       | 10K-100K+张图片                 |
+| 训练时间      | 快速           | 较慢（需要更多训练周期）                 |
+| 推理速度      | 更快           | 较慢                         |
+| 小对象检测能力    | 使用FPN时表现良好     | 需要多尺度处理                   |
+| 全局上下文理解   | 较有限         | 非常出色                     |
+| 位置编码方式    | 隐式编码       | 显式编码                     |
 
-## Reference Documentation
+## 参考文档
 
-### 1. Computer Vision Architectures
+### 1. 计算机视觉架构
 
-See `references/computer_vision_architectures.md` for:
+请参阅`references/computer_vision_architectures.md`，了解：
 
-- CNN backbone architectures (ResNet, EfficientNet, ConvNeXt)
-- Vision Transformer variants (ViT, DeiT, Swin)
-- Detection heads (anchor-based vs anchor-free)
-- Feature Pyramid Networks (FPN, BiFPN, PANet)
-- Neck architectures for multi-scale detection
+- CNN基础架构（ResNet、EfficientNet、ConvNeXt）
+- 视觉变换器变体（ViT、DeiT、Swin）
+- 检测头（基于锚点的与无锚点的）
+- 特征金字塔网络（FPN、BiFPN、PANet）
+- 用于多尺度检测的颈部架构
 
-### 2. Object Detection Optimization
+### 2. 对象检测优化
 
-See `references/object_detection_optimization.md` for:
+请参阅`references/object_detection_optimization.md`，了解：
 
-- Non-Maximum Suppression variants (NMS, Soft-NMS, DIoU-NMS)
-- Anchor optimization and anchor-free alternatives
-- Loss function design (focal loss, GIoU, CIoU, DIoU)
-- Training strategies (warmup, cosine annealing, EMA)
-- Data augmentation for detection (mosaic, mixup, copy-paste)
+- 非最大值抑制方法（NMS、Soft-NMS、DIoU-NMS）
+- 锚点优化及无锚点检测方法
+- 损失函数设计（focal loss、GIoU、CIoU、DIoU）
+- 训练策略（热身训练、余弦退火、EMA）
+- 数据增强方法（mosaic、mixup、copy-paste）
 
-### 3. Production Vision Systems
+### 3. 生产级视觉系统
 
-See `references/production_vision_systems.md` for:
+请参阅`references/production_vision_systems.md`，了解：
 
-- ONNX export and optimization
-- TensorRT deployment pipeline
-- Batch inference optimization
-- Edge device deployment (Jetson, Intel NCS)
-- Model serving with Triton
-- Video processing pipelines
+- ONNX导出与优化方法
+- TensorRT部署流程
+- 批量推理优化
+- 边缘设备部署（Jetson、Intel NCS）
+- 使用Triton进行模型服务
+- 视频处理流程
 
-## Common Commands
+## 常用命令
 
 ### Ultralytics YOLO
 
@@ -499,7 +499,7 @@ python tools/test.py configs/faster_rcnn.py checkpoints/latest.pth --eval bbox
 python demo/image_demo.py demo.jpg configs/faster_rcnn.py checkpoints/latest.pth
 ```
 
-### Model Optimization
+### 模型优化
 
 ```bash
 # ONNX export and simplify
@@ -513,19 +513,19 @@ trtexec --onnx=model.onnx --saveEngine=model.engine --fp16 --workspace=4096
 trtexec --loadEngine=model.engine --batch=1 --iterations=1000 --avgRuns=100
 ```
 
-## Performance Targets
+## 性能目标
 
-| Metric | Real-time | High Accuracy | Edge |
-|--------|-----------|---------------|------|
-| FPS | >30 | >10 | >15 |
-| mAP@50 | >0.6 | >0.8 | >0.5 |
-| Latency P99 | <50ms | <150ms | <100ms |
-| GPU Memory | <4GB | <8GB | <2GB |
-| Model Size | <50MB | <200MB | <20MB |
+| 指标        | 实时性       | 高精度     | 边缘设备适用性       |
+|-------------|-----------|-----------|---------------------------|
+| FPS         | >30        | >10         | >15                          |
+| mAP@50       | >0.6        | >0.8                          |
+| 延迟（P99百分位数） | <50ms       | <150ms                        |
+| GPU内存占用    | <4GB        | <8GB                        | <2GB                        |
+| 模型大小       | <50MB       | <200MB                        | <20MB                        |
 
-## Resources
+## 资源
 
-- **Architecture Guide**: `references/computer_vision_architectures.md`
-- **Optimization Guide**: `references/object_detection_optimization.md`
-- **Deployment Guide**: `references/production_vision_systems.md`
-- **Scripts**: `scripts/` directory for automation tools
+- **架构指南**：`references/computer_vision_architectures.md`
+- **优化指南**：`references/object_detection_optimization.md`
+- **部署指南**：`references/production_vision_systems.md`
+- **自动化工具脚本**：`scripts/`目录

@@ -1,28 +1,28 @@
 ---
 name: gpt
-description: OpenAI GPT integration. Chat completions, image generation, embeddings, and fine-tuning via OpenAI API.
+description: OpenAI GPT集成：通过OpenAI API实现聊天功能、图像生成、嵌入模型以及模型的微调。
 metadata: {"clawdbot":{"emoji":"🤖","always":true,"requires":{"bins":["curl","jq"]},"primaryEnv":"OPENAI_API_KEY"}}
 ---
 
 # GPT 🤖
 
-OpenAI GPT integration.
+OpenAI GPT 的集成方案。
 
-## Setup
+## 设置
 
 ```bash
 export OPENAI_API_KEY="sk-..."
 ```
 
-## Features
+## 功能
 
-- Chat completions (GPT-4, GPT-4o)
-- Image generation (DALL-E)
-- Text embeddings
-- Fine-tuning
-- Assistants API
+- 聊天自动补全（GPT-4、GPT-4o）
+- 图像生成（DALL-E）
+- 文本嵌入
+- 模型微调
+- 辅助工具 API
 
-## Usage Examples
+## 使用示例
 
 ```
 "Ask GPT: Explain quantum computing"
@@ -30,7 +30,7 @@ export OPENAI_API_KEY="sk-..."
 "Create embeddings for this text"
 ```
 
-## API Reference
+## API 参考
 
 ```bash
 curl -s https://api.openai.com/v1/chat/completions \

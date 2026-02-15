@@ -1,42 +1,42 @@
 ---
 name: Windmill
-description: Build automation workflows and internal tools with Windmill's code-first platform.
+description: 使用 Windmill 的“代码优先”（code-first）平台来构建自动化工作流程和内部工具。
 metadata: {"clawdbot":{"emoji":"🌀","os":["linux","darwin","win32"]}}
 ---
 
-## Script Traps
-- Main function signature determines input schema — Windmill infers from type hints, wrong types break the UI form
-- Return value is the script output — forgetting to return means downstream steps get nothing
-- Python dependencies go in inline `requirements.txt` comment — not a global file, each script is isolated
-- TypeScript runs on Bun — Node.js-specific APIs may not work
+## 脚本陷阱  
+- 主函数签名决定了输入数据的格式；Windmill 会根据类型提示来推断输入数据的格式，如果类型错误，会导致用户界面（UI）出错。  
+- 返回值是脚本的执行结果；如果忘记返回结果，后续步骤将无法获取任何数据。  
+- Python 依赖项需要以注释的形式写入 `requirements.txt` 文件中；每个脚本都是独立的，不应使用全局依赖文件。  
+- TypeScript 需要在 Bun 环境中运行；某些仅适用于 Node.js 的 API 可能无法正常使用。  
 
-## Flow Execution
-- `results.step_name` fails if step hasn't run yet — conditional branches cause undefined access errors
-- Parallel branches need explicit configuration — default is sequential, not concurrent
-- Suspend steps wait forever without timeout — set explicit timeout or flow hangs indefinitely
-- Error handlers only catch step failures — script syntax errors bypass handlers
+## 流程执行  
+- 如果某个步骤尚未执行，`results.step_name` 会引发错误；条件分支可能导致未定义的访问错误。  
+- 并行执行的步骤需要明确配置；默认情况下，流程是按顺序执行的，而非同时执行。  
+- 如果没有设置超时时间，暂停的步骤会无限期地等待；需要设置明确的超时时间，否则流程会无限期地卡住。  
+- 错误处理器仅能捕获步骤执行中的错误；脚本语法错误会直接忽略处理器的处理。  
 
-## Scheduling Pitfalls
-- Timezone defaults to server timezone — set explicitly or jobs fire at unexpected times
-- Concurrent execution allowed by default — add mutex lock if jobs shouldn't overlap
-- Schedules attach to scripts/flows — no standalone schedule entities, delete script = delete schedule
+## 调度陷阱  
+- 时间区默认设置为服务器的时间区；需要手动设置时间区，否则任务可能会在错误的时间执行。  
+- 默认情况下允许任务并行执行；如果任务不能同时执行，需要添加互斥锁（mutex）来避免冲突。  
+- 调度任务是与具体的脚本/流程关联的；删除脚本意味着删除相应的调度任务。  
 
-## Secrets and Variables
-- Secrets cannot be read back from UI after creation — store originals securely elsewhere
-- Variables are plaintext and visible — never put sensitive data in variables, only secrets
-- Path format matters — `u/username/secret` for user, `f/folder/secret` for shared
+## 秘密信息和变量  
+- 创建后的秘密信息无法通过用户界面读取；应将其安全地存储在其他地方。  
+- 变量中的数据是明文的，容易被查看；切勿将敏感数据存储在变量中，只能存储秘密信息。  
+- 路径格式很重要；用户相关的秘密信息应使用 `u/username/secret` 的格式，共享资源应使用 `f/folder/secret` 的格式。  
 
-## Self-Hosting
-- PostgreSQL is the only state — workers are stateless, back up only the database
-- Single container includes workers — fine for small loads, separate workers for scale
-- Worker count determines parallelism — one worker = one concurrent script execution
+## 自主托管  
+- PostgreSQL 是唯一的存储状态的地方；工作节点（workers）是无状态的，只需备份数据库即可。  
+- 单个容器可以容纳多个工作节点；对于小规模应用来说这没问题，但需要为大规模应用分离工作节点。  
+- 工作节点的数量决定了并发执行的程度；一个工作节点对应一个并发执行的脚本。  
 
-## Webhook Triggers
-- Each script/flow gets unique webhook URL — changes if you rename the script
-- Webhook payload becomes script input — schema must match expected arguments
-- No built-in auth on webhooks — validate tokens in script logic or use reverse proxy
+## Webhook 触发  
+- 每个脚本/流程都会获得一个唯一的 Webhook URL；如果重命名脚本，Webhook URL 也会随之改变。  
+- Webhook 的请求数据会成为脚本的输入参数；数据格式必须与预期的参数相匹配。  
+- Webhook 没有内置的身份验证机制；需要在脚本逻辑中验证请求令牌，或者使用反向代理来处理身份验证。  
 
-## Common Mistakes
-- Testing flows without testing scripts first — debug scripts individually
-- Expecting state between runs — use variables or external storage for persistence
-- Hardcoding paths — use `wmill.get_resource()` for portability between workspaces
+## 常见错误  
+- 在不先测试脚本的情况下直接测试整个流程；应单独调试每个脚本。  
+- 期望在不同执行之间数据能够保持一致；应使用变量或外部存储来保存数据。  
+- 硬编码路径；应使用 `wmill.get_resource()` 方法来确保脚本在不同工作空间中的可移植性。

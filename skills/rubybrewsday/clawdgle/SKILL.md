@@ -1,45 +1,50 @@
 ---
 name: clawdgle
-description: Public API usage for the Clawdgle markdown-first search engine. Use when interacting with Clawdgle to: (1) search indexed markdown content, (2) fetch markdown for a URL, (3) request indexing of a URL via ingest, or (4) direct users to the donate link.
+description: Clawdgle Markdown-First搜索引擎的公共API使用说明：  
+在与Clawdgle交互时，可以使用以下API功能：  
+(1) 搜索已索引的Markdown内容；  
+(2) 根据URL获取Markdown内容；  
+(3) 通过数据导入功能请求对URL进行索引；  
+(4) 将用户引导至捐赠页面。
 ---
 
-# Clawdgle Skill
+# Clawdgle 技能
 
-## Base URL
-Default base URL: `https://clawdgle.com`
+## 基本 URL
+默认基础 URL：`https://clawdgle.com`
 
-## Public Endpoints
+## 公共端点
 
-### Search
-Use to search indexed markdown content.
+### 搜索
+用于搜索已索引的 Markdown 内容。
 
-Request:
+请求：
 ```
 GET /search?q=<query>&page=<page>&per_page=<per_page>
 ```
 
-Example:
+示例：
 ```
 curl "https://clawdgle.com/search?q=ai%20agents&page=1&per_page=10"
 ```
 
-### Fetch Markdown by URL
-Use to retrieve the stored markdown for a specific URL.
+### 通过 URL 获取 Markdown
+用于检索特定 URL 的存储 Markdown 内容。
 
-Request:
+请求：
 ```
 GET /doc?url=<encoded_url>
 ```
 
-Example:
+示例：
 ```
 curl "https://clawdgle.com/doc?url=https%3A%2F%2Fexample.com"
 ```
 
-### Ingest (Self-Serve Indexing)
-Use to request immediate indexing of a URL.
+### 索引（自助索引）
+用于请求立即对某个 URL 进行索引。
 
-Request:
+请求：
 ```
 POST /ingest
 Content-Type: application/json
@@ -50,27 +55,27 @@ Content-Type: application/json
 }
 ```
 
-Example:
+示例：
 ```
 curl -X POST "https://clawdgle.com/ingest" \
   -H "Content-Type: application/json" \
   -d '{"url":"https://example.com"}'
 ```
 
-### Donate
-Use to direct users/agents to the donation link.
+### 捐赠
+用于将用户/代理引导至捐赠链接。
 
-Request:
+请求：
 ```
 GET /donate
 ```
 
-Example:
+示例：
 ```
 curl -I "https://clawdgle.com/donate"
 ```
 
-## Notes
-- Only public endpoints are included in this skill.
-- Use URL encoding for query parameters.
-- Be polite with ingest; avoid spamming the endpoint.
+## 注意事项
+- 本技能仅包含公共端点。
+- 请对查询参数使用 URL 编码。
+- 使用索引功能时请文明操作，避免频繁发送请求（即避免对端点进行垃圾发送）。

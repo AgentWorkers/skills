@@ -1,24 +1,24 @@
 ---
 name: shell-scripting
-description: Write robust, portable shell scripts. Use when parsing arguments, handling errors properly, writing POSIX-compatible scripts, managing temp files, running commands in parallel, managing background processes, or adding --help to scripts.
+description: 编写健壮且可移植的 shell 脚本。这些脚本可用于解析命令参数、正确处理错误、编写符合 POSIX 标准的脚本、管理临时文件、并行执行命令、管理后台进程，以及为脚本添加 `--help` 命令以提供使用说明。
 metadata: {"clawdbot":{"emoji":"🐚","requires":{"bins":["bash"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Shell Scripting
+# Shell 脚本编程
 
-Write reliable, maintainable bash scripts. Covers argument parsing, error handling, portability, temp files, parallel execution, process management, and self-documenting scripts.
+编写可靠且易于维护的 Bash 脚本。内容包括参数解析、错误处理、脚本的可移植性、临时文件的使用、并行执行、进程管理以及脚本的自我文档化。
 
-## When to Use
+## 适用场景
 
-- Writing scripts that others (or future you) will run
-- Automating multi-step workflows
-- Parsing command-line arguments with flags and options
-- Handling errors and cleanup properly
-- Running tasks in parallel
-- Making scripts portable across Linux and macOS
-- Wrapping complex commands with a simpler interface
+- 编写供他人或未来自己使用的脚本
+- 自动化多步骤工作流程
+- 解析命令行参数（包括标志和选项）
+- 正确处理错误并进行清理
+- 并行执行任务
+- 使脚本在 Linux 和 macOS 系统上都能正常运行
+- 为复杂的命令提供更简单的使用接口
 
-## Script Template
+## 脚本模板
 
 ```bash
 #!/usr/bin/env bash
@@ -85,9 +85,9 @@ main() {
 main "$@"
 ```
 
-## Error Handling
+## 错误处理
 
-### set flags
+### 设置标志（Setting Flags）
 
 ```bash
 set -e          # Exit on any command failure
@@ -105,7 +105,7 @@ exit_code=$?
 set -e
 ```
 
-### Trap for cleanup
+### 定义清理脚本（Defining Cleanup Scripts）
 
 ```bash
 # Cleanup on exit (any exit: success, failure, or signal)
@@ -123,7 +123,7 @@ trap 'echo "Interrupted"; exit 130' INT    # Ctrl+C
 trap 'echo "Terminated"; exit 143' TERM    # kill
 ```
 
-### Error handling patterns
+### 错误处理模式（Error Handling Patterns）
 
 ```bash
 # Check command exists before using it
@@ -152,9 +152,9 @@ retry() {
 retry 3 curl -sf https://api.example.com/health
 ```
 
-## Argument Parsing
+## 参数解析（Argument Parsing）
 
-### Simple: positional + flags
+### 简单方式：位置参数 + 标志（Simple Method: Positional Parameters + Flags）
 
 ```bash
 # Manual parsing (no dependencies)
@@ -182,7 +182,7 @@ FILES=("$@")
 [[ ${#FILES[@]} -gt 0 ]] || die "At least one file is required"
 ```
 
-### getopts (POSIX, short options only)
+### 使用 getopts（POSIX，仅支持短选项）（Using getopts (POSIX, only for short options)）
 
 ```bash
 while getopts ":o:vhf" opt; do
@@ -198,7 +198,7 @@ done
 shift $((OPTIND - 1))
 ```
 
-## Temp Files and Directories
+## 临时文件和目录（Temporary Files and Directories）
 
 ```bash
 # Create temp file (automatically unique)
@@ -220,9 +220,9 @@ TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'myapp')
 trap 'rm -rf "$TMPDIR"' EXIT
 ```
 
-## Parallel Execution
+## 并行执行（Parallel Execution）
 
-### xargs -P
+### 使用 xargs -P（Using xargs -P）
 
 ```bash
 # Run 4 commands in parallel
@@ -235,7 +235,7 @@ find . -name "*.csv" | xargs -P 4 -I {} ./process.sh {}
 find . -name "*.jpg" | xargs -P 8 -I {} sh -c 'convert {} -resize 800x600 resized/{} && echo "Done: {}"'
 ```
 
-### Background jobs + wait
+### 在后台执行任务并等待完成（Running Jobs in the Background and Waiting for Completion）
 
 ```bash
 # Run tasks in background, wait for all
@@ -253,7 +253,7 @@ done
 [[ $failed -eq 0 ]] || die "$failed jobs failed"
 ```
 
-### GNU Parallel (if available)
+### 使用 GNU Parallel（如果可用）（Using GNU Parallel, if available）
 
 ```bash
 # Process files with 8 parallel jobs
@@ -266,9 +266,9 @@ parallel --bar -j 4 convert {} -resize 800x600 resized/{/} ::: *.jpg
 cat urls.txt | parallel -j 10 curl -sO {}
 ```
 
-## Process Management
+## 进程管理（Process Management）
 
-### Background processes
+### 启动后台进程（Starting Background Processes）
 
 ```bash
 # Start in background
@@ -286,7 +286,7 @@ echo "Exit code: $?"
 trap 'kill $BG_PID 2>/dev/null' EXIT
 ```
 
-### Process supervision
+### 监控进程（Monitoring Processes）
 
 ```bash
 # Run a command, restart if it dies
@@ -306,7 +306,7 @@ run_with_restart() {
 run_with_restart ./my-server --port 8080
 ```
 
-### Timeout
+### 设置超时（Setting Timouts）
 
 ```bash
 # Kill command after 30 seconds
@@ -322,9 +322,9 @@ long_running_command
 kill $TIMER_PID 2>/dev/null
 ```
 
-## Portability (Linux vs macOS)
+## 可移植性（Linux 与 macOS 的差异）（Portability: Differences between Linux and macOS）
 
-### Common differences
+### 常见差异（Common Differences）
 
 ```bash
 # sed: macOS requires -i '' (empty backup extension)
@@ -353,7 +353,7 @@ real_path() { cd "$(dirname "$1")" && echo "$(pwd)/$(basename "$1")"; }
 # Use grep -E instead, or install GNU grep
 ```
 
-### POSIX-safe patterns
+### POSIX 安全编程模式（POSIX-Safe Programming Patterns）
 
 ```bash
 # Use printf instead of echo -e (echo behavior varies)
@@ -373,9 +373,9 @@ if [[ ${#array[@]} -gt 0 ]]; then
 fi
 ```
 
-## Config File Parsing
+## 配置文件解析（Config File Parsing）
 
-### Source a config file
+### 从文件中读取配置信息（Reading Configuration from a File）
 
 ```bash
 # Simple: source a key=value file
@@ -390,7 +390,7 @@ fi
 source config.env
 ```
 
-### Parse INI-style config
+### 解析 INI 格式的配置文件（Parsing INI-Style Configuration Files）
 
 ```bash
 # config.ini:
@@ -419,9 +419,9 @@ echo "$database_host"  # localhost
 echo "$app_debug"      # true
 ```
 
-## Useful Patterns
+## 有用的编程模式（Useful Programming Patterns）
 
-### Confirm before destructive action
+### 在执行破坏性操作前进行确认（Confirming Before Performing Destructive Actions）
 
 ```bash
 confirm() {
@@ -434,7 +434,7 @@ confirm "Delete all files in /tmp/data?" || die "Aborted"
 rm -rf /tmp/data/*
 ```
 
-### Progress indicator
+### 显示进度（Showing Progress Indicators）
 
 ```bash
 # Simple counter
@@ -448,7 +448,7 @@ done < file_list.txt
 echo "" >&2
 ```
 
-### Lock file (prevent concurrent runs)
+### 加锁文件以防止并发执行（Locking Files to Prevent Concurrent Execution）
 
 ```bash
 LOCKFILE="/tmp/${SCRIPT_NAME}.lock"
@@ -464,7 +464,7 @@ acquire_lock
 # ... safe to proceed, only one instance runs ...
 ```
 
-### Stdin or file argument
+### 使用标准输入或文件作为参数（Using Standard Input or Files as Arguments）
 
 ```bash
 # Read from file argument or stdin
@@ -478,14 +478,14 @@ fi | while IFS= read -r line; do
 done
 ```
 
-## Tips
+## 技巧和建议（Tips and Suggestions）
 
-- Always start with `set -euo pipefail`. It catches 80% of silent bugs.
-- Always use `trap cleanup EXIT` for temp files. Never rely on reaching the cleanup code at the end.
-- Quote all variable expansions: `"$var"` not `$var`. Unquoted variables break on spaces and globs.
-- Use `[[ ]]` instead of `[ ]` in bash. It handles empty strings, spaces, and pattern matching better.
-- `shellcheck` is the best linter for shell scripts. Run it: `shellcheck myscript.sh`. Install it if available.
-- `readonly` for constants prevents accidental overwrite: `readonly DB_HOST="localhost"`.
-- Write a `usage()` function and call it on `-h`/`--help` and on missing required arguments. Future users (including you) will thank you.
-- Prefer `printf` over `echo` for anything that might contain special characters or needs formatting.
-- Test scripts with `bash -n script.sh` (syntax check) before running.
+- 始终使用 `set -euo pipefail`：这可以捕获 80% 的潜在错误。
+- 对于临时文件，务必使用 `trap cleanup EXIT` 来确保文件被正确清理。不要依赖脚本执行到最后才执行清理操作。
+- 变量引用时必须加引号：使用 `"$var"` 而不是 `$var`。未加引号的变量会在遇到空格或通配符时出错。
+- 在 Bash 中使用 `[[ ]]` 而不是 `[ ]`，因为它能更好地处理空字符串、空格和模式匹配。
+- `shellcheck` 是检查 Shell 脚本的优秀工具。运行 `shellcheck myscript.sh`；如果可用，请安装它。
+- 使用 `readonly` 修饰符来保护常量，防止意外覆盖：`readonly DB_HOST="localhost"`。
+- 编写一个 `usage()` 函数，并在 `-h`/`--help` 选项或缺少必要参数时调用它。未来的用户（包括你自己）会因此受益。
+- 对于可能包含特殊字符或需要格式化的内容，优先使用 `printf` 而不是 `echo`。
+- 在运行脚本之前，使用 `bash -n script.sh` 进行语法检查。

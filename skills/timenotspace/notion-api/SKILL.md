@@ -1,34 +1,34 @@
 ---
 name: notion-api
-description: Generic Notion API CLI (Node) for search, querying data sources (databases), and creating pages. Configure with NOTION_KEY (or ~/.config/notion/api_key).
+description: 通用概念API命令行界面（Node.js）：用于搜索数据源（数据库）、查询数据以及创建页面。配置方式是通过设置`NOTION_KEY`（或`~/.config/notion/api_key`）。
 ---
 
-# notion-api (generic)
+# notion-api（通用）
 
-This skill provides a small Node-based CLI for the Notion API. It’s designed to be shareable: **no hard-coded database IDs and no secrets in the repo**.
+该工具提供了一个基于 Node.js 的命令行界面（CLI），用于与 Notion API 进行交互。它被设计为可共享的：**仓库中不包含硬编码的数据库 ID 或任何敏感信息**。
 
-## Auth
+## 认证
 
-Provide a Notion integration token via either:
+可以通过以下方式提供 Notion 集成令牌：
 
-- `NOTION_KEY` env var, or
-- `~/.config/notion/api_key` (first line)
+- 使用环境变量 `NOTION_KEY`；
+- 或者从文件 `~/.config/notion/api_key` 中读取（文件的第一行）。
 
-Also make sure the target pages/databases are shared with your integration in Notion.
+同时，请确保目标页面/数据库已在 Notion 中设置为可共享状态。
 
-## Commands (CLI)
+## 命令（CLI）
 
-Run via:
+使用以下命令运行该工具：
 
 - `node scripts/notion-api.mjs <command> ...`
 
-### Search
+### 搜索
 
 ```bash
 node scripts/notion-api.mjs search "query" --page-size 10
 ```
 
-### Query a data source (database query)
+### 查询数据源（数据库查询）
 
 ```bash
 node scripts/notion-api.mjs query --data-source-id <DATA_SOURCE_ID> --page-size 10
@@ -36,17 +36,17 @@ node scripts/notion-api.mjs query --data-source-id <DATA_SOURCE_ID> --page-size 
 node scripts/notion-api.mjs query --data-source-id <ID> --body '{"filter": {...}, "sorts": [...], "page_size": 10}'
 ```
 
-### Create a page in a database
+### 在数据库中创建页面
 
 ```bash
 node scripts/notion-api.mjs create-page --database-id <DATABASE_ID> --title "My item" --title-prop Name
 ```
 
-## Output
+## 输出
 
-All commands print JSON to stdout.
+所有命令都会将结果以 JSON 格式输出到标准输出（stdout）。
 
-## Notes
+## 注意事项：
 
-- Notion API version header defaults to `2025-09-03` (override with `NOTION_VERSION`).
-- Rate limits apply; prefer `page_size` and minimal calls.
+- Notion API 的版本信息默认为 `2025-09-03`；可以通过设置 `NOTION_VERSION` 变量来覆盖这一默认值。
+- 该工具受到速率限制，请尽量使用 `page_size` 参数来减少请求次数，并避免频繁调用 API。

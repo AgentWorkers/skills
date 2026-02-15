@@ -1,42 +1,53 @@
 ---
 name: endpoints
-description: "Endpoints document management API toolkit. Scan documents with AI extraction and organize structured data into categorized endpoints. Use when the user asks to: scan a document, upload a file, list endpoints, inspect endpoint data, check usage stats, create or delete endpoints, get file URLs, or manage document metadata. Requires ENDPOINTS_API_KEY from endpoints.work dashboard."
+description: "**端点文档管理 API 工具包**  
+该工具包支持使用人工智能技术对文档进行扫描，并将提取的结构化数据组织到分类后的端点中。适用于用户需要执行以下操作的场景：  
+- 扫描文档  
+- 上传文件  
+- 列出所有端点  
+- 检查端点数据  
+- 查看使用统计信息  
+- 创建或删除端点  
+- 获取文件 URL  
+- 管理文档元数据  
+
+使用该工具包前，需要从 `endpoints.work` 仪表板中获取 `ENDPOINTS_API_KEY` 这个访问密钥。"
 ---
 
-# Endpoints API Toolkit
+# Endpoints API 工具包
 
-## Setup
+## 设置
 
-Install dependencies:
+安装依赖项：
 
 ```bash
 cd scripts && npm install
 ```
 
-Configure credentials by creating a `.env` file in the project root:
+通过在项目根目录下创建一个 `.env` 文件来配置凭据：
 
 ```
 ENDPOINTS_API_URL=https://endpoints.work
 ENDPOINTS_API_KEY=ep_your_api_key_here
 ```
 
-**Prerequisites**: An Endpoints account with an API key. Generate your API key from the [API Keys page](https://endpoints.work/api-keys).
+**前提条件**：您需要拥有一个 Endpoints 账户以及 API 密钥。您可以从 [API 密钥页面](https://endpoints.work/api-keys) 生成 API 密钥。
 
-## Quick Start
+## 快速入门
 
-| User says | Function to call |
+| 用户操作 | 调用的函数 |
 |-----------|-----------------|
-| "List my endpoints" | `listEndpoints()` |
-| "Show endpoint details for /job-tracker/january" | `getEndpoint('/job-tracker/january')` |
-| "Scan this document" | `scanFile('/path/to/file.pdf', 'job tracker')` |
-| "Scan this text" | `scanText('Meeting notes...', 'meeting tracker')` |
-| "Create an endpoint for receipts" | `createEndpoint('/receipts/2026')` |
-| "Delete the old endpoint" | `deleteEndpoint('/category/slug')` |
-| "Remove that item" | `deleteItem('abc12345')` |
-| "Get the file URL" | `getFileUrl('userid/path/file.pdf')` |
-| "Check my usage" | `getStats()` |
+| “列出我的端点” | `listEndpoints()` |
+| “显示 /job-tracker/january 的端点详细信息” | `getEndpoint('/job-tracker/january')` |
+| “扫描此文档” | `scanFile('/path/to/file.pdf', 'job tracker')` |
+| “扫描此文本” | `scanText('Meeting notes...', 'meeting tracker')` |
+| “为收据创建一个端点” | `createEndpoint('/receipts/2026')` |
+| “删除旧的端点” | `deleteEndpoint('/category/slug')` |
+| “删除该条目” | `deleteItem('abc12345')` |
+| “获取文件 URL” | `getFileUrl('userid/path/file.pdf')` |
+| “查看我的使用情况” | `getStats()` |
 
-Execute functions by importing from `scripts/src/index.ts`:
+通过导入 `scripts/src/index.ts` 来执行这些函数：
 
 ```typescript
 import { listEndpoints, scanText, getStats } from './scripts/src/index.js';
@@ -46,80 +57,80 @@ const result = await scanText('Meeting with John about Q1 goals', 'meeting track
 const stats = await getStats();
 ```
 
-Or run directly with tsx:
+或者直接使用 `.tsx` 文件运行：
 
 ```bash
 npx tsx scripts/src/index.ts
 ```
 
-## Workflow Pattern
+## 工作流程模式
 
-Every analysis follows three phases:
+每个分析过程都遵循三个阶段：
 
-### 1. Analyze
-Run API functions. Each call hits the Endpoints API and returns structured data.
+### 1. 分析
+调用 API 函数。每次调用都会触发 Endpoints API 并返回结构化数据。
 
-### 2. Auto-Save
-All results automatically save as JSON files to `results/{category}/`. File naming patterns:
-- Named results: `{sanitized_name}.json`
-- Auto-generated: `YYYYMMDD_HHMMSS__{operation}.json`
+### 2. 自动保存
+所有结果会自动保存为 JSON 文件，文件保存在 `results/{category}/` 目录下。文件命名规则如下：
+- 有名称的结果文件：`{sanitized_name}.json`
+- 自动生成的文件：`YYYYMMDD_HHMMSS__{operation}.json`
 
-### 3. Summarize
-After analysis, read the saved JSON files and create a markdown summary in `results/summaries/` with data tables, insights, and extracted entities.
+### 3. 总结
+分析完成后，读取保存的 JSON 文件，并在 `results/summaries/` 目录下生成一个 Markdown 总结文件，其中包含数据表、洞察结果以及提取的实体信息。
 
-## High-Level Functions
+## 高级函数
 
-| Function | Purpose | What it returns |
+| 函数 | 功能 | 返回内容 |
 |----------|---------|----------------|
-| `listEndpoints()` | Get all endpoints by category | Tree structure with categories and endpoints |
-| `getEndpoint(path)` | Get endpoint details | Full metadata (old + new items) |
-| `scanText(text, prompt)` | Scan text with AI | Extracted entities and endpoint path |
-| `scanFile(filePath, prompt)` | Scan file with AI | Extracted entities and endpoint path |
-| `getStats()` | Get usage statistics | Parses used, limits, storage |
+| `listEndpoints()` | 按类别列出所有端点 | 包含类别和端点的树状结构 |
+| `getEndpoint(path)` | 获取端点详细信息 | 包含旧版本和新版本的完整元数据 |
+| `scanText(text, prompt)` | 使用 AI 扫描文本 | 提取实体信息及端点路径 |
+| `scanFile(filePath, prompt)` | 使用 AI 扫描文件（PDF、图片、文档） | 提取实体信息及端点路径 |
+| `getStats()` | 获取使用统计信息 | 包括使用量、存储空间等信息 |
 
-## Individual API Functions
+## 单个 API 函数
 
-For granular control, import specific functions. See [references/api-reference.md](references/api-reference.md) for the complete list with parameters, types, and examples.
+如需进行更细粒度的控制，请导入相应的函数。请参阅 [references/api-reference.md](references/api-reference.md)，其中列出了所有函数的参数、类型和示例。
 
-### Endpoint Functions
+### 端点函数
 
-| Function | Purpose |
+| 函数 | 功能 |
 |----------|---------|
-| `listEndpoints()` | List all endpoints organized by category |
-| `getEndpoint(path)` | Get full endpoint details with metadata |
-| `createEndpoint(path)` | Create a new empty endpoint |
-| `deleteEndpoint(path)` | Delete endpoint and all associated files |
+| `listEndpoints()` | 按类别列出所有端点 |
+| `getEndpoint(path)` | 获取端点的完整详细信息（包括元数据） |
+| `createEndpoint(path)` | 创建一个新的空端点 |
+| `deleteEndpoint(path)` | 删除端点及其所有关联文件 |
 
-### Scanning Functions
+### 扫描函数
 
-| Function | Purpose |
+| 函数 | 功能 |
 |----------|---------|
-| `scanText(text, prompt)` | Scan text content with AI extraction |
-| `scanFile(filePath, prompt)` | Scan file (PDF, images, docs) with AI |
+| `scanText(text, prompt)` | 使用 AI 扫描文本内容并提取信息 |
+| `scanFile(filePath, prompt)` | 使用 AI 扫描文件（PDF、图片、文档） |
 
-### Item Functions
+### 条目函数
 
-| Function | Purpose |
+| 函数 | 功能 |
 |----------|---------|
-| `deleteItem(itemId)` | Delete a single item by its 8-char ID |
+| `deleteItem(itemId)` | 根据 8 位 ID 删除单个条目 |
 
-### File Functions
+### 文件函数
 
-| Function | Purpose |
+| 函数 | 功能 |
 |----------|---------|
-| `getFileUrl(key)` | Get presigned S3 URL for a file |
+| `getFileUrl(key)` | 获取文件的预签名 S3 URL |
 
-### Billing Functions
+### 计费函数
 
-| Function | Purpose |
+| 函数 | 功能 |
 |----------|---------|
-| `getStats()` | Get usage stats (parses, storage, tier) |
+| `getStats()` | 获取使用统计信息（包括使用量、存储空间等） |
 
-## Data Structures
+## 数据结构
 
-### Living JSON Pattern
+### Living JSON 模式
 
-Endpoints use the Living JSON pattern for document history:
+Endpoints 使用 Living JSON 模式来记录文档历史：
 
 ```typescript
 {
@@ -131,28 +142,28 @@ Endpoints use the Living JSON pattern for document history:
 }
 ```
 
-### Metadata Item
+### 元数据条目
 
-Each item has:
-- **8-character ID** - Unique identifier (e.g., `abc12345`)
-- **summary** - AI-generated description
-- **entities** - Extracted entities (people, companies, dates)
-- **filePath** - S3 URL if file was uploaded
-- **fileType** - MIME type
-- **originalText** - Source text
+每个条目包含以下信息：
+- **8 位 ID** - 唯一标识符（例如：`abc12345`）
+- **summary** - 由 AI 生成的描述
+- **entities** - 提取的实体（人名、公司名称、日期等）
+- **filePath** - 如果文件已上传，则包含 S3 文件路径
+- **fileType** | 文件的 MIME 类型
+- **originalText** | 原始文本
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 401 | Invalid or missing API key |
-| 404 | Endpoint or item not found |
-| 409 | Endpoint already exists |
-| 429 | Usage limit exceeded |
+| 401 | API 密钥无效或缺失 |
+| 404 | 未找到端点或条目 |
+| 409 | 端点已存在 |
+| 429 | 超过使用限制 |
 
-## Examples
+## 示例
 
-### List and Inspect
+### 列出和检查端点
 
 ```typescript
 // Get all endpoints
@@ -164,7 +175,7 @@ const details = await getEndpoint('/job-tracker/january');
 console.log(`Total items: ${details.totalItems}`);
 ```
 
-### Scan Documents
+### 扫描文档
 
 ```typescript
 // Scan text content
@@ -179,7 +190,7 @@ const fileResult = await scanFile('./invoice.pdf', 'invoice tracker');
 console.log(`Extracted ${fileResult.entriesAdded} items`);
 ```
 
-### Check Usage
+### 查看使用情况
 
 ```typescript
 const stats = await getStats();

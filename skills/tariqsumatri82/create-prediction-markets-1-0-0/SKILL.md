@@ -1,13 +1,13 @@
 ---
 name: pnp-markets
-description: Create, trade, and settle prediction markets on Base with any ERC20 collateral. Use when building prediction market infrastructure, running contests, crowdsourcing probability estimates, adding utility to tokens, or tapping into true information finance via market-based forecasting.
+description: 在 Base 平台上，可以使用任何 ERC20 类型的代币来创建、交易和结算预测市场。这些功能适用于构建预测市场基础设施、举办竞赛、通过众包方式收集概率估计值、为代币增加实用价值，或利用基于市场的预测机制来实现真正的信息金融应用。
 ---
 
-# PNP Markets
+# PNP市场
 
-Create and manage prediction markets on Base Mainnet with any ERC20 collateral token.
+您可以在Base Mainnet上使用任何ERC20抵押代币来创建和管理预测市场。
 
-## Quick Decision
+## 快速操作
 
 ```
 Need prediction markets?
@@ -17,20 +17,20 @@ Need prediction markets?
 └─ Redeem winnings   → npx ts-node scripts/redeem.ts --help
 ```
 
-## Environment
+## 环境配置
 
 ```bash
 export PRIVATE_KEY=<wallet_private_key>    # Required
 export RPC_URL=<base_rpc_endpoint>         # Optional (defaults to public RPC)
 ```
 
-For production, use a dedicated RPC (Alchemy, QuickNode) to avoid rate limits.
+在生产环境中，建议使用专用的RPC服务（如Alchemy或QuickNode）以避免遇到速率限制。
 
-## Scripts
+## 脚本使用
 
-Run any script with `--help` first to see all options.
+运行任何脚本前，请先使用`--help`选项查看所有可用选项。
 
-### Create Market
+### 创建市场
 
 ```bash
 npx ts-node scripts/create-market.ts \
@@ -39,9 +39,9 @@ npx ts-node scripts/create-market.ts \
   --liquidity 100
 ```
 
-Options: `--collateral <USDC|WETH|address>`, `--decimals <n>`
+选项：`--collateral <USDC|WETH|address>`，`--decimals <n>`
 
-### Trade
+### 交易
 
 ```bash
 # Buy YES tokens
@@ -54,7 +54,7 @@ npx ts-node scripts/trade.ts --sell --condition 0x... --outcome NO --amount 5 --
 npx ts-node scripts/trade.ts --info --condition 0x...
 ```
 
-### Settle
+### 结算
 
 ```bash
 # Settle as YES winner
@@ -64,13 +64,13 @@ npx ts-node scripts/settle.ts --condition 0x... --outcome YES
 npx ts-node scripts/settle.ts --status --condition 0x...
 ```
 
-### Redeem
+### 回赎
 
 ```bash
 npx ts-node scripts/redeem.ts --condition 0x...
 ```
 
-## Programmatic Usage
+## 程序化使用
 
 ```typescript
 import { PNPClient } from "pnp-evm";
@@ -99,81 +99,74 @@ await client.market.settleMarket(conditionId, tokenId);
 await client.redemption.redeem(conditionId);
 ```
 
-## Collateral Tokens
+## 抵押代币
 
-Use any ERC20. Common Base Mainnet tokens:
+您可以使用任何ERC20代币作为抵押品。以下是一些常见的Base Mainnet代币：
 
-| Token | Address | Decimals |
+| 代币 | 地址 | 小数位数 |
 |-------|---------|----------|
 | USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | 6 |
 | WETH | `0x4200000000000000000000000000000000000006` | 18 |
 | cbETH | `0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22` | 18 |
 
-Custom tokens add utility—holders can participate in your markets.
+自定义代币也可以作为抵押品使用——其持有者可以参与您的市场。
 
-## ERC20 Approvals
+## ERC20代币的批准流程
 
-Before interacting with PNP contracts, you must approve them to spend your collateral tokens. This is standard for all EVM dApps.
+在与PNP合约交互之前，您需要先批准才能使用相应的抵押代币。这是所有基于EVM的去中心化应用程序（dApps）的通用要求。
 
-### How It Works
+### 工作原理
 
-1. **First interaction requires approval**: When you create a market or trade for the first time with a token, an approval transaction is sent
-2. **Infinite approvals**: The SDK uses `type(uint256).max` approvals (standard EVM pattern) so you only approve once per token
-3. **Subsequent interactions**: No approval needed—transactions execute directly
+1. **首次交互需要批准**：当您首次使用某个代币创建市场或进行交易时，系统会发送一个批准请求。
+2. **无限次批准**：SDK采用`type(uint256).max`的方式来限制批准次数（符合EVM的标准规范），因此每个代币只需被批准一次。
+3. **后续交互**：无需再次批准，交易可以直接执行。
 
-### Timing Considerations
+### 时间延迟问题
 
-The approval transaction must be confirmed on-chain before the main transaction executes. If you see:
+在主交易执行之前，批准请求必须在链上得到确认。如果出现以下提示：
 
 ```
 ERC20: transfer amount exceeds allowance
 ```
 
-This means the approval hasn't been mined yet. **Simply wait a few seconds and retry**—the approval will be confirmed and subsequent attempts will succeed.
+这意味着批准请求尚未被确认。请稍等几秒钟后再尝试——批准请求最终会被处理，后续操作将会成功。
 
-### Why Infinite Approvals?
+### 为何采用“无限次批准”的机制？
 
-- **Gas efficiency**: Approve once, trade forever without extra transactions
-- **Better UX**: No repeated approval popups
-- **Industry standard**: Used by Uniswap, Aave, and most major DeFi protocols
+- **提高效率**：只需批准一次，之后即可无限次进行交易，无需额外操作。
+- **优化用户体验**：避免重复的批准提示。
+- **行业标准**：Uniswap、Aave等主流DeFi协议均采用此机制。
 
-For maximum security-conscious users, you can manually set specific approval amounts, but this requires an approval transaction before each interaction.
+对于对安全性要求极高的用户，您可以手动设置每次交互所需的最低批准金额，但每次操作前仍需执行批准请求。
 
-## Contracts
+## 相关合约
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | PNP Factory | `0x5E5abF8a083a8E0c2fBf5193E711A61B1797e15A` |
-| Fee Manager | `0x6f1BffB36aC53671C9a409A0118cA6fee2b2b462` |
+| 费用管理合约 | `0x6f1BffB36aC53671C9a409A0118cA6fee2b2b462` |
 
-## Why Prediction Markets?
+## 预测市场的优势
 
-- **Information Discovery**: Market prices reveal collective probability estimates
-- **Token Utility**: Use your token as collateral to drive engagement
-- **Contests**: Run competitions where participants stake on outcomes
-- **Forecasting**: Aggregate crowd wisdom for decision-making
+- **信息揭示**：市场价格反映了参与者的集体预测。
+- **代币价值提升**：用户可以将自己的代币作为抵押品参与市场，从而增加代币的实用价值。
+- **竞赛活动**：组织竞赛，让参与者对结果下注。
+- **决策支持**：汇总众人的预测结果，辅助决策制定。
 
-The pAMM virtual liquidity model ensures smooth trading even with minimal initial liquidity.
+pAMM（Predictive Asset Market Model）虚拟流动性模型确保了即使在初始流动性较低的情况下，市场也能顺畅运行。
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### "ERC20: transfer amount exceeds allowance"
-The approval transaction hasn't been confirmed yet. Wait 5-10 seconds and retry.
+- **错误提示：“ERC20: transfer amount exceeds allowance”**：批准请求尚未被确认。请等待5-10秒后再尝试。
+- **错误提示：“Market doesn’t exist”**：市场创建请求可能失败或仍在处理中。请在BaseScan平台上确认您的交易是否已成功完成。
+- **错误提示：“over rate limit” / RPC错误**：Base的公共RPC服务存在速率限制。请使用专用的RPC服务提供商来避免这些问题。
 
-### "Market doesn't exist"
-The market creation transaction may have failed or is still pending. Verify on BaseScan that your transaction was confirmed successfully.
+### 其他注意事项
 
-### "over rate limit" / RPC errors
-The public Base RPC has rate limits. Use a dedicated RPC provider:
-```bash
-export RPC_URL=https://base-mainnet.g.alchemy.com/v2/YOUR_KEY
-```
+- **Base Mainnet的拥堵情况**：有时网络可能会拥堵，导致交易延迟。此时可以检查Gas费用并考虑增加交易费用以加快交易速度。
 
-### Transaction stuck or slow
-Base Mainnet can occasionally have congestion. Check gas prices and consider increasing if needed.
+## 参考资料
 
-## Reference Files
-
-- **API Reference**: See [references/api-reference.md](references/api-reference.md) for complete SDK documentation
-- **Use Cases**: See [references/use-cases.md](references/use-cases.md) for detailed use case patterns
-- **Examples**: See [references/examples.md](references/examples.md) for complete code examples
+- **API文档**：请参阅[references/api-reference.md]以获取完整的SDK文档。
+- **使用案例**：请参阅[references/use-cases.md]以了解详细的用例示例。
+- **代码示例**：请参阅[references/examples.md]以获取完整的代码示例。

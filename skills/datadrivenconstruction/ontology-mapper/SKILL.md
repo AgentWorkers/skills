@@ -1,18 +1,18 @@
 ---
 slug: "ontology-mapper"
 display_name: "Ontology Mapper"
-description: "Map construction data to standard ontologies. Create semantic mappings between different data schemas"
+description: "将地图构建数据映射到标准的本体（ontologies）中，并在不同数据模式（data schemas）之间建立语义关联（semantic mappings）。"
 ---
 
-# Ontology Mapper
+# 本体映射器（Ontology Mapper）
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.2), this skill maps construction data to standard ontologies like IFC, COBie, Uniclass, and OmniClass, enabling semantic interoperability between systems.
+该工具基于 DDC 方法论（第 2.2 章），将建筑数据映射到标准的本体（如 IFC、COBie、Uniclass 和 OmniClass），从而实现系统间的语义互操作性。
 
-**Book Reference:** "Доминирование открытых данных" / "Open Data Dominance"
+**参考书籍**：《开放数据的优势》（"Доминирование открытых данных"）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -495,9 +495,9 @@ class OntologyMapper:
         return output
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Map Field to IFC
+### 将字段映射到 IFC
 
 ```python
 mapper = OntologyMapper()
@@ -514,7 +514,7 @@ if result.best_match:
     print(f"Confidence: {result.best_match.confidence.value}")
 ```
 
-### Map Entire Schema
+### 映射整个数据架构
 
 ```python
 # Define schema with sample values
@@ -531,7 +531,7 @@ print(f"Coverage: {report.coverage:.0%}")
 print(f"Mapped: {report.mapped_fields}/{report.total_fields}")
 ```
 
-### Create Custom Mappings
+### 创建自定义映射规则
 
 ```python
 # Add custom mapping
@@ -545,24 +545,24 @@ mapper.create_mapping(
 )
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `OntologyMapper` | Main mapping engine |
-| `OntologyType` | Standard ontologies (IFC, COBie, etc.) |
-| `SemanticMapping` | Mapping between concepts |
-| `MappingResult` | Result of mapping operation |
-| `RelationType` | Relationship types |
-| `MappingConfidence` | Confidence levels |
+| 组件            | 功能                        |
+|-----------------|---------------------------|
+| `OntologyMapper`    | 主要的映射引擎                |
+| `OntologyType`     | 标准本体（如 IFC、COBie 等）             |
+| `SemanticMapping` | 概念之间的映射关系              |
+| `MappingResult`    | 映射操作的结果                   |
+| `RelationType`     | 关系类型                        |
+| `MappingConfidence` | 映射的置信度                    |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.2
-- **Website**: https://datadrivenconstruction.io
+- **参考书籍**：Artem Boiko 著的《数据驱动的建筑设计》（"Data-Driven Construction"），第 2.2 章
+- **官方网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [open-data-integrator](../open-data-integrator/SKILL.md) for open data
-- Use [data-model-designer](../../Chapter-2.5/data-model-designer/SKILL.md) for schema design
-- Use [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) for validation
+- 使用 [open-data-integrator](../open-data-integrator/SKILL.md) 进行开放数据的整合
+- 使用 [data-model-designer](../../Chapter-2.5/data-model-designer/SKILL.md) 进行数据架构设计
+- 使用 [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) 进行数据验证

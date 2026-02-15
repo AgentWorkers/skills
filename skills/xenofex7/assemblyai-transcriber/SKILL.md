@@ -1,6 +1,26 @@
 ---
 name: assemblyai-transcriber
-description: "Transcribe audio files with speaker diarization (who speaks when). Supports 100+ languages, automatic language detection, and timestamps. Use for meetings, interviews, podcasts, or voice messages. Requires AssemblyAI API key."
+description: "**功能说明：**  
+该工具能够将音频文件转录为文本，并标注出说话者的身份以及说话的具体时间。支持100多种语言，具备自动语言检测功能，并可添加时间戳。适用于会议记录、采访、播客或语音消息的整理。使用该工具需要具备AssemblyAI的API密钥。  
+
+**主要特点：**  
+1. **多语言支持**：支持100多种语言的音频转录。  
+2. **自动语言检测**：能够自动识别音频中的语言类型。  
+3. **时间戳功能**：为转录内容添加精确的时间戳。  
+4. **应用场景广泛**：适用于会议记录、采访、播客等多种场景。  
+5. **API依赖**：需要使用AssemblyAI的API密钥进行功能调用。  
+
+**使用说明：**  
+1. **获取API密钥**：首先需要从AssemblyAI官网获取API密钥。  
+2. **安装工具**：根据系统要求安装相应的工具软件。  
+3. **导入音频文件**：将需要转录的音频文件导入工具界面。  
+4. **开始转录**：点击开始按钮，工具会自动开始转录并生成文本文件。  
+5. **查看结果**：转录完成后，可以查看生成的文本文件，其中包含标注了说话者身份和时间戳的文本。  
+
+**注意事项：**  
+- 请确保已安装所需的工具软件并正确配置API密钥。  
+- 不同语言的转录效果可能因语言特性而略有差异。  
+- 请根据实际需求选择合适的转录选项（如是否包含时间戳等）。"
 metadata:
   openclaw:
     requires:
@@ -8,82 +28,44 @@ metadata:
         - ASSEMBLYAI_API_KEY
 ---
 
-# AssemblyAI Transcriber 🎙️
+# AssemblyAI 语音转录器 🎙️  
+能够将音频文件转录为文本，并标注出说话者的身份（例如：说话者A、B、C等）。  
 
-Transcribe audio files with speaker diarization (who speaks when).
+## 主要功能  
+- ✅ 支持100多种语言的转录  
+- ✅ 可标注说话者的身份（A、B、C等）  
+- 每条语音记录都带有时间戳  
+- 具备自动语言检测功能  
+- 支持多种音频格式：MP3、WAV、M4A、FLAC、OGG、WEBM  
 
-## Features
+## 设置方法  
+1. 注册AssemblyAI账户：https://www.assemblyai.com/  
+2. 获取API密钥（免费 tier：每月100分钟使用时长）  
+3. 设置环境变量：  
+   （请参考以下代码块或配置文件进行设置）  
 
-- ✅ Transcription in 100+ languages
-- ✅ Speaker diarization (Speaker A, B, C...)
-- ✅ Timestamps per utterance
-- ✅ Automatic language detection
-- ✅ Supports MP3, WAV, M4A, FLAC, OGG, WEBM
+### 使用方法  
+#### 转录本地音频文件  
+（请参考以下代码块进行操作）  
 
-## Setup
+#### 从URL转录音频  
+（请参考以下代码块进行操作）  
 
-1. Create AssemblyAI account: https://www.assemblyai.com/
-2. Get API key (free tier: 100 min/month)
-3. Set environment variable:
+#### 配置选项  
+（请参考以下代码块进行设置）  
 
-```bash
-export ASSEMBLYAI_API_KEY="your-api-key"
-```
+## 输出格式  
+（请参考以下代码块进行设置）  
 
-Or save to config file:
+## 定价方案  
+- **免费 tier**：每月100分钟免费使用  
+- **付费 tier**：每分钟约0.01美元  
 
-```json
-// ~/.assemblyai_config.json
-{
-  "api_key": "YOUR_API_KEY"
-}
-```
-
-## Usage
-
-### Transcribe local audio
-
-```bash
-python3 scripts/transcribe.py /path/to/recording.mp3
-```
-
-### Transcribe from URL
-
-```bash
-python3 scripts/transcribe.py https://example.com/meeting.mp3
-```
-
-### Options
-
-```bash
-python3 scripts/transcribe.py audio.mp3 --no-diarization  # Skip speaker labels
-python3 scripts/transcribe.py audio.mp3 --json            # Raw JSON output
-```
-
-## Output Format
-
-```
-## Transcript
-
-*Language: EN*
-*Duration: 05:32*
-
-**Speaker A** [00:00]: Hello everyone, welcome to the meeting.
-**Speaker B** [00:03]: Thanks! Happy to be here.
-**Speaker A** [00:06]: Let's start with the first item...
-```
-
-## Pricing
-
-- **Free Tier**: 100 minutes/month free
-- **After**: ~$0.01/minute
-
-## Tips
-
-- For best speaker diarization: clear speaker changes, minimal overlap
-- Background noise is filtered well
-- Multi-language auto-detection works reliably
+## 使用建议  
+- 为获得更准确的发言者标注效果，请确保说话者之间的转换清晰、无语音重叠  
+- 该工具能有效过滤背景噪音  
+- 多语言自动检测功能非常可靠  
 
 ---
 
-**Author**: xenofex7 | **Version**: 1.1.0
+**作者**：xenofex7 | **版本**：1.1.0

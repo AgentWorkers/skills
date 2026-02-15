@@ -1,6 +1,6 @@
 ---
 name: habit-tracker
-description: Build habits with streaks, reminders, and progress visualization
+description: 通过“连贯练习”（streaks）、提醒功能以及进度可视化工具来培养良好的学习习惯。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,59 +11,62 @@ triggers:
   - "habit progress"
 ---
 
-# Habit Tracker
+# 习惯追踪器
 
-Build lasting habits through conversation. Track streaks, get reminders, celebrate progress.
+通过对话帮助你养成持久的习惯。记录连续完成习惯的天数，接收提醒，庆祝你的进步。
 
-## What it does
+## 功能介绍
 
-Creates and tracks daily/weekly habits, maintains streak counts, sends optional reminders, and visualizes your progress over time. Simple accountability through your AI assistant.
+- 创建并追踪每日/每周的习惯；
+- 维护连续完成习惯的天数（“连贯天数”）；
+- 可选择性地发送提醒；
+- 以可视化的方式展示你的习惯养成进度。
 
-## Usage
+## 使用方法
 
-**Create habits:**
+**创建新习惯：**
 ```
 "New habit: meditate daily"
 "Track reading 30 minutes"
 "Add habit: gym 3x per week"
 ```
 
-**Log completions:**
+**记录完成情况：**
 ```
 "Did meditation"
 "Completed reading"
 "Hit the gym today"
 ```
 
-**Check progress:**
+**查看进度：**
 ```
 "How are my habits?"
 "Meditation streak"
 "Weekly habit summary"
 ```
 
-**Set reminders:**
+**设置提醒：**
 ```
 "Remind me to meditate at 7am"
 "Habit reminder at 9pm"
 ```
 
-## Habit Types
+## 习惯类型
 
-- **Daily**: Must complete every day for streak
-- **Weekly**: Complete X times per week
-- **Custom**: Define your own cadence
+- **每日习惯**：必须每天完成才能保持连贯天数；
+- **每周习惯**：每周完成指定次数；
+- **自定义习惯**：你可以自己设定完成频率。
 
-## Streak Rules
+## 连贯天数规则
 
-- Miss a day = streak resets (daily habits)
-- Miss weekly target = week doesn't count
-- Say "skip [habit] today" to pause without breaking streak (limited uses)
+- 如果错过某一天，连贯天数将被重置（针对每日习惯）；
+- 如果未能达到每周目标，该周的习惯记录将被视为无效；
+- 可以输入“skip [习惯] today”来暂停习惯的追踪，而不会中断连贯天数（该功能有限制）。
 
-## Tips
+## 使用建议
 
-- Start with 1-2 habits, add more as they stick
-- Ask "habit insights" for pattern analysis
-- Say "archive [habit]" to stop tracking without deleting history
-- Morning check: "What habits do I need to do today?"
-- All data stored locally
+- 先从1-2个习惯开始，随着习惯的养成再逐渐增加；
+- 通过询问“habit insights”来分析自己的习惯养成模式；
+- 输入“archive [习惯]”可以停止追踪该习惯，同时保留所有历史记录；
+- 早晨可以查看：“今天需要完成哪些习惯？”
+- 所有数据都存储在本地设备上。

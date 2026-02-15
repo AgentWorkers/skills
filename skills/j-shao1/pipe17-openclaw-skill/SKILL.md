@@ -1,306 +1,137 @@
 ---
 
-## name: pipe17 description: Pipe17 Unified API for searching and reading orders, shipping requests (shipments), fulfillments, and inventory. homepage: [https://apidoc.pipe17.com/#/](https://apidoc.pipe17.com/#/) metadata: { "openclaw": { "emoji": "🧩", "requires": { "env": ["PIPE17\_API\_KEY"] }, "primaryEnv": "PIPE17\_API\_KEY" } }
-
-# pipe17
-
-Use the Pipe17 Unified API to search and read core commerce/operations objects.
-
-This skill focuses on:
-
-- Search + read **Orders**
-- Search + read **Shipping Requests** (a.k.a. **Shipments**)
-- Search + read **Fulfillments**
-- Search **Inventory** by SKU (and optionally location)
-
-## Setup
-
-1. Create / obtain a Pipe17 API key for the target organization/integration.
-2. Export it:
-
-```bash
-export PIPE17_API_KEY="..."
+## 名称：pipe17  
+**描述：** Pipe17 是一个统一的 API，用于搜索和读取订单、发货请求（运输信息）、物流状态以及库存信息。  
+**首页：** [https://apidoc.pipe17.com/#/](https://apidoc.pipe17.com/#/)  
+**元数据：**  
+```json
+{
+  "openclaw": {
+    "emoji": "🧩",
+    "requires": {
+      "env": ["PIPE17_API_KEY"]
+    },
+    "primaryEnv": "PIPE17_API_KEY"
+  }
+}
 ```
 
-> Keep the API key secret. Use least-privilege keys whenever possible.
-
-## API Basics
-
-**Base URL** (default):
-
-```
-https://api-v3.pipe17.com/api/v3
-```
-
-All requests should include:
-
-- `X-Pipe17-Key: ${PIPE17_API_KEY}`
-- `Accept: application/json`
-
-Example:
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-
-curl "${P17_BASE}/orders" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-## Search & Filtering
-
-Pipe17 commonly supports server-side filtering via query parameters, often including:
-
-- `filters=...` (repeatable)
-- `limit=...`
-- `page=...`
-
-A common filter encoding pattern looks like:
-
-```
-filters={type}~{field}~{operator}~{value}
-```
-
-Examples of typical patterns:
-
-- `filters=string~status~equals~readyForFulfillment`
-- `filters=string~status~equalsAnyOf~new,onHold,readyForFulfillment`
-- `filters=date~extOrderCreatedAt~isGreaterThanOrEqualTo~2024-12-31T00:00:00.000Z`
-
-If your tenant uses a different filter grammar, follow the contract in the API doc.
-
-## Orders
-
-### Search orders
-
-List orders with optional query parameters.
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `count` | integer (int32) | Number of results to return |
-| `skip` | integer (int32) | Number of results to skip (for pagination) |
-| `extOrderId` | array[string] | Filter by external order ID(s) |
-| `since` | string (date-time) | Filter orders since this UTC ISO timestamp |
-| `status` | array[string] | Filter by status(es) |
-
-**Allowed `status` values:** `draft`, `new`, `onHold`, `toBeValidated`, `reviewRequired`, `readyForFulfillment`, `sentToFulfillment`, `partialFulfillment`, `fulfilled`, `inTransit`, `partialReceived`, `received`, `canceled`, `returned`, `refunded`, `archived`, `closed`
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-
-# Example: most recent orders (paging)
-curl "${P17_BASE}/orders?count=25&skip=0" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by status
-curl "${P17_BASE}/orders?count=25&status=new&status=onHold&status=readyForFulfillment" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by date
-curl "${P17_BASE}/orders?count=25&since=2024-12-31T00:00:00.000Z" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by external order ID
-curl "${P17_BASE}/orders?extOrderId=EXT-12345" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-### Read order by id
-
-The search endpoint returns an `orderId` for each order. Use it to fetch full order details.
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-ORDER_ID="{orderId}"
-
-curl "${P17_BASE}/orders/${ORDER_ID}" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-## Shipping Requests
-
-### Search shipping requests
-
-List shipping requests with optional query parameters.
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `count` | integer (int32) | Number of results to return |
-| `skip` | integer (int32) | Number of results to skip (for pagination) |
-| `extOrderId` | array[string] | Filter by external order ID(s) |
-| `orderId` | array[string] | Filter by Pipe17 order ID(s) |
-| `locationId` | array[string] | Filter by location ID(s) |
-| `since` | string (date-time) | Filter shipping requests since this UTC ISO timestamp |
-| `status` | array[string] | Filter by status(es) |
-
-**Allowed `status` values:** `new`, `pendingInventory`, `pendingShippingLabel`, `reviewRequired`, `readyForFulfillment`, `sentToFulfillment`, `fulfilled`, `partialFulfillment`, `canceled`, `canceledRestock`, `failed`, `onHold`
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-
-# Example: list shipping requests
-curl "${P17_BASE}/shipping_requests?count=25&skip=0" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by status
-curl "${P17_BASE}/shipping_requests?count=25&status=readyForFulfillment" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by order ID
-curl "${P17_BASE}/shipping_requests?count=25&orderId=ORD-12345" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by location
-curl "${P17_BASE}/shipping_requests?count=25&locationId=LOC-001" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-### Read shipping request by id
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-SHIPPING_REQUEST_ID="{shippingRequestId}"
-
-curl "${P17_BASE}/shipping_requests/${SHIPPING_REQUEST_ID}" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-## Fulfillments
-
-Fulfillments represent completed shipment execution with tracking and shipped line items. They are typically treated as immutable once created.
-
-### Search fulfillments
-
-List fulfillments with optional query parameters.
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `count` | integer (int32) | Number of results to return |
-| `skip` | integer (int32) | Number of results to skip (for pagination) |
-| `extOrderId` | array[string] | Filter by external order ID(s) |
-| `orderId` | array[string] | Filter by Pipe17 order ID(s) |
-| `shipmentId` | array[string] | Filter by shipment ID(s) |
-| `locationId` | array[string] | Filter by location ID(s) |
-| `since` | string (date-time) | Filter fulfillments since this UTC ISO timestamp |
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-
-# Example: list fulfillments
-curl "${P17_BASE}/fulfillments?count=25&skip=0" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by order ID
-curl "${P17_BASE}/fulfillments?count=25&orderId=ORD-12345" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by shipment ID
-curl "${P17_BASE}/fulfillments?count=25&shipmentId=SHIP-001" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: filter by date
-curl "${P17_BASE}/fulfillments?count=25&since=2024-12-31T00:00:00.000Z" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-### Read fulfillment by id
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-FULFILLMENT_ID="{fulfillmentId}"
-
-curl "${P17_BASE}/fulfillments/${FULFILLMENT_ID}" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-## Inventory
-
-Inventory is stored per **SKU** (and often per **location**) and may include multiple quantity types (e.g., onHand, available, committed, etc.).
-
-### Search inventory
-
-List inventory with optional query parameters.
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `count` | integer (int32) | Number of results to return |
-| `skip` | integer (int32) | Number of results to skip (for pagination) |
-| `sku` | array[string] | Filter by SKU(s). Mutually exclusive with `sku_gt`/`sku_lt` |
-| `locationId` | array[string] | Filter by location ID(s) |
-| `since` | string (date-time) | Filter inventory created after this UTC ISO timestamp |
-| `available` | integer | Filter where `available` equals this value. Mutually exclusive with `available_gt`/`available_lt` |
-| `available_gt` | integer | Filter where `available` is greater than this value |
-| `available_lt` | integer | Filter where `available` is less than this value |
-| `onHand` | integer | Filter where `onHand` equals this value. Mutually exclusive with `onHand_gt`/`onHand_lt` |
-| `onHand_gt` | integer | Filter where `onHand` is greater than this value |
-| `onHand_lt` | integer | Filter where `onHand` is less than this value |
-| `totals` | boolean | Return inventory totals across all locations (not allowed with `ledger` flag) |
-| `ledger` | boolean | Return inventory ledger information (not allowed with `totals` flag) |
-
-> **Default behavior:** Always send `totals=true` unless the user specifically requests ledger detail. `totals` and `ledger` are mutually exclusive.
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-
-# Example: list inventory by SKU (always use totals=true by default)
-curl "${P17_BASE}/inventory?count=100&sku=MY-SKU-001&totals=true" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: SKU + location
-curl "${P17_BASE}/inventory?count=100&sku=MY-SKU-001&locationId=LOC-001&totals=true" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: find items with zero available
-curl "${P17_BASE}/inventory?count=100&available=0&totals=true" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: find items with available > 10
-curl "${P17_BASE}/inventory?count=100&available_gt=10&totals=true" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-
-# Example: get ledger detail (only when specifically requested)
-curl "${P17_BASE}/inventory?count=100&sku=MY-SKU-001&ledger=true" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-### Read inventory record by inventoryId
-
-```bash
-P17_BASE="https://api-v3.pipe17.com/api/v3"
-INVENTORY_ID="{inventoryId}"
-
-curl "${P17_BASE}/inventory/${INVENTORY_ID}" \
-  -H "X-Pipe17-Key: ${PIPE17_API_KEY}" \
-  -H "Accept: application/json"
-```
-
-## Notes
-
-- Prefer **list/search** endpoints with pagination (`count`, `skip`) for support workflows.
-- Favor narrow filters (status/date/sku) to avoid pulling large result sets.
-- If you hit rate limits, implement backoff and retry according to response headers.
-
-## References
-
-- Pipe17 Unified API Docs: [https://apidoc.pipe17.com/#/](https://apidoc.pipe17.com/#/)
-
+### 使用 Pipe17 统一 API 搜索和读取核心商业/运营数据  
+
+该技能主要支持以下操作：  
+- 搜索并读取 **订单**  
+- 搜索并读取 **发货请求**（也称为 **运输信息**）  
+- 搜索并读取 **物流状态**  
+- 按 SKU（以及可选的位置）搜索 **库存**  
+
+#### 设置  
+1. 为目标组织/集成创建或获取一个 Pipe17 API 密钥。  
+2. 将 API 密钥导出：  
+
+**注意：** 请严格保密 API 密钥，并尽可能使用权限最低的密钥。  
+
+#### API 基础知识  
+**基础 URL**（默认值）：[此处应填写实际 URL]  
+
+所有请求都必须包含以下字段：  
+- `X-Pipe17-Key: ${PIPE17_API_KEY}`  
+- `Accept: application/json`  
+
+**示例请求：** [此处应提供示例请求格式]  
+
+#### 搜索与过滤  
+Pipe17 支持通过查询参数进行服务器端过滤，常见参数包括：  
+- `filters=...`（可重复使用）  
+- `limit=...`  
+- `page=...`  
+
+**常见的过滤模式示例：**  
+- `filters=string~status~equals~readyForFulfillment`  
+- `filters=string~status~equalsAnyOf~new,onHold,readyForFulfillment`  
+- `filters=date~extOrderCreationTime~isGreaterThanOrEqualTo~2024-12-31T00:00:00.000Z`  
+
+如果您的租户使用不同的过滤语法，请遵循 API 文档中的说明。  
+
+#### 订单  
+### 搜索订单  
+可以列出订单，支持可选的查询参数：  
+| 参数 | 类型 | 描述 |  
+|-----------|------|-------------|  
+| `count` | integer (int32) | 返回的结果数量 |  
+| `skip` | integer (int32) | 要跳过的结果数量（用于分页） |  
+| `extOrderId` | array[string] | 通过外部订单 ID 进行过滤 |  
+| `since` | string (date-time) | 根据此 UTC ISO 时间戳过滤订单 |  
+| `status` | array[string] | 根据订单状态进行过滤 |  
+
+**允许的 `status` 值：** `draft`, `new`, `onHold`, `toBeValidated`, `reviewRequired`, `readyForFulfillment`, `sentToFulfillment`, `partialFulfillment`, `fulfilled`, `inTransit`, `partialReceived`, `received`, `canceled`, `returned`, `refunded`, `archived`, `closed`  
+
+#### 通过 ID 读取订单详情  
+搜索接口会返回每个订单的 `orderId`，可使用该 ID 获取订单的完整信息。  
+
+#### 发货请求  
+### 搜索发货请求  
+可以列出发货请求，支持可选的查询参数：  
+| 参数 | 类型 | 描述 |  
+|-----------|------|-------------|  
+| `count` | integer (int32) | 返回的结果数量 |  
+| `skip` | integer (int32) | 要跳过的结果数量（用于分页） |  
+| `extOrderId` | array[string] | 通过外部订单 ID 进行过滤 |  
+| `orderId` | array[string] | 通过 Pipe17 订单 ID 进行过滤 |  
+| `locationId` | array[string] | 通过位置 ID 进行过滤 |  
+| `since` | string (date-time) | 根据此 UTC ISO 时间戳过滤发货请求 |  
+| `status` | array[string] | 根据物流状态进行过滤 |  
+
+**允许的 `status` 值：** `new`, `pendingInventory`, `pendingShippingLabel`, `reviewRequired`, `readyForFulfillment`, `sentToFulfillment`, `fulfilled`, `partialFulfillment`, `canceled`, `canceledRestock`, `failed`, `onHold`  
+
+#### 通过 ID 读取发货请求详情  
+可以使用订单 ID 获取详细的发货请求信息。  
+
+#### 物流状态  
+**物流状态** 表示已完成的运输操作，创建后通常不可更改。  
+### 搜索物流状态  
+可以列出物流状态信息，支持可选的查询参数：  
+| 参数 | 类型 | 描述 |  
+|-----------|------|-------------|  
+| `count` | integer (int32) | 返回的结果数量 |  
+| `skip` | integer (int32) | 要跳过的结果数量（用于分页） |  
+| `extOrderId` | array[string] | 通过外部订单 ID 进行过滤 |  
+| `orderId` | array[string] | 通过 Pipe17 订单 ID 进行过滤 |  
+| `shipmentId` | array[string] | 通过运输 ID 进行过滤 |  
+| `locationId` | array[string] | 通过位置 ID 进行过滤 |  
+| `since` | string (date-time) | 根据此 UTC ISO 时间戳过滤物流状态 |  
+
+#### 通过 ID 读取物流状态详情  
+可以使用物流 ID 获取详细的物流状态信息。  
+
+#### 库存  
+库存信息按 **SKU**（以及通常按 **位置**）存储，可能包含多种库存数量类型（如 **onHand**、**available** 等）。  
+### 搜索库存  
+可以列出库存信息，支持可选的查询参数：  
+| 参数 | 类型 | 描述 |  
+|-----------|------|-------------|  
+| `count` | integer (int32) | 返回的结果数量 |  
+| `skip` | integer (int32) | 要跳过的结果数量（用于分页） |  
+| `sku` | array[string] | 按 SKU 进行过滤 |  
+| `locationId` | array[string] | 按位置 ID 进行过滤 |  
+| `since` | string (date-time) | 根据此 UTC ISO 时间戳过滤库存信息 |  
+| `available` | integer | 过滤条件：`available` 等于该值 |  
+| `available_gt` | integer | 过滤条件：`available` 大于该值 |  
+| `available_lt` | integer | 过滤条件：`available` 小于该值 |  
+| `onHand` | integer | 过滤条件：`onHand` 等于该值 |  
+| `onHand_gt` | integer | 过滤条件：`onHand` 大于该值 |  
+| `onHand_lt` | integer | 过滤条件：`onHand` 小于该值 |  
+| `totals` | boolean | 是否返回所有位置的库存总数（与 `ledger` 标志互斥） |  
+| `ledger` | boolean | 是否返回库存账本信息（与 `totals` 标志互斥） |  
+
+**默认行为：** 除非用户特别要求，否则始终设置 `totals=true`。`totals` 和 `ledger` 是互斥的。  
+
+#### 通过库存 ID 读取库存记录  
+可以使用库存 ID 获取详细的库存记录。  
+
+#### 注意事项：  
+- 建议使用支持分页的 `list`/`search` 端点（`count`、`skip` 参数），以便更好地管理数据流。  
+- 使用精确的过滤条件（如状态/日期/SKU），以避免获取大量数据。  
+- 如果遇到请求速率限制，请根据响应头信息实现重试机制。  
+
+#### 参考资料：  
+- Pipe17 统一 API 文档：[https://apidoc.pipe17.com/#/](https://apidoc.pipe17.com/#/)

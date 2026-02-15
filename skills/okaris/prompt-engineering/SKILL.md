@@ -11,332 +11,277 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Prompt Engineering Guide
+# 提示工程指南
 
-Master prompt engineering for AI models via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行界面 (CLI) 掌握 AI 模型的提示工程技巧。
 
-## Quick Start
+## 快速入门
 
-```bash
-curl -fsSL https://cli.inference.sh | sh && infsh login
-
-# Well-structured LLM prompt
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "You are a senior software engineer. Review this code for security vulnerabilities:\n\n```python\nuser_input = request.args.get(\"query\")\nresult = db.execute(f\"SELECT * FROM users WHERE name = {user_input}\")\n```\n\nProvide specific issues and fixes."
-}'
+```python
+user_input = request.args.get("query")
+result = db.execute(f"SELECT * FROM users WHERE name = {user_input}")
 ```
 
-## LLM Prompting
+请提供具体的问题及其解决方案。
 
-### Basic Structure
+---
 
-```
-[Role/Context] + [Task] + [Constraints] + [Output Format]
-```
+[角色/上下文] + [任务] + [约束条件] + [输出格式]
 
-### Role Prompting
+---
 
 ```bash
 infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "You are an expert data scientist with 15 years of experience in machine learning. Explain gradient descent to a beginner, using simple analogies."
-}'
+  "prompt": "你是一位拥有 15 年机器学习经验的专家数据科学家。用简单的类比向初学者解释梯度下降算法。"
+}
 ```
 
-### Task Clarity
+---
 
-```bash
-# Bad: vague
-"Help me with my code"
+**错误示例：**  
+“帮我修改我的代码。”
 
-# Good: specific
-"Debug this Python function that should return the sum of even numbers from a list, but returns 0 for all inputs:
+**正确示例：**  
+“调试这个 Python 函数，它应该计算列表中所有偶数的和，但目前的代码对所有输入都返回 0：”
 
+```python
 def sum_evens(numbers):
     total = 0
     for n in numbers:
         if n % 2 == 0:
             total += n
-        return total
-
-Identify the bug and provide the corrected code."
+    return total
 ```
 
-### Chain-of-Thought
+请找出错误并提供修正后的代码。
 
-```bash
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Solve this step by step:\n\nA store sells apples for $2 each and oranges for $3 each. If someone buys 5 fruits and spends $12, how many of each fruit did they buy?\n\nThink through this step by step before giving the final answer."
-}'
-```
+---
 
-### Few-Shot Examples
+**提示示例：**  
+“逐步解决这个问题：**  
+“一家商店以每颗 2 美元的价格出售苹果，以每颗 3 美元的价格出售橙子。如果有人购买了 5 个水果并花费了 12 美元，他们各买了多少个水果？在给出最终答案之前，请先逐步思考。”
 
-```bash
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Convert these sentences to formal business English:\n\nExample 1:\nInput: gonna send u the report tmrw\nOutput: I will send you the report tomorrow.\n\nExample 2:\nInput: cant make the meeting, something came up\nOutput: I apologize, but I will be unable to attend the meeting due to an unforeseen circumstance.\n\nNow convert:\nInput: hey can we push the deadline back a bit?"
-}'
-```
+---
 
-### Output Format Specification
+**提示示例：**  
+“将这些句子转换为正式的商务英语：**  
+**示例 1：**  
+输入：` gonna send u the report tmrw`  
+输出：`I will send you the report tomorrow.`  
 
-```bash
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Analyze the sentiment of these customer reviews. Return a JSON array with objects containing \"text\", \"sentiment\" (positive/negative/neutral), and \"confidence\" (0-1).\n\nReviews:\n1. \"Great product, fast shipping!\"\n2. \"Meh, its okay I guess\"\n3. \"Worst purchase ever, total waste of money\"\n\nReturn only valid JSON, no explanation."
-}'
-```
+**示例 2：**  
+输入：`cant make the meeting, something came up`  
+输出：`I apologize, but I will be unable to attend the meeting due to an unforeseen circumstance.`  
 
-### Constraint Setting
+**现在将其转换为：**  
+输入：`Hey, can we push the deadline back a bit?`  
 
-```bash
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Summarize this article in exactly 3 bullet points. Each bullet must be under 20 words. Focus only on actionable insights, not background information.\n\n[article text]"
-}'
-```
+---
 
-## Image Generation Prompting
+**提示示例：**  
+“分析这些客户评论的情感。返回一个 JSON 数组，其中包含 `text`、`sentiment`（正面/负面/中性）和 `confidence`（0-1）字段。**  
+**评论：**  
+1. `Great product, fast shipping!`  
+2. `Meh, its okay I guess`  
+3. `Worst purchase ever, total waste of money`  
 
-### Basic Structure
+**注意：** 仅返回有效的 JSON 数据，无需解释。  
 
-```
-[Subject] + [Style] + [Composition] + [Lighting] + [Technical]
-```
+---
 
-### Subject Description
+**提示示例：**  
+“用 exactly 3 个要点总结这篇文章。每个要点不得超过 20 个单词。仅关注可操作的见解，不要包含背景信息。**  
+**[文章内容]**  
 
-```bash
-# Bad: vague
-"a cat"
+---
 
-# Good: specific
-infsh app run falai/flux-dev --input '{
-  "prompt": "A fluffy orange tabby cat with green eyes, sitting on a vintage leather armchair"
-}'
-```
+**主题** + **风格** + **构图** + **光线** + **技术要求**  
 
-### Style Keywords
+---
 
-```bash
-infsh app run falai/flux-dev --input '{
-  "prompt": "Portrait photograph of a woman, shot on Kodak Portra 400 film, soft natural lighting, shallow depth of field, nostalgic mood, analog photography aesthetic"
-}'
-```
+**错误示例：**  
+“一只猫。”
 
-### Composition Control
+**正确示例：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "一只毛茸茸的橙色虎斑猫，绿色的眼睛，坐在一把复古皮革扶手椅上。"
+}`
 
-```bash
-infsh app run falai/flux-dev --input '{
-  "prompt": "Wide establishing shot of a cyberpunk city skyline at night, rule of thirds composition, neon signs in foreground, towering skyscrapers in background, rain-slicked streets"
-}'
-```
+---
 
-### Quality Keywords
+**提示示例：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "一张女性的肖像照片，使用柯达 Portra 400 胶片拍摄，柔和的自然光，浅景深，怀旧的氛围，模拟摄影风格。"
+}`
 
-```
-photorealistic, 8K, ultra detailed, sharp focus, professional,
-masterpiece, high quality, best quality, intricate details
-```
+---
 
-### Negative Prompts
+**提示示例：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "夜景中的赛博朋克城市天际线全景镜头，三分法构图，前景有霓虹灯，背景是高耸的摩天大楼，街道被雨水打湿。"
+}`
 
-```bash
-infsh app run falai/flux-dev --input '{
-  "prompt": "Professional headshot portrait, clean background",
-  "negative_prompt": "blurry, distorted, extra limbs, watermark, text, low quality, cartoon, anime"
-}'
-```
+---
 
-## Video Prompting
+**技术要求：**  
+- 真实感强  
+- 8K 分辨率  
+- 超高细节  
+- 清晰的焦点  
+- 专业品质  
 
-### Basic Structure
+---
 
-```
-[Shot Type] + [Subject] + [Action] + [Setting] + [Style]
-```
+**提示示例：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "专业的头部特写肖像，背景干净。"
+  "负面提示："  
+  "图像模糊、变形、有多余的肢体、水印、文字、低质量、卡通风格或动漫效果。"
+}`
 
-### Camera Movement
+---
 
-```bash
-infsh app run google/veo-3-1-fast --input '{
-  "prompt": "Slow tracking shot following a woman walking through a sunlit forest, golden hour lighting, shallow depth of field, cinematic, 4K"
-}'
-```
+**镜头类型** + **主题** + **动作** + **场景** + **风格**  
 
-### Action Description
-
-```bash
-infsh app run google/veo-3-1-fast --input '{
-  "prompt": "Close-up of hands kneading bread dough on a wooden surface, flour dust floating in morning light, slow motion, cozy baking aesthetic"
-}'
-```
+---
 
-### Temporal Keywords
+**提示示例：**  
+`infsh app run google/veo-3-1-fast --input '{
+  "prompt": "跟随一位女性在阳光照耀的森林中行走的慢动作镜头，黄金时刻的光线，浅景深，电影风格，4K 分辨率。"
+}`
 
-```
-slow motion, timelapse, real-time, smooth motion,
-continuous shot, quick cuts, frozen moment
-```
-
-## Advanced Techniques
-
-### System Prompts
-
-```bash
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "system": "You are a helpful coding assistant. Always provide code with comments. If you are unsure about something, say so rather than guessing.",
-  "prompt": "Write a Python function to validate email addresses using regex."
-}'
-```
-
-### Structured Output
-
-```bash
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Extract information from this text and return as JSON:\n\n\"John Smith, CEO of TechCorp, announced yesterday that the company raised $50 million in Series B funding. The round was led by Venture Partners.\"\n\nSchema:\n{\n  \"person\": string,\n  \"title\": string,\n  \"company\": string,\n  \"event\": string,\n  \"amount\": string,\n  \"investor\": string\n}"
-}'
-```
-
-### Iterative Refinement
-
-```bash
-# Start broad
-infsh app run falai/flux-dev --input '{
-  "prompt": "A castle on a hill"
-}'
-
-# Add specifics
-infsh app run falai/flux-dev --input '{
-  "prompt": "A medieval stone castle on a grassy hill"
-}'
-
-# Add style
-infsh app run falai/flux-dev --input '{
-  "prompt": "A medieval stone castle on a grassy hill, dramatic sunset sky, fantasy art style, epic composition"
-}'
-
-# Add technical
-infsh app run falai/flux-dev --input '{
-  "prompt": "A medieval stone castle on a grassy hill, dramatic sunset sky, fantasy art style by Greg Rutkowski, epic composition, 8K, highly detailed"
-}'
-```
-
-### Multi-Turn Reasoning
-
-```bash
-# First: analyze
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Analyze this business problem: Our e-commerce site has a 70% cart abandonment rate. List potential causes."
-}'
-
-# Second: prioritize
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "Given these causes of cart abandonment: [previous output], rank them by likely impact and ease of fixing. Format as a priority matrix."
-}'
-
-# Third: action plan
-infsh app run openrouter/claude-sonnet-45 --input '{
-  "prompt": "For the top 3 causes identified, provide specific A/B tests we can run to validate and fix each issue."
-}'
-```
+---
 
-## Model-Specific Tips
-
-### Claude
-
-- Excels at nuanced instructions
-- Responds well to role-playing
-- Good at following complex constraints
-- Prefers explicit output formats
-
-### GPT-4
-
-- Strong at code generation
-- Works well with examples
-- Good structured output
-- Responds to "let's think step by step"
-
-### FLUX
-
-- Detailed subject descriptions
-- Style references work well
-- Lighting keywords important
-- Negative prompts supported
-
-### Veo
-
-- Camera movement keywords
-- Cinematic language works well
-- Action descriptions important
-- Include temporal context
-
-## Common Mistakes
-
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Too vague | Unpredictable output | Add specifics |
-| Too long | Model loses focus | Prioritize key info |
-| Conflicting | Confuses model | Remove contradictions |
-| No format | Inconsistent output | Specify format |
-| No examples | Unclear expectations | Add few-shot |
-
-## Prompt Templates
-
-### Code Review
-
-```
-Review this [language] code for:
-1. Bugs and logic errors
-2. Security vulnerabilities
-3. Performance issues
-4. Code style/best practices
-
-Code:
-[code]
-
-For each issue found, provide:
-- Line number
-- Issue description
-- Severity (high/medium/low)
-- Suggested fix
-```
-
-### Content Writing
-
-```
-Write a [content type] about [topic].
-
-Audience: [target audience]
-Tone: [formal/casual/professional]
-Length: [word count]
-Key points to cover:
-1. [point 1]
-2. [point 2]
-3. [point 3]
-
-Include: [specific elements]
-Avoid: [things to exclude]
-```
-
-### Image Generation
-
-```
-[Subject with details], [setting/background], [lighting type],
-[art style or photography style], [composition], [quality keywords]
-```
-
-## Related Skills
-
-```bash
-# Video prompting guide
-npx skills add inference-sh/agent-skills@video-prompting-guide
-
-# LLM models
-npx skills add inference-sh/agent-skills@llm-models
-
-# Image generation
-npx skills add inference-sh/agent-skills@ai-image-generation
-
-# Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
-```
-
-Browse all apps: `infsh app list`
+**提示示例：**  
+`infsh app run google/veo-3-1-fast --input '{
+  "prompt": "手在木制表面上揉面团的特写镜头，面粉屑在晨光中飘浮，慢动作，温馨的烘焙氛围。"
+}`
+
+---
+
+**技术要求：**  
+- 慢动作  
+- 时间延时  
+- 实时效果  
+- 平稳的镜头切换  
+- 冻结关键瞬间  
+
+---
+
+**提示示例：**  
+`infsh app run openrouter/claude-sonnet-45 --input '{
+  "system": "你是一个乐于助人的编程助手。提供代码时请加上注释。如果你对某些内容不确定，请明确说明，而不是猜测。",
+  "prompt": "编写一个使用正则表达式验证电子邮件地址的 Python 函数。"
+}`
+
+---
+
+**提示示例：**  
+`infsh app run openrouter/claude-sonnet-45 --input '{
+  "prompt": "从这段文本中提取信息并返回 JSON 格式："
+  "John Smith, CEO of TechCorp, announced yesterday that the company raised $50 million in Series B funding. The round was led by Venture Partners."
+  "schema": {
+    "person": "字符串",
+    "title": "字符串",
+    "company": "字符串",
+    "event": "字符串",
+    "amount": "字符串",
+    "investor": "字符串"
+  }
+}`
+
+---
+
+**提示示例：**  
+**初始提示：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "一座位于山丘上的城堡。"
+}`
+
+**详细化提示：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "一座坐落在草坡上的中世纪石堡。"
+}`
+
+**添加风格：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "一座坐落在草坡上的中世纪石堡，戏剧性的日落天空，奇幻艺术风格，宏大的构图。"
+}`
+
+**增加技术细节：**  
+`infsh app run falai/flux-dev --input '{
+  "prompt": "一座坐落在草坡上的中世纪石堡，戏剧性的日落天空，由 Greg Rutkowski 设计的奇幻艺术风格，8K 分辨率，高度详细的画面。"
+}`
+
+---
+
+**提示示例：**  
+**分析问题：**  
+`infsh app run openrouter/claude-sonnet-45 --input '{
+  "prompt": "分析这个业务问题：我们的电子商务网站的购物车放弃率为 70%。列出可能的原因。"
+}`
+
+**优先级排序：**  
+`infsh app run openrouter/claude-sonnet-45 --input '{
+  "prompt": "根据这些购物车放弃的原因 [之前的输出]，按照影响程度和修复难易程度对它们进行排序。"
+}`
+
+**制定行动计划：**  
+`infsh app run openrouter/claude-sonnet-45 --input '{
+  "prompt": "对于排名前三的原因，提供具体的 A/B 测试来验证和修复每个问题。"
+}`
+
+---
+
+**代码审查：**  
+检查以下代码：**  
+1. 代码中的错误和逻辑问题  
+2. 安全漏洞  
+3. 性能问题  
+4. 代码风格和最佳实践  
+
+**代码审查内容：**  
+[代码]
+
+对于发现的每个问题，请提供：  
+- 问题所在的行号  
+- 问题描述  
+- 问题严重程度（高/中/低）  
+- 建议的修复方法  
+
+---
+
+**编写内容：**  
+**内容类型：** [具体内容类型]  
+**目标受众：** [目标读者群体]  
+**语气：** [正式/随意/专业]  
+**字数：** [所需字数]  
+**需要涵盖的关键点：**  
+1. [关键点 1]  
+2. [关键点 2]  
+3. [关键点 3]  
+**包含的元素：** [必须包含的元素]  
+**避免的内容：** [不应包含的元素]  
+
+---
+
+**其他功能：**  
+[相关功能列表]  
+- [功能描述]  
+
+---
+
+**视频提示指南：**  
+`npx skills add inference-sh/agent-skills@video-prompting-guide`  
+
+**大语言模型：**  
+`npx skills add inference-sh/agent-skills@llm-models`  
+
+**图像生成：**  
+`npx skills add inference-sh/agent-skills@ai-image-generation`  
+
+**完整平台技能：**  
+`npx skills add inference-sh/agent-skills@inference-sh`  
+
+**浏览所有应用程序：**  
+`infsh app list`

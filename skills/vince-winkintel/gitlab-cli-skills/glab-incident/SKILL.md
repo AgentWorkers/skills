@@ -1,11 +1,11 @@
 ---
 name: glab-incident
-description: Manage GitLab incidents for issue tracking and incident management. Use when creating incidents, managing incident response, or linking incidents to issues. Triggers on incident, incident management, create incident, incident response.
+description: 用于管理 GitLab 中的事件（incidents），以实现问题跟踪（issue tracking）和事件处理（incident management）的功能。适用于创建事件、管理事件响应（incident response），或将事件与问题（issues）关联起来。该功能会在事件发生、事件管理过程启动、事件被创建或事件响应开始时触发。
 ---
 
-# glab incident
+# glab 事件
 
-## Overview
+## 概述
 
 ```
 
@@ -35,12 +35,12 @@ description: Manage GitLab incidents for issue tracking and incident management.
     -R --repo                        Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab incident --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

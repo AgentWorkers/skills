@@ -1,7 +1,7 @@
 ---
 name: motion
 version: 1.0.0
-description: Complete Motion.dev documentation - modern animation library for React, JavaScript, and Vue (formerly Framer Motion)
+description: 完成 Motion.dev 的文档编写——这是一个专为 React、JavaScript 和 Vue 设计的现代动画库（前身为 Framer Motion）
 author: Leonardo Balland
 tags:
   - motion
@@ -24,27 +24,27 @@ read_when:
   - Migrating from Framer Motion to Motion
 ---
 
-# Motion.dev Documentation
+# Motion.dev 文档
 
-Motion is a modern animation library for React, JavaScript, and Vue. It's the evolution of Framer Motion, offering:
+Motion 是一个专为 React、JavaScript 和 Vue 设计的现代化动画库。它是 Framer Motion 的升级版本，具备以下特点：
 
-- **Tiny size**: Just 2.3kb for the mini HTML/SVG version
-- **High performance**: Hardware-accelerated animations
-- **Flexible**: Animate HTML, SVG, WebGL, and JavaScript objects
-- **Easy to use**: Intuitive API with smart defaults
-- **Spring physics**: Natural, kinetic animations
-- **Scroll animations**: Link values to scroll position
-- **Gestures**: Drag, hover, tap, and more
+- **体积小巧**：迷你 HTML/SVG 版本的体积仅为 2.3KB
+- **高性能**：支持硬件加速的动画效果
+- **灵活性**：可以动画化 HTML、SVG、WebGL 和 JavaScript 对象
+- **易于使用**：提供直观的 API 和智能的默认设置
+- **真实的物理效果**：实现自然、动态的动画效果
+- **滚动动画**：可以将动画效果与滚动位置关联起来
+- **手势支持**：支持拖拽、悬停、点击等多种手势操作
 
-## Quick Reference
+## 快速参考
 
-### Installation
+### 安装
 
 ```bash
 npm install motion
 ```
 
-### Basic Animation
+### 基本动画
 
 ```javascript
 import { animate } from "motion"
@@ -59,7 +59,7 @@ animate(element, { x: 100 }, { type: "spring", stiffness: 300 })
 animate("li", { opacity: 1 }, { delay: stagger(0.1) })
 ```
 
-### React
+### 在 React 中使用 Motion
 
 ```jsx
 import { motion } from "motion/react"
@@ -70,7 +70,7 @@ import { motion } from "motion/react"
 />
 ```
 
-### Scroll Animations
+### 滚动动画
 
 ```javascript
 import { scroll } from "motion"
@@ -78,22 +78,20 @@ import { scroll } from "motion"
 scroll(animate(".box", { scale: [1, 2, 1] }))
 ```
 
-## Documentation Structure
+## 文档结构
 
-- `quick-start.md` - Installation and first animation
-- More docs to be added...
+- `quick-start.md`：安装指南及第一个动画示例
+- 更多文档即将添加……
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- Implementing animations in web applications
-- Optimizing animation performance
-- Creating scroll-based effects
-- Building interactive UI with gestures
-- Migrating from Framer Motion to Motion
+- 在 Web 应用程序中实现动画效果
+- 优化动画性能
+- 创建基于滚动的交互式效果
+- 从 Framer Motion 迁移到 Motion
 
-## External Resources
+## 外部资源
 
-- Official site: https://motion.dev
-- GitHub: https://github.com/motiondivision/motion
-- Examples: https://motion.dev/examples
+- 官方网站：https://motion.dev
+- GitHub 仓库：https://github.com/motiondivision/motion
+- 示例代码：https://motion.dev/examples

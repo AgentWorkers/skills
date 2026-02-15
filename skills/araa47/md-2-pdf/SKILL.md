@@ -1,14 +1,14 @@
 ---
 name: md-to-pdf
-description: Convert markdown files to clean, formatted PDFs using reportlab
+description: 使用 reportlab 将 markdown 文件转换为格式整齐的 PDF 文件
 metadata: {"openclaw":{"emoji":"📄","requires":{"bins":["uv"]}}}
 ---
 
-# Markdown to PDF
+# 将 Markdown 文档转换为格式规范的 PDF 文件
 
-Convert markdown documents to professional, clean PDFs with proper formatting.
+本工具可将 Markdown 文档转换为专业、外观整洁的 PDF 文件，同时保持原有的格式。
 
-## Usage
+## 使用方法
 
 ```bash
 # Basic usage
@@ -22,38 +22,38 @@ uv run scripts/md-to-pdf.py input.md --output my-report.pdf
 uv run scripts/md-to-pdf.py input.md -v
 ```
 
-## Features
+## 主要功能
 
-- **Headers**: H1-H6 with hierarchical styling
-- **Text formatting**: Bold, italic, inline code
-- **Lists**: Bullet lists, numbered lists, task lists
-- **Code blocks**: Syntax highlighting with background
-- **Tables**: Full table support with headers
-- **Links**: Clickable hyperlinks
-- **Horizontal rules**: Visual section dividers
-- **YAML frontmatter**: Automatically skipped
-- **Special characters**: Emojis, Unicode symbols
-- **Page numbers**: Automatic footer with page numbers
-- **Professional styling**: Clean, readable output
+- **标题**：支持 H1 至 H6 级别的标题，具有层次化的显示效果
+- **文本格式**：支持加粗、斜体以及内联代码显示
+- **列表**：支持项目符号列表、编号列表和任务列表
+- **代码块**：代码块会自动高亮显示，并带有背景颜色
+- **表格**：支持带标题的完整表格格式
+- **链接**：链接可点击并跳转到指定网页
+- **水平分隔线**：用于划分文档的不同部分
+- **YAML 标头**：会自动被忽略
+- **特殊字符**：支持表情符号和 Unicode 符号
+- **页码**：PDF 文件底部会自动显示页码
+- **专业外观**：生成的 PDF 文件格式清晰、易于阅读
 
-## Options
+## 命令选项
 
-- `-o, --output`: Output PDF file path (default: input_filename.pdf)
-- `-v, --verbose`: Print detailed processing information
+- `-o, --output`：指定输出 PDF 文件的路径（默认为输入文件的名称）
+- `-v, --verbose`：打印详细的处理过程信息
 
-## Supported Markdown Elements
+## 支持的 Markdown 元素
 
-| Element | Syntax | Status |
-|---------|--------|--------|
-| Headers | `# H1` to `###### H6` | ✅ |
-| Bold | `**text**` or `__text__` | ✅ |
-| Italic | `*text*` or `_text_` | ✅ |
-| Inline code | `` `code` `` | ✅ |
-| Code blocks | ``` | ✅ |
-| Bullet lists | `- item` or `* item` | ✅ |
-| Numbered lists | `1. item` | ✅ |
-| Task lists | `- [x] done` | ✅ |
-| Tables | `| col | col |` | ✅ |
-| Links | `[text](url)` | ✅ |
-| Horizontal rules | `---` or `***` | ✅ |
-| Blockquotes | `> quote` | ✅ |
+| 元素        | 语法                                      | 支持情况       |
+|-------------|-----------------------------------------|-------------|
+| 标题         | `# H1` 至 `###### H6`                             | ✅            |
+| 加粗         | `**文本**` 或 `__文本__`                             | ✅            |
+| 斜体         | `*文本*` 或 `_文本_`                             | ✅            |
+| 内联代码       | ``` `代码` ``                             | ✅            |
+| 代码块        | ```                                      | ✅            |
+| 项目符号列表     | `- 条目` 或 `* 条目`                             | ✅            |
+| 编号列表     | `1. 条目`                                   | ✅            |
+| 任务列表     | `- [x] 已完成`                               | ✅            |
+| 表格         | `| 列1 | 列2 |`                               | ✅            |
+| 链接         | `[文本](网址)`                               | ✅            |
+| 水平分隔线     | `---` 或 `***`                               | ✅            |
+| 块引用       | `> 引用`                                   | ✅            |

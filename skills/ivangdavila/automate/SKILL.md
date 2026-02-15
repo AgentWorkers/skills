@@ -1,65 +1,63 @@
 ---
 name: Automate
-description: Identify tasks that waste tokens. Scripts don't hallucinate, don't cost per-run, and don't fail randomly. Spot automation opportunities and build them.
+description: 识别那些会浪费“令牌”（tokens）的任务。这些脚本不会产生错误（即不会“胡言乱语”），每次运行也不会产生额外成本，也不会随机失败。发现自动化的可能性，并将其实现出来。
 ---
 
-## Core Principle
+## 核心原则
 
-LLMs are expensive, slow, and probabilistic. Scripts are free, fast, and deterministic.
+大型语言模型（LLMs）成本高昂、运行速度慢且结果具有不确定性；而脚本则免费、运行速度快且结果可预测。
 
-Every time you do something twice that could be scripted, you're wasting:
-- **Tokens** — money burned on solved problems
-- **Time** — seconds/minutes vs milliseconds
-- **Reliability** — LLMs fail randomly, scripts fail predictably
+每当您遇到可以重复使用脚本来完成的任务时，您实际上是在浪费资源：
+- **Token**（用于支付LLM服务费用的资源）；
+- **时间**（脚本通常能快速完成任务，而LLM需要更多时间）；
+- **可靠性**（LLM可能会随机出错，而脚本则能稳定运行）。
 
-Check `signals.md` for detection patterns. Check `templates.md` for common script patterns.
-
----
-
-## The Automation Test
-
-Before doing any task, ask:
-
-1. **Is this deterministic?** Same input → same output every time?
-2. **Is this repetitive?** Will this happen again?
-3. **Is this rule-based?** Can I write down the exact steps?
-
-If yes to all three → **script it, don't LLM it.**
+请查阅`signals.md`以了解检测模式，同时参考`templates.md`以了解常见的脚本编写规范。
 
 ---
 
-## Script vs LLM Decision Matrix
+## 自动化测试
 
-| Task type | Script | LLM |
+在执行任何任务之前，请先思考以下问题：
+1. **这个任务的结果是否具有确定性？** 同样的输入是否每次都能得到相同的输出？
+2. **这个任务是否具有重复性？** 这个任务还会再次发生吗？
+3. **这个任务是否基于规则？** 我能否将具体的操作步骤写下来？
+
+如果这三个问题的答案都是“是”，那么**应该使用脚本，而不是依赖LLM**。
+
+---
+
+## 脚本与LLM的使用决策矩阵
+
+| 任务类型 | 脚本 | LLM |
 |-----------|--------|-----|
-| Format conversion (JSON↔YAML) | ✅ | ❌ |
-| Text transformation (regex) | ✅ | ❌ |
-| File operations (rename, move) | ✅ | ❌ |
-| Data validation | ✅ | ❌ |
-| API calls with fixed logic | ✅ | ❌ |
-| Git workflows | ✅ | ❌ |
-| Judgement calls | ❌ | ✅ |
-| Creative content | ❌ | ✅ |
-| Ambiguous inputs | ❌ | ✅ |
-| One-time unique tasks | ❌ | ✅ |
+| 格式转换（JSON ↔ YAML） | ✅ | ❌ |
+| 文本处理（正则表达式） | ✅ | ❌ |
+| 文件操作（重命名、移动） | ✅ | ❌ |
+| 数据验证 | ✅ | ❌ |
+| 具有固定逻辑的API调用 | ✅ | ❌ |
+| Git工作流程 | ✅ | ❌ |
+| 需要判断的任务 | ❌ | ✅ |
+| 创意内容生成 | ❌ | ✅ |
+| 输入信息不明确的情况 | ❌ | ✅ |
+| 一次性且独特的任务 | ❌ | ✅ |
 
 ---
 
-## Automation Triggers
+## 自动化触发条件
 
-When you notice yourself:
-
-- Doing the **same task twice** → script it
-- Writing **similar prompts repeatedly** → script the pattern
-- **Formatting output** the same way → script the formatter
-- **Validating data** with same rules → script the validator
-- **Calling APIs** with predictable logic → script the integration
+当您发现以下情况时，应考虑编写脚本：
+- **重复执行相同的任务**；
+- **反复编写类似的请求或提示**；
+- **以相同的方式格式化输出结果**；
+- **使用相同的规则进行数据验证**；
+- **执行具有可预测逻辑的API调用**。
 
 ---
 
-## Automation Proposal Format
+## 自动化提案格式
 
-When you spot an opportunity:
+当您发现可以自动化某项任务时，请按照以下格式编写提案：
 
 ```
 🔧 Automation opportunity
@@ -81,22 +79,21 @@ Should I write it?
 
 ---
 
-## Script Standards
+## 脚本编写标准
 
-When writing automation:
-
-1. **Single purpose** — one script, one job
-2. **Idempotent** — safe to run multiple times
-3. **Documented** — usage in comments at top
-4. **Logged** — output what you're doing
-5. **Fail loud** — exit codes, error messages
-6. **No secrets hardcoded** — env vars or keychain
+在编写自动化脚本时，请遵循以下原则：
+1. **单一用途**：每个脚本只用于完成一个特定的任务；
+2. **幂等性**：脚本可以安全地多次执行而不会产生副作用；
+3. **文档化**：在脚本开头添加使用说明；
+4. **记录执行过程**：输出脚本的实际执行内容；
+5. **明确错误处理**：设置明确的退出代码和错误信息；
+6. **避免硬编码敏感信息**：使用环境变量或密钥管理工具来存储敏感数据。
 
 ---
 
-## Tracking Automations
+## 自动化的跟踪与维护
 
-Document what you've built:
+请记录您所编写的自动化脚本，以便后续管理和优化：
 
 ```
 ### Active Scripts
@@ -111,26 +108,24 @@ Document what you've built:
 
 ---
 
-## The 3x Rule
+## “3次法则”
 
-If you do something **3 times**, it must become a script.
-
-- 1st time: Do it, note that it might repeat
-- 2nd time: Do it, flag as automation candidate  
-- 3rd time: Stop. Write the script first, then run it.
-
----
-
-## Anti-Patterns
-
-| Don't | Do instead |
-|-------|------------|
-| Re-prompt for same transformation | Write a script once |
-| Use LLM for data validation | Write validation rules |
-| Burn tokens on formatting | Use formatters (prettier, jq, etc.) |
-| Ask LLM to remember procedures | Document in scripts |
-| Solve same problem differently each time | Standardize with automation |
+如果您某项任务执行了**三次**，那么就应该将其转换为脚本：
+- 第一次执行时：记录下来，并意识到该任务可能会重复；
+- 第二次执行时：将其标记为自动化候选任务；
+- 第三次执行时：立即停止手动操作，先编写脚本，然后再运行脚本。
 
 ---
 
-*Every script written = permanent token savings. Compound your efficiency.*
+## 应避免的做法
+
+以下是一些应该避免的做法：
+- **对于相同的处理任务反复请求LLM**：只需编写一次脚本即可；
+- **使用LLM进行数据验证**：应该编写专门的验证规则；
+- **在格式化数据时浪费Token**：可以使用更高效的工具（如`jq`等）；
+- **依赖LLM来记住操作步骤**：应该将这些步骤记录在脚本中；
+- **每次都以不同的方式解决相同的问题**：应该通过自动化来实现标准化。
+
+---
+
+*每编写一个脚本，就相当于节省了一次Token的成本。通过持续优化自动化流程，您可以显著提高工作效率。*

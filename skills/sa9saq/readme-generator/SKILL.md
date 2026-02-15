@@ -1,19 +1,19 @@
 ---
-description: Auto-generate comprehensive README.md files by analyzing project structure and configuration.
+description: 通过分析项目结构和配置，自动生成全面的 README.md 文件。
 ---
 
-# README Generator
+# README 生成器
 
-Analyze a project directory and generate a complete, useful README.md.
+该工具会分析项目目录，并生成一份完整且实用的 README.md 文件。
 
-## Requirements
+## 使用要求
 
-- File system access to the target project
-- No API keys or external services needed
+- 需要具备对目标项目文件系统的访问权限
+- 不需要使用任何 API 密钥或外部服务
 
-## Instructions
+## 使用说明
 
-### Step 1: Scan the project
+### 第一步：扫描项目目录
 
 ```bash
 # Project structure (exclude noise)
@@ -32,12 +32,12 @@ ls LICENSE* LICENCE* 2>/dev/null
 ls src/index.* src/main.* main.* app.* cli.* 2>/dev/null
 ```
 
-### Step 2: Read key files (first 50 lines each)
-- Main entry point
-- Config files (tsconfig, pyproject, etc.)
-- Existing README (to preserve intent)
+### 第二步：读取关键文件（每个文件的前 50 行）
+- 主入口文件
+- 配置文件（如 `tsconfig`、`pyproject` 等）
+- 现有的 README 文件（以保留其编写意图）
 
-### Step 3: Generate README with this structure
+### 第三步：根据以下结构生成 README 文件
 
 ```markdown
 # Project Name
@@ -65,21 +65,21 @@ Clone, install, test, contribute steps.
 Detected license type.
 ```
 
-### Step 4: Save output
-- If no README.md exists → save as `README.md`
-- If README.md exists → save as `README.generated.md` and let user decide
-- Always ask before overwriting an existing README
+### 第四步：保存生成的结果
+- 如果项目中不存在 `README.md` 文件，则将其保存为 `README.md`。
+- 如果已经存在 `README.md` 文件，则将其保存为 `README.generated.md`，并让用户自行决定是否替换原有文件。
+- 在覆盖现有 README 文件之前，务必先询问用户是否同意。
 
-## Edge Cases
+## 特殊情况处理
 
-- **Monorepo**: Detect multiple package.json/go.mod files. Generate root README with links to sub-packages.
-- **Empty project**: Generate minimal README with project name and setup placeholder.
-- **Non-English comments**: Generate README in English regardless of code comments language.
-- **Private/internal projects**: Skip "Publishing" sections; focus on development setup.
+- **单仓库项目（Monorepo）**：检测到多个 `package.json` 或 `go.mod` 文件时，生成一个包含子包链接的根目录 README 文件。
+- **空项目**：生成一个包含项目名称和基本设置信息的简短 README 文件。
+- **项目中的注释语言非英语**：无论代码中的注释使用何种语言，生成的 README 文件都将以英语显示。
+- **私有/内部项目**：跳过 “发布”（Publishing）相关内容，重点介绍项目的开发环境设置。
 
-## Tips
+## 使用提示
 
-- **Don't fabricate**: Only document what actually exists in the project. Don't invent features.
-- **Be practical**: Installation and usage sections are the most valuable — prioritize them.
-- **Code examples**: Use actual file names and real commands from the project.
-- Adapt section depth to project complexity (small script → short README).
+- **如实记录**：仅记录项目中实际存在的内容，不要虚构功能。
+- **注重实用性**：安装和使用说明部分最为重要，应予以优先处理。
+- **使用真实示例**：使用项目中实际的文件名和命令。
+- 根据项目的复杂程度调整各部分的详细程度（简单脚本对应的 README 文件可以简短一些）。

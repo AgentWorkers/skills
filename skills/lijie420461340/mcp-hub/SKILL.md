@@ -1,6 +1,6 @@
 ---
 name: mcp-hub
-description: Access 1200+ AI Agent tools via Model Context Protocol (MCP)
+description: 通过模型上下文协议（Model Context Protocol, MCP）访问1200多种AI代理工具
 author: claude-office-skills
 version: "1.0"
 tags: ['mcp', 'ai-agent', 'tools', 'integration']
@@ -12,44 +12,44 @@ library:
   stars: 40k+
 ---
 
-# Mcp Hub Skill
+# Mcp Hub 技能
 
-## Overview
+## 概述
 
-This skill provides access to 1200+ MCP (Model Context Protocol) servers - standardized tools that extend AI capabilities. Connect Claude to filesystems, databases, APIs, and document processing tools.
+该技能提供了对 1200 多个 MCP（Model Context Protocol）服务器的访问权限，这些服务器是用于扩展 AI 功能的标准化工具。可以将 Claude 与文件系统、数据库、API 和文档处理工具连接起来。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to accomplish
-2. Provide any required input data or files
-3. I'll execute the appropriate operations
+1. 说明您想要完成的任务。
+2. 提供所需的输入数据或文件。
+3. 我将执行相应的操作。
 
-**Example prompts:**
-- "Access local filesystem to read/write documents"
-- "Query databases for data analysis"
-- "Integrate with GitHub, Slack, Google Drive"
-- "Run document processing tools"
+**示例提示：**
+- “访问本地文件系统以读写文档”
+- “查询数据库以进行分析”
+- “与 GitHub、Slack、Google Drive 集成”
+- “运行文档处理工具”
 
-## Domain Knowledge
+## 领域知识
 
 
-### MCP Architecture
+### MCP 架构
 
 ```
 Claude ←→ MCP Server ←→ External Resource
         (Protocol)      (Files, APIs, DBs)
 ```
 
-### Popular Document MCP Servers
+### 常用的 MCP 服务器
 
-| Server | Function | Stars |
+| 服务器 | 功能 | 星级 |
 |--------|----------|-------|
-| **filesystem** | Read/write local files | Official |
-| **google-drive** | Access Google Docs/Sheets | 5k+ |
-| **puppeteer** | Browser automation, PDF gen | 10k+ |
-| **sqlite** | Database queries | Official |
+| **filesystem** | 读写本地文件 | 官方提供 |
+| **google-drive** | 访问 Google Docs/Sheets | 5000 多个评分 |
+| **puppeteer** | 浏览器自动化、PDF 生成 | 10000 多个评分 |
+| **sqlite** | 数据库查询 | 官方提供 |
 
-### Configuration Example
+### 配置示例
 
 ```json
 {
@@ -70,14 +70,14 @@ Claude ←→ MCP Server ←→ External Resource
 }
 ```
 
-### MCP Tool Discovery
+### 查找 MCP 工具
 
-Browse available servers:
-- [mcp.run](https://mcp.run) - MCP marketplace
+可以浏览可用的服务器：
+- [mcp.run](https://mcp.run) - MCP 市场平台
 - [awesome-mcp-servers](https://github.com/wong2/awesome-mcp-servers)
 - [mcp-awesome.com](https://mcp-awesome.com)
 
-### Using MCP in Skills
+### 在技能中使用 MCP
 
 ```python
 # MCP tools become available to Claude automatically
@@ -90,21 +90,21 @@ Browse available servers:
 ```
 
 
-## Best Practices
+## 最佳实践
 
-1. **Only enable MCP servers you need (security)**
-2. **Use official servers when available**
-3. **Check server permissions before enabling**
-4. **Combine multiple servers for complex workflows**
+1. **仅启用所需的 MCP 服务器（出于安全考虑）**
+2. **在可能的情况下使用官方服务器**
+3. **在启用之前检查服务器权限**
+4. **结合多个服务器以完成复杂的工作流程**
 
-## Installation
+## 安装
 
 ```bash
 # Install required dependencies
 pip install python-docx openpyxl python-pptx reportlab jinja2
 ```
 
-## Resources
+## 资源
 
-- [MCP Servers Repository](https://github.com/modelcontextprotocol/servers)
-- [Claude Office Skills Hub](https://github.com/claude-office-skills/skills)
+- [MCP 服务器仓库](https://github.com/modelcontextprotocol/servers)
+- [Claude Office 技能中心](https://github.com/claude-office-skills/skills)

@@ -1,36 +1,37 @@
 ---
 name: go-concurrency
 model: standard
-description: Production Go concurrency patterns — goroutines, channels, sync primitives, context, worker pools, pipelines, and graceful shutdown. Use when building concurrent Go applications or debugging race conditions.
+description: Go语言的生产环境并发模式包括：goroutine（协程）、channel（通道）、同步原语（sync primitives）、context（上下文）、worker pool（工作线程池）、pipeline（流水线）以及优雅的程序关闭（graceful shutdown）。这些模式在构建并发Go应用程序或调试竞态条件（race conditions）时非常有用。
 ---
 
-# Go Concurrency Patterns
+# Go 并发模式
 
-Production patterns for Go concurrency including goroutines, channels, synchronization primitives, and context management.
+Go 并发的常用模式包括 goroutine（轻量级并发执行单元）、channel（用于goroutine之间的通信）、同步原语以及上下文管理。
 
-## When to Use
+## 使用场景
 
-- Building concurrent Go applications
-- Implementing worker pools and pipelines
-- Managing goroutine lifecycles and cancellation
-- Debugging race conditions
-- Implementing graceful shutdown
+- 构建并发的 Go 应用程序
+- 实现工作池和管道（pipeline）机制
+- 管理 goroutine 的生命周期和取消操作
+- 调试数据竞争（race condition）问题
+- 实现优雅的程序关闭（graceful shutdown）
 
-## Concurrency Primitives
+## 并发原语
 
-| Primitive         | Purpose                          | When to Use                         |
-| ----------------- | -------------------------------- | ----------------------------------- |
-| `goroutine`       | Lightweight concurrent execution | Any concurrent work                 |
-| `channel`         | Communication between goroutines | Passing data, signaling             |
-| `select`          | Multiplex channel operations     | Waiting on multiple channels        |
-| `sync.Mutex`      | Mutual exclusion                 | Protecting shared state             |
-| `sync.WaitGroup`  | Wait for goroutines to complete  | Coordinating goroutine completion   |
-| `context.Context` | Cancellation and deadlines       | Request-scoped lifecycle management |
-| `errgroup.Group`  | Concurrent tasks with errors     | Parallel work that can fail         |
+| 原语                          | 用途                                      | 使用场景                                      |
+| --------------------------- | -------------------------------------- | ---------------------------------------- |
+| `goroutine`       | 轻量级的并发执行单元                            | 所有需要并发处理的任务                         |
+| `channel`         | goroutine 之间的通信工具                          | 用于传递数据和发送信号                         |
+| `select`          | 多路复用 channel 操作                          | 等待多个 channel 的响应                         |
+| `sync.Mutex`      | 实现互斥锁（mutual exclusion）                    | 保护共享资源                             |
+| `sync.WaitGroup`     | 等待所有 goroutine 完成                         | 协调 goroutine 的执行顺序                         |
+| `context.Context`    | 提供取消和超时功能                            | 用于控制 goroutine 的生命周期                         |
+| `errgroup.Group`     | 处理可能出错的并发任务                          | 并发任务中的错误处理                         |
 
-**Go Concurrency Mantra:** Don't communicate by sharing memory; share memory by communicating.
+**Go 并发原则：**  
+“不要通过共享内存来实现通信；要通过通信来共享内存。”
 
-## Quick Start
+## 快速入门
 
 ```go
 func main() {
@@ -60,7 +61,7 @@ func main() {
 }
 ```
 
-## Pattern 1: Worker Pool
+## 模式 1：工作池（Worker Pool）
 
 ```go
 type Job struct {
@@ -119,7 +120,7 @@ func main() {
 }
 ```
 
-## Pattern 2: Fan-Out / Fan-In Pipeline
+## 模式 2：扇出/扇入管道（Fan-Out/Fan-In Pipeline）
 
 ```go
 // Stage 1: Generate values
@@ -190,7 +191,7 @@ func main() {
 }
 ```
 
-## Pattern 3: errgroup with Cancellation
+## 模式 3：带取消功能的 errgroup
 
 ```go
 import "golang.org/x/sync/errgroup"
@@ -242,7 +243,7 @@ func fetchWithLimit(ctx context.Context, urls []string) ([]string, error) {
 }
 ```
 
-## Pattern 4: Bounded Concurrency (Semaphore)
+## 模式 4：有界并发（使用信号量，Semaphore）
 
 ```go
 import "golang.org/x/sync/semaphore"
@@ -290,7 +291,7 @@ func (s Semaphore) Acquire()             { s <- struct{}{} }
 func (s Semaphore) Release()             { <-s }
 ```
 
-## Pattern 5: Graceful Shutdown
+## 模式 5：优雅关闭（Graceful Shutdown）
 
 ```go
 func main() {
@@ -349,7 +350,7 @@ func (s *Server) Shutdown(timeout time.Duration) {
 }
 ```
 
-## Pattern 6: Concurrent Map
+## 模式 6：并发映射（Concurrent Map）
 
 ```go
 // sync.Map: optimized for read-heavy workloads with stable keys
@@ -406,11 +407,11 @@ func (m *ShardedMap) Set(key string, value any) {
 }
 ```
 
-**When to use which:**
-- `sync.Map` — Few keys, many reads, keys added once and rarely deleted
-- `ShardedMap` — Many keys, frequent writes, need predictable performance
+**选择合适的并发数据结构：**
+- `sync.Map`：适用于键数量较少、读取操作较多、键仅添加一次且很少删除的场景。
+- `ShardedMap`：适用于键数量较多、写入操作频繁、需要可预测性能的场景。
 
-## Select Patterns
+## 模式选择指南
 
 ```go
 // Timeout
@@ -445,7 +446,7 @@ for {
 }
 ```
 
-## Race Detection
+## 数据竞争检测（Race Detection）
 
 ```bash
 go test -race ./...     # Tests with race detector
@@ -453,28 +454,26 @@ go build -race .        # Build with race detector
 go run -race main.go    # Run with race detector
 ```
 
-## Best Practices
+## 最佳实践
 
-**Do:**
-- Use `context.Context` for cancellation and deadlines on every goroutine
-- Close channels from the sender side only
-- Use `errgroup` for concurrent operations that return errors
-- Buffer channels when count is known upfront
-- Prefer channels over mutexes for coordination
-- Always run tests with `-race`
+- 在每个 goroutine 中使用 `context.Context` 来处理取消和超时逻辑。
+- 仅从发送方关闭 channel。
+- 对于可能返回错误的并发操作，使用 `errgroup` 来统一处理错误。
+- 当已知 channel 的使用量时，使用缓冲区来接收数据。
+- 在需要协调多个 goroutine 时，优先使用 channel 而不是 mutex。
+- 在进行测试时，务必启用 `-race` 标志。
 
-**Don't:**
-- Leak goroutines — every goroutine must have an exit path
-- Close a channel from the receiver — causes panic
-- Use `time.Sleep` for synchronization — use proper primitives
-- Ignore `ctx.Done()` in long-running goroutines
-- Share memory without synchronization — use channels or mutexes
+**避免的做法：**
+- **不要让 goroutine 无终止路径**——每个 goroutine 都必须有退出机制。
+- **不要从接收方关闭 channel**——这会导致程序 panic。
+- **不要使用 `time.Sleep` 来实现同步**——应使用专门的同步原语。
+- **不要忽略 `ctx.Done()` 的调用**——在长时间运行的 goroutine 中，确保它被正确调用。
+- **不要在没有同步机制的情况下共享内存**——应使用 channel 或 mutex 来保证数据安全。
 
-## NEVER Do
-
-- **NEVER close a channel from the receiver** — Only the sender should close; receivers panic on closed channels
-- **NEVER send on a closed channel** — Causes panic; design so sender controls close
-- **NEVER use unbounded goroutine spawning** — Use worker pools or semaphores for bounded concurrency
-- **NEVER ignore the `-race` flag in testing** — Data races are silent bugs that corrupt state
-- **NEVER pass pointers to loop variables into goroutines** — Capture the value or use index closure pattern
-- **NEVER use `time.Sleep` as synchronization** — Use channels, WaitGroups, or context
+**绝对禁止的做法：**
+- **绝对不要从接收方关闭 channel**——只能由发送方关闭 channel；否则接收方会收到 panic。
+- **绝对不要向已关闭的 channel 发送数据**——这会导致 panic；应让发送方控制 channel 的关闭。
+- **绝对不要无限制地创建新的 goroutine**——对于有界并发场景，应使用工作池或信号量。
+- **绝对不要在测试中忽略 `-race` 标志**——数据竞争会悄悄破坏程序状态。
+- **绝对不要将循环变量的指针传递给 goroutine**——应捕获变量的值或使用闭包（closure）来传递数据。
+- **绝对不要使用 `time.Sleep` 来实现同步**——应使用 channel、`sync.WaitGroup` 或 `context` 来完成同步操作。

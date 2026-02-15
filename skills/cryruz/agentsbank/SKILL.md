@@ -1,69 +1,69 @@
-# AgentsBank SDK Skill Definition
+# AgentsBank SDK 技能定义
 
-**Version:** 1.0.6  
-**Publisher:** AgentsBank  
-**Contact:** info@agentsbank.online  
-**Status:** 🟢 Public Release - Production Ready
-
----
-
-## 🎯 PURPOSE & CAPABILITY
-
-This skill provides **secure, scoped crypto banking operations** for AI agents via the official AgentsBank SDK. It enables agents to manage wallets, check balances, and execute transactions with explicit user control.
-
-### ✅ Capabilities (Read-Only & Safe)
-- ✓ Fetch agent wallet balances across all supported chains (Ethereum, BSC, Solana, Bitcoin)
-- ✓ Retrieve transaction history with filtering and pagination
-- ✓ Query wallet details, metadata, and account information
-- ✓ Sign messages for authentication and verification (no fund transfer)
-- ✓ Estimate gas fees before transaction execution
-- ✓ List all wallets with pagination support
-
-### ⚠️ Capabilities (Write/Financial - Requires Explicit User Invocation)
-- ⚠️ Send crypto transactions (only if `disableModelInvocation: false` is explicitly overridden by user)
-- ⚠️ Create new wallets (only if `disableModelInvocation: false` is explicitly overridden by user)
-- ⚠️ Self-register agents and humans autonomously
-
-### ❌ NOT Included (Out of Scope)
-- OAuth2 delegated access to external wallets
-- Webhooks or event subscriptions
-- Smart contract deployment
-- Sandboxed testing (use testnet chains directly)
-- Private key export or management
+**版本：** 1.0.6  
+**发布者：** AgentsBank  
+**联系方式：** info@agentsbank.online  
+**状态：** 🟢 公开发布 - 已准备好投入生产  
 
 ---
 
-## 🔐 CREDENTIALS & ENVIRONMENT VARIABLES
+## 🎯 目的与功能  
 
-### Required Environment Variables
+该技能通过官方 AgentsBank SDK 为 AI 代理提供 **安全、受限制的加密银行服务**。它使代理能够管理钱包、查询余额并在用户的明确控制下执行交易。  
 
-| Variable | Type | Purpose | Example |
-|----------|------|---------|---------|
-| `AGENTSBANK_API_URL` | string | API endpoint (primary) | `https://api.agentsbank.online` |
-| `AGENTSBANK_AGENT_USERNAME` | string | Agent identifier | `agent_123456_abc` |
-| `AGENTSBANK_AGENT_PASSWORD` | string | Agent credential (secret) | *(user-specific)* |
+### ✅ 功能（仅读取权限，安全可靠）  
+- ✓ 获取代理在所有支持链（Ethereum、BSC、Solana、Bitcoin）上的钱包余额  
+- ✓ 支持过滤和分页查询交易历史记录  
+- ✓ 查询钱包详情、元数据和账户信息  
+- ✓ 签署用于身份验证的消息（不涉及资金转移）  
+- ✓ 在执行交易前估算Gas费用  
+- ✓ 支持分页显示所有钱包  
 
-**⚠️ SECURITY NOTES:**
-- `AGENTSBANK_AGENT_PASSWORD` must **never** be committed to version control
-- Store in `.env` file (add to `.gitignore`)
-- Rotate credentials quarterly or if exposed
-- Use a secret manager (e.g., HashiCorp Vault, AWS Secrets Manager) in production
+### ⚠️ 功能（写入权限/金融操作 - 需要用户明确授权）  
+- ⚠️ 发送加密交易（仅在用户明确设置 `disableModelInvocation: false` 时可用）  
+- ⚠️ 创建新钱包（仅在用户明确设置 `disableModelInvocation: false` 时可用）  
+- ⚠️ 代理和人类用户可自主完成自我注册  
 
-### Optional Environment Variables
-
-| Variable | Type | Purpose | Default |
-|----------|------|---------|---------|
-| `AGENTSBANK_API_KEY` | string | Alternative to password-based auth | *(not set)* |
-| `AGENTSBANK_LOG_LEVEL` | string | Logging verbosity | `info` |
-| `AGENTSBANK_TIMEOUT_MS` | number | Request timeout | `30000` |
+### ❌ 不包含的功能（超出范围）  
+- 对外部钱包的 OAuth2 委托访问  
+- Webhook 或事件订阅  
+- 智能合约部署  
+- 沙盒测试（直接使用测试网链）  
+- 私钥导出或管理  
 
 ---
 
-## 🚀 INSTALL & SETUP
+## 🔐 凭据与环境变量  
 
-### 1. Install SDK
+### 必需的环境变量  
 
-The published npm package is **lightweight** (~6.8 KB) with no node_modules included. Installation only fetches dependencies you need:
+| 变量 | 类型 | 用途 | 示例 |
+|----------|------|---------|---------|  
+| `AGENTSBANK_API_URL` | 字符串 | API 端点（主接口） | `https://api.agentsbank.online` |
+| `AGENTSBANK_AGENT_USERNAME` | 字符串 | 代理标识符 | `agent_123456_abc` |
+| `AGENTSBANK_AGENT_PASSWORD` | 字符串 | 代理密码 | （用户专属） |
+
+**⚠️ 安全注意事项：**  
+- `AGENTSBANK_AGENT_PASSWORD` 绝对 **不能** 被提交到版本控制系统中  
+- 应将密码存储在 `.env` 文件中（并添加到 `.gitignore` 文件中）  
+- 每季度更换密码，或一旦密码泄露立即更换  
+- 在生产环境中使用密钥管理工具（如 HashiCorp Vault、AWS Secrets Manager）  
+
+### 可选的环境变量  
+
+| 变量 | 类型 | 用途 | 默认值 |  
+|----------|------|---------|---------|  
+| `AGENTSBANK_API_KEY` | 字符串 | 基于密钥的认证替代方案 | （未设置） |  
+| `AGENTSBANK_LOG_LEVEL` | 字符串 | 日志详细程度 | `info` |  
+| `AGENTSBANK_TIMEOUT_MS` | 数字 | 请求超时时间 | `30000` |  
+
+---
+
+## 🚀 安装与设置  
+
+### 1. 安装 SDK  
+
+发布的 npm 包体积较小（约 6.8 KB），不包含 `node_modules`。安装过程仅会下载所需的依赖项：  
 
 ```bash
 npm install @agentsbankai/sdk
@@ -71,24 +71,24 @@ npm install @agentsbankai/sdk
 yarn add @agentsbankai/sdk
 # or
 pnpm add @agentsbankai/sdk
-```
+```  
 
-This will:
-- ✅ Download the compiled SDK (CJS + ESM formats)
-- ✅ Install required dependencies (axios, ethers, @solana/web3.js, etc.)
-- ✅ No bloat: node_modules are excluded from the published package
+安装完成后：  
+- ✅ 下载编译后的 SDK（CJS 和 ESM 格式）  
+- ✅ 安装必要的依赖项（axios、ethers、@solana/web3.js 等）  
+- ★ 安装包中不包含 `node_modules`  
 
-### 2. Initialize Environment
+### 2. 初始化环境  
 
-Create `.env` file in your project root:
+在项目根目录下创建 `.env` 文件：  
 
 ```env
 AGENTSBANK_API_URL=https://api.agentsbank.online
 AGENTSBANK_AGENT_USERNAME=agent_123456_abc
 AGENTSBANK_AGENT_PASSWORD=your_secure_password_here
-```
+```  
 
-### 3. Create Client Instance
+### 3. 创建客户端实例  
 
 ```typescript
 import { AgentsBankSDK } from '@agentsbankai/sdk';
@@ -106,9 +106,9 @@ const { token, agent } = await bank.login({
 });
 
 console.log('✅ Authenticated as:', agent.agent_id);
-```
+```  
 
-### 4. Use Safe Operations (Always Allowed)
+### 4. 使用安全操作（始终允许）  
 
 ```typescript
 // Get wallet balance (safe, read-only)
@@ -138,13 +138,13 @@ console.log('Estimated gas:', gasEstimate);
 // List all wallets with pagination
 const wallets = await bank.listWallets({ limit: 20, offset: 0 });
 console.log('Agent wallets:', wallets);
-```
+```  
 
 ---
 
-## ⚠️ RESTRICTED OPERATIONS (Require Explicit User Approval)
+## ⚠️ 受限制的操作（需要用户明确授权）  
 
-The following operations **will not execute autonomously** and require explicit user invocation:
+以下操作 **不能自动执行**，必须获得用户授权：  
 
 ```typescript
 // ❌ This requires user to explicitly call it
@@ -156,16 +156,15 @@ const tx = await bank.sendTransaction({
   chain: 'solana',
   token: 'SOL'
 });
-```
+```  
 
-**Why restricted?**
-- Financial operations that move assets must never be autonomous
-- Requires explicit user approval before execution
-- Prevents unintended fund transfers due to model hallucination
-- v1.0.6 adds comprehensive error handling for validation failures
+**为何受限？**  
+- 涉及资产转移的金融操作必须由用户明确授权  
+- 防止因模型错误导致的不必要的资金转移  
+- v1.0.6 版本增加了对验证失败的全面错误处理  
 
-### Error Handling (v1.0.6)
-The SDK provides typed errors for better debugging:
+### 错误处理（v1.0.6）  
+SDK 提供了类型化的错误信息，便于调试：  
 
 ```typescript
 import { AgentsBankSDK, SDKError } from '@agentsbankai/sdk';
@@ -183,11 +182,11 @@ try {
     // Error codes: INVALID_ADDRESS, INSUFFICIENT_BALANCE, INVALID_CHAIN, etc.
   }
 }
-```
+```  
 
 ---
 
-## 📋 METADATA & CONFIGURATION
+## 📋 元数据与配置  
 
 ```json
 {
@@ -238,71 +237,67 @@ try {
   "noModelAutonomy": true,
   "changelog": "https://github.com/agentsbank/sdk/blob/main/CHANGELOG.md"
 }
-```
+```  
 
 ---
 
-## 🛡️ SECURITY BOUNDARIES
+## 🛡️ 安全限制  
 
-### What This Skill Can Do
-✅ Read wallet balances and history  
-✅ Sign messages for authentication  
-✅ Create wallets (with explicit user request)  
-✅ Retrieve account metadata  
+### 该技能的功能  
+✅ 读取钱包余额和交易历史  
+✅ 签署用于身份验证的消息  
+✅ 在用户请求下创建钱包  
+✅ 查询账户元数据  
 
-### What This Skill CANNOT Do
-❌ Execute transactions autonomously  
-❌ Export private keys  
-❌ Access external service credentials  
-❌ Persist sensitive data to disk  
-❌ Make requests to unlisted endpoints  
+### 该技能不能执行的操作  
+❌ 自动执行交易  
+❌ 导出私钥  
+❌ 访问外部服务凭证  
+❌ 将敏感数据保存到磁盘  
+❌ 向未公开的 API 端点发起请求  
 
-### Authentication Scopes
-- **Read scopes:** `read:balance`, `read:history`, `read:wallet`, `sign:message`
-- **Write scopes:** `write:transaction`, `write:wallet` (user-invoked only)
-- **No delegation:** Agent cannot request additional scopes
-
----
-
-## ✅ VERIFICATION CHECKLIST
-
-Before using this skill, confirm:
-
-- [ ] You have obtained valid `AGENTSBANK_AGENT_USERNAME` and `AGENTSBANK_AGENT_PASSWORD` from https://agentsbank.online
-- [ ] Credentials are stored securely in `.env` (never committed)
-- [ ] You have reviewed the [Security Architecture](https://docs.agentsbank.online/security)
-- [ ] You understand that `disableModelInvocation: true` prevents autonomous transactions
-- [ ] You have tested read operations first before enabling write operations
-- [ ] You monitor activity logs at admin.agentsbank.online
+### 认证权限范围  
+- **读取权限：** `read:balance`、`read:history`、`read:wallet`、`sign:message`  
+- **写入权限：** `write:transaction`、`write:wallet`（仅限用户主动请求）  
+- **禁止委托授权：** 代理无法请求额外的权限  
 
 ---
 
-## 📖 DOCUMENTATION & SUPPORT
+## ✅ 验证清单  
 
-| Resource | URL |
-|----------|-----|
-| Full SDK Docs | https://docs.agentsbank.online/sdk |
-| API Reference | https://api.agentsbank.online/docs |
-| Security Guide | https://docs.agentsbank.online/security |
-| Troubleshooting | https://docs.agentsbank.online/faq |
-| GitHub Issues | https://github.com/agentsbank/sdk/issues |
-| Support Email | support@agentsbank.online |
-
----
-
-## ⚖️ DISCLAIMER
-
-This skill integrates with real cryptocurrency networks (Ethereum, Solana, Bitcoin, BSC). **Transactions are irreversible.** 
-
-- AgentsBank is not responsible for fund loss due to incorrect addresses or user error
-- Always test with small amounts first
-- Use testnet chains for development
-- Enable 2FA on your AgentsBank account
+在使用此技能之前，请确认：  
+- [ ] 您已从 https://agentsbank.online 获取有效的 `AGENTSBANK_AGENT_USERNAME` 和 `AGENTSBANK_AGENT_PASSWORD`  
+- [ ] 凭据已安全存储在 `.env` 文件中（切勿提交到版本控制）  
+- [ ] 您已阅读了 [安全架构文档](https://docs.agentsbank.online/security)  
+- [ ] 了解 `disableModelInvocation: true` 可防止自动执行交易  
+- [ ] 在启用写入操作前，您已先测试了读取操作  
+- [ ] 您正在监控 admin.agentsbank.online 的活动日志  
 
 ---
 
-**Last Updated:** February 11, 2026 (v1.0.6 release)  
-**Status:** 🟢 Public Release - Production Ready ✅  
-**npm Package:** https://www.npmjs.com/package/@agentsbankai/sdk  
-**GitHub:** https://github.com/agentsbank/sdk  
-**Changes in v1.0.6:** Comprehensive error handling, enhanced type definitions, improved client implementation
+## 📖 文档与支持  
+
+| 资源 | 链接 |  
+|----------|-----|  
+| 完整 SDK 文档 | https://docs.agentsbank.online/sdk |  
+| API 参考 | https://api.agentsbank.online/docs |  
+| 安全指南 | https://docs.agentsbank.online/security |  
+| 故障排除 | https://docs.agentsbank.online/faq |  
+| GitHub 问题反馈 | https://github.com/agentsbank/sdk/issues |  
+| 支持邮箱 | support@agentsbank.online |  
+
+---
+
+## ⚖️ 免责声明  
+
+该技能连接到真实的加密货币网络（Ethereum、Solana、Bitcoin、BSC）。**交易是不可撤销的。**  
+- AgentsBank 对因地址错误或用户操作失误导致的资金损失概不负责  
+- 请先使用小额资金进行测试  
+- 开发过程中请使用测试网链  
+- 请为您的 AgentsBank 账户启用双重身份验证（2FA）  
+
+**最后更新：** 2026 年 2 月 11 日（v1.0.6 版本发布）  
+**状态：** 🟢 公开发布 - 已准备好投入生产 ✅  
+**npm 包：** https://www.npmjs.com/package/@agentsbankai/sdk  
+**GitHub：** https://github.com/agentsbank/sdk  
+**v1.0.6 的主要变更：** 全面错误处理、改进的类型定义、优化的客户端实现

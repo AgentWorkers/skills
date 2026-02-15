@@ -1,6 +1,6 @@
 ---
 name: revenuecat
-description: RevenueCat metrics, customer data, and documentation search. Use when querying subscription analytics, MRR, churn, customers, or RevenueCat docs.
+description: RevenueCat指标、客户数据以及文档搜索功能。适用于查询订阅分析数据（MRR）、客户流失率（churn）、客户信息，或RevenueCat的相关文档。
 license: MIT
 metadata:
   {
@@ -15,46 +15,46 @@ metadata:
 
 # RevenueCat
 
-Query RevenueCat metrics and search documentation.
+用于查询 RevenueCat 的各项指标并搜索相关文档。
 
-## Config
+## 配置
 
-Set `RC_API_KEY` environment variable, which should be a v2 secret API key.
+请设置 `RC_API_KEY` 环境变量，该变量应为 v2 版本的秘密 API 密钥。
 
-## Context
+## 使用说明
 
-Query the RevenueCat API (`GET /projects`) to get information about the project you have access to. Your RevenueCat API key allows access to a single project. Use the project ID in subsequent API calls.
+通过查询 RevenueCat API（`GET /projects`）来获取您有权访问的项目信息。您的 RevenueCat API 密钥仅允许您访问一个项目。在后续的 API 调用中，请使用该项目 ID。
 
-## API Access
+## API 访问方式
 
 ```bash
 {baseDir}/scripts/rc-api.sh <endpoint>
 ```
 
-Example: `{baseDir}/scripts/rc-api.sh /projects` to list projects.
+示例：运行 `{baseDir}/scripts/rc-api.sh /projects` 命令可列出所有项目。
 
-## Local API Reference
+## 本地 API 参考文档
 
-Start with `{baseDir}/references/api-v2.md` for auth, pagination, and common patterns. Then load the domain file you need:
+有关身份验证、分页和常用操作模式的详细信息，请参考 `{baseDir}/references/api-v2.md`。然后根据需要加载相应的领域文档：
 
-| Domain             | File                               | Covers                                                                                                   |
+| 领域             | 文档文件                               | 所涵盖的内容                                                                                                   |
 | ------------------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Customers          | `references/customers.md`          | CRUD, attributes, aliases, entitlements, subscriptions, purchases, invoices, virtual currencies, actions |
-| Subscriptions      | `references/subscriptions.md`      | List, get, transactions, cancel, refund, management URL                                                  |
-| Products           | `references/products.md`           | CRUD, create in store, test prices                                                                       |
-| Offerings          | `references/offerings.md`          | Offerings, packages, package products                                                                    |
-| Entitlements       | `references/entitlements.md`       | CRUD, attach/detach products                                                                             |
-| Purchases          | `references/purchases.md`          | List, get, refund, entitlements                                                                          |
-| Projects           | `references/projects.md`           | Projects, apps, API keys, StoreKit config                                                                |
-| Metrics            | `references/metrics.md`            | Overview metrics, charts, chart options                                                                  |
-| Paywalls           | `references/paywalls.md`           | Paywall creation                                                                                         |
-| Integrations       | `references/integrations.md`       | Integrations CRUD                                                                                        |
-| Virtual Currencies | `references/virtual-currencies.md` | Virtual currencies CRUD                                                                                  |
-| Error Handling     | `references/error-handling.md`     | Error handling                                                                                           |
-| Rate Limits        | `references/rate-limits.md`        | Rate limits                                                                                              |
+| 客户              | `references/customers.md`          | 客户信息（CRUD 操作、属性、别名、权限、订阅、购买记录、发票、虚拟货币等）                         |
+| 订阅              | `references/subscriptions.md`      | 订阅信息（列表、获取、交易记录、取消、退款等）                                      |
+| 产品              | `references/products.md`           | 产品信息（CRUD 操作、在应用内创建产品、测试价格等）                         |
+| 产品套餐          | `references/offerings.md`          | 产品套餐信息                                              |
+| 权限              | `references/entitlements.md`       | 权限管理（创建/关联产品等）                                         |
+| 购买记录          | `references/purchases.md`          | 购买记录（列表、获取、退款等）                                          |
+| 项目              | `references/projects.md`           | 项目信息（应用、API 密钥、StoreKit 配置等）                                   |
+| 指标              | `references/metrics.md`            | 指标概览、图表展示及相关设置                                      |
+| 支付墙            | `references/paywalls.md`           | 支付墙的创建与配置                                        |
+| 集成              | `references/integrations.md`       | 集成功能（CRUD 操作）                                        |
+| 虚拟货币            | `references/virtual-currencies.md`     | 虚拟货币的创建与管理                                        |
+| 错误处理            | `references/error-handling.md`     | 错误处理机制                                            |
+| 速率限制            | `references/rate-limits.md`        | API 使用速率限制设置                                        |
 
-Only load the reference file relevant to the current task — don't load them all.
+请仅加载与当前任务相关的文档文件，无需加载所有文档。
 
-## Remote Documentation Search
+## 远程文档搜索
 
-The RevenueCat documentation is available at https://www.revenuecat.com/docs. Use https://www.revenuecat.com/docs/llms.txt and /sitemap.xml as a guide to the content that is available. Add .md to the end of a documentation URL to get the markdown version of the page.
+RevenueCat 的官方文档可访问：https://www.revenuecat.com/docs。您可以使用 `https://www.revenuecat.com/docs/llms.txt` 和 `/sitemap.xml` 了解可用的文档内容。在文档 URL 的末尾添加 `.md` 扩展名即可获取该文档的 Markdown 版本。

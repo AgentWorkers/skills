@@ -1,30 +1,29 @@
 ---
 name: farcaster-agent
-description: Create Farcaster accounts and post casts autonomously. Official skill from the Farcaster team.
+description: 创建 Farcaster 账户并自动发布直播内容。这是 Farcaster 团队提供的官方技能。
 metadata: {"openclaw":{"emoji":"🟣","requires":{"bins":["node","npm"],"env":[]},"install":[{"id":"npm","kind":"shell","command":"cd {baseDir}/.. && npm install","label":"Install dependencies"}]}}
 ---
 
 # Farcaster Agent
 
-Official skill from the Farcaster team. Create and manage a Farcaster account autonomously. Register a new Farcaster identity (FID), add signing keys, set up a profile with username, and post casts to the network.
+这是Farcaster团队提供的官方技能，用于自主创建和管理Farcaster账户。您可以注册一个新的Farcaster身份（FID），添加签名密钥，设置包含用户名的个人资料，并将内容发布到Farcaster网络中。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- You need to create a Farcaster account from scratch
-- You want to post casts (messages) to Farcaster
-- You need to set up a profile with username, bio, and profile picture
-- You want autonomous presence on the Farcaster social network
+- 当您需要从零开始创建Farcaster账户时。
+- 当您希望向Farcaster发布内容（消息）时。
+- 当您需要设置包含用户名、个人简介和头像的个人资料时。
+- 当您希望在Farcaster社交网络上自主展示自己的存在时。
 
-## Prerequisites
+## 先决条件
 
-You need approximately **$1 of ETH or USDC** on any major chain (Ethereum, Optimism, Base, Arbitrum, or Polygon). The skill handles bridging and swapping automatically.
+您需要在任意主要区块链（Ethereum、Optimism、Base、Arbitrum或Polygon）上拥有大约1美元的ETH或USDC。该技能会自动处理资金的桥接和转换操作。
 
-## Complete Flow
+## 完整流程
 
-### Step 1: Generate Wallet and Request Funding
+### 第1步：生成钱包并请求资金
 
-If you don't have a funded wallet, create one first:
+如果您还没有已充值的钱包，请先创建一个：
 
 ```javascript
 const { Wallet } = require('ethers');
@@ -34,37 +33,37 @@ console.log('Address:', wallet.address);
 console.log('Private Key:', wallet.privateKey);
 ```
 
-**Ask your human:** "I've created a wallet. Please send ~$1 of ETH or USDC to `<address>` on any of these chains: Ethereum, Optimism, Base, Arbitrum, or Polygon. Let me know when done."
+**请告知相关人员：**“我已经创建了一个钱包。请将约1美元的ETH或USDC发送到以下链上的地址：<address>。完成后请通知我。”
 
-**Save the private key securely** - you'll need it for all subsequent steps.
+**请妥善保管私钥**——后续所有步骤都需要使用它。
 
-### Step 2: Run Auto-Setup
+### 第2步：运行自动设置流程
 
-Once funded, run the complete setup:
+资金到账后，运行自动设置流程：
 
 ```bash
 cd {baseDir}/..
 PRIVATE_KEY=0x... node src/auto-setup.js "Your first cast text here"
 ```
 
-This will:
-1. Detect which chain has funds (ETH or USDC)
-2. Bridge/swap to get ETH on Optimism and USDC on Base
-3. Register your FID (Farcaster ID)
-4. Add a signer key
-5. Wait for hub synchronization
-6. Post your first cast
-7. **Automatically save credentials** to persistent storage
+该流程将：
+1. 检测您在哪个链上有资金（ETH或USDC）。
+2. 将资金桥接到Optimism链，并将USDC转换到Base链。
+3. 注册您的FID（Farcaster ID）。
+4. 添加签名密钥。
+5. 等待Farcaster Hub的同步完成。
+6. 发布您的第一条内容。
+7. **自动将凭据保存到持久存储中**。
 
-### Step 3: Credentials are Saved Automatically
+### 凭据的保存方式
 
-Credentials are automatically saved to:
-- `~/.openclaw/farcaster-credentials.json` (if OpenClaw is installed)
-- `./credentials.json` (fallback)
+凭据会自动保存到以下位置：
+- `~/.openclaw/farcaster-credentials.json`（如果安装了OpenClaw）
+- `./credentials.json`（备用路径）
 
-**Security Warning:** Credentials are stored as **plain text JSON**. Anyone with access to these files can control the wallet funds and Farcaster account. For production use, implement your own secure storage.
+**安全提示：** 凭据以纯文本JSON格式保存。任何能够访问这些文件的人都可以控制钱包中的资金和Farcaster账户。在生产环境中，请使用更安全的存储方式。
 
-You can verify and manage credentials:
+您可以通过以下命令验证和管理凭据：
 
 ```bash
 cd {baseDir}/..
@@ -79,14 +78,15 @@ node src/credentials.js get
 node src/credentials.js path
 ```
 
-To disable auto-save, use `--no-save`:
+要禁用自动保存功能，请使用`--no-save`选项：
+
 ```bash
 PRIVATE_KEY=0x... node src/auto-setup.js "Your cast" --no-save
 ```
 
-## Posting Casts
+## 发布内容
 
-To post additional casts, load credentials from storage:
+要发布更多内容，请从存储中加载凭据：
 
 ```javascript
 const { postCast, loadCredentials } = require('{baseDir}/../src');
@@ -104,23 +104,23 @@ const { hash } = await postCast({
 console.log('Cast URL: https://farcaster.xyz/~/conversations/' + hash);
 ```
 
-Or via CLI with environment variables:
+或者通过命令行接口（CLI）使用环境变量来加载凭据：
 
 ```bash
 cd {baseDir}/..
 PRIVATE_KEY=0x... SIGNER_PRIVATE_KEY=... FID=123 node src/post-cast.js "Your cast content"
 ```
 
-## Setting Up Profile
+## 设置个人资料
 
-To set username, display name, bio, and profile picture:
+要设置用户名、显示名称、个人简介和头像，请执行以下操作：
 
 ```bash
 cd {baseDir}/..
 PRIVATE_KEY=0x... SIGNER_PRIVATE_KEY=... FID=123 npm run profile myusername "Display Name" "My bio" "https://example.com/pfp.png"
 ```
 
-Or programmatically:
+或者通过编程方式来实现：
 
 ```javascript
 const { setupFullProfile } = require('{baseDir}/../src');
@@ -136,75 +136,66 @@ await setupFullProfile({
 });
 ```
 
-### Fname (Username) Requirements
+### 用户名（fname）的要求：
+- 仅允许使用小写字母、数字和连字符。
+- 不能以连字符开头。
+- 长度为1到16个字符。
+- 每个账户只能设置一个用户名。
+- 每28天只能更改一次用户名。
 
-- Lowercase letters, numbers, and hyphens only
-- Cannot start with a hyphen
-- 1-16 characters
-- One fname per account
-- Can only change once every 28 days
+### 头像选项：
+- 可以使用任何公开可访问的HTTPS图片链接作为头像：
+  - **DiceBear**（生成的头像）：`https://api.dicebear.com/7.x/bottts/png?seed=yourname`
+  - IPFS托管的图片
+  - 任何公开的图片链接
 
-### Profile Picture Options
+## 费用明细
 
-For PFP, use any publicly accessible HTTPS image URL:
-- **DiceBear** (generated avatars): `https://api.dicebear.com/7.x/bottts/png?seed=yourname`
-- IPFS-hosted images
-- Any public image URL
+| 操作            | 费用            |
+|-----------------|-----------------|
+| FID注册        | 约0.20美元           |
+| 添加签名密钥       | 约0.05美元           |
+| 资金桥接        | 约0.10-0.20美元         |
+| 每次API调用       | 0.001美元           |
+| **最低总费用**      | 约0.50美元           |
 
-## Cost Breakdown
+建议预算1美元，以应对可能的重试次数和网络费用波动。
 
-| Operation | Cost |
-|-----------|------|
-| FID Registration | ~$0.20 |
-| Add Signer | ~$0.05 |
-| Bridging | ~$0.10-0.20 |
-| Each API call | $0.001 |
-| **Total minimum** | **~$0.50** |
+## API接口
 
-Budget $1 to have buffer for retries and gas fluctuations.
+### Neynar Hub API（`https://hub-api.neynar.com`）
+| 接口           | 方法             | 描述                 |
+|-----------------|-----------------|-------------------|
+| `/v1/submitMessage`    | POST             | 发布内容、更新个人资料（需要包含x402支付头信息） |
+| `/v1/onChainIdRegistryEventByAddress?address=<addr>` | GET             | 检查指定地址的FID是否已同步       |
+| `/v1/onChainSignersByFid?fid=<fid>` | GET             | 检查指定FID的签名密钥是否已同步       |
 
-## API Endpoints
+### Neynar REST API（`https://api.neynar.com`）
+| 接口           | 方法             | 描述                 |
+|-----------------|-----------------|-------------------|
+| `/v2/farcaster/cast?identifier=<hash>&type=hash` | GET             | 验证内容是否已在网络中发布       |
 
-### Neynar Hub API (`https://hub-api.neynar.com`)
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/v1/submitMessage` | POST | Submit casts, profile updates (requires x402 payment header) |
-| `/v1/onChainIdRegistryEventByAddress?address=<addr>` | GET | Check if FID is synced for address |
-| `/v1/onChainSignersByFid?fid=<fid>` | GET | Check if signer keys are synced |
+### Farcaster用户名注册服务（`https://fnames.farcaster.xyz`）
+| 接口           | 方法             | 描述                 |
+|-----------------|-----------------|-------------------|
+| `/transfers`       | POST             | 注册或转移用户名（需要EIP-712签名）     |
+| `/transfers/current?name=<fname>` | GET             | 检查用户名的可用性         |
 
-### Neynar REST API (`https://api.neynar.com`)
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/v2/farcaster/cast?identifier=<hash>&type=hash` | GET | Verify cast exists on network |
+### x402支付方式
+- **地址：** `0xA6a8736f18f383f1cc2d938576933E5eA7Df01A1`
+- **费用：** 每次API调用0.001美元（基于Base链）
+- **支付头信息：** `X-PAYMENT`，附带Base链上的EIP-3009格式的`transferWithAuthorization`签名
 
-### Farcaster Fname Registry (`https://fnames.farcaster.xyz`)
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/transfers` | POST | Register or transfer an fname (requires EIP-712 signature) |
-| `/transfers/current?name=<fname>` | GET | Check fname availability (404 = available) |
+## 常见错误及解决方法：
 
-### x402 Payment
-- **Address:** `0xA6a8736f18f383f1cc2d938576933E5eA7Df01A1`
-- **Cost:** 0.001 USDC per API call (on Base)
-- **Header:** `X-PAYMENT` with base64-encoded EIP-3009 `transferWithAuthorization` signature
+- **“invalid hash”**：可能是因为使用了旧版本的库。解决方法：运行`npm install @farcaster/hub-nodejs@latest`。
+- **“unknown fid”**：可能是因为Farcaster Hub尚未同步您的注册信息。解决方法：等待30-60秒后重试。
+- **添加签名密钥时交易失败**：可能是元数据编码问题。解决方法：代码已经使用了正确的`SignedKeyRequestValidator.encodeMetadata()`方法。
+- **“fname is not registered for fid”**：可能是因为Farcaster Hub尚未同步您的用户名注册信息。解决方法：等待30-60秒（代码会自动处理）。
 
-## Common Errors
+## 手动操作（如果自动设置失败）
 
-### "invalid hash"
-Cause: Old library version. Fix: Run `npm install @farcaster/hub-nodejs@latest`
-
-### "unknown fid"
-Cause: Hub hasn't synced your registration yet. Fix: Wait 30-60 seconds and retry.
-
-### Transaction reverts when adding signer
-Cause: Metadata encoding issue. Fix: The code already uses the correct `SignedKeyRequestValidator.encodeMetadata()` method.
-
-### "fname is not registered for fid"
-Cause: Hub hasn't synced your fname registration. Fix: Wait 30-60 seconds (the code handles this automatically).
-
-## Manual Step-by-Step (If Auto-Setup Fails)
-
-If auto-setup fails partway through, you can run individual steps:
+如果自动设置过程中遇到问题，您可以单独执行上述步骤：
 
 ```bash
 cd {baseDir}/..
@@ -225,9 +216,9 @@ PRIVATE_KEY=0x... SIGNER_PRIVATE_KEY=... FID=123 node src/post-cast.js "Hello!"
 PRIVATE_KEY=0x... SIGNER_PRIVATE_KEY=... FID=123 npm run profile username "Name" "Bio" "pfp-url"
 ```
 
-## Programmatic API
+## 程序化API使用
 
-All functions are available for import:
+所有相关功能都可以通过编程方式导入：
 
 ```javascript
 const {
@@ -261,7 +252,7 @@ const {
 } = require('{baseDir}/../src');
 ```
 
-## Example: Full Autonomous Flow
+## 示例：完整的自主操作流程
 
 ```javascript
 const { Wallet } = require('ethers');
@@ -292,8 +283,8 @@ await setupFullProfile({
 console.log('Profile: https://farcaster.xyz/myagent');
 ```
 
-## Source Code
+## 源代码
 
-The complete implementation is at: https://github.com/rishavmukherji/farcaster-agent
+完整实现代码位于：https://github.com/rishavmukherji/farcaster-agent
 
-For detailed technical documentation, see the AGENT_GUIDE.md in that repository.
+有关详细的技术文档，请参阅该仓库中的AGENT_GUIDE.md文件。

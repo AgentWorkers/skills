@@ -1,15 +1,14 @@
 ---
 name: feature-specification
 model: reasoning
-description: Convert persona docs into detailed feature specifications with acceptance criteria. Use when translating user needs into implementable specs, writing user stories, defining acceptance criteria, or preparing features for development.
+description: 将角色文档（persona documents）转换为详细的特性规范（feature specifications），并附上验收标准（acceptance criteria）。这种转换方法适用于将用户需求（user needs）转化为可实现的规范、编写用户故事（user stories）、定义验收标准，或为开发准备特性（features）。
 ---
 
-# Feature Specification (Meta-Skill)
+# 功能规范（元技能）
 
-Bridge persona documentation and development. This skill translates user needs, pain points, and journeys identified in persona docs into structured, implementable feature specifications with clear acceptance criteria.
+该技能负责将人物文档（persona documents）与开发工作进行对接。它将人物文档中识别出的用户需求、痛点以及使用流程转化为结构化、可实施的特性规范，并明确指定验收标准。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,30 +19,30 @@ npx clawhub@latest install feature-specification
 
 ---
 
-## Purpose
+## 目的
 
-Persona docs define *who* and *why*. Feature specs define *what* and *how well*. This skill closes the gap:
+人物文档定义了“谁”以及“为什么需要某个功能”。而特性规范则明确了“需要实现什么”以及“实现的质量标准”。该技能的作用在于：
 
-- Extracts actionable features from persona pain points and journeys
-- Structures requirements so developers know exactly what to build
-- Defines acceptance criteria so QA knows exactly what to verify
-- Prevents scope ambiguity before a single line of code is written
-
----
-
-## When to Use
-
-- After persona docs exist (`docs/PERSONA.md` or `docs/personas/`)
-- Before development begins on a new feature or product
-- When a feature request lacks clear acceptance criteria
-- When stakeholders disagree on what "done" means
-- When converting user feedback into development work
+- 从人物文档中提取出可操作的特性需求；
+- 对需求进行结构化处理，让开发人员清楚知道需要开发什么；
+- 明确验收标准，以便质量保证（QA）人员知道需要验证什么；
+- 在编写任何代码之前，避免项目范围的模糊性。
 
 ---
 
-## Feature Spec Template
+## 适用场景
 
-Use this structure for every feature specification. Place specs in `docs/specs/` or `docs/features/`.
+- 在人物文档（`docs/PERSONA.md` 或 `docs/personas/`）编写完成后；
+- 在开始新功能或产品的开发之前；
+- 当功能需求缺乏明确的验收标准时；
+- 当利益相关者对“完成标准”存在分歧时；
+- 当需要将用户反馈转化为开发任务时。
+
+---
+
+## 特性规范模板
+
+请使用以下结构来编写每个特性规范。将规范文件保存在 `docs/specs/` 或 `docs/features/` 目录下。
 
 ```markdown
 # Feature: [Feature Name]
@@ -109,34 +108,34 @@ the problem. 2-4 sentences. No implementation details.]
 
 ---
 
-## Writing Effective User Stories
+## 编写有效的用户故事
 
-User stories connect persona needs to developer tasks. Apply the INVEST criteria:
+用户故事将人物需求与开发任务联系起来。请遵循 INVEST 原则：
 
-| Criterion | Meaning | Test Question |
+| 标准 | 含义 | 测试问题 |
 |-----------|--------------------------------------|-------------------------------------------|
-| Independent | No ordering dependency on others | Can this be built and released alone? |
-| Negotiable | Details can be discussed | Is this a conversation starter, not a contract? |
-| Valuable | Delivers value to the persona | Would the persona care about this? |
-| Estimable | Team can estimate effort | Is the scope clear enough to size? |
-| Small | Fits in a single iteration | Can this ship in one sprint? |
-| Testable | Clear pass/fail verification | Can QA write a test for this? |
+| 独立性（Independent） | 不依赖于其他功能 | 这个功能可以独立构建并发布吗？ |
+| 可协商性（Negotiable） | 细节可以讨论 | 这只是一个讨论的起点，而不是不可更改的契约吗？ |
+| 价值性（Valuable） | 能为人物带来实际价值 | 这个功能对人物来说重要吗？ |
+| 可估算性（Estimable） | 团队能够估算工作量 | 功能范围是否足够明确，以便进行估算？ |
+| 小规模性（Small） | 可以在一个开发周期内完成 | 这个功能可以在一个冲刺中实现吗？ |
+| 可测试性（Testable） | 有明确的通过/失败标准 | 质量保证人员能为这个功能编写测试用例吗？ |
 
-### Good vs Bad User Stories
+### 优秀用户故事与糟糕用户故事的对比
 
-| Bad | Why It's Bad | Good |
-|-----|-------------|------|
-| "Users can log in" | No persona, no benefit | "As a returning customer, I want to log in with my email, so that I can access my order history" |
-| "Make it fast" | Vague, untestable | "As a mobile user on 3G, I want the product list to load in under 2s, so that I don't abandon the page" |
-| "Add admin panel" | Solution-first, no problem | "As a store manager, I want to update product prices without developer help, so that I can respond to market changes daily" |
-| "Handle errors" | No specificity | "As a checkout user, I want clear feedback when my payment fails, so that I know whether to retry or use a different card" |
-| "Implement caching" | Implementation detail, not a story | "As a repeat visitor, I want previously viewed pages to load instantly, so that browsing feels responsive" |
+| 拙劣的用户故事 | 缺点 | 优秀的用户故事 |
+|---------|------------------|-------------------------|
+| “用户可以登录” | 没有明确的人物角色，也没有实际价值 | “作为回头客，我希望能够使用我的电子邮件登录，以便查看我的订单历史” |
+| “加快加载速度” | 描述模糊，无法测试 | “作为使用 3G 网络的移动用户，我希望产品列表能在 2 秒内加载完毕，以免我离开页面” |
+| “添加管理员面板” | 先提出解决方案，而非明确需求 | “作为店长，我希望能够在没有开发人员帮助的情况下更新产品价格，以便及时响应市场变化” |
+| “处理错误” | 没有具体细节 | “作为结账用户，我希望在支付失败时能得到明确的反馈，以便知道是应该重试还是使用其他支付方式” |
+| “实现缓存” | 只提到了实现细节，而非具体需求 | “作为经常访问该网站的用户，我希望之前浏览过的页面能够立即加载，以提升浏览体验” |
 
 ---
 
-## Acceptance Criteria Patterns
+## 验收标准模板
 
-### Pattern 1: Happy Path
+### 模式 1：理想使用流程（Happy Path）
 
 ```gherkin
 Given a logged-in customer with items in their cart
@@ -144,7 +143,7 @@ When they click "Checkout"
 Then they are taken to the payment page with their cart summary visible
 ```
 
-### Pattern 2: Boundary Conditions
+### 模式 2：边界条件（Boundary Conditions）
 
 ```gherkin
 Given a cart with 100 items (maximum allowed)
@@ -153,7 +152,7 @@ Then they see "Cart limit reached — remove an item to add a new one"
 And the item is NOT added to the cart
 ```
 
-### Pattern 3: Error Cases
+### 模式 3：错误处理（Error Cases）
 
 ```gherkin
 Given a user submitting the registration form
@@ -163,7 +162,7 @@ And the form is NOT submitted
 And focus moves to the email field
 ```
 
-### Pattern 4: State Transitions
+### 模式 4：状态转换（State Transitions）
 
 ```gherkin
 Given an order with status "Processing"
@@ -173,7 +172,7 @@ And the customer receives a shipping confirmation email within 5 minutes
 And the tracking number is visible on the order detail page
 ```
 
-### Pattern 5: Negative / Security
+### 模式 5：安全性考虑（Security Considerations）
 
 ```gherkin
 Given a user who is NOT the account owner
@@ -184,67 +183,67 @@ And the access attempt is logged
 
 ---
 
-## Priority Framework
+## 优先级框架
 
-Apply MoSCoW prioritization, anchored to persona impact:
+采用 MoSCoW 优先级评估方法，根据功能对人物角色的影响来决定优先级：
 
-| Priority | Label | Definition | Persona Alignment |
-|----------|---------|-----------------------------------------------|------------------------------------------|
-| P0 | Must | Product is unusable without this | Blocks the persona's primary goal |
-| P1 | Should | Significant value, painful to defer | Addresses a top-3 pain point |
-| P2 | Could | Nice to have, enhances experience | Improves a secondary journey |
-| P3 | Won't | Explicitly deferred (this release) | Low-frequency need or niche scenario |
+| 优先级 | 标签 | 定义 | 与人物角色的关联 |
+|---------|---------|-----------------------------------------------|------------------------------------------|
+| P0（Must） | 必须实现 | 没有这个功能，产品将无法使用 | 阻碍人物角色的主要目标 |
+| P1（Should） | 应该实现 | 具有重要价值，延迟实现会造成不便 | 解决前三大痛点 |
+| P2（Could） | 可以实现 | 提升用户体验，但非必需 | 改善次要的使用流程 |
+| P3（Won’t） | 明确决定不在当前版本中实现 | 需求频率较低或属于特定场景 |
 
-**Prioritization process:**
+**优先级确定流程：**
 
-1. List all candidate features
-2. Map each to a persona pain point or journey step
-3. Assign MoSCoW based on persona impact, not technical interest
-4. Validate: Do all P0s together form a usable product for the target persona?
-5. Cut scope until P0s are achievable in the timeline
-
----
-
-## Specification Anti-Patterns
-
-| Anti-Pattern | Example | Fix |
-|-------------------------------|------------------------------------------|--------------------------------------------------|
-| Vague requirement | "System should be user-friendly" | Define measurable criteria: "Task completion in < 3 clicks" |
-| Missing edge cases | Only specifying the happy path | Add boundary, error, and concurrent-use scenarios |
-| No acceptance criteria | "Implement search" | Add Given/When/Then for each scenario |
-| Solution masquerading as need | "Use Redis for caching" | State the need: "Repeat queries return in < 50ms" |
-| Missing personas | "Users can export data" | Specify which persona and why they export |
-| Unbounded scope | "Support all file formats" | List exact formats: "PDF, CSV, XLSX" |
-| Implicit assumptions | Assuming auth exists without stating it | List all dependencies explicitly |
+1. 列出所有候选功能；
+2. 将每个功能与人物角色的痛点或使用流程步骤对应起来；
+3. 根据功能对人物角色的影响，使用 MoSCoW 原则进行优先级排序；
+4. 验证：所有 P0 级别的功能加在一起后，能否构成一个对目标人物角色有用的产品？
+5. 调整功能范围，直到所有 P0 级别的功能都能在预定时间内实现。
 
 ---
 
-## Integration with Workflow
+## 规范编写中的常见错误
 
-Feature specs connect to the broader development process:
-
-1. **Persona docs** (`docs/PERSONA.md`) — Source of truth for user needs
-2. **Feature specs** (`docs/specs/`) — This skill's output; the development contract
-3. **Task creation** — Each spec becomes one or more development tasks
-4. **Implementation** — Developers reference the spec for scope and criteria
-5. **Testing** — QA derives test cases directly from acceptance criteria
-6. **Review** — PR reviews check that acceptance criteria are met
-
-When using with the `/new-feature` command or similar workflows:
-
-- Read the relevant persona doc first
-- Generate the spec using this template
-- Validate acceptance criteria cover happy path, errors, and edge cases
-- Confirm priority with stakeholders before development begins
+| 错误类型 | 例子 | 修正方法 |
+|-------------------|-----------------------------------|--------------------------------------------------|
+| 需求描述模糊 | “系统应该用户友好” | 明确可衡量的标准：“任务完成时间应在 3 次点击内” |
+| 未考虑边界情况 | 只描述了理想使用流程 | 需要补充边界条件、错误处理以及多用户同时使用的场景 |
+| 缺少验收标准 | “实现搜索功能” | 为每个使用场景明确给出具体条件（例如：在什么情况下、使用什么方法、达到什么结果） |
+| 将解决方案误认为是需求 | “使用 Redis 进行缓存” | 明确需求：“重复查询的响应时间应在 50 毫秒内” |
+| 未指定相关人物角色 | “用户可以导出数据” | 明确指出是哪些人物角色需要导出数据以及导出的目的 |
+| 范围界定不明确 | “支持所有文件格式” | 列出具体的文件格式（例如：PDF、CSV、XLSX） |
+| 未经确认的假设 | 假设某些功能（如身份验证）已经存在 | 明确列出所有依赖的系统、API、功能及数据来源 |
 
 ---
 
-## NEVER Do
+## 与工作流程的集成
 
-1. **NEVER write a spec without referencing a persona** — every feature exists for a user
-2. **NEVER skip acceptance criteria** — "obvious" requirements cause the most bugs
-3. **NEVER use vague qualifiers as requirements** — "fast", "easy", "intuitive" are not testable
-4. **NEVER combine multiple features in one spec** — one spec, one feature, one clear scope
-5. **NEVER specify implementation details in user stories** — describe the *what*, not the *how*
-6. **NEVER mark a spec as Approved without edge cases documented** — happy paths are the easy part
-7. **NEVER assume dependencies are obvious** — list every system, API, feature, and data source the spec relies on
+特性规范与更广泛的开发流程紧密关联：
+
+1. **人物文档**（`docs/PERSONA.md`）——用户需求的权威来源；
+2. **特性规范**（`docs/specs/`）——该技能的输出结果，也是开发工作的依据；
+3. **任务创建**——每个特性规范会转化为一个或多个开发任务；
+4. **实现阶段**——开发人员根据规范来确定功能范围和验收标准；
+5. **测试阶段**——质量保证人员根据验收标准编写测试用例；
+6. **评审阶段**——代码审查时需确认验收标准是否得到满足。
+
+在使用 `/new-feature` 命令或其他类似工作流程时，请遵循以下步骤：
+
+- 首先阅读相关的人物文档；
+- 使用该模板生成特性规范；
+- 确保验收标准涵盖了理想使用流程、错误处理以及边界情况；
+- 在开始开发之前，与利益相关者确认功能优先级。
+
+---
+
+## 绝对禁止的行为：
+
+1. **绝不要在没有参考人物文档的情况下编写特性规范**——每个功能都是为满足用户需求而存在的；
+2. **绝不要忽略验收标准**——看似“显而易见”的需求往往会导致最多的错误；
+3. **绝不要使用模糊的描述来定义需求**——“快速”、“简单”、“直观”等描述无法用于测试；
+4. **绝不要将多个功能合并到一个规范中**——每个规范应只对应一个功能，并明确其范围；
+5. **绝不要在用户故事中描述实现细节**——用户故事应只描述功能需求，而非实现方式；
+6. **绝不要在未记录边界情况的情况下就将规范标记为“已批准”**——理想使用流程只是实现过程中的简单部分；
+7. **绝不要想当然地假设依赖关系**——必须明确列出规范所依赖的所有系统、API、功能及数据来源。

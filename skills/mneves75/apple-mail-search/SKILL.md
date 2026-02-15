@@ -1,15 +1,15 @@
 ---
 name: apple-mail-search
-description: Fast Apple Mail search via SQLite on macOS. Search emails by subject, sender, date, attachments - results in ~50ms vs 8+ minutes with AppleScript. Use when asked to find, search, or list emails.
+description: 在 macOS 上，可以通过 SQLite 快速搜索 Apple Mail 中的邮件。支持按主题、发件人、日期或附件进行搜索；搜索速度约为 50 毫秒，而使用 AppleScript 时则需要 8 分钟以上。当需要查找、搜索或列出邮件时，可以使用此方法。
 homepage: https://github.com/steipete/clawdbot
 metadata: {"clawdbot":{"emoji":"📬","os":["darwin"],"requires":{"bins":["sqlite3"]}}}
 ---
 
-# Apple Mail Search
+# Apple Mail 搜索
 
-Search Apple Mail.app emails instantly via SQLite. ~50ms vs 8+ minutes with AppleScript.
+通过 SQLite 可以即时搜索 Apple Mail.app 中的电子邮件。搜索速度约为 50 毫秒，而使用 AppleScript 则需要 8 分钟以上。
 
-## Installation
+## 安装
 
 ```bash
 # Copy mail-search to your PATH
@@ -17,7 +17,7 @@ cp mail-search /usr/local/bin/
 chmod +x /usr/local/bin/mail-search
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 mail-search subject "invoice"           # Search subjects
@@ -33,7 +33,7 @@ mail-search open 12345                  # Open email by ID
 mail-search stats                       # Database statistics
 ```
 
-## Options
+## 选项
 
 ```
 -n, --limit N    Max results (default: 20)
@@ -43,7 +43,7 @@ mail-search stats                       # Database statistics
 --db PATH        Override database path
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Find bank statements from last month
@@ -59,35 +59,35 @@ mail-search sender "@bankofamerica.com" -n 100 | grep -i statement
 mail-search recent 30 --csv > recent_emails.csv
 ```
 
-## Why This Exists
+## 该工具的必要性
 
-| Method | Time for 130k emails |
+| 方法 | 搜索 130,000 封电子邮件的时间 |
 |--------|---------------------|
-| AppleScript iteration | 8+ minutes |
-| Spotlight/mdfind | **Broken since Big Sur** |
-| SQLite (this tool) | ~50ms |
+| AppleScript | 8 分钟以上 |
+| Spotlight/mdfind | 自 macOS Big Sur 之后不再可用 |
+| SQLite（本工具） | 约 50 毫秒 |
 
-Apple removed the emlx Spotlight importer in macOS Big Sur. This tool queries the `Envelope Index` SQLite database directly.
+Apple 在 macOS Big Sur 中移除了用于导入 .emlx 文件的 Spotlight 功能。本工具直接查询 `Envelope Index` SQLite 数据库。
 
-## Technical Details
+## 技术细节
 
-**Database:** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index`
+**数据库位置：** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index`
 
-**Key tables:**
-- `messages` - Email metadata (dates, flags, FKs)
-- `subjects` - Subject lines
-- `addresses` - Email addresses and display names
-- `recipients` - TO/CC mappings
-- `attachments` - Attachment filenames
+**主要表格：**
+- `messages`：电子邮件元数据（日期、标记、外键）
+- `subjects`：邮件主题行
+- `addresses`：电子邮件地址和显示名称
+- `recipients`：收件人/抄送人信息
+- `attachments`：附件文件名
 
-**Limitations:**
-- Read-only (cannot compose/send)
-- Metadata only (bodies in .emlx files)
-- Mail.app only (not Outlook, etc.)
+**限制：**
+- 仅支持读取操作（无法创建或发送邮件）
+- 仅包含元数据（.emlx 文件中的邮件正文不可访问）
+- 仅适用于 Apple Mail.app（不支持 Outlook 等其他邮件客户端）
 
-## Advanced: Raw SQL
+## 高级用法：原始 SQL 查询
 
-For custom queries, use sqlite3 directly:
+如需自定义查询，可以直接使用 sqlite3：
 
 ```bash
 sqlite3 -header -column ~/Library/Mail/V10/MailData/Envelope\ Index "
@@ -101,6 +101,6 @@ LIMIT 20;
 "
 ```
 
-## License
+## 许可证**
 
-MIT
+MIT 许可证

@@ -1,59 +1,59 @@
 ---
 name: switch-modes
-description: Switch between AI models dynamically to optimize costs and performance. Use when the user says mode commands like "eco mode", "balanced mode", "smart mode", or "max mode", or when they want to check their current mode with "/modes status" or configure modes with "/modes setup".
+description: 动态切换AI模型以优化成本和性能。当用户输入如“节能模式”、“平衡模式”、“智能模式”或“最高性能模式”等指令时，系统会自动切换相应的模式；用户也可以通过“/modes status”查看当前模式的状态，或使用“/modes setup”来配置模式设置。
 license: MIT
 metadata:
   author: serudda
   version: "1.0.0"
 ---
 
-# Switch Modes
+# 切换模式
 
-Dynamically switch between AI models to optimize costs and performance.
+动态切换AI模型，以优化成本和性能。
 
-## When to Use This Skill
+## 何时使用此功能
 
-Activate this skill when the user mentions:
+当用户提及以下内容时，激活此功能：
 
-- Mode switching commands: `eco mode`, `balanced mode`, `smart mode`, `max mode`
-- Status check: `/modes status`
-- Configuration: `/modes setup`
+- 模式切换命令：`eco mode`、`balanced mode`、`smart mode`、`max mode`
+- 状态检查：`/modes status`
+- 配置：`/modes setup`
 
-## How It Works
+## 工作原理
 
-The skill manages 4 predefined modes, each mapped to a specific model:
+该功能管理4种预定义的模式，每种模式对应一个特定的AI模型：
 
-- **eco** → Cheapest model (for summaries, quick questions)
-- **balanced** → Daily driver model (for general work)
-- **smart** → Powerful model (for complex reasoning)
-- **max** → Most powerful model (for critical tasks)
+- **eco** → 最经济的模型（适用于摘要生成、简单问答）
+- **balanced** → 适用于日常工作的模型
+- **smart** → 适用于复杂推理的模型
+- **max** → 最强大的模型（适用于关键任务）
 
-Configuration is stored in `~/.openclaw/workspace/switch-modes.json`.
+配置信息存储在 `~/.openclaw/workspace/switch-modes.json` 文件中。
 
-## Step-by-Step Instructions
+## 分步操作说明
 
-### 1. Detect Mode Commands
+### 1. 检测模式切换命令
 
-When the user message contains any of these patterns:
+当用户消息包含以下内容时：
 
-- `eco mode` or `eco` (standalone)
-- `balanced mode` or `balanced`
-- `smart mode` or `smart`
-- `max mode` or `max`
+- `eco mode` 或 `eco`（单独输入）
+- `balanced mode` 或 `balanced`
+- `smart mode` 或 `smart`
+- `max mode` 或 `max`
 - `/modes status`
 - `/modes setup`
 
-### 2. Handle Setup Command (`/modes setup`)
+### 2. 处理配置命令（`/modes setup`）
 
-If the configuration file doesn't exist or user requests setup:
+如果配置文件不存在或用户请求进行配置：
 
-1. Use `AskUserQuestion` to gather model preferences for each mode:
-   - **ECO mode**: Recommend `anthropic/claude-3.5-haiku`
-   - **BALANCED mode**: Recommend `anthropic/claude-sonnet-4-5`
-   - **SMART mode**: Recommend `anthropic/claude-opus-4-5`
-   - **MAX mode**: Recommend `anthropic/claude-opus-4-6` or `openai/o1-pro`
+1. 使用 `AskUserQuestion` 功能收集用户对每种模式的偏好：
+   - **ECO模式**：推荐 `anthropic/claude-3.5-haiku`
+   - **BALANCED模式**：推荐 `anthropic/claude-sonnet-4-5`
+   - **SMART模式**：推荐 `anthropic/claude-opus-4-5`
+   - **MAX模式**：推荐 `anthropic/claude-opus-4-6` 或 `openai/o1-pro`
 
-2. Create/update `~/.openclaw/workspace/switch-modes.json` with the structure:
+2. 使用以下结构创建或更新 `~/.openclaw/workspace/switch-modes.json` 文件：
 
 ```json
 {
@@ -64,43 +64,43 @@ If the configuration file doesn't exist or user requests setup:
 }
 ```
 
-3. Confirm setup completion to the user.
+3. 向用户确认配置已完成。
 
-### 3. Handle Status Command (`/modes status`)
+### 3. 处理状态检查命令（`/modes status`）
 
-1. Read the OpenClaw config at `~/.openclaw/openclaw.json` to get current model
-2. Read `~/.openclaw/workspace/switch-modes.json` to get mode mappings
-3. Determine which mode is currently active by matching the current model
-4. Display: `✅ Currently in [MODE] mode using [MODEL_ID]`
+1. 读取 `~/.openclaw/openclaw.json` 文件中的OpenClaw配置信息，以获取当前使用的模型。
+2. 读取 `~/.openclaw/workspace/switch-modes.json` 文件中的模式映射关系。
+3. 根据当前使用的模型确定当前激活的模式。
+4. 显示提示：`✅ 当前处于 [MODE] 模式，使用 [MODEL_ID]`
 
-### 4. Handle Mode Switch Commands
+### 4. 处理模式切换命令
 
-When user requests a mode switch:
+当用户请求切换模式时：
 
-1. **Read configuration**:
+1. **读取配置信息**：
 
    ```bash
    cat ~/.openclaw/workspace/switch-modes.json
    ```
 
-   If file doesn't exist, prompt user to run `/modes setup` first.
+   如果配置文件不存在，提示用户先运行 `/modes setup` 命令。
 
-2. **Get the target model** from the config based on requested mode (eco/balanced/smart/max)
+2. 根据用户请求的模式（eco/balanced/smart/max），从配置文件中获取目标模型。
 
-3. **Update OpenClaw config**:
-   - Read current config: `~/.openclaw/openclaw.json`
-   - Update the `model` field with the new model ID
-   - Write back to `~/.openclaw/openclaw.json`
+3. **更新OpenClaw配置**：
+   - 读取当前的配置文件：`~/.openclaw/openclaw.json`
+   - 将 `model` 字段更新为新的模型ID。
+   - 将更新后的配置写回 `~/.openclaw/openclaw.json` 文件。
 
-4. **Confirm to user**:
+4. 向用户确认切换结果：
    ```
    ✅ [MODE] mode activated
    Now using: [MODEL_ID]
    ```
 
-## Examples
+## 示例
 
-### Example 1: Mode Switch
+### 示例1：模式切换
 
 ```
 User: eco mode
@@ -110,7 +110,7 @@ Agent: ✅ ECO mode activated
       Now using: anthropic/claude-3.5-haiku
 ```
 
-### Example 2: Status Check
+### 示例2：状态检查
 
 ```
 User: /modes status
@@ -119,7 +119,7 @@ Agent: [reads switch-modes.json for mode mappings]
 Agent: ✅ Currently in BALANCED mode using anthropic/claude-sonnet-4-5
 ```
 
-### Example 3: First Time Setup
+### 示例3：首次配置
 
 ```
 User: /modes setup
@@ -132,28 +132,28 @@ Agent: ✅ Setup complete! You can now use:
       - max mode
 ```
 
-## File Locations
+## 文件位置
 
-- **Configuration**: `~/.openclaw/workspace/switch-modes.json`
-- **OpenClaw Config**: `~/.openclaw/openclaw.json`
-- **Example Config**: See `example-config.json` in skill directory
+- **配置文件**：`~/.openclaw/workspace/switch-modes.json`
+- **OpenClaw配置文件**：`~/.openclaw/openclaw.json`
+- **示例配置文件**：请参阅技能目录下的 `example-config.json`
 
-## Common Edge Cases
+## 常见问题及处理方式
 
-1. **Config file missing**: Prompt user to run `/modes setup`
-2. **Invalid model ID**: Show error and ask user to reconfigure that mode
-3. **Model not available**: Suggest checking API keys and model access in OpenClaw
-4. **Ambiguous input**: If just "eco" or "smart" without "mode", still treat as mode switch command
-5. **Case insensitive**: Accept "ECO MODE", "Eco Mode", "eco mode" all the same
+1. **配置文件缺失**：提示用户运行 `/modes setup` 命令。
+2. **模型ID无效**：显示错误信息，并要求用户重新配置该模式。
+3. **模型不可用**：建议检查API密钥和OpenClaw中的模型访问权限。
+4. **输入不明确**：即使只输入了“eco”或“smart”而没有指定模式，也视为模式切换命令。
+5. **大小写不敏感**：“ECO MODE”、“Eco Mode”或“eco mode”均被视为有效命令。
 
-## Important Notes
+## 重要说明
 
-- Mode switching is instant - no restart required
-- Changes only affect the current session's default model
-- Preserve all other settings in `openclaw.json` when updating model
-- Always validate JSON before writing config files
-- Use absolute paths: `~/.openclaw/...` not relative paths
+- 模式切换是即时生效的，无需重启程序。
+- 更改仅影响当前会话的默认模型设置。
+- 更新模型时，保留 `openclaw.json` 文件中的其他所有设置。
+- 在写入配置文件之前，务必验证JSON数据的有效性。
+- 使用绝对路径（如 `~/.openclaw/...`），而非相对路径。
 
-## Reference
+## 参考资料
 
-For detailed troubleshooting, supported models list, and FAQ, see [./REFERENCE.md](references/REFERENCE.md).
+有关详细的故障排除方法、支持的模型列表和常见问题解答，请参阅 [./REFERENCE.md](references/REFERENCE.md)。

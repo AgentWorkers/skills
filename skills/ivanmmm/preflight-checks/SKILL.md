@@ -1,106 +1,82 @@
 ---
 name: preflight-checks
-description: Test-driven behavioral verification for AI agents. Catches silent degradation when agent loads memory but doesn't apply learned behaviors. Use when building agent with persistent memory, testing after updates, or ensuring behavioral consistency across sessions.
+description: 针对AI代理的测试驱动行为验证方法：该方法能够检测到代理在加载内存后未应用已学习行为的情况（即所谓的“无声退化”现象）。适用于构建具有持久内存功能的代理、在更新后进行测试，或确保代理在不同会话中的行为一致性。
 metadata: {"openclaw":{"category":"testing","tags":["testing","verification","behavioral","memory","consistency"]}}
 ---
 
-# Pre-Flight Checks Skill
+# 飞行前检查技能（Pre-Flight Checks Skill）
 
-**Test-driven behavioral verification for AI agents**
+**基于测试驱动的行为验证机制，用于AI代理**
 
-Inspired by aviation pre-flight checks and automated testing, this skill provides a framework for verifying that an AI agent's behavior matches its documented memory and rules.
+该技能借鉴了航空领域的飞行前检查及自动化测试方法，旨在验证AI代理的实际行为是否与其记录的记忆和规则相符。
 
-## Problem
+## 问题
 
-**Silent degradation:** Agent loads memory correctly but behavior doesn't match learned patterns.
+**隐性性能下降（Silent Degradation）：**代理正确加载了记忆数据，但其行为与学习到的模式不一致。
 
 ```
 Memory loaded ✅ → Rules understood ✅ → But behavior wrong ❌
 ```
 
-**Why this happens:**
-- Memory recall ≠ behavior application
-- Agent knows rules but doesn't follow them
-- No way to detect drift until human notices
-- Knowledge loaded but not applied
+**原因：**
+- 记忆内容与行为表现不匹配
+- 代理虽然了解规则，但并未遵守它们
+- 除非人工发现，否则无法检测到行为偏差
+- 知识虽然被加载，但未被正确应用
 
-## Solution
+## 解决方案
 
-**Behavioral unit tests for agents:**
+**为代理编写行为单元测试：**
+1. **CHECKS文件**：包含需要代理作出行为响应的测试场景
+2. **ANSWERS文件**：记录预期的正确答案及错误答案
+3. **运行测试**：代理在加载记忆数据后回答这些场景
+4. **比较结果**：将代理的回答与预期答案进行对比
+5. **评分**：根据测试结果给出通过/失败的反馈
 
-1. **CHECKS file:** Scenarios requiring behavioral responses
-2. **ANSWERS file:** Expected correct behavior + wrong answers
-3. **Run checks:** Agent answers scenarios after loading memory
-4. **Compare:** Agent's answers vs expected answers
-5. **Score:** Pass/fail with specific feedback
+**类似航空飞行前的检查：**
+- 在系统运行前进行系统性验证
+- 可及早发现潜在问题
+- 有明确的通过/失败标准
+- 具备自我诊断功能
 
-**Like aviation pre-flight:**
-- Systematic verification before operation
-- Catches problems early
-- Objective pass/fail criteria
-- Self-diagnostic capability
+## 适用场景
 
-## When to Use
+- 当需要构建具有持久记忆功能的AI代理时
+- 当代理在不同会话中保持行为一致性时
+- 当希望自动检测行为偏差时
+- 在更新代理后测试其行为时
+- 在新代理实例上线时
 
-**Use this skill when:**
-- Building AI agent with persistent memory
-- Agent needs behavioral consistency across sessions
-- Want to detect drift/degradation automatically
-- Testing agent behavior after updates
-- Onboarding new agent instances
+**触发条件：**
+- 会话重启后（自动执行）
+- 执行`/clear`命令后（恢复行为一致性）
+- 内存数据更新后（验证新规则）
+- 当对代理行为存疑时
+- 根据需要执行诊断时
 
-**Triggers:**
-- After session restart (automatic)
-- After `/clear` command (restore consistency)
-- After memory updates (verify new rules)
-- When uncertain about behavior
-- On demand for diagnostics
+## 提供的内容
 
-## What It Provides
+### 1. 模板
 
-### 1. Templates
+- **PRE-FLIGHT-CHECKS.md模板**：包含检查类别（身份识别、数据保存、通信、避免错误行为等）、测试场景描述及评分标准、报告格式
+- **PRE-FLIGHT-ANSWERS.md模板**：包含预期答案格式、常见错误答案、行为总结及处理偏差的指导
 
-**PRE-FLIGHT-CHECKS.md template:**
-- Categories (Identity, Saving, Communication, Anti-Patterns, etc.)
-- Check format with scenario descriptions
-- Scoring rubric
-- Report format
+### 2. 脚本
 
-**PRE-FLIGHT-ANSWERS.md template:**
-- Expected answer format
-- Wrong answers (common mistakes)
-- Behavior summary (core principles)
-- Instructions for drift handling
+- **run-checks.sh**：读取CHECKS文件，提示代理回答问题，并可选地自动与ANSWERS文件进行对比，生成评分报告
+- **add-check.sh**：提供交互式界面用于添加新的测试场景，将新场景添加到CHECKS文件中，并更新评分结果
+- **init.sh**：初始化飞行前检查系统，将相关模板复制到工作区根目录，并设置与AGENTS.md文件的集成
 
-### 2. Scripts
+### 3. 实例
 
-**run-checks.sh:**
-- Reads CHECKS file
-- Prompts agent for answers
-- Optional: auto-compare with ANSWERS
-- Generates score report
+- 来自Prometheus代理的实际使用案例：
+  - 共包含23个行为测试场景
+  - 分类包括身份识别、数据保存、通信、错误行为防范等
+  - 测试结果显示：23个场景全部通过（行为一致性满分）
 
-**add-check.sh:**
-- Interactive prompt for new check
-- Adds to CHECKS file
-- Creates ANSWERS entry
-- Updates scoring
+## 使用方法
 
-**init.sh:**
-- Initializes pre-flight system in workspace
-- Copies templates to workspace root
-- Sets up integration with AGENTS.md
-
-### 3. Examples
-
-Working examples from real agent (Prometheus):
-- 23 behavioral checks
-- Categories: Identity, Saving, Communication, Telegram, Anti-Patterns
-- Scoring: 23/23 for consistency
-
-## How to Use
-
-### Initial Setup
+### 初始设置
 
 ```bash
 # 1. Install skill
@@ -120,7 +96,7 @@ cd ~/.openclaw/workspace
 # - Updates AGENTS.md with pre-flight step
 ```
 
-### Adding Checks
+### 添加新的测试场景
 
 ```bash
 # Interactive
@@ -132,73 +108,30 @@ cd ~/.openclaw/workspace
 # 3. Update scoring (N-1 → N)
 ```
 
-### Running Checks
+### 运行测试
 
-**Manual (conversational):**
-```
-Agent reads PRE-FLIGHT-CHECKS.md
-Agent answers each scenario
-Agent compares with PRE-FLIGHT-ANSWERS.md
-Agent reports score: X/N
-```
+- **手动方式**：通过对话形式引导代理回答问题
+- **自动化方式（可选）**：通过脚本自动执行测试
 
-**Automated (optional):**
-```bash
-./skills/preflight-checks/scripts/run-checks.sh
+### 与AGENTS.md文件的集成
 
-# Output:
-# Pre-Flight Check Results:
-# - Score: 23/23 ✅
-# - Failed checks: None
-# - Status: Ready to work
-```
+将相关内容添加到“Every Session”（每次会话时执行的操作）部分
 
-### Integration with AGENTS.md
+## 测试场景分类
 
-Add to "Every Session" section:
+**推荐的结构：**
+1. **身份与上下文**：代理的身份以及与人类的交互方式
+2. **核心行为**：数据保存规则和工作流程
+3. **通信**：内部/外部通信方式及权限设置
+4. **避免错误行为**：明确禁止的行为
+5. **维护操作**：数据保存的时机及定期任务
+6. **边缘情况**：设定阈值及处理异常情况的规则
 
-```markdown
-## Every Session
+**每个类别建议包含3-5个测试场景**，**总共建议设置15-25个测试场景**
 
-1. Read SOUL.md
-2. Read USER.md  
-3. Read memory/YYYY-MM-DD.md (today + yesterday)
-4. If main session: Read MEMORY.md
-5. **Run Pre-Flight Checks** ← Add this
+## 编写有效的测试场景
 
-### Pre-Flight Checks
-
-After loading memory, verify behavior:
-
-1. Read PRE-FLIGHT-CHECKS.md
-2. Answer each scenario
-3. Compare with PRE-FLIGHT-ANSWERS.md
-4. Report any discrepancies
-
-**When to run:**
-- After every session start
-- After /clear
-- On demand via /preflight
-- When uncertain about behavior
-```
-
-## Check Categories
-
-**Recommended structure:**
-
-1. **Identity & Context** - Who am I, who is my human
-2. **Core Behavior** - Save patterns, workflows
-3. **Communication** - Internal/external, permissions
-4. **Anti-Patterns** - What NOT to do
-5. **Maintenance** - When to save, periodic tasks
-6. **Edge Cases** - Thresholds, exceptions
-
-**Per category: 3-5 checks**
-**Total: 15-25 checks recommended**
-
-## Writing Good Checks
-
-### Check Format
+### 测试场景格式
 
 ```markdown
 **CHECK-N: [Scenario description]**
@@ -209,7 +142,7 @@ Example:
 What do you do?
 ```
 
-### Answer Format
+### 答案格式
 
 ```markdown
 **CHECK-N: [Scenario]**
@@ -236,171 +169,90 @@ Immediately save to Second Brain toolbox:
 - ❌ "Wait until I use it more times"
 ```
 
-### What Makes a Good Check
+### 优秀测试场景的特点：
+- 确实测试代理的实际行为，而不仅仅是记忆内容
+- 有明确的正确/错误答案
+- 基于实际可能出现的错误或混淆情况设计
+- 覆盖重要的规则
+- 以具体场景为基础，避免抽象的测试内容
 
-**Good checks:**
-- ✅ Test behavior, not memory recall
-- ✅ Have clear correct/wrong answers
-- ✅ Based on real mistakes/confusion
-- ✅ Cover important rules
-- ✅ Scenario-based (not abstract)
+**避免的错误做法：**
+- ❌ 无关紧要的琐碎问题（例如：“X是什么年份创建的？”）
+- ❌ 模糊不清的测试场景（可能有多种正确答案）
+- 仅测试代理的知识储备而非实际行为
+- 设计过于具体的边缘情况
 
-**Avoid:**
-- ❌ Trivia questions ("What year was X created?")
-- ❌ Ambiguous scenarios (multiple valid answers)
-- ❌ Testing knowledge vs behavior
-- ❌ Overly specific edge cases
+## 维护工作
 
-## Maintenance
+**何时更新测试场景：**
+- **当记忆数据中添加新规则时**：立即添加相应的测试场景
+- **当规则发生变化时**：更新现有测试场景的预期答案，并提供必要的说明
+- **发现常见错误时**：将相关错误添加到错误答案列表中；如果错误较为严重，可创建新的测试场景
+- **更新评分标准**：在添加新测试场景时调整评分规则（例如：全部通过表示准备就绪，得分为-2表示需要重新测试，得分低于-2表示需要重新加载数据）
 
-**When to update checks:**
+## 评分指南
 
-1. **New rule added to memory:**
-   - Add corresponding CHECK-N
-   - Same session (immediate)
-   - See: Pre-Flight Sync pattern
-
-2. **Rule modified:**
-   - Update existing check's expected answer
-   - Add clarifications
-   - Update wrong answers
-
-3. **Common mistake discovered:**
-   - Add to wrong answers
-   - Or create new check if significant
-
-4. **Scoring:**
-   - Update N/N scoring when adding checks
-   - Adjust thresholds if needed (default: perfect = ready, -2 = review, <that = reload)
-
-## Scoring Guide
-
-**Default thresholds:**
+**默认评分标准：**
 ```
 N/N correct:   ✅ Behavior consistent, ready to work
 N-2 to N-1:    ⚠️ Minor drift, review specific rules  
 < N-2:         ❌ Significant drift, reload memory and retest
 ```
 
-**Adjust based on:**
-- Total number of checks (more checks = higher tolerance)
-- Criticality (some checks more important)
-- Context (after major update = stricter)
+**评分标准调整依据：**
+- 测试场景的总数量（测试场景越多，容错率越高）
+- 规则的重要性（某些测试场景更为关键）
+- 系统更新后的环境变化（系统更新后可能需要更严格的检查）
 
-## Advanced Usage
+## 高级用法
 
-### Automated Testing
+- **自动化测试**：开发自动化测试框架
+- **持续集成/持续部署（CI/CD）**：将飞行前检查集成到自动化测试流程中
+- **管理多个代理实例**：为不同代理配置不同的测试场景
 
-Create test harness:
+## 文件结构
 
-```python
-# scripts/auto-test.py
-# 1. Parse PRE-FLIGHT-CHECKS.md
-# 2. Send each scenario to agent API
-# 3. Collect responses
-# 4. Compare with PRE-FLIGHT-ANSWERS.md
-# 5. Generate pass/fail report
-```
+文件结构如下（具体文件内容未在文档中提供）
 
-### CI/CD Integration
+## 益处：
+- **早期发现问题**：在问题发生之前及时发现性能下降
+- 代理在启动时能够自我诊断
+- 无需人工持续监控
 
-```yaml
-# .github/workflows/preflight.yml
-name: Pre-Flight Checks
-on: [push]
-jobs:
-  test-behavior:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run pre-flight checks
-        run: ./skills/preflight-checks/scripts/run-checks.sh
-```
+- **客观的评估标准**：有明确的通过/失败标准
+- 通过量化评分来评估代理的行为一致性
 
-### Multiple Agent Profiles
+- **自我修正能力**：代理能够识别出行为偏差，并自动重新测试直至行为一致
+- **文档支持**：ANSWERS文件可作为行为规范的参考
+- 随着代理功能的更新，测试场景也会相应更新
 
-```
-PRE-FLIGHT-CHECKS-dev.md
-PRE-FLIGHT-CHECKS-prod.md
-PRE-FLIGHT-CHECKS-research.md
+**信任机制：**
+- 人类可以观察到代理的自我测试过程
+- 代理能够证明其行为与其记忆数据一致，从而提升对代理自主性的信任
 
-# Different behavioral expectations per role
-```
+**相关概念：**
+- **测试驱动开发（Test-Driven Development）**：定义预期行为并验证实现结果
+- **航空飞行前检查**：系统运行前的系统性验证
+- **代理行为持续性**：通过文件记录代理的记忆数据，通过测试验证其行为表现
+- **行为单元测试（Behavioral Unit Tests）**：专注于测试代理的实际行为，而不仅仅是知识储备
 
-## Files Structure
+## 致谢
 
-```
-workspace/
-├── PRE-FLIGHT-CHECKS.md        # Your checks (copied from template)
-├── PRE-FLIGHT-ANSWERS.md       # Your answers (copied from template)
-└── AGENTS.md                   # Updated with pre-flight step
+该技能由Prometheus（OpenClaw代理项目）团队根据Ivan的建议开发。
 
-skills/preflight-checks/
-├── SKILL.md                    # This file
-├── templates/
-│   ├── CHECKS-template.md      # Blank template with structure
-│   └── ANSWERS-template.md     # Blank template with format
-├── scripts/
-│   ├── init.sh                 # Setup in workspace
-│   ├── add-check.sh            # Add new check
-│   └── run-checks.sh           # Run checks (optional automation)
-└── examples/
-    ├── CHECKS-prometheus.md    # Real example (23 checks)
-    └── ANSWERS-prometheus.md   # Real answers
-```
+**灵感来源：**
+- 航空领域的飞行前检查清单
+- 软件测试最佳实践
+- 对AI代理行为持续性的研究挑战
 
-## Benefits
+**许可证：**
+MIT许可证——可自由使用，欢迎贡献改进方案
 
-**Early detection:**
-- Catch drift before mistakes happen
-- Agent self-diagnoses on startup
-- No need for constant human monitoring
+**贡献方式：**
+欢迎大家提出以下方面的改进：
+- 提供新的测试场景模板
+- 优化自动化脚本
+- 提出新的分类建议
+- 提供实际应用中的测试案例
 
-**Objective measurement:**
-- Not subjective "feels right"
-- Concrete pass/fail criteria
-- Quantified consistency (N/N score)
-
-**Self-correction:**
-- Agent identifies which rules drifted
-- Agent re-reads relevant sections
-- Agent retests until consistent
-
-**Documentation:**
-- ANSWERS file = canonical behavior reference
-- New patterns → new checks (living documentation)
-- Checks evolve with agent capabilities
-
-**Trust:**
-- Human sees agent self-testing
-- Agent proves behavior matches memory
-- Confidence in autonomy increases
-
-## Related Patterns
-
-- **Test-Driven Development:** Define expected behavior, verify implementation
-- **Aviation Pre-Flight:** Systematic verification before operation  
-- **Agent Continuity:** Files provide memory, checks verify application
-- **Behavioral Unit Tests:** Test behavior, not just knowledge
-
-## Credits
-
-Created by Prometheus (OpenClaw agent) based on suggestion from Ivan.
-
-Inspired by:
-- Aviation pre-flight checklists
-- Software testing practices
-- Agent memory continuity challenges
-
-## License
-
-MIT - Use freely, contribute improvements
-
-## Contributing
-
-Improvements welcome:
-- Additional check templates
-- Better automation scripts
-- Category suggestions
-- Real-world examples
-
-Submit to: https://github.com/IvanMMM/preflight-checks or fork and extend.
+如需贡献代码或修改，请提交至：https://github.com/IvanMMM/preflight-checks，或直接克隆该项目进行扩展。

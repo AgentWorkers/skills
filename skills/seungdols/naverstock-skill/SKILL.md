@@ -1,25 +1,25 @@
 ---
 name: naver-stock
-description: Fetch text-based real-time stock prices (KRX, Overseas) using Naver Finance.
+description: 使用 Naver Finance 获取基于文本的实时股票价格（KRX、海外市场）。
 metadata: {"clawdbot":{"emoji":"📈","os":["mac","linux","windows"],"requires":{"bins":["node"]}}}
 ---
 
-# Naver Stock
+# Naver 股票
 
-Fetch real-time stock prices for domestic (KRX) and overseas markets using Naver Finance.
+使用 Naver Finance 获取韩国（KRX）市场和国外市场的实时股票价格。
 
-## Usage
+## 使用方法
 
-Run the bundled script with a stock name or code.
+使用股票名称或代码运行捆绑的脚本。
 
 ```bash
 node index.cjs "삼성전자"
 node index.cjs "AAPL"
 ```
 
-## Output Format
+## 输出格式
 
-Returns a JSON object with price details.
+返回一个包含价格详情的 JSON 对象。
 
 ```json
 {
@@ -35,37 +35,37 @@ Returns a JSON object with price details.
 }
 ```
 
-### Field Descriptions
+### 字段说明
 
-- `name`: Stock name.
-- `code`: Stock symbol/code.
-- `price`: Current price in regular market.
-- `change`: Price change in regular market.
-- `changePercent`: Percentage change in regular market.
-- `nxtPrice`: Current price in Nextrade (NXT) Alternative Trading System.
-- `nxtChange`: Price change in Nextrade.
-- `nxtChangePercent`: Percentage change in Nextrade.
-- `currency`: Currency code (e.g., KRW, USD).
+- `name`：股票名称。
+- `code`：股票代码。
+- `price`：常规市场中的当前价格。
+- `change`：常规市场中的价格变动。
+- `changePercent`：常规市场中的价格变动百分比。
+- `nxtPrice`：Nextrade（NXT）替代交易系统中的当前价格。
+- `nxtChange`：Nextrade 中的价格变动。
+- `nxtChangePercent`：Nextrade 中的价格变动百分比。
+- `currency`：货币代码（例如：KRW、USD）。
 
-### About Nextrade (NXT)
-Nextrade is an Alternative Trading System (ATS) in Korea that offers extended trading hours.
-- **Pre-market**: 08:00 ~ 08:50
-- **After-market**: 15:30 ~ 20:00 (Can be traded until 8 PM)
-- **Note**: Prices in Nextrade (`nxtPrice`) may differ from the regular KRX market price, providing off-hours trading opportunities.
+### 关于 Nextrade（NXT）
+Nextrade 是韩国的一个替代交易系统（ATS），提供延长的交易时间：
+- **盘前交易时间**：08:00 ~ 08:50
+- **盘后交易时间**：15:30 ~ 20:00（可交易至晚上 8 点）
+- **注意**：Nextrade 中的价格（`nxtPrice`）可能与常规 KRX 市场价格不同，提供了盘后交易机会。
 
-## Examples
+## 示例
 
-### Domestic Stock
+### 国内股票
 ```bash
 node index.cjs 005930
 ```
 
-### Overseas Stock
+### 国外股票
 ```bash
 node index.cjs "Tesla"
 ```
 
-### Exchange Rate
+### 汇率
 ```bash
 node index.cjs "USD"
 node index.cjs "엔"

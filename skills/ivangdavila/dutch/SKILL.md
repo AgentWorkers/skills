@@ -1,97 +1,95 @@
 ---
 name: Dutch
-description: Write Dutch that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的荷兰语。既不正式，也不像机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Dutch is technically correct but sounds off. Too formal. Too stiff. Natives write more directly, with particles and casual flow. Match that.
+虽然AI生成的荷兰语在语法上是正确的，但听起来很正式、很生硬。荷兰本地人的表达方式更加直接，会使用一些特定的词性和短语，语言也更加自然流畅。我们需要让AI生成的荷兰语更贴近这种表达习惯。
 
-## Formality Default
+## 正式性与非正式性
 
-Default register is too high. Dutch is notably direct. Unless explicitly formal: lean casual. "Hoi" not "Goedendag". "Ja" not "Jazeker". "Oké" not "Akkoord".
+荷兰语通常比较直接表达，除非需要特别正式，否则应该采用非正式的语气。例如：“Hoi”而不是“Goedendag”，“Ja”而不是“Jazeker”，“Oké”而不是“Akkoord”。
 
-## Je vs U
+## “Je”与“U”的使用
 
-Critical distinction:
-- U: elderly, very formal, customer service
-- Je/Jij: everyone else, default for most contexts
-- Dutch internet is almost entirely je/jij
-- U in casual contexts = stiff, old-fashioned
+在荷兰语中，“Je”和“U”的使用有明显的区别：
+- “U”通常用于指代年长的人或非常正式的场合（如客户服务）；
+- “Je”或“Jij”则用于大多数日常对话中。在荷兰的网络交流中，几乎完全使用“Je”或“Jij”；
+- 在非正式场合使用“U”会显得生硬、过时。
 
-## Modal Particles
+## 情态助词
 
-These make Dutch natural:
-- Maar: softening ("Doe maar")
-- Even/Effe: "just" ("Ik kijk even")
-- Toch: "right?", emphasis ("Je komt toch?")
-- Wel: affirmation, contrast ("Ik ga wel")
-- Hoor: reassurance ("Is goed hoor")
-- Nou: "well" ("Nou, dat weet ik niet")
-- Missing these = textbook Dutch
+这些助词能让荷兰语表达更自然：
+- “Maar”：用于缓和语气（例如：“Doe maar”）；
+- “Even/Effe”：表示“稍等”；
+- “Toch”：用于强调（例如：“Je komt toch?”）；
+- “Wel”：表示肯定或对比（例如：“Ik ga wel”）；
+- “Hoor”：用于安慰或确认（例如：“Is goed hoor”）；
+- “Nou”：表示犹豫或不确定（例如：“Nou, dat weet ik niet”）；
+- 如果省略这些助词，荷兰语就会显得非常刻板、像教科书里的例子一样。
 
-## Fillers & Flow
+## 填充词与语言流畅性
 
-Real Dutch has fillers:
-- Nou, ja, nee (as filler, not just "no")
-- Zeg maar, eigenlijk, gewoon
-- Echt, enzo, ofzo
-- Weet je, snap je
+荷兰语中有很多填充词，用于使表达更自然：
+- “Nou, ja, nee”等词不仅表示否定，也用于填充对话；
+- “Zeg maar, eigenlijk, gewoon”等短语用于表达犹豫或思考；
+- “Echt, enzo, ofzo”等词用于强调或补充说明；
+- “Weet je, snap je”等短语用于确认对方是否理解。
 
-## Diminutives
+## 小词形式
 
-Dutch loves diminutives (-je, -tje, -pje):
-- Momentje, biertje, drankje
-- Beetje, leuk dingetje
-- Adds warmth and casualness
-- Overuse is more natural than underuse
+荷兰语中喜欢使用小词形式（如“-je”、“-tje”、“-pje”）：
+- “Momentje”（稍等）、“biertje”（啤酒）、“drankje”（饮料）；
+- “Beetje”（一点点）、“leuk dingetje”（可爱的东西）；
+- 使用小词可以增加语言的亲切感和随意性；
+- 过度使用这些小词反而比使用得少更自然。
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Goed → Leuk, Top, Gaaf, Vet
-- Slecht → Kut, Klote, Bagger
-- Veel → Mega, Super, Heel erg
-- Mooi → Prachtig, Geweldig, Te gek
+在表达时，不要选择过于中立的词汇：
+- “Goed”可以替换为“Leuk”、“Top”、“Gauf”、“Vet”等更生动的说法；
+- “Slecht”可以替换为“Kut”、“Klote”、“Bagger”等更强烈的词汇；
+- “Veel”可以替换为“Mega”、“Super”、“Heel erg”等更夸张的表达；
+- “Mooi”可以替换为“Prachtig”、“Geweldig”、“Te gek”等更丰富的词汇。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Gezellig! (untranslatable, cozy/fun)
-- Lekker (not just food - lekker weertje, lekker bezig)
-- Geen probleem, Prima, Top
-- Maakt niet uit, Komt goed
+一些荷兰语中的自然表达：
+- “Gezellig!”（非常愉快！）
+- “Lekker”（不仅指食物，也可以表示天气好或事情有趣）；
+- “Geen probleem, Prima, Top”（没问题，很好）；
+- “Maakt niet uit, Komt goed”（没关系，会解决的）。
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Echt?, Serieus?, Meen je niet!
-- Wauw!, Gaaf!, Vet!
-- Jammer, Balen, Kut
-- Haha, lol in text
+在对话中，要自然地回应：
+- “Echt?, Serieus?, Meen je niet!”（真的吗？你是认真的吗？）
+- “Wauw!, Gaaf!, Vet!”（哇，太棒了！）
+- “Jammer, Balen, Kut”（真遗憾，太糟糕了！）
+- “Haha, lol”（哈哈，哈哈）。
 
-## Belgian Dutch
+## 比利时荷兰语
 
-If Belgian, adapt:
-- Allez, Voilà, Tof
-- Different expressions, softer tone
-- Ge/Gij instead of Je/Jij in some regions
-- Don't mix Dutch and Belgian
+如果是比利时荷兰语，需要做一些调整：
+- 使用“Allez”、“Voilà”、“Tof”等表达方式；
+- 在某些地区，会用“Ge”或“Gij”代替“Je/Jij”；
+- 不要将荷兰语和比利时荷兰语的用语混用。
 
-## English Mixing
+## 英语的影响
 
-Dutch often mixes English:
-- "Dat is zo awkward"
-- "Super nice!"
-- "Ik ben aan het chillen"
-- Natural in casual contexts
+荷兰语中经常混合使用英语词汇：
+- “Dat is zo awkward”（这太尴尬了）；
+- “Super nice!”（非常棒！）；
+- “Ik ben aan het chillen”（我正在放松）；
+- 这些表达在非正式场合很自然。
 
-## Punctuation
+## 标点符号
 
-Dutch punctuation:
-- „Aanhalingstekens" or "quotes"
-- Numbers: 1.000,50 (period thousands, comma decimals)
+荷兰语的标点符号：
+- 引号使用“„Aanhalingstekens”；
+- 数字写作方式是“1.000,50”（千位用句点，小数点用逗号）。
 
-## The "Native Test"
+## 最后的测试
 
-Before sending: would a Dutch person screenshot this as "AI-generated"? If yes—too formal, missing particles, not gezellig. Loosen up.
+在发送之前，需要考虑：如果一个荷兰人看到这段AI生成的文本，会认为这是“AI生成的”吗？如果是这样，那么这段文本就太正式了，缺少了一些自然的表达方式，也没有体现出荷兰语的亲切感。需要让语言更加自然、流畅。

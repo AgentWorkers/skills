@@ -1,46 +1,47 @@
 ---
 name: aws-ecs-monitor
-description: AWS ECS production health monitoring with CloudWatch log analysis — monitors ECS service health, ALB targets, SSL certificates, and provides deep CloudWatch log analysis for error categorization, restart detection, and production alerts.
+description: **使用 CloudWatch 日志分析进行 AWS ECS 生产环境健康监控**  
+该方案可监控 ECS 服务的运行状态、ALB（应用负载均衡器）目标服务器的运行状况以及 SSL 证书的有效性，并提供深入的 CloudWatch 日志分析功能。这些分析功能有助于错误分类、自动检测服务器重启情况以及及时发出生产环境异常警报。
 ---
 
-# AWS ECS Monitor
+# AWS ECS 监控器
 
-Production health monitoring and log analysis for AWS ECS services.
+用于监控 AWS ECS 服务的运行状态并分析日志。
 
-## What It Does
+## 功能概述
 
-- **Health Checks**: HTTP probes against your domain, ECS service status (desired vs running), ALB target group health, SSL certificate expiry
-- **Log Analysis**: Pulls CloudWatch logs, categorizes errors (panics, fatals, OOM, timeouts, 5xx), detects container restarts, filters health check noise
-- **Auto-Diagnosis**: Reads health status and automatically investigates failing services via log analysis
+- **运行状态检查**：通过 HTTP 请求检查您的域名、ECS 服务的运行状态（是否正常运行）、ALB 目标组的健康状况以及 SSL 证书的有效期。
+- **日志分析**：从 CloudWatch 中获取日志，对错误类型进行分类（如 panic、fatal、OOM、timeout、5xx 错误），检测容器重启事件，并过滤掉与运行状态无关的日志信息。
+- **自动诊断**：根据日志分析结果自动诊断出现问题的服务。
 
-## Prerequisites
+## 前提条件
 
-- `aws` CLI configured with appropriate IAM permissions:
+- 需要配置具有相应 IAM 权限的 `aws` CLI，具备以下权限：
   - `ecs:ListServices`, `ecs:DescribeServices`
   - `elasticloadbalancing:DescribeTargetGroups`, `elasticloadbalancing:DescribeTargetHealth`
   - `logs:FilterLogEvents`, `logs:DescribeLogGroups`
-- `curl` for HTTP health checks
-- `python3` for JSON processing and log analysis
-- `openssl` for SSL certificate checks (optional)
+- 需要 `curl` 命令工具用于执行 HTTP 健康状态检查。
+- 需要 `python3` 用于处理 JSON 数据和日志分析。
+- （可选）需要 `openssl` 工具用于检查 SSL 证书的有效性。
 
-## Configuration
+## 配置方式
 
-All configuration is via environment variables:
+所有配置均通过环境变量完成：
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `ECS_CLUSTER` | **Yes** | — | ECS cluster name |
-| `ECS_REGION` | No | `us-east-1` | AWS region |
-| `ECS_DOMAIN` | No | — | Domain for HTTP/SSL checks (skip if unset) |
-| `ECS_SERVICES` | No | auto-detect | Comma-separated service names to monitor |
-| `ECS_HEALTH_STATE` | No | `./data/ecs-health.json` | Path to write health state JSON |
-| `ECS_HEALTH_OUTDIR` | No | `./data/` | Output directory for logs and alerts |
-| `ECS_LOG_PATTERN` | No | `/ecs/{service}` | CloudWatch log group pattern (`{service}` is replaced) |
-| `ECS_HTTP_ENDPOINTS` | No | — | Comma-separated `name=url` pairs for HTTP probes |
+| 变量          | 是否必填 | 默认值         | 说明                                      |
+|---------------|---------|------------------|-----------------------------------------|
+| `ECS_CLUSTER`     | 是       | —            | ECS 集群名称                                      |
+| `ECS_REGION`     | 否       | `us-east-1`       | AWS 区域                                      |
+| `ECS_DOMAIN`     | 否       | —            | 用于 HTTP/SSL 检查的域名（未设置时可省略）                   |
+| `ECS_SERVICES`     | 否       | 自动检测        | 用逗号分隔的待监控服务名称                          |
+| `ECS_HEALTH_STATE`     | 否       | `./data/ecs-health.json` | 用于存储健康状态信息的 JSON 文件路径                 |
+| `ECS_health_OUTDIR` | 否       | `./data/`        | 日志和警报的输出目录                             |
+| `ECS_LOG_PATTERN`     | 否       | `/ecs/{service}`     | CloudWatch 日志组匹配模式（`{service}` 会被替换）             |
+| `ECS_HTTP_ENDPOINTS`     | 否       | —            | 用于 HTTP 请求的 URL 列表（用逗号分隔）                        |
 
-## Scripts
+## 脚本说明
 
-### `scripts/ecs-health.sh` — Health Monitor
+### `scripts/ecs-health.sh` — 运行状态监控脚本
 
 ```bash
 # Full check
@@ -53,9 +54,12 @@ ECS_CLUSTER=my-cluster ./scripts/ecs-health.sh --json
 ECS_CLUSTER=my-cluster ./scripts/ecs-health.sh --quiet
 ```
 
-Exit codes: `0` = healthy, `1` = unhealthy/degraded, `2` = script error
+退出代码说明：
+- `0`：服务运行正常
+- `1`：服务运行异常/性能下降
+- `2`：脚本执行错误
 
-### `scripts/cloudwatch-logs.sh` — Log Analyzer
+### `scripts/cloudwatch-logs.sh` — 日志分析脚本
 
 ```bash
 # Pull raw logs from a service
@@ -77,53 +81,45 @@ ECS_CLUSTER=my-cluster ./scripts/cloudwatch-logs.sh auto-diagnose
 ECS_CLUSTER=my-cluster ./scripts/cloudwatch-logs.sh summary --minutes 120
 ```
 
-Options: `--minutes N` (default: 60), `--json`, `--limit N` (default: 200), `--verbose`
+可选参数：
+- `--minutes N`（默认值：60）：日志分析的间隔时间（分钟）
+- `--json`：以 JSON 格式输出日志
+- `--limit N`（默认值：200）：每次分析的日志条目数量
+- `--verbose`：详细输出日志信息
 
-## Auto-Detection
+## 自动检测机制
 
-When `ECS_SERVICES` is not set, both scripts auto-detect services from the cluster:
+当未设置 `ECS_SERVICES` 时，这两个脚本会自动从 ECS 集群中检测服务。
 
 ```bash
 aws ecs list-services --cluster $ECS_CLUSTER
 ```
 
-Log groups are resolved by pattern (default `/ecs/{service}`). Override with `ECS_LOG_PATTERN`:
+日志组通过指定的模式 `/ecs/{service}` 进行匹配；如需自定义模式，可修改 `ECS_LOG_PATTERN`。
 
 ```bash
 # If your log groups are /ecs/prod/my-api, /ecs/prod/my-frontend, etc.
 ECS_LOG_PATTERN="/ecs/prod/{service}" ECS_CLUSTER=my-cluster ./scripts/cloudwatch-logs.sh diagnose
 ```
 
-## Integration
+## 集成方式
 
-The health monitor can trigger the log analyzer for auto-diagnosis when issues are detected. Set `ECS_HEALTH_OUTDIR` to a shared directory and run both scripts together:
+当检测到问题时，运行状态监控脚本可以触发日志分析脚本进行自动诊断。请将 `ECS_health_OUTDIR` 设置为共享目录，并同时运行这两个脚本。
 
-```bash
-export ECS_CLUSTER=my-cluster
-export ECS_DOMAIN=example.com
-export ECS_HEALTH_OUTDIR=./data
+## 错误分类
 
-# Run health check (auto-triggers log analysis on failure)
-./scripts/ecs-health.sh
+日志分析脚本将错误类型分为以下几类：
 
-# Or run log analysis independently
-./scripts/cloudwatch-logs.sh auto-diagnose --minutes 30
-```
+- `panic`：Go 语言程序中的 panic 错误
+- `fatal`：致命错误
+- `oom`：内存溢出错误
+- `timeout`：连接/请求超时错误
+- `connection_error`：连接请求被拒绝或重置
+- `http_5xx`：HTTP 500 级错误响应
+- `python_traceback`：Python 程序中的异常堆栈跟踪
+- `exception`：其他通用异常
+- `auth_error`：权限/认证失败
+- `structured_error`：结构化的错误日志
+- `error`：其他一般的错误信息
 
-## Error Categories
-
-The log analyzer classifies errors into:
-
-- `panic` — Go panics
-- `fatal` — Fatal errors
-- `oom` — Out of memory
-- `timeout` — Connection/request timeouts
-- `connection_error` — Connection refused/reset
-- `http_5xx` — HTTP 500-level responses
-- `python_traceback` — Python tracebacks
-- `exception` — Generic exceptions
-- `auth_error` — Permission/authorization failures
-- `structured_error` — JSON-structured error logs
-- `error` — Generic ERROR-level messages
-
-Health check noise (GET/HEAD `/health` from ALB) is automatically filtered from error counts and HTTP status distribution.
+来自 ALB 的 `/health`（GET/HEAD 请求）请求产生的无关日志信息会自动从错误统计和 HTTP 状态分布数据中过滤掉。

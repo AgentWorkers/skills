@@ -1,39 +1,39 @@
 ---
-description: Lint Markdown files for style issues, broken links, and formatting problems with auto-fix suggestions.
+description: 使用 Lint 工具检查 Markdown 文件中的样式问题、失效链接以及格式错误，并提供自动修复建议。
 ---
 
 # Markdown Linter
 
-Check and improve Markdown file quality.
+用于检查和优化Markdown文件的质量。
 
-## Capabilities
+## 功能
 
-- **Style Checks**: Heading levels, list consistency, line length
-- **Link Validation**: Check for broken internal/external links
-- **Structure Analysis**: TOC generation, heading hierarchy
-- **Auto-Fix**: Suggest or apply formatting corrections
+- **样式检查**：检查标题层级、列表的一致性以及行长度
+- **链接验证**：检测内部/外部链接是否有效
+- **结构分析**：生成目录（TOC）并检查标题层次结构
+- **自动修复**：建议或应用格式化修正
 
-## Usage
+## 使用方法
 
-Ask the agent to:
-- "Lint README.md for issues"
-- "Check all markdown files in this directory"
-- "Fix formatting issues in docs/"
-- "Generate a table of contents for this document"
+你可以让代理执行以下命令：
+- `Lint README.md for issues`：检查`README.md`文件中的问题
+- `Check all markdown files in this directory`：检查该目录下的所有Markdown文件
+- `Fix formatting issues in docs/`：修复文档中的格式问题
+- `Generate a table of contents for this document`：为当前文档生成目录
 
-## How It Works
+## 工作原理
 
-Analyzes Markdown files for common issues:
-- Inconsistent heading levels (skipping levels)
-- Trailing whitespace, missing blank lines
-- Broken relative links
-- Inconsistent list markers
-- Long lines
+该工具会分析Markdown文件中常见的错误，例如：
+- 不一致的标题层级（跳过某些标题层级）
+- 文末的空白字符、缺少换行符
+- 无效的相对链接
+- 不一致的列表标记
+- 过长的行
 
-Can use `markdownlint-cli` if available, or perform analysis with built-in text processing.
+如果可用，可以使用`markdownlint-cli`工具；否则，也可以通过内置的文本处理功能进行分析。
 
-## Requirements
+## 需求
 
-- Optional: `markdownlint-cli` (`npm install -g markdownlint-cli`)
-- Works without external tools using text analysis
-- No API keys needed
+- **可选**：安装`markdownlint-cli`（`npm install -g markdownlint-cli`）
+- 无需外部工具，仅依赖内置的文本处理功能
+- 不需要API密钥

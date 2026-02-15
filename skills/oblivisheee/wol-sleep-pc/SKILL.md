@@ -1,50 +1,56 @@
 ---
 name: wol-sleep-pc
-description: Send Wake-on-LAN (magic packet) and Sleep-on-LAN (inverted MAC) packets for a specific PC. Use when the user asks to wake, check, or put the PC to sleep on the local LAN. Defaults are zeroed; configure the target IP, MAC, and inverted MAC via command-line flags or a config file.
+description: 向指定的PC发送“Wake-on-LAN”（网络唤醒）数据包和“Sleep-on-LAN”（网络睡眠）数据包。当用户需要在本地局域网中唤醒或让PC进入睡眠状态时，可以使用该功能。默认值均为零；目标IP地址、MAC地址以及反转后的MAC地址可通过命令行参数或配置文件进行设置。
 ---
 
 # wol-sleep-pc
 
-This skill provides two small, well-tested scripts to send Wake-on-LAN (WOL) and Sleep-on-LAN (SOL) magic packets to a target machine on the same LAN. The skill is intentionally configurable and does not ship with any real MAC/IP defaults — defaults are zeroed and must be provided via CLI flags or a local config file.
+该技能提供了两个经过充分测试的小脚本，用于向同一局域网中的目标机器发送“唤醒局域网”（Wake-on-LAN, WOL）和“睡眠局域网”（Sleep-on-LAN, SOL）信号包。该技能具有高度可配置性，不包含任何默认的MAC/IP地址——所有默认值都被设置为0，必须通过命令行参数（CLI）或本地配置文件来指定。
 
-Files provided:
-- scripts/send_wol.py — Send a standard WOL magic packet.
-- scripts/send_sleep.py — Send a SOL (inverted-MAC) magic packet.
-- README.md — Usage examples and install notes.
-- .gitignore — Ensures local config is not committed.
+提供的文件：
+- `scripts/send_wol.py` — 发送标准的WOL信号包。
+- `scripts/send_sleep.py` — 发送SOL（MAC地址反转）信号包。
+- `README.md` — 使用示例和安装说明。
+- `.gitignore` — 确保本地配置文件不会被提交到版本控制系统中。
 
-Quick usage
-- From the repository root:
+**快速使用方法：**
+- 从仓库根目录执行：
+  ```
   python3 scripts/send_wol.py --mac 24:4B:FE:CA:90:99 --broadcast 192.168.1.255
-
-- Send SOL (inverted MAC):
+  ```
+  或
+  ```
   python3 scripts/send_sleep.py --mac 99:90:CA:FE:4B:24 --broadcast 192.168.1.255
+  ```
 
-Config file (recommended)
-- Path: ~/.config/wol-sleep-pc/config.json
-- Example content:
+**推荐配置文件：**
+- 文件路径：`~/.config/wol-sleep-pc/config.json`
+- 示例内容：
+  ```
   {
     "mac": "24:4B:FE:CA:90:99",
     "sleep_mac": "99:90:CA:FE:4B:24",
     "broadcast": "192.168.1.255",
     "port": 9
   }
-- Behavior: scripts load values from this file if present; any CLI flags override the config file values.
-- The repository .gitignore ignores config files so secrets remain local.
+  ```
+  **说明：**
+  如果存在该配置文件，脚本会优先读取其中的设置；命令行参数的值会覆盖配置文件中的设置。
+  仓库中的`.gitignore`文件会忽略配置文件，从而确保敏感信息不会被公开。
 
-Agent usage patterns
-- "wake PC" — run send_wol.py with configured values.
-- "sleep PC" — run send_sleep.py with configured inverted MAC.
-- "send WOL now" / "send SOL now" — immediate send.
+**代理使用示例：**
+- `wake PC` — 使用配置好的参数运行`send_wol.py`脚本。
+- `sleep PC` — 使用配置好的反转MAC地址运行`send_sleep.py`脚本。
+- `send WOL now` / `send SOL now` — 立即发送信号包。
 
-Design notes and safety
-- Scripts require Python 3 and permission to send UDP broadcast packets from the runtime host.
-- The skill assumes L2 connectivity to the target LAN; if running from a different network segment, configure the correct broadcast address or run the script from a host on the same LAN.
-- Defaults are intentionally zeroed to avoid leaking sensitive addresses when the skill is published.
+**设计注意事项与安全性：**
+- 这些脚本需要Python 3环境，并且运行时主机需要具有发送UDP广播包的权限。
+- 该技能依赖于与目标局域网的二层网络连接；如果从其他网络段执行，请配置正确的广播地址，或从同一局域网内的主机运行脚本。
+- 所有默认值都被设置为0，以防止在发布技能时泄露敏感信息。
 
-Publishing guidance
-- The repo is safe to publish to ClawHub as-is because it contains no real MAC/IP values and ignores local config.
-- Add a LICENSE if you want to publish under a specific license.
+**发布指南：**
+- 由于该仓库不包含实际的MAC/IP地址，并且会忽略本地配置文件，因此可以直接将其发布到ClawHub。
+- 如果希望根据特定许可证发布该技能，请添加相应的许可证文件。
 
-When to trigger this skill
-- Trigger when the user explicitly requests waking or sleeping a machine on their LAN, or asks to save or update local WOL/SOL config. The scripts are small and deterministic; prefer executing the scripts rather than re-generating the packet code each time.
+**触发条件：**
+- 当用户明确请求唤醒或睡眠局域网中的机器，或请求保存/更新本地WOL/SOL配置时，触发该技能。这些脚本体积小且执行效率高，建议直接使用它们，而不是每次都重新生成信号包代码。

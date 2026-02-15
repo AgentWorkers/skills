@@ -1,35 +1,35 @@
 ---
 name: context-budgeting
-description: Manage and optimize OpenClaw context window usage via partitioning, pre-compression checkpointing, and information lifecycle management. Use when the session context is near its limit (>80%), when the agent experiences "memory loss" after compaction, or when aiming to reduce token costs and latency for long-running tasks.
+description: 通过分区、预压缩检查点以及信息生命周期管理来管理和优化 OpenClaw 上上下文窗口的使用。在会话上下文接近其使用限制（>80%）时、代理在压缩后出现“内存丢失”情况时，或者为了降低长时间运行任务的令牌成本和延迟时，应使用这些方法。
 ---
 
-# Context Budgeting Skill
+# 上下文预算管理技能
 
-This skill provides a systematic framework for managing the finite context window (RAM) of an OpenClaw agent.
+该技能为管理 OpenClaw 代理的有限上下文窗口（RAM）提供了一个系统化的框架。
 
-## Core Concepts
+## 核心概念
 
-### 1. Information Partitioning
-- **Objective/Goal (10%)**: Core task instructions and active constraints.
-- **Short-term History (40%)**: Recent 5-10 turns of raw dialogue.
-- **Decision Logs (20%)**: Summarized outcomes of past steps ("Tried X, failed because Y").
-- **Background/Knowledge (20%)**: High-relevance snippets from MEMORY.md.
+### 1. 信息分区
+- **目标/任务（10%）**：核心任务指令和当前的限制条件。
+- **近期历史记录（40%）**：最近 5-10 轮的原始对话内容。
+- **决策日志（20%）**：过去步骤的总结结果（例如：“尝试了 X，但由于 Y 失败”）。
+- **背景信息/知识（20%）**：来自 `MEMORY.md` 的高相关性内容片段。
 
-### 2. Pre-compression Checkpointing (Mandatory)
-Before any compaction (manual or automatic), the agent MUST:
-1.  **Generate Checkpoint**: Update `memory/hot/HOT_MEMORY.md` with:
-    - **Status**: Current task progress.
-    - **Key Decision**: Significant choices made.
-    - **Next Step**: Immediate action required.
-2.  **Run Automation**: Execute `scripts/gc_and_checkpoint.sh` to trigger the physical cleanup.
+### 2. 预压缩检查点机制（强制要求）
+在任何压缩操作（手动或自动）之前，代理必须执行以下步骤：
+1. **生成检查点**：更新 `memory/hot/HOT_MEMORY.md`，内容包括：
+    - **当前任务进度**。
+    - **关键决策**：所做的重大选择。
+    - **下一步行动**：需要立即执行的操作。
+2. **运行自动化脚本**：执行 `scripts/gc_and_checkpoint.sh` 以触发物理清理过程。
 
-## Automation Tool: `gc_and_checkpoint.sh`
-Located at: `skills/context-budgeting/scripts/gc_and_checkpoint.sh`
+## 自动化工具：`gc_and_checkpoint.sh`
+文件位置：`skills/context-budgeting/scripts/gc_and_checkpoint.sh`
 
-**Usage**: 
-- Run this script after updating `HOT_MEMORY.md` to finalize the compaction process without restarting the session.
+**使用方法**：
+- 在更新 `HOT_MEMORY.md` 后运行此脚本，以完成压缩过程，而无需重新启动会话。
 
-## Integration with Heartbeat
-Heartbeat (every 30m) acts as the Garbage Collector (GC):
-1.  Check `/status`. If Context > 80%, trigger the **Checkpointing** procedure.
-2.  Clear raw data (e.g., multi-megabyte JSON outputs) once the summary is extracted.
+## 与 Heartbeat 的集成
+Heartbeat 每 30 分钟执行一次垃圾回收（GC）操作：
+1. 检查 `/status` 文件。如果上下文使用率超过 80%，则触发 **检查点生成** 过程。
+2. 在提取出摘要后，清除原始数据（例如，数兆字节的 JSON 输出文件）。

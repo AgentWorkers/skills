@@ -1,17 +1,17 @@
 ---
 name: tavily-best-practices
-description: "Build production-ready Tavily integrations with best practices baked in. Reference documentation for developers using coding assistants (Claude Code, Cursor, etc.) to implement web search, content extraction, crawling, and research in agentic workflows, RAG systems, or autonomous agents."
+description: "构建具备最佳实践的生产就绪型 Tavily 集成方案。为使用编码辅助工具（如 Claude Code、Cursor 等）的开发者提供参考文档，帮助他们实现网页搜索、内容提取、爬虫功能以及研究功能，这些功能可应用于代理工作流程（agent workflows）、RAG（Retrieval, Augmentation, Generation）系统或自主代理（autonomous agents）中。"
 ---
 
 # Tavily
 
-Tavily is a search API designed for LLMs, enabling AI applications to access real-time web data.
+Tavily 是一个专为大型语言模型（LLMs）设计的搜索 API，它使 AI 应用程序能够访问实时的网络数据。
 
-## Prerequisites
+## 先决条件
 
-**Tavily API Key Required** - Get your key at https://app.tavily.com (1,000 free API credits/month, no credit card required)
+**需要 Tavily API 密钥** - 请在 https://app.tavily.com 获取您的密钥（每月提供 1,000 个免费 API 信用额度，无需信用卡）
 
-Add to `~/.claude/settings.json`:
+将密钥添加到 `~/.claude/settings.json` 文件中：
 ```json
 {
   "env": {
@@ -20,9 +20,9 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code after adding your API key.
+添加 API 密钥后，请重新启动 Claude 代码。
 
-## Installation
+## 安装
 
 **Python:**
 ```bash
@@ -34,9 +34,9 @@ pip install tavily-python
 npm install @tavily/core
 ```
 
-See **[references/sdk.md](references/sdk.md)** for complete SDK reference.
+有关完整的 SDK 参考信息，请参阅 **[references/sdk.md]**。
 
-## Client Initialization
+## 客户端初始化
 
 ```python
 from tavily import TavilyClient
@@ -55,26 +55,26 @@ from tavily import AsyncTavilyClient
 async_client = AsyncTavilyClient()
 ```
 
-## Choosing the Right Method
+## 选择合适的方法
 
-**For custom agents/workflows:**
+**对于自定义代理/工作流程：**
 
-| Need | Method |
+| 需求 | 方法 |
 |------|--------|
-| Web search results | `search()` |
-| Content from specific URLs | `extract()` |
-| Content from entire site | `crawl()` |
-| URL discovery from site | `map()` |
+| 网页搜索结果 | `search()` |
+| 特定 URL 的内容 | `extract()` |
+| 整个网站的内容 | `crawl()` |
+| 从网站中发现 URL | `map()` |
 
-**For out-of-the-box research:**
+**对于即用的研究功能：**
 
-| Need | Method |
+| 需求 | 方法 |
 |------|--------|
-| End-to-end research with AI synthesis | `research()` |
+| 基于 AI 的端到端研究 | `research()` |
 
-## Quick Reference
+## 快速参考
 
-### search() - Web Search
+### `search()` - 网页搜索
 
 ```python
 response = client.search(
@@ -88,9 +88,9 @@ for result in response["results"]:
     print(f"{result['title']}: {result['score']}")
 ```
 
-Key parameters: `query`, `max_results`, `search_depth` (ultra-fast/fast/basic/advanced), `topic`, `include_domains`, `exclude_domains`, `time_range`
+关键参数：`query`（查询内容）、`max_results`（搜索结果数量）、`search_depth`（搜索深度：超快速/快速/基本/高级）、`topic`（搜索主题）、`include_domains`（包含的域名）、`exclude_domains`（排除的域名）、`time_range`（时间范围）
 
-### extract() - URL Content Extraction
+### `extract()` - URL 内容提取
 
 ```python
 # Two-step pattern (recommended for control)
@@ -103,9 +103,9 @@ extracted = client.extract(
 )
 ```
 
-Key parameters: `urls` (max 20), `extract_depth`, `query`, `chunks_per_source` (1-5)
+关键参数：`urls`（最多 20 个 URL）、`extract_depth`（提取深度）、`query`（搜索查询）、`chunks_per_source`（每个来源的提取块数量，范围 1-5）
 
-### crawl() - Site-Wide Extraction
+### `crawl()` - 全站内容提取
 
 ```python
 response = client.crawl(
@@ -117,9 +117,9 @@ response = client.crawl(
 )
 ```
 
-Key parameters: `url`, `max_depth`, `max_breadth`, `limit`, `instructions`, `chunks_per_source`, `select_paths`, `exclude_paths`
+关键参数：`url`（要爬取的 URL）、`max_depth`（最大爬取深度）、`max_breadth`（最大爬取宽度）、`limit`（爬取限制）、`instructions`（爬取指令）、`chunks_per_source`（每个来源的提取块数量）、`select_paths`（需要提取的路径）、`exclude_paths`（需要排除的路径）
 
-### map() - URL Discovery
+### `map()` - URL 发现
 
 ```python
 response = client.map(
@@ -130,7 +130,7 @@ response = client.map(
 api_docs = [url for url in response["results"] if "/api/" in url]
 ```
 
-### research() - AI-Powered Research
+### `research()` - 基于 AI 的研究功能
 
 ```python
 import time
@@ -151,15 +151,15 @@ while response["status"] not in ["completed", "failed"]:
 print(response["content"])  # The research report
 ```
 
-Key parameters: `input`, `model` ("mini"/"pro"/"auto"), `stream`, `output_schema`, `citation_format`
+关键参数：`input`（输入数据）、`model`（模型类型：“mini”/“pro”/“auto”）、`stream`（数据流类型）、`output_schema`（输出格式）、`citation_format`（引用格式）
 
-## Detailed Guides
+## 详细指南
 
-For complete parameters, response fields, patterns, and examples:
+有关完整的参数、响应字段、使用模式和示例，请参阅以下文档：
 
-- **[references/sdk.md](references/sdk.md)** - Python & JavaScript SDK reference, async patterns, Hybrid RAG
-- **[references/search.md](references/search.md)** - Query optimization, search depth selection, domain filtering, async patterns, post-filtering
-- **[references/extract.md](references/extract.md)** - One-step vs two-step extraction, query/chunks for targeting, advanced mode
-- **[references/crawl.md](references/crawl.md)** - Crawl vs Map, instructions for semantic focus, use cases, Map-then-Extract pattern
-- **[references/research.md](references/research.md)** - Prompting best practices, model selection, streaming, structured output schemas
-- **[references/integrations.md](references/integrations.md)** - LangChain, LlamaIndex, CrewAI, Vercel AI SDK, and framework integrations
+- **[references/sdk.md]** - Python 和 JavaScript SDK 参考文档，包括异步处理模式和混合式检索架构（RAG）
+- **[references/search.md]** - 查询优化、搜索深度选择、域名过滤、异步处理模式、后续过滤操作
+- **[references/extract.md]** - 一步提取与两步提取方法，针对特定内容的查询方式，高级提取模式
+- **[references/crawl.md]** - 爬取与 URL 发现功能的区别，语义聚焦的爬取策略，以及“先映射再提取”的使用场景
+- **[references/research.md]** - 提示输入的最佳实践、模型选择、数据流处理方式、结构化输出格式
+- **[references/integrations.md]** - 与 LangChain、LlamaIndex、CrewAI、Vercel AI SDK 等框架的集成方法

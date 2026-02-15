@@ -1,6 +1,6 @@
 ---
 name: remotion-server
-description: Headless video rendering with Remotion. Works on any Linux server - no Mac or GUI needed. Templates for chat demos, promos, and more.
+description: 使用 Remotion 进行无头视频渲染。该技术适用于任何 Linux 服务器，无需 Mac 或图形用户界面（GUI）。提供用于聊天演示、宣传视频等多种用途的模板。
 homepage: https://remotion.dev
 user-invocable: true
 disable-model-invocation: true
@@ -14,38 +14,37 @@ metadata:
 
 # Remotion Server
 
-Render videos headlessly on any Linux server using Remotion. No Mac or GUI required.
+使用 Remotion，您可以在任何 Linux 服务器上无头渲染视频，无需 Mac 或图形用户界面。
 
-## Setup (one-time)
+## 设置（一次性操作）
 
-Install browser dependencies:
+安装浏览器所需的依赖项：
 ```bash
 bash {baseDir}/scripts/setup.sh
 ```
 
-## Quick Start
+## 快速入门
 
-### Create a project:
+### 创建项目：
 ```bash
 bash {baseDir}/scripts/create.sh my-video
 cd my-video
 ```
 
-### Render a video:
+### 渲染视频：
 ```bash
 npx remotion render MyComp out/video.mp4
 ```
 
-## Templates
+## 模板
 
-### Chat Demo (Telegram-style)
-Creates a phone mockup with animated chat messages.
-
+### 聊天演示（类似 Telegram 的风格）
+创建一个带有动画聊天信息的电话模拟界面。
 ```bash
 bash {baseDir}/scripts/create.sh my-promo --template chat
 ```
 
-Edit `src/messages.json`:
+编辑 `src/messages.json` 文件：
 ```json
 [
   {"text": "What's the weather?", "isUser": true},
@@ -53,67 +52,66 @@ Edit `src/messages.json`:
 ]
 ```
 
-### Title Card
-Simple animated title/intro card.
-
+### 标题卡
+简单的动画标题/介绍卡片。
 ```bash
 bash {baseDir}/scripts/create.sh my-intro --template title
 ```
 
-## Example Chat Usage
+## 聊天使用示例
 
-- "Make a video showing a chat about [topic]"
-- "Create a promo video for [feature]"
-- "Render a title card saying [text]"
+- “制作一个关于 [主题] 的聊天视频”
+- “为 [功能] 创建一个宣传视频”
+- “渲染一个显示 [文本] 的标题卡”
 
-## Linux Dependencies
+## Linux 所需依赖项
 
-The setup script installs:
-- libnss3, libatk, libcups2, libgbm, etc.
-- Required for Chrome Headless Shell
+设置脚本会安装以下库：
+- libnss3、libatk、libcups2、libgbm 等
+- 这些是 Chrome 无头 shell 所必需的
 
-For Ubuntu/Debian:
+对于 Ubuntu/Debian：
 ```bash
 sudo apt install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libgbm1 libpango-1.0-0 libcairo2 libxcomposite1 libxdamage1 libxfixes3 libxrandr2
 ```
 
-**Note:** Remotion 4.0.418+ uses custom Chrome binaries with proprietary codecs for both Linux x64 and ARM64, improving compatibility.
+**注意：** Remotion 4.0.418 及更高版本使用自定义的 Chrome 可执行文件，并针对 Linux x64 和 ARM64 架构提供了专有的编解码器，从而提高了兼容性。
 
-## Output Formats
+## 输出格式
 
-- MP4 (h264) - default
+- MP4 (h264) - 默认格式
 - WebM (vp8/vp9)
 - GIF
-- PNG sequence
+- PNG 序列图
 
 ```bash
 npx remotion render MyComp out/video.webm --codec=vp8
 npx remotion render MyComp out/video.gif --codec=gif
 ```
 
-## Privacy Note
+## 隐私声明
 
-All templates use FAKE demo data only:
-- Fake GPS coords (San Francisco: 37.7749, -122.4194)
-- Placeholder names and values
-- Never includes real user data
+所有模板仅使用模拟数据：
+- 模拟的 GPS 坐标（旧金山：37.7749, -122.4194）
+- 占位名称和值
+- 绝不包含真实用户数据
 
-Always review generated content before publishing.
+在发布之前，请务必检查生成的内容。
 
-## Security & Permissions
+## 安全性与权限
 
-**What this skill does:**
-- Installs Chromium dependencies for headless rendering (via `scripts/setup.sh`)
-- Creates Remotion project scaffolding locally (via `scripts/create.sh`)
-- Renders video files to local disk using `npx remotion render`
+**此技能的功能：**
+- 通过 `scripts/setup.sh` 安装用于无头渲染的 Chromium 依赖项
+- 通过 `scripts/create.sh` 在本地创建 Remotion 项目框架
+- 使用 `npx remotion render` 将视频文件渲染到本地磁盘
 
-**What this skill does NOT do:**
-- Does not require any API keys or credentials
-- Does not upload videos or data to external services
-- Does not access network resources beyond npm package downloads during setup
-- Does not access personal data — all templates use placeholder content
-- Cannot be invoked autonomously by the agent (`disable-model-invocation: true`)
+**此技能不执行以下操作：**
+- 不需要任何 API 密钥或凭证
+- 不会上传视频或数据到外部服务
+- 在设置过程中不会访问网络资源（仅限于 npm 包的下载）
+- 不会访问个人数据——所有模板都使用占位内容
+- 无法被代理程序自动调用（`disable-model-invocation: true`）
 
-**Bundled scripts:** `scripts/setup.sh` (install dependencies), `scripts/create.sh` (scaffold projects)
+**捆绑的脚本：** `scripts/setup.sh`（安装依赖项），`scripts/create.sh`（创建项目框架）
 
-Review scripts before first use. The setup script runs `apt install` for browser dependencies on Linux.
+在使用前请先查看这些脚本。设置脚本会在 Linux 上运行 `apt install` 命令来安装浏览器依赖项。

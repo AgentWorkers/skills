@@ -9,12 +9,12 @@ homepage: https://github.com/groxaxo/parakeet-tdt-0.6b-v3-fastapi-openai
 metadata: {"clawdbot":{"emoji":"🦜","env":["PARAKEET_URL"]}}
 ---
 
-# Parakeet TDT (Speech-to-Text)
+# Parakeet TDT（语音转文本）
 
-Local transcription using NVIDIA Parakeet TDT 0.6B v3 with ONNX Runtime.
-Runs on CPU — no GPU required. ~30x faster than realtime.
+使用 NVIDIA Parakeet TDT 0.6B v3 和 ONNX Runtime 进行本地转录。  
+可在 CPU 上运行——无需 GPU；转录速度比实时转录快约 30 倍。  
 
-## Installation
+## 安装  
 
 ```bash
 # Clone the repo
@@ -27,15 +27,15 @@ docker compose up -d parakeet-cpu
 # Or run directly with Python
 pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 5000
-```
+```  
 
-Default port is `5000`. Set `PARAKEET_URL` to override (e.g., `http://localhost:5092`).
+默认端口为 `5000`。可以通过设置 `PARAKEET_URL` 来更改端口（例如：`http://localhost:5092`）。  
 
-## API Endpoint
+## API 端点  
 
-OpenAI-compatible API at `$PARAKEET_URL` (default: `http://localhost:5000`).
+提供与 OpenAI 兼容的 API，地址为 `$PARAKEET_URL`（默认：`http://localhost:5000`）。  
 
-## Quick Start
+## 快速入门  
 
 ```bash
 # Transcribe audio file (plain text)
@@ -52,9 +52,9 @@ curl -X POST $PARAKEET_URL/v1/audio/transcriptions \
 curl -X POST $PARAKEET_URL/v1/audio/transcriptions \
   -F "file=@/path/to/audio.mp3" \
   -F "response_format=srt"
-```
+```  
 
-## Python / OpenAI SDK
+## Python / OpenAI SDK  
 
 ```python
 import os
@@ -72,32 +72,32 @@ with open("audio.mp3", "rb") as f:
         response_format="text"
     )
 print(transcript)
-```
+```  
 
-## Response Formats
+## 响应格式  
 
-| Format | Output |
+| 格式 | 输出内容 |
 |--------|--------|
-| `text` | Plain text |
+| `text` | 纯文本 |
 | `json` | `{"text": "..."}` |
-| `verbose_json` | Segments with timestamps and words |
-| `srt` | SRT subtitles |
-| `vtt` | WebVTT subtitles |
+| `verbose_json` | 带时间戳和单词的文本片段 |
+| `srt` | SRT 字幕 |
+| `vtt` | WebVTT 字幕 |
 
-## Supported Languages (25)
+## 支持的语言（共 25 种）  
 
-English, Spanish, French, German, Italian, Portuguese, Polish, Russian,
-Ukrainian, Dutch, Swedish, Danish, Finnish, Norwegian, Greek, Czech,
-Romanian, Hungarian, Bulgarian, Slovak, Croatian, Lithuanian, Latvian,
-Estonian, Slovenian
+英语、西班牙语、法语、德语、意大利语、葡萄牙语、波兰语、俄语、  
+乌克兰语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、捷克语、  
+罗马尼亚语、匈牙利语、保加利亚语、斯洛伐克语、克罗地亚语、立陶宛语、拉脱维亚语、  
+爱沙尼亚语、斯洛文尼亚语  
 
-Language is auto-detected — no configuration needed.
+语言会自动检测，无需额外配置。  
 
-## Web Interface
+## Web 界面  
 
-Open `$PARAKEET_URL` in a browser for drag-and-drop transcription UI.
+在浏览器中打开 `$PARAKEET_URL`，即可使用拖放功能进行转录操作。  
 
-## Docker Management
+## Docker 管理  
 
 ```bash
 # Check status
@@ -111,11 +111,11 @@ docker compose restart
 
 # Stop
 docker compose down
-```
+```  
 
-## Why Parakeet over Whisper?
+## 为什么选择 Parakeet 而不是 Whisper？  
 
-- **Speed**: ~30x faster than realtime on CPU
-- **Accuracy**: Comparable to Whisper large-v3
-- **Privacy**: Runs 100% locally, no cloud calls
-- **Compatibility**: Drop-in replacement for OpenAI's transcription API
+- **速度**：在 CPU 上的转录速度比实时转录快约 30 倍。  
+- **准确性**：与 Whisper v3 的准确性相当。  
+- **隐私保护**：所有处理完全在本地完成，无需使用云服务。  
+- **兼容性**：可以替代 OpenAI 的转录 API。

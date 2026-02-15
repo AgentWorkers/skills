@@ -1,39 +1,39 @@
 ---
 name: video-ad-deconstructor
 version: 1.0.0
-description: Deconstruct video ad creatives into marketing dimensions using Gemini AI. Extracts hooks, social proof, CTAs, target audience, emotional triggers, urgency tactics, and more. Use when analyzing competitor ads, generating creative briefs, or understanding what makes ads effective.
+description: 使用 Gemini AI 将视频广告创意分解为多个营销维度，提取出广告中的关键元素，如吸引用户的点（hooks）、社交证明（social proof）、行动号召（CTAs）、目标受众信息、能够引发情感共鸣的元素（emotional triggers）、以及用于营造紧迫感的策略（urgency tactics）等。该工具适用于分析竞争对手的广告、制定创意策划书，或深入了解广告效果背后的原因。
 ---
 
-# Video Ad Deconstructor
+# 视频广告分析工具
 
-AI-powered deconstruction of video ad creatives into actionable marketing insights.
+该工具利用人工智能技术，将视频广告内容分解为可操作的营销洞察。
 
-## What This Skill Does
+## 该工具的功能
 
-- **Generate Summaries**: Product, features, audience, CTA extraction
-- **Deconstruct Marketing Dimensions**: Hooks, social proof, urgency, emotion, etc.
-- **Support Multiple Content Types**: Consumer products and gaming ads
-- **Progress Tracking**: Callback support for long analyses
-- **JSON Output**: Structured data for downstream processing
+- **生成摘要**：提取产品信息、功能、目标受众以及呼吁行动（CTA）内容。
+- **分析营销要素**：识别广告中的关键元素，如吸引注意力的视觉元素、文字内容、用户评价等。
+- **支持多种内容类型**：适用于消费品广告和游戏广告的分析。
+- **进度跟踪**：支持长时间分析过程的回调功能。
+- **JSON输出**：提供结构化数据，便于后续处理。
 
-## Setup
+## 设置
 
-### 1. Environment Variables
+### 1. 环境变量
 
 ```bash
 # Required for Gemini
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ```
 
-### 2. Dependencies
+### 2. 依赖项
 
 ```bash
 pip install vertexai
 ```
 
-## Usage
+## 使用方法
 
-### Basic Ad Deconstruction
+### 基本广告分析
 
 ```python
 from scripts.deconstructor import AdDeconstructor
@@ -66,7 +66,7 @@ summary = deconstructor.generate_summary(
 print(summary)
 ```
 
-### Full Deconstruction
+### 全面广告分析
 
 ```python
 # Deconstruct all marketing dimensions
@@ -86,9 +86,9 @@ for dimension, data in analysis.dimensions.items():
     print(data)
 ```
 
-## Output Structure
+## 输出结构
 
-### Summary Output
+### 摘要输出
 
 ```
 Product/App: CableFlow Cable Organizer
@@ -103,7 +103,7 @@ Target Audience: Tech users frustrated with cable management
 Call to Action: Order now and get 50% off
 ```
 
-### Deconstruction Output
+### 分析结果输出
 
 ```python
 {
@@ -130,35 +130,35 @@ Call to Action: Order now and get 50% off
 }
 ```
 
-## Marketing Dimensions Deconstructed
+## 分析的营销要素
 
-| Dimension | What It Extracts |
-|-----------|------------------|
-| `spoken_hooks` | Opening hooks from transcript |
-| `visual_hooks` | Attention-grabbing visuals |
-| `text_hooks` | On-screen text hooks |
-| `social_proof` | Testimonials, user counts, reviews |
-| `urgency_scarcity` | Limited time offers, stock warnings |
-| `emotional_triggers` | Fear, desire, belonging, etc. |
-| `problem_solution` | Pain points and solutions |
-| `cta_analysis` | Call-to-action effectiveness |
-| `target_audience` | Who the ad targets |
-| `unique_mechanism` | What makes product special |
+| 要素        | 分析内容                         |
+|------------|--------------------------------------------|
+| `spoken_hooks`  | 广告中的口头引导语                         |
+| `visual_hooks`  | 吸引注意力的视觉元素                         |
+| `text_hooks`  | 屏幕上的文字内容                         |
+| `social_proof`  | 用户评价、观看次数等社交证明                   |
+| `urgency_scarcity` | 限时优惠、库存提醒等紧迫感元素             |
+| `emotional_triggers` | 情感触发因素（恐惧、欲望、归属感等）             |
+| `problem_solution` | 产品解决的问题                         |
+| `cta_analysis` | 呼吁行动（CTA）的有效性分析                 |
+| `target_audience`  | 广告的目标受众                         |
+| `unique_mechanism` | 产品的独特卖点                         |
 
-## Customizing Prompts
+## 自定义分析参数
 
-Edit prompts in `prompts/marketing_analysis.md` to customize:
+在 `prompts/marketing_analysis.md` 文件中编辑参数，以自定义以下内容：
 
-- What dimensions to analyze
-- Output format
-- Scoring criteria
-- Gaming vs consumer product focus
+- 需要分析的营销要素
+- 输出格式
+- 评分标准
+- 重点分析的对象（消费品广告或游戏广告）
 
-## Common Questions This Answers
+## 常见问题解答
 
-- "What hooks does this ad use?"
-- "What's the emotional appeal?"
-- "How does this ad create urgency?"
-- "Who is this ad targeting?"
-- "What social proof is shown?"
-- "Deconstruct this competitor's ad"
+- “这个广告使用了哪些吸引注意力的元素？”
+- “这个广告的情感诉求是什么？”
+- “这个广告是如何营造紧迫感的？”
+- “这个广告的目标受众是谁？”
+- “广告中展示了哪些社交证明？”
+- “分析一下竞争对手的广告。”

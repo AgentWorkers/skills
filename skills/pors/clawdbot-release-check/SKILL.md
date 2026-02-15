@@ -1,21 +1,21 @@
 ---
 name: clawdbot-release-check
-description: Check for new clawdbot releases and notify once per new version.
+description: 监控 `clawdbot` 的新版本发布，并在每个新版本发布时发送通知。
 homepage: https://github.com/clawdbot/clawdbot
 metadata: {"clawdbot":{"emoji":"🔄","requires":{"bins":["curl","jq"]}}}
 ---
 
-# Clawdbot Release Check
+# Clawdbot 版本检查工具
 
-Checks for new clawdbot releases from GitHub and notifies you once per version. No nagging.
+该工具会定期从 GitHub 检查 Clawdbot 的新版本，并在每次有新版本发布时通知您。不会频繁打扰您。
 
-## Installation
+## 安装
 
 ```bash
 clawdhub install clawdbot-release-check
 ```
 
-## Quick Setup (with cron)
+## 快速设置（使用 cron 任务）
 
 ```bash
 # Add daily update check at 9am, notify via Telegram
@@ -28,12 +28,12 @@ clawdhub install clawdbot-release-check
 {baseDir}/scripts/setup.sh --uninstall
 ```
 
-After setup, restart the gateway:
+设置完成后，请重启网关：
 ```bash
 launchctl kickstart -k gui/$(id -u)/com.clawdis.gateway
 ```
 
-## Manual Usage
+## 手动使用方法
 
 ```bash
 # Check for updates (silent if up-to-date or already notified)
@@ -55,14 +55,14 @@ launchctl kickstart -k gui/$(id -u)/com.clawdis.gateway
 {baseDir}/scripts/check.sh --help
 ```
 
-## How It Works
+## 工作原理
 
-1. Fetches latest release from `github.com/clawdbot/clawdbot/releases`
-2. Compares with your installed version (from `package.json`)
-3. If behind, shows highlights from release notes
-4. Saves state to prevent repeat notifications
+1. 从 `github.com/clawdbot/clawdbot/releases` 获取最新版本信息。
+2. 与您已安装的版本（存储在 `package.json` 中）进行比较。
+3. 如果发现版本更新，会显示版本更新说明中的重点内容。
+4. 保存检查状态信息，以避免重复通知。
 
-## Example Output
+## 示例输出
 
 ```
 🔄 **Clawdbot Update Available!**
@@ -82,9 +82,9 @@ _(3 versions behind)_
 To update: `cd /path/to/clawdis && git pull && pnpm install && pnpm build`
 ```
 
-## Files
+## 相关文件
 
-**State** — `~/.clawdbot/clawdbot-release-check-state.json`:
+**状态文件** — `~/.clawdbot/clawdbot-release-check-state.json`：
 ```json
 {
   "lastNotifiedVersion": "v2026.1.5-3",
@@ -92,15 +92,13 @@ To update: `cd /path/to/clawdis && git pull && pnpm install && pnpm build`
 }
 ```
 
-**Cache** — `~/.clawdbot/clawdbot-release-check-cache.json`:
-- Release data cached for 24 hours (saves API calls)
-- Highlights extracted once per release (saves tokens)
-- Use `--clear-cache` to force refresh
+**缓存文件** — `~/.clawdbot/clawdbot-release-check-cache.json`：
+- 版本信息缓存有效期为 24 小时（可减少 API 调用次数）。
+- 每次版本更新后，仅提取重点内容进行缓存（节省存储空间）。
+- 可使用 `--clear-cache` 命令强制刷新缓存。
 
-## Configuration
+## 配置参数
 
-Environment variables:
-- `CLAWDBOT_DIR` — Path to clawdbot source (auto-detected from `~/dev/clawdis`, `~/clawdbot`, or npm global)
-- `CACHE_MAX_AGE_HOURS` — Cache TTL in hours (default: 24)
-
-
+环境变量：
+- `CLAWDBOT_DIR` — Clawdbot 源代码的路径（系统会自动从 `~/dev/clawdis`、`~/clawdbot` 或 npm 全局目录中检测该路径）。
+- `CACHE_MAX_AGE_HOURS` — 缓存的有效时间（以小时为单位，默认值为 24 小时）。

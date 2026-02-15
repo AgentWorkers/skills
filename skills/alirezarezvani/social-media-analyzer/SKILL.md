@@ -1,6 +1,6 @@
 ---
 name: social-media-analyzer
-description: Social media campaign analysis and performance tracking. Calculates engagement rates, ROI, and benchmarks across platforms. Use for analyzing social media performance, calculating engagement rate, measuring campaign ROI, comparing platform metrics, or benchmarking against industry standards.
+description: 社交媒体活动分析与绩效追踪工具。能够计算各平台的参与度、投资回报率（ROI）及各项关键指标。适用于分析社交媒体活动的效果、评估活动投资回报率、对比不同平台的绩效数据，或根据行业标准进行基准测试。
 triggers:
   - analyze social media
   - calculate engagement rate
@@ -14,139 +14,139 @@ triggers:
   - LinkedIn engagement
 ---
 
-# Social Media Analyzer
+# 社交媒体分析工具
 
-Campaign performance analysis with engagement metrics, ROI calculations, and platform benchmarks.
-
----
-
-## Table of Contents
-
-- [Analysis Workflow](#analysis-workflow)
-- [Engagement Metrics](#engagement-metrics)
-- [ROI Calculation](#roi-calculation)
-- [Platform Benchmarks](#platform-benchmarks)
-- [Tools](#tools)
-- [Examples](#examples)
+该工具用于分析社交媒体活动的表现，提供参与度指标、投资回报率（ROI）计算以及平台基准数据。
 
 ---
 
-## Analysis Workflow
+## 目录
 
-Analyze social media campaign performance:
+- [分析工作流程](#analysis-workflow)
+- [参与度指标](#engagement-metrics)
+- [ROI 计算](#roi-calculation)
+- [平台基准](#platform-benchmarks)
+- [工具](#tools)
+- [示例](#examples)
 
-1. Validate input data completeness (reach > 0, dates valid)
-2. Calculate engagement metrics per post
-3. Aggregate campaign-level metrics
-4. Calculate ROI if ad spend provided
-5. Compare against platform benchmarks
-6. Identify top and bottom performers
-7. Generate recommendations
-8. **Validation:** Engagement rate < 100%, ROI matches spend data
+---
 
-### Input Requirements
+## 分析工作流程
 
-| Field | Required | Description |
+分析社交媒体活动的表现包括以下步骤：
+
+1. 验证输入数据的完整性（覆盖范围 > 0，日期有效）
+2. 计算每条帖子的参与度指标
+3. 汇总活动级别的各项指标
+4. 如果提供了广告支出，计算 ROI
+5. 与平台基准数据进行比较
+6. 确定表现最佳的帖子和最差的帖子
+7. 生成优化建议
+8. **验证要求：** 参与度低于 100% 时，ROI 必须与支出数据一致
+
+### 输入要求
+
+| 字段 | 是否必填 | 说明 |
 |-------|----------|-------------|
-| platform | Yes | instagram, facebook, twitter, linkedin, tiktok |
-| posts[] | Yes | Array of post data |
-| posts[].likes | Yes | Like/reaction count |
-| posts[].comments | Yes | Comment count |
-| posts[].reach | Yes | Unique users reached |
-| posts[].impressions | No | Total views |
-| posts[].shares | No | Share/retweet count |
-| posts[].saves | No | Save/bookmark count |
-| posts[].clicks | No | Link clicks |
-| total_spend | No | Ad spend (for ROI) |
+| 平台 | 是 | instagram、facebook、twitter、linkedin、tiktok |
+| 帖子数组 | 是 | 帖子数据数组 |
+| 帖子点赞数 | 是 | 点赞/互动次数 |
+| 帖子评论数 | 是 | 评论次数 |
+| 帖子覆盖范围 | 是 | 达到的唯一用户数 |
+| 帖子展示次数 | 否 | 总浏览量 |
+| 帖子分享次数 | 否 | 分享/转发次数 |
+| 帖子保存次数 | 否 | 保存/书签次数 |
+| 帖子点击次数 | 否 | 链接点击次数 |
+| 总支出 | 否 | 广告支出（用于计算 ROI） |
 
-### Data Validation Checks
+### 数据验证
 
-Before analysis, verify:
+在分析之前，请确认以下内容：
 
-- [ ] Reach > 0 for all posts (avoid division by zero)
-- [ ] Engagement counts are non-negative
-- [ ] Date range is valid (start < end)
-- [ ] Platform is recognized
-- [ ] Spend > 0 if ROI requested
+- 所有帖子的覆盖范围 > 0（避免除以零的情况）
+- 参与度数据为非负数
+- 日期范围有效（开始日期 < 结束日期）
+- 平台被正确识别
+- 如果需要计算 ROI，则广告支出 > 0
 
 ---
 
-## Engagement Metrics
+## 参与度指标
 
-### Engagement Rate Calculation
+### 参与度计算
 
 ```
 Engagement Rate = (Likes + Comments + Shares + Saves) / Reach × 100
 ```
 
-### Metric Definitions
+### 指标定义
 
-| Metric | Formula | Interpretation |
+| 指标 | 公式 | 解释 |
 |--------|---------|----------------|
-| Engagement Rate | Engagements / Reach × 100 | Audience interaction level |
-| CTR | Clicks / Impressions × 100 | Content click appeal |
-| Reach Rate | Reach / Followers × 100 | Content distribution |
-| Virality Rate | Shares / Impressions × 100 | Share-worthiness |
-| Save Rate | Saves / Reach × 100 | Content value |
+| 参与度 | 参与次数 / 覆盖范围 × 100 | 观众互动程度 |
+| 点击率（CTR） | 点击次数 / 展示次数 × 100 | 内容的吸引力 |
+| 覆盖率 | 覆盖范围 / 关注者数量 × 100 | 内容传播范围 |
+| 病毒传播率 | 分享次数 / 展示次数 × 100 | 内容的分享价值 |
+| 保存率 | 保存次数 / 覆盖范围 × 100 | 内容的价值 |
 
-### Performance Categories
+### 表现评估标准
 
-| Rating | Engagement Rate | Action |
+| 评分 | 参与度 | 推荐措施 |
 |--------|-----------------|--------|
-| Excellent | > 6% | Scale and replicate |
-| Good | 3-6% | Optimize and expand |
-| Average | 1-3% | Test improvements |
-| Poor | < 1% | Analyze and pivot |
+| 优秀 | > 6% | 扩大规模并复制成功策略 |
+| 良好 | 3-6% | 优化并扩大影响力 |
+| 一般 | 1-3% | 测试改进方案 |
+| 较差 | < 1% | 分析原因并调整策略 |
 
 ---
 
-## ROI Calculation
+## ROI 计算
 
-Calculate return on ad spend:
+计算广告支出的回报：
 
-1. Sum total engagements across posts
-2. Calculate cost per engagement (CPE)
-3. Calculate cost per click (CPC) if clicks available
-4. Estimate engagement value using benchmark rates
-5. Calculate ROI percentage
-6. **Validation:** ROI = (Value - Spend) / Spend × 100
+1. 求和所有帖子的总参与次数
+2. 计算每次参与的成本（CPE）
+3. 如果有点击数据，计算每次点击的成本（CPC）
+4. 使用基准数据估算参与价值
+5. 计算 ROI 百分比
+6. **验证要求：** ROI = (参与价值 - 广告支出) / 广告支出 × 100
 
-### ROI Formulas
+### ROI 计算公式
 
-| Metric | Formula |
+| 指标 | 公式 |
 |--------|---------|
-| Cost Per Engagement (CPE) | Total Spend / Total Engagements |
-| Cost Per Click (CPC) | Total Spend / Total Clicks |
-| Cost Per Thousand (CPM) | (Spend / Impressions) × 1000 |
-| Return on Ad Spend (ROAS) | Revenue / Ad Spend |
+| 每次参与的成本（CPE） | 总支出 / 总参与次数 |
+| 每次点击的成本（CPC） | 总支出 / 总点击次数 |
+| 每千次展示的成本（CPM） | (广告支出 / 展示次数) × 1000 |
+| 广告支出回报率（ROAS） | 收入 / 广告支出 |
 
-### Engagement Value Estimates
+### 参与价值估算
 
-| Action | Value | Rationale |
+| 行为 | 价值 | 原因 |
 |--------|-------|-----------|
-| Like | $0.50 | Brand awareness |
-| Comment | $2.00 | Active engagement |
-| Share | $5.00 | Amplification |
-| Save | $3.00 | Intent signal |
-| Click | $1.50 | Traffic value |
+| 点赞 | 0.50 美元 | 提升品牌知名度 |
+| 评论 | 2.00 美元 | 积极互动 |
+| 分享 | 5.00 美元 | 内容传播 |
+| 保存 | 3.00 美元 | 表明用户感兴趣 |
+| 点击 | 1.50 美元 | 增加网站流量 |
 
-### ROI Interpretation
+### ROI 解释
 
-| ROI % | Rating | Recommendation |
+| ROI 百分比 | 评分 | 建议 |
 |-------|--------|----------------|
-| > 500% | Excellent | Scale budget significantly |
-| 200-500% | Good | Increase budget moderately |
-| 100-200% | Acceptable | Optimize before scaling |
-| 0-100% | Break-even | Review targeting and creative |
-| < 0% | Negative | Pause and restructure |
+| > 500% | 优秀 | 大幅增加预算 |
+| 200-500% | 良好 | 适度增加预算 |
+| 100-200% | 可接受 | 在扩大规模前进行优化 |
+| 0-100% | 收支平衡 | 重新评估目标受众和创意策略 |
+| < 0% | 负值 | 暂停活动并重新调整策略 |
 
 ---
 
-## Platform Benchmarks
+## 平台基准
 
-### Engagement Rate by Platform
+### 各平台的参与度
 
-| Platform | Average | Good | Excellent |
+| 平台 | 平均值 | 良好 | 优秀 |
 |----------|---------|------|-----------|
 | Instagram | 1.22% | 3-6% | >6% |
 | Facebook | 0.07% | 0.5-1% | >1% |
@@ -154,60 +154,60 @@ Calculate return on ad spend:
 | LinkedIn | 2.0% | 3-5% | >5% |
 | TikTok | 5.96% | 8-15% | >15% |
 
-### CTR by Platform
+### 各平台的点击率（CTR）
 
-| Platform | Average | Good | Excellent |
+| 平台 | 平均值 | 良好 | 优秀 |
 |----------|---------|------|-----------|
 | Instagram | 0.22% | 0.5-1% | >1% |
 | Facebook | 0.90% | 1.5-2.5% | >2.5% |
 | LinkedIn | 0.44% | 1-2% | >2% |
 | TikTok | 0.30% | 0.5-1% | >1% |
 
-### CPC by Platform
+### 各平台的每次点击成本（CPC）
 
-| Platform | Average | Good |
+| 平台 | 平均值 | 良好 |
 |----------|---------|------|
-| Facebook | $0.97 | <$0.50 |
-| Instagram | $1.20 | <$0.70 |
-| LinkedIn | $5.26 | <$3.00 |
-| TikTok | $1.00 | <$0.50 |
+| Facebook | 0.97 美元 | <0.50 美元 |
+| Instagram | 1.20 美元 | <0.70 美元 |
+| LinkedIn | 5.26 美元 | <3.00 美元 |
+| TikTok | 1.00 美元 | <0.50 美元 |
 
-See `references/platform-benchmarks.md` for complete benchmark data.
+完整的基准数据请参阅 `references/platform-benchmarks.md`。
 
 ---
 
-## Tools
+## 工具
 
-### Calculate Metrics
+### 计算指标
 
 ```bash
 python scripts/calculate_metrics.py assets/sample_input.json
 ```
 
-Calculates engagement rate, CTR, reach rate for each post and campaign totals.
+用于计算每条帖子和整个活动的参与度、点击率和覆盖率。
 
-### Analyze Performance
+### 分析表现
 
 ```bash
 python scripts/analyze_performance.py assets/sample_input.json
 ```
 
-Generates full performance analysis with ROI, benchmarks, and recommendations.
+生成包含 ROI、基准数据和优化建议的全面分析报告。
 
-**Output includes:**
-- Campaign-level metrics
-- Post-by-post breakdown
-- Benchmark comparisons
-- Top performers ranked
-- Actionable recommendations
+**输出内容包括：**
+- 活动级别的各项指标
+- 每条帖子的详细数据
+- 与基准数据的对比
+- 表现最佳的帖子排名
+- 可操作的优化建议
 
 ---
 
-## Examples
+## 示例
 
-### Sample Input
+### 示例输入
 
-See `assets/sample_input.json`:
+请参阅 `assets/sample_input.json`：
 
 ```json
 {
@@ -229,9 +229,9 @@ See `assets/sample_input.json`:
 }
 ```
 
-### Sample Output
+### 示例输出
 
-See `assets/expected_output.json`:
+请参阅 `assets/expected_output.json`：
 
 ```json
 {
@@ -256,25 +256,24 @@ See `assets/expected_output.json`:
 }
 ```
 
-### Interpretation
+### 解释
 
-The sample campaign shows:
-- **Engagement rate 8.36%** vs 1.22% benchmark = Excellent (6.8x above average)
-- **CTR 1.55%** vs 0.22% benchmark = Excellent (7x above average)
-- **ROI 660%** = Outstanding return on $500 spend
-- **Recommendation:** Scale budget, replicate successful elements
+示例活动显示：
+- **参与度为 8.36%，而基准值为 1.22%，属于优秀表现（是平均水平的 6.8 倍）**
+- **点击率为 1.55%，而基准值为 0.22%，属于优秀表现（是平均水平的 7 倍）**
+- **ROI 为 660%，在 500 美元的广告支出下获得了出色的回报**
+- **建议：** 扩大预算，并复制成功的策略
 
 ---
 
-## Reference Documentation
+## 参考文档
 
-### Platform Benchmarks
+### 平台基准
 
-`references/platform-benchmarks.md` contains:
-
-- Engagement rate benchmarks by platform and industry
-- CTR benchmarks for organic and paid content
-- Cost benchmarks (CPC, CPM, CPE)
-- Content type performance by platform
-- Optimal posting times and frequency
-- ROI calculation formulas
+`references/platform-benchmarks.md` 包含以下内容：
+- 各平台和行业的参与度基准数据
+- 有机内容和付费内容的点击率基准
+- 各平台的成本基准（CPC、CPM、CPE）
+- 不同类型内容的表现
+- 最佳的发布时间和频率
+- ROI 计算公式

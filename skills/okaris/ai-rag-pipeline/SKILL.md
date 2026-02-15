@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI RAG Pipeline
+# AI RAG 管道
 
-Build RAG (Retrieval Augmented Generation) pipelines via [inference.sh](https://inference.sh) CLI.
+您可以通过 [inference.sh](https://inference.sh) 命令行界面（CLI）来构建 RAG（Retrieval Augmented Generation，检索增强生成）管道。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,64 +27,64 @@ infsh app run openrouter/claude-sonnet-45 --input "{
 }"
 ```
 
-## What is RAG?
+## 什么是 RAG？
 
-RAG combines:
-1. **Retrieval**: Fetch relevant information from external sources
-2. **Augmentation**: Add retrieved context to the prompt
-3. **Generation**: LLM generates response using the context
+RAG 结合了以下三个步骤：
+1. **检索**：从外部来源获取相关信息。
+2. **增强**：将检索到的内容添加到问题提示中。
+3. **生成**：大型语言模型（LLM）利用这些信息生成回答。
 
-This produces more accurate, up-to-date, and verifiable AI responses.
+这种方式能够产生更准确、更及时且可验证的 AI 回答。
 
-## RAG Pipeline Patterns
+## RAG 管道模式
 
-### Pattern 1: Simple Search + Answer
+### 模式 1：简单搜索 + 回答
 
 ```
 [User Query] -> [Web Search] -> [LLM with Context] -> [Answer]
 ```
 
-### Pattern 2: Multi-Source Research
+### 模式 2：多源研究
 
 ```
 [Query] -> [Multiple Searches] -> [Aggregate] -> [LLM Analysis] -> [Report]
 ```
 
-### Pattern 3: Extract + Process
+### 模式 3：提取 + 处理
 
 ```
 [URLs] -> [Content Extraction] -> [Chunking] -> [LLM Summary] -> [Output]
 ```
 
-## Available Tools
+## 可用工具
 
-### Search Tools
+### 搜索工具
 
-| Tool | App ID | Best For |
+| 工具 | 应用 ID | 适用场景 |
 |------|--------|----------|
-| Tavily Search | `tavily/search-assistant` | AI-powered search with answers |
-| Exa Search | `exa/search` | Neural search, semantic matching |
-| Exa Answer | `exa/answer` | Direct factual answers |
+| Tavily Search | `tavily/search-assistant` | 基于 AI 的搜索工具，提供答案 |
+| Exa Search | `exa/search` | 神经搜索，语义匹配 |
+| Exa Answer | `exa/answer` | 直接提供事实性答案 |
 
-### Extraction Tools
+### 提取工具
 
-| Tool | App ID | Best For |
+| 工具 | 应用 ID | 适用场景 |
 |------|--------|----------|
-| Tavily Extract | `tavily/extract` | Clean content from URLs |
-| Exa Extract | `exa/extract` | Analyze web content |
+| Tavily Extract | `tavily/extract` | 从 URL 中提取内容 |
+| Exa Extract | `exa/extract` | 分析网页内容 |
 
-### LLM Tools
+### LLM 工具
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | Complex analysis |
-| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | Fast processing |
-| GPT-4o | `openrouter/gpt-4o` | General purpose |
-| Gemini 2.5 Pro | `openrouter/gemini-25-pro` | Long context |
+| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | 复杂数据分析 |
+| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | 快速处理 |
+| GPT-4o | `openrouter/gpt-4o` | 通用型模型 |
+| Gemini 2.5 Pro | `openrouter/gemini-25-pro` | 处理长篇文本 |
 
-## Pipeline Examples
+## 管道示例
 
-### Basic RAG Pipeline
+### 基本 RAG 管道
 
 ```bash
 # 1. Search for information
@@ -103,7 +103,7 @@ Provide a well-structured summary with source citations.\"
 }"
 ```
 
-### Multi-Source Research
+### 多源研究
 
 ```bash
 # Search multiple sources
@@ -124,7 +124,7 @@ Provide a balanced analysis with sources.\"
 }"
 ```
 
-### URL Content Analysis
+### URL 内容分析
 
 ```bash
 # 1. Extract content from specific URLs
@@ -148,7 +148,7 @@ Provide:
 }"
 ```
 
-### Fact-Checking Pipeline
+### 事实核查管道
 
 ```bash
 # Claim to verify
@@ -174,7 +174,7 @@ Provide:
 }"
 ```
 
-### Research Report Generator
+### 研究报告生成器
 
 ```bash
 TOPIC="Impact of generative AI on creative industries"
@@ -208,7 +208,7 @@ Format as a professional report with:
 }"
 ```
 
-### Quick Answer with Sources
+### 带有来源的快速回答
 
 ```bash
 # Use Exa Answer for direct factual questions
@@ -217,9 +217,9 @@ infsh app run exa/answer --input '{
 }'
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Query Optimization
+### 1. 查询优化
 
 ```bash
 # Bad: Too vague
@@ -229,7 +229,7 @@ infsh app run exa/answer --input '{
 "latest developments in large language models January 2024"
 ```
 
-### 2. Context Management
+### 2. 上下文管理
 
 ```bash
 # Summarize long search results before sending to LLM
@@ -246,9 +246,9 @@ infsh app run openrouter/claude-sonnet-45 --input "{
 }"
 ```
 
-### 3. Source Attribution
+### 3. 来源标注
 
-Always ask the LLM to cite sources:
+始终要求 LLM 引用其使用的信息来源：
 
 ```bash
 infsh app run openrouter/claude-sonnet-45 --input '{
@@ -256,7 +256,7 @@ infsh app run openrouter/claude-sonnet-45 --input '{
 }'
 ```
 
-### 4. Iterative Research
+### 4. 迭代研究
 
 ```bash
 # First pass: broad search
@@ -266,9 +266,9 @@ INITIAL=$(infsh app run tavily/search-assistant --input '{"query": "topic overvi
 DEEP=$(infsh app run tavily/search-assistant --input '{"query": "specific aspect from initial search"}')
 ```
 
-## Pipeline Templates
+## 管道模板
 
-### Agent Research Tool
+### 代理研究工具
 
 ```bash
 #!/bin/bash
@@ -289,7 +289,7 @@ research() {
 research "your query here"
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Web search tools
@@ -305,9 +305,9 @@ npx skills add inference-sh/agent-skills@ai-content-pipeline
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse all apps: `infsh app list`
+查看所有工具：`infsh app list`
 
-## Documentation
+## 文档
 
-- [Adding Tools to Agents](https://inference.sh/docs/agents/adding-tools) - Agent tool integration
-- [Building a Research Agent](https://inference.sh/blog/guides/research-agent) - Full guide
+- [将工具添加到代理中](https://inference.sh/docs/agents/adding-tools) - 代理工具集成指南
+- [构建研究代理](https://inference.sh/blog/guides/research-agent) - 完整指南

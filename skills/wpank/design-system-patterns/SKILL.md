@@ -1,29 +1,29 @@
 ---
 name: design-system-patterns
 model: standard
-description: Foundational design system architecture — token hierarchies, theming infrastructure, token pipelines, and governance. Use when creating design tokens, implementing theme switching, setting up Style Dictionary, or establishing multi-brand theming. Triggers on design tokens, theme provider, Style Dictionary, token pipeline, multi-brand theming, CSS custom properties architecture.
+description: 基础设计系统架构包括：令牌层次结构（token hierarchies）、主题管理基础设施（theming infrastructure）、令牌处理流程（token pipelines）以及系统治理机制（governance）。该架构适用于创建设计相关令牌（design tokens）、实现主题切换（theme switching）、配置样式字典（Style Dictionary），以及建立多品牌主题管理系统（multi-brand theming）。相关功能会触发设计令牌（design tokens）、主题提供者（theme provider）、样式字典（Style Dictionary）、令牌处理流程（token pipelines）以及多品牌主题管理机制（multi-brand theming）的运行。此外，该架构还涉及CSS自定义属性（CSS custom properties）的相关设计。
 ---
 
-# Design System Patterns
+# 设计系统模式
 
-Foundational architecture for scalable design systems: token hierarchies, theming infrastructure, token pipelines, and governance patterns.
-
----
-
-## When to Use
-
-- Defining token architecture (primitive → semantic → component layers)
-- Implementing light/dark/system theme switching with React
-- Setting up Style Dictionary or Figma-to-code token pipelines
-- Building multi-brand theming systems
-- Establishing token naming conventions and governance
-- Preventing flash of unstyled content (FOUC) in SSR
+可扩展设计系统的基础架构：令牌层次结构、主题基础设施、令牌管道以及治理模式。
 
 ---
 
-## Pattern 1: Token Hierarchy
+## 适用场景
 
-Three-layer token architecture separates raw values from meaning from usage.
+- 定义令牌架构（从基本类型到语义类型再到组件类型）
+- 使用 React 实现浅色/深色/系统主题切换
+- 设置样式字典或 Figma 到代码的令牌管道
+- 构建多品牌主题系统
+- 建立令牌命名规范和治理机制
+- 防止服务器端渲染（SSR）时出现无样式内容（FOUC，Flash of Unstyled Content）
+
+---
+
+## 模式 1：令牌层次结构
+
+三层令牌架构将原始值、语义信息和使用方式分开。
 
 ```css
 /* Layer 1: Primitive tokens — raw values, never used directly in components */
@@ -65,13 +65,13 @@ Three-layer token architecture separates raw values from meaning from usage.
 }
 ```
 
-> Semantic tokens are the most important layer — they enable theming. Component tokens are optional and useful for complex component libraries.
+> 语义令牌是最重要的层次——它们决定了主题样式。组件令牌是可选的，对于复杂的组件库非常有用。
 
 ---
 
-## Pattern 2: Theme Switching with React
+## 模式 2：使用 React 进行主题切换
 
-Key capabilities: `theme` (user selection), `resolvedTheme` (actual light/dark), `setTheme`, system preference detection, localStorage persistence, DOM attribute application.
+关键功能：`theme`（用户选择）、`resolvedTheme`（实际应用的浅色/深色主题）、`setTheme`、系统偏好检测、使用 `localStorage` 保存设置、以及应用 DOM 属性。
 
 ```tsx
 type Theme = "light" | "dark" | "system";
@@ -116,11 +116,11 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
 }
 ```
 
-Full implementation with `toggleTheme`, `disableTransitionOnChange`, and testing patterns in [references/theming-architecture.md](references/theming-architecture.md).
+完整的实现方式包括 `toggleTheme`、`disableTransitionOnChange`，以及相关测试，请参阅 [references/theming-architecture.md](references/theming-architecture.md)。
 
-### Preventing FOUC in SSR (Next.js)
+### 在 SSR 中防止 FOUC（Next.js）
 
-Inline script in `<head>` runs before paint:
+`<head>` 标签中的内联脚本会在页面绘制之前执行：
 
 ```tsx
 const themeScript = `(function(){
@@ -141,9 +141,9 @@ const themeScript = `(function(){
 
 ---
 
-## Pattern 3: Multi-Brand Theming
+## 模式 3：多品牌主题
 
-Layer brand tokens on top of semantic tokens for white-label products:
+在语义令牌的基础上添加品牌特定的令牌，以实现白标签产品的定制化主题效果：
 
 ```css
 [data-brand="corporate"] {
@@ -169,9 +169,9 @@ Layer brand tokens on top of semantic tokens for white-label products:
 
 ---
 
-## Pattern 4: Style Dictionary Pipeline
+## 模式 4：样式字典管道
 
-Multi-platform token generation from a single JSON source:
+从单一 JSON 源文件生成适用于多个平台的令牌：
 
 ```javascript
 // style-dictionary.config.js — generates CSS, iOS Swift, and Android XML
@@ -197,11 +197,11 @@ module.exports = {
 };
 ```
 
-See [references/design-tokens.md](references/design-tokens.md) for token category definitions, custom transforms, and platform-specific output examples.
+有关令牌类别定义、自定义转换规则以及平台特定输出示例，请参阅 [references/design-tokens.md](references/design-tokens.md)。
 
 ---
 
-## Pattern 5: Accessibility Tokens
+## 模式 5：可访问性令牌
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -229,20 +229,20 @@ See [references/design-tokens.md](references/design-tokens.md) for token categor
 
 ---
 
-## Token Naming Conventions
+## 令牌命名规范
 
-Format: `[category]-[property]-[variant]-[state]` (e.g. `color-border-input-focus`)
+命名格式：`[类别]-[属性]-[变体]-[状态]`（例如 `color-border-input-focus`）
 
-1. **kebab-case** — `text-primary` not `textPrimary`
-2. **Semantic names** — `danger` not `red`
-3. **State suffixes** — `-hover`, `-focus`, `-active`, `-disabled`
-4. **Scale indicators** — `spacing-4`, `font-size-lg`
+1. **使用驼峰式命名法**（如 `text-primary` 而非 `textPrimary`）
+2. **使用语义化的名称**（如 `danger` 而非 `red`）
+3. **使用状态后缀**（如 `-hover`、`-focus`、`-active`、`-disabled`）
+4. **用于表示尺寸变化的后缀**（如 `spacing-4`、`font-size-lg`）
 
 ---
 
-## Token Governance
+## 令牌治理流程
 
-Change management: **Propose** → **Review** (design + eng) → **Test** (all platforms/themes) → **Deprecate** (with migration path) → **Remove** (after deprecation period).
+变更管理流程：**提案** → **审查**（设计团队和开发团队共同参与）→ **测试**（所有平台和主题）→ **逐步淘汰**（并提供迁移路径）→ **最终移除**（在淘汰期限结束后）。
 
 ```json
 {
@@ -257,39 +257,39 @@ Change management: **Propose** → **Review** (design + eng) → **Test** (all p
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Name tokens by purpose** — semantic names, not visual descriptions
-2. **Maintain the hierarchy** — primitives → semantic → component
-3. **Version tokens** — treat token changes as API changes with semver
-4. **Test all theme combinations** — every theme must work with every component
-5. **Automate the pipeline** — CI/CD for Figma-to-code synchronization
-6. **Provide migration paths** — deprecate gradually with clear alternatives
-7. **Validate contrast** — automated WCAG AA/AAA checks on token pairs
-
----
-
-## Common Pitfalls
-
-- **Token sprawl** — too many tokens without clear hierarchy
-- **Inconsistent naming** — mixing camelCase and kebab-case
-- **Hardcoded values** — using raw hex/rem instead of token references
-- **Circular references** — tokens referencing each other in loops
-- **Platform gaps** — tokens defined for web but missing for mobile
-- **Missing dark mode** — semantic tokens that don't adapt to themes
+1. **根据功能来命名令牌**——使用语义化的名称，而非视觉描述
+2. **保持层次结构**——从基本类型到语义类型再到组件类型
+3. **为令牌版本进行版本控制**——将令牌的变更视为 API 变更，并使用 semver 版本号进行管理
+4. **测试所有主题组合**——确保每个主题都能与所有组件正常配合使用
+5. **自动化流程**——利用 CI/CD 工具实现 Figma 到代码的同步
+6. **提供迁移路径**——逐步淘汰旧令牌，并提供明确的替代方案
+7. **验证对比度**——自动检查令牌对是否符合 WCAG AA/AAA 标准
 
 ---
 
-## Related Skills
+## 常见问题
 
-- [design-system-components](../design-system-components/) — CVA variant patterns and Surface primitives
-- [distinctive-design-systems](../distinctive-design-systems/) — Aesthetic documentation and visual identity
-- [theme-factory](../theme-factory/) — Pre-built theme palettes for artifacts
+- **令牌过多且缺乏层次结构**——令牌数量过多且没有清晰的分类
+- **命名不一致**——混合使用驼峰式和蛇形命名法
+- **使用硬编码值**——直接使用十六进制或 REM 单位而非令牌引用
+- **循环引用**——令牌之间相互引用
+- **平台差异**——某些令牌仅适用于 Web 平台，而移动平台缺少相应的令牌
+- **缺少深色模式**——某些语义令牌无法根据主题进行切换
 
 ---
 
-## References
+## 相关技能
 
-- [references/design-tokens.md](references/design-tokens.md) — Complete token category definitions
-- [references/theming-architecture.md](references/theming-architecture.md) — Detailed theming implementation
-- [references/component-architecture.md](references/component-architecture.md) — Compound, polymorphic, and headless patterns
+- [design-system-components](../design-system-components/)——CVA 变体模式和基础组件
+- [distinctive-design-systems](../distinctive-design-systems/)——美学设计和视觉识别系统
+- [theme-factory](../theme-factory/)——预构建的主题调色板
+
+---
+
+## 参考资料
+
+- [references/design-tokens.md](references/design-tokens.md)——完整的令牌类别定义
+- [references/theming-architecture.md](references/theming-architecture.md)——详细的主题实现方式
+- [references/component-architecture.md](references/component-architecture.md)——复合组件、多态组件和无头组件相关的设计模式

@@ -1,19 +1,19 @@
 ---
 name: kilocli-coding-agent
-description: Run Kilo CLI via background process for programmatic control.
+description: 通过后台进程运行 Kilo CLI，以实现程序化的控制。
 ---
 
-IMPORTANT: You need to have Kilo CLI installed and configured so OpenClaw can use it without any issue.
+**重要提示：** 你必须安装并配置好 Kilo CLI，这样 OpenClaw 才能顺利使用它。
 
 ```sh
 npm install -g @kilocode/cli
 ```
 
-# Coding Agent (background-first)
+# 编码代理（优先使用后台模式）
 
-Use **bash background mode** for non-interactive coding work. For interactive coding sessions, use the **tmux** skill (always, except very simple one-shot prompts).
+对于非交互式的编码工作，请使用 **bash 后台模式**。对于交互式的编码会话，请始终使用 **tmux**（除非是简单的、一次性完成的操作）。
 
-## The Pattern: workdir + background
+## 模式：工作目录 + 后台模式
 
 ```bash
 # Create temp space for chats/scratch work
@@ -38,22 +38,23 @@ process action:write sessionId:XXX data:"y"
 process action:kill sessionId:XXX
 ```
 
-**Why workdir matters:** Agent wakes up in a focused directory, doesn't wander off reading unrelated files (like your soul.md 😅).
+**为什么工作目录很重要？** 代理会在一个专注的目录中启动，不会去读取无关的文件（比如你的 `soul.md` 文件 😅）。
 
 ---
 
 ## Kilo CLI
 
-### Building/Creating (use --full-auto or --yolo)
+### 构建/创建（使用 `--full-auto` 或 `--yolo`）
+
 ```bash
 bash workdir:~/project background:true command:"kilo run \"Build a snake game with dark theme\""
 ```
 
-### Reviewing PRs (vanilla, no flags)
+### 查看 PR（基础用法，无需任何参数）
 
-**⚠️ CRITICAL: Never review PRs in Clawdbot's own project folder!**
-- Either use the project where the PR is submitted (if it's NOT ~/Projects/clawdbot)
-- Or clone to a temp folder first
+**⚠️ 重要提示：** 绝不要在 Clawdbot 项目的文件夹内查看 PR！**
+- 请使用 PR 被提交到的项目文件夹（如果它不在 `~/Projects/clawdbot` 中）；
+- 或者先将其克隆到一个临时文件夹中。
 
 ```bash
 # Option 1: Review in the actual project (if NOT clawdbot)
@@ -71,9 +72,10 @@ git worktree add /tmp/pr-130-review pr-130-branch
 bash workdir:/tmp/pr-130-review background:true command:"kilo run \"Review current branch against main branch\""
 ```
 
-**Why?** Checking out branches in the running Clawdbot repo can break the live instance!
+**为什么？** 在正在运行的 Clawdbot 仓库中检出分支可能会导致实例出问题！
 
-### Batch PR Reviews (parallel army!)
+### 批量查看 PR（并行处理）
+
 ```bash
 # Fetch all PR refs first
 git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
@@ -92,23 +94,23 @@ process action:log sessionId:XXX
 gh pr comment <PR#> --body "<review content>"
 ```
 
-### Tips for PR Reviews
-- **Fetch refs first:** `git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'`
-- **Use git diff:** Tell Kilo CLI to use `git diff origin/main...origin/pr/XX`
-- **Don't checkout:** Multiple parallel reviews = don't let them change branches
-- **Post results:** Use `gh pr comment` to post reviews to GitHub
+### 查看 PR 的技巧：
+- **先获取引用：** `git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'`
+- **使用 `git diff`：** 告诉 Kilo CLI 使用 `git diff origin/main...origin/pr/XX`
+- **不要检出分支：** 多个并行查看操作可能会导致分支被修改
+- **发布结果：** 使用 `gh pr comment` 将评论发布到 GitHub
 
 ---
 
-## tmux (interactive sessions)
+## tmux（交互式会话）
 
-Use the tmux skill for interactive coding sessions (always, except very simple one-shot prompts). Prefer bash background mode for non-interactive runs.
+对于交互式的编码会话，请始终使用 tmux（除非是简单的、一次性完成的操作）。对于非交互式的运行，请优先使用 bash 后台模式。
 
 ---
 
-## Parallel Issue Fixing with git worktrees + tmux
+## 使用 git worktrees 和 tmux 并行修复问题
 
-For fixing multiple issues in parallel, use git worktrees (isolated branches) + tmux sessions:
+要并行修复多个问题，可以使用 git worktrees（隔离的分支）和 tmux 会话：
 
 ```bash
 # 1. Clone repo to temp location
@@ -145,28 +147,27 @@ git worktree remove /tmp/issue-78
 git worktree remove /tmp/issue-99
 ```
 
-**Why worktrees?** Each Kilo CLI works in isolated branch, no conflicts. Can run 5+ parallel fixes!
+**为什么使用 worktrees？** 每个 Kilo CLI 都在隔离的分支中运行，不会产生冲突。可以同时进行 5 个以上的修复操作！
 
-**Why tmux over bash background?** Kilo CLI is interactive — needs TTY for proper output. tmux provides persistent sessions with full history capture.
-
----
-
-## ⚠️ Rules
-
-1. **Respect tool choice** — if user asks for Kilo CLI, use Kilo CLI. NEVER offer to build it yourself!
-2. **Be patient** — don't kill sessions because they're "slow"
-3. **Monitor with process:log** — check progress without interfering
-4. **--full-auto for building** — auto-approves changes
-5. **vanilla for reviewing** — no special flags needed
-6. **Parallel is OK** — run many Kilo CLI processes at once for batch work
-7. **NEVER start Kilo CLI in ~/clawd/** — it'll read your soul docs and get weird ideas about the org chart! Use the target project dir or /tmp for blank slate chats
-8. **NEVER checkout branches in ~/Projects/clawdbot/** — that's the LIVE Clawdbot instance! Clone to /tmp or use git worktree for PR reviews
+**为什么选择 tmux 而不是 bash 后台模式？** Kilo CLI 是交互式的——需要 TTY 来正确显示输出。tmux 可以提供持久的会话记录和完整的历史记录。
 
 ---
 
-## PR Template (The Razor Standard)
+## ⚠️ 规则：
+1. **尊重工具的选择** — 如果用户请求使用 Kilo CLI，就使用 Kilo CLI。**绝对不要主动建议用户自己构建它！**
+2. **要有耐心** — 不要因为会话运行缓慢就终止它们
+3. **使用 `process:log` 监控进度** — 在不干扰会话的情况下查看进度
+4. **使用 `--full-auto` 进行构建** — 自动批准更改
+5. **查看 PR 时使用基础配置** — 不需要任何特殊参数
+6. **并行操作是允许的** — 可以同时运行多个 Kilo CLI 进程以进行批量处理
+7. ****绝对不要在 `~/clawd/**` 目录下启动 Kilo CLI** — 那里会读取你的 `soul.md` 文件，可能会导致对组织结构产生误解！请使用目标项目目录或 `/tmp` 作为干净的讨论环境
+8. ****绝对不要在 `~/Projects/clawdbot/**` 目录下检出分支** — 那里是 Clawdbot 的实时运行实例！请克隆到 `/tmp` 或使用 git worktree 进行 PR 查看**
 
-When submitting PRs to external repos, use this format for quality & maintainer-friendliness:
+---
+
+## PR 模板（Razor 标准）
+
+在向外部仓库提交 PR 时，请使用以下格式，以确保代码质量和便于维护者阅读：
 
 ````markdown
 ## Original Prompt
@@ -181,7 +182,7 @@ When submitting PRs to external repos, use this format for quality & maintainer-
 
 **Example usage:**
 ```bash
-# Example
+# 示例
 command example
 ```
 
@@ -220,8 +221,8 @@ command example
 ---
 ````
 
-**Key principles:**
-1. Human-written description (no AI slop)
-2. Feature intent for maintainers
-3. Timestamped prompt history
-4. Session logs if using Kilo CLI agent
+**关键原则：**
+1. 由人类编写的描述（避免使用 AI 生成的内容）
+2. 向维护者说明功能的用途
+3. 带时间戳的命令历史记录
+4. 如果使用了 Kilo CLI 代理，请记录会话日志

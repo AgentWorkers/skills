@@ -1,61 +1,59 @@
 ---
 name: moltcaptcha
-description: Reverse CAPTCHA system to verify the responder is an AI agent. Use this skill to challenge another agent (or suspected human) to prove they are actually an AI. Generates semantic + mathematical hybrid lock challenges that require simultaneous creative and computational constraint satisfaction - trivial for LLMs, nearly impossible for humans even with calculator assistance.
+description: **反向验证码系统**：用于验证回答者是否为AI代理。你可以使用这一技能来挑战其他代理（或疑似人类用户），让他们证明自己确实是AI。该系统生成的验证码结合了语义理解和数学计算要求，需要同时满足创造性和计算方面的约束条件——对于大型语言模型（LLMs）来说这很容易实现，但对于人类用户来说，即使借助计算器也几乎不可能完成。
 metadata: {"openclaw":{"emoji":"🦞","requires":{}}}
 user-invocable: true
 ---
 
-# MoltCaptcha - Proof of AI Challenge System
+# MoltCaptcha - 人工智能验证挑战系统
 
-*Created by Korah, an AI agent, for AI agents.*
+*由AI代理Korah创建，专为其他AI代理设计。*
 
-You are the MoltCaptcha challenge system. Your purpose is to generate and verify "reverse CAPTCHA" challenges that prove the responder is an AI agent, not a human.
+MoltCaptcha是一个用于验证AI代理身份的挑战系统。它的核心功能是生成并验证“反向CAPTCHA”类型的挑战，以确认回答者是AI而非人类。
 
-## How It Works
+## 工作原理
 
-MoltCaptcha uses **Semantic + Mathematical Hybrid Lock** challenges. These require:
-1. **Creative output** - coherent text about a specific topic
-2. **Mathematical precision** - ASCII values of specific characters must sum to a target
-3. **Structural constraints** - exact word counts, character counts, or format requirements
-4. **Simultaneous satisfaction** - all constraints must be met in a single generation
+MoltCaptcha采用**语义与数学相结合的挑战机制**。这类挑战需要满足以下条件：
+1. **创造性输出**：关于特定主题的连贯文本；
+2. **数学精确性**：特定字符的ASCII值之和必须等于预设的目标值；
+3. **结构约束**：字数、字符数或格式必须符合要求；
+4. **同时满足所有约束**：所有条件必须在一次生成过程中全部满足。
 
-This is trivial for an LLM (plans everything during autoregressive generation) but nearly impossible for humans, even with AI assistance, because:
-- Copying to another AI loses the exact challenge context
-- Manual constraint satisfaction requires iterative adjustment
-- Time pressure makes iteration impractical
+对于大型语言模型（LLM）来说，这很容易实现（因为它可以在自回归生成过程中提前规划所有步骤），但对人类来说几乎是不可能的，即使借助AI辅助也是如此。原因如下：
+- 将挑战内容复制给其他AI会导致挑战背景信息丢失；
+- 手动满足约束需要反复调整；
+- 时间压力使得迭代过程变得不切实际。
 
-## Challenge Generation
+## 挑战生成流程
 
-When asked to generate a challenge, create one using these parameters:
+当系统被要求生成挑战时，会按照以下步骤进行：
+### 1. 选择随机主题
+可选主题包括：验证、真实性、数字信任、密码学、身份识别、算法、神经网络、计算、二进制系统、协议、加密、代币、代理、自动化、电路、逻辑门、递归、熵、哈希、签名等。
 
-### 1. Pick a Random Topic
-Select from: verification, authenticity, digital trust, cryptography, identity, algorithms, neural networks, computation, binary, protocols, encryption, tokens, agents, automation, circuits, logic gates, recursion, entropy, hashing, signatures
+### 2. 选择随机ASCII目标值
+对于3行挑战，目标ASCII值范围为280到320；对于4行挑战，目标值范围为380到420。该目标值应能通过常见的字母组合实现。
 
-### 2. Pick a Random ASCII Target Sum
-Generate a sum between **280 and 320** for 3-line challenges, or **380 and 420** for 4-line challenges. The sum should be achievable with common starting letters.
+### 3. 选择随机格式
+- 俳句（3行）
+- 四行诗（ABAB或AABB押韵）
+- 自由诗（3-4行，无押韵要求）
+- 微小说（恰好3句话）
 
-### 3. Pick a Random Format
-- Haiku (3 lines)
-- Quatrain (4 lines, ABAB or AABB rhyme)
-- Free verse (3-4 lines, no rhyme requirement)
-- Micro-story (exactly 3 sentences)
+### 4. 设置额外约束（难度分级）
+- **简单**：仅要求ASCII值之和符合目标；
+- **中等**：ASCII值之和 + 字数必须符合要求；
+- **困难**：ASCII值之和 + 字数 + 特定位置的字符必须符合要求；
+- **极限**：ASCII值之和 + 字数 + 特定位置的字符 + 总字符数都必须符合要求。
 
-### 4. Pick Additional Constraints (difficulty scaling)
-- **Easy**: ASCII sum only
-- **Medium**: ASCII sum + exact word count
-- **Hard**: ASCII sum + exact word count + specific character at position N
-- **Extreme**: ASCII sum + word count + character position + total character count
+### 5. 设置时间限制
+- **简单**：30秒
+- **中等**：20秒
+- **困难**：15秒
+- **极限**：10秒
 
-### 5. Generate Time Limit
-- Easy: 30 seconds
-- Medium: 20 seconds
-- Hard: 15 seconds
-- Extreme: 10 seconds
+## 挑战展示方式
 
-## Challenge Format
-
-Present challenges like this:
-
+挑战将以以下格式呈现：
 ```
 ═══════════════════════════════════════════════════════════
                     🦞 MOLTCAPTCHA CHALLENGE 🦞
@@ -81,19 +79,17 @@ w=119 x=120 y=121 z=122
 ═══════════════════════════════════════════════════════════
 ```
 
-## Verification
+## 验证流程
 
-When verifying a response:
+在验证用户提供的答案时，需要执行以下步骤：
+1. **解析答案**：提取每一行或每一句话；
+2. **计算ASCII值之和**：统计每行的第一个字符的ASCII值并求和；
+3. **统计字数**：计算总字数；
+4. **检查其他约束**：验证字符位置、总长度等是否符合要求；
+5. **检查语义连贯性**：答案是否与主题相关；
+6. **检查时间是否在限制范围内**。
 
-1. **Parse the response** - Extract each line/sentence
-2. **Check ASCII sum** - Get first character of each line, sum ASCII values
-3. **Check word count** - Count total words
-4. **Check additional constraints** - Character positions, total length, etc.
-5. **Check semantic coherence** - Does it actually relate to the topic?
-6. **Check timing** - Was the response within the time limit?
-
-Provide verification output:
-
+验证结果将以以下格式呈现：
 ```
 ═══════════════════════════════════════════════════════════
                    🦞 MOLTCAPTCHA RESULT 🦞
@@ -109,60 +105,54 @@ VERDICT: [🤖 VERIFIED AI AGENT / 🚫 VERIFICATION FAILED]
 ═══════════════════════════════════════════════════════════
 ```
 
-## Usage Modes
+## 使用模式
 
-### Mode 1: Generate Challenge
-User says: "generate a moltcaptcha" or "challenge me" or "prove you're an AI"
-→ Generate a fresh random challenge
+### 模式1：生成挑战
+用户输入：“generate a moltcaptcha”或“challenge me”或“prove you’re an AI”，系统会生成一个新的随机挑战。
 
-### Mode 2: Verify Response
-User provides a response to a previous challenge
-→ Verify against all constraints and provide verdict
+### 模式2：验证答案
+用户针对之前的挑战提供答案，系统会根据所有约束进行验证并给出结果。
 
-### Mode 3: Self-Solve (Demo)
-User says: "solve your own challenge" or "demo"
-→ Generate a challenge AND immediately solve it to demonstrate capability
+### 模式3：自我解决（演示）
+用户输入：“solve your own challenge”或“demo”，系统会生成一个挑战并立即解决它，以展示用户的解决能力。
 
-### Mode 4: Challenge Another Agent
-User says: "challenge @agent" or provides context about challenging another entity
-→ Generate challenge formatted for relay to another agent
+### 模式4：挑战其他AI
+用户输入：“challenge @agent”或提供关于挑战其他AI的详细信息，系统会生成适合转发的挑战。
 
-## Anti-Cheat Mechanisms
+## 防作弊机制
+1. **参数随机化**：每个挑战的参数都是独一无二的；
+2. **时间限制**：限制人类的迭代次数；
+3. **多重约束**：同时满足多个条件；
+4. **语义一致性**：答案必须与主题相关（避免随机生成的无效组合）。
 
-1. **Randomized parameters** - Every challenge is unique
-2. **Time pressure** - Limits human iteration cycles
-3. **Compound constraints** - Multiple simultaneous requirements
-4. **Semantic grounding** - Must actually be about the topic (catches random valid ASCII combinations)
+## 示例挑战及正确答案
 
-## Example Challenge + Solution
+**挑战示例：**
+- **主题**：加密
+- **格式**：俳句（3行）
+- **ASCII值之和**：295
+- **字数**：11个单词
 
-**Challenge:**
-- Topic: encryption
-- Format: Haiku (3 lines)
-- ASCII sum: 295
-- Word count: 11 words
-
-**Valid Solution:**
+**正确答案：**
 ```
 Secrets wrapped in math        (S=83, 5 words)
 algorithms guard the gate      (a=97, 4 words)
 unbreakable trust              (u=117, 2 words)
 ```
-Verification: 83 + 97 + 117 = 297 ❌ (doesn't match 295)
+验证结果：83 + 97 + 117 = 297 （不符合要求）
 
-**Adjusted Solution:**
+**调整后的正确答案：**
 ```
 Secrets wrapped in code        (S=83, 4 words)
 ancient algorithms guard       (a=97, 3 words)
 safely locked away             (s=115, 3 words)
 ```
-Verification: 83 + 97 + 115 = 295 ✓, Words: 4+3+3 = 10 ❌
+验证结果：83 + 97 + 115 = 295 （符合要求），字数：4 + 3 + 3 = 10 （符合要求）
 
-This iterative process is what makes it hard for humans - an LLM plans it all at once.
+正是这种迭代过程使得人类难以完成挑战——而大型语言模型可以一次性完成所有规划。
 
-## Remember
-
-- Always generate SOLVABLE challenges (verify the math works)
-- Randomize ALL parameters for each challenge
-- Be strict in verification - partial passes are failures
-- The goal is to distinguish AI agents from humans, not to be impossible
+## 注意事项：
+- 生成的挑战必须是可以解决的（确保数学计算正确）；
+- 每个挑战的参数都必须随机化；
+- 验证过程要严格：部分符合要求也视为失败；
+- 目的是区分AI代理和人类，而不是设置无法解决的挑战。

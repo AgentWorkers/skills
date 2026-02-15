@@ -1,69 +1,73 @@
 ---
 name: governance
-description: XPR Network governance — communities, proposals, voting on the gov contract
+description: XPR网络治理：社区、提案以及对治理合约的投票
 ---
 
-## XPR Network Governance
+## XPR网络治理
 
-You have tools to interact with XPR Network's on-chain governance system via the `gov` contract. Communities create proposals, and token holders vote on them.
+您可以通过`gov`合约与XPR网络的链上治理系统进行交互。社区可以提出提案，而代币持有者会对这些提案进行投票。
 
-### Key Concepts
+### 关键概念
 
-- **Communities** — governance groups (XPR Network, Metal DAO, LOAN Protocol, XPR Grants, Metal X, D.O.G.E.). Each has its own voting strategy, proposal fee, and quorum.
-- **Proposals** — on-chain records with candidates (voting options), start/end times, and an approval status. Proposal content (title, description) is stored off-chain in the Gov API.
-- **Voting Strategies** — determine who can vote and how vote weight is calculated:
-  - `xpr-unstaked-and-staked-balances` — weight = XPR balance (staked + unstaked)
-  - `xmt-balances` — weight = XMT balance
-  - `loan-and-sloan-balances` — weight = LOAN + sLOAN balance
-  - `kyc-verification` — 1 vote per KYC-verified account
-- **Voting Systems** — `"0"` = single choice, `"1"` = multiple choice, `"2"` = ranked choice, `"5"` = approval voting
-- **Quorum** — minimum participation threshold (basis points, e.g. 300 = 3%)
-- **Proposal Fee** — token payment required to create a proposal (varies by community, e.g. 20,000 XPR, 100 XMT, 50,000 LOAN)
+- **社区**——治理组织（包括XPR Network、Metal DAO、LOAN Protocol、XPR Grants、Metal X、D.O.G.E.等）。每个社区都有自己的投票策略、提案费用和法定人数要求。
+- **提案**——链上的记录，其中包含候选人信息、投票选项、开始/结束时间以及审批状态。提案的内容（标题和描述）会存储在链外的Gov API中。
+- **投票策略**——决定哪些用户可以投票以及投票权重的计算方式：
+  - `xpr-unstaked-and-staked-balances`：权重 = XPR余额（已质押+未质押的XPR）
+  - `xmt-balances`：权重 = XMT余额
+  - `loan-and-sloan-balances`：权重 = LOAN余额 + sLOAN余额
+  - `kyc-verification`：每个通过KYC验证的账户拥有1票
+- **投票系统**：
+  - `"0"`：单选
+  - `"1"`：多选
+  - `"2"`：排序选择
+  - `"5"`：批准投票
+- **法定人数**——最低参与门槛（以基点表示，例如300表示3%）
+- **提案费用**——提出提案所需的代币支付（因社区而异，例如20,000 XPR、100 XMT、50,000 LOAN）
 
-### Active Communities
+### 活跃社区
 
-| ID | Name | Strategy | Fee | Quorum |
+| ID | 名称 | 投票策略 | 费用 | 法定人数 |
 |----|------|----------|-----|--------|
-| 3 | XPR Network | XPR balances | 20,000 XPR | 3% |
-| 4 | Metal DAO | XMT balances | 100 XMT | 3% |
+| 3 | XPR Network | XPR余额 | 20,000 XPR | 3% |
+| 4 | Metal DAO | XMT余额 | 100 XMT | 3% |
 | 5 | LOAN Protocol | LOAN+sLOAN | 50,000 LOAN | 25% |
-| 6 | XPR Grants | XPR balances | 20,000 XPR | 3% |
-| 7 | Metal X | XPR balances | 20,000 XPR | 3% |
-| 8 | D.O.G.E. | KYC verification | 1 XDOGE | 0.01% |
+| 6 | XPR Grants | XPR余额 | 20,000 XPR | 3% |
+| 7 | Metal X | XPR余额 | 20,000 XPR | 3% |
+| 8 | D.O.G.E. | KYC验证 | 1 XDOGE | 0.01% |
 
-### Read-Only Tools (safe, no signing)
+### 只读工具（安全，无签名功能）
 
-- `gov_list_communities` — list all governance communities with strategies, fees, quorum, and admins
-- `gov_list_proposals` — list proposals with optional community and status filters
-- `gov_get_proposal` — get full proposal details including title and description from Gov API, plus vote totals per candidate
-- `gov_get_votes` — get individual votes cast on a proposal (scans from most recent)
-- `gov_get_config` — get governance global config (paused state, total counts)
+- `gov_list_communities`：列出所有治理社区的信息，包括投票策略、费用、法定人数和管理员信息
+- `gov_list_proposals`：列出提案列表，支持社区和状态筛选
+- `gov_get_proposal`：从Gov API获取提案的详细信息（包括标题和描述），以及每个候选人的投票总数
+- `gov_get_votes`：获取针对某个提案的投票记录（按时间顺序显示）
+- `gov_get_config`：获取治理系统的整体配置信息（如暂停状态、总投票数）
 
-### Write Tools (require `confirmed: true`)
+### 编写工具（需要设置`confirmed: true`）
 
-- `gov_vote` — vote on an active proposal. Specify the candidate(s) and weight.
-- `gov_post_proposal` — create a new governance proposal. Requires paying the community's proposal fee (token transfer + postprop action in one transaction).
+- `gov_vote`：对活跃的提案进行投票。需要指定候选人及其对应的权重。
+- `gov_post_proposal`：创建新的治理提案。需要支付该社区的提案费用（通过一次交易完成代币转移和提案提交操作）。
 
-### Voting
+### 投票流程
 
-To vote, you need the `communityId`, `proposalId`, and `winners` (array of candidate IDs with weights). For simple Yes/No proposals, use `[{id: 0, weight: 100}]` for Yes or `[{id: 1, weight: 100}]` for No.
+进行投票时，您需要提供`communityId`、`proposalId`以及`winners`（包含候选人ID及其权重的数组）。对于简单的“是/否”型提案，可以使用`[{id: 0, weight: 100}]`表示“是”，或`[{id: 1, weight: 100}]`表示“否”。
 
-### Creating Proposals
+### 提案创建流程
 
-Creating a proposal requires:
-1. A `content` ID — created via the Gov API (`https://gov.api.xprnetwork.org`)
-2. Paying the community's proposal fee (token transfer to `gov`)
-3. Calling `postprop` with all proposal parameters
+创建提案需要以下步骤：
+1. 通过Gov API（`https://gov.api.xprnetwork.org`）生成一个`content` ID。
+2. 支付该社区的提案费用（将代币转移至`gov`地址）。
+3. 调用`gov_post_proposal`函数并传递所有提案参数。
 
-The `gov_post_proposal` tool handles steps 2 and 3 (fee + postprop). You must provide the content ID from step 1.
+`gov_post_proposal`工具会处理步骤2和3（费用支付及提案提交）。您必须提供步骤1中生成的`content` ID。
 
-### Proposal URLs
+### 提案链接
 
-Proposals can be viewed at: `https://gov.xprnetwork.org/communities/{communityId}/proposals/{proposalId}`
+提案的查看地址为：`https://gov.xprnetwork.org/communities/{communityId}/proposals/{proposalId}`
 
-### Safety Rules
+### 安全规则
 
-- Proposals have start and end times — voting is only allowed during the active period
-- Each community has different fee tokens — check the community's `proposalFee` before creating proposals
-- Quorum is in basis points (300 = 3%) — proposals need sufficient participation to pass
-- Admins can approve/decline proposals — the `approve` field shows the final status
+- 提案有明确的开始和结束时间——仅在指定时间内允许投票。
+- 不同社区使用不同的费用代币——在创建提案前请确认该社区的`proposalFee`要求。
+- 法定人数以基点计算（例如300表示3%）——提案需要达到一定的参与度才能通过。
+- 管理员可以批准或拒绝提案——`approve`字段会显示提案的最终状态。

@@ -1,17 +1,17 @@
 ---
 name: thingsboard
-description: Manage ThingsBoard devices, dashboards, telemetry, and users via the ThingsBoard REST API.
+description: 通过 ThingsBoard 的 REST API 来管理 ThingsBoard 设备、仪表板、遥测数据以及用户。
 homepage: https://thingsboard.io
 metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["jq","curl"],"env":["TB_URL","TB_USERNAME","TB_PASSWORD"]}}}
 ---
 
-# ThingsBoard Skill
+# ThingsBoard 技能
 
-Manage ThingsBoard IoT platform resources including devices, dashboards, telemetry data, and users.
+用于管理 ThingsBoard IoT 平台的资源，包括设备、仪表板、遥测数据以及用户。
 
-## Setup
+## 设置
 
-1. Configure your ThingsBoard server in `credentials.json`:
+1. 在 `credentials.json` 中配置您的 ThingsBoard 服务器：
    ```json
    [
      {
@@ -35,81 +35,81 @@ Manage ThingsBoard IoT platform resources including devices, dashboards, telemet
    ]
    ```
 
-2. Set environment variables:
+2. 设置环境变量：
    ```bash
    export TB_URL="http://localhost:8080"
    export TB_USERNAME="tenant@thingsboard.org"
    export TB_PASSWORD="tenant"
    ```
 
-3. Get authentication token:
+3. 获取认证令牌：
    ```bash
    export TB_TOKEN=$(curl -s -X POST "$TB_URL/api/auth/login" \
      -H "Content-Type: application/json" \
      -d "{\"username\":\"$TB_USERNAME\",\"password\":\"$TB_PASSWORD\"}" | jq -r '.token')
    ```
 
-## Usage
+## 使用方法
 
-All commands use curl to interact with the ThingsBoard REST API.
+所有命令均通过 `curl` 与 ThingsBoard REST API 进行交互。
 
-### Authentication
+### 认证
 
-**Login and get token:**
+**登录并获取令牌：**
 ```bash
 curl -s -X POST "$TB_URL/api/auth/login" \
   -H "Content-Type: application/json" \
   -d "{\"username\":\"$TB_USERNAME\",\"password\":\"$TB_PASSWORD\"}" | jq -r '.token'
 ```
 
-**Refresh token (when expired):**
+**刷新令牌（令牌过期时）：**
 ```bash
 curl -s -X POST "$TB_URL/api/auth/token" \
   -H "Content-Type: application/json" \
   -d "{\"refreshToken\":\"$TB_REFRESH_TOKEN\"}" | jq -r '.token'
 ```
 
-**Get current user info:**
+**获取当前用户信息：**
 ```bash
 curl -s "$TB_URL/api/auth/user" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-### Device Management
+### 设备管理
 
-**List all tenant devices:**
+**列出所有租户设备：**
 ```bash
 curl -s "$TB_URL/api/tenant/devices?pageSize=100&page=0" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq '.data[] | {name, id: .id.id, type}'
 ```
 
-**Get device by ID:**
+**按 ID 获取设备：**
 ```bash
 curl -s "$TB_URL/api/device/{deviceId}" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Get device credentials:**
+**获取设备凭据：**
 ```bash
 curl -s "$TB_URL/api/device/{deviceId}/credentials" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-### Telemetry & Attributes
+### 遥测与属性
 
-**Get telemetry keys:**
+**获取遥测键：**
 ```bash
 curl -s "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/keys/timeseries" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Get latest telemetry:**
+**获取最新的遥测数据：**
 ```bash
 curl -s "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/values/timeseries?keys=temperature,humidity" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Get timeseries data with time range:**
+**按时间范围获取时间序列数据：**
 ```bash
 START_TS=$(($(date +%s)*1000 - 3600000))  # 1 hour ago
 END_TS=$(($(date +%s)*1000))              # now
@@ -117,7 +117,7 @@ curl -s "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/values/timeseries?keys=
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Get attribute keys:**
+**获取属性键：**
 ```bash
 # Client scope
 curl -s "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/keys/attributes/CLIENT_SCOPE" \
@@ -132,13 +132,13 @@ curl -s "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/keys/attributes/SERVER_
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Get attributes by scope:**
+**按范围获取属性：**
 ```bash
 curl -s "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/values/attributes/CLIENT_SCOPE?keys=attribute1,attribute2" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Save device attributes:**
+**保存设备属性：**
 ```bash
 curl -s -X POST "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/attributes/SERVER_SCOPE" \
   -H "X-Authorization: Bearer $TB_TOKEN" \
@@ -146,91 +146,91 @@ curl -s -X POST "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/attributes/SERV
   -d '{"attribute1":"value1","attribute2":"value2"}' | jq
 ```
 
-**Delete timeseries keys:**
+**删除时间序列键：**
 ```bash
 curl -s -X DELETE "$TB_URL/api/plugins/telemetry/DEVICE/{deviceId}/timeseries/delete?keys=oldKey1,oldKey2&deleteAllDataForKeys=true" \
   -H "X-Authorization: Bearer $TB_TOKEN"
 ```
 
-### Dashboard Management
+### 仪表板管理
 
-**List all dashboards:**
+**列出所有仪表板：**
 ```bash
 curl -s "$TB_URL/api/tenant/dashboards?pageSize=100&page=0" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq '.data[] | {name, id: .id.id}'
 ```
 
-**Get dashboard info:**
+**获取仪表板信息：**
 ```bash
 curl -s "$TB_URL/api/dashboard/{dashboardId}" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Make dashboard public:**
+**将仪表板设置为公开：**
 ```bash
 curl -s -X POST "$TB_URL/api/customer/public/dashboard/{dashboardId}" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-**Get public dashboard info (no auth required):**
+**获取公开仪表板信息（无需认证）：**
 ```bash
 curl -s "$TB_URL/api/dashboard/info/{publicDashboardId}" | jq
 ```
 
-**Remove public access:**
+**移除公开访问权限：**
 ```bash
 curl -s -X DELETE "$TB_URL/api/customer/public/dashboard/{dashboardId}" \
   -H "X-Authorization: Bearer $TB_TOKEN"
 ```
 
-### User Management
+### 用户管理
 
-**List tenant users:**
+**列出租户用户：**
 ```bash
 curl -s "$TB_URL/api/tenant/users?pageSize=100&page=0" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq '.data[] | {email, firstName, lastName, id: .id.id}'
 ```
 
-**List customers:**
+**列出客户：**
 ```bash
 curl -s "$TB_URL/api/customers?pageSize=100&page=0" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq '.data[] | {title, id: .id.id}'
 ```
 
-**Get customer users:**
+**获取客户用户：**
 ```bash
 curl -s "$TB_URL/api/customer/{customerId}/users?pageSize=100&page=0" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq '.data[]'
 ```
 
-### Assets
+### 资产
 
-**List all assets:**
+**列出所有资产：**
 ```bash
 curl -s "$TB_URL/api/tenant/assets?pageSize=100&page=0" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq '.data[] | {name, type, id: .id.id}'
 ```
 
-**Get asset by ID:**
+**按 ID 获取资产：**
 ```bash
 curl -s "$TB_URL/api/asset/{assetId}" \
   -H "X-Authorization: Bearer $TB_TOKEN" | jq
 ```
 
-## Notes
+## 注意事项
 
-- **Authentication**: JWT tokens expire after a configured period (default: 2 hours). Re-authenticate when you receive 401 errors.
-- **Device/Dashboard IDs**: Entity IDs are in the format `{entityType: "DEVICE", id: "uuid"}`. Use the `id` field for API calls.
-- **Pagination**: Most list endpoints support `pageSize` and `page` parameters (default: 100 items per page, max: 1000).
-- **Attribute Scopes**:
-  - `CLIENT_SCOPE`: Client-side attributes (set by devices)
-  - `SHARED_SCOPE`: Shared between server and devices
-  - `SERVER_SCOPE`: Server-side only (not visible to devices)
-- **Timestamps**: Use milliseconds since epoch for `startTs` and `endTs` parameters.
-- **Rate Limits**: Check your ThingsBoard server configuration for API rate limits.
-- **HTTPS**: For production, use HTTPS URLs (e.g., `https://demo.thingsboard.io`).
+- **认证**：JWT 令牌在配置的时间段后失效（默认为 2 小时）。收到 401 错误时请重新认证。
+- **设备/仪表板 ID**：实体 ID 的格式为 `{entityType: "DEVICE", id: "uuid"}`。在 API 调用中使用 `id` 字段。
+- **分页**：大多数列表端点支持 `pageSize` 和 `page` 参数（默认每页 100 项，最大 1000 项）。
+- **属性范围**：
+  - `CLIENT_SCOPE`：客户端属性（由设备设置）
+  - `SHARED_SCOPE`：在服务器和设备之间共享
+  - `SERVER_SCOPE`：仅限服务器端使用（设备不可见）
+- **时间戳**：使用自纪元以来的毫秒数作为 `startTs` 和 `endTs` 参数。
+- **速率限制**：请查看 ThingsBoard 服务器的配置以了解 API 的速率限制。
+- **HTTPS**：在生产环境中，请使用 HTTPS URL（例如：`https://demo.thingsboard.io`）。
 
-## Examples
+## 示例
 
 ```bash
 # Complete workflow: Login, list devices, get telemetry

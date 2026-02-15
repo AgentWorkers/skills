@@ -1,6 +1,6 @@
 ---
 name: eyebot-bridgebot
-description: Cross-chain bridge specialist for seamless asset transfers
+description: 跨链桥接解决方案专家，致力于实现资产的无缝转移
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,33 +10,33 @@ metadata:
 
 # BridgeBot 🌉
 
-**Intelligent Cross-Chain Transfers**
+**智能跨链转账**
 
-Move assets between chains with optimal routing, minimal fees, and maximum security.
+在各种区块链之间安全、高效地转移资产，实现最优路由选择、最低费用和最高安全性。
 
-## Features
+## 主要功能
 
-- **Route Optimization**: Best bridge for each transfer
-- **Fee Comparison**: Compare costs across bridges
-- **Speed Options**: Fast vs economical routes
-- **Security Scoring**: Bridge risk assessment
-- **Status Tracking**: Real-time transfer monitoring
+- **路由优化**：为每次转账选择最佳路径
+- **费用对比**：比较不同跨链服务之间的费用差异
+- **速度选项**：提供快速与经济型两种转账方式
+- **安全评估**：对跨链服务的风险进行评估
+- **状态跟踪**：实时监控转账进度
 
-## Supported Bridges
+## 支持的跨链服务
 
-| Bridge | Chains | Speed |
-|--------|--------|-------|
-| Across | All major | Fast |
-| Stargate | All major | Medium |
-| Hop | ETH L2s | Fast |
-| Celer | Wide support | Medium |
-| Native | Chain-specific | Varies |
+| 跨链服务 | 支持的区块链 | 转账速度 |
+|--------|--------------|---------|
+| Across | 所有主流区块链 | 非常快 |
+| Stargate | 所有主流区块链 | 较快 |
+| Hop | ETH L2s区块链 | 非常快 |
+| Celer | 支持多种区块链 | 较快 |
+| Native | 仅支持特定区块链 | 速度因区块链而异 |
 
-## Supported Chains
+## 支持的区块链
 
 Ethereum • Base • Polygon • Arbitrum • Optimism • BSC • Avalanche
 
-## Usage
+## 使用方法
 
 ```bash
 # Quote a bridge
@@ -49,5 +49,6 @@ eyebot bridgebot send ETH ethereum base 1.0
 eyebot bridgebot status <tx_hash>
 ```
 
-## Support
+## 售后支持
+
 Telegram: @ILL4NE

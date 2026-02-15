@@ -1,17 +1,17 @@
 ---
 name: finance-reconciler
-description: Privacy-first personal finance tracker with local SQLite storage
+description: 这款个人财务管理工具将隐私保护置于首位，数据存储采用本地的 SQLite 数据库。
 requires: python3
 install: pip3 install pandas ofxparse tabulate python-dateutil
 ---
 
-# Finance Reconciler
+# 财务对账工具
 
-A privacy-first personal finance skill that imports bank transactions, auto-categorizes them, tracks budgets, answers natural language spending queries, and generates reports. All data stays local in SQLite — nothing is sent to external servers.
+这是一个以隐私保护为核心设计的个人财务管理工具，它可以导入银行交易记录、自动分类这些交易、跟踪预算支出、回答与支出相关的问题，并生成报告。所有数据都存储在本地SQLite数据库中，不会被发送到任何外部服务器。
 
-## First-Time Setup
+## 首次使用说明
 
-On first use, run these two commands before anything else:
+首次使用时，请在执行其他操作之前先运行以下两个命令：
 
 ```bash
 pip3 install pandas ofxparse tabulate python-dateutil
@@ -21,133 +21,116 @@ pip3 install pandas ofxparse tabulate python-dateutil
 python3 scripts/db.py
 ```
 
-If either command fails, stop and show the user the error. Do not proceed until setup succeeds.
+如果任一命令失败，请停止操作并向用户显示错误信息。只有在设置成功后才能继续使用该工具。
 
-## First-Time User Onboarding
+## 新用户入门指南
 
-If the user has no transactions in the database yet (or says something general like "help me track my finances", "get started", or "what can you do"), walk them through this:
+如果用户的数据库中还没有交易记录（或者他们提出了类似“帮我管理财务”、“如何开始使用”之类的问题），请按照以下步骤引导他们：
 
-1. Explain that this tool tracks spending from bank statement files — all data stays on their machine.
-2. Tell them to download a statement from their bank:
-   - **Chase**: chase.com → Statements & Documents → Download account activity → CSV
-   - **Bank of America**: bankofamerica.com → Statements & Documents → Download Transactions → CSV
-   - **Wells Fargo**: wellsfargo.com → Account Activity → Download → Comma Delimited
-   - **Any bank**: Look for "Export to Quicken" or "Download OFX/QFX" for OFX format, or any CSV download option
-3. Ask them to share the file path or drop the file into the conversation.
-4. Suggest they try these after importing:
-   - "How much did I spend on groceries last month?"
-   - "Set a $400 monthly budget for dining"
-   - "Show me my monthly report"
+1. 向用户解释该工具会从银行对账单文件中提取交易信息，并且所有数据都会保存在用户的设备上。
+2. 告诉用户如何从他们的银行网站下载对账单：
+   - **Chase银行**：chase.com → 对账单与文档 → 下载账户活动 → CSV格式
+   - **美国银行**：bankofamerica.com → 对账单与文档 → 下载交易记录 → CSV格式
+   - **富国银行**：wellsfargo.com → 账户活动 → 下载 → 逗号分隔格式
+   - 其他银行：查找“导出到Quicken”或“下载OFX/QFX”选项（用于OFX格式文件），或者选择CSV格式的下载选项
+3. 请求用户分享文件路径，或者将文件直接上传到对话中。
+4. 建议用户尝试以下操作：
+   - “我上个月在食品杂货上的花费是多少？”
+   - “为餐饮开支设定每月400美元的预算”
+   - “查看我的月度报告”
 
-## Handling File Input
+## 文件导入处理
 
-When the user wants to import a bank statement:
+当用户想要导入银行对账单时：
+- **如果用户提供了文件路径**（例如：`~/Downloads/chase_jan.csv`），请直接使用该路径来执行导入操作。
+- **如果用户上传了文件**，系统会自动找到文件的临时存储路径，并使用该路径进行导入。
+- **如果用户提到了银行名称但未提供文件**，请详细指导他们如何下载文件。例如：“要下载Chase银行的对账单，请登录chase.com，进入对账单与文档页面，选择日期范围，然后选择CSV格式进行下载。之后将文件路径分享给我。”
+- **如果文件格式不明确**，系统会自动识别Chase、美国银行和富国银行的文件格式；对于其他银行，系统会尝试使用通用的CSV解析规则（如Date、Description、Amount列）。如果解析失败，请询问用户文件中包含哪些具体的列名。
 
-- **If they provide a file path** (e.g., `~/Downloads/chase_jan.csv`): use that path directly with the import script.
-- **If they attach/upload a file**: the file will be available at a local temp path. Use that path with the import script.
-- **If they mention a bank but don't provide a file**: tell them exactly how to download it. For example: "To get your Chase statement, log in to chase.com, go to Statements & Documents, select your account, choose a date range, and download as CSV. Then share the file path with me."
-- **If the file format is unclear**: the import script auto-detects Chase, Bank of America, and Wells Fargo formats. For other banks, it falls back to generic CSV parsing that matches common column names (Date, Description, Amount). If that also fails, ask the user what columns their CSV has.
+支持的文件类型：`.csv`（Chase、美国银行、富国银行通用格式）和`.ofx`/`.qfx`（通用格式）。
 
-Supported file types: `.csv` (Chase, BofA, Wells Fargo, generic) and `.ofx`/`.qfx` (universal).
+## 主要功能操作
 
-## Operations
+### 1. 导入交易记录
 
-### 1. Import Transactions
-
-For CSV files:
-
+- 对于CSV文件，请执行以下代码：
 ```bash
 python3 scripts/import_csv.py <file_path> [--format chase|bofa|wells_fargo|generic] [--account <name>]
 ```
 
-For OFX/QFX files:
-
+- 对于OFX/QFX文件，请执行以下代码：
 ```bash
 python3 scripts/import_ofx.py <file_path> [--account <name>]
 ```
 
-Choose the import script based on file extension (`.ofx`/`.qfx` → `import_ofx.py`, everything else → `import_csv.py`). The bank format is auto-detected if `--format` is omitted. Both scripts output JSON.
+根据文件扩展名选择相应的导入脚本（`.ofx`/`.qfx` → `import_ofx.py`；其他格式 → `import_csv.py`）。如果省略了`--format`参数，系统会自动检测文件格式。两个脚本都会将导入的数据转换为JSON格式。
 
-After a successful import, **always run categorization automatically** (step 2) without the user asking. Then present a summary like: "Imported 47 transactions from Jan 1–31. Here's the breakdown: Groceries $342, Dining $189, ..."
+成功导入后，**务必自动执行分类操作**（步骤2），无需用户另行请求。然后向用户展示分类结果，例如：“共导入47笔交易记录（1月1日至31日）：食品杂货342美元，餐饮189美元……”
 
-If the import returns duplicates > 0, mention it: "Skipped 12 duplicate transactions that were already imported."
+如果导入过程中发现重复的交易记录，请告知用户：“已跳过12笔重复的交易记录。”
 
-### 2. Categorize Transactions
+### 2. 对交易记录进行分类
 
-Run on uncategorized transactions:
-
+对未分类的交易记录执行以下操作：
 ```bash
 python3 scripts/categorize.py run
 ```
 
-Re-categorize everything (after adding rules):
-
+在添加分类规则后，系统会重新对所有交易进行分类：
 ```bash
 python3 scripts/categorize.py run --recategorize
 ```
 
-Add a custom rule:
-
+用户可以自定义分类规则：
 ```bash
 python3 scripts/categorize.py add-rule <category> <pattern> [--type keyword|exact|regex|custom]
 ```
 
-Categories: groceries, dining, transport, utilities, subscriptions, shopping, healthcare, entertainment, income, uncategorized.
+支持的分类类别包括：食品杂货、餐饮、交通、水电费、订阅服务、购物、医疗保健、娱乐、收入以及其他未分类的支出。
 
-If more than 20% of transactions land in "uncategorized", proactively tell the user: "I couldn't categorize X transactions. Here are some common ones: [list top uncategorized merchants]. Want me to add rules for any of these?" Then use `add-rule` for each one they confirm, and re-run with `--recategorize`.
+如果超过20%的交易被归类为“未分类”，请主动告知用户：“有X笔交易无法被分类。以下是一些常见的未分类交易来源：[列出常见的未分类交易商家]。需要我为这些商家添加分类规则吗？”用户确认后，可以使用`add-rule`命令为这些商家添加规则，并重新运行`--recategorize`命令以更新分类结果。
 
-### 3. Query Spending
+### 3. 查询支出情况
 
-```bash
-python3 scripts/query.py "<natural language query>"
-```
+系统支持以下类型的查询：
+- **时间范围**：本月、上个月、1月、过去30天、今年、2024-01-01至2024-03-31
+- **支出类别**：食品杂货、餐饮、交通、水电费、订阅服务、购物、医疗保健、娱乐、收入
+- **交易商家**：例如“在Starbucks消费”
+- **数据汇总方式**：总计/求和、计数、平均值、最大值/最小值、列出/显示
 
-The query parser understands:
-- **Time**: "this month", "last month", "January", "last 30 days", "this year", "2024-01-01 to 2024-03-31"
-- **Categories**: "groceries", "dining", "transport", "utilities", "subscriptions", "shopping", "healthcare", "entertainment", "income"
-- **Merchants**: "at Starbucks", "from Amazon"
-- **Aggregations**: total/sum, count, average, largest/max, smallest/min, list/show
+系统会根据用户的查询请求生成相应的查询语句，并以易于理解的方式呈现结果。对于总计数据，会直接显示具体金额；对于列表数据，会以表格形式展示日期和金额。
 
-Translate the user's question into the closest query string. Present results conversationally — for totals state the amount, for lists format as a readable table with dates and amounts.
+### 4. 管理预算
 
-### 4. Manage Budgets
+系统会跟踪用户的预算执行情况，并用以下三种状态表示：
+- **正常**（支出占比低于80%）
+- **警告**（支出占比在80%至100%之间）
+- **超出预算**（支出占比超过100%）
 
-```bash
-python3 scripts/budget.py set <category> <amount> [--period monthly|yearly]
-python3 scripts/budget.py status [--category <name>] [--period monthly|yearly]
-python3 scripts/budget.py list
-python3 scripts/budget.py delete <category> [--period monthly|yearly]
-```
+在报告预算状态时，会使用清晰的语言进行说明，例如：“您的餐饮预算使用率为87%（300美元中的261美元），本月还剩39美元。”对于超出预算的部分，会特别突出显示。
 
-Budget statuses: **ok** (under 80%), **warning** (80-100%), **exceeded** (over 100%).
+### 5. 生成报告
 
-When reporting status, use clear language: "Your dining budget is at 87% ($261 of $300) — you have $39 left this month." Highlight exceeded budgets prominently.
+- 使用`--format text`选项可以生成便于阅读的文本报告。
+- 使用`--format html`选项可以生成可在浏览器中查看的HTML报告。用户可以将报告保存为文件，系统会提供文件的保存路径。
 
-### 5. Generate Reports
+报告会重点展示支出最多的类别、与上个月的对比情况、预算执行情况以及主要的支出来源。
 
-```bash
-python3 scripts/report.py [--month <1-12>] [--year <year>] [--period monthly|yearly] [--format json|text|html]
-```
+## 数据存储位置
 
-Use `--format text` for conversational summaries. Use `--format html` when the user wants a file they can open in a browser — save the output to a file and give them the path.
+所有数据都存储在本地文件`~/.openclaw/skills/finance-reconciler/data/transactions.db`（SQLite数据库）中。用户可以通过设置环境变量`FINANCE_DATA_DIR`来更改数据存储路径。
 
-Present report highlights conversationally: biggest spending categories, changes from last month, budget concerns, and top merchants.
+## 常见用户问题的处理方式
 
-## Data Location
-
-All data is stored locally at `~/.openclaw/skills/finance-reconciler/data/transactions.db` (SQLite). Set the `FINANCE_DATA_DIR` environment variable to override.
-
-## Responding to Common User Intents
-
-| User says | What to do |
+| 用户问题 | 处理方式 |
 |-----------|-----------|
-| "Import my statement" / shares a file | Run import → categorize → show summary |
-| "How much did I spend on X?" | Run query.py with their question |
-| "Set a budget for groceries" | Ask for the amount if not given, then run budget.py set |
-| "Am I over budget?" | Run budget.py status for all categories |
-| "Show me my report" / "monthly summary" | Run report.py for current or specified month |
-| "What can you do?" / "help" | Explain the 5 operations with examples |
-| "Why is X categorized as Y?" | Explain the rule-based system, offer to add a custom rule |
-| "I don't have a file yet" | Give them bank-specific download instructions |
+| “导入我的对账单” / 分享文件路径 | 运行导入脚本 → 进行分类 → 显示分类结果 |
+| “我在某项支出上的花费是多少？” | 使用`query.py`根据用户的问题生成查询结果 |
+| “为食品杂货设定预算” | 如果用户未提供具体金额，先询问后再运行`budget.py`设置预算 |
+| “我超出预算了吗？” | 运行`budget.py`查询所有类别的预算执行情况 |
+| “查看我的报告” / “查看月度总结” | 运行`report.py`生成当前或指定月份的报告 |
+| “这个工具能做什么？” / “需要帮助” | 向用户解释工具的五大功能并举例说明 |
+| “为什么某项支出被归类为Y？” | 解释系统的分类规则，并提供自定义规则的选项 |
+| “我还没有对账单文件” | 提供该银行的具体下载指南 |
 
-All scripts output JSON to stdout. Parse the JSON and present results in clear, conversational language — never dump raw JSON to the user.
+所有脚本都会将处理结果以JSON格式输出到标准输出（stdout）。系统会解析JSON数据并以清晰、易于理解的方式呈现结果，绝不会直接将原始JSON数据展示给用户。

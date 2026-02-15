@@ -1,25 +1,25 @@
 ---
 name: sage-xch
-description: Sage XCH transaction operations. Send XCH, bulk send, combine coins, split coins, multi-send, clawback finalization.
+description: Sage XCH交易操作：发送XCH、批量发送、合并货币、拆分货币、多次发送以及回扣的最终处理。
 ---
 
-# Sage XCH Transactions
+# Sage XCH 交易
 
-XCH (Chia) transaction operations.
+XCH（Chia）交易操作。
 
-## Amount Format
+## 金额格式
 
-All amounts in mojos (string): `1 XCH = "1000000000000"`
+所有金额均以“mojos”为单位（字符串格式）：`1 XCH = "1000000000000"`。
 
-## Endpoints
+## 终端点
 
-### Send XCH
+### 发送 XCH
 
-| Endpoint | Description |
+| 终端点 | 描述 |
 |----------|-------------|
-| `send_xch` | Send to single address |
-| `bulk_send_xch` | Send to multiple addresses |
-| `multi_send` | Send multiple asset types |
+| `send_xch` | 向单个地址发送 |
+| `bulk_send_xch` | 向多个地址发送 |
+| `multi_send` | 同时发送多种类型的资产 |
 
 #### send_xch
 
@@ -59,13 +59,13 @@ All amounts in mojos (string): `1 XCH = "1000000000000"`
 }
 ```
 
-### Coin Management
+### 硬币管理
 
-| Endpoint | Payload | Description |
+| 终端点 | 有效载荷 | 描述 |
 |----------|---------|-------------|
-| `combine` | `{"coin_ids": [...], "fee": "...", "auto_submit": true}` | Merge coins |
-| `split` | `{"coin_ids": [...], "output_count": 10, "fee": "...", "auto_submit": true}` | Split coin |
-| `auto_combine_xch` | See below | Auto-merge small coins |
+| `combine` | `{"coin_ids": [...], "fee": "...", "auto_submit": true}` | 合并硬币 |
+| `split` | `{"coin_ids": [...], "output_count": 10, "fee": "...", "auto_submit": true}` | 分割硬币 |
+| `auto_combine_xch` | 详见下文 | 自动合并小额硬币 |
 
 #### auto_combine_xch
 
@@ -78,15 +78,15 @@ All amounts in mojos (string): `1 XCH = "1000000000000"`
 }
 ```
 
-### Clawback
+### 回收（Clawback）
 
-| Endpoint | Payload | Description |
+| 终端点 | 有效载荷 | 描述 |
 |----------|---------|-------------|
-| `finalize_clawback` | `{"coin_ids": [...], "fee": "...", "auto_submit": true}` | Complete clawback |
+| `finalize_clawback` | `{"coin_ids": [...], "fee": "...", "auto_submit": true}` | 完成硬币回收 |
 
-## Response Format
+## 响应格式
 
-All transaction endpoints return:
+所有交易终端点返回的响应格式相同：
 
 ```json
 {
@@ -99,7 +99,7 @@ All transaction endpoints return:
 }
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Send 1 XCH
@@ -118,9 +118,9 @@ sage_rpc auto_combine_xch '{
 }'
 ```
 
-## Clawback Feature
+## 回收功能
 
-Send with clawback (recoverable for N seconds):
+支持带有回收功能的交易（在 N 秒内可恢复）：
 
 ```json
 {
@@ -132,4 +132,4 @@ Send with clawback (recoverable for N seconds):
 }
 ```
 
-After clawback period, recipient runs `finalize_clawback` to claim.
+回收期结束后，接收者需要运行 `finalize_clawback` 来领取回收的硬币。

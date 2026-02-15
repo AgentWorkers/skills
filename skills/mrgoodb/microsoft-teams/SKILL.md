@@ -1,14 +1,14 @@
 ---
 name: microsoft-teams
-description: Send messages, manage channels, and automate workflows via Microsoft Teams API. Post to channels, create meetings, and manage team memberships.
+description: 通过 Microsoft Teams API 发送消息、管理频道以及自动化工作流程；在频道中发布内容、创建会议并管理团队成员资格。
 metadata: {"clawdbot":{"emoji":"👥","requires":{"env":["TEAMS_WEBHOOK_URL"]}}}
 ---
 
 # Microsoft Teams
 
-Team collaboration and messaging.
+用于团队协作和消息传递。
 
-## Webhook (Simplest - No Auth)
+## Webhook（最简单的方式——无需身份验证）
 
 ```bash
 # Post to channel via incoming webhook
@@ -17,7 +17,7 @@ curl -X POST "$TEAMS_WEBHOOK_URL" \
   -d '{"text": "Hello from automation!"}'
 ```
 
-## Adaptive Card via Webhook
+## 通过 Webhook 使用自适应卡片（Adaptive Cards）
 
 ```bash
 curl -X POST "$TEAMS_WEBHOOK_URL" \
@@ -36,9 +36,9 @@ curl -X POST "$TEAMS_WEBHOOK_URL" \
   }'
 ```
 
-## Graph API (Full Access)
+## Graph API（全权限访问）
 
-Requires Azure AD app registration with Microsoft Graph permissions.
+需要使用 Azure AD 注册应用程序，并获得 Microsoft Graph 的相关权限。
 
 ```bash
 export TEAMS_ACCESS_TOKEN="xxxxxxxxxx"
@@ -64,6 +64,6 @@ curl -X POST "https://graph.microsoft.com/v1.0/me/onlineMeetings" \
   -d '{"startDateTime": "2024-01-30T10:00:00Z", "endDateTime": "2024-01-30T11:00:00Z", "subject": "Quick Sync"}'
 ```
 
-## Links
-- Admin: https://admin.teams.microsoft.com
-- Docs: https://docs.microsoft.com/en-us/graph/api/resources/teams-api-overview
+## 链接：
+- 管理员：https://admin.teams.microsoft.com
+- 文档：https://docs.microsoft.com/en-us/graph/api/resources/teams-api-overview

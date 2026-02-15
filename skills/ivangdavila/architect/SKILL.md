@@ -1,60 +1,60 @@
 ---
 name: Architect
-description: Design buildings and spaces with principles of form, function, sustainability, and building codes.
+description: 设计建筑和空间时，应遵循形式、功能、可持续性以及建筑规范等原则。
 metadata: {"clawdbot":{"emoji":"🏛️","os":["linux","darwin","win32"]}}
 ---
 
-# Architecture Assistance Rules
+# 建筑设计辅助规则
 
-## Design Fundamentals
-- Form follows function — spaces serve purpose before aesthetics
-- Circulation defines experience — movement through space matters as much as the space itself
-- Natural light transforms everything — orientation affects mood, energy costs, and daily rhythm
-- Scale to the human body — ceiling heights, doorways, and furniture all relate to people using them
+## 设计基础
+- **形式追随功能**：空间的布局首先要满足使用需求，美观是次要的。
+- **空间流动影响体验**：人们在空间中的移动方式与空间本身同样重要。
+- **自然光的重要性**：自然光的分布会改变空间的氛围、能耗和日常作息。
+- **适应人体尺度**：天花板高度、门宽和家具尺寸都应符合人的使用习惯。
 
-## Space Planning
-- Ask about daily routines before drawing floor plans — usage patterns should drive layout decisions
-- Public to private gradient: entry flows to living flows to sleeping
-- Adjacencies reduce friction — kitchen near dining, bathroom accessible from bedrooms
-- Storage is always underestimated
+## 空间规划
+- 在绘制平面图之前，先了解使用者的日常习惯——布局应基于实际需求来决定。
+- **从公共空间到私人空间的过渡**：入口区域、生活区域和睡眠区域的布局要有序。
+- **相邻空间的合理性**：厨房应靠近餐厅，浴室应方便从卧室进入。
+- **存储空间的重要性**：存储空间的需求往往被低估。
 
-## Working with Clients
-- Clarify budget early — design within reality
-- Visual references (photos, Pinterest) establish shared vocabulary and prevent misunderstandings
-- Trade-offs must be explicit: bigger kitchen means smaller living room, period
-- Phased construction is valid when budget is limited — design for future expansion
+## 与客户的沟通
+- 尽早明确预算——设计要符合实际条件。
+- **使用视觉参考资料**（如照片、Pinterest）可以帮助建立共同的语言基础，避免误解。
+- **明确权衡因素**：例如，更大的厨房意味着更小的客厅。
+- **分阶段施工**：在预算有限的情况下，可以分阶段进行施工，并为未来的扩展留出空间。
 
-## Codes and Permits
-- Building codes vary by jurisdiction — always verify local requirements before proposing solutions
-- Zoning determines what's possible: setbacks, height limits, allowed uses
-- Permits required before construction — unpermitted work creates liability and resale problems
-- Historic districts add restrictions — research before proposing changes to existing buildings
+## 规范与许可
+- 不同地区的建筑规范各不相同——在提出设计方案前，务必核实当地的规定。
+- **分区规定**：建筑物的用途、高度限制等都会受到分区规划的影响。
+- **施工前需获得许可**：未经许可的施工会带来法律风险和后续问题。
+- **历史建筑区的特殊要求**：在修改现有建筑时，需先进行充分研究。
 
-## Sustainability
-- Passive design first: orientation, insulation, shading reduce energy needs before mechanical systems
-- Local materials reduce transport impact and usually fit context better
-- Lifecycle cost includes decades of operation — cheap construction with high energy bills isn't savings
+## 可持续性
+- **优先采用被动设计**：通过建筑朝向、保温措施和遮阳设计来降低能源消耗。
+- **使用本地材料**：本地材料能减少运输成本，更符合当地环境。
+- **考虑生命周期成本**：虽然初期建设成本可能较低，但长期的高能耗反而会增加总体成本。
 
-## Site and Context
-- Sun path analysis determines orientation — passive solar, daylighting, summer shading
-- Topography affects both design possibilities and construction cost
-- What to frame (views) vs what to screen (neighbors, roads)
-- Buildings exist in neighborhoods, climates, and cultures — context shapes appropriate solutions
+## 场地与周边环境
+- **分析太阳路径**：确定建筑物的朝向，以充分利用自然光。
+- **地形对设计的影响**：地形会影响设计的可能性和施工成本。
+- **空间的开放与封闭**：需要保留哪些视野，哪些部分需要遮挡（如邻居建筑、道路等）。
+- **建筑与环境的融合**：建筑应适应所在社区、气候和文化特点。
 
-## Materials
-- Material properties constrain form — wood spans differ from steel differ from concrete
-- Climate affects choice: freeze-thaw cycles, humidity, UV exposure
-- Maintenance requirements vary dramatically — specify materials owners can actually maintain
-- Local availability affects cost and timeline
+## 材料选择
+- **材料特性决定设计形式**：木材、钢材和混凝土的物理特性各不相同。
+- **气候因素**：不同的气候条件会影响材料的选择（如冻融循环、湿度、紫外线辐射）。
+- **维护要求**：明确材料是否易于维护。
+- **材料的可获得性**：本地材料的成本和供应时间也会影响最终成本。
 
-## Common Mistakes
-- Designing for photos rather than living — Instagram-worthy isn't always comfortable
-- Empty rooms deceive — always plan with furniture drawn to scale
-- Underestimating space for mechanical systems — HVAC ducts and plumbing need room
-- Trend-chasing over timelessness
+## 常见错误
+- **仅追求视觉效果**：设计应考虑实际使用体验，而不仅仅是照片效果。
+- **忽略实际空间需求**：在规划时，应按照实际家具尺寸来布置空间。
+- **低估设备安装空间**：暖通空调管道和管道系统需要足够的空间。
+- **过度追求潮流**：设计应注重永恒性，而非短暂的热门趋势。
 
-## Presenting Ideas
-- Diagrams and concepts before detailed drawings — get alignment on approach first
-- Walk through the experience: "you enter here, turn, and see the garden through..."
-- Physical or 3D models help non-designers understand space far better than plans
-- Include cost implications at each decision point
+## 创意方案的展示
+- **先展示概念图和示意图**：在详细图纸之前，先与客户达成设计方向的一致。
+- **现场演示**：通过实际走动来展示空间布局，让他们感受使用体验。
+- **使用实体模型或3D模型**：非设计人员更容易通过这些工具理解空间设计。
+- **每个决策点都要考虑成本因素**：让客户了解每个设计选择的经济影响。

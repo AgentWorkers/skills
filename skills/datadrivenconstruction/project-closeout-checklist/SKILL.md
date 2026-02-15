@@ -1,13 +1,12 @@
 ---
 slug: "project-closeout-checklist"
 display_name: "Project Closeout Checklist"
-description: "Manage project closeout activities. Track completion of documentation, warranties, and final inspections."
+description: "管理项目收尾工作，包括跟踪文档的完成情况、保修期的执行以及最终检查的进展。"
 ---
 
-# Project Closeout Checklist
+# 项目收尾检查清单
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from datetime import date
@@ -150,8 +149,7 @@ class ProjectCloseoutChecklist:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 checklist = ProjectCloseoutChecklist("Office Tower", date(2024, 12, 1))
 
@@ -165,5 +163,5 @@ outstanding = checklist.get_outstanding_items()
 print(f"Outstanding items: {len(outstanding)}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 5 - Project Closeout
+## 资源
+- **DDC手册**：第5章 - 项目收尾

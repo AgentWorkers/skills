@@ -1,13 +1,13 @@
 ---
 name: ogt-docs
-description: Documentation-as-Source-of-Truth workflow. Use when working with projects that use docs/ as the canonical source for definitions, rules, and tasks. Routes to specialized sub-skills for specific documentation types.
+description: “文档即事实”（Documentation-as-Source-of-Truth）工作流程：适用于那些将文档作为定义、规则和任务的标准来源的项目。该流程会引导用户前往专门处理特定类型文档的子模块或子系统。
 ---
 
-# OGT Docs - Documentation as Source of Truth
+# OGT 文档 - 作为事实依据的文档
 
-## Philosophy
+## 哲学
 
-**Documentation is the database of decisions. Code is merely its implementation.**
+**文档是决策的记录；代码仅仅是这些决策的实现方式。**
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -21,18 +21,18 @@ description: Documentation-as-Source-of-Truth workflow. Use when working with pr
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use `ogt-docs` when you need to:
+在以下情况下使用 `ogt-docs`：
 
-- Understand the docs/ folder structure
-- Find the right sub-skill for a specific task
-- Initialize a new docs-first project
-- Navigate between definition types
+- 需要理解文档/文件夹的结构；
+- 为特定任务找到合适的子技能；
+- 初始化一个以文档为主的项目；
+- 在不同类型的文档之间导航。
 
-**For specific tasks, use the specialized sub-skills listed below.**
+**对于特定任务，请使用下面列出的专用子技能。**
 
-## Documentation Structure Overview
+## 文档结构概述
 
 ```
 docs/
@@ -67,9 +67,9 @@ docs/
     └── branding/
 ```
 
-## The Folder-as-Entity Pattern
+## “文件夹即实体”的模式
 
-Every documentable item is a **folder** containing:
+每个需要记录的项都是一个 **文件夹**，其中包含：
 
 ```
 {item_slug}/
@@ -78,56 +78,55 @@ Every documentable item is a **folder** containing:
 └── .{signal_files}           # Status markers and metadata
 ```
 
-**Benefits:**
+**优势：**
+- 可以在整个工作流程阶段之间移动整个文件夹；
+- 可以附加无限数量的辅助文件；
+- 通过点文件（`.dot` 文件）来指示状态；
+- 可以原子级地版本控制和跟踪更改。
 
-- Move entire folder between workflow stages
-- Attach unlimited supporting files
-- Signal status via dot-files
-- Version and track changes atomically
+## 子技能参考
 
-## Sub-Skills Reference
+### 定义（说明事物的本质）
 
-### Definitions (WHAT things ARE)
-
-| Sub-Skill                   | Purpose                        | Use When                          |
+| 子技能                   | 目的                        | 使用场景                          |
 | --------------------------- | ------------------------------ | --------------------------------- |
-| `ogt-docs-define`           | General definition guidance    | Need overview of definition types |
-| `ogt-docs-define-business`  | Business model, pricing, users | Defining business concepts        |
-| `ogt-docs-define-feature`   | Product features and specs     | Specifying a new feature          |
-| `ogt-docs-define-code`      | Technical architecture         | Defining services, data models    |
-| `ogt-docs-define-marketing` | Brand, messaging, audience     | Marketing definitions             |
-| `ogt-docs-define-branding`  | Visual identity, tone          | Brand guidelines                  |
-| `ogt-docs-define-tools`     | Tooling and CLI specs          | Defining developer tools          |
+| `ogt-docs-define`           | 提供通用的定义指导    | 需要了解定义类型的概览             |
+| `ogt-docs-define-business`  | 定义商业模式、定价、用户群体 | 规定业务概念                    |
+| `ogt-docs-define-feature`   | 描述产品特性和规格     | 定义新功能                      |
+| `ogt-docs-define-code`      | 描述技术架构         | 定义服务、数据模型                 |
+| `ogt-docs-define-marketing` | 定义品牌、信息传递方式、目标受众 | 制定营销策略                   |
+| `ogt-docs-define-branding`  | 规定视觉识别元素、语言风格   | 制定品牌指南                    |
+| `ogt-docs-define-tools`     | 描述开发工具和命令行接口     | 定义开发工具的相关信息              |
 
-### Rules (HOW to IMPLEMENT)
+### 规则（说明实现方法）
 
-| Sub-Skill                   | Purpose                   | Use When                    |
+| 子技能                   | 目的                   | 使用场景                    |
 | --------------------------- | ------------------------- | --------------------------- |
-| `ogt-docs-rules`            | General rules guidance    | Need overview of rule types |
-| `ogt-docs-rules-code`       | Coding standards overview | General code rules          |
-| `ogt-docs-rules-code-front` | Frontend-specific rules   | React, CSS, components      |
-| `ogt-docs-rules-code-back`  | Backend-specific rules    | API, database, services     |
-| `ogt-docs-rules-code-infra` | Infrastructure rules      | Docker, CI/CD, deployment   |
-| `ogt-docs-rules-git`        | Version control rules     | Commits, branches, PRs      |
+| `ogt-docs-rules`            | 提供通用的规则指导    | 需要了解规则类型的概览             |
+| `ogt-docs-rules-code`       | 提供编码标准指导       | 制定通用编码规则                 |
+| `ogt-docs-rules-code-front` | 提供前端特定规则       | 适用于 React、CSS、组件的规则           |
+| `ogt-docs-rules-code-back`  | 提供后端特定规则       | 适用于 API、数据库、服务的规则           |
+| `ogt-docs-rules-code-infra` | 提供基础设施规则       | 适用于 Docker、CI/CD、部署的规则           |
+| `ogt-docs-rules-git`        | 提供版本控制规则       | 适用于提交、分支、Pull Request 的规则         |
 
-### Tasks (WHAT to DO)
+### 任务（说明具体操作）
 
-| Sub-Skill              | Purpose                 | Use When                       |
+| 子技能              | 目的                 | 使用场景                       |
 | ---------------------- | ----------------------- | ------------------------------ |
-| `ogt-docs-create-task` | Create and manage tasks | Need to create/update a task   |
-| `ogt-docs-audit-task`  | Verify task completion  | Checking if task is truly done |
+| `ogt-docs-create-task` | 创建和管理任务         | 需要创建或更新任务                   |
+| `ogt-docs-audit-task` | 核实任务是否完成         | 检查任务是否真正完成                 |
 
-### Other
+### 其他
 
-| Sub-Skill                | Purpose                   | Use When                          |
+| 子技能                | 目的                   | 使用场景                          |
 | ------------------------ | ------------------------- | --------------------------------- |
-| `ogt-docs-create`        | General creation guidance | Need to create any doc type       |
-| `ogt-docs-create-social` | Marketing content         | Creating social/marketing content |
-| `ogt-docs-audit`         | General audit guidance    | Auditing documentation            |
-| `ogt-docs-init`          | Initialize docs structure | Setting up new project            |
-| `ogt-docs-config`        | Configuration options     | Customizing docs workflow         |
+| `ogt-docs-create`        | 提供通用的创建指导       | 需要创建任何类型的文档                 |
+| `ogt-docs-create-social` | 创建营销内容           | 制作社交媒体/营销相关的文档             |
+| `ogt-docs-audit`         | 提供通用的审核指导       | 对文档进行审核                     |
+| `ogt-docs-init`          | 初始化文档结构           | 设置新项目的文档结构                 |
+| `ogt-docs-config`        | 配置文档工作流程         | 自定义文档处理流程                 |
 
-## Workflow Overview
+## 工作流程概述
 
 ```mermaid
 flowchart TB
@@ -157,60 +156,55 @@ flowchart TB
     verify -->|Docs Wrong| define
 ```
 
-## Quick Start
+## 快速入门
 
-### "I need to define something new"
+### “我需要定义新内容”
 
-→ Use `ogt-docs-define` to understand types, then the specific sub-skill
+→ 使用 `ogt-docs-define` 了解文档类型，然后选择相应的子技能；
+### “我需要创建一个任务”
 
-### "I need to create a task"
+→ 使用 `ogt-docs-create-task`；
+### “我需要确认任务是否已完成”
 
-→ Use `ogt-docs-create-task`
+→ 使用 `ogt-docs-audit-task`；
+### “我需要添加编码规则”
 
-### "I need to check if a task is really done"
+→ 使用 `ogt-docs-rules-code` 或相应的前端/后端/基础设施规则；
+### “我需要为新项目设置文档结构”
 
-→ Use `ogt-docs-audit-task`
+→ 使用 `ogt-docs-init`。
 
-### "I need to add coding rules"
+## 命名规范
 
-→ Use `ogt-docs-rules-code` or the specific frontend/backend/infra variant
-
-### "I need to set up docs for a new project"
-
-→ Use `ogt-docs-init`
-
-## Naming Conventions
-
-| Element          | Format                | Example                                 |
+| 元素          | 命名格式                | 示例                                 |
 | ---------------- | --------------------- | --------------------------------------- |
-| Folder slugs     | snake_case            | `global_search`, `user_auth`            |
-| Primary files    | lowercase type        | `task.md`, `feature.md`, `rule.md`      |
-| Supporting files | lowercase descriptive | `phase_0.md`, `notes.md`, `progress.md` |
-| Signal files     | dot + snake_case      | `.blocked_reason`, `.approved_by_human` |
+| 文件夹名称       | 使用蛇形命名法（snake_case）       | `global_search`, `user_auth`            |
+| 主要文档文件     | 使用小写字母表示类型         | `task.md`, `feature.md`, `rule.md`      |
+| 辅助文件       | 使用小写字母加描述性词汇       | `phase_0.md`, `notes.md`, `progress.md`     |
+| 信号文件       | 使用点文件（`.dot`）加上蛇形命名法     | `.blocked_reason`, `.approved_by_human`     |
 
-## Signal Files Reference
+## 信号文件说明
 
-Signal files are dot-files that indicate status or metadata.
+信号文件是通过点文件（`.dot` 文件）来表示状态或元数据的文件。
 
-| Signal                 | Type    | Meaning                     |
-| ---------------------- | ------- | --------------------------- |
-| `.version`             | Content | Schema/doc version (JSON)   |
-| `.blocked`             | Empty   | Item is blocked             |
-| `.blocked_reason`      | Content | Why it's blocked            |
-| `.approved`            | Empty   | Approved for implementation |
-| `.approved_by_{name}`  | Empty   | Who approved                |
-| `.rejected`            | Empty   | Rejected                    |
-| `.rejected_reason`     | Content | Why rejected                |
-| `.verified`            | Empty   | Implementation verified     |
-| `.completed_at`        | Content | Completion timestamp        |
-| `.assigned_to_{agent}` | Empty   | Who's working on it         |
-| `.pr_link`             | Content | Associated PR URL           |
-| `.depends_on`          | Content | Dependencies list           |
+| 信号类型       | 含义                         | 解释                          |
+| ---------------------- | --------------------------- | --------------------------------- |
+| `.version`       | 文件内容           | 文档的版本信息（JSON 格式）             |
+| `.blocked`       | 文件被阻止           | 文件当前处于阻止状态                   |
+| `.blocked_reason`     | 阻止原因           | 文件被阻止的具体原因                 |
+| `.approved`       | 文件已获批准           | 文件已被批准进行实施                 |
+| `.approved_by_{name}`     | 批准人             | 批准文件的人                     |
+| `.rejected`       | 文件被拒绝           | 文件被拒绝的原因                 |
+| `.verified`       | 文件已验证           | 文件的实现已通过验证                 |
+| `.completed_at`     | 文件完成时间           | 文件完成的时间戳                   |
+| `.assigned_to_{agent}`     | 负责人             | 负责处理该文件的人员                 |
+| `.pr_link`       | 关联的 Pull Request 链接     | 与该文件相关的 Pull Request 链接           |
+| `.depends_on`     | 依赖关系           | 文件所依赖的其他文件或任务               |
 
-## The Golden Rules
+## 重要原则
 
-1. **If it's not documented, it doesn't exist**
-2. **If code contradicts docs, code is wrong**
-3. **Never trust "done" status without verification**
-4. **Move folders, don't copy files**
-5. **Signal with dot-files, don't edit status fields**
+1. **如果没有记录在文档中，那就意味着它不存在**；
+2. **如果代码与文档矛盾，那么代码就是错误的**；
+3. **未经验证，切勿相信“已完成”的状态**；
+4. **移动文件夹，而不是复制文件**；
+5. **使用点文件来传递状态信息，不要直接修改状态字段**。

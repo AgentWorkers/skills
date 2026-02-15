@@ -1,30 +1,52 @@
 ---
 name: quests
-description: Track and guide humans through complex multi-step real-world processes. Use when a user needs help with a bureaucratic, legal, technical, or any multi-step procedure that requires organized tracking, step-by-step guidance, and progress monitoring. Triggers on requests like "help me with this process", "guide me through", "track this project", "create a quest", or any complex task that benefits from being broken into manageable steps presented one at a time. Also triggers for existing quests: "how's my quest going", "what's next on [process]", "update my progress". This is for multi-session/multi-day processes, not simple one-off tasks. The quest replaces scattered memory files — it IS the memory for long-running processes.
+description: **功能说明：**  
+该功能旨在帮助用户顺利完成复杂的多步骤实际操作流程，适用于需要系统化跟踪、逐步指导以及进度监控的场景，无论是涉及官僚手续、法律事务、技术操作还是其他任何需要分步骤处理的流程。  
+
+**触发条件：**  
+当用户发出如下请求时，该功能会被触发：  
+- “帮我完成这个流程”  
+- “请指导我完成这个操作”  
+- “跟踪这个项目的进度”  
+- “创建一个任务”  
+- 或者任何可以通过分解为可管理步骤来更有效地完成的复杂任务。  
+
+**适用于的场景：**  
+- 多会话/多天的长期流程（而非简单的单次性任务）。  
+
+**替代方案：**  
+该功能取代了以往分散存储的临时文件，成为长期运行流程的“记忆记录”。  
+
+**示例：**  
+- 用户：“我需要帮助完成这个复杂的申请流程。”  
+- 系统响应：“请按照以下步骤操作：  
+  1. 准备所需材料……  
+  2. 提交申请……  
+  3. 等待审核结果……”  
+- 用户根据系统提示逐步完成流程，并可随时查看进度。  
+
+**注意事项：**  
+- 该功能特别适用于需要系统化管理的复杂流程，适用于官僚手续、法律事务、技术操作等领域。
 ---
 
-# Quests — Guided Process Framework
+# 任务管理框架（Quest Management Framework）  
+这是一个标准化框架，用于帮助AI代理跟踪并指导人类完成复杂的长期任务。在该框架中，**任务（Quest）是所有信息的唯一来源**——任务中包含了上下文、决策、联系人、风险以及进度信息，这些信息不会分散在多个内存文件中。  
 
-A standardized framework for AI agents to track and guide humans through complex long-term tasks. The quest is the **single source of truth** — context, decisions, contacts, risks, and progress live inside the quest, not scattered across memory files.
+## 设计理念：  
+- **循序渐进**：`quest next` 只显示当前的任务，避免信息过载。  
+- **任务即记忆**：`quest context` 以简洁的形式提供代理所需的所有信息。  
+- **动态文档**：任务步骤可以随时添加、删除或重新排序。  
+- **用户友好**：`quest brief` 会生成适合发送消息的摘要。  
 
-## Philosophy
+## 命令行接口（CLI）：`skills/quests/scripts/quest.py`（符号链接为 `quest`）  
+数据存储在 `$WORKSPACE/data/quests.json` 中。任务ID是根据名称自动生成的（采用slug化格式）。  
 
-- **One step at a time**: `quest next` shows only the current task — no overwhelm
-- **Quest as memory**: `quest context` gives the agent everything needed in minimal tokens
-- **Living document**: Steps can be added, removed, reordered, and modified at any time
-- **Human-friendly**: `quest brief` generates summaries suitable for messaging
+### 规范说明：  
+- **自动识别**：当只有一个任务处于活动状态时，`quest` 参数是可选的。  
+- **模糊匹配**：任务可以通过ID、ID前缀或名称子字符串进行匹配。  
+- **可选参数**：执行 `quest done` 无需指定具体步骤即可完成当前的活动步骤。  
 
-## CLI: `skills/quests/scripts/quest.py` (symlink as `quest`)
-
-Data stored at `$WORKSPACE/data/quests.json`. Quest IDs are auto-generated from names (slugified).
-
-### Conventions
-
-- **Auto-resolution**: When only one quest is active, the quest argument is optional
-- **Fuzzy matching**: Quests match by exact ID, ID prefix, or name substring
-- **Optional args**: `quest done` with no step completes the current active step
-
-### Quick Start
+### 快速入门  
 ```bash
 quest new "Fix car" --priority high --deadline 2026-06-01
 quest add car "Get documents" --desc "Gather all paperwork"
@@ -35,108 +57,108 @@ quest contact car "Agency" --phone "555-1234" --role "Tax office"
 quest next car                    # Present current step to human
 quest done car 1.1                # Mark substep done
 quest context car                 # Reload full context (~1K tokens)
-```
+```  
 
-### Resuming a Quest (New Session)
+### 恢复任务（新会话）  
 ```bash
 quest list                        # Find active quests
 quest context myquest             # Load full state — replaces reading memory files
 quest next myquest                # Present current step to human
-```
+```  
 
-### Commands Reference
+### 命令参考：  
+**任务生命周期：**  
+- `new <名称> [--描述] [--优先级 低|中|高] [--截止日期 DATE] [--标签 a,b]`  
+- `list [--全部]` — 列出所有活动中的任务（包括已归档的任务）。  
+- `delete <任务> [--归档]` — 归档操作可逆，删除操作不可逆。  
 
-**Quest lifecycle:**
-- `new <name> [--desc] [--priority low|medium|high] [--deadline DATE] [--tags a,b]`
-- `list [--all]` — list active (or all including archived)
-- `delete <quest> [--archive]` — archive is reversible, delete is permanent
+**任务步骤（高度灵活）：**  
+- `add <任务> <标题> [--描述]` — 添加一个步骤。  
+- `insert <任务> <位置> <标题> [--描述]` — 在指定位置插入步骤。  
+- `remove <任务> <步骤>` — 删除一个步骤或子步骤（例如 `3` 或 `2.1`）。  
+- `substep <任务> <步骤> <标题>` — 为某个步骤添加子步骤。  
+- `done [任务] [步骤]` — 完成步骤/子步骤（系统会自动进入下一个步骤）。  
+- `skip [任务] [步骤]` — 跳过某个步骤。  
+- `block <任务> <步骤> <原因>` — 将步骤标记为“已阻止”。  
+- `unblock <任务> <步骤>` — 解除步骤的阻止状态。  
+- `edit <任务> [步骤] [--标题] [--描述]` — 编辑步骤或任务级别的信息。  
+- `reorder <任务> <步骤> <位置>` — 移动步骤的位置。  
 
-**Steps (fully flexible):**
-- `add <quest> <title> [--desc]` — append a step
-- `insert <quest> <position> <title> [--desc]` — insert at specific position
-- `remove <quest> <step>` — remove a step or substep (e.g. `3` or `2.1`)
-- `substep <quest> <step> <title>` — add substep to a step
-- `done [quest] [step]` — complete step/substep (auto-advances to next)
-- `skip [quest] [step]` — skip a step
-- `block <quest> <step> <reason>` — mark step as blocked
-- `unblock <quest> <step>` — unblock
-- `edit <quest> [step] [--title] [--desc]` — edit step or quest-level fields
-- `reorder <quest> <step> <position>` — move step to new position
+**上下文与记忆**（核心功能）：  
+- `learn <任务> <事实>` — 记录关键事实（影响所有步骤）。  
+- `decide <任务> <决策> [--原因]` — 记录决策及其理由。  
+- `risk <任务> <风险>` — 标记风险或问题。  
+- `note <任务> <步骤> <文本>` — 为特定步骤添加备注。  
+- `summarize <任务> <文本>` — 更新任务的概要信息。  
+- `context [任务] [--json]` — 提供简洁的上下文信息（约500-1500个字符）。  
+- `brief [任务]` — 生成适合异步消息传递的摘要。  
+- `log [任务] [-n 数量]` — 记录带有时间戳的活动日志。  
 
-**Context & Memory** (the core feature):
-- `learn <quest> <fact>` — record a key fact (quest-level, affects all steps)
-- `decide <quest> <decision> [--reason]` — record a decision with rationale
-- `risk <quest> <concern>` — flag a risk or concern
-- `note <quest> <step> <text>` — add a note to a specific step (step-level)
-- `summarize <quest> <text>` — update the high-level context summary
-- `context [quest] [--json]` — compact context dump (~500-1500 chars)
-- `brief [quest]` — human-friendly summary for async messaging
-- `log [quest] [-n LIMIT]` — timestamped activity log
+> **`learn` 与 `note` 的区别**：  
+  - 使用 `learn` 记录影响整个任务的事实（例如：“免税需要12个月”。  
+  - 使用 `note` 记录特定步骤的信息（例如：“Carlos表示他已经有了CoC文件”）。  
 
-> **`learn` vs `note`**: Use `learn` for facts that affect the whole quest ("Tax exemption requires 12 months"). Use `note` for step-specific info ("Carlos said he has the CoC already").
+**元数据：**  
+- `meta <任务> [--优先级] [--截止日期] [--标签 a,b] [--删除]`  
+- `contact <任务> [名称] [--电话] [--电子邮件] [--角色] [--网址]` — 添加或列出联系人信息。  
+- `link <任务> [网址] [--标签]` — 添加或列出参考链接。  
 
-**Metadata:**
-- `meta <quest> [--priority] [--deadline] [--tags a,b] [--remove]`
-- `contact <quest> [name] [--phone] [--email] [--role] [--url]` — add or list contacts
-- `link <quest> [url] [--label]` — add or list reference links
+**模板：**  
+- `template save <任务> [模板名称]` — 将任务结构保存为可重用的模板。  
+- `template list` — 列出可用的模板。  
+- `template use <模板> [任务名称]` — 使用模板创建新任务。  
 
-**Templates:**
-- `template save <quest> [template_name]` — save quest structure as reusable template
-- `template list` — list available templates
-- `template use <template> [quest_name]` — create new quest from template
+**显示方式：**  
+- `next [任务]` — 仅显示当前步骤（用于向人类展示）。  
+- `show [任务] [-v]` — 显示包含所有步骤和上下文的完整任务信息。  
+- `status [任务]` — 提供任务的快速进度概览。  
 
-**Display:**
-- `next [quest]` — current step only (for presenting to human)
-- `show [quest] [-v]` — full quest with all steps and context
-- `status [quest]` — quick progress overview
+**导出：**  
+- `export <任务> [--文件路径]` — 以Markdown格式导出任务信息。  
+- `json [任务]` — 以原始JSON格式导出任务信息（如果没有指定参数，则导出所有任务）。  
 
-**Export:**
-- `export <quest> [--file path]` — markdown export
-- `json [quest]` — raw JSON (all quests if no arg)
+## 代理使用指南：  
+### 何时（以及何时不）创建任务：  
+- **适合创建任务的情况**：涉及多个会话的过程、需要多个步骤的任务、持续多天的任务。  
+- **不适合创建任务的情况**：简单的单次性任务、快速查询、可以在一次对话中完成的任务。  
 
-## Agent Guidelines
+### 启动新任务：  
+1. 使用 `quest new` 创建任务，并设置优先级和截止日期（如果已知）。  
+2. 使用 `quest add` 添加5-12个步骤（可以使用子步骤来细化任务）。  
+3. 使用 `quest learn` 记录初始事实。  
+4. 随着任务的进展，添加联系人、链接和风险信息。  
+5. 使用 `quest next` 显示第一个步骤。  
 
-### When (Not) to Create a Quest
-- **Create**: Multi-session processes, bureaucratic tasks, anything >3 steps spanning multiple days
-- **Don't create**: Simple one-off tasks, quick lookups, things that fit in one conversation
+### 会话恢复：  
+在开始涉及现有任务的会话时：  
+1. 使用 `quest list` 查看当前处于活动状态的任务。  
+2. 使用 `quest context <ID>` 重新加载任务的完整状态（替代读取内存文件）。  
+3. 使用 `quest next <ID>` 查看人类上次停止的位置。  
 
-### Starting a New Quest
-1. Create with `quest new` — set priority and deadline if known
-2. Add 5-12 steps with `quest add` (use substeps for granularity)
-3. Record initial facts with `quest learn`
-4. Add contacts, links, and risks as discovered
-5. Present first step with `quest next`
+### 任务执行过程中的操作：  
+- 记录所有信息：事实（`learn`）、决策（`decide`）、风险（`risk`）。  
+- 随着理解的深入，使用 `quest summarize` 更新任务概要。  
+- 随着任务的变化，自由地添加、删除或重新排序步骤。  
+- 在与人类进行异步通信时（如通过WhatsApp或Discord），使用 `quest brief` 提供任务概要。  
+- 在交互式对话中，使用 `quest next` 继续推进任务。  
 
-### Session Resumption
-At the start of any session involving an existing quest:
-1. `quest list` — check what's active
-2. `quest context <id>` — reload full state (replaces reading memory files)
-3. `quest next <id>` — see where the human left off
+### 向人类展示任务：  
+- **始终使用 `quest next`** — 不要未经提示就显示所有步骤列表。  
+- 当人类完成某个步骤时，使用 `quest done` 通知系统自动进入下一个步骤。  
+- 当某个步骤被标记为“已阻止”时，使用 `quest block` 并说明原因。  
+- 当人类提供新信息时，使用 `quest learn` 或 `quest note` 更新任务内容。  
 
-### During the Process
-- Record everything: facts (`learn`), decisions (`decide`), risks (`risk`)
-- Update summary with `quest summarize` as understanding evolves
-- Add/remove/reorder steps freely as the process changes
-- Use `quest brief` when messaging the human asynchronously (WhatsApp/Discord recap)
-- Use `quest next` in interactive conversation
+### 多个任务同时进行：  
+自动识别功能仅适用于单个活动任务。当有多个任务同时进行时，必须明确指定任务的ID。  
 
-### Presenting to Humans
-- **Always use `quest next`** — never show the full step list unprompted
-- When human completes something → `quest done` → auto-advances
-- When blocked → `quest block` with clear reason
-- When human provides info → `quest learn` or `quest note`
+### 任务完成：  
+当所有步骤都完成后，任务会自动完成。可以考虑：  
+- 使用 `quest export <任务> --文件路径` 保存任务记录。  
+- 如果任务可能会重复执行，使用 `quest template save` 保存模板。  
+- 使用 `quest delete <任务> --archive` 清理任务记录，同时保留数据。  
 
-### Multiple Active Quests
-Auto-resolution only works with one active quest. When multiple are active, always specify the quest ID explicitly.
-
-### Quest Completion
-When all steps are done, the quest auto-completes. Consider:
-- `quest export <quest> --file` to save a permanent record
-- `quest template save` if the process might repeat
-- `quest delete <quest> --archive` to clean up while preserving data
-
-### Token Efficiency
-- `quest context` outputs ~500-1500 chars with full situational awareness
-- No need for separate memory files, trackers, or project docs
-- The quest IS the memory — facts, decisions, contacts, risks, all in one place
-- Use `quest context --json` for structured programmatic access
+### 代码效率：  
+- `quest context` 输出约500-1500个字符，涵盖完整的任务信息。  
+- 无需单独的内存文件、跟踪工具或项目文档。  
+- 任务本身就包含了所有信息：事实、决策、联系人、风险等。  
+- 使用 `quest context --json` 可以以结构化的方式访问任务数据。

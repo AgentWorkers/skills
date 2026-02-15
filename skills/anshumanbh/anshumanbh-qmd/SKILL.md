@@ -1,48 +1,48 @@
 ---
 name: qmd
-description: Search markdown knowledge bases efficiently using qmd. Use this when searching Obsidian vaults or markdown collections to find relevant content with minimal token usage.
+description: 使用 qmd 高效地搜索 Markdown 知识库。在搜索 Obsidian 文档库或 Markdown 集合时，可以利用该工具以最少的令牌使用量找到相关内容。
 argument-hint: "<search query> [--collection <name>] [--semantic]"
 ---
 
-# QMD Search Skill
+# QMD 搜索技能
 
-Search markdown knowledge bases efficiently using qmd, a local indexing tool that uses BM25 + vector embeddings to return only relevant snippets instead of full files.
+使用 qmd（一个本地索引工具）高效地搜索 Markdown 知识库。qmd 结合 BM25 算法和向量嵌入技术，仅返回相关的内容片段，而无需加载整个文件。
 
-## Why Use This
+## 为什么使用它
 
-- **96% token reduction** - Returns relevant snippets instead of reading entire files
-- **Instant results** - Pre-indexed content means fast searches
-- **Local & private** - All indexing and search happens locally
-- **Hybrid search** - BM25 for keyword matching, vector search for semantic similarity
+- **减少 96% 的数据量**：仅返回相关的内容片段，无需读取整个文件。
+- **即时结果**：预索引的内容使得搜索速度非常快。
+- **本地化且私密**：所有的索引和搜索操作都在本地完成。
+- **混合搜索**：使用 BM25 算法进行关键词匹配，通过向量搜索来评估内容的语义相似性。
 
-## Commands
+## 命令
 
-### Search (BM25 keyword matching)
+### 搜索（基于 BM25 的关键词匹配）
 ```bash
 qmd search "your query" --collection <name>
 ```
-Fast, accurate keyword-based search. Best for specific terms or phrases.
+快速、准确的基于关键词的搜索。适用于搜索特定的术语或短语。
 
-### Vector Search (semantic)
+### 向量搜索（语义搜索）
 ```bash
 qmd vsearch "your query" --collection <name>
 ```
-Semantic similarity search. Best for conceptual queries where exact words may vary.
+基于语义相似性的搜索。适用于那些表述可能有多种变体的概念性查询。
 
-### Hybrid Search (both + reranking)
+### 混合搜索（结合两种方法并进行重新排序）
 ```bash
 qmd hybrid "your query" --collection <name>
 ```
-Combines both approaches with LLM reranking. Most thorough but often overkill.
+结合 BM25 和向量搜索的结果，并使用大型语言模型（LLM）进行重新排序。这种方法最为全面，但通常也会增加搜索时间。
 
-## How to Use
+## 使用方法
 
-1. **Check if collection exists**:
+1. **检查集合是否存在**：
    ```bash
    qmd collection list
    ```
 
-2. **Search the collection**:
+2. **在集合中搜索**：
    ```bash
    # For specific terms
    qmd search "api authentication" --collection notes
@@ -51,9 +51,9 @@ Combines both approaches with LLM reranking. Most thorough but often overkill.
    qmd vsearch "how to handle errors gracefully" --collection notes
    ```
 
-3. **Read results**: qmd returns relevant snippets with file paths and context
+3. **阅读结果**：qmd 会返回包含文件路径和相关上下文的相关内容片段。
 
-## Setup (if qmd not installed)
+## 设置（如果未安装 qmd）
 
 ```bash
 # Install qmd
@@ -66,7 +66,7 @@ qmd collection add ~/path/to/vault --name notes
 qmd embed --collection notes
 ```
 
-## Invocation Examples
+## 调用示例
 
 ```
 /qmd api authentication          # BM25 search for "api authentication"
@@ -74,27 +74,27 @@ qmd embed --collection notes
 /qmd --setup                     # Guide through initial setup
 ```
 
-## Best Practices
+## 最佳实践
 
-- Use **BM25 search** (`qmd search`) for specific terms, names, or technical keywords
-- Use **vector search** (`qmd vsearch`) when looking for concepts where wording may vary
-- Avoid hybrid search unless you need maximum recall - it's slower
-- Re-run `qmd embed` after adding significant new content to keep vectors current
+- 使用 **BM25 搜索**（`qmd search`）来搜索特定的术语、名称或技术关键词。
+- 当需要搜索表述可能有多种变体的概念时，使用 **向量搜索**（`qmd vsearch`）。
+- 除非需要最高的召回率，否则避免使用混合搜索——因为它会更慢。
+- 在添加大量新内容后，重新运行 `qmd embed` 以更新向量索引。
 
-## Handling Arguments
+## 参数处理
 
-- `$ARGUMENTS` contains the full search query
-- If `--semantic` flag is present, use `qmd vsearch` instead of `qmd search`
-- If `--setup` flag is present, guide user through installation and collection setup
-- If `--collection <name>` is specified, use that collection; otherwise default to checking available collections
+- `$ARGUMENTS` 包含完整的搜索查询。
+- 如果存在 `--semantic` 标志，使用 `qmd vsearch` 而不是 `qmd search`。
+- 如果存在 `--setup` 标志，指导用户完成安装和集合配置。
+- 如果指定了 `--collection <名称>`，则使用该集合；否则默认使用可用的集合。
 
-## Workflow
+## 工作流程
 
-1. Parse arguments from `$ARGUMENTS`
-2. Check if qmd is installed (`which qmd`)
-3. If not installed, offer to guide setup
-4. If searching:
-   - List collections if none specified
-   - Run appropriate search command
-   - Present results to user with file paths
-5. If user wants to read a specific result, use the Read tool on the file path
+1. 从 `$ARGUMENTS` 中解析参数。
+2. 检查 qmd 是否已安装（使用 `which qmd` 命令）。
+3. 如果未安装，提供安装指导。
+4. 如果需要搜索：
+   - 如果没有指定集合，则列出所有可用的集合。
+   - 运行相应的搜索命令。
+   - 向用户展示包含文件路径的结果。
+5. 如果用户想要阅读某个具体结果，可以使用相应的工具来读取该文件。

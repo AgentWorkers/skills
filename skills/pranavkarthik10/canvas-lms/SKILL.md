@@ -1,31 +1,31 @@
 ---
 name: canvas-lms
-description: Access Canvas LMS (Instructure) for course data, assignments, grades, and submissions. Use when checking due dates, viewing grades, listing courses, or fetching course materials from Canvas.
+description: 访问 Canvas LMS（Instructure）以获取课程数据、作业、成绩以及提交情况。该工具可用于查看截止日期、成绩、课程列表，或从 Canvas 下载课程材料。
 ---
 
-# Canvas LMS Skill
+# Canvas LMS 技能
 
-Access Canvas LMS data via the REST API.
+通过 REST API 访问 Canvas LMS 的数据。
 
-## Setup
+## 设置
 
-1. Generate an API token in Canvas: Account → Settings → New Access Token
-2. Store token in environment or `.env` file:
+1. 在 Canvas 中生成 API 令牌：账户 → 设置 → 新访问令牌
+2. 将令牌存储在环境变量或 `.env` 文件中：
    ```bash
    export CANVAS_TOKEN="your_token_here"
    export CANVAS_URL="https://your-school.instructure.com"  # or canvas.yourschool.edu
    ```
 
-## Authentication
+## 认证
 
-Include token in all requests:
+在所有请求中包含令牌：
 ```bash
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/..."
 ```
 
-## Common Endpoints
+## 常用端点
 
-### Courses & Profile
+### 课程与个人资料
 ```bash
 # User profile
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/users/self/profile"
@@ -37,7 +37,7 @@ curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/courses?enr
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/dashboard/dashboard_cards"
 ```
 
-### Assignments & Due Dates
+### 作业与截止日期
 ```bash
 # To-do items (upcoming work)
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/users/self/todo"
@@ -58,14 +58,14 @@ curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/courses/{co
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/courses/{course_id}/assignments/{id}/submissions/self"
 ```
 
-### Grades
+### 成绩
 ```bash
 # Enrollments with scores
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/users/self/enrollments?include[]=current_grading_period_scores&per_page=50"
 ```
-Extract grade: `.grades.current_score`
+获取成绩：`.grades.current_score`
 
-### Course Content
+### 课程内容
 ```bash
 # Announcements
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/announcements?context_codes[]=course_{course_id}&per_page=20"
@@ -83,25 +83,25 @@ curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/courses/{co
 curl -s -H "Authorization: Bearer $CANVAS_TOKEN" "$CANVAS_URL/api/v1/conversations?per_page=20"
 ```
 
-## Response Handling
+## 响应处理
 
-- List endpoints return arrays
-- Pagination: check `Link` header for `rel="next"`
-- Dates are ISO 8601 (UTC)
-- Use `--max-time 30` for slow endpoints
+- 列表端点返回数组
+- 分页：检查 `Link` 头部的 `rel="next"` 字段
+- 日期采用 ISO 8601 格式（UTC）
+- 对于响应速度较慢的端点，可以使用 `--max-time 30` 参数
 
-Parse with jq:
+使用 jq 进行解析：
 ```bash
 curl -s ... | jq '.[] | {name: .name, due: .due_at}'
 ```
 
-Or Python if jq unavailable:
+如果无法使用 jq，也可以使用 Python 进行解析：
 ```bash
 curl -s ... | python3 -c "import sys,json; data=json.load(sys.stdin); print(json.dumps(data, indent=2))"
 ```
 
-## Tips
+## 提示
 
-- Course IDs appear in todo/assignment responses
-- File download URLs are in the `url` field of file objects
-- Always include `per_page=50` to get more results (default is often 10)
+- 课程 ID 会出现在待办事项/作业的响应中
+- 文件下载地址位于文件对象的 `url` 字段中
+- 为获取更多结果，请始终添加 `per_page=50` 参数（默认值通常为 10）

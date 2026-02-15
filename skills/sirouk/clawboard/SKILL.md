@@ -1,124 +1,101 @@
 ---
 name: clawboard
-description: "Install and operate Clawboard with OpenClaw. Use for scripted/manual/agentic install, token setup, Docker startup, logger plugin wiring, and validation."
+description: "使用 OpenClaw 安装并操作 Clawboard。该工具可用于脚本化/手动安装、令牌设置、Docker 启动、日志插件配置以及验证等操作。"
 ---
 
 # Clawboard
 
-## Status
+## 状态
 
-- ClawHub: **not available yet**.
-- Install path today: scripted bootstrap or manual repo install.
-- If OpenClaw is missing and user wants Chutes provider, start with [`add_chutes.sh`](../../inference-providers/add_chutes.sh) after creating a `https://chutes.ai` account.
+- ClawHub：**尚未可用**。
+- 安装路径：通过脚本化引导程序安装或手动从仓库安装。
+- 如果缺少 OpenClaw 且用户需要 Chutes 提供者，请在创建 `https://chutes.ai` 账户后，先运行 `add_chutes.sh` 脚本（位于 `../../inference-providers/add_chutes.sh`）。
 
-## Current Architecture Snapshot
+## 当前架构概览
 
-- `web` (Next.js): `http://localhost:3010`
-- `api` (FastAPI + SQLite): `http://localhost:8010`
-- `classifier` (async stage-2 worker): topic/task classification loop
-- `qdrant` (vector index): dense retrieval backend on internal Docker network
-- `clawboard-logger` plugin: stage-1 firehose logging + response-time context extension
+- `web`（Next.js）：`http://localhost:3010`
+- `api`（FastAPI + SQLite）：`http://localhost:8010`
+- `classifier`（异步第二阶段工作器）：负责主题/任务分类
+- `qdrant`（向量索引）：在内部 Docker 网络中提供密集检索功能
+- `clawboard-logger` 插件：用于日志记录和响应时间统计
 
-Retrieval/search stack:
+## 检索/搜索机制
 
-- Dense vectors + BM25 + lexical matching
-- Reciprocal rank fusion + reranking
-- Qdrant primary, SQLite embeddings mirror/fallback
+- 使用密集向量 + BM25 算法 + 词汇匹配
+- 采用互惠排名融合算法进行重新排序
+- 主要使用 Qdrant，同时支持 SQLite 嵌入作为备用方案
 
-## Goal
+## 目标
 
-Get a user to a working Clawboard install where:
+让用户能够成功安装并使用 Clawboard，具体要求如下：
+1. `web`、`api` 和 `classifier` 都能正常运行。
+2. `clawboard-logger` 插件已安装并启用。
+3. 令牌流配置正确（写入数据及非本地读取操作均需依赖此配置）。
+4. OpenClaw 网关已重启，并且用户能够成功登录到 Clawboard。
 
-1. Clawboard web/api/classifier are running.
-2. `clawboard-logger` plugin is installed and enabled.
-3. Token flow is configured correctly (required for writes + non-localhost reads).
-4. OpenClaw gateway is restarted and logging into Clawboard.
+## 重要规则（仓库与已安装技能的关联）
 
-## Hard Rules (Repo vs Installed Skill)
+- 仓库副本（版本控制）：`$CLAWBOARD_DIR/skills/clawboard`
+- OpenClaw 所使用的安装路径：`$HOME/.openclaw/skills/clawboard`
+- **默认安装方式为符号链接**（`~/.openclaw/skills/clawboard -> $CLAWBOARD_DIR/skills/clawboard`）。
+- 运行时可以确定当前使用的是哪种安装模式：
 
-- Repo copy (version controlled): `$CLAWBOARD_DIR/skills/clawboard`
-- Installed skill path (what OpenClaw reads): `$HOME/.openclaw/skills/clawboard`
-- **Default install mode is symlink** (`~/.openclaw/skills/clawboard -> $CLAWBOARD_DIR/skills/clawboard`).
-- Detect mode deterministically at runtime:
+### 符号链接模式（默认）
 
-```bash
-if [ -L "$HOME/.openclaw/skills/clawboard" ]; then
-  echo "symlink"
-else
-  echo "copy"
-fi
-```
+- 在符号链接模式下，仓库中的任何更改会立即反映在 OpenClaw 中。
+- 在复制模式下，需要手动同步或复制更改后，更改才会更新到 OpenClaw。当 `SKILL.md`、`agents/`、`references/` 或 `scripts/` 文件发生变化时，需要执行同步操作：
 
-- In **symlink mode** (default), repo edits are immediately visible to OpenClaw.
-- In **copy mode**, repo edits do not update OpenClaw until you sync/copy again. After skill file changes (SKILL.md, `agents/`, `references/`, `scripts/`), sync into OpenClaw:
+### 复制模式
 
-```bash
-cd "$CLAWBOARD_DIR"
-bash scripts/sync_openclaw_skill.sh --to-openclaw --apply --force
-```
+- 如果在复制模式下修改了 `~/.openclaw/skills/clawboard` 目录下的文件，请在提交前先将其同步回仓库：
 
-- If you changed files under `~/.openclaw/skills/clawboard` while in copy mode, sync them back before committing:
+### 开发环境与运行时注意事项
 
-```bash
-cd "$CLAWBOARD_DIR"
-bash scripts/sync_openclaw_skill.sh --to-repo --apply
-```
-
-## Workspace + Runtime Assumptions (for coding tasks)
-
-- Typical repo locations for Clawboard code:
+- Clawboard 代码的典型存放位置：
   - `~/[agent_name]/clawboard`
   - `~/[agent_name]/projects/clawboard`
-- For scripted installs, bootstrap auto-detects OpenClaw workspace conventions and usually lands in one of those layouts.
-- When asked to work on Clawboard frontend/backend, prefer the active git repo copy under those locations, not `~/.openclaw/skills/*`.
-- After typical bootstrap, assume Docker services are running:
-  - `CLAWBOARD_WEB_HOT_RELOAD=1`: `web-dev` is used for Next.js hot reload (`web` is stopped).
-  - `CLAWBOARD_WEB_HOT_RELOAD=0`: production-style `web` service is used.
-- Fast runtime check commands:
+- 脚本化安装会自动检测 OpenClaw 的工作区布局，并将代码安装到这些位置之一。
+- 在处理 Clawboard 的前端/后端功能时，建议使用这些位置的 Git 仓库副本，而非 `~/.openclaw/skills/*` 目录。
+- 安装完成后，假设以下 Docker 服务正在运行：
+  - `CLAWBOARD_WEB_HOT_RELOAD=1`：表示使用 Next.js 的热重载功能（此时 `web` 服务会停止）。
+  - `CLAWBOARD_WEB_HOT_RELOAD=0`：表示使用生产环境的 `web` 服务。
+- 可用于检查运行状态的命令：
   - `docker compose ps`
-  - `echo "$CLAWBOARD_WEB_HOT_RELOAD"` (or read from `$CLAWBOARD_DIR/.env`)
+  - `echo "$CLAWBOARD_WEB_hot_RELOAD"`（或从 `$CLAWBOARD_DIR/.env` 中读取）
   - `curl -s http://localhost:8010/api/health`
-- Parity rules while editing:
-  - Skill path mode should be checked first (`test -L ~/.openclaw/skills/clawboard`).
-  - If symlink mode: edit repo files directly (`$CLAWBOARD_DIR/skills/clawboard/**`).
-  - If copy mode: sync to OpenClaw after edits (`bash scripts/sync_openclaw_skill.sh --to-openclaw --apply --force`).
-  - Logger plugin edits (`extensions/clawboard-logger/**`) must be reinstalled/enabled in OpenClaw:
-    - `openclaw plugins install -l "$CLAWBOARD_DIR/extensions/clawboard-logger"`
-    - `openclaw plugins enable clawboard-logger`
-  - `~/.openclaw/skills/clawboard-logger` is optional and may not exist by default. If your environment has it, keep it synced with its repo copy explicitly.
+- 编辑代码时的注意事项：
+  - 首先检查技能文件的安装路径（`test -L ~/.openclaw/skills/clawboard`）。
+  - 如果使用符号链接模式，直接编辑仓库文件（`$CLAWBOARD_DIR/skills/clawboard/**`）。
+  - 如果使用复制模式，编辑后需要执行同步操作（`bash scripts/sync_openclaw_skill.sh --to-openclaw --apply --force`）。
+- 修改 `clawboard-logger` 插件后，需在 OpenClaw 中重新安装并启用该插件：
+  - `openclaw plugins install -l "$CLAWBOARD_DIR/extensions/clawboard-logger"`
+  - `openclaw plugins enable clawboard-logger`
+  - `~/.openclaw/skills/clawboard-logger` 是可选的，可能默认不存在。如果环境中存在该文件，请确保其与仓库中的版本保持同步。
 
-## Install Modes
+## 安装方式
 
-### 1) Quick Scripted Install (recommended)
+### 1) 快速脚本安装（推荐）
 
-Use:
+使用以下脚本进行安装：
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/sirouk/clawboard/main/scripts/bootstrap_openclaw.sh | bash
-```
+该脚本会自动检测你的 OpenClaw 工作区位置，并据此克隆或更新仓库。如果找到 `projects/`（或 `project/`）目录结构，则会将技能文件安装到该目录；否则会安装到 `~/clawboard` 目录。
+- 脚本还生成令牌，并将 `CLAWBOARD_TOKEN` 存储在 `.env` 文件中。
+- 脚本会检测浏览器访问的 URL（优先使用 Tailscale，否则使用本地地址），并设置 `CLAWBOARD_PUBLIC_API_BASE` 和 `CLAWBOARD_PUBLIC_WEB_URL`。
+- 脚本会构建并启动相关的 Docker 服务。
+- 确保 `web`、`api`、`classifier` 和 `qdrant` 服务都能正常运行。
+- 把技能文件安装到 `$HOME/.openclaw/skills/clawboard`（默认为符号链接）。
+- 安装并启用 `clawboard-logger` 插件。
+- 通过 `openclaw config set` 命令配置插件参数。
+- 确保 OpenClaw 的 OpenResponses 端点（`POST /v1/responses`）已启用，以便处理附件上传。
+- 重启 OpenClaw 网关。
+- 设置相关配置参数。
 
-What the script does:
+如果尚未安装 `openclaw` CLI，脚本仍会完成 Clawboard 的部署，并提供后续操作指南。
+此外，当缺少 OpenClaw 时，脚本还会自动尝试安装 Chutes 插件。
 
-- Clones/updates repo by auto-detecting your OpenClaw workspace. If it finds a `projects/` (or `project/`) convention, it installs there; otherwise it falls back to `~/clawboard`.
-  - Override with `--dir <path>`, `CLAWBOARD_DIR=<path>`, or `CLAWBOARD_PARENT_DIR=<path>` (installs to `<parent>/clawboard`).
-- Generates a token if missing and writes `.env` with `CLAWBOARD_TOKEN`.
-- Detects browser access URLs (Tailscale if available, else localhost) and writes `.env` `CLAWBOARD_PUBLIC_API_BASE` and `CLAWBOARD_PUBLIC_WEB_URL`.
-- Builds and starts Docker services.
-- Ensures `web` + `api` + `classifier` + `qdrant` are running.
-- Installs skill at `$HOME/.openclaw/skills/clawboard` (default: symlink to repo skill; optional copy mode).
-- Installs/enables `clawboard-logger` plugin.
-- Writes plugin config (`baseUrl`, `token`, `enabled`) via `openclaw config set`.
-- Ensures OpenClaw OpenResponses endpoint is enabled (`POST /v1/responses`) for attachments.
-- Restarts OpenClaw gateway.
-- Sets `/api/config` title + integration level.
-
-If `openclaw` CLI is not installed yet, the script still deploys Clawboard and prints follow-up instructions.
-It now also offers to run the Chutes fast path automatically when `openclaw` is missing.
-
-Useful flags:
-
-- `--integration-level full|write|manual` (default `write`)
-- `--no-backfill` (same as `manual`)
+**常用参数：**
+- `--integration-level full|write|manual`（默认为 `write`）
+- `--no-backfill`（等同于 `manual`）
 - `--api-url http://localhost:8010`
 - `--web-url http://localhost:3010`
 - `--web-hot-reload` / `--no-web-hot-reload`
@@ -126,184 +103,78 @@ Useful flags:
 - `--public-web-url https://clawboard.example.com`
 - `--token <token>`
 - `--title "<name>"`
-- `--skill-symlink` (default)
-- `--skill-copy` (fallback if you do not want symlink mode)
+- `--skill-symlink`（默认值）
+- `--skill-copy`（用于禁用符号链接模式）
 - `--update`
 
-### 2) Human Manual Install
+### 2) 手动安装
 
-Prereqs:
+**前提条件：**
+- 安装 `git`、`docker` 及 `openclaw` CLI
+- 在 macOS 上安装 Docker Desktop
 
-- `git`, `docker` (+ compose), `openclaw` CLI
-- Docker Desktop on macOS
+**安装步骤：**
+1. 克隆仓库。
+2. 生成令牌并配置环境变量。
 
-Steps:
+**配置环境变量：**
+- 在 `$CLAWBOARD_DIR/.env` 中设置 `CLAWBOARD_TOKEN=<value>`。
+- 设置 `CLAWBOARD_PUBLIC_API_BASE=<浏览器可访问的 API 地址>`。
+- 可选：设置 `CLAWBOARD_PUBLIC_WEB_URL=<浏览器可访问的 UI 地址>`。
 
-1. Clone repo:
+**示例：**
+- 本地地址：`http://localhost:8010`
+- Tailscale 服务器：`http://100.x.y.z:8010`
+- 自定义域名：`https://api.example.com`
 
-```bash
-CLAWBOARD_PARENT_DIR="${CLAWBOARD_PARENT_DIR:-}"
-CLAWBOARD_DIR="${CLAWBOARD_DIR:-${CLAWBOARD_PARENT_DIR:+$CLAWBOARD_PARENT_DIR/clawboard}}"
-CLAWBOARD_DIR="${CLAWBOARD_DIR:-$HOME/clawboard}"
-git clone https://github.com/sirouk/clawboard "$CLAWBOARD_DIR"
-cd "$CLAWBOARD_DIR"
-```
+**启动 Clawboard：**
 
-2. Create token and env:
+**安装技能文件：**
 
-```bash
-cp .env.example .env
-openssl rand -hex 32
-```
+**如果需要使用复制模式而非符号链接模式：**
 
-Set `CLAWBOARD_TOKEN=<value>` in `$CLAWBOARD_DIR/.env`.
-Set `CLAWBOARD_PUBLIC_API_BASE=<browser-reachable-api-url>` in `$CLAWBOARD_DIR/.env`.
-Optional: set `CLAWBOARD_PUBLIC_WEB_URL=<browser-reachable-ui-url>` in `$CLAWBOARD_DIR/.env`.
-Examples:
+**安装并启用日志插件：**
 
-- local: `http://localhost:8010`
-- tailscale: `http://100.x.y.z:8010`
-- custom domain: `https://api.example.com`
+**配置插件：**
 
-3. Start Clawboard:
+**启用附件处理功能：**
 
-```bash
-docker compose up -d --build
-```
+**重启 OpenClaw 网关：**
 
-4. Install skill:
+**注意事项：**
+- OpenClaw 的配置文件存储在 `$HOME/.openclaw/openclaw.json` 中。
+- 确保插件使用的令牌（`CLAWBOARD_TOKEN`）与 API 服务器的令牌一致。
 
-```bash
-mkdir -p "$HOME/.openclaw/skills"
-rm -rf "$HOME/.openclaw/skills/clawboard"
-ln -s "$CLAWBOARD_DIR/skills/clawboard" "$HOME/.openclaw/skills/clawboard"
-```
+### 3) 手动复制技能文件到 OpenClaw
 
-If you explicitly want copy mode instead of symlink:
+使用以下命令进行手动安装：
 
-```bash
-mkdir -p "$HOME/.openclaw/skills"
-rm -rf "$HOME/.openclaw/skills/clawboard"
-cp -R "$CLAWBOARD_DIR/skills/clawboard" "$HOME/.openclaw/skills/clawboard"
-```
+**安全提示：**
+- 所有写入操作及非本地读取操作均需使用 `CLAWBOARD_TOKEN`。
+- 本地读取操作默认为无令牌访问（仅限读取）。
+- 严格限制网络访问权限（使用防火墙或 Tailscale 的访问控制规则；除非特别需要，否则避免公开访问数据）。
+- 使用 Docker Compose 时，默认情况下不会将相关服务绑定到主机端口；建议通过 API 进行读写操作。
 
-If user keeps skills elsewhere, use that path instead of `$HOME/.openclaw/skills`.
+## 验证步骤
 
-5. Install + enable logger plugin:
+运行以下命令进行验证：
+- 确保 API 运行正常。
+- 检查 `tokenRequired` 和 `tokenConfigured` 的配置是否正确。
+- 确保 `logger` 插件已启用。
+- 检查搜索端点是否能返回相关模式信息（当有向量数据时，还会显示 Qdrant 的相关信息）。
+- 新的 OpenClaw 消息应记录在 Clawboard 的日志中。
 
-```bash
-openclaw plugins install -l "$CLAWBOARD_DIR/extensions/clawboard-logger"
-openclaw plugins enable clawboard-logger
-```
+## 可选辅助工具：
 
-6. Configure plugin (writes into OpenClaw config):
+- 本地内存设置脚本：`$CLAWBOARD_DIR/skills/clawboard/scripts/setup-openclaw-local-memory.sh`
+- **内存备份工具（GitHub 私有仓库）：**
+  - 设置脚本：`$CLAWBOARD_DIR/skills/clawboard/scripts/setup-openclaw-memory-backup.sh`
+  - 备份脚本：`$CLAWBOARD_DIR/skills/clawboard/scripts/backup_openclaw_curated_memories.sh`（仅在文件更改时执行备份操作）
+  - 备份内容包括配置、主题、任务、日志以及可选的附件信息。
+  - 配置文件存储路径：`$HOME/.openclaw/credentials/clawboard-memory-backup.json`（权限设置为 600）。
+- Chutes 提供者辅助工具：`curl -fsSL https://raw.githubusercontent.com/sirouk/clawboard/main/inference-providers/add_chutes.sh | bash`
 
-```bash
-# contextMode options: auto | cheap | full | patient
-openclaw config set plugins.entries.clawboard-logger.config --json '{
-  "baseUrl":"http://localhost:8010",
-  "token":"YOUR_TOKEN",
-  "enabled":true,
-  "contextMode":"auto",
-  "contextFallbackMode":"cheap",
-  "contextFetchTimeoutMs":1200,
-  "contextTotalBudgetMs":2200,
-  "contextMaxChars":2200
-}'
-openclaw config set plugins.entries.clawboard-logger.enabled --json true
-```
-
-7. Enable OpenResponses (recommended for attachments):
-
-```bash
-openclaw config set gateway.http.endpoints.responses.enabled --json true
-```
-
-8. Restart gateway:
-
-```bash
-openclaw gateway restart
-```
-
-Notes:
-
-- OpenClaw config is stored at `$HOME/.openclaw/openclaw.json`.
-- Keep plugin `token` aligned with API server `CLAWBOARD_TOKEN`.
-
-### 3) Agentic Install (copy/paste into OpenClaw)
-
-Use this exact prompt:
-
-```md
-Install Clawboard for me end-to-end. ClawHub is not available yet, so choose one of these:
-
-1) Scripted install (preferred):
-- Run: curl -fsSL https://raw.githubusercontent.com/sirouk/clawboard/main/scripts/bootstrap_openclaw.sh | bash
-
-2) Manual install:
-- Clone repo to `$CLAWBOARD_DIR`
-- Create `CLAWBOARD_TOKEN` and write `$CLAWBOARD_DIR/.env`
-- Set `CLAWBOARD_PUBLIC_API_BASE` (local/Tailscale/custom domain) in `$CLAWBOARD_DIR/.env`
-- Set `CLAWBOARD_PUBLIC_WEB_URL` (local/Tailscale/custom domain) in `$CLAWBOARD_DIR/.env`
-- Start docker compose
-- Symlink skill to $HOME/.openclaw/skills/clawboard (default; copy only if explicitly requested)
-- Install/enable clawboard-logger plugin
-- Set plugin config (baseUrl + token) in OpenClaw config
-- Restart gateway
-
-After install, validate:
-- http://localhost:8010/api/health
-- http://localhost:8010/api/config
-- plugin enabled + gateway restarted
-- send one test message and confirm it appears in Clawboard logs
-
-Ask me before choosing local vs Tailscale API base URL.
-```
-
-Security reminder for all methods:
-
-- `CLAWBOARD_TOKEN` is required for all writes and all non-localhost reads.
-- Localhost reads can run tokenless (read-only default posture).
-- Keep network boundaries strict (localhost/firewall/Tailscale ACLs; avoid Funnel/public exposure unless explicitly intended).
-- Compose defaults keep vector/db/cache services off host ports; use the API as the supported read/write/delete interface.
-
-## Validation Checklist
-
-Run:
-
-```bash
-curl -s http://localhost:8010/api/health
-curl -s http://localhost:8010/api/config
-openclaw plugins list | rg clawboard-logger
-curl -s "http://localhost:8010/api/search?q=continuity"
-```
-
-Expect:
-
-- API health is `ok`.
-- `tokenRequired` is `true`.
-- `tokenConfigured` is `true`.
-- Logger plugin is enabled.
-- Search endpoint returns mode/details (and will include qdrant mode when vectors are available).
-- New OpenClaw message appears in Clawboard Logs.
-
-## Optional Helpers
-
-- Local memory setup script:
-  - `$CLAWBOARD_DIR/skills/clawboard/scripts/setup-openclaw-local-memory.sh`
-- **Curated memory cloud backup (GitHub private repo):**
-  - Setup (interactive):
-    - `$CLAWBOARD_DIR/skills/clawboard/scripts/setup-openclaw-memory-backup.sh`
-  - Backup run (safe for automation; commits/pushes only when changed):
-    - `$CLAWBOARD_DIR/skills/clawboard/scripts/backup_openclaw_curated_memories.sh`
-  - Includes optional full Clawboard state export (config/topics/tasks/logs + optional attachments).
-  - Stores config at:
-    - `$HOME/.openclaw/credentials/clawboard-memory-backup.json` (chmod 600)
-- Chutes provider helper:
-  - `curl -fsSL https://raw.githubusercontent.com/sirouk/clawboard/main/inference-providers/add_chutes.sh | bash`
-
-## References
-
+**参考文档：**
 - `references/clawboard-api.md`
 - `references/openclaw-hooks.md`
 - `references/openclaw-memory-local.md`

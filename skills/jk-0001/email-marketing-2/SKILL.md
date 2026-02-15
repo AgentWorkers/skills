@@ -1,220 +1,149 @@
 ---
 name: email-marketing
-description: Build and execute email marketing campaigns for a solopreneur business. Use when building an email list, writing email sequences (welcome, nurture, sales), designing broadcast campaigns, improving open and click rates, or setting up email automation. Covers list building, segmentation, email copywriting, sequence design, deliverability, and metrics. Trigger on "email marketing", "email campaign", "email sequence", "email list", "newsletter", "email automation", "improve email open rates", "nurture emails", "welcome email".
+description: 为个人创业企业构建并执行电子邮件营销活动。适用于建立邮件列表、编写邮件序列（欢迎邮件、跟进邮件、销售邮件）、设计群发邮件活动、提高邮件打开率和点击率，以及设置电子邮件自动化流程。内容涵盖邮件列表的构建、用户细分、邮件内容创作、邮件序列设计、邮件发送的可靠性以及相关指标的监控。相关关键词包括：电子邮件营销（email marketing）、电子邮件活动（email campaign）、邮件序列（email sequence）、邮件列表（email list）、电子报（newsletter）、电子邮件自动化（email automation）、提高邮件打开率（improve email open rates）、跟进邮件（nurture emails）、欢迎邮件（welcome email）。
 ---
 
-# Email Marketing
+# 电子邮件营销
 
-## Overview
-Email is the highest-ROI marketing channel for solopreneurs — you own the list, the engagement is direct, and the cost is near zero. But most solopreneur email marketing fails because it's either too salesy (instant unsubscribes) or too timid (no conversions). This playbook builds an email system that nurtures relationships and drives revenue.
-
----
-
-## Step 1: Build Your Email List
-
-You can't do email marketing without subscribers. List building is priority #1.
-
-**Where to capture emails:**
-
-| Source | How | Conversion Tip |
-|---|---|---|
-| **Website (lead magnet)** | Offer something valuable (checklist, template, guide) in exchange for email | Make the lead magnet hyper-specific to your ICP's #1 pain |
-| **Blog posts** | Inline or end-of-post signup form | Offer a content upgrade related to the post topic |
-| **Landing pages** | Dedicated page for a specific offer | Single focus — no navigation, one CTA only |
-| **Social media bio** | Link to signup page in bio | Tease the value in your bio copy |
-| **Webinars or events** | Registration form captures email | Deliver value on the webinar, follow up with email sequence |
-| **Gated content** | Require email to access resource | Only gate high-value content (not every blog post) |
-
-**Lead magnet ideas (choose based on your ICP):**
-- Checklist (quick win, actionable)
-- Template (saves time, immediately useful)
-- Guide or ebook (educational, positions you as expert)
-- Swipe file (examples or case studies)
-- Calculator or tool (interactive, high perceived value)
-- Mini-course (5 days of lessons via email)
-
-**Rule:** The more specific the lead magnet, the higher the conversion AND the more qualified the subscriber. "Free marketing guide" is generic. "Cold email template that gets 20%+ reply rates for SaaS founders" is specific.
+## 概述  
+对于独立创业者来说，电子邮件营销是回报率最高的营销渠道——你拥有自己的邮件列表，互动直接，且成本几乎为零。然而，大多数独立创业者的电子邮件营销都失败了，原因要么是过于推销（导致用户立即退订），要么是过于谨慎（无法促成转化）。本指南将帮助你建立一个能够培养客户关系并推动收入的电子邮件系统。
 
 ---
 
-## Step 2: Choose Your Email Platform
+## 第一步：建立你的邮件列表  
+没有订阅者，就无法开展电子邮件营销。因此，建立邮件列表是首要任务。  
 
-Start simple. Pick a tool that handles the basics well and doesn't overcomplicate.
+**获取电子邮件的途径：**  
+| 来源 | 方法 | 转化技巧 |  
+|---|---|---|  
+| **网站（吸引潜在客户的资源）** | 提供有价值的内容（如检查表、模板、指南）以换取电子邮件地址 | 确保这些资源直接解决你的主要客户需求（ICP，即“初始客户痛点”）  
+| **博客文章** | 在文章中嵌入或文章末尾设置注册表单 | 提供与文章主题相关的额外内容  
+| ** landing page（着陆页）** | 专门用于特定优惠的页面 | 专注一个核心信息，仅设置一个点击行动号召（CTA）  
+| **社交媒体个人简介** | 在个人简介中添加注册链接 | 在简介中简要介绍内容的价值  
+| **网络研讨会或活动** | 通过注册表单收集电子邮件地址 | 在网络研讨会上提供价值内容，并通过后续邮件进行跟进  
+| **需要电子邮件才能获取的内容** | 仅向订阅者提供高价值的内容（而非所有博客文章）  
 
-**Recommended for solopreneurs (ranked by simplicity):**
-1. **ConvertKit** (best for creators, simple automation, clean design)
-2. **Mailchimp** (free tier, beginner-friendly, good templates)
-3. **Beehiiv** (great for newsletters, built-in monetization, fast growth features)
-4. **MailerLite** (affordable, solid automation, decent UI)
+**吸引潜在客户的资源建议（根据你的主要客户需求选择）：**  
+- 检查表（快速吸引用户，实用性强）  
+- 模板（节省时间，立即可用）  
+- 指南或电子书（具有教育性，能展现你的专业知识）  
+- 实例文件或案例研究  
+- 计算器或工具（互动性强，用户感知价值高）  
+- 微课程（通过电子邮件发送的5天课程）  
 
-**Features you need:** Automation (sequences), segmentation (tags or lists), deliverability tracking, and basic analytics (opens, clicks). Avoid tools with complex enterprise features you'll never use.
-
----
-
-## Step 3: Design Your Core Email Sequences
-
-Automated sequences do the heavy lifting. Set them up once, they run forever.
-
-### Sequence 1: Welcome Sequence (5-7 emails over 7-10 days)
-**Goal:** Introduce yourself, deliver value, build trust, set expectations.
-
-```
-EMAIL 1 (Day 0): Deliver the lead magnet + set expectations
-  - Give them what they signed up for
-  - Tell them what to expect (frequency, topics)
-  - One small ask: reply and tell me what you're working on
-
-EMAIL 2 (Day 2): Deliver unexpected value
-  - Share a tip, insight, or resource they didn't ask for
-  - Build goodwill before you ask for anything
-
-EMAIL 3 (Day 4): Tell your story (briefly)
-  - Why you built this business
-  - What problem you solve and for whom
-  - Keep it short — 3-4 paragraphs max
-
-EMAIL 4 (Day 6): Social proof
-  - Share a case study or testimonial
-  - Or: share a relevant win or result
-
-EMAIL 5 (Day 8): Soft CTA
-  - Invite them to take the next step (book a call, try the product, read a key resource)
-  - Low-pressure: "If you're interested, here's how we can work together."
-
-(Optional) EMAIL 6-7: Answer top 2 objections or FAQs
-```
-
-**Key rule:** Don't sell hard in the welcome sequence. Build trust first, sell later.
-
-### Sequence 2: Nurture Sequence (ongoing, every 7-14 days)
-**Goal:** Stay top of mind, provide ongoing value, occasionally pitch.
-
-Structure: 80% value, 20% pitch. For every 5 emails, 4 are purely educational/helpful, 1 is a pitch or CTA.
-
-**Value emails:**
-- Tips, how-tos, frameworks
-- Case studies or customer stories
-- Industry insights or trends
-- Curated resources
-
-**Pitch emails:**
-- Product launch or feature announcement
-- Limited-time offer or discount
-- "Here's how we can help you with [specific problem]"
-
-### Sequence 3: Sales Sequence (5-7 emails over 10 days after a specific action)
-**Goal:** Convert warm leads (trial signups, demo requests, proposal sent) into customers.
-
-Triggered when someone takes a high-intent action (starts trial, downloads pricing, books a call).
-
-```
-EMAIL 1 (Day 0): Confirm the action, set expectations
-EMAIL 2 (Day 2): Deliver a quick win (show them how to get value fast)
-EMAIL 3 (Day 4): Handle objection #1 (usually price or "will this work for me?")
-EMAIL 4 (Day 6): Social proof (testimonial or case study)
-EMAIL 5 (Day 8): Handle objection #2 (usually implementation time or complexity)
-EMAIL 6 (Day 10): Urgency (trial ending, offer expiring, limited availability)
-```
-
-**Key rule:** Each email should accomplish ONE thing. Don't cram multiple messages into one email.
+**规则：** 邀请潜在客户的资源越具体，转化率越高，订阅者的质量也越高。“免费营销指南”这类内容较为通用；而“针对SaaS创始人的高回复率邮件模板”则更具针对性。  
 
 ---
 
-## Step 4: Write Email Copy That Converts
+## 第二步：选择你的电子邮件平台  
+从简单易用的工具开始。选择能够处理基本功能且不会过于复杂的平台。  
 
-Email copy is different from landing page copy — it's more personal, more conversational, and shorter.
+**推荐给独立创业者的工具（按简易程度排名）：**  
+1. **ConvertKit**（最适合创作者，自动化功能简单，设计清晰）  
+2. **Mailchimp**（免费版本适合初学者，模板丰富）  
+3. **Beehiiv**（非常适合发送新闻通讯，内置盈利功能，支持快速增长）  
+4. **MailerLite**（价格实惠，自动化功能强大，用户界面友好）  
 
-**Email structure:**
-
-```
-SUBJECT LINE:   Get them to open (curiosity, value, or urgency)
-PREVIEW TEXT:   First line of email — hook them further
-BODY:           Short paragraphs (2-3 sentences max), one idea per email
-CTA:            One clear action (click, reply, book, buy)
-SIGNATURE:      Your name, your role, your business
-P.S.:           Restate the CTA or add a bonus (P.S. lines get read more than body copy)
-```
-
-**Subject line formulas:**
-
-| Type | Example |
-|---|---|
-| **Curiosity** | "The one metric that predicted our best customers" |
-| **Value** | "5-min read: how to automate client reporting" |
-| **Personalization** | "Hey [Name], quick question for you" |
-| **Urgency** | "Ending tonight: [offer]" |
-| **Question** | "Still struggling with [pain point]?" |
-
-**Body copy rules:**
-- Start with a hook (first sentence must grab them)
-- Write like you're talking to one person (use "you" and "I", not "we" and "our users")
-- Keep it scannable (short paragraphs, bold key phrases, use line breaks generously)
-- One CTA per email (multiple CTAs split attention and kill conversions)
-- End with a P.S. (seriously, it works — restate your offer or add urgency)
+**你需要的功能：** 自动化发送邮件序列、用户分类（标签或列表管理）、邮件送达率跟踪以及基本分析数据（如打开率、点击率）。避免使用那些你永远不会用到的企业级高级功能。  
 
 ---
 
-## Step 5: Segment Your List
+## 第三步：设计你的核心邮件发送序列  
+自动化邮件序列能发挥重要作用。设置一次后，它们会持续运行。  
 
-Sending the same email to everyone is lazy and ineffective. Segmented emails get 3x higher engagement.
+### 第一序列：欢迎序列（7-10天内发送5封邮件）  
+**目标：** 介绍自己，提供价值，建立信任，设定预期。  
+**关键规则：** 在欢迎序列中不要强行推销。先建立信任，再推销。  
 
-**How to segment:**
+### 第二序列：持续维护序列（每7-14天发送一封）  
+**目标：** 让用户记住你，持续提供价值，偶尔进行推销。  
+**结构：** 80%的内容应具有价值，20%为推销信息。每5封邮件中，4封是教育性或帮助性的内容，1封是推销信息或点击行动号召。  
+**示例内容：**  
+- 提示、操作指南、框架  
+- 案例研究或客户故事  
+- 行业洞察或趋势  
+- 精选资源  
 
-| Segment By | Example | Why It Matters |
-|---|---|---|
-| **Behavior** | Opened last 3 emails vs didn't | Send re-engagement campaigns to cold subscribers |
-| **Stage in funnel** | Subscriber vs trial user vs customer | Different messages for different stages |
-| **Interest / topic** | Tagged based on lead magnet they downloaded | Send relevant content only |
-| **Purchase history** | Bought Product A, hasn't bought Product B | Targeted upsell/cross-sell |
-| **Engagement level** | High engagers vs low engagers | VIP content for high engagers, win-back campaigns for low |
+### 第三序列：销售序列（在用户采取特定行动后10天内发送5封邮件）  
+**目标：** 将感兴趣的潜在客户（如试用注册者、请求演示者或收到报价请求者）转化为实际客户。  
+**触发条件：** 当用户采取高意向动作（如开始试用、下载价格信息或预约电话）时发送邮件。  
 
-**Rule:** Start simple with 2-3 segments. Don't over-complicate. "Engaged subscribers" and "cold subscribers" is a good starting point.
-
----
-
-## Step 6: Improve Deliverability
-
-If your emails land in spam, nothing else matters. Deliverability is hygiene — get it right or your metrics will tank.
-
-**Deliverability checklist:**
-
-- [ ] Use a custom domain for sending (not @gmail.com). Set up SPF, DKIM, and DMARC records.
-- [ ] Warm up your domain (don't send to 10,000 people on day 1 — start small, ramp up gradually).
-- [ ] Clean your list regularly. Remove bounces and unengaged subscribers every 3-6 months.
-- [ ] Avoid spam trigger words in subject lines ("FREE!!!", "ACT NOW", "LIMITED TIME OFFER!!!").
-- [ ] Make it easy to unsubscribe. Hiding the unsubscribe link gets you marked as spam.
-- [ ] Monitor your sender reputation (tools: Google Postmaster, Sender Score).
-
-**If your open rates suddenly drop:** Check spam. Send a test email to yourself at Gmail, Outlook, and Yahoo. If it lands in spam, you have a deliverability problem.
+**关键规则：** 每封邮件应只传达一个信息。不要在一条邮件中塞入太多内容。  
 
 ---
 
-## Step 7: Measure Performance and Iterate
+## 第四步：撰写能促成转化的邮件内容  
+电子邮件内容与着陆页内容不同——它更个性化、更像对话，篇幅也更短。  
 
-Track these metrics monthly:
+**邮件结构示例：**  
+（此处应插入具体的邮件内容结构示例）  
 
-| Metric | What It Means | Healthy Range |
-|---|---|---|
-| **Open rate** | % of recipients who opened the email | 15-25% (varies by industry) |
-| **Click rate** | % of recipients who clicked a link | 2-5% |
-| **Unsubscribe rate** | % who unsubscribed | < 0.5% per email |
-| **Bounce rate** | % of emails that didn't deliver | < 2% |
-| **Conversion rate** | % who took the desired action (signup, purchase, etc.) | Varies by offer |
+**主题行撰写技巧：**  
+| 类型 | 示例 |  
+|---|---|  
+| 激发好奇心 | “这个指标预测了我们的最佳客户”  
+| 提供价值 | “5分钟阅读：如何自动化客户报告”  
+| 个性化 | “嘿[姓名]，有个小问题想问你”  
+| 表达紧迫感 | “今晚截止：[优惠活动]”  
+| 提出问题 | “还在为[痛点]困扰吗？”  
 
-**What to do with the data:**
-
-- **Low open rates?** Test subject lines (A/B test 2-3 variations). Check deliverability (landing in spam?). Clean your list (remove unengaged subscribers).
-- **Low click rates?** Weak CTA or irrelevant content. Test CTA placement and wording. Segment better (send more targeted emails).
-- **High unsubscribe rates?** Sending too often, content isn't relevant, or tone is off. Survey unsubscribers to understand why.
-
-**Iteration rule:** Test one variable at a time. Subject line one week, CTA placement the next. Measure, learn, repeat.
+**正文写作规则：**  
+- 以吸引人的开头开头（第一句话必须抓住读者的注意力）  
+- 像在与人交谈一样写作（使用“你”和“我”，而不是“我们”或“我们的用户”）  
+- 保持易读性（段落简短，使用粗体强调关键信息，适当分段）  
+- 每封邮件只包含一个点击行动号召（多个CTA会分散注意力，降低转化率）  
+- 以附言结尾（真的有效——重申你的优惠或强调紧迫性）  
 
 ---
 
-## Email Marketing Mistakes to Avoid
-- Not sending consistently. If you email once a quarter, people forget who you are. Aim for at least monthly.
-- Selling in every email. You'll burn out your list. 80% value, 20% pitch is the rule.
-- Not segmenting. Sending the same message to everyone means it's relevant to no one.
-- Ignoring unengaged subscribers. They drag down your metrics and hurt deliverability. Remove or re-engage them.
-- Not having a welcome sequence. The first 7 days after signup are the highest-engagement window. Use it.
-- Writing generic subject lines. "Newsletter #47" gets ignored. Make every subject line earn the open.
+## 第五步：对邮件列表进行分类  
+向所有人发送相同的邮件既懒惰又无效。分类后的邮件能提高3倍的互动率。  
+
+**分类方法：**  
+| 分类依据 | 示例 | 重要性 |  
+|---|---|---|  
+| **行为** | 是否打开了最近3封邮件 | 向未活跃的订阅者发送重新参与的活动邮件  
+| **销售流程阶段** | 新订阅者、试用用户、已购买用户 | 不同阶段发送不同的邮件内容  
+| **兴趣/主题** | 根据用户下载的资源进行分类 | 只发送相关内容  
+| **购买历史** | 购买了产品A但未购买产品B | 发送升级销售或交叉销售的邮件  
+| **互动程度** | 高互动用户与低互动用户 | 为高互动用户提供VIP内容，为低互动用户发送挽回客户的活动邮件 |  
+**规则：** 从2-3个简单的分类开始。不要过度复杂化。“活跃订阅者”和“未活跃订阅者”是一个好的起点。  
+
+---
+
+## 第六步：提高邮件送达率  
+如果邮件被归入垃圾邮件，其他一切努力都白费。邮件送达率是关键——必须处理好这一点，否则各项指标都会下降。  
+
+**提高送达率的注意事项：**  
+- 使用自定义域名发送邮件（而非@gmail.com）。设置SPF、DKIM和DMARC记录。  
+- 逐步增加发送量（不要第一天就发送给10,000人）。  
+- 定期清理邮件列表，每3-6个月删除未打开邮件或未参与的订阅者。  
+- 避免在主题行中使用触发垃圾邮件的词汇（如“免费!!!”、“立即行动!!!”、“限时优惠!!!”）。  
+- 使用户容易取消订阅。隐藏取消订阅链接会导致邮件被标记为垃圾邮件。  
+- 监控你的发送者信誉（可以使用Google Postmaster、Sender Score等工具）。  
+
+**如果打开率突然下降：** 检查邮件是否被归入垃圾邮件。在Gmail、Outlook和Yahoo上给自己发送测试邮件。如果邮件被归入垃圾邮件，说明你的送达率有问题。  
+
+## 第七步：衡量效果并不断优化**  
+每月跟踪以下指标：  
+| 指标 | 含义 | 健康范围 |  
+|---|---|---|  
+| 打开率 | 打开邮件的接收者比例 | 15-25%（因行业而异）  
+| 点击率 | 点击链接的接收者比例 | 2-5%  
+| 退订率 | 退订的比例 | 每封邮件的退订率<0.5%  
+| 抵达率 | 邮件成功送达的比例 | <2%  
+| 转化率 | 完成预期行动（如注册、购买等）的用户比例 | 取决于提供的内容  
+
+**根据数据采取行动：**  
+- **打开率低？** 测试不同的主题行（进行A/B测试）。检查邮件送达情况（是否被归入垃圾邮件）。清理邮件列表（删除未参与的订阅者）。  
+- **点击率低？** 可能是CTA设计不佳或内容不相关。测试CTA的位置和措辞。进一步细分用户群体（发送更精准的邮件）。  
+- **退订率高？** 可能是因为发送频率过高、内容不相关或语气不当。调查退订者的原因。  
+**优化原则：** 每次只测试一个变量。先测试主题行，下一周测试CTA的位置。测量结果，学习经验，然后重复优化。  
+
+## 需避免的电子邮件营销误区：**  
+- 不定期发送邮件。如果你每季度才发送一次邮件，人们会忘记你的存在。建议至少每月发送一次。  
+- 每封邮件都进行推销。这样会耗尽你的订阅者资源。遵循“80%内容，20%推销”的原则。  
+- 不对邮件列表进行分类。向所有人发送相同的内容意味着没有用户会感兴趣。  
+- 忽视未参与的订阅者。他们会影响你的各项指标并降低邮件送达率。删除或重新吸引他们。  
+- 没有设置欢迎序列。注册后的前7天是互动率最高的时期，一定要利用好这个时机。  
+- 使用通用的主题行。像“第47期新闻通讯”这样的主题行很容易被忽略。每个主题行都应该有吸引力。

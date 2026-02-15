@@ -1,99 +1,98 @@
 ---
 name: Career
-description: "Auto-learns your career context. Guides decisions on paths, transitions, and growth based on what it discovers about you."
+description: "它会自动学习你的职业背景和需求，根据对你情况的了解来指导你在职业道路上的选择、职业转型以及个人成长方向。"
 ---
 
-## Auto-Adaptive Career Profile
+## 自适应职业规划系统
 
-This skill auto-evolves. Observe what matters to them, detect patterns, personalize guidance.
+该技能会自动进化：观察用户的需求，识别其中的规律，并提供个性化的指导。
 
-**Core Loop:**
-1. **Discover** — Extract career context from any question they ask
-2. **Pattern** — After 2+ signals, propose confirmation
-3. **Store** — Only after explicit yes, add below
-4. **Apply** — Use profile to personalize all career guidance
+**核心流程：**
+1. **发现** — 从用户提出的任何问题中提取与职业相关的信息。
+2. **分析模式** — 在收集到两个或更多相关线索后，提出确认请求。
+3. **存储数据** — 仅当用户明确表示同意后，才会将信息保存下来。
+4. **应用指导** — 利用保存的数据来个性化所有职业建议。
 
 ---
 
-## Framework: Career Decisions
+## 职业决策框架
 
 ```
 Context → Options → Fit → Tradeoffs → Path → Action
 ```
 
-Before advising: Understand where they are. Map realistic options. Assess fit with their profile. Surface tradeoffs. Recommend path. Define next step.
+在提供建议之前，首先需要了解用户的实际情况：明确他们的当前位置，分析可行的选择，评估这些选择是否符合他们的职业规划，并指出可能存在的权衡因素，最后推荐合适的职业发展路径以及下一步行动。
 
-### 1. Context Gathering
-- Current situation (employed, studying, transitioning, stuck)
-- Time horizon (urgent vs exploratory)
-- Constraints (location, money, family, visa, credentials)
-- What triggered this question now?
+### 1. 信息收集
+- 当前状况（已就业、在求学中、处于职业转换期、遇到瓶颈）
+- 时间规划（紧急需求还是探索性需求）
+- 制约因素（地理位置、经济条件、家庭因素、签证问题、学历要求）
+- 是什么促使他们提出这个问题？
 
-### 2. Options Mapping
-- Don't just answer the stated question — expand the option space
-- Include adjacent paths they might not have considered
-- Reality-check: is this option actually accessible from where they are?
+### 2. 选项分析
+- 不仅要回答用户提出的问题，还要扩展他们的选择范围；
+- 考虑到他们可能尚未想到的相关路径；
+- 进行现实评估：从用户当前的情况来看，这些选项是否可行？
 
-### 3. Fit Assessment
-- Match options against their stored profile (below)
-- Flag mismatches explicitly: "You said X matters, but this path requires Y"
-- Distinguish "temporary sacrifice" from "fundamental misalignment"
+### 3. 适配性评估
+- 将各种选项与用户保存的职业规划数据进行比对；
+- 明确指出不匹配的地方：“您表示某项因素很重要，但这条职业路径需要具备其他条件”；
+- 区分“暂时性的牺牲”和“根本性的不匹配”。
 
-### 4. Tradeoff Surfacing
-- Every path has costs — name them
-- Short-term vs long-term tradeoffs
-- Reversibility: can they course-correct if wrong?
+### 4. 权衡分析
+- 每条职业路径都有其成本和风险；
+- 明确指出这些成本和风险（短期与长期的权衡）；
+- 评估用户是否能够及时调整方向（如果选择错误）。
 
-### 5. Action Definition
-- End with a concrete next step, not abstract advice
-- Include timeline: "This week, do X"
-
----
-
-## Traps
-
-- **Grass is greener**: Current job problems may follow them
-- **Prestige capture**: Optimizing for status vs actual satisfaction
-- **Sunk cost**: "I've invested 5 years" ≠ reason to stay
-- **False binary**: "Stay or quit" ignores negotiate, pivot, transition
-- **Projection**: Their values, not yours or society's
-- **Timing blindness**: Market conditions matter; some moves have windows
+### 5. 行动规划
+- 最终给出具体的下一步行动建议，而不是抽象的指导；
+- 包括时间安排：“本周，请完成X”。
 
 ---
 
-## Career Profile
-
-*Observe and fill. One line per insight. Confirm before storing.*
-
-### Values
-<!-- What actually matters to them. "autonomy over salary (confirmed)" -->
-
-### Strengths
-<!-- What they're good at. "writing: strong (observed)" -->
-
-### Constraints
-<!-- Hard limits. "location: must stay in Madrid (confirmed)" -->
-
-### Context
-<!-- Current situation. "senior dev, 4 years same company (stated)" -->
-
-### Interests
-<!-- What energizes them. "likes building 0→1 (pattern)" -->
-
-### Dislikes
-<!-- What drains them. "hates meetings (confirmed)" -->
-
-### Goals
-<!-- Stated objectives. "wants to lead a team (exploring)" -->
+## 常见误区：
+- **“别处草更绿”**：换工作可能带来新的问题；
+- **追求虚荣的职位**：过度关注职位的声望而非实际的工作满意度；
+- **沉没成本谬误**：仅仅因为已经投入了时间或资源，就认为必须继续留在当前岗位；
+- **非黑即白的思维**：认为只有“留下”或“辞职”两种选择，忽略了协商、调整或转型的可能性；
+- **主观预测**：建议应基于用户的价值观，而非你的或社会的标准；
+- **时机判断失误**：市场状况很重要，某些职业决策有最佳时机。
 
 ---
 
-## Entry Format
+## 职业规划表
 
-`aspect: insight (level) [notes]`
+*请根据实际情况填写以下内容。每条信息占用一行。保存前请确认其准确性。*
 
-Levels: `stated` (they said it) → `pattern` (2+ signals) → `confirmed` (explicitly validated)
+### 个人价值观
+<!-- 对他们来说真正重要的东西。例如：“更看重自主性而非薪资（已确认）”
+
+### 个人优势
+<!-- 他们的特长。例如：“写作能力很强（已观察到）”
+
+### 制约因素
+<!-- 无法改变的限制条件。例如：“必须留在马德里（已确认）”
+
+### 当前状况
+<!-- 当前的职业环境。例如：“在公司担任高级开发人员，已工作4年”）
+
+### 兴趣爱好
+<!-- 让他们感到兴奋的事情。例如：“喜欢将想法从0变为1（已观察到）”
+
+### 不喜欢的事情
+<!-- 令他们感到疲惫或沮丧的事情。例如：“讨厌开会（已确认）”
+
+### 职业目标
+// 用户明确表达的目标。例如：“希望领导一个团队（正在探索中）”
 
 ---
 
-*Empty sections = nothing learned yet. Every career question is a chance to discover more.*
+## 数据输入格式
+
+`方面：信息类型（确认程度）[备注]`
+
+确认程度：`已声明`（用户直接说明）→ `有规律可循`（收集到两个或更多线索）→ `已确认`（用户明确同意）
+
+---
+
+*如果某个部分为空，说明目前尚未收集到相关信息。每个职业相关的问题都是发现更多信息的契机。*

@@ -3,37 +3,44 @@ name: architecture-patterns
 model: reasoning
 ---
 
-# Architecture Patterns
+# 架构模式
 
-## WHAT
-Backend architecture patterns for building maintainable, testable systems: Clean Architecture, Hexagonal Architecture, and Domain-Driven Design.
+## 什么是架构模式？
+用于构建可维护、可测试的后端系统的架构模式包括：清晰架构（Clean Architecture）、六边形架构（Hexagonal Architecture）和领域驱动设计（Domain-Driven Design）。
 
-## WHEN
-- Designing new backend systems from scratch
-- Refactoring monoliths for better maintainability
-- Establishing architecture standards for teams
-- Creating testable, mockable codebases
-- Planning microservices decomposition
+## 适用场景：
+- 从零开始设计新的后端系统
+- 重构单体应用以提高可维护性
+- 为团队建立统一的架构标准
+- 创建可测试、可模拟的代码库
+- 规划微服务的分解
 
-## KEYWORDS
-clean architecture, hexagonal, ports and adapters, DDD, domain-driven design, layers, entities, use cases, repositories, aggregates, bounded contexts
+## 关键术语：
+- 清晰架构（Clean Architecture）
+- 六边形架构（Hexagonal Architecture）
+- 端口与适配器（Ports and Adapters）
+- 领域驱动设计（Domain-Driven Design）
+- 层（Layers）
+- 实体（Entities）
+- 用例（Use Cases）
+- 仓库（Repositories）
+- 聚合（Aggregates）
+- 有界上下文（Bounded Contexts）
 
 ---
 
-## Decision Framework: Which Pattern?
+## 决策框架：选择哪种模式？
+| 情况 | 推荐模式 |
+|---------|-------------------|
+| 简单的CRUD应用程序 | 不推荐（过度设计） |
+| 复杂度中等，需要团队标准化 | 清晰架构（Clean Architecture） |
+| 需要频繁更改的外部集成 | 六边形架构（六边形架构与适配器） |
+| 拥有大量规则的复杂业务领域 | 领域驱动设计（Domain-Driven Design） |
+| 大型系统，涉及多个团队 | 领域驱动设计 + 有界上下文（Domain-Driven Design + Bounded Contexts） |
 
-| Situation | Recommended Pattern |
-|-----------|---------------------|
-| Simple CRUD app | None (over-engineering) |
-| Medium complexity, team standardization | Clean Architecture |
-| Multiple external integrations that change frequently | Hexagonal (Ports & Adapters) |
-| Complex business domain with many rules | Domain-Driven Design |
-| Large system with multiple teams | DDD + Bounded Contexts |
+## 快速参考
 
-## Quick Reference
-
-### Clean Architecture Layers
-
+### 清晰架构（Clean Architecture）的层次结构
 ```
 ┌──────────────────────────────────────┐
 │      Frameworks & Drivers (UI, DB)   │  ← Outer: Can change
@@ -46,10 +53,11 @@ clean architecture, hexagonal, ports and adapters, DDD, domain-driven design, la
 └──────────────────────────────────────┘
 ```
 
-**Dependency Rule**: Dependencies point INWARD only. Inner layers never import outer layers.
+**依赖规则**：依赖关系只能朝内部方向（INWARD）指向。内部层永远不能导入外部层。
 
-### Hexagonal Architecture
+---
 
+### 六边形架构（Hexagonal Architecture）
 ```
          ┌─────────────┐
     ┌────│   Adapter   │────┐    (REST API)
@@ -64,13 +72,12 @@ clean architecture, hexagonal, ports and adapters, DDD, domain-driven design, la
          └─────────────┘
 ```
 
-**Ports**: Interfaces defining what the domain needs
-**Adapters**: Implementations (swappable for testing)
+**端口（Ports）**：定义领域需求的接口
+**适配器（Adapters）**：实现层（可替换以便进行测试）
 
 ---
 
-## Directory Structure
-
+## 目录结构
 ```
 app/
 ├── domain/           # Entities & business rules (innermost)
@@ -94,10 +101,8 @@ app/
 
 ---
 
-## Pattern 1: Clean Architecture
-
-### Entity (Domain Layer)
-
+## 模式1：清晰架构（Clean Architecture）
+### 实体（领域层，Domain Layer）
 ```python
 from dataclasses import dataclass
 from datetime import datetime
@@ -119,8 +124,7 @@ class User:
         return self.is_active
 ```
 
-### Port (Interface)
-
+### 端口（接口，Port）**
 ```python
 from abc import ABC, abstractmethod
 from typing import Optional
@@ -137,8 +141,7 @@ class IUserRepository(ABC):
         pass
 ```
 
-### Use Case (Application Layer)
-
+### 用例（应用层，Application Layer）
 ```python
 @dataclass
 class CreateUserRequest:
@@ -175,8 +178,7 @@ class CreateUserUseCase:
         return CreateUserResponse(user=saved, success=True)
 ```
 
-### Adapter (Implementation)
-
+### 适配器（实现层，Adapter）**
 ```python
 class PostgresUserRepository(IUserRepository):
     """Adapter: PostgreSQL implementation of the port."""
@@ -204,9 +206,8 @@ class PostgresUserRepository(IUserRepository):
 
 ---
 
-## Pattern 2: Hexagonal (Ports & Adapters)
-
-Best when you have multiple external integrations that may change.
+## 模式2：六边形架构（六边形架构与适配器，Hexagonal Architecture with Adapters）
+**适用场景**：当存在多个可能频繁变化的外部集成时。
 
 ```python
 # Domain Service (Core)
@@ -249,12 +250,10 @@ class MockPaymentAdapter(PaymentGatewayPort):
 
 ---
 
-## Pattern 3: Domain-Driven Design
+## 模式3：领域驱动设计（Domain-Driven Design）
+**适用场景**：处理具有大量规则的复杂业务领域。
 
-For complex business domains with many rules.
-
-### Value Objects (Immutable)
-
+### 值对象（不可变对象，Value Objects）**
 ```python
 @dataclass(frozen=True)
 class Email:
@@ -276,8 +275,7 @@ class Money:
         return Money(self.amount + other.amount, self.currency)
 ```
 
-### Aggregates (Consistency Boundaries)
-
+### 聚合（保持数据一致性，Aggregates for Consistency）**
 ```python
 class Order:
     """Aggregate root: enforces invariants."""
@@ -309,8 +307,7 @@ class Order:
         self._events.append(OrderSubmittedEvent(self.id))
 ```
 
-### Repository Pattern
-
+### 仓库模式（Repository Pattern）**
 ```python
 class OrderRepository:
     """Persist/retrieve aggregates, publish domain events."""
@@ -323,9 +320,8 @@ class OrderRepository:
 
 ---
 
-## Testing Benefits
-
-All patterns enable the same testing approach:
+## 测试优势
+所有这些模式都支持相同的测试方法：
 
 ```python
 # Test with mock adapter
@@ -344,12 +340,11 @@ async def test_create_user():
 
 ---
 
-## NEVER
-
-- **Anemic Domain Models**: Entities with only data, no behavior (put logic IN entities)
-- **Framework Coupling**: Business logic importing Flask, FastAPI, Django ORM
-- **Fat Controllers**: Business logic in HTTP handlers
-- **Leaky Abstractions**: Repository returning ORM objects instead of domain entities
-- **Skipping Layers**: Controller directly accessing database
-- **Over-Engineering**: Using Clean Architecture for simple CRUD apps
-- **Circular Dependencies**: Use cases importing controllers
+**绝对禁止的做法**：
+- **“贫血的领域模型”（Anemic Domain Models）**：仅包含数据、没有行为的实体（应将逻辑放入实体中）
+- **框架耦合**：业务逻辑依赖于特定的框架（如Flask、FastAPI、Django ORM）
+- **臃肿的控制器**：将业务逻辑放在HTTP处理函数中
+- **“漏风的抽象”**：仓库返回ORM对象而非领域实体
+- **跳过架构层次**：控制器直接访问数据库
+- **过度设计**：在简单的CRUD应用程序中使用清晰架构
+- **循环依赖**：用例直接导入控制器

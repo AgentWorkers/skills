@@ -1,6 +1,6 @@
 ---
 name: smart-ocr
-description: Extract text from images and scanned documents using PaddleOCR - supports 100+ languages
+description: 使用 PaddleOCR 从图片和扫描的文档中提取文本——支持 100 多种语言
 author: claude-office-skills
 version: "1.0"
 tags: [ocr, paddleocr, text-extraction, multilingual, image]
@@ -12,28 +12,27 @@ library:
   stars: 69k
 ---
 
-# Smart OCR Skill
+# 智能OCR技能
 
-## Overview
+## 概述
 
-This skill enables intelligent text extraction from images and scanned documents using **PaddleOCR** - a leading OCR engine supporting 100+ languages. Extract text from photos, screenshots, scanned PDFs, and handwritten documents with high accuracy.
+该技能利用**PaddleOCR**（一款支持100多种语言的领先OCR引擎）从图像和扫描文档中智能提取文本。能够高精度地从照片、截图、扫描的PDF文件以及手写文档中提取文本。
 
-## How to Use
+## 使用方法
 
-1. Provide the image or scanned document
-2. Optionally specify language(s) to detect
-3. I'll extract text with position and confidence data
+1. 提供图像或扫描的文档。
+2. （可选）指定需要检测的语言。
+3. 系统将提取文本，并提供文本的位置和置信度信息。
 
-**Example prompts:**
-- "Extract all text from this screenshot"
-- "OCR this scanned PDF document"
-- "Read the text from this business card photo"
-- "Extract Chinese and English text from this image"
+**示例命令：**
+- “从这张截图中提取所有文本”
+- “对这份扫描的PDF文档进行OCR处理”
+- “读取这张名片照片中的文本”
+- “从这张图片中提取中文和英文文本”
 
-## Domain Knowledge
+## 领域知识
 
-### PaddleOCR Fundamentals
-
+### PaddleOCR基础
 ```python
 from paddleocr import PaddleOCR
 
@@ -51,8 +50,7 @@ for line in result[0]:
     print(f"{text} ({conf:.2f})")
 ```
 
-### Supported Languages
-
+### 支持的语言
 ```python
 # Common language codes
 languages = {
@@ -78,8 +76,7 @@ ocr = PaddleOCR(lang='japan')  # Japanese
 ocr = PaddleOCR(lang='multilingual')  # Auto-detect
 ```
 
-### Configuration Options
-
+### 配置选项
 ```python
 from paddleocr import PaddleOCR
 
@@ -111,9 +108,9 @@ ocr = PaddleOCR(
 )
 ```
 
-### Processing Different Sources
+### 处理不同类型的源文件
 
-#### Image Files
+#### 图像文件
 ```python
 # Single image
 result = ocr.ocr('image.png')
@@ -125,7 +122,7 @@ for img in images:
     process_result(result)
 ```
 
-#### PDF Files (Scanned)
+#### 扫描的PDF文件
 ```python
 from pdf2image import convert_from_path
 
@@ -152,7 +149,7 @@ def ocr_pdf(pdf_path):
     return '\n\n'.join(all_text)
 ```
 
-#### URLs and Bytes
+#### URL和字节数据
 ```python
 import requests
 from io import BytesIO
@@ -167,8 +164,7 @@ with open('image.png', 'rb') as f:
 result = ocr.ocr(BytesIO(img_bytes))
 ```
 
-### Result Processing
-
+### 结果处理
 ```python
 def process_ocr_result(result):
     """Process OCR result into structured data."""
@@ -202,8 +198,7 @@ def sort_by_position(lines):
     return sorted(lines, key=lambda x: (x['bbox']['top'], x['bbox']['left']))
 ```
 
-### Text Layout Reconstruction
-
+### 文本布局重建
 ```python
 def reconstruct_layout(result, line_threshold=10):
     """Reconstruct text layout from OCR results."""
@@ -235,17 +230,17 @@ def reconstruct_layout(result, line_threshold=10):
     return '\n'.join(text_lines)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Preprocess Images**: Improve quality before OCR
-2. **Choose Correct Language**: Specify language for better accuracy
-3. **Handle Multi-column**: Process columns separately
-4. **Filter Low Confidence**: Skip results below threshold
-5. **Batch Processing**: Process multiple images efficiently
+1. **预处理图像**：在OCR处理前提高图像质量。
+2. **选择正确的语言**：指定语言以提高识别准确性。
+3. **处理多列文本**：分别处理每列文本。
+4. **过滤低置信度的结果**：忽略置信度低于预设阈值的结果。
+5. **批量处理**：高效处理多张图像。
 
-## Common Patterns
+## 常见问题及解决方法
 
-### Image Preprocessing
+### 图像预处理
 ```python
 from PIL import Image, ImageEnhance, ImageFilter
 
@@ -270,7 +265,7 @@ def preprocess_image(image_path):
     return preprocessed_path
 ```
 
-### Batch OCR with Progress
+### 带进度提示的批量OCR处理
 ```python
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
@@ -294,9 +289,9 @@ def batch_ocr(image_paths, max_workers=4):
     return results
 ```
 
-## Examples
+## 示例
 
-### Example 1: Business Card Reader
+### 示例1：名片识别工具
 ```python
 from paddleocr import PaddleOCR
 import re
@@ -346,7 +341,7 @@ print(f"Email: {card_info['email']}")
 print(f"Phone: {card_info['phone']}")
 ```
 
-### Example 2: Receipt Scanner
+### 示例2：收据扫描功能
 ```python
 from paddleocr import PaddleOCR
 import re
@@ -407,7 +402,7 @@ print(f"Items: {len(receipt_data['items'])}")
 print(f"Total: ${receipt_data['total']}")
 ```
 
-### Example 3: Multi-language Document
+### 示例3：多语言文档处理
 ```python
 from paddleocr import PaddleOCR
 
@@ -446,16 +441,15 @@ for text, info in result.items():
     print(f"[{info['language']}] {text} ({info['confidence']:.2f})")
 ```
 
-## Limitations
+## 注意事项
 
-- Handwritten text accuracy varies
-- Very small text may not be detected
-- Complex backgrounds reduce accuracy
-- Rotated text needs angle classification
-- GPU recommended for best performance
+- 手写文本的识别准确性可能有所波动。
+- 非常小的文字可能无法被识别。
+- 复杂的背景会降低识别效果。
+- 旋转的文本需要根据角度进行重新定位。
+- 为获得最佳性能，建议使用GPU。
 
-## Installation
-
+## 安装方法
 ```bash
 # CPU version
 pip install paddlepaddle paddleocr
@@ -467,8 +461,8 @@ pip install paddlepaddle-gpu paddleocr
 pip install pdf2image Pillow
 ```
 
-## Resources
+## 资源链接
 
-- [PaddleOCR GitHub](https://github.com/PaddlePaddle/PaddleOCR)
-- [Model Zoo](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/models_list_en.md)
-- [Multi-language Support](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/multi_languages_en.md)
+- [PaddleOCR GitHub仓库](https://github.com/PaddlePaddle/PaddleOCR)
+- [模型库](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/models_list_en.md)
+- [多语言支持文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/multi_languages_en.md)

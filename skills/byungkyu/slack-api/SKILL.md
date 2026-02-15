@@ -15,9 +15,9 @@ metadata:
 
 # Slack
 
-Access the Slack API with managed OAuth authentication. Send messages, manage channels, list users, and automate Slack workflows.
+您可以使用托管的 OAuth 认证来访问 Slack API。该 API 允许您发送消息、管理频道、列出用户以及自动化 Slack 工作流程。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Post a message to a channel
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/slack/{method}
 ```
 
-The gateway proxies requests to `slack.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `slack.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Slack OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Slack OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Slack connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Slack 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,11 +142,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Post Message
+### 发送消息
 
 ```bash
 POST /slack/api/chat.postMessage
@@ -158,7 +158,7 @@ Content-Type: application/json
 }
 ```
 
-With blocks:
+**使用 Markdown 格式发送消息：**
 
 ```bash
 POST /slack/api/chat.postMessage
@@ -172,7 +172,7 @@ Content-Type: application/json
 }
 ```
 
-### Post Thread Reply
+### 回复帖子
 
 ```bash
 POST /slack/api/chat.postMessage
@@ -185,7 +185,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Message
+### 更新消息
 
 ```bash
 POST /slack/api/chat.update
@@ -198,7 +198,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Message
+### 删除消息
 
 ```bash
 POST /slack/api/chat.delete
@@ -210,55 +210,55 @@ Content-Type: application/json
 }
 ```
 
-### List Channels
+### 列出频道
 
 ```bash
 GET /slack/api/conversations.list?types=public_channel,private_channel
 ```
 
-### Get Channel Info
+### 获取频道信息
 
 ```bash
 GET /slack/api/conversations.info?channel=C0123456789
 ```
 
-### Get Channel Members
+### 获取频道成员
 
 ```bash
 GET /slack/api/conversations.members?channel=C0123456789&limit=100
 ```
 
-### List Messages in Channel
+### 列出频道中的消息
 
 ```bash
 GET /slack/api/conversations.history?channel=C0123456789&limit=100
 ```
 
-### Get Thread Replies
+### 获取帖子回复
 
 ```bash
 GET /slack/api/conversations.replies?channel=C0123456789&ts=1234567890.123456
 ```
 
-### List Users
+### 列出用户
 
 ```bash
 GET /slack/api/users.list
 ```
 
-### Get User Info
+### 获取用户信息
 
 ```bash
 GET /slack/api/users.info?user=U0123456789
 ```
 
-### Search Messages
+### 搜索消息
 
 ```bash
 GET /slack/api/search.messages?query=keyword
 ```
 
-### Open DM Conversation
+### 打开私信对话
 
 ```bash
 POST /slack/api/conversations.open
@@ -269,7 +269,7 @@ Content-Type: application/json
 }
 ```
 
-### Add Reaction
+### 添加表情反应
 
 ```bash
 POST /slack/api/reactions.add
@@ -282,7 +282,7 @@ Content-Type: application/json
 }
 ```
 
-### Upload File
+### 上传文件
 
 ```bash
 POST /slack/api/files.upload
@@ -293,15 +293,15 @@ content=file content here
 filename=example.txt
 ```
 
-### Auth Test
+### 验证 API 密钥
 
-Get current user and team info:
+获取当前用户和团队信息：
 
 ```bash
 GET /slack/api/auth.test
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -329,34 +329,34 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Channel IDs start with `C` (public), `G` (private/group), or `D` (DM)
-- User IDs start with `U`, Team IDs start with `T`
-- Message timestamps (`ts`) are used as unique identifiers
-- Use `mrkdwn` type for Slack-flavored markdown formatting
-- Thread replies use `thread_ts` to reference the parent message
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 频道 ID 以 `C`（公共频道）、`G`（私有/组频道）或 `D`（私信）开头。
+- 用户 ID 以 `U` 开头，团队 ID 以 `T` 开头。
+- 消息时间戳（`ts`）用作唯一标识符。
+- 使用 `mrkdwn` 格式进行 Slack 特色的 Markdown 格式化。
+- 帖子回复使用 `thread_ts` 来引用父消息。
+- **重要提示：** 当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 选项来禁用全局解析。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析，这可能导致 “无效的 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Slack connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Slack API |
+| 400 | 未建立 Slack 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次请求） |
+| 4xx/5xx | 来自 Slack API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -367,26 +367,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `slack`. For example:
+1. 确保您的 URL 路径以 `slack` 开头。例如：
+   - 正确：`https://gateway.maton.ai/slack/api/chat.postMessage`
+   - 错误：`https://gateway.maton.ai/api/chat.postMessage`
 
-- Correct: `https://gateway.maton.ai/slack/api/chat.postMessage`
-- Incorrect: `https://gateway.maton.ai/api/chat.postMessage`
+## 资源
 
-## Resources
-
-- [Slack API Overview](https://api.slack.com/apis)
-- [Post Message](https://api.slack.com/methods/chat.postMessage)
-- [Update Message](https://api.slack.com/methods/chat.update)
-- [Delete Message](https://api.slack.com/methods/chat.delete)
-- [List Channels](https://api.slack.com/methods/conversations.list)
-- [Channel History](https://api.slack.com/methods/conversations.history)
-- [Thread Replies](https://api.slack.com/methods/conversations.replies)
-- [List Users](https://api.slack.com/methods/users.list)
-- [Get User Info](https://api.slack.com/methods/users.info)
-- [Search Messages](https://api.slack.com/methods/search.messages)
-- [Block Kit Reference](https://api.slack.com/reference/block-kit)
-- [LLM Reference](https://docs.slack.dev/llms.txt)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Slack API 概述](https://api.slack.com/apis)
+- [发送消息](https://api.slack.com/methods/chat.postMessage)
+- [更新消息](https://api.slack.com/methods/chat.update)
+- [删除消息](https://api.slack.com/methods/chat.delete)
+- [列出频道](https://api.slack.com/methods/conversations.list)
+- [频道历史记录](https://api.slack.com/methods/conversations.history)
+- [帖子回复](https://api.slack.com/methods/conversations.replies)
+- [列出用户](https://api.slack.com/methods/users.list)
+- [获取用户信息](https://api.slack.com/methods/users.info)
+- [搜索消息](https://api.slack.com/methods/search.messages)
+- [Block Kit 参考](https://api.slack.com/reference/block-kit)
+- [LLM 参考](https://docs.slack.dev/llms.txt)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

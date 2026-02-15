@@ -1,26 +1,26 @@
 ---
 name: xmtp-cli-sync
-description: Sync conversations and messages with the XMTP CLI. Use when syncing conversations or syncing all.
+description: 使用 XMTP CLI 同步对话记录和消息。适用于同步部分对话或全部对话记录的情况。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# CLI sync
+# CLI 同步
 
-Sync conversations and groups, or sync all conversations and messages.
+用于同步对话记录和群组信息，或者同步所有对话记录及消息。
 
-## When to apply
+## 使用场景
 
-- Syncing conversations (incremental)
-- Syncing all conversations and messages (full sync)
+- 同步特定对话记录（增量同步）
+- 同步所有对话记录及消息（完全同步）
 
-## Rules
+## 命令规则
 
-- `sync-syncall` – `sync` and `syncall` commands
+- `sync-syncall`：同时执行 `sync` 和 `syncall` 命令
 
-## Quick start
+## 快速入门
 
 ```bash
 # Sync conversations
@@ -30,4 +30,4 @@ xmtp sync
 xmtp syncall
 ```
 
-Read `rules/sync-syncall.md` for details.
+详情请参阅 `rules/sync-syncall.md` 文件。

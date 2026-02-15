@@ -1,26 +1,26 @@
-# Policy Writer
+# 政策制定工具
 
-Generate professional internal policies for any business function — HR, IT, finance, compliance, data privacy, acceptable use, and more.
+该工具能够为企业的各种业务职能（如人力资源、信息技术、财务、合规性、数据隐私、使用规范等）生成专业的内部政策。
 
-## Usage
+## 使用方法
 
-Tell your agent what policy you need:
-- "Write an acceptable use policy for our SaaS platform"
-- "Create a data retention policy for GDPR compliance"
-- "Draft a remote work policy for a 50-person company"
+只需告诉您的智能助手所需制定的政策类型：
+- “为我们的SaaS平台制定使用规范政策”
+- “创建符合GDPR标准的数据保留政策”
+- “为一家拥有50名员工的公司起草远程工作政策”
 
-## What You Get
+## 收获成果
 
-1. **Executive summary** — what the policy covers and why it exists
-2. **Scope** — who it applies to
-3. **Policy statements** — clear, enforceable rules
-4. **Procedures** — step-by-step implementation
-5. **Compliance references** — relevant regulations (GDPR, SOC2, HIPAA, etc.)
-6. **Review schedule** — when to update
+1. **执行摘要**：政策涵盖的内容及其制定目的
+2. **适用范围**：政策针对的对象
+3. **政策条款**：明确且可执行的规则
+4. **实施流程**：详细的执行步骤
+5. **合规性参考**：相关的法规要求（如GDPR、SOC2、HIPAA等）
+6. **审核计划**：政策更新的频率
 
-## Prompt
+## 使用提示
 
-When the user asks for a policy document, generate a complete, professional policy using this structure:
+当用户请求制定政策文件时，请使用此结构生成一份完整且专业的政策文档：
 
 ```
 # [Policy Name]
@@ -55,16 +55,18 @@ When the user asks for a policy document, generate a complete, professional poli
 [How often reviewed, who approves changes]
 ```
 
-Adjust formality and detail based on company size. Startup = lean and practical. Enterprise = comprehensive with approval workflows.
+根据公司规模调整政策的正式程度和详细内容：
+- **初创企业**：政策应简洁实用。
+- **大型企业**：政策应全面细致，并包含审批流程。
 
-## Tips
+## 使用建议
 
-- Pair with industry-specific context packs for regulation-aware policies
-- Stack multiple policies into an employee handbook
-- Use for ISO 27001, SOC2, GDPR documentation prep
+- 结合行业特定的法规背景资料包，以制定符合行业要求的政策。
+- 将多份政策整合到员工手册中。
+- 该工具可用于ISO 27001、SOC2、GDPR等标准的文档编制工作。
 
-## More Tools
+## 其他工具
 
-- [AI Agent Context Packs](https://afrexai-cto.github.io/context-packs/) — industry-specific agent configs ($47/pack)
-- [AI Revenue Leak Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) — find where manual processes cost you money
-- [Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/) — configure your AI agent in minutes
+- [AI助手配置包](https://afrexai-cto.github.io/context-packs/)：针对不同行业的智能助手配置文件（每包47美元）
+- [AI收入损失计算器](https://afrexai-cto.github.io/ai-revenue-calculator/)：帮助识别手动流程中的成本浪费
+- [智能助手设置向导](https://afrexai-cto.github.io/agent-setup/)：几分钟内即可完成智能助手的配置

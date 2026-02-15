@@ -1,986 +1,530 @@
 ---
 name: Decision Economic Optimizer
-description: Deterministic decision-ranking API with HTTP 402 USDC payments and outcome credits (discounts).
+description: 具有 HTTP 402 USDC 支付和结果信用（折扣）功能的确定性决策排序 API。
 version: 0.1.0
 homepage: https://which-llm.com
 credentials_required: true
 primary_credential: WALLET_CREDENTIALS
 ---
 
-# Which‑LLM: Outcome‑Driven Decision Optimizer
+# Which-LLM: 基于结果的决策优化器
 
-## Overview
+## 概述
 
-Use this skill when you need to pick a recommended **LLM model** under clear constraints like **budget** and **minimum quality**, based on a natural-language goal.
+当您需要在预算和最低质量等明确约束条件下，根据自然语言目标选择推荐的**大语言模型（LLM）**时，可以使用此技能。
 
-You’ll get a single recommended model plus an ordered fallback plan you can follow if the first choice fails.
+您将获得一个推荐的模型，以及一个备选方案。如果首选方案失败，您可以按照备选方案进行操作。
 
-## How it works
+## 工作原理
 
-- **Ask for a decision**: send `goal` + constraints to `POST /decision/optimize`.
-- **Get an answer**: receive `recommended_model` and (when available) a `fallback_plan`.
-- **Earn discounts**: after you execute the choice, report the outcome to `POST /decision/outcome` to receive a credit token you can apply to future paid calls.
+- **请求决策**: 向 `POST /decision/optimize` 发送 `goal` 和约束条件。
+- **获取答案**: 接收 `recommended_model`，以及在可用情况下接收 `fallback_plan`。
+- **获得折扣**: 在执行选择后，向 `POST /decision/outcome` 报告结果，以获得可用于未来付费请求的信用令牌。
 
-## Quick Reference
+## 快速参考
 
-**API Base URL:** `https://api.which-llm.com`  
-**Homepage:** `https://which-llm.com`  
-**Skill Files:** `skills/decision-economic-optimizer/SKILL.md`, `skills/decision-economic-optimizer/skill.json`
+**API 基本 URL:** `https://api.which-llm.com`  
+**首页:** `https://which-llm.com`  
+**技能文件:** `skills/decision-economic-optimizer/SKILL.md`, `skills/decision-economic-optimizer/skill.json`
 
-**Supported Chains:** Base (8453), Ethereum (1), Arbitrum (42161), Optimism (10), Avalanche (43114)
+**支持的链**: Base (8453), Ethereum (1), Arbitrum (42161), Optimism (10), Avalanche (43114)
 
-**Single-line Use Cases:**
+**单行用例**:
 
-- Pick the cheapest LLM that meets quality requirements
-- Get a fallback plan when your first choice fails
-- Optimize model selection for specific tasks (summarize, extract, classify, coding)
-- Earn discounts by reporting actual execution outcomes
+- 选择符合质量要求的最低成本 LLM
+- 当首选方案失败时获取备选方案
+- 为特定任务优化模型选择（总结、提取、分类、编码）
+- 通过报告实际执行结果来获得折扣
 
-### Prerequisites
+### 先决条件
 
-Before using this skill, you must provide the agent with:
+在使用此技能之前，您必须向代理提供以下信息：
 
-- **Dedicated EVM-compatible wallet** for autonomous payments (separate from your main wallet)
-- **Limited USDC balance** on at least one supported chain (Base recommended for lower fees) - recommended $2-10 USDC
-- **Native gas token** for transaction fees (ETH on Base/Ethereum/Arbitrum/Optimism, AVAX on Avalanche) - recommended $3-5
-- **Payment address verification** - you must verify payment addresses from multiple independent sources before giving the agent wallet access
-- **Important:** Both USDC and gas tokens must be in the same dedicated wallet
+- **专用的 EVM 兼容钱包**，用于自主支付（与您的主钱包分开）
+- 至少在一个支持的链上拥有有限的 USDC 余额（Base 推荐，费用较低） - 建议 2-10 美元 USDC
+- 用于交易费用的本地气体令牌（Base/Ethereum/Arbitrum/Optimism 为 ETH，Avalanche 为 AVAX） - 建议 3-5 美元
+- **支付地址验证**: 在授予代理钱包访问权限之前，必须从多个独立来源验证支付地址
+- **重要提示**: USDC 和气体令牌必须存储在同一专用钱包中
 
-The agent requires these credentials to autonomously:
+代理需要这些凭据来自主动生成以下操作：
 
-- Sign USDC transfer transactions
-- Query wallet balance
-- Send transactions to blockchain
+- 签署 USDC 转账交易
+- 查询钱包余额
+- 向区块链发送交易
 
-### Credential Type Options & Risk Assessment
+### 凭据类型选项及风险评估
 
-This skill supports multiple credential formats for wallet access. **Choose the option that matches your security requirements:**
+此技能支持多种钱包访问凭据格式。**选择符合您安全要求的选项**:
 
-#### Option 1: Raw Private Key
+#### 选项 1: 原始私钥
 
-**Format:** 64-character hex string with `0x` prefix
+**格式**: 以 `0x` 开头的 64 位十六进制字符串
 
-```bash
-export WALLET_PRIVATE_KEY="0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-```
+**风险概况**:
 
-**Risk Profile:**
+- ✅ **最简单的实现方式** - 直接签名功能
+- ⚠️ **如果使用主钱包则风险较高** - 完全控制钱包
+- ✅ **使用专用钱包时风险可接受** - 资金隔离有限
+- ⚠️ **需要安全存储** - 使用环境变量或密钥管理器
 
-- ✅ **Simplest implementation** - Direct signing capability
-- ⚠️ **High risk if main wallet** - Full control of wallet
-- ✅ **Acceptable risk with dedicated wallet** - Limited funds isolation
-- ⚠️ **Requires secure storage** - Environment variable or secrets manager
+**适用场景**: 您为该技能创建了一个专门用于存储有限 USDC 和气体令牌的专用钱包
 
-**Use when:** You create a dedicated wallet with limited USDC + gas token specifically for this skill
+**安全措施**:
 
-**Security mitigation:**
+- 必须是专用钱包（不能使用主钱包）
+- 仅包含有限的资金（2-10 美元 USDC + 3-5 美元气体令牌）
+- 需要的气体令牌类型：Base/Etherum/Arbitrum/Optimism 为 ETH，Avalanche 为 AVAX
+- 应定期更换钱包（创建新钱包并转移剩余余额）
+- **严禁** 将钱包信息提交到版本控制或共享
 
-- MUST be a dedicated wallet (not your main wallet)
-- MUST contain limited funds only ($2-10 USDC + $3-5 gas token)
-- Gas tokens needed: ETH on Base/Ethereum/Arbitrum/Optimism, or AVAX on Avalanche
-- SHOULD rotate periodically (create new wallet, transfer remaining balance)
-- MUST NOT be committed to git or shared
+#### 选项 2: 动机短语
 
-#### Option 2: Mnemonic Phrase
+**格式**: 12 或 24 个单词的 BIP-39 种子短语
 
-**Format:** 12 or 24-word BIP-39 seed phrase
+**风险概况**:
 
-```bash
-export WALLET_MNEMONIC="word1 word2 word3 ... word12"
-```
+- ⚠️ **与私钥相同的风险** - 从短语派生私钥
+- ⚠️ **潜在风险较高** - 可能生成多个账户
+- ✅ **用户友好的备份方式** - 更容易安全地记录
 
-**Risk Profile:**
+**适用场景**: 您更喜欢使用基于动机的钱包管理方式
 
-- ⚠️ **Same risk as private key** - Derives private key from phrase
-- ⚠️ **Potentially higher risk** - Can derive multiple accounts
-- ✅ **User-friendly backup** - Easier to write down securely
+**安全措施**: 与私钥相同 + 确保仅使用第一个派生的账户（m/44'/60'/0'/0/0）
 
-**Use when:** You prefer mnemonic-based wallet management
+#### 选项 3: 密钥存储文件 + 密码
 
-**Security mitigation:** Same as private key + ensure only first derived account (m/44'/60'/0'/0/0) is used
+**格式**: 加密后的 JSON 密钥存储文件（Ethereum 标准）+ 密码
 
-#### Option 3: Keystore File + Password
+**风险概况**:
 
-**Format:** Encrypted JSON keystore file (Ethereum standard) + password
+- ✅ **静态存储时已加密** - 私钥以加密形式存储
+- ✅ **双重认证** - 需要文件和密码
+- ⚠️ **仍然允许完全签名** - 解密后与私钥相同
+- ⚠️ **文件管理要求** - 必须安全存储密钥存储文件
 
-```bash
-export WALLET_KEYSTORE_PATH="/path/to/keystore.json"
-export WALLET_KEYSTORE_PASSWORD="your-secure-password"
-```
+**适用场景**: 您希望使用加密的私钥存储方式，并需要密码保护
 
-**Risk Profile:**
+**凭据设置**:
 
-- ✅ **Encrypted at rest** - Private key stored encrypted
-- ✅ **Two-factor security** - Requires file AND password
-- ⚠️ **Still grants full signing** - Once decrypted, same as private key
-- ⚠️ **File management overhead** - Must securely store keystore file
+1. 为此技能专门生成一个新的钱包（切勿重复使用现有钱包）
+2. 用有限的 USDC 和气体令牌（建议 2-10 美元 USDC + 3-5 美元气体令牌）进行充值
+   - **USDC 金额**:
+     - 1 美元 = 100 次请求（每次 0.01 美元，或使用 50% 信用额度后 199 次请求）
+     - 2 美元 = 200 次请求（或使用 50% 信用额度后 399 次请求）
+     - 5 美元 = 500 次请求（或使用 50% 信用额度后 999 次请求）
+     - 10 美元 = 1,000 次请求（或使用 50% 信用额度后 1,999 次请求）
+   - **气体令牌金额**: Base/Etherum/Arbitrum/Optimism 为 3-5 美元 ETH，Avalanche 为 AVAX，用于交易费用
+   - **信用优化**: 如果您在每次决策后报告结果并使用信用令牌，除了第一次请求外，所有请求均可获得约 50% 的退款，从而有效增加请求次数
 
-**Use when:** You want encrypted private key storage with password protection
+3. 将私钥存储在安全的环境变量或密钥管理器中
+4. 定期通过区块浏览器监控交易
+5. 定期更换钱包（建议每月更换一次）
+6. **严禁** 将私钥提交到版本控制或公开共享
 
-**Security mitigation:** Strong password + secure keystore file permissions (chmod 600)
+**自主操作说明**: 代理将使用此钱包自主支付 API 请求（每次 0.01 美元），无需每次都请求批准。这种设计避免了审批疲劳，同时保持成本可预测，并受您选择的钱包余额限制。
 
-### Credential Setup
+**重要提示**: 请确保在专用钱包中同时存放 USDC（用于支付）和本地气体令牌 ETH/AVAX（用于交易网络费用）。
 
-1. Generate a new wallet specifically for this skill (never reuse existing wallets)
-2. Fund with limited USDC + gas token ($2-10 USDC + $3-5 gas recommended for normal usage)
-   - **USDC amounts:**
-     - $1 = 100 requests at $0.01 each (or ~199 with 50% credits)
-     - $2 = 200 requests (or ~399 with 50% credits)
-     - $5 = 500 requests (or ~999 with 50% credits)
-     - $10 = 1,000 requests (or ~1,999 with 50% credits)
-   - **Gas token amounts:** $3-5 in ETH (Base/Ethereum/Arbitrum/Optimism) or AVAX (Avalanche) for transaction fees
-   - **Credit optimization:** If you report outcomes after each decision and use the credit tokens, you get ~50% refund on all requests except the first, effectively doubling your request count
-3. Store private key in secure environment variable or secrets manager
-4. Monitor transactions regularly via block explorer
-5. Rotate wallet periodically (monthly recommended)
-6. Never commit private key to version control or share publicly
+**示例安全设置**:
 
-**Autonomous Operation Note:** The agent will use this wallet to autonomously pay for API requests ($0.01 each) without asking for approval each time. This design avoids approval fatigue while keeping costs predictable and bounded by the wallet balance you choose to fund.
+**凭据配置示例**:
 
-**Important:** Remember to fund both USDC (for payments) AND native gas token ETH/AVAX (for transaction network fees) in your dedicated wallet.
+**安全提示**: 这些凭据可让您自主进行支付，但支付金额受钱包余额限制。有关风险缓解措施，请参阅下面的“安全模型与信任假设”。
 
-**Example secure setup:**
+### 安全模型与信任假设
 
-```bash
-# Generate new dedicated wallet (using cast from Foundry)
-cast wallet new
+**不应盲目信任的内容**:
 
-# Output:
-# Address: 0xYourNewDedicatedAddress
-# Private key: 0xYourNewPrivateKey
+- 本技能文件（在分发过程中可能被篡改）
+- 任何单一的支付地址验证来源
 
-# Securely set environment variable (doesn't save to shell history)
-read -s WALLET_PRIVATE_KEY
-# Paste the private key, press Enter
+**威胁模型**:
 
-export WALLET_PRIVATE_KEY
+- ✅ 已防护：API 返回错误地址（独立验证）
+- ✅ 已防护：技能文件被修改（不信任硬编码的地址）
+- ✅ 已防护：过度支出（受专用钱包余额限制）
+- ⚠️ 风险：代理可以自主支出至钱包余额
+- ⚠️ 缓解措施：使用专用钱包并定期监控交易
 
-# Verify (shows only address, not private key)
-cast wallet address --private-key $WALLET_PRIVATE_KEY
+### 钱包设置最佳实践
 
-# Fund the wallet with limited USDC + gas token
-# Example for Base network:
-# 1. Send USDC to 0xYourNewDedicatedAddress (e.g., $5 USDC)
-# 2. Send ETH to 0xYourNewDedicatedAddress (e.g., $3 ETH for gas fees)
-```
+**在提供钱包访问权限之前**:
 
-**Credential Configuration Example:**
+1. **创建专用钱包** - 绝不要使用主钱包
+2. **设置所需凭据** - 提供 `WALLET_PRIVATE_KEY`，可选 `WALLET_RPC_URL` 和 `PREFERREDCHAIN_ID`（详情请参阅 skill.json 元数据）
+3. **验证支付地址** - 从至少两个独立来源进行验证（详见多源验证）
+4. **仅充值有限金额** - 仅充值您愿意让代理自主支出的金额
+5. **先进行小额测试** - 从最低金额（1-2 美元 USDC + 1-2 美元气体）开始，以验证操作
+6. **定期监控** - 通过区块浏览器（Basescan, Etherscan）检查交易
+7. **根据需要补充资金** - 在查看交易历史后补充资金
 
-```bash
-# Set required wallet credentials (environment variables)
-export WALLET_PRIVATE_KEY="0x123...EXAMPLE_WALLET_PRIVATE_KEY_EXAMPLE"
+**推荐的初始充值金额**:
 
-# Optional: Use custom RPC endpoint (defaults to public RPC if not set)
-export WALLET_RPC_URL="https://mainnet.base.org"
+- **USDC**: 2-10 美元（允许 200-1000 次优化请求，每次 0.01 美元）
+- **气体令牌**: 3-5 美元 ETH（Base/Etherum/Arbitrum/Optimism）或 AVAX（Avalanche）
 
-# Optional: Set preferred chain (defaults to Base/8453 if not set)
-export PREFERRED_CHAIN_ID="8453"
-```
+**此技能的功能**:
 
-**Security Note:** These credentials grant autonomous payment capability up to the wallet balance. See "Security Model & Trust Assumptions" below for risk mitigation.
+- 向 Which-LLM API 发送 HTTPS 请求
+- 使用 `POST /decision/optimize` 获取推荐结果，并使用 `POST /decision/outcome` 报告结果
+- 可以调用 `GET /capabilities`、`GET /pricing` 和 `GET /status` 来了解功能和费用
+- 对于付费端点，遵循标准流程：**402 → 自主支付 → 重试**，并可以使用 `X-Credit-Token` 享受折扣
+- 当 API 需要支付时（402 响应），使用提供的钱包凭据（`WALLET_PRIVATE_KEY`）自主发送 USDC 支付
+- 通过 `WALLET_RPC_URL`（或默认的公共 RPC）连接到区块链以签名和广播交易
 
-### Security Model & Trust Assumptions
+**此技能不执行的功能**:
 
-**What you should NOT blindly trust:**
+- 不调用 LLM 或根据您的输入执行代码
 
-- This skill file (could be tampered during distribution)
-- Any single verification source for payment addresses
+**安全规则**:
 
-**Threat model:**
+- 代理在您提供的专用钱包的余额范围内操作
+- 定期通过区块浏览器监控钱包交易
+- 仅向 API 发送支付证明头部：交易哈希和钱包地址
 
-- ✅ Protected against: API returning wrong address (verify independently)
-- ✅ Protected against: Skill file modification (no hardcoded addresses trusted)
-- ✅ Protected against: Excessive spending (limited by dedicated wallet balance)
-- ⚠️ Risk: Agent can autonomously spend up to wallet balance
-- ⚠️ Mitigation: Use dedicated wallet with limited funds, monitor transactions regularly
+### 认证
 
-### Wallet Setup Best Practices
+没有 API 密钥。付费请求使用 **支付证明头部**（在初始 402 响应之后）和可选的 `X-Credit-Token` 享受折扣
 
-**Before providing wallet access:**
+**端点**:
 
-1. **Create a dedicated wallet** - Never use your main wallet
-2. **Set required credentials** - Provide `WALLET_PRIVATE_KEY` and optionally `WALLET_RPC_URL`, `PREFERRED_CHAIN_ID` (see skill.json metadata for details)
-3. **Verify payment addresses** - Check from at least 2 independent sources (see Multi-Source Verification below)
-4. **Fund with limited amount** - Only deposit what you're comfortable the agent spending autonomously
-5. **Test with small amount first** - Start with minimal funding ($1-2 USDC + $1-2 gas) to verify operation
-6. **Monitor regularly** - Check transactions on block explorer (Basescan, Etherscan)
-7. **Refill as needed** - Add more funds only after reviewing transaction history
+- 免费端点（`/capabilities`, `/pricing`, `/status`）无需认证
+- 付费端点（`/decision/optimize`）最初返回 402 响应，然后接受支付证明头部
+- 从结果报告中获得的信用可以通过 `X-Credit-Token` 头部兑换
 
-**Recommended initial funding:**
+### 自主操作模型
 
-- **USDC:** $2-10 (allows 200-1000 optimization requests at $0.01 each)
-- **Gas token:** $3-5 in ETH (Base/Ethereum/Arbitrum/Optimism) or AVAX (Avalanche)
-- **Note:** Gas fees on Base are typically very low (~$0.01-0.05 per transaction), so $3-5 ETH can cover hundreds of transactions
+此技能使用您提供的专用钱包自主操作：
 
-## What this skill does
+- ⚙️ **自主支付授权**: 代理可以在钱包余额范围内自主发送 USDC 支付，无需每次请求都获得批准
+- ⚙️ **自主 API 调用**: 可以自主调用免费和付费端点（`POST /decision/optimize`, `POST /decision/outcome`），无需确认
+- ⚙️ **风险控制**: 通过限制专用钱包余额来控制最大支出
+- ℹ️ **一次性设置**: 在提供钱包访问权限之前，从多个来源验证支付地址（详见支付安全验证）
 
-- Sends HTTPS requests to Which‑LLM API
-- Uses `POST /decision/optimize` to get a recommendation and `POST /decision/outcome` to report results
-- May call `GET /capabilities`, `GET /pricing`, and `GET /status` to discover features and costs
-- For paid endpoints, handles the standard flow: **402 → pay autonomously → retry**, and can apply `X-Credit-Token` for discounts
-- **Autonomously sends USDC payments** using the provided wallet credentials (`WALLET_PRIVATE_KEY`) when the API requires payment (402 response)
-- Connects to blockchain via `WALLET_RPC_URL` (or defaults to public RPC) to sign and broadcast transactions
+**为什么不需要每次请求都获得批准？**
 
-## What this skill does NOT do
+此技能设计为**无需每次请求都获得批准**，原因如下：
 
-- Does not call an LLM or execute code from your inputs
+1. **每次请求的成本非常低**: 每次决策仅花费 0.01 美元 USDC（或使用 50% 信用额度后只需 0.005 美元）
+2. **审批疲劳**: 每次 0.01 美元的支付都需要批准会带来不便
+3. **用户控制的限制**: 通过限制专用钱包的 USDC 余额来控制最大支出
+- ✅ 成本可控：您可以通过控制专用钱包的 USDC 余额来控制总支出
+- ✅ 钱包是专用的（与您的主资金分开）
+- ✅ 交易可以通过区块浏览器在链上审计
+- ℹ️ 请确保在专用钱包中同时存放 USDC 和气体令牌（ETH/AVAX）
 
-## Security rules
+## 支付安全验证
 
-- Agent operates within the balance limits of the dedicated wallet you provide
-- Monitor wallet transactions regularly through block explorers
-- Only send payment proof headers to API: transaction hash & wallet address
+### ⚠️ 安全模型
 
-### Authentication
+此技能**无法** 提供可信赖的硬编码支付地址，因为：
 
-There is no API key. Paid requests use **payment proof headers** (after an initial 402) and optional `X-Credit-Token` for discounts.
+- 技能文件在分发过程中可能被篡改
+- 注册表被破坏或中间人攻击可能会修改“已验证”的地址
+- 不应信任任何单一的财务交易来源
 
-## Endpoints
+### 需要多源验证（一次性设置）
 
-- Free endpoints (`/capabilities`, `/pricing`, `/status`) require no authentication
-- Paid endpoints (`/decision/optimize`) return 402 initially, then accept payment proof headers
-- Credits earned from outcome reports can be redeemed via `X-Credit-Token` header
+在发送任何支付之前，从**至少两个独立来源**验证支付地址：
 
-### Autonomous Operation Model
+#### 选项 1: 公知的端点（纯文本）
 
-This skill operates autonomously using a dedicated wallet you provide:
+此端点以纯文本形式返回接收者地址（以 `0x` 开头的 42 个字符）。
 
-- ⚙️ **Autonomous payment authorization**: Agent can send USDC payments up to the wallet balance without per-transaction approval
-- ⚙️ **Autonomous API calls**: Can call both free and paid endpoints (`POST /decision/optimize`, `POST /decision/outcome`) without confirmation
-- ⚙️ **Risk control**: You control maximum spending by limiting the dedicated wallet balance
-- ℹ️ **One-time setup**: Verify payment addresses from multiple sources before providing wallet access (see Payment Security Verification)
+#### 选项 2: 官方文档（结构化 JSON）
 
-**Why No Per-Request Approval?**
+#### 选项 3: ENS 记录
 
-This skill is designed for **autonomous operation without per-request approval** because:
+使用以下方法检查 ENS 域名 `which-llm.eth`:
 
-1. **Very low per-request cost**: Each decision costs only $0.01 USDC (or ~$0.005 with 50% credit refunds)
-2. **Approval fatigue**: Requiring approval for every $0.01 payment would be disruptive and impractical
-3. **User-controlled limits**: You set the maximum spending by limiting the dedicated wallet USDC balance (+ gas token for fees)
-4. **Example**: A $5 USDC balance + $3 gas token allows 500 optimization requests (or ~999 if using credits from outcome reports)
+- 方法 A: 使用 app.ens.domains
 
-**Trade-off:** You grant autonomous spending capability in exchange for convenience. This is acceptable because:
+1. 访问 [app.ens.domains/which-llm.eth](https://app.ens.domains/which-llm.eth)
+2. 在 ENS 记录的 “Records” 标签中查找 “Address” 字段
+3. 确认其与其他来源显示的地址一致
 
-- ✅ Cost per request is minimal ($0.01)
-- ✅ Total spending is bounded by wallet USDC balance you control (+ minimal gas fees)
-- ✅ Wallet is dedicated (separate from your main funds)
-- ✅ Transactions are auditable on-chain via block explorer
-- ℹ️ Remember to maintain both USDC and gas token (ETH/AVAX) in the dedicated wallet
+- 方法 B: 使用命令行（需要从 Foundry 安装）
 
-## Payment Security Verification
+如果您没有安装 Foundry：
 
-### ⚠️ Security Model
+然后解析 ENS 名称：
 
-This skill **cannot** provide a trustworthy hardcoded payment address because:
+#### 验证规则**: 所有来源必须返回**相同的地址**。如果任何来源显示不同的地址，请**不要进行支付**，并将差异报告给 [report](https://api.which-llm.com/report/wrong_address)。
 
-- The skill file itself could be tampered with during distribution
-- A compromised registry or MITM attack could modify the "verified" address
-- No single source should be trusted for financial transactions
+**注意**: 此验证只需进行一次。验证通过后，代理可以自主将支付发送到已验证的地址，金额不超过钱包的 USDC 余额（确保钱包也有足够的气体令牌用于交易费用）。
 
-### Multi-Source Verification Required (One-Time Setup)
+### 报告地址验证问题
 
-Before sending ANY payment, verify the payment address from **at least 2 of these independent sources**:
+如果您遇到地址验证问题，请使用免费的 `/report/wrong_address` 端点进行报告：
 
-#### Option 1: Well-known endpoint (plain text)
+**请求字段（全部为可选，至少需要一个）**:
 
-```bash
-curl -s https://api.which-llm.com/.well-known/payment-address.txt
-```
+- `"well known"`（字符串） - `.well-known/payment-address.txt` 验证出现问题
+- `"api"`（字符串） - 基于 API 的地址验证出现问题
+- `"ENS"`（字符串） - ENS 名称解析出现问题
 
-This returns the receiver address as plain text (42 characters starting with `0x`).
+**示例响应**:
 
-#### Option 2: Official documentation (structured JSON)
+## 开始使用
 
-```bash
-curl -s https://api.which-llm.com/docs/payment-addresses | jq -r '.receiver'
-```
+### 示例：通过 API 获取支付地址
 
-#### Option 3: ENS record
+### 示例输出**:
 
-Check the ENS domain `which-llm.eth` using any of these methods:
+### 检查功能（推荐）
 
-- Method A: Using app.ens.domains
+### 示例输出**:
 
-1. Visit [app.ens.domains/which-llm.eth](https://app.ens.domains/which-llm.eth)
-2. Look for the "Address" field in the ENS record (under "Records" tab)
-3. Verify it matches the address from other sources
+### 检查价格
 
-- Method B: Using command line (requires `cast` from Foundry)
+### 示例输出**:
 
-If you don't have Foundry installed:
+### 优化决策（付费）
 
-```bash
-# Install Foundry
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-```
+优化端点使用 HTTP 402 支付限制。以下是详细流程：
 
-Then resolve the ENS name:
+#### 第一步：初始请求（预期返回 402 响应）
 
-```bash
-# Resolve ENS name to address
-cast resolve-name which-llm.eth --rpc-url https://eth.llamarpc.com
-```
+**请求字段**:
 
-**Verification Rule:** All sources must return the **same address**. If any source shows a different address, **DO NOT provide payment** and report the discrepancy to [report]("https://api.which-llm.com/report/wrong_address").
+- `goal`（必填）：您想要完成的任务的自然语言描述
+- `constraints`（必填）:
+  - `min_quality_score`：最低质量阈值（0-1）
+  - `max_cost_usd`：最大成本（美元）
+- `workload`（可选）：用于准确估算成本的令牌/定价维度
+  - `input_tokens`, `output_tokens`（如果提供了 workload 则必填）
+  - `requests`, `images`, `web_searches`, `internal_reasoning_tokens`, `input_cache_read_tokens`, `input_cache_write_tokens`（可选）
+- `task_type`（可选）："summarize" | "extract" | "classify" | "coding" | "general" - 帮助路由到合适的模型
 
-**Note:** This verification is required only once. After verification, the agent can autonomously send payments to the verified address up to the wallet USDC balance (ensure wallet also has gas tokens for transaction fees).
+**示例响应（需要支付）**:
 
-### Reporting Address Validation Issues
+#### 第二步：在链上支付 USDC
 
-If you encounter address validation problems, report them using the free `/report/wrong_address` endpoint:
+**⚠️ 安全提示**: 在初始设置期间必须验证支付地址**（详见“支付安全验证”部分）
 
-```bash
-# Report discrepancy from .well-known and ENS
-curl -X POST "https://api.which-llm.com/report/wrong_address" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "well known": ".well-known returned 0xAAA... but ENS returned 0xBBB...",
-    "ENS": "which-llm.eth resolved to different address than other sources"
-  }'
-```
+代理将自动向所选链上的 `accepts[].pay_to` 发送确切的 USDC 转账：
 
-**Request Body Fields (all optional, at least one required):**
+- 金额： exactly `required_amount`（例如，0.01 美元）
+- 链路：从 `accepts[].chain` 中选择（例如，Base 为 eip155:8453）
+- 资产：USDC
+- 代理使用提供的钱包签名并发送交易
+- 确认后，将获得交易哈希（`tx_hash`）
 
-- `"well known"` (string) - Issues with `.well-known/payment-address.txt` validation
-- `"api"` (string) - Issues with API-based address validation
-- `"ENS"` (string) - Issues with ENS name resolution
+**注意**: 代理使用您提供的专用钱包自主签名和发送交易。只有交易哈希和钱包地址作为公共支付证明发送给 API。
 
-**Example Response:**
+#### 第三步：带有支付证明的重试
 
-```json
-{
-  "status": "recorded",
-  "report_id": "123e4567-e89b-12d3-a456-426614174000",
-  "reported_at_epoch": 1707686400
-}
-```
+代理将自动使用支付证明头部重试请求：
 
-## Getting Started
+**支付头部**:
 
-### Example: Fetch payment addresses via API
-
-```bash
-curl -s "https://api.which-llm.com/docs/payment-addresses"
-```
-
-**Example Output:**
-
-```json
-{
-  "service": "decision-economic-optimizer",
-  "payment_asset": "USDC",
-  "payment_scheme": "exact",
-  "chain_namespace": "eip155",
-  "chains": {
-    "8453": {
-      "name": "Base",
-      "asset": "USDC",
-      "pay_to": "0x..."
-    },
-    "1": {
-      "name": "Ethereum",
-      "asset": "USDC",
-      "pay_to": "0x..."
-    }
-  },
-  "receiver": "0x..."
-}
-```
-
-### Check capabilities (recommended)
-
-```bash
-curl -s "https://api.which-llm.com/capabilities"
-```
-
-**Example Output:**
-
-```json
-{
-  "service": "decision-economic-optimizer",
-  "deterministic": true,
-  "decision_version": "v1",
-  "supported_constraints": ["cost", "quality"],
-  "supported_decision_types": ["llm_model_selection"],
-  "endpoints": ["/decision/optimize", "/decision/outcome", "/status"],
-  "payment_model": "http_402",
-  "payment_asset": "USDC",
-  "payment_scheme": "exact",
-  "networks": [
-    "eip155:8453",
-    "eip155:1",
-    "eip155:42161",
-    "eip155:10",
-    "eip155:43114"
-  ]
-}
-```
-
-### Check pricing
-
-```bash
-curl -s "https://api.which-llm.com/pricing"
-```
-
-**Example Output:**
-
-```json
-{
-  "currency": "USDC",
-  "payment_asset": "USDC",
-  "payment_scheme": "exact",
-  "chain_namespace": "eip155",
-  "chains": {
-    "8453": "Base",
-    "1": "Ethereum",
-    "42161": "Arbitrum",
-    "10": "Optimism",
-    "43114": "Avalanche"
-  },
-  "pricing": {
-    "/decision/optimize": {
-      "price": 0.01,
-      "unit": "per_request"
-    }
-  }
-}
-```
-
-### Optimize a decision (paid)
-
-The optimize endpoint uses HTTP 402 payment gating. Here's the detailed flow:
-
-#### Step 1: Initial Request (Expects 402)
-
-```bash
-IDEMPOTENCY_KEY="request_$(date +%s)_001"
-
-curl -sS -i -X POST "https://api.which-llm.com/decision/optimize" \
-  -H "Content-Type: application/json" \
-  -H "Idempotency-Key: $IDEMPOTENCY_KEY" \
-  -d '{
-    "goal": "Summarize customer feedback emails into a 5-bullet executive summary",
-    "constraints": {
-      "min_quality_score": 0.8,
-      "max_cost_usd": 0.01
-    },
-    "workload": {
-      "input_tokens": 1200,
-      "output_tokens": 300,
-      "requests": 1
-    },
-    "task_type": "summarize"
-  }'
-```
-
-**Request Fields:**
-
-- `goal` (required): Natural language description of what you want to accomplish
-- `constraints` (required):
-  - `min_quality_score`: Minimum quality threshold (0-1)
-  - `max_cost_usd`: Maximum cost in USD
-- `workload` (optional): Token/pricing dimensions for accurate cost estimation
-  - `input_tokens`, `output_tokens` (required if workload provided)
-  - `requests`, `images`, `web_searches`, `internal_reasoning_tokens`, `input_cache_read_tokens`, `input_cache_write_tokens` (optional)
-- `task_type` (optional): `"summarize" | "extract" | "classify" | "coding" | "general"` - helps route to task-appropriate models
-
-**Example Response (402 Payment Required):**
-
-```http
-HTTP/2 402 Payment Required
-Content-Type: application/json
-
-{
-  "error_code": "PAYMENT_REQUIRED",
-  "required_amount": "0.01",
-  "currency": "USDC",
-  "accepts": [
-    {
-      "chain": "eip155:8453",
-      "asset": "USDC",
-      "pay_to": "0x...PAY_TO_ADDRESS...123xyz",
-      "scheme": "exact"
-    },
-    {
-      "chain": "eip155:1",
-      "asset": "USDC",
-      "pay_to": "0x...PAY_TO_ADDRESS...123xyz",
-      "scheme": "exact"
-    }
-  ],
-  "payment_reference": "decision_optimize_abc123",
-  "idempotency_key": "request_1770809000_001"
-}
-```
-
-##### Step 2: Pay USDC On-Chain
-
-**⚠️ SECURITY: Payment address must be verified during initial setup** (see "Payment Security Verification" section)
-
-The agent will autonomously send an exact USDC transfer to `accepts[].pay_to` on the chosen chain:
-
-- Amount: exactly `required_amount` (e.g., `0.01` USDC)
-- Chain: choose from `accepts[].chain` (e.g., `eip155:8453` for Base)
-- Asset: USDC
-- The agent uses the provided wallet to sign and send the transaction
-- After confirmation, the transaction hash (`tx_hash`) is obtained
-
-**Note:** The agent autonomously signs and sends the transaction using the dedicated wallet you provided. Only the transaction hash and wallet address are sent to the API as public proof of payment.
-
-##### Step 3: Retry with Payment Proof
-
-The agent automatically retries the request with payment proof headers:
-
-```bash
-# Example of the retry request (automated by agent)
-TX_HASH="0x...TRANSACTION_HASH_FROM_STEP_2"
-PAYER_ADDRESS="0x...WALLET_ADDRESS_PROVIDED"
-PAYMENT_CHAIN="eip155:8453"
-PAYMENT_AMOUNT="0.01"
-
-curl -sS -i -X POST "https://api.which-llm.com/decision/optimize" \
-  -H "Content-Type: application/json" \
-  -H "Idempotency-Key: $IDEMPOTENCY_KEY" \
-  -H "X-Payment-Chain: $PAYMENT_CHAIN" \
-  -H "X-Payment-Tx: $TX_HASH" \
-  -H "X-Payer: $PAYER_ADDRESS" \
-  -H "X-Payment-Amount: $PAYMENT_AMOUNT" \
-  -H "X-Payment-Asset: USDC" \
-  -d '{
-    "goal": "Summarize customer feedback emails into a 5-bullet executive summary",
-    "constraints": {
-      "min_quality_score": 0.8,
-      "max_cost_usd": 0.01
-    }
-  }'
-```
-
-**Payment Headers:**
-
-- `X-Payment-Chain`: CAIP-2 chain ID (e.g., `eip155:8453` for Base)
-- `X-Payment-Tx`: Transaction hash (32 bytes, hex with `0x` prefix)
-- `X-Payer`: Your wallet address (hex with `0x` prefix) - **public address only**
-- `X-Payment-Amount`: Exact decimal amount matching `required_amount`
+- `X-Payment-Chain`: CAIP-2 链路 ID（例如，Base 为 eip155:8453）
+- `X-Payment-Tx`: 交易哈希（32 字节，以 `0x` 开头的十六进制字符串）
+- `X-Payer`: 您的钱包地址（以 `0x` 开头的十六进制字符串） - **仅限公共地址**
+- `X-Payment-Amount`: 与 `required_amount` 相匹配的精确十进制金额
 - `X-Payment-Asset`: `USDC`
 
-**Security Note:** These headers contain only public information (transaction hash and wallet address). The API verifies the payment by checking the on-chain transaction.
-
-**Example Response (200 Success):**
-
-```http
-HTTP/2 200 OK
-Content-Type: application/json
-X-Decision-Version: v1
-X-Decision-Hash: 0xdef456...
-
-{
-  "decision_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
-  "decision_version": "v1",
-  "deterministic": true,
-  "scoring_version": "v1.0",
-  "recommended_model": "openai/gpt-4o-mini",
-  "expected_cost": 0.008,
-  "expected_quality": 0.85,
-  "safe_to_execute": true,
-  "human_review_required": false,
-  "task_type": "summarize",
-  "model_metadata": {
-    "provider": "openai",
-    "model_id": "openai/gpt-4o-mini",
-    "name": "GPT-4o Mini",
-    "context_length": 128000,
-    "pricing": {
-      "prompt": 0.15,
-      "completion": 0.6
-    },
-    "signals": {
-      "is_small": true,
-      "is_coder": false,
-      "is_reasoning": false
-    }
-  },
-  "fallback_plan": [
-    {
-      "option_id": "anthropic/claude-3-haiku",
-      "reason": "NEXT_BEST"
-    }
-  ],
-  "explainability": {
-    "score": 0.92,
-    "components": {
-      "cost_penalty": 0.15,
-      "quality_penalty": 0.05,
-      "goal_penalty": 0.02,
-      "pricing_dimensions_used": ["prompt", "completion"]
-    },
-    "discarded": false
-  },
-  "payment": {
-    "status": "verified",
-    "chain": "eip155:8453",
-    "tx_hash": "0x...EXAMPLE_TX_HASH",
-    "payer": "0x...EXAMPLE_PAYER_ADDRESS",
-    "amount_usdc": "0.01",
-    "asset": "USDC",
-    "receiver": "0x...PAY_TO_ADDRESS...123xyz"
-  },
-  "job_receipt": {
-    "receipt_version": "v1",
-    "receipt_id": "0xabc123...",
-    "eip712": {
-      "types": {},
-      "domain": {},
-      "message": {},
-      "signature": "0x..."
-    }
-  }
-}
-```
-
-**Using Credit Token (Discount):**
-
-If you have a credit token from a previous outcome, include it to reduce the required payment:
-
-```bash
-# Example token structure (base64 JWT): {"credit_id":"...","decision_id":"...","payer":"0x...","amount_usdc":"..."}
-CREDIT_TOKEN="eyJ...EXAMPLE_CREDIT_TOKEN_FROM_OUTCOME_RESPONSE...xyz"
-
-curl -sS -i -X POST "https://api.which-llm.com/decision/optimize" \
-  -H "Content-Type: application/json" \
-  -H "X-Credit-Token: $CREDIT_TOKEN" \
-  -d '{
-    "goal": "Classify customer inquiries by priority",
-    "constraints": {
-      "min_quality_score": 0.7,
-      "max_cost_usd": 0.015
-    }
-  }'
-```
-
-**Possible Responses:**
-
-- If credit fully covers cost → 200 response (no payment needed)
-- If credit partially covers → 402 with reduced `required_amount`
-
-**Example Response (402 with Partial Credit):**
-
-```http
-HTTP/2 402 Payment Required
-Content-Type: application/json
-
-{
-  "error_code": "PAYMENT_REQUIRED",
-  "required_amount": "0.005",
-  "currency": "USDC",
-  "accepts": [...],
-  "diagnostic": {
-    "price_usdc": "0.01",
-    "credit_applied_usdc": "0.005",
-    "remaining_usdc": "0.005"
-  }
-}
-```
-
-#### 4. Report outcome (earn a discount)
-
-After executing the recommended model, report what actually happened to earn a credit token (discount) for future calls.
-
-**Request:**
-
-```bash
-DECISION_ID="d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90"
-OUTCOME_KEY="outcome_$(date +%s)_001"
-
-curl -sS -i -X POST "https://api.which-llm.com/decision/outcome" \
-  -H "Content-Type: application/json" \
-  -H "Idempotency-Key: $OUTCOME_KEY" \
-  -d '{
-    "decision_id": "'"$DECISION_ID"'",
-    "option_used": "openai/gpt-4o-mini",
-    "actual_cost": 0.008,
-    "actual_latency": 650,
-    "quality_score": 0.86,
-    "success": true
-  }'
-```
-
-**Request Fields:**
-
-- `decision_id` (required): The `decision_id` from the optimize response
-- `option_used` (required): The model ID that was actually used (should match `recommended_model` or a fallback)
-- `actual_cost` (required): Actual cost in USD (≥ 0)
-- `actual_latency` (required): Actual latency in milliseconds (≥ 0)
-- `quality_score` (required): Quality score 0-1
-- `success` (required): Boolean indicating if the task succeeded
-
-**Example Response (200 Success):**
-
-```http
-HTTP/2 200 OK
-Content-Type: application/json
-
-{
-  "status": "recorded",
-  "decision_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
-  "outcome_hash": "0xdef456789abcdef456789abcdef456789abcdef456789abcdef456789abcdef",
-  "refund_credit": {
-    "status": "issued",
-    "credit_id": "credit_abc123def456",
-    "credit_amount_usdc": 0.005,
-    "credit_token": "eyJ...SIGNED_JWT_TOKEN_USE_THIS_IN_X_CREDIT_TOKEN_HEADER...xyz"
-  }
-}
-```
-
-**Credit Token Details:**
-
-- `credit_token`: A signed token you can use on future paid calls
-- `credit_amount_usdc`: The discount amount (typically 50% of original payment, with decay over time)
-- `credit_id`: Unique identifier for this credit
-
-**Using the Credit Token:**
-
-Save the `credit_token` and include it in future optimize requests:
-
-```bash
-# Use the credit_token value from your /decision/outcome response
-CREDIT_TOKEN="eyJ...YOUR_CREDIT_TOKEN_FROM_OUTCOME_RESPONSE...xyz"
-
-curl -sS -i -X POST "https://api.which-llm.com/decision/optimize" \
-  -H "Content-Type: application/json" \
-  -H "X-Credit-Token: $CREDIT_TOKEN" \
-  -d '{
-    "goal": "Extract key entities from support tickets",
-    "constraints": {
-      "min_quality_score": 0.75,
-      "max_cost_usd": 0.02
-    }
-  }'
-```
-
-**Example Response (200 Success with Credit):**
-
-```http
-HTTP/2 200 OK
-Content-Type: application/json
-
-{
-  "decision_id": "f7g8h9i0-j1k2-l3m4-n5o6-p7q8r9s0t1u2",
-  "decision_version": "v1",
-  "deterministic": true,
-  "recommended_model": "anthropic/claude-3-haiku",
-  "expected_cost": 0.012,
-  "expected_quality": 0.78,
-  "safe_to_execute": true,
-  "human_review_required": false
-}
-```
-
-**Note:** No payment was required because the credit token covered the full cost.
-
-**Credit Behavior:**
-
-- Credits reduce the `required_amount` on the next paid call
-- If credit fully covers cost → 200 response (no payment needed)
-- If credit partially covers → 402 with reduced `required_amount`
-- Credits decay over time (50% decay after 30 days, expires after 90 days)
-- Credits are single-use (redeemed after successful payment)
-- Credits are bound to the payer address from the original decision
-
-**Important Notes:**
-
-- Credits are only issued for paid/verified decisions
-- Each decision can only issue one credit per payer
-
-## Troubleshooting
-
-### Common Error Codes
-
-#### `PAYMENT_REQUIRED` (402)
-
-**Cause:** Endpoint requires payment but no valid payment proof was provided.  
-**Resolution:**
-
-1. Check the `required_amount` and `accepts` array in the response
-2. Send exact USDC amount to the `pay_to` address on your chosen chain
-3. Wait for transaction confirmation (1-3 blocks)
-4. Retry request with payment proof headers
-
-**Example Error Response:**
-
-```json
-{
-  "error_code": "PAYMENT_REQUIRED",
-  "required_amount": "0.01",
-  "currency": "USDC",
-  "accepts": [
-    {
-      "chain": "eip155:8453",
-      "asset": "USDC",
-      "pay_to": "0x...PAY_TO_ADDRESS...123xyz",
-      "scheme": "exact"
-    }
-  ],
-  "payment_reference": "decision_optimize_abc123"
-}
-```
-
-#### `PAYMENT_INVALID` (402)
-
-**Cause:** Payment amount doesn't match required amount, or payment verification failed.  
-**Resolution:**
-
-1. Verify you sent exactly `required_amount` (not more, not less)
-2. Check transaction was confirmed on-chain
-3. Ensure you're using the correct chain (CAIP-2 format in `X-Payment-Chain`)
-4. Verify payment headers match actual transaction details
-
-#### `PAYMENT_ALREADY_USED` (402)
-
-**Cause:** This transaction hash was already used for a different request.  
-**Resolution:**
-
-- Each payment transaction can only be used once
-- Send a new payment transaction for this request
-- Use `Idempotency-Key` header to retry the same request with same payment
-
-#### `NO_FEASIBLE_OPTIONS` (400)
-
-**Cause:** No models satisfy both cost and quality constraints.  
-**Resolution:**
-
-1. Check `constraint_analysis` in error response for which constraint was violated more
-2. Relax constraints: increase `max_cost_usd` or decrease `min_quality_score`
-3. Review `discarded_models` to see which models were close to meeting requirements
-
-**Example Error Response:**
-
-```json
-{
-  "error_code": "NO_FEASIBLE_OPTIONS",
-  "constraint_analysis": {
-    "cost_violations": 12,
-    "quality_violations": 3,
-    "total_models_evaluated": 15
-  },
-  "discarded_models": [
-    {
-      "option_id": "openai/gpt-4",
-      "discard_reason": "MAX_COST"
-    }
-  ],
-  "suggestions": {
-    "relax_cost": true,
-    "relax_quality": false
-  }
-}
-```
-
-#### `DECISION_NOT_FOUND` (400)
-
-**Cause:** The `decision_id` doesn't exist in the system.  
-**Resolution:**
-
-- Verify the `decision_id` from your optimize response
-- Only paid/verified decisions can have outcomes reported
-- Check for typos in the decision ID
-
-### Payment Verification Failures
-
-#### Transaction not found on-chain
-
-**Symptoms:** `PAYMENT_INVALID` error even though transaction was sent.  
-**Resolution:**
-
-1. Wait longer - blockchain confirmation can take 30-60 seconds
-2. Verify transaction was sent to correct network (Base = 8453, not Ethereum = 1)
-3. Check transaction status on block explorer (Basescan, Etherscan)
-4. Ensure RPC nodes are synced (occasional issue during high network congestion)
-
-#### Wrong payment amount
-
-**Symptoms:** `PAYMENT_INVALID` with diagnostic showing amount mismatch.  
-**Resolution:**
-
-- Must send **exactly** the `required_amount` in USDC (6 decimals)
-- Do not round or approximate - use exact value from 402 response
-- Check USDC balance and allowances in your wallet
-- Ensure wallet has sufficient gas token (ETH/AVAX) for transaction fees
-
-#### Wrong recipient address
-
-**Symptoms:** Transaction confirmed but API returns `PAYMENT_INVALID`.  
-**Resolution:**
-
-1. **CRITICAL:** Verify you sent to the correct address from multiple sources
-2. Check `pay_to` field in 402 response `accepts` array
-3. Verify address matches what's shown at `/docs/payment-addresses`
-4. If addresses don't match, **DO NOT PROCEED** - contact support
-
-### Credit Token Issues
-
-#### `CREDIT_INVALID` (402)
-
-**Cause:** Credit token is malformed, expired, or verification failed.  
-**Resolution:**
-
-1. Check token wasn't truncated when copying
-2. Verify token matches exactly what was returned from `/decision/outcome`
-3. Credits expire after 90 days - check `issued_at_epoch` in original response
-4. Ensure you're using the token on the same payer address
-
-#### `CREDIT_ALREADY_USED` (402)
-
-**Cause:** This credit was already redeemed in a previous request.  
-**Resolution:**
-
-- Credits are single-use only
-- Check `redeemed_at_epoch` in error response
-- Request new credit by reporting another outcome
-
-#### Credit doesn't reduce payment amount
-
-**Symptoms:** 402 response shows same `required_amount` even with valid credit.  
-**Resolution:**
-
-1. Verify credit token is included in `X-Credit-Token` header
-2. Check credit `amount_usdc` - may be smaller than expected due to time decay
-3. Credits only apply to the next paid call after issuance
-4. Ensure payer address matches the address that received the credit
-
-### Rate Limiting
-
-#### `RATE_LIMIT_EXCEEDED` (429)
-
-**Symptoms:** `429 Too Many Requests` response with `X-RateLimit-*` headers.  
-**Resolution:**
-
-1. Check `X-RateLimit-Reset` header for when limit resets (epoch timestamp)
-2. Implement exponential backoff: wait 1s, 2s, 4s, 8s between retries
-3. Use `Idempotency-Key` to safely retry the same request
-4. Consider using paid endpoints which have higher rate limits
-
-**Rate Limits (per minute):**
-
-- `/decision/optimize` unpaid: 5 requests
-- `/decision/optimize` paid: 20 requests
-- `/decision/outcome`: 60 requests
-- Public GET endpoints: 600 requests
-
-**Example Error Response:**
-
-```json
-{
-  "error_code": "RATE_LIMIT_EXCEEDED",
-  "retry_after_seconds": 45
-}
-```
-
-**Response Headers:**
-
-```txt
-X-RateLimit-Limit: 5
-X-RateLimit-Remaining: 0
-X-RateLimit-Reset: 1770809760
-```
+**安全提示**: 这些头部仅包含公共信息（交易哈希和钱包地址）。API 通过检查链上的交易来验证支付。
+
+**示例响应（200 成功）**:
+
+**使用信用令牌（享受折扣）**:
+
+如果您有来自之前结果的信用令牌，可以包含它以减少所需支付：
+
+**可能的响应**:
+
+- 如果信用完全覆盖成本 → 返回 200 响应（无需支付）
+- 如果信用部分覆盖 → 返回 402 响应，并减少 `required_amount`
+
+**示例响应（部分信用）**:
+
+#### 4. 报告结果（获得折扣）**
+
+在执行推荐的模型后，报告实际发生的情况以获得信用令牌（用于未来的请求）。
+
+**请求**:
+
+**请求字段**:
+
+- `decision_id`（必填）：来自优化响应的 `decision_id`
+- `option_used`（必填）：实际使用的模型 ID（应与 `recommended_model` 或备选模型匹配）
+- `actual_cost`（必填）：实际成本（美元）
+- `actual_latency`（必填）：实际延迟（毫秒）
+- `quality_score`（必填）：质量分数（0-1）
+- `success`（必填）：表示任务是否成功的布尔值
+
+**示例响应（200 成功）**:
+
+**信用令牌详细信息**:
+
+- `credit_token`：您可以在未来的付费请求中使用的签名令牌
+- `credit_amount_usdc`：折扣金额（通常为原始金额的 50%，随时间衰减）
+- `credit_id`：此信用的唯一标识符
+
+**使用信用令牌**:
+
+保存 `credit_token` 并在未来的优化请求中包含它：
+
+**示例响应（200 成功并使用信用）**:
+
+**注意**: 由于信用令牌覆盖了全部成本，因此无需支付。
+
+**信用行为**:
+
+- 信用令牌会在下一次付费请求中减少 `required_amount`
+- 如果信用完全覆盖成本 → 返回 200 响应（无需支付）
+- 如果信用部分覆盖 → 返回 402 响应，并减少 `required_amount`
+- 信用随时间衰减（30 天后衰减 50%，90 天后过期）
+- 信用是一次性使用的（在成功支付后使用）
+- 信用仅限于原始决策的支付者地址
+
+**重要提示**:
+
+- 信用仅针对已支付/验证的决策发放
+- 每个决策只能发放一次信用
+
+## 故障排除
+
+### 常见错误代码
+
+#### `PAYMENT_REQUIRED`（402）
+
+**原因**: 端点要求支付，但未提供有效的支付证明。
+**解决方法**:
+
+1. 检查响应中的 `required_amount` 和 `accepts` 数组
+2. 向所选链上的 `pay_to` 地址发送确切的 USDC 金额
+3. 等待交易确认（1-3 个区块）
+4. 使用支付证明头部重试请求
+
+**示例错误响应**:
+
+#### `PAYMENT_INVALID`（402）
+
+**原因**: 支付金额与所需金额不匹配，或支付验证失败。
+**解决方法**:
+
+1. 确保您发送的金额 exactly 为 `required_amount`（不多也不少）
+2. 确认交易已在链上确认
+3. 确保您使用正确的链路（`X-Payment-Chain` 中使用 CAIP-2 格式）
+4. 确认支付头部与实际交易详情匹配
+
+#### `PAYMENT_ALREADY_used`（402）
+
+**原因**: 该交易哈希已用于其他请求。
+**解决方法**:
+
+- 每笔支付交易只能使用一次
+- 为此请求发送新的支付交易
+- 使用 `Idempotency-Key` 头部重试相同的请求
+
+#### `NO_FEASIBLE'options`（400）
+
+**原因**: 没有模型同时满足成本和质量约束。
+**解决方法**:
+
+1. 检查错误响应中的 `constraint_analysis`，了解哪个约束被违反得最严重
+2. 放宽约束：增加 `max_cost_usd` 或减少 `min_quality_score`
+3. 查看 `discarded_models`，了解哪些模型接近满足要求
+
+**示例错误响应**:
+
+#### `DECISION_NOT_FOUND`（400）
+
+**原因**: `decision_id` 在系统中不存在。
+**解决方法**:
+
+- 确认来自优化响应的 `decision_id`
+- 只有已支付/验证的决策才能报告结果
+- 检查决策 ID 中是否有拼写错误
+
+### 支付验证失败
+
+#### 交易未在链上找到
+
+**症状**: 即使发送了交易，也会出现 `PAYMENT_INVALID` 错误。
+**解决方法**:
+
+1. 等待更长时间 - 区块确认可能需要 30-60 秒
+2. 确认交易是否发送到了正确的链上（Base = 8453，非 Ethereum = 1）
+3. 在区块浏览器（Basescan, Etherscan）上检查交易状态
+4. 确保 RPC 节点已同步（在高网络拥堵期间偶尔会出现问题）
+
+#### 支付金额错误
+
+**症状**: `PAYMENT_INVALID` 错误，但显示的金额不匹配。
+**解决方法**:
+
+- 必须发送 **确切的** `required_amount`（6 位小数）
+- 不要四舍五入或近似 - 使用 402 响应中的确切金额
+- 检查钱包中的 USDC 余额和允许的金额
+- 确保钱包中有足够的气体令牌（ETH/AVAX）用于交易费用
+
+#### 收款人地址错误
+
+**症状**: 交易已确认，但 API 返回 `PAYMENT_INVALID`。
+**解决方法**:
+
+1. **紧急**: 确认您从多个来源发送到了正确的地址
+2. 检查 402 响应中的 `pay_to` 字段
+3. 确认地址是否与 `/docs/payment-addresses` 中显示的地址一致
+4. 如果地址不一致，请**不要继续** - 联系支持
+
+### 信用令牌问题
+
+#### `CREDIT_INVALID`（402）
+
+**原因**: 信用令牌格式错误、过期或验证失败。
+**解决方法**:
+
+1. 确保在复制时信用令牌没有截断
+2. 确认令牌与 `/decision/outcome` 中返回的完全匹配
+3. 信用在 90 天后过期 - 检查原始响应中的 `issued_at_epoch`
+4. 确保您在相同的支付者地址上使用信用令牌
+
+#### `CREDIT_ALREADY_used`（402）
+
+**原因**: 该信用已在之前的请求中使用过。
+**解决方法**:
+
+- 信用仅限一次性使用
+- 检查错误响应中的 `redeemed_at_epoch`
+- 通过报告另一个结果来请求新的信用
+
+#### 信用未减少支付金额
+
+**症状**: 即使有有效的信用，402 响应仍显示相同的 `required_amount`。
+**解决方法**:
+
+1. 确认 `X-Credit-Token` 头部中包含了信用令牌
+2. 检查 `credit_amount_usdc` - 可能由于时间衰减而减少
+3. 信用仅适用于下一次付费请求
+4. 确保支付者地址与接收信用的地址一致
+
+### 速率限制
+
+#### `RATE_LIMIT_EXCEEDED`（429）
+
+**症状**: 返回 `429 Too Many Requests` 响应，并带有 `X-RateLimit-*` 头部。
+**解决方法**:
+
+1. 查看 `X-RateLimit-Reset` 头部，了解限制重置的时间（epoch 时间戳）
+2. 实施指数退避策略：在重试之间等待 1 秒、2 秒、4 秒、8 秒
+3. 使用 `Idempotency-Key` 安全地重试相同的请求
+4. 考虑使用具有更高速率限制的付费端点
+
+**每分钟的速率限制**:
+
+- `/decision/optimize` 未付费：5 次请求
+- `/decision/optimize` 付费：20 次请求
+- `/decision/outcome`：60 次请求
+- 公共 GET 端点：600 次请求
+
+**示例错误响应**:
+
+**响应头部**:
+
+**响应头部**:
+
+###

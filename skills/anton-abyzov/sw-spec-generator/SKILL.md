@@ -1,33 +1,33 @@
 ---
 name: spec-generator
-description: Generates comprehensive specifications (spec.md, plan.md, tasks.md with embedded tests) for SpecWeave increments. Use when creating new increments, planning features, or converting ideas into actionable specs. Produces structured documentation with proven templates and context-aware organization.
+description: 生成针对 SpecWeave 增量的全面规范文件（包括 spec.md、plan.md 和 tasks.md，其中包含嵌入式测试）。这些文件可用于创建新的增量版本、规划功能开发，或将想法转化为可执行的规范。该工具采用经过验证的模板和基于上下文的组织结构，生成结构化、易于理解的文档。
 ---
 
-# Spec Generator - Flexible Increment Documentation
+# Spec Generator - 灵活的增量文档生成工具
 
-**Purpose**: Automatically generate comprehensive specification documentation (spec.md, plan.md, tasks.md with embedded tests) for SpecWeave increments using proven templates and flexible, context-aware structure.
+**用途**：使用经过验证的模板和灵活的、基于上下文的结构，自动为 SpecWeave 的每个增量生成全面的规范文档（包括 spec.md、plan.md 和 tasks.md，其中包含嵌入式测试）。
 
-**When to Use**:
-- Creating new increments (`/sw:inc`)
-- Planning features or products
-- Generating structured documentation
-- Converting ideas into actionable specs
+**使用场景**：
+- 创建新的增量（`/sw:inc` 命令）
+- 规划功能或产品
+- 生成结构化的文档
+- 将想法转化为可执行的规范
 
-**Based On**: Flexible Spec Generator (V2) - context-aware, non-rigid templates
+**基于**：Flexible Spec Generator（V2）——具备上下文感知能力的非刚性模板
 
 ---
 
-## How Spec Generator Works
+## Spec Generator 的工作原理
 
-### 1. Flexible Spec Generation (spec.md)
+### 1. 灵活的规范生成（spec.md）
 
-**Adapts to Context**:
-- **New Product**: Full PRD with market analysis, user personas, competitive landscape
-- **Feature Addition**: Focused user stories, acceptance criteria, integration points
-- **Bug Fix**: Problem statement, root cause, solution, impact analysis
-- **Refactoring**: Current state, proposed changes, benefits, migration plan
+**适应不同场景**：
+- **新产品**：包含市场分析、用户角色和竞争格局的完整产品需求文档（PRD）
+- **功能添加**：聚焦于用户故事、验收标准和集成点
+- **错误修复**：问题描述、根本原因、解决方案和影响分析
+- **重构**：当前状态、建议的变更、好处和迁移计划
 
-**YAML Frontmatter**:
+**YAML 前言部分**：
 ```yaml
 ---
 increment: 0001-feature-name
@@ -41,11 +41,10 @@ created: 2025-12-04
 ---
 ```
 
-**⛔ CRITICAL RULE: Every User Story MUST have `**Project**:` field!**
+**⛔ 重要规则：每个用户故事都必须包含 `**Project**:` 字段！**
+- 这在单项目模式和多项目模式中都是强制性的。
 
-This is MANDATORY in BOTH single-project AND multi-project modes.
-
-**Core Sections** (Always Present):
+**核心部分**（始终存在）：
 ```markdown
 # Product Specification: [Increment Name]
 
@@ -109,19 +108,19 @@ specweave context projects
 ```json
 {
   "level": 1,
-  "projects": [{"id": "frontend-app", "name": "Frontend App"}],
-  "detectionReason": "multiProject configuration"
+  "projects": [{"id": "frontend-app", "name": "前端应用"}],
+  "detectionReason": "多项目配置"
 }
 ```
 For 2-level:
 ```json
 {
   "level": 2,
-  "projects": [{"id": "acme-corp", "name": "ACME Corp"}],
+  "projects": [{"id": "acme-corp", "name": "ACME 公司"}],
   "boardsByProject": {
     "acme-corp": [
-      {"id": "digital-ops", "name": "Digital Operations"},
-      {"id": "mobile-team", "name": "Mobile Team"}
+      {"id": "digital-ops", "name": "数字运营团队"},
+      {"id": "mobile-team", "name": "移动团队"}
     ]
   }
 }
@@ -131,20 +130,20 @@ For 2-level:
 
 **RESOLUTION PRIORITY (MUST FOLLOW THIS ORDER!):**
 ```
-1. ✅ EXACT MATCH: config.project.name or multiProject.projects key → USE IT
-2. ✅ LIVING DOCS: Existing folder in specs/ → USE THAT PROJECT ID
-3. ✅ RECENT PATTERNS: Same feature type in past increments → USE SAME PROJECT
-4. ⚠️  UNCERTAIN: Multiple valid options OR no clear match → ASK USER!
-5. 🔄 FALLBACK: If all else fails → USE "default" (NEVER "specweave"!)
+1. ✅ 完全匹配：`config.project.name` 或 `multiProject.projects` 关键字 → 使用该项目
+2. ✅ 现有文档：如果 `specs/` 目录中存在相应的项目 → 使用该项目 ID
+3. ✅ 过去的模式：如果之前的增量中有相同的功能类型 → 使用相同的项目
+4. ⚠️ 不确定：如果有多个有效选项或没有明确匹配 → 询问用户！
+5. 🔄 备用方案：如果其他方法都失败 → 使用“default”项目（切勿使用“specweave”项目！）
 ```
 
 **⚠️ CRITICAL: IF UNCERTAIN - YOU MUST ASK THE USER!**
 ```
-I found multiple potential projects for this feature:
-- frontend-app (keywords: UI, form, React)
-- backend-api (keywords: API, endpoint)
+我找到了与该功能相关的多个潜在项目：
+- frontend-app（关键词：UI、表单、React）
+- backend-api（关键词：API、端点）
 
-Which project should I assign to this feature?
+应该将此功能分配给哪个项目？
 ```
 
 **❌ NEVER DO THIS:**
@@ -154,13 +153,13 @@ Which project should I assign to this feature?
 
 **✅ CORRECT FALLBACK (when no projects configured):**
 ```
-**Project**: default
+**项目**: default
 ```
 
 **4. STORE the actual IDs for use in spec.md:**
 ```
-RESOLVED_PROJECT = "frontend-app"  // from projects[].id
-RESOLVED_BOARD = "digital-ops"     // from boardsByProject (2-level only)
+RESOLVED_Project = "frontend-app"  // 来自 projects[]
+RESOLVED_BOARD = "digital-ops"     // 来自 boardsByProject（仅二级结构）
 ```
 
 **5. Now generate spec.md using RESOLVED values (NEVER placeholders!)**
@@ -176,65 +175,51 @@ Now map each user story to the correct project:
 
 **Resolution Flow:**
 ```
-1. Get valid projects from context API: ["frontend-app", "backend-api", "shared"]
-2. Analyze feature description for keywords
-3. Map keywords to ACTUAL project IDs (from step 1, NOT generic terms!)
-4. Assign each US to its project
+1. 从上下文 API 中获取有效的项目：["frontend-app", "backend-api", "shared"]
+2. 分析功能描述中的关键词
+3. 将关键词映射到实际的项目 ID（来自步骤 1，避免使用通用术语！）
+4. 将每个用户故事分配给相应的项目
 ```
 
 **Resolution Example:**
 ```
-Context API returned: projects = ["frontend-app", "backend-api", "shared"]
+上下文 API 返回的结果：projects = ["frontend-app", "backend-api", "shared"]
 
-Feature: "Add OAuth login to React frontend"
-Detected keywords: "React", "frontend", "login"
+功能：“为 React 前端添加 OAuth 登录”
+检测到的关键词：“React”、“frontend”、“login”
 
-Mapping:
-- "frontend" keyword → matches "frontend-app" (from context API)
-- "login" spans frontend + backend
+映射结果：
+- “frontend”关键词 → 对应 “frontend-app”
+- “login”关键词同时关联到 “frontend-app” 和 “backend-api”
 
-Result:
-  US-001 (Login UI) → **Project**: frontend-app
-  US-002 (Auth API) → **Project**: backend-api
-```
+**注意**：
+- 在生成 spec.md 之前，必须先运行 `specweave context projects` 命令。
+- 仅使用 API 响应中的项目 ID。
+- 每个用户故事都必须有明确的 `**Project**` 字段。
+- 对于二级结构的项目，每个用户故事还必须有明确的 `**Board**` 字段。
 
-**VALIDATION RULES:**
+**禁止的行为**：
+- 未先运行上下文 API 就直接生成 spec.md。
+- 禁止使用 `{{PROJECT_ID}}` 或 `{{BOARD_ID}` 占位符。
+- 禁止使用通用的项目名称（如 “frontend” 而不是 “frontend-app”）。
+- 禁止使用 API 响应中不存在的项目名称。
 
-```
-✅ REQUIRED: Run "specweave context projects" BEFORE generating spec.md
-✅ REQUIRED: Use ONLY project IDs from the API response
-✅ REQUIRED: Each US has explicit **Project**: field with resolved value
-✅ REQUIRED: For 2-level, each US has explicit **Board**: field with resolved value
+### 2. 灵活的文档部分（取决于具体场景）：
+- **竞争分析**（针对新产品）
+- **技术要求**（针对复杂功能）
+- **API 设计**（针对后端 API）
+- **UI/UX 要求**（针对前端）
+- **安全考虑**（针对认证/数据相关功能）
+- **迁移计划**（针对涉及重大变更的功能）
 
-❌ FORBIDDEN: Generating spec.md without running context API first
-❌ FORBIDDEN: Using {{PROJECT_ID}} or {{BOARD_ID}} placeholders
-❌ FORBIDDEN: Using generic keywords as project names ("frontend" vs "frontend-app")
-❌ FORBIDDEN: Inventing project names not in the API response
-```
+### 3. 技术计划生成（plan.md）
 
-## Success Metrics
-[How we'll measure success]
+**根据复杂度调整内容**：
+- **简单功能**：组件列表、数据流、实现步骤
+- **复杂系统**：完整架构图、序列图、实体关系图（ER 图）
+- **基础设施**：部署架构、扩展策略、监控方案
 
-## Non-Goals (Out of Scope)
-[What we're NOT doing in this increment]
-```
-
-**Flexible Sections** (Context-Dependent):
-- **Competitive Analysis** (if new product)
-- **Technical Requirements** (if complex feature)
-- **API Design** (if backend API)
-- **UI/UX Requirements** (if frontend)
-- **Security Considerations** (if auth/data)
-- **Migration Plan** (if breaking change)
-
-### 2. Technical Plan Generation (plan.md)
-
-**Adapts to Complexity**:
-- **Simple Feature**: Component list, data flow, implementation steps
-- **Complex System**: Full architecture, C4 diagrams, sequence diagrams, ER diagrams
-- **Infrastructure**: Deployment architecture, scaling strategy, monitoring
-
-**Core Sections**:
+**核心部分**：
 ```markdown
 # Technical Plan: [Increment Name]
 
@@ -261,9 +246,9 @@ Result:
 ## Risks & Mitigations
 ```
 
-### 3. Task Breakdown Generation (tasks.md)
+### 4. 任务分解生成（tasks.md）
 
-**Smart Task Creation**:
+**智能任务创建**：
 ```markdown
 # Implementation Tasks: [Increment Name]
 
@@ -288,8 +273,8 @@ Result:
 - `path/to/file.ts`
 
 **Implementation**:
-```[language]
-[Code example or approach]
+```[语言]
+[代码示例或方法]
 ```
 
 **Acceptance Criteria**:
@@ -304,9 +289,9 @@ Result:
 [Dependency graph if complex]
 ```
 
-### 4. Test Strategy Generation (tests.md)
+### 5. 测试策略生成（tests.md）
 
-**Comprehensive Test Coverage**:
+**全面的测试覆盖**：
 ```markdown
 # Test Strategy: [Increment Name]
 
@@ -320,12 +305,12 @@ Result:
 ## Unit Tests (X test cases)
 
 ### TC-001: [Test Name]
-```[language]
-describe('[Component]', () => {
-  it('[should do something]', async () => {
-    // Arrange
-    // Act
-    // Assert
+```[语言]
+describe('[组件]', () => {
+  it('[应该执行某操作]', async () => {
+    // 准备
+    // 执行
+    // 断言
   });
 });
 ```
@@ -341,17 +326,17 @@ describe('[Component]', () => {
 
 ---
 
-## Spec Generator Templates
+## 规范生成模板
 
-### Template Selection Logic
+### 模板选择逻辑
 
-**Input Analysis**:
-1. Analyze increment description (keywords, complexity)
-2. Detect domain (frontend, backend, infra, ML, etc.)
-3. Determine scope (feature, product, bug fix, refactor)
-4. Assess technical complexity (simple, moderate, complex)
+**输入分析**：
+1. 分析增量的描述（关键词、复杂度）
+2. 确定领域（前端、后端、基础设施、机器学习等）
+3. 确定范围（功能、产品、错误修复、重构）
+4. 评估技术复杂度（简单、中等、复杂）
 
-**Template Selection**:
+**模板选择**：
 ```
 IF new_product THEN
   spec_template = "Full PRD"
@@ -368,21 +353,19 @@ ELSE IF refactoring THEN
 END IF
 ```
 
-### Context-Aware Sections
-
-**Auto-Include Based On**:
-- **"authentication"** → Security Considerations, JWT/OAuth design
-- **"API"** → API Design, OpenAPI spec, rate limiting
-- **"database"** → ER diagrams, migration scripts, indexes
-- **"frontend"** → Component hierarchy, state management, UI/UX
-- **"deployment"** → CI/CD, infrastructure, monitoring
-- **"ML"** → Model architecture, training pipeline, evaluation metrics
+### 基于上下文的自动包含内容**：
+- **“authentication”** → 安全考虑、JWT/OAuth 设计
+- **“API”** → API 设计、OpenAPI 规范、速率限制
+- **“database”** → 实体关系图、迁移脚本、索引
+- **“frontend”** → 组件层次结构、状态管理、UI/UX
+- **“deployment”** → 持续集成/持续部署（CI/CD）、基础设施、监控
+- **“ML”** → 模型架构、训练流程、评估指标
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Simple Feature
+### 示例 1：简单功能
 ```
 User: /sw:inc "Add dark mode toggle to settings"
 
@@ -398,7 +381,7 @@ Generating specifications...
 ✓ tests.md: Unit tests for component, E2E for toggle
 ```
 
-### Example 2: Complex System
+### 示例 2：复杂系统
 ```
 User: /sw:inc "Multi-tenant SaaS platform with billing"
 
@@ -414,7 +397,7 @@ Generating specifications...
 ✓ tests.md: 100+ test cases (unit, integration, E2E, load testing)
 ```
 
-### Example 3: Bug Fix
+### 示例 3：错误修复
 ```
 User: /sw:inc "Fix race condition in user session handling"
 
@@ -432,53 +415,49 @@ Generating specifications...
 
 ---
 
-## Integration with /sw:inc
+## 与 `/sw:inc` 的集成
 
-The Spec Generator is automatically invoked by `/sw:inc`:
-
-1. **User Intent Analysis**:
-   - Analyze increment description
-   - Detect keywords, domain, complexity
-
-2. **Template Selection**:
-   - Choose appropriate templates
-   - Auto-include relevant sections
-
-3. **Specification Generation**:
-   - Generate spec.md with PM context
-   - Generate plan.md with Architect context
-   - Generate tasks.md with breakdown
-   - Generate tests.md with coverage strategy
-
-4. **User Review**:
-   - Show generated structure
-   - Allow refinement
-   - Confirm before creating files
+Spec Generator 会通过 `/sw:inc` 命令自动触发：
+1. **用户意图分析**：
+   - 分析增量描述
+   - 检测关键词、领域和复杂度
+2. **模板选择**：
+   - 选择合适的模板
+   - 自动包含相关部分
+3. **规范生成**：
+   - 生成包含项目管理的 spec.md
+   - 生成包含架构设计的 plan.md
+   - 生成包含任务分解的 tasks.md
+   - 生成包含测试策略的 tests.md
+4. **用户审核**：
+   - 显示生成的文档结构
+   - 允许用户进行修改
+   - 在创建文件前确认内容
 
 ---
 
-## Advantages Over Rigid Templates
+## 与刚性模板的优势
 
-**Flexible (V2) Approach**:
-- ✅ Adapts to increment type (product, feature, bug fix, refactor)
-- ✅ Includes only relevant sections
-- ✅ Scales complexity up/down
-- ✅ Domain-aware (frontend, backend, ML, infra)
-- ✅ Faster for simple increments
-- ✅ Comprehensive for complex products
+**灵活的（V2）方法**：
+- ✅ 适应不同的增量类型（产品、功能、错误修复、重构）
+- ✅ 仅包含相关内容
+- ✅ 能够根据复杂度灵活调整
+- ✅ 具有领域针对性（前端、后端、机器学习、基础设施）
+- ✅ 对简单增量处理更快
+- ✅ 对复杂产品生成全面的文档
 
-**Rigid (V1) Approach**:
-- ❌ Same template for everything
-- ❌ Many irrelevant sections
-- ❌ Wastes time on simple features
-- ❌ Insufficient for complex products
-- ❌ One-size-fits-none
+**刚性的（V1）方法**：
+- ✅ 所有增量都使用相同的模板
+- ✅ 包含许多无关的内容
+- ✅ 在简单功能上浪费时间
+- ✅ 对复杂产品支持不足
+- ✅ 无法满足多样化需求
 
 ---
 
-## Configuration
+## 配置
 
-Users can customize spec generation in `.specweave/config.yaml`:
+用户可以在 `.specweave/config.yaml` 文件中自定义规范生成设置：
 
 ```yaml
 spec_generator:
@@ -505,29 +484,29 @@ spec_generator:
 
 ---
 
-## 🔀 Multi-Project User Story Generation
+## 🔀 多项目用户故事生成
 
-**CRITICAL**: When umbrella/multi-project mode is detected, user stories MUST be generated per-project!
+**重要提示**：当检测到多项目模式时，每个用户故事都必须针对具体的项目生成！
 
-### Detection (MANDATORY FIRST STEP)
+### 检测步骤（必须执行）：
 
-**Automated Detection**: Use `detectMultiProjectMode(projectRoot)` from `src/utils/multi-project-detector.ts`. This utility checks ALL config formats automatically.
+**自动检测**：使用 `src/utils/multi-project-detector.ts` 中的 `detectMultiProjectMode(projectRoot)` 函数。该工具会自动检查所有配置文件。
 
-**Manual check (for agents)**: Read `.specweave/config.json` and check:
-- `umbrella.enabled` + `childRepos[]`
-- `multiProject.enabled` + `projects{}`
+**手动检查（适用于管理员）**：阅读 `.specweave/config.json` 并检查以下内容：
+- `umbrella.enabled` 和 `childRepos[]`
+- `multiProject.enabled` 和 `projects{}`
 - `sync.profiles[].config.boardMapping`
-- Multiple folders in `.specweave/docs/internal/specs/`
+- `.specweave/docs/internal/specs/` 目录下是否存在多个文件夹
 
-**If ANY of these conditions are TRUE → Multi-project mode ACTIVE:**
-- `umbrella.enabled: true` in config.json
-- `umbrella.childRepos` has entries
-- Multiple project folders exist in `specs/` (e.g., `sw-app-fe/`, `sw-app-be/`, `sw-app-shared/`)
-- User prompt mentions: "3 repos", "frontend repo", "backend API", "shared library"
+**如果满足以下任意条件，则表示处于多项目模式**：
+- `config.json` 中的 `umbrella.enabled` 为 `true`
+- `umbrella.childRepos` 中有项目条目
+- `specs/` 目录下存在多个项目文件夹（例如 `sw-app-fe/`, `sw-app-be/`, `sw-app-shared/`
+- 用户在输入中提到了多个项目（如 “3 个仓库”、“前端仓库”、“后端 API”、“共享库”）
 
-### Per-User-Story Project Targeting (PREFERRED)
+### 每个用户故事指定目标项目（推荐）
 
-Each user story specifies its target project inline:
+每个用户故事都应明确指定其目标项目：
 
 ```markdown
 ## User Stories
@@ -555,15 +534,15 @@ Each user story specifies its target project inline:
 - [ ] **AC-US2-01**: POST /predict-ctr accepts thumbnail image
 ```
 
-**Benefits of per-US targeting:**
-- Each US syncs to correct project/repo
-- Single increment can span multiple projects
-- Living docs auto-grouped by project
-- External tools (GitHub/JIRA/ADO) receive issues in correct project
+**指定目标项目的优点**：
+- 每个用户故事都会关联到正确的项目/仓库
+- 单个增量可以涉及多个项目
+- 文档会自动按项目分组
+- 外部工具（如 GitHub/JIRA/ADO）会将问题记录在正确的项目中
 
-### Multi-Project User Story Format (with **Project**: per US)
+### 多项目用户故事格式（每个用户故事都包含 **Project** 字段）
 
-**✅ CORRECT Format - Every US has `**Project**:`:**
+**✅ 正确的格式要求**：
 ```markdown
 ## User Stories
 
@@ -588,19 +567,19 @@ Each user story specifies its target project inline:
 - [ ] **AC-US2-02**: ML model returns prediction score
 ```
 
-### Project Classification Rules
+### 项目分类规则
 
-When analyzing user descriptions, classify each user story by keywords:
+在分析用户故事时，根据关键词对项目进行分类：
 
-| Keywords | Project | Prefix |
+| 关键词 | 项目 | 前缀 |
 |----------|---------|--------|
-| UI, component, page, form, view, drag-drop, theme, builder, menu display | Frontend | FE |
-| API, endpoint, CRUD, webhook, analytics, database, service, ML model | Backend | BE |
-| types, schemas, validators, utilities, localization, common | Shared | SHARED |
-| iOS, Android, mobile app, push notification | Mobile | MOBILE |
-| Terraform, K8s, Docker, CI/CD, deployment | Infrastructure | INFRA |
+| UI、组件、页面、表单、视图、拖放、主题、构建器、菜单显示 | 前端 | FE |
+| API、端点、CRUD、Webhook、分析、数据库、服务、机器学习模型 | 后端 | BE |
+| 类型、模式、验证器、工具、本地化、通用功能 | 共享 | SHARED |
+| iOS、Android、移动应用、推送通知 | 移动端 | MOBILE |
+| Terraform、K8s、Docker、持续集成/持续部署 | 基础设施 | INFRA |
 
-### AC-ID Format by Project
+### 按项目分类的 AC-ID 格式
 
 ```
 AC-{PROJECT}-US{story}-{number}
@@ -612,7 +591,7 @@ Examples:
 - AC-MOBILE-US1-01 (Mobile, User Story 1, AC #1)
 ```
 
-### tasks.md Must Reference Project-Scoped User Stories
+### tasks.md 必须引用特定项目的项目相关用户故事
 
 ```markdown
 ### T-001: Create Thumbnail Upload Component
@@ -626,7 +605,7 @@ Examples:
 **Status**: [ ] Not Started
 ```
 
-### Workflow Summary
+### 工作流程总结
 
 ```
 1. DETECT multi-project mode (check config.json, folder structure)
@@ -642,32 +621,32 @@ Examples:
 6. Each project folder gets its own filtered spec
 ```
 
-### Why This Matters
+### 这个功能的重要性
 
-Without project-scoped stories:
-- ❌ All issues created in ONE repo (wrong!)
-- ❌ No clarity which team owns what
-- ❌ Tasks reference wrong user stories
-- ❌ GitHub sync broken across repos
+**不使用项目分类的用户故事会导致**：
+- 所有问题都记录在同一个仓库中（错误！）
+- 无法明确哪些任务属于哪个团队
+- 任务引用错误的项目
+- GitHub 上的问题记录在错误的仓库中
 
-With project-scoped stories:
-- ✅ Each repo gets only its user stories
-- ✅ Clear ownership per team/repo
-- ✅ GitHub issues in correct repo
-- ✅ Clean separation of concerns
-
----
-
-## Related Skills
-
-- **Planning workflow**: Guides increment planning (uses Spec Generator internally)
-- **Context loading**: Loads relevant context for specification generation
-- **Quality validation**: Validates generated specifications for completeness
-- **multi-project-spec-mapper**: Splits specs into project-specific files
-- **umbrella-repo-detector**: Detects multi-repo architecture
+**使用项目分类的用户故事后**：
+- 每个仓库只包含属于它的用户故事
+- 明确每个团队/仓库的任务归属
+- GitHub 上的问题记录在正确的仓库中
+- 问题得到清晰的分层管理
 
 ---
 
+## 相关技能
+
+- **计划工作流程**：指导增量规划（内部使用 Spec Generator）
+- **上下文加载**：为规范生成加载相关上下文
+- **质量验证**：验证生成的规范是否完整
+- **多项目规范分割器**：将规范文件按项目分类
+- **多仓库架构检测器**：检测多仓库架构
+
 ---
 
-Based on: Flexible Spec Generator (V2) - context-aware, non-rigid templates
+---
+
+**基于**：Flexible Spec Generator（V2）——具备上下文感知能力的非刚性模板

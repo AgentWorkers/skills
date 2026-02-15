@@ -1,6 +1,6 @@
 ---
 name: template-engine
-description: Auto-fill document templates with data - mail merge for any format
+description: 使用数据自动填充文档模板——适用于任何格式的邮件合并功能
 author: claude-office-skills
 version: "1.0"
 tags: ['template', 'mail-merge', 'autofill', 'automation']
@@ -12,28 +12,27 @@ library:
   stars: 2.1k
 ---
 
-# Template Engine Skill
+# 模板引擎技能
 
-## Overview
+## 概述
 
-This skill enables template-based document generation - define templates with placeholders, then automatically fill them with data. Works with Word, Excel, PowerPoint, and more.
+该技能支持基于模板的文档生成——您可以定义包含占位符的模板，然后自动用数据填充这些占位符。该技能适用于 Word、Excel、PowerPoint 等文档格式。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to accomplish
-2. Provide any required input data or files
-3. I'll execute the appropriate operations
+1. 说明您想要完成的具体任务。
+2. 提供所需的输入数据或文件。
+3. 我将执行相应的操作。
 
-**Example prompts:**
-- "Mail merge for bulk letters/contracts"
-- "Generate personalized reports from data"
-- "Create certificates from templates"
-- "Auto-fill forms with user data"
+**示例提示：**
+- “批量生成信件/合同的邮件合并内容”
+- “根据数据生成个性化报告”
+- “根据模板创建证书”
+- “使用用户数据自动填充表单”
 
-## Domain Knowledge
+## 相关领域知识
 
-
-### Template Syntax (Jinja2-based)
+### 模板语法（基于 Jinja2）
 
 ```
 {{ variable }}           - Simple substitution
@@ -42,7 +41,7 @@ This skill enables template-based document generation - define templates with pl
 {{ date | format_date }} - Filter
 ```
 
-### Word Template Example
+### Word 模板示例
 
 ```python
 from docxtpl import DocxTemplate
@@ -73,7 +72,7 @@ fill_template(
 )
 ```
 
-### Excel Template
+### Excel 模板示例
 
 ```python
 from openpyxl import load_workbook
@@ -96,7 +95,7 @@ def fill_excel_template(template_path: str, data: dict, output_path: str):
     return output_path
 ```
 
-### Bulk Generation (Mail Merge)
+### 批量生成（邮件合并）
 
 ```python
 import csv
@@ -127,7 +126,7 @@ mail_merge(
 )
 ```
 
-### Advanced: Conditional Content
+### 高级功能：条件内容处理
 
 ```python
 from docxtpl import DocxTemplate
@@ -148,22 +147,21 @@ doc.render({
 doc.save("output.docx")
 ```
 
+## 最佳实践
 
-## Best Practices
+1. **使用清晰的占位符名称（例如：{{client_name}}）**
+2. **在渲染之前验证数据**
+3. **优雅地处理缺失的数据**
+4. **对模板进行版本控制**
 
-1. **Use clear placeholder naming ({{client_name}})**
-2. **Validate data before rendering**
-3. **Handle missing data gracefully**
-4. **Keep templates version-controlled**
-
-## Installation
+## 安装方法
 
 ```bash
 # Install required dependencies
 pip install python-docx openpyxl python-pptx reportlab jinja2
 ```
 
-## Resources
+## 资源推荐
 
-- [docxtpl / yumdocs Repository](https://github.com/elapouya/python-docxtpl)
+- [docxtpl / yumdocs 仓库](https://github.com/elapouya/python-docxtpl)
 - [Claude Office Skills Hub](https://github.com/claude-office-skills/skills)

@@ -1,6 +1,6 @@
 ---
 name: remindme
-description: "⏰ simple Telegram reminders for OpenClaw. cron, zero dependencies."
+description: "⏰ 为 OpenClaw 提供简单的 Telegram 提醒功能，完全不依赖任何第三方工具（如 cron）。"
 tags: [cron, reminders, productivity, schedule, telegram, discord, slack, whatsapp, signal]
 metadata:
   openclaw:
@@ -12,9 +12,9 @@ command-dispatch: prompt
 
 # Remind Me v2
 
-Set reminders on **any channel** using natural language. No setup. No dependencies.
+您可以使用自然语言在**任何渠道**上设置提醒。无需任何设置，也无需依赖任何外部服务。
 
-## Usage
+## 使用方法
 
 ```
 /remindme drink water in 10 minutes
@@ -30,61 +30,38 @@ Set reminders on **any channel** using natural language. No setup. No dependenci
 /remindme cancel <jobId>
 ```
 
-## Agent Instructions
+## 代理指令
 
-When the user triggers `/remindme`, determine the intent:
+当用户触发 `/remindme` 命令时，系统会解析用户的意图：
 
-- **list** → call `cron.list` and show active reminder jobs.
-- **cancel / delete / remove `<jobId>`** → call `cron.remove` with that jobId.
-- **everything else** → create a new reminder (steps below).
+- **列出所有提醒** → 调用 `cron.list` 函数显示当前激活的提醒任务。
+- **取消/删除 `<jobId>` 提醒** → 调用 `cron.remove` 函数并传入相应的 `jobId`。
+- **其他所有操作** → 创建一个新的提醒（具体步骤见下文）。
 
 ---
 
-### Step 1: Parse the Input (Structured Pipeline)
+### 第一步：解析输入（结构化处理流程）
 
-Extract three things: **WHAT** (the message), **WHEN** (the time), **RECURRENCE** (one-shot or recurring).
+从输入内容中提取三个关键信息：**提醒内容**、**提醒时间**以及**提醒频率**（一次性还是周期性）。
 
-Follow this decision tree **in order** — stop at the first match:
+按照以下决策流程进行处理，直到找到匹配项：
 
-#### Layer 1: Pattern Matching (works on any model)
+#### 第一层：模式匹配（适用于所有模型）
 
-Scan the input for these patterns. Match top-to-bottom, first match wins for WHEN:
+从输入内容中查找以下模式，并从上到下进行匹配。第一个匹配到的模式将决定提醒时间：
 
-**Relative durations** — look for `in <number> <unit>`:
-| Pattern | Duration |
-|---|---|
-| `in Ns`, `in N seconds`, `in N sec` | N seconds |
-| `in Nm`, `in N min`, `in N minutes` | N minutes |
-| `in Nh`, `in N hours`, `in N hr` | N hours |
-| `in Nd`, `in N days` | N * 24 hours |
-| `in Nw`, `in N weeks` | N * 7 days |
+**相对时间表达**：
+- `in Ns`、`in N seconds`、`in N min`、`in N hr`、`in N days`、`in N weeks`：表示具体的时间长度（以秒、分钟、小时或天为单位）。
+- `at <time>`：表示绝对的时间点（例如 `at 10:30`）。
+- `tomorrow`、`next <day>`、`on <day>`：表示具体的日期（例如 `tomorrow`、`next Monday`、`on Friday`）。
 
-**Absolute clock times** — look for `at <time>`:
-| Pattern | Meaning |
-|---|---|
-| `at HH:MM`, `at H:MMam/pm` | Today at that time (or tomorrow if past) |
-| `at Ham/pm`, `at HH` | Today at that hour |
+**周期性提醒**：
+- `every Nm/Nh/Nd`：表示“每隔 N 分钟/小时/天”重复。
+- `every day at <time>`、`every weekday at <time>`、`every weekend at <time>`：表示“每天/每周几的 <时间>`。
+- `every hour`：表示“每小时”重复。
 
-**Named days** — look for `tomorrow`, `next <day>`, `on <day>`:
-| Pattern | Meaning |
-|---|---|
-| `tomorrow` | Next calendar day, default 9am |
-| `tonight` | Today at 8pm (or now+1h if past 8pm) |
-| `next monday..sunday` | The coming occurrence of that weekday, default 9am |
-| `on <day>` | Same as `next <day>` |
-
-**Recurring** — look for `every <pattern>`:
-| Pattern | Cron/Interval |
-|---|---|
-| `every Nm/Nh/Nd` | `kind: "every"`, `everyMs: N * unit_ms` |
-| `every day at <time>` | `kind: "cron"`, `expr: "M H * * *"` |
-| `every <weekday> at <time>` | `kind: "cron"`, `expr: "M H * * DOW"` |
-| `every weekday at <time>` | `kind: "cron"`, `expr: "M H * * 1-5"` |
-| `every weekend at <time>` | `kind: "cron"`, `expr: "M H * * 0,6"` |
-| `every hour` | `kind: "every"`, `everyMs: 3600000` |
-
-**Unit conversion table** (for `everyMs` and duration math):
-| Unit | Milliseconds |
+**单位转换表**（用于 `everyMs` 和时间计算）：
+| 单位 | 对应的毫秒数 |
 |---|---|
 | 1 second | 1000 |
 | 1 minute | 60000 |
@@ -92,115 +69,47 @@ Scan the input for these patterns. Match top-to-bottom, first match wins for WHE
 | 1 day | 86400000 |
 | 1 week | 604800000 |
 
-#### Layer 2: Slang & Shorthand (common phrases)
+#### 第二层：俚语和简写表达
 
-If Layer 1 didn't match, check for these:
-| Phrase | Resolves to |
-|---|---|
-| `in a bit`, `in a minute`, `shortly` | 30 minutes |
-| `in a while` | 1 hour |
-| `later`, `later today` | 3 hours |
-| `end of day`, `eod` | Today 5pm |
-| `end of week`, `eow` | Friday 5pm |
-| `end of month`, `eom` | Last day of month, 5pm |
-| `morning` | 9am |
-| `afternoon` | 2pm |
-| `evening` | 6pm |
-| `tonight` | 8pm |
-| `midnight` | 12am next day |
-| `noon` | 12pm |
+如果第一层匹配失败，检查以下常见表达：
+- `in a bit`、`in a minute`、`shortly`：表示“大约 30 分钟后”。
+- `in a while`：表示“1 小时后”。
+- `later`、`later today`：表示“3 小时后”。
+- `end of day`、`eod`：表示“今天下午 5 点”。
+- `end of week`、`eow`：表示“周五下午 5 点”。
+- `end of month`、`eom`：表示“本月最后一天下午 5 点”。
+- `morning`、`afternoon`、`evening`、`tonight`：表示具体的时间点（例如 “上午 9 点”、“下午 2 点”、“晚上 6 点”）。
+- `midnight`：表示“次日午夜”。
+- `noon`：表示“中午 12 点”。
 
-#### Layer 3: Event-Relative & Holidays (LLM reasoning required)
+#### 第三层：事件相关表达（需要利用语言理解能力）
 
-If Layers 1-2 didn't match, the input likely references an event or holiday. Use your knowledge to resolve:
+如果前两层都未匹配到有效信息，可能用户指的是某个特定事件或节日。根据用户的描述进行判断：
+- **节日时间**：例如用户说“在 <节日> 之前/之后/当天”，需要确定节日的具体日期（例如圣诞节、情人节等）。
+- **浮动日期的节日**：例如感恩节（美国）通常在十一月的第四个星期四，需要根据当年实际情况计算日期。
 
-**Holiday resolution** — when the user says "before/after/on <holiday>":
-1. Identify the holiday and its **fixed date for the current year**.
-2. Apply any offset: "3 days before Christmas" → Dec 25 minus 3 = Dec 22.
-3. If the holiday has passed this year, use next year's date.
+#### 第四层：消除歧义（如有必要，请用户确认）
 
-**Common fixed-date holidays** (reference table):
-| Holiday | Date |
-|---|---|
-| New Year's Day | Jan 1 |
-| Valentine's Day | Feb 14 |
-| St. Patrick's Day | Mar 17 |
-| April Fools | Apr 1 |
-| US Independence Day | Jul 4 |
-| Halloween | Oct 31 |
-| Christmas Eve | Dec 24 |
-| Christmas | Dec 25 |
-| New Year's Eve | Dec 31 |
+如果经过前三层处理仍无法确定提醒时间，请询问用户具体时间。切勿自行猜测或设置默认时间。
 
-**Floating holidays** (vary by year — compute or look up):
-- Thanksgiving (US): 4th Thursday of November
-- Easter: varies (use your knowledge for the current year)
-- Mother's Day (US): 2nd Sunday of May
-- Father's Day (US): 3rd Sunday of June
-- Labor Day (US): 1st Monday of September
-- Memorial Day (US): Last Monday of May
+### 第二步：计算提醒时间
 
-**Cultural/religious events** (if referenced, use your knowledge):
-- Ramadan, Eid al-Fitr, Eid al-Adha, Diwali, Hanukkah, Lunar New Year, etc.
-- If you're unsure of the exact date, **ask the user to confirm** rather than guess.
+- **时区规则**：始终使用用户的**本地时区**（系统默认时区），不要使用 UTC。如果用户指定了时区（例如 “at 9am EST”），则使用该时区。
+- **一次性提醒**：使用包含用户本地时区偏移量的 ISO 8601 时间戳。
+- **周期性提醒**：使用 Cron 表达式（例如 `every day at 9am` 表示“每天上午 9 点”）。
+- **间隔性提醒**：使用 `everyMs` 参数设置提醒间隔（例如 `every 2 hours` 表示“每 2 小时”）。
 
-**Event-relative patterns:**
-| Pattern | Resolution |
-|---|---|
-| `N days before <event>` | event_date - N days |
-| `N days after <event>` | event_date + N days |
-| `the day before <event>` | event_date - 1 day |
-| `the week of <event>` | Monday of event's week, 9am |
-| `on <event>` | event_date, 9am |
+### 第三步：确定提醒的展示渠道
 
-#### Layer 4: Ambiguity — Ask, Don't Guess
+提醒只有在用户能够看到的地方才能发挥作用。系统会按照以下优先级确定提醒的展示渠道：
+1. 用户明确指定的渠道（如 Telegram、Discord、Slack、WhatsApp）。
+2. 用户最近使用的渠道。
+3. 用户在 `MEMORY.md` 文件中设置的优先提醒渠道。
+4. 如果用户未配置任何外部渠道，则提示用户选择发送渠道。
 
-If you still can't determine WHEN after all layers:
-- **Ask the user** to clarify. Example: "I couldn't figure out the timing. When exactly should I remind you?"
-- Never silently pick a default time.
-- Never schedule a reminder you're not confident about.
+### 第四步：调用 `cron.add` 函数
 
-### Step 2: Compute the Schedule
-
-**Timezone rule:** ALWAYS use the user's **local timezone** (system timezone). Never default to UTC. If the user explicitly mentions a timezone (e.g. "at 9am EST"), use that instead.
-
-**One-shot** → ISO 8601 timestamp with the user's local timezone offset.
-- If the computed time is in the PAST, bump to the next occurrence.
-
-**Recurring (cron)** → 5-field cron expression with `tz` set to the user's IANA timezone.
-- `every day at 9am` → `expr: "0 9 * * *"`
-- `every monday at 8:30am` → `expr: "30 8 * * 1"`
-- `every weekday at 9am` → `expr: "0 9 * * 1-5"`
-
-**Recurring (interval)** → `kind: "every"` with `everyMs` in milliseconds.
-- `every 2 hours` → `everyMs: 7200000`
-
-### Validation Checkpoint (before calling cron.add)
-
-Before proceeding to Step 3, verify:
-1. The computed timestamp is **in the future** (not the past).
-2. The duration makes sense (e.g. "in 0 minutes" should be rejected).
-3. For recurring: the cron expression or interval is valid (no `everyMs: 0`).
-4. **Echo back** the parsed time to the user in the confirmation (Step 5) so they can catch errors.
-
-### Step 3: Detect the Delivery Channel
-
-Reminders are useless if the user never sees them. The delivery channel determines WHERE the reminder appears when it fires.
-
-**Priority order:**
-
-1. **Explicit override** — if the user says "on telegram" / "on discord" / "on slack" / "on whatsapp" in their message, use that channel.
-2. **Current channel** — if the user is messaging from an external channel (Telegram, Discord, Slack, etc.), deliver there.
-3. **Preferred channel** — if the user has a preferred reminder channel saved in MEMORY.md, use that.
-4. **Last external channel** — use `channel: "last"` to deliver to the last place the user interacted externally.
-5. **No external channel available** — if the user is on CLI/webchat and has NO external channels configured, **stop and ask**: "Where should I deliver this reminder? I need an external channel (Telegram, Discord, Slack, WhatsApp, Signal, or iMessage) since the CLI won't be open when the reminder fires."
-
-
-### Step 4: Call `cron.add`
-
-**One-shot reminder:**
-
-```json
+- **一次性提醒**：执行相应的代码块（```json
 {
   "name": "Reminder: <short description>",
   "schedule": {
@@ -221,11 +130,8 @@ Reminders are useless if the user never sees them. The delivery channel determin
   },
   "deleteAfterRun": true
 }
-```
-
-**Recurring reminder:**
-
-```json
+```）。
+- **周期性提醒**：执行相应的代码块（```json
 {
   "name": "Recurring: <short description>",
   "schedule": {
@@ -246,11 +152,8 @@ Reminders are useless if the user never sees them. The delivery channel determin
     "bestEffort": true
   }
 }
-```
-
-**Fixed-interval recurring reminder** (e.g. "every 2 hours"):
-
-```json
+```）。
+- **固定间隔的周期性提醒**（例如“每 2 小时”）：执行相应的代码块（```json
 {
   "name": "Recurring: <short description>",
   "schedule": {
@@ -270,43 +173,41 @@ Reminders are useless if the user never sees them. The delivery channel determin
     "bestEffort": true
   }
 }
-```
+```）。
 
-### Step 5: Confirm to User
+### 第五步：向用户确认提醒信息
 
-After `cron.add` succeeds, reply with:
-
-```
+在成功设置提醒后，向用户发送确认信息（```
 Reminder set!
 "<reminder message>"
 <friendly time description> (<ISO timestamp or cron expression>)
 Will deliver to: <channel>
 Job ID: <jobId> (use "/remindme cancel <jobId>" to remove)
-```
+```）。
 
 ---
 
-## Rules
+## 注意事项：
 
-1. **ALWAYS use `deleteAfterRun: true`** for one-shot reminders. Omit it for recurring.
-2. **ALWAYS use `delivery.mode: "announce"`** — without this, the user never sees the reminder.
-3. **ALWAYS use `sessionTarget: "isolated"`** — reminders run in their own session.
-4. **ALWAYS use `wakeMode: "now"`** — ensures immediate delivery at the scheduled time.
-5. **ALWAYS use `delivery.bestEffort: true`** — prevents job failure if delivery has a transient issue.
-6. **NEVER use `act:wait` or loops** for delays longer than 1 minute. Cron handles timing.
-7. **NEVER deliver to localhost/webchat/CLI** — the user won't be there when the reminder fires. If on CLI with no external channels, ask the user where to deliver.
-8. **Always use the user's local timezone** (system timezone). Never default to UTC. If MEMORY.md has a timezone override, use that instead.
-9. **For recurring reminders**, do NOT set `deleteAfterRun`.
-10. **Always return the jobId** so the user can cancel later.
-11. **If the user says "on telegram/discord/slack/etc"**, override the auto-detected channel with the explicit one.
+1. **一次性提醒**必须设置 `deleteAfterRun: true`，周期性提醒则不需要。
+2. **必须设置 `delivery.mode: "announce"`，否则用户无法收到提醒通知。
+3. **必须设置 `sessionTarget: "isolated"`，以确保提醒在独立会话中执行。
+4. **必须设置 `wakeMode: "now"`，以确保提醒在预定时间立即发送。
+5. **必须设置 `delivery.bestEffort: true`，以防止提醒发送失败。
+6. **不要使用 `act:wait` 或循环操作来延迟提醒发送（超过 1 分钟的延迟由 Cron 自动处理）。
+7. **不要将提醒发送到本地主机/CLI/网页聊天界面**，因为用户可能不在这些地方；如果用户通过 CLI 使用服务，请询问发送渠道。
+8. **始终使用用户的本地时区**，不要使用 UTC；如果 `MEMORY.md` 文件中有时区设置，请优先使用该设置。
+9. **对于周期性提醒**，不要设置 `deleteAfterRun`。
+10. **务必返回提醒的 `jobId`，以便用户日后取消提醒。
+11. 如果用户指定了具体的发送渠道（如 Telegram、Discord 等），请覆盖系统自动检测的渠道设置。
 
-## Troubleshooting
+## 常见问题解决方法：
 
-- **Reminder didn't fire?** → `cron.list` to check. Verify gateway was running at the scheduled time.
-- **Delivered to wrong chat?** → Use explicit chat/channel ID, not `"last"`.
-- **Too many old jobs?** → Install the Janitor (see `references/TEMPLATES.md`).
-- **Recurring job keeps delaying?** → After consecutive failures, cron applies exponential backoff (30s → 1m → 5m → 15m → 60m). Backoff resets after a successful run.
+- **提醒未发送？**：使用 `cron.list` 检查 Cron 服务是否在预定时间运行。
+- **提醒发送到了错误的聊天界面？**：请使用正确的聊天界面 ID。
+- **系统中积累了太多旧的提醒任务？**：请参考 `references/TEMPLATES.md` 中的清理脚本。
+- **周期性提醒一直延迟？**：Cron 服务会采用指数级退避策略（首次失败后延迟 30 秒，之后逐渐增加）。
 
-## References
+## 参考资料
 
-See `references/TEMPLATES.md` for copy-paste templates and the Janitor auto-cleanup setup.
+更多模板和自动清理脚本的详细信息，请参阅 `references/TEMPLATES.md`。

@@ -1,26 +1,26 @@
 ---
 name: cron-gen
-description: Generate cron expressions from natural language
+description: **从自然语言生成 Cron 表达式**
 ---
 
-# Cron Generator
+# Cron 生成器
 
-"Every weekday at 9am" to "0 9 * * 1-5". Stop googling cron syntax.
+将“Every weekday at 9am”转换为“0 9 * * 1-5”。别再在谷歌上搜索 Cron 语法了。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-cron-gen "every monday at 3pm"
 ```
 
-## What It Does
+## 功能介绍
 
-- Converts plain English to cron expressions
-- Explains what the cron does
-- Validates existing cron syntax
-- Shows next execution times
+- 将自然语言描述转换为 Cron 表达式  
+- 解释 Cron 表达式的具体含义  
+- 验证输入的 Cron 语法是否正确  
+- 显示任务的下次执行时间  
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate from description
@@ -33,7 +33,7 @@ npx ai-cron-gen --explain "0 */4 * * *"
 npx ai-cron-gen "every 30 minutes" --next 5
 ```
 
-## Output
+## 输出结果
 
 ```
 Expression: 0 9 * * 1-5
@@ -43,17 +43,17 @@ Next runs:
   - Tue Jan 30 09:00:00 2024
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+需要 Node.js 18 及更高版本，并且必须配置 OPENAI_API_KEY。  
 
-## License
+## 许可证
 
-MIT. Free forever.
+采用 MIT 许可证，永久免费使用。  
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-cron-gen](https://github.com/lxgicstudios/ai-cron-gen)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub 仓库：[github.com/lxgicstudios/ai-cron-gen](https://github.com/lxgicstudios/ai-cron-gen)  
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

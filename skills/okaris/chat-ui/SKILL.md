@@ -9,20 +9,20 @@ description: |
   react chat, chat interface, messaging ui, conversation ui, chat building blocks
 ---
 
-# Chat UI Components
+# 聊天用户界面组件
 
-Chat building blocks from [ui.inference.sh](https://ui.inference.sh).
+这些聊天组件来自 [ui.inference.sh](https://ui.inference.sh)。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install chat components
 npx shadcn@latest add https://ui.inference.sh/r/chat.json
 ```
 
-## Components
+## 组件
 
-### Chat Container
+### 聊天容器
 
 ```tsx
 import { ChatContainer } from "@/registry/blocks/chat/chat-container"
@@ -32,7 +32,7 @@ import { ChatContainer } from "@/registry/blocks/chat/chat-container"
 </ChatContainer>
 ```
 
-### Messages
+### 消息
 
 ```tsx
 import { ChatMessage } from "@/registry/blocks/chat/chat-message"
@@ -48,7 +48,7 @@ import { ChatMessage } from "@/registry/blocks/chat/chat-message"
 />
 ```
 
-### Chat Input
+### 聊天输入框
 
 ```tsx
 import { ChatInput } from "@/registry/blocks/chat/chat-input"
@@ -60,7 +60,7 @@ import { ChatInput } from "@/registry/blocks/chat/chat-input"
 />
 ```
 
-### Typing Indicator
+### 输入状态指示器
 
 ```tsx
 import { TypingIndicator } from "@/registry/blocks/chat/typing-indicator"
@@ -68,7 +68,7 @@ import { TypingIndicator } from "@/registry/blocks/chat/typing-indicator"
 {isTyping && <TypingIndicator />}
 ```
 
-## Full Example
+## 完整示例
 
 ```tsx
 import {
@@ -101,17 +101,17 @@ export function Chat() {
 }
 ```
 
-## Message Variants
+## 消息类型
 
-| Role | Description |
+| 类型 | 说明 |
 |------|-------------|
-| `user` | User messages (right-aligned) |
-| `assistant` | AI responses (left-aligned) |
-| `system` | System messages (centered) |
+| `user` | 用户发送的消息（右对齐显示） |
+| `assistant` | 人工智能生成的回复（左对齐显示） |
+| `system` | 系统发送的消息（居中显示） |
 
-## Styling
+## 样式设计
 
-Components use Tailwind CSS and shadcn/ui design tokens:
+这些组件使用了 Tailwind CSS 和 shadcn/ui 的设计规范：
 
 ```tsx
 <ChatMessage
@@ -121,7 +121,7 @@ Components use Tailwind CSS and shadcn/ui design tokens:
 />
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full agent component (recommended)
@@ -134,10 +134,10 @@ npx skills add inference-sh/agent-skills@widgets-ui
 npx skills add inference-sh/agent-skills@markdown-ui
 ```
 
-## Documentation
+## 文档资料
 
-- [Chatting with Agents](https://inference.sh/docs/agents/chatting) - Building chat interfaces
-- [Agent UX Patterns](https://inference.sh/blog/ux/agent-ux-patterns) - Chat UX best practices
-- [Real-Time Streaming](https://inference.sh/blog/observability/streaming) - Streaming responses
+- [与智能助手进行聊天](https://inference.sh/docs/agents/chatting) - 如何构建聊天界面 |
+- [智能助手的用户体验设计模式](https://inference.sh/blog/ux/agent-ux-patterns) - 聊天界面的最佳实践 |
+- [实时流式响应](https://inference.sh/blog/observability/streaming) - 实时流式消息传递技术
 
-Component docs: [ui.inference.sh/blocks/chat](https://ui.inference.sh/blocks/chat)
+组件文档：[ui.inference.sh/blocks/chat](https://ui.inference.sh/blocks/chat)

@@ -1,6 +1,37 @@
 ---
 name: github-actions-troubleshooting
-description: "Troubleshoot GitHub Actions workflows, particularly for Go projects. Diagnose failing workflows, distinguish between code and environment issues, interpret logs, and apply fixes for common CI/CD problems."
+description: "**GitHub Actions 工作流故障排除**  
+（特别是针对 Go 项目）  
+
+**一、诊断故障的工作流**  
+当 GitHub Actions 工作流出现故障时，首先需要对其进行详细诊断。区分故障是由代码问题引起的，还是由环境配置问题导致的。  
+
+**二、分析日志**  
+通过查看工作流的日志文件（通常位于 `./logs` 目录下），可以获取有关故障的详细信息。这些日志包含了运行过程中的错误信息、警告以及执行步骤的详细记录。仔细分析日志有助于确定问题的根源。  
+
+**三、解决常见 CI/CD 问题**  
+针对常见的 CI/CD 问题，可以采取以下解决方法：  
+1. **检查代码问题**：确保所有相关的 Go 代码都符合项目的编码规范和标准。使用代码审查工具（如 GoLint）来检查代码质量。  
+2. **检查环境配置**：确保所有必要的环境变量都已正确设置，并且与项目的依赖项相匹配。  
+3. **优化构建过程**：优化构建脚本（`Dockerfile` 或 `build.gradle` 等），以减少构建时间并避免不必要的步骤。  
+4. **调整依赖管理**：使用最新的依赖包版本，并确保依赖项之间的兼容性。  
+5. **优化部署过程**：检查部署脚本（`DeployScript` 或 `Pipeline.yml` 等），确保部署逻辑正确无误。  
+
+**四、应用修复措施**  
+根据诊断结果，应用相应的修复措施。这可能包括：  
+- 修复代码中的错误；  
+- 更新环境配置；  
+- 优化构建和部署流程；  
+- 调整依赖管理策略。  
+
+**五、预防类似问题**  
+为了避免类似问题的再次发生，可以采取以下措施：  
+- 定期审查和维护工作流配置；  
+- 监控工作流的运行状态，及时发现潜在问题；  
+- 为关键步骤添加日志记录和错误处理机制；  
+- 参考官方文档和社区资源，了解最佳实践。  
+
+通过以上步骤，您可以有效地排查和解决 GitHub Actions 工作流中的故障，确保项目的持续集成和持续部署过程顺利进行。"
 metadata:
   {
     "openclaw":
@@ -28,65 +59,65 @@ metadata:
   }
 ---
 
-# GitHub Actions Troubleshooting Skill
+# GitHub Actions 故障排除技巧
 
-Use the `gh` CLI and Git to diagnose and fix GitHub Actions workflow failures, particularly for Go projects. This skill helps identify whether failures are due to code issues or environment/configuration problems.
+使用 `gh` CLI 和 Git 来诊断和修复 GitHub Actions 工作流的故障，尤其是针对 Go 项目。该技巧有助于判断故障是由于代码问题还是环境/配置问题引起的。
 
-## Workflow Analysis
+## 工作流分析
 
-Check the status of recent workflow runs:
+查看最近的工作流运行状态：
 
 ```bash
 gh run list --repo owner/repo --limit 10
 ```
 
-View details of a specific failing workflow:
+查看特定失败工作流的详细信息：
 
 ```bash
 gh run view <run-id> --repo owner/repo
 ```
 
-Get logs for failed jobs only:
+仅获取失败任务的日志：
 
 ```bash
 gh run view <run-id> --repo owner/repo --log-failed
 ```
 
-## Distinguishing Issue Types
+## 区分问题类型
 
-1. **Code Issues**: Failures in compilation, tests, or linting that occur consistently across environments
-2. **Environment Issues**: Problems with dependency resolution, tool installation, or type-checking in CI that work locally
+1. **代码问题**：在所有环境中都一致出现的编译、测试或代码检查（linting）失败。
+2. **环境问题**：与依赖项解析、工具安装或本地 CI 中的类型检查相关的问题。
 
-## Common Go CI Fixes
+## 常见的 Go CI 修复方法
 
-### Linter Configuration Issues
-- Look for "undefined" reference errors that indicate import resolution problems
-- Try minimal linter configs that disable type-checking linters
-- Use `golangci-lint run --disable-all --enable=gofmt` for basic syntax checking
+### 代码检查（Linting）配置问题
+- 寻找表示导入解析问题的 “undefined” 引用错误。
+- 尝试使用不启用类型检查的简化配置文件。
+- 使用 `golangci-lint run --disable-all --enable=gofmt` 进行基本的语法检查。
 
-### Dependency Resolution
-- Verify go.mod and go.sum are consistent
-- Run `go mod tidy` to resolve dependency conflicts
-- Check that required dependencies are properly declared
+### 依赖项解析问题
+- 确认 `go.mod` 和 `go.sum` 文件是否一致。
+- 运行 `go mod tidy` 来解决依赖项冲突。
+- 检查是否正确声明了所需的依赖项。
 
-## Diagnostic Commands
+## 诊断命令
 
-Check specific workflow job logs:
+查看特定工作流任务的日志：
 
 ```bash
 gh run view --job <job-id> --repo owner/repo
 ```
 
-Download workflow artifacts for inspection:
+下载工作流生成的文件以供检查：
 
 ```bash
 gh run download <run-id> --repo owner/repo
 ```
 
-## Troubleshooting Workflow
+## 故障排除步骤
 
-1. Identify which jobs are failing and which are passing
-2. Examine error messages for clues about the nature of the issue
-3. Determine if the issue is reproducible locally
-4. Apply targeted fixes based on issue type
-5. Monitor subsequent workflow runs to verify resolution
+1. 确定哪些任务失败了，哪些任务成功了。
+2. 查看错误信息以获取问题的线索。
+3. 判断问题是否可以在本地重现。
+4. 根据问题类型进行针对性的修复。
+5. 监控后续的工作流运行情况，以验证问题是否已解决。

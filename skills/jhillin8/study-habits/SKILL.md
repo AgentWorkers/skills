@@ -1,6 +1,6 @@
 ---
 name: study-habits
-description: Build effective study habits with spaced repetition, active recall, and session tracking
+description: 通过间隔重复、主动回忆和会话跟踪来培养有效的学习习惯。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,62 +11,49 @@ triggers:
   - "exam prep"
 ---
 
-# Study Habits
+# 学习习惯
 
-*Learning that sticks—through science, not stubbornness.*
+*真正的学习效果，来自于科学的方法，而非固执的态度。*
 
-## What it does
+## 功能介绍
 
-This skill transforms how you absorb and retain information by combining proven cognitive techniques with persistent session tracking:
+该工具通过结合经过验证的认知学习技巧与持续的学习记录功能，彻底改变你的信息吸收和记忆方式：
 
-- **Study Session Tracking** - Logs when you study, what topic, duration, and effectiveness rating for accountability and pattern recognition
-- **Technique Suggestions** - Recommends study methods based on your learning goal (memorization vs. deep understanding vs. skill practice)
-- **Spaced Repetition Reminders** - Intelligently schedules review sessions to hit the sweet spot where forgetting begins
-- **Progress Dashboard** - Shows your study velocity, topic mastery levels, and retention curves over time
-- **Exam Countdown** - Builds personalized prep schedules that work backward from exam date to ensure full coverage
+- **学习记录**：记录你的学习时间、学习内容、学习时长以及学习效果，帮助你自我监督并发现学习模式。
+- **学习技巧推荐**：根据你的学习目标（记忆、理解或技能练习）推荐合适的学习方法。
+- **间隔重复提醒**：智能安排复习时间，确保在知识开始遗忘的临界点进行复习。
+- **进度仪表盘**：展示你的学习速度、各科目的掌握程度以及知识巩固情况。
+- **考试倒计时**：根据考试日期倒推，制定个性化的复习计划，确保全面覆盖所有知识点。
 
-## Usage
+## 使用方法
 
-**Start study**
-: "Start a 50-minute study session on photosynthesis" → Creates a session timer, suggests an optimal study technique, and tracks your focus
+**开始学习**：
+输入：“开始一个50分钟的光合作用学习会话”，系统会设置计时器，推荐最佳学习方法，并监控你的学习专注度。
 
-**Log topic**
-: "I just finished studying Chapter 3, felt confident" → Records the session, captures confidence level, determines next review interval
+**记录学习内容**：
+输入：“我刚刚完成了第三章的学习，感觉掌握得不错”，系统会记录这次学习会话，评估你的掌握程度，并确定下一次复习的时间间隔。
 
-**Review schedule**
-: "When should I review calculus next?" → Shows which topics need review based on spaced repetition algorithm, prioritizes by forgetting curve
+**制定复习计划**：
+输入：“我什么时候应该复习微积分？”系统会根据间隔重复算法推荐需要复习的章节，并根据遗忘曲线优先处理重点内容。
 
-**Check progress**
-: "Show me my study stats" → Displays sessions completed, topics covered, retention trends, time invested per subject
+**查看学习进度**：
+输入：“显示我的学习数据”，系统会显示已完成的学习会话、已学习的知识点以及各科目的知识巩固情况。
 
-**Exam countdown**
-: "I have an exam in 21 days on biology" → Creates a study plan that distributes chapters across available time, accounts for review cycles, flags high-risk topics
+**考试倒计时**：
+输入：“我21天后有生物考试”，系统会为你制定一个学习计划，合理分配学习时间，并标记出需要重点复习的章节。
 
-## Study Techniques
+## 学习技巧
 
-**Active Recall**
-: Test yourself without looking at notes. Forces your brain to retrieve information rather than passively reread. Far more effective than review.
+- **主动回忆**：不看笔记，自己尝试回忆知识点。这种方法比被动地重新阅读更有效。
+- **间隔重复**：在逐渐延长的时间间隔（1天、3天、1周、2周）内复习内容，有助于克服遗忘现象，将知识长期存储在记忆中。
+- **番茄工作法**：每次学习25分钟，中间休息5分钟，防止疲劳并保持注意力。
+- **费曼技巧**：像向完全没有相关背景的人讲解概念一样大声表达，这样可以立即发现自己的理解盲点。
+- **交错学习**：在同一学习会话中混合学习不同的知识点或题型，有助于建立灵活的知识结构并提高模式识别能力。
 
-**Spaced Repetition**
-: Review material at increasing intervals (1 day, 3 days, 1 week, 2 weeks). This combats the forgetting curve and moves knowledge to long-term memory.
+## 使用建议
 
-**Pomodoro Technique**
-: Study in 25-minute focused bursts with 5-minute breaks. Prevents burnout and maintains attention during sessions.
-
-**Feynman Technique**
-: Explain a concept aloud as if teaching it to someone with no background. Exposes gaps in understanding immediately.
-
-**Interleaving**
-: Mix different topics or problem types in one session instead of blocking them. Builds flexible knowledge and stronger pattern recognition.
-
-## Tips
-
-1. **Track confidence, not just completion** — Rate how well you understood each topic (1-10) rather than just marking it done. This surfaces weak areas early.
-
-2. **Use active recall over rereading** — Flashcards, practice problems, and explain-it-aloud beat passively reviewing notes by 10x.
-
-3. **Study in shorter sprints, more often** — Three 45-minute sessions spread across a week beat one 2-hour cramming session. Your brain consolidates overnight.
-
-4. **Review the day after, then space out** — First review should be 24 hours later, then 3 days, then a week. The algorithm handles this automatically.
-
-5. **All data stays local on your machine** — Your study history, notes, and progress never leave your device. Full privacy, full control.
+1. **关注理解程度，而不仅仅是完成进度**：对每个知识点进行评分（1-10分），而不是简单地标记为“完成”。这能帮助你及早发现薄弱环节。
+2. **优先使用主动回忆方法**：使用闪卡、练习题或大声讲解等方式，比被动地阅读笔记效果更好。
+3. **分多次进行短时间学习**：一周内安排三次45分钟的学习会话，比一次2小时的高强度学习更有效。大脑会在夜间巩固学习内容。
+4. **及时复习**：第一次复习应在学习后24小时进行，之后每隔3天和1周再复习一次。系统会自动安排复习时间。
+5. **所有数据都保存在本地设备上**：你的学习记录、笔记和进度数据始终保存在你的设备上，确保隐私和安全。

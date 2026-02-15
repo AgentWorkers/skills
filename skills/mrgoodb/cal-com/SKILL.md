@@ -1,22 +1,22 @@
 ---
 name: cal-com
-description: Manage Cal.com scheduling - list bookings, event types, and availability. Use when you need to check schedules, manage booking links, or automate meeting scheduling with Cal.com's API.
+description: 管理 Cal.com 的日程安排功能：可以查看预订信息、事件类型以及可用时间。当您需要查看日程表、管理预订链接，或通过 Cal.com 的 API 自动安排会议时，请使用此功能。
 ---
 
 # Cal.com API
 
-Manage scheduling and bookings via Cal.com API.
+通过 Cal.com API 管理日程安排和预订。
 
-## Setup
+## 设置
 
-1. Get API key: Cal.com → Settings → Developer → API Keys
-2. Store key:
+1. 获取 API 密钥：访问 Cal.com → 设置 → 开发者 → API 密钥
+2. 存储密钥：
 ```bash
 mkdir -p ~/.config/calcom
 echo "cal_live_XXXXX" > ~/.config/calcom/api_key
 ```
 
-## API Basics
+## API 基础知识
 
 ```bash
 CAL_KEY=$(cat ~/.config/calcom/api_key)
@@ -25,13 +25,13 @@ CAL_URL="https://api.cal.com/v1"  # or self-hosted URL
 curl -s "${CAL_URL}/me?apiKey=${CAL_KEY}" | jq
 ```
 
-## List Event Types
+## 列出事件类型
 
 ```bash
 curl -s "${CAL_URL}/event-types?apiKey=${CAL_KEY}" | jq '.event_types[] | {id, title, slug, length}'
 ```
 
-## Get Event Type
+## 获取事件类型
 
 ```bash
 EVENT_TYPE_ID="123"
@@ -39,13 +39,13 @@ EVENT_TYPE_ID="123"
 curl -s "${CAL_URL}/event-types/${EVENT_TYPE_ID}?apiKey=${CAL_KEY}" | jq
 ```
 
-## List Bookings
+## 列出预订信息
 
 ```bash
 curl -s "${CAL_URL}/bookings?apiKey=${CAL_KEY}" | jq '.bookings[] | {id, title, startTime, endTime, status}'
 ```
 
-## Get Booking
+## 获取预订详情
 
 ```bash
 BOOKING_ID="123"
@@ -53,14 +53,14 @@ BOOKING_ID="123"
 curl -s "${CAL_URL}/bookings/${BOOKING_ID}?apiKey=${CAL_KEY}" | jq
 ```
 
-## Filter Bookings by Status
+## 按状态筛选预订
 
 ```bash
 # upcoming, past, cancelled, recurring
 curl -s "${CAL_URL}/bookings?apiKey=${CAL_KEY}&status=upcoming" | jq '.bookings'
 ```
 
-## Create Booking
+## 创建预订
 
 ```bash
 curl -s -X POST "${CAL_URL}/bookings?apiKey=${CAL_KEY}" \
@@ -79,7 +79,7 @@ curl -s -X POST "${CAL_URL}/bookings?apiKey=${CAL_KEY}" \
   }' | jq
 ```
 
-## Cancel Booking
+## 取消预订
 
 ```bash
 curl -s -X DELETE "${CAL_URL}/bookings/${BOOKING_ID}?apiKey=${CAL_KEY}" \
@@ -87,7 +87,7 @@ curl -s -X DELETE "${CAL_URL}/bookings/${BOOKING_ID}?apiKey=${CAL_KEY}" \
   -d '{"cancellationReason": "Schedule conflict"}' | jq
 ```
 
-## Reschedule Booking
+## 重新安排预订
 
 ```bash
 curl -s -X PATCH "${CAL_URL}/bookings/${BOOKING_ID}?apiKey=${CAL_KEY}" \
@@ -98,32 +98,32 @@ curl -s -X PATCH "${CAL_URL}/bookings/${BOOKING_ID}?apiKey=${CAL_KEY}" \
   }' | jq
 ```
 
-## List Availabilities
+## 列出可用时间
 
 ```bash
 curl -s "${CAL_URL}/availability?apiKey=${CAL_KEY}&eventTypeId=123&dateFrom=2024-01-15&dateTo=2024-01-22" | jq
 ```
 
-## Get Available Slots
+## 获取可用时间段
 
 ```bash
 curl -s "${CAL_URL}/slots?apiKey=${CAL_KEY}&eventTypeId=123&startTime=2024-01-15&endTime=2024-01-22&timeZone=Europe/Paris" | jq '.slots'
 ```
 
-## List Schedules
+## 列出日程安排
 
 ```bash
 curl -s "${CAL_URL}/schedules?apiKey=${CAL_KEY}" | jq '.schedules[] | {id, name, timeZone}'
 ```
 
-## Webhooks
+## Webhook
 
-List:
+- **列出 Webhook 事件**：
 ```bash
 curl -s "${CAL_URL}/webhooks?apiKey=${CAL_KEY}" | jq
 ```
 
-Create:
+- **创建 Webhook**：
 ```bash
 curl -s -X POST "${CAL_URL}/webhooks?apiKey=${CAL_KEY}" \
   -H "Content-Type: application/json" \
@@ -134,22 +134,22 @@ curl -s -X POST "${CAL_URL}/webhooks?apiKey=${CAL_KEY}" \
   }' | jq
 ```
 
-## Event Triggers
+## 事件触发器
 
-- `BOOKING_CREATED`
-- `BOOKING_CANCELLED`
-- `BOOKING_RESCHEDULED`
-- `BOOKING_CONFIRMED`
-- `BOOKING_REJECTED`
+- `BOOKING CREATED`（预订创建）
+- `BOOKING_CANCELLED`（预订取消）
+- `BOOKING_RESCHEDULED`（预订重新安排）
+- `BOOKING_CONFIRMED`（预订确认）
+- `BOOKING_REJECTED`（预订被拒绝）
 
-## Self-Hosted
+## 自托管环境
 
-For self-hosted Cal.com, change base URL:
+对于自托管的 Cal.com 系统，需要更改基础 URL：
 ```bash
 CAL_URL="https://your-cal-instance.com/api/v1"
 ```
 
-## Rate Limits
+## 速率限制
 
-- Default: No published limits (be reasonable)
-- Self-hosted: Depends on your infrastructure
+- **默认设置**：无公开的速率限制（请合理使用 API）
+- **自托管环境**：具体限制取决于您的基础设施配置

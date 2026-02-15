@@ -13,11 +13,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Telegram Bot API
+# Telegram机器人API
 
-Access the Telegram Bot API with managed authentication. Send messages, photos, polls, locations, and more through your Telegram bot.
+您可以使用托管的身份验证来访问Telegram机器人API。通过您的Telegram机器人发送消息、图片、投票、位置等信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get bot info
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/telegram/:token/{method}
 ```
 
-The `:token` placeholder is automatically replaced with your bot token from the connection configuration. Replace `{method}` with the Telegram Bot API method name (e.g., `sendMessage`, `getUpdates`).
+`:token`占位符会自动替换为从连接配置中获取的机器人令牌。请将`{method}`替换为Telegram机器人API的方法名称（例如：`sendMessage`、`getUpdates`）。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)登录或创建账户。
+2. 访问[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Telegram bot connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`管理您的Telegram机器人连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete the bot token configuration.
+在浏览器中打开返回的`url`以完成机器人令牌的配置。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Telegram connections (multiple bots), specify which one to use with the `Maton-Connection` header:
+如果您有多个Telegram连接（多个机器人），请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,21 +138,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Bot Information
+### 机器人信息
 
-#### Get Bot Info
+#### 获取机器人信息
 
 ```bash
 GET /telegram/:token/getMe
 ```
 
-Returns information about the bot.
+返回有关机器人的信息。
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -168,9 +168,9 @@ Returns information about the bot.
 }
 ```
 
-### Getting Updates
+### 获取更新
 
-#### Get Updates (Long Polling)
+#### 获取更新（长轮询）
 
 ```bash
 POST /telegram/:token/getUpdates
@@ -183,20 +183,20 @@ Content-Type: application/json
 }
 ```
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| offset | Integer | No | First update ID to return |
-| limit | Integer | No | Number of updates (1-100, default 100) |
-| timeout | Integer | No | Long polling timeout in seconds |
-| allowed_updates | Array | No | Update types to receive |
+| offset | 整数 | 否 | 要返回的第一个更新ID |
+| limit | 整数 | 否 | 更新数量（1-100，默认为100） |
+| timeout | 整数 | 否 | 长轮询超时时间（以秒为单位） |
+| allowed_updates | 数组 | 否 | 要接收的更新类型 |
 
-#### Get Webhook Info
+#### 获取Webhook信息
 
 ```bash
 GET /telegram/:token/getWebhookInfo
 ```
 
-#### Set Webhook
+#### 设置Webhook
 
 ```bash
 POST /telegram/:token/setWebhook
@@ -209,7 +209,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Webhook
+#### 删除Webhook
 
 ```bash
 POST /telegram/:token/deleteWebhook
@@ -220,9 +220,9 @@ Content-Type: application/json
 }
 ```
 
-### Sending Messages
+### 发送消息
 
-#### Send Text Message
+#### 发送文本消息
 
 ```bash
 POST /telegram/:token/sendMessage
@@ -235,15 +235,15 @@ Content-Type: application/json
 }
 ```
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| chat_id | Integer/String | Yes | Target chat ID or @username |
-| text | String | Yes | Message text (1-4096 characters) |
-| parse_mode | String | No | `HTML`, `Markdown`, or `MarkdownV2` |
-| reply_markup | Object | No | Inline keyboard or reply keyboard |
-| reply_parameters | Object | No | Reply to a specific message |
+| chat_id | 整数/字符串 | 是 | 目标聊天ID或@用户名 |
+| text | 字符串 | 是 | 消息文本（1-4096个字符） |
+| parse_mode | 字符串 | 否 | `HTML`、`Markdown`或`MarkdownV2` |
+| reply_markup | 对象 | 否 | 回复键盘样式 |
+| reply_parameters | 对象 | 否 | 回复特定消息 |
 
-**With HTML Formatting:**
+**使用HTML格式：**
 
 ```bash
 POST /telegram/:token/sendMessage
@@ -256,7 +256,7 @@ Content-Type: application/json
 }
 ```
 
-**With Inline Keyboard:**
+**使用内联键盘：**
 
 ```bash
 POST /telegram/:token/sendMessage
@@ -279,7 +279,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Photo
+#### 发送图片
 
 ```bash
 POST /telegram/:token/sendPhoto
@@ -292,14 +292,14 @@ Content-Type: application/json
 }
 ```
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| chat_id | Integer/String | Yes | Target chat ID |
-| photo | String | Yes | Photo URL or file_id |
-| caption | String | No | Caption (0-1024 characters) |
-| parse_mode | String | No | Caption parse mode |
+| chat_id | 整数/字符串 | 是 | 目标聊天ID |
+| photo | 字符串 | 是 | 图片URL或文件ID |
+| caption | 字符串 | 否 | 图片说明（0-1024个字符） |
+| parse_mode | 字符串 | 否 | 说明解析模式 |
 
-#### Send Document
+#### 发送文档
 
 ```bash
 POST /telegram/:token/sendDocument
@@ -312,7 +312,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Video
+#### 发送视频
 
 ```bash
 POST /telegram/:token/sendVideo
@@ -325,7 +325,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Audio
+#### 发送音频
 
 ```bash
 POST /telegram/:token/sendAudio
@@ -338,7 +338,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Location
+#### 发送位置
 
 ```bash
 POST /telegram/:token/sendLocation
@@ -351,7 +351,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Contact
+#### 发送联系人信息
 
 ```bash
 POST /telegram/:token/sendContact
@@ -365,7 +365,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Poll
+#### 发送投票
 
 ```bash
 POST /telegram/:token/sendPoll
@@ -383,17 +383,17 @@ Content-Type: application/json
 }
 ```
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| chat_id | Integer/String | Yes | Target chat ID |
-| question | String | Yes | Poll question (1-300 characters) |
-| options | Array | Yes | Poll options (2-10 items) |
-| is_anonymous | Boolean | No | Anonymous poll (default true) |
-| type | String | No | `regular` or `quiz` |
-| allows_multiple_answers | Boolean | No | Allow multiple answers |
-| correct_option_id | Integer | No | Correct answer for quiz |
+| chat_id | 整数/字符串 | 是 | 目标聊天ID |
+| question | 字符串 | 是 | 投票问题（1-300个字符） |
+| options | 数组 | 是 | 投票选项（2-10个选项） |
+| is_anonymous | 布尔值 | 否 | 是否匿名投票（默认为true） |
+| type | 字符串 | 否 | `regular`或`quiz` |
+| allows_multiple_answers | 布尔值 | 是否允许多个答案 |
+| correct_option_id | 整数 | 否 | 正确答案（用于测验） |
 
-#### Send Dice
+#### 发送骰子结果
 
 ```bash
 POST /telegram/:token/sendDice
@@ -405,11 +405,11 @@ Content-Type: application/json
 }
 ```
 
-Supported emoji: 🎲 🎯 🎳 🏀 ⚽ 🎰
+支持的emoji：🎲 🎯 🎳 🏀 ⚽ 🎰
 
-### Editing Messages
+### 编辑消息
 
-#### Edit Message Text
+#### 编辑消息文本
 
 ```bash
 POST /telegram/:token/editMessageText
@@ -422,7 +422,7 @@ Content-Type: application/json
 }
 ```
 
-#### Edit Message Caption
+#### 编辑消息说明
 
 ```bash
 POST /telegram/:token/editMessageCaption
@@ -435,7 +435,7 @@ Content-Type: application/json
 }
 ```
 
-#### Edit Message Reply Markup
+#### 编辑消息回复样式
 
 ```bash
 POST /telegram/:token/editMessageReplyMarkup
@@ -452,7 +452,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Message
+#### 删除消息
 
 ```bash
 POST /telegram/:token/deleteMessage
@@ -464,9 +464,9 @@ Content-Type: application/json
 }
 ```
 
-### Forwarding & Copying
+### 转发与复制
 
-#### Forward Message
+#### 转发消息
 
 ```bash
 POST /telegram/:token/forwardMessage
@@ -479,7 +479,7 @@ Content-Type: application/json
 }
 ```
 
-#### Copy Message
+#### 复制消息
 
 ```bash
 POST /telegram/:token/copyMessage
@@ -492,9 +492,9 @@ Content-Type: application/json
 }
 ```
 
-### Chat Information
+### 聊天信息
 
-#### Get Chat
+#### 获取聊天信息
 
 ```bash
 POST /telegram/:token/getChat
@@ -505,7 +505,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Chat Administrators
+#### 获取聊天管理员
 
 ```bash
 POST /telegram/:token/getChatAdministrators
@@ -516,7 +516,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Chat Member Count
+#### 获取聊天成员数量
 
 ```bash
 POST /telegram/:token/getChatMemberCount
@@ -527,7 +527,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Chat Member
+#### 获取聊天成员
 
 ```bash
 POST /telegram/:token/getChatMember
@@ -539,9 +539,9 @@ Content-Type: application/json
 }
 ```
 
-### Bot Commands
+### 机器人命令
 
-#### Set My Commands
+#### 设置我的命令
 
 ```bash
 POST /telegram/:token/setMyCommands
@@ -556,13 +556,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get My Commands
+#### 获取我的命令
 
 ```bash
 GET /telegram/:token/getMyCommands
 ```
 
-#### Delete My Commands
+#### 删除我的命令
 
 ```bash
 POST /telegram/:token/deleteMyCommands
@@ -571,15 +571,15 @@ Content-Type: application/json
 {}
 ```
 
-### Bot Profile
+### 机器人配置
 
-#### Get My Description
+#### 获取我的描述
 
 ```bash
 GET /telegram/:token/getMyDescription
 ```
 
-#### Set My Description
+#### 设置我的描述
 
 ```bash
 POST /telegram/:token/setMyDescription
@@ -590,7 +590,7 @@ Content-Type: application/json
 }
 ```
 
-#### Set My Name
+#### 设置我的名称
 
 ```bash
 POST /telegram/:token/setMyName
@@ -601,9 +601,9 @@ Content-Type: application/json
 }
 ```
 
-### Files
+### 文件
 
-#### Get File
+#### 获取文件
 
 ```bash
 POST /telegram/:token/getFile
@@ -614,7 +614,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -627,11 +627,11 @@ Content-Type: application/json
 }
 ```
 
-Download files from: `https://api.telegram.org/file/bot<token>/<file_path>`
+从以下地址下载文件：`https://api.telegram.org/file/bot<token>/<file_path>`
 
-### Callback Queries
+### 回调查询
 
-#### Answer Callback Query
+#### 回答回调查询
 
 ```bash
 POST /telegram/:token/answerCallbackQuery
@@ -644,7 +644,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -706,11 +706,11 @@ response = json.load(urllib.request.urlopen(req))
 print(json.dumps(response, indent=2))
 ```
 
-## Response Format
+## 响应格式
 
-All Telegram Bot API responses follow this format:
+所有Telegram机器人API的响应都遵循以下格式：
 
-**Success:**
+**成功：**
 ```json
 {
   "ok": true,
@@ -718,7 +718,7 @@ All Telegram Bot API responses follow this format:
 }
 ```
 
-**Error:**
+**错误：**
 ```json
 {
   "ok": false,
@@ -727,35 +727,35 @@ All Telegram Bot API responses follow this format:
 }
 ```
 
-## Notes
+## 注意事项
 
-- `:token` is automatically replaced with your bot token from the connection
-- Chat IDs are integers for private chats and can be negative for groups
-- All methods support both GET and POST, but POST is recommended for methods with parameters
-- Text messages have a 4096 character limit
-- Captions have a 1024 character limit
-- Polls support 2-10 options
-- File uploads require multipart/form-data (use URLs for simplicity)
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- `:token`会自动替换为从连接中获取的机器人令牌。
+- 私人聊天的聊天ID为整数，群组的聊天ID可以为负数。
+- 所有方法都支持GET和POST请求，但带有参数的方法建议使用POST。
+- 文本消息的长度限制为4096个字符。
+- 说明的长度限制为1024个字符。
+- 投票支持2-10个选项。
+- 上传文件需要使用multipart/form-data格式（为简化操作，可以使用URL）。
+- 重要提示：当将curl的输出传递给`jq`或其他命令时，在某些shell环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Telegram connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (Telegram limits vary by method) |
-| 4xx/5xx | Passthrough error from Telegram Bot API |
+| 400 | 缺少Telegram连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 429 | 超过请求频率限制（不同方法的限制不同） |
+| 4xx/5xx | 来自Telegram机器人API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了`MATON_API_KEY`环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -766,19 +766,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `telegram`. For example:
+1. 确保您的URL路径以`telegram`开头。例如：
+- 正确：`https://gateway.maton.ai/telegram/:token/sendMessage`
+- 错误：`https://gateway.maton.ai/:token/sendMessage`
 
-- Correct: `https://gateway.maton.ai/telegram/:token/sendMessage`
-- Incorrect: `https://gateway.maton.ai/:token/sendMessage`
+## 资源
 
-## Resources
-
-- [Telegram Bot API Documentation](https://core.telegram.org/bots/api)
-- [Available Methods](https://core.telegram.org/bots/api#available-methods)
-- [Formatting Options](https://core.telegram.org/bots/api#formatting-options)
-- [Inline Keyboards](https://core.telegram.org/bots/api#inlinekeyboardmarkup)
-- [Bot Commands](https://core.telegram.org/bots/api#setmycommands)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Telegram机器人API文档](https://coreTelegram.org/bots/api)
+- [可用方法](https://coreTelegram.org/bots/api#available-methods)
+- [格式化选项](https://coreTelegram.org/bots/api#formatting-options)
+- [内联键盘样式](https://coreTelegram.org/bots/api#inlinekeyboardmarkup)
+- [机器人命令](https://coreTelegram.org/bots/api#setmycommands)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

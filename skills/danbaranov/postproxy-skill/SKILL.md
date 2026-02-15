@@ -1,52 +1,52 @@
 ---
 name: postproxy
-description: Call PostProxy API to create and manage social media posts
+description: 调用 PostProxy API 来创建和管理社交媒体帖子。
 allowed-tools: Bash
 ---
 
-# PostProxy API Skill
+# PostProxy API 功能
 
-Call the [PostProxy](https://postproxy.dev/) API to manage social media posts across multiple platforms (Facebook, Instagram, TikTok, LinkedIn, YouTube, X/Twitter, Threads).
+调用 [PostProxy](https://postproxy.dev/) API 可以管理多个平台（Facebook、Instagram、TikTok、LinkedIn、YouTube、X/Twitter、Threads）上的社交媒体帖子。
 
-## Setup
+## 设置
 
-API key must be set in environment variable `POSTPROXY_API_KEY`.
-Get your API key at: https://app.postproxy.dev/api_keys
+API 密钥必须设置为环境变量 `POSTPROXY_API_KEY`。
+您可以在以下链接获取 API 密钥：https://app.postproxy.dev/api_keys
 
-## Base URL
+## 基本 URL
 
 ```
 https://api.postproxy.dev
 ```
 
-## Authentication
+## 认证
 
-All requests require Bearer token:
+所有请求都需要使用 Bearer 令牌进行身份验证：
 ```bash
 -H "Authorization: Bearer $POSTPROXY_API_KEY"
 ```
 
-## Endpoints
+## 端点
 
-### List Profiles
+### 列出个人资料
 ```bash
 curl -X GET "https://api.postproxy.dev/api/profiles" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY"
 ```
 
-### List Posts
+### 列出帖子
 ```bash
 curl -X GET "https://api.postproxy.dev/api/posts" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY"
 ```
 
-### Get Post
+### 获取帖子信息
 ```bash
 curl -X GET "https://api.postproxy.dev/api/posts/{id}" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY"
 ```
 
-### Create Post (JSON with media URLs)
+### 创建帖子（包含媒体文件链接）
 ```bash
 curl -X POST "https://api.postproxy.dev/api/posts" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY" \
@@ -60,8 +60,8 @@ curl -X POST "https://api.postproxy.dev/api/posts" \
   }'
 ```
 
-### Create Post (File Upload)
-Use multipart form data to upload local files:
+### 创建帖子（通过文件上传）
+使用多部分表单数据上传本地文件：
 ```bash
 curl -X POST "https://api.postproxy.dev/api/posts" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY" \
@@ -72,8 +72,8 @@ curl -X POST "https://api.postproxy.dev/api/posts" \
   -F "media[]=@/path/to/image2.png"
 ```
 
-### Create Draft
-Add `post[draft]=true` to create without publishing:
+### 创建草稿
+添加 `post[draft]=true` 以创建未发布的帖子：
 ```bash
 curl -X POST "https://api.postproxy.dev/api/posts" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY" \
@@ -83,16 +83,16 @@ curl -X POST "https://api.postproxy.dev/api/posts" \
   -F "post[draft]=true"
 ```
 
-### Publish Draft
+### 发布草稿
 ```bash
 curl -X POST "https://api.postproxy.dev/api/posts/{id}/publish" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY"
 ```
 
-Profile options: `facebook`, `instagram`, `tiktok`, `linkedin`, `youtube`, `twitter`, `threads` (or use profile IDs)
+个人资料选项：`facebook`、`instagram`、`tiktok`、`linkedin`、`youtube`、`twitter`、`threads`（或使用个人资料 ID）
 
-### Schedule Post
-Add `scheduled_at` to post object:
+### 安排帖子发布时间
+在帖子对象中添加 `scheduled_at` 参数：
 ```bash
 curl -X POST "https://api.postproxy.dev/api/posts" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY" \
@@ -106,15 +106,15 @@ curl -X POST "https://api.postproxy.dev/api/posts" \
   }'
 ```
 
-### Delete Post
+### 删除帖子
 ```bash
 curl -X DELETE "https://api.postproxy.dev/api/posts/{id}" \
   -H "Authorization: Bearer $POSTPROXY_API_KEY"
 ```
 
-## Platform-Specific Parameters
+## 平台特定参数
 
-For Instagram, TikTok, YouTube, add `platforms` object:
+对于 Instagram、TikTok 和 YouTube，需要添加 `platforms` 对象：
 ```json
 {
   "platforms": {
@@ -125,6 +125,5 @@ For Instagram, TikTok, YouTube, add `platforms` object:
 }
 ```
 
-## User Request
-
+## 用户请求参数
 $ARGUMENTS

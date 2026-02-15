@@ -1,344 +1,200 @@
 ---
 name: decision-trees
-description: Decision tree analysis for complex decision-making across all domains. Use when user needs to evaluate multiple options with uncertain outcomes, assess risk/reward scenarios, or structure choices systematically. Applicable to business, investment, personal decisions, operations, career choices, product strategy, and any situation requiring structured evaluation. Triggers include decision tree, should I, what if, evaluate options, compare alternatives, risk analysis.
+description: 决策树分析适用于所有领域的复杂决策过程。当用户需要评估具有不确定结果的多个选项、评估风险/回报情景或系统地梳理决策流程时，可以使用这种方法。它适用于商业决策、投资决策、个人选择、运营管理、职业规划以及任何需要结构化评估的情境。常见的应用场景包括：决策树建模、判断“我应该怎么做？”、“如果……会怎样？”、选项对比、风险评估等。
 ---
 
-# Decision Trees — Structured Decision-Making
-
-Decision tree analysis: a visual tool for making decisions with probabilities and expected value.
+# 决策树——结构化决策方法
 
-## When to Use
+决策树分析：一种用于基于概率和预期价值进行决策的可视化工具。
 
-✅ **Good for:**
-- Business decisions (investments, hiring, product launches)
-- Personal choices (career, relocation, purchases)
-- Trading & investing (position sizing, entry/exit)
-- Operational decisions (expansion, outsourcing)
-- Any situation with measurable consequences
+## 适用场景
 
-❌ **Not suitable for:**
-- Decisions with true uncertainty (black swans)
-- Fast tactical choices
-- Purely emotional/ethical questions
-
-## Method
+✅ **适用于：**
+- 商业决策（投资、招聘、产品发布）
+- 个人选择（职业发展、搬家、购物）
+- 交易与投资（持仓规模、入场/出场时机）
+- 运营决策（扩张、外包）
+- 任何具有可衡量后果的决策场景
 
-**Decision tree** = tree-like structure where:
-- **Decision nodes** (squares) — your actions
-- **Chance nodes** (circles) — random events
-- **End nodes** (triangles) — final outcomes
+❌ **不适用于：**
+- 具有完全不确定性的决策（黑天鹅事件）
+- 快速的战术性决策
+- 纯粹基于情感或伦理的决策
 
-**Process:**
-1. **Define options** — all possible actions
-2. **Define outcomes** — what can happen after each action
-3. **Estimate probabilities** — how likely is each outcome (0-100%)
-4. **Estimate values** — utility/reward for each outcome (money, points, utility units)
-5. **Calculate EV** — expected value = Σ (probability × value)
-6. **Choose** — option with highest EV
+## 方法原理
 
-## Formula
+**决策树**是一种树状结构，其中：
+- **决策节点**（方形）——代表你的选择
+- **随机节点**（圆形）——代表随机事件
+- **终点节点**（三角形）——代表最终结果
 
-```
-EV = Σ (probability_i × value_i)
-```
+**决策步骤：**
+1. **确定选项**——列出所有可能的行动方案
+2. **预测结果**——分析每个行动可能带来的结果
+3. **估算概率**——评估每个结果的概率（0-100%）
+4. **评估价值**——计算每个结果的收益或损失
+5. **计算预期价值（EV）**——预期价值 = Σ（概率 × 结果价值）
+6. **选择**——预期价值最高的选项
 
-**Example:**
-- Outcome A: 70% probability, +$100 → 0.7 × 100 = $70
-- Outcome B: 30% probability, -$50 → 0.3 × (-50) = -$15
-- **EV = $70 + (-$15) = $55**
+## 公式示例（略）
 
-## Classic Example (from Wikipedia)
+**示例：**
+- 结果A：70%的概率，收益100美元 → 0.7 × 100 = 70美元
+- 结果B：30%的概率，损失50美元 → 0.3 × (-50) = -15美元
+- **预期价值 = 70美元 + (-15美元) = 55美元**
 
-**Decision:** Go to party or stay home?
+**经典示例（来自维基百科）**
 
-### Estimates:
-- Party: +9 utility (fun)
-- Home: +3 utility (comfort)
-- Carrying jacket unnecessarily: -2 utility
-- Being cold: -10 utility
-- Probability cold: 70%
-- Probability warm: 30%
+**决策：**去参加派对还是待在家里？**
 
-### Tree:
+- 参加派对：收益9（乐趣）
+- 待在家里：收益3（舒适）
+- 无谓地穿外套：收益-2
+- 感到寒冷：收益-10
+- 感到寒冷的概率：70%
+- 不感到寒冷的概率：30%
 
-```
-Decision
-├─ Go to party
-│  ├─ Take jacket
-│  │  ├─ Cold (70%) → 9 utility (party)
-│  │  └─ Warm (30%) → 9 - 2 = 7 utility (carried unnecessarily)
-│  │  EV = 0.7 × 9 + 0.3 × 7 = 8.4
-│  └─ Don't take jacket
-│     ├─ Cold (70%) → 9 - 10 = -1 utility (froze)
-│     └─ Warm (30%) → 9 utility (perfect)
-│     EV = 0.7 × (-1) + 0.3 × 9 = 2.0
-└─ Stay home
-   └─ EV = 3.0 (always)
-```
+**决策树：**
 
-**Conclusion:** Go and take jacket (EV = 8.4) > stay home (EV = 3.0) > go without jacket (EV = 2.0)
+**结论：**穿外套去参加派对（预期价值8.4）> 待在家里（预期价值3.0）> 不穿外套去参加派对（预期价值2.0）**
 
-## Business Example
+**商业决策示例**
 
-**Decision:** Launch new product?
+**决策：**是否发布新产品？**
 
-### Estimates:
-- Success probability: 40%
-- Failure probability: 60%
-- Profit if success: $500K
-- Loss if failure: $200K
-- Don't launch: $0
+- 成功概率：40%
+- 失败概率：60%
+- 成功时的收益：50万美元
+- 失败时的损失：20万美元
+- 不发布产品的收益：0美元
 
-### Tree:
+**决策树：**
 
-```
-Launch product
-├─ Success (40%) → +$500K
-└─ Failure (60%) → -$200K
+**结论：**发布产品（预期价值8万美元）比不发布产品（预期价值0美元）更有利**
 
-EV = (0.4 × 500K) + (0.6 × -200K) = 200K - 120K = +$80K
+**交易示例**
 
-Don't launch
-└─ EV = $0
-```
+**决策：**是入场交易还是等待时机？**
 
-**Conclusion:** Launch (EV = +$80K) is better than not launching ($0).
+- 上涨的概率：60%
+- 下跌的概率：40%
+- 持仓规模：1000美元
+- 目标收益：上涨10%（收益100美元）
+- 止损点：下跌5%（损失50美元）
 
-## Trading Example
+**决策树：**
 
-**Decision:** Enter position or wait?
+**结论：**入场交易的预期价值为正（40美元），优于等待（预期价值0美元）**
 
-### Estimates:
-- Probability of rise: 60%
-- Probability of fall: 40%
-- Position size: $1000
-- Target: +10% ($100 profit)
-- Stop-loss: -5% ($50 loss)
+## 方法局限性
 
-### Tree:
+⚠️ **关键问题：**
+- **主观估计**——概率值往往基于猜测
+- **未考虑风险偏好**——忽略了人类的风险厌恶心理
+- **模型过于简化**——现实情况更为复杂
+- **结果不稳定**——数据微小变化可能导致决策树结构大幅改变
+- **可能存在误差**——存在更精确的决策方法（如随机森林）
 
-```
-Enter position
-├─ Rise (60%) → +$100
-└─ Fall (40%) → -$50
+**但：**该方法对于**梳理思维过程**非常有价值，即使数值估计并不精确。
 
-EV = (0.6 × 100) + (0.4 × -50) = 60 - 20 = +$40
+## 用户使用流程
 
-Wait
-└─ No position → $0
-
-EV = $0
-```
-
-**Conclusion:** Entering position has positive EV (+$40), better than waiting ($0).
-
-## Method Limitations
-
-⚠️ **Critical points:**
-
-1. **Subjective estimates** — probabilities often "finger in the air"
-2. **Doesn't account for risk appetite** — ignores psychology (loss aversion)
-3. **Simplified model** — reality is more complex
-4. **Unstable** — small data changes can drastically alter the tree
-5. **May be inaccurate** — other methods exist that are more precise (random forests)
-
-**But:** The method is valuable for **structuring thinking**, even if numbers are approximate.
-
-## User Workflow
-
-### 1. Structuring
-
-Ask:
-- What are the action options?
-- What are possible outcomes?
-- What are values/utility for each outcome?
-- How do we measure value? (money, utility units, happiness points)
-
-### 2. Probability Estimation
-
-Help estimate through:
-- Historical data (if available)
-- Comparable situations
-- Expert judgment (user experience)
-- Subjective assessment (if no data)
-
-### 3. Visualization
-
-Draw tree in markdown:
-
-```
-Decision
-├─ Option A
-│  ├─ Outcome A1 (X%) → Value Y
-│  └─ Outcome A2 (Z%) → Value W
-└─ Option B
-   └─ Outcome B1 (100%) → Value V
-```
-
-### 4. EV Calculation
-
-For each option:
-```
-EV_A = (X% × Y) + (Z% × W)
-EV_B = V
-```
-
-### 5. Recommendation
-
-Option with highest EV = best choice (rationally).
-
-**But add context:**
-- Risk tolerance (can user handle worst case)
-- Time horizon (when is result needed)
-- Other factors (reputational risk, emotions, ethics)
-
-## Application Examples by Domain
-
-### Trading & Investing
-
-**Position Sizing:**
-- Options: 5%, 10%, 20% of capital
-- Outcomes: Profit/loss with different probabilities
-- Value: Absolute profit in $
-
-**Entry Timing:**
-- Options: Enter now, wait for -5%, wait for -10%
-- Outcomes: Price goes up/down
-- Value: Opportunity cost vs better entry price
-
-### Business Strategy
-
-**Product Launch:**
-- Options: Launch / don't launch
-- Outcomes: Success / failure
-- Value: Revenue, market share, costs
-
-**Hiring Decision:**
-- Options: Hire candidate A / candidate B / don't hire
-- Outcomes: Successful onboarding / quit after X months
-- Value: Productivity, costs, opportunity cost
-
-### Personal Decisions
-
-**Career Change:**
-- Options: Stay / change job / start business
-- Outcomes: Success / failure in new role
-- Value: Salary, satisfaction, growth, risk
-
-**Real Estate:**
-- Options: Buy house A / house B / continue renting
-- Outcomes: Price increase / decrease / personal situation changes
-- Value: Net worth, monthly costs, quality of life
-
-### Operations
-
-**Capacity Planning:**
-- Options: Expand production / outsource / status quo
-- Outcomes: Demand increases / decreases
-- Value: Profit, utilization, fixed costs
-
-**Vendor Selection:**
-- Options: Vendor A / Vendor B / in-house
-- Outcomes: Quality, reliability, failures
-- Value: Total cost of ownership
-
-## Calculator Script
-
-Use `scripts/decision_tree.py` for automated EV calculations:
-
-```bash
-python3 scripts/decision_tree.py --interactive
-```
-
-Or via JSON:
-
-```bash
-python3 scripts/decision_tree.py --json tree.json
-```
-
-JSON format:
-
-```json
-{
-  "decision": "Launch product?",
-  "options": [
-    {
-      "name": "Launch",
-      "outcomes": [
-        {"name": "Success", "probability": 0.4, "value": 500000},
-        {"name": "Failure", "probability": 0.6, "value": -200000}
-      ]
-    },
-    {
-      "name": "Don't launch",
-      "outcomes": [
-        {"name": "Status quo", "probability": 1.0, "value": 0}
-      ]
-    }
-  ]
-}
-```
-
-Output:
-
-```
-📊 Decision Tree Analysis
-
-Decision: Launch product?
-
-Option 1: Launch
-  └─ EV = $80,000.00
-     ├─ Success (40.0%) → +$500,000.00
-     └─ Failure (60.0%) → -$200,000.00
-
-Option 2: Don't launch
-  └─ EV = $0.00
-     └─ Status quo (100.0%) → $0.00
-
-✅ Recommendation: Launch (EV: $80,000.00)
-```
-
-## Final Checklist
-
-Before giving recommendation, ensure:
-
-- ✅ All options covered
-- ✅ Probabilities sum to 100% for each branch
-- ✅ Values are realistic (not fantasies)
-- ✅ Worst case scenario is clear to user
-- ✅ Risk/reward ratio is explicit
-- ✅ Method limitations mentioned
-- ✅ Qualitative context added (not just EV)
-
-## Method Advantages
-
-✅ **Simple** — people understand trees intuitively
-✅ **Visual** — clear structure
-✅ **Works with little data** — can use expert estimates
-✅ **White box** — transparent logic
-✅ **Worst/best case** — extreme scenarios visible
-✅ **Multiple decision-makers** — can account for different interests
-
-## Method Disadvantages
-
-❌ **Unstable** — small data changes → large tree changes
-❌ **Inaccurate** — often more precise methods exist
-❌ **Subjective** — probability estimates "from the head"
-❌ **Complex** — becomes unwieldy with many outcomes
-❌ **Doesn't account for risk preference** — assumes risk neutrality
-
-## Important
-
-The method is valuable for **structuring thinking**, but numbers are often taken from thin air.
-
-What matters more is the process — **forcing yourself to think through all branches** and explicitly evaluate consequences.
-
-Don't sell the decision as "scientifically proven" — it's just a framework for conscious choice.
-
-## Further Reading
-
-- Decision trees in operations research
-- Influence diagrams (more compact for complex decisions)
-- Utility functions (accounting for risk aversion)
-- Monte Carlo simulation (for greater accuracy)
-- Real options analysis (for strategic decisions)
+### 1. 构建决策树**
+- 明确所有可能的行动选项
+- 分析每个选项可能带来的结果
+- 评估每个结果的收益或损失
+- 确定评估价值的依据（金钱、效用单位等）
+
+### 2. 概率估算**
+- 可以利用历史数据、类似情况或专家判断进行估算
+- 在缺乏数据时，也可以进行主观评估
+
+### 3. 可视化**
+- 使用Markdown格式绘制决策树结构
+
+### 4. 计算预期价值**
+- 对每个选项进行预期价值计算
+
+### 5. 做出决策**
+- 选择预期价值最高的选项
+
+**但需考虑以下因素：**
+- 用户的风险承受能力
+- 需要决策的时间期限
+- 其他相关因素（如声誉风险、情感因素、伦理考量）
+
+## 各领域的应用示例
+
+### 交易与投资
+- **持仓规模**：决定投入资本的5%、10%或20%
+- **结果**：不同概率下的收益或损失
+- **评估标准**：绝对收益金额
+
+### 商业战略
+- **产品发布**：决定是否发布新产品
+- **结果**：产品是否成功
+- **评估标准**：收入、市场份额、成本
+
+### 招聘决策
+- **候选人选择**：选择候选人A、候选人B或不招聘
+- **结果**：候选人是否能够融入团队或离职
+- **评估标准**：工作效率、成本、机会成本
+
+### 个人决策
+- **职业发展**：是否换工作或创业
+- **结果**：新工作中的表现
+- **评估标准**：薪资、工作满意度、个人成长
+
+### 房地产
+- **购房决策**：购买房屋A、房屋B或继续租房
+- **结果**：房价涨跌或个人生活变化
+- **评估标准**：净资产、月度成本、生活质量
+
+### 运营决策
+- **产能规划**：决定扩大生产、外包还是维持现状
+- **结果**：需求变化
+- **评估标准**：利润、设备利用率、固定成本
+
+**计算工具**
+- 使用`scripts/decision_tree.py`脚本自动计算预期价值
+
+**数据格式：**
+- JSON格式或Markdown格式均可
+
+**输出结果：**
+
+**最终检查清单：**
+- 确保所有选项都被考虑在内
+- 每个分支的概率总和为100%
+- 评估的价值符合实际情况
+- 用户清楚了解最坏情况
+- 风险与收益的比例明确
+- 提及方法的局限性
+- 提供了决策的定性分析（而不仅仅是预期价值）
+
+## 方法优势**
+- **简单易懂**：决策树结构直观易理解
+- **可视化效果好**：决策过程一目了然
+- **数据要求低**：即使数据较少也能使用
+- **逻辑透明**：决策过程透明可追溯
+- **能考虑多种情况**：适用于多种决策场景
+
+**方法劣势**
+- **结果不稳定**：数据微小变化可能导致决策树结构大幅变动
+- **可能存在误差**：存在更精确的决策方法
+- **主观性较强**：概率估计依赖于个人判断
+- **适用范围有限**：当结果众多时，决策树可能难以处理
+
+**重要提示：**
+- 该方法有助于梳理思维过程，但数值估计往往基于假设
+- 更重要的是整个决策过程本身——务必全面考虑所有可能性并明确评估后果
+
+**补充说明：**
+- 这种方法并非“科学验证”的决策工具，而只是一个辅助工具。
+
+**进一步阅读资源：**
+- 决策树在运筹学中的应用
+- 影响图（适用于复杂决策的简化工具）
+- 效用函数（用于考虑风险厌恶）
+- 蒙特卡洛模拟（提高预测准确性）
+- 实际期权分析（用于战略决策）

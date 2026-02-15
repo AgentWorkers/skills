@@ -1,19 +1,19 @@
 ---
 name: skill-release-manager
-description: Automates the release lifecycle of OpenClaw skills. Updates version, syncs to GitHub (subtree), creates GitHub Releases, and publishes to ClawHub in one command.
+description: 该脚本自动化了 OpenClaw 技能的发布流程：通过一个命令即可完成版本更新、与 GitHub（子树）的同步、GitHub 发布物的创建以及内容的发布到 ClawHub 的操作。
 ---
 
-# Skill Release Manager
+# 技能发布管理器
 
-Unified release tool for OpenClaw skills.
+OpenClaw 技能的统一发布工具。
 
-## Features
-1.  **Version Bump**: Automatically increments `package.json` version (patch/minor/major).
-2.  **Git Ops**: Commits the version bump to the local workspace.
-3.  **GitHub Release**: Uses `skill-publisher` to sync code to a remote repo and create a GitHub Release.
-4.  **ClawHub Publish**: Pushes the skill to the ClawHub registry.
+## 主要功能
+1. **版本升级**：自动更新 `package.json` 文件中的版本号（patch、minor、major）。
+2. **Git 操作**：将版本升级信息提交到本地工作区。
+3. **GitHub 发布**：使用 `skill-publisher` 将代码同步到远程仓库，并在 GitHub 上创建一个新的发布版本。
+4. **ClawHub 发布**：将技能发布到 ClawHub 注册表中。
 
-## Usage
+## 使用方法
 
 ```bash
 node skills/skill-release-manager/index.js \
@@ -23,12 +23,12 @@ node skills/skill-release-manager/index.js \
   --notes "Release notes here"
 ```
 
-## Options
-*   `--path`: Path to the skill directory (required).
-*   `--remote`: Target GitHub repository URL (required).
-*   `--bump`: Version increment (`patch`, `minor`, `major`) or specific version (`1.2.3`). Default: `patch`.
-*   `--notes`: Release notes for GitHub.
+## 常用参数
+*   `--path`：技能目录的路径（必需）。
+*   `--remote`：目标 GitHub 仓库的 URL（必需）。
+*   `--bump`：版本升级类型（`patch`、`minor`、`major`）或具体版本号（例如 `1.2.3`）。默认值：`patch`。
+*   `--notes`：用于 GitHub 的发布说明。
 
-## Prerequisites
-*   `skill-publisher` skill must be present.
-*   `clawhub` CLI must be authenticated.
+## 先决条件
+- 必须安装 `skill-publisher` 工具。
+- 必须完成 `clawhub` 命令行工具的认证。

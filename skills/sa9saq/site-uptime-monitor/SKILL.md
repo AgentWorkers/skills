@@ -1,36 +1,36 @@
 ---
-description: Monitor website uptime, measure response times, and check HTTP status codes for any URL.
+description: 监控网站的正常运行时间（uptime），测量响应时间（response times），并检查任意 URL 的 HTTP 状态码（HTTP status codes）。
 ---
 
-# Uptime Monitor
+# 运行时间监控器
 
-Check website availability and performance.
+用于检查网站的可用性和性能。
 
-## Capabilities
+## 功能
 
-- **Uptime Check**: Verify if a website is up or down
-- **Response Time**: Measure DNS, connect, TLS, and total response times
-- **Status Codes**: Report HTTP status codes and redirects
-- **Bulk Check**: Monitor multiple URLs at once
-- **History**: Repeated checks over time with summary
+- **运行时间检查**：验证网站是否正常运行（是否处于“上线”或“下线”状态）
+- **响应时间**：测量DNS解析时间、连接时间、TLS传输时间以及总响应时间
+- **状态码**：报告HTTP状态码及页面重定向情况
+- **批量检查**：同时监控多个URL
+- **历史记录**：记录多次检查的结果并生成汇总报告
 
-## Usage
+## 使用方法
 
-Ask the agent to:
-- "Is example.com up?"
-- "Measure response time for mysite.org"
-- "Check these 5 URLs and report status"
-- "Monitor api.example.com every 30 seconds for 5 minutes"
+您可以要求代理执行以下操作：
+- “example.com现在是否可以访问？”
+- “测量mysite.org的响应时间”
+- “检查这5个URL的状态”
+- “每隔30秒监控api.example.com的状态，持续5分钟”
 
-## How It Works
+## 工作原理
 
-Uses `curl` with timing output:
+该工具通过`curl`命令实现数据采集，并记录相应的执行时间：
 
 ```bash
 curl -o /dev/null -s -w "HTTP %{http_code} | DNS: %{time_namelookup}s | Connect: %{time_connect}s | TLS: %{time_appconnect}s | Total: %{time_total}s\n" https://example.com
 ```
 
-## Requirements
+## 系统要求
 
-- `curl` (pre-installed on most systems)
-- No API keys needed
+- 需要安装`curl`（大多数系统均已预装）
+- 无需使用API密钥

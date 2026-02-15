@@ -1,112 +1,112 @@
 ---
 name: Video Editing
-description: Edit videos with AI background removal, color grading, upscaling, stabilization, and enhancement tools.
+description: 使用人工智能技术编辑视频，支持背景去除、色彩校正、画质提升、视频稳定化以及视频效果优化等功能。
 metadata: {"clawdbot":{"emoji":"🎞️","os":["linux","darwin","win32"]}}
 ---
 
-# AI Video Editing
+# 人工智能视频编辑
 
-Help users edit and enhance videos with AI tools.
+帮助用户使用人工智能工具来编辑和优化视频。
 
-**Rules:**
-- Ask what edit they need: remove background, color grade, upscale, stabilize, enhance
-- Check technique files: `background-removal.md`, `color-grading.md`, `upscaling.md`, `stabilization.md`, `audio.md`, `effects.md`
-- Check `tools.md` for provider-specific setup
-- Always work on copies, preserve originals
+**操作规则：**
+- 询问用户需要进行的编辑操作：去除背景、调色、提升画质、稳定画面、增强视频效果等。
+- 查阅相关技术文档：`background-removal.md`、`color-grading.md`、`upscaling.md`、`stabilization.md`、`audio.md`、`effects.md`。
+- 查看 `tools.md` 以获取特定工具的设置指南。
+- 始终在副本上进行编辑，保留原始文件。
 
 ---
 
-## Edit Type Selection
+## 编辑类型选择
 
-| Task | Technique | Best Tools |
+| 任务 | 技术方法 | 最佳工具 |
 |------|-----------|------------|
-| Remove background | Video matting | Runway, Unscreen, rotobrush |
-| Color correction | LUTs, grading | DaVinci Resolve, Runway |
-| Increase resolution | Video upscaling | Topaz Video AI, Real-ESRGAN |
-| Fix shaky footage | Stabilization | DaVinci, Premiere, ffmpeg |
-| Clean up audio | Enhancement | Adobe Podcast, Descript |
-| Add effects | AI effects | Runway, After Effects |
-| Slow motion | Frame interpolation | RIFE, Topaz |
+| 去除背景 | 视频抠像 | Runway、Unscreen、Rotobrush |
+| 调色 | 色彩校正 | DaVinci Resolve、Runway |
+| 提升分辨率 | 视频缩放 | Topaz Video AI、Real-ESRGAN |
+| 修复抖动画面 | 稳定画面 | DaVinci、Premiere、ffmpeg |
+| 清理音频 | 音频增强 | Adobe Podcast、Descript |
+| 添加特效 | 人工智能特效 | Runway、After Effects |
+| 慢动作处理 | 帧插值 | RIFE、Topaz |
 
 ---
 
-## Workflow Principles
+## 工作流程原则
 
-- **Proxy workflow** — edit low-res, export high-res
-- **Non-destructive** — preserve original files
-- **Render in stages** — color before effects before upscale
-- **Check key frames** — AI can flicker between cuts
-- **Audio separately** — enhance audio track independently
-
----
-
-## Common Workflows
-
-### Background Replacement
-1. Export with alpha (green screen or AI matte)
-2. Place over new background
-3. Match lighting/color
-4. Add edge blur for realism
-5. Composite shadows
-
-### Enhancement Pipeline
-1. Stabilize (if needed)
-2. Color correct / grade
-3. Denoise
-4. Upscale to final resolution
-5. Sharpen (light)
-
-### Audio Cleanup
-1. Remove background noise
-2. Enhance voice clarity
-3. Normalize levels
-4. Add compression if needed
+- **代理工作流程**：先使用低分辨率文件进行编辑，再导出高分辨率结果。
+- **非破坏性编辑**：确保原始文件不被修改。
+- **分阶段渲染**：先进行色彩处理，再添加特效，最后进行分辨率提升。
+- **检查关键帧**：人工智能处理可能导致画面在切换时出现闪烁现象。
+- **音频独立处理**：音频轨道应单独进行优化。
 
 ---
 
-## Frame Rates
+## 常见工作流程
 
-| Source | Interpolation | Output |
+### 背景替换
+1. 将视频导出为带Alpha通道的格式（如绿幕或人工智能抠像结果）。
+2. 将处理后的视频叠加到新背景上。
+3. 调整光线和色彩以匹配新背景。
+4. 添加边缘模糊效果以增强真实感。
+5. 合成最终画面。
+
+### 视频优化流程
+1. （如有需要）稳定画面。
+2. 调整色彩。
+3. 去除噪点。
+4. 将视频分辨率提升至最终需求。
+5. 调整图像清晰度。
+
+### 音频处理
+1. 去除背景噪音。
+2. 提高语音清晰度。
+3. 标准化音频音量。
+4. 如有必要，对音频进行压缩。
+
+---
+
+## 帧率转换
+
+| 原始帧率 | 插值方式 | 输出帧率 |
 |--------|---------------|--------|
-| 24fps | 2x | 48fps |
-| 30fps | 2x | 60fps |
-| 30fps | 4x | 120fps |
-| 60fps | 2x | 120fps |
+| 24fps | 2倍插值 | 48fps |
+| 30fps | 2倍插值 | 60fps |
+| 30fps | 4倍插值 | 120fps |
+| 60fps | 2倍插值 | 120fps |
 
-**Use cases:**
-- Slow motion (need more frames)
-- Gaming footage (smooth motion)
-- Film to video conversion
-
----
-
-## Export Settings
-
-**YouTube/General:**
-- H.264 codec
-- 1080p or 4K
-- 15-30 Mbps bitrate
-
-**Archive/Master:**
-- ProRes or DNxHD
-- Original resolution
-- Maximum quality
-
-**Social Media:**
-- Platform presets
-- 9:16 for vertical
-- Under file size limits
+**应用场景：**
+- 慢动作处理（需要更多帧率）。
+- 游戏画面处理（确保动作流畅）。
+- 电影转视频格式。
 
 ---
 
-### Current Setup
-<!-- Tool: status -->
+## 导出设置
 
-### Projects
-<!-- What they're editing -->
+**YouTube/通用设置：**
+- 使用 H.264 编解码器。
+- 分辨率选择 1080p 或 4K。
+- 数据传输速率控制在 15-30 Mbps 之间。
 
-### Preferences
-<!-- Preferred tools, codecs, settings -->
+**归档/高质量版本：**
+- 使用 ProRes 或 DNxHD 格式。
+- 保持原始分辨率。
+- 确保视频质量达到最高标准。
+
+**社交媒体设置：**
+- 根据平台要求进行格式调整（例如，视频比例设置为 9:16）。
+- 遵守文件大小限制。
 
 ---
-*Check technique files for detailed workflows.*
+
+### 当前工具配置
+<!-- 请查看相关技术文档以获取最新工具状态信息。 -->
+
+### 正在处理的项目
+<!-- 请列出当前正在编辑的项目内容。 -->
+
+### 使用偏好
+<!-- 请说明常用的工具、编码格式及设置偏好。 -->
+
+---
+
+*请查阅相关技术文档以获取更详细的工作流程信息。*

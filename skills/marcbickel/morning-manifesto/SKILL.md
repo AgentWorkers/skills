@@ -1,17 +1,38 @@
 ---
 name: morning-manifesto
-description: Daily morning reflection workflow with task sync to Obsidian, Apple Reminders, and Linear
+description: 每日晨间反思工作流程：将任务同步到 Obsidian、Apple Reminders 和 Linear 中  
+
+**步骤 1：创建任务**  
+1. 在 Obsidian 中创建一个新的笔记或页面，用于记录当天的反思内容。  
+2. 在 Apple Reminders 中设置一个定时提醒，提醒时间设定为每天早晨。  
+3. 在 Linear 应用中创建一个新的任务，设置开始时间为当天早晨的提醒时间。  
+
+**步骤 2：编写反思内容**  
+1. 在 Obsidian 中输入当天早晨的反思内容。  
+2. 在 Linear 应用中输入与反思内容相关的任务细节（如目标、行动项等）。  
+
+**步骤 3：同步任务**  
+1. 使用 Obsidian 的插件（如 “Sync with Reminders”）将 Obsidian 中的笔记与 Apple Reminders 同步。  
+2. 使用 Linear 的 API 或其他同步工具将 Linear 中的任务与 Apple Reminders 同步。  
+
+**步骤 4：执行任务**  
+1. 根据 Apple Reminders 的提醒，开始当天的反思活动。  
+2. 根据 Linear 中的任务安排，执行相应的行动项。  
+
+**注意事项**：  
+- 确保所有工具都正确配置并同步。  
+- 定期检查同步状态，确保任务没有丢失或重复。  
+- 及时更新反思内容和任务进度。
 metadata: {"clawdbot":{"emoji":"🌅","trigger":"/morning_manifesto"}}
 ---
 
-# Morning Manifesto 🌅
+# 早晨宣言 🌅  
+触发条件：`/morning_manifesto`  
 
-Trigger: `/morning_manifesto`
+## 流程  
 
-## Flow
-
-### 1. Send the prompts
-When `/morning-manifesto` is triggered, immediately send:
+### 1. 发送提示  
+当 `/morning-manifesto` 被触发时，立即发送以下内容：  
 ```
 Good morning! 🚀 Please tell me about:
 - What you did yesterday?
@@ -19,13 +40,13 @@ Good morning! 🚀 Please tell me about:
 - Today's adventure
 - Tasks and commitments
 - How are the weekly priorities going?
-```
+```  
 
-### 2. Wait for response
-Wait for user reply (text or audio). Audio is automatically transcribed via whisper.cpp.
+### 2. 等待用户回复  
+等待用户的文本或音频回复。音频会通过 `whisper.cpp` 自动转录。  
 
-### 3. Parse and append to Obsidian daily note
-Parse the response and append to today's note in the Obsidian vault (🔥 Fires). Structure:
+### 3. 解析并添加到 Obsidian 日志中  
+解析用户的回复，并将其添加到 Obsidian 日志中（🔥 Fires 文件夹）。日志结构如下：  
 ```markdown
 ## Morning Manifesto - [YYYY-MM-DD]
 
@@ -44,28 +65,28 @@ Parse the response and append to today's note in the Obsidian vault (🔥 Fires)
 
 ### Weekly priorities status
 [user's response]
-```
+```  
 
-### 4. Sync tasks with Apple Reminders
-For each task/commitment mentioned:
-- **If task exists**: Update its due date to today
-- **If new task**: Create a new reminder with due date today
-- Use the `apple-reminders` skill for this
+### 4. 同步任务到 Apple Reminders  
+对于用户提到的每个任务或承诺：  
+- **如果任务已存在**：将其截止日期更新为今天；  
+- **如果为新任务**：创建一个新的提醒，截止日期设为今天；  
+使用 `apple-reminders` 技能来完成这一操作。  
 
-### 5. Query Linear for urgent issues
-Query all teams for issues with priority = urgent (1). Format:
+### 5. 查询 Linear 系统中的紧急问题  
+查询所有团队中优先级为“紧急”（1）的问题。查询格式如下：  
 ```
 🔴 Urgent Linear Issues:
 - [Team] [Issue ID]: [Title]
-```
+```  
 
-### 6. Send summary
-Send a final message with:
-- Today's Apple Reminders (all due today)
-- Urgent Linear issues across all teams
+### 6. 发送总结信息  
+发送一条总结信息，内容包括：  
+- 今天需要在 Apple Reminders 中完成的所有任务；  
+- 所有团队中存在的紧急问题。  
 
-## Key details
-- Use today's date for Obsidian note naming (YYYY-MM-DD.md)
-- For Apple Reminders: query by due date, create with due date
-- For Linear: use `priority = 1` filter, query all teams
-- Pay special attention to "Tasks and commitments" section
+## 关键细节：  
+- 使用今天的日期作为 Obsidian 日志的文件名（格式为 `YYYY-MM-DD.md`）；  
+- 对于 Apple Reminders：按截止日期进行查询并创建新的提醒；  
+- 对于 Linear 系统：使用 `priority = 1` 的过滤条件来查询所有团队中的问题；  
+- 特别关注“任务和承诺”部分。

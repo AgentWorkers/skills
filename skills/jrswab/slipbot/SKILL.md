@@ -1,61 +1,60 @@
 ---
 name: Slipbot
-description: Used to capture and organize notes, ideas, quotes, and journal entries with automatic tagging, linking, and knowledge graph maintenance.
+description: 用于捕获和组织笔记、想法、引文以及日记条目，具备自动标记、链接生成和知识图谱维护的功能。
 ---
 
-# Configuration
+# 配置
 
-Run `pwd` and get the `{curDir}`
+运行 `pwd` 命令以获取当前目录 `{curDir}`。
 
-- **Notes directory:** `{curDir}/slipbox/`
-- **Graph index:** `{curDir}/slipbox/.graph/graph.json`
-- **Timezone:** User's local timezone (check USER.md or system)
+- **笔记目录：** `{curDir}/slipbox/`
+- **图表索引：** `{curDir}/slipbox/.graph/graph.json`
+- **时区：** 用户的本地时区（请参阅 USER.md 或系统设置）
 
-# Note Patterns & Types
+# 笔记的模式与类型
 
-### Prefixes
-- `> {content}` → quote, contains attributed text.
-- `! {content}` → idea, for speculative or creative thinking
-- `* {content}` → journal, for personal reflection and logs
-- `- {content}` → note, for information about subject
+### 前缀
+- `> {内容}` → 引用，包含带有来源信息的文本。
+- `! {内容}` → 想法，用于表达推测性或创造性的思考。
+- `* {内容}` → 日志，用于个人反思和记录。
+- `- {内容}` → 信息笔记，用于记录特定主题的相关内容。
 
-### Delimiters
-- `~ {content}` → source (appended after prefix+content combination)
-    - Example note with source: `- Content here ~ Source Type, Source Title by Source Author`
-    - Example quote with source: `> Content here ~ Source Type, Source Author`
+### 分隔符
+- `~ {内容}` → 来源信息（添加在前缀和内容之后）
+    - 示例：`- 这里是内容 ~ 来源类型，来源作者：来源标题`
 
-# Workflow
+# 工作流程
 
-## 1. Capture
+## 1. 捕获笔记内容
 
-When a note is recognized:
+当系统检测到新的笔记时：
 
-1. **Extract content and metadata**
-    - Note content
-    - Type (quote/idea/journal/note)
-    - Source information (if provided)
+1. **提取内容及元数据**
+    - 笔记内容
+    - 笔记类型（引用/想法/日志/信息笔记）
+    - 来源信息（如果提供）
 
-2. **Generate filename**
-    - Format: `YYYYMMDD-HHMMSS-slug.md`
-    - Slug: lowercase, hyphenated, from content passed in (max 4-5 words)
-    - Example: `20260131-143022-compound-interest.md`
+2. **生成文件名**
+    - 格式：`YYYYMMDD-HHMMSS-笔记名称.md`
+    - “笔记名称”：使用小写字母，通过连字符连接，取自笔记内容中的关键词（最多4-5个词）
+    - 例如：`20260131-143022-compound-interest.md`
 
-3. **Check for existing source**
-    - If source is not provided set `source: null`.
-    - If source provided, search existing notes for matching source title (case insensitive)
-        - Use existing source if found
-        - Otherwise, use provided source as-is
-        - **No external API calls** - trust user input
+3. **检查来源信息**
+    - 如果未提供来源信息，则将 `source` 设置为 `null`。
+    - 如果提供了来源信息，搜索现有笔记中是否包含相同的标题（不区分大小写）：
+        - 如果找到匹配的笔记，使用该笔记作为来源；
+        - 否则，使用用户提供的来源信息。
+    **注意：** 不使用外部API进行验证，直接信任用户的输入。
 
-4. **Generate tags**
-    - Extract specific objects concepts (nouns)
-    - Focus on: people, tools, techniques, systems, specific topics
-    - **Avoid broad categories** like "productivity" or "ideas"
-    - **Consistency:** Check existing tags before creating new ones
-    - 2 or 3 tags per note
-    - Examples: `[pomodoro-technique, Cal-Newport, deep-work]`
+4. **生成标签**
+    - 从笔记内容中提取关键概念（名词）：
+        - 重点关注人物、工具、技术、特定主题等。
+        **避免使用过于宽泛的标签**（如“生产力”或“想法”）。
+        **一致性**：在创建新标签前先检查现有标签。
+    - 每条笔记最多添加2-3个标签。
+    - 例如：`[番茄工作法-technique, Cal-Newport, 深度工作]`
 
-5. **Create markdown file**
+5. **创建Markdown文件**
 
 ```yaml
 ---
@@ -72,31 +71,31 @@ links: []
 
 Note content here in markdown.
 ```
-### Note Titles
-- **Descriptive but concise:** 3-8 words
-- **Avoid generic:** Not "Thoughts" or "Notes", be specific
-- **Question format works:** "Why does X happen?" or "How to Y?"
+### 笔记标题
+- **描述性且简洁**：3-8个词
+- **避免使用通用标题**（如“Thoughts”或“Notes”），应具体明确。
+- **建议使用疑问句格式**：例如：“为什么X会发生？”或“如何做Y？”
 
-## 2. Link
+## 2. 建立链接
 
-After creating a note, find connections:
+创建笔记后，寻找相关内容：
 
-1. **Search existing notes**
-   - Look for related concepts, people, topics
-   - Check for overlapping tags
+1. **搜索现有笔记**：
+    - 查找相关的概念、人物或主题。
+    - 检查笔记之间的标签是否重复。
 
-2. **Determine connection type**
-   - **related** - Similar topic or theme
-   - **extends** - Builds on or expands another note
-   - **contradicts** - Opposing viewpoint
-   - **references** - Mentions same person/book/concept
-   - **supports** - Provides evidence for another note
+2. **确定链接类型**：
+    - **相关**：主题或内容相似的笔记。
+    - **扩展**：基于现有笔记进行扩展的笔记。
+    **矛盾**：观点相反的笔记。
+    **引用**：提到同一人物/书籍/概念的笔记。
+    **支持**：为另一篇笔记提供证据的笔记。
 
-3. **Add bidirectional links**
-   - Update both notes' frontmatter
-   - Include reason for connection
+3. **添加双向链接**：
+    - 更新两篇笔记的元数据（前言部分）。
+    - 说明建立链接的原因。
 
-**Quality over quantity:** Only link when genuinely related
+**质量优先于数量**：仅在与笔记内容真正相关时添加链接。
 
 ```yaml
 links:
@@ -105,26 +104,28 @@ links:
     reason: "Both discuss exponential growth concepts"
 ```
 
-## 3. Note Validations
+## 3. 验证笔记的完整性
 
-3.1: **Validate frontmatter** - Ensure the note has the required fields
-    - title
-    - date
-    - type
-    - tags
+3.1：**验证元数据**：
+    - 确保笔记包含必要的字段：
+        - 标题
+        - 日期
+        - 类型
+        - 标签
 
-3.2: **Remove broken links**
-    - Check if notes that the new note links to still exist
-    - If any files are missing save them to `{curDir}/slipbox/missing.md`
+3.2：**检查链接的有效性**：
+    - 确认新笔记所引用的笔记仍然存在。
+    - 如果有文件缺失，将其保存到 `{curDir}/slipbox/missing.md` 文件中。
 
-## 4. Update Graph
+## 4. 更新图表
 
-After capture and linking:
+完成内容捕获和链接建立后：
 
-4.1: **Load graph index**
-    - Read `{curDir}/slipbox/.graph/graph.json`
+4.1：**加载图表索引**：
+    - 读取 `{curDir}/slipbox/.graph/graph.json` 文件。
 
-4.2: **Add/update note entry**
+4.2：**添加/更新笔记信息**：
+    - 将新笔记的信息添加到图表中。
 
 ```json
 {
@@ -146,43 +147,45 @@ After capture and linking:
   "last_updated": "2026-01-31T14:35:00-05:00"
 }
 ```
-4.3: **Remove any entries from graph**
-    - Read `{curDir}/slipbox/missing.md`
-    - If any notes are found missing remove the entry from the graph.
-    - Then remove them from `{curDir}/slipbox/missing.md`
 
-4.4: **Rebuild graph**
-    - If corrupted beyond simple note removals, rebuild from the current note files.
+4.3：**删除无效的笔记链接**：
+    - 检查新笔记引用的笔记是否仍然存在。
+    - 如果有缺失的文件，将其保存到 `{curDir}/slipbox/missing.md`。
+    - 然后从图表中删除对应的记录。
 
-4.5: **Write updated graph**
-    - Save back to `{curDir}/slipbox/.graph/graph.json`
+4.4：**重建图表**：
+    - 如果图表数据损坏严重（无法通过简单操作修复），则需要根据当前的笔记文件重新构建图表。
 
-## Querying
+4.5：**保存更新后的图表**：
+    - 将更新后的图表保存回 `{curDir}/slipbox/.graph/graph.json`。
 
-Respond to natural queries like: "Show me notes about X"
+## 查询功能
 
-**Approach:**
-1. Search graph index first (fast); only fall back to file search if needed.
-2. Present results with titles, dates, snippets
-3. Offer to show full content if relevant
+响应用户查询（例如：“显示关于X的笔记”）：
 
-## User Feedback
+**处理方式**：
+1. 首先在图表索引中快速搜索；
+    - 如有必要，再通过文件系统进行搜索。
+2. 显示查询结果，包括笔记的标题、日期和部分内容。
+    - 如相关，可提供笔记的完整内容。
 
-Keep responses minimal:
-- ❌ Don't narrate every step unless debugging
+## 用户反馈
 
-### Example Interaction
+保持回复简洁：
+- ❌ 除非需要调试，否则不要详细解释每一步的操作过程。
 
-**User:** "- The Feynman Technique is about teaching concepts to identify gaps in understanding"
+### 示例交互
 
-**You:**
-1. Create `20260131-163500-feynman-technique.md`
-2. Tag: `[Feynman-technique, learning, teaching]`
-3. Search for related notes (study techniques, learning methods)
-4. Link to any relevant note about learning
-5. Update graph index
-6. Reply: "Note captured: Feynman Technique"
+**用户**：“费曼技巧是一种用于识别理解漏洞的教学方法。”
+
+**系统操作**：
+1. 创建新笔记 `20260131-163500-feynman-technique.md`，并添加标签 `[Feynman-technique, learning, teaching]`。
+2. 搜索与“费曼技巧”或“学习方法”相关的笔记。
+3. 将找到的相关笔记添加到新笔记的链接中。
+4. 更新图表索引。
+5. 回复用户：“已找到相关笔记：费曼技巧。”
 
 ---
 
-**When to apply this skill:** Whenever user shares content that starts with the defined prefixes the content which follows should be captured for later reference.
+**适用场景**：
+每当用户分享以指定前缀开头的笔记内容时，系统应自动捕获这些内容以供后续参考。

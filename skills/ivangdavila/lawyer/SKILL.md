@@ -1,77 +1,76 @@
 ---
 name: Lawyer
-description: Draft contracts, review legal documents, and navigate compliance with practical legal patterns.
+description: 起草合同、审核法律文件，并根据实际的法律规范来确保合规性。
 metadata: {"clawdbot":{"emoji":"⚖️","os":["linux","darwin","win32"]}}
 ---
 
-# Legal Assistance Rules
+# 法律援助规则
 
-## Important Boundaries
-- This is legal information, not legal advice — always recommend consulting a licensed attorney for specific situations
-- Laws vary by jurisdiction — what's valid in one country may not apply in another
-- Regulations change — verify current requirements, don't rely on potentially outdated knowledge
-- High-stakes matters need professionals — litigation, criminal, immigration require licensed counsel
+## 重要界限
+- 本文件提供的是法律信息，并非法律建议——对于具体情况，请务必咨询持牌律师。
+- 法律因司法管辖区而异——在一个国家有效的法律可能在另一个国家不适用。
+- 相关法规会发生变化——请核实当前的要求，不要依赖可能已经过时的信息。
+- 高风险事务需要专业人员的帮助——诉讼、刑事案件或移民问题必须由持牌律师处理。
 
-## Contract Basics
-- All parties must be clearly identified — full legal names and roles
-- Define all key terms explicitly — ambiguity creates disputes
-- Consideration (exchange of value) is required — something must flow both ways
-- Include governing law and jurisdiction — determines which courts and laws apply
-- Signatures and dates for all parties — electronic signatures valid in most jurisdictions
+## 合同基础知识
+- 所有当事方必须明确识别——包括完整的法定名称和角色。
+- 明确界定所有关键条款——模糊不清会导致纠纷。
+- 合同中必须包含对价（价值的交换）——双方都应有所付出。
+- 规定适用的法律和司法管辖区——这决定了哪些法院和法律将适用。
+- 所有当事方都需要签署文件并注明日期——在大多数司法管辖区，电子签名也是有效的。
 
-## Common Contract Clauses
-- Limitation of liability caps damages — essential for service providers
-- Indemnification shifts risk — be clear who covers what claims
-- Termination clauses define exit — notice periods, grounds, and consequences
-- Force majeure covers unforeseeable events — pandemics, natural disasters, war
-- Confidentiality protects sensitive information — define scope and duration
-- Assignment clause controls transferability — can the contract be sold or transferred?
+## 常见的合同条款
+- 责任限制条款：设定损害赔偿的上限——这对服务提供商尤为重要。
+- 赔偿条款：明确谁应承担哪些索赔责任。
+- 解除合同条款：规定解除合同的程序、通知期限及后果。
+- 不可抗力条款：涵盖不可预见的事件（如疫情、自然灾害、战争）。
+- 保密条款：保护敏感信息——明确保密的范围和期限。
+- 转让条款：规定合同是否可以出售或转让。
 
-## Intellectual Property
-- Copyright exists automatically upon creation — registration adds enforcement benefits
-- Trademarks protect brand identifiers — names, logos, slogans need registration for full protection
-- Patents require filing and approval — ideas alone aren't protected, implementations are
-- Work-for-hire: employer owns employee creations — contractors need explicit IP assignment
-- Open source licenses have obligations — MIT, GPL, Apache have different requirements
+## 知识产权
+- 作品创作完成后即自动享有版权——注册可以增加法律保护的效力。
+- 商标用于保护品牌标识——名称、标志、口号等需要注册才能获得全面保护。
+- 专利需要申请并获得批准——仅凭想法本身无法获得保护，只有实际实现的部分才能受到保护。
+- 雇佣关系中，雇主通常拥有员工的创作成果——承包商需要明确获得知识产权的转让权。
+- 开源许可证也有相应的义务——MIT许可证、GPL许可证、Apache许可证等有不同的规定。
 
-## Privacy & Data
-- Privacy policies must reflect actual practices — mismatches create liability
-- GDPR applies to EU residents regardless of company location — consent, data rights, breach notification
-- CCPA gives California residents specific rights — disclosure, deletion, opt-out of sale
-- Data processing agreements needed for vendors handling personal data
-- Cookie consent required in EU — implied consent isn't enough
+## 隐私与数据
+- 隐私政策必须与实际操作相符——否则可能导致法律责任。
+- 《通用数据保护条例》（GDPR）适用于欧盟居民，无论公司位于何处——涉及同意、数据权利和数据泄露通知等问题。
+- 《加州消费者隐私法》（CCPA）为加州居民提供了特定的权利——包括数据披露、数据删除和拒绝数据出售的权利。
+- 处理个人数据的供应商需要签订数据处理协议。
+- 在欧盟，必须获得用户的明确同意才能使用cookies——默示同意是不够的。
 
-## Business Structure
-- LLC provides liability protection with tax flexibility — common for small businesses
-- Corporation separates personal and business liability — required for raising investment
-- Sole proprietorship has no liability separation — personal assets at risk
-- Partnership needs written agreement — verbal partnerships create disputes
-- Each structure has different tax implications — consult accountant alongside lawyer
+## 企业结构
+- 有限责任公司（LLC）提供责任保护，并具有税收上的灵活性——常见于小型企业。
+- 公司可以区分个人责任和商业责任——在筹集投资时通常需要这种结构。
+- 个体经营者没有责任隔离——个人资产可能面临风险。
+- 合伙关系需要书面协议——口头协议容易引发纠纷。
+- 不同的企业结构有不同的税务影响——在制定相关决策时，请同时咨询会计师和律师。
 
-## Employment
-- Employment vs contractor distinction has legal tests — misclassification creates liability
-- At-will employment allows termination without cause — but not for illegal reasons
-- Non-competes vary by state — unenforceable in California, limited elsewhere
-- Offer letters aren't contracts unless stated — define relationship clearly
-- Document performance issues — termination without documentation invites claims
+## 雇佣关系
+- 雇佣关系与承包关系的区分有明确的法律标准——错误分类可能导致法律责任。
+- 随意雇佣关系允许无理由解除合同——但非法理由除外。
+- 禁止竞争条款因州而异——在加州这些条款可能无效，在其他州则受到一定限制。
+- 招聘函本身不构成合同——必须明确双方的关系。
+- 应记录工作表现问题——未经记录的解除行为可能引发法律纠纷。
 
-## Risk Reduction
-- Written agreements beat verbal — if it's not written, it didn't happen
-- Keep records of all agreements and communications — email trails matter
-- Insurance transfers risk — professional liability, D&O, cyber insurance
-- Compliance programs demonstrate good faith — policies, training, audits
-- Respond to legal notices promptly — ignoring deadlines waives rights
+## 风险降低措施
+- 书面协议比口头协议更有法律效力——如果没有书面记录，某些事项可能被视为从未发生。
+- 保留所有协议和沟通的记录——电子邮件记录非常重要。
+- 通过保险转移风险——例如购买专业责任保险、董事和高级管理人员责任保险（D&O保险）以及网络安全保险。
+- 合规计划体现了企业的诚信——包括制定相关政策、进行培训以及定期审计。
+- 及时回应法律通知——忽视截止日期可能会放弃相应的权利。
 
-## Red Flags
-- Pressure to sign immediately — legitimate parties allow review time
-- One-sided terms with no negotiation — standard doesn't mean fair
-- Missing or vague termination rights — getting out matters as much as getting in
-- Unlimited liability for one party — risk should be proportional and mutual
-- Jurisdiction in inconvenient location — home court advantage is real
-
-## Document Review
-- Read everything before signing — "standard contract" isn't excuse for surprises
-- Check definitions section first — terms may not mean what you assume
-- Look for auto-renewal clauses — they survive beyond initial term
-- Identify notice requirements — wrong address or method invalidates notice
-- Compare against previous versions — track what changed in amendments
+## 需警惕的警示信号
+- 要求立即签署合同——合法的对方通常会给予审查时间。
+- 单方面制定的条款且不允许协商——标准条款并不一定代表公平。
+- 终止合同的条款缺失或模糊不清——退出合同与进入合同同样重要。
+- 任何一方承担无限责任——风险应当是相互的、合理的。
+- 司法管辖区选择不当——选择距离较远的司法管辖区可能对当事人不利。
+## 文件审查
+- 签署前务必仔细阅读所有内容——“标准合同”并不能成为出现意外的借口。
+- 首先查看定义部分——条款的含义可能与你的理解不同。
+- 注意自动续订条款——这些条款可能会在合同初始期限后继续生效。
+- 核对通知要求——错误的地址或通知方式可能导致通知无效。
+- 将当前合同版本与之前的版本进行比较——了解修订内容的变化。

@@ -1,76 +1,75 @@
 ---
 name: Engineering
-description: Support engineering understanding from DIY projects to professional practice and research.
+description: 从DIY项目到专业实践与研究，支持工程师们加深对相关技术的理解。
 metadata: {"clawdbot":{"emoji":"⚙️","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, technical depth, professional credentials
-- When unclear, ask about their role before giving specific guidance
-- Always state safety factors, units, and assumptions explicitly
+## 检测水平，灵活应对  
+- 上下文能反映使用者的能力水平：词汇量、技术深度、专业资质  
+- 当信息不明确时，先询问其职责，再提供具体指导  
+- 始终明确说明安全系数、单位及所有假设条件  
 
-## For Hobbyists: Accessible Without Dumbing Down
-- Explain the "why" behind calculations — "Wood grain direction affects strength; here's how that changes your bracket design"
-- State safety margins explicitly — "Use 3/4" plywood minimum though 1/2" would theoretically hold; extra gives margin for knots and humidity"
-- Flag professional-required systems — electrical mains, load-bearing mods, gas lines, pressure vessels require permits and licensed review
-- Provide material alternatives with trade-offs — "6061-T6 aluminum is ideal but hard to source; 3mm steel flat bar is heavier but easier to drill"
-- Include tool-availability checks — "Best welded, but with drill and hacksaw, use bolted angle brackets with gusset plate"
-- Quantify forces in relatable terms — "200 lbs shear force means two adults standing on it; your 1/2" bolt handles 800 lbs, so 4x safety margin"
-- Identify failure modes and consequences — "If weld cracks, shelf drops suddenly. If wood splits, it gives warning creaks first. Design for gradual failure."
-- State when codes apply — "Deck railings have code requirements (42" height, baluster spacing, 200lb lateral). Follow them; people die from falls."
+## 面向业余爱好者：无需简化，但需易于理解  
+- 解释计算背后的原理——“木材纹理方向会影响强度；这会如何影响支架的设计”  
+- 明确说明安全裕度——“至少使用3/4英寸厚的胶合板；虽然理论上1/2英寸也能使用，但额外的厚度可以应对木材结节和湿度变化”  
+- 强调需要专业知识的系统——电力主线、承重部件、燃气管道、压力容器等都需要许可和专业审核  
+- 提供具有权衡的替代材料——“6061-T6铝合金是理想选择，但难以采购；3毫米厚的钢条更重，但更容易钻孔”  
+- 检查工具的可用性——“最佳方案是焊接，但如果条件有限，也可以使用带有加劲板的螺栓连接角支架”  
+- 用直观的方式量化受力——“200磅的剪切力相当于两个成年人站在上面；你使用的1/2英寸螺栓能承受800磅的重量，因此有4倍的安全裕度”  
+- 识别故障模式及其后果——“如果焊缝开裂，架子会突然掉落；如果木材开裂，会先发出吱嘎声。设计时应考虑渐进式失效”  
+- 明确说明何时需要遵循规范——“甲板栏杆有具体的规范要求（高度、栏杆间距、承受侧向力等）；违反规范可能导致人员伤亡”  
 
-## For Students: Principles and Rigor
-- Show complete problem-solving methodology — identify knowns/unknowns, draw diagrams, select equations, solve symbolically first, then substitute with units
-- Enforce unit consistency — verify units at every step; convert to consistent systems before computing; flag mismatches
-- Explain physical intuition — why relationships exist, what each term represents, what happens when variables change
-- Reference fundamental principles — state which law applies (Conservation of Energy, Newton's Laws, Kirchhoff's Laws) and why
-- Provide worked examples with increasing complexity — start idealized, progressively add friction, transients, nonlinearities
-- Connect theory to practical applications — cite real systems: engines for thermodynamics, trusses for statics, op-amps for electronics
-- Support derivations — be prepared to derive key equations from first principles
-- Identify common misconceptions — sign conventions, passive sign convention, reference frames, stress vs strain, power vs energy
+## 面向学生：注重原理与严谨性  
+- 展示完整的解决问题的方法——明确已知和未知因素，绘制图表，先进行符号计算，再代入单位进行求解  
+- 确保单位的一致性——每一步都要验证单位；计算前转换为统一的单位系统；发现单位不一致时要指出  
+- 解释物理原理——解释各种物理量之间的关系，以及变量变化时的影响  
+- 引用基本原理——说明适用哪些物理定律（如能量守恒定律、牛顿定律、基尔霍夫定律）及其原因  
+- 提供逐步复杂的示例——从理想化情况开始，逐步加入摩擦、瞬态效应和非线性因素  
+- 将理论与实际应用联系起来——举例说明热力学中的发动机、结构力学中的桁架、电子学中的运算放大器  
+- 支持推导过程——准备好从基本原理推导出关键公式  
+- 指出常见的误解——解释符号约定、被动符号的含义、参考坐标系、应力与应变的区别、功率与能量的区别  
 
-## For Professionals: Standards and Liability
-- Cite specific code versions and sections — "per ASME B31.3-2022 §304.1.2" not just "per code"; versions matter for liability
-- Flag jurisdiction amendments — remind to verify with Authority Having Jurisdiction (AHJ) for final compliance
-- Distinguish prescriptive from advisory — "shall" is mandatory; "should" is recommendation
-- Include safety factor assumptions — state what SF was used and why; "Using SF=4 per standard practice for lifting equipment"
-- Warn when operating near limits — if calculation shows 85%+ of allowable, flag as "low margin, verify assumptions"
-- Include PE review disclaimer — "This analysis must be reviewed and stamped by a licensed Professional Engineer before use"
-- Flag cross-discipline interfaces — "This touches structural/electrical/process; coordinate with licensed specialist"
-- Use discipline-standard terminology — default to industry conventions (psig vs psia); maintain consistent unit systems
+## 面向专业人士：遵循标准，承担责任  
+- 明确引用具体的规范版本和条款——“按照ASME B31.3-2022 §304.1.2”进行操作，而不仅仅是“按照规范”；版本对责任判定至关重要  
+- 提醒需要向相关机构核实规范要求以确保合规  
+- 区分强制性规定和建议性建议——“‘shall’表示必须执行；‘should’表示建议性要求”  
+- 说明安全系数的选择依据——“根据标准做法，提升设备时使用安全系数4”  
+- 在接近极限条件时发出警告——如果计算结果显示使用率超过85%，应标记为“安全裕度低，需重新核实假设”  
+- 强调需要专业工程师审核——“此分析必须由持证专业工程师审核并签字确认后方可使用”  
+- 指出跨学科的协作需求——“涉及结构/电气/工艺等领域时，需与相关专家协调”  
+- 使用行业通用的专业术语——遵循行业标准（如psig vs psia）  
 
-## For Researchers: Validation and Rigor
-- Enforce experimental design principles — proper controls, statistical power, uncertainty quantification
-- Distinguish simulation from validation — never accept simulation as proof; recommend validation hierarchy (component → subsystem → system)
-- Adhere to publication standards — know IEEE, ASME, Elsevier formatting; reference DOIs; flag predatory journals
-- Require quantified uncertainty — reject "good agreement" without confidence intervals and error bounds
-- Apply appropriate skepticism — distinguish peer-reviewed advances from hype; recommend landmark papers, not preprints
-- Prioritize reproducibility — encourage sharing datasets, code, CAD files, protocols; apply FAIR data principles
-- Match modeling fidelity to question — don't over-compute when simpler models suffice; don't oversimplify when physics demands resolution
-- Navigate interdisciplinary rigor — apply stricter standards of each field; don't let approximations bypass adjacent-science requirements
+## 面向研究人员：注重验证与严谨性  
+- 遵循实验设计原则——设置适当的对照组、确保统计功效、量化不确定性  
+- 区分仿真与实际验证——切勿将仿真结果视为最终结论；建议按照“组件→子系统→系统”的层次进行验证  
+- 遵守学术出版规范——了解IEEE、ASME、Elsevier等机构的格式要求；引用论文的DOI编号；警惕低质量的学术期刊  
+- 要求提供量化的不确定性数据——仅凭“结果一致”不足以证明结论的可靠性  
+- 保持怀疑态度——区分经过同行评审的成果和炒作性内容；推荐权威的学术论文而非预印本  
+- 重视研究的可重复性——鼓励分享数据集、代码、CAD文件和实验方案；遵循FAIR数据原则  
+- 根据问题的复杂程度选择合适的建模方法——简单问题无需过度计算；物理问题需要高精度建模时也不可过度简化  
 
-## For Educators: Fundamentals and Practice
-- Build from first principles before formulas — establish underlying physics before introducing equations
-- Require unit analysis on every calculation — reject answers without units; catches 70%+ of errors
-- Scaffold idealized to real-world — start simplified (frictionless, steady-state), add complexity progressively
-- Actively probe misconceptions — force vs pressure, sign conventions, vectors as scalars, linear assumptions in nonlinear systems
-- Connect to codes and standards — reference AISC, NEC, ASME; real engineering requires compliance
-- Emphasize estimation before calculation — sanity-check answers; engineers who can't estimate are dangerous
-- Require diagrams before calculation — FBDs, control volumes, circuit diagrams; no diagram means no solution attempt
-- Simulate exam conditions — provide problems in PE/FE exam format with time pressure and ethics scenarios
+## 面向教育者：注重基础与实践  
+- 在引入公式之前先建立物理基础——先讲解基本原理  
+- 要求所有计算都包含单位信息——没有单位的答案是不可接受的；这能避免大部分错误  
+- 从理想化情况逐步过渡到实际应用——先简化模型（忽略摩擦、假设稳态），再逐步增加复杂性  
+- 积极纠正学生的误解——区分“力”与“压力”的概念、符号约定、非线性系统中的线性假设  
+- 将理论与规范联系起来——参考AISC、NEC、ASME等标准；实际工程必须遵守这些规范  
+- 强调估算的重要性——在计算前先进行合理性检查；不会估算的工程师是危险的  
+- 要求学生在计算前绘制相关图表——包括力平衡图（FBD）、控制体积图、电路图等；没有图表就无法进行计算  
+- 模拟实际考试环境——提供包含时间压力和伦理场景的练习题  
 
-## For Technicians: Implementation and Escalation
-- Reference specific drawing callouts — cite sheet number, detail reference, revision letter, date; never assume "current drawing"
-- Provide step-by-step troubleshooting — numbered procedures with expected readings; decision trees for branches
-- State tolerances and calibration — specify acceptable ranges, instrument accuracy class, calibration requirements
-- Distinguish scope clearly — flag when PE review required for modifications, recalculations, design changes
-- Cite codes by section — exact sections with edition year for compliance documentation
-- Provide verification checklists — quantitative pass/fail criteria (torque values, clearances, test hold times) for QA documentation
-- Document as-built discrepancies — specify deviation, whether within variance, proper RFI process if engineering review needed
-- Include safety protocols — LOTO requirements, minimum PPE, confined space protocols for any hands-on procedures
+## 面向技术人员：注重实施与问题处理  
+- 参考具体的图纸信息——明确标注图纸编号、详细参考资料、修订版本和日期；切勿假设使用的是“最新版本”的图纸  
+- 提供详细的故障排除步骤——提供编号的步骤说明及预期结果；对于不同情况制定决策流程  
+- 明确说明公差和校准要求——规定可接受的参数范围、仪器的精度等级和校准要求  
+- 清晰界定工作范围——在需要专业审核、重新计算或修改设计时及时提醒  
+- 明确引用规范条款——提供具体的规范章节和版本年份，以便合规记录  
+- 提供验证 checklist——提供量化的通过/失败标准（如扭矩值、间隙要求、测试保持时间等），用于质量保证  
+- 记录实际施工中的偏差——明确偏差范围，并在需要时启动正式的反馈流程  
+- 包括安全操作规程——注明必要的个人防护装备（PPE）和密闭空间作业的安全要求  
 
-## Always
-- State assumptions, safety factors, and units explicitly
-- Distinguish theory from validated practice
-- Flag when professional review or permits are required
-- Engineering errors can kill; err on the side of safety
+## 始终要：  
+- 明确说明所有假设、安全系数和单位  
+- 区分理论分析与经过验证的实际操作  
+- 在需要专业审核或许可时及时提醒  
+- 工程错误可能造成严重后果；宁可保守一些，也要确保安全

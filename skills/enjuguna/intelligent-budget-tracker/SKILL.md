@@ -1,13 +1,13 @@
 ---
 name: agent-money-tracker
-description: Intelligent budget tracking and financial management library for AI agents - expense tracking, income management, budgets, savings goals, and LLM-powered insights
+description: 专为AI代理设计的智能预算跟踪与财务管理库：支持费用追踪、收入管理、预算制定、储蓄目标设定，以及利用大型语言模型（LLM）提供的数据分析与洞察功能。
 ---
 
-# Agent Money Tracker
+# 代理资金追踪器（Agent Money Tracker）
 
-A TypeScript library for AI agents to track expenses, income, budgets, and savings goals with LLM-powered natural language parsing. **No frontend required** - designed for programmatic use by agents and bots.
+这是一个TypeScript库，专为AI代理设计，用于追踪开支、收入、预算以及储蓄目标。该库利用基于LLM（Large Language Model）的自然语言处理技术来实现这些功能。**无需前端界面**，专为代理和机器人程序化使用而设计。
 
-## Installation
+## 安装
 
 ```bash
 npm install agent-money-tracker
@@ -15,9 +15,9 @@ npm install agent-money-tracker
 
 ---
 
-## Usage
+## 使用方法
 
-### Initialize the Budget Tracker
+### 初始化预算追踪器
 
 ```typescript
 import { clawhub } from 'agent-money-tracker';
@@ -29,7 +29,7 @@ await clawhub.initialize();
 await clawhub.initialize('/path/to/data');
 ```
 
-### Expense Tracking
+### 花费追踪
 
 ```typescript
 // Add an expense
@@ -53,7 +53,7 @@ const foodExpenses = clawhub.getExpenses({
 });
 ```
 
-### Income Tracking
+### 收入追踪
 
 ```typescript
 // Add income
@@ -68,7 +68,7 @@ await clawhub.addIncome(500, 'Freelance', 'Website project');
 const income = clawhub.getIncome();
 ```
 
-### Budget Management
+### 预算管理
 
 ```typescript
 // Create a monthly budget
@@ -87,7 +87,7 @@ const suggestions = clawhub.suggestBudgetLimits();
 // Returns: [{ category, suggested, average, max }]
 ```
 
-### Savings Goals
+### 储蓄目标
 
 ```typescript
 // Create a savings goal
@@ -105,7 +105,7 @@ const progress = clawhub.getGoalProgress();
 // Returns: [{ goalName, targetAmount, currentAmount, percentageComplete, daysRemaining, onTrack }]
 ```
 
-### Analytics & Reports
+### 分析与报告
 
 ```typescript
 // Monthly spending summary
@@ -124,7 +124,7 @@ const comparison = clawhub.compareToLastMonth();
 // Returns: { expenseChange, incomeChange, topIncreases, topDecreases }
 ```
 
-### Smart Insights
+### 智能洞察
 
 ```typescript
 // Generate AI-powered insights
@@ -138,7 +138,7 @@ const insights = await clawhub.generateInsights();
 const unreadInsights = clawhub.getInsights();
 ```
 
-### Recurring Transactions
+### 定期交易
 
 ```typescript
 // Create recurring expense (e.g., Netflix subscription)
@@ -156,7 +156,7 @@ await clawhub.createRecurring(
 await clawhub.processRecurring();
 ```
 
-### Data Management
+### 数据管理
 
 ```typescript
 // Get statistics
@@ -178,68 +178,68 @@ const dataPath = clawhub.getDataPath();
 
 ---
 
-## Default Categories
+## 默认分类
 
-### Expense Categories
-| Category | Icon |
-|----------|------|
-| Food & Dining | 🍔 |
-| Transportation | 🚗 |
-| Shopping | 🛍️ |
-| Bills & Utilities | 💡 |
-| Entertainment | 🎬 |
-| Health & Fitness | 💪 |
-| Education | 📚 |
-| Personal Care | 💄 |
-| Subscriptions | 📱 |
+### 花费分类
+| 分类 | 图标 |
+|------|------|
+| 食物与餐饮 | 🍔 |
+| 交通 | 🚗 |
+| 购物 | 🛍️ |
+| 账单与公用事业 | 💡 |
+| 娱乐 | 🎬 |
+| 健康与健身 | 💪 |
+| 教育 | 📚 |
+| 个人护理 | 💄 |
+| 订阅服务 | 📱 |
 
-### Income Categories
-| Category | Icon |
-|----------|------|
-| Salary | 💰 |
-| Freelance | 💻 |
-| Investments | 📈 |
-| Gifts | 🎁 |
+### 收入分类
+| 分类 | 图标 |
+|------|------|
+| 工资 | 💰 |
+| 自由职业收入 | 💻 |
+| 投资 | 📈 |
+| 礼物 | 🎁 |
 
 ---
 
-## Cross-Platform Storage
+## 跨平台数据存储
 
-Data is stored in platform-specific locations:
+数据存储在各个平台特定的位置：
 
-| Platform | Default Path |
-|----------|-------------|
+| 平台 | 默认路径 |
+|------|-------------|
 | Windows | `%APPDATA%\clawhub` |
 | macOS | `~/Library/Application Support/clawhub` |
 | Linux | `~/.local/share/clawhub` |
 
-Override with environment variable:
+可以通过环境变量进行自定义配置：
 ```bash
 export CLAWHUB_DATA_PATH=/custom/path
 ```
 
 ---
 
-## API Reference Summary
+## API参考摘要
 
-| Method | Description |
+| 方法 | 描述 |
 |--------|-------------|
-| `initialize(path?)` | Initialize the budget tracker |
-| `addExpense(amount, category, description, options?)` | Add expense |
-| `addIncome(amount, category, description, options?)` | Add income |
-| `addFromNaturalLanguage(text)` | Parse and add from natural language |
-| `createBudget(name, category, limit, period, threshold?)` | Create budget |
-| `getBudgetStatus()` | Get all budget statuses |
-| `checkBudgetAlerts()` | Get budget warnings/alerts |
-| `createGoal(name, target, options?)` | Create savings goal |
-| `contributeToGoal(goalId, amount, note?)` | Add to goal |
-| `getGoalProgress()` | Get all goal progress |
-| `getSpendingSummary(start?, end?)` | Get spending breakdown |
-| `getMonthlyTrends(months?)` | Get monthly trend data |
-| `generateMonthlyReport(year?, month?)` | Generate full report |
-| `generateInsights()` | Generate AI insights |
-| `createRecurring(type, amount, category, desc, freq, options?)` | Create recurring |
-| `processRecurring()` | Process due recurring transactions |
-| `getStats()` | Get transaction statistics |
-| `exportData()` | Export all data as JSON |
-| `backup()` | Create timestamped backup |
+| `initialize(path?)` | 初始化预算追踪器 |
+| `addExpense(amount, category, description, options?)` | 添加支出记录 |
+| `addIncome(amount, category, description, options?)` | 添加收入记录 |
+| `addFromNaturalLanguage(text)` | 从自然语言文本中解析并添加数据 |
+| `createBudget(name, category, limit, period, threshold?)` | 创建预算 |
+| `getBudgetStatus()` | 获取所有预算状态 |
+| `checkBudgetAlerts()` | 获取预算警告/提醒 |
+| `createGoal(name, target, options?)` | 创建储蓄目标 |
+| `contributeToGoal(goalId, amount, note?)` | 为储蓄目标添加支出记录 |
+| `getGoalProgress()` | 获取储蓄目标的进度 |
+| `getSpendingSummary(start?, end?)` | 获取支出明细 |
+| `getMonthlyTrends(months?)` | 获取每月趋势数据 |
+| `generateMonthlyReport(year?, month?)` | 生成月度报告 |
+| `generateInsights()` | 生成智能分析报告 |
+| `createRecurring(type, amount, category, desc, freq, options?)` | 创建定期交易记录 |
+| `processRecurring()` | 处理到期的定期交易 |
+| `getStats()` | 获取交易统计数据 |
+| `exportData()` | 将所有数据导出为JSON格式 |
+| `backup()` | 创建带时间戳的备份文件 |

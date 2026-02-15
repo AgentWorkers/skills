@@ -1,29 +1,29 @@
 ---
 name: paypal
-description: PayPal payment integration. Send money, create invoices, and manage PayPal transactions.
+description: PayPal支付集成：支持发送款项、创建发票以及管理PayPal交易。
 metadata: {"clawdbot":{"emoji":"🅿️","always":true,"requires":{"bins":["curl","jq"]},"primaryEnv":"PAYPAL_CLIENT_ID"}}
 ---
 
 # PayPal 🅿️
 
-PayPal payment platform integration.
+PayPal支付平台集成。
 
-## Setup
+## 设置
 
 ```bash
 export PAYPAL_CLIENT_ID="your_client_id"
 export PAYPAL_SECRET="your_secret"
 ```
 
-## Features
+## 功能
 
-- Send payments
-- Create invoices
-- Request money
-- Transaction history
-- Refunds
+- 发送付款
+- 创建发票
+- 请求退款
+- 交易历史记录
+- 退款功能
 
-## Usage Examples
+## 使用示例
 
 ```
 "Send $25 to user@email.com via PayPal"

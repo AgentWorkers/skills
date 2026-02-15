@@ -1,13 +1,13 @@
 ---
 name: pscale-service-token
-description: Create, list, and manage service tokens for CI/CD authentication. Use when setting up automated deployments, configuring CI/CD pipelines (GitHub Actions, GitLab CI, CircleCI, etc.), creating non-interactive authentication, or rotating CI/CD credentials. Preferred over passwords for production automation. Triggers on service token, CI/CD auth, automation token, pipeline authentication.
+description: 创建、列出并管理服务令牌，用于 CI/CD（持续集成/持续部署）认证。这些令牌适用于设置自动化部署、配置 CI/CD 管道（如 GitHub Actions、GitLab CI、CircleCI 等）、实现非交互式认证，或轮换 CI/CD 凭据。在生产环境中的自动化场景中，建议优先使用服务令牌而非密码。服务令牌可用于触发 CI/CD 流程、实现自动化认证等功能。
 ---
 
 # pscale service-token
 
-Create, list, and manage service tokens for CI/CD and automation.
+用于创建、列出和管理用于持续集成/持续部署（CI/CD）及自动化流程的服务令牌。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Create service token
@@ -20,9 +20,9 @@ pscale service-token list --org <org>
 pscale service-token delete <token-id> --org <org>
 ```
 
-## Workflows
+## 工作流程
 
-### CI/CD Setup (GitHub Actions)
+### 持续集成/持续部署设置（GitHub Actions）
 
 ```bash
 # 1. Create service token
@@ -45,7 +45,7 @@ pscale service-token create --org my-org
 #   pscale deploy-request deploy my-db my-branch
 ```
 
-### CI/CD Pipeline Integration
+### 持续集成/持续部署管道集成
 
 ```bash
 # 1. Create service token
@@ -61,7 +61,7 @@ pscale service-token create --org my-org
 #     - pscale deploy-request create $DATABASE $BRANCH_NAME
 ```
 
-### Token Rotation
+### 令牌轮换
 
 ```bash
 # 1. List existing tokens
@@ -76,23 +76,23 @@ pscale service-token create --org my-org
 pscale service-token delete <old-token-id> --org my-org
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Token authentication fails
+### 令牌认证失败
 
-**Error:** `401 Unauthorized`
+**错误信息：** `401 Unauthorized`
 
-**Solutions:**
-- Verify both TOKEN_ID and TOKEN are set correctly
-- Check token hasn't been deleted: `pscale service-token list`
-- Ensure token has required permissions
-- Try creating new token (old may be expired)
+**解决方法：**
+- 确保 `TOKEN_ID` 和 `TOKEN` 都设置正确
+- 检查令牌是否已被删除：`pscale service-token list`
+- 确保令牌具有所需的权限
+- 尝试创建新的令牌（旧令牌可能已过期）
 
-### Token not showing in list
+### 令牌未显示在列表中
 
-**Cause:** Tokens are organization-scoped
+**原因：** 令牌是组织级（organization-scoped）的
 
-**Solution:**
+**解决方法：**
 ```bash
 # Ensure correct org
 pscale org show
@@ -101,22 +101,22 @@ pscale org show
 pscale service-token list --org <correct-org>
 ```
 
-## Security Best Practices
+## 安全最佳实践
 
-1. **Rotate tokens regularly** (every 90 days recommended)
-2. **Use separate tokens** for different CI/CD systems
-3. **Delete unused tokens** immediately
-4. **Never commit tokens** to version control
-5. **Use secrets management** (GitHub Secrets, environment variables, vault systems)
-6. **Limit token scope** if possible (coming in future PlanetScale updates)
+1. **定期轮换令牌**（建议每90天轮换一次）
+2. **为不同的CI/CD系统使用不同的令牌**
+3. **立即删除未使用的令牌**
+4. **切勿将令牌提交到版本控制系统中**
+5. **使用秘密管理工具**（如GitHub Secrets、环境变量或加密存储系统）
+6. **如果可能的话，限制令牌的权限范围**（这将在未来的PlanetScale更新中实现）
 
-## Related Skills
+## 相关技能
 
-- **pscale-auth** - Interactive authentication (development)
-- **pscale-deploy-request** - Automated deployments via tokens
-- **gitlab-cli-skills** - GitLab CI integration
-- **github** - GitHub Actions integration
+- **pscale-auth** - 交互式认证（开发用途）
+- **pscale-deploy-request** - 通过令牌进行自动化部署
+- **gitlab-cli-skills** - GitLab持续集成集成
+- **github** - GitHub Actions集成
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete command reference.
+有关完整命令的参考信息，请参阅 `references/commands.md`。

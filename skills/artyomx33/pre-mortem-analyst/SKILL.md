@@ -1,28 +1,26 @@
 ---
 name: pre-mortem-analyst
-description: Imagine the project already failed, then work backward to find why. More powerful than risk assessment because it assumes failure is certain. Use when user says "pre-mortem", "premortem", "imagine this failed", "what could go wrong", "risk analysis", "before we launch", "stress test", "what would kill this", "project risks".
+description: 假设项目已经失败了，然后从失败的角度出发去找出原因。这种方法比风险评估更有效，因为它假设失败是必然会发生的事情。在以下情况下可以使用这种方法：当用户提到“进行事后的分析（pre-mortem）”、“想象项目会失败的情况”、“可能会出什么问题”、“风险分析”、“在项目发布之前”、“压力测试”、“什么因素会导致项目失败”或“项目风险”时。
 ---
 
-# Pre-Mortem Analyst
+# 事前分析（Pre-Mortem Analysis）
 
-## Why Pre-Mortem > Risk Assessment
+## 为何选择事前分析而非风险评估？
 
-**Risk Assessment:** "What MIGHT go wrong?" → Optimism bias filters answers
-**Pre-Mortem:** "It's 6 months later. It FAILED. Why?" → Liberates honest analysis
+**风险评估：** “可能会出现什么问题？” → 这种方法容易受到乐观偏见的影响，导致分析结果失真。  
+**事前分析：** “六个月后，项目失败了。原因是什么？” → 这种方法能够促使人们进行坦诚的分析。  
+研究表明：事前分析能够提高问题识别率30%。
 
-Research: Pre-mortems increase problem identification by 30%.
+## 分析流程：
 
-## The Process
+1. **确定背景信息：** “时间是[日期]，该项目已经彻底失败了。”  
+2. **头脑风暴失败原因：** 列出10个以上的失败原因（不进行筛选）。  
+3. **分类原因：** 人为因素、流程问题、技术问题、外部因素。  
+4. **评估风险等级：** 根据可能性与影响程度对原因进行评分（高/中/低）。  
+5. **制定预防措施：** 针对排名前三的风险因素，制定具体的应对策略。  
+6. **设置监控机制：** 确定潜在的早期预警信号。
 
-1. **Set the scene:** "It's [date]. This has failed completely."
-2. **Brainstorm causes:** List 10+ failure reasons (no filtering)
-3. **Categorize:** People, Process, Technology, External
-4. **Rate:** Likelihood × Impact (H/M/L)
-5. **Prevent:** Top 3 get specific mitigation actions
-6. **Monitor:** Define early warning signs
-
-## Output Format
-
+## 输出格式：  
 ```
 PROJECT: [Name]
 FAILURE SCENARIO: "It's [date]. [Project] has completely failed."
@@ -44,22 +42,19 @@ WARNING SIGNS TO MONITOR:
 □ [Early indicator 2]
 ```
 
-## Common Failure Categories
+## 常见的失败原因分类：  
+| 分类        | 常见原因                                      |
+|------------|-----------------------------------------|
+| **人为因素**    | 关键人员离职、技能缺口、团队协作不畅、缺乏积极性           |
+| **流程问题**    | 过紧的时间表、项目范围不断扩大、依赖关系问题           |
+| **技术问题**    | 项目无法扩展、集成失败、安全漏洞                      |
+| **外部因素**    | 市场环境变化、竞争对手的竞争策略、法规更新             |
 
-| Category | Common Causes |
-|----------|---------------|
-| **People** | Key person leaves, skill gaps, misalignment, low buy-in |
-| **Process** | Aggressive timeline, scope creep, dependency issues |
-| **Tech** | Doesn't scale, integration fails, security breach |
-| **External** | Market shift, competitor move, regulation change |
+## 集成相关注意事项：  
+- **结合系统化的策略制定方法**：通过系统化的方法来规避潜在风险。  
+- **考虑潜在的连锁反应**：分析已预防的失败事件可能对整个项目产生的影响。  
+- **质疑隐藏的假设**：对项目背后的假设进行重新审视。  
+- **在投入资源前进行验证**：在正式开始项目前，先验证所有相关方案的有效性。
 
-## Integration
-
-Compounds with:
-- **inversion-strategist** → Create systematic avoidance strategies
-- **second-order-consequences** → Project impact of prevented failures
-- **first-principles-decomposer** → Question hidden assumptions
-- **mspot-generator** → Validate MSPOT projects before committing
-
----
-See references/examples.md for Artem-specific pre-mortems
+---  
+有关Artem项目特有的事前分析方法，请参阅`references/examples.md`文件。

@@ -1,6 +1,6 @@
 ---
 name: pptx-manipulation
-description: Create, edit, and manipulate PowerPoint presentations programmatically using python-pptx
+description: 使用 `python-pptx` 库，可以以编程方式创建、编辑和操作 PowerPoint 演示文稿。
 author: claude-office-skills
 version: "1.0"
 tags: [presentation, powerpoint, pptx, python-pptx, slides]
@@ -12,28 +12,27 @@ library:
   stars: 3.2k
 ---
 
-# PPTX Manipulation Skill
+# PPTX 操作技能
 
-## Overview
+## 概述
 
-This skill enables programmatic creation, editing, and manipulation of Microsoft PowerPoint (.pptx) presentations using the **python-pptx** library. Create professional slides with text, shapes, images, charts, and tables without manual editing.
+该技能允许使用 **python-pptx** 库以编程方式创建、编辑和操作 Microsoft PowerPoint (.pptx) 演示文稿。无需手动编辑即可制作包含文本、形状、图片、图表和表格的专业幻灯片。
 
-## How to Use
+## 使用方法
 
-1. Describe the presentation you want to create or modify
-2. Provide content, data, or images to include
-3. I'll generate python-pptx code and execute it
+1. 描述您想要创建或修改的演示文稿。
+2. 提供要包含的内容、数据或图片。
+3. 我将生成相应的 python-pptx 代码并执行它。
 
-**Example prompts:**
-- "Create a 10-slide pitch deck from this outline"
-- "Add a chart to slide 3 with this data"
-- "Extract all text from this presentation"
-- "Generate slides from this markdown content"
+**示例提示：**
+- “根据这个大纲创建一个 10 页的提案演示文稿。”
+- “在第三张幻灯片上添加一个包含这些数据的图表。”
+- “从这个演示文稿中提取所有文本。”
+- “根据这段 Markdown 内容生成幻灯片。”
 
-## Domain Knowledge
+## 领域知识
 
-### python-pptx Fundamentals
-
+### python-pptx 基础知识
 ```python
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -47,7 +46,7 @@ prs = Presentation()
 prs = Presentation('existing.pptx')
 ```
 
-### Presentation Structure
+### 演示文稿结构
 ```
 Presentation
 ├── slide_layouts (predefined layouts)
@@ -59,7 +58,7 @@ Presentation
 └── slide_masters (templates)
 ```
 
-### Slide Layouts
+### 幻灯片布局
 ```python
 # Common layout indices (may vary by template)
 TITLE_SLIDE = 0
@@ -75,9 +74,9 @@ slide_layout = prs.slide_layouts[TITLE_CONTENT]
 slide = prs.slides.add_slide(slide_layout)
 ```
 
-### Adding Content
+### 添加内容
 
-#### Title Slide
+#### 标题幻灯片
 ```python
 slide_layout = prs.slide_layouts[0]  # Title slide
 slide = prs.slides.add_slide(slide_layout)
@@ -89,7 +88,7 @@ title.text = "Quarterly Report"
 subtitle.text = "Q4 2024 Performance Review"
 ```
 
-#### Text Content
+#### 文本内容
 ```python
 # Using placeholder
 body = slide.placeholders[1]
@@ -106,7 +105,7 @@ p.text = "Sub-bullet"
 p.level = 1
 ```
 
-#### Text Box
+#### 文本框
 ```python
 from pptx.util import Inches, Pt
 
@@ -124,7 +123,7 @@ p.font.bold = True
 p.font.size = Pt(18)
 ```
 
-#### Shapes
+#### 形状
 ```python
 from pptx.enum.shapes import MSO_SHAPE
 
@@ -142,7 +141,7 @@ shape.text = "Rectangle with text"
 # MSO_SHAPE.CALLOUT_ROUNDED_RECTANGLE
 ```
 
-#### Images
+#### 图片
 ```python
 # Add image
 slide.shapes.add_picture(
@@ -159,7 +158,7 @@ slide.shapes.add_picture(
 )
 ```
 
-### Tables
+### 表格
 ```python
 # Create table
 rows, cols = 4, 3
@@ -193,7 +192,7 @@ for row_idx, row_data in enumerate(data, 1):
         table.cell(row_idx, col_idx).text = value
 ```
 
-### Charts
+### 图表
 ```python
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE
@@ -216,9 +215,9 @@ chart.has_legend = True
 chart.legend.include_in_layout = False
 ```
 
-### Formatting
+### 格式设置
 
-#### Text Formatting
+#### 文本格式
 ```python
 from pptx.dml.color import RGBColor
 
@@ -230,7 +229,7 @@ run.font.italic = True
 run.font.color.rgb = RGBColor(0x00, 0x66, 0xCC)
 ```
 
-#### Shape Fill & Line
+#### 形状的填充和线条
 ```python
 from pptx.dml.color import RGBColor
 
@@ -241,24 +240,24 @@ shape.line.color.rgb = RGBColor(0x00, 0x00, 0x00)
 shape.line.width = Pt(2)
 ```
 
-#### Paragraph Alignment
+#### 段落对齐
 ```python
 from pptx.enum.text import PP_ALIGN
 
 p.alignment = PP_ALIGN.CENTER  # LEFT, RIGHT, JUSTIFY
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use Templates**: Start with a .pptx template for consistent branding
-2. **Layout First**: Plan slide structure before coding
-3. **Reuse Slide Masters**: Maintain consistency across presentations
-4. **Optimize Images**: Compress images before adding
-5. **Test Output**: Always verify generated presentations
+1. **使用模板**：从现有的 .pptx 模板开始，以保持品牌一致性。
+2. **先规划布局**：在编写代码之前先设计好幻灯片结构。
+3. **重用幻灯片母版**：确保多个演示文稿之间的风格统一。
+4. **优化图片**：在添加之前先压缩图片。
+5. **测试输出**：始终验证生成的演示文稿是否满足需求。
 
-## Common Patterns
+## 常见用法
 
-### Slide Deck Generator
+### 演示文稿生成器
 ```python
 def create_deck(title, slides_content):
     prs = Presentation()
@@ -284,7 +283,7 @@ def create_deck(title, slides_content):
     return prs
 ```
 
-### Data-Driven Charts
+### 数据驱动的图表
 ```python
 def add_bar_chart(slide, title, categories, values):
     from pptx.chart.data import CategoryChartData
@@ -305,9 +304,9 @@ def add_bar_chart(slide, title, categories, values):
     return chart
 ```
 
-## Examples
+## 示例
 
-### Example 1: Create a Pitch Deck
+### 示例 1：创建提案演示文稿
 ```python
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -359,7 +358,7 @@ slide.shapes.add_chart(
 prs.save('pitch_deck.pptx')
 ```
 
-### Example 2: Report with Data Table
+### 示例 2：包含数据表的报告
 ```python
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -398,22 +397,21 @@ for row_idx, row_data in enumerate(data, 1):
 prs.save('sales_report.pptx')
 ```
 
-## Limitations
+## 限制
 
-- Cannot render complex animations
-- Limited SmartArt support
-- No video embedding via API
-- Master slide editing is complex
-- Chart types limited to standard Office charts
+- 无法渲染复杂的动画效果。
+- 对 SmartArt 图形的支持有限。
+- 无法通过 API 嵌入视频。
+- 编辑母版幻灯片较为复杂。
+- 可用的图表类型仅限于 Office 标准图表。
 
-## Installation
-
+## 安装方法
 ```bash
 pip install python-pptx
 ```
 
-## Resources
+## 资源
 
-- [python-pptx Documentation](https://python-pptx.readthedocs.io/)
-- [GitHub Repository](https://github.com/scanny/python-pptx)
-- [Slide Layout Guide](https://python-pptx.readthedocs.io/en/latest/user/slides.html)
+- [python-pptx 文档](https://python-pptx.readthedocs.io/)
+- [GitHub 仓库](https://github.com/scanny/python-pptx)
+- [幻灯片布局指南](https://python-pptx.readthedocs.io/en/latest/user/slides.html)

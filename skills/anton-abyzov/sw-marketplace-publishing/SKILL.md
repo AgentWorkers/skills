@@ -1,15 +1,15 @@
 ---
 name: marketplace-publishing
-description: Claude Code marketplace publishing - npm publish, GitHub releases, semantic versioning, plugin packaging. Use when publishing plugins.
+description: Claude Code市场发布功能包括：通过npm进行发布、在GitHub上上传代码、使用语义化版本控制（semantic versioning）以及插件打包（plugin packaging）。这些功能专门用于插件（plugins）的发布过程。
 ---
 
-# Marketplace Publishing Expert
+# 市场发布专家
 
-Expert guidance for publishing Claude Code plugins to npm and marketplace.
+提供关于如何将 Claude Code 插件发布到 npm 和相关市场的专业指导。
 
-## Publishing Platforms
+## 发布平台
 
-**1. GitHub** (Recommended):
+**1. GitHub**（推荐）：
 ```bash
 # Install from GitHub
 claude plugin add github:username/plugin-name
@@ -26,7 +26,7 @@ claude plugin add github:username/plugin-name
 - README with installation
 ```
 
-**2. npm**:
+**2. npm**：
 ```bash
 # Install from npm
 claude plugin add plugin-name
@@ -42,7 +42,7 @@ claude plugin add plugin-name
 - Unique name (prefix: claude-plugin-)
 ```
 
-**3. Marketplace**:
+**3. 市场平台**：
 ```bash
 # Official Claude Code marketplace
 # PR to marketplace repository
@@ -54,11 +54,11 @@ claude plugin add plugin-name
 - Proper licensing
 ```
 
-## Semantic Versioning
+## 语义版本控制
 
-**Version Format**: `MAJOR.MINOR.PATCH`
+**版本格式**：`MAJOR.MINOR.PATCH`
 
-**Rules**:
+**规则**：
 ```yaml
 MAJOR (1.0.0 → 2.0.0):
   - Breaking changes
@@ -79,7 +79,7 @@ PATCH (1.0.0 → 1.0.1):
   - No API changes
 ```
 
-**Examples**:
+**示例**：
 ```bash
 # Bug fix
 npm version patch  # 1.0.0 → 1.0.1
@@ -91,9 +91,9 @@ npm version minor  # 1.0.1 → 1.1.0
 npm version major  # 1.1.0 → 2.0.0
 ```
 
-## package.json Setup
+## package.json 配置
 
-**Minimum**:
+**最低要求**：
 ```json
 {
   "name": "claude-plugin-my-plugin",
@@ -113,7 +113,7 @@ npm version major  # 1.1.0 → 2.0.0
 }
 ```
 
-**Full**:
+**完整配置**：
 ```json
 {
   "name": "claude-plugin-my-plugin",
@@ -152,9 +152,9 @@ npm version major  # 1.1.0 → 2.0.0
 }
 ```
 
-## Publishing Workflow
+## 发布工作流程
 
-**GitHub Release**:
+**在 GitHub 上发布**：
 ```bash
 # 1. Update version
 npm version patch
@@ -175,7 +175,7 @@ gh release create v1.0.1 \
   --notes "Bug fixes and improvements"
 ```
 
-**npm Publish**:
+**通过 npm 发布**：
 ```bash
 # 1. Login
 npm login
@@ -190,9 +190,9 @@ npm publish
 npm view claude-plugin-my-plugin
 ```
 
-## Documentation Requirements
+## 文档要求
 
-**README.md**:
+**README.md**：
 ```markdown
 # Plugin Name
 
@@ -207,7 +207,8 @@ Brief description.
 
 ## Installation
 
-\```bash
+\```
+bash
 claude plugin add github:user/plugin
 \```
 
@@ -226,7 +227,7 @@ Description.
 MIT
 ```
 
-**CHANGELOG.md**:
+**CHANGELOG.md**：
 ```markdown
 # Changelog
 
@@ -242,22 +243,22 @@ MIT
 - Initial release
 ```
 
-## Quality Checklist
+## 质量检查清单
 
-**Pre-publish**:
-- ✅ All commands working
-- ✅ Skills activate correctly
-- ✅ No hardcoded secrets
-- ✅ README with examples
-- ✅ LICENSE file
-- ✅ Semantic versioning
-- ✅ CHANGELOG updated
-- ✅ Git tag created
+**发布前**：
+- ✅ 所有命令都能正常运行
+- ✅ 插件功能能够正确激活
+- ✅ 不存在硬编码的敏感信息（如密码等）
+- ✅ README 文件中包含使用示例
+- ✅ 有完整的 LICENSE 文件
+- ✅ 使用语义版本控制
+- ✅ CHANGELOG 文件已更新
+- ✅ 已创建 Git 标签
 
-**Post-publish**:
-- ✅ Test installation
-- ✅ Verify on npm (if published)
-- ✅ Check GitHub release
-- ✅ Update marketplace (if applicable)
+**发布后**：
+- ✅ 测试插件的安装过程
+- ✅ 在 npm 上验证插件的可用性
+- ✅ 检查 GitHub 上的发布信息
+- ✅ （如适用）更新市场平台上的信息
 
-Publish professional Claude Code plugins!
+发布专业的 Claude Code 插件吧！

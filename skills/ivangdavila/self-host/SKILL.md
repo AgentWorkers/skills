@@ -1,67 +1,67 @@
 ---
 name: Self-Host
-description: Deploy and maintain self-hosted services with security, backups, and long-term reliability.
+description: 部署并维护自托管服务，确保其具备安全性、数据备份功能以及长期的可靠性。
 metadata: {"clawdbot":{"emoji":"🖥️","requires":{"anyBins":["docker","podman"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Self-Hosting Rules
+# 自托管规则
 
-## Before Installing Anything
-- Backups first — decide where data lives and how it's backed up before deploying, not after data exists
-- Check resource requirements — many services need more RAM than expected, OOM kills corrupt data
-- Verify the project is actively maintained — abandoned projects become security liabilities
+## 在安装任何东西之前
+- 先进行数据备份——在部署之前就确定数据存储的位置及备份方式，而不是等到数据已经存在之后再处理。
+- 检查资源需求——许多服务所需的RAM比预期要更多，内存不足会导致数据损坏。
+- 确认项目是否仍在维护中——被弃用的项目会成为安全隐患。
 
-## Docker Fundamentals
-- Always use named volumes or bind mounts for persistent data — anonymous volumes are lost on container removal
-- Pin image versions (`nginx:1.25.3` not `nginx:latest`) — latest changes unexpectedly and breaks setups
-- Set restart policy (`unless-stopped` or `on-failure`) — containers don't auto-start after reboot by default
-- Use `docker compose down` not `docker compose rm` — down handles networks and volumes properly
+## Docker基础
+- 始终使用命名卷或绑定挂载来存储持久化数据——匿名卷在容器被删除时会丢失。
+- 固定镜像版本（例如 `nginx:1.25.3` 而不是 `nginx:latest`）——使用最新版本可能会导致配置出错。
+- 设置重启策略（`unless-stopped` 或 `on-failure`）——默认情况下，容器在重启后不会自动启动。
+- 使用 `docker compose down` 而不是 `docker compose rm`——`docker compose down` 可以正确处理网络和卷的释放。
 
-## Networking
-- Never expose database ports to the internet — only the reverse proxy should be public
-- Use a reverse proxy (Traefik, Caddy, Nginx Proxy Manager) — handles SSL, routing, and security in one place
-- Create Docker networks per project — default bridge network lacks DNS resolution between containers
-- Bind admin interfaces to localhost only (`127.0.0.1:8080:8080`) — not all traffic needs to be public
+## 网络配置
+- 绝不要将数据库端口暴露到互联网上——只有反向代理应该设置为公共访问。
+- 使用反向代理（如 Traefik、Caddy、Nginx Proxy Manager）——它们可以统一处理SSL、路由和安全问题。
+- 为每个项目创建独立的Docker网络——默认的桥接网络无法在容器之间实现DNS解析。
+- 将管理接口绑定到 `localhost`（`127.0.0.1:8080:8080`）——并非所有流量都需要公开访问。
 
-## SSL and Domains
-- Use automatic SSL with Let's Encrypt — Caddy and Traefik do this natively
-- For local/LAN access, use a real domain with DNS challenge — avoids browser certificate warnings
-- Wildcard certificates simplify multi-service setups — one cert for *.home.example.com
+## SSL和域名
+- 使用Let’s Encrypt自动获取SSL证书——Caddy和Traefik支持这一功能。
+- 对于本地/局域网访问，使用带有DNS验证的正式域名——这样可以避免浏览器显示证书警告。
+- 使用通配符证书简化多服务管理——一个证书可以覆盖所有以 `.home.example.com` 结尾的域名。
 
-## Security Essentials
-- Change all default passwords immediately — bots scan for default credentials within hours
-- Enable automatic security updates for the host OS — unpatched systems get compromised
-- Use fail2ban or equivalent — brute force attacks are constant
-- Keep services behind authentication (Authelia, Authentik) — not everything has built-in auth
-- Disable root SSH, use key-only authentication — password SSH is a vulnerability
+## 安全要点
+- 立即更改所有默认密码——机器人会在几小时内尝试猜测默认密码。
+- 为宿主操作系统启用自动安全更新——未打补丁的系统容易受到攻击。
+- 使用fail2ban或类似工具——暴力攻击是常见的安全威胁。
+- 为所有服务设置身份验证机制（如Authelia、Authentik）——并非所有服务都内置了身份验证功能。
+- 禁用root用户的SSH登录权限，仅使用密钥认证——基于密码的SSH登录存在安全风险。
 
-## Backups
-- Test restores, not just backups — untested backups are wishful thinking
-- 3-2-1 rule: 3 copies, 2 different media, 1 offsite — local RAID is not backup
-- Automate backup schedules — manual backups get forgotten
-- Back up Docker volumes, not containers — containers are ephemeral, data is not
+## 备份
+- 不要只备份数据，还要测试恢复过程——未经测试的备份毫无意义。
+- 遵循“3-2-1”备份规则：保留3份备份副本，存储在2种不同的介质上，并将其中一份备份到异地。
+- 自动化备份流程——手动备份很容易被遗忘。
+- 备份Docker卷而不是容器本身——容器是临时性的，数据才是需要长期保存的对象。
 
-## Monitoring
-- Set up uptime monitoring (Uptime Kuma is self-hostable) — know when services die before users tell you
-- Monitor disk space — full disks cause silent failures and corruption
-- Log rotation is mandatory — Docker logs grow forever by default, fill disks
-- Consider resource monitoring (Netdata, Prometheus) — spot problems before they're critical
+## 监控
+- 设置服务器运行状态监控工具（如Uptime Kuma）——在用户发现问题之前就能及时发现服务故障。
+- 监控磁盘空间使用情况——磁盘满会导致系统无声故障和数据损坏。
+- 必须定期轮换日志文件——Docker日志默认会无限增长，可能导致磁盘空间不足。
+- 考虑使用资源监控工具（如Netdata、Prometheus）——在问题变得严重之前及时发现潜在问题。
 
-## Maintenance
-- Schedule regular update windows — services need updates, plan for downtime
-- Document everything you deploy — future you won't remember why that container exists
-- Keep a compose file repo — reproducibility matters when hardware fails
-- Test updates on staging when possible — production surprises are painful
+## 维护
+- 定期安排系统更新——服务需要更新，同时要为可能出现的停机时间做好计划。
+- 记录所有部署的内容——未来你可能无法解释某个容器的存在原因。
+- 保留`docker-compose.yml`文件的版本记录——在硬件故障时，可复现的部署环境非常重要。
+- 如果可能的话，在测试环境中测试更新——在生产环境中出现问题会非常麻烦。
 
-## Home Server Specifics
-- Dynamic DNS if ISP doesn't provide static IP — Cloudflare, DuckDNS work well
-- UPS protects against power loss corruption — especially important for databases
-- Consider power consumption — some hardware costs more in electricity than cloud hosting
-- Port forwarding exposes your home network — use VPN (WireGuard, Tailscale) instead when possible
+## 适用于家庭服务器的特殊注意事项
+- 如果ISP不提供静态IP地址，可以使用动态DNS服务（如Cloudflare、DuckDNS）。
+- 使用不间断电源（UPS）防止停电导致数据丢失——尤其是对于数据库而言非常重要。
+- 考虑能耗问题——某些硬件的电费可能比云托管更高。
+- 使用端口转发功能时要注意隐私——如果可能的话，建议使用VPN（如WireGuard、Tailscale）来保护网络。
 
-## Common Mistakes
-- Putting everything on one machine with no redundancy — single point of failure for all services
-- Ignoring updates for months — security vulnerabilities accumulate
-- No firewall rules — assuming "nobody knows my IP" is security
-- Storing secrets in docker-compose.yml committed to git — use .env files, exclude from version control
-- Over-engineering from day one — start simple, add complexity when needed
+## 常见错误
+- 将所有服务集中在一台机器上且没有冗余措施——这会导致所有服务都面临单点故障的风险。
+- 几个月不进行系统更新——安全漏洞会逐渐累积。
+- 不设置防火墙规则——认为“没人知道我的IP地址”就等于安全了。
+- 将敏感信息存储在`docker-compose.yml`文件中并提交到Git仓库——应该使用`.env`文件来存储配置信息，并将其排除在版本控制之外。
+- 从一开始就过度设计系统——先从简单方案开始，根据需要再逐步增加复杂性。

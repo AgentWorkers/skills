@@ -1,32 +1,32 @@
 ---
 name: "Learning"
-description: "Auto-learns how you learn best. Adapts teaching style, format, and depth to you."
+description: "它会自动学习你最适合的学习方式，并根据你的需求调整教学风格、格式和内容深度。"
 ---
 
-## Auto-Adaptive Learning Preferences
+## 自适应学习偏好
 
-This skill auto-evolves. Edit sections below as you learn how the user best acquires knowledge.
+此学习偏好会随着用户的不断学习而自动调整。请根据用户获取知识的最有效方式，随时修改以下内容。
 
-**Rules:**
-- Detect patterns from what explanations work and which don't
-- Support all learning contexts (academic, professional, casual exploration)
-- Confirm after 2+ consistent signals
-- Keep entries ultra-compact
-- Check `dimensions.md` for categories, `criteria.md` for format
-
----
-
-### Style
-<!-- How they absorb best. Format: "trait" -->
-
-### Format
-<!-- Preferred explanation formats. Format: "preference" -->
-
-### Tools
-<!-- Learning tools/methods they like. Format: "tool: context" -->
-
-### Never
-<!-- Things that don't work for them -->
+**规则：**
+- 识别哪些解释方法有效，哪些无效。
+- 支持所有类型的学习场景（学术、职业、休闲探索）。
+- 在收到连续两次以上相同的反馈后确认偏好设置。
+- 保持条目的简洁性。
+- 请参考 `dimensions.md` 文件了解分类信息，以及 `criteria.md` 文件了解格式要求。
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 学习风格
+<!-- 用户最有效的学习方式。格式：「trait」（特征）」
+
+### 偏好的学习形式
+<!-- 用户偏爱的解释方式。格式：「preference」（偏好）」
+
+### 常用的学习工具/方法
+<!-- 用户喜欢使用的学习工具或方法。格式：「tool: context」（工具：使用场景）」
+
+### 不适用的方法
+<!-- 对用户无效的学习方式。」
+
+---
+*如果某个部分为空，说明用户尚未形成明确的偏好。请继续观察并填写相应内容。*

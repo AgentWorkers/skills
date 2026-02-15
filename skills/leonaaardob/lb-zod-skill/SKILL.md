@@ -1,69 +1,69 @@
 ---
 name: zod
-description: Complete Zod validation library documentation. Use when working with Zod schema validation, TypeScript type inference, form validation, API validation, error handling, or data parsing. Covers schema definition, refinements, transforms, error customization, and ecosystem integrations.
+description: 完整的 Zod 验证库文档。适用于处理 Zod 模式验证、TypeScript 类型推断、表单验证、API 验证、错误处理以及数据解析等场景。内容包括模式定义、优化方法、数据转换、错误自定义以及与相关生态系统的集成。
 ---
 
-# Zod Documentation
+# Zod 文档
 
-Complete Zod validation library documentation embedded in markdown. Read from `references/` to answer questions about schema validation, type inference, and error handling.
+这是一个完整的 Zod 验证库文档，采用 Markdown 格式编写。您可以通过阅读 `references/` 目录中的文件来了解关于模式验证、类型推断和错误处理的相关信息。
 
-## Documentation Structure
+## 文档结构
 
-All documentation is in `references/` organized by topic:
+所有文档都存储在 `references/` 目录中，并按主题进行分类：
 
-### Core Documentation
+### 核心文档
 
-#### Getting Started
-- `index.mdx` - Introduction and quick start
-- `basics.mdx` - Basic usage and schema definition
+#### 入门
+- `index.mdx` - 介绍和快速入门
+- `basics.mdx` - 基本用法和模式定义
 
-#### API Reference
-- `api.mdx` - Complete API documentation
-  - Primitives (string, number, boolean, etc.)
-  - Complex types (object, array, tuple, union, etc.)
-  - Schema methods (parse, safeParse, parseAsync, etc.)
-  - Refinements and transforms
-  - Type inference
-  - Error handling
+#### API 参考
+- `api.mdx` - 完整的 API 文档
+  - 原始类型（字符串、数字、布尔值等）
+  - 复合类型（对象、数组、元组、联合类型等）
+  - 模式方法（`parse`、`safeParse`、`parseAsync` 等）
+  - 优化和转换
+  - 类型推断
+  - 错误处理
 
-#### Advanced Features
-- `error-formatting.mdx` - Error formatting and customization
-- `error-customization.mdx` - Custom error messages
-- `codecs.mdx` - Serialization and deserialization
-- `json-schema.mdx` - JSON Schema generation
-- `metadata.mdx` - Schema metadata
+#### 高级功能
+- `error-formatting.mdx` - 错误格式化和自定义
+- `error-customization.mdx` - 自定义错误信息
+- `codecs.mdx` - 序列化和反序列化
+- `json-schema.mdx` - JSON 模式生成
+- `metadata.mdx` - 模式元数据
 
-#### Integration & Ecosystem
-- `ecosystem.mdx` - Community packages and integrations
-- `library-authors.mdx` - Guide for library authors
-- `packages/` - Related packages
+#### 集成与生态系统
+- `ecosystem.mdx` - 社区包和集成方案
+- `library-authors.mdx` - 库作者指南
+- `packages/` - 相关包
 
-#### Version 4
-- `v4/` - Zod v4 features and migration guide
+#### Zod 4.0 版本
+- `v4/` - Zod 4.0 的新特性和迁移指南
 
-## Quick Reference
+## 快速参考
 
-### Common Tasks
+### 常见任务
 
-| Task | File to Read |
+| 任务 | 需要阅读的文件 |
 |------|--------------|
-| Get started | `index.mdx`, `basics.mdx` |
-| Define schemas | `api.mdx` (Primitives section) |
-| Object validation | `api.mdx` (Objects section) |
-| Array validation | `api.mdx` (Arrays section) |
-| Union types | `api.mdx` (Unions section) |
-| Refinements | `api.mdx` (Refinements section) |
-| Transforms | `api.mdx` (Transforms section) |
-| Error handling | `error-formatting.mdx`, `error-customization.mdx` |
-| Type inference | `api.mdx` (Type Inference section) |
-| Async validation | `api.mdx` (Async section) |
-| JSON Schema | `json-schema.mdx` |
-| Custom errors | `error-customization.mdx` |
-| Ecosystem | `ecosystem.mdx` |
+| 入门 | `index.mdx`, `basics.mdx` |
+| 定义模式 | `api.mdx`（原始类型部分） |
+| 对象验证 | `api.mdx`（对象部分） |
+| 数组验证 | `api.mdx`（数组部分） |
+| 联合类型 | `api.mdx`（联合类型部分） |
+| 优化 | `api.mdx`（优化部分） |
+| 转换 | `api.mdx`（转换部分） |
+| 错误处理 | `error-formatting.mdx`, `error-customization.mdx` |
+| 类型推断 | `api.mdx`（类型推断部分） |
+| 异步验证 | `api.mdx`（异步部分） |
+| JSON 模式 | `json-schema.mdx` |
+| 自定义错误信息 | `error-customization.mdx` |
+| 生态系统 | `ecosystem.mdx` |
 
-### Schema Examples
+### 模式示例
 
-**Primitives:**
+**原始类型：**
 ```typescript
 z.string()
 z.number()
@@ -75,7 +75,7 @@ z.any()
 z.unknown()
 ```
 
-**Complex Types:**
+**复合类型：**
 ```typescript
 z.object({ ... })
 z.array(z.string())
@@ -86,7 +86,7 @@ z.map(z.string(), z.number())
 z.set(z.string())
 ```
 
-**Refinements:**
+**优化：**
 ```typescript
 z.string().email()
 z.string().url()
@@ -95,31 +95,31 @@ z.number().min(5).max(10)
 z.string().regex(/pattern/)
 ```
 
-**Transforms:**
+**转换：**
 ```typescript
 z.string().transform(val => val.toUpperCase())
 z.coerce.number()
 ```
 
-### When to Use This Skill
+### 适用场景
 
-- Form validation in React/Next.js
-- API request/response validation
-- Environment variable parsing
-- Runtime type checking
-- Data transformation and parsing
-- Error message customization
-- Integration with tRPC, React Hook Form, etc.
-- TypeScript type inference from schemas
+- 在 React/Next.js 中进行表单验证
+- API 请求/响应的验证
+- 环境变量的解析
+- 运行时类型检查
+- 数据的转换和解析
+- 自定义错误信息
+- 与 tRPC、React Hook Form 等工具的集成
+- 从模式生成 TypeScript 类型
 
-### How to Navigate
+### 如何导航
 
-1. **Start with `index.mdx`** for introduction
-2. **For basic usage:** Read `basics.mdx`
-3. **For API details:** Check `api.mdx` (comprehensive reference)
-4. **For error handling:** See `error-formatting.mdx` and `error-customization.mdx`
-5. **For advanced features:** Browse `codecs.mdx`, `json-schema.mdx`, `metadata.mdx`
-6. **For integrations:** Check `ecosystem.mdx`
-7. **For v4 features:** See `v4/` directory
+1. 首先阅读 `index.mdx` 以获取简介。
+2. 了解基本用法，请阅读 `basics.mdx`。
+3. 查阅 API 详细信息，请参考 `api.mdx`。
+4. 有关错误处理，请参阅 `error-formatting.mdx` 和 `error-customization.mdx`。
+5. 了解高级功能，请浏览 `codecs.mdx`、`json-schema.mdx` 和 `metadata.mdx`。
+6. 有关集成方案，请查看 `ecosystem.mdx`。
+7. 了解 Zod 4.0 的新特性，请查看 `v4/` 目录。
 
-All files are `.mdx` (Markdown + JSX) but readable as plain markdown.
+所有文件均为 `.mdx` 格式（Markdown + JSX），但也可以直接作为纯 Markdown 文本阅读。

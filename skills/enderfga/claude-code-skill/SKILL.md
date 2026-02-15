@@ -1,23 +1,23 @@
-# OpenClaw Claude Code Skill
+# OpenClaw Claude 代码技能
 
-## Description
+## 描述
 
-MCP (Model Context Protocol) integration for OpenClaw/Clawdbot. Use when you need to:
-- Connect and orchestrate MCP tool servers (filesystem, GitHub, etc.)
-- Persist state across sessions with IndexedDB/localStorage
-- Sync sessions across multiple devices
+本技能实现了 OpenClaw/Clawdbot 与 MCP（Model Context Protocol）的集成。适用于以下场景：
+- 连接并协调 MCP 工具服务器（如文件系统、GitHub 等）；
+- 使用 IndexedDB 或 localStorage 在会话之间持久化数据；
+- 在多个设备之间同步会话状态。
 
-Triggers: "MCP", "tool server", "sub-agent orchestration", "session sync", "state persistence", "Claude Code integration"
+触发条件：`MCP`、`tool server`、`sub-agent orchestration`、`session sync`、`state persistence`、`Claude Code integration`。
 
-## Installation
+## 安装
 
 ```bash
 npm install openclaw-claude-code-skill
 ```
 
-## Core APIs
+## 核心 API
 
-### MCP Server Management
+### MCP 服务器管理
 
 ```typescript
 import { 
@@ -46,7 +46,7 @@ const result = await executeMcpAction("fs", {
 });
 ```
 
-### State Persistence
+### 状态持久化
 
 ```typescript
 import { createPersistStore, indexedDBStorage } from "openclaw-claude-code-skill";
@@ -67,7 +67,7 @@ if (useStore.getState()._hasHydrated) {
 }
 ```
 
-### Session Synchronization
+### 会话同步
 
 ```typescript
 import { mergeSessions, mergeWithUpdate, mergeKeyValueStore } from "openclaw-claude-code-skill";
@@ -79,27 +79,27 @@ const mergedSessions = mergeSessions(localSessions, remoteSessions);
 const mergedConfig = mergeWithUpdate(localConfig, remoteConfig);
 ```
 
-## Key Functions
+## 主要功能
 
-| Function | Purpose |
-|----------|---------|
-| `initializeMcpSystem()` | Start all MCP servers from config |
-| `addMcpServer(id, config)` | Add new server dynamically |
-| `removeMcpServer(id)` | Remove a server |
-| `pauseMcpServer(id)` | Pause a server |
-| `resumeMcpServer(id)` | Resume a paused server |
-| `executeMcpAction(id, req)` | Call a tool on specific server |
-| `getAllTools()` | List all available tools |
-| `getClientsStatus()` | Get status of all MCP clients |
-| `setConfigPath(path)` | Set custom config file location |
-| `createPersistStore()` | Create Zustand store with persistence |
-| `mergeSessions()` | Merge session arrays |
-| `mergeWithUpdate()` | Merge with timestamp resolution |
-| `mergeKeyValueStore()` | Merge key-value stores |
+| 功能          | 用途                                      |
+|-----------------|-----------------------------------------|
+| `initializeMcpSystem()` | 根据配置启动所有 MCP 服务器                         |
+| `addMcpServer(id, config)` | 动态添加新的 MCP 服务器                         |
+| `removeMcpServer(id)` | 删除指定的 MCP 服务器                         |
+| `pauseMcpServer(id)` | 暂停指定的 MCP 服务器                         |
+| `resumeMcpServer(id)` | 恢复暂停的 MCP 服务器                         |
+| `executeMcpAction(id, req)` | 在指定服务器上执行工具命令                         |
+| `getAllTools()` | 获取所有可用的工具列表                         |
+| `getClientsStatus()` | 获取所有 MCP 客户端的状态                         |
+| `setConfigPath(path)` | 设置自定义配置文件路径                         |
+| `createPersistStore()` | 创建具有持久化功能的存储系统                         |
+| `mergeSessions()` | 合并多个会话数据                         |
+| `mergeWithUpdate()` | 合并会话数据并处理时间戳差异                   |
+| `mergeKeyValueStore()` | 合并键值对存储数据                         |
 
-## Configuration
+## 配置
 
-Create `mcp_config.json`:
+创建 `mcp_config.json` 文件：
 
 ```json
 {
@@ -119,20 +119,20 @@ Create `mcp_config.json`:
 }
 ```
 
-Set custom config path:
+设置自定义配置文件路径：
 
 ```typescript
 import { setConfigPath } from "openclaw-claude-code-skill";
 setConfigPath("/path/to/mcp_config.json");
 ```
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- TypeScript (optional but recommended)
+- Node.js 18 及以上版本                     |
+- TypeScript（推荐使用，但非必需）                     |
 
-## Links
+## 链接
 
-- [GitHub](https://github.com/Enderfga/openclaw-claude-code-skill)
-- [npm](https://www.npmjs.com/package/openclaw-claude-code-skill)
-- [MCP Specification](https://spec.modelcontextprotocol.io/)
+- [GitHub](https://github.com/Enderfga/openclaw-claude-code-skill)       |
+- [npm](https://www.npmjs.com/package/openclaw-claude-code-skill)     |
+- [MCP 规范文档](https://spec.modelcontextprotocol.io/)       |

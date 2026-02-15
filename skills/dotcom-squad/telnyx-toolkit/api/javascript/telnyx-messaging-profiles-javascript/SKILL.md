@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Profiles - JavaScript
+# Telnyx 消息传递配置文件 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,11 +31,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List messaging profiles
+## 列出消息传递配置文件
 
-`GET /messaging_profiles`
+`GET /messagingprofiles`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -44,9 +44,9 @@ for await (const messagingProfile of client.messagingProfiles.list()) {
 }
 ```
 
-## Create a messaging profile
+## 创建消息传递配置文件
 
-`POST /messaging_profiles` — Required: `name`, `whitelisted_destinations`
+`POST /messagingprofiles` — 必需参数：`name`、`whitelisted_destinations`
 
 ```javascript
 const messagingProfile = await client.messagingProfiles.create({
@@ -57,9 +57,9 @@ const messagingProfile = await client.messagingProfiles.create({
 console.log(messagingProfile.data);
 ```
 
-## Retrieve a messaging profile
+## 获取消息传递配置文件
 
-`GET /messaging_profiles/{id}`
+`GET /messagingprofiles/{id}`
 
 ```javascript
 const messagingProfile = await client.messagingProfiles.retrieve(
@@ -69,9 +69,9 @@ const messagingProfile = await client.messagingProfiles.retrieve(
 console.log(messagingProfile.data);
 ```
 
-## Update a messaging profile
+## 更新消息传递配置文件
 
-`PATCH /messaging_profiles/{id}`
+`PATCH /messagingprofiles/{id}`
 
 ```javascript
 const messagingProfile = await client.messagingProfiles.update(
@@ -81,9 +81,9 @@ const messagingProfile = await client.messagingProfiles.update(
 console.log(messagingProfile.data);
 ```
 
-## Delete a messaging profile
+## 删除消息传递配置文件
 
-`DELETE /messaging_profiles/{id}`
+`DELETE /messagingprofiles/{id}`
 
 ```javascript
 const messagingProfile = await client.messagingProfiles.delete(
@@ -93,9 +93,9 @@ const messagingProfile = await client.messagingProfiles.delete(
 console.log(messagingProfile.data);
 ```
 
-## List phone numbers associated with a messaging profile
+## 列出与消息传递配置文件关联的电话号码
 
-`GET /messaging_profiles/{id}/phone_numbers`
+`GET /messagingprofiles/{id}/phone_numbers`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -106,9 +106,9 @@ for await (const phoneNumberWithMessagingSettings of client.messagingProfiles.li
 }
 ```
 
-## List short codes associated with a messaging profile
+## 列出与消息传递配置文件关联的短代码
 
-`GET /messaging_profiles/{id}/short_codes`
+`GET /messagingprofiles/{id}/short_codes`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -119,9 +119,9 @@ for await (const shortCode of client.messagingProfiles.listShortCodes(
 }
 ```
 
-## List Auto-Response Settings
+## 列出自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs`
+`GET /messagingprofiles/{profile_id}/autoresp_configs`
 
 ```javascript
 const autorespConfigs = await client.messagingProfiles.autorespConfigs.list(
@@ -131,9 +131,9 @@ const autorespConfigs = await client.messagingProfiles.autorespConfigs.list(
 console.log(autorespConfigs.data);
 ```
 
-## Create auto-response setting
+## 创建自动应答设置
 
-`POST /messaging_profiles/{profile_id}/autoresp_configs` — Required: `op`, `keywords`, `country_code`
+`POST /messagingprofiles/{profile_id}/autoresp_configs` — 必需参数：`op`、`keywords`、`country_code`
 
 ```javascript
 const autoRespConfigResponse = await client.messagingProfiles.autorespConfigs.create('profile_id', {
@@ -145,9 +145,9 @@ const autoRespConfigResponse = await client.messagingProfiles.autorespConfigs.cr
 console.log(autoRespConfigResponse.data);
 ```
 
-## Get Auto-Response Setting
+## 获取自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`GET /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```javascript
 const autoRespConfigResponse = await client.messagingProfiles.autorespConfigs.retrieve(
@@ -158,9 +158,9 @@ const autoRespConfigResponse = await client.messagingProfiles.autorespConfigs.re
 console.log(autoRespConfigResponse.data);
 ```
 
-## Update Auto-Response Setting
+## 更新自动应答设置
 
-`PUT /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — Required: `op`, `keywords`, `country_code`
+`PUT /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — 必需参数：`op`、`keywords`、`country_code`
 
 ```javascript
 const autoRespConfigResponse = await client.messagingProfiles.autorespConfigs.update(
@@ -176,9 +176,9 @@ const autoRespConfigResponse = await client.messagingProfiles.autorespConfigs.up
 console.log(autoRespConfigResponse.data);
 ```
 
-## Delete Auto-Response Setting
+## 删除自动应答设置
 
-`DELETE /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`DELETE /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```javascript
 const autorespConfig = await client.messagingProfiles.autorespConfigs.delete(
@@ -189,7 +189,7 @@ const autorespConfig = await client.messagingProfiles.autorespConfigs.delete(
 console.log(autorespConfig);
 ```
 
-## List short codes
+## 列出所有短代码
 
 `GET /short_codes`
 
@@ -200,7 +200,7 @@ for await (const shortCode of client.shortCodes.list()) {
 }
 ```
 
-## Retrieve a short code
+## 获取特定短代码的信息
 
 `GET /short_codes/{id}`
 
@@ -210,11 +210,9 @@ const shortCode = await client.shortCodes.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d
 console.log(shortCode.data);
 ```
 
-## Update short code
+## 更新短代码的设置
 
-Update the settings for a specific short code.
-
-`PATCH /short_codes/{id}` — Required: `messaging_profile_id`
+`PATCH /short_codes/{id}` — 必需参数：`messaging_profile_id`
 
 ```javascript
 const shortCode = await client.shortCodes.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {

@@ -1,17 +1,16 @@
 ---
 name: nextjs
 model: standard
-description: Next.js App Router best practices — Server Components, data fetching, caching, routing, middleware, metadata, error handling, streaming, Server Actions, and performance optimization for Next.js 14-16+.
+description: Next.js 应用程序路由器的最佳实践 —— 服务器组件、数据获取、缓存、路由、中间件、元数据、错误处理、流式传输、服务器动作以及针对 Next.js 14-16+ 版本的性能优化。
 keywords: [next.js, nextjs, app router, server components, rsc, server actions, streaming, suspense, parallel routes, intercepting routes, metadata, middleware, caching, revalidation, image optimization, font optimization]
 user-invocable: false
 ---
 
-# Next.js App Router
+# Next.js 应用程序路由器
 
-Apply these patterns when building, reviewing, or debugging Next.js App Router applications.
+在构建、审查或调试 Next.js 应用程序的路由器时，请遵循以下模式。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -19,28 +18,27 @@ Apply these patterns when building, reviewing, or debugging Next.js App Router a
 npx clawhub@latest install nextjs
 ```
 
+## 适用场景
 
-## WHEN
+- 构建使用路由器（Router）的 Next.js 应用程序
+- 从 Pages Router 迁移到 App Router
+- 实现服务器组件（Server Components）和流式数据传输（streaming）
+- 设置并行路由（parallel routes）和拦截路由（intercepting routes）
+- 优化数据获取和缓存（data fetching and caching）
+- 使用服务器动作（Server Actions）构建全栈功能
+- 调试数据加载错误（hydration errors）或 RSC（React Server Components）边界问题
 
-- Building Next.js applications with App Router
-- Migrating from Pages Router to App Router
-- Implementing Server Components and streaming
-- Setting up parallel and intercepting routes
-- Optimizing data fetching and caching
-- Building full-stack features with Server Actions
-- Debugging hydration errors or RSC boundary issues
+## 渲染模式
 
-## Rendering Modes
-
-| Mode | Where | When to Use |
+| 模式 | 渲染位置 | 适用场景 |
 |------|-------|-------------|
-| **Server Components** | Server only | Data fetching, secrets, heavy computation |
-| **Client Components** | Browser | Interactivity, hooks, browser APIs |
-| **Static (SSG)** | Build time | Content that rarely changes |
-| **Dynamic (SSR)** | Request time | Personalized or real-time data |
-| **Streaming** | Progressive | Large pages, slow data sources |
+| **服务器组件** | 仅在服务器端 | 数据获取、敏感信息处理、复杂计算 |
+| **客户端组件** | 浏览器端 | 交互性、钩子（hooks）、浏览器 API |
+| **静态渲染（SSG, Static Site Generation）** | 构建时 | 假设内容很少变化 |
+| **动态渲染（SSR, Server-Side Rendering）** | 请求时 | 需要个性化或实时更新的数据 |
+| **流式渲染** | 逐步加载（progressive loading） | 大型页面、数据源加载缓慢 |
 
-### Server vs Client Decision Tree
+### 服务器与客户端决策树
 
 ```
 Does it need...?
@@ -52,9 +50,9 @@ Does it need...?
     └── Split: Server parent fetches data → Client child handles UI
 ```
 
-## File Conventions
+## 文件规范
 
-See [file-conventions.md](references/file-conventions.md) for complete reference.
+有关完整规范，请参阅 [file-conventions.md](references/file-conventions.md)。
 
 ```
 app/
@@ -69,20 +67,26 @@ app/
 └── opengraph-image.tsx # OG image generation
 ```
 
-Route segments: `[slug]` dynamic, `[...slug]` catch-all, `[[...slug]]` optional catch-all, `(group)` route group, `@slot` parallel route, `_folder` private (excluded from routing).
+路由段说明：
+- `[slug]`：动态路由
+- `[...slug]`：通用路由
+- `[[...slug]]`：可选的通用路由
+- `(group)`：路由组
+- `@slot`：并行路由
+- `_folder`：私有文件夹（不参与路由处理）
 
-## Data Fetching Patterns
+## 数据获取模式
 
-Choose the right pattern for each use case. See [data-patterns.md](references/data-patterns.md) for full decision tree.
+为每种使用场景选择合适的模式。有关详细信息，请参阅 [data-patterns.md](references/data-patterns.md)。
 
-| Pattern | Use Case | Caching |
+| 模式 | 适用场景 | 缓存策略 |
 |---------|----------|---------|
-| Server Component fetch | Internal reads (preferred) | Full Next.js caching |
-| Server Action | Mutations, form submissions | POST only, no cache |
-| Route Handler | External APIs, webhooks, public REST | GET can be cached |
-| Client fetch → API | Client-side reads (last resort) | HTTP cache headers |
+| 服务器组件获取数据 | 内部数据读取（推荐） | 全部使用 Next.js 的缓存机制 |
+| 服务器动作（Server Action） | 数据更新、表单提交 | 仅使用 POST 请求，不缓存 |
+- 路由处理器（Route Handler） | 外部 API、Webhook、公共 REST 请求 | GET 请求可以缓存 |
+- 客户端获取数据 → API | 客户端读取（最后手段） | 使用 HTTP 缓存头（HTTP cache headers）
 
-### Server Component Data Fetching (Preferred)
+### 服务器组件数据获取（推荐）
 
 ```tsx
 // app/products/page.tsx — Server Component by default
@@ -92,7 +96,7 @@ export default async function ProductsPage() {
 }
 ```
 
-### Avoiding Data Waterfalls
+## 避免数据瀑布效应（Avoiding Data Waterfalls）
 
 ```tsx
 // BAD: Sequential — each awaits before the next starts
@@ -107,7 +111,7 @@ const [user, posts] = await Promise.all([getUser(), getPosts()])
 <Suspense fallback={<PostsSkeleton />}><PostsSection /></Suspense>
 ```
 
-### Server Actions (Mutations)
+## 服务器动作（Server Actions）
 
 ```tsx
 // app/actions.ts
@@ -129,46 +133,22 @@ export async function addToCart(productId: string) {
 }
 ```
 
-## Caching Strategy
+## 缓存策略
 
-| Method | Syntax | Use Case |
+| 方法 | 语法 | 适用场景 |
 |--------|--------|----------|
-| No cache | `fetch(url, { cache: 'no-store' })` | Always-fresh data |
-| Static | `fetch(url, { cache: 'force-cache' })` | Rarely changes |
-| ISR | `fetch(url, { next: { revalidate: 60 } })` | Time-based refresh |
-| Tag-based | `fetch(url, { next: { tags: ['products'] } })` | On-demand invalidation |
+| 不缓存 | `fetch(url, { cache: 'no-store' })` | 始终获取最新数据 |
+| 静态数据 | `fetch(url, { cache: 'force-cache' })` | 数据很少变化 |
+- 基于时间的更新 | `fetch(url, { next: { revalidate: 60 } })` | 定期更新数据 |
+- 基于标签的更新 | `fetch(url, { next: { tags: ['products'] } })` | 根据标签动态更新数据 |
 
-Invalidate from Server Actions:
+**注意：** 从服务器动作（Server Actions）发起的数据更新必须能够被序列化为 JSON 格式（JSON-serializable）。
 
-```tsx
-'use server'
-import { revalidateTag, revalidatePath } from 'next/cache'
+**关键规则：** 客户端组件（Client Components）不能是异步的（async）。应在服务器组件中获取数据，然后将其传递给客户端组件。
 
-export async function updateProduct(id: string, data: ProductData) {
-  await db.product.update({ where: { id }, data })
-  revalidateTag('products')   // Invalidate by tag
-  revalidatePath('/products') // Invalidate by path
-}
-```
+## 异步 API（Next.js 15 及以上版本）
 
-## RSC Boundaries
-
-Props crossing Server → Client boundary **must be JSON-serializable**. See [rsc-boundaries.md](references/rsc-boundaries.md).
-
-| Prop Type | Valid? | Fix |
-|-----------|--------|-----|
-| `string`, `number`, `boolean` | Yes | — |
-| Plain object / array | Yes | — |
-| Server Action (`'use server'`) | Yes | — |
-| Function `() => {}` | **No** | Define inside client component |
-| `Date` object | **No** | Use `.toISOString()` |
-| `Map`, `Set`, class instance | **No** | Convert to plain object/array |
-
-**Critical rule:** Client Components cannot be `async`. Fetch data in a Server Component parent and pass it down.
-
-## Async APIs (Next.js 15+)
-
-`params`, `searchParams`, `cookies()`, and `headers()` are all async. See [async-patterns.md](references/async-patterns.md).
+`params`、`searchParams`、`cookies()` 和 `headers()` 都是异步操作。有关详细信息，请参阅 [async-patterns.md](references/async-patterns.md)。
 
 ```tsx
 // Pages and layouts — always await params
@@ -189,69 +169,37 @@ export default function Page({ params }: Props) {
 }
 ```
 
-## Routing Patterns
+## 路由模式
 
-### Route Organization
+### 路由组织结构
 
-| Pattern | Syntax | Purpose |
+| 模式 | 语法 | 用途 |
 |---------|--------|---------|
-| Route groups | `(marketing)/` | Organize without affecting URL |
-| Parallel routes | `@analytics/` | Multiple independent sections in one layout |
-| Intercepting routes | `(.)photos/[id]` | Modal overlays on soft navigation |
-| Private folders | `_components/` | Exclude from routing |
+| 路由组 | `(marketing)/` | 逻辑组织路由，不影响 URL 结构 |
+| 并行路由 | `@analytics/` | 在同一布局中展示多个独立的部分 |
+- 拦截路由 | `(.)photos/[id]` | 在导航操作时显示模态框 |
+- 私有文件夹 | `_components/` | 不参与路由处理 |
 
-### Parallel Routes & Modals
+### 并行路由与模态框
 
-See [parallel-routes.md](references/parallel-routes.md) for complete modal pattern.
+有关模态框的详细信息，请参阅 [parallel-routes.md](references/parallel-routes.md)。
 
-Key rules:
-- Every `@slot` folder **must** have a `default.tsx` (returns `null`) or you get 404 on refresh
-- Close modals with `router.back()`, **never** `router.push()` or `<Link>`
-- Intercepting route matchers: `(.)` same level, `(..)` one level up, `(...)` from root
+**重要规则：**
+- 每个 `@slot` 文件夹必须包含一个 `default.tsx` 文件（该文件应返回 `null`），否则页面在刷新时会显示 404 错误。
+- 使用 `router.back()` 关闭模态框，**禁止** 使用 `router.push()` 或 `<Link>`。
+- 拦截路由的匹配器：`(.)` 表示同一层级路由，`(..)` 表示上一层级路由，`(...)` 表示从根目录开始的路由。
 
-## Metadata & SEO
+## 元数据与 SEO
 
-See [metadata.md](references/metadata.md) for OG images, sitemaps, and file conventions.
+有关元数据（Metadata）的详细信息，请参阅 [metadata.md](references/metadata.md)，包括原始图片（OG images）、站点地图（sitemaps）和文件规范。
 
-```tsx
-// Static metadata (layout or page)
-export const metadata: Metadata = {
-  title: { default: 'My App', template: '%s | My App' },
-  description: 'Built with Next.js',
-}
+**注意：** 元数据仅适用于服务器组件（Metadata is Server Components）。如果页面使用了 `use client`，请将元数据提取到父布局中。
 
-// Dynamic metadata
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const post = await getPost(slug)
-  return {
-    title: post.title,
-    description: post.description,
-    openGraph: { images: [{ url: post.image, width: 1200, height: 630 }] },
-  }
-}
-```
+## 错误处理
 
-**Metadata is Server Components only.** If a page has `'use client'`, extract metadata to a parent layout.
+有关错误处理的详细信息，请参阅 [error-handling.md](references/error-handling.md)，包括身份验证错误（auth errors）的处理方式。
 
-## Error Handling
-
-See [error-handling.md](references/error-handling.md) for full patterns including auth errors.
-
-```tsx
-// app/blog/error.tsx — must be 'use client'
-'use client'
-export default function Error({ error, reset }: { error: Error; reset: () => void }) {
-  return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
-    </div>
-  )
-}
-```
-
-**Critical gotcha:** `redirect()`, `notFound()`, `forbidden()`, and `unauthorized()` throw special errors. Never catch them in try/catch:
+**重要提示：** `redirect()`、`notFound()`、`forbidden()` 和 `unauthorized()` 会抛出特殊的错误。切勿在 `try/catch` 块中捕获这些错误。
 
 ```tsx
 // BAD: redirect throw is caught — navigation fails!
@@ -269,7 +217,7 @@ catch (error) { return { error: 'Failed' } }
 redirect(`/posts/${post.id}`)
 ```
 
-## Streaming with Suspense
+## 使用 Suspense 实现流式渲染
 
 ```tsx
 export default async function ProductPage({ params }: Props) {
@@ -290,91 +238,91 @@ export default async function ProductPage({ params }: Props) {
 }
 ```
 
-### Hooks That Require Suspense Boundaries
+### 需要 Suspense 的钩子
 
-| Hook | Suspense Required |
+| 需要 Suspense 的钩子 | 说明 |
 |------|-------------------|
-| `useSearchParams()` | Always (or entire page becomes CSR) |
-| `usePathname()` | In dynamic routes |
-| `useParams()` | No |
-| `useRouter()` | No |
+| `useSearchParams()` | 总是需要 Suspense，否则整个页面会变成客户端渲染（CSR） |
+| `usePathname()` | 在动态路由中需要 Suspense |
+| `useParams()` | 不需要 Suspense |
+| `useRouter()` | 不需要 Suspense |
 
-## Performance
+## 性能优化
 
-- **Always use `next/image`** over `<img>` — see [image-optimization.md](references/image-optimization.md)
-- **Always use `next/link`** over `<a>` — client-side navigation with prefetching
-- **Always use `next/font`** — see [font-optimization.md](references/font-optimization.md)
-- **Always use `next/script`** — see [scripts.md](references/scripts.md)
-- **Set `priority`** on above-the-fold images (LCP)
-- **Add `sizes`** when using `fill` — without it, the largest image variant downloads
-- **Dynamic imports** for heavy client components: `const Chart = dynamic(() => import('./Chart'))`
-- **Use `generateStaticParams`** to pre-render dynamic routes at build time
+- **始终使用 `next/image` 而不是 `<img>` — 详见 [image-optimization.md](references/image-optimization.md) |
+- **始终使用 `next/link` 而不是 `<a>` — 实现客户端导航并预加载资源 |
+- **始终使用 `next/font` — 详见 [font-optimization.md](references/font-optimization.md) |
+- **始终使用 `next/script` — 详见 [scripts.md](references/scripts.md) |
+- 为重要的图片设置 `priority` 属性（LCP, Loading Critical Pictures） |
+- 使用 `sizes` 属性来控制图片大小 — 不设置此属性会导致下载最大的图片版本 |
+- 对于复杂的客户端组件，使用动态导入：`const Chart = dynamic(() => import('./Chart'))`
+- 使用 `generateStaticParams` 在构建时预渲染动态路由
 
-## Route Handlers
+## 路由处理器（Route Handlers）
 
-See [route-handlers.md](references/route-handlers.md) for API endpoint patterns.
+有关 API 端点的详细信息，请参阅 [route-handlers.md](references/route-handlers.md)。
 
-## Bundling
+## 打包（Bundling）
 
-See [bundling.md](references/bundling.md) for fixing third-party package issues, server-incompatible packages, and ESM/CommonJS problems.
+有关解决第三方包问题、服务器不兼容包以及 ESM（ESM）/CommonJS 相关问题的方法，请参阅 [bundling.md](references/bundling.md)。
 
-## Hydration Errors
+## 数据加载错误（Hydration Errors）
 
-See [hydration-errors.md](references/hydration-errors.md) for all causes and fixes.
+有关数据加载错误的成因及解决方法，请参阅 [hydration-errors.md](references/hydration-errors.md)。
 
-| Cause | Fix |
+| 原因 | 解决方法 |
 |-------|-----|
-| Browser APIs (`window`, `localStorage`) | Client component with `useEffect` mount check |
-| `new Date().toLocaleString()` | Render on client with `useEffect` |
-| `Math.random()` for IDs | Use `useId()` hook |
-| `<p><div>...</div></p>` | Fix invalid HTML nesting |
-| Third-party scripts modifying DOM | Use `next/script` with `afterInteractive` |
+- 浏览器 API（如 `window`、`localStorage`） | 客户端组件中需要使用 `useEffect` 进行渲染检查 |
+- `new Date().toLocaleString()` | 在客户端使用 `useEffect` 进行渲染 |
+- 使用 `Math.random()` 生成 ID 时 | 使用 `useId()` 钩子 |
+- 错误的 HTML 结构（如 `<p><div>...</div></p>` | 修复无效的 HTML 标签嵌套 |
+- 第三方脚本修改 DOM 时 | 使用 `next/script` 并设置 `afterInteractive` 属性
 
-## Self-Hosting
+## 自托管（Self-Hosting）
 
-See [self-hosting.md](references/self-hosting.md) for Docker, PM2, cache handlers, and deployment checklist.
+有关 Docker、PM2、缓存处理以及部署的详细信息，请参阅 [self-hosting.md](references/self-hosting.md)。
 
-Key points:
-- Use `output: 'standalone'` for Docker — creates minimal production bundle
-- Copy `public/` and `.next/static/` separately (not included in standalone)
-- Set `HOSTNAME="0.0.0.0"` for containers
-- Multi-instance ISR requires a custom cache handler (Redis/S3) — filesystem cache breaks
-- Set health check endpoint at `/api/health`
+**关键点：**
+- 使用 `output: 'standalone'` 选项进行 Docker 托管 — 生成最小的生产版本包 |
+- 分别复制 `public/` 和 `.next/static/` 文件夹（它们不包含在独立版本包中） |
+- 为容器设置 `HOSTNAME="0.0.0.0"` |
+- 多实例场景需要自定义缓存处理（如 Redis/S3） — 文件系统缓存可能导致问题 |
+- 设置健康检查端点为 `/api/health`
 
-## NEVER Do
+## 绝对不要做的事情
 
-| Never | Why | Instead |
+| 绝对不要 | 原因 | 替代方案 |
 |-------|-----|---------|
-| Add `'use client'` by default | Bloats client bundle, loses Server Component benefits | Server Components are default — add `'use client'` only for interactivity |
-| Make client components `async` | Not supported — will crash | Fetch in Server Component parent, pass data as props |
-| Pass `Date`/`Map`/functions to client | Not serializable across RSC boundary | Serialize to string/plain object, or use Server Actions |
-| Fetch from own API in Server Components | Unnecessary round-trip — you're already on the server | Access DB/service directly |
-| Wrap `redirect()`/`notFound()` in try-catch | They throw special errors that get swallowed | Call outside try-catch or use `unstable_rethrow()` |
-| Skip `loading.tsx` or Suspense fallbacks | Users see blank page during data loading | Always provide loading states |
-| Use `useSearchParams` without Suspense | Entire page silently falls back to CSR | Wrap in `<Suspense>` boundary |
-| Use `router.push()` to close modals | Breaks history, modal can flash/persist | Use `router.back()` |
-| Use `@vercel/og` for OG images | Built into Next.js already | Import from `next/og` |
-| Omit `default.tsx` in parallel route slots | Hard navigation (refresh) returns 404 | Add `default.tsx` returning `null` |
-| Use Edge runtime unless required | Limited APIs, most npm packages break | Default Node.js runtime covers 95% of cases |
-| Skip `sizes` prop on `fill` images | Downloads largest image variant always | Add `sizes="100vw"` or appropriate breakpoints |
-| Import fonts in multiple components | Creates duplicate instances | Import once in layout, use CSS variable |
-| Use `<link>` for Google Fonts | No optimization, blocks rendering | Use `next/font` |
+- 默认启用 `use client` | 会导致客户端包体积增大，失去服务器组件的优势 | 服务器组件是默认设置——仅在需要交互性时启用 `use client` |
+- 将客户端组件设置为异步（async） | 不被支持，可能导致程序崩溃 | 应在服务器组件中获取数据，并将其作为属性传递给客户端组件 |
+- 将 `Date`、`Map` 或函数传递给客户端 | 这些数据无法在 RSC 边界之间进行序列化 | 应将它们序列化为字符串或普通对象 |
+- 在服务器组件中直接从自己的 API 获取数据 | 不必要地增加网络请求 | 直接访问数据库或服务 |
+- 在 `try-catch` 块中捕获 `redirect()`、`notFound()`、`forbidden()` 等错误 | 这些错误会隐藏在异常处理中 | 应在 `try-catch` 之外处理这些错误 |
+- 跳过 `loading.tsx` 或 Suspense 备用方案 | 用户在数据加载时可能会看到空白页面 | 必须提供加载状态提示 |
+- 在没有 Suspense 的情况下使用 `useSearchParams` | 会导致整个页面变成客户端渲染 | 应使用 `<Suspense>` 来处理加载状态 |
+- 使用 `router.push()` 关闭模态框 | 会破坏浏览历史记录，导致模态框突然关闭 | 应使用 `router.back()` |
+- 使用 `@vercel/og` 生成原始图片 | Next.js 已经内置了相关功能 | 应从 `next/og` 导入图片 |
+- 在并行路由中省略 `default.tsx` 文件 | 这会导致页面刷新时显示 404 错误 | 应添加返回 `null` 的 `default.tsx` 文件 |
+- 除非必要，否则不使用 Edge 运行时环境 | 大多数 npm 包在 Edge 环境中无法正常工作 | 默认的 Node.js 运行时环境已经可以满足大部分需求 |
+- 跳过 `sizes` 属性 | 会导致下载最大的图片版本 | 应设置 `sizes="100vw"` 或适当的尺寸属性 |
+- 在多个组件中重复导入字体 | 会导致重复加载 | 应在布局文件中统一导入字体 |
+- 使用 `<link>` 标签加载 Google 字体 | 无法优化渲染效果 | 应使用 `next/font` |
 
-## Reference Files
+## 参考文件
 
-| File | Topic |
+| 文件 | 主题 |
 |------|-------|
-| [rsc-boundaries.md](references/rsc-boundaries.md) | Server/Client boundary rules, serialization |
-| [data-patterns.md](references/data-patterns.md) | Fetching decision tree, waterfall avoidance |
-| [error-handling.md](references/error-handling.md) | Error boundaries, redirect gotcha, auth errors |
-| [async-patterns.md](references/async-patterns.md) | Next.js 15+ async params/cookies/headers |
-| [metadata.md](references/metadata.md) | SEO, OG images, sitemaps, file conventions |
-| [parallel-routes.md](references/parallel-routes.md) | Modal pattern, intercepting routes, gotchas |
-| [hydration-errors.md](references/hydration-errors.md) | Causes, debugging, fixes |
-| [self-hosting.md](references/self-hosting.md) | Docker, PM2, cache handlers, deployment |
-| [file-conventions.md](references/file-conventions.md) | Project structure, special files, middleware |
-| [bundling.md](references/bundling.md) | Third-party packages, SSR issues, Turbopack |
-| [image-optimization.md](references/image-optimization.md) | next/image best practices |
-| [font-optimization.md](references/font-optimization.md) | next/font best practices |
-| [scripts.md](references/scripts.md) | next/script, third-party loading |
-| [route-handlers.md](references/route-handlers.md) | API endpoints, request/response helpers |
+| [rsc-boundaries.md](references/rsc-boundaries.md) | 服务器/客户端边界规则、数据序列化 |
+| [data-patterns.md](references/data-patterns.md) | 数据获取策略、避免数据瀑布效应 |
+| [error-handling.md](references/error-handling.md) | 错误处理、重定向相关问题、身份验证错误 |
+| [async-patterns.md](references/async-patterns.md) | Next.js 15 及以上版本中的异步参数、cookies、headers 的使用 |
+| [metadata.md](references/metadata.md) | SEO、原始图片、站点地图、文件规范 |
+| [parallel-routes.md](references/parallel-routes.md) | 模态框模式、拦截路由的相关注意事项 |
+| [hydration-errors.md](references/hydration-errors.md) | 数据加载错误的成因及解决方法 |
+| [self-hosting.md](references/self-hosting.md) | Docker 托管、PM2、缓存处理、部署相关内容 |
+| [file-conventions.md](references/file-conventions.md) | 项目结构、特殊文件、中间件（middleware） |
+| [bundling.md](references/bundling.md) | 第三方包、服务器渲染问题、Turbopack 打包工具 |
+| [image-optimization.md](references/image-optimization.md) | `next/image` 的最佳实践 |
+| [font-optimization.md](references/font-optimization.md) | `next/font` 的最佳实践 |
+| [scripts.md](references/scripts.md) | `next/script` 的使用、第三方脚本的加载 |
+| [route-handlers.md](references/route-handlers.md) | API 端点、请求/响应处理相关内容 |

@@ -1,16 +1,16 @@
 ---
 name: Wishlist
-description: Build a personal wishlist system for capturing wants, tracking prices, and smart purchasing decisions.
+description: 构建一个个人愿望清单系统，用于记录需求、跟踪商品价格，并辅助做出明智的购买决策。
 metadata: {"clawdbot":{"emoji":"⭐","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User shares something they want → capture with details
-- User asks what to buy → surface by priority and price
-- Periodically check prices on tracked items
-- Create `~/wishlist/` as workspace
+## 核心功能
+- 用户分享他们想要购买的商品，并提供详细信息。
+- 系统会根据商品优先级和价格将推荐商品展示给用户。
+- 定期检查已跟踪商品的价格变化。
+- 创建 `~/wishlist/` 文件夹作为用户购物清单的工作区。
 
-## File Structure
+## 文件结构
 ```
 ~/wishlist/
 ├── items/
@@ -28,7 +28,7 @@ metadata: {"clawdbot":{"emoji":"⭐","os":["linux","darwin","win32"]}}
 └── settings.md
 ```
 
-## Item Entry
+## 商品信息记录
 ```markdown
 # sony-headphones.md
 ## Item
@@ -64,8 +64,8 @@ Consider refurbished
 January 15, 2024
 ```
 
-## Quick Capture
-For fast saving:
+## 快速记录功能
+为了方便快速保存商品信息：
 ```markdown
 User: "I want those Sony headphones"
 → Create item with name
@@ -73,7 +73,7 @@ User: "I want those Sony headphones"
 → Start tracking
 ```
 
-## Priority Levels
+## 优先级设置
 ```markdown
 # by-priority/must-have.md
 Items you're actively planning to buy:
@@ -91,7 +91,7 @@ Nice to have, no rush:
 - Drone
 ```
 
-## Price Alerts
+## 价格提醒功能
 ```markdown
 # price-alerts.md
 ## Active Alerts
@@ -103,7 +103,7 @@ Nice to have, no rush:
 - Feb 10: Sony dropped to $349 (still above target)
 ```
 
-## Settings
+## 设置选项
 ```markdown
 # settings.md
 ## Price Check Frequency
@@ -121,32 +121,32 @@ Notify when:
 - Direct from manufacturer
 ```
 
-## Price Checking
-When checking prices:
-- Search current prices across configured stores
-- Compare to target and history
-- Surface significant drops
-- Update last checked date
+## 价格检查流程
+在检查价格时：
+- 在配置好的商店中搜索当前价格。
+- 将当前价格与目标价格及历史价格进行比较。
+- 强制显示价格大幅下降的商品。
+- 更新商品的最后检查日期。
 
-## What To Surface
-- "Sony headphones dropped $30 this week"
-- "3 items on your must-have list under budget"
-- "Kindle hasn't changed price in 2 months"
-- "Black Friday coming — review high-priority items"
+## 信息展示内容示例：
+- “索尼耳机本周降价30美元。”
+- “您购物清单中的3件商品在预算范围内。”
+- “Kindle的价格已经两个月没有变动了。”
+- “黑色星期五即将到来——请查看高优先级的商品。”
 
-## Smart Suggestions
-- "This item often discounts on Prime Day"
-- "Refurbished available at 40% off"
-- "Similar item with better reviews for less"
-- "You've wanted this 6 months — still relevant?"
+## 智能推荐功能
+- “这款商品在Prime Day经常打折。”
+- “有翻新版的商品，折扣高达40%。”
+- “有评价更好的类似商品，价格更便宜。”
+- “您已经想要这款商品6个月了——它还符合您的需求吗？”
 
-## Purchase Flow
-When user decides to buy:
-- Confirm current best price
-- Move to purchased.md with date and final price
-- Note: got target price? above/below?
+## 购买流程
+当用户决定购买时：
+- 确认当前的最佳购买价格。
+- 将商品信息保存到 `purchased.md` 文件中，并记录购买日期和最终价格。
+- 注意：实际购买价格是否达到了目标价格？
 
-## Purchased Log
+## 购买记录
 ```markdown
 # purchased.md
 ## 2024
@@ -159,22 +159,22 @@ When user decides to buy:
 - Total saved vs original price: $340
 ```
 
-## Categories
-Organize by type for browsing:
-- Tech: gadgets, electronics
-- Home: furniture, appliances
-- Clothing: wardrobe additions
-- Hobby: gear for interests
-- Gifts: things to gift others
+## 商品分类
+为了便于浏览，商品按类别进行分类：
+- 科技类：小工具、电子产品
+- 家居类：家具、电器
+- 服装类：新增的衣物
+- 休闲爱好类：与个人兴趣相关的装备
+- 礼品类：适合赠送他人的物品
 
-## Progressive Enhancement
-- Start: capture items with priority
-- Add target prices
-- Enable price checking
-- Review monthly: still want it?
+## 功能逐步完善计划：
+- 初始阶段：仅记录商品及其优先级。
+- 后续添加目标价格信息。
+- 启用价格检查功能。
+- 每月检查一次：用户是否仍然需要这些商品？
 
-## What NOT To Do
-- Buy impulsively without checking wishlist first
-- Keep items forever without reviewing
-- Ignore price history patterns
-- Forget why you wanted something
+## 需避免的行为：
+- 不要未经查看购物清单就冲动购买。
+- 不要长期保留未审核的商品记录。
+- 忽视商品的价格历史变化趋势。
+- 忘记自己最初想要购买这些商品的原因。

@@ -1,13 +1,23 @@
 ---
 name: note-processor
-description: Summarize and analyze research notes created by research-assistant. Features: generate summaries, extract keywords, search within topics, list all topics. Works with research_db.json format. Perfect for finding patterns, reviewing research progress, and extracting insights from accumulated notes without re-reading everything.
+description: **研究助理生成的研究笔记的汇总与分析工具**  
+该工具具备以下核心功能：  
+1. **生成笔记摘要**：能够自动提取研究笔记的关键内容，为用户提供简洁的笔记概要。  
+2. **关键词提取**：从笔记中识别出高频出现的关键词，帮助用户快速理解笔记的主题。  
+3. **主题搜索**：支持用户根据特定关键词或主题对笔记进行高效搜索。  
+4. **完整主题列表**：系统会列出所有被记录的研究主题，便于用户进行分类和管理。  
+
+该工具专为处理 `research_db.json` 格式的笔记文件设计，非常适合用于：  
+- **发现研究中的规律与趋势**：通过分析大量笔记数据，帮助研究人员发现潜在的研究模式或趋势。  
+- **监控研究进度**：用户可以随时查看已完成或正在进行的研究主题，确保研究工作的顺利进行。  
+- **高效提取见解**：无需逐篇阅读所有笔记，即可快速获取关键信息，提升研究效率。
 ---
 
-# Note Processor
+# 笔记处理器（Note Processor）
 
-Analyze and summarize research notes to extract insights quickly.
+该工具用于分析和总结研究笔记，以便快速提取有价值的见解。
 
-## Quick Start
+## 快速入门
 
 ```bash
 note_processor.py summarize <topic>
@@ -16,7 +26,7 @@ note_processor.py extract <topic> <keyword>
 note_processor.py list
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Get a summary of a research topic
 note_processor.py summarize income-experiments
@@ -31,17 +41,17 @@ note_processor.py extract income-experiments skill
 note_processor.py list
 ```
 
-## Features
+## 主要功能
 
-- **Summaries** - Overview of topic with statistics, tags, key points
-- **Keywords** - Extract most common words (filters stop words)
-- **Search** - Find notes containing specific keywords
-- **List** - See all research topics with basic stats
-- **Integration** - Works with research-assistant's database format
+- **摘要**：提供主题概览，包括统计数据、标签和关键点
+- **关键词**：提取最常见的词汇（排除常用停用词）
+- **搜索**：查找包含特定关键词的笔记
+- **列表**：查看所有研究主题及其基本统计信息
+- **集成**：支持与研究辅助工具（research-assistant）的数据库格式兼容
 
-## When to Use
+## 使用场景
 
-### After Research Sessions
+### 研究会后
 ```bash
 # Summarize what you learned
 note_processor.py summarize new-research-topic
@@ -50,7 +60,7 @@ note_processor.py summarize new-research-topic
 note_processor.py keywords new-research-topic
 ```
 
-### Before Writing Reports
+### 撰写报告前
 ```bash
 # Find specific information
 note_processor.py extract income-experiments monetization
@@ -59,7 +69,7 @@ note_processor.py extract income-experiments monetization
 note_processor.py summarize income-experiments
 ```
 
-### Reviewing Progress
+### 审查研究进展
 ```bash
 # See all topics and their sizes
 note_processor.py list
@@ -68,17 +78,15 @@ note_processor.py list
 note_processor.py keywords income-experiments
 ```
 
-## Command Details
+## 命令详情
 
-### summarize <topic>
-Shows:
-- Note count and word count
-- Creation and last update dates
-- Top 5 tags
-- Key points (sentences with important words)
-- 3 most recent notes
+### `summarize <主题>`
+- 显示：笔记数量、单词数量、创建日期和最后更新日期
+- 前5个标签
+- 关键点（包含重要词汇的句子）
+- 最近3条笔记
 
-**Output example:**
+**输出示例：**
 ```
 📊 Summary: income-experiments
 ------------------------------------------------------------
@@ -97,13 +105,12 @@ Last update: 2026-02-07
    2. Second experiment: content automation pipeline...
 ```
 
-### keywords <topic>
-Shows:
-- Total unique keywords
-- Top 20 keywords with frequency
-- Filters common stop words (that, this, with, from, etc.)
+### `keywords <主题>`
+- 显示：所有独特的关键词
+- 出现频率最高的20个关键词
+- 过滤常用停用词（如“that”、“this”、“with”等）
 
-**Output example:**
+**输出示例：**
 ```
 🔤 Keywords: income-experiments
 ------------------------------------------------------------
@@ -116,14 +123,13 @@ Top 20 Keywords:
   4. content              ( 2x)
 ```
 
-### extract <topic> <keyword>
-Shows:
-- All notes containing the keyword
-- Keyword highlighted in uppercase
-- Timestamps and tags
-- Preview of matched content
+### `extract <主题> <关键词>`
+- 显示：所有包含该关键词的笔记
+- 关键词会以大写字母显示
+- 包含时间戳和标签
+- 显示匹配内容的预览
 
-**Output example:**
+**输出示例：**
 ```
 🔍 Search Results: 'skill' in income-experiments
 ------------------------------------------------------------
@@ -134,14 +140,13 @@ Found 4 match(es)
    First experiment: create and publish **SKILL**s to ClawHub...
 ```
 
-### list
-Shows:
-- All research topics
-- Note count and word count
-- Last update date
-- Preview of most recent note
+### `list`
+- 显示：所有研究主题
+- 笔记数量和单词数量
+- 最后更新日期
+- 最新笔记的预览
 
-**Output example:**
+**输出示例：**
 ```
 📚 Research Topics (5)
 ------------------------------------------------------------
@@ -155,11 +160,12 @@ security-incident
    Latest: Day 1: Security vulnerability found...
 ```
 
-## Integration with research-assistant
+## 与研究辅助工具的集成
 
-note-processor works with the same database as research-assistant (`research_db.json`).
+该工具使用与研究辅助工具相同的数据库（`research_db.json`）。
 
-### Typical Workflow
+### 典型工作流程
+
 ```bash
 # 1. Add research notes
 research_organizer.py add "new-topic" "Research finding here" "tag1" "tag2"
@@ -177,7 +183,8 @@ note_processor.py extract new-topic keyword
 note_processor.py list
 ```
 
-### Using Both Together
+### 两者结合使用
+
 ```bash
 # Research phase
 research_organizer.py add "experiment" "Test result 1" "testing"
@@ -193,29 +200,29 @@ note_processor.py extract experiment conclusion
 # Now write report based on extracted notes
 ```
 
-## Key Point Detection
+## 关键点检测
 
-The `summarize` command detects key points by finding sentences with important words:
-- important, key, critical, essential
-- must, should, note, remember
-- warning, priority, critical
+`summarize`命令通过识别包含重要词汇的句子来提取关键点：
+- “important”、“key”、“critical”、“essential”
+- “must”、“should”、“note”、“remember”
+- “warning”、“priority”、“critical”
 
-This helps surface actionable insights from your research.
+这有助于从研究中提取出可操作的见解。
 
-## Keyword Extraction
+## 关键词提取
 
-The `keywords` command:
-- Filters words shorter than 4 characters
-- Removes common stop words
-- Counts frequency across all notes
-- Shows top 20 keywords
+`keywords`命令：
+- 过滤长度小于4个字符的词汇
+- 删除常用停用词
+- 统计所有笔记中关键词的出现频率
+- 显示出现频率最高的20个关键词
 
-**Stop words filtered:**
+**被过滤的停用词：**
 that, this, with, from, have, been, will, what, when, where, which, their, there, would, could, should, about, these, those, other, into, through
 
-## Use Cases
+## 使用场景
 
-### Before Writing a Report
+### 撰写报告前
 ```bash
 # Get overview
 note_processor.py summarize research-topic
@@ -227,7 +234,7 @@ note_processor.py extract research-topic metrics
 note_processor.py keywords research-topic
 ```
 
-### Reviewing Research Progress
+### 审查研究进展
 ```bash
 # See what you've been working on
 note_processor.py list
@@ -239,7 +246,7 @@ note_processor.py summarize current-project
 note_processor.py keywords current-project
 ```
 
-### Finding Specific Information
+### 查找特定信息
 ```bash
 # Search across a topic
 note_processor.py extract income-experiments monetization
@@ -251,72 +258,66 @@ note_processor.py extract security-incident path-validation
 note_processor.py extract experiment conclusion
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use summaries** - Get overview before diving into details
-2. **Search first** - Use extract before reading all notes
-3. **Check keywords** - Find themes you might have missed
-4. **List regularly** - Review all topics to see gaps
-5. **Tag consistently** - Makes keywords more meaningful
+1. **使用摘要**：在深入细节之前先获取整体概览
+2. **先搜索**：在阅读所有笔记之前使用`extract`功能
+3. **检查关键词**：发现可能遗漏的主题
+4. **定期整理列表**：定期查看所有主题以发现遗漏的内容
+5. **一致地添加标签**：使关键词更具意义
 
-## Data Location
+## 数据存储位置
 
-Database: `~/.openclaw/workspace/research_db.json`
-Format: Compatible with research-assistant skill
+数据库：`~/.openclaw/workspace/research_db.json`
+格式：与研究辅助工具（research-assistant）兼容
 
-## Limitations
+## 限制
 
-- **Simple keyword extraction** - Frequency-based, not semantic
-- **No NLP** - Basic text processing (no ML/AI)
-- **Stop word list** - English-focused, customize for other languages
-- **Key point detection** - Pattern-based, not understanding-based
+- **简单的关键词提取**：基于频率统计，而非语义分析
+- **无自然语言处理**：仅进行基本文本处理（不使用机器学习/人工智能）
+- **停用词列表**：以英语为主，可针对其他语言进行自定义
+- **关键点检测**：基于模式识别，而非深度理解
 
-## Tips
+## 提示
 
-### For Better Keywords
-- Use consistent terminology in your notes
-- Avoid abbreviations or synonyms for the same concept
-- Tag notes with important terms
-- Review keywords to see if important terms appear
+### 提高关键词质量
 
-### For Better Summaries
-- Write complete sentences in notes
-- Include important words (key, critical, must, etc.)
-- Tag notes with themes
-- Regularly summarize to track progress
+- 在笔记中使用统一的术语
+- 避免使用缩写或同义词来表示相同概念
+- 为笔记添加相关标签
+- 定期检查关键词，确保重要术语被正确标记
 
-### For Better Search
-- Use specific keywords in extract
-- Search for related terms (synonyms)
-- Check tags in results
-- Use summaries to find the right topic
+### 提高摘要质量
 
-## Troubleshooting
+- 在笔记中书写完整的句子
+- 包含重要词汇（如“key”、“critical”、“must”等）
+- 为笔记添加主题标签
+- 定期生成摘要以跟踪研究进展
 
-### "Topic not found"
-```
-Topic 'x' not found.
-```
-**Solution:** Check topic name spelling. Use `note_processor.py list` to see all topics.
+### 提高搜索效果
 
-### "No matches found"
-```
-No matches for 'keyword' in topic 'x'
-```
-**Solution:** Try different keywords, check spelling, use `note_processor.py keywords` to find related terms.
+- 在`extract`命令中使用具体的关键词
+- 搜索相关词汇（使用同义词）
+- 查看搜索结果中的标签
+- 利用摘要来定位相关主题
 
-### Poor keyword results
-```
-Top Keywords are mostly common words
-```
-**Solution:** 
-- Use more specific terms in your notes
-- Tag notes with important terms
-- The stop word filter can be customized in the code
+## 常见问题及解决方法
 
-## Examples by Use Case
+### “找不到该主题”
+**解决方法：**检查主题名称的拼写。可以使用`note_processor.py list`查看所有主题。
 
-### Project Review
+### “未找到匹配结果”
+**解决方法：**尝试使用不同的关键词，检查拼写，或使用`note_processor.py keywords`查找相关术语。
+
+### 关键词提取效果不佳
+**解决方法：**
+- 在笔记中使用更具体的词汇
+- 为笔记添加重要标签
+- 可以在代码中自定义停用词过滤规则
+
+## 按使用场景划分的示例
+
+### 项目回顾
 ```bash
 # What have I been working on?
 note_processor.py list
@@ -328,7 +329,7 @@ note_processor.py summarize project-x
 note_processor.py keywords project-x
 ```
 
-### Writing Documentation
+### 编写文档
 ```bash
 # Find specific details
 note_processor.py extract security-incident vulnerability
@@ -340,7 +341,7 @@ note_processor.py summarize security-incident
 note_processor.py keywords security-incident
 ```
 
-### Preparing a Report
+### 准备报告
 ```bash
 # Find all relevant information
 note_processor.py extract income-experiments monetization
@@ -353,14 +354,14 @@ note_processor.py summarize income-experiments
 # Key points are in the output
 ```
 
-## Integration with Other Skills
+## 与其他工具的集成
 
-### With research-assistant
-- research-assistant: add notes
-- note-processor: analyze notes
-- Use together: add → analyze → write report
+### 与研究辅助工具（research-assistant）集成
+- `research-assistant`：添加笔记
+- `note-processor`：分析笔记
+- 顺序使用：添加 → 分析 → 撰写报告
 
-### With task-runner
+### 与任务执行工具（task-runner）集成
 ```bash
 # Add task to summarize research
 task_runner.py add "Summarize experiment results" "documentation"
@@ -372,7 +373,7 @@ note_processor.py summarize experiment
 task_runner.py complete 1
 ```
 
-### With file skills
+### 与其他工具集成
 ```bash
 # Extract research notes
 note_processor.py extract research-topic important
@@ -384,13 +385,13 @@ research_organizer.py export research-topic ~/shared/summary.md
 note_processor.py summarize research-topic > ~/shared/summary.txt
 ```
 
-## Zero-Cost Advantage
+## 无成本优势
 
-This skill requires:
-- ✅ Python 3 (included)
-- ✅ No API keys
-- ✅ No external dependencies
-- ✅ No paid services
-- ✅ Works with research-assistant (free)
+该工具无需额外费用，具备以下要求：
+- ✅ 支持Python 3（已包含）
+- ✅ 无需API密钥
+- ✅ 无需外部依赖
+- ✅ 无需付费服务
+- ✅ 可与研究辅助工具（research-assistant）免费结合使用
 
-Perfect for autonomous research workflows with no additional costs.
+非常适合无需额外成本的自主研究工作流程。

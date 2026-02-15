@@ -1,16 +1,16 @@
-# SKILL.md - AI Act Risk Check
+# SKILL.md - AI法案风险评估工具
 
 ## `ai-act-risk-check`
 
-**Description:** Quickly assesses a preliminary risk classification for an AI system based on the high-risk categories listed in Annex III of the EU AI Act (focusing on biometrics, critical infrastructure, education, employment, essential services, law enforcement, and justice).
+**描述：** 根据欧盟AI法案附录III中列出的高风险类别（重点关注生物识别、关键基础设施、教育、就业、基本服务、执法和司法领域），快速评估AI系统的初步风险等级。
 
-**Usage:**
+**使用方法：**
 \`\`\`bash
-ai-act-risk-check "Our system is an AI algorithm that screens job applications based on predicted performance metrics."
+ai-act-risk-check "我们的系统是一个基于预测性能指标筛选求职申请的AI算法。"
 \`\`\`
 
-**Output:** A determination of HIGH-RISK or LOW-RISK, along with the relevant Annex III category (if high-risk).
+**输出结果：** 会判定系统属于“高风险”（HIGH-RISK）或“低风险”（LOW-RISK），并会显示相应的附录III风险类别（如属于高风险）。
 
-**Dependencies:** None (uses pure shell and `oracle` via `exec` for inference).
+**依赖项：** 无（仅使用Shell命令和`oracle`工具通过`exec`进行风险评估）。
 
-**Execution Logic:** Passes the user's description to an LLM for classification against the hard-coded Annex III criteria.
+**执行逻辑：** 将用户提供的描述传递给大型语言模型（LLM），根据预先设定的附录III标准进行风险分类。

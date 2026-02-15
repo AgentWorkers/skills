@@ -1,6 +1,6 @@
 ---
 name: image-generation
-description: AI image generation using Pollinations.ai - FREE with no API key required. Use when generating hero images, icons, logos, illustrations, mockups, or any visual assets for websites and apps. Covers product shots, avatars, placeholders, and social media images with professional quality.
+description: 使用 Pollinations.ai 生成 AI 图像——完全免费，无需 API 密钥。适用于生成英雄图片、图标、徽标、插图、原型图或任何用于网站和应用程序的视觉素材。该工具可生成高质量的产品图片、头像、占位图以及社交媒体图片。
 allowed-tools:
   - Read
   - Write
@@ -9,100 +9,100 @@ context: fork
 model: opus
 ---
 
-# AI Image Generation Skill
+# 人工智能图像生成技能
 
-Expert in generating professional-quality images using Pollinations.ai - a FREE, open-source AI image generation platform requiring NO API keys.
+我们擅长使用 Pollinations.ai（一个免费的开源人工智能图像生成平台）来生成专业质量的图像，该平台无需使用 API 密钥。
 
-## Quick Reference
+## 快速参考
 
-**Generate any image instantly:**
+**立即生成任何图像：**
 ```
 https://image.pollinations.ai/prompt/YOUR_PROMPT_HERE
 ```
 
-## When This Skill Activates
+## 该技能的适用场景
 
-This skill auto-activates when you need images for:
-- **Web Development**: Hero sections, backgrounds, banners, thumbnails
-- **App Design**: Splash screens, onboarding, placeholders, icons
-- **Marketing**: Product mockups, social media, ads, landing pages
-- **UI/UX**: Illustrations, avatars, empty states, feature graphics
-- **Prototyping**: Concept visualization, wireframe assets
+当您需要以下类型的图像时，此技能会自动激活：
+- **网页开发**：首页图片、背景图、横幅图、缩略图
+- **应用程序设计**：启动画面、引导页、占位符图片、图标
+- **市场营销**：产品原型图、社交媒体图片、广告图片、着陆页图片
+- **用户界面/用户体验（UI/UX）**：插图、头像、空白状态界面、功能图形
+- **原型设计**：概念可视化、线框图素材
 
 ## Pollinations.ai API
 
-### Basic URL Structure
+### 基本 URL 结构
 
 ```
 https://image.pollinations.ai/prompt/{prompt}?{parameters}
 ```
 
-### Parameters
+### 参数
 
-| Parameter | Values | Default | Description |
+| 参数 | 值 | 默认值 | 说明 |
 |-----------|--------|---------|-------------|
-| `width` | 256-2048 | 1024 | Image width in pixels |
-| `height` | 256-2048 | 1024 | Image height in pixels |
-| `model` | flux, turbo, flux-realism, flux-anime, flux-3d, flux-cablyai | flux | AI model to use |
-| `seed` | any integer | random | Reproducible results |
-| `nologo` | true | false | Remove watermark |
-| `enhance` | true | false | Prompt enhancement |
-| `safe` | true | false | Safety filter |
+| `width` | 256-2048 | 1024 | 图像宽度（像素） |
+| `height` | 256-2048 | 1024 | 图像高度（像素） |
+| `model` | flux, turbo, flux-realism, flux-anime, flux-3d, flux-cablyai | 使用的 AI 模型 |
+| `seed` | 任意整数 | 随机值 | 保证结果的可重复性 |
+| `nologo` | true | false | 是否去除水印 |
+| `enhance` | true | false | 是否进行图像优化 |
+| `safe` | true | false | 是否启用安全过滤 |
 
-### Available Models
+### 可用的 AI 模型
 
-| Model | Best For | Quality | Speed |
+| 模型 | 适用场景 | 图像质量 | 生成速度 |
 |-------|----------|---------|-------|
-| `flux` | General purpose, photorealistic | Highest | Medium |
-| `flux-realism` | Ultra-realistic photos | Very High | Medium |
-| `flux-anime` | Anime/illustration style | High | Fast |
-| `flux-3d` | 3D renders, product mockups | High | Medium |
-| `flux-cablyai` | Artistic, creative styles | High | Fast |
-| `turbo` | Quick iterations, drafts | Medium | Fastest |
+| `flux` | 通用用途，照片级真实感 | 最高 | 中等 |
+| `flux-realism` | 超真实照片 | 非常高 | 中等 |
+| `flux-anime` | 动画/插画风格 | 高 | 快速 |
+| `flux-3d` | 3D 渲染图、产品原型图 | 高 | 中等 |
+| `flux-cablyai` | 艺术风格、创意图像 | 高 | 快速 |
+| `turbo` | 快速迭代、草图生成 | 中等 | 最快 |
 
-## Professional Prompt Engineering
+## 专业提示编写技巧
 
-### Prompt Formula (CRITICAL for Quality)
+### 提示公式（对图像质量至关重要）
 
 ```
 [Subject] + [Style/Medium] + [Lighting] + [Composition] + [Quality Modifiers]
 ```
 
-### Quality Modifiers (ALWAYS Include)
+### 必须包含的质量修饰词
 
-For **highest quality output**, append these to prompts:
+为了获得**最高质量的图像输出**，请在提示中添加以下修饰词：
 
 ```
 , professional photography, 8k uhd, high resolution, sharp focus, highly detailed
 ```
 
-For **specific use cases**:
+### 特定使用场景下的提示示例：
 
-| Use Case | Quality Modifiers |
+| 使用场景 | 需要添加的修饰词 |
 |----------|-------------------|
-| **Website Hero** | `cinematic lighting, professional photography, 8k, sharp focus, volumetric lighting` |
-| **Product Shot** | `studio lighting, white background, commercial photography, product photography, clean` |
-| **App Icon** | `minimal, flat design, vector style, clean lines, app icon, centered, simple background` |
-| **Illustration** | `digital illustration, vibrant colors, clean lines, professional artwork, detailed` |
-| **Avatar** | `portrait, centered, professional headshot, neutral background, high quality` |
-| **Background** | `seamless pattern, tileable, abstract, subtle, muted colors, non-distracting` |
+| **网站首页图片** | `电影级光照效果、专业摄影风格、8K 分辨率、清晰对焦、立体光照` |
+| **产品图片** | **摄影室灯光效果、白色背景、商业摄影风格、清晰图像** |
+| **应用程序图标** | **极简设计、矢量风格、线条简洁、居中显示、简洁背景** |
+| **插图** | **数字插画、鲜艳色彩、线条清晰、专业水准** |
+| **头像** | **肖像风格、居中显示、专业头像、中性背景、高质量图像** |
+| **背景图** | **无缝图案、可平铺、抽象风格、色调柔和、不会分散注意力** |
 
-### Aspect Ratios for Common Use Cases
+### 常见使用场景的尺寸比例
 
-| Use Case | Width | Height | Ratio |
+| 使用场景 | 宽度 | 高度 | 比例 |
 |----------|-------|--------|-------|
-| **Hero Banner** | 1920 | 1080 | 16:9 |
-| **Social Media Post** | 1200 | 1200 | 1:1 |
-| **Portrait/Avatar** | 800 | 1200 | 2:3 |
-| **Product Card** | 800 | 600 | 4:3 |
-| **Mobile Splash** | 1080 | 1920 | 9:16 |
-| **App Icon** | 512 | 512 | 1:1 |
-| **OG Image** | 1200 | 630 | ~1.9:1 |
-| **Thumbnail** | 400 | 300 | 4:3 |
+| **首页横幅** | 1920 | 1080 | 16:9 |
+| **社交媒体帖子** | 1200 | 1200 | 1:1 |
+| **肖像/头像** | 800 | 1200 | 2:3 |
+| **产品卡片** | 800 | 600 | 4:3 |
+| **移动应用启动画面** | 1080 | 1920 | 9:16 |
+| **应用程序图标** | 512 | 512 | 1:1 |
+| **原始图片** | 1200 | 630 | 约 1.9:1 |
+| **缩略图** | 400 | 300 | 4:3 |
 
-## Code Examples
+## 代码示例
 
-### React/Next.js Integration
+### React/Next.js 集成方法
 
 ```tsx
 // components/GeneratedImage.tsx
@@ -148,7 +148,7 @@ export function GeneratedImage({
 />
 ```
 
-### With Next.js Image Optimization
+### 使用 Next.js 优化图像显示
 
 ```tsx
 // next.config.js
@@ -181,7 +181,7 @@ export function OptimizedGeneratedImage({ prompt, width, height, alt }) {
 }
 ```
 
-### HTML Direct Embed
+### 直接在 HTML 中嵌入图像
 
 ```html
 <!-- Hero Image -->
@@ -198,13 +198,13 @@ export function OptimizedGeneratedImage({ prompt, width, height, alt }) {
 />
 ```
 
-### Markdown (for Documentation)
+### 用于文档编写的 Markdown 代码
 
 ```markdown
 ![Hero Image](https://image.pollinations.ai/prompt/abstract%20geometric%20pattern%2C%20gradient%20blue%20purple%2C%20modern%2C%20clean?width=1200&height=400&nologo=true)
 ```
 
-### Batch Generation Script (Node.js)
+### 批量生成脚本（Node.js）
 
 ```typescript
 import fs from 'fs';
@@ -239,87 +239,87 @@ for (const asset of assets) {
 }
 ```
 
-## Use Case Recipes
+## 使用场景示例
 
-### 1. Landing Page Hero
+### 1. 网站首页图片生成
 
 ```
 https://image.pollinations.ai/prompt/modern%20SaaS%20dashboard%20floating%20in%20space%2C%20dark%20theme%2C%20glowing%20UI%20elements%2C%20professional%203D%20render%2C%20cinematic%20lighting%2C%208k%20uhd?width=1920&height=1080&model=flux&nologo=true
 ```
 
-### 2. Team Member Avatars
+### 2. 团队成员头像生成
 
 ```
 https://image.pollinations.ai/prompt/professional%20headshot%2C%20friendly%20smile%2C%20neutral%20gray%20background%2C%20studio%20lighting%2C%20business%20casual?width=400&height=400&model=flux-realism&nologo=true
 ```
 
-### 3. App Empty State
+### 3. 应用程序空白状态界面设计
 
 ```
 https://image.pollinations.ai/prompt/cute%20illustration%20of%20empty%20box%2C%20minimal%20flat%20design%2C%20soft%20pastel%20colors%2C%20friendly%2C%20vector%20style?width=400&height=300&model=flux-anime&nologo=true
 ```
 
-### 4. Product Mockup
+### 4. 产品原型图生成
 
 ```
 https://image.pollinations.ai/prompt/iPhone%2015%20mockup%20on%20wooden%20desk%2C%20coffee%20cup%2C%20minimal%2C%20lifestyle%20photography%2C%20warm%20lighting%2C%20professional?width=1200&height=800&model=flux-3d&nologo=true
 ```
 
-### 5. Blog Featured Image
+### 5. 博客特色图片
 
 ```
 https://image.pollinations.ai/prompt/abstract%20visualization%20of%20artificial%20intelligence%2C%20neural%20networks%2C%20blue%20and%20purple%2C%20futuristic%2C%20clean?width=1200&height=630&model=flux&nologo=true
 ```
 
-### 6. App Icon
+### 6. 应用程序图标制作
 
 ```
 https://image.pollinations.ai/prompt/minimalist%20app%20icon%2C%20letter%20A%2C%20gradient%20blue%20to%20purple%2C%20rounded%20corners%2C%20flat%20design%2C%20iOS%20style?width=512&height=512&model=flux&nologo=true
 ```
 
-### 7. Background Pattern
+### 7. 背景图设计
 
 ```
 https://image.pollinations.ai/prompt/seamless%20geometric%20pattern%2C%20subtle%20gray%20on%20white%2C%20minimalist%2C%20tileable%2C%20modern?width=512&height=512&model=flux&nologo=true
 ```
 
-### 8. Feature Illustration
+### 8. 功能插图制作
 
 ```
 https://image.pollinations.ai/prompt/isometric%20illustration%20of%20cloud%20computing%2C%20servers%2C%20data%20flow%2C%20blue%20and%20white%2C%20clean%20vector%20style?width=800&height=600&model=flux&nologo=true
 ```
 
-## Best Practices
+## 最佳实践
 
-### DO
+### 建议的做法：
 
-1. **Use descriptive prompts** - More detail = better results
-2. **Include quality modifiers** - "8k, professional, detailed"
-3. **Specify the style** - "photograph", "illustration", "3D render"
-4. **Define lighting** - "studio lighting", "natural light", "cinematic"
-5. **Set appropriate dimensions** - Match your actual use case
-6. **Use seeds for consistency** - Same seed = reproducible results
-7. **Cache generated images** - Save to CDN for production
+1. **使用详细的提示** – 信息越详细，生成效果越好。
+2. **添加质量修饰词**，例如 “8K 分辨率、专业水准、细节丰富”。
+3. **明确指定图像风格**，例如 “照片风格”、“插画风格”、“3D 渲染”。
+4. **指定光照效果**，例如 “摄影室灯光效果”、“自然光”、“电影级光照”。
+5. **设置合适的尺寸**，以匹配实际使用需求。
+6. **使用随机种子值** 以确保结果的一致性。
+7. **缓存生成的图像**，并将它们保存到内容分发网络（CDN）中以供后续使用。
 
-### DON'T
+### 不建议的做法：
 
-1. **Don't use generic prompts** - "a picture of something"
-2. **Don't request copyrighted content** - No brand logos, celebrities
-3. **Don't use in loops without throttling** - Rate limits apply
-4. **Don't skip the `nologo=true` param** - Avoids watermarks
-5. **Don't generate same image repeatedly** - Use seed + cache
+1. **避免使用通用或模糊的提示**，例如 “生成一张图片”。
+2. **不要请求受版权保护的内容**，例如品牌标志或名人图片。
+3. **不要频繁重复生成相同的图像**，请使用随机种子值并缓存结果。
+4. **务必设置 `nologo=true` 以去除水印**。
+5. **遵守请求速率限制**，避免过度使用服务。
 
-## Rate Limits & Caching Strategy
+## 请求速率限制与缓存策略
 
-### Pollinations Rate Limits
+### Pollinations 的请求速率限制
 
-| Tier | Limit | Signup |
-|------|-------|--------|
-| Anonymous | 1 req/15s | None |
-| Seed (free) | 1 req/5s | Free registration |
-| Flower | 1 req/3s | Paid |
+| 用户类型 | 每 15 秒的请求次数 |
+|------|-------------------|
+| 匿名用户 | 1 次 |
+| 使用免费账户（无种子值） | 每 5 秒 1 次 |
+| 使用高级账户（含种子值） | 每 3 秒 1 次 |
 
-### Production Caching Strategy
+### 生产环境下的缓存策略
 
 ```typescript
 // Cache generated images to your CDN
@@ -341,102 +341,95 @@ async function getOrGenerateImage(prompt: string, options: ImageOptions) {
 }
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Slow generation | Use `turbo` model for faster results |
-| Poor quality | Add quality modifiers, use `flux` or `flux-realism` |
-| Wrong style | Specify style explicitly: "photograph", "illustration" |
-| Watermark appears | Add `nologo=true` parameter |
-| Inconsistent results | Use same `seed` parameter |
-| Rate limited | Wait 15s between requests or register for higher limits |
-| Image not loading | URL-encode the prompt properly |
+| 生成速度慢** | 使用 `turbo` 模型可加快生成速度。 |
+| 图像质量差** | 添加质量修饰词，或选择 `flux` 或 `flux-realism` 模型。 |
+| 图像风格不正确** | 明确指定所需的图像风格，例如 “照片风格” 或 “插画风格”。 |
+| 图像出现水印** | 设置 `nologo=true` 以去除水印。 |
+| 生成结果不一致** | 使用相同的随机种子值。 |
+| 请求被限制** | 请等待 15 秒后再进行请求，或注册高级账户以获得更多请求次数。 |
+| 图像无法加载** | 确保提示字符串正确编码。
 
-## Integration with Frontend Design
+## 与前端设计的集成方法
 
-When building websites/apps, this skill works seamlessly with frontend development:
+在构建网站或应用程序时，此技能可以无缝集成到前端开发流程中：
+1. **开发阶段**：直接使用 Pollinations.ai 提供的 URL 作为占位符。
+2. **生产阶段**：生成最终图像并保存到 CDN。
+3. **处理动态内容**：通过 API 生成图像，并使用适当的缓存策略。
 
-1. **During Development**: Use Pollinations URLs directly as placeholders
-2. **Before Production**: Generate final images and save to your CDN
-3. **For Dynamic Content**: Use the API with proper caching
+### 激活此技能的关键词
 
-```tsx
-// Development: Direct URL (fast iteration)
-<img src="https://image.pollinations.ai/prompt/..." />
+当您输入以下关键词时，该技能会自动激活：
+- “生成图像”
+- “创建图片”
+- “制作插图”
+- “用于……的首页图片”
+- “用于……的横幅图”
+- “……的产品原型图”
+- “占位符图片”
+- “头像图片”
+- “……的插图”
 
-// Production: Cached on your CDN
-<img src="https://your-cdn.com/images/hero-cached.png" />
-```
+## 为 SpecWeave 文档网站生成图像时的品牌指南
 
-## Activation Keywords
+在为 SpecWeave 文档网站生成图像时，请遵循以下品牌规范：
 
-This skill activates automatically when you mention:
-- "generate an image", "create a picture", "make an illustration"
-- "hero image for", "banner for", "background for"
-- "mockup of", "product shot", "app icon"
-- "placeholder image", "avatar", "thumbnail"
-- "illustration of", "graphic of", "visual for"
-- Any image asset request during web/app development
+### 品牌提示颜色
 
-## Documentation Site Assets (SpecWeave Brand)
-
-When generating images for SpecWeave documentation sites, use these brand guidelines:
-
-### Brand Colors for Prompts
-
-| Color | Hex | Usage |
+| 颜色 | 十六进制代码 | 用途 |
 |-------|-----|-------|
-| Primary Purple | #7c3aed | Main brand color, gradients |
-| Purple Dark | #6d28d9 | Accents, shadows |
-| Purple Light | #a78bfa | Highlights, glows |
-| Purple Darkest | #5b21b6 | Deep backgrounds |
+| 主要紫色 | #7c3aed | 主要品牌颜色，用于渐变效果 |
+| 深紫色 | #6d28d9 | 用于阴影或高光效果 |
+| 浅紫色 | #a78bfa | 用于亮点或发光效果 |
+| 最深紫色 | #5b21b6 | 用于深色背景 |
 
-**Include in prompts:** `purple violet gradient #7c3aed`, `professional SaaS aesthetic`
+**在提示中请使用以下颜色代码：** `purple violet gradient #7c3aed`、`professional SaaS aesthetic`。
 
-### Standard Docs Dimensions
+### 标准文档图像尺寸
 
-| Asset Type | Width | Height | Model | Usage |
+| 图像类型 | 宽度 | 高度 | 使用的 AI 模型 | 用途 |
 |------------|-------|--------|-------|-------|
-| Hero Banner | 1920 | 1080 | flux | Homepage hero, landing pages |
-| Feature Card | 800 | 600 | flux | Feature illustrations |
-| Section Header | 1200 | 400 | flux | Section banners |
-| Icon | 64 | 64 | flux | Navigation, feature icons |
-| Empty State | 400 | 300 | flux-anime | Empty states, placeholders |
-| Social Card | 1200 | 630 | flux | OG images, social sharing |
+| 首页横幅 | 1920 | 1080 | flux | 首页图片 |
+| 功能卡片 | 800 | 600 | flux | 功能说明插图 |
+| 节目标题 | 1200 | 400 | flux | 节目标题横幅 |
+| 图标 | 64 | 64 | flux | 导航图标 |
+| 空白状态界面 | 400 | 300 | flux-anime | 空白状态界面、占位符图片 |
+| 社交媒体图片 | 1200 | 630 | flux | 社交媒体分享用的图片 |
 
-### Docs-Specific Prompt Templates
+### 专用文档提示模板
 
-| Asset Type | Prompt Pattern |
+| 图像类型 | 提示示例 |
 |------------|---------------|
-| **Hero** | `[concept] in abstract form, purple gradient #7c3aed to #a78bfa, professional SaaS, glowing nodes, dark background, 8k, clean minimal` |
-| **Feature Illustration** | `isometric illustration of [feature], purple accent #7c3aed, white background, clean vector style, professional` |
-| **Section Banner** | `abstract [theme] visualization, flowing lines, purple gradient #7c3aed, minimal, professional, wide format` |
-| **Icon** | `minimal icon [concept], purple fill #7c3aed, white background, app icon style, centered, simple` |
-| **Living Docs** | `interconnected documents with glowing purple connections #7c3aed, network visualization, professional, clean` |
-| **Agent System** | `AI agents as geometric shapes in orbital formation, purple violet theme #7c3aed, futuristic, professional` |
-| **Workflow** | `branching flowchart paths, glowing circuit lines, purple gradient #7c3aed, decision tree visualization, minimal` |
+| **首页图片** | `[具体概念]，采用紫色渐变效果（#7c3aed 至 #a78bfa），专业 SaaS 风格，带有发光效果的节点，深色背景，8K 分辨率，极简设计` |
+| **功能插图** | `[具体功能] 的等轴测插图，带有紫色点缀（#7c3aed），白色背景，简洁的矢量风格` |
+| **节目标题横幅** | **[具体主题** 的抽象可视化效果，流畅的线条，紫色渐变效果（#7c3aed），极简设计` |
+| **图标** | **[具体概念] 的极简图标，紫色背景，应用图标风格，居中显示` |
+| **动态文档** | **相互连接的文档，带有发光的紫色线条（#7c3aed），网络可视化效果，专业设计` |
+| **智能代理系统** | **智能代理以几何形状呈现，采用紫色渐变效果（#7c3aed），未来主义风格` |
 
-### SpecWeave Docs Ready-to-Use URLs
+### SpecWeave 文档示例链接
 
-**Living Documentation Illustration:**
+**动态文档插图示例：**
 ```
 https://image.pollinations.ai/prompt/interconnected%20hexagonal%20document%20nodes%20forming%20network%2C%20glowing%20purple%20connections%20%237c3aed%2C%20gradient%20to%20%23a78bfa%2C%20professional%20SaaS%2C%20dark%20background%2C%208k%2C%20minimal%20vector?width=800&height=600&model=flux&nologo=true&seed=42
 ```
 
-**Multi-Agent System Illustration:**
+**多智能代理系统插图示例：**
 ```
 https://image.pollinations.ai/prompt/interconnected%20AI%20agents%20as%20geometric%20avatars%20in%20orbital%20formation%2C%20purple%20violet%20theme%20%237c3aed%2C%20futuristic%20holographic%2C%20professional%2C%20clean%20dark%20background%2C%208k?width=800&height=600&model=flux&nologo=true&seed=42
 ```
 
-**Workflow/Decision Tree Illustration:**
+**工作流程/决策树插图示例：**
 ```
 https://image.pollinations.ai/prompt/branching%20flowchart%20paths%20made%20of%20glowing%20circuit%20lines%2C%20purple%20gradient%20%237c3aed%20to%20%23a78bfa%2C%20decision%20trees%2C%20minimal%20geometric%2C%20professional%2C%20dark%20background?width=800&height=600&model=flux&nologo=true&seed=42
 ```
 
-## Related Skills
+## 相关技能
 
-- **frontend-design**: For UI/UX design patterns
-- **browser-automation**: For screenshot capture
-- **docusaurus**: For documentation site setup
-- **technical-writing**: For documentation content
+- **前端设计**：用于用户界面/用户体验（UI/UX）设计
+- **浏览器自动化**：用于截图功能
+- **docusaurus**：用于文档网站的搭建
+- **技术写作**：用于文档内容的编写

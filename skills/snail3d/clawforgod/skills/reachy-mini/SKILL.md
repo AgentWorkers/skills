@@ -1,20 +1,35 @@
 ---
 name: reachy-mini
-description: Control a Reachy Mini robot (by Pollen Robotics / Hugging Face) via its REST API and SSH. Use for any request involving the Reachy Mini robot — moving the head, body, or antennas; playing emotions or dances; capturing camera snapshots; adjusting volume; managing apps; checking robot status; or any physical robot interaction. The robot has a 6-DoF head, 360° body rotation, two animated antennas, a wide-angle camera (with non-disruptive WebRTC snapshot), 4-mic array, and speaker.
+description: 通过 Pollen Robotics/Hugging Face 提供的 REST API 和 SSH 协议来控制 Reachy Mini 机器人。您可以使用这些接口执行以下操作：  
+- 移动机器人的头部、身体或天线  
+- 播放预设的情绪表达或舞蹈动作  
+- 拍摄摄像头截图  
+- 调整音量  
+- 管理机器人运行的应用程序  
+- 查查机器人的当前状态  
+- 以及进行其他与机器人相关的物理交互操作。  
+
+该机器人具备以下功能：  
+- 6 自由度的头部运动  
+- 360° 的身体旋转能力  
+- 两个可动画显示的信息天线  
+- 一个广角摄像头（支持 WebRTC 协议进行实时视频传输）  
+- 由 4 个麦克风组成的阵列  
+- 一个内置扬声器
 ---
 
-# Reachy Mini Robot Control
+# Reachy Mini 机器人控制
 
-## Quick Start
+## 快速入门
 
-Use the CLI script or `curl` to control the robot. The script lives at:
+您可以使用 CLI 脚本或 `curl` 来控制机器人。脚本的路径为：
 ```
 ~/clawd/skills/reachy-mini/scripts/reachy.sh
 ```
 
-Set the robot IP via `REACHY_HOST` env var or `--host` flag. Default: `192.168.8.17`.
+您可以通过设置环境变量 `REACHY_HOST` 或使用 `--host` 标志来指定机器人的 IP 地址。默认值为 `192.168.8.17`。
 
-### Common Commands
+### 常用命令
 ```bash
 reachy.sh status                    # Daemon status, version, IP
 reachy.sh state                     # Full robot state
@@ -30,22 +45,22 @@ reachy.sh emotions                  # List all emotions
 reachy.sh dances                    # List all dances
 ```
 
-## Environment
+## 环境配置
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `REACHY_HOST` | `192.168.8.17` | Robot IP address |
-| `REACHY_PORT` | `8000` | REST API port |
-| `REACHY_SSH_USER` | `pollen` | SSH username (for `snap` command) |
-| `REACHY_SSH_PASS` | `root` | SSH password (for `snap` command, uses `sshpass`) |
+| 变量          | 默认值       | 说明                          |
+|-----------------|------------|-------------------------------------------|
+| `REACHY_HOST`     | `192.168.8.17`    | 机器人 IP 地址                      |
+| `REACHY_PORT`     | `8000`      | REST API 端口                      |
+| `REACHY_SSH_USER`   | `pollen`     | SSH 用户名（用于 `snap` 命令）                |
+| `REACHY_SSH_PASS`   | `root`     | SSH 密码（用于 `snap` 命令，使用 `sshpass`）            |
 
-## Movement Guide
+## 运动控制
 
-### Head Control (6 DoF)
-The head accepts pitch, yaw, roll in **radians**:
-- **Pitch** (look up/down): -0.5 (up) to 0.5 (down)
-- **Yaw** (look left/right): -0.8 (right) to 0.8 (left)
-- **Roll** (tilt sideways): -0.5 to 0.5
+### 头部控制（6 自由度）
+头部可以执行俯仰（pitch）、偏航（yaw）和滚动（roll）动作，单位为弧度：
+- **俯仰**（上下看）：-0.5（向上）到 0.5（向下）  
+- **偏航**（左右看）：-0.8（向右）到 0.8（向左）  
+- **滚动**（侧倾）：-0.5 到 0.5  
 
 ```bash
 # Look up
@@ -61,39 +76,42 @@ reachy.sh goto --head -0.1,0,-0.3 --duration 1.5
 reachy.sh goto --head 0,0,0 --duration 1.0
 ```
 
-### Body Rotation (360°)
-Body yaw in radians. 0 = forward, positive = left, negative = right.
+### 身体旋转（360°）
+身体偏航的角度，单位为弧度。0 表示向前，正值表示向左，负值表示向右。
+
 ```bash
 reachy.sh goto --body 1.57 --duration 2.0   # Turn 90° left
 reachy.sh goto --body -1.57 --duration 2.0  # Turn 90° right
 reachy.sh goto --body 0 --duration 2.0      # Face forward
 ```
 
-### Antennas
-Two antennas [left, right] in radians. Range ~-0.5 to 0.5.
+### 天线
+机器人有两个天线（左侧和右侧），角度范围为约 -0.5 到 0.5 弧度。
+
 ```bash
 reachy.sh goto --antennas 0.4,0.4 --duration 0.5    # Both up
 reachy.sh goto --antennas -0.3,-0.3 --duration 0.5   # Both down
 reachy.sh goto --antennas 0.4,-0.4 --duration 0.5    # Asymmetric
 ```
 
-### Combined Movements
+### 综合运动
 ```bash
 # Look left and turn body left with antennas up
 reachy.sh goto --head 0,0.3,0 --body 0.5 --antennas 0.4,0.4 --duration 2.0
 ```
 
-### Interpolation Modes
-Use `--interp` with goto:
-- `minjerk` — Smooth, natural (default)
-- `linear` — Constant speed
-- `ease` — Ease in/out
-- `cartoon` — Bouncy, exaggerated
+### 插值模式
+使用 `--interp` 参数与 `goto` 命令结合使用：
+- `minjerk` — 平滑、自然的运动方式（默认值）  
+- `linear` — 匀速运动  
+- `ease` — 运动过程平滑过渡  
+- `cartoon` — 动作夸张、富有动感  
 
-## Emotions & Dances
+## 情感表达与舞蹈动作
 
-### Playing Emotions
-80+ pre-recorded expressive animations. Select contextually appropriate ones:
+### 情感表达
+机器人支持 80 多种预录制的表情动画，您可以根据场景选择合适的动画。
+
 ```bash
 reachy.sh play-emotion curious1       # Curious look
 reachy.sh play-emotion cheerful1      # Happy expression
@@ -104,20 +122,20 @@ reachy.sh play-emotion yes1           # Nodding yes
 reachy.sh play-emotion no1            # Shaking no
 ```
 
-### Playing Dances
-19 dance moves, great for fun or celebration:
+### 舞蹈动作
+机器人共有 19 种舞蹈动作，非常适合娱乐或庆祝场合。
+
 ```bash
 reachy.sh play-dance groovy_sway_and_roll
 reachy.sh play-dance chicken_peck
 reachy.sh play-dance dizzy_spin
 ```
 
-### Full Lists
-Run `reachy.sh emotions` or `reachy.sh dances` to see all available moves.
+### 完整列表
+运行 `reachy.sh emotions` 或 `reachy.sh dances` 可查看所有可用的动作。
 
-## Motor Modes
-
-Before movement, motors must be `enabled`. Check with `reachy.sh motors`.
+## 电机控制
+在开始运动之前，必须先启用电机。请使用 `reachy.sh motors` 命令进行配置。
 
 ```bash
 reachy.sh motors-enable     # Enable (needed for movement commands)
@@ -125,7 +143,7 @@ reachy.sh motors-disable    # Disable (robot goes limp)
 reachy.sh motors-gravity    # Gravity compensation (manually pose the robot)
 ```
 
-## Volume Control
+## 音量控制
 ```bash
 reachy.sh volume            # Current speaker volume
 reachy.sh volume-set 50     # Set speaker to 50%
@@ -134,9 +152,8 @@ reachy.sh mic-volume        # Microphone level
 reachy.sh mic-volume-set 80 # Set microphone to 80%
 ```
 
-## App Management
-
-Reachy Mini runs HuggingFace Space apps. Manage them via:
+## 应用管理
+Reachy Mini 支持运行 HuggingFace Space 应用程序。您可以通过以下方式管理这些应用程序：
 ```bash
 reachy.sh apps              # List all available apps
 reachy.sh apps-installed    # Installed apps only
@@ -145,38 +162,36 @@ reachy.sh app-start NAME    # Start an app
 reachy.sh app-stop          # Stop current app
 ```
 
-**Important**: Only one app runs at a time. Starting a new app stops the current one. Apps may take exclusive control of the robot — stop the running app before sending manual movement commands if the robot doesn't respond.
+**重要提示**：同一时间只能运行一个应用程序。启动新应用程序会停止当前正在运行的应用程序。某些应用程序可能会独占控制权，因此在发送手动运动指令前，请确保当前应用程序已停止运行。
 
-## Camera Snapshots
-
-Capture JPEG photos from the robot's camera (IMX708 wide-angle) via WebRTC — **non-disruptive** to the running daemon.
+## 相机快照
+您可以使用 WebRTC 从机器人的 IMX708 宽角相机捕获 JPEG 格式的照片，这一过程不会干扰机器人的正常运行。
 
 ```bash
 reachy.sh snap                        # Save to /tmp/reachy_snap.jpg
 reachy.sh snap /path/to/output.jpg    # Custom output path
 ```
 
-**Requirements**: SSH access to the robot (uses `sshpass` + `REACHY_SSH_PASS` env var, default: `root`).
+**使用要求**：需要通过 SSH 访问机器人（使用 `sshpass` 和环境变量 `REACHY_SSH_PASS`，默认值为 `root`）。
 
-**How it works**: Connects to the daemon's WebRTC signalling server (port 8443) using GStreamer's `webrtcsrc` plugin on the robot, captures one H264-decoded frame, and saves as JPEG. No daemon restart, no motor disruption.
+**工作原理**：机器人通过 GStreamer 的 `webrtcsrc` 插件连接到守护进程的 WebRTC 信号服务器（端口 8443），捕获一个 H264 解码后的帧并保存为 JPEG 图像。此过程不会导致守护进程重启或电机中断。
 
-**Note**: The robot must be **awake** (head up) for a useful image. If asleep, the camera faces into the body. Run `reachy.sh wake-up` first.
+**注意**：为了获得清晰的图像，机器人必须处于“唤醒”状态（头部朝上）。如果机器人处于睡眠状态，相机会朝向身体方向。请先运行 `reachy.sh wake-up` 命令唤醒机器人。
 
-## Audio Sensing
+## 音频感应
 ```bash
 reachy.sh doa               # Direction of Arrival from mic array
 ```
-Returns angle in radians (0=left, π/2=front, π=right) and speech detection boolean.
+该功能可以返回角度（单位为弧度，0 表示左侧，π/2 表示前方，π 表示右侧），以及语音检测结果（布尔值）。
 
-## Contextual Reactions (Clawdbot Integration)
-
-Use `reachy-react.sh` to trigger contextual robot behaviors from heartbeats, cron jobs, or session responses.
+## 基于上下文的反应（与 Clawdbot 的集成）
+您可以使用 `reachy-react.sh` 脚本根据心率、定时任务或会话响应来触发机器人的特定行为。
 
 ```
 ~/clawd/skills/reachy-mini/scripts/reachy-react.sh
 ```
 
-### Reactions
+### 反应动作
 ```bash
 reachy-react.sh ack           # Nod acknowledgment (received a request)
 reachy-react.sh success       # Cheerful emotion (task done)
@@ -190,39 +205,36 @@ reachy-react.sh doa-track     # Turn head toward detected sound source
 reachy-react.sh celebrate     # Random dance (fun moments)
 ```
 
-Pass `--bg` to run in background (non-blocking).
+使用 `--bg` 参数可以使脚本在后台运行（非阻塞模式）。
 
-### Built-in Behaviors
-- **Quiet hours** (22:00–06:29 ET): All reactions except `morning`, `goodnight`, and `patrol` are silently skipped.
-- **Auto-wake**: Reactions ensure the robot is awake before acting (starts daemon + wakes if needed).
-- **Fault-tolerant**: If robot is unreachable, reactions exit cleanly without errors.
+### 内置行为
+- **安静时段**（美国东部时间 22:00–06:29）：除了 `morning`、`goodnight` 和 `patrol` 之外的所有反应动作都会被忽略。
+- **自动唤醒**：在执行任何动作前，系统会确保机器人处于唤醒状态（如果需要，会重新启动守护进程）。
+- **容错机制**：如果无法与机器人通信，相关反应会正常退出，而不会出现错误。
 
-### Integration Points
+### 集成方式
+| 触发条件 | 对应反应 | 备注                        |
+|---------|------------|-----------------------------------------|
+| 早晨提醒（6:30 AM） | `morning`   | 机器人醒来并打招呼                |
+| 晚安提醒（10:00 PM） | `goodnight`   | 机器人播放安静的表情动画并进入睡眠状态       |
+| 心跳检测 | `idle`     | 头部轻微倾斜、天线摆动或环顾四周                |
+| 心跳检测（每 4 秒一次） | `doa-track` | 检测附近的语音并转向语音来源           |
+| 心跳检测（每 6 秒一次） | `patrol`    | 通过相机快照监测房间环境                |
+| 重要未读邮件 | `alert`     | 天线抬起并显示惊讶的表情              |
+| 2 小时内的会议 | `remind`    | 表示欢迎或好奇的表情动作             |
+| 亚历山大发送请求 | `ack`     | 简单点头回应                    |
+| 任务完成   | `success`    | 随机播放欢快的表情动画                |
+| 好消息或庆祝事件 | `celebrate`   | 随机执行舞蹈动作                    |
 
-| Trigger | Reaction | Notes |
-|---------|----------|-------|
-| Morning briefing cron (6:30 AM) | `morning` | Robot wakes up and greets |
-| Goodnight cron (10:00 PM) | `goodnight` | Robot plays sleepy emotion, goes to sleep |
-| Heartbeat (periodic) | `idle` | Subtle head tilt, antenna wave, or look-around |
-| Heartbeat (~1 in 4) | `doa-track` | Checks for nearby speech, turns toward it |
-| Heartbeat (~1 in 6) | `patrol` | Camera snapshot for room awareness |
-| Important unread email | `alert` | Antennas up + surprised emotion |
-| Meeting <2h away | `remind` | Welcoming/curious emotion |
-| Request from Alexander | `ack` | Quick head nod |
-| Task completed | `success` | Random cheerful/happy emotion |
-| Good news or celebration | `celebrate` | Random dance move |
+### 方向检测（DOA）
+`doa-track` 功能利用机器人的四麦克风阵列检测语音方向，并使头部转向语音来源。方向角度（0=左侧，π/2=前方，π=右侧）会被映射到机器人的偏航动作。
 
-### DOA (Direction of Arrival) Tracking
+### 监控房间
+`patrol` 功能会定期拍摄房间照片并打印路径。您可以在心跳检测时使用该功能来监测房间内的活动或变化。
 
-The `doa-track` reaction uses the robot's 4-mic array to detect speech direction and turn the head toward the speaker. The DOA angle (0=left, π/2=front, π=right) is mapped to head yaw. Only triggers when speech is actively detected.
+## 直接 API 访问
+对于 CLI 未涵盖的功能，您可以使用 `curl` 或 `raw` 命令进行操作。
 
-### Camera Patrol
-
-The `patrol` reaction captures a snapshot and prints the image path. Use this during heartbeats to check the room periodically. Combine with image analysis to detect activity or changes.
-
-## Direct API Access
-
-For anything not covered by the CLI, use `curl` or the `raw` command:
 ```bash
 # Via raw command
 reachy.sh raw GET /api/state/full
@@ -235,15 +247,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   http://192.168.8.17:8000/api/move/goto
 ```
 
-## Reference
+## 参考资料
+有关完整的 API 端点列表、数据结构（如 GotoModelRequest、FullBodyTarget、XYZRPYPose）以及所有表情和舞蹈动作的详细信息，请参阅 [references/api-reference.md](references/api-reference.md)。
 
-For the complete API endpoint list, schemas (GotoModelRequest, FullBodyTarget, XYZRPYPose), and full emotion/dance catalogs, see [references/api-reference.md](references/api-reference.md).
-
-## Troubleshooting
-
-- **Robot doesn't move**: Check `reachy.sh motors` — must be `enabled`. Run `reachy.sh motors-enable`.
-- **No response**: Check `reachy.sh status`. State should be `running`. If not, run `reachy.sh reboot-daemon`.
-- **Movements ignored**: An app may have exclusive control. Run `reachy.sh app-stop` first.
-- **Network unreachable**: Verify the robot IP with `ping $REACHY_HOST`. Check `reachy.sh wifi-status`.
-- **Snap shows black image**: Robot is likely asleep (head down). Run `reachy.sh wake-up` first.
-- **Snap fails with SSH error**: Ensure `sshpass` is installed and `REACHY_SSH_PASS` is set correctly.
+## 故障排除
+- **机器人无法移动**：检查 `reachy.sh motors` 命令，确保电机已启用。运行 `reachy.sh motors-enable`。
+- **无响应**：检查 `reachy.sh status` 命令，确认机器人处于运行状态。如果不是，请运行 `reachy.sh reboot-daemon`。
+- **动作未被执行**：可能是某个应用程序正在独占控制权。请先使用 `reachy.sh app-stop` 停止该应用程序。
+- **网络连接问题**：使用 `ping $REACHY_HOST` 命令验证机器人 IP 地址。同时检查 `reachy.sh wifi-status` 命令的状态。
+- **快照显示黑屏**：机器人可能处于睡眠状态（头部向下）。请先运行 `reachy.sh wake-up` 命令唤醒机器人。
+- **使用 SSH 时出现错误**：确保已安装 `sshpass` 并正确设置了 `REACHY_SSH_PASS`。

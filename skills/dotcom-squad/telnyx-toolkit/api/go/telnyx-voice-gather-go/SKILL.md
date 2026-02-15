@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 本文档由 Telnyx OpenAPI 规范自动生成，请勿修改。 -->
 
-# Telnyx Voice Gather - Go
+# Telnyx 语音采集 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,11 +38,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Add messages to AI Assistant
+## 向 AI 助手添加消息
 
-Add messages to the conversation started by an AI assistant on the call.
+向 AI 助手发起的通话中添加消息。
 
 `POST /calls/{call_control_id}/actions/ai_assistant_add_messages`
 
@@ -58,9 +58,9 @@ Add messages to the conversation started by an AI assistant on the call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Start AI Assistant
+## 启动 AI 助手
 
-Start an AI assistant on the call.
+在通话中启动 AI 助手。
 
 `POST /calls/{call_control_id}/actions/ai_assistant_start`
 
@@ -76,9 +76,9 @@ Start an AI assistant on the call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Stop AI Assistant
+## 停止 AI 助手
 
-Stop an AI assistant on the call.
+在通话中停止 AI 助手。
 
 `POST /calls/{call_control_id}/actions/ai_assistant_stop`
 
@@ -94,9 +94,9 @@ Stop an AI assistant on the call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Gather stop
+## 停止数据采集
 
-Stop current gather.
+停止当前的数据采集操作。
 
 `POST /calls/{call_control_id}/actions/gather_stop`
 
@@ -112,11 +112,11 @@ Stop current gather.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Gather using AI
+## 使用 AI 进行数据采集
 
-Gather parameters defined in the request payload using a voice assistant.
+使用语音助手收集请求负载中定义的参数。
 
-`POST /calls/{call_control_id}/actions/gather_using_ai` — Required: `parameters`
+`POST /calls/{call_control_id}/actions/gather_using_ai` — 必需参数：`parameters`
 
 ```go
 	response, err := client.Calls.Actions.GatherUsingAI(
@@ -136,9 +136,9 @@ Gather parameters defined in the request payload using a voice assistant.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Gather using audio
+## 使用音频进行数据采集
 
-Play an audio file on the call until the required DTMF signals are gathered to build interactive menus.
+在通话中播放音频文件，直到收集到所需的 DTMF 信号以构建交互式菜单。
 
 `POST /calls/{call_control_id}/actions/gather_using_audio`
 
@@ -154,11 +154,11 @@ Play an audio file on the call until the required DTMF signals are gathered to b
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Gather using speak
+## 使用文本转语音功能进行数据采集
 
-Convert text to speech and play it on the call until the required DTMF signals are gathered to build interactive menus.
+将文本转换为语音并在通话中播放，直到收集到所需的 DTMF 信号以构建交互式菜单。
 
-`POST /calls/{call_control_id}/actions/gather_using_speak` — Required: `voice`, `payload`
+`POST /calls/{call_control_id}/actions/gather_using_speak` — 必需参数：`voice`, `payload`
 
 ```go
 	response, err := client.Calls.Actions.GatherUsingSpeak(
@@ -175,9 +175,9 @@ Convert text to speech and play it on the call until the required DTMF signals a
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Gather
+## 数据采集
 
-Gather DTMF signals to build interactive menus.
+收集 DTMF 信号以构建交互式菜单。
 
 `POST /calls/{call_control_id}/actions/gather`
 
@@ -195,18 +195,18 @@ Gather DTMF signals to build interactive menus.
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 webhook 事件会被发送到您配置的 webhook URL：
+所有 webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头，用于验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callGatherEnded` | Call Gather Ended |
-| `CallAIGatherEnded` | Call AI Gather Ended |
-| `CallAIGatherMessageHistoryUpdated` | Call AI Gather Message History Updated |
-| `CallAIGatherPartialResults` | Call AI Gather Partial Results |
-| `CallConversationEnded` | Call Conversation Ended |
-| `callPlaybackStarted` | Call Playback Started |
-| `callPlaybackEnded` | Call Playback Ended |
-| `callDtmfReceived` | Call Dtmf Received |
+| `callGatherEnded` | 通话数据采集结束 |
+| `CallAIGatherEnded` | 通话中 AI 数据采集结束 |
+| `CallAIGatherMessageHistoryUpdated` | 通话中 AI 数据采集消息历史更新 |
+| `CallAIGatherPartialResults` | 通话中 AI 数据采集部分结果 |
+| `CallConversationEnded` | 通话结束 |
+| `callPlaybackStarted` | 通话播放开始 |
+| `callPlaybackEnded` | 通话播放结束 |
+| `callDtmfReceived` | 通话中接收到 DTMF 信号 |

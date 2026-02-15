@@ -1,36 +1,36 @@
 ---
 name: jb-explorer-ui
-description: Etherscan-like contract explorer for Juicebox projects. Read contract state, write transactions, and decode events.
+description: 类似Etherscan的合约浏览器，适用于Juicebox项目。可以查看合约状态、执行交易以及解码合约事件。
 ---
 
-# Juicebox V5 Contract Explorer UI
+# Juicebox V5 合同浏览器 UI
 
-Build Etherscan-like interfaces for reading contract state, executing transactions, and exploring Juicebox project data.
+该工具构建了类似 Etherscan 的界面，用于读取合约状态、执行交易以及探索 Juicebox 项目的数据。
 
-## Compatibility
+## 兼容性
 
 - **nana-core-v5**: v5.0.0+
-- **Last verified**: 2025-01-16
+- **最后验证日期**: 2025-01-16
 
-## Uses Shared Components
+## 使用的共享组件
 
-This skill uses components from `/shared/`:
+该功能使用了 `/shared/` 目录下的以下组件：
 
-| Component | Purpose |
+| 组件 | 用途 |
 |-----------|---------|
-| `styles.css` | Dark theme, buttons, cards, forms |
-| `wallet-utils.js` | Wallet connection, chain switching |
-| `chain-config.json` | RPC URLs, contract addresses |
-| `abis/*.json` | JBController, JBMultiTerminal, JBProjects |
+| `styles.css` | 深色主题、按钮、卡片、表单 |
+| `wallet-utils.js` | 钱包连接、链切换 |
+| `chain-config.json` | RPC 地址、合约地址 |
+| `abis/*.json` | JBController、JBMultiTerminal、JBProjects |
 
-## Features
+## 主要功能
 
-- **Read Tab**: Call any view/pure function, auto-decode results
-- **Write Tab**: Submit transactions with wallet signing
-- **Events Tab**: Browse and filter contract events
-- **Quick Actions**: One-click project overview, ruleset info
+- **读取选项卡**: 调用任何视图或纯函数，并自动解码结果 |
+- **写入选项卡**: 通过钱包签名提交交易 |
+- **事件选项卡**: 浏览和过滤合约事件 |
+- **快速操作**: 一键查看项目概览和规则集信息 |
 
-## Template Structure
+## 模板结构
 
 ```
 ┌─────────────────────────────────────────┐
@@ -55,7 +55,7 @@ This skill uses components from `/shared/`:
 └─────────────────────────────────────────┘
 ```
 
-## Core JavaScript Logic
+## 核心 JavaScript 逻辑
 
 ```javascript
 /**
@@ -163,7 +163,7 @@ const QUICK_ACTIONS = [
 ];
 ```
 
-## HTML Template
+## HTML 模板
 
 ```html
 <!DOCTYPE html>
@@ -437,23 +437,23 @@ const QUICK_ACTIONS = [
 </html>
 ```
 
-## Customization Points
+## 自定义点
 
-| What | Where |
+| 需要自定义的内容 | 修改位置 |
 |------|-------|
-| Add quick actions | Extend `QUICK_ACTIONS` array |
-| Change styling | Override CSS variables in `:root` |
-| Add ABI sources | Modify `fetchABI()` method |
-| Custom result formatting | Extend `format()` method |
+| 添加快速操作 | 扩展 `QUICK_ACTIONS` 数组 |
+| 更改样式 | 在 `:root` 中覆盖 CSS 变量 |
+| 添加 ABI 源文件 | 修改 `fetchABI()` 方法 |
+| 自定义结果格式 | 扩展 `format()` 方法 |
 
-## Example Prompts
+## 示例命令
 
-- "Create an explorer for JBController on Optimism"
-- "Build a read-only explorer (no write tab)"
-- "Add a quick action to check project splits"
+- “为 Optimism 链路创建一个 JBController 浏览器”
+- “构建一个仅支持读取功能的浏览器（不包含写入选项卡）”
+- “添加一个用于检查项目拆分的快速操作”
 
-## See Also
+## 相关文档
 
-- `/jb-event-explorer-ui` - Event-focused browsing
-- `/jb-hook-deploy-ui` - Deploy custom hooks
-- `/jb-ruleset-timeline-ui` - Ruleset history visualization
+- `/jb-event-explorer-ui` - 专注于事件浏览的界面 |
+- `/jb-hook-deploy-ui` - 用于部署自定义钩子的界面 |
+- `/jb-ruleset-timeline-ui` - 规则集历史记录可视化界面 |

@@ -1,6 +1,6 @@
 ---
 name: instagram-growth
-description: Expert guidance for instagram-growth.
+description: Instagram增长的专家指导。
 version: 1.0.0
 tags: [self-improvement,productivity,lifestyle]
 author: OpenWork
@@ -11,18 +11,17 @@ metadata:
       env: []
 ---
 
-# uinstagram growth
+# Instagram增长策略
 
-Expert guidance for instagram-growth.
+针对Instagram增长的专家指导。
 
-## Capabilities
+## 功能内容
+- 最佳实践
+- 技巧与策略
+- 实践练习
+- 资源推荐
 
-- Best practices
-- Tips and strategies
-- Practical exercises
-- Resource recommendations
-
-## Usage
-Help me with instagram-growth
-Tips for instagram-growth
-Best practices for instagram-growth
+## 使用说明
+- 帮助我实现Instagram增长
+- Instagram增长的实用技巧
+- Instagram增长的最佳实践

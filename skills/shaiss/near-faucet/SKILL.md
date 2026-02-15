@@ -1,63 +1,65 @@
 ---
 name: near-faucet
-description: OpenClaw skill for requesting NEAR testnet tokens via faucet. Provides faucet requests, status checking, and balance queries with rate limiting.
+description: **OpenClaw技能：通过Faucet请求NEAR测试网代币**  
+该技能支持发起Faucet请求、检查请求状态以及查询账户余额，并具备速率限制功能（即防止频繁请求导致的系统负担）。
 ---
 
-# NEAR Testnet Faucet Skill
+# NEAR 测试网代币领取工具
 
-Simple faucet integration for NEAR testnet tokens.
+这是一个用于领取 NEAR 测试网代币的简单工具。
 
-## Description
+## 描述
 
-This skill provides easy access to NEAR testnet tokens via faucet requests. Includes rate limiting to prevent abuse.
+该工具允许用户通过代币领取请求轻松获取 NEAR 测试网代币，并配备了速率限制机制以防止滥用。
 
-## Features
+## 主要功能
 
-- Request NEAR testnet tokens
-- Check faucet request status
-- Rate limiting per address
-- Simple CLI commands
+- 请求 NEAR 测试网代币
+- 查查代币领取请求的状态
+- 对每个地址实施速率限制
+- 提供简单的命令行接口（CLI）命令
 
-## Commands
+## 命令
 
 ### `near-faucet request [account_id]`
-Request testnet NEAR tokens for an account.
+为指定账户请求 NEAR 测试网代币。
 
-**Parameters:**
-- `account_id` - NEAR account ID (optional, uses default if configured)
+**参数：**
+- `account_id` - NEAR 账户 ID（可选，如未配置则使用默认值）
 
-**Example:**
+**示例：**
 ```bash
 near-faucet request myaccount.testnet
 ```
 
 ### `near-faucet status [request_id]`
-Check the status of a faucet request.
+查看代币领取请求的状态。
 
-**Parameters:**
-- `request_id` - Request ID to check (optional, shows latest if omitted)
+**参数：**
+- `request_id` - 需要查询的请求 ID（可选，省略时显示最新状态）
 
 ### `near-faucet balance [account_id]`
-Check testnet balance for an account.
+查询指定账户的测试网代币余额。
 
-## Configuration
+## 配置
 
-Set your default account via environment variable or config:
+您可以通过环境变量或配置文件设置默认账户：
+
 ```bash
 export NEAR_ACCOUNT="myaccount.testnet"
 ```
 
-## Installation
+## 安装
 
-The skill is automatically installed in your OpenClaw skills directory.
+该工具会自动安装到您的 OpenClaw 工具目录中。
 
-## Rate Limits
+## 速率限制
 
-- 1 request per account per 24 hours
-- Maximum 10 NEAR per request
-- Request queue processing time: ~1-5 minutes
+- 每个账户每天最多可发起 1 次请求
+- 每次请求最多可领取 10 个 NEAR 代币
+- 请求处理时间：约 1-5 分钟
 
-## References
+## 参考资料
 
-- NEAR Testnet Faucet: https://wallet.testnet.near.org/
-- NEAR CLI: https://docs.near.org/tools/near-cli
+- NEAR 测试网代币领取平台：https://wallet.testnet.near.org/
+- NEAR 命令行工具（CLI）：https://docs.near.org/tools/near-cli

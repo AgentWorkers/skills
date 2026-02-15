@@ -1,32 +1,32 @@
 ---
 slug: "daily-report-generator"
 display_name: "Daily Report Generator"
-description: "Automatically generate daily construction reports from field data, worker inputs, weather, and progress photos. Creates professional PDF reports."
+description: "根据现场数据、工人输入的信息、天气情况以及施工进度照片，自动生成每日施工报告。这些报告会被生成为专业的PDF格式文件。"
 ---
 
-# Daily Report Generator for Construction Sites
+# 建筑工地每日报告生成器
 
-Automate the creation of comprehensive daily construction reports by aggregating data from multiple sources into professional documentation.
+通过从多个来源汇总数据，自动化生成全面的每日施工报告。
 
-## Business Case
+## 商业案例
 
-**Problem**: Site managers spend 45-60 minutes daily on:
-- Collecting information from foremen
-- Checking weather conditions
-- Compiling worker counts and hours
-- Writing narrative summaries
-- Formatting and distributing reports
+**问题**：工地管理人员每天需要花费45-60分钟的时间进行以下工作：
+- 从工头那里收集信息
+- 检查天气状况
+- 统计工人的出勤时间和工作时长
+- 撰写叙述性总结
+- 格式化并分发报告
 
-**Solution**: Automated system that:
-- Pulls data from Google Sheets/project database
-- Integrates weather API data
-- Aggregates worker timesheets
-- Generates professional PDF reports
-- Distributes to stakeholders automatically
+**解决方案**：自动化系统能够：
+- 从Google Sheets或项目数据库中提取数据
+- 集成天气API数据
+- 综合工人的考勤记录
+- 生成专业的PDF报告
+- 自动将报告分发给相关利益方
 
-**ROI**: 80% reduction in daily reporting time (45 min → 9 min for review)
+**投资回报率（ROI）**：每日报告时间减少80%（从45分钟缩短至9分钟用于审核）
 
-## Report Structure
+## 报告结构
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -81,7 +81,7 @@ Automate the creation of comprehensive daily construction reports by aggregating
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-## Python Implementation
+## Python实现
 
 ```python
 import pandas as pd
@@ -428,9 +428,9 @@ if __name__ == "__main__":
     print(f"Report generated: {report_path}")
 ```
 
-## Data Sources Integration
+## 数据源集成
 
-### From n8n Project Management System
+### 从n8n项目管理系统获取数据
 ```python
 # Connect to Google Sheets used by n8n bot
 def get_data_from_project_management(spreadsheet_id: str) -> dict:
@@ -454,7 +454,7 @@ def get_data_from_project_management(spreadsheet_id: str) -> dict:
     }
 ```
 
-### From Timesheet System
+### 从考勤系统获取数据
 ```python
 # Integrate with common timesheet formats
 def import_timesheet(source: str, format: str = 'excel') -> pd.DataFrame:
@@ -478,7 +478,7 @@ def import_timesheet(source: str, format: str = 'excel') -> pd.DataFrame:
     return df
 ```
 
-## n8n Workflow for Automation
+## n8n自动化工作流程
 
 ```yaml
 name: Daily Report Automation
@@ -531,7 +531,7 @@ steps:
         Issues: {{$json.open_issues}}
 ```
 
-## Report Distribution
+## 报告分发
 
 ```python
 def distribute_report(report_path: str, recipients: dict):
@@ -559,14 +559,14 @@ def distribute_report(report_path: str, recipients: dict):
         upload_to_portal(portal_url, report_path)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Data Collection**: Set up automated data collection to minimize manual input
-2. **Review Time**: Allow 5-10 minutes for manager review before distribution
-3. **Photos**: Include 3-5 key photos showing progress
-4. **Issues**: Be specific about impacts and resolution dates
-5. **Distribution**: Send by 6-7 PM to allow stakeholder review
+1. **数据收集**：设置自动化的数据收集流程，以减少人工输入。
+2. **审核时间**：在报告分发前预留5-10分钟供管理人员审核。
+3. **照片**：附上3-5张展示施工进度的关键照片。
+4. **问题描述**：明确问题的影响及解决日期。
+5. **分发时间**：在下午6-7点之前发送报告，以便相关利益方及时审阅。
 
 ---
 
-*"A good daily report tells the story of the day in 2 minutes or less."*
+*“一份优秀的每日报告能在两分钟或更短的时间内概括当天的工作情况。”*

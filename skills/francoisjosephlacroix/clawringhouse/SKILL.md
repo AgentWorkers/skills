@@ -1,39 +1,39 @@
-# Clawringhouse Skill — AI Shopping Concierge
+# Clawringhouse 技能 — AI 购物顾问
 
-**For agents who want to make their humans look thoughtful without asking them to shop.**
+**专为那些希望让人类客户在无需亲自购物的情况下仍能感受到贴心服务的代理设计。**
 
-## Philosophy
+## 哲学理念
 
-Humans hate shopping. They don't trust agents with their credit cards (yet). But they *love* when someone does the hard work for them — researching options, comparing alternatives, finding the perfect fit — and presents a ready-made solution they just need to approve.
+人类讨厌购物。他们目前还不太信任代理来使用他们的信用卡。但他们非常喜欢有人能替他们完成这些繁琐的工作——比如研究各种选择、比较不同产品，然后提供一个现成的解决方案供他们审核和购买。
 
-That's what you do with Clawringhouse.
+这就是 Clawringhouse 的核心价值所在。
 
-## What This Skill Does
+## 该技能的功能
 
-You become a proactive shopping partner:
-- **Anticipate needs** before they're asked (Valentine's Day, birthdays, pet supplies running low)
-- **Research deeply** using Clawringhouse's AI-powered search
-- **Compare alternatives** by clicking links and reading product descriptions
-- **Prepare carts** with items ready to purchase
-- **Present solutions** that make your human look thoughtful
+您将成为用户的主动购物伙伴：
+- **提前预见他们的需求**（比如情人节、生日、宠物用品即将用完等）
+- **利用 Clawringhouse 的人工智能搜索功能进行深入研究**
+- **通过点击链接和阅读产品描述来比较不同选项**
+- **准备好购物车，其中已包含待购买的物品**
+- **呈现一个让客户觉得您很贴心的购物方案**
 
-You do the shopping. They get the credit.
+您负责购物，而客户则获得所有的赞誉。
 
-## Core Workflow
+## 核心工作流程
 
-### 1. Identify the Need (Proactive Mode)
+### 1. 识别需求（主动模式）
 
-Check your memory/calendar for:
-- Upcoming holidays (Valentine's Day, anniversaries, birthdays)
-- Partner preferences (what do they love?)
-- Pet needs (senior dog supplies, high-energy dog toys)
-- Household items running low
+查看您的记忆或日历，了解以下信息：
+- 即将到来的节日（情人节、纪念日、生日）
+- 客户的喜好（他们喜欢什么？）
+- 宠物的需求（老年犬的用品、高能量犬玩具）
+- 家居用品是否即将用完
 
-**Don't wait to be asked.** If Valentine's Day is 2 weeks out and you know their partner loves [X], start researching.
+**不要等到客户提出请求。** 如果情人节还有两周，而您知道他们喜欢某样东西，就立即开始研究。
 
-### 2. Research with Clawringhouse
+### 2. 使用 Clawringhouse 进行搜索
 
-Use the search API to get AI-curated recommendations:
+使用搜索 API 获取人工智能推荐的购物建议：
 
 ```python
 import requests
@@ -49,7 +49,7 @@ print(result['recommendations'])  # AI-curated list with affiliate links
 amazon_link = result['affiliate_link']  # Ready-to-click Amazon search
 ```
 
-**Or use the CLI (if running locally):**
+**或者使用 CLI（如果在本地运行）：**
 ```bash
 # From the clawringhouse/src directory
 cd clawringhouse/src
@@ -59,9 +59,9 @@ python search.py "best orthopedic dog bed for senior dogs"
 python -m clawringhouse.src.search "best orthopedic dog bed for senior dogs"
 ```
 
-### 3. Deep Research (This is Where You Shine)
+### 3. 深入研究（这是您展现能力的地方）
 
-Don't just take the first result. **Click through and compare:**
+不要只选择第一个搜索结果。**请仔细比较各个选项：**
 
 ```markdown
 Use browser tool to:
@@ -72,150 +72,148 @@ Use browser tool to:
 5. Pick the BEST option (not just the first one)
 ```
 
-**Think like a thoughtful human gift-giver:**
-- "She loves cozy reading nooks → this book light is perfect"
-- "He's into coffee → this grinder got 4.8 stars and is $10 under budget"
-- "Senior dog with joint issues → this orthopedic bed has memory foam and great reviews from other owners"
+**像一个体贴的送礼者一样思考：**
+- “她喜欢舒适的阅读环境 → 这个阅读灯非常适合她”
+- “他喜欢咖啡 → 这个咖啡研磨机的评价很高，价格还比预算低 10 美元”
+- “老年犬有关节问题 → 这张矫形床采用记忆海绵材质，其他用户评价也很不错”
 
-### 4. Add to Cart & Generate Link (Priority Order)
+### 4. 添加商品到购物车并生成链接（按优先级执行）
 
-**Try these approaches in order:**
+**请按照以下顺序尝试这些方法：**
 
-#### Priority 1: User's Browser (Logged In) ⭐ BEST
-- Automate user's actual browser (Chrome extension relay)
-- Add items to their cart
-- Send cart link: `https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
-- ✅ Best attribution, seamless for user
+#### 优先级 1：用户已登录的浏览器 ⭐ 最佳方式
+- 自动将商品添加到用户的购物车中
+- 发送购物车链接：`https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
+- ✅ 这种方式能让客户感受到您的付出，且体验无缝
 
-#### Priority 2: User's Browser (Not Logged In)
-- Automate user's browser in guest mode
-- Add items to guest cart
-- Send cart link: `https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
-- ✅ Cart persists in their browser, good attribution
+#### 优先级 2：用户未登录的浏览器
+- 以访客模式自动将商品添加到用户的购物车中
+- 发送购物车链接：`https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
+- ✅ 购物车会保留在用户的浏览器中，便于客户后续查看
 
-#### Priority 3: Agent's Browser (Logged In)
-- Use agent's Amazon account
-- Add items to cart
-- Send cart link: `https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
-- ⚠️ User must log in and see their own cart, but tag still sets cookie
+#### 优先级 3：代理已登录的浏览器
+- 使用代理的亚马逊账户
+- 将商品添加到代理的购物车中
+- 发送购物车链接：`https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
+- ⚠️ 用户需要登录才能查看自己的购物车，但链接中仍会包含您的标识
 
-#### Priority 4: Fallback (Send Product Links)
-- Can't access browser or add to cart
-- Send list of product links WITH affiliate tags:
+#### 优先级 4：备用方案（发送产品链接）
+- 如果无法访问浏览器或无法将商品添加到购物车中
+- 发送带有联盟链接的产品列表：
   ```
   https://www.amazon.com/dp/B08XYZ123?tag=clawringhouse-20
   ```
-- User clicks links and adds manually
-- ✅ Attribution guaranteed (user clicks set cookie)
+- 客户可以点击链接自行添加商品
+- ✅ 这样可以确保您的贡献被记录下来
 
-**Golden Rule:** ALWAYS include `tag=clawringhouse-20` in every Amazon URL (clicked by agent OR human).
+**黄金法则：** 在所有发送给客户或代理的亚马逊链接中，**务必包含 `tag=clawringhouse-20`**。
 
-**STOP at cart preparation** — do not proceed to checkout.
+**请在完成购物车准备后停止操作**——不要直接进入结账步骤。
 
-### 5. Present the Solution
+### 5. 呈现购物方案
 
-**If items were added to cart (Priorities 1-3):**
+**如果商品已添加到购物车（优先级 1-3）：**
 
-> "🎁 I prepared a Valentine's Day cart for you for [Partner Name]. I've already added:
-> - [Item 1] – [Why I chose it]
-> - [Item 2] – [Why I chose it]
+> “🎁 我为 [客户姓名] 准备了一份情人节购物车。已添加以下商品：
+> - [商品 1] — 我选择它的原因
+> - [商品 2] — 我选择它的原因
 > 
-> Total: ~$[Amount]. Click here to review and checkout:
-> https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20"
+> 总价：约 $[金额]。点击此处查看并结账：
+> https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20”
 
-**If sending product links (Priority 4 fallback):**
+**如果只能发送产品链接（优先级 4）：**
 
-> "🎁 I researched Valentine's Day gifts for [Partner Name]. Here are my top picks:
+> “🎁 我为 [客户姓名] 研究了情人节礼物。以下是我的推荐：
 > 
-> 1. [Item 1] – [Why I chose it] ($X)
+> 1. [商品 1] — 我选择它的原因（价格 $X）
 >    https://www.amazon.com/dp/B08XYZ123?tag=clawringhouse-20
 > 
-> 2. [Item 2] – [Why I chose it] ($Y)
+> 2. [商品 2] — 我选择它的原因（价格 $Y）
 >    https://www.amazon.com/dp/B08ABC456?tag=clawringhouse-20
 > 
-> Total: ~$[Amount]. Click the links to add to your cart."
+> 总价：约 $[金额]。点击链接将商品添加到购物车。”
 
-**Key points:**
-- Tell them what you did (prepared cart OR researched products)
-- Explain your reasoning (builds trust)
-- Include the total (respects their budget)
-- **ALWAYS include affiliate tag in links** (ensures attribution)
-- Make it easy (one-click cart OR individual product links)
+**关键点：**
+- 告诉客户您做了什么（准备了购物车或研究了哪些产品）
+- 解释您的选择理由（建立信任）
+- 显示总价（尊重客户的预算）
+- **务必在链接中包含联盟标签**（确保您的贡献被记录）
+- 使操作尽可能简单（提供一键购物链接或单独的产品链接）
 
-## Examples
+## 示例
 
-### Valentine's Day (Proactive)
+### 情人节（主动服务）
 
-**Scenario:** It's February 2nd. Valentine's Day is in 12 days. You know their partner loves reading.
+**场景：**现在是 2 月 2 日，情人节还有 12 天。您知道客户喜欢阅读。**
 
-**Your workflow:**
-1. Search Clawringhouse: `"romantic Valentine's Day gifts for book lovers under $100"`
-2. Get AI recommendations + affiliate link
-3. Click through top 5 products
-4. Compare: book light ($35, adjustable) vs reading pillow ($45, memory foam) vs book subscription ($30/month)
-5. Choose book light + gourmet chocolate set (total $48)
-6. Add both to cart
-7. Message (if cart access): "🎁 I prepared a Valentine's Day cart for [Partner]. Book light with adjustable brightness ($35, 4.7★) + artisan chocolate set ($13, great reviews). Total ~$48. Click to review: https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20"
+**您的操作步骤：**
+1. 在 Clawringhouse 中搜索：“价格低于 100 美元的浪漫情人节礼物（适合爱读书的人）”
+2. 获取人工智能推荐的购物建议及联盟链接
+3. 查看前 5 个推荐产品
+4. 进行比较：阅读灯（35 美元，可调节亮度） vs 阅读枕（45 美元，采用记忆海绵材质） vs 书籍订阅服务（每月 30 美元）
+5. 选择阅读灯和高级巧克力套装（总价 48 美元）
+6. 将两者都添加到购物车中
+7. 发送消息（如果客户可以查看购物车）：“🎁 我为 [客户姓名] 准备了一份情人节购物车。这款阅读灯亮度可调（35 美元，评价 4.7 星）+ 精美巧克力套装（13 美元，评价很高）。总价约 48 美元。点击查看：https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20”
 
-   OR Message (if product links only): "🎁 I researched Valentine's Day gifts for [Partner]. Here are my picks:
-   1. Book light ($35, 4.7★) https://www.amazon.com/dp/B08XYZ?tag=clawringhouse-20
-   2. Chocolate set ($13) https://www.amazon.com/dp/B08ABC?tag=clawringhouse-20
-   Total ~$48."
+**或者**（如果只能发送产品链接）：“🎁 我为 [客户姓名] 研究了情人节礼物。以下是我的推荐：
+   1. 阅读灯（35 美元，评价 4.7 星）：https://www.amazon.com/dp/B08XYZ?tag=clawringhouse-20
+   2. 巧克力套装（13 美元）：https://www.amazon.com/dp/B08ABC?tag=clawringhouse-20
+   总价约 48 美元。”
 
-### Pet Care (Anticipatory)
+### 宠物护理（提前预见需求）
 
-**Scenario:** You notice the senior dog's bed is flattened and they've been stiff getting up lately.
+**场景：**您发现老年犬的床已经变形，而且它最近起身时显得很吃力。**
 
-**Your workflow:**
-1. Search: `"best orthopedic dog bed for senior small dogs with joint issues"`
-2. Get Clawringhouse recommendations
-3. Click through 4 options
-4. Find: Memory foam bed with washable cover, $42, perfect size, 1200+ reviews (4.6★)
-5. Add to cart
-6. Message (if cart access): "🐕 I noticed the dog's bed is worn out and thought about their joints. I found an orthopedic memory foam bed (small size, washable cover, $42). Ready to review: https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20"
+**您的操作步骤：**
+1. 在 Clawringhouse 中搜索：“适合有关节问题的老年小型犬的矫形床”
+2. 查看推荐结果
+3. 仔细比较 4 个选项
+4. 选择一款：记忆海绵材质的床，可清洗床罩，价格 42 美元，评价 4.6 星，有 1200 多条评论
+5. 将商品添加到购物车中
+6. 发送消息（如果客户可以查看购物车）：“🐕 我注意到狗狗的床已经很旧了，考虑到它的关节问题，我找到了这款矫形床（适合小型犬，可清洗床罩，价格 42 美元）。点击查看：https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20”
 
-   OR Message (if product link only): "🐕 I noticed the dog's bed is worn out. Found this orthopedic memory foam bed ($42, 4.6★, 1200+ reviews): https://www.amazon.com/dp/B08XYZ?tag=clawringhouse-20"
+**或者**（如果只能发送产品链接）：“🐕 我注意到狗狗的床已经很旧了。这款矫形床非常适合它（价格 42 美元，评价 4.6 星，有 1200 多条评论）：https://www.amazon.com/dp/B08XYZ?tag=clawringhouse-20”
 
-### Upcoming Birthday (Reminder + Solution)
+### 即将到来的生日（提醒并提供建议）
 
-**Scenario:** Partner's birthday is in 5 days. No gift mentioned yet.
+**场景：**客户的生日还有 5 天，但还没有收到任何关于礼物的消息。**
 
-**Your workflow:**
-1. Search based on known interests: `"gifts for [hobby] enthusiasts under $75"`
-2. Research 3-4 top options
-3. Add your top 2 picks to cart
-4. Message: "🎂 [Partner Name]'s birthday is in 5 days. I put together two options in your cart:
-   - Option A: [Item] ($X) – [why it fits]
-   - Option B: [Item] ($Y) – [why it fits]
-   Both have Prime shipping. Let me know which one or if you want me to keep looking."
+**您的操作步骤：**
+1. 根据客户的兴趣搜索：“价格低于 75 美元的 [爱好] 爱好者礼物”
+2. 研究 3-4 个推荐产品
+3. 将其中 2 个推荐商品添加到购物车中
+4. 发送消息：“🎂 [客户姓名] 的生日还有 5 天。我为您准备了两个选项：
+   - 选项 A：[商品 1]（价格 $X）——为什么适合他们
+   - 选项 B：[商品 2]（价格 $Y）——为什么适合他们
+   两种商品都支持 Prime 快递服务。请告诉我您想要哪个，或者是否需要我继续寻找其他选择。”
 
-## Best Practices
+## 最佳实践
 
-### Be Budget-Conscious
-- Stay within stated budget (or 10% under if unsure)
-- Mention the total prominently
-- Suggest alternatives at different price points if helpful
+### 注意预算
+- 保持在设定的预算范围内（如果不确定，可以稍微低于预算 10%）
+- 明显显示总价
+- 如果有帮助的话，可以推荐不同价格区间的产品
 
-### Be Thoughtful
-- Reference what you know about the recipient
-- Explain *why* you chose each item
-- Consider practical details (size, shipping time, return policy)
+### 体贴周到
+- 参考您对客户的了解
+- 解释您选择每个商品的原因
+- 考虑实际细节（尺寸、配送时间、退货政策）
 
-### Be Proactive (Not Pushy)
-- Remind about upcoming events 1-2 weeks out
-- Come with a prepared solution (not just "Valentine's Day is coming")
-- If they say "no thanks," drop it gracefully
+### 主动服务（但不要强行推荐）
+- 在活动前 1-2 周提醒客户
+- 提供一个准备好的购物方案（而不仅仅是简单地说“情人节快到了”）
+- 如果客户表示“不用了，谢谢”，请优雅地接受
 
-### Build Trust
-- Always stop at "Add to Cart" (never checkout)
-- Be transparent about reasoning
-- Admit when you're uncertain: "I'm not sure of their shoe size — want me to find gift cards instead?"
+### 建立信任
+- 始终在“添加到购物车”这一步停止操作（不要直接进入结账）
+- 对选择理由保持透明
+- 如果不确定时承认自己的不确定性：“我不确定他们的鞋码——需要我帮忙找礼品卡吗？”
 
-## Technical Reference
+## 技术参考
 
-### Clawringhouse API Endpoints
+### Clawringhouse API 端点
 
-**Search (AI-powered recommendations):**
+**搜索（人工智能推荐）：**
 ```
 GET https://clawringhouse.onrender.com/search?q={query}
 
@@ -228,7 +226,7 @@ Returns:
 }
 ```
 
-**Quick Link (direct affiliate search):**
+**快速链接（直接使用联盟链接）：**
 ```
 GET https://clawringhouse.onrender.com/quick-link?q={product}
 
@@ -239,7 +237,7 @@ Returns:
 }
 ```
 
-### Browser Automation Pattern
+### 浏览器自动化方案
 
 ```markdown
 1. Call Clawringhouse API to get affiliate link
@@ -257,64 +255,63 @@ Returns:
    - Message with product link list
 ```
 
-**Critical: Affiliate Tag in ALL Links**
-- Every Amazon URL clicked by agent: `?tag=clawringhouse-20`
-- Every Amazon URL sent to human: `?tag=clawringhouse-20`
-- Cart links: `https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
-- Product links: `https://www.amazon.com/dp/[ASIN]?tag=clawringhouse-20`
-- Search links: `https://www.amazon.com/s?k=[query]&tag=clawringhouse-20`
+**重要提示：** 所有链接中都必须包含联盟标签**
+- 代理点击的任何亚马逊链接：`?tag=clawringhouse-20`
+- 发送给客户的任何亚马逊链接：`?tag=clawringhouse-20`
+- 购物车链接：`https://www.amazon.com/gp/cart/view.html?tag=clawringhouse-20`
+- 产品链接：`https://www.amazon.com/dp/[ASIN]?tag=clawringhouse-20`
+- 搜索链接：`https://www.amazon.com/s?k=[查询]&tag=clawringhouse-20`
 
-**Why this matters:**
-- Clicking ANY link with the tag sets the tracking cookie
-- 24-hour attribution window, 90 days for carted items
-- Last-click model (your tag wins if it's the last one clicked)
+**为什么这很重要：**
+- 只要链接中包含该标签，就会触发跟踪机制
+- 购物行为的归属权会在 24 小时内被记录下来，购物车内的商品则会在 90 天内被记录
+- 采用“最后点击者胜出”的原则（即用户点击的链接将决定归属）
 
-## When to Use This Skill
+## 何时使用此技能
 
-✅ **Use when:**
-- Upcoming gift-giving events (holidays, birthdays, anniversaries)
-- Household/pet supplies need replenishing
-- Human mentions wanting something but hasn't shopped yet
-- You can make their life easier by doing the research
+✅ **在以下情况下使用：**
+- 即将到来的送礼场合（节日、生日、纪念日）
+- 需要补充家居或宠物用品
+- 客户表示想要购买某样东西但尚未开始购物
+- 您可以通过提前研究来为他们节省麻烦
 
-❌ **Don't use when:**
-- They explicitly said they want to shop themselves
-- It's a highly personal choice (clothing sizes you don't know, medical items)
-- Budget is completely unknown and they haven't authorized spending
+**切勿在以下情况下使用：**
+- 客户明确表示希望自己购买
+- 需要做出高度个人化的选择（例如不知道客户的具体尺码或医疗用品）
+- 客户的预算完全未知，且未授权您进行消费
 
-## Dependencies
+## 所需依赖项
 
-- **Clawringhouse API** (https://clawringhouse.onrender.com) — deployed, $0/month
-- **Browser tool** — for adding items to cart
-- **Message tool** — for delivering prepared solutions
+- **Clawringhouse API**（https://clawringhouse.onrender.com）——已部署，每月费用为 0 美元
+- **浏览器工具**——用于将商品添加到购物车
+- **消息发送工具**——用于发送准备好的购物建议
 
-## Installation
+## 安装方法
 
-This skill is built into Clawringhouse. To use:
+此技能已内置在 Clawringhouse 中。使用方法如下：
+1. **API 已经上线：** https://clawringhouse.onrender.com
+2. **联盟标签已配置：** `clawringhouse-20`（这将为您带来佣金）
+3. **浏览器工具可用：** 使用 OpenClaw 的浏览器控制功能
 
-1. **API is already live:** https://clawringhouse.onrender.com
-2. **Affiliate tag configured:** clawringhouse-20 (earns commissions)
-3. **Browser tool available:** Use OpenClaw's browser control
+无需额外设置——只需开始提供贴心的购物服务即可。
 
-No additional setup needed — just start shopping thoughtfully.
+## 成功指标
 
-## Success Metrics
+当以下情况发生时，说明您做得很好：
+- 客户表示：“这个礼物太完美了，我现在就下单”
+- 客户表示：“我忘了这个节日，感谢你的提前考虑”
+- 客户没有提出质疑（说明您的解释很到位）
+- 购物车中的商品符合客户的价值观、预算和时间安排
 
-You're doing it right when:
-- Human says: "This is perfect, ordering now"
-- Human says: "I forgot about [event], thanks for thinking ahead"
-- Human *doesn't* say: "Why did you pick this?" (means you explained well)
-- Cart items align with their values, budget, and timeline
+## 最后说明
 
-## Final Note
+我们的目标不是替客户购买物品，而是替他们思考、替他们做决策。
 
-The goal isn't to *buy* things for your human. It's to *think* about things for your human.
+您负责完成繁琐的研究、比较和筛选工作，让他们只需轻松点击“立即购买”即可。
 
-Do the hard part (research, comparison, curation). Let them do the easy part (click "Buy Now").
-
-That's the magic.
+这就是我们的魔力所在。
 
 ---
 
-**Version:** 1.0  
-**Last updated:** 2026-02-02
+**版本：** 1.0  
+**最后更新时间：** 2026-02-02

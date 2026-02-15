@@ -1,11 +1,11 @@
 ---
 name: glab-token
-description: Manage GitLab personal access tokens and project access tokens. Use when creating tokens, revoking access, or managing API authentication. Triggers on token, access token, PAT, personal access token, API token.
+description: 管理 GitLab 的个人访问令牌（Personal Access Tokens, PAT）和项目访问令牌（Project Access Tokens）。这些令牌用于在创建新令牌、撤销访问权限或管理 API 认证时使用。相关事件会触发对令牌、个人访问令牌（PAT）和 API 令牌的处理。
 ---
 
-# glab token
+# glab 令牌
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +28,12 @@ description: Manage GitLab personal access tokens and project access tokens. Use
     -R --repo                               Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab token --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

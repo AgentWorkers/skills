@@ -1,12 +1,13 @@
 ---
 name: oura-analytics
-description: Oura Ring data integration and analytics. Fetch sleep scores, readiness, activity, HRV, and trends from the Oura Cloud API. Generate automated reports, correlations with productivity, and trigger-based alerts for low recovery days. Requires OURA_API_TOKEN (get at cloud.ouraring.com).
+description: Oura Ring的数据集成与分析功能：  
+可通过Oura Cloud API获取用户的睡眠质量评分、身体状态（如“准备就绪”或“活跃”）、心率变异性（HRV）以及相关数据趋势。系统能够自动生成报告，分析这些数据与工作效率之间的关联，并在用户恢复状况不佳的日子触发警报。使用此功能需要OURA_API_TOKEN（可在cloud.ouraring.com获取）。
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":["OURA_API_TOKEN"]},"homepage":"https://github.com/kesslerio/oura-analytics-openclaw-skill"}}
 ---
 
 # Oura Analytics
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Set Oura API token
@@ -22,18 +23,18 @@ python {baseDir}/scripts/oura_api.py readiness --days 7
 python {baseDir}/scripts/oura_api.py report --type weekly
 ```
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- Fetching Oura Ring metrics (sleep, readiness, activity, HRV)
-- Analyzing recovery trends over time
-- Correlating sleep quality with productivity/events
-- Setting up automated alerts for low readiness
-- Generating daily/weekly/monthly health reports
+当需要执行以下操作时，请使用此技能：
+- 获取 Oura Ring 的各项指标（睡眠质量、设备状态、活动量、心率变异性 HRV）
+- 分析睡眠质量的长期变化趋势
+- 研究睡眠质量与工作效率或事件之间的关联
+- 设置设备状态低时的自动提醒
+- 生成每日/每周/每月的健康报告
 
-## Core Workflows
+## 核心工作流程
 
-### 1. Data Fetching
+### 1. 数据获取
 ```bash
 export PYTHONPATH="{baseDir}/scripts"
 python - <<'PY'
@@ -46,7 +47,7 @@ print(len(sleep_data), len(readiness_data))
 PY
 ```
 
-### 2. Trend Analysis
+### 2. 趋势分析
 ```bash
 export PYTHONPATH="{baseDir}/scripts"
 python - <<'PY'
@@ -64,38 +65,38 @@ print(avg_sleep, avg_readiness, trend)
 PY
 ```
 
-### 3. Alerts
+### 3. 提醒设置
 ```bash
 python {baseDir}/scripts/alerts.py --days 7 --readiness 60 --efficiency 80
 ```
 
-## Environment
+## 环境要求
 
-Required:
-- `OURA_API_TOKEN`
+必需的环境变量：
+- `OURA_API_TOKEN`（用于访问 Oura Cloud API）
 
-Optional (used for alerts/reports/timezone/output):
-- `KESSLER_TELEGRAM_BOT_TOKEN` (fallback to `TELEGRAM_BOT_TOKEN`)
-- `TELEGRAM_CHAT_ID`
-- `USER_TIMEZONE`
-- `OURA_OUTPUT_DIR`
+可选的环境变量（用于设置提醒、生成报告或指定时区/输出格式）：
+- `KESSLER_TELEGRAM_BOT_TOKEN`（默认使用 `TELEGRAM_BOT_TOKEN`）
+- `TELEGRAMCHAT_ID`（用于发送通知的 Telegram 聊天频道/群组 ID）
+- `USER_TIMEZONE`（用户所在时区）
+- `OURA_OUTPUT_DIR`（报告输出目录）
 
-## Scripts
+## 脚本
 
-- `scripts/oura_api.py` - Oura Cloud API wrapper with OuraAnalyzer and OuraReporter classes
-- `scripts/alerts.py` - Threshold-based notifications (CLI: `python {baseDir}/scripts/alerts.py --days 7 --readiness 60`)
-- `scripts/weekly_report.py` - Weekly report generator
+- `scripts/oura_api.py`：封装了 Oura Cloud API 的 Python 脚本，包含 `OuraAnalyzer` 和 `OuraReporter` 类
+- `scripts/alerts.py`：基于阈值的提醒系统（命令行使用方式：`python {baseDir}/scripts/alerts.py --days 7 --readiness 60`）
+- `scripts/weekly_report.py`：用于生成每周健康报告的脚本
 
-## References
+## 参考资料
 
-- `references/api.md` - Oura Cloud API documentation
-- `references/metrics.md` - Metric definitions and interpretations
+- `references/api.md`：Oura Cloud API 的官方文档
+- `references/metrics.md`：各项指标的定义及解释
 
-## Automation (Cron Jobs)
+## 自动化配置（Cron 作业）
 
-Cron jobs are configured in OpenClaw's gateway, not in this repo. Add these to your OpenClaw setup:
+Cron 作业的配置应在 OpenClaw 的管理界面中进行，而非在此仓库中完成。请按照以下要求配置自动化任务：
 
-### Daily Morning Briefing (8:00 AM)
+### 每日晨间简报（上午 8:00）
 ```bash
 openclaw cron add \
   --name "Daily Oura Health Report (Hybrid)" \
@@ -109,7 +110,7 @@ openclaw cron add \
   --message "Run the daily Oura health report with hybrid format: Execute bash /path/to/your/scripts/daily-oura-report-hybrid.sh"
 ```
 
-### Weekly Sleep Report (Sunday 8:00 AM)
+### 每周睡眠报告（每周日上午 8:00）
 ```bash
 openclaw cron add \
   --name "Weekly Oura Sleep Report" \
@@ -123,7 +124,7 @@ openclaw cron add \
   --message "Run weekly Oura sleep report: bash /path/to/your/oura-weekly-sleep-alert.sh"
 ```
 
-### Daily Obsidian Note (8:15 AM)
+### 每日 Obsidian 记录（上午 8:15）
 ```bash
 openclaw cron add \
   --name "Daily Obsidian Note" \
@@ -134,4 +135,4 @@ openclaw cron add \
   --message "Create daily Obsidian note with Oura data. Run: source /path/to/venv/bin/activate && python /path/to/daily-note.py"
 ```
 
-**Note:** Replace `/path/to/your/` with your actual paths and `<YOUR_TELEGRAM_CHAT_ID>` with your Telegram channel/group ID.
+**注意：**请将 `/path/to/your/` 替换为实际的路径，将 `<YOUR_TELEGRAMCHAT_ID>` 替换为你的 Telegram 聊天频道/群组 ID。

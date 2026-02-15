@@ -1,62 +1,61 @@
-# eBay Trading API Skill
+# eBay交易API技能
 
-Create, manage, and research eBay listings for trading cards and collectibles.
+该技能用于创建、管理和查询eBay上的集换式卡牌和收藏品的列表。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- Creating eBay listings from photos or item descriptions
-- Looking up sold prices (comps) for pricing decisions
-- Managing existing listings (revise, end)
-- Building photo-to-listing automation workflows
+- 从照片或商品描述创建eBay列表
+- 查找已售商品的价格以辅助定价决策
+- 管理现有列表（修改或删除）
+- 构建自动化的照片到列表的转换流程
 
-## Quick Start
+## 快速入门
 
-### Create a Listing
+### 创建列表
 ```bash
 cd ~/clawd/ebay && python3 trading_api.py --create
 ```
 
-### Verify Without Listing (Dry Run)
+### 无列表验证（模拟运行）
 ```bash
 cd ~/clawd/ebay && python3 trading_api.py
 ```
 
-### Check Sold Comps
+### 查看已售商品价格
 ```bash
 cd ~/clawd/ebay && python3 comps.py "2024 Topps Chrome Mike Trout"
 ```
 
-## API Calls Available
+## 可用的API调用
 
-| Call | Purpose | Script |
+| 调用 | 功能 | 脚本 |
 |------|---------|--------|
-| `AddItem` | Create new listing | `trading_api.py` |
-| `VerifyAddItem` | Validate without listing | `trading_api.py` |
-| `ReviseItem` | Edit existing listing | `revise.py` (TODO) |
-| `EndItem` | End/delete listing | `end.py` (TODO) |
-| `GetItem` | Fetch listing details | `get_item.py` (TODO) |
-| `findCompletedItems` | Sold price research | `comps.py` ✅ |
+| `AddItem` | 创建新列表 | `trading_api.py` |
+| `VerifyAddItem` | 无列表情况下进行验证 | `trading_api.py` |
+| `ReviseItem` | 修改现有列表 | `revise.py`（待完成） |
+| `EndItem` | 删除列表 | `end.py`（待完成） |
+| `GetItem` | 获取列表详情 | `get_item.py`（待完成） |
+| `findCompletedItems` | 查询已售商品价格 | `comps.py` ✅ |
 
-## Card Conditions
+## 卡片状态
 
-### Ungraded Cards (Condition ID: 4000)
-| Condition | Descriptor ID |
+### 未分级卡片（状态ID：4000）
+| 状态 | 描述符ID |
 |-----------|---------------|
-| Near Mint or Better | 400010 |
-| Excellent | 400011 |
-| Very Good | 400012 |
-| Poor | 400013 |
+| 几乎全新 | 400010 |
+| 优秀 | 400011 |
+| 非常好 | 400012 |
+| 较差 | 400013 |
 
-### Graded Cards (Condition ID: 2750)
-Supported graders: PSA, BGS, SGC, CGC, CSG, BVG, BCCG, KSA, GMA, HGA
+### 分级卡片（状态ID：2750）
+支持的分级机构：PSA、BGS、SGC、CGC、CSG、BVG、BCCG、KSA、GMA、HGA
 
-Grades: 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, Authentic
+等级：10、9.5、9、8.5、8、7.5、7、6.5、6、5.5、5、4.5、4、3.5、3、2.5、2、1.5、1、真品
 
-## Configuration
+## 配置
 
-### Required Environment Variables
-Set in `~/.env.ebay` or export directly:
+### 必需的环境变量
+在`~/.env.ebay`中设置或直接导出：
 
 ```bash
 EBAY_DEV_ID=your-dev-id
@@ -64,8 +63,8 @@ EBAY_APP_ID=your-app-id
 EBAY_CERT_ID=your-cert-id
 ```
 
-### OAuth Tokens
-Stored in `~/clawd/ebay/.tokens.json` (auto-managed):
+### OAuth令牌
+存储在`~/clawd/ebay/.tokens.json`中（自动管理）：
 ```json
 {
   "access_token": "v^1.1#i^1#...",
@@ -74,11 +73,11 @@ Stored in `~/clawd/ebay/.tokens.json` (auto-managed):
 }
 ```
 
-Run `oauth_setup.py` to initialize tokens, or `refresh_token.py` to refresh expired tokens.
+运行`oauth_setup.py`初始化令牌，或运行`refresh_token.py`刷新过期令牌。
 
-## Usage Examples
+## 使用示例
 
-### Python: Create Sports Card Listing
+### Python：创建运动卡片列表
 ```python
 from trading_api import load_credentials, create_sports_card_listing
 
@@ -101,7 +100,7 @@ item_id = create_sports_card_listing(creds, card_info, price="29.99")
 print(f"Listed: https://www.ebay.com/itm/{item_id}")
 ```
 
-### Python: Graded Card
+### Python：分级卡片列表
 ```python
 card_info = {
     "title": "2020 Panini Prizm LaMelo Ball RC PSA 10",
@@ -120,67 +119,67 @@ card_info = {
 item_id = create_sports_card_listing(creds, card_info, price="199.99")
 ```
 
-## Rate Limits
+## 速率限制
 
-| API | Daily Limit | Reset Time |
+| API | 每日限制 | 重置时间 |
 |-----|-------------|------------|
-| Trading API | 5,000 calls | Midnight PT |
-| Finding API | 5,000 calls | Midnight PT |
+| Trading API | 5,000次调用 | 太平洋时间午夜 |
+| Finding API | 5,000次调用 | 太平洋时间午夜 |
 
-**Best practices:**
-- Use `VerifyAddItem` for testing (counts toward limit)
-- Implement exponential backoff on 503 errors
-- Cache comp results to reduce Finding API calls
+**最佳实践**：
+- 使用`VerifyAddItem`进行测试（计入调用次数）
+- 在遇到503错误时采用指数级退避策略
+- 缓存查询结果以减少Finding API的调用次数
 
-## Troubleshooting
+## 故障排除
 
-| Error | Cause | Fix |
+| 错误 | 原因 | 解决方法 |
 |-------|-------|-----|
-| `Auth token is hard expired` | Access token expired (2hr) | Run `oauth_setup.py` |
-| `Invalid refresh token` | Refresh token expired (18mo) | Full OAuth re-auth via `oauth_setup.py` |
-| `exceeded the number of times` | eBay rate limited | Wait 1hr or check eBay developer dashboard |
-| `Invalid App ID` | Wrong credentials | Check `.env.ebay` has `EBAY_PROD_APP_ID` |
-| `Category not found` | Bad category ID | Use category names: `basketball`, `baseball` |
-| `Missing item specifics` | Required fields empty | Add player, year, set, card_number |
-| `No items found` | Too specific query | Broaden search terms |
-| `Connection timeout` | eBay API slow | Retry in 30 seconds |
-| `503 Service Unavailable` | API overloaded | Wait and retry with backoff |
+| `Auth token is hard expired` | 访问令牌过期（2小时） | 运行`oauth_setup.py` |
+| `Invalid refresh token` | 刷新令牌过期（18个月） | 通过`oauth_setup.py`重新认证 |
+| `Exceeded the number of times` | 被eBay限制了调用次数 | 等待1小时或查看eBay开发者控制台 |
+| `Invalid App ID` | 凭据错误 | 确保`.env.ebay`中包含`EBAY_PROD_APP_ID` |
+| `Category not found` | 类别ID错误 | 使用正确的类别名称（如`basketball`、`baseball`） |
+| `Missing item specifics` | 必填字段为空 | 添加球员名称、年份、系列和卡片编号 |
+| `No items found` | 查询过于具体 | 扩大搜索范围 |
+| `Connection timeout` | eBay API响应缓慢 | 30秒后重试 |
+| `503 Service Unavailable` | API负载过高 | 等待后重试并采用退避策略 |
 
-## Security Notes
+## 安全注意事项
 
-### 🔑 Token Management
-- Tokens stored in `.tokens.json` — **ensure 600 permissions**: `chmod 600 .tokens.json`
-- Access tokens expire after 2 hours (auto-refresh via refresh_token)
-- Refresh tokens expire after 18 months — calendar reminder recommended
-- If refresh fails, re-run `oauth_setup.py` to re-authenticate
+### 🔑 令牌管理
+- 令牌存储在`.tokens.json`文件中 — 确保文件权限设置为`600`：`chmod 600 .tokens.json`
+- 访问令牌2小时后过期（通过`refresh_token`自动刷新）
+- 刷新令牌18个月后过期 — 建议设置提醒
+- 如果刷新失败，重新运行`oauth_setup.py`进行重新认证
 
-### 🔒 Credential Safety
-- Never commit `.tokens.json` or `.env.ebay` to git
-- Add to `.gitignore`: `.tokens.json`, `.env.ebay`, `*.log`
-- Use environment variables, not hardcoded values
-- Rotate tokens immediately if exposed
-- API credentials (Dev/App/Cert IDs) are **not** secret but treat as private
+### 🔒 凭据安全
+- **切勿将`.tokens.json`或`.env.ebay`文件提交到git仓库**
+- 将这些文件添加到`.gitignore`中：`.tokens.json`, `.env.ebay`, `*.log`
+- 使用环境变量而非硬编码值
+- 令牌泄露后立即更换
+- API凭据（开发/应用/证书ID）虽然不是机密信息，但仍需保密
 
-### ✅ Input Validation
-- All user input is HTML-escaped via `html.escape()` before API calls
-- Titles limited to 80 characters (eBay max)
-- Description wrapped in CDATA to prevent XML injection
-- Card numbers, grades sanitized to alphanumeric
+### ✅ 输入验证
+- 所有用户输入在API调用前都会通过`html.escape()`进行转义
+- 标题长度限制为80个字符（符合eBay规定）
+- 描述内容使用CDATA标签以防止XML注入
+- 卡片编号和等级信息仅保留字母数字字符
 
-### 📋 Audit Trail
-- Failed listings logged to `~/clawd/ebay/errors.log`
-- Successful listings logged with ItemID, timestamp, and price
-- Keep logs for 90 days minimum (eBay dispute window)
+### 📋 日志记录
+- 失败的列表操作会记录到`~/clawd/ebay/errors.log`
+- 成功的列表操作会记录ItemID、时间戳和价格
+- 日志至少保留90天（符合eBay争议处理要求）
 
-### 🛡️ API Response Handling
-- Never log full API responses (may contain PII)
-- Mask ItemIDs in non-debug logs: `1234***789`
-- Sanitize error messages before displaying to users
-- Strip buyer/seller info from any logged responses
+### 🛡️ API响应处理
+- **切勿记录完整的API响应内容**（可能包含个人隐私信息）
+- 在非调试日志中屏蔽ItemID：例如`1234***789`
+- 在显示给用户之前对错误信息进行清洗
+- 从日志中删除买家/卖家信息
 
-## Sandbox vs Production
+## 沙盒环境与生产环境
 
-Toggle with `sandbox` parameter:
+通过`sandbox`参数切换环境：
 ```python
 # Sandbox (testing)
 response = call_trading_api(creds, "AddItem", xml, sandbox=True)
@@ -189,10 +188,10 @@ response = call_trading_api(creds, "AddItem", xml, sandbox=True)
 response = call_trading_api(creds, "AddItem", xml, sandbox=False)
 ```
 
-Sandbox URL: `https://api.sandbox.ebay.com/ws/api.dll`
-Production URL: `https://api.ebay.com/ws/api.dll`
+沙盒URL：`https://api.sandbox.ebay.com/ws/api.dll`
+生产环境URL：`https://api.ebay.com/ws/api.dll`
 
-## File Structure
+## 文件结构
 
 ```
 ~/clawd/ebay/
@@ -206,39 +205,39 @@ Production URL: `https://api.ebay.com/ws/api.dll`
 └── pending.json       # Pending listings queue
 ```
 
-## TODO
+## 待完成事项
 
-- [x] `comps.py` — findCompletedItems wrapper for price research ✅
-- [ ] `revise.py` — ReviseItem for editing listings
-- [ ] `end.py` — EndItem for ending listings
-- [ ] `upload.py` — eBay Picture Services integration
-- [ ] Rate limiting with exponential backoff
-- [ ] Structured error logging
+- [x] `comps.py` — 实现查询已售商品价格的函数 ✅
+- [ ] `revise.py` — 修改列表功能的实现
+- [ ] `end.py` — 删除列表功能的实现
+- [ ] `upload.py` — 与eBay图片服务的集成
+- [ ] 实现基于指数级退避的速率限制
+- [ ] 实现结构化的错误日志记录
 
-## Known Limitations
+## 已知限制
 
-### Rate Limits
-- **Finding API:** ~5,000 calls/day (may be lower for new apps)
-- **Trading API:** ~5,000 calls/day
-- If rate limited, `comps.py` returns `fallback: true` — use manual pricing
-- Limits reset at midnight Pacific Time
-- New apps may have stricter burst limits initially
+### 速率限制
+- **Finding API**：每日5,000次调用（新应用可能更低）
+- **Trading API**：每日5,000次调用
+- 如果达到限制，`comps.py`会返回`fallback: true`——此时需手动定价
+- 限制在太平洋时间午夜重置
+- 新应用可能初始时有更严格的临时调用限制
 
-### Token Expiry
-- **Access tokens** expire after ~2 hours (auto-refreshed)
-- **Refresh tokens** last 18 months — set a calendar reminder!
-- If refresh fails, re-run `oauth_setup.py` to re-authenticate
+### 令牌过期
+- **访问令牌**2小时后过期（自动刷新）
+- **刷新令牌**18个月后过期——建议设置提醒
+- 如果刷新失败，重新运行`oauth_setup.py`进行重新认证
 
-### Finding API Requires Production Credentials
-The Finding API (`findCompletedItems`) does **not** have a sandbox environment. You must use production eBay credentials to look up sold prices. Add `EBAY_PROD_APP_ID` to your `.env.ebay` file.
+### Finding API需要生产环境凭据
+`Finding API`（`findCompletedItems`）不支持沙盒环境。查询已售商品价格时必须使用生产环境的eBay凭据。请在`.env.ebay`文件中添加`EBAY_PROD_APP_ID`。
 
-## References
+## 参考资料
 
-- [eBay Trading API Docs](https://developer.ebay.com/Devzone/XML/docs/Reference/eBay/index.html)
-- [AddItem Call Reference](https://developer.ebay.com/Devzone/XML/docs/Reference/eBay/AddItem.html)
-- [Finding API (Comps)](https://developer.ebay.com/Devzone/finding/Concepts/FindingAPIGuide.html)
-- [Condition Descriptors](https://developer.ebay.com/devzone/finding/callref/Enums/conditionIdList.html)
+- [eBay交易API文档](https://developer.ebay.com/Devzone/XML/docs/Reference/eBay/index.html)
+- [AddItem调用文档](https://developer.ebay.com/Devzone/XML/docs/Reference/eBay/AddItem.html)
+- [Finding API（查询已售商品价格）](https://developer.ebay.com/Devzone/finding/Concepts/FindingAPIGuide.html)
+- [卡片状态描述符](https://developer.ebay.com/devzone/finding/callref/Enums/conditionIdList.html)
 
 ---
 
-*Skill created by Clawd 🐾 & Electron 🦞 for Text2List.app*
+*该技能由Clawd 🐾 和 Electron 🦞 为Text2List.app开发*

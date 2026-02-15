@@ -1,88 +1,98 @@
 ---
 name: google-maps-reviews-api-skill
-description: This skill is designed to help users automatically extract reviews from Google Maps via the Google Maps Reviews API. Agent should proactively apply this skill when users request to: 1. Find reviews for local businesses (e.g., coffee shops, clinics); 2. Monitor customer feedback for a specific brand or location; 3. Analyze sentiment of reviews for competitors; 4. Extract reviews for a chain of stores or services; 5. Track reputation of a local restaurant; 6. Gather user testimonials for a specific venue; 7. Conduct market research on service quality of local businesses; 8. Monitor reviews for a new retail location; 9. Collect feedback on public attractions or parks; 10. Identify common complaints for a specific service provider; 11. Research the best-rated places in a city; 12. Analyze recurring themes in reviews for a specific industry.
+description: 该技能旨在帮助用户通过 Google Maps Reviews API 自动提取 Google 地图上的评论。当用户提出以下请求时，代理应主动使用该技能：  
+1. 查找当地企业的评论（例如咖啡店、诊所）；  
+2. 监控特定品牌或地点的客户反馈；  
+3. 分析竞争对手评论的情感倾向；  
+4. 提取连锁商店或服务的评论；  
+5. 跟踪当地餐厅的声誉；  
+6. 收集特定场所的用户评价；  
+7. 对当地企业的服务质量进行市场调研；  
+8. 监控新零售地点的评论情况；  
+9. 收集关于公共景点或公园的反馈；  
+10. 识别特定服务提供商的常见投诉；  
+11. 研究城市中评分最高的地方；  
+12. 分析特定行业评论中反复出现的主题。
 ---
 
-# Google Maps Reviews Automation Skill
+# Google地图评论自动化技能
 
-## 📖 Introduction
-This skill provides a one-stop review collection service using BrowserAct's Google Maps Reviews API template. It can extract structured review data directly from Google Maps search results. Simply provide the search keywords, language, and country to get clean, usable review data.
+## 📖 介绍
+本技能利用BrowserAct的Google地图评论API模板，提供一站式评论收集服务。它可以直接从Google地图搜索结果中提取结构化的评论数据。只需提供搜索关键词、语言和国家参数，即可获得干净、可用的评论数据。
 
-## ✨ Capability Features
-1. **No Hallucination, Precision Data Extraction**: Uses preset workflows to avoid AI-generated hallucinations.
-2. **No CAPTCHA Issues**: Built-in mechanisms to bypass reCAPTCHA or other verification challenges.
-3. **No IP Restrictions or Geo-fencing**: Breaks through regional IP limits to ensure stable access worldwide.
-4. **Agile Execution**: Faster task execution compared to pure AI-driven browser automation solutions.
-5. **High Cost-Effectiveness**: Significantly reduces data acquisition costs compared to high-token-consumption AI solutions.
+## ✨ 功能特点
+1. **数据提取精准无误**：采用预设的工作流程，避免AI生成的虚假评论。
+2. **无需处理验证码**：内置机制可绕过reCAPTCHA或其他验证要求。
+3. **无IP限制或地理屏蔽**：突破区域IP限制，确保全球范围内的稳定访问。
+4. **执行效率高**：相比纯AI驱动的浏览器自动化方案，执行速度更快。
+5. **成本效益高**：与高token消耗的AI方案相比，显著降低数据采集成本。
 
-## 🔑 API Key Guidance
-Before running, check the `BROWSERACT_API_KEY` environment variable. If not set, do not take other measures; instead, request the user to provide it.
-**Agent must inform the user**:
-> "Since you haven't configured the BrowserAct API Key, please go to the [BrowserAct Console](https://www.browseract.com/reception/integrations) to get your Key and provide it to me in this chat."
+## 🔑 API密钥说明
+在运行之前，请检查`BROWSERACT_API_KEY`环境变量。如果未设置，请让用户提供该密钥。
+**代理应告知用户**：
+> “由于您尚未配置BrowserAct API密钥，请前往[BrowserAct控制台](https://www.browseract.com/reception/integrations)获取密钥，并在此聊天中提供给我。”
 
-## 🛠️ Input Parameters Details
-The Agent should flexibly configure the following parameters when calling the script:
+## 🛠️ 输入参数详情
+代理在调用脚本时，应灵活配置以下参数：
 
-1. **KeyWords (Search Keywords)**
-   - **Type**: `string`
-   - **Description**: The query used to find places on Google Maps (e.g., business names, categories).
-   - **Example**: `coffee shop`, `dental clinic`, `Tesla showroom`
+1. **KeyWords（搜索关键词）**
+   - **类型**：`string`
+   - **说明**：用于在Google地图上查找地点的查询词（例如：咖啡店、牙科诊所、特斯拉展厅）。
+   - **示例**：`coffee shop`、`dental clinic`、`Tesla showroom`
 
-2. **language (Language)**
-   - **Type**: `string`
-   - **Description**: Sets the UI language and the language of the returned text.
-   - **Supported values**: `en`, `zh-CN`, `es`, `fr`, etc.
-   - **Default**: `en`
+2. **language（语言）**
+   - **类型**：`string`
+   - **说明**：设置用户界面语言和返回文本的语言。
+   - **支持的值**：`en`、`zh-CN`、`es`、`fr`等。
+   - **默认值**：`en`
 
-3. **country (Country)**
-   - **Type**: `string`
-   - **Description**: Country or region bias for search results.
-   - **Supported values**: `us`, `gb`, `ca`, `au`, `jp`, etc.
-   - **Default**: `us`
+3. **country（国家）**
+   - **类型**：`string`
+   - **说明**：指定搜索结果的地区偏好。
+   - **支持的值**：`us`、`gb`、`ca`、`au`、`jp`等。
+   - **默认值**：`us`
 
-## 🚀 Invocation Method (Recommended)
-The Agent should execute the following script to get results:
+## 🚀 建议的调用方法
+代理应执行以下脚本以获取结果：
 
 ```bash
 # Example call
 python -u ./.cursor/skills/google-maps-reviews-api-skill/scripts/google_maps_reviews_api.py "Keywords" "Language" "Country"
 ```
 
-### ⏳ Running Status Monitoring
-Since this task involves automated browser operations, it may take several minutes. The script will continuously output status logs with timestamps (e.g., `[14:30:05] Task Status: running`).
-**Agent Notes**:
-- Stay focused on the terminal output while waiting for results.
-- As long as the terminal is outputting new status logs, the task is running normally; do not misjudge it as hung or non-responsive.
-- If the status remains unchanged for a long time or the script stops outputting without returning results, consider a retry.
+### ⏳ 运行状态监控
+由于此任务涉及自动化浏览器操作，可能需要几分钟时间。脚本会持续输出带有时间戳的状态日志（例如：`[14:30:05] 任务状态：正在运行`）。
+**代理注意事项**：
+- 在等待结果时，请密切关注终端输出。
+- 只要终端仍在输出新的状态日志，说明任务正在正常运行；不要误认为是程序挂起或无响应。
+- 如果状态长时间不变或脚本停止输出且未返回结果，请尝试重新运行。
 
-## 📊 Output Data Description
-After successful execution, the script parses and prints results from the API response:
-- `author_name`: Display name of the reviewer
-- `author_profile_url`: Profile URL of the reviewer
-- `rating`: Star rating
-- `text`: Review text content
-- `comment_date`: Human-readable date
-- `likes_count`: Number of likes
-- `author_image_url`: Reviewer's avatar URL
+## 📊 输出数据说明
+脚本成功执行后，会解析并打印API响应中的数据：
+- `author_name`：评论者的显示名称
+- `author_profile_url`：评论者的个人资料链接
+- `rating`：评分（星号等级）
+- `text`：评论文本内容
+- `comment_date`：人类可读的日期格式
+- `likes_count`：点赞数
+- `author_image_url`：评论者的头像链接
 
-## ⚠️ Exception Handling & Retry Mechanism
-If an error occurs (e.g., network fluctuations or task failure), follow this logic:
+## ⚠️ 异常处理与重试机制
+如果发生错误（例如网络波动或任务失败），请按照以下步骤处理：
+1. **检查输出内容**：
+   - 如果输出包含“Invalid authorization”，说明API密钥无效或已过期。**不要重试**，请让用户提供正确的密钥。
+   - 如果输出不包含“Invalid authorization”，但任务仍然失败（例如输出以“Error:”开头或返回空结果），代理应**自动尝试重新运行脚本一次**。
+2. **重试次数限制**：
+   - 自动重试仅允许**一次**。如果第二次尝试仍然失败，请停止并向用户报告错误。
 
-1. **Check Output Content**:
-   - If output contains `"Invalid authorization"`, the API Key is invalid or expired. **Do not retry**; guide the user to provide a correct Key.
-   - If output does not contain `"Invalid authorization"` but the task fails (e.g., output starts with `Error:` or returns empty results), the Agent should **automatically try to re-run the script once**.
-
-2. **Retry Limit**:
-   - Automatic retry is limited to **once**. If the second attempt fails, stop and report the error to the user.
-
-## 🌟 Typical Use Cases
-1. **Local Business Analysis**: Find reviews for cafes or clinics in a specific area.
-2. **Reputation Monitoring**: Track feedback for a specific brand location.
-3. **Competitive Benchmarking**: Analyze reviews of competitor stores.
-4. **Sentiment Analysis**: Gather review text for emotion and topic modeling.
-5. **Market Research**: Evaluate service quality across different regions.
-6. **Lead Qualification**: Use review data to identify high-quality service providers.
-7. **Customer Insight**: Understand recurring complaints or praises.
-8. **Venue Research**: Collect testimonials for parks, museums, or attractions.
-9. **Retail Monitoring**: Gather feedback for newly opened stores.
-10. **Service Quality Audit**: Analyze ratings and comments for a specific service chain.
+## 🌟 典型应用场景
+1. **本地业务分析**：查找特定区域的咖啡店或诊所的评论。
+2. **声誉监控**：追踪特定品牌门店的反馈情况。
+3. **竞争分析**：分析竞争对手门店的评论。
+4. **情感分析**：收集评论文本以进行情感分析和主题建模。
+5. **市场调研**：评估不同地区的服务质量。
+6. **客户筛选**：利用评论数据识别优质服务提供商。
+7. **客户洞察**：了解常见的投诉或表扬内容。
+8. **场所研究**：收集公园、博物馆或景点的用户评价。
+9. **零售监控**：收集新开门店的反馈信息。
+10. **服务质量审计**：分析特定服务链的评分和评论。

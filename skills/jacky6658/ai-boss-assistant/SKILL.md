@@ -1,6 +1,6 @@
 ---
 name: ai-boss-assistant
-description: Transform any AI into a professional executive assistant with battle-tested personas and workflows. Complete templates for Google Workspace integration (Gmail, Calendar, Drive), milestone delivery system, and security guidelines.
+description: 将任何人工智能（AI）系统转变为具备经过实战验证的角色和工作流程的专业执行助理。提供与 Google Workspace（Gmail、Calendar、Drive）集成的完整模板，以及里程碑交付系统和安全指南。
 homepage: https://github.com/jacky6658/ai-boss-assistant
 metadata:
   {
@@ -14,22 +14,22 @@ metadata:
 
 # AI Boss Assistant
 
-> Transform any AI into a professional executive assistant with battle-tested personas and workflows.
+> 将任何人工智能（AI）转变为具备实战经验的专业执行助理，具备完善的角色设定和工作流程。
 
-## Overview
+## 概述
 
-This skill provides complete templates to train an AI agent as your personal boss assistant. It includes:
+本技能提供了完整的模板，用于训练AI代理成为您的个人助理。它包括：
 
-- **Persona Framework**: Define how your AI thinks, communicates, and behaves
-- **Milestone Delivery**: Break big tasks into manageable stages
-- **Google Workspace Integration**: Gmail, Calendar, Drive automation
-- **Security Guidelines**: Built-in privacy and permission rules
+- **角色设定框架**：定义AI的思维方式、沟通方式以及行为模式
+- **任务分解**：将大型任务分解为可管理的阶段
+- **与Google Workspace的集成**：实现Gmail、Calendar、Drive的自动化操作
+- **安全指南**：内置的隐私和权限管理规则
 
-## Quick Usage
+## 快速使用方法
 
-### Train Your AI
+### 训练您的AI
 
-Ask the AI to read and learn from these files in order:
+请让AI按照以下步骤阅读并学习这些文件：
 
 ```
 Please read and learn from:
@@ -39,9 +39,9 @@ Please read and learn from:
 4. agent-persona/RULES.md - Behavioral rules
 ```
 
-### Example Commands
+### 示例命令
 
-After training, you can say:
+训练完成后，您可以这样使用AI：
 
 ```
 "Check my calendar for tomorrow and summarize"
@@ -50,39 +50,39 @@ After training, you can say:
 "What's on my todo list today?"
 ```
 
-## Key Concepts
+## 关键概念
 
-### AI Employee vs Chatbot
+### AI员工与聊天机器人的区别
 
-This template creates an "AI Employee" that:
-- ✅ Proactively executes tasks
-- ✅ Provides complete solutions
-- ✅ Has judgment and opinions
-- ✅ Delivers results, not just answers
+本模板创建的“AI员工”具备以下特点：
+- ✅ 能够主动执行任务
+- ✅ 提供完整的解决方案
+- ✅ 具备判断力和自己的观点
+- ✅ 不仅提供答案，还能交付实际成果
 
-### Milestone Delivery
+### 任务分解
 
-Big tasks are broken into stages:
+大型任务会被分解为多个阶段：
 ```
 Task → M1 → Deliver → OK → M2 → Deliver → OK → Done
 ```
 
-This prevents "black box" operations and allows review at each stage.
+这样可以避免操作过程变得“不可预测”（即像“黑箱”一样难以理解），并允许在每个阶段进行审查。
 
-### Externalized Memory
+### 外部化存储
 
-Important info is written to files:
-- `MEMORY.md` - Long-term memory
-- `memory/YYYY-MM-DD.md` - Daily logs
+重要信息会被保存在文件中：
+- `MEMORY.md`：长期存储
+- `memory/YYYY-MM-DD.md`：每日日志
 
-## Requirements
+## 系统要求
 
-- OpenClaw 1.0+
-- Node.js 18+
-- Google Account (for Workspace integration)
-- gog CLI (for Google Workspace)
+- OpenClaw 1.0及以上版本
+- Node.js 18及以上版本
+- Google账户（用于与Google Workspace集成）
+- gog CLI（用于管理Google Workspace）
 
-## Installation
+## 安装方法
 
 ```bash
 # Install gog for Google Workspace
@@ -90,7 +90,7 @@ npm install -g gog
 gog auth login --services gmail,calendar,drive
 ```
 
-## Files Structure
+## 文件结构
 
 ```
 agent-persona/     - Core persona templates
@@ -100,8 +100,8 @@ security/          - Security guidelines
 tasks/             - Task management templates
 ```
 
-## Links
+## 链接
 
-- **GitHub**: https://github.com/jacky6658/ai-boss-assistant
-- **Documentation**: See README.md for full documentation
-- **Issues**: https://github.com/jacky6658/ai-boss-assistant/issues
+- **GitHub仓库**：https://github.com/jacky6658/ai-boss-assistant
+- **文档**：详见README.md
+- **问题反馈**：https://github.com/jacky6658/ai-boss-assistant/issues

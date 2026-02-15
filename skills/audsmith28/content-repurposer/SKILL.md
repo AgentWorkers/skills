@@ -1,34 +1,34 @@
 ---
 name: content-repurposer
-description: Transform long-form content into platform-optimized snippets. Your agent takes one blog post, video transcript, or podcast notes and generates ready-to-publish Twitter threads, LinkedIn posts, email newsletters, and Instagram captions. Maintains voice consistency while adapting to each platform's format, length, and engagement patterns. Configure tone preferences, platform priorities, and output formats. Use when publishing content across multiple channels, repurposing existing material, or maximizing reach from a single piece of content.
+description: 将长篇内容转换为适用于不同平台的简短片段。我们的工具能够接收一篇博客文章、视频文字记录或播客笔记，然后生成适合在 Twitter、LinkedIn、电子邮件新闻通讯和 Instagram 上发布的帖子。在转换过程中，工具会保持语言风格的一致性，并根据每个平台的格式、长度和用户互动习惯进行调整。用户可以配置语言风格偏好、优先发布的平台以及输出格式。该工具适用于在多个渠道发布内容、重新利用现有素材，或通过单一内容最大化传播效果。
 metadata:
   clawdbot:
     emoji: "♻️"
 ---
 
-# Content Repurposer — Create Once, Publish Everywhere
+# 内容复用工具 — 一次创作，多平台发布
 
-**Stop reformatting. Start publishing.**
+**别再重新格式化了，直接开始发布吧。**
 
-You wrote one great piece. Now you need it as a Twitter thread, LinkedIn post, newsletter section, and Instagram caption. That's 4+ hours of rewriting, reformatting, and maintaining voice consistency. Or... 30 seconds.
+你写了一篇很棒的文章，但现在你需要将它制作成适合在 Twitter、LinkedIn、新闻通讯或 Instagram 上发布的版本。这通常需要花费 4 个多小时的时间来进行重新编写、格式调整以及保持语言风格的一致性。但是，使用这个工具只需要 30 秒！
 
-Content Repurposer takes your long-form content (blog post, video transcript, podcast notes, article) and automatically generates platform-optimized versions. Same core message. Different formats. Your voice throughout.
+**内容复用工具** 可以将你的长篇内容（如博客文章、视频文字记录、播客笔记或文章）自动转换为适合不同平台的版本。核心信息不变，只是形式不同，但语言风格始终如一。
 
-**What makes it different:** This isn't a template engine—it's intelligent adaptation. The skill understands what makes content perform on each platform: Twitter wants punchy hooks and thread flow, LinkedIn values professional insights and storytelling, newsletters need scannable sections and CTAs, Instagram demands visual hooks and emoji. One command. Five platforms. Ready to publish.
+**它的独特之处在于：** 这不是一个简单的模板引擎，而是一种智能的适配系统。该工具能够理解每种平台对内容的需求：Twitter 喜欢简洁有力的开头和连贯的帖子结构；LinkedIn 注重专业的见解和故事性；新闻通讯需要易于阅读的段落和明确的行动号召（CTA）；Instagram 则需要吸引人的视觉元素和表情符号。只需一个命令，就能同时生成适用于五种平台的版本，随时可以发布。
 
-## The Problem
+## 问题所在
 
-Content creators face the **repurpose grind**:
-- ✍️ You create one killer blog post (2-3 hours)
-- 🔄 Manually reformat for Twitter (45 min)
-- 🔄 Adapt for LinkedIn (30 min)
-- 🔄 Write newsletter version (30 min)
-- 🔄 Craft Instagram caption (20 min)
-- 😤 Total: 4+ hours of reformatting, still inconsistent voice
+内容创作者常常面临这样的困扰：
+- ✍️ 你花费 2-3 小时创作一篇精彩的博客文章
+- 🔄 手动将其格式调整为适合 Twitter 的样式（45 分钟）
+- 🔄 再调整以适应 LinkedIn（30 分钟）
+- 🔄 写出适合新闻通讯的版本（30 分钟）
+- 🔄 拟定适合 Instagram 的标题（20 分钟）
+- 😤 总共需要 4 个多小时的时间来反复调整格式，而且语言风格仍然不一致
 
-Meanwhile your content library sits unused because repurposing is exhausting.
+与此同时，你的内容库却因为重复性工作而闲置着。
 
-## The Solution
+## 解决方案
 
 ```bash
 repurpose.sh blog-post.md
@@ -39,92 +39,92 @@ repurpose.sh blog-post.md
 # → threads-post.txt (bonus!)
 ```
 
-30 seconds. Five platforms. Your voice. Ready to copy-paste and publish.
+只需 30 秒，就能生成适用于五种平台的版本，且语言风格完全保持一致，可以直接复制并发布。
 
-## Setup
+## 设置步骤
 
-1. Run `scripts/setup.sh` to initialize config
-2. Edit `~/.config/content-repurposer/config.json` with your voice settings
-3. Test with: `scripts/repurpose.sh examples/sample-post.md --dry-run`
+1. 运行 `scripts/setup.sh` 命令来初始化配置文件
+2. 使用 `~/.config/content-repurposer/config.json` 文件设置你的语言风格
+3. 用 `scripts/repurpose.sh examples/sample-post.md --dry-run` 命令进行测试
 
-## Config
+## 配置文件
 
-Config lives at `~/.config/content-repurposer/config.json`. See `config.example.json` for full schema.
+配置文件位于 `~/.config/content-repurposer/config.json`。详细结构请参考 `config.example.json`。
 
-Key sections:
-- **voice** — Tone, style, personality (professional/casual/witty/educational)
-- **platforms** — Enable/disable platforms, set priorities
-- **twitter** — Thread length (3-10 tweets), hook style, hashtag preferences
-- **linkedin** — Length (1300-2000 chars), story style, B2B focus
-- **newsletter** — Section format, CTA style, subject line approach
-- **instagram** — Caption length, emoji density, hashtag count
-- **output** — Directory, file naming, whether to auto-copy best version to clipboard
+**关键配置项：**
+- **voice**：语气、风格（专业/随意/幽默/教育性）
+- **platforms**：启用/禁用目标平台，并设置优先级
+- **twitter**：帖子长度（3-10 条推文）、开头方式、标签偏好
+- **linkedin**：长度（1300-2000 字符）、故事风格、商业内容重点
+- **newsletter**：段落格式、行动号召样式、主题行设计
+- **instagram**：标题长度、表情符号使用频率、标签数量
+- **output**：输出文件目录、文件命名规则、是否自动将最佳版本复制到剪贴板
 
-## Scripts
+## 脚本说明
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `scripts/setup.sh` | Initialize config directory |
-| `scripts/repurpose.sh` | Main script: all platforms at once |
-| `scripts/twitter-thread.sh` | Twitter thread only (quick iteration) |
-| `scripts/linkedin-post.sh` | LinkedIn post only |
-| `scripts/newsletter.sh` | Newsletter section only |
-| `scripts/instagram-caption.sh` | Instagram caption only |
-| `scripts/threads-post.sh` | Meta Threads post only |
+| `scripts/setup.sh` | 初始化配置目录 |
+| `scripts/repurpose.sh` | 一次性生成所有平台的版本 |
+| `scripts/twitter-thread.sh` | 仅生成适合 Twitter 的帖子 |
+| `scripts/linkedin-post.sh` | 仅生成适合 LinkedIn 的帖子 |
+| `scripts/newsletter.sh` | 仅生成适合新闻通讯的段落 |
+| `scripts/instagram-caption.sh` | 仅生成适合 Instagram 的标题 |
+| `scripts/threads-post.sh` | 仅生成适合 Meta Threads 的帖子 |
 
-All scripts support `--platform-specific-options` for one-off customization.
+所有脚本都支持 `--platform-specific-options` 选项，以便进行个性化定制。
 
-## How It Works
+## 工作原理
 
-1. **Parse Input**: Read long-form content (markdown, .txt, URL)
-2. **Extract Core**: Identify main thesis, key points, quotes, stats
-3. **Platform Adapt**: For each enabled platform:
-   - Apply format rules (thread structure, char limits, emoji)
-   - Maintain voice/tone from config
-   - Add platform-specific hooks and CTAs
-   - Optimize for engagement patterns
-4. **Output**: Save to `output/` directory, optionally copy to clipboard
+1. **解析输入内容**：读取长篇内容（Markdown 格式、.txt 文件或 URL）
+2. **提取核心信息**：提取主要观点、关键数据、引用和统计数据
+3. **平台适配**：针对每个启用的平台：
+   - 应用相应的格式规则（如帖子结构、字符限制、表情符号使用）
+   - 保持配置中设定的语言风格
+   - 添加平台特有的开头和行动号召
+   - 优化内容以提升互动效果
+4. **输出结果**：将处理后的内容保存到 `output/` 目录中，可选择复制到剪贴板
 
-## Platform Specs
+## 各平台的具体要求
 
 ### Twitter/X Threads
-- **Length**: 3-10 tweets (configurable)
-- **Format**: Numbered or unnumbered, 280 chars/tweet
-- **Hook**: Bold opening tweet (question, stat, or bold claim)
-- **Structure**: Intro → Key points → Insight → CTA
-- **Best for**: Hot takes, frameworks, step-by-step guides
+- **长度**：3-10 条推文（可配置）
+- **格式**：编号或未编号，每条推文 280 个字符
+- **开头**：引人注目的开头（问题、数据或强调性陈述）
+- **结构**：引言 → 关键点 → 深入分析 → 行动号召
+- **适用场景**：热点观点、实用指南、操作步骤
 
 ### LinkedIn
-- **Length**: 1300-2000 characters (sweet spot for "see more")
-- **Format**: Native text, no links in post body
-- **Hook**: Personal story or professional insight
-- **Structure**: Hook → Story/Context → Value/Lesson → CTA
-- **Best for**: B2B insights, career lessons, thought leadership
+- **长度**：1300-2000 字符（适合阅读更多内容的长度）
+- **格式**：纯文本格式，正文内不允许包含链接
+- **开头**：个人故事或专业见解
+- **结构**：引人入胜的开头 → 内容/背景 → 价值/启示 → 行动号召
+- **适用场景**：商业洞察、职业发展建议、思想领导力分享
 
-### Email Newsletter
-- **Length**: 200-500 words per section
-- **Format**: Scannable sections with headers
-- **Hook**: Compelling subject line + opening line
-- **Structure**: Subject → Hook → Key points (bullets/sections) → CTA
-- **Best for**: Deep dives, curated insights, personal updates
+### 电子邮件新闻通讯
+- **长度**：每个段落 200-500 字
+- **格式**：易于阅读的段落结构，包含标题
+- **开头**：吸引人的主题行和开头句子
+- **结构**：主题 → 开头 → 关键点（列表/分段） → 行动号召
+- **适用场景**：深入分析、精选内容、个人更新
 
 ### Instagram
-- **Length**: 150-300 characters (pre-"...more" cutoff)
-- **Format**: Emoji-heavy, visual language
-- **Hook**: Emotional or curiosity-driven first line
-- **Structure**: Hook → Core message → Hashtags (5-10)
-- **Best for**: Visual content tie-ins, motivation, quick tips
+- **长度**：150-300 字符（包含“...more”按钮前的部分）
+- **格式**：大量使用表情符号，视觉效果突出
+- **开头**：富有情感或引发好奇心的句子
+- **结构**：引人入胜的开头 → 核心信息 → 标签（5-10 个）
+- **适用场景**：视觉内容、激励性内容、小贴士
 
 ### Meta Threads
-- **Length**: 500 characters max
-- **Format**: Casual, Twitter-like but longer
-- **Hook**: Conversational opener
-- **Structure**: Similar to Twitter but single post
-- **Best for**: Casual takes, quick insights
+- **长度**：最多 500 字符
+- **格式**：风格类似 Twitter，但篇幅稍长
+- **开头**：对话式的表达方式
+- **结构**：类似 Twitter 的结构，但是一篇完整的帖子
+- **适用场景**：轻松的主题、快速分享的见解
 
-## Voice Consistency
+## 语言风格的一致性
 
-The skill maintains YOUR voice by using config settings:
+该工具通过配置文件来保持你原有的语言风格：
 
 ```json
 "voice": {
@@ -136,13 +136,13 @@ The skill maintains YOUR voice by using config settings:
 }
 ```
 
-Every platform adaptation respects these settings. You sound like YOU, not a template.
+无论转换到哪个平台，内容都会保持你特有的语言风格，让你听起来像你自己，而不是机械地使用模板。
 
-## Example Workflow
+## 示例工作流程
 
-**Input**: A 1500-word blog post about AI automation workflows
+**输入**：一篇关于 AI 自动化工作流程的 1500 字博客文章
 
-**Output** (30 seconds later):
+**输出**（30 秒后）：
 
 ```
 output/
@@ -154,77 +154,69 @@ output/
 │   └── threads-post.txt           # 480-char casual take
 ```
 
-Copy, paste, publish. Done.
+复制、粘贴、发布即可。
 
-## Advanced Usage
+## 高级用法
 
-### Single Platform
+### 单一平台定制
 ```bash
 twitter-thread.sh blog-post.md --tweets 5 --style bold
 linkedin-post.sh blog-post.md --length short --b2b-focus
 ```
 
-### URL Input
+### 通过 URL 上传内容
 ```bash
 repurpose.sh https://yourblog.com/post --platforms twitter,linkedin
 ```
 
-### Batch Processing
+### 批量处理
 ```bash
 for file in content/*.md; do
   repurpose.sh "$file" --output archives/
 done
 ```
 
-### Custom Voice (One-Off)
+### 单次使用时的自定义语言设置
 ```bash
 repurpose.sh blog-post.md --tone witty --emoji high
 ```
 
-## Pro Tips
+## 使用技巧
 
-1. **Subject Line First**: For newsletters, generate 5 subject line options
-2. **Hook Testing**: Generate multiple opening hooks, pick the best
-3. **Engagement Checklist**: Does each version have a clear CTA?
-4. **Platform Priority**: Start with your best-performing platform
-5. **Batch Days**: Repurpose a month of content in one session
+1. **优先生成主题行**：为新闻通讯生成多个主题行选项
+2. **多次测试开头**：生成多个开头选项，选择最合适的
+3. **互动性检查**：每个版本是否都包含明确的行动号召？
+4. **优先处理表现最好的平台**：先从效果最好的平台开始发布
+5 **批量处理**：一次性处理一个月的内容
 
-## Data Files
+## 数据文件
 
-```
-~/.config/content-repurposer/
-├── config.json              # User configuration
-├── voice-samples.json       # Optional: your writing samples for voice training
-└── platform-templates.json  # Optional: custom platform templates
-```
+**输出文件** 默认保存在 `~/content-repurposer-output/` 目录中（可配置）。
 
-Output files go to `~/content-repurposer-output/` by default (configurable).
+**适用场景：**
+- **博主**：将一篇博客文章转化为多篇适合社交媒体的内容
+- **播客主**：将播客笔记转化为宣传材料
+- **课程开发者**：将课程讲义转化为营销内容
+- **咨询师**：将一篇见解转化为适用于多个平台的分享内容
+- **广告机构**：无需雇佣写手，即可高效生成多平台内容
 
-## Use Cases
+## 注意事项
 
-- **Bloggers**: Turn one post into a week of social content
-- **Podcasters**: Repurpose episode notes into promotional content
-- **Course Creators**: Transform lesson transcripts into marketing snippets
-- **Consultants**: Turn one insight into multi-platform thought leadership
-- **Agencies**: Scale content production for clients without hiring writers
+- ❌ **这不是内容生成器**：你需要提供原始内容
+- ❌ **这不是发布调度工具**：使用 Buffer/Hootsuite 等工具来安排发布时间（我们只负责内容生成）
+- ❌ **这不是图片制作工具**：仅处理文本内容（如需图片，可结合 DALL-E 工具）
 
-## What It's NOT
+**为什么这个工具有效？**
 
-- ❌ **Not a content generator**: You provide the source material
-- ❌ **Not a scheduler**: Use Buffer/Hootsuite for posting (we just create the content)
-- ❌ **Not image creation**: Text only (pair with DALL-E for visuals)
+因为传统的内容复用方法存在以下问题：
+- 手动操作效率低下
+- 基于模板的生成方式显得机械
+- 不考虑平台特性，无法针对每个平台进行优化
 
-## Why This Works
+而这个工具解决了这些问题：快速、保持语言风格一致、同时针对每个平台进行优化。
 
-Content repurposing fails when it's:
-- Manual (too slow)
-- Template-based (sounds robotic)
-- Platform-agnostic (doesn't optimize for each channel)
-
-This skill solves all three: fast, voice-consistent, platform-optimized.
-
-**Your content deserves more reach. Your time deserves better use.**
+**你的内容值得被更多人看到，你的时间也应该得到更好的利用。**
 
 ---
 
-Built for creators who value their time and their voice.
+专为重视时间和语言风格的创作者设计。

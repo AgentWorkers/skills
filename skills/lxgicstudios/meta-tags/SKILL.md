@@ -1,65 +1,65 @@
 ---
 name: Meta Tags - SEO Tag Generator
-description: Generate HTML meta tags for SEO, Open Graph, Twitter Cards, JSON-LD. Copy-paste ready. Perfect for web developers. Free CLI tool.
+description: 生成用于 SEO、Open Graph、Twitter Cards 和 JSON-LD 的 HTML 元标签。可直接复制粘贴使用，非常适合网页开发者。这是一个免费的命令行工具（CLI）。
 ---
 
-# Meta Tags
+# 元标签
 
-Generate complete meta tags for SEO. HTML, Open Graph, Twitter Cards, JSON-LD schema.
+生成用于搜索引擎优化（SEO）、Open Graph、Twitter Cards 和 JSON-LD 的完整元标签。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @lxgicstudios/meta-tags
 ```
 
-## Basic Usage
+## 基本用法
 
 ```bash
 npx @lxgicstudios/meta-tags -t "Page Title" -d "Description" -u "https://example.com"
 ```
 
-## Commands
+## 命令
 
-### Generate All Tags
+### 生成所有标签
 
 ```bash
 meta-tags -t "My Website" -d "Welcome to my site" -u "https://example.com"
 ```
 
-### With Social Image
+### 带有社交媒体图片的元标签
 
 ```bash
 meta-tags -t "Blog Post" -d "Great article" -i "https://example.com/image.jpg"
 ```
 
-### Article Type
+### 文章类型
 
 ```bash
 meta-tags -t "How to Code" --type article --author "John Doe" --published "2024-01-15"
 ```
 
-### From Config File
+### 从配置文件生成元标签
 
 ```bash
 meta-tags --config seo.json -o head.html
 ```
 
-## Options
+## 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `-t, --title` | Page title (required) |
-| `-d, --description` | Meta description |
-| `-u, --url` | Canonical URL |
-| `-i, --image` | OG/Twitter image |
-| `-k, --keywords` | Keywords (comma-separated) |
-| `--site-name` | Website name |
-| `--twitter` | Twitter handle |
-| `--type` | OG type: website, article, product |
-| `--format` | html, json, react, vue |
+| `-t, --title` | 页面标题（必填） |
+| `-d, --description` | 元描述 |
+| `-u, --url` | 标准URL |
+| `-i, --image` | Open Graph/Twitter 图片 |
+| `-k, --keywords` | 关键词（用逗号分隔） |
+| `--site-name` | 网站名称 |
+| `--twitter` | Twitter 账号 |
+| `--type` | 元标签类型：网站、文章、产品 |
+| `--format` | 输出格式：html、json、react、vue |
 
-## Output Example
+## 输出示例
 
 ```html
 <!-- Primary Meta Tags -->
@@ -80,7 +80,7 @@ meta-tags --config seo.json -o head.html
 <script type="application/ld+json">...</script>
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 meta-tags -t "Title" --format html   # Default
@@ -89,20 +89,20 @@ meta-tags -t "Title" --format react  # React Helmet
 meta-tags -t "Title" --format vue    # Vue useHead
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-**Blog post tags:**
+**博客文章元标签：**
 ```bash
 meta-tags -t "My Article" -d "Description" -i "cover.jpg" --type article --author "Me"
 ```
 
-**Generate for Next.js:**
+**为 Next.js 生成元标签：**
 ```bash
 meta-tags -t "Page" --format react -o metadata.tsx
 ```
 
 ---
 
-**Built by [LXGIC Studios](https://lxgicstudios.com)**
+**由 [LXGIC Studios](https://lxgicstudios.com) 开发**
 
 🔗 [GitHub](https://github.com/lxgicstudios/meta-tags) · [Twitter](https://x.com/lxgicstudios)

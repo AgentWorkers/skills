@@ -1,6 +1,6 @@
 ---
 name: ping-beads
-description: "Verify the bead daemon is alive and responsive"
+description: "验证 bead 守护进程是否正在运行且能够正常响应请求。"
 metadata:
   {
     "openclaw":
@@ -14,9 +14,9 @@ metadata:
 
 # Ping Beads
 
-Verify the bead daemon is alive and responsive. Checks the `bd.sock` socket to confirm the bead daemon (`bd`) is running and accepting connections.
+用于验证 bead 守护进程是否正常运行且能够响应请求。通过检查 `bd.sock` 套接字来确认 bead 守护进程（`bd`）正在运行并接受连接。
 
-## Commands
+## 命令
 
 ```bash
 # Check if the bead daemon is alive (checks bd.sock)
@@ -26,6 +26,6 @@ ping-beads
 ping-beads status
 ```
 
-## Install
+## 安装
 
-No installation needed. `bd` is expected to be in PATH as part of the beads system.
+无需安装。`bd` 应该已经包含在 beads 系统的 PATH 环境变量中。

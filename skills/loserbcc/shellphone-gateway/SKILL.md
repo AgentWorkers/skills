@@ -1,19 +1,19 @@
 # shellphone-gateway
 
-Private WebSocket gateway for connecting iOS to your AI agents. No Telegram. No Discord. No middleman.
+这是一个专用的 WebSocket 网关，用于将 iOS 设备连接到您的 AI 代理服务器。无需使用 Telegram 或 Discord，也无需任何中间件。
 
-## What This Does
+## 功能介绍
 
-ShellPhone + OpenClaw Gateway creates a direct, encrypted line between your iPhone and your self-hosted AI bots.
+ShellPhone 与 OpenClaw Gateway 结合使用，可在您的 iPhone 和自托管的 AI 机器人之间建立一条直接、加密的通信通道：
 
-- **Privacy-first**: Messages never touch third-party servers
-- **Self-hosted**: Runs on your hardware
-- **Auto-detects ollama**: Zero config if you have local LLMs
-- **Free TTS/ASR**: Via ScrappyLabs (no account needed)
+- **隐私保护优先**：所有消息都不会传输到第三方服务器。
+- **完全自托管**：该服务运行在您的本地硬件上。
+- **自动识别 LLM（Large Language Model）**：如果您拥有本地 LLM，无需任何配置即可使用该服务。
+- **免费的语音合成/语音识别功能**：通过 ScrappyLabs 提供（无需注册账户）。
 
-## Quick Start
+## 快速入门
 
-### 1. Run the Gateway
+### 1. 运行网关
 
 ```bash
 # Docker (recommended)
@@ -26,22 +26,22 @@ pip install openclaw-gateway
 openclaw-gateway
 ```
 
-### 2. Get the iOS App
+### 2. 下载 iOS 应用程序
 
-Join the TestFlight beta: https://testflight.apple.com/join/BnjD4BEf
+加入 TestFlight 测试计划：https://testflight.apple.com/join/BnjD4BEf
 
-### 3. Connect
+### 3. 连接设备
 
-Scan the QR code from `http://localhost:8770/setup` or enter manually:
-- **URL**: `wss://your-server:8770/gateway`
-- **Token**: (printed on gateway startup)
+扫描来自 `http://localhost:8770/setup` 的 QR 码，或手动输入连接信息：
+- **URL**：`wss://your-server:8770/gateway`
+- **Token**：在网关启动时会在屏幕上显示。
 
-## Links
+## 相关链接
 
-- **TestFlight**: https://testflight.apple.com/join/BnjD4BEf
-- **Gateway GitHub**: https://github.com/loserbcc/openclaw-gateway
-- **ScrappyLabs**: https://scrappylabs.ai
+- **TestFlight**：https://testflight.apple.com/join/BnjD4BEf
+- **GitHub 仓库**：https://github.com/loserbcc/openclaw-gateway
+- **ScrappyLabs**：https://scrappylabs.ai
 
-## License
+## 许可证
 
-MIT — do whatever you want with it.
+采用 MIT 许可协议——您可以自由使用该软件，无需遵守任何额外限制。

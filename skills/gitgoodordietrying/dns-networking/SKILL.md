@@ -1,26 +1,26 @@
 ---
 name: dns-networking
-description: Debug DNS resolution and network connectivity. Use when troubleshooting DNS failures, testing port connectivity, diagnosing firewall rules, inspecting HTTP requests with curl verbose mode, configuring /etc/hosts, or debugging proxy and certificate issues.
+description: 调试DNS解析和网络连接问题。适用于排查DNS故障、测试端口连通性、诊断防火墙规则、使用`curl`的详细模式检查HTTP请求、配置`/etc/hosts`文件，以及解决代理和证书相关问题。
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"anyBins":["dig","nslookup","curl","ping","nc"]},"os":["linux","darwin","win32"]}}
 ---
 
-# DNS & Networking
+# DNS与网络
 
-Debug DNS resolution, network connectivity, and HTTP issues. Covers dig/nslookup, port testing, firewall rules, curl diagnostics, /etc/hosts, proxy configuration, and certificate troubleshooting.
+本章节介绍如何调试DNS解析、网络连接以及HTTP相关的问题。内容包括使用`dig`/`nslookup`命令、端口测试、防火墙规则检查、`curl`诊断工具、`/etc/hosts`文件配置、代理设置以及证书相关问题的排查方法。
 
-## When to Use
+## 使用场景
 
-- DNS name not resolving or resolving to wrong IP
-- Connection refused / connection timed out errors
-- Diagnosing firewall or security group rules
-- HTTP requests failing for unclear reasons
-- Proxy configuration issues
-- SSL/TLS certificate errors
-- Testing connectivity between services
+- DNS名称无法解析或解析为错误的IP地址
+- 连接被拒绝或超时错误
+- 需要诊断防火墙或安全组规则的影响
+- HTTP请求失败且原因不明
+- 代理配置出现问题
+- SSL/TLS证书出现错误
+- 需要测试服务之间的网络连接
 
-## DNS Debugging
+## DNS调试
 
-### Query DNS records
+### 查询DNS记录
 
 ```bash
 # A record (IP address)
@@ -55,7 +55,7 @@ host example.com
 host -t MX example.com
 ```
 
-### Check DNS propagation
+### 检查DNS记录的传播情况
 
 ```bash
 # Query multiple public DNS servers
@@ -69,7 +69,7 @@ dig example.com | grep -E '^\S+\s+\d+\s+IN\s+A'
 # The number is TTL in seconds
 ```
 
-### Local DNS issues
+### 本地DNS问题排查
 
 ```bash
 # Check /etc/resolv.conf (which DNS server the system uses)
@@ -90,7 +90,7 @@ ipconfig /flushdns
 resolvectl status
 ```
 
-### /etc/hosts patterns
+### `/etc/hosts`文件的配置与使用
 
 ```bash
 # /etc/hosts — local DNS overrides (no TTL, instant)
@@ -110,9 +110,9 @@ resolvectl status
 192.168.1.100   db.local redis.local cache.local
 ```
 
-## Port and Connectivity Testing
+## 端口与网络连接测试
 
-### Test if a port is open
+### 测试端口是否开放
 
 ```bash
 # nc (netcat) — most reliable
@@ -134,7 +134,7 @@ curl -sI -o /dev/null -w "%{http_code}" https://example.com
 docker exec my-container nc -zv db 5432
 ```
 
-### Network path diagnostics
+### 网络路径诊断
 
 ```bash
 # traceroute (show network hops)
@@ -157,7 +157,7 @@ netstat -rn           # macOS
 route -n              # Linux (older)
 ```
 
-### Check listening ports
+### 检查系统正在监听的端口
 
 ```bash
 # What's listening on which port (Linux)
@@ -177,9 +177,9 @@ lsof -i :3000
 fuser 3000/tcp   # Linux
 ```
 
-## curl Diagnostics
+## `curl`诊断工具
 
-### Verbose request inspection
+### 详细请求日志查看
 
 ```bash
 # Full verbose output (headers, TLS handshake, timing)
@@ -209,7 +209,7 @@ curl --resolve example.com:443:203.0.113.50 https://example.com
 curl --interface eth1 https://example.com
 ```
 
-### Debug common HTTP issues
+### 常见HTTP问题的调试方法
 
 ```bash
 # Test with different HTTP versions
@@ -232,9 +232,9 @@ curl -X OPTIONS -H "Origin: http://localhost:3000" \
      -v https://api.example.com/endpoint
 ```
 
-## Firewall Basics
+## 防火墙基础知识
 
-### iptables (Linux)
+### Linux系统下的`iptables`
 
 ```bash
 # List all rules
@@ -253,7 +253,7 @@ sudo iptables -A INPUT -p tcp --dport 3306 -j DROP
 sudo iptables-save > /etc/iptables/rules.v4
 ```
 
-### ufw (simpler, Ubuntu/Debian)
+### Ubuntu/Debian系统下的`ufw`（更简单的防火墙管理工具）
 
 ```bash
 # Enable
@@ -272,7 +272,7 @@ sudo ufw status verbose
 sudo ufw reset
 ```
 
-### macOS firewall
+### macOS系统下的防火墙设置
 
 ```bash
 # Check status
@@ -285,9 +285,9 @@ sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add /usr/local/bin/myapp
 ```
 
-## Proxy Configuration
+## 代理配置
 
-### Environment variables
+### 环境变量的设置与使用
 
 ```bash
 # Set proxy for most CLI tools
@@ -302,7 +302,7 @@ export http_proxy=http://proxy.example.com:8080  # lowercase also works
 export HTTPS_PROXY=http://user:password@proxy.example.com:8080
 ```
 
-### Test through proxy
+### 通过代理进行网络请求
 
 ```bash
 # curl with explicit proxy
@@ -319,7 +319,7 @@ curl https://httpbin.org/ip  # Compare with direct
 curl -v -x http://proxy:8080 https://example.com 2>&1 | grep -i "proxy\|connect"
 ```
 
-### Common proxy issues
+### 常见的代理配置问题
 
 ```bash
 # Node.js fetch/undici does NOT respect HTTP_PROXY
@@ -339,7 +339,7 @@ npm config set https-proxy http://proxy:8080
 pip install --proxy http://proxy:8080 package-name
 ```
 
-## Certificate Troubleshooting
+## 证书问题排查
 
 ```bash
 # Check certificate from a server
@@ -366,7 +366,7 @@ date
 # If the system clock is wrong, certs will appear invalid
 ```
 
-## Quick Diagnostics Script
+## 快速诊断脚本
 
 ```bash
 #!/bin/bash
@@ -399,13 +399,17 @@ fi
 echo "=== Done ==="
 ```
 
-## Tips
+## 使用技巧
 
-- `dig +short` is the fastest way to check DNS from the command line. Use `@8.8.8.8` to bypass local caching.
-- `nc -zv` is the simplest port connectivity test. If nc isn't available, use bash's `/dev/tcp`.
-- curl's `-w` format string with timing variables is the fastest way to diagnose slow HTTP requests: DNS, connect, TLS, and TTFB are all visible.
-- DNS changes propagate based on TTL. Check the current TTL with `dig` before expecting a DNS change to take effect.
-- `/etc/hosts` changes take effect immediately (no TTL, no propagation delay). Use it to test domain migrations before changing DNS.
-- When debugging "connection refused": first verify the port is open with `nc`, then check the service is actually listening with `ss -tlnp` or `lsof -i`.
-- `mtr` is better than `traceroute` for diagnosing packet loss — it runs continuously and shows per-hop loss percentages.
-- Node.js, Python `requests`, and many libraries do NOT automatically use `HTTP_PROXY` environment variables. Check each tool's proxy documentation.
+- `dig +short`是从命令行快速查询DNS记录的最快方法。使用`@8.8.8.8`可以绕过本地DNS缓存。
+- `nc -zv`是最简单的端口连接测试工具；如果`nc`不可用，可以使用`bash`的`/dev/tcp`命令。
+- `curl`的`-w`格式化选项可以显示请求的详细信息（包括耗时），有助于诊断HTTP请求的延迟问题（包括DNS解析、连接建立和TLS握手的时间）。
+- DNS记录的传播速度取决于TTL（Time To Live）值。在确认DNS更改生效前，可以使用`dig`命令查看当前的TTL值。
+- 修改`/etc/hosts`文件后，设置会立即生效（无需等待TTL更新时间）。在更改DNS设置前，可以使用它来测试域名解析是否正常。
+- 当遇到“连接被拒绝”的错误时，首先使用`nc`检查端口是否开放，然后使用`ss -tlnp`或`lsof -i`命令确认目标服务是否正在监听。
+- `mtr`比`traceroute`更适合诊断数据包丢失问题，因为它可以连续显示数据包在传输过程中的丢失情况。
+- Node.js、Python的`requests`库等许多工具并不会自动使用`HTTP_PROXY`环境变量。请查阅相关工具的文档以确认代理设置是否生效。
+
+## 注意事项
+
+- 在使用这些工具时，请确保已正确配置系统环境变量，并根据具体操作系统和工具的文档进行操作。

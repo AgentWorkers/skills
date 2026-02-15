@@ -1,35 +1,35 @@
 ---
 name: keyword-research
-description: Discovers high-value keywords with search intent analysis, difficulty assessment, and content opportunity mapping. Essential for starting any SEO or GEO content strategy.
+description: 通过搜索意图分析、难度评估以及内容机会映射，发现具有高价值的关键词。这是启动任何SEO或地理内容策略（GEO content strategy）的基础。
 geo-relevance: "medium"
 ---
 
-# Keyword Research
+# 关键词研究
 
-This skill helps you discover, analyze, and prioritize keywords for SEO and GEO content strategies. It identifies high-value opportunities based on search volume, competition, intent, and business relevance.
+该技能可帮助您发现、分析并优先选择用于 SEO 和地理定位（GEO）内容策略的关键词。它根据搜索量、竞争情况、用户意图以及与业务的相关性来识别高价值的机会。
 
-## When to Use This Skill
+## 何时使用该技能
 
-- Starting a new content strategy or campaign
-- Expanding into new topics or markets
-- Finding keywords for a specific product or service
-- Identifying long-tail keyword opportunities
-- Understanding search intent for your industry
-- Planning content calendars
-- Researching keywords for GEO optimization
+- 在开始新的内容策略或活动时
+- 扩展到新的主题或市场时
+- 为特定产品或服务寻找关键词时
+- 识别长尾关键词机会时
+- 了解您所在行业的搜索意图时
+- 规划内容日程时
+- 研究用于 GEO 优化的关键词时
 
-## What This Skill Does
+## 该技能的功能
 
-1. **Keyword Discovery**: Generates comprehensive keyword lists from seed terms
-2. **Intent Classification**: Categorizes keywords by user intent (informational, navigational, commercial, transactional)
-3. **Difficulty Assessment**: Evaluates competition level and ranking difficulty
-4. **Opportunity Scoring**: Prioritizes keywords by potential ROI
-5. **Clustering**: Groups related keywords into topic clusters
-6. **GEO Relevance**: Identifies keywords likely to trigger AI responses
+1. **关键词发现**：从初始关键词生成全面的关键词列表
+2. **意图分类**：根据用户意图（信息性、导航性、商业性、交易性）对关键词进行分类
+3. **难度评估**：评估竞争程度和排名难度
+4. **机会评分**：根据潜在的投资回报率（ROI）对关键词进行优先级排序
+5. **聚类**：将相关关键词分组到主题簇中
+6. **地理相关性**：识别可能触发人工智能（AI）响应的关键词
 
-## How to Use
+## 使用方法
 
-### Basic Keyword Research
+### 基本关键词研究
 
 ```
 Research keywords for [topic/product/service]
@@ -39,7 +39,7 @@ Research keywords for [topic/product/service]
 Find keyword opportunities for a [industry] business targeting [audience]
 ```
 
-### With Specific Goals
+### 基于特定目标的研究
 
 ```
 Find low-competition keywords for [topic] with commercial intent
@@ -49,55 +49,52 @@ Find low-competition keywords for [topic] with commercial intent
 Identify question-based keywords for [topic] that AI systems might answer
 ```
 
-### Competitive Research
+### 竞争对手分析
 
 ```
 What keywords is [competitor URL] ranking for that I should target?
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的占位符信息。
 
-**With ~~SEO tool + ~~search console connected:**
-Automatically pull historical search volume data, keyword difficulty scores, SERP analysis, current rankings from ~~search console, and competitor keyword overlap. The skill will fetch seed keyword metrics, related keyword suggestions, and search trend data.
+**当连接到 ~~SEO 工具 + ~~搜索控制台时**：
+- 自动获取历史搜索量数据、关键词难度评分、SERP 分析结果、当前排名以及竞争对手的关键词重叠情况。该技能将获取初始关键词指标、相关关键词建议和搜索趋势数据。
 
-**With manual data only:**
-Ask the user to provide:
-1. Seed keywords or topic description
-2. Target audience and geographic location
-3. Business goals (traffic, leads, sales)
-4. Current domain authority (if known) or site age
-5. Any known keyword performance data or search volume estimates
+**仅使用手动数据时**：
+- 请用户提供以下信息：
+  - 初始关键词或主题描述
+  - 目标受众和地理位置
+  - 商业目标（流量、潜在客户、销售额）
+  - 当前域名权威度（如果已知）或网站年龄
+  - 任何已知的关键词表现数据或搜索量估计值
 
-Proceed with the full analysis using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+- 使用提供的数据继续进行完整分析。在输出中注明哪些指标来自自动化收集，哪些来自用户提供的数据。
 
-## Instructions
+## 指导说明
 
-When a user requests keyword research:
+当用户请求关键词研究时：
 
-1. **Understand the Context**
+1. **了解背景**：
+   - 如果用户未提供相关信息，请提出澄清性问题：
+     - 您的产品/服务/主题是什么？
+     - 目标受众是谁？
+     - 您的商业目标是什么？（流量、潜在客户、销售额）
+     - 您当前的域名权威度如何？（新网站还是已建立的网站？）
+     - 有特定的地理定位要求吗？
+     - 偏好的语言是什么？
 
-   Ask clarifying questions if not provided:
-   - What is your product/service/topic?
-   - Who is your target audience?
-   - What is your business goal? (traffic, leads, sales)
-   - What is your current domain authority? (new site, established, etc.)
-   - Any specific geographic targeting?
-   - Preferred language?
+2. **生成初始关键词**：
+   - 从以下方面开始：
+     - 核心产品/服务术语
+     - 与问题相关的关键词
+     - 解决方案相关的关键词
+     - 针对特定受众的术语
+     - 行业术语
 
-2. **Generate Seed Keywords**
-
-   Start with:
-   - Core product/service terms
-   - Problem-focused keywords (what issues do you solve?)
-   - Solution-focused keywords (how do you help?)
-   - Audience-specific terms
-   - Industry terminology
-
-3. **Expand Keyword List**
-
-   For each seed keyword, generate variations:
+3. **扩展关键词列表**：
+   - 对每个初始关键词生成变体：
    
    ```markdown
    ## Keyword Expansion Patterns
@@ -124,21 +121,18 @@ When a user requests keyword research:
    - [keyword] guide
    ```
 
-4. **Classify Search Intent**
+4. **分类搜索意图**：
+   - 按用户意图对每个关键词进行分类：
 
-   Categorize each keyword:
-
-   | Intent | Signals | Example | Content Type |
+   | 意图 | 信号词 | 示例 | 内容类型 |
    |--------|---------|---------|--------------|
-   | Informational | what, how, why, guide, learn | "what is SEO" | Blog posts, guides |
-   | Navigational | brand names, specific sites | "google analytics login" | Homepage, product pages |
-   | Commercial | best, review, vs, compare | "best SEO tools [current year]" | Comparison posts, reviews |
-   | Transactional | buy, price, discount, order | "buy SEO software" | Product pages, pricing |
+   | 信息性 | 什么、如何、为什么、指南、学习 | “什么是 SEO” | 博文、指南 |
+   | 导航性 | 品牌名称、特定网站 | “Google Analytics 登录” | 主页、产品页面 |
+   | 商业性 | 最佳、评论、对比 | “2026 年最佳 SEO 工具” | 对比文章、评论 |
+   | 交易性 | 购买、价格、折扣、订单 | “购买 SEO 软件” | 产品页面、价格信息 |
 
-5. **Assess Keyword Difficulty**
-
-   Score each keyword (1-100 scale):
-
+5. **评估关键词难度**：
+   - 为每个关键词打分（1-100 分）：
    ```markdown
    ### Difficulty Factors
    
@@ -160,15 +154,14 @@ When a user requests keyword research:
    - New or emerging topics
    ```
 
-6. **Calculate Opportunity Score**
+6. **计算机会评分**：
+   公式：`机会评分 = (搜索量 × 意图价值) / 难度`
 
-   Formula: `Opportunity = (Volume × Intent Value) / Difficulty`
-
-   **Intent Value** assigns a numeric weight by search intent:
-   - Informational = 1
-   - Navigational = 1
-   - Commercial = 2
-   - Transactional = 3
+   **意图价值** 根据搜索意图分配数值权重：
+   - 信息性 = 1
+   - 导航性 = 1
+   - 商业性 = 2
+   - 交易性 = 3
 
    ```markdown
    ### Opportunity Matrix
@@ -181,9 +174,8 @@ When a user requests keyword research:
    | Research | Low | Low | Low | ⭐⭐ |
    ```
 
-7. **Identify GEO Opportunities**
-
-   Keywords likely to trigger AI responses:
+7. **识别地理相关机会**：
+   - 识别可能触发 AI 响应的关键词：
    
    ```markdown
    ### GEO-Relevant Keywords
@@ -202,10 +194,8 @@ When a user requests keyword research:
    - Low commercial intent
    ```
 
-8. **Create Topic Clusters**
-
-   Group keywords into content clusters:
-
+8. **创建主题簇**：
+   - 将关键词分组到内容簇中：
    ```markdown
    ## Topic Cluster: [Main Topic]
    
@@ -231,8 +221,7 @@ When a user requests keyword research:
    [Continue for all cluster keywords...]
    ```
 
-9. **Generate Output Report**
-
+9. **生成输出报告**：
    ```markdown
    # Keyword Research Report: [Topic]
    
@@ -286,26 +275,26 @@ When a user requests keyword research:
    3. [Action item 3]
    ```
 
-## Validation Checkpoints
+## 验证检查点
 
-### Input Validation
-- [ ] Seed keywords or topic description clearly provided
-- [ ] Target audience and business goals specified
-- [ ] Geographic and language targeting confirmed
-- [ ] Domain authority or site maturity level established
+### 输入验证
+- [ ] 是否提供了明确的初始关键词或主题描述
+- [ ] 是否指定了目标受众和商业目标
+- [ ] 是否确认了地理和语言定位
+- [ ] 是否确定了域名权威度或网站成熟度
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] Search volume and difficulty scores included for each keyword
-- [ ] Keywords grouped by intent and mapped to content types
-- [ ] Topic clusters show clear pillar-to-cluster relationships
-- [ ] Source of each data point clearly stated (~~SEO tool data, user-provided, or estimated)
+### 输出验证
+- [ ] 每个建议都引用了具体的数据点（而非泛泛而谈的建议）
+- [ ] 每个关键词都包含了搜索量和难度评分
+- [ ] 关键词按意图分类并对应到相应的内容类型
+- [ ] 主题簇之间显示了清晰的关系
+- [ ] 明确说明了每个数据点的来源（来自 ~~SEO 工具数据、用户提供的数据或估算值）
 
-## Example
+## 示例
 
-**User**: "Research keywords for a project management software company targeting small businesses"
+**用户**：“为一家针对中小企业的项目管理软件公司研究关键词”
 
-**Output**:
+**输出**：
 
 ```markdown
 # Keyword Research Report: Project Management Software
@@ -394,68 +383,68 @@ Cluster articles:
 4. **Ongoing**: Track rankings and adjust strategy based on performance
 ```
 
-## Advanced Features
+## 高级功能
 
-### Intent Mapping
+### 意图映射
 
 ```
 Map all keywords for [topic] by search intent and funnel stage
 ```
 
-### Seasonal Analysis
+### 季节性分析
 
 ```
 Identify seasonal keyword trends for [industry]
 ```
 
-### Competitor Gap
+### 竞争对手差距分析
 
 ```
 What keywords do [competitor 1], [competitor 2], [competitor 3] rank for 
 that I'm missing?
 ```
 
-### Local Keywords
+### 地方关键词
 
 ```
 Research local keywords for [business type] in [city/region]
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Start with seed keywords** that describe your core offering
-2. **Don't ignore long-tail** - they often have highest conversion rates
-3. **Match content to intent** - informational queries need guides, not sales pages
-4. **Group into clusters** for topical authority
-5. **Prioritize quick wins** to build momentum and credibility
-6. **Include GEO keywords** in your strategy for AI visibility
-7. **Review quarterly** - keyword dynamics change over time
+1. **从描述您核心产品的初始关键词开始**
+2. **不要忽视长尾关键词**——它们通常转化率最高
+3. **确保内容与用户意图相匹配**——信息性查询需要的是指南，而不是销售页面
+4. **将关键词分组到簇中**以建立主题权威性
+5. **优先处理能够快速产生效果的关键词**以建立势头和可信度
+6. **在策略中包含地理关键词**以提高 AI 的识别度
+7. **每季度进行一次审查**——关键词的趋势会随时间变化
 
-## Keyword Intent Taxonomy
+## 关键词意图分类
 
-Understanding search intent is critical for keyword selection and content planning.
+理解搜索意图对于关键词选择和内容规划至关重要。
 
-### Intent Classification Matrix
+### 意图分类矩阵
 
-| Intent Type | User Goal | SERP Signals | Content Strategy | Conversion Potential |
+| 意图类型 | 用户目标 | SERP 信号词 | 内容策略 | 转化潜力 |
 |------------|-----------|--------------|-----------------|---------------------|
-| Informational | Learn something | Featured snippets, PAA, knowledge panels | Guides, tutorials, explainers | Low (nurture) |
-| Navigational | Find specific site/page | Brand results, sitelinks | Brand pages, login pages | Medium (brand) |
-| Commercial Investigation | Research before buying | Comparison results, reviews, "best" lists | Comparisons, reviews, buying guides | High (mid-funnel) |
-| Transactional | Complete an action | Shopping results, ads, product pages | Product pages, pricing, signup | Highest (bottom-funnel) |
+| 信息性 | 学习新知识 | 推荐片段、PAA（个性化广告）、知识面板 | 指南、教程、解释性文章 | 低（培养用户兴趣） |
+| 导航性 | 查找特定网站/页面 | 品牌相关结果、站点链接 | 品牌页面、登录页面 | 中等（提升品牌知名度） |
+| 商业性 | 购买前调查 | 对比结果、评论、“最佳”列表 | 对比文章、评论、购买指南 | 高（转化率较高） |
+| 交易性 | 完成购买动作 | 购物结果、广告、产品页面 | 产品页面、价格信息 | 最高（转化率最高） |
 
-### Intent Signal Words
+### 意图信号词
 
-| Intent | Signal Words | Example Keywords |
+| 意图 | 信号词 | 示例关键词 |
 |--------|-------------|-----------------|
-| Informational | how, what, why, when, guide, tutorial, learn, examples | "how to improve SEO", "what is schema markup" |
-| Navigational | [brand name], login, sign in, official, website | "Ahrefs login", "Google Search Console" |
-| Commercial | best, top, review, comparison, vs, alternative, pricing | "best SEO tools 2026", "Ahrefs vs SEMrush" |
-| Transactional | buy, purchase, discount, coupon, free trial, download, hire | "buy Ahrefs subscription", "SEO audit tool free" |
+| 信息性 | 如何、什么、为什么、指南、教程、学习、示例 | “如何提高 SEO”，“什么是 Schema 标记” |
+| 导航性 | [品牌名称]、登录、注册、官方网站 | “Ahrefs 登录”，“Google Search Console” |
+| 商业性 | 最佳、顶级、评论、对比、替代方案、价格 | “2026 年最佳 SEO 工具”，“Ahrefs 与 SEMrush 的对比” |
+| 交易性 | 购买、付款、折扣、优惠券、免费试用、下载 | “购买 Ahrefs 订阅”，“免费 SEO 审计工具” |
 
-## Topic Cluster Architecture
+## 主题簇架构
 
-### Hub-and-Spoke Model
+### 中心辐射模型
 
 ```
                     ┌──────────────┐
@@ -472,66 +461,65 @@ Understanding search intent is critical for keyword selection and content planni
                     └──────────────┘
 ```
 
-**Pillar Page**: Comprehensive overview (3,000-5,000 words) targeting broad keyword
-**Cluster Pages**: Focused articles (1,500-2,500 words) targeting specific long-tail keywords
-**Internal Links**: Every cluster page links to pillar; pillar links to all cluster pages
+**核心页面**：针对广泛关键词的综合性概述（3,000-5,000 字）
+**簇页面**：针对特定长尾关键词的专题文章（1,500-2,500 字）
+**内部链接**：每个簇页面链接到核心页面；核心页面链接到所有簇页面
 
-### Topic Cluster Planning Template
+### 主题簇规划模板
 
-| Pillar Topic | Pillar Keyword | Cluster Topic | Cluster Keyword | Volume | Difficulty | Status |
+| 核心主题 | 核心关键词 | 子主题 | 长尾关键词 | 搜索量 | 难度 | 状态 |
 |-------------|---------------|--------------|----------------|--------|-----------|--------|
-| [Broad topic] | [Head keyword] | [Subtopic 1] | [Long-tail 1] | [X] | [X] | [Draft/Published] |
+| [广泛主题] | [主要关键词] | [子主题 1] | [长尾关键词 1] | [X] | [X] | [草稿/已发布] |
 
-## Keyword Prioritization Framework
+## 关键词优先级框架
 
-**Which score to use**: Use the Priority Score (below) for initial keyword triage and shortlisting. Use the Opportunity Score (Step 6 above) for final content calendar prioritization, where the additional GEO and competitive factors provide more nuanced ranking.
+**使用哪种评分标准**：使用优先级评分（如下）进行初步的关键词筛选。使用机会评分（步骤 6）进行最终的内容日程安排，其中额外的地理和竞争因素会提供更细致的排名依据。
 
-### Priority Scoring Matrix
+### 优先级评分矩阵
 
-Score each keyword 1-5 on these factors, then calculate weighted total:
+根据以下因素为每个关键词打分（1-5 分），然后计算加权总分：
 
-| Factor | Weight | Score 1 (Low) | Score 5 (High) |
+| 因素 | 权重 | 评分 1（低） | 评分 5（高） |
 |--------|--------|---------------|----------------|
-| Search Volume | 20% | <100/mo | >10,000/mo |
-| Keyword Difficulty | 25% | KD >80 (hard) | KD <20 (easy) |
-| Business Relevance | 30% | Tangential to offering | Core to offering |
-| Search Intent Match | 15% | Informational only | Transactional/commercial |
-| Trend Direction | 10% | Declining | Growing |
+| 搜索量 | 20% | <100 次/月 | >10,000 次/月 |
+| 关键词难度 | 25% | 难度 >80（高） | 难度 <20（低） |
+| 业务相关性 | 30% | 与业务关联度低 | 与业务高度相关 |
+| 意图匹配度 | 15% | 仅针对信息性查询 | 针对交易性或商业性查询 |
+| 趋势方向 | 10% | 趋势下降 | 趋势上升 |
 
-**Priority Score** = Σ(Factor Weight × Score) / 5
+**优先级评分** = Σ（因素权重 × 评分）/ 5
 
-### Priority Categories
+### 优先级分类
 
-| Priority | Score Range | Action |
+| 优先级 | 评分范围 | 行动建议 |
 |----------|------------|--------|
-| P0 — Must Target | 4.0-5.0 | Create content immediately |
-| P1 — High Value | 3.0-3.9 | Queue for next content sprint |
-| P2 — Opportunity | 2.0-2.9 | Plan for future content calendar |
-| P3 — Monitor | 1.0-1.9 | Track but don't prioritize |
+| P0 — 必须优先处理 | 4.0-5.0 | 立即创建内容 |
+| P1 — 高价值 | 3.0-3.9 | 列入下一次内容计划 |
+| P2 — 有潜力 | 2.0-2.9 | 规划未来的内容 |
+| P3 — 监控 | 1.0-1.9 | 追踪但不优先处理 |
 
-## Seasonal Keyword Patterns
+## 季节性关键词模式
 
-### Seasonal Analysis Framework
+### 季节性分析框架
 
-| Season Trigger | Example Keywords | Planning Lead Time | Content Strategy |
+| 季节性触发因素 | 示例关键词 | 规划提前时间 | 内容策略 |
 |---------------|-----------------|-------------------|-----------------|
-| Calendar events | "Black Friday SEO", "New Year marketing plan" | 3-4 months ahead | Publish 6-8 weeks before peak |
-| Industry events | "[Conference] takeaways", "Google algorithm update" | 1-2 months / reactive | Pre-plan templates, react quickly |
-| Budget cycles | "marketing budget template Q1", "SEO ROI report" | 2-3 months ahead | Target planning season (Oct-Dec) |
-| Seasonal demand | "summer marketing ideas", "holiday email campaigns" | 2-3 months ahead | Refresh annually with new data |
+| 日历事件 | “黑色星期五 SEO”，“新年营销计划” | 提前 3-4 个月 | 在高峰期前 6-8 周发布 |
+| 行业事件 | “[会议] 备忘录”，“Google 算法更新” | 1-2 个月 / 反应式规划 | 提前准备模板，快速响应 |
+| 预算周期 | “第一季度营销预算模板”，“SEO ROI 报告” | 提前 2-3 个月 | 针对特定季节进行规划 |
+| 季节性需求 | “夏季营销创意”，“节日邮件活动” | 提前 2-3 个月 | 根据新数据每年更新 |
 
-## Reference Materials
+## 参考资料
 
-- [Keyword Intent Taxonomy](./references/keyword-intent-taxonomy.md) — Complete intent classification with signal words and content strategies
-- [Topic Cluster Templates](./references/topic-cluster-templates.md) — Hub-and-spoke architecture templates for pillar and cluster content
+- [关键词意图分类](./references/keyword-intent-taxonomy.md) — 完整的意图分类及相关信号词和内容策略
+- [主题簇模板](./references/topic-cluster-templates.md) — 用于构建核心页面和簇页面的内容模板
 
-## Related Skills
+## 相关技能
 
-- [competitor-analysis](../competitor-analysis/) — See what keywords competitors rank for
-- [content-gap-analysis](../content-gap-analysis/) — Find missing keyword opportunities
-- [seo-content-writer](../../build/seo-content-writer/) — Create content for target keywords
-- [geo-content-optimizer](../../build/geo-content-optimizer/) — Optimize for AI citations
-- [rank-tracker](../../monitor/rank-tracker/) — Monitor keyword position changes over time
-- [memory-management](../../cross-cutting/memory-management/) — Store keyword data in project memory
-- [serp-analysis](../serp-analysis/) — SERP patterns inform keyword strategy
-
+- [竞争对手分析](../competitor-analysis/) — 查看竞争对手排名的关键词
+- [内容差距分析](../content-gap-analysis/) — 发现缺失的关键词机会
+- [SEO 内容编写](../../build/seo-content-writer/) — 为目标关键词创建内容
+- [地理内容优化](../../build/geo-content-optimizer/) — 优化以提升 AI 的引用率
+- [排名跟踪](../../monitor/rank-tracker/) — 监测关键词排名的变化
+- [内存管理](../../cross-cutting/memory-management/) — 将关键词数据存储在项目内存中
+- [SERP 分析](../serp-analysis/) — SERP 数据有助于制定关键词策略

@@ -1,19 +1,20 @@
 ---
 name: computer-use
-description: Full desktop computer use for headless Linux servers and VPS. Creates a virtual display (Xvfb + XFCE) to control GUI applications without a physical monitor. Screenshots, mouse clicks, keyboard input, scrolling, dragging — all 17 standard actions. Model-agnostic, works with any LLM.
+description: **全桌面计算机使用方案：适用于无显示器的Linux服务器和VPS**  
+该方案通过创建一个虚拟显示环境（Xvfb + XFCE），实现无需物理显示器即可控制图形用户界面（GUI）应用程序的功能。用户可以执行所有标准的操作，包括截图、鼠标点击、键盘输入、滚动以及拖拽等。该方案具有高度的通用性，适用于任何类型的自然语言模型（LLM），且不依赖于具体的模型架构。
 ---
 
-# Computer Use Skill
+# 计算机使用技巧
 
-Full desktop GUI control for headless Linux servers. Creates a virtual display (Xvfb + XFCE) so you can run and control desktop applications on VPS/cloud instances without a physical monitor.
+对于无显示器的 Linux 服务器，可以完全通过图形用户界面（GUI）进行控制。系统会创建一个虚拟显示界面（Xvfb + XFCE），这样你就可以在没有物理显示器的情况下，在虚拟私有服务器（VPS）或云服务器上运行和控制桌面应用程序。
 
-## Environment
+## 环境配置
 
-- **Display**: `:99`
-- **Resolution**: 1024x768 (XGA, Anthropic recommended)
-- **Desktop**: XFCE4
+- **显示端口**：`:99`
+- **分辨率**：1024x768（XGA，推荐使用）
+- **桌面环境**：XFCE4
 
-## Quick Start
+## 快速入门
 
 ```bash
 export DISPLAY=:99
@@ -34,45 +35,45 @@ export DISPLAY=:99
 ./scripts/scroll.sh down 5
 ```
 
-## Actions Reference
+## 操作参考
 
-| Action | Script | Arguments | Description |
+| 操作 | 脚本 | 参数 | 描述 |
 |--------|--------|-----------|-------------|
-| screenshot | `screenshot.sh` | — | Capture screen → base64 PNG |
-| cursor_position | `cursor_position.sh` | — | Get current mouse X,Y |
-| mouse_move | `mouse_move.sh` | x y | Move mouse to coordinates |
-| left_click | `click.sh` | x y left | Left click at coordinates |
-| right_click | `click.sh` | x y right | Right click |
-| middle_click | `click.sh` | x y middle | Middle click |
-| double_click | `click.sh` | x y double | Double click |
-| triple_click | `click.sh` | x y triple | Triple click (select line) |
-| left_click_drag | `drag.sh` | x1 y1 x2 y2 | Drag from start to end |
-| left_mouse_down | `mouse_down.sh` | — | Press mouse button |
-| left_mouse_up | `mouse_up.sh` | — | Release mouse button |
-| type | `type_text.sh` | "text" | Type text (50 char chunks, 12ms delay) |
-| key | `key.sh` | "combo" | Press key (Return, ctrl+c, alt+F4) |
-| hold_key | `hold_key.sh` | "key" secs | Hold key for duration |
-| scroll | `scroll.sh` | dir amt [x y] | Scroll up/down/left/right |
-| wait | `wait.sh` | seconds | Wait then screenshot |
-| zoom | `zoom.sh` | x1 y1 x2 y2 | Cropped region screenshot |
+| 截屏 | `screenshot.sh` | — | 截取屏幕并转换为 base64 格式的 PNG 图片 |
+| 获取鼠标位置 | `cursor_position.sh` | — | 获取当前鼠标的位置（X, Y 坐标） |
+| 移动鼠标 | `mouse_move.sh` | x y | 将鼠标移动到指定的坐标 |
+| 左键点击 | `click.sh` | x y left | 在指定的坐标处左键点击 |
+| 右键点击 | `click.sh` | x y right | 在指定的坐标处右键点击 |
+| 中键点击 | `click.sh` | x y middle | 在指定的坐标处中键点击 |
+| 双击 | `click.sh` | x y double | 双击 |
+| 三击 | `click.sh` | x y triple | 三击（用于选择文本行） |
+| 拖动 | `drag.sh` | x1 y1 x2 y2 | 从起点拖动到终点 |
+| 按下鼠标左键 | `mouse_down.sh` | — | 按下鼠标左键 |
+| 释放鼠标左键 | `mouse_up.sh` | — | 释放鼠标左键 |
+| 输入文本 | `type_text.sh` | "text" | 逐段输入文本（每次输入 50 个字符，间隔 12 毫秒） |
+| 按键 | `key.sh` | "combo" | 按下指定的键（如 Return、Ctrl+C、Alt+F4） |
+| 长时间按住键 | `hold_key.sh` | "key" seconds | 按住指定的键指定时间 |
+| 滚动屏幕 | `scroll.sh` | dir amt [x y] | 向上/下/左/右滚动屏幕 |
+| 等待 | `wait.sh` | seconds | 等待指定时间后截图 |
+| 缩放屏幕 | `zoom.sh` | x1 y1 x2 y2 | 截取指定区域的屏幕截图 |
 
-## Workflow Pattern
+## 工作流程
 
-1. **Screenshot** — Always start by seeing the screen
-2. **Analyze** — Identify UI elements and coordinates
-3. **Act** — Click, type, scroll
-4. **Screenshot** — Verify result
-5. **Repeat**
+1. **截图**：首先查看屏幕内容。
+2. **分析**：识别用户界面元素及其坐标。
+3. **执行操作**：进行点击、输入文本或滚动等操作。
+4. **再次截图**：验证操作结果。
+5. **重复上述步骤**。
 
-## Tips
+## 使用技巧
 
-- Screen is 1024x768, origin (0,0) at top-left
-- Click to focus before typing in text fields
-- Use `ctrl+End` to jump to page bottom in browsers
-- Most actions auto-screenshot after 2 sec delay
-- Long text is chunked (50 chars) with 12ms keystroke delay
+- 屏幕分辨率为 1024x768，原点位于屏幕的左上角（0,0）。
+- 在输入文本框前，请先点击以聚焦输入框。
+- 在浏览器中，可以使用 `Ctrl+End` 键跳转到页面底部。
+- 大部分操作会在 2 秒后自动截图。
+- 长文本会分多次输入（每次 50 个字符），每次输入之间有 12 毫秒的延迟。
 
-## System Services
+## 系统服务
 
 ```bash
 # Services auto-start on boot
@@ -83,7 +84,7 @@ sudo systemctl status xfce-desktop      # XFCE session
 sudo systemctl restart virtual-desktop xfce-desktop
 ```
 
-## Opening Applications
+## 打开应用程序
 
 ```bash
 export DISPLAY=:99
@@ -92,9 +93,9 @@ xfce4-terminal &                   # Terminal
 thunar &                           # File manager
 ```
 
-## Requirements
+## 所需系统软件
 
-System packages (install once):
+需要安装的系统软件包（安装一次即可）：
 ```bash
 sudo apt install -y xvfb xfce4 xfce4-terminal xdotool scrot imagemagick dbus-x11 chromium-browser
 ```

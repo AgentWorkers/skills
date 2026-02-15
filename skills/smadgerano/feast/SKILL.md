@@ -14,18 +14,18 @@ description: |
 
 # Feast
 
-A meal planning skill that transforms weekly cooking into a cultural experience.
+这是一个 meal planning 工具，它将每周的烹饪活动转变为一种文化体验。
 
-## Quick Start
+## 快速入门
 
-1. **New user?** Run onboarding: "Let's set up Feast" or "Onboard me for meal planning"
-2. **Returning user?** Check status: "What's the meal plan status?"
-3. **Planning day?** Start planning: "Let's plan next week's meals"
-4. **Cooking day?** Get reveal: "What's for dinner?"
+1. **新用户？** 运行入职引导：“让我们设置 Feast”或“为我开启 meal planning 功能”。
+2. **老用户？** 查看计划状态：“我的 meal plan 状态如何？”
+3. **计划日？** 开始制定计划：“让我们规划下周的餐食”。
+4. **烹饪日？** 查看当天的餐食安排：“晚餐吃什么？”
 
-## Core Files
+## 核心文件
 
-User data lives in their workspace:
+用户数据存储在他们的工作区中：
 
 ```
 workspace/meals/
@@ -37,40 +37,39 @@ workspace/meals/
     └── YYYY-MM-DD.md     # Each week's plan (self-contained)
 ```
 
-**Note:** Weekly plans are fully self-contained — each day's recipe, theme research, music playlist, and cultural context is embedded directly in the week file. There are no separate recipe or theme files.
+**注意：** 每周的计划都是自包含的——每天的食谱、主题研究、音乐播放列表和文化背景都直接嵌入到周计划文件中。没有单独的食谱或主题文件。
 
-## Weekly Cadence
+## 每周的工作流程
 
-Default schedule (user-configurable):
+默认时间表（可用户配置）：
 
-| Day | Activity | Trigger |
+| 时间 | 活动 | 触发条件 |
 |-----|----------|---------|
-| Thursday | Research & draft | "Let's plan next week" |
-| Friday | Confirm plan | "Confirm the meal plan" |
-| Saturday | Shopping list | "Generate shopping list" |
-| Sunday | Shopping | User shops |
-| Week | Daily reveals | "What's for dinner?" |
-| End of week | Review | "Review this week's meals" |
+| 星期四 | 研究与起草 | “让我们规划下周的餐食” |
+| 星期五 | 确认计划 | “确认 meal plan” |
+| 星期六 | 生成购物清单 | “生成购物清单” |
+| 星期日 | 购物 | 用户去购物 |
+| 每周结束时 | 回顾 | “回顾本周的餐食” |
 
-## Notifications
+## 通知
 
-Feast sends reminders at key moments: planning day, confirmation, shopping list, daily reveals, and week review. These are delivered via cron jobs that spawn isolated agents to send notifications.
+Feast 会在关键时间点发送提醒：计划日、确认计划、生成购物清单、每日餐食安排和每周回顾。这些提醒通过 cron 作业来发送。
 
-### Notification Channels
+### 通知渠道
 
-Users configure their preferred channel in `profile.yaml` under `schedule.notifications.channel`:
+用户可以在 `profile.yaml` 的 `schedule.notifications.channel` 配置中选择他们偏好的通知渠道：
 
-| Channel | Delivery Method |
+| 渠道 | 通知方式 |
 |---------|-----------------|
-| `auto` | Delivers to the current session or first available channel |
-| `telegram` | Sends via Telegram (requires Telegram channel configured in OpenClaw) |
-| `discord` | Sends via Discord (requires Discord channel configured in OpenClaw) |
-| `signal` | Sends via Signal (requires Signal channel configured in OpenClaw) |
-| `webchat` | Outputs to the chat session |
+| `auto` | 通知当前会话或第一个可用的渠道 |
+| `telegram` | 通过 Telegram 发送（需要在 OpenClaw 中配置 Telegram 频道） |
+| `discord` | 通过 Discord 发送（需要在 OpenClaw 中配置 Discord 频道） |
+| `signal` | 通过 Signal 发送（需要在 OpenClaw 中配置 Signal 频道） |
+| `webchat` | 在聊天会话中显示通知 |
 
-### Push Notifications (Optional)
+### 推送通知（可选）
 
-For notifications to mobile devices independent of chat channels, users can enable push notifications:
+为了在独立于聊天渠道的情况下向移动设备发送通知，用户可以启用推送通知：
 
 ```yaml
 schedule:
@@ -80,163 +79,160 @@ schedule:
       method: "pushbullet"    # or "ntfy"
 ```
 
-**Supported methods:**
+**支持的方法：**
 
-- **Pushbullet** — Requires the `pushbullet-notify` skill installed separately with API key configured
-- **ntfy** — Uses ntfy.sh (or self-hosted); configure topic in profile
+- **Pushbullet** — 需要单独安装 `pushbullet-notify` 插件并配置 API 密钥 |
+- **ntfy** — 使用 ntfy.sh（或自托管服务）；在个人资料中配置主题。
 
-Push notifications are sent *in addition to* the primary channel, not instead of it. If push delivery fails, the notification still goes to the primary channel.
+推送通知会作为主要通知渠道的补充发送，而不是替代它。如果推送失败，通知仍会发送到主要渠道。
 
-### Timing
+### 通知时间
 
-Notifications are delivered via OpenClaw's cron system with `wakeMode: "next-heartbeat"`. This means notifications arrive within the heartbeat interval (typically up to 1 hour) after the scheduled time. For most meal planning purposes, this slight delay is acceptable.
+通知通过 OpenClaw 的 cron 系统发送，使用 `wakeMode: "next-heartbeat"`。这意味着通知会在预定时间后的心跳间隔（通常不超过 1 小时）内到达。对于大多数 meal planning 用途来说，这种轻微的延迟是可以接受的。
 
-### Managing Notifications
+### 管理通知
 
-Users can adjust their notification preferences anytime:
+用户可以随时调整他们的通知偏好：
 
-- "Change my Feast notifications to Telegram"
-- "Turn off morning hints"
-- "Enable Pushbullet notifications"
+- “将我的 Feast 通知改为 Telegram”
+- “关闭早晨的提示”
+- “启用 Pushbullet 通知”
 
-When updating, remove old cron jobs using stored IDs and create new ones with updated settings.
+更新通知设置时，需要使用存储的 ID 删除旧的 cron 作业，并创建新的作业。
 
-## Workflows
+## 工作流程
 
-### Onboarding
+### 入职引导
 
-Read [references/onboarding.md](references/onboarding.md) for the full flow.
+请阅读 [references/onboarding.md](references/onboarding.md) 以了解完整的流程。
 
-Essential questions:
-1. Location (for seasonality, units, stores)
-2. Household size & portion needs
-3. Week structure (start day, cooking days, cheat day)
-4. Dietary requirements & phase
-5. Equipment & cooking confidence
-6. Preferences (cuisines, spice, budget)
+需要回答的关键问题：
+1. 所在地（用于考虑食材的季节性、单位换算和购物地点）
+2. 家庭人数及每人的食物需求
+3. 每周的安排（开始日、烹饪日、休息日）
+4. 饮食要求和饮食阶段
+5. 厨具和烹饪能力
+6. 偏好（菜系、香料、预算）
 
-Save to `workspace/meals/profile.yaml`.
+将信息保存到 `workspace/meals/profile.yaml` 中。
 
-### Planning (Thursday)
+### 计划（星期四）
 
-1. Check user profile
-2. Review history (avoid recent repeats)
-3. Check upcoming cultural events (see [references/events.md](references/events.md))
-4. Check seasonality for location
-5. Select 6-7 meals with:
-   - Cuisine variety
-   - Ingredient overlap
-   - Balanced nutrition
-   - Mix of quick/involved
-6. **For each meal, research and embed:**
-   - **The Place:** Identify specific region of origin (drill down to province, city, or area). Research regional context, history, current events. Write an evocative description.
-   - **The Dish:** Research authentic recipe from native sources (search in original language). Include origin story, cultural significance, full ingredients and method.
-   - **The Soundtrack:** Curate a 1-2 hour playlist with contemporary hits + classic/traditional from the region (see [references/theme-research.md](references/theme-research.md)). Include full tracklist with links.
-   - **Setting the Scene:** How to serve, what to drink, atmosphere tips.
-7. Draft plan to `workspace/meals/weeks/YYYY-MM-DD.md` (all content embedded in this single file)
-8. Present summary (themes only, not full reveals)
+1. 查看用户个人资料
+2. 查看历史记录（避免重复选择最近的食谱）
+3. 查看即将到来的文化活动（参见 [references/events.md](references/events.md)）
+4. 根据所在地考虑食材的季节性
+5. 选择 6-7 道餐食，需满足以下条件：
+   - 菜系多样性
+   - 食材的重复使用
+   - 营养均衡
+   - 食材的易获取程度（快速准备或需要较多时间的）
+6. **对于每道餐食，进行以下研究并记录：**
+   - **地点**：确定具体的地域来源（细化到省份、城市或地区）。研究该地区的背景、历史和当前事件，并撰写生动的描述。
+   - **菜肴**：从当地来源查找真实的食谱（使用原始语言搜索）。包括食材的来源故事、文化意义和制作方法。
+   - **配乐**：精选 1-2 小时的播放列表，包含该地区的当代热门歌曲和经典/传统音乐（参见 [references/theme-research.md](references/theme-research.md)）。提供完整的曲目列表和链接。
+   - **用餐环境**：提供用餐方式、饮品搭配和氛围建议。
+7. 将计划草稿保存到 `workspace/meals/weeks/YYYY-MM-DD.md` 文件中（所有内容都嵌入在这个文件中）
+8. 提供计划概要（仅包含主题信息，不包含完整的餐食详情）
 
-### Confirmation (Friday)
+### 确认计划（星期五）
 
-1. Present draft plan with themes
-2. Allow amendments
-3. Mark as confirmed
-4. Set up daily reveal reminders
+1. 展示计划草稿并允许用户修改
+2. 将计划标记为已确认
+3. 设置每日餐食安排的提醒
 
-### Shopping List (Saturday)
+### 生成购物清单（星期六）
 
-1. Generate from confirmed plan
-2. Optimise:
-   - Group by category
-   - Combine overlapping ingredients
-   - Check pack sizes vs needs
-   - Flag seasonal items
-3. **Price check key ingredients** (see [references/price-checking.md](references/price-checking.md)):
-   - Identify top 3-5 most expensive items (usually proteins, specialty ingredients)
-   - Check prices across user's available stores
-   - Note current deals, multi-buy offers, loyalty card prices
-   - Add price recommendations to the shopping list
-   - Suggest shopping strategy (single store or split if savings are significant)
-4. Present for review with price guidance
-5. Allow amendments
-6. Mark as approved
+1. 根据确认的计划生成购物清单
+2. 优化清单：
+   - 按类别分组食材
+   - 合并重复使用的食材
+   - 检查食材的包装规格是否满足需求
+   - 标记季节性食材
+3. **检查关键食材的价格**（参见 [references/price-checking.md](references/price-checking.md)：
+   - 确定最昂贵的 3-5 种食材（通常是蛋白质类或特殊食材）
+   - 在用户可购买的商店中比较价格
+   - 记录当前的优惠活动、团购信息和使用会员卡的价格优惠
+   - 在购物清单中添加价格建议
+   - 提出购物策略（建议在一家商店购买或分批购买以节省费用）
+4. 展示购物清单并征求用户意见
+5. 允许用户修改清单
+6. 将清单标记为已批准
 
-### Daily Reveal
+### 每日餐食安排（星期日）
 
-1. Check it's a cooking day
-2. Reveal:
-   - Full recipe (in user's units)
-   - **Theme dossier highlights:**
-     - The place: Regional context, history, and character
-     - What's happening there now (current news/events from planning time)
-     - The dish: Origin story, cultural significance, how it's eaten locally
-   - **Curated playlist:**
-     - Contemporary hits from the region (what people there listen to now)
-     - Classic/traditional music from the region
-     - Full tracklist with links (Spotify/YouTube)
-     - The vibe and journey the playlist creates
-   - Setting the scene: Serving suggestions, drinks pairings, atmosphere tips
-3. Optional morning hint for anticipation
+1. 确认当天是烹饪日
+2. 公布完整的餐食信息：
+   - 食谱（以用户选择的单位为准）
+   - **主题简介：**
+     - 地点的背景、历史和特色
+     - 当地当前发生的事件
+     - 菜品的来源故事、文化意义以及当地的食用方式
+   - **精选的播放列表：**
+     - 当地的热门歌曲
+     - 该地区的经典/传统音乐
+     - 完整的曲目列表和链接（Spotify/YouTube）
+     - 用餐环境的建议和饮品搭配
+3. （可选）在早晨发送提醒以增加期待感
 
-### Review (End of Week)
+### 回顾（每周结束时）
 
-1. For each meal: rating (1-5), notes
-2. Update history
-3. Identify favourites → add to favourites
-4. Identify failures → add to failures
-5. Capture improvements for system
-6. Save review to week file
+1. 为每道餐食评分（1-5 分）并记录反馈
+2. 更新历史记录
+3. 将喜欢的餐食添加到收藏列表
+4. 将不成功的餐食记录到失败列表
+5. 将改进意见提供给系统
+6. 将回顾信息保存到周计划文件中
 
-## Recipe Regionalisation
+## 食谱的地域化处理
 
-All recipes stored in standardised internal units. On output, convert to user's preferred units:
+所有食谱都使用标准化的内部单位进行存储。在输出时，会转换为用户选择的单位：
 
-- Temperature: Celsius / Fahrenheit / Gas Mark
-- Weight: Metric (g/kg) / Imperial (oz/lb)
-- Volume: Metric (ml/L) / Cups
+- 温度：摄氏度 / 华氏度 / 烹饪火候标记
+- 重量：公制（克/千克）/ 英制（盎司/磅）
+- 体积：公制（毫升/升）/ 杯
 
-See [references/conversions.md](references/conversions.md).
+详情请参阅 [references/conversions.md](references/conversions.md)。
 
-## Authenticity Guidelines
+## 真实性指南
 
-When researching cuisines:
-1. Search in the original language where possible
-2. Look for recipes from native sources, not just English food blogs
-3. **Identify the specific region of origin** — not just "Thai food" but "Northern Thai, Chiang Mai style"
-4. **Research music that's actually from the region:**
-   - Find contemporary hits (what's charting there now)
-   - Find classic/traditional music (legendary artists from the region)
-   - Build a curated 1-2 hour playlist — not generic Spotify searches
-   - See [references/theme-research.md](references/theme-research.md) for guidance
-5. **Research the region itself** — history, current events, social context, what it's famous for
-6. Note cultural context and any associated events
-7. Respect dietary traditions (e.g., no pork in Middle Eastern themes)
-8. **Embed everything in the week plan** — recipes, themes, music, and context all go in the single week file
+在研究菜系时：
+1. 尽可能使用原始语言进行搜索
+2. 从当地来源查找食谱，而不仅仅是英文美食博客
+3. **明确食材的具体地域来源**——例如，不是简单地写“泰国菜”，而是“北泰菜，清迈风格”
+4. **研究真正来自该地区的音乐**：
+   - 查找当地的流行歌曲
+   - 查找经典/传统的音乐
+   - 精选 1-2 小时的播放列表（而不是使用通用的 Spotify 搜索结果）
+   - 参考 [references/theme-research.md](references/theme-research.md) 以获取更多指导
+5. **研究该地区本身**——了解其历史、当前事件和社会背景
+6. 尊重当地的饮食传统（例如，在中东菜系中不使用猪肉）
+7. **将所有信息都嵌入到周计划中**——食谱、主题、音乐和背景信息都包含在同一个周计划文件中
 
-See [references/cuisines/](references/cuisines/) for per-cuisine guides.
+有关各菜系的详细指南，请参阅 [references/cuisines/](references/cuisines/)。
 
-## Templates
+## 模板
 
-- [templates/profile.yaml](templates/profile.yaml) — User profile
-- [templates/week.md](templates/week.md) — Weekly plan with embedded recipes, themes, music, and shopping list
-- [templates/shopping-list.md](templates/shopping-list.md) — Standalone shopping list format (for reference; usually embedded in week)
+- [templates/profile.yaml](templates/profile.yaml) — 用户个人资料模板
+- [templates/week.md](templates/week.md) — 包含食谱、主题、音乐和购物清单的周计划模板
+- [templates/shopping-list.md](templates/shopping-list.md) — 独立的购物清单模板（仅供参考，通常会嵌入到周计划文件中）
 
-## References
+## 参考资料
 
-- [references/onboarding.md](references/onboarding.md) — User onboarding guide
-- [references/theme-research.md](references/theme-research.md) — How to research cultural themes and curate music
-- [references/price-checking.md](references/price-checking.md) — Smart shopping and price comparison guidance
-- [references/events.md](references/events.md) — Cultural events calendar for themed planning
-- [references/nutrition.md](references/nutrition.md) — Dietary phases and balanced meal guidance
-- [references/conversions.md](references/conversions.md) — Unit conversion tables
-- [references/cuisines/](references/cuisines/) — Per-cuisine research guides
-- [references/seasonality/](references/seasonality/) — Regional seasonal produce
+- [references/onboarding.md](references/onboarding.md) — 用户入职指南
+- [references/theme-research.md](references/theme-research.md) — 如何研究文化主题和精选音乐
+- [references/price-checking.md](references/price-checking.md) — 智能购物和价格比较指南
+- [references/events.md](references/events.md) — 用于主题规划的 cultural events 日历
+- [references/nutrition.md](references/nutrition.md) — 饮食阶段和均衡饮食指南
+- [references/conversions.md](references/conversions.md) — 单位换算表
+- [references/cuisines/](references/cuisines/) — 各菜系的研究指南
+- [references/seasonality/](references/seasonality/) — 地区性食材指南
 
-## Scripts
+## 脚本
 
-### History Tracking
+### 历史记录
 
-After a meal is revealed and cooked, update history:
+在餐食信息公布并烹饪完成后，更新历史记录：
 
 ```bash
 python scripts/update-history.py \
@@ -250,26 +246,26 @@ python scripts/update-history.py \
     --notes "Great, maybe more chilli next time"
 ```
 
-This updates `history.yaml` and recalculates statistics automatically.
+这会更新 `history.yaml` 文件并自动重新计算相关统计数据。
 
-When doing the daily reveal, after the user confirms they've cooked and optionally rated the meal, run this script to keep history current.
+在用户确认烹饪并评分后，运行此脚本以保持历史记录的准确性。
 
-## Health & Nutrition
+## 健康与营养
 
-- Track calories per meal if user has a target
-- Ensure weekly variety across food groups
-- Respect dietary phases (weight loss = deficit, etc.)
-- Flag any nutritional concerns
+- 如果用户有饮食目标，记录每餐的热量摄入
+- 确保每周摄入的食物种类多样化
+- 遵循饮食计划（例如，减肥需要控制热量摄入）
+- 标记任何营养方面的问题
 
-See [references/nutrition.md](references/nutrition.md).
+详情请参阅 [references/nutrition.md](references/nutrition.md)。
 
-## Seasonal Awareness
+## 季节性食材
 
-Check seasonality for user's location before suggesting ingredients. Seasonal produce is:
-- Better quality
-- Often cheaper
-- More environmentally responsible
+在推荐食材之前，根据用户的所在地检查食材的季节性。季节性食材：
+- 质量更好
+- 价格通常更便宜
+- 更环保
 
-Not every ingredient needs to be in season, but prefer seasonal when possible.
+虽然不是所有食材都必须是当季的，但尽可能使用季节性食材。
 
-See [references/seasonality/](references/seasonality/) for regional guides.
+有关地区性食材的更多信息，请参阅 [references/seasonality/](references/seasonality/)。

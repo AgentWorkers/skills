@@ -1,17 +1,17 @@
 ---
 name: local-places
-description: Search for places (restaurants, cafes, etc.) via Google Places API proxy on localhost.
+description: 通过本地主机上的 Google Places API 代理来搜索地点（餐厅、咖啡馆等）。
 homepage: https://github.com/Hyaxia/local_places
 metadata: {"clawdbot":{"emoji":"📍","requires":{"bins":["uv"],"env":["GOOGLE_PLACES_API_KEY"]},"primaryEnv":"GOOGLE_PLACES_API_KEY"}}
 ---
 
-# 📍 Local Places
+# 📍 本地地点查询
 
-*Find places, Go fast*
+*快速查找附近的地点*
 
-Search for nearby places using a local Google Places API proxy. Two-step flow: resolve location first, then search.
+使用本地的 Google Places API 代理来搜索附近的地点。操作流程分为两步：首先确定用户的位置，然后进行搜索。
 
-## Setup
+## 设置
 
 ```bash
 cd {baseDir}
@@ -20,20 +20,20 @@ uv venv && uv pip install -e ".[dev]"
 uv run --env-file .env uvicorn local_places.main:app --host 127.0.0.1 --port 8000
 ```
 
-Requires `GOOGLE_PLACES_API_KEY` in `.env` or environment.
+需要将 `GOOGLE_PLACES_API_KEY` 设置在 `.env` 文件或环境变量中。
 
-## Quick Start
+## 快速入门
 
-1. **Check server:** `curl http://127.0.0.1:8000/ping`
+1. **检查服务器：** `curl http://127.0.0.1:8000/ping`
 
-2. **Resolve location:**
+2. **确定用户位置：**
 ```bash
 curl -X POST http://127.0.0.1:8000/locations/resolve \
   -H "Content-Type: application/json" \
   -d '{"location_text": "Soho, London", "limit": 5}'
 ```
 
-3. **Search places:**
+3. **搜索地点：**
 ```bash
 curl -X POST http://127.0.0.1:8000/places/search \
   -H "Content-Type: application/json" \
@@ -45,30 +45,30 @@ curl -X POST http://127.0.0.1:8000/places/search \
   }'
 ```
 
-4. **Get details:**
+4. **获取地点详情：**
 ```bash
 curl http://127.0.0.1:8000/places/{place_id}
 ```
 
-## Conversation Flow
+## 对话流程
 
-1. If user says "near me" or gives vague location → resolve it first
-2. If multiple results → show numbered list, ask user to pick
-3. Ask for preferences: type, open now, rating, price level
-4. Search with `location_bias` from chosen location
-5. Present results with name, rating, address, open status
-6. Offer to fetch details or refine search
+1. 如果用户输入“附近”或提供模糊的位置信息 → 先确定用户的具体位置。
+2. 如果搜索结果有多个 → 显示编号列表，让用户选择所需地点。
+3. 询问用户的偏好（如类型、是否需要立即打开、评分、价格等级）。
+4. 根据用户选择的地点进行搜索。
+5. 显示搜索结果，包括地点名称、评分、地址和开放状态。
+6. 提供获取详细信息或进一步精炼搜索条件的选项。
 
-## Filter Constraints
+## 过滤条件
 
-- `filters.types`: exactly ONE type (e.g., "restaurant", "cafe", "gym")
-- `filters.price_levels`: integers 0-4 (0=free, 4=very expensive)
-- `filters.min_rating`: 0-5 in 0.5 increments
-- `filters.open_now`: boolean
-- `limit`: 1-20 for search, 1-10 for resolve
-- `location_bias.radius_m`: must be > 0
+- `filters.types`：必须选择一种类型（例如：“餐厅”、“咖啡馆”、“健身房”）。
+- `filters.price_levels`：整数范围 0-4（0 表示免费，4 表示非常昂贵）。
+- `filters.min_rating`：评分范围 0-5，以 0.5 为间隔。
+- `filters.open_now`：布尔值，表示是否需要立即打开地点。
+- `limit`：搜索结果数量为 1-20 个；定位结果数量为 1-10 个。
+- `location_bias.radius_m`：必须大于 0（表示搜索半径）。
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -88,4 +88,4 @@ curl http://127.0.0.1:8000/places/{place_id}
 }
 ```
 
-Use `next_page_token` as `page_token` in next request for more results.
+在后续请求中，使用 `next_page_token` 作为分页参数来获取更多结果。

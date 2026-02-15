@@ -1,6 +1,6 @@
 ---
 name: monad-development
-description: Builds dapps on Monad blockchain. Use when deploying contracts, setting up frontends with viem/wagmi, or verifying contracts on Monad testnet or mainnet.
+description: 在Monad区块链上构建去中心化应用程序（dapps）。适用于部署智能合约、使用viem/wagmi搭建前端界面，以及在Monad测试网或主网上验证智能合约的场景。
 license: MIT
 compatibility: Requires foundry, node 18+, curl, and internet access for faucet and verification APIs
 metadata:
@@ -8,54 +8,54 @@ metadata:
   version: "1.0.0"
 ---
 
-# Monad Development
+# 单子（Monad）开发
 
-For questions not covered here, fetch https://docs.monad.xyz/llms.txt
+对于未在此处涵盖的问题，请访问：https://docs.monad.xyz/llms.txt
 
-## Quick Reference
+## 快速参考
 
-### Defaults
-- **Network:** Always use **testnet** (chain ID 10143) unless user says "mainnet"
-- **Verification:** Always verify contracts after deployment unless user says not to
-- **Framework:** Use Foundry (not Hardhat)
-- **Wallet:** If you generate a wallet, MUST persist it (see Wallet Persistence section)
+### 默认设置
+- **网络（Network）：** 除非用户明确指定使用“mainnet”，否则始终使用“testnet”（链ID：10143）。
+- **合约验证（Verification）：** 合同部署后必须进行验证，除非用户另有指示。
+- **框架（Framework）：** 使用 Foundry，而非 Hardhat。
+- **钱包（Wallet）：** 如果为用户生成了钱包，必须将其保存下来（详见“钱包持久化”部分）。
 
-### Networks
+### 网络
 
-| Network | Chain ID | RPC |
+| 网络 | 链ID | RPC |
 |---------|----------|-----|
 | Testnet | 10143 | https://testnet-rpc.monad.xyz |
 | Mainnet | 143 | https://rpc.monad.xyz |
 
-Docs: https://docs.monad.xyz
+文档链接：https://docs.monad.xyz
 
-### Explorers
+### 探索器（Explorers）
 
-| Explorer | Testnet | Mainnet |
-|----------|---------|---------|
+| 探索器 | Testnet | Mainnet |
+|---------|---------|---------|
 | Socialscan | https://monad-testnet.socialscan.io | https://monad.socialscan.io |
 | MonadVision | https://testnet.monadvision.com | https://monadvision.com |
 | Monadscan | https://testnet.monadscan.com | https://monadscan.com |
 
-### Agent APIs
+### 代理 API（Agent APIs）
 
-**IMPORTANT:** Do NOT use a browser. Use these APIs directly with curl.
+**重要提示：** 请勿使用浏览器，直接使用 `curl` 命令调用这些 API。
 
-**Faucet (Testnet Funding):**
+**测试网资金获取（Testnet Funding）：**
 ```bash
 curl -X POST https://agents.devnads.com/v1/faucet \
   -H "Content-Type: application/json" \
   -d '{"chainId": 10143, "address": "0xYOUR_ADDRESS"}'
 ```
 
-Returns: `{"txHash": "0x...", "amount": "1000000000000000000", "chain": "Monad Testnet"}`
+返回结果：`{"txHash": "0x...", "amount": "1000000000000000000", "chain": "Monad Testnet"}`
 
-**Fallback (official faucet):** https://faucet.monad.xyz
-If the agent faucet fails, ask the user to fund via the official faucet (do not use a browser yourself).
+**备用方案（官方资金获取渠道）：** https://faucet.monad.xyz
+如果代理提供的资金获取功能失败，请让用户通过官方渠道进行资金注入（切勿自行使用浏览器操作）。
 
-**Verification (All Explorers):**
+**合约验证（所有探索器）：**
 
-ALWAYS use the verification API first. It verifies on all 3 explorers (MonadVision, Socialscan, Monadscan) with one call. Do NOT use `forge verify-contract` as first choice.
+**务必首先使用验证 API**。该 API 会在 MonadVision、Socialscan 和 Monadscan 三个探索器上同时进行验证。切勿将 `forge verify-contract` 作为首选方法。
 
 ```bash
 # 1. Get verification data
@@ -86,45 +86,44 @@ curl -X POST https://agents.devnads.com/v1/verify \
   -d @/tmp/verify.json
 ```
 
-**With constructor arguments:** Add `constructorArgs` (ABI-encoded, WITHOUT 0x prefix):
+**使用构造函数参数（With constructor arguments）：** 需要提供构造函数参数（以 ABI 格式编码，且前面不能加前缀 “0x”）：
 ```bash
 ARGS=$(cast abi-encode "constructor(string,string,uint256)" "MyToken" "MTK" 1000000000000000000000000)
 ARGS_NO_PREFIX=${ARGS#0x}
 # Add to request: "constructorArgs": "$ARGS_NO_PREFIX"
 ```
 
-**Manual verification fallback (if API fails):**
+**API 失效时的手动验证方案（Manual verification fallback）：**
 ```bash
 forge verify-contract <ADDR> <CONTRACT> --chain 10143 \
   --verifier sourcify \
   --verifier-url "https://sourcify-api-monad.blockvision.org/"
 ```
 
-## Wallet Persistence
+## 钱包持久化（Wallet Persistence）
 
-**CRITICAL for agents:** If you generate a wallet for the user, you MUST persist it for future use.
+**对代理来说至关重要（Critical for agents）：** 如果为用户生成了钱包，必须将其保存下来以便将来使用。
 
-When generating a new wallet:
-1. Create wallet: `cast wallet new`
-2. **Immediately save** the address and private key to a secure location
-3. Inform the user where the wallet details are stored
-4. Fund the wallet via faucet before deployment
+生成新钱包的步骤：
+1. 创建钱包：`cast wallet new`
+2. **立即** 将钱包地址和私钥保存到安全的位置。
+3. 告知用户钱包信息的存储位置。
+4. 在部署前通过资金获取渠道为钱包充值。
 
-**Storage options:**
-- Write to `~/.monad-wallet` with chmod 600
-- Store in a project-specific `.env` file (add to .gitignore)
-- Return credentials to user and ask them to save securely
+**存储选项（Storage options）：**
+- 将钱包信息写入 `~/.monad-wallet` 文件，并设置权限为 600。
+- 将钱包信息存储在项目特定的 `.env` 文件中（该文件应被添加到 `.gitignore` 列表中）。
+- 将钱包凭据返回给用户，并要求他们妥善保管。
 
-**Why this matters:** Users need access to their wallet to:
-- Deploy additional contracts
-- Interact with deployed contracts
-- Manage funds
-- Verify ownership
+**为什么这很重要（Why this matters）：** 用户需要能够访问他们的钱包来：
+- 部署额外的合约。
+- 与已部署的合约进行交互。
+- 管理资金。
+- 验证合约的所有权。
 
-## Deployment Workflow
+## 部署工作流程（Deployment Workflow）
 
-Use `forge script` for deployments:
-
+使用 `forge` 脚本进行部署：
 ```bash
 forge script script/Deploy.s.sol:DeployScript \
   --rpc-url https://testnet-rpc.monad.xyz \
@@ -132,8 +131,7 @@ forge script script/Deploy.s.sol:DeployScript \
   --broadcast
 ```
 
-**Deploy script template:**
-
+**部署脚本模板（Deploy script template）：**
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
@@ -150,27 +148,26 @@ contract DeployScript is Script {
 }
 ```
 
-## Technical Details
+## 技术细节（Technical Details）
 
-### EVM Version (Critical)
+### EVM 版本（EVM Version，至关重要）**
 
-Always set `evmVersion: "prague"`. Requires Solidity 0.8.27+.
+始终将 `evmVersion` 设置为 “prague”。此设置要求使用 Solidity 0.8.27 或更高版本。
 
-**Foundry** (`foundry.toml`):
+**Foundry 配置（Foundry configuration，`foundry.toml` 文件）：**
 ```toml
 [profile.default]
 evm_version = "prague"
 solc_version = "0.8.28"
 ```
 
-### Foundry Tips
+### Foundry 使用技巧（Foundry Tips）
 
-**Flags that don't exist (don't use):**
-- `--no-commit` - not a valid flag for `forge init` or `forge install`
+**请勿使用以下无效的标志（Flags not to use）：**
+- `--no-commit` — 这不是一个有效的 `forge init` 或 `forge install` 命令参数。
 
-**Deployment - use `forge script`, NOT `forge create`:**
-
-`forge create --broadcast` is buggy and often ignored. Use `forge script` instead.
+**部署时请使用 `forge script`，而非 `forge create`：**
+`forge create --broadcast` 存在漏洞，且经常被忽略。请使用 `forge script` 代替。
 
 ```bash
 forge script script/Deploy.s.sol:DeployScript \
@@ -179,7 +176,7 @@ forge script script/Deploy.s.sol:DeployScript \
   --broadcast
 ```
 
-**Deploy script must NOT hardcode addresses:**
+**部署脚本中不得硬编码地址（Deploy script must NOT hardcode addresses）：**
 
 ```solidity
 // ✅ Correct - reads private key from --private-key flag
@@ -195,16 +192,14 @@ function run() external {
 }
 ```
 
-### Frontend
+### 前端开发（Frontend Development）**
 
-Import from `viem/chains`. Do NOT define custom chain:
-
+相关代码需从 `viem/chains` 模块导入。**请勿自定义链配置（Do NOT define custom chain configurations）：**
 ```ts
 import { monadTestnet } from "viem/chains";
 ```
 
-Use with wagmi:
-
+**与 Wagmi 的配合使用（Usage with Wagmi）：**
 ```ts
 import { createConfig, http } from 'wagmi'
 import { monadTestnet } from 'viem/chains'
@@ -217,15 +212,15 @@ const config = createConfig({
 })
 ```
 
-## Example: Deploy ERC20
+## 示例：部署 ERC20 合约**
 
-**1. Create project:**
+**1. 创建项目（Create a project）：**
 ```bash
 forge init my-token
 cd my-token
 ```
 
-**2. Configure `foundry.toml`:**
+**2. 配置 `foundry.toml` 文件（Configure `foundry.toml`）：**
 ```toml
 [profile.default]
 src = "src"
@@ -235,7 +230,7 @@ evm_version = "prague"
 solc_version = "0.8.28"
 ```
 
-**3. Create contract `src/MyToken.sol`:**
+**3. 创建合约文件 `src/MyToken.sol`（Create contract `src/MyToken.sol`）：**
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
@@ -249,12 +244,12 @@ contract MyToken is ERC20 {
 }
 ```
 
-**4. Install dependencies:**
+**4. 安装依赖项（Install dependencies）：**
 ```bash
 forge install OpenZeppelin/openzeppelin-contracts --no-commit
 ```
 
-**5. Create deploy script `script/Deploy.s.sol`:**
+**5. 创建部署脚本 `script/Deploy.s.sol`（Create deploy script `script/Deploy.s.sol`）：**
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
@@ -271,7 +266,7 @@ contract DeployScript is Script {
 }
 ```
 
-**6. Deploy:**
+**6. 部署合约（Deploy the contract）：**
 ```bash
 forge script script/Deploy.s.sol:DeployScript \
   --rpc-url https://testnet-rpc.monad.xyz \
@@ -279,7 +274,7 @@ forge script script/Deploy.s.sol:DeployScript \
   --broadcast
 ```
 
-**7. Verify:**
+**7. 验证部署结果（Verify the deployment）：**
 ```bash
 # Use verification API (verifies on all explorers)
 STANDARD_INPUT=$(forge verify-contract <TOKEN_ADDRESS> src/MyToken.sol:MyToken --chain 10143 --show-standard-json-input)

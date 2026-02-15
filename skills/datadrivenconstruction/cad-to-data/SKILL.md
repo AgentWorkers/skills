@@ -1,18 +1,18 @@
 ---
 slug: "cad-to-data"
 display_name: "CAD To Data"
-description: "Convert CAD/BIM files to structured data. Extract element data from Revit, IFC, DWG, DGN files"
+description: "将 CAD/BIM 文件转换为结构化数据。从 Revit、IFC、DWG、DGN 文件中提取元素数据。"
 ---
 
-# CAD To Data
+# 将CAD文件转换为结构化数据
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.4), this skill converts CAD and BIM files to structured data, extracting element properties, quantities, and relationships from Revit, IFC, DWG, and DGN files.
+本技能基于DDC方法论（第2.4章），将CAD和BIM文件转换为结构化数据，从Revit、IFC、DWG和DGN文件中提取元素属性、数量和关系信息。
 
-**Book Reference:** "Преобразование данных в структурированную форму" / "Data Transformation to Structured Form"
+**参考书籍**：《数据转换成结构化形式》（Data Transformation to Structured Form）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -577,9 +577,9 @@ class CADDataConverter:
         return report
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Extract IFC Data
+### 提取IFC数据
 
 ```python
 converter = CADDataConverter()
@@ -595,7 +595,7 @@ for element in data['elements'][:5]:
     print(f"  {element['name']}: {element['type']}")
 ```
 
-### Extract Quantities
+### 提取数量信息
 
 ```python
 quantities = converter.extract_quantities(
@@ -607,7 +607,7 @@ print(f"Wall count: {quantities['quantities']['wall']['count']}")
 print(f"Total wall area: {quantities['quantities']['wall']['totals']['Area']}")
 ```
 
-### Generate Schedule
+### 生成进度报表
 
 ```python
 door_schedule = converter.extract_schedule(
@@ -620,7 +620,7 @@ for door in door_schedule:
     print(f"{door['name']}: {door.get('Width')}x{door.get('Height')}")
 ```
 
-### Generate Report
+### 生成报告
 
 ```python
 ifc_extractor = IFCExtractor()
@@ -630,24 +630,24 @@ report = converter.generate_report(result)
 print(report)
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `CADDataConverter` | Main conversion engine |
-| `IFCExtractor` | IFC file extraction |
-| `DWGExtractor` | DWG/DXF extraction |
-| `CADElement` | Extracted element data |
-| `CADExtractionResult` | Complete extraction result |
-| `ElementCategory` | BIM element categories |
+| 组件          | 功能                          |
+|--------------|-----------------------------|
+| `CADDataConverter` | 主要转换引擎                     |
+| `IFCExtractor` | 提取IFC文件中的数据                 |
+| `DWGExtractor` | 提取DWG/DXF文件中的数据                 |
+| `CADElement` | 提取的元素数据                     |
+| `CADExtractionResult` | 完整的提取结果                     |
+| `ElementCategory` | BIM元素分类                     |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.4
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建造》（Data-Driven Construction），第2.4章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [image-to-data](../image-to-data/SKILL.md) for image extraction
-- Use [qto-report](../../Chapter-3.2/qto-report/SKILL.md) for quantity reports
-- Use [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) for validation
+- 使用 [image-to-data](../image-to-data/SKILL.md) 功能提取图像数据
+- 使用 [qto-report](../../Chapter-3.2/qto-report/SKILL.md) 功能生成数量报告
+- 使用 [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) 功能进行数据验证

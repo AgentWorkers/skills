@@ -1,16 +1,16 @@
 ---
 name: tandoor-recipes
-description: Manage recipes, meal plans, and shopping lists in Tandoor Recipe Manager. Use when the user wants to create recipes, plan meals, search for recipes, or manage their shopping list.
+description: 在 Tandoor Recipe Manager 中，您可以管理食谱、膳食计划和购物清单。当用户需要创建新食谱、规划饮食、搜索现有食谱或管理自己的购物清单时，可以使用该工具。
 metadata: { "openclaw": { "emoji": "🍽️", "requires": { "bins": ["node"], "env": ["TANDOOR_URL", "TANDOOR_API_TOKEN"] }, "primaryEnv": "TANDOOR_API_TOKEN" } }
 ---
 
-# Tandoor Recipe Manager
+# Tandoor 食谱管理器
 
-Interact with the user's Tandoor Recipe Manager to manage recipes, meal plans, and shopping lists.
+用户可以通过 Tandoor 食谱管理器来管理食谱、膳食计划和购物清单。
 
-## How to Use
+## 使用方法
 
-**Required env vars:** `TANDOOR_URL` (Tandoor instance URL) and `TANDOOR_API_TOKEN`
+**所需环境变量：** `TANDOOR_URL`（Tandoor 服务端地址）和 `TANDOOR_API_TOKEN`  
 
 ```bash
 node ./scripts/tandoor.js <command> [args...]
@@ -18,79 +18,79 @@ node ./scripts/tandoor.js <command> [args...]
 
 ---
 
-## What You Can Do
+## 功能介绍
 
-### 🔍 Find Recipes
+### 🔍 查找食谱
 
-**Search by name:**
+**按名称搜索：**
 ```bash
 node ./scripts/tandoor.js search-recipes "pasta"
 node ./scripts/tandoor.js search-recipes "chicken" 20  # limit to 20 results
 ```
 
-**Get full recipe details:**
+**查看完整食谱详情：**
 ```bash
 node ./scripts/tandoor.js get-recipe 42
 ```
 
 ---
 
-### 📅 Meal Planning
+### 📅 膳食计划
 
-**See available meal types (Breakfast, Lunch, Dinner, etc.):**
+**查看可用的餐食类型（早餐、午餐、晚餐等）：**
 ```bash
 node ./scripts/tandoor.js get-meal-types
 ```
 
-**Add a recipe to the meal plan:**
+**将食谱添加到膳食计划中：**
 ```bash
 node ./scripts/tandoor.js add-to-meal-plan <recipe_id> "<meal_type>" "<YYYY-MM-DD>"
 # Example: Add recipe 42 as Dinner on Feb 10th
 node ./scripts/tandoor.js add-to-meal-plan 42 "Dinner" "2025-02-10"
 ```
 
-**View meal plans for a date range:**
+**查看指定日期范围内的膳食计划：**
 ```bash
 node ./scripts/tandoor.js get-meal-plans "2025-02-08" "2025-02-14"
 ```
 
 ---
 
-### 🛒 Shopping List
+### 🛒 购物清单
 
-**View current shopping list:**
+**查看当前购物清单：**
 ```bash
 node ./scripts/tandoor.js get-shopping-list
 node ./scripts/tandoor.js get-shopping-list "true"   # show checked items
 node ./scripts/tandoor.js get-shopping-list "both"   # show all
 ```
 
-**Add an item to the shopping list:**
+**将商品添加到购物清单中：**
 ```bash
 node ./scripts/tandoor.js add-shopping-item "<food>" "<amount>" "<unit>" "[note]"
 # Example:
 node ./scripts/tandoor.js add-shopping-item "Chicken Breast" "500" "g" "For stir fry"
 ```
 
-**Check off an item:**
+**勾选商品：**
 ```bash
 node ./scripts/tandoor.js check-shopping-item <item_id>
 ```
 
-**Remove an item:**
+**删除商品：**
 ```bash
 node ./scripts/tandoor.js remove-shopping-item <item_id>
 ```
 
 ---
 
-### ➕ Create New Recipes
+### ➕ 创建新食谱
 
 ```bash
 node ./scripts/tandoor.js create-recipe "<name>" "<ingredients>" "<instructions>" [servings]
 ```
 
-Example:
+示例：
 ```bash
 node ./scripts/tandoor.js create-recipe "Grilled Cheese" \
   "2 slices bread
@@ -104,7 +104,7 @@ node ./scripts/tandoor.js create-recipe "Grilled Cheese" \
 
 ---
 
-### 📚 Browse Reference Data
+### 📚 浏览参考资料
 
 ```bash
 node ./scripts/tandoor.js get-keywords          # all keywords
@@ -115,20 +115,20 @@ node ./scripts/tandoor.js get-units              # all units
 
 ---
 
-## Workflows
+## 工作流程
 
-### Plan Dinner for the Week
+### 为本周规划晚餐
 
-1. **Search for recipes** the user might enjoy:
+1. **搜索用户可能喜欢的食谱：**
    ```bash
    node ./scripts/tandoor.js search-recipes "chicken"
    ```
-2. **Note the recipe IDs** from the results
-3. **Get available meal types** (to confirm "Dinner" exists):
+2. **记录搜索结果中的食谱 ID：**
+3. **查看可用的餐食类型**（确认“晚餐”这一餐食类型是否存在）：
    ```bash
    node ./scripts/tandoor.js get-meal-types
    ```
-4. **Add each recipe to a day** (repeat for each day):
+4. **将每个食谱分配到相应的日期**（每天重复此步骤）：
    ```bash
    node ./scripts/tandoor.js add-to-meal-plan 42 "Dinner" "2025-02-10"
    node ./scripts/tandoor.js add-to-meal-plan 15 "Dinner" "2025-02-11"
@@ -137,27 +137,27 @@ node ./scripts/tandoor.js get-units              # all units
 
 ---
 
-### Check Today's Meal Plan
+### 查看今天的膳食计划
 
-1. **Get today's meal plans**:
+1. **获取今天的膳食计划：**
    ```bash
    node ./scripts/tandoor.js get-meal-plans "2025-02-08"
    ```
-2. **If user wants recipe details**, get the full recipe:
+2. **如果用户需要食谱详情，可查看完整食谱内容：**
    ```bash
    node ./scripts/tandoor.js get-recipe <recipe_id>
    ```
 
 ---
 
-### Add Recipe Ingredients to Shopping List
+### 将食谱食材添加到购物清单
 
-1. **Get the recipe details** to see all ingredients:
+1. **获取食谱详情以查看所有食材：**
    ```bash
    node ./scripts/tandoor.js get-recipe <recipe_id>
    ```
-2. **Parse the ingredients** from the response (look at `steps[].ingredients[]`)
-3. **Add each ingredient** to the shopping list:
+2. **从响应中解析食材信息**（查看 `steps[].ingredients[]`）：
+3. **将每种食材添加到购物清单中：**
    ```bash
    node ./scripts/tandoor.js add-shopping-item "Chicken Breast" "500" "g"
    node ./scripts/tandoor.js add-shopping-item "Onion" "2" "piece"
@@ -166,9 +166,9 @@ node ./scripts/tandoor.js get-units              # all units
 
 ---
 
-### Create and Schedule a New Recipe
+### 创建并安排新食谱
 
-1. **Create the recipe**:
+1. **创建新食谱：**
    ```bash
    node ./scripts/tandoor.js create-recipe "Pasta Carbonara" \
      "200g spaghetti
@@ -181,35 +181,35 @@ node ./scripts/tandoor.js get-units              # all units
    4. Combine all and serve" \
      2
    ```
-2. **Note the recipe ID** from the response
-3. **Add to meal plan**:
+2. **记录新食谱的 ID：**
+3. **将新食谱添加到膳食计划中：**
    ```bash
    node ./scripts/tandoor.js add-to-meal-plan <new_recipe_id> "Dinner" "2025-02-12"
    ```
 
 ---
 
-### Clear Checked Items from Shopping List
+### 从购物清单中删除已勾选的商品
 
-1. **View checked items**:
+1. **查看已勾选的商品：**
    ```bash
    node ./scripts/tandoor.js get-shopping-list "true"
    ```
-2. **Remove each checked item** by ID:
+2. **根据 ID 删除已勾选的商品：**
    ```bash
    node ./scripts/tandoor.js remove-shopping-item <item_id>
    ```
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-**"Food not found" or "Unit not found"**  
-Search for the correct name in Tandoor first:
+**“找不到食材”或“找不到对应的餐食类型”**  
+请先在 Tandoor 服务端中查找正确的名称：
 ```bash
 node ./scripts/tandoor.js get-foods "chicken"
 node ./scripts/tandoor.js get-units "gram"
 ```
 
-**"Meal type not found"**  
-Run `get-meal-types` to see exact names (case-insensitive match).
+**“找不到对应的餐食类型”**  
+运行 `get-meal-types` 命令以获取所有餐食类型的名称（不区分大小写）。

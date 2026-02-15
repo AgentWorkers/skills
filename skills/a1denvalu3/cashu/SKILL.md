@@ -1,6 +1,6 @@
 ---
 name: cashu
-description: Use the Nutshell (cashu) CLI to manage Cashu ecash wallets, send/receive tokens, and pay Lightning invoices. Also known as Cashu Nutshell.
+description: 使用 Nutshell (cashu) CLI 来管理 Cashu 的电子钱包、发送/接收代币以及支付 Lightning 账单。它也被称为 Cashu Nutshell。
 compatibility: Requires `cashu` CLI (installed via pipx).
 metadata:
   project: nutshell
@@ -14,19 +14,19 @@ env:
   MINT_URL: https://8333.space:3338
 ---
 
-# Nutshell (Cashu CLI)
+# Nutshell（Cashu CLI）
 
-Nutshell is a command-line wallet for Cashu, an ecash protocol for Bitcoin. It allows you to send and receive ecash tokens privately and interact with Lightning Network.
+Nutshell 是一个用于 Cashu 的命令行钱包工具。Cashu 是一种基于比特币的电子现金（ecash）协议，它允许您私密地发送和接收电子现金令牌，并与 Lightning Network 进行交互。
 
-## Environment Configuration (Required)
+## 环境配置（必需）
 
-The CLI requires two environment variables to function correctly:
+为了正常使用该 CLI，需要设置两个环境变量：
 
-1. `CASHU_DIR`: Directory for wallet data (typically `~/.cashu`).
-2. `MINT_URL` (or `MINT_HOST`): The URL of the Cashu mint you want to use.
+1. `CASHU_DIR`：钱包数据的目录（通常为 `~/.cashu`）。
+2. `MINT_URL`：您要使用的 Cashu 代币铸造服务的 URL。
 
-**Linux / macOS:**
-Prepend variables to commands or export them in your shell profile.
+**Linux / macOS：**
+将这两个变量添加到命令前，或在您的 shell 配置文件中导出它们。
 ```bash
 # Per-command
 CASHU_DIR=~/.cashu MINT_URL=https://mint.example.com cashu balance
@@ -36,20 +36,20 @@ export CASHU_DIR=~/.cashu
 export MINT_URL=https://mint.example.com
 ```
 
-**Windows (PowerShell):**
+**Windows（PowerShell）：**
 ```powershell
 $env:CASHU_DIR = "$HOME\.cashu"
 $env:MINT_URL = "https://mint.example.com"
 cashu balance
 ```
 
-## CLI Usage
+## CLI 使用方法
 
-All examples below assume `CASHU_DIR` and `MINT_URL` are set. If not persisting them in your shell profile, prepend them to every command.
+以下所有示例均假设 `CASHU_DIR` 和 `MINT_URL` 已经设置。如果未在 shell 配置文件中保存这些变量，请在每个命令前添加它们。
 
-**Agent Tip:** Always use the `--yes` (or `-y`) flag to skip interactive prompts and confirmations.
+**提示：** 始终使用 `--yes`（或 `-y`）标志来跳过交互式提示和确认。
 
-### Balance & Info
+### 账户余额与信息查询
 
 ```bash
 # Check wallet balance
@@ -65,9 +65,9 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes info
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes wallets
 ```
 
-### Sending & Receiving
+### 发送与接收电子现金令牌
 
-**Send Cashu tokens (ecash):**
+**发送 Cashu 令牌：**
 
 ```bash
 # Send amount (generates a token string to share)
@@ -75,7 +75,7 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes send <amount>
 # Example: CASHU_DIR=~/.cashu MINT_URL=https://8333.space:3338 cashu --yes send 100
 ```
 
-**Receive Cashu tokens:**
+**接收 Cashu 令牌：**
 
 ```bash
 # Receive a token string
@@ -84,23 +84,23 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes receive <token_string>
 
 ### Lightning Network
 
-**Pay a Lightning Invoice (melt):**
+**支付 Lightning 发票（melt）：**
 
 ```bash
 # Pay an invoice
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes pay <bolt11_invoice>
 ```
 
-**Create a Lightning Invoice (mint):**
+**创建 Lightning 发票（mint）：**
 
 ```bash
 # Create an invoice to receive funds into the wallet
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes invoice <amount>
 ```
 
-### Lightning Address (LNURL)
+### Lightning 地址（LNURL）
 
-Manage your Nostr Lightning Address (e.g., `user@npubx.cash`) to receive payments.
+管理您的 Nostr Lightning 地址（例如 `user@npubx.cash`）以接收付款。
 
 ```bash
 # Create (or display) your static Lightning Address
@@ -113,7 +113,7 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes lnurl check
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes lnurl mint
 ```
 
-### Advanced
+### 高级功能
 
 ```bash
 # Burn spent tokens
@@ -123,12 +123,12 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes burn
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes invoices
 ```
 
-## Configuration
+## 配置
 
-Nutshell uses a `.env` file inside `CASHU_DIR` for additional configuration.
-If `MINT_URL` is not provided, it may default to a public test mint or fail. Always specify your trusted mint.
+Nutshell 使用位于 `CASHU_DIR` 目录下的 `.env` 文件进行额外配置。
+如果未提供 `MINT_URL`，系统可能会默认使用公共测试代币铸造服务，从而导致问题。请始终使用您信任的代币铸造服务。
 
-## Notes
+## 注意事项
 
-- Tokens are large strings starting with `cashuA...` (V3) or `cashuB...` (V4).
-- Ensure you back up your mnemonic if using significant funds (see `cashu info`).
+- 令牌是由 `cashuA...`（V3 版本）或 `cashuB...`（V4 版本）开头的字符串。
+- 如果使用大量资金，请务必备份您的助记词（参见 `cashu info` 命令）。

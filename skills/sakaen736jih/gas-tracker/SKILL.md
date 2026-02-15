@@ -1,24 +1,24 @@
 ---
 name: gas-tracker
-description: Monitor Ethereum gas prices in real-time - get current gwei rates, estimate transaction costs, find optimal times to transact, and track gas trends.
+description: 实时监控以太坊的气体费用（gas prices）——获取当前的 gwei 价格，估算交易成本，找到最佳的交易时间，并跟踪气体费用的趋势。
 metadata: {"openclaw":{"requires":{"bins":["cast"]},"install":[{"id":"foundry","kind":"shell","command":"curl -L https://foundry.paradigm.xyz | bash && foundryup","bins":["cast"],"label":"Install Foundry (cast)"}]}}
 ---
 
-# Ethereum Gas Tracker
+# 以太坊Gas费用追踪器
 
-## Quick Gas Check
+## 快速Gas费用查询
 
-Current gas price:
+当前Gas费用：
 ```bash
 cast gas-price --rpc-url https://eth.llamarpc.com | xargs -I {} cast --to-unit {} gwei
 ```
 
-With priority fee (EIP-1559):
+使用优先费用（EIP-1559）时：
 ```bash
 cast base-fee --rpc-url https://eth.llamarpc.com | xargs -I {} cast --to-unit {} gwei
 ```
 
-## Detailed Gas Info
+## 详细Gas费用信息
 
 ```bash
 python3 << 'EOF'
@@ -56,7 +56,7 @@ for name, limit in gas_limits.items():
 EOF
 ```
 
-## EIP-1559 Gas Estimation
+## EIP-1559 Gas费用估算
 
 ```bash
 python3 << 'EOF'
@@ -89,9 +89,9 @@ print("⚡ Urgent: 5-10+ Gwei")
 EOF
 ```
 
-## Gas Price APIs
+## Gas费用相关API
 
-### Etherscan Gas Oracle
+### Etherscan Gas费用预测服务
 
 ```bash
 curl -s "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourKey" | \
@@ -105,7 +105,7 @@ print(f\"🚀 Fast: {data['FastGasPrice']} Gwei\")
 print(f\"📦 Base Fee: {data.get('suggestBaseFee', 'N/A')} Gwei\")"
 ```
 
-### Blocknative Gas Estimator
+### Blocknative Gas费用估算工具
 
 ```bash
 curl -s "https://api.blocknative.com/gasprices/blockprices" \
@@ -119,7 +119,7 @@ for p in prices:
     print(f\"{p['confidence']}% confidence: {p['price']} Gwei | Priority: {p['maxPriorityFeePerGas']} Gwei\")"
 ```
 
-## Real-Time Monitor
+## 实时监控
 
 ```bash
 python3 << 'EOF'
@@ -161,7 +161,7 @@ while True:
 EOF
 ```
 
-## Gas Cost Calculator
+## Gas费用计算器
 
 ```bash
 python3 << 'EOF'
@@ -213,7 +213,7 @@ for name, gas_limit in operations:
 EOF
 ```
 
-## Historical Gas Analysis
+## 历史Gas费用分析
 
 ```bash
 python3 << 'EOF'
@@ -245,7 +245,7 @@ for idx, fee in sorted_fees[:5]:
 EOF
 ```
 
-## Gas Price Alerts
+## Gas费用提醒
 
 ```bash
 python3 << 'EOF'
@@ -282,7 +282,7 @@ while True:
 EOF
 ```
 
-## L2 Gas Comparison
+## 第二层网络（L2）Gas费用比较
 
 ```bash
 python3 << 'EOF'
@@ -314,30 +314,30 @@ for name, rpc in chains.items():
 EOF
 ```
 
-## Best Times to Transact
+## 最佳交易时间
 
-| Time (UTC) | Gas Level | Reason |
+| 时间（UTC） | Gas费用水平 | 原因 |
 |------------|-----------|--------|
-| 00:00-06:00 | Low | US sleeping, Asia waking |
-| 06:00-12:00 | Medium | Europe active |
-| 12:00-18:00 | High | US + Europe overlap |
-| 18:00-00:00 | Medium | US peak, Europe sleeping |
-| Weekends | Low | Less trading activity |
+| 00:00-06:00 | 低 | 美国处于睡眠时间，亚洲地区开始活跃 |
+| 06:00-12:00 | 中等 | 欧洲地区活跃 |
+| 12:00-18:00 | 高 | 美国和欧洲地区同时活跃 |
+| 18:00-00:00 | 中等 | 美国交易高峰期，欧洲地区处于睡眠时间 |
+| 周末 | 低 | 交易活动较少 |
 
-## Gas Tokens
+## Gas费用相关代币
 
-| Option | Description |
+| 选项 | 说明 |
 |--------|-------------|
-| Flashbots | MEV protection, often lower gas |
-| Gas tokens (deprecated) | CHI, GST2 no longer work post-London |
-| Batch transactions | Combine multiple ops |
-| L2 solutions | Arbitrum, Optimism for lower fees |
+| Flashbots | 提供MEV（Minimizes Emission Vulnerability）保护，通常Gas费用较低 |
+| Gas费用代币（已弃用） | CHI、GST2在伦敦硬分叉后不再适用 |
+| 批量交易 | 合并多个操作以降低费用 |
+| 第二层网络解决方案（L2） | Arbitrum、Optimism等方案提供更低的费用 |
 
-## Notes
+## 注意事项
 
-- Gas prices fluctuate with network demand
-- Base fee burns, priority fee goes to validators
-- EIP-1559: maxFeePerGas = baseFee + priorityFee
-- Use Flashbots for MEV protection
-- L2s are 10-100x cheaper for most operations
-- Weekend transactions typically cheaper
+- Gas费用会随网络需求波动 |
+- 基础费用会被烧毁（即被销毁），优先费用归验证者所有 |
+- EIP-1559规定：maxFeePerGas = 基础费用 + 优先费用 |
+- 使用Flashbots可以有效保护MEV |
+- 第二层网络（L2）的多数操作费用比主网便宜10-100倍 |
+- 周末的交易费用通常较低 |

@@ -1,6 +1,12 @@
 ---
 name: zotero
-description: Zotero integration for both personal and Group libraries. search items (title/author/tags/year/fulltext/combined queries), create/update/delete items and metadata, add/edit item-level notes, perform bulk operations, and sync attachments (upload PDF or link URL). Trigger when user asks to search their Zotero, add or modify an item/note, upload attachments, or manage group libraries.
+description: Zotero集成支持个人库和团队库：  
+- 支持搜索项目（按标题、作者、标签、年份、全文或组合条件进行查询）；  
+- 支持创建、更新、删除项目及其元数据；  
+- 支持添加或编辑项目级别的注释；  
+- 支持批量操作；  
+- 支持同步附件（上传PDF文件或提供附件的URL链接）。  
+- 当用户请求搜索Zotero中的内容、添加或修改项目/注释、上传附件或管理团队库时，系统会自动触发相应的操作。
 metadata:
   clawdbot:
     primaryEnv: ZOTERO_API_KEY
@@ -15,85 +21,88 @@ metadata:
       example: "config = { env = { ZOTERO_API_KEY = \"xxxx\"; ZOTERO_USER_ID = \"12345\"; }; };"
 ---
 
-# Zotero (overview)
+# Zotero（概述）
 
-This skill enables safe, repeatable programmatic access to a user's Zotero account (personal and group libraries) using Zotero API keys. It provides example scripts, a small Python client wrapper around pyzotero, a CLI example, and guidance for secure configuration and packaging as an AgentSkill.
+该技能允许使用Zotero API密钥安全、可重复地通过编程方式访问用户的Zotero账户（个人库和组库）。它提供了示例脚本、一个基于pyzotero的Python客户端封装、一个命令行界面（CLI）示例，以及关于如何安全配置该技能并将其打包为AgentSkill的指导。
 
-## Triggers (must be present in description)
+## 触发条件（描述中必须包含）
 
-Activate this skill when the user asks things like: "search my Zotero for X", "add a note to item <id>", "upload PDF to Zotero", "create item in Group library <id>", or any request explicitly referencing Zotero library management.
+当用户提出如下请求时，激活此技能：  
+- “在我的Zotero中搜索‘深度学习’并按年份排序”  
+- “为项目<id>添加备注”  
+- “将PDF文件上传到Zotero”  
+- “在组库<id>中创建项目”  
+- 或任何明确涉及Zotero库管理的请求  
 
-## Preconditions
+## 先决条件  
 
-- The user provides a Zotero API key (developer key) and the target userID and/or groupID(s).
-- **Credentials are resolved with the following priority** (first match is used):
-  1. Command-line argument flags (e.g., `--user 12345` or `--group 99999`)
-  2. Environment variables: `ZOTERO_API_KEY`, `ZOTERO_USER_ID`, `ZOTERO_GROUP_ID`
-  
-- `ZOTERO_API_KEY` is **required** (must be set as an environment variable or passed explicitly). Do NOT store raw keys in the repository.
-- Implementation uses the pyzotero Python library by default. A Node.js variant can be added later if desired.
-- If environment variables are set, no user input is needed—the skill executes automatically with the configured credentials.
+- 用户需提供Zotero API密钥（开发者密钥）以及目标用户ID和/或组ID。  
+- **凭据的解析优先级如下**（优先使用第一个匹配项）：  
+  1. 命令行参数标志（例如：`--user 12345` 或 `--group 99999`）  
+  2. 环境变量：`ZOTERO_API_KEY`、`ZOTERO_USER_ID`、`ZOTERO_GROUP_ID`  
 
-## Supported features
+- **`ZOTERO_API_KEY`是必需的**（必须通过环境变量设置或明确传递）。**请勿将原始密钥存储在代码仓库中**。  
+- 该技能默认使用pyzotero Python库实现；如需，后续可添加Node.js版本。  
+- 如果设置了环境变量，则无需用户输入，技能将使用配置好的凭据自动执行。  
 
-- Search items by title, creator/author, tags, year, fulltext, or arbitrary field combinations; supports sorting and pagination.
-- Create new items (journalArticle, book, conferencePaper, thesis, etc.) with standard Zotero metadata fields (title, creators, date, abstractNote, tags, publicationTitle, DOI, ISBN, extra, etc.).
-- Update item metadata by sending a field-level patch/diff.
-- Add / edit / delete item-level notes (Zotero item notes). PDF internal annotations/highlights are out-of-scope (advanced extension).
-- Upload attachments (local PDF) and link attachments (external URLs) to items; include attachment metadata (title, contentType).
-- Delete single items or perform batch operations (with explicit confirmation and dry-run options).
-- List available groups and collections for the authenticated key.
-- Logging of key operations to local logs (no API keys or full PDF contents in logs by default).
+## 支持的功能  
 
-## Bundled resources (recommended)
+- 按标题、创建者/作者、标签、年份、全文或任意字段组合搜索项目；支持排序和分页。  
+- 使用标准的Zotero元数据字段（标题、创建者、日期、摘要、标签、出版物标题、DOI、ISBN等）创建新项目（如期刊文章、书籍、会议论文、学位论文等）。  
+- 通过发送字段级别的更新请求来修改项目元数据。  
+- 添加/编辑/删除项目级别的备注（Zotero项目备注）。PDF内部的注释/高亮功能不在支持范围内（属于高级扩展功能）。  
+- 上传附件（本地PDF文件）并将外部URL链接的附件添加到项目中；同时包含附件元数据（标题、内容类型）。  
+- 删除单个项目或执行批量操作（提供明确的确认提示和预测试选项）。  
+- 列出已认证用户可使用的组和集合。  
+- 将操作记录到本地日志文件中（默认情况下，日志中不包含API密钥或PDF文件内容）。  
 
-- scripts/
-  - pyzotero_client.py — lightweight wrapper around pyzotero with functions: auth, search_items, create_item, update_item, add_note, upload_attachment, delete_items, list_groups, list_collections.
-  - cli.py — example CLI: zotero search|create|update|note|upload|delete — accepts JSON input or flags.
-  - install.sh - installs pyzotero and dependencies in a virtual environment; includes instructions for setting ZOTERO_API_KEY.
+## 推荐的配套资源  
 
-- references/
-  - zotero-api.md — concise Zotero Web API reference (endpoints used, rate limits, common error codes).
-  - usage-examples.md — mapping from natural-language triggers to API actions and sample payloads.
-  - security.md — recommendation to store API key in environment variables or a local secrets manager; do not commit keys.
+- **脚本：**  
+  - `pyzotero_client.py`：基于pyzotero的轻量级封装，包含`auth`、`search_items`、`create_item`、`update_item`、`add_note`、`upload_attachment`、`delete_items`、`list_groups`、`list_collections`等函数。  
+  - `cli.py`：示例CLI脚本，支持`zotero search`、`create`、`update`、`note`、`upload`、`delete`等命令，可接受JSON输入或参数。  
+  - `install.sh`：在虚拟环境中安装pyzotero及其依赖项，并提供设置`ZOTERO_API_KEY`的说明。  
 
-- assets/
-  - config.example.json — example configuration (no keys): { api_key_env: "ZOTERO_API_KEY", user_id: null, group_ids: [] }
+- **参考文档：**  
+  - `zotero-api.md`：简明的Zotero Web API参考文档（使用的端点、速率限制、常见错误代码）。  
+  - `usage-examples.md`：将自然语言请求映射到API操作及示例数据格式的说明。  
+  - `security.md`：建议将API密钥存储在环境变量或本地密钥管理工具中，切勿将密钥提交到代码仓库。  
 
-## Design & implementation notes
+- **资源文件：**  
+  - `config.example.json`：示例配置文件（不含密钥）：`{ api_key_env: "ZOTERO_API_KEY", user_id: null, group_ids: [] }`  
 
-- Default language: Python (pyzotero). All write operations require an explicit confirmation flag (e.g., --yes) to avoid accidental destructive changes.
-- Batch delete defaults to a dry-run; a second confirmation is required to execute.
-- Attachment upload flow: POST to /users/<userID or groupID>/items/<itemKey>/children with file data, then update parent-child relationships as required (see zotero-api.md).
-- Error handling: API errors are translated into readable messages including suggested recovery actions (retry, check permissions, check rate limits).
-- Logging: by default logs to ~/.config/zotero-skill/logs/operations.log. Logs omit ZOTERO_API_KEY and do not store full PDF contents.
+## 设计与实现注意事项  
 
-## Example natural-language triggers
+- **默认编程语言**：Python（使用pyzotero库）。所有写入操作都需要明确的确认标志（例如`--yes`），以防止意外破坏数据。  
+- 批量删除操作默认为预测试模式；执行前需要再次确认。  
+- 附件上传流程：通过`POST`请求发送到`/users/<userID>/items/<itemKey>/children`，然后根据需要更新父子关系（详见`zotero-api.md`）。  
+- **错误处理**：API错误会转换为易于理解的提示信息，并提供相应的恢复建议（如重试、检查权限、检查速率限制）。  
+- **日志记录**：日志文件默认保存在`~/.config/zotero-skill/logs/operations.log`中，日志中不包含API密钥或PDF文件内容。  
 
-When environment variables (`ZOTERO_API_KEY`, `ZOTERO_USER_ID`, `ZOTERO_GROUP_ID`) are configured, the skill executes automatically without additional user prompts:
+## 自然语言请求示例  
 
-- "Search my Zotero for 'deep learning' and sort by year"
-- "Add a note to item 12345: 'Expand methods section with ablation study'"
-- "Upload /home/user/papers/foo.pdf as an attachment to item 67890"
-- "Create a new journalArticle in Group library 99999 with title X, authors Y, DOI Z"
+当配置了环境变量`ZOTERO_API_KEY`、`ZOTERO_USER_ID`、`ZOTERO_GROUP_ID`后，该技能会自动执行，无需额外提示：  
+- “在我的Zotero中搜索‘深度学习’并按年份排序”  
+- “为项目12345添加备注：‘扩展方法部分，包含消融研究内容’”  
+- “将`/home/user/papers/foo.pdf`作为附件上传到项目67890”  
+- “在组库99999中创建一篇新的期刊文章，标题为X，作者为Y，DOI为Z”  
 
-When using the CLI without `ZOTERO_USER_ID` or `ZOTERO_GROUP_ID` set, you can override via arguments:
-- `python cli.py search --q "term" --user 12345` (overrides ZOTERO_USER_ID env var)
+**使用CLI时（未设置`ZOTERO_USER_ID`或`ZOTERO_GROUP_ID`）：**可以通过参数进行覆盖：  
+- `python cli.py search --q "term" --user 12345`（覆盖`ZOTERO_USER_ID`环境变量）  
 
-## Security
+## 安全性  
 
-- Required environment variables (in the execution environment):
-
+- **执行环境必须设置的必要环境变量：**  
   ```bash
   export ZOTERO_API_KEY="<your_api_key_here>"
   export ZOTERO_USER_ID="<your_user_id>"         # For personal library (optional if using groups)
   export ZOTERO_GROUP_ID="<your_group_id>"       # For group library (optional if using personal)
-  ```
+  ```  
 
-- Do not commit real keys to source control. Prefer OS keyrings or secret managers for long-term storage.
-- Once these environment variables are set, the skill will use them automatically without requiring user input.
+- **注意事项：**  
+  **请勿将实际API密钥提交到代码仓库中**。建议使用操作系统提供的密钥管理工具进行长期存储。  
+- 一旦设置了这些环境变量，技能将自动使用它们，无需用户再次输入。  
 
-## Notes for integrators
-
-- If a JavaScript/Node implementation is required, add a node/ subfolder and provide equivalent wrappers and examples.
-- Advanced feature: support parsing and syncing PDF annotations or highlights — requires downloading PDFs and using annotation parsers and is out-of-scope for initial release.
+## 集成说明：**  
+- 如需JavaScript/Node.js实现，请创建相应的代码文件和示例。  
+- **高级功能：**支持解析和同步PDF注释/高亮内容——这需要下载PDF文件并使用相应的解析工具，目前不在初始版本的开发范围内。

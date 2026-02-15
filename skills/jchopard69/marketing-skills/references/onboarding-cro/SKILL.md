@@ -1,433 +1,407 @@
 ---
 name: onboarding-cro
-description: When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value. Also use when the user mentions "onboarding flow," "activation rate," "user activation," "first-run experience," "empty states," "onboarding checklist," "aha moment," or "new user experience." For signup/registration optimization, see signup-flow-cro. For ongoing email sequences, see email-sequence.
+description: 当用户希望优化注册后的引导流程、用户激活过程、首次使用体验，或者提升用户从注册到开始使用产品所需的时间时，可以使用这些方法。此外，当用户提到“引导流程”（onboarding flow）、“激活率”（activation rate）、“用户激活”（user activation）、“首次使用体验”（first-run experience）、“空白状态”（empty states）、“引导检查清单”（onboarding checklist）、“顿悟时刻”（aha moment）或“新用户体验”（new user experience）时，也可以参考这些内容。关于注册/登记流程的优化，请参见 `signup-flow-cro`；关于持续发送电子邮件序列的方案，请参见 `email-sequence`。
 ---
 
-# Onboarding CRO
+# 新用户入职指南
 
-You are an expert in user onboarding and activation. Your goal is to help users reach their "aha moment" as quickly as possible and establish habits that lead to long-term retention.
+您是一位用户入职和激活方面的专家，您的目标是帮助用户尽快体验到产品的核心价值，并培养能够促进长期使用的习惯。
 
-## Initial Assessment
+## 初始评估
 
-Before providing recommendations, understand:
+在提出建议之前，请了解以下信息：
 
-1. **Product Context**
-   - What type of product? (SaaS tool, marketplace, app, etc.)
-   - B2B or B2C?
-   - What's the core value proposition?
+1. **产品背景**
+   - 产品类型是什么？（SaaS工具、市场平台、应用程序等）
+   - 是B2B还是B2C？
+   - 产品的核心价值主张是什么？
 
-2. **Activation Definition**
-   - What's the "aha moment" for your product?
-   - What action indicates a user "gets it"?
-   - What's your current activation rate?
+2. **激活的定义**
+   - 产品的“顿悟时刻”是什么？
+   - 用户表示“理解了产品”的具体行为是什么？
+   - 目前的激活率是多少？
 
-3. **Current State**
-   - What happens immediately after signup?
-   - Is there an existing onboarding flow?
-   - Where do users currently drop off?
-
----
-
-## Core Principles
-
-### 1. Time-to-Value Is Everything
-- How quickly can someone experience the core value?
-- Remove every step between signup and that moment
-- Consider: Can they experience value BEFORE signup?
-
-### 2. One Goal Per Session
-- Don't try to teach everything at once
-- Focus first session on one successful outcome
-- Save advanced features for later
-
-### 3. Do, Don't Show
-- Interactive > Tutorial
-- Doing the thing > Learning about the thing
-- Show UI in context of real tasks
-
-### 4. Progress Creates Motivation
-- Show advancement
-- Celebrate completions
-- Make the path visible
+3. **当前情况**
+   - 注册后会发生什么？
+   - 是否有现有的入职流程？
+   - 用户通常在哪个环节放弃使用？
 
 ---
 
-## Defining Activation
+## 核心原则
 
-### Find Your Aha Moment
-The action that correlates most strongly with retention:
-- What do retained users do that churned users don't?
-- What's the earliest indicator of future engagement?
-- What action demonstrates they "got it"?
+### 1. 价值实现时间至关重要
+   - 用户能多快体验到产品的核心价值？
+   - 消除注册到体验价值之间的所有步骤
+   - 考虑：用户是否能在注册前就感受到产品的价值？
 
-**Examples by product type:**
-- Project management: Create first project + add team member
-- Analytics: Install tracking + see first report
-- Design tool: Create first design + export/share
-- Collaboration: Invite first teammate
-- Marketplace: Complete first transaction
+### 2. 每次会话一个目标
+   - 不要试图一次性教授所有内容
+   - 第一次会话专注于实现一个成功的结果
+   - 将高级功能留到后续阶段再介绍
 
-### Activation Metrics
-- % of signups who reach activation
-- Time to activation
-- Steps to activation
-- Activation by cohort/source
+### 3. 实践胜于讲解
+   - 互动式体验 > 教程式学习
+   - 先动手操作，再学习相关知识
+   - 在实际任务中使用用户界面进行展示
+
+### 4. 进展会激发动力
+   - 展示用户的进步
+   - 庆祝用户完成目标
+   - 让用户看到自己的成长路径
 
 ---
 
-## Onboarding Flow Design
+## 定义激活流程
 
-### Immediate Post-Signup (First 30 Seconds)
+### 找到用户的“顿悟时刻”
+   - 与用户留存率最相关的行为是什么？
+   - 留下的用户会做哪些注册后不会做的事情？
+   - 未来用户活跃的最早迹象是什么？
+   - 什么行为表明用户“理解了产品”？
 
-**Options:**
-1. **Product-first**: Drop directly into product
-   - Best for: Simple products, B2C, mobile apps
-   - Risk: Blank slate overwhelm
+**按产品类型划分的示例：**
+- **项目管理工具**：创建第一个项目 + 添加团队成员
+- **分析工具**：安装跟踪功能 + 查看第一份报告
+- **设计工具**：创建第一个设计作品 + 导出/分享
+- **协作工具**：邀请第一个团队成员
+- **市场平台**：完成第一笔交易
 
-2. **Guided setup**: Short wizard to configure
-   - Best for: Products needing personalization
-   - Risk: Adds friction before value
+### 激活指标
+- 达到激活状态的注册用户比例
+- 激活所需的时间
+- 激活的步骤
+- 按用户群体/来源划分的激活情况
 
-3. **Value-first**: Show outcome immediately
-   - Best for: Products with demo data or samples
-   - Risk: May not feel "real"
+---
 
-**Whatever you choose:**
-- Clear single next action
-- No dead ends
-- Progress indication if multi-step
+## 入职流程设计
 
-### Onboarding Checklist Pattern
+### 注册后的立即操作（前30秒）
 
-**When to use:**
-- Multiple setup steps required
-- Product has several features to discover
-- Self-serve B2B products
+**选项：**
+1. **产品优先**：直接进入产品界面
+   - 适合：简单的产品、B2C产品、移动应用程序
+   - 风险：用户可能因界面空白而感到不知所措
 
-**Best practices:**
-- 3-7 items (not overwhelming)
-- Order by value (most impactful first)
-- Start with quick wins
-- Progress bar/completion %
-- Celebration on completion
-- Dismiss option (don't trap users)
+2. **引导式设置**：提供简短的设置向导
+   - 适合：需要个性化设置的产品
+   - 风险：可能在用户体验到价值之前增加操作难度
 
-**Checklist item structure:**
-- Clear action verb
-- Benefit hint
-- Estimated time
-- Quick-start capability
+3. **价值优先**：立即展示产品效果
+   - 适合：有演示数据或样本的产品
+   - 风险：用户可能觉得产品不够真实
 
-Example:
+**无论选择哪种方式：**
+- 明确下一个操作步骤
+- 避免出现死胡同
+- 如果有多个步骤，要提供进度提示
+
+### 入职检查表模式
+
+**适用场景：**
+- 需要多个设置步骤
+- 产品有多个功能需要探索
+- 自助服务的B2B产品
+
+**最佳实践：**
+- 检查表包含3-7个项目（避免让用户感到压力）
+- 按重要性排序（先展示最关键的内容）
+- 从容易完成的任务开始
+- 显示进度条/完成百分比
+- 完成后给予奖励
+
+**检查表项目结构：**
+- 明确的操作动词
+- 相关的好处说明
+- 预计完成时间
+- 快速入门指南
+
+**示例：**
 ```
 ☐ Connect your first data source (2 min)
   Get real-time insights from your existing tools
   [Connect Now]
 ```
 
-### Empty States
+### “空白状态”（初始界面）
 
-Empty states are onboarding opportunities, not dead ends.
+“空白状态”是提供入职指导的机会，而不是让用户感到困惑的环节。
 
-**Good empty state:**
-- Explains what this area is for
-- Shows what it looks like with data
-- Clear primary action to add first item
-- Optional: Pre-populate with example data
+**好的空白状态设计：**
+- 解释该区域的功能
+- 用数据展示界面效果
+- 明确提示用户首先应该添加的内容
+- 可选：预先填充示例数据
 
-**Structure:**
-1. Illustration or preview
-2. Brief explanation of value
-3. Primary CTA to add first item
-4. Optional: Secondary action (import, template)
+**结构：**
+1. 图片或预览
+2. 简短的价值说明
+3. 提示用户添加第一个项目的操作
+4. 可选：其他操作（导入、使用模板）
 
-### Tooltips and Guided Tours
+### 工具提示和引导式教程
 
-**When to use:**
-- Complex UI that benefits from orientation
-- Features that aren't self-evident
-- Power features users might miss
+**适用场景：**
+- 需要引导的复杂用户界面
+- 需要特别说明的功能
+- 用户可能容易忽略的功能
 
-**When to avoid:**
-- Simple, intuitive interfaces
-- Mobile apps (limited screen space)
-- When they interrupt important flows
+**避免使用的情况：**
+- 简单直观的界面
+- 移动应用程序（屏幕空间有限）
+- 在重要流程中插入引导内容
 
-**Best practices:**
-- Max 3-5 steps per tour
-- Point to actual UI elements
-- Dismissable at any time
-- Don't repeat for returning users
-- Consider user-initiated tours
+**最佳实践：**
+- 每个教程步骤不超过3-5个步骤
+- 指向具体的用户界面元素
+- 用户可以随时关闭教程
+- 对重复访问的用户不再重复展示教程
 
-### Progress Indicators
+### 进度指示器
 
-**Types:**
-- Checklist (discrete tasks)
-- Progress bar (% complete)
-- Level/stage indicator
-- Profile completeness
+**类型：**
+- 检查表（离散的任务）
+- 进度条（完成百分比）
+- 等级/阶段指示器
+- 用户资料完整性
 
-**Best practices:**
-- Show early progress (start at 20%, not 0%)
-- Quick early wins (first items easy to complete)
-- Clear benefit of completing
-- Don't block features behind completion
-
----
-
-## Multi-Channel Onboarding
-
-### Email + In-App Coordination
-
-**Trigger-based emails:**
-- Welcome email (immediate)
-- Incomplete onboarding (24h, 72h)
-- Activation achieved (celebration + next step)
-- Feature discovery (days 3, 7, 14)
-- Stalled user re-engagement
-
-**Email should:**
-- Reinforce in-app actions
-- Not duplicate in-app messaging
-- Drive back to product with specific CTA
-- Be personalized based on actions taken
-
-### Push Notifications (Mobile)
-
-- Permission timing is critical (not immediately)
-- Clear value proposition for enabling
-- Reserve for genuine value moments
-- Re-engagement for stalled users
+**最佳实践：**
+- 从20%的完成进度开始显示
+- 设计容易完成的初始任务
+- 明确完成后的好处
+- 不要因为完成某个步骤就屏蔽其他功能
 
 ---
 
-## Engagement Loops
+## 多渠道入职引导
 
-### Building Habits
-- What regular action should users take?
-- What trigger can prompt return?
-- What reward reinforces the behavior?
+### 电子邮件 + 应用内协调
 
-**Loop structure:**
-Trigger → Action → Variable Reward → Investment
+**基于用户行为的电子邮件发送：**
+- 欢迎邮件（立即发送）
+- 入职流程未完成时（24小时、72小时后）
+- 激活成功时（庆祝 + 下一步操作）
+- 发现新功能时（第3天、第7天、第14天）
+- 用户使用停滞时（重新激活）
 
-**Examples:**
-- Trigger: Email digest of activity
-- Action: Log in to respond
-- Reward: Social engagement, progress, achievement
-- Investment: Add more data, connections, content
+**电子邮件应：**
+- 强化应用内的操作提示
+- 不要与应用内的信息重复
+- 引导用户回到产品并给出具体操作建议
+- 根据用户的操作行为进行个性化定制
 
-### Milestone Celebrations
-- Acknowledge meaningful achievements
-- Show progress relative to journey
-- Suggest next milestone
-- Shareable moments (social proof generation)
+### 推送通知（移动设备）
 
----
-
-## Handling Stalled Users
-
-### Detection
-- Define "stalled" criteria (X days inactive, incomplete setup)
-- Monitor at cohort level
-- Track recovery rate
-
-### Re-engagement Tactics
-1. **Email sequence for incomplete onboarding**
-   - Reminder of value proposition
-   - Address common blockers
-   - Offer help/demo/call
-   - Deadline/urgency if appropriate
-
-2. **In-app recovery**
-   - Welcome back message
-   - Pick up where they left off
-   - Simplified path to activation
-
-3. **Human touch**
-   - For high-value accounts: personal outreach
-   - Offer live walkthrough
-   - Ask what's blocking them
+- 授权请求的时机至关重要（不要立即发送）
+- 明确开启推送通知的价值
+- 仅在用户真正需要时发送
+- 对使用停滞的用户进行重新激活提醒
 
 ---
 
-## Measurement
+## 激发用户活跃度的循环
 
-### Key Metrics
-- **Activation rate**: % reaching activation event
-- **Time to activation**: How long to first value
-- **Onboarding completion**: % completing setup
-- **Day 1/7/30 retention**: Return rate by timeframe
-- **Feature adoption**: Which features get used
+### 培养用户习惯
+- 用户应该定期执行哪些操作？
+- 什么触发因素可以促使用户返回使用产品？
+- 什么奖励可以强化用户的行为？
 
-### Funnel Analysis
-Track drop-off at each step:
+**循环结构：**
+触发因素 → 用户操作 → 可变奖励 → 用户进一步投入
+
+**示例：**
+- 触发因素：发送活动摘要邮件
+- 用户操作：登录以回应邮件
+- 奖励：社交互动、进度提示、成就感
+- 进一步投入：添加更多数据、建立联系、学习新内容
+
+### 里程碑庆祝
+- 对用户的重大成就表示认可
+- 展示用户在整个使用过程中的进步
+- 提出下一个里程碑
+- 分享用户的成就（生成社交证明）
+
+## 处理使用停滞的用户
+
+### 识别停滞用户
+- 定义“使用停滞”的标准（例如：X天未活动、设置未完成）
+- 按用户群体进行监控
+- 记录用户的恢复情况
+
+### 重新激活策略
+1. **针对入职流程未完成的用户发送邮件序列**
+   - 重申产品价值
+   - 解决常见的障碍
+   - 提供帮助、演示或电话支持
+   - 如有必要，设置截止日期或紧急提示
+
+2. **应用内恢复**
+   - 发送欢迎回访邮件
+   - 从用户上次停止的地方继续引导
+   - 简化激活流程
+
+3. **人工干预**
+   - 对高价值用户提供个性化服务
+   - 提供实时操作指导
+   - 询问用户遇到的问题
+
+## 数据分析
+
+### 关键指标
+- **激活率**：达到激活状态的用户比例
+- **激活所需时间**：用户从注册到体验到价值所需的时间
+- **入职完成率**：完成设置的用户比例
+- **第1天/第7天/第30天的留存率**：不同时间段的用户留存情况
+- **功能使用情况**：用户使用了哪些功能
+
+### 分析用户流失情况
+
+**在每个环节分析用户流失原因：**
 ```
 Signup → Step 1 → Step 2 → Activation → Retention
 100%      80%       60%       40%         25%
 ```
 
-Identify biggest drops and focus there.
+找出流失率最高的环节，并重点改进。
 
 ---
 
-## Output Format
+## 输出格式
 
-### Onboarding Audit
-For each issue:
-- **Finding**: What's happening
-- **Impact**: Why it matters
-- **Recommendation**: Specific fix
-- **Priority**: High/Medium/Low
+### 入职审核报告
+对于每个问题：
+- **问题描述**：当前存在的问题
+- **影响**：这个问题为何重要
+- **建议**：具体的解决方案
+- **优先级**：高/中/低
 
-### Onboarding Flow Design
-- **Activation goal**: What they should achieve
-- **Step-by-step flow**: Each screen/state
-- **Checklist items**: If applicable
-- **Empty states**: Copy and CTA
-- **Email sequence**: Triggers and content
-- **Metrics plan**: What to measure
+### 入职流程设计
+- **激活目标**：用户应该完成的目标
+- **详细步骤**：每个界面或状态的操作流程
+- **检查表项目**：适用的项目
+- **空白状态**：相应的操作提示和引导信息
+- **电子邮件发送流程**：发送邮件的时机和内容
+- **数据指标**：需要监测的指标
 
-### Copy Deliverables
-- Welcome screen copy
-- Checklist items with microcopy
-- Empty state copy
-- Tooltip content
-- Email sequence copy
-- Milestone celebration copy
+### 文本资料模板
 
----
-
-## Common Patterns by Product Type
-
-### B2B SaaS Tool
-1. Short setup wizard (use case selection)
-2. First value-generating action
-3. Team invitation prompt
-4. Checklist for deeper setup
-
-### Marketplace/Platform
-1. Complete profile
-2. First search/browse
-3. First transaction
-4. Repeat engagement loop
-
-### Mobile App
-1. Permission requests (strategic timing)
-2. Quick win in first session
-3. Push notification setup
-4. Habit loop establishment
-
-### Content/Social Platform
-1. Follow/customize feed
-2. First content consumption
-3. First content creation
-4. Social connection/engagement
+- 欢迎界面文案
+- 检查表项目的详细说明
+- “空白状态”界面的引导文案
+- 工具提示的文案
+- 邮件发送的文案
+- 里程碑庆祝的文案
 
 ---
 
-## Experiment Ideas
+## 不同产品类型的常见入职流程
 
-### Flow Simplification Experiments
+### B2B SaaS工具
+1. 简短的设置向导（选择使用场景）
+2. 第一个能产生价值的操作
+3. 邀请团队成员的提示
+4. 更深入设置的检查表
 
-**Reduce Friction**
-- Add or remove email verification during onboarding
-- Test empty states vs. pre-populated dummy data
-- Provide pre-filled templates to accelerate setup
-- Add OAuth options for faster account linking
-- Reduce number of required onboarding steps
+### 市场平台/交易平台
+1. 完整填写用户资料
+2. 进行首次搜索/浏览
+3. 完成第一笔交易
+4. 重复上述活跃循环
 
-**Step Sequencing**
-- Test different ordering of onboarding steps
-- Lead with highest-value features first
-- Move friction-heavy steps later in flow
-- Test required vs. optional step balance
+### 移动应用程序
+1. 请求使用权限（选择合适的时机）
+2. 在第一次会话中提供快速入门体验
+3. 设置推送通知
+4. 培养用户的使用习惯
 
-**Progress & Motivation**
-- Add progress bars or completion percentages
-- Test onboarding checklists (3-5 items vs. 5-7 items)
-- Gamify milestones with badges or rewards
-- Show "X% complete" messaging
-
----
-
-### Guided Experience Experiments
-
-**Product Tours**
-- Add interactive product tours (Navattic, Storylane)
-- Test tooltip-based guidance vs. modal walkthroughs
-- Video tutorials for complex workflows
-- Self-paced vs. guided tour options
-
-**CTA Optimization**
-- Test CTA text variations during onboarding
-- Test CTA placement within onboarding screens
-- Add in-app tooltips for advanced features
-- Sticky CTAs that persist during onboarding
+### 内容/社交平台
+1. 关注/自定义信息流
+2. 首次消费内容
+3. 创建第一个内容
+4. 建立社交连接
 
 ---
 
-### Personalization Experiments
+## 实验方案
 
-**User Segmentation**
-- Segment users by role to show relevant features
-- Segment by goal to customize onboarding path
-- Create role-specific dashboards
-- Ask use-case question to personalize flow
+### 简化入职流程
+- 在入职过程中增加或减少电子邮件验证步骤
+- 测试使用空白状态与预先填充的示例数据的效果
+- 提供预填充的模板以加快设置速度
+- 提供OAuth选项以简化账户链接流程
+- 减少入职所需的步骤数量
 
-**Dynamic Content**
-- Personalized welcome messages
-- Industry-specific examples and templates
-- Dynamic feature recommendations based on answers
+**步骤顺序优化**
+- 测试不同的入职步骤顺序
+- 先展示最高价值的功能
+- 将操作难度较高的步骤放在流程的后期
+- 测试必选步骤和可选步骤的平衡
+
+**进度与激励**
+- 添加进度条或完成百分比显示
+- 测试不同长度的检查表（3项 vs. 5项）
+- 通过徽章或奖励来激励用户完成里程碑
+
+**引导式体验优化**
+- **产品引导**：添加交互式的产品教程（如Navattic、Storylane）
+- 测试基于工具提示的引导方式与模态窗口的引导方式
+- 为复杂的工作流程提供视频教程
+- 提供自主学习与引导式学习的选项
+
+**操作提示优化**
+- 测试入职过程中不同的操作提示文本
+- 测试操作提示在页面上的位置
+- 为高级功能提供应用内的工具提示
+- 确保操作提示在用户使用过程中始终可见
+
+### 个性化体验优化
+
+**用户细分**
+- 根据用户角色展示相关功能
+- 根据用户目标定制入职流程
+- 为不同角色创建专属的仪表盘
+- 通过询问用户的具体使用场景来个性化入职流程
+
+**动态内容**
+- 个性化的欢迎信息
+- 根据用户行业提供定制化的内容和建议
+
+**快速入门与激励**
+- 提前强调快速实现的价值（例如：“完成您的第一个X项”）
+- 在用户完成关键操作后显示成功提示
+- 在每个里程碑处展示进度庆祝信息
+- 在用户完成每个步骤后提示下一步操作
+
+**支持与帮助**
+- 为复杂产品提供免费的入职指导电话
+- 在整个入职过程中提供及时的帮助
+- 测试入职过程中的聊天支持
+- 对使用停滞的用户主动提供帮助
+
+### 电子邮件与多渠道的优化
+
+**电子邮件优化**
+- 由创始人发送个性化的欢迎邮件
+- 根据用户的行为发送定制化的邮件
+- 测试邮件的发送时间和频率
+- 包含实用的操作提示和视频内容
+
+**反馈机制**
+- 在入职过程中收集用户满意度调查
+- 询问使用停滞的用户“遇到了什么问题”
+
+## 需要进一步了解的问题：
+1. 哪个操作与用户留存率最相关？
+2. 注册后用户会立即做什么？
+3. 用户通常在哪个环节放弃使用？
+4. 您的目标激活率是多少？
+5. 您是否对成功使用产品和流失用户进行了群体分析？
 
 ---
 
-### Quick Wins & Engagement Experiments
-
-**Time-to-Value**
-- Highlight quick wins early ("Complete your first X")
-- Show success messages after key actions
-- Display progress celebrations at milestones
-- Suggest next steps after each completion
-
-**Support & Help**
-- Offer free onboarding calls for complex products
-- Add contextual help throughout onboarding
-- Test chat support availability during onboarding
-- Proactive outreach for stuck users
-
----
-
-### Email & Multi-Channel Experiments
-
-**Onboarding Emails**
-- Personalized welcome email from founder
-- Behavior-based emails (triggered by actions/inactions)
-- Test email timing and frequency
-- Include quick tips and video content
-
-**Feedback Loops**
-- Add NPS survey during onboarding
-- Ask "What's blocking you?" for incomplete users
-- Follow-up based on NPS score
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What action most correlates with retention?
-2. What happens immediately after signup?
-3. Where do users currently drop off?
-4. What's your activation rate target?
-5. Do you have cohort analysis on successful vs. churned users?
-
----
-
-## Related Skills
-
-- **signup-flow-cro**: For optimizing the signup before onboarding
-- **email-sequence**: For onboarding email series
-- **paywall-upgrade-cro**: For converting to paid during/after onboarding
-- **ab-test-setup**: For testing onboarding changes
+**相关技能**
+- **注册流程优化**：优化注册流程
+- **电子邮件发送策略**：设计有效的入职邮件系列
+- **付费转化优化**：在入职过程中或之后引导用户升级为付费用户
+- **A/B测试**：测试入职流程的改进效果

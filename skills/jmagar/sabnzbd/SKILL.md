@@ -1,16 +1,16 @@
 ---
 name: sabnzbd
 version: 1.0.0
-description: Manage Usenet downloads with SABnzbd. Use when the user asks to "check SABnzbd", "list NZB queue", "add NZB", "pause downloads", "resume downloads", "SABnzbd status", "Usenet queue", "NZB history", or mentions SABnzbd/sab download management.
+description: 使用 SABnzbd 管理 Usenet 下载任务。当用户请求“检查 SABnzbd 的状态”、“列出 NZB 下载队列”、“添加 NZB 文件”、“暂停下载”、“恢复下载”、“查看 SABnzbd 的详细信息”、“查看 Usenet 下载队列”或提及 SABnzbd 以及下载管理相关功能时，可以使用该工具。
 ---
 
 # SABnzbd API
 
-Manage Usenet downloads via SABnzbd's REST API.
+通过 SABnzbd 的 REST API 管理 Usenet 下载任务。
 
-## Setup
+## 设置
 
-Config: `~/.clawdbot/credentials/sabnzbd/config.json`
+配置文件：`~/.clawdbot/credentials/sabnzbd/config.json`
 
 ```json
 {
@@ -19,11 +19,11 @@ Config: `~/.clawdbot/credentials/sabnzbd/config.json`
 }
 ```
 
-Get your API key from SABnzbd Config → General → Security.
+从 SABnzbd 的“设置” → “安全”选项中获取您的 API 密钥。
 
-## Quick Reference
+## 快速参考
 
-### Queue Status
+### 队列状态
 
 ```bash
 # Full queue
@@ -36,7 +36,7 @@ Get your API key from SABnzbd Config → General → Security.
 ./scripts/sab-api.sh queue --nzo-id SABnzbd_nzo_xxxxx
 ```
 
-### Add NZB
+### 添加 NZB 文件
 
 ```bash
 # By URL (indexer link)
@@ -49,9 +49,9 @@ Get your API key from SABnzbd Config → General → Security.
 ./scripts/sab-api.sh add-file /path/to/file.nzb --category tv
 ```
 
-Priority: `force`, `high`, `normal`, `low`, `paused`, `duplicate`
+优先级：`force`、`high`、`normal`、`low`、`paused`、`duplicate`
 
-### Control Queue
+### 控制队列
 
 ```bash
 ./scripts/sab-api.sh pause              # Pause all
@@ -63,7 +63,7 @@ Priority: `force`, `high`, `normal`, `low`, `paused`, `duplicate`
 ./scripts/sab-api.sh purge              # Clear queue
 ```
 
-### Speed Control
+### 速度控制
 
 ```bash
 ./scripts/sab-api.sh speedlimit 50      # 50% of max
@@ -71,7 +71,7 @@ Priority: `force`, `high`, `normal`, `low`, `paused`, `duplicate`
 ./scripts/sab-api.sh speedlimit 0       # Unlimited
 ```
 
-### History
+### 历史记录
 
 ```bash
 ./scripts/sab-api.sh history
@@ -81,7 +81,7 @@ Priority: `force`, `high`, `normal`, `low`, `paused`, `duplicate`
 ./scripts/sab-api.sh delete-history <nzo_id>
 ```
 
-### Categories & Scripts
+### 分类与脚本
 
 ```bash
 ./scripts/sab-api.sh categories
@@ -90,7 +90,7 @@ Priority: `force`, `high`, `normal`, `low`, `paused`, `duplicate`
 ./scripts/sab-api.sh change-script <nzo_id> notify.py
 ```
 
-### Status & Info
+### 状态与信息
 
 ```bash
 ./scripts/sab-api.sh status             # Full status
@@ -99,14 +99,14 @@ Priority: `force`, `high`, `normal`, `low`, `paused`, `duplicate`
 ./scripts/sab-api.sh server-stats       # Download stats
 ```
 
-## Response Format
+## 响应格式
 
-Queue slot includes:
-- `nzo_id`, `filename`, `status`
-- `mb`, `mbleft`, `percentage`
-- `timeleft`, `priority`, `cat`
-- `script`, `labels`
+队列信息包括：
+- `nzo_id`、`filename`、`status`
+- `mb`、`mbleft`、`percentage`
+- `timeleft`、`priority`、`cat`
+- `script`、`labels`
 
-Status values: `Downloading`, `Queued`, `Paused`, `Propagating`, `Fetching`
+状态值：`Downloading`、`Queued`、`Paused`、`Propagating`、`Fetching`
 
-History status: `Completed`, `Failed`, `Queued`, `Verifying`, `Repairing`, `Extracting`
+历史记录状态：`Completed`、`Failed`、`Queued`、`Verifying`、`Repairing`、`Extracting`

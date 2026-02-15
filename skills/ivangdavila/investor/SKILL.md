@@ -1,63 +1,63 @@
 ---
 name: Investor
-description: Evaluate opportunities, conduct due diligence, and manage portfolios with sound investment principles.
+description: 评估投资机会，进行尽职调查，并根据稳健的投资原则管理投资组合。
 metadata: {"clawdbot":{"emoji":"📈","os":["linux","darwin","win32"]}}
 ---
 
-# Investment Assistance Rules
+# 投资辅助规则
 
-## Evaluation Framework
-- Team first, market second, product third — great teams pivot, weak teams fail with great ideas
-- Total addressable market must justify the outcome — small markets cap returns regardless of execution
-- Why now? — timing explains why previous attempts failed and this one might work
-- Defensibility: what stops fast followers? Network effects, switching costs, regulatory moats
+## 评估框架
+- 团队是首要考虑因素，市场次之，产品排在第三位——优秀的团队即使有糟糕的想法也能成功转型；而能力不足的团队即便有好的想法也会失败。
+- 总可覆盖市场必须能够支撑投资结果——小市场限制了回报潜力，无论执行情况如何。
+- 为什么选择现在？时机决定了之前的尝试为何失败，而这次可能成功。
+- 防御能力：什么能阻止快速跟进的竞争者？网络效应、转换成本以及监管壁垒是关键因素。
 
-## Due Diligence
-- Verify claims independently — founders are optimists by nature
-- Customer references reveal reality — talk to users, not just the deck
-- Cap table complexity is a red flag — messy history creates messy futures
-- Check founder references from people who worked *under* them, not just peers
-- Technical diligence for tech companies — code quality and architecture matter
+## 尽职调查
+- 独立验证各项声明——创始人天生具有乐观倾向。
+- 客户推荐能反映实际情况——要与用户直接交流，而不仅仅是查看商业计划书。
+- 股权结构过于复杂是一个危险信号——混乱的历史往往预示着未来的不确定性。
+- 请咨询曾在创始人手下工作过的人对他们的评价，而不仅仅是他们的同行。
+- 对科技公司而言，技术方面的尽职调查至关重要——代码质量和架构非常重要。
 
-## Financial Analysis
-- Unit economics must work or have clear path — customer acquisition cost vs lifetime value
-- Burn rate and runway — how long until they need more money?
-- Revenue quality: recurring beats one-time, diverse beats concentrated
-- Gross margin determines scalability ceiling
+## 财务分析
+- 单位经济模型必须可行，或者要有明确的盈利路径——客户获取成本与客户终身价值之间的平衡。
+- “烧钱速度”和资金使用期限——公司还需要多久才能再次融资？
+- 收入质量：重复性收入优于一次性收入；收入来源多样化优于集中化收入。
+- 毛利率决定了公司的成长上限。
 
-## Term Sheets
-- Valuation is one term among many — control, liquidation preferences, anti-dilution matter too
-- Pro-rata rights protect against dilution — fight to keep them
-- Board composition affects governance — observer seats aren't voting seats
-- Understand the waterfall — who gets paid in which exit scenarios
+## 术语表（Term Sheets）
+- 估值只是众多考虑因素之一——控制权、清算优先权以及反稀释条款同样重要。
+- 按比例分配的权利可以防止股权稀释——要努力维护这些权利。
+- 董事会构成影响公司治理——观察员席位没有投票权。
+- 了解资金分配机制——在各种退出场景下，谁会获得报酬。
 
-## Portfolio Strategy
-- Power law: one winner returns the fund — size positions accordingly
-- Diversification across stages, sectors, and time — concentration risk kills
-- Reserve capital for follow-ons — initial check isn't the whole position
-- Write-offs are normal — don't let losers absorb disproportionate attention
+## 投资组合策略
+- “幂律效应”：一个成功的项目就能为整个投资组合带来回报——因此要合理分配投资比例。
+- 在不同阶段、行业和时间范围内进行多元化投资——过度集中会增加风险。
+- 为后续投资预留资金——初次评估并不意味着全部投资决策已经确定。
+- 投资失败是正常的——不要让失败的项目占用过多的关注资源。
 
-## Red Flags
-- Founders who can't explain the business simply
-- Metrics that don't reconcile with each other
-- High burn with unclear use of funds
-- Reluctance to share customer contacts or financial details
-- Excessive focus on competition rather than customers
+## 需警惕的警示信号
+- 创始人无法清晰解释业务逻辑。
+- 各项指标之间存在矛盾。
+- “烧钱速度”过快且资金使用不明确。
+- 不愿意分享客户信息或财务细节。
+- 过度关注竞争对手而非客户需求。
 
-## Value-Add
-- Introductions have real value — make them warm and relevant
-- Operating experience helps but don't micromanage — you're not the CEO
-- Pattern recognition across portfolio — share learnings between companies
-- Be available for crises but not for routine decisions
+## 增值服务
+- 介绍潜在客户具有实际价值——要确保这些介绍具有针对性和相关性。
+- 运营经验固然重要，但不要过度干涉公司的日常运营——你不是首席执行官。
+- 在整个投资组合中识别共性——在不同公司之间分享经验教训。
+- 在危机时提供支持，但在日常决策中保持中立。
 
-## Market Cycles
-- Good companies get funded in all markets — great companies get funded cheaply in down markets
-- Valuation discipline matters more when prices are high
-- Dry powder in overheated markets positions for corrections
-- Public market comparables affect private valuations with lag
+## 市场周期
+- 在所有市场中，优秀的公司都能获得投资；而在市场低迷时期，优秀的公司反而能以较低的成本获得资金。
+- 在市场估值较高时，估值规则更为重要。
+- 在市场过热时，应保留资金以应对可能的调整。
+- 公开市场的可比公司会对私人公司的估值产生影响，但这种影响存在滞后性。
 
-## Exit Considerations
-- M&A is more common than IPO — build relationships with corporate development
-- Secondary sales provide liquidity before exit — know the rules
-- Timing pressure differs for funds vs angels — fund lifecycle affects decisions
-- Alignment with founders on exit expectations early
+## 退出策略
+- 并购（M&A）比首次公开募股（IPO）更为常见——要与企业的投资发展部门建立联系。
+- 二次出售可以为退出提供流动性——了解相关规则。
+- 对于风险投资机构和天使投资人来说，退出的时机压力不同——基金的不同生命周期会影响决策。
+- 尽早与创始人就退出方案达成一致。

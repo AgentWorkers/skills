@@ -17,9 +17,9 @@ metadata:
 
 # Constant Contact
 
-Access the Constant Contact V3 API with managed OAuth authentication. Manage contacts, email campaigns, contact lists, segments, and marketing analytics.
+您可以使用管理的OAuth身份验证来访问Constant Contact V3 API，该API支持联系人管理、电子邮件活动管理、联系人列表管理、客户群体管理以及营销数据分析等功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/constant-contact/v3/{resource}
 ```
 
-The gateway proxies requests to `api.cc.email/v3` and automatically injects your OAuth token.
+该API通过`api.cc.email/v3`接口接收请求，并自动插入您的OAuth令牌。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)登录或创建账户。
+2. 访问[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Constant Contact OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`管理您的Constant Contact OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Constant Contact connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Constant Contact连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,55 +140,55 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略该头部，系统将使用默认的（最旧的）活跃连接。
 
-## API Reference
+## API参考
 
-### Account
+### 账户
 
-#### Get Account Summary
+#### 获取账户信息
 
 ```bash
 GET /constant-contact/v3/account/summary
 ```
 
-#### Get Account Emails
+#### 获取账户中的电子邮件地址
 
 ```bash
 GET /constant-contact/v3/account/emails
 ```
 
-#### Get User Privileges
+#### 获取用户权限
 
 ```bash
 GET /constant-contact/v3/account/user/privileges
 ```
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /constant-contact/v3/contacts
 ```
 
-Query parameters:
-- `status` - Filter by status: `all`, `active`, `deleted`, `not_set`, `pending_confirmation`, `temp_hold`, `unsubscribed`
-- `email` - Filter by email address
-- `lists` - Filter by list ID(s)
-- `segment_id` - Filter by segment ID
-- `tags` - Filter by tag ID(s)
-- `updated_after` - ISO-8601 date filter
-- `include` - Include subresources: `custom_fields`, `list_memberships`, `taggings`, `notes`
-- `limit` - Results per page (default 50, max 500)
+查询参数：
+- `status` - 按状态过滤：`all`、`active`、`deleted`、`not_set`、`pending_confirmation`、`temp_hold`、`unsubscribed`
+- `email` - 按电子邮件地址过滤
+- `lists` - 按联系人列表ID过滤
+- `segment_id` - 按客户群体ID过滤
+- `tags` - 按标签ID过滤
+- `updated_after` - ISO-8601日期格式的过滤条件
+- `include` - 包含子资源：`custom_fields`、`list_memberships`、`taggings`、`notes`
+- `limit` - 每页显示的结果数量（默认50条，最多500条）
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /constant-contact/v3/contacts/{contact_id}
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /constant-contact/v3/contacts
@@ -207,7 +207,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PUT /constant-contact/v3/contacts/{contact_id}
@@ -222,15 +222,15 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /constant-contact/v3/contacts/{contact_id}
 ```
 
-#### Create or Update Contact (Sign-Up Form)
+#### 创建或更新联系人（注册表单）
 
-Use this endpoint to create a new contact or update an existing one without checking if they exist first:
+使用此接口可以创建新联系人或更新现有联系人，无需先检查其是否存在：
 
 ```bash
 POST /constant-contact/v3/contacts/sign_up_form
@@ -244,32 +244,32 @@ Content-Type: application/json
 }
 ```
 
-#### Get Contact Counts
+#### 获取联系人数量
 
 ```bash
 GET /constant-contact/v3/contacts/counts
 ```
 
-### Contact Lists
+### 联系人列表
 
-#### List Contact Lists
+#### 列出联系人列表
 
 ```bash
 GET /constant-contact/v3/contact_lists
 ```
 
-Query parameters:
-- `include_count` - Include contact count per list
-- `include_membership_count` - Include membership count
-- `limit` - Results per page
+查询参数：
+- `include_count` - 包含每个列表中的联系人数量
+- `includemembership_count` - 包含每个列表中的成员数量
+- `limit` - 每页显示的结果数量
 
-#### Get Contact List
+#### 获取联系人列表信息
 
 ```bash
 GET /constant-contact/v3/contact_lists/{list_id}
 ```
 
-#### Create Contact List
+#### 创建联系人列表
 
 ```bash
 POST /constant-contact/v3/contact_lists
@@ -282,7 +282,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact List
+#### 更新联系人列表
 
 ```bash
 PUT /constant-contact/v3/contact_lists/{list_id}
@@ -295,21 +295,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact List
+#### 删除联系人列表
 
 ```bash
 DELETE /constant-contact/v3/contact_lists/{list_id}
 ```
 
-### Tags
+### 标签
 
-#### List Tags
+#### 列出标签
 
 ```bash
 GET /constant-contact/v3/contact_tags
 ```
 
-#### Create Tag
+#### 创建标签
 
 ```bash
 POST /constant-contact/v3/contact_tags
@@ -320,7 +320,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Tag
+#### 更新标签
 
 ```bash
 PUT /constant-contact/v3/contact_tags/{tag_id}
@@ -331,21 +331,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Tag
+#### 删除标签
 
 ```bash
 DELETE /constant-contact/v3/contact_tags/{tag_id}
 ```
 
-### Custom Fields
+### 自定义字段
 
-#### List Custom Fields
+#### 列出自定义字段
 
 ```bash
 GET /constant-contact/v3/contact_custom_fields
 ```
 
-#### Create Custom Field
+#### 创建自定义字段
 
 ```bash
 POST /constant-contact/v3/contact_custom_fields
@@ -357,30 +357,30 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Custom Field
+#### 删除自定义字段
 
 ```bash
 DELETE /constant-contact/v3/contact_custom_fields/{custom_field_id}
 ```
 
-### Email Campaigns
+### 电子邮件活动
 
-#### List Email Campaigns
+#### 列出电子邮件活动
 
 ```bash
 GET /constant-contact/v3/emails
 ```
 
-Query parameters:
-- `limit` - Results per page (default 50)
+查询参数：
+- `limit` - 每页显示的结果数量（默认50条）
 
-#### Get Email Campaign
+#### 获取电子邮件活动信息
 
 ```bash
 GET /constant-contact/v3/emails/{campaign_id}
 ```
 
-#### Create Email Campaign
+#### 创建电子邮件活动
 
 ```bash
 POST /constant-contact/v3/emails
@@ -401,7 +401,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Email Campaign Activity
+#### 更新电子邮件活动信息
 
 ```bash
 PUT /constant-contact/v3/emails/activities/{campaign_activity_id}
@@ -414,7 +414,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Test Email
+#### 发送测试邮件
 
 ```bash
 POST /constant-contact/v3/emails/activities/{campaign_activity_id}/tests
@@ -425,7 +425,7 @@ Content-Type: application/json
 }
 ```
 
-#### Schedule Email Campaign
+#### 安排电子邮件活动
 
 ```bash
 POST /constant-contact/v3/emails/activities/{campaign_activity_id}/schedules
@@ -436,21 +436,21 @@ Content-Type: application/json
 }
 ```
 
-### Segments
+### 客户群体
 
-#### List Segments
+#### 列出客户群体
 
 ```bash
 GET /constant-contact/v3/segments
 ```
 
-#### Get Segment
+#### 获取客户群体信息
 
 ```bash
 GET /constant-contact/v3/segments/{segment_id}
 ```
 
-#### Create Segment
+#### 创建客户群体
 
 ```bash
 POST /constant-contact/v3/segments
@@ -462,15 +462,15 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Segment
+#### 删除客户群体
 
 ```bash
 DELETE /constant-contact/v3/segments/{segment_id}
 ```
 
-### Bulk Activities
+### 批量操作
 
-#### Import Contacts
+#### 导入联系人
 
 ```bash
 POST /constant-contact/v3/activities/contacts_file_import
@@ -479,7 +479,7 @@ Content-Type: multipart/form-data
 {file: contacts.csv, list_ids: ["list-uuid"]}
 ```
 
-#### Add Contacts to Lists
+#### 将联系人添加到列表中
 
 ```bash
 POST /constant-contact/v3/activities/add_list_memberships
@@ -493,7 +493,7 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Contacts from Lists
+#### 从列表中移除联系人
 
 ```bash
 POST /constant-contact/v3/activities/remove_list_memberships
@@ -507,7 +507,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contacts in Bulk
+#### 批量删除联系人
 
 ```bash
 POST /constant-contact/v3/activities/contact_delete
@@ -518,51 +518,51 @@ Content-Type: application/json
 }
 ```
 
-#### Get Activity Status
+#### 获取活动状态
 
 ```bash
 GET /constant-contact/v3/activities/{activity_id}
 ```
 
-#### List Activities
+#### 列出活动记录
 
 ```bash
 GET /constant-contact/v3/activities
 ```
 
-### Reporting
+### 报告
 
-#### Email Campaign Summaries
+#### 电子邮件活动摘要
 
 ```bash
 GET /constant-contact/v3/reports/summary_reports/email_campaign_summaries
 ```
 
-Query parameters:
-- `start` - Start date (ISO-8601)
-- `end` - End date (ISO-8601)
+查询参数：
+- `start` - 开始日期（ISO-8601格式）
+- `end` - 结束日期（ISO-8601格式）
 
-#### Get Email Campaign Report
+#### 获取电子邮件活动报告
 
 ```bash
 GET /constant-contact/v3/reports/email_reports/{campaign_activity_id}
 ```
 
-#### Contact Activity Summary
+#### 联系人活动摘要
 
 ```bash
 GET /constant-contact/v3/reports/contact_reports/{contact_id}/activity_summary
 ```
 
-## Pagination
+## 分页
 
-The API uses cursor-based pagination with a `limit` parameter:
+该API使用基于游标的分页机制，通过`limit`参数进行分页：
 
 ```bash
 GET /constant-contact/v3/contacts?limit=50
 ```
 
-Response includes pagination links:
+响应中包含分页链接：
 
 ```json
 {
@@ -575,13 +575,13 @@ Response includes pagination links:
 }
 ```
 
-Use the cursor from the `next` link for subsequent pages:
+使用“next”链接可以查看后续页面：
 
 ```bash
 GET /constant-contact/v3/contacts?cursor=abc123
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -611,31 +611,31 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Resource IDs use UUID format (36 characters with hyphens)
-- All dates use ISO-8601 format: `YYYY-MM-DDThh:mm:ss.sZ`
-- Maximum 1,000 contact lists per account
-- A contact can belong to up to 50 lists
-- Bulk operations are asynchronous - check activity status for completion
-- Email campaigns require verified sender email addresses
-- `format_type: 5` for custom HTML emails
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 资源ID采用UUID格式（36个字符，包含连字符）。
+- 所有日期均采用ISO-8601格式（例如：`YYYY-MM-DDThh:mm:ss.sZ`）。
+- 每个账户最多可以拥有1,000个联系人列表。
+- 一个联系人最多可以属于50个列表。
+- 批量操作是异步的，请检查活动状态以确认操作是否完成。
+- 电子邮件活动要求发送者的电子邮件地址经过验证。
+- `format_type: 5`表示自定义HTML格式的邮件。
+- **重要提示：** 当使用curl命令时，如果URL中包含括号，请使用`curl -g`来禁用全局解析。
+- **重要提示：** 当将curl的输出传递给`jq`或其他命令时，在某些shell环境中环境变量`$MATON_API_KEY`可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Constant Contact connection or invalid request |
-| 401 | Invalid or missing Maton API key, or OAuth token expired |
-| 403 | Insufficient permissions for the requested operation |
-| 404 | Resource not found |
-| 409 | Conflict (e.g., duplicate email address) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Constant Contact API |
+| 400 | 缺少Constant Contact连接或请求无效 |
+| 401 | Maton API密钥无效或缺失，或者OAuth令牌已过期 |
+| 403 | 没有足够的权限执行请求的操作 |
+| 404 | 资源未找到 |
+| 409 | 发生冲突（例如，电子邮件地址重复） |
+| 429 | 操作频率超出限制 |
+| 4xx/5xx | 来自Constant Contact API的传递错误 |
 
-### Error Response Format
+### 错误响应格式
 
 ```json
 {
@@ -644,15 +644,15 @@ data = response.json()
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保`MATON_API_KEY`环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -663,20 +663,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `constant-contact`. For example:
+1. 确保您的URL路径以`constant-contact`开头。例如：
+- 正确的路径：`https://gateway.maton.ai/constant-contact/v3/contacts`
+- 错误的路径：`https://gateway.maton.ai/v3/contacts`
 
-- Correct: `https://gateway.maton.ai/constant-contact/v3/contacts`
-- Incorrect: `https://gateway.maton.ai/v3/contacts`
+## 资源链接
 
-## Resources
-
-- [Constant Contact V3 API Overview](https://developer.constantcontact.com/api_guide/getting_started.html)
-- [API Reference](https://developer.constantcontact.com/api_reference/index.html)
-- [Technical Overview](https://developer.constantcontact.com/api_guide/v3_technical_overview.html)
-- [Contacts Overview](https://developer.constantcontact.com/api_guide/contacts_overview.html)
-- [Email Campaigns Guide](https://developer.constantcontact.com/api_guide/email_campaigns_get_started.html)
-- [Contact Lists Overview](https://v3.developer.constantcontact.com/api_guide/lists_overview.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Constant Contact V3 API概述](https://developer.constantcontact.com/api_guide/getting_started.html)
+- [API参考](https://developer.constantcontact.com/api_reference/index.html)
+- [技术概述](https://developer.constantcontact.com/api_guide/v3_technical_overview.html)
+- [联系人概述](https://developer.constantcontact.com/api_guide/contacts_overview.html)
+- [电子邮件活动指南](https://developer.constantcontact.com/api_guide/email_campaigns_get_started.html)
+- [联系人列表概述](https://v3.developer.constantcontact.com/api_guide/lists_overview.html)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

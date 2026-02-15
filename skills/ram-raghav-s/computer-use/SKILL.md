@@ -1,58 +1,58 @@
 ---
 name: computer-use
-description: Full desktop computer use for headless Linux servers and VPS. Creates a virtual display (Xvfb + XFCE) to control GUI applications without a physical monitor. Screenshots, mouse clicks, keyboard input, scrolling, dragging — all 17 standard actions. Includes flicker-free VNC setup for live remote viewing. Model-agnostic, works with any LLM.
+description: **全桌面计算机使用方案：适用于无显示器的Linux服务器和VPS**  
+该方案通过创建虚拟显示界面（Xvfb + XFCE），实现无需物理显示器即可控制图形用户界面（GUI）应用程序的功能。用户可执行所有标准的操作，包括截图、鼠标点击、键盘输入、滚动以及拖拽等。同时，系统还提供了无闪烁效果的VNC（Virtual Network Computing）连接功能，支持实时远程查看。该方案具有高度的兼容性，适用于任何类型的Linux服务器和大型语言模型（LLM，Large Language Model）。
 version: 1.2.0
 ---
 
-# Computer Use Skill
+# 计算机使用技巧
 
-Full desktop GUI control for headless Linux servers. Creates a virtual display (Xvfb + XFCE) so you can run and control desktop applications on VPS/cloud instances without a physical monitor.
+针对无头Linux服务器，提供了完整的桌面图形界面（GUI）控制功能。通过创建一个虚拟显示（Xvfb + XFCE），可以在没有物理显示器的情况下在VPS或云实例上运行和控制桌面应用程序。
 
-## Environment
+## 环境配置
 
-- **Display**: `:99`
-- **Resolution**: 1024x768 (XGA, Anthropic recommended)
-- **Desktop**: XFCE4 (minimal — xfwm4 + panel only)
+- **显示端口**：`:99`
+- **分辨率**：1024x768（XGA，推荐使用）
+- **桌面环境**：XFCE4（极简版——仅包含xfwm4和面板）
 
-## Quick Setup
+## 快速设置
 
-Run the setup script to install everything (systemd services, flicker-free VNC):
+运行设置脚本以完成所有配置（包括systemd服务及无闪烁效果的VNC连接）：
 
 ```bash
 ./scripts/setup-vnc.sh
 ```
 
-This installs:
-- Xvfb virtual display on `:99`
-- Minimal XFCE desktop (xfwm4 + panel, no xfdesktop)
-- x11vnc with stability flags
-- noVNC for browser access
+该脚本会安装以下内容：
+- 在`:99`端口上启动Xvfb虚拟显示
+- 极简版的XFCE桌面环境（仅包含xfwm4和面板，不包含xfdesktop）
+- 带有稳定性优化选项的x11vnc服务器
+- 用于浏览器访问的noVNC工具
 
-All services auto-start on boot and auto-restart on crash.
+所有服务会在系统启动时自动启动，并在崩溃后自动重启。
 
-## Actions Reference
+## 常用操作指南
 
-| Action | Script | Arguments | Description |
-|--------|--------|-----------|-------------|
-| screenshot | `screenshot.sh` | — | Capture screen → base64 PNG |
-| cursor_position | `cursor_position.sh` | — | Get current mouse X,Y |
-| mouse_move | `mouse_move.sh` | x y | Move mouse to coordinates |
-| left_click | `click.sh` | x y left | Left click at coordinates |
-| right_click | `click.sh` | x y right | Right click |
-| middle_click | `click.sh` | x y middle | Middle click |
-| double_click | `click.sh` | x y double | Double click |
-| triple_click | `click.sh` | x y triple | Triple click (select line) |
-| left_click_drag | `drag.sh` | x1 y1 x2 y2 | Drag from start to end |
-| left_mouse_down | `mouse_down.sh` | — | Press mouse button |
-| left_mouse_up | `mouse_up.sh` | — | Release mouse button |
-| type | `type_text.sh` | "text" | Type text (50 char chunks, 12ms delay) |
-| key | `key.sh` | "combo" | Press key (Return, ctrl+c, alt+F4) |
-| hold_key | `hold_key.sh` | "key" secs | Hold key for duration |
-| scroll | `scroll.sh` | dir amt [x y] | Scroll up/down/left/right |
-| wait | `wait.sh` | seconds | Wait then screenshot |
-| zoom | `zoom.sh` | x1 y1 x2 y2 | Cropped region screenshot |
+| 操作        | 脚本            | 参数            | 说明                                      |
+|-------------|------------------|------------------|-----------------------------------------|
+| 截屏        | `screenshot.sh`       |                 | 截取屏幕并转换为base64 PNG格式                   |
+| 移动鼠标      | `mouse_move.sh`       | x y             | 将鼠标移动到指定坐标                         |
+| 左键点击      | `click.sh`       | x y left         | 在指定坐标处执行左键点击                     |
+| 右键点击      | `click.sh`       | x y right         | 在指定坐标处执行右键点击                     |
+| 中键点击      | `click.sh`       | x y middle         | 在指定坐标处执行中键点击                     |
+| 双击        | `click.sh`       | x y double         | 在指定坐标处执行双击                         |
+| 三击        | `click.sh`       | x y triple         | 在指定坐标处执行三击                         |
+| 拖动        | `drag.sh`       | x1 y1 x2 y2         | 从起点拖动到终点                         |
+| 按下鼠标左键    | `mouse_down.sh`      |                 | 按下鼠标左键                             |
+| 释放鼠标左键    | `mouse_up.sh`      |                 | 释放鼠标左键                             |
+| 输入文本      | `type_text.sh`       | "text"           | 以50个字符为一段输入文本，每段输入间隔12毫秒           |
+| 按键        | `key.sh`       | "combo"           | 按下指定按键（如Return、Ctrl+C、Alt+F4）             |
+| 长时间按住按键    | `hold_key.sh`       | "key" seconds       | 按住指定按键指定时间                         |
+| 滚动屏幕      | `scroll.sh`       | dir amt [x y]         | 向上/下/左/右滚动屏幕                         |
+| 等待        | `wait.sh`       | seconds           | 等待指定时间后截图                         |
+| 缩放屏幕      | `zoom.sh`       | x1 y1 x2 y2         | 截取指定区域的屏幕截图                     |
 
-## Usage Examples
+## 使用示例
 
 ```bash
 export DISPLAY=:99
@@ -73,27 +73,27 @@ export DISPLAY=:99
 ./scripts/scroll.sh down 5
 ```
 
-## Workflow Pattern
+## 工作流程
 
-1. **Screenshot** — Always start by seeing the screen
-2. **Analyze** — Identify UI elements and coordinates
-3. **Act** — Click, type, scroll
-4. **Screenshot** — Verify result
-5. **Repeat**
+1. **截屏**——首先查看屏幕内容。
+2. **分析**——识别用户界面元素及其坐标。
+3. **执行操作**——点击、输入文本、滚动屏幕。
+4. **再次截屏**——验证操作结果。
+5. **重复上述步骤**。
 
-## Tips
+## 提示
 
-- Screen is 1024x768, origin (0,0) at top-left
-- Click to focus before typing in text fields
-- Use `ctrl+End` to jump to page bottom in browsers
-- Most actions auto-screenshot after 2 sec delay
-- Long text is chunked (50 chars) with 12ms keystroke delay
+- 屏幕分辨率为1024x768，原点位于屏幕左上角(0,0)。
+- 在输入文本框前请先点击以聚焦输入框。
+- 在浏览器中，可以使用`Ctrl+End`快速跳转到页面底部。
+- 大量文本会分多次输入（每次50个字符），每次输入之间有12毫秒的延迟。
+- 长文本会分多次输入，每次输入之间有12毫秒的延迟。
 
-## Live Desktop Viewing (VNC)
+## 实时查看桌面（通过VNC）
 
-Watch the desktop in real-time via browser or VNC client.
+可以通过浏览器或VNC客户端实时查看桌面内容。
 
-### Connect via Browser
+### 通过浏览器连接
 
 ```bash
 # SSH tunnel (run on your local machine)
@@ -103,7 +103,7 @@ ssh -L 6080:localhost:6080 your-server
 http://localhost:6080/vnc.html
 ```
 
-### Connect via VNC Client
+### 通过VNC客户端连接
 
 ```bash
 # SSH tunnel
@@ -112,9 +112,9 @@ ssh -L 5900:localhost:5900 your-server
 # Connect VNC client to localhost:5900
 ```
 
-### SSH Config (recommended)
+### SSH配置（推荐）
 
-Add to `~/.ssh/config` for automatic tunneling:
+将以下配置添加到`~/.ssh/config`文件中以实现自动隧道连接：
 
 ```
 Host your-server
@@ -124,9 +124,9 @@ Host your-server
   LocalForward 5900 127.0.0.1:5900
 ```
 
-Then just `ssh your-server` and VNC is available.
+之后只需输入`ssh your-server`，即可通过VNC访问远程服务器。
 
-## System Services
+## 系统服务配置
 
 ```bash
 # Check status
@@ -136,18 +136,18 @@ systemctl status xvfb xfce-minimal x11vnc novnc
 sudo systemctl restart xvfb xfce-minimal x11vnc novnc
 ```
 
-### Service Chain
+### 服务依赖关系
 
 ```
 xvfb → xfce-minimal → x11vnc → novnc
 ```
 
-- **xvfb**: Virtual display :99 (1024x768x24)
-- **xfce-minimal**: Watchdog that runs xfwm4+panel, kills xfdesktop
-- **x11vnc**: VNC server with `-noxdamage` for stability
-- **novnc**: WebSocket proxy with heartbeat for connection stability
+- **xvfb**：负责创建虚拟显示（端口：:99，分辨率：1024x768x24）
+- **xfce-minimal**：监控xfwm4和面板的运行状态，并在需要时关闭xfdesktop。
+- **x11vnc**：作为VNC服务器，使用`-noxdamage`选项确保显示稳定。
+- **novnc**：作为WebSocket代理，通过心跳信号保持连接稳定。
 
-## Opening Applications
+## 打开应用程序
 
 ```bash
 export DISPLAY=:99
@@ -156,7 +156,7 @@ xfce4-terminal &                # Terminal
 thunar &                        # File manager
 ```
 
-**Note**: Snap browsers (Firefox, Chromium) have sandbox issues on headless servers. Use Chrome `.deb` instead:
+**注意**：在无头服务器上，Firefox和Chromium等浏览器可能存在沙箱限制。建议使用Chrome的deb包进行安装：
 
 ```bash
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -164,9 +164,9 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 sudo apt-get install -f
 ```
 
-## Manual Setup
+## 手动设置
 
-If you prefer manual setup instead of `setup-vnc.sh`:
+如果不想使用`setup-vnc.sh`脚本，可以手动进行配置：
 
 ```bash
 # Install packages
@@ -188,27 +188,27 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now xvfb xfce-minimal x11vnc novnc
 ```
 
-## Troubleshooting
+## 常见问题解决方法
 
-### VNC shows black screen
-- Check if xfwm4 is running: `pgrep xfwm4`
-- Restart desktop: `sudo systemctl restart xfce-minimal`
+### VNC显示黑屏
+- 检查xfwm4是否正在运行：`pgrep xfwm4`
+- 重启桌面服务：`sudo systemctl restart xfce-minimal`
 
-### VNC flickering/flashing
-- Ensure xfdesktop is masked (check `/usr/bin/xfdesktop`)
-- xfdesktop causes flicker due to clear→draw cycles on Xvfb
+### VNC画面闪烁
+- 确保xfdesktop已被禁用（检查`/usr/bin/xfdesktop`文件）。
+- xfdesktop可能导致Xvfb在显示过程中出现闪烁现象。
 
-### VNC disconnects frequently
-- Check noVNC has `--heartbeat 30` flag
-- Check x11vnc has `-noxdamage` flag
+### VNC连接频繁断开
+- 确保noVNC配置中使用了`--heartbeat 30`选项。
+- 检查x11vnc是否使用了`-noxdamage`选项。
 
-### x11vnc crashes (SIGSEGV)
-- Add `-noxdamage -noxfixes` flags
-- The DAMAGE extension causes crashes on Xvfb
+### x11vnc崩溃（SIGSEGV错误）
+- 尝试添加`-noxdamage -noxfixes`选项。
+- `DAMAGE`扩展程序可能会导致Xvfb崩溃。
 
-## Requirements
+## 必需安装的软件
 
-Installed by `setup-vnc.sh`:
+通过`setup-vnc.sh`脚本可以自动安装所有必需的软件：  
 ```bash
 xvfb xfce4 xfce4-terminal xdotool scrot imagemagick dbus-x11 x11vnc novnc websockify
 ```

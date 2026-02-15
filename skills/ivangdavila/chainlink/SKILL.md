@@ -1,75 +1,75 @@
 ---
 name: Chainlink
-description: Assist with Chainlink LINK tokens, oracle integrations, staking, and price feed usage.
+description: 协助处理 Chainlink 的 LINK 代币、预言机集成、质押机制以及价格数据源的使用相关事宜。
 metadata: {"clawdbot":{"emoji":"⬡","os":["linux","darwin","win32"]}}
 ---
 
-## LINK Token Basics
-- LINK is an ERC-20 token on Ethereum — standard wallet and exchange support
-- Also available on multiple chains — Arbitrum, Optimism, Polygon, Avalanche, BSC
-- Bridging LINK between chains uses official Chainlink bridge — verify bridge address before using
-- Different chains have different LINK contract addresses — verify correct address per network
+## LINK代币基础  
+- LINK是Ethereum上的ERC-20代币，支持标准钱包和交易所；  
+- 也可在多个区块链上使用，包括Arbitrum、Optimism、Polygon、Avalanche和BSC；  
+- 在不同区块链之间传输LINK需要使用官方的Chainlink桥接服务——使用前请确认桥接地址的正确性；  
+- 不同区块链上的LINK合约地址各不相同，请根据网络环境核实正确的地址。  
 
-## Token Transfers
-- Standard ERC-20 transfer rules apply — gas paid in native token (ETH, MATIC, etc.)
-- Some DeFi protocols accept LINK as collateral — Aave, Compound
-- LINK has no special transfer restrictions — no tax tokens, no rebasing
-- Decimals: 18 — same as ETH, standard precision
+## 代币转账  
+- 遵循标准的ERC-20转账规则——转账所需的气体费用需用原生代币（如ETH、MATIC等）支付；  
+- 一些去中心化金融（DeFi）协议接受LINK作为抵押品（例如Aave、Compound）；  
+- LINK没有特殊的转账限制，也没有重新定价（rebasing）机制；  
+- 小数精度为18位，与ETH保持一致。  
 
-## Staking (v0.2)
-- Community staking allows LINK holders to stake — earn rewards for securing network
-- Staking has capacity limits — pool may be full, waitlist exists
-- Unbonding period applies — can't withdraw instantly after unstaking
-- Rewards in LINK — automatically added to staked balance
-- Slashing risk exists — node operators can lose stake for misbehavior
+## 质押（v0.2）  
+- 社区质押机制允许LINK持有者参与质押，通过保障网络安全来获取奖励；  
+- 质押有容量限制，质押池可能已满，需等待排队；  
+- 解锁质押后不能立即取回代币；  
+- 奖励会自动添加到质押者的账户余额中；  
+- 存在“惩罚机制”（slashing）——节点运营商若行为不当可能会失去质押代币。  
 
-## Price Feeds (For Developers)
-- Chainlink price feeds are the standard for DeFi — Aave, Synthetix, and most protocols use them
-- Feed addresses differ per network and pair — always verify on docs.chain.link
-- Feeds update based on deviation threshold and heartbeat — not every block
-- Check `latestRoundData()` not just `latestAnswer()` — includes timestamp and round info
-- Stale data check critical — verify `updatedAt` timestamp is recent
+## 价格数据源（开发者参考）  
+- Chainlink提供的价格数据源是DeFi领域的标准——Aave、Synthetix等协议均使用这些数据；  
+- 不同网络和资产对的地址各不相同，请务必在docs.chain.link上核实；  
+- 数据更新基于偏差阈值和心跳机制（heartbeat），并非每个区块都会更新；  
+- 请使用`latestRoundData()`而非`latestAnswer()`函数，该函数包含时间戳和轮次信息；  
+- 请务必检查数据是否过期（`updatedAt`时间戳是否为最新）。  
 
-## Oracle Integration Patterns
-- Direct consumer: your contract calls feed directly — simplest approach
-- Chainlink Automation (Keepers): trigger actions based on conditions — no server needed
-- VRF (Verifiable Random Function): provably fair randomness — for NFT mints, games, lotteries
-- Functions: connect to any API — custom off-chain computation
-- CCIP: cross-chain messaging — official Chainlink interoperability protocol
+## Oracle集成方式  
+- **直接使用方式**：你的合约直接调用Chainlink提供的价格数据源；  
+- **自动化集成**：基于特定条件触发操作，无需额外服务器；  
+- **VRF（可验证随机函数）**：用于生成随机数（适用于NFT铸造、游戏、抽奖等场景）；  
+- **自定义功能**：可连接任何API，实现链下计算；  
+- **CCIP（跨链通信协议）**：官方的Chainlink跨链通信协议。  
 
-## VRF Usage
-- Request/receive pattern: request randomness, receive in callback — not synchronous
-- Each request costs LINK — fund subscription or pay per request
-- Confirmation blocks add security but delay — more confirmations = more secure
-- Randomness is verifiable on-chain — anyone can verify it wasn't manipulated
+## VRF的使用  
+- 请求/接收模式：发送请求后通过回调接收结果（非同步操作）；  
+- 每次请求都会消耗LINK费用（可订阅或按次付费）；  
+- 更多的确认区块会增加安全性（确认次数越多，安全性越高）；  
+- 随机性结果可在链上验证，确保结果未被篡改。  
 
-## Common Developer Mistakes
-- Hardcoding feed addresses — use address registry or config
-- Not checking for stale data — price feeds can stop updating
-- Assuming instant updates — deviation thresholds mean prices can be slightly stale
-- Not handling VRF callback failures — callback can revert, losing the randomness
-- Insufficient LINK for subscriptions — requests fail silently when underfunded
+## 开发者常见错误  
+- 硬编码价格数据源地址（建议使用地址注册表或配置文件）；  
+- 未检查数据是否过期（价格数据可能停止更新）；  
+- 误以为数据会即时更新（实际可能存在延迟）；  
+- 未处理VRF回调失败的情况（可能导致随机性结果丢失）；  
+- 订阅费用不足时请求会失败（系统会默默忽略请求）。  
 
-## Network Comparisons
-- Ethereum mainnet: highest security, highest gas costs
-- L2s (Arbitrum, Optimism): lower cost, same security model
-- Alt-L1s (Polygon, Avalanche): native integration, different trust assumptions
-- Testnets: Sepolia for Ethereum, network-specific for others
+## 区块链对比  
+- **Ethereum主网**：安全性最高，但气体费用最高；  
+- **L2层解决方案（如Arbitrum、Optimism）**：费用较低，但安全性相同；  
+- **其他L1层区块链（如Polygon、Avalanche）**：具有原生集成功能，但信任模型不同；  
+- **测试网**：Ethereum使用Sepolia，其他区块链有各自的测试网。  
 
-## Security Considerations
-- Only use official Chainlink feeds — verify contract addresses on docs.chain.link
-- Monitor for feed deprecation — Chainlink announces deprecated feeds
-- Multi-oracle pattern for critical systems — don't rely on single source
-- Circuit breakers for extreme price movements — protect against oracle manipulation
+## 安全注意事项  
+- 仅使用官方的Chainlink价格数据源，请在docs.chain.link上核实合约地址；  
+- 关注数据源的更新状态（Chainlink会公布已弃用的数据源）；  
+- 对于关键系统，建议采用多源数据验证机制（避免依赖单一数据源）；  
+- 遇到极端价格波动时，可使用“断路器”机制（circuit breaker）防止数据被操纵。  
 
-## CCIP (Cross-Chain)
-- Send messages and tokens across chains — official Chainlink bridge
-- Lane availability varies — not all chain pairs supported
-- Fee estimation before sending — paid in LINK or native token
-- Message finality depends on source and destination chains
+## CCIP（跨链通信）  
+- 支持在区块链之间发送消息和代币；  
+- 不同链对之间的通信功能可能有所不同；  
+- 发送前请预估费用（费用以LINK或原生代币支付）；  
+- 消息的最终确认状态取决于发送链和接收链。  
 
-## Ecosystem
-- Node operators earn LINK for providing data — professional infrastructure required
-- BUILD program for projects integrating Chainlink — access to resources and support
-- Extensive documentation at docs.chain.link — primary reference for developers
-- Community resources: Discord, Stack Overflow, GitHub
+## 生态系统  
+- 节点运营商通过提供数据来获取LINK奖励；  
+- Chainlink提供了专门的BUILD项目，帮助项目集成该服务；  
+- 官方文档（docs.chain.link）提供了详尽的参考资料；  
+- 社区资源包括Discord、Stack Overflow和GitHub等平台。

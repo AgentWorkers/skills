@@ -1,29 +1,29 @@
 ---
 name: alias-gen
-description: Generate shell aliases from your command history. Use when streamlining your terminal workflow.
+description: 根据您的命令历史记录生成 shell 别名，以便简化终端工作流程。
 ---
 
-# Shell Alias Generator
+# Shell 别名生成器
 
-Analyzes your command history and suggests aliases for commands you type all the time. Stop typing git checkout when you could type gco.
+该工具会分析您的命令历史记录，并为您经常使用的命令推荐别名。例如，您可以输入 `gco` 代替 `git checkout`。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-alias
 ```
 
-## What It Does
+## 功能介绍
 
-- Reads your shell history (bash, zsh, fish)
-- Finds frequently typed long commands
-- Generates memorable aliases
-- Creates proper shell syntax for your environment
-- Groups related commands together
+- 读取您的 Shell 历史记录（支持 bash、zsh、fish）
+- 找出您频繁输入的长命令
+- 生成易于记忆的别名
+- 生成适用于您当前环境的正确 Shell 语法
+- 将相关命令组合在一起
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Analyze and suggest aliases
@@ -36,42 +36,42 @@ npx ai-alias --shell zsh
 npx ai-alias "docker compose up, git status, npm run dev"
 ```
 
-## Best Practices
+## 使用建议
 
-- **Keep them short** - 2-4 characters ideal
-- **Make them memorable** - gc for git commit, not x7
-- **Avoid conflicts** - Don't override existing commands
-- **Document them** - Comment your aliases file
+- **别名应简短**：2-4 个字符最为理想
+- **易于记忆**：例如使用 `gc` 代替 `git commit`
+- **避免冲突**：不要覆盖现有的命令
+- **做好文档记录**：在别名文件中添加注释
 
-## When to Use This
+## 适用场景
 
-- You notice yourself typing the same commands daily
-- Setting up a new machine
-- Teaching someone your workflow
-- Auditing which commands you use most
+- 当您发现自己每天都在重复输入相同的命令时
+- 在新机器上设置工作环境时
+- 教授他人您的工作流程时
+- 审查您最常使用的命令时
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册，也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-alias --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool parses your shell history file, counts command frequency, filters out commands with sensitive data, and generates alias definitions. It uses naming conventions that make aliases easy to remember.
+该工具会解析您的 Shell 历史记录文件，统计命令的使用频率，过滤掉包含敏感数据的命令，并生成相应的别名定义。它采用的命名规则使得别名易于记忆。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具。

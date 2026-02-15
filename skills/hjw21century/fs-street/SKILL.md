@@ -1,13 +1,13 @@
 ---
 name: fs-street
-description: Fetches articles from Farnam Street RSS. Use when asking about decision-making, mental models, learning, or wisdom from Farnam Street blog.
+description: 从 Farnam Street 的 RSS 源中获取文章。当您想了解 Farnam Street 博客中关于决策、思维模型、学习或智慧方面的内容时，可以使用此功能。
 ---
 
 # Farnam Street
 
-Fetches articles from Farnam Street blog, covering topics like mental models, decision-making, leadership, and learning.
+该工具用于从 Farnam Street 博客中获取文章，内容涵盖思维模型、决策制定、领导力和学习等相关主题。
 
-## Quick Start
+## 快速入门
 
 ```
 # Basic queries
@@ -19,16 +19,16 @@ Fetches articles from Farnam Street blog, covering topics like mental models, de
 有哪些可用的日期
 ```
 
-## Query Types
+## 查询类型
 
-| Type | Examples | Description |
+| 类型 | 示例 | 描述 |
 |------|----------|-------------|
-| Relative date | `昨天的文章` `今天的文章` `前天` | Yesterday, today, day before |
-| Absolute date | `2024-06-13的文章` | YYYY-MM-DD format |
-| Date range | `有哪些日期` `可用的日期` | Show available dates |
-| Topic search | `关于决策的文章` `思维模型` | Search by keyword |
+| 相对日期 | `昨天的文章` `今天的文章` `前天` | 昨天、今天、前天 |
+| 绝对日期 | `2024-06-13 的文章` | 使用 YYYY-MM-DD 格式 |
+| 日期范围 | `有哪些日期` `可用的日期` | 显示可用的日期范围 |
+| 主题搜索 | `关于决策的文章` `思维模型` | 按关键词搜索 |
 
-## Workflow
+## 工作流程
 
 ```
 - [ ] Step 1: Parse date from user request
@@ -39,26 +39,26 @@ Fetches articles from Farnam Street blog, covering topics like mental models, de
 
 ---
 
-## Step 1: Parse Date
+## 第一步：解析日期
 
-| User Input | Target Date | Calculation |
+| 用户输入 | 目标日期 | 计算方式 |
 |------------|-------------|-------------|
-| `昨天` | Yesterday | today - 1 day |
-| `前天` | Day before | today - 2 days |
-| `今天` | Today | Current date |
-| `2024-06-13` | 2024-06-13 | Direct parse |
+| `昨天` | 昨天 | 当前日期 - 1 天 |
+| `前天` | 前天 | 当前日期 - 2 天 |
+| `今天` | 今天 | 当前日期 |
+| `2024-06-13` | 2024-06-13 | 直接解析 |
 
-**Format**: Always use `YYYY-MM-DD`
+**格式要求**：必须使用 `YYYY-MM-DD` 格式。
 
 ---
 
-## Step 2: Fetch RSS
+## 第二步：获取 RSS 数据
 
 ```bash
 python skills/fs-street/scripts/fetch_blog.py --date YYYY-MM-DD
 ```
 
-**Available commands**:
+**可用命令**：
 
 ```bash
 # Get specific date
@@ -71,13 +71,13 @@ python skills/fs-street/scripts/fetch_blog.py --date-range
 python skills/fs-street/scripts/fetch_blog.py --relative yesterday
 ```
 
-**Requirements**: `pip install feedparser requests`
+**安装要求**：`pip install feedparser requests`
 
 ---
 
-## Step 3: Check Content
+## 第三步：检查内容
 
-### When NOT Found
+### 如果未找到内容
 
 ```markdown
 Sorry, no article available for 2024-06-14
@@ -89,15 +89,15 @@ Suggestions:
 - View 2024-06-12 article
 ```
 
-### Members Only Content
+### 仅限会员内容
 
-Some articles are marked `[FS Members]` - these are premium content and may only show a teaser.
+部分文章会被标记为 `[FS Members]`——这些是付费内容，可能仅显示预览内容。
 
 ---
 
-## Step 4: Format Results
+## 第四步：格式化结果
 
-**Example Output**:
+**示例输出**：
 
 ```markdown
 # Farnam Street · 2024年6月13日
@@ -120,28 +120,28 @@ URL: https://fs.blog/experts-vs-imitators/
 
 ---
 
-## Configuration
+## 配置参数
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| RSS_URL | RSS feed URL | `https://fs.blog/feed/` |
+| 参数 | 描述 | 默认值 |
+|--------|-------------|---------|
+| RSS_URL | RSS 数据源 URL | `https://fs.blog/feed/` |
 
-No API keys required.
-
----
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| RSS fetch fails | Check network connectivity |
-| Invalid date | Use YYYY-MM-DD format |
-| No content | Check available date range |
-| Members only | Some articles are premium content |
+无需使用 API 密钥。
 
 ---
 
-## CLI Reference
+## 故障排除
+
+| 问题 | 解决方案 |
+|------|---------|
+| RSS 数据获取失败 | 检查网络连接 |
+| 日期格式不正确 | 确保使用正确的 YYYY-MM-DD 格式 |
+| 未找到内容 | 检查可用的日期范围 |
+| 仅限会员内容 | 部分文章为付费内容 |
+
+---
+
+## 命令行接口参考
 
 ```bash
 # Get specific date

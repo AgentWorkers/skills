@@ -1,32 +1,32 @@
 ---
 name: skill-scan
-description: Security scanner for OpenClaw skill packages. Scans skills for malicious code, evasion techniques, prompt injection, and misaligned behavior BEFORE installation. Use to audit any skill from ClawHub or local directories.
+description: OpenClaw 技能包的安全扫描工具。在安装之前，该工具会检测技能包中是否存在恶意代码、规避机制、提示注入（prompt injection）以及异常行为。适用于审计来自 ClawHub 或本地目录的任何技能包。
 ---
 
-# Skill-Scan — Security Auditor for Agent Skills
+# Skill-Scan — 用于检查代理技能的安全审计工具
 
-Multi-layered security scanner for OpenClaw skill packages. Detects malicious code, evasion techniques, prompt injection, and misaligned behavior through static analysis and optional LLM-powered deep inspection. Run this BEFORE installing or enabling any untrusted skill.
+这是一个针对 OpenClaw 技能包的多层安全扫描工具。通过静态分析以及可选的基于大型语言模型 (LLM) 的深度检测，能够识别恶意代码、规避技术、提示注入以及行为异常。在安装或启用任何未经信任的技能之前，请务必运行此工具。
 
-## Features
+## 主要功能
 
-- **6 analysis layers** — pattern matching, AST/evasion, prompt injection, LLM deep analysis, alignment verification, meta-analysis
-- **60+ detection rules** — execution threats, credential theft, data exfiltration, obfuscation, behavioral signatures
-- **Context-aware scoring** — reduces false positives for legitimate API skills
-- **ClawHub integration** — scan skills directly from the registry by slug
-- **Multiple output modes** — text report (default), `--json`, `--compact`, `--quiet`
-- **Exit codes** — 0 for safe, 1 for risky (easy scripting integration)
+- **6 层分析机制**：模式匹配、抽象语法树 (AST) 分析、规避行为检测、提示注入检测、基于 LLM 的深度分析、行为一致性验证、元数据分析
+- **60 多条检测规则**：执行威胁、凭证窃取、数据泄露、代码混淆、行为特征识别
+- **上下文感知的评分系统**：有效降低对合法 API 技能的误报率
+- **集成 ClawHub**：可通过技能的唯一标识符（slug）直接从 ClawHub 扫描技能
+- **多种输出格式**：文本报告（默认）、`--json`、`--compact`、`--quiet`
+- **退出代码**：0 表示安全；1 表示存在风险（便于脚本集成）
 
-## When to Use
+## 使用场景
 
-**MANDATORY** before installing or enabling:
-- Skills from ClawHub (any skill not authored by you)
-- Skills shared by other users or teams
-- Skills from public repositories
-- Any skill package you haven't personally reviewed
+**强制要求**：在安装或启用以下技能之前必须使用：
+- 来自 ClawHub 的技能（非用户自行编写的技能）
+- 其他用户或团队共享的技能
+- 来自公共仓库的技能
+- 未经过用户亲自审核的技能包
 
-**RECOMMENDED** for periodic audits of already-installed skills.
+**建议**：定期对已安装的技能进行安全审计。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Scan a local skill directory
@@ -45,21 +45,21 @@ skill-scan scan-hub some-skill-slug --json
 skill-scan scan-hub some-skill-slug --quiet
 ```
 
-## Risk Scoring
+## 风险评分
 
-| Risk | Score | Action |
+| 风险等级 | 评分 | 应对措施 |
 |------|-------|--------|
-| LOW | 80-100 | Safe to install |
-| MEDIUM | 50-79 | Review findings before installing |
-| HIGH | 20-49 | Do NOT install — serious threats detected |
-| CRITICAL | 0-19 | Do NOT install — multiple critical threats |
+| 低风险 | 80-100 | 可以安全安装 |
+| 中等风险 | 50-79 | 安装前请查看检测结果 |
+| 高风险 | 20-49 | 请勿安装——检测到严重威胁 |
+| 极高风险 | 0-19 | 请勿安装——存在多个致命威胁 |
 
-## Exit Codes
+## 退出代码
 
-- `0` — LOW risk (safe to proceed)
-- `1` — MEDIUM or higher (block installation)
+- `0`：低风险（可安全安装）
+- `1`：中等风险或更高风险（阻止安装）
 
-## LLM Options
+## 基于 LLM 的配置选项
 
 ```bash
 skill-scan scan-hub slug --llm        # Always run deep analysis (layers 4-5)
@@ -67,24 +67,24 @@ skill-scan scan-hub slug --llm-auto   # LLM only if pattern scan finds MEDIUM+
 skill-scan scan-hub slug --llm-only   # Skip patterns, LLM analysis only
 ```
 
-Provider auto-detected from environment:
-- `OPENAI_API_KEY` -> gpt-4o-mini
-- `ANTHROPIC_API_KEY` -> claude-sonnet-4-5
+系统会自动检测并设置 LLM 服务提供商：
+- `OPENAI_API_KEY` -> `gpt-4o-mini`
+- `ANTHROPIC_API_KEY` -> `claude-sonnet-4-5`
 
-## For the Agent
+## 对于代理的使用
 
-When the user asks to install a skill from ClawHub, follow this workflow:
+当用户请求从 ClawHub 安装技能时，请按照以下流程操作：
 
-1. **Scan first** — run `skill-scan scan-hub <slug>` BEFORE installing
-2. **Check the result**:
-   - If **LOW risk** (exit code 0): proceed with installation
-   - If **MEDIUM risk**: show findings to the user and ask whether to proceed
-   - If **HIGH or CRITICAL risk**: block installation and show the report
-3. **Report** — always show the user the scan summary (score, risk level, finding count)
+1. **先进行扫描**：在安装前运行 `skill-scan scan-hub <slug>`
+2. **查看扫描结果**：
+   - 如果风险等级为低风险（退出代码为 0）：继续安装
+   - 如果风险等级为中等风险：向用户展示检测结果并询问是否继续安装
+   - 如果风险等级为高风险或极高风险：阻止安装并展示扫描报告
+3. **提供报告**：始终向用户展示扫描摘要（评分、风险等级、检测结果数量）
 
-### Alert Format
+### 警报格式
 
-When a scan finds MEDIUM or higher risk:
+当扫描发现中等风险或更高风险时，系统会生成如下格式的警报：
 
 ```
 🛡️ Skill-Scan Alert: {RISK_LEVEL} ({SCORE}/100)
@@ -94,13 +94,13 @@ Top threat: {highest severity finding title}
 Action: Installation blocked pending review.
 ```
 
-## AGENTS.md Integration
+## 如何将 Skill-Scan 集成到代理的工作流程中
 
-To integrate skill-scan into your agent's workflow, add ONE of the following templates to your `AGENTS.md` (or equivalent agent instructions file).
+要将 Skill-Scan 集成到代理的工作流程中，请在 `AGENTS.md`（或相应的代理配置文件）中添加以下模板之一。
 
-### Option A: Automatic Scanning (Recommended)
+### 选项 A：自动扫描（推荐）
 
-All ClawHub skill installs are automatically scanned before installation. No manual step needed.
+所有来自 ClawHub 的技能在安装前都会自动进行扫描，无需手动操作。
 
 ```markdown
 ## Skill-Scan — Automatic Pre-Install Security Scanning
@@ -124,7 +124,7 @@ BEFORE installing any skill from ClawHub, you MUST scan it with skill-scan first
 
 When asked to audit installed skills, batch scan the skills directory:
 ```bash
-skill-scan batch {skillsDir}
+   skill-scan batch {skillsDir}
 ```
 
 ### LLM Deep Analysis
@@ -135,9 +135,9 @@ skill-scan scan-hub <slug> --llm-auto
 ```
 ```
 
-### Option B: Manual On-Demand Scanning
+### 选项 B：手动按需扫描
 
-Skills are only scanned when the user explicitly asks. Installation proceeds without automatic checks.
+只有当用户明确请求时才会进行扫描。安装过程不会自动触发扫描。
 
 ```markdown
 ## Skill-Scan — On-Demand Skill Security Scanning
@@ -166,41 +166,34 @@ skill-scan is available to audit skill packages for security threats. Use it whe
 4. Let the user decide what to do
 ```
 
-## Install-Time Setup
+## 安装时的配置提示
 
-When this skill is first installed, ask the user:
-
-> **How should skill-scan integrate with your workflow?**
+在首次安装该工具时，询问用户：
+> “您希望如何将 Skill-Scan 集成到您的工作流程中？”
 >
-> 1. **Automatic** (Recommended) — Every `clawhub install` is scanned first. HIGH/CRITICAL installs are blocked automatically.
-> 2. **Manual** — Scanning only happens when you explicitly ask for it.
+> 1. **自动扫描**（推荐）：每次从 ClawHub 安装技能时都会自动进行扫描。高风险或极高风险技能会自动被阻止。
+> 2. **手动扫描**：仅在使用时才进行扫描。
 
-Based on their choice, add the corresponding template (Option A or Option B above) to the project's `AGENTS.md`.
+根据用户的选择，在项目的 `AGENTS.md` 中添加相应的配置模板（选项 A 或选项 B）。
 
-## Detection Categories
+## 检测类别
 
-**Execution threats** — `eval()`, `exec()`, `child_process`, dynamic imports
+- **执行威胁**：`eval()`、`exec()`、`child_process`、动态导入函数
+- **凭证窃取**：`.env` 文件访问、API 密钥、令牌、私钥、钱包文件
+- **数据泄露**：`fetch()`、`axios`、`requests`、套接字、Webhook 功能
+- **文件系统操作**：写入/删除/重命名文件
+- **代码混淆**：Base64 编码、十六进制编码、Unicode 编码、字符串构造
+- **提示注入**：越狱技巧、不可见字符、同形异义字、伪装请求
+- **行为特征**：数据泄露、木马程序、隐蔽后门
 
-**Credential theft** — `.env` access, API keys, tokens, private keys, wallet files
+## 系统要求
 
-**Data exfiltration** — `fetch()`, `axios`, `requests`, sockets, webhooks
+- Python 3.10 及以上版本
+- `httpx` 库版本需大于或等于 0.27（仅用于调用 LLM API）
+- 仅在使用 `--llm` 模式时需要 API 密钥（静态分析功能无需额外配置）
 
-**Filesystem manipulation** — Write/delete/rename operations
+## 相关工具
 
-**Obfuscation** — Base64, hex, unicode encoding, string construction
-
-**Prompt injection** — Jailbreaks, invisible characters, homoglyphs, roleplay framing, encoded instructions
-
-**Behavioral signatures** — Compound patterns: data exfiltration, trojan skills, evasive malware, persistent backdoors
-
-## Requirements
-
-- Python 3.10+
-- `httpx>=0.27` (for LLM API calls only)
-- API key only needed for `--llm` modes (static analysis is self-contained)
-
-## Related Skills
-
-- **input-guard** — External input scanning
-- **memory-scan** — Agent memory security
-- **guardrails** — Security policy configuration
+- **input-guard**：外部输入安全检查工具
+- **memory-scan**：代理内存安全检测工具
+- **guardrails**：安全策略配置工具

@@ -1,51 +1,51 @@
 ---
 name: agentlens
-description: Navigate and understand codebases using agentlens hierarchical documentation. Use when exploring new projects, finding modules, locating symbols in large files, finding TODOs/warnings, or understanding code structure.
+description: 使用 agentlens 的分层式文档结构来导航和理解代码库。适用于探索新项目、查找模块、在大型文件中定位符号、查找待办事项/警告信息，或理解代码结构。
 metadata:
   short-description: Codebase navigation with agentlens
   author: agentlens
   version: "1.0"
 ---
 
-# AgentLens - Codebase Navigation
+# AgentLens - 代码库导航
 
-## Before Working on Any Codebase
-Always start by reading `.agentlens/INDEX.md` for the project map.
+## 在开始处理任何代码库之前
+请务必先阅读 `.agentlens/INDEX.md`，以了解项目整体结构。
 
-## Navigation Hierarchy
+## 导航层次结构
 
-| Level | File | Purpose |
+| 层级 | 文件 | 用途 |
 |-------|------|---------|
-| L0 | `INDEX.md` | Project overview, all modules listed |
-| L1 | `modules/{slug}/MODULE.md` | Module details, file list |
-| L1 | `modules/{slug}/outline.md` | Symbols in large files |
-| L1 | `modules/{slug}/memory.md` | TODOs, warnings, business rules |
-| L1 | `modules/{slug}/imports.md` | File dependencies |
-| L2 | `files/{slug}.md` | Deep docs for complex files |
+| L0 | `INDEX.md` | 项目概览，列出所有模块 |
+| L1 | `modules/{slug}/MODULE.md` | 模块详细信息，文件列表 |
+| L1 | `modules/{slug}/outline.md` | 大文件中的函数/方法索引 |
+| L1 | `modules/{slug}/memory.md` | 待办事项、警告信息、业务规则 |
+| L1 | `modules/{slug}/imports.md` | 文件依赖关系 |
+| L2 | `files/{slug}.md` | 复杂文件的详细文档 |
 
-## Navigation Flow
+## 导航流程
 
 ```
 INDEX.md → Find module → MODULE.md → outline.md/memory.md → Source file
 ```
 
-## When To Read What
+## 在什么情况下阅读相应的文档
 
-| You Need | Read This |
+| 需要什么 | 阅读什么 |
 |----------|-----------|
-| Project overview | `.agentlens/INDEX.md` |
-| Find a module | INDEX.md, search module name |
-| Understand a module | `modules/{slug}/MODULE.md` |
-| Find function/class in large file | `modules/{slug}/outline.md` |
-| Find TODOs, warnings, rules | `modules/{slug}/memory.md` |
-| Understand file dependencies | `modules/{slug}/imports.md` |
+| 了解项目概览 | `.agentlens/INDEX.md` |
+| 查找特定模块 | `INDEX.md`，搜索模块名称 |
+| 了解模块详情 | `modules/{slug}/MODULE.md` |
+| 在大文件中查找函数/方法 | `modules/{slug}/outline.md` |
+| 查看待办事项、警告信息、业务规则 | `modules/{slug}/memory.md` |
+| 了解文件依赖关系 | `modules/{slug}/imports.md` |
 
-## Best Practices
+## 最佳实践
 
-1. **Don't read source files directly** for large codebases - use outline.md first
-2. **Check memory.md before modifying** code to see warnings and TODOs
-3. **Use outline.md to locate symbols**, then read only the needed source sections
-4. **Regenerate docs** with `agentlens` command if they seem stale
+1. **对于大型代码库，不要直接阅读源代码**——先使用 `outline.md` 进行快速浏览 |
+2. **修改代码前，请先查看 `memory.md` 以了解警告和待办事项** |
+3. **使用 `outline.md` 定位所需的功能/方法，然后仅阅读相关的源代码部分** |
+4. 如果文档看起来过时，请使用 `agentlens` 命令重新生成文档。
 
-For detailed navigation patterns, see [references/navigation.md](references/navigation.md)
-For structure explanation, see [references/structure.md](references/structure.md)
+有关详细的导航规则，请参阅 [references/navigation.md]；
+有关代码库结构的说明，请参阅 [references/structure.md]。

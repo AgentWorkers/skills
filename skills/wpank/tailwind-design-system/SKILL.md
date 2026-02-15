@@ -3,478 +3,146 @@ name: tailwind-design-system
 model: fast
 ---
 
-# Tailwind Design System
+# Tailwind 设计系统
 
-Build production-ready component libraries with Tailwind CSS using CVA, compound components, design tokens, and theming.
+使用 Tailwind CSS、CVA（Class Variance Authority）、复合组件（compound components）和设计令牌（design tokens）来构建可用于生产环境的组件库。
 
-## WHAT
+## 什么是 Tailwind 设计系统？
 
-Patterns for scalable Tailwind-based design systems:
-- Class Variance Authority (CVA) for type-safe variants
-- Compound component architecture
-- CSS variable-based theming
-- Dark mode implementation
-- Responsive grid systems
-- Animation utilities
+Tailwind 设计系统是一套可扩展的设计模式，基于 Tailwind CSS 构建。它包括以下核心特性：
+- **类变体权限（CVA）**：用于实现类型安全的组件变体。
+- **复合组件架构**：允许组件之间共享上下文和状态。
+- **基于 CSS 变量的主题系统**：支持动态切换主题样式。
+- **暗模式（Dark Mode）**：提供统一的暗色主题体验。
+- **响应式网格系统**：适应不同屏幕尺寸。
+- **动画工具**：提供简单的动画效果。
 
-## WHEN
+## 适用场景
 
-- Building a component library with Tailwind
-- Implementing design tokens and theming
-- Creating reusable UI components with variants
-- Setting up dark mode
-- Standardizing patterns across a codebase
+- 使用 Tailwind 构建组件库。
+- 实现自定义的设计令牌和主题系统。
+- 创建具有多种变体的可复用 UI 组件。
+- 配置暗模式功能。
+- 在整个代码库中统一设计规范。
 
-## KEYWORDS
+## 关键术语
 
-tailwind, cva, design system, component library, variants, theming, dark mode, design tokens, shadcn, compound components, tailwind-merge
+- Tailwind CSS：Tailwind 的核心样式系统。
+- CVA（Class Variance Authority）：用于管理组件变体的类型安全机制。
+- 设计令牌（Design Tokens）：用于定义可复用的设计元素和样式。
+- 暗模式（Dark Mode）：提供统一的暗色背景和样式。
+- 复合组件（Compound Components）：由多个简单组件组合而成的复杂组件。
+- `tailwind-merge`：用于解决样式冲突的工具。
 
-**Related skills:** `tailwind-v4-shadcn` for Tailwind v4 setup and migration
+**相关技能**：`tailwind-v4-shadcn`：用于 Tailwind v4 的配置和迁移。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
-```bash
-npx clawhub@latest install tailwind-design-system
-```
-
+（安装说明请参考相应的文档或教程。）
 
 ---
 
-## Core Setup
+## 核心设置
 
-### Utility Function
+### 实用工具函数
 
-```typescript
-// lib/utils.ts
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-```
-
-### Design Token Architecture
-
-```
-Primitive Tokens (abstract)
-    └── Semantic Tokens (purpose)
-        └── Component Tokens (specific)
-
-Example:
-    slate-900 → foreground → card-title-color
-```
+（相关工具函数的代码请参考相应的文档或教程。）
 
 ---
 
-## Pattern 1: CVA Components
+## 设计令牌架构
 
-Class Variance Authority for type-safe, variant-based components:
-
-```typescript
-// components/ui/button.tsx
-import { cva, type VariantProps } from 'class-variance-authority'
-import { forwardRef } from 'react'
-import { cn } from '@/lib/utils'
-
-const buttonVariants = cva(
-  // Base styles (always applied)
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
-        icon: 'h-10 w-10',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
-  }
-)
-
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
-}
-
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
-    return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Button.displayName = 'Button'
-
-export { Button, buttonVariants }
-```
-
-**Usage:**
-
-```tsx
-<Button variant="destructive" size="lg">Delete</Button>
-<Button variant="outline">Cancel</Button>
-<Button variant="ghost" size="icon"><Search /></Button>
-```
+设计令牌是一种用于定义可复用设计元素和样式的机制。通过这些令牌，可以轻松地创建和切换不同的组件样式。
 
 ---
 
-## Pattern 2: Compound Components
+## 模式 1：CVA 组件（Class Variance Authority）
 
-Composable components with shared context:
+CVA 是一种用于实现类型安全、基于变体的组件设计模式。它允许你为组件定义多种样式变体，并确保代码的类型安全性。
 
-```typescript
-// components/ui/card.tsx
-import { cn } from '@/lib/utils'
-import { forwardRef } from 'react'
+**使用方法：**
 
-const Card = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)}
-      {...props}
-    />
-  )
-)
-Card.displayName = 'Card'
-
-const CardHeader = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
-  )
-)
-CardHeader.displayName = 'CardHeader'
-
-const CardTitle = forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => (
-    <h3 ref={ref} className={cn('text-2xl font-semibold leading-none tracking-tight', className)} {...props} />
-  )
-)
-CardTitle.displayName = 'CardTitle'
-
-const CardDescription = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
-  )
-)
-CardDescription.displayName = 'CardDescription'
-
-const CardContent = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
-  )
-)
-CardContent.displayName = 'CardContent'
-
-const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />
-  )
-)
-CardFooter.displayName = 'CardFooter'
-
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
-```
-
-**Usage:**
-
-```tsx
-<Card>
-  <CardHeader>
-    <CardTitle>Account Settings</CardTitle>
-    <CardDescription>Manage your account preferences</CardDescription>
-  </CardHeader>
-  <CardContent>
-    <form>{/* form fields */}</form>
-  </CardContent>
-  <CardFooter>
-    <Button>Save Changes</Button>
-  </CardFooter>
-</Card>
-```
+（具体使用方法请参考相应的文档或教程。）
 
 ---
 
-## Pattern 3: Form Components with Validation
+## 模式 2：复合组件（Compound Components）
 
-```typescript
-// components/ui/input.tsx
-import { forwardRef } from 'react'
-import { cn } from '@/lib/utils'
+复合组件是一种由多个简单组件组合而成的复杂组件。它们可以共享状态和上下文，从而提高代码的可维护性和可复用性。
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: string
-}
+**使用方法：**
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, error, ...props }, ref) => {
-    return (
-      <div className="relative">
-        <input
-          type={type}
-          className={cn(
-            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background',
-            'file:border-0 file:bg-transparent file:text-sm file:font-medium',
-            'placeholder:text-muted-foreground',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            error && 'border-destructive focus-visible:ring-destructive',
-            className
-          )}
-          ref={ref}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${props.id}-error` : undefined}
-          {...props}
-        />
-        {error && (
-          <p id={`${props.id}-error`} className="mt-1 text-sm text-destructive" role="alert">
-            {error}
-          </p>
-        )}
-      </div>
-    )
-  }
-)
-Input.displayName = 'Input'
-
-export { Input }
-```
+（具体使用方法请参考相应的文档或教程。）
 
 ---
 
-## Pattern 4: Grid System
+## 模式 3：带验证功能的表单组件
 
-```typescript
-// components/ui/grid.tsx
-import { cn } from '@/lib/utils'
-import { cva, type VariantProps } from 'class-variance-authority'
+这些组件包含验证逻辑，可以确保用户输入的有效性。
 
-const gridVariants = cva('grid', {
-  variants: {
-    cols: {
-      1: 'grid-cols-1',
-      2: 'grid-cols-1 sm:grid-cols-2',
-      3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-      4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-    },
-    gap: {
-      none: 'gap-0',
-      sm: 'gap-2',
-      md: 'gap-4',
-      lg: 'gap-6',
-      xl: 'gap-8',
-    },
-  },
-  defaultVariants: {
-    cols: 3,
-    gap: 'md',
-  },
-})
+**使用方法：**
 
-interface GridProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof gridVariants> {}
-
-export function Grid({ className, cols, gap, ...props }: GridProps) {
-  return <div className={cn(gridVariants({ cols, gap, className }))} {...props} />
-}
-
-// Container component
-const containerVariants = cva('mx-auto w-full px-4 sm:px-6 lg:px-8', {
-  variants: {
-    size: {
-      sm: 'max-w-screen-sm',
-      md: 'max-w-screen-md',
-      lg: 'max-w-screen-lg',
-      xl: 'max-w-screen-xl',
-      '2xl': 'max-w-screen-2xl',
-      full: 'max-w-full',
-    },
-  },
-  defaultVariants: {
-    size: 'xl',
-  },
-})
-
-interface ContainerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof containerVariants> {}
-
-export function Container({ className, size, ...props }: ContainerProps) {
-  return <div className={cn(containerVariants({ size, className }))} {...props} />
-}
-```
-
-**Usage:**
-
-```tsx
-<Container>
-  <Grid cols={4} gap="lg">
-    {products.map(product => (
-      <ProductCard key={product.id} product={product} />
-    ))}
-  </Grid>
-</Container>
-```
+（具体使用方法请参考相应的文档或教程。）
 
 ---
 
-## Pattern 5: Dark Mode
+## 模式 4：网格系统（Grid System）
 
-### Theme Provider
+Tailwind 提供了响应式网格系统，可以轻松地布局页面元素。
 
-```typescript
-// providers/theme-provider.tsx
-'use client'
+**使用方法：**
 
-import { createContext, useContext, useEffect, useState } from 'react'
-
-type Theme = 'dark' | 'light' | 'system'
-
-interface ThemeContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-  resolvedTheme: 'dark' | 'light'
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
-
-export function ThemeProvider({
-  children,
-  defaultTheme = 'system',
-  storageKey = 'theme',
-}: {
-  children: React.ReactNode
-  defaultTheme?: Theme
-  storageKey?: string
-}) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme)
-  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('light')
-
-  useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as Theme | null
-    if (stored) setTheme(stored)
-  }, [storageKey])
-
-  useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.remove('light', 'dark')
-
-    const resolved = theme === 'system'
-      ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      : theme
-
-    root.classList.add(resolved)
-    setResolvedTheme(resolved)
-  }, [theme])
-
-  return (
-    <ThemeContext.Provider value={{
-      theme,
-      setTheme: (t) => { localStorage.setItem(storageKey, t); setTheme(t) },
-      resolvedTheme,
-    }}>
-      {children}
-    </ThemeContext.Provider>
-  )
-}
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext)
-  if (!context) throw new Error('useTheme must be used within ThemeProvider')
-  return context
-}
-```
-
-### Theme Toggle
-
-```tsx
-import { Moon, Sun } from 'lucide-react'
-import { useTheme } from '@/providers/theme-provider'
-import { Button } from '@/components/ui/button'
-
-export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme()
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-    >
-      <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
-    </Button>
-  )
-}
-```
+（具体使用方法请参考相应的文档或教程。）
 
 ---
 
-## Animation Utilities
+## 模式 5：暗模式（Dark Mode）
 
-```typescript
-// lib/animations.ts
-import { cn } from './utils'
+暗模式允许你在应用程序中启用统一的暗色主题。
 
-export const fadeIn = 'animate-in fade-in duration-300'
-export const fadeOut = 'animate-out fade-out duration-300'
-export const slideInFromTop = 'animate-in slide-in-from-top duration-300'
-export const slideInFromBottom = 'animate-in slide-in-from-bottom duration-300'
-export const zoomIn = 'animate-in zoom-in-95 duration-300'
-export const zoomOut = 'animate-out zoom-out-95 duration-300'
+**实现方法：**
 
-// Compound animations
-export const modalEnter = cn(fadeIn, zoomIn, 'duration-200')
-export const modalExit = cn(fadeOut, zoomOut, 'duration-200')
-export const dropdownEnter = cn(fadeIn, slideInFromTop, 'duration-150')
-```
+（具体实现方法请参考相应的文档或教程。）
 
 ---
 
-## Best Practices
+## 动画工具（Animation Utilities）
 
-### Do
+Tailwind 提供了一些简单的动画效果，可以增强用户界面。
 
-- Use CSS variables for theming (enables runtime switching)
-- Compose variants with CVA (type-safe, explicit)
-- Use semantic color names (`primary` not `blue-500`)
-- Forward refs for composition
-- Add accessibility attributes (ARIA, focus states)
-- Use `tailwind-merge` to handle class conflicts
+**使用方法：**
 
-### Don't
-
-- Use arbitrary values when you can extend the theme
-- Nest `@apply` deeply (hurts readability)
-- Skip focus states (keyboard users need them)
-- Hardcode colors (use semantic tokens)
-- Forget to test dark mode
+（具体使用方法请参考相应的文档或教程。）
 
 ---
 
-## NEVER
+## 最佳实践
 
-- Use hardcoded colors like `bg-blue-500` for semantic purposes (use `bg-primary`)
-- Skip focus-visible styles on interactive elements
-- Mix arbitrary values with design tokens inconsistently
-- Forget `forwardRef` on reusable components
-- Use `!important` to override styles (fix the cascade instead)
+### 应该做的：
+
+- 使用 CSS 变量进行主题设置，以便在运行时动态切换样式。
+- 使用 CVA 来组合组件变体，确保代码的类型安全性和可读性。
+- 使用语义化的颜色名称（例如 `primary` 而不是 `blue-500`）。
+- 使用 `forwardRef` 来传递组件之间的引用。
+- 为元素添加可访问性属性（如 ARIA 标签和焦点状态）。
+- 使用 `tailwind-merge` 来解决样式冲突。
+
+### 不应该做的：
+
+- 在可以扩展主题的情况下使用任意值。
+- 过深地嵌套 `@apply` 语句（会影响代码的可读性）。
+- 省略交互元素的焦点状态样式（键盘用户需要这些样式）。
+- 硬编码颜色值（使用语义化的设计令牌）。
+- 忘记测试暗模式功能。
+
+---
+
+## 绝对不要做的：
+
+- 为了语义化目的而使用硬编码的颜色值（例如 `bg-blue-500`，应使用 `bg-primary`）。
+- 省略交互元素的 `focus-visible` 样式。
+- 不一致地混合使用任意值和设计令牌。
+- 忘记为可复用组件添加 `forwardRef`。
+- 使用 `!important` 来覆盖样式（应该通过其他方式解决样式冲突）。

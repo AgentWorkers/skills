@@ -1,6 +1,22 @@
 ---
 name: Chat with PDF
-description: Answer questions about PDF content, summarize, and extract information
+description: **功能概述：**  
+- **回答问题关于PDF内容：** 用户可以针对PDF文件中的具体内容提出问题，系统会提供相应的答案或解释。  
+- **总结PDF内容：** 系统能够对PDF文件进行自动总结，提取关键信息或主题。  
+- **提取信息：** 用户可以指定从PDF文件中提取特定的数据或文本片段。  
+
+**技术实现：**  
+- **自然语言处理（NLP）：** 使用先进的自然语言处理技术来理解用户的查询和PDF文件的内容。  
+- **文本分析：** 对PDF文件进行深度文本分析，提取关键词、句子和段落结构。  
+- **数据提取：** 根据用户的需求，从PDF文件中提取所需的信息或数据。  
+
+**示例：**  
+1. 用户提问：“PDF文件的第3页第5行是什么内容？”  
+   - 系统会返回：“PDF文件的第3页第5行是：‘This is an example sentence.’”  
+2. 用户请求：“总结这篇PDF文章的主要观点。”  
+   - 系统会输出：“本文主要讨论了……（总结文章的核心观点）。”  
+3. 用户指定：“提取PDF文件中所有与‘人工智能’相关的文本。”  
+   - 系统会提取出所有包含“人工智能”一词的文本片段。
 author: claude-office-skills
 version: "1.0"
 tags: [pdf, document-ai, qa, summarization, extraction]
@@ -8,59 +24,59 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, file_operations]
 ---
 
-# Chat with PDF
+# 与PDF文档进行智能对话
 
-Have intelligent conversations about PDF documents - ask questions, get summaries, and extract specific information.
+您可以就PDF文档提出问题、获取摘要或提取特定信息。
 
-## Overview
+## 概述
 
-This skill enables you to:
-- Ask questions about PDF content
-- Get summaries at various detail levels
-- Extract specific data points
-- Compare information across multiple PDFs
-- Find relevant sections quickly
+此功能允许您：
+- 提出关于PDF内容的问题
+- 获取不同详细程度的摘要
+- 提取具体数据点
+- 比较多个PDF文件中的信息
+- 快速找到相关部分
 
-## How to Use
+## 使用方法
 
-### Basic Interaction
-1. Share or upload the PDF document
-2. Ask your question or request
-3. Get contextual answers with citations
+### 基本操作
+1. 共享或上传PDF文档
+2. 提出您的问题或请求
+3. 获取带有引用信息的答案
 
-### Question Types
+### 问题类型
 
-**Factual Questions**
+**事实性问题**
 ```
 "What is the contract value mentioned in this document?"
 "Who are the parties involved in this agreement?"
 "What are the key dates mentioned?"
 ```
 
-**Summarization**
+**摘要**
 ```
 "Summarize this document in 3 bullet points"
 "Give me an executive summary"
 "What are the main topics covered?"
 ```
 
-**Extraction**
+**提取**
 ```
 "Extract all names and titles mentioned"
 "List all financial figures in the document"
 "Find all action items or deliverables"
 ```
 
-**Analysis**
+**分析**
 ```
 "What are the risks mentioned in this contract?"
 "Are there any ambiguous terms?"
 "What obligations does Party A have?"
 ```
 
-## Output Formats
+## 输出格式
 
-### Q&A Format
+### 问答格式
 ```markdown
 **Question**: [Your question]
 
@@ -72,7 +88,7 @@ This skill enables you to:
 **Confidence**: [High/Medium/Low]
 ```
 
-### Summary Format
+### 摘要格式
 ```markdown
 ## Document Summary
 
@@ -90,7 +106,7 @@ This skill enables you to:
 - [Detail 2]
 ```
 
-### Extraction Format
+### 提取格式
 ```markdown
 ## Extracted Information
 
@@ -104,26 +120,25 @@ This skill enables you to:
 ...
 ```
 
-## Best Practices
+## 最佳实践
 
-### For Better Answers
-1. **Be specific**: "What is the termination clause?" vs "Tell me about the contract"
-2. **Reference sections**: "What does Section 5.2 say about liability?"
-3. **Ask follow-ups**: Build on previous answers for deeper understanding
+### 为了获得更好的答案
+1. **具体说明**：例如，“终止条款是什么？”而不是“请介绍一下合同内容”
+2. **引用相关章节**：例如，“第5.2节关于责任的部分是怎么规定的？”
+3. **提出后续问题**：基于之前的答案进行更深入的探讨
 
-### For Better Extraction
-1. **Specify format**: "Extract as a table" or "List as bullet points"
-2. **Name the fields**: "Extract: name, date, amount, description"
-3. **Set criteria**: "Only extract amounts over $10,000"
+### 为了更准确地提取信息
+1. **指定格式**：例如，“以表格形式提取”或“以项目符号列表的形式呈现”
+2. **明确字段名称**：例如，“提取的字段包括：名称、日期、金额、描述”
+3. **设置筛选条件**：例如，“仅提取金额超过10,000美元的记录”
 
-### For Better Summaries
-1. **Specify length**: "Summarize in 100 words" or "3 bullet points"
-2. **Focus area**: "Summarize the financial terms only"
-3. **Audience**: "Summarize for a legal team" vs "for executives"
+### 为了获得更好的摘要
+1. **指定长度**：例如，“用100个字概括”或“列出3个要点”
+2. **明确目标受众**：例如，“为法律团队总结”或“为高管总结”
 
-## Example Workflows
+## 示例工作流程
 
-### Contract Review
+### 合同审核
 ```
 1. "What type of contract is this?"
 2. "Who are the parties and what are their roles?"
@@ -133,7 +148,7 @@ This skill enables you to:
 6. "Are there any unusual or concerning clauses?"
 ```
 
-### Research Paper Analysis
+### 研究论文分析
 ```
 1. "What is the main thesis or hypothesis?"
 2. "What methodology was used?"
@@ -142,7 +157,7 @@ This skill enables you to:
 5. "What future research do they suggest?"
 ```
 
-### Financial Report
+### 财务报告分析
 ```
 1. "What is the total revenue reported?"
 2. "How does this compare to last year?"
@@ -151,17 +166,16 @@ This skill enables you to:
 5. "Extract all financial metrics into a table"
 ```
 
-## Multi-Document Support
+## 多文档支持
 
-When working with multiple PDFs:
-
+当处理多个PDF文件时：
 ```
 "Compare the terms in Contract A vs Contract B"
 "Which document mentions [topic]?"
 "Create a summary table comparing key points across all documents"
 ```
 
-### Comparison Output
+### 对比结果
 ```markdown
 ## Document Comparison
 
@@ -180,35 +194,35 @@ When working with multiple PDFs:
 2. [Similarity 2]
 ```
 
-## Handling Challenges
+## 面临的挑战
 
-### Scanned PDFs (Image-based)
-- OCR will be applied automatically
-- Quality depends on scan quality
-- May have recognition errors
+### 扫描的PDF文件（基于图像）
+- 系统会自动应用OCR技术
+- 文本质量取决于扫描效果
+- 可能存在识别错误
 
-### Complex Layouts
-- Tables may need reformatting
-- Multi-column text is processed left-to-right
-- Footnotes processed separately
+### 复杂的布局
+- 表格可能需要重新格式化
+- 多列文本会按从左到右的顺序处理
+- 脚注会单独处理
 
-### Long Documents
-- Ask about specific sections for accuracy
-- Request page-by-page summaries for overview
-- Use targeted questions over broad ones
+### 长文档
+- 为确保准确性，请询问特定章节的内容
+- 如需概览，可以请求逐页摘要
+- 请提出具体、针对性的问题，而非笼统的问题
 
-## Limitations
+## 限制
 
-- Cannot execute code embedded in PDFs
-- Password-protected PDFs need password
-- Very large PDFs (500+ pages) may need chunking
-- Handwritten content recognition is limited
-- Cannot guarantee 100% accuracy on scanned documents
-- Charts and images are described, not analyzed numerically
+- 无法执行PDF中嵌入的代码
+- 需要密码保护的PDF文件需要输入密码
+- 非常大的PDF文件（500页以上）可能需要分部分处理
+- 手写内容的识别能力有限
+- 无法保证扫描文档的100%准确性
+- 图表和图片只能进行描述，无法进行数值分析
 
-## Privacy Note
+## 隐私声明
 
-Document contents are processed according to the AI provider's privacy policy. For sensitive documents, consider:
-- Using on-premise solutions
-- Redacting sensitive information first
-- Checking data retention policies
+文档内容将按照AI提供商的隐私政策进行处理。对于敏感文档，请考虑：
+- 使用本地解决方案
+- 先删除敏感信息
+- 查阅数据保留政策

@@ -1,91 +1,82 @@
 ---
 name: journal-to-post
-description: Convert personal journal entries into shareable social media posts
+description: 将个人日记条目转换为可在社交媒体上分享的帖子
 version: 1.0.0
 author: theflohart
 tags: [content, writing, social-media, journaling]
 ---
 
-# Journal to Post
+# 将个人笔记转化为可分享的社交媒体帖子
 
-Convert personal reflections, journal entries, or voice notes into shareable social media posts.
+将您的个人反思、日记条目或语音笔记转换为适合在社交媒体上分享的内容。
 
-## Usage
+## 使用方法
 
 ```
 /journal-to-post [journal text or file path]
 ```
 
-## How It Works
+## 工作原理
 
-1. **Input:** Provide journal text directly or a file path
-2. **Process:** Extract universal insights from personal experience
-3. **Output:** 1-3 polished posts ready to share
+1. **输入：** 直接提供日记文本或文件路径。
+2. **处理：** 从个人经历中提取有价值的见解。
+3. **输出：** 生成1-3条经过润色的、可供分享的帖子。
 
-## Voice Guidelines
+## 语音记录的注意事项
 
-### Do
+### 应该这样做：
+- 表达直接、自信，避免含糊其辞。
+- 在分享个人经历时使用第一人称。
+- 使用引人注目的开头语来挑战人们的固有观念。
+- 提供具体的细节以增加内容的可信度（例如数字、时间框架）。
 
-- Direct, confident, no hedging
-- First person when sharing experience
-- Punchy hooks that challenge assumptions
-- Specific details that add credibility (numbers, timeframes)
+### 不应该这样做：
+- 包含过于私密的细节。
+- 写些泛泛而谈的陈词滥调。
+- 使用“我明白了……”这样的表述方式（要展示而非直接告诉别人）。
+- 使内容听起来像普通的自我帮助内容。
 
-### Don't
+## 被提取的内容：
+- 从个人经历中得出的普遍性见解。
+- 反直觉的观察结果。
+- 您注意到的规律或模式。
+- 用于支撑这些见解的具体数据。
 
-- Include too personal/private details
-- Write vague platitudes
-- Use "I learned that..." framing (show, don't tell)
-- Sound like typical self-help content
+## 转换示例
 
-## What Gets Extracted
+### 示例1
+**日记：**
+> “在那个艰难的会议后，我感到精力下降。走了3个小时后，才恢复过来。”
 
-- Universal insights from personal experience
-- Counterintuitive observations
-- Patterns you've noticed
-- Specific data points that anchor the insight
-
-## Transformation Examples
-
-### Example 1
-
-**Journal:**
-> "Noticed my energy dropped after that difficult meeting. Took 3 hours of walking before I felt normal again."
-
-**Post:**
-> "Your body keeps score of difficult conversations. My energy tanked after one meeting yesterday. Took 3 hours of walking to recover. Most people ignore this and wonder why they're exhausted by Friday."
+**生成的帖子：**
+> “你的身体会记录下那些令人疲惫的对话。昨天的一场会议让我精疲力尽，走了3个小时才恢复过来。大多数人却忽略了这一点，还奇怪为什么到了周五还会感到疲惫。”
 
 ---
 
-### Example 2
+### 示例2
+**日记：**
+> “今天在冥想中有了突破——我意识到自己一直在试图‘达到’内心的平静，而不是仅仅去观察已经存在的平静状态。”
 
-**Journal:**
-> "Had a breakthrough in meditation today - realized I've been trying to 'achieve' stillness instead of just noticing what's already there."
-
-**Post:**
-> "The meditation trap: trying to achieve stillness. The shift: noticing stillness is already there, underneath the noise. Took me 2 years to stop efforting."
+**生成的帖子：**
+> “冥想的误区：总想着要‘达到’平静。真正的转变在于：发现平静其实早已存在，只是被各种杂念所掩盖。我花了两年时间才不再刻意去追求它。”
 
 ---
 
-### Example 3
+### 示例3
+**日记：**
+> “花了4个小时去调试一个问题，结果发现只是个拼写错误。虽然很沮丧，但事后想想也挺有趣的。”
 
-**Journal:**
-> "Spent 4 hours debugging something that turned out to be a typo. Frustrated but also funny in hindsight."
+**生成的帖子：**
+> “花了4个小时去调试，结果只是个拼写错误。一个字符的错误……这就是工作的常态。‘卡住’和‘解决’之间的距离往往小得令人尴尬。”
 
-**Post:**
-> "4 hours debugging. The fix? A typo. One character. This is the job. The gap between 'stuck' and 'solved' is often embarrassingly small."
+## 输出结果：
+- 每条生成的帖子都会包含：
+  - 可以直接复制粘贴的完整内容。
+  - 对内容转换过程的说明（提取了哪些信息，去掉了哪些内容）。
+  - 提供不同的分享建议（例如适合在X平台还是LinkedIn上分享）。
 
-## Output
-
-For each generated post:
-
-1. **Show the post** - Ready to copy/paste
-2. **Explain the transformation** - What was extracted, what was removed
-3. **Offer variations** - Different angles or platforms (X vs LinkedIn)
-
-## Tips for Better Results
-
-- Include specific numbers and timeframes in your journal
-- Note your emotional state, not just events
-- Capture the "aha moment" or shift in thinking
-- Don't self-censor in the journal - the skill will filter for you
+## 提高效果的小贴士：
+- 在日记中记录具体的数字和时间框架。
+- 不仅记录事件本身，还要记录当时的情绪状态。
+- 抓住那些‘顿悟’的瞬间或思维上的转变。
+- 在日记中不要自我审查——这个工具会自动筛选出有价值的信息。

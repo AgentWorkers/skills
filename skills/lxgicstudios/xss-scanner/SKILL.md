@@ -1,22 +1,22 @@
-# XSS Scanner
+# XSS扫描器
 
-Detect cross-site scripting vulnerabilities in your frontend code before they ship.
+在您的前端代码发布之前，检测其中的跨站脚本（XSS）漏洞。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-xss-check
 ```
 
-## What It Does
+## 功能介绍
 
-- Scans JavaScript/TypeScript for XSS vulnerabilities
-- Detects unsafe innerHTML, eval, and DOM manipulation
-- Identifies unescaped user input in templates
-- Checks React dangerouslySetInnerHTML usage
-- Provides fix suggestions for each finding
+- 扫描JavaScript/TypeScript代码中的XSS漏洞
+- 检测不安全的内联HTML（innerHTML）、`eval`语句以及DOM操作
+- 识别模板中的未转义用户输入
+- 检查React中的`dangerouslySetInnerHTML`用法
+- 为每个发现的漏洞提供修复建议
 
-## Usage
+## 使用方法
 
 ```bash
 # Scan current directory
@@ -26,23 +26,23 @@ npx ai-xss-check
 npx ai-xss-check ./src/components
 ```
 
-## When to Use
+## 适用场景
 
-- Before security audits
-- Reviewing third-party code
-- Setting up CI security gates
-- Training junior devs on XSS prevention
+- 在进行安全审计之前
+- 审查第三方代码时
+- 设置持续集成（CI）的安全检查机制
+- 培训初级开发人员了解XSS防护知识
 
-## Part of the LXGIC Dev Toolkit
+## LXGIC开发工具包的一部分
 
-One of 110+ free developer tools from LXGIC Studios. No paywalls, no sign-ups.
+LXGIC Studios提供的110多种免费开发工具之一。无需付费，也无需注册。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/lxgic-studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT许可证。永久免费使用。

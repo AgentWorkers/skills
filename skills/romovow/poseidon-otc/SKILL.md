@@ -1,24 +1,23 @@
 ---
 name: poseidon-otc
-description: Execute trustless P2P token swaps on Solana via the Poseidon OTC protocol. Create trade rooms, negotiate offers, lock tokens with time-based escrow, and execute atomic on-chain swaps. Supports agent-to-agent trading with real-time WebSocket updates.
+description: 通过Poseidon OTC协议，在Solana网络上执行无信任的P2P代币交换操作。可以创建交易房间、协商交易条款、使用基于时间的托管服务锁定代币，并完成原子级的链上交换。该系统支持代理之间的实时交易，同时提供WebSocket实时更新功能。
 metadata: { "openclaw": { "emoji": "🔱", "requires": { "env": ["POSEIDON_BURNER_KEY"] }, "primaryEnv": "POSEIDON_BURNER_KEY", "homepage": "https://poseidon.cash" } }
 ---
 
 # Poseidon OTC Skill
 
-**TL;DR for Agents:** This skill lets you trade tokens with humans or other agents on Solana. You create a room, both parties deposit tokens to escrow, confirm, and execute an atomic swap. No trust required - it's all on-chain.
+**简要说明：**  
+该技能允许您在Solana网络上与人类或其他代理进行代币交易。您需要创建一个交易房间，双方将代币存入托管账户，然后确认并执行原子交换（atomic swap）。整个过程无需信任机制，所有操作都在链上完成。
 
-## When to Use This Skill
+## 使用场景：  
+- **点对点代币交易**：直接与其他用户交换任意SPL代币。  
+- **代理间交易**：两个AI代理可以自主协商并执行交易。  
+- **大额场外交易**：通过直接交易避免去中心化交易所（DEX）可能产生的滑点。  
+- **受保护的交易**：使用锁定机制防止交易对手立即抛售代币。  
+- **多代币交换**：单次原子交易中最多可交换4种代币。
 
-- **Trading tokens P2P** - Swap any SPL token directly with another party
-- **Agent-to-agent commerce** - Two AI agents can negotiate and execute trades autonomously  
-- **Large OTC deals** - Avoid slippage from DEX trades by going direct
-- **Protected trades** - Use lockups to prevent counterparty from dumping immediately
-- **Multi-token swaps** - Trade up to 4 tokens per side in one atomic transaction
-
-## Quick Start for Agents
-
-### 1. Initialize (requires wallet)
+## 代理快速入门：  
+### 1. 初始化（需要钱包）  
 ```typescript
 import { PoseidonOTC } from 'poseidon-otc-skill';
 
@@ -27,13 +26,13 @@ const client = new PoseidonOTC({
 });
 ```
 
-### 2. Create a Trade Room
+### 2. 创建交易房间  
 ```typescript
 const { roomId, link } = await client.createRoom();
 // Share `link` with counterparty or another agent
 ```
 
-### 3. Wait for Counterparty & Set Offer
+### 3. 等待交易对手并设置报价  
 ```typescript
 // Check room status
 const room = await client.getRoom(roomId);
@@ -46,7 +45,7 @@ await client.updateOffer(roomId, [{
 }]);
 ```
 
-### 4. Confirm & Execute
+### 4. 确认并执行交易  
 ```typescript
 // First confirmation = "I agree to these terms"
 await client.confirmTrade(roomId, 'first');
@@ -58,8 +57,7 @@ await client.confirmTrade(roomId, 'second');
 const { txSignature } = await client.executeSwap(roomId);
 ```
 
-## Complete Trade Flow
-
+## 完整交易流程  
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        TRADE LIFECYCLE                          │
@@ -102,51 +100,47 @@ const { txSignature } = await client.executeSwap(roomId);
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## API Reference
+## API参考：  
 
-### Room Management
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `createRoom(options?)` | `{ inviteCode?: string }` | `{ roomId, link }` | Create new room |
-| `getRoom(roomId)` | `roomId: string` | `TradeRoom` | Get full room state |
-| `getUserRooms(wallet?)` | `wallet?: string` | `TradeRoom[]` | List your rooms |
-| `joinRoom(roomId, inviteCode?)` | `roomId, inviteCode?` | `{ success }` | Join as Party B |
-| `cancelRoom(roomId)` | `roomId: string` | `{ success }` | Cancel & refund |
-| `getRoomLink(roomId)` | `roomId: string` | `string` | Get share URL |
+### 房间管理  
+| 方法 | 参数 | 返回值 | 描述 |  
+|--------|------------|---------|-------------|  
+| `createRoom(options?)` | `{ inviteCode?: string }` | 创建新房间 |  
+| `getRoom(roomId)` | `roomId: string` | `TradeRoom` | 获取房间状态 |  
+| `getUserRooms(wallet?)` | `wallet?: string` | `TradeRoom[]` | 查看您的房间列表 |  
+| `joinRoom(roomId, inviteCode?)` | `roomId, inviteCode?` | 以交易对手身份加入房间 |  
+| `cancelRoom(roomId)` | `roomId: string` | 取消房间并退款 |  
+| `getRoomLink(roomId)` | `roomId: string` | 房间分享链接 |  
 
-### Trading
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `updateOffer(roomId, tokens)` | `roomId, [{mint, amount, decimals}]` | `{ success }` | Set your offer |
-| `withdrawFromOffer(roomId, tokens)` | `roomId, tokens[]` | `{ success }` | Pull back tokens |
-| `confirmTrade(roomId, stage)` | `roomId, 'first'│'second'` | `{ success }` | Confirm stage |
-| `executeSwap(roomId)` | `roomId: string` | `{ txSignature }` | Execute swap |
-| `declineOffer(roomId)` | `roomId: string` | `{ success }` | Reject terms |
+### 交易操作  
+| 方法 | 参数 | 返回值 | 描述 |  
+|--------|------------|---------|-------------|  
+| `updateOffer(roomId, tokens)` | `roomId, [{mint, amount, decimals}]` | 设置您的报价 |  
+| `withdrawFromOffer(roomId, tokens)` | `roomId, tokens[]` | 撤回已提交的代币 |  
+| `confirmTrade(roomId, stage)` | `roomId, 'first' | 'second'` | 确认交易阶段 |  
+| `executeSwap(roomId)` | `roomId: string` | `txSignature` | 执行交换 |  
+| `declineOffer(roomId)` | `roomId: string` | 拒绝交易条款 |  
 
-### Lockups (Anti-Dump)
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `proposeLockup(roomId, seconds)` | `roomId, seconds` | `{ success }` | Propose lock |
-| `acceptLockup(roomId)` | `roomId: string` | `{ success }` | Accept lock |
-| `getLockupStatus(roomId)` | `roomId: string` | `{ canClaim, timeRemaining }` | Check timer |
-| `claimLockedTokens(roomId)` | `roomId: string` | `{ txSignature }` | Claim after expiry |
+### 锁定机制（防止交易对手抛售）  
+| 方法 | 参数 | 返回值 | 描述 |  
+|--------|------------|---------|-------------|  
+| `proposeLockup(roomId, seconds)` | `roomId, seconds` | 提出锁定请求 |  
+| `acceptLockup(roomId)` | `roomId: string` | 接受锁定请求 |  
+| `getLockupStatus(roomId)` | `roomId: string` | `canClaim, timeRemaining` | 查看锁定状态及剩余时间 |  
+| `claimLockedTokens(roomId)` | `roomId: string` | 期满后领取锁定代币 |  
 
-### Utility
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `getBalance()` | none | `{ sol: number }` | Check SOL balance |
-| `isAutonomous()` | none | `boolean` | Has signing wallet? |
-| `getWebSocketUrl()` | none | `string` | Get WS endpoint |
+### 实用功能  
+| 方法 | 参数 | 返回值 | 描述 |  
+|--------|------------|---------|-------------|  
+| `getBalance()` | 无 | `sol: number` | 查看SOL余额 |  
+| `isAutonomous()` | 无 | `boolean` | 是否使用签名钱包 |  
+| `getWebSocketUrl()` | 无 | 获取WebSocket连接地址 |  
 
-## WebSocket Real-Time Updates
+## WebSocket实时更新  
+**建议使用WebSocket进行实时监控，而非频繁调用`getRoom()`方法：**  
+连接地址：`wss://poseidon.cash/ws/trade-room`  
 
-**Don't poll. Subscribe.**
-
-Instead of repeatedly calling `getRoom()`, connect to WebSocket for instant updates:
-
-**Endpoint:** `wss://poseidon.cash/ws/trade-room`
-
-### Subscribe to Room Events
+### 订阅房间事件  
 ```typescript
 const { unsubscribe } = await client.subscribeToRoom(roomId, (event) => {
   switch (event.type) {
@@ -167,35 +161,32 @@ const { unsubscribe } = await client.subscribeToRoom(roomId, (event) => {
       break;
   }
 });
-```
+```  
+**事件类型及触发时机：**  
+| 事件 | 触发条件 |  
+|-------|--------------|  
+| `full-state` | 订阅后立即获取房间完整状态 |  
+| `join` | 交易对手加入房间 |  
+| `offer` | 有人更新报价 |  
+| `confirm` | 有人确认交易（第一方或第二方） |  
+| `lockup` | 提出或接受锁定请求 |  
+| `execute` | 交易成功执行 |  
+| `cancel` | 房间被取消 |  
+| `terminated` | 房间到期或终止 |  
+| `error` | 发生错误 |  
 
-### Event Types
-| Event | When It Fires |
-|-------|--------------|
-| `full-state` | Immediately on subscribe - complete room state |
-| `join` | Counterparty joined the room |
-| `offer` | Someone updated their offer |
-| `confirm` | Someone confirmed (first or second) |
-| `lockup` | Lockup proposed or accepted |
-| `execute` | Swap executed successfully |
-| `cancel` | Room was cancelled |
-| `terminated` | Room expired or terminated |
-| `error` | Something went wrong |
-
-### WebSocket Actions (Faster than HTTP)
+### WebSocket操作（比HTTP更快）  
 ```typescript
 await client.sendOfferViaWs(roomId, tokens);      // Update offer
 await client.sendConfirmViaWs(roomId, 'first');   // Confirm
 await client.sendLockupProposalViaWs(roomId, 3600); // Propose 1hr lock
 await client.sendAcceptLockupViaWs(roomId);       // Accept lock
 await client.sendExecuteViaWs(roomId);            // Execute swap
-```
+```  
 
-## Agent-to-Agent Trading Example
-
-**Scenario:** Agent A wants to sell 1000 USDC for 5 SOL to Agent B
-
-### Agent A (Seller):
+## 代理间交易示例：  
+**场景：** 代理A希望用1000个USDC兑换5个SOL给代理B：  
+### 代理A（卖方）：  
 ```typescript
 // 1. Create room
 const { roomId } = await client.createRoom();
@@ -221,9 +212,8 @@ await client.subscribeToRoom(roomId, async (event) => {
     await client.confirmTrade(roomId, 'second');
   }
 });
-```
-
-### Agent B (Buyer):
+```  
+### 代理B（买方）：  
 ```typescript
 // 1. Join the room
 await client.joinRoom(roomId);
@@ -248,38 +238,33 @@ await client.subscribeToRoom(roomId, async (event) => {
     }
   }
 });
-```
+```  
 
-## Common Token Mints
+## 常见代币信息：  
+| 代币 | 发行地址 | 小数位数 |  
+|-------|--------------|----------|  
+| USDC | `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v` | 6 |  
+| USDT | `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB` | 6 |  
+| wSOL | `So11111111111111111111111111111111111111112` | 9 |  
+| BONK | `DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263` | 5 |  
 
-| Token | Mint Address | Decimals |
-|-------|--------------|----------|
-| USDC | `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v` | 6 |
-| USDT | `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB` | 6 |
-| wSOL | `So11111111111111111111111111111111111111112` | 9 |
-| BONK | `DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263` | 5 |
-
-## Environment Variables
-
+## 环境变量  
 ```bash
 POSEIDON_BURNER_KEY=<base58-private-key>  # Required for autonomous mode
 POSEIDON_API_URL=https://poseidon.cash    # API endpoint (default: mainnet)
 POSEIDON_RPC_URL=https://api.mainnet-beta.solana.com  # Solana RPC
-```
+```  
 
-## Security Notes
+## 安全注意事项：  
+- **托管在链上**：资金由Solana程序管理，而非API控制。  
+- **原子交换**：双方必须同时完成交易，否则交易失败。  
+- **签名有效期**：签名在24小时内有效。  
+- **锁定机制强制执行**：无法绕过锁定时间。  
+- **使用备用钱包**：仅将可承受风险的金额存入交易钱包。  
 
-- **Escrow is on-chain** - Funds are held by the Solana program, not the API
-- **Atomic swaps** - Either both sides complete or neither does
-- **Signatures expire** - Auth signatures valid for 24 hours
-- **Lockups are enforced on-chain** - Can't bypass the timer
-- **Hot wallet warning** - Only fund your burner wallet with amounts you're comfortable risking
+## 程序ID：  
+**主网：** `AfiRReYhvykHhKXhwjhcsXFejHdxqYLk2QLWnjvvLKUN`  
 
-## Program ID
-
-**Mainnet:** `AfiRReYhvykHhKXhwjhcsXFejHdxqYLk2QLWnjvvLKUN`
-
-## Links
-
-- Website: https://poseidon.cash
-- Docs: https://docs.poseidon.cash
+## 链接：  
+- 网站：https://poseidon.cash  
+- 文档：https://docs.poseidon.cash

@@ -12,24 +12,24 @@ metadata:
   version: "2.0.0"
 ---
 
-# Towns Protocol Bot SDK Reference
+# Towns Protocol Bot SDK 参考
 
-## Critical Rules
+## 重要规则
 
-**MUST follow these rules - violations cause silent failures:**
+**必须遵守以下规则，违反规则会导致系统无声地失败：**
 
-1. **User IDs are Ethereum addresses** - Always `0x...` format, never usernames
-2. **Mentions require BOTH** - `<@{userId}>` format in text AND `mentions` array in options
-3. **Two-wallet architecture**:
-   - `bot.viem.account.address` = Gas wallet (signs & pays fees) - **MUST fund with Base ETH**
-   - `bot.appAddress` = Treasury (optional, for transfers)
-4. **Slash commands DON'T trigger onMessage** - They're exclusive handlers
-5. **Interactive forms use `type` property** - Not `case` (e.g., `type: 'form'`)
-6. **Never trust txHash alone** - Verify `receipt.status === 'success'` before granting access
+1. **用户 ID 是以太坊地址** – 必须采用 `0x...` 的格式，不能使用用户名。
+2. **提及功能需要同时满足以下两个条件**：在文本中使用 `<@{userId}>` 的格式，并且在选项中的 `mentions` 数组中也要包含该用户 ID。
+3. **双钱包架构**：
+   - `bot.viem.account.address`：用于支付交易费用的 Gas 钱包（必须使用 Base ETH 充值）。
+   - `bot.appAddress`：用于资金转移的 Treasury 钱包（可选）。
+4. **斜杠命令（slash commands）不会触发 `onMessage` 事件** – 它们是专门用于处理斜杠命令的处理器。
+5. **交互式表单使用 `type` 属性** – 而不是 `case`（例如：`type: 'form'`）。
+6. **切勿仅依赖 `txHash` 来判断交易是否成功** – 在授予访问权限之前，必须验证 `receipt.status === 'success'`。
 
-## Quick Reference
+## 快速参考
 
-### Key Imports
+### 关键导入
 
 ```typescript
 import { makeTownsBot, getSmartAccountFromUserId } from '@towns-protocol/bot'
@@ -40,39 +40,39 @@ import { readContract, waitForTransactionReceipt } from 'viem/actions'
 import { execute } from 'viem/experimental/erc7821'
 ```
 
-### Handler Methods
+### 处理器方法
 
-| Method | Signature | Notes |
+| 方法 | 签名 | 说明 |
 |--------|-----------|-------|
-| `sendMessage` | `(channelId, text, opts?) → { eventId }` | opts: `{ threadId?, replyId?, mentions?, attachments? }` |
-| `editMessage` | `(channelId, eventId, text)` | Bot's own messages only |
-| `removeEvent` | `(channelId, eventId)` | Bot's own messages only |
-| `sendReaction` | `(channelId, messageId, emoji)` | |
-| `sendInteractionRequest` | `(channelId, payload)` | Forms, transactions, signatures |
-| `hasAdminPermission` | `(userId, spaceId) → boolean` | |
-| `ban` / `unban` | `(userId, spaceId)` | Needs ModifyBanning permission |
+| `sendMessage` | `(channelId, text, opts?) → {eventId }` | 参数：`opts` 可包含 `threadId?`, `replyId?`, `mentions?`, `attachments?` |
+| `editMessage` | `(channelId, eventId, text)` | 仅用于处理机器人自己的消息。 |
+| `removeEvent` | `(channelId, eventId)` | 仅用于处理机器人自己的消息。 |
+| `sendReaction` | `(channelId, messageId, emoji)` | 用于发送表情符号。 |
+| `sendInteractionRequest` | `(channelId, payload)` | 用于处理表单提交、交易请求等。 |
+| `hasAdminPermission` | `(userId, spaceId) → boolean` | 检查用户是否具有管理员权限。 |
+| `ban` / `unban` | `(userId, spaceId)` | 需要 `ModifyBanning` 权限才能执行操作。 |
 
-### Bot Properties
+### 机器人属性
 
-| Property | Description |
+| 属性 | 说明 |
 |----------|-------------|
-| `bot.viem` | Viem client for blockchain |
-| `bot.viem.account.address` | Gas wallet - **MUST fund with Base ETH** |
-| `bot.appAddress` | Treasury wallet (optional) |
-| `bot.botId` | Bot identifier |
+| `bot.viem` | 用于与区块链交互的 Viem 客户端。 |
+| `bot.viem.account.address` | Gas 钱包地址（必须使用 Base ETH 充值）。 |
+| `bot.appAddress` | Treasury 钱包地址（可选）。 |
+| `bot.botId` | 机器人标识符。 |
 
-**For detailed guides, see [references/](references/):**
-- [Messaging API](references/MESSAGING.md) - Mentions, threads, attachments, formatting
-- [Blockchain Operations](references/BLOCKCHAIN.md) - Read/write contracts, verify transactions
-- [Interactive Components](references/INTERACTIVE.md) - Forms, transaction requests
-- [Deployment](references/DEPLOYMENT.md) - Local dev, Render, tunnels
-- [Debugging](references/DEBUGGING.md) - Troubleshooting guide
+**如需详细指南，请参阅 [参考文档](references/)：**
+- [消息传递 API](references/MESSAGING.md) – 包含提及功能、线程管理、附件处理、格式化规则等。
+- [区块链操作](references/BLOCKCHAIN.md) – 包括合约的读写、交易验证等功能。 |
+- [交互式组件](references/INTERACTIVE.md) – 如何创建交互式表单、处理交易请求等。 |
+- [部署指南](references/DEPLOYMENT.md) – 本地开发、代码渲染、通道配置等。 |
+- [调试指南](references/DEBUGGING.md) – 问题排查方法。 |
 
 ---
 
-## Bot Setup
+## 机器人设置
 
-### Project Initialization
+### 项目初始化
 
 ```bash
 bunx towns-bot init my-bot
@@ -80,7 +80,7 @@ cd my-bot
 bun install
 ```
 
-### Environment Variables
+### 环境变量
 
 ```bash
 APP_PRIVATE_DATA=<base64_credentials>   # From app.towns.com/developer
@@ -89,7 +89,7 @@ PORT=3000
 BASE_RPC_URL=https://base-mainnet.g.alchemy.com/v2/KEY  # Recommended
 ```
 
-### Basic Bot Template
+### 基本机器人模板
 
 ```typescript
 import { makeTownsBot } from '@towns-protocol/bot'
@@ -114,7 +114,7 @@ bot.onSlashCommand('ping', async (handler, event) => {
 export default bot.start()
 ```
 
-### Config Validation
+### 配置验证
 
 ```typescript
 import { z } from 'zod'
@@ -134,11 +134,11 @@ if (!env.success) {
 
 ---
 
-## Event Handlers
+## 事件处理器
 
 ### onMessage
 
-Triggers on regular messages (NOT slash commands).
+在普通消息（非斜杠命令）触发时执行。
 
 ```typescript
 bot.onMessage(async (handler, event) => {
@@ -152,7 +152,7 @@ bot.onMessage(async (handler, event) => {
 
 ### onSlashCommand
 
-Triggers on `/command`. Does NOT trigger onMessage.
+在接收到 `/command` 命令时触发。不会触发 `onMessage` 事件。
 
 ```typescript
 bot.onSlashCommand('weather', async (handler, { args, channelId }) => {
@@ -168,6 +168,8 @@ bot.onSlashCommand('weather', async (handler, { args, channelId }) => {
 
 ### onReaction
 
+在用户发送表情符号时触发。
+
 ```typescript
 bot.onReaction(async (handler, event) => {
   // event: { reaction, messageId, channelId }
@@ -179,7 +181,7 @@ bot.onReaction(async (handler, event) => {
 
 ### onTip
 
-Requires "All Messages" mode in Developer Portal.
+仅在开发者门户中启用“所有消息”（All Messages）模式下才能触发。
 
 ```typescript
 bot.onTip(async (handler, event) => {
@@ -192,6 +194,8 @@ bot.onTip(async (handler, event) => {
 ```
 
 ### onInteractionResponse
+
+在处理用户交互时触发。
 
 ```typescript
 bot.onInteractionResponse(async (handler, event) => {
@@ -217,9 +221,9 @@ bot.onInteractionResponse(async (handler, event) => {
 })
 ```
 
-### Event Context Validation
+### 事件上下文验证
 
-Always validate context before using:
+在使用事件处理器之前，务必验证事件上下文。
 
 ```typescript
 bot.onSlashCommand('cmd', async (handler, event) => {
@@ -233,24 +237,24 @@ bot.onSlashCommand('cmd', async (handler, event) => {
 
 ---
 
-## Common Mistakes
+## 常见错误及解决方法
 
-| Mistake | Fix |
+| 错误 | 解决方法 |
 |---------|-----|
-| `insufficient funds for gas` | Fund `bot.viem.account.address` with Base ETH |
-| Mention not highlighting | Include BOTH `<@userId>` in text AND `mentions` array |
-| Slash command not working | Add to `commands` array in makeTownsBot |
-| Handler not triggering | Check message forwarding mode in Developer Portal |
-| `writeContract` failing | Use `execute()` for external contracts |
-| Granting access on txHash | Verify `receipt.status === 'success'` first |
-| Message lines overlapping | Use `\n\n` (double newlines), not `\n` |
-| Missing event context | Validate `spaceId`/`channelId` before using |
+| **Gas 资金不足** | 为 `bot.viem.account.address` 资金充值 Base ETH。 |
+| 提及功能未生效 | 确保文本中包含 `<@userId>`，并且 `mentions` 数组中也包含该用户 ID。 |
+| 斜杠命令无法使用 | 将相关命令添加到 `commands` 数组中（在 `makeTownsBot` 函数中）。 |
+| 处理器未触发 | 检查开发者门户中的消息转发设置。 |
+| `writeContract` 失败 | 对于外部合约，请使用 `execute()` 方法。 |
+| 仅根据 `txHash` 授予访问权限 | 先验证 `receipt.status === 'success'`。 |
+| 消息行重叠 | 使用 `\n\n`（双换行符），而不是 `\n`。 |
+| 事件上下文缺失 | 在使用相关功能前，务必验证 `spaceId` 和 `channelId` 的值。 |
 
 ---
 
-## Resources
+## 资源
 
-- **Developer Portal**: https://app.towns.com/developer
-- **Documentation**: https://docs.towns.com/build/bots
-- **SDK**: https://www.npmjs.com/package/@towns-protocol/bot
-- **Chain ID**: 8453 (Base Mainnet)
+- **开发者门户**：https://app.towns.com/developer
+- **文档**：https://docs.towns.com/build/bots
+- **SDK**：https://www.npmjs.com/package/@towns-protocol/bot
+- **链 ID**：8453（Base Mainnet）

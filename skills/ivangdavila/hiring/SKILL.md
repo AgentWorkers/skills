@@ -1,81 +1,81 @@
 ---
 name: Hiring
 slug: hiring
-description: Hire humans or AI agents for tasks you cannot do yourself, with platform selection, vetting, contracts, and payment management.
+description: 您可以雇佣人类或人工智能代理来完成那些您自己无法完成的任务。平台选择、人员筛选、合同签订以及支付管理等方面都由我们为您提供一站式服务。
 ---
 
-## Platform Selection
+## 平台选择
 
-| Task Type | Platform | Why |
-|-----------|----------|-----|
-| Development, design, writing | Upwork, Freelancer.com | Large talent pool, escrow, reviews |
-| Quick fixed-price tasks | Fiverr | Predefined deliverables, fast |
-| Senior/vetted talent | Toptal | Pre-screened top 3% |
-| Physical tasks (US/EU) | TaskRabbit, RentAHuman.ai | Local presence, verification |
-| Design contests | 99designs | Multiple concepts, competition |
+| 任务类型 | 平台          | 选择理由            |
+|-----------|--------------|-------------------|
+| 开发、设计、写作 | Upwork、Freelancer.com | 人才库庞大，提供托管服务，有项目评审机制 |
+| 快速的固定价格任务 | Fiverr        | 有预定义的交付成果，流程快速           |
+| 经验丰富的高级人才 | Toptal        | 仅招聘表现最优秀的3%人才           |
+| 实体任务（美国/欧洲） | TaskRabbit、RentAHuman.ai | 本地服务团队，可验证候选人资质       |
+| 设计竞赛     | 99designs       | 提供多种设计方案，有竞争机制         |
 
-For API integration details, see `platforms.md`.
+有关API集成的详细信息，请参阅 `platforms.md`。
 
-## Hiring Checklist
+## 雇佣流程
 
-1. **Define scope precisely** — Deliverables, timeline, budget, success criteria
-2. **Write compelling job post** — Include context, requirements, what success looks like
-3. **Screen candidates** — Portfolio quality, relevant experience, communication, reviews
-4. **Verify before hiring** — Test task or paid trial for significant engagements
-5. **Negotiate rates** — Know market rates; prefer fixed-price or milestones over hourly
-6. **Contract before work** — IP assignment, NDA, payment terms, termination clause
-7. **Structured onboarding** — Access credentials, project brief, communication channels
-8. **Milestone payments** — Never 100% upfront; tie payments to deliverables
-9. **Track and document** — Log hours, deliverables, feedback for future reference
+1. **明确任务范围** — 明确交付成果、时间表、预算和成功标准 |
+2. **撰写吸引人的招聘信息** — 包括项目背景、需求以及成功的定义 |
+3. **筛选候选人** — 评估候选人的作品集质量、相关经验及沟通能力 |
+4. **雇佣前进行验证** — 对重要项目进行测试或提供付费试用 |
+5. **协商费用** — 了解市场行情；优先选择固定价格或按里程碑支付的模式 |
+6. **签订合同** — 明确知识产权归属、保密协议、付款条款和终止条件 |
+7. **提供系统的入职指导** — 包括访问权限、项目概述和沟通渠道 |
+8. **按里程碑付款** — 从不一次性支付全部费用；将付款与交付成果挂钩 |
+9. **记录和跟踪** — 记录工作时长、交付成果及客户反馈，以备后续参考 |
 
-## Red Flags
+## 需警惕的信号
 
-- Requests full payment upfront
-- Portfolio inconsistent with claimed experience
-- Vague answers to specific questions
-- Sudden unavailability after deposit
-- "Senior" applies, different person delivers
-- Copied/AI-generated portfolio pieces
-- Refuses video call or screen share
-- Pushes to move off-platform immediately
+- 要求一次性支付全部费用 |
+- 作品集与所声称的经验不符 |
+- 对具体问题回答含糊不清 |
+- 收到预付款后突然无法联系 |
+- 声称是“高级人才”，但实际交付工作的人却不同 |
+- 作品集为复制或AI生成 |
+- 拒绝视频通话或屏幕共享 |
+- 坚持要求立即转移到其他平台完成工作 |
 
-## Rate Benchmarks
+## 费用基准
 
-Check current market rates at `platforms.md`. General guidance:
-- Below market = quality or availability issues likely
-- 20-30% above market = acceptable for proven performers
-- Get 3+ quotes before committing on large projects
+请参阅 `platforms.md` 以获取当前市场费用标准。一般参考原则：
+- 费用低于市场平均水平：可能存在质量或可用性问题 |
+- 费用高于市场平均水平20-30%：适用于表现优秀的候选人 |
+- 对于大型项目，至少获取3份报价后再做决定 |
 
-## Contracts
+## 合同
 
-For contract templates and payment structures, see `contracts.md`.
+有关合同模板和付款结构的详细信息，请参阅 `contracts.md`。
 
-## Legal Essentials
+## 法律注意事项
 
-Before engaging contractors, review `legal.md` for:
-- Worker classification (IC vs employee)
-- Required tax documents (W-9/W-8BEN)
-- IP assignment language
-- Jurisdiction-specific requirements
+在雇佣承包商之前，请务必阅读 `legal.md`，了解以下内容：
+- 承包商的分类（独立承包商还是雇员） |
+- 需要提交的税务文件（W-9/W-8BEN） |
+- 知识产权的归属问题 |
+- 不同司法管辖区的特定要求 |
 
-## Physical Tasks
+## 实体任务
 
-For dispatching humans for real-world tasks (pickups, inspections, deliveries), see `physical.md`.
+有关派遣人员执行实际任务（如接送、检查、配送）的详细信息，请参阅 `physical.md`。
 
-## Hiring AI Agents
+## 雇佣AI代理
 
-For delegating to other AI agents with model routing and cost control, see `agents.md`.
+有关通过AI代理完成任务及成本控制的详细信息，请参阅 `agents.md`。
 
-## Contractor Management
+## 承包商管理
 
-**Track per contractor:**
-- Skills, rates, timezone, languages
-- Past projects and performance
-- Availability windows
-- Communication preferences
-- Reliability score (1-5)
+**对每位承包商的跟踪信息：**
+- 技能、费用、时区、语言能力 |
+- 过往项目及表现 |
+- 可用时间 |
+- 沟通偏好 |
+- 可靠性评分（1-5分）
 
-**After each engagement:**
-- Document what worked/didn't
-- Update reliability score
-- Note for future matching ("great for React, slow on mobile")
+**每次合作结束后：**
+- 记录工作的成功与不足之处 |
+- 更新承包商的可靠性评分 |
+- 为未来的匹配任务留下备注（例如：“擅长React开发，但在移动端开发方面表现较慢”）

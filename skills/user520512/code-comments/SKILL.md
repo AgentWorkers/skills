@@ -1,3 +1,3 @@
-# Code Comments Generator
+# 代码注释生成器
 
-Generate code comments and docs.
+用于生成代码注释和文档。

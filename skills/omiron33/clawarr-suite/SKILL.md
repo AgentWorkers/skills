@@ -10,19 +10,19 @@ description: >
 homepage: https://github.com/omiron33/clawarr-suite
 ---
 
-# ClawARR Suite
+# ClawARR套件
 
-Unified deep-integration control for self-hosted media automation stacks. This skill provides comprehensive agent-executable operations across the entire *arr ecosystem with rich analytics, dashboard generation, and advanced library exploration.
+这是一个用于自托管媒体自动化堆栈的统一深度集成控制工具。该工具提供了对整个*arr生态系统*的全面代理可执行操作，包括丰富的分析功能、仪表板生成以及高级库探索功能。
 
-## Quick Start
+## 快速入门
 
-**First time setup (recommended):**
+**首次设置（推荐）：**
 ```bash
 scripts/setup.sh <host-ip-or-hostname>
 ```
-Discovers services, grabs API keys, verifies connections, and outputs your config.
+该脚本会发现服务、获取API密钥、验证连接，并输出您的配置信息。
 
-**Common operations:**
+**常见操作：**
 ```bash
 scripts/status.sh              # Health check all services
 scripts/library.sh stats all   # Library statistics
@@ -32,16 +32,16 @@ scripts/manage.sh wanted all   # Show missing content
 scripts/requests.sh list       # Overseerr requests
 ```
 
-## Scripts Overview
+## 脚本概述
 
-### Core Operations
-- **`setup.sh`** — Guided setup wizard with auto-discovery
-- **`discover.sh`** — Scan host for *arr services
-- **`status.sh`** — Health check all configured services
-- **`diagnose.sh`** — Automated troubleshooting
+### 核心操作
+- **`setup.sh`** — 带有自动发现功能的引导式设置向导
+- **`discover.sh`** — 扫描主机上的*arr服务*
+- **`status.sh`** — 检查所有已配置服务的运行状态
+- **`diagnose.sh`** — 自动化故障排除
 
-### Library Exploration (`library.sh`)
-Deep statistics and exploration for Radarr/Sonarr/Lidarr:
+### 库探索 (`library.sh`)
+针对Radarr/Sonarr/Lidarr的深度统计和探索功能：
 ```bash
 library.sh stats [app]          # Overall library stats
 library.sh quality [app]        # Quality profile breakdown
@@ -55,8 +55,8 @@ library.sh nofiles [app]        # Monitored but no files
 library.sh disk [app]           # Disk usage by root folder
 ```
 
-### Analytics (`analytics.sh`)
-Rich viewing analytics from Tautulli/Plex:
+### 分析 (`analytics.sh`)
+来自Tautulli/Plex的丰富视图分析功能：
 ```bash
 analytics.sh activity                 # Currently watching
 analytics.sh history [count]          # Watch history
@@ -69,8 +69,8 @@ analytics.sh recent-added [count]     # Recently added to Plex
 analytics.sh play-totals              # Total play statistics
 ```
 
-### Content Management (`manage.sh`)
-Add, remove, and manage content:
+### 内容管理 (`manage.sh`)
+添加、删除和管理内容：
 ```bash
 manage.sh add-movie "<title>" [quality] [root]
 manage.sh add-series "<title>" [quality] [root]
@@ -82,8 +82,8 @@ manage.sh rename <app> <id>
 manage.sh refresh <app> [id]
 ```
 
-### Request Management (`requests.sh`)
-Overseerr request handling:
+### 请求管理 (`requests.sh`)
+监控请求处理过程：
 ```bash
 requests.sh list [pending|approved|available|all]
 requests.sh approve <id>
@@ -92,8 +92,8 @@ requests.sh info <id>
 requests.sh stats
 ```
 
-### Subtitle Management (`subtitles.sh`)
-Bazarr operations:
+### 字幕管理 (`subtitles.sh`)
+Bazarr相关操作：
 ```bash
 subtitles.sh wanted
 subtitles.sh history [count]
@@ -101,16 +101,16 @@ subtitles.sh search <series|movie> <id>
 subtitles.sh languages
 ```
 
-### Indexer Management (`indexers.sh`)
-Prowlarr operations:
+### 索引器管理 (`indexers.sh`)
+Prowlarr相关操作：
 ```bash
 indexers.sh list
 indexers.sh test [id]
 indexers.sh stats
 ```
 
-### Download Client (`downloads.sh`)
-SABnzbd operations:
+### 下载客户端 (`downloads.sh`)
+SABnzbd相关操作：
 ```bash
 downloads.sh active
 downloads.sh speed
@@ -120,26 +120,25 @@ downloads.sh resume
 downloads.sh queue
 ```
 
-### Dashboard Generation (`dashboard.sh`)
-Generate self-contained HTML dashboard:
+### 仪表板生成 (`dashboard.sh`)
+生成自包含的HTML仪表板：
 ```bash
 dashboard.sh [output_file]
 ```
-Creates beautiful dark-themed dashboard with:
-- System health
-- Download activity
-- Library statistics
-- Recent activity
-- Viewing analytics
-- Disk usage
+仪表板包含以下内容：
+- 系统运行状态
+- 下载活动
+- 库统计信息
+- 最近活动
+- 观看分析数据
+- 磁盘使用情况
 
-Output defaults to `clawarr-dashboard.html` (open in any browser).
+默认输出文件为`clawarr-dashboard.html`（可在任何浏览器中打开）。
 
-### Media Tracker Integration (`trakt.sh`, `trackers.sh`, `letterboxd.sh`, `simkl.sh`)
+### 媒体跟踪器集成 (`trakt.sh`, `trackers.sh`, `letterboxd.sh`, `simkl.sh`)
+跟踪并同步您在Trakt.tv、Letterboxd、Simkl等服务上的观看记录。
 
-Track and sync what you watch across services like Trakt.tv, Letterboxd, Simkl, and more.
-
-**Unified Interface (`trackers.sh`):**
+**统一接口 (`trackers.sh`):**
 ```bash
 trackers.sh setup              # Interactive setup wizard
 trackers.sh status             # Show configured trackers
@@ -149,21 +148,20 @@ trackers.sh import letterboxd file.csv
 trackers.sh compare trakt simkl
 ```
 
-**Trakt.tv Integration (`trakt.sh`):**
-
-*Authentication:*
+**Trakt.tv集成 (`trakt.sh`):**
+- **身份验证：**
 ```bash
 trakt.sh auth                  # Device code OAuth flow
 trakt.sh auth-status           # Check authentication
 ```
 
-*Profile & Stats:*
+- **个人资料与统计：**
 ```bash
 trakt.sh profile [username]    # Show profile
 trakt.sh stats [username]      # Detailed statistics
 ```
 
-*Watching & History:*
+- **观看记录与历史记录：**
 ```bash
 trakt.sh watching              # Currently watching
 trakt.sh history [movies|shows|episodes] [limit]
@@ -171,14 +169,14 @@ trakt.sh sync-history export file.json
 trakt.sh sync-history import file.json
 ```
 
-*Scrobbling:*
+- **抓取元数据：**
 ```bash
 trakt.sh scrobble start movie 12345
 trakt.sh scrobble stop movie 12345 100
 trakt.sh checkin movie "Inception"
 ```
 
-*Lists & Collections:*
+- **列表与收藏夹：**
 ```bash
 trakt.sh watchlist [movies|shows]
 trakt.sh watchlist-add movie "Dune Part Two"
@@ -188,13 +186,13 @@ trakt.sh lists                 # Custom lists
 trakt.sh list-items my-favorites
 ```
 
-*Ratings:*
+- **评分：**
 ```bash
 trakt.sh ratings movies 8      # Movies rated 8+
 trakt.sh rate movie "Inception" 10
 ```
 
-*Discovery:*
+- **发现新内容：**
 ```bash
 trakt.sh recommendations movies
 trakt.sh trending shows
@@ -202,17 +200,17 @@ trakt.sh popular movies
 trakt.sh calendar all 7        # Next 7 days
 ```
 
-*Search:*
+- **搜索：**
 ```bash
 trakt.sh search "Breaking Bad" show
 ```
 
-*Sync:*
+- **同步：**
 ```bash
 trakt.sh sync-plex             # Sync Plex watch history to Trakt
 ```
 
-**Letterboxd Integration (`letterboxd.sh`):**
+**Letterboxd集成 (`letterboxd.sh`):**
 ```bash
 letterboxd.sh export           # Export from Plex as Letterboxd CSV
 letterboxd.sh import diary.csv # Import Letterboxd diary
@@ -220,7 +218,7 @@ letterboxd.sh profile username # View public profile
 letterboxd.sh diary username 2024
 ```
 
-**Simkl Integration (`simkl.sh`):**
+**Simkl集成 (`simkl.sh`):**
 ```bash
 simkl.sh auth                  # OAuth authentication
 simkl.sh profile               # Show profile
@@ -230,11 +228,9 @@ simkl.sh watchlist all         # View watchlist
 simkl.sh sync                  # Sync with Plex
 ```
 
-### Traktarr & Retraktarr Integration
-
-Automate content discovery and library syncing with Trakt lists.
-
-**Traktarr (Trakt → Radarr/Sonarr):**
+### Traktarr与Retraktarr集成
+自动化内容发现和库同步功能：
+- **Traktarr (Trakt → Radarr/Sonarr):**
 ```bash
 # Status and configuration
 trakt.sh traktarr-status       # Check if installed
@@ -248,7 +244,7 @@ trakt.sh traktarr-add shows trending 5
 trakt.sh traktarr-add movies watchlist 50
 ```
 
-**Retraktarr (Radarr/Sonarr → Trakt):**
+- **Retraktarr (Radarr/Sonarr → Trakt):**
 ```bash
 # Status and configuration
 trakt.sh retraktarr-status     # Check if installed
@@ -260,7 +256,7 @@ trakt.sh retraktarr-sync movies
 trakt.sh retraktarr-sync shows
 ```
 
-**Installation via Setup Wizard:**
+**通过设置向导安装：**
 ```bash
 trackers.sh setup
 # Choose option 5 for Traktarr
@@ -268,14 +264,14 @@ trackers.sh setup
 # Offers to install via pip if not found
 ```
 
-**What They Do:**
-- **Traktarr:** Automatically adds content from Trakt lists (trending, anticipated, watchlist, custom) to Radarr/Sonarr for download
-- **Retraktarr:** Syncs your Radarr/Sonarr library back to Trakt as public/private lists
+**功能说明：**
+- **Traktarr：** 将Trakt列表中的内容（热门、即将上映、观看列表、自定义）自动添加到Radarr/Sonarr中以供下载
+- **Retraktarr：** 将Radarr/Sonarr的库同步回Trakt，支持公共/私有列表
 
-See `references/traktarr-retraktarr.md` for complete setup, cron scheduling, and usage patterns.
+有关完整设置、定时任务安排和使用模式的详细信息，请参阅`references/traktarr-retraktarr.md`。
 
-### Prowlarr Indexer Management (`prowlarr.sh`)
-Centralized indexer management across all *arr apps:
+### Prowlarr索引器管理 (`prowlarr.sh)`
+集中管理所有*arr应用程序*的索引器：
 ```bash
 prowlarr.sh indexers              # List all indexers
 prowlarr.sh test [id]             # Test indexer(s)
@@ -288,8 +284,8 @@ prowlarr.sh status                # Health check
 prowlarr.sh logs [count]          # Recent logs
 ```
 
-### Recyclarr Quality Profiles (`recyclarr.sh`)
-Sync TRaSH Guides quality profiles to Sonarr/Radarr:
+### Recyclarr质量配置文件 (`recyclarr.sh)`
+将TRaSH Guide的质量配置文件同步到Sonarr/Radarr：
 ```bash
 recyclarr.sh status               # Check status & config
 recyclarr.sh sync [instance]      # Sync profiles (all or specific)
@@ -301,8 +297,8 @@ recyclarr.sh create-config        # Generate config template
 recyclarr.sh logs [count]         # View recent logs
 ```
 
-### Maintainerr Library Cleanup (`maintainerr.sh`)
-Automated library cleanup based on rules:
+### Maintainerr库清理 (`maintainerr.sh`)
+根据规则自动清理库文件：
 ```bash
 maintainerr.sh status             # Check status
 maintainerr.sh rules              # List cleanup rules
@@ -313,8 +309,8 @@ maintainerr.sh exclude <media_id> <rule_id>  # Exclude media from rule
 maintainerr.sh logs               # View activity log
 ```
 
-### Notifiarr Notifications (`notifiarr.sh`)
-Unified notification management across *arr services:
+### Notifiarr通知系统 (`notifiarr.sh)`
+统一管理所有*arr服务*的通知：
 ```bash
 notifiarr.sh status               # Check status & integrations
 notifiarr.sh triggers             # List notification triggers
@@ -324,8 +320,8 @@ notifiarr.sh config               # Configuration summary
 notifiarr.sh logs                 # Recent notification log
 ```
 
-### Kometa Collection Manager (`kometa.sh`)
-Plex collection, overlay, and metadata automation:
+### Kometa收藏夹管理 (`kometa.sh`)
+自动化Plex收藏夹的创建、覆盖和元数据管理：
 ```bash
 kometa.sh status                  # Check container status
 kometa.sh run [library]           # Run Kometa (all or specific library)
@@ -336,8 +332,8 @@ kometa.sh templates               # List available default collections/overlays
 kometa.sh logs [count]            # View recent logs
 ```
 
-### Unpackerr Archive Extraction (`unpackerr.sh`)
-Automatic archive extraction for download clients:
+### Unpackerr档案提取 (`unpackerr.sh)`
+为下载客户端自动提取档案文件：
 ```bash
 unpackerr.sh status               # Check status & config
 unpackerr.sh activity             # Recent extraction activity
@@ -347,15 +343,15 @@ unpackerr.sh logs [count]         # View recent logs
 unpackerr.sh restart              # Restart container
 ```
 
-### Legacy Scripts
-- **`queue.sh`** — View download queues (use `manage.sh wanted` or `downloads.sh active` for more detail)
-- **`search.sh`** — Search content (use `manage.sh add-*` for full workflow)
+### 遗留脚本
+- **`queue.sh`** — 查看下载队列（使用`manage.sh wanted`或`downloads.sh active`获取更多详细信息）
+- **`search.sh`** — 搜索内容（使用`manage.sh add-*`完成整个工作流程）
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-**Core Services:**
+**核心服务：**
 ```bash
 export CLAWARR_HOST=192.168.1.100
 export SONARR_KEY=abc123...
@@ -380,7 +376,7 @@ export UNPACKERR_SSH=mynas       # SSH host for unpackerr container
 export DOCKER_CONFIG_BASE=/opt/docker  # Docker config root (default: /volume1/docker for Synology)
 ```
 
-**Media Trackers (optional):**
+**媒体跟踪器（可选）：**
 ```bash
 # Trakt.tv (register app at https://trakt.tv/oauth/applications/new)
 export TRAKT_CLIENT_ID=your_client_id
@@ -394,14 +390,14 @@ export SIMKL_CLIENT_SECRET=your_client_secret
 export LETTERBOXD_API_KEY=your_api_key  # Optional, uses CSV export if not set
 ```
 
-**Token Storage:**
-- Tokens are automatically saved to `~/.config/clawarr/`
-- Files: `trakt_tokens.json`, `simkl_tokens.json`
-- Permissions: 600 (user read/write only)
+**令牌存储：**
+令牌会自动保存在`~/.config/clawarr/`目录下：
+- 文件：`trakt_tokens.json`, `simkl_tokens.json`
+- 权限：600（用户仅读写）
 
-Store in `.env` file and source before running scripts.
+请将配置信息保存在`.env`文件中，并在运行脚本前加载该文件。
 
-### Standard Ports
+### 标准端口
 - Sonarr: 8989
 - Radarr: 7878
 - Lidarr: 8686
@@ -417,50 +413,50 @@ Store in `.env` file and source before running scripts.
 - FlareSolverr: 8191
 - Homarr: 7575
 
-## API Key Discovery
+## API密钥获取
 
-### Method 1: /initialize.json (Easiest)
-Most *arr apps expose API key at public endpoint:
+### 方法1：/initialize.json（最简单）
+大多数*arr应用程序*都会在公共端点暴露API密钥：
 ```bash
 curl -s http://HOST:7878/initialize.json | jq -r '.apiKey'
 ```
 
-For older versions (v3):
+对于旧版本（v3）：
 ```bash
 curl -s http://HOST:7878/initialize.js | grep -o "apiKey: '[^']*'" | cut -d"'" -f2
 ```
 
-### Method 2: Config Files
-**Docker/Unraid/Synology:** `/config/config.xml` (inside container)
+### 方法2：配置文件
+**Docker/Unraid/Synology：** `/config/config.xml`（在容器内部）
 ```bash
 grep '<ApiKey>' /path/to/config.xml | sed 's/.*<ApiKey>\(.*\)<\/ApiKey>.*/\1/'
 ```
 
-### Method 3: Web UI
-Settings → General → Security → API Key
+### 方法3：Web UI
+设置 → 通用 → 安全 → API密钥
 
-### Plex Token
-From Plex Web UI:
-1. Open any media item
-2. "Get Info" → "View XML"
-3. URL contains `X-Plex-Token=...`
+### Plex令牌
+通过Plex Web UI获取：
+1. 打开任意媒体项目
+2. 选择“获取信息” → “查看XML”
+3. URL中包含`X-Plex-Token=...`
 
-Or use:
+或者使用以下方法：
 ```bash
 curl -u "username:password" -X POST \
   'https://plex.tv/users/sign_in.json' \
   -H "X-Plex-Client-Identifier: <unique-id>"
 ```
 
-### Tautulli API Key
-Settings → Web Interface → API → API Key
+### Tautulli API密钥
+设置 → Web界面 → API → API密钥
 
-### SABnzbd API Key
-Config → General → Security → API Key
+### SABnzbd API密钥
+在配置 → 通用 → 安全 → API密钥中设置
 
-## Common Workflows
+## 常见工作流程
 
-### Library Analysis
+### 库分析
 ```bash
 # Get complete library overview
 scripts/library.sh stats all
@@ -475,7 +471,7 @@ scripts/library.sh missing all
 scripts/library.sh disk all
 ```
 
-### Viewing Analytics
+### 观看分析
 ```bash
 # Current activity
 scripts/analytics.sh activity
@@ -490,7 +486,7 @@ scripts/analytics.sh user-stats
 scripts/analytics.sh peak-hours
 ```
 
-### Request Management
+### 请求管理
 ```bash
 # Show pending requests
 scripts/requests.sh list pending
@@ -502,7 +498,7 @@ scripts/requests.sh approve 123
 scripts/requests.sh stats
 ```
 
-### Content Management
+### 内容管理
 ```bash
 # Add movie
 scripts/manage.sh add-movie "Dune Part Two"
@@ -517,7 +513,7 @@ scripts/manage.sh history radarr 30
 scripts/manage.sh wanted all
 ```
 
-### Indexer Management (Prowlarr)
+### 索引器管理（Prowlarr）
 ```bash
 # List and test all indexers
 scripts/prowlarr.sh indexers
@@ -534,7 +530,7 @@ scripts/prowlarr.sh add-app radarr http://host:7878 <radarr_key>
 scripts/prowlarr.sh sync
 ```
 
-### Quality Profiles (Recyclarr)
+### 质量配置文件（Recyclarr）
 ```bash
 # Preview changes
 scripts/recyclarr.sh diff
@@ -546,7 +542,7 @@ scripts/recyclarr.sh sync
 scripts/recyclarr.sh status
 ```
 
-### Library Cleanup (Maintainerr)
+### 库清理（Maintainerr）
 ```bash
 # View rules and matched media
 scripts/maintainerr.sh rules
@@ -559,7 +555,7 @@ scripts/maintainerr.sh run
 scripts/maintainerr.sh exclude 12345 1
 ```
 
-### Collections & Overlays (Kometa)
+### 收藏夹与覆盖层（Kometa）
 ```bash
 # Run collection/overlay generation
 scripts/kometa.sh run
@@ -571,7 +567,7 @@ scripts/kometa.sh collections
 scripts/kometa.sh templates
 ```
 
-### Dashboard
+### 仪表板
 ```bash
 # Generate dashboard
 scripts/dashboard.sh my-dashboard.html
@@ -580,9 +576,9 @@ scripts/dashboard.sh my-dashboard.html
 open my-dashboard.html
 ```
 
-### Media Tracking Workflows
+### 媒体跟踪工作流程
 
-**Initial Setup:**
+**初始设置：**
 ```bash
 # Set up Trakt.tv
 scripts/trackers.sh setup
@@ -593,7 +589,7 @@ scripts/trackers.sh setup
 scripts/trackers.sh status
 ```
 
-**Sync Plex to Trakt:**
+**将Plex数据同步到Trakt：**
 ```bash
 # One-time sync of watch history
 scripts/trakt.sh sync-plex
@@ -602,7 +598,7 @@ scripts/trakt.sh sync-plex
 scripts/trackers.sh sync plex trakt
 ```
 
-**Export for Letterboxd:**
+**导出数据到Letterboxd：**
 ```bash
 # Generate Letterboxd-compatible CSV
 scripts/letterboxd.sh export
@@ -610,7 +606,7 @@ scripts/letterboxd.sh export
 # Upload at letterboxd.com/import/
 ```
 
-**Cross-Tracker Sync:**
+**跨跟踪器同步：**
 ```bash
 # Export from Trakt, convert for Letterboxd
 scripts/trackers.sh sync trakt letterboxd
@@ -619,7 +615,7 @@ scripts/trackers.sh sync trakt letterboxd
 scripts/trackers.sh compare trakt simkl
 ```
 
-**Discovery & Recommendations:**
+**内容发现与推荐：**
 ```bash
 # Get personalized recommendations
 scripts/trakt.sh recommendations movies
@@ -631,19 +627,7 @@ scripts/trakt.sh trending shows
 scripts/trakt.sh calendar all 7
 ```
 
-**Track Viewing:**
-```bash
-# See what you're currently watching
-scripts/trakt.sh watching
-
-# View watch history
-scripts/trakt.sh history movies 50
-
-# Rate something you watched
-scripts/trakt.sh rate movie "Inception" 10
-```
-
-**Automation with Traktarr/Retraktarr:**
+**Traktarr/Retraktarr自动化：**
 ```bash
 # Set up Traktarr (Trakt → Arr)
 scripts/trackers.sh setup  # Option 5
@@ -665,22 +649,22 @@ scripts/trakt.sh retraktarr-sync all
 # Retraktarr daily at 3am: 0 3 * * * retraktarr sync
 ```
 
-## Troubleshooting
+## 故障排除
 
-### No Files Eligible for Import
+### 无法导入文件
 
-**Diagnosis:**
+**诊断：**
 ```bash
 scripts/diagnose.sh
 ```
 
-Common causes:
-1. **Stale Docker mounts** — Container restarted but host didn't
-2. **Path mapping** — Download client and *arr app see different paths
-3. **Permissions** — *arr app can't read download directory
-4. **Category mismatch** — Download in wrong category
+常见原因：
+1. **Docker容器重启但主机未重启**
+2. **路径映射问题** — 下载客户端和*arr应用程序*使用的路径不同
+3. **权限问题** — *arr应用程序*无法读取下载目录
+4. **类别不匹配** — 下载的文件属于错误的类别
 
-**Solutions:**
+**解决方法：**
 ```bash
 # Restart containers (fixes stale mounts)
 docker restart radarr sonarr
@@ -689,176 +673,175 @@ docker restart radarr sonarr
 # Settings → Download Clients → Remote Path Mappings
 ```
 
-### Queue Stuck
+### 下载队列卡住
 
-**Check download client:**
+**检查下载客户端：**
 ```bash
 scripts/downloads.sh active
 scripts/downloads.sh speed
 ```
 
-**Check *arr queues:**
+**检查*arr应用程序*的队列：**
 ```bash
 scripts/manage.sh wanted all
 ```
 
-**Check indexers:**
+**检查索引器：**
 ```bash
 scripts/indexers.sh test
 scripts/indexers.sh stats
 ```
 
-### Missing Subtitles
+### 字幕缺失
 
 ```bash
 scripts/subtitles.sh wanted
 scripts/subtitles.sh search series <id>
 ```
 
-## Reference Documentation
+## 参考文档
 
-- **`references/api-endpoints.md`** — Complete API reference for all services
-- **`references/tracker-apis.md`** — Media tracker API documentation (Trakt, Simkl, Letterboxd)
-- **`references/traktarr-retraktarr.md`** — Complete guide to Traktarr & Retraktarr automation
-- **`references/companion-services.md`** — Prowlarr, Recyclarr, FlareSolverr, Unpackerr, Notifiarr, Maintainerr, Kometa reference
-- **`references/common-issues.md`** — Troubleshooting guide with solutions
-- **`references/setup-guide.md`** — Platform-specific installation
-- **`references/prompts.md`** — Suggested natural-language prompts for agents
-- **`references/dashboard-templates.md`** — HTML/CSS templates for dashboards
+- **`references/api-endpoints.md`** — 所有服务的完整API参考
+- **`references/tracker-apis.md` — 媒体跟踪器API文档（Trakt, Simkl, Letterboxd）
+- **`references/traktarr-retraktarr.md** — Traktarr与Retraktarr自动化的完整指南
+- **`references/companion-services.md` — Prowlarr, Recyclarr, FlareSolverr, Unpackerr, Maintainerr, Kometa的参考文档
+- **`references/common-issues.md** — 故障排除指南及解决方案
+- **`references/setup-guide.md** — 平台特定的安装指南
+- **`references/prompts.md` — 为代理程序提供的建议性自然语言提示
+- **`references/dashboard-templates.md** — 仪表板的HTML/CSS模板
 
-## Example Agent Prompts
+## 代理程序提示示例
 
-See `references/prompts.md` for complete list. Examples:
+请参阅`references/prompts.md`以获取完整列表。示例提示包括：
+**库与下载：**
+- “显示当前正在下载的内容”
+- “这周添加了哪些电影？”
+- “生成我的媒体库仪表板”
+- “本月观看次数最多的剧集是什么？”
+- “查找所有可以升级到4K分辨率的720p电影”
+- “显示所有被监控剧集的缺失字幕”
+- “这周有哪些新电影上映？”
+- “批准所有待处理的Overseerr请求”
+- “每个库占用了多少磁盘空间？”
+- “显示我过去30天的Plex观看统计”
+- “哪些字幕缺失？”
+- “测试所有索引器的性能”
 
-**Library & Downloads:**
-- "Show me what's downloading right now"
-- "What movies were added this week?"
-- "Generate a dashboard of my media library"
-- "What are the most watched shows this month?"
-- "Find all 720p movies that could be upgraded to 4K"
-- "Show missing episodes for all monitored shows"
-- "What's coming out this week?"
-- "Approve all pending Overseerr requests"
-- "How much disk space am I using per library?"
-- "Show my Plex viewing stats for the last 30 days"
-- "What subtitles are missing?"
-- "Test all my indexers"
+**媒体跟踪：**
+- “为我的Plex库设置Trakt跟踪”
+- “将我的Plex观看历史同步到Trakt”
+- “我在Trakt上当前正在观看什么？”
+- “显示我这个月的Trakt观看历史”
+- “根据我的Trakt评分推荐电影”
+- “显示Trakt上的热门电影”
+- “将我的电影列表导出到Letterboxd”
+- “比较我的Trakt和Simkl观看历史”
+- “显示我正在跟踪的即将上映的电影”
+- “在Trakt上给《盗梦空间》打10分”
+- “将《沙丘2》添加到我的Trakt观看列表”
+- “显示我的Letterboxd个人资料统计”
+- “我在Trakt上评分最高的电影是什么？”
 
-**Media Tracking:**
-- "Set up Trakt tracking for my Plex library"
-- "Sync my Plex watch history to Trakt"
-- "What am I currently watching on Trakt?"
-- "Show my Trakt watch history from this month"
-- "Get movie recommendations based on my Trakt ratings"
-- "What's trending on Trakt right now?"
-- "Export my library for Letterboxd"
-- "Compare my Trakt and Simkl watch histories"
-- "Show me upcoming movie releases I'm tracking"
-- "Rate Inception 10/10 on Trakt"
-- "Add Dune Part Two to my Trakt watchlist"
-- "Show my Letterboxd profile stats"
-- "What are my top-rated movies on Trakt?"
+**Prowlarr与索引器：**
+- “显示所有索引器并测试它们的性能”
+- “在所有索引器中搜索《绝命毒师》”
+- “将Prowlarr的索引器同步到Sonarr和Radarr”
+- **在Prowlarr中添加Sonarr作为同步目标”
 
-**Prowlarr & Indexers:**
-- "Show all my indexers and test them"
-- "Search across all indexers for Breaking Bad"
-- "Sync Prowlarr indexers to Sonarr and Radarr"
-- "Add Sonarr as a sync target in Prowlarr"
+**质量配置文件（Recyclarr）：**
+- “同步TRaSH Guide的质量配置文件”
+- “预览Recyclarr会做出的更改”
+- “显示Radarr可用的质量配置文件”
+- “Sonarr支持哪些质量标准？”
 
-**Quality Profiles (Recyclarr):**
-- "Sync TRaSH Guides quality profiles"
-- "Preview what Recyclarr would change"
-- "Show available quality profiles for Radarr"
-- "What quality definitions does Sonarr have?"
+**库清理（Maintainerr）：**
+- “显示我的库清理规则”
+- “哪些电影被标记为需要删除？”
+- “立即运行所有清理规则”
+- “从清理规则中排除这部电影”
 
-**Library Cleanup (Maintainerr):**
-- "Show my library cleanup rules"
-- "What movies are flagged for deletion?"
-- "Run all cleanup rules now"
-- "Exclude this movie from the cleanup rule"
+**收藏夹与覆盖层（Kometa）：**
+- “运行Kometa更新收藏夹”
+- “显示我所有的Plex收藏夹”
+- “有哪些可用的覆盖层模板？”
+- “将IMDb Top 250收藏夹添加到我的电影库”
 
-**Collections & Overlays (Kometa):**
-- "Run Kometa to update collections"
-- "Show all my Plex collections"
-- "What overlay templates are available?"
-- "Add IMDb Top 250 collection to my movie library"
+**通知系统（Notifiarr）：**
+- “检查Notifiarr的状态和集成情况”
+- **发送测试通知**
+- **显示最近的通知**
 
-**Notifications (Notifiarr):**
-- "Check Notifiarr status and integrations"
-- "Send a test notification"
-- "Show recent notifications"
+**档案提取（Unpackerr）：**
+- “检查Unpackerr的状态”
+- **显示最近的提取活动”
+- “是否有提取错误？”
 
-**Archive Extraction (Unpackerr):**
-- "Check Unpackerr status"
-- "Show recent extraction activity"
-- "Any extraction errors?"
+**Traktarr/Retraktarr自动化：**
+- **设置Traktarr自动添加热门电影**
+- **将Trakt上的前10部热门电影添加到Radarr**
+- **配置Traktarr监控我的Trakt观看列表**
+- **将我的Radarr库同步到公共Trakt列表**
+- **显示Traktarr的状态和配置**
+- **通过Traktarr将热门剧集添加到Sonarr**
+- **设置Trakt和*arr应用程序*之间的自动同步**
+- “Retraktarr正在做什么？是否已同步？”
 
-**Traktarr/Retraktarr Automation:**
-- "Set up Traktarr to auto-add trending movies"
-- "Add the top 10 anticipated movies from Trakt to Radarr"
-- "Configure Traktarr to monitor my Trakt watchlist"
-- "Sync my Radarr library to a public Trakt list"
-- "Show Traktarr status and configuration"
-- "Add trending shows to Sonarr via Traktarr"
-- "Set up automatic syncing between Trakt and my *arr apps"
-- "What's Retraktarr doing? Is it synced?"
+## 技术说明
 
-## Technical Notes
+### Bash 3.2兼容性
+所有脚本均兼容macOS bash 3.2：
+- 不支持关联数组（`declare -A`）
+- 不支持大写参数扩展（`${var^^}`）
+- 使用`$(echo "$var" | tr '[:lower:]' '[:upper:]')`进行大小写转换
+- 不使用`|&`（管道重定向标准错误输出），改用`2>&1`
 
-### Bash 3.2 Compatibility
-All scripts are compatible with macOS bash 3.2:
-- No associative arrays (`declare -A`)
-- No uppercase parameter expansion (`${var^^}`)
-- Use `$(echo "$var" | tr '[:lower:]' '[:upper:]')` for case conversion
-- No `|&` (pipe stderr), use `2>&1` instead
+### 依赖项
+- **curl** — HTTP请求工具
+- **jq** — JSON解析工具
+- **bc** — 数学计算工具（用于百分比和GB单位转换）
+- **sed** — 文本处理工具
 
-### Dependencies
-- **curl** — HTTP requests
-- **jq** — JSON parsing
-- **bc** — Math calculations (for percentages, GB conversions)
-- **sed** — Text processing
+这些工具在macOS/Linux系统中都是标准配置。
 
-All standard on macOS/Linux.
+### 安全性
+- 绝不记录API密钥
+- 对破坏性操作（如删除、移除）进行确认
+- 对批量操作实施速率限制
+- 使用HTTPS进行远程访问
 
-### Security
-- Never log API keys
-- Confirm destructive actions (delete, remove)
-- Rate limiting for bulk operations
-- Use HTTPS for remote access
+### 性能
+- 脚本会在可能的情况下缓存API响应
+- 仪表板生成仅运行一次时获取数据
+- 批量操作会使用批量API接口
 
-### Performance
-- Scripts cache API responses where possible
-- Dashboard generation pulls data once per run
-- Bulk operations use batch APIs when available
+## 版本兼容性
 
-## Version Compatibility
-
-Tested with:
-- Sonarr v4.x (API v3)
-- Radarr v5.x (API v3)
-- Lidarr v2.x (API v1)
-- Readarr v0.3.x (API v1)
-- Prowlarr v1.x (API v1)
+已测试的版本包括：
+- Sonarr v4.x（API v3）
+- Radarr v5.x（API v3）
+- Lidarr v2.x（API v1）
+- Readarr v0.3.x（API v1）
+- Prowlarr v1.x（API v1）
 - Bazarr v1.4.x
-- Overseerr v1.33.x (API v1)
-- Plex Media Server (all recent versions)
-- Tautulli v2.x (API v2)
+- Overseerr v1.33.x（API v1）
+- Plex Media Server（所有最新版本）
+- Tautulli v2.x（API v2）
 - SABnzbd v4.x
 - Recyclarr v7.x
 - Unpackerr v0.14.x
 - Notifiarr v0.8.x
 - Maintainerr v2.x
-- Kometa v2.x (Plex Meta Manager successor)
+- Kometa v2.x（Plex Meta Manager的替代品）
 - FlareSolverr v3.x
 
-## Contributing
+## 贡献方式
 
-Report issues or suggest features via GitHub. Include:
-- Script name and command run
-- Error output (sanitize API keys!)
-- Service versions
-- Platform (Docker/Unraid/Synology/etc)
+如需报告问题或建议新功能，请通过GitHub提交。请提供以下信息：
+- 脚本名称及运行命令
+- 错误输出（请对API密钥进行脱敏处理！）
+- 服务版本
+- 平台（Docker/Unraid/Synology等）
 
-## License
+## 许可证
 
-MIT License - See repository for details.
+MIT许可证 - 详情请参见仓库。

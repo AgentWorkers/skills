@@ -1,17 +1,17 @@
 ---
 name: kimchi-premium
 version: 1.0.0
-description: Calculate Bitcoin Kimchi Premium (Upbit vs Binance)
+description: 计算比特币“Kimchi Premium”的价格差异（Upbit vs Binance）
 author: seungdols
 ---
 
 # Kimchi Premium 🌶️
 
-Calculates the real-time Kimchi Premium by comparing Bitcoin prices on Upbit (KRW) and Binance (USD).
+该技能通过比较 Upbit（韩元计价）和 Binance（美元计价）上的比特币价格，来计算 Kimchi Premium 的实时溢价率及价格差。
 
-## Usage
+## 使用方法
 
-Run the skill to see the current premium percentage and price difference.
+运行该技能即可查看当前的溢价百分比和价格差。
 
 ```bash
 node index.js

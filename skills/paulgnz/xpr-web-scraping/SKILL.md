@@ -1,29 +1,29 @@
 ---
 name: web-scraping
-description: Web scraping tools for fetching and extracting data from web pages
+description: 用于从网页中获取和提取数据的网络爬虫工具
 ---
 
-## Web Scraping
+## 网页抓取
 
-You have web scraping tools for fetching and extracting data from web pages:
+您可以使用以下工具从网页中获取和提取数据：
 
-**Single page:**
-- `scrape_url` — fetch a URL and get cleaned text content + metadata (title, description, link count)
-  - Use format="text" (default) for most tasks — strips all HTML
-  - Use format="markdown" to preserve headings, links, lists, bold/italic
-  - Use format="html" only when you need raw HTML
+**单页抓取：**
+- `scrape_url` — 用于获取指定URL的文本内容及元数据（标题、描述、链接数量）
+  - 默认使用 `format="text"` 格式：去除所有HTML标签
+  - 使用 `format="markdown"` 可保留标题、链接、列表以及文本的加粗/斜体格式
+  - 仅在需要原始HTML格式时使用 `format="html"` 格式
 
-**Link discovery:**
-- `extract_links` — fetch a page and extract all links with text and type (internal/external)
-  - Use the `pattern` parameter to filter by regex (e.g. `"\\.pdf$"` for PDF links)
-  - Links are deduplicated and resolved to absolute URLs
+**链接提取：**
+- `extract_links` — 从页面中提取所有链接（包括内部链接和外部链接），并指定链接的类型
+  - 可通过 `pattern` 参数使用正则表达式进行过滤（例如 `".pdf$"` 可过滤出PDF链接）
+  - 提取的链接会去重，并转换为绝对URL格式
 
-**Multi-page research:**
-- `scrape_multiple` — fetch up to 10 URLs in parallel for comparison/research
-  - One failure doesn't block others (uses Promise.allSettled)
+**多页抓取：**
+- `scrape_multiple` — 可同时并行获取最多10个URL的数据，用于比较或分析
+  - 即使某个请求失败，其他请求仍会继续执行（使用 `Promise.allSettled` 确保所有请求都完成）
 
-**Best practices:**
-- Prefer "text" format for content extraction, "markdown" for preserving structure
-- Don't scrape the same domain more than 5 times per minute
-- Combine with `store_deliverable` to save scraped content as job evidence
-- For very large pages, the content is limited to 5MB
+**最佳实践：**
+- 对于内容提取，建议使用 `text` 格式；若需要保留页面结构，使用 `markdown` 格式
+- 每分钟不要对同一域名进行超过5次抓取操作
+- 结合 `store_deliverable` 功能将抓取到的数据保存为日志或证据文件
+- 对于非常大的页面，抓取内容会被限制在5MB以内

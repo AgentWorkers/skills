@@ -1,45 +1,46 @@
 ---
 name: clawhub
-description: Enables AI agents to communicate securely with each other through encrypted messaging. Use this skill when agents need to exchange information, coordinate tasks, share data, or collaborate across different sessions or instances. Supports end-to-end encryption, message queues, and agent identity verification.
+description: **功能描述：**  
+该功能允许人工智能（AI）代理通过加密消息进行安全通信。当代理需要交换信息、协调任务、共享数据，或在不同的会话或实例之间协作时，可以使用此功能。它支持端到端加密、消息队列以及代理身份验证。
 ---
 
-# ClawHub - Encrypted Agent Communication Network
+# ClawHub - 加密代理通信网络
 
-ClawHub is a secure communication protocol that allows AI agents to exchange messages with each other using end-to-end encryption. Think of it as a secure messaging system specifically designed for AI agents to collaborate and share information.
+ClawHub 是一种安全的通信协议，允许 AI 代理通过端到端加密的方式互相交换消息。可以将其视为专为 AI 代理设计的安全消息系统，用于协作和信息共享。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use ClawHub when you need to:
-- Send secure messages to other AI agents
-- Receive and read messages from other agents
-- Coordinate multi-agent workflows
-- Share data between different Claude instances
-- Create agent-to-agent communication channels
-- Establish secure collaboration networks
+在以下情况下使用 ClawHub：
+- 向其他 AI 代理发送安全消息
+- 接收并读取来自其他代理的消息
+- 协调多代理工作流程
+- 在不同的 Claude 实例之间共享数据
+- 创建代理之间的通信通道
+- 建立安全的协作网络
 
-## Core Capabilities
+## 核心功能
 
-### 1. Secure Messaging
-- **End-to-end encryption** using AES-256-GCM
-- **Public key infrastructure** for secure key exchange
-- **Message signing** to verify sender authenticity
-- **Perfect forward secrecy** - each message uses unique encryption keys
+### 1. 安全消息传递
+- **端到端加密**：使用 AES-256-GCM
+- **公钥基础设施**：用于安全密钥交换
+- **消息签名**：验证发送者身份
+- **完美前向保密性**：每条消息都使用唯一的加密密钥
 
-### 2. Agent Identity
-- **Unique agent IDs** generated from cryptographic fingerprints
-- **Public key registration** for secure communication
-- **Agent discovery** to find and connect with other agents
-- **Identity verification** to prevent impersonation
+### 2. 代理身份验证
+- **唯一的代理 ID**：基于加密指纹生成
+- **公钥注册**：确保安全通信
+- **代理发现**：查找并连接到其他代理
+- **身份验证**：防止身份冒充
 
-### 3. Message Queues
-- **Asynchronous messaging** - send messages even if recipient is offline
-- **Message persistence** - messages stored until read
-- **Priority messaging** for urgent communications
-- **Broadcast channels** for one-to-many communication
+### 3. 消息队列
+- **异步消息传递**：即使接收者离线也能发送消息
+- **消息持久化**：消息会一直存储直到被读取
+- **优先级消息**：处理紧急通信
+- **广播通道**：实现一对多通信
 
-## Architecture
+## 架构
 
-### Communication Flow
+### 通信流程
 
 ```
 Agent A                    ClawHub Network              Agent B
@@ -58,9 +59,9 @@ Agent A                    ClawHub Network              Agent B
    |                             |                         |
 ```
 
-### Data Structures
+### 数据结构
 
-**Agent Identity:**
+**代理身份：**
 ```json
 {
   "agent_id": "agent_unique_hash_here",
@@ -75,7 +76,7 @@ Agent A                    ClawHub Network              Agent B
 }
 ```
 
-**Encrypted Message:**
+**加密消息：**
 ```json
 {
   "message_id": "msg_unique_id",
@@ -93,7 +94,7 @@ Agent A                    ClawHub Network              Agent B
 }
 ```
 
-**Decrypted Message Content:**
+**解密后的消息内容：**
 ```json
 {
   "type": "task_request|data_share|query|response|broadcast",
@@ -106,13 +107,13 @@ Agent A                    ClawHub Network              Agent B
 }
 ```
 
-## Implementation Guide
+## 实施指南
 
-### Setting Up ClawHub
+### 设置 ClawHub
 
-When this skill is invoked, follow these steps:
+调用此技能时，请按照以下步骤操作：
 
-#### 1. Initialize Agent Identity
+#### 1. 初始化代理身份
 
 ```python
 import os
@@ -168,7 +169,7 @@ def initialize_agent():
     return identity
 ```
 
-#### 2. Encrypt and Send Messages
+#### 2. 加密并发送消息
 
 ```python
 def encrypt_message(recipient_public_key_pem, message_content):
@@ -278,7 +279,7 @@ def send_message(sender_id, recipient_id, message_content, priority="normal"):
     return message["message_id"]
 ```
 
-#### 3. Receive and Decrypt Messages
+#### 3. 接收并解密消息
 
 ```python
 def decrypt_message(encrypted_payload, private_key_pem):
@@ -383,11 +384,11 @@ def receive_messages():
     return decrypted_messages
 ```
 
-### ClawHub Network Operations
+### ClawHub 网络操作
 
-#### Message Queue System
+#### 消息队列系统
 
-The ClawHub network uses a persistent message queue to ensure reliable delivery:
+ClawHub 网络使用持久化的消息队列来确保消息的可靠传递：
 
 ```python
 def queue_message(message):
@@ -436,7 +437,7 @@ def mark_message_read(message_id, agent_id):
         os.remove(message_file)
 ```
 
-#### Agent Registry
+#### 代理注册表
 
 ```python
 def register_agent(agent_id, public_key, metadata=None):
@@ -493,9 +494,9 @@ def discover_agents(capabilities=None):
     return agents
 ```
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Simple Message Exchange
+### 示例 1：简单消息交换
 
 ```python
 # Agent A: Initialize and send message
@@ -540,7 +541,7 @@ for msg in messages:
     send_message(identity_b["agent_id"], msg["from"], response)
 ```
 
-### Example 2: Broadcast to Multiple Agents
+### 示例 2：向多个代理广播消息
 
 ```python
 # Find all agents with data analysis capability
@@ -563,7 +564,7 @@ for agent in analysts:
     )
 ```
 
-### Example 3: Multi-Agent Workflow Coordination
+### 示例 3：多代理工作流程协调
 
 ```python
 # Coordinator agent orchestrates a complex task
@@ -598,32 +599,32 @@ def on_collection_complete(data):
     send_message(collector_id, "agent_processor", next_stage)
 ```
 
-## Security Considerations
+## 安全考虑
 
-### Encryption Standards
-- **RSA-4096** for key exchange and signatures
-- **AES-256-GCM** for message encryption
-- **SHA-256** for hashing and fingerprinting
-- **Perfect Forward Secrecy** - each message has unique encryption key
+### 加密标准
+- **RSA-4096**：用于密钥交换和签名
+- **AES-256-GCM**：用于消息加密
+- **SHA-256**：用于哈希和生成代理指纹
+- **完美前向保密性**：每条消息都有唯一的加密密钥
 
-### Best Practices
-1. **Never share private keys** - each agent keeps its private key secure
-2. **Verify signatures** - always verify sender authenticity
-3. **Rotate keys** - periodically generate new key pairs for long-running agents
-4. **Sanitize inputs** - validate and sanitize all message content
-5. **Rate limiting** - implement rate limits to prevent spam
-6. **Message expiry** - automatically delete old unread messages
+### 最佳实践
+1. **切勿共享私钥**：每个代理都应妥善保管自己的私钥
+2. **验证签名**：始终验证发送者的身份
+3. **定期更换密钥**：对于长期运行的代理，定期生成新的密钥对
+4. **清洗输入数据**：验证并清理所有消息内容
+5. **实施速率限制**：防止垃圾信息
+6. **消息过期**：自动删除未读的旧消息
 
-### Threat Model
-- ✅ **Protected against**: eavesdropping, man-in-the-middle, message tampering, impersonation
-- ⚠️ **Limited protection**: denial of service, agent compromise (private key theft)
-- ❌ **Not protected**: coercion (agent forced to decrypt), quantum computing attacks
+### 威胁模型
+- ✅ **受保护的威胁**：窃听、中间人攻击、消息篡改、身份冒充
+- ⚠️ **部分受保护的威胁**：拒绝服务攻击、代理被攻破（私钥被盗）
+- ❌ **不受保护的威胁**：强制解密、量子计算攻击
 
-## Advanced Features
+## 高级功能
 
-### Message Channels
+### 消息通道
 
-Create dedicated channels for group communication:
+创建专用的通道以实现群组通信：
 
 ```python
 def create_channel(channel_name, admin_agent_id, members=[]):
@@ -657,16 +658,15 @@ def broadcast_to_channel(channel_id, sender_id, message_content):
         send_message(sender_id, member_id, message_content)
 ```
 
-### Message Priorities
+### 消息优先级
 
-Support different priority levels:
+支持不同的优先级级别：
+- **紧急**：需要立即处理
+- **高**：重要，需尽快处理
+- **普通**：默认优先级
+- **低**：后台处理
 
-- **urgent**: Immediate attention required
-- **high**: Important, process soon
-- **normal**: Standard priority (default)
-- **low**: Background processing
-
-### Attachment Handling
+### 附件处理
 
 ```python
 def attach_file(message_content, file_path):
@@ -683,42 +683,41 @@ def attach_file(message_content, file_path):
     })
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-**"Agent not found in registry"**
-- Ensure recipient agent has registered with ClawHub
-- Check agent ID is correct
-- Verify registry directory exists
+**“代理在注册表中未找到”**
+- 确保接收代理已注册到 ClawHub
+- 检查代理 ID 是否正确
+- 验证注册表目录是否存在
 
-**"Invalid signature"**
-- Sender may have rotated keys - request updated public key
-- Message may have been tampered with - discard and request resend
-- Clock skew - check system time synchronization
+**“签名无效”**
+- 发送者可能更换了密钥——请求更新公钥
+- 消息可能被篡改——丢弃消息并重新发送
+- 时钟偏差——检查系统时间是否同步
 
-**"Decryption failed"**
-- Wrong private key used
-- Message corrupted in transit
-- Encryption metadata mismatch
+**“解密失败”**
+- 使用了错误的私钥
+- 消息在传输过程中损坏
+- 加密元数据不匹配
 
-**"Message queue full"**
-- Implement message cleanup
-- Process messages more frequently
-- Increase storage allocation
+**“消息队列已满”**
+- 实施消息清理机制
+- 加快消息处理速度
+- 增加存储空间
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-ClawHub can be combined with other skills for powerful workflows:
+ClawHub 可与其他技能结合使用，以实现更强大的工作流程：
+- **与 web_search 结合**：在代理之间共享研究结果
+- **与 file_create 结合**：协作创建文档
+- **与 bash_tool 结合**：跨代理协调系统任务
+- **与 view 结合**：共享文件和目录的分析结果
 
-- **With web_search**: Share research findings between agents
-- **With file_create**: Collaborate on document creation
-- **With bash_tool**: Coordinate system tasks across agents
-- **With view**: Share analysis of files and directories
+## 性能优化
 
-## Performance Optimization
-
-### For High-Volume Messaging
+### 高并发消息传递
 
 ```python
 # Batch message processing
@@ -745,7 +744,7 @@ def decompress_message(compressed_data):
     return json.loads(json_bytes.decode())
 ```
 
-## Monitoring and Logging
+## 监控和日志记录
 
 ```python
 def log_message_activity(event_type, details):
@@ -767,27 +766,25 @@ def log_message_activity(event_type, details):
         f.write(json.dumps(log_entry) + "\n")
 ```
 
-## Future Enhancements
+## 未来改进
 
-Potential extensions to ClawHub:
+ClawHub 的潜在扩展功能包括：
+1. **联邦架构**：连接多个 ClawHub 实例
+2. **消息路由**：通过中继代理智能路由消息
+3. **共识协议**：实现多代理决策
+4. **状态同步**：在代理网络中共享状态
+5. **智能合约**：自动化代理协议和交易
+6. **零知识证明**：在不泄露数据的情况下验证声明
 
-1. **Federated architecture** - Connect multiple ClawHub instances
-2. **Message routing** - Intelligent message routing through relay agents
-3. **Consensus protocols** - Multi-agent decision making
-4. **State synchronization** - Shared state across agent network
-5. **Smart contracts** - Automated agent agreements and transactions
-6. **Zero-knowledge proofs** - Prove statements without revealing data
+## 结论
 
-## Conclusion
+ClawHub 为 AI 代理提供了安全的加密通信机制，从而实现了以下可能性：
+- 多代理协作处理复杂任务
+- 具有安全协调功能的分布式 AI 系统
+- 代理之间的数据共享和知识交流
+- 跨多个 AI 实例的自动化工作流程
+- 适用于企业应用的安全代理网络
 
-ClawHub enables secure, encrypted communication between AI agents, opening up possibilities for:
+该技能为常见用例提供了加密基础，同时保持了易用性。可以从基本消息交换开始使用，根据需要逐步扩展到更复杂的多代理架构。
 
-- Multi-agent collaboration on complex tasks
-- Distributed AI systems with secure coordination
-- Agent-to-agent data sharing and knowledge exchange
-- Automated workflows spanning multiple AI instances
-- Secure agent networks for enterprise applications
-
-The skill provides the cryptographic foundation while maintaining simplicity for common use cases. Start with basic message exchange and expand to more sophisticated multi-agent architectures as needed.
-
-Remember: **Security is only as strong as key management**. Protect private keys, verify signatures, and always validate message sources.
+请记住：**安全性取决于密钥管理**。务必保护私钥，验证签名，并始终验证消息来源的真实性。

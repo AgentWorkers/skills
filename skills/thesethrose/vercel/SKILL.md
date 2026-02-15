@@ -1,54 +1,52 @@
 ---
 name: vercel
-description: Deploy applications and manage projects with complete CLI reference. Commands for deployments, projects, domains, environment variables, and live documentation access.
+description: 使用完整的 CLI（命令行接口）来部署应用程序和管理项目。提供了关于部署、项目、域名、环境变量以及实时文档访问的相关命令。
 metadata: {"clawdbot":{"emoji":"▲","requires":{"bins":["vercel","curl"]}}}
 ---
 
 # Vercel
 
-Complete Vercel CLI reference and documentation access.
+完整的 Vercel 命令行界面（CLI）参考及文档访问指南。
 
-## When to Use
-- Deploying applications to Vercel
-- Managing projects, domains, and environment variables
-- Running local development server
-- Viewing deployment logs and status
-- Looking up Vercel documentation
+## 使用场景
+- 将应用程序部署到 Vercel
+- 管理项目、域名和环境变量
+- 运行本地开发服务器
+- 查看部署日志和状态
+- 查阅 Vercel 文档
 
 ---
 
-## Documentation
-
-Fetch any Vercel docs page as markdown:
+## 文档
+您可以获取任何 Vercel 文档页面（格式为 Markdown）：
 
 ```bash
 curl -s "https://vercel.com/docs/<path>" -H 'accept: text/markdown'
 ```
 
-**Get the full sitemap to discover all available pages:**
+**获取完整的站点地图以查看所有可用页面：**
 ```bash
 curl -s "https://vercel.com/docs/sitemap.md" -H 'accept: text/markdown'
 ```
 
 ---
 
-## CLI Commands
+## CLI 命令
 
-### Deployment
+### 部署
+#### `vercel` / `vercel deploy [路径]`
+部署当前目录或指定的路径。
 
-#### `vercel` / `vercel deploy [path]`
-Deploy the current directory or specified path.
+**选项：**
+- `--prod` - 部署到生产环境
+- `-e KEY=VALUE` - 设置运行时环境变量
+- `-b KEY=VALUE` - 设置构建时环境变量
+- `--prebuilt` - 部署预构建的输出（需与 `vercel build` 一起使用）
+- `--force` - 即使没有变化也强制部署
+- `--no-wait` - 不等待部署完成
+- `-y, --yes` - 跳过提示，使用默认值
 
-**Options:**
-- `--prod` - Deploy to production
-- `-e KEY=VALUE` - Set runtime environment variables
-- `-b KEY=VALUE` - Set build-time environment variables
-- `--prebuilt` - Deploy prebuilt output (use with `vercel build`)
-- `--force` - Force new deployment even if unchanged
-- `--no-wait` - Don't wait for deployment to finish
-- `-y, --yes` - Skip prompts, use defaults
-
-**Examples:**
+**示例：**
 ```bash
 vercel                          # deploy current directory
 vercel --prod                   # deploy to production
@@ -58,19 +56,19 @@ vercel build && vercel --prebuilt  # prebuilt deploy
 ```
 
 #### `vercel build`
-Build the project locally into `./vercel/output`.
+在本地构建项目，并将结果输出到 `./vercel/output`。
 
 ```bash
 vercel build
 ```
 
-#### `vercel dev [dir]`
-Start local development server.
+#### `vercel dev [目录]`
+启动本地开发服务器。
 
-**Options:**
-- `-l, --listen <URI>` - Port/address (default: 0.0.0.0:3000)
+**选项：**
+- `-l, --listen <URI>` - 端口/地址（默认：0.0.0.0:3000）
 
-**Examples:**
+**示例：**
 ```bash
 vercel dev                  # start on port 3000
 vercel dev --listen 8080    # start on port 8080
@@ -78,16 +76,15 @@ vercel dev --listen 8080    # start on port 8080
 
 ---
 
-### Project Management
+### 项目管理
+#### `vercel link [路径]`
+将本地目录链接到 Vercel 项目。
 
-#### `vercel link [path]`
-Link local directory to a Vercel project.
+**选项：**
+- `-p, --project <名称>` - 指定项目名称
+- `-y, --yes` - 跳过提示
 
-**Options:**
-- `-p, --project <NAME>` - Specify project name
-- `-y, --yes` - Skip prompts
-
-**Examples:**
+**示例：**
 ```bash
 vercel link
 vercel link --yes
@@ -95,7 +92,7 @@ vercel link -p my-project
 ```
 
 #### `vercel projects`
-Manage projects.
+管理项目。
 
 ```bash
 vercel projects list              # list all projects
@@ -104,8 +101,8 @@ vercel projects inspect [name]    # show project details
 vercel projects remove <name>     # delete project
 ```
 
-#### `vercel pull [path]`
-Pull project settings and env vars from cloud.
+#### `vercel pull [路径]`
+从云端拉取项目设置和环境变量。
 
 ```bash
 vercel pull
@@ -113,21 +110,13 @@ vercel pull
 
 ---
 
-### Environment Variables
-
+### 环境变量
 #### `vercel env`
-Manage environment variables.
+管理环境变量。
 
-```bash
-vercel env list [environment]                    # list env vars
-vercel env add <name> [environment]              # add env var
-vercel env remove <name> [environment]           # remove env var
-vercel env pull [filename]                       # pull to .env.local
-```
+**环境类型：`development`、`preview`、`production`
 
-**Environments:** `development`, `preview`, `production`
-
-**Examples:**
+**示例：**
 ```bash
 vercel env list production
 vercel env add DATABASE_URL production
@@ -136,10 +125,9 @@ vercel env pull .env.local
 
 ---
 
-### Domains & Aliases
-
+### 域名与别名
 #### `vercel domains`
-Manage domain names.
+管理域名。
 
 ```bash
 vercel domains list                          # list domains
@@ -151,15 +139,9 @@ vercel domains transfer-in <domain>          # transfer domain to Vercel
 ```
 
 #### `vercel alias`
-Manage deployment aliases.
+管理部署别名。
 
-```bash
-vercel alias list                                    # list aliases
-vercel alias set <deployment> <alias>                # create alias
-vercel alias remove <alias>                          # remove alias
-```
-
-**Examples:**
+**示例：**
 ```bash
 vercel alias set my-app-abc123.vercel.app my-app.vercel.app
 vercel alias set my-app-abc123.vercel.app custom-domain.com
@@ -167,60 +149,59 @@ vercel alias set my-app-abc123.vercel.app custom-domain.com
 
 ---
 
-### Deployments
-
-#### `vercel ls [app]` / `vercel list`
-List deployments.
+### 部署
+#### `vercel ls [应用]` / `vercel list`
+列出所有部署。
 
 ```bash
 vercel ls
 vercel ls my-project
 ```
 
-#### `vercel inspect [id]`
-Display deployment information.
+#### `vercel inspect [ID]`
+显示部署信息。
 
 ```bash
 vercel inspect <deployment-url-or-id>
 ```
 
-#### `vercel logs <url|id>`
-View runtime logs for a deployment.
+#### `vercel logs <URL|ID>`
+查看某个部署的运行时日志。
 
-**Options:**
-- `-j, --json` - Output as JSON (compatible with jq)
+**选项：**
+- `-j, --json` - 以 JSON 格式输出（兼容 jq）
 
-**Examples:**
+**示例：**
 ```bash
 vercel logs my-app.vercel.app
 vercel logs <deployment-id> --json
 vercel logs <deployment-id> --json | jq 'select(.level == "error")'
 ```
 
-#### `vercel promote <url|id>`
-Promote deployment to production.
+#### `vercel promote <URL|ID>`
+将部署推送到生产环境。
 
 ```bash
 vercel promote <deployment-url-or-id>
 ```
 
-#### `vercel rollback [url|id]`
-Rollback to previous deployment.
+#### `vercel rollback <URL|ID>`
+回滚到之前的部署版本。
 
 ```bash
 vercel rollback
 vercel rollback <deployment-url-or-id>
 ```
 
-#### `vercel redeploy [url|id]`
-Rebuild and deploy a previous deployment.
+#### `vercel redeploy <URL|ID>`
+重新构建并部署之前的版本。
 
 ```bash
 vercel redeploy <deployment-url-or-id>
 ```
 
-#### `vercel rm <id>` / `vercel remove`
-Remove a deployment.
+#### `vercel rm <ID>` / `vercel remove`
+删除某个部署。
 
 ```bash
 vercel rm <deployment-url-or-id>
@@ -228,8 +209,7 @@ vercel rm <deployment-url-or-id>
 
 ---
 
-### Authentication & Teams
-
+### 认证与团队
 ```bash
 vercel login [email]      # log in or create account
 vercel logout             # log out
@@ -240,8 +220,7 @@ vercel teams              # manage teams
 
 ---
 
-### Other Commands
-
+### 其他命令
 ```bash
 vercel open               # open project in dashboard
 vercel init [example]     # initialize from example
@@ -254,35 +233,33 @@ vercel bisect             # binary search for bug-introducing deployment
 
 ---
 
-## Global Options
+## 全局选项
+所有命令都支持以下全局选项：
 
-Available on all commands:
-
-| Option | Description |
-|--------|-------------|
-| `-h, --help` | Show help |
-| `-v, --version` | Show version |
-| `-d, --debug` | Debug mode |
-| `-t, --token <TOKEN>` | Auth token |
-| `-S, --scope` | Set scope/team |
-| `--cwd <DIR>` | Working directory |
-| `-A, --local-config <FILE>` | Path to vercel.json |
-| `--no-color` | Disable colors |
+| 选项 | 描述 |
+|------|-------------|
+| `-h, --help` | 显示帮助信息 |
+| `-v, --version` | 显示版本信息 |
+| `-d, --debug` | 开启调试模式 |
+| `-t, --token <令牌>` | 设置认证令牌 |
+| `-S, --scope` | 设置范围/团队 |
+| `--cwd <目录>` | 设置工作目录 |
+| `-A, --local-config <文件>` | 指定 `vercel.json` 文件的路径 |
+| `--no-color` | 禁用颜色显示 |
 
 ---
 
-## Quick Reference
-
-| Task | Command |
+## 快速参考
+| 任务 | 命令 |
 |------|---------|
-| Deploy | `vercel` or `vercel --prod` |
-| Dev server | `vercel dev` |
-| Link project | `vercel link` |
-| List deployments | `vercel ls` |
-| View logs | `vercel logs <url>` |
-| Add env var | `vercel env add <name> <env>` |
-| Pull env vars | `vercel env pull` |
-| Rollback | `vercel rollback` |
-| Add domain | `vercel domains add <domain> <project>` |
-| Get docs | `curl -s "https://vercel.com/docs/<path>" -H 'accept: text/markdown'` |
-| Docs sitemap | `curl -s "https://vercel.com/docs/sitemap.md" -H 'accept: text/markdown'` |
+| 部署 | `vercel` 或 `vercel --prod` |
+| 启动开发服务器 | `vercel dev` |
+| 链接项目 | `vercel link` |
+| 列出部署 | `vercel ls` |
+| 查看日志 | `vercel logs <URL>` |
+| 添加环境变量 | `vercel env add <名称> <值>` |
+| 拉取环境变量 | `vercel env pull` |
+| 回滚部署 | `vercel rollback` |
+| 添加域名 | `vercel domains add <域名> <项目>` |
+| 获取文档 | `curl -s "https://vercel.com/docs/<路径>" -H 'accept: text/markdown'` |
+| 文档站点地图 | `curl -s "https://vercel.com/docs/sitemap.md" -H 'accept: text/markdown'` |

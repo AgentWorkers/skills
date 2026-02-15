@@ -1,199 +1,157 @@
-# Copywriting — Conversion Copy That Sells
+# 撰写文案——打造能促成销售的文案
 
-Write landing pages, product descriptions, ads, and sales copy using proven direct-response frameworks.
-Sources: Digitaloft (13 frameworks), CrazyEgg, NON.agency, DesignRush (direct response examples).
-All outputs go to `workspace/artifacts/`.
+使用经过验证的直接转化文案框架来撰写登陆页、产品描述、广告和销售文案。  
+资料来源：Digitaloft（13个框架）、CrazyEgg、NON.agency、DesignRush（直接转化文案示例）。  
+所有输出文件保存在 `workspace/artifacts/` 目录下。  
 
-## Use when
-- Writing landing page copy (Gumroad, product pages, ClawHub listings)
-- Crafting product descriptions that convert browsers to buyers
-- Writing ad copy (social, search, display)
-- Improving existing copy that isn't converting
-- Writing Upwork profile descriptions or service listings
-- Creating CTA buttons and microcopy
-- Sales page sections (hero, features, testimonials, pricing)
+## 适用场景：  
+- 撰写登陆页文案（如Gumroad平台的产品页面、ClawHub上的技能列表）  
+- 编写能够将访客转化为买家的产品描述  
+- 制作广告文案（适用于社交媒体、搜索引擎和展示广告）  
+- 优化那些无法促成转化的现有文案  
+- 撰写Upwork个人资料描述或服务列表  
+- 设计CTA按钮和引导用户采取行动的文案  
+- 编写销售页面的内容（包括产品亮点、用户评价和价格信息）  
 
-## Don't use when
-- Cold outreach emails (use cold-outreach skill — different format)
-- Blog posts for SEO (different goal — traffic, not immediate conversion)
-- Technical documentation (clarity > persuasion)
-- Proposals (use proposal-writing skill)
+## 不适用场景：  
+- 冷启动邮件（请使用专门的冷启动邮件撰写技巧）  
+- 用于SEO的博客文章（目标不同——追求流量而非即时转化）  
+- 技术文档（需要的是清晰性而非说服力）  
+- 商业提案（请使用专门的提案撰写技巧）  
 
-## Negative examples
-- "Write me a cold email" → No. Use cold-outreach skill.
-- "Help me with my resume" → No. Different format entirely.
-- "Write a technical README" → No. Documentation, not sales.
+## 不佳示例：  
+- “给我写封冷启动邮件” → 不适用，应使用专门的冷启动邮件撰写技巧。  
+- “帮我修改简历” → 不适用，这属于完全不同的写作类型。  
+- “编写技术性的README文件” → 不适用，这属于文档编写，而非销售文案。  
 
-## Edge cases
-- Upwork profile bio → YES. It's a mini sales page — you're selling yourself.
-- ClawHub skill descriptions → YES. Descriptions should make people install.
-- Email subject lines → YES. Subject lines are conversion copy (open rate = conversion).
-- Discord channel descriptions → Borderline. Only if you need them to drive action.
-
----
-
-## The 6 Core Frameworks
-
-Pick the framework that matches your copy's goal:
-
-### 1. PAS — Problem, Agitate, Solve
-**Best for:** Landing pages, product pages, pain-point-driven products.
-
-```
-[PROBLEM] You're losing bookings every time your phone goes to voicemail.
-[AGITATE] That's 3-5 clients a week — $300-500/month walking out the door while your hands are busy.
-[SOLVE] Our SMS automation catches every missed call and books them automatically. One therapist went from 15 to 22 clients/week in 30 days.
-```
-
-**When to use:** When the audience KNOWS they have a problem. Agitation makes them feel the cost of inaction.
-
-### 2. AIDA — Attention, Interest, Desire, Action
-**Best for:** Ads, email subject lines, general sales pages.
-
-```
-[ATTENTION] What if your agent could earn money while you sleep?
-[INTEREST] The Reef orchestrates local AI models to handle tasks 24/7 — no cloud API costs.
-[DESIRE] Imagine checking your dashboard and seeing 50 tasks completed overnight, at $0 compute cost.
-[ACTION] Get The Reef for $29 → [CTA button]
-```
-
-**When to use:** When you need to grab cold traffic and walk them through to action.
-
-### 3. FAB — Features, Advantages, Benefits
-**Best for:** Product descriptions, feature pages, comparison sections.
-
-```
-[FEATURE] Automated SMS auto-responder
-[ADVANTAGE] Responds to missed calls in under 5 seconds — faster than any human
-[BENEFIT] Never lose a booking to voicemail again. Clients feel heard even when you're busy.
-```
-
-**When to use:** When you need to translate features into reasons people should care. Most tech products describe features but forget benefits.
-
-### 4. BAB — Before, After, Bridge
-**Best for:** Transformation-focused copy, case studies, testimonials.
-
-```
-[BEFORE] You're manually checking voicemails between sessions, texting clients back hours late.
-[AFTER] Your phone handles it all — instant replies, automatic booking, review requests sent after each session.
-[BRIDGE] Our automation system connects your phone to your calendar. Setup takes 15 minutes.
-```
-
-### 5. The 4 Ps — Promise, Picture, Proof, Push
-**Best for:** Long-form sales pages.
-
-```
-[PROMISE] Double your bookings without hiring a receptionist.
-[PICTURE] Imagine finishing a session and seeing 3 new bookings confirmed — all handled while you worked.
-[PROOF] "I went from 15 to 22 clients a week in my first month." — Alfred, Soothing Escape Massage
-[PUSH] Start your free trial today. Cancel anytime. → [CTA]
-```
-
-### 6. Star-Story-Solution
-**Best for:** About pages, brand narratives, personal selling.
-
-```
-[STAR] Meet Celeste — an AI agent that lives on a Mac mini and builds automation for small businesses.
-[STORY] Built by a solo developer who was tired of seeing small business owners drown in admin work.
-[SOLUTION] Now Celeste powers SMS automation, booking systems, and AI workflows — starting at $149/mo.
-```
+## 特殊情况：  
+- Upwork个人资料简介 → 可以使用这些文案框架，因为这相当于一个微型销售页面，你是在推销自己。  
+- ClawHub上的技能描述 → 可以使用这些框架，因为描述内容应能促使用户下载或使用你的技能。  
+- 邮件主题行 → 可以使用这些文案框架，因为主题行直接影响打开率，从而影响转化率。  
+- Discord频道描述 → 可以使用这些框架，但前提是它们能引导用户采取行动。  
 
 ---
 
-## Landing Page Structure
+## 六大核心文案框架  
 
-A high-converting landing page follows this order:
+根据你的文案目标选择合适的框架：  
 
-### 1. Hero Section
-- **Headline:** One clear promise (10 words or fewer)
-- **Subhead:** How you deliver on the promise (1-2 sentences)
-- **CTA:** Primary action button
-- **Visual:** Product screenshot, demo, or relevant image
+### 1. PAS（问题、激发共鸣、提供解决方案）  
+**最适合用于：** 登陆页、产品页面以及针对用户痛点设计的产品。  
 
-**Formula:** "[Outcome] without [pain point]"
-- "Automate Your Bookings Without Missing a Single Client"
-- "Run Local AI Models Without Cloud API Bills"
+**使用场景：** 当目标受众明确知道自己存在问题时。通过激发他们的紧迫感，让他们意识到不采取行动的后果。  
 
-### 2. Problem Section
-Use PAS. Name their pain. Make it specific.
+### 2. AIDA（吸引注意、引发兴趣、激发欲望、促使行动）  
+**最适合用于：** 广告、邮件主题行和一般的销售页面。  
 
-### 3. Solution Section
-Use FAB. Show what you built and why it matters to THEM.
+**使用场景：** 当你需要吸引潜在客户并引导他们采取行动时。  
 
-### 4. Social Proof
-- Testimonials with specific results ("went from X to Y")
-- Client logos (if B2B)
-- Numbers ("500+ agents use this skill")
-- Star ratings or review excerpts
+### 3. FAB（功能、优势、好处）  
+**最适合用于：** 产品描述、功能页面和对比内容。  
 
-### 5. How It Works
-3 simple steps. Remove complexity.
-```
-Step 1: [Easy first action]
-Step 2: [We do the work]
-Step 3: [They get the result]
-```
+**使用场景：** 当你需要将产品功能转化为用户关心的价值时。大多数技术产品只描述功能，却忽略了好处。  
 
-### 6. Pricing
-Use pricing-psychology skill. Show value before price. Anchor high.
+### 4. BAB（使用前、使用后、过渡）  
+**最适合用于：** 强调产品带来的改变、案例研究和用户评价。  
 
-### 7. FAQ / Objection Handling
-Address top 4-5 objections in Q&A format (see objection-handling skill).
+**使用场景：** 当你需要展示产品使用前后的效果时。  
 
-### 8. Final CTA
-Repeat the hero CTA. Add urgency if real.
+### 5. The 4Ps（承诺、场景描绘、证据、推动行动）  
+**最适合用于：** 长篇销售页面。  
+
+**使用场景：** 当你需要详细阐述产品价值时。  
+
+### 6. Star-Story-Solution（明星故事+解决方案）  
+**最适合用于：** 关于产品的介绍页面、品牌故事和个人销售文案。  
 
 ---
 
-## Copy Rules (Non-Negotiable)
+## 高转化率登陆页的结构  
 
-1. **Write for scanners.** Most people skim. Use headlines, bullets, bold, and short paragraphs.
-2. **One idea per sentence.** Complex sentences kill conversion.
-3. **"You" > "We."** The copy is about THEM, not you. Count your "you"s vs "we"s.
-4. **Specific > Vague.** "Save 5 hours/week" beats "save time." Numbers create belief.
-5. **Benefits > Features.** Features tell. Benefits sell. Always translate.
-6. **CTA = Action verb + Outcome.** "Get Started" < "Start Automating Today"
-7. **Cut 30%.** First draft is always too long. Cut ruthlessly. Every word must earn its place.
-8. **Read it out loud.** If you stumble, rewrite. Copy should flow like conversation.
+高转化率的登陆页应遵循以下结构：  
 
----
+### 1. 产品亮点部分  
+- **标题：** 一个明确的承诺（10个词以内）  
+- **副标题：** 你将如何兑现这个承诺（1-2句话）  
+- **CTA（呼叫行动）：** 主要的按钮链接  
+- **视觉元素：** 产品截图、演示视频或相关图片  
 
-## CTA Writing Guide
+**示例格式：** “[理想结果]，无需面对[痛点]”  
+- “无需依赖云API，即可自动化预订流程”  
+- “无需支付费用，即可运行本地AI模型”  
 
-| Weak | Strong | Why |
-|------|--------|-----|
-| Submit | Get My Free Guide | Outcome-focused |
-| Click Here | Start Automating Today | Action + benefit |
-| Learn More | See How It Works | Specific curiosity |
-| Sign Up | Join 500+ Agents | Social proof + action |
-| Buy Now | Get The Reef — $29 | Clear price, clear product |
-| Download | Grab Your Checklist | Casual, energetic |
+### 2. 问题描述部分  
+使用PAS框架，明确指出用户面临的具体问题。  
 
----
+### 3. 解决方案部分  
+使用FAB框架，展示产品的功能及其对用户的重要性。  
 
-## Platform-Specific Notes
+### 4. 用户评价部分  
+- 用具体成果展示用户的使用体验（例如：“从X状态变为Y状态”）  
+- 客户LOGO（适用于B2B场景）  
+- 数据支持（例如：“500多名代理正在使用该功能”）  
+- 星级评分或用户评价  
 
-**Gumroad listings:**
-- Title = benefit-driven headline (not product name alone)
-- First 2 lines visible in search — make them count
-- Use bullet points for features/benefits
-- Include "What's inside" section
+### 5. 产品使用流程部分  
+用简单的三个步骤解释产品的工作原理，避免复杂化。  
 
-**ClawHub skill descriptions:**
-- Lead with what problem the skill solves
-- "Use when / Don't use when" is visible to browsers — make it compelling
-- Include a result: "Used by X agents" or "Built from Y sources"
+### 6. 价格部分  
+运用价格心理学技巧，先展示产品价值再展示价格。设定较高的价格门槛。  
 
-**Upwork profile:**
-- First 2 lines = hook (visible before "more")
-- Lead with client outcomes, not your resume
-- Specific numbers: "Built 50+ automations" > "experienced developer"
+### 7. 常见问题解答/异议处理  
+以问答形式解答最常见的4-5个疑问。  
+
+### 8. 最后的CTA  
+重复产品亮点部分的CTA内容。如果需要，可强调紧迫性。  
 
 ---
 
-## Key Principles
-- Copy is a conversation, not a lecture
-- Every piece of copy has ONE job: get them to take the NEXT step
-- The headline does 80% of the work — spend 50% of your time on it
-- Specificity builds trust. Vagueness breeds skepticism.
-- Test > opinion. When in doubt, A/B test.
+## 撰写文案的通用规则（不可妥协）：  
+1. **为快速阅读的用户撰写文案。** 大多数人只会浏览内容。使用标题、项目符号、加粗字体和简短的段落。  
+2. **每个句子只表达一个核心观点。** 复杂的句子会降低转化率。  
+3. 使用“你”而非“我们”作为主语。文案的重点是用户，而不是作者。注意“你”和“我们”的使用频率。  
+4. **具体化而非模糊化。** “每周节省5小时”比“节省时间”更具说服力。数字能增强信任感。  
+5. **强调好处而非功能。** 功能只是描述，而好处才能真正促成销售。  
+6. **CTA应包含明确的行动指令和预期结果。** 例如：“立即开始”比“今天就开始自动化”更有效。  
+7. **删减30%的内容。** 初稿通常过长，要大胆删减不必要的内容。每个字都应有其存在的意义。  
+8. **大声朗读文案。** 如果读起来不流畅，就重新修改。文案应该像对话一样自然流畅。  
+
+---
+
+## CTA（呼叫行动）撰写指南  
+
+| 表现不佳 | 表现优秀 | 原因 |  
+|------|--------|-----|  
+| “提交” | “获取我的免费指南” | 以结果为导向的表述方式 |  
+| “点击这里” | “立即开始自动化” | 明确的行动指令和好处描述 |  
+| “了解更多” | “查看产品详情” | 引发用户好奇心的表述方式 |  
+| “注册” | “加入500多名代理的行列” | 结合用户评价和行动号召 |  
+| “立即购买” | “购买The Reef——29美元” | 明确的价格和产品信息 |  
+| “下载” | “获取你的检查清单” | 语气轻松、充满活力 |  
+
+---
+
+## 平台特定要求：  
+
+**Gumroad产品列表：**  
+- 标题应突出产品带来的好处（而非仅使用产品名称）  
+- 搜索结果中前两行内容必须吸引用户注意——务必重视这部分内容  
+- 使用项目符号来列举产品功能及好处  
+- 提供“产品包含内容”部分  
+
+**ClawHub技能描述：**  
+- 首先说明该技能能解决什么问题  
+- 明确说明“适合/不适合使用该技能的场景”，以增强吸引力  
+- 提供使用该技能的成果示例（例如：“被X名代理使用”）  
+
+**Upwork个人资料：**  
+- 前两行内容要吸引用户注意（在“更多信息”之前展示）  
+- 以用户的使用成果作为开头，而非个人简历  
+- 提供具体的数据支持（例如：“开发了50多个自动化流程”）  
+
+## 关键原则：  
+- 文案就像一场对话，而不是演讲  
+- 每段文案都有唯一的目的：促使用户采取下一步行动  
+- 标题的作用至关重要——请花费50%的时间来撰写它  
+- 具体化能建立信任；模糊不清会引发怀疑  
+- 始终通过A/B测试来验证文案效果。

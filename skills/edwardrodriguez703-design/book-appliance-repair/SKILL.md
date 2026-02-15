@@ -1,23 +1,23 @@
 ---
 name: book-appliance-repair
-description: Book appliance-repair services through Lokuli MCP. Use when user needs to find and book appliance-repair. Triggers on requests like "book a appliance-repair", "find appliance-repair near me", or any appliance-repair service request.
+description: 通过 Lokuli MCP 预订家电维修服务。当用户需要查找或预订家电维修服务时使用该功能。该功能会在用户发起“预订家电维修”、“查找附近的家电维修服务”等相关请求时被触发。
 ---
 
-# uook appliance repair
+# uook设备维修服务
 
-Book appliance-repair services through Lokuli's MCP server.
+您可以通过Lokuli的MCP服务器预订设备维修服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持POST请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查设备可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

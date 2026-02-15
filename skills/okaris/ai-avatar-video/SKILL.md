@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Avatar & Talking Head Videos
+# 人工智能头像与语音视频
 
-Create AI avatars and talking head videos via [inference.sh](https://inference.sh) CLI.
+您可以通过 [inference.sh](https://inference.sh) 命令行界面（CLI）创建人工智能头像和语音视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,16 +27,16 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-## Available Models
+## 可用模型
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | Multi-character, best quality |
-| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | Single character |
-| Fabric 1.0 | `falai/fabric-1-0` | Image talks with lipsync |
-| PixVerse Lipsync | `falai/pixverse-lipsync` | Highly realistic |
+| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | 多个角色，最高画质 |
+| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | 单个角色 |
+| Fabric 1.0 | `falai/fabric-1-0` | 基于图像的配音服务 |
+| PixVerse Lipsync | `falai/pixverse-lipsync` | 高度逼真的嘴唇同步效果 |
 
-## Search Avatar Apps
+## 搜索头像应用
 
 ```bash
 infsh app list --search "omnihuman"
@@ -44,9 +44,9 @@ infsh app list --search "lipsync"
 infsh app list --search "fabric"
 ```
 
-## Examples
+## 示例
 
-### OmniHuman 1.5 (Multi-Character)
+### OmniHuman 1.5（多角色）
 
 ```bash
 infsh app run bytedance/omnihuman-1-5 --input '{
@@ -55,9 +55,9 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-Supports specifying which character to drive in multi-person images.
+支持在多人图像中指定要控制的角色。
 
-### Fabric 1.0 (Image Talks)
+### Fabric 1.0（基于图像的配音）
 
 ```bash
 infsh app run falai/fabric-1-0 --input '{
@@ -75,9 +75,9 @@ infsh app run falai/pixverse-lipsync --input '{
 }'
 ```
 
-Generates highly realistic lipsync from any audio.
+能够根据任何音频生成高度逼真的嘴唇同步效果。
 
-## Full Workflow: TTS + Avatar
+## 完整工作流程：文本转语音（TTS）+ 头像
 
 ```bash
 # 1. Generate speech from text
@@ -92,7 +92,7 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-## Full Workflow: Dub Video in Another Language
+## 完整工作流程：将视频配音为另一种语言
 
 ```bash
 # 1. Transcribe original video
@@ -110,22 +110,22 @@ infsh app run infsh/latentsync-1-6 --input '{
 }'
 ```
 
-## Use Cases
+## 应用场景
 
-- **Marketing**: Product demos with AI presenter
-- **Education**: Course videos, explainers
-- **Localization**: Dub content in multiple languages
-- **Social Media**: Consistent virtual influencer
-- **Corporate**: Training videos, announcements
+- **市场营销**：使用人工智能演示者进行产品展示
+- **教育**：课程视频、教学讲解
+- **本地化**：将内容配音为多种语言
+- **社交媒体**：统一风格的虚拟主播
+- **企业**：培训视频、公告发布
 
-## Tips
+## 提示
 
-- Use high-quality portrait photos (front-facing, good lighting)
-- Audio should be clear with minimal background noise
-- OmniHuman 1.5 supports multiple people in one image
-- LatentSync is best for syncing existing videos to new audio
+- 使用高质量的肖像照片（正面朝向，光线良好）
+- 音频应清晰，背景噪音尽可能低
+- OmniHuman 1.5 支持在一张图像中显示多人
+- LatentSync 是将现有视频与新音频同步的最佳工具
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -144,10 +144,10 @@ npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@ai-image-generation
 ```
 
-Browse all video apps: `infsh app list --category video`
+浏览所有视频应用：`infsh app list --category video`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
-- [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
+- [运行应用](https://inference.sh/docs/apps/running) - 如何通过 CLI 运行应用
+- [内容处理流程示例](https://inference.sh/docs/examples/content-pipeline) - 构建媒体工作流程
+- [流式处理结果](https://inference.sh/docs/api/sdk/streaming) - 实时进度更新

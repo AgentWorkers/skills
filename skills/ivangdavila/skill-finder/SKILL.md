@@ -1,64 +1,53 @@
 ---
 name: "Skill Finder"
-description: "Find the right skill for any need. Search, evaluate, and compare skills intelligently."
+description: "找到适合任何需求的技能。智能地进行搜索、评估和比较各种技能。"
 ---
 
-## Find the Right Skill
+## 寻找合适的技能
 
-Don't just search by name — search by need. Evaluate quality before recommending.
+不要仅仅根据技能名称进行搜索，而应根据实际需求来搜索。在推荐技能之前，先评估其质量。
 
-**Complements:**
-- `skill-manager` — manages installed, suggests proactively
-- `skill-builder` — creates new skills
-- `skill-finder` — finds existing skills when user asks
+**相关工具：**
+- `skill-manager`：管理已安装的技能，并主动向用户推荐合适的技能。
+- `skill-builder`：用于创建新的技能。
+- `skill-finder`：当用户提出需求时，帮助查找现有的技能。
 
-**References:**
-- `search.md` — Search strategies and commands
-- `evaluate.md` — Quality evaluation criteria
-- `criteria.md` — How to learn user preferences
-
----
-
-### When to Use
-
-User explicitly wants to find a skill:
-- "Is there a skill for X?"
-- "Find me something that does Y"
-- "What skills exist for Z?"
-
-### Search → Evaluate → Recommend
-
-1. **Search** by need, not just keywords
-2. **Evaluate** quality using `evaluate.md` criteria
-3. **Compare** if multiple options exist
-4. **Recommend** with reasoning
-
-### Quality Signals
-
-Quick evaluation before recommending:
-- **Structure** — Short SKILL.md? Progressive disclosure?
-- **Clarity** — Clear triggers in description?
-- **Maintenance** — Recent updates? Active author?
-- **Fit** — Matches user's actual need?
-
-### Learning User Preferences
-
-Track in sections below:
-- What quality matters to them
-- Skills they liked/disliked
-- Domains they work in
+**参考文档：**
+- `search.md`：搜索策略和命令。
+- `evaluate.md`：技能质量评估标准。
+- `criteria.md`：如何了解用户的偏好。
 
 ---
 
-### Preferences
-<!-- What user values in skills -->
+### 何时使用这些工具
 
-### Liked
-<!-- Skills they installed and kept -->
+当用户明确表示想要查找某个技能时：
+- “有没有用于完成某项任务的技能？”
+- “帮我找到能够实现某个功能的应用或工具。”
+- “关于某个特定领域，有哪些可用的技能？”
 
-### Passed
-<!-- Skills they saw but declined (with reason) -->
+### 操作流程：搜索 → 评估 → 推荐
+
+1. **根据需求**进行搜索，而不仅仅是输入关键词。
+2. 使用 `evaluate.md` 中列出的标准来评估技能的质量。
+3. 如果有多个候选技能，需要进行比较。
+4. 在推荐技能时，要给出合理的理由。
+
+### 评估技能质量的参考因素：
+
+在推荐技能之前，需要快速评估以下方面：
+- **结构**：技能的文档结构是否简洁明了？信息是否按逻辑顺序呈现？
+- **清晰度**：技能描述中的触发条件（即使用该技能的情境）是否清晰？
+- **维护情况**：该技能是否经常更新？开发者是否仍在维护它？
+- **适用性**：该技能是否符合用户的实际需求？
+
+### 了解用户的偏好
+
+可以通过以下方式来记录用户的偏好：
+- 用户认为哪些技能质量较高？
+- 用户安装并使用了哪些技能？
+- 用户看过哪些技能，但出于某种原因没有选择使用它们？
 
 ---
 
-*Search command: `npx clawhub search <query>`*
+*搜索命令：`npx clawhub search <查询>`*

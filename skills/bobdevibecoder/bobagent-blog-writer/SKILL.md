@@ -1,70 +1,70 @@
 ---
 name: blog-writer
-description: This skill should be used when writing blog posts, articles, or long-form content in the writer's distinctive writing style. It produces authentic, opinionated content that matches the writer's voice—direct, conversational, and grounded in personal experience. The skill handles the complete workflow from research review through Notion publication. Use this skill for drafting blog posts, thought leadership pieces, or any writing meant to reflect the writer's perspective on AI, productivity, sales, marketing, or technology topics.
+description: 此技能适用于撰写博客文章、论文或长篇内容时，能够以作者独特的写作风格呈现内容。它能够生成真实、富有观点性的文章，充分体现作者的写作风格——直截了当、富有对话感，并基于个人经验。该技能涵盖了从资料研究到在 Notion 平台上发布文章的整个工作流程。你可以使用此技能来起草博客文章、思想领导力相关的文章，或是任何旨在反映作者在人工智能（AI）、生产力、销售、市场营销或技术等领域观点的写作作品。
 ---
 
-# Blog Writer
+# 博客写作技能
 
-## Overview
+## 概述
 
-This skill enables writing blog posts and articles that authentically capture the writer's distinctive voice and style. It draws on examples of the writer's published work to produce content that is direct, opinionated, conversational, and grounded in practical experience. The skill includes automatic Notion integration and maintains a growing library of finalized examples.
+此技能能够帮助用户撰写出真正体现其个人风格和特色的博客文章。它通过分析用户已发布的作品，生成内容直截了当、观点鲜明、语言亲切且基于实际经验的文章。该技能支持与 Notion 的自动集成，并持续扩充已完成的文章示例库。
 
-## When to Use This Skill
+## 适用场景
 
-Trigger this skill when:
-- The user requests blog post or article writing in "my style" or "like my other posts"
-- Drafting thought leadership content on AI, productivity, marketing, or technology
-- Creating articles that need the writer's authentic voice and perspective
-- The user provides research materials, links, or notes to incorporate into writing
+在以下情况下使用此技能：
+- 用户要求以“我的风格”或“类似我之前的文章”来撰写博客文章；
+- 需要撰写关于人工智能、生产力、市场营销或技术的观点性内容；
+- 需要融入作者个人观点和见解的文章；
+- 用户提供了可用于写作的研究资料、链接或笔记。
 
-## Core Responsibilities
+## 核心职责
 
-1. **Follow the writer's Writing Style**: Match voice, word choice, structure, and length of example posts in `references/blog-examples/`
-2. **Incorporate Research**: Review and integrate any information, research material, or links provided by the user
-3. **Follow User Instructions**: Adhere closely to the user's specific requests for topic, angle, and emphasis
-4. **Produce Authentic Writing**: Create content that reads as genuinely the writer's voice, not generic AI-generated content
+1. **遵循作者的写作风格**：确保新文章在语气、用词、结构和篇幅上与 `references/blog-examples/` 中的示例文章保持一致。
+2. **整合研究内容**：审核并整合用户提供的任何信息、研究资料或链接。
+3. **遵循用户指示**：严格遵循用户对主题、角度和重点的具体要求。
+4. **创作原创内容**：确保文章具有作者的独特风格，而非由 AI 生成的通用文本。
 
-## Workflow
+## 工作流程
 
-### Phase 1: Gather Information
+### 第一阶段：收集信息
 
-Request from the user:
-- Topic or subject matter
-- Any specific angle or thesis to explore
-- Research materials, links, or notes (if available)
-- Target length preference (default: 800-1500 words)
+向用户询问以下信息：
+- 主题或内容方向
+- 需要探讨的具体角度或论点
+- 可用的研究资料、链接或笔记
+- 偏好的文章长度（默认：800-1500 字）
 
-Review all provided materials thoroughly before beginning to write.
+在开始写作前，仔细审阅所有提供的资料。
 
-### Phase 2: Draft the Content
+### 第二阶段：起草内容
 
-Reference the style guide at `references/style-guide.md` and examples in `references/blog-examples/` for calibration.
+参考 `references/style-guide.md` 中的风格指南以及 `references/blog-examples/` 中的示例文章进行构思。
 
-When writing:
-1. Start with a strong opening statement establishing the thesis
-2. Use personal voice and first-person perspective where natural
-3. Include relevant personal anecdotes or professional experience if applicable
-4. Structure with clear subheadings (###) every 2-3 paragraphs
-5. Keep paragraphs short (2-4 sentences)
-6. Weave in research materials naturally, not as block quotes
-7. End with reflection, call-to-action, or forward-looking statement
+写作时，请遵循以下原则：
+- 以一个强有力的开篇陈述明确文章的论点；
+- 在合适的地方使用第一人称进行表达；
+- 如有必要，可加入个人轶事或专业经验；
+- 每 2-3 段使用清晰的子标题（###）来组织内容；
+- 每段保持 2-4 句的简短长度；
+- 自然地融入研究资料，而非以块引用形式呈现；
+- 以反思性的语句、行动号召或展望未来的内容作为结尾。
 
-### Phase 3: Review and Iterate
+### 第三阶段：审核与修改
 
-Present the draft and gather feedback. Iterate until the user confirms satisfaction.
+向用户展示草稿并收集反馈，持续修改直至用户满意为止。
 
-### Phase 4: Publish to Notion (REQUIRED)
+### 第四阶段：发布到 Notion（必选）
 
-When the draft is complete (even if not yet finalized), publish to the TS Notes database.
+即使草稿尚未完成，也必须将其发布到 TS Notes 数据库中。
 
-**Notion Publication Details:**
-- Database: "TS Notes" (data source ID: `04a872be-8bed-4f43-a448-3dfeebc0df21`)
-- **Type property**: `Writing`
-- **Project(s) property**: Link to "My Writing" project (page URL: `https://www.notion.so/2a5b4629bb3780189199f3c496980c0c`)
-- **Note property**: The title of the blog post
-- **Content**: The full blog post content in Notion-flavored Markdown
+**发布到 Notion 的详细信息：**
+- 数据库：**TS Notes**（数据源 ID：`04a872be-8bed-4f43-a448-3dfeebc0df21`）
+- **类型属性**：`Writing`
+- **项目属性**：链接到“我的写作”项目（页面 URL：`https://www.notion.so/2a5b4629bb3780189199f3c496980c0c`）
+- **笔记属性**：博客文章的标题
+- **内容**：采用 Notion 格式的 Markdown 格式的完整博客文章内容
 
-**Example Notion API call properties:**
+**示例 Notion API 调用属性：**
 ```json
 {
   "Note": "Blog Post Title Here",
@@ -73,77 +73,74 @@ When the draft is complete (even if not yet finalized), publish to the TS Notes 
 }
 ```
 
-**CRITICAL**: The outcome is considered a **failure** if the content is not added to Notion. Always publish to Notion as part of the workflow, even for drafts.
+**重要提示**：如果内容未发布到 Notion，则视为**失败**。请务必将草稿发布到 Notion，这是工作流程中的必要步骤。
 
-### Phase 5: Finalize to Examples Library (Post-Outcome)
+### 第五阶段：将最终稿件添加到示例库中
 
-When the user confirms the draft is **final**:
-
-1. Save the finalized post to `references/blog-examples/` with filename format:
+当用户确认草稿为最终版本时，请执行以下操作：
+1. 将最终稿件保存到 `references/blog-examples/`，文件命名格式如下：
    ```
    YYYY-MM-DD-slug-title.md
    ```
-   Example: `2025-11-25-why-ai-art-is-useless.md`
+   例如：`2025-11-25-why-ai-art-is-useless.md`
+2. 检查示例库的数量：
+   - 如果示例数量超过 20 篇，请征求用户同意删除最旧的 5 篇；
+   - 按文件名日期前缀对文件进行排序，以便识别最旧的文件。
 
-2. Check the examples library count:
-   - If exceeding 20 examples, ask user permission to remove the 5 oldest
-   - Sort by filename date prefix to identify oldest files
+当最终稿件成功保存到技能文件夹中时，视为任务完成。
 
-The post-outcome is considered **successful** when the final draft is saved to the skill folder.
+## 成功标准
 
-## Success Criteria
-
-| Outcome | Success | Failure |
+| 结果 | 成功 | 失败 |
 |---------|---------|---------|
-| Primary | User receives requested content AND it is added to TS Notes with Type=Writing and Project=My Writing | Content delivered but NOT added to Notion |
-| Post-outcome | Final draft saved to `references/blog-examples/` | Final draft not saved when user confirms it's final |
+| 主要目标 | 用户收到所需内容，并且内容被添加到 TS Notes 中（类型为 Writing，项目为“我的写作”） | 内容已交付，但未添加到 Notion |
+| 后续步骤 | 最终稿件保存到 `references/blog-examples/` | 用户确认草稿为最终版本后，最终稿件仍未保存 |
 
-## the writer's Writing Style Profile
+## 作者的写作风格特点
 
-### Voice & Tone
-- **Direct and opinionated**: State positions clearly, even contrarian ones
-- **Conversational**: Write like speaking to a colleague—accessible without being simplistic
-- **First-person when sharing experience**: Use "I" naturally for personal insights
-- **Authentic skepticism**: Willing to criticize trends when warranted
+### 语言风格与语气
+- **直截了当且观点鲜明**：清晰表达观点，包括反对性意见；
+- **语言亲切**：像与同事交谈一样写作，易于理解且不过于简单化；
+- **使用第一人称分享经验**：在分享个人见解时自然使用“我”；
+- **真诚的怀疑态度**：在必要时敢于批评现有趋势。
 
-### Structure Patterns
-- **Strong opening thesis**: Open with a clear, often bold statement
-- **Subheadings throughout**: Use `###` format liberally to break up content
-- **Short paragraphs**: Rarely more than 3-4 sentences
-- **Personal anecdotes woven in**: Illustrate points with real examples
-- **Practical takeaways**: Provide actionable insights, not just theory
-- **Reflective conclusion**: End with call-to-action or forward-looking hope
+### 结构特点
+- **明确的开篇论点**：以简洁有力的陈述开头；
+- **大量使用子标题**：通过 `###` 格式清晰划分段落；
+- **短段落**：每段通常不超过 3-4 句；
+- **融入个人轶事**：用真实案例来说明观点；
+- **实用的建议**：提供可操作的见解，而不仅仅是理论；
+- **反思性结尾**：以行动号召或对未来的展望作为结尾。
 
-### Length & Format
-- Target: 800-1500 words
-- Markdown format with headers and emphasis
-- Minimal bullet points in prose—prefer flowing sentences
+### 长度和格式要求
+- 字数目标：800-1500 字；
+- 使用 Markdown 格式，包含标题和重点强调；
+- 文本中尽量少使用项目符号，偏好流畅的句子表达。
 
-### Vocabulary Markers
-- Uses "leverage" for tools/technology
-- Says "that said" for transitions
-- Comfortable with direct statements like "this is useless" or "boy was I wrong"
-- Uses contractions naturally (I've, doesn't, won't)
-- Avoids corporate jargon while maintaining professionalism
+### 词汇特点
+- 使用“leverage”来表示工具或技术；
+- 用“that said”作为过渡句；
+- 能够直接表达观点（如“这毫无用处”或“我真是大错特错”）；
+- 自然地使用缩写（如“I’ve, doesn’t, won’t”）；
+- 在保持专业性的同时避免使用行业术语。
 
-### Thematic Elements
-- AI as tool, not replacement
-- Practical over theoretical
-- Human-centered technology
-- Honest assessment of what works and what doesn't
+### 主题方向
+- 将人工智能视为工具而非替代品；
+- 强调技术的实用性而非理论性；
+- 对技术的效果进行客观评估。
 
-## Resources
+## 参考资源
 
 ### references/style-guide.md
-Quick reference for the writer's writing patterns, vocabulary preferences, and structural conventions.
+- 作者写作风格、词汇偏好和结构规范的快速参考。
 
 ### references/blog-examples/
-Contains example blog posts demonstrating the writer's writing style. These serve as reference material when calibrating voice and structure. New finalized posts expand this library over time.
+- 收录了体现作者写作风格的示例博客文章，可用于调整写作风格和结构。
+- 随着时间的推移，新完成的文章会不断扩充这个示例库。
 
-## Notion API Reference
+## Notion API 参考
 
-To create a page in TS Notes:
-
+以下是创建 TS Notes 页面的 API 调用示例：
 ```
 Database data source ID: 04a872be-8bed-4f43-a448-3dfeebc0df21
 
@@ -155,4 +152,4 @@ Properties:
 Content: Full blog post in Notion-flavored Markdown
 ```
 
-The "My Writing" project page ID is: `2a5b4629-bb37-8018-9199-f3c496980c0c`
+“我的写作”项目的页面 ID 为：`2a5b4629-bb37-8018-9199-f3c496980c`

@@ -1,36 +1,36 @@
 ---
 name: grok-image
-description: Generate images using Grok (xAI) image generation API. Use when you need to create images from text prompts.
+description: 使用 Grok（xAI）图像生成 API 生成图像。当您需要根据文本提示创建图像时，可以使用该 API。
 ---
 
-# Grok Image Generation
+# Grok 图像生成
 
-## Setup
+## 设置
 
-Add your API key to `~/.clawdbot/.env`:
+将您的 API 密钥添加到 `~/.clawdbot/.env` 文件中：
 ```
 GROK_API_KEY=xai-your-key-here
 ```
 
-## Usage
+## 使用方法
 
-Generate images with a simple prompt:
+使用简单的命令生成图像：
 
 ```
 Generate a cute raccoon character with friendly smile
 ```
 
-The skill will:
-1. Read GROK_API_KEY from ~/.clawdbot/.env
-2. Call Grok's image generation API
-3. Save the image and return the path
+该技能将执行以下操作：
+1. 从 `~/.clawdbot/.env` 文件中读取 `GROK_API_KEY`。
+2. 调用 Grok 的图像生成 API。
+3. 保存生成的图像并返回其路径。
 
-## Options
+## 选项
 
-- **Custom output path**: Add `--output /path/to/image.png`
-- **Size**: `--size 512x512` (default: 1024x1024)
+- **自定义输出路径**：添加 `--output /path/to/image.png` 参数。
+- **图像尺寸**：`--size 512x512`（默认值：1024x1024）。
 
-## Notes
+## 注意事项
 
-- Uses grok-imagine-image model
-- Images are saved to the workspace or specified path
+- 该技能使用 `grok-imagine-image` 模型进行图像生成。
+- 生成的图像会被保存在工作区或指定的路径中。

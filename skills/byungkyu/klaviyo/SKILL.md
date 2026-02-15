@@ -15,9 +15,9 @@ metadata:
 
 # Klaviyo
 
-Access the Klaviyo API with managed OAuth authentication. Manage profiles, lists, segments, campaigns, flows, events, metrics, templates, catalogs, and webhooks for email marketing and customer engagement.
+您可以使用托管的 OAuth 认证来访问 Klaviyo API。该 API 支持管理电子邮件营销和客户互动相关的各种功能，包括配置文件、列表、受众群体、营销活动、流程、事件、指标、模板、产品目录以及 Webhook 等。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List profiles
@@ -30,47 +30,47 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/klaviyo/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Klaviyo API endpoint path. The gateway proxies requests to `a.klaviyo.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Klaviyo API 端点路径。该网关会将请求代理到 `a.klaviyo.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## API Versioning
+## API 版本控制
 
-Klaviyo uses date-based API versioning. Include the `revision` header in all requests:
+Klaviyo 使用基于日期的 API 版本控制。请在所有请求中包含 `revision` 头部：
 
 ```
 revision: 2024-10-15
 ```
 
-## Connection Management
+## 连接管理
 
-Manage your Klaviyo OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Klaviyo OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -81,7 +81,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -94,7 +94,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -105,7 +105,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -120,9 +120,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -133,9 +133,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Klaviyo connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Klaviyo 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -148,28 +148,28 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Profiles
+### 配置文件
 
-Manage customer data and consent.
+用于管理客户数据和同意设置。
 
-#### Get Profiles
+#### 获取配置文件信息
 
 ```bash
 GET /klaviyo/api/profiles
 ```
 
-Query parameters:
-- `filter` - Filter profiles (e.g., `filter=equals(email,"test@example.com")`)
-- `fields[profile]` - Comma-separated list of fields to include
-- `page[cursor]` - Cursor for pagination
-- `page[size]` - Number of results per page (max 100)
-- `sort` - Sort field (prefix with `-` for descending)
+查询参数：
+- `filter` - 过滤配置文件（例如：`filter=equals(email,"test@example.com")`
+- `fields[profile]` - 要包含的字段列表（用逗号分隔）
+- `page[cursor]` - 分页游标
+- `page[size]` - 每页显示的结果数量（最多 100 个）
+- `sort` - 排序字段（以 `-` 开头表示降序）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -181,7 +181,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -202,13 +202,13 @@ EOF
 }
 ```
 
-#### Get a Profile
+#### 获取单个配置文件信息
 
 ```bash
 GET /klaviyo/api/profiles/{profile_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -220,7 +220,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create a Profile
+#### 创建配置文件
 
 ```bash
 POST /klaviyo/api/profiles
@@ -242,7 +242,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -256,13 +256,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Profile
+#### 更新配置文件
 
 ```bash
 PATCH /klaviyo/api/profiles/{profile_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -276,35 +276,35 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Merge Profiles
+#### 合并配置文件
 
 ```bash
 POST /klaviyo/api/profile-merge
 ```
 
-#### Get Profile Lists
+#### 获取配置文件列表
 
 ```bash
 GET /klaviyo/api/profiles/{profile_id}/lists
 ```
 
-#### Get Profile Segments
+#### 获取配置文件受众群体
 
 ```bash
 GET /klaviyo/api/profiles/{profile_id}/segments
 ```
 
-### Lists
+### 列表
 
-Organize subscribers into static lists.
+用于将订阅者组织到静态列表中。
 
-#### Get Lists
+#### 获取列表信息
 
 ```bash
 GET /klaviyo/api/lists
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -316,7 +316,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -333,19 +333,13 @@ EOF
 }
 ```
 
-#### Get a List
+#### 创建列表
 
 ```bash
 GET /klaviyo/api/lists/{list_id}
 ```
 
-#### Create a List
-
-```bash
-POST /klaviyo/api/lists
-```
-
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -359,25 +353,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a List
+#### 更新列表
 
 ```bash
 PATCH /klaviyo/api/lists/{list_id}
 ```
 
-#### Delete a List
+#### 删除列表
 
 ```bash
 DELETE /klaviyo/api/lists/{list_id}
 ```
 
-#### Add Profiles to List
+#### 将配置文件添加到列表中
 
 ```bash
 POST /klaviyo/api/lists/{list_id}/relationships/profiles
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -391,29 +385,29 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Remove Profiles from List
+#### 从列表中删除配置文件
 
 ```bash
 DELETE /klaviyo/api/lists/{list_id}/relationships/profiles
 ```
 
-#### Get List Profiles
+#### 获取列表中的配置文件信息
 
 ```bash
 GET /klaviyo/api/lists/{list_id}/profiles
 ```
 
-### Segments
+### 观众群体
 
-Create dynamic audiences based on conditions.
+根据条件创建动态受众群体。
 
-#### Get Segments
+#### 获取受众群体信息
 
 ```bash
 GET /klaviyo/api/segments
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -425,52 +419,58 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get a Segment
+#### 获取单个受众群体信息
 
 ```bash
 GET /klaviyo/api/segments/{segment_id}
 ```
 
-#### Create a Segment
+#### 创建受众群体
 
 ```bash
 POST /klaviyo/api/segments
 ```
 
-#### Update a Segment
+**示例：**
 
 ```bash
 PATCH /klaviyo/api/segments/{segment_id}
 ```
 
-#### Delete a Segment
+#### 更新受众群体
 
 ```bash
 DELETE /klaviyo/api/segments/{segment_id}
 ```
 
-#### Get Segment Profiles
+#### 删除受众群体
+
+```bash
+DELETE /klaviyo/api/segments/{segment_id}
+```
+
+#### 获取受众群体配置文件信息
 
 ```bash
 GET /klaviyo/api/segments/{segment_id}/profiles
 ```
 
-### Campaigns
+### 营销活动
 
-Design and send email campaigns.
+设计和发送电子邮件营销活动。
 
-#### Get Campaigns
+#### 获取营销活动信息
 
 ```bash
 GET /klaviyo/api/campaigns
 ```
 
-Query parameters:
-- `filter` - Filter campaigns (e.g., `filter=equals(messages.channel,'email')`)
-- `fields[campaign]` - Fields to include
-- `sort` - Sort by field
+查询参数：
+- `filter` - 过滤营销活动（例如：`filter=equals(messages.channel,'email')`
+- `fields[campaign]` - 要包含的字段
+- `sort` - 按字段排序
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -482,7 +482,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -505,19 +505,19 @@ EOF
 }
 ```
 
-#### Get a Campaign
+#### 获取单个营销活动信息
 
 ```bash
 GET /klaviyo/api/campaigns/{campaign_id}
 ```
 
-#### Create a Campaign
+#### 创建营销活动
 
 ```bash
 POST /klaviyo/api/campaigns
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -531,41 +531,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Campaign
+#### 更新营销活动
 
 ```bash
 PATCH /klaviyo/api/campaigns/{campaign_id}
 ```
 
-#### Delete a Campaign
+#### 删除营销活动
 
 ```bash
 DELETE /klaviyo/api/campaigns/{campaign_id}
 ```
 
-#### Send a Campaign
+#### 发送营销活动
 
 ```bash
 POST /klaviyo/api/campaign-send-jobs
 ```
 
-#### Get Recipient Estimation
+#### 获取接收者预估数量
 
 ```bash
 POST /klaviyo/api/campaign-recipient-estimations
 ```
 
-### Flows
+### 流程
 
-Build automated customer journeys.
+构建自动化的客户交互流程。
 
-#### Get Flows
+#### 获取流程信息
 
 ```bash
 GET /klaviyo/api/flows
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -577,7 +577,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -595,27 +595,21 @@ EOF
 }
 ```
 
-#### Get a Flow
-
-```bash
-GET /klaviyo/api/flows/{flow_id}
-```
-
-#### Create a Flow
+#### 创建流程
 
 ```bash
 POST /klaviyo/api/flows
 ```
 
-> **Note:** Flow creation via API may be limited. Flows are typically created through the Klaviyo UI, then managed via API. Use GET, PATCH, and DELETE operations for existing flows.
+> **注意：** 通过 API 创建流程可能会受到限制。通常建议先通过 Klaviyo UI 创建流程，然后再通过 API 进行管理。对于现有流程，可以使用 GET、PATCH 和 DELETE 操作。
 
-#### Update Flow Status
+#### 更新流程状态
 
 ```bash
 PATCH /klaviyo/api/flows/{flow_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -629,40 +623,40 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete a Flow
+#### 删除流程
 
 ```bash
 DELETE /klaviyo/api/flows/{flow_id}
 ```
 
-#### Get Flow Actions
+#### 获取流程操作信息
 
 ```bash
 GET /klaviyo/api/flows/{flow_id}/flow-actions
 ```
 
-#### Get Flow Messages
+#### 获取流程中的消息
 
 ```bash
 GET /klaviyo/api/flows/{flow_id}/flow-messages
 ```
 
-### Events
+### 事件
 
-Track customer interactions and behaviors.
+跟踪客户的互动和行为。
 
-#### Get Events
+#### 获取事件信息
 
 ```bash
 GET /klaviyo/api/events
 ```
 
-Query parameters:
-- `filter` - Filter events (e.g., `filter=equals(metric_id,"ABC123")`)
-- `fields[event]` - Fields to include
-- `sort` - Sort by field (default: `-datetime`)
+查询参数：
+- `filter` - 过滤事件（例如：`filter=equals(metric_id,"ABC123")`
+- `fields[event]` - 要包含的字段
+- `sort` - 按字段排序（默认：`-datetime`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -674,7 +668,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -695,19 +689,19 @@ EOF
 }
 ```
 
-#### Get an Event
+#### 获取单个事件信息
 
 ```bash
 GET /klaviyo/api/events/{event_id}
 ```
 
-#### Create an Event
+#### 创建事件
 
 ```bash
 POST /klaviyo/api/events
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -721,23 +715,23 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Bulk Create Events
+#### 批量创建事件
 
 ```bash
 POST /klaviyo/api/event-bulk-create-jobs
 ```
 
-### Metrics
+### 指标
 
-Access performance data and analytics.
+访问性能数据和分析信息。
 
-#### Get Metrics
+#### 获取指标信息
 
 ```bash
 GET /klaviyo/api/metrics
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -749,7 +743,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -771,19 +765,19 @@ EOF
 }
 ```
 
-#### Get a Metric
+#### 获取单个指标信息
 
 ```bash
 GET /klaviyo/api/metrics/{metric_id}
 ```
 
-#### Query Metric Aggregates
+#### 查询指标聚合数据
 
 ```bash
 POST /klaviyo/api/metric-aggregates
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -797,17 +791,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Templates
+### 模板
 
-Manage email templates.
+管理电子邮件模板。
 
-#### Get Templates
+#### 获取模板信息
 
 ```bash
 GET /klaviyo/api/templates
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -819,19 +813,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get a Template
+#### 获取单个模板信息
 
 ```bash
 GET /klaviyo/api/templates/{template_id}
 ```
 
-#### Create a Template
+#### 创建模板
 
 ```bash
 POST /klaviyo/api/templates
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -845,41 +839,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Template
+#### 更新模板
 
 ```bash
 PATCH /klaviyo/api/templates/{template_id}
 ```
 
-#### Delete a Template
+#### 删除模板
 
 ```bash
 DELETE /klaviyo/api/templates/{template_id}
 ```
 
-#### Render a Template
+#### 渲染模板
 
 ```bash
 POST /klaviyo/api/template-render
 ```
 
-#### Clone a Template
+#### 复制模板
 
 ```bash
 POST /klaviyo/api/template-clone
 ```
 
-### Catalogs
+### 产品目录
 
-Manage product catalogs.
+管理产品目录。
 
-#### Get Catalog Items
+#### 获取产品目录项信息
 
 ```bash
 GET /klaviyo/api/catalog-items
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -891,7 +885,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -908,53 +902,53 @@ EOF
 }
 ```
 
-#### Get a Catalog Item
+#### 获取单个产品目录项信息
 
 ```bash
 GET /klaviyo/api/catalog-items/{catalog_item_id}
 ```
 
-#### Create Catalog Items
+#### 创建产品目录项
 
 ```bash
 POST /klaviyo/api/catalog-items
 ```
 
-#### Update Catalog Item
+#### 更新产品目录项
 
 ```bash
 PATCH /klaviyo/api/catalog-items/{catalog_item_id}
 ```
 
-#### Delete Catalog Item
+#### 删除产品目录项
 
 ```bash
 DELETE /klaviyo/api/catalog-items/{catalog_item_id}
 ```
 
-#### Get Catalog Variants
+#### 获取产品目录变体信息
 
 ```bash
 GET /klaviyo/api/catalog-variants
 ```
 
-#### Get Catalog Categories
+#### 获取产品目录分类信息
 
 ```bash
 GET /klaviyo/api/catalog-categories
 ```
 
-### Tags
+### 标签
 
-Organize resources with tags.
+使用标签对资源进行分类。
 
-#### Get Tags
+#### 获取标签信息
 
 ```bash
 GET /klaviyo/api/tags
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -966,53 +960,47 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create a Tag
+#### 创建标签
 
 ```bash
 POST /klaviyo/api/tags
 ```
 
-#### Update a Tag
+#### 更新标签
 
 ```bash
 PATCH /klaviyo/api/tags/{tag_id}
 ```
 
-#### Delete a Tag
+#### 删除标签
 
 ```bash
 DELETE /klaviyo/api/tags/{tag_id}
 ```
 
-#### Tag a Campaign
+#### 为营销活动添加标签
 
 ```bash
 POST /klaviyo/api/tag-campaign-relationships
 ```
 
-#### Tag a Flow
+#### 为流程添加标签
 
 ```bash
 POST /klaviyo/api/tag-flow-relationships
 ```
 
-### Coupons
+### 优惠券
 
-Manage discount codes.
+管理折扣代码。
 
-#### Get Coupons
+#### 获取优惠券信息
 
 ```bash
 GET /klaviyo/api/coupons
 ```
 
-#### Create a Coupon
-
-```bash
-POST /klaviyo/api/coupons
-```
-
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -1026,17 +1014,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-> **Note:** The `external_id` must match regex `^[0-9_A-z]+$` (alphanumeric and underscores only, no hyphens).
+> **注意：** `external_id` 必须符合正则表达式 `^[0-9_A-z]+$`（仅允许字母、数字和下划线，不允许使用连字符）。
 
-#### Get Coupon Codes
+#### 获取优惠券代码
 
 ```bash
 GET /klaviyo/api/coupon-codes
 ```
 
-> **Note:** This endpoint requires a filter parameter. You must filter by coupon ID or profile ID.
+> **注意：** 此端点需要一个过滤参数。您必须根据优惠券 ID 或配置文件 ID 进行过滤。
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -1048,13 +1036,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Coupon Codes
+#### 创建优惠券代码
 
 ```bash
 POST /klaviyo/api/coupon-codes
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -1068,17 +1056,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Webhooks
+### Webhook
 
-Configure event notifications.
+配置事件通知。
 
-#### Get Webhooks
+#### 获取 Webhook 信息
 
 ```bash
 GET /klaviyo/api/webhooks
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -1090,13 +1078,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /klaviyo/api/webhooks
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -1110,41 +1098,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get a Webhook
+#### 获取 Webhook 信息
 
 ```bash
 GET /klaviyo/api/webhooks/{webhook_id}
 ```
 
-#### Update a Webhook
+#### 更新 Webhook
 
 ```bash
 PATCH /klaviyo/api/webhooks/{webhook_id}
 ```
 
-#### Delete a Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /klaviyo/api/webhooks/{webhook_id}
 ```
 
-#### Get Webhook Topics
+#### 获取 Webhook 主题信息
 
 ```bash
 GET /klaviyo/api/webhook-topics
 ```
 
-### Accounts
+### 账户
 
-Retrieve account information.
+检索账户信息。
 
-#### Get Accounts
+#### 获取账户信息
 
 ```bash
 GET /klaviyo/api/accounts
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -1156,11 +1144,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Filtering
+## 过滤
 
-Klaviyo uses JSON:API filtering syntax. Common operators:
+Klaviyo 使用 JSON:API 过滤语法。常见操作符如下：
 
-| Operator | Example |
+| 操作符 | 示例 |
 |----------|---------|
 | `equals` | `filter=equals(email,"test@example.com")` |
 | `contains` | `filter=contains(name,"newsletter")` |
@@ -1169,14 +1157,15 @@ Klaviyo uses JSON:API filtering syntax. Common operators:
 | `greater-or-equal` | `filter=greater-or-equal(updated,2024-01-01)` |
 | `any` | `filter=any(status,["draft","scheduled"])` |
 
-Combine filters with `and`:
+可以使用 `and` 运算符组合多个过滤条件：
+
 ```
 filter=and(equals(status,"active"),greater-than(created,2024-01-01))
 ```
 
-## Pagination
+## 分页
 
-Klaviyo uses cursor-based pagination:
+Klaviyo 使用基于游标的分页机制：
 
 ```bash
 python <<'EOF'
@@ -1188,7 +1177,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-Response includes pagination links:
+响应中包含分页链接：
 
 ```json
 {
@@ -1200,9 +1189,9 @@ Response includes pagination links:
 }
 ```
 
-## Sparse Fieldsets
+## 精简字段集
 
-Request only specific fields to reduce response size:
+仅请求特定字段以减少响应大小：
 
 ```bash
 # Request only email and first_name for profiles
@@ -1212,7 +1201,7 @@ Request only specific fields to reduce response size:
 ?include=lists&fields[list]=name,created
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -1246,40 +1235,40 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All requests use JSON:API specification
-- Timestamps are in ISO 8601 RFC 3339 format (e.g., `2024-01-16T23:20:50.52Z`)
-- Resource IDs are strings (often base64-encoded)
-- Use sparse fieldsets to optimize response size
-- Include `revision` header for API versioning (recommended: `2024-10-15`)
-- Some POST endpoints return `200` instead of `201` for successful creation
-- Coupon `external_id` must match regex `^[0-9_A-z]+$` (no hyphens)
-- Coupon codes endpoint requires a filter (e.g., `filter=equals(coupon.id,"...")`)
-- Flow creation via API may be limited; flows are typically created in the Klaviyo UI
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `page[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 所有请求都遵循 JSON:API 规范。
+- 时间戳采用 ISO 8601 RFC 3339 格式（例如：`2024-01-16T23:20:50.52Z`）。
+- 资源 ID 为字符串（通常经过 Base64 编码）。
+- 使用精简字段集以优化响应大小。
+- 为确保 API 版本控制，请包含 `revision` 头部（推荐格式：`2024-10-15`）。
+- 某些 POST 端点在成功创建资源时返回 `200` 而不是 `201`。
+- 优惠券的 `external_id` 必须符合正则表达式 `^[0-9_A-z]+$`（不允许使用连字符）。
+- 优惠券代码端点需要过滤参数（例如：`filter=equals(coupon.id,"...")`）。
+- 通过 API 创建流程可能会受到限制；通常建议先在 Klaviyo UI 中创建流程，然后再通过 API 进行管理。
+- **重要提示：** 当 URL 包含方括号（如 `fields[]`、`page[]`）时，使用 `curl -g` 选项可避免全局解析问题。
+- **重要提示：** 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing Klaviyo connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 429 | Rate limited (fixed-window algorithm) |
-| 4xx/5xx | Passthrough error from Klaviyo API |
+| 400 | 请求错误或未建立 Klaviyo 连接 |
+| 401 | 无效或未设置的 Maton API 密钥 |
+| 403 | 权限不足 |
+| 404 | 资源未找到 |
+| 429 | 请求速率限制（基于固定时间窗口的算法） |
+| 4xx/5xx | 来自 Klaviyo API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出所有连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -1290,17 +1279,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `klaviyo`. For example:
+1. 确保您的 URL 路径以 `klaviyo` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/klaviyo/api/profiles`
+- 错误格式：`https://gateway.maton.ai/api/profiles`
 
-- Correct: `https://gateway.maton.ai/klaviyo/api/profiles`
-- Incorrect: `https://gateway.maton.ai/api/profiles`
+## 资源
 
-## Resources
-
-- [Klaviyo API Documentation](https://developers.klaviyo.com)
-- [API Reference](https://developers.klaviyo.com/en/reference/api_overview)
-- [Klaviyo Developer Portal](https://developers.klaviyo.com/en)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Klaviyo API 文档](https://developers.klaviyo.com)
+- [API 参考](https://developers.klaviyo.com/en/reference/api_overview)
+- [Klaviyo 开发者门户](https://developers.klaviyo.com/en)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

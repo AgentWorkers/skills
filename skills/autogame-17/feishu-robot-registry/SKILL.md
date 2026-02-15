@@ -1,3 +1,3 @@
 # feishu-robot-registry
 
-feishu robot registry skill.
+feishu机器人注册表技能。

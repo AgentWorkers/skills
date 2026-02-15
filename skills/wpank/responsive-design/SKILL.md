@@ -3,35 +3,44 @@ name: responsive-design
 model: standard
 ---
 
-# Responsive Design
+# 响应式设计
 
-Modern responsive CSS patterns using container queries, fluid typography, CSS Grid, and mobile-first strategies.
+现代响应式设计采用容器查询（container queries）、流动式排版（fluid typography）、CSS网格（CSS Grid）以及“以移动设备为先”（mobile-first）的策略。
 
-## WHAT
+## 什么是响应式设计
 
-Comprehensive responsive design techniques:
-- Container queries for component-level responsiveness
-- Fluid typography and spacing with `clamp()`
-- CSS Grid and Flexbox layout patterns
-- Mobile-first breakpoint strategies
-- Responsive images and media
-- Viewport units and dynamic sizing
+响应式设计的核心技术包括：
+- **容器查询**：用于实现组件级别的响应式布局
+- **流动式排版与间距控制**：使用 `clamp()` 函数来调整文本大小和间距
+- **CSS网格与Flexbox布局**：灵活的布局方式
+- **“以移动设备为先”的断点策略**：确保移动设备上的用户体验
+- **响应式图片与媒体资源**：根据设备屏幕尺寸自动调整图片显示方式
+- **视口单位（viewport units）**：确保内容在不同设备上正确显示
 
-## WHEN
+## 适用场景
 
-- Building layouts that adapt across screen sizes
-- Creating reusable components that respond to container size
-- Implementing fluid typography scales
-- Setting up responsive grid systems
-- Handling mobile navigation patterns
-- Optimizing images for different devices
+- 构建能够适应各种屏幕尺寸的布局
+- 创建能够根据容器大小自动调整的复用组件
+- 实现可伸缩的文本排版效果
+- 设置响应式的网格系统
+- 设计适用于移动设备的导航界面
+- 优化图片以适应不同设备的显示需求
 
-## KEYWORDS
+## 关键术语
 
-responsive, container query, media query, breakpoint, mobile-first, fluid typography, clamp, css grid, flexbox, viewport, adaptive, responsive images
+- 响应式（responsive）
+- 容器查询（container query）
+- 媒体查询（media query）
+- 断点（breakpoint）
+- 以移动设备为先（mobile-first）
+- 流动式排版（fluid typography）
+- CSS网格（CSS Grid）
+- Flexbox
+- 视口（viewport）
+- 自适应布局（adaptive layout）
+- 响应式图片（responsive images）
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -42,7 +51,7 @@ npx clawhub@latest install responsive-design
 
 ---
 
-## Breakpoint Scale (Mobile-First)
+## 断点设置（以移动设备为先）
 
 ```css
 /* Base: Mobile (< 640px) - no media query needed */
@@ -54,13 +63,13 @@ npx clawhub@latest install responsive-design
 @media (min-width: 1536px) { /* 2xl: Large screens */ }
 ```
 
-**Tailwind equivalents:** `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+**Tailwind CSS中的对应属性：** `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
 
 ---
 
-## Container Queries
+## 容器查询
 
-Component-level responsiveness independent of viewport:
+实现与视口无关的组件级响应式布局：
 
 ```css
 /* Define containment context */
@@ -89,7 +98,7 @@ Component-level responsiveness independent of viewport:
 }
 ```
 
-### Tailwind Container Queries
+### Tailwind CSS中的容器查询语法
 
 ```tsx
 function ResponsiveCard({ title, image, description }) {
@@ -117,9 +126,9 @@ function ResponsiveCard({ title, image, description }) {
 
 ---
 
-## Fluid Typography
+## 流动式排版
 
-### CSS Custom Properties Scale
+**CSS自定义属性的应用**
 
 ```css
 :root {
@@ -139,7 +148,9 @@ h3 { font-size: var(--text-2xl); }
 p  { font-size: var(--text-base); }
 ```
 
-### Fluid Spacing Scale
+## 流动式间距控制
+
+**使用 `clamp()` 的方法**
 
 ```css
 :root {
@@ -151,21 +162,9 @@ p  { font-size: var(--text-base); }
 }
 ```
 
-### Clamp Formula
+## CSS网格布局
 
-```
-clamp(MIN, PREFERRED, MAX)
-
-MIN: Smallest allowed size
-PREFERRED: Ideal fluid calculation (often uses vw)
-MAX: Largest allowed size
-```
-
----
-
-## CSS Grid Responsive Layouts
-
-### Auto-Fit Grid (Items Wrap)
+**自动适应的网格布局**
 
 ```css
 .grid-auto {
@@ -175,7 +174,7 @@ MAX: Largest allowed size
 }
 ```
 
-### Named Grid Areas
+**命名网格区域**
 
 ```css
 .page-layout {
@@ -214,7 +213,7 @@ MAX: Largest allowed size
 .footer  { grid-area: footer; }
 ```
 
-### Tailwind Grid
+**Tailwind CSS中的网格系统**
 
 ```tsx
 function ProductGrid({ products }) {
@@ -230,7 +229,9 @@ function ProductGrid({ products }) {
 
 ---
 
-## Responsive Navigation
+## 响应式导航
+
+**设计适用于移动设备的导航系统**
 
 ```tsx
 function ResponsiveNav({ items }) {
@@ -279,9 +280,9 @@ function ResponsiveNav({ items }) {
 
 ---
 
-## Responsive Images
+## 响应式图片
 
-### Art Direction with Picture
+**使用`Picture`元素实现艺术效果**
 
 ```tsx
 function ResponsiveHero() {
@@ -304,7 +305,7 @@ function ResponsiveHero() {
 }
 ```
 
-### Resolution Switching with srcset
+**通过`srcset`实现分辨率切换**
 
 ```tsx
 function ProductImage({ product }) {
@@ -325,11 +326,9 @@ function ProductImage({ product }) {
 }
 ```
 
----
+## 响应式表格
 
-## Responsive Tables
-
-### Horizontal Scroll Pattern
+**水平滚动布局**
 
 ```tsx
 function ResponsiveTable({ data, columns }) {
@@ -358,7 +357,7 @@ function ResponsiveTable({ data, columns }) {
 }
 ```
 
-### Card Layout on Mobile
+**移动设备上的卡片布局**
 
 ```tsx
 function ResponsiveDataTable({ data, columns }) {
@@ -387,9 +386,9 @@ function ResponsiveDataTable({ data, columns }) {
 }
 ```
 
----
+## 视口单位
 
-## Viewport Units
+**使用视口单位确保布局正确显示**
 
 ```css
 /* Standard viewport units - problematic on mobile */
@@ -405,37 +404,35 @@ function ResponsiveDataTable({ data, columns }) {
 .max-full-height { max-height: 100lvh; }
 ```
 
----
+## 最佳实践
 
-## Best Practices
-
-1. **Mobile-First**: Write base styles for mobile, enhance for larger screens
-2. **Content Breakpoints**: Set breakpoints where content breaks, not device sizes
-3. **Fluid Over Fixed**: Prefer `clamp()` and relative units over fixed `px`
-4. **Container Queries**: Use for component-level responsiveness
-5. **Touch Targets**: Minimum 44×44px tap targets on mobile
-6. **Test Real Devices**: Simulators don't catch all issues
-7. **Logical Properties**: Use `inline`/`block` for internationalization
+- **以移动设备为先**：先为移动设备编写基础样式，再针对更大屏幕进行优化
+- **根据内容设置断点**：根据内容的显示方式设置断点，而非设备屏幕尺寸
+- **优先使用流动式布局**：使用 `clamp()` 和相对单位，而非固定的 `px`
+- **使用容器查询**：实现组件级别的响应式设计
+- **触摸目标**：移动设备上的触摸目标应至少为 44×44px
+- **在实际设备上进行测试**：模拟器无法完全模拟所有问题
+- **使用逻辑化的属性**：使用 `inline`/`block` 类属性以实现国际化
 
 ---
 
-## Common Issues
+## 常见问题及解决方法
 
-| Issue | Cause | Fix |
+| 问题 | 原因 | 解决方法 |
 |-------|-------|-----|
-| Horizontal scroll | Fixed widths | Use relative units, `max-width: 100%` |
-| 100vh too tall on mobile | Address bar | Use `100dvh` or `100svh` |
-| Tiny tap targets | Desktop design | Min 44px height/width on interactive elements |
-| Images breaking layout | Missing constraints | Add `max-width: 100%; height: auto;` |
-| Text too small | Fixed font size | Use fluid typography with `clamp()` |
+| 水平滚动问题** | 图片或元素宽度固定 | 使用相对单位，例如 `max-width: 100%` |
+| 在移动设备上页面高度过高** | 由于地址栏占用空间 | 使用 `100dvh` 或 `100svh` |
+| 触摸目标过小** | 设计针对桌面设备 | 交互元素的尺寸至少为 44px |
+| 图片破坏布局** | 缺少尺寸限制 | 添加 `max-width: 100%; height: auto;` |
+| 文本显示过小** | 字体大小固定 | 使用 `clamp()` 实现可伸缩的文本排版 |
 
 ---
 
-## NEVER
+## 避免的错误做法
 
-- Use `px` for typography (use `rem`)
-- Skip mobile testing on real devices
-- Forget touch target sizing (44×44px minimum)
-- Use `100vh` on mobile without fallback
-- Nest too many media queries (flattens readability)
-- Ignore content-based breakpoints in favor of device-specific ones
+- **避免使用 `px` 作为排版单位**：应使用 `rem` 作为相对单位
+- **不要忽略在实际设备上的测试**：模拟器无法完全模拟真实设备的显示效果
+- **忽略触摸目标的大小要求**：触摸目标至少应为 44×44px
+- **在移动设备上使用 `100vh` 且不设置备用方案**：这可能导致布局问题
+- **过度使用媒体查询**：过多的媒体查询会降低代码的可读性
+- **忽略基于内容的断点设置**：应优先使用基于设备特性的断点设置

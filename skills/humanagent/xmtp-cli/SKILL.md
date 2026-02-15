@@ -9,39 +9,39 @@ metadata:
   version: "1.0.0"
 ---
 
-# XMTP CLI
+# XMTP 命令行界面（CLI）
 
-Use the `xmtp` command to test, debug, and interact with XMTP conversations, groups, and messages from the command line. This skill is the entry point; use the sub-skills below for specific CLI tasks.
+使用 `xmtp` 命令可以从命令行测试、调试以及与 XMTP 对话、组和消息进行交互。这是基础技能；如需执行特定的 CLI 操作，请使用以下子技能。
 
-## When to apply
+## 适用场景
 
-- Testing or debugging XMTP from the command line
-- Sending messages or creating and managing groups
-- Listing or finding conversations, members, and messages
-- Syncing conversations and messages
-- Managing group permissions
-- Demonstrating content types (text, markdown, attachment, transaction, deeplink, miniapp)
+- 从命令行测试或调试 XMTP 功能
+- 发送消息或创建/管理组
+- 列出或查找对话、成员及消息
+- 同步对话和消息
+- 管理组权限
+- 展示内容类型（文本、Markdown、附件、交易信息、深度链接、迷你应用）
 
-## Sub-skills
+## 子技能
 
-| Sub-skill | Use when |
-|-----------|----------|
-| **setup** | Initialize CLI and configure env (init, env variables) |
-| **groups** | Create DM or group, update group metadata |
-| **send** | Send messages to address or group |
-| **list** | List conversations, members, messages; find by address or inbox |
-| **debug** | Get info, resolve address, inspect inbox |
-| **sync** | Sync conversations or sync all |
-| **permissions** | List/info group permissions, update permissions |
-| **content** | Demo text, markdown, attachment, transaction, deeplink, miniapp |
-| **debugging** | Enable CLI debug logging (XMTP_FORCE_DEBUG env) |
+| 子技能 | 适用场景 |
+|---------|---------|
+| **setup** | 初始化 CLI 并配置环境（使用 `init` 命令及环境变量） |
+| **groups** | 创建私信或组，更新组元数据 |
+| **send** | 向指定地址或组发送消息 |
+| **list** | 列出对话、成员及消息；按地址或收件箱查找 |
+| **debug** | 获取信息、解析地址、查看收件箱内容 |
+| **sync** | 同步对话或所有数据 |
+| **permissions** | 查看/修改组权限 |
+| **content** | 展示文本、Markdown、附件、交易信息、深度链接、迷你应用等内容 |
+| **debugging** | 启用 CLI 调试日志（通过设置 `XMTP_FORCE_DEBUG` 环境变量）
 
-## How to use
+## 使用方法
 
-1. Pick the sub-skill that matches the task (e.g. send message → **send**).
-2. Read that sub-skill’s `SKILL.md` and its `rules/` for step-by-step guidance.
+1. 选择与所需任务匹配的子技能（例如：发送消息 → 使用 **send** 子技能）。
+2. 阅读该子技能对应的 `SKILL.md` 文件及其 `rules/` 文件以获取详细操作步骤。
 
-## Install
+## 安装
 
 ```bash
 npm install -g @xmtp/cli
@@ -51,18 +51,18 @@ pnpm add -g @xmtp/cli
 yarn global add @xmtp/cli
 ```
 
-## Run without install
+## 无需安装即可使用
 
 ```bash
 npx @xmtp/cli <command> <arguments>
 # or pnpx / yarn dlx
 ```
 
-## Help
+## 帮助文档
 
 ```bash
 xmtp --help
 xmtp <command> --help
 ```
 
-Full documentation: [docs.xmtp.org](https://docs.xmtp.org)
+完整文档：[docs.xmtp.org](https://docs.xmtp.org)

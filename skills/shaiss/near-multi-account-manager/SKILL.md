@@ -1,40 +1,40 @@
 ---
 name: near-multi-account
-description: Secure multi-account management for NEAR Protocol with encrypted credential storage, account switching, and balance aggregation.
+description: NEAR 协议的安全多账户管理系统，支持加密凭证存储、账户切换以及余额聚合功能。
 ---
 
-# NEAR Multi-Account Manager
+# NEAR 多账户管理器
 
-A secure and comprehensive OpenClaw skill for managing multiple NEAR Protocol accounts. Store credentials, switch between accounts, check balances, transfer NEAR, and track transactions across all your accounts from one unified interface.
+这是一个安全且功能全面的 OpenClaw 技能，用于管理多个 NEAR 协议账户。它支持存储凭据、在账户之间切换、查看余额、转账 NEAR 以及通过一个统一的界面跟踪所有账户的交易。
 
-## What It Does
+## 功能概述
 
-- 🔐 **Secure Credential Storage** - Encrypted storage for multiple NEAR account private keys using AES-256-CBC
-- 🔄 **Account Switching** - Quickly set and switch between active accounts for seamless operations
-- 💰 **Balance Management** - Check balances for individual accounts or all accounts at once
-- 💸 **NEAR Transfers** - Transfer NEAR between accounts with a single command
-- 📊 **Account Summaries** - Get comprehensive overviews of all managed accounts including total holdings
-- 📜 **Transaction Tracking** - View account information and transaction history via NEAR explorer
-- 📤 **Export/Import** - Backup and restore account information (private keys excluded for security)
-- 🗑️ **Account Management** - Add, remove, and manage accounts with confirmation safeguards
+- 🔐 **安全凭据存储**：使用 AES-256-CBC 对多个 NEAR 账户的私钥进行加密存储。
+- 🔄 **账户切换**：快速切换活跃账户，以实现无缝操作。
+- 💰 **余额管理**：可以查看单个账户或所有账户的余额。
+- 💸 **NEAR 转账**：通过一个命令即可在不同账户之间转账 NEAR。
+- 📊 **账户概览**：获取所有管理账户的详细信息，包括总持有量。
+- 📜 **交易跟踪**：通过 NEAR 探索器查看账户信息和交易历史。
+- 📤 **导出/导入**：可以备份和恢复账户信息（出于安全考虑，私钥不会被导出）。
+- 🗑️ **账户管理**：支持添加、删除和管理账户，并提供确认机制。
 
-## Use Cases
+## 使用场景
 
-- **Developers** - Manage multiple testnet and mainnet accounts during development
-- **Traders** - Track balances across multiple trading accounts
-- **Organizations** - Manage team accounts with quick switching between them
-- **DeFi Users** - Monitor and move funds between accounts for yield farming or staking
-- **Power Users** - Centralized management of NEAR portfolio
+- **开发者**：在开发过程中管理多个测试网和主网账户。
+- **交易者**：跟踪多个交易账户的余额。
+- **组织**：方便地切换团队账户进行管理。
+- **DeFi 用户**：监控账户间的资金流动，用于收益 farming 或 staking。
+- **高级用户**：集中管理 NEAR 投资组合。
 
-## Requirements
+## 系统要求
 
-- Node.js runtime (bundled with OpenClaw)
-- Valid NEAR Protocol account(s)
-- Private key(s) in format: `ed25519:...`
+- 需要 Node.js 运行环境（OpenClaw 已包含该环境）。
+- 拥有有效的 NEAR 协议账户。
+- 私钥格式为 `ed25519:...`。
 
-## Usage Examples
+## 使用示例
 
-### Add a NEAR Account
+### 添加 NEAR 账户
 ```javascript
 await add_account({
   accountId: "myaccount.near",
@@ -43,12 +43,12 @@ await add_account({
 });
 ```
 
-### Check All Balances
+### 查看所有余额
 ```javascript
 await get_all_balances();
 ```
 
-### Transfer NEAR
+### 转账 NEAR
 ```javascript
 await transfer({
   to: "recipient.near",
@@ -56,26 +56,26 @@ await transfer({
 });
 ```
 
-### Get Account Summary
+### 获取账户概览
 ```javascript
 await account_summary();
 ```
 
-## Security Features
+## 安全特性
 
-- **AES-256-CBC Encryption** - All private keys are encrypted at rest
-- **Custom Encryption Keys** - Set via `NEAR_SKILL_KEY` environment variable
-- **Confirmation Required** - Account removal requires explicit confirmation
-- **No Key Export** - Export functions exclude private keys for security
-- **Local Storage** - Data never leaves your machine unless explicitly exported
+- **AES-256-CBC 加密**：所有私钥在存储时均被加密。
+- **自定义加密密钥**：可以通过 `NEAR_SKILL_KEY` 环境变量进行设置。
+- **需要确认**：删除账户需要明确确认。
+- **禁止导出私钥**：出于安全考虑，导出功能不包含私钥。
+- **本地存储**：数据不会离开您的设备，除非您主动导出。
 
-## Technical Details
+## 技术细节
 
-- Uses NEAR SDK (near-api-js) for blockchain interactions
-- Supports NEAR mainnet (testnet support available via configuration)
-- Encrypted data stored in `~/.openclaw/skills/near-multi-account-manager/`
-- Active account tracking via separate file for quick access
+- 使用 NEAR SDK (`near-api-js`) 进行区块链交互。
+- 支持 NEAR 主网；测试网支持可通过配置启用。
+- 加密数据存储在 `~/.openclaw/skills/near-multi-account-manager/` 目录下。
+- 通过单独的文件记录活跃账户，以便快速访问。
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

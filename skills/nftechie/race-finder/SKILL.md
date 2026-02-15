@@ -1,63 +1,63 @@
 ---
 name: race-finder
-description: Find upcoming races — running, trail, triathlon, cycling, swimming, and obstacle courses. Search by location, distance, sport, and date. Returns race details with registration links.
+description: 查找即将举行的比赛——包括跑步、越野跑、铁人三项、自行车、游泳和障碍赛等项目。可以通过地点、距离、运动类型和日期进行搜索。搜索结果会显示比赛详情以及注册链接。
 ---
 
-# Race Finder Skill
+# 赛事查找功能
 
-Search for upcoming races across the US and internationally. Data sourced from RunSignUp, the largest endurance event registration platform.
+该功能可搜索美国及全球范围内的即将举行的赛事信息，数据来源于RunSignUp——最大的耐力赛事注册平台。
 
 ## API
 
-**Base URL:** `https://api.racefinder.net`
+**基础URL:** `https://api.racefinder.net`
 
-### Search Races
+### 搜索赛事
 
 ```
 GET /api/v1/races
 ```
 
-All parameters are optional. Returns upcoming races sorted by date.
+所有参数均为可选。返回按日期排序的即将举行的赛事列表。
 
-#### Query Parameters
+#### 查询参数
 
-| Parameter    | Type   | Description                                          | Example            |
-|-------------|--------|------------------------------------------------------|--------------------|
-| `q`         | string | Search by race name                                  | `q=Austin Marathon` |
-| `city`      | string | City name                                            | `city=Austin`      |
-| `state`     | string | US state code                                        | `state=TX`         |
-| `country`   | string | Two-letter country code (default: US)                | `country=CA`       |
-| `sport`     | string | Sport type (see below)                               | `sport=running`    |
-| `distance`  | string | Distance category (see below)                        | `distance=marathon` |
-| `start_date`| string | Races on or after this date (YYYY-MM-DD, default: today) | `start_date=2026-06-01` |
-| `end_date`  | string | Races on or before this date (YYYY-MM-DD)            | `end_date=2026-12-31` |
-| `zipcode`   | string | US zipcode (requires `radius`)                       | `zipcode=78701`    |
-| `radius`    | string | Miles from zipcode                                   | `radius=25`        |
-| `page`      | int    | Page number (default: 1)                             | `page=2`           |
-| `per_page`  | int    | Results per page (default: 20, max: 50)              | `per_page=10`      |
+| 参数            | 类型     | 说明                                                         | 示例                |
+|-----------------|---------|--------------------------------------------------|-------------------|
+| `q`            | 字符串    | 按赛事名称搜索                                      | `q=Austin Marathon`     |
+| `city`          | 字符串    | 城市名称                                        | `city=Austin`         |
+| `state`          | 字符串    | 美国州代码                                        | `state=TX`           |
+| `country`         | 字符串    | 两位字母的国家代码（默认：US）                               | `country=CA`           |
+| `sport`          | 字符串    | 运动类型（详见下文）                                   | `sport=running`       |
+| `distance`       | 字符串    | 赛事距离类别                                      | `distance=marathon`     |
+| `start_date`      | 字符串    | 该日期或之后举行的赛事（格式：YYYY-MM-DD，默认：今天）       | `start_date=2026-06-01`     |
+| `end_date`      | 字符串    | 该日期或之前举行的赛事（格式：YYYY-MM-DD）                       | `end_date=2026-12-31`     |
+| `zipcode`       | 字符串    | 美国邮政编码（需配合`radius`参数使用）                         | `zipcode=78701`        |
+| `radius`        | 字符串    | 以邮政编码为中心的搜索半径（单位：英里）                         | `radius=25`           |
+| `page`          | 整数     | 当前页面编号（默认：1）                                    | `page=2`            |
+| `per_page`       | 整数     | 每页显示的结果数量（默认：20，最大：50）                         | `per_page=10`          |
 
-#### Sport Values
+#### 运动类型选项
 
-| Value       | Description              |
-|------------|--------------------------|
-| `running`  | Road running races       |
-| `trail`    | Trail running & ultras   |
-| `triathlon`| Triathlons & duathlons   |
-| `cycling`  | Bike races & rides       |
-| `swimming` | Swimming & open water    |
-| `obstacle` | Obstacle courses & mud runs |
+| 选项            | 说明                          |                          |
+|-----------------|-----------------------------|-------------------------|
+| `running`       | 跑步赛事                        |                          |
+| `trail`         | 徒步跑及超长距离跑赛事                   |                          |
+| `triathlon`      | 铁人三项及双项赛事                   |                          |
+| `cycling`       | 自行车赛事                       |                          |
+| `swimming`      | 游泳赛事                        |                          |
+| `obstacle`     | 障碍赛及泥地跑赛事                   |                          |
 
-#### Distance Values
+#### 赛事距离选项
 
-| Value           | Range         |
-|----------------|---------------|
-| `5k`           | ~2–4 miles    |
-| `10k`          | ~5–8 miles    |
-| `half-marathon`| ~12–15 miles  |
-| `marathon`     | ~25–28 miles  |
-| `ultra`        | 30+ miles     |
+| 距离            | 范围                         |                          |
+|-----------------|-----------------------------|-------------------------|
+| `5k`            | 约2–4英里                        |                          |
+| `10k`           | 约5–8英里                        |                          |
+| `half-marathon`    | 约12–15英里                        |                          |
+| `marathon`       | 约25–28英里                        |                          |
+| `ultra`          | 30英里以上                        |                          |
 
-#### Response Format
+#### 响应格式
 
 ```json
 {
@@ -88,45 +88,45 @@ All parameters are optional. Returns upcoming races sorted by date.
 }
 ```
 
-**No authentication required.**
+**无需身份验证。**
 
-## Examples
+## 使用示例
 
-### Find races in a city
+### 在某城市查找赛事
 
 ```bash
 curl "https://api.racefinder.net/api/v1/races?city=Austin&state=TX"
 ```
 
-### Find marathons near a zipcode
+### 在指定邮政编码附近查找马拉松赛事
 
 ```bash
 curl "https://api.racefinder.net/api/v1/races?zipcode=78701&radius=50&distance=marathon"
 ```
 
-### Find trail races in Colorado this summer
+### 查找今年夏天在科罗拉多州举行的徒步跑赛事
 
 ```bash
 curl "https://api.racefinder.net/api/v1/races?state=CO&sport=trail&start_date=2026-06-01&end_date=2026-08-31"
 ```
 
-### Search by race name
+### 按赛事名称搜索
 
 ```bash
 curl "https://api.racefinder.net/api/v1/races?q=Ironman"
 ```
 
-### Find 5Ks in California
+### 查找加利福尼亚州的5公里跑步赛事
 
 ```bash
 curl "https://api.racefinder.net/api/v1/races?state=CA&sport=running&distance=5k"
 ```
 
-## Tips for Agents
+## 代理使用提示：
 
-- Use `details_url` when users want to learn more about a race — it links to the full race page on racefinder.net
-- Use `register_url` when users are ready to sign up — it links directly to registration
-- Default search returns races starting from today, sorted by date
-- Combine `zipcode` + `radius` for location-based search (US only)
-- Combine `sport` + `distance` to narrow results (e.g., `sport=running&distance=half-marathon`)
-- The `total_results` field shows how many results were returned on this page; use `page` to paginate
+- 当用户想了解赛事详情时，可使用`details_url`（该链接会指向racefinder.net上的赛事页面）。
+- 当用户准备报名时，可使用`register_url`（该链接直接跳转到报名页面）。
+- 默认搜索结果为从今天开始的赛事，按日期排序显示。
+- 仅限美国地区：结合使用`zipcode`和`radius`参数进行地理位置搜索。
+- 结合使用`sport`和`distance`参数来缩小搜索范围（例如：`sport=running&distance=half-marathon`）。
+- `total_results`字段显示当前页面显示的结果数量；使用`page`参数进行分页浏览。

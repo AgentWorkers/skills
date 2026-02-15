@@ -1,11 +1,11 @@
 ---
 name: glab-attestation
-description: Work with GitLab attestations for software supply chain security including artifact verification and provenance. Use when verifying software artifacts, managing attestations, or working with supply chain security. Triggers on attestation, verify artifact, provenance, supply chain security.
+description: 与 GitLab 的认证机制协作，以确保软件供应链的安全性，包括对软件构件的验证及其来源的追溯。该工具可用于验证软件构件、管理认证信息，以及处理与供应链安全相关的问题。当认证机制触发时，它会自动执行构件的验证、来源追溯及供应链安全相关的检查。
 ---
 
-# glab attestation
+# glab 证书（Attestation）
 
-## Overview
+## 概述
 
 ```
 
@@ -32,12 +32,12 @@ description: Work with GitLab attestations for software supply chain security in
     -h --help                            Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab attestation --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

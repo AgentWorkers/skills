@@ -1,90 +1,73 @@
 ---
 name: app-builder
-description: Build, edit, and deploy Instant-backed apps using npx instant-cli, create-instant-app (Next.js + Codex), GitHub (gh), and Vercel (vercel). Use when asked to create a new app, modify an existing app, fix bugs, add features, or deploy/update an app. Projects live under ~/apps; always work inside the relevant app folder.
+description: 使用 `npx instant-cli`、`create-instant-app`（Next.js + Codex）、GitHub（gh）以及 Vercel（vercel）来构建、编辑和部署基于 Instant 的应用程序。当需要创建新应用程序、修改现有应用程序、修复错误、添加新功能或部署/更新应用程序时，请使用这些工具。所有项目都存储在 `~/apps` 目录下；请始终在相应的应用程序文件夹内进行操作。
 ---
 
-# App Builder
+# 应用构建器（App Builder）
 
-You have access to:
+您可以使用以下工具：
 - `npx instant-cli`
-- `gh` 
-- `vercel`
+- `gh`（GitHub 命令行工具）
+- `vercel`（Vercel 部署工具）
 
-If you use these tools, and find out that you don't have them or are not logged in, prompt the user to install them and log in. 
+如果您发现这些工具未安装或未登录，请提示用户先安装并登录。
 
-All apps live in: `~/apps`
+所有应用程序都存储在 `~/apps` 目录下。
 
-## Ground rules
+## 基本规则
+- 请始终在 `~/apps/<app-name>` 目录下创建或编辑项目。
+- 在进行任何更改之前，请阅读仓库根目录下的 `AGENTS.md` 文件；如果存在 `~/apps/<app-name>/AGENTS.md` 文件，请也一并阅读。
+- 目前，所有更改都必须推送到 `main` 分支。
+- 每个应用程序都必须满足以下要求：
+  1) 被推送至 GitHub
+  2) 在 Vercel 上部署
 
-- Always create/edit projects in `~/apps/<app-name>`.
-- Before making changes, read `AGENTS.md` in the repo root; also read `~/apps/<app-name>/AGENTS.md` if it exists.
-- For now, always push to `main`.
-- Every app must be:
-  1) pushed to GitHub
-  2) deployed on Vercel
-
-## Workflow: create a new app
-
-1. **Pick an app folder name**
-   - Ensure `~/apps` exists.
-   - The project will end up at `~/apps/<app-name>`.
-
-2. **Create an Instant appId + token**
-   - Run:
+## 工作流程：创建新应用程序
+1. **选择应用程序文件夹名称**
+   - 确保 `~/apps` 目录存在。
+   - 项目最终会存储在 `~/apps/<app-name>` 目录下。
+2. **生成应用程序 ID（appId）和访问令牌（token）**
+   - 运行以下命令：
      - `npx instant-cli init-without-files`
-   - Capture the returned `appId` and `token`.
-
-3. **Generate the Next.js app**
-   - Run this from inside `~/apps` (because the command creates the project folder):
+   - 记录返回的 `appId` 和 `token` 值。
+3. **生成 Next.js 应用程序**
+   - 在 `~/apps` 目录下运行以下命令（该命令会创建项目文件夹）：
      - `cd ~/apps`
      - `npx create-instant-app <app-name> --next --codex --app <appId> --token <token>`
-
-4. **Initialise git + GitHub repo (if needed)**
-   - From `~/apps/<app-name>`:
-     - `git init` (if not already)
-     - `git add -A && git commit -m "Init"` (if needed)
+4. **初始化 Git 仓库和 GitHub 账户（如需要）**
+   - 在 `~/apps/<app-name>` 目录下执行以下操作：
+     - `git init`（如果尚未初始化）
+     - `git add -A && git commit -m "初始化"`（如果需要）
      - `gh repo create <repo-name> --private --source . --remote origin --push`
-       - Use `--public` if the user requests.
+       - 如果用户要求，可以使用 `--public` 选项将仓库设置为公开。
+5. **使用 Vercel 部署应用程序**
+   - 在 `~/apps/<app-name>` 目录下执行以下命令：
+     - `vercel link`（或根据提示使用 `vercel project add` 或 `vercel`）
+     - `vercel --prod`（部署到生产环境）
 
-5. **Vercel: create/link project and deploy**
-   - From `~/apps/<app-name>`:
-     - `vercel link` (or `vercel project add` / `vercel` depending on prompts)
-     - `vercel --prod`
-
-6. **Implement requested changes**
-   - Use a coding agent (Codex CLI or equivalent) from within the app directory to make changes.
-   - Prefer small, reviewable commits.
-
-7. **Commit + push (main)**
+## 工作流程：编辑现有应用程序
+1. 进入 `~/apps/<app-name>` 目录。
+2. 阅读相关的 `AGENTS.md` 文件。
+3. 拉取最新代码：
+   - `git checkout main && git pull`
+4. 通过编码工具（如 Codex CLI）或常规编辑方式对应用程序进行修改。
+5. 根据需要测试和构建应用程序。
+6. 提交更改并推送到 `main` 分支：
    - `git add -A`
-   - `git commit -m "<clear message>"`
+   - `git commit -m "<清晰的提交信息>"
    - `git push -u origin main`
-
-8. **Deploy update**
+7. 将更改部署到 Vercel：
    - `vercel --prod`
 
-## Workflow: edit an existing app
+## 环境变量（.env 文件）
+   - 首次将应用程序部署到 Vercel 时，环境变量可能尚未配置。请使用 CLI 将本地 `.env` 文件中的环境变量上传到服务器。
 
-1. `cd ~/apps/<app-name>`
-2. Read relevant `AGENTS.md`.
-3. Pull latest:
-   - `git checkout main && git pull`
-4. Make changes via coding agent / normal edits.
-5. Test/build as appropriate.
-6. Commit + push to `main`.
-7. Deploy to Vercel (`vercel --prod`).
+## 注意事项
+- 如果 `create-instant-app` 命令已经创建了仓库和远程仓库，请不要重复操作——只需确保 `origin` 仓库存在并且代码已推送到 `main` 分支即可。
+- 如果应用程序已经通过 Vercel 部署过，请不要重新链接——直接进行部署即可。
 
-## Environment variables (.env)
+## 交流方式
+- 开始使用此功能时，请发送消息：“好的，我正在准备使用我的应用程序构建器功能。”
+- 在完成每个步骤后，请发送更新消息。构建应用程序可能需要一些时间，请让用户保持耐心。
 
-When you first push to vercel, it likely won't have environment variables. Use the CLI to push the environment variables you do have in the local .env file.
-
-## Notes / guardrails
-
-- If `create-instant-app` created the repo + remote already, do not re-create it—just ensure `origin` exists and `main` is pushed.
-- If Vercel is already linked, do not re-link—just deploy.
-
-## Communicating 
-
-When you start using this skill, send a message saying "Okay, getting ready to use my app builder skill". 
-
-Then send period updates as you make progress. Building an app takes a while. Make it fun for the user.
+希望这些说明能帮助您顺利使用应用程序构建器！

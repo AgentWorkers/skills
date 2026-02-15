@@ -1,48 +1,48 @@
 ---
 name: ridb-search
-description: Search the Recreation Information Database (RIDB) for campgrounds and recreation facilities near a location. Use when finding campgrounds, recreation areas, or federal facilities by location/radius. Supports geocoding (city names) and lat/lon coordinates.
+description: 在娱乐信息数据库（RIDB）中搜索指定位置附近的露营地和娱乐设施。该功能可用于根据地理位置或半径查找露营地、娱乐区或联邦设施。支持地理编码（城市名称）以及经纬度坐标输入。
 ---
 
-# RIDB Search
+# RIDB 搜索
 
-Search recreation.gov's database for campgrounds and facilities near a location.
+在 recreation.gov 的数据库中搜索指定地点附近的露营地和设施。
 
-## Setup
+## 设置
 
-Requires a free RIDB API key:
-1. Go to https://ridb.recreation.gov/profile
-2. Sign up and generate an API key
-3. Set environment variable: `export RIDB_API_KEY=your_key_here`
+需要一个免费的 RIDB API 密钥：
+1. 访问 https://ridb.recreation.gov/profile
+2. 注册并生成一个 API 密钥
+3. 设置环境变量：`export RIDB_API_KEY=your_key_here`
 
-## Usage
+## 使用方法
 
-Search by location name (auto-geocodes):
+**按地点名称搜索（自动进行地理编码）：**
 ```bash
 python scripts/search.py --location "Bend, OR" --radius 50
 python scripts/search.py -l "Yosemite Valley" -r 25 --camping-only
 ```
 
-Search by coordinates:
+**按坐标搜索：**
 ```bash
 python scripts/search.py --lat 44.0582 --lon -121.3153 --radius 50
 ```
 
-### Options
+### 选项
 
-| Flag | Description |
+| 标志 | 描述 |
 |------|-------------|
-| `--location, -l` | Location name to geocode (e.g., "Bend, OR") |
-| `--lat` | Latitude (use with --lon) |
-| `--lon` | Longitude (use with --lat) |
-| `--radius, -r` | Search radius in miles (default: 50) |
-| `--limit` | Max results (default: 50) |
-| `--camping-only` | Filter to camping facilities |
-| `--reservable-only` | Filter to reservable facilities |
-| `--json` | Output JSON (for programmatic use) |
+| `--location, -l` | 需要地理编码的地点名称（例如：“Bend, OR”） |
+| `--lat` | 纬度（与 `--lon` 一起使用） |
+| `--lon` | 经度（与 `--lat` 一起使用） |
+| `--radius, -r` | 搜索半径（单位：英里，默认值：50） |
+| `--limit` | 最大显示结果数量（默认值：50） |
+| `--camping-only` | 仅显示露营地设施 |
+| `--reservable-only` | 仅显示可预订的设施 |
+| `--json` | 以 JSON 格式输出结果（适用于程序化使用） |
 
-### Output
+### 输出结果
 
-Human-readable (default):
+- **人类可读格式（默认）：**
 ```
 📍 Geocoded 'Bend, OR' to 44.0582, -121.3153
 
@@ -55,7 +55,7 @@ Found 23 facilities within 50 miles
    URL: https://www.recreation.gov/camping/campgrounds/234567
 ```
 
-JSON output (`--json`):
+- **JSON 格式输出（使用 `--json` 选项）：**
 ```json
 {
   "query": {"latitude": 44.0582, "longitude": -121.3153, "radius_miles": 50},
@@ -71,9 +71,9 @@ JSON output (`--json`):
 }
 ```
 
-## Notes
+## 注意事项：
 
-- RIDB contains federal recreation data; some state/private campgrounds may not be listed
-- The `id` field is the campground ID used for availability checks on recreation.gov
-- Radius is in miles (RIDB native unit)
-- Geocoding uses OpenStreetMap/Nominatim (free, no key required)
+- RIDB 数据包含联邦政府的休闲设施信息；部分州或私人经营的露营地可能不会被列出。
+- `id` 字段是用于在 recreation.gov 上查询设施可用性的唯一标识符。
+- 搜索半径以英里为单位（RIDB 的原生单位）。
+- 地理编码使用 OpenStreetMap/Nominatim 技术（免费，无需密钥）。

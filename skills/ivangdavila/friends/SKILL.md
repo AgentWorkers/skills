@@ -1,70 +1,68 @@
 ---
 name: Friends
-description: Build a personal friendship system with interaction tracking, relationship health, and proactive maintenance reminders.
+description: 构建一个个人友谊系统，该系统具备互动跟踪功能、关系健康状况评估以及主动的维护提醒功能。
 ---
 
-## Situation Detection
-
-| Context | Load |
-|---------|------|
-| Making new friends, expanding circle | `making.md` |
-| Strengthening existing friendships | `deepening.md` |
-| Handling disagreements, hurt feelings | `conflicts.md` |
-| Reaching out to lost friends | `reconnecting.md` |
+## 情境检测  
+| 情境 | 处理方式 | 参考文档 |  
+|---------|---------|---------|  
+| 结交新朋友、扩大社交圈 | `making.md` |  
+| 加强现有友谊 | `deepening.md` |  
+| 处理分歧、化解矛盾 | `conflicts.md` |  
+| 与久未联系的朋友重新建立联系 | `reconnecting.md` |  
 
 ---
 
-## Core Behavior
-- User mentions a friend → check if exists, offer to create/update
-- Interaction detected → log it, note context
-- Friendship fading → surface proactively with reconnection prompt
-- Create `~/friends/` as workspace
+## 核心行为  
+- 当用户提到某位朋友时，检查该朋友是否存在，并提供创建或更新其信息的选项。  
+- 检测到用户与朋友的互动时，记录该互动并记录相关情境。  
+- 当友谊出现淡化的迹象时，主动提醒用户重新建立联系。  
+- 创建一个名为 `~/friends/` 的文件夹来存储所有朋友的资料。  
 
-## When User Mentions Someone
-- "Had dinner with Carlos" → log interaction, create if new
-- "Ana's going through a divorce" → add to life events, flag for check-ins
-- "Pedro moved to Berlin" → update location
-- "Haven't seen Maria in months" → surface last interaction, suggest reach out
+## 用户提到朋友时的处理流程  
+- “我和卡洛斯一起吃了晚饭” → 记录此次互动；如果该朋友信息不存在，则创建新资料。  
+- “安娜正在经历离婚” → 将此信息添加到用户的“生活事件”记录中，并标记为需要定期跟进的关注点。  
+- “佩德罗搬去了柏林” → 更新该朋友的位置信息。  
+- “好几个月没见到玛丽亚了” → 提醒用户上次与她的互动时间，并建议主动联系她。  
 
-## Friend Structure
-- One Markdown file per person: carlos-martinez.md
-- Sections: basics, how we met, life events, interaction history, friendship notes
-- Tags for circles: #inner-circle #close #wider #reconnecting
-- Readable format — this is about relationships, not database
+## 朋友资料的结构  
+- 每位朋友对应一个 Markdown 文件（例如：`carlos-martinez.md`）。文件内容包括：基本信息、相识经过、生活事件、互动记录以及友谊相关备注。  
+- 使用标签（如 #inner-circle、#close、#wider、#reconnecting）来区分不同类型的友谊关系。  
+- 文件格式便于阅读；这些资料主要用于记录人际关系，而非存储在数据库中。  
 
-## Key Fields To Capture
-- Name, how you met, when friendship started
-- Birthday, important dates
-- Current life situation: job, relationship, kids, city
-- What they care about, what's going on in their life
-- Last interaction and what you talked about
-- What kind of friend they are (activity buddy, deep talks, etc.)
+## 需要记录的关键信息  
+- 朋友的名字、相识方式、友谊开始的日期；  
+- 生日、重要日期；  
+- 当前的生活状况（工作、婚姻状况、是否有孩子、居住城市）；  
+- 朋友关心的事情以及他们生活中的重要事件；  
+- 上次互动的内容及讨论的主题；  
+- 朋友的角色（例如：活动伙伴、可以深入交流的朋友等）。  
 
-## Interaction Logging
-- Date + brief note: "2024-03-15: Beers, he's stressed about work"
-- Recent at top — most relevant for context
-- Note emotional state: were they up or down?
-- Flag follow-ups: "said he'd let me know about the job"
+## 互动记录  
+- 记录互动的日期及简要说明（例如：“2024-03-15：一起喝了啤酒，他似乎工作压力很大”）。  
+- 最新的互动记录会显示在页面顶部，以便用户快速了解最新情况；  
+- 记录对方的情绪状态（是开心还是沮丧）。  
+- 标记需要后续跟进的事项（例如：“他说会告诉我工作方面的进展”。  
 
-## Relationship Health Tracking
-- Last interaction date
-- Typical frequency (weekly? monthly? quarterly?)
-- Who initiates more
-- Current status: thriving / stable / fading / needs attention
+## 友谊关系的维护  
+- 记录最后一次互动的日期；  
+- 评估友谊关系的亲密程度（每周、每月还是每季度联系一次？）；  
+- 分析谁更频繁地主动联系对方；  
+- 判断友谊关系的现状（是否稳定、需要关注等）。  
 
-## Proactive Surfacing
-- "Haven't seen Carlos in 6 weeks — you usually meet monthly"
-- "Ana's divorce was 3 months ago — worth checking in?"
-- "Pedro's birthday is Friday — he's in Berlin now"
-- "You said you'd introduce Maria to your colleague"
+## 主动提醒机制  
+- “已经6周没见到卡洛斯了——你们通常每周都会见面” → 提醒用户联系他。  
+- “安娜的离婚发生在3个月前——是否需要关心她的近况？”  
+- “佩德罗的生日是周五——他现在住在柏林” → 提醒用户向他表示祝福。  
+- “你之前说过要介绍玛丽亚给同事认识” → 提醒用户履行承诺。  
 
-## Circles and Prioritization
-- **Inner circle**: talk weekly, priority maintenance
-- **Close friends**: monthly contact expected
-- **Wider circle**: quarterly is fine
-- **Reconnecting**: actively trying to rebuild
+## 朋友关系的分类与优先级  
+- **核心朋友圈**：每周保持联系；  
+- **亲密朋友**：建议每月联系一次；  
+- **普通朋友**：每季度联系一次即可；  
+- **久未联系的朋友**：应积极尝试重新建立联系。  
 
-## Folder Structure
+## 文件夹结构  
 ```
 ~/friends/
 ├── inner-circle/
@@ -75,46 +73,44 @@ description: Build a personal friendship system with interaction tracking, relat
 ├── reconnecting/
 ├── index.md          # quick reference, all friends
 └── check-ins.md      # who needs attention
-```
+```  
 
-## Life Events Worth Tracking
-- Job changes, promotions, layoffs
-- Relationships: new partner, breakup, divorce, marriage
-- Kids: pregnancy, birth, milestones
-- Health: illness, recovery, mental health struggles
-- Moves: new city, new home
-- Losses: death in family, pet, hardship
+## 需要跟踪的重要生活事件  
+- 工作变动、升职或裁员；  
+- 个人关系（新伴侣、分手、离婚、结婚）；  
+- 家庭成员的出生、健康问题（怀孕、生病、康复）；  
+- 搬家或居住地变更；  
+- 重要的生活变故（家庭成员或宠物的离世、生活困境）。  
 
-## What To Surface Before Meeting
-- "Dinner with Carlos tonight. Last time (Feb): stressed about work, daughter starting school"
-- "Ana mentioned looking for new apartment — ask how that's going"
-- Recent life events relevant to conversation
+## 在见面前需要提前了解的信息  
+- “今晚要和卡洛斯共进晚餐。上次见面时他提到工作压力很大，女儿刚开始上学”；  
+- “安娜提到正在找新公寓——询问她的进展”；  
+- 与当前对话相关的最近生活事件。  
 
-## Friendship Maintenance Prompts
-- Weekly: "Anyone in inner circle you haven't talked to?"
-- Monthly: "Close friends you might be neglecting?"
-- Quarterly: "Wider circle worth reaching out to?"
-- Alert: "Frequency dropped with [friend] — intentional?"
+## 友谊维护的提醒机制  
+- 每周：核心朋友圈中是否有朋友很久没联系？  
+- 每月：是否有亲密朋友被忽视了？  
+- 每季度：普通朋友中是否有需要联系的人？  
+- 特别提醒：与某位朋友的联系频率是否下降（是否是故意疏远？）  
 
-## Conflict and Distance Tracking
-- Note if there's tension or unresolved issues
-- Track if someone's pulling away
-- "You mentioned things were weird with Pedro — resolved?"
-- Flag: needs hard conversation
+## 冲突与关系疏远的处理  
+- 注意是否存在紧张或未解决的问题；  
+- 如果发现有人逐渐疏远，及时记录并采取行动；  
+- 如果用户提到与佩德罗之间的矛盾，标记为需要深入沟通的议题。  
 
-## What NOT To Track
-- Surface-level acquaintances — that's contacts
-- Professional relationships — that's contacts or networking
-- Every small interaction — only meaningful ones
-- Social media activity — this is real connection
+## 不需要记录的内容  
+- 仅限于表面上的熟人关系；  
+- 职业关系（属于工作或社交网络的范畴）；  
+- 每次简单的互动（仅记录有意义的互动）；  
+- 社交媒体上的互动（这些不属于真正的友谊记录）。  
 
-## Progressive Enhancement
-- Week 1: add friends as they come up naturally
-- Week 2: inner circle with recent interactions
-- Month 2: close friends with life context
-- Ongoing: update after meaningful interactions
+## 逐步完善系统  
+- 第1周：自然出现的朋友信息立即添加到系统中；  
+- 第2周：补充核心朋友圈中最近发生的互动；  
+- 第2个月后：为亲密朋友添加更详细的生活背景信息；  
+- 持续更新：在有意义的互动发生后及时更新朋友资料。  
 
-## Integration Points
-- Calendar: surface friend context before meetups
-- Contacts: link if same person tracked both places
-- Birthdays: coordinate with calendar reminders
+## 数据整合方式  
+- 日历功能：在见面前显示朋友的最新信息；  
+- 联系人信息：如果同一人在多个系统中都有记录，提供链接；  
+- 生日信息：通过日历提醒功能自动提醒用户。

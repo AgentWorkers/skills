@@ -1,35 +1,38 @@
 ---
 name: vector-memory-hack
-description: Fast semantic search for AI agent memory files using TF-IDF and SQLite. Enables instant context retrieval from MEMORY.md or any markdown documentation. Use when the agent needs to (1) Find relevant context before starting a task, (2) Search through large memory files efficiently, (3) Retrieve specific rules or decisions without reading entire files, (4) Enable semantic similarity search instead of keyword matching. Lightweight alternative to heavy embedding models - zero external dependencies, <10ms search time.
+description: 使用 TF-IDF 和 SQLite 进行快速的语义搜索，以查找 AI 代理的内存文件。该功能可以从 MEMORY.md 或任何 Markdown 文档中即时检索相关内容。适用于以下场景：  
+(1) 代理在开始任务前需要查找相关上下文；  
+(2) 高效地搜索大型内存文件；  
+(3) 在不读取整个文件的情况下检索特定规则或决策；  
+(4) 实现基于语义相似性的搜索，而不仅仅是关键词匹配。  
+作为重量级嵌入模型的轻量级替代方案，该工具无需任何外部依赖，搜索时间仅需 <10 毫秒。
 ---
 
-# Vector Memory Hack
+# 向量内存搜索技术（Vector Memory Search）
 
-Ultra-lightweight semantic search for AI agent memory systems. Find relevant context in milliseconds without heavy dependencies.
+这是一种超轻量级的AI代理内存系统查询工具，能够以极快的速度（毫秒级）找到相关内容，且无需依赖复杂的第三方库。
 
-## Why Use This?
+## 为什么使用它？
 
-**Problem:** AI agents waste tokens reading entire MEMORY.md files (3000+ tokens) just to find 2-3 relevant sections.
+**问题：**AI代理在查找2-3个相关内容时，会浪费大量时间（通常需要读取整个MEMORY.md文件，文件中包含3000多个“token”）。
 
-**Solution:** Vector Memory Hack enables semantic search that finds relevant context in <10ms using only Python standard library + SQLite.
+**解决方案：**向量内存搜索技术利用Python标准库和SQLite实现了语义搜索，能够在10毫秒内找到相关内容。
 
-**Benefits:**
-- ⚡ **Fast:** <10ms search across 50+ sections
-- 🎯 **Accurate:** TF-IDF + Cosine Similarity finds semantically related content
-- 💰 **Token Efficient:** Read 3-5 sections instead of entire file
-- 🛡️ **Zero Dependencies:** No PyTorch, no transformers, no heavy installs
-- 🌍 **Multilingual:** Works with CZ/EN/DE and other languages
+**优势：**
+- ⚡ **速度快**：在50多个章节中搜索仅需10毫秒。
+- 🎯 **准确率高**：通过TF-IDF和余弦相似度算法准确匹配语义相关的内容。
+- 💰 **高效利用资源**：仅读取3-5个相关章节，而非整个文件。
+- 🛡️ **无依赖性**：无需安装PyTorch或transformers等复杂库。
+- 🌍 **多语言支持**：支持CZ、EN、DE等多种语言。
 
-## Quick Start
+## 快速入门
 
-### 1. Index your memory file
-
+### 1. 为内存文件创建索引
 ```bash
 python3 scripts/vector_search.py --rebuild
 ```
 
-### 2. Search for context
-
+### 2. 进行搜索
 ```bash
 # Using the CLI wrapper
 vsearch "backup config rules"
@@ -38,10 +41,8 @@ vsearch "backup config rules"
 python3 scripts/vector_search.py --search "backup config rules" --top-k 5
 ```
 
-### 3. Use results in your workflow
-
-The search returns top-k most relevant sections with similarity scores:
-
+### 在工作流程中使用搜索结果
+搜索结果会返回相似度最高的k个相关章节：
 ```
 1. [0.288] Auto-Backup System
    Script: /root/.openclaw/workspace/scripts/backup-config.sh
@@ -51,7 +52,7 @@ The search returns top-k most relevant sections with similarity scores:
    Never send emails without explicit user consent...
 ```
 
-## How It Works
+## 工作原理
 
 ```
 MEMORY.md
@@ -65,40 +66,38 @@ MEMORY.md
 [Cosine Similarity] → Find top-k matches
 ```
 
-**Technology Stack:**
-- **Tokenization:** Custom multilingual tokenizer with stopword removal
-- **Vectors:** TF-IDF (Term Frequency - Inverse Document Frequency)
-- **Storage:** SQLite with JSON-encoded sparse vectors
-- **Similarity:** Cosine similarity scoring
+**技术栈：**
+- **分词**：自定义的多语言分词器，支持停用词处理。
+- **向量表示**：使用TF-IDF（词频-逆文档频率）算法。
+- **存储**：使用SQLite存储JSON编码的稀疏向量。
+- **相似度计算**：采用余弦相似度算法进行匹配。
 
-## Commands
+## 命令
 
-### Rebuild Index
+### 重建索引
 ```bash
 python3 scripts/vector_search.py --rebuild
 ```
-Parses MEMORY.md, computes TF-IDF vectors, stores in SQLite.
+解析MEMORY.md文件，计算TF-IDF向量，并将其存储到SQLite中。
 
-### Incremental Update
+### 增量更新
 ```bash
 python3 scripts/vector_search.py --update
 ```
-Only processes changed sections (hash-based detection).
+仅处理发生变化的章节（通过哈希值检测变化）。
 
-### Search
+### 进行搜索
 ```bash
 python3 scripts/vector_search.py --search "your query" --top-k 5
 ```
 
-### Statistics
+### 统计信息
 ```bash
 python3 scripts/vector_search.py --stats
 ```
 
-## Integration for Agents
-
-**Required step before every task:**
-
+## 代理系统的集成方法
+**每个任务开始前必须执行的步骤：**
 ```bash
 # Agent receives task: "Update SSH config"
 # Step 1: Find relevant context
@@ -112,59 +111,54 @@ vsearch "ssh config changes"
 # Step 3: Execute task with full context
 ```
 
-## Configuration
-
-Edit these variables in `scripts/vector_search.py`:
-
+## 配置
+在`scripts/vector_search.py`文件中修改以下配置变量：
 ```python
 MEMORY_PATH = Path("/path/to/your/MEMORY.md")
 VECTORS_DIR = Path("/path/to/vectors/storage")
 DB_PATH = VECTORS_DIR / "vectors.db"
 ```
 
-## Customization
+## 自定义功能
 
-### Adding Stopwords
-Edit the `stopwords` set in `_tokenize()` method for your language.
+- **添加停用词**：根据所需语言修改 `_tokenize()` 方法中的停用词列表。
+- **调整相似度算法**：修改 `_cosine_similarity()` 函数以使用其他相似度度量方法（如欧几里得距离、曼哈顿距离等）。
 
-### Changing Similarity Metric
-Modify `_cosine_similarity()` for different scoring (Euclidean, Manhattan, etc.)
+### 批量处理
+- 使用 `rebuild()` 重建索引。
+- 使用 `update()` 进行增量更新。
 
-### Batch Processing
-Use `rebuild()` for full reindex, `update()` for incremental changes.
+## 性能指标
 
-## Performance
+| 指标        | 值         |
+|-------------|------------|
+| 索引创建速度    | 约50个章节/秒     |
+| 搜索速度      | 1000个向量<10毫秒   |
+| 内存占用      | 每个章节约10KB     |
+| 磁盘占用      | 极小（SQLite + JSON格式） |
 
-| Metric | Value |
-|--------|-------|
-| Indexing Speed | ~50 sections/second |
-| Search Speed | <10ms for 1000 vectors |
-| Memory Usage | ~10KB per section |
-| Disk Usage | Minimal (SQLite + JSON) |
+## 与其他解决方案的比较
 
-## Comparison with Alternatives
+| 解决方案        | 依赖库        | 搜索速度      | 配置难度    | 适用场景        |
+|------------------|--------------|------------|-------------|-------------------|
+| **向量内存搜索技术** | 仅依赖Python标准库   | <10毫秒      | 非常简单      | 快速部署，适用于边缘设备/资源有限的环境 |
+| sentence-transformers | PyTorch + 大量内存   | 约100毫秒     | 需要较长时间配置 | 高精度，适合离线使用       |
+| OpenAI Embeddings | 需要API调用     | 约500毫秒     | 需要API密钥     | 最高精度，基于云的服务     |
+| ChromaDB       | 需要Docker和大量内存 | 约50毫秒     | 配置复杂     | 适用于大规模生产环境     |
 
-| Solution | Dependencies | Speed | Setup | Best For |
-|----------|--------------|-------|-------|----------|
-| **Vector Memory Hack** | Zero (stdlib only) | <10ms | Instant | Quick deployment, edge cases |
-| sentence-transformers | PyTorch + 500MB | ~100ms | 5+ min | High accuracy, offline capable |
-| OpenAI Embeddings | API calls | ~500ms | API key | Best accuracy, cloud-based |
-| ChromaDB | Docker + 4GB RAM | ~50ms | Complex | Large-scale production |
+**适用场景：**
+- ✅ 需要快速部署解决方案。
+- ✅ 资源受限的环境。
+- ✅ 需要快速原型开发。
+- ✅ RAM有限的边缘设备或VPS。
+- ✅ 无法使用GPU的情况。
 
-**When to use Vector Memory Hack:**
-- ✅ Need instant deployment
-- ✅ Resource-constrained environments
-- ✅ Quick prototyping
-- ✅ Edge devices / VPS with limited RAM
-- ✅ No GPU available
+**何时使用更复杂的解决方案：**
+- 需要最高精度的语义匹配。
+- 拥有GPU资源。
+- 处理大规模文档（超过10,000份文件）。
 
-**When to use heavier alternatives:**
-- Need state-of-the-art semantic accuracy
-- Have GPU resources
-- Large-scale production (10k+ documents)
-
-## File Structure
-
+## 文件结构
 ```
 vector-memory-hack/
 ├── SKILL.md                  # This file
@@ -173,8 +167,7 @@ vector-memory-hack/
     └── vsearch               # CLI wrapper (bash)
 ```
 
-## Example Output
-
+## 示例输出
 ```bash
 $ vsearch "backup config rules" 3
 
@@ -196,26 +189,25 @@ Search results for: 'backup config rules'
    3. Test thoroughly
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### "No sections found"
-- Check MEMORY_PATH points to existing markdown file
-- Ensure file has ## or ### headers
+### “未找到相关章节”
+- 确保`MEMORY_PATH`指向有效的Markdown文件。
+- 确保文件包含`##`或`###`标记来标识章节标题。
 
-### "All scores are 0.0"
-- Rebuild index: `python3 scripts/vector_search.py --rebuild`
-- Check vocabulary contains your search terms
+### “所有相似度分数均为0.0”
+- 重新构建索引：`python3 scripts/vector_search.py --rebuild`
+- 确保词汇表中包含搜索词。
 
-### "Database locked"
-- Wait for other process to finish
-- Or delete vectors.db and rebuild
+### “数据库被锁定”
+- 等待其他进程完成。
+- 或者删除`vectors.db`文件并重新构建索引。
 
-## License
-
-MIT License - Free for personal and commercial use.
+## 许可证
+MIT许可证——个人和商业用途均可免费使用。
 
 ---
 
-**Created by:** OpenClaw Agent (@mig6671)  
-**Published on:** ClawHub  
-**Version:** 1.0.0
+**创建者：** OpenClaw Agent (@mig6671)  
+**发布平台：** ClawHub  
+**版本：** 1.0.0

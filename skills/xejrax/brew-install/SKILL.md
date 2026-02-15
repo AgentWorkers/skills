@@ -1,6 +1,6 @@
 ---
 name: brew-install
-description: "Install missing binaries via dnf (Fedora/Bazzite package manager)"
+description: "通过 dnf（Fedora/Bazzite 的包管理器）安装缺失的二进制文件。"
 metadata:
   {
     "openclaw":
@@ -12,11 +12,11 @@ metadata:
   }
 ---
 
-# Brew Install
+# Brew 安装
 
-Install missing binaries via dnf, the Fedora/Bazzite package manager. Despite the name, this skill wraps `dnf` on Bazzite rather than Homebrew.
+通过 dnf（Fedora/Bazzite 的包管理器）来安装缺失的二进制文件。尽管名称中包含“Brew”，但实际上这个技巧是在 Bazzite 环境中使用 dnf 而不是 Homebrew 来完成安装的。
 
-## Commands
+## 命令
 
 ```bash
 # Install a package
@@ -26,6 +26,6 @@ brew-install <package>
 brew-install search <query>
 ```
 
-## Install
+## 安装过程
 
-No installation needed. `dnf` is the default package manager on Fedora/Bazzite and is always present.
+无需额外安装。dnf 是 Fedora/Bazzite 的默认包管理器，因此它始终存在于系统中。

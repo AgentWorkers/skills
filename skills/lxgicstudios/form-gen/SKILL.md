@@ -1,28 +1,28 @@
 ---
 name: form-gen
-description: Generate form components with validation. Use when building forms.
+description: 生成带有验证功能的表单组件。在构建表单时可以使用这些组件。
 ---
 
-# Form Generator
+# 表单生成器
 
-Forms are tedious. Validation is worse. Describe what fields you need and get a complete form component with validation wired up.
+填写表单是一件繁琐的事情，而表单验证更是令人头疼。只需描述您需要的字段，即可获得一个包含验证功能的完整表单组件。
 
-**One command. Zero config. Just works.**
+**一个命令即可完成所有操作，无需任何配置。**  
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx @lxgicstudios/ai-form "signup form with email, password, name"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates React form components
-- Includes validation with react-hook-form + zod
-- Handles error states and accessibility
-- Supports TypeScript out of the box
+- 生成 React 表单组件  
+- 集成 `react-hook-form` 和 `zod` 进行表单验证  
+- 处理错误状态并确保表单的可访问性  
+- 支持 TypeScript（默认启用）  
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Signup form
@@ -35,42 +35,42 @@ npx @lxgicstudios/ai-form "checkout form with address and payment" -t
 npx @lxgicstudios/ai-form "contact form" -o ContactForm.tsx -t
 ```
 
-## Best Practices
+## 最佳实践  
 
-- **Use TypeScript** - catch errors at compile time
-- **Show inline errors** - don't wait until submit
-- **Add loading states** - show progress during submission
-- **Test with keyboard** - forms must be accessible
+- **使用 TypeScript**：在编译时捕获错误  
+- **显示即时错误提示**：无需等到提交时才显示错误信息  
+- **添加加载状态**：在提交过程中显示进度条  
+- **使用键盘进行测试**：确保表单对所有用户都是可访问的  
 
-## When to Use This
+## 适用场景  
 
-- Need a form fast without boilerplate
-- Setting up validation patterns
-- Prototyping with working forms
-- Learning react-hook-form + zod
+- 需要快速创建表单（无需编写繁琐的代码）  
+- 需要设置表单验证规则  
+- 用于原型设计（确保表单功能正常）  
+- 学习如何使用 `react-hook-form` 和 `zod`  
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包  
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册账号，也不需要 API 密钥。这些工具都能直接使用。  
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+**了解更多信息：**  
+- GitHub: https://github.com/LXGIC-Studios  
+- Twitter: https://x.com/lxgicstudios  
+- Substack: https://lxgicstudios.substack.com  
+- 官网: https://lxgic.dev  
 
-## Requirements
+## 使用要求  
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行时需要设置 `OPENAI_API_KEY` 环境变量。  
 
 ```bash
 npx @lxgicstudios/ai-form --help
 ```
 
-## How It Works
+## 工作原理  
 
-Takes your form description, determines the fields and their validation rules, then generates a complete React component using react-hook-form for state management and zod for validation schemas.
+该工具会根据您提供的表单描述自动识别字段及其验证规则，然后使用 `react-hook-form` 管理表单状态，并通过 `zod` 定义验证规则，最终生成完整的 React 表单组件。  
 
-## License
+## 许可证  
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具。

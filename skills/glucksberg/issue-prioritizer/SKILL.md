@@ -1,151 +1,147 @@
 ---
 name: issue-prioritizer
-description: Prioritize GitHub issues by ROI, solution sanity, and architectural impact. Identifies quick wins, over-engineered proposals, and actionable bugs. Use for issue triage, contributor matching, and filtering non-actionable items. Read-only — never modifies repositories. Requires GitHub CLI (gh).
+description: 根据投资回报率（ROI）、解决方案的合理性以及其对架构的影响来优先处理 GitHub 上的问题。能够识别出那些能够快速解决问题的方案、设计过于复杂的提案以及那些可以实际解决的漏洞。该工具可用于问题分类（triage）、匹配合适的贡献者，以及过滤掉那些无法处理的问题的条目。仅具有读取权限——严禁修改任何代码仓库。需要使用 GitHub 的命令行工具（gh）。
 metadata: {"openclaw": {"requires": {"bins": ["gh"]}}}
 ---
 
-# Issue Prioritizer
+# 问题优先级排序工具
 
-Analyze issues from a GitHub repository and rank them by **Adjusted Score** — ROI penalized by Tripping Scale (solution sanity), Architectural Impact, and Actionability.
+该工具用于分析 GitHub 仓库中的问题，并根据**调整后的得分**对问题进行排序。得分计算时会考虑以下因素：解决方案的合理性（Tripping Scale）、对架构的影响（Architectural Impact）以及问题的可解决性（Actionability）。
 
-This is a **read-only skill**. It analyzes and presents information. The user makes all decisions.
+这是一个**仅限读取**的工具，它仅负责分析并展示信息，所有决策均由用户自行做出。
 
-## Requirements
+## 使用要求
 
-- `gh` CLI authenticated (`gh auth login`)
+- 需要使用 `gh` 命令行工具进行身份验证（`gh auth login`）。
 
-## Instructions
+## 使用说明
 
-### Step 1: Get Repository
+### 第1步：获取仓库
 
-If the user didn't specify a repository, ask which one to analyze (format: `owner/repo`).
+如果用户未指定仓库，请询问需要分析的仓库（格式：`owner/repo`）。
 
-### Step 2: Fetch Issues
+### 第2步：获取问题列表
 
 ```bash
 gh issue list --repo {owner/repo} --state open --limit {limit} --json number,title,body,labels,createdAt,comments,url
 ```
 
-Default limit is 30. Store the full JSON response.
+默认获取30个问题。将完整的 JSON 响应结果存储下来。
 
-**Error handling:**
-- Auth error → tell user to run `gh auth login`
-- Rate limited → inform user, suggest reducing `--limit`
-- Repo not found → check format `owner/repo`
-- No issues → report and exit
-- Missing fields → treat null/missing body and labels as empty
+**错误处理：**
+- 身份验证失败 → 告知用户重新执行 `gh auth login`
+- 请求频率超出限制 → 通知用户并建议减少请求次数（使用 `--limit` 参数）
+- 仓库不存在 → 检查输入格式（`owner/repo`）
+- 仓库中没有任何问题 → 报告错误并退出
+- 数据字段缺失 → 将缺失的字段或标签视为空值
 
-### Step 3: Filter Issues with Existing PRs
+### 第3步：过滤已有关联 Pull Request（PR）的问题
 
-**Note:** If user specified `--include-with-prs`, skip this entire step and proceed to Step 4 with all fetched issues.
+**注意：** 如果用户指定了 `--include-with-prs` 参数，则跳过此步骤，直接进入第4步，处理所有获取到的问题。
 
-Before analyzing, check for open PRs that already address issues to avoid duplicate work.
+在分析问题之前，先检查是否存在已经针对这些问题提交的 PR，以避免重复工作。
 
 ```bash
 gh pr list --repo {owner/repo} --state open --json number,title,body,url
 ```
 
-**Detect linked issues** using ALL of these methods:
+**检测关联问题** 的方法如下：
 
-**Method 1 — Explicit Keywords** (high confidence):
-Scan PR title and body (case-insensitive):
-- `fixes #N`, `fix #N`, `fixed #N`
-- `closes #N`, `close #N`, `closed #N`
-- `resolves #N`, `resolve #N`, `resolved #N`
+**方法1 — 明确的关键词**（高置信度）：
+扫描 PR 的标题和正文（不区分大小写）：
+- `fixes #N`、`fix #N`、`fixed #N`
+- `closes #N`、`close #N`、`closed #N`
+- `resolves #N`、`resolve #N`、`resolved #N`
 
-**Method 2 — Issue References** (medium confidence):
-- `#N` anywhere in text
-- `issue N`, `issue #N`, `related to #N`, `addresses #N`
+**方法2 — 问题引用**（中等置信度）：
+- 文本中包含 `#N`
+- `issue N`、`issue #N`、`related to #N`、`addresses #N`
 
-**Method 3 — Title Similarity** (fuzzy):
-Normalize titles (lowercase, remove punctuation/common words). If 70%+ word overlap → likely linked.
+**方法3 — 标题相似性**（模糊匹配）：
+对标题进行规范化处理（转换为小写，去除标点符号和常见词汇）。如果标题有70%以上的相似度，则认为存在关联。
 
-**Method 4 — Semantic Matching** (ambiguous cases):
-Extract key terms from issue (error names, function names, components). Check if PR body discusses same things.
+**方法4 — 语义匹配**（用于不确定的情况）：
+从问题描述中提取关键信息（错误名称、函数名称、组件名称），检查 PR 正文是否讨论了相同的问题。
 
-**Confidence icons:**
-- 🔗 Explicit link (fixes/closes/resolves)
-- 📎 Referenced (#N mentioned)
-- 🔍 Similar title (fuzzy match)
-- 💡 Semantic match (same components)
+**置信度标识**：
+- 🔗 明确的关联链接（如 `fixes`、`closes`、`resolves`）
+- 📎 被引用（如 `#N` 被提及）
+- 🔍 标题相似（模糊匹配）
+- 💡 语义匹配（涉及相同组件）
 
-Remove linked issues from analysis. Report them separately before the main report.
+将关联的问题从分析结果中移除，并在最终报告中单独列出。
 
-If all issues have PRs, report that and exit.
+如果所有问题都已有 PR，直接报告结果并退出。
 
-### Step 4: Analyze Each Issue
+### 第4步：分析每个问题
 
-For each remaining issue, score the following:
+对每个剩余的问题进行如下评分：
 
-#### Difficulty (1-10)
+#### 难度（1-10分）
 
-Base score: 5. Adjustments:
-
-| Signal | Adjustment |
+基础得分：5分。根据以下因素进行调整：
+| 信号 | 调整分数 |
 |--------|-----------|
-| Documentation only | -3 |
-| Has proposed solution | -2 |
-| Has reproduction steps | -1 |
-| Clear error message | -1 |
-| Unknown root cause | +3 |
-| Architectural change | +3 |
-| Race condition/concurrency | +2 |
-| Security implications | +2 |
-| Multiple systems involved | +2 |
+| 仅需要文档说明 | -3 |
+| 已提出解决方案 | -2 |
+| 有复现步骤 | -1 |
+| 错误信息清晰 | -1 |
+| 根本原因未知 | +3 |
+| 对架构有影响 | +3 |
+| 存在竞态条件/并发问题 | +2 |
+| 存在安全风险 | +2 |
+| 涉及多个系统 | +2 |
 
-#### Importance (1-10)
+#### 重要性（1-10分）
 
-| Range | Level | Examples |
+| 分数范围 | 等级 | 例子 |
 |-------|-------|---------|
-| 8-10 | Critical | Crash, data loss, security vulnerability, service down |
-| 6-7 | High | Broken functionality, errors, performance issues |
-| 4-5 | Medium | Enhancements, feature requests, improvements |
-| 1-3 | Low | Cosmetic, documentation, typos |
+| 8-10 | 关键问题 | 会导致系统崩溃、数据丢失、安全漏洞或服务中断 |
+| 6-7 | 高度重要 | 功能故障、错误、性能问题 |
+| 4-5 | 中等重要 | 需要改进的功能或需求 |
+| 1-3 | 低度重要 | 仅涉及外观调整、文档问题或拼写错误 |
 
-#### Tripping Scale (1-5) — Solution Sanity (How "Out There" Is It?)
+#### 解决方案的合理性（Tripping Scale，1-5分）：
 
-| Score | Label | Description |
+| 分数 | 标签 | 描述 |
 |-------|-------|-------------|
-| 1 | Total Sanity | Proven approach, standard patterns |
-| 2 | Grounded w/Flair | Practical with creative touches |
-| 3 | Dipping Toes | Exploring cautiously |
-| 4 | Wild Adventure | Bold, risky, unconventional |
-| 5 | Tripping | Questionable viability |
+| 1 | 完全合理 | 使用了经过验证的方法和标准模式 |
+| 2 | 基于现有技术的创新方案 | 具有实用性且包含创新元素 |
+| 3 | 需谨慎尝试的方案 | 需要谨慎评估其可行性 |
+| 4 | 风险较高的方案 | 大胆且不常规的解决方案 |
+| 5 | 可能行不通的方案 | 可能存在重大问题 |
 
-**Red Flags** (+score): rewrite from scratch, buzzwords (blockchain, AI-powered, ML-based), experimental/unstable, breaking change, custom protocol
-**Green Flags** (-score): standard approach, minimal change, backward compatible, existing library, well-documented
+**警示信号**（分数越高，风险越大）：需要从头开始重新编写代码；使用流行术语（如区块链、人工智能、机器学习）；方案具有实验性或不稳定；可能破坏现有系统；使用自定义协议
+**积极信号**（分数越高，可行性越高）：使用标准方法；修改幅度小；向后兼容；有完善的文档支持
 
-#### Architectural Impact (1-5)
+#### 对架构的影响（1-5分）
 
-Always ask: "Is there a simpler way?" before scoring.
+在评分前，请务必思考：“是否有更简单的方法？”
 
-| Score | Label | Description |
+| 分数 | 标签 | 描述 |
 |-------|-------|-------------|
-| 1 | Surgical | Isolated fix, 1-2 files, no new abstractions |
-| 2 | Localized | Small addition, follows existing patterns exactly |
-| 3 | Moderate | New component within existing architecture |
-| 4 | Significant | New subsystem, new patterns, affects multiple modules |
-| 5 | Transformational | Restructures core, changes paradigms, migration needed |
+| 1 | 小范围修改 | 仅涉及1-2个文件，无需引入新的抽象概念 |
+| 2 | 局部修改 | 完全遵循现有架构模式 |
+| 3 | 中等程度的修改 | 在现有架构中添加新组件 |
+| 4 | 大幅修改 | 引入新子系统或新架构模式，影响多个模块 |
+| 5 | 彻底改造 | 需要重构核心代码或改变开发范式 |
 
-**Red Flags** (+score): "rewrite", "refactor entire", new framework for existing capability, changes across >5 files, breaking API changes, scope creep
-**Green Flags** (-score): single file fix, uses existing utilities, follows established patterns, backward compatible, easily revertible
+**警示信号**（分数越高，风险越大）：如果存在简单解决方案，那么进行架构修改可能是不必要的。对于只需一个条件判断就能解决的问题，无需进行复杂的重构。
 
-**Critical:** If a simple solution exists, architectural changes are wrong. Don't create a "validation framework" when a single if-check suffices.
+#### 可解决性（1-5分）：
 
-#### Actionability (1-5) — Can it be resolved with a PR?
-
-| Score | Label | Description |
+| 分数 | 标签 | 描述 |
 |-------|-------|-------------|
-| 1 | Not Actionable | Question, discussion, duplicate, support request |
-| 2 | Needs Triage | Missing info, unclear scope, needs clarification |
-| 3 | Needs Investigation | Root cause unknown, requires debugging first |
-| 4 | Ready to Work | Clear scope, may need some design decisions |
-| 5 | PR Ready | Solution is clear, just needs implementation |
+| 1 | 无法解决 | 问题不明确、存在争议或重复性问题 |
+| 2 | 需要进一步评估 | 缺少必要信息，范围不明确，需要进一步澄清 |
+| 3 | 需要调查 | 根本原因未知，需要先进行调试 |
+| 4 | 可以解决 | 范围明确，可能需要一些设计决策 |
+| 5 | 已准备好提交 PR | 解决方案明确，只需实现即可 |
 
-**Blockers** (-score): questions ("how do I?"), discussions ("thoughts?"), labels (duplicate, wontfix, question), missing repro
-**Ready signals** (+score): action titles ("fix:", "add:"), proposed solution, repro steps, good-first-issue label, specific files mentioned
+**其他影响因素**（分数越高，可行性越高）：
+- 是否需要通过 PR 来解决问题（如 “如何实现？”、“需要哪些资源？” 等问题）；是否有相关的标签（如 “重复问题”、“无法修复” 等）；是否提供了问题复现步骤；问题描述是否清晰（如 “修复方法”、“添加内容” 等）；是否有明确的行动指示（如 “修复”、“添加新功能” 等）；是否提到了具体的文件。
 
-#### Derived Values
+#### 衍生值计算
 
 ```
 issueType: "bug" | "feature" | "docs" | "other"
@@ -155,54 +151,54 @@ suggestedLevel:
   - "advanced": difficulty 7+ OR security implications OR architectural changes
 ```
 
-#### Calculation Formulas
+#### 计算公式
 
 ```
 ROI = Importance / Difficulty
 AdjustedScore = ROI × TripMultiplier × ArchMultiplier × ActionMultiplier
 ```
 
-**Tripping Scale Multiplier:**
+**Tripping Scale 乘数：**
 
-| Score | Label | Multiplier |
+| 分数 | 标签 | 乘数 |
 |-------|-------|------------|
-| 1 | Total Sanity | 1.00 (no penalty) |
-| 2 | Grounded w/Flair | 0.85 |
-| 3 | Dipping Toes | 0.70 |
-| 4 | Wild Adventure | 0.55 |
-| 5 | Tripping | 0.40 |
+| 1 | 完全合理 | 1.00（无惩罚） |
+| 2 | 基于现有技术的创新方案 | 0.85 |
+| 3 | 需谨慎尝试的方案 | 0.70 |
+| 4 | 风险较高的方案 | 0.55 |
+| 5 | 可能行不通的方案 | 0.40 |
 
-**Architectural Impact Multiplier:**
+**Architectural Impact 乘数：**
 
-| Score | Label | Multiplier |
+| 分数 | 标签 | 乘数 |
 |-------|-------|------------|
-| 1 | Surgical | 1.00 (no penalty) |
-| 2 | Localized | 0.90 |
-| 3 | Moderate | 0.75 |
-| 4 | Significant | 0.50 |
-| 5 | Transformational | 0.25 |
+| 1 | 小范围修改 | 1.00（无惩罚） |
+| 2 | 局部修改 | 0.90 |
+| 3 | 中等程度的修改 | 0.75 |
+| 4 | 大幅修改 | 0.50 |
+| 5 | 彻底改造 | 0.25 |
 
-**Actionability Multiplier:**
+**Actionability 乘数：**
 
-| Score | Label | Multiplier |
+| 分数 | 标签 | 乘数 |
 |-------|-------|------------|
-| 5 | PR Ready | 1.00 (no penalty) |
-| 4 | Ready to Work | 0.90 |
-| 3 | Needs Investigation | 0.70 |
-| 2 | Needs Triage | 0.40 |
-| 1 | Not Actionable | 0.10 |
+| 5 | 已准备好提交 PR | 1.00（无惩罚） |
+| 4 | 可以解决 | 0.90 |
+| 3 | 需要调查 | 0.70 |
+| 2 | 需要进一步评估 | 0.40 |
+| 1 | 无法解决 | 0.10 |
 
-### Step 5: Categorize
+### 第5步：对问题进行分类
 
-- **Quick Wins**: ROI ≥ 1.5 AND Difficulty ≤ 5 AND Trip ≤ 3 AND Arch ≤ 2 AND Actionability ≥ 4
-- **Critical Bugs**: issueType = "bug" AND Importance ≥ 8
-- **Tripping Issues**: Trip ≥ 4
-- **Over-Engineered**: Arch ≥ 4 (simpler solution likely exists)
-- **Not Actionable**: Actionability ≤ 2
+- **高性价比问题**：调整后的得分 ≥ 1.5，难度 ≤ 5，解决方案的合理性 ≤ 3，可解决性 ≥ 4
+- **关键问题**：问题类型为 “bug”，重要性 ≥ 8
+- **风险较高的问题**：解决方案的合理性 ≤ 4
+- **设计过于复杂的问题**：对架构的影响 ≥ 4（可能存在更简单的解决方案）
+- **无法解决的问题**：可解决性 ≤ 2
 
-Sort all issues by AdjustedScore descending.
+按照调整后的得分降序排列所有问题。
 
-### Step 6: Present Results
+### 第6步：展示结果
 
 ```
 ═══════════════════════════════════════════════════════════════
@@ -318,18 +314,18 @@ Sort all issues by AdjustedScore descending.
 ═══════════════════════════════════════════════════════════════
 ```
 
-## Options
+## 可选参数
 
-- `--json`: Raw JSON output
-- `--markdown` / `--md`: Markdown table output
-- `--quick-wins`: Show only quick wins
-- `--level beginner|intermediate|advanced`: Filter by contributor level
-- `--limit N`: Number of issues to analyze (default: 30)
-- `--include-with-prs`: Skip PR filtering, include all issues
+- `--json`：以原始 JSON 格式输出结果
+- `--markdown` / `--md`：以 Markdown 表格格式输出结果
+- `--quick-wins`：仅显示高性价比问题
+- `--level beginner|intermediate|advanced`：根据用户水平筛选问题
+- `--limit N`：指定要分析的问题数量（默认：30个）
+- `--include-with-prs`：跳过 PR 过滤步骤，显示所有问题
 
-## LLM Deep Analysis (Optional)
+## 使用大型语言模型（LLM）进行深度分析（可选）
 
-For higher-quality scoring, use an LLM to analyze each issue individually. For each issue, prompt the model with the issue details and scoring criteria, requesting structured JSON output:
+为了获得更准确的评分结果，可以使用大型语言模型（LLM）对每个问题进行单独分析。向模型提供问题详情和评分标准，请求结构化的 JSON 输出：
 
 ```json
 {
@@ -358,13 +354,13 @@ For higher-quality scoring, use an LLM to analyze each issue individually. For e
 }
 ```
 
-Truncate issue bodies longer than 2000 characters before sending to the model.
+在将问题正文发送给模型之前，将其截断至2000个字符以内。
 
-**When to use LLM Deep Analysis:**
-- Complex repositories with nuanced issues
-- When accuracy matters more than speed
-- For repositories you're unfamiliar with
+**适用场景：**
+- 问题较为复杂的仓库
+- 当准确性比速度更重要的情况
+- 对不熟悉的仓库
 
-**Tradeoffs:** Slower (~2-5s per issue) but more accurate. 1 API call per issue.
+**注意事项：** 使用 LLM 会降低处理速度（每个问题大约需要2-5秒），但准确性更高。每个问题需要调用一次 API。
 
-**Integration:** For each issue, call the LLM with the analysis prompt, parse the JSON response, and merge into results before Step 5 (Categorize).
+**集成步骤：** 对每个问题，使用 LLM 进行分析，解析 JSON 结果，并在步骤5之前将其合并到最终结果中。

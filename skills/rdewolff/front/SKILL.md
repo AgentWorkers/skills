@@ -1,18 +1,17 @@
 ---
 name: front
-description: Front.app API for managing conversations, messages, comments, and team collaboration.
+description: Front.app API 用于管理对话、消息、评论以及团队协作功能。
 homepage: https://front.com
 metadata: {"clawdbot":{"emoji":"📬","requires":{"bins":["curl"],"env":["FRONT_API_TOKEN"]},"primaryEnv":"FRONT_API_TOKEN"}}
 ---
 
 # Front
 
-Use Front's API to manage conversations, read/send messages, and collaborate with team comments.
+使用 Front 的 API 来管理对话、发送/接收消息以及与团队成员进行协作。
 
-## Setup
+## 设置
 
-Get your API token from Front → Settings → Developers → API Tokens.
-Store it in `~/.clawdbot/clawdbot.json`:
+从 Front 的“设置”（Settings）→“开发者”（Developers）→“API 令牌”（API Tokens）中获取 API 令牌。将其保存在 `~/.clawdbot/clawdbot.json` 文件中：
 ```json
 {
   "skills": {
@@ -25,16 +24,16 @@ Store it in `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-Or set env: `FRONT_API_TOKEN=your_token`
+或者通过环境变量设置：`FRONT_API_TOKEN=your_token`
 
-## Quick Reference
+## 快速参考
 
-### List Inboxes
+### 列出收件箱中的消息
 ```bash
 {baseDir}/scripts/front.sh inboxes
 ```
 
-### List Conversations
+### 列出所有对话
 ```bash
 {baseDir}/scripts/front.sh conversations [inbox_id]      # Active conversations (unassigned + assigned)
 {baseDir}/scripts/front.sh conversations --all           # Include archived
@@ -44,100 +43,100 @@ Or set env: `FRONT_API_TOKEN=your_token`
 {baseDir}/scripts/front.sh conversations --limit 200     # Increase result limit (default: 100)
 ```
 
-### Get Conversation Details
+### 获取对话详情
 ```bash
 {baseDir}/scripts/front.sh conversation <conversation_id>
 ```
 
-### List Messages in Conversation
+### 查看对话中的消息
 ```bash
 {baseDir}/scripts/front.sh messages <conversation_id>
 ```
 
-### Search Conversations
+### 搜索对话
 ```bash
 {baseDir}/scripts/front.sh search "query text"
 {baseDir}/scripts/front.sh search "from:client@example.com"
 {baseDir}/scripts/front.sh search "tag:urgent"
 ```
 
-### Read Comments (Team Notes)
+### 阅读评论（团队笔记）
 ```bash
 {baseDir}/scripts/front.sh comments <conversation_id>
 ```
 
-### Add Comment (Team Note)
+### 添加评论（团队笔记）
 ```bash
 {baseDir}/scripts/front.sh add-comment <conversation_id> "Your team note here"
 ```
 
-### Reply to Conversation
+### 回复对话
 ```bash
 {baseDir}/scripts/front.sh reply <conversation_id> "Your reply message"
 # With --draft flag to save as draft instead of sending:
 {baseDir}/scripts/front.sh reply <conversation_id> "Draft message" --draft
 ```
 
-### List Teammates
+### 列出团队成员
 ```bash
 {baseDir}/scripts/front.sh teammates
 ```
 
-### Assign Conversation
+### 分配对话任务
 ```bash
 {baseDir}/scripts/front.sh assign <conversation_id> <teammate_id>
 ```
 
-### Tag Conversation
+### 为对话添加标签
 ```bash
 {baseDir}/scripts/front.sh tag <conversation_id> <tag_id>
 ```
 
-### List Tags
+### 列出所有标签
 ```bash
 {baseDir}/scripts/front.sh tags
 ```
 
-### Get Contact Info
+### 获取联系信息
 ```bash
 {baseDir}/scripts/front.sh contact <contact_id_or_handle>
 ```
 
-### List Drafts
+### 查看草稿
 ```bash
 {baseDir}/scripts/front.sh drafts [inbox_id]    # Search conversations for drafts
 ```
-Note: Front API doesn't have a global drafts endpoint. This command checks active conversations for draft replies.
+注意：Front API 没有专门用于查看草稿的端点。此命令会检查当前活跃的对话中是否有未发送的草稿回复。
 
-## Common Workflows
+## 常见工作流程
 
-**Daily inbox review:**
+**每日收件箱审核：**
 ```bash
 # List unassigned open conversations
 {baseDir}/scripts/front.sh conversations --unassigned --status open
 ```
 
-**Find customer conversations:**
+**查找与客户的对话：**
 ```bash
 {baseDir}/scripts/front.sh search "from:customer@company.com"
 ```
 
-**Add team context:**
+**添加团队背景信息：**
 ```bash
 {baseDir}/scripts/front.sh add-comment cnv_abc123 "Customer is VIP - handle with care"
 ```
 
-## Notes
+## 注意事项
 
-- API base: Auto-detected (company-specific, e.g., `https://company.api.frontapp.com`)
-- Auth: Bearer token in header
-- Rate limit: 120 requests/minute
-- Conversation IDs start with `cnv_`
-- Inbox IDs start with `inb_`
-- Always confirm before sending replies
+- **API 基础地址**：会自动检测（根据公司设置，例如 `https://company.api.frontapp.com`）
+- **认证方式**：在请求头中传递 Bearer 令牌
+- **请求速率限制**：每分钟 120 次请求
+- **对话 ID** 以 `cnv_` 开头
+- **收件箱 ID** 以 `inb_` 开头
+- 在发送回复前请务必确认信息
 
-## API Limitations
+## API 限制
 
-- **No global search**: The `/conversations/search` endpoint may return 404 depending on API plan
-- **No global drafts**: Drafts are stored per-conversation, not globally accessible
-- **Conversations vs Inbox**: By default shows non-archived/non-deleted conversations (open, unassigned, assigned)
+- **无全局搜索功能**：`/conversations/search` 端点可能会根据 API 计划的不同返回 404 错误
+- **无全局草稿功能**：草稿信息是按对话单独存储的，无法全局访问
+- **对话与收件箱的区别**：默认显示未归档/未删除的对话（即未关闭、未分配或已分配的对话）

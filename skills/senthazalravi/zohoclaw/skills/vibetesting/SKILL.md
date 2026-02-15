@@ -1,64 +1,64 @@
-# vibetesting - Browser Automation Testing Skill
+# vibetesting - 浏览器自动化测试技能
 
-A comprehensive browser automation testing skill for OpenClaw that performs functional, UI, accessibility, performance, and visual regression testing.
+这是一项针对OpenClaw的全面浏览器自动化测试技能，支持功能测试、用户界面测试、无障碍测试、性能测试以及视觉回归测试。
 
-## Overview
+## 概述
 
-This skill enables OpenClaw to spin up a browser and perform comprehensive testing on web applications. It supports multiple testing types and provides detailed reports.
+该技能使OpenClaw能够启动浏览器并对Web应用程序进行全面的测试。它支持多种测试类型，并提供详细的测试报告。
 
-## Capabilities
+## 功能
 
-### 🧪 Testing Types
+### 测试类型
 
-1. **Functional Testing**
-   - Form validation
-   - Button interactions
-   - Link navigation
-   - API interactions
-   - Data entry and validation
+1. **功能测试**
+   - 表单验证
+   - 按钮交互
+   - 链接导航
+   - API交互
+   - 数据输入与验证
 
-2. **UI Testing**
-   - Element visibility
-   - Responsive design checks
-   - Layout verification
-   - Color contrast checks
-   - Typography verification
+2. **用户界面测试**
+   - 元素可见性
+   - 响应式设计检查
+   - 布局验证
+   - 颜色对比度检查
+   - 字体样式验证
 
-3. **Accessibility Testing**
-   - WCAG 2.1 compliance checks
-   - ARIA label verification
-   - Keyboard navigation
-   - Screen reader compatibility
-   - Alt text validation
+3. **无障碍测试**
+   - WCAG 2.1合规性检查
+   - ARIA标签验证
+   - 键盘导航
+   - 屏幕阅读器兼容性
+   - 替代文本验证
 
-4. **Performance Testing**
-   - Page load times
-   - Resource timing
-   - Lighthouse metrics
-   - Core Web Vitals (LCP, FID, CLS)
-   - JavaScript execution time
+4. **性能测试**
+   - 页面加载时间
+   - 资源加载时间
+   - Lighthouse指标
+   - 核心Web Vital指标（LCP、FID、CLS）
+   - JavaScript执行时间
 
-5. **Visual Regression Testing**
-   - Screenshot comparison
-   - Layout shift detection
-   - Visual diff generation
-   - Threshold-based validation
+5. **视觉回归测试**
+   - 屏幕截图对比
+   - 布局变化检测
+   - 视觉差异生成
+   - 阈值-based验证
 
-6. **Security Testing**
-   - HTTPS verification
-   - Content Security Policy checks
-   - XSS vulnerability scanning
-   - Form security validation
+6. **安全性测试**
+   - HTTPS验证
+   - 内容安全策略检查
+   - XSS漏洞扫描
+   - 表单安全验证
 
-7. **End-to-End Testing**
-   - User journey testing
-   - Checkout flow validation
-   - Authentication flows
-   - Multi-step form testing
+7. **端到端测试**
+   - 用户流程测试
+   - 结账流程验证
+   - 认证流程
+   - 多步骤表单测试
 
-## Usage
+## 使用方法
 
-### Basic Testing
+### 基本测试
 
 ```markdown
 [VibeTesting]
@@ -66,7 +66,7 @@ Target URL: https://example.com
 Testing Type: functional
 ```
 
-### Comprehensive Testing
+### 全面测试
 
 ```markdown
 [VibeTesting]
@@ -76,7 +76,7 @@ Include: functional, accessibility, performance
 Report Format: html
 ```
 
-### Specific Test Type
+### 特定测试类型
 
 ```markdown
 [VibeTesting]
@@ -85,85 +85,85 @@ Testing Type: accessibility
 WCAG Level: AA
 ```
 
-## Parameters
+## 参数
 
-| Parameter | Required | Description | Default |
+| 参数 | 是否必填 | 描述 | 默认值 |
 |-----------|----------|-------------|---------|
-| `target_url` | Yes | URL to test | - |
-| `testing_type` | No | Type of testing | `comprehensive` |
-| `include` | No | Test categories to run | All |
-| `exclude` | No | Test categories to skip | None |
-| `report_format` | No | Output format | `html` |
-| `viewport` | No | Browser viewport size | `1920x1080` |
-| `headless` | No | Run without browser UI | `true` |
-| `timeout` | No | Test timeout (seconds) | `60` |
-| `wait_for_network` | No | Wait for network idle | `true` |
-| `cookies` | No | Cookies to set | `{}` |
-| `auth` | No | Basic auth credentials | `null` |
-| `wcag_level` | No | WCAG compliance level | `AA` |
-| `performance_threshold` | No | Max load time (ms) | `3000` |
-| `screenshot_baseline` | No | Baseline screenshot for comparison | `null` |
-| `visual_threshold` | No | Visual diff threshold (0-1) | `0.01` |
+| `target_url` | 是 | 要测试的URL | - |
+| `testing_type` | 否 | 测试类型 | `comprehensive` |
+| `include` | 否 | 要运行的测试类别 | 所有 |
+| `exclude` | 否 | 要跳过的测试类别 | 无 |
+| `report_format` | 否 | 输出格式 | `html` |
+| `viewport` | 否 | 浏览器视口大小 | `1920x1080` |
+| `headless` | 否 | 无浏览器界面的运行模式 | `true` |
+| `timeout` | 否 | 测试超时（秒） | `60` |
+| `wait_for_network` | 否 | 等待网络连接稳定 | `true` |
+| `cookies` | 否 | 要设置的Cookie | `{}` |
+| `auth` | 否 | 基本认证凭据 | `null` |
+| `wcag_level` | 否 | WCAG合规性级别 | `AA` |
+| `performance_threshold` | 否 | 最大加载时间（毫秒） | `3000` |
+| `screenshot_baseline` | 否 | 用于对比的基准截图 | `null` |
+| `visual_threshold` | 否 | 视觉差异阈值（0-1） | `0.01` |
 
-## Testing Types
+## 测试类型
 
 ### quick
-Fast smoke tests (5-10 seconds)
-- Basic page load
-- Main elements present
-- No JavaScript errors
+快速测试（5-10秒）
+- 基本页面加载
+- 主要元素存在
+- 无JavaScript错误
 
 ### functional
-Full functional testing (30-60 seconds)
-- Form testing
-- Button interactions
-- Navigation flows
-- API validation
+全面功能测试（30-60秒）
+- 表单测试
+- 按钮交互
+- 导航流程
+- API验证
 
 ### comprehensive
-Complete testing suite (2-5 minutes)
-- All functional tests
-- Accessibility audit
-- Performance metrics
-- Visual regression
-- Security checks
+完整测试套件（2-5分钟）
+- 所有功能测试
+- 无障碍审计
+- 性能指标
+- 视觉回归
+- 安全性检查
 
 ### accessibility
-Dedicated accessibility testing (1-2 minutes)
-- WCAG compliance
-- ARIA labels
-- Keyboard navigation
-- Screen reader text
+专门的无障碍测试（1-2分钟）
+- WCAG合规性
+- ARIA标签
+- 键盘导航
+- 屏幕阅读器文本
 
 ### performance
-Performance-focused testing (30-60 seconds)
-- Page load time
-- Core Web Vitals
-- Resource timing
-- Lighthouse score
+专注于性能的测试（30-60秒）
+- 页面加载时间
+- 核心Web Vital指标
+- 资源加载时间
+- Lighthouse评分
 
 ### visual
-Visual regression testing (1-2 minutes)
-- Full-page screenshot
-- Layout comparison
-- Visual diff generation
+视觉回归测试（1-2分钟）
+- 全页截图
+- 布局对比
+- 视觉差异生成
 
 ### security
-Security-focused testing (30-60 seconds)
-- HTTPS check
-- CSP validation
-- Basic vulnerability scan
+专注于安全的测试（30-60秒）
+- HTTPS检查
+- CSP验证
+- 基本漏洞扫描
 
 ### e2e
-End-to-end user journeys (varies)
-- Multi-step flows
-- Authentication
-- Checkout processes
-- User scenarios
+端到端用户流程测试（时间不定）
+- 多步骤流程
+- 认证
+- 结账流程
+- 用户场景
 
-## Examples
+## 示例
 
-### Test a Simple Page
+### 测试简单页面
 
 ```
 [VibeTesting]
@@ -171,7 +171,7 @@ target_url: https://example.com
 testing_type: quick
 ```
 
-### Run Full Accessibility Audit
+### 运行全面无障碍审计
 
 ```
 [VibeTesting]
@@ -181,7 +181,7 @@ wcag_level: AA
 report_format: detailed
 ```
 
-### Performance Testing with Custom Viewport
+### 使用自定义视口进行性能测试
 
 ```
 [VibeTesting]
@@ -192,7 +192,7 @@ performance_threshold: 2000
 headless: true
 ```
 
-### Visual Regression Testing
+### 进行视觉回归测试
 
 ```
 [VibeTesting]
@@ -202,7 +202,7 @@ screenshot_baseline: baseline.png
 visual_threshold: 0.05
 ```
 
-### E2E Checkout Flow Testing
+### 进行端到端结账流程测试
 
 ```
 [VibeTesting]
@@ -219,7 +219,7 @@ auth:
   pass: testpass123
 ```
 
-### Custom Test with Specific Elements
+### 使用特定元素进行自定义测试
 
 ```
 [VibeTesting]
@@ -236,27 +236,27 @@ elements:
       visible: true
 ```
 
-## Output
+## 输出
 
-### Console Output
-Real-time test progress and results
+### 控制台输出
+实时测试进度和结果
 
-### HTML Report
-Detailed interactive report with:
-- Test summary
-- Pass/fail breakdown
-- Performance metrics
-- Accessibility score
-- Visual diffs (if applicable)
-- Screenshots
-- Recommendations
+### HTML报告
+详细的交互式报告，包含：
+- 测试总结
+- 通过/失败情况
+- 性能指标
+- 无障碍评分
+- 视觉差异（如适用）
+- 屏幕截图
+- 建议
 
-### JSON Export
-Machine-readable results for CI/CD integration
+### JSON导出
+适用于CI/CD集成的机器可读结果
 
-## Integration
+## 集成
 
-### CI/CD Pipeline
+### CI/CD管道
 
 ```yaml
 - name: Browser Testing
@@ -278,65 +278,65 @@ Machine-readable results for CI/CD integration
       --output results/
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Test Environment**
-   - Use staging/development URLs for testing
-   - Avoid testing production without permission
-   - Set up test accounts if needed
+1. **测试环境**
+   - 使用测试环境/开发环境的URL进行测试
+   - 未经许可勿在生产环境中进行测试
+   - 如有需要，设置测试账户
 
-2. **Performance**
-   - Use headless mode for CI/CD
-   - Set appropriate timeouts
-   - Don't overload target servers
+2. **性能**
+   - 在CI/CD过程中使用无浏览器界面模式
+   - 设置适当的超时时间
+   - 避免过载目标服务器
 
-3. **Security**
-   - Never commit credentials
-   - Use environment variables
-   - Validate SSL certificates
+3. **安全性**
+   - 绝不要提交认证凭据
+   - 使用环境变量
+   - 验证SSL证书
 
-4. **Visual Testing**
-   - Establish baseline screenshots
-   - Update baselines after design changes
-   - Set appropriate thresholds
+4. **视觉测试**
+   - 建立基准截图
+   - 设计更改后更新基准
+   - 设置适当的阈值
 
-5. **Accessibility**
-   - Test with real screen readers
-   - Check keyboard navigation
-   - Verify color contrast ratios
+5. **无障碍测试**
+   - 使用真实的屏幕阅读器进行测试
+   - 检查键盘导航功能
+   - 验证颜色对比度
 
-## Troubleshooting
+## 故障排除
 
-### Browser Won't Start
-- Ensure Chrome/Chromium is installed
-- Check port availability
-- Verify no conflicting processes
+### 浏览器无法启动
+- 确保安装了Chrome/Chromium
+- 检查端口是否可用
+- 确认没有冲突的进程
 
-### Elements Not Found
-- Check if page fully loaded
-- Verify selectors are correct
-- Wait for dynamic content
+### 元素未找到
+- 检查页面是否完全加载
+- 确认选择器是否正确
+- 等待动态内容加载完成
 
-### Timeout Errors
-- Increase timeout setting
-- Check network connectivity
-- Verify server responsiveness
+### 超时错误
+- 增加超时设置
+- 检查网络连接
+- 确认服务器响应速度
 
-### Memory Issues
-- Run in headless mode
-- Close other browser instances
-- Increase system resources
+### 内存问题
+- 使用无浏览器界面模式运行
+- 关闭其他浏览器实例
+- 增加系统资源
 
-## Requirements
+## 要求
 
-- **Browser**: Chrome/Chromium (recommended)
-- **OpenClaw**: Gateway running with browser support
-- **Network**: Internet access for testing external URLs
-- **Permissions**: No special system permissions needed
+- **浏览器**：推荐使用Chrome/Chromium
+- **OpenClaw**：需启用浏览器支持的Gateway版本
+- **网络**：需要互联网连接以测试外部URL
+- **权限**：无需特殊系统权限
 
-## Advanced Configuration
+## 高级配置
 
-### Custom Viewports
+### 自定义视口
 
 ```yaml
 viewports:
@@ -345,7 +345,7 @@ viewports:
   mobile: 390x844
 ```
 
-### Wait Strategies
+### 等待策略
 
 ```yaml
 wait:
@@ -355,7 +355,7 @@ wait:
   timeout: 30
 ```
 
-### Retry Configuration
+### 重试配置
 
 ```yaml
 retry:
@@ -366,70 +366,70 @@ retry:
     - "#async-content"
 ```
 
-## Reporting
+## 报告
 
-### Report Sections
+### 报告内容
 
-1. **Executive Summary**
-   - Overall score
-   - Test statistics
-   - Critical issues
+1. **执行摘要**
+   - 总分
+   - 测试统计信息
+   - 严重问题
 
-2. **Functional Results**
-   - Test cases
-   - Pass/fail details
-   - Error messages
+2. **功能测试结果**
+   - 测试用例
+   - 通过/失败详情
+   - 错误信息
 
-3. **Accessibility Report**
-   - WCAG compliance
-   - Issues by severity
-   - Recommendations
+3. **无障碍测试报告**
+   - WCAG合规性
+   - 问题严重程度
+   - 建议
 
-4. **Performance Metrics**
-   - Load time breakdown
-   - Core Web Vitals
-   - Lighthouse score
+4. **性能指标**
+   - 加载时间分布
+   - 核心Web Vital指标
+   - Lighthouse评分
 
-5. **Visual Comparison**
-   - Baseline vs current
-   - Visual diff highlight
-   - Change detection
+5. **视觉对比**
+   - 基准与当前状态的对比
+   - 视觉差异高亮显示
+   - 变更检测结果
 
-6. **Security Findings**
-   - Vulnerabilities
-   - Recommendations
-   - Risk level
+6. **安全问题**
+   - 漏洞信息
+   - 建议
+   - 风险等级
 
-## Limitations
+## 限制
 
-- Cannot test payment processing (requires real credentials)
-- Limited to visible content (cannot bypass authentication barriers)
-- Visual testing depends on rendering consistency
-- Performance metrics may vary between runs
+- 无法测试支付处理（需要真实凭据）
+- 仅限于可见内容（无法绕过认证机制）
+- 视觉测试依赖于渲染的一致性
+- 性能指标可能因运行环境而异
 
-## Future Enhancements
+## 未来改进计划
 
-- [ ] Multi-browser support (Firefox, Safari)
-- [ ] Cloud browser integration (BrowserStack, Sauce Labs)
-- [ ] AI-powered test generation
-- [ ] Custom test scripts (JavaScript/Python)
-- [ ] Test recorder (record interactions)
-- [ ] Integration with testing frameworks (Playwright, Cypress)
-- [ ] Parallel test execution
-- [ ] Distributed testing across nodes
+- [ ] 支持多浏览器（Firefox、Safari）
+- [ ] 集成云浏览器测试平台（BrowserStack、Sauce Labs）
+- [ ] 基于AI的测试生成
+- [ ] 自定义测试脚本（JavaScript/Python）
+- [ ] 测试录制功能
+- [ ] 与测试框架集成（Playwright、Cypress）
+- [ ] 并行执行测试
+- [ ] 在多个节点上进行分布式测试
 
-## Support
+## 支持
 
-- **Issues**: Report bugs and feature requests
-- **Documentation**: See OpenClaw docs
-- **Examples**: Check the examples directory
+- **问题报告**：提交错误和功能请求
+- **文档**：请参考OpenClaw官方文档
+- **示例**：查看示例目录
 
-## Version
+## 版本信息
 
-- **Current**: 1.0.0
-- **Last Updated**: 2026-02-05
-- **Author**: OpenClaw Community
+- **当前版本**：1.0.0
+- **最后更新时间**：2026-02-05
+- **作者**：OpenClaw社区
 
 ---
 
-**Happy Testing!** 🧪🔍✨
+**祝您测试顺利！** 🧪🔍✨

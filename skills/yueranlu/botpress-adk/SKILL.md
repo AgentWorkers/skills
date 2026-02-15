@@ -1,112 +1,112 @@
 ---
 name: adk
-description: A guide to build AI bots with Botpress's Agent Development Kit (ADK)
+description: 使用 Botpress 的 Agent Development Kit (ADK) 构建 AI 机器人的指南
 version: 1.0.0
 author: yueranlu
 tags: [botpress, adk, chatbot, ai, typescript]
 homepage: https://github.com/botpress/adk
 ---
 
-# Botpress ADK Development Guide
+# Botpress ADK开发指南
 
-A comprehensive guide for building AI bots with the Botpress Agent Development Kit (ADK).
+本指南详细介绍了如何使用Botpress代理开发工具包（ADK）构建AI机器人。
 
-## When to Use
+## 使用场景
 
-- User asks to build a Botpress bot or chatbot
-- User mentions ADK, Agent Development Kit, or Botpress
-- User wants to create actions, tools, workflows, conversations, tables, triggers, or knowledge bases
-- User needs help with `adk` CLI commands (init, dev, deploy, link)
-- User has ADK-related errors or needs troubleshooting
-- User asks about bot configuration, state management, or integrations
+- 用户希望创建Botpress机器人或聊天机器人
+- 用户提到ADK、代理开发工具包或Botpress
+- 用户需要创建动作（Actions）、工具（Tools）、工作流（Workflows）、对话（Conversations）、表格（Tables）、触发器（Triggers）或知识库（Knowledge Bases）
+- 用户需要帮助使用`adk`命令行界面（CLI）的命令（如`init`、`dev`、`deploy`、`link`）
+- 用户遇到与ADK相关的问题或需要故障排除
+- 用户询问关于机器人配置、状态管理或集成的问题
 
-## Quick Reference
+## 快速参考
 
-The ADK is a **convention-based TypeScript framework** where **file structure maps directly to bot behavior**.
+ADK是一个基于约定的TypeScript框架，其中文件结构直接决定了机器人的行为。
 
-**Your role:** Guide users through the entire bot development lifecycle - from project setup to deployment. Use the patterns and code examples in this skill to write correct, working ADK code.
+**您的角色：**指导用户完成整个机器人开发生命周期，从项目设置到部署。使用本指南中的模式和代码示例来编写正确的、可运行的ADK代码。
 
-**Key principle:** In ADK, **where you put files matters**. Each component type has a specific `src/` subdirectory, and files are auto-discovered based on location.
+**关键原则：**在ADK中，**文件的位置非常重要**。每种组件类型都有特定的`src/`子目录，文件会根据位置自动被识别。
 
-## How to Use This Skill
+## 如何使用本指南
 
-**This skill is your primary reference for building Botpress bots.** When a user asks you to build something with the ADK:
+**本指南是您构建Botpress机器人的主要参考资料。**当用户请求使用ADK构建某些功能时，请按照以下步骤操作：
 
-1. **Identify what they need** - Is it a new bot, a feature (action, tool, workflow), data storage (table), or event handling (trigger)?
-2. **Check the correct directory** - Each component type goes in a specific `src/` subdirectory
-3. **Use the patterns below** - Follow the code examples exactly, they represent the correct ADK conventions
-4. **Run `adk --help`** - For CLI commands not covered here, or `adk <command> --help` for specific help
+1. **确定需求**：是需要一个新的机器人、功能（动作、工具、工作流）、数据存储（表格）还是事件处理（触发器）？
+2. **检查正确的目录**：每种组件类型都位于特定的`src/`子目录中。
+3. **遵循代码示例**：严格按照代码示例操作，它们代表了正确的ADK规范。
+4. **运行`adk --help`**：对于未在此处覆盖的CLI命令，可以使用`adk <command> --help`获取具体帮助。
 
-**Decision Guide - What Component to Create:**
+**决策指南 - 创建什么组件：**
 
-| User Wants To... | Create This | Location |
+| 用户需求 | 创建内容 | 位置 |
 |------------------|-------------|----------|
-| Handle user messages | Conversation | `src/conversations/` |
-| Add a function the AI can call | Tool | `src/tools/` |
-| Add reusable business logic | Action | `src/actions/` |
-| Run background/scheduled tasks | Workflow | `src/workflows/` |
-| Store structured data | Table | `src/tables/` |
-| React to events (user created, etc.) | Trigger | `src/triggers/` |
-| Give AI access to docs/data | Knowledge Base | `src/knowledge/` |
-| Connect external service (Slack, etc.) | Integration | `adk add <name>` |
+| 处理用户消息 | 对话（Conversations） | `src/conversations/` |
+| 添加AI可调用的功能 | 工具（Tools） | `src/tools/` |
+| 添加可重用的业务逻辑 | 动作（Actions） | `src/actions/` |
+| 运行后台/定时任务 | 工作流（Workflows） | `src/workflows/` |
+| 存储结构化数据 | 表格（Tables） | `src/tables/` |
+| 对事件作出反应（用户创建等） | 触发器（Triggers） | `src/triggers/` |
+| 让AI访问文档/数据 | 知识库（Knowledge Bases） | `src/knowledge/` |
+| 连接外部服务（如Slack） | 集成（Integrations） | `adk add <名称>` |
 
-**If the information in this skill isn't enough**, fetch the corresponding GitHub reference file (links provided in each section) for more detailed specifications.
+**如果本指南中的信息不够，请**查阅相应部分的GitHub参考文件（提供链接）以获取更详细的规范。
 
-## Important: ADK is AI-Native
+## 重要提示：ADK是AI原生的
 
-The ADK does **NOT** use traditional chatbot patterns. Don't create intents, entities, or dialog flows.
+ADK**不**使用传统的聊天机器人模式。**请不要创建意图（Intents）、实体（Entities）或对话流程（Dialog Flows）。
 
-**Instead of:**
-- Defining intents (`greet`, `orderPizza`, `checkStatus`)
-- Training entity extraction (`@pizzaSize`, `@toppings`)
-- Manually routing to intent handlers
+**替代方法：**
+- 定义意图（如`greet`、`orderPizza`、`checkStatus`）
+- 训练实体提取（如`@pizzaSize`、`@toppings`）
+- 手动路由到意图处理程序
 
-**ADK uses:**
-- `execute()` - The AI understands user intent naturally from instructions
-- Tools - AI autonomously decides when to call your functions
-- `zai.extract()` - Schema-based structured data extraction
-- Knowledge bases - RAG for grounding responses in your docs
+**ADK使用的方法：**
+- `execute()`：AI能够直接从指令中理解用户意图
+- 工具（Tools）：AI自主决定何时调用您的功能
+- `zai.extract()`：基于模式的结构化数据提取
+- 知识库（Knowledge Bases）：用于为响应提供上下文
 
-**Docs:** https://www.botpress.com/docs/adk/
-**GitHub:** https://github.com/botpress/skills/tree/master/skills/adk
+**文档：**https://www.botpress.com/docs/adk/
+**GitHub：**https://github.com/botpress/skills/tree/master/skills/adk/
 
 ---
 
-## Prerequisites & Installation
+## 先决条件与安装
 
-Before using the ADK, ensure the user has:
+在使用ADK之前，请确保用户具备以下条件：
 
-- **Botpress Account** - Create at https://app.botpress.cloud
-- **Node.js v22.0.0+** - Check with `node --version`
-- **Package Manager** - bun (recommended), pnpm, yarn, or npm
+- **Botpress账户**：在https://app.botpress.cloud创建账户
+- **Node.js v22.0.0+**：使用`node --version`检查版本
+- **包管理器**：推荐使用bun、pnpm或yarn
 
-**Install the ADK CLI:**
+**安装ADK CLI：**
 
-macOS & Linux:
-```bash
+- macOS & Linux：
+  ```bash
 curl -fsSL https://github.com/botpress/adk/releases/latest/download/install.sh | bash
 ```
 
-Windows (PowerShell):
-```powershell
+- Windows（PowerShell）：
+  ```powershell
 powershell -c "irm https://github.com/botpress/adk/releases/latest/download/install.ps1 | iex"
 ```
 
-**Verify installation:**
-```bash
+**验证安装：**
+  ```bash
 adk --version
 ```
 
-If installation fails, check https://github.com/botpress/adk/releases for manual download options.
+如果安装失败，请查看https://github.com/botpress/adk/releases以获取手动下载选项。
 
-**Docs:** https://www.botpress.com/docs/adk/quickstart
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
+**文档：**https://www.botpress.com/docs/adk/quickstart
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
 
 ---
 
-## Quick Start
+## 快速入门
 
-Once the ADK CLI is installed, create a new bot:
+安装ADK CLI后，创建一个新的机器人：
 
 ```bash
 adk init my-bot         # Create project (choose "Hello World" template for beginners)
@@ -119,20 +119,20 @@ adk chat                # Test in CLI (run in separate terminal)
 adk deploy              # Deploy to production when ready
 ```
 
-The visual console at **http://localhost:3001/** lets you configure integrations and test the bot.
+通过**http://localhost:3001/**的可视化控制台，您可以配置集成并测试机器人。
 
-**Docs:** https://www.botpress.com/docs/adk/quickstart
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
+**文档：**https://www.botpress.com/docs/adk/quickstart
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
 
 ---
 
-## Linking and Deploying Your Bot
+## 链接和部署机器人
 
-**IMPORTANT:** Your bot must be linked to Botpress Cloud and deployed for it to work. The ADK runs locally during development but the bot itself lives in Botpress Cloud.
+**重要提示：**您的机器人必须链接到Botpress Cloud并部署才能正常工作。ADK在开发过程中运行在本地，但机器人本身存储在Botpress Cloud中。
 
-### The Correct Order: Link → Dev → Deploy
+### 正确顺序：链接 → 开发 → 部署
 
-Follow this order to get your bot working:
+按照以下顺序操作以使机器人生效：
 
 ```bash
 # 1. LINK - Connect your project to Botpress Cloud (creates agent.json)
@@ -145,28 +145,26 @@ adk dev
 adk deploy
 ```
 
-**Step-by-step:**
+**步骤说明：**
 
-1. **`adk link`** - Links your local project to a bot in Botpress Cloud. This creates `agent.json` with your workspace and bot IDs. Run this first before anything else.
+1. **`adk link`**：将本地项目链接到Botpress Cloud中的机器人。这会生成包含工作区和机器人ID的`agent.json`文件。在其他操作之前，请先运行此命令。
+2. **`adk dev`**：启动本地开发服务器，并支持热重载。在http://localhost:3001打开开发控制台，您可以在此配置集成并测试机器人。在另一个终端中使用`adk chat`进行测试。
+3. **`adk deploy`**：将机器人部署到生产环境。当您准备好让机器人通过生产渠道（如Slack、WhatsApp、Webchat等）访问时，运行此命令。
 
-2. **`adk dev`** - Starts the local development server with hot reloading. Opens the dev console at http://localhost:3001 where you can configure integrations and test your bot. Use `adk chat` in a separate terminal to test.
+### 故障排除
 
-3. **`adk deploy`** - Deploys your bot to production. Run this when you're ready for your bot to be live and accessible through production channels (Slack, WhatsApp, webchat, etc.).
+**如果在运行`adk dev`或`adk deploy`时遇到错误：**
 
-### Troubleshooting Errors
+1. **检查日志**：查看终端输出或http://localhost:3001开发控制台中的日志面板。
+2. **复制错误信息**：从日志中选择并复制完整的错误信息。
+3. **寻求帮助**：将错误信息粘贴回AI助手，并请求其帮助解决问题。
 
-**If you encounter errors when running `adk dev` or `adk deploy`:**
+**常见错误场景：**
+- **集成配置错误**：通常意味着需要在http://localhost:3001的UI中配置集成。
+- **类型错误**：通常由导入错误或模式不匹配引起。
+- **部署失败**：可能表示缺少环境变量或配置无效。
 
-1. **Check the logs** - Look at the terminal output or the logs panel in the dev console at http://localhost:3001
-2. **Copy the error message** - Select and copy the full error message from the logs
-3. **Ask for help** - Paste the error back to the AI assistant and ask it to help fix the issue
-
-Common error scenarios:
-- **Integration configuration errors:** Usually means an integration needs to be configured in the UI at localhost:3001
-- **Type errors:** Often caused by incorrect imports or schema mismatches
-- **Deployment failures:** May indicate missing environment variables or invalid configuration
-
-**Example workflow for fixing errors:**
+**示例错误处理流程：**
 ```
 1. Run `adk dev` or `adk deploy`
 2. See error in terminal/logs
@@ -175,51 +173,32 @@ Common error scenarios:
 5. The AI will help diagnose and fix the issue
 ```
 
-**Docs:** https://www.botpress.com/docs/adk/quickstart
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
+**文档：**https://www.botpress.com/docs/adk/quickstart
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
 
 ---
 
-## Project Structure
+## 项目结构
 
-**Critical rule:** File location determines behavior. Place components in the correct `src/` subdirectory or they won't be discovered.
+**重要规则：**文件的位置决定了其行为。**请将组件放置在正确的`src/`子目录中，否则它们将无法被识别。
 
-```
-my-bot/
-├── agent.config.ts    # Bot configuration: name, models, state schemas, integrations
-├── agent.json         # Workspace/bot IDs (auto-generated by adk link/dev, add to .gitignore)
-├── package.json       # Node.js dependencies and scripts (dev, build, deploy)
-├── tsconfig.json      # TypeScript configuration
-├── .env               # API keys and secrets (never commit!)
-├── .gitignore         # Should include: agent.json, .env, node_modules/, .botpress/
-├── src/
-│   ├── conversations/ # Handle incoming messages → use execute() for AI responses
-│   ├── workflows/     # Background processes → use step() for resumable operations
-│   ├── actions/       # Reusable functions → call from anywhere with actions.name()
-│   ├── tools/         # AI-callable functions → AI decides when to invoke these
-│   ├── tables/        # Data storage → auto-synced to cloud, supports semantic search
-│   ├── triggers/      # Event handlers → react to user.created, integration events, etc.
-│   └── knowledge/     # RAG sources → index docs, websites, or tables for AI context
-└── .botpress/         # Auto-generated types (never edit manually)
-```
+**关键配置文件：**
 
-**Key Configuration Files:**
+- **agent.config.ts**：主要配置文件，定义机器人元数据、AI模型、状态模式和集成（您可以编辑此文件）。
+- **agent.json**：将代理与工作区/机器人ID关联起来。由`adk link`或`adk dev`自动生成。**请将其添加到`.gitignore`中**，因为它包含因开发者而异的环境特定ID。
+- **package.json**：Node.js配置文件，包含`@botpress/runtime`依赖项以及`dev`、`build`、`deploy`脚本。
+- **tsconfig.json**：项目的TypeScript配置文件。
+- **.env**：环境变量文件，用于存储API密钥和秘密信息（切勿提交！）
+- **.gitignore**：应包含`agent.json`、`.env`、`node_modules/`、`.botpress/`。
 
-- **agent.config.ts** - Primary configuration defining bot metadata, AI models, state schemas, and integrations (you edit this)
-- **agent.json** - Links agent to workspace/bot IDs. Auto-generated by `adk link` or `adk dev`. **Add to .gitignore** - contains environment-specific IDs that differ per developer
-- **package.json** - Node.js config with `@botpress/runtime` dependency and scripts for `dev`, `build`, `deploy`
-- **tsconfig.json** - TypeScript configuration for the project
-- **.env** - Environment variables for API keys and secrets (never commit!)
-- **.gitignore** - Should include: `agent.json`, `.env`, `node_modules/`, `.botpress/`
-
-**Docs:** https://www.botpress.com/docs/adk/project-structure
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/agent-config.md
+**文档：**https://www.botpress.com/docs/adk/project-structure
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/agent-config.md
 
 ---
 
-## Agent Configuration
+## 代理配置
 
-The `agent.config.ts` file defines your bot's identity, AI models, state schemas, and integrations. Always start here when setting up a new bot.
+`agent.config.ts`文件定义了机器人的身份、AI模型、状态模式和集成。设置新机器人时，请始终从这里开始。
 
 ```typescript
 import { defineConfig, z } from "@botpress/runtime";
@@ -276,34 +255,33 @@ export default defineConfig({
 });
 ```
 
-**Available models:**
-- OpenAI: `openai:gpt-4o`, `openai:gpt-4o-mini`, `openai:gpt-4-turbo`
-- Anthropic: `anthropic:claude-3-5-sonnet`, `anthropic:claude-3-opus`
-- Google: `google:gemini-1.5-pro`, `google:gemini-1.5-flash`
+**可用模型：**
+- OpenAI：`openai:gpt-4o`、`openai:gpt-4o-mini`、`openai:gpt-4-turbo`
+- Anthropic：`anthropic:claude-3-5-sonnet`、`anthropic:claude-3-opus`
+- Google：`google:gemini-1.5-pro`、`google:gemini-1.5-flash`
 
-**Docs:** https://www.botpress.com/docs/adk/project-structure
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/agent-config.md
+**文档：**https://www.botpress.com/docs/adk/project-structure
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/agent-config.md
 
 ---
 
-## Core Concepts
+## 核心概念
 
-### 1. Actions - Reusable Business Logic
+### 1. 动作（Actions） - 可重用的业务逻辑
 
-**When to create an Action:**
-- You need reusable logic that will be called from multiple places (workflows, conversations, triggers)
-- You're wrapping an external API or database operation
-- You want testable, composable business logic
-- You need to call integration APIs (Slack, Linear, etc.) with custom logic
+**何时创建动作：**
+- 当您需要可重用的逻辑，并且该逻辑将在多个地方被调用时（如工作流、对话、触发器）。
+- 当您正在封装外部API或数据库操作时。
+- 当您需要可测试、可组合的业务逻辑时。
+- 当您需要调用集成API（如Slack、Linear等）并使用自定义逻辑时。
 
-**When NOT to use an Action (use a Tool instead):**
-- You want the AI to decide when to call it autonomously
-- The function should be available during `execute()`
+**何时不使用动作（而使用工具：**  
+- 当您希望AI自主决定何时调用该功能时。
+- 该功能应在`execute()`期间可用。
 
-Actions are **not** directly callable by the AI - convert them to tools with `.asTool()` if the AI needs to use them.
+**位置：**`src/actions/`
 
-**Location:** `src/actions/*.ts`
-
+**调用动作：**
 ```typescript
 import { Action, z } from "@botpress/runtime";
 
@@ -323,68 +301,36 @@ export const fetchUser = new Action({
 });
 ```
 
-**Calling actions:**
-```typescript
-import { actions } from "@botpress/runtime";
-const userData = await actions.fetchUser({ userId: "123" });
+**关键规则：**
+- 处理程序接收`{ input, client }`：必须在处理程序内部解构`input`。
+- 不能直接在参数中解构输入字段。
+- 可以调用其他动作、集成动作或访问状态。
+- 可以使用`.asTool()`将其转换为工具。
 
-// To make an action callable by the AI, convert it to a tool:
-tools: [actions.fetchUser.asTool()]
-```
-
-**Key Rules:**
-- Handler receives `{ input, client }` - must destructure `input` inside the handler
-- Cannot destructure input fields directly in parameters
-- Can call other actions, integration actions, access state
-- Can be converted to tools with `.asTool()`
-
-**Docs:** https://www.botpress.com/docs/adk/concepts/actions
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/actions.md
+**文档：**https://www.botpress.com/docs/adk/concepts/actions
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/actions.md
 
 ---
 
-### 2. Tools - AI-Callable Functions
+### 2. 工具（Tools） - AI可调用的函数
 
-**When to create a Tool:**
-- You want the AI to autonomously decide when to use this function
-- The function retrieves information the AI needs (search, lookup, fetch)
-- The function performs actions on behalf of the user (create ticket, send message)
-- You're building capabilities the AI should have during conversations
+**何时创建工具：**
+- 当您希望AI自主决定何时使用该功能时。
+- 该功能需要检索AI所需的信息（搜索、查找、获取）。
+- 该功能需要代表用户执行操作（创建工单、发送消息）。
+- 当您正在构建AI在对话中应具备的功能时。
 
-**The AI decides when to use tools based on:**
-1. The tool's `description` - Make this clear and specific about WHEN to use it
-2. The input schema's `.describe()` fields - Help AI understand what parameters mean
-3. The conversation context and user's intent
+**AI根据以下因素决定使用工具：**
+1. 工具的`description`：明确说明其使用时机。
+2. 输入模式的`.describe()`字段：帮助AI理解参数的含义。
+3. 对话上下文和用户意图。
 
-**Key difference from Actions:** Tools can destructure input directly; Actions cannot.
+**工具与动作的主要区别：**  
+- 工具可以直接解构输入；动作则不能。
 
-**Location:** `src/tools/*.ts`
+**位置：**`src/tools/`
 
-```typescript
-import { Autonomous, z } from "@botpress/runtime";
-
-export const searchProducts = new Autonomous.Tool({
-  name: "searchProducts",
-  // This description is critical - it tells the AI when to use this tool
-  description: "Search the product catalog. Use when user asks about products, availability, pricing, or wants to browse items.",
-
-  input: z.object({
-    query: z.string().describe("Search keywords"),
-    category: z.string().optional().describe("Filter by category")
-  }),
-  output: z.object({
-    products: z.array(z.object({ id: z.string(), name: z.string(), price: z.number() }))
-  }),
-
-  // Unlike actions, tools CAN destructure input directly in the handler
-  handler: async ({ query, category }) => {
-    // Your search logic here
-    return { products: [] };
-  }
-});
-```
-
-**Using ThinkSignal:** When a tool can't complete but you want to give the AI context:
+**使用ThinkSignal：**当工具无法完成任务但您希望为AI提供上下文时：**
 ```typescript
 import { Autonomous } from "@botpress/runtime";
 
@@ -395,7 +341,7 @@ throw new Autonomous.ThinkSignal(
 );
 ```
 
-**Advanced Tool Properties:**
+**高级工具属性：**
 ```typescript
 export const myTool = new Autonomous.Tool({
   name: "myTool",
@@ -417,83 +363,37 @@ export const myTool = new Autonomous.Tool({
 });
 ```
 
-**Docs:** https://www.botpress.com/docs/adk/concepts/tools
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tools.md
+**文档：**https://www.botpress.com/docs/adk/concepts/tools**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tools.md
 
 ---
 
-### 3. Conversations - Message Handlers
+### 3. 对话（Conversations） - 消息处理程序
 
-**When to create a Conversation:**
-- Every bot needs at least one conversation handler to respond to users
-- Create separate handlers for different channels if they need different behavior
-- Use `channel: "*"` to handle all channels with one handler
+**何时创建对话：**
+- 每个机器人至少需要一个对话处理程序来响应用户。
+- 如果不同渠道需要不同的行为，请为它们创建单独的处理程序。
+- 使用`channel: "*"`来使用一个处理程序处理所有渠道。
 
-**Key decisions when building a conversation:**
-1. **Which channels?** - Specify `"*"` for all, or specific channels like `"slack.dm"`
-2. **What tools does the AI need?** - Pass them to `execute({ tools: [...] })`
-3. **What knowledge should ground responses?** - Pass to `execute({ knowledge: [...] })`
-4. **What instructions guide the AI?** - Define personality, rules, and context
+**构建对话时的关键决策：**
+1. **哪些渠道？** - 指定`"*"`以处理所有渠道，或指定特定渠道（如`slack.dm`）。
+2. **AI需要哪些工具？** - 将它们传递给`execute({ tools: [...] })`。
+3. **哪些知识应该用于生成响应？** - 传递给`execute({ knowledge: [...] })`。
+4. **哪些指令指导AI？** - 定义机器人的人格、规则和上下文。
 
-**The `execute()` function is the heart of ADK** - it runs autonomous AI logic with your tools and knowledge. Most conversation handlers will call `execute()`.
+**`execute()`函数是ADK的核心**——它使用工具和知识运行自主AI逻辑。大多数对话处理程序都会调用`execute()`。
 
-**Location:** `src/conversations/*.ts`
+**位置：**`src/conversations/`
 
-```typescript
-import { Conversation, z } from "@botpress/runtime";
+**处理程序上下文：**
+- `message`：用户消息数据。
+- `execute`：运行自主AI逻辑。
+- `conversation`：对话实例方法（发送、开始打字、停止打字）。
+- `state`：可变状态（机器人、用户、对话）。
+- `client`：Botpress API客户端。
+- `type`：事件类型（消息、工作流请求）。
 
-export const Chat = new Conversation({
-  // Which channels this handler responds to
-  channel: "chat.channel",  // Or "*" for all, or ["slack.dm", "webchat.channel"]
-
-  // Per-conversation state (optional)
-  state: z.object({
-    messageCount: z.number().default(0)
-  }),
-
-  async handler({ message, state, conversation, execute, user }) {
-    state.messageCount += 1;
-
-    // Handle commands
-    if (message?.payload?.text?.startsWith("/help")) {
-      await conversation.send({
-        type: "text",
-        payload: { text: "Available commands: /help, /status" }
-      });
-      return;
-    }
-
-    // Let the AI handle the response with your tools and knowledge
-    await execute({
-      // Instructions guide the AI's behavior and personality
-      instructions: `You are a helpful customer support agent for Acme Corp.
-        User's name: ${user.state.name || "there"}
-        User's tier: ${user.state.tier}
-        Be friendly, concise, and always offer to help further.`,
-
-      // Tools the AI can use during this conversation
-      tools: [searchProducts, actions.createTicket.asTool()],
-
-      // Knowledge bases for RAG - AI will search these to ground responses
-      knowledge: [DocsKnowledgeBase],
-
-      model: "openai:gpt-4o",
-      temperature: 0.7,
-      iterations: 10  // Max tool call iterations
-    });
-  }
-});
-```
-
-**Handler Context:**
-- `message` - User's message data
-- `execute` - Run autonomous AI logic
-- `conversation` - Conversation instance methods (send, startTyping, stopTyping)
-- `state` - Mutable state (bot, user, conversation)
-- `client` - Botpress API client
-- `type` - Event classification (message, workflow_request)
-
-**Execute Function Options:**
+**执行函数选项：**
 ```typescript
 await execute({
   instructions: string | async function,  // Required
@@ -511,176 +411,84 @@ await execute({
 });
 ```
 
-**Common channels:** `chat.channel`, `webchat.channel`, `slack.dm`, `slack.channel`, `discord.channel`, `whatsapp.channel`, `"*"` (all)
+**常见渠道：**`chat.channel`、`webchat.channel`、`slack.dm`、`slack.channel`、`discord.channel`、`"*"`（所有渠道）。
 
-**Docs:** https://www.botpress.com/docs/adk/concepts/conversations
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/conversations.md
+**文档：**https://www.botpress.com/docs/adk/concepts/conversations`
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/conversations.md
 
 ---
 
-### 4. Workflows - Background & Multi-Step Processes
+### 4. 工作流（Workflows） - 后台与多步骤流程
 
-**When to create a Workflow:**
-- Operations that take longer than 2 minutes (the default timeout)
-- Multi-step processes that need to survive crashes/restarts
-- Scheduled/recurring tasks (daily reports, periodic syncs)
-- Background processing (order fulfillment, data migration)
-- Operations that need to wait for external events or user input
+**何时创建工作流：**
+- 需要超过2分钟的操作（默认超时）。
+- 需要持续运行的多步骤流程。
+- 定时/周期性任务（每日报告、定期同步）。
+- 需要等待外部事件或用户输入的操作。
 
-**When NOT to use a Workflow (handle in conversation instead):**
-- Quick operations that complete immediately
-- Simple request-response patterns
-- Operations that don't need persistence
+**何时不使用工作流（而在对话中处理）：**
+- 需要立即完成的快速操作。
+- 简单的请求-响应模式。
+- 不需要持久化的操作。
 
-**Key workflow concepts:**
-- **Steps are checkpoints** - If workflow crashes, it resumes from last completed step
-- **State persists** - Store progress in `state` to track across steps
-- **Always pass conversationId** - If the workflow needs to message users back
+**工作流的关键概念：**
+- **步骤是检查点**：如果工作流崩溃，它将从最后一个完成的步骤继续。
+- **状态会持久化**：在`state`中存储进度以跟踪各个步骤。
+- **始终传递conversationId**：如果工作流需要向用户发送消息。
 
-**Location:** `src/workflows/*.ts`
+**位置：**`src/workflows/`
 
-```typescript
-import { Workflow, z } from "@botpress/runtime";
+**步骤方法：**
 
-export const ProcessOrderWorkflow = new Workflow({
-  name: "processOrder",
-  description: "Processes customer orders",
-  timeout: "6h",                    // Max duration
-  schedule: "0 9 * * *",            // Optional: run daily at 9am (cron syntax)
-
-  input: z.object({
-    orderId: z.string(),
-    conversationId: z.string()      // Include this to message the user back!
-  }),
-
-  state: z.object({
-    currentStep: z.number().default(0),
-    processedItems: z.array(z.string()).default([])
-  }),
-
-  output: z.object({
-    success: z.boolean(),
-    itemsProcessed: z.number()
-  }),
-
-  async handler({ input, state, step, client, execute }) {
-    // State is passed as parameter, auto-tracked
-    state.currentStep = 1;
-
-    // IMPORTANT: Each step needs a unique, stable name (no dynamic names!)
-    const orderData = await step("fetch-order", async () => {
-      return await fetchOrderData(input.orderId);
-    });
-
-    // Steps can have retry logic
-    await step("process-payment", async () => {
-      return await processPayment(orderData);
-    }, { maxAttempts: 3 });
-
-    // To message the user from a workflow, use client.createMessage (NOT conversation.send)
-    await step("notify-user", async () => {
-      await client.createMessage({
-        conversationId: input.conversationId,
-        type: "text",
-        payload: { text: "Your order has been processed!" }
-      });
-    });
-
-    return {
-      success: true,
-      itemsProcessed: state.processedItems.length
-    };
-  }
-});
-
-// Start a workflow from a conversation or trigger
-await ProcessOrderWorkflow.start({
-  orderId: "123",
-  conversationId: conversation.id  // Always pass this if you need to message back
-});
-
-// Get or create with deduplication
-const instance = await ProcessOrderWorkflow.getOrCreate({
-  key: `order-${orderId}`,  // Prevents duplicate workflows
-  input: { orderId, conversationId }
-});
-```
-
-**Step Methods:**
-
-| Method | Purpose |
+| 方法 | 用途 |
 |--------|---------|
-| `step(name, fn)` | Basic execution with caching |
-| `step.sleep(name, ms)` | Pause for milliseconds |
-| `step.sleepUntil(name, date)` | Pause until specific date |
-| `step.listen()` | Wait for external events |
-| `step.progress(msg)` | Update progress message |
-| `step.request(name, prompt)` | Request user input (blocking) |
-| `step.executeWorkflow()` | Start and await another workflow |
-| `step.waitForWorkflow(id)` | Wait for existing workflow |
-| `step.map(items, fn)` | Process array with concurrency |
-| `step.forEach(items, fn)` | Execute on items without results |
-| `step.batch(items, fn)` | Process in groups |
-| `step.fail(reason)` | Mark workflow as failed |
-| `step.abort()` | Stop immediately without failure |
+| `step(name, fn)` | 带有缓存的基本执行 |
+| `step.sleep(name, ms)` | 暂停指定毫秒数 |
+| `step.sleepUntil(name, date)` | 暂停直到指定日期 |
+| `step.listen()` | 等待外部事件 |
+| `step.progress(msg)` | 更新进度消息 |
+| `step.request(name, prompt)` | 请求用户输入（阻塞） |
+| `step.executeWorkflow()` | 启动并等待另一个工作流 |
+| `step.waitForWorkflow(id)` | 等待现有工作流 |
+| `step.map(items, fn)` | 并发处理数组 |
+| `step.forEach(items, fn)` | 成组处理项目 |
+| `step.batch(items, fn)` | 分组处理项目 |
+| `step.fail(reason)` | 标记工作流失败 |
+| `step.abort()` | 立即停止，不报告错误 |
 
-**Critical Rules:**
-- Step names must be **unique** and **stable** (avoid dynamic naming in loops)
-- State is passed as a parameter, not accessed via `this.state`
-- Always pass `conversationId` for workflows that need to message users
-- Default timeout is 2 minutes - use steps for longer processes
+**关键规则：**
+- 步骤名称必须**唯一**且**稳定**（避免在循环中使用动态命名）。
+- 状态作为参数传递，不要通过`this.state`访问。
+- 如果工作流需要向用户发送消息，请始终传递`conversationId`。
+- 默认超时为2分钟——对于较长的流程，请使用步骤。
 
-**Docs:** https://www.botpress.com/docs/adk/concepts/workflows/overview
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/workflows.md
+**文档：**https://www.botpress.com/docs/adk/concepts/workflows/overview**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/workflows.md
 
 ---
 
-### 5. Tables - Data Storage
+### 5. 表格（Tables） - 数据存储
 
-**When to create a Table:**
-- You need to persist structured data (users, orders, tickets, logs)
-- You want to query/filter data by fields
-- You need semantic search on text content (set `searchable: true`)
-- You're storing data that should survive bot restarts
+**何时创建表格：**
+- 需要持久化结构化数据（用户、订单、工单、日志）。
+- 需要根据字段查询/过滤数据。
+- 需要对文本内容进行语义搜索（设置`searchable: true`）。
+- 需要存储的数据应在机器人重启后仍然可用。
 
-**When NOT to use a Table (use State instead):**
-- Simple key-value data per user/conversation → use `user.state` or `conversation.state`
-- Temporary data that doesn't need persistence
-- Small amounts of data that fit in state
+**何时不使用表格（而使用状态：**
+- 对于每个用户/对话的简单键值数据，使用`user.state`或`conversation.state`。
+- 临时数据不需要持久化。
+- 数据量较小，适合存储在状态中。
 
-**Tables vs Knowledge Bases:**
-- **Tables** = Structured data you CRUD (create, read, update, delete)
-- **Knowledge Bases** = Documents/content for AI to search and reference
+**表格与知识库的区别：**
+- **表格** = 可进行CRUD操作的结构化数据（创建、读取、更新、删除）。
+- **知识库** = 供AI搜索和参考的文档/内容。
 
-**Location:** `src/tables/*.ts`
+**关键规则（违反规则会导致错误）：**
+- **不要定义`id`列**——它将自动生成为数字。
+- 表格名称必须以“Table”结尾（例如`OrdersTable`，而不是`Orders`）。
 
-**CRITICAL RULES (violations will cause errors):**
-- Do NOT define an `id` column - it's created automatically as a number
-- Table names MUST end with "Table" (e.g., `OrdersTable`, not `Orders`)
-
-```typescript
-import { Table, z } from "@botpress/runtime";
-
-export const OrdersTable = new Table({
-  name: "OrdersTable",  // Must end with "Table"
-  description: "Stores order information",
-  columns: {
-    // NO id column - it's automatic!
-    orderId: z.string(),
-    userId: z.string(),
-    status: z.enum(["pending", "completed", "cancelled"]),
-    total: z.number(),
-    createdAt: z.date(),
-    // Enable semantic search on a column:
-    notes: {
-      schema: z.string(),
-      searchable: true
-    }
-  }
-});
-```
-
-**CRUD operations:**
+**CRUD操作：**
 ```typescript
 // Create - id is auto-assigned
 await OrdersTable.createRows({
@@ -722,7 +530,7 @@ await OrdersTable.deleteRows({ status: "cancelled" });
 await OrdersTable.deleteRowIds([123, 456]);
 ```
 
-**Advanced: Computed Columns:**
+**高级功能：计算列：**
 ```typescript
 columns: {
   basePrice: z.number(),
@@ -736,176 +544,71 @@ columns: {
 }
 ```
 
-**Docs:** https://www.botpress.com/docs/adk/concepts/tables
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tables.md
+**文档：**https://www.botpress.com/docs/adk/concepts/tables**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tables.md**
 
 ---
 
-### 6. Knowledge Bases - RAG for AI Context
+### 6. 知识库（Knowledge Bases） - 用于AI上下文的检索式问答（RAG）
 
-**When to create a Knowledge Base:**
-- You want the AI to answer questions based on your documentation
-- You have FAQs, policies, or product info the AI should reference
-- You want AI responses grounded in specific content (not hallucinated)
-- You're building a support bot that needs access to help articles
+**何时创建知识库：**
+- 当您希望AI根据文档回答问题时。
+- 当您有FAQ、政策或产品信息供AI引用时。
+- 当您希望AI的响应基于具体内容时（而不是凭空生成）。
+- 当您正在构建需要访问帮助文章的支持机器人时。
 
-**How RAG works in ADK:**
-1. You define knowledge sources (websites, files, tables)
-2. Content is indexed and embedded for semantic search
-3. During `execute()`, the AI automatically searches relevant knowledge
-4. AI uses retrieved content to generate grounded responses
+**ADK中RAG的工作原理：**
+1. 您定义知识来源（网站、文件、表格）。
+2. 内容被索引并嵌入以便进行语义搜索。
+3. 在`execute()`期间，AI会自动搜索相关知识。
+4. AI使用检索到的内容生成基于上下文的响应。
 
-**Choosing a DataSource type:**
-- **Website** - Index public documentation, help sites, blogs
-- **Directory** - Index local markdown/text files (dev only!)
-- **Table** - Index structured data from your tables
+**选择数据源类型：**
+- **网站** - 索引公共文档、帮助站点、博客。
+- **目录** - 索引本地Markdown/文本文件（仅限开发使用！）
+- **表格** - 索引来自表格的结构化数据。
 
-**Location:** `src/knowledge/*.ts`
+**位置：**`src/knowledge/`
 
-```typescript
-import { Knowledge, DataSource } from "@botpress/runtime";
-
-// Website source - index via sitemap
-const websiteSource = DataSource.Website.fromSitemap(
-  "https://docs.example.com/sitemap.xml",
-  {
-    id: "website-docs",
-    maxPages: 500,
-    maxDepth: 10,
-    filter: (ctx) => ctx.url.includes("/docs/")  // Only index /docs/ pages
-  }
-);
-
-// Local files (development only - won't work in production)
-const localSource = DataSource.Directory.fromPath("src/knowledge/docs", {
-  id: "local-docs",
-  filter: (path) => path.endsWith(".md")
-});
-
-// Table-based knowledge
-const tableSource = DataSource.Table.fromTable(FAQTable, {
-  id: "faq-table",
-  transform: ({ row }) => `Question: ${row.question}\nAnswer: ${row.answer}`,
-  filter: ({ row }) => row.published === true
-});
-
-export const DocsKB = new Knowledge({
-  name: "docsKB",
-  description: "Product documentation and help articles",
-  sources: [websiteSource, localSource, tableSource]
-});
-
-// Use in conversations - AI will search this knowledge base
-await execute({
-  instructions: "Answer based on the documentation",
-  knowledge: [DocsKB]
-});
-
-// Manually refresh knowledge base
-await DocsKB.refresh();                  // Smart refresh (only changed content)
-await DocsKB.refresh({ force: true });   // Force full re-index
-await DocsKB.refreshSource("website-docs", { force: true });  // Refresh specific source
-```
-
-**Website Source Methods:**
-- `fromSitemap(url, options)` - Parse XML sitemap
-- `fromWebsite(baseUrl, options)` - Crawl from base URL (requires Browser integration)
-- `fromLlmsTxt(url, options)` - Parse llms.txt file
-- `fromUrls(urls, options)` - Index specific URLs
-
-**Docs:** https://www.botpress.com/docs/adk/concepts/knowledge
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/knowledge-bases.md
+**文档：**https://www.botpress.com/docs/adk/concepts/knowledge**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/knowledge-bases.md`
 
 ---
 
-### 7. Triggers - Event-Driven Automation
+### 7. 触发器（Triggers） - 基于事件的自动化
 
-**When to create a Trigger:**
-- You need to react to events automatically (user signs up, issue created, etc.)
-- You want to start workflows when specific events occur
-- You need to sync data when external systems change
-- You want to send notifications based on events
+**何时创建触发器：**
+- 当您需要自动响应事件时（例如用户注册、问题创建等）。
+- 当特定事件发生时，您希望启动工作流。
+- 当外部系统发生变化时，您需要同步数据。
+- 当您需要根据事件发送通知时。
 
-**Common trigger patterns:**
-- **User onboarding** - Trigger on `user.created` → start onboarding workflow
-- **Integration sync** - Trigger on `linear:issueCreated` → create record in table
-- **Notifications** - Trigger on `workflow.completed` → send Slack message
+**常见触发器模式：**
+- **用户注册** - 在`user.created`时触发→启动注册工作流。
+- **集成同步** - 在`linear:issueCreated`时触发→在表格中创建记录。
+- **通知** - 在`workflow_completed`时触发→发送Slack消息。
 
-**Finding available events:**
-- Bot events: `user.created`, `conversation.started`, `workflow.completed`, etc.
-- Integration events: Run `adk info <integration> --events` to see available events
+**查找可用事件：**
+- 机器人事件：`user.created`、`conversationstarted`、`workflow_completed`等。
+- 集成事件：运行`adk info <integration> --events`查看可用事件。
 
-**Location:** `src/triggers/*.ts`
-
-```typescript
-import { Trigger } from "@botpress/runtime";
-
-export default new Trigger({
-  name: "onNewUser",
-  description: "Start onboarding when user created",
-  events: ["user.created"],  // Can listen to multiple events
-
-  handler: async ({ event, client, actions }) => {
-    const { userId, email } = event.payload;
-
-    // Start an onboarding workflow
-    await OnboardingWorkflow.start({
-      userId,
-      email
-    });
-  }
-});
-
-// Integration events use format: integration:eventName
-export const LinearTrigger = new Trigger({
-  name: "onLinearIssue",
-  description: "Handle Linear issue events",
-  events: ["linear:issueCreated", "linear:issueUpdated"],
-
-  handler: async ({ event, actions }) => {
-    if (event.type === "linear:issueCreated") {
-      await actions.slack.sendMessage({
-        channel: "#notifications",
-        text: `New issue: ${event.payload.title}`
-      });
-    }
-  }
-});
-```
-
-**Common Bot Events:**
-- `user.created`, `user.updated`, `user.deleted`
-- `conversation.started`, `conversation.ended`, `message.created`
-- `workflow.started`, `workflow.completed`, `workflow.failed`
-- `bot.started`, `bot.stopped`
-
-**Common Integration Events:**
-- Slack: `slack:reactionAdded`, `slack:memberJoinedChannel`
-- Linear: `linear:issueCreated`, `linear:issueUpdated`
-- GitHub: `github:issueOpened`, `github:pullRequestOpened`
-- Intercom: `intercom:conversationEvent`, `intercom:contactEvent`
-
-**Find integration events:** Run `adk info <integration> --events`
-
-**Docs:** https://www.botpress.com/docs/adk/concepts/triggers
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/triggers.md
+**文档：**https://www.botpress.com/docs/adk/concepts/triggers**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/triggers**
 
 ---
 
-## Sending Messages
+## 发送消息
 
-**CRITICAL: The method depends on WHERE you're sending from:**
+**重要提示：**方法取决于发送的位置：**
 
-| Context | Method | Why |
+| 上下文 | 方法 | 原因 |
 |---------|--------|-----|
-| In Conversations | `conversation.send()` | Has conversation context |
-| In Workflows/Actions | `client.createMessage()` | Needs explicit `conversationId` |
+| 在对话中 | `conversation.send()` | 有对话上下文 |
+| 在工作流/动作中 | `client.createMessage()` | 需要`conversationId` |
 
-**Common mistake:** Using `client.createMessage()` in conversations. Always use `conversation.send()` instead.
+**常见错误：**在对话中使用`client.createMessage()`。**始终使用`conversation.send()`。
 
-The method depends on where you're sending from:
-
-**In conversations** - Use `conversation.send()`:
+**在对话中**：使用`conversation.send()`：
 ```typescript
 await conversation.send({ type: "text", payload: { text: "Hello!" } });
 await conversation.send({ type: "image", payload: { imageUrl: "https://..." } });
@@ -921,7 +624,7 @@ await conversation.send({
 });
 ```
 
-**In workflows or actions** - Use `client.createMessage()` with `conversationId`:
+**在工作流或动作中**：使用`client.createMessage()`并传递`conversationId`：
 ```typescript
 await client.createMessage({
   conversationId: input.conversationId,  // Must have this!
@@ -930,7 +633,7 @@ await client.createMessage({
 });
 ```
 
-**All Message Types:**
+**所有消息类型：**
 ```typescript
 // Text
 { type: "text", payload: { text: "Hello!" } }
@@ -991,129 +694,51 @@ await client.createMessage({
 }}
 ```
 
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/messages.md
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/messages.md**
 
 ---
 
-## Zai - LLM Utility Operations
+## Zai - LLM实用工具
 
-**When to use Zai vs execute():**
-- **Use `zai`** for specific, structured AI operations (extract data, classify, summarize)
-- **Use `execute()`** for autonomous, multi-turn AI conversations with tools
+**何时使用Zai而不是execute()：**
+- **使用`zai`**进行特定的、结构化的AI操作（提取数据、分类、标记）。
+- **使用`execute()`**进行自主的多轮对话。
 
-**Zai is perfect for:**
-- Extracting structured data from user messages (`zai.extract`)
-- Classifying/labeling content (`zai.check`, `zai.label`)
-- Summarizing long content (`zai.summarize`)
-- Answering questions from documents (`zai.answer`)
-- Sorting/filtering/grouping data intelligently (`zai.sort`, `zai.filter`, `zai.group`)
+**Zai适用于：**
+- 从用户消息中提取结构化数据（`zai.extract`）。
+- 对内容进行分类/标记（`zai.check`、`zai.label`）。
+- 概括长内容（`zai.summarize`）。
+- 根据文档回答问题（`zai.answer`）。
+- 智能地排序/过滤/分组数据（`zai.sort`、`zai.filter`、`zai.group`）。
 
-**Zai operations are optimized for speed and cost** - they use the `zai` model configured in `agent.config.ts` (typically a faster/cheaper model).
+**Zai操作针对速度和成本进行了优化**——它们使用`agent.config.ts`中配置的`zai`模型（通常是更快/更经济的模型）。
 
-```typescript
-import { adk, z } from "@botpress/runtime";
-
-// Extract structured data from text
-const contact = await adk.zai.extract(
-  "Contact John at john@example.com, phone 555-0100",
-  z.object({
-    name: z.string(),
-    email: z.string(),
-    phone: z.string()
-  })
-);
-// Returns: { name: "John", email: "john@example.com", phone: "555-0100" }
-
-// Check if text matches a condition (returns boolean)
-const isSpam = await adk.zai.check(messageText, "is spam or promotional");
-
-// Label text with multiple criteria
-const labels = await adk.zai.label(customerEmail, {
-  spam: "is spam",
-  urgent: "needs immediate response",
-  complaint: "expresses dissatisfaction"
-});
-// Returns: { spam: false, urgent: true, complaint: true }
-
-// Summarize content
-const summary = await adk.zai.summarize(longDocument, {
-  length: 200,
-  bulletPoints: true
-});
-
-// Answer questions from documents (with citations)
-const result = await adk.zai.answer(docs, "What is the refund policy?");
-if (result.type === "answer") {
-  console.log(result.answer);
-  console.log(result.citations);
-}
-// Response types: "answer", "ambiguous", "out_of_topic", "invalid_question", "missing_knowledge"
-
-// Rate items on 1-5 scale
-const scores = await adk.zai.rate(products, "quality score");
-
-// Sort by criteria
-const sorted = await adk.zai.sort(tickets, "by urgency, most urgent first");
-
-// Group items semantically
-const groups = await adk.zai.group(emails, {
-  instructions: "categorize by topic"
-});
-
-// Rewrite text
-const professional = await adk.zai.rewrite("hey wassup", "make it professional and friendly");
-
-// Filter arrays
-const activeUsers = await adk.zai.filter(users, "have been active this month");
-
-// Generate text
-const blogPost = await adk.zai.text("Write about AI in healthcare", {
-  length: 1000,
-  temperature: 0.7
-});
-
-// Patch code files
-const patched = await adk.zai.patch(files, "add JSDoc comments to all functions");
-```
-
-**Zai Configuration:**
-```typescript
-// Create configured instance
-const preciseZai = adk.zai.with({
-  modelId: "best",        // "best" | "fast" | custom model ID
-  temperature: 0.1
-});
-
-// Enable active learning
-const learningZai = adk.zai.learn("sentiment-analysis");
-```
-
-**Docs:** https://www.botpress.com/docs/adk/zai/overview
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/zai-complete-guide.md
+**文档：**https://www.botpress.com/docs/adk/zai/overview**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/zai-complete-guide.md**
 
 ---
 
-## Integrations
+## 集成（Integrations）
 
-**When to add an Integration:**
-- You need to connect to an external service (Slack, Linear, GitHub, etc.)
-- You want to receive messages from a channel (webchat, WhatsApp, Discord)
-- You need to call external APIs with pre-built actions
-- You want to react to events from external systems
+**何时添加集成：**
+- 当您需要连接到外部服务（如Slack、Linear、GitHub等）时。
+- 当您需要从渠道（如Webchat、WhatsApp、Discord）接收消息时。
+- 当您需要使用预构建的动作调用外部API时。
+- 当您需要对外部系统中的事件作出反应时。
 
-**Integration workflow:**
-1. **Search** - Find integrations with `adk search <name>`
-2. **Add** - Install with `adk add <name>@<version>`
-3. **Configure** - Set up credentials in the UI at `http://localhost:3001/`
-4. **Use** - Call actions via `actions.<integration>.<action>()`
+**集成工作流程：**
+1. **搜索** - 使用`adk search <名称>`查找集成。
+2. **添加** - 使用`adk add <名称>@<版本>`进行安装。
+3. **配置** - 在http://localhost:3001的UI中设置凭据。
+4. **使用** - 通过`actions.<integration>.<action>()`调用动作。
 
-**Making integration actions available to AI:**
+**使集成动作对AI可用：**
 ```typescript
 // Convert any integration action to an AI-callable tool
 tools: [actions.slack.sendMessage.asTool()]
 ```
 
-**CLI commands:**
+**CLI命令：**
 ```bash
 adk search slack           # Find integrations
 adk add slack@latest       # Add to project
@@ -1124,7 +749,7 @@ adk upgrade slack          # Update to latest
 adk remove slack           # Remove integration
 ```
 
-**Using integration actions:**
+**使用集成动作：**
 ```typescript
 import { actions } from "@botpress/runtime";
 
@@ -1149,67 +774,39 @@ const results = await actions.browser.webSearch({ query: "Botpress docs", maxRes
 await execute({ tools: [actions.slack.sendMessage.asTool()] });
 ```
 
-**Docs:** https://www.botpress.com/docs/adk/managing-integrations
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/integration-actions.md
+**文档：**https://www.botpress.com/docs/adk/managing-integrations**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/integration-actions.md**
 
----
+## 状态管理
 
-## State Management
+**理解状态层次结构 - 选择正确的级别：**
 
-**Understanding the state hierarchy - choose the right level:**
-
-| State Level | Scope | Use For |
+| 状态级别 | 范围 | 用途 |
 |-------------|-------|---------|
-| `bot.state` | Global, all users | Feature flags, counters, maintenance mode |
-| `user.state` | Per user, all their conversations | User preferences, profile, tier |
-| `conversation.state` | Per conversation | Context, message count, active workflow |
-| `workflow.state` | Per workflow instance | Progress tracking, intermediate results |
+| `bot.state` | 全局，所有用户 | 特性标志、计数器、维护模式 |
+| `user.state` | 每个用户，他们的所有对话 | 用户偏好设置、个人资料、等级 |
+| `conversation.state` | 每个对话 | 上下文、消息计数、活动工作流 |
+| `workflow.state` | 每个工作流实例 | 进度跟踪、中间结果 |
 
-**State is automatically persisted** - just modify it and it saves.
+**状态会自动持久化**——只需修改它，它就会保存。
 
-Access and modify state from anywhere in your bot:
+**从机器人的任何地方访问和修改状态：**
 
-```typescript
-import { bot, user, conversation } from "@botpress/runtime";
+**状态类型：**
+- **Bot State**：全局的，所有用户共享。
+- **User State**：每个用户的，跨所有对话持久。
+- **Conversation State**：每个对话的，对话之间独立。
+- **Workflow State**：每个工作流实例的，跨步骤持久。
 
-// Bot state - global, shared across all users
-bot.state.maintenanceMode = true;
-bot.state.totalConversations += 1;
+**标签（Tags）与状态（State）：**
+- 使用**Tags**进行分类、简单字符串、过滤/查询。
+- 使用**State**处理复杂对象、数组、嵌套数据。
 
-// User state - per user, persists across conversations
-user.state.name = "Alice";
-user.state.tier = "pro";
-user.state.preferredLanguage = "es";
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tags.md**
 
-// In handlers, state is passed as a parameter
-async handler({ state }) {
-  state.messageCount += 1;  // Auto-persisted
-}
+## 上下文API
 
-// Tags - simple string key-value pairs for categorization
-user.tags.source = "website";
-user.tags.region = "north-america";
-conversation.tags.category = "support";
-conversation.tags.priority = "high";
-```
-
-**State Types:**
-- **Bot State** - Global, shared across all users and conversations
-- **User State** - Per-user, persists across all their conversations
-- **Conversation State** - Per-conversation, isolated between conversations
-- **Workflow State** - Per-workflow instance, persists across steps
-
-**Tags vs State:**
-- Use **Tags** for: categorization, simple strings, filtering/querying
-- Use **State** for: complex objects, arrays, nested data, business logic
-
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tags.md
-
----
-
-## Context API
-
-Access runtime services in any handler:
+**在任何处理程序中访问运行时服务：**
 
 ```typescript
 import { context } from "@botpress/runtime";
@@ -1234,11 +831,9 @@ if (user) {
 }
 ```
 
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/context-api.md
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/context-api.md**
 
----
-
-## CLI Quick Reference
+## CLI快速参考
 
 ```bash
 # Project Lifecycle
@@ -1281,32 +876,30 @@ adk --help                   # Full CLI help
 adk <command> --help         # Help for specific command
 ```
 
-**Docs:** https://www.botpress.com/docs/adk/cli-reference
-**GitHub:** https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md
+**文档：**https://www.botpress.com/docs/adk/cli-reference**
+**GitHub：**https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md**
 
----
+## 使用`execute()`进行自主执行
 
-## Autonomous Execution with `execute()`
+`execute()`函数是ADK AI能力的核心。它能够：
+- 从自然语言中理解用户意图。
+- 决定调用哪些工具以及何时调用。
+- 在知识库中搜索相关信息。
+- 生成基于上下文的响应。
+- 循环调用多个工具直到任务完成。
 
-**The `execute()` function is the core of ADK's AI capabilities.** It runs an autonomous AI agent that can:
-- Understand user intent from natural language
-- Decide which tools to call and when
-- Search knowledge bases for relevant information
-- Generate contextual responses
-- Loop through multiple tool calls until the task is complete
+**何时使用execute()：**
+- 在对话处理程序中生成AI响应。
+- 在工作流中需要AI决策时。
+- 在任何需要自主、多步骤AI行为的地方。
 
-**When to use execute():**
-- In conversation handlers to generate AI responses
-- In workflows when you need AI decision-making
-- Anywhere you want autonomous, multi-step AI behavior
+**配置的关键参数：**
+- `instructions`：告诉AI它的身份和行为方式。
+- `tools`：赋予AI功能（搜索、创建、更新等）。
+- `knowledge`：为AI提供上下文。
+- `exits`：定义特定结果的结构化输出模式。
 
-**Key parameters to configure:**
-- `instructions` - Tell the AI who it is and how to behave
-- `tools` - Give the AI capabilities (search, create, update, etc.)
-- `knowledge` - Ground the AI in your documentation
-- `exits` - Define structured output schemas for specific outcomes
-
-The `execute()` function enables autonomous AI agent behavior:
+`execute()`函数实现了AI的自主行为：
 
 ```typescript
 import { Autonomous, z } from "@botpress/runtime";
@@ -1374,32 +967,29 @@ if (result.is(AnswerExit)) {
 }
 ```
 
----
+## 故障排除**
 
-## Troubleshooting
-
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| "Cannot destructure property" in Actions | Destructuring input directly in handler params | Use `async handler({ input, client })` then `const { field } = input` inside |
-| Table creation fails | Invalid table name or `id` defined | Remove `id` column, ensure name ends with "Table" |
-| Integration action not found | Integration not installed or configured | Run `adk list`, add with `adk add`, configure in UI at localhost:3001 |
-| Knowledge base not updating | KB not synced | Run `adk kb sync --dev` or `adk kb sync --force` |
-| Workflow not resuming | Dynamic step names | Use stable, unique step names (no `step(\`item-${i}\`)`) |
-| Types out of date | Generated types stale | Run `adk dev` or `adk build` to regenerate |
-| Can't message user from workflow | Missing conversationId | Pass `conversationId` when starting workflow, use `client.createMessage()` |
-| "user is not defined" | Accessing conversation context outside conversation | Use `context.get("user", { optional: true })` |
-| State changes not persisting | Creating new objects instead of modifying | Modify state directly: `state.user.name = "Alice"` |
-| Tool not being used by AI | Poor description | Improve tool description, add detailed `.describe()` to inputs |
+| “在动作中无法解构属性” | 在处理程序参数中直接解构输入 | 使用`async handler({ input, client })`，然后在内部使用`const { field } = input` |
+| 创建表格失败 | 表格名称或`id`定义无效 | 删除`id`列，确保名称以“Table”结尾 |
+| 未找到集成动作 | 集成未安装或配置不正确 | 运行`adk list`，使用`adk add`添加，并在http://localhost:3001的UI中配置 |
+| 知识库未更新 | 知识库未同步 | 运行`adk kb sync --dev`或`adk kb sync --force` |
+- 工作流无法恢复 | 步骤名称动态 | 使用稳定、唯一的步骤名称（避免使用`step(\`item-${i}\`) |
+- 类型过时 | 生成的类型过时 | 运行`adk dev`或`adk build`重新生成 |
+- 无法从工作流向用户发送消息 | 缺少conversationId | 在启动工作流时传递`conversationId`，使用`client.createMessage()` |
+- “user未定义” | 在对话之外访问对话上下文 | 使用`context.get("user", { optional: true })` |
+- 状态更改未持久化 | 创建新对象而不是修改 | 直接修改状态：`state.user.name = "Alice"` |
+- 工具未被AI使用 | 描述不够清晰 | 改进工具描述，为输入添加详细的`.describe()` |
 
-**For more help:** Run `adk --help` or check:
-- **Docs:** https://www.botpress.com/docs/adk/
-- **GitHub:** https://github.com/botpress/skills/tree/master/skills/adk/references
+**更多帮助：**运行`adk --help`或查看：**
+- **文档：**https://www.botpress.com/docs/adk/
+- **GitHub：**https://github.com/botpress/skills/tree/master/skills/adk/references`
 
----
+## 常见模式与最佳实践**
 
-## Common Patterns & Best Practices
+### 1. 始终为工作流传递conversationId**
 
-### 1. Always Pass conversationId for Workflows
 ```typescript
 // In conversation - starting a workflow that needs to message back
 await MyWorkflow.start({
@@ -1415,7 +1005,8 @@ await client.createMessage({
 });
 ```
 
-### 2. Use Environment Variables for Secrets
+### 2. 使用环境变量存储秘密信息**
+
 ```typescript
 // In .env (never commit!)
 API_KEY=sk-...
@@ -1425,7 +1016,8 @@ SLACK_TOKEN=xoxb-...
 config: { apiKey: process.env.API_KEY }
 ```
 
-### 3. Keep Step Names Stable in Workflows
+### 3. 在工作流中保持步骤名称稳定**
+
 ```typescript
 // GOOD - Single step for batch
 await step("process-all-items", async () => {
@@ -1440,7 +1032,8 @@ for (let i = 0; i < items.length; i++) {
 }
 ```
 
-### 4. Error Handling in Actions/Tools
+### 4. 在动作/工具中处理错误**
+
 ```typescript
 export default new Action({
   handler: async ({ input }) => {
@@ -1455,7 +1048,8 @@ export default new Action({
 });
 ```
 
-### 5. ThinkSignal for Tool Edge Cases
+### 5. 对于工具的边缘情况使用ThinkSignal**
+
 ```typescript
 handler: async ({ query }) => {
   const results = await search(query);
@@ -1471,7 +1065,8 @@ handler: async ({ query }) => {
 }
 ```
 
-### 6. Multi-Channel Handling
+### 6. 多渠道处理**
+
 ```typescript
 export default new Conversation({
   channels: ["slack.channel", "webchat.channel"],
@@ -1487,116 +1082,111 @@ export default new Conversation({
 });
 ```
 
----
+## 完整参考文档
 
-## Complete Reference Documentation
+### 官方Botpress ADK文档
+**基础URL：**https://www.botpress.com/docs/adk/
 
-### Official Botpress ADK Documentation
-**Base URL:** https://www.botpress.com/docs/adk/
-
-| Topic | URL |
+| 主题 | URL |
 |-------|-----|
-| Introduction | https://www.botpress.com/docs/adk/introduction |
-| Quickstart | https://www.botpress.com/docs/adk/quickstart |
-| Project Structure | https://www.botpress.com/docs/adk/project-structure |
-| Actions | https://www.botpress.com/docs/adk/concepts/actions |
-| Tools | https://www.botpress.com/docs/adk/concepts/tools |
-| Conversations | https://www.botpress.com/docs/adk/concepts/conversations |
-| Workflows Overview | https://www.botpress.com/docs/adk/concepts/workflows/overview |
-| Workflow Steps | https://www.botpress.com/docs/adk/concepts/workflows/steps |
-| Tables | https://www.botpress.com/docs/adk/concepts/tables |
-| Triggers | https://www.botpress.com/docs/adk/concepts/triggers |
-| Knowledge Bases | https://www.botpress.com/docs/adk/concepts/knowledge |
-| Managing Integrations | https://www.botpress.com/docs/adk/managing-integrations |
-| Zai Overview | https://www.botpress.com/docs/adk/zai/overview |
-| Zai Reference | https://www.botpress.com/docs/adk/zai/reference |
-| CLI Reference | https://www.botpress.com/docs/adk/cli-reference |
+| 介绍 | https://www.botpress.com/docs/adk/introduction |
+| 快速入门 | https://www.botpress.com/docs/adk/quickstart |
+| 项目结构 | https://www.botpress.com/docs/adk/project-structure |
+| 动作 | https://www.botpress.com/docs/adk/concepts/actions |
+| 工具 | https://www.botpress.com/docs/adk/concepts/tools |
+| 对话 | https://www.botpress.com/docs/adk/concepts/conversations |
+| 工作流概述 | https://www.botpress.com/docs/adk/concepts/workflows/overview |
+| 工作流步骤 | https://www.botpress.com/docs/adk/concepts/workflows/steps |
+| 表格 | https://www.botpress.com/docs/adk/concepts/tables |
+| 触发器 | https://www.botpress.com/docs/adk/concepts/triggers |
+| 知识库 | https://www.botpress.com/docs/adk/concepts/knowledge |
+| 管理集成 | https://www.botpress.com/docs/adk/managing-integrations |
+| Zai概述 | https://www.botpress.com/docs/adk/zai/overview |
+| Zai参考 | https://www.botpress.com/docs/adk/zai/reference |
+| CLI参考 | https://www.botpress.com/docs/adk/cli-reference |
 
-### GitHub Repository References (AI-Optimized)
-**Base URL:** https://github.com/botpress/skills/tree/master/skills/adk/references
+### GitHub仓库参考（AI优化）
 
-For detailed specifications beyond this guide, fetch the corresponding reference file:
+**基础URL：**https://github.com/botpress/skills/tree/master/skills/adk/references**
 
-| Topic | Reference File |
+有关本指南之外的详细规范，请查阅相应的参考文件：
+
+| 主题 | 参考文件 |
 |-------|----------------|
-| Actions | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/actions.md |
-| Tools | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tools.md |
-| Workflows | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/workflows.md |
-| Conversations | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/conversations.md |
-| Tables | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tables.md |
-| Triggers | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/triggers.md |
-| Knowledge Bases | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/knowledge-bases.md |
-| Messages | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/messages.md |
-| Agent Config | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/agent-config.md |
+| 动作 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/actions.md |
+| 工具 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tools.md |
+| 工作流 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/workflows.md |
+| 对话 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/conversations.md |
+| 表格 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tables.md |
+| 触发器 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/triggers.md |
+| 知识库 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/knowledge-bases.md |
+| 消息 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/messages.md |
+| 代理配置 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/agent-config.md |
 | CLI | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/cli.md |
-| Integration Actions | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/integration-actions.md |
-| Model Configuration | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/model-configuration.md |
-| Context API | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/context-api.md |
-| Tags | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/tags.md |
-| Files | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/files.md |
-| Zai Complete Guide | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/zai-complete-guide.md |
-| Zai Agent Reference | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/zai-agent-reference.md |
-| MCP Server | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/mcp-server.md |
+| 集成动作 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/integration-actions.md |
+| 模型配置 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/model-configuration.md |
+| 上下文API | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/context-api.md |
+| 标签 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references-tags.md |
+| 文件 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/files.md |
+| Zai完整指南 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/zai-complete-guide |
+| Zai代理参考 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/zai-agent-reference |
+| MCP服务器 | https://raw.githubusercontent.com/botpress/skills/master/skills/adk/references/mcp-server.md |
 
----
+## 常见场景 - 应该构建什么
 
-## Common Scenarios - What to Build
+**“我想构建一个根据文档回答问题的支持机器人”**
+1. 创建一个以文档为来源的知识库。
+2. 创建一个使用该知识的对话处理程序，并调用`execute()`。
+3. 添加`chat`集成进行测试。
 
-**"I want to build a support bot that answers questions from our docs"**
-1. Create a Knowledge Base with your documentation as a source
-2. Create a Conversation handler that uses `execute()` with that knowledge
-3. Add the `chat` integration for testing
+**“我希望机器人在用户报告问题时创建工单”**
+1. 添加Linear集成：`adk add linear`。
+2. 创建一个调用`actions.linear.issueCreate()`的工具。
+3. 将该工具传递给`execute()`。
 
-**"I want the bot to create tickets in Linear when users report issues"**
-1. Add the Linear integration: `adk add linear`
-2. Create a Tool that calls `actions.linear.issueCreate()`
-3. Pass the tool to `execute()` in your conversation
+**“我需要运行每日同步任务”**
+1. 创建一个工作流，设置`schedule: "0 9 * * *"`（cron语法）。
+2. 在步骤中实现同步逻辑。
+3. 工作流将在预定时间自动运行。
 
-**"I need to run a daily sync job"**
-1. Create a Workflow with `schedule: "0 9 * * *"` (cron syntax)
-2. Implement the sync logic in steps
-3. The workflow will run automatically at the scheduled time
+**“我需要存储用户偏好设置”**
+1. 在`agent.config.ts`中定义模式。
+2. 通过`user.state.preferenceField = value`进行访问/修改。
+3. 状态会自动持久化。
 
-**"I want to store user preferences"**
-1. Define the schema in `agent.config.ts` under `user.state`
-2. Access/modify via `user.state.preferenceField = value`
-3. State persists automatically
+**“我需要在新用户注册时作出反应”**
+1. 创建一个监听`user.created`事件的触发器。
+2. 在处理程序中启动注册工作流或发送欢迎消息。
 
-**"I need to react when a new user signs up"**
-1. Create a Trigger listening to `user.created` event
-2. In the handler, start an onboarding workflow or send a welcome message
+**“我需要存储订单数据并对其进行搜索”**
+1. 创建一个表格，并设置相应的模式（记住：不要使用`id`字段，名称以“Table”结尾）。
+2. 在需要搜索的文本列上设置`searchable: true`。
+3. 使用CRUD方法：`createRows`、`findRows`、`updateRows`、`deleteRows`。
 
-**"I want to store order data and search it"**
-1. Create a Table with your schema (remember: no `id` field, name ends with "Table")
-2. Use `searchable: true` on text columns you want to search
-3. Use CRUD methods: `createRows`, `findRows`, `updateRows`, `deleteRows`
+## 总结
 
----
+本指南提供了使用ADK构建Botpress机器人的全面指导：
 
-## Summary
+- **设置与初始化**：ADK的安装和项目创建。
+- **项目结构**：约定、文件和组织结构。
+- **核心概念**：动作、工具、工作流、对话、表格、知识库、触发器。
+- **状态管理**：机器人、用户、对话和工作流的状态。
+- **集成管理**：添加和配置集成。
+- **Zai（AI操作）**：提取、分类、标记、总结、回答、排序、分组、重写、过滤。
+- **CLI参考**：完整的命令指南。
+- **测试与部署**：本地测试和云部署。
+- **常见模式**：最佳实践和故障排除。
 
-This skill provides comprehensive guidance for building Botpress bots using the ADK:
+**核心原则：**ADK是一个基于约定的框架，文件的位置决定了其行为。将组件放置在正确的`src/`子目录中，它们将自动成为机器人的功能。
 
-- **Setup & Initialization** - ADK installation and project creation
-- **Project Structure** - Conventions, files, and organization
-- **Core Concepts** - Actions, Tools, Workflows, Conversations, Tables, Knowledge, Triggers
-- **State Management** - Bot, user, conversation, and workflow state
-- **Integration Management** - Adding and configuring integrations
-- **Zai (AI Operations)** - Extract, check, label, summarize, answer, sort, group, rewrite, filter
-- **CLI Reference** - Complete command guide
-- **Testing & Deployment** - Local testing and cloud deployment
-- **Common Patterns** - Best practices and troubleshooting
+**何时使用本指南：**
+- 用户希望创建新的Botpress机器人。
+- 用户询问如何添加动作、工具、工作流、对话、表格、知识库或触发器。
+- 用户需要关于集成的帮助（如Slack、Linear、GitHub等）。
+- 用户需要了解ADK的模式和最佳实践。
+- 用户遇到问题或需要故障排除。
+- 用户询问关于CLI命令、配置或部署的问题。
 
-**Core Principle:** The ADK is a convention-based framework where file location determines behavior. Place components in the correct `src/` subdirectory and they automatically become bot capabilities.
-
-**When to use this skill:**
-- User wants to create a new Botpress bot
-- User asks how to add actions, tools, workflows, conversations, tables, knowledge bases, or triggers
-- User needs help with integrations (Slack, Linear, GitHub, etc.)
-- User wants to understand ADK patterns and best practices
-- User has errors or needs troubleshooting
-- User asks about CLI commands, configuration, or deployment
-
-**Official Documentation:** https://www.botpress.com/docs/adk/
-**GitHub Repository:** https://github.com/botpress/adk
-**Skills Repository:** https://github.com/botpress/skills
+**官方文档：**https://www.botpress.com/docs/adk/
+**GitHub仓库：**https://github.com/botpress/adk
+**技能仓库：**https://github.com/botpress/skills

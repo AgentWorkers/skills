@@ -1,57 +1,57 @@
 ---
 name: video-pro
-description: MiniPC 노드(Remotion + FFmpeg)를 활용한 실전형 비디오 에디팅 스킬. 프로그래밍 방식의 영상 제작부터 컷 편집, 자막 합성, 포맷 변환까지 지원합니다.
+description: 利用 MiniPC 节点（Emotion + FFmpeg）实现实战型视频编辑技能。支持从编程方式制作视频到剪辑、字幕合成、格式转换等全方位的视频处理功能。
 ---
 
-# 🎬 Video Pro (Miss Kim Edition)
+# 🎬 Video Pro（Miss Kim 版）
 
-MiniPC 노드의 강력한 리소스를 사용하여 고성능 비디오 에디팅을 수행합니다. Remotion을 이용한 코드 기반 영상 생성과 FFmpeg을 이용한 정밀 가공을 결합합니다.
+利用 MiniPC 强大的计算资源，实现高性能的视频编辑。结合了基于代码的视频生成工具 Remotion 和视频处理工具 FFmpeg，提供精确的视频处理能力。
 
-## 🏗️ 환경 설정 (MiniPC)
+## 🏗️ 环境配置（MiniPC）
 
-- **IP:** `<MINIPC_IP>` (Tailscale)
-- **Remotion 프로젝트:** `$HOME/remotion-videos`
-- **FFmpeg:** 전역 설치됨
+- **IP:** `<MINIPC_IP>`（Tailscale）
+- **Remotion 项目路径:** `$HOME/remotion-videos`
+- **FFmpeg:** 已全局安装
 
 ---
 
-## 🚀 주요 기능
+## 🚀 主要功能
 
-### 1. Remotion 컴포넌트 렌더링
-React 코드를 MP4 영상으로 렌더링합니다. 데이터 기반의 개인화 영상 제작에 탁월합니다.
+### 1. Remotion 组件渲染
+将 React 代码渲染为 MP4 格式的视频，非常适合基于数据的个性化视频制作。
 
-**실행 방법:**
+**使用方法:**
 ```bash
 # MiniPC에서 실행
 cd $HOME/remotion-videos
 npx remotion render <CompositionId> out/video.mp4 --props '{"title": "안녕, 미스 김!"}'
 ```
 
-### 2. FFmpeg 정밀 가공
-가장 빈번하게 사용되는 실전용 명령어 모음입니다.
+### 2. FFmpeg 精确视频处理
+以下是常用的一些实用命令：
 
-| 작업 | 명령어 |
+| 操作 | 命令 |
 |------|-------|
-| **컷 편집** | `ffmpeg -y -i input.mp4 -ss 00:00:10 -to 00:00:20 -c copy output.mp4` |
-| **자막 합성(Burn-in)** | `ffmpeg -y -i input.mp4 -vf "subtitles='input.srt'" output.mp4` |
-| **포맷 변환 (MOV→MP4)** | `ffmpeg -y -i input.mov -c:v libx264 -c:a aac output.mp4` |
-| **오디오 추출 (MP3)** | `ffmpeg -y -i input.mp4 -vn -acodec libmp3lame output.mp3` |
-| **영상 음소거** | `ffmpeg -y -i input.mp4 -an -c:v copy output.mp4` |
-| **GIF 변환** | `ffmpeg -y -i input.mp4 -vf "fps=15,scale=480:-1" -loop 0 output.gif` |
-| **해상도 변경 (720p)** | `ffmpeg -y -i input.mp4 -vf "scale=1280:720" -c:a copy output.mp4` |
+| **剪辑** | `ffmpeg -y -i input.mp4 -ss 00:00:10 -to 00:00:20 -c copy output.mp4` |
+| **字幕合成（嵌入到视频中）** | `ffmpeg -y -i input.mp4 -vf "subtitles='input.srt'" output.mp4` |
+| **格式转换（MOV→MP4）** | `ffmpeg -y -i input.mov -c:v libx264 -c:a aac output.mp4` |
+| **提取音频（MP3）** | `ffmpeg -y -i input.mp4 -vn -acodec libmp3lame output.mp3` |
+| **静音视频** | `ffmpeg -y -i input.mp4 -an -c:v copy output.mp4` |
+| **转换为 GIF** | `ffmpeg -y -i input.mp4 -vf "fps=15,scale=480:-1" -loop 0 output.gif` |
+| **调整分辨率（720p）** | `ffmpeg -y -i input.mp4 -vf "scale=1280:720" -c:a copy output.mp4` |
 
-### 3. AI 자막 (Whisper) 연동 설계
-오디오를 텍스트로 변환하여 자막 파일을 생성하고 영상에 입히는 워크플로우입니다.
+### 3. AI 字幕（Whisper）集成
+通过将音频转换为文本，生成字幕文件并嵌入到视频中：
 
-1. **오디오 추출:** FFmpeg을 사용하여 영상에서 오디오만 추출합니다.
-2. **전사 (Transcription):** Whisper 모델(Mac Studio 또는 MiniPC)을 사용하여 `.srt` 파일을 생성합니다.
-3. **자막 합성:** FFmpeg의 `subtitles` 필터를 사용하여 영상에 자막을 영구적으로 입힙니다 (Burn-in).
+1. **提取音频:** 使用 FFmpeg 提取视频中的音频。
+2. **转录:** 使用 Whisper 模型（Mac Studio 或 MiniPC）生成 `.srt` 字幕文件。
+3. **合成字幕:** 使用 FFmpeg 的 `subtitles` 过滤器将字幕永久嵌入到视频中。
 
 ---
 
-## 🛠️ 실전 활용 패턴 (nodes.run)
+## 🛠️ 实际使用模式（nodes.run）
 
-서브에이전트가 MiniPC에 명령을 내릴 때 다음 패턴을 사용합니다.
+子代理在向 MiniPC 发送命令时，请使用以下模式：
 
 ```javascript
 // MiniPC에서 렌더링 후 결과물 확인
@@ -61,12 +61,12 @@ await nodes.run({
 });
 ```
 
-## ⚠️ 주의사항
+## ⚠️ 注意事项
 
-1. **MiniPC 경로:** 항상 `$HOME/` 기준 절대 경로를 확인하세요.
-2. **성능:** Remotion 렌더링은 CPU 집약적입니다. 가급적 서브에이전트를 통해 백그라운드에서 실행하세요.
-3. **자막 경로:** FFmpeg `subtitles` 필터 사용 시 경로에 특수문자가 있다면 이스케이프 처리가 필요할 수 있습니다.
-4. **대용량 파일:** 노드 간 대용량 파일 전송은 가급적 피하고, MiniPC 내부에서 가공을 완료한 후 최종 결과물만 가져오세요.
+1. **MiniPC 路径:** 确保路径始终以 `$HOME/` 为基准的绝对路径。
+2. **性能:** Remotion 的渲染过程对 CPU 资源要求较高，建议通过子代理在后台运行。
+3. **字幕路径:** 如果 FFmpeg 的 `subtitles` 参数中的路径包含特殊字符，可能需要对其进行转义处理。
+4. **大文件处理:** 尽量避免在节点间传输大文件，建议在 MiniPC 内完成所有处理后再传输最终结果。
 
 ---
-*미스 김의 비디오 스킬은 실전에서의 효율성과 결과물의 품질을 최우선으로 합니다.* 💋
+*Miss Kim 的视频制作技巧注重实际操作中的效率和输出质量。* 💋

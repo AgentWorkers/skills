@@ -8,24 +8,24 @@ package: azure-ai-transcription
 
 # Azure AI Transcription SDK for Python
 
-Client library for Azure AI Transcription (speech-to-text) with real-time and batch transcription.
+这是一个用于 Azure AI Transcription（语音转文本）的客户端库，支持实时转录和批量转录功能。
 
-## Installation
+## 安装
 
 ```bash
 pip install azure-ai-transcription
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 TRANSCRIPTION_ENDPOINT=https://<resource>.cognitiveservices.azure.com
 TRANSCRIPTION_KEY=<your-key>
 ```
 
-## Authentication
+## 认证
 
-Use subscription key authentication (DefaultAzureCredential is not supported for this client):
+使用订阅密钥进行认证（此客户端不支持 DefaultAzureCredential）：
 
 ```python
 import os
@@ -37,7 +37,7 @@ client = TranscriptionClient(
 )
 ```
 
-## Transcription (Batch)
+## 批量转录
 
 ```python
 job = client.begin_transcription(
@@ -50,7 +50,7 @@ result = job.result()
 print(result.status)
 ```
 
-## Transcription (Real-time)
+## 实时转录
 
 ```python
 stream = client.begin_stream_transcription(locale="en-US")
@@ -59,11 +59,11 @@ for event in stream:
     print(event.text)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Enable diarization** when multiple speakers are present
-2. **Use batch transcription** for long files stored in blob storage
-3. **Capture timestamps** for subtitle generation
-4. **Specify language** to improve recognition accuracy
-5. **Handle streaming backpressure** for real-time transcription
-6. **Close transcription sessions** when complete
+1. 当有多个说话者时，启用“对话记录”功能。
+2. 对于存储在 blob 存储中的长文件，使用批量转录方式。
+3. 采集时间戳以用于生成字幕。
+4. 指定语言以提高识别准确性。
+5. 在实时转录过程中处理流式数据传输的背压问题。
+6. 转录任务完成后，关闭相应的转录会话。

@@ -1,17 +1,24 @@
 ---
 name: safe-multisig-skill
-description: Propose, confirm, and execute Safe multisig transactions using the Safe{Core} SDK (protocol-kit v6 / api-kit v4). TypeScript strict. Use when an agent needs to operate a Safe smart account — (1) create/predict a new Safe, (2) fetch Safe owners/threshold/nonce, (3) list pending multisig txs, (4) build + propose a tx, (5) add confirmations, (6) execute a tx onchain, or (7) troubleshoot Safe nonce/signature issues across chains (Base/Ethereum/Optimism/Arbitrum/Polygon/etc.).
+description: 使用 Safe{Core} SDK（协议套件 v6 / API 套件 v4）来提议、确认并执行安全的多重签名交易。该 SDK 需要 TypeScript 严格类型检查的支持。当代理需要操作一个 Safe 智能账户时，可以使用以下功能：  
+(1) 创建或预测一个新的 Safe 账户；  
+(2) 获取 Safe 账户的所有者信息、交易阈值以及随机数（nonce）；  
+(3) 列出待处理的多重签名交易；  
+(4) 构建并提议交易；  
+(5) 添加交易确认；  
+(6) 在链上执行交易；  
+(7) 解决跨多个区块链（如 Base、Ethereum、Optimism、Arbitrum、Polygon 等）的 Safe 随机数或签名相关问题。
 ---
 
-# Safe Multisig Skill
+# 安全的多重签名（Safe Multisig）功能
 
-TypeScript-strict scripts for interacting with Safe multisig accounts via:
-- **Safe Transaction Service** (read state, propose txs, submit confirmations)
-- **Safe{Core} SDK** (create Safes, create txs, compute hashes, sign, execute)
+这些TypeScript-strict脚本用于通过以下方式与安全的多重签名（Safe multisig）账户进行交互：
+- **安全交易服务（Safe Transaction Service）**：读取账户状态、提议交易（propose transactions）、提交确认（submit confirmations）
+- **Safe{Core} SDK**：创建多重签名账户（create Safes）、创建交易（create transactions）、计算哈希值（compute hashes）、签名（sign）、执行交易（execute transactions）
 
-All scripts use `ethers v6`, validate inputs (addresses, tx hashes), and output JSON.
+所有脚本均使用`ethers v6`，验证输入数据（地址、交易哈希值），并输出JSON格式的结果。
 
-## Quick start
+## 快速入门
 
 ```bash
 cd <this-skill>
@@ -21,23 +28,23 @@ cd <this-skill>
 ./scripts/safe_about.sh --chain base
 ```
 
-## Core scripts
+## 核心脚本
 
-| Script | Description |
-|--------|-------------|
-| `create-safe.ts` | Predict address + optionally deploy a new Safe |
-| `safe-info.ts` | Fetch Safe info (owners/threshold/nonce) |
-| `list-pending.ts` | List pending (queued) multisig transactions |
-| `safe_txs_list.ts` | List all multisig transactions (queued + executed) |
-| `propose-tx.ts` | Create + propose a multisig tx |
-| `approve-tx.ts` | Add an off-chain confirmation for a tx hash |
-| `execute-tx.ts` | Execute a fully-confirmed tx onchain |
+| 脚本          | 描述                                      |
+|----------------|-----------------------------------------|
+| `create-safe.ts`    | 预测账户地址；可选地部署新的多重签名账户                |
+| `safe-info.ts`    | 获取多重签名账户的信息（所有者、阈值、随机数（nonce）             |
+| `list-pending.ts`    | 列出待处理的多重签名交易                         |
+| `safe_txs_list.ts`    | 列出所有已排队或已执行的多重签名交易                   |
+| `propose-tx.ts`    | 创建并提议一个新的多重签名交易请求                   |
+| `approve-tx.ts`    | 为交易哈希添加离线确认（off-chain confirmation）         |
+| `execute-tx.ts`    | 在链上执行已确认的交易                         |
 
-All scripts: `npx tsx scripts/<name>.ts --help`
+所有脚本的使用方法：`npx tsx scripts/<脚本名称>.ts --help`
 
-## Common tasks
+## 常见操作
 
-### 1) Create a new Safe
+### 1) 创建新的多重签名账户
 
 ```bash
 npx tsx scripts/create-safe.ts \
@@ -46,23 +53,23 @@ npx tsx scripts/create-safe.ts \
   --threshold 2
 ```
 
-Add `--deploy` + `SAFE_SIGNER_PRIVATE_KEY` to send the deployment tx.
+在运行脚本时，添加`--deploy`和`SAFE_SIGNER_PRIVATE_KEY`参数以部署新的账户。
 
-### 2) Get Safe info
+### 2) 获取多重签名账户信息
 
 ```bash
 npx tsx scripts/safe-info.ts --chain base --safe 0xYourSafe
 ```
 
-### 3) List pending transactions
+### 3) 列出待处理的多重签名交易
 
 ```bash
 npx tsx scripts/list-pending.ts --chain base --safe 0xYourSafe
 ```
 
-### 4) Propose a new transaction
+### 4) 提议新的交易
 
-Create a tx request JSON (see `references/tx_request.schema.json` and `references/examples.md`).
+请参考`references/tx_request.schema.json`和`references/examples.md`来生成交易请求的JSON格式。
 
 ```bash
 export SAFE_SIGNER_PRIVATE_KEY="..."
@@ -73,7 +80,7 @@ npx tsx scripts/propose-tx.ts \
   --tx-file ./references/example.tx.json
 ```
 
-### 5) Confirm (approve) a proposed transaction
+### 5) 确认（批准）提议的交易
 
 ```bash
 export SAFE_SIGNER_PRIVATE_KEY="..."
@@ -84,7 +91,7 @@ npx tsx scripts/approve-tx.ts \
   --safe-tx-hash 0x...
 ```
 
-### 6) Execute a confirmed transaction (onchain)
+### 6) 在链上执行已确认的交易
 
 ```bash
 export SAFE_SIGNER_PRIVATE_KEY="..."
@@ -96,22 +103,22 @@ npx tsx scripts/execute-tx.ts \
   --safe-tx-hash 0x...
 ```
 
-## Configuration
+## 配置参数
 
-All scripts accept:
-- `--chain <slug>` (recommended): e.g. `base`, `base-sepolia`, `mainnet`, `arbitrum`, `optimism`
-- `--tx-service-url <url>`: Override the transaction service URL
-- `--rpc-url <url>`: RPC endpoint (or `RPC_URL` env var)
-- `--api-key <key>`: Safe Transaction Service API key (or `SAFE_TX_SERVICE_API_KEY` env var)
+所有脚本支持以下配置选项：
+- `--chain <链名>`（推荐）：例如 `base`、`base-sepolia`、`mainnet`、`arbitrum`、`optimism`
+- `--tx-service-url <交易服务URL>`：自定义交易服务URL
+- `--rpc-url <RPC端点>`：RPC服务端点（或通过环境变量`RPC_URL`设置）
+- `--api-key <API密钥>`：安全交易服务的API密钥（或通过环境变量`SAFE_TX_SERVICE_API_KEY`设置）
 
-## Security rules
+## 安全注意事项
 
-- **Never paste private keys into chat.** Use env vars or files.
-- Prefer low-privilege signers and spending limits.
-- Always verify Safe address, chainId / RPC, and nonce before signing.
+- **切勿将私钥粘贴到聊天框中**。请使用环境变量或文件来存储私钥。
+- 尽量使用权限较低的角色进行签名操作，并设置合理的交易花费限制。
+- 在签名之前，务必验证多重签名账户的地址、链名（chainId）、RPC端点以及随机数（nonce）。
 
-## References
+## 参考资料
 
-- `references/examples.md` — example requests + workflows
-- `references/tx_request.schema.json` — tx request JSON shape
-- `references/tx_service_slugs.md` — chain slugs + notes
+- `references/examples.md`：示例交易请求及操作流程
+- `references/tx_request.schema.json`：交易请求的JSON格式规范
+- `references/tx_service_slugs.md`：各链的名称及相关说明

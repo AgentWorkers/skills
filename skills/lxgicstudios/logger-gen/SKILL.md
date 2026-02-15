@@ -1,28 +1,28 @@
 ---
 name: logger-gen
-description: Set up structured logging for any framework. Use when configuring logging.
+description: 为任何框架设置结构化的日志记录功能。在配置日志记录时使用此功能。
 ---
 
-# Logger Generator
+# 日志生成器
 
-Structured logging is important but setting it up right takes time. This tool generates production-ready logging config for pino, winston, or bunyan.
+虽然结构化日志记录非常重要，但正确配置它需要花费时间。这个工具可以为 pino、winston 或 bunyan 生成可用于生产环境的日志配置。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-logger pino
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates logging setup for popular libraries
-- Includes request tracking and correlation IDs
-- Sets up log rotation and formatting
-- Pretty output for development, JSON for production
+- 为常用库生成日志配置
+- 包含请求跟踪信息和关联 ID
+- 设置日志轮换和格式化规则
+- 开发模式下提供美观的日志输出，生产模式下提供 JSON 格式的日志
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Pino setup
@@ -35,42 +35,42 @@ npx ai-logger winston -o lib/logger.ts
 npx ai-logger bunyan -e edge
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use structured logs** - JSON is searchable
-- **Include request IDs** - trace requests across services
-- **Log at the right level** - don't info log everything
-- **Redact sensitive data** - never log passwords or tokens
+- **使用结构化日志**：JSON 格式的日志更易于搜索
+- **包含请求 ID**：便于跨服务追踪请求
+- **在适当的级别记录日志**：不要在所有情况下都记录详细信息
+- **隐藏敏感数据**：切勿记录密码或令牌
 
-## When to Use This
+## 适用场景
 
-- Starting a new project with proper logging
-- Replacing console.log with real logging
-- Setting up log aggregation
-- Debugging production issues
+- 在新项目中设置合适的日志记录机制
+- 用正式的日志记录系统替换 console.log
+- 配置日志聚合功能
+- 调试生产环境中的问题
 
-## Part of the LXGIC Dev Toolkit
+## 作为 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、注册或使用 API 密钥，只需使用即可。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-logger --help
 ```
 
-## How It Works
+## 工作原理
 
-Generates complete logging configuration for your chosen library including transports, formatters, and middleware for request logging. Handles environment-specific settings automatically.
+该工具会为所选库生成完整的日志配置，包括传输方式（transport）、格式化规则（formatter）以及用于请求记录的中间件（middleware），并自动处理与环境相关的配置设置。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具。

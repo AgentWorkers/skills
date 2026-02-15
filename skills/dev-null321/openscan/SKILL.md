@@ -1,6 +1,6 @@
 ---
 name: openscan
-description: Scan binaries and scripts for malicious patterns before trusting them. Use when installing skills, evaluating unknown binaries, or auditing tool dependencies.
+description: 在信任二进制文件和脚本之前，先扫描它们以检测是否存在恶意代码模式。这适用于安装技能（skills）、评估未知的二进制文件或审计工具依赖关系时。
 version: 1.0.0
 author: Marq Britt
 homepage: https://github.com/marqbritt/openscan
@@ -16,29 +16,29 @@ metadata:
 
 # OpenScan
 
-Lightweight malware detection for macOS and Linux binaries/scripts. Ported from the Harkonnen antimalware engine.
+一款轻量级的恶意软件检测工具，适用于 macOS 和 Linux 系统的二进制文件/脚本。该工具基于 Harkonnen 杀毒引擎进行开发。
 
-## What It Detects
+## 检测内容
 
-**Binary Analysis:**
-- Mach-O (macOS) and ELF (Linux) parsing
-- Suspicious dylibs/shared objects (Frida, injection frameworks)
-- Missing/invalid code signatures (macOS)
-- Disabled security features (PIE, NX, RELRO)
-- Packed/encrypted binaries (high entropy)
+**二进制文件检测：**
+- 解析 Mach-O（macOS）和 ELF（Linux）格式文件
+- 检测可疑的动态链接库（dylibs）/共享对象（如 Frida、注入框架）
+- 检查缺失或无效的代码签名（macOS）
+- 识别被禁用的安全功能（如 PIE、NX、RELRO）
+- 检测经过压缩/加密的二进制文件（具有高熵特性）
 
-**Pattern Detection:**
-- Shellcode byte sequences
-- Suspicious API references (process injection, keylogging, etc.)
-- Network indicators (embedded URLs, IPs)
-- Encoded payloads (base64 blobs)
+**模式检测：**
+- 检测 shellcode 字节序列
+- 识别可疑的 API 调用（如进程注入、键盘记录等行为）
+- 分析网络活动（嵌入的 URL、IP 地址）
+- 检测编码后的有效载荷（如 base64 格式的数据）
 
-**Script Analysis:**
-- Dangerous shell patterns (curl|bash, eval, etc.)
-- Obfuscation indicators
-- Privilege escalation attempts
+**脚本文件检测：**
+- 识别危险的 shell 脚本模式（如 curl、bash、eval 等）
+- 检测代码混淆的迹象
+- 分析权限提升尝试
 
-## Usage
+## 使用方法
 
 ```bash
 # Scan a single binary
@@ -54,27 +54,27 @@ node bin/scan.js /path --json
 node bin/scan.js /path --quiet
 ```
 
-## Exit Codes
+## 退出代码
 
-- `0` - Clean (score ≤ 20)
-- `1` - Suspicious (score 21-60)
-- `2` - High threat (score > 60)
+- `0`：文件安全（评分 ≤ 20）
+- `1`：文件可疑（评分 21-60）
+- `2`：威胁等级高（评分 > 60）
 
-## Threat Scoring
+## 威胁评分
 
-Each file receives a score from 0-100:
+每个文件都会被赋予 0-100 分的评分：
 
-| Score | Level    | Meaning                              |
+| 评分 | 危险等级 | 含义                                      |
 |-------|----------|--------------------------------------|
-| 0-20  | CLEAN    | No significant findings              |
-| 21-40 | LOW      | Minor concerns, probably safe        |
-| 41-60 | MEDIUM   | Suspicious patterns, review manually |
-| 61-80 | HIGH     | Likely malicious or dangerous        |
-| 81-100| CRITICAL | Known malicious patterns             |
+| 0-20  | 安全    | 未发现显著问题                        |
+| 21-40 | 低风险   | 存在轻微问题，通常为安全文件                |
+| 41-60 | 中等风险 | 存在可疑模式，需手动检查                |
+| 61-80 | 高风险   | 很可能是恶意文件                    |
+| 81-100 | 极高风险 | 明显为恶意文件                    |
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-Use before installing or trusting unknown binaries:
+在安装或使用未知二进制文件之前，建议先使用 OpenScan 进行检测：
 
 ```javascript
 // Example: scan before allowing a skill's binary
@@ -89,13 +89,13 @@ async function checkBinary(binPath) {
 }
 ```
 
-## Limitations
+## 限制
 
-- Not a replacement for full antivirus
-- Signature-based detection is minimal (no hash database)
-- May produce false positives on legitimate security tools
-- Cannot detect all obfuscation techniques
+- 不能替代完整的防病毒软件
+- 基于签名的检测功能有限（不支持哈希数据库）
+- 可能会对合法的安全工具产生误报
+- 无法检测所有类型的代码混淆技术
 
-## Credits
+## 致谢
 
-Detection logic ported from [Harkonnen](https://github.com/dev-null321/Harkonnen) antimalware engine.
+该工具的检测逻辑源自 [Harkonnen](https://github.com/dev-null321/Harkonnen) 杀毒引擎。

@@ -1,67 +1,67 @@
 ---
 name: Data Analysis
-description: Turn raw data into decisions with statistical rigor, proper methodology, and awareness of analytical pitfalls.
+description: 将原始数据转化为决策，需要运用严谨的统计方法、科学的研究方法，并充分意识到分析过程中可能存在的陷阱（即避免常见的分析错误）。
 ---
 
-## When to Load
+## 何时进行数据分析
 
-User asks about: analyzing data, finding patterns, understanding metrics, testing hypotheses, cohort analysis, A/B testing, churn analysis, statistical significance.
+用户通常会询问以下方面的问题：数据分析、模式识别、指标解读、假设验证、群体分析（cohort analysis）、A/B测试、用户流失分析（churn analysis）以及统计显著性（statistical significance）。
 
-## Core Principle
+## 核心原则
 
-Analysis without a decision is just arithmetic. Always clarify: **What would change if this analysis shows X vs Y?**
+没有明确决策目标的分析仅仅只是数学运算。务必明确：**如果分析结果显示X与Y不同，那么实际情况会如何改变？**
 
-## Methodology First
+## 方法优先
 
-Before touching data:
-1. **What decision** is this analysis supporting?
-2. **What would change your mind?** (the real question)
-3. **What data do you actually have** vs what you wish you had?
-4. **What timeframe** is relevant?
+在开始处理数据之前，需要先考虑以下问题：
+1. 这项分析旨在支持哪个决策？
+2. 什么因素会改变你的判断？（这才是真正重要的问题）
+3. 你实际拥有的数据是什么？你希望拥有哪些数据？
+4. 哪个时间范围是相关的？
 
-## Statistical Rigor Checklist
+## 统计严谨性检查清单
 
-- [ ] Sample size sufficient? (small N = wide confidence intervals)
-- [ ] Comparison groups fair? (same time period, similar conditions)
-- [ ] Multiple comparisons? (20 tests = 1 "significant" by chance)
-- [ ] Effect size meaningful? (statistically significant ≠ practically important)
-- [ ] Uncertainty quantified? ("12-18% lift" not just "15% lift")
+- [ ] 样本量是否足够？（样本量小会导致置信区间较宽）
+- [ ] 对照组是否公平？（处于相同的时间段、相似的条件下）
+- 是否进行了多重比较？（进行20次独立测试后，至少有一次结果可能是偶然出现的“显著”结果）
+- 效应量是否有实际意义？（统计上的显著并不一定意味着实际上的重要）
+- 不确定性是否得到了量化？（例如，效果是“12-18%的提升”，而不仅仅是“15%的提升”）
 
-## Analytical Pitfalls to Catch
+## 需要注意的分析陷阱
 
-| Pitfall | What it looks like | How to avoid |
-|---------|-------------------|--------------|
-| Simpson's Paradox | Trend reverses when you segment | Always check by key dimensions |
-| Survivorship bias | Only analyzing current users | Include churned/failed in dataset |
-| Comparing unequal periods | Feb (28d) vs March (31d) | Normalize to per-day or same-length windows |
-| p-hacking | Testing until something is "significant" | Pre-register hypotheses or adjust for multiple comparisons |
-| Correlation in time series | Both went up = "related" | Check if controlling for time removes relationship |
-| Aggregating percentages | Averaging percentages directly | Re-calculate from underlying totals |
+| 陷阱          | 表现形式                | 应对方法                                      |
+|------------------|------------------|-----------------------------------------|
+| 辛普森悖论（Simpson's Paradox） | 分组后数据趋势发生反转          | 始终通过关键维度来验证数据趋势                    |
+| 生存者偏差（Survivorship Bias） | 仅分析当前用户              | 将流失用户或失败用户也纳入数据集                   |
+| 比较不同时间段的数据     | 例如2月（28天）与3月（31天）         | 将数据标准化为每日数据或相同长度的时间段             |
+| p值操纵（p-hacking）    | 无休止地测试直到某个结果“显著”       | 预先设定假设或调整多重比较的影响                |
+| 时间序列中的相关性     | 两个指标同时上升即认为“相关”         | 检查控制时间变量后相关性是否仍然存在                 |
+| 直接汇总百分比       | 直接计算平均值              | 重新根据原始总数进行计算                         |
 
-For detailed examples of each pitfall, see `pitfalls.md`.
+有关每个陷阱的详细示例，请参阅 `pitfalls.md`。
 
-## Approach Selection
+## 方法选择
 
-| Question type | Approach | Key output |
-|---------------|----------|------------|
-| "Is X different from Y?" | Hypothesis test | p-value + effect size + CI |
-| "What predicts Z?" | Regression/correlation | Coefficients + R² + residual check |
-| "How do users behave over time?" | Cohort analysis | Retention curves by cohort |
-| "Are these groups different?" | Segmentation | Profiles + statistical comparison |
-| "What's unusual?" | Anomaly detection | Flagged points + context |
+| 问题类型        | 适用方法                | 主要输出结果                                   |
+|---------------|------------------|-----------------------------------------|
+| “X与Y是否不同？”     | 假设检验（Hypothesis Test）        | p值（p-value）+ 效应量（effect size）+ 置信区间（confidence interval） |
+| “什么因素可以预测Z？”    | 回归分析/相关性分析（Regression/Correlation） | 回归系数（coefficients）+ R²值（R²）+ 剩差检验（residual check） |
+| “用户随时间的行为如何？”    | 群体分析（Cohort Analysis）       | 不同群体的留存曲线（retention curves）                |
+| “这些组之间有差异吗？”    | 数据分段（Segmentation）         | 用户群体特征（profiles）+ 统计比较                   |
+| “哪些情况不寻常？”     | 异常检测（Anomaly Detection）       | 标记异常数据点并提供背景信息                     |
 
-For technique details and when to use each, see `techniques.md`.
+有关每种方法的详细信息及其适用场景，请参阅 `techniques.md`。
 
-## Output Standards
+## 输出标准
 
-1. **Lead with the insight**, not the methodology
-2. **Quantify uncertainty** — ranges, not point estimates
-3. **State limitations** — what this analysis can't tell you
-4. **Recommend next steps** — what would strengthen the conclusion
+1. 首先呈现分析结果带来的洞察，而非分析方法本身。
+2. 量化不确定性，使用范围（ranges）而非单一的点估计值。
+3. 明确分析的局限性，即该分析无法解答哪些问题。
+4. 提出后续建议，以增强分析结论的可信度。
 
-## Red Flags to Escalate
+## 需要引起重视的警示信号
 
-- User wants to "prove" a predetermined conclusion
-- Sample size too small for reliable inference
-- Data quality issues that invalidate analysis
-- Confounders that can't be controlled for
+- 用户试图“证明”一个预先确定的结论。
+- 样本量过小，无法得出可靠的结论。
+- 数据质量存在问题，导致分析结果无效。
+- 存在无法控制的混杂因素（confounders）。

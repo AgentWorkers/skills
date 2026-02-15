@@ -1,49 +1,39 @@
 ---
 name: sage-walletconnect
-description: Sage WalletConnect integration. Filter coins, get asset coins, sign messages, send transactions for dApp connectivity.
+description: Sage WalletConnect集成：支持筛选货币、获取资产信息、签名消息以及发送交易，以实现与去中心化应用（dApp）的互联互通。
 ---
 
 # Sage WalletConnect
 
-WalletConnect protocol integration for dApp connectivity.
+Sage WalletConnect 提供了一种用于 dApp（去中心化应用程序）与钱包之间通信的协议集成方案。
 
-## Endpoints
+## 端点（Endpoints）
 
-### Coin Operations
+### 硬币操作（Coin Operations）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `filter_unlocked_coins` | `{"coin_ids": [...]}` | Filter to unlocked |
-| `get_asset_coins` | See below | Get spendable coins |
+| 端点 | 有效载荷（Payload） | 描述 |
+|----------|-----------------|-------------------|
+| `filter_unlocked_coins` | `{"coin_ids": [...]}` | 过滤已解锁的硬币 |
+| `get_asset_coins` | 见下文 | 获取可花费的硬币 |
 
-#### get_asset_coins Payload
+#### `get_asset_coins` 的有效载荷（Payload）
 
-```json
-{
-  "type": "cat",
-  "asset_id": "a628c1c2...",
-  "included_locked": false,
-  "offset": 0,
-  "limit": 50
-}
-```
+可支持的资产类型：`"cat"`、`"did"`、`"nft"`
 
-Asset types: `"cat"`, `"did"`, `"nft"`
+### 消息签名（Message Signing）
 
-### Message Signing
+| 端点 | 有效载荷 | 描述 |
+|----------|-----------------|-------------------|
+| `sign_message_with_public_key` | `{"message": "...", "public_key": "0x..."}` | 使用公钥签名消息 |
+| `sign_message_by_address` | `{"message": "...", "address": "xch1..."}` | 使用地址密钥签名消息 |
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `sign_message_with_public_key` | `{"message": "...", "public_key": "0x..."}` | Sign with pubkey |
-| `sign_message_by_address` | `{"message": "...", "address": "xch1..."}` | Sign with address key |
+### 交易（Transactions）
 
-### Transaction
+| 端点 | 有效载荷 | 描述 |
+|----------|-----------------|-------------------|
+| `send_transaction_immediately` | `{"spend_bundle": {...}}` | 直接广播交易请求 |
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `send_transaction_immediately` | `{"spend_bundle": {...}}` | Direct broadcast |
-
-## Spendable Coin Structure
+## 可花费硬币的结构（Structure of Spendable Coins）
 
 ```json
 {
@@ -64,7 +54,7 @@ Asset types: `"cat"`, `"did"`, `"nft"`
 }
 ```
 
-## Sign Message Response
+## 消息签名响应（Message Signing Response）
 
 ```json
 {
@@ -73,7 +63,7 @@ Asset types: `"cat"`, `"did"`, `"nft"`
 }
 ```
 
-## Send Transaction Response
+## 交易发送响应（Transaction Sending Response）
 
 ```json
 {
@@ -82,9 +72,11 @@ Asset types: `"cat"`, `"did"`, `"nft"`
 }
 ```
 
-Status: `1` = success, other = error
+状态码说明：
+- `1`：成功
+- 其他值：错误
 
-## Examples
+## 示例（Examples）
 
 ```bash
 # Filter unlocked coins
@@ -118,17 +110,17 @@ sage_rpc send_transaction_immediately '{
 }'
 ```
 
-## WalletConnect Flow
+## WalletConnect 的工作流程（WalletConnect Workflow）
 
-1. dApp requests connection
-2. User approves in Sage
-3. dApp calls `get_asset_coins` to find spendable coins
-4. dApp builds transaction
-5. User signs via `sign_message_*` or transaction signing
-6. dApp broadcasts or calls `send_transaction_immediately`
+1. dApp 请求与钱包建立连接。
+2. 用户在 Sage 平台上进行身份验证并批准连接。
+3. dApp 调用 `get_asset_coins` 函数来获取可花费的硬币。
+4. dApp 构建交易请求。
+5. 用户通过 `sign_message_*` 或其他签名方法对交易进行签名。
+6. dApp 将签名后的交易请求广播到网络，或直接调用 `send_transaction_immediately` 函数来发送交易。
 
-## Notes
+## 注意事项（Notes）
 
-- WalletConnect enables dApp ↔ wallet communication
-- `lineage_proof` is required for CAT spends
-- Message signing proves address ownership without spending
+- WalletConnect 支持 dApp 与钱包之间的双向通信。
+- 对于涉及 CAT（特定类型的资产）的交易，`lineage_proof` 是必需的。
+- 消息签名功能可以在不进行实际交易的情况下验证地址的所有权。

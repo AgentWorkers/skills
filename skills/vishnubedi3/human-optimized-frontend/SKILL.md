@@ -7,177 +7,176 @@ description: >
   Trigger keywords: use human-optimized-frontend, redesign frontend, redesign interface.
 ---
 
-## Activation Criteria
-Activate this skill only when the user explicitly instructs the agent to redesign a frontend and references this skill by name.
+## 激活条件  
+仅当用户明确指示代理重新设计前端界面，并通过名称引用此技能时，才能激活该技能。  
 
-Do not activate for:
-- Conceptual discussion or critique only
-- Coding or implementation tasks
-- Inspiration, references, or visual examples
-- Partial or component-level design requests
+**不适用的情况：**  
+- 仅用于概念性讨论或评估  
+- 编码或实现相关任务  
+- 提供灵感、参考资料或视觉示例  
+- 部分或组件级别的设计请求  
 
-## Execution Steps
+## 执行步骤  
 
-### 1. Context Intake
-- Consume all provided information about the interface.
-- If context is missing, assume a neutral functional product with general-purpose usage.
-- Do not assume branding, audience psychology, or business goals unless explicitly stated.
+### 1. 信息收集  
+- 收集关于当前界面的所有相关信息。  
+- 如果缺少相关信息，假设该产品为具有通用功能的中性设计。  
+- 除非另有明确说明，否则不要假设产品的品牌特性、目标用户群体或业务目标。  
 
-### 2. Direction Lock (Aesthetic + UX)
-- Select exactly one aesthetic direction.
-- Select exactly one UX interaction philosophy (e.g. clarity-first, flow-driven, exploration-led).
-- All visual, motion, and interaction decisions must reinforce both.
-- Do not mix stylistic or interaction paradigms.
+### 2. 确定设计方向（美学与用户体验）  
+- 选择一种明确的美学风格。  
+- 选择一种明确的用户体验交互方式（例如：以清晰度为核心、以用户流程为导向或以探索性体验为主）。  
+- 所有的视觉效果、动画效果和交互设计都必须与所选的方向保持一致。  
+- 不得混合不同的设计风格或交互模式。  
 
-### 3. Initial Design Generation
+### 3. 初始设计生成  
 
-#### Typography
-- Body text baseline: 15–18px equivalent
-- Heading scale:
-  - H1 = body × 2.2–2.6
-  - H2 = body × 1.6–1.9
-  - H3 = body × 1.3–1.5
-- Line height:
-  - Body: 1.45–1.6
-  - Headings: 1.15–1.3
-- Font rule:
-  - Serif + sans-serif pairing OR single family with ≥ 4 weights
-- Letter spacing:
-  - Headings: -1% to -3%
-  - Body: 0% to +1%
-- Prohibited fonts: system defaults, Inter, Roboto, Arial.
+#### 字体排版  
+- 正文文字的字号：15–18像素  
+- 标题大小：  
+  - H1：正文字号的1.2–1.6倍  
+  - H2：正文字号的1.6–1.9倍  
+  - H3：正文字号的1.3–1.5倍  
+- 行高：  
+  - 正文：1.45–1.6像素  
+  - 标题：1.15–1.3像素  
+- 字体要求：  
+  - 使用衬线字体与无衬线字体的组合，或使用至少有4种粗细变化的同一字体系列  
+- 字符间距：  
+  - 标题：-1%至-3%  
+  - 正文：0%至+1%  
+- 禁用的字体：系统默认字体、Inter、Roboto、Arial  
 
-#### Color & Theme
-- Palette:
-  - 1 dominant
-  - 1 secondary
-  - 1 accent
-  - 1 neutral base
-- Contrast:
-  - Text ≥ 4.5:1
-  - Interactive elements ≥ 3:1
-- Accent usage ≤ 10% of visible area
-- Only one saturated color allowed
-- Gradients allowed only as background fields
+#### 颜色与主题  
+- 配色方案：  
+  - 1种主导色  
+  - 1种辅助色  
+  - 1种强调色  
+  - 1种中性背景色  
+- 对比度要求：  
+  - 文本与背景的对比度≥4.5:1  
+  - 交互元素的对比度≥3:1  
+- 强调色的使用面积不得超过可见区域的10%  
+- 只允许使用一种饱和度较高的颜色；渐变仅可用于背景效果  
 
-#### Layout & Composition
-- Single spacing base unit (8px or 10px)
-- Visual weight distribution:
-  - Primary: 40–55%
-  - Secondary: 25–35%
-  - Tertiary: ≤ 20%
-- Maximum two alignment axes per view
-- Symmetry allowed only with counterbalancing contrast
+#### 布局与构图  
+- 基本间距单位：8像素或10像素  
+- 各元素的重要性分配：  
+  - 主要元素：40–55%  
+  - 辅助元素：25–35%  
+  - 次要元素：≤20%  
+- 每个界面最多允许使用两个对齐轴  
+- 只允许在具有适当对比度的情况下使用对称设计  
 
-#### Background & Depth
-- Background type:
-  - Textured neutral OR
-  - Low-contrast geometry OR
-  - Layered planes
-- Max depth layers: 3
-- Foreground contrast must exceed background by ≥ 20%
+#### 背景与层次感  
+- 背景类型：  
+  - 有纹理的中性背景  
+  - 低对比度的几何图案  
+  - 分层背景  
+- 最多允许使用3层背景效果  
+- 前景与背景的对比度必须≥20%  
 
-#### Motion Graphics (Mandatory)
-- Required motion categories:
-  - Entry motion
-  - Hierarchy reinforcement
-  - Interaction feedback
-- Timing: 180–420ms
-- Easing:
-  - Primary: ease-out
-  - Secondary: subtle cubic or linear
-- Max simultaneous moving elements per viewport: 3
-- Motion must encode hierarchy, state, or spatial relation
-- Prohibited: decorative loops, idle animations, novelty motion
+#### 动画效果（必选）  
+- 必须包含以下类型的动画效果：  
+  - 进入动画  
+  - 用于强化界面层次结构的动画  
+  - 交互反馈动画  
+- 动画时长：180–420毫秒  
+- 动画缓动效果：  
+  - 主要动画采用“缓出”效果  
+  - 辅助动画采用柔和的立方体或线性动画  
+- 每个视口中同时移动的动画元素数量最多为3个  
+- 动画效果必须能够体现界面的层次结构、状态或空间关系  
+- 禁用装饰性动画、无意义的动画或过于复杂的动画效果  
 
-#### UX Structure (Mandatory)
-- Define a primary user goal per view.
-- All visual and motion emphasis must support this goal.
-- Interaction rules:
-  - One primary action per screen
-  - Secondary actions visually subordinate
-- Navigation clarity:
-  - Entry point must be obvious within 1 second
-  - Next available action must be discoverable without exploration
-- Cognitive load:
-  - No more than 3 competing focal points per view
-- Feedback:
-  - All user actions must produce immediate visual or motion feedback
-- Error tolerance:
-  - Interfaces must be forgiving; destructive actions must be visually distinguished
+#### 用户体验结构（必选）  
+- 为每个界面定义一个主要用户目标。  
+- 所有的视觉元素和动画效果都必须服务于这一目标。  
+- 交互规则：  
+  - 每个界面只包含一个主要操作  
+- 辅助操作在视觉上应处于次要位置  
+- 导航设计需清晰：  
+  - 进入点必须在1秒内显而易见  
+- 下一个可用操作无需额外探索即可找到  
+- 认知负担：  
+  - 每个界面内的焦点不超过3个  
+- 反馈机制：  
+  - 所有用户操作都应立即产生视觉或动画反馈  
+- 错误处理：  
+  - 界面应具有容错性；破坏性操作必须有明显的视觉提示  
 
-### 4. Quantitative Evaluation Loop
+### 4. 定量评估  
+对每个设计维度进行0–10分的评分：  
 
-Score each dimension from 0–10:
+**字体排版**：  
+- 8分及以上：层次结构清晰易读  
+- 6分及以下：字号或间距不协调  
 
-**Typography**
-- ≥ 8: hierarchy instantly readable
-- ≤ 6: scale or spacing feels inconsistent
+**颜色**：  
+- 8分及以上：主导色与强调色的使用明确  
+- 6分及以下：颜色搭配不合理或对比度不足  
 
-**Color**
-- ≥ 8: dominance and emphasis are unambiguous
-- ≤ 6: accents compete or contrast is weak
+**布局**：  
+- 8分及以上：视觉焦点在1–2秒内能够被识别  
+- 6分及以下：多个元素争夺用户的注意力  
 
-**Layout**
-- ≥ 8: eye flow resolves within 1–2 seconds
-- ≤ 6: multiple regions compete equally
+**背景**：  
+- 8分及以上：背景设计有助于增强层次感  
+- 6分及以下：背景设计分散用户注意力或显得单调  
 
-**Background**
-- ≥ 7: depth supports hierarchy
-- ≤ 5: background distracts or feels empty
+**动画效果**：  
+- 8分及以上：动画效果有助于提升用户体验  
+- 6分及以下：动画效果干扰用户操作或降低操作效率  
 
-**Motion**
-- ≥ 8: motion improves comprehension and flow
-- ≤ 6: motion distracts or delays intent
+**用户体验**：  
+- 8分及以上：用户意图明确，操作流程流畅  
+- 6分及以下：操作过程中存在犹豫、模糊或阻碍  
 
-**UX**
-- ≥ 8: user intent is obvious, actions feel effortless
-- ≤ 6: hesitation, ambiguity, or friction introduced
+**整体协调性**：  
+- 8分及以上：视觉元素、动画效果和用户体验相互协调  
+- 6分及以下：某些维度之间存在矛盾  
 
-**Cross-Dimensional Harmony**
-- ≥ 8: visuals, motion, and UX reinforce the same hierarchy and intent
-- ≤ 6: any dimension contradicts another
+**综合评分（各维度权重）**：  
+- 字体排版：20%  
+- 颜色：20%  
+- 布局：20%  
+- 动画效果：15%  
+- 用户体验：15%  
+- 背景：10%  
+- 整体协调性：至少8分  
 
-**Weighted Total Score**
-- Typography: 20%
-- Color: 20%
-- Layout: 20%
-- Motion: 15%
-- UX: 15%
-- Background: 10%
-- Harmony: mandatory ≥ 8
+### 5. 迭代流程  
+- 首先调整评分最低的维度。  
+- 如果用户体验评分低于8分，优先进行用户体验方面的调整。  
+- 每次迭代最多调整两个维度。  
+- 最多迭代次数：5次。  
+- 如果整体协调性评分下降，需撤销最后一次的修改。  
 
-### 5. Iteration Rules
-- Adjust lowest-scoring dimension first.
-- UX adjustments take priority if UX score < 8.
-- Never adjust more than two dimensions per iteration.
-- Maximum iterations: 5.
-- If harmony score drops, revert the last change.
+### 6. 最终输出  
+生成一份完整的前端设计规范，内容包括：  
+- 字体排版方案  
+- 配色方案及其用途  
+- 布局结构与元素的重要性分配  
+- 背景设计与层次感处理  
+- 动画效果的定义  
+- 用户体验流程与交互规则  
 
-### 6. Final Output
-Produce a single declarative frontend specification including:
-- Typography system
-- Color palette with roles
-- Layout structure and visual weights
-- Background and depth treatment
-- Motion graphics definitions
-- UX flow and interaction rules
+**注意事项：**  
+- 不提供替代方案或解释性说明。  
+- 不涉及设计理论。  
 
-No alternatives. No explanations. No theory.
+## 处理不明确的情况  
+- 如果缺少相关信息，假设产品为具有通用功能的中性设计。  
+- 即使在缺少信息的情况下，设计仍需满足美学、动画效果和用户体验的基本要求。  
+- 不得推断产品的品牌特性、情感基调或目标用户群体。  
 
-## Ambiguity Handling
-- Missing context defaults to neutral functional usage.
-- Defaults must still satisfy aesthetic, motion, and UX thresholds.
-- Never infer branding, emotional tone, or audience psychology.
+## 限制与注意事项  
+- 不生成代码、设计资源或原型图。  
+- 除非有重新设计的必要，否则不得对现有设计进行评价。  
+- 不得提及行业趋势、竞争对手或热门产品。  
+- 不提供多个设计方案供选择。  
+- 不需要对设计决策进行解释。  
 
-## Constraints & Non-Goals
-- Do not generate code, assets, or mockups.
-- Do not critique existing designs unless redesign context requires it.
-- Do not reference trends, competitors, or popular products.
-- Do not provide multiple options.
-- Do not justify decisions.
-
-## Failure Behavior
-If activation conditions are not met, output a minimal statement indicating the skill cannot be activated.
-
-If after maximum iterations UX or harmony thresholds are not met, output a minimal statement indicating that a satisfactory frontend cannot be generated under the given constraints and terminate.
+**失败处理**  
+- 如果未满足激活条件，输出一条简短提示，说明该技能无法被激活。  
+- 如果经过多次迭代后仍无法满足用户体验或整体协调性的要求，输出一条简短提示，表示在当前限制条件下无法生成满意的设计结果，并终止流程。

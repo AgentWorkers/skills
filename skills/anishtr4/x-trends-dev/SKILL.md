@@ -1,6 +1,6 @@
 ---
 name: x-trends
-description: "Fetches current top trending topics on X (Twitter) for any country using public aggregators."
+description: "使用公共数据聚合工具，获取任意国家在 X（Twitter）上当前最热门的 trending 主题。"
 version: 1.2.0
 author: Ani
 license: MIT
@@ -8,18 +8,17 @@ license: MIT
 
 # X Trends Scraper 📉
 
-A professional CLI tool to fetch X (Twitter) trending topics without an account.
-Powered by [getdaytrends.com](https://getdaytrends.com).
+这是一个专业的命令行工具（CLI），无需注册账户即可获取X（Twitter）的热门话题。该工具由[getdaytrends.com](https://getdaytrends.com)提供支持。
 
-## Installation
+## 安装
 
 ```bash
 clawdhub install x-trends
 ```
 
-## Usage
+## 使用方法
 
-Run the tool directly:
+直接运行该工具：
 
 ```bash
 # Default (India, Top 20, Table View)
@@ -32,11 +31,11 @@ x-trends --json
 x-trends --country us --limit 5
 ```
 
-## Features
-- **No Login Required**: Uses public aggregators.
-- **Volume Data**: Shows tweet counts (<10K, 50K, etc).
-- **Multi-Country**: Supports 'us', 'uk', 'india', 'world', etc.
-- **JSON Mode**: Easy parsing for other tools.
+## 主要功能
+- **无需登录**：使用公开的聚合服务来获取数据。
+- **数据统计**：显示推文数量（例如<10K、50K等）。
+- **支持多国家**：可查询“us”、“uk”、“india”、“world”等国家的热门话题。
+- **JSON格式输出**：输出格式为JSON，便于其他工具进行进一步处理。
 
-## Output
-Displays a clean, colorized table or raw JSON.
+## 输出结果
+输出结果为格式清晰、带有颜色标注的表格或原始JSON数据。

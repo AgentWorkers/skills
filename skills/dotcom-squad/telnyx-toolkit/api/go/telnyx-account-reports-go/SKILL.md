@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Reports - Go
+# Telnyx 账户报告 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Get all MDR detailed report requests
+## 获取所有 MDR 详细报告请求
 
-Retrieves all MDR detailed report requests for the authenticated user
+检索已认证用户的所有 MDR 详细报告请求
 
 `GET /legacy_reporting/batch_detail_records/messaging`
 
@@ -53,11 +53,11 @@ Retrieves all MDR detailed report requests for the authenticated user
 	fmt.Printf("%+v\n", messagings.Data)
 ```
 
-## Create a new MDR detailed report request
+## 创建新的 MDR 详细报告请求
 
-Creates a new MDR detailed report request with the specified filters
+使用指定的过滤器创建新的 MDR 详细报告请求
 
-`POST /legacy_reporting/batch_detail_records/messaging` — Required: `start_time`, `end_time`
+`POST /legacy_reporting/batch_detail_records/messaging` — 必需参数：`start_time`、`end_time`
 
 ```go
 	messaging, err := client.Legacy.Reporting.BatchDetailRecords.Messaging.New(context.TODO(), telnyx.LegacyReportingBatchDetailRecordMessagingNewParams{
@@ -70,9 +70,9 @@ Creates a new MDR detailed report request with the specified filters
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## Get a specific MDR detailed report request
+## 获取特定的 MDR 详细报告请求
 
-Retrieves a specific MDR detailed report request by ID
+通过 ID 获取特定的 MDR 详细报告请求
 
 `GET /legacy_reporting/batch_detail_records/messaging/{id}`
 
@@ -84,9 +84,9 @@ Retrieves a specific MDR detailed report request by ID
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## Delete a MDR detailed report request
+## 删除 MDR 详细报告请求
 
-Deletes a specific MDR detailed report request by ID
+通过 ID 删除特定的 MDR 详细报告请求
 
 `DELETE /legacy_reporting/batch_detail_records/messaging/{id}`
 
@@ -98,9 +98,9 @@ Deletes a specific MDR detailed report request by ID
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## Get all CDR report requests
+## 获取所有 CDR 报告请求
 
-Retrieves all CDR report requests for the authenticated user
+检索已认证用户的所有 CDR 报告请求
 
 `GET /legacy_reporting/batch_detail_records/voice`
 
@@ -112,11 +112,11 @@ Retrieves all CDR report requests for the authenticated user
 	fmt.Printf("%+v\n", voices.Data)
 ```
 
-## Create a new CDR report request
+## 创建新的 CDR 报告请求
 
-Creates a new CDR report request with the specified filters
+使用指定的过滤器创建新的 CDR 报告请求
 
-`POST /legacy_reporting/batch_detail_records/voice` — Required: `start_time`, `end_time`
+`POST /legacy_reporting/batch_detail_records/voice` — 必需参数：`start_time`、`end_time`
 
 ```go
 	voice, err := client.Legacy.Reporting.BatchDetailRecords.Voice.New(context.TODO(), telnyx.LegacyReportingBatchDetailRecordVoiceNewParams{
@@ -129,9 +129,9 @@ Creates a new CDR report request with the specified filters
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Get a specific CDR report request
+## 获取特定的 CDR 报告请求
 
-Retrieves a specific CDR report request by ID
+通过 ID 获取特定的 CDR 报告请求
 
 `GET /legacy_reporting/batch_detail_records/voice/{id}`
 
@@ -143,9 +143,9 @@ Retrieves a specific CDR report request by ID
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Delete a CDR report request
+## 删除 CDR 报告请求
 
-Deletes a specific CDR report request by ID
+通过 ID 删除特定的 CDR 报告请求
 
 `DELETE /legacy_reporting/batch_detail_records/voice/{id}`
 
@@ -157,9 +157,9 @@ Deletes a specific CDR report request by ID
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Get available CDR report fields
+## 获取可用的 CDR 报告字段
 
-Retrieves all available fields that can be used in CDR reports
+检索所有可用于 CDR 报告的字段
 
 `GET /legacy_reporting/batch_detail_records/voice/fields`
 
@@ -171,9 +171,9 @@ Retrieves all available fields that can be used in CDR reports
 	fmt.Printf("%+v\n", response.Billing)
 ```
 
-## List MDR usage reports
+## 列出 MDR 使用报告
 
-Fetch all previous requests for MDR usage reports.
+获取所有之前的 MDR 使用报告请求
 
 `GET /legacy_reporting/usage_reports/messaging`
 
@@ -185,9 +185,9 @@ Fetch all previous requests for MDR usage reports.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a new legacy usage V2 MDR report request
+## 创建新的传统使用 V2 MDR 报告请求
 
-Creates a new legacy usage V2 MDR report request with the specified filters
+使用指定的过滤器创建新的传统使用 V2 MDR 报告请求
 
 `POST /legacy_reporting/usage_reports/messaging`
 
@@ -201,9 +201,9 @@ Creates a new legacy usage V2 MDR report request with the specified filters
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## Get an MDR usage report
+## 获取 MDR 使用报告
 
-Fetch single MDR usage report by id.
+通过 ID 获取单个 MDR 使用报告
 
 `GET /legacy_reporting/usage_reports/messaging/{id}`
 
@@ -215,9 +215,9 @@ Fetch single MDR usage report by id.
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## Delete a V2 legacy usage MDR report request
+## 删除 V2 传统使用 MDR 报告请求
 
-Deletes a specific V2 legacy usage MDR report request by ID
+通过 ID 删除特定的 V2 传统使用 MDR 报告请求
 
 `DELETE /legacy_reporting/usage_reports/messaging/{id}`
 
@@ -229,9 +229,9 @@ Deletes a specific V2 legacy usage MDR report request by ID
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## List telco data usage reports
+## 列出电信数据使用报告
 
-Retrieve a paginated list of telco data usage reports
+获取分页的电信数据使用报告列表
 
 `GET /legacy_reporting/usage_reports/number_lookup`
 
@@ -243,9 +243,9 @@ Retrieve a paginated list of telco data usage reports
 	fmt.Printf("%+v\n", numberLookups.Data)
 ```
 
-## Submit telco data usage report
+## 提交电信数据使用报告
 
-Submit a new telco data usage report
+提交新的电信数据使用报告
 
 `POST /legacy_reporting/usage_reports/number_lookup`
 
@@ -257,9 +257,9 @@ Submit a new telco data usage report
 	fmt.Printf("%+v\n", numberLookup.Data)
 ```
 
-## Get telco data usage report by ID
+## 通过 ID 获取电信数据使用报告
 
-Retrieve a specific telco data usage report by its ID
+通过 ID 获取特定的电信数据使用报告
 
 `GET /legacy_reporting/usage_reports/number_lookup/{id}`
 
@@ -271,9 +271,9 @@ Retrieve a specific telco data usage report by its ID
 	fmt.Printf("%+v\n", numberLookup.Data)
 ```
 
-## Delete telco data usage report
+## 删除电信数据使用报告
 
-Delete a specific telco data usage report by its ID
+通过 ID 删除特定的电信数据使用报告
 
 `DELETE /legacy_reporting/usage_reports/number_lookup/{id}`
 
@@ -284,9 +284,9 @@ Delete a specific telco data usage report by its ID
 	}
 ```
 
-## Get speech to text usage report
+## 获取语音转文本使用报告
 
-Generate and fetch speech to text usage report synchronously.
+生成并同步获取语音转文本使用报告
 
 `GET /legacy_reporting/usage_reports/speech_to_text`
 
@@ -298,9 +298,9 @@ Generate and fetch speech to text usage report synchronously.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List CDR usage reports
+## 列出 CDR 使用报告
 
-Fetch all previous requests for cdr usage reports.
+获取所有之前的 CDR 使用报告请求
 
 `GET /legacy_reporting/usage_reports/voice`
 
@@ -312,9 +312,9 @@ Fetch all previous requests for cdr usage reports.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a new legacy usage V2 CDR report request
+## 创建新的传统使用 V2 CDR 报告请求
 
-Creates a new legacy usage V2 CDR report request with the specified filters
+使用指定的过滤器创建新的传统使用 V2 CDR 报告请求
 
 `POST /legacy_reporting/usage_reports/voice`
 
@@ -329,9 +329,9 @@ Creates a new legacy usage V2 CDR report request with the specified filters
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Get a CDR usage report
+## 获取 CDR 使用报告
 
-Fetch single cdr usage report by id.
+通过 ID 获取单个 CDR 使用报告
 
 `GET /legacy_reporting/usage_reports/voice/{id}`
 
@@ -343,9 +343,9 @@ Fetch single cdr usage report by id.
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Delete a V2 legacy usage CDR report request
+## 删除 V2 传统使用 CDR 报告请求
 
-Deletes a specific V2 legacy usage CDR report request by ID
+通过 ID 删除特定的 V2 传统使用 CDR 报告请求
 
 `DELETE /legacy_reporting/usage_reports/voice/{id}`
 
@@ -357,9 +357,9 @@ Deletes a specific V2 legacy usage CDR report request by ID
 	fmt.Printf("%+v\n", voice.Data)
 ```
 
-## Fetch all Messaging usage reports
+## 获取所有消息使用报告
 
-Fetch all messaging usage reports.
+获取所有消息使用报告
 
 `GET /reports/mdr_usage_reports`
 
@@ -371,9 +371,9 @@ Fetch all messaging usage reports.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create MDR Usage Report
+## 创建 MDR 使用报告
 
-Submit request for new new messaging usage report.
+提交新的消息使用报告请求
 
 `POST /reports/mdr_usage_reports`
 
@@ -389,9 +389,9 @@ Submit request for new new messaging usage report.
 	fmt.Printf("%+v\n", mdrUsageReport.Data)
 ```
 
-## Retrieve messaging report
+## 获取消息使用报告
 
-Fetch a single messaging usage report by id
+通过 ID 获取单个消息使用报告
 
 `GET /reports/mdr_usage_reports/{id}`
 
@@ -403,9 +403,9 @@ Fetch a single messaging usage report by id
 	fmt.Printf("%+v\n", mdrUsageReport.Data)
 ```
 
-## Delete MDR Usage Report
+## 删除 MDR 使用报告
 
-Delete messaging usage report by id
+通过 ID 删除消息使用报告
 
 `DELETE /reports/mdr_usage_reports/{id}`
 
@@ -417,9 +417,9 @@ Delete messaging usage report by id
 	fmt.Printf("%+v\n", mdrUsageReport.Data)
 ```
 
-## Generate and fetch MDR Usage Report
+## 生成并获取 MDR 使用报告
 
-Generate and fetch messaging usage report synchronously.
+同步生成并获取消息使用报告
 
 `GET /reports/mdr_usage_reports/sync`
 
@@ -433,9 +433,9 @@ Generate and fetch messaging usage report synchronously.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Generates and fetches CDR Usage Reports
+## 生成并获取 CDR 使用报告
 
-Generate and fetch voice usage report synchronously.
+同步生成并获取语音使用报告
 
 `GET /reports/cdr_usage_reports/sync`
 
@@ -450,9 +450,9 @@ Generate and fetch voice usage report synchronously.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Get Telnyx product usage data (BETA)
+## 获取 Telnyx 产品使用数据（测试版）
 
-Get Telnyx usage data by product, broken out by the specified dimensions
+按指定维度获取 Telnyx 产品使用数据
 
 `GET /usage_reports`
 
@@ -468,9 +468,9 @@ Get Telnyx usage data by product, broken out by the specified dimensions
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get Usage Reports query options (BETA)
+## 获取使用报告查询选项（测试版）
 
-Get the Usage Reports options for querying usage, including the products available and their respective metrics and dimensions
+获取用于查询使用情况的报告选项，包括可用的产品及其相应的指标和维度
 
 `GET /usage_reports/options`
 

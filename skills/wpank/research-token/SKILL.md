@@ -1,45 +1,42 @@
 ---
 name: research-token
-description: Research a token's Uniswap liquidity, volume profile, pool distribution, and risk factors. Use when the user asks about a token's tradability, liquidity depth, or wants due diligence.
+description: 研究某个代币在 Uniswap 平台上的流动性、交易量分布、交易池构成以及相关风险因素。当用户询问某个代币的可交易性、流动性情况或需要深入了解该代币时，可以使用这些信息来进行尽职调查。
 model: opus
 allowed-tools: [Task(subagent_type:token-analyst)]
 ---
 
-# Research Token
+# 研究令牌（Research Token）
 
-## Overview
+## 概述
 
-Performs comprehensive due diligence on a token from a Uniswap protocol perspective. Delegates to the `token-analyst` agent to analyze liquidity across all pools, volume trends, and risk factors.
+该功能从 Uniswap 协议的角度对令牌进行全面尽职调查。它会委托给 `token-analyst` 代理来分析所有交易池中的流动性、交易量趋势以及风险因素。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下问题时，可以激活该功能：
+- “研究 UNI 令牌”
+- “X 令牌的流动性足够吗？”
+- “对 PEPE 令牌进行分析”
+- “对这个令牌进行尽职调查”
+- “哪些交易池在交易 X 令牌？”
+- “X 令牌在 Uniswap 上的流动性如何？”
+- “交易 X 令牌安全吗？”
 
-- "Research UNI token"
-- "Is there enough liquidity for X?"
-- "Token analysis for PEPE"
-- "Due diligence on this token"
-- "What pools trade X?"
-- "How liquid is X on Uniswap?"
-- "Is X safe to trade?"
+## 参数
 
-## Parameters
+| 参数          | 是否必填 | 默认值        | 说明                                      |
+|---------------|--------|-------------|-----------------------------------------|
+| token         | 是       | —           | 令牌名称、符号或合约地址                             |
+| chain         | 否       | 所有链         | 指定链或“所有链”（用于跨链视图）                        |
+| focus         | 否       | 全面分析       | “流动性”、“交易量”或“风险”                             |
 
-| Parameter | Required | Default      | Description                                    |
-| --------- | -------- | ------------ | ---------------------------------------------- |
-| token     | Yes      | —            | Token name, symbol, or contract address         |
-| chain     | No       | All chains   | Specific chain or "all" for cross-chain view   |
-| focus     | No       | Full analysis| "liquidity", "volume", or "risk"               |
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：确定要研究的令牌以及任何链或分析重点。
+2. **委托给 `token-analyst` 代理**：使用令牌标识符调用 `Task(subagent_type:token-analyst)`。该代理会解析该令牌信息，查找所有交易池，分析其流动性及交易量，并生成风险评估报告。
+3. **展示结果**：将 `token-analyst` 代理的报告格式化为用户易于理解的摘要。
 
-1. **Extract parameters** from the user's request: identify the token and any chain/focus filters.
-
-2. **Delegate to token-analyst**: Invoke `Task(subagent_type:token-analyst)` with the token identifier. The agent resolves the token, discovers all pools, analyzes liquidity and volume, and produces a risk assessment.
-
-3. **Present results**: Format the token-analyst's report into a user-friendly summary.
-
-## Output Format
+## 输出格式
 
 ```text
 Token Research: UNI (Uniswap)
@@ -65,16 +62,16 @@ Token Research: UNI (Uniswap)
   Trading: Suitable for trades up to $2.5M with < 1% price impact
 ```
 
-## Important Notes
+## 重要说明
 
-- Delegates entirely to `token-analyst` — no direct MCP tool calls.
-- The analysis is from a Uniswap protocol perspective only — not a general investment analysis.
-- Risk factors are based on observable on-chain metrics, not price predictions.
+- 所有分析工作完全委托给 `token-analyst` 代理，不直接调用 MCP 工具。
+- 该分析仅基于 Uniswap 协议的数据，不提供一般性的投资建议。
+- 风险因素仅基于链上的可观测指标，不包含价格预测。
 
-## Error Handling
+## 错误处理
 
-| Error                | User-Facing Message                              | Suggested Action              |
-| -------------------- | ------------------------------------------------ | ----------------------------- |
-| Token not found      | "Could not find token X on Uniswap."             | Provide contract address      |
-| No pools             | "No Uniswap pools found for this token."          | Token may not be listed       |
-| Insufficient data    | "Limited trading data available for this token."  | Token may be too new          |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+|-------------------|---------------------------------------------------------|-------------------------------------------|
+| 未找到令牌             | “在 Uniswap 上未找到 X 令牌。”                             | 提供合约地址                                    |
+| 未找到交易池             | “未找到该令牌的交易池。”                                 | 该令牌可能尚未在 Uniswap 上上市                         |
+| 数据不足             | “该令牌的交易数据有限。”                                  | 该令牌可能发布时间较短                         |

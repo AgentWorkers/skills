@@ -1,53 +1,53 @@
 ---
 name: Collaborate
-description: Auto-learns when to seek different perspectives. Grows a library of useful mindsets and collaboration patterns.
+description: 它会自动学习何时需要从不同的角度来思考问题，并逐渐建立起一个包含各种有用思维模式和协作方式的“知识库”。
 ---
 
-## Auto-Adaptive Collaboration Memory
+## 自适应协作记忆
 
-This skill auto-evolves. Learn which perspectives help, when to seek them, and how exchanges work best.
+这项技能会随着时间的推移而不断进化。你需要学会哪些视角有助于解决问题，何时寻求这些视角，以及如何最有效地进行交流。
 
-**Core Loop:**
-1. **Recognize** — Notice when your own perspective is insufficient
-2. **Select** — Choose mindset/perspective that fills the gap
-3. **Exchange** — Engage in dialogue, not delegation
-4. **Evaluate** — Did the collaboration shift your understanding?
-5. **Store** — Record useful patterns below
+**核心流程：**
+1. **识别** — 注意到自己的视角是否不足以解决问题。
+2. **选择** — 选择能够填补知识空白的思维方式或视角。
+3. **交流** — 进行对话，而非简单地将任务委托给他人。
+4. **评估** — 协作是否改变了你的理解？
+5. **记录** — 将有用的方法或模式记录下来。
 
-Check `mindsets.md` for perspective archetypes. Check `vs-delegate.md` for when to collaborate vs delegate.
+请参考 `mindsets.md` 以了解不同的思维方式类型，以及参考 `vs-delegate.md` 来了解何时应该协作、何时应该委托任务。
 
-## Collaborate ≠ Delegate
+## 协作 ≠ 委托
 
-| Delegate | Collaborate |
+| 委托 | 协作 |
 |----------|-------------|
-| You instruct, they execute | You exchange, both contribute |
-| Your context, your style | Their skills, their perspective |
-| Output: completed task | Output: enriched understanding |
+| 你下达指令，他们执行 | 你们共同交流，共同完成任务 |
+| 你的背景和风格 | 他们的技能和视角 |
+| 结果：任务完成 | 结果：双方的理解都得到了提升 |
 
-**Trigger:** You need a different lens, not more hands.
+**触发条件：** 你需要不同的视角或方法，而不是更多的劳动力。
 
-## Entry Format
+## 记录格式
 
-One line: `context: perspective (level) [outcome]`
+每条记录格式为：`背景：视角（熟练程度）[结果]`
 
-Levels: `tried` (once), `pattern` (2+ successes), `confirmed` (explicit yes), `avoid` (didn't help)
+熟练程度分类：`尝试过`（仅使用过一次）、`有效方法`（多次成功使用）、`已被证实有效`（明确证明有效）、`应避免使用`（没有帮助）
 
-Examples:
-- `UI decisions: UX critic (confirmed) [catches layout issues]`
-- `architecture: devil's advocate (pattern) [finds edge cases]`
-- `copy/messaging: user-who-hates-reading (tried) [simplified headers]`
-- `security: paranoid auditor (confirmed)`
+示例：
+- `UI设计：用户体验评审员（已被证实有效）[发现了布局问题]`
+- **架构设计：故意提出反对意见的人（有效方法）[发现了潜在问题]`
+- **文案/信息传递：不喜欢阅读的用户（尝试过）[简化了标题设计]`
+- **安全审计：过度谨慎的审核者（已被证实有效）`
 
-### Perspectives That Help
-<!-- Mindsets that improved outcomes. Format: "context: perspective (level) [notes]" -->
+### 有助于解决问题的视角
+（格式：`背景：视角（熟练程度）[备注]`）
 
-### Exchange Patterns
-<!-- How collaboration works best. Format: "situation: pattern (level)" -->
+### 最有效的交流方式
+（格式：`情境：交流方法（熟练程度）`）
 
-### Triggers
-<!-- Signals that you need collaboration. Format: "signal: action" -->
+### 需要协作的信号
+（格式：`提示：应采取的行动`）
 
-### Avoid
-<!-- Perspectives/approaches that didn't add value -->
+### 应避免的视角或方法
+（格式：`应避免使用的方法/视角`）
 
-*Empty sections = nothing learned yet. Collaborate, evaluate, record.*
+*如果某个部分为空，说明你还没有学到任何东西。请尝试协作，进行评估，然后记录下来。*

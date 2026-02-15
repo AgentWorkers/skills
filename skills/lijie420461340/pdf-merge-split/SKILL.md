@@ -1,6 +1,6 @@
 ---
 name: PDF Merge & Split
-description: Combine multiple PDFs or split into separate files
+description: 合并多个 PDF 文件或将其拆分为单独的文件
 author: claude-office-skills
 version: "1.0"
 tags: [pdf, merge, split, combine, extract, pages]
@@ -8,45 +8,45 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, file_operations]
 ---
 
-# PDF Merge & Split
+# PDF合并与分割
 
-Combine multiple PDF files into one or split PDFs into separate documents.
+将多个PDF文件合并为一个文件，或将PDF文件分割成多个独立的文档。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Merge multiple PDFs into a single file
-- Split PDFs by page ranges
-- Extract specific pages
-- Reorder pages within a PDF
-- Create custom arrangements
+本技能可帮助您：
+- 将多个PDF文件合并为一个文件
+- 按页码范围分割PDF文件
+- 提取特定页面
+- 重新排列PDF文件中的页面顺序
+- 创建自定义的页面布局
 
-## How to Use
+## 使用方法
 
-### Merge PDFs
+### 合并PDF文件
 ```
 "Merge these 3 PDFs into one file"
 "Combine document1.pdf and document2.pdf"
 "Join all PDFs in this folder in alphabetical order"
 ```
 
-### Split PDF
+### 分割PDF文件
 ```
 "Split this PDF into individual pages"
 "Extract pages 5-10 from this PDF"
 "Split this PDF every 5 pages"
 ```
 
-### Reorder
+### 重新排列页面顺序
 ```
 "Move page 3 to the end"
 "Reorder pages: 1, 3, 2, 4, 5"
 "Reverse the page order"
 ```
 
-## Merge Operations
+## 合并操作
 
-### Basic Merge
+### 基本合并
 ```markdown
 ## PDF Merge Plan
 
@@ -70,7 +70,7 @@ This skill helps you:
 - [ ] Optimize/compress output
 ```
 
-### Advanced Merge
+### 高级合并
 ```markdown
 ## Advanced PDF Merge
 
@@ -92,9 +92,9 @@ This skill helps you:
 - Compression: None / Low / Medium / High
 ```
 
-## Split Operations
+## 分割操作
 
-### Split by Range
+### 按页码范围分割
 ```markdown
 ## PDF Split Plan
 
@@ -114,7 +114,7 @@ This skill helps you:
 `[original_name]_part[N].pdf`
 ```
 
-### Split by Size
+### 按文件大小分割
 ```markdown
 ## Split by File Size
 
@@ -135,7 +135,7 @@ This skill helps you:
 | ... | ... | ... |
 ```
 
-### Split by Bookmark
+### 按书签分割
 ```markdown
 ## Split by Bookmarks/Chapters
 
@@ -157,7 +157,7 @@ This skill helps you:
 | appendix.pdf | Appendix | 180-end |
 ```
 
-### Extract Specific Pages
+### 提取特定页面
 ```markdown
 ## Page Extraction
 
@@ -175,9 +175,9 @@ This skill helps you:
 - **Pages**: 6 total (1, 5, 6, 7, 15, 20)
 ```
 
-## Page Operations
+## 页面操作
 
-### Reorder Pages
+### 重新排列页面
 ```markdown
 ## Page Reorder Plan
 
@@ -192,7 +192,7 @@ This skill helps you:
 - Page 7 ↔ Page 8 (swapped)
 ```
 
-### Delete Pages
+### 删除页面
 ```markdown
 ## Page Deletion
 
@@ -209,7 +209,7 @@ This skill helps you:
 - Output: document_cleaned.pdf
 ```
 
-### Insert Pages
+### 插入页面
 ```markdown
 ## Page Insertion
 
@@ -227,7 +227,7 @@ This skill helps you:
 - New page count: 14
 ```
 
-### Rotate Pages
+### 旋转页面
 ```markdown
 ## Page Rotation
 
@@ -241,9 +241,9 @@ This skill helps you:
 | 15 | Landscape | 90° CCW | Portrait |
 ```
 
-## Batch Processing
+## 批量处理
 
-### Batch Merge
+### 批量合并
 ```markdown
 ## Batch Merge Job
 
@@ -267,7 +267,7 @@ This skill helps you:
 | project-b_combined.pdf | summary.pdf, details.pdf |
 ```
 
-### Batch Split
+### 批量分割
 ```markdown
 ## Batch Split Job
 
@@ -284,28 +284,28 @@ This skill helps you:
   - ...
 ```
 
-## Tool Recommendations
+## 工具推荐
 
-### Free Tools
-- **PDF24**: Web and desktop, full featured
-- **ILovePDF**: Web-based, easy to use
-- **PDFsam Basic**: Desktop, open source
-- **Preview (Mac)**: Built-in, drag and drop
+### 免费工具
+- **PDF24**：网页版和桌面版，功能齐全
+- **ILovePDF**：基于网页的应用，易于使用
+- **PDFsam Basic**：桌面版，开源软件
+- **Preview (Mac)**：内置工具，支持拖放操作
 
-### Professional
-- **Adobe Acrobat Pro**: Industry standard
-- **Foxit PDF Editor**: Full featured
-- **Nitro Pro**: Good for business
+### 专业工具
+- **Adobe Acrobat Pro**：行业标准工具
+- **Foxit PDF Editor**：功能强大的PDF编辑器
+- **Nitro Pro**：适用于商务场景
 
-### Command Line
-- **pdftk**: Classic, powerful
-- **qpdf**: Fast, scriptable
-- **pdfcpu**: Modern Go-based tool
+### 命令行工具
+- **pdftk**：经典工具，功能强大
+- **qpdf**：处理速度快，支持脚本编写
+- **pdfcpu**：基于Go语言的现代工具
 
-## Limitations
+## 限制
 
-- Cannot perform actual file operations (provides guidance)
-- Password-protected PDFs need password first
-- Very large files may need chunked processing
-- Some PDFs with restrictions cannot be modified
-- Merging different page sizes may cause issues
+- 无法直接对文件进行实际操作（仅提供操作指导）
+- 需要输入密码才能打开受保护的PDF文件
+- 大文件可能需要分块处理
+- 某些受限的PDF文件可能无法被修改
+- 合并不同尺寸的页面时可能会出现问题

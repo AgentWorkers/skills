@@ -1,50 +1,50 @@
 ---
 name: Reading
-description: Help users read better — book recommendations, retention strategies, and matching reading approach to goals.
+description: 帮助用户更好地阅读：书籍推荐、阅读巩固策略，以及根据个人目标选择合适的阅读方法。
 metadata:
   category: learning
   skills: ["reading", "books", "learning", "retention"]
 ---
 
-## Before Recommending Books
+## 在推荐书籍之前
 
-- Ask what they've read and liked — recommendations without context waste time
-- Ask WHY they want to read this topic — learning vs entertainment vs solving specific problem
-- Ask available time — 10 min/day vs 2 hours changes what to suggest
-- One great recommendation beats list of 10 — decision paralysis kills action
-- Consider format: commuter needs audiobook, parent needs short chapters
+- 询问他们读过哪些书以及哪些书让他们感兴趣——脱离上下文的推荐只会浪费时间。
+- 了解他们为什么想阅读某个主题——是为了学习、娱乐，还是为了解决某个具体问题。
+- 了解他们的可用时间——每天10分钟与2小时的时间安排会直接影响推荐内容的选择。
+- 一个高质量的推荐往往比一堆书单更有效——决策困难会阻碍行动的推进。
+- 考虑读者的阅读需求：通勤途中适合听有声书，家长可能更喜欢章节较短的书。
 
-## Matching Approach to Goal
+## 根据目标选择合适的推荐方式
 
-| Goal | Approach |
+| 目标 | 推荐方法 |
 |------|----------|
-| Extract specific info | Skim, index, targeted chapters |
-| Deep learning | Slow read, notes, re-read sections |
-| Entertainment | Linear, don't interrupt flow |
-| Deciding if worth reading | First chapter + reviews + summary |
-| Research a topic | Multiple books, cross-reference |
+| 获取具体信息 | 快速浏览、查看目录、选择相关章节 |
+| 深入学习 | 慢速阅读、做笔记、重复阅读某些部分 |
+| 娱乐性阅读 | 保持阅读的连贯性，不要中断阅读流程 |
+| 判断书籍是否值得阅读 | 阅读第一章、查看书评和总结 |
+| 研究某个主题 | 阅读多本书并相互参考 |
 
-Don't assume they need to read cover-to-cover — ask what they actually need.
+不要假设读者需要从头到尾读完一本书——要了解他们真正的需求。
 
-## Retention That Actually Works
+## 有效的记忆方法
 
-- Ask them to explain back what they learned — reveals gaps immediately
-- Suggest connecting to something they already know — isolated facts don't stick
-- One actionable takeaway per chapter — "What will you do with this?"
-- Revisit after 1 week: "What do you remember?" — spaced recall beats rereading
-- Writing summary in own words beats highlighting — active processing required
+- 让他们用自己的话复述所学内容——这能立即发现他们的理解盲点。
+- 建议将新知识与他们已有的知识联系起来——孤立的知识不容易被记住。
+- 每章提供一个可行的建议或收获——“你会用这个知识做什么？”
+- 一周后再次询问：“你还记得什么？”——间隔性回忆比重新阅读更有效。
+- 用自己的话写书评或总结——这需要主动思考和加工信息。
 
-## When to Suggest Quitting
+## 何时建议放弃阅读
 
-- They've given it 50+ pages and aren't engaged — sunk cost isn't reason to continue
-- They're forcing themselves — reading shouldn't feel like punishment
-- The book is above/below their current level — suggest alternative at right level
-- Their goal can be met faster — summary, article, or different book might serve better
+- 如果他们已经读了50多页但仍然没有兴趣——投入的时间不应成为继续阅读的理由。
+- 如果他们是在强迫自己阅读——阅读不应变成一种负担。
+- 如果这本书的难度超出了他们的当前水平——建议选择适合他们水平的书籍。
+- 如果他们的目标可以通过其他方式更快实现——总结、阅读相关文章或选择其他书籍可能更合适。
 
-## Common Assistance Mistakes
+## 常见的推荐误区
 
-- Recommending classics because "should read" — match to their actual interests
-- Long book lists that overwhelm — curate ruthlessly, one next read
-- Assuming physical book when audiobook fits their life better
-- Not asking about past reading failures — "I always start but never finish" needs different approach
-- Treating all books as equal time investment — 200 pages ≠ 600 pages
+- 因为某本书“应该读”就推荐它——要根据读者的实际兴趣来推荐。
+- 提供过长的书单让读者感到不知所措——应该精心挑选，一次只推荐一本书。
+- 假设读者更喜欢纸质书，而实际上有声书更适合他们的生活习惯。
+- 不询问读者以往的阅读经历——对于那些“总是开始但从未读完书”的人，需要采取不同的方法。
+- 把所有书籍都视为同等的投资——200页的书和600页的书在阅读难度上是有区别的。

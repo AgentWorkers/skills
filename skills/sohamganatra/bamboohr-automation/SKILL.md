@@ -1,158 +1,156 @@
 ---
 name: bamboohr-automation
-description: "Automate BambooHR tasks via Rube MCP (Composio): employees, time-off, benefits, dependents, employee updates. Always search tools first for current schemas."
+description: "通过 Rube MCP (Composio) 自动化 BambooHR 的各项任务：员工信息管理、休假申请处理、福利发放、家属信息更新等。在使用任何工具之前，请务必先查询其当前的数据库架构（schema）。"
 requires:
   mcp: [rube]
 ---
 
-# BambooHR Automation via Rube MCP
+# 通过 Rube MCP 自动化 BambooHR 操作
 
-Automate BambooHR human resources operations through Composio's BambooHR toolkit via Rube MCP.
+通过 Composio 的 BambooHR 工具包和 Rube MCP 来自动化 BambooHR 的人力资源管理操作。
 
-## Prerequisites
+## 先决条件
 
-- Rube MCP must be connected (RUBE_SEARCH_TOOLS available)
-- Active BambooHR connection via `RUBE_MANAGE_CONNECTIONS` with toolkit `bamboohr`
-- Always call `RUBE_SEARCH_TOOLS` first to get current tool schemas
+- Rube MCP 必须已连接（RUBE_SEARCH_TOOLS 可用）
+- 通过 `RUBE_MANAGE_CONNECTIONS` 使用 `bamboohr` 工具包建立有效的 BambooHR 连接
+- 在运行任何工作流之前，务必先调用 `RUBE_SEARCH_TOOLS` 以获取当前的工具架构信息
 
-## Setup
+## 设置
 
-**Get Rube MCP**: Add `https://rube.app/mcp` as an MCP server in your client configuration. No API keys needed — just add the endpoint and it works.
+**添加 Rube MCP**：在客户端配置中添加 `https://rube.app/mcp` 作为 MCP 服务器。无需 API 密钥——只需添加该端点即可。
 
+1. 通过确认 `RUBE_SEARCH_TOOLS` 是否有响应来验证 Rube MCP 是否可用。
+2. 使用 `bamboohr` 工具包调用 `RUBE_MANAGE_CONNECTIONS`。
+3. 如果连接状态不是 `ACTIVE`，请按照返回的认证链接完成 BambooHR 的身份验证。
+4. 在运行任何工作流之前，确保连接状态显示为 `ACTIVE`。
 
-1. Verify Rube MCP is available by confirming `RUBE_SEARCH_TOOLS` responds
-2. Call `RUBE_MANAGE_CONNECTIONS` with toolkit `bamboohr`
-3. If connection is not ACTIVE, follow the returned auth link to complete BambooHR authentication
-4. Confirm connection status shows ACTIVE before running any workflows
+## 核心工作流
 
-## Core Workflows
+### 1. 列出和搜索员工
 
-### 1. List and Search Employees
+**使用场景**：用户需要查找员工或获取完整的员工目录。
 
-**When to use**: User wants to find employees or get the full employee directory
+**工具顺序**：
+1. `BAMBOOHR_GET_ALL_EMPLOYEES` - 获取员工目录 [必需]
+2. `BAMBOOHR_GET_EMPLOYEE` - 获取特定员工的详细信息 [可选]
 
-**Tool sequence**:
-1. `BAMBOOHR_GET_ALL_EMPLOYEES` - Get the employee directory [Required]
-2. `BAMBOOHR_GET_EMPLOYEE` - Get detailed info for a specific employee [Optional]
+**关键参数**：
+- 对于 `GET_ALL_EMPLOYEES`：无需参数；返回员工目录。
+- 对于 `GET_EMPLOYEE`：
+  - `id`：员工 ID（数字）
+  - `fields`：以逗号分隔的字段列表（例如，'firstName, lastName, department, jobTitle'）
 
-**Key parameters**:
-- For GET_ALL_EMPLOYEES: No required parameters; returns directory
-- For GET_EMPLOYEE:
-  - `id`: Employee ID (numeric)
-  - `fields`: Comma-separated list of fields to return (e.g., 'firstName,lastName,department,jobTitle')
+**注意事项**：
+- 员工 ID 是数字整数。
+- `GET_ALL_EMPLOYEES` 返回基本目录信息；如需完整详细信息，请使用 `GET_EMPLOYEE`。
+- `fields` 参数用于控制返回的字段；省略该参数可能会返回最少的数据。
+- 常见字段：firstName, lastName, department, division, jobTitle, workEmail, status。
+- 包括非活跃/已终止的员工；请检查 `status` 字段。
 
-**Pitfalls**:
-- Employee IDs are numeric integers
-- GET_ALL_EMPLOYEES returns basic directory info; use GET_EMPLOYEE for full details
-- The `fields` parameter controls which fields are returned; omitting it may return minimal data
-- Common fields: firstName, lastName, department, division, jobTitle, workEmail, status
-- Inactive/terminated employees may be included; check `status` field
+### 2. 跟踪员工信息变更
 
-### 2. Track Employee Changes
+**使用场景**：用户需要检测员工的最新数据变更以进行同步或审计。
 
-**When to use**: User wants to detect recent employee data changes for sync or auditing
+**工具顺序**：
+1. `BAMBOOHR_EMPLOYEE_GET_CHANGED` - 获取发生变更的员工 [必需]
 
-**Tool sequence**:
-1. `BAMBOOHR_EMPLOYEE_GET_CHANGED` - Get employees with recent changes [Required]
+**关键参数**：
+- `since`：用于检测变更的 ISO 8601 日期时间字符串。
+- `type`：要检查的变更类型（例如，'inserted', 'updated', 'deleted'）。
 
-**Key parameters**:
-- `since`: ISO 8601 datetime string for change detection threshold
-- `type`: Type of changes to check (e.g., 'inserted', 'updated', 'deleted')
+**注意事项**：
+- `since` 参数是必需的；请使用 ISO 8601 格式（例如，'2024-01-15T00:00:00Z'）。
+- 返回的是发生变更的员工的 ID，而不是完整的员工信息。
+- 需要为每个变更的员工单独调用 `GET_EMPLOYEE` 来获取详细信息。
+- 适用于增量同步工作流；请缓存上次同步的时间戳。
 
-**Pitfalls**:
-- `since` parameter is required; use ISO 8601 format (e.g., '2024-01-15T00:00:00Z')
-- Returns IDs of changed employees, not full employee data
-- Must call GET_EMPLOYEE separately for each changed employee's details
-- Useful for incremental sync workflows; cache the last sync timestamp
+### 3. 管理休假
 
-### 3. Manage Time-Off
+**使用场景**：用户需要查看休假余额、申请休假或管理休假请求。
 
-**When to use**: User wants to view time-off balances, request time off, or manage requests
+**工具顺序**：
+1. `BAMBOOHR_GET_meta_TIME_OFF_TYPES` - 列出可用的休假类型 [必需]
+2. `BAMBOOHR_GET_TIME_OFF_BALANCES` - 检查当前休假余额 [可选]
+3. `BAMBOOHR_GET_TIME_OFF_REQUESTS` - 列出现有的休假请求 [可选]
+4. `BAMBOOHR_CREATE_TIME_OFF_REQUEST` - 提交新的休假请求 [可选]
+5. `BAMBOOHR_UPDATE_TIME_OFF_REQUEST` - 修改或批准/拒绝休假请求 [可选]
 
-**Tool sequence**:
-1. `BAMBOOHR_GET_META_TIME_OFF_TYPES` - List available time-off types [Prerequisite]
-2. `BAMBOOHR_GET_TIME_OFF_BALANCES` - Check current balances [Optional]
-3. `BAMBOOHR_GET_TIME_OFF_REQUESTS` - List existing requests [Optional]
-4. `BAMBOOHR_CREATE_TIME_OFF_REQUEST` - Submit a new request [Optional]
-5. `BAMBOOHR_UPDATE_TIME_OFF_REQUEST` - Modify or approve/deny a request [Optional]
+**关键参数**：
+- 对于余额：`employeeId`, 休假类型 ID
+- 对于请求：`start`, `end`（日期范围），`employeeId`
+- 对于创建请求：
+  - `employeeId`：要申请休假的员工 ID
+  - `timeOffTypeId`：来自 `GET_META_TIME_OFF_TYPES` 的类型 ID
+  - `start`：开始日期（YYYY-MM-DD）
+  - `end`：结束日期（YYYY-MM-DD）
+  - `amount`：休假天数/小时数
+  - `notes`：请求的备注（可选）
+- 对于更新请求：`requestId`, `status`（'approved', 'denied', 'cancelled'）
 
-**Key parameters**:
-- For balances: `employeeId`, time-off type ID
-- For requests: `start`, `end` (date range), `employeeId`
-- For creation:
-  - `employeeId`: Employee to request for
-  - `timeOffTypeId`: Type ID from GET_META_TIME_OFF_TYPES
-  - `start`: Start date (YYYY-MM-DD)
-  - `end`: End date (YYYY-MM-DD)
-  - `amount`: Number of days/hours
-  - `notes`: Optional notes for the request
-- For update: `requestId`, `status` ('approved', 'denied', 'cancelled')
+**注意事项**：
+- 休假类型 ID 是数字；请先通过 `GET_META_TIME_OFF_TYPES` 获取。
+- 开始和结束日期的格式为 'YYYY-MM-DD'。
+- 余额可能以小时或天为单位，具体取决于公司配置。
+- 更新请求状态需要相应的权限（经理/管理员级别）。
+- 创建请求不会自动批准；需要单独的批准步骤。
 
-**Pitfalls**:
-- Time-off type IDs are numeric; resolve via GET_META_TIME_OFF_TYPES first
-- Date format is 'YYYY-MM-DD' for start and end dates
-- Balances may be in hours or days depending on company configuration
-- Request status updates require appropriate permissions (manager/admin)
-- Creating a request does NOT auto-approve it; separate approval step needed
+### 4. 更新员工信息
 
-### 4. Update Employee Information
+**使用场景**：用户需要修改员工资料。
 
-**When to use**: User wants to modify employee profile data
+**工具顺序**：
+1. `BAMBOOHR_GET_EMPLOYEE` - 获取当前员工信息 [必需]
+2. `BAMBOOHR_UPDATE_EMPLOYEE` - 更新员工字段 [必需]
 
-**Tool sequence**:
-1. `BAMBOOHR_GET_EMPLOYEE` - Get current employee data [Prerequisite]
-2. `BAMBOOHR_UPDATE_EMPLOYEE` - Update employee fields [Required]
+**关键参数**：
+- `id`：员工 ID（数字，必需）
+- 需要更新的字段及其值（例如，`department`, `jobTitle`, `workPhone`）
 
-**Key parameters**:
-- `id`: Employee ID (numeric, required)
-- Field-value pairs for the fields to update (e.g., `department`, `jobTitle`, `workPhone`)
+**注意事项**：
+- 只有请求中包含的字段才会被更新；其他字段保持不变。
+- 某些字段是只读的，无法通过 API 进行更新。
+- 字段名称必须与 BambooHR 的预期名称完全匹配。
+- 更新操作会被记录在员工的变更历史中；更新前请使用 `GET_EMPLOYEE` 验证当前值，以避免覆盖。
 
-**Pitfalls**:
-- Only fields included in the request are updated; others remain unchanged
-- Some fields are read-only and cannot be updated via API
-- Field names must match BambooHR's expected field names exactly
-- Updates are audited; changes appear in the employee's change history
-- Verify current values with GET_EMPLOYEE before updating to avoid overwriting
+### 5. 管理员工依赖关系和福利
 
-### 5. Manage Dependents and Benefits
+**使用场景**：用户需要查看员工的依赖关系或福利覆盖情况。
 
-**When to use**: User wants to view employee dependents or benefit coverage
+**工具顺序**：
+1. `BAMBOOHR_DEPENDENTS_GET_ALL` - 列出所有依赖关系 [必需]
+2. `BAMBOOHR_BENEFIT_GET_COVERAGES` - 获取福利覆盖详情 [可选]
 
-**Tool sequence**:
-1. `BAMBOOHR_DEPENDENTS_GET_ALL` - List all dependents [Required]
-2. `BAMBOOHR_BENEFIT_GET_COVERAGES` - Get benefit coverage details [Optional]
+**关键参数**：
+- 对于依赖关系：可选的 `employeeId` 过滤条件
+- 对于福利：具体参数取决于架构；请查阅 RUBE_SEARCH_TOOLS 以获取当前参数。
 
-**Key parameters**:
-- For dependents: Optional `employeeId` filter
-- For benefits: Depends on schema; check RUBE_SEARCH_TOOLS for current parameters
+**注意事项**：
+- 依赖关系数据包含敏感的个人信息（PII）；请妥善处理。
+- 每位员工的福利覆盖可能包含多种计划类型。
+- 并非所有 BambooHR 计划都包含福利管理功能；请查看账户设置。
+- 数据访问权限取决于 API 密钥。
 
-**Pitfalls**:
-- Dependent data includes sensitive PII; handle with appropriate care
-- Benefit coverages may include multiple plan types per employee
-- Not all BambooHR plans include benefits administration; check account features
-- Data access depends on API key permissions
+## 常见模式
 
-## Common Patterns
+### ID 解析
 
-### ID Resolution
-
-**Employee name -> Employee ID**:
+**员工姓名 -> 员工 ID**：
 ```
 1. Call BAMBOOHR_GET_ALL_EMPLOYEES
 2. Find employee by name in directory results
 3. Extract id (numeric) for detailed operations
 ```
 
-**Time-off type name -> Type ID**:
+**休假类型名称 -> 类型 ID**：
 ```
 1. Call BAMBOOHR_GET_META_TIME_OFF_TYPES
 2. Find type by name (e.g., 'Vacation', 'Sick Leave')
 3. Extract id for time-off requests
 ```
 
-### Incremental Sync Pattern
+### 增量同步模式
 
-For keeping external systems in sync with BambooHR:
+为了保持外部系统与 BambooHR 的同步：
 ```
 1. Store last_sync_timestamp
 2. Call BAMBOOHR_EMPLOYEE_GET_CHANGED with since=last_sync_timestamp
@@ -161,8 +159,7 @@ For keeping external systems in sync with BambooHR:
 5. Update last_sync_timestamp
 ```
 
-### Time-Off Workflow
-
+### 休假工作流
 ```
 1. GET_META_TIME_OFF_TYPES -> find type ID
 2. GET_TIME_OFF_BALANCES -> verify available balance
@@ -170,51 +167,51 @@ For keeping external systems in sync with BambooHR:
 4. UPDATE_TIME_OFF_REQUEST -> approve/deny (manager action)
 ```
 
-## Known Pitfalls
+## 已知问题
 
-**Employee IDs**:
-- Always numeric integers
-- Resolve names to IDs via GET_ALL_EMPLOYEES
-- Terminated employees retain their IDs
+**员工 ID**：
+- 始终为数字整数。
+- 通过 `GET_ALL_EMPLOYEES` 将姓名解析为 ID。
+- 已终止的员工仍保留其 ID。
 
-**Date Formats**:
-- Time-off dates: 'YYYY-MM-DD'
-- Change detection: ISO 8601 with timezone
-- Inconsistent formats between endpoints; check each endpoint's schema
+**日期格式**：
+- 休假日期：'YYYY-MM-DD'。
+- 变更检测：使用带时区的 ISO 8601 格式。
+- 不同端点的格式可能不一致；请检查每个端点的架构。
 
-**Permissions**:
-- API key permissions determine accessible fields and operations
-- Some operations require admin or manager-level access
-- Time-off approvals require appropriate role permissions
+**权限**：
+- API 密钥权限决定了可访问的字段和操作。
+- 某些操作需要管理员或经理级别的权限。
+- 休假批准需要相应的角色权限。
 
-**Sensitive Data**:
-- Employee data includes PII (names, addresses, SSN, etc.)
-- Handle all responses with appropriate security measures
-- Dependent data is especially sensitive
+**敏感数据**：
+- 员工数据包含个人信息（姓名、地址、SSN 等）。
+- 请采取适当的安全措施处理所有响应数据。
+- 依赖关系数据尤其敏感。
 
-**Rate Limits**:
-- BambooHR API has rate limits per API key
-- Bulk operations should be throttled
-- GET_ALL_EMPLOYEES is more efficient than individual GET_EMPLOYEE calls
+**速率限制**：
+- BambooHR API 对每个 API 密钥有速率限制。
+- 应对批量操作进行节流。
+- `GET_ALL_EMPLOYEES` 比单独的 `GET_EMPLOYEE` 调用更高效。
 
-**Response Parsing**:
-- Response data may be nested under `data` key
-- Employee fields vary based on `fields` parameter
-- Empty fields may be omitted or returned as null
-- Parse defensively with fallbacks
+**响应解析**：
+- 响应数据可能嵌套在 `data` 键下。
+- 员工字段会根据 `fields` 参数而有所不同。
+- 空字段可能被省略或返回为 null。
+- 请采取防御性措施进行解析，并设置默认值。
 
-## Quick Reference
+## 快速参考
 
-| Task | Tool Slug | Key Params |
+| 任务 | 工具名称 | 关键参数 |
 |------|-----------|------------|
-| List all employees | BAMBOOHR_GET_ALL_EMPLOYEES | (none) |
-| Get employee details | BAMBOOHR_GET_EMPLOYEE | id, fields |
-| Track changes | BAMBOOHR_EMPLOYEE_GET_CHANGED | since, type |
-| Time-off types | BAMBOOHR_GET_META_TIME_OFF_TYPES | (none) |
-| Time-off balances | BAMBOOHR_GET_TIME_OFF_BALANCES | employeeId |
-| List time-off requests | BAMBOOHR_GET_TIME_OFF_REQUESTS | start, end, employeeId |
-| Create time-off request | BAMBOOHR_CREATE_TIME_OFF_REQUEST | employeeId, timeOffTypeId, start, end |
-| Update time-off request | BAMBOOHR_UPDATE_TIME_OFF_REQUEST | requestId, status |
-| Update employee | BAMBOOHR_UPDATE_EMPLOYEE | id, (field updates) |
-| List dependents | BAMBOOHR_DEPENDENTS_GET_ALL | employeeId |
-| Benefit coverages | BAMBOOHR_BENEFIT_GET_COVERAGES | (check schema) |
+| 列出所有员工 | BAMBOOHR_GET_ALL_EMPLOYEES | （无） |
+| 获取员工详情 | BAMBOOHR_GET_EMPLOYEE | id, fields |
+| 跟踪变更 | BAMBOOHR_EMPLOYEE_GET_CHANGED | since, type |
+| 休假类型 | BAMBOOHR_GET_meta_TIME_OFF_TYPES | （无） |
+| 休假余额 | BAMBOOHR_GET_TIME_OFF_BALANCES | employeeId |
+| 列出休假请求 | BAMBOOHR_GET_TIME_OFF_REQUESTS | start, end, employeeId |
+| 创建休假请求 | BAMBOOHR_CREATE_TIME_OFF_REQUEST | employeeId, timeOffTypeId, start, end |
+| 更新休假请求 | BAMBOOHR_UPDATE_TIME_OFF_REQUEST | requestId, status |
+| 更新员工信息 | BAMBOOHR_UPDATE_EMPLOYEE | id, (field updates) |
+| 列出依赖关系 | BAMBOOHR_DEPENDENTS_GET_ALL | employeeId |
+| 福利覆盖 | BAMBOOHR_BENEFIT_GET_COVERAGES | （请查看架构） |

@@ -1,77 +1,77 @@
 ---
 name: Cubox Integration
-description: Save web pages and memos to Cubox using the Open API
+description: 使用 Open API 将网页和备忘录保存到 Cubox 上
 ---
 
-# Cubox Integration Skill
+# Cubox 集成技能
 
-This skill enables saving content to Cubox using the Open API. Cubox is a read-it-later and bookmarking service that supports saving web URLs and quick memos.
+该技能允许您使用 Open API 将内容保存到 Cubox 中。Cubox 是一个“稍后阅读”和书签服务，支持保存网页链接以及快速创建便签。
 
-## Prerequisites
+## 先决条件
 
-1. **Cubox Premium Membership** - The Open API is a premium feature
-2. **API Key** - Get your API URL from Cubox settings:
-   - Go to Cubox Preferences > Extension Center and Automation > API Extension
-   - Enable "API Link" to get your personal API URL
-   
-> ⚠️ **Security**: Your API URL is a unique credential. Keep it private and never share it.
+1. **Cubox 高级会员资格**——Open API 是高级会员专属功能。
+2. **API 密钥**——请从 Cubox 设置中获取您的 API URL：
+   - 进入 Cubox 设置 > 扩展中心与自动化 > API 扩展
+   - 启用“API 链接”功能以获取您的个人 API URL。
 
-## Environment Setup
+> ⚠️ **安全提示**：您的 API URL 是一个唯一的凭证，请妥善保管，切勿分享。
 
-Set the `CUBOX_API_URL` environment variable with your personal API URL:
+## 环境配置
+
+使用您的个人 API URL 设置 `CUBOX_API_URL` 环境变量：
 
 ```bash
 export CUBOX_API_URL="https://cubox.pro/c/api/save/YOUR_TOKEN"
 ```
 
-## Available Tools
+## 可用工具
 
-### 1. Save URL (`scripts/save_url.py`)
+### 1. 保存网页链接（`scripts/save_url.py`）
 
-Save a web page URL to Cubox.
+将网页链接保存到 Cubox 中。
 
 ```bash
 python scripts/save_url.py <url> [--title "Title"] [--description "Description"] [--tags "tag1,tag2"] [--folder "Folder Name"]
 ```
 
-**Parameters:**
-- `url` (required): The web page URL to save
-- `--title`: Optional title for the bookmark
-- `--description`: Optional description
-- `--tags`: Comma-separated list of tags
-- `--folder`: Target folder name (defaults to Inbox)
+**参数：**
+- `url`（必填）：要保存的网页链接
+- `--title`（可选）：书签的标题
+- `--description`（可选）：描述
+- `--tags`（可选）：用逗号分隔的标签列表
+- `--folder`（可选）：目标文件夹名称（默认为“收件箱”）
 
-**Example:**
+**示例：**
 ```bash
 python scripts/save_url.py "https://example.com/article" --title "Great Article" --tags "tech,reading" --folder "Articles"
 ```
 
-### 2. Save Memo (`scripts/save_memo.py`)
+### 2. 保存便签（`scripts/save_memo.py`）
 
-Save a quick memo/note to Cubox.
+将快速创建的便签或笔记保存到 Cubox 中。
 
 ```bash
 python scripts/save_memo.py <content> [--title "Title"] [--description "Description"] [--tags "tag1,tag2"] [--folder "Folder Name"]
 ```
 
-**Parameters:**
-- `content` (required): The memo text content
-- `--title`: Optional title (Cubox will auto-generate if not provided)
-- `--description`: Optional description
-- `--tags`: Comma-separated list of tags
-- `--folder`: Target folder name (defaults to Inbox)
+**参数：**
+- `content`（必填）：便签文本内容
+- `--title`（可选）：标题（如果未提供，Cubox 会自动生成）
+- `--description`（可选）：描述
+- `--tags`（可选）：用逗号分隔的标签列表
+- `--folder`（可选）：目标文件夹名称（默认为“收件箱”）
 
-**Example:**
+**示例：**
 ```bash
 python scripts/save_memo.py "Remember to review the quarterly report" --title "Todo" --tags "work,reminder"
 ```
 
-## API Rate Limits
+## API 使用限制
 
-- Premium users: **500 API calls per day**
+- 高级用户：每天最多 500 次 API 调用。
 
-## Notes
+## 注意事项
 
-- After saving, Cubox cloud will automatically process the content (article parsing, snapshot archiving, etc.), which may take some time
-- If title or description is not specified, Cubox will attempt to generate them automatically
-- If no folder is specified, content will be saved to your Inbox by default
+- 保存内容后，Cubox 云端会自动处理相关操作（如文章解析、快照存档等），这可能需要一些时间。
+- 如果未指定标题或描述，Cubox 会尝试自动生成这些信息。
+- 如果未指定文件夹，内容将默认保存到您的“收件箱”中。

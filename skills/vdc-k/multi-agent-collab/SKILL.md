@@ -1,38 +1,38 @@
 ---
 name: multi-agent-collab
-description: Initialize a token-optimized documentation system for multi-agent collaboration. Includes templates, best practices, and automated maintenance (Cron). Reduces token usage by 90%+ and costs by 40%+.
+description: 初始化一个专为多智能体协作设计的、基于令牌的文档系统。该系统包含模板、最佳实践以及自动化维护（通过 Cron 任务实现）。该方案可将令牌使用量降低 90% 以上，同时将成本降低 40% 以上。
 author: HH & Claw
 version: 1.0.0
 repository: https://github.com/Vdc-K/multi-agent-collab-system
 ---
 
-# Multi-Agent Collab System 🦞
+# 多智能体协作系统 🦞
 
-This skill helps you set up the **MACS (Multi-Agent Collaboration System)** in your workspace. It's designed to keep your agents fast, cheap, and smart.
+该技能可帮助您在工作空间中搭建 **MACS（多智能体协作系统）**。该系统旨在提升智能体的运行效率、降低运行成本，并增强其智能水平。
 
-## 🚀 Installation
+## 🚀 安装
 
-After installing this skill, run:
+安装该技能后，请运行以下命令：
 `multi-agent-collab init`
 
-## 📂 What it sets up:
+## 📂 安装内容：
 
-1. **Templates**: `PROJECT-README.md`, `TASK.md`, `CHANGELOG.md`, `CONTEXT.md`, `llms.txt`.
-2. **Docs**: Best practices for model routing and task delegation.
-3. **Cron Jobs**: (Optional) Automated weekly cleanup using Gemini Flash.
+1. **模板文件**：`PROJECT-README.md`、`TASK.md`、`CHANGELOG.md`、`CONTEXT.md`、`llms.txt`。
+2. **文档资料**：关于模型路由和任务分配的最佳实践指南。
+3. **定时任务**：（可选）使用 **Gemini Flash** 实现每周自动清理功能。
 
-## 🛠️ Usage
+## 🛠️ 使用方法
 
-### Initialize a new project:
-Ask your agent: "Help me initialize a new project using the MACS system."
+### 初始化新项目：
+向您的智能体请求：“使用 MACS 系统帮我初始化一个新项目。”
 
-### Automated Cleanup:
-The system is designed to use **Gemini Flash** for low-cost maintenance. 
+### 自动清理：
+该系统采用 **Gemini Flash** 进行低成本维护。
 
-## 💰 Efficiency
+## 💰 效率提升
 
-- **Token Savings**: 90-95% (via Hybrid Context Hierarchy)
-- **Cost Savings**: 40-77% (via Tiered Model Routing)
+- **令牌节省**：通过混合上下文架构（Hybrid Context Hierarchy），可节省 90-95% 的令牌消耗。
+- **成本降低**：通过分层模型路由（Tiered Model Routing）机制，可节省 40-77% 的运营成本。
 
 ---
-"Structure is the new prompt engineering." 🦞
+“结构本身就是一种新的‘提示工程’（Structure is the new prompt engineering）。” 🦞

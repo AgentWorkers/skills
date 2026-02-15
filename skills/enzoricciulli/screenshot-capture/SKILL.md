@@ -1,61 +1,68 @@
 ---
 name: screenshot-capture
-description: Process screenshots Enzo shares with comments. Save to reference library, extract content, categorize, set reminders, and log patterns. Use when Enzo sends an image with context like "save this", shares a screenshot of content (LinkedIn posts, tweets, articles), or sends ideas/frameworks to remember.
+description: 处理恩佐分享的截图：  
+- 添加评论；  
+- 将截图保存到参考库中；  
+- 提取截图中的内容；  
+- 对截图进行分类；  
+- 设置提醒；  
+- 记录截图中的关键信息或模式。  
+
+当恩佐发送带有上下文的图片（例如：“保存这张图片”），或者分享内容截图（如LinkedIn帖子、推文、文章），或者发送需要记住的想法/框架时，可以使用这些功能。
 ---
 
-# Screenshot Capture
+# 截图捕获
 
-When Enzo shares a screenshot with comments, execute this workflow:
+当 Enzo 分享带有注释的截图时，请按照以下工作流程操作：
 
-## 1. Save Screenshot
+## 1. 保存截图
 ```
 cp [inbound image] notes/screenshots/[descriptive-name].jpg
 ```
-Name should reflect content (e.g., `positioning-angles.jpg`, `gpt-ads-hack.jpg`)
+截图的文件名应能反映其内容（例如：`positioning-angles.jpg`、`gpt-ads-hack.jpg`）
 
-## 2. Categorize
+## 2. 分类
 
-Based on Enzo's comment and content, determine category:
+根据 Enzo 的注释和截图内容，确定截图的类别：
 
-| Category | Signals | Destination |
+| 类别 | 信号类型 | 存储位置 |
 |----------|---------|-------------|
-| **Framework** | Actionable mental model, how-to, process | `notes/frameworks.md` under main section |
-| **AI Hack** | "AI porn", hackathon material, overpromises but useful | `notes/frameworks.md` under "AI Hacks & Hackathon Ideas" |
-| **Idea** | Original thought, "I want to build", future project | `notes/ideas.md` |
+| **框架** | 可操作的思维模型、操作指南、流程 | `notes/frameworks.md` 文件（位于主目录下） |
+| **AI 技巧** | 与 AI 相关的技巧、黑客马拉松素材（可能包含过度宣传的内容，但仍有实用价值） | `notes/frameworks.md` 文件中的 “AI Hacks & Hackathon Ideas” 部分 |
+| **想法** | Enzo 的原创想法或未来计划的项目 | `notes/ideas.md` 文件 |
 
-## 3. Extract & Store
+## 3. 提取并存储信息
 
-- Extract key content from screenshot
-- Add to appropriate file with:
-  - Date saved
-  - Source (if visible)
-  - Screenshot reference
-  - Enzo's commentary (if provided)
-  - Structured summary
+- 从截图中提取关键内容
+- 将提取的信息保存到相应的文件中，并包含以下信息：
+  - 保存日期
+  - 图片的来源（如果可见）
+  - 截图的引用链接
+  - Enzo 的评论（如果有）
+  - 对截图内容的结构化总结
 
-## 4. Set Reminder
+## 4. 设置提醒
 
-**Always set a 1-week reminder** unless Enzo specifies otherwise.
+**除非 Enzo 有特别要求，否则务必设置一周后的提醒。**  
+提醒内容应提示相关行动：
+- “你已经在什么项目上测试过 [框架] 吗？”
+- “你尝试过 [技巧] 吗？”
+- “[想法] 有进展吗？”
 
-Reminder text should prompt action:
-- "Have you tested [framework] on anything?"
-- "Did you try [hack]?"
-- "Any progress on [idea]?"
+## 5. 记录观察结果
 
-## 5. Log Pattern
-
-Add observation to `notes/patterns.md`:
+将观察结果记录到 `notes/patterns.md` 文件中：
 ```markdown
 - [category] [topic]: [brief description] — [intent signal]
 ```
 
-Intent signals: learn, build, share, remember, reference, hackathon
+**信号类型**：学习、开发、分享、记忆、参考、黑客马拉松
 
-## 6. Confirm
+## 6. 确认
 
-Reply with:
-- What was saved and where
-- Reminder date
-- Any commentary acknowledged
+回复 Enzo，告知他以下信息：
+- 保存了哪些内容以及保存的位置
+- 提醒的日期
+- 是否已收到他的任何评论
 
-Keep confirmation brief.
+回复内容应简洁明了。

@@ -1,44 +1,50 @@
 ---
 name: paperless-ngx
-description: Interact with Paperless-ngx document management system via REST API. Use when users want to search, upload, download, organize documents, manage tags, correspondents, or document types in their Paperless-ngx instance.
+description: 通过 REST API 与 Paperless-ngx 文档管理系统进行交互。当用户需要在其 Paperless-ngx 实例中搜索、上传、下载、组织文档、管理标签、联系人或文档类型时，可以使用该接口。
 ---
 
-# Paperless-ngx Skill
+# Paperless-ngx 技能
 
-Manage documents in Paperless-ngx via its REST API using HTTP requests.
+通过 HTTP 请求，利用 Paperless-ngx 的 REST API 来管理文档。
 
-## Configuration
+## 配置
 
-Requires environment variables:
-- `PAPERLESS_URL`: Base URL (e.g., `https://paperless.example.com`)
-- `PAPERLESS_TOKEN`: API token from Paperless-ngx settings
+需要以下环境变量：
+- `PAPERLESS_URL`：基础 URL（例如：`https://paperless.example.com`）
+- `PAPERLESS_TOKEN`：来自 Paperless-ngx 设置的 API 令牌
 
-## Authentication
+## 认证
 
-Include token in all requests:
+在所有请求中都需要包含令牌：
 ```
 Authorization: Token $PAPERLESS_TOKEN
 ```
 
-## Core Operations
+## 核心操作
 
-### Search Documents
+### 搜索文档
 
 ```bash
 curl -s "$PAPERLESS_URL/api/documents/?query=invoice" \
   -H "Authorization: Token $PAPERLESS_TOKEN"
 ```
 
-Filter options: `correspondent__id`, `document_type__id`, `tags__id__in`, `created__date__gte`, `created__date__lte`, `added__date__gte`.
+过滤选项：
+- `correspondent__id`（联系人 ID）
+- `document_type__id`（文档类型 ID）
+- `tags__id__in`（标签 ID）
+- `created__date__gte`（创建日期大于等于指定时间）
+- `created__date__lte`（创建日期小于等于指定时间）
+- `added__date__gte`（添加日期大于等于指定时间）
 
-### Get Document Details
+### 获取文档详情
 
 ```bash
 curl -s "$PAPERLESS_URL/api/documents/{id}/" \
   -H "Authorization: Token $PAPERLESS_TOKEN"
 ```
 
-### Download Document
+### 下载文档
 
 ```bash
 # Original file
@@ -50,7 +56,7 @@ curl -s "$PAPERLESS_URL/api/documents/{id}/download/?original=false" \
   -H "Authorization: Token $PAPERLESS_TOKEN" -o document.pdf
 ```
 
-### Upload Document
+### 上传文档
 
 ```bash
 curl -s "$PAPERLESS_URL/api/documents/post_document/" \
@@ -63,9 +69,17 @@ curl -s "$PAPERLESS_URL/api/documents/post_document/" \
   -F "tags=4"
 ```
 
-Optional fields: `title`, `created`, `correspondent`, `document_type`, `storage_path`, `tags` (repeatable), `archive_serial_number`, `custom_fields`.
+可选字段：
+- `title`（标题）
+- `created`（创建时间）
+- `correspondent`（联系人）
+- `document_type`（文档类型）
+- `storage_path`（存储路径）
+- `tags`（标签，可重复）
+- `archive_serial_number`（归档序列号）
+- `custom_fields`（自定义字段）
 
-### Update Document Metadata
+### 更新文档元数据
 
 ```bash
 curl -s -X PATCH "$PAPERLESS_URL/api/documents/{id}/" \
@@ -74,16 +88,16 @@ curl -s -X PATCH "$PAPERLESS_URL/api/documents/{id}/" \
   -d '{"title": "New Title", "correspondent": 1, "tags": [1, 2]}'
 ```
 
-### Delete Document
+### 删除文档
 
 ```bash
 curl -s -X DELETE "$PAPERLESS_URL/api/documents/{id}/" \
   -H "Authorization: Token $PAPERLESS_TOKEN"
 ```
 
-## Organization Endpoints
+## 组织相关端点
 
-### Tags
+### 标签
 
 ```bash
 # List tags
@@ -96,7 +110,7 @@ curl -s -X POST "$PAPERLESS_URL/api/tags/" \
   -d '{"name": "Important", "color": "#ff0000"}'
 ```
 
-### Correspondents
+### 联系人
 
 ```bash
 # List correspondents
@@ -109,7 +123,7 @@ curl -s -X POST "$PAPERLESS_URL/api/correspondents/" \
   -d '{"name": "ACME Corp"}'
 ```
 
-### Document Types
+### 文档类型
 
 ```bash
 # List document types
@@ -122,32 +136,27 @@ curl -s -X POST "$PAPERLESS_URL/api/document_types/" \
   -d '{"name": "Invoice"}'
 ```
 
-## Bulk Operations
+## 批量操作
 
-```bash
-curl -s -X POST "$PAPERLESS_URL/api/documents/bulk_edit/" \
-  -H "Authorization: Token $PAPERLESS_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "documents": [1, 2, 3],
-    "method": "add_tag",
-    "parameters": {"tag": 5}
-  }'
-```
+### 批量操作方法：
+- `set_correspondent`（设置联系人）
+- `set_document_type`（设置文档类型）
+- `add_tag`（添加标签）
+- `remove_tag`（删除标签）
+- `delete`（删除文档）
+- `reprocess`（重新处理文档）
 
-Methods: `set_correspondent`, `set_document_type`, `add_tag`, `remove_tag`, `delete`, `reprocess`.
+## 任务状态
 
-## Task Status
-
-After upload, check task status:
+上传文档后，检查任务状态：
 ```bash
 curl -s "$PAPERLESS_URL/api/tasks/?task_id={uuid}" \
   -H "Authorization: Token $PAPERLESS_TOKEN"
 ```
 
-## Response Handling
+## 响应处理
 
-- List endpoints return `{"count": N, "results": [...]}` with pagination
-- Single objects return the object directly
-- Use `?page=2` for pagination
-- Add `?ordering=-created` for sorting (prefix `-` for descending)
+- 列表端点返回 `{"count": N, "results": [...]}`（包含分页信息）
+- 单个对象直接返回该对象
+- 使用 `?page=2` 进行分页
+- 使用 `?ordering=-created` 进行排序（前缀 `-` 表示降序排序）

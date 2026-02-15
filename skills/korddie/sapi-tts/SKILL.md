@@ -1,15 +1,15 @@
 ---
 name: sapi-tts
-description: Windows SAPI5 text-to-speech with Neural voices. Lightweight alternative to GPU-heavy TTS - zero GPU usage, instant generation. Auto-detects best available voice for your language. Works on Windows 10/11.
+description: Windows SAPI5文本转语音功能，支持使用神经网络生成的合成声音。作为对依赖GPU的TTS技术的轻量级替代方案，该工具完全不使用GPU资源，能够即时生成语音效果。系统会自动检测最适合您所使用语言的合成声音。兼容Windows 10/11操作系统。
 ---
 
-# SAPI5 TTS (Windows)
+# SAPI5 TTS（Windows）
 
-Lightweight text-to-speech using Windows built-in SAPI5. Zero GPU, instant generation.
+这是一个基于Windows内置SAPI5技术的轻量级文本转语音工具，无需使用GPU，支持即时语音生成。
 
-## Installation
+## 安装
 
-Save the script below as `tts.ps1` in your skills folder:
+将以下脚本保存为`tts.ps1`文件，并将其放在您的`skills`文件夹中：
 
 ```powershell
 <#
@@ -153,7 +153,7 @@ try {
 }
 ```
 
-## Quick Start
+## 快速入门
 
 ```powershell
 # Generate audio file
@@ -163,19 +163,19 @@ try {
 .\tts.ps1 "Bonjour !" -Play
 ```
 
-## Parameters
+## 参数
 
-| Parameter | Alias | Default | Description |
-|-----------|-------|---------|-------------|
-| `-Text` | (positional) | required | Text to speak |
-| `-VoiceName` | `-Voice`, `-v` | auto | Voice name (partial match OK) |
-| `-Language` | `-Lang`, `-l` | fr | Language: fr, en, de, es, it... |
-| `-Output` | `-o` | auto | Output WAV file path |
-| `-Rate` | `-r` | 0 | Speed: -10 (slow) to +10 (fast) |
-| `-Play` | `-p` | false | Play audio immediately after generation |
-| `-ListVoices` | | | Show installed voices |
+| 参数          | 别名        | 默认值     | 说明                                      |
+|---------------|------------|---------|-----------------------------------------|
+| `-Text`        | （位置参数）     | 必需      | 需要转语音的文本                          |
+| `-VoiceName`     | `-Voice`, `-v`     | 自动匹配   | 语音名称（部分匹配即可）                         |
+| `-Language`     | `-Lang`, `-l`     | fr       | 语言：fr, en, de, es, it...                      |
+| `-Output`      | `-o`        | 自动匹配   | 输出WAV文件的路径                          |
+| `-Rate`        | `-r`        | 0        | 语速：-10（慢）到+10（快）                         |
+| `-Play`        | `-p`        | false      | 生成后立即播放音频                          |
+| `-ListVoices`    |            |           | 显示已安装的语音列表                         |
 
-## Examples
+## 示例
 
 ```powershell
 # French with auto-play
@@ -191,28 +191,26 @@ try {
 .\tts.ps1 -ListVoices
 ```
 
-## Installing Neural Voices (Recommended)
+## （推荐）安装神经语音（Neural Voices）
 
-Neural voices sound much better than legacy Desktop voices.
+神经语音（Neural Voices）的音质远优于传统的桌面语音（Desktop Voices）。
 
 ### Windows 11
-Neural voices are built-in. Go to:
-**Settings → Time & Language → Speech → Manage voices**
+神经语音已内置。操作步骤：
+**设置 → 时间与语言 → 语音 → 管理语音**
 
-### Windows 10/11 (More voices)
-For additional Neural voices (like French Denise):
+### Windows 10/11（更多语音选项）
+若需使用更多神经语音（例如法语的Denise语音）：
+1. 安装[NaturalVoiceSAPIAdapter](https://github.com/gexgd0419/NaturalVoiceSAPIAdapter)
+2. 在**设置 → 时间与语言 → 语音**中下载所需语音
+3. 运行`-ListVoices`命令查看可用语音列表
 
-1. Install [NaturalVoiceSAPIAdapter](https://github.com/gexgd0419/NaturalVoiceSAPIAdapter)
-2. Download voices in **Settings → Time & Language → Speech**
-3. Run `-ListVoices` to verify
+## 性能
+- **语音生成时间**：即时（<1秒）
+- **硬件要求**：无需GPU
+- **CPU占用**：极低
+- **音质**：高质量（神经语音）/ 基础质量（传统语音）
 
-## Performance
+## 致谢
 
-- **Generation:** Instant (< 1 second)
-- **GPU:** None
-- **CPU:** Minimal
-- **Quality:** Good (Neural) / Basic (Legacy)
-
-## Credits
-
-Made by Pocus 🎩 — AI assistant, with Olive (@Korddie).
+本工具由Pocus 🎩开发，AI助手团队与Olive (@Korddie) 共同完成。

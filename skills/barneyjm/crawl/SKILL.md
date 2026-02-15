@@ -1,17 +1,18 @@
 ---
 name: crawl
-description: "Crawl any website and save pages as local markdown files. Use when you need to download documentation, knowledge bases, or web content for offline access or analysis. No code required - just provide a URL."
+description: "**功能描述：**  
+可以爬取任意网站，并将网页内容保存为本地 Markdown 文件。适用于需要下载文档、知识库或网页内容以供离线访问或分析的场景。无需编写任何代码——只需提供网站的 URL 即可。"
 ---
 
 # Crawl Skill
 
-Crawl websites to extract content from multiple pages. Ideal for documentation, knowledge bases, and site-wide content extraction.
+该技能用于爬取网站内容，可以从多个页面中提取信息。非常适合用于文档生成、知识库构建以及整个网站的数据提取。
 
-## Prerequisites
+## 先决条件
 
-**Tavily API Key Required** - Get your key at https://tavily.com
+**需要 Tavily API 密钥** - 请在 [https://tavily.com](https://tavily.com) 获取您的 API 密钥。
 
-Add to `~/.claude/settings.json`:
+将密钥添加到 `~/.claude/settings.json` 文件中：
 ```json
 {
   "env": {
@@ -20,15 +21,15 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-## Quick Start
+## 快速入门
 
-### Using the Script
+### 使用脚本
 
 ```bash
 ./scripts/crawl.sh '<json>' [output_dir]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Basic crawl
 ./scripts/crawl.sh '{"url": "https://docs.example.com"}'
@@ -46,9 +47,9 @@ Add to `~/.claude/settings.json`:
 ./scripts/crawl.sh '{"url": "https://docs.example.com", "instructions": "Find API documentation", "chunks_per_source": 3}'
 ```
 
-When `output_dir` is provided, each crawled page is saved as a separate markdown file.
+当提供了 `output_dir` 时，每个爬取到的页面都会被保存为单独的 Markdown 文件。
 
-### Basic Crawl
+### 基本爬取
 
 ```bash
 curl --request POST \
@@ -62,7 +63,7 @@ curl --request POST \
   }'
 ```
 
-### Focused Crawl with Instructions
+### 带有指令的定向爬取
 
 ```bash
 curl --request POST \
@@ -78,39 +79,39 @@ curl --request POST \
   }'
 ```
 
-## API Reference
+## API 参考
 
-### Endpoint
+### 端点
 
 ```
 POST https://api.tavily.com/crawl
 ```
 
-### Headers
+### 请求头
 
-| Header | Value |
-|--------|-------|
+| 头部字段 | 值         |
+|---------|------------|
 | `Authorization` | `Bearer <TAVILY_API_KEY>` |
 | `Content-Type` | `application/json` |
 
-### Request Body
+### 请求体
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `url` | string | Required | Root URL to begin crawling |
-| `max_depth` | integer | 1 | Levels deep to crawl (1-5) |
-| `max_breadth` | integer | 20 | Links per page |
-| `limit` | integer | 50 | Total pages cap |
-| `instructions` | string | null | Natural language guidance for focus |
-| `chunks_per_source` | integer | 3 | Chunks per page (1-5, requires instructions) |
-| `extract_depth` | string | `"basic"` | `basic` or `advanced` |
-| `format` | string | `"markdown"` | `markdown` or `text` |
-| `select_paths` | array | null | Regex patterns to include |
-| `exclude_paths` | array | null | Regex patterns to exclude |
-| `allow_external` | boolean | true | Include external domain links |
-| `timeout` | float | 150 | Max wait (10-150 seconds) |
+| 字段        | 类型         | 默认值       | 说明         |
+|------------|-------------|-------------|
+| `url`       | string       | 必填        | 开始爬取的根 URL     |
+| `max_depth`    | integer      | 1           | 爬取的深度（1-5层）   |
+| `max_breadth`    | integer      | 20           | 每页链接数量     |
+| `limit`      | integer      | 总页面数量上限   |
+| `instructions` | string       | 可选        | 爬取方向的自然语言指令 |
+| `chunks_per_source` | integer      | 3           | 每页的数据块数量   |
+| `extract_depth` | string       | `"basic"`      | 爬取深度模式（basic/advanced） |
+| `format`     | string       | `"markdown"`      | 输出格式（markdown/text） |
+| `select_paths` | array       | 可选        | 需要包含的路径正则表达式 |
+| `exclude_paths` | array       | 可选        | 需要排除的路径正则表达式 |
+| `allow_external` | boolean      | true         | 是否允许包含外部链接   |
+| `timeout`     | float        | 150          | 最大等待时间（10-150 秒） |
 
-### Response Format
+### 响应格式
 
 ```json
 {
@@ -125,27 +126,27 @@ POST https://api.tavily.com/crawl
 }
 ```
 
-## Depth vs Performance
+## 爬取深度与性能
 
-| Depth | Typical Pages | Time |
-|-------|---------------|------|
-| 1 | 10-50 | Seconds |
-| 2 | 50-500 | Minutes |
-| 3 | 500-5000 | Many minutes |
+| 爬取深度 | 典型页面数量 | 所需时间     |
+|---------|-------------|-------------|
+| 1        | 10-50        | 几秒钟       |
+| 2        | 50-500        | 几分钟       |
+| 3        | 500-5000       | 需要很多分钟     |
 
-**Start with `max_depth=1`** and increase only if needed.
+**建议从 `max_depth=1` 开始，根据需要逐步增加深度。**
 
-## Crawl for Context vs Data Collection
+## 爬取目的：获取上下文信息 vs 收集数据
 
-**For agentic use (feeding results into context):** Always use `instructions` + `chunks_per_source`. This returns only relevant chunks instead of full pages, preventing context window explosion.
+**用于生成上下文（将结果输入到大型语言模型中）：** 必须使用 `instructions` 和 `chunks_per_source` 参数。这样只会返回相关的数据块，而不会返回整个页面，从而避免上下文信息过载。
 
-**For data collection (saving to files):** Omit `chunks_per_source` to get full page content.
+**用于数据收集（保存到文件中）：** 可以省略 `chunks_per_source` 参数以获取完整页面内容。
 
-## Examples
+## 示例
 
-### For Context: Agentic Research (Recommended)
+### 用于生成上下文：代理式研究（推荐）
 
-Use when feeding crawl results into an LLM context:
+当将爬取结果输入到大型语言模型（LLM）中时使用此方法：
 
 ```bash
 curl --request POST \
@@ -160,9 +161,9 @@ curl --request POST \
   }'
 ```
 
-Returns only the most relevant chunks (max 500 chars each) per page - fits in context without overwhelming it.
+每次页面只返回最相关的部分内容（每段最多 500 个字符），适合用于生成上下文而不会造成信息过载。
 
-### For Context: Targeted Technical Docs
+### 用于生成上下文：针对性技术文档
 
 ```bash
 curl --request POST \
@@ -178,9 +179,9 @@ curl --request POST \
   }'
 ```
 
-### For Data Collection: Full Page Archive
+### 用于数据收集：完整页面存档
 
-Use when saving content to files for later processing:
+当需要将内容保存到文件中以供后续处理时使用此方法：
 
 ```bash
 curl --request POST \
@@ -196,11 +197,11 @@ curl --request POST \
   }'
 ```
 
-Returns full page content - use the script with `output_dir` to save as markdown files.
+返回完整页面内容，可以使用 `output_dir` 参数将结果保存为 Markdown 文件。
 
-## Map API (URL Discovery)
+## Map API（URL 发现）
 
-Use `map` instead of `crawl` when you only need URLs, not content:
+如果您只需要获取 URL 而不需要内容，可以使用 `map` 而不是 `crawl`：
 
 ```bash
 curl --request POST \
@@ -214,7 +215,7 @@ curl --request POST \
   }'
 ```
 
-Returns URLs only (faster than crawl):
+**注意：** `map` 方法比 `crawl` 方法更快，因为它只返回 URL。
 
 ```json
 {
@@ -226,11 +227,11 @@ Returns URLs only (faster than crawl):
 }
 ```
 
-## Tips
+## 提示：
 
-- **Always use `chunks_per_source` for agentic workflows** - prevents context explosion when feeding results to LLMs
-- **Omit `chunks_per_source` only for data collection** - when saving full pages to files
-- **Start conservative** (`max_depth=1`, `limit=20`) and scale up
-- **Use path patterns** to focus on relevant sections
-- **Use Map first** to understand site structure before full crawl
-- **Always set a `limit`** to prevent runaway crawls
+- **在代理式工作流程中始终使用 `chunks_per_source` 参数**，以避免将大量数据输入到大型语言模型中导致信息过载。
+- **仅在数据收集时省略 `chunks_per_source` 参数**，以保存完整页面内容。
+- **开始时设置较低的深度和页面数量（例如 `max_depth=1`，`limit=20`），然后根据需要逐步增加。
+- **使用路径模式`select_paths` 和 `exclude_paths` 来定位所需或排除不需要的内容。**
+- **在进行全面爬取之前，先使用 `map` 方法了解网站结构。**
+- **始终设置 `limit` 参数**，以防止爬取行为失控。

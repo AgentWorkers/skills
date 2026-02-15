@@ -1,35 +1,35 @@
 ---
 name: apple-remind-me
-description: Natural language reminders that create actual Apple Reminders.app entries (macOS-native)
+description: 能够创建实际 Apple Reminders.app 条目的自然语言提醒功能（适用于 macOS 系统）
 metadata: {"openclaw":{"emoji":"⏰","os":["darwin"],"requires":{"bins":["remindctl","date"]}}}
 ---
 
-# Apple Remind Me (macOS Native)
+# Apple Remind Me（macOS原生工具）
 
-Create, manage, and organize Apple Reminders using natural language. Works with Reminders.app natively - syncs to iPhone, iPad, Apple Watch.
+使用自然语言创建、管理和组织Apple提醒事项。该工具可原生与Reminders.app配合使用，并能同步到iPhone、iPad和Apple Watch。
 
-## Quick Reference
+## 快速参考
 
-| Want to... | Command | Example |
-|-----------|---------|---------|
-| Create reminder | `create-reminder.sh "msg" "when"` | `create-reminder.sh "Call mom" "tomorrow at 2pm"` |
-| List reminders | `list-reminders.sh [filter]` | `list-reminders.sh today` |
-| Complete reminder | `complete-reminder.sh ID` | `complete-reminder.sh XXXX-XXXX` |
-| Delete reminder | `delete-reminder.sh ID` | `delete-reminder.sh XXXX-XXXX` |
-| Edit message | `edit-reminder-message.sh ID "msg"` | `edit-reminder-message.sh XXXX "New text"` |
-| Edit time | `edit-reminder-time.sh ID "when"` | `edit-reminder-time.sh XXXX "next friday"` |
+| 操作          | 命令                | 示例                |
+|------------------|------------------|-------------------|
+| 创建提醒事项     | `create-reminder.sh "内容" "时间"` | `create-reminder.sh "明天下午2点给妈妈打电话"` |
+| 查看提醒事项     | `list-reminders.sh [筛选条件]` | `list-reminders.sh today`       |
+| 完成提醒事项     | `complete-reminder.sh ID`      | `complete-reminder.sh XXXX-XXXX`     |
+| 删除提醒事项     | `delete-reminder.sh ID`      | `delete-reminder.sh XXXX-XXXX`     |
+| 修改提醒内容     | `edit-reminder-message.sh ID "内容"` | `edit-reminder-message.sh XXXX "新文本"` |
+| 修改提醒时间     | `edit-reminder-time.sh ID "时间"` | `edit-reminder-time.sh 明天下午3点`   |
 
-## Available Commands
+## 可用命令
 
-### 1. Create Reminder
-Create a new reminder with natural language time parsing.
+### 1. 创建提醒事项
+使用自然语言创建新的提醒事项，系统会自动解析时间。
 
-**Usage:**
+**使用方法：**
 ```bash
 ./create-reminder.sh "message" "when"
 ```
 
-**Examples:**
+**示例：**
 ```bash
 ./create-reminder.sh "Pay bills" "later today"
 ./create-reminder.sh "Call dentist" "tomorrow at 3pm"
@@ -37,15 +37,15 @@ Create a new reminder with natural language time parsing.
 ./create-reminder.sh "Team meeting" "next monday at 10am"
 ```
 
-### 2. List Reminders
-Display all incomplete reminders with IDs, titles, due dates, and lists.
+### 2. 查看提醒事项
+显示所有未完成的提醒事项，包括ID、标题、截止日期等信息。
 
-**Usage:**
+**使用方法：**
 ```bash
 ./list-reminders.sh
 ```
 
-**Output Format:**
+**输出格式：**
 ```
 ⏳ ID: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
    Title: Reminder text
@@ -53,132 +53,132 @@ Display all incomplete reminders with IDs, titles, due dates, and lists.
    List: Reminders
 ```
 
-### 3. Complete Reminder
-Mark a reminder as completed (it will move to completed list in Reminders.app).
+### 3. 完成提醒事项
+将提醒事项标记为已完成（该事项会自动移至Reminders.app的“已完成”列表中）。
 
-**Usage:**
+**使用方法：**
 ```bash
 ./complete-reminder.sh "REMINDER-ID"
 ```
 
-**Example:**
+**示例：**
 ```bash
 ./complete-reminder.sh "CDCBCB94-1215-494E-9F12-471AFEF25C09"
 ```
 
-### 4. Delete Reminder
-Permanently delete a reminder.
+### 4. 删除提醒事项
+永久删除某个提醒事项。
 
-**Usage:**
+**使用方法：**
 ```bash
 ./delete-reminder.sh "REMINDER-ID"
 ```
 
-**Example:**
+**示例：**
 ```bash
 ./delete-reminder.sh "7C403BC5-6016-410A-810D-9A0F924682F9"
 ```
 
-### 5. Edit Reminder Message
-Update the text/title of an existing reminder.
+### 5. 修改提醒内容
+更新现有提醒事项的文本或标题。
 
-**Usage:**
+**使用方法：**
 ```bash
 ./edit-reminder-message.sh "REMINDER-ID" "new message"
 ```
 
-**Example:**
+**示例：**
 ```bash
 ./edit-reminder-message.sh "CDCBCB94-1215-494E-9F12-471AFEF25C09" "Updated reminder text"
 ```
 
-### 6. Edit Reminder Time
-Reschedule a reminder to a new time using natural language.
+### 6. 修改提醒时间
+使用自然语言重新安排提醒事项的时间。
 
-**Usage:**
+**使用方法：**
 ```bash
 ./edit-reminder-time.sh "REMINDER-ID" "new time"
 ```
 
-**Examples:**
+**示例：**
 ```bash
 ./edit-reminder-time.sh "CDCBCB94-1215-494E-9F12-471AFEF25C09" "tomorrow at 2pm"
 ./edit-reminder-time.sh "CDCBCB94-1215-494E-9F12-471AFEF25C09" "in 3 hours"
 ./edit-reminder-time.sh "CDCBCB94-1215-494E-9F12-471AFEF25C09" "next friday"
 ```
 
-## Time Parsing Reference
+## 时间解析说明
 
-### Relative Times
-Format: `in [number] [unit]`
-- `in 5 minutes` → 5 minutes from now
-- `in 2 hours` → 2 hours from now
-- `in 3 days` → 3 days from now at current time
+### 相对时间表达方式
+格式：`in [数字] [单位]`
+- `in 5 minutes` → 5分钟后
+- `in 2 hours` → 2小时后
+- `in 3 days` → 3天后（从当前时间算起）
 
-### Time of Day Shortcuts
-- `later today` / `later` / `this afternoon` → Today at 17:00
-- `tonight` → Today at 20:00
-- `tomorrow` → Tomorrow at 09:00
+### 时间快捷方式
+- `later today` / `later` / `this afternoon` → 今天下午
+- `tonight` → 今晚
+- `tomorrow` → 明天
 
-### Tomorrow with Specific Time
-Format: `tomorrow at [time]`
-- `tomorrow at 3pm` → Tomorrow at 15:00
-- `tomorrow at 10:30am` → Tomorrow at 10:30
-- `tomorrow at 8pm` → Tomorrow at 20:00
+### 明天具体时间
+格式：`tomorrow at [时间]`
+- `tomorrow at 3pm` → 明天下午3点
+- `tomorrow at 10:30am` → 明天上午10:30
+- `tomorrow at 8pm` → 明天晚上8点
 
-### Day of Week
-Format: `next [weekday]` (lowercase required)
-- `next monday` → Next Monday at 09:00
-- `next friday` → Next Friday at 09:00
-- `next sunday` → Next Sunday at 09:00
+### 星期几
+格式：`next [星期几]`（必须使用小写）
+- `next monday` → 下周一上午9点
+- `next friday` → 下周五上午9点
+- `next sunday` → 下周日上午9点
 
-**Note:** Day names must be lowercase (monday, tuesday, etc.)
+**注意：** 星期几必须使用小写（如“monday”而非“Monday”）
 
-### ISO Format (fallback)
-- `2026-01-27 14:00` → Exact date and time
+### 备用格式（ISO格式）
+- `2026-01-27 14:00` → 精确的日期和时间
 
-## Agent Implementation Guide
+## 代理实现指南
 
-### Creating Reminders
-When user says: "Remind me to X at/in Y"
+### 创建提醒事项
+当用户说：“在[时间]提醒我做某事”时，系统会执行以下操作：
 ```bash
 ./create-reminder.sh "X" "Y"
 ```
 
-### Listing Reminders
-When user asks: "What are my reminders?" or "Show my reminders"
+### 查看提醒事项
+当用户询问“我的提醒事项有哪些？”或“显示我的提醒事项”时，系统会执行以下操作：
 ```bash
 ./list-reminders.sh
 ```
 
-### Completing Reminders
-When user says: "Mark [reminder] as done" or "Complete [reminder]"
-1. List reminders to find the ID
-2. Use the ID to complete:
+### 完成提醒事项
+当用户说“将[提醒事项]标记为已完成”或“完成[提醒事项]”时，系统会执行以下操作：
+1. 列出所有提醒事项以找到对应的ID；
+2. 使用该ID完成提醒事项：
 ```bash
 ./complete-reminder.sh "REMINDER-ID"
 ```
 
-### Editing Reminders
-When user says: "Change [reminder] to say X" or "Reschedule [reminder] to Y"
-1. List reminders to find the ID
-2. Edit message or time:
+### 修改提醒事项
+当用户说“将[提醒事项]的内容修改为[新内容]”或“将[提醒事项]的时间改到[新时间]”时，系统会执行以下操作：
+1. 列出所有提醒事项以找到对应的ID；
+2. 修改提醒事项的内容或时间：
 ```bash
 ./edit-reminder-message.sh "REMINDER-ID" "new message"
 ./edit-reminder-time.sh "REMINDER-ID" "new time"
 ```
 
-### Deleting Reminders
-When user says: "Delete [reminder]" or "Remove [reminder]"
-1. List reminders to find the ID
-2. Delete:
+### 删除提醒事项
+当用户说“删除[提醒事项]”或“移除[提醒事项]”时，系统会执行以下操作：
+1. 列出所有提醒事项以找到对应的ID；
+2. 删除该提醒事项：
 ```bash
 ./delete-reminder.sh "REMINDER-ID"
 ```
 
-## Workflow Examples
+## 工作流程示例
 
-### Complete Workflow: Find and Complete a Reminder
+### 完整工作流程：查找并完成提醒事项
 ```bash
 # 1. List all reminders
 ./list-reminders.sh | grep "Pay bills"
@@ -190,7 +190,7 @@ When user says: "Delete [reminder]" or "Remove [reminder]"
 ./complete-reminder.sh "CDCBCB94-1215-494E-9F12-471AFEF25C09"
 ```
 
-### Complete Workflow: Reschedule a Reminder
+### 完整工作流程：重新安排提醒事项
 ```bash
 # 1. List reminders and find the one to reschedule
 ./list-reminders.sh | grep "Team meeting"
@@ -199,26 +199,26 @@ When user says: "Delete [reminder]" or "Remove [reminder]"
 ./edit-reminder-time.sh "REMINDER-ID" "next friday at 2pm"
 ```
 
-## Technical Details
+## 技术细节
 
-- **Backend:** Uses `remindctl` command-line tool (macOS native)
-- **Date Parsing:** BSD date utility (macOS compatible)
-- **Time Format:** ISO 8601 timestamps for remindctl
-- **List Filtering:** Shows only incomplete reminders by default
-- **Sync:** All changes sync immediately to iCloud and all devices
+- **后端支持：** 使用`remindctl`命令行工具（macOS原生工具）
+- **日期解析：** 使用BSD日期处理函数（兼容macOS）
+- **时间格式：** 使用ISO 8601时间戳格式
+- **列表筛选：** 默认仅显示未完成的提醒事项
+- **同步功能：** 所有更改会立即同步到iCloud及所有设备
 
-## Requirements
+## 系统要求
 
-- macOS (darwin)
-- `remindctl` (installed at `/usr/local/bin/remindctl`)
-- `date` (BSD version, macOS default)
-- `python3` (for JSON parsing in list-reminders.sh)
-- Apple Reminders.app
+- macOS（darwin系统）
+- 安装了`remindctl`工具（位于`/usr/local/bin/remindctl`）
+- 安装了`date`命令（BSD版本，macOS系统默认提供）
+- 安装了`python3`（用于`list-reminders.sh`脚本中的JSON解析）
+- 安装了Apple Reminders.app
 
-## Limitations
+## 限制事项
 
-- Day of week parsing requires lowercase (e.g., "monday" not "Monday")
-- "Next [weekday]" adds 7 days (doesn't calculate exact next occurrence)
-- No support for recurring reminders
-- No support for custom reminder lists (uses default "Reminders" list)
-- No location-based reminders
+- 星期几的名称必须使用小写（例如“monday”而非“Monday”）
+- 使用“next [星期几]”时，系统会添加7天（不计算下一个确切的提醒时间）
+- 不支持重复提醒
+- 不支持自定义提醒列表（使用系统默认的“Reminders”列表）
+- 不支持基于位置的提醒功能

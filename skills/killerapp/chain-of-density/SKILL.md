@@ -1,6 +1,6 @@
 ---
 name: chain-of-density
-description: "Iteratively densify text summaries using Chain-of-Density technique. Use when compressing verbose documentation, condensing requirements, or creating executive summaries while preserving information density."
+description: "使用“密度链”（Chain-of-Density）技术迭代地优化文本摘要。该技术适用于压缩冗长的文档内容、精简需求描述，或在保留信息密度的同时生成简洁的执行摘要。"
 license: Apache-2.0
 compatibility: "Python 3.10+ (for text_metrics.py script via uv run)"
 metadata:
@@ -10,42 +10,42 @@ metadata:
   arxiv: "https://arxiv.org/abs/2309.04269"
 ---
 
-# Chain-of-Density Summarization
+# 密度链摘要技术（Chain-of-Density Summarization）
 
-Compress text through iterative entity injection following the CoD paper methodology. Each pass identifies missing entities from the source and incorporates them while maintaining identical length.
+该技术通过迭代的方式，根据 CoD 论文中的方法论对文本进行压缩。每次迭代都会识别出源文本中的缺失实体，并将这些实体添加到摘要中，同时保持摘要的字符长度不变。
 
-## The Method
+## 技术原理
 
-Chain-of-Density works through multiple iterations:
+“密度链摘要”技术通过多次迭代来实现压缩目标：
 
-1. **Iteration 1**: Create sparse, verbose base summary (4-5 sentences at `target_words`)
-2. **Subsequent iterations**: Each iteration:
-   - Identify 1-3 missing entities from SOURCE (not summary)
-   - Rewrite summary to include them
-   - Maintain IDENTICAL word count through compression
+1. **第 1 次迭代**：生成一个简洁但信息量较大的基础摘要（包含 `target_words` 个单词）。
+2. **后续迭代**：每次迭代都会：
+   - 从源文本中识别出 1-3 个缺失的实体。
+   - 重新编写摘要以包含这些实体。
+   - 确保压缩后的摘要单词数量与原始摘要相同。
 
-**Key principle**: Never drop entities - only add and compress.
+**核心原则**：仅添加缺失的实体，绝不删除任何实体。
 
-## Missing Entity Criteria
+## 实体筛选标准
 
-Each entity added must meet ALL 5 criteria:
+每个被添加的实体必须满足以下 5 个标准：
 
-| Criterion | Description |
-|-----------|-------------|
-| **Relevant** | To the main story/topic |
-| **Specific** | Descriptive yet concise (≤5 words) |
-| **Novel** | Not in the previous summary |
-| **Faithful** | Present in the source (no hallucination) |
-| **Anywhere** | Can be from anywhere in the source |
+| 标准 | 描述 |
+|---------|---------|
+| **相关性** | 与主题紧密相关 |
+| **具体性** | 描述性强且简洁（不超过 5 个单词） |
+| **新颖性** | 在之前的摘要中未出现过 |
+| **真实性** | 确实存在于源文本中 |
+| **来源多样性** | 可以来自源文本的任何部分 |
 
-## Quick Start
+## 快速入门步骤
 
-1. User provides text to summarize
-2. Orchestrate 5 iterations via `cod-iteration` agent
-3. Each iteration reports entities added via `Missing_Entities:` line
-4. Return final summary + entity accumulation history
+1. 用户提供需要压缩的文本。
+2. 通过 `cod-iteration` 代理执行 5 次迭代。
+3. 每次迭代都会通过 `Missing_Entities:` 行报告新增的实体信息。
+4. 最后返回压缩后的摘要以及实体添加的历史记录。
 
-## Orchestration Pattern
+## 运行流程
 
 ```
 Iteration 1: Sparse base (target_words, verbose filler)
@@ -61,9 +61,9 @@ Iteration 5: +1-2 entities, final density
 Final dense summary (same word count, 9+ entities)
 ```
 
-## How to Orchestrate
+## 运行方式
 
-**Iteration 1** - Pass source text only:
+**第 1 次迭代**：仅传递源文本：
 
 ```
 Task(subagent_type="cod-iteration", prompt="""
@@ -73,7 +73,7 @@ text: [SOURCE TEXT HERE]
 """)
 ```
 
-**Iterations 2-5** - Pass BOTH previous summary AND source:
+**第 2-5 次迭代**：同时传递之前的摘要和源文本：
 
 ```
 Task(subagent_type="cod-iteration", prompt="""
@@ -84,14 +84,14 @@ source: [ORIGINAL SOURCE TEXT HERE]
 """)
 ```
 
-**Critical**:
-- Invoke serially, not parallel
-- Pass SOURCE text in every iteration for entity discovery
-- Parse `Missing_Entities:` line to track entity accumulation
+**重要提示**：
+- 这些迭代需要依次执行，不能并行进行。
+- 每次迭代都需要传递源文本以识别缺失的实体。
+- 通过 `Missing_Entities:` 行来跟踪添加的实体信息。
 
-## Expected Agent Output Format
+## 代理输出格式
 
-The `cod-iteration` agent returns:
+`cod-iteration` 代理会返回以下格式的结果：
 
 ```
 Missing_Entities: "entity1"; "entity2"; "entity3"
@@ -100,11 +100,11 @@ Denser_Summary:
 [The densified summary - identical word count to previous]
 ```
 
-Parse both parts - track entities for history, pass summary to next iteration.
+需要解析这两个部分：一部分用于记录实体添加的历史信息，另一部分用于传递给下一次迭代。
 
-## Measuring Density
+## 密度计算方法
 
-Use `scripts/text_metrics.py` for deterministic word counts:
+使用 `scripts/text_metrics.py` 脚本来进行精确的单词计数：
 
 ```bash
 echo "your summary text" | uv run scripts/text_metrics.py words
@@ -114,25 +114,22 @@ uv run scripts/text_metrics.py metrics "your summary text"
 # Returns: {"words": N, "chars": N, "bytes": N}
 ```
 
-## Parameters
+## 参数设置
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| iterations | 5 | Number of density passes (paper uses 5) |
-| target_words | 80 | Word count maintained across ALL iterations |
-| return_history | false | Include intermediate summaries + entities |
+| 参数 | 默认值 | 说明 |
+|---------|---------|-------------|
+| iterations | 5 | 迭代次数（论文中推荐使用 5 次） |
+| target_words | 80 | 所有迭代过程中保持不变的单词数量 |
+| return_history | false | 是否包含中间摘要和实体信息 |
 
-Note: `target_words` can be adjusted based on source length and desired output density.
+**注意**：`target_words` 可根据源文本的长度和所需的压缩效果进行调整。
 
-## Output Format
+## 输出格式
 
-### Minimal (default)
-```
+- **简化格式（默认）**：```
 [Final dense summary text]
 ```
-
-### With History (return_history=true)
-```yaml
+- **包含历史记录的格式（return_history=true）**：```yaml
 final_summary: |
   [Dense summary at target_words with accumulated entities]
 iterations:
@@ -150,23 +147,23 @@ iterations:
 total_entities: 9
 ```
 
-## When to Use
+## 适用场景
 
-- Verbose documentation exceeding 500 words
-- Requirements documents needing condensation
-- Creating executive summaries from detailed reports
-- Compressing skills that exceed recommended length
+- 长度超过 500 字的冗长文档
+- 需要精简的内容（如需求文档）
+- 从详细报告中提取核心信息的执行摘要
+- 需要压缩的技能描述（超过推荐长度的文档）
 
-## When NOT to Use
+## 不适用场景
 
-- Legal/compliance text (precision required)
-- Tutorial content (beginners need explanation)
-- Already concise content (<300 words)
-- Specifications (don't compress specs)
+- 法律/合规性文本（需要高度精确性）
+- 教程内容（初学者需要详细的解释）
+- 已经非常简洁的文本（少于 300 字）
+- 技术规范（不应被压缩）
 
-## Example
+## 示例
 
-**Source** (180 words, verbose skill excerpt):
+**源文本**（180 字，内容较为冗长）：
 ```
 The name field is a required field that must be present in every skill.
 The name field identifies the skill and must follow a specific format.
@@ -175,7 +172,7 @@ The name field can be 1 to 64 characters long. The description field
 is also required and tells agents when to use your skill...
 ```
 
-**Iteration 1** (Sparse, 80 words):
+**第 1 次迭代**（生成的摘要，包含 80 个单词）：
 ```
 Missing_Entities: (none - establishing base)
 
@@ -183,7 +180,7 @@ Denser_Summary:
 This document discusses the requirements for skill configuration fields in agent systems. It covers various aspects of how fields should be formatted and what values they can contain. The document also mentions validation rules that apply to these fields and provides guidance on best practices for developers. Additionally, it includes information about both optional and required elements that need to be considered when creating new skills for the system.
 ```
 
-**Iteration 3** (After 2 passes, same 80 words):
+**第 3 次迭代**（经过两次迭代后，摘要仍为 80 个单词）：
 ```
 Missing_Entities: "1-64 characters"; "lowercase alphanumeric-hyphens"; "Use when phrase"
 
@@ -191,7 +188,7 @@ Denser_Summary:
 Skills require `name` (1-64 chars, lowercase alphanumeric-hyphens) and `description` fields with validation rules. The name identifies skills; descriptions tell agents when to invoke using "Use when..." phrases. Both fields have format constraints and best practices. Optional metadata fields provide author, version, and compatibility information for cross-platform agent discovery.
 ```
 
-**Final Iteration 5** (Same 80 words, maximum density):
+**第 5 次迭代**（最终生成的摘要，保持 80 个单词，达到最大压缩效果）：
 ```
 Missing_Entities: "Claude Code"; "Cursor"; "GitHub Copilot"
 
@@ -199,16 +196,15 @@ Denser_Summary:
 Required: `name` (1-64 chars, ^[a-z0-9]+(-[a-z0-9]+)*$) and `description` (1-1024 chars) with validation. Description includes "Use when..." + discovery keywords for auto-invocation. Optional: license (SPDX), compatibility, metadata (author, version, tags). Cross-platform: Claude Code, Cursor, GitHub Copilot. Name matches directory. Progressive disclosure via references/, assets/, scripts/ subdirectories.
 ```
 
-## Architecture Note
+## 架构说明
 
-This skill implements the [CoD paper](https://arxiv.org/abs/2309.04269) methodology:
-- Skill = orchestrator (this file)
-- Agent = stateless worker (`cod-iteration`)
-- Script = deterministic utility (`text_metrics.py`)
+该技术实现了 [CoD 论文](https://arxiv.org/abs/2309.04269) 中提出的方法论：
+- **Skill**：负责整个流程的协调工作（即本文件）。
+- **Agent**：无状态的工作进程（`cod-iteration`）。
+- **Script**：用于执行具体操作的脚本（`text_metrics.py`）。
+- 下级代理不能直接调用其他代理；所有操作都必须通过 `Task` 工具来协调。
 
-Sub-agents cannot call other sub-agents. Only skills orchestrate via Task tool.
+## 参考文献
 
-## References
-
-- Paper: [From Sparse to Dense: GPT-4 Summarization with Chain of Density Prompting](https://arxiv.org/abs/2309.04269)
-- Dataset: [HuggingFace griffin/chain_of_density](https://huggingface.co/datasets/griffin/chain_of_density)
+- 论文：[From Sparse to Dense: GPT-4 Summarization with Chain of Density Prompting](https://arxiv.org/abs/2309.04269)
+- 数据集：[HuggingFace griffin/chain_of_density](https://huggingface.co/datasets/griffin/chain_of_density)

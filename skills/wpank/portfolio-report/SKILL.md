@@ -1,45 +1,42 @@
 ---
 name: portfolio-report
-description: Generate a comprehensive portfolio report for a wallet's Uniswap positions across all chains — covering total value, PnL, fee earnings, impermanent loss, and composition. Use when the user asks about their positions, earnings, or portfolio overview.
+description: 生成一份全面的钱包在所有链上Uniswap持仓的报表——涵盖总价值、盈亏（PnL）、手续费收入、非永久性损失以及持仓构成。当用户询问其持仓情况、收益或投资组合概览时，可使用此报表。
 model: opus
 allowed-tools: [Task(subagent_type:portfolio-analyst)]
 ---
 
-# Portfolio Report
+# 投资组合报告
 
-## Overview
+## 概述
 
-Generates a comprehensive portfolio report for a wallet's Uniswap positions across all supported chains. Delegates to the `portfolio-analyst` agent to discover positions, calculate PnL, track fee earnings, and analyze composition.
+该功能会生成一个全面的投資组合报告，展示钱包在所有支持的网络（chain）上的 Uniswap 持仓情况。具体工作由 `portfolio-analyst` 代理负责：发现持仓、计算盈亏（PnL）、追踪手续费收入以及分析持仓构成。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下请求时，可激活此功能：
+- “显示我的持仓”
+- “生成投资组合报告”
+- “我的 Uniswap 盈亏是多少？”
+- “我通过手续费赚了多少钱？”
+- “哪些持仓超出了预设范围？”
+- “我的投资组合总价值是多少？”
+- “汇总我的 LP 持仓情况”
 
-- "Show me my positions"
-- "Portfolio report"
-- "What's my Uniswap PnL?"
-- "How much have I earned in fees?"
-- "Which positions are out of range?"
-- "What's my portfolio worth?"
-- "Summarize my LP positions"
+## 参数
 
-## Parameters
+| 参数                | 是否必填 | 默认值                | 说明                                      |
+|------------------|--------|------------------|-----------------------------------------|
+| wallet            | 否       | 配置好的代理钱包地址        | 需要分析的钱包地址                          |
+| chains             | 否       | 所有网络               | 可选择特定网络或“所有网络”                         |
+| focus              | 否       | “全部信息”             | 可选择“持仓”、“盈亏”、“手续费”或“全部信息”                   |
 
-| Parameter | Required | Default              | Description                                |
-| --------- | -------- | -------------------- | ------------------------------------------ |
-| wallet    | No       | Configured agent wallet | Wallet address to analyze               |
-| chains    | No       | All chains           | Specific chains or "all"                   |
-| focus     | No       | full                 | "positions", "pnl", "fees", or "full"      |
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：确定钱包地址、网络筛选条件以及关注的重点（持仓、盈亏、手续费或全部信息）。
+2. **委托给 `portfolio-analyst` 代理**：调用 `Task(subagent_type:portfolio-analyst)` 并传递相关参数。代理会查询所有网络上的持仓信息，计算盈亏并分析持仓构成。
+3. **展示结果**：将分析结果以用户友好的格式呈现。
 
-1. **Extract parameters** from the user's request: identify wallet address, chain filter, and focus area.
-
-2. **Delegate to portfolio-analyst**: Invoke `Task(subagent_type:portfolio-analyst)` with the parameters. The agent discovers all positions across chains, values them, calculates PnL, and analyzes composition.
-
-3. **Present results**: Format the portfolio report as a user-friendly summary.
-
-## Output Format
+## 输出格式
 
 ```text
 Portfolio Report: 0xf39F...2266
@@ -66,17 +63,17 @@ Portfolio Report: 0xf39F...2266
     - Rebalance UNI/WETH position (currently out of range)
 ```
 
-## Important Notes
+## 重要说明
 
-- Delegates entirely to `portfolio-analyst` — no direct MCP tool calls.
-- PnL includes gas costs. A position may be profitable before gas but unprofitable after.
-- IL is reported as both absolute dollar value and percentage.
-- Data may be slightly delayed due to RPC/subgraph sync.
+- 所有处理工作均由 `portfolio-analyst` 代理完成，无需直接调用 MCP 工具。
+- 盈亏（PnL）包含网络交易产生的 Gas 费用；某个持仓在交易前可能盈利，但在交易后可能转为亏损。
+- 持仓的收益以绝对美元价值和百分比两种方式显示。
+- 由于 RPC 请求或子图同步问题，数据可能存在轻微延迟。
 
-## Error Handling
+## 错误处理
 
-| Error                | User-Facing Message                              | Suggested Action              |
-| -------------------- | ------------------------------------------------ | ----------------------------- |
-| Wallet not configured | "No wallet configured."                          | Set WALLET_TYPE + PRIVATE_KEY |
-| No positions found   | "No Uniswap positions found for this wallet."    | Wallet may not have LP'd      |
-| Chain unreachable    | "Could not connect to X chain."                  | Try again later               |
+| 错误类型                | 用户可见的提示信息 | 建议的操作                         |
+|------------------|------------------|----------------------------------------|
+| 未配置钱包            | “未配置钱包。”                 | 请设置 WALLET_TYPE 和 PRIVATE_KEY                |
+| 未找到持仓            | “未找到该钱包的 Uniswap 持仓。”             | 可能该钱包未参与 LP 活动                   |
+| 无法连接目标网络        | “无法连接到 X 网络。”                | 请稍后重试                        |

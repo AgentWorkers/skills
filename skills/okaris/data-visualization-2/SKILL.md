@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Data Visualization
+# 数据可视化
 
-Create clear, effective data visualizations via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具创建清晰、有效的数据可视化图表。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,26 +25,26 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## Chart Selection Guide
+## 图表选择指南
 
-### Which Chart for Which Data?
+### 哪种图表适用于哪种数据？
 
-| Data Relationship | Best Chart | Never Use |
+| 数据关系 | 最适合的图表 | 绝对不要使用 |
 |------------------|-----------|-----------|
-| **Change over time** | Line chart | Pie chart |
-| **Comparing categories** | Bar chart (horizontal for many categories) | Line chart |
-| **Part of a whole** | Stacked bar, treemap | Pie chart (controversial but: bar is always clearer) |
-| **Distribution** | Histogram, box plot | Bar chart |
-| **Correlation** | Scatter plot | Bar chart |
-| **Ranking** | Horizontal bar chart | Vertical bar, pie |
-| **Geographic** | Choropleth map | Bar chart |
-| **Composition over time** | Stacked area chart | Multiple pie charts |
-| **Single metric** | Big number (KPI card) | Any chart (overkill) |
-| **Flow / process** | Sankey diagram | Bar chart |
+| **随时间变化的数据** | 折线图 | 饼图 |
+| **比较不同类别的数据** | 横向柱状图（适用于多个类别） | 折线图 |
+| **整体中的部分** | 堆叠柱状图、树状图 | 饼图（虽然有争议，但柱状图通常更清晰） |
+| **数据分布** | 直方图、箱线图 | 柱状图 |
+| **数据相关性** | 散点图 | 柱状图 |
+| **数据排名** | 横向柱状图 | 垂直柱状图、饼图 |
+| **地理数据** | 等高线地图 | 柱状图 |
+| **随时间变化的组成** | 堆叠面积图 | 多个饼图 |
+| **单一指标** | 大数值（关键绩效指标） | 任何图表（可能过于复杂） |
+| **数据流程** | 桑基图 | 柱状图 |
 
-### The Pie Chart Problem
+### 饼图的局限性
 
-Pie charts are almost always the wrong choice:
+饼图几乎总是错误的选择：
 
 ```
 ❌ Pie chart problems:
@@ -60,32 +60,32 @@ Pie charts are almost always the wrong choice:
    - Just a table (if precision matters)
 ```
 
-## Design Rules
+## 设计规则
 
-### Axes
+### 轴
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Always start Y-axis at 0 (bar charts) | Prevents misleading visual |
-| Line charts CAN start above 0 | When showing change, not absolute values |
-| Label both axes | Reader shouldn't have to guess units |
-| Remove unnecessary gridlines | Reduce visual noise |
-| Use horizontal labels | Vertical text is hard to read |
-| Sort bar charts by value | Don't use alphabetical order unless there's a reason |
+| Y轴始终从0开始（柱状图） | 避免误导观众 |
+| 折线图可以不从0开始 | 当展示变化趋势而非绝对值时 |
+| 为两个轴都添加标签 | 读者不应猜测单位 |
+| 删除不必要的网格线 | 减少视觉干扰 |
+| 使用水平标签 | 垂直文本难以阅读 |
+| 按数值对柱状图进行排序 | 除非有特殊原因，否则不要按字母顺序排序 |
 
-### Color
+### 颜色
 
-| Principle | Application |
+| 原则 | 应用方法 |
 |-----------|------------|
-| **Max 5-7 colors** per chart | More becomes unreadable |
-| **Highlight one thing** | Grey everything else, color the focus |
-| **Sequential** for magnitude | Light → dark for low → high |
-| **Diverging** for positive/negative | Red ← neutral → blue |
-| **Categorical** for groups | Distinct hues, similar brightness |
-| **Colorblind-safe** | Avoid red/green only — add shapes or labels |
-| **Consistent meaning** | If blue = revenue, keep it blue everywhere |
+| 每个图表最多使用5-7种颜色 | 色彩过多会降低可读性 |
+| 突出重点内容 | 其他部分使用灰色，重点部分使用特定颜色 |
+| 根据数值大小使用颜色渐变 | 从浅色到深色表示数值从小到大 |
+| 根据正负值使用不同的颜色 | 正数为红色，中性为中性色，负数为蓝色 |
+| 对于分类数据使用不同的颜色 | 使用不同的色调，但亮度相近 |
+| 适合色盲用户 | 避免仅使用红色/绿色——可以添加形状或文字说明 |
+| 保持颜色的一致性 | 如果蓝色代表收入，那么在整个图表中都使用蓝色 |
 
-### Good Color Palettes
+### 好的配色方案
 
 ```python
 # Sequential (low to high)
@@ -101,20 +101,20 @@ categorical = ["#3b82f6", "#f59e0b", "#10b981", "#8b5cf6", "#ef4444"]
 cb_safe = ["#0077BB", "#33BBEE", "#009988", "#EE7733", "#CC3311"]
 ```
 
-### Text and Labels
+### 文本和标签
 
-| Element | Rule |
+| 元素 | 规则 |
 |---------|------|
-| **Title** | States the insight, not the data type. "Revenue doubled in Q2" not "Q2 Revenue Chart" |
-| **Annotations** | Call out key data points directly on the chart |
-| **Legend** | Avoid if possible — label directly on chart lines/bars |
-| **Font size** | Minimum 12px, 14px+ for presentations |
-| **Number format** | Use K, M, B for large numbers (42K not 42,000) |
-| **Data labels** | Add to bars/points when exact values matter |
+| **标题** | 需要传达的洞察，而不是数据类型。例如：“第二季度收入翻了一番”，而不是“第二季度收入图表” |
+| **注释** | 直接在图表上标注关键数据点 |
+| **图例** | 尽量避免使用图例——直接在图表线条/柱子上标注 |
+| **字体大小** | 演示文稿中至少使用12px或14px以上的字体 |
+| **数字格式** | 使用K、M、B等符号表示大数值（例如42K而不是42,000） |
+| **数据标签** | 当需要显示精确数值时，为柱子/数据点添加标签 |
 
-## Chart Recipes
+## 图表制作技巧
 
-### Line Chart (Time Series)
+### 折线图（时间序列）
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -122,7 +122,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### Horizontal Bar Chart (Comparison)
+### 横向柱状图（比较）
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -130,7 +130,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### KPI / Big Number Card
+### 关键绩效指标/大数值展示
 
 ```bash
 infsh app run infsh/html-to-image --input '{
@@ -138,7 +138,7 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-### Heatmap
+### 热力图
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -146,17 +146,17 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## Storytelling with Data
+## 用数据讲故事
 
-### The Narrative Arc
+### 叙事结构
 
-| Step | What to Do | Example |
+| 步骤 | 需要做什么 | 示例 |
 |------|-----------|---------|
-| 1. **Context** | Set up what the reader needs to know | "We track customer acquisition cost monthly" |
-| 2. **Tension** | Show the problem or change | "CAC increased 40% in Q3" |
-| 3. **Resolution** | Show the insight or solution | "But LTV increased 80%, so unit economics improved" |
+| 1. **背景** | 说明读者需要了解的信息 | “我们每月跟踪客户获取成本” |
+| 2. **问题/变化** | 展示问题或变化 | “第三季度的客户获取成本增加了40%” |
+| 3. **解决方案** | 展示洞察或解决方案 | “但客户生命周期价值增加了80%，因此单位经济效益得到了提升” |
 
-### Title as Insight
+### 标题应传达核心洞察
 
 ```
 ❌ Descriptive titles (what the chart shows):
@@ -170,17 +170,17 @@ infsh app run infsh/python-executor --input '{
    "Support response time is the #1 satisfaction driver"
 ```
 
-### Annotation Techniques
+### 注释技巧
 
-| Technique | When to Use |
+| 技巧 | 适用场景 |
 |-----------|------------|
-| **Call-out label** | Highlight a specific data point ("Peak: 320K") |
-| **Reference line** | Show target/benchmark ("Goal: 100K") |
-| **Shaded region** | Mark a time period ("Product launch window") |
-| **Arrow + text** | Draw attention to trend change |
-| **Before/after line** | Show impact of an event |
+| **突出显示特定数据点** | 强调某个具体的数据点（例如：“峰值：32万”） |
+| **参考线** | 显示目标或基准值（例如：“目标：10万”） |
+| **阴影区域** | 标记某个时间段（例如：“产品发布窗口”） |
+| **箭头+文字** | 引导观众注意趋势变化 |
+| **前后对比线** | 显示事件的影响 |
 
-## Dark Mode Charts
+## 暗模式图表
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -188,22 +188,22 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Pie charts | Hard to compare, always misleading | Use bar charts or treemaps |
-| Y-axis not starting at 0 (bar charts) | Exaggerates differences | Start at 0 for bars, OK to truncate for lines |
-| Too many colors | Visual noise, confusing | Max 5-7 colors, highlight only what matters |
-| No title or generic title | Reader doesn't know the insight | Title = the takeaway, not the data type |
-| 3D charts | Distorts data, looks unprofessional | Always use 2D |
-| Dual Y-axes | Misleading, hard to read | Use two separate charts |
-| Alphabetical sort on bar charts | Hides the story | Sort by value (largest first) |
-| No labels on axes | Reader can't interpret | Always label with units |
-| Chartjunk (decorative elements) | Distracts from data | Remove everything that doesn't convey information |
-| Red/green only for color coding | Colorblind users can't read | Use shapes, patterns, or colorblind-safe palettes |
+| 使用饼图 | 难以比较数据，容易产生误导 | 使用柱状图或树状图 |
+| Y轴没有从0开始（柱状图） | 会夸大数据差异 | 柱状图的Y轴必须从0开始；折线图可以适当截断 |
+| 颜色过多 | 造成视觉干扰 | 最多使用5-7种颜色，只突出重点 |
+| 没有标题或标题过于笼统 | 读者无法理解图表的意义 | 标题应明确传达核心洞察 |
+| 3D图表 | 会扭曲数据，显得不专业 | 始终使用2D图表 |
+| 双Y轴 | 误导观众，难以阅读 | 使用两个独立的图表 |
+| 按字母顺序排序柱状图 | 会掩盖数据的真实关系 | 按数值大小排序（从大到小） |
+| 轴上没有标签 | 观众无法理解数据 | 必须为轴添加标签 |
+| 非必要的装饰元素 | 会分散观众的注意力 | 删除所有不传递信息的元素 |
+| 仅使用红色/绿色进行颜色编码 | 色盲用户难以区分颜色 | 可以使用形状、图案或适合色盲用户的配色方案 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@pitch-deck-visuals
@@ -211,4 +211,4 @@ npx skills add inferencesh/skills@technical-blog-writing
 npx skills add inferencesh/skills@competitor-teardown
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

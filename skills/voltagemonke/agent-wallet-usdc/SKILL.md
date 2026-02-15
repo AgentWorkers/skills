@@ -1,44 +1,44 @@
 ---
 name: agent-wallet
-description: Multi-chain wallet management for AI agents. Create wallets, check balances, transfer tokens (USDC/native), and bridge cross-chain. Use when agents need to send/receive payments, check funds, or manage crypto wallets. Supports Solana, Base, and Ethereum. Trigger phrases include "create wallet", "check balance", "send USDC", "transfer", "my addresses", "wallet status".
+description: 适用于AI代理的多链钱包管理工具。支持创建钱包、查询余额、转账代币（USDC/原生代币）以及跨链操作。当代理需要发送/接收付款、查询资金或管理加密钱包时，可使用该工具。支持Solana、Base和Ethereum区块链。常用指令包括：“create wallet”（创建钱包）、“check balance”（查询余额）、“send USDC”（发送USDC）、“transfer”（转账）、“my addresses”（查看地址列表）和“wallet status”（查看钱包状态）。
 ---
 
 # AgentWallet
 
-Multi-chain wallet skill for AI agents. One seed phrase, all chains.
+这是一个专为AI代理设计的多链钱包工具。只需提供一个种子短语，即可管理所有支持的区块链。
 
-## Quick Reference
+## 快速参考
 
-| Command | Example |
+| 命令 | 例子 |
 |---------|---------|
-| Create wallet | "Create a new wallet" |
-| Show addresses | "Show my addresses" / "What's my wallet?" |
-| Check balance | "Check my balance" / "How much USDC do I have?" |
-| Transfer | "Send 10 USDC to 0x..." / "Transfer 5 SOL to ..." |
-| Bridge | "Bridge 10 USDC from Base to Solana" |
-| Chain info | "What chains are supported?" |
+| 创建钱包 | "创建一个新的钱包" |
+| 显示地址 | "显示我的地址" / "我的钱包里有什么?" |
+| 检查余额 | "查看我的余额" / "我有多少USDC?" |
+| 转账 | "向0x...转账10 USDC" / "向...转账5 SOL" |
+| 跨链转账 | "将10 USDC从Base链桥接到Solana链" |
+| 链路信息 | "支持哪些区块链?" |
 
-## Setup
+## 设置
 
-### New Wallet
+### 新钱包
 
 ```
 User: "Create a new wallet"
 ```
 
-Generates BIP-39 seed phrase, derives addresses for all chains. Shows seed ONCE with security warning.
+生成BIP-39种子短语，并为所有支持的区块链生成地址。该种子短语仅会显示一次，并会发出安全警告。
 
-### Import Existing Wallet
+### 导入现有钱包
 
 ```
 User: "Import my wallet"
 ```
 
-Response: "Add your seed phrase to `.env` as `WALLET_SEED_PHRASE`, then say 'Show my addresses' to verify."
+提示：请将您的种子短语添加到`.env`文件中（键名为`WALLET_SEED_PHRASE`），然后输入“Show my addresses”进行验证。
 
-No seed phrases in chat for imports - security first.
+**注意：** 为了安全起见，导入钱包时不允许在聊天框中输入种子短语。
 
-### Environment
+### 环境配置
 
 ```bash
 # Required for wallet operations
@@ -51,13 +51,13 @@ BASE_RPC=                # Custom Base RPC (defaults to public)
 ETH_RPC=                 # Custom Ethereum RPC (defaults to public)
 ```
 
-## Commands
+## 命令
 
-### Create Wallet
+### 创建钱包
 
-Run: `node scripts/wallet.js create`
+运行命令：`node scripts/wallet.js create`
 
-Output format:
+输出格式：
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔐 NEW WALLET GENERATED
@@ -85,82 +85,82 @@ Network: TESTNET
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Show Addresses
+### 显示地址
 
-Run: `node scripts/wallet.js addresses`
+运行命令：`node scripts/wallet.js addresses`
 
-Shows derived addresses without exposing seed.
+会显示生成的地址，但不会暴露种子短语。
 
-### Check Balance
+### 检查余额
 
-Run: `node scripts/wallet.js balance [chain]`
+运行命令：`node scripts/wallet.js balance [chain]`
 
-- `node scripts/wallet.js balance` - All chains
-- `node scripts/wallet.js balance solana` - Solana only
-- `node scripts/wallet.js balance base` - Base only
+- `node scripts/wallet.js balance` - 查看所有链路的余额
+- `node scripts/wallet.js balance solana` - 仅查看Solana链的余额
+- `node scripts/wallet.js balance base` - 仅查看Base链的余额
 
-Output includes native token + USDC balance per chain.
+输出结果包括每个链路的原生代币和USDC余额。
 
-### Transfer
+### 转账
 
-Run: `node scripts/wallet.js transfer <chain> <token> <amount> <recipient>`
+运行命令：`node scripts/wallet.js transfer <chain> <token> <amount> <recipient>`
 
-Examples:
-- `node scripts/wallet.js transfer solana USDC 10 7xK9fR2...` 
-- `node scripts/wallet.js transfer base ETH 0.01 0x7a3B...`
+示例：
+- `node scripts/wallet.js transfer solana USDC 10 7xK9fR2...`  
+- `node scripts/wallet.js transfer base ETH 0.01 0x7a3B...`  
 - `node scripts/wallet.js transfer solana SOL 0.5 7xK9fR2...`
 
-Supported tokens per chain:
+**支持的代币：**
 - **Solana**: SOL, USDC
 - **Base**: ETH, USDC
 - **Ethereum**: ETH, USDC
 
-### Bridge (Cross-Chain)
+### 跨链转账
 
-Run: `node scripts/wallet.js bridge <from-chain> <to-chain> <amount>`
+运行命令：`node scripts/wallet.js bridge <from-chain> <to-chain> <amount>`
 
-Bridges USDC between chains using Circle CCTP V2.
+使用Circle CCTP V2协议在区块链之间转账USDC。
 
-Examples:
-- `node scripts/wallet.js bridge base solana 10` - Bridge 10 USDC from Base to Solana
-- `node scripts/wallet.js bridge ethereum base 50` - Bridge 50 USDC from Ethereum to Base
-- `node scripts/wallet.js bridge solana ethereum 25` - Bridge 25 USDC from Solana to Ethereum
+示例：
+- `node scripts/wallet.js bridge base solana 10` - 将10 USDC从Base链桥接到Solana链
+- `node scripts/wallet.js bridge ethereum base 50` - 将50 USDC从Ethereum链桥接到Base链
+- `node scripts/wallet.js bridge solana ethereum 25` - 将25 USDC从Solana链桥接到Ethereum链
 
-**Note:** Bridging takes 1-5 minutes (burn → attestation → mint). Requires USDC on source chain plus native tokens for gas.
+**注意：** 跨链转账需要1-5分钟的时间（包括燃烧、验证和铸造过程）。操作需要源链上有足够的USDC，并且目标链上有足够的原生代币作为交易手续费。
 
-### Chain Info
+### 链路信息
 
-Run: `node scripts/wallet.js chains`
+运行命令：`node scripts/wallet.js chains`
 
-Lists supported chains, networks, and USDC contract addresses.
+会列出所有支持的区块链、网络以及相关的USDC合约地址。
 
-## Derivation Paths
+## 密钥生成机制
 
-All chains derive from single BIP-39 seed:
+所有链路的地址都是基于同一个BIP-39种子短语生成的：
 
-| Chain | Path | Standard |
+| 链路 | 密钥生成路径 | 标准 |
 |-------|------|----------|
 | Solana | `m/44'/501'/0'/0'` | Solana/Phantom |
 | EVM (Base/Eth) | `m/44'/60'/0'/0/0` | BIP-44 Ethereum |
 
-EVM chains share the same address (same derivation path).
+EVM系列区块链使用相同的密钥生成路径。
 
-## Security Model
+## 安全模型
 
-- **One seed per agent** - Each agent instance isolated
-- **Seed shown once** - Only at creation, never logged
-- **Memory only** - Private keys derived on-demand, never persisted
-- **No chat import** - Seeds added via .env only (except generation)
+- **每个代理使用独立的种子短语**：确保每个代理实例的隐私安全。
+- **种子短语仅显示一次**：仅在创建钱包时显示，不会被记录。
+- **密钥动态生成**：私钥按需生成，不会被持久化存储。
+- **禁止通过聊天框导入种子短语**：种子短语必须通过`.env`文件进行配置。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Fix |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|-----|
-| "WALLET_SEED_PHRASE not set" | Missing env var | Add seed to .env |
-| "Invalid seed phrase" | Wrong format | Must be 12 or 24 words |
-| "Insufficient balance" | Not enough funds | Check balance first |
-| "Invalid address" | Wrong format | Verify recipient address |
+| "WALLET_SEED_PHRASE未设置" | `.env`文件中缺少该环境变量 | 请将种子短语添加到`.env`文件中。 |
+| "种子短语格式错误" | 种子短语长度不正确（应为12或24个单词） | 请确保格式正确。 |
+| “余额不足” | 账户余额不足 | 请先检查余额。 |
+| “地址格式错误” | 收件人地址格式不正确 | 请验证收件人地址。 |
 
-## Chain References
+## 链路参考
 
-For RPC endpoints, USDC addresses, and chain-specific details, see [references/chains.md](references/chains.md).
+有关RPC端点、USDC地址和各链路的详细信息，请参阅[references/chains.md](references/chains.md)。

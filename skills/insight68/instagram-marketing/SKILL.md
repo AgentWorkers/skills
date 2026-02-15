@@ -1,40 +1,59 @@
 ---
 name: instagram-marketing
-description: Generate Instagram marketing content from product URLs. Extract product information and create engaging Instagram posts with image suggestions, captions, and hashtags optimized for engagement. Use when user provides a product URL from e-commerce sites like Amazon, Shopify, Taobao, etc. and wants Instagram marketing content such as Image/text post ideas, engaging captions with CTAs, hashtag strategy, or Story/reels content suggestions.
+description: 根据用户提供的产品URL（来自亚马逊、Shopify、淘宝等电子商务网站），生成适合在Instagram上发布的营销内容。具体步骤包括：
+
+1. **提取产品信息**：从产品URL中提取产品的名称、价格、描述、图片链接等关键信息。
+
+2. **创建吸引人的Instagram帖子**：
+   - **图片选择**：根据产品特性选择合适的图片，确保图片质量高且与产品内容相关。
+   - **编写吸引人的标题和描述**：使用简洁明了的标题，结合产品的特点和优势来吸引用户的注意力。描述部分应包含产品的核心卖点和使用场景。
+   - **添加Call to Action (CTA)**：鼓励用户采取特定行动，如购买产品、了解更多信息或关注品牌。
+
+3. **优化标签（Hashtags）**：使用与产品相关的热门标签，以提高帖子的曝光率和互动率。
+
+4. **内容格式**：确保帖子遵循Instagram的格式要求，包括适当的图片和文字比例、标题和描述的位置等。
+
+5. **适用于不同类型的帖子**：根据产品类型和用户需求，生成适合发布在Instagram Stories或Reels中的内容。
+
+示例：
+- 如果产品适合发布在Stories中，可以添加动画效果、音乐或视频片段，增加互动性。
+- 如果产品适合发布在Reels中，可以使用短视频形式，结合多个镜头和不同的视角来展示产品。
+
+通过以上步骤，可以为用户提供定制化的Instagram营销内容，帮助提高产品的在线曝光率和销售转化率。
 ---
 
-# Instagram Marketing Generator
+# Instagram营销生成器
 
-## Overview
+## 概述
 
-Transform any product URL into scroll-stopping Instagram content. Extract product details, analyze brand positioning, and generate platform-native marketing assets that drive engagement and conversions.
+将任何产品URL转换为能够吸引用户驻足观看的Instagram内容。提取产品详情，分析品牌定位，并生成符合Instagram平台特性的营销素材，以提升用户参与度和转化率。
 
-## Quick Start
+## 快速入门
 
-1. **Input**: Provide product URL
-2. **Extract**: Use `scripts/extract_product.py` to fetch product details
-3. **Generate**: Apply Instagram content frameworks from `references/`
-4. **Deliver**: Output ready-to-post content package
+1. **输入**：提供产品URL
+2. **提取**：使用`scripts/extract_product.py`脚本获取产品详情
+3. **生成**：应用`references/`目录中的Instagram内容模板
+4. **输出**：生成可直接发布的完整内容包
 
-## Content Frameworks
+## 内容模板
 
-### Framework Selection Guide
+### 模板选择指南
 
-Choose based on product type and brand personality:
+根据产品类型和品牌风格选择合适的模板：
 
-| Product Type | Recommended Framework | Reference |
+| 产品类型 | 推荐模板 | 参考文档 |
 |--------------|----------------------|-----------|
-| Fashion/Beauty | Aesthetic + Lifestyle | `FASHION.md` |
-| Tech/Gadgets | Feature-First + Demo | `TECH.md` |
-| Food/Beverage | Sensory + Lifestyle | `LIFESTYLE.md` |
-| Home/Decor | Transformation + Tips | `HOME.md` |
-| Services | Trust + Results | `SERVICE.md` |
+| 时尚/美容 | `FASHION.md` | `references/FASHION.md` |
+| 科技/小工具 | `TECH.md` | `references/TECH.md` |
+| 食品/饮料 | `LIFESTYLE.md` | `references/LIFESTYLE.md` |
+| 家居/装饰 | `HOME.md` | `references/HOME.md` |
+| 服务 | `SERVICE.md` | `references SERVICE.md` |
 
-### Core Content Elements
+### 核心内容元素
 
-Every Instagram post package includes:
+每个Instagram内容包包括：
 
-#### 1. Image/Video Brief
+#### 1. 图片/视频简介
 ```
 • Visual style (aesthetic direction)
 • Composition guidelines
@@ -43,7 +62,7 @@ Every Instagram post package includes:
 • Background/props guidance
 ```
 
-#### 2. Caption Structure
+#### 2. 标题格式
 ```
 HOOK → [First line - stops the scroll]
   |
@@ -52,12 +71,12 @@ HOOK → [First line - stops the scroll]
   └── CTA → [Clear action: link, DM, save, share]
 ```
 
-**Caption Length Guide:**
-- Feed posts: 138-150 characters (optimal engagement)
-- Carousel: 150-200 characters
-- Educational: Up to 300 characters
+**标题长度建议：**
+- 信息流帖子：138-150个字符（最佳互动效果）
+- 轮播图：150-200个字符
+- 教育类内容：最多300个字符
 
-#### 3. Hashtag Strategy (30 max)
+#### 3. 标签策略（最多30个标签）
 ```
 • 3-5 branded/niche tags (high relevance)
 • 10-15 trend tags (moderate volume)
@@ -65,36 +84,36 @@ HOOK → [First line - stops the scroll]
 • Mix of: #branded #descriptive #trend #location #emotion
 ```
 
-See `references/HASHTAG_STRATEGY.md` for detailed hashtag optimization.
+详情请参阅`references/HASHTAG_STRATEGYYYY.md`文档，了解标签优化技巧。
 
-## Product Information Extraction
+## 产品信息提取
 
-### Script Usage
+### 脚本使用方法
 
 ```bash
 python3 scripts/extract_product.py <url>
 ```
 
-**Extracted fields:**
-- Product name
-- Price/value proposition
-- Key features (3-5)
-- Target audience
-- Unique selling proposition
-- Brand tone
-- Visual assets (existing images)
+**提取的信息包括：**
+- 产品名称
+- 价格/价值主张
+- 主要功能（3-5项）
+- 目标受众
+- 独特卖点
+- 品牌风格
+- 可用的视觉素材（现有图片）
 
-### Manual Extraction Fallback
+### 手动提取方案
 
-If script fails, extract manually:
-1. Visit product URL
-2. Identify: name, price, features, benefits
-3. Note brand visual style
-4. Capture 3-5 product angles
+如果脚本失败，可以手动提取信息：
+1. 访问产品URL
+2. 收集：产品名称、价格、功能、优势
+3. 观察品牌视觉风格
+4. 拍摄3-5张产品照片
 
-## Content Generation Workflow
+## 内容生成流程
 
-### Step 1: Analyze Product & Audience
+### 第一步：分析产品与目标受众
 
 ```
 PRODUCT → [What is it? What problem does it solve?]
@@ -106,37 +125,37 @@ PRODUCT → [What is it? What problem does it solve?]
   └── PLATFORM FIT → [Feed post, Story, Reel, Carousel?]
 ```
 
-**Key Questions:**
-- What emotion should the user feel?
-- What's the "scroll-stopping" moment?
-- What's the post-purchase transformation?
+**关键问题：**
+- 用户应该感受到什么样的情感？
+- 什么内容能吸引用户驻足观看？
+- 产品使用后能带来怎样的改变？
 
-### Step 2: Choose Content Format
+### 第二步：选择内容格式
 
-#### Feed Post (Single Image)
-- **Best for**: Product showcases, announcements
-- **Visual**: High-quality product shot, clean background
-- **Caption**: Punchy hook + benefits + CTA
+#### 信息流帖子（单张图片）
+- **适用场景**：产品展示、公告
+- **视觉要求**：高质量的产品图片，简洁的背景
+- **标题**：吸引人的开头 + 产品优势 + 行动号召
 
-#### Carousel (Swipe-able)
-- **Best for**: Features, tutorials, transformations
-- **Structure**: 5-10 slides
-  1. Hook slide
-  2-4. Feature/benefit slides
-  5. CTA slide
+#### 轮播图（可滑动）
+- **适用场景**：产品功能介绍、教程、使用效果展示
+- **结构**：5-10张图片
+  1. 开场图片
+  2-4张功能/优势图片
+  5张行动号召图片
 
-#### Story (15-60 sec)
-- **Best for**: Flash sales, polls, Q&A, behind-scenes
-- **Elements**: Interactive stickers, tap-through links
+#### 故事（15-60秒）
+- **适用场景**：限时促销、投票、问答、幕后花絮
+- **元素**：互动贴纸、点击链接
 
-#### Reel (15-90 sec video)
-- **Best for**: Demos, unboxing, transformations
-- **Hook**: First 1 second critical
-- **Music**: Trending audio boost
+#### 视频（15-90秒）
+- **适用场景**：产品演示、开箱视频、使用效果展示
+- **开头**：前1秒至关重要
+- **音乐**：使用热门音乐提升观看体验
 
-### Step 3: Generate Content Package
+### 第三步：生成内容包
 
-Output format (see `templates/OUTPUT_TEMPLATE.md`):
+输出格式请参考`templates/OUTPUT_TEMPLATE.md`文件：
 
 ```markdown
 ## Instagram Content Package
@@ -156,44 +175,43 @@ Output format (see `templates/OUTPUT_TEMPLATE.md`):
 [Time, frequency, cross-post suggestions]
 ```
 
-## Instagram Style Guidelines
+## Instagram风格指南
 
-### Visual Principles
+### 视觉设计原则
 
-1. **Consistency First**
-   - Cohesive color palette (3-5 colors max)
-   - Consistent filter/preset
-   - Recognizable brand aesthetic
+1. **一致性优先**
+   - 保持色彩搭配的一致性（最多3-5种颜色）
+   - 使用统一的滤镜/预设效果
+   - 体现品牌独特的美学风格
 
-2. **Quality Over Quantity**
-   - High-resolution images (1080x1080 or 1080x1350)
-   - Good lighting (natural preferred)
-   - Clean composition (rule of thirds)
+2. **质量高于数量**
+   - 使用高分辨率图片（1080x1080或1080x1350）
+   - 优质的光线效果（自然光为佳）
+   - 规则三分法构图
 
-3. **Native Feel**
-   - Avoid over-polished, stock-looking content
-   - Embrace authenticity
-   - Show real people/products
+3. **保持原生感**
+   - 避免过度修饰或使用库存图片
+   - 体现真实的产品/人物
 
-### Caption Best Practices
+### 标题编写技巧
 
-✅ DO:
-- Start with a hook (question, bold statement, emotion)
-- Write conversationally (like talking to a friend)
-- Use line breaks for readability
-- Include clear CTA
-- Add 3-5 relevant hashtags
+✅ 应该：
+- 用引人入胜的开头（问题、强调句、情感表达）
+- 采用对话式的语言
+- 使用换行符提高可读性
+- 包含明确的行动号召
+- 添加3-5个相关标签
 
-❌ DON'T:
-- Write paragraphs longer than 3 lines
-- Use excessive emojis (1-3 max)
-- Overuse hashtags (30 max, quality > quantity)
-- Sound robotic or overly promotional
-- Include "link in bio" more than once
+❌ 不应该：
+- 写超过3行的长标题
+- 过度使用表情符号（最多1-3个）
+- 过量使用标签（30个以内，质量优先）
+- 语言显得机械或过于促销
+- 在简介中多次提及“点击链接”
 
-### Engagement Triggers
+### 提高互动性的方法
 
-Embed these in content:
+在内容中嵌入以下元素：
 ```
 • Questions: "Which color would you choose?"
 • Opinions: "Yes or No?"
@@ -202,88 +220,88 @@ Embed these in content:
 • CTAs: "Link in bio to shop"
 ```
 
-## Content Templates
+## 内容模板示例
 
-### Template 1: Problem-Solution
+### 模板1：问题-解决方案
 ```
 Hook: Tired of [problem]?
 Body: Meet [product]. It [benefit 1], [benefit 2], and [benefit 3].
 CTA: Shop now → link in bio
 ```
 
-### Template 2: Transformation
+### 模板2：产品使用效果展示
 ```
 Hook: Before → After
 Body: How [product] transformed [situation].
 CTA: See the difference → link in bio
 ```
 
-### Template 3: Social Proof
+### 模板3：用户评价/社会证明
 ```
 Hook: ⭐⭐⭐⭐⭐ "Review quote"
 Body: Join [number]+ happy customers.
 CTA: Try it risk-free → link in bio
 ```
 
-### Template 4: Educational
+### 模板4：产品教育类内容
 ```
 Hook: 5 things you didn't know about [product/category]
 Body: [Value-packed tips]
 CTA: Save this post + follow for more
 ```
 
-### Template 5: Limited Time
+### 模板5：限时优惠
 ```
 Hook: 🚨 Only [number] left!
 Body: [Product] at [price] for [timeframe].
 CTA: Don't miss out → link in bio
 ```
 
-## Advanced: Multi-Post Series
+## 高级技巧：多篇帖子系列
 
-For product launches or campaigns, create 3-5 post series:
+对于产品发布或营销活动，可以创建3-5篇系列帖子：
 
-### Series Structure
-1. **Teaser** (2-3 days before)
-   - Build anticipation
-   - "Something big coming"
+### 系列结构
+1. **预热帖**（发布前2-3天）
+   - 激发用户兴趣
+   - “重大消息即将揭晓”
 
-2. **Launch** (Day 1)
-   - Product reveal
-   - Key features
+2. **正式发布帖**（第一天）
+   - 产品介绍
+   - 主要功能展示
 
-3. **Deep Dive** (Day 2-3)
-   - Benefits, use cases
-   - Social proof
+3. **深入解析帖**（第二天-第三天）
+   - 产品优势、使用案例
+   - 用户评价
 
-4. **Urgency** (Day 4-5)
-   - Limited availability
-   - Last chance
+4. **紧急提醒帖**（第四天-第五天）
+   - 限时优惠
+   - 最后机会
 
-See `references/CAMPAIGN_STRATEGY.md` for complete campaign planning.
+详细的活动策划方案请参阅`references/CAMPAIGN_STRATEGYYYY.md`。
 
-## References
+## 参考资料
 
-### Detailed Guides
-- `references/FASHION.md` - Fashion & beauty content
-- `references/TECH.md` - Tech & gadgets content
-- `references/HASHTAG_STRATEGY.md` - Hashtag optimization
-- `references/CAMPAIGN_STRATEGY.md` - Multi-post campaigns
-- `references/ENGAGEMENT_TACTICS.md` - Comment management & growth
+### 详细指南
+- `references/FASHION.md` - 时尚/美容类内容模板
+- `references/TECH.md` - 科技/小工具类内容模板
+- `references/HASHTAG_STRATEGYYYY.md` - 标签优化指南
+- `references/CAMPAIGN_STRATEGYYYY.md` - 多篇帖子营销策略
+- `references/ENGAGEMENT_TACTICS.md` - 互动策略与增长技巧
 
-### Templates
-- `templates/CAROUSEL_TEMPLATE.md` - Swipe-able post structure
-- `templates/STORY_TEMPLATE.md` - Interactive story framework
-- `templates/REEL_TEMPLATE.md` - Video script structure
-- `templates/OUTPUT_TEMPLATE.md` - Final content format
+### 模板文件
+- `templates/CAROUSEL_TEMPLATE.md` - 轮播图模板
+- `templates/STORY TEMPLATE.md` - 故事类内容模板
+- `templates/REEL TEMPLATE.md` - 视频脚本模板
+- `templates/OUTPUT TEMPLATE.md` - 最终内容格式模板
 
-## Tips
+## 提示
 
-- Always match content to brand voice
-- Test different hook styles
-- Analyze competitor posts for inspiration
-- Repurpose content across formats (feed → story → reel)
-- Save high-performing posts as templates
-- Time posts for peak audience hours
-- Engage with comments within 1 hour
-- Use Instagram Insights to optimize
+- 确保内容与品牌风格一致
+- 测试不同的开头方式
+- 分析竞争对手的帖子以获取灵感
+- 将内容灵活应用于不同格式（信息流 → 故事 → 视频）
+- 将表现优秀的帖子保存为模板
+- 根据用户活跃时间发布内容
+- 在1小时内回复用户评论
+- 使用Instagram Insights工具优化内容效果

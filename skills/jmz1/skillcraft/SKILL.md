@@ -1,206 +1,175 @@
 ---
 name: skillcraft
-description: Design and build OpenClaw skills. Use when asked to "make/build/craft a skill", extract ad-hoc functionality into a skill, or package scripts/instructions for reuse. Covers OpenClaw-specific integration (tool calling, memory, message routing, cron, canvas, nodes) and ClawHub publishing.
+description: 设计和构建 OpenClaw 技能。当需要“创建/构建/开发一项技能”时，可以使用这种方法；也可以将临时开发的功能提取出来并封装成可重用的技能；或者将脚本/指令打包以便后续使用。本文档涵盖了与 OpenClaw 相关的集成内容（如工具调用、内存管理、消息路由、定时任务（cron）、用户界面（canvas）以及节点（nodes）的配置，同时还介绍了如何将这些技能发布到 ClawHub 平台。
 metadata: {"openclaw":{"emoji":"🧶"}}
 ---
-# Skillcraft — OpenClaw Skill Designer
+# Skillcraft — OpenClaw 技能设计指南
 
-An opinionated guide for creating OpenClaw skills. Focuses on **OpenClaw-specific integration** — message routing, cron scheduling, memory persistence, channel formatting, frontmatter gating — not generic programming advice.
+本指南专注于如何使用 OpenClaw 创建自定义技能。它主要介绍与 OpenClaw 相关的集成方法，包括消息路由、定时任务调度、数据持久化、通道格式化以及技能的前置内容（frontmatter）设置，而非通用的编程建议。
 
-**Docs:** <https://docs.openclaw.ai/tools/skills> · <https://docs.openclaw.ai/tools/creating-skills>
+**相关文档：** <https://docs.openclaw.ai/tools/skills> · <https://docs.openclaw.ai/tools/creating-skills>
 
-## Model Notes
+## 技能适用模型
 
-This skill is written for frontier-class models (Opus, Sonnet). If you're running a cheaper model and find a stage underspecified, expand it yourself — the design sequence is a scaffold, not a script. Cheaper models should:
+本技能专为高端模型（如 Opus、Sonnet）设计。如果你使用的是较低端的模型，并发现某些部分描述不够详细，可以自行补充相关内容。设计流程只是一个框架，并非固定不变的脚本。对于低端模型，建议：
 
-- Read the pattern files in `{baseDir}/patterns/` more carefully before architecting
-- Spend more time on Stage 2 (capability discovery) — enumerate OpenClaw features explicitly
-- Be more methodical in Stage 4 (spec) — write out the full structure before implementing
-- Consult <https://docs.openclaw.ai> when unsure about any OpenClaw feature
+- 在进行架构设计之前，仔细阅读 `{baseDir}/patterns/` 目录下的模式文件（pattern files）。
+- 花更多时间在“能力发现”（Stage 2）阶段，明确列出 OpenClaw 的所有功能。
+- 在“设计规范”（Stage 4）阶段要更加有条理，先详细规划整个技能的结构。
+- 如果对 OpenClaw 的某个功能不确定，请参考 <https://docs.openclaw.ai> 的官方文档。
 
 ---
 
-## The Design Sequence
+## 设计流程
 
-### Stage 0: Inventory (Extraction Only)
+### 第 0 阶段：现状分析（仅限功能提取）
 
-Skip if building from scratch. Use when packaging existing functionality (scripts, TOOLS.md sections, conversation patterns, repeated instructions) into a skill.
+如果从零开始开发技能，可以跳过此阶段。此阶段用于将现有的功能（如脚本、TOOLS.md 文件、对话模式、重复性指令等）整合到新的技能中。
 
-Gather what exists, where it lives, what works, what's fragile. Then proceed to Stage 1.
+收集现有功能的信息，了解它们的位置、运行状态以及可能存在的问题，然后进入第 1 阶段。
 
-### Stage 1: Problem Understanding
+### 第 1 阶段：问题理解
 
-Work through with the user:
+与用户深入讨论：
+1. **这个技能的具体功能是什么？**（用一句话概括）
+2. **它应该在什么情况下被加载？** 例如：任务执行过程中、定时触发等。
+3. **成功的标准是什么？** 为每个使用场景提供具体的成功结果。
 
-1. **What does this skill do?** (one sentence)
-2. **When should it load?** Example phrases, mid-task triggers, scheduled triggers
-3. **What does success look like?** Concrete outcomes per example
+### 第 2 阶段：能力探索
 
-### Stage 2: Capability Discovery
+#### 通用性考量
 
-#### Generalisability
+尽早明确：**这个技能是仅适用于当前模型，还是可以在任何 OpenClaw 实例上使用？**
 
-Ask early: **Is this for your setup, or should it work on any OpenClaw instance?**
-
-| Choice | Implications |
+| 选择 | 含义 |
 |--------|-------------|
-| **Universal** | Generic paths, no local assumptions, ClawHub-ready |
-| **Particular** | Can reference local skills, tools, workspace config |
+| **通用** | 使用通用的处理路径，不依赖特定环境；适用于 ClawHub |
+| **特定** | 可以引用本模型的技能、工具或工作区配置。 |
 
-#### Skill Synergy (Particular Only)
+#### 技能协同性（仅针对特定模型）
 
-Scan `<available_skills>` from the system prompt for complementary capabilities. Read promising skills to understand composition opportunities.
+查看系统提示中的 `<available_skills>`，寻找可以协同使用的其他技能。了解这些技能的组合方式，以便更好地设计新技能。
 
-#### OpenClaw Features
+#### OpenClaw 功能
 
-Review the docs with the skill's needs in mind. Think compositionally — OpenClaw's primitives combine in powerful ways. Key docs to check:
+根据技能的需求查阅官方文档。注意 OpenClaw 的基本功能组合方式。需要查阅的文档包括：
+- `/concepts/messages`（消息相关）
+- `/automation/cron-jobs`（定时任务相关）
+- `/tools/subagents`（子代理相关）
+- `/tools/browser`（浏览器相关）
+- `/tools/`（Canvas UI 相关）
+- `/nodes/`（节点设备相关）
+- `/tools/slash-commands`（命令行工具相关）
 
-| Need | Doc |
-|------|-----|
-| Messages | `/concepts/messages` |
-| Cron/scheduling | `/automation/cron-jobs` |
-| Subagents | `/tools/subagents` |
-| Browser | `/tools/browser` |
-| Canvas UI | `/tools/` (canvas) |
-| Node devices | `/nodes/` |
-| Slash commands | `/tools/slash-commands` |
+参考 `{baseDir}/patterns/composable-examples.md` 以获取组合这些功能的灵感。
 
-See `{baseDir}/patterns/composable-examples.md` for inspiration on combining these.
+### 第 3 阶段：架构设计
 
-### Stage 3: Architecture
+根据第 1 和第 2 阶段的分析，确定适用的设计模式：
+- 如果技能需要封装某个 CLI 工具，参考 `{baseDir}/patterns/cli-wrapper.md`。
+- 如果需要封装 Web API，参考 `{baseDir}/patterns/api-wrapper.md`。
+- 如果需要监控或通知功能，参考 `{baseDir}/patterns/monitor.md`。
 
-Based on Stages 1–2, identify which patterns apply:
+将所有适用的模板整合到新技能中。大多数技能都会结合多种设计模式。
 
-| If the skill... | Pattern |
-|-----------------|---------|
-| Wraps a CLI tool | `{baseDir}/patterns/cli-wrapper.md` |
-| Wraps a web API | `{baseDir}/patterns/api-wrapper.md` |
-| Monitors and notifies | `{baseDir}/patterns/monitor.md` |
+**脚本与指令的分工：** 脚本负责处理可预测的操作（如 API 调用、数据采集、文件处理）；SKILL.md 中的指令则用于决策（如结果解析、方法选择、输出生成）。判断标准是：一个简单的系统能否可靠地完成这些任务？如果可以，就用脚本实现。
 
-Load all that apply and synthesise. Most skills combine patterns.
+### 第 4 阶段：设计规范
 
-**Script vs. instructions split:** Scripts handle deterministic mechanics (API calls, data gathering, file processing). SKILL.md instructions handle judgment (interpreting results, choosing approaches, composing output). The boundary is: could a less intelligent system do this reliably? If yes → script.
+向用户展示拟定的技能架构：
+1. **技能的结构**（包括文件和目录结构）
+2. **SKILL.md 的整体结构**（各部分及其主要内容）
+3. **组成部分**（如脚本、模块、封装层）
+4. **状态管理**（技能是无状态的、会话状态的，还是需要持久化的数据，以及数据存储的位置）
+5. **与 OpenClaw 的集成方式**（使用了哪些 OpenClaw 功能，以及它们之间的交互方式）
+6. **敏感信息的管理**（如环境变量、密钥链、配置文件的位置——这些信息应记录在设置部分，切勿硬编码）
 
-### Stage 4: Design Specification
+**状态数据存储位置：**
+- `<workspace>/memory/`：面向用户的上下文数据
+- `{baseDir}/state.json`：技能内部的临时状态数据
+- `<workspace>/state/<skill>.json`：技能在工作区中的持久化状态数据
 
-Present proposed architecture for user review:
+如果是在提取现有功能，需要说明数据迁移的细节（哪些数据需要迁移，哪些工作区文件需要更新）。
 
-1. **Skill structure** — files and directories
-2. **SKILL.md outline** — sections and key content
-3. **Components** — scripts, modules, wrappers
-4. **State** — stateless, session-stateful, or persistent (and where it lives)
-5. **OpenClaw integration** — which features, how they interact
-6. **Secrets** — env vars, keychain, config file (document in setup section, never hardcode)
+**验证：** 新技能能否处理第 1 阶段中的所有测试用例？是否存在矛盾或异常情况？根据用户的反馈不断优化设计。
 
-**State locations:**
-- `<workspace>/memory/` — user-facing context
-- `{baseDir}/state.json` — skill-internal state (travels with skill)
-- `<workspace>/state/<skill>.json` — skill state in common workspace area
+### 第 5 阶段：实现
 
-If extracting: include migration notes (what moves, what workspace files need updating).
+**默认实现方式：** 在同一会话中执行所有操作。在实现过程中随时与用户沟通和确认。只有当脚本结构过于复杂时，才需要引入子代理（subagent）。SKILL.md 和集成逻辑应始终保留在主会话中。
+1. 创建技能目录并编写 SKILL.md 的基本框架。
+2. 编写相关脚本（如果有的话），确保它们能够正常运行并经过测试。
+3. 完善 SKILL.md 中的详细使用说明。
+4. 根据第 1 阶段的测试用例进行验证。
 
-**Validate:** Does it handle all Stage 1 examples? Any contradictions? Edge cases?
-
-Iterate until the user is satisfied. This is where design problems surface cheaply.
-
-### Stage 5: Implementation
-
-**Default: same-session.** Work through the spec with user review at each step. Reserve subagent handoff for complex script subcomponents only — SKILL.md and integration logic stay in the main session.
-
-1. Create skill directory + SKILL.md skeleton (frontmatter + sections)
-2. Scripts (if any) — get them working and tested
-3. SKILL.md body — complete instructions
-4. Test against Stage 1 examples
-
-If extracting: update workspace files, clean up old locations, verify standalone operation.
+如果是在提取现有功能，需要更新工作区文件，并确保新技能能够独立运行。
 
 ---
 
-## Crafting the Frontmatter
+## 前置内容（Frontmatter）的编写
 
-The frontmatter determines discoverability and gating. Format follows the [AgentSkills](https://agentskills.io) spec with OpenClaw extensions.
+前置内容决定了技能的可见性和使用限制。其格式遵循 [AgentSkills](https://agentskills.io) 的规范，并进行了 OpenClaw 的扩展。
 
-```yaml
----
-name: my-skill
-description: [description optimised for discovery — see below]
-homepage: https://github.com/user/repo  # optional
-metadata: {"openclaw":{"emoji":"🔧","requires":{"bins":["tool"],"env":["API_KEY"]},"primaryEnv":"API_KEY","install":[...]}}
----
-```
+**重要提示：** `metadata` 必须是一个单行的 JSON 对象（这是解析器的限制）。
 
-**Critical:** `metadata` must be a **single-line** JSON object (parser limitation).
+### 描述部分：** 为技能的发现和调用提供帮助
 
-### Description — Write for Discovery
+描述部分决定了技能是否会被加载。需要包含以下内容：
+- **核心功能**：技能的具体作用
+- **触发关键词**：用户可能使用的搜索词
+- **适用场景**：该技能适用的具体情况
 
-The description determines whether the skill gets loaded. Include:
-- **Core capability** — what it does
-- **Trigger keywords** — terms users would say
-- **Contexts** — situations where it applies
+**测试建议：** 检查用户是否会根据第 1 阶段的示例短语选择这个技能。
 
-Test: would the agent select this skill for each of your Stage 1 example phrases?
+### 前置内容的关键字段
 
-### Frontmatter Keys
-
-| Key | Purpose |
+| 字段 | 作用 |
 |-----|---------|
-| `name` | Skill identifier (required) |
-| `description` | Discovery text (required) |
-| `homepage` | URL for docs/repo |
-| `user-invocable` | `true`/`false` — expose as slash command (default: true) |
-| `disable-model-invocation` | `true`/`false` — exclude from model prompt (default: false) |
-| `command-dispatch` | `tool` — bypass model, dispatch directly to a tool |
-| `command-tool` | Tool name for direct dispatch |
-| `command-arg-mode` | `raw` — forward raw args to tool |
+| `name` | 技能的唯一标识符 |
+| `description` | 用于技能发现的描述文本 |
+| `homepage` | 技能文档或仓库的 URL |
+| `user-invocable` | 是否可以通过命令行调用（默认值为 `true`） |
+| `disable-model-invocation` | 是否从模型提示中排除该技能（默认值为 `false`） |
+| `command-dispatch` | 是否直接调用工具（`true` 表示通过工具执行） |
+| `command-tool` | 直接调用的工具名称 |
+| `command-arg-mode` | 是否将命令参数原样传递给工具 |
 
-### Metadata Gating
+### 元数据的使用
 
-OpenClaw filters skills at load time using `metadata.openclaw`:
+OpenClaw 在加载技能时会根据 `metadata.openclaw` 进行过滤：
+- `always: true`：忽略所有筛选条件，始终加载该技能。
+- `emoji`：是否在 macOS 的技能界面中显示该技能。
+- `os`：平台筛选条件（`darwin`、`linux`、`win32`）。
+- `requires.bins`：所有相关工具必须存在于系统的 PATH 环境变量中。
+- `requires.anyBins`：至少有一个相关工具必须存在。
+- `requires.env`：相关环境变量必须存在或已在配置文件中设置。
+- `requires.config`：配置文件的路径必须有效。
+- `primaryEnv`：该技能的标识符会映射到 `skills.entries.<name>.apiKey`。
+- `install`：安装说明（适用于不同的部署方式，如 brew、node、go、uv、download）。
 
-| Field | Effect |
-|-------|--------|
-| `always: true` | Skip all gates, always load |
-| `emoji` | Display in macOS Skills UI |
-| `os` | Platform filter (`darwin`, `linux`, `win32`) |
-| `requires.bins` | All must exist on PATH |
-| `requires.anyBins` | At least one must exist |
-| `requires.env` | Env var must exist or be in config |
-| `requires.config` | Config paths must be truthy |
-| `primaryEnv` | Maps to `skills.entries.<name>.apiKey` |
-| `install` | Installer specs for auto-setup (brew/node/go/uv/download) |
+**注意：** 在沙箱环境中运行时，`requires.bins` 会检查宿主系统的二进制文件是否存在。
 
-**Sandbox note:** `requires.bins` checks the **host** at load time. If sandboxed, the binary must also exist inside the container.
+### 令牌消耗
 
-### Token Budget
+每个被加载的技能会在系统提示中占用约 97 个字符（包括名称、描述和路径）。描述应简洁明了，避免冗余——每个额外的字符都会增加系统运行的开销。
 
-Each eligible skill adds ~97 chars + name + description + location path to the system prompt. Keep descriptions informative but not bloated — every character costs tokens on every turn.
+### 安装说明
 
-### Install Specs
+---
 
-```json
-"install": [
-  {"id": "brew", "kind": "brew", "formula": "tap/tool", "bins": ["tool"], "label": "Install via brew"},
-  {"id": "npm", "kind": "node", "package": "tool", "bins": ["tool"]},
-  {"id": "uv", "kind": "uv", "package": "tool", "bins": ["tool"]},
-  {"id": "go", "kind": "go", "package": "github.com/user/tool@latest", "bins": ["tool"]},
-  {"id": "dl", "kind": "download", "url": "https://...", "archive": "tar.gz"}
-]
-```
+## 路径规范
 
-## Path Conventions
-
-| Token | Meaning |
+| 术语 | 含义 |
 |-------|---------|
-| `{baseDir}` | This skill's directory (OpenClaw resolves at runtime) |
-| `<workspace>/` | Agent's workspace root |
+| `{baseDir}` | 该技能的目录路径（OpenClaw 在运行时解析该路径） |
+| `<workspace>/` | 代理的工作区根目录 |
 
-- Use `{baseDir}` for skill-internal references (scripts, state, patterns)
-- Use `<workspace>/` for workspace files (TOOLS.md, memory/, etc.)
-- Never hardcode absolute paths — workspaces are portable
-- For subagent scenarios, include path context in the task description (sandbox mounts differ)
+- 使用 `{baseDir}` 来引用技能内部的文件和目录。
+- 使用 `<workspace>/` 来引用工作区的其他文件（如 TOOLS.md、存储文件等）。
+- 切勿硬编码绝对路径——工作区设置是可移植的。
+- 在涉及子代理的场景中，需要在任务描述中说明路径信息（因为沙箱环境下的文件路径可能不同）。
 
-## References
+## 参考资源
 
-- Pattern files: `{baseDir}/patterns/` (cli-wrapper, api-wrapper, monitor, composable-examples)
-- OpenClaw docs: <https://docs.openclaw.ai/tools/skills>
-- ClawHub: <https://clawhub.com>
+- 模式文件：`{baseDir}/patterns/`（包含各种技能的模板文件）
+- OpenClaw 官方文档：<https://docs.openclaw.ai/tools/skills>
+- ClawHub：<https://clawhub.com>

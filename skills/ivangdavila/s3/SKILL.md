@@ -1,77 +1,77 @@
 ---
 name: S3
-description: Work with S3-compatible object storage with proper security, lifecycle policies, and access patterns.
+description: 与兼容 S3 的对象存储服务进行协作，确保具备适当的安全性、生命周期管理策略以及访问控制机制。
 metadata: {"clawdbot":{"emoji":"🪣","os":["linux","darwin","win32"]}}
 ---
 
-## Public Access Control
+## 公共访问控制
 
-- Default deny public access—only open when explicitly needed (static hosting)
-- Bucket policy vs IAM: bucket policy for cross-account/public, IAM for same-account roles
-- Check both bucket-level AND account-level block settings—account can override bucket
-- For web assets, prefer CDN in front of bucket over direct public access
+- 默认情况下，系统会拒绝公共访问；仅在确实需要时才允许访问（例如静态资源托管）。
+- 使用桶策略（bucket policy）或IAM（Identity and Access Management）来控制访问权限：桶策略适用于跨账户或公共访问的场景，而IAM则用于同一账户内的角色管理。
+- 需要同时检查桶级别和账户级别的访问控制设置；账户可以覆盖桶级别的设置。
+- 对于Web资源，建议在桶之前使用CDN（Content Delivery Network）来提供访问服务，而不是直接允许公共访问。
 
-## Presigned URLs
+## 预签名URL（Presigned URLs）
 
-- Set shortest expiration practical—minutes for immediate use, not days
-- URL is a bearer token—anyone with it has access; treat as secret
-- Specify HTTP method in signature—GET for download, PUT for upload
-- Include Content-Type for uploads—mismatch between signature and request causes 403
-- Generate server-side, never expose credentials to client
+- 设置尽可能短的过期时间（例如几分钟，适用于即时使用的情况，而非几天）。
+- 预签名URL实际上是一种“承载令牌”（bearer token）——任何拥有该URL的人都可以访问相关资源，因此应将其视为敏感信息进行严格管理。
+- 在签名中明确指定HTTP方法：使用`GET`进行下载，使用`PUT`进行上传。
+- 上传文件时必须指定`Content-Type`；如果签名和请求中的`Content-Type`不匹配，会导致403错误。
+- 请在服务器端生成预签名URL，切勿将访问凭据暴露给客户端。
 
-## Lifecycle Rules
+## 生命周期管理（Lifecycle Management）
 
-- Transition to cheaper tiers for infrequent access—but check minimum storage duration penalties
-- Auto-delete for temp files, logs, old versions—prevents unbounded storage growth
-- Clean incomplete multipart uploads—accumulate invisibly; set abort rule (7 days typical)
-- Versioned buckets: separate rules for current vs noncurrent versions
+- 对于不经常访问的资源，可以切换到更便宜的存储 tier 以降低成本；但请注意最低存储期限的限制。
+- 自动删除临时文件、日志和旧版本，以防止存储空间无限增长。
+- 清理未完成的多部分上传（multipart uploads）——这些未完成的上传文件会默默地占用存储空间；建议设置自动终止规则（通常为7天）。
+- 对于支持版本控制的桶，需要为当前版本和非当前版本分别设置不同的管理规则。
 
-## Versioning Behavior
+## 版本控制（Versioning）
 
-- Enable before you need it—can't recover deleted objects without versioning
-- "Delete" creates delete marker—object hidden but versions remain; storage still consumed
-- Permanent deletion requires explicit version ID—without it, just adds marker
-- Noncurrent version expiration essential—otherwise old versions accumulate forever
+- 在确实需要之前就启用版本控制功能；没有版本控制的话，删除的对象将无法恢复。
+- 执行“删除”操作时，系统只会添加一个删除标记（delete marker），对象本身仍然存在于存储系统中，但版本信息会被保留；存储空间仍然会被占用。
+- 要永久删除某个对象，必须提供该对象的版本ID；如果没有版本ID，系统只会添加一个删除标记。
+- 非当前版本的文件需要设置过期时间，否则旧版本会无限期地占用存储空间。
 
-## Multipart Uploads
+## 多部分上传（Multipart Uploads）
 
-- Required above 5GB, recommended above 100MB—single PUT has size limits
-- Incomplete uploads invisible in normal listings—consume storage silently
-- Abort incomplete uploads via lifecycle—or manually with `list-multipart-uploads`
-- Parallel part uploads for speed—parts can upload concurrently
+- 当文件大小超过5GB时，必须使用多部分上传；建议文件大小超过100MB时也使用多部分上传方式——单次`PUT`请求有大小限制。
+- 未完成的多部分上传在正常列表中是不可见的，但它们仍然会默默地占用存储空间。
+- 可以通过生命周期管理功能或使用`list-multipart-uploads`命令手动终止未完成的上传。
+- 为了提高上传速度，可以并行上传多个文件部分。
 
-## CORS for Browser Access
+## CORS（Cross-Origin Resource Sharing）用于浏览器访问
 
-- Required for JavaScript direct upload/download—blocked without CORS headers
-- Specify exact origins—avoid wildcard `*` for authenticated requests
-- Expose headers that JavaScript needs to read—Content-Length, ETag, custom headers
-- AllowedMethods: GET for download, PUT for upload, DELETE if needed
+- 对于使用JavaScript直接上传或下载资源的情况，CORS是必需的；如果没有CORS头部，相关操作会被阻止。
+- 必须明确指定允许的请求来源地址；对于经过身份验证的请求，应避免使用通配符`*`。
+- 需要暴露JavaScript能够读取的头部信息，例如`Content-Length`、`ETag`以及自定义头部信息。
+- 允许的HTTP方法包括：`GET`用于下载，`PUT`用于上传，`DELETE`（在某些情况下）。
 
-## Key Naming
+## 密钥命名（Key Naming）
 
-- Use prefixes like directories: `users/123/avatar.jpg`—but S3 is flat, not hierarchical
-- Avoid sequential prefixes for high throughput—`2024-01-01/file1` can hotspot
-- Random prefix or hash for write-heavy buckets—distributes across partitions
-- No leading slash—`/images/file.jpg` creates empty-string prefix
+- 使用类似目录的结构来命名文件键，例如`users/123/avatar.jpg`；不过S3的存储结构是扁平的，没有层次结构。
+- 为了避免高吞吐量下的性能问题，应避免使用连续的命名前缀（例如`2024-01-01/file1`）。
+- 对于写入操作频繁的桶，可以使用随机前缀或哈希值来分配存储空间。
+- 文件键前面不能有斜杠（/），否则会导致生成空字符串前缀。
 
-## Cost Awareness
+## 成本意识（Cost Awareness）
 
-- Request volume matters—many small files more expensive than few large files
-- Egress typically costly—CDN reduces egress by caching at edge
-- Minimum storage duration varies by tier—early deletion still charged full period
-- Lifecycle transitions have per-object cost—millions of tiny files expensive to transition
+- 请求的总量对成本有很大影响：大量小文件比少数大文件更昂贵。
+- 数据输出（egress）通常成本较高；使用CDN可以在边缘节点缓存数据，从而降低输出成本。
+- 不同存储tier的最低存储期限不同；即使提前删除文件，也会按照整个存储周期计费。
+- 生命周期管理操作会按对象计费；因此，处理大量小文件时成本可能会很高。
 
-## Replication
+## 复制（Replication）
 
-- Cross-region for disaster recovery, same-region for compliance copies
-- Versioning required on both source and destination
-- Only new objects replicate—existing objects need manual copy or batch operation
-- Delete markers not replicated by default—explicitly enable if needed
+- 可以跨区域进行复制以实现灾难恢复，也可以在同一区域内复制以满足合规性要求。
+- 无论是源桶还是目标桶，都需要启用版本控制功能。
+- 只有新创建的对象才会被复制；现有对象需要手动复制或通过批量操作进行迁移。
+- 默认情况下，删除标记不会被复制；如果需要，可以手动启用复制功能。
 
-## Provider Differences
+## 提供商之间的差异（Provider Differences）
 
-- AWS S3: full feature set, most tools assume AWS behavior
-- Cloudflare R2: no egress fees, subset of features
-- Backblaze B2: S3-compatible API, different pricing model
-- MinIO: self-hosted, full S3 API compatibility
-- Check presigned URL compatibility—some providers have quirks
+- **AWS S3**：提供完整的版本控制功能，大多数工具都假设S3的行为是标准的。
+- **Cloudflare R2**：没有数据输出费用，但功能较为有限。
+- **Backblaze B2**：提供与S3兼容的API，但定价模式不同。
+- **MinIO**：需要自行部署，但具有完整的S3 API兼容性。
+- 在使用预签名URL时，请检查不同提供商之间的兼容性，因为某些提供商可能存在特殊要求。

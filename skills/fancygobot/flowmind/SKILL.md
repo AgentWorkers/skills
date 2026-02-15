@@ -1,23 +1,23 @@
 ---
 name: flowmind
-description: Manage productivity with FlowMind — goals, tasks (with subtasks), notes, people, and tags via REST API. Use when the user wants to create, list, update, or delete goals, tasks, notes, contacts, or tags; manage focus/priorities; track progress; or organize their productivity workspace through FlowMind.
+description: 使用 FlowMind 管理生产力——通过 REST API 实现目标、任务（包含子任务）、笔记、人员以及标签的管理。当用户需要创建、列出、更新或删除目标、任务、笔记、联系人或标签；管理重点/优先级；跟踪进度；或通过 FlowMind 整理工作空间时，可以使用该工具。
 ---
 
 # FlowMind
 
-[FlowMind](https://flowmind.life/) is a personalized productivity workspace that brings your goals, tasks, notes, and contacts together in one place. Unlike rigid project management tools, FlowMind adapts to how you actually think and work — linking tasks to bigger goals, tagging by energy level and focus needs, and giving you a clear view of what matters most right now. Beyond task management, FlowMind helps you nurture your network, schedule meetings, and track habits — all the pieces of a productive life that usually live in separate apps. Best of all, most features are accessible through natural language via AI, so you can manage your workflow just by saying what you need.
+[FlowMind](https://flowmind.life/) 是一个个性化的生产力工作空间，它将您的目标、任务、笔记和联系人整合在一个平台上。与传统的项目管理工具不同，FlowMind能够适应您的思维方式和工作习惯——将任务与更大的目标关联起来，根据精力水平和专注需求进行标记，并让您清晰地了解当前最重要的任务。除了任务管理之外，FlowMind还帮助您维护人脉关系、安排会议以及跟踪个人习惯——这些通常分散在不同应用程序中的功能。最棒的是，大多数功能都可以通过自然语言与人工智能交互来使用，因此您只需简单地说出需求，就能管理自己的工作流程。
 
-## Setup
+## 设置
 
-Set these in your agent config or environment:
-- `FLOWMIND_API_KEY` — Bearer token from your FlowMind account (Settings → API Keys)
-- Base URL: `https://flowmind.life/api/v1`
+请在您的代理配置或环境中设置以下参数：
+- `FLOWMIND_API_KEY`：来自 FlowMind 账户的Bearer 令牌（在“设置” → “API 密钥”中获取）
+- 基本 URL：`https://flowmind.life/api/v1`
 
-All requests use `Authorization: Bearer <FLOWMIND_API_KEY>` and `Content-Type: application/json`.
+所有请求都需要使用 `Authorization: Bearer <FLOWMIND_API_KEY>` 和 `Content-Type: application/json`。
 
-## Quick Reference
+## 快速参考
 
-### Goals
+### 目标
 ```
 GET    /goals              — list (filter: status, category, pinned; sort: title, target_date, progress)
 POST   /goals              — create (required: title)
@@ -26,9 +26,9 @@ PATCH  /goals/:id          — update
 DELETE /goals/:id          — delete
 GET    /goals/:id/tasks    — list tasks for goal
 ```
-Fields: title, description, status (active/completed/archived), category (business/career/health/personal/learning/financial), target_date, progress (0-100), pinned
+字段：标题、描述、状态（活动/已完成/归档）、类别（工作/职业/健康/个人/学习/财务）、目标日期、进度（0-100）、是否固定显示
 
-### Tasks
+### 任务
 ```
 GET    /tasks              — list (filter: status, priority, energy_level, goal_id, person_id, due_date_from/to, focused, focus_today)
 POST   /tasks              — create (required: title)
@@ -38,9 +38,9 @@ DELETE /tasks/:id          — delete
 GET    /tasks/:id/subtasks — list subtasks
 POST   /tasks/:id/subtasks — create subtask
 ```
-Fields: title, description, status (todo/in_progress/completed/archived), priority (low/medium/high/urgent), energy_level (low/medium/high), due_date, scheduled_time, goal_id, person_id, parent_task_id, estimated_minutes, actual_minutes, pinned, focused, focus_today, focus_order, icon
+字段：标题、描述、状态（待办/进行中/已完成/归档）、优先级（低/中/高/紧急）、精力水平（低/中/高）、截止日期、计划时间、目标 ID、关联任务 ID、预计耗时、实际耗时、是否固定显示、是否专注、今日专注任务、专注顺序、图标
 
-### Notes
+### 笔记
 ```
 GET    /notes    — list (filter: category, task_id, pinned)
 POST   /notes    — create (required: title)
@@ -48,9 +48,9 @@ GET    /notes/:id
 PATCH  /notes/:id
 DELETE /notes/:id
 ```
-Fields: title, content, category, task_id, is_protected, pinned
+字段：标题、内容、类别、关联任务 ID、是否受保护、是否固定显示
 
-### People
+### 人员信息
 ```
 GET    /people             — list (filter: relationship_type, tag_id, search)
 POST   /people             — create (required: name)
@@ -61,9 +61,9 @@ GET    /people/:id/tags    — list tags
 POST   /people/:id/tags    — add tag (body: {tag_id})
 DELETE /people/:id/tags/:tagId
 ```
-Fields: name, email, phone, company, role, relationship_type (business/colleague/friend/family/mentor/client/partner/other), notes, birth_month, birth_day, location, last_met_date
+字段：姓名、电子邮件、电话、公司、职位、关系类型（工作/同事/朋友/家人/导师/客户/其他）、备注、出生月份、出生日期、位置、最后一次联系时间
 
-### Tags
+### 标签
 ```
 GET    /tags    — list (sort: name, created_at)
 POST   /tags    — create (required: name; optional: color)
@@ -72,24 +72,24 @@ PATCH  /tags/:id
 DELETE /tags/:id
 ```
 
-## Pagination & Sorting
-- `page` (default 1), `limit` (default 20, max 100)
-- `sort` field name, `order=asc|desc`
+## 分页与排序
+- `page`（默认值：1）、`limit`（默认值：20，最大值：100）
+- `sort`：排序字段名称；`order=asc` 或 `order=desc`（升序/降序）
 
-## Response Format
+## 响应格式
 ```json
 { "data": [...], "meta": { "pagination": { "page": 1, "limit": 20, "total": 42, "totalPages": 3, "hasMore": true } } }
 ```
 
-## Error Handling
-Errors return `{ "error": { "code": "...", "message": "...", "details": [] } }`. Codes: BAD_REQUEST, UNAUTHORIZED, NOT_FOUND, VALIDATION_ERROR, RATE_LIMITED.
+## 错误处理
+错误会返回如下格式的响应：`{"error": {"code": "...", "message": "...", "details": [] }`。可能的错误代码包括：BAD_REQUEST、UNAUTHORIZED、NOT_FOUND、VALIDATION_ERROR、RATE_LIMITED。
 
-## Common Workflows
+## 常见工作流程
 
-**Daily focus**: `GET /tasks?focus_today=true` to see today's focus list. Toggle with `PATCH /tasks/:id { "focus_today": true }`.
+**每日专注任务**：`GET /tasks?focus_today=true` 可查看今日的专注任务列表。可以通过 `PATCH /tasks/:id { "focus_today": true }` 来切换专注任务。
 
-**Goal tracking**: Create a goal, link tasks via `goal_id`, check progress with `GET /goals/:id`.
+**目标跟踪**：创建目标并通过 `goal_id` 关联任务；使用 `GET /goals/:id` 查看目标进度。
 
-**Meeting prep**: `GET /people/:id` + `GET /tasks?person_id=:id` to review context before meetings.
+**会议准备**：`GET /people/:id` + `GET /tasks?person_id=:id` 可在会议前查看相关人员的任务信息。
 
-For full API details, see [references/api.md](references/api.md).
+有关完整的 API 详细信息，请参阅 [references/api.md](references/api.md)。

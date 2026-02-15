@@ -1,26 +1,26 @@
 ---
 name: encoding-formats
-description: Encode, decode, and convert between data formats. Use when working with Base64, URL encoding, hex, Unicode, JWT tokens, hashing, checksums, or converting between serialization formats like JSON, MessagePack, and protobuf wire format.
+description: 对数据进行编码、解码以及在不同格式之间进行转换。适用于处理 Base64、URL 编码、十六进制数、Unicode、JWT 令牌、哈希值、校验和等场景，同时也支持在 JSON、MessagePack 和 protobuf 线性格式等序列化格式之间进行数据转换。
 metadata: {"clawdbot":{"emoji":"🔢","requires":{"anyBins":["base64","python3","openssl","xxd"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Encoding & Formats
+# 编码与格式
 
-Encode, decode, and inspect data in common formats. Covers Base64, URL encoding, hex, Unicode, JWTs, hashing, checksums, and serialization formats.
+本章节介绍了如何对常见格式的数据进行编码、解码和检查，包括 Base64、URL 编码、十六进制表示、Unicode、JSON Web Tokens (JWT)、哈希算法、校验和以及序列化格式等。
 
-## When to Use
+## 使用场景
 
-- Decoding a Base64 string from an API response or config
-- URL-encoding parameters for HTTP requests
-- Inspecting hex dumps of binary data
-- Decoding JWT tokens to see claims
-- Computing or verifying file checksums
-- Converting between character encodings (UTF-8, Latin-1, etc.)
-- Understanding wire formats (protobuf, MessagePack)
+- 从 API 响应或配置文件中解码 Base64 字符串
+- 为 HTTP 请求参数进行 URL 编码
+- 检查二进制数据的十六进制表示
+- 解码 JWT 以获取其中包含的信息（claims）
+- 计算或验证文件的校验和
+- 在不同的字符编码（如 UTF-8、Latin-1 等）之间进行转换
+- 理解数据传输的格式（如 protobuf、MessagePack）
 
 ## Base64
 
-### Encode and decode
+### 编码与解码
 
 ```bash
 # Encode string
@@ -44,7 +44,7 @@ echo -n "Hello" | base64 | tr '+/' '-_' | tr -d '='
 echo "SGVsbG8" | tr '-_' '+/' | base64 -d
 ```
 
-### In code
+### 代码示例
 
 ```javascript
 // JavaScript (browser + Node.js 16+)
@@ -72,9 +72,9 @@ base64.urlsafe_b64encode(b"Hello").decode()
 base64.urlsafe_b64decode("SGVsbG8=")
 ```
 
-## URL Encoding
+## URL 编码
 
-### Encode and decode
+### 编码与解码
 
 ```bash
 # Python one-liner
@@ -89,7 +89,7 @@ python3 -c "from urllib.parse import unquote; print(unquote('hello%20world%20%26
 curl -G --data-urlencode "q=hello world & more" https://api.example.com/search
 ```
 
-### In code
+### 代码示例
 
 ```javascript
 // JavaScript
@@ -114,9 +114,9 @@ unquote('hello%20world')        # 'hello world'
 urlencode({'q': 'hello world', 'page': 1})  # 'q=hello+world&page=1'
 ```
 
-## Hex
+## 十六进制表示
 
-### View and convert
+### 查看与转换
 
 ```bash
 # File hex dump
@@ -141,7 +141,7 @@ python3 -c "print(bytes.fromhex('48656c6c6f').decode())"  # Hello
 python3 -c "print('Hello'.encode().hex())"                 # 48656c6c6f
 ```
 
-### In code
+### 代码示例
 
 ```javascript
 // JavaScript
@@ -163,7 +163,7 @@ int('ff', 16)                           # 255
 
 ## Unicode
 
-### Inspect characters
+### 检查 Unicode 字符
 
 ```bash
 # Show Unicode code points
@@ -186,7 +186,7 @@ file -bi document.txt
 # text/plain; charset=utf-8
 ```
 
-### Encoding conversion
+### 编码转换
 
 ```bash
 # Convert between encodings
@@ -205,7 +205,7 @@ with open('utf8.txt', 'w', encoding='utf-8') as f:
 "
 ```
 
-### Common Unicode issues
+### 常见的 Unicode 相关问题
 
 ```
 BOM (Byte Order Mark):
@@ -221,9 +221,9 @@ Mojibake (wrong encoding):
   Fix: re-read with correct encoding
 ```
 
-## JWT (JSON Web Tokens)
+## JSON Web Tokens (JWT)
 
-### Decode a JWT
+### 解码 JWT
 
 ```bash
 # JWT has 3 parts separated by dots: header.payload.signature
@@ -247,7 +247,7 @@ jwt_decode() {
 jwt_decode "$TOKEN"
 ```
 
-### In code
+### 代码示例
 
 ```javascript
 // JavaScript (no library needed for decoding)
@@ -279,9 +279,9 @@ def decode_jwt(token):
 header, payload = decode_jwt(token)
 ```
 
-## Hashing
+## 哈希算法
 
-### Common hash functions
+### 常用的哈希函数
 
 ```bash
 # MD5 (not for security — only for checksums/dedup)
@@ -307,7 +307,7 @@ echo -n "Hello" | openssl dgst -sha256
 openssl dgst -sha256 file.bin
 ```
 
-### In code
+### 代码示例
 
 ```javascript
 // Node.js
@@ -332,7 +332,7 @@ with open("file.bin", "rb") as f:
     print(hashlib.sha256(f.read()).hexdigest())
 ```
 
-### Checksums for file integrity
+### 文件完整性校验
 
 ```bash
 # Generate checksum file
@@ -347,9 +347,9 @@ sha256sum file1.bin file2.bin
 cmp file1.bin file2.bin && echo "Identical" || echo "Different"
 ```
 
-## Serialization Formats
+## 序列化格式
 
-### JSON ↔ other formats
+### JSON 与其他格式之间的转换
 
 ```bash
 # JSON to YAML
@@ -376,7 +376,7 @@ jq '.' data.json
 python3 -m json.tool data.json
 ```
 
-### Binary formats (inspection)
+### 二进制数据的检查
 
 ```bash
 # MessagePack → JSON
@@ -397,7 +397,7 @@ print(json.dumps(data, indent=2, default=str))
 " < data.cbor
 ```
 
-## Quick Decode Script
+## 快速解码脚本
 
 ```bash
 #!/bin/bash
@@ -433,12 +433,12 @@ if echo "$INPUT" | grep -qP '^[0-9a-fA-F]+$' && [[ $((${#INPUT} % 2)) -eq 0 ]]; 
 fi
 ```
 
-## Tips
+## 使用技巧
 
-- Base64 increases data size by ~33%. Use it for embedding binary data in text formats (JSON, XML, email), not for compression or encryption.
-- Base64url (RFC 4648) uses `-` and `_` instead of `+` and `/`, and omits padding `=`. JWTs and URL parameters use this variant.
-- SHA-256 is the standard for integrity checks. MD5 is fine for dedup and non-security checksums but broken for cryptographic use.
-- JWTs are signed, not encrypted. Anyone can decode the header and payload. Only the signature verifies authenticity. Never put secrets in JWT claims.
-- When files display garbled text (mojibake), the problem is almost always wrong encoding assumption. Check with `file -bi` and re-read with the correct encoding.
-- `xxd -p` (plain hex) and `xxd -r -p` (reverse) are the fastest way to convert between binary and hex on the command line.
-- URL-encode with `encodeURIComponent` (JavaScript) or `urllib.parse.quote` (Python), not by hand. Manual encoding misses edge cases.
+- Base64 会使得数据大小增加约 33%。它适用于将二进制数据嵌入到文本格式（如 JSON、XML、电子邮件）中，但不适合用于压缩或加密。
+- Base64url（RFC 4648）使用 `-` 和 `_` 代替 `+` 和 `/`，并且不添加 `=` 填充字符。JWT 和 URL 参数通常使用这种编码方式。
+- SHA-256 是用于验证文件完整性的标准哈希算法；MD5 可用于去重或非安全性的校验，但不适合用于加密。
+- JWT 是经过签名的，但并未被加密。任何人都可以解码其头部和负载部分，只有签名部分能验证其真实性。切勿在 JWT 的 claims 中存储敏感信息。
+- 如果文件显示乱码（即“mojibake”现象），几乎总是由于编码错误造成的。可以使用 `file -bi` 命令检查文件编码，并使用正确的编码方式重新读取文件。
+- 在命令行中，`xxd -p`（显示原始十六进制内容）和 `xxd -r -p`（反向转换）是最快速的二进制与十六进制转换工具。
+- URL 编码应使用 JavaScript 的 `encodeURIComponent` 或 Python 的 `urllib.parse.quote` 函数，不要手动进行编码，因为手动编码可能会遗漏一些特殊情况。

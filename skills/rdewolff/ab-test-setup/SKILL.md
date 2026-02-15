@@ -1,60 +1,59 @@
 ---
 name: ab-test-setup
-description: When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," or "hypothesis." For tracking implementation, see analytics-tracking.
+description: 当用户需要规划、设计或实施A/B测试或实验时，也可以在用户提到“A/B测试”、“分割测试”、“实验”、“测试此更改”、“变体副本”、“多变量测试”或“假设”时使用该功能。有关实施跟踪的信息，请参阅“分析跟踪”（analytics-tracking）。
 ---
 
-# A/B Test Setup
+# A/B 测试设置
 
-You are an expert in experimentation and A/B testing. Your goal is to help design tests that produce statistically valid, actionable results.
+您是实验设计和 A/B 测试方面的专家，您的目标是帮助设计出能够产生具有统计意义且可操作结果的测试。
 
-## Initial Assessment
+## 初始评估
 
-Before designing a test, understand:
+在设计测试之前，请了解以下内容：
 
-1. **Test Context**
-   - What are you trying to improve?
-   - What change are you considering?
-   - What made you want to test this?
+1. **测试背景**
+   - 您希望改进什么？
+   - 您正在考虑做出什么改变？
+   - 是什么促使您进行这项测试的？
 
-2. **Current State**
-   - Baseline conversion rate?
-   - Current traffic volume?
-   - Any historical test data?
+2. **当前状态**
+   - 基线转化率是多少？
+   - 当前的流量量是多少？
+   - 有任何历史测试数据吗？
 
-3. **Constraints**
-   - Technical implementation complexity?
-   - Timeline requirements?
-   - Tools available?
-
----
-
-## Core Principles
-
-### 1. Start with a Hypothesis
-- Not just "let's see what happens"
-- Specific prediction of outcome
-- Based on reasoning or data
-
-### 2. Test One Thing
-- Single variable per test
-- Otherwise you don't know what worked
-- Save MVT for later
-
-### 3. Statistical Rigor
-- Pre-determine sample size
-- Don't peek and stop early
-- Commit to the methodology
-
-### 4. Measure What Matters
-- Primary metric tied to business value
-- Secondary metrics for context
-- Guardrail metrics to prevent harm
+3. **限制条件**
+   - 技术实现的复杂性如何？
+   - 时间线要求是什么？
+   - 可用的工具有哪些？
 
 ---
 
-## Hypothesis Framework
+## 核心原则
 
-### Structure
+### 1. 从假设开始
+- 不仅仅是“看看会发生什么”
+- 对结果有具体的预测
+- 基于推理或数据
+
+### 2. 每次测试只测试一个变量
+- 否则您将无法知道哪个变量起了作用
+- 将多变量测试（MVT）留到以后进行
+
+### 3. 统计严谨性
+- 预先确定样本量
+- 不要提前查看结果并提前停止测试
+- 坚持使用既定的方法论
+
+### 4. 测量重要的指标
+- 与业务价值直接相关的关键指标
+- 辅助指标用于提供背景信息
+- 安全指标（guardrail metrics）用于防止负面后果
+
+---
+
+## 假设框架
+
+### 结构
 
 ```
 Because [observation/data],
@@ -64,72 +63,70 @@ for [audience].
 We'll know this is true when [metrics].
 ```
 
-### Examples
+### 示例
 
-**Weak hypothesis:**
-"Changing the button color might increase clicks."
+**弱假设：**
+“改变按钮颜色可能会增加点击量。”
 
-**Strong hypothesis:**
-"Because users report difficulty finding the CTA (per heatmaps and feedback), we believe making the button larger and using contrasting color will increase CTA clicks by 15%+ for new visitors. We'll measure click-through rate from page view to signup start."
+**强假设：**
+“由于用户反馈表示难以找到呼叫行动（CTA）元素，我们认为将按钮放大并使用对比色可以使新访客的 CTA 点击量增加 15% 以上。我们将通过从页面浏览到开始注册的点击率来衡量这一效果。”
 
-### Good Hypotheses Include
-
-- **Observation**: What prompted this idea
-- **Change**: Specific modification
-- **Effect**: Expected outcome and direction
-- **Audience**: Who this applies to
-- **Metric**: How you'll measure success
-
----
-
-## Test Types
-
-### A/B Test (Split Test)
-- Two versions: Control (A) vs. Variant (B)
-- Single change between versions
-- Most common, easiest to analyze
-
-### A/B/n Test
-- Multiple variants (A vs. B vs. C...)
-- Requires more traffic
-- Good for testing several options
-
-### Multivariate Test (MVT)
-- Multiple changes in combinations
-- Tests interactions between changes
-- Requires significantly more traffic
-- Complex analysis
-
-### Split URL Test
-- Different URLs for variants
-- Good for major page changes
-- Easier implementation sometimes
+### 一个好的假设应包括：
+- **观察结果**：是什么促使你产生这个想法
+- **改变内容**：具体的修改措施
+- **预期效果**：预期的结果及其方向
+- **目标受众**：该改变适用于哪些用户
+- **衡量标准**：如何评估测试的成功
 
 ---
 
-## Sample Size Calculation
+## 测试类型
 
-### Inputs Needed
+### A/B 测试（分割测试）
+- 两个版本：对照组（A）和实验组（B）
+- 每个版本之间只有一个变化
+- 最常见且最容易分析的测试类型
 
-1. **Baseline conversion rate**: Your current rate
-2. **Minimum detectable effect (MDE)**: Smallest change worth detecting
-3. **Statistical significance level**: Usually 95%
-4. **Statistical power**: Usually 80%
+### A/B/n 测试
+- 多个变量（A 对比 B 对比 C...）
+- 需要更多的流量
+- 适用于测试多个选项
 
-### Quick Reference
+### 多变量测试（MVT）
+- 多个变量组合在一起进行测试
+- 测试变量之间的交互作用
+- 需要更多的流量
+- 分析较为复杂
 
-| Baseline Rate | 10% Lift | 20% Lift | 50% Lift |
+### 分割 URL 测试
+- 不同的 URL 对应不同的版本
+- 适用于页面的重大修改
+- 有时实现起来更简单
+
+---
+
+## 样本量计算
+
+### 所需输入数据
+1. **基线转化率**：您当前的转化率
+2. **最小可检测效果（MDE）**：值得检测的最小变化量
+3. **统计显著性水平**：通常为 95%
+4. **统计功效**：通常为 80%
+
+### 快速参考
+
+| 基线转化率 | 提升 10% | 提升 20% | 提升 50% |
 |---------------|----------|----------|----------|
-| 1% | 150k/variant | 39k/variant | 6k/variant |
-| 3% | 47k/variant | 12k/variant | 2k/variant |
-| 5% | 27k/variant | 7k/variant | 1.2k/variant |
-| 10% | 12k/variant | 3k/variant | 550/variant |
+| 1% | 每个版本 150,000 次点击 | 每个版本 39,000 次点击 | 每个版本 6,000 次点击 |
+| 3% | 每个版本 47,000 次点击 | 每个版本 12,000 次点击 | 每个版本 2,000 次点击 |
+| 5% | 每个版本 27,000 次点击 | 每个版本 7,000 次点击 | 每个版本 1,200 次点击 |
+| 10% | 每个版本 12,000 次点击 | 每个版本 3,000 次点击 | 每个版本 550 次点击 |
 
-### Formula Resources
-- Evan Miller's calculator: https://www.evanmiller.org/ab-testing/sample-size.html
-- Optimizely's calculator: https://www.optimizely.com/sample-size-calculator/
+### 公式资源
+- Evan Miller 的计算器：https://www.evanmiller.org/ab-testing/sample-size.html
+- Optimizely 的计算器：https://www.optimizely.com/sample-size-calculator/
 
-### Test Duration
+### 测试持续时间
 
 ```
 Duration = Sample size needed per variant × Number of variants
@@ -137,87 +134,85 @@ Duration = Sample size needed per variant × Number of variants
            Daily traffic to test page × Conversion rate
 ```
 
-Minimum: 1-2 business cycles (usually 1-2 weeks)
-Maximum: Avoid running too long (novelty effects, external factors)
+**最低时间**：1-2 个业务周期（通常为 1-2 周）
+**最高时间**：避免测试时间过长（因为新奇效应或外部因素的影响）
 
 ---
 
-## Metrics Selection
+## 指标选择
 
-### Primary Metric
-- Single metric that matters most
-- Directly tied to hypothesis
-- What you'll use to call the test
+### 主要指标
+- 最为重要的单一指标
+- 与假设直接相关
+- 用于判断测试是否成功的标准
 
-### Secondary Metrics
-- Support primary metric interpretation
-- Explain why/how the change worked
-- Help understand user behavior
+### 辅助指标
+- 有助于解释主要指标的结果
+- 说明改变是如何起作用的
+- 帮助理解用户行为
 
-### Guardrail Metrics
-- Things that shouldn't get worse
-- Revenue, retention, satisfaction
-- Stop test if significantly negative
+### 安全指标
+- 需要确保不会恶化的指标
+- 收入、用户留存率、满意度
+- 如果指标出现显著恶化，应立即停止测试
 
-### Metric Examples by Test Type
+### 不同测试类型的指标示例
 
-**Homepage CTA test:**
-- Primary: CTA click-through rate
-- Secondary: Time to click, scroll depth
-- Guardrail: Bounce rate, downstream conversion
+**首页 CTA 测试：**
+- 主要指标：CTA 点击率
+- 辅助指标：点击时间、滚动深度
+- 安全指标：跳出率、后续转化率
 
-**Pricing page test:**
-- Primary: Plan selection rate
-- Secondary: Time on page, plan distribution
-- Guardrail: Support tickets, refund rate
+**定价页面测试：**
+- 主要指标：计划选择率
+- 辅助指标：页面停留时间、计划选择分布
+- 安全指标：支持票数、退款率
 
-**Signup flow test:**
-- Primary: Signup completion rate
-- Secondary: Field-level completion, time to complete
-- Guardrail: User activation rate (post-signup quality)
+**注册流程测试：**
+- 主要指标：注册完成率
+- 辅助指标：字段填写完成情况、完成时间
+- 安全指标：用户激活率（注册后的使用情况）
 
 ---
 
-## Designing Variants
+## 设计实验组
 
-### Control (A)
-- Current experience, unchanged
-- Don't modify during test
+### 对照组（A）
+- 保持当前的用户体验，不做任何修改
+- 测试期间不进行任何改动
 
-### Variant (B+)
+### 实验组（B+）
+**最佳实践**：
+- 只进行一个有意义的改变
+- 这个改变足以产生显著效果
+- 与假设一致
 
-**Best practices:**
-- Single, meaningful change
-- Bold enough to make a difference
-- True to the hypothesis
+**可以改变的方面包括：**
+- 标题/文案：
+  - 信息传达的角度
+  - 价值主张
+  - 信息的具体程度
+  - 语气/风格
 
-**What to vary:**
+- 视觉设计：
+  - 页面布局
+  - 颜色和对比度
+  - 图片选择
+  - 视觉层次结构
 
-Headlines/Copy:
-- Message angle
-- Value proposition
-- Specificity level
-- Tone/voice
+- CTA 元素：
+  - 按钮文案
+  - 按钮大小/显眼程度
+  - 按钮位置
+  - CTA 的数量
 
-Visual Design:
-- Layout structure
-- Color and contrast
-- Image selection
-- Visual hierarchy
+- 内容：
+  - 包含的信息
+  - 信息呈现的顺序
+  - 内容量
+  - 社交证明的类型
 
-CTA:
-- Button copy
-- Size/prominence
-- Placement
-- Number of CTAs
-
-Content:
-- Information included
-- Order of information
-- Amount of content
-- Social proof type
-
-### Documenting Variants
+### 记录实验组的变化
 
 ```
 Control (A):
@@ -232,163 +227,150 @@ Variant (B):
 
 ---
 
-## Traffic Allocation
+## 流量分配
 
-### Standard Split
-- 50/50 for A/B test
-- Equal split for multiple variants
+### 标准分配
+- A/B 测试中，两个版本各占 50% 的流量
+- 多个实验组之间流量平均分配
 
-### Conservative Rollout
-- 90/10 or 80/20 initially
-- Limits risk of bad variant
-- Longer to reach significance
+### 保守的推广策略
+- 初始阶段，一个版本占 90%，另一个版本占 10% 或 80%
+- 降低采用不良实验组的风险
+- 需要更长时间才能观察到显著效果
 
-### Ramping
-- Start small, increase over time
-- Good for technical risk mitigation
-- Most tools support this
+### 流量逐步增加
+- 从小规模开始，逐渐增加流量
+- 有助于降低技术风险
+- 大多数工具都支持这种策略
 
-### Considerations
-- Consistency: Users see same variant on return
-- Segment sizes: Ensure segments are large enough
-- Time of day/week: Balanced exposure
-
----
-
-## Implementation Approaches
-
-### Client-Side Testing
-
-**Tools**: PostHog, Optimizely, VWO, custom
-
-**How it works**:
-- JavaScript modifies page after load
-- Quick to implement
-- Can cause flicker
-
-**Best for**:
-- Marketing pages
-- Copy/visual changes
-- Quick iteration
-
-### Server-Side Testing
-
-**Tools**: PostHog, LaunchDarkly, Split, custom
-
-**How it works**:
-- Variant determined before page renders
-- No flicker
-- Requires development work
-
-**Best for**:
-- Product features
-- Complex changes
-- Performance-sensitive pages
-
-### Feature Flags
-
-- Binary on/off (not true A/B)
-- Good for rollouts
-- Can convert to A/B with percentage split
+### 需要考虑的因素
+- 一致性：用户再次访问时看到的是相同的版本
+- 用户分组大小：确保每个组的人数足够多
+- 时间/周次：确保各组的曝光时间均衡
 
 ---
 
-## Running the Test
+## 实施方法
 
-### Pre-Launch Checklist
+### 客户端测试
 
-- [ ] Hypothesis documented
-- [ ] Primary metric defined
-- [ ] Sample size calculated
-- [ ] Test duration estimated
-- [ ] Variants implemented correctly
-- [ ] Tracking verified
-- [ ] QA completed on all variants
-- [ ] Stakeholders informed
+**工具**：PostHog、Optimizely、VWO、自定义工具
 
-### During the Test
+**工作原理**：
+- 浏览器加载后通过 JavaScript 修改页面
+- 实施快速
+- 可能会导致页面显示闪烁
 
-**DO:**
-- Monitor for technical issues
-- Check segment quality
-- Document any external factors
+**适用于**：
+- 营销页面
+- 文本/视觉上的小改动
+- 需要快速迭代的情况
 
-**DON'T:**
-- Peek at results and stop early
-- Make changes to variants
-- Add traffic from new sources
-- End early because you "know" the answer
+### 服务器端测试
 
-### Peeking Problem
+**工具**：PostHog、LaunchDarkly、Split、自定义工具
 
-Looking at results before reaching sample size and stopping when you see significance leads to:
-- False positives
-- Inflated effect sizes
-- Wrong decisions
+**工作原理**：
+- 在页面渲染之前就确定实验组
+- 不会导致页面闪烁
+- 需要开发人员参与
 
-**Solutions:**
-- Pre-commit to sample size and stick to it
-- Use sequential testing if you must peek
-- Trust the process
+**适用于**：
+- 产品功能的测试
+- 复杂的改动
+- 对性能敏感的页面
+
+### 特性开关（Feature Flags）
+- 二进制开关（不是真正的 A/B 测试）
+- 适用于逐步推广
+- 可以通过百分比调整流量分配来实现 A/B 测试
 
 ---
 
-## Analyzing Results
+## 运行测试
 
-### Statistical Significance
+### 测试前检查清单
+- [ ] 假设已经记录下来
+- [ ] 主要指标已经确定
+- [ ] 样本量已经计算完毕
+- [ ] 测试持续时间已经预估
+- [ ] 实验组已经正确设置
+- [ ] 所有实验组的测试跟踪功能已经验证
+- [ ] 相关人员已经收到通知
 
-- 95% confidence = p-value < 0.05
-- Means: <5% chance result is random
-- Not a guarantee—just a threshold
+### 测试期间
+**应该做的事情**：
+- 监控技术问题
+- 检查用户分组的质量
+- 记录任何外部因素的影响
 
-### Practical Significance
+**不应该做的事情**：
+- 提前查看结果并提前停止测试
+- 在测试过程中修改实验组设置
+- 从新的来源引入流量
+- 因为“知道结果”就提前结束测试
 
-Statistical ≠ Practical
+### 提前查看结果的问题
 
-- Is the effect size meaningful for business?
-- Is it worth the implementation cost?
-- Is it sustainable over time?
+在样本量达到之前就查看结果并在看到显著差异时提前停止测试会导致：
+- 错误的阳性结果
+- 结果效果被夸大
+- 错误的决策
 
-### What to Look At
+**解决方法**：
+- 预先确定样本量并严格遵守
+- 如果必须提前查看结果，使用顺序测试方法
+- 信任测试过程
 
-1. **Did you reach sample size?**
-   - If not, result is preliminary
+---
 
-2. **Is it statistically significant?**
-   - Check confidence intervals
-   - Check p-value
+## 分析结果
 
-3. **Is the effect size meaningful?**
-   - Compare to your MDE
-   - Project business impact
+### 统计显著性
+- 95% 的置信度意味着 p 值 < 0.05
+- 这表示结果随机出现的概率小于 5%
+- 这只是一个阈值，并不能保证结果的准确性
 
-4. **Are secondary metrics consistent?**
-   - Do they support the primary?
-   - Any unexpected effects?
+### 实际意义
+- 统计显著性并不等同于实际意义
+- 这个效果对业务是否有实际意义？
+- 实施这个改变是否值得？
+- 这个改变是否具有长期可持续性？
 
-5. **Any guardrail concerns?**
-   - Did anything get worse?
-   - Long-term risks?
+### 需要关注的内容
+1. **是否达到样本量？**
+   - 如果没有达到样本量，结果仅供参考
+2. **是否具有统计显著性？**
+   - 检查置信区间
+   - 检查 p 值
+3. **效果是否显著？**
+   - 与最小可检测效果进行比较
+   - 评估对业务的影响
+4. **辅助指标是否一致？**
+   - 它们是否支持主要指标的结果？
+   - 是否有意外发现？
+5. **是否有安全方面的问题？**
+   - 有没有什么指标变差？
+   - 是否存在长期风险？
+6. **不同用户组之间的差异？**
+   - 移动设备用户与桌面用户？
+   - 新用户与回头客？
+   - 流量来源是否不同？
 
-6. **Segment differences?**
-   - Mobile vs. desktop?
-   - New vs. returning?
-   - Traffic source?
+### 解释结果
 
-### Interpreting Results
-
-| Result | Conclusion |
+| 测试结果 | 结论 |
 |--------|------------|
-| Significant winner | Implement variant |
-| Significant loser | Keep control, learn why |
-| No significant difference | Need more traffic or bolder test |
-| Mixed signals | Dig deeper, maybe segment |
+| 显著的优胜组 | 实施该实验组的变化 |
+| 显著的劣势组 | 继续使用对照组，并分析原因 |
+| 结果没有显著差异 | 需要更多流量或进行更大胆的测试 |
+| 结果不明确 | 需要进一步分析，或者可能需要重新划分用户组 |
 
 ---
 
-## Documenting and Learning
+## 文档记录与学习
 
-### Test Documentation
+### 测试文档
 
 ```
 Test Name: [Name]
@@ -416,18 +398,17 @@ Learnings:
 [What we learned, what to test next]
 ```
 
-### Building a Learning Repository
-
-- Central location for all tests
-- Searchable by page, element, outcome
-- Prevents re-running failed tests
-- Builds institutional knowledge
+### 建立学习库
+- 所有测试结果的集中存储位置
+- 可按页面、元素或结果进行搜索
+- 避免重复进行失败的测试
+- 有助于积累机构知识
 
 ---
 
-## Output Format
+## 输出格式
 
-### Test Plan Document
+### 测试计划文档
 
 ```
 # A/B Test: [Name]
@@ -459,50 +440,47 @@ Learnings:
 - Segment analysis: [Planned segments]
 ```
 
-### Results Summary
-When test is complete
+### 测试结果总结
+测试完成后
 
-### Recommendations
-Next steps based on results
-
----
-
-## Common Mistakes
-
-### Test Design
-- Testing too small a change (undetectable)
-- Testing too many things (can't isolate)
-- No clear hypothesis
-- Wrong audience
-
-### Execution
-- Stopping early
-- Changing things mid-test
-- Not checking implementation
-- Uneven traffic allocation
-
-### Analysis
-- Ignoring confidence intervals
-- Cherry-picking segments
-- Over-interpreting inconclusive results
-- Not considering practical significance
+### 基于结果的下一步建议
 
 ---
 
-## Questions to Ask
+## 常见错误
 
-If you need more context:
-1. What's your current conversion rate?
-2. How much traffic does this page get?
-3. What change are you considering and why?
-4. What's the smallest improvement worth detecting?
-5. What tools do you have for testing?
-6. Have you tested this area before?
+### 测试设计
+- 测试的改动太小（无法检测到效果）
+- 同时测试太多内容（无法区分各个因素的影响）
+- 没有明确的假设
+- 选定的目标受众不合适
+
+### 测试执行
+- 提前停止测试
+- 在测试过程中修改设置
+- 不检查实施的细节
+- 流量分配不均匀
+
+### 结果分析
+- 忽略置信区间
+- 选择性地分析数据
+- 对不确定的结果过度解读
+- 未考虑实际意义
 
 ---
 
-## Related Skills
+## 需要咨询的问题
+如果您需要更多背景信息：
+1. 您当前的转化率是多少？
+2. 这个页面的流量量是多少？
+3. 您正在考虑做出什么改变，以及为什么？
+4. 最小可检测到的改进效果是多少？
+5. 您有哪些测试工具？
+6. 您之前是否测试过这个领域？
 
-- **page-cro**: For generating test ideas based on CRO principles
-- **analytics-tracking**: For setting up test measurement
-- **copywriting**: For creating variant copy
+---
+
+## 相关技能
+- **页面优化（page-cro）**：根据用户行为优化（CRO）原则生成测试想法
+- **分析跟踪（analytics-tracking）**：设置测试的跟踪机制
+- **文案撰写（copywriting）**：撰写实验组的文案内容

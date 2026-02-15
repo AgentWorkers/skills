@@ -1,82 +1,81 @@
 ---
 name: google-calendar
-description: Manages Google Calendar — creates, updates, and queries events, scheduling, and availability. Use when the user mentions calendar, meetings, appointments, agenda, or Google Calendar.
+description: **管理 Google 日历**：用于创建、更新和查询事件，以及安排日程和查看用户的可用时间。当用户提到日历、会议、预约或 Google 日历时，请使用此功能。
 ---
 
-# Google Calendar
+# Google 日历
 
-## First-Time Setup
+## 首次设置
 
-1. Check if `~/.config/google-calendar-skill/client.json` exists (if exists, move on to step 2 without asking, if not, point them to SETUP.md in the source repo).
-2. Run `bun run auth.ts login` — this opens the browser. The user signs into their Google account.
-3. After login succeeds, the script prints the authenticated email. Show it to the user.
-4. Ask the user what this account is for (e.g. "work", "personal") and optionally its **purpose** (e.g. "Work meetings", "Personal"). Then run:
+1. 检查 `~/.config/google-calendar-skill/client.json` 文件是否存在（如果存在，则直接跳到第 2 步；如果不存在，请引导用户参考源代码仓库中的 SETUP.md 文件）。
+2. 运行 `bun run auth.ts login` — 这将打开浏览器，用户需要登录他们的 Google 账户。
+3. 登录成功后，脚本会显示用户的认证邮箱地址，请将其展示给用户。
+4. 询问用户这个账户的用途（例如：“工作”或“个人”），以及可选的账户**目的**（例如：“工作会议”或“个人用途”）。然后执行以下操作：
    ```bash
    bun run auth.ts label <chosen-name> [purpose]
    ```
-   If they didn't give a purpose, guess based on what they said about the account and update **config.json** (see Account config below): set `accounts.<label>.purpose`.
-5. Ask if they want to connect another Google account. If yes, repeat from step 2.
-6. After each `label` (if purpose wasn't passed), ensure config.json has the account's purpose.
-7. List their calendars so they can see what's available (runs for all accounts; output is labeled):
+   如果用户没有提供账户用途，可以根据他们的描述进行猜测，并更新 `config.json` 文件中的 `accounts.<label>.purpose` 字段。
+5. 询问用户是否要连接另一个 Google 账户。如果是，请重复第 2 步的操作。
+6. 对于每个账户，确保 `config.json` 文件中都记录了该账户的用途。
+7. 列出用户的日历，以便他们查看可用的日历（会为所有账户列出日历信息；输出结果会标明账户名称）：
    ```bash
    bun run calendar.ts calendars
    ```
 
-## Working Directory
+## 工作目录
 
-All commands must run from this skill's `scripts/` directory. Determine the path relative to this SKILL.md file:
+所有命令都必须从 `scripts/` 目录下执行。请确定相对于此 SKILL.md 文件的路径：
 
 ```bash
 cd "$(dirname "<path-to-this-SKILL.md>")/scripts"
 ```
 
-For the default install location:
+## 认证命令
 
-```bash
-cd ~/.openclaw/skills/google-calendar/scripts
-```
+这些命令需要在 `scripts/` 目录下执行。访问令牌会在过期后自动刷新。所有认证命令都支持 `--account <别名>` 参数（默认值为 `default`）。
 
-## Auth Commands
-
-Run from `scripts/`. Tokens auto-refresh on expiry. All auth commands accept `--account <alias>` (defaults to `default`).
-
-| Command                                      | Description                                                                               |
+| 命令                                      | 描述                                                                                   |
 | -------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `bun run auth.ts login`                      | Start OAuth flow (opens browser)                                                          |
-| `bun run auth.ts status`                     | Check authentication status                                                               |
-| `bun run auth.ts accounts`                   | List all authenticated accounts with emails                                               |
-| `bun run auth.ts label <name> [description]` | Rename an account; optional description → config purpose (defaults to renaming `default`) |
-| `bun run auth.ts refresh`                    | Force-refresh the access token                                                            |
-| `bun run auth.ts revoke`                     | Revoke tokens and delete local credentials                                                |
-| `bun run auth.ts token`                      | Print a valid access token (auto-refreshes)                                               |
+| `bun run auth.ts login`                      | 启动 OAuth 登录流程（打开浏览器）                                                          |
+| `bun run auth.ts status`                     | 检查认证状态                                                               |
+| `bun run auth.ts accounts`                   | 列出所有已认证的账户及其邮箱地址                                               |
+| `bun run auth.ts label <名称> [描述]` | 重命名账户；描述可设置为账户的用途（默认情况下会重命名为 `default`）                         |
+| `bun run auth.ts refresh`                    | 强制刷新访问令牌                                                            |
+| `bun run auth.ts revoke`                     | 撤销令牌并删除本地凭证                                                |
+| `bun run auth.ts token`                      | 打印有效的访问令牌（令牌会自动刷新）                                               |
 
-## Calendar Commands
+## 日历命令
 
-Run from `scripts/`.
+这些命令也需要在 `scripts/` 目录下执行。
 
-- **list, get, update, delete, calendars, freebusy** — no `--account`. The script runs for **all** connected accounts and labels output (e.g. `── work ──`, `── personal ──`).
-- **create, quick** — require `--account <alias>` (or default `default`). Use config.json to pick the right account when creating events.
+- `list, get, update, delete, calendars, freebusy` — 这些命令不支持 `--account` 参数。脚本会为所有连接的账户执行操作，并在输出中注明账户名称（例如：`── work ──`, `── personal ──`）。
+- `create, quick` — 这些命令需要 `--account <别名>` 参数（默认值为 `default`）。创建事件时，脚本会从 `config.json` 文件中选择相应的账户。
+- 共享参数：`--calendar <ID>`（默认值为 `primary`）。仅 `create` 和 `quick` 命令支持此参数。
 
-Shared flag: `--calendar <ID>` (defaults to `primary`). For create/quick only: `--account <alias>`.
-
-| Command                                                              | Description                                     |
+| 命令                                                              | 描述                                     |
 | -------------------------------------------------------------------- | ----------------------------------------------- |
-| `bun run calendar.ts list [--from DATE] [--to DATE] [--max N]`       | List upcoming events (all accounts, labeled)    |
-| `bun run calendar.ts get <eventId>`                                  | Get event details (tries all accounts, labeled) |
-| `bun run calendar.ts create --summary "..." [options] --account X`   | Create an event on account X                    |
-| `bun run calendar.ts quick "text" --account X`                       | Quick-add on account X                          |
-| `bun run calendar.ts update <eventId> [--summary ...] [--start ...] [--attendees ...] [--add-attendees ...] [--remove-attendees ...]` | Update an event (tries all accounts) |
-| `bun run calendar.ts delete <eventId>`                               | Delete an event (tries all accounts)            |
-| `bun run calendar.ts calendars`                                      | List all calendars (all accounts, labeled)      |
-| `bun run calendar.ts freebusy --from DATE --to DATE`                 | Free/busy (all accounts, labeled)               |
+| `bun run calendar.ts list [--from 日期] [--to 日期] [--max N]`       | 列出所有账户的即将发生的事件（结果会标明账户名称）    |
+| `bun run calendar.ts get <事件ID>`                                  | 获取事件详情（尝试查询所有账户的信息，结果会标明账户名称） |
+| `bun run calendar.ts create --summary "..." [选项] --account X`   | 在账户 X 上创建事件                    |
+| `bun run calendar.ts quick "文本" --account X`                       | 在账户 X 上快速创建事件                          |
+| `bun run calendar.ts update <事件ID> [--summary ...] [--start ...] [--attendees ...] [--add-attendees ...] [--remove-attendees ...]` | 更新事件信息（尝试查询所有账户的信息） |
+| `bun run calendar.ts delete <事件ID>`                               | 删除事件（尝试查询所有账户的信息）            |
+| `bun run calendar.ts calendars`                                      | 列出所有账户的日历信息（结果会标明账户名称）      |
+| `bun run calendar.ts freebusy --from 日期 --to 日期`                 | 查看账户的日程安排（结果会标明账户名称）               |
 
-### Create flags
+### 创建事件的参数
 
-Use exactly these flag names — the CLI does not accept aliases:
+请使用以下参数名称，CLI 不支持别名：
 
-`--summary` (required, the event title), `--start`, `--end`, `--description`, `--location`, `--attendees` (comma-separated emails), `--all-day`.
+- `--summary`（必填）：事件标题
+- `--start`：事件开始时间
+- `--end`：事件结束时间
+- `--description`：事件描述
+- `--location`：事件地点
+- `--attendees`：参与者邮箱地址（用逗号分隔）
+- `--all-day`：表示事件为全天事件
 
-Dates accept any JS-parsable format. Omitting `--start` defaults to 1h from now; omitting `--end` defaults to 1h duration.
+日期格式需符合 JavaScript 的解析规则。如果省略 `--start`，默认为当前时间后 1 小时；如果省略 `--end`，默认事件持续 1 小时。
 
 ```bash
 # Timed event
@@ -85,16 +84,15 @@ bun run calendar.ts create --summary "Standup" --start "2026-02-07T10:00" --end 
 bun run calendar.ts create --summary "Vacation" --start "2026-03-01" --end "2026-03-05" --all-day
 ```
 
-### Update flags
+### 更新事件的参数
 
-`--summary`, `--start`, `--end`, `--description`, `--location` — same as create (only provided fields are changed).
+`--summary`, `--start`, `--end`, `--description`, `--location` 的参数与创建事件时使用的参数相同。这些参数用于更新事件信息。
 
-Attendee flags:
-
-- `--attendees "a@b.com,c@d.com"` — **replaces** all attendees with this list
-- `--add-attendees "e@f.com,g@h.com"` — **adds** to existing attendees (skips duplicates)
-- `--remove-attendees "a@b.com"` — **removes** specific attendees
-- `--no-notify` — skip sending email invitations (by default, invites are sent when attendees change)
+参与者相关参数：
+- `--attendees "a@b.com,c@d.com"`：用指定列表替换所有参与者
+- `--add-attendees "e@f.com,g@h.com"`：向现有参与者列表中添加新参与者（重复的地址会被忽略）
+- `--remove-attendees "a@b.com"`：从参与者列表中移除指定参与者
+- `--no-notify`：不发送电子邮件邀请（默认情况下，参与者信息变更时会发送邀请）
 
 ```bash
 # Add attendees to an existing event (sends invites)
@@ -105,9 +103,9 @@ bun run calendar.ts update abc123 --attendees "carol@example.com" --no-notify
 bun run calendar.ts update abc123 --remove-attendees "alice@example.com"
 ```
 
-## Multiple Accounts
+## 多个账户
 
-Each `login` saves to the `default` slot. Use `label` to rename it (optionally with a purpose), then login again for the next account:
+每次登录操作都会将账户信息保存到 `default` 标签下。可以使用 `label` 参数为账户重新命名（可选地指定账户用途），然后再次登录以使用其他账户：
 
 ```bash
 bun run auth.ts login
@@ -116,24 +114,24 @@ bun run auth.ts login
 bun run auth.ts label personal "Personal appointments, family"
 ```
 
-Use `--account` only for **create** and **quick**; other calendar commands run for all accounts and label output:
+`--account` 参数仅用于 `create` 和 `quick` 命令；其他日历命令会为所有账户执行操作，并在输出中注明账户名称：
 
 ```bash
 bun run calendar.ts list
 bun run calendar.ts create --summary "Dentist" --account personal --start "2026-02-10T09:00"
 ```
 
-Manage accounts:
+**账户管理**
 
-- `bun run auth.ts accounts` — list all with emails
-- `bun run auth.ts label <new> [description] --account <old>` — rename any account; optional description → config purpose
+- `bun run auth.ts accounts`：列出所有已认证的账户及其邮箱地址
+- `bun run auth.ts label <新名称> [描述] --account <旧名称>`：重命名账户；描述可设置为账户的用途
 
-## Account config (config.json)
+## 账户配置（config.json）
 
-The skill keeps account purposes in **config.json** in the same directory as this SKILL.md (the skill root). The `label` command creates/updates this file when you rename an account; pass an optional description as the second argument to set `purpose`, or add/edit it in config.json afterward.
+该技能将账户的用途信息保存在与 `SKILL.md` 文件位于同一目录下的 `config.json` 文件中。执行 `label` 命令时，系统会创建或更新该文件。在重命名账户时，可以将描述作为第二个参数传递以设置账户的用途；之后也可以直接在 `config.json` 文件中修改该信息。
 
-- **Path:** same folder as this SKILL.md, e.g. `$(dirname "<path-to-this-SKILL.md>")/config.json`
-- **Format:**
+- **文件路径**：与 `SKILL.md` 文件位于同一文件夹，例如：`$(dirname "<path-to-this-SKILL.md>")/config.json`
+- **文件格式**：
   ```json
   {
   	"accounts": {
@@ -143,13 +141,13 @@ The skill keeps account purposes in **config.json** in the same directory as thi
   }
   ```
 
-**When creating events:** read `config.json` first. Use it to choose `--account` (and optionally which calendar) from the user's intent or the account `purpose`. If the user doesn't specify an account and there's only one in config, use that; if multiple, infer from context or ask.
+**创建事件时的注意事项：** 在创建事件之前，请先读取 `config.json` 文件。根据用户的意图或账户的用途来选择 `--account` 参数（以及可选的日历）。如果用户没有指定账户，并且配置文件中只有一个账户，系统会自动使用该账户；如果有多个账户，则需要根据上下文或用户输入来选择账户。
 
-**When listing or changing events:** run the calendar command once (no `--account`). The script runs for all connected accounts and labels output with each account name.
+**列出或修改事件时的注意事项：** 在列出或修改事件信息时，只需执行一次日历命令（不需要指定 `--account` 参数）。脚本会为所有连接的账户执行操作，并在输出中列出每个账户的日历信息。
 
-## Workflow
+## 工作流程
 
-When handling a user's calendar request:
+在处理用户的日历请求时，请按照以下流程操作：
 
 ```
 - [ ] 1. cd into scripts/ directory
@@ -162,6 +160,6 @@ When handling a user's calendar request:
 - [ ] 8. Parse and present results to user
 ```
 
-## Additional Resources
+## 其他资源
 
-- For event fields, query parameters, recurrence rules, and attendee options, see [references/API.md](references/API.md)
+有关事件字段、查询参数、事件重复规则和参与者选项的详细信息，请参阅 [references/API.md](references/API.md)。

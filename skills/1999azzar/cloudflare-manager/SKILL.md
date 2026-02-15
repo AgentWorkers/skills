@@ -1,45 +1,44 @@
 ---
 name: cloudflare-manager
-description: Manage Cloudflare DNS records, Tunnels (cloudflared), and Zero Trust policies. Use when user wants to "point domain", "expose localhost", or "block IP".
+description: 管理 Cloudflare 的 DNS 记录、隧道（cloudflared）以及零信任（Zero Trust）策略。适用于用户需要“指向某个域名”、“暴露本地主机（localhost）”或“阻止特定 IP 地址”的场景。
 ---
 
 # Cloudflare Manager
 
-## Configuration
-Requires the following environment variables in `.env`:
+## 配置
+需要以下环境变量（位于 `.env` 文件中）：
 
-| Variable | Description | Required? |
+| 变量 | 说明 | 是否必需？ |
 | :--- | :--- | :--- |
-| `CLOUDFLARE_API_TOKEN` | API Token with Zone.DNS permissions | Yes |
-| `CLOUDFLARE_ZONE_ID` | The Zone ID to manage | Yes |
+| `CLOUDFLARE_API_TOKEN` | 具有 Zone.DNS 权限的 API 令牌 | 是 |
+| `CLOUDFLARE_ZONE_ID` | 需要管理的区域 ID | 是 |
 
-Legacy support: `CF_API_TOKEN` and `CF_ZONE_ID` are also accepted.
+**旧版本支持**：也支持使用 `CF_API_TOKEN` 和 `CF_ZONE_ID`。
 
-## Installation
-This skill requires Python dependencies (`requests`, `PyYAML`).
-Run the install script to set up a local virtual environment:
+## 安装
+本功能需要依赖 Python 库（`requests`、`PyYAML`）。运行安装脚本以创建本地虚拟环境：
 ```bash
 ./scripts/install.sh
 ```
 
-## Usage
-- **Role**: Cloud Engineer.
-- **Trigger**: "Create DNS record", "Setup tunnel", "Expose port 3000".
-- **Output**: JSON status or CLI command results.
+## 使用方法
+- **适用角色**：云工程师（Cloud Engineer）。
+- **触发条件**：执行“创建 DNS 记录”（Create DNS record）、“设置隧道”（Setup tunnel）或“开放端口 3000”（Expose port 3000）等操作。
+- **输出结果**：以 JSON 格式返回状态信息或 CLI 命令的执行结果。
 
-### Commands
+### 命令
 #### `scripts/cf_manager.py`
-The main CLI wrapper. Use the venv python to run it.
+这是主要的 CLI 工具。请使用 `venv python` 来运行该脚本。
 
-**Syntax:**
+**语法**：
 ```bash
 .venv/bin/python3 scripts/cf_manager.py [OPTIONS] <COMMAND>
 ```
 
-**Options:**
-- `--dry-run`: Simulate actions without applying changes (DNS or Ingress).
+**选项**：
+- `--dry-run`：模拟操作，不实际应用任何更改（不修改 DNS 或 Ingress 设置）。
 
-**Examples:**
+**示例**：
 ```bash
 # List DNS Records
 .venv/bin/python3 scripts/cf_manager.py list-dns
@@ -51,18 +50,18 @@ The main CLI wrapper. Use the venv python to run it.
 .venv/bin/python3 scripts/cf_manager.py update-ingress --hostname app.example.com --service http://localhost:3000
 ```
 
-## Security & Permissions
-- **API Token Scope**: Follow the *Principle of Least Privilege*. Create a token with **Zone:DNS:Edit** and **Zone:Settings:Edit** permissions only for the specific zone. Avoid using Global API Keys.
-- **Privileged Operations**:
-  - The `update-ingress` command modifies `/etc/cloudflared/config.yml` and restarts the service.
-  - **Sudo Access**: Requires sudo to run `tee` and `systemctl`.
-  - **Least Privilege**: Do NOT grant full sudo. Use the example in `references/sudoers.example` to restrict sudo access to only the necessary commands.
-  - **Safeguard**: Use `--dry-run` to preview the config changes without writing to disk or restarting services.
+## 安全性与权限
+- **API 令牌权限**：遵循“最小权限原则”（Principle of Least Privilege）。仅为特定区域创建具有 `Zone:DNS:Edit` 和 `Zone:Settings:Edit` 权限的 API 令牌。避免使用全局 API 密钥。
+- **高级操作**：
+  - `update-ingress` 命令会修改 `/etc/cloudflared/config.yml` 文件并重启服务。
+  - **sudo 权限**：运行 `tee` 和 `systemctl` 命令需要 `sudo` 权限。
+- **权限限制**：切勿授予完整的 `sudo` 权限。请参考 `references/sudoers.example` 中的示例，将 `sudo` 权限限制在仅必要的命令上。
+- **安全措施**：使用 `--dry-run` 选项预览配置更改，避免将更改写入磁盘或重启服务。
 
-## Capabilities
-1.  **DNS Management**: Add/Edit/Delete A/CNAME records.
-2.  **Tunnels**: `cloudflared` config management (requires sudo).
-3.  **Security**: Access Policies, WAF rules.
+## 功能概述
+1. **DNS 管理**：添加、编辑和删除 A/CNAME 记录。
+2. **隧道管理**：配置 Cloudflare 隧道（需要 `sudo` 权限）。
+3. **安全设置**：管理访问策略和 WAF 规则。
 
-## Reference Materials
-- [Tunnel Guide](references/tunnel-guide.md)
+## 参考资料
+- [隧道使用指南](references/tunnel-guide.md)

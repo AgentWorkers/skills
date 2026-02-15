@@ -1,29 +1,29 @@
-# Prompt Injection Protection Skill
+# 提示注入防护技能
 
-## Description
-A comprehensive skill to protect against prompt injection attacks when processing external content such as websites, emails, documents, and other untrusted input sources.
+## 描述
+这是一项全面的技能，用于在处理来自网站、电子邮件、文档以及其他不可信输入源的外部内容时，防止提示注入攻击。
 
-## Purpose
-This skill provides methods to safely sanitize, validate, and process external content to prevent malicious prompt injection attempts that could manipulate the AI's behavior or cause it to execute unintended actions.
+## 目的
+该技能提供了安全清理、验证和处理外部内容的方法，以防止恶意提示注入尝试，这些尝试可能会操纵人工智能的行为或导致其执行非预期的操作。
 
-## Features
-- Content sanitization and validation
-- Prompt injection detection and filtering
-- Secure processing of web content
-- Safe extraction of information from untrusted sources
-- Protection against jailbreak attempts
+## 特点
+- 内容清理与验证
+- 提示注入检测与过滤
+- 安全处理网页内容
+- 从不可信来源安全提取信息
+- 防止越狱尝试
 
-## Security Measures
-- Input sanitization
-- Output encoding
-- Context isolation
-- Validation of external content
-- Prevention of instruction hijacking
+## 安全措施
+- 输入清理
+- 输出编码
+- 上下文隔离
+- 外部内容验证
+- 防止指令劫持
 
-## Usage
-The skill provides functions to:
-- Sanitize external content before processing
-- Validate content against injection patterns
-- Safely extract information from untrusted sources
-- Process web content securely
-- Filter potentially harmful instructions
+## 使用方法
+该技能提供了以下功能：
+- 在处理之前清理外部内容
+- 验证内容是否存在注入模式
+- 从不可信来源安全提取信息
+- 安全处理网页内容
+- 过滤潜在的有害指令

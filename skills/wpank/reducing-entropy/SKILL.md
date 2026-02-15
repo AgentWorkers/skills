@@ -2,85 +2,82 @@
 name: reducing-entropy
 model: reasoning
 category: testing
-description: Minimize total codebase size through ruthless simplification. Measure success by final code amount, not effort. Bias toward deletion.
+description: 通过彻底的简化来最小化代码库的总大小。衡量成功的标准是最终的代码量，而非开发过程中所付出的努力。应倾向于删除不必要的代码。
 version: 1.0
 keywords: [simplification, deletion, refactoring, complexity, entropy, YAGNI, less code, minimalism]
 activation: manual  # Only activate when explicitly requested
 ---
 
-# Reducing Entropy
+# 降低代码复杂性（Reducing Code Complexity）
 
-> More code begets more code. Entropy accumulates. This skill biases toward the smallest possible codebase.
-
----
-
-## WHAT This Skill Does
-
-Provides a mindset and checklist for:
-- Evaluating whether changes reduce or increase total code
-- Finding opportunities to delete code
-- Resisting premature abstraction
-- Choosing the simplest solution that solves the problem
-
-**Core question:** "What does the codebase look like *after*?"
-
-## WHEN To Use
-
-Activate this skill when:
-- **Refactoring code** and considering options
-- **Adding a new feature** and choosing implementation approach
-- **Reviewing PRs** to challenge unnecessary complexity
-- **Paying down tech debt** and prioritizing what to simplify
-- **User explicitly asks** for code reduction or simplification
+> 代码量越多，就越容易产生更多的代码。这会导致代码复杂性的不断增加。这种思维方式倾向于追求最小的代码库规模。
 
 ---
 
-## The Goal
+## 本技能的作用
 
-The goal is **less total code in the final codebase** — not less code to write right now.
+本技能提供了一种思维模式和检查清单，用于：
+- 评估代码变更是否减少了总代码量；
+- 寻找删除代码的机会；
+- 抵制过早进行抽象化设计；
+- 选择最简单的解决方案来解决问题。
 
-| Scenario | Verdict |
+**核心问题：** “代码变更后的代码库会是什么样子？”
+
+## 适用场景
+
+在以下情况下使用本技能：
+- **重构代码** 并评估不同方案时；
+- **添加新功能** 并选择实现方式时；
+- **审查代码提交（PR）** 以消除不必要的复杂性时；
+- **减少技术债务** 并确定优先简化哪些部分时；
+- **用户明确要求** 减少或简化代码时。
+
+---
+
+## 目标
+
+最终的目标是**代码库中的总代码量减少**——而不是当前需要编写的代码量减少。
+
+| 情景 | 结果 |
 |----------|---------|
-| Writing 50 lines that delete 200 lines | **Net win** ✓ |
-| Keeping 14 functions to avoid writing 2 | **Net loss** ✗ |
-| "Better organized" but more code | **More entropy** ✗ |
-| "More flexible" but more code | **More entropy** ✗ |
-| "Cleaner separation" but more code | **More entropy** ✗ |
+| 编写50行代码但能删除200行代码 | **净收益** ✓ |
+| 保留14个函数以避免编写2个函数 | **净损失** ✗ |
+| “代码组织得更清晰”但代码量增加了 | **代码复杂性增加** ✗ |
+| “代码更灵活”但代码量增加了 | **代码复杂性增加** ✗ |
+| “代码分离得更合理”但代码量增加了 | **代码复杂性增加** ✗ |
 
-**Measure the end state, not the effort.**
-
----
-
-## Before You Begin
-
-**Load a mindset from `references/`:**
-
-1. List files in `references/`
-2. Read frontmatter descriptions
-3. Pick at least one that applies
-4. State which you loaded and its core principle
-
-Available mindsets:
-- `simplicity-vs-easy.md` — Simple is objective; easy is subjective. Choose simple.
-- `design-is-taking-apart.md` — Good design separates concerns, removes dependencies.
-- `data-over-abstractions.md` — 100 functions on one structure beats 10 on 10.
-- `expensive-to-add-later.md` — When YAGNI doesn't apply (PAGNI exceptions).
+**关注最终状态，而非开发过程中的工作量。**
 
 ---
 
-## Three Questions
+## 开始前的准备
 
-### 1. What's the smallest codebase that solves this?
+**从 `references/` 文件中选择一种思维模式：**
+1. 列出 `references/` 文件中的所有文档；
+2. 阅读每个文档的前言说明；
+3. 选择至少一种适合当前情况的思维模式，并明确其核心原则。
 
-Not "what's the smallest change" — what's the smallest *result*.
+可选的思维模式包括：
+- `simplicity-vs-easy.md`：简单是客观的；容易是主观的。选择简单。
+- `design-is-taking-apart.md`：良好的设计能够分离不同功能，消除依赖关系。
+- `data-over-abstractions.md`：使用一个通用结构来处理多种数据类型，比使用多个自定义类型更好。
+- `expensive-to-add-later.md`：在某些情况下，YAGNI（You Ain’t Gonna Need It Now）原则不适用（存在 PAGNI，即“你以后可能会需要它”的情况）。
 
-- Could this be 2 functions instead of 14?
-- Could this be 0 functions (delete the feature)?
-- What would we delete if we did this?
+---
 
-### 2. Does the proposed change result in less total code?
+## 三个关键问题
 
-Count lines before and after. If after > before, challenge it.
+### 1. 能够实现这一目标的最小代码库是什么样的？
+
+这里问的是**最终的结果**，而不是**最小的变更步骤**：
+- 这个功能能否用2个函数而不是14个函数来实现？
+- 如果这样做，是否可以完全删除这个功能？
+- 如果这样做，我们可以删除哪些代码？
+
+### 2. 提出的变更是否会导致总代码量减少？
+
+在变更前后分别统计代码行数。如果变更后的代码量大于变更前的代码量，就需要重新考虑这个变更。
 
 ```
 Before: 847 lines across 12 files
@@ -88,104 +85,101 @@ After:  623 lines across 8 files
 Verdict: ✓ Net reduction of 224 lines
 ```
 
-### 3. What can we delete?
+### 3. 我们可以删除哪些代码？
 
-Every change is an opportunity to delete. Ask:
-
-- What does this make obsolete?
-- What was only needed because of what we're replacing?
-- What's the maximum we could remove?
+每一次代码变更都是一次删除代码的机会。需要思考：
+- 这些代码因什么而变得过时？
+- 它们只是因为我们要替换某些代码而存在的吗？
+- 我们最多可以删除多少代码？
 
 ---
 
-## Red Flags
+## 需注意的陷阱
 
-| Phrase | What It Hides | Challenge |
+| 说法 | 隐藏的问题 | 应对策略 |
 |--------|---------------|-----------|
-| "Keep what exists" | Status quo bias | "Total code is the metric, not churn" |
-| "This adds flexibility" | Speculative generality | "Flexibility for what? Is it needed now?" |
-| "Better separation of concerns" | More files = more code | "Separation isn't free. Worth how many lines?" |
-| "Type safety" | Sometimes bloats code | "Worth how many lines? Could runtime checks work?" |
-| "Easier to understand" | More things ≠ easier | "14 things are not easier than 2 things" |
-| "This is the pattern" | Pattern worship | "Does the pattern fit, or are we forcing it?" |
-| "We might need this later" | YAGNI violation | "Delete it. Git remembers." |
+| “保留现有的代码” | 保守倾向 | “衡量标准应该是总代码量，而不是代码的频繁变动” |
+| “这样做能提高灵活性” | 过度的通用性 | “这种灵活性有什么实际用途？现在真的需要吗？” |
+| “功能分离得更合理” | 文件数量增加导致代码量增加 | “分离功能并不意味着代码更简单。这样做是否值得？” |
+| “类型安全性” | 有时会导致代码冗余 | “这种冗余是否值得保留？是否可以通过运行时检查来避免？” |
+| “代码更易于理解” | 代码量增加并不一定意味着更容易理解 | “14个功能并不一定比2个功能更容易理解” |
+| “这是最佳实践” | 过度依赖某种设计模式 | “这个模式真的适合当前需求吗？还是我们在强行使用它？” |
+| “以后可能会用到这个代码” | 违反 YAGNI 原则 | “直接删除它。Git 会记录变更历史” |
 
 ---
 
-## Deletion Checklist
+## 删除代码的 checklist
 
-Before completing any refactor, ask:
-
-- [ ] Did I count lines before and after?
-- [ ] Did I delete everything this change makes obsolete?
-- [ ] Did I remove any now-unnecessary abstractions?
-- [ ] Did I consolidate files that are too small to stand alone?
-- [ ] Did I delete tests for deleted code?
-- [ ] Did I update imports to remove dead dependencies?
-
----
-
-## When This Doesn't Apply
-
-- The codebase is already minimal for what it does
-- You're in a framework with strong conventions (don't fight it)
-- Regulatory/compliance requirements mandate certain structures
-- The "simpler" version would be genuinely unmaintainable (rare)
+在完成任何重构之前，请确认以下事项：
+- [ ] 我是否统计了变更前后的代码行数？
+- [ ] 我是否删除了所有因变更而变得过时的代码？
+- [ ] 我是否移除了不必要的抽象层？
+- [ ] 我是否合并了那些单独存在却功能单一的文件？
+- [ ] 我是否删除了被删除代码对应的测试代码？
+- [ ] 我是否更新了导入语句，以移除不再使用的依赖项？
 
 ---
 
-## NEVER Do
+## 适用限制
 
-1. **NEVER keep code "in case we need it"** — delete it; git has history
-2. **NEVER add abstractions for fewer than 3 use cases** — wait for the pattern to emerge
-3. **NEVER create new files for single functions** — colocate with usage
-4. **NEVER preserve code just because someone wrote it** — evaluate on merit
-5. **NEVER accept "more organized" as justification for more code** — organization should reduce, not increase
-6. **NEVER skip the line count** — measure before and after; feelings lie
-7. **NEVER add "flexibility" without immediate need** — YAGNI applies
-8. **NEVER refactor without deleting something** — if nothing becomes obsolete, question the value
+- 如果代码库已经达到了实现功能的最低复杂度；
+- 如果你使用的是具有严格规范的框架（不要违背这些规范）；
+- 如果法规或合规性要求规定了特定的代码结构；
+- 如果“更简单”的版本实际上难以维护（这种情况很少见）。
 
 ---
 
-## Quick Wins
+## 绝对不要做的事情
 
-| Pattern | Action |
+- **永远不要为了“以后可能用得上”而保留代码**——直接删除它；Git 会记录所有的变更历史。
+- **永远不要为少于3种使用场景而添加抽象层**——等待合适的模式出现。
+- **永远不要为单个功能创建新的文件**——将相关代码放在使用它的地方。
+- **永远不要仅仅因为某人编写了某段代码就保留它**——根据代码的实际价值来决定是否保留。
+- **永远不要以“代码组织得更清晰”为理由来增加代码量**——代码组织应该有助于减少复杂性，而不是增加它。
+- **永远不要忽略代码行数的统计**——在变更前后都必须进行统计；直觉往往不可靠。
+- **永远不要在没有实际需求的情况下增加代码的灵活性**——YAGNI 原则仍然适用。
+- **永远不要在不删除任何代码的情况下进行重构**——如果没有任何代码变得过时，就需要重新评估这个变更的必要性。
+
+---
+
+## 快速优化方法
+
+| 常见问题 | 解决方案 |
 |---------|--------|
-| Wrapper that just forwards calls | Inline the wrapped code |
-| Config file with 2 settings | Move to environment variables |
-| Utils file with 1 function | Move function to where it's used |
-| Interface with 1 implementation | Delete the interface |
-| Abstract class with 1 subclass | Merge into concrete class |
-| Module that re-exports everything | Delete; import from source |
-| Comments explaining obvious code | Delete comments; code is clear |
+| 使用封装层只是为了转发调用 | 直接将封装层中的代码内联到调用处 |
+| 配置文件中只有2个设置 | 将这些设置移到环境变量中 |
+| 工具函数只有1个功能 | 将这个函数移到实际使用它的地方 |
+- 接口只有一个实现方式 | 直接删除这个接口 |
+- 抽象类只有一个子类 | 将这个抽象类合并到具体的实现类中 |
+- 模块中重新导出了所有内容 | 直接删除这个模块；从源代码中导入所需内容 |
+- 用于解释显而易见代码的注释 | 删除这些注释；代码本身已经足够清晰 |
 
 ---
 
-## The Grug Perspective
+## “Grug”视角
 
-> "complexity very very bad. say again: complexity very bad. you think you not, but you are."
+> “复杂性非常糟糕。再说一遍：复杂性非常糟糕。你可能不这么认为，但事实确实如此。”
 
-Grug brain developer knows:
-- Complexity demon hides in abstraction
-- More code = more bugs = more complexity
-- Best code is no code
-- Second best code is simple code
-- If you can't understand it in your head, it's too complex
+持有这种思维方式的开发者明白：
+- 复杂性的根源在于抽象层的滥用；
+- 代码量越多，漏洞就越多，复杂性也就越高；
+- 最好的代码是“没有代码”的状态；
+- 第二好的代码是简单的代码；
+- 如果你无法在脑海中理解某段代码，那它就太复杂了。
 
 ---
 
-## References
+## 参考资料
 
-Philosophical foundations for simplicity thinking:
-
-| Reference | Core Principle |
+关于简单性思维的哲学基础：
+| 文档 | 核心原则 |
 |-----------|----------------|
-| [simplicity-vs-easy.md](references/simplicity-vs-easy.md) | Simple (objective) vs easy (subjective) — choose simple |
-| [design-is-taking-apart.md](references/design-is-taking-apart.md) | Good design separates; composition beats construction |
-| [data-over-abstractions.md](references/data-over-abstractions.md) | Generic data + many functions beats many custom types |
-| [expensive-to-add-later.md](references/expensive-to-add-later.md) | PAGNI exceptions — what you probably are gonna need |
+| [simplicity-vs-easy.md](references/simplicity-vs-easy.md) | 简单（客观标准）与容易（主观感受）——选择简单 |
+| [design-is-taking-apart.md](references/design-is-taking-apart.md) | 良好的设计能够分离不同功能，组合优于继承 |
+| [data-over-abstractions.md](references/data-over-abstractions.md) | 使用通用数据结构和多个函数比使用多个自定义类型更好 |
+| [expensive-to-add-later.md](references/expensive-to-add-later.md) | 在某些情况下，YAGNI 原则不适用（存在 PAGNI，即“你以后可能会需要这个功能”） |
 
-External resources:
+外部资源：
 - [Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy/) — Rich Hickey
 - [The Grug Brained Developer](https://grugbrain.dev/)
 - [Out of the Tar Pit](https://curtclifton.net/papers/MosesleyMarks06a.pdf) — Moseley & Marks

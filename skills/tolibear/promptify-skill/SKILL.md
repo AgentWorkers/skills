@@ -1,67 +1,67 @@
 ---
 name: promptify
-description: Optimize prompts for clarity and effectiveness. Use when user says "improve this prompt", "optimize my prompt", "make this clearer", or provides vague/unstructured prompts. Intelligently routes to sub-agents for codebase research, clarifying questions, or web search as needed.
+description: 优化提示语，以提高其清晰度和有效性。当用户表示“改进这个提示语”、“优化我的提示语”或“让这个提示语更清晰”时，或者当用户提供的提示语模糊或结构不清晰时，应使用此功能。系统会根据需要智能地将请求路由到相应的子代理，以便进行代码库研究、问题澄清或网络搜索。
 metadata: {"moltbot":{"emoji":"✨"}}
 ---
 
-# Prompt Optimizer
+# 提示优化器
 
-Transform prompts into clear, effective ones. Model-agnostic.
+将用户输入的提示转换为清晰、有效的指令。该工具不依赖于任何特定的模型或技术框架。
 
-## Modifiers (parse from ARGUMENTS)
+## 修改器（从参数中解析）
 
-- **+ask** → Force clarifying questions
-- **+deep** → Force codebase exploration
-- **+web** → Force web search
+- **+ask**：强制要求用户提出更明确的问题
+- **+deep**：强制要求对代码库进行深入探索
+- **+web**：强制要求进行网络搜索
 
-No modifiers? Auto-detect what's needed.
+如果没有指定修改器？系统会自动判断需要执行哪些操作。
 
-## Auto-Detection Triggers
+## 自动检测触发条件
 
-| Trigger | Signals |
+| 触发条件 | 对应的信号 |
 |---------|---------|
-| **codebase-researcher** | "this project", "our API", specific files/functions, "integrate", "extend", "refactor" |
-| **clarifier** | Ambiguous ("make it better"), multiple interpretations, missing constraints, vague pronouns |
-| **web-researcher** | "best practices", "latest", external APIs/libraries, framework patterns, year references |
+| **codebase-researcher** | “这个项目”、“我们的API”、“特定的文件/函数”、“集成”、“扩展”、“重构” |
+| **clarifier** | 语句含义模糊、存在多种解释方式、缺少约束条件、代词使用不明确 |
+| **web-researcher** | “最佳实践”、“最新信息”、“外部API/库”、“框架模式”、“年份相关的内容” |
 
-## Agent Dispatch
+## 代理任务分配
 
-When agents needed:
-1. Announce which and why
-2. Run in parallel via Task tool (agents/ directory)
-3. Synthesize findings
-4. Optimize with gathered context
+当需要使用代理任务时：
+1. 公布需要使用的代理任务及其原因
+2. 通过“Task”工具（位于“agents/”目录下）并行执行这些任务
+3. 合并各代理任务的搜索结果
+4. 根据收集到的信息对提示进行优化
 
 ---
 
-## Core Contract (every prompt needs all four)
+## 核心规范（每个提示都必须包含以下四个要素）
 
-| Element | If Missing |
-|---------|------------|
-| **Role** | Add persona with expertise |
-| **Task** | Make action specific |
-| **Constraints** | Infer from context |
-| **Output** | Specify format/structure |
+| 元素        | 如果缺少该元素应如何处理 |
+|------------|-------------------------|
+| **角色**      | 为任务分配具有相应专业知识的“代理” |
+| **任务**      | 明确指定需要完成的具体操作 |
+| **约束条件**   | 从上下文中推断出必要的限制条件 |
+| **输出格式**   | 规定输出的格式和结构 |
 
-## Process
+## 处理流程
 
-1. **If image**: Analyze, incorporate context
-2. **Detect type**: coding/writing/analysis/creative/data
-3. **Convert output→process**: "Write X" → "Analyze → Plan → Implement → Validate"
-4. **Strip fluff**: "please", "I want you to", filler, apologies
-5. **Apply contract**: Verify all 4 elements
-6. **Add structure**: XML tags for complex prompts
+1. **如果输入是图片**：分析图片内容并整合相关上下文信息
+2. **判断任务类型**：判断任务属于编码、写作、分析、创意创作还是数据处理类别
+3. **转换任务指令**：将模糊的指令转换为具体的操作步骤（例如：“Write X” → “分析 → 规划 → 实施 → 验证”）
+4. **去除冗余信息**：删除不必要的词汇（如“please”、“I want you to”等填充语）
+5. **验证规范**：确保任务符合上述四个核心规范
+6. **添加结构化格式**：对于复杂的提示，使用XML标签进行格式化
 
-## Type Focus
+## 任务类型分类
 
-- **Coding**: Specs, edge cases, framework
-- **Writing**: Tone, audience, length
-- **Analysis**: Criteria, depth
-- **Creative**: Constraints, novelty
-- **Data**: I/O format, edge cases
+- **编码**：需求规格、边界情况、所使用的编程框架
+- **写作**：写作风格、目标受众、文章长度
+- **分析**：分析标准、分析深度
+- **创意创作**：创作要求、内容的创新性
+- **数据处理**：输入/输出格式、数据处理的边界情况
 
-## Output
+## 输出结果
 
-1. Optimized prompt in code block
-2. `echo 'PROMPT' | pbcopy`
-3. 2-3 sentence explanation
+- 优化后的提示（以代码块的形式呈现）
+- 命令示例：`echo 'PROMPT' | pbcopy`
+- 2-3句话的说明性文本，解释优化过程或结果

@@ -1,6 +1,6 @@
 ---
 name: meetup-planner
-description: An intelligent event finder that searches for meetups and events based on your interests, tracks them, and reminds you before they happen
+description: 这是一个智能的事件查找工具，它可以根据您的兴趣搜索聚会和活动，跟踪这些活动的进度，并在活动发生前提醒您。
 license: MIT
 metadata:
   version: 1.0.0
@@ -18,190 +18,187 @@ metadata:
     cron: daily-searches
 ---
 
-# Meetup Planner
+# 活动规划助手
 
-An intelligent assistant that helps you discover, track, and never miss events that match your interests.
+这是一个智能助手，能帮助您发现、跟踪并不错过任何符合您兴趣的活动。
 
-## One-time Setup
+## 一次性设置
 
-**IMPORTANT**: After installing this skill, the agent will automatically run the bootstrap setup process from `BOOTSTRAP.md`.
+**重要提示**：安装此技能后，代理会自动运行 `BOOTSTRAP.md` 中的引导设置流程。
 
-The bootstrap process:
-1. Checks for web search and crawling capabilities
-2. Collects your event preferences
-3. Sets up automated daily searches (optional)
-4. Creates workspace structure
+引导设置流程包括：
+1. 检查网页搜索和爬取功能
+2. 收集您的活动偏好设置
+3. （可选）设置每日自动搜索
+4. 创建工作区结构
 
-If you don't have search/crawling capabilities, I'll ask you to provide the necessary tools.
+如果您没有搜索/爬取功能，系统会请求您提供相应的工具。
 
-## What This Skill Does
+## 该技能的功能
 
-After setup:
-1. **Daily Search**: Automatically searches for events matching your profile every morning (if enabled)
-2. **Event Discovery**: Uses available search and scraping tools to find events across the web
-3. **Event Tracking**: Saves and presents new events for your review
-4. **Smart Reminders**: Sets up notifications 24 hours and 2 hours before confirmed events
-5. **Preference Management**: Updates your interests and search criteria anytime
+设置完成后：
+1. **每日搜索**：每天早上自动搜索符合您偏好的活动（如启用）
+2. **活动发现**：使用可用的搜索和爬取工具在网络上查找活动
+3. **活动跟踪**：保存新发现的活动供您查看
+4. **智能提醒**：在活动开始前24小时和2小时发送提醒
+5. **偏好设置管理**：随时更新您的兴趣和搜索条件
 
-## First Time Setup
+## 首次设置
 
-**When you first run this skill**, I will guide you through setup by following `BOOTSTRAP.md`.
+**首次使用此技能时**，系统会按照 `BOOTSTRAP.md` 的步骤引导您完成设置。
 
-The setup process is **interactive and friendly**:
+设置过程是**交互式且友好的**：
+1. ✅ 检查网页搜索和爬取功能
+2. 🎯 通过友好对话了解您的活动偏好
+3. ⏰ （可选）设置每日自动搜索
+4. 📁 创建具有适当权限的工作区结构
 
-1. ✅ Check for web search and crawling capabilities
-2. 🎯 Learn your event preferences through a friendly conversation
-3. ⏰ Set up automated daily searches (optional)
-4. 📁 Create workspace structure with proper permissions
+**设置耗时2-3分钟**。如果您没有安装搜索/爬取工具，系统会请求您提供它们。
 
-**Setup takes 2-3 minutes**. If you don't have search/crawling tools installed, I'll ask you to provide them.
+## 使用方法
 
-## How to Use
-
-### Initial Run
+### 初始运行
 ```
 Run the meetup-planner skill to begin setup
 ```
 
-### Daily Operations
-Once set up, the skill will:
-- Search for events every morning automatically
-- Save findings to `events.json`
-- Present new events for your review
-- Track events you're interested in
+### 日常操作
+设置完成后，该技能将：
+- 每天早上自动搜索活动
+- 将搜索结果保存到 `events.json` 文件中
+- 展示新的活动供您查看
+- 跟踪您感兴趣的活动
 
-### When You Find an Event You Like
-Tell me "I'm interested in [event name]" and I will:
-- Mark it as confirmed
-- Send you the registration link
-- Set up reminders (24h and 2h before the event)
+### 发现感兴趣的活动
+告诉系统：“我对 [活动名称] 感兴趣”，系统将：
+- 将该活动标记为已确认
+- 发送注册链接给您
+- 设置24小时和2小时前的提醒
 
-### Commands
-- `update preferences` - Modify your event preferences
-- `show upcoming` - Display all tracked events
-- `remove event [name]` - Stop tracking an event
-- `pause search` - Temporarily stop daily searches
-- `resume search` - Resume daily searches
+### 命令
+- `update preferences` - 修改您的活动偏好设置
+- `show upcoming` - 显示所有被跟踪的活动
+- `remove event [名称]` - 停止跟踪某个活动
+- `pause search` - 暂时停止每日搜索
+- `resume search` - 恢复每日搜索
 
-## Data Storage
+## 数据存储
 
-The skill maintains:
-- `user-preferences.json` - Your event preferences
-- `events.json` - All discovered and tracked events
-- `event-reminders.json` - Scheduled reminders
+该技能维护以下文件：
+- `user-preferences.json` - 您的活动偏好设置
+- `events.json` - 所有发现和跟踪的活动
+- `event-reminders.json` - 预定的提醒信息
 
-## Technical Details
+## 技术细节
 
-**Capabilities Required:**
-- Web search capability (any search tool or skill)
-- Web crawling/scraping capability (any scraping tool or skill)
+**所需功能**：
+- 网页搜索功能（任何搜索工具或技能）
+- 网页爬取/抓取功能（任何抓取工具或技能）
 
-**Scheduling:**
-- Uses system cron jobs (or equivalent) for daily searches
-- Uses scheduled tasks for event reminders
+**调度**：
+- 使用系统cron作业（或等效工具）进行每日搜索
+- 使用定时任务发送活动提醒
 
-## Privacy Note
+## 隐私声明
 
-All data is stored locally on your machine. Your preferences and tracked events are never sent anywhere except to search for new events via the configured APIs.
+所有数据仅存储在您的本地机器上。您的偏好设置和跟踪的活动信息不会被发送到任何外部地方，除非是通过配置的API进行新活动的搜索。
 
-## Data Transmission & External API Usage
+## 数据传输与外部API使用
 
-This skill makes external network requests to search and scrape event information. The exact services depend on what search/crawling tools you have installed.
+该技能会通过外部网络请求来搜索和抓取活动信息。具体使用的服务取决于您安装的搜索/爬取工具。
 
-**What is sent:**
-- Search query strings constructed from your preferences (e.g., "AI meetup San Francisco February 2026")
-- URLs of event pages to scrape
-- Your IP address (automatically sent by your network stack)
-- Any authentication credentials required by the search/crawling tools you use
+**传输的数据**：
+- 根据您的偏好设置的搜索查询字符串（例如：“AI meetup San Francisco February 2026”）
+- 需要抓取的活动页面的URL
+- 您的IP地址（由网络系统自动发送）
+- 您使用的搜索/爬取工具所需的任何认证凭据
 
-**What is NOT sent:**
-- Your complete preference profile
-- Event registration status or history
-- Personal notes or modifications
-- Other tracked events
+**不传输的数据**：
+- 您的完整偏好设置
+- 活动注册状态或历史记录
+- 个人备注或修改内容
+- 其他被跟踪的活动信息
 
-**Purpose:** To discover public events matching your interests and extract structured event details.
-
-### Data Minimization Practices
-- Only essential data is transmitted to accomplish the task
-- All credentials are transmitted securely over HTTPS only
-- No telemetry, analytics, or usage tracking is performed
-- No data is sent to any services beyond your configured search/crawling tools
+**数据最小化原则**：
+- 仅传输完成任务所需的最必要数据
+- 所有凭据均通过HTTPS安全传输
+- 不进行任何遥测、分析或使用情况跟踪
+- 数据不会被发送到除您配置的搜索/爬取工具之外的任何服务
 
 ---
 
-## Agent Instructions
+## 代理使用说明
 
-**IMPORTANT: After installing this skill, ALWAYS run the bootstrap setup from BOOTSTRAP.md before first use.**
+**重要提示**：安装此技能后，请在使用前务必运行 `BOOTSTRAP.md` 中的引导设置流程。
 
-When this skill is invoked:
+当调用此技能时：
 
-### Phase 0: Check Bootstrap Status (ALWAYS RUN THIS FIRST)
+### 第0阶段：检查引导设置状态（务必先运行此步骤）
 
-**Before doing anything else**, check if bootstrap is complete:
+**在继续其他操作之前**，请检查引导设置是否已完成：
 
 ```bash
 # Check if bootstrap config exists
 cat ~/.openclaw/workspace/meetup-planner/config.json 2>/dev/null
 ```
 
-**If file doesn't exist OR `bootstrapComplete: false`:**
-- Tell human: "👋 Welcome to Meetup Planner! I need to set up a few things first. This will only take a couple of minutes."
-- **Follow BOOTSTRAP.md step-by-step** (all steps in order)
-- Do NOT proceed to Phase 1/2/3 until bootstrap is complete
+**如果文件不存在或 `bootstrapComplete: false`：**
+- 通知用户：“👋 欢迎使用活动规划助手！我需要先进行一些设置，这只需要几分钟时间。”
+- **按照 `BOOTSTRAP.md` 中的步骤逐步操作**
+- 在引导设置完成之前，请勿进入第1/2/3阶段
 
-**If file exists AND `bootstrapComplete: true`:**
-- Bootstrap is done, proceed to the appropriate phase based on what human asked for:
-  - "search now" → Phase 2 (Daily Search Routine)
-  - "show upcoming" → Phase 3 (Event Confirmation & Tracking)
-  - "update preferences" → Re-run the preference collection from BOOTSTRAP.md
-  - No specific request → Ask: "What would you like to do? I can search for events, show upcoming events, or update your preferences."
+**如果文件存在且 `bootstrapComplete: true`：**
+- 根据用户的请求进入相应的阶段：
+  - “立即搜索” → 进入第2阶段（每日搜索）
+  - “显示即将举行的活动” → 进入第3阶段（活动确认与跟踪）
+  - “更新偏好设置” → 重新运行偏好设置收集流程
+  - 无特定请求 → 询问：“您想做什么？我可以搜索活动、显示即将举行的活动或更新您的偏好设置。”
 
-### Phase 1: Setup
+### 第1阶段：设置
 
-**All setup is handled by BOOTSTRAP.md. See Phase 0 above.**
+**所有设置均由 `BOOTSTRAP.md` 处理。详见上述第0阶段。**
 
-### Phase 2: Daily Search Routine
+### 第2阶段：每日搜索
 
-1. **Load preferences:**
-   - Read `~/.openclaw/workspace/meetup-planner/user-preferences.json`
-   - Parse the human's interests, location, preferred event types, etc.
+1. **加载偏好设置**：
+   - 读取 `~/.openclaw/workspace/meetup-planner/user-preferences.json`
+   - 解析用户的兴趣、位置、偏好的活动类型等
 
-2. **Search for events:**
-   - Use your available **search tool or skill** to search for events matching preferences
-   - Search queries should be constructed like:
-     - "{topic} meetup {location} {current_month}"
-     - "{topic} conference {location} upcoming"
-     - "{topic} workshop {location}"
-   - Run multiple searches covering all their topics of interest
+2. **搜索活动**：
+   - 使用您可用的搜索工具搜索符合偏好设置的活动
+   - 搜索查询示例：
+     - “[主题] 活动 {地点} {当前月份}”
+     - “[主题] 会议 {地点} 即将举行”
+     - “[主题] 研讨会 {地点}”
+   - 进行多次搜索，涵盖用户的所有兴趣主题
 
-3. **Extract event details:**
-   - For each promising search result, use your available **scraping tool or skill** to scrape the event page
-   - Extract: event name, date, time, location, description, registration link, cost
-   - Look for: Eventbrite, Meetup.com, Luma, conference sites, etc.
+3. **提取活动详情**：
+   - 对于每个符合条件的搜索结果，使用您可用的抓取工具提取活动页面的信息
+   - 提取：活动名称、日期、时间、地点、描述、注册链接
+   - 可参考的网站包括：Eventbrite、Meetup.com、Luma等
 
-4. **Filter and save:**
-   - Load existing events from `~/.openclaw/workspace/meetup-planner/events.json`
-   - Filter out duplicates and events that don't match criteria
-   - Add new events to the file
-   - Mark each event with: `{id, name, date, time, location, url, description, cost, added_date, status: "new"}`
+4. **过滤和保存**：
+   - 从 `~/.openclaw/workspace/meetup-planner/events.json` 中加载现有活动
+   - 过滤掉重复项和不符合条件的活动
+   - 将新活动添加到文件中
+   - 为每个活动添加以下信息：`{id, name, date, time, location, url, description, cost, added_date, status: "new"`
 
-5. **Present to human:**
-   - Format new events nicely with all key details
-   - Ask: "I found X new events that match your interests. Would you like to hear about them?"
-   - Share event details one by one or as a list
-   - For each event, ask if they're interested
+5. **展示给用户**：
+   - 以美观的格式展示新活动详情
+   - 询问：“我找到了X个符合您兴趣的新活动。您想了解它们吗？”
+   - 可以逐一展示活动详情，或以列表形式展示
+   - 对每个活动询问用户是否感兴趣
 
-### Phase 3: Event Confirmation & Tracking
+### 第3阶段：活动确认与跟踪
 
-1. **When human expresses interest:**
-   - Update event status to "interested" in `events.json`
-   - Provide the registration link: "Here's the link to register: {url}"
-   - Ask: "Let me know when you've registered!"
+1. **当用户表示感兴趣时**：
+   - 在 `events.json` 中将活动状态更新为“感兴趣”
+   - 提供注册链接：“这是注册链接：{url}”
+   - 询问：“您注册后请告诉我！”
 
-2. **When human confirms registration:**
-   - Update event status to "registered" in `events.json`
-   - Schedule reminders in `~/.openclaw/workspace/meetup-planner/reminders.json`:
+2. **当用户确认注册时**：
+   - 在 `events.json` 中将活动状态更新为“已注册”
+   - 在 `~/.openclaw/workspace/meetup-planner/reminders.json` 中设置提醒：
      ```json
      {
        "event_id": "abc123",
@@ -212,48 +209,46 @@ cat ~/.openclaw/workspace/meetup-planner/config.json 2>/dev/null
        ]
      }
      ```
-   - Confirm: "Great! I'll remind you 24 hours before and 2 hours before the event."
+   - 确认：“太好了！我会在活动开始前24小时和2小时提醒您。”
 
-### Phase 4: Reminder System
+### 第4阶段：提醒系统
 
-1. **Check for due reminders** (run this check every hour):
-   - Load `~/.openclaw/workspace/meetup-planner/reminders.json`
-   - Check current time against event time
-   - If within 24-25 hours before event and 24h reminder not sent:
-     - Notify human: "Reminder: {event_name} is tomorrow at {time}! Location: {location}"
-     - Mark 24h reminder as sent
-   - If within 2-3 hours before event and 2h reminder not sent:
-     - Notify human: "Heads up! {event_name} starts in 2 hours at {time}. Time to get ready!"
-     - Mark 2h reminder as sent
+1. **检查提醒是否到期**（每小时检查一次）：
+   - 加载 `~/.openclaw/workspace/meetup-planner/reminders.json`
+   - 检查当前时间与活动时间
+   - 如果距离活动还有24-25小时且24小时提醒未发送：
+     - 通知用户：“提醒：[活动名称] 明天在{时间}举行！地点：{地点}”
+     - 标记24小时提醒已发送
+   - 如果距离活动还有2-3小时且2小时提醒未发送：
+     - 通知用户：“注意！[活动名称] 将在2小时后开始！请做好准备！”
+     - 标记2小时提醒已发送
 
-2. **Post-event cleanup:**
-   - After event date passes, move event to "past" status
-   - Optionally ask: "How was {event_name}? Would you like me to look for similar events?"
+2. **活动结束后**：
+   - 将活动状态更新为“已结束”
+   - 可选询问：“[活动名称] 体验如何？您想让我帮忙寻找类似的活动吗？”
 
-### Phase 5: Ongoing Commands
+### 第5阶段：持续操作
 
-Support these commands from your human:
+支持以下用户命令：
+- **“update preferences”** / **“change preferences”**：重新运行偏好设置收集流程
+- **“show upcoming”**：显示所有状态为“感兴趣”或“已注册”的活动
+- **“show new events”**：显示状态为“新”的未查看活动
+- **“remove event [名称]**：停止跟踪某个活动
+- **“pause search”**：暂停每日自动搜索（更新配置）
+- **“resume search”**：恢复每日自动搜索
+- **“search now”**：立即执行搜索
+- **“list past events”**：显示已发生的活动
 
-- **"update preferences"** / **"change preferences"**: Re-run the preference collection interview
-- **"show upcoming"**: Display all events with status "interested" or "registered"
-- **"show new events"**: Display events with status "new" that haven't been reviewed
-- **"remove event [name]"**: Remove an event from tracking
-- **"pause search"**: Stop daily automated searches (update config)
-- **"resume search"**: Resume daily automated searches
-- **"search now"**: Run the search routine immediately
-- **"list past events"**: Show events that have already occurred
+## 错误处理
 
-## Error Handling
+- **如果技能安装失败**：提供手动操作指南和GitHub链接
+- **如果API密钥无效**：请求用户验证并提供新的密钥
+- **如果搜索没有结果**：尝试使用更宽泛的搜索词或建议其他主题
+- **如果cron设置失败**：在用户请求时提供手动搜索选项
+- **如果活动抓取失败**：仅显示搜索结果链接
+- **始终保护数据**：未经备份，不得覆盖 `events.json` 或 `preferences.json`
 
-- **If skills fail to install:** Provide manual instructions and the GitHub links
-- **If API keys are invalid:** Ask human to verify and provide new keys
-- **If searches return no results:** Try broader search terms or suggest different topics
-- **If cron setup fails:** Offer to search manually when user requests
-- **If event scraping fails:** Fall back to showing just the search result link
-- **Always preserve data:** Never overwrite `events.json` or `preferences.json` without backing up
-
-## File Structure
-
+## 文件结构
 ```
 ~/.openclaw/workspace/meetup-planner/
 ├── user-preferences.json    # Human's event preferences

@@ -1,33 +1,33 @@
 ---
 name: aluvia-brave-search
-description: Web search and content extraction via Brave Search API, with unblockable access using Aluvia mobile proxy. Use for searching documentation, facts, or any web content. No browser required; bypasses blocks and CAPTCHAs.
+description: 通过Brave Search API进行网络搜索和内容提取，利用Aluvia移动代理实现无限制的访问。适用于搜索文档、事实或任何网页内容。无需使用浏览器；可绕过网络限制和验证码。
 ---
 
 # Aluvia Brave Search
 
-Headless web search and content extraction using Brave Search, with unblockable access via Aluvia mobile proxy. No browser required; bypasses blocks and CAPTCHAs.
+这是一个基于Brave Search的无头网页搜索工具，支持通过Aluvia移动代理进行内容提取。无需使用浏览器，能够绕过网络限制和验证码。
 
-## Setup
+## 设置
 
-Run once before first use:
+首次使用前请运行以下命令：
 
 ```bash
 cd ~/Projects/agent-scripts/skills/aluvia-brave-search
 npm ci
 ```
 
-# Set your API keys (required for all features):
+## 设置您的API密钥（所有功能均需设置）：
 
 export ALUVIA_API_KEY=your_aluvia_key
 export BRAVE_API_KEY=your_brave_key
 
-# Optional: reuse a specific Aluvia connection
+## 可选：重用现有的Aluvia连接
 
 export ALUVIA_CONNECTION_ID=your_connection_id
 
-Both `ALUVIA_API_KEY` and `BRAVE_API_KEY` are required. If `ALUVIA_CONNECTION_ID` is set, it will be used to reuse an existing Aluvia connection for proxying requests.
+`ALUVIA_API_KEY`和`BRAVE_API_KEY`都是必需的。如果设置了`ALUVIA_CONNECTION_ID`，则可以重用现有的Aluvia连接来代理请求。
 
-## Search
+## 搜索
 
 ```bash
 ./search.js "query"                    # Basic search (5 results)
@@ -36,15 +36,15 @@ Both `ALUVIA_API_KEY` and `BRAVE_API_KEY` are required. If `ALUVIA_CONNECTION_ID
 ./search.js "query" -n 3 --content     # Combined
 ```
 
-## Extract Page Content
+## 提取页面内容
 
 ```bash
 ./content.js https://example.com/article
 ```
 
-Fetches a URL and extracts readable content as markdown.
+该功能可以获取指定URL的页面内容，并将其以Markdown格式提取出来。
 
-## Output Format
+## 输出格式
 
 ```
 --- Result 1 ---
@@ -58,9 +58,9 @@ Content: (if --content flag used)
 ...
 ```
 
-## When to Use
+## 适用场景
 
-- Searching for documentation or API references
-- Looking up facts or current information
-- Fetching content from specific URLs
-- Any task requiring web search without interactive browsing
+- 搜索文档或API参考资料
+- 查找事实或实时信息
+- 从特定URL获取内容
+- 所有不需要交互式浏览的网页搜索任务

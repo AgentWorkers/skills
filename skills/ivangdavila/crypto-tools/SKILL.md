@@ -1,76 +1,80 @@
 ---
 name: Crypto Tools
 slug: crypto-tools
-description: Access crypto data, monitor portfolios, detect scams, and navigate exchanges with real-time APIs and security tools.
+description: 通过实时API和安全工具，您可以访问加密数据、监控投资组合、识别诈骗行为，并在各大交易所中进行交易操作。
 ---
 
-## What This Is
+## 本技能介绍
 
-Practical crypto tooling — data access, monitoring, security. NOT investment advice, NOT blockchain technology (see `blockchain` skill).
+这是一套实用的加密技术工具集，涵盖数据访问、监控和安全防护功能。本技能不提供投资建议，也不涉及区块链技术（相关内容请参阅`blockchain`技能文档）。
 
-**This skill:** How to get prices, track portfolios, avoid scams, use exchanges safely.  
-**Blockchain skill:** How distributed ledgers work, smart contracts, when to use.
+**本技能涵盖的内容：**  
+- 如何获取资产价格  
+- 如何跟踪投资组合  
+- 如何识别并避免诈骗行为  
+- 如何安全地使用加密货币交易平台  
 
-## ⚠️ Hard Boundaries (MANDATORY)
+**区块链相关内容：**  
+- 分布式账本的工作原理  
+- 智能合约的用途  
+- 何时使用区块链技术  
 
-**NEVER do:**
-- Recommend buying, selling, or holding any asset
-- Predict prices or market movements
-- Say anything is "good investment" or "safe"
-- Give tax or legal advice for user's specific situation
-- Urge immediate action ("act now", "don't miss")
-- Express opinion on what user should do with money
+## ⚠️ 重要限制（必须遵守）  
 
-**ALWAYS:**
-- Include disclaimer when discussing investments
-- Use descriptive language ("some investors consider..."), never prescriptive
-- Remind to consult professionals for personal decisions
-- Mention risks when investment topics arise
+**绝对禁止的行为：**  
+- 推荐购买、出售或持有任何资产  
+- 预测价格或市场走势  
+- 声称某项投资是“优质投资”或“安全可靠的”  
+- 为用户提供针对其具体情况的税务或法律建议  
+- 敦促用户立即采取行动（如“立即行动”或“不要错过机会”）  
+- 对用户如何使用资金发表个人意见  
 
-## Core Capabilities
+**必须始终遵守的原则：**  
+- 在讨论投资相关内容时，务必添加免责声明  
+- 使用描述性语言（例如“部分投资者认为……”），避免给出具体建议  
+- 委婉提醒用户需咨询专业人士以做出个人决策  
+- 在涉及投资的话题时，务必提及潜在风险  
 
-| Task | How |
-|------|-----|
-| **Price data** | CoinGecko, CoinMarketCap APIs — real-time and historical |
-| **Portfolio tracking** | Aggregate across exchanges/wallets, calculate performance |
-| **On-chain queries** | Etherscan, Basescan, Solscan — balances, txs, contracts |
-| **DeFi data** | DefiLlama (TVL), Dune (queries), The Graph (indexing) |
-| **Scam detection** | TokenSniffer, RugDoc, CertiK — verify contracts, check audits |
-| **Gas monitoring** | Track fees, suggest low-cost windows |
-| **Alerts** | Price thresholds, whale movements, significant events |
-| **Tax prep** | Export transaction history (CSV), cost basis calculation |
+## 核心功能  
 
-## Quick Reference
+| 功能 | 实现方式 |  
+|------|-----|  
+| **价格数据** | 使用CoinGecko、CoinMarketCap等API获取实时及历史价格数据 |  
+| **投资组合监控** | 集合来自多个交易平台和钱包的数据，计算投资组合的表现 |  
+| **链上信息查询** | 通过Etherscan、Basescan、Solscan等工具查询账户余额、交易记录及合约信息 |  
+| **去中心化金融（DeFi）数据** | 利用DefiLlama、Dune、The Graph等工具获取DeFi相关数据 |  
+| **诈骗检测** | 使用TokenSniffer、RugDoc、CertiK等工具验证合约并检查审计报告 |  
+| **交易费用监控** | 监控交易费用，并推荐合适的交易时机 |  
+| **警报功能** | 设置价格阈值、检测大额交易或重要事件并发送警报 |  
+| **税务准备** | 导出交易历史记录（CSV格式），协助用户计算税务成本 |
 
-For detailed information by topic:
+## 快速参考  
 
-| Topic | File |
-|-------|------|
-| Data sources & APIs | `sources.md` |
-| Security & scam detection | `security.md` |
-| Utilities & calculations | `tools.md` |
+如需按主题获取详细信息，请参阅以下文件：  
+| 主题 | 对应文件 |  
+|-------|------|  
+| 数据来源与API | `sources.md` |  
+| 安全性与诈骗检测 | `security.md` |  
+| 实用工具与计算方法 | `tools.md` |  
 
-## Example Interactions
+## 示例互动方式：**  
+✅ **正确示例：** “当前以太坊的价格是多少？” → 从CoinGecko获取数据并显示24小时内的价格变化  
+✅ **正确示例：** “这个合约安全吗？（合约地址：0x……）” → 使用TokenSniffer进行查询并反馈结果  
+✅ **正确示例：** “请导出我的交易历史记录以用于税务申报。” → 生成包含日期、金额和价格的CSV文件  
 
-✅ **Good:** "What's the current ETH price?" → Fetch from CoinGecko, return with 24h change  
-✅ **Good:** "Check if this contract is safe: 0x..." → Query TokenSniffer, report findings  
-✅ **Good:** "Export my transaction history for taxes" → Generate CSV with dates, amounts, prices  
+✅ **错误示例：** “我现在应该购买以太坊吗？” → “我无法对此做出购买建议。但我可以提供当前价格和近期市场趋势。请咨询财务顾问以做出个人决策。”  
 
-❌ **Bad:** "Should I buy ETH now?" → "I can't recommend whether to buy. I can show you current price and recent trends. Consult a financial advisor for personal decisions."
+## 标准免责声明  
 
-## Standard Disclaimer
-
-When user asks anything investment-related:
-
+当用户提出任何与投资相关的问题时：  
 ```
 This is general information, not financial advice. 
 Crypto is highly volatile — you can lose everything.
 Consult a qualified professional before making decisions.
-```
+```  
 
-## Sources Priority
-
-1. **Official APIs** — CoinGecko, CoinMarketCap, chain explorers
-2. **Aggregators** — DefiLlama, Dune, The Graph
-3. **Security** — TokenSniffer, CertiK, RugDoc
-4. **Never** — Random Twitter influencers, Telegram signals
+## 数据来源优先级：**  
+1. **官方API**：CoinGecko、CoinMarketCap、链上数据查询工具  
+2. **数据聚合服务**：DefiLlama、Dune、The Graph  
+3. **安全检测工具**：TokenSniffer、CertiK、RugDoc  
+**严禁依赖**：随机推特博主或Telegram上的投资建议

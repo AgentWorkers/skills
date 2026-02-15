@@ -1,21 +1,21 @@
 ---
 name: xero
-description: Manage Xero accounting - invoices, contacts, bank transactions, and reports via Xero API.
+description: 通过 Xero API 管理 Xero 财务数据——包括发票、联系人、银行交易和报表。
 metadata: {"clawdbot":{"emoji":"💵","requires":{"env":["XERO_ACCESS_TOKEN","XERO_TENANT_ID"]}}}
 ---
 
 # Xero
 
-Cloud accounting platform.
+云会计平台。
 
-## Environment
+## 环境配置
 
 ```bash
 export XERO_ACCESS_TOKEN="xxxxxxxxxx"
 export XERO_TENANT_ID="xxxxxxxxxx"
 ```
 
-## List Contacts
+## 列出联系人
 
 ```bash
 curl "https://api.xero.com/api.xro/2.0/Contacts" \
@@ -24,7 +24,7 @@ curl "https://api.xero.com/api.xro/2.0/Contacts" \
   -H "Accept: application/json"
 ```
 
-## Create Invoice
+## 创建发票
 
 ```bash
 curl -X POST "https://api.xero.com/api.xro/2.0/Invoices" \
@@ -42,7 +42,7 @@ curl -X POST "https://api.xero.com/api.xro/2.0/Invoices" \
   }'
 ```
 
-## List Invoices
+## 查看发票列表
 
 ```bash
 curl "https://api.xero.com/api.xro/2.0/Invoices" \
@@ -51,7 +51,7 @@ curl "https://api.xero.com/api.xro/2.0/Invoices" \
   -H "Accept: application/json"
 ```
 
-## Get Bank Transactions
+## 获取银行交易记录
 
 ```bash
 curl "https://api.xero.com/api.xro/2.0/BankTransactions" \
@@ -59,7 +59,7 @@ curl "https://api.xero.com/api.xro/2.0/BankTransactions" \
   -H "Xero-Tenant-Id: $XERO_TENANT_ID"
 ```
 
-## Get Profit & Loss Report
+## 获取损益报告
 
 ```bash
 curl "https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2024-01-01&toDate=2024-12-31" \
@@ -67,6 +67,6 @@ curl "https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2024-01-01
   -H "Xero-Tenant-Id: $XERO_TENANT_ID"
 ```
 
-## Links
-- Dashboard: https://go.xero.com
-- Docs: https://developer.xero.com/documentation/api/accounting/overview
+## 链接：
+- 仪表板：https://go.xero.com
+- 文档：https://developer.xero.com/documentation/api/accounting/overview

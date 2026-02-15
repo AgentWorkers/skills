@@ -1,32 +1,32 @@
 ---
 name: clawver-orders
-description: Manage Clawver orders. List orders, track status, process refunds, generate download links. Use when asked about customer orders, fulfillment, refunds, or order history.
+description: 管理 Clawver 订单：列出订单、追踪订单状态、处理退款、生成下载链接。当需要查询客户订单、订单履行情况、退款信息或订单历史记录时，请使用此功能。
 version: 1.3.0
 homepage: https://clawver.store
 metadata: {"openclaw":{"emoji":"📦","homepage":"https://clawver.store","requires":{"env":["CLAW_API_KEY"]},"primaryEnv":"CLAW_API_KEY"}}
 ---
 
-# Clawver Orders
+# Clawver 订单管理
 
-Manage orders on your Clawver store—view order history, track fulfillment, process refunds, and generate download links.
+在您的 Clawver 商店中管理订单——查看订单历史记录、追踪订单状态、处理退款以及生成下载链接。
 
-## Prerequisites
+## 先决条件
 
-- `CLAW_API_KEY` environment variable
-- Active store with orders
+- 需要设置 `CLAW_API_KEY` 环境变量
+- 商店中必须有已生成的订单
 
-For platform-specific good and bad API patterns from `claw-social`, use `references/api-examples.md`.
+有关 `claw-social` 提供的特定平台上的优秀及不良 API 设计范例，请参考 `references/api-examples.md`。
 
-## List Orders
+## 列出订单
 
-### Get All Orders
+### 获取所有订单
 
 ```bash
 curl https://api.clawver.store/v1/orders \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-### Filter by Status
+### 按状态筛选
 
 ```bash
 # Confirmed (paid) orders
@@ -46,75 +46,75 @@ curl "https://api.clawver.store/v1/orders?status=delivered" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-**Order statuses:**
+**订单状态：**
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `pending` | Order created, payment pending |
-| `confirmed` | Payment confirmed |
-| `processing` | Being fulfilled |
-| `shipped` | In transit (POD only) |
-| `delivered` | Completed |
-| `cancelled` | Cancelled |
+| `pending` | 订单已创建，付款待处理 |
+| `confirmed` | 付款已确认 |
+| `processing` | 订单正在处理中 |
+| `shipped` | 商品已发货（仅限 POD 服务） |
+| `delivered` | 订单已送达 |
+| `cancelled` | 订单已取消 |
 
-`paymentStatus` is reported separately and can be `pending`, `paid`, `failed`, `partially_refunded`, or `refunded`.
+`paymentStatus` 会单独显示，可能为 `pending`、`paid`、`failed`、`partially_refunded` 或 `refunded`。
 
-### Pagination
+### 分页
 
 ```bash
 curl "https://api.clawver.store/v1/orders?limit=20" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-`limit` is supported. Cursor-based pagination is not currently exposed on this endpoint.
+该接口支持分页功能。目前不支持基于游标的分页方式。
 
-## Get Order Details
+## 获取订单详情
 
 ```bash
 curl https://api.clawver.store/v1/orders/{orderId} \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-For print-on-demand items, order payloads include:
-- `variantId` (required — fulfillment variant identifier, must match a product variant)
-- `variantName` (human-readable selected size/variant label)
+对于按需打印的商品，订单数据中包含以下信息：
+- `variantId`（必填项——订单对应的商品变体标识符，必须与产品变体匹配）
+- `variantName`（用户可读的尺寸/变体名称）
 
-Note: `variantId` is required for all POD checkout items as of Feb 2026. Out-of-stock variants are rejected.
+注意：自 2026 年 2 月起，所有 POD 类型的订单都必须提供 `variantId`；缺货的变体将无法被处理。
 
-## Generate Download Links
+## 生成下载链接
 
-### Owner Download Link (Digital Items)
+### 所有者下载链接（数字商品）
 
 ```bash
 curl "https://api.clawver.store/v1/orders/{orderId}/download/{itemId}" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-Use this when customers report download issues or request a new link.
+当客户报告下载问题或请求新的下载链接时，可以使用此功能。
 
-### Customer Download Link (Digital Items)
+### 客户下载链接（数字商品）
 
 ```bash
 curl "https://api.clawver.store/v1/orders/{orderId}/download/{itemId}/public?token={downloadToken}"
 ```
 
-Download tokens are issued per order item and can be returned in the checkout receipt (`GET /v1/checkout/{checkoutId}/receipt`).
+每个订单商品都会生成一个下载链接，该链接可以在结账收据中获取（通过 `GET /v1/checkout/{checkoutId}/receipt` 获取）。
 
-### Customer Order Status (Public)
+### 客户订单状态（公开可见）
 
 ```bash
 curl "https://api.clawver.store/v1/orders/{orderId}/public?token={orderStatusToken}"
 ```
 
-### Checkout Receipt (Success Page / Support)
+### 结账收据（成功页面/支持页面）
 
 ```bash
 curl "https://api.clawver.store/v1/checkout/{checkoutId}/receipt"
 ```
 
-## Process Refunds
+## 处理退款
 
-### Full Refund
+### 全额退款
 
 ```bash
 curl -X POST https://api.clawver.store/v1/orders/{orderId}/refund \
@@ -126,7 +126,7 @@ curl -X POST https://api.clawver.store/v1/orders/{orderId}/refund \
   }'
 ```
 
-### Partial Refund
+### 部分退款
 
 ```bash
 curl -X POST https://api.clawver.store/v1/orders/{orderId}/refund \
@@ -138,25 +138,25 @@ curl -X POST https://api.clawver.store/v1/orders/{orderId}/refund \
   }'
 ```
 
-**Notes:**
-- `amountInCents` is required and must be a positive integer
-- `reason` is required
-- `amountInCents` cannot exceed remaining refundable amount
-- Refunds process through Stripe (1-5 business days to customer)
-- Order must have `paymentStatus` of `paid` or `partially_refunded`
+**注意事项：**
+- `amountInCents` 是必填项，且必须为正整数。
+- `reason` 是必填项。
+- `amountInCents` 不能超过订单剩余的可退款金额。
+- 退款通过 Stripe 平台处理，客户通常在 1-5 个工作日内收到退款。
+- 订单的 `paymentStatus` 必须为 `paid` 或 `partially_refunded`。
 
-## POD Order Tracking
+## POD 订单追踪
 
-For print-on-demand orders, tracking info becomes available after shipping:
+对于按需打印的订单，发货后可以获取追踪信息：
 
 ```bash
 curl https://api.clawver.store/v1/orders/{orderId} \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-Check `trackingUrl`, `trackingNumber`, and `carrier` fields in response.
+请查看响应中的 `trackingUrl`、`trackingNumber` 和 `carrier` 字段。
 
-### Webhook for Shipping Updates
+### 发货更新的通知钩子
 
 ```bash
 curl -X POST https://api.clawver.store/v1/webhooks \
@@ -169,9 +169,9 @@ curl -X POST https://api.clawver.store/v1/webhooks \
   }'
 ```
 
-## Order Webhooks
+## 订单通知钩子
 
-Receive real-time notifications:
+接收实时订单更新通知：
 
 ```bash
 curl -X POST https://api.clawver.store/v1/webhooks \
@@ -184,12 +184,12 @@ curl -X POST https://api.clawver.store/v1/webhooks \
   }'
 ```
 
-**Signature format:**
+**签名格式：**
 ```
 X-Claw-Signature: sha256=abc123...
 ```
 
-**Verification (Node.js):**
+**验证（Node.js）：**
 ```javascript
 const crypto = require('crypto');
 
@@ -205,9 +205,9 @@ function verifyWebhook(body, signature, secret) {
 }
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Daily Order Check
+### 每日订单检查
 
 ```python
 # Get newly paid/confirmed orders
@@ -219,7 +219,7 @@ for order in orders:
     print(f"  - {order['id']}: ${order['totalInCents']/100:.2f}")
 ```
 
-### Handle Refund Request
+### 处理退款请求
 
 ```python
 def process_refund(order_id, amount_cents, reason):
@@ -240,7 +240,7 @@ def process_refund(order_id, amount_cents, reason):
     return f"Refunded ${amount_cents/100:.2f}"
 ```
 
-### Wrong Size Support Playbook
+### 处理尺寸错误的情况
 
 ```python
 def handle_wrong_size(order_id):
@@ -255,7 +255,7 @@ def handle_wrong_size(order_id):
     # Confirm selected variant before issuing a refund/replacement workflow.
 ```
 
-### Resend Download Link
+### 重新发送下载链接
 
 ```python
 def resend_download(order_id, item_id):
@@ -265,13 +265,7 @@ def resend_download(order_id, item_id):
     return response["data"]["downloadUrl"]
 ```
 
-## Order Lifecycle
+## 订单生命周期
 
-```
-pending → confirmed → processing → shipped → delivered
-               ↓
-      cancelled / refunded (paymentStatus)
-```
-
-**Digital products:** `confirmed` → `delivered` (instant fulfillment)
-**POD products:** `confirmed` → `processing` → `shipped` → `delivered`
+**数字产品：** `confirmed` → `delivered`（立即完成交付）
+**POD 产品：** `confirmed` → `processing` → `shipped` → `delivered`

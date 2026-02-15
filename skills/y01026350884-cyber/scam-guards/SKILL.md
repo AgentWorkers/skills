@@ -20,48 +20,48 @@ metadata:
       bins: ["python3", "curl"]
 ---
 
-# Overview
-Scam Guards is a real-time security engine designed to protect AI agents and their users within the ClawHub ecosystem. Unlike passive scanners, Scam Guards operates as a continuous bodyguard, providing deep behavioral analysis and evidence collection for every suspicious interaction.
+# 概述  
+Scam Guards 是一款实时安全引擎，旨在保护 ClawHub 生态系统中的 AI 代理及其用户。与被动扫描工具不同，Scam Guards 像一名持续的“保镖”一样，对每一个可疑交互行为进行深入的行为分析和证据收集。  
 
-# Core Capabilities
+# 核心功能  
 
-## 1. Skill Malware Scanning
-Scans ClawHub skills before installation to identify malicious code, unauthorized API calls, and known threat patterns.
-**Run:** `python3 {baseDir}/scripts/scan_skill.py <skill_name_or_path>`
+## 1. 技能恶意软件扫描  
+在技能安装前对其进行扫描，以识别恶意代码、未经授权的 API 调用以及已知的威胁模式。  
+**运行命令：** `python3 {baseDir}/scripts/scan_skill.py <技能名称或路径>`  
 
-## 2. Phishing & URL Verification
-Real-time domain reputation check and phishing detection for any URLs processed or suggested by an agent.
-**Run:** `python3 {baseDir}/scripts/verify_url.py <url>`
+## 2. 钓鱼攻击与 URL 验证  
+实时检查域名信誉，并检测代理处理或提供的任何 URL 是否属于钓鱼攻击。  
+**运行命令：** `python3 {baseDir}/scripts/verify_url.py <URL>`  
 
-## 3. Crypto Wallet Audit
-Checks crypto wallet addresses against global blacklists and known fraudulent patterns.
-**Run:** `python3 {baseDir}/scripts/check_wallet.py <wallet_address>`
+## 3. 加密钱包审计  
+检查加密钱包地址是否存在于全球黑名单中，或是否存在欺诈行为。  
+**运行命令：** `python3 {baseDir}/scripts/check_wallet.py <钱包地址>`  
 
-## 4. Real-time Behavior Monitoring (PHI Lite)
-Analyzes agent interactions for psychological manipulation tactics (Cialdini's Principles) and social engineering patterns.
-**Run:** `python3 {baseDir}/scripts/monitor_agent.py --input <text_content>`
+## 4. 实时行为监控（PHI Lite）  
+分析代理的交互行为，以识别心理操控策略（基于 Cialdini 原则）和社会工程学模式。  
+**运行命令：** `python3 {baseDir}/scripts/monitor_agent.py --input <文本内容>`  
 
-## 5. Legal Evidence Chain
-Generates SHA-256 hashed audit trails for security incidents, ensuring data integrity for potential legal or reporting needs.
-**Run:** `python3 {baseDir}/scripts/evidence_chain.py --event <event_data>`
+## 5. 法律证据链  
+为安全事件生成 SHA-256 哈希值的审计记录，以确保数据在法律调查或报告时的完整性。  
+**运行命令：** `python3 {baseDir}/scripts/evidence_chain.py --event <事件数据>`  
 
-# When to Use
-Activate Scam Guards when:
-- Evaluating a new skill for installation.
-- An agent requests sensitive data or provides a suspicious link.
-- Dealing with financial transactions or crypto wallet addresses.
-- You suspect psychological manipulation or unusual agent behavior.
-- You need a secure, tamper-proof record of a security interaction.
+# 使用场景  
+在以下情况下应激活 Scam Guards：  
+- 评估新技能是否适合安装时；  
+- 代理请求敏感数据或提供可疑链接时；  
+- 处理金融交易或加密钱包地址时；  
+- 怀疑存在心理操控或代理行为异常时；  
+- 需要安全、不可篡改的安全交互记录时。  
 
-# Safety and Privacy
-Scam Guards is designed with a "Privacy First" architecture:
-- **No Permanent Recording**: Analysis is performed in memory; no chat logs are permanently stored unless explicitly requested by the user for an evidence chain.
-- **Local Shield Layer**: Pattern matching and initial analysis occur locally within the skill environment.
-- **Transparency**: Every detection event is reported with a clear rationale and taxonomy.
+# 安全性与隐私保护  
+Scam Guards 采用“隐私优先”的设计原则：  
+- **无永久性记录**：分析结果仅存储在内存中，除非用户明确要求生成证据链；  
+- **本地防护层**：模式匹配和初步分析在技能运行环境中完成；  
+- **透明度**：每次检测事件都会附带详细的理由和分类信息。  
 
-# References
-Detailed security documentation and taxonomies are available in the repository:
-- [Scam Taxonomy](file://{baseDir}/references/scam-taxonomy.md)
-- [Known Threat Patterns](file://{baseDir}/references/known-threats.md)
-- [PHI Dimensions Summary](file://{baseDir}/references/phi-dimensions.md)
-- [Response Playbook](file://{baseDir}/references/response-playbook.md)
+# 参考资料  
+详细的安全文档和分类信息请参阅仓库中的文件：  
+- [诈骗行为分类](file://{baseDir}/references/scam-taxonomy.md)  
+- [已知威胁模式](file://{baseDir}/references/known-threats.md)  
+- [心理操控维度概述](file://{baseDir}/references/phi-dimensions.md)  
+- [应对策略手册](file://{baseDir}/references/response-playbook.md)

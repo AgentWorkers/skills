@@ -1,31 +1,32 @@
 ---
 name: openviking-mcp
-description: Set up and run the OpenViking MCP server for RAG capabilities. Use when users need semantic search and document Q&A exposed through Model Context Protocol for Claude Desktop/CLI or other MCP clients. Triggers on requests about OpenViking MCP, RAG servers, or semantic search MCP setup.
+description: **配置并运行 OpenViking MCP 服务器以支持 RAG（问答生成）功能**  
+当用户需要通过 Model Context Protocol 在 Claude Desktop/CLI 或其他 MCP 客户端进行语义搜索或文档问答时，可使用该服务器。该服务器会在收到关于 OpenViking MCP、RAG 服务器或语义搜索相关配置的请求时被触发。
 ---
 
-# OpenViking MCP Server
+# OpenViking MCP 服务器
 
-HTTP MCP server that exposes OpenViking RAG capabilities as tools for Claude and other MCP clients.
+这是一个 HTTP 基本的 MCP（Media Center Protocol）服务器，它将 OpenViking 的 RAG（Retrieval, Augmentation, and Generation）功能作为工具提供给 Claude 以及其他 MCP 客户端使用。
 
-## What It Provides
+## 提供的功能
 
-| Tool | Purpose |
+| 工具 | 功能 |
 |------|---------|
-| `query` | Full RAG pipeline — semantic search + LLM answer generation |
-| `search` | Semantic search only, returns matching documents with scores |
-| `add_resource` | Ingest files, directories, or URLs into the database |
+| `query` | 完整的 RAG 流程——语义搜索 + 大语言模型（LLM）答案生成 |
+| `search` | 仅提供语义搜索，返回匹配的文档及其分数 |
+| `add_resource` | 将文件、目录或 URL 添加到数据库中 |
 
-## Prerequisites
+## 先决条件
 
-- Python 3.13+
-- `uv` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
-- OpenAI API key (for LLM and embeddings)
+- Python 3.13 或更高版本 |
+- 已安装 `uv`（通过运行 `curl -LsSf https://astral.sh/uv/install.sh | sh` 安装） |
+- OpenAI API 密钥（用于 LLM 和嵌入功能）
 
-## Setup Steps
+## 设置步骤
 
-### Step 1: Get the Code
+### 第 1 步：获取代码
 
-Clone the OpenViking repository:
+克隆 OpenViking 仓库：
 
 ```bash
 git clone https://github.com/ZaynJarvis/openviking.git
@@ -33,30 +34,30 @@ git clone https://github.com/ZaynJarvis/openviking.git
 cd openviking/examples/mcp-query
 ```
 
-### Step 2: Install Dependencies
+### 第 2 步：安装依赖项
 
 ```bash
 uv sync
 ```
 
-### Step 3: Configure API Keys (Human Input Required)
+### 第 3 步：配置 API 密钥（需要用户手动操作）
 
-Copy the example config:
+复制示例配置文件：
 
 ```bash
 cp ov.conf.example ov.conf
 ```
 
-**You must edit `ov.conf` and add your API tokens.** The critical fields:
+**请编辑 `ov.conf` 文件并添加您的 API 密钥。** 关键字段包括：
 
-| Field | Purpose | Example |
+| 字段 | 用途 | 示例 |
 |-------|---------|---------|
-| `vlm.token` | LLM for generating answers | `sk-...` (OpenAI) |
-| `embedding.token` | Embeddings for semantic search | `sk-...` (OpenAI) |
+| `vlm.token` | 用于生成答案的 LLM | `sk-...`（OpenAI） |
+| `embedding.token` | 用于语义搜索的嵌入模型 | `sk-...`（OpenAI） |
 
-**Wait for user to confirm:** Ask the user to paste their `ov.conf` (with tokens redacted if sharing logs) or confirm they've set it up before proceeding.
+**等待用户确认：** 在继续之前，请用户粘贴他们的 `ov.conf` 文件（如果需要共享日志，请将 API 密钥隐藏），或确认他们已经完成了配置。
 
-Example minimal config:
+示例最小配置文件：
 
 ```json
 {
@@ -73,22 +74,22 @@ Example minimal config:
 }
 ```
 
-### Step 4: Start the Server
+### 第 4 步：启动服务器
 
 ```bash
 uv run server.py
 ```
 
-Server runs at `http://127.0.0.1:8000/mcp` by default.
+服务器默认运行在 `http://127.0.0.1:8000/mcp` 上。
 
-### Step 5: Connect to Claude
+### 第 5 步：连接到 Claude
 
-**Claude CLI:**
+**Claude 命令行界面：**
 ```bash
 claude mcp add --transport http openviking http://localhost:8000/mcp
 ```
 
-**Claude Desktop:** Add to `~/.mcp.json`:
+**Claude 桌面应用：** 将以下配置添加到 `~/.mcp.json` 文件中：
 
 ```json
 {
@@ -101,7 +102,7 @@ claude mcp add --transport http openviking http://localhost:8000/mcp
 }
 ```
 
-## Server Options
+## 服务器选项
 
 ```
 uv run server.py [OPTIONS]
@@ -113,37 +114,37 @@ uv run server.py [OPTIONS]
   --transport TYPE    streamable-http | stdio (default: streamable-http)
 ```
 
-Environment variables: `OV_CONFIG`, `OV_DATA`, `OV_PORT`, `OV_DEBUG`
+环境变量：`OV_CONFIG`, `OV_DATA`, `OV_PORT`, `OV_DEBUG`
 
-## Usage Examples
+## 使用示例
 
-Once connected, Claude can use these tools:
+连接成功后，Claude 可以使用以下功能：
 
-**Query with RAG:**
+**使用 RAG 进行查询：**
 ```
 "Search my documents for information about Q3 revenue and summarize the findings"
 ```
 
-**Semantic search only:**
+**仅进行语义搜索：**
 ```
 "Find documents related to machine learning architecture"
 ```
 
-**Add documents:**
+**添加文档：**
 ```
 "Index the PDF at ~/documents/report.pdf"
 "Add https://example.com/article to my knowledge base"
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Port in use | Change with `--port 9000` |
-| Config not found | Ensure `ov.conf` exists or set `OV_CONFIG` path |
-| Dependencies missing | Run `uv sync` in the mcp-query directory |
-| Authentication errors | Check your API tokens in `ov.conf` |
+| 端口已被占用 | 使用 `--port 9000` 更改端口 |
+| 配置文件未找到 | 确保 `ov.conf` 文件存在，或设置正确的 `OV_CONFIG` 路径 |
+| 依赖项缺失 | 在 `mcp-query` 目录中运行 `uv sync` 命令 |
+| 认证错误 | 检查 `ov.conf` 文件中的 API 密钥是否正确 |
 
-## Resources
+## 资源
 
-- OpenViking repo: `code/openviking/` or https://github.com/ZaynJarvis/openviking
+- OpenViking 仓库：`code/openviking/` 或 https://github.com/ZaynJarvis/openviking

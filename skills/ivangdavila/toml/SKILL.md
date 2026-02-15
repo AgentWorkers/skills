@@ -1,61 +1,61 @@
 ---
 name: TOML
-description: Write valid TOML configuration files with correct types and structure.
+description: 编写格式正确、类型准确的 TOML 配置文件。
 metadata: {"clawdbot":{"emoji":"⚙️","os":["linux","darwin","win32"]}}
 ---
 
-## Strings
+## 字符串
 
-- Basic strings `"..."` support escapes: `\n`, `\t`, `\\`, `\"`
-- Literal strings `'...'` are raw—no escape sequences, backslash is literal
-- Multiline basic `"""..."""` allows newlines; leading newline after `"""` is trimmed
-- Multiline literal `'''...'''` for raw blocks; no escape processing
+- 基本字符串 `"..."` 支持转义字符：`\n`、`\t`、`\\`、`\"`  
+- 字面量字符串 `'...'` 是原始字符串，不支持转义序列，反斜杠本身也是字符的一部分  
+- 多行基本字符串 `"""..."""` 允许包含换行符；`"""` 开头后的换行符会被自动去除  
+- 多行字面量字符串 `'''...'''` 用于表示原始数据块，不进行任何转义处理  
 
-## Keys
+## 键（Keys）
 
-- Bare keys: alphanumeric, dash, underscore only—`key-name_1` valid
-- Quoted keys for special chars: `"key with spaces"` or `'key.with.dots'`
-- Dotted keys `a.b.c = 1` equivalent to nested tables—defines `[a.b]` implicitly
-- Keys are case-sensitive—`Key` and `key` are different
+- 简单键：仅由字母数字、短横线和下划线组成，例如 `key-name_1` 是有效的  
+- 带引号的键用于表示包含特殊字符的键，例如 `"key with spaces"` 或 `'key.with.dots'`  
+- 点表示法键（如 `a.b.c = 1`）等价于嵌套结构，会隐式创建 `[a.b]`  
+- 键是区分大小写的，`Key` 和 `key` 是不同的  
 
-## Tables
+## 表格（Tables）
 
-- `[table]` defines table; all following key-values belong to it until next header
-- `[a.b.c]` creates nested structure—parent tables created implicitly
-- Dotted keys under `[table]` extend it: `[fruit]` then `apple.color = "red"` works
-- Defining table after dotted key created it is error—order matters
+- `[table]` 定义一个表格，其后所有的键值对都属于该表格，直到遇到下一个表头  
+- `[a.b.c]` 创建一个嵌套结构；父表格会自动被创建  
+- 在 `[table]` 下使用点表示法键可以扩展表格，例如 `[fruit]` 后面写 `apple.color = "red"` 是有效的  
+- 在已经定义了点表示法键之后再定义表格是错误的，键的顺序非常重要  
 
-## Arrays of Tables
+## 表格数组（Arrays of Tables）
 
-- `[[array]]` appends new table to array each time it appears
-- `[[products]]` twice creates `products[0]` and `products[1]`
-- Mix `[array.nested]` after `[[array]]` to add to most recent array element
-- Cannot redefine static table as array or vice versa
+- `[[array]]` 每次使用时都会在数组中添加一个新的表格  
+- `[[products]]` 会创建两个元素 `products[0]` 和 `products[1]`  
+- 可以在 `[[array]]` 之后直接使用 `[[array.nested]]` 来添加元素到最近的数组中  
+- 静态表格不能被重新定义为数组，反之亦然  
 
-## Inline Tables
+## 内联表格（Inline Tables）
 
-- `point = { x = 1, y = 2 }` for compact single-line tables
-- Inline tables cannot span lines (until TOML 1.1)
-- Cannot add keys to inline table after definition—immutable once closed
-- Nested inline tables allowed but reduce readability
+- `point = { x = 1, y = 2 }` 用于表示紧凑的单行表格  
+- 内联表格不能跨多行（TOML 1.1 版本之前）  
+- 内联表格定义后不能添加新的键，因为它们是不可变的  
+- 允许嵌套内联表格，但会降低可读性  
 
-## Types
+## 数据类型（Types）
 
-- Integers: decimal, hex `0xDEAD`, octal `0o755`, binary `0b1010`
-- Underscores for readability: `1_000_000` is valid
-- Floats: `3.14`, `5e-10`, `inf`, `nan` (case-sensitive)
-- Booleans: `true`/`false` only—lowercase, no yes/no/on/off
+- 整数：十进制 `0xDEAD`、十六进制 `0x755`、八进制 `0o755`、二进制 `0b1010`  
+- 为提高可读性，可以使用下划线，例如 `1_000_000` 是有效的  
+- 浮点数：`3.14`、`5e-10`、`inf`、`nan`（区分大小写）  
+- 布尔值：只能是 `true` 或 `false`（小写形式，不使用 `yes/no/on/off`）  
 
-## Dates & Times
+## 日期和时间（Dates & Times）
 
-- RFC 3339 format: `2024-01-15T14:30:00Z` or with offset `+05:30`
-- Local datetime: `2024-01-15T14:30:00` (no timezone)
-- Local date: `2024-01-15`; Local time: `14:30:00`
-- Milliseconds supported: `14:30:00.123`
+- 使用 RFC 3339 格式，例如 `2024-01-15T14:30:00Z` 或带时区偏移量的格式 `+05:30`  
+- 本地日期时间：`2024-01-15T14:30:00`（不带时区）  
+- 本地日期：`2024-01-15`；本地时间：`14:30:00`  
+- 支持毫秒格式，例如 `14:30:00.123`  
 
-## Common Pitfalls
+## 常见错误（Common Pitfalls）
 
-- No null type—omit key entirely for optional values
-- Arrays must be homogeneous (TOML 1.0)—TOML 1.1 allows mixed types
-- Trailing commas not allowed in arrays or inline tables
-- Comment `#` only outside strings—no inline comment after value on same line works, but avoid ambiguity
+- TOML 不支持 `null` 类型，对于可选值应完全省略该键  
+- 数组必须是同类型的（TOML 1.0 规范），TOML 1.1 版本允许混合类型  
+- 数组或内联表格中不允许在末尾添加逗号  
+- 注释符号 `#` 只能用于字符串外部；在同一行中不能在值后面直接添加注释，以避免歧义

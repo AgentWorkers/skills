@@ -1,60 +1,53 @@
 ---
 name: content-strategy
-description: Build and execute a content marketing strategy for a solopreneur business. Use when planning what content to create, deciding on content formats and channels, building a content calendar, measuring content performance, or systematizing content production. Covers audience research for content, content pillars, distribution strategy, repurposing workflows, and metrics. Trigger on "content strategy", "content marketing", "what content should I create", "content plan", "content calendar", "content ideas", "content distribution", "grow through content".
+description: 为个人创业企业制定并执行内容营销策略。该策略可用于规划要创建的内容类型、选择内容格式和发布渠道、制定内容发布计划、评估内容效果以及系统化内容制作流程。涵盖内容受众研究、核心内容主题、内容分发策略、内容的再利用方法以及相关评估指标。相关关键词包括：“内容策略”、“内容营销”、“应该创建哪些内容”、“内容计划”、“内容发布日历”、“内容创意”、“内容分发”以及“通过内容实现业务增长”。
 ---
 
-# Content Strategy
+# 内容策略
 
-## Overview
-Content marketing is how solopreneurs build authority, attract customers, and grow without paid ads. But random content doesn't work — you need a strategy. This playbook builds a repeatable system for creating content that actually drives business results, not just likes.
-
----
-
-## Step 1: Define Your Content Goals
-
-Content without a goal is just noise. Before you create anything, answer: what is this content supposed to DO?
-
-**Common solopreneur content goals:**
-- **Generate awareness** (new people discover you exist)
-- **Build trust** (people see you as credible and knowledgeable)
-- **Drive leads** (people give you their email or book a call)
-- **Enable sales** (content answers objections and shortens sales cycles)
-- **Retain customers** (existing customers stay engaged and see ongoing value)
-
-**Rule:** Pick ONE primary goal per piece of content. You can have secondary benefits, but clarity on the main goal determines format, channel, and CTA.
-
-Example: A tutorial blog post might have the primary goal of "generate awareness" (via SEO) and a secondary goal of "drive leads" (with an email signup CTA at the end).
+## 概述
+内容营销是独立创业者建立权威、吸引客户并实现业务增长的方式，而无需依赖付费广告。但随意发布内容是行不通的——你需要一个明确的策略。本指南将帮助你建立一个可重复的内容创作系统，这种系统能够真正推动业务成果，而不仅仅是获得点赞。
 
 ---
 
-## Step 2: Research Your Audience's Content Needs
+## 第一步：明确你的内容目标
+没有目标的内容只是无意义的噪音。在开始创作之前，先问自己：这个内容到底要实现什么？
 
-Great content solves a specific problem for a specific person. Bad content talks about what YOU want to talk about.
+**独立创业者的常见内容目标：**
+- **提高知名度**（让新用户知道你的存在）
+- **建立信任**（让人们认为你可信且知识渊博）
+- **生成潜在客户**（让人们提供电子邮件地址或预约通话）
+- **促进销售**（内容能够解答疑问并缩短销售周期）
+- **保留客户**（让现有客户保持参与并感受到持续的价值）
 
-**Research workflow (spend 2-3 hours on this before creating anything):**
+**规则：**每篇内容只设定一个主要目标。虽然可以有次要效果，但明确的主要目标将决定内容的格式、发布渠道和行动号召（CTA）。
 
-1. **Mine customer conversations.** Go through support tickets, sales calls, discovery calls. What questions do prospects and customers ask repeatedly? Those are your content topics.
-
-2. **Check competitor content.** What are the top 3-5 players in your space publishing? Look for gaps — topics they're NOT covering or covering poorly.
-
-3. **Keyword research (if doing SEO).** Use free tools (Google autocomplete, AnswerThePublic, or "People Also Ask" in Google results) to see what people are actually searching for related to your niche.
-
-4. **Community mining.** Go to Reddit, Slack communities, Facebook groups, or forums in your space. What questions get asked over and over? Those are high-value topics.
-
-**Output:** A list of 20-30 content ideas ranked by: (a) relevance to your ICP, (b) search volume or community demand, (c) your unique perspective or experience on the topic.
+**示例：**一篇教程博客文章的主要目标可能是“提高知名度”（通过SEO），次要目标可能是“生成潜在客户”（在文章末尾设置电子邮件注册的CTA）。
 
 ---
 
-## Step 3: Build Content Pillars
+## 第二步：研究目标受众的内容需求
+优质的内容能够解决特定人群的具体问题。而糟糕的内容则只是作者自己想讲的内容。
 
-Content pillars are 3-5 broad topic areas that all your content falls under. They keep you focused and prevent random one-off content that doesn't build momentum.
+**研究流程（在开始创作前花2-3小时）：**
+1. **分析客户反馈。**查看支持工单、销售电话和咨询电话中的常见问题。这些问题就是你的内容主题。
+2. **研究竞争对手的内容。**在你的领域内，排名前三到五的竞争者都在发布哪些内容？寻找他们未覆盖或覆盖不佳的主题。
+3. **进行关键词研究（如果要进行SEO）。**使用免费工具（如Google自动完成、AnswerThePublic或Google搜索结果中的“人们也问”）来了解用户实际在搜索与你领域相关的内容。
+4. **挖掘社区意见。**访问Reddit、Slack社区、Facebook群组或相关论坛。哪些问题被反复提及？这些就是有价值的内容主题。
 
-**How to define pillars:**
-- Each pillar should map to a core problem your product/service solves or a key interest area of your ICP.
-- Pillars should be broad enough to generate dozens of pieces of content but specific enough to be relevant.
-- Aim for 3-5 pillars max. More than that dilutes focus.
+**输出：**一份包含20-30个内容创意的列表，按照以下标准进行排序：(a) 与你的目标受众（ICP）的相关性；(b) 搜索量或社区需求；(c) 你在该主题上的独特视角或经验。
 
-**Example (for an n8n automation consultant):**
+---
+
+## 第三步：构建内容支柱
+内容支柱是3-5个广泛的主题领域，所有内容都应围绕这些领域展开。这有助于保持创作的重点，避免发布零散、缺乏连贯性的内容。
+
+**如何定义内容支柱：**
+- 每个支柱应对应你的产品/服务解决的核心问题，或是你的目标受众的关键兴趣点。
+- 支柱应足够广泛，以便可以生成大量相关内容；同时也要足够具体，以确保内容的针对性。
+- 最多设置3-5个支柱。超过这个数量会分散创作焦点。
+
+**示例（针对n8n自动化顾问）：**
 ```
 Pillar 1: Workflow Automation Fundamentals
 Pillar 2: No-Code Tool Comparisons
@@ -62,120 +55,112 @@ Pillar 3: Business Process Optimization
 Pillar 4: Real Client Case Studies
 ```
 
-Every piece of content you create should fit under one of these pillars. If it doesn't, don't create it.
+你创作的每一篇文章都应属于其中一个支柱。如果不属于某个支柱，就不要发布它。
 
 ---
 
-## Step 4: Choose Your Content Formats and Channels
+## 第四步：选择内容格式和发布渠道
+独立创业者无法面面俱到。选择1-2种主要的内容格式和1-2个主要发布渠道。专注于深度而非广度。
 
-Solopreneurs can't do everything. Pick 1-2 primary formats and 1-2 primary channels. Go deep, not wide.
-
-**Content formats:**
-| Format | Best For | Time Investment | Longevity |
+**内容格式：**
+| 格式 | 适用场景 | 时间投入 | 持久性 |
 |---|---|---|---|
-| **Blog posts** | SEO, teaching, depth | 2-4 hrs/post | High (evergreen) |
-| **Videos (YouTube)** | Visual topics, personality-driven brands | 3-6 hrs/video | High (evergreen) |
-| **Podcasts** | Thought leadership, interviews | 2-3 hrs/episode | Medium |
-| **Twitter/X threads** | Quick insights, community building | 30 min/thread | Low (24-48hr shelf life) |
-| **LinkedIn posts** | B2B, professional content | 30-60 min/post | Low-medium |
-| **Email newsletters** | Relationship building, owned audience | 1-2 hrs/newsletter | Medium (subscribers keep it) |
-| **Short-form video (TikTok, Reels)** | Viral potential, younger demos | 1-2 hrs/video | Low (algorithmic churn) |
+| **博客文章** | 适合教学、深入分析 | 每篇文章2-4小时 | 高（长期有效） |
+| **视频（YouTube）** | 适合视觉化内容、注重个人魅力的品牌 | 每个视频3-6小时 | 高（长期有效） |
+| **播客** | 适合分享思想、进行访谈 | 每集2-3小时 | 中等 |
+| **Twitter/X帖子** | 适合快速分享见解、建立社区互动 | 每条帖子30分钟 | 低（有效期24-48小时） |
+| **LinkedIn帖子** | 适合B2B场景、专业内容 | 每篇帖子30-60分钟 | 低-中等 |
+| **电子邮件通讯** | 适合建立长期关系、维护自有受众 | 每份通讯1-2小时 | 中等（订阅者会长期保留） |
+| **短视频（TikTok、Reels）** | 适合病毒式传播、年轻受众 | 每个视频1-2小时 | 低（算法更新快） |
 
-**Selection criteria:**
-- Where does your ICP hang out? (B2B = LinkedIn. Developers = Twitter. Visual products = Instagram.)
-- What format do you NOT hate creating? (If you hate being on camera, don't pick YouTube.)
-- What has the best ROI for your goals? (Lead gen = blog + email. Brand building = Twitter + LinkedIn.)
+**选择标准：**
+- 你的目标受众主要使用哪些平台？（B2B场景适合LinkedIn；开发者适合Twitter；视觉产品适合Instagram。）
+- 你最不讨厌哪种内容形式？（如果你不喜欢上镜，就不要选择YouTube。）
+- 哪种格式对你的目标最有利？（生成潜在客户适合博客+电子邮件；品牌建设适合Twitter+LinkedIn。）
 
-**Recommended solopreneur starting stack:**
-- **Primary format:** Blog posts or long-form LinkedIn posts (depending on B2B vs B2C)
-- **Secondary format:** Email newsletter (this is your owned channel — never skip this)
+**推荐独立创业者使用的初始内容组合：**
+- **主要格式：**博客文章或长篇LinkedIn帖子（根据B2B或B2C场景选择）
+- **次要格式：**电子邮件通讯（这是你的自有渠道，务必坚持发布）
 
 ---
 
-## Step 5: Build a Content Calendar
+## 第五步：制定内容计划
+内容计划可以避免“今天该发什么？”的困惑。提前2-4周进行规划。
 
-A content calendar prevents the "what should I post today?" panic. Plan 2-4 weeks ahead.
-
-**Calendar structure:**
+**计划结构：**
 ```
 DATE | PILLAR | TOPIC | FORMAT | CHANNEL | CTA | STATUS
 ```
 
-**Example:**
+**示例：**
 ```
 Feb 10 | Automation | "5 n8n workflows every SaaS founder needs" | Blog | Website + LinkedIn | Email signup | Draft
 Feb 13 | Case Study | "How we saved Client X 20hrs/week" | LinkedIn post | LinkedIn | Book a call | Scheduled
 Feb 17 | Tool Comparison | "Zapier vs n8n: Which is right for you?" | Blog | Website + Twitter | Free guide download | Outline
 ```
 
-**Cadence recommendations:**
-- Blog: 1-2x/week (minimum 2x/month to maintain SEO momentum)
-- Newsletter: 1x/week or biweekly (consistency matters more than frequency)
-- Social (LinkedIn/Twitter): 3-5x/week
+**发布频率建议：**
+- 博客：每周1-2篇（每月至少2篇以维持SEO效果）
+- 电子邮件通讯：每周或每两周1篇（一致性比频率更重要）
+- 社交媒体（LinkedIn/Twitter）：每周3-5篇
 
-**Rule:** Batch creation. Write 4 posts in one sitting rather than 1 post four different days. Batching is 3x faster and produces better quality.
-
----
-
-## Step 6: Distribution and Amplification
-
-Creating content is 30% of the work. Distribution is the other 70%.
-
-**Distribution checklist for every piece:**
-- [ ] Publish on primary channel (blog, YouTube, etc.)
-- [ ] Share on 2-3 social channels with unique captions per platform (don't just copy-paste the same message)
-- [ ] Send to email list (if it's a high-value piece)
-- [ ] Post in 1-2 relevant communities (but add value to the discussion, don't just drop links)
-- [ ] DM it to 3-5 people who you think would find it genuinely useful
-- [ ] Repurpose into 2-3 other formats (see next step)
-
-**Timing:** Publish early in the week (Tuesday-Thursday) for best engagement. Avoid Fridays and weekends unless your audience is specifically active then.
+**规则：**批量创作。一次性完成4篇文章，而不是分散在几天内发布。批量创作效率更高，质量也更好。
 
 ---
 
-## Step 7: Repurpose Everything
+## 第六步：内容的分发与推广
+创建内容只是工作的一部分，分发才是关键。
 
-One piece of long-form content can become 5-10 smaller pieces. This is how solopreneurs produce high volume without burning out.
+**每篇内容的推广 checklist：**
+- 在主要渠道发布（博客、YouTube等）
+- 在2-3个社交媒体渠道分享，并为每个平台添加独特的标题（不要复制粘贴相同的内容）
+- 如果内容价值较高，发送给电子邮件列表中的用户
+- 在1-2个相关社区发布（但要为讨论带来价值，而不仅仅是发布链接）
+- 私信3-5个你认为会感兴趣的人
+- 将内容重新制作成其他2-3种格式
 
-**Repurposing workflow (example: one blog post):**
-1. Original: 1,500-word blog post
-2. Repurpose into: LinkedIn post (first 3 paragraphs + a hook)
-3. Repurpose into: Twitter thread (key points broken into 8-10 tweets)
-4. Repurpose into: Email newsletter (add a personal intro, link to full post)
-5. Repurpose into: Carousel post (main points as slides on LinkedIn or Instagram)
-6. Repurpose into: Short video (you on camera summarizing the key takeaway in 60 seconds)
-
-**Rule:** Repurpose the high-performers. If a blog post gets good traffic or a LinkedIn post gets strong engagement, milk it — turn it into 5 more formats.
+**发布时间：**选择工作日的早些时候（周二至周四）以获得更好的互动效果。除非你的目标受众在周五或周末特别活跃，否则避免在这些时间发布。
 
 ---
 
-## Step 8: Measure What Matters
+## 第七步：内容复用
+一篇长篇内容可以衍生出5-10篇短篇内容。这是独立创业者高效创作、避免过度劳累的方法。
 
-Track content performance so you can double down on what works and stop doing what doesn't.
+**内容复用流程（以一篇博客文章为例）：**
+1. 原始内容：1500字的博客文章
+2. 重新制作成：LinkedIn帖子（前3段内容加上吸引人的开头）
+3. 重新制作成：Twitter帖子（将关键点拆分成8-10条推文）
+4. 重新制作成：电子邮件通讯（添加个人介绍和完整文章链接）
+5. 重新制作成：轮播图（在LinkedIn或Instagram上以幻灯片形式展示关键点）
+6. 重新制作成：短视频（你亲自出镜，用60秒总结核心内容）
 
-**Metrics by goal:**
+**规则：**重点推广表现优异的内容。如果一篇博客文章获得了大量流量或LinkedIn帖子获得了高互动率，就将其转化为更多形式。
 
-| Goal | Metrics to Track |
+---
+
+## 第八步：评估内容效果
+跟踪内容的表现，以便专注于有效的方法，停止无效的做法。
+
+**根据目标评估的指标：**
+| 目标 | 需要跟踪的指标 |
 |---|---|
-| Awareness | Impressions, reach, new visitors, social followers |
-| Trust | Engagement rate (comments, shares), time on page, repeat visitors |
-| Lead generation | Email signups, CTA clicks, lead magnet downloads |
-| Sales enablement | Content assists (how many deals involved this content?), proposal open rates (if content is attached) |
+| 提高知名度 | 浏览量、覆盖范围、新访客数、社交媒体粉丝数 |
+| 建立信任 | 互动率（评论、分享次数）、页面停留时间、重复访问者数 |
+| 生成潜在客户 | 电子邮件注册数、CTA点击率、潜在客户下载量 |
+| 促进销售 | 内容对销售的帮助（该内容帮助完成了多少交易？）、提案打开率（如果附有提案文件） |
 
-**Dashboard (monthly check-in):**
-- Top 5 performing pieces (by traffic or engagement)
-- Traffic source breakdown (organic, social, direct, referral)
-- Conversion rate (visitors → email signups or leads)
-- Time investment vs results (which content type has the best ROI?)
+**每月检查的仪表盘：**
+- 表现最好的5篇文章（按流量或互动率排序）
+- 流量来源分析（自然搜索、社交媒体、直接访问、推荐）
+- 转化率（访客→电子邮件注册或潜在客户）
+- 时间投入与效果（哪种内容格式的ROI最高？）
 
-**Iteration rule:** Every month, identify the top-performing content type and topic. Do 2x more of that next month. Identify the worst performer. Stop doing that format or adjust the approach.
+**迭代规则：**每月识别表现最好的内容类型和主题，下个月加倍投入。识别表现最差的内容类型，停止使用该格式或调整创作方法。
 
----
-
-## Content Strategy Mistakes to Avoid
-- Creating content without a goal. Every piece should have a purpose tied to a business outcome.
-- Not researching what your audience actually wants. Your assumptions are often wrong — validate with real data.
-- Trying to be on every platform. Pick 1-2 and dominate them before expanding.
-- Publishing inconsistently. One post a month doesn't build momentum. Consistency compounds.
-- Not repurposing. Creating 10 original pieces is 5x harder than creating 2 original pieces and repurposing them into 8 more.
-- Ignoring metrics. If you don't measure, you can't improve. Check your numbers monthly at minimum.
+## 避免的内容策略错误：
+- 创作内容时没有明确目标。每篇文章都应与业务目标相关联。
+- 不研究目标受众的实际需求。你的假设往往是错误的——用数据来验证。
+- 试图在所有平台上都发布内容。先专注1-2个平台并取得优势，再逐步扩展。
+- 发布内容不规律。每月只发布一篇文章无法建立持续的影响力。一致性才是关键。
+- 不进行内容复用。创作10篇原创内容比创作2篇原创内容并复用它们要困难得多。
+- 忽视数据分析。如果不进行评估，就无法改进。至少每月检查一次数据。

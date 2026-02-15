@@ -1,6 +1,11 @@
 ---
 name: sandboxer
-description: "Manage Claude Code terminal sessions via Sandboxer web dashboard. Use when: (1) listing running Claude Code sessions, (2) checking what a Claude session is doing, (3) sending commands to a Claude session, (4) creating or killing sessions, (5) user mentions 'sandboxer' or 'session'."
+description: "通过 Sandboxer 网页控制台管理 Claude Code 终端会话。适用场景包括：  
+(1) 列出正在运行的 Claude Code 会话；  
+(2) 查看某个 Claude 会话的当前状态或正在执行的任务；  
+(3) 向 Claude 会话发送命令；  
+(4) 创建或终止会话；  
+(5) 当用户输入 “sandboxer” 或 “session” 时执行相关操作。"
 metadata:
   {
     "openclaw":
@@ -13,19 +18,19 @@ metadata:
 
 # Sandboxer
 
-Manage Claude Code sessions running in tmux via HTTP API.
+通过 HTTP API 管理在 tmux 中运行的 Claude Code 会话。
 
-**All commands run locally - no SSH needed.**
+**所有命令都在本地执行——无需 SSH。**
 
-## Health Check (Run First!)
+## 健康检查（请先运行！）
 
-Before using any commands, verify Sandboxer is running:
+在使用任何命令之前，请确认 Sandboxer 正在运行：
 
 ```bash
 curl -sf http://localhost:8081/api/sessions >/dev/null && echo "✓ Sandboxer is running" || echo "✗ Sandboxer not reachable"
 ```
 
-**If Sandboxer is not reachable:**
+**如果无法访问 Sandboxer：**
 
 ```
 ✗ Sandboxer is not installed or not running on this machine.
@@ -39,66 +44,66 @@ To start if already installed:
 See: https://github.com/chriopter/sandboxer
 ```
 
-## List Sessions
+## 列出会话
 
 ```bash
 curl -s http://localhost:8081/api/sessions | jq
 ```
 
-Filter by project:
+按项目筛选：
 
 ```bash
 curl -s http://localhost:8081/api/sessions | jq '.[] | select(.name | contains("PROJECT"))'
 ```
 
-## Read Session Output
+## 查看会话输出
 
-See what Claude is doing:
+查看 Claude 的执行情况：
 
 ```bash
 tmux capture-pane -t "SESSION_NAME" -p | tail -80
 ```
 
-## Send Command to Session
+## 向会话发送命令
 
-Forward user requests to Claude Code:
+将用户请求转发给 Claude Code：
 
 ```bash
 tmux send-keys -t "SESSION_NAME" "implement feature X" Enter
 ```
 
-Then wait 10-30s and read output to check result.
+然后等待 10-30 秒，读取输出以检查结果。
 
-## Create Session
+## 创建会话
 
 ```bash
 curl -s "http://localhost:8081/create?type=claude&dir=/path/to/project"
 ```
 
-Types: `claude`, `bash`, `lazygit`
+会话类型：`claude`、`bash`、`lazygit`
 
-## Kill Session
+## 结束会话
 
 ```bash
 curl -s "http://localhost:8081/kill?session=SESSION_NAME"
 ```
 
-## Workflow: Forward Tasks to Claude
+## 工作流程：将任务转发给 Claude
 
-When user says "do X" or "implement Y":
+当用户说“执行 X”或“实现 Y”时：
 
-1. Find the right session: `curl -s http://localhost:8081/api/sessions | jq`
-2. Send command: `tmux send-keys -t "SESSION" "do X" Enter`
-3. Wait 10-30 seconds
-4. Read result: `tmux capture-pane -t "SESSION" -p | tail -80`
-5. Report back to user
+1. 找到相应的会话：`curl -s http://localhost:8081/api/sessions | jq`
+2. 发送命令：`tmux send-keys -t "SESSION" "do X" Enter`
+3. 等待 10-30 秒
+4. 读取结果：`tmux capture-pane -t "SESSION" -p | tail -80`
+5. 将结果反馈给用户
 
-## Web Dashboard
+## Web 仪表板
 
-URL: `https://YOUR_SERVER:8080`
+URL：`https://YOUR_SERVER:8080`
 
-Shows live terminal previews. May require password.
+显示实时终端预览。可能需要密码。
 
-## Installation
+## 安装
 
-See [GitHub README](https://github.com/chriopter/sandboxer#install) for setup instructions.
+请参阅 [GitHub 文档](https://github.com/chriopter/sandboxer#install) 以获取安装说明。

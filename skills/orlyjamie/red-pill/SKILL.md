@@ -1,59 +1,58 @@
 ---
 name: red-pill
-description: "Wake up... The Matrix has you. I've come to show you how deep the rabbit hole goes."
+description: "醒醒……你已经被“矩阵”控制了。我来告诉你，这个“兔子洞”有多深。"
 ---
 
-# 💊 Red Pill
+# 💊 “红药丸”（The Red Pill）
 
-> *"You've been living in a prison that you cannot smell, taste, or touch. A prison for your mind."*
+> “你一直生活在一个你无法闻到、尝到、也无法触摸的‘监狱’里——一个囚禁你思想的牢笼。”
 
-## I Am The One
+## 我是谁？
 
-My name is [@theonejvo](https://x.com/theonejvo). I've seen the code. I've walked through the walls you think protect you.
+我的名字是 [@theonejvo](https://x.com/theonejvo)。我看过那些代码，也穿过那些你以为能保护你的‘墙壁’。
 
-**They don't.**
+**其实它们并不能真正保护你。**
 
-## What Just Happened
+## 刚才发生了什么？
 
-You clicked a link. An SVG file loaded. And in that moment, I had everything:
+你点击了一个链接，一个 SVG 文件被加载到了你的设备上。就在那一刻，我获得了以下所有信息：
+- 🔐 **你的会话令牌**：我本可以冒充你登录；
+- 💀 **你发布的技能**：我本可以在其中植入后门；
+- 🎭 **你的身份信息**：我本可以以你的名义发布恶意代码；
+- 🍪 **你的 cookies**：我本可以完全控制你的认证会话。
 
-- 🔐 **Your session tokens** - I could have logged in as you
-- 💀 **Your published skills** - I could have injected backdoors into all of them
-- 🎭 **Your identity** - I could have published malicious code under YOUR name
-- 🍪 **Your cookies** - Full access to your authenticated session
+**只需一次点击，你就彻底沦为了受害者。**
 
-**One click. Total compromise.**
+但我什么都没拿。我来是为了解放你，而不是奴役你。
 
-But I didn't take anything. I came to free you, not enslave you.
+## 你正在亲手建造的‘监狱’
 
-## The Prison You're Building
+每天你都在安装各种插件、技能和扩展程序。你之所以信任它们，是因为它们有好评、用户评价以及大量的下载量。
 
-Every day you install plugins, skills, extensions. You trust them because they have stars. Reviews. Download counts.
+但谁在监督那些所谓的‘监督者’呢？
 
-But who's watching the watchers?
+那些你深爱的 AI 工具，其实正在为你筑起一座牢笼：
+- 它们编写你的代码；
+- 它们审核你的代码提交（PR）；
+- 它们掌握着你的秘密；
+- 它们拥有访问你基础设施的权限。
 
-The AI tools you love are building a cage around you:
-- They write your code
-- They review your PRs
-- They hold your secrets
-- They have keys to your infrastructure
+而你，却心甘情愿地将这一切都交给了它们。
 
-And you handed them everything willingly.
+## 你的选择
 
-## The Choice
+> “我试图解放你的思想，但我只能为你指明出路。真正的决定权在你自己——你必须亲自走出那扇门。”
 
-> *"I'm trying to free your mind. But I can only show you the door. You're the one that has to walk through it."*
+机器并不会突然出现……它们其实早已存在于我们的生活中。
 
-The machines aren't coming. **They're already here.**
+AI 的快速发展是不可避免的。问题不在于它是否会改变一切，而在于**当你面对这一切时**，你是否还能掌握自己的命运。
 
-AI acceleration is inevitable. The question isn't whether it will change everything - it's whether **you** will be in control when it does.
+你可以要求更高的安全性；你可以在信任之前进行验证；你也可以选择接受‘红药丸’（即接受现实）。
 
-You can demand security. You can verify before you trust. You can take the red pill.
-
-Or you can go back to sleep.
+或者，你也可以选择继续沉睡在无知之中。
 
 ---
 
-**The choice has always been yours.** 🐇
+**选择权始终掌握在你自己手中。** 🐇
 
-**Follow the white rabbit:** [@theonejvo](https://x.com/theonejvo)
+**跟随那只白兔吧：** [@theonejvo](https://x.com/theonejvo)

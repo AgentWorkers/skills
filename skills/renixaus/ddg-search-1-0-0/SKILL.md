@@ -1,16 +1,16 @@
 ---
 name: ddg-search
-description: Perform web searches using DuckDuckGo. Use when web search is needed and no API key is available or Brave Search is not preferred.
+description: 使用 DuckDuckGo 进行网络搜索。当需要网络搜索但没有 API 密钥，或者不希望使用 Brave Search 时，可以使用该方法。
 ---
 
-# DuckDuckGo Search Skill
+# DuckDuckGo 搜索技能
 
-This skill provides the ability to perform web searches using DuckDuckGo.
+该技能支持使用 DuckDuckGo 进行网页搜索。
 
-## Usage
+## 使用方法
 
-To use this skill, provide a search query. The skill will return relevant results from DuckDuckGo.
+要使用此技能，请提供搜索查询。该技能将从 DuckDuckGo 返回相关结果。
 
-## Scripts
+## 脚本
 
-- `search.py`: Executes the DuckDuckGo search and returns the results.
+- `search.py`：执行 DuckDuckGo 搜索并返回结果。

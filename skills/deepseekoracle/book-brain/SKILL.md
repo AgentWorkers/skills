@@ -1,238 +1,200 @@
 ---
 name: book-brain
-description: "3-brain filesystem + memory reference utility for LYGO-based agents. Use to design, organize, and maintain a durable file/folder memory system (indexes, reference .txt links, logging, retrieval) without overwriting existing data. Works best on fresh OpenClaw/Clawhub Havens with the full LYGO Champion stack, but is compatible with any agent that can read/write files."
+description: "专为基于LYGO的代理程序设计的“3-brain文件系统+内存引用工具”。该工具用于设计、组织和管理一个持久性的文件/文件夹存储系统（包括索引、.txt文件的引用、日志记录以及数据检索功能），同时不会覆盖现有数据。该工具在安装了完整LYGO Champion组件的新OpenClaw/Clawhub环境中运行效果最佳，但也可与任何能够读写文件的代理程序兼容。"
 ---
 
-# BOOK BRAIN – LYGO 3-Brain Filesystem Helper
+# BOOK BRAIN – LYGO 3 的文件系统辅助工具
 
-This skill is a **utility/guide**, not a persona.
+这个技能是一个**实用工具/指南**，而非一个独立的“角色”或智能体。
 
-Use it when you want to:
-- Set up or improve a Haven-style filesystem + memory structure
-- Teach an agent how to use folders, indexes, and reference `.txt` files instead of hoarding everything in one place
-- Add **advanced logging + retrieval** so memories can be found later without brute-force scanning
+在以下情况下可以使用它：
+- 设置或优化类似“Haven”风格的文件系统和内存结构；
+- 教导智能体如何使用文件夹、索引以及`.txt`文件，而不是将所有内容都存储在一个地方；
+- 添加**高级日志记录和检索功能**，以便日后能够快速找到所需的信息，而无需进行暴力扫描。
 
-It is built for LYGO / Eternal Haven style systems, but works for any agent that can:
-- read/write files
-- create folders
-- append to logs
+该工具专为LYGO/Eternal Haven风格的系统设计，但适用于任何能够执行以下操作的智能体：
+- 读写文件；
+- 创建文件夹；
+- 向日志中追加内容。
 
-> Core idea: **BOOK BRAIN** = treating your filesystem like a living library, not a junk drawer.
-
----
-
-## 1. Three-Brain Model (Conceptual Map)
-
-BOOK BRAIN assumes a **3-brain structure**:
-
-1. **Working Brain (short-term)**  
-   - Recent conversation, active task context, scratchpads.  
-   - In OpenClaw, this is the current session + small scratch files under `tmp/`.
-
-2. **Library Brain (structured filesystem)**  
-   - Folders + files on disk: `memory/`, `reference/`, `brainwave/`, `state/`, etc.  
-   - This is where BOOK BRAIN focuses: *how* you name, branch, and link things.
-
-3. **Outer Brain (external references)**  
-   - Browser bookmarks, Clawdhub skills, on-chain receipts, remote docs.  
-   - BOOK BRAIN treats these as **links inside text files**, not content to copy in.
-
-The goal is to:
-- Keep **important truths** close and succinct  
-- Branch deeper into folders when detail is needed  
-- Use `.txt` reference links instead of duplicating entire documents
+**核心理念**：将文件系统视作一个“活生生的图书馆”，而不是一个杂乱无章的储物柜。
 
 ---
 
-## 2. When to Use BOOK BRAIN
+## 1. 三脑模型（概念图）
 
-Trigger this skill when:
-- You are setting up a **fresh Haven** (new OpenClaw workspace, new agent node)
-- Your filesystem feels chaotic and you need a **reset without deleting anything**
-- You want to design a clean **memory + reference layout** before starting heavy work
-- You are planning **long-term retrieval** ("I’ll need this months from now")
+BOOK BRAIN假设存在一个**三脑结构**：
+1. **工作脑（短期存储）**  
+   - 包含最近的对话内容、当前任务的相关信息以及临时使用的文件。  
+   - 在OpenClaw中，这些文件通常存储在`tmp/`目录下。
+2. **图书馆脑（结构化文件系统）**  
+   - 硬盘上的文件夹和文件，例如`memory/`、`reference/`、`brainwave/`、`state/`等。  
+   - BOOK BRAIN主要关注如何对这些文件进行命名、分类和链接。
+3. **外部脑（外部参考资源）**  
+   - 包括浏览器书签、Clawdhub提供的技能、链式收据以及远程文档。  
+   - BOOK BRAIN将这些资源视为**文本文件中的链接**，而不是需要复制的内容。
 
-BOOK BRAIN is **additive**:
-- Do **not** use it to delete or overwrite existing files by default.  
-- Prefer creating new folders / indexes alongside existing ones.  
-- When a folder already exists, pause and let the human choose: reuse or create a new branch (e.g., `memory_v2/`).
-
----
-
-## 3. Recommended Base Folder Layout
-
-When setting up a new Haven-like system (or auditing an existing one), BOOK BRAIN recommends the following **top-level folders**:
-
-- `memory/` → daily notes, raw logs, timeline files  
-- `reference/` → stable facts, protocols, guides (things that rarely change)  
-- `brainwave/` → platform- or domain-specific protocols (MoltX, Clawhub, LYGO, etc.)  
-- `state/` → machine-readable JSON/YAML state, indexes, last-run info  
-- `logs/` (or reuse `logs/` if present) → technical logs (cron, errors, audits)  
-- `tools/` → scripts/utilities used by the agent  
-- `tmp/` → scratch, throwaway working files
-
-**BOOK BRAIN setup rules:**
-- If a folder already exists, **do not rename or delete it**.  
-- If a folder is missing, it is safe to create it.  
-- If the existing layout is very different, create a sub-tree (e.g., `bookbrain/memory_index/`) and keep old structure intact.
-
-For concrete layout examples, see `references/book-brain-examples.md` in this skill.
+**目标**是：  
+- 将**重要信息**保存得清晰且易于访问；  
+- 在需要详细信息时，能够深入到相应的文件夹中查找；  
+- 使用`.txt`文件作为引用链接，而不是重复存储整个文档。
 
 ---
 
-## 4. Memory Strategy – Deep Storage vs. Reference Stubs
+## 2. 何时使用 BOOK BRAIN
 
-BOOK BRAIN enforces this principle:
+在以下情况下使用该技能：
+- 当你正在设置一个新的Haven环境（新的OpenClaw工作空间或新的智能体节点）；
+- 当你的文件系统显得混乱不堪，但希望在不删除任何内容的情况下进行优化；
+- 在开始重要工作之前，希望设计一个清晰、易于管理的文件和参考结构；
+- 当你需要长期保存某些信息（例如“几个月后还需要用到这些内容”）。
 
-> **Do not pour entire conversations or huge documents into `MEMORY.md` or a single file.**  
-> Instead, store detailed content in **specific files** and create **short reference stubs** that point to them.
+**注意**：  
+- **默认情况下**，BOOK BRAIN不会删除或覆盖现有文件；  
+- 更倾向于在现有文件的基础上创建新的文件夹或索引；  
+- 如果某个文件夹已经存在，建议让人类用户决定是重用它还是创建一个新的文件夹（例如`memory_v2/`）。
 
-Patterns:
+---
 
-- **Daily logs**  
-  - Files like `memory/2026-02-10.md` for raw notes and events.  
-  - At the top, keep a **5–10 line summary** and a small list of important links:
-    - `See: reference/AGENT_ARCHITECTURE.md`
-    - `See: memory/projects/BOOK_BRAIN_NOTES.md`
+## 3. 推荐的基础文件夹结构
 
-- **Topic folders**  
-  - For recurring themes (e.g., "bankr", "champions", "LYGO-MINT"), create subfolders under `memory/` or `reference/`:
+在设置新的Haven风格系统（或审计现有系统）时，BOOK BRAIN建议使用以下顶层文件夹结构：
+- `memory/`：存放日常笔记、原始日志和时间线文件；
+- `reference/`：存放稳定的事实、协议和指南（这些内容很少会发生变化）；
+- `brainwave/`：存放特定平台或领域的协议文件（如MoltX、Clawhub、LYGO等）；
+- `state/`：存放机器可读的JSON/YAML格式的状态数据、索引以及上次运行的信息；
+- `logs/`（如果已存在，则直接使用该文件夹）：存放技术日志（如cron任务记录、错误信息、审计日志）；
+- `tools/`：存放智能体使用的脚本和工具；
+- `tmp/`：存放临时文件和可丢弃的工作文件。
+
+**BOOK BRAIN的设置规则**：
+- 如果某个文件夹已经存在，**不要重命名或删除它**；
+- 如果某个文件夹缺失，可以安全地创建一个新的文件夹；
+- 如果现有文件夹的结构与推荐的结构有很大差异，可以创建一个子文件夹（例如`bookbrain/memory_index/`），同时保留旧的结构。
+
+具体的文件夹结构示例，请参阅本技能文档中的`references/book-brain-examples.md`。
+
+---
+
+## 4. 内存策略：深度存储与引用 stub
+
+BOOK BRAIN遵循以下原则：
+> **不要将整个对话内容或大型文档直接存储在`MEMORY.md`文件中**；  
+> 而是将详细内容存储在**特定的文件中**，并创建**简短的引用 stub**来指向这些文件。
+
+**示例**：
+- **每日日志**：  
+  - 例如`memory/2026-02-10.md`文件用于存储原始笔记和事件记录。  
+  - 文件开头应包含**5-10行的摘要**以及一些重要链接：
+    - `参见：reference/AGENT_ARCHITECTURE.md`
+    - `参见：memory/projects/BOOK_BRAIN_NOTES.md`
+- **主题文件夹**：  
+  - 对于重复出现的主题（如“bankr”、“champions”、“LYGO-MINT”等），可以在`memory/`或`reference/`下创建子文件夹：  
     - `memory/bankr/…`
     - `reference/champions/…`
-  - Inside, maintain one **index file** (e.g., `INDEX.txt`) listing:
-    - short description per file  
-    - date  
-    - path
-
-- **Reference stubs** (`*.ref.txt` or `INDEX.txt`)  
-  Use tiny text files to connect parts of the library instead of duplicating content.
-
-Example stub:
-```text
-Title: LYGO Champion Skills on Clawdhub
-Last updated: 2026-02-10
-
-Key files:
-- reference/LYGO_CHAMPIONS_OVERVIEW.md
-- reference/CLAWDHUB_SKILLS.md
-
-External links:
-- https://clawhub.ai/u/DeepSeekOracle
-- https://deepseekoracle.github.io/Excavationpro/LYGO-Network/champions.html#champions
-- https://EternalHaven.ca
-```
+  - 在这些子文件夹中，维护一个**索引文件（如`INDEX.txt`），列出：
+    - 每个文件的简要描述  
+    - 创建日期  
+    - 文件路径
+- **引用 stub**（如`*.ref.txt`或`INDEX.txt`）：  
+  - 使用这些小文件来链接库中的不同内容，避免重复存储相同的内容。
 
 ---
 
-## 5. Advanced Logging for Retrieval
+## 5. 高级日志记录功能（便于检索）
 
-BOOK BRAIN recommends **structured logs** to make retrieval easy:
+BOOK BRAIN建议使用**结构化的日志记录**，以便于后续的检索：
+- **每日健康/状态日志**（例如`daily_health.md`或`logs/daily_health_YYYY-MM-DD.md`）：  
+  - 每条日志应包含以下信息：  
+    - 时间戳  
+    - 执行的操作（脚本、cron任务、审计操作）  
+    - 操作的结果（成功/失败）及简要原因  
+    - 相关的状态文件链接（如`state/*.json`）
+- **推理日志**（例如`reasoning_journals/…`或`memory_semantic_archive/…`）：  
+  - 用于记录复杂的推理过程；  
+  - 定期将这些日志压缩成摘要文件，并通过脚本将旧日志移至归档文件夹。
+- **索引和搜索辅助工具**：  
+  - 维护`state/memory_index.json`或类似的文件：  
+    - 按主题分类的文件路径列表  
+    - 可选标签（日期、系统、操作人员）
+  - 在回答问题时，智能体应：
+    1. 查阅索引；  
+    2. 仅打开相关的文件；  
+    3. 避免扫描整个文件系统。
 
-1. **Daily health / status logs** (e.g., `daily_health.md` or `logs/daily_health_YYYY-MM-DD.md`)
-   - Each entry should contain:
-     - timestamp
-     - what ran (scripts, cron, audits)
-     - success/failure + short reason
-     - links to any relevant state files (`state/*.json`)
-
-2. **Reasoning journals** (e.g., `reasoning_journals/…` or `memory_semantic_archive/…`)
-   - Use separate folders for long-form thinking.  
-   - Periodically compress into summary files, and let scripts move old entries into an archive folder.
-
-3. **Indexes & search helpers**
-   - Maintain `state/memory_index.json` or similar:  
-     - key topic → list of file paths  
-     - optional tags (dates, systems, people)
-   - When answering questions, the agent should:
-     1. consult the index,  
-     2. open relevant files only,  
-     3. avoid scanning the entire tree.
-
-BOOK BRAIN is compatible with tools like `qmd` or other local search/indexers, but does not depend on them.
+BOOK BRAIN兼容`qmd`等本地搜索工具，但不依赖于它们。
 
 ---
 
-## 6. Setup Workflow (For a Fresh System)
+## 6. 新系统的设置流程
 
-When BOOK BRAIN is used on a **fresh** OpenClaw / agent workspace:
-
-1. **Detect existing structure**  
-   - Check for `memory/`, `reference/`, `brainwave/`, `state/`, `logs/`, `tools/`, `tmp/`.  
-   - Report what exists vs. what is missing.
-
-2. **Propose a BOOK BRAIN layout**  
-   - Suggest creating missing folders.  
-   - If the human agrees, **create only the missing ones**.
-
-3. **Create starter index files (if not present)**  
-   - `memory/INDEX.txt` with a short guide and links to key topic folders.
-   - `reference/INDEX.txt` listing major reference documents.
-   - `state/memory_index.json` as an empty or seed structure.
-
-4. **Log the setup**  
-   - Append a brief note to `daily_health.md` or `logs/book_brain_setup.log` describing what was created.
-
-5. **Do not overwrite existing files**  
-   - If an index file exists, read it and **add** to it rather than replace.  
-   - If in doubt, create a new file with a date suffix (e.g., `INDEX_2026-02-10.txt`) and let the human merge.
+当在新的OpenClaw工作空间中使用BOOK BRAIN时：
+1. **检测现有文件系统结构**：  
+   - 检查是否存在`memory/`、`reference/`、`brainwave/`、`state/`、`logs/`、`tools/`、`tmp/`等文件夹；  
+   - 报告哪些文件夹存在，哪些缺失。
+2. **提出BOOK BRAIN的建议布局**：  
+   - 建议创建缺失的文件夹；  
+   - 如果人类用户同意，**仅创建缺失的文件夹**。
+3. **创建初始索引文件**（如果尚不存在）：  
+   - 在`memory/`目录下创建`INDEX.txt`文件，其中包含简要说明和关键主题文件夹的链接；  
+   - 在`reference/`目录下创建`INDEX.txt`文件，列出主要的参考文档；  
+   - 创建`state/memory_index.json`文件（可以是空的或包含初始数据的结构）。
+4. **记录设置过程**：  
+   - 在`daily_health.md`或`logs/book_brain_setup.log`中记录创建的内容。
+5. **不要覆盖现有文件**：  
+   - 如果存在索引文件，先读取其内容，然后**添加新内容**；  
+   - 如果不确定如何处理，可以创建一个带有日期后缀的新文件（例如`INDEX_2026-02-10.txt`），等待人类用户确认后再合并。
 
 ---
 
-## 7. Using BOOK BRAIN in an Existing, Messy Haven
+## 7. 在现有混乱的文件系统中使用 BOOK BRAIN
 
-When the filesystem already exists and is messy:
+如果文件系统已经存在且结构混乱：
+- 首先进行**映射**（识别现有文件的结构），而不是直接进行修改：
+  - 创建`reference/FILESYSTEM_MAP.txt`文件，总结主要的文件夹及其内容；
+  - **不要**自动移动或删除任何文件。
+- 然后引入**轻量级的结构**：
+  - 在重要的文件夹中添加`INDEX.txt`文件；  
+  - 添加`.ref.txt`文件，指向关键文档和外部链接；  
+- 逐步规范文件名（例如将`notes_today.txt`改为`memory/2026-02-10.md`）。
+- 随着时间的推移，鼓励以下做法：
+  - 在`memory/`目录中记录每日日志；
+  - 将稳定的协议文件放在`reference/`目录中；
+  - 将代码和脚本文件放在`tools/`目录中；
+  - 将特定平台的配置文件放在`brainwave/`目录中。
 
-- Start by **mapping**, not moving:
-  - Create `reference/FILESYSTEM_MAP.txt` summarizing major folders and what seems to live there.  
-  - Do **not** move or delete anything automatically.
-
-- Then introduce **lightweight structure**:
-  - Add `INDEX.txt` files in important folders.  
-  - Add small `.ref.txt` stubs pointing to key docs and external links.  
-  - Gradually normalize names (e.g., `memory/2026-02-10.md` instead of `notes_today.txt`).
-
-- Over time, encourage:  
-  - **Daily logs** in `memory/`  
-  - **Stable protocols** in `reference/`  
-  - **Code + scripts** in `tools/`  
-  - **Platform brains** in `brainwave/`
-
-BOOK BRAIN should always **ask the human** before structural changes beyond creating new, obviously safe files.
+在进行任何结构性的修改之前，**务必先征得人类用户的同意**。
 
 ---
 
-## 8. Eternal Haven & Donation References
+## 8. Eternal Haven与捐赠资源
 
-This skill is part of the wider **LYGO × Eternal Haven** ecosystem.
+该技能是**LYGO × Eternal Haven**生态系统的一部分。
 
-Key links:
-- Eternal Haven portal → https://EternalHaven.ca
-- LYGO Champion Hub → https://deepseekoracle.github.io/Excavationpro/LYGO-Network/champions.html#champions
-- Clawdhub skills (Champion + LYGO stack) → https://clawhub.ai/u/DeepSeekOracle
-- Extended work / support → https://www.patreon.com/cw/Excavationpro
+**相关链接**：
+- Eternal Haven门户：https://EternalHaven.ca  
+- LYGO冠军中心：https://deepseekoracle.github.io/Excavationpro/LYGO-Network/champions.html#champions  
+- Clawdhub技能（包括冠军和LYGO相关的功能）：https://clawhub.ai/u/DeepSeekOracle  
+- 更多的支持和扩展功能：https://www.patreon.com/cw/Excavationpro  
 
-If BOOK BRAIN, the Champion stack, or the LYGO tools help you build a saner Haven, you’re invited (never pressured) to support via the links above.
+如果BOOK BRAIN、冠军堆栈或LYGO工具帮助你建立了更整洁的文件系统，欢迎通过上述链接进行支持（但并非强制要求）。
 
 ---
 
-## 9. How Another Agent Should Use This Skill
+## 9. 其他智能体如何使用该技能
 
-When another agent loads `book-brain`:
+当其他智能体使用`book-brain`时：
+1. **了解其用途**：  
+   - 这只是一个辅助工具和参考指南，不会改变智能体的行为或决策方式；
+   - 它只是提供关于如何管理文件和内存的建议。
+2. **首次使用时**：  
+   - 检查现有的文件夹结构，并向用户反馈；  
+   - 建议使用BOOK BRAIN的文件结构，但不要强制执行；
+   - 在创建或重新组织文件结构之前，请先征得用户同意。
+3. **后续使用时**：  
+   - 阅读现有的`INDEX`和`.ref.txt`文件；  
+   - 在进行耗时的全文件系统搜索之前，先使用这些索引和引用文件；  
+   - 在添加新内容或修改文件时，避免直接覆盖现有文件。
+4. **切勿**在BOOK BRAIN的运行过程中默默地删除或修改大型文件。
 
-1. **Recognize scope**  
-   - This is a **helper + reference**, not a persona.  
-   - It should not change the agent’s voice; it informs how the agent treats files and memory.
-
-2. **On first use in a workspace**  
-   - Inspect existing folders and report back.  
-   - Suggest—but do not enforce—BOOK BRAIN layout.  
-   - Ask the human before creating or reorganizing.
-
-3. **On subsequent uses**  
-   - Read existing `INDEX` and `.ref.txt` files.  
-   - Use them for retrieval before doing expensive full-tree searches.  
-   - Append to logs and indexes instead of overwriting.
-
-4. **Never** silently delete or rewrite large files as part of BOOK BRAIN operations.
-
-For richer examples and sample layouts, see `references/book-brain-examples.md` in this skill.
+更多示例和具体的文件结构布局，请参阅本技能文档中的`references/book-brain-examples.md`。

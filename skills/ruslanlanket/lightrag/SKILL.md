@@ -1,16 +1,16 @@
 ---
 name: lightrag
-description: Search and manage knowledge bases using LightRAG API. Supports multiple servers, context-aware writing, and direct information retrieval. Use when the user wants to query a LightRAG-powered knowledge base or use it as context for tasks.
+description: 使用 LightRAG API 搜索和管理知识库。该 API 支持多服务器环境、上下文感知的写作功能以及直接的信息检索。当用户需要查询由 LightRAG 提供支持的知识库，或将其作为任务执行的上下文信息时，可以使用该 API。
 ---
 
-# LightRAG Skill
+# LightRAG 技能
 
-This skill allows you to interact with one or more LightRAG API servers. You can perform queries in various modes (local, global, hybrid, mix, naive) and use the retrieved context for further processing.
+此技能允许您与一个或多个 LightRAG API 服务器进行交互。您可以在不同的模式下执行查询（本地模式、全局模式、混合模式、简单模式），并使用检索到的上下文数据进行进一步处理。
 
-## Configuration
+## 配置
 
-The skill uses a configuration file at `~/.lightrag_config.json` to store server details.
-Format:
+该技能使用位于 `~/.lightrag_config.json` 的配置文件来存储服务器详细信息。
+格式：
 ```json
 {
   "servers": {
@@ -27,16 +27,16 @@ Format:
 }
 ```
 
-## Workflows
+## 工作流程
 
-### 1. Direct Search
-To find information, use `scripts/query_lightrag.py`.
-Modes: `local`, `global`, `hybrid`, `mix`, `naive`.
+### 1. 直接搜索
+要查找信息，请使用 `scripts/query_lightrag.py`。
+支持的模式：`local`、`global`、`hybrid`、`mix`、`naive`。
 
-### 2. Using Context for Writing
-To use a knowledge base as context (e.g., for a test or article):
-1. Run `query_lightrag.py` with the `--only-context` flag.
-2. Pass the resulting context to your writing task/model.
+### 2. 使用上下文数据进行写作
+要将知识库作为上下文数据使用（例如，用于测试或撰写文章）：
+1. 运行 `query_lightrag.py` 并使用 `--only-context` 标志。
+2. 将生成的上下文数据传递给您的写作任务或模型。
 
-## Reference
-See [API_DOCS.md](references/API_DOCS.md) for endpoint details.
+## 参考资料
+有关端点详情，请参阅 [API_DOCS.md](references/API_DOCS.md)。

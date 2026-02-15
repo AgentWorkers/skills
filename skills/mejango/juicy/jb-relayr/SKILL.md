@@ -1,13 +1,14 @@
 ---
 name: jb-relayr
-description: Relayr API reference for multi-chain transaction bundling. Pay gas on one chain, execute on many. Used for omnichain deployments, cross-chain operations, and meta-transactions.
+description: **Relayr API参考：多链交易捆绑功能**  
+该API支持在一条链上支付交易手续费（即“gas fee”），然后在多条链上同时执行这些交易。它适用于跨链部署、跨链操作以及元交易（meta-transactions）场景。
 ---
 
-# Relayr: Multi-Chain Transaction Bundling
+# Relayr：多链交易打包服务
 
-Relayr is a meta-transaction relay service by 0xBASED that bundles transactions across chains. Users sign transactions for multiple chains, pay gas on one chain, and Relayr relayers execute on all others.
+Relayr 是由 0xBASED 提供的一种元交易中继服务，它能够将多个链上的交易打包在一起。用户可以为多个链签署交易，在一个链上支付手续费，然后 Relayr 会负责在其他链上执行这些交易。
 
-## Overview
+## 概述
 
 ```
 1. User signs ERC2771 forward requests for each target chain
@@ -18,30 +19,30 @@ Relayr is a meta-transaction relay service by 0xBASED that bundles transactions 
 6. Poll for bundle completion status
 ```
 
-## API Base URLs
+## API 基本 URL
 
 ```
 Production API: https://api.relayr.ba5ed.com
 Dashboard: https://relayr.ba5ed.com
 ```
 
-## Authentication
+## 认证
 
-**No API key required.** Relayr is permissionless. Anyone can submit bundles.
+**无需 API 密钥。** Relayr 支持无需权限的访问，任何人都可以提交交易打包请求。
 
 ---
 
-## API Endpoints
+## API 端点
 
-### 1. Create Bundle Quote
+### 1. 创建交易打包请求（Create Bundle Quote）
 
 ```
 POST /v1/bundle/prepaid
 ```
 
-Creates a bundle of transactions and returns payment options.
+该接口用于创建交易打包请求，并返回支付选项。
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "transactions": [
@@ -56,16 +57,16 @@ Creates a bundle of transactions and returns payment options.
 }
 ```
 
-**Fields:**
-| Field | Type | Description |
+**字段：**
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `chain` | number | Target chain ID |
-| `target` | string | Contract to call (usually ERC2771Forwarder) |
-| `data` | string | Encoded calldata |
-| `value` | string | ETH value in wei (usually "0" for meta-txs) |
-| `virtual_nonce_mode` | string | "Disabled" or "Enabled" for sequential ordering |
+| `chain` | 数字 | 目标链的 ID |
+| `target` | 字符串 | 需要调用的合约（通常是 ERC2771Forwarder） |
+| `data` | 字符串 | 编码后的调用数据（calldata） |
+| `value` | 字符串 | 以太坊金额（单位：wei，元交易通常为 "0"） |
+| `virtual_nonce_mode` | 字符串 | "Disabled" 或 "Enabled"（用于指定交易的执行顺序） |
 
-**Response:**
+**响应：**
 ```json
 {
   "bundle_uuid": "550e8400-e29b-41d4-a716-446655440000",
@@ -95,29 +96,29 @@ Creates a bundle of transactions and returns payment options.
 }
 ```
 
-**Response Fields:**
-| Field | Description |
+**响应字段：**
+| 字段 | 描述 |
 |-------|-------------|
-| `bundle_uuid` | Unique identifier for tracking |
-| `payment_info` | Array of payment options (one per supported chain) |
-| `payment_info[].chain` | Chain ID to pay on |
-| `payment_info[].target` | Address to send payment to |
-| `payment_info[].amount` | Wei amount to pay |
-| `payment_info[].calldata` | Transaction data for payment |
-| `per_txn` | Per-transaction details |
-| `txn_uuids` | Array of transaction UUIDs |
+| `bundle_uuid` | 用于追踪的唯一标识符 |
+| `payment_info` | 支付选项数组（每个支持的链对应一个选项） |
+| `payment_info[].chain` | 需要支付的链的 ID |
+| `payment_info[].target` | 支付目标地址 |
+| `payment_info[].amount` | 需要支付的金额（单位：wei） |
+| `payment_info[].calldata` | 用于支付的交易数据 |
+| `per_txn` | 单个交易的详细信息 |
+| `txn_uuids` | 交易 UUID 的数组 |
 
 ---
 
-### 2. Get Bundle Status
+### 2. 获取交易打包请求的状态（Get Bundle Status）
 
 ```
 GET /v1/bundle/{bundle_uuid}
 ```
 
-Poll this endpoint to check execution status.
+通过调用此接口可以查询交易打包请求的执行状态。
 
-**Response:**
+**响应：**
 ```json
 {
   "bundle_uuid": "550e8400-e29b-41d4-a716-446655440000",
@@ -144,35 +145,35 @@ Poll this endpoint to check execution status.
 
 ---
 
-### 3. Get Transaction Status
+### 3. 获取单个交易的状态（Get Transaction Status）
 
 ```
 GET /v1/transaction/{txn_uuid}
 ```
 
-Get status of individual transaction within a bundle.
+用于获取打包请求中某个交易的具体状态。
 
 ---
 
-## Transaction Status Values
+## 交易状态码及其含义
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| `Quoted` | Bundle created, awaiting payment |
-| `PaymentReceived` | Payment confirmed, queued for execution |
-| `Pending` | Transaction submitted, awaiting confirmation |
-| `Success` | Transaction confirmed on-chain |
-| `Completed` | Alias for Success |
-| `Failed` | Transaction reverted |
-| `Expired` | Payment not received within deadline (48h) |
+| `Quoted` | 交易打包请求已创建，等待支付 |
+| `PaymentReceived` | 支付已确认，正在排队执行 |
+| `Pending` | 交易已提交，等待确认 |
+| `Success` | 交易已在链上确认 |
+| `Completed` | 与 "Success" 同义 |
+| `Failed` | 交易被回滚 |
+| `Expired` | 支付未在 48 小时内完成 |
 
 ---
 
-## ERC2771 Forward Request Format
+## ERC2771 Forward 请求格式
 
-Relayr uses ERC2771 meta-transactions. The forwarder contract validates signatures and executes calls with the original sender preserved via `_msgSender()`.
+Relayr 使用 ERC2771 元交易机制。Forwarder 合约会验证签名，并在执行交易时保留原始发送者的信息（通过 `_msgSender()` 方法获取）。
 
-### TypedData Domain
+### TypedData 的相关内容
 
 ```javascript
 const domain = {
@@ -183,7 +184,7 @@ const domain = {
 };
 ```
 
-### TypedData Types
+### TypedData 的类型
 
 ```javascript
 const types = {
@@ -199,21 +200,21 @@ const types = {
 };
 ```
 
-### Message Fields
+### 消息字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `from` | address | Original signer address |
-| `to` | address | Target contract to call |
-| `value` | uint256 | ETH to forward (usually 0) |
-| `gas` | uint256 | Gas limit for execution |
-| `nonce` | uint256 | User's forwarder nonce (query from contract) |
-| `deadline` | uint48 | Unix timestamp expiry (max 48 hours from now) |
-| `data` | bytes | Encoded function calldata |
+| `from` | 地址 | 原始签名者的地址 |
+| `to` | 地址 | 需要调用的目标合约 |
+| `value` | uint256 | 需要转发的以太币数量 |
+| `gas` | uint256 | 交易执行的 gas 限制 |
+| `nonce` | uint256 | 用户提供的 nonce 值（从合约中获取） |
+| `deadline` | uint48 | 交易执行的截止时间（从现在起最多 48 小时） |
+| `data` | bytes | 编码后的函数调用数据 |
 
-### Getting the Nonce
+### 获取用户的 nonce 值
 
-Query the forwarder contract for the user's current nonce:
+可以通过调用 Forwarder 合约来获取用户的当前 nonce 值：
 
 ```javascript
 const forwarder = new ethers.Contract(forwarderAddress, [
@@ -225,7 +226,7 @@ const nonce = await forwarder.nonces(userAddress);
 
 ---
 
-## Complete JavaScript Example
+## 完整的 JavaScript 示例
 
 ```javascript
 import { ethers } from 'ethers';
@@ -432,7 +433,7 @@ async function main() {
 
 ---
 
-## RelayrClient Class
+## RelayrClient 类
 
 ```javascript
 class RelayrClient {
@@ -494,41 +495,41 @@ class RelayrClient {
 
 ---
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误类型 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `Quote failed` | Invalid transaction data | Check calldata encoding |
-| `Nonce too low` | Nonce already used | Query fresh nonce from forwarder |
-| `Deadline expired` | Signature expired | Re-sign with new deadline |
-| `Insufficient payment` | Gas price changed | Request new quote |
-| `Transaction reverted` | Contract execution failed | Debug on target chain explorer |
+| `Quote failed` | 交易数据无效 | 检查编码是否正确 |
+| `Nonce too low` | nonce 值已被使用 | 从 Forwarder 合约中重新获取 nonce 值 |
+| `Deadline expired` | 签名失效 | 重新签名并设置新的截止时间 |
+| `Insufficient payment` | 支付金额不足 | 重新请求报价 |
+| `Transaction reverted` | 交易执行失败 | 在目标链上调试问题 |
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Always quote fresh** - Gas prices fluctuate, get a new quote immediately before paying
-2. **Set reasonable gas limits** - Too low causes reverts, too high is expensive
-3. **Use 48-hour deadlines** - Maximum allowed, gives time for execution
-4. **Handle chain switching** - Users may need to switch wallets to pay on different chain
-5. **Poll with backoff** - Start at 2-3s, increase to 10s after 30 seconds
-6. **Verify nonces** - Always query fresh nonce from forwarder contract
-7. **Handle partial failures** - Some chains may succeed while others fail
-
----
-
-## Use Cases
-
-- **Omnichain project deployment** - Deploy Juicebox project to multiple chains at once
-- **Cross-chain configuration** - Update settings across all chains simultaneously
-- **Multi-chain token operations** - Coordinate token actions across networks
-- **Batch transactions** - Execute multiple transactions with single payment
+1. **始终获取最新报价**：Gas 价格会波动，因此在支付前请立即获取最新的报价。
+2. **设置合理的 gas 限制**：过低的 gas 限制可能导致交易回滚，过高的限制则会增加成本。
+3. **使用 48 小时的截止时间**：这是允许的最大时间范围，确保有足够的时间完成交易执行。
+4. **处理链切换**：用户可能需要更换钱包以便在不同的链上支付。
+5. **采用延迟请求机制**：初始请求间隔为 2-3 秒，30 秒后间隔增加到 10 秒。
+6. **验证 nonce 值**：始终从 Forwarder 合约中获取最新的 nonce 值。
+7. **处理部分失败的情况**：某些链可能成功执行，而其他链可能失败。
 
 ---
 
-## Related Skills
+## 使用场景
 
-- `/jb-bendystraw` - Query cross-chain data after deployment
-- `/jb-omnichain-ui` - Build UIs using Relayr
-- `/jb-project` - Project deployment configurations
+- **多链项目部署**：一次性将 Juicebox 项目部署到多个链上。
+- **跨链配置**：同时更新所有链上的设置。
+- **多链代币操作**：协调不同链上的代币操作。
+- **批量交易**：使用一次支付来执行多个交易。
+
+---
+
+## 相关技能
+
+- `/jb-bendystraw`：用于部署后查询跨链数据。
+- `/jb-omnichain-ui`：使用 Relayr 构建用户界面。
+- `/jb-project`：项目部署的相关配置。

@@ -1,51 +1,51 @@
 ---
 name: openclaw-trakt
-description: Track and recommend TV shows and movies using Trakt.tv. Use when the user asks for show/movie recommendations, wants to track what they're watching, check their watchlist, or get personalized suggestions based on their viewing history. Requires Trakt.tv account with Pro subscription for full functionality.
+description: 使用 Trakt.tv 来跟踪和推荐电视剧及电影。当用户请求节目/电影推荐、想要查看自己正在观看的内容、查看自己的观看列表，或根据观看历史获得个性化建议时，可以使用该服务。请注意：要使用全部功能，需要拥有 Trakt.tv 的 Pro 订阅账户。
 ---
 
-# Trakt.tv Integration for OpenClaw
+# OpenClaw 的 Trakt.tv 集成
 
-Integrate with Trakt.tv to track watch history and provide personalized show/movie recommendations.
+通过集成 Trakt.tv，您可以追踪用户的观看历史，并获得个性化的剧集/电影推荐。
 
-**📚 Trakt API Documentation:** <https://trakt.docs.apiary.io/>
+**📚 Trakt API 文档：** <https://trakt.docs.apiary.io/>
 
-## First-Time Setup Required
+## 首次设置要求
 
-**Before using this skill, run the interactive setup:**
+**在使用此功能之前，请运行交互式设置程序：**
 
-### Automated Setup (Recommended)
+### 自动设置（推荐）
 ```bash
 python3 scripts/setup.py
 ```
 
-This will guide you through:
-1. Installing dependencies
-2. Creating a Trakt application
-3. Configuring credentials
-4. Authenticating with PIN
-5. Testing the integration
+该程序将指导您完成以下步骤：
+1. 安装所需依赖项
+2. 创建 Trakt 应用程序
+3. 配置凭证
+4. 通过 PIN 进行身份验证
+5. 测试集成效果
 
-### Manual Setup
-If automated setup doesn't work, follow the manual steps in the Setup section below.
+### 手动设置
+如果自动设置失败，请按照下面的手动步骤进行操作。
 
-### Interactive Setup for OpenClaw
-When a user asks to "install Trakt" or "set up Trakt integration," OpenClaw should:
-1. Read `INSTALL.md` for detailed interactive flow
-2. Or run `python3 scripts/setup.py` and guide user through prompts
+### OpenClaw 的交互式设置
+当用户请求“安装 Trakt”或“设置 Trakt 集成”时，OpenClaw 应该：
+1. 读取 `INSTALL.md` 文件以获取详细的交互式操作流程
+2. 或者运行 `python3 scripts/setup.py` 并根据提示指导用户完成设置
 
 ---
 
-## Features
+## 功能
 
-- Track watch history (automatically synced by Trakt from streaming services)
-- Get personalized recommendations based on viewing habits
-- Access user watchlists and collections
-- Search for shows and movies
-- View trending content
+- 自动追踪用户的观看历史（Trakt 会从流媒体服务同步这些数据）
+- 根据用户的观看习惯提供个性化推荐
+- 访问用户的观看列表和收藏夹
+- 搜索剧集和电影
+- 查看热门内容
 
-## Prerequisites
+## 先决条件
 
-1. **Python dependencies:**
+1. **Python 依赖项：**
    ```bash
    # Install via pip (with --break-system-packages if needed)
    pip3 install requests
@@ -55,34 +55,34 @@ When a user asks to "install Trakt" or "set up Trakt integration," OpenClaw shou
    source ~/.openclaw-venv/bin/activate
    pip install requests
    ```
-   
-   Alternatively, install via Homebrew if available:
+
+   或者，如果可用，可以通过 Homebrew 安装：
    ```bash
    brew install python-requests
    ```
 
-2. **Trakt.tv account** with Pro subscription (required for automatic watch tracking)
+2. **Trakt.tv 账户**（需订阅 Pro 订阅才能自动追踪观看记录）
 
-3. **Trakt API application** - Create at <https://trakt.tv/oauth/applications>
+3. **Trakt API 应用程序** - 在 <https://trakt.tv/oauth/applications> 创建
 
-4. **Configuration file:** `~/.openclaw/trakt_config.json` (see setup below)
+4. **配置文件：`~/.openclaw/trakt_config.json`（请参见下面的设置说明）
 
-## Setup
+## 设置
 
-### 1. Create Trakt Application
+### 1. 创建 Trakt 应用程序
 
-1. Visit <https://trakt.tv/oauth/applications>
-2. Click "New Application"
-3. Fill in the form:
-   - Name: "OpenClaw Assistant"
-   - Description: "Personal AI assistant integration"
-   - Redirect URI: `urn:ietf:wg:oauth:2.0:oob` (for PIN auth)
-   - Permissions: Check all that apply
-4. Save and note your Client ID and Client Secret
+1. 访问 <https://trakt.tv/oauth/applications>
+2. 点击“新建应用程序”
+3. 填写表单：
+   - 名称：OpenClaw Assistant
+   - 描述：个人 AI 助手集成
+   - 重定向 URI：`urn:ietf:wg:oauth:2.0:oob`（用于 PIN 验证）
+   - 权限：勾选所有适用的权限
+4. 保存并记下您的客户端 ID（Client ID）和客户端密钥（Client Secret）
 
-### 2. Create Configuration File
+### 2. 创建配置文件
 
-Create `~/.openclaw/trakt_config.json` with your credentials:
+创建 `~/.openclaw/trakt_config.json` 文件，并填写您的凭证：
 
 ```json
 {
@@ -93,130 +93,129 @@ Create `~/.openclaw/trakt_config.json` with your credentials:
 }
 ```
 
-Replace `YOUR_CLIENT_ID_HERE` and `YOUR_CLIENT_SECRET_HERE` with your actual values from step 1.
+将 `YOUR_CLIENT_ID_HERE` 和 `YOUR_CLIENT_SECRET_HERE` 替换为步骤 1 中的实际值。
 
-**Note:** Leave `access_token` and `refresh_token` empty - they'll be filled automatically after authentication.
+**注意：** `access_token` 和 `refresh_token` 可以留空——它们会在身份验证后自动填充。
 
-### 3. Authenticate
+### 3. 身份验证
 
-Run the authentication script:
+运行身份验证脚本：
 
 ```bash
 python3 scripts/trakt_client.py auth
 ```
 
-This will output a PIN URL. Visit it, authorize the app, and run:
+该脚本会生成一个 PIN 验证链接。访问该链接，完成授权后，运行以下命令：
 
 ```bash
 python3 scripts/trakt_client.py auth <PIN>
 ```
 
-Authentication tokens are saved to `~/.openclaw/trakt_config.json`
+身份验证令牌将保存到 `~/.openclaw/trakt_config.json` 文件中。
 
-## Usage
+## 使用方法
 
-### Get Recommendations
+### 获取推荐
 
-When a user asks for show/movie recommendations:
+当用户请求剧集/电影推荐时：
 
 ```bash
 python3 scripts/trakt_client.py recommend
 ```
 
-This returns personalized recommendations based on the user's watch history and ratings.
+系统会根据用户的观看历史和评分返回个性化推荐。
 
-### Check Watch History
+### 查看观看历史
 
 ```bash
 python3 scripts/trakt_client.py history
 ```
 
-Returns the user's recent watch history.
+显示用户最近的观看记录。
 
-### View Watchlist
+### 查看观看列表
 
 ```bash
 python3 scripts/trakt_client.py watchlist
 ```
 
-Shows content the user has saved to watch later.
+显示用户保存的、待观看的剧集内容。
 
-### Search
+### 搜索
 
 ```bash
 python3 scripts/trakt_client.py search "Breaking Bad"
 ```
 
-Search for specific shows or movies.
+搜索特定的剧集或电影。
 
-### Trending Content
+### 热门内容
 
 ```bash
 python3 scripts/trakt_client.py trending
 ```
 
-Get currently trending shows and movies.
+获取当前的热门剧集和电影列表。
 
-## Recommendation Workflow
+## 推荐工作流程
 
-When a user asks "What should I watch?" or similar:
+当用户询问“我应该看什么？”时：
 
-1. **Get personalized recommendations:**
+1. **获取个性化推荐：**
    ```bash
    python3 scripts/trakt_client.py recommend
    ```
 
-2. **Parse the results** and present them naturally:
-   - Show title, year, rating
-   - Brief description/genre
-   - Why it's recommended (if available)
+2. **解析推荐结果**并以自然的方式展示：
+   - 显示剧集名称、年份、评分
+   - 简短描述/类型
+   - 推荐理由（如果有的话）
 
-3. **Optionally check watchlist** to avoid suggesting shows they already plan to watch
+3. **可选：检查用户的观看列表**，避免推荐用户已经计划观看的剧集
+4. **参考最近的历史记录**，避免重复推荐最近观看过的内容
 
-4. **Consider recent history** to avoid re-suggesting recently watched content
+## API 参考
 
-## API Reference
+详细了解 Trakt API 的端点文档，请参阅 `references/api.md`。
 
-See `references/api.md` for detailed Trakt API endpoint documentation.
+## 常见使用场景
 
-## Common Use Cases
+**“我今晚应该看什么？”**
+- 获取推荐，可根据心情或类型进行筛选
+- 如果用户喜欢热门内容，可以查看热门推荐
 
-**"What should I watch tonight?"**
-- Get recommendations, filter by mood/genre if specified
-- Check trending if user wants something popular
+**“将 [剧集] 添加到我的观看列表”**
+- 搜索剧集
+- 将剧集添加到 Trakt 的观看列表（需要实现额外的 API 功能）
 
-**"Add [show] to my watchlist"**
-- Search for the show
-- Add to Trakt watchlist (requires additional endpoint implementation)
+**“我最近看了什么？”**
+- 获取观看历史记录
+- 总结用户最近观看的剧集/电影
 
-**"What have I been watching lately?"**
-- Get watch history
-- Summarize recent shows/movies
+**“[剧集] 是热门的吗？”**
+- 获取热门剧集列表
+- 搜索特定的剧集
 
-**"Is [show] trending?"**
-- Get trending list
-- Search for specific show
+## 限制
 
-## Limitations
+- 需要 Trakt Pro 订阅才能自动从流媒体服务追踪观看记录
+- 随着观看历史的积累，推荐效果会逐渐改善
+- API 有请求限制：每 5 分钟最多 1000 次请求（已认证用户）
+- 完整的 API 文档：<https://trakt.docs.apiary.io/>
 
-- Trakt Pro subscription required for automatic watch tracking from streaming services
-- Recommendations improve over time as watch history grows
-- API rate limits apply: 1000 requests per 5 minutes (authenticated)
-- Full API documentation: <https://trakt.docs.apiary.io/>
+## 故障排除
 
-## Troubleshooting
+**“身份验证失败”**
+- 确保 `~/.openclaw/trakt_config.json` 中的 CLIENT_ID 和 CLIENT_SECRET 设置正确
+- 确认 PIN 验证码准确无误（区分大小写）
+- 检查 Trakt 应用程序是否具有正确的权限
 
-**"Authentication failed"**
-- Verify CLIENT_ID and CLIENT_SECRET are set correctly in `~/.openclaw/trakt_config.json`
-- Ensure PIN is copied accurately (case-sensitive)
-- Check that your Trakt application has proper permissions
+**“没有返回推荐”**
+- 用户可能还没有足够的观看记录
+- 可以尝试查看热门内容
+- 确保用户已在 Trakt 上对某些内容进行了评分
 
-**"No recommendations returned"**
-- User may not have enough watch history yet
-- Try falling back to trending content
-- Ensure user has rated some content on Trakt
-
-**"API request failed"**
-- Check authentication token hasn't expired
-- Verify network connectivity
-- Check Trakt API status: https://status.trakt.tv
+**“API 请求失败”**
+- 检查身份验证令牌是否过期
+- 确认网络连接正常
+- 查看 Trakt API 的状态：https://status.trakt.tv

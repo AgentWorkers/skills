@@ -1,25 +1,24 @@
 ---
 slug: "duration-prediction"
 display_name: "Duration Prediction"
-description: "Predict project duration using k-NN and regression. Estimate timeline based on similar historical projects."
+description: "使用 k-NN（k-近邻算法）和回归分析来预测项目持续时间。根据类似的历史项目来估算项目的时间线。"
 ---
 
-# Duration Prediction
+# 项目持续时间预测
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-Project duration estimation challenges:
-- Subjective expert estimates
-- Lack of historical benchmarking
-- Inaccurate early-stage predictions
-- Difficulty comparing similar projects
+### 问题描述
+项目持续时间估算面临以下挑战：
+- 专家的估算具有主观性
+- 缺乏历史数据作为基准
+- 早期阶段的预测不准确
+- 难以比较类似的项目
 
-### Solution
-Machine learning-based duration prediction using k-Nearest Neighbors and regression models trained on historical project data.
+### 解决方案
+使用基于机器学习的预测方法，通过 k-最近邻（k-Nearest Neighbors）算法和回归模型（regression models），并结合历史项目数据进行训练，以实现项目持续时间的预测。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -347,8 +346,7 @@ class DurationPredictor:
         return pd.DataFrame(data)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Create predictor
 predictor = DurationPredictor()
@@ -382,9 +380,9 @@ print(f"Confidence interval: {result.confidence_interval}")
 print(f"Similar projects: {result.similar_projects}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Compare Models
+### 1. 模型比较
 ```python
 knn_result = predictor.predict(new_project, ModelType.KNN)
 weighted_result = predictor.predict(new_project, ModelType.WEIGHTED_KNN)
@@ -395,20 +393,20 @@ print(f"Weighted k-NN: {weighted_result.predicted_duration}")
 print(f"Regression: {regression_result.predicted_duration}")
 ```
 
-### 2. Model Evaluation
+### 2. 模型评估
 ```python
 metrics = predictor.evaluate_model(test_data, ModelType.WEIGHTED_KNN)
 print(f"MAE: {metrics['mae']} days")
 print(f"MAPE: {metrics['mape']}%")
 ```
 
-### 3. Find Similar Projects
+### 3. 寻找类似项目
 ```python
 similar = predictor.get_similar_projects(new_project, n=5)
 print(similar)
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.5 - Future: Predictions and Machine Learning
-- **scikit-learn**: https://scikit-learn.org/
-- **Website**: https://datadrivenconstruction.io
+## 资源参考
+- **DDC 书籍**：第 4.5 章 - 未来：预测与机器学习（Future: Predictions and Machine Learning）
+- **scikit-learn**：https://scikit-learn.org/
+- **官方网站**：https://datadrivenconstruction.io

@@ -1,37 +1,71 @@
 ---
 name: swift-concurrency-expert
-description: Swift Concurrency review and remediation for Swift 6.2+. Use when asked to review Swift Concurrency usage, improve concurrency compliance, or fix Swift concurrency compiler errors in a feature or file.
+description: **Swift 并发审查与修复（适用于 Swift 6.2 及更高版本）**  
+当需要审查 Swift 代码中的并发实现、提升代码的并发合规性，或修复特定功能或文件中的并发编译错误时，可参考本指南。  
+
+**主要用途：**  
+- 审查 Swift 代码中的并发逻辑，确保其符合最佳实践；  
+- 优化并发代码的性能和稳定性；  
+- 解决因并发问题导致的编译错误或运行时异常。  
+
+**适用场景：**  
+- 开发人员在进行代码审查时；  
+- 团队协作中，用于代码质量提升；  
+- 在修复特定功能或模块中的并发相关问题时。  
+
+**具体步骤：**  
+1. **理解并发基础**：  
+   - 熟悉 Swift 的并发模型（如线程、协程、GCD 等）；  
+   - 了解常见的并发错误及其原因。  
+
+2. **代码审查**：  
+   - 检查代码中是否存在并发相关的错误或潜在风险；  
+   - 评估并发逻辑的效率和可维护性；  
+   - 提出改进建议。  
+
+3. **修复问题**：  
+   - 根据审查结果，修改有问题的代码；  
+   - 测试修复后的代码，确保其正常运行且没有新的并发问题。  
+
+4. **文档记录**：  
+   - 记录所有修改的内容和原因；  
+   - 更新相关文档，以供后续参考。  
+
+**注意事项：**  
+- 并发编程具有较高的复杂性，建议在修改代码前充分理解其原理；  
+- 在处理并发问题时，务必遵循最佳实践和官方文档的建议。  
+
+通过本指南，您将能够更有效地管理和优化 Swift 代码的并发性能，提升软件的质量和稳定性。
 ---
 
-# Swift Concurrency Expert
+# Swift 并发专家
 
-_Attribution: copied from @Dimillian’s `Dimillian/Skills` (2025-12-31)._
+## 来源：复制自 @Dimillian 的 `Dimillian/Skills`（2025-12-31）。
 
-## Overview
+## 概述
 
-Review and fix Swift Concurrency issues in Swift 6.2+ codebases by applying actor isolation, Sendable safety, and modern concurrency patterns with minimal behavior changes.
+通过应用演员隔离（actor isolation）、可发送性（Sendable）安全性和现代并发模式，审查并修复 Swift 6.2 及更高版本代码库中的并发问题，同时尽量减少对代码行为的影响。
 
-## Workflow
+## 工作流程
 
-### 1. Triage the issue
+### 1. 问题分类
 
-- Capture the exact compiler diagnostics and the offending symbol(s).
-- Identify the current actor context (`@MainActor`, `actor`, `nonisolated`) and whether a default actor isolation mode is enabled.
-- Confirm whether the code is UI-bound or intended to run off the main actor.
+- 记录编译器的具体诊断信息以及出现问题的代码位置。
+- 确定当前的演员上下文（`@MainActor`、`actor`、`nonisolated`），以及是否启用了默认的演员隔离模式。
+- 判断代码是用于用户界面（UI）的，还是打算在主演员（main actor）之外运行的。
 
-### 2. Apply the smallest safe fix
+### 2. 采用最小化的安全修复方案
 
-Prefer edits that preserve existing behavior while satisfying data-race safety.
+优先选择能够在保持现有代码行为的同时满足数据竞争安全性的修复方法。
 
-Common fixes:
-- **UI-bound types**: annotate the type or relevant members with `@MainActor`.
-- **Protocol conformance on main actor types**: make the conformance isolated (e.g., `extension Foo: @MainActor SomeProtocol`).
-- **Global/static state**: protect with `@MainActor` or move into an actor.
-- **Background work**: move expensive work into a `@concurrent` async function on a `nonisolated` type or use an `actor` to guard mutable state.
-- **Sendable errors**: prefer immutable/value types; add `Sendable` conformance only when correct; avoid `@unchecked Sendable` unless you can prove thread safety.
+常见的修复方法包括：
+- **用于用户界面的类型**：使用 `@MainActor` 注解来标记该类型或相关成员。
+- **在主演员类型上实现协议**：将协议的实现设置为可隔离的（例如：`extension Foo: @MainActor SomeProtocol`）。
+- **全局/静态状态**：使用 `@MainActor` 来保护这些状态，或者将它们移至特定的演员中。
+- **后台任务**：将耗时的任务放入一个 `@concurrent` 的异步函数中（该函数属于 `nonisolated` 类型），或者使用演员来管理可变状态。
+- **可发送性错误**：优先选择不可变/常量类型的错误；仅在确保线程安全的情况下才添加 `Sendable` 标签；避免使用 `@unchecked Sendable`。
 
+## 参考资料
 
-## Reference material
-
-- See `references/swift-6-2-concurrency.md` for Swift 6.2 changes, patterns, and examples.
-- See `references/swiftui-concurrency-tour-wwdc.md` for SwiftUI-specific concurrency guidance.
+- 查阅 `references/swift-6-2-concurrency.md` 以了解 Swift 6.2 的并发相关变更、模式和示例。
+- 查阅 `references/swiftui-concurrency-tour-wwdc.md` 以获取针对 SwiftUI 的并发指导。

@@ -1,40 +1,40 @@
 ---
 name: drafts
-description: Manage Drafts app notes via CLI on macOS. Create, view, list, edit, append, prepend, and run actions on drafts. Use when a user asks to create a note, list drafts, search drafts, or manage their Drafts inbox. IMPORTANT - Drafts app must be running on macOS for this to work.
+description: 在 macOS 上，可以通过 CLI（命令行接口）来管理 Drafts 应用中的笔记。支持创建、查看、列出、编辑、追加、前置以及执行其他操作。当用户需要创建笔记、列出所有草稿、搜索草稿或管理自己的草稿收件箱时，可以使用此功能。**重要提示**：必须确保 Drafts 应用已在 macOS 上运行，才能使用这些 CLI 命令。
 homepage: https://github.com/nerveband/drafts
 metadata: {"clawdbot":{"emoji":"📋","os":["darwin"],"requires":{"bins":["drafts"]}}}
 ---
 
 # Drafts CLI
 
-Manage [Drafts](https://getdrafts.com) notes from the terminal on macOS.
+通过终端在 macOS 上管理 [Drafts](https://getdrafts.com) 的笔记。
 
-## IMPORTANT REQUIREMENTS
+## 重要要求
 
-> **This CLI ONLY works on macOS with Drafts app running.**
+> **此 CLI 仅适用于运行了 Drafts 应用的 macOS 系统。**
 
-- **macOS only** - Uses AppleScript, will not work on Linux/Windows
-- **Drafts must be RUNNING** - The app must be open for any command to work
-- **Drafts Pro required** - Automation features require Pro subscription
+- **仅支持 macOS** - 该工具基于 AppleScript，无法在 Linux 或 Windows 上使用。
+- **Drafts 必须处于运行状态** - 所有命令只有在 Drafts 应用运行时才能生效。
+- **需要 Drafts Pro 订阅** - 自动化功能需要 Pro 订阅。
 
-If commands fail or hang, first check: `open -a Drafts`
+如果命令执行失败或卡住，请首先检查：`open -a Drafts`
 
-## Setup
+## 安装
 
-Install via Go:
+通过 Go 安装：
 ```bash
 go install github.com/nerveband/drafts/cmd/drafts@latest
 ```
 
-Or build from source:
+或从源代码编译：
 ```bash
 git clone https://github.com/nerveband/drafts
 cd drafts && go build ./cmd/drafts
 ```
 
-## Commands
+## 命令
 
-### Create a Draft
+### 创建笔记
 
 ```bash
 # Simple draft
@@ -50,7 +50,7 @@ drafts create "Urgent reminder" -f
 drafts create "Reference note" -a
 ```
 
-### List Drafts
+### 列出笔记
 
 ```bash
 # List inbox (default)
@@ -69,7 +69,7 @@ drafts list -f all
 drafts list -t mytag
 ```
 
-### Get a Draft
+### 获取笔记内容
 
 ```bash
 # Get specific draft
@@ -79,7 +79,7 @@ drafts get <uuid>
 drafts get
 ```
 
-### Modify Drafts
+### 修改笔记内容
 
 ```bash
 # Prepend text
@@ -92,13 +92,13 @@ drafts append "Added at the end" -u <uuid>
 drafts replace "Completely new content" -u <uuid>
 ```
 
-### Edit in Editor
+### 在编辑器中编辑笔记
 
 ```bash
 drafts edit <uuid>
 ```
 
-### Run Actions
+### 运行自定义操作
 
 ```bash
 # Run action on text
@@ -108,7 +108,7 @@ drafts run "Copy" "Text to copy to clipboard"
 drafts run "Copy" -u <uuid>
 ```
 
-### Get Schema
+### 获取笔记的元数据（schema）
 
 ```bash
 # Full schema for LLM integration
@@ -118,66 +118,35 @@ drafts schema
 drafts schema create
 ```
 
-## Output Format
+## 输出格式
 
-**JSON (default)** - All commands return structured JSON:
-```json
-{
-  "success": true,
-  "data": {
-    "uuid": "ABC123",
-    "content": "Note content",
-    "title": "Note title",
-    "tags": ["tag1", "tag2"],
-    "folder": "inbox"
-  }
-}
-```
+- **JSON（默认）**：所有命令返回结构化的 JSON 数据。
+- **纯文本**：以人类可读的形式输出结果。
 
-**Plain text** - Human-readable output:
-```bash
-drafts list --plain
-```
+## 常见使用场景
 
-## Common Workflows
+- **快速记录**  
+- **每日日志**  
+- **搜索与审阅**
 
-### Quick Capture
-```bash
-drafts create "Remember to call dentist tomorrow" -t reminder
-```
+## 故障排除
 
-### Daily Journal
-```bash
-drafts append "$(date): Completed project review" -u <journal-uuid>
-```
+- **命令执行失败或返回空结果**：
+  1. Drafts 是否正在运行？ → `open -a Drafts`
+  2. 是否使用了 Drafts Pro？ → 自动化功能需要 Pro 订阅。
+  3. 是否获得了必要的系统权限？ → 查看系统设置 > 隐私 > 自动化。
 
-### Search and Review
-```bash
-# List all drafts with a specific tag
-drafts list -t work
+- **命令卡住**：
+  - 检查 Drafts 是否显示了任何对话框或警告信息。
 
-# Get full content of a draft
-drafts get <uuid>
-```
+## 注意事项
 
-## Troubleshooting
+- **仅支持 macOS（基于 AppleScript）**
+- **Drafts 应用必须处于运行状态**
+- **需要 Drafts Pro 订阅**
+- 所有的 UUID 都是由 Drafts 生成的唯一标识符。
+- 标签区分大小写。
 
-**Commands fail or return empty:**
-1. Is Drafts running? → `open -a Drafts`
-2. Is Drafts Pro active? → Automation requires Pro
-3. Permissions granted? → System Settings > Privacy > Automation
+## 版本
 
-**Commands hang:**
-- Check if Drafts is showing a dialog
-
-## Notes
-
-- macOS ONLY (AppleScript-based)
-- Drafts app MUST be running
-- Requires Drafts Pro subscription
-- All UUIDs are Drafts-generated identifiers
-- Tags are case-sensitive
-
-## Version
-
-Latest (from go install)
+最新版本（通过 Go 安装获得）

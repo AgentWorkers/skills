@@ -1,73 +1,72 @@
 ---
 name: Plants
-description: Build a personal plant care system with watering schedules, care logs, and seasonal reminders.
+description: 构建一个个人植物护理系统，该系统具备浇水计划、护理记录以及季节性提醒功能。
 metadata: {"clawdbot":{"emoji":"🌱","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions a plant → create entry with care requirements
-- Track watering and care → remind when due
-- Seasonal prompts → fertilizing, repotting, pruning timing
-- Create `~/plants/` as workspace
+## 核心功能  
+- 当用户提到某种植物时，系统会创建包含其养护要求的记录。  
+- 系统会跟踪植物的浇水及养护情况，并在需要时发出提醒。  
+- 根据季节变化提供相应的养护建议（如施肥、换盆、修剪等）。  
+- 用户的工作区为 `~/plants/` 文件夹。  
 
-## When User Adds a Plant
-- Name (common and scientific if known)
-- Location: room, windowsill, outdoor
-- Light conditions: direct sun, bright indirect, low light
-- Acquired date: helps track age and growth
-- Photo: visual reference for health comparison
+## 用户添加植物时的操作流程  
+- 输入植物的名称（包括通用名和学名，如果已知的话）。  
+- 选择植物的放置位置（房间、窗台或室外）。  
+- 选择光照条件（直射阳光、明亮的散射光或弱光）。  
+- 输入植物的购买日期（有助于记录植物的生长情况）。  
+- 上传植物的照片（便于后续查看植物的健康状况）。  
 
-## Plant File Structure
-One file per plant: `pothos-living-room.md`
-- Basic info: name, species, location
-- Care requirements: water, light, humidity, temperature
-- Care log: dated entries of watering, fertilizing, issues
-- Notes: quirks, observations, what works
+## 植物文件结构  
+每种植物对应一个文件，例如：`pothos-living-room.md`。  
+文件内容包括：  
+- 基本信息（名称、品种、放置位置）。  
+- 养护要求（浇水频率、光照需求、湿度要求、温度范围）。  
+- 养护记录（包括每次浇水的日期、施肥情况以及遇到的问题）。  
+- 备注（植物的特殊习性、观察结果以及有效的养护方法）。  
 
-## Watering Tracking
-- Log date when watered
-- Note method: thorough soak, light water, bottom watering
-- Track frequency that works — adjust by season
-- "Last watered 5 days ago" surfacing when asked
+## 浇水记录  
+- 记录每次浇水的日期和方式（如彻底浇透、少量浇水或从底部浇水）。  
+- 根据季节调整浇水频率。  
+- 当用户询问时，系统会显示“上次浇水时间”。  
 
-## Watering Reminders
-- Calculate based on plant type and last watering
-- Succulents: 10-14 days
-- Tropicals: 5-7 days
-- Adjust by season — less in winter, more in summer
-- Group plants by watering day to simplify routine
+## 浇水提醒  
+- 根据植物类型和上次浇水时间自动计算下一次浇水的建议时间：  
+  - 多肉植物：10–14天一次。  
+  - 热带植物：5–7天一次。  
+  - 冬季减少浇水频率，夏季适当增加。  
+- 将植物按浇水日期分组，以便更轻松地管理养护流程。  
 
-## Seasonal Care Calendar
-- Spring: repotting season, increase watering, start fertilizing
-- Summer: peak growth, watch for pests, more frequent water
-- Fall: reduce fertilizing, prepare for dormancy
-- Winter: reduce watering, no fertilizing, watch for dry air
+## 季节性养护日历  
+- 春季：换盆季节，增加浇水频率并开始施肥。  
+- 夏季：植物生长旺盛，需注意病虫害，增加浇水次数。  
+- 秋季：减少施肥，为植物进入休眠期做准备。  
+- 冬季：减少浇水，避免施肥，并注意空气干燥。  
 
-## Problem Tracking
-- Yellow leaves, brown tips, pests → log with photo
-- What was tried, what worked
-- Build knowledge base per plant species
-- "Last time pothos had yellow leaves, I reduced watering"
+## 问题记录与处理  
+- 当植物出现黄叶、叶尖枯萎或病虫害等问题时，需记录详细情况并附上照片。  
+- 记录尝试过的养护方法以及哪些方法有效。  
+- 为每种植物建立知识库，以便日后参考（例如：“上次绿萝叶子发黄时，我减少了浇水频率”。）  
 
-## Fertilizing Schedule
-- Track last fertilizing date
-- Most houseplants: monthly during growing season
-- Remind when due based on plant type
-- Note which fertilizer used
+## 施肥计划  
+- 记录上次施肥的日期。  
+- 大多数室内植物在生长季节需每月施肥一次。  
+- 根据植物类型自动提醒下一次施肥时间。  
+- 记录使用的肥料类型。  
 
-## Repotting Log
-- When repotted: date, pot size, soil mix used
-- Next repotting estimate: usually 1-2 years
-- Signs to watch: roots circling, water runs straight through
+## 换盆记录  
+- 记录换盆的日期、新花盆的尺寸以及使用的土壤类型。  
+- 预计下次换盆的时间（通常为1–2年）。  
+- 注意换盆的迹象（如根系缠绕或水容易从新花盆中流出）。  
 
-## Progressive Enhancement
-- Week 1: add plants as they come up
-- Week 2: start logging watering
-- Month 2: add care requirements, set reminders
-- Month 3: seasonal calendar integration
-- Ongoing: photo log for growth tracking
+## 持续改进  
+- 第1周：新植物加入后立即开始记录其养护情况。  
+- 第2周：开始记录浇水情况。  
+- 第3个月：添加养护要求并设置浇水提醒。  
+- 第4个月：将季节性养护提醒整合到系统中。  
+- 随后持续添加照片以跟踪植物的生长情况。  
 
-## Folder Structure
+## 文件夹结构  
 ```
 ~/plants/
 ├── indoor/
@@ -76,39 +75,35 @@ One file per plant: `pothos-living-room.md`
 ├── outdoor/
 ├── wishlist.md
 └── care-calendar.md
-```
+```  
 
-## Photo Tracking
-- Periodic photos show growth over time
-- Before/after for problem resolution
-- Reference for "is this normal for this plant?"
-- Store in plant folder or link from file
+## 照片管理  
+- 定期拍摄植物照片，以展示植物的生长变化。  
+- 通过前后对比照片来判断植物是否健康（例如：“这种植物的叶子变黄是否正常？”）。  
+- 照片可以存储在植物对应的文件夹中，或通过链接直接从文件中查看。  
 
-## Propagation Tracking
-- Parent plant reference
-- Date started
-- Method: cutting, division, seeds
-- Progress log until established
+## 繁殖记录  
+- 记录植物的繁殖方式（如扦插、分株或播种）。  
+- 记录繁殖过程中的进展，直到植物成功生长。  
 
-## Plant Death / Removal
-- Don't delete — move to archive
-- Note cause if known: overwatering, pests, neglect
-- Lessons learned for future
-- "RIP monstera, root rot from overwatering winter 2024"
+## 植物死亡或移除的处理  
+- 不要直接删除相关文件，而是将其移至“存档”文件夹。  
+- 如果知道植物死亡的原因（如浇水过多、病虫害或疏于照料），请记录下来，作为未来的参考。  
+- 例如：“2024年冬季，绿萝因浇水过多而死亡。”  
 
-## What NOT To Suggest
-- Complex apps before files work
-- Automated watering systems — manual observation is valuable
-- Over-precise schedules — plants aren't machines
-- Guilt about plant deaths — it happens, learn and move on
+## 不建议的做法  
+- 在文件系统完善之前，不建议使用复杂的养护应用程序。  
+- 不建议使用自动浇水系统——人工观察更为重要。  
+- 不要过度依赖精确的浇水计划——植物并非机器。  
+- 对植物死亡感到内疚是正常的，但要从中学到经验并继续照顾其他植物。  
 
-## Common Questions to Handle
-- "When did I last water the fiddle leaf?" → check log
-- "Why is my pothos drooping?" → suggest common causes
-- "What plants are good for low light?" → recommendations from knowledge
-- "Time to repot anything?" → check repotting dates
+## 常见问题的解答  
+- “我上次是什么时候给绿萝浇水的？” → 查看养护记录。  
+- “为什么我的绿萝叶子下垂了？” → 提供可能的常见原因。  
+- “哪些植物适合在弱光环境下生长？” → 根据知识库给出推荐。  
+- “什么时候该给植物换盆？” → 查看换盆的日期。  
 
-## Integration Points
-- Habits: "water plants" as recurring habit
-- Calendar: seasonal care reminders
-- Shopping: fertilizer, pots, soil when needed
+## 系统集成点  
+- 将“浇水植物”设置为定期执行的操作。  
+- 通过日历功能提供季节性养护提醒。  
+- 根据需要提醒用户购买肥料、花盆和土壤。

@@ -1,19 +1,66 @@
 ---
 name: ai-proposal-generator
-description: Generate professional HTML proposals from meeting notes. Features 5 proposal styles (Corporate, Entrepreneur, Creative, Consultant, Minimal), 6+ color themes, and a Design Wizard for custom templates. Triggers on "create proposal", "proposal for [client]", "proposal wizard", "proposal from [notes]", "show proposal styles", "finalize proposal". Integrates with ai-meeting-notes for context. Outputs beautiful, responsive HTML ready to send or export as PDF.
+description: **将会议记录转换为专业的HTML提案工具**
+
+- **主要功能：**  
+  - 从会议记录自动生成HTML提案  
+  - 支持5种提案样式（企业风格、创业风格、创意风格、咨询风格、极简风格）  
+  - 提供6种以上的颜色主题供选择  
+  - 内置设计向导，可自定义提案模板  
+  - 支持以下操作指令：`create proposal`、`proposal for [client]`、`proposal wizard`、`proposal from [notes]`、`show proposal styles`、`finalize proposal`  
+  - 与`ai-meeting-notes`集成，以便获取会议背景信息  
+  - 生成的HTML页面美观且响应式，可直接发送或导出为PDF格式  
+
+**核心特性：**  
+1. **多风格提案生成：**  
+   - 根据用户需求选择不同的提案风格（企业、创业、创意、咨询或极简），确保提案符合专业形象。  
+
+2. **丰富的颜色选项：**  
+   - 提供多种颜色主题，让用户能够轻松定制提案的外观。  
+
+3. **智能模板设计：**  
+   - 内置设计向导，帮助用户快速创建个性化的提案模板。  
+
+4. **高效内容整合：**  
+   - 支持从会议记录中提取关键信息并自动整合到提案中。  
+
+5. **实时数据更新：**  
+   - 当用户执行相关操作（如创建提案、查看提案样式等）时，系统会实时更新界面内容。  
+
+6. **AI辅助：**  
+   - 与`ai-meeting-notes`集成，自动获取会议背景信息，提升提案的完整性和准确性。  
+
+7. **美观的响应式设计：**  
+   - 生成的HTML页面具有良好的响应式设计，适应不同设备和屏幕尺寸。  
+
+8. **便捷的导出功能：**  
+   - 支持将提案直接导出为PDF格式，方便用户分享或存档。  
+
+**使用场景：**  
+- 适用于企业、创业团队、咨询公司等需要高效生成专业提案的场景。  
+
+**技术实现：**  
+- 使用Python、HTML、CSS、JavaScript等前端技术进行开发，确保用户界面的友好性和性能。  
+- 利用AI技术（如自然语言处理）辅助内容提取和模板生成。  
+
+**示例操作：**  
+- 用户可以通过`create proposal`命令开始创建新的提案。  
+- 选择合适的提案风格和颜色主题后，使用设计向导快速设计提案模板。  
+- 系统会自动从会议记录中提取相关信息并填充到提案中。  
+- 完成提案后，可以直接发送或导出为PDF格式。
 ---
 
-# AI Proposal Generator
+# 人工智能提案生成器
 
-Generate professional, beautifully-designed HTML proposals from meeting notes in minutes.
+该工具能够从会议记录中快速生成专业且设计精美的HTML提案。
 
-## System Overview
+## 系统概述
 
 ```
 Meeting Notes + Your Template + Color Theme = Professional HTML Proposal
 ```
 
-## File Locations
+## 文件位置
 
 ```
 proposals/
@@ -38,74 +85,73 @@ proposals/
 └── SERVICES.md          ← User's pricing/packages
 ```
 
-## Trigger Phrases
+## 触发语句
 
-| Phrase | Action |
+| 语句 | 操作 |
 |--------|--------|
-| `"create proposal for [client]"` | Generate proposal, pull from recent meeting notes |
-| `"proposal from [file]"` | Generate from specific meeting notes file |
-| `"proposal wizard"` | Launch Design Wizard to create/customize template |
-| `"show proposal styles"` | Display all 5 styles with descriptions |
-| `"show color themes"` | Display all color themes with previews |
-| `"change style to [x]"` | Switch proposal style |
-| `"change theme to [x]"` | Switch color theme |
-| `"preview proposal"` | Show current draft |
-| `"edit [section]"` | Modify specific section |
-| `"finalize proposal"` | Generate final HTML |
-| `"export pdf"` | Convert HTML to PDF |
+| `"为[客户名称]创建提案"` | 生成提案，从最近的会议记录中提取信息 |
+| `"从[文件名称]生成提案"` | 从指定的会议记录文件中生成提案 |
+| `"提案向导"` | 启动设计向导以创建/自定义提案模板 |
+| `"显示提案样式"` | 显示所有5种提案样式及其描述 |
+| `"显示颜色主题"` | 显示所有颜色主题及其预览 |
+| `"将样式更改为[x]"` | 更改提案样式 |
+| `"将主题更改为[x]"` | 更改颜色主题 |
+| `"预览提案"` | 显示当前草稿 |
+| `"编辑[部分]"` | 修改特定部分 |
+| `"完成提案"` | 生成最终的HTML文件 |
+| `"导出PDF"` | 将HTML文件转换为PDF格式 |
 
-## Proposal Styles
+## 提案样式
 
-### 1. Corporate
-**Tone:** Formal, structured, trust-building
-**Best for:** Enterprise clients, B2B, government, large organizations
-**Sections:** Cover Page, Executive Summary, Company Overview, Understanding Your Needs, Proposed Solution, Methodology, Project Team, Timeline, Investment, Terms, Appendix
+### 1. **企业风格**
+**语气：** 正式、结构清晰、建立信任
+**适合对象：** 企业客户、B2B业务、政府机构、大型组织
+**包含部分：** 封面页、执行摘要、公司概况、了解客户需求、提出的解决方案、方法论、项目团队、时间线、投资信息、条款、附件
 
-### 2. Entrepreneur
-**Tone:** Bold, direct, action-oriented
-**Best for:** Startups, SMBs, fast-moving founders
-**Sections:** The Problem, The Solution, What You Get, How It Works, Investment, Why Us, Let's Go
+### 2. **创业风格**
+**语气：** 简洁直接、注重行动
+**适合对象：** 初创企业、小型企业、行动迅速的创始人
+**包含部分：** 问题分析、解决方案、您将获得的好处、工作原理、投资信息、选择我们的理由、下一步行动
 
-### 3. Creative
-**Tone:** Visual, modern, portfolio-focused
-**Best for:** Agencies, designers, marketing, creative services
-**Sections:** The Vision, Your Challenges, Our Approach, The Work, Case Studies, Timeline, Investment, The Team, Next Steps
+### 3. **创意风格**
+**语气：** 视觉化、现代感强、注重作品集展示
+**适合对象：** 广告机构、设计师、营销团队、创意服务提供商
+**包含部分：** 愿景描述、您面临的挑战、我们的解决方案、项目案例、时间线、投资信息、团队介绍、下一步计划
 
-### 4. Consultant
-**Tone:** Professional, advisory, expertise-led
-**Best for:** Coaches, consultants, advisors, professional services
-**Sections:** Situation Analysis, Key Challenges, Recommendations, Engagement Options, Expected Outcomes, Credentials, Investment, Next Steps
+### 4. **咨询风格**
+**语气：** 专业、提供咨询建议、强调专业知识
+**适合对象：** 教练、咨询顾问、专业服务提供者
+**包含部分：** 情况分析、主要挑战、建议方案、合作方式、预期成果、资质信息、投资要求、下一步行动
 
-### 5. Minimal
-**Tone:** Clean, simple, no-fluff
-**Best for:** Freelancers, small projects, retainers, quick quotes
-**Sections:** Project Overview, Scope, Timeline, Investment, Terms, Accept
+### 5. **极简风格**
+**语气：** 简洁明了、去除冗余
+**适合对象：** 自由职业者、小型项目、长期合作客户、快速报价需求
+**包含部分：** 项目概述、项目范围、时间线、投资信息、条款、确认合作
 
-## Color Themes
+## 颜色主题
 
-| Theme | Primary | Accent | Background | Vibe |
+| 主题 | 主色调 | 辅色调 | 背景色 | 氛围 |
 |-------|---------|--------|------------|------|
-| **Ocean Blue** | `#0ea5e9` | `#0284c7` | Light | Professional, trustworthy |
-| **Ember Orange** | `#ff6b35` | `#ff8c42` | Light/Dark | Bold, energetic |
-| **Forest Green** | `#22c55e` | `#16a34a` | Light | Growth, natural |
-| **Slate Dark** | `#1e293b` | `#475569` | Dark | Modern, sophisticated |
-| **Royal Purple** | `#8b5cf6` | `#7c3aed` | Light | Creative, premium |
-| **Trust Navy** | `#1e3a5f` | `#2563eb` | Light | Corporate, established |
+| **海洋蓝** | `#0ea5e9` | `#0284c7` | 浅色调 | 专业、值得信赖 |
+| **火焰橙** | `#ff6b35` | `#ff8c42` | 浅/深色调 | 强烈、充满活力 |
+| **森林绿** | `#22c55e` | `#16a34a` | 浅色调 | 代表成长与自然 |
+| **板岩深蓝** | `#1e293b` | `#475569` | 深色调 | 现代感强、优雅 |
+| **皇家紫** | `#8b5cf6` | `#7c3aed` | 浅色调 | 具有创意、高端感 |
+| **信任海军蓝** | `#1e3a5f` | `#2563eb` | 浅色调 | 企业风格、稳重 |
 
-## Design Wizard
+## 设计向导
 
-Triggered by `"proposal wizard"` — 6-step guided template creation:
+通过执行 `"提案向导"` 可以创建提案模板，整个过程分为6个步骤：
+- **步骤1：** 选择企业类型（机构、咨询、技术、自由职业者、其他）
+- **步骤2：** 选择典型客户（企业、小型企业、初创企业、个人或混合类型）
+- **步骤3：** 选择语气（正式、友好、简洁或强烈）
+- **步骤4：** 从12个选项中多选部分内容
+- **步骤5：** 根据用户选择推荐合适的提案风格或允许用户自行选择
+- **步骤6：** 从6种颜色主题中选择或自定义颜色主题
 
-**Step 1 — Business Type:** Agency, Consulting, Tech, Freelance, Professional, Other
-**Step 2 — Typical Clients:** Enterprise, SMB, Startups, Individuals, Mix
-**Step 3 — Tone:** Formal, Friendly, Bold, Minimal
-**Step 4 — Sections:** Multi-select from 12 options
-**Step 5 — Style:** Recommend based on answers or let user choose
-**Step 6 — Color Theme:** Select from 6 themes or custom
+生成的定制模板将保存在 `proposals/templates/custom/[名称].md` 文件夹中。
 
-Output: Saves custom template to `proposals/templates/custom/[name].md`
-
-### Wizard Output Format
+### 向导输出格式
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ TEMPLATE CREATED
@@ -119,15 +165,15 @@ Output: Saves custom template to `proposals/templates/custom/[name].md`
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-## Proposal Generation
+## 提案生成流程
 
-### Step 1: Gather Context
-1. Search `meeting-notes/` for client name
-2. Check `MEMORY.md` for client history
-3. Load `proposals/SERVICES.md` for pricing
-4. Ask user to fill gaps
+### 步骤1：收集相关信息
+1. 在 `meeting-notes/` 目录中搜索客户名称
+2. 查看 `MEMORY.md` 文件以获取客户历史记录
+3. 从 `proposals/SERVICES.md` 文件中获取价格信息
+4. 需要用户补充缺失的信息
 
-### Step 2: Generate Draft
+### 步骤2：生成提案草稿
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📄 PROPOSAL DRAFT — [Client Name]
@@ -143,14 +189,14 @@ Commands: "show", "edit [section]", "preview html", "finalize"
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Step 3: Edit & Refine
-- `"edit executive summary"` → Rewrite section
-- `"make it more formal"` → Adjust tone
-- `"add testimonials"` → Insert section
-- `"change price to $5,000"` → Update pricing
+### 步骤3：编辑与完善
+- 修改“执行摘要”部分的内容
+- 调整语言风格，使其更加正式
+- 添加客户评价或推荐信
+- 将价格更新为 $5,000
 
-### Step 4: Finalize
-Generate HTML using base template + theme CSS:
+### 步骤4：完成提案
+使用基础模板和选定的颜色主题样式生成最终的HTML文件：
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ PROPOSAL FINALIZED
@@ -163,28 +209,27 @@ Ready to send, export PDF, or download.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-## HTML Generation
+## HTML文件生成方式
 
-### Base Template
-Use `assets/proposal-template.html` as foundation:
-- Inject markdown content converted to HTML
-- Apply theme CSS variables
-- Apply style-specific layout classes
+### 基础模板
+- 使用 `assets/proposal-template.html` 作为基础框架
+- 将Markdown格式的内容转换为HTML
+- 应用相应的颜色主题样式
+- 应用特定样式的布局样式
 
-### Style Classes
-- `.proposal-corporate` — Serif headers, formal spacing, bordered sections
-- `.proposal-entrepreneur` — Bold headers, high contrast, CTA-focused
-- `.proposal-creative` — Asymmetric layout, visual emphasis, portfolio grid
-- `.proposal-consultant` — Clean lines, advisory tone, option cards
-- `.proposal-minimal` — Maximum whitespace, essential typography only
+### 样式分类
+- `.proposal-corporate`：使用衬线字体、正式的排版、带边框的页面元素
+- `.proposal-entrepreneur`：使用粗体标题、高对比度的字体、突出重点的呼叫行动（CTA）元素
+- `.proposal-creative`：采用非对称布局、强调视觉效果、展示作品集
+- `.proposal-consultant`：使用简洁的线条、专业的文字风格、提供选项卡
+- `.proposal-minimal`：保持较大的空白间距、仅展示必要的文本内容
 
-### Requirements
-- Mobile-responsive
-- Print-ready (clean page breaks)
-- PDF-exportable
+## 系统要求
+- 支持移动设备显示
+- 适合打印（页面布局清晰）
+- 支持导出为PDF格式
 
-## SERVICES.md Template
-
+## `SERVICES.md` 模板
 ```markdown
 # Services & Pricing
 
@@ -205,26 +250,31 @@ Use `assets/proposal-template.html` as foundation:
 - Payment: [Net 15, 50% upfront, etc.]
 ```
 
-## Integration
+## 系统集成
 
-### From ai-meeting-notes
-Extract: Client name, pain points, scope discussed, budget hints, timeline, decision makers
+### 从 `ai-meeting-notes` 中提取的信息：
+- 客户名称
+- 客户面临的问题
+- 讨论的项目范围
+- 预算建议
+- 项目时间线
+- 决策者信息
 
-### To ai-daily-briefing
-Pending proposals appear in briefing as action items
+### 信息传递方式
+生成的提案会自动添加到 `ai-daily-briefing` 系统中，作为待处理的任务项显示
 
-## Default Pairings
+## 默认搭配方案
 
-| Client Type | Style | Theme |
+| 客户类型 | 提案风格 | 颜色主题 |
 |-------------|-------|-------|
-| Enterprise | Corporate | Trust Navy |
-| Startup | Entrepreneur | Ember Orange |
-| Agency | Creative | Royal Purple |
-| SMB | Consultant | Ocean Blue |
-| Quick project | Minimal | Slate Dark |
+| 企业 | 企业风格 | 信任海军蓝（Trust Navy） |
+| 初创企业 | 创业风格 | 火焰橙（Ember Orange） |
+| 广告机构 | 创意风格 | 皇家紫（Royal Purple） |
+| 小型企业 | 咨询风格 | 海洋蓝（Ocean Blue） |
+| 快速项目 | 极简风格 | 板岩深蓝（Slate Dark） |
 
-## Error Handling
+## 错误处理机制
 
-**No meeting notes:** Offer to create from scratch or paste notes
-**No SERVICES.md:** Help create or allow manual pricing
-**No template:** Prompt wizard or suggest built-in style
+- 如果没有会议记录：建议用户从头开始创建提案或手动粘贴会议内容
+- 如果 `SERVICES.md` 文件缺失：提供帮助以创建提案或允许用户手动输入价格信息
+- 如果没有合适的提案模板：自动触发向导或推荐默认的提案样式

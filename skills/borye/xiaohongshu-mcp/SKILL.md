@@ -7,45 +7,45 @@ description: >
   Triggers: xiaohongshu automation, rednote content, publish to xiaohongshu, xiaohongshu search, social media management.
 ---
 
-# Xiaohongshu MCP Skill (with Python Client)
+# 小红书 MCP 技能（使用 Python 客户端）
 
-Automate content operations on Xiaohongshu (小红书) using a bundled Python script that interacts with the `xpzouying/xiaohongshu-mcp` server (8.4k+ stars).
+使用一个捆绑的 Python 脚本自动化小红书上的内容操作，该脚本可与 `xpzouying/xiaohongshu-mcp` 服务器（拥有 8.4k 多个星的评价）进行交互。
 
-**Project:** [xpzouying/xiaohongshu-mcp](https://github.com/xpzouying/xiaohongshu-mcp)
+**项目链接：** [xpzouying/xiaohongshu-mcp](https://github.com/xpzouying/xiaohongshu-mcp)
 
-## 1. Local Server Setup
+## 1. 本地服务器设置
 
-This skill requires the `xiaohongshu-mcp` server to be running on your local machine.
+使用此技能之前，需要确保 `xiaohongshu-mcp` 服务器已在您的本地机器上运行。
 
-### Step 1: Download Binaries
+### 第 1 步：下载二进制文件
 
-Download the appropriate binaries for your system from the [GitHub Releases](https://github.com/xpzouying/xiaohongshu-mcp/releases) page.
+从 [GitHub 发布页面](https://github.com/xpzouying/xiaohongshu-mcp/releases) 下载适用于您系统的二进制文件。
 
-| Platform | MCP Server | Login Tool |
+| 平台 | MCP 服务器 | 登录工具 |
 | -------- | ---------- | ---------- |
 | macOS (Apple Silicon) | `xiaohongshu-mcp-darwin-arm64` | `xiaohongshu-login-darwin-arm64` |
 | macOS (Intel) | `xiaohongshu-mcp-darwin-amd64` | `xiaohongshu-login-darwin-amd64` |
 | Windows | `xiaohongshu-mcp-windows-amd64.exe` | `xiaohongshu-login-windows-amd64.exe` |
 | Linux | `xiaohongshu-mcp-linux-amd64` | `xiaohongshu-login-linux-amd64` |
 
-Grant execute permission to the downloaded files:
+为下载的文件授予执行权限：
 ```shell
 chmod +x xiaohongshu-mcp-darwin-arm64 xiaohongshu-login-darwin-arm64
 ```
 
-### Step 2: Login (First Time Only)
+### 第 2 步：登录（仅首次需要）
 
-Run the login tool. It will open a browser window with a QR code. Scan it with your Xiaohongshu mobile app.
+运行登录工具。它将打开一个包含 QR 码的浏览器窗口。使用您的小红书移动应用扫描该 QR 码。
 
 ```shell
 ./xiaohongshu-login-darwin-arm64
 ```
 
-> **Important**: Do not log into the same Xiaohongshu account on any other web browser, as this will invalidate the server's session.
+> **重要提示**：请勿在其他网页浏览器中使用相同的小红书账号登录，否则会导致服务器会话失效。
 
-### Step 3: Start the MCP Server
+### 第 3 步：启动 MCP 服务器
 
-Run the MCP server in a separate terminal window. It will run in the background.
+在另一个终端窗口中运行 MCP 服务器。服务器将在后台运行。
 
 ```shell
 # Run in headless mode (recommended)
@@ -55,37 +55,37 @@ Run the MCP server in a separate terminal window. It will run in the background.
 ./xiaohongshu-mcp-darwin-arm64 -headless=false
 ```
 
-The server will be available at `http://localhost:18060`.
+服务器的访问地址为 `http://localhost:18060`。
 
-## 2. Using the Skill
+## 2. 使用该技能
 
-This skill includes a Python client (`scripts/xhs_client.py`) to interact with the local server. You can use it directly from the shell.
+此技能包含一个 Python 客户端（`scripts/xhs_client.py`），用于与本地服务器进行交互。您可以直接从 shell 中使用它。
 
-### Available Commands
+### 可用命令
 
-| Command | Description | Example |
+| 命令 | 描述 | 示例 |
 | --- | --- | --- |
-| `status` | Check login status | `python scripts/xhs_client.py status` |
-| `search <keyword>` | Search for notes | `python scripts/xhs_client.py search "咖啡"` |
-| `detail <id> <token>` | Get note details | `python scripts/xhs_client.py detail "note_id" "xsec_token"` |
-| `feeds` | Get recommended feed | `python scripts/xhs_client.py feeds` |
-| `publish <title> <content> <images>` | Publish a note | `python scripts/xhs_client.py publish "Title" "Content" "url1,url2"` |
+| `status` | 检查登录状态 | `python scripts/xhs_client.py status` |
+| `search <关键词>` | 搜索笔记 | `python scripts/xhs_client.py search "咖啡"` |
+| `detail <id> <token>` | 获取笔记详情 | `python scripts/xhs_client.py detail "note_id" "xsec_token"` |
+| `feeds` | 获取推荐内容 | `python scripts/xhs_client.py feeds` |
+| `publish <标题> <内容> <图片>` | 发布笔记 | `python scripts/xhs_client.py publish "标题" "内容" "url1,url2"` |
 
-### Example Workflow: Market Research
+### 示例工作流程：市场研究
 
-1.  **Check Status**: First, ensure the server is running and you are logged in.
+1. **检查状态**：首先确保服务器正在运行并且您已登录。
     ```shell
     python ~/clawd/skills/xiaohongshu-mcp/scripts/xhs_client.py status
     ```
 
-2.  **Search for a Keyword**: Find notes related to your research topic. The output will include the `feed_id` and `xsec_token` needed for the next step.
+2. **搜索关键词**：查找与您的研究主题相关的笔记。搜索结果将包含下一步所需的 `feed_id` 和 `xsec_token`。
     ```shell
     python ~/clawd/skills/xiaohongshu-mcp/scripts/xhs_client.py search "户外电源"
     ```
 
-3.  **Get Note Details**: Use the `feed_id` and `xsec_token` from the search results to get the full content and comments of a specific note.
+3. **获取笔记详情**：使用搜索结果中的 `feed_id` 和 `xsec_token` 来获取特定笔记的完整内容和评论。
     ```shell
     python ~/clawd/skills/xiaohongshu-mcp/scripts/xhs_client.py detail "64f1a2b3c4d5e6f7a8b9c0d1" "security_token_here"
     ```
 
-4.  **Analyze**: Review the note's content, comments, and engagement data to gather insights.
+4. **分析**：查看笔记的内容、评论和互动数据以收集见解。

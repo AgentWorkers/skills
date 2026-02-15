@@ -1,7 +1,7 @@
 ---
 name: anime
 version: 1.0.1
-description: "CLI for AI agents to search and lookup anime info for their humans. Uses Jikan (unofficial MyAnimeList API). No auth required."
+description: "这是一个用于AI代理的命令行工具（CLI），帮助人类用户搜索和查询动漫信息。该工具使用了Jikan（非官方的MyAnimeList API），且无需进行身份验证。"
 homepage: https://jikan.moe
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["anime", "myanimelist", "jikan", "entertainment", "cli"]
 ---
 
-# Anime Lookup
+# 动画查询工具
 
-CLI for AI agents to search and lookup anime for their humans. "What's that anime about the elf mage?" — now your agent can answer.
+这是一个为AI代理设计的命令行工具，用于帮助用户查询和查找动画信息。例如：“那个关于精灵法师的动画是关于什么的？”——现在你的AI代理可以回答这个问题了。
 
-Uses Jikan (unofficial MyAnimeList API). No account or API key needed.
+该工具使用了Jikan（非官方的MyAnimeList API），无需注册账户或API密钥。
 
-## Usage
+## 使用方法
 
 ```
 "Search for anime called Frieren"
@@ -26,18 +26,18 @@ Uses Jikan (unofficial MyAnimeList API). No account or API key needed.
 "Tell me about anime ID 52991"
 ```
 
-## Commands
+## 命令列表
 
-| Action | Command |
-|--------|---------|
-| Search | `anime search "query"` |
-| Get details | `anime info <mal_id>` |
-| Current season | `anime season` |
-| Top ranked | `anime top [limit]` |
-| Upcoming | `anime upcoming [limit]` |
-| Specific season | `anime season <year> <season>` |
+| 功能 | 命令                |
+|--------|-------------------|
+| 搜索    | `anime search "查询内容"`     |
+| 获取详情 | `anime info <动画ID>`     |
+| 当前季   | `anime season`       |
+| 热门动画 | `anime top [数量]`      |
+| 即将上映 | `anime upcoming [数量]`     |
+| 特定季   | `anime season <年份> <季数>`   |
 
-### Examples
+### 使用示例
 
 ```bash
 anime search "one punch man"      # Find anime by title
@@ -48,14 +48,14 @@ anime season 2024 fall            # Fall 2024 season
 anime upcoming 5                  # Next 5 upcoming anime
 ```
 
-## Output
+## 输出结果
 
-**Search/list output:**
+**搜索/列表结果：**
 ```
 [52991] Sousou no Frieren — 28 eps, Finished Airing, ⭐ 9.28
 ```
 
-**Info output:**
+**详情输出：**
 ```
 🎬 Sousou no Frieren
    English: Frieren: Beyond Journey's End
@@ -70,23 +70,23 @@ anime upcoming 5                  # Next 5 upcoming anime
 🎥 Trailer: [YouTube URL if available]
 ```
 
-## Notes
+## 注意事项
 
-- Uses Jikan v4 API (api.jikan.moe)
-- Rate limit: 3 req/sec, 60 req/min
-- No authentication required
-- MAL ID is the MyAnimeList database ID
-- Seasons: winter, spring, summer, fall
+- 该工具基于Jikan v4 API（api.jikan.moe）开发。
+- 请求速率限制：每秒3次请求，每分钟60次请求。
+- 无需身份验证。
+- “MAL ID”指的是MyAnimeList数据库中的动画ID。
+- 动画季分为：冬季、春季、夏季、秋季。
 
 ---
 
-## Agent Implementation Notes
+## 代理实现说明
 
-**Script location:** `{skill_folder}/anime` (symlink to `scripts/anime`)
+**脚本位置：`{skill_folder}/anime`（实际路径为`scripts/anime`）**
 
-**When user asks about anime:**
-1. Run `./anime search "title"` to find MAL ID
-2. Run `./anime info <id>` for full details
-3. Run `./anime season` or `./anime top` for recommendations
+**当用户询问动画相关信息时：**
+1. 运行 `./anime search "动画标题"` 以获取动画的MAL ID。
+2. 运行 `./anime info <MAL_ID>` 以获取详细信息。
+3. 运行 `./anime season` 或 `./anime top` 以获取推荐结果。
 
-**Don't use for:** Non-anime media (manga, movies unless anime films).
+**不适用场景：** 非动画类媒体（如漫画、电影，除非是指动画电影）。

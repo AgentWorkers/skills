@@ -1,22 +1,21 @@
-# A/B Test Variations
+# A/B 测试变体
 
-**Version**: 1.0.0
-**Category**: Google Veo
-**Created by**: Momo (manual curation)
-**Created at**: 2026-02-05T16:51:45.971858
+**版本**: 1.0.0  
+**类别**: Google Veo  
+**创建者**: Momo（人工策划）  
+**创建时间**: 2026-02-05T16:51:45.971858  
 
-## Description
+## 说明  
 
-This skill provides a high-quality, manually crafted prompt template for AI google veo generation.
+该提示模板为 AI 生成 Google Veo 视频提供了高质量、经过精心设计的模板。  
 
-**Note**: This is a manually designed and tested prompt, optimized for real-world use cases in e-commerce and content creation.
+**注意**: 该提示模板是人工设计和测试的，专为电子商务和内容创作的实际应用场景进行了优化。  
 
-## Usage
+## 使用方法  
 
-### Basic Usage
+### 基本用法  
 
-Use this prompt template with your AI video/image generation tool:
-
+将此提示模板与您的 AI 视频/图像生成工具结合使用：  
 ```text
 Generate two 15-second video variations using Google Veo for A/B testing {product_name}.
 
@@ -41,24 +40,23 @@ Test metrics to track:
 - Engagement (likes, shares, comments)
 
 Use Google Veo to create both variations, ensuring consistency in quality.
-```
+```  
 
-### Variables
+### 变量说明  
 
-Replace the following variables in the prompt with your specific values:
+请将提示中的以下变量替换为具体的值：  
+- `{product_name}`：您的产品名称  
+- `{brand_colors}`：您的品牌配色方案（例如：“蓝色、白色、灰色”）  
+- `{background_style}`：首选的背景风格（极简风格、渐变效果、特定场景）  
+- `{target_audience}`：目标受众（例如：“25-35 岁的年轻人”）  
+- `{cta_text}`：行动号召语（例如：“立即购买 - 享受 20% 折扣”）  
+- `{setting}`：场景设置（家庭、办公室、户外、咖啡馆）  
+- `{feature}`：需要突出的产品特性  
+- `{season}`：季节（春季、夏季、秋季、冬季）  
+- `{holiday_colors}`：节日配色方案  
+- `{competitor_product}`：竞争对手的产品名称（用于对比）  
 
-- `{product_name}` - Name of your product
-- `{brand_colors}` - Your brand's color palette (e.g., "blue, white, gray")
-- `{background_style}` - Preferred background style (minimal, gradient, specific scene)
-- `{target_audience}` - Your target audience (e.g., "young adults, 25-35")
-- `{cta_text}` - Call-to-action text (e.g., "Shop Now - 20% Off")
-- `{setting}` - Scene setting (home, office, outdoor, café)
-- `{feature}` - Specific product feature to highlight
-- `{season}` - Season (spring, summer, autumn, winter)
-- `{holiday_colors}` - Holiday color palette
-- `{competitor_product}` - Competitor product name (for comparison)
-
-### Example
+### 示例  
 
 ```text
 Generate two 15-second video variations using Google Veo for A/B testing {{Premium Wireless Earbuds}}.
@@ -84,47 +82,45 @@ Test metrics to track:
 - Engagement (likes, shares, comments)
 
 Use Google Veo to create both variations, ensuring consistency in quality.
-```
+```  
 
-## Tags
+## 标签  
 
-google-veo, video, ab-testing, optimization
+google-veo、video、ab-testing、optimization  
 
-## Requirements
+## 使用要求  
 
-Compatible with AI tools that support text-to-video or text-to-image generation:
-- For video: Sora2, Google Veo, Runway, Pika Labs, Kling
-- For image: Midjourney, DALL-E 3, Stable Diffusion, Stable Diffusion XL
+该提示模板兼容支持文本转视频或文本转图像生成的人工智能工具：  
+- 视频工具：Sora2、Google Veo、Runway、Pika Labs、Kling  
+- 图像工具：Midjourney、DALL-E 3、Stable Diffusion、Stable Diffusion XL  
 
-## Tips
+## 提示  
 
-1. **Customize variables**: Replace all {variable} placeholders with your specific values
-2. **Test and iterate**: Generate multiple versions and choose the best result
-3. **Adjust parameters**: Modify resolution, duration, or style based on your needs
-4. **Combine with other skills**: Use multiple prompts together for comprehensive content
+1. **自定义变量**：将所有 `{variable}` 占位符替换为具体值。  
+2. **测试与迭代**：生成多个版本并选择最佳结果。  
+3. **调整参数**：根据需要修改分辨率、时长或风格。  
+4. **与其他提示结合使用**：结合多个提示模板以创建更丰富的内容。  
 
-## Use Cases
+## 适用场景  
 
-Perfect for:
-- E-commerce product videos and images
-- Marketing campaigns and promotions
-- Social media content (Instagram, TikTok, YouTube Shorts)
-- Product launches and announcements
-- Seasonal and holiday campaigns
-- Brand storytelling and testimonials
+- 适用于：  
+  - 电子商务产品视频和图片  
+  - 营销活动和促销  
+  - 社交媒体内容（Instagram、TikTok、YouTube Shorts）  
+  - 产品发布和公告  
+  - 季节性和节日营销活动  
+  - 品牌故事讲述和用户评价  
 
-## Quality Assurance
+## 质量保证  
 
-This prompt has been:
-- ✅ Manually designed and curated
-- ✅ Optimized for real-world e-commerce scenarios
-- ✅ Tested for AI video/image generation tools
-- ✅ Reviewed for clarity and effectiveness
+该提示模板已通过以下验证：  
+- ✅ 由人工设计和策划  
+- ✅ 专为电子商务场景优化  
+- ✅ 经过 AI 视频/图像生成工具测试  
+- ✅ 经过清晰度和效果审查  
 
-## Feedback
+## 意见反馈  
 
-If you find this prompt helpful, please leave a review or share your generated content!
+如果您觉得这个提示模板有用，请留下评论或分享您使用它生成的内容！  
 
----
-
-*This skill is part of the Manual Prompts Collection - high-quality, curated prompts for AI content generation.*
+*该提示模板属于“人工提示集合”系列——专为 AI 内容生成提供的高质量、精心策划的提示模板。*

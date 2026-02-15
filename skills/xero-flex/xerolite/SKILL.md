@@ -1,32 +1,32 @@
 ---
 name: xerolite
-description: "Integrate OpenClaw with Xerolite trading platform. Use when: querying Xerolite API, placing orders, searching contracts, or processing Xerolite webhooks."
+description: "将 OpenClaw 与 Xerolite 交易平台集成。使用场景包括：查询 Xerolite API、下订单、搜索合约以及处理 Xerolite 的 Webhook 事件。"
 ---
 
 # Xerolite
 
-Xerolite is a TradingView-to-broker (IB) trading platform.  
-This skill lets the agent place orders, search contracts, and receive Xerolite webhooks via OpenClaw.
+Xerolite 是一个将 TradingView 数据传输到经纪商（IB）的交易平台。  
+该插件允许代理通过 OpenClaw 下单、搜索合约以及接收来自 Xerolite 的 Webhook 消息。
 
-## Setup
+## 设置
 
-### Install
+### 安装
 
-Installs the transform module and configures webhook endpoint:
+安装 `transforms` 模块并配置 Webhook 端点：
 
 ```bash
 bash skills/xerolite/scripts/install.sh
 ```
 
-### Uninstall
+### 卸载
 
-Removes transform module and webhook configuration:
+卸载 `transforms` 模块并清除 Webhook 配置：
 
 ```bash
 bash skills/xerolite/scripts/uninstall.sh
 ```
 
-## Package Structure
+## 包结构
 
 ```
 skills/xerolite/
@@ -42,21 +42,21 @@ skills/xerolite/
     └── WEBHOOKS.md       # Webhook configuration
 ```
 
-## Capabilities
+## 功能
 
-- Place orders via Xerolite REST API.
-- Search contracts via Xerolite REST API.
-- Receive `/hooks/xerolite` webhooks and format them as readable notifications.
+- 通过 Xerolite 的 REST API 下单。
+- 通过 Xerolite 的 REST API 搜索合约。
+- 接收 `/hooks/xerolite` Webhook 并将其格式化为可读的通知。
 
-## Commands
+## 命令
 
-Use these commands from the skill directory (or with `{baseDir}` in other skills).
+请从插件目录中使用这些命令（或在其他插件中使用 `{baseDir}` 来调用它们）。
 
-**Default flag values** (optional; omit to use): `--currency USD`, `--asset-class STOCK`, `--exch SMART`.
+**默认参数值**（可选；省略即可）：`--currency USD`、`--asset-class STOCK`、`--exch SMART`。
 
-### Place order
+### 下单
 
-Required: `--action`, `--qty`, `--symbol`. Optional: `--currency`, `--asset-class`, `--exch`.
+必填参数：`--action`、`--qty`、`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
 
 ```bash
 # Minimal (defaults: USD, STOCK, SMART)
@@ -72,7 +72,7 @@ node {baseDir}/scripts/xerolite.mjs order place \
   --qty 10
 ```
 
-JSON sent to `POST /api/agent/order/place-order`:
+发送到 `POST /api/agent/order/place-order` 的 JSON 数据：
 
 ```json
 {
@@ -86,9 +86,9 @@ JSON sent to `POST /api/agent/order/place-order`:
 }
 ```
 
-### Search contract
+### 搜索合约
 
-Required: `--symbol`. Optional: `--currency`, `--asset-class`, `--exch`.
+必填参数：`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
 
 ```bash
 # Minimal (defaults: USD, STOCK, SMART)
@@ -102,7 +102,7 @@ node {baseDir}/scripts/xerolite.mjs contract search \
   --exch SMART
 ```
 
-JSON sent to `POST /api/agent/contract/search`:
+发送到 `POST /api/agent/contract/search` 的 JSON 数据：
 
 ```json
 {
@@ -113,37 +113,25 @@ JSON sent to `POST /api/agent/contract/search`:
 }
 ```
 
-## Webhooks
+## Webhook
 
-After install, OpenClaw listens at `/hooks/xerolite`.
+安装完成后，OpenClaw 会监听 `/hooks/xerolite` 路径。
 
-### How It Works
+### 工作原理
 
-```
-Xerolite Event
-     ↓
-POST /hooks/xerolite (with Bearer token)
-     ↓
-Transform module formats payload
-     ↓
-Agent receives formatted notification
-     ↓
-Delivers to active channel (Telegram, etc.)
-```
+`transforms` 模块（`xerolite.js`）会将接收到的数据格式化为结构清晰的可读通知。
 
-The transform module (`xerolite.js`) formats incoming payloads into readable notifications with proper structure.
+### Xerolite 配置
 
-### Xerolite Configuration
+配置 Xerolite 以发送 Webhook：
+- **URL**：`https://your-openclaw-host:18789/hooks/xerolite`
+- **方法**：POST
+- **请求头**：`Authorization: Bearer <your-hooks-token>`
+- **内容类型**：`application/json`
 
-Configure Xerolite to send webhooks:
-- **URL**: `https://your-openclaw-host:18789/hooks/xerolite`
-- **Method**: POST
-- **Header**: `Authorization: Bearer <your-hooks-token>`
-- **Content-Type**: `application/json`
+### 数据格式
 
-### Payload Format
-
-The transform handles various payload structures:
+`transforms` 模块可以处理多种数据格式：
 
 ```json
 {"event": "order.created", "data": {"id": "123", "total": 99.99}}
@@ -153,7 +141,7 @@ The transform handles various payload structures:
 {"message": "Server restarted", "level": "info"}
 ```
 
-Output example:
+输出示例：
 ```
 📥 **Xerolite Notification**
 
@@ -165,35 +153,35 @@ Output example:
 
 ## REST API
 
-For the order and contract search endpoints used by this skill, see [references/API.md](references/API.md).
+有关此插件使用的订单和合约搜索端点的详细信息，请参阅 [references/API.md](references/API.md)。
 
-## Transform Module
+## Transform 模块
 
-The bundled transform (`transforms/xerolite.js`) handles:
-- Payload formatting with readable structure
-- Event/message/data field extraction
-- Automatic delivery to configured channel
-- No-rephrase instruction for clean forwarding
+随插件提供的 `transforms/xerolite.js` 模块负责：
+- 数据格式化，使其易于阅读
+- 提取事件/消息/数据字段
+- 将数据自动发送到配置的通道
+- 确保数据在传输过程中不被重新格式化
 
-To customize the transform, edit `transforms/xerolite.js` before running install.
+如需自定义 `transforms/xerolite.js`，请在安装前对其进行修改。
 
-## Requirements
+## 系统要求
 
-- Env vars: `XEROLITE_API_URL`, `XEROLITE_API_KEY`
-- Node.js 18+ (for built-in `fetch`)
-- OpenClaw hooks enabled (for webhook delivery)
+- 环境变量：`XEROLITE_API_URL`、`XEROLITE_API_KEY`
+- Node.js 18 及以上版本（支持内置的 `fetch` 函数）
+- OpenClaw 的 Webhook 功能已启用
 
-## Troubleshooting
+## 故障排除
 
-### Webhook not receiving
-- Verify `hooks.token` is set in openclaw config
-- Check Xerolite sends correct `Authorization: Bearer <token>` header
-- Confirm gateway was restarted after install
+### Webhook 未接收
+- 确认 `openclaw` 配置中已设置 `hooks.token`
+- 检查 Xerolite 是否正确设置了 `Authorization: Bearer <token>` 请求头
+- 安装完成后确认网关已重新启动
 
-### 401 Unauthorized
-- Token mismatch — check Xerolite uses same token as `hooks.token`
+### 401 Unauthorized 错误
+- 令牌不匹配 —— 确认 Xerolite 使用的令牌与 `hooks.token` 一致
 
-### Transform not working
-- Check transform is at `~/.openclaw/hooks/transforms/xerolite.js`
-- Re-run `install.sh` to copy fresh transform
-- Check gateway logs for errors
+### Transform 模块无法工作
+- 确认 `transforms/xerolite.js` 文件位于 `~/.openclaw/hooks/transforms/` 目录下
+- 重新运行 `install.sh` 以更新转换脚本
+- 查看网关日志以获取错误信息

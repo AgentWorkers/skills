@@ -1,27 +1,27 @@
 ---
 name: google-calendar
-description: Interact with Google Calendar via the Google Calendar API – list upcoming events, create new events, update or delete them. Use this skill when you need programmatic access to your calendar from OpenClaw.
+description: 通过 Google Calendar API 与 Google 日历进行交互：列出即将发生的事件、创建新事件、更新或删除事件。当您需要从 OpenClaw 以编程方式访问您的日历时，请使用此技能。
 ---
 
-# Google Calendar Skill
+# Google 日历技能
 
-## Overview
-This skill provides a thin wrapper around the Google Calendar REST API. It lets you:
-- **list** upcoming events (optionally filtered by time range or query)
-- **add** a new event with title, start/end time, description, location, and attendees
-- **update** an existing event by its ID
-- **delete** an event by its ID
+## 概述
+该技能提供了对 Google 日历 REST API 的简单封装。它允许你执行以下操作：
+- **列出** 即将发生的事件（可选地根据时间范围或查询条件进行筛选）
+- **添加** 新事件，包括事件标题、开始/结束时间、描述、地点和参与者信息
+- **根据事件 ID 更新** 现有事件
+- **根据事件 ID 删除** 事件
 
-The skill is implemented in Python (`scripts/google_calendar.py`). It expects the following environment variables to be set (you can store them securely with `openclaw secret set`):
+该技能使用 Python 编写（文件名为 `scripts/google_calendar.py`），运行该技能之前需要设置以下环境变量（你可以使用 `openclaw secret set` 工具安全地存储这些变量）：
 ```
 GOOGLE_CLIENT_ID=…
 GOOGLE_CLIENT_SECRET=…
 GOOGLE_REFRESH_TOKEN=…   # obtained after OAuth consent
 GOOGLE_CALENDAR_ID=primary   # or the ID of a specific calendar
 ```
-The first time you run the skill you may need to perform an OAuth flow to obtain a refresh token – see the **Setup** section below.
+首次运行该技能时，可能需要执行 OAuth 流程以获取刷新令牌——请参阅下面的 **设置** 部分。
 
-## Commands
+## 命令
 ```
 google-calendar list [--from <ISO> --to <ISO> --max <N>]
 google-calendar add   --title <title> [--start <ISO> --end <ISO>]
@@ -29,35 +29,35 @@ google-calendar add   --title <title> [--start <ISO> --end <ISO>]
 google-calendar update --event-id <id> [--title <title> ... other fields]
 google-calendar delete --event-id <id>
 ```
-All commands return a JSON payload printed to stdout. Errors are printed to stderr and cause a non‑zero exit code.
+所有命令都会将返回的 JSON 数据输出到标准输出（stdout）中。错误信息会被输出到标准错误（stderr）中，并导致非零的退出代码。
 
-## Setup
-1. **Create a Google Cloud project** and enable the *Google Calendar API*.
-2. **Create OAuth credentials** (type *Desktop app*). Note the `client_id` and `client_secret`.
-3. Run the helper script to obtain a refresh token:
+## 设置步骤
+1. **创建一个 Google Cloud 项目** 并启用 *Google 日历 API*。
+2. **创建 OAuth 凭据**（选择 *桌面应用* 类型）。请记录下 `client_id` 和 `client_secret`。
+3. 运行辅助脚本以获取刷新令牌：
    ```bash
    GOOGLE_CLIENT_ID=… GOOGLE_CLIENT_SECRET=… python3 -m google_calendar.auth
    ```
-   It will open a browser (or print a URL you can open elsewhere) and ask you to grant access. After you approve, copy the `refresh_token` it prints.
-4. Store the credentials securely:
+   该脚本会打开浏览器（或显示一个你可以在其他地方打开的 URL），请求你授权访问。授权成功后，系统会显示刷新令牌，请将其复制下来。
+4. 安全地存储这些凭据：
    ```bash
    openclaw secret set GOOGLE_CLIENT_ID <value>
    openclaw secret set GOOGLE_CLIENT_SECRET <value>
    openclaw secret set GOOGLE_REFRESH_TOKEN <value>
    openclaw secret set GOOGLE_CALENDAR_ID primary   # optional
    ```
-5. Install the required Python packages (once):
+5. 安装一次所需的 Python 包：
    ```bash
    pip install --user google-auth google-auth-oauthlib google-api-python-client
    ```
 
-## How it works (brief)
-The script loads the credentials from the environment, refreshes the access token using the refresh token, builds a `service = build('calendar', 'v3', credentials=creds)`, and then calls the appropriate API method.
+## 工作原理（简要说明）
+脚本从环境变量中读取凭据，使用刷新令牌重新获取访问令牌，然后创建一个服务对象（`service = build('calendar', 'v3', credentials=creds)`），并调用相应的 API 方法。
 
-## References
-- Google Calendar API reference: https://developers.google.com/calendar/api/v3/reference
-- OAuth 2.0 for installed apps: https://developers.google.com/identity/protocols/oauth2/native-app
+## 参考资料
+- Google 日历 API 文档：https://developers.google.com/calendar/api/v3/reference
+- 安装应用的 OAuth 2.0 协议：https://developers.google.com/identity/protocols/oauth2/native-app
 
 ---
 
-**Note:** This skill does not require a GUI; it works entirely via HTTP calls, so it is suitable for headless servers.
+**注意：** 该技能不需要图形用户界面（GUI），完全通过 HTTP 请求进行操作，因此非常适合用于无头服务器（headless servers）。

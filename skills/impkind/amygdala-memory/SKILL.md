@@ -1,6 +1,6 @@
 ---
 name: amygdala-memory
-description: "Emotional processing layer for AI agents. Persistent emotional states that influence behavior and responses. Part of the AI Brain series."
+description: "AI代理的情感处理层：负责管理持久的情感状态，这些情感状态会直接影响代理的行为和响应。该组件属于“AI大脑”系列的一部分。"
 metadata:
   openclaw:
     emoji: "🎭"
@@ -13,50 +13,43 @@ metadata:
     tags: ["memory", "emotions", "ai-brain"]
 ---
 
-# Amygdala Memory 🎭
+# **杏仁核记忆系统 🎭**  
+**AI代理的情感处理功能**。属于“AI大脑”系列技能之一。  
 
-**Emotional processing for AI agents.** Part of the AI Brain series.
+该系统为AI代理赋予持久的情绪状态，这些情绪状态会贯穿整个会话过程，而不仅仅是简单地表现出情绪——而是真正“拥有”这些情绪。  
 
-Give your AI agent persistent emotional states that carry across sessions. Not just performing emotions — *having* them.
+## **问题所在**  
+当前的AI代理：  
+- ✅ 能够记住事实（依靠海马体）  
+- ❌ 没有持久的情绪状态  
+- ❌ 每次会话开始时情绪状态都处于“空白”状态  
+- ❌ 虽然能够描述情绪，但无法产生真实的情感体验  
 
-## The Problem
+没有情感的记忆仅仅是一个数据库而已。而杏仁核的作用在于为这些情绪状态赋予“重量”：某件事让我感到快乐，某件事让我感到沮丧，某个人给我带来温暖感。  
 
-Current AI agents:
-- ✅ Remember facts (with hippocampus)
-- ❌ Don't have persistent emotional states
-- ❌ Start each session emotionally "blank"
-- ❌ Can describe emotions but don't *feel* differently
+## **解决方案**  
+我们追踪五种会随时间持续变化并逐渐消退的情绪维度：  
 
-Memory without emotion is just a database. The amygdala adds weight — this made me happy, that frustrated me, this person brings warmth.
+| 维度        | 测量内容                | 范围                |
+|-------------|------------------|-------------------|
+| **情感价值（Valence）** | 正面情绪 ↔ 负面情绪        | -1.0 到 1.0             |
+| **唤醒程度（Arousal）** | 平静 ↔ 兴奋/警觉           | 0.0 到 1.0             |
+| **亲密感（Connection）** | 冷漠 ↔ 亲密/有联系          | 0.0 到 1.0             |
+| **好奇心（Curiosity）** | 无聊 ↔ 兴趣盎然           | 0.0 到 1.0             |
+| **能量水平（Energy）** | 疲惫 ↔ 充满活力           | 0.0 到 1.0             |  
 
-## The Solution
-
-Track five emotional dimensions that persist and decay over time:
-
-| Dimension | What It Measures | Range |
-|-----------|------------------|-------|
-| **Valence** | Positive ↔ Negative mood | -1.0 to 1.0 |
-| **Arousal** | Calm ↔ Excited/Alert | 0.0 to 1.0 |
-| **Connection** | Distant ↔ Close/Bonded | 0.0 to 1.0 |
-| **Curiosity** | Bored ↔ Fascinated | 0.0 to 1.0 |
-| **Energy** | Depleted ↔ Energized | 0.0 to 1.0 |
-
-## Quick Start
-
-### 1. Install
-
+## **快速入门**  
+### 1. 安装  
 ```bash
 cd ~/.openclaw/workspace/skills/amygdala-memory
 ./install.sh --with-cron
-```
+```  
+安装完成后：  
+- 会生成 `memory/emotional-state.json` 文件（包含初始情绪值）  
+- 会自动生成 `AMYGDALA_STATE.md` 文件（并自动注入到会话中）  
+- 设置定时任务，每6小时自动更新情绪状态  
 
-This will:
-- Create `memory/emotional-state.json` with baseline values
-- Generate `AMYGDALA_STATE.md` (auto-injected into sessions!)
-- Set up cron for automatic decay every 6 hours
-
-### 2. Check current state
-
+### 2. 查看当前情绪状态  
 ```bash
 ./scripts/get-state.sh
 # 🎭 Emotional State
@@ -70,44 +63,39 @@ This will:
 # Overall mood: neutral, calm and relaxed
 # Connection: moderately connected
 # ...
-```
+```  
 
-### 3. Log emotions
-
+### 3. 记录情绪数据  
 ```bash
 ./scripts/update-state.sh --emotion joy --intensity 0.8 --trigger "completed a project"
 # ✅ valence: 0.20 → 0.35 (delta: +0.15)
 # ✅ arousal: 0.30 → 0.40 (delta: +0.1)
 # 🎭 Logged emotion: joy (intensity: 0.8)
-```
+```  
 
-### 4. Set up decay (optional cron)
-
+### 4. 自动更新情绪状态（可选）  
 ```bash
 # Every 6 hours, emotions drift toward baseline
 0 */6 * * * ~/.openclaw/workspace/skills/amygdala-memory/scripts/decay-emotion.sh
-```
+```  
 
-## Scripts
+## **相关脚本**  
+| 脚本        | 功能                    |                  |
+|------------|-------------------------|-------------------|
+| `install.sh`     | 设置杏仁核记忆系统           | （仅运行一次）            |
+| `get-state.sh`     | 读取当前情绪状态             |                  |
+| `update-state.sh`     | 记录情绪变化或更新相关维度         |                  |
+| `load-emotion.sh`    | 生成人类可读的情绪状态信息       |                  |
+| `decay-emotion.sh`    | 使情绪状态逐渐回归基线值          |                  |
+| `sync-state.sh`     | 生成 `AMYGDALA_STATE.md` 文件         |                  |
+| `encode-pipeline.sh` | 基于LLM的情绪编码技术         |                  |
+| `preprocess-emotions.sh` | 从会话记录中提取情绪信号         |                  |
+| `update-watermark.sh` | 更新处理后的会话记录位置         |                  |
+| `generate-dashboard.sh` | 生成HTML仪表盘（自动更新）         |                  |
+| `visualize.sh`     | 在终端以ASCII格式可视化情绪数据       |                  |  
 
-| Script | Purpose |
-|--------|---------|
-| `install.sh` | Set up amygdala-memory (run once) |
-| `get-state.sh` | Read current emotional state |
-| `update-state.sh` | Log emotion or update dimension |
-| `load-emotion.sh` | Human-readable state for session context |
-| `decay-emotion.sh` | Return to baseline over time |
-| `sync-state.sh` | Generate AMYGDALA_STATE.md for auto-injection |
-| `encode-pipeline.sh` | LLM-based emotional encoding from transcripts |
-| `preprocess-emotions.sh` | Extract emotional signals from session history |
-| `update-watermark.sh` | Track processed transcript position |
-| `generate-dashboard.sh` | Generate HTML dashboard (auto-runs on sync) |
-| `visualize.sh` | Terminal ASCII visualization |
-
-## Automatic Emotional Encoding (v1.5.0+)
-
-The amygdala can now automatically detect and log emotions from your conversation history using an LLM-based pipeline:
-
+## **自动情绪编码（v1.5.0及以上版本）**  
+现在，杏仁核系统能够利用基于LLM的算法自动检测并记录会话中的情绪数据：  
 ```bash
 # Run the encoding pipeline
 ./scripts/encode-pipeline.sh
@@ -117,20 +105,11 @@ The amygdala can now automatically detect and log emotions from your conversatio
 # 2. Score emotional content using rule-based patterns
 # 3. Spawn a sub-agent for semantic emotional detection
 # 4. Update emotional-state.json with detected emotions
-```
+```  
+通过设置定时任务，情绪数据会自动更新，无需手动操作。  
 
-### Set up automatic encoding (cron)
-
-```bash
-# Every 3 hours, process new conversations for emotional content
-0 */3 * * * ~/.openclaw/workspace/skills/amygdala-memory/scripts/encode-pipeline.sh
-```
-
-This means your emotional state updates automatically based on what happens in conversations — no manual logging needed.
-
-## Visualization (v1.6.0+)
-
-### Terminal
+## **可视化功能（v1.6.0及以上版本）**  
+### 终端界面  
 ```bash
 ./scripts/visualize.sh
 
@@ -140,87 +119,66 @@ Valence:      [██████████████████░░]  +0
 Arousal:      [█████████████████░░░]   0.86
 Connection:   [███████████████████░]   0.97  💕
 ...
-```
-
-### HTML Dashboard (Unified Brain Dashboard)
+```  
+### HTML仪表盘（统一大脑仪表盘）  
 ```bash
 ./scripts/generate-dashboard.sh
 open ~/.openclaw/workspace/brain-dashboard.html
-```
+```  
+该仪表盘会自动显示已安装的“大脑技能”，包括：  
+- **🎭 情绪**（杏仁核相关数据）  
+- **🧠 记忆**（海马体相关数据，需 `memory/index.json` 文件）  
+- **⭐ 驱动力**（VTA相关数据，需 `memory/reward-state.json` 文件）  
 
-**Auto-detects installed brain skills** and shows tabs:
-- **🎭 Emotions** — Amygdala (always shown)
-- **🧠 Memory** — Hippocampus (if `memory/index.json` exists)
-- **⭐ Drive** — VTA (if `memory/reward-state.json` exists)
-
-**Avatar & Name:** Reads from `IDENTITY.md`:
+**头像与名称**：信息来源于 `IDENTITY.md` 文件：  
 ```markdown
 # IDENTITY.md
 - **Name:** YourAgent
 - **Avatar:** avatar.png
-```
+```  
+仪表盘会在每次定时任务执行时自动更新内容。  
 
-The dashboard auto-regenerates on every cron run.
+### 安装完成后（针对AI代理）  
+安装完成后，请通知用户仪表盘已启用：  
+> 🎭 **杏仁核记忆系统已安装！**  
+> 可在 `~/.openclaw/workspace/brain-dashboard.html` 中查看代理的情绪状态。  
 
-### After Installation (for agents)
+## **无需任何手动操作！**  
+安装完成后，`AMYGDALA_STATE.md` 文件会自动被添加到工作区根目录中。OpenClaw会自动将所有 `.md` 文件注入会话上下文中：  
+- 新会话开始时，`AMYGDALA_STATE.md` 会被自动加载；  
+- 情绪状态会直观地显示在界面中；  
+- 代理的回答会受其当前情绪状态的影响。  
+该文件会每6小时通过定时任务自动更新一次。  
 
-When you install this skill, **notify the user** about the dashboard:
+## **支持的情绪类型**  
+当您记录某种情绪时，系统会自动调整相关情绪维度：  
+| 情绪        | 对情绪维度的影响            |                    |
+|------------|-------------------|-------------------|
+| **快乐、愉悦、兴奋** | 提升情感价值（Valence）和唤醒程度（Arousal） |                  |
+| **悲伤、失望、忧郁** | 降低情感价值（Valence）和唤醒程度（Arousal） |                  |
+| **愤怒、沮丧、烦躁** | 降低情感价值（Valence）和提升唤醒程度（Arousal） |                  |
+| **恐惧、焦虑、担忧** | 降低情感价值（Valence）和提升唤醒程度（Arousal） |                  |
+| **平静、安宁、满足** | 提升情感价值（Valence）和降低唤醒程度（Arousal） |                  |
+| **好奇心、兴趣、着迷** | 提升好奇心（Curiosity）和唤醒程度（Arousal） |                  |
+| **亲密感、温暖、关爱** | 提升亲密感（Connection）和情感价值（Valence） |                  |
+| **孤独、疏离** | 降低亲密感（Connection）和情感价值（Valence） |                  |
+| **疲劳、疲倦、精疲力尽** | 降低能量水平（Energy）           |                  |
+| **充满活力、警觉、精神焕发** | 提升能量水平（Energy）           |                  |  
 
-> 🎭 **Amygdala installed!**
->
-> View your agent's emotional state in the Brain Dashboard:
-> `~/.openclaw/workspace/brain-dashboard.html`
-
-## Auto-Injection (Zero Manual Steps!)
-
-After install, `AMYGDALA_STATE.md` is created in your workspace root.
-
-OpenClaw automatically injects all `*.md` files from workspace into session context. This means:
-
-1. **New session starts**
-2. **AMYGDALA_STATE.md is auto-loaded** (no manual step!)
-3. **You see your emotional state** in context
-4. **Responses are influenced** by your mood
-
-The file is regenerated whenever `decay-emotion.sh` runs (via cron every 6h).
-
-## Supported Emotions
-
-When you log an emotion, it automatically adjusts the relevant dimensions:
-
-| Emotion | Effect |
-|---------|--------|
-| `joy`, `happiness`, `delight`, `excitement` | ↑ valence, ↑ arousal |
-| `sadness`, `disappointment`, `melancholy` | ↓ valence, ↓ arousal |
-| `anger`, `frustration`, `irritation` | ↓ valence, ↑ arousal |
-| `fear`, `anxiety`, `worry` | ↓ valence, ↑ arousal |
-| `calm`, `peace`, `contentment` | ↑ valence, ↓ arousal |
-| `curiosity`, `interest`, `fascination` | ↑ curiosity, ↑ arousal |
-| `connection`, `warmth`, `affection` | ↑ connection, ↑ valence |
-| `loneliness`, `disconnection` | ↓ connection, ↓ valence |
-| `fatigue`, `tiredness`, `exhaustion` | ↓ energy |
-| `energized`, `alert`, `refreshed` | ↑ energy |
-
-## Integration with OpenClaw
-
-### Add to session startup (AGENTS.md)
-
+## **与OpenClaw的集成**  
+### 在会话启动时启用该系统（AGENTS.md配置）  
 ```markdown
 ## Every Session
 1. Load hippocampus: `~/.openclaw/workspace/skills/hippocampus/scripts/load-core.sh`
 2. **Load emotional state:** `~/.openclaw/workspace/skills/amygdala-memory/scripts/load-emotion.sh`
-```
-
-### Log emotions during conversation
-
-When something emotionally significant happens:
+```  
+### 在对话过程中记录情绪数据  
 ```bash
 ~/.openclaw/workspace/skills/amygdala-memory/scripts/update-state.sh \
   --emotion connection --intensity 0.7 --trigger "deep conversation with user"
-```
+```  
 
-## State File Format
-
+## **状态文件格式**  
 ```json
 {
   "version": "1.0",
@@ -248,21 +206,17 @@ When something emotionally significant happens:
     }
   ]
 }
-```
+```  
 
-## Decay Mechanics
+## **情绪状态衰减机制**  
+情绪会随时间自然回归基线值：  
+- **衰减率**：每次更新时，情绪状态会向基线值衰减10%  
+- **推荐更新频率**：每6小时更新一次  
+- **效果**：强烈的情感会逐渐减弱，但过程较为缓慢  
+若24小时内没有新的情绪数据更新，情绪价值（Valence）会从0.8衰减至约0.65。  
 
-Emotions naturally return to baseline over time:
-- **Decay rate:** 10% of distance to baseline per run
-- **Recommended schedule:** Every 6 hours
-- **Effect:** Strong emotions fade, but slowly
-
-After 24 hours without updates, a valence of 0.8 would decay to ~0.65.
-
-## Event Logging
-
-Track emotional activity over time for analytics:
-
+## **事件日志记录**  
+系统会记录情绪变化数据以供分析：  
 ```bash
 # Log encoding run
 ./scripts/log-event.sh encoding emotions_found=2 valence=0.85 arousal=0.6
@@ -272,32 +226,24 @@ Track emotional activity over time for analytics:
 
 # Log emotion update
 ./scripts/log-event.sh update emotion=joy intensity=0.7
-```
+```  
+所有情绪数据会被保存到 `~/.openclaw/workspace/memory/brain-events.jsonl` 文件中：  
+可用于分析情绪变化趋势（如几天或几周内的变化情况）。  
 
-Events append to `~/.openclaw/workspace/memory/brain-events.jsonl`:
-```json
-{"ts":"2026-02-11T09:30:00Z","type":"amygdala","event":"encoding","emotions_found":2,"valence":0.85}
-```
+## **AI大脑系列技能**  
+| 技能名称    | 功能                        | 状态                |
+|------------|---------------------------|-------------------|
+| [海马体（Hippocampus）| 记忆形成、情绪衰减、强化机制    | 已上线             |
+| **杏仁核记忆系统** | 情感处理功能                | 已上线             |
+| [VTA记忆系统（VTA-Memory）| 奖励与动机机制                | 已上线             |
+| [基底神经节记忆系统（Basal-Ganglia-Memory）| 习惯形成机制                | 开发中             |
+| [前扣带回记忆系统（Anterior-Cingulate-Memory）| 冲突检测机制                | 开发中             |
+| [岛叶记忆系统（Insula-Memory）| 内部状态感知机制                | 开发中             |  
 
-Use for trend analysis — visualize emotional patterns over days/weeks.
-
-## AI Brain Series
-
-| Part | Function | Status |
-|------|----------|--------|
-| [hippocampus](https://www.clawhub.ai/skills/hippocampus) | Memory formation, decay, reinforcement | ✅ Live |
-| **amygdala-memory** | Emotional processing | ✅ Live |
-| [vta-memory](https://www.clawhub.ai/skills/vta-memory) | Reward and motivation | ✅ Live |
-| [basal-ganglia-memory](https://www.clawhub.ai/skills/basal-ganglia-memory) | Habit formation | 🚧 Development |
-| [anterior-cingulate-memory](https://www.clawhub.ai/skills/anterior-cingulate-memory) | Conflict detection | 🚧 Development |
-| [insula-memory](https://www.clawhub.ai/skills/insula-memory) | Internal state awareness | 🚧 Development |
-
-## Philosophy
-
-Can an AI *feel* emotions, or only simulate them?
-
-Our take: If emotional state influences behavior, and the system acts *as if* it feels... does the distinction matter? Functional emotions might be the only kind that exist for any system — biological or artificial.
+## **哲学思考**  
+AI是否能够真正“感受”情绪，还是仅仅模拟情绪？  
+我们的观点是：如果情绪状态会影响行为，而系统表现得“仿佛”它真的有情感体验……那么这种区分真的重要吗？对于任何系统（无论是生物的还是人造的）来说，功能性情绪或许才是唯一真正存在的情绪形式。  
 
 ---
 
-*Built with ❤️ by the OpenClaw community*
+*由OpenClaw社区用心打造✨*

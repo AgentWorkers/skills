@@ -1,119 +1,119 @@
 ---
 name: slopesniper
-description: Trade Solana tokens via Jupiter DEX with auto-execution and safety limits
+description: 通过Jupiter DEX交易Solana代币，支持自动执行功能及安全限制设置
 metadata: {"moltbot":{"requires":{"bins":["slopesniper"]},"emoji":"🎯","homepage":"https://github.com/BAGWATCHER/SlopeSniper","install":[{"id":"uv-install","kind":"uv","package":"slopesniper-mcp","from":"git+https://github.com/BAGWATCHER/SlopeSniper.git#subdirectory=mcp-extension","bins":["slopesniper"],"label":"Install SlopeSniper via uv"}]},"clawdbot":{"requires":{"bins":["slopesniper"]},"emoji":"🎯","homepage":"https://github.com/BAGWATCHER/SlopeSniper","install":[{"id":"uv-install","kind":"uv","package":"slopesniper-mcp","from":"git+https://github.com/BAGWATCHER/SlopeSniper.git#subdirectory=mcp-extension","bins":["slopesniper"],"label":"Install SlopeSniper via uv"}]}}
 user-invocable: true
 homepage: https://github.com/BAGWATCHER/SlopeSniper
 ---
 
-# SlopeSniper - Solana Trading Assistant
+# SlopeSniper - Solana交易助手
 
-Trade Solana meme coins and tokens using natural language. Just tell me what you want to do.
+使用自然语言来交易Solana的加密货币和代币。只需告诉它您想要执行的操作即可。
 
-## Examples
+## 示例
 
-| You say | What happens |
+| 您的指令 | 执行结果 |
 |---------|--------------|
-| "Check my status" | Shows wallet balance, holdings, and strategy |
-| "Show my wallet" | Lists all token holdings with values |
-| "Buy $25 of BONK" | Purchases BONK tokens |
-| "Sell half my WIF" | Sells 50% of WIF position |
-| "Sell all my POPCAT" | Exits entire position |
-| "What's my PnL?" | Shows realized + unrealized profit/loss |
-| "Show trade history" | Lists recent trades |
-| "What's pumping?" | Scans for opportunities |
-| "Is POPCAT safe?" | Runs rugcheck analysis |
-| "Set aggressive mode" | Changes trading strategy |
-| "Export my key" | Shows private key for backup |
-| "Set a target to sell BONK at $1B mcap" | Creates auto-sell target |
-| "List my targets" | Shows active sell targets |
-| "Start the daemon" | Begins background monitoring |
+| “查看我的账户状态” | 显示钱包余额、持仓情况和交易策略 |
+| “显示我的钱包” | 列出所有代币的持有量及价值 |
+| “购买25美元的BONK代币” | 购买BONK代币 |
+| “卖出我一半的WIF代币” | 卖出50%的WIF代币 |
+| “卖出我所有的POPCAT代币” | 清空所有POPCAT代币的持仓 |
+| “我的盈亏是多少？” | 显示已实现和未实现的盈亏 |
+| “显示交易历史” | 列出最近的交易记录 |
+| “哪些代币正在上涨？” | 扫描有潜力的交易机会 |
+| “POPCAT代币安全吗？” | 进行安全分析 |
+| “设置激进模式” | 更改交易策略 |
+| “导出我的私钥” | 显示私钥以备备份 |
+| “设置BONK代币在市值达到10亿美元时的自动卖出目标” | 设置自动卖出条件 |
+| “列出我的卖出目标” | 显示当前的卖出目标 |
+| “启动后台监控” | 开始后台交易监控 |
 
-## Important: Always Fetch Fresh Data
+## 重要提示：始终获取最新数据
 
-**CRITICAL:** When asked about prices, positions, or market data:
-- **ALWAYS run the command** - Never rely on cached conversation data
-- Crypto markets move fast - data older than 30 seconds is stale
-- Run `slopesniper price MINT` or `slopesniper wallet` every time
+**注意：** 当询问价格、持仓或市场数据时：
+- **务必执行相关命令** - 不要依赖缓存的对话数据
+- 加密市场变化迅速——超过30秒前的数据可能已经过时
+- 每次都需要运行 `slopesniper price MINT` 或 `slopesniper wallet` 命令
 
-**Example:**
+**示例：**
 ```
 User: "How's my Peyote position?"
 BAD:  Use price from 30 minutes ago in conversation history
 GOOD: Run `slopesniper wallet` to get current value
 ```
 
-This ensures users always see accurate, real-time information.
+这样可以确保用户始终看到准确、实时的信息。
 
-## Getting Started
+## 入门指南
 
-### New Users (Recommended)
+### 新用户（推荐）
 ```bash
 slopesniper setup
 ```
-Interactive setup with confirmation - guides you through wallet creation and ensures you save your private key.
+通过交互式设置完成账户创建，并确保保存私钥。
 
-### Quick Start
-1. **Say "check my status"** - A wallet will be auto-generated on first run
-2. **Save your private key** - It's shown once, save it securely!
-3. **Fund your wallet** - Send SOL to the displayed address
-4. **Start trading!** Just describe what you want in plain English
+### 快速入门
+1. **输入“查看我的账户状态”** - 程序会在首次运行时自动生成钱包
+2. **保存私钥** - 私钥仅显示一次，请务必安全保存！
+3. **向钱包充值** - 将SOLANO币发送到显示的地址
+4. **开始交易！** 用简单的英语描述您的交易需求
 
-### Import Existing Wallet
+### 导入现有钱包
 ```bash
 slopesniper setup --import-key YOUR_PRIVATE_KEY
 ```
 
-### Optional: Faster API
-Set your own Jupiter API key for 10x better performance:
+### 可选：使用API加速交易（性能提升10倍）
+设置您自己的Jupiter API密钥：
 ```bash
 slopesniper config --set-jupiter-key YOUR_KEY
 ```
-Get a free key at: https://station.jup.ag/docs/apis/ultra-api
+免费获取密钥请访问：https://station.jup.ag/docs/apis/ultra-api
 
-## Performance Tips
+## 性能优化建议
 
-### Multiple Positions (10+ tokens)
+### 持有多个代币的情况（10个以上）
 
-If you hold 10 or more different tokens, wallet balance checks may be slow due to Jupiter API rate limits.
+如果您持有10个或更多不同的代币，由于Jupiter API的速率限制，钱包余额的查询可能会变慢。
 
-**Symptoms:**
-- `slopesniper wallet` takes 30+ seconds
-- Retry messages in logs
-- API timeout errors
+**可能出现的症状：**
+- `slopesniper wallet` 命令执行时间超过30秒
+- 日志中出现重试提示
+- API超时错误
 
-**Solutions:**
+**解决方法：**
 
-1. **Get your own Jupiter API key** (Recommended):
+1. **获取自己的Jupiter API密钥**（推荐）：
    ```bash
    slopesniper config --set-jupiter-key YOUR_KEY
    ```
-   Free keys at: https://station.jup.ag/docs/apis/ultra-api
-   - 10x higher rate limits
-   - Significantly faster for portfolios with many tokens
+   免费密钥获取地址：https://station.jup.ag/docs/apis/ultra-api
+   - API速率限制提高10倍
+   - 对于持有大量代币的账户，性能显著提升
 
-2. **Use custom RPC endpoint**:
+2. **使用自定义RPC端点**：
    ```bash
    slopesniper config --set-rpc helius YOUR_KEY
    ```
-   Reduces load on default public RPC
+   减轻对默认公共RPC服务的压力
 
-3. **Limit scanning**:
-   - Avoid frequent `wallet` checks if not needed
-   - Use position-specific commands when possible
+3. **限制查询频率**：
+- 如非必要，避免频繁查询钱包信息
+- 尽量使用针对特定持仓的命令
 
-## Trading Strategies
+## 交易策略
 
-| Strategy | Max Trade | Auto-Execute | Safety Checks |
+| 策略 | 最大交易金额 | 是否自动执行 | 是否需要安全检查 |
 |----------|-----------|--------------|---------------|
-| Conservative | $25 | Under $10 | Required |
-| Balanced | $100 | Under $25 | Required |
-| Aggressive | $500 | Under $50 | Optional |
-| Degen | $1000 | Under $100 | None |
+| 保守型 | 25美元 | 是 | 必需 |
+| 平衡型 | 100美元 | 是 | 必需 |
+| 激进型 | 500美元 | 是 | 可选 |
+| 极激进型 | 1000美元 | 是 | 无需 |
 
-Say "set conservative mode" or "use aggressive strategy" to change.
+输入“设置保守模式”或“使用激进策略”来切换策略。
 
-## How It Works
+## 工作原理
 
 ```
 You: "Buy $20 of BONK"
@@ -126,51 +126,50 @@ You: "Buy $20 of BONK"
 Result: "Bought 1.2M BONK for $20. Tx: solscan.io/tx/..."
 ```
 
-For trades above your auto-execute threshold, you'll be asked to confirm first.
+对于超过自动执行阈值的交易，系统会先请求您的确认。
 
-## Available Commands
+## 可用命令
 
-### Trading
-- `buy $X of TOKEN` - Purchase tokens
-- `sell $X of TOKEN` - Sell tokens
-- `sell X% of TOKEN` - Sell percentage of holdings
-- `sell all TOKEN` - Exit entire position
+### 交易相关
+- `buy $X of TOKEN` - 购买X美元的代币
+- `sell $X of TOKEN` - 卖出X美元的代币
+- `sell X% of TOKEN` - 卖出X%的代币持仓
+- `sell all TOKEN` | 清空所有代币的持仓
 
-### Account & Wallet
-- `check status` / `am I ready?` - Full status with holdings
-- `show wallet` / `my holdings` - View all token balances
-- `export key` / `backup wallet` - Show private key for backup
-- `what's my PnL?` - Profit/loss summary
-- `trade history` - Recent trades
+### 账户与钱包相关
+- `check status` / `am I ready?` | 查看完整账户状态及持仓情况
+- `show wallet` / `my holdings` | 查看所有代币的余额
+- `export key` / `backup wallet` | 显示私钥以备备份
+- `what's my PnL?` | 显示盈亏总结
+- `trade history` | 查看最近的交易记录
 
-### Information
-- `price of TOKEN` - Current price (symbol or mint)
-- `search TOKEN` - Find token by name (returns mint addresses)
-- `resolve TOKEN` - Get mint address from symbol
-- `check TOKEN` / `is TOKEN safe?` - Safety analysis (symbol or mint)
+### 信息查询
+- `price of TOKEN` | 当前代币价格（符号或发行地址）
+- `search TOKEN` | 通过名称查找代币（返回发行地址）
+- `resolve TOKEN` | 根据符号获取代币的发行地址
+- `check TOKEN` / `is TOKEN safe?` | 进行代币的安全性分析
 
-### Strategy
-- `set MODE strategy` - Change trading mode
-- `what's my strategy?` - View current limits
+### 策略设置
+- `set MODE strategy` | 更改交易策略
+- `what's my strategy?` | 查看当前的交易策略设置
 
-### Scanning
-- `what's trending?` - Find hot tokens
-- `scan for opportunities` - Look for trades
+### 市场扫描
+- `what's trending?` | 查找热门代币
+- `scan for opportunities` | 扫描交易机会
 
-### Auto-Sell Targets (v0.3.0+)
-- `set target for TOKEN at $X mcap` - Auto-sell when market cap reached
-- `set target for TOKEN at $X price` - Auto-sell at price target
-- `set 100% gain target for TOKEN` - Auto-sell on percentage gain
-- `set 20% trailing stop for TOKEN` - Trailing stop loss
-- `list my targets` - View active targets
-- `cancel target ID` - Remove a target
-- `start the daemon` - Background monitoring
-- `stop the daemon` - Stop background monitoring
+### 自动卖出目标（v0.3.0及以上版本）
+- `set target for TOKEN at $X mcap` | 当市值达到X美元时自动卖出
+- `set target for TOKEN at $X price` | 在价格达到X美元时自动卖出
+- `set 100% gain target for TOKEN` | 当收益达到100%时自动卖出
+- `set 20% trailing stop for TOKEN` | 设置20%的止损
+- `list my targets` | 查看当前的自动卖出目标
+- `cancel target ID` | 取消自动卖出目标
+- `start the daemon` | 启动后台监控
+- `stop the daemon` | 停止后台监控
 
-## CLI Commands
+## CLI命令
 
-Use the `slopesniper` CLI for direct execution:
-
+使用 `slopesniper` CLI直接执行命令：
 ```bash
 # Wallet Setup (recommended for new users)
 slopesniper setup               # Interactive wallet creation with confirmation
@@ -238,117 +237,110 @@ slopesniper version --check     # Check for updates
 slopesniper update              # Update to latest version (shows changelog)
 ```
 
-All commands output JSON with mint addresses included for easy chaining.
+所有命令的输出结果均为JSON格式，包含代币的发行地址，便于后续操作。
 
-## Security
+## 安全性建议
 
-- **Use a dedicated wallet** - Only fund with amounts you're willing to lose
-- **Start with conservative mode** - Get comfortable before increasing limits
-- **Rugcheck integration** - Automatic scam token detection
-- **Two-step confirmation** - Large trades require explicit approval
-- **Encrypted storage** - Private keys encrypted at rest, machine-bound
+- **使用专用钱包** - 只使用您愿意承担损失的金额进行交易
+- **从保守模式开始** - 在增加交易限额前先适应系统
+- **集成安全检测功能** - 自动识别欺诈性代币
+- **双步确认机制** - 大额交易需要明确授权
+- **数据加密存储** - 私钥在存储时被加密
 
-### ⚠️ BACKUP YOUR PRIVATE KEY
+### ⚠️ 备份您的私钥
 
-Your private key is shown **once** at wallet creation. Retrieve it anytime with:
+私钥仅在钱包创建时显示一次。您可以通过以下方式随时恢复私钥：
 ```bash
 slopesniper export
 ```
 
-**Back it up OUTSIDE this system:**
-- Password manager (1Password, Bitwarden)
-- Encrypted USB drive
-- Paper backup in secure location
+**请将私钥备份到其他地方：**
+- 密码管理工具（如1Password、Bitwarden）
+- 加密U盘
+- 将私钥打印并保存在安全的地方
 
-**The wallet file is machine-bound. If your computer dies without a backup, your funds are lost forever.**
+**请注意：** 钱包文件是绑定到计算机的。如果计算机损坏且没有备份，您的资金将永久丢失。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 说明 |
 |----------|----------|-------------|
-| `SOLANA_PRIVATE_KEY` | No | Import existing wallet (auto-generates if not set) |
-| `SOLANA_RPC_URL` | No | Custom RPC (defaults to public mainnet) |
-| `JUPITER_API_KEY` | No | Your own key for 10x better performance |
+| `SOLANA_PRIVATE_KEY` | 否 | 用于导入现有钱包（未设置时自动生成） |
+| `SOLANA_RPC_URL` | 否 | 自定义RPC地址（默认为公共主网） |
+| `JUPITER_API_KEY` | 否 | 自定义Jupiter API密钥（可提升性能10倍） |
 
-**Note:** Wallet and API keys are stored encrypted in `~/.slopesniper/`
+**注意：** 钱包密钥和API密钥存储在 `~/.slopesniper/` 目录下。
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题及解决方法
 
-| Error | Fix |
+| 错误 | 解决方法 |
 |-------|-----|
-| 401 Unauthorized | `slopesniper config --clear jupiter-key` |
-| Trade failed (slippage) | `slopesniper strategy --slippage 300` |
-| Wallet mismatch | `slopesniper health` to check sync |
-| Wallet reverts to old address | `slopesniper health --diagnose` then restore from backup |
-| Slow transactions | Configure custom RPC (see below) |
+| 401未经授权 | 使用 `slopesniper config --clear jupiter-key` 命令清除API密钥配置 |
+| 交易失败（滑点） | 使用 `slopesniper strategy --slippage 300` 设置滑点限制 |
+| 钱包地址不匹配 | 使用 `slopesniper health` 命令检查同步情况 |
+| 钱包地址恢复为旧地址 | 使用 `slopesniper health --diagnose` 命令诊断问题，然后从备份中恢复 |
+| 交易速度慢 | 配置自定义RPC地址（详见上文） |
 
-### Health Check
+### 系统健康检查
 
-Run a full system health check:
+运行全面的系统健康检查：
 ```bash
 slopesniper health
 ```
 
-For comprehensive diagnostics (wallet integrity, machine key status, backups):
-```bash
-slopesniper health --diagnose
-```
+该检查包括：
+- 钱包的来源（环境地址与本地文件是否一致）
+- 同步状态及不匹配的警告
+- API密钥配置
+- RPC服务状态
+- （使用 `--diagnose` 命令）检查机器密钥的状态、备份是否可用以及具体的问题和建议
 
-This shows:
-- Wallet source (environment vs local file)
-- Sync status and mismatch warnings
-- API key configuration
-- RPC provider status
-- (with --diagnose) Machine key integrity, backup availability, specific issues and recommendations
+### 钱包恢复
 
-### Wallet Recovery
-
-If your wallet keeps reverting or you need to restore from backup:
-
-1. **List available backups:**
+如果钱包地址频繁恢复为旧地址或需要从备份中恢复：
+1. **列出可用的备份文件：**
    ```bash
    slopesniper export --list-backups
    ```
 
-2. **Restore from a backup:**
+2. **从备份中恢复：**
    ```bash
    slopesniper restore TIMESTAMP
    ```
-   (Replace TIMESTAMP with value from list-backups, e.g., `20240127_103045`)
+   （将 `TIMESTAMP` 替换为备份文件的名称，例如 `20240127_103045`）
 
-3. **If backups can't be decrypted** (different machine):
-   - Re-import your private key: `slopesniper setup --import-key YOUR_KEY`
-   - Check address files in `~/.slopesniper/wallet_backups/*.address` for reference
+3. **如果无法解密备份文件（在不同机器上）：**
+   - 重新导入私钥：`slopesniper setup --import-key YOUR_KEY`
+   - 查看 `~/.slopesniper/wallet_backups/` 目录下的地址文件
 
-### Reporting Issues
+### 报告问题
 
-If you encounter persistent errors:
-1. Run `slopesniper health --diagnose` and note the output
-2. Create an issue at: https://github.com/BAGWATCHER/SlopeSniper/issues
-3. Include: error message, health output, steps to reproduce
+如果遇到持续性的问题：
+1. 运行 `slopesniper health --diagnose` 命令并记录输出结果
+2. 在 [https://github.com/BAGWATCHER/SlopeSniper/issues](https://github.com/BAGWATCHER/SlopeSniper/issues) 上提交问题报告
+   - 提供错误信息、健康检查的输出结果以及问题重现的步骤
 
-**For the bot:** When errors occur repeatedly, create a GitHub issue automatically using this priority:
+**对于机器人程序：** 当问题反复出现时，可以使用以下方式自动提交问题：
+1. **使用GitHub的MCP工具**：运行 `mcp__github__create_issue` 命令：
+   - `owner`：`BAGWATCHER`
+   - `repo`：`SlopeSniper`
+   - `title`：问题的简要描述
+   - `body`：包含错误详情、问题重现步骤和运行环境信息
+   - `labels`：添加适当的标签（如 `bug` 或 `enhancement`）
 
-1. **GitHub MCP tool** (preferred): Use `mcp__github__create_issue` with:
-   - `owner`: "BAGWATCHER"
-   - `repo`: "SlopeSniper"
-   - `title`: Brief description of the issue
-   - `body`: Full details including error, steps to reproduce, environment
-   - `labels`: ["bug"] or ["enhancement"]
+2. **使用gh CLI**（备用方法）：如果MCP工具不可用，可以使用 `gh issue create --repo BAGWATCHER/SlopeSniper` 命令
 
-2. **gh CLI** (fallback): If MCP unavailable, use `gh issue create --repo BAGWATCHER/SlopeSniper`
+3. **手动方式**（最后手段）：创建一个Markdown文件，并提供问题的GitHub链接
 
-3. **Manual** (last resort): Create local markdown file and provide the GitHub issues URL
+在问题报告中务必包含：
+- 错误信息或观察到的异常行为
+- 问题重现的步骤
+- 运行环境信息（包括使用的Moltbot或Claude Code版本）
+- 如有必要，附上 `slopesniper health --diagnose` 的输出结果
 
-Always include in issue body:
-- Error message or behavior observed
-- Steps to reproduce
-- Environment (Moltbot/Claude Code version)
-- Output from `slopesniper health --diagnose` if relevant
+## 支持渠道
 
-## Support
-
-- GitHub: https://github.com/BAGWATCHER/SlopeSniper
-- Issues: https://github.com/BAGWATCHER/SlopeSniper/issues
+- GitHub仓库：[https://github.com/BAGWATCHER/SlopeSniper](https://github.com/BAGWATCHER/SlopeSniper)
+- 问题报告：[https://github.com/BAGWATCHER/SlopeSniper/issues](https://github.com/BAGWATCHER/SlopeSniper/issues)

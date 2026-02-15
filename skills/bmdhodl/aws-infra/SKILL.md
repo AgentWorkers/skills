@@ -1,40 +1,40 @@
 ---
 name: aws-infra
-description: Chat-based AWS infrastructure assistance using AWS CLI and console context. Use for querying, auditing, and monitoring AWS resources (EC2, S3, IAM, Lambda, ECS/EKS, RDS, CloudWatch, billing, etc.), and for proposing safe changes with explicit confirmation before any write/destructive action.
+description: 基于聊天的AWS基础设施辅助服务，利用AWS CLI（命令行接口）和AWS控制台的功能。该服务可用于查询、审计和监控AWS资源（如EC2、S3、IAM、Lambda、ECS/EKS、RDS、CloudWatch等），并在执行任何写入或破坏性操作之前，提供明确的确认提示以确保操作的安全性。
 ---
 
-# AWS Infra
+# AWS 基础设施
 
-## Overview
-Use the local AWS CLI to answer questions about AWS resources. Default to read‑only queries. Only propose or run write/destructive actions after explicit user confirmation.
+## 概述
+使用本地的 AWS CLI 来查询有关 AWS 资源的信息。默认操作为只读查询。只有在用户明确确认后，才会执行写入或破坏性操作。
 
-## Quick Start
-1. Determine profile/region from environment or `~/.aws/config`.
-2. Start with identity:
+## 快速入门
+1. 从环境变量或 `~/.aws/config` 文件中确定配置文件/区域。
+2. 首先获取身份验证信息：
    - `aws sts get-caller-identity`
-3. Use read‑only service commands to answer the question.
-4. If the user asks for changes, outline the exact command and ask for confirmation before running.
+3. 使用只读服务命令来获取所需信息。
+4. 如果用户要求进行更改，请详细说明具体的命令，并在执行前获取用户的确认。
 
-## Safety Rules (must follow)
-- Treat all actions as **read‑only** unless the user explicitly requests a change **and** confirms it.
-- For any potentially destructive change (delete/terminate/destroy/modify/scale/billing/IAM credentials), require a confirmation step.
-- Prefer `--dry-run` when available and show the plan before execution.
-- Never reveal or log secrets (access keys, session tokens).
+## 安全规则（必须遵守）
+- 除非用户明确请求更改并确认，否则所有操作都应视为 **只读** 操作。
+- 对于任何可能具有破坏性的操作（如删除、终止、修改、扩展、计费或管理 IAM 凭据等），必须要求用户确认。
+- 在可能的情况下，优先使用 `--dry-run` 选项，并在执行前展示操作计划。
+- 绝不要泄露或记录任何敏感信息（如访问密钥、会话令牌）。
 
-## Task Guide (common requests)
-- **Inventory / list**: use `list`/`describe`/`get` commands.
-- **Health / errors**: use CloudWatch metrics/logs queries.
-- **Security checks**: IAM, S3 public access, SG exposure, KMS key usage.
-- **Costs**: Cost Explorer / billing queries (read‑only).
-- **Changes**: show exact CLI command and require confirmation.
+## 任务指南（常见请求）
+- **资源清单/列表**：使用 `list`、`describe`、`get` 命令。
+- **系统健康状况/错误检查**：使用 CloudWatch 的指标和日志查询功能。
+- **安全检查**：检查 IAM 设置、S3 的公共访问权限、安全组配置以及 KMS 密钥的使用情况。
+- **成本管理**：使用 Cost Explorer 进行计费查询（仅限只读操作）。
+- **进行更改**：在执行任何更改前，需显示具体的 CLI 命令并获取用户的确认。
 
-## Region & Profile Handling
-- If the user specifies a region/profile, honor it.
-- Otherwise use `AWS_PROFILE` / `AWS_REGION` if set, then fall back to `~/.aws/config`.
-- When results are region‑scoped, state the region used.
+## 区域与配置文件管理
+- 如果用户指定了具体的区域或配置文件，请按照用户的要求进行操作。
+- 如果没有指定，优先使用 `AWS_PROFILE` 或 `AWS_REGION` 环境变量；如果这些变量也未设置，则使用 `~/.aws/config` 文件。
+- 当查询结果具有区域限制时，需明确说明所使用的区域。
 
-## References
-See `references/aws-cli-queries.md` for common command patterns.
+## 参考资料
+有关常见的 CLI 命令模式，请参阅 `references/aws-cli-queries.md`。
 
-## Assets
-- `assets/icon.svg` — custom icon (dark cloud + terminal prompt)
+## 图标资源
+- `assets'icon.svg` — 自定义图标（包含深色云朵和终端提示符）

@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-historical-cost"
 display_name: "CWICR Historical Cost"
-description: "Track and analyze historical cost data using CWICR. Compare actual vs estimated costs, build project cost database, and improve future estimates."
+description: "使用 CWICR 跟踪和分析历史成本数据。对比实际成本与估算成本，建立项目成本数据库，并改进未来的成本估算。"
 ---
 
-# CWICR Historical Cost Tracker
+# CWICR历史成本跟踪器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Improving estimates requires:
-- Actual cost feedback
-- Historical comparisons
-- Trend analysis
-- Lessons learned
+### 问题描述
+要提高估算的准确性，需要：
+- 实际成本的反馈
+- 历史数据的对比
+- 趋势分析
+- 经验总结
 
-### Solution
-Track actual costs against CWICR estimates, build historical database, and use data to improve future estimating accuracy.
+### 解决方案
+将实际成本与CWICR的估算值进行对比，建立历史成本数据库，并利用这些数据来提高未来的估算精度。
 
-### Business Value
-- **Accuracy improvement** - Learn from actuals
-- **Benchmarking** - Project comparisons
-- **Trend analysis** - Cost movement patterns
-- **Organizational knowledge** - Cost database
+### 商业价值
+- **准确性提升**：通过实际数据来优化估算
+- **基准对比**：项目间的成本比较
+- **趋势分析**：成本变动模式的研究
+- **组织知识积累**：构建成本数据库
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -375,7 +375,7 @@ class CWICRHistoricalCost:
             json.dump(data, f, indent=2)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date
@@ -406,27 +406,27 @@ tracker.record_actual_cost(
 )
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Accuracy Analysis
+### 1. 准确性分析
 ```python
 metrics = tracker.get_accuracy_metrics()
 print(f"Within 10%: {metrics['within_10pct']:.1f}%")
 ```
 
-### 2. Adjustment Factors
+### 2. 调整因子
 ```python
 factors = tracker.suggest_adjustment_factors()
 for cat, factor in factors.items():
     print(f"{cat}: {factor:.2f}x")
 ```
 
-### 3. Work Item History
+### 3. 工作项历史记录
 ```python
 history = tracker.get_work_item_history("CONC-001")
 print(f"Average variance: {history['average_variance_pct']}%")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.2 - Historical Cost Analysis
+- **DDC手册**: 第3.2章 - 历史成本分析

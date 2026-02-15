@@ -1,51 +1,50 @@
 ---
 name: pocket-casts
-description: Download YouTube videos and upload them to Pocket Casts Files for offline viewing. For personal use with content you own or have rights to.
+description: 下载 YouTube 视频，并将其上传到 Pocket Casts 以供离线观看。仅限用于您拥有或有权使用的个人内容。
 version: 1.0.0
 author: emmanuelem
 ---
 
-# Pocket Casts YouTube Uploader
+# Pocket Casts YouTube 上传工具
 
-Download YouTube videos and upload them to Pocket Casts Files for offline viewing.
+该工具可用于下载 YouTube 视频，并将其上传到 Pocket Casts 以供离线观看。
 
-## Usage
+## 使用方法
 
 ```bash
 ~/skills/pocket-casts/scripts/upload.sh "YOUTUBE_URL"
 ```
 
-Or with a custom title:
+或者使用自定义标题：
 ```bash
 ~/skills/pocket-casts/scripts/upload.sh "YOUTUBE_URL" "Custom Title"
 ```
 
-## Prerequisites
+## 先决条件
 
-### Required
-- **yt-dlp** - YouTube downloader (via uv: `uvx yt-dlp`)
-- **ffmpeg** - Video processing (`apt install ffmpeg`)
-- **curl** - HTTP requests (usually pre-installed)
-- **jq** - JSON parsing (`apt install jq`)
+### 必需软件：
+- **yt-dlp**：YouTube 下载工具（通过 uv 使用：`uvx yt-dlp`)
+- **ffmpeg**：视频处理工具（通过 `apt install ffmpeg` 安装）
+- **curl**：HTTP 请求工具（通常已预装）
+- **jq**：JSON 解析工具（通过 `apt install jq` 安装）
 
-### Recommended  
-- **deno** - JavaScript runtime for yt-dlp challenges:
+### 推荐软件：
+- **deno**：用于处理 yt-dlp 相关任务的 JavaScript 运行时环境：
   ```bash
   curl -fsSL https://deno.land/install.sh | sh
   ```
-  Add to PATH: `export PATH="$HOME/.deno/bin:$PATH"`
+  将其添加到系统路径中：`export PATH="$HOME/.deno/bin:$PATH"`
 
-## Setup
+## 设置步骤
 
-1. **Create credentials directory:**
+1. **创建凭据目录：**
    ```bash
    mkdir -p ~/.clawdbot/credentials/pocket-casts
    chmod 700 ~/.clawdbot/credentials/pocket-casts
    ```
 
-2. **Add Pocket Casts refresh token:**
-   
-   Get your refresh token from browser dev tools while logged into pocketcasts.com, then:
+2. **获取 Pocket Casts 的刷新令牌：**
+   在登录 pocketcasts.com 后，通过浏览器开发者工具获取刷新令牌，然后按照以下步骤操作：
    ```bash
    cat > ~/.clawdbot/credentials/pocket-casts/config.json << 'EOF'
    {
@@ -54,49 +53,46 @@ Or with a custom title:
    EOF
    chmod 600 ~/.clawdbot/credentials/pocket-casts/config.json
    ```
-   
-   The refresh token lasts ~1 year. Access tokens are fetched automatically.
 
-3. **Add YouTube cookies** (required for most videos):
-   
-   YouTube's bot detection requires cookies from a logged-in browser session.
-   
-   - Install "Get cookies.txt LOCALLY" browser extension (or similar)
-   - Go to youtube.com while logged in
-   - Export cookies via the extension
-   - Save to `~/.clawdbot/credentials/pocket-casts/cookies.txt`
-   
+   刷新令牌的有效期约为 1 年。系统会自动获取访问令牌。
+
+3. **添加 YouTube 的 Cookie（大多数视频都需要）：**
+   YouTube 的机器人检测机制需要来自已登录浏览器会话的 Cookie。
+   - 安装 “Get cookies.txt LOCALLY” 浏览器扩展程序（或类似工具）
+   - 登录后访问 youtube.com
+   - 通过扩展程序导出 Cookie
+   - 将导出的 Cookie 保存到 `~/.clawdbot/credentials/pocket-casts/cookies.txt` 文件中
    ```bash
    chmod 600 ~/.clawdbot/credentials/pocket-casts/cookies.txt
    ```
 
-## How It Works
+## 工作原理
 
-1. Downloads video via `yt-dlp --remux-video mp4`
-2. Refreshes Pocket Casts access token using stored refresh token
-3. Requests presigned upload URL from Pocket Casts API
-4. PUTs file to S3 via presigned URL
-5. Deletes local video file
+1. 使用 `yt-dlp --remux-video mp4` 命令下载视频。
+2. 使用存储的刷新令牌更新 Pocket Casts 的访问令牌。
+3. 从 Pocket Casts API 获取预签名的上传 URL。
+4. 通过预签名的 URL 将文件上传到 S3 云存储服务。
+5. 删除本地下载的视频文件。
 
-## Environment Variables
+## 环境变量
 
-- `CLAWDBOT_CREDENTIALS` - Override credentials directory (default: `~/.clawdbot/credentials`)
+- `CLAWDBOT_CREDENTIALS`：用于指定凭据目录（默认值为 `~/.clawdbot/credentials`）
 
-## Notes
+## 注意事项
 
-- Files appear in the Pocket Casts "Files" tab
-- Videos play natively in the app (iOS/Android/Web)
-- Max file size depends on your Pocket Casts subscription (~2GB for Plus)
-- Cookies may need refreshing if YouTube blocks requests
+- 下载的视频会显示在 Pocket Casts 的 “Files” 标签页中。
+- 视频可以在 iOS、Android 和 Web 平台上直接播放。
+- 文件的最大大小取决于您的 Pocket Casts 订阅套餐（Plus 订阅通常支持最大 2GB 的文件）。
+- 如果 YouTube 阻止请求，可能需要重新获取 Cookie。
 
-## ⚠️ Legal Disclaimer
+## ⚠️ 法律声明
 
-**This skill is provided for personal, fair-use purposes only.**
+**本工具仅用于个人、合法用途。**
 
-- **YouTube Terms of Service** prohibit downloading videos except via official means. Downloading may violate YouTube's ToS depending on your jurisdiction and intended use.
-- **Pocket Casts Terms** require that you own or have the rights to any media you upload to your Files library.
-- **Copyright law** varies by country. Downloading and storing copyrighted content without permission may be illegal in your jurisdiction.
+- **YouTube 服务条款** 明确禁止通过非官方途径下载视频。根据您所在地区的法律法规及使用目的，下载视频可能违反 YouTube 的服务条款。
+- **Pocket Casts 的使用条款** 要求您拥有上传到文件库中的所有媒体的所有权或使用权限。
+- **版权法因国家/地区而异。未经许可下载和存储受版权保护的内容可能属于违法行为。**
 
-By using this skill, you accept full responsibility for ensuring your use complies with all applicable terms of service and laws. The authors disclaim any liability for misuse.
+使用本工具时，您需自行确保您的使用行为符合所有适用的服务条款和法律法规。作者对任何不当使用行为概不负责。
 
-**Recommended uses:** Personal recordings, Creative Commons content, videos you created, or content where the creator has explicitly permitted downloading.
+**推荐用途：** 个人录制内容、遵循 Creative Commons 许可协议的内容、您自己制作的内容，或创作者明确允许下载的内容。

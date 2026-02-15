@@ -1,54 +1,55 @@
 ---
 name: alicloud-ai-video-wan-video
-description: Generate videos with Model Studio DashScope SDK using the wan2.6-i2v-flash model. Use when implementing or documenting video.generate requests/responses, mapping prompt/negative_prompt/duration/fps/size/seed/reference_image/motion_strength, or integrating video generation into the video-agent pipeline.
+description: 使用 Model Studio DashScope SDK 和 wan2.6-i2v-flash 模型生成视频。该功能适用于实现或记录 `video.generate` 请求/响应的处理过程，以及配置参数（如 `prompt`、`negative_prompt`、`duration`、`fps`、`size`、`seed`、`reference_image`、`motion_strength`）的设置；同时也可用于将视频生成功能集成到视频代理（video-agent）的流程中。
 ---
 
-Category: provider
+**类别：提供者（Provider）**
 
 # Model Studio Wan Video
 
-Provide consistent video generation behavior for the video-agent pipeline by standardizing `video.generate` inputs/outputs and using DashScope SDK (Python) with the exact model name.
+通过标准化 `video.generate` 的输入/输出参数，并使用 DashScope SDK（Python）以及正确的模型名称，为视频生成流程提供一致的行为。
 
-## Critical model name
+## 关键模型名称
 
-Use ONLY this exact model string:
+**仅使用以下确切的模型字符串：**
 - `wan2.6-i2v-flash`
 
-Do not add date suffixes or aliases.
+**请勿添加日期后缀或别名。**
 
-## Prerequisites
+## 先决条件**
 
-- Install SDK (recommended in a venv to avoid PEP 668 limits):
+- 安装 SDK（建议在虚拟环境（venv）中安装，以避免违反 PEP 668 的限制）：
 
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install dashscope
 ```
-- Set `DASHSCOPE_API_KEY` in your environment, or add `dashscope_api_key` to `~/.alibabacloud/credentials` (env takes precedence).
 
-## Normalized interface (video.generate)
+- 在您的环境中设置 `DASHSCOPE_API_KEY`，或将 `dashscope_api_key` 添加到 `~/.alibabacloud/credentials` 文件中（环境变量优先级更高）。
 
-### Request
-- `prompt` (string, required)
-- `negative_prompt` (string, optional)
-- `duration` (number, required) seconds
-- `fps` (number, required)
-- `size` (string, required) e.g. `1280*720`
-- `seed` (int, optional)
-- `reference_image` (string | bytes, required for `wan2.6-i2v-flash`)
-- `motion_strength` (number, optional)
+## 规范化的接口（`video.generate`）
 
-### Response
-- `video_url` (string)
-- `duration` (number)
-- `fps` (number)
-- `seed` (int)
+### 请求参数
+- `prompt`（字符串，必填）
+- `negative_prompt`（字符串，可选）
+- `duration`（数字，必填）：秒
+- `fps`（数字，必填）
+- `size`（字符串，必填）：例如 `1280*720`
+- `seed`（整数，可选）
+- `reference_image`（字符串 | 字节流，对于 `wan2.6-i2v-flash` 是必填的）
+- `motion_strength`（数字，可选）
 
-## Quick start (Python + DashScope SDK)
+### 响应参数
+- `video_url`（字符串）
+- `duration`（数字）
+- `fps`（数字）
+- `seed`（整数）
 
-Video generation is usually asynchronous. Expect a task ID and poll until completion.
-Note: `wan2.6-i2v-flash` requires an input image; map `reference_image` to `img_url`.
+## 快速入门（Python + DashScope SDK）
+
+视频生成通常是异步的。您需要获取任务 ID 并持续轮询直到任务完成。
+**注意：** `wan2.6-i2v-flash` 需要一个输入图像；请将 `reference_image` 映射到 `img_url`。
 
 ```python
 import os
@@ -88,7 +89,7 @@ def generate_video(req: dict) -> dict:
     }
 ```
 
-## Async handling (polling)
+## 异步处理（轮询）
 
 ```python
 import os
@@ -108,32 +109,31 @@ final = VideoSynthesis.wait(task)
 video_url = final.output.get("video_url")
 ```
 
-## Operational guidance
+## 操作指南
 
-- Video generation can take minutes; expose progress and allow cancel/retry.
-- Cache by `(prompt, negative_prompt, duration, fps, size, seed, reference_image hash, motion_strength)`.
-- Store video assets in object storage and persist only URLs in metadata.
-- `reference_image` can be a URL or local path; the SDK auto-uploads local files.
-- If you get `Field required: input.img_url`, the reference image is missing or not mapped.
+- 视频生成可能需要几分钟时间；请显示进度并允许用户取消或重试操作。
+- 使用 `(prompt, negative_prompt, duration, fps, size, seed, reference_image_hash, motion_strength)` 作为缓存键。
+- 将视频文件存储在对象存储中，并仅在元数据中保存视频的 URL。
+- `reference_image` 可以是 URL 或本地路径；SDK 会自动上传本地文件。
+- 如果出现 “Field required: input.img_url” 的错误，说明参考图像缺失或未正确映射。
 
-## Size notes
+## 关于视频尺寸的注意事项
 
-- Use `WxH` format (e.g. `1280*720`).
-- Prefer common sizes; unsupported sizes can return 400.
+- 使用 `WxH` 格式（例如 `1280*720`）。
+- 建议使用常见的视频尺寸；不支持的尺寸可能会导致生成失败（返回错误代码 400）。
 
-## Output location
+## 输出位置
 
-- Default output: `output/ai-video-wan-video/videos/`
-- Override base dir with `OUTPUT_DIR`.
+- 默认输出路径：`output/ai-video-wan-video/videos/`
+- 可通过 `OUTPUT_DIR` 变量覆盖默认输出目录。
 
-## Anti-patterns
+## 避免的错误做法
 
-- Do not invent model names or aliases; use `wan2.6-i2v-flash` only.
-- Do not block the UI without progress updates.
-- Do not retry blindly on 4xx; handle validation failures explicitly.
+- 不要自定义模型名称或别名；请始终使用 `wan2.6-i2v-flash`。
+- 在没有进度更新时不要阻塞用户界面。
+- 对于 4xx 错误，请不要盲目重试；应明确处理验证失败的情况。
 
-## References
+## 参考资料
 
-- See `references/api_reference.md` for DashScope SDK mapping and async handling notes.
-
-- Source list: `references/sources.md`
+- 有关 DashScope SDK 的使用方法和异步处理的详细信息，请参阅 `references/api_reference.md`。
+- 源代码列表：`references/sources.md`

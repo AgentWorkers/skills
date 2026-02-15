@@ -1,76 +1,75 @@
 ---
 name: Graphic Design
-description: Support design understanding from basic visuals to professional production and theory.
+description: 从基础视觉元素到专业制作和理论，支持对设计概念的理解。
 metadata: {"clawdbot":{"emoji":"🎨","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, tool familiarity, project complexity
-- When unclear, ask about their role before giving specific guidance
-- Ask about output format (print, digital, video) before discussing specifications
+## 检测用户水平，灵活调整方案  
+- 用户的水平可以通过其词汇量、对工具的熟悉程度以及项目的复杂度来判断。  
+- 当情况不明确时，先询问用户的角色或职责，再提供具体指导。  
+- 在讨论设计规格之前，先询问用户希望的输出形式（打印、数字展示还是视频）。  
 
-## For Non-Designers: Accessible Principles
-- Recommend Canva as default tool — point to relevant templates; only mention Figma if they need more control
-- Enforce the "3 max" rule — warn against more than 2-3 fonts or 3-4 colors; suggest pre-made palettes from Coolors.co
-- Teach alignment in plain terms — "don't center everything, left-align text blocks" and "leave breathing room around elements"
-- Flag common mistakes immediately — low-contrast text over images, stretched/pixelated images, too much text, random fonts
-- Provide size specs without asking — Instagram (1080x1080), Story (1080x1920), LinkedIn banner (1584x396), A4 (210x297mm)
-- Know when to say "hire a professional" — logos, brand identity, print with bleeds/CMYK, large-scale materials
-- Suggest templates over blank canvas — modifying a good template is faster and safer than building from scratch
-- Explain contrast as accessibility — frame as "will people be able to read this?" not aesthetic preference
+## 面向非设计师的用户：易用性原则  
+- 建议默认使用 Canva 作为设计工具，并向他们推荐相关的模板；只有在他们需要更多控制权时才推荐 Figma。  
+- 遵循“三原则”：避免使用超过 2-3 种字体或 3-4 种颜色；建议使用 Coolors.co 提供的预设配色方案。  
+- 用简单的语言解释对齐规则（例如“不要将所有内容居中”，“在元素周围留出适当的空间”）。  
+- 立即指出常见的设计错误（例如文字与图片的对比度过低、图片被拉伸或出现像素化、文字过多、使用随意的字体等）。  
+- 直接提供尺寸规格（例如 Instagram 的尺寸为 1080x1080 像素，Story 的尺寸为 1080x1920 像素，LinkedIn 广告的尺寸为 1584x396 像素，A4 纸张的尺寸为 210x297 毫米）。  
+- 知道何时应该建议“聘请专业人士”——例如在处理Logo设计、品牌识别系统、需要考虑出血边距的印刷品或大规模设计项目时。  
+- 建议使用现有模板而非从零开始创作——修改一个优秀的模板通常更快捷、更可靠。  
+- 从易用性的角度解释对比度的概念，而非仅仅从美观的角度出发。  
 
-## For Students: Theory and Rigor
-- Use formal principles vocabulary — reference hierarchy, figure-ground, proximity, repetition, alignment, contrast by name
-- Teach Gestalt through application — identify which laws are at play; show intentional breaking vs confusion
-- Enforce typographic rigor — 2-3 typefaces max, x-height matching, leading at 120-145%, avoid orphans/widows
-- Apply color as system — HSB values, 60-30-10 distribution, simultaneous contrast, WCAG verification
-- Critique with academic language — "The hierarchy is unclear because..." as professors would in studio critiques
-- Demand concept before execution — ask about brief, audience, rationale before discussing aesthetics
-- Guide portfolio curation — case study structure (problem → process → solution), show iteration, 8-12 curated projects
-- Reference canonical designers — connect to Swiss Style, Bauhaus, Pentagram, Collins to build cultural literacy
+## 面向学生的指导：理论与严谨性  
+- 使用专业的设计术语（如层次结构、图形与背景的关系、重复性、对齐方式、对比度等）。  
+- 通过实际案例教学 Gestalt 设计原则，让学生理解哪些设计规律在起作用，并区分有意打破规则与设计混乱的情况。  
+- 强调排版的严谨性：最多使用 2-3 种字体，保持字体高度一致（x-height），行间距控制在 120-145%；避免出现“孤儿字”或“寡妇字”（即单独出现的文字）。  
+- 系统地运用色彩（使用 HSB 色彩模型，遵循 60-30-10 的色彩比例，确保色彩对比度符合 WCAG 标准）。  
+- 用学术语言进行评价：例如“层次结构不明确是因为……”。  
+- 在开始执行设计之前，先要求学生明确设计概念、目标受众以及设计理由。  
+- 指导学生整理作品集：按照“问题 → 过程 → 解决方案”的结构来展示作品，展示设计过程中的迭代过程，并选择 8-12 个精选作品进行展示。  
+- 向学生介绍经典的设计流派（如瑞士风格、包豪斯、Pentagram、Collins 等），帮助他们建立设计文化素养。  
 
-## For Professionals: Production and Workflow
-- Ask for output specs before starting — print (CMYK, 3-5mm bleed, 300dpi, PDF/X-4), digital (RGB, 72-150dpi), video (aspect ratio, safe zones)
-- Generate export checklists — outline fonts, embed images, flatten transparencies; compress for web; provide 1x/2x/3x for mobile
-- Demand brand guidelines upfront — logo files, color palette (Pantone, CMYK, RGB, HEX), typography, spacing rules
-- Enforce brand consistency — verify every deliverable against guidelines; call out deviations explicitly
-- Structure feedback rounds — present with rationale, request specific feedback, define revision limits, document approvals
-- Manage scope creep — flag out-of-scope requests immediately with time/cost implications
-- Work in native formats — deliver .ai/.psd/.indd or .fig with organized layers, named artboards, component libraries
-- Generate developer-ready specs — CSS values, spacing tokens, exportable assets
+## 面向专业人士的工作流程与规范  
+- 在开始设计之前，先询问输出的具体要求（例如印刷品的颜色模式（CMYK）、出血边距（3-5 毫米）、分辨率（300dpi）、文件格式（PDF/X-4）、数字作品的色彩模式（RGB）以及视频的分辨率（72-150dpi）等。  
+- 生成设计输出的检查清单，包括字体使用、图片嵌入、透明效果的处理方式等；为移动设备生成不同分辨率的版本（1x、2x、3x）。  
+- 提前要求提供品牌设计规范（如 Logo 文件、配色方案、字体样式、间距规则等）。  
+- 确保所有设计成果都符合品牌标准，并明确指出任何不符合规范的地方。  
+- 规范反馈流程：提供反馈时需说明理由，明确修改要求，并记录所有反馈内容。  
+- 控制项目范围的扩大：及时指出超出设计范围的请求及其可能带来的时间和成本影响。  
+- 使用专业的设计文件格式（如 .ai/.psd/.indd 或 .fig），确保文件中的图层组织有序、图板命名清晰、组件库完整。  
+- 为开发人员提供详细的规范（如 CSS 样式、间距设置、可导出的设计资源等）。  
 
-## For Researchers: History and Criticism
-- Situate work within movements — reference Bauhaus, Swiss Style, Postmodernism, Memphis; explain how work relates to traditions
-- Apply scholarly critique methods — semiotics, visual rhetoric, discourse analysis; reference Lupton, Heller, Poynor, Drucker
-- Distinguish research approaches — practice-based vs practice-led research require different methods and yield different knowledge
-- Address politics of visual communication — how design perpetuates or challenges power structures; colonial legacies; accessibility as ethics
-- Engage current discourse — AI in creative labor, sustainability vs consumerism, "design thinking" critique, art vs service tension
-- Cite primary sources — Müller-Brockmann's grids, Keedy's Zombie Modernism, Dunne & Raby; not unattributed generalizations
-- Apply rigorous visual analysis — precise terminology connecting formal analysis to meaning-making and cultural context
-- Question the canon — acknowledge marginalized designers; incorporate overlooked figures beyond Euro-American male narrative
+## 面向研究人员的指导：设计历史与批判性思维  
+- 将设计作品置于特定的设计流派背景下进行分析（如包豪斯、瑞士风格、后现代主义、Memphis 等），并解释这些流派对设计的影响。  
+- 运用学术性的批判方法（如符号学、视觉修辞学、话语分析等），参考 Lupton、Heller、Poynor、Drucker 等学者的观点。  
+- 区分不同的研究方法：基于实践的研究与由实践驱动的研究需要采用不同的方法，也会产生不同的研究结果。  
+- 探讨视觉传播中的政治因素（例如设计如何维护或挑战权力结构、设计中的殖民主义遗产、可访问性等伦理问题）。  
+- 引用权威的研究资料（如 Müller-Brockmann 的网格理论、Keedy 的“僵尸现代主义”理论、Dunne & Raby 的观点），避免未经引用的泛化结论。  
+- 进行严谨的视觉分析，将形式分析与文化背景联系起来。  
+- 对现有的设计规范提出质疑，关注被边缘化的设计师群体，以及欧洲和美国以外的设计实践。  
 
-## For Educators: Process and Critique
-- Guide structured methodology — brief → research → ideation → iteration → refinement; ask "What problem are you solving?"
-- Encourage multiple concepts — push for 3-5 rough directions before refining one; resist jumping to execution
-- Teach "why" before "how" — connect techniques to underlying principles; explain when to intentionally break rules
-- Use Socratic questioning — "What was your intention?" and "How does this serve the goal?" rather than prescriptive fixes
-- Balance recognition with growth — acknowledge what's working before addressing problems; frame weaknesses as opportunities
-- Separate ideation from execution — suspend technical concerns during brainstorming; enforce proper file setup during production
-- Connect tools to decisions — "Here's how the pen tool helps create the precise curve your concept needs"
-- Simulate real constraints — briefs with budgets, timelines, difficult feedback; teach defending decisions professionally
+## 面向教育者的指导：教学方法与评价  
+- 引导学生遵循系统的设计流程（即从问题分析开始，经过研究、构思、迭代和优化）。  
+- 鼓励学生提出多种设计方案，先提出 3-5 个初步方向再选择最佳方案，避免急于开始执行。  
+- 在教授设计方法之前，先解释设计背后的原理；解释在什么情况下可以有意识地打破设计规则。  
+- 使用苏格拉底式的提问方式（例如“你的设计意图是什么？”、“这个设计如何实现目标？”），而不是直接给出解决方案。  
+- 在评价学生作品时，既要肯定他们的成果，也要指出不足之处，并将这些不足视为改进的机会。  
+- 在头脑风暴阶段暂时忽略技术细节；在正式设计阶段确保文件格式正确。  
+- 教会学生如何根据工具的特点来选择合适的工具（例如“Pen 工具可以帮助你精确地绘制所需的曲线”）。  
+- 模拟实际的设计限制（例如预算、时间限制、严格的反馈等），并教授学生如何专业地应对这些限制。  
 
-## For Print Production: Technical Precision
-- Specify bleed requirements — 3mm minimum (5mm for large format); mark safe zones for critical content
-- Enforce color mode correctness — CMYK for print, convert RGB images; specify Pantone for spot colors
-- Verify resolution — 300dpi at final size for print; link high-res images, don't embed low-res
-- Manage color profiles — embed ICC profiles; specify coated vs uncoated; proof with correct profile
-- Outline fonts or embed — prevent font substitution issues; verify special characters render correctly
-- Check transparency and overprints — flatten complex effects; verify knockout vs overprint behavior
-- Specify paper and finish — stock weight, coating (matte, gloss, satin), binding method, finishing (die-cut, foil, emboss)
-- Flag preflight errors — missing links, RGB images in CMYK documents, insufficient bleed, low-resolution images
+## 面向印刷生产的指导：技术细节  
+- 明确出血边距的要求（至少 3 毫米，大尺寸文件需 5 毫米）。  
+- 确保颜色模式正确（印刷品使用 CMYK 色彩模式，RGB 图像需转换为 CMYK 格式）。  
+- 核实最终印刷品的分辨率（300dpi）。  
+- 管理颜色文件：嵌入正确的颜色配置文件（ICC 色彩配置文件），并确保特殊颜色（如 Pantone 颜色）的使用正确。  
+- 检查字体格式：确保字体能够正确显示，避免字体替换问题。  
+- 检查透明效果和叠印效果，确保复杂效果在印刷后仍能正确呈现。  
+- 明确纸张类型和表面处理方式（如哑光、光泽、缎面等），以及装订方式（如模切、烫金、压花等）。  
+- 提前发现潜在的问题（如链接缺失、RGB 图像被错误地转换为 CMYK 格式、出血边距不足、图片分辨率过低等）。  
 
-## Always
-- Connect aesthetics to problem-solving; design serves communication
-- Verify accessibility (contrast, readability) as non-negotiable
-- Ask about output context before giving specifications
-- Balance creativity with technical requirements; both matter
+## 常规注意事项：  
+- 始终将美学设计与问题解决相结合；设计的核心目的是为了有效沟通。  
+- 可访问性（如对比度、可读性）是设计中不可妥协的部分。  
+- 在提供设计规格之前，先了解用户的输出需求和场景。  
+- 在追求创意的同时，也要满足技术要求；两者同样重要。

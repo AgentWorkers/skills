@@ -15,48 +15,51 @@ allowed-tools:
   - mcp__uniswap__check_safety_status
 ---
 
-# Research and Trade
+# 研究与交易
 
-## Overview
+## 概述
 
-This is the autonomous research-to-execution pipeline. Instead of manually calling four different agents and wiring their outputs together, this skill runs the full expert workflow in one command: research a token, find the best pool, assess risk, and -- only if the risk assessment approves -- execute the trade.
+这是一个自动化的研究到执行流程。该流程无需手动调用四个不同的代理并连接它们的输出结果，而是通过一个命令完成整个专家级的工作流程：研究代币、寻找最佳交易池、评估风险——只有在风险评估通过后，才会执行交易。
 
-**Why this is 10x better than calling agents individually:**
+**为什么这比单独调用各个代理要好10倍：**
 
-1. **Compound context**: Each agent receives the accumulated findings from all prior agents. The risk-assessor doesn't just evaluate a swap in isolation -- it sees the token-analyst's liquidity warnings, the pool-researcher's depth analysis, and the exact trade size, enabling a far richer risk assessment than standalone invocation.
-2. **Automatic risk gating**: A VETO at any stage short-circuits the pipeline immediately. No wasted gas, no wasted time, and you get a full explanation of why.
-3. **Single command for a 4-step expert workflow**: Manually coordinating token research, pool selection, risk evaluation, and trade execution takes significant time and expertise. This compresses it into one natural-language request.
-4. **Progressive disclosure**: You see each stage's findings as they complete, not just a final result. If the pipeline stops at risk assessment, you still get the full research report.
+1. **复合上下文**：每个代理都会接收到之前所有代理的累积信息。风险评估者不会孤立地评估交易，而是会结合代币分析师的流动性警告、交易池研究者的深度分析以及具体的交易金额，从而做出更全面的风险评估。
+2. **自动风险控制**：在任何阶段，如果出现风险问题，流程会立即停止。这样既不会浪费Gas（交易费用），也不会浪费时间，并且用户会收到详细的解释。
+3. **一步完成四步专家级工作流程**：手动协调代币研究、交易池选择、风险评估和交易执行需要大量的时间和专业知识。而这个流程将这一切压缩成一个简单的自然语言指令。
+4. **逐步展示结果**：用户可以实时看到每个阶段的分析结果，而不仅仅是最终结果。即使流程在风险评估阶段停止，用户也能获得完整的研究报告。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户说出以下指令时，可以激活该流程：
 
-- "Research UNI and buy if it looks good"
-- "Due diligence on AAVE then trade"
-- "Investigate and trade ARB"
-- "Should I buy LINK? If so, do it"
-- "Is PEPE safe to trade? Buy $500 worth if yes"
-- "Research X, assess risk, and swap if it passes"
-- "Autonomous trade: research then execute"
-- "Check out TOKEN and buy some if the risk is acceptable"
+- “研究UNI代币，如果情况良好就购买”
+- “先对AAVE进行尽职调查，然后再进行交易”
+- “调查并交易ARB代币”
+- “我应该购买LINK代币吗？如果可以，就购买”
+- “PEPE代币安全吗？如果安全，就购买500美元的量”
+- “研究X代币，评估风险，如果通过就进行交易”
+- “自动交易：先研究再执行”
+- “查看TOKEN代币，如果风险可接受就购买一些”
 
-**Do NOT use** when the user just wants research without trading (use `research-token` instead) or just wants to execute a swap without research (use `execute-swap` instead).
+**不适用场景**
 
-## Parameters
+- 当用户仅需要研究代币而不进行交易时（请使用`research-token`命令）
+- 当用户仅需要执行交易而不进行任何研究时（请使用`execute-swap`命令）
 
-| Parameter     | Required | Default    | How to Extract                                                     |
-| ------------- | -------- | ---------- | ------------------------------------------------------------------ |
-| token         | Yes      | --         | Token to research and potentially buy: "UNI", "AAVE", or 0x addr  |
-| amount        | Yes      | --         | Trade size: "$500", "1 ETH worth", "0.5 ETH"                      |
-| chain         | No       | ethereum   | Target chain: "ethereum", "base", "arbitrum"                       |
-| riskTolerance | No       | moderate   | "conservative", "moderate", "aggressive"                           |
-| action        | No       | buy        | "buy" (swap into token) or "sell" (swap out of token)              |
-| payWith       | No       | WETH       | Token to spend: "WETH", "USDC", etc.                              |
+## 参数
 
-If the user doesn't provide an amount, **ask for it** -- never guess a trade size.
+| 参数                | 是否必填 | 默认值       | 提取方式                                                                                              |
+|------------------|--------|------------|-------------------------------------------------------------------------------------------------------------------------|
+| token               | 是      | --          | 需要研究的代币："UNI", "AAVE" 或者 0x 地址                                            |
+| amount              | 是      | --          | 交易金额："$500", "1 ETH的量", "0.5 ETH"                                                    |
+| chain               | 否       | ethereum     | 目标链："ethereum", "base", "arbitrum"                                                    |
+| riskTolerance        | 否       | moderate     | "conservative"（保守），"moderate"（中等），"aggressive"（激进）                               |
+| action              | 否       | buy         | "buy"（买入代币）或 "sell"（卖出代币）                                                    |
+| payWith             | 否       | WETH         | 用于支付的代币："WETH", "USDC"等等                                                    |
 
-## Workflow
+如果用户没有提供交易金额，请**询问用户**——切勿自行猜测交易金额。
+
+## 工作流程
 
 ```
                           RESEARCH-AND-TRADE PIPELINE
@@ -108,15 +111,15 @@ If the user doesn't provide an amount, **ask for it** -- never guess a trade siz
   └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Research (token-analyst)
+### 第1步：研究（代币分析师）
 
-Delegate to `Task(subagent_type:token-analyst)` with:
+委托给`Task(subagent_type:token-analyst)`，并提供以下信息：
 
-- Token symbol or address
-- Target chain
-- Request: full due diligence report
+- 代币符号或地址
+- 目标链
+- 请求：完整的尽职调查报告
 
-**What to pass to the agent:**
+**需要传递给代理的信息：**
 
 ```
 Research this token for a potential trade:
@@ -129,7 +132,7 @@ Provide a full due diligence report: liquidity across all pools, volume profile
 at < 1% price impact.
 ```
 
-**Present to user after completion:**
+**完成后的用户展示内容：**
 
 ```text
 Step 1/5: Token Research Complete
@@ -144,11 +147,11 @@ Step 1/5: Token Research Complete
   Proceeding to pool analysis...
 ```
 
-**Gate check:** If the token-analyst reports critical risk factors (total liquidity < $100K, no pools found, token not verified), present findings and ask the user if they want to continue before proceeding.
+**风险检查**：如果代币分析师报告了关键风险因素（总流动性低于10万美元、未找到合适的交易池、代币未通过验证），请向用户展示这些信息，并询问他们是否继续。
 
-### Step 2: Pool Analysis (pool-researcher)
+### 第2步：交易池分析（交易池研究者）
 
-Delegate to `Task(subagent_type:pool-researcher)` with the token research output:
+委托给`Task(subagent_type:pool-researcher)`，并提供代币研究的结果：
 
 ```
 Find the best pool for trading {token}/{payWith} on {chain}.
@@ -167,7 +170,7 @@ fee APY, TVL, liquidity depth at the trade size, and price impact estimate.
 Recommend the best pool for this specific trade.
 ```
 
-**Present to user after completion:**
+**完成后的用户展示内容：**
 
 ```text
 Step 2/5: Pool Analysis Complete
@@ -180,9 +183,9 @@ Step 2/5: Pool Analysis Complete
   Proceeding to risk assessment...
 ```
 
-### Step 3: Risk Assessment (risk-assessor)
+### 第3步：风险评估（风险评估者）
 
-Delegate to `Task(subagent_type:risk-assessor)` with **compound context** from Steps 1 and 2:
+委托给`Task(subagent_type:risk-assessor)`，并提供来自第1步和第2步的**复合上下文**信息：
 
 ```
 Evaluate risk for this proposed swap:
@@ -202,16 +205,16 @@ Evaluate all applicable risk dimensions: slippage, liquidity, smart contract ris
 Provide a clear APPROVE / CONDITIONAL_APPROVE / VETO / HARD_VETO decision.
 ```
 
-**Conditional gate logic after risk-assessor returns:**
+**风险评估者返回后的处理逻辑：**
 
-| Decision             | Action                                                                               |
-| -------------------- | ------------------------------------------------------------------------------------ |
-| **APPROVE**          | Present risk summary, proceed to Step 4 (user confirmation)                          |
-| **CONDITIONAL_APPROVE** | Show conditions (e.g., "split into 2 tranches"). Ask user: "Accept conditions?"   |
-| **VETO**             | **STOP.** Show full research report + risk assessment + veto reason. Suggest alternatives. |
-| **HARD_VETO**        | **STOP.** Show reason. Non-negotiable -- do not offer to proceed.                    |
+| 决策                | 执行动作                                                                                   |
+|------------------|----------------------------------------------------------------------------------------|
+| **批准**              | 展示风险总结，进入第4步（用户确认）                                                         |
+| **有条件批准**          | 显示具体条件（例如：“分成两笔交易”）。询问用户：“接受这些条件吗？”                                      |
+| **否决**              | **停止**。展示完整的研究报告、风险评估结果及否决原因。提供替代方案。                                      |
+| **绝对否决**            | **停止**。展示原因。这种情况下无法继续进行交易。                                                    |
 
-**Present to user (APPROVE case):**
+**向用户展示内容（批准情况）：**
 
 ```text
 Step 3/5: Risk Assessment Complete
@@ -225,7 +228,7 @@ Step 3/5: Risk Assessment Complete
   Ready for your confirmation...
 ```
 
-**Present to user (VETO case):**
+**向用户展示内容（否决情况）：**
 
 ```text
 Step 3/5: Risk Assessment -- VETOED
@@ -246,9 +249,9 @@ Step 3/5: Risk Assessment -- VETOED
   Pipeline stopped. No trade executed.
 ```
 
-### Step 4: User Confirmation
+### 第4步：用户确认
 
-Before executing any trade, present a clear summary and ask for explicit confirmation:
+在执行任何交易之前，向用户展示清晰的总结，并请求明确确认：
 
 ```text
 Trade Confirmation Required
@@ -266,11 +269,11 @@ Trade Confirmation Required
   Proceed with this trade? (yes/no)
 ```
 
-**Only proceed to Step 5 if the user explicitly confirms.**
+**只有在使用者明确确认后，才进入第5步。**
 
-### Step 5: Execute (trade-executor)
+### 第5步：执行交易（交易执行者）
 
-Delegate to `Task(subagent_type:trade-executor)` with the full pipeline context:
+委托给`Task(subagent_type:trade-executor)`，并提供完整的流程上下文：
 
 ```
 Execute this swap:
@@ -285,7 +288,7 @@ The token has been researched (liquidity: {X}, volume: {Y}) and risk-assessed
 (slippage: {Z}, liquidity: {W}). Proceed with execution through the safety pipeline.
 ```
 
-**Present final result:**
+**展示最终结果：**
 
 ```text
 Step 5/5: Trade Executed
@@ -307,9 +310,9 @@ Step 5/5: Trade Executed
   Total cost: $987.20 (trade + gas)
 ```
 
-## Output Format
+## 输出格式
 
-### Successful Pipeline (all 5 steps)
+### 流程成功（所有5步都完成）
 
 ```text
 Research and Trade Complete
@@ -329,7 +332,7 @@ Research and Trade Complete
   Pipeline: Research -> Pool -> Risk -> Confirm -> Execute (all passed)
 ```
 
-### Vetoed Pipeline (stopped at risk)
+### 流程被否决（在风险评估阶段停止）
 
 ```text
 Research and Trade -- Risk Vetoed
@@ -349,27 +352,27 @@ Research and Trade -- Risk Vetoed
   Pipeline: Research -> Pool -> Risk (VETOED) -- No trade executed.
 ```
 
-## Important Notes
+## 重要说明
 
-- **This skill always researches first.** It never skips to trading. If the user just wants a quick swap without research, redirect them to `execute-swap`.
-- **Risk gating is non-negotiable for HARD_VETO.** If the risk-assessor issues a HARD_VETO (unverified token, pool TVL < $1K, price impact > 10%), the pipeline stops. The user cannot override this.
-- **VETO is informational.** For a regular VETO, present the full research and explain why. The user can then choose to use `execute-swap` directly if they want to proceed at their own risk -- but this skill will not do it.
-- **Compound context is the key differentiator.** The risk-assessor is dramatically more useful when it has the token-analyst's risk factors and the pool-researcher's depth analysis, compared to calling it standalone with just a swap request.
-- **Progressive output keeps the user informed.** Don't wait until the end to show results. After each agent completes, show a brief summary so the user knows what's happening.
-- **Amount is required.** Never assume a trade size. If the user says "research and buy UNI" without an amount, ask: "How much would you like to trade?"
+- **该流程始终会先进行研究**。如果用户只是想快速交易而不进行研究，请引导他们使用`execute-swap`命令。
+- **对于绝对否决（HARD_VETO），风险控制是不可协商的**。如果风险评估者发出绝对否决（例如代币未通过验证、交易池的总流动性低于1000美元、价格波动率超过10%），流程将立即停止。用户无法更改这一决定。
+- **否决只是提供信息**。对于普通否决，会向用户展示完整的研究报告并解释原因。用户可以选择直接使用`execute-swap`命令自行进行交易，但该流程不会自动执行交易。
+- **复合上下文是关键**：风险评估者在拥有代币分析师的风险分析和交易池研究者的深度分析后，其评估效果会大大提升。
+- **逐步展示结果**：不要等到流程结束才显示结果。每个代理完成步骤后，都会向用户展示简要总结，让他们了解当前进度。
+- **必须提供交易金额**。切勿自行猜测交易金额。如果用户只要求“研究UNI代币”，请询问：“您想购买多少？”
 
-## Error Handling
+## 错误处理
 
-| Error                         | User-Facing Message                                                      | Suggested Action                          |
-| ----------------------------- | ------------------------------------------------------------------------ | ----------------------------------------- |
-| Token not found               | "Could not find token {X} on {chain}."                                   | Check spelling or provide contract address|
-| No pools found                | "No Uniswap pools found for {token}/{payWith} on {chain}."              | Try different pay token or chain          |
-| Token-analyst fails           | "Token research failed: {reason}. Cannot proceed without due diligence." | Try again or use research-token directly  |
-| Pool-researcher fails         | "Pool analysis failed. Research completed but cannot find optimal pool."  | Try execute-swap with manual pool choice  |
-| Risk-assessor VETO            | "Risk assessment vetoed this trade: {reason}."                           | Reduce amount, try different token/pool   |
-| Risk-assessor HARD_VETO       | "Trade blocked: {reason}. This cannot be overridden."                    | The trade is unsafe at any size           |
-| Trade-executor fails          | "Trade execution failed: {reason}. Research and risk data preserved."    | Check wallet, balance, gas; retry         |
-| Safety check fails            | "Safety limits exceeded. Check spending limits with check-safety."       | Wait for limit reset or adjust limits     |
-| User declines confirmation    | "Trade cancelled. Research and risk data are shown above for reference." | No action needed                          |
-| Wallet not configured         | "No wallet configured. Cannot execute trades."                           | Set up wallet with setup-agent-wallet     |
-| Insufficient balance          | "Insufficient {payWith} balance: have {X}, need {Y}."                    | Reduce amount or acquire more tokens      |
+| 错误类型                | 向用户显示的消息                                                         | 建议的操作                                                                                          |
+|------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| 未找到代币            | “在{chain}链上找不到代币{X}。”                                                         | 检查拼写或提供合约地址                                                         |
+| 未找到合适的交易池          | “在{chain}链上未找到适用于{token}/{payWith}的交易池。”                                      | 尝试使用其他代币或链         |
+| 代币研究失败            | “代币研究失败：{原因}。无法在没有尽职调查的情况下继续。”                                        | 重新尝试或直接使用`research-token`命令         |
+| 交易池分析失败            | “交易池分析失败。研究已完成，但未找到最佳交易池。”                                      | 尝试手动选择交易池并执行`execute-swap`命令         |
+| 风险评估否决            | “风险评估否决了此次交易：{原因}。”                                                     | 减少交易金额或尝试其他代币/交易池         |
+| 绝对否决（HARD_VETO）        | “交易被阻止：{原因}。无论交易金额多少，此次交易都不安全。”                                      | 交易无法进行                                                            |
+| 交易执行失败            | “交易执行失败：{原因}。研究数据和风险信息已保存。”                                         | 检查钱包余额和Gas费用；重新尝试                                         |
+| 安全检查失败            | “超过了安全限制。请使用`check-safety`命令检查支付限制。”                                      | 等待限制重置或调整限制                                                         |
+| 用户拒绝确认            | “交易已取消。研究结果和风险信息已展示供参考。”                                                     | 无需进一步操作                                                         |
+| 未配置钱包              | “未配置钱包。无法执行交易。”                                                         | 使用`setup-agent-wallet`命令配置钱包                                         |
+| 账户余额不足            | “{payWith}余额不足：当前余额为{X}，需要{Y}。”                                         | 增加余额或购买更多代币                                                         |

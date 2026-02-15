@@ -1,25 +1,25 @@
 ---
 name: camoufox
 version: 1.0.0
-description: Anti-detect browser automation using Camoufox (Firefox-based). Use instead of Chrome/Playwright for bot-detection-heavy sites like X/Twitter, Naver, and other protected sites. Provides stealth browsing with OS/browser fingerprint spoofing, humanized mouse movements, and persistent sessions.
+description: 使用 Camoufox（基于 Firefox 的工具）来规避浏览器自动化检测。在需要应对大量机器人检测的网站（如 X/Twitter、Naver 等受保护的网站）上，建议使用 Camoufox 代替 Chrome 或 Playwright。Camoufox 提供了隐秘浏览功能，包括伪造操作系统和浏览器的特征信息、模拟自然的人类鼠标操作方式以及保持会话的持续性。
 ---
 
 # Camoufox
 
-**Use instead of OpenClaw's built-in browser tool for bot-detection sites.**
+**用于替代 OpenClaw 内置的浏览器工具，以检测机器人访问的网站。**
 
-## Setup (one-time)
+## 设置（一次性操作）
 ```bash
 bash scripts/setup.sh
 ```
 
-## Usage
+## 使用方法
 ```bash
 source ~/.openclaw/workspace/camoufox-env/bin/activate
 xvfb-run -a --server-args="-screen 0 1920x1080x24" python3 your_script.py
 ```
 
-## Required Settings
+## 必需的设置
 ```python
 from camoufox.sync_api import Camoufox
 
@@ -34,18 +34,18 @@ with Camoufox(
     # Use standard Playwright API from here
 ```
 
-## Paths
-- venv: `~/.openclaw/workspace/camoufox-env/`
-- profile: `~/.openclaw/camoufox-profile/`
+## 路径配置
+- 环境变量：`~/.openclaw/workspace/camoufox-env/`
+- 配置文件：`~/.openclaw/camoufox-profile/`
 
-## CAPTCHA Handling
-First visit to protected sites may need manual CAPTCHA:
+## 图形验证码处理
+首次访问受保护的网站时可能需要手动输入图形验证码：
 ```bash
 DISPLAY=:1 python3 scripts/login_session.py https://site.com/login
 ```
-Solve via VNC, session saves to profile for future automation.
+可以通过 VNC 进行操作，会话信息会保存在配置文件中，以便后续自动化使用。
 
-## Scripts
-- `scripts/setup.sh` - Install dependencies
-- `scripts/browse.py <url> --screenshot out.png` - Quick browse
-- `scripts/login_session.py <url>` - VNC manual login
+## 脚本
+- `scripts/setup.sh` - 安装依赖项
+- `scripts/browse.py <url> --screenshot out.png` - 快速浏览网站并生成截图
+- `scripts/login_session.py <url>` - 通过 VNC 手动登录网站

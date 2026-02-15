@@ -1,6 +1,6 @@
 ---
 name: code-formatter
-description: A simple example skill for demonstration purposes
+description: 一个用于演示目的的简单示例技能
 subagents:
   - name: reviewer
     description: You are a senior code reviewer.
@@ -9,36 +9,36 @@ allowed-tools:
   - Write
 ---
 
-# Code Formatter Skill
+# 代码格式化工具
 
-Automatically formats code files using industry-standard tools.
+该工具使用行业标准的工具自动格式化代码文件。
 
-## Capabilities
+## 功能
 
-- Format JavaScript/TypeScript with Prettier
-- Fix ESLint issues automatically
-- Format JSON, YAML, and Markdown files
-- Run format checks before commits
+- 使用 Prettier 格式化 JavaScript/TypeScript 代码
+- 自动修复 ESLint 报告的问题
+- 格式化 JSON、YAML 和 Markdown 文件
+- 在提交代码之前运行格式化检查
 
-## Usage Examples
+## 使用示例
 
-**Format a single file:**
+**格式化单个文件：**
 ```
 "Format the src/index.js file"
 ```
 
-**Format entire directory:**
+**格式化整个目录：**
 ```
 "Format all files in the src/ directory"
 ```
 
-**Check formatting without changes:**
+**检查格式化情况（无需进行任何修改）：**
 ```
 "Check if files in src/ are properly formatted"
 ```
 
-## Configuration
+## 配置
 
-Set these environment variables for custom configuration:
-- `PRETTIER_CONFIG`: Path to prettier config (default: .prettierrc)
-- `ESLINT_CONFIG`: Path to eslint config (default: .eslintrc.js)
+请设置以下环境变量以实现自定义配置：
+- `PRETTIER_CONFIG`：Prettier 的配置文件路径（默认值：.prettierrc）
+- `ESLINT_CONFIG`：ESLint 的配置文件路径（默认值：.eslintrc.js）

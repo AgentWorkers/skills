@@ -6,19 +6,19 @@ description: |
   Use when: (1) User requests audio/voice output with the "tts" trigger or keyword. (2) Content needs to be spoken rather than read (multitasking, accessibility, driving, cooking). (3) User wants a specific voice, speed, pitch, or format for TTS output.
 ---
 
-# Edge-TTS Skill
+# Edge-TTS 技能
 
-## Overview
+## 概述
 
-Generate high-quality text-to-speech audio using Microsoft Edge's neural TTS service via the node-edge-tts npm package. Supports multiple languages, voices, adjustable speed/pitch, and subtitle generation.
+通过 `node-edge-tts` npm 包，利用 Microsoft Edge 的神经网络 TTS（文本转语音）服务生成高质量的语音文件。支持多种语言、多种语音选项，以及可调节的语速和音调，并支持字幕生成功能。
 
-## Quick Start
+## 快速入门
 
-When you detect TTS intent from triggers or user request:
+当从用户触发器或请求中检测到 TTS 意图时：
 
-1. **Call the tts tool** (Clawdbot built-in) to convert text to speech
-2. The tool returns a MEDIA: path
-3. Clawdbot routes the audio to the current channel
+1. **调用 TTS 工具**（Clawdbot 内置）将文本转换为语音。
+2. 该工具返回一个 `MEDIA:` 路径。
+3. Clawdbot 将音频发送到当前频道。
 
 ```javascript
 // Example: Built-in tts tool usage
@@ -26,37 +26,37 @@ tts("Your text to convert to speech")
 // Returns: MEDIA: /path/to/audio.mp3
 ```
 
-## Trigger Detection
+## 触发器检测
 
-Recognize "tts" keyword as TTS requests. The skill automatically filters out TTS-related keywords from text before conversion to avoid converting the trigger words themselves to audio.
+识别 “tts” 关键字作为 TTS 请求。该技能会在转换文本之前自动过滤掉与 TTS 相关的关键词，以避免将触发词本身转换为音频。
 
-## Advanced Customization
+## 高级定制
 
-### Using the Node.js Scripts
+### 使用 Node.js 脚本
 
-For more control, use the bundled scripts directly:
+如需更多控制，可以直接使用随附的脚本：
 
-#### TTS Converter
+#### TTS 转换器
 ```bash
 cd scripts
 npm install
 node tts-converter.js "Your text" --voice en-US-AriaNeural --rate +10% --output output.mp3
 ```
 
-**Options:**
-- `--voice, -v`: Voice name (default: en-US-AriaNeural)
-- `--lang, -l`: Language code (e.g., en-US, es-ES)
-- `--format, -o`: Output format (default: audio-24khz-48kbitrate-mono-mp3)
-- `--pitch`: Pitch adjustment (e.g., +10%, -20%, default)
-- `--rate, -r`: Rate adjustment (e.g., +10%, -20%, default)
-- `--volume`: Volume adjustment (e.g., +0%, -10%, default)
-- `--save-subtitles, -s`: Save subtitles as JSON file
-- `--output, -f`: Output file path (default: tts_output.mp3)
-- `--proxy, -p`: Proxy URL (e.g., http://localhost:7890)
-- `--timeout`: Request timeout in milliseconds (default: 10000)
-- `--list-voices, -L`: List available voices
+**选项：**
+- `--voice, -v`：语音名称（默认：en-US-AriaNeural）
+- `--lang, -l`：语言代码（例如：en-US, es-ES）
+- `--format, -o`：输出格式（默认：audio-24khz-48kbitrate-mono-mp3）
+- `--pitch`：音调调整（例如：+10%, -20%，默认）
+- `--rate, -r`：语速调整（例如：+10%, -20%，默认）
+- `--volume`：音量调整（例如：+0%, -10%，默认）
+- `--save-subtitles, -s`：将字幕保存为 JSON 文件
+- `--output, -f`：输出文件路径（默认：tts_output.mp3）
+- `--proxy, -p`：代理 URL（例如：http://localhost:7890）
+- `--timeout`：请求超时时间（以毫秒为单位，默认：10000）
+- `--list-voices, -L`：列出可用的语音
 
-#### Configuration Manager
+#### 配置管理器
 ```bash
 cd scripts
 npm install
@@ -69,107 +69,109 @@ node config-manager.js --get
 node config-manager.js --reset
 ```
 
-### Voice Selection
+### 语音选择
 
-Common voices (use `--list-voices` for full list):
+常用语音（使用 `--list-voices` 查看完整列表）：
 
-**English:**
-- `en-US-MichelleNeural` (female, natural, **default**)
-- `en-US-AriaNeural` (female, natural)
-- `en-US-GuyNeural` (male, natural)
-- `en-GB-SoniaNeural` (female, British)
-- `en-GB-RyanNeural` (male, British)
+**英语：**
+- `en-US-MichelleNeural`（女性，自然音色，**默认**）
+- `en-US-AriaNeural`（女性，自然音色）
+- `en-US-GuyNeural`（男性，自然音色）
+- `en-GB-SoniaNeural`（女性，英式发音）
+- `en-GB-RyanNeural`（男性，英式发音）
 
-**Other Languages:**
-- `es-ES-ElviraNeural` (Spanish, Spain)
-- `fr-FR-DeniseNeural` (French)
-- `de-DE-KatjaNeural` (German)
-- `ja-JP-NanamiNeural` (Japanese)
-- `zh-CN-XiaoxiaoNeural` (Chinese)
-- `ar-SA-ZariyahNeural` (Arabic)
+**其他语言：**
+- `es-ES-ElviraNeural`（西班牙语，西班牙）
+- `fr-FR-DeniseNeural`（法语）
+- `de-DE-KatjaNeural`（德语）
+- `ja-JP-NanamiNeural`（日语）
+- `zh-CN-XiaoxiaoNeural`（中文）
+- `ar-SA-ZariyahNeural`（阿拉伯语）
 
-### Rate Guidelines
+### 语速指南
 
-Rate values use percentage format:
-- `"default"`: Normal speed
-- `"-20%"` to `"-10%"`: Slow, clear (tutorials, stories, accessibility)
-- `"+10%"` to `"+20%"`: Slightly fast (summaries)
-- `"+30%"` to `"+50%"`: Fast (news, efficiency)
+语速值使用百分比表示：
+- `"default"`：正常速度
+- `"-20%"` 至 `"-10%"`：较慢，适合讲解、阅读等场景
+- `"+10%"` 至 `"+20%"`：稍快，适合总结等场景
+- `"+30%"` 至 `"+50%"`：较快，适合新闻、演讲等场景
 
-### Output Formats
+### 输出格式
 
-Choose audio quality based on use case:
-- `audio-24khz-48kbitrate-mono-mp3`: Standard quality (voice notes, messages)
-- `audio-24khz-96kbitrate-mono-mp3`: High quality (presentations, content)
-- `audio-48khz-96kbitrate-stereo-mp3`: Highest quality (professional audio, music)
+根据使用场景选择音频质量：
+- `audio-24khz-48kbitrate-mono-mp3`：标准质量（语音提示、消息）
+- `audio-24khz-96kbitrate-mono-mp3`：高质量（演示文稿、内容）
+- `audio-48khz-96kbitrate-stereo-mp3`：最高质量（专业音频、音乐）
 
-## Resources
+## 资源
 
 ### scripts/tts-converter.js
-Main TTS conversion script using node-edge-tts. Generates audio files with customizable voice, rate, volume, pitch, and format. Supports subtitle generation and voice listing.
+主要的 TTS 转换脚本，使用 `node-edge-tts` 实现。支持自定义语音、语速、音量、音调和格式，并支持字幕生成。
 
 ### scripts/config-manager.js
-Manages persistent user preferences for TTS settings (voice, language, format, pitch, rate, volume). Stores config in `~/.tts-config.json`.
+管理用户的 TTS 设置（语音、语言、格式、音调、语速、音量）。配置信息存储在 `~/.tts-config.json` 文件中。
 
 ### scripts/package.json
-NPM package configuration with node-edge-tts dependency.
+NPM 包的配置文件，包含 `node-edge-tts` 依赖项。
 
 ### references/node_edge_tts_guide.md
-Complete documentation for node-edge-tts npm package including:
-- Full voice list by language
-- Prosody options (rate, pitch, volume)
-- Usage examples (CLI and Module)
-- Subtitle generation
-- Output formats
-- Best practices and limitations
+`node-edge-tts` npm 包的完整文档，包括：
+- 按语言分类的语音列表
+- 语调设置（语速、音调、音量）
+- 使用示例（命令行和模块）
+- 字幕生成
+- 输出格式
+- 最佳实践和限制
 
-### Voice Testing
-Test different voices and preview audio quality at: https://tts.travisvn.com/
+### 语音测试
 
-Refer to this when you need specific voice details or advanced features.
+可以在以下链接测试不同的语音并预览音频质量：https://tts.travisvn.com/
 
-## Installation
+如需特定语音详情或高级功能，请参考此文档。
 
-To use the bundled scripts:
+## 安装
+
+要使用随附的脚本，请执行以下操作：
 
 ```bash
 cd /home/user/clawd/skills/public/tts-skill/scripts
 npm install
 ```
 
-This installs:
-- `node-edge-tts` - TTS library
-- `commander` - CLI argument parsing
+这将安装：
+- `node-edge-tts`：TTS 库
+- `commander`：命令行参数解析工具
 
-## Workflow
+## 工作流程
 
-1. **Detect intent**: Check for "tts" trigger or keyword in user message
-2. **Choose method**: Use built-in `tts` tool for simple requests, or `scripts/tts-converter.js` for customization
-3. **Generate audio**: Convert the target text (message, search results, summary)
-4. **Return to user**: The tts tool returns a MEDIA: path; Clawdbot handles delivery
+1. **检测意图**：检查用户消息中是否包含 “tts” 关键字或触发词。
+2. **选择方法**：对于简单请求，使用内置的 `tts` 工具；对于复杂需求，使用 `scripts/tts-converter.js` 进行定制。
+3. **生成音频**：将目标文本（消息、搜索结果、摘要等）转换为语音。
+4. **返回结果**：TTS 工具返回 `MEDIA:` 路径，由 Clawdbot 负责后续的音频传输。
 
-## Testing
+## 测试
 
-### Basic Test
-Run the test script to verify TTS functionality:
+### 基本测试
+运行测试脚本以验证 TTS 功能：
 ```bash
 cd /home/user/clawd/skills/public/edge-tts/scripts
 npm test
 ```
-This generates a test audio file and verifies the TTS service is working.
+该脚本会生成一个测试音频文件，并验证 TTS 服务是否正常工作。
 
-### Voice Testing
-Test different voices and preview audio quality at: https://tts.travisvn.com/
+### 语音测试
 
-### Integration Test
-Use the built-in `tts` tool for quick testing:
+可以在以下链接测试不同的语音并预览音频质量：https://tts.travisvn.com/
+
+### 集成测试
+使用内置的 `tts` 工具进行快速测试：
 ```javascript
 // Example: Test TTS with default settings
 tts("This is a test of the TTS functionality.")
 ```
 
-### Configuration Test
-Verify configuration persistence:
+### 配置测试
+验证配置是否能够持久保存：
 ```bash
 cd /home/user/clawd/skills/public/edge-tts/scripts
 node config-manager.js --get
@@ -177,22 +179,22 @@ node config-manager.js --set-voice en-US-GuyNeural
 node config-manager.js --get
 ```
 
-## Troubleshooting
+## 故障排除
 
-- **Test connectivity**: Run `npm test` to check if TTS service is accessible
-- **Check voice availability**: Use `node tts-converter.js --list-voices` to see available voices
-- **Verify proxy settings**: If using proxy, test with `node tts-converter.js "test" --proxy http://localhost:7890`
-- **Check audio output**: The test should generate `test-output.mp3` in the scripts directory
+- **测试连接**：运行 `npm test` 以检查 TTS 服务是否可用。
+- **检查语音可用性**：使用 `node tts-converter.js --list-voices` 查看可用的语音。
+- **验证代理设置**：如果使用代理，请使用 `node tts-converter.js "test" --proxy http://localhost:7890` 进行测试。
+- **检查音频输出**：测试应生成 `test-output.mp3` 文件，保存在 `scripts` 目录中。
 
-## Notes
+## 注意事项
 
-- node-edge-tts uses Microsoft Edge's online TTS service (updated, working authentication)
-- No API key needed (free service)
-- Output is MP3 format by default
-- Requires internet connection
-- Supports subtitle generation (JSON format with word-level timing)
-- **Temporary File Handling**: By default, audio files are saved to the system's temporary directory (`/tmp/edge-tts-temp/` on Unix, `C:\Users\<user>\AppData\Local\Temp\edge-tts-temp\` on Windows) with unique filenames (e.g., `tts_1234567890_abc123.mp3`). Files are not automatically deleted - the calling application (Clawdbot) should handle cleanup after use. You can specify a custom output path with the `--output` option if permanent storage is needed.
-- **TTS keyword filtering**: The skill automatically filters out TTS-related keywords (tts, TTS, text-to-speech) from text before conversion to avoid converting the trigger words themselves to audio
-- For repeated preferences, use `config-manager.js` to set defaults
-- **Default voice**: `en-US-MichelleNeural` (female, natural)
-- Neural voices (ending in `Neural`) provide higher quality than Standard voices
+- `node-edge-tts` 使用 Microsoft Edge 的在线 TTS 服务（服务已更新，支持身份验证）。
+- 不需要 API 密钥（免费服务）。
+- 输出格式默认为 MP3。
+- 需要互联网连接。
+- 支持字幕生成（JSON 格式，包含单词级别的时间信息）。
+- **临时文件处理**：音频文件默认保存在系统的临时目录中（Unix 系统下为 `/tmp/edge-tts-temp/`，Windows 系统下为 `C:\Users\<user>\AppData\Local\Temp\edge-tts-temp\`），文件名具有唯一性（例如：`tts_1234567890_abc123.mp3`）。文件不会自动删除——调用应用程序（Clawdbot）应在使用后负责清理。如果需要永久存储，可以使用 `--output` 选项指定自定义输出路径。
+- **TTS 关键词过滤**：该技能会在转换文本之前自动过滤掉与 TTS 相关的关键词，以避免将触发词本身转换为音频。
+- 对于重复的配置设置，可以使用 `config-manager.js` 设置默认值。
+- **默认语音**：`en-US-MichelleNeural`（女性，自然音色）。
+- “Neural” 结尾的语音通常比标准语音提供更高的音质。

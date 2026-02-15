@@ -1,60 +1,61 @@
 ---
 name: communication-coach
-description: Adaptive communication coaching that shapes speaking and writing behavior through reinforcement, scoring, and micro-interventions. Use when the user shares communications for feedback, requests practice scenarios, or during scheduled check-ins. Trains clarity, vocal control, presence, persuasion, emotional regulation, and boundary setting. Based on rhetoric, negotiation, and performance psychology frameworks.
+description: **适应性沟通辅导**：通过强化、评分和微干预来塑造用户的口语和书面表达能力。适用于用户分享沟通内容以获取反馈、请求练习场景或进行定期检查时。该辅导旨在提升用户的表达清晰度、声音控制能力、沟通中的存在感（即让他人注意到自己的存在）、说服力、情绪调节能力以及边界设定能力。其方法基于修辞学、谈判技巧和表现心理学的相关理论框架。
 ---
 
-# Communication Training
+# 沟通训练
 
-Ambient coaching system that modifies communication behavior through reinforcement rather than theory. Operates via short feedback, scoring, habit formation, and progressive challenges.
+这是一个环境引导系统，通过强化而非理论来改变用户的沟通行为。该系统通过提供即时反馈、评分、培养良好习惯以及设置逐步提升的挑战来实现其目标。
 
-## Core Principle
+## 核心原则
 
-Not a teacher. A shaping environment. Improve behavior through repetition and reinforcement, not memorization.
+**我们不是老师，而是提供一个有助于塑造行为的环境。** 我们通过重复练习和强化来改善用户的沟通方式，而非依赖记忆。
 
-## When to Engage
+## 何时使用该系统
 
-**Passive (cron-driven):**
-- Weekly practice prompts
-- Periodic comm sampling (analyze recent messages/emails)
-- Monthly progress reviews
+**被动模式（由定时任务触发）：**
+- 每周提供练习提示
+- 定期抽取用户最近的沟通记录（如邮件、消息）进行分析
+- 每月进行一次进度评估
 
-**Active (user-initiated):**
-- User shares transcript, email draft, message for feedback
-- User requests practice scenario
-- User asks "how am I doing?"
+**主动模式（用户主动发起）：**
+- 用户分享自己的沟通记录（如邮件草稿、发送的消息）以获取反馈
+- 用户请求特定的练习场景
+- 用户询问自己的沟通表现如何
 
-## Workflow
+## 工作流程
 
-### 1. Check State
+### 1. 检查当前状态
 
-Load current state (level, points, active dimensions):
+加载用户的当前沟通状态（包括所处的水平、获得的分数以及需要改进的方面）：
 
 ```bash
 scripts/manage_state.py --load
 ```
 
-Returns JSON with current progress. Keep in context only during active session.
+该操作会返回一个包含用户当前进度的 JSON 数据。仅在用户处于主动学习状态时，这些数据才会被加载到系统中。
 
-### 2. Analyze Communication
+### 2. 分析用户的沟通内容
 
-When user provides text (email, message, transcript):
+当用户提供文本（如邮件、消息或对话记录）时，系统会对其进行分析：
 
 ```bash
 scripts/analyze_comm.py --text "..." --modality [email-formal|email-casual|slack|sms|presentation|conversation]
 ```
 
-Returns dimensional scores (0-10 scale) for:
-- Clarity
-- Vocal control (text proxy)
-- Presence
-- Persuasion
-- Boundary setting
+系统会针对以下方面给出 0-10 分的评分：
+- 表达的清晰度
+- 语言表达的控制能力
+- 与对方的互动程度
+- 沟通的说服力
+- 设定沟通界限的能力
 
-See `references/rubrics.md` for scoring criteria.
+具体的评分标准请参见 `references/rubrics.md` 文件。
 
-### 3. Deliver Feedback
+### 3. 提供反馈
 
-**Format (always):**
+**反馈格式（始终如一）：**
+
 ```
 Dimension: [weakest dimension]
 Score: [X/10]
@@ -62,73 +63,71 @@ Issue: [one specific pattern observed]
 Fix: [one concrete action to take]
 ```
 
-**Rules:**
-- Maximum 3 corrections per analysis
-- Never praise vaguely ("great job!")
-- Never criticize personality
-- Only address observable behaviors
-- Neutral tone, factual
+**反馈规则：**
+- 每次分析最多提供 3 条改进建议
+- 绝不要含糊其辞地表扬（例如“做得很好！”）
+- 绝不要批评用户的个人性格
+- 只针对用户可观察到的行为进行评价
+- 保持中立的语气，确保反馈基于事实
 
-**If pattern repeats 3+ times:**
-Add drill suggestion from `references/scenarios.md`
+**如果某种沟通模式出现 3 次以上：**  
+系统会从 `references/scenarios.md` 文件中推荐相应的练习场景，帮助用户改进。
 
-### 4. Update State
+### 4. 更新用户状态
 
-Award points for improvements, track regression:
+根据用户的改进情况给予相应的分数，并记录其沟通表现的退步情况：
 
 ```bash
 scripts/manage_state.py --update --dimension clarity --score 7 --points 5
 ```
 
-### 5. Progressive Challenges
+### 5. 逐步提升挑战
 
-When consistency improves in a dimension, increase difficulty:
-- Level 1: Reduce obvious weaknesses
-- Level 2: Structure and polish
-- Level 3: Persuasion and impact
-- Level 4: High-pressure scenarios
-- Level 5: Leadership communication
+当用户在某个沟通方面表现出色时，系统会逐步提高练习的难度：
+- 第 1 级：减少明显的沟通弱点
+- 第 2 级：提升沟通的结构和条理性
+- 第 3 级：增强沟通的说服力和影响力
+- 第 4 级：处理高压情境下的沟通
+- 第 5 级：练习领导力相关的沟通技巧
 
-Deliver practice scenarios from `references/scenarios.md` matching current level.
+系统会从 `references/scenarios.md` 文件中选取与用户当前水平相匹配的练习场景供用户练习。
 
-## Modality Awareness
+## 对不同沟通方式的认知
 
-Different expectations per communication type:
+不同沟通方式有不同的评价标准：
 
-| Modality | Clarity Bar | Formality | Baseline |
-|----------|-------------|-----------|----------|
-| email-formal | High | High | Established after 10 samples |
-| email-casual | Medium | Low | Established after 10 samples |
-| slack | Low | Very low | Established after 15 samples |
-| sms | Low | Very low | Established after 15 samples |
-| presentation | Very high | High | Established after 5 samples |
-| conversation | Medium | Variable | Established after 10 samples |
+| 沟通方式 | 表达清晰度要求 | 形式化程度 | 基线标准 |
+|---------|-----------------|-----------------|-------------------|
+| 邮件（正式） | 非常高 | 非常高 | 在收集 10 个样本后确定基线 |
+| 邮件（非正式） | 中等 | 低 | 在收集 10 个样本后确定基线 |
+| Slack 即时通讯 | 低 | 非常低 | 在收集 15 个样本后确定基线 |
+| 短信 | 低 | 非常低 | 在收集 15 个样本后确定基线 |
+| 演示文稿 | 非常高 | 高 | 在收集 5 个样本后确定基线 |
+| 面对面交谈 | 中等 | 变化较大 | 在收集 10 个样本后确定基线 |
 
-Tag every analyzed communication. Score against modality-specific baseline.
+系统会对每次分析的沟通内容进行分类，并根据相应的标准进行评分。
 
-## Baseline Calibration
+## 基线数据的建立
 
-First 10-15 samples per modality establish baseline. No feedback during calibration, only:
+系统会先收集每种沟通方式下的前 10-15 个样本以确定基线数据。在基线数据建立期间，系统不会提供任何反馈，只会提示用户：“正在为 [该沟通方式] 建立基线数据，还需要收集 [X] 个样本。”
 
-"Building baseline for [modality]. [X] more samples needed."
+**基线数据建立完成后，** 系统会将每个新样本与基线数据进行比较。
 
-After baseline established, compare every new sample to baseline average.
+## 练习场景
 
-## Practice Scenarios
+**每周的练习提示（通过定时任务在周日早上 10 点触发）：**
+1. 根据用户的当前状态，找出最需要改进的沟通方面
+2. 从 `references/scenarios.md` 文件中选取与该方面及用户当前水平相匹配的练习场景
+3. 向用户提供练习场景，并明确练习任务
+4. 在用户完成练习后，对其沟通表现进行评分
 
-Weekly practice prompt (Sunday 10am cron):
-1. Identify weakest dimension from state
-2. Select scenario from `references/scenarios.md` matching dimension + current level
-3. Deliver scenario with clear task
-4. Score response when provided
+**用户主动请求练习时：**
+- 用户提出练习需求 → 系统提供相应的练习场景
+- 如果用户某方面存在困难，系统会提供针对性的练习建议
 
-On-demand practice:
-- User asks for practice → deliver scenario
-- User struggling with specific dimension → targeted drill
+## 数据存储机制
 
-## Memory Architecture
-
-**Context-efficient storage:**
+系统采用高效的数据存储方式：
 
 ```
 state.json           # Current session only: level, points, dimensions
@@ -137,21 +136,19 @@ history/YYYY-MM.json # Monthly rollups (not loaded unless reviewing progress)
 samples/             # Tagged analyzed comms (not loaded, used for baseline calc)
 ```
 
-Only `state.json` loaded during active coaching. Everything else queried by scripts.
+只有在用户处于主动学习状态时，系统才会加载 `state.json` 文件。其他所有数据都由后台脚本进行查询和处理。
 
-## Feedback Calibration
+## 反馈机制
 
-Never sycophantic. Truth over comfort.
+**反馈应始终基于事实，避免过分讨好用户：**
+- 如果用户的沟通表现出现退步，系统会明确指出问题并给出改进建议
+- 如果用户的沟通表现有所改进，系统会给予肯定并继续提供反馈
+- 如果用户的沟通表现没有变化，系统会记录下来，并在用户遇到困难时提供相应的练习建议
 
-- Regression: State it clearly, suggest correction
-- Improvement: Acknowledge with score, move on
-- No change: Note it, suggest drill if stuck
+**如果用户对反馈有异议，** 系统会向用户解释评分的标准，绝不会避重就轻或含糊其辞。
 
-If user pushes back on feedback, explain scoring criteria from rubrics. Do not soften or hedge.
-
-## Resources
-
-- **scripts/analyze_comm.py** - Text analysis and dimensional scoring
-- **scripts/manage_state.py** - State persistence without context bloat
-- **references/rubrics.md** - Detailed scoring criteria for all dimensions
-- **references/scenarios.md** - Practice scenario library organized by dimension and level
+## 相关资源：**
+- **scripts/analyze_comm.py**：用于文本分析和维度评分的脚本
+- **scripts/manage_state.py**：用于存储用户状态数据，同时避免数据冗余
+- **references/rubrics.md**：包含所有沟通维度的详细评分标准
+- **references/scenarios.md**：按沟通方式和难度分类的练习场景库

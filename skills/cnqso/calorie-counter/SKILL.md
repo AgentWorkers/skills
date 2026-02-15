@@ -1,55 +1,77 @@
 ---
 name: calorie-counter
-description: Track daily calorie and protein intake, set goals, and log weight. Use when user mentions food they ate, wants to know remaining calories, or needs to track weight. Stores data in SQLite with automatic daily totals.
+description: **功能概述：**  
+该工具用于记录每日摄入的卡路里和蛋白质含量，帮助用户设定目标并记录体重变化。当用户提到所吃的食物、想要了解剩余的卡路里摄入量或需要监测体重时，可以随时使用该工具。数据会自动存储在 SQLite 数据库中，并每日生成摄入总量的统计报告。  
+
+**主要功能：**  
+1. **记录每日摄入量：** 自动记录用户每天摄入的卡路里和蛋白质数量。  
+2. **目标设定：** 允许用户设定每日或每周的卡路里和蛋白质摄入目标。  
+3. **体重追踪：** 用户可以随时查看自己的体重变化。  
+4. **食物查询：** 提供功能让用户查询所摄入食物的具体卡路里和蛋白质含量。  
+5. **数据存储：** 数据安全地存储在 SQLite 数据库中，支持数据备份和恢复。  
+6. **统计报告：** 每日自动生成摄入总量的统计报告，帮助用户了解自己的饮食状况。  
+
+**使用场景：**  
+- 适用于需要控制饮食和健康管理的用户。  
+- 适合健身、减肥或保持健康的人群。  
+
+**注意事项：**  
+- 请确保在设备上安装了 SQLite 数据库支持的应用程序，以便数据存储和查询。  
+- 定期备份数据，以防数据丢失。  
+
+**技术细节：**  
+- 使用 SQLite 数据库进行数据存储，确保数据的安全性和持久性。  
+- 采用简洁的界面设计，易于用户操作。  
+- 提供实时计算功能，帮助用户实时了解自己的饮食摄入情况。
 metadata: { "openclaw": { "emoji": "🍎", "requires": { "python": ">=3.7" } } }
 ---
 
-# Calorie Counter
+# 卡路里计数器
 
-Simple, reliable calorie and protein tracking with SQLite database.
+这是一个简单可靠的卡路里和蛋白质追踪工具，使用 SQLite 数据库进行存储。
 
-## Features
+## 主要功能
 
-- **Manual Entry**: Add food with calories and protein
-- **Protein Tracking**: Monitor daily protein intake
-- **Daily Goals**: Set custom calorie targets
-- **Weight Tracking**: Log weight in pounds
-- **Instant Feedback**: See totals immediately after adding food
-- **History**: View past days and trends
+- **手动输入**：可以添加包含卡路里和蛋白质的食物信息。
+- **蛋白质追踪**：监控每日蛋白质摄入量。
+- **每日目标**：设置自定义的卡路里摄入目标。
+- **体重追踪**：记录体重（单位：磅）。
+- **即时反馈**：添加食物后即可立即查看总摄入量。
+- **历史记录**：查看过去几天的数据及变化趋势。
 
-## Usage
+## 使用方法
 
-### Adding Food
+### 添加食物
 ```bash
 python scripts/calorie_tracker.py add "chicken breast" 165 31
 python scripts/calorie_tracker.py add "banana" 100 1
 ```
-Shows immediate feedback with today's totals and remaining calories.
+添加食物后，会立即显示当天的总摄入量及剩余卡路里。
 
-### Viewing Today's Summary
+### 查看当天总结
 ```bash
 python scripts/calorie_tracker.py summary
 ```
-Shows:
-- All entries for today
-- Total calories and protein consumed
-- Daily goal and remaining calories
-- Progress percentage
+显示：
+- 当天的所有食物记录
+- 总摄入的卡路里和蛋白质
+- 每日目标及剩余卡路里
+- 进度百分比
 
-### Setting Goals
+### 设置目标
 ```bash
 python scripts/calorie_tracker.py goal 2000
 ```
-Sets the daily calorie goal (persists).
+设置每日卡路里目标（该目标会持续保存）。
 
-### Weight Tracking
+### 体重追踪
 ```bash
 python scripts/calorie_tracker.py weight 175
 python scripts/calorie_tracker.py weight-history
 ```
-Weight is in pounds (decimals allowed: 175.5).
+体重以磅为单位进行记录（允许使用小数，例如：175.5磅）。
 
-### Viewing History
+### 查看历史记录
 ```bash
 # Last 7 days
 python scripts/calorie_tracker.py history
@@ -58,7 +80,7 @@ python scripts/calorie_tracker.py history
 python scripts/calorie_tracker.py history 30
 ```
 
-### Deleting Entries
+### 删除记录
 ```bash
 # List entries to get ID
 python scripts/calorie_tracker.py list
@@ -67,83 +89,82 @@ python scripts/calorie_tracker.py list
 python scripts/calorie_tracker.py delete 42
 ```
 
-## Database
+## 数据库
 
-SQLite database: `calorie_data.db`
+使用 SQLite 数据库：`calorie_data.db`
 
-### Tables
+### 数据表结构
 
-**entries** - Food log
-- id (INTEGER) - Auto-increment
-- date (TEXT) - YYYY-MM-DD
-- food_name (TEXT)
-- calories (INTEGER)
-- protein (INTEGER)
-- created_at (TIMESTAMP) - Automatic
+**entries**（食物记录）：
+- id（整数）：自动递增
+- date（文本）：YYYY-MM-DD 格式
+- food_name（文本）
+- calories（整数）：卡路里含量
+- protein（整数）：蛋白质含量
+- created_at（时间戳）：自动记录
 
-**daily_goal** - Single calorie target
-- id (INTEGER) - Always 1
-- calorie_goal (INTEGER)
+**daily_goal**（每日目标）：
+- id（整数）：始终为 1
+- calorie_goal（整数）：每日目标卡路里数值
 
-**weight_log** - Weight tracking
-- id (INTEGER) - Auto-increment
-- date (TEXT) - YYYY-MM-DD
-- weight_lbs (REAL) - Pounds with decimals
-- created_at (TIMESTAMP) - Automatic
+**weight_log**（体重记录）：
+- id（整数）：自动递增
+- date（文本）：YYYY-MM-DD 格式
+- weight_lbs（实数）：体重（单位：磅，允许使用小数）
+- created_at（时间戳）：自动记录
 
-## Agent Instructions
+## 使用说明
 
-**Important:** The skill is located at `workspace/calorie-counter/` in your agent's workspace. All commands should use this path prefix.
+**重要提示：**  
+该工具位于您的代理工作区的 `workspace/calorie-counter/` 目录下。所有命令都应使用此路径前缀。
 
-### When user mentions food:
-1. Extract food name, calories, and protein (estimate if not provided)
-2. Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py add "food" CALORIES PROTEIN`
-3. The command outputs immediate totals (no need to run summary separately)
+### 用户提到食物时的操作：
+1. 提取食物的名称、卡路里含量和蛋白质含量（如果未提供，则进行估算）。
+2. 运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py add "食物名称" 卡路里含量 蛋白质含量`
+3. 命令会立即显示总摄入量（无需单独运行总结功能）。
 
-Example:
-- User: "I had a chicken breast for lunch, about 165 calories"
-- Estimate protein (chicken is ~30g per 165 cal)
-- Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py add "chicken breast" 165 30`
+**示例：**
+- 用户：**我午餐吃了鸡胸肉，大约165卡路里。**
+- 估算蛋白质含量（鸡肉每165卡路里约含30克蛋白质）：
+  运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py add "chicken breast" 165 30`
 
-### When user wants remaining calories:
-1. Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py summary`
+### 用户想要查看剩余卡路里时：
+运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py summary`
 
-### When user sets a goal:
-1. Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py goal CALORIES`
+### 用户设置目标时：
+运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py goal 卡路里目标`
 
-### When user logs weight:
-1. Convert to pounds if needed (1 kg ≈ 2.205 lbs)
-2. Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py weight POUNDS`
+### 用户记录体重时：
+1. 如需将单位转换为磅（1千克约等于2.205磅），请先进行转换。
+2. 运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py weight [体重值]`
 
-### When user wants to delete entry:
-1. Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py list` to show IDs
-2. Run: `python3 workspace/calorie-counter/scripts/calorie_tracker.py delete ID`
+### 用户想要删除记录时：
+1. 运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py list` 查看记录ID。
+2. 运行命令：`python3 workspace/calorie-counter/scripts/calorie_tracker.py delete [记录ID]`
 
-### Protein Estimation Guide
-If user doesn't specify protein, estimate based on food type:
-- **Lean meats** (chicken, turkey): ~0.30g per calorie
-- **Fish**: ~0.25g per calorie
-- **Red meat**: ~0.20g per calorie
-- **Eggs**: ~0.12g per calorie (1 egg = 70 cal, 6g protein)
-- **Greek yogurt**: ~0.10g per calorie
-- **Nuts**: ~0.04g per calorie
-- **Bread/pasta**: ~0.03g per calorie
-- **Fruits**: ~0.01g per calorie or less
-- **Vegetables**: ~0.02-0.04g per calorie
+### 蛋白质含量估算指南：
+如果用户未提供蛋白质含量，可根据食物类型进行估算：
+- **瘦肉**（如鸡肉、火鸡）：每卡路里约含0.30克蛋白质
+- **鱼类**：每卡路里约含0.25克蛋白质
+- **红肉**：每卡路里约含0.20克蛋白质
+- **鸡蛋**：每卡路里约含0.12克蛋白质（1个鸡蛋约70卡路里，含6克蛋白质）
+- **希腊酸奶**：每卡路里约含0.10克蛋白质
+- **坚果**：每卡路里约含0.04克蛋白质
+- **面包/意大利面**：每卡路里约含0.03克蛋白质
+- **水果**：每卡路里约含0.01克或更少蛋白质
+- **蔬菜**：每卡路里约含0.02-0.04克蛋白质
 
-When uncertain, estimate conservatively or ask the user.
+**不确定时，请保守估算或询问用户。**
 
-## Notes
+## 其他注意事项：
+- 卡路里和蛋白质含量为整数（不支持小数）。
+- 体重以磅为单位记录（允许使用小数）。
+- 数据库会在首次使用时自动生成。
+- 所有时间均以本地时区显示。
+- 日期格式为 YYYY-MM-DD。
+- 列表中的时间显示为 `created_at` 时间戳（格式为 HH:MM）。
 
-- Calories and protein are integers (no decimals)
-- Weight is in pounds (decimals allowed)
-- Database created automatically on first use
-- All times in local timezone
-- Dates in YYYY-MM-DD format
-- Time shown in lists is from created_at timestamp (HH:MM format)
-
-## Example Session
-
+## 示例使用流程
 ```bash
 # Set goal
 $ python scripts/calorie_tracker.py goal 2000

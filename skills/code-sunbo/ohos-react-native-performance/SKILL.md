@@ -1,6 +1,6 @@
 ---
 name: ohos-react-native-performance
-description: OpenHarmony React Native performance static checks and optimization. Based on ohos_react_native performance doc. Use when writing or reviewing React Native for OpenHarmony code, bundle-harmony, lifecycle, or TurboModule. Applies to RNAbility, Hermes bytecode, React render optimization.
+description: OpenHarmony React Native 的性能静态检查与优化。本内容基于 ohos_react_native 的性能文档编写，适用于在开发或审查 OpenHarmony 的 React Native 代码时使用，涉及 bundle-harmony、生命周期管理以及 TurboModule 等技术。优化范围包括 RNAbility、Hermes 字节码以及 React 绘制过程的性能提升。
 license: MIT
 metadata:
   author: OpenHarmony-SIG / homecheck
@@ -11,70 +11,69 @@ metadata:
   version: '1.0.0'
 ---
 
-# OpenHarmony React Native Performance Static Check Skills
+# OpenHarmony React Native 性能静态检查技巧
 
-Static-check rules and config for React Native for OpenHarmony, from the official [performance-optimization](https://gitcode.com/openharmony-sig/ohos_react_native/blob/master/docs/en/performance-optimization.md) doc. This skill is English-only to reduce token usage; Chinese content is available via links below.
+这些静态检查规则和配置适用于 OpenHarmony 版本的 React Native，来源于官方的 [性能优化](https://gitcode.com/openharmony-sig/ohos_react_native/blob/master/docs/en/performance-optimization.md) 文档。为减少字符使用量，这些内容仅以英文提供；中文版本可通过以下链接查看。
 
-## When to Apply
+## 适用场景
 
-Use this skill when:
+在以下情况下使用这些技巧：
+- 编写或审查 OpenHarmony 版本的 React Native 应用代码或项目配置
+- 优化 React Native 页面渲染、状态更新（setState）或列表性能
+- 配置 **bundle-harmony** 构建过程、Hermes 字节码或发布版本
+- 集成或审查 **RNAbility** 的生命周期管理（前台/后台切换）
+- 设计或实现 **TurboModule**（主线程与工作线程的协同工作）
+- 为使用 Trace、React Marker、FCP 等工具进行性能分析做准备
 
-- Writing or reviewing **React Native for OpenHarmony** (RNOH) application code or OpenHarmony project configuration
-- Optimizing React Native page rendering, setState, or list performance
-- Configuring **bundle-harmony** build, Hermes bytecode, or Release build
-- Integrating or reviewing **RNAbility** lifecycle (onForeground/onBackground)
-- Designing or implementing **TurboModule** (main vs worker thread)
-- Preparing for performance analysis with Trace, React Marker, FCP, etc.
+## 规则分类（按优先级）
 
-## Rule Categories by Priority
-
-| Priority | Category            | Impact   | Prefix                    |
+| 优先级 | 分类            | 影响程度 | 前缀                    |
 | -------- | ------------------- | -------- | ------------------------- |
-| 1        | Render optimization | CRITICAL | `rnoh-render-`              |
-| 2        | Bundle & native     | HIGH     | `rnoh-bundle-`, `rnoh-native-` |
-| 3        | Lifecycle & monitor | HIGH     | `rnoh-lifecycle-`           |
-| 4        | TurboModule         | MEDIUM   | `rnoh-turbo-`               |
-| 5        | List & key          | MEDIUM   | `rnoh-list-`                |
+| 1        | 渲染优化 | 关键性    | `rnoh-render-`              |
+| 2        | 打包与原生代码     | 高        | `rnoh-bundle-`, `rnoh-native-` |
+| 3        | 生命周期与监控     | 高        | `rnoh-lifecycle-`           |
+| 4        | TurboModule       | 中等      | `rnoh-turbo-`               |
+| 5        | 列表与数据管理     | 中等      | `rnoh-list-`                |
 
-## Quick Reference
+## 快速参考
 
-### 1. Render optimization (CRITICAL)
+### 1. 渲染优化（关键性）
 
-- `rnoh-render-avoid-same-state` — Avoid setState when state unchanged to prevent extra renders
-- `rnoh-render-pure-memo` — Use PureComponent or React.memo to avoid unnecessary re-renders
-- `rnoh-render-props-once` — Create callbacks/prop objects once (constructor or outside component)
-- `rnoh-render-split-child` — Split independent UI into child components
-- `rnoh-render-merge-setstate` — Merge setState to avoid multiple commits and renders
-- `rnoh-render-state-not-mutate` — Use new objects in setState; do not mutate existing state
-- `rnoh-render-batching` — Keep React 18 Automatic Batching enabled (RNOH default concurrentRoot: true)
+- `rnoh-render-avoid-same-state` — 当状态未发生变化时避免使用 `setState`，以防止不必要的重新渲染
+- `rnoh-render-pure-memo` — 使用 `PureComponent` 或 `React.memo` 来避免不必要的重新渲染
+- `rnoh-render-props-once` — 在构造函数或组件外部仅创建一次属性对象
+- `rnoh-render-split-child` — 将独立的 UI 组件拆分为子组件
+- `rnoh-render-merge-setstate` — 合并多个 `setState` 调用，以减少提交次数和渲染次数
+- `rnoh-render-state-not-mutate` — 在 `setState` 中使用新对象，不要修改现有状态
+- `rnoh-render-batching` — 保持 React 18 的自动批处理功能启用（OpenHarmony 默认值为 `concurrentRoot: true`）
 
-### 2. Bundle & native config (HIGH)
+### 2. 打包与原生代码配置（高）
 
-- `rnoh-bundle-release` — Use `--dev=false --minify=true` for performance/production bundle
-- `rnoh-bundle-hbc` — Prefer Hermes bytecode (hermesc) for production
-- `rnoh-native-release` — Use Release build on native side; lower LOG_VERBOSITY_LEVEL when appropriate
-- `rnoh-native-bisheng` — Optionally use BiSheng compiler (buildOption.nativeCompiler: "BiSheng")
+- `rnoh-bundle-release` — 使用 `--dev=false --minify=true` 生成性能优化版或生产版包
+- `rnoh-bundle-hbc` — 生产版本优先使用 Hermes 字节码（hermesc）
+- `rnoh-native-release` — 在原生代码层面使用发布版本；适当降低 `LOG_VERBOSITY_LEVEL`
+- `rnoh-native-bisheng` — 可选使用 BiSheng 编译器（`buildOption.nativeCompiler: "BiSheng"`）
 
-### 3. Lifecycle & monitoring (HIGH)
+### 3. 生命周期与监控（高）
 
-- `rnoh-lifecycle-foreground-background` — Call onForeground/onBackground in onPageShow/onPageHide or onShown/onHidden
-- `rnoh-lifecycle-fcp` — First-frame monitoring: use mount event or root onLayout to report FCP
+- `rnoh-lifecycle-foreground-background` — 在 `onPageShow/onPageHide` 或 `onShown/onHidden` 事件中处理前台/后台切换
+- `rnoh-lifecycle-fcp` — 通过 `mount` 事件或 `root.onLayout` 监控首帧加载时间（FCP）
 
-### 4. TurboModule (MEDIUM)
+### 4. TurboModule（中等）
 
-- `rnoh-turbo-worker` — Run heavy TurboModules (JSON, crypto, image, network, I/O) on worker thread; avoid ImageLoader on worker
+- `rnoh-turbo-worker` — 将计算密集型任务（如 JSON 处理、加密、图像处理、网络请求、I/O 操作）放在工作线程上执行；避免在 worker 线程中使用 `ImageLoader`
 
-### 5. List & key (MEDIUM)
+### 5. 列表与数据管理（中等）
 
-- `rnoh-list-key` — Provide stable keys for list items; avoid using index as key
+- `rnoh-list-key` — 为列表项提供稳定的键值对；避免使用索引作为键
 
-## How to Use
+## 使用方法
 
-- **Static checks:** Apply the rules above in code review or scripts (JS/TS and config).
-- **Details and examples:** See the corresponding rule files under `rules/` (e.g. `rules/rnoh-render-pure-memo.md`).
-- **Full doc:** [Performance optimization (en)](https://gitcode.com/openharmony-sig/ohos_react_native/blob/master/docs/en/performance-optimization.md).
+- **静态检查：** 在代码审查或脚本（JS/TS）中应用上述规则。
+- **详细信息与示例：** 查看 `rules/` 目录下的相应规则文件（例如 `rules/rnoh-render-pure-memo.md`）。
+- **完整文档：** [性能优化（英文版）](https://gitcode.com/openharmony-sig/ohos_react_native/blob/master/docs/en/performance-optimization.md)。
 
-## Relation to general React Native skills
+## 与通用 React Native 技巧的关系
 
-- This skill focuses on **OpenHarmony**-specific React Native performance (RNAbility, bundle-harmony, HBC, TurboModule worker, Trace/React Marker).
-- It complements **vercel-react-native-skills** and **react-native-best-practices**: list virtualization (FlashList), Pressable, expo-image, StyleSheet, etc. still apply; this skill adds OpenHarmony-side config and render-optimization details.
+- 本技巧专注于 OpenHarmony 版本的 React Native 性能优化（包括 RNAbility、bundle-harmony、HBC、TurboModule、Trace/React Marker 等功能）。
+- 它与 **vercel-react-native-skills** 和 **react-native-best-practices** 相辅相成：例如列表虚拟化（FlashList）、可点击元素（Pressable）、图片处理（expo-image）、样式表（StyleSheet）等技巧仍然适用；本技巧补充了 OpenHarmony 特有的配置和渲染优化细节。

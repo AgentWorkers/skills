@@ -1,54 +1,54 @@
 ---
 name: XLSX
-description: Read and generate Excel files with correct types, dates, and cross-platform compatibility.
+description: 能够读取并生成格式正确的Excel文件，确保日期格式准确无误，并具备跨平台兼容性。
 metadata: {"clawdbot":{"emoji":"📗","os":["linux","darwin","win32"]}}
 ---
 
-## Dates
+## 日期
 
-- Excel dates are serial numbers—days since 1900-01-01 (Windows) or 1904-01-01 (Mac legacy)
-- 1900 leap year bug: Excel incorrectly treats 1900 as leap year—serial 60 is Feb 29, 1900 (invalid)
-- Date vs number ambiguous without cell format—always check number format code, not just value
-- Times are fractional days: 0.5 = 12:00 noon; 0.25 = 06:00
+- Excel中的日期实际上是序列号，表示从1900年1月1日（Windows系统）或1904年1月1日（Mac旧版本）开始的天数。
+- 1900年闰年问题：Excel错误地将1900年视为闰年，导致序列号为60的日期实际上是1900年2月29日（这是无效的日期）。
+- 仅凭数值无法区分日期和普通数字——必须检查单元格的格式。
+- 时间值是以小数形式表示的：0.5表示中午12点，0.25表示下午6点。
 
-## Numbers
+## 数字
 
-- 15-digit precision limit—larger numbers silently truncate; use text format for IDs, phone numbers
-- Leading zeros stripped from numbers—format as text or use custom format `00000`
-- Scientific notation triggers automatically—`1E10` becomes number; quote if literal text
-- Currency/percentage stored as numbers—formatting is display-only, raw value differs
+- Excel对数字的精度限制为15位；超过这个限制的数字会自动被截断。对于ID或电话号码等特殊用途，应使用文本格式。
+- 数字前面的零会被自动去除；可以选择将数字格式化为“00000”等形式。
+- 科学计数法（如`1E10`）会自动转换为数值；如果需要保留文字形式，则需要加上引号。
+- 货币或百分比数据虽然以数字形式存储，但其显示格式只是为了美观，实际数值可能与存储形式不同。
 
-## Text & Encoding
+## 文本与编码
 
-- Shared strings table stores unique text once—large files reuse indices; libraries handle this
-- 32,767 character limit per cell
-- Newlines in cells: `\n` works but cell needs wrap text format to display
-- Unicode fully supported in XLSX—but legacy XLS has codepage issues
+- 共享字符串表会只存储一次相同的文本内容，从而避免重复存储；大型文件会通过索引来高效引用这些文本。
+- 每个单元格的最大字符数为32,767个。
+- 单元格中的换行符使用`\n`，但需要将单元格设置为“自动换行”格式才能正确显示换行内容。
+- XLSX格式完全支持Unicode编码，但旧版本的XLS存在编码问题。
 
-## Structure
+## 结构
 
-- Row limit: 1,048,576; column limit: 16,384 (XFD)—XLS limit is 65,536 × 256
-- Merged cells: only top-left cell holds value—reading others returns empty
-- Hidden rows/columns still contain data—don't assume hidden means excluded
-- Sheet names max 31 chars; forbidden: `\ / ? * [ ]`
+- 单元的行数上限为1,048,576行，列数上限为16,384列（XFD格式）；XLS格式的行数和列数上限分别为65,536行×256列。
+- 合并的单元格中只有左上角的单元格包含实际数据，其他合并单元格显示为空值。
+- 被隐藏的行或列仍然包含数据，不要误以为隐藏的单元格就不存在数据。
+- 工作表名称最多可以包含31个字符，禁止使用`\`、`/`、`?`、`*`、`[`等特殊字符。
 
-## Formulas
+## 公式
 
-- Cell may contain formula and cached result—some readers return formula, others cached value
-- Formulas recalculate on open—cached values may be stale; force recalc or read formula
-- Array formulas (CSE/dynamic) have different behavior across Excel versions
-- External references `[Book.xlsx]Sheet!A1` break when file moves
+- 单元格中可以同时包含公式和公式计算的结果；不同的Excel版本可能返回不同的结果（公式或缓存的结果）。
+- 公式在打开工作表时会重新计算；如果需要使用最新的计算结果，可以强制重新计算或直接读取公式内容。
+- 数组公式（CSE/Dynamic数组公式）在不同版本的Excel中的行为可能有所不同。
+- 外部引用（如`[Book.xlsx]Sheet!A1`）在文件移动后可能会失效。
 
-## Cross-Platform
+## 跨平台兼容性
 
-- Windows vs Mac Excel: date system (1900 vs 1904) can differ—check workbook setting
-- LibreOffice/Google Sheets: some Excel features unsupported—test roundtrip
-- XLSM contains macros (security risk); XLSB is binary (faster, less compatible)
-- Password protection is trivial to break—not real security; encrypt file externally
+- Windows版和Mac版Excel的日期系统可能不同（1900年作为闰年的规则不同），请检查工作簿的设置。
+- LibreOffice和Google Sheets可能不支持某些Excel的功能，请进行测试以确保数据能够正确传输。
+- XLSM格式包含宏，存在安全风险；XLSB格式是二进制格式，虽然读取速度更快，但兼容性较差。
+- 文件的密码保护很容易被破解，因此不建议依赖密码保护；建议对文件进行外部加密。
 
-## Common Library Issues
+## 常见的问题和库相关注意事项
 
-- Empty rows at end: some writers pad to fixed size—trim when reading
-- Type inference on read: numbers-as-text stay text; explicit conversion needed
-- Memory: loading large files fully into RAM—use streaming reader for big files
-- Column letters vs indices: A=0 or A=1 varies by library—verify convention
+- 文件末尾可能存在空白行，某些写入工具会自动填充这些空白行；在读取数据时需要将这些空白行去除。
+- 在读取数据时，系统可能会尝试自动推断数据的类型；如果数据原本是数字，应明确进行类型转换。
+- 大型文件加载到内存中可能会占用大量内存，建议使用流式读取器来处理这类文件。
+- 单元格中的字母索引（A=0还是A=1）因库的不同而有所差异，使用前请确认具体的约定。

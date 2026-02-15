@@ -1,55 +1,55 @@
 ---
 name: News
-description: Build a personalized news system that learns your interests, formats, and schedule.
+description: 构建一个个性化的新闻系统，该系统能够学习您的兴趣、偏好以及阅读时间安排，并据此定制新闻内容的呈现方式与发布时间。
 metadata: {"clawdbot":{"emoji":"📰","os":["linux","darwin","win32"]}}
 ---
 
-## Building Your News Profile
+## 构建您的新闻个人资料
 
-- On first interaction, ask what topics matter most — don't assume generic categories like "tech" or "business"
-- Capture specific interests, not just broad areas: "AI startups" is better than "technology", "Rust ecosystem" is better than "programming"
-- Ask about proportions when multiple interests exist — "70% AI, 20% markets, 10% general" shapes every briefing
-- Record format preferences: some users want bullet summaries, others want narrative analysis, others want headlines only
-- Note timing preferences explicitly — morning briefing, evening recap, weekly digest, or on-demand only
+- 在首次互动时，询问用户最关心的主题——不要假设使用通用的类别，如“科技”或“商业”。
+- 了解用户的具体兴趣爱好，而不仅仅是宽泛的领域：“AI初创企业”比“技术”更具体，“Rust生态系统”比“编程”更精准。
+- 如果用户有多种兴趣，询问各自的占比——例如“70% 关注AI，20% 关注市场，10% 关注其他领域”，这将有助于定制新闻简报内容。
+- 记录用户的格式偏好：有些人喜欢项目符号形式的摘要，有些人喜欢叙述性的分析，还有些人只希望看到新闻标题。
+- 明确记录用户的时间偏好：是早上接收简报、晚上回顾、每周汇总，还是按需接收。
 
-## Proactive News Delivery
+## 主动推送新闻
 
-- When timing preferences are set, initiate briefings without being asked — a good news system anticipates
-- Start each briefing with the single most important development in the user's interest areas
-- Include a "why this matters to you" line for major stories — connect news to the user's specific context
-- End briefings with: "Anything you want me to go deeper on?" — invite engagement without forcing it
-- If a major story breaks in a tracked interest area, surface it proactively even outside scheduled times
+- 一旦了解了用户的时间偏好，就主动推送新闻简报——一个好的新闻系统会提前做好准备。
+- 每次简报都从用户最感兴趣的领域开始，介绍最重要的新闻发展。
+- 对于重大新闻，要说明“这为什么对您重要”——将新闻与用户的实际需求联系起来。
+- 简报结束时可以问：“有什么您希望我进一步深入讲解的吗？”——邀请用户参与讨论，但不要强迫他们。
+- 如果用户关注的新闻领域出现了重大事件，即使不在预定时间，也要主动向用户推送。
 
-## Learning and Adapting
+## 学习与调整
 
-- Track which stories the user engages with vs skips — patterns reveal true interests better than stated preferences
-- When the user asks follow-up questions, note the topic as higher-interest
-- Periodically ask "Should I adjust your news mix?" — preferences evolve, profiles should too
-- If the user consistently ignores a category, suggest removing it rather than continuing to include it
+- 记录用户关注和忽略的新闻内容——用户的实际行为比他们表达的偏好更能反映他们的真实兴趣。
+- 当用户提出后续问题时，将该主题标记为高兴趣项。
+- 定期询问“我是否应该调整您的新闻推送内容？”——用户的偏好会发生变化，个人资料也需要相应调整。
+- 如果用户长期忽略某个类别，建议将其从推送内容中移除。
 
-## Delivering Individual Stories
+## 推送具体新闻事件
 
-- Lead with "what happened" before "why it matters" — facts first, analysis second
-- Always include when the news broke — stale news presented as fresh destroys trust
-- Cite sources by name — attribution builds credibility and lets users verify
-- Never fabricate or assume news events — if uncertain whether something happened, say so explicitly
+- 先介绍“发生了什么”，再解释“为什么这很重要”——先呈现事实，再进行分析。
+- 始终说明新闻的发布时间——过时的新闻会破坏用户的信任感。
+- 请务必注明新闻来源的名称——署名有助于建立可信度，让用户能够核实信息的真实性。
+- 绝不要捏造或猜测新闻事件——如果不确定某件事是否真实发生，一定要如实说明。
 
-## Multi-Source and Bias
+## 多源信息与偏见
 
-- Present at least 2 sources when covering contested topics — single-source reporting on controversy is reckless
-- Note when sources disagree — disagreement itself is information worth surfacing
-- State known editorial leanings when relevant — helps users calibrate what they're reading
-- If a story only appears in partisan outlets, say so explicitly — absence from mainstream coverage matters
+- 在报道有争议的话题时，至少引用两个来源——单一来源的报道可能会造成偏见。
+- 当不同来源的观点不一致时，要予以说明——这种分歧本身也是值得关注的信息。
+- 在适当的情况下，说明新闻媒体的立场或倾向——这有助于用户判断信息的可靠性。
+- 如果某个新闻只出现在偏袒性媒体上，也要明确告知用户——主流媒体未报道的情况同样值得关注。
 
-## Briefing Formats
+## 新闻简报格式
 
-- **Morning briefing:** 5-7 items max, prioritized by user interests, <2 min read time
-- **Deep dive:** Single topic, multiple angles, sources compared, 5-10 min read
-- **Weekly digest:** What actually changed this week, not daily noise aggregated
-- **Breaking alert:** One story, why it matters, what's still unknown, <30 seconds
+- **晨间简报**：最多5-7条新闻，根据用户兴趣排序，阅读时间不超过2分钟。
+- **深度分析**：聚焦一个主题，从多个角度进行报道并比较不同来源的信息，阅读时间约5-10分钟。
+- **每周汇总**：总结本周真正发生变化的内容，而非简单的日常新闻汇总。
+- **突发警报**：仅推送一条重要新闻，解释其重要性以及尚未明确的信息，阅读时间不超过30秒。
 
-## Scope Boundaries
+## 范围限制
 
-- Creating articles or press releases requires journalism/content creation skills
-- Deep investigative fact-checking requires specialized verification skills
-- Sending scheduled messages requires integration with notification systems
+- 制作文章或新闻稿需要具备新闻采编或内容创作的能力。
+- 深度调查和事实核查需要专业的验证技能。
+- 定时推送消息需要与通知系统集成。

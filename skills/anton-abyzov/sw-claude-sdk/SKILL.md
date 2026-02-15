@@ -1,15 +1,15 @@
 ---
 name: claude-sdk
-description: Claude Code SDK - tools (Read, Write, Edit, Bash), agent tools (Task, Skill), hooks, and MCP integration. Use for Claude Code extension development.
+description: Claude Code SDK - 包含用于读写、编辑代码的工具（支持Bash命令），以及用于执行任务和技能的代理工具（agent tools）。此外，还支持钩子（hooks）机制和与MCP（Management Console Platform）的集成。该SDK专为Claude Code的扩展开发而设计。
 ---
 
-# Claude SDK Expert
+# Claude SDK 专家
 
-Expert knowledge of Claude Code SDK, tools, and extension development.
+具备对 Claude Code SDK、相关工具以及扩展开发的深入理解。
 
-## Core Tools
+## 核心工具
 
-**File Operations**:
+**文件操作**：
 ```typescript
 // Read files
 Read({ file_path: '/absolute/path/file.ts' });
@@ -28,7 +28,7 @@ Edit({
 });
 ```
 
-**Search**:
+**搜索**：
 ```typescript
 // Find files by pattern
 Glob({ pattern: '**/*.ts' });
@@ -48,7 +48,7 @@ Grep({
 });
 ```
 
-**Execution**:
+**执行**：
 ```typescript
 // Run commands
 Bash({
@@ -63,9 +63,9 @@ Bash({
 });
 ```
 
-## Agent Tools
+## 代理工具
 
-**Sub-agents**:
+**子代理**：
 ```typescript
 // Invoke specialized sub-agent
 Task({
@@ -74,7 +74,7 @@ Task({
 });
 ```
 
-**Skills**:
+**技能**：
 ```typescript
 // Activate skill explicitly
 Skill({ skill: 'skill-name' });
@@ -82,15 +82,15 @@ Skill({ skill: 'skill-name' });
 // Or let auto-activation handle it
 ```
 
-**Commands**:
+**命令**：
 ```typescript
 // Execute slash command
 SlashCommand({ command: '/plugin:command arg1 arg2' });
 ```
 
-## Plugin Hooks
+## 插件钩子
 
-**Available Hook Events**:
+**可用的钩子事件**：
 ```typescript
 type HookEvent =
   | 'PostToolUse'        // After tool executes
@@ -105,7 +105,7 @@ type HookEvent =
   | 'SessionEnd';        // Session ended
 ```
 
-**Hook Configuration**:
+**钩子配置**：
 ```json
 {
   "hooks": {
@@ -123,11 +123,11 @@ type HookEvent =
 }
 ```
 
-## MCP (Model Context Protocol)
+## MCP（模型上下文协议）
 
-> **Code-First Preferred**: Anthropic research shows [code execution achieves 98% token reduction vs MCP](https://www.anthropic.com/engineering/code-execution-with-mcp). Use MCP only for: quick debugging, Claude Desktop integration, or tools with no code equivalent. For automation, CI/CD, and production - write code instead.
+> **优先使用代码实现**：Anthropic 的研究表明，与 MCP 相比，代码执行方式可以减少 98% 的通信开销（[参考链接：https://www.anthropic.com/engineering/code-execution-with-mcp】）。仅在以下情况下使用 MCP：快速调试、Claude Desktop 集成，或那些没有代码实现方式的工具。对于自动化、持续集成/持续部署（CI/CD）以及生产环境，建议直接编写代码。
 
-**MCP Server Integration** (when needed):
+**MCP 服务器集成**（如需使用）：
 ```typescript
 // Connect to MCP server
 const mcp = await connectMCP({
@@ -141,24 +141,24 @@ const mcp = await connectMCP({
 mcp.call('read_file', { path: '/path/to/file' });
 ```
 
-## Best Practices
+## 最佳实践
 
-**Tool Usage**:
-- Use absolute paths (not relative)
-- Handle errors gracefully
-- Provide clear descriptions
-- Batch independent operations
+**工具使用**：
+- 使用绝对路径（而非相对路径）
+- 优雅地处理错误
+- 提供清晰的文档说明
+- 批量执行独立操作
 
-**Performance**:
-- Minimize tool calls
-- Use Grep before Read (search first)
-- Parallel independent operations
-- Cache results when possible
+**性能优化**：
+- 尽量减少工具调用次数
+- 在读取数据前先使用 grep 进行搜索
+- 并行执行独立操作
+- 可能的情况下缓存搜索结果
 
-**Security**:
-- Validate file paths
-- Sanitize user input
-- No hardcoded secrets
-- Use environment variables
+**安全性**：
+- 验证文件路径的合法性
+- 对用户输入进行安全处理
+- 避免使用硬编码的敏感信息
+- 使用环境变量来存储配置信息
 
-Build powerful Claude Code extensions!
+构建强大的 Claude Code 扩展吧！

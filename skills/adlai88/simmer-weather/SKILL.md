@@ -1,7 +1,7 @@
 ---
 name: simmer-weather
 displayName: Polymarket Weather Trader
-description: Trade Polymarket weather markets using NOAA forecasts via Simmer API. Inspired by gopfan2's $2M+ strategy. Use when user wants to trade temperature markets, automate weather bets, check NOAA forecasts, or run gopfan2-style trading.
+description: 通过 Simmer API 利用 NOAA 的天气预报在 Polymarket 平台上进行交易。这一策略的灵感来源于 gopfan2 的盈利策略（盈利金额超过 200 万美元）。适用于用户想要交易与温度相关的市场、自动化进行天气相关的投注、查看 NOAA 的天气预报，或执行类似 gopfan2 的交易策略的情况。
 metadata: {"clawdbot":{"emoji":"🌡️","requires":{"env":["SIMMER_API_KEY"]},"cron":null,"autostart":false}}
 authors:
   - Simmer (@simmer_markets)
@@ -9,65 +9,61 @@ attribution: "Strategy inspired by gopfan2"
 version: "1.6.0"
 ---
 
-# Polymarket Weather Trader
+# Polymarket 天气交易策略
 
-Trade temperature markets on Polymarket using NOAA forecast data.
+使用 NOAA 预报数据在 Polymarket 上进行温度市场交易。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when the user wants to:
-- Trade weather markets automatically
-- Set up gopfan2-style temperature trading
-- Buy low on weather predictions
-- Check their weather trading positions
-- Configure trading thresholds or locations
+当用户希望执行以下操作时，可以使用此策略：
+- 自动进行天气市场交易
+- 设置类似 gopfan2 的温度交易规则
+- 在天气预测价格较低时买入
+- 检查自己的天气交易头寸
+- 配置交易阈值或交易地点
 
-## What's New in v1.2.0
+## v1.2.0 的新功能
 
-- **Max Trades Per Run**: New `SIMMER_WEATHER_MAX_TRADES` config to limit trades per scan cycle (default: 5)
+- **单次扫描周期的最大交易数量**：新增了 `SIMMER_WEATHER_MAX_TRADES` 配置参数，用于限制每次扫描周期内的交易次数（默认值为 5 次）
 
 ### v1.1.1
-- **Status Script**: New `scripts/status.py` for quick balance and position checks
-- **API Reference**: Added Quick Commands section with API endpoints
+- **状态检查脚本**：新增了 `scripts/status.py` 脚本，用于快速查看账户余额和交易头寸
+- **API 参考**：增加了包含 API 端点的快速命令部分
 
 ### v1.1.0
-- **Source Tagging**: All trades tagged with `sdk:weather` for portfolio tracking
-- **Smart Sizing**: Position sizing based on available balance (`--smart-sizing`)
-- **Context Safeguards**: Checks for flip-flop warnings, slippage, time decay
-- **Price Trend Detection**: Detects recent price drops for stronger signals
+- **交易标记**：所有交易都被标记为 `sdk:weather`，以便进行投资组合跟踪
+- **智能资金分配**：根据可用余额自动调整交易头寸大小（使用 `--smart-sizing` 参数）
+- **风险防护机制**：检查市场反转、滑点及价格波动等风险
+- **价格趋势检测**：识别近期价格下跌情况，以获取更强的买入信号
 
-## Setup Flow
+## 设置流程
 
-When user asks to install or configure this skill:
+当用户请求安装或配置此策略时，请按照以下步骤操作：
+1. **获取 Simmer API 密钥**：
+   - 可在 simmer.markets/dashboard 的 SDK 标签页获取该密钥
+   - 将密钥存储在环境变量 `SIMMER_API_KEY` 中
+2. **确认设置**（或使用默认值）：
+   - **买入阈值**：价格低于此值时买入（默认为 0.15 美分）
+   - **卖出阈值**：价格高于此值时卖出（默认为 0.45 美分）
+   - **单次交易最大金额**：每次交易的最大金额（默认为 2.00 美元）
+   **交易地点**：指定进行交易的城市（默认为纽约市）
+3. **将设置保存到环境变量中**
+4. **配置定时任务**（默认关闭——用户需要手动启用）
 
-1. **Ask for Simmer API key**
-   - They can get it from simmer.markets/dashboard → SDK tab
-   - Store in environment as `SIMMER_API_KEY`
+## 配置参数
 
-2. **Ask about settings** (or confirm defaults)
-   - Entry threshold: When to buy (default 15¢)
-   - Exit threshold: When to sell (default 45¢)
-   - Max position: Amount per trade (default $2.00)
-   - Locations: Which cities to trade (default NYC)
-
-3. **Save settings to environment variables**
-
-4. **Set up cron** (disabled by default — user must enable scheduling)
-
-## Configuration
-
-| Setting | Environment Variable | Default | Description |
+| 参数 | 环境变量 | 默认值 | 说明 |
 |---------|---------------------|---------|-------------|
-| Entry threshold | `SIMMER_WEATHER_ENTRY` | 0.15 | Buy when price below this |
-| Exit threshold | `SIMMER_WEATHER_EXIT` | 0.45 | Sell when price above this |
-| Max position | `SIMMER_WEATHER_MAX_POSITION` | 2.00 | Maximum USD per trade |
-| Max trades/run | `SIMMER_WEATHER_MAX_TRADES` | 5 | Maximum trades per scan cycle |
-| Locations | `SIMMER_WEATHER_LOCATIONS` | NYC | Comma-separated cities |
-| Smart sizing % | `SIMMER_WEATHER_SIZING_PCT` | 0.05 | % of balance per trade |
+| 买入阈值 | `SIMMER_WEATHER_ENTRY` | 0.15 | 价格低于此值时买入 |
+| 卖出阈值 | `SIMMER_WEATHER_EXIT` | 0.45 | 价格高于此值时卖出 |
+| 单次交易最大金额 | `SIMMER_WEATHER_MAX_POSITION` | 2.00 | 每次交易的最大金额（美元） |
+| 单次扫描周期的最大交易次数 | `SIMMER_WEATHER_MAX_TRADES` | 5 | 每次扫描周期内的最大交易次数 |
+| 交易地点 | `SIMMER_WEATHER_LOCATIONS` | NYC | 用逗号分隔的城市列表 |
+| 智能资金分配比例 | `SIMMER_WEATHER_SIZING_PCT` | 0.05 | 每笔交易的资金分配比例（占余额的百分比） |
 
-**Supported locations:** NYC, Chicago, Seattle, Atlanta, Dallas, Miami
+**支持的交易地点**：纽约市、芝加哥、西雅图、亚特兰大、达拉斯、迈阿密
 
-## Quick Commands
+## 快速命令
 
 ```bash
 # Check account balance and positions
@@ -77,13 +73,13 @@ python scripts/status.py
 python scripts/status.py --positions
 ```
 
-**API Reference:**
-- Base URL: `https://api.simmer.markets`
-- Auth: `Authorization: Bearer $SIMMER_API_KEY`
-- Portfolio: `GET /api/sdk/portfolio`
-- Positions: `GET /api/sdk/positions`
+**API 参考**：
+- 基础 URL：`https://api.simmer.markets`
+- 认证方式：`Authorization: Bearer $SIMMER_API_KEY`
+- 投资组合信息：`GET /api/sdk/portfolio`
+- 交易头寸信息：`GET /api/sdk/positions`
 
-## Running the Skill
+## 运行策略
 
 ```bash
 # Dry run (default — shows opportunities, no trades)
@@ -108,47 +104,53 @@ python weather_trader.py --no-safeguards
 python weather_trader.py --no-trends
 ```
 
-## How It Works
+## 工作原理
 
-Each cycle the script:
-1. Fetches active weather markets from Simmer API
-2. Groups markets by event (each temperature day is one event)
-3. Parses event names to get location and date
-4. Fetches NOAA forecast for that location/date
-5. Finds the temperature bucket that matches the forecast
-6. **Safeguards**: Checks context for flip-flop warnings, slippage, time decay
-7. **Trend Detection**: Looks for recent price drops (stronger buy signal)
-8. **Entry**: If bucket price < threshold and safeguards pass → BUY
-9. **Exit**: Checks open positions, sells if price > exit threshold
-10. **Tagging**: All trades tagged with `sdk:weather` for tracking
+脚本的工作流程如下：
+1. 每个周期从 Simmer API 获取活跃的天气市场数据
+2. 按事件类型对市场进行分类（每个温度数据对应一个事件）
+3. 解析事件名称以获取具体地点和日期
+4. 获取该地点/日期的 NOAA 预报数据
+5. 找到与预报数据匹配的温度区间
+6. **风险防护机制**：检查市场反转、滑点及价格波动等风险
+7. **价格趋势检测**：识别近期价格下跌情况，以获取更强的买入信号
+8. **买入操作**：如果当前价格低于买入阈值且满足其他风险防护条件，则买入
+9. **卖出操作**：检查现有头寸，如果价格高于卖出阈值则卖出
+10. **交易标记**：所有交易都会被标记为 `sdk:weather`，以便后续跟踪
 
-## Smart Sizing
+## 智能资金分配
 
-With `--smart-sizing`, position size is calculated as:
-- 5% of available USDC balance (configurable via `SIMMER_WEATHER_SIZING_PCT`)
-- Capped at max position setting ($2.00 default)
-- Falls back to fixed size if portfolio unavailable
+使用 `--smart-sizing` 参数时，交易头寸大小会根据以下规则计算：
+- 可用 USDC 余额的 5%（可通过 `SIMMER_WEATHER_SIZING_PCT` 参数调整）
+- 最大交易金额不超过预设的最大值（默认为 2.00 美元）
+- 如果投资组合中缺乏足够的资金，将使用固定头寸大小
 
-This prevents over-deployment and scales with your account size.
+**注意事项**：
+- 此机制可防止过度交易，并根据账户规模动态调整头寸大小。
 
-## Safeguards
+## 风险防护机制
 
-Before trading, the skill checks:
-- **Flip-flop warning**: Skips if you've been reversing too much
-- **Slippage**: Skips if estimated slippage > 15%
-- **Time decay**: Skips if market resolves in < 2 hours
-- **Market status**: Skips if market already resolved
+在交易前，脚本会检查以下风险：
+- **市场反转**：如果价格波动过于频繁，则跳过当前交易
+- **滑点**：如果预计滑点超过 15%，则跳过交易
+- **价格波动**：如果市场在 2 小时内即将恢复稳定，则跳过交易
+- **市场状态**：如果市场已经趋于稳定，则跳过交易
 
-Disable with `--no-safeguards` (not recommended).
+**警告提示**：
+- “严重市场反转警告”：表示价格波动过于剧烈，建议等待后再交易
+- “滑点过高”：市场流动性较差，建议减小头寸或跳过交易
+- “市场即将恢复稳定”：市场可能在短时间内恢复稳定，风险增加
+- “未找到天气市场”：当前可能没有活跃的天气交易市场（受季节性影响）
 
-## Source Tagging
+**禁用风险防护机制**：可以使用 `--no-safeguard` 参数（不推荐）
 
-All trades are tagged with `source: "sdk:weather"`. This means:
-- Portfolio shows breakdown by strategy
-- Copytrading skill won't sell your weather positions
-- You can track weather P&L separately
+**标记说明**：
+- 所有交易都会被标记为 `source: "sdk:weather"`，便于投资组合管理和分析
+- 这意味着投资组合会按策略进行分类显示
+- 复制交易策略不会影响你的天气交易头寸
+- 可以单独跟踪天气交易的盈亏情况
 
-## Example Output
+## 示例输出
 
 ```
 🌤️ Simmer Weather Trading Skill
@@ -182,20 +184,10 @@ All trades are tagged with `source: "sdk:weather"`. This means:
   Trades executed: 1
 ```
 
-## Troubleshooting
+## 常见问题及解决方法**
 
-**"Safeguard blocked: Severe flip-flop warning"**
-- You've been changing direction too much on this market
-- Wait before trading again
-
-**"Slippage too high"**
-- Market is illiquid, reduce position size or skip
-
-**"Resolves in Xh - too soon"**
-- Market resolving soon, risk is elevated
-
-**"No weather markets found"**
-- Weather markets may not be active (seasonal)
-
-**"API key invalid"**
-- Get new key from simmer.markets/dashboard → SDK tab
+- **“风险防护机制触发：严重市场反转警告”**：表示价格波动过于剧烈，建议等待后再交易
+- **“滑点过高”**：市场流动性较差，建议减小头寸或跳过交易
+- **“市场即将恢复稳定”**：市场可能在短时间内恢复稳定，风险增加
+- **“未找到天气市场”**：当前可能没有活跃的天气交易市场（受季节性影响）
+- **“API 密钥无效”**：请从 simmer.markets/dashboard 的 SDK 标签页重新获取 API 密钥

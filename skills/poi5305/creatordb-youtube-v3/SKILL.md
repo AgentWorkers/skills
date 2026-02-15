@@ -1,15 +1,15 @@
 ---
 name: creatordb-youtube-v3
-description: Can search and get YouTuber information
+description: 可以搜索并获取YouTuber的信息。
 homepage: https://www.creatordb.app
 metadata: {"moltbot":{"emoji":"🐽","requires":{"bins":["curl"],"env":["CREATORDB_API_KEY"]},"primaryEnv":"CREATORDB_API_KEY","install":[]}}
 ---
 
 # CreatorDB YouTube API
 
-Search and retrieve YouTuber information including subscribers, growth stats, pricing estimates, and more.
+该API用于搜索和检索YouTube博主的信息，包括订阅者数量、增长数据、赞助价格等。
 
-## Search YouTubers by Name
+## 按名称搜索YouTube博主
 
 ```bash
 curl --request POST \
@@ -33,7 +33,7 @@ curl --request POST \
 }'
 ```
 
-Search Response:
+搜索结果：
 ```json
 {
   "data": {
@@ -60,7 +60,7 @@ Search Response:
 }
 ```
 
-## Get YouTuber Profile
+## 获取YouTube博主的个人资料
 
 ```bash
 curl --request GET \
@@ -69,7 +69,7 @@ curl --request GET \
   --header "api-key: $CREATORDB_API_KEY"
 ```
 
-Profile Response:
+个人资料响应：
 ```json
 {
   "data": {
@@ -153,7 +153,7 @@ Profile Response:
 }
 ```
 
-## Get YouTuber performance
+## 获取YouTube博主的视频播放数据
 
 ```bash
 curl --request GET \
@@ -162,7 +162,7 @@ curl --request GET \
   --header 'api-key: $CREATORDB_API_KEY'
 ```
 
-Response
+响应：
 ```json
 {
   "data": {
@@ -391,7 +391,7 @@ Response
 }
 ```
 
-## Get YouTuber content detail
+## 获取YouTube博主的具体视频内容
 
 ```base
 curl --request GET \
@@ -400,7 +400,7 @@ curl --request GET \
   --header 'api-key: $CREATORDB_API_KEY'
 ```
 
-Response
+响应：
 
 ```json
 {
@@ -451,8 +451,7 @@ Response
 }
 ```
 
-
-## Get YouTuber Sponsorship information
+## 获取YouTube博主的赞助信息
 
 ```bash
 curl --request GET \
@@ -461,7 +460,7 @@ curl --request GET \
   --header 'api-key: $CREATORDB_API_KEY'
 ```
 
-Response
+响应：
 ```json
 {
   "data": {
@@ -546,7 +545,7 @@ Response
 }
 ```
 
-## Get YouTuber audience demographics
+## 获取YouTube博主的观众 demographic 数据
 
 ```bash
 curl --request GET \
@@ -555,7 +554,7 @@ curl --request GET \
   --header 'api-key: $CREATORDB_API_KEY'
 ```
 
-Response
+响应：
 ```json
 {
   "data": {
@@ -620,16 +619,16 @@ Response
 }
 ```
 
-## API Key
+## API密钥
 
-- `CREATORDB_API_KEY` env var is required
-- Or set `skills."creatordb-youtube-v3".env.CREATORDB_API_KEY` in `~/.clawdbot/moltbot.json`
-- Get your API key at https://www.creatordb.app
+- 需要设置环境变量 `CREATORDB_API_KEY`
+- 或者在 `~/.clawdbot/moltbot.json` 文件中设置 `skills."creatordb-youtube-v3".env.CREATORDB_API_KEY`
+- 你可以在 [https://www.creatordb.app](https://www.creatordb.app) 获取API密钥
 
-## Notes
+## 注意事项
 
-- Use `channelId` from search results to get detailed profile
-- `subscriberGrowth`: `g7`/`g30`/`g90` = growth rate over 7/30/90 days
-- `videoPrice`/`shortsPrice`: estimated sponsorship pricing in USD
-- `categoryBreakdown`: channel content category distribution
-- Pagination: use `offset` and `pageSize` for search results
+- 使用搜索结果中的 `channelId` 来获取博主的详细个人资料
+- `subscriberGrowth`：表示7天/30天/90天内的订阅者增长率
+- `videoPrice`/`shortsPrice`：视频的预估赞助价格（单位：美元）
+- `categoryBreakdown`：频道内容的分类分布
+- 分页：使用 `offset` 和 `pageSize` 来获取搜索结果

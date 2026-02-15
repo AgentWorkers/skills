@@ -1,41 +1,42 @@
 ---
 name: openclaw-backup
-description: Backup and restore OpenClaw data. Use when user asks to create backups, set up automatic backup schedules, restore from backup, or manage backup rotation. Handles ~/.openclaw directory archiving with proper exclusions.
+description: **备份与恢复 OpenClaw 数据**  
+当用户需要创建备份、设置自动备份计划、从备份中恢复数据或管理备份轮换时，可以使用此功能。该功能会正确处理 `~/.openclaw` 目录的归档过程，并确保排除某些不需要备份的文件。
 ---
 
-# OpenClaw Backup
+# OpenClaw 备份
 
-Backup and restore OpenClaw configuration, credentials, and workspace.
+用于备份和恢复 OpenClaw 的配置信息、凭据以及工作区数据。
 
-## Create Backup
+## 创建备份
 
-Run the backup script:
+运行备份脚本：
 
 ```bash
 ./scripts/backup.sh [backup_dir]
 ```
 
-Default backup location: `~/openclaw-backups/`
+默认备份路径：`~/openclaw-backups/`
 
-Output: `openclaw-YYYY-MM-DD_HHMM.tar.gz`
+备份文件名格式：`openclaw-YYYY-MM-DD_HHMM.tar.gz`
 
-## What Gets Backed Up
+## 备份的内容
 
-- `openclaw.json` — main config
-- `credentials/` — API keys, tokens
-- `agents/` — agent configs, auth profiles
-- `workspace/` — memory, SOUL.md, user files
-- `telegram/` — session data
-- `cron/` — scheduled tasks
+- `openclaw.json` — 主配置文件
+- `credentials/` — API 密钥、令牌
+- `agents/` — 代理配置文件、认证信息
+- `workspace/` — 内存数据、SOUL.md 文件、用户文件
+- `telegram/` — 会话数据
+- `cron/` — 定时任务配置
 
-## Excluded
+## 不包括在备份中的文件
 
-- `completions/` — cache, regenerated automatically
-- `*.log` — logs
+- `completions/` — 缓存数据（会自动重新生成）
+- `*.log` — 日志文件
 
-## Setup Daily Backup with Cron
+## 使用 Cron 设置每日自动备份
 
-Use OpenClaw cron for daily backups with notification:
+使用 OpenClaw 的 Cron 任务设置每日自动备份，并接收备份完成通知：
 
 ```json
 {
@@ -50,11 +51,11 @@ Use OpenClaw cron for daily backups with notification:
 }
 ```
 
-## Restore
+## 恢复数据
 
-See [references/restore.md](references/restore.md) for step-by-step restore instructions.
+请参考 [references/restore.md](references/restore.md) 以获取详细的恢复步骤。
 
-Quick restore:
+**快速恢复方法：**
 
 ```bash
 openclaw gateway stop
@@ -63,6 +64,6 @@ tar -xzf ~/openclaw-backups/openclaw-YYYY-MM-DD_HHMM.tar.gz -C ~
 openclaw gateway start
 ```
 
-## Rotation
+## 备份文件轮换
 
-Script keeps last 7 backups automatically.
+该脚本会自动保留最近的 7 份备份文件。

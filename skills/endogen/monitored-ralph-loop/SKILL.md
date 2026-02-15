@@ -1,28 +1,28 @@
 ---
 name: ralph-loop
-description: Generate copy-paste bash scripts for Ralph Wiggum/AI agent loops (Codex, Claude Code, OpenCode, Goose). Use when asked for a "Ralph loop", "Ralph Wiggum loop", or an AI loop to plan/build code via PROMPT.md + AGENTS.md, SPECS, and IMPLEMENTATION_PLAN.md, including PLANNING vs BUILDING modes, backpressure, sandboxing, and completion conditions.
+description: 生成可复制的 Bash 脚本，用于实现 Ralph Wiggum 或 AI 代理的循环执行流程（适用于 Codex、Claude Code、OpenCode、Goose 等平台）。当需要根据 PROMPT.md、AGENTS.md、SPECS 和 IMPLEMENTATION_PLAN.md 文件来规划或构建代码时，可以使用这些脚本。脚本应支持规划（PLANNING）和构建（BUILDING）两种模式，并具备回压（backpressure）控制、沙箱（sandboxing）功能以及完成条件（completion conditions）的设置。
 ---
 
-# Ralph Loop (Event-Driven)
+# Ralph 循环（事件驱动）
 
-Enhanced Ralph pattern with **event-driven notifications** — Codex/Claude calls OpenClaw when it needs attention instead of polling.
+这是一个增强了的 Ralph 模式，它采用**事件驱动的通知机制**：当需要关注时，Codex/Claude 会直接调用 OpenClaw，而不是进行轮询。
 
-## Key Concepts
+## 关键概念
 
-### Clean Sessions
-Each iteration spawns a **fresh agent session** with clean context. This is intentional:
-- Avoids context window limits
-- Each `codex exec` is a new process with no memory of previous runs
-- Memory persists via files: `IMPLEMENTATION_PLAN.md`, `AGENTS.md`, git history
+### 清新的会话
+每次迭代都会创建一个具有**全新上下文**的代理会话。这样做有以下原因：
+- 避免上下文窗口的限制
+- 每次 `codex exec` 都是一个新的进程，不会保留之前运行的任何信息
+- 信息会通过文件进行持久化存储：`IMPLEMENTATION_PLAN.md`、`AGENTS.md` 和 git 历史记录
 
-### File-Based Notification Fallback
-If OpenClaw is rate-limited when Codex sends a wake notification:
-1. The notification is written to `.ralph/pending-notification.txt`
-2. Wake is attempted (may fail)
-3. When OpenClaw recovers, it checks for pending notifications
-4. Work is never lost — it's all in git/files
+### 基于文件的通知机制（备用方案）
+如果 OpenClaw 在接收唤醒通知时受到速率限制：
+1. 通知会被写入 `.ralph/pending-notification.txt` 文件
+2. 会尝试唤醒 OpenClaw（可能会失败）
+3. 当 OpenClaw 恢复后，它会检查是否有未处理的通知
+4. 所有工作都不会丢失——所有信息都保存在 git 文件中
 
-## File Structure
+## 文件结构
 
 ```
 project/
@@ -38,9 +38,9 @@ project/
     └── last-notification.txt      # Previous notification (for reference)
 ```
 
-## Notification Format
+## 通知格式
 
-`.ralph/pending-notification.txt`:
+`.ralph/pending-notification.txt` 文件的内容如下：
 ```json
 {
   "timestamp": "2026-02-07T02:30:00+01:00",
@@ -53,15 +53,14 @@ project/
 }
 ```
 
-Status values:
-- `pending` — Wake failed or not attempted
-- `delivered` — Wake succeeded
+状态值：
+- `pending`：唤醒失败或未尝试
+- `delivered`：唤醒成功
 
 ---
 
-## OpenClaw Recovery Procedure
-
-When coming back online after rate limit or downtime, **check for pending notifications**:
+## OpenClaw 恢复流程
+当 OpenClaw 在受到速率限制或停机后重新上线时，它会**检查是否有未处理的通知**：
 
 ```bash
 # Find all pending notifications across projects
@@ -71,52 +70,48 @@ find ~/projects -name "pending-notification.txt" -path "*/.ralph/*" 2>/dev/null
 cat /path/to/project/.ralph/pending-notification.txt
 ```
 
-### Recovery Actions by Message Prefix
+### 根据消息前缀执行不同的恢复操作
 
-| Prefix | Action |
+| 前缀 | 操作 |
 |--------|--------|
-| `DONE:` | Report completion to user, summarize what was built |
-| `PLANNING_COMPLETE:` | Inform user, ask if ready for BUILDING mode |
-| `PROGRESS:` | Log it, update user if significant |
-| `DECISION:` | Present options to user, wait for answer, inject into AGENTS.md |
-| `ERROR:` | Check logs (`.ralph/ralph.log`), analyze, help or escalate |
-| `BLOCKED:` | Escalate to user immediately with full context |
-| `QUESTION:` | Present to user, get clarification, inject into AGENTS.md |
+| `DONE:` | 向用户报告完成情况，并总结已完成的工作 |
+| `PLANNING COMPLETE:` | 通知用户，询问是否准备好进入构建模式 |
+| `PROGRESS:` | 记录进度，并在有重要进展时通知用户 |
+| `DECISION:` | 向用户展示选项，等待回复，并将结果更新到 `AGENTS.md` 中 |
+| `ERROR:` | 查看日志（`.ralph/ralph.log`），分析问题并协助解决或升级问题 |
+| `BLOCKED:` | 立即向用户报告问题，并提供完整的信息 |
+| `QUESTION:` | 向用户提问以获取澄清，并将结果更新到 `AGENTS.md` 中 |
 
-### Injecting Responses
-
-To answer a decision/question for the next iteration:
+### 提交响应
+为了在下次迭代中处理用户的决策或问题，需要将用户的回复保存到 `AGENTS.md` 中：
 ```bash
 echo "## Human Decisions
 - [$(date '+%Y-%m-%d %H:%M')] Q: <question>? A: <answer>" >> AGENTS.md
 ```
 
-The next Codex session will read AGENTS.md and see the answer.
+下一次 Codex 会话会读取 `AGENTS.md` 文件以获取用户的回复。
 
-### Clearing Notifications
-
-After processing a notification, clear it:
+### 清除通知
+处理完通知后，需要将其从系统中清除：
 ```bash
 mv .ralph/pending-notification.txt .ralph/last-notification.txt
 ```
 
 ---
 
-## Workflow
+## 工作流程
 
-### 1. Collect Requirements
+### 1. 收集需求
+（如果尚未提供，请询问以下信息：）
+- **目标/待办事项**：需要实现什么结果？
+- **命令行工具**：`codex`、`claude`、`opencode`、`goose`
+- **运行模式**：`PLANNING`（规划）、`BUILDING`（构建）或 `BOTH`（同时进行）
+- **技术栈**：使用的语言、框架、数据库
+- **测试命令**：如何验证代码的正确性
+- **最大迭代次数**：默认为 20 次
 
-Ask for (if not provided):
-- **Goal/JTBD**: What outcome is needed?
-- **CLI**: `codex`, `claude`, `opencode`, `goose`
-- **Mode**: `PLANNING`, `BUILDING`, or `BOTH`
-- **Tech stack**: Language, framework, database
-- **Test command**: How to verify correctness
-- **Max iterations**: Default 20
-
-### 2. Generate Specs
-
-Break the goal into **topics of concern** → `specs/*.md`:
+### 2. 生成规范
+将目标分解为多个**相关主题**，并分别生成对应的 `.spec/*.md` 文件：
 
 ```markdown
 # specs/overview.md
@@ -134,8 +129,7 @@ Break the goal into **topics of concern** → `specs/*.md`:
 - [ ] Criterion 2
 ```
 
-### 3. Generate AGENTS.md
-
+### 3. 生成 `AGENTS.md`
 ```markdown
 # AGENTS.md
 
@@ -160,10 +154,9 @@ Run after each implementation:
 <!-- Agent appends operational notes here -->
 ```
 
-### 4. Generate PROMPT.md (Mode-Specific)
+### 4. 生成特定于运行模式的提示文件（`PROMPT.md`）
 
-#### PLANNING Mode
-
+#### 规划模式（PLANNING Mode）
 ```markdown
 # Ralph PLANNING Loop
 
@@ -186,7 +179,7 @@ Run after each implementation:
 ## Notifications
 When you need input or finish planning:
 ```bash
-openclaw gateway wake --text "PLANNING: <your message>" --mode now
+openclaw gateway wake --text "PLANNING: <你的消息>" --mode now
 ```
 
 Use prefixes:
@@ -197,16 +190,15 @@ Use prefixes:
 ## Completion
 When plan is complete and ready for building, add to IMPLEMENTATION_PLAN.md:
 ```
-STATUS: PLANNING_COMPLETE
+STATUS: PLANNINGCOMPLETE
 ```
 Then notify:
 ```bash
-openclaw gateway wake --text "DONE: Planning complete. X tasks identified." --mode now
+openclaw gateway wake --text "DONE: 规划完成。已识别出 X 项任务。" --mode now
 ```
 ```
 
-#### BUILDING Mode
-
+#### 构建模式（BUILDING Mode）
 ```markdown
 # Ralph BUILDING Loop
 
@@ -231,7 +223,7 @@ openclaw gateway wake --text "DONE: Planning complete. X tasks identified." --mo
 ## Notifications
 Call OpenClaw when needed:
 ```bash
-openclaw gateway wake --text "<PREFIX>: <message>" --mode now
+openclaw gateway wake --text "<前缀>: <消息>" --mode now
 ```
 
 Prefixes:
@@ -246,13 +238,12 @@ When all tasks are done:
 1. Add to IMPLEMENTATION_PLAN.md: `STATUS: COMPLETE`
 2. Notify:
 ```bash
-openclaw gateway wake --text "DONE: All tasks complete. Summary: <what was built>" --mode now
+openclaw gateway wake --text "DONE: 所有任务已完成。总结：<已完成的工作>" --mode now
 ```
 ```
 
-### 5. Run the Loop
-
-Use the provided `scripts/ralph.sh`:
+### 5. 运行循环
+使用提供的 `scripts/ralph.sh` 脚本来执行整个流程：
 
 ```bash
 # Default: 20 iterations with Codex
@@ -267,10 +258,8 @@ RALPH_TEST="pytest" ./scripts/ralph.sh
 
 ---
 
-## Parallel Execution
-
-For independent tasks, use git worktrees:
-
+## 并行执行
+对于独立的任务，可以使用 git 的工作树（worktrees）来管理任务：
 ```bash
 # Create worktrees for parallel work
 git worktree add /tmp/task-auth main
@@ -281,50 +270,48 @@ exec pty:true background:true workdir:/tmp/task-auth command:"codex exec --full-
 exec pty:true background:true workdir:/tmp/task-upload command:"codex exec --full-auto 'Implement image upload...'"
 ```
 
-Track sessions:
-
-| Session ID | Worktree | Task | Status |
+任务状态跟踪：
+| 会话 ID | 工作树 | 任务 | 状态 |
 |------------|----------|------|--------|
-| abc123 | /tmp/task-auth | Auth module | running |
-| def456 | /tmp/task-upload | Image upload | running |
+| abc123 | /tmp/task-auth | 认证模块 | 正在运行 |
+| def456 | /tmp/task-upload | 图像上传 | 正在运行 |
 
-Each Codex notifies independently. Check `.ralph/pending-notification.txt` in each worktree.
+每个 Codex 会独立地执行任务。请检查每个工作树中的 `.ralph/pending-notification.txt` 文件，以获取通知信息。
 
 ---
 
-## CLI-Specific Notes
+## 与命令行工具（CLI）相关的注意事项
 
 ### Codex
-- Requires git repository
-- **Each `codex exec` is a fresh session** — no memory between calls
-- `--full-auto`: Auto-approve in workspace (sandboxed)
-- `--yolo`: No sandbox, no approvals (dangerous but fast)
-- Default model: gpt-5.2-codex
+- 需要一个 git 仓库
+- 每次 `codex exec` 都是一个全新的会话，不会保留之前的执行信息
+- `--full-auto`：在工作区中自动批准任务（在沙箱环境中）
+- `--yolo`：不使用沙箱，也不进行自动批准（风险较高但执行速度快）
+- 默认使用的模型：gpt-5.2-codex
 
-### Claude Code
-- `--dangerously-skip-permissions`: Auto-approve (use in sandbox)
-- No git requirement
-- Each invocation is fresh
+### Claude
+- `--dangerously-skip-permissions`：自动批准任务（仅在沙箱环境中使用）
+- 不需要 git 仓库
+- 每次调用都是全新的会话
 
 ### OpenCode
-- `opencode run "$(cat PROMPT.md)"`
+- 使用 `opencode run "$(cat PROMPT.md)"` 来执行任务
 
 ### Goose
-- `goose run "$(cat PROMPT.md)"`
+- 使用 `goose run "$(cat PROMPT.md)"` 来执行任务
 
 ---
 
-## Safety
-
-⚠️ **Auto-approve flags are dangerous.** Always:
-1. Run in a dedicated directory/branch
-2. Use a sandbox (Docker/VM) for untrusted projects
-3. Have `git reset --hard` ready as escape hatch
-4. Review commits before pushing
+## 安全注意事项
+⚠️ **自动批准功能具有风险**。务必遵循以下规则：
+1. 将相关代码放在专门的目录或分支中运行
+2. 对于不可信的项目，使用沙箱环境（如 Docker 或虚拟机）
+3. 准备好 `git reset --hard` 命令作为应急措施
+4. 在提交代码之前仔细审查所有的更改
 
 ---
 
-## Quick Start
+## 快速入门指南
 
 ```bash
 # 1. Create project directory
@@ -358,29 +345,9 @@ EOF
 
 ---
 
-## Example: Antique Catalogue
-
-```markdown
-# specs/overview.md
-## Goal
-Web app for cataloguing antique items with metadata, images, and categories.
-
-## Tech Stack
-- Python 3.11 + FastAPI
-- SQLite + SQLAlchemy
-- HTMX + Tailwind CSS
-- Local file storage for images
-
-## Features
-1. CRUD for items (name, description, age, purchase info, dimensions)
-2. Image upload (multiple per item)
-3. Tags and categories
-4. Search and filter
-5. Multiple view modes (grid, list, detail)
-```
-
-The agent will:
-1. (PLANNING) Break this into 10-15 tasks
-2. (BUILDING) Implement each task, one per iteration
-3. Commit after each successful implementation
-4. Notify on completion or if blocked
+## 示例：Antique Catalogue 项目
+在这个项目中，代理会执行以下操作：
+1. （规划阶段）将任务分解为 10-15 个部分
+2. （构建阶段）每次迭代完成一个任务
+3. 每个任务成功完成后都会提交代码
+4. 在任务完成或遇到问题时发送通知

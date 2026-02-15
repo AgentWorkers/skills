@@ -1,84 +1,85 @@
 ---
 name: Outreach
-description: Plan, personalize, and track outreach campaigns for sales, PR, recruiting, partnerships, and link building with timing strategy and follow-up cadence.
+description: 规划、定制并跟踪针对销售、公关、招聘、合作伙伴关系以及建立外部联系的外展活动，同时制定明确的时间策略和后续跟进计划。
 ---
 
-## Situation Detection
+## 情境检测
 
-| Context | Load |
+| 情境 | 需要使用的文档 |
 |---------|------|
-| Writing cold emails, follow-ups, subject lines | `templates.md` |
-| Sales outreach (SDR, BDR, AE) | `by-type.md` → Sales section |
-| PR/Media pitching, influencer outreach | `by-type.md` → PR section |
-| Link building, guest posts, SEO outreach | `by-type.md` → SEO section |
-| Recruiting, talent sourcing | `by-type.md` → Recruiting section |
-| Investor, partnership, BD outreach | `by-type.md` → BD section |
-| Tracking what works, analyzing patterns | `tracking.md` |
+| 发送冷邮件、跟进邮件、设置邮件主题行 | `templates.md` |
+| 销售推广（SDR、BDR、AE） | `by-type.md` → 销售板块 |
+| 产品发布/媒体推广、联系 influencer | `by-type.md` → 公关板块 |
+| 建立链接、发布客座文章、SEO 推广 | `by-type.md` → SEO 板块 |
+| 招聘、人才获取 | `by-type.md` → 招聘板块 |
+| 与投资者/合作伙伴的沟通 | `by-type.md` → 商业发展板块 |
+| 跟踪有效策略、分析行为模式 | `tracking.md` |
 
 ---
 
-## Universal Rules
+## 通用规则
 
-**The Formula:** Who (right person, verified contact) + Why Now (trigger event) + WIIFT (what's in it for them)
+**沟通公式：**  
+正确的对象（已核实联系方式） + 现在发送的原因（触发事件） + 对对方的好处（What’s in It For Them, WIIFT）
 
-**Personalization:** Reference something SPECIFIC — not "loved your work" but "your piece on X changed how I think about Y." If you can't find a hook, you haven't researched enough.
+**个性化：**  
+提及具体的内容——不要只是说“我喜欢你的工作”，而是要说明“你关于 X 的文章改变了我对 Y 的看法”。如果你找不到合适的切入点，那就说明你还不够了解对方。
 
-**Timing:**
-- Best: Tuesday-Thursday, 9-11am recipient's timezone
-- Avoid: Monday 9am, Friday afternoon, holidays, major news days
-- Check: Did they just post/publish something? Strike while relevant
+**发送时间：**  
+最佳时间：周二至周四，上午 9 点至 11 点（接收者的时区）  
+避免时间：周一上午 9 点、周五下午、节假日、重大新闻发布日  
+注意：对方是否刚刚发布了新内容？在相关时机发送邮件。
 
-**Follow-up cadence:**
-
-| Touch | Timing | Purpose |
+**跟进节奏：**  
+| 联系方式 | 时间 | 目的 |
 |-------|--------|---------|
-| 1 | Day 0 | Value-first intro, specific ask |
-| 2 | Day 3-5 | New angle or additional value |
-| 3 | Day 7-10 | Different channel if possible |
-| 4 | Day 14+ | Break-up email |
+| 第一次联系 | 发送当天 | 介绍产品价值并提出具体请求 |
+| 第二次联系 | 第 3-5 天 | 提供新的角度或额外的价值 |
+| 第三次联系 | 第 7-10 天 | 尽可能通过不同的渠道发送 |
+| 第四次联系 | 第 14 天以后 | 发送总结性邮件 |
 
-Stop after 3-4 touches. "Bumping this up" is spam.
-
----
-
-## Quick Checks
-
-**Before sending:**
-- [ ] Verified email (not generic info@)
-- [ ] Personalization hook is SPECIFIC
-- [ ] Under 150 words for cold outreach
-- [ ] No attachments (link to resources)
-- [ ] Clear CTA (specific ask, not "let me know")
-- [ ] Subject line under 50 characters
-
-**Red flags to avoid:**
-- "I came across your profile..." (generic)
-- Pitching in first message (build curiosity first)
-- "Per my last email..." (guilt-trip)
-- Asking for "exposure" (have budget or don't ask)
-- Simultaneous competitor pitches with exclusive angles
+**注意：**  
+最多进行 3-4 次联系。频繁发送相同内容会被视为垃圾邮件。
 
 ---
 
-## Outreach Profile
+## 快速检查事项
 
-*Build over time. Update after campaigns.*
+**发送前：**  
+- [ ] 邮箱地址已核实（不是通用的 info@）  
+- [ ] 个性化内容具体且具有吸引力  
+- 冷邮件内容不超过 150 字  
+- 不要附上附件（仅附上资源链接）  
+- 清晰的呼吁行动（CTA）：提出具体的请求，而不是简单的“请告知我”  
+- 邮件主题行不超过 50 个字符  
 
-### What Works
-<!-- "Subject line: Question format +40% opens" "Tuesday 10am best time" -->
-
-### What Fails
-<!-- "Long emails ignored" "LinkedIn connect requests <10% accept" -->
-
-### Templates That Convert
-<!-- "Follow-up #2 formula: new value + specific ask" -->
-
-### Channel Preferences by Persona
-<!-- "Execs: email via EA" "Journalists: Twitter DM > email" -->
-
-### Contacts to Avoid
-<!-- "Reporter X: never responds" "VC Y: no cold outreach" -->
+**需要避免的错误：**  
+- “我看到了你的个人资料……”（过于泛泛）  
+- 在第一封邮件中就直接推销产品（先激发对方的好奇心）  
+- 以“根据我上一封邮件……”开头（制造负罪感）  
+- 请求对方提供曝光机会（除非你有预算）  
+- 同时向竞争对手发送带有独家内容的推广邮件  
 
 ---
 
-*Empty = nothing learned yet. Every campaign reveals patterns. Track and update.*
+## 外展联系人资料  
+*这些资料需要逐步完善，并在每次活动后更新。*
+
+### 有效的方法  
+<!-- “邮件主题行采用疑问句格式，打开率提高 40%” “周二上午 10 点是最佳发送时间” -->  
+
+### 失败的原因  
+<!-- “长邮件被忽略” “LinkedIn 上的添加好友请求接受率低于 10%” -->  
+
+### 有效的邮件模板  
+<!-- “第二次跟进邮件的公式：提供新价值并提出具体请求” -->  
+
+### 不同人群的沟通渠道偏好  
+<!-- “高管：通过销售代表（EA）发送邮件” “记者：发送 Twitter 私信优于发送邮件” -->  
+
+### 需要避免联系的人  
+<!-- “记者 X：从不回复” “风险投资家 Y：禁止发送冷邮件” -->  
+
+---
+
+*如果某个模板没有效果，说明还需要进一步学习。每次活动都会揭示新的规律。请持续跟踪并更新相关资料。*

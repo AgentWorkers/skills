@@ -1,33 +1,33 @@
 ---
 name: apple-mail
-description: Apple Mail.app integration for macOS. Read inbox, search emails, send emails, reply, and manage messages with fast direct access (no enumeration).
+description: macOS上的Apple Mail.app集成功能：您可以快速直接地查看收件箱、搜索邮件、发送邮件、回复邮件以及管理消息（无需逐一浏览邮件列表）。
 metadata: {"clawdbot":{"emoji":"📧","os":["darwin"],"requires":{"bins":["sqlite3"]}}}
 ---
 
 # Apple Mail
 
-Interact with Mail.app via AppleScript and SQLite. Run scripts from: `cd {baseDir}`
+您可以通过 AppleScript 和 SQLite 与 Mail.app 进行交互。脚本的执行路径为：`cd {baseDir}`
 
-## Commands
+## 命令
 
-| Command | Usage |
+| 命令 | 用法 |
 |---------|-------|
-| **Refresh** | `scripts/mail-refresh.sh [account] [wait_seconds]` |
-| List recent | `scripts/mail-list.sh [mailbox] [account] [limit]` |
-| Search | `scripts/mail-search.sh "query" [mailbox] [limit]` |
-| Fast search | `scripts/mail-fast-search.sh "query" [limit]` |
-| Read email | `scripts/mail-read.sh <message-id> [message-id...]` |
-| Delete | `scripts/mail-delete.sh <message-id> [message-id...]` |
-| Mark read | `scripts/mail-mark-read.sh <message-id> [message-id...]` |
-| Mark unread | `scripts/mail-mark-unread.sh <message-id> [message-id...]` |
-| Send | `scripts/mail-send.sh "to@email.com" "Subject" "Body" [from-account] [attachment]` ¹ |
-| Reply | `scripts/mail-reply.sh <message-id> "body" [reply-all]` |
-| List accounts | `scripts/mail-accounts.sh` |
-| List mailboxes | `scripts/mail-mailboxes.sh [account]` |
+| **刷新** | `scripts/mail-refresh.sh [account] [wait_seconds]` |
+| 列出最近的消息 | `scripts/mail-list.sh [mailbox] [account] [limit]` |
+| 搜索 | `scripts/mail-search.sh "query" [mailbox] [limit]` |
+| 快速搜索 | `scripts/mail-fast-search.sh "query" [limit]` |
+| 阅读邮件 | `scripts/mail-read.sh <message-id> [message-id...]` |
+| 删除邮件 | `scripts/mail-delete.sh <message-id> [message-id...]` |
+| 标记为已读 | `scripts/mail-mark-read.sh <message-id> [message-id...]` |
+| 标记为未读 | `scripts/mail-mark-unread.sh <message-id> [message-id...]` |
+| 发送邮件 | `scripts/mail-send.sh "to@email.com" "Subject" "Body" [from-account] [attachment]` ¹ |
+| 回复邮件 | `scripts/mail-reply.sh <message-id> "body" [reply-all]` |
+| 列出账户 | `scripts/mail-accounts.sh` |
+| 列出邮箱 | `scripts/mail-mailboxes.sh [account]` |
 
-## Refreshing Mail
+## 刷新邮件
 
-Force Mail.app to check for new messages:
+强制 Mail.app 检查是否有新消息：
 
 ```bash
 scripts/mail-refresh.sh                    # All accounts, wait up to 10s
@@ -36,82 +36,82 @@ scripts/mail-refresh.sh "" 5               # All accounts, max 5 seconds
 scripts/mail-refresh.sh Google 0           # Google account, no wait
 ```
 
-**Smart sync detection:**
-- Script monitors database message count
-- Returns early when sync completes (no changes for 2s)
-- Reports new message count: `Sync complete in 2s (+3 messages)`
+**智能同步检测：**
+- 脚本会监控数据库中的消息数量；
+- 如果 2 秒内没有变化，则提前返回结果；
+- 如果有新消息，会显示：“同步完成（2 秒后，新增了 3 条消息）”。
 
-**Notes:**
-- Mail.app must be running (script will error if not)
-- `mail-list.sh` does NOT auto-refresh — call `mail-refresh.sh` first if you need fresh data
+**注意：**
+- Mail.app 必须正在运行中（否则脚本会出错）；
+- `mail-list.sh` 不会自动刷新数据——如果需要最新数据，请先运行 `mail-refresh.sh`。
 
-## Output Format
+## 输出格式
 
-List/search returns: `ID | ReadStatus | Date | Sender | Subject`
-- `●` = unread, blank = read
+列表/搜索结果格式：`ID | 已读状态 | 发件时间 | 发件人 | 主题`
+- `●` 表示未读，空白表示已读。
 
-## Gmail Mailboxes
+## Gmail 邮箱
 
-⚠️ Gmail special folders need `[Gmail]/` prefix:
+⚠️ Gmail 的特殊文件夹需要加上 `[Gmail]/` 前缀：
 
-| Shows as | Use |
+| 显示方式 | 使用方式 |
 |----------|-----|
 | `Spam` | `[Gmail]/Spam` |
 | `Sent Mail` | `[Gmail]/Sent Mail` |
 | `All Mail` | `[Gmail]/All Mail` |
 | `Trash` | `[Gmail]/Trash` |
 
-Custom labels work without prefix.
+自定义标签可以直接使用，无需添加前缀。
 
-## Fast Search (SQLite)
+## 快速搜索（使用 SQLite）
 
-✨ **Now safe even if Mail.app is running** — copies database to temp file first.
+✨ **现在即使 Mail.app 正在运行也可以使用**——脚本会先将数据库内容复制到临时文件中再进行查询。
 
 ```bash
 scripts/mail-fast-search.sh "query" [limit]  # ~50ms vs minutes
 ```
 
-Previously required Mail.app to be quit. Now works anytime by copying the database to a temp file before querying.
+以前需要关闭 Mail.app 才能使用快速搜索功能。现在只需将数据库内容复制到临时文件后即可进行查询。
 
-## Performance Notes
+## 性能说明
 
-**Speed by operation:**
-| Operation | Speed | Notes |
+**各操作的耗时：**
+| 操作 | 耗时 | 备注 |
 |-----------|-------|-------|
-| `mail-fast-search.sh` | ~50ms | SQLite query, fastest |
-| `mail-accounts.sh` | <1s | Simple AppleScript |
-| `mail-list.sh` | 1-3s | AppleScript, direct mailbox access |
-| `mail-send.sh` | 1-2s | Creates and sends message |
-| `mail-read.sh` | ~2s | Position-optimized lookup |
-| `mail-delete.sh` | ~0.5s | Position-optimized lookup |
-| `mail-mark-*.sh` | ~1.5s | Position-optimized lookup |
+| `mail-fast-search.sh` | 约 50 毫秒 | 使用 SQLite 查询，速度最快 |
+| `mail-accounts.sh` | 小于 1 秒 | 使用简单的 AppleScript |
+| `mail-list.sh` | 1-3 秒 | 使用 AppleScript 直接访问邮箱 |
+| `mail-send.sh` | 1-2 秒 | 创建并发送邮件 |
+| `mail-read.sh` | 约 2 秒 | 采用位置优化查询方式 |
+| `mail-delete.sh` | 约 0.5 秒 | 采用位置优化查询方式 |
+| `mail-mark-*.sh` | 约 1.5 秒 | 采用位置优化查询方式 |
 
-**Optimization technique:**
-SQLite provides account UUID and approximate message position. AppleScript jumps directly to that position instead of iterating from the start.
+**优化技巧：**
+SQLite 提供了账户的 UUID 和消息的大致位置信息。AppleScript 会直接跳转到该位置，而不是从头开始遍历。
 
-**Batch operations supported:**
-- `mail-read.sh 123 456 789` - Read multiple (separator between each)
-- `mail-delete.sh 123 456 789` - Delete multiple
-- `mail-mark-read.sh 123 456` - Mark multiple as read
-- `mail-mark-unread.sh 123 456` - Mark multiple as unread
+**支持批量操作：**
+- `mail-read.sh 123 456 789` — 一次性读取多封邮件（各邮件之间用 `=` 分隔） |
+- `mail-delete.sh 123 456 789` — 一次性删除多封邮件 |
+- `mail-mark-read.sh 123 456` — 一次性将多封邮件标记为已读 |
+- `mail-mark-unread.sh 123 456` — 一次性将多封邮件标记为未读 |
 
-**⚠️ No auto-refresh:** Scripts read cached data. Call `mail-refresh.sh` first if you need latest emails.
+**⚠️ 不支持自动刷新：** 脚本会读取缓存的数据。如果需要最新邮件，请先运行 `mail-refresh.sh`。
 
-## Managing Emails
+## 管理邮件
 
-**Delete emails:**
+**删除邮件：**
 ```bash
 scripts/mail-delete.sh 12345                    # Delete one
 scripts/mail-delete.sh 12345 12346 12347        # Delete multiple
 ```
 
-**Mark as read/unread:**
+**标记为已读/未读：**
 ```bash
 scripts/mail-mark-read.sh 12345 12346           # Mark as read
 scripts/mail-mark-unread.sh 12345               # Mark as unread
 ```
 
-**Bulk operations example:**
+**批量操作示例：**
 ```bash
 # Find spam emails
 scripts/mail-fast-search.sh "spam" 50 > spam.txt
@@ -120,46 +120,45 @@ scripts/mail-fast-search.sh "spam" 50 > spam.txt
 grep "^[0-9]" spam.txt | cut -d'|' -f1 | xargs scripts/mail-delete.sh
 ```
 
-## Reading Email Bodies
+## 阅读邮件内容
 
 ```bash
 scripts/mail-read.sh 12345              # Single email
 scripts/mail-read.sh 12345 12346 12347  # Multiple emails (separated output)
 ```
 
-Uses position-optimized lookup (~2s per message). Multiple emails are separated by `========` with a summary at the end.
+采用位置优化查询方式（每封邮件大约需要 2 秒）。多封邮件之间用 `========` 分隔，最后会显示邮件摘要。
 
-## Errors
+## 错误信息
 
-| Error | Cause |
+| 错误 | 原因 |
 |-------|-------|
-| `Mail.app is not running` | Open Mail.app before running scripts |
-| `Account not found` | Invalid account — check mail-accounts.sh |
-| `Message not found` | Invalid/deleted ID — get fresh from mail-list.sh |
-| `Can't get mailbox` | Invalid name — check mail-mailboxes.sh |
-| `Mail database not found` | SQLite DB missing — check ~/Library/Mail/V{9,10,11}/MailData/ |
+| `Mail.app 未运行` | 运行脚本前请确保 Mail.app 已启动 |
+| 账户未找到 | 账户无效——请检查 `mail-accounts.sh` |
+| 邮件未找到 | 邮件 ID 无效或已被删除——请通过 `mail-list.sh` 获取最新信息 |
+| 无法获取邮箱 | 邮箱名称无效——请检查 `mail-mailboxes.sh` |
+| 邮件数据库未找到 | SQLite 数据库缺失——请检查 `~/Library/Mail/V{9,10,11}/MailData/` |
 
-## Technical Details
+## 技术细节
 
-**Database:** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index`
+**数据库位置：** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index`
 
-**Message lookup method (optimized):**
-1. Query SQLite for account UUID, mailbox path, and approximate position
-2. AppleScript accesses the specific account directly (no iteration)
-3. Search starts at the approximate position (±5 messages buffer)
-4. Falls back to full mailbox search only if position hint fails
+**邮件查找方法（经过优化）：**
+1. 向 SQLite 查询账户的 UUID、邮箱路径和消息的大致位置；
+2. AppleScript 直接访问相应的账户（无需遍历所有邮件）；
+3. 搜索从大致位置开始（误差范围为 5 封邮件）；
+- 如果位置信息不准确，才会进行全邮箱搜索。
 
-**Safety:**
-- Fast search copies database to temp file before querying
-- Safe to use even if Mail.app is running
-- Delete/read/mark operations query live database but access is minimal
+**安全性：**
+- 快速搜索会在查询前将数据库内容复制到临时文件中；
+- 即使 Mail.app 正在运行，也可以安全使用这些脚本；
+- 删除/阅读/标记操作会查询实时数据库，但对数据库的访问量很小。
 
-## Notes
+## 其他说明：
+- 邮件 ID 是系统内部的编号，需要通过列表/搜索功能获取最新信息；
+- 发送邮件前请确认收件人信息；
+- AppleScript 的搜索功能虽然较慢，但查询范围较广；SQLite 在处理元数据时速度较快；
+- 删除/标记操作支持批量操作（可以传递多个邮件 ID）；
+- 如果需要获取最新邮件，请在列出邮件之前先执行刷新操作。
 
-- Message IDs are internal, get fresh ones from list/search
-- Confirm recipient before sending
-- AppleScript search is slow but comprehensive; SQLite is fast for metadata
-- Delete/mark operations support bulk actions (pass multiple IDs)
-- Always refresh before listing if you need the absolute latest emails
-
-¹ **Known limitation:** Mail.app adds a leading blank line to sent emails. This is an AppleScript/Mail.app behavior that cannot be bypassed.
+¹ **已知限制：** Mail.app 会在已发送的邮件前添加空行。这是 AppleScript 和 Mail.app 的系统行为，无法更改。

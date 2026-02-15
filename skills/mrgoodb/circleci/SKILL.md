@@ -1,29 +1,34 @@
 ---
 name: circleci
-description: Manage CircleCI pipelines, jobs, and workflows via API. Trigger and monitor builds.
+description: 通过 API 管理 CircleCI 的管道（pipelines）、作业（jobs）和工作流程（workflows）。触发并监控构建过程（builds）。
 metadata: {"clawdbot":{"emoji":"⭕","requires":{"env":["CIRCLECI_TOKEN"]}}}
 ---
-# CircleCI
-Continuous integration platform.
-## Environment
+# CircleCI  
+持续集成平台。  
+
+## 环境设置  
 ```bash
 export CIRCLECI_TOKEN="xxxxxxxxxx"
-```
-## List Pipelines
+```  
+
+## 管道列表  
 ```bash
 curl "https://circleci.com/api/v2/project/gh/{org}/{repo}/pipeline" \
   -H "Circle-Token: $CIRCLECI_TOKEN"
-```
-## Trigger Pipeline
+```  
+
+## 触发管道  
 ```bash
 curl -X POST "https://circleci.com/api/v2/project/gh/{org}/{repo}/pipeline" \
   -H "Circle-Token: $CIRCLECI_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"branch": "main"}'
-```
-## Get Workflow
+```  
+
+## 工作流程  
 ```bash
 curl "https://circleci.com/api/v2/workflow/{workflowId}" -H "Circle-Token: $CIRCLECI_TOKEN"
-```
-## Links
-- Docs: https://circleci.com/docs/api/v2/
+```  
+
+## 链接  
+- 文档：https://circleci.com/docs/api/v2/

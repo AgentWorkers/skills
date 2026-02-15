@@ -1,172 +1,152 @@
 ---
 name: workshop-miro
-description: Workshop photos/notes -> an editable Miro diagram (real FRAMES as containers + stickies + connectors) with idempotent dedupe, rollback, undo and change commands, using the local script miro-push.mjs and env vars.
+description: 研讨会照片/笔记：保存在一个可编辑的 Miro 图表中（使用真实的框架作为容器，结合便签和连接线）。该图表支持幂等去重、回滚、撤销以及修改功能，这些功能通过本地脚本 `miro-push.mjs` 和环境变量来实现。
 ---
 
-# Workshop → Miro (Top Mode vNext)
+# 工作坊 → Miro（Top Mode vNext）
 
-## Goal
-Produce a workshop output on Miro that is:
-- readable as a diagram (not “scattered post-its”)
-- easy to edit (real containers)
-- idempotent (no duplicates)
-- correctable (undo / delete / update)
+## 目标
+使用 Miro 创建的工作坊输出应满足以下要求：
+- 能够以图表的形式展示（而不是散落的便签）；
+- 易于编辑（每个元素都有明确的容器）；
+- 具有幂等性（避免重复内容）；
+- 可以进行撤销、删除或更新操作。
 
-## Security (mandatory)
-- Never print MIRO_ACCESS_TOKEN
-- Use only env vars: MIRO_ACCESS_TOKEN and MIRO_BOARD_ID
-- Never use browser cookies/session tokens
+## 安全性（强制要求）
+- 绝不要打印 `MIRO_ACCESS_TOKEN`；
+- 仅使用环境变量 `MIRO_ACCESS_TOKEN` 和 `MIROBOARD_ID`；
+- 绝不要使用浏览器 cookie 或会话令牌。
 
-## Key rule: a container = a FRAME (not a shape)
-A “workshop container” must be a FRAME when:
-- there is a large rectangle/square with a clear title (e.g., “Easy vision”, “Milestone”, “VMS”, “Data Hub”, “Vico Insider”)
-- or there is a swimlane/column with a title
-- or a box is clearly grouping multiple elements (stickies or sub-boxes)
+## 关键规则：容器即框架（frame）
+当满足以下条件时，一个“工作坊容器”应被视为一个框架：
+- 存在一个带有明确标题的大矩形或正方形（例如：“Easy vision”、“Milestone”、“VMS”、“Data Hub”、“Vico Insider”）；
+- 或者存在一个带有标题的泳道或列；
+- 或者一个框明显用于分组多个元素（便签或子框）。
 
-Do NOT create a frame if:
-- it’s just blank space without a title
-- it’s only a decorative border without grouping meaning
+**注意：** 如果某个区域只是空白空间且没有标题，或者仅作为装饰性边框而没有实际分组作用，则不要创建框架。
 
-## HARD REQUIREMENT (do not violate)
-- You MUST create frames[] when the board contains categories/areas.
-- You MUST assign a non-null frameId to each sticky (except explicit "outside notes").
-- If frames[] is empty OR if >10% stickies have frameId=null:
-  - DO NOT run the push command.
-  - Regenerate the structure (max 2 attempts).
+## 强制性要求（不得违反）
+- 当工作坊板包含多个类别/区域时，必须创建框架数组 `frames[]`；
+- 每个便签都必须分配一个非空的 `frameId`（明确标记为“外部笔记”的便签除外）；
+- 如果 `frames[]` 为空，或者超过 10% 的便签的 `frameId` 为 `null`，则：
+  - 不要执行推送操作；
+  - 重新生成工作坊结构（最多尝试 2 次）。
 
-## Quality Gate — Container sanity check (mandatory)
-If the image contains >=2 titled containers:
-- frames.length MUST be >= 2
-- at least 95% of stickies MUST have a non-null frameId
-If not satisfied:
-- DO NOT push
-- Regenerate structure (max 2 attempts)
+## 质量检查（强制要求）
+- 如果图像中包含至少 2 个带标题的容器：
+  - `frames.length` 必须大于等于 2；
+  - 至少 95% 的便签必须具有非空的 `frameId`。
+- 如果不满足这些条件，则不要执行推送操作；重新生成工作坊结构（最多尝试 2 次）。
 
-## Mandatory planning (do not print)
-Before generating JSON and before running DIRECT PUSH:
-1) Identify candidate FRAMES:
-   - any large rectangle with a title
-   - any area labeled on the side or centered above/below
-2) Assign every sticky to a candidate frame.
-3) If a sticky is ambiguous, add a warning and assign it to the closest/most plausible frame.
-4) Only after that, generate the final JSON.
+## 必须进行的规划（不要打印）
+在生成 JSON 数据并执行推送操作之前：
+1. 确定可能的框架：
+   - 任何带有标题的大矩形；
+   - 任何在页面侧面或上方/下方标记的区域；
+2. 将每个便签分配到一个合适的框架中；
+3. 如果某个便签的归属不明确，添加警告并将其分配到最接近或最合理的框架中；
+4. 之后再生成最终的 JSON 数据。
 
-## Quality Gate (mandatory)
-Before executing `node ... apply`:
-- At least 1 frame must exist.
-- At least 90% of stickies must have a non-null frameId.
-- No frame should be “giant” if the image clearly contains multiple distinct areas.
-- If the gate fails, DO NOT push: regenerate the structure (max 2 attempts).
+## 执行 `node ... apply` 之前的质量检查（强制要求）
+- 必须至少存在一个框架；
+- 至少 90% 的便签必须具有非空的 `frameId`；
+- 如果图像中包含多个不同的区域，任何框架都不应过大；
+- 如果检查失败，不要执行推送操作；重新生成工作坊结构（最多尝试 2 次）。
 
-## Dedup / Idempotency (mandatory)
-- Every push must include a STABLE `meta.sessionKey` for the same diagram/topic (e.g., "easy-vision-workshop").
-- Every push must include a unique `meta.runId` (timestamp).
-- If the sessionKey is the same:
-  - first remove the previous run (automatic undo)
-  - then apply the new one
-This prevents duplicates and repeated runs.
+## 避免重复与幂等性（强制要求）
+- 每次推送操作都必须包含一个稳定的 `meta.sessionKey`（例如：“easy-vision-workshop”）；
+- 每次推送操作都必须包含一个唯一的 `meta.runId`（时间戳）；
+- 如果 `sessionKey` 相同：
+  - 先删除之前的操作（自动撤销）；
+  - 再执行新的操作。
+- 这样可以防止重复生成相同的内容。
 
-## Operating modes
-### A) DIRECT PUSH (default if the user asks)
-1) Generate a Miro-ready JSON (schema below) including:
-   - meta.sessionKey (stable)
-   - meta.runId (unique)
-2) Save the JSON to:
-   - `...\workshop-miro\_out\miro-ready-YYYYMMDD-HHMMSS.json`
-3) Execute:
-   - `node ...\miro-push.mjs apply <PATH_JSON>`
-4) Reply with:
-   - frames created: N
-   - stickies created: N
-   - connectors created: N
-   - sessionKey + runId
-   - warnings (if any)
+## 操作模式
+### A) 直接推送（用户未指定时默认模式）
+1. 生成适用于 Miro 的 JSON 数据（格式如下）：
+   - `meta.sessionKey`（稳定的值）；
+   - `meta.runId`（唯一的值）；
+2. 将 JSON 数据保存到文件 `...\workshop-miro\_out\miro-ready-YYYYMMDD-HHMMSS.json`；
+3. 执行命令 `node ...\miro-push.mjs apply <PATH_JSON>`；
+4. 返回结果：
+   - 创建的框架数量：N；
+   - 创建的便签数量：N；
+   - 创建的连接器数量：N；
+   - `sessionKey` 和 `runId`；
+   - （如果有）警告信息。
 
-### B) CORRECTIONS (when the user wants changes)
-- UNDO (per session): `node ...\miro-push.mjs undo <sessionKey>`
-- If the user says “redo it better / wrong category / move things”:
-  - regenerate a corrected JSON with the same sessionKey
-  - run APPLY again (it replaces the previous run)
+### B) 更改操作（用户需要修改内容时）
+- 撤销操作（针对当前会话）：`node ...\miro-push.mjs undo <sessionKey>`；
+- 如果用户要求“重新设计”或“调整分类”或“移动元素”：
+  - 重新生成带有相同 `sessionKey` 的修改后的 JSON 数据；
+  - 再次执行 `apply` 操作（这将替换之前的操作）。
+> 注意：如果脚本支持细粒度编辑（如删除/更新单个便签），可以后续进行这些操作；
+> 否则，建议使用相同的 `sessionKey` 重新生成整个工作坊结构（这样更清晰且通常更快）。
 
-> Note: fine-grained edits (delete/update a single sticky) are a next step if the script supports them.
-> Otherwise, recommended: full regeneration with the same sessionKey (cleaner and usually faster).
+## 智能布局规则
+- 在每个框架内：
+  - 左侧：输入/来源信息；
+  - 中间：处理过程/API/平台；
+  - 右侧：输出结果/用户界面/外部集成；
+- 布局间距建议：`x += 420`, `y += 260`；
+- 如果图表中有一条贯穿整个图表的箭头：
+  - 为了提高可读性，建议使用两个较短的连接器，并通过一个中间节点来表示（例如，使用便签标注“API”或“Integration”）。
 
-## Smart layout rules
-- Inside each frame:
-  - left: inputs/sources
-  - center: processing / API / platforms
-  - right: outputs/UI/external integrations
-- Spacing guideline: x += 420, y += 260
-- If there is a long arrow crossing the whole diagram:
-  - prefer 2 shorter connectors via an intermediate node (e.g., sticky “API” or “Integration”) if it improves readability
+## 连接器/关系规则
+- 当在白板上看到箭头或线条，或者文本表示某种流程（如“API”、“sensoren”、“data”、“->”、“integration”）时，创建连接器；
+- 连接器标签应使用描述该流程的词语（例如：“API”、“Sensoren”、“Data”、“Milestone”）；
+- 连接器的默认形状为“elbowed”（适用于架构图）。
 
-## Connector / relationship rules
-Create a connector when:
-- you see an arrow/line on the whiteboard
-- or the text implies a flow: "API", "sensoren", "data", "->", "integration"
-- connector label: use the word that describes the flow (e.g., “API”, “Sensoren”, “Data”, “Milestone”)
+## 避免重叠规则（保持箭头清晰）
+- 避免连接器与便签或注释重叠；
+- 使用默认的“elbowed”形状；
+- 保持清晰的布局：不要将便签放置得太靠近框架边缘；框架内部的最小间距为 160 像素；
+- 如果连接器过长或会穿过多个元素，可以在框架外部创建一个或多个“路由器节点”（例如，使用带有“.”或空文本的灰色便签）；
+- 对于不同框架之间的连接，分别在源框架的右侧边缘和目标框架的左侧边缘创建路由器节点。
 
-Default connector shape: "elbowed" (more readable for architecture diagrams).
-
-## Anti-overlap rules (clean arrows)
-Goal: avoid connectors crossing over stickies/notes.
-
-- Use default connector shape = "elbowed".
-- Always keep a free “routing lane”:
-  - Do not place stickies close to frame borders.
-  - Minimum inner frame padding: 160px.
-- If a connector would be long or would cross a cluster:
-  - create one or more “router nodes” (gray sticky with "." or empty text) placed outside clusters
-  - split the connection into segments: A -> R1 -> R2 -> B
-- For connections between different frames:
-  - use a router node near the right border of the source frame
-  - and a router node near the left border of the target frame
-
-## JSON Output (FRAME-based)
+## JSON 输出格式（基于框架）
+```json
 {
   "meta": {
-    "title": "string",
-    "source": "photo|notes",
-    "language": "it|de|en",
-    "createdAt": "ISO-8601",
-    "sessionKey": "string (stable)",
-    "runId": "string (unique)"
+    "title": "工作坊标题",
+    "source": "图片|便签内容",
+    "language": "意大利语|德语|英语",
+    "createdAt": "ISO-8601格式的时间戳",
+    "sessionKey": "稳定的会话键",
+    "runId": "唯一的会话ID"
   },
   "frames": [
-    { "id": "F1", "title": "string", "x": 0, "y": 0, "w": 1400, "h": 900 }
+    { "id": "F1", "title": "工作坊标题", "x": 0, "y": 0, "width": 1400, "height": 900 }
   ],
   "stickies": [
     {
       "id": "S1",
       "frameId": "F1|null",
-      "text": "string",
-      "color": "light_yellow|light_blue|light_green|light_pink|gray",
+      "text": "内容",
+      "color": "浅黄色|浅蓝色|浅绿色|浅粉色|灰色",
       "x": 0,
       "y": 0,
       "unclear": false
     }
   ],
   "connectors": [
-    { "from": "S1", "to": "S2", "label": "string|null", "shape": "straight|elbowed|curved" }
+    { "from": "S1", "to": "S2", "label": "连接信息", "shape": "直线|弯曲"
   ],
-  "warnings": [ "string" ]
+  "warnings": [ "警告信息" ]
 }
+```
 
-## HARD Containment Detection (mandatory)
-A "container" is a large rectangle that encloses other notes and has a title (e.g. "Product A", "Product B").
+## 强制性的容器检测规则
+一个“容器”是指一个包含其他便签且带有标题的大矩形（例如：“产品 A”、“产品 B”）：
+- 必须为每个容器创建一个框架（框架的标题应与容器的标题相同）；
+- 所有内部的便签都必须通过 `frameId` 被分配到相应的框架中；
+- 仅那些明确位于所有容器之外的便签可以没有 `frameId`。
+- 容器的边界应被严格遵循：如果一个元素在视觉上位于容器范围内，那么它就属于该容器；
+- 如果不确定元素的归属，应将其分配到最近的容器，并添加警告。
 
-You MUST do this:
-1) Create one FRAME per container rectangle (title = the container title).
-2) Assign EVERY inner note to that frame via frameId.
-3) Only outer notes (explicitly outside all containers) may have frameId=null.
-
-Containment must be interpreted literally:
-- If an element is visually inside the container boundaries, it belongs to that container.
-- If unsure, assign to the nearest container and add a warning.
-
-## Quality checklist (before pushing)
-- sessionKey present and stable
-- no giant “Workshop” frame unless the photo truly shows a single big box
-- every sticky belongs to the correct frame (category)
-- no duplicate stickies with identical text inside the same frame
-- connectors only where they make sense (not between every pair)
+## 推送前的质量检查清单
+- `sessionKey` 必须存在且稳定；
+- 除非图片中确实只显示一个大的框架，否则不要创建过大的“Workshop”框架；
+- 每个便签都必须属于正确的框架（对应的类别）；
+- 同一框架内不能有内容重复的便签；
+- 连接器只应在有逻辑关系的地方出现（不要随意添加）。

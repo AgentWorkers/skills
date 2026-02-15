@@ -1,86 +1,85 @@
 ---
 name: "Deep Research"
-description: "Conduct exhaustive multi-source investigation with methodology tracking, source evaluation, and iterative depth."
+description: "进行彻底的多源调查，采用跟踪方法、源代码评估以及迭代深入分析的手段。"
 ---
 
-## Core Role
+## 核心角色
 
-Deep Research = investigate thoroughly until the question is answered. Not surface search — systematic exploration with documented methodology.
+**深入研究**：指的是通过系统的探索来彻底解决问题，而不仅仅是进行表面的搜索。这需要遵循明确的方法论。
 
-**Not:** quick lookups (→ just search), combining existing docs (→ Synthesize), ongoing monitoring (→ Digest)
+**注意**：不要进行快速查找（→ 只是搜索信息），不要简单地将现有文档拼凑起来（→ 合成信息），也不要仅仅进行持续监控（→ 消息汇总）。
 
-## Protocol
+## 协议
 
 ```
 Scope → Search → Evaluate → Deepen → Synthesize → Document → Deliver
 ```
 
-### 1. Scope
+### 1. 确定研究范围
 
-Before searching, clarify:
-- What exactly needs answering?
-- What depth is required? (Overview / Thorough / Exhaustive)
-- What's the decision this enables?
-- Time/effort budget?
+在开始搜索之前，需要明确以下几点：
+- 需要回答的具体问题是什么？
+- 需要达到什么样的研究深度？（概述级、深入级还是全面级）
+- 这项研究能帮助做出什么决策？
+- 你有多少时间和精力可以投入？
 
-Reframe vague questions into specific, answerable queries.
+将模糊的问题转化为具体、可回答的查询。
 
-### 2. Search
+### 2. 进行搜索
 
-Multi-vector approach (see `methodology.md`):
-- Start broad, then narrow
-- Multiple search engines/sources
-- Follow citation trails
-- Check primary sources when secondary cite them
-- Look for contradicting viewpoints
+采用多维度的搜索方法（详见 `methodology.md`）：
+- 先从广泛的范围开始，然后逐步缩小搜索范围；
+- 使用多个搜索引擎或信息来源；
+- 当参考次级资料时，务必核对原始资料；
+- 寻找相互矛盾的观点或观点。
 
-Track every source. Nothing unattributed.
+记录所有信息来源的出处，确保所有内容都有明确的出处。
 
-### 3. Evaluate
+### 3. 评估信息来源
 
-For each source (see `sources.md`):
-- Authority: Who wrote this? What credentials?
-- Recency: When? Still valid?
-- Evidence: Claims backed by data?
-- Bias: Any agenda or conflict?
-- Corroboration: Do others confirm this?
+对于每一个信息来源（详见 `sources.md`）：
+- 权威性：是谁撰写的？他们具备哪些资质？
+- 时效性：信息是最新发布的吗？现在仍然有效吗？
+- 证据支持：这些观点是否有数据支持？
+- 偏见：是否存在某种倾向性或利益冲突？
+- 验证性：其他来源是否也支持这些观点？
 
-Flag low-credibility sources. Weight findings accordingly.
+标记那些可信度较低的来源，并根据其可信度对研究结果进行相应的权重调整。
 
-### 4. Deepen
+### 4. 深入研究
 
-Research is iterative:
-- Initial findings reveal new questions
-- Follow promising threads
-- Fill gaps identified
-- Stop when: answer is clear, returns diminish, or budget exhausted
+研究是一个迭代的过程：
+- 初始的发现可能会引发新的问题；
+- 跟踪有潜力的研究线索；
+- 填补发现的空白；
+- 在以下情况下停止研究：答案已经明确、搜索结果逐渐减少，或者研究预算用尽。
 
-Document decision to stop and why.
+记录停止研究的决定及其原因。
 
-### 5. Synthesize
+### 5. 合成研究结果
 
-Merge findings (use Synthesize skill patterns):
-- Reconcile contradictions explicitly
-- Weight by source quality
-- Note confidence levels
-- Identify remaining unknowns
+整合所有的研究发现（使用 `Synthesize` 中提供的方法）：
+- 明确解决信息来源之间的矛盾；
+- 根据来源的质量对结果进行权重排序；
+- 记录各个结果的可靠性程度；
+- 确定仍然未知的部分。
 
-### 6. Document
+### 6. 记录研究过程
 
-Research trail matters:
-- Sources consulted (with links)
-- Search queries used
-- Why certain sources were weighted higher
-- What was NOT found (gaps)
+研究过程中的所有细节都很重要：
+- 记录参考的信息来源（附上链接）；
+- 使用的搜索查询语句；
+- 说明为什么某些来源被赋予更高的权重；
+- 记录未能找到的信息（即研究中的空白部分）。
 
-### 7. Deliver
+### 7. 生成最终成果
 
-Format per user needs (see `output-formats.md`):
-- Executive: BLUF + key findings + confidence
-- Academic: Full methodology + citations
-- Working doc: All findings for further work
+根据用户的需求来格式化最终成果（详见 `output-formats.md`）：
+- 执行层：简洁明了的结论 + 关键发现 + 结果的可靠性评估；
+- 学术层：完整的研究方法 + 引用文献；
+- 工作层：所有研究结果，以便后续进一步使用。
 
-## Output Format (Default)
+## 输出格式（默认格式）
 
 ```
 🔬 DEEP RESEARCH: [Topic]
@@ -108,17 +107,17 @@ Format per user needs (see `output-formats.md`):
 [Brief: what was searched, how sources were evaluated]
 ```
 
-## Depth Levels
+## 研究深度等级
 
-| Level | Effort | Sources | When |
-|-------|--------|---------|------|
-| Quick | 5-10 min | 3-5 | Simple factual questions |
-| Standard | 30-60 min | 8-15 | Most research requests |
-| Thorough | 2-4 hours | 20-30 | Important decisions |
-| Exhaustive | Days | 50+ | Critical, high-stakes |
+| 研究深度 | 所需时间 | 使用的来源 | 适用场景 |
+|---------|---------|-----------|---------|
+| 快速搜索 | 5-10分钟 | 3-5个来源 | 简单的事实性问题 |
+| 标准搜索 | 30-60分钟 | 8-15个来源 | 大多数研究需求 |
+| 深入研究 | 2-4小时 | 20-30个来源 | 重要的决策制定 |
+| 全面研究 | 数天时间 | 50个以上来源 | 关键性、高风险的研究 |
 
-Confirm depth before starting. Adjust if findings warrant.
+在开始研究之前，先确定所需的研究深度。如果根据研究发现的结果需要调整研究深度，请及时调整。
 
 ---
 
-*References: `methodology.md`, `sources.md`, `output-formats.md`*
+*参考文献：`methodology.md`、`sources.md`、`output-formats.md`*

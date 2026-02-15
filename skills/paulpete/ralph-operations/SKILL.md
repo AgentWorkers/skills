@@ -1,48 +1,49 @@
 ---
 name: ralph-operations
-description: Use when managing Ralph orchestration loops, analyzing diagnostic data, debugging hat selection, investigating backpressure, or performing post-mortem analysis
+description: **使用场景：**  
+在管理 Ralph 协调循环、分析诊断数据、调试帽子选择（hat selection，具体含义需结合上下文确定）、排查背压（backpressure）问题或进行事后分析（post-mortem analysis）时使用。
 tags: [loops, diagnostics, debugging, analysis]
 ---
 
-# Ralph Operations
+# Ralph 操作
 
-Manage, monitor, and diagnose Ralph orchestration loops.
+用于管理、监控和诊断 Ralph 的编排循环。
 
-## Loop Management
+## 循环管理
 
-### Quick Reference
+### 快速参考
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| List active loops | `ralph loops` |
-| List all (including merged) | `ralph loops --all` |
-| View loop changes | `ralph loops diff <id>` |
-| View loop logs | `ralph loops logs <id>` |
-| Follow logs live | `ralph loops logs <id> -f` |
-| Stop running loop | `ralph loops stop <id>` |
-| Merge completed loop | `ralph loops merge <id>` |
-| Retry failed merge | `ralph loops retry <id>` |
-| Abandon loop | `ralph loops discard <id>` |
-| Clean stale processes | `ralph loops prune` |
+| 列出活动中的循环 | `ralph loops` |
+| 列出所有循环（包括已合并的） | `ralph loops --all` |
+| 查看循环变更 | `ralph loops diff <id>` |
+| 查看循环日志 | `ralph loops logs <id>` |
+| 实时查看日志 | `ralph loops logs <id> -f` |
+| 停止运行循环 | `ralph loops stop <id>` |
+| 合并已完成的循环 | `ralph loops merge <id>` |
+| 重试失败的合并 | `ralph loops retry <id>` |
+| 放弃循环 | `ralph loops discard <id>` |
+| 清理无效的进程 | `ralph loops prune` |
 
-**Loop ID format:** Partial matching works - `a3f2` matches `loop-20250124-143052-a3f2`
+**循环 ID 格式：** 部分匹配有效 - `a3f2` 与 `loop-20250124-143052-a3f2` 匹配
 
-### Loop Status
+### 循环状态
 
-| Status | Color | Meaning |
+| 状态 | 颜色 | 含义 |
 |--------|-------|---------|
-| running | green | Loop is actively executing |
-| queued | blue | Completed, waiting for merge |
-| merging | yellow | Merge in progress |
-| needs-review | red | Merge failed, requires intervention |
-| merged | dim | Successfully merged (with `--all`) |
-| discarded | dim | Abandoned (with `--all`) |
+| 运行中 | 绿色 | 循环正在执行中 |
+| 排队中 | 蓝色 | 合并已完成，等待合并 |
+| 合并中 | 黄色 | 合并正在进行中 |
+| 需要审核 | 红色 | 合并失败，需要干预 |
+| 已合并 | 淡色 | 成功合并（使用 `--all` 命令） |
+| 被放弃 | 淡色 | 被放弃（使用 `--all` 命令） |
 
-### Starting & Stopping
+### 启动与停止
 
-Loops start automatically via `ralph run`:
-- **Primary loop**: Runs in main workspace, holds `.ralph/loop.lock`
-- **Worktree loop**: Created when primary is running, isolated in `.worktrees/<loop-id>/`
+循环通过 `ralph run` 自动启动：
+- **主循环**：在主工作区运行，保存在 `.ralph/loop.lock` 文件中 |
+- **工作树循环**：在主循环运行时创建，保存在 `.worktrees/<loop-id>/` 目录中 |
 
 ```bash
 ralph loops                       # Any loops running?
@@ -52,7 +53,7 @@ ralph loops stop <id> --force     # Immediate stop
 ralph loops discard <id>          # Abandon + clean worktree
 ```
 
-### Inspecting Loops
+### 检查循环
 
 ```bash
 ralph loops diff <id>             # What changed
@@ -61,21 +62,21 @@ ralph loops history <id>          # State changes
 ralph loops attach <id>           # Shell into worktree
 ```
 
-**Worktree context files** (`.worktrees/<loop-id>/`):
+**工作树上下文文件**（`.worktrees/<loop-id>/`）：
 
-| File | Contents |
+| 文件 | 内容 |
 |------|----------|
-| `.ralph/events.jsonl` | Event stream: hats, iterations, tool calls |
-| `.ralph/agent/summary.md` | Current session summary |
-| `.ralph/agent/handoff.md` | Handoff context for next iteration |
-| `.ralph/agent/scratchpad.md` | Working notes |
-| `.ralph/agent/tasks.jsonl` | Runtime task state |
+| `.ralph/events.jsonl` | 事件流：帽子选择、迭代次数、工具调用 |
+| `.ralph/agent/summary.md` | 当前会话摘要 |
+| `.ralph/agent/handoff.md` | 下一次迭代的交接信息 |
+| `.ralph/agent/scratchpad.md` | 工作笔记 |
+| `.ralph/agent/tasks.jsonl` | 运行时任务状态 |
 
-**Primary loop** uses the same files at `.ralph/agent/` in repo root.
+**主循环** 使用仓库根目录下的 `.ralph/agent/` 目录中的相同文件。
 
-### Merge Queue
+### 合并队列
 
-Flow: `Queued → Merging → Merged` or `→ NeedsReview → Merging (retry)` or `→ Discarded`
+流程：`排队 → 合并 → 已合并` 或 `→ 需要审核 → 重新尝试合并` 或 `→ 被放弃`
 
 ```bash
 ralph loops merge <id>            # Queue for merge
@@ -83,7 +84,7 @@ ralph loops process               # Process pending merges now
 ralph loops retry <id>            # Retry failed merge
 ```
 
-**Reading state:**
+**读取状态：**
 ```bash
 jq -r '.prompt' .ralph/loop.lock 2>/dev/null
 tail -20 .ralph/merge-queue.jsonl | jq .
@@ -91,67 +92,67 @@ tail -20 .ralph/merge-queue.jsonl | jq .
 
 ---
 
-## Diagnostics
+## 诊断
 
-### Enabling
+### 启用诊断功能
 
 ```bash
 RALPH_DIAGNOSTICS=1 ralph run -p "your prompt"
 ```
 
-Zero overhead when disabled. Output: `.ralph/diagnostics/<YYYY-MM-DDTHH-MM-SS>/`
+禁用时不会产生任何开销。输出文件：`.ralph/diagnostics/<YYYY-MM-DDTHH-MM-SS>/`
 
-### Session Discovery
+### 会话发现
 
 ```bash
 LATEST=$(ls -t .ralph/diagnostics/ | head -1)
 SESSION=".ralph/diagnostics/$LATEST"
 ```
 
-### File Reference
+### 文件参考
 
-| File | Contains | Key Fields |
+| 文件 | 包含内容 | 关键字段 |
 |------|----------|------------|
-| `agent-output.jsonl` | Agent text, tool calls, results | `type`, `iteration`, `hat` |
-| `orchestration.jsonl` | Hat selection, events, backpressure | `event.type`, `iteration`, `hat` |
-| `performance.jsonl` | Timing, latency, token counts | `metric.type`, `iteration`, `hat` |
-| `errors.jsonl` | Parse errors, validation failures | `error_type`, `message`, `context` |
-| `trace.jsonl` | All tracing logs with metadata | `level`, `target`, `message` |
+| `agent-output.jsonl` | 代理文本、工具调用、结果 | `type`, `iteration`, `hat` |
+| `orchestration.jsonl` | 帽子选择、事件、背压信息 | `event.type`, `iteration`, `hat` |
+| `performance.jsonl` | 性能数据、延迟、令牌计数 | `metric.type`, `iteration`, `hat` |
+| `errors.jsonl` | 解析错误、验证失败信息 | `error_type`, `message`, `context` |
+| `trace.jsonl` | 带有元数据的所有跟踪日志 | `level`, `target`, `message` |
 
-### Diagnostic Workflow
+### 诊断工作流程
 
-**1. Errors first:**
+**1. 先查看错误信息：**
 ```bash
 wc -l "$SESSION/errors.jsonl"
 jq '.' "$SESSION/errors.jsonl"
 jq -s 'group_by(.error_type) | map({type: .[0].error_type, count: length})' "$SESSION/errors.jsonl"
 ```
 
-**2. Orchestration flow:**
+**2. 查看编排流程：**
 ```bash
 jq '{iter: .iteration, hat: .hat, event: .event.type}' "$SESSION/orchestration.jsonl"
 jq 'select(.event.type == "hat_selected") | {iter: .iteration, hat: .event.hat, reason: .event.reason}' "$SESSION/orchestration.jsonl"
 jq 'select(.event.type == "backpressure_triggered") | {iter: .iteration, reason: .event.reason}' "$SESSION/orchestration.jsonl"
 ```
 
-**3. Agent activity:**
+**3. 代理活动：**
 ```bash
 jq 'select(.type == "tool_call") | {iter: .iteration, tool: .name}' "$SESSION/agent-output.jsonl"
 jq -s '[.[] | select(.type == "tool_call")] | group_by(.iteration) | map({iter: .[0].iteration, tools: [.[].name]})' "$SESSION/agent-output.jsonl"
 ```
 
-**4. Performance:**
+**4. 性能分析：**
 ```bash
 jq 'select(.metric.type == "iteration_duration") | {iter: .iteration, ms: .metric.duration_ms}' "$SESSION/performance.jsonl"
 jq -s '[.[] | select(.metric.type == "token_count")] | {total_in: (map(.metric.input) | add), total_out: (map(.metric.output) | add)}' "$SESSION/performance.jsonl"
 ```
 
-**5. Trace logs:**
+**5. 跟踪日志：**
 ```bash
 jq 'select(.level == "ERROR" or .level == "WARN")' "$SESSION/trace.jsonl"
 ```
 
-### Quick Health Check
+### 快速健康检查
 
 ```bash
 SESSION=".ralph/diagnostics/$(ls -t .ralph/diagnostics/ | head -1)"
@@ -170,43 +171,39 @@ jq 'select(.event.type == "loop_terminated")' "$SESSION/orchestration.jsonl"
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Stale Processes
-`ralph loops` shows loops that aren't running → `ralph loops prune`
+### 无效的进程
+使用 `ralph loops` 查看未运行的循环 → 使用 `ralph loops prune` 清理这些进程
 
-### Orphan Worktrees
-`.worktrees/` has directories not in `ralph loops` → `ralph loops prune` or `git worktree remove .worktrees/<id> --force`
+### 孤立的 worktree
+如果 `.worktrees/` 目录不在 `ralph loops` 列表中 → 使用 `ralph loops prune` 或 `git worktree remove .worktrees/<id> --force` 删除这些目录
 
-### Merge Conflicts
-Loop stuck in `needs-review`:
-1. `ralph loops diff <id>` — see conflicting changes
-2. `ralph loops attach <id>` — resolve manually, commit, retry
-3. `ralph loops discard <id>` — abandon if not worth fixing
+### 合并冲突
+循环卡在 “需要审核” 状态：
+1. 使用 `ralph loops diff <id>` 查看冲突的更改 |
+2. 使用 `ralph loops attach <id>` 手动解决冲突，然后提交并重试 |
+3. 如果不值得修复，使用 `ralph loops discard <id>` 放弃该循环
 
-### Lock Stuck
-"Loop already running" but nothing is → `rm .ralph/loop.lock` (safe if process is dead)
+### 锁定问题
+如果显示 “循环已经在运行”，但实际上没有任何活动 → 删除 `.ralph/loop.lock` 文件（如果相关进程已终止则安全操作）
 
-### Agent Stuck in Loop
-```bash
-jq -s '[.[] | select(.type == "tool_call")] | group_by(.name) | map({tool: .[0].name, count: length}) | sort_by(-.count)' "$SESSION/agent-output.jsonl"
-```
-Red flag: Many iterations with few events = agent not making progress.
+### 代理在循环中卡住
+**警告信号：** 多次迭代但事件很少 = 代理未能取得进展。
 
-### Merge Stuck in "merging"
-Process died mid-merge. Unblock:
-```bash
-echo '{"ts":"'$(date -u +%Y-%m-%dT%H:%M:%S.000000Z)'","loop_id":"<loop-id>","event":{"type":"needs_review","reason":"Merge process died"}}' >> .ralph/merge-queue.jsonl
-ralph loops discard <loop-id>
-```
+### 合并过程卡住
+如果合并过程卡住：
+1. 使用 `ralph loops diff <id>` 查看冲突内容 |
+2. 手动解决冲突后提交更改 |
+3. 如果问题无法解决，使用 `ralph loops discard <id>` 放弃该循环
 
-### Worktree Corruption
+### worktree 损坏
 ```bash
 git worktree repair
 ralph loops prune
 ```
 
-### Cleanup
+### 清理
 ```bash
 ralph clean --diagnostics              # Delete all sessions
 ralph clean --diagnostics --dry-run    # Preview deletions

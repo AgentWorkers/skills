@@ -1,194 +1,196 @@
 ---
 name: acestep-songwriting
-description: Music songwriting guide for ACE-Step. Provides professional knowledge on writing captions, lyrics, choosing BPM/key/duration, and structuring songs. Use this skill when users want to create, write, or plan a song before generating it with ACE-Step.
+description: ACE-Step音乐创作指南：提供关于编写歌曲标题、歌词、选择节拍率（BPM）、音调和时长（key/duration）以及构建歌曲结构的专业知识。当用户希望在使用ACE-Step生成歌曲之前进行创作、编写或规划时，可以参考本指南。
 allowed-tools: Read
 ---
 
-# ACE-Step Songwriting Guide
+# ACE-Step 歌曲创作指南
 
-Professional music creation knowledge for writing captions, lyrics, and choosing music parameters for ACE-Step.
+本指南提供了专业的音乐创作知识，帮助您为 ACE-Step 生成歌曲的标题、歌词以及选择相应的音乐参数。
 
-## Output Format
+## 输出格式
 
-After using this guide, produce two things for the acestep skill:
-1. **Caption** (`-c`): Style/genre/instruments/emotion description
-2. **Lyrics** (`-l`): Complete structured lyrics with tags
-3. **Parameters**: `--duration`, `--bpm`, `--key`, `--time-signature`, `--language`
+使用本指南后，您需要为 ACE-Step 生成以下内容：
+1. **标题** (`-c`): 风格/流派/乐器/情感描述
+2. **歌词** (`-l`): 包含标签的完整歌词结构
+3. **音乐参数**: `--duration`, `--bpm`, `--key`, `--time-signature`, `--language`
 
 ---
 
-## Caption: The Most Important Input
+## 标题：最重要的输入
 
-**Caption is the most important factor affecting generated music.**
+**标题是影响生成音乐质量的最关键因素。**
 
-Supports multiple formats: simple style words, comma-separated tags, complex natural language descriptions.
+支持多种格式：
+- 简单的风格描述
+- 用逗号分隔的标签
+- 复杂的自然语言描述
 
-### Common Dimensions
+### 常见维度
 
-| Dimension | Examples |
+| 维度 | 例子 |
 |-----------|----------|
-| **Style/Genre** | pop, rock, jazz, electronic, hip-hop, R&B, folk, classical, lo-fi, synthwave |
-| **Emotion/Atmosphere** | melancholic, uplifting, energetic, dreamy, dark, nostalgic, euphoric, intimate |
-| **Instruments** | acoustic guitar, piano, synth pads, 808 drums, strings, brass, electric bass |
-| **Timbre Texture** | warm, bright, crisp, muddy, airy, punchy, lush, raw, polished |
-| **Era Reference** | 80s synth-pop, 90s grunge, 2010s EDM, vintage soul, modern trap |
-| **Production Style** | lo-fi, high-fidelity, live recording, studio-polished, bedroom pop |
-| **Vocal Characteristics** | female vocal, male vocal, breathy, powerful, falsetto, raspy, choir |
-| **Speed/Rhythm** | slow tempo, mid-tempo, fast-paced, groovy, driving, laid-back |
-| **Structure Hints** | building intro, catchy chorus, dramatic bridge, fade-out ending |
+| **风格/流派** | 流行乐 (pop)、摇滚 (rock)、爵士 (jazz)、电子乐 (electronic)、嘻哈 (hip-hop)、R&B、民谣 (folk)、古典音乐 (classical)、低保真 (lo-fi)、合成器浪潮 (synthwave) |
+| **情感/氛围** | 忧郁 (melancholic)、振奋人心 (uplifting)、充满活力 (energetic)、梦幻 (dreamy)、黑暗 (dark)、怀旧 (nostalgic)、欣快 (euphoric)、亲密 (intimate) |
+| **乐器** | 原声吉他 (acoustic guitar)、钢琴 (piano)、合成器音效 (synth pads)、808鼓 (808 drums)、弦乐 (strings)、铜管乐器 (brass)、电贝斯 (electric bass) |
+| **音色质感** | 温暖 (warm)、明亮 (bright)、清晰 (crisp)、浑浊 (muddy)、空灵 (airy)、有力 (punchy)、浓郁 (lush)、原始 (raw)、精致 (polished) |
+| **时代参考** | 80年代合成器流行乐 (80s synth-pop)、90年代垃圾摇滚 (90s grunge)、2010年代电子舞曲 (2010s EDM)、复古灵魂乐 (vintage soul)、现代陷阱乐 (modern trap) |
+| **制作风格** | 低保真 (lo-fi)、高保真 (high-fidelity)、现场录制 (live recording)、录音室精制 (studio-polished)、卧室流行乐 (bedroom pop) |
+| **人声特点** | 女声 (female vocal)、男声 (male vocal)、轻柔的 (breathy)、有力的 (powerful)、假声 (falsetto)、沙哑的 (raspy)、合唱 (chorus) |
+| **速度/节奏** | 慢速 (slow tempo)、中速 (mid-tempo)、快速 (fast-paced)、富有节奏感 (groovy)、强劲 (driving)、轻松随意 (laid-back) |
+| **结构提示** | 引入部分 (intro)、朗朗上口的副歌 (chorus)、戏剧性的桥段 (bridge)、渐弱的结尾 (fade-out) |
 
-### Caption Writing Principles
+### 标题编写原则
 
-1. **Specific beats vague** — "sad piano ballad with female breathy vocal" > "a sad song"
-2. **Combine multiple dimensions** — style+emotion+instruments+timbre anchors direction precisely
-3. **Use references well** — "in the style of 80s synthwave" conveys complex aesthetic quickly
-4. **Texture words are useful** — warm, crisp, airy, punchy influence mixing and timbre
-5. **Don't pursue perfection** — Caption is a starting point, iterate based on results
-6. **Granularity determines freedom** — Less detail = more model creativity; more detail = more control
-7. **Avoid conflicting words** — "classical strings" + "hardcore metal" degrades output
-   - **Fix: Repetition reinforcement** — Repeat the elements you want more
-   - **Fix: Conflict to evolution** — "Start with soft strings, middle becomes metal rock, end turns to hip-hop"
-8. **Don't put BPM/key/tempo in Caption** — Use dedicated parameters instead
+1. **具体描述节奏** — 例如：“带有女性轻柔嗓音的悲伤钢琴民谣”（“a sad song with female breathy vocal”）
+2. **结合多个维度** — 结合风格、情感、乐器和音色来精确定位音乐方向
+3. **合理使用参考信息** — 如“80年代合成器浪潮风格”能快速传达复杂的审美风格
+4. **使用恰当的描述词** — 如“温暖”、“清晰”、“空灵”等词汇会影响音乐的混音和音色
+5. **不必追求完美** — 标题只是一个起点，根据实际效果进行迭代
+6. **细节的多少决定了创作的自由度** — 细节越少，模型创作的空间越大；细节越多，控制越严格
+7. **避免矛盾的描述** — 如“古典弦乐”与“硬核金属”这样的组合会降低音乐质量
+   - **修正方法**：重复您希望突出的元素
+   - **解决矛盾的方法**：例如从柔和的弦乐开始，中间转为金属摇滚，结尾转向嘻哈风格
+8. **不要在标题中写明 BPM/速度** — 使用专门的音乐参数来设置
 
 ---
 
-## Lyrics: The Temporal Script
+## 歌词：时间轴上的脚本
 
-Lyrics controls how music unfolds over time. It carries:
-- Lyric text itself
-- **Structure tags** ([Verse], [Chorus], [Bridge]...)
-- **Vocal style hints** ([raspy vocal], [whispered]...)
-- **Instrumental sections** ([guitar solo], [drum break]...)
-- **Energy changes** ([building energy], [explosive drop]...)
+歌词决定了音乐在时间上的发展过程。它包含：
+- 歌词内容本身
+- **结构标签**（[Verse]、[Chorus]、[Bridge] 等）
+- **人声风格提示**（[raspy vocal]、[whispered] 等）
+- **乐器部分**（[guitar solo]、[drum break] 等）
+- **能量变化**（[building energy]、[explosive drop] 等）
 
-### Structure Tags
+### 结构标签
 
-| Category | Tag | Description |
+| 类别 | 标签 | 描述 |
 |----------|-----|-------------|
-| **Basic Structure** | `[Intro]` | Opening, establish atmosphere |
-| | `[Verse]` / `[Verse 1]` | Verse, narrative progression |
-| | `[Pre-Chorus]` | Pre-chorus, build energy |
-| | `[Chorus]` | Chorus, emotional climax |
-| | `[Bridge]` | Bridge, transition or elevation |
-| | `[Outro]` | Ending, conclusion |
-| **Dynamic Sections** | `[Build]` | Energy gradually rising |
-| | `[Drop]` | Electronic music energy release |
-| | `[Breakdown]` | Reduced instrumentation, space |
-| **Instrumental** | `[Instrumental]` | Pure instrumental, no vocals |
-| | `[Guitar Solo]` | Guitar solo |
-| | `[Piano Interlude]` | Piano interlude |
-| **Special** | `[Fade Out]` | Fade out ending |
-| | `[Silence]` | Silence |
+| **基本结构** | `[Intro]` | 引入部分，营造氛围 |
+| | `[Verse]` / `[Verse 1]` | 第一段歌词 |
+| | `[Pre-Chorus]` | 副歌前奏，逐渐积累能量 |
+| | `[Chorus]` | 正歌部分，情感高潮 |
+| | `[Bridge]` | 桥段，过渡或高潮部分 |
+| | `[Outro]` | 结尾部分 |
+| **动态变化** | `[Build]` | 能量逐渐增强 |
+| | `[Drop]` | 电子音乐中的能量爆发 |
+| | `[Breakdown]` | 乐器减少，音量减弱 |
+| **纯乐器部分** | `[Instrumental]` | 仅包含乐器，无人声 |
+| | `[Guitar Solo]` | 吉他独奏 |
+| | `[Piano Interlude]` | 钢琴间奏 |
+| **特殊效果** | `[Fade Out]` | 渐弱结尾 |
+| | `[Silence]` | 完全静音 |
 
-### Combining Tags
+### 结合使用标签
 
-Use `-` for finer control, but keep it concise:
+使用 `-` 来实现更精细的控制，但要保持简洁：
 
 ```
 ✅ [Chorus - anthemic]
 ❌ [Chorus - anthemic - stacked harmonies - high energy - powerful - epic]
 ```
 
-Put complex style descriptions in Caption, not in tags.
+将复杂的风格描述放在标题中，而不是标签中。
 
-### Caption-Lyrics Consistency
+### 标题与歌词的一致性
 
-**Models are not good at resolving conflicts.** Checklist:
-- Instruments in Caption ↔ Instrumental section tags in Lyrics
-- Emotion in Caption ↔ Energy tags in Lyrics
-- Vocal description in Caption ↔ Vocal control tags in Lyrics
+**模型在处理冲突时表现不佳**。请检查以下内容：
+- 标题中提到的乐器是否与歌词中的乐器标签一致
+- 标题中描述的情感是否与歌词中的能量标签一致
+- 标题中描述的人声特点是否与歌词中的人声控制标签一致
 
-### Vocal Control Tags
+### 人声控制标签
 
-| Tag | Effect |
+| 标签 | 效果 |
 |-----|--------|
-| `[raspy vocal]` | Raspy, textured vocals |
-| `[whispered]` | Whispered |
-| `[falsetto]` | Falsetto |
-| `[powerful belting]` | Powerful, high-pitched singing |
-| `[spoken word]` | Rap/recitation |
-| `[harmonies]` | Layered harmonies |
-| `[call and response]` | Call and response |
-| `[ad-lib]` | Improvised embellishments |
+| `[raspy vocal]` | 沙哑、有质感的嗓音 |
+| `[whispered]` | 低语 |
+| `[falsetto]** | 假声 |
+| `[powerful belting]` | 强有力的高音演唱 |
+| `[spoken word]` | 说唱/朗诵 |
+| `[harmonies]` | 多层和声 |
+| `[call and response]** | 问答式演唱 |
+| `[ad-lib]` | 即兴的装饰性演唱 |
 
-### Energy and Emotion Tags
+### 能量和情感标签
 
-| Tag | Effect |
+| 标签 | 效果 |
 |-----|--------|
-| `[high energy]` | High energy, passionate |
-| `[low energy]` | Low energy, restrained |
-| `[building energy]` | Increasing energy |
-| `[explosive]` | Explosive energy |
-| `[melancholic]` | Melancholic |
-| `[euphoric]` | Euphoric |
-| `[dreamy]` | Dreamy |
-| `[aggressive]` | Aggressive |
+| `[high energy]` | 充满活力 |
+| `[low energy]` | 低沉、克制 |
+| `[building energy]` | 能量逐渐增强 |
+| `[explosive]` | 突然的能量爆发 |
+| `[melancholic]` | 忧郁 |
+| `[euphoric]` | 欣快 |
+| `[dreamy]` | 梦幻 |
+| `[aggressive]` | 强烈、具有攻击性 |
 
-### Lyric Writing Tips
+### 歌词写作技巧
 
-1. **6-10 syllables per line** — Model aligns syllables to beats; keep similar counts for lines in same position (±1-2)
-2. **Uppercase = stronger intensity** — `WE ARE THE CHAMPIONS!` (shouting) vs `walking through the streets` (normal)
-3. **Parentheses = background vocals** — `We rise together (together)`
-4. **Extend vowels** — `Feeeling so aliiive` (use cautiously, effects unstable)
-5. **Clear section separation** — Blank lines between sections
+1. **每行 6-10 个音节** — 模型会根据节奏对齐音节；相同位置的行应保持相似的音节数（±1-2）
+2. **大写单词表示更强烈的效果** — 例如：“WE ARE THE CHAMPIONS!”（强烈表达） vs “walking through the streets”（普通表达）
+3. **括号表示背景人声** — 例如：“We rise together (together)” |
+4. **适当延长元音** — 例如：“Feeling so aliiive”（使用时要谨慎，效果可能不稳定）
+5. **明确区分不同部分** — 不同部分之间使用空行分隔
 
-### Avoiding "AI-flavored" Lyrics
+### 避免“人工智能风格”的歌词
 
-| Red Flag | Description |
+| 不良迹象 | 说明 |
 |----------|-------------|
-| **Adjective stacking** | "neon skies, electric hearts, endless dreams" — vague imagery filler |
-| **Rhyme chaos** | Inconsistent patterns or forced rhymes breaking meaning |
-| **Blurred boundaries** | Lyric content crosses structure tags |
-| **No breathing room** | Lines too long to sing in one breath |
-| **Mixed metaphors** | Water → fire → flying — listeners can't anchor |
-
-**Metaphor discipline**: One core metaphor per song, explore its multiple aspects.
+| **堆叠形容词** | 如“neon skies, electric hearts, endless dreams” — 这类模糊的描述会削弱歌词的表现力 |
+| **押韵混乱** | 不一致的押韵或生硬的押韵会破坏歌词的流畅性 |
+| **结构混乱** | 歌词内容跨越不同的结构标签 |
+| **句子过长** | 一句话无法完整演唱 |
+| **混合使用隐喻** | 如将“水”与“火”和“飞行”混用，听众难以理解隐喻的含义 |
+**隐喻使用建议**：每首歌使用一个核心隐喻，并深入探索其多个方面
 
 ---
 
-## Music Metadata
+## 音乐元数据
 
-**Most of the time, let LM auto-infer.** Only set manually when you have clear requirements.
+**大多数情况下，让模型自动推断参数。**只有在有明确要求时才手动设置。
 
-| Parameter | Range | Description |
+| 参数 | 范围 | 说明 |
 |-----------|-------|-------------|
-| `bpm` | 30–300 | Slow 60–80, mid 90–120, fast 130–180 |
-| `keyscale` | Key | e.g. `C Major`, `Am`. Common keys (C, G, D, Am, Em) most stable |
-| `timesignature` | Time sig | `4/4` (most common), `3/4` (waltz), `6/8` (swing) |
-| `vocal_language` | Language | Usually auto-detected from lyrics |
-| `duration` | Seconds | See duration calculation below |
+| `bpm` | 每分钟拍数 (bpm) | 30–300：慢速；60–80；90–120：中等速度；130–180：快速 |
+| `keyscale` | 乐调 (keyscale) | 例如 C 大调 (C Major)、Am。常见乐调（C, G, D, Am, Em）最稳定 |
+| `timesignature` | 节奏类型 (time-signature) | 4/4（最常见）、3/4（华尔兹）、6/8（摇摆乐） |
+| `vocal_language` | 语言 (language) | 通常从歌词中自动检测 |
+| `duration` | 时长 (duration) | 单位：秒 |
 
-### When to Set Manually
+### 何时手动设置参数
 
-| Scenario | Set |
+| 情况 | 设置参数 |
 |----------|-----|
-| Daily generation | Let LM auto-infer |
-| Clear tempo requirement | `bpm` |
-| Specific style (waltz) | `timesignature=3/4` |
-| Match other material | `bpm` + `duration` |
-| Specific key color | `keyscale` |
+| 日常生成 | 让模型自动推断 |
+| 需要明确的速度** | 设置 `bpm` |
+| 特定风格（如华尔兹） | 设置 `timesignature=3/4` |
+| 与其他素材匹配** | 同时设置 `bpm` 和 `duration` |
+| 特定乐调** | 设置 `keyscale` |
 
 ---
 
-## Duration Calculation
+## 时长计算
 
-### Estimation Method
+### 估算方法
 
-- **Intro/Outro**: 5-10 seconds each
-- **Instrumental sections**: 5-15 seconds each
-- **Typical structures**:
-  - 2 verses + 2 choruses: 120-150s minimum
-  - 2 verses + 2 choruses + bridge: 180-240s minimum
-  - Full song with intro/outro: 210-270s (3.5-4.5 min)
+- **引言/结尾部分**：各 5-10 秒
+- **纯乐器部分**：各 5-15 秒
+- **典型结构**：
+  - 2段主歌 + 2段副歌：至少 120-150 秒
+  - 2段主歌 + 2段副歌 + 桥段：至少 180-240 秒
+- **包含引言和结尾的完整歌曲**：210-270 秒（3.5-4.5 分钟）
 
-### BPM and Duration Relationship
+### BPM 与时长的关系
 
-- **Slower BPM (60-80)**: Need MORE duration for same lyrics
-- **Medium BPM (100-130)**: Standard duration
-- **Faster BPM (150-180)**: Can fit more lyrics, but still need breathing room
+- **较慢的 BPM（60-80）**：需要更长的时长来表达歌词内容
+- **中等 BPM（100-130）**：适合标准长度的歌曲
+- **较快的 BPM（150-180）**：虽然可以容纳更多歌词，但仍需适当的节奏空间
 
-**Rule of thumb**: When in doubt, estimate longer. A song too short feels rushed.
+**经验法则**：如果有疑问，建议估算更长的时长。过短的歌曲会让人感觉仓促。
 
 ---
 
-Note: Lyrics tags (piano, powerful, whispered) are consistent with Caption (piano ballad, building to powerful chorus, intimate).
+**注意**：歌词中的标签（如“钢琴”、“有力的演唱”、“低语”）应与标题中的描述（如“钢琴民谣”、“逐渐增强的情感”、“亲密的氛围”）保持一致。

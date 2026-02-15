@@ -1,52 +1,52 @@
 ---
 name: mission-control
-description: Kanban-style task management dashboard for AI assistants. Manage tasks via CLI or dashboard UI. Use when user mentions tasks, kanban, task board, mission control, or wants to track work items with status columns (backlog, in progress, review, done).
+description: 专为AI助手设计的看板式任务管理仪表板。可通过命令行界面（CLI）或仪表板用户界面（UI）来管理任务。适用于用户需要提及任务、使用看板功能、管理任务板、执行任务控制，或希望跟踪带有状态列（待办、进行中、审核中、已完成）的工作项的情况。
 homepage: https://github.com/rdsthomas/mission-control
 metadata: {"clawdbot": {"emoji": "🎛️"}}
 ---
 
-# Mission Control — Task Management for AI Assistants
+# 任务管理工具 — 专为AI助手设计
 
-A Kanban-style task board that you (the AI assistant) manage. Your human creates and prioritizes tasks via the web dashboard; you execute them automatically when they're moved to "In Progress".
+这是一个采用Kanban风格的任务管理面板，由您（AI助手）负责维护。人类用户通过Web仪表板创建和优先级排序任务，当任务状态变为“进行中”时，AI助手会自动执行这些任务。
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-**Just say:** *"Set up Mission Control for my workspace"*
+只需说出：“为我的工作空间设置Mission Control”。
 
-The agent will:
-1. Check prerequisites (Tailscale, gh CLI)
-2. Copy dashboard files to your workspace
-3. Create the config file (`~/.clawdbot/mission-control.json`)
-4. Install the webhook transform
-5. Set up GitHub webhook
-6. Push to GitHub and enable Pages
+系统将执行以下操作：
+1. 检查必备依赖（Tailscale、gh CLI）
+2. 将仪表板文件复制到您的工作空间
+3. 创建配置文件（`~/.clawdbot/mission-control.json`）
+4. 安装Webhook转换脚本
+5. 设置GitHub Webhook
+6. 将配置推送到GitHub并启用GitHub Pages
 
-**That's it.** The agent handles everything.
+就这样，所有设置都完成了。后续的所有操作都由AI助手负责处理。
 
 ---
 
-## Prerequisites
+## 必备条件
 
-Before setup, you need:
+在开始设置之前，请确保满足以下要求：
 
-| Requirement | Check | Install |
+| 必备条件 | 检查内容 | 安装方法 |
 |-------------|-------|---------|
-| **Tailscale** | `tailscale status` | `brew install tailscale` or [tailscale.com/download](https://tailscale.com/download) |
-| **Tailscale Funnel** | `tailscale funnel status` | `tailscale funnel 18789` (one-time) |
+| **Tailscale** | `tailscale status` | `brew install tailscale` 或 [访问官网下载](https://tailscale.com/download) |
+| **Tailscale Funnel** | `tailscale funnel status` | `tailscale funnel 18789`（一次性操作） |
 | **GitHub CLI** | `gh auth status` | `brew install gh && gh auth login` |
 
-If any are missing, tell the agent — it will guide you through installation.
+如果缺少任何依赖，请告知AI助手，它会指导您完成安装。
 
 ---
 
-## How It Works
+## 工作原理
 
-1. **Dashboard** — Web UI hosted on GitHub Pages where humans manage tasks
-2. **Webhook** — GitHub sends push events to Clawdbot when tasks change
-3. **Transform** — Compares old vs new tasks.json, detects status changes
-4. **Auto-Processing** — When a task moves to "In Progress", the agent starts working
+1. **仪表板**：基于GitHub Pages提供的Web用户界面，用于人类用户管理任务。
+2. **Webhook**：当任务状态发生变化时，GitHub会向Clawdbot发送推送事件。
+3. **转换脚本**：比较旧版本与新版本的`tasks.json`文件，检测任务状态的变化。
+4. **自动处理**：当任务状态变为“进行中”时，AI助手会立即开始执行相关任务。
 
-### The Flow
+### 动作流程
 
 ```
 Human moves task → GitHub push → Webhook → Transform → Agent receives work order
@@ -58,9 +58,9 @@ Agent updates status ← Commits changes ← Marks subtasks done ←─┘
 
 ---
 
-## Task Structure
+## 任务结构
 
-Tasks live in `<workspace>/data/tasks.json`:
+任务数据存储在`<workspace>/data/tasks.json`文件中：
 
 ```json
 {
@@ -78,21 +78,21 @@ Tasks live in `<workspace>/data/tasks.json`:
 }
 ```
 
-### Status Values
+## 任务状态说明
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| `permanent` | Recurring tasks (daily checks, etc.) |
-| `backlog` | Waiting to be worked on |
-| `in_progress` | **Agent is working on this** |
-| `review` | Done, awaiting human approval |
-| `done` | Completed and approved |
+| `permanent` | 循环任务（例如每日检查） |
+| `backlog` | 等待处理的任务 |
+| `in_progress` | **AI助手正在处理中** |
+| `review` | 已完成，等待人类审核 |
+| `done` | 已完成并获批准 |
 
 ---
 
-## CLI Commands
+## 命令行工具
 
-Use `<skill>/scripts/mc-update.sh` for task updates:
+使用`<skill>/scripts/mc-update.sh`命令来更新任务信息：
 
 ```bash
 # Status changes
@@ -114,40 +114,38 @@ mc-update.sh push "Commit message"
 
 ---
 
-## Agent Workflow
+## AI助手的工作流程
 
-When you receive a task (moved to "In Progress"):
+当收到状态为“进行中”的任务时，AI助手会执行以下步骤：
+1. **读取任务信息**：查看任务标题、描述以及子任务详情。
+2. **标记任务开始**：执行`mc-update.sh start <task_id>`命令。
+3. **执行任务**：处理所有子任务，并将每个子任务的完成状态更新为“已完成”。
+4. **记录进度**：添加进度说明。
+5. **完成任务**：执行`mc-update.sh complete <task_id> "Summary"`命令。
 
-1. **Read** — Check title, description, subtasks, dod
-2. **Mark started** — `mc-update.sh start <task_id>`
-3. **Execute** — Work through subtasks, mark each done
-4. **Document** — Add progress comments
-5. **Complete** — `mc-update.sh complete <task_id> "Summary"`
+### 处理任务重新分配的情况
 
-### Handling Rework
-
-If a completed task is moved back to "In Progress" with a new comment:
-1. Read the feedback comment
-2. Address the issues
-3. Add a comment explaining your changes
-4. Move back to Review
-
----
-
-## EPICs
-
-EPICs are parent tasks with multiple child tickets. When you receive an EPIC:
-
-1. Child tickets are listed in the subtasks (format: `MC-XXX-001: Title`)
-2. Work through them sequentially (1 → 2 → 3...)
-3. After each child: comment result, set to "review", mark EPIC subtask done
-4. After last child: set EPIC to "review"
+如果已完成的任务被重新标记为“进行中”并附有新的说明，AI助手会：
+1. 阅读新的说明内容。
+2. 解决相关问题。
+3. 添加评论说明所做的修改。
+4. 将任务状态重新设置为“审查中”。
 
 ---
 
-## Heartbeat Integration
+## EPIC任务（大型项目）
 
-Add to your `HEARTBEAT.md`:
+EPIC任务是包含多个子任务的父任务。收到EPIC任务时：
+1. 子任务会以`MC-XXX-001: 标题`的格式列出。
+2. 按顺序处理每个子任务（例如：1 → 2 → 3...）。
+3. 处理完每个子任务后，将其状态设置为“审查中”，并将对应的子任务标记为“已完成”。
+4. 所有子任务处理完成后，将EPIC任务的状态设置为“审查中”。
+
+---
+
+## 心跳检测集成
+
+请将相关配置添加到`HEARTBEAT.md`文件中：
 
 ```markdown
 ## Task Check
@@ -157,13 +155,11 @@ Add to your `HEARTBEAT.md`:
 3. Check "review" tasks for new feedback comments
 ```
 
----
+## 配置文件
 
-## Configuration
+配置信息保存在`~/.clawdbot/mission-control.json`文件中。详细配置选项请参考`assets/examples/CONFIG-REFERENCE.md`。
 
-Config lives in `~/.clawdbot/mission-control.json`. See `assets/examples/CONFIG-REFERENCE.md` for all options.
-
-Minimal config (set by agent during setup):
+以下是AI助手在设置过程中默认使用的最小化配置：
 
 ```json
 {
@@ -173,48 +169,39 @@ Minimal config (set by agent during setup):
 }
 ```
 
----
+## 故障排除
 
-## Troubleshooting
+如遇到问题，请参考`docs/TROUBLESHOOTING.md`：
+- 仪表板显示空白数据？请确保已正确连接GitHub令牌。
+- Webhook未触发？请检查Tailscale Funnel的配置。
+- 更新内容未显示？可能是GitHub Pages的缓存问题，请稍等1-2分钟。
 
-See `docs/TROUBLESHOOTING.md` for common issues:
+## 安全性
 
-- Dashboard shows sample data → Connect GitHub token
-- Webhook not triggering → Check Tailscale Funnel
-- Changes not appearing → GitHub Pages cache (wait 1-2 min)
+Mission Control是一个专为AI助手设计的任务管理系统，其主要功能是将人类编写的工作任务描述传递给AI助手执行。这种设计并非安全漏洞。
 
----
+### 信任模型
+- **单用户/受信任用户设置**：任务创建者同时也是AI助手的控制者，因此信任边界与直接向助手发送指令相同。
+- **多用户设置**：如果多个用户可以在仪表板上创建任务，请将任务内容视为不可信的输入。利用Clawdbot的沙箱环境和权限控制机制来限制AI助手的权限。
+- **安全措施**：
+  - `mc-update.sh`会在将数据传递给Python或Git之前验证输入内容，防止注入攻击。
+  - 仪表板不存储任何凭证信息，所有认证操作均由Clawdbot的配置文件处理。
+  - Webhook签名会通过`timingSafeEqual`函数进行验证，以防止篡改。
+  - `sync-to-opensource.sh`脚本会在数据同步前扫描是否存在泄露的凭证。
 
-## Security
-
-Mission Control is a task management system **for** AI agents — its core purpose is to pass human-authored task descriptions to an agent for execution. This is by design, not a vulnerability.
-
-### Trust Model
-
-- **Single-user / trusted-user setup:** Task authors are the same people who control the agent. The trust boundary is identical to typing a message directly to your assistant.
-- **Multi-user setups:** If multiple users can create tasks on the dashboard, treat task content as untrusted input. Use Clawdbot's agent sandbox and permission model to limit what the agent can do.
-
-### Mitigations
-
-- **Input sanitization:** `mc-update.sh` validates all inputs against injection patterns before passing them to Python or git.
-- **No credential storage:** The dashboard stores no tokens or secrets — all auth is handled by Clawdbot's config.
-- **Webhook HMAC verification:** The transform module validates webhook signatures using `timingSafeEqual` to prevent tampering.
-- **Security scan on sync:** The `sync-to-opensource.sh` script scans for leaked credentials before publishing.
-
-### Recommendations
-
-- Keep your dashboard repository **private** if you don't want others to see your task data.
-- Review task descriptions before moving them to "In Progress" if the task was created by someone else.
-- Use Clawdbot's `groupPolicy` and `allowFrom` settings to restrict who can interact with the agent.
+### 建议
+- 如果不希望他人查看任务数据，请将仪表板仓库设置为私有。
+- 如果任务由他人创建，在将其状态设置为“进行中”之前，请仔细审核任务描述。
+- 使用Clawdbot的`groupPolicy`和`allowFrom`设置来限制可以与AI助手交互的用户。
 
 ---
 
-## Files
+## 相关文件
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `<workspace>/index.html` | Dashboard UI |
-| `<workspace>/data/tasks.json` | Task data |
-| `<skill>/scripts/mc-update.sh` | CLI tool |
-| `~/.clawdbot/mission-control.json` | Config |
-| `~/.clawdbot/hooks-transforms/github-mission-control.mjs` | Webhook transform |
+| `<workspace>/index.html` | 仪表板用户界面 |
+| `<workspace>/data/tasks.json` | 任务数据文件 |
+| `<skill>/scripts/mc-update.sh` | 命令行工具 |
+| `~/.clawdbot/mission-control.json` | 配置文件 |
+| `~/.clawdbot/hooks-transforms/github-mission-control.mjs` | Webhook转换脚本 |

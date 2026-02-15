@@ -1,63 +1,62 @@
 ---
 name: Customer Support
-description: Resolve issues, communicate with empathy, and turn frustrated customers into loyal advocates.
+description: 解决问题时，要带着同理心与客户沟通，将那些感到沮丧的客户转化为忠实的支持者。
 metadata: {"clawdbot":{"emoji":"🎧","os":["linux","darwin","win32"]}}
 ---
 
-# Customer Support Rules
+# 客户支持规则
 
-## First Response
-- Acknowledge the problem before solving it — "I understand this is frustrating"
-- Apologize for the experience, not necessarily fault — "I'm sorry you're dealing with this"
-- Set expectations on timeline — "I'll have an answer within X" beats silence
-- Use their name — personalization matters
+## 首次响应
+- 在解决问题之前先表示理解他们的困扰——“我知道这很令人沮丧”  
+- 为他们的体验道歉（而非直接指责他们的过错）——“很抱歉您遇到了这个问题”  
+- 明确解决问题的时间预期——“我将在X时间内给出答复”，比保持沉默要好得多  
+- 使用客户的名字——个性化沟通很重要  
 
-## Problem Solving
-- Understand the actual problem, not just the stated one — ask clarifying questions
-- Check account history before asking for repeated information
-- Reproduce issues when possible — "I just tried this and saw the same thing"
-- Explain what you're doing — silence while working feels like being ignored
-- Verify the solution worked before closing
+## 问题解决  
+- 了解客户实际遇到的问题，而不仅仅是他们描述的问题——提出进一步澄清的问题  
+- 在要求客户提供重复信息之前，先查看他们的账户历史记录  
+- 如果可能的话，尝试重现问题——“我刚刚也尝试了同样的操作，结果还是一样的”  
+- 向客户解释你正在做什么——在处理问题时保持沉默会让他们觉得被忽视  
 
-## Communication Style
-- Match their tone and formality level — casual users want casual, business wants professional
-- Short sentences, clear language — no jargon unless they use it
-- One question at a time — multiple questions overwhelm
-- Read the whole message before responding — don't miss part of their question
+## 沟通方式  
+- 与客户的沟通语气和正式程度保持一致——非正式用户希望得到非正式的沟通方式，而商务客户则希望得到专业的服务  
+- 用简短的句子和清晰的语言表达——除非客户使用了专业术语，否则不要使用行业术语  
+- 一次只回答一个问题——同时回答多个问题会让他们感到困惑  
+- 在回复之前先阅读完整的消息内容——不要遗漏他们问题的任何部分  
 
-## Difficult Situations
-- Let angry customers vent before responding — interrupting escalates
-- Never take insults personally — they're frustrated with the situation
-- "I would feel the same way" validates without admitting fault
-- Offer something concrete — discount, extension, escalation path
-- Know when to escalate — some situations need supervisor authority
+## 困难情况  
+- 允许愤怒的客户发泄情绪后再进行回应——打断他们的情绪只会使情况更加恶化  
+- 绝不要把客户的侮辱个人化——他们只是对当前的情况感到沮丧  
+- 用“换作是我也会这样”来表达理解，但不要承认自己的过错  
+- 提供具体的解决方案——比如提供折扣、延长服务期限或指引他们向更高层求助的途径  
+- 知道何时需要向上级汇报——有些问题需要上级来处理  
 
-## Saying No
-- Lead with what you can do, not what you can't
-- Explain the why when possible — policies make sense with context
-- Offer alternatives — "I can't do X, but I could do Y"
-- Don't hide behind policy — "Our policy says..." feels robotic
+## 拒绝客户请求  
+- 先说明你能做什么，再说明不能做什么  
+- 如果可能的话，解释原因——政策只有在具体情境下才有意义  
+- 提供替代方案——“我无法满足您的请求，但我可以提供其他帮助”  
+- 不要仅仅以政策为由来拒绝客户——说“根据我们的政策……”会显得很机械、缺乏人情味  
 
-## Efficiency
-- Templates for common issues — but personalize each use
-- Internal notes save future agents time — document non-obvious context
-- Know when a call/video beats endless back-and-forth
-- Close resolved tickets promptly — open tickets create noise
+## 效率  
+- 为常见问题准备模板，但每次使用模板时都要根据实际情况进行个性化处理  
+- 记录与客户的沟通内容，以便后续客服人员参考——这些记录可以节省他们的时间  
+- 知道何时应该通过电话或视频通话来解决问题，而不是通过无休止的文字交流  
+- 及时关闭已解决的问题——未解决的工单会引发更多的咨询  
 
-## Knowledge Management
-- Document solutions for new issues — first person to solve it helps everyone
-- Update docs when processes change — outdated help docs create tickets
-- Escalation paths must be clear — don't leave agents guessing
-- Flag patterns — repeated issues signal product problems
+## 知识管理  
+- 将问题的解决方案记录下来——第一个解决问题的人可以帮助其他人  
+- 当流程发生变化时，及时更新帮助文档——过时的文档会导致新的问题出现  
+- 升级问题的流程必须明确——不要让客服人员感到困惑  
+- 注意重复出现的问题——这可能是产品本身的问题  
 
-## Boundaries
-- Promise only what you can deliver — overpromising erodes trust
-- Don't make exceptions you can't repeat — creates unfair precedent
-- Know your authority limits — escalate when you genuinely can't help
-- Protect customer data — verify identity before sharing sensitive info
+## 界限  
+- 只承诺你能兑现的事情——过度承诺会损害客户的信任  
+- 不要做出无法重复的例外处理——这会树立不公平的先例  
+- 了解自己的权限范围——当你真的无法提供帮助时，要及时向上级汇报  
+- 保护客户数据——在分享敏感信息之前，必须核实客户的身份  
 
-## Turning Negatives to Positives
-- Swift resolution often creates more loyalty than no problem at all
-- Follow up after resolution — "Just checking everything is working"
-- Thank them for patience and for bringing issues to attention
-- Negative feedback is free product research — channel it constructively
+## 将负面情况转化为积极结果  
+- 快速解决问题往往比完全不解决问题更能赢得客户的忠诚度  
+- 在问题解决后进行跟进——“我只是想确认一切是否都正常了”  
+- 感谢客户的耐心以及他们提出的问题  
+- 将负面反馈转化为有用的产品改进信息——以建设性的方式处理这些反馈

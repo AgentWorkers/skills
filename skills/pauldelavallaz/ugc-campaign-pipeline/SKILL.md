@@ -17,11 +17,11 @@ description: |
   OUTPUT: Edited MP4 video with multiple scenes + subtitles + logo
 ---
 
-# UGC Campaign Pipeline
+# 用户生成内容（UGC）营销活动流程
 
-Complete workflow for creating UGC-style promotional videos from a product.
+这是一个从产品素材创建UGC风格宣传视频的完整工作流程。
 
-## Pipeline Overview
+## 流程概述
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -62,15 +62,15 @@ Complete workflow for creating UGC-style promotional videos from a product.
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-## Execution Checklist
+## 执行检查清单
 
-### Before Starting
-- [ ] Product image received
-- [ ] Brand/product name known
-- [ ] Target audience understood
-- [ ] Tone defined (casual, professional, energetic)
+### 开始前
+- [ ] 已收到产品图片
+- [ ] 已知晓品牌/产品名称
+- [ ] 明确目标受众
+- [ ] 确定了语言风格（随意、专业或充满活力）
 
-### Step 1: Hero Image (Morpheus)
+### 第一步：主角图片选择（Morpheus）
 ```bash
 # Select model from catalog
 cat ~/clawd/models-catalog/catalog/catalog.json | jq '[.talents[] | select(.gender == "male/female") | {id, name, ethnicity}]'
@@ -85,7 +85,7 @@ COMFY_DEPLOY_API_KEY="..." uv run ~/.clawdbot/skills/morpheus-fashion-design/scr
   --output "~/clawd/outputs/{project}/morpheus/hero.png"
 ```
 
-### Step 2: Variations (Multishot)
+### 第二步：多角度图片拍摄
 ```bash
 COMFY_DEPLOY_API_KEY="..." uv run ~/.clawdbot/skills/multishot-ugc/scripts/generate.py \
   --image "~/clawd/outputs/{project}/morpheus/hero.png" \
@@ -94,21 +94,21 @@ COMFY_DEPLOY_API_KEY="..." uv run ~/.clawdbot/skills/multishot-ugc/scripts/gener
   --aspect-ratio "9:16"
 ```
 
-### Step 3: Selection Criteria
-Analyze all 11 images for:
-- ✅ Face clearly visible (frontal or 3/4)
-- ✅ Mouth not obscured
-- ✅ No distorted hands/fingers
-- ✅ Product visible
-- ✅ Different from other selected images
+### 第三步：图片筛选标准
+分析所有11张图片，确保：
+- ✅ 脸部清晰可见（正面或3/4侧面）
+- ✅ 嘴部未被遮挡
+- ✅ 手指/手部没有变形
+- ✅ 产品清晰可见
+- ✅ 与其他选定的图片有所不同
 
-Select 4 images that are:
-1. Different angles/perspectives
-2. Suitable for lip-sync
-3. Error-free
+从这些图片中选出4张符合以下条件的图片：
+1. 拍摄角度或视角不同
+2. 适合进行对口型同步
+3. 无任何质量问题
 
-### Step 4: Script Writing
-Write 4 lines of pure dialogue:
+### 第四步：编写剧本
+编写4行纯对话内容：
 ```
 ESCENA 1: [Opening hook - grab attention]
 ESCENA 2: [Problem/benefit - relate to audience]  
@@ -116,14 +116,13 @@ ESCENA 3: [Feature highlight - specific value]
 ESCENA 4: [CTA/brand mention - close strong]
 ```
 
-**Rules:**
-- Pure dialogue only
-- NO annotations: [excited], (pause), *smiles*
-- NO stage directions
-- NO tone indicators
-- Just what the person says
+**规则：**
+- 仅使用纯对话
+- 不允许添加注释（如“兴奋”、“（停顿）”、“*微笑*”等）
+- 不允许添加舞台指示或语气提示
+- 仅记录人物实际说的话
 
-### Step 5: Generate Videos (VEED)
+### 第五步：视频制作（使用VEED工具）
 ```bash
 for i in 1 2 3 4; do
   COMFY_DEPLOY_API_KEY="..." uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
@@ -133,18 +132,18 @@ for i in 1 2 3 4; do
 done
 ```
 
-### Step 6: Final Edit (Remotion)
-Create Remotion project with:
-- All 4 video clips sequenced
-- Animated subtitles for each scene
-- Logo animation at end
-- Render to final MP4
+### 第六步：最终剪辑
+创建一个Remotion项目，包含：
+- 所有4个视频片段
+- 每个场景的动画字幕
+- 结尾处的品牌标志动画
+- 将视频渲染为最终的MP4格式
 
 ---
 
-## Script Templates by Industry
+## 根据行业分类的剧本模板
 
-### Snacks/Food
+### 食品/零食
 ```
 Escena 1: Che, tenés que probar esto.
 Escena 2: [Sabor/textura highlight]. Te pega de una.
@@ -152,7 +151,7 @@ Escena 3: Y mirá, no es solo [feature], tiene ese gustito que te deja queriendo
 Escena 4: [Brand + Product]. Una vez que arrancás, no parás.
 ```
 
-### Tech/Gadgets
+### 科技/小工具
 ```
 Escena 1: Mirá lo que me llegó.
 Escena 2: Esto cambia todo. [Key feature].
@@ -160,7 +159,7 @@ Escena 3: Y lo mejor? [Secondary benefit].
 Escena 4: [Brand]. Ya no vuelvo atrás.
 ```
 
-### Beauty/Skincare
+### 美容/护肤品
 ```
 Escena 1: Ok, necesito contarte algo.
 Escena 2: Este [producto] es increíble. [Result].
@@ -168,7 +167,7 @@ Escena 3: Lo uso hace [tiempo] y mirá la diferencia.
 Escena 4: [Brand]. Tu piel te lo va a agradecer.
 ```
 
-### Fashion
+### 时尚
 ```
 Escena 1: Encontré mi nueva obsesión.
 Escena 2: Mirá este [prenda]. [Quality/style].
@@ -178,7 +177,7 @@ Escena 4: [Brand]. Estilo sin esfuerzo.
 
 ---
 
-## Output Structure
+## 输出文件结构
 
 ```
 ~/clawd/outputs/{project}/
@@ -201,11 +200,11 @@ Escena 4: [Brand]. Estilo sin esfuerzo.
 
 ---
 
-## Quality Checklist (Before Delivery)
+## 交付前的质量检查标准
 
-- [ ] Hero image: product visible, model looks natural
-- [ ] Variations: 4 selected are distinct and lip-sync ready
-- [ ] Script: matches brand tone, pure dialogue format
-- [ ] Videos: lip-sync quality is good, no artifacts
-- [ ] Final: subtitles readable, transitions smooth, logo appears
-- [ ] Audio: voice quality clear, timing natural
+- [ ] 主角图片：产品清晰可见，模特表现自然
+- **多角度图片**：选出的4张图片各具特色，适合进行对口型同步
+- **剧本**：符合品牌语言风格，采用纯对话格式
+- **视频**：对口型同步效果良好，无瑕疵
+- **最终成品**：字幕清晰可见，过渡流畅，品牌标志显示完整
+- **音频**：语音质量清晰，播放节奏自然

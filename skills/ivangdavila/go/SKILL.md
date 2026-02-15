@@ -1,75 +1,71 @@
 ---
 name: Go
-description: Write reliable Go code avoiding goroutine leaks, interface traps, and common concurrency bugs.
+description: 编写可靠的 Go 代码，避免 goroutine 泄漏、接口陷阱以及常见的并发错误。
 metadata: {"clawdbot":{"emoji":"🐹","requires":{"bins":["go"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Goroutine Leaks
-- Goroutine blocked on channel with no sender = leak forever — always ensure channel closes or use context
-- Unbuffered channel send blocks until receive — deadlock if receiver never comes
-- `for range` on channel loops forever until channel closed — sender must `close(ch)`
-- Context cancellation doesn't stop goroutine automatically — must check `ctx.Done()` in loop
-- Leaked goroutines accumulate memory and never garbage collect
+## 线程泄漏（Goroutine Leaks）
+- 如果线程在无发送者的通道上阻塞，将会导致永久性泄漏——务必确保通道被关闭或使用上下文（context）来控制线程的生命周期。
+- 未缓冲的通道在接收者未出现时会导致发送操作无限阻塞，从而引发死锁。
+- 使用 `for range` 遍历通道时，如果通道未关闭，循环将永远持续下去——发送者必须调用 `close(ch)` 来关闭通道。
+- 上下文取消（context cancellation）不会自动终止线程——需要在循环中检查 `ctx.Done()` 来判断是否可以继续执行。
 
-## Channel Traps
-- Sending to nil channel blocks forever — receiving from nil also blocks forever
-- Sending to closed channel panics — closing already closed channel panics
-- Only sender should close channel — receiver closing causes sender panic
-- Buffered channel full = send blocks — size buffer for expected load
-- `select` with multiple ready cases picks randomly — not first listed
+## 通道陷阱（Channel Traps）
+- 向空（nil）通道发送数据会导致发送操作无限阻塞；从空通道接收数据也会导致接收操作无限阻塞。
+- 向已经关闭的通道发送数据会引发 panic。
+- 只有发送者才能关闭通道；如果接收者尝试关闭通道，发送者也会引发 panic。
+- 如果缓冲区的大小不足以容纳即将发送的数据，发送操作将会被阻塞。
 
-## Defer Gotchas
-- Defer arguments evaluated immediately, not when deferred function runs — `defer log(time.Now())` captures now
-- Defer in loop accumulates — defers stack, run at function end not iteration end
-- Defer runs even on panic — good for cleanup, but recover only in deferred function
-- Named return values modifiable in defer — `defer func() { err = wrap(err) }()` works
-- Defer order is LIFO — last defer runs first
+## `defer` 语句的常见错误（Defer Gotchas）
+- `defer` 语句中的参数会在其被调用时立即被求值，而不是在 `defer` 语句所在的函数执行时求值。例如，`defer log(time.Now())` 会立即记录当前时间。
+- 在循环中使用 `defer` 语句会导致栈帧的累积——`defer` 语句会在函数结束时执行，而不是在每次迭代结束时执行。
+- 即使发生 panic，`defer` 语句也会被执行——这有助于进行资源清理，但错误只能在 `defer` 语句所在的函数中得到处理。
+- 在 `defer` 语句中声明的返回值是可以被修改的——例如 `defer func() { err = wrap(err) }()` 是有效的。
 
-## Interface Traps
-- Nil concrete value in interface is not nil interface — `var p *MyType; var i interface{} = p; i != nil` is true
-- Type assertion on wrong type panics — use comma-ok: `v, ok := i.(Type)`
-- Empty interface `any` accepts anything but loses type safety — avoid when possible
-- Interface satisfaction is implicit — no compile error if method signature drifts
-- Pointer receiver doesn't satisfy interface for value type — only `*T` has the method
+## 接口相关陷阱（Interface Traps）
+- 接口中包含 `nil` 类型的具体值仍然属于该接口类型——例如 `var p *MyType; var i interface{} = p; i != nil` 是合法的。
+- 对错误的类型进行类型断言会引发 panic——应该使用 `v, ok := i.(Type)` 来安全地进行类型转换。
+- 空接口 `any` 可以接受任何类型的数据，但会失去类型安全性——应尽量避免使用。
+- 接口的满足性是隐式的——即使方法签名发生变化，编译器也不会报错。
+- 对于值类型来说，指针类型的接收者并不满足接口要求——只有 `*T` 类型的接收者才能调用接口中的方法。
 
-## Error Handling
-- Errors are values, not exceptions — always check returned error
-- `err != nil` after every call — unchecked errors are silent bugs
-- `errors.Is` for wrapped errors — `==` doesn't work with `fmt.Errorf("%w", err)`
-- Sentinel errors should be `var ErrFoo = errors.New()` not recreated
-- Panic for programmer errors only — return error for runtime failures
+## 错误处理（Error Handling）
+- 错误是可被赋值的值，而不是异常——务必检查返回的错误。
+- 每次函数调用后都应该检查 `err != nil`，未处理的错误会成为隐藏的漏洞。
+- 使用 `errors.Is` 来判断错误是否被正确处理；`==` 运算符不能用于比较带有格式化信息的错误（如 `fmt.Errorf("%w", err)`）。
+- 应该使用 `errors.New()` 来创建特定的错误类型，而不是重复创建错误对象。
 
-## Slice Gotchas
-- Slice is reference to array — modifying slice modifies original
-- Append may or may not reallocate — never assume capacity
-- Slicing doesn't copy — `a[1:3]` shares memory with `a`
-- Nil slice and empty slice differ — `var s []int` vs `s := []int{}`
-- `copy()` copies min of lengths — doesn't extend destination
+## 切片（Slice）相关陷阱（Slice Gotchas）
+- 切片是对数组的引用——修改切片会修改原始数组。
+- `append` 操作可能会重新分配内存，也可能不会；切勿假设切片的容量始终可用。
+- 切片操作不会复制数据——`a[1:3]` 会与 `a` 共享内存。
+- `nil` 切片和空切片是不同的——`var s []int` 与 `s := []int{}` 是不同的。
+- `copy()` 函数只会复制切片中最小的长度部分，而不会扩展目标切片的容量。
 
-## Map Traps
-- Reading from nil map returns zero value — writing to nil map panics
-- Map iteration order is random — don't rely on order
-- Maps not safe for concurrent access — use `sync.Map` or mutex
-- Taking address of map element forbidden — `&m[key]` doesn't compile
-- Delete from map during iteration is safe — but add may cause issues
+## 映射（Map）相关陷阱（Map Traps）
+- 从空映射中读取数据会返回零值；向空映射中写入数据会引发 panic。
+- 映射的迭代顺序是随机的——不要依赖特定的迭代顺序。
+- 映射不支持并发访问——应使用 `sync.Map` 或互斥锁（mutex）来保护数据安全。
+- 禁止获取映射元素的地址——`&m[key]` 会导致编译错误。
+- 在迭代过程中删除映射中的元素是安全的；但添加元素可能会导致问题。
 
-## String Gotchas
-- Strings are immutable byte slices — each modification creates new allocation
-- `range` over string iterates runes, not bytes — index jumps for multi-byte chars
-- `len(s)` is bytes, not characters — use `utf8.RuneCountInString()`
-- String comparison is byte-wise — not Unicode normalized
-- Substring shares memory with original — large string keeps memory alive
+## 字符串（String）相关陷阱（String Traps）
+- 字符串是不可变的字节切片——任何修改都会创建新的内存分配。
+- 使用 `range` 遍历字符串时，实际上是遍历字符串中的每个字节；对于多字节字符，索引位置可能会跳跃。
+- `len(s)` 返回的是字节的长度，而不是字符的数量——应使用 `utf8.RuneCountInString()` 来获取字符数量。
+- 字符串的比较是基于字节的——不会进行 Unicode 规范化的比较。
+- 子字符串会与原始字符串共享内存——因此，修改子字符串可能会影响原始字符串的内存使用情况。
 
-## Struct and Memory
-- Struct fields padded for alignment — field order affects memory size
-- Zero value is valid — `var wg sync.WaitGroup` works, no constructor needed
-- Copying struct with mutex copies unlocked mutex — always pass pointer
-- Embedding is not inheritance — promoted methods can be shadowed
-- Exported fields start uppercase — lowercase fields invisible outside package
+## 结构体（Struct）和内存（Struct and Memory）
+- 结构体的字段会被填充以保持对齐——字段的排列顺序会影响内存占用大小。
+- 可以使用零值作为结构体的字段——例如 `var wg sync.WaitGroup` 是合法的，不需要构造函数。
+- 使用互斥锁复制结构体时，需要传递结构体的指针，而不是结构体本身。
+- 嵌入（embedding）并不等同于继承——嵌入的结构体中的方法可能会被隐藏。
+- 导出的结构体字段的首字母应该是大写的——小写的字段在包外部是不可见的。
 
-## Build Traps
-- `go build` caches aggressively — use `-a` flag to force rebuild
-- Unused imports fail compilation — use `_` import for side effects only
-- `init()` runs before main, order by dependency — not file order
-- `go:embed` paths relative to source file — not working directory
-- Cross-compile: `GOOS=linux GOARCH=amd64 go build` — easy but test on target
+## 编译相关陷阱（Build Traps）
+- `go build` 命令会频繁缓存编译结果——可以使用 `-a` 标志强制重新编译。
+- 未使用的导入语句会导致编译失败——使用 `_` 前缀的导入语句仅用于引入副作用。
+- `init()` 函数会在 `main` 函数之前执行，其执行顺序取决于依赖关系，而不是文件顺序。
+- `go:embed` 指令指定的路径是相对于源代码文件的，而不是工作目录的。
+- 在跨平台编译时（如 `GOOS=linux GOARCH=amd64 go build`），需要在目标平台上进行测试。

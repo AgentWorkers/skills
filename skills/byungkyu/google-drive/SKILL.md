@@ -15,9 +15,9 @@ metadata:
 
 # Google Drive
 
-Access the Google Drive API with managed OAuth authentication. List, search, create, and manage files and folders.
+通过管理的 OAuth 认证来访问 Google Drive API。可以列出、搜索、创建和管理文件及文件夹。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List files
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-drive/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Drive API endpoint path. The gateway proxies requests to `www.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google Drive API 端点路径。该网关会将请求代理到 `www.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Drive connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Drive 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,153 +138,38 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### List Files
+### 列出文件
 
 ```bash
 GET /google-drive/drive/v3/files?pageSize=10
 ```
 
-With query:
+- 带查询参数：
+  - `name = '确切的文件名'`
+  - `name contains '部分名称'`
+  - `mimeType = 'application/pdf'`
+  - `'folderId' in parents`
+  - `trashed = false`
+  - `modifiedTime > '2024-01-01T00:00:00'`
 
-```bash
-GET /google-drive/drive/v3/files?q=name%20contains%20'report'&pageSize=10
-```
-
-Only folders:
-
-```bash
-GET /google-drive/drive/v3/files?q=mimeType='application/vnd.google-apps.folder'
-```
-
-Files in specific folder:
-
-```bash
-GET /google-drive/drive/v3/files?q='FOLDER_ID'+in+parents
-```
-
-With fields:
-
-```bash
-GET /google-drive/drive/v3/files?fields=files(id,name,mimeType,createdTime,modifiedTime,size)
-```
-
-### Get File Metadata
-
-```bash
-GET /google-drive/drive/v3/files/{fileId}?fields=id,name,mimeType,size,createdTime
-```
-
-### Download File Content
-
-```bash
-GET /google-drive/drive/v3/files/{fileId}?alt=media
-```
-
-### Export Google Docs
-
-```bash
-GET /google-drive/drive/v3/files/{fileId}/export?mimeType=application/pdf
-```
-
-### Create File (metadata only)
-
-```bash
-POST /google-drive/drive/v3/files
-Content-Type: application/json
-
-{
-  "name": "New Document",
-  "mimeType": "application/vnd.google-apps.document"
-}
-```
-
-### Create Folder
-
-```bash
-POST /google-drive/drive/v3/files
-Content-Type: application/json
-
-{
-  "name": "New Folder",
-  "mimeType": "application/vnd.google-apps.folder"
-}
-```
-
-### Update File Metadata
-
-```bash
-PATCH /google-drive/drive/v3/files/{fileId}
-Content-Type: application/json
-
-{
-  "name": "Renamed File"
-}
-```
-
-### Move File to Folder
-
-```bash
-PATCH /google-drive/drive/v3/files/{fileId}?addParents=NEW_FOLDER_ID&removeParents=OLD_FOLDER_ID
-```
-
-### Delete File
-
-```bash
-DELETE /google-drive/drive/v3/files/{fileId}
-```
-
-### Copy File
-
-```bash
-POST /google-drive/drive/v3/files/{fileId}/copy
-Content-Type: application/json
-
-{
-  "name": "Copy of File"
-}
-```
-
-### Share File
-
-```bash
-POST /google-drive/drive/v3/files/{fileId}/permissions
-Content-Type: application/json
-
-{
-  "role": "reader",
-  "type": "user",
-  "emailAddress": "user@example.com"
-}
-```
-
-## Query Operators
-
-Use in the `q` parameter:
-- `name = 'exact name'`
-- `name contains 'partial'`
-- `mimeType = 'application/pdf'`
-- `'folderId' in parents`
-- `trashed = false`
-- `modifiedTime > '2024-01-01T00:00:00'`
-
-Combine with `and`:
-```
+- 使用 `and` 进行组合查询：
+  ```
 name contains 'report' and mimeType = 'application/pdf'
 ```
 
-## Common MIME Types
+## 常见 MIME 类型
 
-- `application/vnd.google-apps.document` - Google Docs
-- `application/vnd.google-apps.spreadsheet` - Google Sheets
-- `application/vnd.google-apps.presentation` - Google Slides
-- `application/vnd.google-apps.folder` - Folder
-- `application/pdf` - PDF
+- `application/vnd.google-apps.document` - Google 文档
+- `application/vnd.google-apps.spreadsheet` - Google 表格
+- `application/vnd.google-apps.presentation` - Google 幻灯片
+- `application/vnd.google-apps.folder` - 文件夹
+- `application/pdf` - PDF 文件
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -312,32 +197,32 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Use `fields` parameter to limit response data
-- Pagination uses `pageToken` from previous response's `nextPageToken`
-- Export is for Google Workspace files only
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 使用 `fields` 参数来限制响应数据。
+- 分页功能使用上一次响应中的 `nextPageToken`。
+- 导出功能仅适用于 Google Workspace 文件。
+- 重要提示：当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 命令可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致“无效 API 密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Drive connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Drive API |
+| 400 | 未建立 Google Drive 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Google Drive API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -348,22 +233,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `google-drive`. For example:
+1. 确保您的 URL 路径以 `google-drive` 开头。例如：
+  - 正确的路径：`https://gateway.maton.ai/google-drive/drive/v3/files`
+  - 错误的路径：`https://gateway.maton.ai/drive/v3/files`
 
-- Correct: `https://gateway.maton.ai/google-drive/drive/v3/files`
-- Incorrect: `https://gateway.maton.ai/drive/v3/files`
+## 资源
 
-## Resources
-
-- [Drive API Overview](https://developers.google.com/drive/api/reference/rest/v3)
-- [List Files](https://developers.google.com/drive/api/reference/rest/v3/files/list)
-- [Get File](https://developers.google.com/drive/api/reference/rest/v3/files/get)
-- [Create File](https://developers.google.com/drive/api/reference/rest/v3/files/create)
-- [Update File](https://developers.google.com/drive/api/reference/rest/v3/files/update)
-- [Delete File](https://developers.google.com/drive/api/reference/rest/v3/files/delete)
-- [Export File](https://developers.google.com/drive/api/reference/rest/v3/files/export)
-- [Search Query Syntax](https://developers.google.com/drive/api/guides/search-files)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Drive API 概述](https://developers.google.com/drive/api/reference/rest/v3)
+- [列出文件](https://developers.google.com/drive/api/reference/rest/v3/files/list)
+- [获取文件](https://developers.google.com/drive/api/reference/rest/v3/files/get)
+- [创建文件](https://developers.google.com/drive/api/reference/rest/v3/files/create)
+- [更新文件](https://developers.google.com/drive/api/reference/rest/v3/files/update)
+- [删除文件](https://developers.google.com/drive/api/reference/rest/v3/files/delete)
+- [导出文件](https://developers.google.com/drive/api/reference/rest/v3/files/export)
+- [搜索查询语法](https://developers.google.com/drive/api/guides/search-files)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

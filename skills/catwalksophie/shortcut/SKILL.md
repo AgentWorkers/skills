@@ -1,140 +1,139 @@
 ---
 name: shortcut
 version: 1.4.1
-description: Manage stories on Shortcut.com kanban boards. Use when creating, updating, or listing tasks/stories on Shortcut project management boards. Supports creating stories with descriptions and types (feature/bug/chore), updating story status, and listing active/completed stories. Includes full checklist task management and comment support.
+description: 在 Shortcut.com 的看板（kanban boards）上管理任务/故事。适用于在 Shortcut 项目管理看板上创建、更新或列出任务/故事。支持创建带有描述和类型（功能/漏洞/杂务）的任务/故事，更新任务/故事的状态，以及列出活跃/已完成的任务/故事。具备完整的任务管理功能（包括待办事项列表）和评论支持。
 ---
 
-# Shortcut Kanban Integration
+# 快捷Kanban集成
 
-Manage tasks and stories on Shortcut.com project boards via API.
+通过API在Shortcut.com的项目看板上管理任务和故事。
 
-## Prerequisites
+## 先决条件
 
-- Shortcut API token configured via one of:
-  - Environment variable: `SHORTCUT_API_TOKEN`
-  - File: `~/.config/shortcut/api-token`
-- Access to a Shortcut workspace with appropriate permissions
+- 通过以下方式配置了SHORTCUT_API_TOKEN：
+  - 环境变量：`SHORTCUT_API_TOKEN`
+  - 文件：`~/.config/shortcut/api-token`
+- 具有适当权限的Shortcut工作空间访问权限
 
-### Setup
+### 设置
 
-1. Get your API token from Shortcut.com (Settings → API Tokens)
-2. Store it either:
-   - As environment variable: `export SHORTCUT_API_TOKEN="your-token"`
-   - In a file: `echo "your-token" > ~/.config/shortcut/api-token && chmod 600 ~/.config/shortcut/api-token`
-3. Initialize workflow states for your workspace:
+1. 从Shortcut.com获取API令牌（设置 → API令牌）
+2. 将其存储为：
+   - 环境变量：`export SHORTCUT_API_TOKEN="your-token"`
+   - 文件：`echo "your-token" > ~/.config/shortcut/api-token && chmod 600 ~/.config/shortcut/api-token`
+3. 为你的工作空间初始化工作流状态：
    ```bash
    scripts/shortcut-init-workflow.sh
    ```
-   This creates `~/.config/shortcut/workflow-states` with your workspace's actual state IDs.
-4. Optionally add to `~/.bashrc` for persistence:
+   这将创建`~/.config/shortcut/workflow-states`文件，其中包含你工作空间的实际状态ID。
+4. （可选）将其添加到`~/.bashrc`中以实现持久化：
    ```bash
    export SHORTCUT_API_TOKEN=$(cat ~/.config/shortcut/api-token 2>/dev/null | tr -d '\n')
    source ~/.config/shortcut/workflow-states
    ```
 
-## Available Operations
+## 可用的操作
 
-### List Stories
+### 列出故事
 
 ```bash
 scripts/shortcut-list-stories.sh [--active|--completed|--all] [--json]
 ```
 
-Options:
-- `--active` - Show only incomplete stories (default)
-- `--completed` - Show only completed stories
-- `--all` - Include archived stories
-- `--json` - Output raw JSON
+选项：
+- `--active` - 仅显示未完成的故事（默认）
+- `--completed` - 仅显示已完成的故事
+- `--all` - 包括已归档的故事
+- `--json` - 输出原始JSON
 
-### Show Story Details
+### 显示故事详情
 
 ```bash
 scripts/shortcut-show-story.sh <story-id>
 ```
 
-Displays full story information including:
-- Story name and status
-- Description (if present)
-- Checklist items with completion status
+显示完整的故事信息，包括：
+- 故事名称和状态
+- 描述（如果有的话）
+- 检查表项及其完成状态
 
-### Create Story
+### 创建故事
 
 ```bash
 scripts/shortcut-create-story.sh "Story name" [--description "text"] [--type feature|bug|chore]
 ```
 
-Story types:
-- `feature` (default) - New functionality
-- `bug` - Bug fix
-- `chore` - Maintenance task
+故事类型：
+- `feature`（默认）- 新功能
+- `bug` - 错误修复
+- `chore` - 维护任务
 
-### Update Story
+### 更新故事
 
 ```bash
 scripts/shortcut-update-story.sh <story-id> [--complete|--todo|--in-progress] [--description "new text"]
 ```
 
-**Workflow states:** The script uses state IDs from `~/.config/shortcut/workflow-states` (created by `shortcut-init-workflow.sh`). If not configured, it falls back to common defaults:
-- Backlog: `500000006`
-- To Do: `500000007`
-- In Progress: `500000008`
-- In Review: `500000009`
-- Done: `500000010`
+**工作流状态：** 脚本使用`~/.config/shortcut/workflow-states`中的状态ID（由`shortcut-init-workflow.sh`创建）。如果未配置，则使用默认值：
+- 待办事项：`500000006`
+- 进行中：`500000007`
+- 审查中：`500000008`
+- 完成：`500000010`
 
-**Note:** Different Shortcut workspaces may use different state IDs. Always run `shortcut-init-workflow.sh` to configure your workspace's actual IDs.
+**注意：** 不同的Shortcut工作空间可能使用不同的状态ID。务必运行`shortcut-init-workflow.sh`来配置你工作空间的实际ID。
 
-### Manage Checklist Tasks
+### 管理检查表任务
 
-**Create a task:**
+**创建任务：**
 ```bash
 scripts/shortcut-create-task.sh <story-id> "task description"
 ```
 
-**Update task completion status:**
+**更新任务完成状态：**
 ```bash
 scripts/shortcut-update-task.sh <story-id> <task-id> [--complete|--incomplete]
 ```
 
-**Edit task description:**
+**编辑任务描述：**
 ```bash
 scripts/shortcut-edit-task.sh <story-id> <task-id> "new description"
 ```
 
-**Delete a task:**
+**删除任务：**
 ```bash
 scripts/shortcut-delete-task.sh <story-id> <task-id>
 ```
 
-Use `shortcut-show-story.sh` to see task IDs.
+使用`shortcut-show-story.sh`查看任务ID。
 
-### Manage Comments
+### 管理评论
 
-**Add a comment:**
+**添加评论：**
 ```bash
 scripts/shortcut-add-comment.sh <story-id> "comment text"
 ```
 
-**Update a comment:**
+**更新评论：**
 ```bash
 scripts/shortcut-update-comment.sh <story-id> <comment-id> "new text"
 ```
 
-**Delete a comment:**
+**删除评论：**
 ```bash
 scripts/shortcut-delete-comment.sh <story-id> <comment-id>
 ```
 
-Use `shortcut-show-story.sh` to see comment IDs.
+使用`shortcut-show-story.sh`查看评论ID。
 
-## Workflow
+## 工作流程
 
-1. List existing stories to understand current board state
-2. Create new stories with descriptive names and appropriate types
-3. Update story status as work progresses
+1. 列出现有故事以了解当前看板状态
+2. 创建具有描述性名称和适当类型的新故事
+3. 随着工作的进展更新故事状态
 
-## Notes
+## 注意事项
 
-- Scripts use `SHORTCUT_API_TOKEN` environment variable or fall back to `~/.config/shortcut/api-token`
-- Stories are created in "Unstarted" state by default (workflow_state_id: 500000006)
-- If your workspace uses different workflow state IDs, you may need to adjust the scripts
-- The token must have permissions for the workspace you want to manage
+- 脚本使用`SHORTCUT_API_TOKEN`环境变量，或回退到`~/.config/shortcut/api-token`
+- 故事默认创建为“未开始”状态（工作流状态ID：500000006）
+- 如果你的工作空间使用不同的工作流状态ID，可能需要调整脚本
+- 令牌必须具有你想要管理的工作空间的访问权限

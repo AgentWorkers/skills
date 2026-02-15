@@ -1,13 +1,13 @@
 ---
 name: github-topics
-description: Fetches GitHub topic trending repositories. Use when asking about GitHub trending repos or open source projects.
+description: 用于获取 GitHub 上的热门仓库。在查询 GitHub 上的热门仓库或开源项目时可以使用该功能。
 ---
 
-# GitHub Topics Trending
+# GitHub 热门话题趋势
 
-Fetch GitHub topic trending repositories and README summaries.
+获取 GitHub 上的热门话题仓库及其 README 文件的摘要。
 
-## Quick Start
+## 快速入门
 
 ```
 # View rankings
@@ -20,15 +20,15 @@ anthropics/claude-code 介绍
 这个仓库是做什么的
 ```
 
-## Query Types
+## 查询类型
 
-| Type | Examples | Description |
+| 类型 | 示例 | 描述 |
 |------|----------|-------------|
-| Rankings | `热门仓库` `Top 10` | Current rankings by stars |
-| Detail | `xxx/xxx 介绍` | Repository README summary |
-| Topic | `python 话题排行榜` | Custom topic search |
+| 排名 | `热门仓库` `Top 10` | 按星数排序的热门仓库 |
+| 详情 | `xxx/xxx 介绍` | 仓库的 README 文件摘要 |
+| 话题 | `python 话题排行榜` | 自定义话题搜索 |
 
-## Workflow
+## 工作流程
 
 ```
 - [ ] Step 1: Parse query type
@@ -38,32 +38,32 @@ anthropics/claude-code 介绍
 
 ---
 
-## Step 1: Parse Query Type
+## 第一步：解析查询类型
 
-| User Input | Query Type | Action |
+| 用户输入 | 查询类型 | 操作 |
 |------------|------------|--------|
-| `热门仓库` | rankings | Show top N repos |
-| `Top 10 项目` | rankings | Show top N repos |
-| `xxx/xxx 介绍` | detail | Get README summary |
-| `python 话题` | rankings | Search python topic |
+| `热门仓库` | rankings | 显示排名前 N 的仓库 |
+| `Top 10 项目` | rankings | 显示排名前 N 的项目 |
+| `xxx/xxx 介绍` | detail | 获取仓库的 README 文件摘要 |
+| `python 话题` | rankings | 搜索与 Python 相关的话题 |
 
 ---
 
-## Step 2: Fetch Data
+## 第二步：获取数据
 
-### Fetch Rankings
+### 获取排名信息
 
 ```bash
 cd skills/github-topics
 python src/github_fetcher.py
 ```
 
-**Requirements**:
+**要求**：
 ```bash
 pip install requests
 ```
 
-### Fetch README (Optional)
+### 获取 README 文件（可选）
 
 ```bash
 python src/readme_fetcher.py
@@ -71,9 +71,9 @@ python src/readme_fetcher.py
 
 ---
 
-## Step 3: Format Results
+## 第三步：格式化结果
 
-### Rankings Output
+### 排名结果输出
 
 ```markdown
 # GitHub Trending - python
@@ -85,7 +85,7 @@ python src/readme_fetcher.py
 | 3 | project-based-learning | 257K | - |
 ```
 
-### Detail Output
+### 详情结果输出
 
 ```markdown
 # anthropics/claude-code
@@ -100,43 +100,43 @@ Official Claude Code CLI for AI-powered software development. Claude Code is Ant
 
 ---
 
-## Configuration
+## 配置参数
 
-| Variable | Description | Default |
+| 变量 | 描述 | 默认值 |
 |----------|-------------|---------|
-| `GH_TOKEN` | GitHub Personal Access Token (optional, for higher rate limits) | - |
-| `TOPIC` | GitHub topic to track | `claude-code` |
+| `GH_TOKEN` | GitHub 个人访问令牌（可选，用于提高请求速率） | - |
+| `TOPIC` | 要跟踪的 GitHub 话题 | `claude-code` |
 
-**Note**: `GH_TOKEN` is optional but recommended:
-- With token: 5,000 requests/hour
-- Without token: 60 requests/hour
+**注意**：`GH_TOKEN` 是可选的，但建议使用：
+- 使用令牌后：每小时 5,000 次请求 |
+- 不使用令牌后：每小时 60 次请求
 
-Create token at: https://github.com/settings/tokens
+请在 [此处](https://github.com/settings/tokens) 创建令牌。
 
 ---
 
-## GitHub API Notes
+## GitHub API 注意事项
 
-| Limit Type | Rate |
+| 限制类型 | 请求速率 |
 |------------|------|
-| Authenticated | 5,000 requests/hour |
-| Unauthenticated | 60 requests/hour |
+| 经认证的 | 每小时 5,000 次请求 |
+| 未认证的 | 每小时 60 次请求 |
 
-**Recommendation**: Use `GH_TOKEN` for higher rate limits.
+**建议**：使用 `GH_TOKEN` 以获得更高的请求速率。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Rate limit | Set `GH_TOKEN` env var |
-| Network timeout | Check internet connection |
-| Empty results | Check topic name exists |
+| 请求速率限制 | 设置 `GH_TOKEN` 环境变量 |
+| 网络超时 | 检查网络连接 |
+| 结果为空 | 确认话题名称是否存在 |
 
 ---
 
-## CLI Reference
+## 命令行接口参考
 
 ```bash
 # Fetch rankings (default topic: claude-code)

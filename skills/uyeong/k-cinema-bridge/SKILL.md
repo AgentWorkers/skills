@@ -1,30 +1,30 @@
 ---
 name: k-cinema-bridge
-description: Query Korean multiplex (Lotte Cinema, CGV, Megabox) box office rankings and upcoming movie data enriched with KOBIS details. Use when the user asks about Korean movies currently showing, box office rankings, upcoming releases, or wants movie recommendations based on genre, director, actor, or rating.
+description: 查询韩国多厅影院（Lotte Cinema、CGV、Megabox）的票房排名以及包含KOBIS详细信息的即将上映电影数据。当用户询问当前正在放映的韩国电影、票房排名、即将上映的电影，或希望根据类型、导演、演员或评分获得电影推荐时，可以使用该功能。
 homepage: https://uyeong.github.io/k-cinema-bridge/
 allowed-tools: WebFetch
 ---
 
 # k-cinema-bridge
 
-A JSON API providing Korean multiplex (Lotte Cinema, CGV, Megabox) box office and upcoming movie data, enriched with detailed information such as genre, director, and cast from KOBIS (Korean Film Council). Data is automatically refreshed daily at 00:00 UTC.
+这是一个提供韩国多厅影院（Lotte Cinema、CGV、Megabox）票房信息以及即将上映电影数据的JSON API，其中包含来自KOBIS（韩国电影委员会）的详细信息，如电影类型、导演和演员阵容。数据每天在UTC时间00:00自动更新。
 
-## API Reference
+## API参考
 
-- Base URL: `https://uyeong.github.io/k-cinema-bridge`
-- All endpoints are accessible via `GET` requests without authentication.
-- The `info` field may be `null`, so always perform a `null` check before accessing it.
+- 基本URL：`https://uyeong.github.io/k-cinema-bridge`
+- 所有端点均支持通过`GET`请求访问，无需身份验证。
+- `info`字段可能为`null`，因此在访问前请务必进行`null`检查。
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |---|---|
-| GET /api/boxoffice.json | Combined box office from all sources (`{lotte, cgv, megabox}`) |
-| GET /api/boxoffice/{source}.json | Box office by source (`BoxOfficeMovie[]`) |
-| GET /api/upcoming.json | Combined upcoming movies from all sources (`{lotte, cgv, megabox}`) |
-| GET /api/upcoming/{source}.json | Upcoming movies by source (`UpcomingMovie[]`) |
+| GET /api/boxoffice.json | 来自所有渠道的综合票房数据（`{lotte, cgv, megabox}`） |
+| GET /api/boxoffice/{source}.json | 按来源划分的票房数据（`BoxOfficeMovie[]`） |
+| GET /api/upcoming.json | 来自所有渠道的即将上映电影数据（`{lotte, cgv, megabox}`） |
+| GET /api/upcoming/{source}.json | 按来源划分的即将上映电影列表（`UpcomingMovie[]`） |
 
-Valid source values: `lotte`, `cgv`, `megabox`
+有效的来源值：`lotte`、`cgv`、`megabox`
 
-## Data Models
+## 数据模型
 
 ### BoxOfficeMovie
 
@@ -64,59 +64,59 @@ audits: {number, grade}[]
 staff: {name, englishName, role}[]
 ```
 
-## Instructions
+## 使用说明
 
-### Recommending Popular Movies
+### 推荐热门电影
 
-When the user asks for movie recommendations or what's popular:
+当用户请求电影推荐或询问热门电影时：
 
-1. Fetch `GET {BASE_URL}/api/boxoffice.json` to retrieve combined box office data from all sources.
-2. Identify movies that appear across multiple sources with low rank values — lower rank means higher popularity.
-3. Present the top-ranked movies with their title, rating, and genre from `info.genres` if available.
+1. 调用`GET {BASE_URL}/api/boxoffice.json`以获取来自所有渠道的综合票房数据。
+2. 识别在多个渠道中出现且排名较低的电影（排名越低，人气越高）。
+3. 显示排名靠前的电影，包括其标题、评分以及`info.genres`中提供的电影类型（如有的话）。
 
-### Announcing Upcoming Releases
+### 公布即将上映的电影
 
-When the user asks about upcoming or soon-to-be-released movies:
+当用户询问即将上映的电影时：
 
-1. Fetch `GET {BASE_URL}/api/upcoming.json` to retrieve combined upcoming movie data.
-2. Filter results by `releaseDate` (YYYY-MM-DD) to match the user's requested time range.
-3. Provide details such as genre, directors, and actors from the `info` field if available.
+1. 调用`GET {BASE_URL}/api/upcoming.json`以获取即将上映的电影数据。
+2. 根据`releaseDate`（YYYY-MM-DD）筛选结果，以匹配用户请求的时间范围。
+3. 提供电影类型、导演和演员等详细信息（如`info`字段中有这些信息的话）。
 
-### Searching by Genre, Director, or Actor
+### 按类型、导演或演员搜索电影
 
-When the user asks about a specific genre, director, or actor:
+当用户询问特定类型的电影、导演或演员时：
 
-1. Fetch both `GET {BASE_URL}/api/boxoffice.json` and `GET {BASE_URL}/api/upcoming.json`.
-2. Filter results using the `info` field:
-    - Genre: match against `info.genres`
-    - Director: match against `info.directors[].name`
-    - Actor: match against `info.actors[].name`
-3. Always null-check the `info` field before accessing nested properties.
+1. 分别调用`GET {BASE_URL}/api/boxoffice.json`和`GET {BASE_URL}/api/upcoming.json`。
+2. 使用`info`字段进行筛选：
+    - 类型：与`info.genres`匹配
+    - 导演：与`info.directors[].name`匹配
+    - 演员：与`info.actors[].name`匹配
+3. 在访问嵌套属性之前，请务必进行`null`检查。
 
-### Filtering by Audience Rating
+### 按观众评分筛选电影
 
-When the user asks for age-appropriate movies:
+当用户询问适合特定年龄段的电影时：
 
-1. Use the `rating` field to filter. This field is always present and does not require the `info` field.
-2. Known rating values: "전체 관람가" (All ages), "12세 관람가" (12+), "15세 관람가" (15+), "청소년 관람불가" (Adults only).
+1. 使用`rating`字段进行筛选。该字段始终存在，无需依赖`info`字段。
+2. 已知的评分值包括：“전체 관람가”（适合所有年龄段）、“12세 관람가”（12岁以上）、“15세 관람가”（15岁以上）、“청소년 관람불가”（仅限成人）。
 
-### Querying a Specific Multiplex
+### 查询特定影院的信息
 
-When the user asks about a specific cinema chain:
+当用户询问特定影院的信息时：
 
-1. Fetch `GET {BASE_URL}/api/boxoffice/{source}.json` or `GET {BASE_URL}/api/upcoming/{source}.json`.
-2. Valid source values: `lotte`, `cgv`, `megabox`.
+1. 调用`GET {BASE_URL}/api/boxoffice/{source}.json`或`GET {BASE_URL}/api/upcoming/{source}.json`。
+2. 有效的来源值：`lotte`、`cgv`、`megabox`。
 
-### Comparing Across Multiplexes
+### 比较不同影院的排名
 
-When the user asks to compare rankings between cinema chains:
+当用户希望比较不同影院的排名时：
 
-1. Fetch `GET {BASE_URL}/api/boxoffice.json` to retrieve combined data.
-2. Find movies with the same `title` across different sources and compare their `rank` values.
+1. 调用`GET {BASE_URL}/api/boxoffice.json`以获取综合数据。
+2. 找出在多个渠道中标题相同的电影，并比较它们的排名。
 
-## Response Guidelines
+## 响应指南
 
-- Respond in the same language the user is using.
-- When presenting movie lists, include title, rank or release date, rating, and genre when available.
-- If `info` is `null` for a movie, present only the base fields (title, rank, rating, posterUrl) without guessing missing details.
-- When comparing across multiplexes, use a table format for clarity.
+- 以用户使用的语言进行响应。
+- 在展示电影列表时，包括标题、排名、上映日期、评分以及电影类型（如果有的话）。
+- 如果电影的`info`字段为`null`，仅显示基本字段（标题、排名、评分、海报链接），不要猜测缺失的详细信息。
+- 在比较不同影院的排名时，使用表格格式以便于清晰展示结果。

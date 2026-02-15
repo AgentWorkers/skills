@@ -17,9 +17,9 @@ metadata:
 
 # Google Merchant Center
 
-Access the Google Merchant Center API with managed OAuth authentication. Manage products, inventories, promotions, data sources, and reports for Google Shopping.
+您可以使用托管的 OAuth 认证来访问 Google Merchant Center API，从而管理 Google Shopping 的产品、库存、促销活动、数据源和报告。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List products in your Merchant Center account
@@ -31,48 +31,48 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-merchant/{sub-api}/{version}/accounts/{accountId}/{resource}
 ```
 
-The Merchant API uses a modular sub-API structure. Replace:
-- `{sub-api}` with the service: `products`, `accounts`, `datasources`, `reports`, `promotions`, `inventories`, `notifications`, `conversions`, `lfp`
-- `{version}` with `v1` (stable) or `v1beta`
-- `{accountId}` with your Merchant Center account ID
+Merchant API 采用模块化的子 API 结构。请将以下内容替换为相应的服务：
+- `{sub-api}`：`products`、`accounts`、`datasources`、`reports`、`promotions`、`inventories`、`notifications`、`conversions`、`lfp`
+- `{version}`：`v1`（稳定版本）或 `v1beta`
+- `{accountId}`：您的 Google Merchant Center 账户 ID
 
-The gateway proxies requests to `merchantapi.googleapis.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `merchantapi.googleapis.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-### Finding Your Merchant Center Account ID
+### 查找您的 Google Merchant Center 账户 ID
 
-Your Merchant Center account ID is a numeric identifier visible in the Merchant Center UI URL or account settings. It's required for all API calls.
+您的 Google Merchant Center 账户 ID 是一个数字标识符，可以在 Merchant Center 用户界面 URL 或账户设置中看到。所有 API 调用都需要这个 ID。
 
-## Connection Management
+## 连接管理
 
-Manage your Google Merchant OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google Merchant OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -83,7 +83,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -107,7 +107,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -122,9 +122,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -135,9 +135,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Merchant connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Merchant 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -149,47 +149,47 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Sub-API Structure
+### 子 API 结构
 
-The Merchant API is organized into sub-APIs, each with its own version:
+Merchant API 分为多个子 API，每个子 API 都有自己的版本：
 
-| Sub-API | Purpose | Stable Version |
+| 子 API | 功能 | 稳定版本 |
 |---------|---------|----------------|
-| `products` | Product catalog management | v1 |
-| `accounts` | Account settings and users | v1 |
-| `datasources` | Data source configuration | v1 |
-| `reports` | Analytics and reporting | v1 |
-| `promotions` | Promotional offers | v1 |
-| `inventories` | Local and regional inventory | v1 |
-| `notifications` | Webhook subscriptions | v1 |
-| `conversions` | Conversion tracking | v1 |
-| `lfp` | Local Fulfillment Partnership | v1beta |
+| `products` | 产品目录管理 | v1 |
+| `accounts` | 账户设置和用户 | v1 |
+| `datasources` | 数据源配置 | v1 |
+| `reports` | 分析和报告 | v1 |
+| `promotions` | 促销活动 | v1 |
+| `inventories` | 本地和区域库存 | v1 |
+| `notifications` | Webhook 订阅 | v1 |
+| `conversions` | 转换跟踪 | v1 |
+| `lfp` | 本地配送合作伙伴关系 | v1beta |
 
-### Products
+### 产品
 
-#### List Products
+#### 列出产品
 
 ```bash
 GET /google-merchant/products/v1/accounts/{accountId}/products
 ```
 
-Query parameters:
-- `pageSize` (integer): Maximum results per page
-- `pageToken` (string): Pagination token
+查询参数：
+- `pageSize`（整数）：每页的最大结果数量
+- `pageToken`（字符串）：分页令牌
 
-#### Get Product
+#### 获取产品信息
 
 ```bash
 GET /google-merchant/products/v1/accounts/{accountId}/products/{productId}
 ```
 
-Product ID format: `contentLanguage~feedLabel~offerId` (e.g., `en~US~sku123`)
+产品 ID 格式：`contentLanguage~feedLabel~offerId`（例如：`en~US~sku123`
 
-#### Insert Product Input
+#### 插入产品信息
 
 ```bash
 POST /google-merchant/products/v1/accounts/{accountId}/productInputs:insert?dataSource=accounts/{accountId}/dataSources/{dataSourceId}
@@ -214,21 +214,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Product Input
+#### 删除产品信息
 
 ```bash
 DELETE /google-merchant/products/v1/accounts/{accountId}/productInputs/{productId}?dataSource=accounts/{accountId}/dataSources/{dataSourceId}
 ```
 
-### Inventories
+### 库存
 
-#### List Local Inventories
+#### 列出本地库存
 
 ```bash
 GET /google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/localInventories
 ```
 
-#### Insert Local Inventory
+#### 插入本地库存信息
 
 ```bash
 POST /google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/localInventories:insert
@@ -245,27 +245,27 @@ Content-Type: application/json
 }
 ```
 
-#### List Regional Inventories
+#### 列出区域库存
 
 ```bash
 GET /google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/regionalInventories
 ```
 
-### Data Sources
+### 数据源
 
-#### List Data Sources
+#### 列出数据源
 
 ```bash
 GET /google-merchant/datasources/v1/accounts/{accountId}/dataSources
 ```
 
-#### Get Data Source
+#### 获取数据源信息
 
 ```bash
 GET /google-merchant/datasources/v1/accounts/{accountId}/dataSources/{dataSourceId}
 ```
 
-#### Create Data Source
+#### 创建数据源
 
 ```bash
 POST /google-merchant/datasources/v1/accounts/{accountId}/dataSources
@@ -281,15 +281,15 @@ Content-Type: application/json
 }
 ```
 
-#### Fetch Data Source (trigger immediate refresh)
+#### 获取数据源数据（触发立即刷新）
 
 ```bash
 POST /google-merchant/datasources/v1/accounts/{accountId}/dataSources/{dataSourceId}:fetch
 ```
 
-### Reports
+### 报告
 
-#### Search Reports
+#### 搜索报告
 
 ```bash
 POST /google-merchant/reports/v1/accounts/{accountId}/reports:search
@@ -300,29 +300,29 @@ Content-Type: application/json
 }
 ```
 
-Available report tables:
-- `product_performance_view` - Clicks, impressions, CTR by product
-- `product_view` - Current inventory with attributes and issues
-- `price_competitiveness_product_view` - Pricing vs competitors
-- `price_insights_product_view` - Suggested pricing
-- `best_sellers_product_cluster_view` - Best sellers by category
-- `competitive_visibility_competitor_view` - Competitor visibility
+可用的报告表格：
+- `product_performance_view`：按产品显示点击量、展示次数和点击率
+- `product_view`：当前库存信息及问题
+- `price_competitiveness_product_view`：与竞争对手的价格对比
+- `price_insights_product_view`：建议定价
+- `best_sellers_product_cluster_view`：按类别显示畅销产品
+- `competitive_visibility_competitor_view`：竞争对手的可见性
 
-### Promotions
+### 促销活动
 
-#### List Promotions
+#### 列出促销活动
 
 ```bash
 GET /google-merchant/promotions/v1/accounts/{accountId}/promotions
 ```
 
-#### Get Promotion
+#### 获取促销活动信息
 
 ```bash
 GET /google-merchant/promotions/v1/accounts/{accountId}/promotions/{promotionId}
 ```
 
-#### Insert Promotion
+#### 插入促销活动信息
 
 ```bash
 POST /google-merchant/promotions/v1/accounts/{accountId}/promotions:insert
@@ -340,65 +340,65 @@ Content-Type: application/json
 }
 ```
 
-### Accounts
+### 账户
 
-#### Get Account
+#### 获取账户信息
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}
 ```
 
-#### List Sub-accounts
+#### 列出子账户
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}:listSubaccounts
 ```
 
-#### Get Business Info
+#### 获取业务信息
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}/businessInfo
 ```
 
-#### Get Shipping Settings
+#### 获取配送设置
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}/shippingSettings
 ```
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}/users
 ```
 
-#### List Programs
+#### 列出计划
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}/programs
 ```
 
-#### List Regions
+#### 列出地区
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}/regions
 ```
 
-#### List Online Return Policies
+#### 列出在线退货政策
 
 ```bash
 GET /google-merchant/accounts/v1/accounts/{accountId}/onlineReturnPolicies
 ```
 
-### Notifications
+### 通知
 
-#### List Notification Subscriptions
+#### 列出通知订阅
 
 ```bash
 GET /google-merchant/notifications/v1/accounts/{accountId}/notificationsubscriptions
 ```
 
-#### Create Notification Subscription
+#### 创建通知订阅
 
 ```bash
 POST /google-merchant/notifications/v1/accounts/{accountId}/notificationsubscriptions
@@ -410,23 +410,23 @@ Content-Type: application/json
 }
 ```
 
-### Conversion Sources
+### 转换来源
 
-#### List Conversion Sources
+#### 列出转换来源
 
 ```bash
 GET /google-merchant/conversions/v1/accounts/{accountId}/conversionSources
 ```
 
-## Pagination
+## 分页
 
-The API uses token-based pagination:
+API 使用基于令牌的分页机制：
 
 ```bash
 GET /google-merchant/products/v1/accounts/{accountId}/products?pageSize=50
 ```
 
-Response includes `nextPageToken` when more results exist:
+当存在更多结果时，响应中会包含 `nextPageToken`：
 
 ```json
 {
@@ -435,13 +435,13 @@ Response includes `nextPageToken` when more results exist:
 }
 ```
 
-Use the token for the next page:
+使用该令牌获取下一页的数据：
 
 ```bash
 GET /google-merchant/products/v1/accounts/{accountId}/products?pageSize=50&pageToken=CAE...
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -472,42 +472,42 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Product IDs use the format `contentLanguage~feedLabel~offerId` (e.g., `en~US~sku123`)
-- Products can only be inserted/updated/deleted in data sources of type `API`
-- After inserting/updating a product, it may take several minutes before the processed product appears
-- Monetary values use micros (divide by 1,000,000 for actual value)
-- The API uses sub-API versioning - prefer `v1` stable over `v1beta`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 产品 ID 的格式为 `contentLanguage~feedLabel~offerId`（例如：`en~US~sku123`）
+- 产品只能在类型为 `API` 的数据源中插入/更新/删除。
+- 插入/更新产品后，可能需要几分钟才能在系统中显示。
+- 货币值以微单位（micro）表示（实际数值需除以 1,000,000）。
+- API 使用子 API 版本控制——建议使用稳定的 `v1` 而不是 `v1beta`。
+- 重要提示：当使用 `curl` 命令时，如果 URL 中包含括号，请使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Merchant connection |
-| 401 | Invalid or missing Maton API key, or no access to specified account |
-| 403 | Permission denied for the requested operation |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Google Merchant API |
+| 400 | 未建立 Google Merchant 连接 |
+| 401 | Maton API 密钥无效或缺失，或无法访问指定的账户 |
+| 403 | 拒绝执行请求的操作 |
+| 404 | 资源未找到 |
+| 429 | 请求次数限制 |
+| 4xx/5xx | 来自 Google Merchant API 的传递错误 |
 
-### Common Errors
+### 常见错误
 
-**"The caller does not have access to the accounts"**: The specified account ID is not accessible with your OAuth credentials. Verify you have access to the Merchant Center account.
+**“调用者无法访问该账户”**：指定的账户 ID 使用您的 OAuth 凭据无法访问。请确认您有权访问该 Google Merchant Center 账户。
 
-**"GCP project is not registered"**: The v1 stable API requires GCP project registration. Use v1beta or register your project.
+**“GCP 项目未注册”**：v1 稳定版本需要注册 GCP 项目。请使用 `v1beta` 或注册您的项目。
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -518,20 +518,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-merchant`. For example:
+1. 确保您的 URL 路径以 `google-merchant` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/google-merchant/products/v1/accounts/{accountId}/products`
+- 错误的路径：`https://gateway.maton.ai/products/v1/accounts/{accountId}/products`
 
-- Correct: `https://gateway.maton.ai/google-merchant/products/v1/accounts/{accountId}/products`
-- Incorrect: `https://gateway.maton.ai/products/v1/accounts/{accountId}/products`
+## 资源
 
-## Resources
-
-- [Merchant API Overview](https://developers.google.com/merchant/api/overview)
-- [Merchant API Reference](https://developers.google.com/merchant/api/reference/rest)
-- [Products Guide](https://developers.google.com/merchant/api/guides/products/overview)
-- [Data Sources Guide](https://developers.google.com/merchant/api/guides/datasources)
-- [Reports Guide](https://developers.google.com/merchant/api/guides/reports)
-- [Product Data Specification](https://support.google.com/merchants/answer/7052112)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Merchant API 概述](https://developers.google.com/merchant/api/overview)
+- [Merchant API 参考](https://developers.google.com/merchant/api/reference/rest)
+- [产品指南](https://developers.google.com/merchant/api/guides/products/overview)
+- [数据源指南](https://developers.google.com/merchant/api/guides/datasources)
+- [报告指南](https://developers.google.com/merchant/api/guides/reports)
+- [产品数据规范](https://support.google.com/merchants/answer/7052112)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

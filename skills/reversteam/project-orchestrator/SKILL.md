@@ -1,6 +1,6 @@
 ---
 name: project-orchestrator
-description: AI agent orchestrator with Neo4j knowledge graph, Meilisearch search, and Tree-sitter parsing. Use for coordinating multiple coding agents on complex projects with shared context and plans.
+description: AI代理协调器，集成Neo4j知识图谱、Meilisearch搜索功能以及Tree-sitter解析技术。用于在具有共享上下文和计划的复杂项目中协调多个编码代理的工作。
 metadata:
   clawdbot:
     emoji: "🎯"
@@ -8,49 +8,50 @@ metadata:
       bins: ["docker", "cargo"]
 ---
 
-# Project Orchestrator
+# 项目编排器（Project Orchestrator）
 
-Coordinate multiple AI coding agents with a shared knowledge base.
+该工具用于协调多个 AI 编码代理，并利用共享的知识库来协同工作。
 
-## Features
+## 主要功能
 
-- **Multi-Project Support**: Manage multiple codebases with isolated data
-- **Neo4j Knowledge Graph**: Code structure, relationships, plans, decisions
-- **Meilisearch**: Fast semantic search across code and decisions
-- **Tree-sitter**: Precise code parsing for 12 languages
-- **Plan Management**: Structured tasks with dependencies and constraints
-- **MCP Integration**: 62 tools for Claude Code, OpenAI Agents, and Cursor
+- **多项目支持**：能够管理多个具有独立数据结构的代码库。
+- **Neo4j 知识图谱**：用于存储代码结构、项目关系、计划以及决策信息。
+- **Meilisearch**：提供快速的语义搜索功能，可在代码和决策记录中查找所需内容。
+- **Tree-sitter**：支持 12 种语言的精确代码解析。
+- **计划管理**：支持结构化任务管理，包括任务之间的依赖关系和约束条件。
+- **MCP 集成**：兼容 62 种工具，包括 Claude Code、OpenAI Agents 和 Cursor。
 
-## Documentation
+## 文档资料
 
-- [Installation Guide](docs/setup/installation.md)
-- [Getting Started Tutorial](docs/guides/getting-started.md)
-- [API Reference](docs/api/reference.md)
-- [MCP Tools Reference](docs/api/mcp-tools.md)
-- Integration Guides: [Claude Code](docs/integrations/claude-code.md) | [OpenAI](docs/integrations/openai.md) | [Cursor](docs/integrations/cursor.md)
+- [安装指南](docs/setup/installation.md)
+- [入门教程](docs/guides/getting-started.md)
+- [API 参考](docs/api/reference.md)
+- [MCP 工具参考](docs/api/mcp-tools.md)
+- 集成指南：[Claude Code](docs/integrations/claude-code.md) | [OpenAI](docs/integrations/openai.md) | [Cursor](docs/integrations/cursor.md)
 
-## Quick Start
+## 快速入门
 
-### 1. Start the backends
+### 1. 启动后端服务
 
 ```bash
 cd {baseDir}
 docker compose up -d neo4j meilisearch
 ```
 
-### 2. Build and run the orchestrator
+### 2. 构建并运行项目编排器
 
 ```bash
 cargo build --release
 ./target/release/orchestrator serve
 ```
 
-Or with Docker:
+### 或者使用 Docker 运行：
+
 ```bash
 docker compose up -d
 ```
 
-### 3. Sync your codebase
+### 3. 同步代码库
 
 ```bash
 # Via CLI
@@ -62,9 +63,9 @@ curl -X POST http://localhost:8080/api/sync \
   -d '{"path": "/path/to/project"}'
 ```
 
-## Usage
+## 使用方法
 
-### Create a project
+### 创建项目
 
 ```bash
 # Create a new project
@@ -86,7 +87,7 @@ curl -X POST http://localhost:8080/api/projects/embryon/sync
 curl "http://localhost:8080/api/projects/embryon/code/search?q=tensor&limit=10"
 ```
 
-### Create a plan
+### 创建计划
 
 ```bash
 orch plan create \
@@ -95,7 +96,7 @@ orch plan create \
   --priority 10
 ```
 
-### Add tasks to the plan
+### 向计划中添加任务
 
 ```bash
 orch task add \
@@ -108,7 +109,7 @@ orch task add \
   --depends <task-1-id>
 ```
 
-### Get context for an agent
+### 获取代理的上下文信息
 
 ```bash
 # JSON context
@@ -118,7 +119,7 @@ orch context --plan <plan-id> --task <task-id>
 orch context --plan <plan-id> --task <task-id> --prompt
 ```
 
-### Record decisions
+### 记录决策结果
 
 ```bash
 orch decision add \
@@ -127,73 +128,72 @@ orch decision add \
   --rationale "Better cache locality, 2x performance improvement"
 ```
 
-### Search past decisions
+### 查找过去的决策记录
 
 ```bash
 orch decision search "memory management GPU"
 ```
 
-## API Endpoints
+## API 接口
 
-### Projects (Multi-Project Support)
+### 项目（多项目支持）
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/projects` | List all projects |
-| POST | `/api/projects` | Create a new project |
-| GET | `/api/projects/{slug}` | Get project by slug |
-| DELETE | `/api/projects/{slug}` | Delete a project |
-| POST | `/api/projects/{slug}/sync` | Sync project's codebase |
-| GET | `/api/projects/{slug}/plans` | List project's plans |
-| GET | `/api/projects/{slug}/code/search` | Search code in project |
+| 方法 | 路径          | 描述                        |
+|--------|-----------------------------|
+| GET    | `/api/projects`     | 列出所有项目                        |
+| POST    | `/api/projects`     | 创建新项目                        |
+| GET    | `/api/projects/{slug}`    | 根据 slug 获取项目信息                |
+| DELETE | `/api/projects/{slug}`    | 删除项目                        |
+| POST    | `/api/projects/{slug}/sync`   | 同步项目的代码库                    |
+| GET    | `/api/projects/{slug}/plans` | 查看项目的计划列表                |
+| GET    | `/api/projects/{slug}/code/search` | 在项目中搜索代码                    |
 
-### Plans & Tasks
+### 计划与任务
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/health` | Health check |
-| GET | `/api/plans` | List active plans |
-| POST | `/api/plans` | Create plan |
-| GET | `/api/plans/{id}` | Get plan details |
-| PATCH | `/api/plans/{id}` | Update plan status |
-| GET | `/api/plans/{id}/next-task` | Get next available task |
-| POST | `/api/plans/{id}/tasks` | Add task to plan |
-| GET | `/api/tasks/{id}` | Get task details |
-| PATCH | `/api/tasks/{id}` | Update task |
-| GET | `/api/plans/{plan}/tasks/{task}/context` | Get task context |
-| GET | `/api/plans/{plan}/tasks/{task}/prompt` | Get generated prompt |
-| POST | `/api/tasks/{id}/decisions` | Add decision |
-| GET | `/api/decisions/search?q=...` | Search decisions |
+| 方法 | 路径          | 描述                        |
+|--------|-----------------------------|
+| GET    | `/health`       | 检查系统运行状态                    |
+| POST    | `/api/plans`     | 创建新计划                        |
+| GET    | `/api/plans/{id}`     | 获取计划详情                      |
+| PATCH    | `/api/plans/{id}`     | 更新计划状态                      |
+| GET    | `/api/plans/{id}/next-task` | 获取下一个可执行的任务                |
+| POST    | `/api/plans/{id}/tasks` | 向计划中添加任务                    |
+| GET    | `/api/tasks/{id}`     | 获取任务详情                      |
+| PATCH    | `/api/tasks/{id}`     | 更新任务信息                      |
+| GET    | `/api/plans/{plan}/tasks/{task}/context` | 获取任务的上下文信息                |
+| GET    | `/api/plans/{plan}/tasks/{task}/prompt` | 获取任务生成的提示信息                |
+| POST    | `/api/tasks/{id}/decisions` | 为任务添加决策记录                  |
+| GET    | `/api/decisions/search?q=...` | 搜索过去的决策记录                |
 
-### Sync & Watch
+### 同步与监控
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/sync` | Sync directory to knowledge base |
-| GET | `/api/watch` | Get file watcher status |
-| POST | `/api/watch` | Start watching a directory |
-| DELETE | `/api/watch` | Stop file watcher |
-| POST | `/api/wake` | Agent completion webhook |
+| 方法 | 路径          | 描述                        |
+|--------|-----------------------------|
+| POST    | `/api/sync`     | 将目录内容同步到知识库                    |
+| GET    | `/api/watch`     | 获取文件监控状态                    |
+| POST    | `/api/watch`     | 开始监控指定目录                    |
+| DELETE | `/api/watch`     | 停止对目录的监控                    |
+| POST    | `/api/wake`     | 发送代理完成通知的 Webhook                |
 
-### Code Exploration (Graph + Search)
+### 代码探索（代码图谱与搜索）
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/code/search?q=...` | Semantic code search |
-| GET | `/api/code/symbols/{path}` | Get symbols in a file |
-| GET | `/api/code/references?symbol=...` | Find all references to a symbol |
-| GET | `/api/code/dependencies/{path}` | Get file import/dependent graph |
-| GET | `/api/code/callgraph?function=...` | Get function call graph |
-| GET | `/api/code/impact?target=...` | Analyze change impact |
-| GET | `/api/code/architecture` | Get codebase overview |
-| POST | `/api/code/similar` | Find similar code snippets |
-| GET | `/api/code/trait-impls?trait_name=...` | Find types implementing a trait |
-| GET | `/api/code/type-traits?type_name=...` | Find traits implemented by a type |
-| GET | `/api/code/impl-blocks?type_name=...` | Get all impl blocks for a type |
+| 方法 | 路径          | 描述                        |
+|--------|-----------------------------|
+| GET    | `/api/code/search?q=...` | 进行语义代码搜索                    |
+| GET    | `/api/code/symbols/{path}` | 获取文件中的符号信息                  |
+| GET    | `/api/code/references?symbol=...` | 查找符号的所有引用                    |
+| GET    | `/api/code/dependencies/{path}` | 获取文件的导入/依赖关系图                |
+| GET    | `/api/code/callgraph?function=...` | 获取函数的调用关系图                |
+| GET    | `/api/code/impact?target=...` | 分析代码变更的影响                  |
+| GET    | `/api/code/architecture` | 查看代码库的整体结构                  |
+| POST    | `/api/code/similar`     | 查找相似的代码片段                    |
+| GET    | `/api/code/trait-impls?trait_name=...` | 查找实现特定 trait 的代码片段            |
+| GET    | `/api/code/type-traits?type_name=...` | 查找由特定类型实现的 trait                |
+| GET    | `/api/code/impl-blocks?type_name=...` | 获取特定类型的所有实现块                  |
 
-## Auto-Sync with File Watcher
+## 与文件监控器的自动同步
 
-Keep the knowledge base updated automatically while coding:
+在编码过程中，知识库会自动更新：
 
 ```bash
 # Start watching a project directory
@@ -208,12 +208,11 @@ curl http://localhost:8080/api/watch
 curl -X DELETE http://localhost:8080/api/watch
 ```
 
-The watcher automatically syncs `.rs`, `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.go` files when modified.
-It ignores `node_modules/`, `target/`, `.git/`, `__pycache__/`, `dist/`, `build/`.
+该工具会自动同步 `.rs`、`.ts`、`.tsx`、`.js`、`.jsx`、`.py`、`.go` 文件的变更。同时，它会忽略 `node_modules/`、`target/`、`.git/`、`__pycache__`、`dist/`、`build/` 目录。
 
-## Code Exploration
+## 代码探索方式
 
-Query the code graph instead of reading files directly:
+可以直接查询代码图谱，而无需直接阅读源代码：
 
 ```bash
 # Semantic search across code
@@ -252,55 +251,28 @@ curl "http://localhost:8080/api/code/type-traits?type_name=Orchestrator"
 curl "http://localhost:8080/api/code/impl-blocks?type_name=Neo4jClient"
 ```
 
-## For Agents
+### 为代理提供的功能
 
-### Getting context before starting work
+- **开始工作前的上下文获取**：帮助代理了解项目背景。
+- **工作过程中的决策记录**：确保代理能够基于最新信息进行操作。
+- **完成任务的实时通知**：及时通知代理任务已完成。
 
-```bash
-# Fetch your task context
-curl http://localhost:8080/api/plans/$PLAN_ID/tasks/$TASK_ID/prompt
-```
+## 配置参数
 
-### Recording decisions while working
+环境变量设置：
 
-```bash
-curl -X POST http://localhost:8080/api/tasks/$TASK_ID/decisions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "description": "Chose X over Y",
-    "rationale": "Because..."
-  }'
-```
+| 变量        | 默认值        | 描述                                      |
+|-------------|-------------|-----------------------------------------|
+| `NEO4J_URI`    | `bolt://localhost:7687` | Neo4j 数据库连接地址                        |
+| `NEO4J_USER`    | `neo4j`       | Neo4j 用户名                                    |
+| `NEO4J_PASSWORD` | `orchestrator123`   | Neo4j 密码                                    |
+| `MEILISEARCH_URL` | `http://localhost:7700` | Meilisearch 服务地址                        |
+| `MEILISEARCH_KEY` | `orchestrator-meili-key-change-me` | Meilisearch API 密钥                        |
+| `WORKSPACE_PATH` | `.`         | 默认工作空间路径                                  |
+| `SERVER_PORT`    | `8080`       | 服务器端口号                                  |
+| `RUST_LOG`     | `info`       | 日志记录级别                                  |
 
-### Notifying completion
-
-```bash
-curl -X POST http://localhost:8080/api/wake \
-  -H "Content-Type: application/json" \
-  -d '{
-    "task_id": "'$TASK_ID'",
-    "success": true,
-    "summary": "Implemented feature X",
-    "files_modified": ["src/foo.rs", "src/bar.rs"]
-  }'
-```
-
-## Configuration
-
-Environment variables:
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NEO4J_URI` | `bolt://localhost:7687` | Neo4j connection URI |
-| `NEO4J_USER` | `neo4j` | Neo4j username |
-| `NEO4J_PASSWORD` | `orchestrator123` | Neo4j password |
-| `MEILISEARCH_URL` | `http://localhost:7700` | Meilisearch URL |
-| `MEILISEARCH_KEY` | `orchestrator-meili-key-change-me` | Meilisearch API key |
-| `WORKSPACE_PATH` | `.` | Default workspace path |
-| `SERVER_PORT` | `8080` | Server port |
-| `RUST_LOG` | `info` | Log level |
-
-## Architecture
+## 系统架构
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -321,7 +293,7 @@ Environment variables:
 └───────────────┘     └───────────────┘     └───────────────┘
 ```
 
-## Development
+## 开发说明
 
 ```bash
 # Run tests

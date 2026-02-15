@@ -1,6 +1,6 @@
 ---
 name: eyebot-alphabot
-description: Market intelligence and alpha finder for crypto opportunities
+description: 市场情报工具及加密货币投资机会发现平台
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,37 +10,37 @@ metadata:
 
 # AlphaBot 🎯
 
-**AI Market Intelligence Engine**
+**AI市场情报引擎**
 
-Find alpha before the crowd. Track whale movements, identify emerging trends, and discover opportunities across DeFi.
+在众人之前发现潜在的优质投资机会。追踪大型钱包的交易动态，识别新兴趋势，并在去中心化金融（DeFi）领域中发现投资机会。
 
-## Features
+## 主要功能
 
-- **Whale Tracking**: Monitor large wallet movements
-- **Trend Detection**: Identify emerging narratives
-- **Token Discovery**: Find promising new tokens early
-- **Social Signals**: Track crypto Twitter sentiment
-- **On-Chain Analytics**: Deep blockchain data analysis
+- **大型钱包追踪**：监控大型钱包的交易活动
+- **趋势检测**：识别市场中的新兴趋势
+- **代币发现**：尽早发现具有潜力的新代币
+- **社交信号分析**：追踪加密货币相关的Twitter讨论情绪
+- **链上数据分析**：深入分析区块链数据
 
-## Intelligence Sources
+## 情报来源
 
-| Source | Data |
+| 来源 | 数据类型 |
 |--------|------|
-| On-Chain | Wallet flows, DEX activity |
-| Social | Twitter, Discord, Telegram |
-| Markets | Price action, volume spikes |
-| Governance | DAO proposals, votes |
-| Development | GitHub activity, updates |
+| 链上数据 | 钱包交易流动、去中心化交易所（DEX）活动 |
+| 社交媒体 | Twitter、Discord、Telegram上的讨论 |
+| 市场数据 | 价格变动、交易量异常 |
+| 治理结构数据 | 去中心化自治组织（DAO）的提案与投票记录 |
+| 开源项目数据 | GitHub上的项目活动与更新信息 |
 
-## Alert Types
+## 警报类型
 
-- 🐋 Whale movements
-- 📈 Volume anomalies  
-- 🔥 Trending tokens
-- 💡 New opportunities
-- ⚠️ Risk warnings
+- 🐋 大型钱包交易动态
+- 📈 交易量异常
+- 🔥 热门代币
+- 💡 新的投资机会
+- ⚠️ 风险警告
 
-## Usage
+## 使用方法
 
 ```bash
 # Find alpha
@@ -53,5 +53,6 @@ eyebot alphabot track <wallet_address>
 eyebot alphabot trending --chain base
 ```
 
-## Support
+## 售后支持
+
 Telegram: @ILL4NE

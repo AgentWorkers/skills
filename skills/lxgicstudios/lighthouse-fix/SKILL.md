@@ -1,28 +1,28 @@
 ---
 name: lighthouse-fixer
-description: Run Lighthouse audit and get AI fix suggestions. Use when improving performance.
+description: 运行 Lighthouse 审计工具，获取 AI 提供的修复建议。在优化性能时可以使用这些建议。
 ---
 
 # Lighthouse Fixer
 
-Lighthouse tells you what's wrong but the fix suggestions are generic. This tool runs Lighthouse and gives you specific, actionable fixes for your issues.
+Lighthouse 可以告诉你网站存在哪些问题，但其提供的修复建议通常较为笼统。这款工具会运行 Lighthouse 并针对你的具体问题给出切实可行的修复方案。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-lighthouse https://mysite.com
 ```
 
-## What It Does
+## 功能介绍
 
-- Runs full Lighthouse audit on any URL
-- Analyzes the results with AI
-- Provides specific fixes, not generic advice
-- Prioritizes issues by impact
+- 对任意 URL 进行全面的 Lighthouse 审计
+- 通过人工智能分析审计结果
+- 提供具体的修复建议，而非泛泛而谈的指导
+- 根据问题的影响程度对问题进行优先级排序
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Audit your site
@@ -35,42 +35,42 @@ npx ai-lighthouse https://example.com/page
 npx ai-lighthouse https://mysite.com --category performance
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Fix performance first** - biggest impact on user experience
-- **Test on slow connections** - not everyone has gigabit
-- **Check mobile separately** - mobile scores are often worse
-- **Iterate** - fix one thing at a time
+- **优先修复性能问题**——这对用户体验影响最大
+- **在网络连接较慢的环境中进行测试**——并非所有人都能使用千兆网络
+- **单独检查移动端表现**——移动端的评分通常较低
+- **逐步修复问题**——一次只修复一个方面
 
-## When to Use This
+## 适用场景
 
-- Lighthouse scores are tanking
-- SEO audit flagged performance issues
-- Core Web Vitals are failing
-- Want actionable advice, not documentation links
+- 当 Lighthouse 的评分持续下降时
+- 当 SEO 审计发现性能问题时
+- 当 Core Web Vitals 指标不达标时
+- 当你需要具体的修复建议而非仅仅文档链接时
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发者工具之一。免费版本无需支付费用、无需注册，也无需 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-lighthouse --help
 ```
 
-## How It Works
+## 工作原理
 
-Runs Lighthouse against your URL, captures the full report, and sends it to GPT-4o-mini. The AI interprets the findings and provides specific code-level recommendations based on the actual issues found.
+该工具会针对你的网站地址运行 Lighthouse 审计，捕获完整的审计报告，并将其发送给 GPT-4o-mini。人工智能会根据实际发现的问题提供具体的代码级修复建议。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。你可以自由使用该工具。

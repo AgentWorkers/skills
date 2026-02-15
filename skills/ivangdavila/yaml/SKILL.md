@@ -1,52 +1,52 @@
 ---
 name: YAML
-description: Write valid YAML that parses predictably across languages and versions.
+description: 编写有效的 YAML 文件，使其能够在不同语言和版本中都能被可靠地解析。
 metadata: {"clawdbot":{"emoji":"📋","os":["linux","darwin","win32"]}}
 ---
 
-## Type Coercion Traps
+## 类型强制转换的陷阱
 
-- `yes`, `no`, `on`, `off`, `true`, `false` → boolean; quote if literal string: `"yes"`
-- `NO` (Norway country code) → false in YAML 1.1; always quote country codes
-- `1.0` → float, `1` → int; quote version numbers: `"1.0"`
-- `010` → octal (8) in YAML 1.1; quote or use `0o10` explicitly
-- `null`, `~`, empty value → null; quote if literal: `"null"`, `"~"`
-- `.inf`, `-.inf`, `.nan` → special floats; quote if literal strings
+- `yes`, `no`, `on`, `off`, `true`, `false` → 布尔值；如果是字面字符串，则需要加引号：`"yes"`  
+- `NO`（挪威的国家代码） → 在 YAML 1.1 中表示 `false`；国家代码始终需要加引号  
+- `1.0` → 浮点数；`1` → 整数；版本号需要加引号：`"1.0"`  
+- `010` → 八进制数（在 YAML 1.1 中）；需要加引号或明确使用 `0o10`  
+- `null`, `~`, 空值 → `null`；如果是字面字符串，则需要加引号：`"null"`, `"~"`  
+- `.inf`, `.nan` → 特殊浮点数；如果是字面字符串，则需要加引号  
 
-## Indentation
+## 缩进规则  
 
-- Spaces only—tabs are forbidden and cause parse errors
-- Consistent indent width required within document—2 spaces conventional
-- Sequence items `-` count as indentation—nested content aligns after the space
+- 仅使用空格进行缩进，禁止使用制表符（tab），否则会导致解析错误  
+- 文档内必须保持一致的缩进宽度（通常为 2 个空格）  
+- 序列项之间的 `-` 也算作缩进；嵌套内容会在空格后对齐  
 
-## Strings
+## 字符串  
 
-- Colon followed by space `: ` triggers key-value—quote strings containing `: `
-- `#` starts comment unless quoted—quote strings with `#`
-- Leading/trailing spaces stripped from unquoted strings—quote to preserve
-- Quote strings starting with `@`, `` ` ``, `*`, `&`, `!`, `|`, `>`, `{`, `[`, `%`
+- 冒号后跟空格 `:` 表示键值对；包含 `:` 的字符串需要加引号  
+- `#` 开头表示注释（除非被引号括起来）；带有 `#` 的字符串需要加引号  
+- 未加引号的字符串前后的空格会被删除；需要加引号的字符串应保留这些空格  
+- 以 `@`, ```, ` ``, `*`, `&`, `!`, `|`, `>`, `{`, `[`, `%` 开头的字符串需要加引号  
 
-## Multiline Strings
+## 多行字符串  
 
-- `|` literal block preserves newlines; `>` folded block joins lines with spaces
-- Trailing newline: `|-` and `>-` strip final newline; `|+` and `>+` keep trailing blank lines
-- Indentation of first content line sets the block indent—be consistent
+- 使用 `|` 表示多行字符串块时，会保留换行符；使用 `>` 表示折叠块时，换行符会用空格连接  
+- 如果字符串以换行符结尾，可以使用 `|-` 或 `>-` 删除末尾的换行符；`|+` 和 `>+` 可以保留末尾的空行  
+- 第一行内容的缩进决定了整个块的缩进方式——请保持一致性  
 
-## Structure
+## 结构规则  
 
-- Duplicate keys: YAML spec says last wins, but some parsers error—avoid duplicates
-- Anchors `&name` and aliases `*name` reduce repetition—but aliases can't override anchor values
-- Document separator `---` starts new document; `...` ends document—useful in streams
-- Empty documents between `---` markers are valid but often unintended
+- 如果存在相同的键，YAML 规范规定最后一个键的值会被优先使用，但某些解析器可能会出错——应避免重复的键  
+- 使用锚点 `&name` 和别名 `*name` 可以减少重复，但别名不能覆盖锚点的值  
+- 文档分隔符 `---` 用于开始新文档；`...` 用于结束文档——在流处理中非常有用  
+- 位于 `---` 标记之间的空文档是有效的，但通常不是预期的行为  
 
-## Comments
+## 注释  
 
-- `#` only valid at line start or after whitespace—`key:value#comment` has no comment
-- No inline comments after multiline block scalars—comment applies to next line
-- No multi-line comment syntax—each line needs `#`
+- `#` 只能用于行首或空白字符之后；`key:value#comment` 的形式不会被解析为注释  
+- 多行字符串块内不允许内联注释——注释会应用于下一行  
+- 不支持多行注释语法——每行都需要单独使用 `#`  
 
-## Compatibility
+## 兼容性  
 
-- YAML 1.1 vs 1.2: boolean words (`yes`/`no`), octal syntax differ—know which version parser uses
-- JSON is valid YAML 1.2—but YAML features (anchors, multiline) don't round-trip to JSON
-- Some parsers limit nesting depth or file size—test with expected data scale
+- YAML 1.1 与 YAML 1.2 之间的差异：布尔值（`yes`/`no`）和八进制数的表示方式不同——请确保知道使用的解析器版本  
+- JSON 是有效的 YAML 1.2 格式，但 YAML 的某些特性（如锚点、多行字符串等）无法在 JSON 中被正确表示  
+- 有些解析器会限制嵌套深度或文件大小——请使用预期数据范围进行测试

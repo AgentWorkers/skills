@@ -1,91 +1,86 @@
 ---
 name: Exam
-description: Generate practice tests, flashcards, study schedules, and timed simulations from any study material.
+description: 可以从任何学习材料中生成练习测试、闪卡、学习计划以及定时模拟题。
 ---
 
-## What This Skill Does
+## 该工具的功能
 
-Complete exam preparation from your content:
-- **Practice tests** — Multiple choice, short answer, essay questions
-- **Flashcards** — Key concepts for spaced repetition, Anki-exportable
-- **Simulations** — Timed mock exams matching real format
-- **Gap analysis** — Identify weak areas, prioritize weak topics
-- **Study schedules** — Realistic calendars based on exam date and availability
-- **Summaries** — Condense chapters to 1-2 pages of exam-relevant content
-- **Concept maps** — Visualize how topics connect
-- **Quick review sheets** — Last-minute "cheat sheets" for 30-min pre-exam review
+该工具可帮助用户全面准备考试：
+- **练习测试**：包含选择题、简答题和论述题
+- **闪卡**：用于间隔重复学习，支持导出到 Anki 软件
+- **模拟考试**：模拟真实考试环境的限时测试
+- **差距分析**：识别学习薄弱环节，确定需要重点复习的主题
+- **学习计划**：根据考试日期和个人时间安排制定实际可行的学习计划
+- **内容摘要**：将章节内容精简为 1-2 页的考试相关要点
+- **概念图**：帮助用户直观理解各知识点之间的联系
+- **快速复习资料**：提供考前 30 分钟的复习资料
 
-Works for: university exams, certifications (AWS, PMP, etc.), standardized tests, professional licensing.
+适用于：大学考试、认证考试（如 AWS、PMP 等）、标准化考试以及专业执照考试。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Load |
+| 功能 | 相关文件 |
 |------|------|
-| Question generation patterns | `questions.md` |
-| Flashcard formats and strategies | `flashcards.md` |
-| Timed simulation setup | `simulations.md` |
-| Performance tracking | `tracking.md` |
+| 问题生成规则 | `questions.md` |
+| 闪卡格式与使用策略 | `flashcards.md` |
+| 模拟考试设置 | `simulations.md` |
+| 成绩跟踪 | `tracking.md` |
 
 ---
 
-## Core Workflow
+## 核心工作流程
 
-### 1. Provide Source Material
-User shares: notes, textbook chapters, slides, documentation, past exams.
+### 1. 提供学习素材
+用户提供学习资料，如笔记、教科书章节、幻灯片、文档或以往的考试题目。
 
-### 2. Generate Questions
-Agent creates questions at specified difficulty:
-- **Easy** — Recall, definitions, basic concepts
-- **Medium** — Application, comparison, analysis
-- **Hard** — Synthesis, edge cases, multi-step reasoning
+### 2. 生成问题
+系统根据难度生成相应类型的问题：
+- **简单题**：考查记忆、定义和基础概念
+- **中等难度题**：考查应用能力、比较分析和综合判断
+- **难题**：考查综合运用能力和复杂逻辑推理
 
-### 3. Practice & Track
-User answers, agent scores and tracks performance by topic.
+### 3. 练习与成绩跟踪
+用户完成答题后，系统会评分并记录各科目的学习情况。
 
-### 4. Focus Weak Areas
-Agent identifies gaps, generates targeted practice.
+### 4. 重点复习薄弱环节
+系统会分析用户的薄弱环节，并生成针对性的练习题。
 
 ---
 
-## Question Types
+## 问题类型
 
-| Type | Format | Best For |
+| 类型 | 格式 | 适用场景 |
 |------|--------|----------|
-| Multiple choice | 4 options, 1 correct | Quick assessment, certifications |
-| Multiple select | N options, M correct | Complex topics |
-| True/False | Statement + T/F | Fast review |
-| Short answer | 1-3 sentences | Definitions, explanations |
-| Fill blank | Sentence with ___ | Terminology |
-| Matching | Connect pairs | Relationships |
-| Essay | Open response | Deep understanding |
+| 选择题 | 4 个选项，1 个正确答案 | 适用于快速评估和认证考试 |
+| 多选题 | 多个选项，选择多个正确答案 | 适用于复杂主题 |
+| 判断题 | 需判断陈述是否正确 | 适用于快速复习 |
+| 简答题 | 1-3 句回答 | 适用于定义和解释性内容 |
+| 填空题 | 需填写空白处 | 适用于术语记忆 |
+| 匹配题 | 选择对应的配对项 | 适用于考查知识点之间的关联 |
+| 论述题 | 开放式回答 | 适用于深入理解 |
 
 ---
 
-## Generating Questions
+## 问题生成方式
 
-**From notes:**
-```
+- **从笔记生成问题**：```
 User: "Generate 10 questions from these AWS S3 notes"
 Agent: Creates mix of types, varying difficulty
 ```
-
-**By topic:**
-```
+- **按主题分类生成问题**：```
 User: "5 hard questions on database normalization"
 Agent: Generates challenging application questions
 ```
-
-**Exam style:**
-```
+- **模拟考试题型**：```
 User: "Make questions like the PMP exam"
 Agent: Matches official format, question style, difficulty
 ```
 
 ---
 
-## Practice Session
+## 练习环节
 
 ```
 📝 Practice: AWS S3 (10 questions)
@@ -100,8 +95,7 @@ D) S3 Glacier
 
 Your answer: _
 ```
-
-After answer:
+用户完成练习后：
 ```
 ✅ Correct!
 
@@ -114,7 +108,7 @@ cost but retrieval takes minutes to hours.
 
 ---
 
-## Storage
+## 数据存储
 
 ```
 ~/exams/
@@ -127,7 +121,7 @@ cost but retrieval takes minutes to hours.
 
 ---
 
-## Study Planning
+## 学习计划制定
 
 ```
 "Create a study schedule — exam in 2 weeks, 3 hours/day available"
@@ -139,7 +133,7 @@ cost but retrieval takes minutes to hours.
 
 ---
 
-## Commands
+## 命令说明
 
 ```
 "Generate 20 questions from [material]"
@@ -153,11 +147,11 @@ cost but retrieval takes minutes to hours.
 
 ---
 
-### Active Subjects
-<!-- Subjects being studied -->
+### 当前学习主题
+（此处列出用户正在学习的主题）
 
-### Performance Summary
-<!-- Overall stats and trends -->
+### 学习成绩总结
+（整体学习情况与趋势分析）
 
-### Focus Areas
-<!-- Topics needing more practice -->
+### 需要重点复习的领域
+（需要加强练习的主题）

@@ -1,35 +1,35 @@
 ---
 name: timesheet
-description: Track time, manage projects and tasks using timesheet.io CLI
+description: 使用 timesheet.io 的 CLI 工具来记录工作时间、管理项目和任务。
 user-invocable: true
 homepage: https://timesheet.io
 metadata: {"requires": {"bins": ["timesheet"]}}
 ---
 
-# Timesheet CLI Skill
+# Timesheet CLI 功能
 
-Control timesheet.io time tracking from the command line. Use `--json` flag for all commands to get structured output.
+通过命令行控制 timesheet.io 的时间跟踪功能。所有命令均可使用 `--json` 标志来获取结构化输出。
 
-## Authentication
+## 认证
 
-Check auth status before using other commands:
+在使用其他命令之前，请先检查认证状态：
 ```bash
 timesheet auth status --json
 ```
 
-If not authenticated, guide the user to run:
+如果未认证，请引导用户运行以下命令：
 ```bash
 timesheet auth login
 ```
 
-Or for automation, set an API key:
+或者，为了实现自动化操作，请设置 API 密钥：
 ```bash
 export TIMESHEET_API_KEY=ts_your.apikey
 ```
 
-## Timer Operations
+## 计时器操作
 
-### Start a Timer
+### 启动计时器
 ```bash
 # List projects first to get project ID
 timesheet projects list --json
@@ -38,90 +38,90 @@ timesheet projects list --json
 timesheet timer start <project-id>
 ```
 
-### Check Timer Status
+### 检查计时器状态
 ```bash
 timesheet timer status --json
 ```
 
-Returns: status (running/paused/stopped), project name, duration, start time.
+返回信息包括：状态（运行中/暂停/已停止）、项目名称、持续时间以及开始时间。
 
-### Control Timer
+### 控制计时器
 ```bash
 timesheet timer pause
 timesheet timer resume
 timesheet timer stop  # Creates a task from the timer
 ```
 
-### Update Running Timer
+### 更新正在运行的计时器
 ```bash
 timesheet timer update --description "Working on feature X"
 timesheet timer update --billable
 ```
 
-## Project Management
+## 项目管理
 
-### List Projects
+### 列出项目
 ```bash
 timesheet projects list --json
 ```
 
-### Create Project
+### 创建项目
 ```bash
 timesheet projects create "Project Name" --json
 timesheet projects create "Client Project" --billable --json
 ```
 
-### Show/Update/Delete
+### 显示/更新/删除项目
 ```bash
 timesheet projects show <id> --json
 timesheet projects update <id> --title "New Name"
 timesheet projects delete <id>
 ```
 
-## Task Management
+## 任务管理
 
-### List Tasks
+### 列出任务
 ```bash
 timesheet tasks list --json           # Recent tasks
 timesheet tasks list --today --json   # Today's tasks
 timesheet tasks list --this-week --json
 ```
 
-### Create Task Manually
+### 手动创建任务
 ```bash
 timesheet tasks create -p <project-id> -s "2024-01-15 09:00" -e "2024-01-15 17:00" --json
 timesheet tasks create -p <project-id> -s "09:00" -e "17:00" -d "Task description" --json
 ```
 
-### Update Task
+### 更新任务
 ```bash
 timesheet tasks update <id> --description "Updated description"
 timesheet tasks update <id> --billable
 timesheet tasks update <id> --start "10:00" --end "12:00"
 ```
 
-### Delete Task
+### 删除任务
 ```bash
 timesheet tasks delete <id>
 ```
 
-## Teams & Tags
+## 团队与标签
 
-### Teams
+### 团队
 ```bash
 timesheet teams list --json
 ```
 
-### Tags
+### 标签
 ```bash
 timesheet tags list --json
 timesheet tags create "Urgent" --color 1
 timesheet tags delete <id>
 ```
 
-## Reports
+## 报告
 
-### Time Summary
+### 时间统计
 ```bash
 timesheet reports summary --today --json
 timesheet reports summary --this-week --json
@@ -129,13 +129,13 @@ timesheet reports summary --this-month --json
 timesheet reports summary --from 2024-01-01 --to 2024-01-31 --json
 ```
 
-### Export Data
+### 导出数据
 ```bash
 timesheet reports export -f xlsx -s 2024-01-01 -e 2024-01-31
 timesheet reports export -f csv --this-month
 ```
 
-## Profile & Config
+## 用户配置
 
 ```bash
 timesheet profile show --json
@@ -145,38 +145,38 @@ timesheet config show
 timesheet config set defaultProjectId <id>
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Log Time for Current Work
-1. Check if timer is running: `timesheet timer status --json`
-2. If not, start timer: `timesheet timer start <project-id>`
-3. When done, stop timer: `timesheet timer stop`
+### 为当前工作记录时间
+1. 检查计时器是否正在运行：`timesheet timer status --json`
+2. 如果未运行，请启动计时器：`timesheet timer start <project-id>`
+3. 完成工作后，停止计时器：`timesheet timer stop`
 
-### Quick Time Entry
+### 快速记录时间
 ```bash
 # Create a completed task directly
 timesheet tasks create -p <project-id> -s "09:00" -e "12:00" -d "Morning standup and dev work" --json
 ```
 
-### Find Project by Name
+### 按名称查找项目
 ```bash
 timesheet projects list --json | jq '.[] | select(.title | contains("ProjectName"))'
 ```
 
-## Error Handling
+## 错误处理
 
-Exit codes:
-- 0: Success
-- 1: General error
-- 2: Usage error (invalid arguments)
-- 3: Authentication error - run `timesheet auth login`
-- 4: API error
-- 5: Rate limit exceeded - wait and retry
-- 6: Network error
+退出代码：
+- 0：成功
+- 1：一般错误
+- 2：使用错误（参数无效）
+- 3：认证错误 - 运行 `timesheet auth login`
+- 4：API 错误
+- 5：超出请求频率限制 - 等待片刻后重试
+- 6：网络错误
 
-## Tips
+## 提示
 
-- Always use `--json` for parsing output programmatically
-- Use `--quiet` or `-q` to suppress non-essential output
-- Set `defaultProjectId` in config to skip project selection for timer
-- Pipe-friendly output is automatic when not in a terminal
+- 始终使用 `--json` 标志以便程序化解析输出结果
+- 使用 `--quiet` 或 `-q` 选项来抑制非必要的输出信息
+- 在配置文件中设置 `defaultProjectId` 可以避免在选择项目时出现错误
+- 当不在终端环境中时，系统会自动生成适合管道传输的输出格式

@@ -1,17 +1,17 @@
 ---
 name: polymarket-arbitrage
-description: Monitor and execute arbitrage opportunities on Polymarket prediction markets. Detects math arbitrage (multi-outcome probability mismatches), cross-market arbitrage (same event different prices), and orderbook inefficiencies. Use when user wants to find or trade Polymarket arbitrage, monitor prediction markets for opportunities, or implement automated trading strategies. Includes risk management, P&L tracking, and alerting.
+description: 在 Polymarket 的预测市场中监控并执行套利机会。能够识别数学套利（多种结果概率不匹配的情况）、跨市场套利（同一事件在不同市场出现不同价格的情况）以及订单簿中的效率低下问题。适用于用户希望寻找或交易 Polymarket 套利机会、监控预测市场以发现套利机会，或实现自动化交易策略的场景。该工具包含风险管理、盈亏跟踪和警报功能。
 ---
 
-# Polymarket Arbitrage
+# Polymarket套利
 
-Find and execute arbitrage opportunities on Polymarket prediction markets.
+在Polymarket的预测市场中寻找并执行套利机会。
 
-## Quick Start
+## 快速入门
 
-### 1. Paper Trading (Recommended First Step)
+### 1. 纸上交易（推荐的第一步）
 
-Run a single scan to see current opportunities:
+运行一次扫描以查看当前的可套利机会：
 
 ```bash
 cd skills/polymarket-arbitrage
@@ -19,234 +19,233 @@ pip install requests beautifulsoup4
 python scripts/monitor.py --once --min-edge 3.0
 ```
 
-View results in `polymarket_data/arbs.json`
+结果保存在`polymarket_data/arbs.json`文件中。
 
-### 2. Continuous Monitoring
+### 2. 持续监控
 
-Monitor every 5 minutes and alert on new opportunities:
+每5分钟监控一次，并在新出现的机会时发出警报：
 
 ```bash
 python scripts/monitor.py --interval 300 --min-edge 3.0
 ```
 
-Stop with `Ctrl+C`
+使用`Ctrl+C`停止监控。
 
-### 3. Understanding Results
+### 3. 理解结果
 
-Each detected arbitrage includes:
-- **net_profit_pct**: Edge after 2% fees
-- **risk_score**: 0-100, lower is better
-- **volume**: Market liquidity
-- **action**: What to do (buy/sell all outcomes)
+每个检测到的套利机会包含以下信息：
+- **net_profit_pct**：扣除2%费用后的净利润率
+- **risk_score**：0-100，分数越低风险越小
+- **volume**：市场流动性
+- **action**：应采取的行动（买入/卖出所有结果）
 
-Good opportunities:
-- Net profit: 3-5%+
-- Risk score: <50
-- Volume: $1M+
-- Type: `math_arb_buy` (safer)
+好的套利机会应满足以下条件：
+- 净利润率：3-5%以上
+- 风险评分：<50
+- 市场成交量：>100万美元
+- 套利类型：`math_arb_buy`（更安全）
 
-## Arbitrage Types Detected
+## 检测到的套利类型
 
-### Math Arbitrage (Primary Focus)
+### 数学套利（主要关注）
 
-**Type A: Buy All Outcomes** (prob sum < 100%)
-- Safest type
-- Guaranteed profit if executable
-- Example: 48% + 45% = 93% → 7% edge, ~5% net after fees
+**类型A：买入所有结果**（概率总和<100%）
+- 最安全的套利类型
+- 如果能够执行，可以保证盈利
+- 例如：48% + 45% = 93% → 扣除费用后净利润约为5%
 
-**Type B: Sell All Outcomes** (prob sum > 100%)
-- Riskier (requires liquidity)
-- Need capital to collateralize
-- Avoid until experienced
+**类型B：卖出所有结果**（概率总和>100%）
+- 风险较高（需要足够的流动性）
+- 需要资金作为抵押
+- 在有经验之前请避免尝试
 
-See `references/arbitrage_types.md` for detailed examples and strategies.
+详细示例和策略请参阅`references/arbitrage_types.md`。
 
-### Cross-Market Arbitrage
+### 跨市场套利
 
-Same event priced differently across markets (not yet implemented - requires semantic matching).
+同一事件在不同市场上的价格不同（尚未实现——需要语义匹配功能）。
 
-### Orderbook Arbitrage
+### 订单簿套利
 
-Requires real-time orderbook data (homepage shows midpoints, not executable prices).
+需要实时订单簿数据（Polymarket首页显示的是中间价，而非可执行价格）。
 
-## Scripts
+## 脚本
 
 ### fetch_markets.py
 
-Scrape Polymarket homepage for active markets.
+从Polymarket首页抓取活跃市场的信息。
 
 ```bash
 python scripts/fetch_markets.py --output markets.json --min-volume 50000
 ```
 
-Returns JSON with market probabilities, volumes, and metadata.
+返回包含市场概率、成交量和元数据的JSON数据。
 
 ### detect_arbitrage.py
 
-Analyze markets for arbitrage opportunities.
+分析市场中的套利机会。
 
 ```bash
 python scripts/detect_arbitrage.py markets.json --min-edge 3.0 --output arbs.json
 ```
 
-Accounts for:
-- 2% taker fees (per leg)
-- Multi-outcome fee multiplication
-- Risk scoring
+脚本考虑了以下因素：
+- 每笔交易的2%手续费
+- 多个结果的手续费计算
+- 风险评分
 
 ### monitor.py
 
-Continuous monitoring with alerting.
+持续监控并触发警报。
 
 ```bash
 python scripts/monitor.py --interval 300 --min-edge 3.0 [--alert-webhook URL]
 ```
 
-Features:
-- Fetches markets every interval
-- Detects arbitrage
-- Alerts on NEW opportunities only (deduplicates)
-- Saves state to `polymarket_data/`
+功能包括：
+- 定期获取市场数据
+- 检测套利机会
+- 仅对新出现的套利机会发出警报（避免重复通知）
+- 将监控状态保存到`polymarket_data/`目录中
 
-## Workflow Phases
+## 工作流程阶段
 
-### Phase 1: Paper Trading (1-2 weeks)
+### 第1阶段：纸上交易（1-2周）
 
-**Goal:** Understand opportunity frequency and quality
+**目标：**了解套利机会的频率和质量
 
-1. Run monitor 2-3x per day
-2. Log opportunities in spreadsheet
-3. Check if they're still available when you look
-4. Calculate what profit would have been
+1. 每天运行监控脚本2-3次
+2. 将检测到的机会记录在电子表格中
+3. 确认这些机会在后续仍可执行
+4. 计算可能的利润
 
-**Decision point:** If seeing 3-5 good opportunities per week, proceed to Phase 2.
+**决策点：**如果每周发现3-5个好的套利机会，进入第2阶段。
 
-### Phase 2: Micro Testing ($50-100 CAD)
+### 第2阶段：小额测试（50-100加元）
 
-**Goal:** Learn platform mechanics
+**目标：**熟悉平台操作
 
-1. Create Polymarket account
-2. Deposit $50-100 in USDC
-3. Manual trades only (no automation)
-4. Max $5-10 per opportunity
-5. Track every trade in spreadsheet
+1. 创建Polymarket账户
+2. 存入50-100加元的USDC
+3. 仅进行手动交易（不使用自动化工具）
+4. 每次交易的最大金额不超过5-10加元
+5. 在电子表格中记录每笔交易
 
-**Decision point:** If profitable after 20+ trades, proceed to Phase 3.
+**决策点：**如果20笔交易后盈利，进入第3阶段。
 
-### Phase 3: Scale Up ($500 CAD)
+### 第3阶段：扩大规模（500加元）
 
-**Goal:** Increase position sizes
+**目标：**增加每次交易的金额
 
-1. Increase bankroll to $500
-2. Max 5% per trade ($25)
-3. Still manual execution
-4. Implement strict risk management
+1. 将资金增加到500加元
+2. 每笔交易的最大金额不超过5%（即25加元）
+3. 仍然采用手动交易方式
+4. 实施严格的风险管理
 
-### Phase 4: Automation (Future)
+### 第4阶段：自动化（未来计划）
 
-Requires:
-- Wallet integration (private key management)
-- Polymarket API or browser automation
-- Execution logic
-- Monitoring infrastructure
+需要以下条件：
+- 钱包集成（管理私钥）
+- Polymarket API或浏览器自动化工具
+- 执行逻辑
+- 监控系统
 
-**Only consider after consistently profitable manual trading.**
+**只有在手动交易持续盈利后，才考虑自动化。**
 
-See `references/getting_started.md` for detailed setup instructions.
+详细设置指南请参阅`references/getting_started.md`。
 
-## Risk Management
+## 风险管理
 
-### Critical Rules
+### 重要规则
 
-1. **Maximum position size:** 5% of bankroll per opportunity
-2. **Minimum edge:** 3% net (after fees)
-3. **Daily loss limit:** 10% of bankroll
-4. **Focus on buy arbs:** Avoid sell-side until experienced
+1. **每次交易的最大持仓比例：**资金总额的5%
+2. **最低净利润率：**扣除费用后的3%
+3. **每日亏损限额：**资金总额的10%
+4. **优先选择买入套利**：在有经验之前，避免卖出套利
 
-### Red Flags
+### 警示信号
 
-- Edge >10% (likely stale data)
-- Volume <$100k (liquidity risk)
-- Probabilities recently updated (arb might close)
-- Sell-side arbs (capital + liquidity requirements)
+- 净利润率超过10%：数据可能过时
+- 市场成交量低于10万美元：存在流动性风险
+- 概率数据最近更新：套利机会可能已经消失
+- 卖出套利：需要更多的资金和流动性
 
-## Fee Structure
+## 费用结构
 
-Polymarket charges:
-- **Maker fee:** 0%
-- **Taker fee:** 2%
+Polymarket的收费标准：
+- **做市商费用：**0%
+- **撮合商费用：**2%
 
-**Conservative assumption:** 2% per leg (assume taker)
+**保守估计：**每笔交易收取2%的费用
 
-**Breakeven calculation:**
-- 2-outcome market: 2% × 2 = 4% gross edge needed
-- 3-outcome market: 2% × 3 = 6% gross edge needed
-- N-outcome market: 2% × N gross edge needed
+**盈亏平衡计算：**
+- 2个结果的市场：需要4%的毛利利润率
+- 3个结果的市场：需要6%的毛利利润率
+- N个结果的市场：需要N%的毛利利润率
 
-**Target:** 3-5% NET profit (after fees)
+**目标：**扣除费用后的净利润为3-5%
 
-## Common Issues
+## 常见问题
 
-### "High edge but disappeared"
+### “利润率很高，但随后消失了”
 
-Homepage probabilities are stale or represent midpoints, not executable prices. This is normal. Real arbs disappear in seconds.
+Polymarket首页显示的概率可能是过时的数据，代表的是中间价而非可执行价格。真实的套利机会通常会在几秒钟内消失。
 
-### "Can't execute at displayed price"
+### “无法以显示的价格执行交易”
 
-Liquidity issue. Low-volume markets show misleading probabilities. Stick to $1M+ volume markets.
+可能是流动性问题。成交量低的市场会导致概率显示不准确。请选择成交量大于100万美元的市场。
 
-### "Edge is too small after fees"
+### “扣除费用后的利润率太低”
 
-Increase `--min-edge` threshold. Try 4-5% for more conservative filtering.
+调整`--min-edge`阈值。可以尝试将阈值设置为4-5%，以获得更严格的筛选标准。
 
-## Files and Data
+## 文件和数据
 
-All monitoring data stored in `./polymarket_data/`:
-- `markets.json` - Latest market scan
-- `arbs.json` - Detected opportunities
-- `alert_state.json` - Deduplication state (which arbs already alerted)
+所有监控数据存储在`./polymarket_data/`目录中：
+- `markets.json`：最新的市场扫描结果
+- `arbs.json`：检测到的套利机会
+- `alert_state.json`：已通知的套利机会状态（避免重复通知）
 
-## Advanced Topics
+## 高级主题
 
-### Telegram Integration (Future)
+### Telegram集成（未来计划）
 
-Pass webhook URL to monitor script for alerts:
+将Webhook地址传递给监控脚本，以便接收警报：
 
 ```bash
 python scripts/monitor.py --alert-webhook "https://api.telegram.org/bot<token>/sendMessage?chat_id=<id>"
 ```
 
-### Position Sizing
+### 持仓规模调整
 
-For a 2-outcome math arb with probabilities p₁ and p₂ where p₁ + p₂ < 100%:
+对于一个有p₁和p₂两个结果的数学套利机会（p₁ + p₂ < 100%）：
 
-**Optimal allocation:**
-- Bet on outcome 1: (100% / p₁) / [(100%/p₁) + (100%/p₂)] of capital
-- Bet on outcome 2: (100% / p₂) / [(100%/p₁) + (100%/p₂)] of capital
+**最佳分配方式：**
+- 对结果1的投注金额：（100% / p₁） / [(100%/p₁) + (100%/p₂)] 的资金
+- 对结果2的投注金额：（100% / p₂） / [(100%/p₁) + (100%/p₂)] 的资金
 
-This ensures equal profit regardless of which outcome wins.
+这样可以确保无论哪个结果获胜，都能获得相同的利润。
 
-**Simplified rule:** For small edges, split capital evenly across outcomes.
+**简化规则：**对于利润率较低的情况，将资金平均分配给两个结果。
 
-### Execution Speed
+### 执行速度
 
-Arbs disappear fast. If planning automation:
-- Use websocket connections (not polling)
-- Place limit orders simultaneously
-- Have capital pre-deposited
-- Monitor gas fees on Polygon
+套利机会消失得很快。如果计划使用自动化工具：
+- 使用WebSocket连接（而非轮询）
+- 同时下达限价单
+- 提前准备好足够的资金
+- 监控Polygon网络的Gas费用
 
-## Resources
+## 资源
 
-- **Polymarket:** https://polymarket.com
-- **Documentation:** https://docs.polymarket.com
-- **API (if available):** Check Polymarket docs
-- **Community:** Polymarket Discord
+- **Polymarket官网：** https://polymarket.com
+- **文档：** https://docs.polymarket.com
+- **API（如可用）：** 查看Polymarket的官方文档
+- **社区：** Polymarket的Discord频道
 
-## Support
+## 帮助支持
 
-For skill issues:
-- Check `references/arbitrage_types.md` for strategy details
-- Check `references/getting_started.md` for setup help
-- Review output files in `polymarket_data/`
-- Ensure dependencies installed: `pip install requests beautifulsoup4`
+- 如有技术问题，请参阅`references/arbitrage_types.md`了解策略细节
+- 参考`references/getting_started.md`获取设置帮助
+- 查看`polymarket_data/`目录中的输出文件
+- 确保已安装以下依赖库：`pip install requests beautifulsoup4`

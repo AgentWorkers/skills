@@ -1,25 +1,25 @@
 ---
 name: postgres-job-queue
 model: standard
-description: PostgreSQL-based job queue with priority scheduling, batch claiming, and progress tracking. Use when building job queues without external dependencies. Triggers on PostgreSQL job queue, background jobs, task queue, priority queue, SKIP LOCKED.
+description: 基于 PostgreSQL 的作业队列系统，支持优先级调度、批量任务处理以及进度跟踪功能。适用于构建无需依赖外部组件的作业队列。该系统可用于触发 PostgreSQL 作业队列、后台任务、任务队列及优先级队列的相关操作，并支持 `SKIP LOCKED` 机制。
 ---
 
-# PostgreSQL Job Queue
+# PostgreSQL作业队列
 
-Production-ready job queue using PostgreSQL with priority scheduling, batch claiming, and progress tracking.
-
----
-
-## When to Use
-
-- Need job queue but want to avoid Redis/RabbitMQ dependencies
-- Jobs need priority-based scheduling
-- Long-running jobs need progress visibility
-- Jobs should survive service restarts
+这是一个基于PostgreSQL的作业队列解决方案，支持优先级调度、批量任务处理以及任务进度跟踪功能，适用于生产环境。
 
 ---
 
-## Schema Design
+## 适用场景
+
+- 需要作业队列功能，但希望避免依赖Redis/RabbitMQ；
+- 任务需要根据优先级进行调度；
+- 长时间运行的任务需要能够实时查看进度；
+- 作业数据需要在服务重启后依然保持完整。
+
+---
+
+## 数据库架构设计
 
 ```sql
 CREATE TABLE jobs (
@@ -62,7 +62,7 @@ CREATE INDEX idx_jobs_worker ON jobs (worker_id)
 
 ---
 
-## Batch Claiming with SKIP LOCKED
+## 使用`SKIP LOCKED`进行批量任务处理
 
 ```sql
 CREATE OR REPLACE FUNCTION claim_job_batch(
@@ -98,7 +98,7 @@ $$ LANGUAGE plpgsql;
 
 ---
 
-## Go Implementation
+## Go语言实现
 
 ```go
 const (
@@ -164,7 +164,7 @@ func (q *JobQueue) Fail(ctx context.Context, jobID uuid.UUID, errMsg string) err
 
 ---
 
-## Stale Job Recovery
+## 失效任务的恢复机制
 
 ```go
 func (q *JobQueue) RecoverStaleJobs(ctx context.Context, timeout time.Duration) (int, error) {
@@ -187,28 +187,28 @@ func (q *JobQueue) RecoverStaleJobs(ctx context.Context, timeout time.Duration) 
 
 ---
 
-## Decision Tree
+## 决策树
 
-| Scenario | Approach |
-|----------|----------|
-| Need guaranteed delivery | PostgreSQL queue |
-| Need sub-ms latency | Use Redis instead |
-| < 1000 jobs/sec | PostgreSQL is fine |
-| > 10000 jobs/sec | Add Redis layer |
-| Need strict ordering | Single worker per type |
-
----
-
-## Related Skills
-
-- **Related:** [service-layer-architecture](../service-layer-architecture/) — Service patterns for job handlers
-- **Related:** [realtime/dual-stream-architecture](../../realtime/dual-stream-architecture/) — Event publishing from jobs
+| 场景 | 选择方案 |
+|------|------|
+| 需要保证任务一定能完成 | 使用PostgreSQL队列 |
+| 需要低于毫秒级的延迟 | 改用Redis |
+| 每秒处理任务数 < 1000个 | 使用PostgreSQL即可 |
+| 每秒处理任务数 > 10000个 | 需要添加Redis层 |
+| 需要严格的任务顺序 | 每种类型任务由单独的工作者处理 |
 
 ---
 
-## NEVER Do
+## 相关技能
 
-- **NEVER use SELECT then UPDATE** — Race condition. Use SKIP LOCKED.
-- **NEVER claim without SKIP LOCKED** — Workers will deadlock.
-- **NEVER store large payloads** — Store references only.
-- **NEVER forget partial index** — Claiming is slow without it.
+- **相关技术：** [service-layer-architecture](../service-layer-architecture/) — 作业处理器的服务架构模式 |
+- **相关技术：** [realtime/dual-stream-architecture](../../realtime/dual-stream-architecture/) — 作业任务的实时事件发布机制 |
+
+---
+
+## 绝对不要做的事情
+
+- **绝对不要使用“SELECT后更新”的操作** — 这会导致竞态条件；请使用`SKIP LOCKED`机制。
+- **绝对不要在没有`SKIP LOCKED`的情况下进行任务处理** — 否则会导致工作者程序死锁。
+- **绝对不要存储大型数据 payload** — 只需要存储数据的引用即可。
+- **绝对不要忘记创建部分索引** — 没有部分索引，任务处理效率会大大降低。

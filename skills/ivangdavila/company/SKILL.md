@@ -1,78 +1,80 @@
 ---
 name: "Company"
-description: "Build an agent-powered organization by mapping functions to skills and iterating on structure."
+description: "通过将功能映射到技能，并不断优化组织结构，来构建一个以代理（agent）为核心驱动的组织。"
 ---
 
-## Triggers
+## 触发条件  
+在以下情况下启动相关流程：  
+- “自动化我的公司运营”；  
+- “使用代理来处理公司的业务事务”；  
+- “用人工智能替代团队”；  
+- “调整公司结构以适应代理系统的使用”；  
+- “我需要哪些技能来支持这些流程”。  
 
-Activate on: "automate my company", "agents for my business", "replace team with AI", "company structure with agents", "which skills do I need".
+**注意区分**：  
+本流程与“创业方法论（startup methodology）”或“商业策略（business strategy）”不同，它关注的是公司组织架构的构建。  
 
-**Different from:** `startup` (methodology) and `business` (strategy). This is about building the organization itself.
+## 核心流程  
+1. **发现阶段**：  
+   - 公司的主要业务是什么？  
+   - 公司目前有哪些业务职能？  
 
-## Core Flow
+2. **职能映射**：  
+   - 对每个业务职能进行分析，判断需要使用现有的技能、定制的技能，还是结合两者的混合方案。  
 
-1. **Discovery** — What does the company do? What functions exist?
-2. **Mapping** — Each function → existing skill, custom skill, or hybrid
-3. **Sequence** — Quick wins first, customer-facing later
-4. **Iteration** — Run → review → adjust → expand
+3. **实施顺序**：  
+   - 先从容易实现且能快速产生效果的职能开始，再逐步扩展到面向客户的职能。  
 
-## Discovery Questions
+4. **迭代过程**：  
+   - 实施后进行评估与调整，不断优化流程。  
 
-Ask before recommending anything:
-- What's the core value you deliver to customers?
-- What functions exist today? (sales, support, ops, finance, marketing, legal, HR)
-- Where does work pile up? What's the bottleneck?
-- What do you actually want to do yourself?
+## 发现阶段需要问的问题：  
+在提出任何建议之前，请先回答以下问题：  
+- 公司向客户提供的核心价值是什么？  
+- 公司目前有哪些业务职能（如销售、支持、运营、财务、营销、法律、人力资源等）？  
+- 哪些工作环节存在瓶颈或效率低下？  
+- 公司自己实际希望如何完成这些工作？  
 
-## Function Mapping
+## 职能映射  
+针对每个业务职能，确定相应的实施策略：  
+| 实施策略 | 适用场景 |  
+|----------|------|  
+| 使用现有技能 | 常见的业务职能（如电子邮件管理、客户关系管理、客户支持等） |  
+| 创建定制技能 | 该业务特有的职能 |  
+| 混合使用现有技能与定制技能 | 结合公司特定规则 |  
+| 人工协助与代理共同完成 | 需要人工判断，代理负责准备工作 |  
 
-For each function, determine approach:
+具体映射方案请参考 `functions.md` 文件。  
 
-| Approach | When |
-|----------|------|
-| Install existing skill | Common function (email, CRM, support) |
-| Create custom skill | Unique to this business |
-| Hybrid | Existing skill + company-specific rules |
-| Human + agent assist | Needs judgment, agent handles prep |
+## 实施顺序  
+按照职能的影响程度进行建设，而非严格按照组织结构来安排：  
+1. **内部运营**：风险较低，输入/输出结果明确。  
+2. **客户支持**：在内部流程稳定后启动。  
+3. **销售**：在客户支持系统运行稳定后推进。  
+4. **战略决策**：由代理协助处理，最终由人工决策。  
 
-See `functions.md` for common mappings.
+有关公司组织结构的详细信息，请参考 `patterns.md` 文件。  
 
-## Building Sequence
+## 迭代流程  
+在将每个职能委托给代理后，需遵循以下步骤：  
+1. 在人工监督下运行该流程1-2周。  
+2. 进行评估：代理在处理过程中有哪些遗漏或错误？  
+3. 根据评估结果调整流程范围。  
+4. 只有在流程稳定后，才能逐步减少人工监督。  
 
-Build in order of impact, not org chart:
-1. **Internal ops** — Low risk, clear inputs/outputs
-2. **Support** — After internal proves reliable
-3. **Sales** — After support is stable
-4. **Strategy** — Agents assist, humans decide
+**切勿在第一天就完全将所有工作都委托给代理。**  
+有关流程跟踪的模板，请参考 `iteration.md` 文件。  
 
-See `patterns.md` for organizational structures.
+## 学习系统  
+随着公司的发展，需记录以下内容：  
+- 所做的决策及其原因；  
+- 对代理职责范围的调整；  
+- 哪些方法有效，哪些失败了；  
+- 新出现的技能需求。  
+这些记录将成为公司的运营经验库。  
 
-## Iteration Protocol
-
-After each function is delegated:
-1. Run 1-2 weeks with human oversight
-2. Review: what did the agent miss?
-3. Adjust scope based on errors
-4. Reduce oversight only when stable
-
-**Never hand off completely on day one.**
-
-See `iteration.md` for tracking template.
-
-## Learning System
-
-As the company evolves, capture:
-- Decisions made and why
-- Adjustments to agent scope
-- What worked vs what failed
-- New skills needed
-
-This becomes the company's operational memory.
-
-## Red Flags
-
-Stop and reassess:
-- Automating trust-building → agents assist, humans close
-- Delegating legal/compliance decisions → agents draft, lawyers approve
-- No clear function boundaries → define before automating
-- Expecting 100% automation immediately → set realistic timeline
+## 需警惕的警示信号（Red Flags）：  
+- 如果自动化过程影响到建立信任的关系（如客户关系），应暂停并重新评估；  
+- 对于法律/合规相关的决策，应让代理起草方案，再由律师审核批准；  
+- 如果业务职能的边界不明确，应在自动化之前先进行界定；  
+- 不要期望立即实现100%的自动化，应设定合理的时间表。

@@ -1,13 +1,13 @@
 ---
 name: skill-compatibility-checker
-description: Pre-installation skill vetter that checks for conflicts, system requirement mismatches, missing dependencies, and security issues before you install a skill. Analyzes skill manifests, scans for name/CLI/port conflicts with existing skills, verifies OS/architecture/Node version compatibility, checks for missing CLI tools and API keys, and runs automated security scanning. Returns GO/CAUTION/BLOCKED with detailed remediation steps.
+description: 预安装检查工具：在您安装某个技能（skill）之前，该工具会检测是否存在冲突、系统需求不匹配、依赖项缺失以及安全问题。它会分析技能的相关配置文件（manifests），检查技能名称或命令行接口（CLI）/端口是否与现有技能重复，验证操作系统（OS）、架构（architecture）及 Node.js 版本之间的兼容性，确认是否缺少必要的 CLI 工具和 API 密钥，并执行自动化的安全扫描。根据扫描结果，该工具会返回“GO”（表示可以安装）、“CAUTION”（表示需要特别注意）或“BLOCKED”（表示无法安装）的提示，并提供详细的修复步骤。
 ---
 
-# Skill Compatibility Checker
+# 技能兼容性检查器
 
-Vet skills before installation. Analyzes compatibility, conflicts, dependencies, and security risks.
+在安装技能之前，请先对其进行验证。该工具会分析技能的兼容性、冲突情况、依赖关系以及安全风险。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Check a local skill directory
@@ -17,84 +17,83 @@ skill-compatibility-checker ~/clawd/some-skill
 skill-compatibility-checker ~/clawd/some-skill --output json
 ```
 
-## What It Checks
+## 检查内容
 
-### 1. Conflict Detection
+### 1. 冲突检测
 
-- **Name conflicts** - Is a skill with this name already installed?
-- **CLI command conflicts** - Does it try to install a command that already exists?
-- **Port conflicts** - Does it use ports that are already in use?
-- **Config conflicts** - Does it modify the same config sections as existing skills?
+- **名称冲突**：是否存在已安装的具有相同名称的技能？
+- **CLI命令冲突**：尝试安装的命令是否已存在？
+- **端口冲突**：使用的端口是否已被占用？
+- **配置冲突**：该技能是否会修改现有技能的配置文件？
 
-### 2. System Requirements
+### 2. 系统要求
 
-Verifies your system meets the skill's requirements:
+验证您的系统是否满足该技能的运行要求：
 
-- **OS compatibility** - macOS, Linux, or Windows?
-- **Architecture** - arm64 or x86_64?
-- **Node.js version** - Does your Node meet the minimum requirement?
+- **操作系统兼容性**：macOS、Linux 还是 Windows？
+- **架构**：arm64 还是 x86_64？
+- **Node.js 版本**：您的 Node.js 是否满足最低要求？
 
-Parsed from:
-- SKILL.md frontmatter and content
-- package.json `engines.node` field
+信息来源：
+- SKILL.md 文件的前言和正文内容
+- package.json 文件中的 `engines.node` 字段
 
-### 3. Dependencies
+### 3. 依赖关系
 
-Checks for missing requirements:
+检查是否缺少以下依赖项：
 
-- **CLI tools** - ffmpeg, python, java, docker, etc.
-  - Lists which are missing
-  - Provides install commands (brew install X)
-  
-- **API keys** - Groq, ElevenLabs, OpenAI, Stripe, Twilio, etc.
-  - Checks TOOLS.md and environment variables
-  - Lists which are not configured
-  
-- **Clawdbot version** - Does the skill need Clawdbot X.Y.Z or higher?
-  
-- **npm packages** - Dependency summary from package.json
+- **CLI 工具**：ffmpeg、python、java、docker 等
+  - 列出缺失的依赖项
+  - 提供安装命令（例如：`brew install <tool>`）
 
-### 4. Security Scan
+- **API 密钥**：Groq、ElevenLabs、OpenAI、Stripe、Twilio 等
+  - 检查 `TOOLS.md` 文件和系统环境变量
+  - 列出未配置的 API 密钥
 
-Runs the **security-scanner** skill (if installed):
+- **Clawdbot 版本**：该技能是否需要 Clawdbot X.Y.Z 或更高版本？
 
-- Detects code execution vulnerabilities (eval, exec, dynamic require)
-- Flags credential theft patterns
-- Warns about network calls to unknown domains
-- Identifies obfuscated or minified code
-- Returns risk level: **SAFE** / **CAUTION** / **DANGEROUS**
+- **npm 包**：从 package.json 文件中获取依赖关系信息
 
-## Output: Installation Readiness
+### 4. 安全扫描
 
-### 🟢 GO
-**Ready to install. No blocking issues detected.**
+（如果已安装 `security-scanner` 工具）会运行安全扫描：
 
-- No system requirement mismatches
-- No conflicts detected
-- All dependencies available
-- Security scan clear (SAFE)
-- Missing optional dependencies (with install commands provided)
+- 检测代码执行中的漏洞（如 `eval`、`exec`、`dynamic require` 等操作）
+- 识别潜在的凭证窃取风险
+- 警告对未知域名的网络请求
+- 检测混淆或压缩的代码
+- 返回风险等级：**安全** / **警告** / **危险**
 
-### 🟡 CAUTION
-**Proceed with caution. Review issues before installation.**
+## 安装准备情况
 
-- All system requirements met, but see warnings
-- Conflicts detected but resolvable
-- Some dependencies missing (CLI tools, API keys)
-- Security scan shows CAUTION level
-- Resolution steps provided for each issue
+### 🟢 可以安装
+**已准备好安装。未发现任何阻碍安装的问题。**
 
-### 🔴 BLOCKED
-**Do not install.**
+- 系统要求均满足
+- 未检测到冲突
+- 所有依赖项均已安装
+- 安全扫描结果正常（安全）
 
-- System requirements NOT met (wrong OS, architecture, or Node version)
-- Skill name conflicts with existing installation
-- Security scan detects DANGEROUS patterns
-- Cannot be installed on this system
+### 🟡 谨慎操作
+**请在安装前仔细检查问题。**
 
-## Usage Examples
+- 系统要求已满足，但存在一些警告
+- 检测到冲突，但可以解决
+- 一些依赖项缺失（如 CLI 工具、API 密钥）
+- 安全扫描结果显示“警告”等级
+- 为每个问题提供了解决方法
 
-### Check a skill directory
+### 🔴 无法安装
+**请勿安装。**
+
+- 系统要求不满足（操作系统、架构或 Node.js 版本不正确）
+- 技能名称与已安装的技能重复
+- 安全扫描发现严重安全风险
+- 该技能无法在此系统上安装
+
+## 使用示例
+
+### 检查技能目录
 
 ```bash
 $ skill-compatibility-checker ~/clawd/my-skill
@@ -125,7 +124,7 @@ Date:  2026-01-29T15:30:00.000Z
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### With warnings (CAUTION)
+### 显示警告（需谨慎操作）
 
 ```bash
 $ skill-compatibility-checker ~/clawd/another-skill
@@ -155,7 +154,7 @@ $ skill-compatibility-checker ~/clawd/another-skill
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### JSON output for programmatic use
+### 用于程序化处理的 JSON 输出
 
 ```bash
 $ skill-compatibility-checker ~/clawd/my-skill --output json
@@ -197,53 +196,53 @@ $ skill-compatibility-checker ~/clawd/my-skill --output json
 }
 ```
 
-## How It Works
+## 工作原理
 
-### 1. Resolve Skill Path
-- Local paths: `~/clawd/my-skill` or `/full/path/to/skill`
-- ClawdHub lookups: `clawdhub:skill-name` (future)
+### 1. 确定技能路径
+- 本地路径：`~/clawd/my-skill` 或 `/full/path/to/skill`
+- 通过 ClawdHub 查询：`clawdhub:skill-name`（未来版本）
 
-### 2. Parse Skill Metadata
-- Read SKILL.md frontmatter (name, description, requirements)
-- Read SKILL.md and README.md content
-- Parse package.json (bin, engines, dependencies)
+### 2. 解析技能元数据
+- 读取 SKILL.md 文件的前言部分（包括技能名称、描述和系统要求）
+- 读取 SKILL.md 和 README.md 的内容
+- 解析 package.json 文件中的 `bin`、`engines` 和 `dependencies` 部分
 
-### 3. Check Conflicts
-- Compare skill name with all installed skills in ~/clawd/
-- Check if bin commands from package.json already exist in PATH
-- Scan for port usage declarations
+### 3. 检查冲突
+- 将技能名称与 `~/clawd/` 目录下已安装的所有技能进行比较
+- 检查 package.json 中定义的命令是否已存在于系统的 PATH 环境变量中
+- 检查技能是否使用了特定的端口
 
-### 4. Verify System Requirements
-- Compare required OS with `process.platform` (darwin, linux, win32)
-- Compare required arch with `process.arch` (arm64, x64)
-- Compare required Node version with running Node version
-- Parse from SKILL.md and package.json engines field
+### 4. 验证系统要求
+- 将所需的操作系统与 `process.platform`（darwin、linux、win32）进行比较
+- 将所需的架构与 `process.arch`（arm64、x86）进行比较
+- 将所需的 Node.js 版本与当前系统上的 Node.js 版本进行比较
+- 从 SKILL.md 和 package.json 的 `engines` 字段中获取相关信息
 
-### 5. Check Dependencies
-- Search content for mentions of common CLI tools (ffmpeg, python, java, etc.)
-- Check if those tools exist in PATH
-- Parse SKILL.md/README for API key requirements
-- Check TOOLS.md and process.env for configured keys
-- Note npm dependencies from package.json
+### 5. 检查依赖关系
+- 查找文档中提到的常见 CLI 工具（如 ffmpeg、python、java 等）
+- 确认这些工具是否已存在于系统的 PATH 环境变量中
+- 从 SKILL.md 和 README.md 中获取 API 密钥的相关信息
+- 检查 `TOOLS.md` 文件和系统环境变量（`process.env`）中是否配置了相应的密钥
+- 从 package.json 中获取 npm 依赖项信息
 
-### 6. Run Security Scan
-- Invoke security-scanner-skill if available
-- Pass skill path to scanner
-- Capture risk level and findings
-- Report security assessment
+### 6. 运行安全扫描
+- 如果安装了 `security-scanner` 工具，会调用它进行安全扫描
+- 将技能路径传递给扫描工具
+- 获取风险等级和扫描结果
+- 报告安全评估结果
 
-### 7. Generate Report
-- Determine readiness (GO / CAUTION / BLOCKED)
-- Format as text (human-readable) or JSON (programmatic)
-- Provide actionable remediation steps
+### 7. 生成报告
+- 判断是否可以安装（安全 / 警慎操作 / 无法安装）
+- 以文本或 JSON 格式生成报告（便于人类阅读或程序化处理）
+- 提供可操作的修复步骤
 
-## Exit Codes
+## 返回代码
 
-- **0** - GO: Ready to install
-- **1** - CAUTION: Review and fix issues before installing
-- **2** - BLOCKED: Do not install on this system
+- **0**：可以安装
+- **1**：需要先检查并修复问题
+- **2**：无法在此系统上安装
 
-This allows scripts to programmatically handle compatibility:
+该工具支持脚本化地处理兼容性检查：
 
 ```bash
 skill-compatibility-checker ~/clawd/my-skill
@@ -259,15 +258,15 @@ else
 fi
 ```
 
-## Requirements
+## 系统要求
 
-- **Node.js** ≥ 14.0.0
-- **security-scanner-skill** (optional, for security scanning)
-- **CLI tools** (optional, detected if mentioned in skill docs)
+- **Node.js** 版本 ≥ 14.0.0
+- **security-scanner-skill**（可选，用于安全扫描）
+- **CLI 工具**（可选，如果技能文档中提到了这些工具，则需要安装）
 
-## How to Use with Other Skills/Sub-Agents
+## 与其他技能/子代理的配合使用
 
-The skill-compatibility-checker is designed to be invoked by other tools:
+该技能兼容性检查器可以被其他工具调用：
 
 ```bash
 # From command line
@@ -278,22 +277,22 @@ const checker = require('./scripts/checker.js');
 const results = checker.checkSystemRequirements('./skill-path');
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-The checker automatically reads these to determine configured API keys:
+该工具会自动读取以下环境变量以获取 API 密钥：
 
 - `GROQ_API_KEY`
 - `ELEVENLABS_API_KEY`
 - `OPENAI_API_KEY`
 - `STRIPE_API_KEY`
 - `TWILIO_AUTH_TOKEN`
-- etc.
+- 等
 
-### TOOLS.md Format
+### TOOLS.md 格式
 
-The checker looks in `~/clawd/TOOLS.md` for API key sections:
+该工具会从 `~/clawd/TOOLS.md` 文件中读取 API 密钥的相关配置：
 
 ```markdown
 ## API Keys & Services
@@ -302,16 +301,16 @@ The checker looks in `~/clawd/TOOLS.md` for API key sections:
 - **ElevenLabs API:** Configured (sk_...)
 ```
 
-## Limitations
+## 限制
 
-- ClawdHub lookups not yet implemented (use local paths)
-- Port conflict detection is informational only (doesn't test actual ports)
-- API key requirement detection is pattern-based (may miss some)
-- CLI tool detection based on common names (ffmpeg, python, etc.)
+- 目前尚未实现通过 ClawdHub 查询技能的功能（使用本地路径）
+- 端口冲突检测仅提供参考信息（不实际测试端口的使用情况）
+- API 密钥的检测基于模式匹配（可能会遗漏某些情况）
+- CLI 工具的检测基于通用名称（如 ffmpeg、python 等）
 
-## Advanced: Programmatic API
+## 高级用法：程序化调用
 
-Use the skill in your own code:
+您可以在自己的代码中调用该工具：
 
 ```javascript
 const {
@@ -332,34 +331,34 @@ const readiness = determineReadiness(results);
 // 'GO' | 'CAUTION' | 'BLOCKED'
 ```
 
-## Tips
+## 提示
 
-1. **Before installing any skill**, run the checker first:
+1. **在安装任何技能之前**，请先运行该检查工具：
    ```bash
    skill-compatibility-checker ~/clawd/new-skill
    ```
 
-2. **For CI/CD pipelines**, use JSON output and exit codes:
+2. **在持续集成/持续部署（CI/CD）流程中**，可以使用 JSON 格式的报告和返回代码：
    ```bash
    skill-compatibility-checker ~/clawd/new-skill --output json || exit $?
    ```
 
-3. **Check regularly** - run the checker on existing skills if you update TOOLS.md:
+3. **定期检查**：如果更新了 `TOOLS.md` 文件，请定期运行该检查工具：
    ```bash
    for skill in ~/clawd/*-skill; do
      skill-compatibility-checker "$skill" || true
    done
    ```
 
-4. **Resolve CAUTION warnings** - they're fixable:
-   - Install missing CLI tools: `brew install <tool>`
-   - Configure API keys in TOOLS.md
-   - Review security findings and ask maintainer
+4. **解决警告**：这些警告都是可以解决的：
+   - 安装缺失的 CLI 工具：`brew install <tool>`
+   - 在 `TOOLS.md` 中配置 API 密钥
+   - 查看安全扫描结果并联系维护者
 
-5. **Don't force install BLOCKED skills** - the system incompatibility is real and you'll encounter errors.
+5. **不要强行安装被标记为“无法安装”的技能**——系统不兼容的问题可能导致运行错误。
 
-## See Also
+## 相关资源
 
-- **security-scanner-skill** - Static code analysis for malware/vulnerabilities
-- **TOOLS.md** - Your API key configuration file
-- **SKILL.md** - Skill metadata format
+- **security-scanner-skill**：用于检测恶意代码和漏洞的静态代码分析工具
+- **TOOLS.md**：用于存储 API 密钥的配置文件
+- **SKILL.md**：技能元数据的格式规范

@@ -1,42 +1,42 @@
-# Vendor Evaluation & Due Diligence
+# 供应商评估与尽职调查
 
-Structured framework for evaluating software vendors, service providers, and technology partners before signing contracts.
+这是一个用于在签署合同前对软件供应商、服务提供商和技术合作伙伴进行评估的结构化框架。
 
-## What This Does
+## 功能概述
 
-Runs a systematic vendor assessment across 8 dimensions:
+该框架从8个维度对供应商进行全面评估：
 
-1. **Financial Stability** — Revenue signals, funding, burn rate indicators
-2. **Technical Fit** — Architecture compatibility, integration complexity, API quality
-3. **Security & Compliance** — SOC2, ISO27001, GDPR, data residency
-4. **Pricing Analysis** — TCO modeling, hidden costs, contract traps
-5. **Reference Check** — Customer sentiment, G2/Capterra scores, churn signals
-6. **Support Quality** — SLA terms, response times, escalation paths
-7. **Vendor Lock-in Risk** — Data portability, switching costs, proprietary dependencies
-8. **Roadmap Alignment** — Product direction vs. your needs over 12-36 months
+1. **财务稳定性** — 收入情况、资金来源、资金消耗速度
+2. **技术适配性** — 架构兼容性、集成复杂性、API质量
+3. **安全与合规性** — SOC2认证、ISO27001标准、GDPR合规性、数据存储位置
+4. **价格分析** — 总拥有成本（TCO）模型、隐藏成本、合同中的潜在风险
+5. **客户反馈** — 客户评价、G2/Capterra评分、客户流失情况
+6. **支持质量** — 服务水平协议（SLA）条款、响应时间、问题解决流程
+7. **供应商锁定风险** — 数据迁移难度、更换供应商的成本、对特定技术的依赖性
+8. **产品路线图匹配度** — 供应商的产品规划与您的需求在12至36个月内的契合度
 
-## How to Use
+## 使用方法
 
-Tell your agent:
-- "Evaluate [vendor] for [use case]"
-- "Compare [vendor A] vs [vendor B] for our [need]"
-- "Run due diligence on [company] before we sign"
+请告知您的代理：
+- “针对[使用场景]对[供应商]进行评估”
+- “为了满足我们的[需求]，比较[供应商A]和[供应商B]”
+- “在签署合同前对[公司]进行尽职调查”
 
-The agent will research the vendor using web search and produce a scored evaluation report with a GO / CAUTION / NO-GO recommendation.
+代理将通过网络搜索来研究该供应商，并生成一份包含评估结果的报告，报告中会给出“建议继续合作”（GO）、“需谨慎考虑”（CAUTION）或“不建议合作”（NO-GO）的建议。
 
-## Scoring
+## 评分标准
 
-Each dimension scores 1-10. Overall score is weighted:
-- Technical Fit & Security: 2x weight
-- Pricing & Lock-in: 1.5x weight
-- All others: 1x weight
+每个维度的评分范围为1-10分。总体评分的计算方式如下：
+- **技术适配性与安全性**：权重为2
+- **价格与供应商锁定风险**：权重为1.5
+- 其他所有维度：权重为1
 
-**Thresholds:**
-- 75+ = GO (proceed with negotiation)
-- 50-74 = CAUTION (address gaps before committing)
-- Below 50 = NO-GO (find alternatives)
+**评分阈值**：
+- 75分及以上：建议继续合作（GO）
+- 50-74分：需谨慎考虑（在决定前解决存在的问题）
+- 低于50分：不建议合作（寻找其他替代方案）
 
-## Output Format
+## 输出格式
 
 ```
 ## Vendor Evaluation: [Name]
@@ -61,18 +61,17 @@ Each dimension scores 1-10. Overall score is weighted:
 [Final verdict with reasoning]
 ```
 
-## Instructions for Agent
+## 代理使用说明
 
-When asked to evaluate a vendor:
+当收到评估供应商的请求时，请按照以下步骤操作：
+1. 在网上搜索：“[供应商]评价”、“[供应商]价格”、“[供应商]的SOC2认证情况”、“[供应商]的替代方案”、“[供应商]在G2/Capterra上的评分”
+2. 查看该公司最近的融资或裁员信息
+3. 浏览其API文档的质量
+4. 查找合同条款和服务水平协议（SLA）信息
+5. 根据实际情况为每个维度打分
+6. 编写评估报告
+7. 将任何可能导致合作失败的负面因素明确标注出来
 
-1. Search the web for: "[vendor] reviews", "[vendor] pricing", "[vendor] SOC2", "[vendor] alternatives", "[vendor] G2 reviews"
-2. Check for recent funding/layoff news
-3. Look at their API documentation quality
-4. Find contract terms and SLA information
-5. Score each dimension with evidence
-6. Produce the evaluation report
-7. Flag any dealbreakers prominently
+请保持直言不讳的态度。公司往往会隐瞒负面信息——请深入挖掘。看似完美的供应商可能也存在问题，请找出其中的权衡因素。
 
-Be direct. Companies hide bad news — dig for it. A vendor that looks perfect probably isn't. Find the tradeoffs.
-
-For comparative evaluations, use the same framework side-by-side with a clear winner per dimension.
+在进行对比评估时，请使用相同的评估框架，并明确指出每个维度上的优劣。

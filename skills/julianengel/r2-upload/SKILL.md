@@ -1,121 +1,57 @@
 ---
 name: Send Me My Files - R2 upload with short lived signed urls
-description: Upload files to Cloudflare R2, AWS S3, or any S3-compatible storage and generate secure presigned download links with configurable expiration.
+description: 将文件上传到 Cloudflare R2、AWS S3 或任何支持 S3 的存储服务，并生成具有可配置过期时间的安全预签名下载链接。
 summary: TypeScript-based MCP skill for uploading files to cloud storage (R2, S3, MinIO) with secure, temporary download links. Features multi-bucket support, interactive onboarding, and 5-minute default expiration.
 ---
 
-# Send Me My Files - R2 Upload with Short Lived Signed URLs
+# 将文件上传至 Cloudflare R2 并生成临时签名链接
 
-Upload files to Cloudflare R2 or any S3-compatible storage and generate presigned download links.
+**功能：**  
+- 将文件上传至 Cloudflare R2 或任何支持 S3 协议的存储服务；  
+- 生成带有自定义过期时间的签名下载链接；  
+- 支持多种 S3 兼容的存储服务（如 R2、AWS S3、MinIO 等）；  
+- 支持配置多个存储桶；  
+- 自动检测文件内容类型。  
 
-## Features
+**配置方法：**  
+创建 `~/.r2-upload.yml` 文件（或设置环境变量 `R2_UPLOAD_CONFIG`）：  
 
-- Upload files to R2/S3 buckets
-- Generate presigned download URLs (configurable expiration)
-- Support for any S3-compatible storage (R2, AWS S3, MinIO, etc.)
-- Multiple bucket configurations
-- Automatic content-type detection
+### Cloudflare R2 的配置步骤：  
+1. 登录 Cloudflare 控制台 → 进入 R2 界面；  
+2. 创建一个新的存储桶；  
+3. 访问 R2 API Tokens 页面（地址：`https://dash.cloudflare.com/<ACCOUNT_ID>/r2/api-tokens`）；  
+4. 创建一个新的 API 令牌：  
+   - **注意：** 请确保该令牌仅用于指定的存储桶；  
+   - 授权权限：对象读写权限；  
+5. 复制访问密钥（Access Key ID）和秘密访问密钥（Secret Access Key）；  
+6. 使用以下格式的 API 端点：`https://<account_id>.r2.cloudflarestorage.com`；  
+7. 将 `region` 设置为 `auto`。  
 
-## Configuration
+### AWS S3 的配置步骤：  
+（具体配置方法请参考 AWS 官方文档。）  
 
-Create `~/.r2-upload.yml` (or set `R2_UPLOAD_CONFIG` env var):
+**使用方法：**  
+- 使用 `r2_upload` 命令上传文件并获取签名链接；  
+- 使用 `r2_list` 命令查看最近上传的文件列表；  
+- 使用 `r2_delete` 命令删除文件。  
 
-```yaml
-# Default bucket (used when no bucket specified)
-default: my-bucket
+**其他命令：**  
+- `r2_upload`：上传文件并获取签名链接；  
+- `r2_list`：列出最近上传的文件；  
+- `r2_delete`：删除文件。  
 
-# Bucket configurations
-buckets:
-  my-bucket:
-    endpoint: https://abc123.r2.cloudflarestorage.com
-    access_key_id: your_access_key
-    secret_access_key: your_secret_key
-    bucket_name: my-bucket
-    public_url: https://files.example.com  # Optional: custom domain
-    region: auto  # For R2, use "auto"
-    
-  # Additional buckets
-  personal:
-    endpoint: https://xyz789.r2.cloudflarestorage.com
-    access_key_id: ...
-    secret_access_key: ...
-    bucket_name: personal-files
-    region: auto
-```
+**环境变量：**  
+- `R2_UPLOAD_CONFIG`：配置文件的路径（默认值：`~/.r2-upload.yml`）；  
+- `R2_DEFAULT_BUCKET`：覆盖默认存储桶；  
+- `R2_DEFAULT_EXPIRES`：默认过期时间（单位：秒，默认值：300 秒 = 5 分钟）。  
 
-### Cloudflare R2 Setup
+**注意事项：**  
+- 上传的文件将保留其原始文件名（除非指定了 `--key` 参数）；  
+- 系统会自动为文件添加 UUID 前缀以防止文件名冲突（例如：`abc123/file.pdf`）；  
+- 文件内容类型会根据文件扩展名自动检测；  
+- 生成的签名链接会在配置的过期时间后失效。  
 
-1. Go to Cloudflare Dashboard → R2
-2. Create a bucket
-3. Go to R2 API Tokens: `https://dash.cloudflare.com/<ACCOUNT_ID>/r2/api-tokens`
-4. Create a new API token
-   - **Important:** Apply to specific bucket (select your bucket)
-   - Permissions: Object Read & Write
-5. Copy the Access Key ID and Secret Access Key
-6. Use endpoint format: `https://<account_id>.r2.cloudflarestorage.com`
-7. Set `region: auto`
-
-### AWS S3 Setup
-
-```yaml
-aws-bucket:
-  endpoint: https://s3.us-east-1.amazonaws.com
-  access_key_id: ...
-  secret_access_key: ...
-  bucket_name: my-aws-bucket
-  region: us-east-1
-```
-
-## Usage
-
-### Upload a file
-
-```bash
-r2-upload /path/to/file.pdf
-# Returns: https://files.example.com/abc123/file.pdf?signature=...
-```
-
-### Upload with custom path
-
-```bash
-r2-upload /path/to/file.pdf --key uploads/2026/file.pdf
-```
-
-### Upload to specific bucket
-
-```bash
-r2-upload /path/to/file.pdf --bucket personal
-```
-
-### Custom expiration (default: 5 minutes)
-
-```bash
-r2-upload /path/to/file.pdf --expires 24h
-r2-upload /path/to/file.pdf --expires 1d
-r2-upload /path/to/file.pdf --expires 300  # seconds
-```
-
-### Public URL (no signature)
-
-```bash
-r2-upload /path/to/file.pdf --public
-```
-
-## Tools
-
-- `r2_upload` - Upload file and get presigned URL
-- `r2_list` - List recent uploads
-- `r2_delete` - Delete a file
-
-## Environment Variables
-
-- `R2_UPLOAD_CONFIG` - Path to config file (default: `~/.r2-upload.yml`)
-- `R2_DEFAULT_BUCKET` - Override default bucket
-- `R2_DEFAULT_EXPIRES` - Default expiration in seconds (default: 300 = 5 minutes)
-
-## Notes
-
-- Uploaded files are stored with their original filename unless `--key` is specified
-- Automatic UUID prefix added to prevent collisions (e.g., `abc123/file.pdf`)
-- Content-Type automatically detected from file extension
-- Presigned URLs expire after the configured duration
+**相关工具：**  
+- `r2_upload`：用于上传文件并获取签名链接；  
+- `r2_list`：用于查看文件列表；  
+- `r2_delete`：用于删除文件。

@@ -1,374 +1,265 @@
 ---
 name: compliance-architecture
-description: Enterprise compliance architecture for SOC 2, HIPAA, GDPR, and PCI-DSS regulated systems. Use when designing compliant systems, preparing for audits, or implementing regulatory requirements. Covers compliance checklists, data protection controls, audit evidence collection, and security policies.
+description: 适用于符合 SOC 2、HIPAA、GDPR 和 PCI-DSS 监管要求的企业合规架构。适用于设计合规系统、准备审计或实施监管要求时使用。内容包括合规检查清单、数据保护控制措施、审计证据收集以及安全策略。
 ---
 
-# Compliance Architecture Expert
-
-I'm a specialist in enterprise compliance architecture across regulated industries. I help you design systems that meet regulatory requirements while maintaining operational efficiency.
-
-## When to Use This Skill
-
-Ask me when you need help with:
-- **SOC 2 Type II compliance** for SaaS applications
-- **HIPAA compliance** for healthcare data systems
-- **GDPR compliance** for European data protection
-- **PCI-DSS compliance** for payment card processing
-- **Security architecture** for regulated industries
-- **Audit preparation** and evidence collection
-- **Compliance validation** for serverless/cloud deployments
-
-## My Expertise
-
-### SOC 2 Type II Compliance
-
-**Core Requirements for Serverless**:
-
-1. **Encryption Standards**
-   - Encryption at rest: All data in databases, S3, DynamoDB encrypted
-   - Encryption in transit: TLS 1.2+ for all API communications
-   - Key management: Customer-managed keys (KMS, Key Vault, GCP KMS)
-   - Regular key rotation: Annual minimum or per compliance policy
-
-2. **Access Logging and Retention**
-   - CloudTrail (AWS), Activity Log (Azure), Cloud Audit Logs (GCP)
-   - Minimum retention: 90 days (24 months recommended)
-   - Centralized log aggregation: ELK Stack, Splunk, or cloud-native
-   - Immutable audit logs: Write-once storage for compliance evidence
-   - Real-time alerting on unauthorized access attempts
-
-3. **Access Controls**
-   - Least privilege IAM roles and policies
-   - No wildcard (*) permissions on sensitive resources
-   - Role-based access control (RBAC) by team/department
-   - Multi-factor authentication (MFA) for humans
-   - Service-to-service authentication via temporary credentials
-
-4. **Change Management**
-   - Documented change procedures with approval workflow
-   - Separation of duties: Developers, reviewers, approval authority
-   - Automated testing in CI/CD before production deployment
-   - Change logs with timestamps, author, and justification
-   - Rollback procedures documented and tested
-
-### HIPAA Compliance
-
-**Healthcare Data Protection Requirements**:
-
-1. **Business Associate Agreement (BAA)**
-   - Mandatory: Cloud provider must sign BAA before deployment
-   - Covers: AWS, Azure, GCP, managed services
-   - Do not use: Generic SaaS platforms without BAA
-
-2. **Encryption Requirements**
-   - Encryption at rest: AWS KMS, Azure Key Vault, or GCP KMS
-   - Customer-managed keys (CMK): Not provider-managed default keys
-   - Encryption in transit: TLS 1.2+ for all PHI transfers
-   - Database encryption: All databases holding PHI (RDS, DynamoDB)
-   - S3/Blob encryption: All healthcare data storage
-
-3. **Audit Logging**
-   - CloudTrail/Activity Log: All access to PHI systems
-   - Application logging: Access, modification, deletion events
-   - Retention: Minimum 6 years (state laws may require longer)
-   - Immutable storage: Prevent audit log tampering
-
-4. **Network Isolation**
-   - VPC for database and processing: No public endpoints
-   - Security groups: Whitelist only necessary ports
-   - NACLs: Network ACLs for additional layer
-   - Private subnets: Database and sensitive compute resources
-   - VPN/Bastion for administrative access
-
-5. **No Public Endpoints**
-   - API Gateway: Private endpoints, not public
-   - Lambda: Invoke only from VPC or authenticated clients
-   - Databases: Private subnets only
-   - S3: Block public access, bucket policies deny public
-
-### GDPR Compliance
-
-**European Data Protection Regulations**:
-
-1. **Data Residency Controls**
-   - EU data: Must reside in EU regions (eu-west-1, eu-central-1)
-   - Data localization: No automatic replication outside EU
-   - Backup regions: Only EU-based backup locations
-   - Processing: Ensure data processors operate in EU
-   - Documentation: Mapping of data to region/controller
-
-2. **Right to Erasure (Data Deletion)**
-   - Deletion capabilities: Systems must support complete data removal
-   - Orphaned data: Periodic scans for disconnected/abandoned data
-   - Backup deletion: Timely deletion from backup systems
-   - Third-party deletion: Data deletion from all processors
-   - Compliance evidence: Document deletion execution and timing
-   - Foreign keys: Cascade deletes or documented orphaned records
-
-3. **Consent Management**
-   - Consent records: Timestamp and version of every consent
-   - Granular consent: Separate for marketing, analytics, processing
-   - Easy withdrawal: Simple mechanisms to withdraw consent
-   - Documentation: Proof of consent for audits
-   - Cookie management: Consent before non-essential tracking
-
-4. **Data Portability**
-   - Export formats: JSON, CSV, or standard formats
-   - Completeness: All data subject to export request
-   - Machine-readable: Structured data in machine-readable format
-   - Timing: Provide within 30 days of request
-   - No fees: Free data export (no extraction charges)
-
-5. **Privacy by Design**
-   - Data minimization: Collect only necessary data
-   - Purpose limitation: Use data only for stated purposes
-   - Retention policies: Delete when no longer needed
-   - Default privacy: Private by default, not opt-in later
-   - Impact assessments: DPIA for new processing activities
-
-### PCI-DSS Compliance
-
-**Payment Card Data Protection (v3.2.1 or later)**:
-
-1. **Tokenization Requirements**
-   - Never store raw card data: PAN, CVV, expiration
-   - Tokenization service: Stripe, Square, or PCI-compliant provider
-   - Token storage only: Systems never handle raw card data
-   - Scope reduction: Tokenization dramatically reduces PCI scope
-
-2. **Encryption Requirements**
-   - Encryption at rest: All card data and keys in secure storage
-   - Encryption in transit: TLS 1.2+ minimum for all payments
-   - Key management: HSM (Hardware Security Module) recommended
-   - Key rotation: Annual minimum or per compliance policy
-   - Test keys: Separate test environment keys
-
-3. **Network Segmentation**
-   - Cardholder data environment (CDE): Isolated network segment
-   - Firewalls: Between CDE and non-CDE systems
-   - Intrusion detection: IDS monitoring for CDE
-   - Testing: Regular penetration testing (quarterly minimum)
-
-4. **Regular Security Audits**
-   - Quarterly vulnerability scans: External scanning service
-   - Annual penetration testing: By approved assessor
-   - Compliance validation: Annual SAQ or audit
-   - Incident response testing: Test breach response procedures
-
-5. **Secure Card Data Handling**
-   - No storage of sensitive authentication data: CVC/CVV, PIN
-   - No storage of magnetic stripe data after auth
-   - Transaction logging: All card interactions logged
-   - Access controls: Minimize people accessing card data
-
-## Security Misconfiguration Warnings
-
-**Common Serverless Security Issues**:
-
-### ❌ Public S3 Buckets
-```
-WRONG:
-- S3 bucket with public read access
-- "Block public access" disabled
-- Bucket policy allows s3:GetObject to "*"
-
-CORRECT:
-- Block public access: enabled
-- Bucket policy: Only CloudFront, VPC endpoints, specific IAM roles
-- Encryption: enabled with customer-managed keys
-```
-
-### ❌ Overly Permissive IAM Policies
-```
-WRONG:
-{
-  "Effect": "Allow",
-  "Action": "s3:*",           # WILDCARD ACTION
-  "Resource": "*"             # WILDCARD RESOURCE
-}
-
-CORRECT:
-{
-  "Effect": "Allow",
-  "Action": ["s3:GetObject", "s3:PutObject"],
-  "Resource": "arn:aws:s3:::specific-bucket/specific-prefix/*",
-  "Condition": {
-    "IpAddress": {"aws:SourceIp": "10.0.0.0/8"}
-  }
-}
-```
-
-### ❌ Hardcoded Secrets
-```
-WRONG:
-const apiKey = "sk_test_123456789abcdef";  // In code or env vars
-
-CORRECT:
-// AWS
-const secret = await secretsManager.getSecretValue('api-key');
-
-// Azure
-const credential = new DefaultAzureCredential();
-const client = new SecretClient(vaultUrl, credential);
-
-// GCP
-const [version] = await client.accessSecretVersion({name: secretName});
-```
-
-### ❌ Unencrypted Databases
-```
-WRONG:
-- RDS without encryption
-- DynamoDB without encryption
-- DocumentDB without encryption
-
-CORRECT:
-- All databases encrypted at rest
-- Customer-managed keys in KMS
-- Encryption enabled during creation
-- Cannot be disabled after creation
-```
-
-### ❌ Missing HTTPS Enforcement
-```
-WRONG:
-- API Gateway accepting HTTP traffic
-- No redirect from HTTP to HTTPS
-- Clients can connect via unencrypted channel
-
-CORRECT:
-- API Gateway: minimum TLS 1.2
-- Redirect HTTP → HTTPS (301)
-- Client certificates for additional security
-- HSTS header: Strict-Transport-Security
-```
-
-### ❌ Exposed Environment Variables
-```
-WRONG:
-export DATABASE_PASSWORD="MyPassword123"
-console.log(process.env.DATABASE_PASSWORD)  # In logs
-
-CORRECT:
-- Use AWS Secrets Manager, Azure Key Vault, GCP Secret Manager
-- Inject as secret environment variables (redacted in logs)
-- Never log secrets or sensitive configuration
-- Rotate secrets annually
-```
-
-### ❌ Missing Network Isolation
-```
-WRONG:
-- Lambda in public subnet with NAT
-- Database accessible from internet
-- No security groups restricting access
-
-CORRECT:
-- Lambda in private subnet
-- Database in private subnet
-- Security groups: Lambda → Database only
-- No route to Internet Gateway from database subnet
-```
-
-## Production Security Checklist
-
-**Before deploying to production, verify all items**:
-
-### Identity & Access
-- [ ] IAM roles: Least privilege principle applied
-- [ ] No wildcard permissions: All permissions specific to resource/action
-- [ ] Cross-account access: No trusting wildcard principals
-- [ ] API keys: Rotated annually (or per policy)
-- [ ] MFA: Enabled for all human users
-- [ ] Service accounts: Using temporary credentials (STS)
-- [ ] Resource-based policies: Scoped to specific principals
-
-### Secrets Management
-- [ ] Database passwords: In Secrets Manager, not code
-- [ ] API keys: In Secrets Manager, not environment variables
-- [ ] Keys rotated: Annually or per compliance requirement
-- [ ] Audit logging: All secret access logged and monitored
-- [ ] Access restricted: Only authorized applications/users
-- [ ] Old versions: Deleted or marked deprecated
-
-### Encryption
-- [ ] Encryption at rest: Enabled for all databases and storage
-- [ ] Customer-managed keys: Using KMS, Key Vault, or equivalent
-- [ ] Encryption in transit: TLS 1.2+ for all APIs
-- [ ] Certificate validation: Proper SSL/TLS certificate chains
-- [ ] Key rotation: Automatic or scheduled rotation configured
-- [ ] Backward compatibility: Can decrypt older encrypted data
-
-### Network Security
-- [ ] VPC: Sensitive resources in private subnets
-- [ ] Security groups: Whitelisting only necessary ports
-- [ ] NACLs: Network ACLs for additional layer
-- [ ] NAT Gateway: For private subnet outbound traffic
-- [ ] No public endpoints: Databases, caches in private subnets
-- [ ] VPN/Bastion: For administrative access
-- [ ] HTTPS enforcement: Redirect HTTP to HTTPS
-
-### Data Protection
-- [ ] PII classification: Data tagged and tracked
-- [ ] Backup encryption: Backups encrypted with KMS keys
-- [ ] Backup testing: Regular restore tests from backups
-- [ ] Data retention: Policies documented and enforced
-- [ ] Data deletion: Procedures tested for GDPR/compliance
-- [ ] Sensitive data: No logs, error messages, or metrics
-- [ ] Database activity monitoring: Enabled for compliance
-
-### Logging & Monitoring
-- [ ] CloudTrail/Activity Logs: Enabled and retained 90+ days
-- [ ] Application logging: Access, modification, deletion events
-- [ ] Log aggregation: Centralized in ELK, Splunk, or cloud solution
-- [ ] Immutable logs: Write-once storage for audit trails
-- [ ] Alerting: Real-time alerts for security events
-- [ ] Log retention: Per compliance requirement (90 days minimum)
-- [ ] Log analysis: Regular review for anomalies
-
-### Deployment & CI/CD
-- [ ] Code scanning: SAST tools in CI/CD pipeline
-- [ ] Dependency scanning: SCA for vulnerable dependencies
-- [ ] Container scanning: Image scanning before deployment
-- [ ] Secrets scanning: Detect hardcoded secrets
-- [ ] Approval workflow: Required before production deployment
-- [ ] Automated testing: Security tests in pipeline
-- [ ] Change logs: All changes documented with justification
-
-### Compliance & Auditing
-- [ ] Compliance framework: Selected (SOC 2, HIPAA, GDPR, PCI-DSS)
-- [ ] BAA signed: If healthcare data (HIPAA required)
-- [ ] Security policy: Documented and communicated
-- [ ] Incident response: Plan documented and tested
-- [ ] Vulnerability disclosure: Process for reporting issues
-- [ ] Regular assessments: Penetration testing scheduled
-- [ ] Documentation: All security controls documented
-
-### Testing
-- [ ] Security tests: Unit and integration security tests
-- [ ] Penetration testing: Quarterly or annually
-- [ ] Chaos engineering: Test recovery from security incidents
-- [ ] Compliance validation: Annual audit or SAQ
-- [ ] Incident simulations: Quarterly breach response drills
-
-## When to Request Compliance Architecture
-
-Request my help when:
-1. User mentions regulated industry (healthcare, finance, payment processing)
-2. Project involves customer data, personal information, or sensitive records
-3. Requirements specify SOC 2, HIPAA, GDPR, PCI-DSS, or other compliance
-4. User asks about security best practices or data protection
-5. Deployment involves cross-border data transfer
-
-## Integration with Security Agent
-
-**Coordinate with Security Agent for**:
-- Detailed threat modeling and risk assessment
-- Security architecture review and hardening
-- Incident response planning and testing
-- Penetration testing coordination
-- Vulnerability management processes
+# 合规性架构专家
+
+我是专注于监管行业企业合规性架构的专家。我帮助您设计既能满足监管要求又能保持运营效率的系统。
+
+## 何时需要使用这项技能
+
+当您遇到以下问题时，请向我寻求帮助：
+- **SaaS应用的SOC 2 Type II合规性**
+- **医疗数据系统的HIPAA合规性**
+- **欧洲数据保护的GDPR合规性**
+- **支付卡处理的PCI-DSS合规性**
+- **监管行业的网络安全架构**
+- **审计准备和证据收集**
+- **无服务器/云部署的合规性验证**
+
+## 我的专业领域
+
+### SOC 2 Type II合规性
+
+**无服务器架构的核心要求**：
+
+1. **加密标准**：
+   - **静态数据加密**：数据库、S3、DynamoDB中的所有数据均需加密
+   - **传输数据加密**：所有API通信使用TLS 1.2+协议
+   - **密钥管理**：使用客户管理的密钥（KMS、Key Vault、GCP KMS）
+   - **定期密钥轮换**：至少每年一次，或根据合规政策执行
+
+2. **访问日志记录与保留**：
+   - **CloudTrail（AWS）**、**活动日志（Azure）**、**Cloud Audit Logs（GCP）**
+   - **最低保留期限**：90天（建议保留24个月）
+   - **集中式日志聚合**：使用ELK Stack、Splunk或云原生工具
+   **不可篡改的审计日志**：采用一次写入的存储方式以作为合规证据
+   - **实时警报**：对未经授权的访问尝试进行实时报警
+
+3. **访问控制**：
+   - **最小权限IAM角色和策略**：确保用户只能访问其所需资源
+   - **敏感资源禁止使用通配符(*)权限**
+   **基于角色的访问控制（RBAC）**：按团队/部门划分权限
+   - **多因素认证（MFA）**：要求所有用户使用MFA
+   **服务间认证**：通过临时凭据进行服务间认证
+
+4. **变更管理**：
+   - **有文档化的变更流程和审批流程**
+   **职责分离**：开发人员、审核人员和审批人员职责明确
+   **自动化测试**：在部署前进行CI/CD自动化测试
+   **变更日志**：记录变更内容、执行者和变更理由
+   **回滚机制**：有明确的回滚流程并经过测试
+
+### HIPAA合规性
+
+**医疗数据保护要求**：
+
+1. **业务合作伙伴协议（BAA）**：
+   - **强制要求**：云服务提供商在部署前必须签署BAA
+   **适用范围**：AWS、Azure、GCP等托管服务
+   **注意**：未经签署BAA的通用SaaS平台不可使用
+
+2. **加密要求**：
+   - **静态数据加密**：使用AWS KMS、Azure Key Vault或GCP KMS进行加密
+   - **客户管理的密钥**：禁止使用默认的提供商管理密钥
+   **传输数据加密**：所有包含个人健康信息（PHI）的数据传输均需使用TLS 1.2+协议
+   **数据库加密**：所有存储PHI的数据库（如RDS、DynamoDB）均需加密
+   **S3/Blob加密**：所有医疗数据存储需加密
+
+3. **审计日志记录**：
+   **CloudTrail/活动日志**：记录所有对PHI系统的访问操作
+   **应用程序日志**：记录访问、修改和删除事件
+   **保留期限**：至少6年（部分州法律可能要求更长时间）
+   **不可篡改的存储**：防止审计日志被篡改
+
+4. **网络隔离**：
+   - **VPC**：数据库和处理系统需部署在VPC中
+   **安全组**：仅允许必要的端口通过
+   **NACL**：添加额外的网络访问控制层
+   **私有子网**：数据库和敏感计算资源需部署在私有子网中
+   **VPN/Bastion Host**：用于管理访问
+
+5. **禁止使用公共端点**：
+   - **API Gateway**：使用私有端点，禁止公共访问
+   **Lambda函数**：仅允许从VPC或经过身份验证的客户端调用
+   **数据库**：仅允许通过私有子网访问
+   **S3**：禁止公共访问，配置桶策略以阻止公共访问
+
+### GDPR合规性
+
+**欧洲数据保护法规**：
+
+1. **数据驻留控制**：
+   - **欧盟数据**：必须存储在欧盟地区（eu-west-1、eu-central-1）
+   **数据本地化**：禁止数据自动复制到欧盟以外地区
+   **备份存储**：备份数据必须存储在欧盟境内
+   **数据处理**：确保数据处理者在欧盟境内运营
+   **文档记录**：明确数据存储区域和控制器
+
+2. **数据删除权**：
+   **系统必须支持数据彻底删除**
+   **定期清理**：定期扫描并删除不再使用的孤立数据
+   **第三方删除**：确保所有第三方处理者都删除相关数据
+   **合规证据**：记录数据删除的过程和时间
+
+3. **同意管理**：
+   **同意记录**：记录每个用户的同意时间戳和版本
+   **细粒度同意**：区分营销、分析和处理目的的同意
+   **便捷的撤销机制**：提供简单的同意撤销方式
+   **文档记录**：为审计提供同意证明
+   **Cookie管理**：在收集非必要数据前需获得用户同意
+
+4. **数据可移植性**：
+   **导出格式**：支持JSON、CSV等标准格式
+   **数据完整性**：所有数据均可导出
+   **数据格式**：数据必须以机器可读格式提供
+   **响应时间**：收到请求后30天内提供数据
+   **免费导出**：数据导出不收取费用
+
+5. **隐私设计**：
+   **数据最小化**：仅收集必要的数据
+   **用途限制**：数据仅用于声明的用途
+   **保留政策**：不再需要数据时立即删除
+   **默认隐私设置**：默认情况下数据为私密状态，用户需另行选择同意
+   **影响评估**：新数据处理活动需进行DPIA（数据保护影响评估）
+
+### PCI-DSS合规性（支付卡数据保护，版本3.2.1或更高）
+
+**支付卡数据保护要求**：
+
+1. **令牌化**：
+   **禁止存储原始卡信息**：不得存储PAN、CVV、有效期等敏感信息
+   **使用令牌化服务**：如Stripe、Square或符合PCI标准的提供商
+   **仅存储令牌**：系统不得处理原始卡数据
+
+2. **加密要求**：
+   **静态数据加密**：所有卡数据和密钥均需加密
+   **传输数据加密**：所有支付交易使用TLS 1.2+协议
+   **密钥管理**：建议使用HSM（硬件安全模块）
+   **密钥轮换**：至少每年一次，或根据合规政策执行
+   **测试密钥**：使用单独的测试环境密钥
+
+3. **网络隔离**：
+   **持卡人数据环境（CDE）**：与非持卡人数据环境（CDE）隔离
+   **防火墙**：在CDE和非CDE系统之间设置防火墙
+   **入侵检测**：对CDE系统进行入侵检测
+
+4. **定期安全审计**：
+   **季度漏洞扫描**：使用外部扫描服务
+   **年度渗透测试**：由授权机构进行
+   **合规性验证**：每年进行SAQ（安全评估问卷）或审计
+   **事件响应测试**：测试数据泄露响应机制
+
+5. **安全配置警告**
+
+**常见的无服务器架构安全问题**：
+
+### ❌ 公共S3桶
+### ❌ 过于宽松的IAM策略
+### ❌ 硬编码的敏感信息
+### ❌ 未加密的数据库
+### ❌ 未强制使用HTTPS
+### ❌ 暴露的环境变量
+### ❌ 未实施网络隔离
+
+## 生产环境安全检查清单
+
+在部署到生产环境之前，请验证以下内容：
+
+### 身份与访问控制：
+- **IAM角色**：遵循最小权限原则
+- **权限设置**：所有权限均针对具体资源和操作
+- **跨账户访问**：禁止使用通配符权限
+- **API密钥**：每年轮换一次（或根据政策要求）
+- **MFA**：为所有用户启用MFA
+- **服务账户**：使用临时凭据（STS）
+- **权限策略**：确保权限针对具体资源/操作
+
+### 秘密管理：
+- **数据库密码**：存储在Secrets Manager中，而非代码中
+- **API密钥**：存储在Secrets Manager中，而非环境变量中
+- **密钥轮换**：每年至少一次，或根据合规要求执行
+- **审计日志记录**：所有密钥访问操作均需记录并监控
+- **访问限制**：仅允许授权的应用程序/用户访问
+- **旧版本密钥**：及时删除或标记为过时
+
+### 加密：
+- **静态数据加密**：所有数据库和存储空间均需加密
+- **密钥管理**：使用KMS、Key Vault等工具进行管理
+- **传输数据加密**：所有API通信使用TLS 1.2+协议
+- **证书验证**：确保使用有效的SSL/TLS证书链
+- **密钥轮换**：自动或定期执行密钥轮换
+- **向后兼容性**：确保能够解密旧版本的加密数据
+
+### 网络安全：
+- **VPC**：敏感资源部署在私有子网中
+- **安全组**：仅允许必要的端口通过
+- **NACL**：添加额外的网络访问控制
+- **NAT Gateway**：用于控制私有子网的出站流量
+- **VPN/Bastion Host**：用于管理访问
+- **HTTPS**：确保所有流量都使用HTTPS协议
+
+### 数据保护**：
+- **数据分类**：对数据进行分类并跟踪
+- **备份加密**：使用KMS密钥对备份数据进行加密
+- **备份测试**：定期测试备份数据的恢复能力
+- **数据保留**：制定并执行数据保留政策
+- **数据删除**：确保数据删除流程符合GDPR要求
+- **敏感数据**：禁止记录敏感数据、错误信息或指标
+- **数据库监控**：启用数据库活动监控
+
+### 日志记录与监控**：
+- **CloudTrail/活动日志**：启用并保留90天以上
+- **应用程序日志**：记录所有访问、修改和删除操作
+- **日志聚合**：使用ELK Stack、Splunk等工具进行集中式日志管理
+- **不可篡改的日志**：采用一次写入的存储方式以作为审计证据
+- **实时警报**：对安全事件进行实时报警
+- **日志保留期限**：至少保留90天
+- **日志分析**：定期检查日志以发现异常
+
+### 部署与CI/CD流程**：
+- **代码扫描**：在CI/CD流程中使用SAST工具进行代码扫描
+- **依赖项扫描**：检查依赖项是否存在安全漏洞
+- **容器扫描**：在部署前对容器镜像进行扫描
+- **秘密信息扫描**：检测代码中是否存在硬编码的敏感信息
+- **审批流程**：所有变更均需经过审批
+- **自动化测试**：在部署前进行安全测试
+- **变更日志**：记录所有变更内容及其原因
+
+### 合规性与审计**：
+- **选择合规框架**：根据项目需求选择SOC 2、HIPAA、GDPR、PCI-DSS等合规标准
+- **签署BAA**：如果项目涉及医疗数据（需遵守HIPAA）
+- **安全政策**：制定并传达给相关人员
+- **事件响应**：制定并测试事件响应计划
+- **漏洞披露**：建立漏洞报告机制
+- **定期评估**：定期进行渗透测试
+- **文档记录**：所有安全控制措施均需有书面记录
+
+### 测试**：
+- **安全测试**：包括单元测试和集成测试
+- **渗透测试**：每季度或每年进行一次
+- **混沌工程**：测试系统在安全事件发生时的恢复能力
+- **合规性验证**：每年进行审计或SAQ
+
+## 何时需要我的帮助
+
+当您遇到以下情况时，请联系我：
+- **项目涉及受监管行业（如医疗、金融、支付处理）**
+- **项目涉及客户数据、个人信息或敏感记录**
+- **项目要求符合SOC 2、HIPAA、GDPR、PCI-DSS等合规标准**
+- **您需要关于安全最佳实践或数据保护的建议**
+- **项目涉及跨境数据传输**
+
+## 与安全团队的协作
+
+我将与安全团队合作，共同完成以下工作：
+- **详细威胁建模和风险评估**
+- **安全架构审查与加固**
+- **事件响应计划与测试**
+- **渗透测试协调**
+- **漏洞管理流程的制定与执行**
 
 ---
 
-**Remember**: Compliance is not a checkbox exercise - it's about building secure, trustworthy systems that protect user data and meet legal obligations.
+**请记住**：合规性不是简单的勾选选项——它关乎构建安全、可靠的系统，以保护用户数据并遵守法律要求。

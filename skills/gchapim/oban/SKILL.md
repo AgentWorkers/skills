@@ -1,11 +1,11 @@
 ---
 name: oban-designer
-description: "Design and implement Oban background job workers for Elixir. Configure queues, retry strategies, uniqueness constraints, cron scheduling, and error handling. Generate Oban workers, queue config, and test setups. Use when adding background jobs, async processing, scheduled tasks, or recurring cron jobs to an Elixir project using Oban."
+description: "设计和实现用于 Elixir 的 Oban 后台作业工作者。配置队列、重试策略、唯一性约束、Cron 调度以及错误处理机制。生成 Oban 工作者的配置文件，并进行测试。在将后台作业、异步处理、定时任务或周期性 Cron 作业添加到 Elixir 项目中时，可以使用 Oban。"
 ---
 
 # Oban Designer
 
-## Installation
+## 安装
 
 ```elixir
 # mix.exs
@@ -27,7 +27,7 @@ config :my_app, Oban,
 {Oban, Application.fetch_env!(:my_app, Oban)}
 ```
 
-Generate the Oban migrations:
+生成 Oban 迁移文件：
 
 ```bash
 mix ecto.gen.migration add_oban_jobs_table
@@ -41,9 +41,9 @@ defmodule MyApp.Repo.Migrations.AddObanJobsTable do
 end
 ```
 
-## Worker Implementation
+## 工作器实现
 
-### Basic Worker
+### 基本工作器
 
 ```elixir
 defmodule MyApp.Workers.SendEmail do
@@ -63,35 +63,35 @@ defmodule MyApp.Workers.SendEmail do
 end
 ```
 
-### Return Values
+### 返回值
 
-| Return | Effect |
+| 返回值 | 含义 |
 |--------|--------|
-| `:ok` | Job marked complete |
-| `{:ok, result}` | Job marked complete |
-| `{:error, reason}` | Job retried (counts as attempt) |
-| `{:cancel, reason}` | Job cancelled, no more retries |
-| `{:snooze, seconds}` | Re-scheduled, doesn't count as attempt |
-| `{:discard, reason}` | Job discarded (Oban 2.17+) |
+| `:ok` | 任务标记为已完成 |
+| `{:ok, result}` | 任务标记为已完成，并返回结果 |
+| `{:error, reason}` | 任务重试（计入尝试次数） |
+| `{:cancel, reason}` | 任务被取消，不再重试 |
+| `{:snooze, seconds}` | 任务被重新安排，不计入尝试次数 |
+| `{:discard, reason}` | 任务被丢弃（Oban 2.17+ 版本） |
 
-## Queue Configuration
+## 队列配置
 
-See [references/worker-patterns.md](references/worker-patterns.md) for common worker patterns.
+有关常见的工作器模式，请参阅 [references/worker-patterns.md](references/worker-patterns.md)。
 
-### Sizing Guidelines
+### 规模调整指南
 
-| Queue | Concurrency | Use Case |
+| 队列类型 | 并发数 | 适用场景 |
 |-------|------------|----------|
-| `default` | 10 | General-purpose |
-| `mailers` | 20 | Email delivery (I/O bound) |
-| `webhooks` | 50 | Webhook delivery (I/O bound, high volume) |
-| `media` | 5 | Image/video processing (CPU bound) |
-| `events` | 5 | Analytics, audit logs |
-| `critical` | 3 | Billing, payments |
+| `default` | 10 | 通用任务 |
+| `mailers` | 20 | 邮件发送（I/O 密集型任务） |
+| `webhooks` | 50 | Webhook 发送（I/O 密集型、高吞吐量任务） |
+| `media` | 5 | 图像/视频处理（CPU 密集型任务） |
+| `events` | 5 | 分析、审计日志处理 |
+| `critical` | 3 | 计费、支付相关任务 |
 
-### Queue Priority
+### 队列优先级
 
-Jobs within a queue execute by priority (0 = highest). Use sparingly:
+队列中的任务按优先级执行（0 表示最高优先级）。请谨慎使用优先级设置：
 
 ```elixir
 %{user_id: user.id}
@@ -99,13 +99,13 @@ Jobs within a queue execute by priority (0 = highest). Use sparingly:
 |> Oban.insert()
 ```
 
-## Retry Strategies
+## 重试策略
 
-### Default Backoff
+### 默认重试策略
 
-Oban uses exponential backoff: `attempt^4 + attempt` seconds.
+Oban 使用指数级重试策略：`attempt^4 + attempt` 秒。
 
-### Custom Backoff
+### 自定义重试策略
 
 ```elixir
 defmodule MyApp.Workers.WebhookDelivery do
@@ -126,7 +126,7 @@ defmodule MyApp.Workers.WebhookDelivery do
 end
 ```
 
-### Timeout
+### 超时设置
 
 ```elixir
 use Oban.Worker, queue: :media
@@ -136,9 +136,7 @@ def timeout(%Oban.Job{args: %{"size" => "large"}}), do: :timer.minutes(10)
 def timeout(_job), do: :timer.minutes(2)
 ```
 
-## Uniqueness
-
-Prevent duplicate jobs:
+## 防止任务重复
 
 ```elixir
 defmodule MyApp.Workers.SyncAccount do
@@ -152,16 +150,16 @@ defmodule MyApp.Workers.SyncAccount do
 end
 ```
 
-### Unique Options
+### 独特性设置
 
-| Option | Default | Description |
+| 设置项 | 默认值 | 说明 |
 |--------|---------|-------------|
-| `period` | 60 | Seconds to enforce uniqueness (`:infinity` for forever) |
-| `states` | all active | Which job states to check |
-| `keys` | all args | Specific arg keys to compare |
-| `timestamp` | `:inserted_at` | Use `:scheduled_at` for scheduled uniqueness |
+| `period` | 60 | 确保任务唯一性的时间间隔（`:infinity` 表示永久有效） |
+| `states` | all active | 需检查的任务状态 |
+| `keys` | all args | 需比较的参数键 |
+| `timestamp` | `:inserted_at` | 使用 `:scheduled_at` 以确保定时任务的唯一性 |
 
-### Replace Existing
+### 替换现有任务
 
 ```elixir
 %{account_id: id}
@@ -172,23 +170,11 @@ end
 |> Oban.insert()
 ```
 
-## Cron Scheduling
+## Cron 调度
 
-```elixir
-# config.exs
-plugins: [
-  {Oban.Plugins.Cron, crontab: [
-    {"0 */6 * * *", MyApp.Workers.DigestEmail},
-    {"0 2 * * *", MyApp.Workers.DailyCleanup},
-    {"0 0 1 * *", MyApp.Workers.MonthlyReport},
-    {"*/5 * * * *", MyApp.Workers.HealthCheck, args: %{service: "api"}},
-  ]}
-]
-```
+使用 Cron 表达式进行任务调度：`minute hour day_of_month month day_of_week`。
 
-Cron expressions: `minute hour day_of_month month day_of_week`.
-
-## Inserting Jobs
+## 插入任务
 
 ```elixir
 # Immediate
@@ -221,11 +207,11 @@ end)
 |> Repo.transaction()
 ```
 
-## Oban Pro Features
+## Oban Pro 特性
 
-Available with Oban Pro license:
+仅限 Oban Pro 许可证用户使用：
 
-### Batch (group of jobs)
+### 批量处理（多个任务同时执行）
 
 ```elixir
 # Process items in batch, run callback when all complete
@@ -236,7 +222,7 @@ batch = MyApp.Workers.ProcessItem.new_batch(
 Oban.insert_all(batch)
 ```
 
-### Workflow (job dependencies)
+### 工作流（任务依赖关系）
 
 ```elixir
 Oban.Pro.Workflow.new()
@@ -246,7 +232,7 @@ Oban.Pro.Workflow.new()
 |> Oban.insert_all()
 ```
 
-### Chunk (aggregate multiple jobs)
+### 分组处理（聚合多个任务）
 
 ```elixir
 defmodule MyApp.Workers.BulkIndex do
@@ -264,11 +250,11 @@ defmodule MyApp.Workers.BulkIndex do
 end
 ```
 
-## Testing
+## 测试
 
-See [references/testing-oban.md](references/testing-oban.md) for detailed testing patterns.
+有关详细的测试模式，请参阅 [references/testing-oban.md](references/testing-oban.md)。
 
-### Setup
+### 设置
 
 ```elixir
 # config/test.exs
@@ -279,7 +265,7 @@ config :my_app, Oban,
 Oban.Testing.start()
 ```
 
-### Asserting Job Enqueued
+### 确认任务已加入队列
 
 ```elixir
 use Oban.Testing, repo: MyApp.Repo
@@ -293,7 +279,7 @@ test "enqueues welcome email on signup" do
 end
 ```
 
-### Executing Jobs in Tests
+### 在测试中执行任务
 
 ```elixir
 test "processes email delivery" do
@@ -305,9 +291,9 @@ test "processes email delivery" do
 end
 ```
 
-## Monitoring
+## 监控
 
-### Telemetry Events
+### 监控事件
 
 ```elixir
 # Attach in application.ex
@@ -318,9 +304,9 @@ end
 ], &MyApp.ObanTelemetry.handle_event/4, %{})
 ```
 
-### Key Metrics to Track
+### 需要跟踪的关键指标
 
-- Job execution duration (p50, p95, p99)
-- Queue depth (available jobs per queue)
-- Error rate per worker
-- Retry rate per worker
+- 任务执行时间（p50、p95、p99 分位数）
+- 队列深度（每个队列中的待处理任务数量）
+- 每个工作器的错误率
+- 每个工作器的重试率

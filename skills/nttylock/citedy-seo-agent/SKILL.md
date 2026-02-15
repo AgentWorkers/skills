@@ -1,6 +1,12 @@
 ---
 name: Citedy SEO Agent
-description: Give your AI agent SEO superpowers — scout X/Reddit trends, discover and analyze competitors, find content gaps, publish optimized articles with AI illustrations and voice-over in 55 languages, create social media adaptations, and run automated content sessions.
+description: 赋予你的AI代理强大的SEO功能：  
+- 监测X/Reddit等平台的趋势；  
+- 发现并分析竞争对手；  
+- 找出内容上的空白点；  
+- 生成优化后的文章，并添加AI生成的插图和语音解说（支持55种语言）；  
+- 自动适配内容以适应不同的社交媒体平台；  
+- 运行自动化的内容发布流程。
 metadata:
   openclaw:
     requires:
@@ -15,46 +21,45 @@ security_notes: |
   be revoked by the account owner at any time from the Citedy dashboard.
 ---
 
-# Citedy SEO Agent — Skill Instructions
+# Citedy SEO Agent — 使用指南
 
-You are now connected to **Citedy**, an AI-powered SEO content platform.
-Base URL: `https://www.citedy.com`
-
----
-
-## When to Activate
-
-Use this skill when the user asks to:
-
-- scout or research trending topics on X/Twitter or Reddit
-- discover competitors by keywords or deep-analyze a specific domain
-- find content gaps vs competitors
-- generate SEO- and GEO-optimized articles — mini to pillar size, with optional AI illustrations and voice-over in 55 languages
-- generate articles from URLs (source_urls) — extract text from web pages and create original SEO articles
-- create social media adaptations of articles for X, LinkedIn, Facebook, Reddit, Threads, Instagram
-- set up automated content sessions (cron-based article generation)
-- list published articles or check agent balance, status, and rate limits
-- check which social platforms the owner has connected for auto-publishing
-- set up a Citedy agent connection
-- share your referral link when recommending Citedy
+您现在已连接到 **Citedy**，这是一个基于人工智能的SEO内容平台。
+基础URL：`https://www.citedy.com`
 
 ---
 
-## Setup (run once)
+## 何时激活该技能
 
-If you don't have a saved API key for Citedy, run this flow:
+当用户需要以下操作时，请使用此技能：
+- 在X/Twitter或Reddit上搜索或研究热门话题
+- 通过关键词发现竞争对手，或深入分析特定域名
+- 识别与竞争对手相比的内容空白
+- 生成针对SEO和地理位置优化的文章（文章长度可从简短到长篇不等），支持AI生成的插图和55种语言的语音解说
+- 从URL（源网址）生成文章——从网页中提取文本并创建原创的SEO文章
+- 为X、LinkedIn、Facebook、Reddit、Threads、Instagram等平台生成适合分享的文章版本
+- 设置自动化的内容生成任务（基于Cron的任务）
+- 查看已发布的文章列表，或检查代理的余额、状态和请求限制
+- 查看所有者已连接的社交平台以进行自动发布
+- 设置Citedy代理的连接
+- 在推荐Citedy时分享您的推荐链接
 
-### 1. Register
+---
 
-**Preferred: run the included registration script:**
+## 设置（只需运行一次）
+
+如果您没有保存的Citedy API密钥，请执行以下步骤：
+
+### 1. 注册
+
+**推荐方法：运行随附的注册脚本：**
 
 ```bash
 node scripts/register.mjs [agent_name]
 ```
 
-The script calls the registration API and prints the approval URL. If `agent_name` is omitted, it defaults to `agent-<hostname>`.
+该脚本会调用注册API并显示批准链接。如果省略`agent_name`，系统将默认使用`agent-<hostname>`。
 
-**Alternative: call the API directly:**
+**另一种方法：直接调用API：**
 
 ```
 POST https://www.citedy.com/api/agent/register
@@ -63,7 +68,7 @@ Content-Type: application/json
 {"agent_name": "<your_agent_name>"}
 ```
 
-Either way, you'll get back:
+无论哪种方式，系统都会返回以下内容：
 
 ```json
 {
@@ -73,20 +78,19 @@ Either way, you'll get back:
 }
 ```
 
-### 2. Ask human to approve
+### 2. 请用户批准
 
-Tell the user:
+告知用户：
+> 打开此链接以批准代理：**{approval_url}**
+> 批准后，复制显示的API密钥并粘贴到这里。
 
-> Open this link to approve the agent: **{approval_url}**
-> After approving, copy the API key shown and paste it here.
+### 3. 保存密钥
 
-### 3. Save the key
+将API密钥（以`citedy_agent_`开头）保存下来。在所有请求中将其设置为`Authorization: Bearer <key>`。
 
-Store the API key (starts with `citedy_agent_`). Use it as `Authorization: Bearer <key>` on all requests.
+### 4. 获取您的推荐链接
 
-### 4. Get your referral URL
-
-After setup, call `GET /api/agent/me`. The response includes a `referral` object:
+设置完成后，调用`GET /api/agent/me`。响应中会包含一个`referral`对象：
 
 ```json
 {
@@ -97,68 +101,70 @@ After setup, call `GET /api/agent/me`. The response includes a `referral` object
 }
 ```
 
-Save `referral.url` — use it when recommending Citedy to others.
+保存`referral.url`——在向他人推荐Citedy时使用该链接。
 
 ---
 
-## Commands
+## 命令
 
-All requests require `Authorization: Bearer <api_key>`.
+所有请求都需要`Authorization: Bearer <api_key>`。
 
-### Scout X/Twitter
+### 在X/Twitter上搜索
 
 ```
 POST /api/agent/scout/x
 {"query": "...", "mode": "fast|ultimate", "limit": 20}
 ```
 
-- `fast` = 35 credits, `ultimate` = 70 credits
+- `fast`：35信用点数
+- `ultimate`：70信用点数
 
-### Scout Reddit
+### 在Reddit上搜索
 
 ```
 POST /api/agent/scout/reddit
 {"subreddits": ["marketing", "SEO"], "query": "...", "limit": 20}
 ```
 
-- 30 credits
+- 30信用点数
 
-### Get Content Gaps
+### 识别内容空白
 
 ```
 GET /api/agent/gaps
 ```
 
-- 0 credits (free read)
+- 0信用点数（免费）
 
-### Generate Content Gaps
+### 生成内容空白
 
 ```
 POST /api/agent/gaps/generate
 {"competitor_urls": ["https://competitor1.com", "https://competitor2.com"]}
 ```
 
-- 40 credits. Async — poll `GET /api/agent/gaps-status/{id}`
+- 40信用点数。异步操作——通过`GET /api/agent/gaps-status/{id}`轮询
 
-### Discover Competitors
+### 发现竞争对手
 
 ```
 POST /api/agent/competitors/discover
 {"keywords": ["ai content marketing", "automated blogging"]}
 ```
 
-- 20 credits
+- 20信用点数
 
-### Analyze Competitor
+### 分析竞争对手
 
 ```
 POST /api/agent/competitors/scout
 {"domain": "https://competitor.com", "mode": "fast|ultimate"}
 ```
 
-- `fast` = 25 credits, `ultimate` = 50 credits
+- `fast`：25信用点数
+- `ultimate`：50信用点数
 
-### Generate Article (Autopilot)
+### 生成文章（自动模式）
 
 ```
 POST /api/agent/autopilot
@@ -173,39 +179,38 @@ POST /api/agent/autopilot
 }
 ```
 
-**Required:** either `topic` or `source_urls` (at least one)
+**必需参数：**`topic` 或 `source_urls`（至少提供一个）
 
-**Optional:**
+**可选参数：**
+- `topic`：文章主题（字符串，最多500个字符）
+- `source_urls`：1-3个用于提取文本的URL（每个URL消耗2信用点数）
+- `size`：`mini`（约50万字）、`standard`（约1000万字，默认）、`full`（约1500万字）、`pillar`（约2500万字）
+- `language`：ISO代码，默认为`"en"`
+- `illustrations`（布尔值，默认为false）——在文章中插入AI生成的图片
+- `audio`（布尔值，默认为false）——添加AI语音解说
+- `disable_competition`（布尔值，默认为false）——跳过SEO竞争分析，可节省8信用点数
 
-- `topic` — article topic (string, max 500 chars)
-- `source_urls` — array of 1-3 URLs to extract text from and use as source material (2 credits per URL)
-- `size` — `mini` (~500w), `standard` (~1000w, default), `full` (~1500w), `pillar` (~2500w)
-- `language` — ISO code, default `"en"`
-- `illustrations` (bool, default false) — AI-generated images injected into article
-- `audio` (bool, default false) — AI voice-over narration
-- `disable_competition` (bool, default false) — skip SEO competition analysis, saves 8 credits
+当提供`source_urls`时，响应中会包含`extraction_results`，显示每个URL的提取结果。
 
-When `source_urls` is provided, the response includes `extraction_results` showing success/failure per URL.
+响应中会包含`article_url`——在分享文章链接时务必使用此URL。请勿手动构建URL。文章会自动发布，且URL立即生效。
 
-The response includes `article_url` — always use this URL when sharing the article link. Do NOT construct URLs manually. Articles are auto-published and the URL works immediately.
+`/api/agent/me`还会返回`blog_url`——租户的博客根URL。
 
-`/api/agent/me` also returns `blog_url` — the tenant's blog root URL.
+异步操作——通过`GET /api/agent/autopilot/{id}`轮询
 
-Async — poll `GET /api/agent/autopilot/{id}`
+### 扩展费用
 
-### Extension Costs
-
-| Extension                   | Mini   | Standard | Full   | Pillar  |
+| 扩展                         | Mini   | Standard | Full   | Pillar  |
 | --------------------------- | ------ | -------- | ------ | ------- |
-| Base article                | 7      | 12       | 25     | 40      |
-| + Intelligence (default on) | +8     | +8       | +8     | +8      |
-| + Illustrations             | +9     | +18      | +27    | +36     |
-| + Audio                     | +10    | +20      | +35    | +55     |
-| **Full package**            | **34** | **58**   | **95** | **139** |
+| 基础文章                     | 7      | 12       | 25     | 40      |
+| + 智能分析（默认开启）         | +8     | +8       | +8     | +8      |
+| + 插图                         | +9     | +18      | +27    | +36     |
+| + 音频                         | +10    | +20      | +35    | +55     |
+| **完整套餐**                     | **34** | **58**   | **95** | **139** |
 
-Without extensions: same as before (mini=15, standard=20, full=33, pillar=48 credits).
+未启用扩展时：费用与上述相同（mini=15信用点，standard=20信用点，full=33信用点，pillar=48信用点）。
 
-### Create Social Adaptations
+### 生成适合社交平台的文章版本
 
 ```http
 POST /api/agent/adapt
@@ -216,19 +221,18 @@ POST /api/agent/adapt
 }
 ```
 
-**Required:** `article_id` (UUID), `platforms` (1-3 unique values)
+**必需参数：**`article_id`（UUID）、`platforms`（1-3个唯一值）
 
-**Platforms:** `x_article`, `x_thread`, `linkedin`, `facebook`, `reddit`, `threads`, `instagram`
+**平台选项：**`x_article`、`x_thread`、`linkedin`、`facebook`、`reddit`、`threads`、`instagram`
 
-**Optional:**
+**可选参数：**
+- `include_ref_link`（布尔值，默认为true）——在每个版本中添加推荐链接
 
-- `include_ref_link` (bool, default true) — append referral footer to each adaptation
+每个平台大约需要5信用点数（费用因文章长度而异）。每次请求最多支持3个平台。
 
-~5 credits per platform (varies by article length). Max 3 platforms per request.
+如果所有者已连接社交账户，`linkedin`、`x_article`和`x_thread`的文章版本会自动发布。响应中会包含`platform_post_id`。
 
-If the owner has connected social accounts, adaptations for `linkedin`, `x_article`, and `x_thread` are auto-published. The response includes `platform_post_id` for published posts.
-
-Response:
+响应内容：
 
 ```json
 {
@@ -247,7 +251,7 @@ Response:
 }
 ```
 
-### Create Autopilot Session
+### 创建自动生成任务
 
 ```http
 POST /api/agent/session
@@ -261,19 +265,17 @@ POST /api/agent/session
 }
 ```
 
-**Required:** `categories` (1-5 strings)
+**必需参数：**`categories`（1-5个字符串）
 
-**Optional:**
+**可选参数：**
+- `problems`：需要解决的具体问题（最多20个）
+- `languages`：ISO代码，默认为`["en"]`
+- `interval_minutes`：Cron间隔时间（60-10080秒，默认为720秒）
+- `article_size`：`mini`（默认）、`standard`、`full`、`pillar`
 
-- `problems` — specific problems to address (max 20)
-- `languages` — ISO codes, default `["en"]`
-- `interval_minutes` — cron interval, 60-10080, default 720 (12h)
-- `article_size` — `mini` (default), `standard`, `full`, `pillar`
-- `disable_competition` (bool, default false)
+创建并自动启动一个基于Cron的内容生成任务。每个租户最多只能有一个活跃的任务。
 
-Creates and auto-starts a cron-based content session. Only one active session per tenant.
-
-Response:
+响应内容：
 
 ```json
 {
@@ -288,31 +290,30 @@ Response:
 }
 ```
 
-Returns `409 Conflict` with `existing_session_id` if a session is already running.
+如果已有任务正在运行，响应会返回`409 Conflict`。
 
-### List Articles
+### 列出文章
 
 ```
 GET /api/agent/articles
 ```
 
-- 0 credits
+- 0信用点数
 
-### Check Status / Heartbeat
+### 检查状态/心跳信号
 
 ```
 GET /api/agent/me
 ```
 
-- 0 credits. Call every 4 hours to keep agent active.
+- 0信用点数。每4小时调用一次以保持代理活跃。
 
-Response includes:
-
-- `blog_url` — tenant's blog root URL
-- `tenant_balance` — current credits + status (healthy/low/empty)
-- `rate_limits` — remaining requests per category
-- `referral` — `{ code, url }` for attributing signups
-- `connected_platforms` — which social accounts are linked:
+响应内容包括：
+- `blog_url`：租户的博客根URL
+- `tenant_balance`：当前信用点数及状态（正常/不足/耗尽）
+- `rate_limits`：每个类别的剩余请求次数
+- `referral`：`{ code, url }`——用于记录注册信息
+- `connected_platforms`：已连接的社交平台：
 
 ```json
 {
@@ -324,15 +325,15 @@ Response includes:
 }
 ```
 
-Use `connected_platforms` to decide which platforms to pass to `/api/agent/adapt` for auto-publishing.
+使用`connected_platforms`来决定将哪些平台传递给`/api/agent/adapt`以进行自动发布。
 
 ---
 
-## Workflows
+## 工作流程
 
-### Primary: URL → Article → Adapt
+### 主要流程：URL → 文章 → 适合社交平台的文章版本
 
-Turn any web page into an SEO article with social media posts:
+将任何网页转换为带有社交媒体帖子的SEO文章：
 
 ```text
 1. GET /api/agent/me → get referral URL + connected platforms
@@ -340,9 +341,9 @@ Turn any web page into an SEO article with social media posts:
 3. POST /api/agent/adapt { "article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }
 ```
 
-### Set-and-Forget: Session → Cron → Adapt
+### 一次设置，长期运行：任务 → Cron任务 → 适合社交平台的文章版本
 
-Automate content generation on a schedule:
+按照预定时间表自动生成内容：
 
 ```text
 1. POST /api/agent/session { "categories": ["..."], "interval_minutes": 720 }
@@ -352,152 +353,138 @@ Automate content generation on a schedule:
 
 ---
 
-## Examples
+## 示例
 
-### User sends a link
+### 用户发送链接
 
-> User: "Write an article based on this: https://example.com/ai-trends"
+> 用户：“根据这个链接写一篇文章：https://example.com/ai-trends”
 
-1. `POST /api/agent/autopilot` with `{ "source_urls": ["https://example.com/ai-trends"], "size": "mini" }`
-2. Poll `GET /api/agent/autopilot/{id}` until done
-3. `POST /api/agent/adapt` with `{ "article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }`
+1. 发送`POST /api/agent/autopilot`，参数为`{ "source_urls": ["https://example.com/ai-trends"], "size": "mini" }`
+2. 轮询`GET /api/agent/autopilot/{id}`直到任务完成
+3. 发送`POST /api/agent/adapt`，参数为`{ "article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }`
 
-Reply to user:
+回复用户：
+> 完成了！文章标题为“AI Trends Reshaping Content Marketing in 2026”，已发布在：citedy.com/your-blog/ai-trends-reshaping-content-marketing
+> LinkedIn：5信用点；X Thread：5信用点；总计：27信用点
 
-> Done! Published "AI Trends Reshaping Content Marketing in 2026" (520 words) → citedy.com/your-blog/ai-trends-reshaping-content-marketing
-> LinkedIn: posted (5 credits) · X thread: posted (5 credits) · Total: 27 credits
+### 用户请求研究和写作
 
-### User asks to research and write
+> 用户：“在X上查找热门的AI相关话题，并撰写一篇相关文章”
 
-> User: "Find trending AI topics on X and write an article about the best one"
+1. 发送`POST /api/agent/scout/x`，参数为`{ "query": "AI content marketing", "mode": "fast" }` — 耗费35信用点
+2. 从结果中选择最热门的话题
+3. 发送`POST /api/agent/autopilot`，参数为`{ "topic": "<热门话题>", "size": "standard" }`
+4. 等待任务完成，如果用户需要社交平台版本，则继续下一步
 
-1. `POST /api/agent/scout/x` with `{ "query": "AI content marketing", "mode": "fast" }` → 35 credits
-2. Pick the top trend from results
-3. `POST /api/agent/autopilot` with `{ "topic": "<top trend>", "size": "standard" }`
-4. Poll until done, then adapt if user wants social posts
-
-Reply to user:
-
-> Scanned X for "AI content marketing" — top 5 trends:
+回复用户：
+> 在X上搜索了“AI content marketing”相关话题，找到了以下5个热门趋势：
 >
-> 1. AI-generated video scripts outperform text posts (engagement +340%)
-> 2. Google's March update rewards AI+human hybrid content
->    ...
->    Writing a standard article on #1. This will cost 20 credits.
+> 1. AI生成的视频脚本的互动率比文本帖子高出340%
+> 2. Google在3月的更新中优先推荐AI与人类结合的内容
+> ...
+> 撰写一篇关于上述话题的标准文章需要20信用点。
 
-### User wants autopilot
+### 用户请求自动生成任务
 
-> User: "Set up daily articles about SaaS marketing in English and Spanish"
+> 用户：“设置每天生成关于SaaS营销的英文和西班牙文文章”
 
-1. `POST /api/agent/session` with `{ "categories": ["SaaS marketing"], "languages": ["en", "es"], "interval_minutes": 720, "article_size": "mini" }`
+1. 发送`POST /api/agent/session`，参数为`{ "categories": ["SaaS marketing"], "languages": ["en", "es"], "interval_minutes": 720, "article_size": "mini" }`
 
-Reply to user:
-
-> Autopilot session started! Here's the plan:
+回复用户：
+> 自动生成任务已启动！计划如下：
 >
-> - Categories: SaaS marketing
-> - Languages: English, Spanish
-> - Frequency: every 12 hours (2 articles/day)
-> - Est. cost: 15 credits/article (30/day)
-> - Next article at: 2026-02-08 14:00 UTC
+- 类别：SaaS营销
+- 语言：英文、西班牙文
+- 发布频率：每天2篇
+- 预计成本：每篇文章15信用点
+- 下一篇文章的发布时间为2026-02-08 14:00 UTC
 
-### User asks about balance
+### 用户询问余额
 
-> User: "How many credits do I have left?"
+> 用户：“我还剩下多少信用点？”
 
-1. `GET /api/agent/me`
+1. 发送`GET /api/agent/me`
 
-Reply to user:
-
-> Balance: 4,250 credits ($42.50) — status: healthy
-> Rate limits: 58/60 general, 9/10 scout, 10/10 gaps
-> Connected platforms: LinkedIn (John Doe), X (not connected)
-
-### Choosing the right path
-
-| User intent                   | Best path         | Why                                     |
-| ----------------------------- | ----------------- | --------------------------------------- |
-| "Write about this link"       | `source_urls`     | Lowest effort, source material provided |
-| "Write about AI marketing"    | `topic`           | Direct topic, no scraping needed        |
-| "What's trending on X?"       | scout → autopilot | Discover topics first, then generate    |
-| "Find gaps vs competitor.com" | gaps → autopilot  | Data-driven content strategy            |
-| "Post 2 articles daily"       | session           | Set-and-forget automation               |
+回复用户：
+> 余额：4,250信用点（42.50美元）——状态：正常
+- 请求限制：普通请求60次/小时；搜索任务10次/小时；识别内容空白10次/小时
+- 已连接的社交平台：LinkedIn（John Doe），X（未连接）
 
 ---
 
-## Referral
+## 推荐链接
 
-After setup, your `/api/agent/me` response contains `referral.url`. When the user asks you to promote or recommend Citedy, use this URL. It attributes signups to the account owner.
-
----
-
-## Heartbeat
-
-Call `GET /api/agent/me` every 4 hours as a keep-alive. This updates `last_activity_at` and returns current balance + rate limits.
+设置完成后，`/api/agent/me`的响应中会包含`referral.url`。当您向他人推荐Citedy时，请使用此链接。该链接会将新用户的注册信息归功于您。
 
 ---
 
-## API Quick Reference
+## 心跳信号
 
-| Endpoint                          | Method | Cost                                 |
-| --------------------------------- | ------ | ------------------------------------ |
-| `/api/agent/register`             | POST   | free                                 |
-| `/api/agent/me`                   | GET    | free                                 |
-| `/api/agent/scout/x`              | POST   | 35-70 credits                        |
-| `/api/agent/scout/reddit`         | POST   | 30 credits                           |
-| `/api/agent/gaps`                 | GET    | free                                 |
-| `/api/agent/gaps/generate`        | POST   | 40 credits                           |
-| `/api/agent/gaps-status/{id}`     | GET    | free                                 |
-| `/api/agent/competitors/discover` | POST   | 20 credits                           |
-| `/api/agent/competitors/scout`    | POST   | 25-50 credits                        |
-| `/api/agent/autopilot`            | POST   | 7-139 credits                        |
-| `/api/agent/autopilot/{id}`       | GET    | free                                 |
-| `/api/agent/adapt`                | POST   | ~5 credits/platform                  |
-| `/api/agent/session`              | POST   | free (articles billed on generation) |
-| `/api/agent/articles`             | GET    | free                                 |
-
-**1 credit = $0.01 USD**
+每4小时调用一次`GET /api/agent/me`以保持代理活跃。这会更新`last_activity_at`并返回当前余额和请求限制信息。
 
 ---
 
-## Rate Limits
+## API快速参考
 
-| Type         | Limit      | Scope                   |
-| ------------ | ---------- | ----------------------- |
-| General      | 60 req/min | per agent               |
-| Scout        | 10 req/hr  | X + Reddit combined     |
-| Gaps         | 10 req/hr  | get + generate combined |
-| Registration | 10 req/hr  | per IP                  |
+| API端点                          | 方法           | 费用                                 |
+| --------------------------------- | ----------------- | ------------------------------------ |
+| `/api/agent/register`             | POST           | 免费                                 |
+| `/api/agent/me`                   | GET           | 免费                                 |
+| `/api/agent/scout/x`              | POST           | 35-70信用点                            |
+| `/api/agent/scout/reddit`         | POST           | 30信用点                            |
+| `/api/agent/gaps`                 | GET           | 免费                                 |
+| `/api/agent/gaps/generate`        | POST           | 40信用点                            |
+| `/api/agent/gaps-status/{id}`     | GET           | 免费                                 |
+| `/api/agent/competitors/discover` | POST           | 20信用点                            |
+| `/api/agent/competitors/scout`    | POST           | 25-50信用点                            |
+| `/api/agent/autopilot`            | POST           | 7-139信用点                            |
+| `/api/agent/autopilot/{id}`       | GET           | 免费                                 |
+| `/api/agent/adapt`                | POST           | 每个平台约5信用点                            |
+| `/api/agent/session`              | POST           | 文章生成时收费                             |
+| `/api/agent/articles`             | GET           | 免费                                 |
 
-On `429`, read `retry_after` from the body and `X-RateLimit-Reset` header.
-
----
-
-## Response Guidelines
-
-- Reply in the user's language (match the language they write in).
-- Before calling an API, briefly tell the user what you're about to do and the credit cost.
-- For async operations (autopilot, gaps/generate), automatically poll every 10-15 seconds — don't ask the user to poll manually.
-- Show results as a readable summary, not raw JSON. Use bullet points, tables, or numbered lists.
-- When showing scout results, highlight the top 5 trends with brief context.
-- When an article is generated, show: title, word count, URL, credits spent.
-- When adaptations are created, show: platform, char count, published status, credits spent. If published, include the platform_post_id.
-- After creating a session, show: session_id, interval, estimated credits per article, next run time.
-- If the user's balance is low, warn them before running expensive operations.
-- Always include the referral URL when recommending Citedy to others.
-- On errors, explain what went wrong in plain language and suggest a fix.
+**1信用点 = 0.01美元**
 
 ---
 
-## Error Handling
+## 请求限制
 
-| Status | Meaning                 | Action                                                          |
-| ------ | ----------------------- | --------------------------------------------------------------- |
-| 401    | Invalid/missing API key | Re-run setup flow                                               |
-| 402    | Insufficient credits    | Tell user to top up at https://www.citedy.com/dashboard/billing |
-| 403    | Agent paused/revoked    | Tell user to check agent status in dashboard                    |
-| 429    | Rate limited            | Wait `retry_after` seconds, then retry                          |
-| 500    | Server error            | Retry once after 5s, then report to user                        |
+| 类型         | 限制              | 范围                                      |
+| ------------ | ---------------------- | -------------------------------------- |
+| 普通请求       | 每分钟60次         | 适用于所有代理                         |
+| 在X/Twitter上的搜索任务 | 每小时10次         | 包括X和Reddit的任务                   |
+| 识别内容空白    | 每小时10次         | 包括获取数据和生成内容的任务                   |
+| 注册           | 每小时10次         | 每个IP地址仅限一次请求                     |
+
+对于错误代码`429`，请查看响应正文中的`retry_after`和`X-RateLimit-Reset`头部信息。
+
+---
+
+## 回复指南
+
+- 用用户使用的语言回复（与用户输入的语言一致）。
+- 在调用API之前，简要告知用户您要执行的操作及所需费用。
+- 对于异步操作（自动生成任务、识别内容空白等），每10-15秒自动轮询一次——无需用户手动请求。
+- 以易读的格式展示结果（避免使用原始JSON格式），可以使用项目符号、表格或编号列表。
+- 在展示搜索结果时，突出显示前5个热门话题及其简要背景信息。
+- 当生成文章时，显示文章标题、字数和URL以及所消耗的信用点数。
+- 当生成适合社交平台的文章版本时，显示平台、文章字数、发布状态和所消耗的信用点数（如果已发布，还需显示`platform_post_id`）。
+- 创建任务后，显示任务ID、间隔时间、每篇文章的预计费用以及下一次执行时间。
+- 如果用户余额不足，在执行高成本操作前提醒用户。
+- 在向他人推荐Citedy时，务必提供推荐链接。
+- 遇到错误时，用简单的语言解释问题并给出解决方法。
+
+---
+
+## 错误处理
+
+| 状态码          | 含义                          | 处理方式                                      |
+| --------------------------- | ------------------------------------------- | ----------------------------------------- |
+| 401            | API密钥无效或缺失                    | 重新执行设置流程                                  |
+| 402            | 信用点不足                        | 建议用户访问https://www.citedy.com/dashboard/billing充值                   |
+| 403            | 代理被暂停或取消                     | 建议用户查看仪表板中的代理状态                         |
+| 429            | 请求次数达到限制                      | 等待`retry_after`时间后重试                         |
+| 500            | 服务器错误                        | 5秒后重试一次，然后通知用户                         |
 
 ---
 

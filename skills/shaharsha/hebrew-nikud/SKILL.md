@@ -1,36 +1,36 @@
 ---
 name: hebrew-nikud
-description: Hebrew nikud (vowel points) reference for AI agents. Correct nikud rules for verb conjugations (binyanim), dagesh, gender suffixes, homographs, and common mistakes. Use before adding nikud to Hebrew text (especially for TTS).
+description: 希伯来语尼库德（元音符号）参考指南，适用于人工智能代理。本指南提供了动词变位（宾亚尼姆）、达格什（元音符号的特殊形式）、性别后缀、同形异义词等相关规则，以及使用尼库德时常见的错误。在为希伯来语文本添加尼库德符号之前，请务必参考本指南（尤其是对于语音合成技术TTS）。
 tags: [hebrew, nikud, vowels, pronunciation, tts, language, reference]
 allowed-tools: []
 ---
 
-# Hebrew Nikud (ניקוד) Reference
+# 希伯来语尼库德（ניקוד）参考指南
 
-A reference guide for adding **selective nikud** to Hebrew text. Designed for AI agents that need accurate pronunciation hints (e.g., for TTS).
+本指南介绍了如何在希伯来文本中添加**选择性尼库德**（即根据需要添加的发音标记）。它专为需要准确发音提示的AI代理（如语音合成系统TTS）设计。
 
-## Golden Rule
+## 重要原则
 
-**Only add nikud when you're 100% certain it's correct.** Wrong nikud is worse than no nikud — the TTS model will read your mistake literally instead of guessing correctly from context.
+**只有在100%确定正确的情况下才添加尼库德。**错误的尼库德比不加尼库德更糟糕——TTS模型会按照错误的发音来读取文本，而无法根据上下文进行正确猜测。
 
-## When to Add Nikud
+## 何时添加尼库德
 
-1. **Ambiguous consonants** (dagesh in בכ"פ)
-2. **Gender-specific suffixes**
-3. **Homographs** (same spelling, different pronunciation)
-4. **Foreign names and loanwords**
-5. **Stress placement** that changes meaning
+1. **发音模糊的辅音**（例如 בכ"פ 中的 dagesh）
+2. **表示性别的后缀**
+3. **同形异义词**（拼写相同但发音不同的单词）
+4. **外来词和借词**
+5. **会改变意义的重音位置**
 
-When in doubt — don't nikud. Let the TTS model guess from context.
+如果有疑问，请不要添加尼库德，让TTS模型根据上下文进行猜测。
 
 ---
 
-## 1. Vowel Symbols Reference
+## 1. 元音符号参考
 
-| Symbol | Name | Sound | Example |
+| 符号 | 名称 | 发音 | 例子 |
 |--------|------|-------|---------|
 | ַ | פַּתָח (Patach) | a | כַּלְבּ (kalb) |
-| ָ | קָמָץ (Kamatz) | a (sometimes o) | שָׁלוֹם (shalom) |
+| ָ | קָמָץ (Kamatz) | a（有时发 o 音）| שָׁלוֹם (shalom) |
 | ֶ | סֶגוֹל (Segol) | e | מֶלֶךְ (melekh) |
 | ֵ | צֵרֵי (Tzere) | e | לֵב (lev) |
 | ִ | חִירִיק (Hiriq) | i | סִפֵּר (siper) |
@@ -38,154 +38,147 @@ When in doubt — don't nikud. Let the TTS model guess from context.
 | וֹ | חוֹלָם מָלֵא | o | שׁוֹמֵר (shomer) |
 | ֻ | קֻבּוּץ (Kubutz) | u | קֻבּוּץ (kubutz) |
 | וּ | שׁוּרוּק (Shuruk) | u | סוּס (sus) |
-| ְ | שְׁוָא (Shva) | silent or e | זְמַן (zman) |
-| ֲ | חֲטַף פַּתַח | short a | חֲלוֹם (khalom) |
-| ֱ | חֲטַף סֶגוֹל | short e | נֶאֱמָן (ne'eman) |
-| ֳ | חֲטַף קָמָץ | short o | צׇהֳרַיִם (tzohorayim) |
+| ְ | שְׁוָא (Shva) | 无声或发 e 音 | זְמַן (zman) |
+| ֲ | חֲטַף פַּתַח | 短 a 音 | חֲלוֹם (khalom) |
+| ֱ | חֲטַף סֶגוֹל | 短 e 音 | נֶאֱמָן (ne'eman) |
+| ֳ | חֲטַף קָמָץ | 短 o 音 | צׇהֳרַיִם (tzohorayim) |
 
-### Shva Rules (שְׁוָא)
-- **Start of word** → vocal (na): בְּרֵאשִׁית (bereshit)
-- **End of word** → silent (nach): כָּתַבְתְּ (katavt)
-- **Two consecutive** → first silent, second vocal: יִשְׁמְרוּ (yishmeru)
-- **After long vowel** → vocal: כּוֹתְבִים (kotvim)
-- **After short vowel** → silent: מַלְכָּה (malka)
+### Shva 的规则
+
+- **词首** → 发元音音：בְּרֵאשִׁית (bereshit)
+- **词尾** → 无声：כָּתַבְתְּ (katavt)
+- **连续出现时**：第一个无声，第二个发元音：יִשְׁמְרוּ (yishmeru)
+- **长元音后** → 发元音：כּוֹתְבִים (kotvim)
+- **短元音后** → 无声：מַלְכָּה (malka)
 
 ---
 
-## 2. Dagesh (דגש) — Hard vs Soft Consonants
+## 2. Dagesh（דגש）——硬辅音与软辅音
 
-### Begedkefet (בגדכפ"ת)
+### Begedkefet（בגדכפ"ת）
 
-Six letters historically changed sound with dagesh. In **modern Hebrew**, only three still have audible differences:
+历史上，六个字母在加上 dagesh 时发音会发生变化。在**现代希伯来语**中，只有三个字母的发音仍有明显区别：
 
-| Letter | With dagesh (hard) | Without dagesh (soft) | Audible in modern Hebrew? |
+| 字母 | 加 dagesh 后（硬音） | 不加 dagesh 后（软音） | 在现代希伯来语中是否可听出区别？ |
 |--------|-------------------|----------------------|--------------------------|
-| בּ | B | V (ב) | ✅ Yes |
-| גּ | G | Gh (ג) | ❌ No (both G) |
-| דּ | D | Dh (ד) | ❌ No (both D) |
-| כּ | K | Kh (כ) | ✅ Yes |
-| פּ | P | F (פ) | ✅ Yes |
-| תּ | T | Th (ת) | ❌ No (both T) |
+| בּ | B | V (ב) | ✅ 可听出 |
+| גּ | G | Gh (ג) | ❌ 听不出（两者发音相同） |
+| דּ | D | Dh (ד) | ❌ 听不出（两者发音相同） |
+| כּ | K | Kh (כ) | ✅ 可听出 |
+| פּ | P | F (פ) | ✅ 可听出 |
+| תּ | T | Th (ת) | ❌ 听不出（两者发音相同） |
 
-**For TTS purposes, only בכ"פ matter** (B/V, K/Kh, P/F).
+**对于TTS来说，只有 בכ"פ 三个字母的发音有区别（B/V、K/Kh、P/F）。**
 
-### When does dagesh appear?
+### dagesh 的出现时机：
 
-**Dagesh Lene (light)** — hardening, in begedkefet letters:
-- At the start of a word (after pause): בַּיִת (bayit)
-- After a silent shva: מִסְפָּר (mispar - the פ has dagesh)
+- **Begedkefet（轻 dagesh）**：在词首（停顿后）：בַּיִת (bayit)
+- **在无声 shva 后**：מִסְפָּר (mispar – 这里的 פ 发 dagesh)
 
-**Dagesh Forte (strong)** — doubling, in any letter except gutturals (אהחע"ר):
-- After the definite article הַ: הַבַּיִת (habayit)
-- In Pi'el/Pu'al/Hitpa'el verb patterns: סִפֵּר, דִּבֵּר
-- After prepositions with article: בַּבַּיִת (babayit)
+- **Dagesh Forte（重 dagesh）**：在任何字母后（除了喉音 אהחע"ר）：
+  - 在定冠词 הַ 后：הַבַּיִת (habayit)
+  - 在 Pi'el/Pu'al/Hitpa'el 动词形式中：סִפֵּר, דִּבֵּר
+  - 在带有定冠词的介词后：בַַּיִת (babayit)
 
-### Common dagesh examples for TTS
+### TTS 中常见的 dagesh 例子
 
-**Pe/Fe (פּ/פ) — most error-prone:**
-- פִּיצָה (pizza), פִּייר (Pierre), פַּעַם (pa'am)
-- פּוֹלִיטִיקָה (politika), פָּרִיז (Paris)
-- אוֹפֶּרָה (opera), קָפּוּצִ'ינוֹ (cappuccino)
+- **Pe/Fe（פּ/פ）**：最容易出错的字母组合：
+  - פִּיצָה (pizza), פִּייר (Pierre), פַּעַם (pa'am)
+  - פּוֹלִיטִיקָה (politika), פָּרִיז (Paris)
+  - אוֹפֶּרָה (opera), קָפּוּצִ'ינוֹ (cappuccino)
 
-**Bet/Vet (בּ/ב):**
-- בְּסֵדֶר (b'seder), בְּדִיוּק (bediyuk), בְּרָכָה (brakha)
-- בּוֹסְטוֹן (Boston), בֵּירָה (bira - beer)
+- **Bet/Vet（בּ/ב）**：
+  - בְּסֵדֶר (b'seder), בְּדִיוּק (bediyuk), בְָכָה (brakha)
+  - בּוֹסְטוֹן (Boston), בֵּירָה (bira - beer)
 
-**Kaf/Khaf (כּ/כ):**
-- כּוֹס (kos), כַּמָּה (kama), כּוֹכָב (kokhav)
-- כְּרִיסְטִינָה (Christina)
+- **Kaf/Khaf（כּ/כ）**：
+  - כּוֹס (kos), כַָּה (kama), כּוֹכָב (kokhav)
+  - כְּרִיסְטִינָה (Christina)
 
 ---
 
-## 3. Verb Conjugations (בניינים)
+## 3. 动词变位（בניינים）
 
-Hebrew has 7 verb patterns. **This is the hardest part** — if unsure of the binyan, don't nikud the verb.
+希伯来语有7种动词变位形式。**这是最难的部分**——如果不确定动词的变位形式，请不要添加尼库德。
 
-### פָּעַל (Pa'al / Qal) — Basic active
-| Form | Pattern | Example |
+### פָּעַל（Pa'al）——基本主动态
+| 形式 | 变位规则 | 例子 |
 |------|---------|---------|
-| Past 3ms | קָטַל | כָּתַב (wrote), שָׁמַר (guarded), לָמַד (learned) |
-| Past 3fs | קָטְלָה | כָּתְבָה, שָׁמְרָה |
-| Past 1s | קָטַלְתִּי | כָּתַבְתִּי |
-| Present ms | קוֹטֵל | כּוֹתֵב (writes), שׁוֹמֵר, לוֹמֵד |
-| Present fs | קוֹטֶלֶת | כּוֹתֶבֶת |
-| Future 3ms | יִקְטוֹל | יִכְתּוֹב, יִשְׁמוֹר |
-| Infinitive | לִקְטוֹל | לִכְתּוֹב, לִשְׁמוֹר |
+| 过去式第三人称单数 | קָטַל | כָּתַב (wrote), שָׁמַר (guarded), לָמַד (learned) |
+| 过去式第三人称复数 | קָטְלָה | כָּתְבָה, שְָמְרָה |
+| 过去式第一人称单数 | קָטַלְתִּי | כָּתַבְתִּי |
+| 现在式第三人称单数 | קוֹטֵל | כּוֹתֵב (writes), שׁוֹמֵר, לוֹמֵד |
+| 现在式复数 | קוֹטֶלֶת | כּוֹתֶבֶת |
+| 将来式第三人称单数 | יִקְטוֹל | יִכְתּוֹב, יִשְׁמוֹר |
+| 原形 | לִקְטוֹל | לִכְתּוֹב, לִשְׁמוֹר |
 
-### פִּעֵל (Pi'el) — Intensive active
-| Form | Pattern | Example |
-|------|---------|---------|
-| Past 3ms | קִטֵּל | סִפֵּר (told), דִּבֵּר (spoke), בִּקֵּשׁ (asked), לִמֵּד (taught) |
-| Past 3fs | קִטְּלָה | סִפְּרָה, דִּבְּרָה |
-| Present ms | מְקַטֵּל | מְסַפֵּר (tells), מְדַבֵּר (speaks), מְלַמֵּד (teaches) |
-| Future 3ms | יְקַטֵּל | יְסַפֵּר, יְדַבֵּר |
-| Infinitive | לְקַטֵּל | לְסַפֵּר, לְדַבֵּר |
+### פִּעֵל（Pi'el）——强调主动态
+| 形式 | 变位规则 | 例子 |
+| 过去式第三人称单数 | קִטֵּל | סִפֵּר (told), דִּבֵּר (spoke), בִּקֵ־שׁ (asked), לִמֵּד (taught) |
+| 过去式第三人称复数 | קִטְּלָה | סִפְּרָה, דִּבְּרָה |
+| 现在式第三人称单数 | מְקַטֵּל | מְסַפֵּר (tells), מְדַבֵּר (speaks), מְלַמֵּד (teaches) |
+| 将来式第三人称单数 | יְקַטֵּל | יְסַפֵּר, יְדַבֵּר |
+| 原形 | לְקַטֵּל | לְסַפֵּר, לְדַבֵּר |
 
-### הִפְעִיל (Hif'il) — Causative active
-| Form | Pattern | Example |
-|------|---------|---------|
-| Past 3ms | הִקְטִיל | הִסְבִּיר (explained), הִזְמִין (invited), הִתְחִיל (started) |
-| Present ms | מַקְטִיל | מַסְבִּיר (explains), מַזְמִין (invites) |
-| Future 3ms | יַקְטִיל | יַסְבִּיר, יַזְמִין |
-| Infinitive | לְהַקְטִיל | לְהַסְבִּיר, לְהַזְמִין |
+### הִפְעִיל（Hif'il）——使役主动态
+| 形式 | 变位规则 | 例子 |
+| 过去式第三人称单数 | הִקְטִיל | הִסְבִֺיר (explained), הִזְמִין (invited), הִתְחִיל (started) |
+| 现在式第三人称单数 | מַקְטִיל | מַסְבִֺיר (explains), מַזְמִין (invites) |
+| 将来式第三人称单数 | יַקְטִיל | יְסַטִיל, יְזְמִין |
+| 原形 | לְהַקְטִיל | לְהַסְבִֺיר, לְהַזְמִין |
 
-### הִתְפַּעֵל (Hitpa'el) — Reflexive
-| Form | Pattern | Example |
-|------|---------|---------|
-| Past 3ms | הִתְקַטֵּל | הִתְקַשֵּׁר (called), הִסְתַּכֵּל (looked) |
-| Present ms | מִתְקַטֵּל | מִתְקַשֵּׁר, מִסְתַּכֵּל |
-| Infinitive | לְהִתְקַטֵּל | לְהִתְקַשֵּׁר |
+### הִתְפֵַל（Hitpa'el）——反身态
+| 形式 | 变位规则 | 例子 |
+| 过去式第三人称单数 | הִתְקַטֵֺל | הִתְקַשֵֺר (called), הִסְתַֺכֵֺל (looked) |
+| 现在式第三人称单数 | מִתְקַטֵֺל | מִתְקַשֵֺר, מִתְסַֺכֵֺל |
+| 原形 | לְהִתְקַטֵֺל | לְהִתְקַשֵֺר |
 
-### נִפְעַל (Nif'al) — Passive of Pa'al
-| Form | Pattern | Example |
-|------|---------|---------|
-| Past 3ms | נִקְטַל | נִכְתַּב (was written), נִשְׁמַר (was guarded) |
-| Present ms | נִקְטָל | נִכְתָּב, נִשְׁמָר |
-| Infinitive | לְהִקָּטֵל | לְהִכָּתֵב |
+### נִפְעַל（Nif'al）——Pa'al 的被动态
+| 形式 | 变位规则 | 例子 |
+| 过去式第三人称单数 | נִקְטַל | נִכְתַֺב (was written), נִשְׁמַר (was guarded) |
+| 现在式第三人称单数 | נִקְטָל | נִכְתָֺב, נִשְׁמָר |
+| 原形 | לְהִקָֺטֵל | לְהִכָֺתֵב |
 
-### פֻּעַל (Pu'al) — Passive of Pi'el
-| Form | Pattern | Example |
-|------|---------|---------|
-| Past 3ms | קֻטַּל | סֻפַּר (was told), בֻּקַּשׁ (was requested) |
-| Present ms | מְקֻטָּל | מְסֻפָּר (is told), מְבֻקָּשׁ (wanted/requested) |
+### פֻּעַל（Pu'al）——Pi'el 的被动态
+| 形式 | 变位规则 | 例子 |
+| 过去式第三人称单数 | קֻטַֺל | סֻפַֺר (was told), בֻׁקַֺשց (was requested) |
+| 现在式第三人称单数 | מְקֻטָֺל | מְקֻפָֺר (is told), מְבֻׁקָֺשց (is wanted/requested) |
 
-### הֻפְעַל (Huf'al) — Passive of Hif'il
-| Form | Pattern | Example |
-|------|---------|---------|
-| Past 3ms | הֻקְטַל | הֻסְבַּר (was explained), הֻזְמַן (was invited) |
-| Present ms | מֻקְטָל | מֻסְבָּר (is explained), מֻזְמָן (is invited) |
+### הֻפְעַל（Huf'al）——Hif'il 的被动态
+| 形式 | 变位规则 | 例子 |
+| 过去式第三人称单数 | הֻקְטַֺל | הֻסְבַֺר (was explained), הֻזְמִין (was invited) |
+| 现在式第三人称单数 | מֻקְטָֺל | מֻסְבָֺר (is explained), מֻזְמָֺn (is invited) |
 
-### ⚠️ Common Verb Confusions
+### ⚠️ 常见动词混淆
 
-| Word | Wrong | Right | Why |
+| 单词 | 错误形式 | 正确形式 | 原因 |
 |------|-------|-------|-----|
-| סיפר | סָפַר (counted, Pa'al) | סִפֵּר (told, Pi'el) | Different binyan! |
-| דיבר | דָּבַר (thing/noun) | דִּבֵּר (spoke, Pi'el) | Noun vs verb |
-| ביקש | בָּקַשׁ | בִּקֵּשׁ (asked, Pi'el) | Pi'el, not Pa'al |
-| למד | לָמַד (learned, Pa'al) | לִמֵּד (taught, Pi'el) | Pa'al vs Pi'el |
-| הסביר | הֶסְבֵּר | הִסְבִּיר (explained, Hif'il) | Hif'il pattern |
-| שמר | שָׂמַר (guarded) | שִׂמֵּר (preserved, Pi'el) | Context-dependent |
+| סיפר | סָפַר (counted, Pa'al) | 应为 סִפֵֺר (told, Pi'el) | 动词变位不同！ |
+| דיבר | דָֺבַר (thing/noun) | 应为 דִֺבֵֺר (spoke, Pi'el) | 名词与动词的混淆 |
+| ביקש | בָֺקַשց | 应为 בִֺקֵֺשց (asked, Pi'el) | 动词变位错误 |
+| למד | לָמַד (learned, Pa'al) | 应为 לִמֵֺד (taught, Pi'el) | 动词变位错误 |
+| הסביר | הֶסְבֵֺר | 应为 הִסְבִֺר (explained, Hif'il) | 动词变位错误 |
+| שמר | שָւמַר (guarded) | 应为 שִւמֵֺר (preserved, Pi'el) | 取决于上下文 |
 
-**Rule of thumb:**
-- Simple action → Pa'al (כָּתַב wrote, שָׁמַר guarded)
-- Intensive / caused action → Pi'el (סִפֵּר told, דִּבֵּר spoke, לִמֵּד taught)
-- Made someone do → Hif'il (הִסְבִּיר explained, הִזְמִין invited)
-- Was done to → Nif'al/Pu'al/Huf'al (נִכְתַּב was written)
+**经验法则：**
+- 简单动作 → 使用 Pa'al（例如：כָֺתַב (wrote), שָֺמַר (guarded)）
+- 强调/使役动作 → 使用 Pi'el（例如：סִפֵֺר (told), דִֺבֵֺר (spoke), לִמֵֺד (taught）
+- 使某人做某事 → 使用 Hif'il（例如：הִסְבִֺיר (explained), הִזְמִין (invited) |
+- 被动动作 → 使用 Nif'al/Pu'al/Huf'al（例如：נִכְתַֺב (was written) |
 
 ---
 
-## 4. Gender Suffixes
+## 4. 性别后缀
 
-| Suffix | Male | Female |
+| 后缀 | 男性 | 女性 |
 |--------|------|--------|
-| Your (singular) | ְךָ (-kha) | ֵךְ (-ekh) |
-| You (pronoun) | אַתָּה | אַתְּ |
-| To you | לְךָ | לָךְ |
-| You (object) | אוֹתְךָ | אוֹתָךְ |
-| Of you | שֶׁלְּךָ | שֶׁלָּךְ |
-| Your (plural) | ְכֶם (-khem, m) | ְכֶן (-khen, f) |
+| 你的（单数） | ְךָ (-kha) | ֵךְ (-ekh) |
+| 你（代词） | אַתָֺה | אַתְֺ |
+| 给你 | לְךָ | לָךְ |
+| 你的（宾语） | אוֹתְךָ | אוֹתָךְ |
+| 你的（复数） | ְכֶם (-khem, m) | ְכֶן (-khen, f) |
 
-### Examples
+### 例子
 ```
 מה שלומְךָ? (to male)
 מה שלומֵךְ? (to female)
@@ -197,58 +190,58 @@ Hebrew has 7 verb patterns. **This is the hardest part** — if unsure of the bi
 
 ---
 
-## 5. Common Homographs
+## 5. 常见同形异义词
 
-Words spelled the same but pronounced differently:
+拼写相同但发音不同的单词：
 
-| Spelling | Pronunciation 1 | Pronunciation 2 | Pronunciation 3 |
+| 拼写 | 第一种发音 | 第二种发音 | 第三种发音 |
 |----------|-----------------|-----------------|-----------------|
-| ספר | סֵפֶר (book) | סָפַר (counted) | סִפֵּר (told) / סַפָּר (barber) |
-| בקר | בּוֹקֶר (morning) | בָּקָר (cattle) | בִּקֵּר (visited) |
+| ספר | סֵפֶר (book) | סָפַר (counted) | סִפֵֺר (told) / סַפָֺר (barber) |
+| בקר | בּוֹקֶר (morning) | בָֺקָר (cattle) | בִֺקֵֺר (visited) |
 | עולם | עוֹלָם (world) | עוֹלֵם (concealing) | |
 | ילד | יֶלֶד (child) | יָלַד (gave birth) | |
-| חלק | חֵלֶק (part) | חָלָק (smooth) | חִלֵּק (divided) |
+| חלק | חֵלֶק (part) | חָלָק (smooth) | חִלֵֺק (divided) |
 | קרא | קָרָא (read/called) | קוֹרֵא (reader) | |
 | ערב | עֶרֶב (evening) | עָרֵב (pleasant) | עָרַב (guaranteed) |
-| כלב | כֶּלֶב (dog) | כָּלֵב (Caleb, name) | |
-| אכל | אָכַל (ate) | אוֹכֵל (food/eating) | |
-| גדול | גָּדוֹל (big) | גִּדּוּל (growth/tumor) | |
+| כלב | כֶֺלֶב (dog) | כָֺלֵֺב (Caleb, name) | |
+| אכל | אָכַל (ate) | אוֹכֵֺל (food/eating) | |
+| גדול | גָֺדוֹל (big) | גִֺדּוֹל (growth/tumor) | |
 
 ---
 
-## 6. Foreign Names & Loanwords
+## 6. 外来词和借词
 
-The model often mispronounces foreign words. Add dagesh for P/B/K sounds:
+TTS模型经常无法正确发音外来词。对于 P/B/K 音，需要添加 dagesh：
 
-| Word | Nikud | Why |
+| 单词 | 尼库德形式 | 原因 |
 |------|-------|-----|
-| פִּייר (Pierre) | dagesh in פ | P not F |
-| פָּרִיז (Paris) | dagesh in פ | P not F |
-| פִּיצָה (pizza) | dagesh in פ | P not F |
-| בּוֹסְטוֹן (Boston) | dagesh in ב | B not V |
-| כְּרִיסְטִינָה (Christina) | dagesh in כ | K not Kh |
-| פּוֹלִין (Poland) | dagesh in פ | P not F |
-| קָפּוּצִ'ינוֹ (cappuccino) | dagesh in פ | P not F |
-| בּוּדָפֶּשְׁט (Budapest) | dagesh in בּ and פּ | B and P |
-| פּוֹרְטוּגָל (Portugal) | dagesh in פ | P not F |
-| בַּרְצֶלוֹנָה (Barcelona) | dagesh in ב | B not V |
+| פִֺייר (Pierre) | פ 字上加 dagesh | P 发音应为 p 而非 f |
+| פָֺרִיז (Paris) | פ 字上加 dagesh | P 发音应为 p 而非 f |
+| פִֺיצָה (pizza) | פ 字上加 dagesh | P 发音应为 p 而非 f |
+| בּוֹסְטוֹן (Boston) | ב 字上加 dagesh | B 发音应为 b 而非 v |
+| כְֺרִיסְטִינָה (Christina) | כ 字上加 dagesh | K 发音应为 k 而非 kh |
+| פּוֹלִין (Poland) | פ 字上加 dagesh | P 发音应为 p 而非 f |
+| קָפּוֺצִ'ינוֹ (cappuccino) | פ 字上加 dagesh | P 发音应为 p 而非 f |
+| בּוֹדָפֶֺשְׁט (Budapest) | ב 字和 פ 字上都加 dagesh | B 和 p 都需加 dagesh |
+| פּוֹרְטוֹגָל (Portugal) | פ 字上加 dagesh | P 发音应为 p 而非 f |
+| בַֺרְצֶלוֹנָה (Barcelona) | ב 字上加 dagesh | B 发音应为 b 而非 v |
 
 ---
 
-## 7. Preposition Nikud Rules
+## 7. 介词中的尼库德规则
 
-Prepositions בְּ (be-), כְּ (ke-), לְ (le-) change nikud in certain situations:
+介词 בְֺ (be-), כְֺ (ke-), לְ (le-) 在某些情况下会改变尼库德形式：
 
-| Before... | Rule | Example |
+| 在...之前 | 规则 | 例子 |
 |-----------|------|---------|
-| Regular consonant | Shva: בְּ | בְּבַיִת (bevayit) |
-| Shva consonant | Hiriq: בִּ | בִּירוּשָׁלַיִם (birushalayim) |
-| Definite article הַ | Absorb article: בַּ | בַּבַּיִת (babayit = in the house) |
-| Hataf vowel | Match the hataf | בַּאֲמִתָּה (ba'amita) |
+| 普通辅音后 | 加 shva：בְֺבַיִת (bevayit) |
+| Shva 辅音后 | 加 hiriq：בִֺירוּשָֺלַיִם (birushalayim) |
+| 定冠词 הַ | 吸收介词：בַֺבַֺיִת (babayit = in the house) |
+| Hataf 元音后 | 与 hataf 元音匹配：בַֺאֲמִתָֺה (ba'amita) |
 
 ---
 
-## 8. Quick Decision Tree
+## 8. 快速决策树
 
 ```
 Should I add nikud to this word?
@@ -285,11 +278,11 @@ Should I add nikud to this word?
 
 ---
 
-## 9. Common Mistakes to Avoid
+## 9. 需避免的常见错误
 
-1. **Over-nikuding** — Adding nikud to every word makes TTS worse, not better
-2. **Wrong binyan** — סָפַר (counted) instead of סִפֵּר (told) is a classic
-3. **Forgetting dagesh in loanwords** — פיצה sounds like "fitza" without dagesh
-4. **Kamatz vs Kamatz Katan** — Both look like ָ but kamatz katan sounds "o" (כָּל = kol)
-5. **Mixing gender suffixes** — ְךָ (male) vs ֵךְ (female) are easy to confuse
-6. **Nikuding when unsure** — If you're not 100% certain, DON'T. The TTS model's contextual guess is usually better than wrong nikud.
+1. **过度添加尼库德** —— 在每个单词上都添加尼库德会使 TTS 的发音效果变差。
+2. **动词变位错误** —— 例如将 סָפַר (counted) 误写为 סִפֵֺר (told)。
+3. **忘记在借词中添加尼库德** —— 没有 dagesh 的 פיצה 会发音错误。
+4. **Kamatz 与 Kamatz Katan 的混淆** —— 两者看起来相同，但 Kamatz Katan 发音为 “o”（例如：כָֺל = kol）。
+5. **混淆性别后缀** —— 例如 ְךָ (男性) 和 ֵךְ (女性) 很容易混淆。
+6. **在不确定时添加尼库德** —— 如果不能100%确定，就不要添加。TTS模型根据上下文的猜测通常比错误的尼库德更好。

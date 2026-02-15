@@ -1,21 +1,21 @@
 ---
 name: coda-ai
-description: CLI to read Coda.io documents and pages. List docs, list pages, read content in markdown/json/html.
+description: 这是一个用于读取 Coda.io 文档和页面的命令行工具（CLI）。该工具可以列出所有文档和页面，并以 Markdown、JSON 或 HTML 格式显示内容。
 homepage: https://www.npmjs.com/package/coda-ai
 metadata: {"openclaw":{"requires":{"bins":["coda-ai"],"env":["CODA_API_TOKEN"]},"primaryEnv":"CODA_API_TOKEN","install":[{"id":"node","kind":"node","package":"coda-ai","bins":["coda-ai"],"label":"Install coda-ai (npm)"}]}}
 ---
 
 # coda-ai
 
-CLI to read Coda.io content for AI agents.
+这是一个用于AI代理读取Coda.io内容的命令行工具（CLI）。
 
-## Workflow
+## 工作流程
 
-1. **docs** → list all documents
-2. **pages** → list pages in a doc
-3. **read** → get page content
+1. **docs**：列出所有文档。
+2. **pages**：列出文档中的所有页面。
+3. **read**：获取页面内容。
 
-## Setup (once)
+## 设置（只需执行一次）
 
 ```bash
 npm install -g coda-ai@0.2.2
@@ -27,17 +27,17 @@ coda-ai auth --from-file .env
 coda-ai whoami # verify auth
 ```
 
-## Credentials & Storage
-- Stored at: `~/.coda-ai/config.json` (written with **0600** permissions)
-- Remove stored credentials:
+## 凭据与存储
+- 凭据存储位置：`~/.coda-ai/config.json`（文件权限设置为**0600**）
+- 如需删除存储的凭据，请执行以下操作：
 
 ```bash
 coda-ai logout
 ```
 
-## Commands
+## 命令
 
-### List Documents
+### 列出文档
 
 ```bash
 coda-ai docs --compact        # only id + name in toon format (recommended for AI Agents)
@@ -46,9 +46,9 @@ coda-ai docs --format json    # full data in json
 coda-ai docs --format table   # human-readable table
 ```
 
-Returns: All docs sorted by most recent update. Use `id` field for next step.
+返回结果：按更新时间排序的所有文档。可以使用`id`字段进行后续操作。
 
-### List Pages
+### 列出页面
 
 ```bash
 coda-ai pages --docId <docId> --compact        # only id + name, toon format (recommended for AI Agents)
@@ -57,9 +57,9 @@ coda-ai pages --docId <docId> --format tree    # visual tree
 coda-ai pages --docId <docId>                  # full data in toon format (default)
 ```
 
-Returns: Page hierarchy. Use `pageId` for next step.
+返回结果：页面的层次结构。可以使用`pageId`字段进行后续操作。
 
-### Read Content
+### 获取页面内容
 
 ```bash
 coda-ai read --docId <docId> --pageId <pageId>  # markdown (default, recommended for AI Agents)
@@ -68,6 +68,6 @@ coda-ai read --docId <docId> --pageId <pageId> --format html    # html export
 ```
 
 
-## Reference
+## 参考文档
 
-Full docs: https://github.com/auniik/coda-ai#readme
+完整文档：https://github.com/auniik/coda-ai#readme

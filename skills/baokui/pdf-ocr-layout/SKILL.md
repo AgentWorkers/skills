@@ -13,31 +13,31 @@ description: Multimodal document deep analysis tool based on Zhipu GLM-OCR, GLM-
   2. Semantic Understanding: GLM-4.7 (text/tables) + GLM-4.6V (multimodal/images)
 ---
 
-# GLM-OCR Multimodal Deep Analysis
+# GLM-OCR多模态深度分析工具
 
-This tool builds a high-precision document parsing pipeline: using **GLM-OCR** for layout element extraction, calling **GLM-4.7** for logical interpretation of table data, and calling **GLM-4.6V** for multimodal visual interpretation of images and charts.
+该工具构建了一个高精度的文档解析流程：使用**GLM-OCR**提取文档的布局元素，调用**GLM-4.7**对表格数据进行逻辑解析，再使用**GLM-4.6V**对图像和图表进行多模态视觉分析。
 
-## Pipeline Implementation Architecture
+## 流程实现架构
 
-This Skill consists of two core script stages, orchestrated through `glm_ocr_pipeline.py`:
+该工具包含两个核心脚本阶段，这些阶段通过`glm_ocr_pipeline.py`进行协调：
 
-### 1. Extraction Stage (`scripts/glm_ocr_extract.py`)
+### 1. 提取阶段 (`scripts/glm_ocr_extract.py`)
 
-- **Core Model**: GLM-OCR
-- **Function**: Responsible for physical layout analysis of documents
-- **Output**: Extract table HTML and clean to Markdown, automatically crop independent chart image files based on Bbox coordinates, and generate intermediate JSON containing full page reading order
+- **核心模型**：GLM-OCR
+- **功能**：负责对文档的物理布局进行分析
+- **输出**：提取表格的HTML内容并将其转换为Markdown格式；根据Bbox坐标自动裁剪独立的图表图像文件；生成包含整页阅读顺序的中间JSON文件
 
-### 2. Understanding Stage (`scripts/glm_understanding.py`)
+### 2. 理解阶段 (`scripts/glm_understanding.py`)
 
-- **Core Model**: GLM-4.7 (text) / GLM-4.6V (visual)
-- **Function**: Responsible for deep semantic reasoning of content
-- **Logic**:
-  - **Tables**: Combine full text context, use GLM-4.7 to analyze business meaning of Markdown table data
-  - **Charts**: Combine full text context + cropped images, use GLM-4.6V for multimodal visual analysis
+- **核心模型**：GLM-4.7（文本）/ GLM-4.6V（视觉）
+- **功能**：负责对内容进行深度语义理解
+- **逻辑**：
+  - **表格**：结合完整的文本上下文，使用GLM-4.7分析Markdown表格数据的业务含义
+  - **图表**：结合完整的文本上下文和裁剪后的图像，使用GLM-4.6V进行多模态视觉分析
 
-## Invocation Methods
+## 调用方法
 
-### Command Line Invocation
+### 命令行调用
 
 ```bash
 # Run complete pipeline: extraction -> cropping -> understanding analysis, supports input in .pdf, .jpg, .png and other formats
@@ -46,16 +46,16 @@ python scripts/glm_ocr_pipeline.py \
   --output_dir "/data/output"
 ```
 
-## API Parameter Description
+## API参数说明
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 | --- | --- | --- | --- |
-| file_path | string | ✅ | Absolute path to input file (supports .pdf, .png, .jpg) |
-| output_dir | string | ✅ | Result output directory (used to save cropped images and JSON reports) |
+| file_path | 字符串 | ✅ | 输入文件的绝对路径（支持.pdf、.png、.jpg格式） |
+| output_dir | 字符串 | ✅ | 结果输出目录（用于保存裁剪后的图像和JSON报告） |
 
-## Return Result Structure (JSON)
+## 返回结果结构（JSON）
 
-The tool returns a list containing layout elements and their deep understanding:
+该工具返回一个列表，其中包含布局元素及其深度分析结果：
 
 ```json
 [
@@ -74,23 +74,23 @@ The tool returns a list containing layout elements and their deep understanding:
 ]
 ```
 
-## Environment Requirements
+## 环境要求
 
-- Environment variable `ZHIPU_API_KEY` must be configured
-- Python 3.8+
-- Dependencies: `zhipuai`, `pillow`, `beautifulsoup4`
+- 必须配置环境变量`ZHIPU_API_KEY`
+- Python 3.8及以上版本
+- 所需依赖库：`zhipuai`、`pillow`、`beautifulsoup4`
 
-## Notes
+## 注意事项
 
-### 1. Model Routing Strategy
+### 1. 模型处理策略
 
-- **Table (表格)**: Content passed to **GLM-4.7**, combined with full text Markdown context for logical reasoning
-- **Image (图片)**: Image Base64 encoded and passed to **GLM-4.6V**, combined with OCR-extracted titles and full text context for multimodal understanding
+- **表格**：将内容传递给**GLM-4.7**，并结合完整的Markdown文本上下文进行逻辑分析
+- **图像**：将图像进行Base64编码后传递给**GLM-4.6V**，并结合OCR提取的标题及完整的文本上下文进行多模态分析
 
-### 2. Context Association
+### 2. 上下文关联
 
-All understanding is based on the complete layout logic of the document (Markdown Context), not isolated fragment analysis.
+所有的理解过程都基于文档的完整布局逻辑（Markdown上下文），而不是孤立片段的分析
 
-### 3. PDF Processing
+### 3. PDF处理
 
-Multi-page PDFs default to processing the first page. For batch processing, please extend the loop logic at the script level.
+对于多页PDF文件，系统默认处理第一页。如需批量处理，请在脚本层面扩展循环逻辑。

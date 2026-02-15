@@ -1,37 +1,37 @@
 ---
 name: vk
-description: "Manage VK.com (Vkontakte) community: post content (text, photos, videos) and handle messages. Use for automating community management via VK API."
+description: "管理 VK.com（Vkontakte）社区：发布内容（文本、图片、视频）并处理用户消息。可通过 VK API 实现社区管理的自动化。"
 ---
 
-# VK Community Management
+# VK社区管理
 
-This skill allows you to manage a VK community using the VK API.
+此技能允许您使用VK API来管理VK社区。
 
-## Requirements
-- VK Access Token. **Важно:** Используйте **User Token** для полных прав (удаление постов, простая загрузка фото). См. [references/api.md](references/api.md) для деталей.
-- Node.js environment.
+## 必备条件
+- VK访问令牌（Access Token）。**重要提示：**请使用**用户令牌（User Token）以获得完整权限（如删除帖子、上传图片等）。详情请参阅[references/api.md](references/api.md)。
+- Node.js开发环境。
 
-## Core Workflows
+## 核心工作流程
 
-### 1. Posting to the Wall
-To post to a community wall:
-1. Если есть медиафайлы, загрузите их:
+### 1. 在社区墙上发布内容
+要在社区墙上发布内容：
+1. 如果有媒体文件，请先上传它们：
    - `node scripts/vk_cli.js upload-photo $TOKEN $GROUP_ID "./image.jpg"`
-2. Используйте `post` с полученным ID вложения:
-   - `node scripts/vk_cli.js post $TOKEN -$GROUP_ID "Текст поста" $ATTACH_ID`
+2. 使用获取到的附件ID，通过`post`命令发布内容：
+   - `node scripts/vk_cli.js post $TOKEN -$GROUP_ID "帖子内容" $ATTACH_ID`
 
-### 2. Handling Messages
-To respond to user messages:
-1. Fetch history with `get-messages`.
-2. Send a reply with `message`.
+### 2. 处理用户消息
+要回复用户消息：
+1. 使用`get-messages`命令获取消息历史记录。
+2. 使用`message`命令发送回复。
 
-### 3. Real-time Monitoring (Long Poll)
-To receive and process messages instantly:
-1. Ensure **Long Poll API** is enabled in your group settings (Manage → API Interaction → Long Poll API).
-2. Use the `poll` command:
-   - `node scripts/vk_cli.js poll $TOKEN $GROUP_ID 1` (where `1` means auto-mark as read).
+### 3. 实时监控（长轮询，Long Poll）
+要即时接收和处理消息：
+1. 确保在您的群组设置中启用了**长轮询API**（管理 → API交互 → 长轮询API）。
+2. 使用`poll`命令：
+   - `node scripts/vk_cli.js poll $TOKEN $GROUP_ID 1`（其中`1`表示自动标记消息为已读）。
 
-**Note:** This skill works best with a **User Token** that has `messages,wall,groups,offline` permissions. Use [VK Host](https://vkhost.github.io/) to get a permanent token.
+**注意：**此技能在使用具有`messages,wall,groups,offline`权限的用户令牌时效果最佳。请使用[VK Host](https://vkhost.github.io/)获取永久令牌。
 
-## Advanced Features
-For details on setting up Long Poll and specialized API methods, refer to [references/api.md](references/api.md).
+## 高级功能
+有关设置长轮询和特定API方法的详细信息，请参阅[references/api.md](references/api.md)。

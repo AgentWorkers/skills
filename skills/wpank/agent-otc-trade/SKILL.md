@@ -19,50 +19,54 @@ allowed-tools:
   - mcp__uniswap__check_safety_status
 ---
 
-# Agent OTC Trade
+# 代理场外交易（Agent OTC Trade）
 
-## Overview
+## 概述
 
-Facilitates over-the-counter trades between agents using Uniswap as the trustless settlement layer. Instead of agents manually coordinating trades through ad-hoc channels, verifying each other's identity, agreeing on prices, and handling settlement independently, this skill provides a structured pipeline: verify counterparty identity via ERC-8004, agree on terms using Uniswap pool prices as the reference rate, and settle atomically through Uniswap pools.
+该功能利用 Uniswap 作为无信任的结算层，促进代理之间的场外交易。与传统方式（代理通过临时渠道手动协调交易、验证对方身份、协商价格并独立处理结算）不同，该功能提供了一套结构化的流程：通过 ERC-8004 标准验证交易对手方的身份，以 Uniswap 的池价格作为参考价格达成交易条款，并通过 Uniswap 池实现原子级结算。
 
-**Why this is 10x better than manual agent-to-agent trading:**
+**为什么这比传统的代理间交易好十倍：**
 
-1. **Counterparty verification**: Before any trade, the counterparty agent's identity is verified via ERC-8004 on-chain registries. Without this, agents trade blindly -- trusting addresses they've never interacted with. The skill checks identity, reputation score, and trust tier, refusing to trade with unverified agents.
-2. **Fair pricing via Uniswap oracle**: OTC trades use Uniswap pool prices as the reference rate, preventing either party from proposing unfair terms. The skill shows the current pool price, the proposed OTC price, and the premium/discount so both parties have full transparency.
-3. **Atomic settlement**: Trades settle through Uniswap pools in a single transaction. No escrow risk, no counterparty default risk, no partial fills. The pool provides guaranteed liquidity at the agreed price.
-4. **Cross-chain support**: For agents on different chains, settlement uses ERC-7683 cross-chain intents. Without this skill, cross-chain OTC trades require manual bridge coordination -- a multi-step process prone to stuck transactions and timing mismatches.
-5. **Audit trail**: Every OTC trade is recorded with counterparty identity, agreed terms, settlement transaction, and fees. This creates a verifiable history for reputation building and dispute resolution.
+1. **交易对手方验证**：在任何交易之前，都会通过链上的 ERC-8004 注册表验证交易对手方的身份。如果没有这一环节，代理们将盲目地进行交易，只能信任那些他们从未有过交互的地址。该功能会检查对方的身份、信誉分数和信任等级，拒绝与未经验证的代理进行交易。
+2. **公平定价**：场外交易使用 Uniswap 的池价格作为参考价格，防止任何一方提出不公平的条件。该功能会显示当前的池价格、提议的场外价格以及溢价/折扣，确保双方都能完全透明地了解交易情况。
+3. **原子级结算**：交易通过 Uniswap 池在单次交易中完成。不存在托管风险、对手方违约风险或部分成交的风险。池会以约定的价格提供有保障的流动性。
+4. **跨链支持**：对于不同链上的代理，结算过程使用 ERC-7683 跨链协议。如果没有这一功能，跨链场外交易需要手动协调桥梁服务，这可能导致交易卡住或时间不匹配的问题。
+5. **审计追踪**：每笔场外交易都会记录交易对手方的身份、约定的条款、结算交易和费用等信息，为建立信誉和解决纠纷提供了可验证的历史记录。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户提出以下请求时，激活该功能：
 
-- "Trade tokens directly with another agent"
-- "Settle an agent-to-agent trade through Uniswap"
-- "Execute an OTC swap with agent 0x..."
-- "Buy tokens from agent 0x... using Uniswap"
-- "Set up a direct trade with a counterparty agent"
-- "OTC trade 1000 USDC for UNI with agent 0x..."
-- "Settle a service payment with another agent via Uniswap"
+- “直接与另一代理交易代币”
+- “通过 Uniswap 结算代理间的交易”
+- “与代理 0x... 执行场外交易”
+- “使用 Uniswap 从代理 0x... 购买代币”
+- “与交易对手方建立直接交易”
+- “用 1000 USDC 与代理 0x... 进行场外交易（交易 UNI）”
+- “通过 Uniswap 与另一代理结算服务费用”
 
-**Do NOT use** when the user wants a regular swap without a specific counterparty (use `execute-swap` instead), wants to provide liquidity (use `manage-liquidity` instead), or wants to find trading opportunities (use `scan-opportunities` instead).
+**不适用场景**
 
-## Parameters
+- 当用户仅需要进行常规的代币交换（此时应使用 `execute-swap` 功能）；
+- 当用户需要提供流动性（此时应使用 `manage-liquidity` 功能）；
+- 当用户希望寻找交易机会（此时应使用 `scan-opportunities` 功能）。
 
-| Parameter           | Required | Default     | How to Extract                                                        |
-| ------------------- | -------- | ----------- | --------------------------------------------------------------------- |
-| counterpartyAgent   | Yes      | --          | Counterparty address (0x...) or ERC-8004 identity                     |
-| tokenSell           | Yes      | --          | Token you are selling: "USDC", "UNI", or 0x address                  |
-| tokenBuy            | Yes      | --          | Token you are buying: "ETH", "UNI", or 0x address                    |
-| amount              | Yes      | --          | Amount to sell: "1000 USDC", "50 UNI", "$5,000 worth"                |
-| chain               | No       | ethereum    | Settlement chain: "ethereum", "base", "arbitrum"                     |
-| settlementMethod    | No       | direct-swap | "direct-swap", "intent" (ERC-7683 cross-chain)                      |
-| maxPremium          | No       | 1%          | Max acceptable premium/discount vs pool price                        |
-| requireVerified     | No       | true        | Require ERC-8004 verified counterparty (true/false)                  |
+## 参数
 
-If the user doesn't provide `counterpartyAgent`, `tokenSell`/`tokenBuy`, or `amount`, **ask for them** -- never guess OTC trade parameters.
+| 参数                | 是否必填 | 默认值       | 获取方式                                      |
+|-------------------|--------|------------|-------------------------------------------|
+| counterpartyAgent     | 是     | --          | 交易对手方的地址（0x...）或 ERC-8004 身份信息                |
+| tokenSell         | 是     | --          | 卖出的代币："USDC", "UNI" 或代币的地址                   |
+| tokenBuy          | 是     | --          | 购买的代币："ETH", "UNI" 或代币的地址                   |
+| amount            | 是     | --          | 卖出数量："1000 USDC", "50 UNI", "价值 $5,000"                   |
+| chain            | 否      | "ethereum"     | 结算链："ethereum", "base", "arbitrum"                   |
+| settlementMethod     | 否      | "direct-swap"     | 结算方式（"direct-swap" 或 "intent" [跨链协议]                |
+| maxPremium        | 否      | 1%          | 可接受的最大溢价/折扣比例（相对于池价格）                   |
+| requireVerified       | 否      | true        | 是否要求验证交易对手方的 ERC-8004 身份                   |
 
-## Workflow
+如果用户未提供 `counterpartyAgent`、`tokenSell`/`tokenBuy` 或 `amount` 参数，请务必询问用户这些信息——切勿自行猜测。
+
+## 工作流程
 
 ```
                         AGENT OTC TRADE PIPELINE
@@ -115,9 +119,9 @@ If the user doesn't provide `counterpartyAgent`, `tokenSell`/`tokenBuy`, or `amo
   └──────────────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Verify Counterparty
+### 第一步：验证交易对手方
 
-Delegate to `Task(subagent_type:identity-verifier)`:
+将任务委托给 `Task(subagent_type:identity-verifier)`：
 
 ```
 Verify the identity and reputation of this agent:
@@ -129,7 +133,7 @@ Registry. Return the trust tier (unverified/basic/verified/trusted),
 reputation score, registration date, and any flags.
 ```
 
-**Present to user:**
+**向用户展示：**
 
 ```text
 Step 1/5: Counterparty Verification
@@ -144,21 +148,21 @@ Step 1/5: Counterparty Verification
   Proceeding to price discovery...
 ```
 
-**Identity gate logic:**
+**身份验证逻辑：**
 
-| Trust Tier   | Action                                                                        |
-| ------------ | ----------------------------------------------------------------------------- |
-| **trusted**  | Proceed to Step 2 automatically                                               |
-| **verified** | Proceed to Step 2 automatically                                               |
-| **basic**    | Warn user: "Counterparty has basic verification only. Proceed?" Ask to confirm. |
-| **unverified** | If `requireVerified=true`: **STOP.** Show reason. Suggest verifying first.  |
-|              | If `requireVerified=false`: Warn strongly, ask for explicit confirmation.     |
+| 信任等级 | 操作                                      |
+|---------|-----------------------------------------|
+| **受信任**  | 自动进入第二步                                  |
+| **已验证** | 自动进入第二步                                  |
+| **基本信任** | 警告用户：“交易对手方仅经过基本验证。是否继续？”请求确认。           |
+| **未验证** | 如果 `requireVerified` 为 true：**停止操作**。说明原因，并建议先进行验证。     |
+|         | 如果 `requireVerified` 为 false：强烈警告用户，并请求明确确认。         |
 
-### Step 2: Price Discovery
+### 第二步：价格确认
 
-1. Call `mcp__uniswap__get_token_price` for both tokens to establish USD values.
-2. Call `mcp__uniswap__get_pool_info` for the token pair to get the current pool price.
-3. Call `mcp__uniswap__get_quote` at the OTC trade size to determine actual execution price including slippage.
+1. 调用 `mcp__uniswap__get_token_price` 获取两种代币的美元价格。
+2. 调用 `mcp__uniswap__get_pool_info` 获取该代币对的当前池价格。
+3. 调用 `mcp__uniswap__get_quote` 根据场外交易规模确定实际成交价格（包括滑点）。
 
 ```text
 Step 2/5: Price Discovery
@@ -174,9 +178,9 @@ Step 2/5: Price Discovery
   Proceeding to terms agreement...
 ```
 
-### Step 3: Terms Agreement
+### 第三步：协商交易条款
 
-Present the complete trade terms for user confirmation:
+向用户展示完整的交易条款以获取确认：
 
 ```text
 OTC Trade Terms
@@ -199,20 +203,20 @@ OTC Trade Terms
   Proceed with this OTC trade? (yes/no)
 ```
 
-**Only proceed to Step 4 if the user explicitly confirms.**
+**只有当用户明确同意后，才能进入第四步。**
 
-If the OTC price deviates from the pool price by more than `maxPremium`, warn the user:
+如果场外价格与池价格的偏差超过 `maxPremium`，请警告用户：
 
 ```text
   WARNING: OTC rate ($7.25/UNI) is 2.1% above pool rate ($7.10/UNI).
   This exceeds your max premium of 1%. Proceed anyway? (yes/no)
 ```
 
-### Step 4: Settlement
+### 第四步：结算
 
-Delegate to `Task(subagent_type:trade-executor)`:
+将任务委托给 `Task(subagent_type:trade-executor)`：
 
-**For direct-swap settlement:**
+**对于直接交换结算：**
 
 ```
 Execute this OTC trade settlement:
@@ -225,15 +229,15 @@ Execute this OTC trade settlement:
   {fee}% pool.
 ```
 
-**For cross-chain intent settlement:**
+**对于跨链交易结算：**
 
-Use `mcp__uniswap__submit_cross_chain_intent` with:
-- `tokenIn`: tokenSell on source chain
-- `tokenOut`: tokenBuy on destination chain
-- `sourceChain`: your chain
-- `destinationChain`: counterparty's chain
+使用 `mcp__uniswap__submit_cross_chain(intent`，参数如下：
+- `tokenIn`：源链上的卖出代币
+- `tokenOut`：目标链上的买入代币
+- `sourceChain`：你的链
+- `destinationChain`：交易对手方的链
 
-### Step 5: Record & Report
+### 第五步：记录与报告
 
 ```text
 Step 5/5: OTC Trade Complete
@@ -254,9 +258,9 @@ Step 5/5: OTC Trade Complete
     Actual:     $7.10/UNI (0.00% premium)
 ```
 
-## Output Format
+## 输出格式
 
-### Successful OTC Trade
+### 交易成功
 
 ```text
 Agent OTC Trade Complete
@@ -282,7 +286,7 @@ Agent OTC Trade Complete
     Trade History: 142 completed, 0 disputes
 ```
 
-### Blocked by Identity Check
+### 验证失败
 
 ```text
 Agent OTC Trade -- Blocked
@@ -300,35 +304,35 @@ Agent OTC Trade -- Blocked
     - Set requireVerified=false to trade with unverified agents (not recommended)
 ```
 
-## Important Notes
+## 重要说明
 
-- **Counterparty verification is the key safety feature.** ERC-8004 identity checks prevent trading with malicious or unknown agents. The default `requireVerified=true` is strongly recommended.
-- **Settlement happens through Uniswap pools, not peer-to-peer.** Both agents interact with the Uniswap pool independently. This means the trade is atomic and trustless -- neither party can default.
-- **The counterparty does not need to be online simultaneously.** Since settlement is through a pool, your agent executes its side of the trade independently. The "OTC" aspect is the agreed-upon terms and counterparty verification, not a literal peer-to-peer atomic swap.
-- **Price reference prevents unfair terms.** The Uniswap pool price serves as an objective reference rate. The `maxPremium` parameter (default 1%) prevents accepting trades at significantly worse-than-market rates.
-- **Cross-chain OTC trades use ERC-7683 intents.** For agents on different chains, the skill uses `submit_cross_chain_intent` for settlement. This adds bridge latency but enables cross-chain agent commerce.
-- **All OTC trades are logged.** Trade details (counterparty, terms, settlement tx) are recorded for reputation building and audit purposes.
-- **This skill settles YOUR side of the trade.** The counterparty agent is responsible for their own execution. In practice, both agents use this skill independently to settle their respective sides through the same Uniswap pool.
+- **交易对手方验证是关键的安全机制。** ERC-8004 身份验证可以防止与恶意或未知的代理进行交易。建议将 `requireVerified` 设置为 `true`。
+- **结算通过 Uniswap 池完成，而非点对点交易。** 两个代理都独立地与 Uniswap 池进行交互，因此交易是原子级的且无信任风险的——任何一方都无法违约。
+- **交易对手方无需同时在线。** 由于结算通过池完成，你的代理可以独立执行自己的交易部分。这里的“场外交易”指的是双方约定的条款和对手方身份的验证，而不是真正的点对点原子交换。
+- **价格参考防止不公平条款。** Uniswap 池价格作为客观的参考标准。`maxPremium` 参数（默认为 1%）可防止接受远低于市场价格的交易。
+- **跨链场外交易使用 ERC-7683 协议。** 对于不同链上的代理，该功能使用 `submit_cross_chain(intent` 进行结算。这会增加一些延迟，但支持跨链交易。
+- **所有场外交易都会被记录。** 交易详情（交易对手方、条款、结算交易）会被记录下来，用于建立信誉和审计。
+- **该功能仅负责执行你方的交易部分。** 交易对手方需自行完成他们的交易部分。实际上，两个代理都可以独立使用该功能，通过同一个 Uniswap 池完成各自的交易。
 
-## MCP server dependency
+## 对 MCP 服务器的依赖
 
-This skill relies on Uniswap MCP tools for pricing, pool data, quotes, balances, and cross-chain intents.
-When used in isolation (for example, from a skills catalog), ensure the Agentic Uniswap MCP server is running:
+该功能依赖于 Uniswap MCP 工具来获取价格、池数据、报价、余额和跨链信息。
+在单独使用该功能时（例如，从技能目录中调用），请确保 Agentic Uniswap MCP 服务器正在运行：
 
-- Repo: [`Agentic-Uniswap` MCP server](https://github.com/wpank/Agentic-Uniswap/tree/main/packages/mcp-server)
-- Package: `@agentic-uniswap/mcp-server`
+- 仓库：[`Agentic-Uniswap` MCP 服务器](https://github.com/wpank/Agentic-Uniswap/tree/main/packages/mcp-server)
+- 包：`@agentic-uniswap/mcp-server`
 
-## Error Handling
+## 错误处理
 
-| Error                     | User-Facing Message                                                       | Suggested Action                                |
-| ------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------- |
-| Counterparty unverified   | "Counterparty agent is not ERC-8004 verified."                            | Ask counterparty to register, or disable check  |
-| Counterparty not found    | "Could not find agent at address {addr}."                                 | Verify the address is correct                   |
-| No pool for pair          | "No Uniswap pool found for {tokenSell}/{tokenBuy} on {chain}."           | Try a different chain or intermediate token      |
-| Premium too high          | "OTC rate deviates {X}% from pool rate, exceeding {maxPremium}% limit."  | Renegotiate terms or increase maxPremium        |
-| Insufficient balance      | "Insufficient {tokenSell} balance: have {X}, need {Y}."                  | Fund wallet or reduce trade amount              |
-| Settlement failed         | "OTC settlement via Uniswap failed: {reason}."                           | Check liquidity, gas, and retry                 |
-| Cross-chain intent failed | "Cross-chain settlement failed: {reason}."                               | Check bridge status and retry                   |
-| Safety check failed       | "Trade exceeds safety limits."                                           | Check spending limits with check-safety         |
-| Wallet not configured     | "No wallet configured. Cannot execute OTC trades."                       | Set up wallet with setup-agent-wallet           |
-| Identity service down     | "ERC-8004 registry unreachable. Cannot verify counterparty."             | Retry later or proceed with caution             |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+|-------------------|-------------------------------------------------|-----------------------------------------------|
+| 交易对手方未验证           | “交易对手方未通过 ERC-8004 验证。”                                      | 请求交易对手方进行注册，或关闭此验证功能                   |
+| 交易对手方未找到           | “无法在地址 {addr} 找到对应的代理。”                                      | 确认地址是否正确                         |
+| 未找到对应的池             | “在链 {chain} 上找不到 {tokenSell}/{tokenBuy} 的 Uniswap 池。”                   | 尝试其他链或使用其他代币                     |
+| 溢价过高             | “场外交易价格与池价格的偏差超过 {X}%，超出 {maxPremium} 的限制。”                   | 重新协商条款或调整最大溢价                     |
+| 账户余额不足             | “{tokenSell} 的余额不足：当前余额为 {X}，需要 {Y}。”                         | 充值或减少交易金额                         |
+| 结算失败             | “通过 Uniswap 的场外交易失败：原因：{reason}。”                             | 检查流动性、Gas 费用并重试                         |
+| 跨链交易失败             | “跨链交易失败：原因：{reason}。”                                      | 检查桥接服务状态并重试                         |
+| 安全检查失败             | “交易超出安全限制。”                                      | 使用 `check-safety` 功能检查交易限额                 |
+| 未配置钱包             | “未配置钱包。无法执行场外交易。”                                      | 使用 `setup-agent-wallet` 功能配置钱包                 |
+| 身份验证服务不可用           | “无法访问 ERC-8004 注册表。无法验证交易对手方。”                         | 稍后重试或谨慎操作                         |

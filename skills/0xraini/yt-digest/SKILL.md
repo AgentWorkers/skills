@@ -1,15 +1,15 @@
 # yt-digest
 
-Extract summaries, transcripts, and key moments from YouTube videos.
+从YouTube视频中提取摘要、字幕和关键片段。
 
-## Features
+## 功能
 
-- **Transcript extraction**: Get full transcript with timestamps
-- **Summary**: AI-generated summary of video content
-- **Key moments**: Extract chapters and highlights
-- **Audio output**: Convert summary to audio (via sag skill)
+- **字幕提取**：获取包含时间戳的完整字幕。
+- **摘要**：由AI生成的视频内容摘要。
+- **关键片段**：提取视频中的重要章节和精彩部分。
+- **音频输出**：将摘要转换为音频（通过sag技能实现）。
 
-## Usage
+## 使用方法
 
 ```bash
 # Get transcript
@@ -25,7 +25,7 @@ yt-digest chapters "https://youtube.com/watch?v=..."
 yt-digest analyze "https://youtube.com/watch?v=..."
 ```
 
-## Output
+## 输出结果
 
 ```
 📺 Video: How to Build AI Agents
@@ -46,6 +46,6 @@ This video covers the basics of building AI agents...
 ...
 ```
 
-## Requirements
+## 系统要求
 
-Uses YouTube's transcript API (no API key needed for public videos).
+需要使用YouTube的字幕API（公开视频无需API密钥）。

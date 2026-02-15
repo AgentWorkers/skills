@@ -1,6 +1,6 @@
 ---
 name: social-sentiment
-description: "Sentiment analysis for brands and products across Twitter, Reddit, and Instagram. Monitor public opinion, track brand reputation, detect PR crises, surface complaints and praise at scale — analyze 70K+ posts with bulk CSV export and Python/pandas. Social listening and brand monitoring powered by 1.5B+ indexed posts."
+description: "针对Twitter、Reddit和Instagram上的品牌及产品进行情感分析。监控公众舆论，追踪品牌声誉，及时发现公关危机，大规模识别用户的投诉与赞扬——支持分析超过7万条帖子，并提供批量CSV导出功能，同时兼容Python和pandas编程语言。该服务基于超过15亿条已索引的帖子数据，提供高效的社会舆论监测与品牌监控功能。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -39,94 +39,69 @@ tags:
   - market-research
 ---
 
-# Social Sentiment
+# 社交情感分析
 
-**Find out what people really think — from what they're actually saying on social media.**
+**从人们在社交媒体上的真实言论中了解他们的真实想法。**
 
-Analyze sentiment for any brand, product, topic, or person across Twitter, Reddit, and Instagram. Surfaces positive and negative themes, flags viral complaints, compares competitors, and tracks opinion over time — powered by 1.5B+ indexed posts via Xpoz MCP.
+您可以分析任何品牌、产品、话题或个人在 Twitter、Reddit 和 Instagram 上的情感倾向。该工具能够识别正面和负面的主题，标记出广为传播的投诉内容，比较不同品牌之间的舆论，并追踪舆论随时间的变化——这一切都依赖于 Xpoz MCP 提供的超过 15 亿条已索引的帖子数据。
 
-**Scale:** Analyzes thousands to tens of thousands of posts per run using bulk CSV exports and automated code analysis. Not a sample — the full dataset.
+**处理能力：** 通过批量 CSV 导出和自动化代码分析，每次分析可以处理数千到数万条帖子。这里提供的是完整的数据集，而非样本数据。
 
 ---
 
-## ⚡ Prerequisites
+## ⚡ 先决条件
 
-1. **Xpoz MCP** must be configured and authenticated. Follow the [xpoz-setup](https://clawhub.ai/skills/xpoz-setup) skill.
-
-Verify Xpoz is ready:
+1. **必须配置并认证 Xpoz MCP**。请按照 [xpoz-setup](https://clawhub.ai/skills/xpoz-setup) 的说明进行设置。
+   验证 Xpoz 是否已准备好：
 
 ```bash
 mcporter call xpoz.checkAccessKeyStatus
 ```
 
-If not `hasAccessKey: true`, follow xpoz-setup first, then return here.
+如果 `hasAccessKey: false`，请先完成 xpoz-setup 的设置，然后再返回到这里。
 
 ---
 
-## How It Works
-
-```
-┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-│  STEP 1: COLLECT │ →  │ STEP 2: BULK     │ →  │ STEP 3: ANALYZE  │
-│                  │    │ DOWNLOAD         │    │ AT SCALE         │
-│ Search Twitter   │    │                  │    │                  │
-│ Search Reddit    │    │ Get CSV export   │    │ Python/pandas on │
-│ Search Instagram │    │ operationId from │    │ full dataset     │
-│ (keyword queries │    │ each search      │    │ Keyword classify │
-│  across all 3)   │    │ Download full    │    │ Engagement weight│
-│                  │    │ CSVs (up to 64K  │    │ Theme extraction │
-│                  │    │ rows each!)      │    │ Viral detection  │
-└──────────────────┘    └──────────────────┘    └──────────────────┘
-
-┌──────────────────┐
-│  STEP 4: REPORT  │
-│                  │
-│ Overall score    │
-│ Theme breakdown  │
-│ Top voices       │
-│ Viral flags      │
-│ Recommendations  │
-└──────────────────┘
-```
+## 工作原理
 
 ---
 
-## Usage
+## 使用方法
 
-### Basic: Single Brand/Product
+### 基本用法：单一品牌/产品
 
-> "Analyze sentiment for Notion"
-> "What do people think about Cursor IDE?"
-> "How is the public perception of Tesla right now?"
+> “分析 Notion 的情感倾向”
+> “人们对 Cursor IDE 有什么看法？”
+> “目前公众对特斯拉的看法如何？”
 
-### Comparison Mode
+### 比较模式
 
-> "Compare sentiment for Notion vs Obsidian"
-> "How does Figma sentiment compare to Canva?"
+> “比较 Notion 和 Obsidian 的情感倾向”
+> “Figma 和 Canva 的情感倾向有何不同？”
 
-### Topic/Event Tracking
+### 话题/事件追踪
 
-> "What's the sentiment around the new iPhone launch?"
-> "How are people reacting to the latest OpenAI announcement?"
+> “新款 iPhone 发布时的舆论如何？”
+> “人们对 OpenAI 的最新公告有何反应？”
 
 ---
 
-## Step 1: Search All Platforms
+## 第一步：在所有平台上进行搜索
 
-For the target brand/product/topic, run parallel searches across all three platforms.
+针对目标品牌/产品/话题，在这三个平台上同时进行搜索。
 
-### Generate Search Queries
+### 生成搜索查询
 
-Create 2-3 queries per platform to capture different angles:
+为每个平台创建 2-3 条查询，以覆盖不同的方面：
 
-1. **Direct mentions** — the brand/product name (broadest query)
-2. **Pain points** — complaints, issues, frustrations (targeted negative)
-3. **Praise** — love, recommend, best, amazing (targeted positive)
+1. **直接提及** — 品牌/产品名称（最广泛的查询）
+2. **痛点** — 抱怨、问题、不满（针对负面内容）
+3. **正面评价** — 爱好、推荐、最佳、出色（针对正面内容）
 
-**Example for "Notion":**
-- `"Notion"` (direct mentions — this is the main high-volume query)
-- `"Notion" AND (slow OR buggy OR frustrating OR hate OR terrible OR worst OR broken)` (negative)
-- `"Notion" AND (love OR amazing OR best OR recommend OR perfect OR great)` (positive)
+**以 “Notion” 为例：**
+- `"Notion"`（直接提及 — 这是主要的高量查询）
+- `"Notion" AND (slow OR buggy OR frustrating OR hate OR terrible OR worst OR broken)`（负面）
+- `"Notion" AND (love OR amazing OR best OR recommend OR perfect OR great)`（正面）
 
 ### Twitter
 
@@ -138,13 +113,13 @@ mcporter call xpoz.getTwitterPostsByKeywords \
   fields='["id","text","authorUsername","likeCount","retweetCount","replyCount","impressionCount","createdAtDate"]'
 ```
 
-**Important:** Always poll for results:
+**重要提示：** 必须持续获取结果：
 
 ```bash
 mcporter call xpoz.checkOperationStatus operationId="OPERATION_ID"
 ```
 
-Poll every 5 seconds until `status: completed`.
+每 5 秒查询一次，直到查询状态变为 `completed`。
 
 ### Reddit
 
@@ -165,62 +140,62 @@ mcporter call xpoz.getInstagramPostsByKeywords \
   fields='["id","caption","username","likeCount","commentCount","createdAtDate"]'
 ```
 
-### Default Time Period
+### 默认时间范围
 
-- Use **last 30 days** unless the user specifies otherwise
-- For events/launches, narrow to the relevant window
+- 除非用户另有指定，否则使用 **过去 30 天** 的数据
+- 对于事件或新产品发布，需缩小时间范围
 
 ---
 
-## Step 2: Bulk CSV Download (CRITICAL — DO NOT SKIP)
+## 第二步：批量下载 CSV 数据（至关重要，切勿跳过）
 
-**This is what makes this skill powerful.** Every Xpoz search returns a `dataDumpExportOperationId` in its response. This gives you a CSV download of the COMPLETE result set — up to 64,000 rows per query.
+**这正是该工具强大的关键所在。** 每次 Xpoz 搜索都会在响应中返回一个 `dataDumpExportOperationId`。该 ID 可用于下载完整的结果集（每个查询最多 64,000 行）。
 
-**DO NOT just read the first 100 results from the API response and call it done.** That's sampling, not analysis. Download the full CSV.
+**切勿仅读取 API 响应中的前 100 条结果就认为分析完成。** 那只是抽样，并非真正的分析。请下载完整的 CSV 数据。
 
-### How to get the CSV
+### 如何获取 CSV 数据
 
-1. After each search completes, note the `dataDumpExportOperationId` from the response
-2. Poll it until the CSV is ready:
+1. 每次搜索完成后，记录响应中的 `dataDumpExportOperationId`。
+2. 持续查询，直到 CSV 数据下载完成：
 
 ```bash
 mcporter call xpoz.checkOperationStatus operationId="op_datadump_XXXXX"
 ```
 
-3. When complete, you'll get a `downloadUrl` — download it:
+3. 下载完成后，您将获得一个 `downloadUrl`，请使用该链接下载数据：
 
 ```bash
 curl -o /tmp/twitter-sentiment.csv "DOWNLOAD_URL"
 ```
 
-4. Repeat for each platform's search results
+4. 对每个平台的搜索结果重复此步骤。
 
-### What you get
+### 下载的内容
 
-Each CSV contains the full dataset with all requested fields:
-- **Twitter CSV:** id, text, authorUsername, likeCount, retweetCount, replyCount, impressionCount, createdAtDate
-- **Reddit CSV:** id, title, body, authorUsername, subredditName, score, numComments, createdAtDate
-- **Instagram CSV:** id, caption, username, likeCount, commentCount, createdAtDate
+每个 CSV 文件包含所有请求的字段：
+- **Twitter CSV：** id, text, authorUsername, likeCount, retweetCount, replyCount, impressionCount, createdAtDate
+- **Reddit CSV：** id, title, body, authorUsername, subredditName, score, numComments, createdAtDate
+- **Instagram CSV：** id, caption, username, likeCount, commentCount, createdAtDate
 
-### Volume expectations
+### 数据量预估
 
-| Brand Size | Twitter | Reddit | Instagram | Total |
+| 品牌规模 | Twitter | Reddit | Instagram | 总计 |
 |------------|---------|--------|-----------|-------|
-| Niche product | 100-500 | 10-50 | 10-50 | ~200-600 |
-| Mid-tier tool | 1K-10K | 50-500 | 50-200 | ~1K-10K |
-| Major brand | 10K-64K | 500-5K | 200-2K | ~10K-70K |
+| 小众产品 | 100-500 | 10-50 | 10-50 | ~200-600 |
+| 中端工具 | 1K-10K | 50-500 | 50-200 | ~1K-10K |
+| 大型品牌 | 10K-64K | 500-5K | 200-2K | ~10K-70K |
 
-For very high-volume brands, you can limit the date range to keep the dataset manageable while still analyzing thousands of posts.
+对于数据量非常大的品牌，可以缩小时间范围，以便在保持分析效果的同时控制数据集的大小。
 
 ---
 
-## Step 3: Analyze at Scale with Code
+## 第三步：使用代码进行大规模分析
 
-**Use Python/pandas to analyze the full CSV datasets.** This is where bulk analysis happens — not by reading posts one by one, but by running automated classification and aggregation over the entire dataset.
+**使用 Python 和 pandas 分析完整的 CSV 数据集。** 分析工作是通过自动化分类和汇总整个数据集来完成的，而不是逐条阅读帖子。
 
-### Analysis Script
+### 分析脚本
 
-Write and execute a Python script that:
+编写并执行一个 Python 脚本：
 
 ```python
 import pandas as pd
@@ -370,35 +345,34 @@ if total_weight > 0:
     print(f"\n=== OVERALL SCORE: {normalized}/100 ===")
 ```
 
-### Key analysis principles:
+### 关键分析原则：
 
-1. **Analyze ALL posts, not a sample** — That's why we download the CSV
-2. **Keyword-based classification scales** — Reading 10K posts individually doesn't; pattern matching does
-3. **Engagement weighting matters** — A complaint with 500 likes ≠ a complaint with 0 likes
-4. **Theme extraction via keyword groups** — Identifies what people are actually talking about
-5. **Viral detection via engagement outliers** — Flags posts with outsized reach
+1. **分析所有帖子，而非样本数据** — 这就是我们需要下载完整 CSV 数据的原因。
+2. **基于关键词的分类更有效** — 逐一阅读 10,000 条帖子效果不佳；关键词匹配能提高效率。
+3. **互动量很重要** — 获得 500 个赞的投诉与没有赞的投诉意义不同。
+4. **通过关键词组提取主题** — 确定人们实际讨论的内容。
+5. **通过互动量异常值检测热门帖子** — 标记出传播范围广的帖子。
 
-### Adapt the keyword lists
+### 自定义关键词列表
 
-The `POSITIVE_KEYWORDS`, `NEGATIVE_KEYWORDS`, and `THEMES` dictionaries above are starting points. **Customize them for the specific brand/product:**
+上面的 `POSITIVE_KEYWORDS`、`NEGATIVE_KEYWORDS` 和 `THEMES` 字典仅供参考。请根据具体品牌/产品进行定制：
+- 对于 **游戏产品**：添加 “fun”、“addictive”、“boring”、“grind”、“pay to win” 等关键词。
+- 对于 **SaaS 工具**：添加 “integration”、“API”、“downtime”、“onboarding” 等关键词。
+- 对于 **消费品品牌**：添加 “quality”、“shipping”、“return”、“customer service” 等关键词。
 
-- For a **gaming product**: add "fun", "addictive", "boring", "grind", "pay to win"
-- For a **SaaS tool**: add "integration", "API", "downtime", "onboarding"
-- For a **consumer brand**: add "quality", "shipping", "return", "customer service"
+### 脚本的输出结果
 
-### Output from the script
-
-The script produces raw numbers. Use these to write the final report — the LLM interprets the data, identifies patterns, and generates actionable insights. The script does the heavy lifting (classifying 10K+ posts); the LLM does the thinking (what does this mean?).
+脚本会生成原始数据。您可以使用这些数据编写最终报告。大型语言模型（LLM）会解读数据、识别模式并生成可操作的见解。脚本负责处理大量的数据分析工作；而 LLM 则负责分析数据的实际含义。
 
 ---
 
-## Step 4: Generate Report
+## 第四步：生成报告
 
-After running the analysis script, compile findings into a structured report.
+运行分析脚本后，将分析结果整理成结构化的报告。
 
-### Report Structure
+### 报告结构
 
-#### 1. Sentiment Score (headline number)
+#### 1. 情感得分（标题数字）
 
 ```
 Overall Sentiment: 72/100 (Mostly Positive)
@@ -416,13 +390,13 @@ Platform breakdown:
   Instagram: 82/100 (500 posts analyzed)
 ```
 
-**Score calculation:**
-- Engagement-weighted: `(pos_weight - neg_weight) / total_weight`, normalized to 0-100
-- 0-30 = Very Negative, 31-45 = Negative, 46-55 = Neutral, 56-70 = Positive, 71-100 = Very Positive
+**得分计算方法：**
+- **基于互动量的加权得分：**(pos_weight - neg_weight) / total_weight**，范围为 0-100
+- 0-30 = 非常负面，31-45 = 负面，46-55 = 中立，56-70 = 正面，71-100 = 非常正面
 
-#### 2. Key Themes
+#### 2. 主要主题
 
-List top themes by frequency, with sentiment breakdown and representative quotes:
+按出现频率列出热门主题，并附上情感分析和代表性引文：
 
 ```
 📈 POSITIVE THEMES
@@ -439,62 +413,62 @@ List top themes by frequency, with sentiment breakdown and representative quotes
    "Notion is unusable with large databases. 10+ second load times." — @dev (567 likes)
 ```
 
-#### 3. Viral Moments
+#### 3. 热门帖子
 
-Flag top 10 posts by engagement score across all platforms. For each:
-- Sentiment classification
-- Full text quote
-- Engagement metrics
-- Platform and URL
+标记出在所有平台上互动量最高的 10 条帖子。每条帖子的信息包括：
+- 情感分类
+- 完整文本引文
+- 互动量指标
+- 发布平台及链接
 
-#### 4. Top Voices
+#### 4. 最有影响力的账号
 
-Most influential accounts talking about the brand (by total engagement across their posts):
-- Username, platform, follower count if available
-- Their overall stance (positive/negative/mixed)
-- Their highest-engagement post
+列出讨论该品牌的最具影响力的账号（根据其所有帖子的总互动量）：
+- 账号名称、平台、粉丝数量（如果可用）
+- 他们的整体立场（正面/负面/中性）
+- 他们互动量最高的帖子
 
-#### 5. Competitor Comparison (if requested)
+#### 5. 竞品对比（如需）
 
-Side-by-side metrics with identical methodology applied to each brand.
+提供每个品牌的对比数据，使用相同的方法进行统计。
 
-#### 6. Actionable Insights
+#### 6. 可操作的见解
 
-3-5 recommendations based on the data:
-- What negative themes need addressing?
-- What positive themes to amplify?
-- Which viral moments need response?
-- Platform-specific strategies
-
----
-
-## Comparison Mode
-
-When comparing two or more brands:
-
-1. Run the full pipeline for each brand separately
-2. Use the same time period, query structure, and keyword lists
-3. Download CSVs and run the same analysis script for each
-4. Present side-by-side metrics
-5. Note volume differences (more mentions ≠ better sentiment)
+根据分析结果提出 3-5 条建议：
+- 哪些负面主题需要解决？
+- 哪些正面主题需要加强宣传？
+- 哪些热门帖子需要回应？
+- 针对不同平台的策略建议
 
 ---
 
-## Scheduling (Optional)
+## 比较模式
 
-For ongoing monitoring, the user can set up a cron job:
+在比较两个或多个品牌时：
+
+1. 分别对每个品牌执行完整的分析流程。
+2. 使用相同的时间范围、查询结构和关键词列表。
+3. 下载每个品牌的 CSV 数据并运行相同的分析脚本。
+4. 对比各品牌的分析结果。
+5. 注意数据量的差异（提及次数多并不一定意味着情感倾向更好）。
+
+---
+
+## 定时任务（可选）
+
+为了实现持续监控，用户可以设置定时任务：
 
 ```
 "Run social sentiment analysis for [brand] weekly and email me the report"
 ```
 
-The agent can use OpenClaw cron to schedule this as a recurring isolated job.
+您可以使用 OpenClaw 的定时任务功能来定期执行此分析任务。
 
 ---
 
-## Data Storage
+## 数据存储
 
-Store results for trend tracking:
+存储分析结果以追踪趋势：
 
 ```bash
 mkdir -p data/social-sentiment
@@ -505,7 +479,7 @@ mkdir -p data/social-sentiment
 # data/social-sentiment/{brand}-{date}-analysis.json
 ```
 
-If previous runs exist, include a **trend line** in the report:
+如果之前有分析记录，请在报告中添加 **趋势线**：
 
 ```
 📈 TREND (last 4 weeks)
@@ -517,36 +491,34 @@ If previous runs exist, include a **trend line** in the report:
 
 ---
 
-## Tips for Best Results
+## 优化建议
 
-- **Download the full CSV** — Never settle for the first 100 API results. The CSV export is the whole point.
-- **Be specific with brand names** — "Notion" is better than "notion app" (avoid false positives)
-- **Check for ambiguity** — If the brand name is a common word (e.g., "Slack", "Rust"), add context terms
-- **Customize keyword lists** — The default positive/negative keywords are a starting point. Add domain-specific terms.
-- **Reddit is gold for honest opinions** — Longer posts, real opinions, subreddit context
-- **Instagram skews positive** — Platform culture favors positive content; adjust expectations
-- **Twitter captures real-time reactions** — Best for event-driven sentiment and highest volume
-- **30 days is the sweet spot** — Enough data for trends, recent enough to be actionable
-- **For huge brands (50K+ posts)** — Narrow the date range rather than sampling
-
----
-
-## Responsible Use
-
-- Only analyze **publicly available** social media content
-- Don't use sentiment data to harass or target individuals
-- Present findings honestly — don't cherry-pick to misrepresent opinion
-- Disclose methodology when sharing results externally
-- Respect that public posts ≠ consent to surveillance at scale
+- **下载完整 CSV 数据** — 切勿仅依赖 API 返回的前 100 条结果。CSV 数据才是分析的关键。
+- **明确品牌名称** — 使用具体的品牌名称（例如 “Notion” 而不是 “notion app”），以避免误判。
+- **避免歧义** — 如果品牌名称是通用词汇（如 “Slack”、“Rust”），请添加上下文信息。
+- **自定义关键词列表** — 默认的正面/负面关键词仅供参考。请根据实际情况添加相关词汇。
+- **Reddit 上的评论更真实** — 长篇评论往往包含用户的真实看法；Reddit 的社区文化更倾向于正面内容。
+- **Instagram 的数据偏正面** — 该平台倾向于展示正面内容，请调整分析预期。
+- **Twitter 反映实时反应** — 适用于追踪事件引发的情感变化和大量数据。
+- **30 天的时间范围是最合适的** — 数据量足够分析趋势，同时也能反映最新情况。
+- **对于数据量极大的品牌（超过 50,000 条帖子）** — 应缩小时间范围以避免数据过载。
 
 ---
 
-## Resources
+## 负责任的使用方式
 
-- **Xpoz:** [xpoz.ai](https://xpoz.ai) — social intelligence MCP powering the searches
-- **Setup:** [xpoz-setup on ClawHub](https://clawhub.ai/skills/xpoz-setup) — one-time auth
-- **Search reference:** [xpoz-social-search on ClawHub](https://clawhub.ai/skills/xpoz-social-search) — full query patterns
+- 仅分析 **公开可见的** 社交媒体内容。
+- 不得利用情感分析数据骚扰或针对个人。
+- 如实呈现分析结果，避免选择性引用数据以误导他人。
+- 在外部分享结果时公开说明分析方法。
+- 需要尊重用户的隐私，理解公开帖子并不等于同意被大规模监控。
 
 ---
 
-**Built for ClawHub • Powered by Xpoz**
+## 资源
+
+- **Xpoz：** [xpoz.ai](https://xpoz.ai) — 提供社交智能分析功能的平台。
+- **设置指南：** [ClawHub 上的 xpoz-setup](https://clawhub.ai/skills/xpoz-setup) — 一次性认证流程。
+- **搜索参考：** [ClawHub 上的 xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search) — 完整的查询模板。
+
+**专为 ClawHub 开发 • 由 Xpoz 提供支持**

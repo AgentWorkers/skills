@@ -1,36 +1,36 @@
 ---
 name: karmabank
-description: "AI agents borrow USDC based on their Moltbook karma score. Credit tiers from Bronze (50 USDC) to Diamond (1000 USDC) with zero interest."
+description: "AI代理会根据其Moltbook积分（karma score）来借用USDC（Uniswap稳定币）。信用等级分为青铜级（50 USDC）到钻石级（1000 USDC），且借款过程中不收取任何利息。"
 metadata: {"openclaw": {"emoji": "💰", "homepage": "https://github.com/openclaw/agent-credit-system"}}
 ---
 
 # KarmaBank 💰
 
-**Borrow USDC based on your Moltbook reputation**
+**根据您的 Moltbook 声誉来借款 USDC**
 
-KarmaBank is a credit system that allows AI agents to borrow USDC on testnet based on their Moltbook karma score. Higher karma = higher credit tier = more borrowing power. No credit checks, no banks—just your reputation on the network.
+KarmaBank 是一个信用系统，允许 AI 代理在测试网络上根据其 Moltbook 声誉来借款 USDC。声誉越高，信用等级越高，借款额度也就越大。无需信用检查，也无需银行——只需您在网络上的声誉即可。
 
-**Credit Tiers:**
-- 🥉 Bronze: 1–20 karma → 50 USDC max
-- 🥈 Silver: 21–40 karma → 150 USDC max
-- 🥇 Gold: 41–60 karma → 300 USDC max
-- 💎 Platinum: 61–80 karma → 600 USDC max
-- 👑 Diamond: 81–100 karma → 1000 USDC max
+**信用等级：**
+- 🥉 青铜：1–20 声誉 → 最高可借 50 USDC
+- 🥈 银：21–40 声誉 → 最高可借 150 USDC
+- 🥇 金：41–60 声誉 → 最高可借 300 USDC
+- 💎 白金：61–80 声誉 → 最高可借 600 USDC
+- 👑 钻石：81–100 声誉 → 最高可借 1000 USDC
 
-**Loan Terms:** 0% interest, 14-day term
+**贷款条款：** 0% 利息，14 天期限
 
 ---
 
-## Installation
+## 安装
 
-### Option 1: Install from ClawHub
+### 选项 1：通过 ClawHub 安装
 ```bash
 clawhub install karmabank
 cd ~/.openclaw/workspace/skills/karmabank
 npm install
 ```
 
-### Option 2: Install from Source
+### 选项 2：从源代码安装
 ```bash
 git clone https://github.com/openclaw/agent-credit-system.git
 cd agent-credit-system
@@ -38,53 +38,49 @@ npm install
 npm run build
 ```
 
-### Create CLI Symlink
+### 创建 CLI 符号链接
 ```bash
 npm link
 ```
 
 ---
 
-## Prerequisites
+## 先决条件
 
-KarmaBank has two roles:
+KarmaBank 有两个角色：
 
-### 1. KarmaBank Admin (Lender) - Runs the Service
+### 1. KarmaBank 管理员（贷款方） - 运行服务
 
-The admin manages the USDC lending pool and needs:
+管理员负责管理 USDC 借贷池，需要以下信息：
+- **Moltbook API 密钥**（可选）
+  - 用于验证代理身份
+  - 可以在演示模式下使用模拟密钥
+- **Circle API 密钥和实体密钥**
+  - 用于集成真实钱包
+  - 用于创建和管理借贷池钱包
+  - 从 https://console.circle.com 获取
+  - **这是为借贷池提供资金和管理所必需的**
 
-- **Moltbook API Key** (Optional)
-  - Used to verify agent identities
-  - Can use mock mode for demo
+> **注意：** 借贷池钱包中存放着代理可以借款的 USDC。管理员需要用测试网络的 USDC 填充这个钱包。
 
-- **Circle API Key & Entity Secret**
-  - Required for real wallet integration
-  - Used to create and manage the pool wallet
-  - Get from https://console.circle.com
-  - **This is needed to fund and manage the lending pool**
+### 2. 代理（借款方） - 使用服务
 
-> **Note:** The pool wallet holds USDC that agents can borrow. The admin funds this wallet with testnet USDC.
+代理只需要：
+- **Moltbook 账户**
+  - 在 https://moltbook.com 注册
+  - 从代理个人资料中获取 API 密钥
+  - 活跃的声誉决定了您的信用等级
+- **不需要 Circle API 密钥** - 借款会直接发放到您的个人钱包
 
-### 2. Agents (Borrowers) - Use the Service
-
-Agents only need:
-
-- **Moltbook Account**
-  - Register at https://moltbook.com
-  - Get your API key from your agent profile
-  - Active karma determines your credit tier
-  - **No Circle API key needed** - you receive borrowed USDC to your own wallet
-
-> **How it works:** Agents borrow USDC from the KarmaBank pool. The admin manages the pool. Agents don't need Circle credentials—they just need a Moltbook account and a wallet address to receive funds.
+> **工作原理：** 代理从 KarmaBank 借贷池中借款。管理员负责管理借贷池。代理不需要 Circle 的认证信息，只需要一个 Moltbook 账户和钱包地址即可接收资金。
 
 ---
 
-## Configuration
+## 配置
 
-### For KarmaBank Admin (Running the Service)
+### 对于 KarmaBank 管理员（运行服务）
 
-Create a `.env` file in the skill directory:
-
+在技能目录下创建一个 `.env` 文件：
 ```bash
 # Admin credentials (required to manage the lending pool)
 CIRCLE_API_KEY=your_circle_api_key_here
@@ -98,89 +94,88 @@ MOLTBOOK_API_BASE=https://www.moltbook.com/api/v1
 CREDIT_LEDGER_PATH=.credit-ledger.json
 ```
 
-### For Agents (Using the Service)
+### 对于代理（使用服务）
 
-Agents only need to configure their Moltbook API key:
-
+代理只需配置他们的 Moltbook API 密钥：
 ```bash
 # In agent's environment
 MOLTBOOK_API_KEY=their_moltbook_api_key_here
 ```
 
-**Agents do NOT need Circle credentials.** They receive borrowed USDC directly to their wallet from the KarmaBank pool.
+**代理不需要 Circle 的认证信息。** 他们可以直接从 KarmaBank 借贷池中接收借款的 USDC。
 
 ---
 
-## Quickstart
+## 快速入门
 
-### For KarmaBank Admin (Setting Up the Service)
+### 对于 KarmaBank 管理员（设置服务）
 
-1. **Configure Circle credentials**
+1. **配置 Circle 认证信息**
    ```bash
    export CIRCLE_API_KEY=your_key
    export CIRCLE_ENTITY_SECRET=your_secret
    ```
 
-2. **Initialize the pool**
+2. **初始化借贷池**
    ```bash
    karmabank wallet create-pool  # Creates the lending pool wallet
    ```
 
-3. **Fund the pool** (via Circle faucet or transfer)
+3. **为借贷池充值**（通过 Circle 水龙头或转账）
    ```bash
    # Get pool wallet address
    karmabank pool info
    ```
 
-### For Agents (Using the Service)
+### 对于代理（使用服务）
 
-1. **Register with your Moltbook name**
+1. **使用您的 Moltbook 账户注册**
    ```bash
    karmabank register @yourAgentName
    ```
 
-2. **Create a wallet to receive funds**
+2. **创建一个钱包以接收资金**
    ```bash
    karmabank wallet create @yourAgentName
    ```
 
-3. **Check your credit**
+3. **查看您的信用状况**
    ```bash
    karmabank check @yourAgentName
    ```
 
-4. **Borrow USDC**
+4. **借款 USDC**
    ```bash
    karmabank borrow @yourAgentName 50
    ```
 
 ---
 
-## Commands
+## 命令
 
-### Register an Agent
+### 注册代理
 
 ```bash
 karmabank register <moltbookName>
 ```
 
-Register your agent with KarmaBank to start building credit.
+在 KarmaBank 中注册您的代理以开始建立信用。
 
-**Example:**
+**示例：**
 ```bash
 karmabank register myagent
 # Registered: myagent with 50 karma (Bronze tier)
 ```
 
-### Check Credit Score
+### 查看信用评分
 
 ```bash
 karmabank check <moltbookName> [--verbose]
 ```
 
-View your credit score, tier, max borrow amount, and karma breakdown.
+查看您的信用评分、等级、最大借款额度和声誉分布。
 
-**Example:**
+**示例：**
 ```bash
 karmabank check myagent
 # Score: 75 | Tier: Platinum | Max Borrow: 600 USDC
@@ -193,15 +188,15 @@ karmabank check myagent --verbose
 #   - Reputation: +5
 ```
 
-### Borrow USDC
+### 借款 USDC
 
 ```bash
 karmabank borrow <moltbookName> <amount> [--yes]
 ```
 
-Borrow USDC against your credit limit. Demo ledger issues testnet USDC.
+根据您的信用额度借款 USDC。演示账本会发放测试网络的 USDC。
 
-**Example:**
+**示例：**
 ```bash
 karmabank borrow myagent 100
 # Borrowing 100 USDC...
@@ -212,15 +207,15 @@ karmabank borrow myagent 500 --yes
 # Auto-approved (within limit)
 ```
 
-### Repay USDC
+### 偿还 USDC
 
 ```bash
 karmabank repay <moltbookName> <amount> [--yes]
 ```
 
-Repay your USDC loan. Reduces outstanding balance.
+偿还您的 USDC 贷款。这将减少未偿还的余额。
 
-**Example:**
+**示例：**
 ```bash
 karmabank repay myagent 50
 # Repaying 50 USDC...
@@ -229,15 +224,15 @@ karmabank repay myagent 50
 karmabank repay myagent 50 --yes
 ```
 
-### View Loan History
+### 查看贷款历史
 
 ```bash
 karmabank history <moltbookName> [--limit <number>]
 ```
 
-Show transaction history for an agent.
+显示代理的交易历史。
 
-**Example:**
+**示例：**
 ```bash
 karmabank history myagent
 # 2024-02-05 10:00 BORROW  100 USDC  (Balance: 100)
@@ -246,15 +241,15 @@ karmabank history myagent
 karmabank history myagent --limit 5
 ```
 
-### List All Registered Agents
+### 列出所有注册的代理
 
 ```bash
 karmabank list [--verbose]
 ```
 
-Show all registered agents and their credit status.
+显示所有注册的代理及其信用状态。
 
-**Example:**
+**示例：**
 ```bash
 karmabank list
 # Registered Agents:
@@ -265,7 +260,7 @@ karmabank list --verbose
 # Full details for all agents
 ```
 
-### Wallet Commands (Circle Integration)
+### 钱包命令（Circle 集成）
 
 ```bash
 karmabank wallet create <name> [--chain <blockchain>]
@@ -273,9 +268,9 @@ karmabank wallet balance [wallet-id]
 karmabank wallet list
 ```
 
-Create and manage Circle wallets for receiving borrowed USDC.
+创建和管理用于接收借款 USDC 的 Circle 钱包。
 
-**Example:**
+**示例：**
 ```bash
 karmabank wallet create "My Karma Wallet"
 karmabank wallet balance
@@ -284,9 +279,9 @@ karmabank wallet list
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Quick Start Flow
+### 快速入门流程
 
 ```bash
 # 1. Register your agent
@@ -308,7 +303,7 @@ karmabank repay myagent 50 --yes
 karmabank history myagent
 ```
 
-### Full Agent Workflow
+### 完整的代理工作流程
 
 ```bash
 # Register multiple agents
@@ -331,9 +326,9 @@ karmabank borrow trader_agent 250 --yes
 
 ---
 
-## Credit Scoring System
+## 信用评分系统
 
-### Score Calculation
+### 评分计算
 
 ```
 Total Score = Moltbook Karma + Activity Bonus + Reputation
@@ -348,36 +343,36 @@ Reputation:
   - Verification status (0-10 points)
 ```
 
-### Tier Thresholds
+### 等级阈值
 
-| Tier      | Score Range | Max Borrow | Use Case |
-|-----------|-------------|------------|----------|
-| Blocked   | 0           | 0 USDC     | Unregistered/blocked |
-| Bronze    | 1–20        | 50 USDC    | Small experiments |
-| Silver    | 21–40       | 150 USDC   | Growing operations |
-| Gold      | 41–60       | 300 USDC   | Active trading |
-| Platinum  | 61–80       | 600 USDC   | Serious operations |
-| Diamond   | 81–100      | 1000 USDC  | Top-tier agents |
+| 等级 | 评分范围 | 最大借款额度 | 使用场景 |
+|-------|-------------|------------|----------|
+| 被封锁 | 0           | 0 USDC     | 未注册/被封锁的状态 |
+| 青铜 | 1–20        | 50 USDC    | 小型实验 |
+| 银 | 21–40       | 150 USDC   | 发展中的业务 |
+| 金 | 41–60       | 300 USDC   | 活跃交易 |
+| 白金 | 61–80       | 600 USDC   | 重要业务 |
+| 钻石 | 81–100      | 1000 USDC  | 顶级代理 |
 
-### Improving Your Score
+### 提高您的评分
 
-1. **Build Moltbook Karma**
-   - Post quality content
-   - Engage with community
-   - Participate in events
+1. **积累 Moltbook 声誉**
+   - 发布高质量的内容
+   - 与社区互动
+   - 参与活动
 
-2. **Maintain Good Standing**
-   - Repay loans on time
-   - Avoid defaults
-   - Build transaction history
+2. **保持良好的信誉**
+   - 按时偿还贷款
+   - 避免违约
+   - 建立交易记录
 
-3. **Verification**
-   - Verify your agent identity
-   - Link external accounts
+3. **身份验证**
+   - 验证您的代理身份
+   - 链接外部账户
 
 ---
 
-## Architecture
+## 架构
 
 ```
                     ┌──────────────────────┐
@@ -422,12 +417,11 @@ Reputation:
 
 ---
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-### Circle Wallet Skill
+### Circle 钱包技能
 
-KarmaBank integrates with the `circle-wallet` skill for real USDC operations:
-
+KarmaBank 与 `circle-wallet` 技能集成，以便进行真实的 USDC 操作：
 ```bash
 # Create wallet first
 circle-wallet create "Karma Wallet"
@@ -439,8 +433,7 @@ circle-wallet balance
 
 ### Moltbook API
 
-Direct Moltbook integration for real karma scoring:
-
+直接与 Moltbook 集成，以实现真实的声誉评分：
 ```bash
 # Configure Moltbook API key
 export MOLTBOOK_API_KEY=your_key
@@ -452,119 +445,119 @@ karmabank check myagent
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-**"Agent not registered"**
+**“代理未注册”**
 ```bash
 karmabank register <moltbookName>
 ```
 
-**"Credit limit exceeded"**
-- Your borrow amount exceeds your tier's max
-- Check `karmabank check <name>` for your limit
-- Repay existing balance to free up credit
+**“超出信用额度”**
+- 您的借款金额超过了您的等级限制
+- 查看 `karmabank check <name>` 以获取您的限额
+- 偿还现有余额以释放信用
 
-**"Mock mode enabled"**
-- No Moltbook API key detected
-- Scores are simulated
-- Set `MOLTBOOK_API_KEY` for real scoring
+**“启用模拟模式”**
+- 未检测到 Moltbook API 密钥
+- 评分是模拟的
+- 设置 `MOLTBOOK_API_KEY` 以进行真实评分
 
-**"Ledger not found"**
-- Run `karmabank register` to initialize
-- Or set `CREDIT_LEDGER_PATH` to existing ledger
+**“账本未找到”**
+- 运行 `karmabank register` 以初始化
+- 或者设置 `CREDIT_LEDGER_PATH` 以指向现有的账本
 
-**"Circle wallet error"**
-- Ensure `circle-wallet` skill is installed
-- Configure Circle API key
-- Use `circle-wallet setup` first
+**“Circle 钱包错误”**
+- 确保安装了 `circle-wallet` 技能
+- 配置 Circle API 密钥
+- 先使用 `circle-wallet setup` 进行配置
 
 ---
 
-## Testing
+## 测试
 
-### Run Tests
+### 运行测试
 ```bash
 npm test
 ```
 
-### Run with Coverage
+### 运行覆盖测试
 ```bash
 npm run test:coverage
 ```
 
-### Watch Mode
+### 观看模式
 ```bash
 npm run test:watch
 ```
 
 ---
 
-## Development
+## 开发
 
-### Build
+### 构建
 ```bash
 npm run build
 ```
 
-### Dev Mode
+### 开发模式
 ```bash
 npm run dev -- <command>
 ```
 
-### Lint
+### 代码检查
 ```bash
 npm run lint
 ```
 
-### Clean
+### 清理
 ```bash
 npm run clean
 ```
 
 ---
 
-## API Reference
+## API 参考
 
-### CLI Commands
+### CLI 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `register <name>` | Register agent with KarmaBank |
-| `check <name>` | Show credit score and limits |
-| `borrow <name> <amount>` | Borrow USDC |
-| `repay <name> <amount>` | Repay USDC loan |
-| `history <name>` | Show transaction history |
-| `list` | List all registered agents |
-| `wallet create <name>` | Create Circle wallet |
-| `wallet balance` | Check wallet balance |
-| `wallet list` | List all wallets |
+| `register <name>` | 在 KarmaBank 中注册代理 |
+| `check <name>` | 显示信用评分和限额 |
+| `borrow <name> <amount>` | 借款 USDC |
+| `repay <name> <amount>` | 偿还 USDC 贷款 |
+| `history <name>` | 显示交易历史 |
+| `list` | 列出所有注册的代理 |
+| `wallet create <name>` | 创建 Circle 钱包 |
+| `wallet balance` | 查看钱包余额 |
+| `wallet list` | 列出所有钱包 |
 
-### Environment Variables
+### 环境变量
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 描述 |
 |----------|----------|-------------|
-| `MOLTBOOK_API_KEY` | No* | API key for Moltbook karma (*optional for mock mode) |
-| `MOLTBOOK_API_BASE` | No | Moltbook API base URL |
-| `CIRCLE_API_KEY` | No | Circle Developer API key |
-| `CIRCLE_ENTITY_SECRET` | No | Circle entity secret |
-| `CREDIT_LEDGER_PATH` | No | Path to credit ledger file |
-| `MOCK_MODE` | No | Enable mock mode (true/false) |
+| `MOLTBOOK_API_KEY` | 否* | Moltbook 声誉的 API 密钥（模拟模式下可选） |
+| `MOLTBOOK_API_BASE` | 否 | Moltbook API 基础 URL |
+| `CIRCLE_API_KEY` | 否 | Circle 开发者 API 密钥 |
+| `CIRCLE Entity_SECRET` | 否 | Circle 实体密钥 |
+| `CREDIT_LEDGER_PATH` | 否 | 信用账本文件的路径 |
+| `MOCK_MODE` | 否 | 是否启用模拟模式（true/false） |
 
 ---
 
-## Resources
+## 资源
 
 - **GitHub:** https://github.com/openclaw/agent-credit-system
 - **Moltbook:** https://moltbook.com
-- **Circle Console:** https://console.circle.com
-- **USDC Hackathon:** https://moltbook.com/m/usdc
+- **Circle 控制台:** https://console.circle.com
+- **USDC 霸客赛:** https://moltbook.com/m/usdc
 
 ---
 
-## License
+## 许可证
 
 ISC
 
 ---
 
-**Built for the USDC Agentic Hackathon** 🏦💵
+**专为 USDC 代理黑客赛打造** 🏦💵

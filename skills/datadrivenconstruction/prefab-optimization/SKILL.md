@@ -1,24 +1,24 @@
 ---
 slug: "prefab-optimization"
 display_name: "Prefab Optimization"
-description: "Optimize prefabrication and modular construction workflows. Plan module sequencing, factory scheduling, transportation logistics, and on-site assembly for maximum efficiency."
+description: "优化预制件生产和模块化施工的工作流程。合理规划模块的组装顺序、工厂的生产计划、运输物流以及现场组装过程，以实现最高效率。"
 ---
 
-# Prefabrication Optimization
+# 预制件优化
 
-## Overview
+## 概述
 
-This skill implements optimization algorithms for prefabricated and modular construction. Maximize factory utilization, minimize transportation costs, and optimize on-site assembly sequences.
+本技能实现了预制件和模块化建筑的优化算法，旨在最大化工厂利用率、降低运输成本，并优化现场组装顺序。
 
-**Optimization Areas:**
-- Module design for transport
-- Factory production scheduling
-- Logistics and transportation
-- On-site assembly sequencing
-- Crane and equipment planning
-- Quality control checkpoints
+**优化领域：**
+- 适用于运输的模块设计
+- 工厂生产调度
+- 物流与运输
+- 现场组装顺序
+- 起重机和设备规划
+- 质量控制检查点
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -101,9 +101,9 @@ constraints = calculate_transport_constraints(module)
 print(f"Module {module.name}: {constraints}")
 ```
 
-## Comprehensive Prefab System
+## 综合预制系统
 
-### Module Definition and Analysis
+### 模块定义与分析
 
 ```python
 from dataclasses import dataclass, field
@@ -263,7 +263,7 @@ class ModuleAnalyzer:
         ]
 ```
 
-### Production Scheduling
+### 生产调度
 
 ```python
 from datetime import datetime, timedelta
@@ -399,7 +399,7 @@ class ProductionScheduler:
         return sorted(gantt_data, key=lambda x: x['start'])
 ```
 
-### Assembly Sequence Optimization
+### 组装顺序优化
 
 ```python
 from collections import defaultdict, deque
@@ -526,7 +526,7 @@ class AssemblySequencer:
         return plan
 ```
 
-### Transportation Optimization
+### 运输优化
 
 ```python
 from scipy.optimize import linear_sum_assignment
@@ -677,33 +677,33 @@ class TransportOptimizer:
         return schedule
 ```
 
-## Quick Reference
+## 快速参考
 
-| Module Type | Typical Dimensions (LxWxH) | Typical Weight | Production Time |
+| 模块类型 | 典型尺寸（长x宽x高） | 典型重量 | 生产时间 |
 |-------------|---------------------------|----------------|-----------------|
-| Bathroom Pod | 3.0 x 2.4 x 2.7m | 4,000-8,000 kg | 30-50 hours |
-| Kitchen Pod | 4.0 x 2.4 x 2.7m | 5,000-10,000 kg | 40-60 hours |
-| Room Module | 6.0 x 3.0 x 3.0m | 15,000-25,000 kg | 60-100 hours |
-| Facade Panel | 6.0 x 3.0 x 0.3m | 2,000-4,000 kg | 15-25 hours |
-| Stair Module | 4.0 x 2.5 x 3.5m | 8,000-12,000 kg | 35-50 hours |
+| 浴室模块 | 3.0 x 2.4 x 2.7米 | 4,000-8,000 千克 | 30-50 小时 |
+| 厨房模块 | 4.0 x 2.4 x 2.7米 | 5,000-10,000 千克 | 40-60 小时 |
+| 房间模块 | 6.0 x 3.0 x 3.0米 | 15,000-25,000 千克 | 60-100 小时 |
+| 立面板 | 6.0 x 3.0 x 0.3米 | 2,000-4,000 千克 | 15-25 小时 |
+| 楼梯模块 | 4.0 x 2.5 x 3.5米 | 8,000-12,000 千克 | 35-50 小时 |
 
-## Transport Limits by Region
+## 不同地区的运输限制
 
-| Region | Max Width | Max Height | Max Length | Max Weight |
+| 地区 | 最大宽度 | 最大高度 | 最大长度 | 最大重量 |
 |--------|-----------|------------|------------|------------|
-| EU Standard | 2.55m | 4.0m | 12.0m | 40t |
-| EU Wide Load | 4.0m | 4.5m | 16.5m | 60t |
-| US Standard | 2.6m | 4.1m | 14.6m | 36t |
-| US Oversize | 4.3m | 4.6m | 22.0m | 60t |
+| 欧盟标准 | 2.55米 | 4.0米 | 12.0米 | 40吨 |
+| 欧盟宽体运输 | 4.0米 | 4.5米 | 16.5米 | 60吨 |
+| 美国标准 | 2.6米 | 4.1米 | 14.6米 | 36吨 |
+| 美国超大型运输 | 4.3米 | 4.6米 | 22.0米 | 60吨 |
 
-## Resources
+## 资源
 
-- **Modular Building Institute**: https://www.modular.org
-- **Prefabrication Hub**: https://www.prefabhub.org
-- **DDC Website**: https://datadrivenconstruction.io
+- **模块化建筑协会**：https://www.modular.org
+- **预制件中心**：https://www.prefabhub.org
+- **DDC 网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `site-logistics-optimization` for on-site delivery scheduling
-- See `4d-simulation` for assembly sequence visualization
-- See `bim-validation-pipeline` for module quality checks
+- 请参阅 `site-logistics-optimization` 以了解现场交付调度方案
+- 请参阅 `4d-simulation` 以查看组装顺序的可视化效果
+- 请参阅 `bim-validation-pipeline` 以进行模块质量检查

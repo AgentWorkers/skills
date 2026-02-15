@@ -18,9 +18,9 @@ metadata:
 
 # Coda
 
-Access the Coda API with managed OAuth authentication. Manage docs, pages, tables, rows, formulas, and controls with full CRUD operations.
+您可以使用受管理的 OAuth 认证来访问 Coda API。通过完整的 CRUD 操作（创建、读取、更新和删除），您可以管理文档、页面、表格、行、公式和控制项。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List your docs
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/coda/apis/v1/{resource}
 ```
 
-Replace `{resource}` with the actual Coda API endpoint path. The gateway proxies requests to `coda.io/apis/v1` and automatically injects your OAuth token.
+请将 `{resource}` 替换为实际的 Coda API 端点路径。该网关会将请求代理到 `coda.io/apis/v1`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Coda OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Coda OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Coda connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Coda 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,40 +141,40 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Account
+### 账户
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /coda/apis/v1/whoami
 ```
 
-Returns information about the authenticated user.
+返回有关已认证用户的信息。
 
-### Docs
+### 文档
 
-#### List Docs
+#### 列出文档
 
 ```bash
 GET /coda/apis/v1/docs
 ```
 
-Query parameters:
-- `isOwner` - Show only owned docs (true/false)
-- `query` - Search query
-- `sourceDoc` - Filter by source doc ID
-- `isStarred` - Show only starred docs
-- `inGallery` - Show only gallery docs
-- `workspaceId` - Filter by workspace
-- `folderId` - Filter by folder
-- `limit` - Page size (default: 25, max: 200)
-- `pageToken` - Pagination token
+查询参数：
+- `isOwner` - 仅显示您拥有的文档（true/false）
+- `query` - 搜索查询
+- `sourceDoc` - 按源文档 ID 过滤
+- `isStarred` - 仅显示星标文档
+- `inGallery` - 仅显示图库中的文档
+- `workspaceId` - 按工作区过滤
+- `folderId` - 按文件夹过滤
+- `limit` - 页面大小（默认：25，最大：200）
+- `pageToken` - 分页令牌
 
-#### Create Doc
+#### 创建文档
 
 ```bash
 POST /coda/apis/v1/docs
@@ -188,31 +188,31 @@ Content-Type: application/json
 }
 ```
 
-#### Get Doc
+#### 获取文档
 
 ```bash
 GET /coda/apis/v1/docs/{docId}
 ```
 
-#### Delete Doc
+#### 删除文档
 
 ```bash
 DELETE /coda/apis/v1/docs/{docId}
 ```
 
-### Pages
+### 页面
 
-#### List Pages
+#### 列出页面
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/pages
 ```
 
-Query parameters:
-- `limit` - Page size
-- `pageToken` - Pagination token
+查询参数：
+- `limit` - 页面大小
+- `pageToken` - 分页令牌
 
-#### Create Page
+#### 创建页面
 
 ```bash
 POST /coda/apis/v1/docs/{docId}/pages
@@ -225,13 +225,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Page
+#### 获取页面
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/pages/{pageIdOrName}
 ```
 
-#### Update Page
+#### 更新页面
 
 ```bash
 PUT /coda/apis/v1/docs/{docId}/pages/{pageIdOrName}
@@ -243,77 +243,77 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Page
+#### 删除页面
 
 ```bash
 DELETE /coda/apis/v1/docs/{docId}/pages/{pageIdOrName}
 ```
 
-### Tables
+### 表格
 
-#### List Tables
+#### 列出表格
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/tables
 ```
 
-Query parameters:
-- `limit` - Page size
-- `pageToken` - Pagination token
-- `sortBy` - Sort by field
-- `tableTypes` - Filter by table type
+查询参数：
+- `limit` - 页面大小
+- `pageToken` - 分页令牌
+- `sortBy` - 按字段排序
+- `tableTypes` - 按表格类型过滤
 
-#### Get Table
+#### 获取表格
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}
 ```
 
-### Columns
+### 列
 
-#### List Columns
+#### 列出列
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/columns
 ```
 
-Query parameters:
-- `limit` - Page size
-- `pageToken` - Pagination token
+查询参数：
+- `limit` - 页面大小
+- `pageToken` - 分页令牌
 
-#### Get Column
+#### 获取列
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}
 ```
 
-### Rows
+### 行
 
-#### List Rows
+#### 列出行
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows
 ```
 
-Query parameters:
-- `query` - Filter rows by search query
-- `useColumnNames` - Use column names instead of IDs in response (true/false)
-- `valueFormat` - Value format (simple, simpleWithArrays, rich)
-- `sortBy` - Sort by column
-- `limit` - Page size
-- `pageToken` - Pagination token
+查询参数：
+- `query` - 按搜索查询过滤行
+- `useColumnNames` - 在响应中使用列名而不是 ID（true/false）
+- `valueFormat` - 值格式（简单、简单带数组、丰富）
+- `sortBy` - 按列排序
+- `limit` - 页面大小
+- `pageToken` - 分页令牌
 
-#### Get Row
+#### 获取行
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
 ```
 
-Query parameters:
-- `useColumnNames` - Use column names instead of IDs
-- `valueFormat` - Value format
+查询参数：
+- `useColumnNames` - 在响应中使用列名而不是 ID
+- `valueFormat` - 值格式
 
-#### Insert/Upsert Rows
+#### 插入/更新行
 
 ```bash
 POST /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows
@@ -332,10 +332,10 @@ Content-Type: application/json
 }
 ```
 
-- Use `keyColumns` for upsert behavior (update if exists, insert if not)
-- Row inserts/upserts are processed asynchronously (returns requestId)
+- 使用 `keyColumns` 来决定更新或插入行为（如果存在则更新，否则插入）
+- 行的插入/更新是异步处理的（返回 requestId）
 
-#### Update Row
+#### 更新行
 
 ```bash
 PUT /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
@@ -350,55 +350,55 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Row
+#### 删除行
 
 ```bash
 DELETE /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
 ```
 
-### Formulas
+### 公式
 
-#### List Formulas
+#### 列出公式
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/formulas
 ```
 
-#### Get Formula
+#### 获取公式
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/formulas/{formulaIdOrName}
 ```
 
-### Controls
+### 控制项
 
-#### List Controls
+#### 列出控制项
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/controls
 ```
 
-#### Get Control
+#### 获取控制项
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/controls/{controlIdOrName}
 ```
 
-### Permissions
+### 权限
 
-#### Get Sharing Metadata
+#### 获取共享元数据
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/acl/metadata
 ```
 
-#### List Permissions
+#### 列出权限
 
 ```bash
 GET /coda/apis/v1/docs/{docId}/acl/permissions
 ```
 
-#### Add Permission
+#### 添加权限
 
 ```bash
 POST /coda/apis/v1/docs/{docId}/acl/permissions
@@ -413,76 +413,76 @@ Content-Type: application/json
 }
 ```
 
-Access values: `readonly`, `write`, `comment`
+权限值：`readonly`、`write`、`comment`
 
-#### Delete Permission
+#### 删除权限
 
 ```bash
 DELETE /coda/apis/v1/docs/{docId}/acl/permissions/{permissionId}
 ```
 
-### Categories
+### 分类
 
-#### List Categories
+#### 列出分类
 
 ```bash
 GET /coda/apis/v1/categories
 ```
 
-### Utilities
+### 实用工具
 
-#### Resolve Browser Link
+#### 解析浏览器链接
 
 ```bash
 GET /coda/apis/v1/resolveBrowserLink?url={encodedUrl}
 ```
 
-Converts a Coda browser URL to API resource information.
+将 Coda 浏览器 URL 转换为 API 资源信息。
 
-#### Get Mutation Status
+#### 获取变更状态
 
 ```bash
 GET /coda/apis/v1/mutationStatus/{requestId}
 ```
 
-Check the status of an asynchronous mutation operation.
+检查异步变更操作的状态。
 
-### Analytics
+### 分析
 
-#### List Doc Analytics
+#### 列出文档分析
 
 ```bash
 GET /coda/apis/v1/analytics/docs
 ```
 
-Query parameters:
-- `isPublished` - Filter by published status
-- `sinceDate` - Start date (YYYY-MM-DD)
-- `untilDate` - End date (YYYY-MM-DD)
-- `limit` - Page size
-- `pageToken` - Pagination token
+查询参数：
+- `isPublished` - 按发布状态过滤
+- `sinceDate` - 开始日期（YYYY-MM-DD）
+- `untilDate` - 结束日期（YYYY-MM-DD）
+- `limit` - 页面大小
+- `pageToken` - 分页令牌
 
-#### List Pack Analytics
+#### 列出包分析
 
 ```bash
 GET /coda/apis/v1/analytics/packs
 ```
 
-#### Get Analytics Update Time
+#### 获取分析更新时间
 
 ```bash
 GET /coda/apis/v1/analytics/updated
 ```
 
-## Pagination
+## 分页
 
-Coda uses cursor-based pagination with `pageToken`:
+Coda 使用基于游标的分页机制，通过 `pageToken` 进行分页：
 
 ```bash
 GET /coda/apis/v1/docs?limit=25
 ```
 
-Response includes `nextPageToken` when more results exist:
+当存在更多结果时，响应中会包含 `nextPageToken`：
 
 ```json
 {
@@ -492,11 +492,11 @@ Response includes `nextPageToken` when more results exist:
 }
 ```
 
-Use the `nextPageToken` value as `pageToken` in subsequent requests.
+在后续请求中使用 `nextPageToken` 值作为 `pageToken`。
 
-## Asynchronous Mutations
+## 异步变更
 
-Create, update, and delete operations return HTTP 202 with a `requestId`:
+创建、更新和删除操作会返回 HTTP 202 状态码，并附带一个 `requestId`：
 
 ```json
 {
@@ -505,24 +505,24 @@ Create, update, and delete operations return HTTP 202 with a `requestId`:
 }
 ```
 
-Check mutation status:
+检查变更状态：
 
 ```bash
 GET /coda/apis/v1/mutationStatus/mutate:9f038510-be42-4d16-bccf-3468d38efd57
 ```
 
-Response:
+响应：
 ```json
 {
   "completed": true
 }
 ```
 
-Mutations are generally processed within a few seconds.
+变更通常在几秒钟内完成处理。
 
-## Code Examples
+## 代码示例
 
-### JavaScript - List Docs
+### JavaScript - 列出文档
 
 ```javascript
 const response = await fetch(
@@ -537,7 +537,7 @@ const data = await response.json();
 console.log(data.items);
 ```
 
-### Python - List Docs
+### Python - 列出文档
 
 ```python
 import os
@@ -553,7 +553,7 @@ for doc in data['items']:
     print(f"{doc['name']}: {doc['id']}")
 ```
 
-### Python - Create Doc and Page
+### Python - 创建文档和页面
 
 ```python
 import os
@@ -581,7 +581,7 @@ page = page_response.json()
 print(f"Created page: {page['id']}")
 ```
 
-### Python - Insert Rows
+### Python - 插入行
 
 ```python
 import os
@@ -607,48 +607,48 @@ result = response.json()
 print(f"Request ID: {result['requestId']}")
 ```
 
-## Notes
+## 注意事项
 
-- Doc IDs look like `s0ekj2vV-v`
-- Page IDs start with `canvas-`
-- Table and column names can be used instead of IDs
-- Row operations require a base table (not views)
-- Create/Update/Delete operations are asynchronous (return requestId)
-- Newly created docs may take a moment to be accessible via API (409 error)
-- Page-level analytics require Enterprise plan
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq`, environment variables may not expand correctly. Use Python examples instead.
+- 文档 ID 的格式为 `s0ekj2vV-v`。
+- 页面 ID 以 `canvas-` 开头。
+- 可以使用表格和列的名称代替 ID。
+- 行的操作需要基于基础表格（而不是视图）。
+- 创建/更新/删除操作是异步的（返回 requestId）。
+- 新创建的文档可能需要一段时间才能通过 API 访问（可能会返回 409 错误）。
+- 页面级别的分析需要 Enterprise 计划。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 curl 输出传递给 `jq` 时，环境变量可能无法正确展开。建议使用 Python 示例。
 
-## Rate Limits
+## 速率限制
 
-| Operation | Limit |
+| 操作 | 限制 |
 |-----------|-------|
-| Reading data | 100 requests per 6 seconds |
-| Writing data | 10 requests per 6 seconds |
-| Writing doc content | 5 requests per 10 seconds |
-| Listing docs | 4 requests per 6 seconds |
-| Reading analytics | 100 requests per 6 seconds |
+| 读取数据 | 每 6 秒 100 次请求 |
+| 写入数据 | 每 6 秒 10 次请求 |
+| 写入文档内容 | 每 10 秒 5 次请求 |
+| 列出文档 | 每 6 秒 4 次请求 |
+| 读取分析数据 | 每 6 秒 100 次请求 |
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Coda connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 409 | Doc not yet accessible (just created) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Coda API |
+| 400 | 未找到 Coda 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 409 | 文档尚未可用（刚刚创建） |
+| 429 | 达到速率限制 |
+| 4xx/5xx | 来自 Coda API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -659,17 +659,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `coda`. For example:
+1. 确保您的 URL 路径以 `coda` 开头。例如：
+- 正确：`https://gateway.maton.ai/coda/apis/v1/docs`
+- 错误：`https://gateway.maton.ai/apis/v1/docs`
 
-- Correct: `https://gateway.maton.ai/coda/apis/v1/docs`
-- Incorrect: `https://gateway.maton.ai/apis/v1/docs`
+## 资源
 
-## Resources
-
-- [Coda API Documentation](https://coda.io/developers/apis/v1)
-- [Coda API Postman Collection](https://www.postman.com/codaio/coda-workspace/collection/0vy7uxn/coda-api)
-- [Coda API Python Library (codaio)](https://codaio.readthedocs.io/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Coda API 文档](https://coda.io/developers/apis/v1)
+- [Coda API Postman 集合](https://www.postman.com/codaio/coda-workspace/collection/0vy7uxn/coda-api)
+- [Coda API Python 库 (codaio)](https://codaio.readthedocs.io/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

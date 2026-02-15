@@ -1,6 +1,6 @@
 ---
 name: masonry
-description: AI-powered image and video generation using the Masonry CLI. Generate images, videos, check job status, and manage media assets.
+description: 使用 Masonry CLI 进行基于 AI 的图像和视频生成。可以生成图像和视频，查看作业状态，并管理媒体资产。
 metadata:
   author: masonry-ai
   version: "1.0"
@@ -10,27 +10,27 @@ allowed-tools: Bash(masonry:*)
 
 # Masonry CLI
 
-The `masonry` CLI provides AI-powered image and video generation capabilities.
+`masonry` CLI 提供了基于人工智能的图像和视频生成功能。
 
-## When to use this skill
+## 适用场景
 
-Use this skill when the user wants to:
-- Generate images from text prompts
-- Generate videos from text prompts
-- Check status of generation jobs
-- Download generated media
-- List available AI models
-- View generation history
+当用户需要执行以下操作时，可以使用此 CLI：
+- 根据文本提示生成图像
+- 根据文本提示生成视频
+- 查看生成作业的状态
+- 下载生成的媒体文件
+- 列出可用的 AI 模型
+- 查看生成历史记录
 
-## Installation
+## 安装
 
-If the masonry command is not available, install it:
+如果 `masonry` 命令不可用，请先进行安装：
 
 ```bash
 curl -sSL https://media.masonry.so/cli/install.sh | sh
 ```
 
-## Quick Commands
+## 常用命令
 
 ```bash
 # Generate image
@@ -50,10 +50,9 @@ masonry models list --type image
 masonry models list --type video
 ```
 
-## Detailed Workflows
+## 详细工作流程
 
-### Image Generation
-
+### 图像生成
 ```bash
 # Basic generation
 masonry image "a sunset over mountains, photorealistic"
@@ -70,8 +69,7 @@ masonry image "cyberpunk cityscape" --aspect 16:9 --model imagen-3.0-generate-00
 #   --seed           Reproducibility seed
 ```
 
-### Video Generation
-
+### 视频生成
 ```bash
 # Basic generation
 masonry video "ocean waves crashing on rocks"
@@ -87,8 +85,7 @@ masonry video "drone shot of forest" --duration 6 --aspect 16:9
 #   --no-audio       Disable audio generation
 ```
 
-### Job Management
-
+### 作业管理
 ```bash
 # List recent jobs
 masonry job list
@@ -104,8 +101,7 @@ masonry history list
 masonry history pending --sync
 ```
 
-### Model Discovery
-
+### 模型探索
 ```bash
 # List all models
 masonry models list
@@ -117,9 +113,9 @@ masonry models list --type video
 masonry models params veo-3.1-fast-generate-preview
 ```
 
-## Response Format
+## 命令返回格式
 
-All commands return JSON:
+所有命令的返回结果均为 JSON 格式：
 
 ```json
 {
@@ -131,23 +127,19 @@ All commands return JSON:
 }
 ```
 
-## Authentication
+## 认证
 
-If commands fail with auth errors:
+如果命令执行过程中出现认证错误，请参考以下说明：
 
 ```bash
 masonry login
 ```
 
-## Enhanced Project Skills
+## 高级项目技能
 
-For project-specific skills with detailed workflows, run:
+对于具有详细工作流程的项目特定技能，可以运行以下命令来安装相应的工具：
+- `masonry-generate`：用于图像生成的详细工作流程
+- `masonry-models`：用于探索 AI 模型
+- `masonry-jobs`：用于管理生成作业
 
-```bash
-masonry skill install
-```
-
-This installs additional skills to `.claude/skills/`:
-- `masonry-generate` - Detailed generation workflow
-- `masonry-models` - Model exploration
-- `masonry-jobs` - Job management
+这些工具会安装到 `.claude/skills/` 目录中：

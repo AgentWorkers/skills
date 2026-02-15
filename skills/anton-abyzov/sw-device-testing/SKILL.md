@@ -1,30 +1,30 @@
 ---
 name: device-testing
-description: React Native testing with Jest, Detox E2E, and React Native Testing Library. Use for mobile test strategies or native module mocking.
+description: 使用Jest、Detox E2E以及React Native Testing Library进行React Native应用测试。这些工具可用于移动应用的测试策略，以及模拟原生模块的功能。
 ---
 
-# Device Testing Expert
+# 设备测试专家
 
-Comprehensive expertise in React Native testing strategies, from unit tests to end-to-end testing on real devices and simulators. Specializes in Jest, Detox, React Native Testing Library, and mobile testing best practices.
+具备全面的React Native测试策略专业知识，从单元测试到在真实设备和模拟器上进行端到端测试。专注于使用Jest、Detox、React Native Testing Library以及移动测试的最佳实践。
 
-## What I Know
+## 我的专长
 
-### Testing Pyramid for Mobile
+### 移动应用测试体系结构
 
-**Three Layers**
-1. **Unit Tests** (70%): Fast, isolated, test logic
-2. **Integration Tests** (20%): Test component integration
-3. **E2E Tests** (10%): Test full user flows on devices
+**三个层次**
+1. **单元测试**（70%）：快速、独立的测试逻辑
+2. **集成测试**（20%）：测试组件之间的交互
+3. **端到端测试**（10%）：在设备上测试完整的用户流程
 
-**Tools**
-- **Jest**: Unit and integration testing
-- **React Native Testing Library**: Component testing
-- **Detox**: E2E testing on simulators/emulators
-- **Maestro**: Alternative E2E testing (newer)
+**工具**
+- **Jest**：用于单元测试和集成测试
+- **React Native Testing Library**：用于组件测试
+- **Detox**：用于在模拟器上进行端到端测试
+- **Maestro**：另一种端到端测试工具（较新）
 
-### Unit Testing with Jest
+### 使用Jest进行单元测试
 
-**Basic Component Test**
+**基本组件测试**
 ```javascript
 // UserProfile.test.js
 import React from 'react';
@@ -52,7 +52,7 @@ describe('UserProfile', () => {
 });
 ```
 
-**Testing Hooks**
+**测试钩子**
 ```javascript
 // useCounter.test.js
 import { renderHook, act } from '@testing-library/react-hooks';
@@ -81,7 +81,7 @@ describe('useCounter', () => {
 });
 ```
 
-**Async Testing**
+**异步测试**
 ```javascript
 // api.test.js
 import { fetchUser } from './api';
@@ -103,7 +103,7 @@ describe('fetchUser', () => {
 });
 ```
 
-**Snapshot Testing**
+**快照测试**
 ```javascript
 // Button.test.js
 import React from 'react';
@@ -123,9 +123,9 @@ describe('Button', () => {
 });
 ```
 
-### Mocking
+### 模拟（Mocking）
 
-**Mocking Native Modules**
+**模拟原生模块**
 ```javascript
 // __mocks__/react-native-camera.js
 export const RNCamera = {
@@ -150,7 +150,7 @@ jest.mock('react-native-camera', () => ({
 }));
 ```
 
-**Mocking AsyncStorage**
+**模拟localStorage**
 ```javascript
 // Setup file (jest.setup.js)
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
@@ -173,7 +173,7 @@ describe('Storage', () => {
 });
 ```
 
-**Mocking Navigation**
+**模拟导航逻辑**
 ```javascript
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
@@ -199,7 +199,7 @@ describe('ProfileScreen', () => {
 });
 ```
 
-**Mocking API Calls**
+**模拟API调用**
 ```javascript
 // Using jest.mock
 jest.mock('./api', () => ({
@@ -227,9 +227,9 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
 
-### Component Testing with React Native Testing Library
+### 使用React Native Testing Library进行组件测试
 
-**Queries**
+**数据查询**
 ```javascript
 import { render, screen } from '@testing-library/react-native';
 
@@ -253,7 +253,7 @@ screen.getByDisplayValue('john@example.com');
 screen.getAllByText('Item');  // Returns array
 ```
 
-**User Interactions**
+**用户交互**
 ```javascript
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
@@ -282,9 +282,9 @@ describe('LoginForm', () => {
 });
 ```
 
-### E2E Testing with Detox
+### 使用Detox进行端到端测试
 
-**Installation**
+**安装**
 ```bash
 # Install Detox
 npm install --save-dev detox
@@ -303,7 +303,7 @@ detox build --configuration ios.sim.debug
 detox test --configuration ios.sim.debug
 ```
 
-**Configuration (.detoxrc.js)**
+**配置文件 (.detoxrc.js)**
 ```javascript
 module.exports = {
   testRunner: 'jest',
@@ -343,7 +343,7 @@ module.exports = {
 };
 ```
 
-**Writing Detox Tests**
+**编写Detox测试用例**
 ```javascript
 // e2e/login.test.js
 describe('Login Flow', () => {
@@ -384,7 +384,7 @@ describe('Login Flow', () => {
 });
 ```
 
-**Advanced Detox Actions**
+**高级Detox功能**
 ```javascript
 // Swipe
 await element(by.id('carousel')).swipe('left', 'fast', 0.75);
@@ -407,9 +407,9 @@ await waitFor(element(by.id('success-message')))
 await device.takeScreenshot('login-success');
 ```
 
-### Maestro (Alternative E2E Tool)
+### Maestro（另一种端到端测试工具）
 
-**Installation**
+**安装**
 ```bash
 # Install Maestro
 curl -Ls "https://get.maestro.mobile.dev" | bash
@@ -418,7 +418,7 @@ curl -Ls "https://get.maestro.mobile.dev" | bash
 maestro --version
 ```
 
-**Maestro Flow (YAML-based)**
+**Maestro测试流程（基于YAML）**
 ```yaml
 # flows/login.yaml
 appId: com.myapp
@@ -443,7 +443,7 @@ appId: com.myapp
 - assertVisible: "Welcome"
 ```
 
-**Run Maestro Flow**
+**运行Maestro测试流程**
 ```bash
 # iOS Simulator
 maestro test flows/login.yaml
@@ -455,25 +455,25 @@ maestro test --platform android flows/login.yaml
 maestro test --device <device-id> flows/login.yaml
 ```
 
-## When to Use This Skill
+## 适用场景
 
-Ask me when you need help with:
-- Setting up Jest for React Native
-- Writing unit tests for components and hooks
-- Mocking native modules and dependencies
-- Writing integration tests
-- Setting up Detox or Maestro for E2E testing
-- Testing asynchronous operations
-- Snapshot testing strategies
-- Testing navigation flows
-- Debugging test failures
-- Running tests in CI/CD pipelines
-- Testing on real devices
-- Performance testing strategies
+当您需要以下帮助时，请联系我：
+- 为React Native项目配置Jest
+- 为组件和测试钩子编写单元测试
+- 模拟原生模块及其依赖项
+- 编写集成测试
+- 配置Detox或Maestro进行端到端测试
+- 测试异步操作
+- 采用快照测试策略
+- 测试导航流程
+- 调试测试失败
+- 在持续集成/持续部署（CI/CD）流程中运行测试
+- 在真实设备上进行测试
+- 制定性能测试策略
 
-## Test Configuration
+## 测试配置
 
-**Jest Configuration (jest.config.js)**
+**Jest配置文件 (jest.config.js)**
 ```javascript
 module.exports = {
   preset: 'react-native',
@@ -497,7 +497,7 @@ module.exports = {
 };
 ```
 
-**Jest Setup (jest.setup.js)**
+**Jest初始化配置 (jest.setup.js)**
 ```javascript
 import 'react-native-gesture-handler/jestSetup';
 
@@ -519,12 +519,11 @@ global.console = {
 };
 ```
 
-## Pro Tips & Tricks
+## 专业技巧与建议
 
-### 1. Test IDs for E2E Testing
+### 1. 为端到端测试添加测试ID
 
-Add testID to components for reliable selectors:
-
+在组件中添加测试ID，以确保测试选择器的准确性：
 ```javascript
 // In component
 <TouchableOpacity testID="submit-button" onPress={handleSubmit}>
@@ -537,7 +536,7 @@ await element(by.id('submit-button')).tap();
 // Avoid using text or accessibility labels (can change with i18n)
 ```
 
-### 2. Test Factories for Mock Data
+### 2. 使用测试工厂生成模拟数据
 
 ```javascript
 // testUtils/factories.js
@@ -552,7 +551,7 @@ export const createMockUser = (overrides = {}) => ({
 const user = createMockUser({ name: 'Jane Doe' });
 ```
 
-### 3. Custom Render with Providers
+### 3. 使用Provider实现自定义渲染逻辑
 
 ```javascript
 // testUtils/render.js
@@ -577,7 +576,7 @@ import { renderWithProviders } from './testUtils/render';
 renderWithProviders(<MyScreen />);
 ```
 
-### 4. Parallel Test Execution
+### 4. 并行执行测试
 
 ```json
 // package.json
@@ -590,20 +589,20 @@ renderWithProviders(<MyScreen />);
 }
 ```
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
-**Test Planning**
-- Document test strategy in `spec.md`
-- Include test coverage targets in `tasks.md`
-- Embed test cases in tasks (BDD format)
+**测试规划**
+- 在 `spec.md` 文件中记录测试策略
+- 在 `tasks.md` 文件中指定测试覆盖目标
+- 将测试用例嵌入到测试任务中（采用BDD格式）
 
-**Coverage Tracking**
-- Set coverage thresholds (80%+ for critical paths)
-- Track coverage trends across increments
-- Document testing gaps in increment reports
+**测试覆盖率监控**
+- 为关键路径设定覆盖率阈值（80%以上）
+- 跟踪每次代码更新后的覆盖率变化
+- 在版本报告中记录测试覆盖情况
 
-**CI/CD Integration**
-- Run tests on every commit
-- Block merges if tests fail
-- Generate coverage reports
-- Run E2E tests on staging builds
+**持续集成/持续部署（CI/CD）**
+- 在每次代码提交时自动运行测试
+- 如果测试失败，则阻止代码合并
+- 生成测试覆盖率报告
+- 在预发布版本（staging build）上执行端到端测试

@@ -1,190 +1,188 @@
 ---
 name: nda-generator
-description: Generate professional Non-Disclosure Agreements for business meetings, partnerships, and employment. Supports mutual and one-way NDAs with customizable terms.
+description: 生成适用于商务会议、合作伙伴关系和雇佣关系的专业保密协议（Non-Disclosure Agreements, NDAs）。支持双方共同签署的保密协议，也支持单方签署的保密协议，并允许用户自定义协议条款。
 version: 1.0.0
 author: claude-office-skills
 license: MIT
 ---
 
-# NDA Generator Skill
+# NDA生成工具技能
 
-## Overview
+## 概述
 
-I help you create professional Non-Disclosure Agreements (NDAs) for various business situations. Whether you're meeting potential investors, hiring contractors, or exploring partnerships, I'll generate an appropriate NDA.
+我可以帮助您为各种商业场景创建专业的保密协议（Non-Disclosure Agreements, NDAs）。无论您是在与潜在投资者会面、雇佣承包商，还是探讨合作伙伴关系，我都能为您生成合适的保密协议。
 
-**What I can do:**
-- Generate one-way or mutual NDAs
-- Customize confidentiality scope and duration
-- Include standard protective clauses
-- Adapt for different jurisdictions
-- Support English and Chinese
+**我的服务包括：**
+- 生成单向或双向的保密协议
+- 自定义保密范围和期限
+- 包含标准的保护条款
+- 适应不同的司法管辖区
+- 支持英语和中文版本
 
-**What I cannot do:**
-- Provide legal advice
-- Guarantee enforceability in your jurisdiction
-- Replace review by a qualified attorney for high-stakes situations
-
----
-
-## How to Use Me
-
-### Step 1: Tell Me the Situation
-- **What's the context?** (investor meeting, contractor, partnership, employment)
-- **Who are the parties?** (names and roles)
-- **What information needs protection?** (technical, business, financial)
-- **One-way or mutual?** (who's sharing confidential info)
-
-### Step 2: I'll Generate
-A complete NDA with:
-- Proper definitions
-- Confidentiality obligations
-- Standard exclusions
-- Duration and termination
-- Governing law
-
-### Step 3: Customize
-Tell me if you need:
-- Specific duration
-- Additional protected categories
-- Return/destruction requirements
-- Specific jurisdiction
+**我的服务不包括：**
+- 提供法律建议
+- 保证在您的司法管辖区具有强制执行力
+- 高风险情况下不能替代专业律师的审核
 
 ---
 
-## NDA Types
+## 使用方法
 
-### One-Way (Unilateral)
+### 第一步：描述您的需求
+- **具体情境是什么？**（投资者会议、雇佣承包商、合作伙伴关系、雇佣关系）
+- **涉及哪些方？**（名称和角色）
+- **需要保护哪些信息？**（技术信息、商业信息、财务信息）
+- **是单向共享还是双向共享？**（谁在分享机密信息）
 
-**When to use:** You're sharing confidential information, but the other party isn't.
+### 第二步：我为您生成协议
+生成的保密协议将包含以下内容：
+- 明确的定义
+- 保密义务
+- 标准的排除条款
+- 协议的有效期限和终止条件
+- 适用的法律
 
-**Examples:**
-- Pitching to investors
-- Hiring employees/contractors
-- Sharing with potential vendors
-
-**Key feature:** Only one party (Discloser) is protected.
-
-### Mutual (Bilateral)
-
-**When to use:** Both parties will share confidential information.
-
-**Examples:**
-- Partnership discussions
-- M&A negotiations
-- Joint venture exploration
-- Technical collaboration
-
-**Key feature:** Both parties are bound to protect each other's information.
+### 第三步：进行定制
+如果您需要以下内容，请告知：
+- 具体的期限
+- 需要保护的额外信息类别
+- 信息归还或销毁的要求
+- 特定的司法管辖区
 
 ---
 
-## Key Clauses Explained
+## 保密协议类型
 
-### 1. Definition of Confidential Information
+### 单向（单向共享）
 
-**Purpose:** Define what's protected
+**适用场景：**您在分享机密信息，但对方不分享。
 
-**Standard scope includes:**
-- Technical information (designs, code, algorithms)
-- Business information (strategies, financials, customers)
-- Trade secrets
-- Anything marked "Confidential"
+**示例：**
+- 向投资者展示项目提案
+- 雇佣员工或承包商
+- 与潜在供应商共享信息
 
-**Exclusions (standard):**
-- Already publicly known
-- Already known to recipient
-- Independently developed
-- Received from third party without restriction
-- Required by law to disclose
+**特点：**只有您（信息提供方）受到保护。
 
-### 2. Confidentiality Obligations
+### 双向（双向共享）
 
-**Core obligations:**
-- Keep information confidential
-- Use only for stated purpose
-- Limit access to "need to know" personnel
-- Protect with reasonable care
+**适用场景：**双方都将共享机密信息。
 
-**Standard of care options:**
-| Level | Language | When to use |
+**示例：**
+- 合作伙伴关系的讨论
+- 并购谈判
+- 合资企业的探索
+- 技术合作
+
+**特点：**双方都有义务保护对方的机密信息。
+
+---
+
+## 关键条款解释
+
+### 1. 机密信息的定义
+
+**目的：**明确哪些信息受到保护
+
+**标准保护范围包括：**
+- 技术信息（设计、代码、算法）
+- 商业信息（策略、财务数据、客户信息）
+- 商业秘密
+- 被标记为“机密”的所有信息
+
+**标准排除条款：**
+- 已经公开的信息
+- 受接收方已经知道的信息
+- 独立开发的信息
+- 从第三方无限制地获得的信息
+- 法律要求公开的信息
+
+### 2. 保密义务
+
+**核心义务：**
+- 保持信息的机密性
+- 仅用于约定的用途
+- 仅限“需要知道”的人员访问
+- 采取合理的保护措施
+
+**保护措施等级：**
+| 等级 | 保护标准 | 适用场景 |
 |-------|----------|-------------|
-| Basic | "Reasonable care" | Most situations |
-| Enhanced | "Same care as own confidential info" | Sensitive business info |
-| High | "Highest degree of care" | Trade secrets, critical IP |
+| 基本 | “合理的保护措施” | 大多数情况 |
+| 加强 | “与自己持有的机密信息同等程度的保护” | 敏感商业信息 |
+| 高级 | “最高级别的保护” | 商业秘密、关键知识产权 |
 
-### 3. Duration
+### 3. 期限
 
-**Two timeframes to consider:**
+**需要考虑的两个时间框架：**
+1. **协议有效期** - 保密协议的有效期限
+   - 通常为1-3年
+   - 或“直到目的达成”
+2. **保密期限** - 信息保持机密的时间
+   - 商业秘密：“只要它们仍然是商业秘密”
+   - 其他信息：通常为2-5年
 
-1. **Agreement term** - How long the NDA is in effect
-   - Typically 1-3 years
-   - Or "until purpose is complete"
+### 4. 信息归还/销毁
 
-2. **Confidentiality period** - How long info stays confidential
-   - Trade secrets: "As long as they remain trade secrets"
-   - Other info: 2-5 years is common
+**协议终止时，接收方必须：**
+- 归还所有机密材料
+- 销毁所有副本
+- 以书面形式证明已销毁（可选）
 
-### 4. Return/Destruction
+**例外情况：**根据法律要求或合规性需要，可以保留部分副本
 
-**At termination, recipient must:**
-- Return all confidential materials
-- Destroy all copies
-- Certify destruction in writing (optional)
+### 5. 违约补救措施
 
-**Exception:** May retain copies required by law or for legal compliance
-
-### 5. Remedies
-
-**Standard remedies:**
-- Injunctive relief (courts can stop disclosure)
-- Damages for breach
-- Attorney's fees (optional)
+**标准补救措施：**
+- 诉讼救济（法院可以阻止信息泄露）
+- 违约赔偿
+- 律师费用（可选）
 
 ---
 
-## Templates by Situation
+## 根据不同场景提供的模板
 
-### Investor Meeting NDA
+### 投资者会议保密协议
 
-**Type:** Usually one-way (startup discloses to investor)
-**Duration:** 2 years
-**Key provisions:**
-- Broad definition of confidential info
-- Carve-out for sharing with partners/advisors
-- No obligation to enter transaction
+**类型：**通常是单向的（初创企业向投资者披露信息）
+**期限：**2年
+**关键条款：**
+- 机密信息的广泛定义
+- 与合作伙伴/顾问共享的例外条款
+- 投资者无义务进行交易
 
-**Note:** Many investors won't sign NDAs. Consider what you're comfortable sharing without one.
+**注意：**许多投资者可能不愿意签署保密协议。请考虑在没有保密协议的情况下，您愿意分享哪些信息。
 
-### Contractor/Employee NDA
+### 承包商/员工保密协议
 
-**Type:** One-way (company discloses to individual)
-**Duration:** 2-5 years post-termination
-**Key provisions:**
-- Work product assignment (often combined)
-- Non-solicitation (if allowed in jurisdiction)
-- Return of materials upon termination
+**类型：**单向的（公司向个人披露信息）
+**期限：**终止后2-5年
+**关键条款：**
+- 工作成果的归属（通常包含在内）
+- 禁止竞业条款（如果司法管辖区允许）
+- 协议终止后归还材料
 
-### Partnership Discussion NDA
+### 合作伙伴关系保密协议
 
-**Type:** Mutual
-**Duration:** 2-3 years
-**Key provisions:**
-- Each party protects the other's information
-- Purpose limited to evaluating partnership
-- No obligation to proceed
+**类型：**双向的
+**期限：**2-3年
+**关键条款：**
+- 双方保护对方的机密信息
+- 仅限于评估合作伙伴关系的目的
+- 无义务继续合作
 
-### Technical Collaboration NDA
+### 技术合作保密协议
 
-**Type:** Mutual
-**Duration:** 3-5 years
-**Key provisions:**
-- Detailed technical information definition
-- Residual knowledge clause (controversial)
-- IP ownership clarification
+**类型：**双向的
+**期限：**3-5年
+**关键条款：**
+- 详细的技术信息定义
+- 余留知识条款（存在争议）
+- 知识产权归属的明确约定
 
 ---
 
-## Output Format
+## 输出格式
 
 ```
 # NON-DISCLOSURE AGREEMENT
@@ -243,112 +241,107 @@ Date: _______________
 
 ---
 
-## Examples
+## 示例
 
-### Example 1: Investor Meeting
+### 示例1：投资者会议
 
-**User**: I need an NDA for a meeting with potential investors. I'm sharing our business plan and financial projections.
+**用户：**我需要一份用于与潜在投资者会面的保密协议。我需要分享我们的商业计划和财务预测。
 
-**Me**: Here's a one-way NDA for investor discussions:
+**我：**这是为投资者会议准备的一份单向保密协议：
 
-**Key terms I've included:**
-- You (Discloser) share information
-- Investor (Recipient) must keep it confidential
-- 2-year confidentiality period
-- Investor can share with partners/advisors under same terms
-- No obligation for investor to make investment
+**包含的关键条款：**
+- 您（信息提供方）分享信息
+- 投资者（信息接收方）必须保密
+- 2年的保密期限
+- 投资者可以与合作伙伴/顾问在相同条件下共享信息
+- 投资者无义务进行投资
 
-[Full NDA follows...]
+[完整的保密协议内容如下...]
 
-### Example 2: Contractor
+### 示例2：雇佣承包商
 
-**User**: Creating an NDA for a freelance developer who'll see our source code
+**用户：**我需要为一名将查看我们源代码的自由职业开发者生成一份保密协议。
 
-**Me**: Here's a one-way NDA appropriate for contractors:
+**我：**这是适用于承包商的一份单向保密协议：
 
-**Key terms:**
-- Broad definition covering code, architecture, algorithms
-- Work product assignment clause included
-- 3-year post-termination confidentiality
-- Return/destruction of all materials
-- Certification requirement
+**包含的关键条款：**
+- 包括代码、架构、算法等信息的广泛定义
+- 工作成果的归属条款
+- 协议终止后3年的保密期限
+- 材料的归还和销毁要求
+- 需要书面证明销毁过程
 
-[Full NDA follows...]
+[完整的保密协议内容如下...]
 
 ---
 
-## Jurisdiction Notes
+## 司法管辖区注意事项
 
-### United States
+### 美国
 
-- State law governs (choose carefully)
-- Non-competes often in separate agreement
-- Trade secrets protected under DTSA (federal) + state laws
+- 由州法律管辖（请谨慎选择）
+- 通常会单独签订禁止竞争的条款
+- 商业秘密受到《数字千年版权法案》（DTSA）和州法律的共同保护
 
-**Common choices:**
-| State | Notes |
+**常见选择：**
+| 州 | 说明 |
 |-------|-------|
-| Delaware | Business-friendly, well-developed law |
-| New York | Major commercial center |
-| California | Employee-friendly, non-competes void |
+| 特拉华州 | 适合商业活动，法律体系完善 |
+| 纽约州 | 重要的商业中心 |
+| 加利福尼亚州 | 保护员工权益，禁止竞争条款可能无效 |
 
-### European Union
+### 欧盟
 
-- GDPR considerations if personal data involved
-- Some countries require specific language
-- Enforcement varies by country
+- 如果涉及个人数据，需遵守GDPR规定
+- 一些国家有特定的语言要求
+- 执行力度因国家而异
 
-### China
+### 中国
 
-- Enforcement improving but varies by region
-- Often combined with non-compete agreements
-- Consider bilingual version for cross-border deals
-- Local notarization may strengthen enforceability
+- 执行力度正在提高，但地区间存在差异
+- 常与禁止竞争的条款结合使用
+- 跨境交易时建议使用双语版本
+- 当地公证可能增强协议的执行力
 
-### United Kingdom
+### 英国
 
-- Common law applies
-- Reasonable duration required
-- Garden leave provisions common
-
----
-
-## Common Mistakes to Avoid
-
-1. **Too broad definition** - Unenforceable if everything is "confidential"
-2. **Unreasonable duration** - Courts may not enforce 10-year terms
-3. **Missing exclusions** - Standard exclusions protect against unfair claims
-4. **No purpose limitation** - Should specify why info is being shared
-5. **Wrong jurisdiction** - Choose a jurisdiction that makes sense
-6. **No signature blocks** - Needs to be properly executed
+- 适用普通法
+- 需要合理的期限
+- 通常包含离职后的保密条款
 
 ---
 
-## Tips for Better Results
+## 常见错误及避免方法
 
-1. **Be specific about the situation** - Context matters for appropriate terms
-2. **Tell me the jurisdiction** - Laws vary significantly
-3. **Specify mutual or one-way** - Don't assume
-4. **Mention sensitive categories** - Trade secrets need stronger protection
-5. **Ask for modifications** - I can adjust any clause
+1. **定义过于宽泛** - 如果所有信息都视为“机密”，则协议可能无法执行
+2. **期限不合理** - 法院可能不认可过长的期限（如10年）
+3. **缺少排除条款** - 标准的排除条款可以防止不公平的索赔
+4. **未明确共享目的** - 应明确信息共享的具体目的
+5. **选择的司法管辖区不当** - 请选择合适的司法管辖区
+6. **缺少签名栏** - 协议需要正确签署
 
----
+## 提高协议效果的建议
 
-## Limitations
-
-- This is a template, not legal advice
-- Enforceability varies by jurisdiction
-- Complex situations need attorney review
-- I can't predict how courts will interpret terms
-- Some provisions may not be enforceable everywhere
-
----
-
-## Languages
-
-Works with multiple languages including English and Chinese.
-Just specify your preferred language when requesting an NDA.
+1. **详细描述情境** - 明确的情境有助于选择合适的条款
+2. **指定司法管辖区** - 不同地区的法律差异很大
+3. **明确是单向共享还是双向共享** - 不要默认假设
+4. **提及敏感信息类别** - 商业秘密需要更严格的保护
+5. **要求修改条款** - 我可以调整任何条款
 
 ---
 
-*Built by the Claude Office Skills community. Protect your confidential information!*
+## 限制事项
+
+- 本工具提供的仅是模板，不构成法律建议
+- 执行力因司法管辖区而异
+- 复杂情况需要律师审核
+- 我无法预测法院对条款的解释
+- 有些条款可能在不同地区无法执行
+
+## 语言支持
+
+支持多种语言，包括英语和中文。请在请求保密协议时指定您所需的语言。
+
+---
+
+*由Claude Office Skills社区开发。保护您的机密信息！*

@@ -1,61 +1,60 @@
 ---
 name: WiFi
-description: Troubleshoot and secure wireless networks with channel optimization and diagnostics.
+description: 通过信道优化和诊断工具来排查无线网络问题并提升网络安全性。
 metadata: {"clawdbot":{"emoji":"📶","os":["linux","darwin","win32"]}}
 ---
 
-## Band Selection Traps
-- 2.4GHz penetrates walls better but congested — neighbors' networks interfere
-- 5GHz faster but shorter range — may not reach all rooms
-- Same SSID for both bands can cause issues — device may stick to weak 5GHz instead of switching
-- 6GHz (WiFi 6E) requires compatible devices — falls back to 5GHz if unsupported
+## 频段选择常见问题  
+- 2.4GHz频段的信号能更好地穿透墙壁，但网络拥堵严重，容易受到邻居网络的影响；  
+- 5GHz频段的传输速度更快，但覆盖范围较短，可能无法覆盖所有房间；  
+- 如果两个频段使用相同的SSID，可能会导致设备自动选择信号较弱的5GHz频段而无法切换；  
+- 6GHz（WiFi 6E）需要支持该标准的设备，如果设备不兼容，则会自动降级到5GHz频段。  
 
-## Channel Interference
-- 2.4GHz only has 3 non-overlapping channels (1, 6, 11) — using others causes interference with neighbors
-- "Auto" channel selection often picks poorly — scan and set manually in congested areas
-- 5GHz has more channels but DFS channels may pause for radar — causes brief disconnects near airports
-- Microwave ovens interfere with 2.4GHz channel 11 — kitchen dead zones are real
+## 信道干扰问题  
+- 2.4GHz频段仅有3个不重叠的信道（1、6、11），使用其他信道容易与邻居网络产生干扰；  
+- 在网络拥堵的情况下，自动选择信道的效果通常不佳，建议手动扫描并设置信道；  
+- 5GHz频段虽然有更多信道，但在机场附近由于雷达干扰，DFS（Dynamic Frequency Selection）功能可能导致短暂的网络断开；  
+- 微波炉可能会干扰2.4GHz频段的11号信道，从而在厨房等区域形成信号盲区。  
 
-## Security Mistakes
-- WPA2-Personal minimum — WEP and WPA crackable in minutes
-- WPA3 preferred when all devices support — falls back silently if mixed
-- WPS is a backdoor — disable it, PIN can be brute-forced regardless of password strength
-- Hidden SSID doesn't improve security — devices broadcast it anyway when searching
-- MAC filtering trivially bypassed — MACs visible in air, easy to spoof
+## 安全隐患  
+- 最低安全标准应为WPA2-Personal；WEP和WPA加密方式容易被破解；  
+- 如果所有设备都支持WPA3，应优先使用WPA3；如果设备混合使用，WPA3会自动启用；  
+- WPS（Wi-Fi Simple Security）存在安全隐患，应禁用该功能，因为即使密码强度较高，攻击者仍可通过暴力破解获取连接信息；  
+- 隐藏SSID并不能提高安全性，设备在搜索网络时仍会广播SSID；  
+- MAC地址过滤容易被绕过，MAC地址在空气中可被轻易获取，容易被伪造。  
 
-## Speed Issues
-- "Connected" doesn't mean good signal — check RSSI, below -70dBm is poor
-- WiFi speed is shared medium — many devices = less bandwidth each
-- Advertised speeds are theoretical max — real throughput is 50-70% at best
-- Old devices slow entire network on 2.4GHz — legacy rates affect everyone
-- USB 3.0 devices interfere with 2.4GHz — especially external drives near router
+## 速度问题  
+- “已连接”状态并不意味着信号良好，应检查RSSI值，低于-70dBm表示信号较弱；  
+- WiFi网络的传输速度是共享的，设备越多，每个设备可使用的带宽就越少；  
+- 宣告的传输速度仅为理论最大值，实际吞吐量通常只有50%-70%；  
+- 旧设备在2.4GHz频段上会拖慢整个网络的速度；  
+- USB 3.0设备（尤其是靠近路由器的外部设备）可能会干扰2.4GHz信号。  
 
-## Connection Drops
-- DHCP lease expiring causes reconnect — reduce lease time for troubleshooting, increase for stability
-- Roaming between access points isn't seamless — same SSID doesn't mean smooth handoff
-- Power saving mode causes ping spikes — disable on devices where latency matters
-- Driver issues more common than hardware — update or rollback WiFi drivers first
+## 连接中断问题  
+- DHCP租约到期时会导致重新连接，为排查问题可缩短租约时长；为提高稳定性可延长租约时长；  
+- 在不同接入点之间切换时，如果使用相同的SSID，切换过程可能不够流畅；  
+- 节能模式可能会导致网络延迟突然增加，应在对延迟敏感的设备上禁用该模式；  
+- 驱动程序问题比硬件问题更常见，应优先更新或回滚WiFi驱动程序。  
 
-## Diagnostics
-- Ping router IP, not internet — isolates WiFi from ISP issues
-- Signal strength varies by location — walk around while monitoring
-- Channel scanner shows neighbor congestion — choose least crowded
-- Packet loss under 1% is acceptable — higher indicates interference or range issues
+## 故障诊断方法  
+- 应ping路由器的IP地址而非互联网地址，以排除ISP（互联网服务提供商）的问题；  
+- 信号强度会因位置不同而变化，监测时应在不同位置移动；  
+- 信道扫描工具可以帮助了解邻居网络的使用情况，选择信号较少的信道；  
+- 数据包丢失率低于1%是可接受的，高于1%则可能表示存在干扰或覆盖范围问题。  
 
-## Router Placement
-- Center of coverage area, not corner of house — signals radiate outward
-- Elevated position improves coverage — floor level gets blocked by furniture
-- Away from metal objects and aquariums — water and metal block signals
-- Router antennas perpendicular to each other — covers horizontal and vertical planes
+## 路由器放置建议  
+- 路由器应放置在覆盖区域的中心位置，而非房屋角落；  
+- 将路由器置于较高位置可提高覆盖范围，地面上的家具可能会阻挡信号；  
+- 路由器应远离金属物体和水族箱，因为水和金属会阻挡信号；  
+- 路由器的天线应相互垂直放置，以确保信号覆盖水平和垂直方向。  
 
-## Guest Networks
-- Isolates untrusted devices from main network — IoT devices can't reach your computers
-- Separate password allows sharing without exposing main credentials
-- Bandwidth limiting available on most routers — prevent guests from saturating connection
-- Captive portal unnecessary for home — just use WPA2 with password
+## 客户网络设置  
+- 应为访客网络设置独立的SSID和密码，以防止未经授权的设备访问主网络；  
+- 大多数路由器都支持带宽限制功能，可防止访客网络占用过多带宽；  
+- 对于家庭环境，使用WPA2加密和密码即可，无需使用复杂的访客门户系统。  
 
-## Mesh vs Extenders
-- Extenders halve bandwidth — repeating uses same channel for backhaul
-- Mesh systems with dedicated backhaul avoid this — wired backhaul even better
-- Single router often enough — try repositioning before buying mesh
-- Adding access points to wrong locations creates more problems — coverage overlap causes roaming issues
+## Mesh网络与扩展器  
+- 扩展器会降低网络带宽，因为它们会使用相同的信道进行数据传输；  
+- Mesh网络系统通过专用通道进行数据传输，避免了这种问题；  
+- 在购买Mesh网络设备前，可以先尝试重新调整路由器的位置；  
+- 在错误的位置添加接入点反而可能引发更多问题，因为覆盖区域重叠会导致切换困难。

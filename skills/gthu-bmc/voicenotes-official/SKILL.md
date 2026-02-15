@@ -1,6 +1,6 @@
 ---
 name: voicenotes
-description: This official skill from the Voicenotes team gives OpenClaw access to new APIs and the ability to search semantically, retrieve full transcripts, filter by tags or date range and create text notes — all through natural conversation.
+description: 这项由 Voicenotes 团队提供的官方技能使 OpenClaw 能够访问新的 API，实现语义搜索、检索完整的语音记录、按标签或时间范围进行过滤，以及创建文本笔记——所有这些功能都通过自然语言对话来完成。
 
 homepage: https://voicenotes.com
 metadata:
@@ -12,19 +12,18 @@ metadata:
     primaryEnv: VOICENOTES_API_KEY
 ---
 
-# voicenotes
+# Voicenotes
 
-Use the Voicenotes skill to create, search and retrieve user’s notes.
+使用 Voicenotes 技能可以创建、搜索和检索用户的笔记。
 
-## Setup
+## 设置
 
-1. Create an integration at https://voicenotes.com/app?open-claw=true#settings
-2. Copy the API key
-3. Configure it:
+1. 在 https://voicenotes.com/app?open-claw=true#settings 创建一个集成。
+2. 复制 API 密钥。
+3. 进行配置：
 
-**Webchat:** Skills → Voicenotes → API Key in the sidebar
-
-**Terminal:** Add to your OpenClaw config (`~/.openclaw/config.yaml`):
+**Webchat：** 在侧边栏中选择 “Skills” → “Voicenotes” → “API Key”。
+**终端：** 将配置添加到您的 OpenClaw 配置文件（`~/.openclaw/config.yaml`）中：
 ```yaml
 skills:
   voicenotes:
@@ -32,39 +31,38 @@ skills:
       VOICENOTES_API_KEY: "your_key_here"
 ```
 
-Or export it directly:
+或者直接导出配置文件：
 ```bash
 export VOICENOTES_API_KEY="your_key_here"
 ```
 
-The key is then available as `$VOICENOTES_API_KEY` environment variable.
+配置完成后，API 密钥将作为 `$VOICENOTES_API_KEY` 环境变量可用。
 
-## API Basics
+## API 基础知识
 
-All requests need the Authorization header:
-
+所有请求都需要包含 `Authorization` 头部信息：
 ```bash
 curl -X GET "https://api.voicenotes.com/api/integrations/open-claw/..." \
   -H "Authorization: $VOICENOTES_API_KEY"
 ```
 
-## Common Operations
+## 常用操作
 
-**Search query in users notes:**
+**在用户笔记中搜索：**
 
-Query parameters:
-- `query` (required): The search query string
+查询参数：
+- `query`（必填）：搜索查询字符串
 
 ```bash
 curl -X GET "https://api.voicenotes.com/api/integrations/open-claw/search/semantic?query={search_query}" \
   -H "Authorization: $VOICENOTES_API_KEY"
 ```
 
-**Get multiple Voicenotes with filters (tags and date range):**
+**根据标签和日期范围获取多个 Voicenotes：**
 
-Query parameters:
-- `tags` (optional): array of valid tags
-- `date_range` (optional): array with start and end date as UTC timestamps
+查询参数：
+- `tags`（可选）：有效的标签数组
+- `date_range`（可选）：包含开始和结束时间的 UTC 时间戳数组
 
 ```bash
 curl -X POST "https://api.voicenotes.com/api/integrations/open-claw/recordings" \
@@ -76,14 +74,14 @@ curl -X POST "https://api.voicenotes.com/api/integrations/open-claw/recordings" 
   }'
 ```
 
-**If you want more context get the whole transcript:**
+**如需更多上下文信息，可以获取完整的转录内容：**
 
 ```bash
 curl "https://api.voicenotes.com/api/integrations/open-claw/recordings/{recording_uuid}" \
   -H "Authorization: $VOICENOTES_API_KEY" \
 ```
 
-**Create a text note in Voicenotes:**
+**在 Voicenotes 中创建文本笔记：**
 
 ```bash
 curl -X POST "https://api.voicenotes.com/api/integrations/open-claw/recordings/new" \
@@ -96,11 +94,11 @@ curl -X POST "https://api.voicenotes.com/api/integrations/open-claw/recordings/n
   }'
 ```
 
-## Response Structure
+## 响应结构
 
-**Semantic Search Response:**
+**语义搜索响应：**
 
-Returns an array of notes and note splits ordered by relevance:
+返回按相关性排序的笔记及其片段数组：
 
 ```json
 [
@@ -131,14 +129,14 @@ Returns an array of notes and note splits ordered by relevance:
 ]
 ```
 
-- `type: "note"` - Complete note matching the search
-- `type: "note_split"` - Chunk from a larger note; use the `uuid` to fetch full transcript if needed
-- `type: "import_split"` - Chunk from an imported note; title is the filename; **cannot** be fetched via `/recordings/{uuid}`
-- `transcript` may contain HTML (`<br>`, `<b>`) for formatting
+- `type: "note"`：与搜索内容完全匹配的笔记。
+- `type: "note_split"`：来自较长笔记的片段；如需获取完整转录内容，请使用 `uuid`。
+- `type: "import_split"`：来自导入笔记的片段；标题即为文件名；**无法** 通过 `/recordings/{uuid}` 获取该片段。
+- `transcript` 可能包含 HTML 格式的内容（如 `<br>`、`<b>`）。
 
-**Get Recordings Response (with filters):**
+**获取录音响应（支持过滤）：**
 
-Returns paginated notes matching the filters:
+返回符合过滤条件的笔记（分页显示）：
 
 ```json
 {
@@ -170,14 +168,14 @@ Returns paginated notes matching the filters:
 }
 ```
 
-Key fields:
-- `data` - Array of recording objects
-- `links.next` - URL for next page (null if no more pages)
-- `meta.per_page` - Results per page (default 10)
+关键字段：
+- `data`：录音对象数组。
+- `links.next`：下一页的 URL（如果没有更多页面，则为 `null`）。
+- `meta.per_page`：每页显示的结果数量（默认为 10）。
 
-**Get Recording Response:**
+**获取录音详情响应：**
 
-Returns full note details:
+返回完整的笔记信息：
 
 ```json
 {
@@ -196,14 +194,14 @@ Returns full note details:
 }
 ```
 
-Key fields:
-- `id` - Note UUID
-- `transcript` - Full text (meetings include `[HH:MM:SS] Speaker N:` timestamps)
-- `duration` - Length in milliseconds
-- `recording_type` - 1=voice note, 2=voice meeting, 3=text note
-- `tags` - Array of tag objects with `name` field
+关键字段：
+- `id`：笔记的 UUID。
+- `transcript`：完整文本（会议记录中包含 `[HH:MM:SS] Speaker N:` 的时间戳）。
+- `duration`：录音时长（以毫秒为单位）。
+- `recording_type`：1=语音笔记，2=语音会议，3=文本笔记。
+- `tags`：包含 `name` 字段的标签对象数组。
 
-**Create Note Response:**
+**创建笔记响应：**
 
 ```json
 {
@@ -220,12 +218,12 @@ Key fields:
 }
 ```
 
-Key fields:
-- `message` - Success confirmation
-- `recording.id` - New note UUID
-- `recording.transcript` - The note content
+关键字段：
+- `message`：操作成功确认信息。
+- `recording.id`：新创建笔记的 UUID。
+- `recording.transcript`：笔记内容。
 
-## Notes
+## 注意事项
 
-- Note IDs are UUIDs
-- Rate limit: ~3 requests/second average
+- 笔记的 ID 为 UUID。
+- 平均每秒请求次数限制约为 3 次。

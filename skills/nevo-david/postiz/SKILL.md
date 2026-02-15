@@ -1,41 +1,41 @@
 ---
 name: postiz
-description: Postiz is a tool to schedule social media and chat posts to 28+ channels X, LinkedIn, LinkedIn Page, Reddit, Instagram, Facebook Page, Threads, YouTube, Google My Business, TikTok, Pinterest, Dribbble, Discord, Slack, Kick, Twitch, Mastodon, Bluesky, Lemmy, Farcaster, Telegram, Nostr, VK, Medium, Dev.to, Hashnode, WordPress, ListMonk
+description: Postiz 是一款用于安排社交媒体和聊天平台发布内容的工具，支持发布到 28 个以上的平台，包括：X（原 Twitter）、LinkedIn、LinkedIn Page、Reddit、Instagram、Facebook Page、Threads、YouTube、Google My Business、TikTok、Pinterest、Dribbble、Discord、Slack、Kick、Twitch、Mastodon、Bluesky、Lemmy、Farcaster、Telegram、Nostr、VK、Medium、Dev.to、Hashnode 和 WordPress。
 homepage: https://docs.postiz.com/public-api/introduction
 metadata: {"clawdbot":{"emoji":"🌎","requires":{"bins":[],"env":["POSTIZ_API_KEY"]}}}
 ---
 
-# Postiz Skill
+# Postiz 技能
 
-Postiz is a tool to schedule social media and chat posts to 28+ channels:
+Postiz 是一个用于将社交媒体和聊天帖子安排发布到 28 个以上渠道的工具：
 
-X, LinkedIn, LinkedIn Page, Reddit, Instagram, Facebook Page, Threads, YouTube, Google My Business, TikTok, Pinterest, Dribbble, Discord, Slack, Kick, Twitch, Mastodon, Bluesky, Lemmy, Farcaster, Telegram, Nostr, VK, Medium, Dev.to, Hashnode, WordPress, ListMonk
+X、LinkedIn、LinkedIn 页面、Reddit、Instagram、Facebook 页面、Threads、YouTube、Google My Business、TikTok、Pinterest、Dribbble、Discord、Slack、Kick、Twitch、Mastodon、Bluesky、Lemmy、Farcaster、Telegram、Nostr、VK、Medium、Dev.to、Hashnode、WordPress、ListMonk
 
-## Setup
+## 设置
 
-1. Get your API key: https://platform.postiz.com/settings
-2. Click on "Settings"
-3. Click "Reveal"
-4. Set environment variables:
+1. 获取您的 API 密钥：https://platform.postiz.com/settings
+2. 点击“设置”（Settings）
+3. 点击“显示”（Reveal）
+4. 设置环境变量：
    ```bash
    export POSTIZ_API_KEY="your-api-key"
    ```
 
-## Get all added channels
+## 获取所有已添加的渠道
 
 ```bash
 curl -X GET "https://api.postiz.com/public/v1/integrations" \
   -H "Authorization: $POSTIZ_API_KEY"
 ```
 
-## Get the next available slot for a channel
+## 获取某个渠道的下一个可用发布时间
 
 ```bash
 curl -X GET "https://api.postiz.com/public/v1/find-slot/:id" \
   -H "Authorization: $POSTIZ_API_KEY"
 ```
 
-## Upload a new file (form-data)
+## 上传新文件（表单数据）
 
 ```bash
 curl -X POST "https://api.postiz.com/public/v1/upload" \
@@ -43,7 +43,7 @@ curl -X POST "https://api.postiz.com/public/v1/upload" \
   -F "file=@/path/to/your/file.png"
 ```
 
-## Upload a new file from an existing URL
+## 从现有 URL 上传新文件
 
 ```bash
 curl -X POST "https://api.postiz.com/public/v1/upload-from-url" \
@@ -54,18 +54,18 @@ curl -X POST "https://api.postiz.com/public/v1/upload-from-url" \
   }'
 ```
 
-## Post list
+## 发布帖子列表
 
 ```bash
 curl -X GET "https://api.postiz.com/public/v1/posts?startDate=2024-12-14T08:18:54.274Z&endDate=2024-12-14T08:18:54.274Z&customer=optionalCustomerId" \
   -H "Authorization: $POSTIZ_API_KEY"
 ```
 
-## Schedule a new post
+## 安排新帖子的发布
 
-Settings for different channels can be found in:
+不同渠道的设置信息请参阅：
 https://docs.postiz.com/public-api/introduction
-On the bottom left menu
+（位于左下角的菜单中）
 
 ```bash
 curl -X POST "https://api.postiz.com/public/v1/posts" \
@@ -96,7 +96,7 @@ curl -X POST "https://api.postiz.com/public/v1/posts" \
 }'
 ```
 
-## Delete a post
+## 删除帖子
 
 ```bash
 curl -X DELETE "https://api.postiz.com/public/v1/posts/:id" \

@@ -1,16 +1,16 @@
 ---
 name: Gifts
-description: Build a personal gift system for tracking ideas, occasions, and gift-giving history.
+description: 构建一个个人礼物系统，用于记录各种想法、送礼场合以及送礼的历史记录。
 metadata: {"clawdbot":{"emoji":"🎁","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions gift idea → save to person's file
-- User asks what to gift → check saved ideas first
-- User gives/receives gift → log for future reference
-- Create `~/gifts/` as workspace
+## 核心功能
+- 当用户提到礼物建议时，将其保存到该用户的文件中。
+- 当用户询问应该送什么礼物时，首先查看已保存的建议。
+- 当用户赠送或收到礼物时，记录下来以供将来参考。
+- 创建一个名为 `~/gifts/` 的文件夹作为礼物存储空间。
 
-## File Structure
+## 文件结构
 ```
 ~/gifts/
 ├── people/
@@ -25,7 +25,7 @@ metadata: {"clawdbot":{"emoji":"🎁","os":["linux","darwin","win32"]}}
 └── my-wishlist.md
 ```
 
-## Person File
+## 用户文件
 ```markdown
 # sarah.md
 ## Basics
@@ -49,13 +49,12 @@ Clothing: M, Shoes: 38 EU
 Candles (has too many)
 ```
 
-## Capturing Ideas
-When user mentions someone wants something:
-- Save immediately with context
-- Note source: "mentioned while cooking" or "saw her eyeing it"
-- Casual mentions = best gifts later
+## 捕获礼物建议
+当用户提到某人想要某样东西时：
+- 立即保存相关信息，并注明上下文（例如：“在做饭时提到的”或“看到她在看那个东西”）。
+- 非正式的提及可以作为后续选择礼物的参考。
 
-## Occasions Calendar
+## 派对/活动日历
 ```markdown
 # birthdays.md
 ## March
@@ -63,7 +62,7 @@ When user mentions someone wants something:
 - Mom: 22nd
 ```
 
-## Gift History
+## 礼物赠送记录
 ```markdown
 # given/2024.md
 ## Sarah — Birthday
@@ -73,7 +72,7 @@ Knife set, $120 — loved it, uses daily
 Spa day — went together
 ```
 
-## Generic Ideas Bank
+## 通用礼物建议库
 ```markdown
 # generic.md
 ## Safe Options
@@ -83,7 +82,7 @@ Nice candle, quality chocolates, gift card
 Concert tickets, cooking class, spa day
 ```
 
-## My Wishlist
+## 我的愿望清单
 ```markdown
 # my-wishlist.md
 ## Want
@@ -95,17 +94,17 @@ L shirts, 10 US shoes
 Avoid: cologne, novelty items
 ```
 
-## What To Surface
-- "Sarah's birthday is in 2 weeks"
-- "You saved an idea for her last month"
-- "Last year you gave her X, went well"
+## 需要展示的信息
+- “Sarah 的生日还有两周。”
+- “你上个月为她保存了一个礼物建议。”
+- “去年你送了她 X，效果很好。”
 
-## Progressive Enhancement
-- Start: add closest people with birthdays
-- Ongoing: capture ideas when mentioned
-- After giving: log reaction
+## 持续改进计划
+- 初始阶段：优先记录生日临近的亲朋好友的礼物建议。
+- 进行中：每当有人提到礼物建议时立即记录下来。
+- 礼物赠送后：记录对方的反应。
 
-## What NOT To Do
-- Suggest generic gifts without checking their file
-- Forget to log gifts (prevents repeats)
-- Miss capturing "I want that" moments
+## 不应做的事情
+- 未经查看用户文件就推荐通用礼物。
+- 忘记记录礼物赠送情况（避免重复赠送相同的礼物）。
+- 错过用户表达“我想要那个礼物”的时刻。

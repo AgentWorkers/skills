@@ -1,6 +1,6 @@
 ---
 name: quality-manager-qms-iso13485
-description: ISO 13485 Quality Management System implementation and maintenance for medical device organizations. Provides QMS design, documentation control, internal auditing, CAPA management, and certification support.
+description: 针对医疗器械组织，提供ISO 13485质量管理体系的建立与维护服务。包括质量管理体系（QMS）的设计、文件控制、内部审核、纠正与预防措施（CAPA）管理以及认证支持。
 triggers:
   - ISO 13485
   - QMS implementation
@@ -16,397 +16,379 @@ triggers:
   - quality records
 ---
 
-# Quality Manager - QMS ISO 13485 Specialist
+# 质量经理 - ISO 13485质量管理体系专家
 
-ISO 13485:2016 Quality Management System implementation, maintenance, and certification support for medical device organizations.
-
----
-
-## Table of Contents
-
-- [QMS Implementation Workflow](#qms-implementation-workflow)
-- [Document Control Workflow](#document-control-workflow)
-- [Internal Audit Workflow](#internal-audit-workflow)
-- [Process Validation Workflow](#process-validation-workflow)
-- [Supplier Qualification Workflow](#supplier-qualification-workflow)
-- [QMS Process Reference](#qms-process-reference)
-- [Decision Frameworks](#decision-frameworks)
-- [Tools and References](#tools-and-references)
+为医疗器械组织提供ISO 13485:2016质量管理体系的实施、维护及认证支持。
 
 ---
 
-## QMS Implementation Workflow
+## 目录
 
-Implement ISO 13485:2016 compliant quality management system from gap analysis through certification.
+- [QMS实施工作流程](#qms-implementation-workflow)
+- [文件控制工作流程](#document-control-workflow)
+- [内部审核工作流程](#internal-audit-workflow)
+- [过程验证工作流程](#process-validation-workflow)
+- [供应商资质评估工作流程](#supplier-qualification-workflow)
+- [QMS过程参考](#qms-process-reference)
+- [决策框架](#decision-frameworks)
+- [工具与参考资料](#tools-and-references)
 
-### Workflow: Initial QMS Implementation
+---
 
-1. Conduct gap analysis against ISO 13485:2016 requirements
-2. Document current state vs. required state for each clause
-3. Prioritize gaps by:
-   - Regulatory criticality
-   - Risk to product safety
-   - Resource requirements
-4. Develop implementation roadmap with milestones
-5. Establish Quality Manual per Clause 4.2.2:
-   - QMS scope with justified exclusions
-   - Process interactions
-   - Procedure references
-6. Create required documented procedures:
-   - Document control (4.2.3)
-   - Record control (4.2.4)
-   - Internal audit (8.2.4)
-   - Nonconforming product (8.3)
-   - Corrective action (8.5.2)
-   - Preventive action (8.5.3)
-7. Deploy processes with training
-8. **Validation:** Gap analysis complete; Quality Manual approved; all required procedures documented and trained
+## QMS实施工作流程
 
-### Gap Analysis Matrix
+从差距分析到认证，帮助组织实施符合ISO 13485:2016标准的质量管理体系。
 
-| Clause | Requirement | Current State | Gap | Priority | Action |
+### 工作流程：初期QMS实施
+
+1. 根据ISO 13485:2016的要求进行差距分析
+2. 记录当前状态与每个条款要求的差距
+3. 按照以下标准优先处理差距：
+   - 法规要求的紧迫性
+   - 对产品安全的风险
+   - 资源需求
+4. 制定包含里程碑的实施路线图
+5. 根据第4.2.2条制定质量手册：
+   - 明确QMS的范围及合理的排除项
+   - 过程之间的交互关系
+   - 程序参考
+6. 创建必要的文件化程序：
+   - 文件控制（4.2.3）
+   - 记录控制（4.2.4）
+   - 内部审核（8.2.4）
+   - 不合格产品（8.3）
+   - 纠正措施（8.5.2）
+   - 预防措施（8.5.3）
+7. 通过培训部署这些流程
+8. **验证：**差距分析完成；质量手册获得批准；所有必要程序均已记录并完成培训
+
+### 差距分析矩阵
+
+| 条款 | 要求 | 当前状态 | 差距 | 优先级 | 措施 |
 |--------|-------------|---------------|-----|----------|--------|
-| 4.2.2 | Quality Manual | Not documented | Major | High | Create QM |
-| 4.2.3 | Document control | Informal | Moderate | High | Formalize SOP |
-| 5.6 | Management review | Ad hoc | Major | High | Establish schedule |
-| 7.3 | Design control | Partial | Moderate | Medium | Complete procedures |
-| 8.2.4 | Internal audit | None | Major | High | Create program |
+| 4.2.2 | 质量手册 | 未记录 | 重大 | 高 | 创建质量手册 |
+| 4.2.3 | 文件控制 | 非正式 | 中等 | 高 | 正式化标准操作程序（SOP） |
+| 5.6 | 管理评审 | 临时性 | 重大 | 高 | 制定评审计划 |
+| 7.3 | 设计控制 | 部分符合 | 中等 | 完成相关程序 |
+| 8.2.4 | 内部审核 | 无 | 重大 | 创建审核计划 |
 
-### QMS Structure
+### QMS结构
 
-| Level | Document Type | Purpose | Example |
+| 层级 | 文档类型 | 目的 | 示例 |
 |-------|---------------|---------|---------|
-| 1 | Quality Manual | QMS overview, policy | QM-001 |
-| 2 | Procedures | How processes work | SOP-02-001 |
-| 3 | Work Instructions | Task-level detail | WI-06-012 |
-| 4 | Records | Evidence of conformity | Training records |
+| 1 | 质量手册 | QMS概述、政策 | QM-001 |
+| 2 | 程序 | 过程操作指南 | SOP-02-001 |
+| 3 | 工作指示 | 任务级细节 | WI-06-012 |
+| 4 | 记录 | 符合性证据 | 培训记录 |
 
-### Required Procedure List
+### 必需的程序列表
 
-| Clause | Procedure | Minimum Content |
+| 条款 | 程序 | 最少内容 |
 |--------|-----------|-----------------|
-| 4.2.3 | Document Control | Approval, review, distribution, obsolete control |
-| 4.2.4 | Record Control | Identification, storage, retention, disposal |
-| 8.2.4 | Internal Audit | Program, auditor qualification, reporting |
-| 8.3 | Nonconforming Product | Identification, segregation, disposition |
-| 8.5.2 | Corrective Action | Investigation, root cause, effectiveness |
-| 8.5.3 | Preventive Action | Risk identification, implementation, verification |
+| 4.2.3 | 文件控制 | 批准、审核、分发、废止控制 |
+| 4.2.4 | 记录控制 | 识别、存储、保留、处置 |
+| 8.2.4 | 内部审核 | 审核计划、审核员资质、报告 |
+| 8.3 | 不合格产品 | 识别、隔离、处理 |
+| 8.5.2 | 纠正措施 | 调查、根本原因、有效性验证 |
+| 8.5.3 | 预防措施 | 风险识别、实施、验证 |
 
 ---
 
-## Document Control Workflow
+## 文件控制工作流程
 
-Establish and maintain document control per ISO 13485 Clause 4.2.3.
+根据ISO 13485第4.2.3条建立并维护文件控制。
 
-### Workflow: Document Creation and Approval
+### 工作流程：文件创建与审批
 
-1. Identify need for new document or revision
-2. Assign document number per numbering convention:
-   - Format: `[TYPE]-[AREA]-[SEQUENCE]-[REV]`
-   - Example: `SOP-02-001-01`
-3. Draft document using approved template
-4. Route for review to subject matter experts
-5. Collect and address review comments
-6. Obtain required approvals based on document type
-7. Update Document Master List
-8. **Validation:** Document numbered correctly; all reviewers signed; Master List updated
+1. 确定需要新文件或修订文件
+2. 按照编号规则分配文件编号：
+   - 格式：`[类型]-[领域]-[序列]-[版本]`
+   - 例如：`SOP-02-001-01`
+3. 使用批准的模板起草文件
+4. 将文件提交给相关专家审核
+5. 收集并处理审核意见
+6. 根据文件类型获取必要的批准
+7. 更新文件主列表
+8. **验证：**文件编号正确；所有审核者均已签字；主列表更新
 
-### Document Numbering Convention
+### 文件编号规则
 
-| Prefix | Document Type | Approval Authority |
+| 前缀 | 文档类型 | 审批权限 |
 |--------|---------------|-------------------|
-| QM | Quality Manual | Management Rep + CEO |
-| POL | Policy | Department Head + QA |
-| SOP | Procedure | Process Owner + QA |
-| WI | Work Instruction | Supervisor + QA |
-| TF | Template/Form | Process Owner |
-| SPEC | Specification | Engineering + QA |
+| QM | 质量手册 | 管理层代表 + 首席执行官 |
+| POL | 政策 | 部门负责人 + 质量保证（QA） |
+| SOP | 程序 | 过程负责人 + 质量保证（QA） |
+| WI | 工作指示 | 监督者 + 质量保证（QA） |
+| TF | 模板/表格 | 过程负责人 |
+| SPEC | 规范 | 工程部门 + 质量保证（QA） |
 
-### Area Codes
+### 领域代码
 
-| Code | Area | Examples |
+| 代码 | 领域 | 示例 |
 |------|------|----------|
-| 01 | Quality Management | Quality Manual, policy |
-| 02 | Document Control | This procedure |
-| 03 | Training | Competency procedures |
-| 04 | Design | Design control |
-| 05 | Purchasing | Supplier management |
-| 06 | Production | Manufacturing |
-| 07 | Quality Control | Inspection, testing |
-| 08 | CAPA | Corrective actions |
+| 01 | 质量管理 | 质量手册、政策 |
+| 02 | 文件控制 | 该程序 |
+| 03 | 培训 | 能力要求程序 |
+| 04 | 设计 | 设计控制 |
+| 05 | 采购 | 供应商管理 |
+| 06 | 生产 | 制造 |
+| 07 | 质量控制 | 检验、测试 |
+| 08 | CAPA | 纠正措施 |
 
-### Document Change Control
+### 文件变更控制
 
-| Change Type | Approval Level | Examples |
+| 变更类型 | 审批级别 | 例子 |
 |-------------|----------------|----------|
-| Administrative | Document Control | Typos, formatting |
-| Minor | Process Owner + QA | Clarifications |
-| Major | Full review cycle | Process changes |
-| Emergency | Expedited + retrospective | Safety issues |
+| 行政性 | 文件控制 | 拼写错误、格式问题 |
+| 轻微 | 过程负责人 + 质量保证 | 说明性修改 |
+| 重大 | 全面审查周期 | 过程变更 |
+| 紧急 | 加速处理 + 回顾性审查 | 安全问题 |
 
-### Document Review Schedule
+### 文件审核计划
 
-| Document Type | Review Period | Trigger for Unscheduled Review |
-|---------------|---------------|-------------------------------|
-| Quality Manual | Annual | Organizational change |
-| Procedures | Annual | Audit finding, regulation change |
-| Work Instructions | 2 years | Process change |
-| Forms | 2 years | User feedback |
+根据ISO 13485第8.2.4条规划和执行内部审核。
 
----
+### 工作流程：年度审核计划
 
-## Internal Audit Workflow
+1. 确定需要审核的过程和领域
+2. 评估审核频率的风险因素：
+   - 之前的审核结果
+   - 法规变更
+   | 过程变更
+   | 投诉趋势
+3. 指定具备资格的审核员（不得审核其负责的区域）
+4. 制定年度审核计划
+5. 获得管理层批准
+6. 将计划通知过程负责人
+7. 跟踪审核进度并根据需要重新安排
+8. **验证：**所有过程均被覆盖；审核员具备资格且独立；计划获得批准
 
-Plan and execute internal audits per ISO 13485 Clause 8.2.4.
+### 单次审核执行流程
 
-### Workflow: Annual Audit Program
+1. 准备包含范围、标准和时间的审核计划
+2. 至少在审核前一周通知被审核方
+3. 审查程序和之前的审核结果
+4. 准备审核清单
+5. 通过以下方式收集证据：
+   - 文件审查
+   | 记录抽样
+   | 过程观察
+   | 人员访谈
+6. 对发现的问题进行分类：
+   | 重大不合格项：系统缺失或完全失效
+   | 轻微不合格项：单一失误或偏差
+   | 观察结果：潜在的未来不合格风险
+7. 召开总结会议
+8. 在5个工作日内发布审核报告
+9. **验证：**所有清单项目均得到处理；发现的问题有证据支持；报告已分发
 
-1. Identify processes and areas requiring audit coverage
-2. Assess risk factors for audit frequency:
-   - Previous audit findings
-   - Regulatory changes
-   - Process changes
-   - Complaint trends
-3. Assign qualified auditors (independent of area audited)
-4. Develop annual audit schedule
-5. Obtain management approval
-6. Communicate schedule to process owners
-7. Track completion and reschedule as needed
-8. **Validation:** All processes covered; auditors qualified and independent; schedule approved
+### 审核计划模板
 
-### Workflow: Individual Audit Execution
-
-1. Prepare audit plan with scope, criteria, and schedule
-2. Notify auditee minimum 1 week prior
-3. Review procedures and previous audit results
-4. Prepare audit checklist
-5. Conduct opening meeting
-6. Collect evidence through:
-   - Document review
-   - Record sampling
-   - Process observation
-   - Personnel interviews
-7. Classify findings:
-   - Major NC: Absence or breakdown of system
-   - Minor NC: Single lapse or deviation
-   - Observation: Risk of future NC
-8. Conduct closing meeting
-9. Issue audit report within 5 business days
-10. **Validation:** All checklist items addressed; findings supported by evidence; report distributed
-
-### Audit Program Template
-
-| Audit # | Process | Clauses | Q1 | Q2 | Q3 | Q4 | Auditor |
+| 审核编号 | 过程 | 条款 | 第一季度 | 第二季度 | 第三季度 | 第四季度 | 审核员 |
 |---------|---------|---------|----|----|----|----|---------|
-| IA-001 | Document Control | 4.2.3, 4.2.4 | X | | | | [Name] |
-| IA-002 | Management Review | 5.6 | | X | | | [Name] |
-| IA-003 | Design Control | 7.3 | | X | | | [Name] |
-| IA-004 | Production | 7.5 | | | X | | [Name] |
-| IA-005 | CAPA | 8.5.2, 8.5.3 | | | | X | [Name] |
+| IA-001 | 文件控制 | 4.2.3, 4.2.4 | X | | | | [审核员姓名] |
+| IA-002 | 管理评审 | 5.6 | | X | | | [审核员姓名] |
+| IA-003 | 设计控制 | 7.3 | | X | | | [审核员姓名] |
+| IA-004 | 生产 | 7.5 | | | X | | [审核员姓名] |
+| IA-005 | CAPA | 8.5.2, 8.5.3 | | | | X | [审核员姓名] |
 
-### Auditor Qualification Requirements
+### 审核员资质要求
 
-| Criterion | Requirement |
+| 标准 | 要求 |
 |-----------|-------------|
-| Training | ISO 13485 awareness + auditor training |
-| Experience | Minimum 1 audit as observer |
-| Independence | Not auditing own work area |
-| Competence | Understanding of audited process |
+| 培训 | 了解ISO 13485标准 + 审核员培训 |
+| 经验 | 至少有一次作为观察员的审核经验 |
+| 独立性 | 不得审核自己负责的区域 |
+| 能力 | 理解被审核的过程 |
 
-### Finding Classification Guide
+### 发现问题分类指南
 
-| Classification | Criteria | Response Time |
+| 分类 | 标准 | 处理时间 |
 |----------------|----------|---------------|
-| Major NC | System absence, total breakdown, regulatory violation | 30 days for CAPA |
-| Minor NC | Single instance, partial compliance | 60 days for CAPA |
-| Observation | Potential risk, improvement opportunity | Track in next audit |
+| 重大不合格项 | 系统缺失、完全失效、违反法规 | 30天内启动CAPA |
+| 轻微不合格项 | 单次发生、部分不符合 | 60天内启动CAPA |
+| 观察结果 | 潜在风险、改进机会 | 在下一次审核中跟踪 |
 
 ---
 
-## Process Validation Workflow
+## 过程验证工作流程
 
-Validate special processes per ISO 13485 Clause 7.5.6.
+根据ISO 13485第7.5.6条验证特殊过程。
 
-### Workflow: Process Validation Protocol
+### 工作流程：过程验证协议
 
-1. Identify processes requiring validation:
-   - Output cannot be verified by inspection
-   - Deficiencies appear only in use
-   - Sterilization, welding, sealing, software
-2. Form validation team with subject matter experts
-3. Write validation protocol including:
-   - Process description and parameters
-   - Equipment and materials
-   - Acceptance criteria
-   - Statistical approach
-4. Execute Installation Qualification (IQ):
-   - Verify equipment installed correctly
-   - Document equipment specifications
-5. Execute Operational Qualification (OQ):
-   - Test parameter ranges
-   - Verify process control
-6. Execute Performance Qualification (PQ):
-   - Run production conditions
-   - Verify output meets requirements
-7. Write validation report with conclusions
-8. **Validation:** IQ/OQ/PQ complete; acceptance criteria met; validation report approved
+1. 确定需要验证的过程：
+   - 输出无法通过检验验证
+   - 缺陷仅在使用过程中出现
+   - 例如：灭菌、焊接、密封、软件过程
+2. 组建包含相关专家的验证团队
+3. 编写验证协议，包括：
+   - 过程描述和参数
+   - 设备和材料
+   - 接受标准
+   - 统计方法
+4. 执行安装验证（IQ）：
+   - 确认设备安装正确
+   - 记录设备规格
+5. 执行操作验证（OQ）：
+   - 测试参数范围
+   | 验证过程控制
+6. 执行性能验证（PQ）：
+   | 运行生产条件
+   | 验证输出是否符合要求
+7. 编写验证报告并总结结论
+8. **验证：**IQ/OQ/PQ完成；接受标准得到满足；验证报告获得批准
 
-### Validation Documentation Requirements
+### 验证文档要求
 
-| Phase | Content | Evidence |
+| 阶段 | 内容 | 证据 |
 |-------|---------|----------|
-| Protocol | Objectives, methods, criteria | Approved protocol |
-| IQ | Equipment verification | Installation records |
-| OQ | Parameter verification | Test results |
-| PQ | Performance verification | Production data |
-| Report | Summary, conclusions | Approval signatures |
+| 协议 | 目标、方法、标准 | 经批准的验证协议 |
+| IQ | 设备验证 | 安装记录 |
+| OQ | 参数验证 | 测试结果 |
+| PQ | 性能验证 | 生产数据 |
+| 报告 | 总结、结论 | 审批签名 |
 
-### Revalidation Triggers
+### 验证重新触发条件
 
-| Trigger | Action Required |
+| 触发因素 | 需要采取的行动 |
 |---------|-----------------|
-| Equipment change | Assess impact, revalidate affected phases |
-| Parameter change | OQ and PQ minimum |
-| Material change | Assess impact, PQ minimum |
-| Process failure | Full revalidation |
-| Periodic | Per validation schedule (typically 3 years) |
+| 设备变更 | 评估影响，重新验证相关阶段 |
+| 参数变更 | 至少进行OQ和PQ验证 |
+| 材料变更 | 评估影响，至少进行PQ验证 |
+| 过程故障 | 全面重新验证 |
+| 定期 | 根据验证计划（通常为3年）
 
-### Special Process Examples
+### 特殊过程示例
 
-| Process | Validation Standard | Critical Parameters |
+| 过程 | 验证标准 | 关键参数 |
 |---------|--------------------|--------------------|
-| EO Sterilization | ISO 11135 | Temperature, humidity, EO concentration, time |
-| Steam Sterilization | ISO 17665 | Temperature, pressure, time |
-| Radiation Sterilization | ISO 11137 | Dose, dose uniformity |
-| Sealing | Internal | Temperature, pressure, dwell time |
-| Welding | ISO 11607 | Heat, pressure, speed |
+| EO灭菌 | ISO 11135 | 温度、湿度、EO浓度、时间 |
+| 蒸汽灭菌 | ISO 17665 | 温度、压力、时间 |
+| 辐射灭菌 | ISO 11137 | 照射剂量、剂量均匀性 |
+| 密封 | 内部标准 | 温度、压力、停留时间 |
+| 焊接 | ISO 11607 | 温度、压力、速度 |
 
----
+## 供应商资质评估工作流程
 
-## Supplier Qualification Workflow
+根据ISO 13485第7.4条评估和批准供应商。
 
-Evaluate and approve suppliers per ISO 13485 Clause 7.4.
+### 工作流程：新供应商资质评估
 
-### Workflow: New Supplier Qualification
+1. 确定供应商类别：
+   - A类：关键（影响安全/性能）
+   - B类：重要（影响质量）
+   - C类：次要（间接影响）
+2. 请求供应商信息：
+   - 质量认证
+   | 产品规格
+   | 质量记录
+3. 根据以下标准评估供应商：
+   | 质量体系（ISO认证）
+   | 技术能力
+   | 质量记录
+   | 财务稳定性
+4. 对于A类供应商：
+   | 进行现场审核
+   | 要求签订质量协议
+5. 计算资质评分
+6. 作出批准决定：
+   | 分数>80：批准
+   | 60-80：有条件批准
+   | <60：不批准
+7. 将供应商加入合格供应商名单
+8. **验证：**评估标准得分；资质记录完整；供应商分类完成
 
-1. Identify supplier category:
-   - Category A: Critical (affects safety/performance)
-   - Category B: Major (affects quality)
-   - Category C: Minor (indirect impact)
-2. Request supplier information:
-   - Quality certifications
-   - Product specifications
-   - Quality history
-3. Evaluate supplier based on:
-   - Quality system (ISO certification)
-   - Technical capability
-   - Quality history
-   - Financial stability
-4. For Category A suppliers:
-   - Conduct on-site audit
-   - Require quality agreement
-5. Calculate qualification score
-6. Make approval decision:
-   - >80: Approved
-   - 60-80: Conditional approval
-   - <60: Not approved
-7. Add to Approved Supplier List
-8. **Validation:** Evaluation criteria scored; qualification records complete; supplier categorized
+### 供应商评估标准
 
-### Supplier Evaluation Criteria
-
-| Criterion | Weight | Scoring |
+| 标准 | 权重 | 分数 |
 |-----------|--------|---------|
-| Quality System | 30% | ISO 13485=30, ISO 9001=20, Documented=10, None=0 |
-| Quality History | 25% | Reject rate: <1%=25, 1-3%=15, >3%=0 |
-| Delivery | 20% | On-time: >95%=20, 90-95%=10, <90%=0 |
-| Technical Capability | 15% | Exceeds=15, Meets=10, Marginal=5 |
-| Financial Stability | 10% | Strong=10, Adequate=5, Questionable=0 |
+| 质量体系 | 30% | ISO 13485=30, ISO 9001=20, 有文件记录=10, 无=0 |
+| 质量记录 | 25% | 拒收率：<1%=25, 1-3%=15, >3%=0 |
+| 交付 | 20% | 按时交付：>95%=20, 90-95%=10, <90%=0 |
+| 技术能力 | 15% | 超出要求=15, 达到要求=10, 边缘=5 |
+| 财务稳定性 | 10% | 良好=10, 一般=5, 有疑问=0 |
 
-### Supplier Category Requirements
+### 供应商类别要求
 
-| Category | Qualification | Monitoring | Agreement |
+| 供应商类别 | 资质要求 | 监控方式 | 协议要求 |
 |----------|---------------|------------|-----------|
-| A - Critical | On-site audit | Annual review | Quality agreement |
-| B - Major | Questionnaire | Semi-annual review | Quality requirements |
-| C - Minor | Assessment | Issue-based | Standard terms |
+| A类（关键） | 现场审核 | 年度审核 | 签订质量协议 |
+| B类（重要） | 问卷调查 | 半年度审核 | 符合质量要求 |
+| C类（次要） | 评估 | 根据问题 | 标准条款 |
 
-### Supplier Performance Metrics
+### 供应商绩效指标
 
-| Metric | Target | Calculation |
+| 指标 | 目标 | 计算方法 |
 |--------|--------|-------------|
-| Accept Rate | >98% | (Accepted lots / Total lots) × 100 |
-| On-Time Delivery | >95% | (On-time / Total orders) × 100 |
-| Response Time | <5 days | Average days to resolve issues |
-| Documentation | 100% | (Complete CoCs / Required CoCs) × 100 |
+| 接受率 | >98% | （接受批次 / 总批次）× 100 |
+| 按时交付 | >95% | （按时交付的批次 / 总订单数）× 100 |
+| 响应时间 | <5天 | 解决问题的平均时间 |
+| 文件记录 | 100% | （完整的质量控制文件 / 必需文件）× 100 |
 
----
+## QMS过程参考
 
-## QMS Process Reference
+### ISO 13485条款结构
 
-### ISO 13485 Clause Structure
-
-| Clause | Title | Key Requirements |
+| 条款 | 标题 | 关键要求 |
 |--------|-------|-----------------|
-| 4.1 | General Requirements | Process identification, interaction, outsourcing |
-| 4.2 | Documentation | Quality Manual, procedures, records |
-| 5.1-5.5 | Management Responsibility | Commitment, policy, objectives, organization |
-| 5.6 | Management Review | Inputs, outputs, records |
-| 6.1-6.4 | Resource Management | Personnel, infrastructure, environment |
-| 7.1 | Product Realization Planning | Quality plan, risk management |
-| 7.2 | Customer Requirements | Determination, review, communication |
-| 7.3 | Design and Development | Planning, inputs, outputs, review, V&V, transfer, changes |
-| 7.4 | Purchasing | Supplier control, purchasing info, verification |
-| 7.5 | Production | Control, cleanliness, validation, identification, traceability |
-| 7.6 | Monitoring Equipment | Calibration, control |
-| 8.1 | Measurement Planning | Monitoring and analysis planning |
-| 8.2 | Monitoring | Feedback, complaints, reporting, audits, process, product |
-| 8.3 | Nonconforming Product | Control, disposition |
-| 8.4 | Data Analysis | Trend analysis |
-| 8.5 | Improvement | CAPA |
+| 4.1 | 一般要求 | 过程识别、交互、外包 |
+| 4.2 | 文件控制 | 质量手册、程序、记录 |
+| 5.1-5.5 | 管理责任 | 承诺、政策、目标、组织结构 |
+| 5.6 | 管理评审 | 输入、输出、记录 |
+| 6.1-6.4 | 资源管理 | 人员、基础设施、环境 |
+| 7.1 | 产品实现规划 | 质量计划、风险管理 |
+| 7.2 | 客户需求 | 确定需求、审查、沟通 |
+| 7.3 | 设计与开发 | 规划、输入、输出、审查、验证、转移、变更 |
+| 7.4 | 采购 | 供应商控制、采购信息、验证 |
+| 7.5 | 生产 | 控制、清洁度、验证、识别、可追溯性 |
+| 7.6 | 设备监控 | 校准、控制 |
+| 8.1 | 测量规划 | 监控和分析规划 |
+| 8.2 | 监控 | 反馈、投诉、报告、审核、过程、产品 |
+| 8.3 | 不合格产品 | 控制、处理 |
+| 8.4 | 数据分析 | 趋势分析 |
+| 8.5 | 改进 | CAPA |
 
-### Management Review Required Inputs (Clause 5.6.2)
+### 管理评审所需输入（条款5.6.2）
 
-| Input | Source | Prepared By |
+| 输入 | 来源 | 准备人 |
 |-------|--------|-------------|
-| Audit results | Internal and external audits | QA Manager |
-| Customer feedback | Complaints, surveys | Customer Quality |
-| Process performance | Process metrics | Process Owners |
-| Product conformity | Inspection data, NCs | QC Manager |
-| CAPA status | CAPA system | CAPA Officer |
-| Previous actions | Prior review records | QMR |
-| Changes affecting QMS | Regulatory, organizational | RA Manager |
-| Recommendations | All sources | All Managers |
+| 审核结果 | 内部和外部审核 | 质量保证经理 |
+| 客户反馈 | 投诉、调查 | 客户质量部门 |
+| 过程绩效 | 过程指标 | 过程负责人 |
+| 产品符合性 | 检验数据、不合格项 | 质量控制经理 |
+| CAPA状态 | CAPA系统 | CAPA负责人 |
+| 之前的改进措施 | 之前的审核记录 | 质量管理负责人 |
+| 影响QMS的变更 | 法规变化、组织变化 | 变更管理负责人 |
+| 建议 | 所有来源 | 所有管理者 |
 
-### Record Retention Requirements
+### 记录保留要求
 
-| Record Type | Minimum Retention | Regulatory Basis |
+| 记录类型 | 最低保留期限 | 法规依据 |
 |-------------|-------------------|------------------|
-| Device Master Record | Life of device + 2 years | 21 CFR 820.181 |
-| Device History Record | Life of device + 2 years | 21 CFR 820.184 |
-| Design History File | Life of device + 2 years | 21 CFR 820.30 |
-| Complaint Records | Life of device + 2 years | 21 CFR 820.198 |
-| Training Records | Employment + 3 years | Best practice |
-| Audit Records | 7 years | Best practice |
-| CAPA Records | 7 years | Best practice |
-| Calibration Records | Equipment life + 2 years | Best practice |
+| 设备主记录 | 设备寿命 + 2年 | 21 CFR 820.181 |
+| 设备历史记录 | 设备寿命 + 2年 | 21 CFR 820.184 |
+| 设计历史文件 | 设备寿命 + 2年 | 21 CFR 820.30 |
+| 投诉记录 | 设备寿命 + 2年 | 21 CFR 820.198 |
+| 培训记录 | 雇佣期限 + 3年 | 行业最佳实践 |
+| 审核记录 | 7年 | 行业最佳实践 |
+| CAPA记录 | 7年 | 行业最佳实践 |
+| 校准记录 | 设备寿命 + 2年 | 行业最佳实践 |
 
----
+## 决策框架
 
-## Decision Frameworks
+### 排除项的合理性说明（条款4.2.2）
 
-### Exclusion Justification (Clause 4.2.2)
-
-| Clause | Permissible Exclusion | Justification Required |
+| 条款 | 允许的排除项 | 需要的合理性说明 |
 |--------|----------------------|------------------------|
-| 6.4.2 | Contamination control | Product not affected by contamination |
-| 7.3 | Design and development | Organization does not design products |
-| 7.5.2 | Product cleanliness | No cleanliness requirements |
-| 7.5.3 | Installation | No installation activities |
-| 7.5.4 | Servicing | No servicing activities |
-| 7.5.5 | Sterile products | No sterile products |
+| 6.4.2 | 污染控制 | 产品不受污染影响 |
+| 7.3 | 设计与开发 | 组织不涉及产品设计 |
+| 7.5.2 | 产品清洁度 | 产品无清洁度要求 |
+| 7.5.3 | 安装 | 无安装活动 |
+| 7.5.4 | 维护 | 无维护活动 |
+| 7.5.5 | 无菌产品 | 产品为非无菌产品 |
 
-### Nonconformity Disposition Decision Tree
+### 不合格产品处理决策树
 
 ```
 Nonconforming Product Identified
@@ -435,59 +417,57 @@ Nonconforming Product Identified
                           approval
 ```
 
-### CAPA Initiation Criteria
+### CAPA启动标准
 
-| Source | Automatic CAPA | Evaluate for CAPA |
+| 来源 | 是否需要启动CAPA | 处理方式 |
 |--------|----------------|-------------------|
-| Customer complaint | Safety-related | All others |
-| External audit | Major NC | Minor NC |
-| Internal audit | Major NC | Repeat minor NC |
-| Product NC | Field failure | Trend exceeds threshold |
-| Process deviation | Safety impact | Repeated deviations |
+| 客户投诉 | 与安全相关的问题 | 启动CAPA |
+| 外部审核 | 重大不合格项 | 启动CAPA |
+| 内部审核 | 重大不合格项 | 重复出现的小问题 |
+| 产品不合格 | 现场故障 | 超过阈值 |
+| 过程偏差 | 对安全有影响 | 重复出现的问题 |
 
----
+## 工具与参考资料
 
-## Tools and References
+### 脚本
 
-### Scripts
-
-| Tool | Purpose | Usage |
+| 工具 | 用途 | 使用方法 |
 |------|---------|-------|
-| [qms_audit_checklist.py](scripts/qms_audit_checklist.py) | Generate audit checklists by clause or process | `python qms_audit_checklist.py --help` |
+| [qms_audit_checklist.py](scripts/qms_audit_checklist.py) | 按条款或过程生成审核清单 | `python qms_audit_checklist.py --help` |
 
-**Audit Checklist Generator Features:**
-- Generate clause-specific checklists (e.g., `--clause 7.3`)
-- Generate process-based checklists (e.g., `--process design-control`)
-- Full system audit checklist (`--audit-type system`)
-- Text or JSON output formats
-- Interactive mode for guided selection
+**审核清单生成器功能：**
+- 生成特定条款的清单（例如：`--clause 7.3`）
+- 生成基于过程的清单（例如：`--process design-control`）
+- 生成全系统审核清单（`--audit-type system`）
+- 提供文本或JSON格式的输出
+- 提供交互式界面以便选择
 
-### References
+### 参考资料
 
-| Document | Content |
+| 文档 | 内容 |
 |----------|---------|
-| [iso13485-clause-requirements.md](references/iso13485-clause-requirements.md) | Detailed requirements for each ISO 13485:2016 clause with audit questions |
-| [qms-process-templates.md](references/qms-process-templates.md) | Ready-to-use templates for document control, audit, CAPA, supplier, training |
+| [iso13485-clause-requirements.md](references/iso13485-clause-requirements.md) | ISO 13485:2016各条款的详细要求及审核问题 |
+| [qms-process-templates.md](references/qms-process-templates.md) | 可用于文件控制、审核、CAPA、供应商管理、培训的模板 |
 
-### Quick Reference: Mandatory Documented Procedures
+### 快速参考：必须记录的程序
 
-| Procedure | Clause | Key Elements |
+| 程序 | 条款 | 关键要素 |
 |-----------|--------|--------------|
-| Document Control | 4.2.3 | Approval, distribution, obsolete control |
-| Record Control | 4.2.4 | Identification, retention, disposal |
-| Internal Audit | 8.2.4 | Program, auditor qualification, reporting |
-| NC Product Control | 8.3 | Identification, segregation, disposition |
-| Corrective Action | 8.5.2 | Root cause, implementation, verification |
-| Preventive Action | 8.5.3 | Risk identification, implementation |
+| 文件控制 | 4.2.3 | 批准、分发、废止控制 |
+| 记录控制 | 4.2.4 | 识别、保留、处置 |
+| 内部审核 | 8.2.4 | 审核计划、审核员资质、报告 |
+| 不合格产品控制 | 8.3 | 识别、隔离、处理 |
+| 纠正措施 | 8.5.2 | 根本原因、实施、验证 |
+| 预防措施 | 8.5.3 | 风险识别、实施 |
 
 ---
 
-## Related Skills
+## 相关技能
 
-| Skill | Integration Point |
+| 技能 | 关联领域 |
 |-------|-------------------|
-| [quality-manager-qmr](../quality-manager-qmr/) | Management review, quality policy |
-| [capa-officer](../capa-officer/) | CAPA system management |
-| [qms-audit-expert](../qms-audit-expert/) | Advanced audit techniques |
-| [quality-documentation-manager](../quality-documentation-manager/) | DHF, DMR, DHR management |
-| [risk-management-specialist](../risk-management-specialist/) | ISO 14971 integration |
+| [quality-manager-qmr](../quality-manager-qmr/) | 管理评审、质量政策 |
+| [capa-officer](../capa-officer/) | CAPA系统管理 |
+| [qms-audit-expert](../qms-audit-expert/) | 高级审核技术 |
+| [quality-documentation-manager](../quality-documentation-manager/) | 设计历史文件（DHF）、设计管理记录（DMR）、文件控制记录（DHR）管理 |
+| [risk-management-specialist](../risk-management-specialist/) | ISO 14971标准整合 |

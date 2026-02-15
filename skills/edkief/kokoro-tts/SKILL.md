@@ -1,52 +1,52 @@
 ---
 name: kokoro-tts
-description: Generate spoken audio from text using the local Kokoro TTS engine. Use when the user asks to "say" something, requests a voice message, or wants text converted to speech.
+description: 使用本地的Kokoro TTS引擎将文本转换为语音。当用户要求“朗读”某些内容、请求语音消息，或者希望将文本转换为语音时，可以使用此功能。
 ---
 
 # Kokoro TTS
 
-This skill allows you to generate high-quality AI speech using a local or remote Kokoro-TTS instance.
+此技能允许您使用本地或远程的Kokoro-TTS实例生成高质量的人工智能语音。
 
-## Configuration
+## 配置
 
-The skill uses the `KOKORO_API_URL` environment variable to locate the API.
+该技能使用`KOKORO_API_URL`环境变量来定位API的地址。
 
-- **Default:** `http://localhost:8880/v1/audio/speech`
-- **To Configure:** Add `KOKORO_API_URL=http://your-server:port/v1/audio/speech` to your `.env` file or environment.
+- **默认值：** `http://localhost:8880/v1/audio/speech`
+- **配置方法：** 将`KOKORO_API_URL=http://your-server:port/v1/audio/speech`添加到您的`.env`文件或环境变量中。
 
-## Usage
+## 使用方法
 
-To generate speech, run the included Node.js script.
+要生成语音，请运行随附的Node.js脚本。
 
-### Command
+### 命令
 
 ```bash
 node skills/kokoro-tts/scripts/tts.js "<text>" [voice] [speed]
 ```
 
-- **text**: The text to speak. Wrap in quotes.
-- **voice**: (Optional) The voice ID. Defaults to `af_heart`.
-- **speed**: (Optional) Speech speed (0.25 to 4.0). Defaults to `1.0`.
+- **text**：要朗读的文本。请用引号括起来。
+- **voice**：（可选）语音ID。默认值为`af_heart`。
+- **speed**：（可选）语音速度（范围：0.25至4.0）。默认值为`1.0`。
 
-### Example
+### 示例
 
 ```bash
 node skills/kokoro-tts/scripts/tts.js "Hello Ed, this is Theosaurus speaking." af_nova
 ```
 
-### Output
+### 输出结果
 
-The script will output a single line starting with `MEDIA:` followed by the path to the generated MP3 file. OpenClaw will automatically pick this up and send it as an audio attachment.
+脚本将输出一行内容，开头为`MEDIA:`，后跟生成的MP3文件的路径。OpenClaw会自动获取该文件并将其作为音频附件发送。
 
-Example Output:
+示例输出：
 `MEDIA: media/tts_1706745000000.mp3`
 
-## Available Voices
+## 可用的语音
 
-Common choices:
-- `af_heart` (Default, Female, Warm)
-- `af_nova` (Female, Professional)
-- `am_adam` (Male, Deep)
-- `bf_alice` (British Female)
+常见的语音选项：
+- `af_heart`（默认值，女性，温暖音色）
+- `af_nova`（女性，专业音色）
+- `am_adam`（男性，低沉音色）
+- `bf_alice`（英国女性）
 
-For a full list, see [references/voices.md](references/voices.md) or query the API.
+如需完整列表，请参阅[references/voices.md]或查询API。

@@ -1,23 +1,23 @@
 ---
 name: book-blowout
-description: Book blowout services through Lokuli MCP. Use when user needs to find and book blowout. Triggers on requests like "book a blowout", "find blowout near me", or any blowout service request.
+description: 通过 Lokuli MCP 提供汽车美容服务预订功能。当用户需要查找或预订汽车美容服务时，可使用该功能。该功能会在收到诸如“预订汽车美容服务”、“查找附近的汽车美容服务”等相关请求时被触发。
 ---
 
-# uook ulowout
+# 查看预订信息
 
-Book blowout services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器查询预订详情。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

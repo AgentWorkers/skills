@@ -1,433 +1,432 @@
 ---
 name: brand-analyzer
-description: This skill should be used when the user requests brand analysis, brand guidelines creation, brand audits, or establishing brand identity and consistency standards. It provides comprehensive frameworks for analyzing brand elements and creating actionable brand guidelines based on requirements.
+description: 当用户请求进行品牌分析、制定品牌指南、开展品牌审计，或建立品牌身份及一致性标准时，应使用此技能。该技能提供了全面的框架，用于分析品牌要素，并根据用户需求制定可执行的品牌指南。
 ---
 
-# Brand Analyzer
-
-## Overview
-
-This skill enables comprehensive brand analysis and guidelines creation. It analyzes brand requirements, identifies brand personality and positioning, and generates professional brand guidelines documents. The skill uses established brand frameworks including Jung's 12 archetypes and industry-standard brand identity principles.
-
-## When to Use This Skill
-
-Use this skill when the user requests:
-- Brand analysis or brand audit
-- Creation of brand guidelines or brand standards
-- Brand identity development or refinement
-- Brand consistency evaluation
-- Brand positioning and differentiation analysis
-- Brand archetype identification
-- Recommendations for brand improvements
-- Documentation of existing brand elements
-
-## Core Workflow
-
-### Step 1: Determine Analysis Type
-
-Identify what type of brand work is needed:
-
-**A. New Brand Development**
-- Starting from scratch or rebranding
-- Requires comprehensive brand identity creation
-- Output: Complete brand guidelines document
-
-**B. Existing Brand Analysis**
-- Analyzing current brand state
-- Identifying inconsistencies and gaps
-- Output: Brand analysis report with recommendations
-
-**C. Quick Brand Audit**
-- Fast assessment of brand health
-- Checking for consistency issues
-- Output: Quick audit checklist with scores
-
-**D. Brand Guidelines Creation**
-- Documenting existing brand elements
-- Formalizing standards and rules
-- Output: Professional brand guidelines
-
-### Step 2: Gather Brand Information
-
-Collect relevant information based on analysis type. Use the questions from `references/brand_analysis_framework.md` as a guide.
-
-**Essential Information**:
-- Brand name and tagline
-- Mission and vision statements
-- Core values
-- Target audience details
-- Industry and competitive context
-- Existing brand materials (if any)
-
-**Visual Identity Information**:
-- Logo and variations
-- Color palette (with codes)
-- Typography (font families)
-- Imagery style preferences
-- Design elements
-
-**Voice and Messaging**:
-- Brand personality traits
-- Tone of voice
-- Key messages
-- Value proposition
-- Language preferences
-
-**Additional Context**:
-- Brand history and evolution
-- Customer perception
-- Competitive positioning
-- Business goals
-- Brand touchpoints
-
-### Step 3: Analyze Brand Archetype
-
-Identify the brand's personality using the 12 archetypes framework from `references/brand_archetypes.md`.
-
-**Analysis Process**:
-1. Review brand's core desire and goals
-2. Assess personality traits and values
-3. Consider target audience aspirations
-4. Evaluate competitive positioning
-5. Identify primary archetype (60-70% influence)
-6. Identify secondary archetype (30-40% influence)
-
-**Archetypes Quick Reference**:
-- **Innocent**: Happiness, optimism, simplicity
-- **Sage**: Knowledge, wisdom, expertise
-- **Explorer**: Freedom, adventure, discovery
-- **Outlaw**: Rebellion, disruption, change
-- **Magician**: Transformation, vision, innovation
-- **Hero**: Courage, achievement, mastery
-- **Lover**: Passion, intimacy, beauty
-- **Jester**: Fun, humor, enjoyment
-- **Everyman**: Belonging, authenticity, relatability
-- **Caregiver**: Nurturing, protection, support
-- **Ruler**: Control, leadership, success
-- **Creator**: Innovation, imagination, artistic expression
-
-Load `references/brand_archetypes.md` for detailed characteristics, visual directions, and messaging patterns for each archetype.
-
-### Step 4: Conduct Brand Analysis
-
-Perform comprehensive analysis using the framework from `references/brand_analysis_framework.md`.
-
-**Key Analysis Areas**:
-
-**1. Brand Identity**
-- Mission/vision clarity and alignment
-- Values authenticity and consistency
-- Personality definition and expression
-- Archetype fit and application
-
-**2. Visual Identity**
-- Logo effectiveness and variations
-- Color palette appropriateness and accessibility
-- Typography hierarchy and readability
-- Imagery style consistency
-- Overall visual coherence
-
-**3. Voice and Messaging**
-- Voice consistency across channels
-- Tone adaptation for contexts
-- Message clarity and relevance
-- Language effectiveness
-- Value proposition strength
-
-**4. Target Audience Alignment**
-- Audience definition completeness
-- Brand-audience fit
-- Messaging resonance
-- Visual appeal to audience
-- Problem-solution alignment
-
-**5. Market Position**
-- Competitive differentiation
-- Unique value proposition
-- Market positioning clarity
-- Brand promise delivery
-
-**6. Brand Consistency**
-- Cross-channel consistency
-- Touchpoint alignment
-- Quality standards maintenance
-- Experience coherence
-
-### Step 5: Generate Output Document
-
-Create the appropriate deliverable based on analysis type using templates from `assets/`.
-
-**Output Options**:
-
-**A. Brand Guidelines Document** (`assets/brand_guidelines_template.md`)
-- Complete, professional brand guidelines
-- Includes all identity elements
-- Usage rules and examples
-- Application across channels
-- Resource section
-
-**B. Brand Analysis Report** (`assets/brand_analysis_report_template.md`)
-- Comprehensive analysis findings
-- Strengths and opportunities
-- Competitive positioning
-- Recommendations and roadmap
-- Success metrics
-
-**C. Quick Brand Audit** (`assets/quick_brand_audit_template.md`)
-- Rapid assessment checklist
-- Health scores by category
-- Priority action items
-- Consistency check across channels
-
-**File Naming Convention**:
-- Guidelines: `brand-guidelines-BRANDNAME-YYYY-MM-DD.md`
-- Analysis: `brand-analysis-BRANDNAME-YYYY-MM-DD.md`
-- Audit: `brand-audit-BRANDNAME-YYYY-MM-DD.md`
-
-**Storage Location**:
-Create in project root or in `brand-documents/` directory if multiple documents.
-
-### Step 6: Provide Recommendations
-
-Based on analysis, provide actionable recommendations:
-
-**Prioritization Framework**:
-- **High Impact + Low Effort**: Quick wins - do immediately
-- **High Impact + High Effort**: Strategic initiatives - plan carefully
-- **Low Impact + Low Effort**: Nice-to-haves - do when possible
-- **Low Impact + High Effort**: Avoid - not worth resources
-
-**Recommendation Categories**:
-1. **Visual Identity Improvements**: Logo refinements, color adjustments, typography updates
-2. **Voice and Messaging**: Tone consistency, message clarification, language refinement
-3. **Documentation**: Creating or updating guidelines, standards documentation
-4. **Consistency**: Fixing inconsistencies across touchpoints
-5. **Strategic**: Repositioning, rebranding, major initiatives
-
-### Step 7: Create Implementation Roadmap
-
-Provide phased approach for implementing recommendations:
-
-**Phase 1: Immediate (0-30 days)**
-- Critical fixes
-- Quick wins
-- Documentation updates
-- High-priority inconsistencies
-
-**Phase 2: Short-term (1-3 months)**
-- Medium-priority improvements
-- Guideline development
-- Team training
-- Channel optimization
-
-**Phase 3: Long-term (3-6+ months)**
-- Strategic initiatives
-- Major redesigns
-- Comprehensive rollouts
-- Measurement and refinement
-
-## Advanced Features
-
-### Competitive Brand Analysis
-
-When comparing to competitors:
-1. Identify 3-5 key competitors
-2. Analyze their positioning and differentiation
-3. Map brand attributes on positioning matrix
-4. Identify gaps and opportunities
-5. Recommend differentiation strategy
-
-### Brand Health Scoring
-
-Provide quantitative assessments:
-- **Visual Identity**: Logo, colors, typography coherence
-- **Brand Foundation**: Mission, values, personality clarity
-- **Voice & Messaging**: Consistency and effectiveness
-- **Consistency**: Cross-channel alignment
-- **Audience Alignment**: Target fit and appeal
-- **Differentiation**: Competitive uniqueness
-- **Documentation**: Guidelines completeness
-
-Scale: 1-10 for each category, with overall average.
-
-### Multi-Channel Audit
-
-Assess brand consistency across touchpoints:
-- Website
-- Social media (platform-specific)
-- Email communications
-- Print materials
-- Packaging
-- Signage and environmental
-- Customer service
-- Product/service delivery
-
-## Usage Examples
-
-### Example 1: New Brand Guidelines
-
-**User Request**: "Create comprehensive brand guidelines for our eco-friendly packaging startup called GreenWrap."
-
-**Execution**:
-1. Ask discovery questions about mission, values, target audience
-2. Gather visual identity details (colors, fonts, logo variations)
-3. Identify brand archetype (likely Explorer or Caregiver)
-4. Reference `references/brand_analysis_framework.md` for structure
-5. Use `assets/brand_guidelines_template.md` as base
-6. Fill in all sections with specific details
-7. Save as `brand-guidelines-greenwrap-2025-03-15.md`
-8. Provide implementation recommendations
-
-### Example 2: Brand Audit
-
-**User Request**: "Audit our existing brand for consistency issues."
-
-**Execution**:
-1. Request access to brand materials across channels
-2. Use `references/brand_analysis_framework.md` audit checklist
-3. Assess each brand element category
-4. Score consistency across touchpoints
-5. Identify gaps and inconsistencies
-6. Use `assets/quick_brand_audit_template.md`
-7. Complete all checklist items with findings
-8. Provide prioritized action items
-9. Save as `brand-audit-[name]-[date].md`
-
-### Example 3: Brand Analysis with Recommendations
-
-**User Request**: "Analyze our tech startup brand and suggest improvements."
-
-**Execution**:
-1. Gather current brand information
-2. Load `references/brand_archetypes.md` to identify archetype
-3. Use `references/brand_analysis_framework.md` for analysis structure
-4. Evaluate all brand elements (visual, voice, positioning)
-5. Assess competitive differentiation
-6. Identify strengths and opportunities
-7. Use `assets/brand_analysis_report_template.md`
-8. Complete comprehensive report with scores
-9. Provide implementation roadmap
-10. Save as `brand-analysis-[name]-[date].md`
-
-## Reference Files
-
-This skill includes detailed reference documentation:
+# 品牌分析工具
+
+## 概述
+
+该工具能够进行全面的品牌分析并制定相应的指导方针。它能够分析品牌需求，识别品牌个性和定位，并生成专业的品牌指导方针文档。该工具采用了包括荣格的12种品牌原型在内的成熟品牌框架以及行业标准品牌识别原则。
+
+## 适用场景
+
+当用户需要以下服务时，请使用该工具：
+- 品牌分析或品牌审计
+- 制定品牌指导方针或品牌标准
+- 品牌形象的开发和优化
+- 评估品牌一致性
+- 品牌定位和差异化分析
+- 品牌原型的识别
+- 提出品牌改进建议
+- 记录现有的品牌元素
+
+## 核心工作流程
+
+### 第一步：确定分析类型
+
+确定所需进行的品牌分析类型：
+
+**A. 新品牌开发**
+- 从零开始或进行品牌重塑
+- 需要创建完整的品牌形象
+- 输出：完整的品牌指导方针文档
+
+**B. 现有品牌分析**
+- 分析当前的品牌状况
+- 识别不一致之处和差距
+- 输出：包含建议的品牌分析报告
+
+**C. 快速品牌审计**
+- 快速评估品牌健康状况
+- 检查一致性问题
+- 输出：包含评分的快速审计清单
+
+**D. 制定品牌指导方针**
+- 记录现有的品牌元素
+- 规范化和明确标准
+- 输出：专业的品牌指导方针
+
+### 第二步：收集品牌信息
+
+根据分析类型收集相关信息。可参考 `references/brand_analysis_framework.md` 中的问题作为指导。
+
+**必备信息**：
+- 品牌名称和标语
+- 使命和愿景声明
+- 核心价值观
+- 目标受众信息
+- 行业背景和竞争环境
+- 现有的品牌材料（如有）
+
+**视觉形象信息**：
+- 标志及其变体
+- 颜色调色板（附代码）
+- 字体样式
+- 图像风格偏好
+- 设计元素
+
+**品牌语言和信息传递**：
+- 品牌个性特征
+- 语言风格
+- 关键信息
+- 价值主张
+- 语言偏好
+
+**其他相关信息**：
+- 品牌历史和发展历程
+- 客户认知
+- 竞争定位
+- 业务目标
+- 品牌接触点
+
+### 第三步：分析品牌原型
+
+使用 `references/brand_archetypes.md` 中的12种品牌原型框架来识别品牌的个性。
+
+**分析步骤**：
+1. 审查品牌的核心需求和目标
+2. 评估个性特征和价值观
+3. 考虑目标受众的期望
+4. 评估竞争定位
+5. 确定主要原型（影响60-70%）
+6. 确定次要原型（影响30-40%）
+
+**原型快速参考**：
+- **天真型**：快乐、乐观、简单
+- **智者型**：知识、智慧、专业
+- **探索者型**：自由、冒险、发现
+- **反叛者型**：颠覆、变革
+- **魔术师型**：变革、愿景、创新
+- **英雄型**：勇气、成就、精通
+- **爱人型**：激情、亲密、美感
+- **小丑型**：乐趣、幽默、享受
+- **普通人型**：归属感、真实性、共鸣
+- **照顾者型**：关怀、保护、支持
+- **统治者型**：控制、领导力、成功
+- **创造者型**：创新、想象力、艺术表达
+
+请加载 `references/brand_archetypes.md` 以获取每个原型的详细特征、视觉方向和信息传递模式。
+
+### 第四步：进行品牌分析
+
+使用 `references/brand_analysis_framework.md` 中的框架进行全面分析。
+
+**关键分析领域**：
+
+**1. 品牌形象**：
+- 使命/愿景的清晰度和一致性
+- 价值观的真实性与一致性
+- 个性的定义和表达
+- 原型的匹配和应用
+
+**2. 视觉形象**：
+- 标志的有效性和变体
+- 颜色调色板的适宜性和可访问性
+- 字体的层次感和可读性
+- 图像风格的一致性
+- 整体的视觉连贯性
+
+**3. 品牌语言和信息传递**：
+- 不同渠道中的语言一致性
+- 根据情境调整语言风格
+- 信息的清晰度和相关性
+- 语言的有效性
+- 价值主张的力量
+
+**4. 目标受众匹配**：
+- 目标受众的定义完整性
+- 品牌与受众的匹配度
+- 信息传递的共鸣性
+- 对受众的视觉吸引力
+- 问题与解决方案的匹配度
+
+**5. 市场定位**：
+- 竞争差异化
+- 独特的价值主张
+- 市场定位的清晰度
+- 品牌承诺的传达
+
+**6. 品牌一致性**：
+- 跨渠道的一致性
+- 接触点的一致性
+- 质量标准的维护
+- 体验的连贯性
+
+### 第五步：生成输出文档
+
+根据分析类型，使用 `assets/` 目录中的模板生成相应的输出文档。
+
+**输出选项**：
+
+**A. 品牌指导方针文档** (`assets/brand_guidelines_template.md`)
+- 完整的专业品牌指导方针
+- 包含所有品牌元素
+- 使用规则和示例
+- 跨渠道的应用指导
+- 资源部分
+
+**B. 品牌分析报告** (`assets/brand_analysis_report_template.md`)
+- 全面的分析结果
+- 优势与机会
+- 竞争定位
+- 建议和行动计划
+- 成功指标
+
+**C. 快速品牌审计** (`assets/quick_brand_audit_template.md`)
+- 快速评估清单
+- 按类别划分的评分
+- 优先行动事项
+- 跨渠道的一致性检查
+
+**文件命名规则**：
+- 指导方针：`brand-guidelines-品牌名称-YYYY-MM-DD.md`
+- 分析报告：`brand-analysis-品牌名称-YYYY-MM-DD.md`
+- 审计报告：`brand-audit-品牌名称-YYYY-MM-DD.md`
+
+**存储位置**：
+将文件存储在项目根目录或 `brand-documents/` 目录中（如果有多个文档）。
+
+### 第六步：提供建议
+
+根据分析结果，提供可操作的改进建议：
+
+**优先级框架**：
+- **高影响 + 低努力**：立即可实施的改进措施
+- **高影响 + 高努力**：需要仔细规划的策略性举措
+- **低影响 + 低努力**：可选择实施的附加建议
+- **低影响 + 高努力**：应避免的措施
+
+**建议类别**：
+1. **视觉形象改进**：标志优化、颜色调整、字体更新
+2. **品牌语言和信息传递**：语言风格的一致性、信息清晰度、语言优化
+3. **文档**：创建或更新指导方针、标准文档
+4. **一致性**：修复各接触点中的不一致之处
+5. **战略**：品牌重新定位、品牌重塑、重大举措
+
+### 第七步：制定实施计划
+
+提供分阶段的实施建议：
+
+**第一阶段：立即执行（0-30天）**
+- 关键问题修复
+- 快速改进措施
+- 文档更新
+- 高优先级的不一致问题
+
+**第二阶段：短期（1-3个月）**
+- 中等优先级的改进
+- 指导方针的制定
+- 团队培训
+- 渠道优化
+
+**第三阶段：长期（3-6个月以上）**
+- 战略性举措
+- 大规模设计调整
+- 全面推广
+- 测量和优化
+
+## 高级功能
+
+### 竞争品牌分析
+
+在与其他品牌进行比较时：
+1. 识别3-5个主要竞争对手
+2. 分析他们的定位和差异化
+3. 将品牌属性映射到定位矩阵上
+4. 识别差距和机会
+5. 提出差异化策略
+
+### 品牌健康评分
+
+提供定量评估：
+- **视觉形象**：标志、颜色、字体的连贯性
+- **品牌基础**：使命、价值观、个性的清晰度
+- **语言和信息传递**：一致性和有效性
+- **一致性**：跨渠道的匹配度
+- **受众匹配**：目标受众的匹配度和吸引力
+- **差异化**：竞争优势的独特性
+- **文档**：指导方针的完整性
+
+评分范围：每个类别1-10分，计算总体平均分。
+
+### 多渠道审计
+
+评估品牌在各个接触点上的一致性：
+- 网站
+- 社交媒体（特定平台）
+- 电子邮件沟通
+- 打印材料
+- 包装
+- 标识和环境
+- 客户服务
+- 产品/服务交付
+
+## 使用示例
+
+### 示例1：新品牌指导方针
+
+**用户需求**：“为我们的环保包装初创公司 GreenWrap 制定全面的品牌指导方针。”
+
+**执行步骤**：
+1. 了解公司的使命、价值观和目标受众
+2. 收集视觉形象相关信息（颜色、字体、标志变体）
+3. 识别品牌原型（可能是探索者型或照顾者型）
+4. 参考 `references/brand_analysis_framework.md` 以确定分析结构
+5. 使用 `assets/brand_guidelines_template.md` 作为基础
+6. 填写所有详细信息
+7. 保存为 `brand-guidelines-greenwrap-2025-03-15.md`
+8. 提供实施建议
+
+### 示例2：品牌审计
+
+**用户需求**：“对我们的现有品牌进行一致性审计。”
+
+**执行步骤**：
+1. 获取所有渠道的品牌材料
+2. 使用 `references/brand_analysis_framework.md` 中的审计清单
+3. 评估每个品牌元素
+4. 按类别评分一致性
+5. 识别差距和不一致之处
+6. 使用 `assets/quick_brand_audit_template.md`
+7. 完成所有清单项并记录结果
+8. 提供优先行动事项
+9. 保存为 `brand-audit-[名称]-[日期].md`
+
+### 示例3：品牌分析及建议
+
+**用户需求**：“分析我们的科技初创公司品牌并提出改进建议。”
+
+**执行步骤**：
+1. 收集当前的品牌信息
+2. 加载 `references/brand_archetypes.md` 以识别品牌原型
+3. 使用 `references/brand_analysis_framework.md` 进行分析
+4. 评估所有品牌元素（视觉、语言、定位）
+5. 评估竞争差异化
+6. 识别优势和发展机会
+7. 使用 `assets/brand_analysis_report_template.md` 编写全面报告
+8. 完成报告并附上评分
+9. 提供实施计划
+10. 保存为 `brand-analysis-[名称]-[日期].md`
+
+## 参考文件
+
+该工具包含以下详细参考文档：
 
 ### `references/brand_analysis_framework.md`
-Comprehensive framework covering:
-- Core brand elements (identity, visual, voice, audience, position)
-- Discovery and analysis questions
-- Brand consistency checkpoints
-- Guideline categories and structure
-- Audit checklists
-- Output frameworks
+- 包括以下内容的全面框架：
+- 核心品牌元素（形象、视觉、语言、受众、定位）
+- 发现和分析问题
+- 指导方针的类别和结构
+- 审计清单
+- 输出模板
 
-**When to load**: For any brand analysis or guidelines creation to ensure comprehensive coverage.
+**使用说明**：在进行任何品牌分析或指导方针制定时，请确保使用此文件以确保全面覆盖。
 
 ### `references/brand_archetypes.md`
-Complete guide to Jung's 12 brand archetypes:
-- Detailed descriptions of each archetype
-- Core desires, goals, and strategies
-- Voice and visual characteristics
-- Example brands for each type
-- How to identify and apply archetypes
-- Mixed archetype strategies
+- 关于荣格12种品牌原型的完整指南：
+- 每个原型的详细描述
+- 核心需求、目标和策略
+- 语言和视觉特征
+- 各类型的示例品牌
+- 如何识别和应用原型
+- 多原型组合策略
 
-**When to load**: When identifying brand personality or determining visual/voice direction.
+**使用说明**：在识别品牌个性或确定视觉/语言方向时，请参考此文件。
 
-## Asset Templates
+## 资源模板
 
-This skill includes three professional templates in `assets/`:
+该工具在 `assets/` 目录中包含三个专业模板：
 
 ### `brand_guidelines_template.md`
-Complete brand guidelines document template with sections for:
-- Brand story and foundation
-- Visual identity (logo, colors, typography, imagery)
-- Voice and messaging
-- Brand applications (digital, print, environmental)
-- Usage examples and checklist
+- 完整的品牌指导方针文档模板，包含以下部分：
+- 品牌故事和基础
+- 视觉形象（标志、颜色、字体）
+- 语言和信息传递
+- 品牌应用（数字、印刷、环境）
+- 使用示例和检查清单
 
 ### `brand_analysis_report_template.md`
-Comprehensive analysis report template covering:
-- Executive summary and key findings
-- Detailed analysis of all brand elements
-- Competitive positioning
-- Touchpoint audit
-- Strengths and opportunities
-- Implementation roadmap with phases
-- Success metrics
+- 全面分析报告模板，包括以下内容：
+- 执行摘要和关键发现
+- 所有品牌元素的详细分析
+- 竞争定位
+- 接触点审计
+- 优势与机会
+- 分阶段实施计划
+- 成功指标
 
 ### `quick_brand_audit_template.md`
-Rapid assessment checklist including:
-- Visual identity verification
-- Brand foundation check
-- Voice and messaging evaluation
-- Consistency across channels
-- Audience alignment assessment
-- Competitive position review
-- Health scores and priority actions
+- 快速评估清单，包括：
+- 视觉形象验证
+- 品牌基础检查
+- 语言和信息传递评估
+- 跨渠道一致性
+- 目标受众匹配度评估
+- 竞争定位审查
+- 健康评分和优先行动事项
 
-## Best Practices
+## 最佳实践
 
-### Discovery Phase
-- Ask open-ended questions to understand brand deeply
-- Review all existing materials before making recommendations
-- Understand business goals and how brand supports them
-- Consider customer perspective and perception
+### 发现阶段
+- 通过开放式问题深入了解品牌
+- 在提出建议前审查所有现有材料
+- 理解业务目标以及品牌如何支持这些目标
+- 考虑客户视角和认知
 
-### Analysis Phase
-- Use both references files for comprehensive framework
-- Be objective in assessments - identify both strengths and gaps
-- Provide specific examples when noting issues
-- Consider industry context and competitive landscape
+### 分析阶段
+- 使用参考文件作为全面分析的框架
+- 客观评估——识别优势和差距
+- 在指出问题时提供具体示例
+- 考虑行业背景和竞争环境
 
-### Documentation Phase
-- Use clear, actionable language
-- Include specific measurements and standards
-- Provide both good and bad examples
-- Make guidelines accessible and easy to follow
+### 文档阶段
+- 使用清晰、可操作的语言
+- 包含具体的衡量标准和规范
+- 提供正面和负面的示例
+- 使指导方针易于理解和遵循
 
-### Recommendation Phase
-- Prioritize based on impact and effort
-- Provide rationale for each recommendation
-- Include estimated timelines and resources
-- Connect recommendations to business goals
+### 建议阶段
+- 根据影响力和实施难度进行优先级排序
+- 为每个建议提供理由
+- 包括预计的时间表和资源需求
+- 将建议与业务目标联系起来
 
-### Follow-up
-- Suggest regular brand audits (quarterly or bi-annually)
-- Recommend brand guideline updates as brand evolves
-- Provide guidance on implementing changes
-- Offer to create supporting materials
+### 后续行动
+- 建议定期进行品牌审计（每季度或每半年）
+- 随着品牌发展更新指导方针
+- 提供实施变更的指导
+- 提供支持性材料的创建服务
 
-## Common Scenarios
+## 常见场景
 
-### Scenario 1: Inconsistent Brand
-**Symptoms**: Different colors/fonts across channels, unclear messaging
-**Approach**: Quick audit → Identify inconsistencies → Prioritize fixes → Create guidelines
-**Output**: Quick audit + Brand guidelines document
+### 情景1：品牌不一致
+**症状**：不同渠道上的颜色/字体不一致，信息传递不明确
+**处理方法**：快速审计 → 识别不一致之处 → 确定优先改进事项 → 制定指导方针
+**输出**：快速审计报告 + 品牌指导方针文档
 
-### Scenario 2: Undefined Brand
-**Symptoms**: No clear values, personality, or visual standards
-**Approach**: Discovery → Define all elements → Document in guidelines
-**Output**: Complete brand guidelines document
+### 情景2：品牌定位不明确
+**症状**：缺乏明确的价值观、个性或视觉标准
+**处理方法**：进行品牌要素的重新定义 → 制定指导方针
+**输出**：完整的品牌指导方针文档
 
-### Scenario 3: Rebranding
-**Symptoms**: Old brand doesn't fit current direction
-**Approach**: Full analysis → Competitive positioning → New identity development
-**Output**: Brand analysis report + New brand guidelines
+### 情景3：品牌重塑
+**症状**：旧品牌不符合当前发展方向
+**处理方法**：进行全面分析 → 确定新的品牌定位 → 制定新的品牌形象
+**输出**：品牌分析报告 + 新品牌指导方针
 
-### Scenario 4: Brand Expansion
-**Symptoms**: Entering new market or launching new product line
-**Approach**: Review core brand → Adapt for new context → Extension guidelines
-**Output**: Brand guidelines with extension sections
+### 情景4：品牌扩展
+**症状**：进入新市场或推出新产品线
+**处理方法**：回顾现有品牌 → 适应新环境 → 制定扩展指导方针
+**输出**：包含扩展内容的品牌指导方针
 
-## Tips for Effective Brand Analysis
+## 有效品牌分析的技巧
 
-1. **Start with Why**: Understanding purpose drives better brand decisions
-2. **Think Long-term**: Brand should be enduring, not trendy
-3. **Stay Authentic**: Brand must reflect true organizational values
-4. **Be Consistent**: Repetition builds recognition
-5. **Consider Context**: Brand exists in competitive and cultural context
-6. **Measure Impact**: Track brand health metrics over time
-7. **Evolve Thoughtfully**: Brands should evolve, but deliberately
-8. **Empower Team**: Guidelines should enable, not restrict creativity
+1. **从“为什么”开始**：理解品牌目的有助于做出更好的决策
+2. **长远考虑**：品牌应具有持久性，而非短暂流行
+3. **保持真实性**：品牌必须反映组织的真实价值观
+4. **保持一致性**：重复性有助于建立品牌认知
+5. **考虑环境**：品牌存在于竞争和文化环境中
+6. **衡量影响**：定期跟踪品牌健康指标
+7. **审慎发展**：品牌应逐步演变
+8. **赋能团队**：指导方针应支持而非限制创造力

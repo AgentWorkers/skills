@@ -1,6 +1,6 @@
 ---
 name: options-spread-conviction-engine
-description: Multi-regime options spread analysis engine with Kelly Criterion Position Sizing. Scores vertical spreads (bull put, bear call, bull call, bear put) and multi-leg strategies (iron condors, butterflies, calendar spreads) using Ichimoku, RSI, MACD, Bollinger Bands, IV term structure, and mathematically-optimal Kelly position sizing. Outputs 0-100 conviction scores with actionable recommendations and contract sizing.
+description: 多策略期权价差分析引擎，结合凯利准则（Kelly Criterion）进行头寸调整。该引擎利用一目均衡线（Ichimoku）、相对强弱指数（RSI）、移动平均收敛发散指标（MACD）、布林带（Bollinger Bands）以及隐含波动率（IV）的期限结构等技术指标，对垂直价差组合（牛市看跌期权、熊市看涨期权、牛市看涨期权、熊市看跌期权）和多腿期权策略（铁秃鹰策略、蝴蝶式期权组合、日历价差组合）进行评分。同时，根据数学最优的凯利准则计算头寸规模，并生成0-100分之间的置信度评分及可操作的交易建议。
 version: 2.2.0
 author: Leonardo Da Pinchy
 metadata:
@@ -15,11 +15,11 @@ metadata:
         label: "Setup isolated Python environment with dependencies"
 ---
 
-# Options Spread Conviction Engine
+# 选项价差判断引擎
 
-**Multi-regime options spread scoring using technical indicators and IV term structure analysis.**
+**该引擎利用技术指标和隐含波动率（IV）期限结构分析，对多种期权策略进行评分。**
 
-## Install
+## 安装
 
 ```bash
 brew install jq
@@ -27,145 +27,139 @@ npm install yahoo-finance2
 sudo ln -s /opt/homebrew/bin/yahoo-finance /usr/local/bin/yf
 ```
 
-## Overview
+## 概述
 
-This engine analyzes any ticker and scores **seven** options strategies across two categories:
+该引擎可以分析任意股票，并对以下两类期权策略进行评分：
 
-### Vertical Spreads (Directional)
-| Strategy | Type | Philosophy | Ideal Setup |
+### 垂直价差（方向性策略）
+| 策略 | 类型 | 基本原理 | 理想设置 |
 |----------|------|------------|-------------|
-| **bull_put** | Credit | Mean Reversion | Bullish trend + oversold dip |
-| **bear_call** | Credit | Mean Reversion | Bearish trend + overbought rip |
-| **bull_call** | Debit | Breakout | Strong bullish momentum |
-| **bear_put** | Debit | Breakout | Strong bearish momentum |
+| **看涨卖空** | 正值期权费 | 均值回归 | 上涨趋势 + 超卖低点 |
+| **看跌买入** | 正值期权费 | 均值回归 | 下跌趋势 + 超买高点 |
+| **看涨买入** | 负值期权费 | 布局突破 | 强劲上涨动能 |
+| **看跌卖空** | 负值期权费 | 布局突破 | 强劲下跌动能 |
 
-### Multi-Leg Strategies (Non-Directional / Theta)
-| Strategy | Type | Philosophy | Ideal Setup |
+### 多腿策略（非方向性/Theta策略）
+| 策略 | 类型 | 基本原理 | 理想设置 |
 |----------|------|------------|-------------|
-| **iron_condor** | Credit | Premium Selling | IV Rank >70, RSI neutral, range-bound |
-| **butterfly** | Debit | Pinning Play | BB squeeze, RSI center, low ADX |
-| **calendar** | Debit | Theta Harvest | Inverted IV term structure (front > back) |
+| **铁秃鹫** | 正值期权费 | 卖出高溢价期权 | IV排名 >70，RSI中性，价格波动范围有限 |
+| **蝴蝶式** | 负值期权费 | 固定价格策略 | 波浪带收窄，RSI处于中间位置，ADX较低 |
+| **日历价差** | 负值期权费 | 利用IV期限结构差异获利 | IV期限结构倒置（前端 > 后端） |
 
-## Scoring Methodology
+## 评分方法
 
-### Vertical Spreads
+### 垂直价差
 
-Weights vary by strategy type (Credit = Mean Reversion, Debit = Breakout):
+不同策略的权重不同（正值期权费 = 均值回归；负值期权费 = 布局突破）：
 
-#### Credit Spreads (bull_put, bear_call)
-| Indicator | Weight | Purpose |
+#### 正值期权费价差（看涨卖空，看跌买入）
+| 指标 | 权重 | 作用 |
 |-----------|--------|---------|
-| Ichimoku Cloud | 25 pts | Trend structure & equilibrium |
-| RSI | 20 pts | Entry timing (mean-reversion) |
-| MACD | 15 pts | Momentum confirmation |
-| Bollinger Bands | 25 pts | Volatility regime |
-| ADX | 15 pts | Trend strength validation |
+| 一目均衡线 | 25分 | 判断趋势结构和平衡状态 |
+| RSI | 20分 | 进场时机（均值回归） |
+| MACD | 15分 | 动能确认 |
+| 波浪带 | 25分 | 波动性判断 |
+| ADX | 15分 | 判断趋势强度 |
 
-#### Debit Spreads (bull_call, bear_put)
-| Indicator | Weight | Purpose |
+#### 负值期权费价差（看涨买入，看跌卖空）
+| 指标 | 权重 | 作用 |
 |-----------|--------|---------|
-| Ichimoku Cloud | 20 pts | Trend confirmation |
-| RSI | 10 pts | Directional momentum |
-| MACD | 30 pts | Breakout acceleration |
-| Bollinger Bands | 25 pts | Bandwidth expansion |
-| ADX | 15 pts | Trend strength validation |
+| 一目均衡线 | 20分 | 判断趋势 |
+| RSI | 10分 | 判断方向动能 |
+| MACD | 30分 | 判断突破速度 |
+| 波浪带 | 25分 | 波动带宽度变化 |
+| ADX | 15分 | 判断趋势强度 |
 
-### Multi-Leg Strategies
+### 多腿策略
 
-#### Iron Condor (Credit / Range-Bound)
-| Component | Weight | Rationale |
+#### 铁秃鹫（正值期权费 / 价格波动范围有限）
+| 组件 | 权重 | 原理 |
 |-----------|--------|-----------|
-| IV Rank (BBW %) | 25 pts | Rich premiums to sell |
-| RSI Neutrality | 20 pts | No directional momentum |
-| ADX Range-Bound | 20 pts | Weak trend = range structure |
-| Price Position | 20 pts | Centered in range = safe margins |
-| MACD Neutrality | 15 pts | No acceleration in any direction |
+| IV排名（波浪带宽度百分比） | 25分 | 高溢价期权可供卖出 |
+| RSI中性 | 20分 | 无方向性动能 |
+| ADX波动范围有限 | 20分 | 趋势较弱 = 价格波动范围有限 |
+| 价格位置 | 20分 | 价格位于波动范围内 = 风险较低 |
+| MACD中性 | 15分 | 无方向性加速 |
 
-**Triggers:**
-- IV Rank > 70: Premium-rich environment
-- RSI 40-60: Neutral momentum
-- ADX < 25: Weak/no trend
-- Price near %B center: Max profit zone maximized
+**触发条件：**
+- IV排名 > 70：高溢价环境
+- RSI 40-60：动能中性 |
+- ADX < 25：趋势较弱/无趋势 |
+- 价格接近中间位置：利润最大化区域
 
-**Strike Selection:**
-- SELL put at 1-sigma below price (short put)
-- BUY put at 2-sigma below (long put — wing)
-- SELL call at 1-sigma above price (short call)
-- BUY call at 2-sigma above (long call — wing)
+**执行策略：**
+- 在价格下方1标准差处卖出看跌期权（卖空）
+- 在价格下方2标准差处买入看跌期权（多头看跌）
+- 在价格上方1标准差处卖出看涨期权（卖空）
+- 在价格上方2标准差处买入看涨期权（多头看涨）
 
-**Output:**
-- All 4 strikes (put_long, put_short, call_short, call_long)
-- Max profit zone (width between short strikes)
-- Wing width
+**输出结果：**
+- 四个执行价格（看跌多头，看跌空头，看涨空头，看涨多头）
+- 最大利润区域（空头执行价格之间的区间）
+- 翅部宽度
 
-#### Butterfly (Debit / Volatility Compression)
-| Component | Weight | Rationale |
+#### 蝴蝶式策略（负值期权费 / 波动性压缩）
+| 组件 | 权重 | 原理 |
 |-----------|--------|-----------|
-| BB Squeeze | 30 pts | Vol compression = narrow range |
-| RSI Neutrality | 25 pts | Price at equilibrium |
-| ADX Weakness | 20 pts | No directional trend at all |
-| Price Centering | 15 pts | At center of range for max profit |
-| MACD Flatness | 10 pts | No momentum |
+| 波浪带收窄 | 30分 | 波动性压缩 = 价格波动范围缩小 |
+| RSI中性 | 25分 | 价格处于平衡状态 |
+| ADX较弱 | 无方向性趋势 |
+| 价格位于波动范围中间 | 位于波动范围中间以实现最大利润 |
+| MACD平缓 | 10分 | 无动能 |
 
-**Triggers:**
-- BBW percentile < 25: Squeeze active
-- RSI 45-55: Dead-center (tighter than condor)
-- ADX < 20: Very weak trend
-- MACD histogram near zero
-- Price at %B = 0.50
+**触发条件：**
+- 波浪带宽度百分比 < 25：波动带收窄明显 |
+- RSI 45-55：价格处于中间位置（比铁秃鹫策略更严格）
+- ADX < 20：趋势非常弱 |
+- MACD柱状图接近零 |
+- 价格位于中间位置（0.50）
 
-**Strike Selection:**
-- BUY 1 call at strike below center (lower wing)
-- SELL 2 calls at center strike (body)
-- BUY 1 call at strike above center (upper wing)
+**执行策略：**
+- 在中间价格下方买入1个看涨期权（下翼）
+- 在中间价格买入2个看涨期权（主体部分）
+- 在中间价格上方买入1个看涨期权（上翼）
 
-**Output:**
-- 3 strikes (lower_long, middle_short, upper_long)
-- Max profit price (= middle strike)
-- Profit zone (approximate breakevens)
+**输出结果：**
+- 三个执行价格（下翼多头，中间空头，上翼多头）
+- 最大利润价格（等于中间价格）
+- 利润区域（大致的盈亏平衡点）
 
-#### Calendar Spread (Debit / Theta Harvesting)
-| Component | Weight | Rationale |
+#### 日历价差（负值期权费 / 利用IV期限结构差异获利）
+| 组件 | 权重 | 原理 |
 |-----------|--------|-----------|
-| IV Term Structure | 30 pts | Front IV > Back IV = theta edge |
-| Price Stability | 20 pts | Price stays near strike |
-| RSI Neutrality | 20 pts | Not trending away from strike |
-| ADX Moderate | 15 pts | Some structure, not trending hard |
-| MACD Neutrality | 15 pts | No directional acceleration |
+| IV期限结构 | 30分 | 前端IV > 后端IV = 利用IV期限结构差异 |
+| 价格稳定性 | 20分 | 价格接近执行价格 |
+| RSI中性 | 20分 | 价格没有偏离执行价格 |
+| ADX适中 | 15分 | 有一定趋势结构，但趋势不明显 |
+| MACD中性 | 15分 | 无方向性加速 |
 
-**Triggers:**
-- Front-month IV > Back-month IV by > 5%: Inverted term structure
-- Low recent volatility: Price stability
-- RSI neutral: No directional momentum
-- ADX 18-25: Moderate trend structure (not chaos)
+**数据来源：**
+- 主要数据来源：Yahoo Finance的实时期权链隐含波动率
+- 备用数据来源：历史波动率（10天与30天的对比）
 
-**Data Sources:**
-- Primary: Live options chain IV from Yahoo Finance
-- Fallback: Historical volatility proxy (HV 10-day vs 30-day)
+**执行策略：**
+- 执行价格：标准执行价格区间
+- 前端到期日：最接近的可用日期
+- 后端到期日：前端到期日后25天以上
 
-**Strike Selection:**
-- ATM strike (rounded to standard interval)
-- Front expiry: nearest available
-- Back expiry: 25+ days after front
+**输出结果：**
+- 单一执行价格（两个期权腿）
+- 前端和后端到期日
+- IV差异百分比
+- IV期限结构差异的描述
 
-**Output:**
-- Single strike (both legs)
-- Front and back expiry dates
-- IV differential (%)
-- Theta advantage description
+## 评分等级
 
-## Conviction Tiers
-
-| Score | Tier | Action |
+| 评分 | 等级 | 行动 |
 |-------|------|--------|
-| 80-100 | EXECUTE | High conviction — Enter the spread |
-| 60-79 | PREPARE | Favorable — Size the trade |
-| 40-59 | WATCH | Interesting — Add to watchlist |
-| 0-39 | WAIT | Poor conditions — Avoid / No setup |
+| 80-100 | 执行 | 信心度高 — 进行价差交易 |
+| 60-79 | 准备 | 条件有利 — 调整交易规模 |
+| 40-59 | 关注 | 有潜力 — 加入观察列表 |
+| 0-39 | 等待 | 条件不佳 — 避免交易 |
 
-## Usage
+## 使用方法
 
-### Vertical Spreads
+### 垂直价差
 
 ```bash
 # Basic analysis (auto-detects best strategy)
@@ -176,7 +170,7 @@ conviction-engine SPY --strategy bear_call
 conviction-engine QQQ --strategy bull_call --period 2y
 ```
 
-### Multi-Leg Strategies
+### 多腿策略
 
 ```bash
 # Iron Condor — high IV, range-bound
@@ -189,21 +183,21 @@ conviction-engine AAPL --strategy butterfly
 conviction-engine TSLA --strategy calendar
 ```
 
-### Multiple Tickers
+### 多个股票
 
 ```bash
 conviction-engine AAPL MSFT GOOGL --strategy bull_put
 conviction-engine SPY QQQ IWM --strategy iron_condor
 ```
 
-### JSON Output (for automation)
+### 自动化所需的JSON输出
 
 ```bash
 conviction-engine TSLA --strategy butterfly --json
 conviction-engine SPY --strategy calendar --json | jq '.[0].iv_term_structure'
 ```
 
-### Full Options
+### 完整的期权策略
 
 ```bash
 conviction-engine <ticker> [ticker...]
@@ -213,9 +207,9 @@ conviction-engine <ticker> [ticker...]
   --json
 ```
 
-## Example Outputs
+## 示例输出
 
-### Iron Condor
+### 铁秃鹫策略
 
 ```
 ================================================================================
@@ -235,7 +229,7 @@ Strikes:
   Wing Width: $5.00
 ```
 
-### Butterfly
+### 蝴蝶式策略
 
 ```
 ================================================================================
@@ -253,7 +247,7 @@ Strikes:
   Profit Zone: ~$685.0 - $695.0
 ```
 
-### Calendar Spread
+### 日历价差策略
 
 ```
 ================================================================================
@@ -272,31 +266,31 @@ Strikes:
   Theta Advantage: Front IV > Back IV by 41.7%
 ```
 
-## IV Rank Approximation
+## IV排名估算
 
-IV Rank is approximated using **Bollinger Bandwidth (BBW) percentile** over 252 trading days:
+IV排名是通过**252个交易日的波浪带宽度百分比**来估算的：
 
 ```
 IV Rank ≈ (Current BBW - 52wk Low BBW) / (52wk High BBW - 52wk Low BBW) × 100
 ```
 
-This correlation is well-documented: realized volatility (BBW) and implied volatility rank move with ~0.7-0.8 correlation (Sinclair, "Volatility Trading", 2013).
+这种相关性已有充分文献支持：实际波动率（波浪带宽度百分比）与隐含波动率排名之间的相关性约为0.7-0.8（Sinclair, "Volatility Trading", 2013）。
 
-## IV Term Structure
+## IV期限结构
 
-For calendar spreads, the engine attempts to fetch live ATM implied volatility from Yahoo Finance options chains. If unavailable, it falls back to historical volatility term structure (HV 10-day vs HV 30-day) as a proxy.
+对于日历价差，该引擎会尝试从Yahoo Finance的期权链中获取实时隐含波动率。如果无法获取，则使用历史波动率数据（10天与30天的对比）作为替代。
 
-## Academic Foundation
+## 学术基础
 
-- **Ichimoku Cloud** — Trend structure (Hosoda, 1968)
-- **RSI** — Momentum oscillator (Wilder, 1978)
-- **MACD** — Trend momentum (Appel, 1979)
-- **Bollinger Bands** — Volatility envelopes (Bollinger, 2001)
-- **IV Rank / Term Structure** — Options market microstructure (Sinclair, 2013)
+- **一目均衡线** — 判断趋势结构（Hosoda, 1968）
+- **RSI** — 动能振荡器（Wilder, 1978）
+- **MACD** — 判断趋势动能（Appel, 1979）
+- **波浪带** — 判断波动性（Bollinger, 2001）
+- **IV排名/期限结构** — 期权市场的微观结构（Sinclair, 2013）
 
-Combining orthogonal signals reduces false-positive rate compared to single-indicator strategies (Pring, 2002; Murphy, 1999).
+结合多种指标可以降低误判率（Pring, 2002; Murphy, 1999）。
 
-## Architecture
+## 架构
 
 ```
 conviction-engine/
@@ -314,83 +308,80 @@ conviction-engine/
 └── SKILL.md                        # This documentation
 ```
 
-### Module Separation
+### 模块分离
 
-- **spread_conviction_engine.py**: Vertical spreads, shared infrastructure (data fetching, indicator computation)
-- **multi_leg_strategies.py**: Iron condors, butterflies, calendars (imports from main engine)
+- **spread_conviction_engine.py**：处理垂直价差策略，共享基础设施（数据获取、指标计算）
+- **multi_leg_strategies.py**：处理多腿策略（铁秃鹫、蝴蝶式、日历价差）
 
-This separation keeps concerns clean while avoiding duplication.
+这种分离有助于保持代码的整洁性，并避免重复代码。
 
-## Limitations & Assumptions
+## 限制与假设
 
-### IV Data
-- **Yahoo Finance Limitations**: Options chains may be unavailable after market hours or for low-volume tickers
-- **Fallback**: Historical volatility (HV) proxy is less accurate than live IV but provides signal
-- **IV Rank**: Approximated from BBW; actual IV Rank requires options chain data
+### IV数据
+- **Yahoo Finance的限制**：在市场关闭时间或某些低成交量股票的期权链可能无法获取数据
+- **备用数据**：历史波动率数据虽然不如实时数据准确，但可以提供交易信号
+- **IV排名**：通过波浪带宽度百分比估算；实际IV排名需要期权链数据
 
-### Strike Selection
-- **Approximation**: Strikes derived from Bollinger Band levels (1-sigma / 2-sigma)
-- **Rounding**: Rounded to standard option strike intervals based on stock price
-- **No Live Pricing**: Does not fetch live option premiums; strike selection is structural, not value-optimized
+### 执行价格选择
+- **估算方法**：根据波浪带水平确定执行价格（1标准差/2标准差）
+- **价格四舍五入**：根据股票价格四舍五入到标准期权执行价格区间
+- **无法获取实时价格**：不获取实时期权溢价；执行价格选择基于结构，而非价值优化
 
-### Data Quality
-- Minimum 180 trading days required for full Ichimoku cloud population
-- Multi-leg strategies require options chains (calendar spreads especially)
-- After-hours analysis may have reduced data quality
+### 数据质量
+- 需要至少180个交易日的数据才能完整计算一目均衡线
+- 多腿策略（尤其是日历价差）需要期权链数据
+- 市场关闭时间后的分析可能导致数据质量下降
 
-### Market Assumptions
-- Assumes normal options market conditions (not extreme volatility events)
-- Strike intervals assume US equity options conventions
-- Not tested on futures, commodities, or non-US markets
+## 市场假设
+- 假设市场条件正常（无极端波动事件）
+- 执行价格基于美国股票期权惯例
+- 未针对期货、商品或非美国市场进行测试
 
-## Requirements
+## 系统要求
 
-- Python 3.10+ (Python 3.14+ supported via pure-python mode)
-- Isolated virtual environment (auto-created on first run)
-- Internet connection (fetches data from Yahoo Finance)
+- Python 3.10及以上版本（Python 3.14及以上版本支持纯Python模式）
+- 需要隔离的虚拟环境（首次运行时会自动创建）
+- 需要互联网连接（用于从Yahoo Finance获取数据）
 
-## Installation
+## 安装过程
 
 ```bash
 clawhub install options-spread-conviction-engine
 ```
 
-The skill automatically creates a virtual environment and installs:
+该工具会自动创建虚拟环境并安装以下软件：
 - pandas >= 2.0
-- pandas_ta >= 0.4.0 (pure Python mode on 3.14+)
+- pandas_ta >= 0.4.0（Python 3.14及以上版本支持纯Python模式）
 - yfinance >= 1.0
 - scipy, tqdm
 
-**Note:** On Python 3.14+, the engine runs in pure Python mode without numba. Performance is slightly reduced but all functionality works correctly.
+**注意：** 在Python 3.14及以上版本中，该工具以纯Python模式运行，不使用numba库。虽然性能略有下降，但所有功能都能正常使用。
 
-## Market Scanners
+## 市场扫描工具
 
-The engine includes two distinct scanning tools for different trading philosophies:
+该工具包含两种不同的扫描工具，适用于不同的交易策略：
 
-### 1. Technical Scanner (market_scanner.py)
-Automates the search for high-conviction plays across entire stock universes using technical indicators (Ichimoku, RSI, MACD, BB).
+### 1. 技术扫描工具（market_scanner.py）
+- 使用技术指标（一目均衡线、RSI、MACD、波浪带）自动搜索高信心度的交易机会。
+- 支持扫描标准普尔500指数、纳斯达克100指数或自定义股票列表。
+- 可过滤出信心度高于80的策略进行执行。
 
-#### Features
-- Scans S&P 500, Nasdaq 100, or custom ticker lists.
-- Filters for EXECUTE tier (conviction ≥80).
-- Runs position sizing to ensure trades fit account guardrails.
-
-#### Usage
+#### 使用方法
 ```bash
 # Scan S&P 500 for high-conviction technical setups
 python3 scripts/market_scanner.py --universe sp500
 ```
 
-### 2. Quantitative Scanner (quant_scanner.py)
-A mathematically-rigorous scanner that ignores technical indicators in favor of market microstructure and probability.
+### 2. 定量扫描工具（quant_scanner.py）
+- 该工具不使用技术指标，而是基于市场微观结构和概率进行交易策略分析。
 
-#### Features
-- **IV Surface Analysis**: Analyzes skew and term structure.
-- **Monte Carlo POP**: 10,000-run simulations for true Probability of Profit.
-- **EV Optimization**: Finds trades with the highest risk-adjusted mathematical expectancy.
-- **Account-Aware**: Enforces small-account constraints ($100 max risk).
+#### 功能：
+- **IV表面分析**：分析波动率分布和期限结构。
+- **蒙特卡洛模拟**：进行10,000次模拟以评估真实盈利概率。
+- **期望值优化**：寻找风险调整后的最高期望收益交易。
+- **考虑账户限制**：确保交易符合账户风险限制（最大风险为100美元）。
 
-#### Usage
+#### 使用方法
 ```bash
 # Maximize POP (Probability of Profit) for SPY
 python3 scripts/quant_scanner.py SPY --mode pop
@@ -399,59 +390,47 @@ python3 scripts/quant_scanner.py SPY --mode pop
 python3 scripts/quant_scanner.py AAPL TSLA --mode ev --min-dte 30
 ```
 
-## Calculator & Position Sizer
+## 计算器与交易规模调整工具
 
-The integrated toolchain includes:
+该工具包括以下组件：
 
 ### calculator.py
-Black-Scholes options pricing with support for:
-- Single options: calls, puts
-- Vertical spreads: bull call, bear put
-- Multi-leg: iron condors, butterflies
-- Greeks calculation (delta, gamma, theta, vega, rho)
-- Monte Carlo POP simulation
+- 支持Black-Scholes期权定价算法，包括：
+- 单个期权：看涨期权、看跌期权
+- 垂直价差：看涨买入、看跌卖出
+- 多腿策略：铁秃鹫、蝴蝶式策略
+- 计算期权希腊值（delta、gamma、theta、vega、rho）
+- 进行蒙特卡洛模拟
 
 ### position_sizer.py
-Kelly criterion position sizing adapted for small accounts:
-- Full Kelly and fractional Kelly (default 0.25)
-- Account guardrails ($390 default, $100 max risk)
-- Trade screening and ranking
-- Strike adjustment suggestions
+- 适用于小型账户的Kelly准则交易规模调整：
+- 提供完整的Kelly准则和分数Kelly准则（默认为0.25）
+- 考虑账户风险限制（最大风险为100美元）
+- 提供交易筛选和排名功能
+- 提供执行价格调整建议
 
-```python
-from position_sizer import calculate_position
+## 相关文件
 
-result = calculate_position(
-    account_value=390,
-    max_loss_per_spread=80,
-    win_amount=40,
-    pop=0.65,
-)
-# Returns: contracts, total_risk, recommendation, reason
-```
+- `scripts/conviction-engine` — 主要的命令行界面脚本
+- `scripts/spread_conviction_engine.py` — 核心价差判断引擎
+- `scripts/multi_leg_strategies.py` — 多腿策略扩展（版本2.0.0）
+- `scripts/market_scanner.py** — 自动化市场扫描工具
+- `scripts/calculator.py` — Black-Scholes定价、希腊值计算、蒙特卡洛模拟
+- `scripts/position_sizer.py` — Kelly准则交易规模调整工具
+- `scripts/setup-venv.sh` — 环境设置脚本
+- `data/sp500_tickers.txt` — 标准普尔500指数成分股列表
+- `data/ndx100_tickers.txt` — 纳斯达克100指数成分股列表
+- `assets/` — 文档和示例代码
 
-## Files
+## 版本历史
 
-- `scripts/conviction-engine` — Main CLI wrapper for conviction engine
-- `scripts/spread_conviction_engine.py` — Core engine (vertical spreads)
-- `scripts/multi_leg_strategies.py` — Multi-leg extensions (v2.0.0)
-- `scripts/market_scanner.py` — Automated market scanner for EXECUTE plays
-- `scripts/calculator.py` — Black-Scholes pricing, Greeks, Monte Carlo POP
-- `scripts/position_sizer.py` — Kelly criterion position sizing
-- `scripts/setup-venv.sh` — Environment setup
-- `data/sp500_tickers.txt` — S&P 500 constituents
-- `data/ndx100_tickers.txt` — Nasdaq 100 constituents
-- `assets/` — Documentation and examples
+- **v2.2.0**（2026-02-13）：添加了Kelly准则交易规模调整、边缘计算和账户风险限制功能
+- **v2.1.0**（2026-02-12）：增加了市场扫描工具和计算器/交易规模调整工具
+- **v2.0.0**（2026-02-12）：增加了多腿策略（铁秃鹫、蝴蝶式、日历价差）
+- **v1.2.1**（2026-02-09）：添加了交易量调整功能和动态执行价格建议
+- **v1.1.0**（2026-02-08）：增加了多信号加权功能和支持多种策略
+- **v1.0.0**（2026-02-07）：初始版本，仅包含看跌卖空策略
 
-## Version History
+## 许可证
 
-- **v2.2.0** (2026-02-13): Kelly Criterion position sizing with full/half Kelly, edge calculation, and account-aware contract sizing
-- **v2.1.0** (2026-02-12): Added market scanner, integrated calculator and position sizer
-- **v2.0.0** (2026-02-12): Added multi-leg strategies (iron condor, butterfly, calendar)
-- **v1.2.1** (2026-02-09): Volume multiplier, dynamic strike suggestions
-- **v1.1.0** (2026-02-08): Cross-signal weighting, multi-strategy support
-- **v1.0.0** (2026-02-07): Initial bull put spread engine
-
-## License
-
-MIT — Part of the Financial Toolkit for OpenClaw
+MIT许可证 — 该工具属于OpenClaw金融工具包的一部分

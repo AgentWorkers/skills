@@ -1,6 +1,6 @@
 ---
 name: workflowy
-description: Workflowy outliner CLI for reading, searching, and editing nodes. Use when the user wants to interact with their Workflowy outline — searching, adding items, viewing trees, marking complete, bulk operations, or usage reports.
+description: 这是一个用于阅读、搜索和编辑 Workflowy 大纲的命令行工具（CLI）。当用户需要与他们的 Workflowy 大纲进行交互时，可以使用该工具：搜索内容、添加新项目、查看大纲结构、标记已完成的项目、执行批量操作或生成使用报告等。
 homepage: https://github.com/mholzen/workflowy
 metadata:
   {
@@ -22,22 +22,22 @@ metadata:
   }
 ---
 
-# workflowy
+# Workflowy
 
-Use the unofficial `workflowy` CLI [mholzen/workflowy](https://github.com/mholzen/workflowy) for managing a Workflowy outline. Requires API key setup.
+可以使用非官方的 `workflowy` 命令行工具（[mholzen/workflowy](https://github.com/mholzen/workflowy)）来管理 Workflowy 的大纲。使用该工具需要先设置 API 密钥。
 
-## Setup (once)
+## 设置（仅一次）
 
-Get your API key at https://workflowy.com/api-key/, and save it to `~/.workflowy/api.key`:
+在 https://workflowy.com/api-key/ 获取你的 API 密钥，并将其保存到 `~/.workflowy/api.key` 文件中：
 
 ```bash
 mkdir -p ~/.workflowy
 echo "your-api-key-here" > ~/.workflowy/api.key
 ```
 
-## Common commands
+## 常用命令
 
-### Reading
+### 阅读
 
 ```bash
 # Get root nodes (depth 2 by default)
@@ -60,7 +60,7 @@ workflowy search -E "<time.*>"
 workflowy search "bug" --item-id <parent-id>
 ```
 
-### Writing
+### 编写
 
 ```bash
 # Add a new node to the Inbox
@@ -83,7 +83,7 @@ workflowy move <item-id> <new-parent-id>
 workflowy delete <item-id>
 ```
 
-### Bulk operations
+### 批量操作
 
 ```bash
 # Search and replace (dry run first!)
@@ -100,7 +100,7 @@ workflowy transform <item-id> split -s "\n"
 workflowy transform <item-id> trim
 ```
 
-### Statistics
+### 统计信息
 
 ```bash
 # Where is most content?
@@ -116,39 +116,39 @@ workflowy report modified --top-n 50
 workflowy report mirrors --top-n 20
 ```
 
-## Data Access Methods
+## 数据访问方法
 
-| Method            | Speed         | Freshness | Use For           |
+| 方法                | 速度          | 数据更新频率 | 适用场景           |
 |-------------------|---------------|-----------|-------------------|
-| `--method=get`    | Medium        | Real-time | Specific items    |
-| `--method=export` | Fast (cached) | ~1 min    | Full tree access  |
-| `--method=backup` | Fastest       | Stale     | Bulk ops, offline |
+| `--method=get`    | 中等          | 实时        | 查看特定项目        |
+| `--method=export` | 快速（缓存数据）    | 约 1 分钟     | 访问整个大纲结构     |
+| `--method=backup` | 最快          | 数据已过时     | 批量操作、离线使用     |
 
-For offline mode, enable Workflowy's Dropbox backup:
+若需离线使用 Workflowy，需启用其 Dropbox 备份功能：
 ```bash
 workflowy get --method=backup
 ```
 
-## Short IDs
+## 简短 ID
 
-Workflowy supports short IDs, obtained from the "Copy Internal Link" menu:
-- Web URL: `https://workflowy.com/#/59fc7acbc68c`
-- Can be used directly, e.g. `workflowy get https://workflowy.com/#/59fc7acbc68c`
+Workflowy 支持使用从“复制内部链接”菜单获得的短 ID：
+- 网址示例：`https://workflowy.com/#/59fc7acbc68c`
+- 可直接使用，例如：`workflowy get https://workflowy.com/#/59fc7acbc68c`
 
-## Special named targets
+## 特殊命名的目标节点
 
-- `inbox` — user's inbox
-- `home` — root of outline
+- `inbox`    — 用户的收件箱
+- `home`    — 大纲的根节点
 
 ```bash
 workflowy create "Quick note" --parent-id=inbox
 workflowy id inbox  # resolve to UUID
 ```
 
-## Notes
+## 注意事项
 
-- Deleting a node also deletes all its children
-- Results are sorted by priority (display order)
-- Use `--method=export` for large tree operations (cached, faster)
-- Mirror analysis requires using the backup method
-- Make sure to confirm before performing bulk replace operations
+- 删除一个节点会同时删除其所有子节点。
+- 结果会按照优先级排序显示。
+- 对于大型大纲结构，建议使用 `--method=export` 命令进行操作（该命令会使用缓存，速度更快）。
+- 需要使用备份功能才能进行镜像分析。
+- 在执行批量替换操作前，请务必确认操作内容。

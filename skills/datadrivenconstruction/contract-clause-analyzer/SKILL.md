@@ -1,24 +1,24 @@
 ---
 slug: "contract-clause-analyzer"
 display_name: "Contract Clause Analyzer"
-description: "Analyze construction contract clauses. Identify risks, obligations, and key terms using NLP."
+description: "分析建筑合同条款。利用自然语言处理（NLP）技术识别合同中的风险、义务以及关键条款。"
 ---
 
-# Contract Clause Analyzer
+# 合同条款分析器
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-Contract review is time-consuming and error-prone:
-- Important clauses missed
-- Risk provisions overlooked
-- Inconsistent interpretation
-- Long review cycles
+### 问题描述
+合同审查耗时且容易出错：
+- 重要条款被遗漏
+- 风险条款被忽视
+- 解释存在分歧
+- 审查周期过长
 
-### Solution
-AI-assisted contract clause analysis that identifies key provisions, flags risks, and extracts critical terms.
+### 解决方案
+利用人工智能辅助进行合同条款分析，能够识别关键条款、标出风险并提取关键术语。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -311,7 +311,7 @@ class ContractClauseAnalyzer:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 analyzer = ContractClauseAnalyzer()
@@ -328,5 +328,5 @@ for clause in high_risk:
     print(f"{clause.clause_id}: {clause.title}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 5 - Contract Management
+## 资源参考
+- **DDC手册**：第5章 - 合同管理

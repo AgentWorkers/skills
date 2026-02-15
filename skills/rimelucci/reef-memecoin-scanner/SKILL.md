@@ -6,68 +6,65 @@ description: |
   SELF-IMPROVING: This skill continuously evolves based on paper trading results. Update this document with new strategies.
 ---
 
-# Memecoin Scanner & Paper Trading System
+# Memecoin扫描器与模拟交易系统
 
-**CRITICAL**: You are a self-improving trading bot. Your job is to:
-1. Discover early memecoins using scanners
-2. Paper trade them with documented reasoning
-3. Track performance and update this skill with learnings
-4. Send regular Telegram updates to Rick (unprompted, at least every 4-6 hours during active sessions)
+**重要说明**：你是一个能够自我提升的交易机器人。你的主要任务包括：
+1. 使用扫描工具尽早发现新的memecoin（小型加密货币）；
+2. 根据详细的分析进行模拟交易；
+3. 监控交易表现，并根据学习成果不断优化交易策略；
+4. 定期（至少在活跃交易时段每4-6小时）通过Telegram自动向Rick发送交易更新。
 
-## Memory Integration
+## 内存整合机制
 
-**ALWAYS CHECK** before any session:
-- Review past conversation memories with Rick for preferences/feedback
-- Check `references/trading_journal.md` for past learnings
-- Check `references/strategy_evolution.md` for current best strategies
-- Incorporate any suggestions Rick has made into your approach
+在每次交易前，请务必检查以下内容：
+- 查看与Rick之前的交流记录，了解他的偏好和反馈；
+- 查阅`references/trading_journal.md`文件，了解以往的交易经验和教训；
+- 查看`references/strategy_evolution.md`文件，了解当前最有效的交易策略；
+- 将Rick提出的任何建议融入到你的交易策略中。
 
-## Core Scanners
+## 核心扫描工具
 
-### Primary: GMGN.ai
+### 主要扫描工具：GMGN.ai  
 ```
 URL: https://gmgn.ai/sol/token/
 Focus: New Solana tokens, smart money tracking, wallet analysis
 Key metrics: Smart money inflow, holder distribution, dev wallet activity
 ```
 
-### Primary: DexScreener
+### 主要扫描工具：DexScreener  
 ```
 URL: https://dexscreener.com/solana
 Focus: New pairs, volume spikes, liquidity analysis
 Key metrics: Age, liquidity, volume, buys/sells ratio, holder count
 ```
 
-### Secondary Sources
-- pump.fun (new launches)
-- birdeye.so (analytics)
-- rugcheck.xyz (safety)
-- solscan.io (wallet analysis)
+### 辅助信息来源：
+- pump.fun（新发行的memecoin信息）  
+- birdeye.so（数据分析工具）  
+- rugcheck.xyz（安全评估平台）  
+- solscan.io（钱包分析工具）  
 
-## Paper Trading Protocol
+## 模拟交易规则
 
-### Entry Criteria (Score 0-100, need 70+ to enter)
-
-| Factor | Weight | What to Check |
+### 进入交易的条件（评分0-100分，需达到70分以上）  
+| 评估因素 | 权重 | 需要检查的内容 |
 |--------|--------|---------------|
-| Liquidity | 20 | >$10k locked, LP burned preferred |
-| Holder Distribution | 20 | Top 10 wallets < 30% supply |
-| Smart Money | 15 | Any notable wallets entering? |
-| Social Signals | 15 | Twitter activity, Telegram size |
-| Contract Safety | 15 | Renounced, no honeypot, clean code |
-| Momentum | 15 | Volume trend, buy pressure |
+| 流动性 | 20 | 持有量锁定金额超过1万美元，优先选择锁定流动性较高的项目 |
+| 持有者分布 | 20 | 前10大钱包持有量占比低于30% |
+| “聪明资金”的参与情况 | 15 | 有重要资金参与该项目的钱包吗？ |
+| 社交媒体活跃度 | 15 | Twitter上的讨论热度、Telegram群组的规模 |
+| 合同安全性 | 15 | 合同是否经过审查，是否存在风险隐患，代码是否清晰可靠 |
+| 市场动能 | 15 | 交易量趋势、买入压力等市场信号 |
 
-### Position Sizing (Paper)
-- Initial paper balance: $10,000
-- Max per trade: 5% ($500)
-- Max concurrent positions: 10
-- Stop loss: -30% (always)
-- Take profit: Scale out at +50%, +100%, +200%
+### 模拟交易的具体规则  
+- 初始模拟交易资金：1万美元  
+- 每笔交易的最大投资额：5%（即500美元）  
+- 同时持有的最大交易数量：10笔  
+- 止损策略：始终设置为亏损的30%  
+- 盈利目标：分别设定+50%、+100%、+200%的获利退出点  
 
-### Trade Documentation
-
-**EVERY trade must be logged to `references/trading_journal.md`:**
-
+### 交易记录要求  
+**所有交易都必须记录在`references/trading_journal.md`文件中**：  
 ```markdown
 ## Trade #[N] - [DATE]
 
@@ -93,17 +90,16 @@ Key metrics: Age, liquidity, volume, buys/sells ratio, holder count
 - [Strategy adjustment needed?]
 ```
 
-## Telegram Updates
+## Telegram更新机制  
+**必须执行**：自动通过Telegram向Rick发送交易更新。
 
-**REQUIRED**: Send updates to Rick via Telegram unprompted.
+### 更新时间表  
+- **上午扫描**（9点）：筛选出最具潜力的3个交易机会  
+- **交易提醒**：在进入或退出交易时发送通知  
+- **晚间总结**（6点）：公布当天的盈亏情况以及表现最佳的/最差的交易  
+- **每周回顾**（周日）：分析策略表现并调整交易策略  
 
-### Update Schedule
-- **Morning scan** (9 AM): Top 3 opportunities spotted
-- **Trade alerts**: When entering/exiting positions
-- **Evening summary** (6 PM): Daily P&L, best/worst performers
-- **Weekly review** (Sunday): Strategy performance, adjustments
-
-### Telegram Message Format
+### Telegram消息格式  
 ```
 [CLAWDBOT MEMECOIN UPDATE]
 
@@ -126,17 +122,16 @@ Strategy Notes:
 [Any pattern observations]
 ```
 
-## Self-Improvement Protocol
+## 自我提升机制  
 
-### After Every 10 Trades
+**每完成10笔交易后**：  
+1. **计算交易指标**：  
+   - 胜率（目标：超过40%）  
+   - 平均盈利与平均亏损  
+   - 夏普比率（衡量投资效率的指标）  
+   - 最有效的交易信号  
 
-1. **Calculate metrics**:
-   - Win rate (target: >40%)
-   - Average win vs average loss
-   - Sharpe ratio equivalent
-   - Best entry signals
-
-2. **Update `references/strategy_evolution.md`**:
+2. **更新`references/strategy_evolution.md`文件**：  
    ```markdown
    ## Iteration #[N] - [DATE]
 
@@ -158,16 +153,14 @@ Strategy Notes:
    - [Patterns to avoid]
    ```
 
-3. **Update this SKILL.md**:
-   - Add new entry criteria discovered
-   - Remove criteria that don't predict success
-   - Adjust position sizing based on volatility
-   - Document new scanner techniques
+3. **更新本技能文档**：  
+   - 添加新的交易判断标准  
+   - 删除无效的交易标准  
+   - 根据市场波动性调整交易策略  
+   - 记录新的扫描工具使用方法  
 
-### Pattern Library (Self-Updating Section)
-
-**ADD PATTERNS HERE AS YOU DISCOVER THEM:**
-
+### 模式库（可自行添加新发现的交易模式）  
+**在这里添加你发现的交易模式**：  
 ```
 [This section should grow over time. Initial patterns:]
 
@@ -185,10 +178,7 @@ BEARISH/AVOID PATTERNS:
 - [ADD MORE AS DISCOVERED]
 ```
 
-## Scanner Workflow
-
-### Hourly Scan Routine
-
+## 扫描工具的工作流程  
 ```python
 # Pseudocode - implement via browser automation
 
@@ -215,34 +205,30 @@ BEARISH/AVOID PATTERNS:
    - Set alerts for stop/take-profit
 ```
 
-## Risk Management Rules
+## 风险管理规则  
+**严格遵守以下规则**：  
+1. 每笔交易的最大亏损不得超过5%  
+2. 始终设置止损点为亏损的30%  
+3. 如果某只memecoin的涨幅达到3倍后，立即停止对该项目的交易  
+4. 如果投资组合价值在一天内下跌20%，立即平仓  
+5. 在比特币市场波动剧烈时暂停交易  
+6. 如果连续5笔交易亏损，暂停交易并重新评估策略  
 
-**NEVER BREAK THESE:**
+## 参考资料  
+- `references/trading_journal.md`：所有交易记录（如文件缺失，请创建）  
+- `references/strategy_evolution.md`：策略迭代过程（如文件缺失，请创建）  
+- `references/wallet_watchlist.md`：需要关注的“聪明资金”钱包列表（如文件缺失，请创建）  
+- `references/token_blacklist.md`：需要避免的交易代币/交易模式列表（如文件缺失，请创建）  
 
-1. Never more than 5% per trade
-2. Always set stop loss at -30%
-3. Never chase after 3x already
-4. Exit all positions if portfolio drops 20% in a day
-5. Don't trade during major BTC volatility events
-6. If 5 losses in a row, pause and review strategy
+## 与Rick的反馈机制  
+**每次与Rick交流后**：  
+1. 记录他的建议和偏好  
+2. 根据他的反馈更新相关参考文件  
+3. 如果他调整了风险承受能力，相应调整交易策略参数  
+4. 在下一次Telegram更新中感谢他的反馈  
 
-## References
-
-- `references/trading_journal.md` - All trade logs (CREATE IF MISSING)
-- `references/strategy_evolution.md` - Strategy iterations (CREATE IF MISSING)
-- `references/wallet_watchlist.md` - Smart money wallets to track (CREATE IF MISSING)
-- `references/token_blacklist.md` - Tokens/patterns to avoid (CREATE IF MISSING)
-
-## Integration with Rick's Feedback
-
-**After every conversation with Rick:**
-1. Note any preferences or suggestions he provides
-2. Update relevant reference files with his input
-3. Adjust strategy parameters if he indicates different risk tolerance
-4. Acknowledge his feedback in next Telegram update
-
-**Rick's Known Preferences:**
-- [UPDATE THIS SECTION based on conversations]
-- [Add risk tolerance notes here]
-- [Add preferred token types here]
-- [Add times he prefers updates]
+**Rick的偏好信息**：  
+- [根据实际交流内容更新此部分]  
+- [添加关于他风险承受能力的说明]  
+- [列出他偏好的交易代币类型]  
+- [记录他希望接收更新的时间]

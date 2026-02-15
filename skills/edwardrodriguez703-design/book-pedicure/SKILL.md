@@ -1,23 +1,23 @@
 ---
 name: book-pedicure
-description: Book pedicure services through Lokuli MCP. Use when user needs to find and book pedicure. Triggers on requests like "book a pedicure", "find pedicure near me", or any pedicure service request.
+description: 通过 Lokuli MCP 预订足部护理服务。当用户需要查找和预订足部护理服务时使用该功能。该功能会在用户输入类似“预订足部护理”、“查找附近的足部护理服务”等请求时被触发。
 ---
 
-# uook pedicure
+# 预约足疗服务
 
-Book pedicure services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来预约足疗服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",

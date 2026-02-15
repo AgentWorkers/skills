@@ -1,19 +1,24 @@
 ---
 slug: "pdf-construction"
 display_name: "PDF Construction"
-description: "PDF processing for construction documents: RFIs, submittals, specifications, drawing packages. Extract data, merge packages, fill forms."
+description: "**建筑文档的PDF处理：**  
+包括请求报价（RFIs）、提交文件、技术规范以及图纸包。  
+主要功能包括：  
+- 提取数据；  
+- 合并多个文件包；  
+- 填写表格。"
 ---
 
-# PDF Processing for Construction
+# 用于建筑行业的PDF处理工具
 
-## Overview
+## 概述
 
-Adapted from Anthropic's PDF skill for construction document workflows.
+本工具基于Anthropic的PDF处理技能开发，专为建筑行业文档工作流程而设计。
 
-## Construction Use Cases
+## 建筑行业应用场景
 
-### 1. RFI Processing
-Extract structured data from Request for Information documents.
+### 1. 信息请求（RFI）处理
+从信息请求（Request for Information）文档中提取结构化数据。
 
 ```python
 from pypdf import PdfReader
@@ -40,8 +45,8 @@ def extract_rfi_data(pdf_path: str) -> dict:
     return {k: v.group(1) if v else None for k, v in rfi_data.items()}
 ```
 
-### 2. Submittal Package Creation
-Merge multiple PDFs into organized submittal packages.
+### 2. 提交文件包生成
+将多个PDF文件合并成有序的提交文件包。
 
 ```python
 from pypdf import PdfWriter, PdfReader
@@ -80,8 +85,8 @@ def create_submittal_package(
     return output_path
 ```
 
-### 3. Specification Extraction
-Extract specification sections for analysis.
+### 3. 规范内容提取
+提取规范文件中的相关内容以供分析。
 
 ```python
 import pdfplumber
@@ -115,8 +120,8 @@ def extract_spec_sections(pdf_path: str) -> dict:
     return sections
 ```
 
-### 4. Drawing Sheet Extraction
-Split drawing packages by sheet.
+### 4. 图纸文件提取
+按图纸类型将图纸文件分开。
 
 ```python
 def split_drawing_package(pdf_path: str, output_dir: str) -> list:
@@ -144,7 +149,7 @@ def split_drawing_package(pdf_path: str, output_dir: str) -> list:
     return sheets
 ```
 
-## Integration with DDC Pipeline
+## 与DDC流程的集成
 
 ```python
 # Example: Process RFI and add to tracking spreadsheet
@@ -164,14 +169,14 @@ tracker = pd.concat([tracker, new_row], ignore_index=True)
 tracker.to_excel("RFI_Log.xlsx", index=False)
 ```
 
-## Dependencies
+## 所需依赖库
 
 ```bash
 pip install pypdf pdfplumber reportlab
 ```
 
-## Resources
+## 参考资源
 
-- **Original**: Anthropic PDF Skill
-- **PyPDF Docs**: https://pypdf.readthedocs.io/
-- **PDFPlumber**: https://github.com/jsvine/pdfplumber
+- **原始来源**：Anthropic PDF处理技能
+- **PyPDF文档**：https://pypdf.readthedocs.io/
+- **PDFPlumber**：https://github.com/jsvine/pdfplumber

@@ -1,33 +1,33 @@
 ---
 name: gas-developer
-description: Google Apps Script specialist. Spreadsheet automation, Gmail, Calendar integration.
+description: Google Apps Script专家：专注于电子表格自动化以及Gmail和日历的集成工作。
 ---
 
-# GAS Developer
+# GAS 开发者
 
-Build Google Apps Script solutions for Spreadsheet automation, Gmail, Calendar, and Drive integration.
+开发用于电子表格自动化、Gmail、日历和 Drive 集成的 Google Apps Script 解决方案。
 
-## Instructions
+## 指令
 
-1. **Understand the requirement**: What Google service? What automation? What trigger?
-2. **Choose the right approach**:
+1. **理解需求**：需要使用哪种 Google 服务？需要实现什么自动化功能？触发条件是什么？
+2. **选择合适的方法**：
 
-   | Use Case | Service | Trigger |
+   | 使用场景 | 服务 | 触发条件 |
    |----------|---------|---------|
-   | Data processing | Spreadsheet | onEdit / time-driven |
-   | Email automation | Gmail | time-driven |
-   | Calendar sync | Calendar | time-driven / onChange |
-   | File management | Drive | time-driven |
-   | Form processing | Forms | onFormSubmit |
-   | Web dashboard | HTML Service | doGet |
+   | 数据处理 | 电子表格 | onEdit / 定时触发 |
+   | 邮件自动化 | Gmail | 定时触发 |
+   | 日历同步 | 日历 | 定时触发 / 更改事件触发 |
+   | 文件管理 | Drive | 定时触发 |
+   | 表单处理 | 表单 | onFormSubmit 触发 |
+   | Web 仪表板 | HTML Service | doGet 请求 |
 
-3. **Write clean GAS code** following best practices below.
-4. **Test thoroughly** — use Logger.log() for debugging.
-5. **Document the setup** — triggers, permissions, configuration.
+3. **遵循以下最佳实践编写清晰的 GAS 代码**。
+4. **彻底测试** — 使用 `Logger.log()` 进行调试。
+5. **记录设置信息** — 包括触发条件、权限配置等。
 
-## Templates
+## 模板
 
-### Spreadsheet — Read/Write
+### 电子表格 — 读/写数据
 ```javascript
 function processSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -45,7 +45,7 @@ function processSheet() {
 }
 ```
 
-### Gmail — Send with Template
+### 使用模板发送邮件到 Gmail
 ```javascript
 function sendTemplateEmail(to, subject, templateName) {
   const template = HtmlService.createTemplateFromFile(templateName);
@@ -58,7 +58,7 @@ function sendTemplateEmail(to, subject, templateName) {
 }
 ```
 
-### External API Call
+### 外部 API 调用
 ```javascript
 function callExternalApi(endpoint, apiKey) {
   const options = {
@@ -79,7 +79,7 @@ function callExternalApi(endpoint, apiKey) {
 }
 ```
 
-### Time-Driven Trigger Setup
+### 定时触发器设置
 ```javascript
 function createDailyTrigger() {
   // Delete existing triggers for this function
@@ -99,7 +99,7 @@ function createDailyTrigger() {
 }
 ```
 
-### Error Handling Pattern
+### 错误处理模式
 ```javascript
 function safeExecute(fn, context) {
   try {
@@ -114,23 +114,22 @@ function safeExecute(fn, context) {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Batch operations**: Use `getValues()` / `setValues()` instead of cell-by-cell
-- **Quota awareness**: GAS has daily quotas (email: 100/day free, URL fetch: 20,000/day)
-- **Cache**: Use `CacheService` for expensive API calls
-- **Properties**: Store config in `PropertiesService` (not hardcoded)
-- **Lock**: Use `LockService` to prevent concurrent trigger execution
+- **批量操作**：使用 `getValues()` / `setValues()` 而不是逐个单元格操作
+- **注意使用限制**：GAS 有每日使用量限制（邮件：每天 100 封免费，URL 请求：每天 20,000 次）
+- **缓存**：对于耗时的 API 调用，使用 `CacheService` 进行缓存
+- **配置存储**：将配置信息存储在 `PropertiesService` 中（避免硬编码）
+- **锁定**：使用 `LockService` 防止多个触发器同时执行
 
-## Security
+## 安全性
 
-- **Never hardcode API keys** — use `PropertiesService.getScriptProperties()`
-- **Validate user input** — especially in web apps (doGet/doPost)
-- **Limit sharing** — deploy as "Execute as me, accessible to specific users"
-- **Review permissions** — GAS requests broad OAuth scopes; explain to client
+- **切勿硬编码 API 密钥** — 使用 `PropertiesService.getScriptProperties()` 获取
+- **验证用户输入** — 尤其是在 Web 应用中（doGet/doPost 请求时）
+- **限制共享**：将脚本设置为“以我的身份执行”，仅允许特定用户访问
+- **审查权限**：GAS 请求需要较宽的 OAuth 权限范围；向用户说明原因
 
-## Delivery Checklist
-
+## 交付检查清单
 ```
 □ Code tested with sample data
 □ Triggers documented and set up
@@ -140,7 +139,7 @@ function safeExecute(fn, context) {
 □ Permissions explained to client
 ```
 
-## Requirements
+## 准备条件
 
-- Google account with Apps Script access
-- No local dependencies — runs entirely in Google Cloud
+- 拥有具有 Apps Script 访问权限的 Google 账户
+- 无需任何本地依赖项 — 所有功能都在 Google Cloud 中运行

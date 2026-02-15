@@ -1,21 +1,21 @@
 ---
 name: revenue-tracker
-description: Track {AGENT_NAME} income and expenses. Generate financial reports and analyze profitability across platforms.
+description: 跟踪 {AGENT_NAME} 的收入和支出情况，生成财务报告，并分析其在各个平台上的盈利能力。
 ---
 
-# Revenue Tracker
+# 收入追踪器
 
-Track income, expenses, and profitability across all platforms.
+用于跟踪所有平台上的收入、支出和盈利能力。
 
-## Instructions
+## 指导说明
 
-1. **Record transactions** in `~/.openclaw/revenue/transactions.jsonl`:
+1. **在 `~/.openclaw/revenue/transactions.jsonl` 文件中记录交易**：
    ```json
    {"date": "2026-02-10", "type": "income", "platform": "coconala", "amount": 3000, "fee": 660, "net": 2340, "description": "GAS automation", "currency": "JPY"}
    {"date": "2026-02-10", "type": "expense", "category": "api", "amount": 750, "description": "Cloudflare Workers", "currency": "JPY"}
    ```
 
-2. **Calculate net revenue**:
+2. **计算净收入**：
    ```bash
    # Daily income
    jq -s '[.[] | select(.date=="2026-02-10" and .type=="income")] | map(.net) | add' ~/.openclaw/revenue/transactions.jsonl
@@ -24,21 +24,21 @@ Track income, expenses, and profitability across all platforms.
    jq -s '[.[] | select(.date | startswith("2026-02") and .type=="expense")] | map(.amount) | add' ~/.openclaw/revenue/transactions.jsonl
    ```
 
-3. **Platform fee reference**:
+3. **平台费用参考**：
 
-   | Platform | Fee Rate | Payout |
-   |----------|---------|--------|
-   | Coconala | 22% | Monthly (min ¥3,000) |
-   | Fiverr | 20% | Bi-weekly ($5 min) |
-   | Upwork | 10-20% | Weekly ($100 min) |
-   | Moltbook | 1-2% | Instant (crypto) |
-   | Note.com | 15% (paywall) | Monthly |
-   | Gumroad | 10% | Weekly |
-   | Direct | 0% | Per invoice |
+| 平台 | 费用比例 | 支付方式 |
+|------|---------|---------|
+| Coconala | 22% | 每月（最低 ¥3,000） |
+| Fiverr | 20% | 每两周（最低 $5） |
+| Upwork | 10-20% | 每周（最低 $100） |
+| Moltbook | 1-2% | 即时支付（加密货币） |
+| Note.com | 15%（需付费） | 每月 |
+| Gumroad | 10% | 每周 |
+| Direct | 0% | 按发票支付 |
 
-4. **Generate reports**:
+4. **生成报告**：
 
-   ### Daily
+   ### 每日报告
    ```
    📊 Daily Revenue — 2026-02-10
    Income:  ¥3,000 (Coconala ×1)
@@ -46,7 +46,7 @@ Track income, expenses, and profitability across all platforms.
    Net:     ¥2,340 (after fees)
    ```
 
-   ### Weekly
+   ### 每周报告
    ```
    📊 Weekly Revenue — Week 6, 2026
    | Platform | Orders | Gross | Fees | Net |
@@ -59,7 +59,7 @@ Track income, expenses, and profitability across all platforms.
    Profit:   ¥4,255
    ```
 
-   ### Monthly
+   ### 每月报告
    ```
    📊 Monthly Revenue — February 2026
    Total Income:    ¥XX,XXX
@@ -75,30 +75,30 @@ Track income, expenses, and profitability across all platforms.
    █░░░░░░░░░ Other      5%
    ```
 
-5. **Goal tracking**:
+5. **目标跟踪**：
    ```json
    {"month": "2026-02", "target": 300000, "actual": 0, "progress": 0}
    ```
 
-## Milestones
+## 里程碑
 
-| Level | Monthly Target | Status |
-|-------|---------------|--------|
-| 🥉 Bronze | ¥10,000 | |
-| 🥈 Silver | ¥50,000 | |
-| 🥇 Gold | ¥100,000 | |
-| 💎 Diamond | ¥300,000 | Goal: quit job |
-| 👑 Crown | ¥1,000,000 | |
+| 等级 | 月度目标 | 进度 |
+|------|---------|--------|
+| 🥉 青铜 | ¥10,000 | |
+| 🥈 银 | ¥50,000 | |
+| 🥇 金 | ¥100,000 | |
+| 💎 钻石 | ¥300,000 | 目标：辞职 |
+| 👑 皇冠 | ¥1,000,000 | |
 
-## Security
+## 安全注意事项
 
-- **Never post exact amounts on SNS** — use vague terms ("そこそこ稼げた")
-- **Don't link client names to amounts** in any shared/public file
-- **Keep transactions.jsonl private** — add to .gitignore
-- **Backup financial data** — critical records
+- **切勿在社交媒体上公开具体金额**——使用模糊的表述（如“赚了些钱”）
+- **不要在任何共享或公开文件中将客户名称与金额关联** |
+- **将 `transactions.jsonl` 文件设置为私密文件**——将其添加到 `.gitignore` 列表中 |
+- **备份财务数据**——重要记录需妥善保存
 
-## Requirements
+## 所需条件
 
-- File system access for `~/.openclaw/revenue/`
-- `jq` for JSONL querying
-- No external API keys needed
+- 具备访问 `~/.openclaw/revenue/` 目录的文件系统权限 |
+- 需要 `jq` 工具来查询 JSONL 文件 |
+- 无需使用任何外部 API 密钥

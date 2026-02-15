@@ -12,23 +12,21 @@ description: >
   initiate/manage calls through the Ringg AI platform.
 ---
 
-# Ringg Voice Agent Skill for OpenClaw
+# OpenClaw的Ringg语音代理技能
 
-This skill connects OpenClaw to [Ringg AI](https://www.ringg.ai) — a Voice OS for enterprises
-that provides low-latency (<337ms), multilingual (20+ languages) AI voice agents for phone
-interactions including lead qualification, feedback collection, confirmations, and more.
+该技能将OpenClaw与[Ringg AI](https://www.ringg.ai)连接起来——Ringg AI是一款为企业设计的语音操作系统，提供低延迟（<337毫秒）、多语言（20多种语言）的语音代理服务，支持电话交互，包括潜在客户筛选、反馈收集、确认等操作。
 
-## Prerequisites
+## 先决条件
 
-- A Ringg AI account with API access
-- `RINGG_API_KEY` environment variable set (obtain from Ringg AI dashboard)
-- `RINGG_WORKSPACE_ID` environment variable set
-- Optional: `RINGG_DEFAULT_ASSISTANT_ID` for a default voice agent
-- Optional: `RINGG_DEFAULT_FROM_NUMBER` for outbound calls
+- 拥有具备API访问权限的Ringg AI账户
+- 设置`RINGG_API_KEY`环境变量（从Ringg AI控制面板获取）
+- 设置`RINGG_WORKSPACE_ID`环境变量
+- 可选：设置`RINGG_DEFAULT_ASSISTANT_ID`以使用默认的语音代理
+- 可选：设置`RINGG_DEFAULT_FROM_NUMBER`以指定呼出电话的号码
 
-## Configuration
+## 配置
 
-Add to `openclaw.json` under `skills.entries`:
+将以下配置添加到`openclaw.json`文件中的`skills.entries`部分：
 
 ```json
 {
@@ -49,11 +47,11 @@ Add to `openclaw.json` under `skills.entries`:
 }
 ```
 
-## Available Actions
+## 可用的操作
 
-### 1. Make an Outbound Call
+### 1. 发起呼出电话
 
-Initiate a call from a Ringg AI assistant to a phone number.
+使用Ringg AI代理拨打指定的电话号码。
 
 ```bash
 # Basic outbound call
@@ -71,19 +69,18 @@ curl -X POST "https://api.ringg.ai/v1/calls/outbound" \
   }'
 ```
 
-**Parameters:**
-- `assistant_id` — ID of the Ringg voice agent to use (falls back to `RINGG_DEFAULT_ASSISTANT_ID`)
-- `to_number` — Destination phone number in E.164 format
-- `from_number` — Caller ID number (falls back to `RINGG_DEFAULT_FROM_NUMBER`)
-- `dynamic_variables` — Key-value pairs passed into the agent's conversation context
+**参数：**
+- `assistant_id` — 要使用的语音代理的ID（默认使用`RINGG_DEFAULT_ASSISTANT_ID`）
+- `to_number` — 目标电话号码（E.164格式）
+- `from_number` — 主叫方号码（默认使用`RINGG_DEFAULT_FROM_NUMBER`）
+- `dynamic_variables` — 传递给代理对话上下文的键值对
 
-When the user says "call +91XXXXXXXXXX" or "make a call to [name/number]", use this action.
-If no assistant_id is specified, use `RINGG_DEFAULT_ASSISTANT_ID`. If no from_number is specified,
-use `RINGG_DEFAULT_FROM_NUMBER`.
+当用户输入“call +91XXXXXXXXXX”或“make a call to [name/number]”时，使用此操作。
+如果未指定`assistant_id`，则使用`RINGG_DEFAULT_ASSISTANT_ID`；如果未指定`from_number`，则使用`RINGG_DEFAULT_FROM_NUMBER`。
 
-### 2. Launch a Campaign
+### 2. 启动呼叫活动
 
-Trigger a batch calling campaign for multiple contacts.
+批量拨打多个联系人的电话。
 
 ```bash
 curl -X POST "https://api.ringg.ai/v1/campaigns/launch" \
@@ -98,20 +95,18 @@ curl -X POST "https://api.ringg.ai/v1/campaigns/launch" \
   }'
 ```
 
-When the user asks to "launch a campaign", "start calling a list", or "run outbound calls for
-[list/segment]", use this action.
+当用户请求“launch a campaign”、“start calling a list”或“run outbound calls for [list/segment]”时，使用此操作。
 
-### 3. Check Call Status
+### 3. 检查呼叫状态
 
 ```bash
 curl -X GET "https://api.ringg.ai/v1/calls/{call_id}/status" \
   -H "Authorization: Bearer $RINGG_API_KEY"
 ```
 
-Returns: call status (ringing, in-progress, completed, failed), duration, transcript summary,
-and disposition.
+返回呼叫状态（正在拨出、进行中、已完成、失败）、通话时长、通话记录摘要以及通话结果。
 
-### 4. Get Call History & Analytics
+### 4. 获取通话记录与分析数据
 
 ```bash
 # Recent call history
@@ -123,39 +118,36 @@ curl -X GET "https://api.ringg.ai/v1/analytics?from=2026-02-01&to=2026-02-06" \
   -H "Authorization: Bearer $RINGG_API_KEY"
 ```
 
-When the user asks "how did the calls go", "show me call analytics", or "what happened on
-yesterday's calls", use these endpoints.
+当用户询问“通话情况如何”、“显示通话分析数据”或“查看昨天的通话记录”时，使用这些功能。
 
-### 5. List Assistants
+### 5. 列出代理
 
 ```bash
 curl -X GET "https://api.ringg.ai/v1/assistants" \
   -H "Authorization: Bearer $RINGG_API_KEY"
 ```
 
-When the user asks "which agents do I have", "list my ringg assistants", or needs to select
-an assistant before making a call, use this.
+当用户询问“我有哪些代理？”或需要在拨打电话前选择代理时，使用此操作。
 
-### 6. Get Call Transcript
+### 6. 获取通话记录
 
 ```bash
 curl -X GET "https://api.ringg.ai/v1/calls/{call_id}/transcript" \
   -H "Authorization: Bearer $RINGG_API_KEY"
 ```
 
-When the user asks "what was said on the call" or "get the transcript", use this.
+当用户询问“通话中说了什么”或“获取通话记录”时，使用此操作。
 
-## Webhook Integration (Inbound Events)
+## Webhook集成（入站事件）
 
-Ringg AI can push real-time call events to OpenClaw via webhooks. To receive call status
-updates, transcripts, and dispositions:
+Ringg AI可以通过Webhook将实时通话事件推送到OpenClaw。要接收通话状态更新、通话记录和通话结果，需执行以下操作：
 
-1. Expose OpenClaw's webhook endpoint:
+1. 暴露OpenClaw的Webhook端点：
    ```bash
    ngrok http 18789
    ```
 
-2. Configure the webhook URL in Ringg AI dashboard or via API:
+2. 在Ringg AI控制面板或通过API配置Webhook URL：
    ```bash
    curl -X POST "https://api.ringg.ai/v1/webhooks" \
      -H "Authorization: Bearer $RINGG_API_KEY" \
@@ -166,30 +158,29 @@ updates, transcripts, and dispositions:
      }'
    ```
 
-3. OpenClaw will receive POST payloads with call events that can trigger agent actions.
+3. OpenClaw将接收到包含通话事件的POST请求，这些事件可以触发相应的代理操作。
 
-## Usage Patterns
+## 使用模式
 
-**Natural language triggers → actions:**
+**用户指令 → 对应操作：**
 
-| User says | Action |
+| 用户指令 | 操作 |
 |-----------|--------|
-| "Call Rahul at +919876543210" | Outbound call with default assistant |
-| "Use the PolicyBazaar agent to call this lead" | Outbound call with specific assistant |
-| "Launch the feedback campaign" | Campaign launch |
-| "How did the last 10 calls go?" | Call history |
-| "Get the transcript for call XYZ" | Call transcript |
-| "What agents do I have in Ringg?" | List assistants |
-| "Show me today's call analytics" | Analytics |
+| “Call Rahul at +919876543210” | 使用默认代理发起呼出电话 |
+| “Use the PolicyBazaar agent to call this lead” | 使用特定代理发起呼出电话 |
+| “Launch the feedback campaign” | 启动反馈收集活动 |
+| “How did the last 10 calls go?” | 查看最近10次通话的记录 |
+| “Get the transcript for call XYZ” | 获取通话XYZ的记录 |
+| “What agents do I have in Ringg?” | 列出所有代理 |
+| “Show me today’s call analytics” | 查看今天的通话分析数据 |
 
-## Error Handling
+## 错误处理
 
-- **401 Unauthorized**: Check `RINGG_API_KEY` is valid
-- **404 Not Found**: Verify assistant_id, call_id, or campaign_id exists
-- **429 Rate Limited**: Back off and retry after the indicated interval
-- **Phone number format**: Always use E.164 format (e.g., +919876543210 for India)
+- **401 Unauthorized**：检查`RINGG_API_KEY`是否有效
+- **404 Not Found**：确认`assistant_id`、`call_id`或`campaign_id`是否存在
+- **429 Rate Limited**：等待指定时间后再重试
+- **电话号码格式**：始终使用E.164格式（例如，印度地区的号码格式为+919876543210）
 
-## API Reference
+## API参考
 
-For full API details, see `references/api_reference.md` in this skill directory, or
-visit the [Ringg AI API Docs](https://docs.ringg.ai).
+有关完整的API详细信息，请参阅该技能目录下的`references/api_reference.md`文件，或访问[Ringg AI API文档](https://docs.ringg.ai)。

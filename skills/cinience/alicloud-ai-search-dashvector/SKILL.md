@@ -1,47 +1,45 @@
 ---
 name: alicloud-ai-search-dashvector
-description: Build vector retrieval with DashVector using the Python SDK. Use when creating collections, upserting docs, and running similarity search with filters in Claude Code/Codex.
+description: 使用 Python SDK 通过 DashVector 构建向量检索功能。该功能适用于创建数据集合、更新文档内容，以及在 Claude Code/Codex 中执行带有过滤条件的相似性搜索。
 ---
 
-Category: provider
+**类别：provider**  
+# DashVector：向量搜索工具  
 
-# DashVector Vector Search
+使用 DashVector 可以管理数据集合，并执行带有可选过滤条件和稀疏向量的向量相似性搜索。  
 
-Use DashVector to manage collections and perform vector similarity search with optional filters and sparse vectors.
-
-## Prerequisites
-
-- Install SDK (recommended in a venv to avoid PEP 668 limits):
+## 先决条件  
+- 安装 SDK（建议在虚拟环境中安装，以避免违反 PEP 668 的限制）：  
 
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install dashvector
-```
-- Provide credentials and endpoint via environment variables:
-  - `DASHVECTOR_API_KEY`
-  - `DASHVECTOR_ENDPOINT` (cluster endpoint)
+```  
+- 通过环境变量提供凭据和端点信息：  
+  - `DASHVECTOR_API_KEY`  
+  - `DASHVECTOR_ENDPOINT`（集群端点）  
 
-## Normalized operations
+## 常用操作  
 
-### Create collection
-- `name` (str)
-- `dimension` (int)
-- `metric` (str: `cosine` | `dotproduct` | `euclidean`)
-- `fields_schema` (optional dict of field types)
+### 创建数据集合  
+- `name`（字符串）  
+- `dimension`（整数）  
+- `metric`（字符串：`cosine` | `dotproduct` | `euclidean`）  
+- `fields_schema`（可选的字典，包含字段类型）  
 
-### Upsert docs
-- `docs` list of `{id, vector, fields}` or tuples
-- Supports `sparse_vector` and multi-vector collections
+### 插入/更新文档  
+- `docs`：包含 `{id, vector, fields}` 的列表或元组  
+- 支持稀疏向量（`sparse_vector`）和多向量集合  
 
-### Query docs
-- `vector` or `id` (one required; if both empty, only filter is applied)
-- `topk` (int)
-- `filter` (SQL-like where clause)
-- `output_fields` (list of field names)
-- `include_vector` (bool)
+### 查询文档  
+- `vector` 或 `id`（必须提供一个）；如果两者都为空，则仅应用过滤条件  
+- `topk`（整数）  
+- `filter`（类似 SQL 的 `WHERE` 子句）  
+- `output_fields`（字段名称列表）  
+- `include_vector`（布尔值）  
 
-## Quickstart (Python SDK)
+## 快速入门（Python SDK）  
 
 ```python
 import os
@@ -82,38 +80,37 @@ ret = collection.query(
 )
 for doc in ret:
     print(doc.id, doc.fields)
-```
+```  
 
-## Script quickstart
+## 脚本快速入门  
 
 ```bash
 python skills/ai/search/alicloud-ai-search-dashvector/scripts/quickstart.py
-```
+```  
 
-Environment variables:
+**环境变量：**  
+- `DASHVECTOR_API_KEY`  
+- `DASHVECTOR_ENDPOINT`  
+- `DASHVECTOR COLLECTION`（可选）  
+- `DASHVECTOR_DIMENSION`（可选）  
 
-- `DASHVECTOR_API_KEY`
-- `DASHVECTOR_ENDPOINT`
-- `DASHVECTOR_COLLECTION` (optional)
-- `DASHVECTOR_DIMENSION` (optional)
+**可选参数：**  
+- `--collection`  
+- `--dimension`  
+- `--topk`  
+- `--filter`  
 
-Optional args: `--collection`, `--dimension`, `--topk`, `--filter`.
+**关于 Claude Code/Codex 的注意事项：**  
+- 建议使用 `upsert` 方法进行幂等性数据插入。  
+- 确保 `dimension` 与嵌入模型的输出尺寸一致。  
+- 使用过滤条件来限定数据集的范围。  
+- 如果使用稀疏向量，在插入或查询时传递 `sparse_vector={token_id: weight, ...}`。  
 
-## Notes for Claude Code/Codex
+## 错误处理**  
+- 401/403：`DASHVECTOR_API_KEY` 无效  
+- 400：集合模式或维度不匹配  
+- 429/5xx：采用指数退避策略重试  
 
-- Prefer `upsert` for idempotent ingestion.
-- Keep `dimension` aligned to your embedding model output size.
-- Use filters to enforce tenant or dataset scoping.
-- If using sparse vectors, pass `sparse_vector={token_id: weight, ...}` when upserting/querying.
-
-## Error handling
-
-- 401/403: invalid `DASHVECTOR_API_KEY`
-- 400: invalid collection schema or dimension mismatch
-- 429/5xx: retry with exponential backoff
-
-## References
-
-- DashVector Python SDK: `Client.create`, `Collection.upsert`, `Collection.query`
-
-- Source list: `references/sources.md`
+## 参考资料**  
+- DashVector Python SDK：`Client.create`、`Collection.upsert`、`Collection.query`  
+- 源代码列表：`references/sources.md`

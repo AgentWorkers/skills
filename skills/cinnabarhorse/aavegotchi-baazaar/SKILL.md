@@ -28,24 +28,24 @@ metadata:
     primaryEnv: PRIVATE_KEY
 ---
 
-## Safety Rules
+## 安全规则
 
-- Default to `dryRun=true` (`DRY_RUN=1`). Never broadcast unless explicitly instructed to do so.
-- Always verify Base mainnet:
-  - `~/.foundry/bin/cast chain-id --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"` must be `8453`.
-- Always verify key/address alignment:
-  - `~/.foundry/bin/cast wallet address --private-key $PRIVATE_KEY` must equal `$FROM_ADDRESS`.
-- Always refetch the listing from the subgraph immediately before simulating or broadcasting (listings can be cancelled/sold/price-updated).
-- Never print or log `$PRIVATE_KEY`.
+- 默认设置为 `dryRun=true`（`DRY_RUN=1`）。除非明确指示，否则切勿进行广播操作。
+- 必须始终验证基础主网（Base mainnet）：
+  - 命令 `~/.foundry/bin/cast chain-id --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"` 的返回值必须为 `8453`。
+- 必须始终验证密钥（key）与地址（address）是否匹配：
+  - 命令 `~/.foundry/bin/cast wallet address --private-key $PRIVATE_KEY` 的结果必须与 `$FROM_ADDRESS` 相等。
+- 在模拟或广播操作之前，必须立即从子图（subgraph）中重新获取列表信息（因为列表可能会被取消、出售或价格更新）。
+- 绝不允许打印或记录 `$PRIVATE_KEY`。
 
-## Required Setup
+## 必需的设置
 
-Required env vars:
-- `PRIVATE_KEY`: EOA private key used for `cast send` (never print/log).
-- `FROM_ADDRESS`: EOA address that owns funds/NFTs and will submit txs.
-- `BASE_MAINNET_RPC`: RPC URL. If unset, use `https://mainnet.base.org`.
+- **必需的环境变量（Required env vars）**：
+  - `PRIVATE_KEY`：用于执行 `cast send` 操作的 EOA（Externally Owned Account）私钥（严禁打印或记录）。
+  - `FROM_ADDRESS`：拥有资金/NFT 的 EOA 地址，该地址将负责提交交易。
+  - `BASE_MAINNET_RPC`：RPC（Remote Procedure Call）地址。如果未设置，则使用 `https://mainnet.base.org`。
 
-Hardcoded Base mainnet constants (override via env if needed):
+- **基础主网的硬编码常量（Hardcoded Base mainnet constants）**（如有需要，可通过环境变量进行覆盖）：
 ```bash
 export BASE_MAINNET_RPC="${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 export DIAMOND="${DIAMOND:-0xA99c4B08201F2913Db8D28e71d020c4298F29dBF}"
@@ -54,26 +54,24 @@ export USDC="${USDC:-0x833589fCD6eDb6E08f4c7C32D4f71b54BDA02913}"
 export SUBGRAPH_URL="${SUBGRAPH_URL:-https://api.goldsky.com/api/public/project_cmh3flagm0001r4p25foufjtt/subgraphs/aavegotchi-core-base/prod/gn}"
 ```
 
-Optional env vars:
-- `RECIPIENT_ADDRESS`: defaults to `FROM_ADDRESS`.
-- `DRY_RUN`: `1` (default) to only simulate via `cast call`. Set to `0` to broadcast via `cast send`.
-- `SLIPPAGE_PCT`: defaults to `1` (used for USDC swapAmount math).
-- `PAYMENT_FEE_PCT_USDC`: defaults to `1` (used for USDC swapAmount math).
-- `GHST_USD_PRICE`: optional override; if unset, fetch from CoinGecko in the USDC flow.
+- **可选的环境变量（Optional env vars）**：
+  - `RECIPIENT_ADDRESS`：默认值为 `FROM_ADDRESS`。
+  - `DRY_RUN`：默认值为 `1`，表示仅通过 `cast call` 进行模拟；设置为 `0` 表示通过 `cast send` 进行广播。
+  - `SLIPPAGE_PCT`：默认值为 `1`，用于计算 USDC 的交换金额。
+  - `PAYMENT_FEE_PCT_USDC`：默认值为 `1`，用于计算 USDC 的交换金额。
+  - `GHST_USD_PRICE`：可选的环境变量；如果未设置，将在 USDC 交易过程中从 CoinGecko 获取相关价格。
 
-Notes:
-- Commands below use `~/.foundry/bin/cast` (works reliably in cron/non-interactive shells). If `cast` is on `PATH`, you can replace `~/.foundry/bin/cast` with `cast`.
-- Canonical addresses and endpoints live in:
-  - `references/addresses.md`
-  - `references/subgraph.md`
+- **注意事项**：
+  - 下面的命令使用 `~/.foundry/bin/cast`（在 cron 或非交互式 shell 中可正常使用）。如果 `cast` 已添加到 `PATH` 中，可以直接使用 `cast` 代替 `~/.foundry/bin/cast`。
+  - 相关的地址和端点信息请参阅 `references/addresses.md` 和 `references/subgraph.md`。
 
-## View Listings (Subgraph)
+## 查看列表信息（子图）
 
-Subgraph endpoint (Goldsky):
-- Default: `$SUBGRAPH_URL` (see exports above)
-- Value: `https://api.goldsky.com/api/public/project_cmh3flagm0001r4p25foufjtt/subgraphs/aavegotchi-core-base/prod/gn`
+- **子图端点（Subgraph endpoint）**（Goldsky）：
+  - 默认值：`$SUBGRAPH_URL`（详见上面的导出配置）。
+  - URL：`https://api.goldsky.com/api/public/project_cmh3flagm0001r4p25foufjtt/subgraphs/aavegotchi-core-base/prod/gn`
 
-Get ERC721 listing by id:
+- **按 ID 获取 ERC721 列表信息**：
 ```bash
 curl -s "$SUBGRAPH_URL" -H 'content-type: application/json' --data '{
   "query":"query($id: ID!){ erc721Listing(id:$id){ id category erc721TokenAddress tokenId seller priceInWei cancelled timeCreated timePurchased } }",
@@ -81,8 +79,8 @@ curl -s "$SUBGRAPH_URL" -H 'content-type: application/json' --data '{
 }'
 ```
 
-Get ERC1155 listing by id:
-- Subgraph field name is `erc1155TypeId` (this maps to the onchain `typeId` / `itemId` argument).
+- **按 ID 获取 ERC1155 列表信息**：
+  - 子图中的字段名为 `erc1155TypeId`（该字段与链上的 `typeId` 或 `itemId` 参数相对应）。
 ```bash
 curl -s "$SUBGRAPH_URL" -H 'content-type: application/json' --data '{
   "query":"query($id: ID!){ erc1155Listing(id:$id){ id category erc1155TokenAddress erc1155TypeId quantity seller priceInWei cancelled sold timeCreated } }",
@@ -90,39 +88,39 @@ curl -s "$SUBGRAPH_URL" -H 'content-type: application/json' --data '{
 }'
 ```
 
-Find active listings:
-- ERC721: `where:{cancelled:false, timePurchased:\"0\"}`
-- ERC1155: `where:{cancelled:false, sold:false}`
+- **查找活跃的列表**：
+  - ERC721：`where:{cancelled:false, timePurchased:\"0\"}`  
+  - ERC1155：`where:{cancelled:false, sold:false}`
 
-Example (active ERC721, newest first):
+- **示例**（按最新时间顺序显示活跃的 ERC721 列表）：
 ```bash
 curl -s "$SUBGRAPH_URL" -H 'content-type: application/json' --data '{
   "query":"query{ erc721Listings(first:20, orderBy:timeCreated, orderDirection:desc, where:{cancelled:false, timePurchased:\"0\"}){ id erc721TokenAddress tokenId priceInWei seller timeCreated } }"
 }'
 ```
 
-Example (active ERC1155, newest first):
+- **示例**（按最新时间顺序显示活跃的 ERC1155 列表）：
 ```bash
 curl -s "$SUBGRAPH_URL" -H 'content-type: application/json' --data '{
   "query":"query{ erc1155Listings(first:20, orderBy:timeCreated, orderDirection:desc, where:{cancelled:false, sold:false}){ id erc1155TokenAddress erc1155TypeId quantity priceInWei seller timeCreated } }"
 }'
 ```
 
-## Execute Listing (Buy With GHST)
+## 执行购买操作（使用 GHST）
 
-Onchain methods (Diamond):
-- `executeERC721ListingToRecipient(uint256 listingId,address contractAddress,uint256 priceInWei,uint256 tokenId,address recipient)`
-- `executeERC1155ListingToRecipient(uint256 listingId,address contractAddress,uint256 itemId,uint256 quantity,uint256 priceInWei,address recipient)`
+- **Diamond 上的链上方法（Onchain methods）**：
+  - `executeERC721ListingToRecipient(uint256 listingId, address contractAddress, uint256 priceInWei, uint256 tokenId, address recipient)`
+  - `executeERC1155ListingToRecipient(uint256 listingId, address contractAddress, uint256 itemId, uint256 quantity, uint256 priceInWei, address recipient)`
 
-Total cost:
-- ERC721: `totalCostGhstWei = priceInWei`
-- ERC1155: `totalCostGhstWei = priceInWei * quantity` (but you still pass `quantity` and `priceInWei` separately to the method)
+- **总成本计算**：
+  - ERC721：`totalCostGhstWei = priceInWei`
+  - ERC1155：`totalCostGhstWei = priceInWei * quantity`（但在调用方法时仍需分别传递 `quantity` 和 `priceInWei`）
 
-Before buying:
-1. Fetch listing details from the subgraph (id, token contract address, tokenId/typeId, quantity, priceInWei).
-2. Check GHST balance/allowance and prepare approvals if needed (see `references/recipes.md`).
+- **购买前的准备**：
+  1. 从子图中获取列表详情（包括 ID、代币合约地址、TokenId、类型 ID、数量和价格）。
+  2. 检查用户的 GHST 余额和权限是否足够，并根据需要准备必要的批准操作（详见 `references/recipes.md`）。
 
-Dry-run (simulate) ERC721 buy:
+- **ERC721 购买的模拟测试（Dry-run）**：
 ```bash
 ~/.foundry/bin/cast call "$DIAMOND" \
   'executeERC721ListingToRecipient(uint256,address,uint256,uint256,address)' \
@@ -131,7 +129,7 @@ Dry-run (simulate) ERC721 buy:
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-Broadcast (real) ERC721 buy (only when explicitly instructed):
+- **实际执行 ERC721 购买操作（仅当明确指示时）**：
 ```bash
 ~/.foundry/bin/cast send "$DIAMOND" \
   'executeERC721ListingToRecipient(uint256,address,uint256,uint256,address)' \
@@ -140,7 +138,7 @@ Broadcast (real) ERC721 buy (only when explicitly instructed):
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-Dry-run (simulate) ERC1155 buy:
+- **ERC1155 购买的模拟测试（Dry-run）**：
 ```bash
 ~/.foundry/bin/cast call "$DIAMOND" \
   'executeERC1155ListingToRecipient(uint256,address,uint256,uint256,uint256,address)' \
@@ -149,7 +147,7 @@ Dry-run (simulate) ERC1155 buy:
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-Broadcast (real) ERC1155 buy (only when explicitly instructed):
+- **实际执行 ERC1155 购买操作（仅当明确指示时）**：
 ```bash
 ~/.foundry/bin/cast send "$DIAMOND" \
   'executeERC1155ListingToRecipient(uint256,address,uint256,uint256,uint256,address)' \
@@ -158,23 +156,23 @@ Broadcast (real) ERC1155 buy (only when explicitly instructed):
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-## Execute Listing (Buy With USDC swapAndBuy*)
+## 执行购买操作（使用 USDC 进行交换和购买）
 
-Onchain methods (Diamond):
-- `swapAndBuyERC721(address tokenIn,uint256 swapAmount,uint256 minGhstOut,uint256 swapDeadline,uint256 listingId,address contractAddress,uint256 priceInWei,uint256 tokenId,address recipient)`
-- `swapAndBuyERC1155(address tokenIn,uint256 swapAmount,uint256 minGhstOut,uint256 swapDeadline,uint256 listingId,address contractAddress,uint256 itemId,uint256 quantity,uint256 priceInWei,address recipient)`
+- **Diamond 上的链上方法（Onchain methods）**：
+  - `swapAndBuyERC721(address tokenIn, uint256 swapAmount, uint256 minGhstOut, uint256 swapDeadline, uint256 listingId, address contractAddress, uint256 priceInWei, uint256 tokenId, address recipient)`
+  - `swapAndBuyERC1155(address tokenIn, uint256 swapAmount, uint256 minGhstOut, uint256 swapDeadline, uint256 listingId, address contractAddress, uint256 itemId, uint256 quantity, uint256 priceInWei, address recipient)`
 
-Required computed args:
-- `swapDeadline = now + 600`
-- `minGhstOut = totalCostGhstWei` (exactly)
-- `swapAmount` (USDC base units, 6 decimals): compute per `references/usdc-swap-math.md`
+- **必需的计算参数**：
+  - `swapDeadline = now + 600`  
+  - `minGhstOut = totalCostGhstWei`（必须精确计算）
+  - `swapAmount`（以 USDC 为单位，保留 6 位小数）：具体计算方法请参阅 `references/usdc-swap-math.md`
 
-Before buying:
-1. Fetch listing details from the subgraph (and compute `totalCostGhstWei`).
-2. Compute `swapAmount` in USDC base units (integer, rounded up).
-3. Ensure USDC allowance to the Diamond is at least `swapAmount` (see `references/recipes.md`).
+- **购买前的准备**：
+  1. 从子图中获取列表详情，并计算 `totalCostGhstWei`。
+  2. 将 `swapAmount` 计算为 USDC 单位（结果需四舍五入）。
+  3. 确保用户的 Diamond 账户中有足够的 GHST（至少等于 `swapAmount`，详见 `references/recipes.md`）。
 
-Dry-run (simulate) ERC721 USDC swap+buy:
+- **ERC721 的 USDC 交换+购买操作模拟测试**：
 ```bash
 ~/.foundry/bin/cast call "$DIAMOND" \
   'swapAndBuyERC721(address,uint256,uint256,uint256,uint256,address,uint256,uint256,address)' \
@@ -183,7 +181,7 @@ Dry-run (simulate) ERC721 USDC swap+buy:
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-Dry-run (simulate) ERC1155 USDC swap+buy:
+- **ERC1155 的 USDC 交换+购买操作模拟测试**：
 ```bash
 ~/.foundry/bin/cast call "$DIAMOND" \
   'swapAndBuyERC1155(address,uint256,uint256,uint256,uint256,address,uint256,uint256,uint256,address)' \
@@ -192,7 +190,7 @@ Dry-run (simulate) ERC1155 USDC swap+buy:
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-Broadcast (real) ERC721 swap+buy (only when explicitly instructed):
+- **实际执行 ERC721 的 USDC 交换+购买操作（仅当明确指示时）**：
 ```bash
 ~/.foundry/bin/cast send "$DIAMOND" \
   'swapAndBuyERC721(address,uint256,uint256,uint256,uint256,address,uint256,uint256,address)' \
@@ -201,7 +199,7 @@ Broadcast (real) ERC721 swap+buy (only when explicitly instructed):
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-Broadcast (real) ERC1155 swap+buy (only when explicitly instructed):
+- **实际执行 ERC1155 的 USDC 交换+购买操作（仅当明确指示时）**：
 ```bash
 ~/.foundry/bin/cast send "$DIAMOND" \
   'swapAndBuyERC1155(address,uint256,uint256,uint256,uint256,address,uint256,uint256,uint256,address)' \
@@ -210,21 +208,21 @@ Broadcast (real) ERC1155 swap+buy (only when explicitly instructed):
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-## Add Listing
+## 添加列表信息
 
-Onchain methods (Diamond):
-- `getListingFeeInWei()(uint256)`
-- `addERC721Listing(address erc721TokenAddress,uint256 tokenId,uint256 category,uint256 priceInWei)`
-- `setERC1155Listing(address erc1155TokenAddress,uint256 typeId,uint256 quantity,uint256 category,uint256 priceInWei)`
+- **Diamond 上的链上方法（Onchain methods）**：
+  - `getListingFeeInWei()`
+  - `addERC721Listing(address erc721TokenAddress, uint256 tokenId, uint256 category, uint256 priceInWei)`
+  - `setERC1155Listing(address erc1155TokenAddress, uint256TypeId, uint256 quantity, uint256 category, uint256 priceInWei)`
 
-Steps:
-1. Check listing fee:
-   - `~/.foundry/bin/cast call "$DIAMOND" 'getListingFeeInWei()(uint256)' --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"`
-2. Ensure the NFT contract has `setApprovalForAll($DIAMOND,true)` (ERC721/1155) before listing.
-3. Submit the listing tx (simulate with `cast call` when `dryRun=true`, broadcast with `cast send` only when explicitly instructed).
-4. After listing, find the newest listingId via the subgraph for `seller=$FROM_ADDRESS` ordered by `timeCreated desc` and confirm it matches token/typeId.
+- **操作步骤**：
+  1. 检查列表费用：
+    - 命令 `~/.foundry/bin/cast call "$DIAMOND" 'getListingFeeInWei()(uint256)' --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"`
+  - 在添加列表之前，确保 NFT 合约具有 `setApprovalForAll($DIAMOND, true)`（适用于 ERC721/ERC1155）权限。
+  - 提交列表交易（当 `dryRun=true` 时使用 `cast call` 进行模拟；仅当明确指示时使用 `cast send` 进行广播）。
+  - 添加列表后，通过子图查找最新的列表 ID（条件为 `seller=$FROM_ADDRESS`，并按 `timeCreated` 降序排序），确认其与代币/类型 ID 匹配。
 
-ERC721 list (simulate):
+- **ERC721 列表的模拟添加**：
 ```bash
 ~/.foundry/bin/cast call "$DIAMOND" \
   'addERC721Listing(address,uint256,uint256,uint256)' \
@@ -233,7 +231,7 @@ ERC721 list (simulate):
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-ERC1155 list (simulate):
+- **ERC1155 列表的模拟添加**：
 ```bash
 ~/.foundry/bin/cast call "$DIAMOND" \
   'setERC1155Listing(address,uint256,uint256,uint256,uint256)' \
@@ -242,10 +240,10 @@ ERC1155 list (simulate):
   --rpc-url "${BASE_MAINNET_RPC:-https://mainnet.base.org}"
 ```
 
-## Common Failure Modes
+## 常见故障情况
 
-- `Diamond: Function does not exist`: wrong contract address or wrong function signature (or wrong chain).
-- `ERC1155Marketplace: not enough GHST`: insufficient balance or allowance (or computed `totalCostGhstWei` is wrong).
-- `ERC1155Marketplace: Not approved` / approval errors: missing `setApprovalForAll` for listing, or missing ERC20 `approve` for buying.
-- Swap errors (e.g. `LibTokenSwap: swapAmount must be > 0`): bad swapAmount math or missing inputs.
-- Listing cancelled/sold or price changed: refetch from subgraph and re-simulate before broadcasting.
+- **Diamond：函数不存在**：可能是合约地址错误或函数签名错误（或使用的链路错误）。
+- **ERC1155Marketplace：GHST 不足**：用户的余额或权限不足，或者计算出的 `totalCostGhstWei` 有误。
+- **ERC1155Marketplace：未获得批准**/批准错误**：可能是因为未执行 `setApprovalForAll` 操作，或者购买操作缺少 ERC20 的批准。
+- **交换错误**（例如 `LibTokenSwap：swapAmount 必须大于 0`）：可能是交换金额计算错误或输入信息缺失。
+- **列表被取消/出售或价格变更**：在广播之前，需要重新从子图中获取信息并重新进行模拟。

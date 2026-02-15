@@ -1,23 +1,23 @@
 ---
 name: book-tattoo
-description: Book tattoo services through Lokuli MCP. Use when user needs to find and book tattoo. Triggers on requests like "book a tattoo", "find tattoo near me", or any tattoo service request.
+description: 通过 Lokuli MCP 预订纹身服务。当用户需要查找或预订纹身时，可以使用此功能。该功能会在用户发起“预订纹身”、“查找附近的纹身店”或任何与纹身服务相关的请求时被触发。
 ---
 
-# uook tattoo
+# 书籍纹身服务
 
-Book tattoo services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来预约书籍纹身服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",

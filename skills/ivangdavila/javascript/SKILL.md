@@ -1,57 +1,57 @@
 ---
 name: JavaScript
-description: Avoid common JavaScript traps — coercion bugs, this binding, async pitfalls, and mutation surprises.
+description: 避免常见的 JavaScript 陷阱：强制类型转换错误、异步编程中的隐患以及对象属性突变带来的意外问题。
 metadata: {"clawdbot":{"emoji":"🟨","requires":{"bins":["node"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Equality Traps
-- `==` coerces: `"0" == false` is true — use `===` always
-- `NaN !== NaN` — use `Number.isNaN()`, not `=== NaN`
-- `typeof null === "object"` — check `=== null` explicitly
-- Objects compare by reference — `{} === {}` is false
+## 等价性陷阱  
+- `==` 会进行隐式类型转换：`"0" == false` 的结果是 `true`，请始终使用 `===`。  
+- `NaN !== NaN` — 应使用 `Number.isNaN()` 而不是 `=== NaN`。  
+- `typeof null === "object"` — 应明确使用 `=== null` 进行判断。  
+- 对象的比较是基于引用的：`{} === {}` 的结果是 `false`。  
 
-## this Binding
-- Regular functions: `this` depends on call site — lost in callbacks
-- Arrow functions: `this` from lexical scope — use for callbacks
-- `setTimeout(obj.method)` loses `this` — use arrow or `.bind()`
-- Event handlers: `this` is element in regular function, undefined in arrow (if no outer this)
+## `this` 的绑定  
+- 普通函数中的 `this` 会依赖于调用上下文，在回调函数中可能会丢失。  
+- 箭头函数中的 `this` 来自词法作用域，适用于回调函数。  
+- 使用 `setTimeout(obj.method)` 时，`this` 的值可能会丢失，应使用箭头函数或 `.bind()` 方法来确保 `this` 的正确绑定。  
+- 事件处理函数中的 `this` 在普通函数中指向当前元素，在箭头函数中可能为 `undefined`（如果没有外部 `this`）。  
 
-## Closure Gotchas
-- Loop variable captured by reference — `let` in loop or IIFE to capture value
-- `var` hoisted to function scope — creates single binding shared across iterations
-- Returning function from loop: all share same variable — use `let` per iteration
+## 闭包相关的问题  
+- 循环变量是通过引用捕获的：使用 `let` 在循环或 IIFE 中声明变量以避免问题。  
+- `var` 变量会被提升到函数作用域，导致所有迭代都共享同一个变量，应使用 `let` 为每次迭代声明新的变量。  
+- 如果从循环中返回一个函数，所有迭代都会共享同一个变量，应使用 `let` 为每次迭代声明新的函数。  
 
-## Array Mutation
-- `sort()`, `reverse()`, `splice()` mutate original — use `toSorted()`, `toReversed()`, `toSpliced()` (ES2023)
-- `push()`, `pop()`, `shift()`, `unshift()` mutate — spread `[...arr, item]` for immutable
-- `delete arr[i]` leaves hole — use `splice(i, 1)` to remove and reindex
-- Spread and `Object.assign` are shallow — nested objects still reference original
+## 数组操作  
+- `sort()`、`reverse()`、`splice()` 会修改原始数组：建议使用 `toSorted()`、`toReversed()`、`toSpliced()`（ES2023）等方法来创建副本。  
+- `push()`、`pop()`、`shift()`、`unshift()` 会修改原始数组：使用数组展开语法 `[...arr, item]` 可以获得不可变的副本。  
+- 使用 `delete arr[i]` 会删除数组元素并导致索引缺失：应使用 `splice(i, 1)` 来删除元素并重新索引。  
+- 数组展开和 `Object.assign` 只会修改表面层的对象，嵌套对象仍然引用原始对象。  
 
-## Async Pitfalls
-- Forgetting `await` returns Promise, not value — easy to miss without TypeScript
-- `forEach` doesn't await — use `for...of` for sequential async
-- `Promise.all` fails fast — one rejection rejects all, use `Promise.allSettled` if need all results
-- Unhandled rejection crashes in Node — always `.catch()` or try/catch with await
+## 异步操作中的陷阱  
+- 忘记使用 `await` 会导致返回的是 `Promise` 而不是具体值：如果没有使用 TypeScript，这很容易被忽略。  
+- `forEach` 不会等待每个异步操作的完成：对于顺序执行的异步操作，应使用 `for...of`。  
+- `Promise.all` 一旦有一个操作失败，所有操作都会失败：如果需要确保所有操作都完成，应使用 `Promise.allSettled`。  
+- 未处理的异步错误会导致 Node.js 程序崩溃：务必使用 `.catch()` 或 `try/catch` 结构加上 `await`。  
 
-## Numbers
-- `0.1 + 0.2 !== 0.3` — floating point, use integer cents or `toFixed()` for display
-- `parseInt("08")` works now — but `parseInt("0x10")` is 16, watch prefixes
-- `Number("")` is 0, `Number(null)` is 0 — but `Number(undefined)` is NaN
-- Large integers lose precision over 2^53 — use `BigInt` for big numbers
+## 数字相关的问题  
+- `0.1 + 0.2 !== 0.3` 是因为浮点数的精度问题：在显示结果时可以使用整数或 `toFixed()` 方法。  
+- `parseInt("08")` 现在可以正确解析为 8，但 `parseInt("0x10)` 会解析为 16，需要注意前缀。  
+- `Number("")` 和 `Number(null)` 的结果是 0，但 `Number(undefined)` 的结果是 `NaN`。  
+- 大整数超过 2^53 位时会丢失精度，应使用 `BigInt` 来表示大数。  
 
-## Iteration
-- `for...in` iterates keys (including inherited) — use `for...of` for values
-- `for...of` on objects fails — objects aren't iterable, use `Object.entries()`
-- `Object.keys()` skips non-enumerable — `Reflect.ownKeys()` gets all including symbols
+## 迭代相关的问题  
+- `for...in` 会遍历对象的键（包括继承的键）：如果需要遍历对象的值，应使用 `for...of`。  
+- 在对象上使用 `for...of` 时可能会失败，因为对象可能不是可迭代的，应使用 `Object.entries()`。  
+- `Object.keys()` 会忽略对象的不可枚举属性，而 `Reflect.ownKeys()` 可以获取所有属性（包括符号属性）。  
 
-## Implicit Coercion
-- `[] + []` is `""` — arrays coerce to strings
-- `[] + {}` is `"[object Object]"` — object toString
-- `{} + []` is `0` in console — `{}` parsed as block, not object
-- `"5" - 1` is 4, `"5" + 1` is "51" — minus coerces, plus concatenates
+## 隐式类型转换  
+- `[] + []` 的结果是 `""`，因为数组会被隐式转换为字符串。  
+- `[] + {}` 的结果是 `"[object Object]"`，因为数组会被转换为对象的字符串表示形式。  
+- `{} + []` 在控制台中的结果是 `0`，因为 `{}` 被解析为代码块而不是对象。  
+- `"5" - 1` 的结果是 4，因为减法操作会先进行隐式类型转换，然后进行字符串连接。  
 
-## Strict Mode
-- `"use strict"` at top of file or function — catches silent errors
-- Implicit globals throw in strict — `x = 5` without declaration fails
-- `this` is undefined in strict functions — not global object
-- Duplicate parameters and `with` forbidden — good riddance
+## 严格模式  
+- 在文件或函数的开头添加 `use strict` 可以捕获潜在的错误。  
+- 在严格模式下，未声明的变量会被视为全局变量，这会导致错误。  
+- 严格模式下，`this` 的值是 `undefined`，而不是全局对象。  
+- 严格模式禁止重复参数和 `with` 语句，这些做法可以避免一些常见的错误。

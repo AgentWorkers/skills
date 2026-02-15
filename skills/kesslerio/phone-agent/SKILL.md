@@ -1,13 +1,16 @@
 ---
 name: phone-agent
-description: "Run a real-time AI phone agent using Twilio, Deepgram, and ElevenLabs. Handles incoming calls, transcribes audio, generates responses via LLM, and speaks back via streaming TTS. Use when user wants to: (1) Test voice AI capabilities, (2) Handle phone calls programmatically, (3) Build a conversational voice bot."
+description: "使用 Twilio、Deepgram 和 ElevenLabs 运行一个实时 AI 电话代理。该代理可以处理来电，转录音频内容，通过大型语言模型（LLM）生成响应，并通过流式文本转语音（TTS）技术将生成的回答播报出来。适用于以下场景：  
+(1) 测试语音 AI 的功能；  
+(2) 以编程方式处理电话呼叫；  
+(3) 构建对话式语音机器人。"
 ---
 
-# Phone Agent Skill
+# 电话代理技能
 
-Runs a local FastAPI server that acts as a real-time voice bridge.
+该技能运行一个本地的 FastAPI 服务器，作为实时语音桥梁。
 
-## Architecture
+## 架构
 
 ```
 Twilio (Phone) <--> WebSocket (Audio) <--> [Local Server] <--> Deepgram (STT)
@@ -16,22 +19,22 @@ Twilio (Phone) <--> WebSocket (Audio) <--> [Local Server] <--> Deepgram (STT)
                                                   +--> ElevenLabs (TTS)
 ```
 
-## Prerequisites
+## 先决条件
 
-1.  **Twilio Account**: Phone number + TwiML App.
-2.  **Deepgram API Key**: For fast speech-to-text.
-3.  **OpenAI API Key**: For the conversation logic.
-4.  **ElevenLabs API Key**: For realistic text-to-speech.
-5.  **Ngrok** (or similar): To expose your local port 8080 to Twilio.
+1. **Twilio 账户**：电话号码 + TwiML 应用程序。
+2. **Deepgram API 密钥**：用于快速的语音转文本功能。
+3. **OpenAI API 密钥**：用于对话逻辑处理。
+4. **ElevenLabs API 密钥**：用于实现逼真的文本转语音功能。
+5. **Ngrok**（或类似工具）：用于将本地的 8080 端口暴露给 Twilio。
 
-## Setup
+## 设置步骤
 
-1.  **Install Dependencies**:
+1. **安装依赖项**：
     ```bash
     pip install -r scripts/requirements.txt
     ```
 
-2.  **Set Environment Variables** (in `~/.moltbot/.env`, `~/.clawdbot/.env`, or export):
+2. **设置环境变量**（在 `~/.moltbot/.env`、`~/.clawdbot/.env` 中设置，或通过 `export` 命令设置）：
     ```bash
     export DEEPGRAM_API_KEY="your_key"
     export OPENAI_API_KEY="your_key"
@@ -41,28 +44,28 @@ Twilio (Phone) <--> WebSocket (Audio) <--> [Local Server] <--> Deepgram (STT)
     export PORT=8080
     ```
 
-3.  **Start the Server**:
+3. **启动服务器**：
     ```bash
     python3 scripts/server.py
     ```
 
-4.  **Expose to Internet**:
+4. **将服务器暴露到互联网**：
     ```bash
     ngrok http 8080
     ```
 
-5.  **Configure Twilio**:
-    - Go to your Phone Number settings.
-    - Set "Voice & Fax" -> "A Call Comes In" to **Webhook**.
-    - URL: `https://<your-ngrok-url>.ngrok.io/incoming`
-    - Method: `POST`
+5. **配置 Twilio**：
+    - 进入您的电话号码设置。
+    - 在“语音与传真”选项中，将“来电处理”方式设置为 **Webhook**。
+    - URL：`https://<your-ngrok-url>.ngrok.io/incoming`
+    - 方法：`POST`
 
-## Usage
+## 使用方法
 
-Call your Twilio number. The agent should answer, transcribe your speech, think, and reply in a natural voice.
+拨打您的 Twilio 号码。代理会接听电话，将您的语音内容转录后，经过处理后以自然的语音回复您。
 
-## Customization
+## 自定义设置
 
-- **System Prompt**: Edit `SYSTEM_PROMPT` in `scripts/server.py` to change the persona.
-- **Voice**: Change `ELEVENLABS_VOICE_ID` to use different voices.
-- **Model**: Switch `gpt-4o-mini` to `gpt-4` for smarter (but slower) responses.
+- **系统提示语**：编辑 `scripts/server.py` 文件中的 `SYSTEM_PROMPT` 以更改对话角色的提示语。
+- **语音**：更改 `ELEVENLABS_VOICE_ID` 以使用不同的语音效果。
+- **模型**：将 `gpt-4o-mini` 更改为 `gpt-4`，以获得更智能（但响应速度较慢）的回复效果。

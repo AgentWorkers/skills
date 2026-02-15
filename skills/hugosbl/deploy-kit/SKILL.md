@@ -1,53 +1,53 @@
-# Deploy Kit — Skill de Déploiement Web
+# 部署工具包 — Web 应用部署技能
 
-Simplifie le déploiement d'apps web sur **Vercel**, **Railway** et **Supabase** via leurs CLIs.
+该工具包简化了通过 **Vercel**、**Railway** 和 **Supabase** 的命令行界面（CLI）来部署 Web 应用的过程。
 
-## Quand utiliser ce skill
+## 适用场景
 
-L'utilisateur demande de déployer une app, créer une base de données, configurer un hébergement, ou gérer des variables d'environnement sur ces plateformes.
+当用户需要部署应用程序、创建数据库、配置服务器托管环境或管理这些平台上的环境变量时，可以使用该技能。
 
-## Workflow principal
+## 主要工作流程
 
-### 1. Détecter le projet
+### 1. 检测项目类型
 
 ```bash
 python3 skills/deploy-kit/scripts/deploy.py detect <chemin>
 ```
 
-Retourne : framework, langage, fichiers clés trouvés.
+返回：检测到的项目框架、编程语言及关键配置文件。
 
-### 2. Vérifier les CLIs disponibles
+### 2. 检查可用的 CLI 工具
 
 ```bash
 python3 skills/deploy-kit/scripts/deploy.py check
 ```
 
-Si un CLI manque, guide l'installation (voir références).
+如果缺少某个 CLI，会指导用户进行安装（请参阅相应文档）。
 
-### 3. Recommander une plateforme
+### 3. 推荐合适的平台
 
 ```bash
 python3 skills/deploy-kit/scripts/deploy.py recommend <chemin>
 ```
 
-| Type de projet | Plateforme recommandée |
+| 项目类型 | 推荐平台 |
 |---|---|
-| Frontend statique / SSR (Next, Astro, Vite, Svelte, Nuxt) | **Vercel** |
-| Backend / API (Express, Flask, FastAPI, Django) | **Railway** |
-| App full-stack avec BDD | **Railway** + **Supabase** |
-| BDD / Auth / Storage / Edge Functions | **Supabase** |
+| 静态前端 / SSR（Next.js、Astro、Vite、Svelte、Nuxt） | **Vercel** |
+| 后端 / API（Express、Flask、FastAPI、Django） | **Railway** |
+| 全栈应用（结合 BDD 架构） | **Railway** + **Supabase** |
+| BDD、认证、存储功能或边缘函数（Edge Functions） | **Supabase** |
 
-### 4. Déployer
+### 4. 实施部署
 
 ```bash
 python3 skills/deploy-kit/scripts/deploy.py deploy <chemin> --platform <vercel|railway|supabase>
 ```
 
-⚠️ **TOUJOURS demander confirmation avant de déployer.** Le script demande aussi une confirmation interactive.
+⚠️ **在部署前务必获取用户确认。** 脚本还会要求用户进行交互式确认。
 
-## Détection de projet — Règles
+## 项目检测规则
 
-| Fichier trouvé | Framework détecté |
+| 检测到的文件 | 对应的框架 |
 |---|---|
 | `next.config.*` | Next.js |
 | `astro.config.*` | Astro |
@@ -56,50 +56,50 @@ python3 skills/deploy-kit/scripts/deploy.py deploy <chemin> --platform <vercel|r
 | `nuxt.config.*` | Nuxt |
 | `remix.config.*` / `app/root.tsx` | Remix |
 | `angular.json` | Angular |
-| `requirements.txt` / `Pipfile` | Python |
-| `manage.py` | Django |
-| `package.json` → scripts.start | Node.js app |
-| `Dockerfile` | Docker (Railway) |
-| `supabase/config.toml` | Supabase project |
+| `requirements.txt` / `Pipfile` | Python 应用 |
+| `manage.py` | Django 应用 |
+| `package.json` → `scripts.start` | Node.js 应用 |
+| `Dockerfile` | 使用 Docker 的项目 |
+| `supabase/config.toml` | Supabase 项目 |
 
-## Variables d'environnement
+## 环境变量设置
 
-- **Vercel** : `vercel env add NOM_VAR` ou via dashboard
-- **Railway** : `railway variables set NOM=VALEUR`
-- **Supabase** : secrets via `supabase secrets set NOM=VALEUR`
+- **Vercel**：使用 `vercel env add 变量名` 命令设置环境变量，或通过管理面板进行设置。
+- **Railway**：使用 `railway variables set 变量名=值` 命令设置环境变量。
+- **Supabase**：通过 `supabase secrets set 变量名=值` 命令设置敏感信息。
 
-Toujours vérifier `.env` / `.env.local` pour les vars existantes avant déploiement.
+部署前务必检查 `.env` 或 `.env.local` 文件中是否存在相关环境变量。
 
-## Domaines custom
+## 自定义域名设置
 
-- **Vercel** : `vercel domains add mondomaine.com`
-- **Railway** : `railway domain` (génère un sous-domaine), custom via dashboard
+- **Vercel**：使用 `vercel domains add 域名.com` 命令添加自定义域名。
+- **Railway**：使用 `railway domain` 命令设置域名（系统会生成子域名），也可通过管理面板进行自定义。
 
-## Références détaillées
+## 详细参考资料
 
-Charger à la demande selon la plateforme :
+根据项目平台，可查阅以下文档：
 
-- `skills/deploy-kit/references/vercel.md` — Vercel CLI complet
-- `skills/deploy-kit/references/railway.md` — Railway CLI complet
-- `skills/deploy-kit/references/supabase.md` — Supabase CLI complet
+- `skills/deploy-kit/references/vercel.md` — Vercel CLI 完整使用指南
+- `skills/deploy-kit/references/railway.md` — Railway CLI 完整使用指南
+- `skills/deploy-kit/references/supabase.md` — Supabase CLI 完整使用指南
 
-## Commandes rapides
+## 常用命令
 
-| Action | Commande |
+| 功能 | 对应命令 |
 |---|---|
-| Deploy preview Vercel | `vercel` |
-| Deploy prod Vercel | `vercel --prod` |
-| Deploy Railway | `railway up` |
-| Push DB Supabase | `supabase db push` |
-| Deploy edge function | `supabase functions deploy <nom>` |
-| Voir les logs | `vercel logs <url>` / `railway logs` |
-| Lister les projets | `vercel ls` / `railway list` |
+| 预发布部署（Vercel） | `vercel` |
+| 生产环境部署（Vercel） | `vercel --prod` |
+| 部署到 Railway 服务器 | `railway up` |
+| 推送数据库数据到 Supabase | `supabase db push` |
+| 部署边缘函数 | `supabase functions deploy <函数名称>` |
+| 查看日志 | `vercel logs <日志地址>` / `railway logs` |
+| 列出所有项目 | `vercel ls` / `railway list` |
 
-## Règles pour l'agent
+## 使用规则
 
-1. **Ne jamais déployer sans confirmation explicite** de l'utilisateur
-2. Toujours détecter le projet avant de recommander
-3. Vérifier que le CLI est installé et authentifié
-4. Charger la référence détaillée de la plateforme si besoin de commandes avancées
-5. Proposer un déploiement preview avant production
-6. Mentionner les coûts potentiels si projet hors free tier
+1. **未经用户明确授权，严禁进行任何部署操作**。
+2. 在推荐部署方案之前，必须先检测项目信息。
+3. 确保用户已安装并登录相应的 CLI 工具。
+4. 如需执行高级命令，请先查阅相关平台文档。
+5. 在正式部署前，建议先进行预发布测试。
+6. 如果项目超出免费使用范围，请提前告知用户可能产生的费用。

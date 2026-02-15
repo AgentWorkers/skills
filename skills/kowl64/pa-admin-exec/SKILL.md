@@ -1,167 +1,166 @@
 ---
 name: core-pa-admin-exec-support
-description: Generates exec-support outputs (plan, prioritized tasks, comms drafts, meeting prep/follow-ups). USE WHEN you want a personal assistant to triage requests and produce ready-to-send drafts and schedules.
+description: 生成执行支持相关的输出（计划、优先级任务列表、沟通草稿以及会议准备/跟进材料）。当您需要一个私人助理来筛选请求并生成可直接发送的草稿和日程安排时，请使用此功能。
 ---
 
-# Core PA Admin and Exec Support
+# 核心秘书协助与执行支持
 
-## PURPOSE
-Turn pasted messages, calendar availability, task lists, and meeting notes into a clear plan, prioritized tasks, professional-friendly communications drafts, and meeting prep/follow-ups—without ever finalizing actions.
+## 功能概述
+将粘贴的消息、日历安排、任务列表和会议记录转化为清晰的计划、优先级排序的任务、专业且友好的沟通草稿，以及会议准备和后续跟进工作——但无需最终确定具体行动。
 
-## WHEN TO USE
-- You need a daily plan and prioritized tasks from incoming messages and to-dos
-- You want email/DM drafts that are friendly but professional
-- You need meeting agendas/briefs and action-item extraction from notes
-- You want scheduling proposals that respect working hours and constraints
-- You want an all-in-one “PA run” that triages, plans, drafts, and follows up
+## 使用场景
+- 需要从收到的消息和待办事项中生成每日计划和优先级任务
+- 需要编写既友好又专业的电子邮件或私信草稿
+- 需要从会议记录中提取会议议程和待办事项
+- 需要制定符合工作时间限制的会议安排方案
+- 需要一个集成了任务筛选、计划制定和跟进功能的一站式秘书服务
 
-### DO NOT USE WHEN…
-- You must send emails or book meetings automatically (this skill only proposes and drafts)
-- You have no access to the content (no messages/calendar/tasks/notes available)
-- The request is legal/medical/financial advice beyond basic admin coordination
+### 不适用场景
+- 需要自动发送电子邮件或预订会议（本工具仅提供建议和草稿）
+- 无法访问任何输入内容（没有消息、日历、任务或会议记录）
+- 该请求涉及法律、医疗或财务方面的建议，超出了基本秘书协调的范围
 
-## INPUTS
-### REQUIRED (at least one)
-- Pasted messages/emails/DMs OR
-- A task/backlog list OR
-- Calendar availability (free/busy windows) OR
-- Meeting notes (raw notes or transcript excerpts)
+## 输入内容
+### 必需输入（至少一项）
+- 粘贴的消息/电子邮件/私信
+- 任务列表或待办事项清单
+- 日历安排（空闲时间）
+- 会议记录（原始内容或会议记录摘要）
 
-### OPTIONAL
-- Stakeholder list + preferences (tone, titles, signature, response SLAs)
-- Priority goals for the day/week
-- Known deadlines, travel days, “hard” commitments
+### 可选输入
+- 相关方名单及偏好设置（语气、邮件格式、签名、回复时间要求）
+- 当天/当周的优先目标
+- 已知的截止日期、出差安排或重要承诺
 
-### EXAMPLES
-- Messages: “Can we meet next week about Q1 planning?” + “Please review the deck by Friday.”
-- Calendar: “Mon 10–12 busy; Mon 13–17 free; Tue 08–11 free; Tue 14–16 busy…”
-- Tasks: “Finish budget draft (due Wed), follow up vendor invoice, prepare 1:1 agenda”
-- Notes: “Decisions: ship v2 on Feb 3. Actions: Alex to update roadmap…”
+### 示例输入
+- 消息：“我们下周能讨论第一季度的规划吗？” + “请在周五前审阅这份资料。”
+- 日历安排：“周一10:00–12:00有安排；周一13:00–17:00空闲；周二08:00–11:00空闲；周二14:00–16:00有安排……”
+- 任务：“完成预算草案（截止日期为周三），跟进供应商发票，准备一对一会议的议程。”
 
-## OUTPUTS
-- A markdown pack containing:
-  - Triage summary (what’s urgent, what’s blocked, what needs decisions)
-  - Daily plan and/or weekly plan (time-blocked suggestions within constraints)
-  - Prioritized task list (with owners, due dates, dependencies)
-  - Comms drafts (email/DM) with subject lines and 1–2 variants if helpful
-  - Meeting agenda(s), brief(s), and action items
-- A JSON block matching the schema in `references/pa-output-json-schema.md`
-- Success criteria:
-  - All scheduling respects: weekdays only, 08:00–17:00 working hours, latest meeting end 16:30, no meetings Sat/Sun
-  - No sending/booking; only drafts and proposals
-  - Missing info triggers STOP-and-ASK
+## 输出内容
+- 一个包含以下内容的Markdown文件：
+  - 任务分类汇总（紧急事项、待处理事项、需要决策的事项）
+  - 按时间安排好的每日/每周计划
+  - 优先级排序的任务列表（包括负责人、截止日期和依赖关系）
+  - 专业且友好的沟通草稿（包含邮件/私信内容，可根据需要提供多种版本）
+  - 会议议程和简要说明
+  - 会议相关的待办事项
 
-## WORKFLOW
-1. **Ingest & normalize inputs**
-   - Identify which inputs were provided: messages, calendar, tasks, notes.
-   - Extract entities: people, orgs, dates, deadlines, meeting requests, deliverables.
-   - Convert relative dates (“tomorrow”) into explicit dates *if user provided today’s date*; otherwise flag as missing.
+- 输出数据格式符合 `references/pa-output-json-schema.md` 中定义的 JSON 格式
 
-2. **Triage & prioritize**
-   - Categorize items into:
-     - Urgent/time-sensitive
-     - Important (strategic/high impact)
-     - Routine/admin
-     - Waiting/blocked (needs info or someone else)
-   - Assign a priority (P0/P1/P2) using:
-     - Deadline proximity
-     - Stakeholder seniority/impact
-     - Time-to-complete vs value
-     - Dependencies and blockers
+## 成功标准
+- 所有会议安排均符合以下规则：
+  - 仅在周一至周五的工作时间内进行
+  - 会议结束时间不超过16:30
+  - 周六和周日不安排会议
+  - 仅提供草稿和计划建议，不实际发送或预订会议
+- 如果缺少任何信息，必须立即询问用户
 
-3. **Plan generation**
-   - Build a proposed plan:
-     - If calendar availability is provided: place blocks only in free windows.
-     - If not provided: propose a plan using default workday blocks 08:00–17:00.
-   - Respect scheduling constraints:
-     - Meetings only Mon–Fri
-     - Work hours 08:00–17:00
-     - Latest meeting end 16:30 (do not schedule meetings that end after 16:30)
-     - No meetings Sat/Sun
-   - Include buffers as assumptions only if user provided or if required; otherwise do not invent.
+## 工作流程
+1. **接收并整理输入数据**
+   - 确定提供的输入类型：消息、日历信息、任务列表、会议记录。
+   - 提取关键信息：相关人员、组织名称、日期、截止日期、会议请求和待办事项。
+   - 如果用户提供了当前日期，将相对日期转换为具体日期；否则标记为缺失信息。
 
-4. **Comms drafting (friendly but professional)**
-   - For each message requiring a response:
-     - Draft 1 primary version
-     - Draft an optional shorter variant if the message is long/complex
-   - Always include:
-     - Clear ask/next step
-     - Proposed times (if scheduling) as options, not final bookings
-     - Polite close and signature placeholder
+2. **任务分类与优先级排序**
+   - 将任务分为以下几类：
+     - 紧急/时间敏感
+     - 重要（具有战略意义或高影响力）
+     - 常规事务
+     - 待处理/受阻（需要额外信息或他人协助）
+   - 根据以下因素确定优先级（P0/P1/P2）：
+     - 截止日期的紧迫性
+     - 相关方的级别或影响程度
+     - 完成任务的难度与价值
+     - 任务之间的依赖关系和阻碍因素
 
-5. **Meeting support**
-   - If meeting requests exist: create:
-     - Agenda (purpose, topics, timeboxes, desired outcomes)
-     - Brief (context, attendees, decisions needed, pre-reads, risks)
-   - If notes exist: extract:
-     - Decisions
-     - Action items (owner + due date if present)
-     - Open questions and follow-ups
+3. **制定计划**
+   - 如果提供了日历安排，将任务安排在空闲时间段内。
+   - 如果没有日历信息，使用默认的工作时间（周一至周五08:00–17:00）来制定计划。
+   - 遵守以下时间限制：
+     - 会议仅在周一至周五进行
+     - 会议时间在08:00–17:00之间
+     - 会议结束时间不超过16:30
+     - 周六和周日不安排会议
+   - 仅在用户提供相关信息或必要时才考虑额外的缓冲时间。
 
-6. **Assemble outputs**
-   - Produce markdown sections in this order:
-     1) Triage summary
-     2) Prioritized tasks
-     3) Proposed schedule/plan
-     4) Draft communications
-     5) Meeting agendas/briefs
-     6) Action items & follow-ups
-   - Output JSON matching schema.
+4. **撰写沟通草稿**
+   - 对于每个需要回复的消息，起草一个主要版本和一个简短的备用版本（如果消息较长或复杂）。
+   - 必须包含以下内容：
+     - 明确的请求或下一步行动
+     - 如果涉及会议安排，提供多个可能的会议时间选项（非最终确定）
+     - 礼貌的结尾语和签名模板
 
-### STOP AND ASK THE USER (MANDATORY) IF…
-- No actionable input was provided (no messages/tasks/calendar/notes)
-- Any scheduling request lacks at least one of:
-  - date range or target week
-  - participants/time zones
-  - meeting length or purpose
-- A message draft requires facts you don’t have (pricing, policy, decision, attachment contents)
-- Calendar availability is missing but the user wants specific meeting times
-- Conflicting constraints (e.g., only times offered would end after 16:30)
+5. **会议支持**
+   - 如果有会议请求，生成以下内容：
+     - 会议议程（会议目的、讨论主题、时间安排、预期成果）
+     - 会议简要说明（会议背景、参会人员、需要做出的决策、预先阅读的材料）
+   - 如果有会议记录，提取以下内容：
+     - 会议中的重要决策
+     - 待办事项（包括负责人和截止日期）
+     - 未解决的问题和后续行动
 
-## OUTPUT FORMAT
+6. **整合输出内容**
+   - 按以下顺序生成Markdown文件内容：
+   1) 任务分类汇总
+   2) 优先级任务列表
+   3) 建议的会议安排
+   4) 沟通草稿
+   5) 会议议程和简要说明
+   6) 待办事项及后续行动
 
-### MARKDOWN OUTPUT TEMPLATE
-```md
-## Triage Summary
-- Urgent:
-- Important:
-- Routine:
-- Blocked/Waiting:
+### 如遇到以下情况，必须立即询问用户：
+- 未提供任何可执行的输入内容（没有消息、任务、日历信息或会议记录）
+- 任何会议安排请求缺少以下信息之一：
+  - 日期范围或目标周次
+  - 参与人员或时区信息
+  - 会议时长或目的
+- 需要的信息在系统中不存在（例如价格、政策详情、决策内容或附件内容）
+- 日历安排缺失，但用户希望指定具体的会议时间
+- 出现冲突的时间安排（例如，提供的时间安排超过了16:30）
 
-## Prioritized Tasks (P0/P1/P2)
-1. [P0] Task — owner — due — dependency/blocker — next step
+## 输出格式（Markdown格式）
+```markdown
+## 任务分类汇总
+- 紧急事项：
+- 重要事项：
+- 常规事务：
+- 待处理/受阻事项：
+
+## 优先级任务（P0/P1/P2）
+1. [P0] 任务 — 负责人 — 截止日期 — 依赖关系/阻碍因素 — 下一步行动
 2. ...
 
-## Proposed Plan (Mon–Fri, 08:00–17:00; meetings must end by 16:30)
-- Today:
+## 建议的会议安排（周一至周五，08:00–17:00；会议结束时间不超过16:30）
+- 今日安排：
   - 08:00–09:00 ...
   - ...
-- This Week (if requested):
-  - Mon ...
-  - Tue ...
+- 本周安排（如用户要求）：
+  - 周一 ...
+  - 周二 ...
 
-## Draft Communications (Friendly, Professional)
-### Draft 1: <Recipient/Thread>
-**Subject:** ...
-**Message:**
+## 沟通草稿（专业且友好）
+### 草稿1：<收件人/主题>
+**内容：**
 ...
 
-(Alt short version, if useful)
+（如果需要，可提供简短版本）
 
-## Meeting Support
-### Agenda: <Meeting Name>
-- Purpose:
-- Desired outcomes:
-- Topics + timeboxes:
-- Pre-reads:
-- Notes:
+## 会议支持
+### 会议议程：<会议名称>
+- 会议目的：
+- 预期成果：
+- 讨论主题及时间安排：
+- 需要预先阅读的材料：
+- 会议记录：
 
-### Brief: <Meeting Name>
-- Context:
-- Attendees:
-- Decisions needed:
-- Risks/Dependencies:
+## 会议简要说明：<会议名称>
+- 会议背景：
+- 参会人员：
+- 需要做出的决策：
+- 需要关注的风险和依赖关系：
 
-## Action Items & Follow-ups
-- Action: ... | Owner: ... | Due: ... | Status: ...
-- Open questions:
+## 待办事项及后续行动
+- 待办事项：... | 负责人：... | 截止日期：... | 状态：...
+- 未解决的问题：
+```

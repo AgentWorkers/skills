@@ -1,28 +1,28 @@
 ---
 name: a11y-checker
-description: Scan HTML and JSX for accessibility issues with AI-powered fix suggestions
+description: 使用人工智能技术扫描 HTML 和 JSX 文件中的可访问性问题，并提供相应的修复建议。
 ---
 
-# A11y Checker
+# A11y 检查器
 
-Scan your HTML and JSX files for WCAG accessibility issues. Get actual code fixes, not just warnings.
+扫描您的 HTML 和 JSX 文件，查找 WCAG 可访问性问题。提供实际的代码修复方案，而不仅仅是警告。
 
-**One command. Real fixes. Not just complaints.**
+**一个命令即可完成所有修复工作。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-a11y ./src/components/Header.tsx
 ```
 
-## What It Does
+## 功能介绍
 
-- Scans HTML/JSX for accessibility violations
-- Identifies WCAG guideline failures
-- Generates actual fix code, not just warnings
-- Works on single files or entire directories
+- 扫描 HTML/JSX 文件中的可访问性违规问题
+- 识别不符合 WCAG 规范的内容
+- 生成实际的修复代码，而不仅仅是警告
+- 可用于单个文件或整个目录
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Scan a single component
@@ -35,39 +35,40 @@ npx ai-a11y ./src/components/
 npx ai-a11y ./src --verbose
 ```
 
-## Common Issues It Catches
+## 常见问题检测
 
-- Missing alt text on images
-- Low color contrast
-- Missing form labels
-- Keyboard navigation problems
-- ARIA attribute misuse
-- Focus management issues
+- 图片缺少 alt 文本
+- 颜色对比度过低
+- 表单标签缺失
+- 键盘导航功能不完善
+- ARIA 属性使用不当
+- 聚焦管理问题
 
-## When to Use This
+## 适用场景
 
-- Before launching a new feature
-- Audit an inherited codebase
-- Prep for accessibility compliance
-- CI/CD accessibility gates
+- 在新功能上线前进行测试
+- 审查现有的代码库
+- 为满足可访问性标准做准备
+- 作为持续集成/持续部署（CI/CD）流程中的可访问性检查环节
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。无需支付费用，也无需注册。
 
-**Find more:** https://github.com/LXGIC-Studios
+**了解更多信息：** https://github.com/LXGIC-Studios
 
-## Requirements
+## 系统要求
 
-Node.js 18+. Needs OPENAI_API_KEY environment variable.
+- Node.js 18.0 或更高版本
+- 需要设置 `OPENAI_API_KEY` 环境变量
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。终身免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**由 LXGIC Studios 开发**
 
 - GitHub: [github.com/lxgicstudios/ai-a11y](https://github.com/lxgicstudios/ai-a11y)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

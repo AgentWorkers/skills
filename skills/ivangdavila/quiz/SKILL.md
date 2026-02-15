@@ -1,92 +1,91 @@
 ---
 name: Quiz
-description: Design engaging quizzes with effective questions, scoring logic, and results that drive learning or conversions.
+description: 设计引人入胜的测验，包含有效的问题、评分逻辑以及能够促进学习或转化的结果。
 ---
 
-## Situation Detection
+## 情境检测
 
-| Context | Load |
-|---------|------|
-| Knowledge assessment, exams, certifications | `types.md` → Knowledge section |
-| Personality quizzes, "Which X are you?" | `types.md` → Personality section |
-| Lead generation, marketing quizzes | `types.md` → Lead-gen section |
-| Writing effective questions | `questions.md` |
-| Building quiz UI/UX, gamification | `implementation.md` |
-
----
-
-## Universal Rules
-
-**One concept per question.** Double-barreled questions confuse and measure nothing. "Do you like pizza and exercise?" → Bad.
-
-**Wrong answers must be plausible.** If correct answer is obvious by elimination, you're testing pattern recognition, not knowledge.
-
-**Results must feel personal.** Generic outcomes kill engagement. "You got 7/10" loses to "You're an 80s Movie Expert — you caught references most people miss."
-
-**Progress visibility motivates.** Show question count, progress bar, time remaining. Uncertainty creates anxiety and abandonment.
+| 使用场景 | 需要参考的文件 |
+|---------|-------------------|
+| 知识评估、考试、认证 | `types.md` → “知识”部分 |
+| 人格测试、“你是哪种类型的人？” | `types.md` → “人格”部分 |
+| 潜在客户获取、营销问卷 | `types.md` → “潜在客户获取”部分 |
+| 编写有效的问题 | `questions.md` |
+| 构建测验的用户界面/用户体验（UI/UX） | `implementation.md` |
 
 ---
 
-## Quiz Types Quick Reference
+## 通用规则
 
-| Type | Goal | Typical Length | Results |
-|------|------|----------------|---------|
-| Knowledge | Assess learning | 10-20 questions | Score + feedback per answer |
-| Personality | Engagement, sharing | 5-12 questions | Personality type/category |
-| Assessment | Diagnose level/fit | 10-30 questions | Detailed report |
-| Lead-gen | Capture email | 5-8 questions | Results gated behind email |
-| Trivia | Entertainment | Any | Leaderboard, social share |
+**每个问题只测试一个概念。** 使用双栏格式的问题会让人困惑，且无法准确衡量考生的知识水平。例如：“你喜欢披萨和锻炼吗？”这样的问题设计不佳。
 
----
+**错误答案必须具有合理性。** 如果正确答案可以通过排除法轻易得出，那么这个题目实际上是在测试考生的模式识别能力，而非知识掌握情况。
 
-## Question Design Checklist
+**结果应该让考生有归属感。** 通用的结果反馈会降低考生的参与度。例如：“你得了7分”不如“你是个80年代电影专家——你发现了大多数人忽略的细节”这样的反馈更有吸引力。
 
-- [ ] Clear, unambiguous wording
-- [ ] One correct answer (or explicit multi-select instruction)
-- [ ] Distractors are plausible, not obviously wrong
-- [ ] No "all of the above" or "none of the above" (lazy design)
-- [ ] Avoid negatives ("Which is NOT...")
-- [ ] Test the concept, not reading comprehension
+**展示进度能激发考生的积极性。** 显示问题数量、进度条以及剩余时间。不确定性会引发焦虑，导致考生放弃测试。
 
 ---
 
-## Scoring Patterns
+## 测验类型快速参考
 
-**Simple percentage:** Correct/total × 100. Best for knowledge tests.
-
-**Weighted scoring:** Some questions worth more. Good for prioritized competencies.
-
-**Branching outcomes:** Answer combinations map to results. Used in personality quizzes.
-
-**Diagnostic rubric:** Score across multiple dimensions. Best for assessments and skill evaluations.
-
----
-
-## Engagement Boosters
-
-- Immediate feedback after each answer (right/wrong + explanation)
-- Visual progress indicator
-- Streak rewards ("3 in a row!")
-- Time pressure (optional, increases excitement but also anxiety)
-- Social sharing of results
-- Leaderboards for competitive contexts
+| 测验类型 | 目标 | 通常长度 | 结果展示方式 |
+|------|------|----------------|-------------------|
+| 知识测验 | 评估学习效果 | 10-20个问题 | 每个问题的得分及反馈 |
+| 人格测验 | 提高参与度、促进分享 | 5-12个问题 | 测出考生的性格类型/类别 |
+| 评估测验 | 诊断考生的能力水平 | 10-30个问题 | 提供详细的评估报告 |
+| 潜在客户获取测验 | 收集考生的电子邮件地址 | 5-8个问题 | 结果仅通过电子邮件提供 |
+| 知识问答 | 娱乐性测验 | 问题数量不限 | 提供排行榜和社交分享功能 |
 
 ---
 
-## Red Flags
+## 问题设计检查清单
 
-- All correct answers in position B/C → Detectable pattern
-- Questions testing obscure trivia vs actual learning objectives
-- Results that don't connect to actions ("Now what?")
-- Too long with no progress indication → Abandonment
-- Mobile-unfriendly UI (tiny buttons, horizontal scroll)
+- 问题表述清晰、无歧义。
+- 每个问题只有一个正确答案（或提供明确的多选选项说明）。
+- 干扰选项应具有合理性，不能明显错误。
+- 避免使用“以上全部”或“以上都不是”这样的选项（这种设计过于简单）。
+- 避免使用否定句式（例如：“下列哪一项是不正确的...”）。
+- 问题应测试考生的概念理解能力，而非阅读理解能力。
 
 ---
 
-## When to Load More
+## 评分方式
 
-| Situation | Reference |
-|-----------|-----------|
-| Designing for specific quiz type | `types.md` |
-| Writing and reviewing questions | `questions.md` |
-| Building quiz flow, UI, tools | `implementation.md` |
+**简单百分比评分：** 正确答案数 ÷ 总问题数 × 100%。适用于知识类测验。
+
+**加权评分：** 部分问题分值更高，适用于需要重点评估某些能力的场景。
+
+**分支式评分：** 根据考生的不同答案组合给出不同的结果。常用于人格测验。
+
+**综合评估评分：** 从多个维度对考生的表现进行评分。适用于全面的技能评估。
+
+---
+
+## 提高参与度的方法
+
+- 每回答一个问题后立即提供反馈（正确/错误 + 解释）。
+- 显示视觉化的进度指示器。
+- 设立连答奖励机制（例如“连续答对3题”）。
+- 可选择设置时间压力（这会增加紧张感，但也可能提高参与度）。
+- 允许考生分享测验结果。
+- 为竞争性场景提供排行榜。
+
+---
+
+## 需要注意的问题
+
+- 如果所有正确答案都集中在B或C选项中，可能表明存在某种规律或考生使用了技巧。
+- 有些问题测试的内容过于冷门或与实际学习目标不符。
+- 测验结果无法引导考生采取后续行动（例如“现在该做什么？”）。
+- 测验界面不适合在移动设备上使用（按钮太小、需要水平滚动）。
+
+---
+
+## 何时需要参考更多资料
+
+| 使用场景 | 需要参考的文件 |
+|-----------|-------------------|
+| 设计特定类型的测验 | `types.md` |
+- 编写和审阅问题 | `questions.md` |
+- 构建测验的流程、用户界面及工具 | `implementation.md` |

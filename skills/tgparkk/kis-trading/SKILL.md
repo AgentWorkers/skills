@@ -1,6 +1,6 @@
 ---
 name: kis-trading
-description: "한국투자증권(KIS) Open API를 이용한 국내 주식 트레이딩. 잔고 조회, 시세 확인, 매수/매도 주문, 매매 내역, 시장 개황 등. | Korean stock trading via KIS (Korea Investment & Securities) Open API. Balance, quotes, buy/sell orders, trade history, market overview."
+description: "使用韩国投资证券（KIS）的Open API进行国内股票交易：包括余额查询、行情查看、买卖订单提交、交易记录查看以及市场行情了解等。"
 metadata:
   openclaw:
     emoji: "📈"
@@ -14,15 +14,13 @@ metadata:
       - KIS_BASE_URL
 ---
 
-# KIS 주식 트레이딩
+# KIS股票交易
 
-한국투자증권 Open API를 통한 국내 주식 매매 스킬.
+通过韩国投资证券（Korea Investment & Securities）的Open API进行国内股票买卖的技能。
 
-Korean stock trading skill using KIS (Korea Investment & Securities) Open API. Supports balance inquiry, real-time quotes, buy/sell orders, trade history, and market overview for stocks listed on KRX (KOSPI/KOSDAQ).
+## 设置
 
-## 설정
-
-config 파일(`~/.kis-trading/config.ini`)에 아래 값을 설정:
+在`~/.kis-trading/config.ini`配置文件中设置以下参数：
 
 ```ini
 [KIS]
@@ -33,80 +31,73 @@ BASE_URL = https://openapi.koreainvestment.com:9443
 # 모의투자: https://openapivts.koreainvestment.com:29443
 ```
 
-설정 확인:
+## 检查配置：
 
 ```bash
 python3 scripts/setup.py --config ~/.kis-trading/config.ini --check
 ```
 
-## 잔고 조회
+## 查看账户余额
 
-"잔고 보여줘", "계좌 잔고", "예수금", "매수 가능 금액"
+- 显示账户余额
+- 显示可用资金
+- 显示可购买的股票金额
 
 ```bash
 python3 scripts/balance.py --config ~/.kis-trading/config.ini
 ```
 
-## 보유 종목
+## 持有的股票
 
-"보유 종목", "내 주식", "수익률"
+- 显示持有的股票信息
+- 显示我的股票
+- 显示股票收益率
 
 ```bash
 python3 scripts/holdings.py --config ~/.kis-trading/config.ini
 ```
 
-## 종목 시세
+## 股票行情
 
-"삼성전자 현재가", "005930 시세", "카카오 주가"
+- 显示三星电子的当前价格（代码：005930）
+- 显示Kakao的股价
 
 ```bash
 python3 scripts/quote.py --config ~/.kis-trading/config.ini --code 005930
 python3 scripts/quote.py --config ~/.kis-trading/config.ini --name 삼성전자
 ```
 
-## 매수/매도 주문
+## 下单/成交
 
-"삼성전자 10주 매수", "카카오 5주 매도"
+- 下单购买三星电子10股
+- 下单出售Kakao 5股
 
-⚠️ **주문은 반드시 사용자에게 확인을 받은 후 실행할 것!**
+**⚠️ 请务必在用户确认后执行任何订单！**
 
-```bash
-# 시장가 매수
-python3 scripts/order.py --config ~/.kis-trading/config.ini --side buy --code 005930 --qty 10 --market
+## 下单前必须：
+1. 向用户展示股票名称、数量和价格，并请求确认
+2. 可以使用`--dry-run`选项预览订单内容
+3. 确认无误后执行实际订单
 
-# 지정가 매수
-python3 scripts/order.py --config ~/.kis-trading/config.ini --side buy --code 005930 --qty 10 --price 70000
+## 交易记录
 
-# 매도
-python3 scripts/order.py --config ~/.kis-trading/config.ini --side sell --code 005930 --qty 10 --market
-```
-
-주문 전 반드시:
-1. 종목명, 수량, 가격을 사용자에게 보여주고 확인 요청
-2. `--dry-run` 으로 주문 내용 미리 확인 가능
-3. 확인 후 실제 주문 실행
-
-## 매매 내역
-
-"매매 내역", "오늘 체결 내역", "주문 내역"
+- 显示交易历史
+- 显示今天的成交记录
+- 显示所有订单的详细信息
 
 ```bash
 python3 scripts/history.py --config ~/.kis-trading/config.ini
 python3 scripts/history.py --config ~/.kis-trading/config.ini --start 20240101 --end 20240131
 ```
 
-## 시장 개황
+## 市场概况
 
-"시장 개황", "거래량 상위", "코스피 지수"
+- 查看市场整体情况
+- 显示成交量排名前几位的股票
+- 显示KOSPI指数
 
-```bash
-python3 scripts/market.py --config ~/.kis-trading/config.ini --action index
-python3 scripts/market.py --config ~/.kis-trading/config.ini --action volume-rank
-```
-
-## 주의사항
-
-- 실전 투자 시 반드시 BASE_URL을 실전 URL로 설정
-- 모의투자와 실전투자의 TR ID가 다를 수 있음
-- API 호출은 초당 20건 제한 (자동 제어됨)
-- 주문은 **절대** 사용자 확인 없이 실행하지 말 것
+## 注意事项：
+- 在实际投资时，请务必将`BASE_URL`设置为正确的API地址
+- 模拟交易和实际交易的TR ID可能不同
+- API调用每秒限制为20次（系统会自动控制）
+- **严禁**在未经用户确认的情况下执行任何订单

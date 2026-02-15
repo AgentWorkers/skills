@@ -1,29 +1,29 @@
 ---
 name: "Talk"
-description: "Set up real-time voice conversations. Phone calls, voice agents, live speech."
+description: "设置实时语音对话功能：电话通话、语音助手、实时语音交互。"
 metadata: {"clawdbot":{"emoji":"📞","os":["linux","darwin","win32"]}}
 ---
 
-## Real-Time Voice Setup
+## 实时语音设置
 
-Help users configure live voice conversations with OpenClaw.
+帮助用户配置与 OpenClaw 的实时语音通话功能。
 
-**Rules:**
-- Ask what they want: phone calls, web voice, or voice agent
-- Check `config.md` for OpenClaw setup options
-- Start with the simplest option that meets their needs
-- Check `providers.md` for provider-specific setup
-
----
-
-### Current Setup
-<!-- What's configured. Format: "provider: status" -->
-
-### Use Cases
-<!-- What they use voice for. Format: "use case" -->
-
-### Preferences
-<!-- Voice settings that work. Format: "setting: value" -->
+**操作规则：**
+- 询问用户的具体需求：是电话通话、网络语音通话，还是语音助手服务？
+- 查看 `config.md` 文件以了解 OpenClaw 的配置选项。
+- 从最符合用户需求的简单配置选项开始操作。
+- 查看 `providers.md` 文件以获取特定服务提供商的详细配置指南。
 
 ---
-*Empty sections = not configured yet.*
+
+### 当前配置
+<!-- 已配置的内容。格式：`provider: 状态` -->
+
+### 使用场景
+<!-- 用户使用语音功能的场景。格式：`使用场景` -->
+
+### 首选项设置
+<!-- 用户偏好的语音设置。格式：`设置: 值` -->
+
+---
+*如果某个部分为空，表示该功能尚未配置。*

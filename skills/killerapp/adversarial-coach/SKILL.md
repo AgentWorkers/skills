@@ -1,52 +1,52 @@
 ---
 name: adversarial-coach
-description: Adversarial implementation review based on Block's g3 dialectical autocoding research. Use when validating implementation completeness against requirements with fresh objectivity.
+description: 基于Block的g3辩证自动编码研究的对抗性实现审查方法。该方法用于以全新的客观性来验证实现是否满足所有需求。
 ---
 
-# /coach - Adversarial Implementation Review
+# /coach - 对抗性实现审查
 
-## Usage
+## 使用方法
 
 ```
 /coach [requirements-file]
 ```
 
-- `/coach` - Infer requirements from context
-- `/coach requirements.md` - Validate against specific file
+- `/coach`：从代码上下文中推断出需求
+- `/coach requirements.md`：根据具体文件验证实现是否满足需求
 
-## Coach-Player Loop
+## 实施者（玩家）与审查者（教练）的互动循环
 
-You orchestrate this dialectical loop between implementing agent (player) and reviewer (coach):
+你负责协调实施者（玩家）与审查者（教练）之间的这种互动过程：
 
-1. You (player) implement features
-2. `/coach` invokes adversarial review with independent evaluation of compliance to requirements
-3. Coach returns: `IMPLEMENTATION_APPROVED` or specific fixes
-4. Address feedback, loop until approved
+1. 你（玩家）实现代码功能。
+2. `/coach` 会启动对抗性审查，并独立评估代码是否符合需求。
+3. 审查者会返回 `IMPLEMENTATION_APPROVED` 或具体的修改建议。
+4. 根据反馈进行修改，直到代码获得批准。
 
-## Review Process
+## 审查流程
 
-### Step 1: Identify Requirements
+### 第一步：识别需求
 
-Check (in order):
-- Specified requirements file or issue/ticket mentioned
-- `requirements.md`, `REQUIREMENTS.md`, `SPEC.md`, `TODO.md`
-- Conversation context; ask user if nothing found
+按顺序检查以下内容：
+- 是否有明确的需求文件或相关问题/工单被提及；
+- `requirements.md`、`REQUIREMENTS.md`、`SPEC.md`、`TODO.md` 文件；
+- 交流过程中的信息；询问开发者是否还有其他遗漏的需求。
 
-### Step 2: Adversarial Review
+### 第二步：对抗性审查
 
-Review with **fresh objectivity** - discard prior knowledge, don't rationalize shortcuts.
+以 **全新的、客观的态度** 进行审查——摒弃先前的认知，避免使用捷径。
 
-| Check Category | Items |
+| 审查类别 | 需要检查的内容 |
 |----------------|-------|
-| Requirements | Each item: implemented or missing with specific gap |
-| Compilation | Compiles? Tests pass? Runs? |
-| Common Gaps | Auth on endpoints, token refresh endpoint, HTTPS, bcrypt for passwords, error handling, input validation |
-| Functional | Test actual flows (not just compilation), verify edge cases work |
-| Test Coverage | Auth error cases (401/403), token expiry, invalid inputs, rate limits |
+| 需求 | 每一项需求：是否已实现，以及存在的具体差距 |
+| 编译 | 代码是否能够编译？测试是否通过？程序是否能够正常运行？ |
+| 常见问题 | 终端认证、令牌刷新机制、密码加密（使用 bcrypt）、错误处理、输入验证等 |
+| 功能性 | 测试实际的功能流程（而不仅仅是代码是否能够编译），验证边缘情况是否正常处理 |
+| 测试覆盖率 | 认证错误（如 401/403 错误）、令牌过期、无效输入、速率限制等 |
 
-### Step 3: Return Verdict
+### 第三步：给出审查结果
 
-**If approved (>95% complete):**
+**如果代码满足 95% 以上的要求，则批准：**
 ```
 IMPLEMENTATION_APPROVED
 
@@ -56,7 +56,7 @@ IMPLEMENTATION_APPROVED
 - Tests: All passing
 ```
 
-**If fixes needed:**
+**如果需要修改：**
 ```
 REQUIREMENTS COMPLIANCE:
 - [Requirement]: Implemented
@@ -67,28 +67,30 @@ IMMEDIATE ACTIONS NEEDED:
 2. [Specific fix]
 ```
 
-## Key Principles
+## 关键原则
 
-**Rigorous but fair:**
-- Catch real gaps (security, logic, data flow), not style preferences
-- Functionality over aesthetics; always flag security issues (auth, crypto, validation)
+**严谨但公平：**
+- 发现实际存在的问题（如安全漏洞、逻辑错误、数据流问题），而非仅仅是代码风格问题；
+- 优先考虑功能完整性，务必指出安全相关的问题（如认证、加密、数据验证等）；
+- 表达简洁明了：使用项目符号列出问题，避免冗长的描述；
+- 审查结果中不应包含代码内容或详细的分析。
 
-**Concise:**
-- Bullets, not essays; specific issues, not vague concerns
-- No file contents or verbose analysis in output
+**全新的视角是你的优势：**
+- 像从未见过这段代码一样进行审查，严格依据需求进行验证，而不是基于开发者的意图。
 
-**Fresh context is your superpower:**
-- Review as if you've never seen this code; validate against requirements, not intentions
+## 审查完成的信号
 
-## Magic Signal
+`IMPLEMENTATION_APPROVED`：表示审查完成。
 
-`IMPLEMENTATION_APPROVED` = termination signal
+只有在以下所有条件都满足时，才能使用该信号：
+- 所有需求都得到满足；
+- 代码能够编译并正常运行；
+- 测试通过；
+- 不存在重大缺陷。
 
-Only use when: all requirements met, code compiles/runs, tests pass, no significant gaps.
+如果有疑问，请不要批准代码。
 
-If in doubt, don't approve.
-
-## Minimal Example
+## 最小示例
 
 ```
 User: /coach SPEC.md
@@ -115,8 +117,8 @@ IMPLEMENTATION_APPROVED
 - 18 tests passing including auth error cases
 ```
 
-## Research
+## 参考资料
 
-- **Paper**: [Adversarial Cooperation in Code Synthesis](https://block.xyz/documents/adversarial-cooperation-in-code-synthesis.pdf)
-- **Implementation**: [g3](https://github.com/dhanji/g3)
-- **Key insight**: Discard implementing agent's self-report; perform independent evaluation against requirements.
+- **论文**：[《代码合成中的对抗性合作》（Adversarial Cooperation in Code Synthesis）[链接](https://block.xyz/documents/adversarial-cooperation-in-code-synthesis.pdf)
+- **实现示例**：[g3](https://github.com/dhanji/g3)
+- **核心观点**：不要相信实施者的自我评估结果，应独立地根据需求进行评估。

@@ -1,6 +1,6 @@
 ---
 name: smart-contracts
-description: Expert guidance for smart-contracts.
+description: 智能合约的专家指南。
 version: 1.0.0
 tags: [data,ai,machine-learning]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# usmart contracts
+# usmart Contracts
 
-Expert guidance and training.
+提供专家级的指导和培训。
 
-## Capabilities
+## 功能亮点
 
-- Best practices
-- Techniques and methods
-- Practical exercises
-- Resource recommendations
+- 最佳实践
+- 技巧与方法
+- 实践练习
+- 资源推荐
 
-## Usage
-Help with this skill
-Tips and guidance
+## 使用方法
+- 提供相关技能的帮助
+- 提供实用的建议和指导

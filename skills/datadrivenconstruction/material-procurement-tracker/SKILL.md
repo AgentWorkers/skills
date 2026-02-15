@@ -1,16 +1,16 @@
 ---
 slug: "material-procurement-tracker"
 display_name: "Material Procurement Tracker"
-description: "Track material procurement from requisition to delivery. Monitor lead times, vendors, and costs."
+description: "从物料申请到交付的整个采购流程进行跟踪。监控交货周期、供应商情况以及成本信息。"
 ---
 
-# Material Procurement Tracker
+# 物料采购跟踪器
 
-## Business Case
+## 商业背景
 
-Long lead items and material procurement require careful tracking to avoid schedule delays.
+对于交货周期较长的项目以及物料采购，需要仔细进行跟踪，以避免进度延误。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -155,7 +155,7 @@ class MaterialProcurementTracker:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 tracker = MaterialProcurementTracker("Office Tower")
@@ -177,5 +177,5 @@ urgent = tracker.get_items_to_order()
 print(f"Items needing order: {len(urgent)}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.4 - Procurement
+## 资源
+- **《DDC手册》**：第3.4章 - 采购

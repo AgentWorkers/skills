@@ -1,15 +1,15 @@
 ---
 name: imap-smtp-email
-description: Read and send email via IMAP/SMTP. Check for new/unread messages, fetch content, search mailboxes, mark as read/unread, and send emails with attachments. Works with any IMAP/SMTP server including Gmail, Outlook, 163.com, vip.163.com, 126.com, vip.126.com, 188.com, and vip.188.com.
+description: 通过 IMAP/SMTP 协议读取和发送电子邮件。可以查看新邮件/未读邮件、获取邮件内容、搜索邮箱中的邮件、将邮件标记为已读/未读，以及发送带有附件的邮件。支持与所有 IMAP/SMTP 服务器配合使用，包括 Gmail、Outlook、163.com、vip.163.com、126.com、vip.126.com、188.com 和 vip.188.com。
 ---
 
-# IMAP/SMTP Email Tool
+# IMAP/SMTP 邮件工具
 
-Read, search, and manage email via IMAP protocol. Send email via SMTP. Supports Gmail, Outlook, 163.com, vip.163.com, 126.com, vip.126.com, 188.com, vip.188.com, and any standard IMAP/SMTP server.
+通过 IMAP 协议读取、搜索和管理电子邮件；通过 SMTP 发送电子邮件。支持 Gmail、Outlook、163.com、vip.163.com、126.com、vip.126.com、188.com、vip.188.com 以及任何标准的 IMAP/SMTP 服务器。
 
-## Configuration
+## 配置
 
-Create `.env` in the skill folder or set environment variables:
+在 skill 文件夹中创建 `.env` 文件，或设置环境变量：
 
 ```bash
 # IMAP Configuration (receiving email)
@@ -31,9 +31,9 @@ SMTP_FROM=your@gmail.com          # Default sender email (optional)
 SMTP_REJECT_UNAUTHORIZED=true     # Set to false for self-signed certs
 ```
 
-## Common Email Servers
+## 常见邮件服务器
 
-| Provider | IMAP Host | IMAP Port | SMTP Host | SMTP Port |
+| 提供商 | IMAP 主机 | IMAP 端口 | SMTP 主机 | SMTP 端口 |
 |----------|-----------|-----------|-----------|-----------|
 | 163.com | imap.163.com | 993 | smtp.163.com | 465 |
 | vip.163.com | imap.vip.163.com | 993 | smtp.vip.163.com | 465 |
@@ -44,47 +44,47 @@ SMTP_REJECT_UNAUTHORIZED=true     # Set to false for self-signed certs
 | yeah.net | imap.yeah.net | 993 | smtp.yeah.net | 465 |
 | Gmail | imap.gmail.com | 993 | smtp.gmail.com | 587 |
 | Outlook | outlook.office365.com | 993 | smtp.office365.com | 587 |
-| QQ Mail | imap.qq.com | 993 | smtp.qq.com | 587 |
+| QQ 邮件 | imap.qq.com | 993 | smtp.qq.com | 587 |
 
-**Important for 163.com:**
-- Use **authorization code** (授权码), not account password
-- Enable IMAP/SMTP in web settings first
+**关于 163.com 的重要说明：**
+- 使用 **授权码**（authorization code），而非账户密码
+- 首先需要在网页设置中启用 IMAP/SMTP 功能
 
-## IMAP Commands (Receiving Email)
+## IMAP 命令（接收邮件）
 
 ### check
-Check for new/unread emails.
+检查是否有新邮件或未读邮件。
 
 ```bash
 node scripts/imap.js check [--limit 10] [--mailbox INBOX] [--recent 2h]
 ```
 
-Options:
-- `--limit <n>`: Max results (default: 10)
-- `--mailbox <name>`: Mailbox to check (default: INBOX)
-- `--recent <time>`: Only show emails from last X time (e.g., 30m, 2h, 7d)
+选项：
+- `--limit <n>`：最大结果数量（默认：10）
+- `--mailbox <名称>`：要检查的邮箱（默认：INBOX）
+- `--recent <时间>`：仅显示过去 X 小时内的邮件（例如：30分钟、2小时、7天）
 
 ### fetch
-Fetch full email content by UID.
+根据 UID 获取邮件的完整内容。
 
 ```bash
 node scripts/imap.js fetch <uid> [--mailbox INBOX]
 ```
 
 ### download
-Download all attachments from an email, or a specific attachment.
+下载邮件中的所有附件，或仅下载特定附件。
 
 ```bash
 node scripts/imap.js download <uid> [--mailbox INBOX] [--dir <path>] [--file <filename>]
 ```
 
-Options:
-- `--mailbox <name>`: Mailbox (default: INBOX)
-- `--dir <path>`: Output directory (default: current directory)
-- `--file <filename>`: Download only the specified attachment (default: download all)
+选项：
+- `--mailbox <名称>`：邮箱（默认：INBOX）
+- `--dir <路径>`：输出目录（默认：当前目录）
+- `--file <文件名>`：仅下载指定的附件（默认：下载所有附件）
 
 ### search
-Search emails with filters.
+使用过滤器搜索邮件。
 
 ```bash
 node scripts/imap.js search [options]
@@ -102,7 +102,7 @@ Options:
 ```
 
 ### mark-read / mark-unread
-Mark message(s) as read or unread.
+将邮件标记为已读或未读。
 
 ```bash
 node scripts/imap.js mark-read <uid> [uid2 uid3...]
@@ -110,36 +110,36 @@ node scripts/imap.js mark-unread <uid> [uid2 uid3...]
 ```
 
 ### list-mailboxes
-List all available mailboxes/folders.
+列出所有可用的邮箱/文件夹。
 
 ```bash
 node scripts/imap.js list-mailboxes
 ```
 
-## SMTP Commands (Sending Email)
+## SMTP 命令（发送邮件）
 
 ### send
-Send email via SMTP.
+通过 SMTP 发送电子邮件。
 
 ```bash
 node scripts/smtp.js send --to <email> --subject <text> [options]
 ```
 
-**Required:**
-- `--to <email>`: Recipient (comma-separated for multiple)
-- `--subject <text>`: Email subject, or `--subject-file <file>`
+**必填参数：**
+- `--to <电子邮件>`：收件人（多个收件人用逗号分隔）
+- `--subject <文本>`：邮件主题，或 `--subject-file <文件>`：主题文件
 
-**Optional:**
-- `--body <text>`: Plain text body
-- `--html`: Send body as HTML
-- `--body-file <file>`: Read body from file
-- `--html-file <file>`: Read HTML from file
-- `--cc <email>`: CC recipients
-- `--bcc <email>`: BCC recipients
-- `--attach <file>`: Attachments (comma-separated)
-- `--from <email>`: Override default sender
+**可选参数：**
+- `--body <文本>`：纯文本邮件正文
+- `--html`：以 HTML 格式发送邮件正文
+- `--body-file <文件>`：从文件中读取邮件正文
+- `--html-file <文件>`：从文件中读取 HTML 内容
+- `--cc <电子邮件>`：抄送收件人
+- `--bcc <电子邮件>`：密送收件人
+- `--attach <文件>`：附加文件（用逗号分隔）
+- `--from <电子邮件>`：覆盖默认发件人
 
-**Examples:**
+**示例：**
 ```bash
 # Simple text email
 node scripts/smtp.js send --to recipient@example.com --subject "Hello" --body "World"
@@ -155,36 +155,36 @@ node scripts/smtp.js send --to "a@example.com,b@example.com" --cc "c@example.com
 ```
 
 ### test
-Test SMTP connection by sending a test email to yourself.
+通过向自己发送测试邮件来测试 SMTP 连接。
 
 ```bash
 node scripts/smtp.js test
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 npm install
 ```
 
-## Security Notes
+## 安全注意事项
 
-- Store credentials in `.env` (add to `.gitignore`)
-- For Gmail: use App Password if 2FA is enabled
-- For 163.com: use authorization code (授权码), not account password
+- 将凭据存储在 `.env` 文件中（并将其添加到 `.gitignore` 文件中）
+- 对于 Gmail：如果启用了 2FA（双重身份验证），请使用应用密码
+- 对于 163.com：使用授权码（authorization code），而非账户密码
 
-## Troubleshooting
+## 故障排除
 
-**Connection timeout:**
-- Verify server is running and accessible
-- Check host/port configuration
+**连接超时：**
+- 确认服务器正在运行且可访问
+- 检查主机/端口配置
 
-**Authentication failed:**
-- Verify username (usually full email address)
-- Check password is correct
-- For 163.com: use authorization code, not account password
-- For Gmail: use App Password if 2FA enabled
+**身份验证失败：**
+- 确认用户名（通常是完整的电子邮件地址）
+- 检查密码是否正确
+- 对于 163.com：使用授权码，而非账户密码
+- 对于 Gmail：如果启用了 2FA，请使用应用密码
 
-**TLS/SSL errors:**
-- Match `IMAP_TLS`/`SMTP_SECURE` setting to server requirements
-- For self-signed certs: set `IMAP_REJECT_UNAUTHORIZED=false` or `SMTP_REJECT_UNAUTHORIZED=false`
+**TLS/SSL 错误：**
+- 确保 `IMAP_TLS`/`SMTPSecure` 设置与服务器要求一致
+- 对于自签名证书：设置 `IMAP_REJECT_UNAUTHORIZED=false` 或 `SMTP_REJECT_UNAUTHORIZED=false`

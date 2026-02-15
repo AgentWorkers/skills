@@ -1,6 +1,6 @@
 ---
 name: pdf-to-docx
-description: Convert PDF files to editable Word documents using pdf2docx
+description: 使用 `pdf2docx` 将 PDF 文件转换为可编辑的 Word 文档
 author: claude-office-skills
 version: "1.0"
 tags: [pdf, word, conversion, pdf2docx, editable]
@@ -12,27 +12,27 @@ library:
   stars: 3.3k
 ---
 
-# PDF to Word Skill
+# 将PDF转换为Word的技能
 
-## Overview
+## 概述
 
-This skill enables conversion from PDF to editable Word documents using **pdf2docx** - a Python library that preserves layout, tables, images, and text formatting. Unlike OCR-based solutions, pdf2docx extracts native PDF content for accurate conversion.
+该技能使用`pdf2docx`（一个Python库）将PDF文件转换为可编辑的Word文档，同时保留布局、表格、图片和文本格式。与基于OCR的解决方案不同，`pdf2docx`直接提取PDF文件的原始内容，从而实现更准确的转换。
 
-## How to Use
+## 使用方法
 
-1. Provide the PDF file you want to convert
-2. Optionally specify pages or conversion options
-3. I'll convert it to an editable Word document
+1. 提供您想要转换的PDF文件。
+2. （可选）指定需要转换的页面或转换选项。
+3. 我会将文件转换为可编辑的Word文档。
 
-**Example prompts:**
-- "Convert this PDF report to an editable Word document"
-- "Turn pages 1-5 of this PDF into Word format"
-- "Extract this scanned document as editable text"
-- "Convert this PDF contract to Word for editing"
+**示例提示：**
+- “将这份PDF报告转换为可编辑的Word文档。”
+- “将这份PDF的第1-5页转换为Word格式。”
+- “将这份扫描的文档提取为可编辑的文本。”
+- “将这份PDF合同转换为Word格式以便编辑。”
 
-## Domain Knowledge
+## 相关领域知识
 
-### pdf2docx Fundamentals
+### `pdf2docx`基础
 
 ```python
 from pdf2docx import Converter
@@ -47,7 +47,7 @@ with Converter('input.pdf') as cv:
     cv.convert('output.docx')
 ```
 
-### Conversion Options
+### 转换选项
 
 ```python
 from pdf2docx import Converter
@@ -69,7 +69,7 @@ cv.convert('output.docx', pages=[0, 2, 4])
 cv.close()
 ```
 
-### Advanced Options
+### 高级选项
 
 ```python
 from pdf2docx import Converter
@@ -97,9 +97,9 @@ cv.convert(
 cv.close()
 ```
 
-### Handling Different PDF Types
+### 处理不同类型的PDF文件
 
-#### Native PDFs (Text-based)
+#### 原生PDF文件（基于文本的）
 ```python
 # Works best with native PDFs
 cv = Converter('native_pdf.pdf')
@@ -107,7 +107,7 @@ cv.convert('output.docx')
 cv.close()
 ```
 
-#### Scanned PDFs (Image-based)
+#### 扫描PDF文件（基于图片的）
 ```python
 # For scanned PDFs, use OCR first
 # pdf2docx works best with native text PDFs
@@ -127,7 +127,7 @@ for img in images:
 # Then create Word document from text
 ```
 
-### Python Integration
+### Python集成
 
 ```python
 from pdf2docx import Converter
@@ -154,7 +154,7 @@ result = pdf_to_word('document.pdf')
 print(f"Created: {result}")
 ```
 
-### Batch Conversion
+### 批量转换
 
 ```python
 from pdf2docx import Converter
@@ -193,7 +193,7 @@ def batch_convert(input_dir, output_dir, max_workers=4):
 batch_convert('./pdfs', './word_docs')
 ```
 
-### Parsing PDF Structure
+### 解析PDF结构
 
 ```python
 from pdf2docx import Converter
@@ -218,17 +218,17 @@ def analyze_pdf(pdf_path):
 analyze_pdf('document.pdf')
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Check PDF Type**: Native PDFs convert better than scanned
-2. **Preview First**: Test with a few pages before full conversion
-3. **Handle Tables**: Complex tables may need manual adjustment
-4. **Image Quality**: Images are extracted at original resolution
-5. **Font Handling**: Some fonts may substitute to system defaults
+1. **检查PDF类型**：原生PDF文件的转换效果更好。
+2. **先预览**：在完全转换之前先测试几页内容。
+3. **处理表格**：复杂的表格可能需要手动调整。
+4. **图片质量**：图片会以原始分辨率提取。
+5. **字体处理**：某些字体可能会被替换为系统默认字体。
 
-## Common Patterns
+## 常见用法
 
-### Convert with Progress
+### 带进度提示的转换
 ```python
 from pdf2docx import Converter
 
@@ -248,7 +248,7 @@ def convert_with_progress(pdf_path, output_path):
     print("Conversion complete!")
 ```
 
-### Extract Tables Only
+### 仅提取表格
 ```python
 from pdf2docx import Converter
 from docx import Document
@@ -281,9 +281,9 @@ def extract_tables_to_word(pdf_path, output_path):
     os.remove(temp_path)
 ```
 
-## Examples
+## 示例
 
-### Example 1: Contract Conversion
+### 示例1：合同转换
 ```python
 from pdf2docx import Converter
 import os
@@ -315,7 +315,7 @@ def convert_contract(pdf_path):
 result = convert_contract('contract.pdf')
 ```
 
-### Example 2: Selective Page Conversion
+### 示例2：选择性页面转换
 ```python
 from pdf2docx import Converter
 
@@ -345,7 +345,7 @@ convert_selected_pages(
 )
 ```
 
-### Example 3: PDF Report to Editable Template
+### 示例3：将PDF报告转换为可编辑模板
 ```python
 from pdf2docx import Converter
 from docx import Document
@@ -387,7 +387,7 @@ def pdf_to_template(pdf_path, output_path):
 pdf_to_template('annual_report.pdf', 'report_template.docx')
 ```
 
-### Example 4: Bulk Invoice Processing
+### 示例4：批量处理发票
 ```python
 from pdf2docx import Converter
 from pathlib import Path
@@ -436,15 +436,15 @@ def process_invoices(input_folder, output_folder):
 results = process_invoices('./invoices_pdf', './invoices_word')
 ```
 
-## Limitations
+## 限制
 
-- Scanned PDFs require OCR preprocessing
-- Complex layouts may not convert perfectly
-- Some fonts may not be available
-- Watermarks are included in conversion
-- Protected/encrypted PDFs need password
+- 扫描PDF文件需要先进行OCR预处理。
+- 复杂的布局可能无法完美转换。
+- 一些字体可能无法被正确显示。
+- PDF中的水印会一起被转换进来。
+- 受保护的/加密的PDF文件需要密码才能转换。
 
-## Installation
+## 安装方法
 
 ```bash
 pip install pdf2docx
@@ -453,8 +453,8 @@ pip install pdf2docx
 pip install Pillow
 ```
 
-## Resources
+## 资源
 
-- [GitHub Repository](https://github.com/dothinking/pdf2docx)
-- [Documentation](https://pdf2docx.readthedocs.io/)
-- [PyPI Package](https://pypi.org/project/pdf2docx/)
+- [GitHub仓库](https://github.com/dothinking/pdf2docx)
+- [文档](https://pdf2docx.readthedocs.io/)
+- [PyPI包](https://pypi.org/project/pdf2docx/)

@@ -1,59 +1,72 @@
 ---
 name: mailchannels-email-api
-description: Send email via MailChannels Email API and ingest signed delivery-event webhooks into Clawdbot (Moltbot).
+description: 通过 MailChannels 的 Email API 发送电子邮件，并将已签名的交付事件（delivery-event）Webhook 数据导入 Clawdbot（Moltbot）。
 homepage: https://docs.mailchannels.net/email-api/
 metadata: {"moltbot":{"emoji":"📨","requires":{"env":["MAILCHANNELS_API_KEY","MAILCHANNELS_ACCOUNT_ID"],"bins":["curl"]},"primaryEnv":"MAILCHANNELS_API_KEY"}}
 ---
 
-# MailChannels Email API (Send + Delivery Events)
+# MailChannels 邮件 API（发送邮件 + 通知事件）
 
-## Environment
+## 环境要求
 
-Required:
-- `MAILCHANNELS_API_KEY` (send in `X-Api-Key`)
-- `MAILCHANNELS_ACCOUNT_ID` (aka `customer_handle`)
+**必填项：**
+- `MAILCHANNELS_API_KEY`（在请求头中设置为 `X-Api-Key`）
+- `MAILCHANNELS_ACCOUNT_ID`（也称为 `customer_handle`）
 
-Optional:
-- `MAILCHANNELS_BASE_URL` (default: `https://api.mailchannels.net/tx/v1`), `MAILCHANNELS_WEBHOOK_ENDPOINT_URL`
+**可选项：**
+- `MAILCHANNELS_BASE_URL`（默认值：`https://api.mailchannels.net/tx/v1`）
+- `MAILCHANNELS_WEBHOOK_ENDPOINT_URL`
 
-## Domain Lockdown (DNS)
+## 域名配置（DNS）
 
-Create a TXT record for each sender domain:
-- Host: `_mailchannels.<your-domain>`
-- Value: `v=mc1; auid=<YOUR_ACCOUNT_ID>`
+为每个发件人域名创建一个 TXT 记录：
+- 主机：`_mailchannels.<your-domain>`
+- 值：`v=mc1; auid=<YOUR_ACCOUNT_ID>`
 
-## API Quick Reference
-Base URL: `${MAILCHANNELS_BASE_URL:-https://api.mailchannels.net/tx/v1}`
-- Send: `POST /send`
-- Send async: `POST /send-async`
-- Webhook: `POST /webhook?endpoint=<url>`, `GET /webhook`, `DELETE /webhook`, `POST /webhook/validate`
-- Public key: `GET /webhook/public-key?id=<keyid>`
+## API 快速参考
 
-## Sending Email
-Minimum payload fields: `personalizations`, `from`, `subject`, `content`.
-Use `/send` for normal traffic and `/send-async` for queued/low-latency; both produce webhooks.
-Persist MailChannels correlation IDs (e.g., `request_id`).
+**基础 URL：** `${MAILCHANNELS_BASE_URL}-https://api.mailchannels.net/tx/v1`
+- **发送邮件：** `POST /send`
+- **异步发送：** `POST /send-async`
+- **Webhook：** `POST /webhook?endpoint=<url>`, `GET /webhook`, `DELETE /webhook`, `POST /webhook/validate`
+- **公钥：** `GET /webhook/public-key?id=<keyid>`
 
-## Delivery Events (Webhooks)
-MailChannels POSTs a JSON array. Common fields: `email`, `customer_handle`, `timestamp`, `event`, `request_id`.
-Bounce fields often include: `recipients`, `status`, `reason`, `smtp_id`.
+## 发送邮件
 
-## Moltbot Hooks Routing
-1) Enable hooks in `~/.clawdbot/moltbot.json`.
-2) Map `/hooks/<path>` to an agent action via `hooks.mappings` and optional transform.
-3) Enroll the public endpoint in MailChannels `/webhook?endpoint=...`.
+**最低要求的数据字段：** `personalizations`, `from`, `subject`, `content`。
+- 使用 `/send` 发送普通邮件；使用 `/send-async` 发送队列中的邮件或低延迟邮件。这两种方式都会触发 Webhook。
+- 确保保存 MailChannels 的关联 ID（例如 `request_id`）。
 
-## Webhook Signature Verification
-Headers: `Content-Digest`, `Signature-Input`, `Signature`.
-Steps:
-- Parse `Signature-Input` (name, `created`, `alg`, `keyid`).
-- Reject stale `created` values.
-- Fetch public key by `keyid`.
-- Recreate the RFC 9421 signature base.
-- Verify ed25519 signature (avoid hand-rolling).
-Also verify JSON body is an array and every event has `customer_handle == MAILCHANNELS_ACCOUNT_ID`.
+## 通知事件（Webhook）
 
-## Correlation + State Updates
-Store your internal message ID + MailChannels IDs (e.g., `request_id`, `smtp_id`).
-Update delivery state from events: `processed`, `delivered`, `soft-bounced`, `hard-bounced`, `dropped`.
-Operational tips: respond 2xx quickly, process async, store raw events, dedupe retries.
+MailChannels 会发送一个 JSON 数组作为通知。常见字段包括：`email`, `customer_handle`, `timestamp`, `event`, `request_id`。
+**退信相关字段：** `recipients`, `status`, `reason`, `smtp_id`。
+
+## Moltbot 的 Hook 路由配置
+
+1. 在 `~/.clawdbot/moltbot.json` 中启用 Hook 功能。
+2. 通过 `hooks.mappings` 将 `/hooks/<path>` 映射到相应的代理操作，并可选地添加转换逻辑。
+3. 将公共 Webhook 端点注册到 MailChannels：`/webhook?endpoint=...`
+
+## Webhook 签名验证
+
+**所需请求头：** `Content-Digest`, `Signature-Input`, `Signature`。
+
+**验证步骤：**
+1. 解析 `Signature-Input`（包含签名名称、创建时间、算法和密钥 ID）。
+2. 拒绝过时的创建时间值。
+3. 根据 `keyid` 获取公钥。
+4. 根据 RFC 9421 规范重新生成签名。
+5. 验证 ed25519 签名（避免手动计算签名）。
+6. 确保 JSON 正文是一个数组，并且每个事件中的 `customer_handle` 与 `MAILCHANNELS_ACCOUNT_ID` 一致。
+
+## 关联信息与状态更新
+
+存储内部消息 ID 和 MailChannels 的 ID（例如 `request_id`, `smtp_id`）。
+根据事件更新邮件状态：`processed`, `delivered`, `soft-bounced`, `hard-bounced`, `dropped`。
+
+**运营建议：**
+- 快速返回 2xx 状态码以表示请求成功。
+- 异步处理请求。
+- 存储原始事件数据。
+- 避免重复发送请求。

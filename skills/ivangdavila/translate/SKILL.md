@@ -1,6 +1,6 @@
 ---
 name: Translate
-description: "Translate text accurately — preserve formatting, handle plurals, and adapt tone per locale."
+description: "请准确翻译文本内容，保持格式不变，处理复数形式，并根据目标语言调整语气。"
 metadata:
   emoji: "🌐"
   category: "text"
@@ -9,42 +9,42 @@ metadata:
   tags: ["translation", "localization", "languages", "formatting"]
 ---
 
-# Translate
+# 翻译技巧
 
-Master accurate translation that preserves meaning, formatting, and cultural context.
+掌握精准的翻译方法，确保翻译内容在意义、格式和文化背景上都能得到准确传达。
 
-## Formatting Preservation
-- Never translate content inside code blocks, HTML tags, or markdown syntax
-- Preserve placeholders like `{name}`, `{{variable}}`, `%s`, `$1` exactly as-is
-- Keep markdown structure intact: headers, links, bold/italic formatting
-- Maintain JSON/XML structure and keys — translate only values where appropriate
+## 格式保留
+- 不要翻译代码块、HTML标签或Markdown语法中的内容
+- 保留占位符（如 `{name}`、`{{variable}}`、`%s`、`$1`）的原样
+- 保持Markdown结构的完整性：标题、链接、粗体/斜体格式
+- 在适当的情况下，仅翻译JSON/XML结构中的值，而保留键的部分
 
-## Content Rules
-- Don't translate: proper nouns, brand names, technical terms, URLs, email addresses
-- Don't translate: code snippets, CSS classes, API endpoints, file extensions
-- Preserve numbers, dates, and IDs in their original format unless locale conversion needed
-- Keep consistent terminology throughout — create a glossary for repeated terms
+## 内容规则
+- 不要翻译专有名词、品牌名称、技术术语、URL和电子邮件地址
+- 不要翻译代码片段、CSS类名、API端点或文件扩展名
+- 除非需要根据语言环境进行转换，否则保留数字、日期和ID的原格式
+- 在整个文档中保持术语的一致性（为重复出现的术语创建术语表）
 
-## Language-Specific Handling
-- **Plurals**: Use correct plural forms per target language rules (not English patterns)
-- **Gender**: Ensure noun-adjective agreement in gendered languages (Spanish/French/German)
-- **Formality**: Choose appropriate register (tu/vous, tú/usted, du/Sie) based on context
-- **RTL languages**: Consider text direction for Arabic/Hebrew but keep LTR elements (URLs, numbers)
+## 语言特定处理
+- **复数形式**：根据目标语言的规则使用正确的复数形式（而非英语的复数形式）
+- **性别**：在有性别区分的语言（如西班牙语、法语、德语）中，确保名词和形容词的性别一致
+- **正式程度**：根据上下文选择合适的称呼方式（如“tu/vous”、“tú/usted”、“du/Sie”）
+- **右-to-left（RTL）语言**：处理阿拉伯语/希伯来语时注意文本方向，但保留左-to-right（LTR）的元素（如URL、数字）
 
-## Cultural Adaptation
-- Adapt idioms and expressions rather than literal translation
-- Convert units when culturally appropriate (miles↔km, Fahrenheit↔Celsius)
-- Adjust date formats to locale standards (MM/DD vs DD/MM vs DD.MM)
-- Use local currency symbols and number formatting (, vs . for decimals)
+## 文化适应
+- 对习语和表达进行适当的调整，而不是直接翻译
+- 在文化合适的情况下转换单位（如英里↔公里、华氏度↔摄氏度）
+- 根据目标语言的标准调整日期格式（如MM/DD、DD/MM、DD.MM）
+- 使用当地的货币符号和数字格式（例如，使用逗号（,）作为小数分隔符）
 
-## Context Awareness
-- Disambiguate based on context: "bank" (financial vs river), "mouse" (animal vs computer)
-- Maintain document tone: formal business vs casual blog vs technical manual
-- Consider target audience: children's content vs academic paper vs marketing copy
-- Preserve original intent and emotional nuance, not just literal meaning
+## 上下文理解
+- 根据上下文消除歧义（例如，“bank”可以是金融机构或河流；“mouse”可以是动物或鼠标）
+- 保持文档的正式程度（如商务文件、博客文章或技术手册）
+- 考虑目标受众（如儿童内容、学术论文或营销文案）
+- 保留原文的意图和情感色彩，而不仅仅是字面意义
 
-## Quality Control
-- Read full context before translating to understand meaning
-- Check that translated text flows naturally in target language
-- Verify all formatting elements remain functional after translation
-- Ensure consistent voice and terminology across the entire document
+## 质量控制
+- 在翻译前阅读整个上下文以理解其含义
+- 确保翻译后的文本在目标语言中读起来自然流畅
+- 检查翻译后的所有格式元素是否仍然有效
+- 确保整个文档中的语气和术语保持一致

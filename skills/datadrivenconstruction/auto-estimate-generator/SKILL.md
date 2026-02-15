@@ -1,25 +1,24 @@
 ---
 slug: "auto-estimate-generator"
 display_name: "Auto Estimate Generator"
-description: "Automatically generate estimates from QTO data. Apply pricing rules to BIM quantities for cost estimates."
+description: "根据QTO（Quantities Taken Off）数据自动生成估算值。将定价规则应用于BIM（Building Information Modeling）中的工程量，以生成成本估算。"
 ---
 
-# Auto Estimate Generator
+# 自动估算生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Manual estimate creation challenges:
-- Time-consuming quantity mapping
-- Inconsistent pricing rules
-- Errors in calculations
-- Difficulty updating estimates
+### 问题描述
+手动创建估算时面临以下挑战：
+- 量值映射耗时较长
+- 定价规则不一致
+- 计算错误
+- 估算更新困难
 
-### Solution
-Automated estimate generation from BIM/QTO data using configurable pricing rules and assembly mappings.
+### 解决方案
+利用可配置的定价规则和组件映射，从 BIM/QTO 数据自动生成估算结果。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional, Callable
@@ -303,8 +302,7 @@ class AutoEstimateGenerator:
         return sorted(suggestions, key=lambda x: x['count'], reverse=True)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize generator
 generator = AutoEstimateGenerator("Office Building A")
@@ -340,28 +338,28 @@ print(f"Total Cost: ${result['total_cost']:,.2f}")
 print(f"Mapping Rate: {result['mapping_rate']}%")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Cost by Element Type
+### 1. 按元素类型划分成本
 ```python
 by_type = generator.get_cost_by_element_type()
 for element_type, cost in by_type.items():
     print(f"{element_type}: ${cost:,.2f}")
 ```
 
-### 2. Unmapped Items
+### 2. 未映射的项
 ```python
 unmapped = generator.get_unmapped_summary()
 print(unmapped)
 ```
 
-### 3. Rule Suggestions
+### 3. 规则建议
 ```python
 suggestions = generator.suggest_missing_rules()
 for s in suggestions:
     print(f"Need rule for: {s['element_type']} ({s['count']} items)")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.2 - QTO and Automated Estimates
-- **Website**: https://datadrivenconstruction.io
+## 参考资源
+- **DDC 手册**：第 3.2 章 - 工料清单（QTO）与自动估算
+- **官方网站**：https://datadrivenconstruction.io

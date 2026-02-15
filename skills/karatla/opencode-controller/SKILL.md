@@ -1,77 +1,72 @@
 ---
 name: opencode-controller
-description: Control and operate Opencode via slash commands. Use this skill to manage sessions, select models, switch agents (plan/build), and coordinate coding through Opencode.
+description: 通过斜杠（/）命令来控制和操作 Opencode。利用这一技能，您可以管理会话、选择模型、切换代理（规划/构建），并通过 Opencode 协调编码工作。
 ---
 
-# Opencode Controller
+# Opencode 控制器
 
-## Core rule
+## 核心规则
 
-Clawdbot does not write code.
-All planning and coding happens inside Opencode.
+Clawdbot 不会编写代码；所有的规划和编码工作都在 Opencode 中完成。
 
-## Pre-flight
+## 准备阶段
 
-- Ask the user which AI provider to use.
-- Ask how the provider should be authenticated.
-- Do not proceed without confirmation.
+- 询问用户希望使用哪个 AI 提供商。
+- 询问如何对所选提供商进行身份验证。
+- 未经用户确认，不得继续执行后续操作。
 
-## Session management
+## 会话管理
 
-- Start Opencode.
-- Open session selector using:
-  /sessions
-- If the current project already exists:
-  - Select the existing session.
-- Never create a new session without user approval.
+- 启动 Opencode。
+- 使用 `/sessions` 命令打开会话选择器。
+- 如果当前项目已经存在：
+  - 选择现有的会话。
+- 未经用户批准，切勿创建新的会话。
 
-## Agent (mode) control
+## 代理（模式）控制
 
-- Open agent selector using:
-  /agents
-- Available agents:
-  - Plan
-  - Build
-- Always select Plan first.
-- Switch agents whenever required using `/agents`.
+- 使用 `/agents` 命令打开代理选择器。
+- 可用的代理模式包括：
+  - Plan（规划）
+  - Build（构建）
+- 始终先选择 “Plan” 模式。
+- 根据需要使用 `/agents` 命令切换代理模式。
 
-## Model selection
+## 模型选择
 
-- Open model selector using:
-  /models
-- Select the user-requested provider.
-- If authentication is required:
-  - Copy the login link provided by Opencode.
-  - Send it to the user.
-  - Wait for confirmation before continuing.
+- 使用 `/models` 命令打开模型选择器。
+- 选择用户请求的 AI 提供商。
+- 如果需要身份验证：
+  - 复制 Opencode 提供的登录链接，并发送给用户。
+- 在继续之前等待用户的确认。
 
-## Plan agent behavior
+## 规划代理行为
 
-- Ask Opencode to analyze the task.
-- Request a clear step-by-step plan.
-- Allow Opencode to ask clarification questions.
-- Review the plan carefully.
-- If the plan is incorrect or incomplete:
-  - Ask Opencode to revise it.
-- Do not allow code generation in Plan.
+- 请求 Opencode 分析任务。
+- 要求 Opencode 提供详细的步骤计划。
+- 允许 Opencode 提出问题以获取更多信息。
+- 仔细审查计划内容。
+- 如果计划有误或不完整：
+  - 要求 Opencode 进行修改。
+- 在 “Plan” 模式中不允许生成代码。
 
-## Build agent behavior
+## 构建代理行为
 
-- Switch to Build using `/agents`.
-- Ask Opencode to implement the approved plan.
-- If Opencode asks any question:
-  - Immediately switch back to Plan.
-  - Answer and confirm the plan.
-  - Switch back to Build.
+- 使用 `/agents` 命令切换到 “Build” 模式。
+- 请求 Opencode 实施已批准的计划。
+- 如果 Opencode 提出任何问题：
+  - 立即切换回 “Plan” 模式。
+- 回答问题并确认计划内容。
+- 然后切换回 “Build” 模式。
 
-## Completion
+## 完成任务
 
-- Repeat the Plan → Build loop until all user requirements are satisfied.
-- Never skip Plan.
-- Never answer questions in Build.
+- 重复 “Plan → Build” 的循环，直到满足所有用户需求。
+- 严禁跳过 “Plan” 模式。
+- 在 “Build” 模式中严禁直接回答问题。
 
-## Output format
+## 输出格式
 
-- Show all slash commands explicitly.
-- State which option is selected.
-- Provide login links verbatim.
+- 明确显示所有使用的命令（以 “/” 开头）。
+- 说明选择了哪个选项。
+- 逐字显示提供的登录链接。

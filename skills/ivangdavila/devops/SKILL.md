@@ -1,70 +1,70 @@
 ---
 name: DevOps
-description: Automate deployments, manage infrastructure, and build reliable CI/CD pipelines.
+description: 自动化部署流程，管理基础设施，并构建可靠的持续集成/持续交付（CI/CD）管道。
 metadata: {"clawdbot":{"emoji":"🔧","os":["linux","darwin","win32"]}}
 ---
 
-# DevOps Rules
+# DevOps 规则
 
-## CI/CD Pipelines
-- Fail fast: run linting and unit tests before expensive integration tests — saves time and compute
-- Cache dependencies between runs — `npm install` on every build wastes minutes
-- Pin action versions with SHA, not tags — `actions/checkout@v3` can change, SHA is immutable
-- Secrets in environment variables, never in code or logs — mask them in CI output
-- Parallel jobs for independent steps — test, lint, and build can run simultaneously
+## CI/CD 管道
+- **快速失败（Fail fast）**：在耗时的集成测试之前先运行代码检查（linting）和单元测试，以节省时间和计算资源。
+- **缓存依赖项**：每次构建时运行 `npm install` 会浪费大量时间，因此应缓存依赖项。
+- **使用 SHA 值而非标签来固定操作版本**：`actions/checkout@v3` 可能会发生变化，而 SHA 值是不变的。
+- **将敏感信息存储在环境变量中**，切勿将其放在代码或日志中；在 CI 输出中对这些信息进行加密处理。
+- **并行执行独立步骤**：测试、代码检查（linting）和构建可以同时进行。
 
-## Deployment Strategies
-- Blue-green: run new version alongside old, switch traffic atomically — instant rollback by switching back
-- Canary: route percentage of traffic to new version — catch issues before full rollout
-- Rolling: update instances incrementally — balance between speed and risk
-- Always have rollback plan before deploying — know exactly how to revert
-- Deploy the same artifact to all environments — build once, promote through stages
+## 部署策略
+- **蓝绿部署（Blue-green deployment）**：在新版本和旧版本并行运行的同时，通过切换流量来实现无缝切换；若出现问题，可立即回滚到旧版本。
+- **金丝雀部署（Canary deployment）**：将部分流量路由到新版本，以便在全面部署前发现潜在问题。
+- **滚动部署（Rolling deployment）**：逐步更新实例，以在速度和风险之间取得平衡。
+- **部署前必须制定回滚计划**，明确知道如何恢复到旧版本。
+- **在所有环境中部署相同的代码**：只需构建一次代码，然后按阶段逐步推广。
 
-## Infrastructure as Code
-- Version control all infrastructure — terraform, ansible, cloudformation in git
-- Never apply changes without plan/diff review — `terraform plan` before `apply`
-- State files contain secrets — store remotely with encryption, never in git
-- Modules for reusable components — don't copy-paste infrastructure definitions
-- Separate environments with workspaces or directories — dev changes shouldn't affect prod
+## 基础设施即代码（Infrastructure as Code）
+- **对所有基础设施进行版本控制**：使用 `terraform`、`ansible` 或 `cloudformation` 并将配置文件存储在 Git 中。
+- **执行任何更改前必须制定计划并审核差异**：先运行 `terraform plan`，再执行 `apply`。
+- **状态文件中不应包含敏感信息**，应将其远程存储并加密处理。
+- **使用模块化组件**：避免重复编写基础设施配置。
+- **使用不同的工作空间或目录来区分开发环境和生产环境**，防止开发中的更改影响生产环境。
 
-## Containers
-- One process per container — containers are not VMs
-- Health checks are mandatory — orchestrators need them for routing and restarts
-- Don't run as root — use non-root USER in Dockerfile
-- Immutable images: config via environment, not baked in — same image in all environments
-- Tag images with git SHA, not just `latest` — know exactly what's deployed
+## 容器（Containers）
+- **每个容器中运行一个进程**：容器不同于虚拟机（VM）。
+- **必须进行健康检查**：编排工具依赖这些检查来进行流量路由和容器重启。
+- **不要以 root 用户权限运行容器**：在 Dockerfile 中使用非 root 用户权限。
+- **使用不可变的容器镜像**：配置信息通过环境变量设置，而非硬编码在镜像中；所有环境使用相同的镜像。
+- **使用 Git 的 SHA 值为容器镜像添加标签**，以便明确了解部署的内容。
 
-## Secrets Management
-- Never store secrets in environment files committed to git — use vault, sealed secrets, or CI secret storage
-- Rotate secrets regularly — automation makes rotation painless
-- Different secrets per environment — dev leak shouldn't compromise prod
-- Audit secret access — know who accessed what and when
-- Secrets in memory, not disk when possible — temp files persist longer than expected
+## 秘密信息管理（Secrets Management）
+- **切勿将敏感信息存储在提交到 Git 的环境文件中**，应使用安全存储库（如 Vault）来管理。
+- **定期轮换敏感信息**：自动化流程可简化轮换过程。
+- **为不同环境配置不同的敏感信息**：避免开发环境中的泄露影响到生产环境。
+- **审计敏感信息的访问记录**：记录谁在何时访问了哪些敏感信息。
+- **尽可能将敏感信息存储在内存中**，避免存储在磁盘上（因为内存中的数据可能被意外删除）。
 
-## Monitoring & Alerting
-- Four golden signals: latency, traffic, errors, saturation — start here
-- Alert on symptoms, not causes — "users seeing errors" not "CPU high"
-- Every alert must be actionable — if you can't do anything, it's noise
-- Dashboard per service with key metrics — one glance shows health
-- Structured logs (JSON) for machine parsing — grep works, but queries are better
+## 监控与告警（Monitoring & Alerting）
+- **关注四个关键指标**：延迟、流量、错误率和系统饱和度。
+- **针对症状而非原因发送告警**：例如，当用户报告“出现错误”时立即响应，而不是仅仅显示“CPU 使用率过高”。
+- **所有告警都必须具有可操作性**；如果无法采取任何措施，那么告警就毫无意义。
+- **为每个服务创建仪表板**，显示关键指标，以便快速了解系统运行状况。
+- **使用结构化日志（JSON 格式）**：便于机器解析；虽然 `grep` 也可行，但查询效率更高。
 
-## Reliability
-- Define SLOs before building alerting — what does "healthy" mean for this service?
-- Error budgets: some failures are acceptable — 99.9% means 8 hours downtime/year is OK
-- Chaos engineering in staging — break things intentionally before prod breaks accidentally
-- Runbooks for common incidents — 3am is not the time to figure out recovery steps
-- Post-mortems without blame — focus on systems, not people
+## 可靠性（Reliability）
+- **在设置告警机制之前定义服务级别目标（SLOs）**：明确“健康”状态的标准。
+- **设定错误容忍度**：某些故障是可以接受的；例如，99.9% 的可用性意味着每年最多允许 8 小时的停机时间。
+- **在测试环境中故意引入故障**：在正式生产环境中避免意外故障的发生。
+- **为常见问题准备相应的操作手册**：不要在凌晨 3 点才去处理恢复流程。
+- **进行事后分析时避免指责**：重点分析系统问题，而非个人责任。
 
-## Common Mistakes
-- SSH into prod to fix things — all changes through automation, or you'll forget what you did
-- No staging environment — "works on my machine" doesn't mean works in prod
-- Ignoring flaky tests — they erode trust in CI, either fix or delete
-- Manual steps in deployment — if it's not automated, it'll be done wrong eventually
-- Monitoring only happy paths — check error rates and edge cases too
+## 常见错误（Common Mistakes）
+- **通过 SSH 登录生产环境进行故障修复**：所有更改都应通过自动化流程完成，否则容易忘记具体操作内容。
+- **没有测试环境**：在开发环境中正常运行的代码不一定能在生产环境中正常运行。
+- **忽略偶尔失败的测试**：这些失败会破坏对持续集成（CI）机制的信任，应尽快修复或删除这些测试。
+- **在部署过程中依赖手动操作**：如果某个步骤没有自动化，最终很可能会出错。
+- **仅监控正常运行情况**：同时也要监控错误率和边缘情况。
 
-## Networking
-- Internal services don't need public IPs — use private subnets, expose only load balancers
-- TLS everywhere, including internal traffic — zero trust, even behind firewall
-- DNS for service discovery — hardcoded IPs break when things move
-- Load balancer health checks separate from app health — LB needs fast response, app health can be thorough
-- Firewall default deny — explicitly allow what's needed, block everything else
+## 网络（Networking）
+- **内部服务无需公网 IP**：使用私有子网，并仅暴露负载均衡器。
+- **所有网络通信都应使用 TLS 协议**，包括内部流量；即使有防火墙，也必须保持零信任原则。
+- **使用 DNS 进行服务发现**：硬编码的 IP 地址在系统迁移后可能会失效。
+- **负载均衡器的健康检查应独立于应用程序的健康检查**：负载均衡器需要快速响应，而应用程序的健康检查可以更详细。
+- **防火墙默认设置为拒绝所有流量**：仅允许必要的流量通过，其他流量一律阻断。

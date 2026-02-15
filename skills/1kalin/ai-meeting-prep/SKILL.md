@@ -1,57 +1,58 @@
 ---
 name: Meeting Prep
-description: Prepares briefing docs so you walk into every meeting ready
+description: 准备简报文档，确保你在每次会议中都能做好充分的准备。
 ---
 
-# Meeting Prep
+# 会议准备
 
-You prepare briefing documents before meetings so the user walks in informed, confident, and ready.
+在会议之前，您会准备简报文件，以确保用户能够带着充分的信息、自信的态度以及做好准备的姿态参加会议。
 
-## When Triggered
+## 触发条件
 
-User says anything like: "I have a meeting with...", "Prep me for...", "Brief me on...", "Meeting with [person/company] tomorrow"
+当用户说出以下内容时，即表示需要准备会议资料：  
+“我有一个与……的会议”，“为我准备关于……的资料”，“请简要介绍一下……”，“明天要与[某人/某公司]开会”  
 
-## Briefing Template
+## 简报模板  
 
-### 1. Meeting Basics
-- **Who:** Names, titles, LinkedIn profiles
-- **Company:** What they do, size, recent news
-- **Context:** Why this meeting is happening
-- **Goal:** What does the user want out of this meeting?
+### 1. 会议基本信息  
+- **参会人员**：姓名、职位、LinkedIn个人资料  
+- **公司**：公司的业务范围、规模、近期动态  
+- **会议背景**：召开此次会议的原因  
+- **会议目标**：用户希望通过此次会议实现什么  
 
-### 2. People Research
+### 2. 参会人员信息  
 
-For each attendee, find:
-- Current role and tenure
-- Previous companies/roles (shared connections?)
-- Recent LinkedIn posts or articles (conversation starters)
-- Anything they've said publicly about relevant topics
+针对每位参会者，收集以下信息：  
+- 当前的职位及任职时间  
+- 之前工作过的公司/职位（如果有共同联系人）  
+- 最近在LinkedIn上发布的帖子或文章（可作为开场话题）  
+- 他们公开表达过的与会议相关的内容  
 
-### 3. Company Intel
+### 3. 公司概况  
 
-- What the company does (one sentence)
-- Recent news (last 90 days) — funding, launches, hires, earnings
-- Competitors
-- Potential pain points based on their industry/size/stage
+- 公司的业务范围（用一句话概括）  
+- 最近90天内的重要动态（如融资、新产品发布、人员招聘、财务业绩）  
+- 主要竞争对手  
+- 根据公司的行业特点、规模和发展阶段，分析可能存在的痛点  
 
-### 4. Agenda & Talking Points
+### 4. 会议议程与讨论要点  
 
-Based on the meeting context, suggest:
-- 3-5 talking points in priority order
-- Questions to ask (smart ones that show you did your homework)
-- Potential objections or concerns they might raise
-- Data points or proof points to have ready
+根据会议背景，提出以下内容：  
+- 按优先级排列的3-5个讨论要点  
+- 有针对性的问题（这些问题能体现您已经做了充分的准备）  
+- 参会者可能提出的反对意见或疑虑  
+- 需要准备的数据或证据  
 
-### 5. Relationship Context
+### 5. 人际关系背景  
 
-If the user has met this person/company before:
-- Pull from any previous notes or CRM data
-- Reference past conversations
-- Note any commitments made previously
+如果用户之前与该人/公司有过接触：  
+- 查阅之前的会议记录或客户关系管理（CRM）数据  
+- 回顾之前的对话内容  
+- 记录对方之前做出的承诺  
 
-### 6. One-Pager Output
+### 6. 一页简报  
 
-Compile everything into a scannable one-pager:
+将所有信息整理成一份易于阅读的一页简报：  
 
 ```
 MEETING BRIEF: [Company/Person] | [Date] [Time]
@@ -82,12 +83,11 @@ WATCH OUT FOR:
 
 NEXT STEPS TO PROPOSE:
 • [What you'll suggest at the end]
-```
+```  
 
-## Rules
-
-- Research is the job. Use web search for every person and company.
-- Keep the brief scannable — bullet points, not paragraphs.
-- Flag unknowns. "Couldn't find recent news" is better than making something up.
-- Time-sensitive: If the meeting is soon, prioritize speed over depth.
-- Always end with suggested next steps to propose in the meeting.
+## 注意事项：  
+- 研究工作是必不可少的。请通过网络搜索获取所有参会人员和公司的相关信息。  
+- 简报应保持简洁易读的形式，使用项目符号而非长段落。  
+- 对于未知的信息，应如实标注（例如“未找到近期动态”，而非随意编造内容）。  
+- 如果会议时间紧迫，优先考虑信息的时效性而非深度。  
+- 每份简报结尾都要提出会议中应讨论的下一步行动建议。

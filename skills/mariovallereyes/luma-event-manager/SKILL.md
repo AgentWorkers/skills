@@ -1,82 +1,90 @@
 ---
 name: luma
-description: Luma Event Manager for Clawdbot — Discover events by topic or location, RSVP, view guest lists, and sync to Google Calendar. No API key required (web scraping), no Luma Plus subscription needed. Repo: github.com/mariovallereyes/luma-skill
+description: **Luma Event Manager for Clawdbot**  
+- 按主题或地点搜索事件  
+- 回复是否参加活动（RSVP）  
+- 查看宾客名单  
+- 将事件信息同步到 Google 日历  
+
+**无需使用 API 密钥（支持网页抓取）**  
+- 无需订阅 Luma Plus 服务  
+
+**仓库地址：** github.com/mariovallereyes/luma-skill
 homepage: https://github.com/mariovallereyes/luma-skill
 metadata: {"clawdbot":{"emoji":"📅","requires":{"bins":["pass"]},"install":[{"id":"npm","kind":"shell","command":"cd skills/luma && npm install","label":"Install dependencies"}]}}
 ---
 
-# Luma Event Manager
+# Luma 事件管理器
 
-Manage Luma events as both **host** and **attendee** via web scraping (no API key required).
+您可以通过网络爬取功能以 **主办方** 或 **参与者** 的身份管理 Luma 事件（无需 API 密钥）。
 
-## Features
+## 功能
 
-### Public (No Auth)
-- Discover events near any location
-- View event details
-- Geographic filtering
+### 公开模式（无需认证）
+- 查找附近地区的事件
+- 查看事件详情
+- 支持地理过滤
 
-### Authenticated (With Cookies)
-- View your RSVP'd events
-- View events you're hosting
-- Access guest lists
-- RSVP to events
-- Sync events to Google Calendar (via `gog` CLI)
+### 认证模式（需要 Cookie）
+- 查看您已确认参加的事件
+- 查看您作为主办方组织的事件
+- 查看参与者名单
+- 回复事件参加意向
+- 将事件同步到 Google 日历（通过 `gog` CLI）
 
-## Triggers
+## 触发器
 
-### Discover Events (Public)
-- "luma search AI" — Find events by topic/theme
-- "luma search startup near San Francisco" — Topic + location
-- "luma events near San Francisco"
-- "luma events near Belmont this weekend"
-- "luma event ai-meetup-sf"
+### 查找事件（公开模式）
+- “luma search AI” — 按主题/类别查找事件
+- “luma search startup near San Francisco” — 按主题和地点查找事件
+- “luma events near San Francisco” — 查找旧金山附近的事件
+- “luma events near Belmont this weekend” — 查找本周末贝尔蒙特附近的事件
+- “luma event ai-meetup-sf” — 查找旧金山的人工智能主题会议
 
-### Host Mode (Auth Required)
-- "luma host events" — List your hosted events
-- "luma host guests <slug>" — View guest list
+### 主办人模式（需要认证）
+- “luma host events” — 查看您组织的事件列表
+- “luma host guests <slug>” — 查看特定活动的参与者名单
 
-### Attendee Mode (Auth Required)
-- "luma my events" — Your RSVP'd events
-- "luma rsvp <slug> <response>" — RSVP yes/no/maybe/waitlist
+### 参与者模式（需要认证）
+- “luma my events” — 查看您已确认参加的事件
+- “luma rsvp <slug> <response>” — 回复事件参加意向（同意/拒绝/待定/加入候补名单）
 
-### Utility
-- "luma configure" — Set up authentication
-- "luma status" — Check connection
-- "luma help" — Show help
-- "luma add calendar <slug>" — Add event to Google Calendar
+### 实用工具
+- “luma configure” — 设置认证信息
+- “luma status” — 检查连接状态
+- “luma help” — 查看帮助文档
+- “luma add calendar <slug>” — 将事件添加到 Google 日历
 
-## Setup
+## 设置
 
-### Basic (Public Events Only)
-No setup required. Just use discover commands.
+### 基本设置（仅适用于公开事件）
+无需额外设置，可直接使用搜索命令。
 
-### Full Access (Your Events + Guest Lists)
-
-1. Log into lu.ma in your browser
-2. Open DevTools (F12) → Application → Cookies → lu.ma
-3. Copy cookie values: `luma_session`, `luma_user_id`
-4. Store in pass:
+### 完整访问权限（包括您的事件和参与者名单）
+1. 在浏览器中登录 lu.ma
+2. 打开开发者工具（F12） → 应用程序 → Cookies → lu.ma
+3. 复制以下 Cookie 值：`luma_session`、`luma_user_id`
+4. 将这些值保存到您的密码管理工具中：
 ```bash
 pass insert luma/cookies
 # Enter: {"luma_session": "value", "luma_user_id": "value"}
 ```
 
-### Calendar Sync (Optional)
-Requires the `gog` CLI with an authorized Google account.
+### 日历同步（可选）
+需要使用具有授权 Google 账户的 `gog` CLI 工具。
 
 ```bash
 gog auth add you@example.com
 ```
 
-Then:
+之后，请按照以下步骤操作：
 ```
 "luma add calendar <slug>"
 "luma add calendar <slug> --account you@example.com"
 "luma add calendar <slug> --calendar_id primary"
 ```
 
-## Examples
+## 示例
 
 ```
 "Events near me this weekend"
@@ -85,9 +93,9 @@ Then:
 "Show my upcoming events"
 ```
 
-## Notes
-- Uses web scraping (no paid Luma Plus required)
-- Exponential backoff with a 1 req/sec floor to respect lu.ma
-- Fallback selectors + Next.js JSON parsing with warnings when selectors fail
-- Cookie auth for private data
-- Public events always accessible
+## 注意事项
+- 该工具使用网络爬取技术，无需购买 Luma Plus 订阅服务。
+- 为避免对 lu.ma 网站造成过大负担，采用了指数级退避策略（每秒最多发送 1 条请求）。
+- 在选择器失效时，系统会使用备用方案并通过 Next.js 进行 JSON 解析，并显示相应的警告信息。
+- 私人数据通过 Cookie 进行保护。
+- 所有公开事件均可随时访问。

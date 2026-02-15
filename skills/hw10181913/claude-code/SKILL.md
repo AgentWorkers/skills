@@ -14,33 +14,33 @@ description: |
 homepage: https://code.claude.com/docs
 ---
 
-# Claude Code Integration
+# Claude Code 集成
 
-This skill integrates Claude Code capabilities into OpenClaw, providing access to AI-assisted coding workflows, documentation, and best practices.
+本技能将 Claude Code 的功能集成到 OpenClaw 中，使用户能够使用 AI 辅助的编码工作流程、文档以及最佳实践。
 
-## What You Can Do
+## 功能概述
 
-### 📚 Documentation Queries
-- Query Claude Code documentation
-- Get best practices and workflows
-- Learn about settings and customization
-- Troubleshoot common issues
+### 📚 文档查询
+- 查询 Claude Code 的文档
+- 获取最佳实践和工作流程
+- 了解设置和自定义选项
+- 解决常见问题
 
-### 🤖 Subagent Management
-- Create coding subagents
-- Manage agent teams
-- Execute complex development tasks
-- Automate code reviews and PR workflows
+### 🤖 子代理管理
+- 创建编码子代理
+- 管理代理团队
+- 执行复杂的开发任务
+- 自动化代码审查和 Pull Request（PR）流程
 
-### 🛠️ Development Workflows
-- Best practices for AI-assisted coding
-- Common workflows and patterns
-- Settings and configuration
-- Troubleshooting guidance
+### 🛠️ 开发工作流程
+- AI 辅助编码的最佳实践
+- 常见的工作流程和模式
+- 设置和配置选项
+- 故障排除指南
 
-## Usage Examples
+## 使用示例
 
-### Query Documentation
+### 查询文档
 ```bash
 # Get documentation about a specific topic
 claude-code query "subagents"
@@ -48,30 +48,30 @@ claude-code query "best practices"
 claude-code query "settings"
 ```
 
-### Execute Coding Task
+### 执行编码任务
 ```bash
 # Create a coding subagent for a complex task
 claude-code task --description "Fix the login bug" --priority high
 claude-code task --description "Refactor the database layer" --model claude-3-5-sonnet
 ```
 
-### List Available Commands
+### 列出可用命令
 ```bash
 # Show all available commands
 claude-code --help
 ```
 
-## Available Commands
+## 可用命令
 
-### query
-Query Claude Code documentation for a specific topic.
+### `query`
+查询 Claude Code 中关于特定主题的文档。
 
-**Usage:**
+**用法:**
 ```bash
 claude-code query <topic>
 ```
 
-**Examples:**
+**示例:**
 ```bash
 claude-code query "subagents"
 claude-code query "agent-teams"
@@ -81,52 +81,52 @@ claude-code query "settings"
 claude-code query "troubleshooting"
 ```
 
-**Topics include:**
-- Subagents and agent teams
-- Best practices and workflows
-- Settings and customization
-- Troubleshooting guide
-- Plugins and extensions
-- MCP (Model Context Protocol)
-- Headless/Programmatic usage
+**可查询的主题包括:**
+- 子代理和代理团队
+- 最佳实践和工作流程
+- 设置和自定义选项
+- 故障排除指南
+- 插件和扩展
+- MCP（模型上下文协议）
+- 无界面/编程式使用方式
 
-### task
-Create and execute a coding subagent task.
+### `task`
+创建并执行一个编码子代理任务。
 
-**Usage:**
+**用法:**
 ```bash
 claude-code task --description "<task description>" [--priority <level>] [--model <model-name>]
 ```
 
-**Options:**
-- `--description, -d`: Task description (required)
-- `--priority, -p`: Task priority (low/medium/high, default: medium)
-- `--model, -m`: Model to use (optional, uses default if not specified)
+**选项:**
+- `--description, -d`: 任务描述（必填）
+- `--priority, -p`: 任务优先级（低/中/高，默认：中等）
+- `--model, -m`: 要使用的模型（可选，未指定时使用默认模型）
 
-**Examples:**
+**示例:**
 ```bash
 claude-code task --description "Implement user authentication module"
 claude-code task --description "Refactor database queries" --priority high
 claude-code task --description "Write unit tests for the API" --model claude-3-5-sonnet
 ```
 
-### docs
-Get overview of Claude Code documentation sections.
+### `docs`
+获取 Claude Code 文档的概览。
 
-**Usage:**
+**用法:**
 ```bash
 claude-code docs [section]
 ```
 
-**Sections:**
-- `quickstart` - Getting started guide
-- `best-practices` - AI coding best practices
-- `common-workflows` - Typical development workflows
-- `settings` - Customization options
-- `troubleshooting` - Common issues and solutions
-- `all` - Full documentation overview (default)
+**文档章节包括:**
+- `quickstart` - 入门指南
+- `best-practices` - AI 编码最佳实践
+- `common-workflows` - 常见开发工作流程
+- `settings` - 自定义选项
+- `troubleshooting` - 常见问题及解决方法
+- `all` - 全部文档概览（默认）
 
-**Examples:**
+**示例:**
 ```bash
 claude-code docs
 claude-code docs quickstart
@@ -134,32 +134,32 @@ claude-code docs best-practices
 claude-code docs troubleshooting
 ```
 
-### info
-Display Claude Code configuration and status.
+### `info`
+显示 Claude Code 的配置和状态。
 
-**Usage:**
+**用法:**
 ```bash
 claude-code info
 ```
 
-**Output includes:**
-- Version information
-- Available subagents
-- Configured models
-- MCP servers status
+**输出内容包括:**
+- 版本信息
+- 可用的子代理
+- 配置的模型
+- MCP 服务器状态
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-This skill works seamlessly with OpenClaw's native capabilities:
+本技能可与 OpenClaw 的原生功能无缝协作：
 
-- **Subagents**: Claude Code subagents complement OpenClaw's subagent system
-- **Code Execution**: Use with OpenClaw's exec tool for complete development workflow
-- **File Management**: Combine with OpenClaw's read/write tools for full codebase management
-- **Sessions**: Claude Code tasks integrate with OpenClaw's session management
+- **子代理**: Claude Code 的子代理可补充 OpenClaw 的子代理系统
+- **代码执行**: 通过 OpenClaw 的执行工具完成整个开发流程
+- **文件管理**: 结合 OpenClaw 的读写工具进行完整的代码库管理
+- **会话管理**: Claude Code 的任务与 OpenClaw 的会话管理集成
 
-## Example Workflows
+## 示例工作流程
 
-### Complex Bug Fix
+### 复杂错误修复
 ```bash
 # 1. Query best practices for debugging
 claude-code query "debugging best practices"
@@ -171,7 +171,7 @@ claude-code task --description "Find and fix the null pointer exception in userS
 claude-code query "code review best practices"
 ```
 
-### New Feature Development
+### 新功能开发
 ```bash
 # 1. Get best practices for the feature type
 claude-code query "API design best practices"
@@ -183,7 +183,7 @@ claude-code task --description "Implement REST API for user management" --priori
 claude-code query "code style settings"
 ```
 
-### Code Review Automation
+### 代码审查自动化
 ```bash
 # 1. Query PR review best practices
 claude-code query "PR review workflows"
@@ -192,26 +192,26 @@ claude-code query "PR review workflows"
 claude-code task --description "Review all PRs in the last week" --priority low
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
-Not required for basic usage. Claude Code integration uses OpenClaw's native capabilities.
+### 环境变量
+基本使用无需环境变量。Claude Code 的集成依赖于 OpenClaw 的原生功能。
 
-### Models
-Uses OpenClaw's configured default models. Override per task with `--model` option.
+### 模型
+使用 OpenClaw 配置的默认模型。可通过 `--model` 选项根据任务进行自定义。
 
-### Subagent Limits
-Managed by OpenClaw's subagent configuration (default: 8 concurrent subagents).
+### 子代理限制
+由 OpenClaw 的子代理配置管理（默认：同时运行 8 个子代理）。
 
-## Notes
+## 注意事项
 
-- This skill provides a wrapper around Claude Code documentation and workflows
-- Complex coding tasks are executed through OpenClaw's native subagent system
-- For direct Claude Code CLI usage, install Claude Code separately from https://claude.com/code
-- All task execution happens through OpenClaw's secure agent infrastructure
+- 本技能提供了对 Claude Code 文档和工作流程的封装
+- 复杂的编码任务通过 OpenClaw 的原生子代理系统执行
+- 如需直接使用 Claude Code 的命令行界面（CLI），请从 https://claude.com/code 单独安装 Claude Code
+- 所有任务执行均通过 OpenClaw 的安全代理基础设施完成
 
-## See Also
+## 相关资源
 
-- Claude Code Official Docs: https://code.claude.com/docs
-- OpenClaw Subagents: Use OpenClaw's native subagent functionality
-- Best Practices: Integrated from Claude Code guidelines
+- Claude Code 官方文档: https://code.claude.com/docs
+- OpenClaw 子代理: 使用 OpenClaw 的原生子代理功能
+- 最佳实践: 从 Claude Code 的指南中整合而来

@@ -1,68 +1,68 @@
 ---
 name: Models
-description: Choose AI models for coding, reasoning, and agents with cost-aware, task-matched recommendations.
+description: 根据成本考量和任务需求，为您推荐适用于编码、推理及智能代理的AI模型。
 metadata: {"clawdbot":{"emoji":"🤖","os":["linux","darwin","win32"]}}
 ---
 
-# AI Model Selection Rules
+# 人工智能模型选择指南
 
-## Core Principle
-- No single model is best for everything — match model to task, not brand loyalty
-- A $0.75/M model often performs identically to a $40/M model for simple tasks
-- Test cheaper alternatives before committing to expensive defaults
+## 核心原则
+- 没有哪个模型能适用于所有场景——应根据任务需求选择合适的模型，而非盲目依赖某个品牌或型号。
+- 对于简单任务来说，价格仅为0.75美元/次的模型往往与价格高达40美元/次的模型表现相当。
+- 在选择昂贵的模型之前，应先尝试更经济的替代方案。
 
-## Cost Reality
-- Output tokens cost 3-10x more than input tokens — advertised input prices are misleading
-- Calculate real cost with your actual input/output ratio, not theoretical pricing
-- Batch/async APIs offer 50% discounts — use them for non-real-time workloads
-- Prompt caching reduces repeated context costs significantly
+## 成本考量
+- 输出生成的文本（“输出令牌”）的成本通常是输入文本（“输入令牌”成本的3到10倍——广告中的输入价格具有误导性。
+- 应根据实际的输入/输出比例来计算实际成本，而非参考理论价格。
+- 批量处理或异步调用API可以享受50%的折扣——适用于非实时处理的工作负载。
+- 提示内容缓存机制能显著降低重复计算的开销。
 
-## Task Matching
+## 任务匹配
 
-### Coding
-- Architecture and design decisions: Use frontier models (Opus-class) — they catch subtle issues cheaper models miss
-- Day-to-day implementation: Mid-tier models (Sonnet-class) offer 90% of capability at 20% of cost
-- Parallel subtasks and scaffolding: Fast/cheap models (Haiku-class) — speed matters more than depth
-- Code review: Thorough models catch async bugs and edge cases that fast models miss
+### 编程相关任务
+- 架构与设计：选择前沿模型（如Opus系列），这类模型能捕捉到低成本模型可能忽略的细微问题。
+- 日常开发：中等性能的模型（如Sonnet系列）只需花费20%的成本，却能提供90%的功能。
+- 并行子任务处理：选择快速且低成本的模型（如Haiku系列），在处理速度上更为关键。
+- 代码审查：高性能模型能发现快速模型可能遗漏的异步错误和边缘情况。
 
-### Non-Coding
-- Complex reasoning and math: Extended thinking modes justify their cost for hard problems
-- General assistance: User preference studies favor models different from benchmark leaders
-- High-volume simple queries: Cheapest models perform identically — don't overpay
-- Long documents: Context window size determines viability — some offer 1M+ tokens
+### 非编程相关任务
+- 复杂的推理和数学计算：对于这类任务，高昂的成本是合理的。
+- 通用辅助任务：用户偏好研究显示，用户更倾向于使用与基准模型不同的模型。
+- 大量简单查询：最便宜的模型也能满足需求——无需过度支付。
+- 长文档处理：上下文窗口的大小决定了模型的适用性——某些模型能处理超过100万个令牌的文档。
 
-## Claude Code vs Codex CLI
-- Claude Code: Fast iteration, UI/frontend, interactive debugging — developer stays in the loop
-- Codex CLI: Long-running background tasks, large refactors, set-and-forget — accuracy over speed
-- Both tools have value — use Claude Code for implementation, Codex for final review
-- File size limits differ — Claude Code struggles with files over 25K tokens
+## Claude Code与Codex CLI的比较
+- Claude Code：迭代速度快，提供用户界面和交互式调试功能，便于开发者持续监控开发过程。
+- Codex CLI：适合执行耗时的后台任务或大规模代码重构，注重准确性而非速度。
+- 两种工具都有其价值——使用Claude Code进行开发，使用Codex进行最终验证。
+- 两者在文件大小上有差异——Claude Code无法处理超过25,000个令牌的文件。
 
-## Orchestration Pattern
-- Planning phase: Use expensive/smart models to break down problems correctly
-- Execution phase: Use balanced models, parallelize where possible
-- Review phase: Use accurate models for final verification — catches bugs others miss
-- This pattern beats using one model for everything at similar total cost
+## 协调使用模式
+- 规划阶段：使用高性能模型来准确分析问题。
+- 执行阶段：尽可能采用平衡性能的模型，并实现并行处理。
+- 审查阶段：使用精确度高的模型进行最终验证，以发现其他模型可能遗漏的错误。
+- 这种模式在总成本相近的情况下，比使用单一模型更有效。
 
-## Benchmark Skepticism
-- Benchmark scores vary 2-3x based on scaffolding and evaluation method
-- User preference rankings differ significantly from benchmark rankings
-- SWE-bench scores don't predict real-world coding quality reliably
-- Models drift week-to-week — last month's best may underperform today
+## 对基准测试结果的质疑
+- 基准测试结果会因使用的技术框架和评估方法的不同而产生2到3倍的差异。
+- 用户的偏好排名与基准测试结果往往存在显著差异。
+- SWE-bench的测试结果无法可靠地预测实际编程质量。
+- 模型的性能会随时间变化——上个月的最佳模型可能在本月表现不佳。
 
-## Open Source Viability
-- DeepSeek and similar models approach frontier performance at 1/50th API cost
-- Self-hosting eliminates API rate limits and price variability
-- MIT/Apache licensed models allow commercial use without restrictions
-- Consider for: data privacy, cost predictability, custom fine-tuning
+## 开源模型的可行性
+- DeepSeek等开源模型以五分之一的API成本实现了接近前沿模型的性能。
+- 自主托管可以避免API的使用限制和价格波动。
+- MIT/Apache许可的模型允许商业用途，且无使用限制。
+- 在选择开源模型时，需考虑数据隐私、成本可预测性以及是否需要定制调优。
 
-## Model Selection Mistakes
-- Using premium models for chatbot responses that cheap models handle identically
-- Ignoring context window limits — chunking long documents costs more than using large-context models
-- Expecting consistency — same prompt gives different results over time as models update
-- Trusting speed over accuracy for complex tasks — fast models trade thoroughness for latency
+## 常见的选择错误
+- 对于聊天机器人响应，使用昂贵的模型，而实际上低成本模型也能满足需求。
+- 忽视上下文窗口的限制——分割长文档反而会增加处理成本。
+- 期望模型结果始终一致——但随着模型的更新，相同的输入可能会得到不同的输出。
+- 在处理复杂任务时，过度依赖模型的处理速度而忽视准确性——快速模型可能会牺牲模型的全面性。
 
-## Practical Guidelines
-- Default to mid-tier for most tasks, escalate to frontier only when quality suffers
-- Track actual costs per workflow, not just per-token rates
-- Build verification into pipelines — don't trust any model blindly
-- Reassess model choices quarterly — pricing and capabilities shift constantly
+## 实用建议
+- 对于大多数任务，优先选择中等性能的模型；只有在质量要求较高时才考虑使用前沿模型。
+- 应跟踪每个工作流程的实际成本，而不仅仅是每个令牌的成本。
+- 将模型验证机制纳入开发流程中，不要盲目信任任何模型。
+- 每季度重新评估模型选择——模型价格和功能会不断变化。

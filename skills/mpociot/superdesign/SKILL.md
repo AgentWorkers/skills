@@ -1,25 +1,25 @@
 ---
 name: frontend-design
-description: Expert frontend design guidelines for creating beautiful, modern UIs. Use when building landing pages, dashboards, or any user interface.
+description: 专家级前端设计指南：用于打造美观、现代的用户界面。适用于构建登录页面、仪表板或任何类型的用户界面。
 metadata: {"clawdbot":{"emoji":"🎨"}}
 ---
 
-# Frontend Design Skill
+# 前端设计技能
 
-Use this skill when creating UI components, landing pages, dashboards, or any frontend design work.
+在创建 UI 组件、登录页面、仪表板或任何前端设计工作时，请使用此技能。
 
-## Design Workflow
+## 设计工作流程
 
-Follow this structured approach for UI design:
+遵循以下结构化的 UI 设计方法：
 
-1. **Layout Design** — Think through component structure, create ASCII wireframes
-2. **Theme Design** — Define colors, fonts, spacing, shadows
-3. **Animation Design** — Plan micro-interactions and transitions
-4. **Implementation** — Generate the actual code
+1. **布局设计** — 确定组件结构，绘制 ASCII 线框图
+2. **主题设计** — 定义颜色、字体、间距和阴影效果
+3. **动画设计** — 规划微交互和过渡效果
+4. **实现** — 生成实际代码
 
-### 1. Layout Design
+### 1. 布局设计
 
-Before coding, sketch the layout in ASCII format:
+在编写代码之前，先用 ASCII 格式绘制布局草图：
 
 ```
 ┌─────────────────────────────────────┐
@@ -37,15 +37,15 @@ Before coding, sketch the layout in ASCII format:
 └─────────────────────────────────────┘
 ```
 
-### 2. Theme Guidelines
+### 2. 主题指南
 
-**Color Rules:**
-- NEVER use generic bootstrap-style blue (#007bff) — it looks dated
-- Prefer oklch() for modern color definitions
-- Use semantic color variables (--primary, --secondary, --muted, etc.)
-- Consider both light and dark mode from the start
+**颜色规则：**
+- **切勿使用通用的 Bootstrap 风格的蓝色（#007bff）** — 这种颜色已经过时了
+- 建议使用 `oklch()` 来定义现代颜色
+- 使用语义化颜色变量（如 `--primary`、`--secondary`、`--muted` 等）
+- 从一开始就考虑亮色模式和暗色模式
 
-**Font Selection (Google Fonts):**
+**字体选择（Google Fonts）：**
 ```
 Sans-serif: Inter, Roboto, Poppins, Montserrat, Outfit, Plus Jakarta Sans, DM Sans, Space Grotesk
 Monospace: JetBrains Mono, Fira Code, Source Code Pro, IBM Plex Mono, Space Mono, Geist Mono
@@ -53,14 +53,14 @@ Serif: Merriweather, Playfair Display, Lora, Source Serif Pro, Libre Baskerville
 Display: Architects Daughter, Oxanium
 ```
 
-**Spacing & Shadows:**
-- Use consistent spacing scale (0.25rem base)
-- Shadows should be subtle — avoid heavy drop shadows
-- Consider using oklch() for shadow colors too
+**间距与阴影效果：**
+- 保持一致的间距比例（基础单位为 0.25rem）
+- 阴影效果要柔和，避免使用过于明显的阴影效果
+- 也可以使用 `oklch()` 来设置阴影颜色
 
-### 3. Theme Patterns
+### 3. 主题样式
 
-**Modern Dark Mode (Vercel/Linear style):**
+**现代暗色模式（Vercel/Linear 风格）：**
 ```css
 :root {
   --background: oklch(1 0 0);
@@ -76,7 +76,7 @@ Display: Architects Daughter, Oxanium
 }
 ```
 
-**Neo-Brutalism (90s web revival):**
+**新 Brutalism 风格（90 年代网页风格复兴）：**
 ```css
 :root {
   --background: oklch(1 0 0);
@@ -92,7 +92,7 @@ Display: Architects Daughter, Oxanium
 }
 ```
 
-**Glassmorphism:**
+**Glassmorphism 风格：**
 ```css
 .glass {
   background: rgba(255, 255, 255, 0.1);
@@ -102,9 +102,9 @@ Display: Architects Daughter, Oxanium
 }
 ```
 
-### 4. Animation Guidelines
+### 4. 动画设计指南
 
-**Micro-syntax for planning:**
+**动画规划的基本语法：**
 ```
 button: 150ms [S1→0.95→1] press
 hover: 200ms [Y0→-2, shadow↗]
@@ -113,40 +113,40 @@ slideIn: 350ms ease-out [X-100→0, α0→1]
 bounce: 600ms [S0.95→1.05→1]
 ```
 
-**Common patterns:**
-- Entry animations: 300-500ms, ease-out
-- Hover states: 150-200ms
-- Button press: 100-150ms
-- Page transitions: 300-400ms
+**常见动画效果：**
+- 进入动画：300-500 毫秒，采用缓动效果（ease-out）
+- 鼠标悬停效果：150-200 毫秒
+- 按钮点击效果：100-150 毫秒
+- 页面切换效果：300-400 毫秒
 
-### 5. Implementation Rules
+### 5. 实现规则
 
-**Tailwind CSS:**
+**使用 Tailwind CSS：**
 ```html
 <!-- Import via CDN for prototypes -->
 <script src="https://cdn.tailwindcss.com"></script>
 ```
 
-**Flowbite (component library):**
+**Flowbite 组件库：**
 ```html
 <link href="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
 ```
 
-**Icons (Lucide):**
+**图标（Lucide 图标库）：**
 ```html
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>lucide.createIcons();</script>
 ```
 
-**Images:**
-- Use real placeholder services: Unsplash, placehold.co
-- Never make up image URLs
-- Example: `https://images.unsplash.com/photo-xxx?w=800&h=600`
+**图片：**
+- 使用可靠的图片占位服务，如 Unsplash 或 placehold.co
+- **切勿自行编写图片 URL**  
+- **示例：`https://images.unsplash.com/photo-xxx?w=800&h=600`  
 
-### 6. Responsive Design
+### 6. 响应式设计**
 
-Always design mobile-first and responsive:
+始终以移动设备优先进行设计，并确保网站具有响应式特性：
 
 ```css
 /* Mobile first */
@@ -163,51 +163,51 @@ Always design mobile-first and responsive:
 }
 ```
 
-### 7. Accessibility
+### 7. 可访问性
 
-- Use semantic HTML (header, main, nav, section, article)
-- Include proper heading hierarchy (h1 → h2 → h3)
-- Add aria-labels to interactive elements
-- Ensure sufficient color contrast (4.5:1 minimum)
-- Support keyboard navigation
+- 使用语义化的 HTML 结构（如 `header`、`main`、`nav`、`section`、`article`）
+- 添加适当的标题层级（h1 → h2 → h3）
+- 为交互式元素添加 `aria-label` 属性
+- 确保足够的颜色对比度（至少为 4.5:1）
+- 支持键盘导航
 
-### 8. Component Design Tips
+### 8. 组件设计技巧
 
-**Cards:**
-- Subtle shadows, not heavy drop shadows
-- Consistent padding (p-4 to p-6)
-- Hover state: slight lift + shadow increase
+**卡片组件：**
+- 使用柔和的阴影效果，避免使用过于明显的阴影
+- 保持一致的内边距（通常为 p-4 到 p-6）
+- 鼠标悬停时，卡片会略微抬高并增加阴影效果
 
-**Buttons:**
-- Clear visual hierarchy (primary, secondary, ghost)
-- Adequate touch targets (min 44x44px)
-- Loading and disabled states
+**按钮组件：**
+- 明确的视觉层次结构（主要按钮、次要按钮、隐藏按钮）
+- 按钮的触控目标区域应足够大（至少 44x44 像素）
+- 显示加载状态和禁用状态
 
-**Forms:**
-- Clear labels above inputs
-- Visible focus states
-- Inline validation feedback
-- Adequate spacing between fields
+**表单组件：**
+- 在输入框上方添加清晰的标签
+- 显示焦点状态
+- 提供内联的验证反馈信息
+- 保持字段之间的适当间距
 
-**Navigation:**
-- Sticky header for long pages
-- Clear active state indication
-- Mobile-friendly hamburger menu
+**导航组件：**
+- 在长页面中使用固定头栏
+- 明确显示活动状态
+- 为移动设备提供友好的汉堡菜单
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Element | Recommendation |
+| 元素 | 推荐使用的样式/库 |
 |---------|---------------|
-| Primary font | Inter, Outfit, DM Sans |
-| Code font | JetBrains Mono, Fira Code |
-| Border radius | 0.5rem - 1rem (modern), 0 (brutalist) |
-| Shadow | Subtle, 1-2 layers max |
-| Spacing | 4px base unit (0.25rem) |
-| Animation | 150-400ms, ease-out |
-| Colors | oklch() for modern, avoid generic blue |
+| 主要字体 | Inter, Outfit, DM Sans |
+| 代码字体 | JetBrains Mono, Fira Code |
+| 边框半径 | 0.5rem 至 1rem（现代风格），0（极简风格） |
+| 阴影效果 | 阴影效果要柔和，最多使用 1-2 层 |
+| 间距 | 基本单位为 4px（0.25rem） |
+| 动画效果 | 动画时长 150-400 毫秒，采用缓动效果（ease-out） |
+| 颜色** | 建议使用 `oklch()` 来定义颜色，避免使用通用的蓝色 |
 
 ---
 
-*Based on SuperDesign patterns — https://superdesign.dev*
+*基于 SuperDesign 的设计模式 — https://superdesign.dev*

@@ -1,30 +1,30 @@
 ---
 slug: "cash-flow-forecaster"
 display_name: "Cash Flow Forecaster"
-description: "Forecast project cash flow based on schedule and cost data. Generate S-curves and payment projections."
+description: "根据进度和成本数据预测项目的现金流。生成S曲线和付款预测。"
 ---
 
-# Cash Flow Forecaster
+# 现金流预测器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Poor cash flow management causes issues:
-- Insufficient funds for payments
-- Missed early payment discounts
-- Inaccurate financial projections
-- Difficulty in financing negotiations
+### 问题描述
+糟糕的现金流管理会导致以下问题：
+- 缺乏足够的资金用于支付
+- 错过提前付款的折扣
+- 财务预测不准确
+- 在融资谈判中处于不利地位
 
-### Solution
-Generate cash flow forecasts from schedule and cost data, including S-curve projections and payment timing analysis.
+### 解决方案
+根据进度和成本数据生成现金流预测，包括S曲线预测和付款时间分析。
 
-### Business Value
-- **Financial planning** - Accurate funding requirements
-- **Vendor relations** - Timely payments
-- **Financing** - Support loan draw schedules
-- **Decision support** - Cash position awareness
+### 商业价值
+- **财务规划**：准确预测资金需求
+- **供应商关系**：确保按时付款
+- **融资**：支持贷款的提取计划
+- **决策支持**：实时了解现金状况
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -393,7 +393,7 @@ class CashFlowForecaster:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date
@@ -421,25 +421,25 @@ forecast = forecaster.generate_cash_flow_forecast()
 print(f"Peak cash requirement: ${min(p.closing_balance for p in forecast):,.0f}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. S-Curve Analysis
+### 1. S曲线分析
 ```python
 s_curve = forecaster.generate_s_curve()
 # Plot cumulative cost over time
 ```
 
-### 2. Funding Requirements
+### 2. 资金需求分析
 ```python
 funding = forecaster.get_funding_requirements(buffer_percent=0.15)
 print(f"Required funding: ${funding['peak_funding_required']:,.0f}")
 ```
 
-### 3. Export Report
+### 3. 报告导出
 ```python
 forecaster.export_forecast("cash_flow_forecast.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Cost Management
-- **Reference**: Project Financial Management
+## 参考资源
+- **DDC手册**：第3.1章 - 成本管理
+- **参考文献**：《项目财务管理》

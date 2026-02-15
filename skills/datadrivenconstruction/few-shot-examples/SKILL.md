@@ -1,18 +1,18 @@
 ---
 slug: "few-shot-examples"
 display_name: "Few Shot Examples"
-description: "Curated few-shot examples for construction AI tasks: classification, extraction, analysis. Domain-specific examples for improved LLM performance."
+description: "为构建AI任务（如分类、提取、分析）精心挑选了少量示例数据。这些特定领域的示例数据有助于提升大型语言模型（LLM）的性能。"
 ---
 
-# Few-Shot Examples for Construction AI
+# 建筑行业AI的少样本示例
 
-## Overview
+## 概述
 
-Curated few-shot examples for construction industry AI tasks. These examples improve LLM performance by providing domain-specific context for classification, extraction, and analysis tasks.
+我们整理了专为建筑行业AI任务设计的少样本示例。这些示例通过提供特定领域的上下文，提升了大型语言模型（LLM）在分类、提取和分析任务中的表现。
 
-## Few-Shot Framework
+## 少样本框架
 
-### Example Manager
+### 示例管理器
 
 ```python
 from dataclasses import dataclass, field
@@ -82,7 +82,7 @@ class ConstructionExampleLibrary:
             self.register(example_set)
 ```
 
-## CSI Classification Examples
+## 建筑现场调查（CSI）分类示例
 
 ```python
 CSI_CLASSIFICATION_EXAMPLES = ExampleSet(
@@ -274,7 +274,7 @@ CSI_CLASSIFICATION_EXAMPLES = ExampleSet(
 )
 ```
 
-## RFI Classification Examples
+## 需求反馈（RFI）分类示例
 
 ```python
 RFI_CLASSIFICATION_EXAMPLES = ExampleSet(
@@ -351,7 +351,7 @@ RFI_CLASSIFICATION_EXAMPLES = ExampleSet(
 )
 ```
 
-## Cost Analysis Examples
+## 成本分析示例
 
 ```python
 COST_ANALYSIS_EXAMPLES = ExampleSet(
@@ -420,7 +420,7 @@ COST_ANALYSIS_EXAMPLES = ExampleSet(
 )
 ```
 
-## Schedule Analysis Examples
+## 进度分析示例
 
 ```python
 SCHEDULE_ANALYSIS_EXAMPLES = ExampleSet(
@@ -489,7 +489,7 @@ SCHEDULE_ANALYSIS_EXAMPLES = ExampleSet(
 )
 ```
 
-## BIM Data Examples
+## 建筑信息模型（BIM）数据示例
 
 ```python
 BIM_EXTRACTION_EXAMPLES = ExampleSet(
@@ -575,7 +575,7 @@ BIM_EXTRACTION_EXAMPLES = ExampleSet(
 )
 ```
 
-## Using Examples in Prompts
+## 在提示中使用示例
 
 ```python
 # Initialize library
@@ -603,7 +603,7 @@ easy_examples = csi_examples.get_examples(n=2, difficulty="easy")
 random_examples = csi_examples.get_random_examples(n=3)
 ```
 
-## Adding Custom Examples
+## 添加自定义示例
 
 ```python
 # Create custom example set for your project
@@ -626,16 +626,16 @@ my_examples = ExampleSet(
 library.register(my_examples)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Diverse Examples**: Include examples across difficulty levels
-2. **Edge Cases**: Add examples for ambiguous situations
-3. **Explanations**: Include reasoning for complex examples
-4. **Regular Updates**: Add new examples as edge cases are discovered
-5. **Balance**: Mix easy and hard examples to calibrate model
+1. **多样化示例**：包含不同难度的示例。
+2. **边缘案例**：添加针对模糊情况的示例。
+3. **解释说明**：为复杂的示例提供详细的解释。
+4. **定期更新**：随着新边缘案例的出现，及时添加新的示例。
+5. **平衡难度**：混合使用简单和复杂的示例以校准模型。
 
-## Resources
+## 资源
 
-- **Few-Shot Learning**: https://www.promptingguide.ai/techniques/fewshot
-- **CSI MasterFormat**: Complete division listings
-- **Construction Terminology**: Industry glossaries and standards
+- **少样本学习**：https://www.promptingguide.ai/techniques/fewshot
+- **CSI MasterFormat**：完整的分类列表。
+- **建筑行业术语**：行业术语表和标准。

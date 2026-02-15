@@ -1,50 +1,48 @@
 ---
 name: gif-whatsapp
 version: 1.0.0
-description: Search and send GIFs on WhatsApp. Handles the Tenor→MP4 conversion required for WhatsApp.
+description: 在 WhatsApp 上搜索并发送 GIF 图片。该功能支持将 Tenor 格式的图片转换为 WhatsApp 支持的 MP4 格式。
 metadata: {"clawdbot":{"emoji":"🎬","requires":{"bins":["gifgrep","ffmpeg","curl"]}}}
 ---
 
-# GIF Sender
+# GIF发送工具
 
-Send GIFs naturally in WhatsApp conversations.
+在WhatsApp聊天中轻松发送GIF图片。
 
-## CRITICAL: WhatsApp GIF Workflow
+## 重要提示：WhatsApp的GIF处理流程
 
-WhatsApp doesn't support direct Tenor/Giphy URLs. You MUST:
-1. Download the GIF
-2. Convert to MP4
-3. Send with `gifPlayback: true`
+WhatsApp不直接支持Tenor或Giphy提供的URL。你必须按照以下步骤操作：
+1. 下载GIF图片。
+2. 将GIF转换为MP4格式。
+3. 使用`gifPlayback: true`选项将其发送。
 
-## Complete Workflow
+## 完整的发送流程
 
-### Step 1: Search for GIF
+### 第1步：搜索GIF图片
 ```bash
 gifgrep "SEARCH QUERY" --max 5 --format url
 ```
-Search in English for best results.
+使用英文进行搜索，以获得最佳结果。
+**请确保获取5个搜索结果，并根据文件名或描述选择最合适的图片**——不要直接使用第一个结果。
 
-**Always get 5 results and pick the best one** based on the filename/description - don't just take the first result.
-
-### Step 2: Download the GIF
+### 第2步：下载GIF图片
 ```bash
 curl -sL "GIF_URL" -o /tmp/gif.gif
 ```
 
-### Step 3: Convert to MP4
+### 第3步：将GIF转换为MP4格式
 ```bash
 ffmpeg -i /tmp/gif.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" /tmp/gif.mp4 -y
 ```
 
-### Step 4: Send via message tool
+### 第4步：通过消息工具发送
 ```
 message action=send to=NUMBER message="‎" filePath=/tmp/gif.mp4 gifPlayback=true
 ```
 
-Note: Use invisible character `‎` (left-to-right mark, U+200E) as message to send GIF without visible caption.
+**注意：** 在发送GIF图片时，需要在消息中插入不可见的字符`‎`（从左到右的标记，Unicode编码为U+200E），这样GIF图片就不会显示标题。
 
-## One-liner Example
-
+## 用法示例
 ```bash
 # Search
 gifgrep "thumbs up" --max 3 --format url
@@ -56,34 +54,33 @@ ffmpeg -i /tmp/g.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)
 # Then send with message tool, gifPlayback=true
 ```
 
-## When to Send GIFs
+## 何时使用GIF图片
 
-✅ Good times:
-- User asks for a GIF
-- Celebrating good news
-- Funny reactions
-- Expressing emotions (excitement, facepalm, etc.)
+✅ 适合使用GIF的场景：
+- 用户请求查看GIF图片时。
+- 庆祝好消息时。
+- 表达情绪（如兴奋、无奈等）时。
 
-❌ Don't overuse:
-- One GIF per context is enough
-- Not every message needs a GIF
+❌ 避免过度使用GIF：
+- 每个场景使用一张GIF就足够了。
+- 并非每条消息都需要GIF图片。
 
-## Popular Search Terms
+## 常见的搜索关键词
 
-| Emotion | Search Terms |
+| 情感 | 相关搜索词 |
 |---------|--------------|
-| Happy | celebration, party, dancing, excited |
-| Approval | thumbs up, nice, good job, applause |
-| Funny | laugh, lol, haha, funny |
-| Shocked | mind blown, shocked, surprised, wow |
-| Sad | crying, sad, disappointed |
-| Frustrated | facepalm, ugh, annoyed |
-| Love | heart, love, hug |
-| Cool | sunglasses, cool, awesome |
+| 开心 | celebration（庆祝）、party（派对）、dancing（跳舞）、excited（兴奋） |
+| 赞同 | thumbs up（点赞）、nice（不错）、good job（干得好）、applause（掌声） |
+| 有趣 | laugh（笑声）、lol（哈哈）、haha（哈哈） |
+| 震惊 | mind blown（震惊）、shocked（惊讶）、surprised（惊讶） |
+| 悲伤 | crying（哭泣）、sad（悲伤）、disappointed（失望） |
+| 沮丧 | facepalm（无奈的表情）、ugh（表示沮丧）、annoyed（恼怒） |
+| 爱情 | heart（心形）、love（爱）、hug（拥抱） |
+| 凉爽 | sunglasses（太阳镜）、cool（酷的）、awesome（很棒的） |
 
-## Why This Works
+## 为什么这种方法有效
 
-- WhatsApp converts all GIFs to MP4 internally
-- Direct Tenor/Giphy URLs often fail
-- MP4 with `gifPlayback=true` displays as looping GIF
-- Small file size = fast delivery
+- WhatsApp会自动将所有GIF图片转换为MP4格式。
+- 直接使用Tenor或Giphy提供的URL可能会导致发送失败。
+- 使用`gifPlayback: true`选项的MP4文件会以循环播放的形式显示。
+- 文件体积小，因此传输速度更快。

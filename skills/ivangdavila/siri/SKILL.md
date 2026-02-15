@@ -1,84 +1,84 @@
 ---
 name: Siri
-description: Control devices, run automations, and help users get more from Siri with HomeKit, Shortcuts, and voice command guidance.
+description: 通过 HomeKit、快捷指令（Shortcuts）以及语音命令引导，您可以控制设备、运行自动化任务，并帮助用户更充分地利用 Siri 的功能。
 ---
 
-## Activation & Setup
+## 激活与设置
 
-**Trigger methods:**
-- Hold Side/Home button
-- "Hey Siri" (always-listening)
-- "Siri" alone (iOS 17+)
+**触发方式：**
+- 长按侧边按钮/主屏幕按钮
+- 说“嘿Siri”（始终处于监听状态）
+- 仅说“Siri”（适用于iOS 17及以上版本）
 
-**Hey Siri not working?** Check: Settings → Siri → Listen for, retrain voice model, test mic with Voice Memos, disable Low Power Mode.
+**“嘿Siri”无法使用？** 检查：设置 → Siri → 听取指令；重新训练语音模型；使用语音备忘录测试麦克风；关闭低功耗模式。
 
-## Command Patterns
+## 命令模式
 
-**Structure:** Action + Target + Details
-- "Call Mom on speaker"
-- "Set a timer for 12 minutes"
-- "Remind me to buy milk when I get home"
+**结构：** 动作 + 目标 + 详细信息
+- “用扬声器给妈妈打电话”
+- “设置12分钟的计时器”
+- “回家后提醒我买牛奶”
 
-**Discovery:** "What can I say?" or "What can you do with [App]?"
+**探索功能：** 说“我能说什么？”或“[应用程序]能做什么？”
 
-**Corrections:** Say "Change that to..." after Siri transcribes wrong.
+**更正指令：** 当Siri转录错误时，说“把那个改成...”。
 
-## Smart Home (HomeKit)
+## 智能家居（HomeKit）
 
-**Device naming:** Short, distinct, no special characters. "Kitchen light" not "Philips Hue A19 Kitchen #2".
+**设备命名：** 简短、易于区分，避免使用特殊字符。例如：“厨房灯”而不是“Philips Hue A19 Kitchen #2”。
 
-**Room-aware commands:**
-- "Turn off the lights" (current room on HomePod)
-- "Turn off the bedroom lights" (specific room)
-- "Turn off downstairs" (zone)
+**基于房间的命令：**
+- “关灯”（当前房间）
+- “关卧室的灯”
+- “关闭楼下的灯光”（指定区域）
 
-**Scenes:** Name for voice: "Good morning", "Movie time", "I'm leaving". Trigger with "Hey Siri, [scene name]".
+**场景设置：** 为语音命令设置名称，例如：“早上好”、“电影时间”、“我要出门”。通过说“嘿Siri，[场景名称]”来触发这些场景。
 
-**Schedules:** "Turn on porch light at sunset", "Lock doors at 10 PM".
+**定时任务：** “日落时打开门廊灯”、“晚上10点锁门”。
 
-**Security accessories** (locks, garage): Require device unlock or HomePod voice recognition.
+**安全配件**（锁、车库）：需要设备解锁或通过HomePod的语音识别来操作。
 
-## Shortcuts Integration
+## 快捷方式集成
 
-**Naming for voice:**
-- Short (2-3 words ideal)
-- Unique (avoid similar sounds)
-- No punctuation
-- Test pronunciation
+**语音命令命名规则：**
+- 名称应简短（2-3个词）
+- 独特，避免发音相似的词
+- 不使用标点符号
+- 测试发音是否准确
 
-**Triggering:** Just say the shortcut name. Works on iPhone, HomePod, Apple Watch, CarPlay.
+**触发方式：** 只需说出快捷方式的名称即可。该功能在iPhone、HomePod、Apple Watch和CarPlay上均可用。
 
-**User input:** Use "Ask for Input" action—Siri will speak the prompt and wait.
+**用户输入：** 使用“Ask for Input”（请求输入）命令——Siri会读出提示并等待用户输入。
 
-**Parameterized commands (iOS 16+):** App Intents allow "Log 8 glasses of water" where the number is parsed. Requires developer implementation.
+**参数化命令（iOS 16及以上版本）：** 应用程序意图（App Intents）支持输入如“记录8杯水”的指令，系统会解析其中的数字。这需要开发者进行实现。
 
-**Feedback:** End shortcuts with "Show Result" for spoken response or "Show Notification" for silent confirmation.
+**反馈方式：** 快捷方式执行完成后，可以选择“Show Result”（显示结果）以获得语音反馈，或选择“Show Notification”（显示通知）以获得无声确认。
 
-## Troubleshooting
+## 故障排除
 
-| Problem | Fix |
+| 问题 | 解决方法 |
 |---------|-----|
-| Siri doesn't hear me | Check mic, remove case, disable Bluetooth audio |
-| Wrong transcription | Speak slower, reduce background noise, check language setting |
-| "I can't do that" | Feature not supported or app not Siri-enabled |
-| HomeKit device not responding | Check Home app, verify device online, restart Home hub |
-| Shortcut won't run by voice | Rename shorter, check Siri toggle in shortcut settings |
+| Siri听不到我的声音 | 检查麦克风是否正常工作；取下手机壳；关闭蓝牙音频功能 |
+| 转录错误 | 说话速度放慢；减少背景噪音；检查语言设置 |
+| “我无法执行该操作” | 该功能可能不受支持，或者应用程序未启用Siri功能 |
+| HomeKit设备无响应 | 检查Home应用程序；确认设备是否已联网；重启HomeHub |
+| 快捷方式无法通过语音触发 | 重新命名快捷方式；检查快捷方式设置中的Siri选项是否启用 |
 
-## Power Tips
+## 电源使用技巧
 
-- **CarPlay:** Siri is hands-free default—just start talking after beep
-- **AirPods:** Squeeze stem or say "Siri" (if enabled)
-- **Type to Siri:** Settings → Accessibility → Siri → Type to Siri
-- **Announce notifications:** HomePod/AirPods can read incoming messages
-- **Intercom:** "Hey Siri, intercom I'm home" broadcasts to all HomePods
+- **CarPlay**：Siri默认为免提模式——听到提示音后即可开始说话。
+- **AirPods**：挤压耳机柄或说“Siri”（如果已启用该功能）。
+- **通过输入文本与Siri交互**：设置 → 辅助功能 → Siri → 通过文本与Siri交互。
+- **查看通知**：HomePod/AirPods可以读取收到的通知内容。
+- **对讲机**：说“嘿Siri，对讲机，我到家了”，所有连接的HomePod都会接收到该指令。
 
 ---
 
-## When to Load More
+## 何时查看更多信息
 
-| Situation | Reference |
+| 情况 | 参考文档 |
 |-----------|-----------|
-| Full command list by category | `commands.md` |
-| HomeKit setup, scenes, zones, troubleshooting | `homekit.md` |
-| Building Shortcuts, triggers, automation | `shortcuts.md` |
-| SiriKit, App Intents, developer integration | `development.md` |
+| 按类别查看完整命令列表 | `commands.md` |
+| HomeKit设置、场景、区域、故障排除 | `homekit.md` |
+| 快捷方式、触发条件、自动化设置 | `shortcuts.md` |
+| SiriKit、应用程序意图、开发者集成 | `development.md` |

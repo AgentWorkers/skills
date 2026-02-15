@@ -1,96 +1,96 @@
 ---
 name: earnings-calendar
-description: This skill retrieves upcoming earnings announcements for US stocks using the Financial Modeling Prep (FMP) API. Use this when the user requests earnings calendar data, wants to know which companies are reporting earnings in the upcoming week, or needs a weekly earnings review. The skill focuses on mid-cap and above companies (over $2B market cap) that have significant market impact, organizing the data by date and timing in a clean markdown table format. Supports multiple environments (CLI, Desktop, Web) with flexible API key management.
+description: 该技能通过使用 Financial Modeling Prep (FMP) API 来检索美国股票的即将发布的收益公告。当用户请求收益日历数据、想知道未来一周哪些公司会发布收益报告，或者需要每周的收益概览时，可以使用该技能。该技能主要针对市值在 20 亿美元以上（中盘及以上）且具有显著市场影响力的公司，将数据按日期和时间顺序整理成清晰的 Markdown 表格格式。支持多种使用环境（命令行界面、桌面应用、Web 应用），并提供灵活的 API 密钥管理功能。
 ---
 
-# Earnings Calendar
+# 营业财报日历
 
-## Overview
+## 概述
 
-This skill retrieves upcoming earnings announcements for US stocks using the Financial Modeling Prep (FMP) API. It focuses on companies with significant market capitalization (mid-cap and above, over $2B) that are likely to impact market movements. The skill generates organized markdown reports showing which companies are reporting earnings over the next week, grouped by date and timing (before market open, after market close, or time not announced).
+该技能通过使用Financial Modeling Prep (FMP) API来检索美国股票的即将发布的财报公告。它主要关注那些市值较大（中盘及以上，超过20亿美元）的公司，因为这些公司的财报可能会对市场产生影响。该技能会生成结构化的Markdown报告，显示接下来一周内哪些公司会发布财报，并按日期和时间进行分组（开盘前、收盘后或未公布时间）。
 
-**Key Features**:
-- Uses FMP API for reliable, structured earnings data
-- Filters by market cap (>$2B) to focus on market-moving companies
-- Includes EPS and revenue estimates
-- Multi-environment support (CLI, Desktop, Web)
-- Flexible API key management
-- Organized by date, timing, and market cap
+**主要特点**：
+- 使用FMP API获取可靠、结构化的财报数据
+- 通过市值（>20亿美元）进行筛选，以关注对市场有重大影响的公司
+- 包括每股收益（EPS）和收入估算
+- 支持多种环境（命令行界面（CLI）、桌面应用和网页）
+- 灵活的API密钥管理
+- 按日期、时间和市值进行排序
 
-## Prerequisites
+## 先决条件
 
-### FMP API Key
+### FMP API密钥
 
-This skill requires a Financial Modeling Prep API key.
+该技能需要一个Financial Modeling Prep API密钥。
 
-**Get Free API Key**:
-1. Visit: https://site.financialmodelingprep.com/developer/docs
-2. Sign up for free account
-3. Receive API key immediately
-4. Free tier: 250 API calls/day (sufficient for weekly earnings calendar)
+**获取免费API密钥**：
+1. 访问：https://site.financialmodelingprep.com/developer/docs
+2. 注册免费账户
+3. 即刻获得API密钥
+4. 免费 tier：每天250次API调用（足够用于每周的财报日历）
 
-**API Key Setup by Environment**:
+**按环境设置API密钥**：
 
-**Claude Code (CLI)**:
+**Claude代码（CLI）**：
 ```bash
 export FMP_API_KEY="your-api-key-here"
 ```
 
-**Claude Desktop**:
-Set environment variable in system or configure MCP server.
+**Claude桌面应用**：
+在系统中设置环境变量或配置MCP服务器。
 
-**Claude Web**:
-API key will be requested during skill execution (stored only for current session).
+**Claude网页**：
+在执行技能时会请求API密钥（仅存储在当前会话中）。
 
-## Core Workflow
+## 核心工作流程
 
-### Step 1: Get Current Date and Calculate Target Week
+### 第1步：获取当前日期并计算目标周
 
-**CRITICAL**: Always start by obtaining the accurate current date.
+**关键**：始终首先获取准确的当前日期。
 
-Retrieve the current date and time:
-- Use system date/time to get today's date
-- Note: "Today's date" is provided in the environment (<env> tag)
-- Calculate the target week: Next 7 days from current date
+- 获取当前日期和时间：
+  - 使用系统日期/时间获取今天的日期
+  - 注意：“今天的日期”在环境变量（<env>标签）中提供
+- 计算目标周：从当前日期起接下来的7天
 
-**Date Range Calculation**:
+**日期范围计算**：
 ```
 Current Date: [e.g., November 2, 2025]
 Target Week Start: [Current Date + 1 day, e.g., November 3, 2025]
 Target Week End: [Current Date + 7 days, e.g., November 9, 2025]
 ```
 
-**Why This Matters**:
-- Earnings calendars are time-sensitive
-- "Next week" must be calculated from the actual current date
-- Provides accurate date range for API request
+**为什么这很重要**：
+- 财报日历具有时间敏感性
+- “下周”必须根据实际的当前日期来计算
+- 为API请求提供准确的日期范围
 
-**Format dates in YYYY-MM-DD** for API compatibility.
+**将日期格式化为YYYY-MM-DD**以确保与API兼容。
 
-### Step 2: Load FMP API Guide
+### 第2步：加载FMP API指南
 
-Before retrieving data, load the comprehensive FMP API guide:
+在检索数据之前，先加载详细的FMP API指南：
 
 ```
 Read: references/fmp_api_guide.md
 ```
 
-This guide contains:
-- FMP API endpoint structure and parameters
-- Authentication requirements
-- Market cap filtering strategy (via Company Profile API)
-- Earnings timing conventions (BMO, AMC, TAS)
-- Response format and field descriptions
-- Error handling strategies
-- Best practices and optimization tips
+该指南包含：
+- FMP API端点结构和参数
+- 认证要求
+- 市值筛选策略（通过公司概况API）
+- 财报时间约定（BMO、AMC、TAS）
+- 响应格式和字段描述
+- 错误处理策略
+- 最佳实践和优化提示
 
-### Step 3: API Key Detection and Configuration
+### 第3步：检测和配置API密钥
 
-Detect API key availability based on environment.
+根据环境检测API密钥的可用性。
 
-**Multi-Environment API Key Detection**:
+**多环境API密钥检测**：
 
-#### 3.1 Check Environment Variable (CLI/Desktop)
+#### 3.1 检查环境变量（CLI/桌面应用）
 
 ```bash
 if [ ! -z "$FMP_API_KEY" ]; then
@@ -99,13 +99,13 @@ if [ ! -z "$FMP_API_KEY" ]; then
 fi
 ```
 
-If environment variable is set, proceed to Step 4.
+如果环境变量已设置，则继续执行第4步。
 
-#### 3.2 Prompt User for API Key (Desktop/Web)
+#### 3.2 向用户请求API密钥（桌面应用/网页）
 
-If environment variable not found, use AskUserQuestion tool:
+如果未找到环境变量，则使用AskUserQuestion工具：
 
-**Question Configuration**:
+**问题配置**：
 ```
 Question: "This skill requires an FMP API key to retrieve earnings data. Do you have an FMP API key?"
 Header: "API Key"
@@ -115,9 +115,9 @@ Options:
   3. "Skip API, use manual entry" → Jump to Step 8 (fallback mode)
 ```
 
-**3.2.1 If user chooses "No, get free key"**:
+**3.2.1 如果用户选择“否，获取免费密钥”**：
 
-Provide instructions:
+提供说明：
 ```
 To get a free FMP API key:
 
@@ -130,23 +130,23 @@ To get a free FMP API key:
 Once you have your API key, please select "Yes, I'll provide it now" to continue.
 ```
 
-#### 3.3 Request API Key Input
+#### 3.3 请求API密钥输入
 
-If user has API key, request input:
+如果用户有API密钥，则请求输入：
 
-**Prompt**:
+**提示**：
 ```
 Please paste your FMP API key below:
 
 (Your API key will only be stored for this conversation session and will be forgotten when the session ends. For regular use, consider setting the FMP_API_KEY environment variable.)
 ```
 
-**Store API key in session variable**:
+**将API密钥存储在会话变量中**：
 ```
 API_KEY = [user_input]
 ```
 
-**Confirm with user**:
+**与用户确认**：
 ```
 ✓ API key received and stored for this session.
 
@@ -159,37 +159,37 @@ Security Note:
 Proceeding with earnings data retrieval...
 ```
 
-### Step 4: Retrieve Earnings Data via FMP API
+### 第4步：通过FMP API检索财报数据
 
-Use the Python script to fetch earnings data from FMP API.
+使用Python脚本从FMP API获取财报数据。
 
-**Script Location**:
+**脚本位置**：
 ```
 scripts/fetch_earnings_fmp.py
 ```
 
-**Execution**:
+**执行**：
 
-**Option A: With Environment Variable (CLI)**:
+**选项A：使用环境变量（CLI）**：
 ```bash
 python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09
 ```
 
-**Option B: With Session API Key (Desktop/Web)**:
+**选项B：使用会话API密钥（桌面应用/网页）**：
 ```bash
 python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09 "${API_KEY}"
 ```
 
-**Script Workflow** (automatic):
-1. Validates API key and date parameters
-2. Calls FMP Earnings Calendar API for date range
-3. Fetches company profiles (market cap, sector, industry)
-4. Filters companies with market cap >$2B
-5. Normalizes timing (BMO/AMC/TAS)
-6. Sorts by date → timing → market cap (descending)
-7. Outputs JSON to stdout
+**脚本工作流程**（自动）：
+1. 验证API密钥和日期参数
+2. 调用FMP财报日历API获取日期范围内的数据
+3. 获取公司概况（市值、行业）
+4. 筛选市值超过20亿美元的公司
+5. 标准化时间（BMO/AMC/TAS）
+6. 按日期 → 时间 → 市值降序排序
+7. 将结果输出到stdout
 
-**Expected Output Format** (JSON):
+**预期输出格式**（JSON）：
 ```json
 [
   {
@@ -210,129 +210,128 @@ python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09 "${API_KEY}"
 ]
 ```
 
-**Save to file** (recommended for use with report generator):
+**保存到文件**（建议用于报告生成器）：
 ```bash
 python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09 "${API_KEY}" > earnings_data.json
 ```
 
-Or capture to variable:
+**或捕获到变量中**：
 ```bash
 earnings_data=$(python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09 "${API_KEY}")
 ```
 
-**Error Handling**:
+**错误处理**：
 
-If script returns errors:
-- **401 Unauthorized**: Invalid API key → Verify key or re-enter
-- **429 Rate Limit**: Exceeded 250 calls/day → Wait or upgrade plan
-- **Empty Result**: No earnings in date range → Expand date range or note in report
-- **Connection Error**: Network issue → Retry or use cached data if available
+如果脚本返回错误：
+- **401 Unauthorized**：API密钥无效 → 验证密钥或重新输入
+- **429 Rate Limit**：超过每日250次调用 → 等待或升级计划
+- **Empty Result**：指定日期范围内没有财报 → 扩大日期范围或在报告中注明
+- **Connection Error**：网络问题 → 重试或使用缓存的数据（如果可用）
 
-### Step 5: Process and Organize Data
+### 第5步：处理和组织数据
 
-Once earnings data is retrieved (JSON format), process and organize it:
+一旦获取到财报数据（JSON格式），对其进行处理和组织：
 
-#### 5.1 Parse JSON Data
+#### 5.1 解析JSON数据
 
-Load JSON data from script output:
+从脚本输出中加载JSON数据：
 ```python
 import json
 earnings_data = json.loads(earnings_json_string)
 ```
 
-Or if saved to file:
+**或如果已保存到文件中**：
 ```python
 with open('earnings_data.json', 'r') as f:
     earnings_data = json.load(f)
 ```
 
-#### 5.2 Verify Data Structure
+#### 5.2 验证数据结构**
 
-Confirm data includes required fields:
-- ✓ symbol
-- ✓ companyName
-- ✓ date
-- ✓ timing (BMO/AMC/TAS)
-- ✓ marketCap
-- ✓ sector
+确认数据包含以下字段：
+- ✓ 股票代码
+- ✓ 公司名称
+- ✓ 日期
+- ✓ 时间（BMO/AMC/TAS）
+- ✓ 市值
+- ✓ 行业
 
-#### 5.3 Group by Date
+#### 5.3 按日期分组
 
-Group all earnings announcements by date:
-- Sunday, [Full Date] (if applicable)
-- Monday, [Full Date]
-- Tuesday, [Full Date]
-- Wednesday, [Full Date]
-- Thursday, [Full Date]
-- Friday, [Full Date]
-- Saturday, [Full Date] (if applicable)
+按日期对所有财报公告进行分组：
+- 星期日，[完整日期]（如适用）
+- 星期一，[完整日期]
+- 星期二，[完整日期]
+- 星期三，[完整日期]
+- 星期四，[完整日期]
+- 星期五，[完整日期]
+- 星期六，[完整日期]（如适用）
 
-#### 5.4 Sub-Group by Timing
+#### 5.4 按时间子分组
 
-Within each date, create three sub-sections:
-1. **Before Market Open (BMO)**
-2. **After Market Close (AMC)**
-3. **Time Not Announced (TAS)**
+在每个日期内创建三个子部分：
+1. **开盘前（BMO）**
+2. **收盘后（AMC）**
+3. **未公布时间（TAS）**
 
-Data is already sorted by timing from the script, so maintain this order.
+数据已经按时间排序，因此保持此顺序。
 
-#### 5.5 Within Each Timing Group
+#### 5.5 在每个时间组内
 
-Companies are already sorted by market cap descending (script output):
-- Mega-cap (>$200B) first
-- Large-cap ($10B-$200B) second
-- Mid-cap ($2B-$10B) third
+公司已经按市值降序排序（脚本输出）：
+- 巨型股（>2000亿美元）排在最前面
+- 大型股（100亿至200亿美元）排在第二位
+- 中型股（20亿至100亿美元）排在第三位
 
-This prioritization ensures the most market-moving companies are listed first.
+这种排序确保了最具市场影响力的公司排在最前面。
 
-#### 5.6 Calculate Summary Statistics
+#### 5.6 计算汇总统计信息
 
-Compute:
-- **Total Companies**: Count of all companies in dataset
-- **Mega/Large Cap Count**: Count where marketCap >= $10B
-- **Mid Cap Count**: Count where marketCap between $2B and $10B
-- **Peak Day**: Day of week with most earnings announcements
-- **Sector Distribution**: Count by sector (Technology, Healthcare, Financial, etc.)
-- **Highest Market Cap Companies**: Top 5 companies by market cap
+计算：
+- **总公司数量**：数据集中的所有公司数量
+- **巨型股/大型股数量**：市值≥100亿美元的公司数量
+- **中型股数量**：市值在20亿至100亿美元之间的公司数量
+- **峰值日**：财报公告最多的星期几
+- **行业分布**：按行业统计（科技、医疗保健、金融等）
+- **市值最高的5家公司**：市值最高的5家公司
 
-### Step 6: Generate Markdown Report
+### 第6步：生成Markdown报告
 
-Use the report generation script to create a formatted markdown report from the JSON data.
+使用报告生成脚本从JSON数据创建格式化的Markdown报告。
 
-**Script Location**:
+**脚本位置**：
 ```
 scripts/generate_report.py
 ```
 
-**Execution**:
+**执行**：
 
-**Option A: Output to stdout**:
+**选项A：输出到stdout**：
 ```bash
 python scripts/generate_report.py earnings_data.json
 ```
 
-**Option B: Save to file**:
+**选项B：保存到文件**：
 ```bash
 python scripts/generate_report.py earnings_data.json earnings_calendar_2025-11-02.md
 ```
 
-**What the script does**:
-1. Loads earnings data from JSON file
-2. Groups by date and timing (BMO/AMC/TAS)
-3. Sorts by market cap within each group
-4. Calculates summary statistics
-5. Generates formatted markdown report
-6. Outputs to stdout or saves to file
+**脚本的作用**：
+1. 从JSON文件中加载财报数据
+2. 按日期和时间（BMO/AMC/TAS）进行分组
+3. 在每个组内按市值排序
+4. 计算汇总统计信息
+5. 生成格式化的Markdown报告
+6. 输出到stdout或保存到文件
 
-The script automatically handles all formatting including:
-- Proper markdown table structure
-- Date grouping and day names
-- Market cap sorting
-- EPS and revenue formatting
-- Summary statistics calculation
+脚本自动处理所有格式化工作，包括：
+- 正确的Markdown表格结构
+- 日期分组和星期名称
+- 市值排序
+- EPS和收入格式化
+- 汇总统计信息的计算
 
-**Report Structure**:
-
+**报告结构**：
 ```markdown
 # Upcoming Earnings Calendar - Week of [START_DATE] to [END_DATE]
 
@@ -435,61 +434,61 @@ The script automatically handles all formatting including:
 *Report generated using FMP Earnings Calendar API with mid-cap+ filter (>$2B market cap). Data current as of report generation time. Always verify earnings dates through official company sources.*
 ```
 
-**Formatting Best Practices**:
-- Use markdown tables for clean presentation
-- Bold important company names (mega-cap) if desired
-- Include market cap in human-readable format ($3.0T, $150B, $5.2B) - already formatted by script
-- Group logically by date then timing
-- Include summary section at top for quick overview
-- Add EPS and revenue estimates if available
+**格式化最佳实践**：
+- 使用Markdown表格进行清晰展示
+- 如需要，用粗体显示重要公司名称（巨型股）
+- 以人类可读的格式显示市值（例如$3.0T、$150B、$5.2B）——已由脚本格式化
+- 按日期和时间逻辑分组
+- 在顶部添加摘要部分以便快速查看
+- 如果有，包括EPS和收入估算
 
-### Step 7: Quality Assurance
+### 第7步：质量保证
 
-Before finalizing the report, verify:
+在最终确定报告之前，进行验证：
 
-**Data Quality Checks**:
-1. ✓ All dates fall within the target week (next 7 days)
-2. ✓ Market cap values are present for all companies
-3. ✓ Each company has timing specified (BMO/AMC/TAS)
-4. ✓ Companies are sorted by market cap within each section
-5. ✓ Summary statistics are accurate
-6. ✓ Report generation date is clearly stated
-7. ✓ EPS and revenue estimates included where available
+**数据质量检查**：
+1. ✓ 所有日期都在目标周内（接下来的7天）
+2. ✓ 所有公司的市值值都存在
+3. ✓ 每家公司的时间都已指定（BMO/AMC/TAS）
+4. ✓ 每个组内的公司都按市值排序
+5. ✓ 汇总统计信息准确
+6. ✓ 明确报告生成日期
+7. ✓ 如果有，包括EPS和收入估算
 
-**Completeness Checks**:
-1. ✓ All days of the target week are included (even if no earnings)
-2. ✓ Major known companies are not missing (verify against external sources if needed)
-3. ✓ Sector information is included where available
-4. ✓ Timing reference section is present
-5. ✓ Data sources are credited (FMP API)
+**完整性检查**：
+1. ✓ 包括目标周内的所有日期（即使没有财报）
+2. ✓ 不遗漏任何主要公司（如有需要，可对外部来源进行验证）
+3. ✓ 包括行业信息（如果有的话）
+4. ✓ 包含时间参考部分
+5. ✓ 显示数据来源（FMP API）
 
-**Format Checks**:
-1. ✓ Markdown tables are properly formatted
-2. ✓ Dates are consistently formatted
-3. ✓ Market caps use consistent units (B for billions, T for trillions)
-4. ✓ All sections follow template structure
-5. ✓ No placeholder text ([PLACEHOLDER]) remains
-6. ✓ EPS and revenue estimates properly formatted
+**格式检查**：
+1. ✓ Markdown表格格式正确
+2. ✓ 日期格式一致
+3. ✓ 市值使用一致的单位（B表示十亿，T表示万亿）
+4. ✓ 所有部分都遵循模板结构
+5. ✓ 没有保留占位符文本（[PLACEHOLDER]）
+6. ✓ EPS和收入估算格式正确
 
-### Step 8: Save and Deliver Report
+### 第8步：保存和交付报告
 
-Save the generated report with an appropriate filename:
+使用适当的文件名保存生成的报告：
 
-**Filename Convention**:
+**文件名约定**：
 ```
 earnings_calendar_[YYYY-MM-DD].md
 ```
 
-Example: `earnings_calendar_2025-11-02.md`
+示例：`earnings_calendar_2025-11-02.md`
 
-The filename date represents the report generation date, not the earnings week.
+文件名中的日期代表报告生成日期，而不是财报周。
 
-**Delivery**:
-- Save the markdown file to the working directory
-- Inform the user that the report has been generated
-- Provide a brief summary of key findings (e.g., "45 companies reporting next week, with Apple and Microsoft on Monday")
+**交付**：
+- 将Markdown文件保存到工作目录
+- 通知用户报告已生成
+- 提供关键发现的简要总结（例如：“下周有45家公司发布财报，其中苹果公司和微软公司在周一）
 
-**Example Summary**:
+**示例总结**：
 ```
 ✓ Earnings calendar report generated: earnings_calendar_2025-11-02.md
 
@@ -507,11 +506,11 @@ Top 5 by market cap:
 5. Tesla - $800B (Wed AMC)
 ```
 
-## Fallback Mode (Step 8 Alternative): Manual Data Entry
+## 备用模式（第8步的替代方案）：手动输入数据
 
-If API access is unavailable or user chooses to skip API:
+如果API访问不可用或用户选择跳过API：
 
-**Provide Instructions for Manual Entry**:
+**提供手动输入的说明**：
 
 ```
 Since FMP API is not available, you can manually gather earnings data:
@@ -531,191 +530,191 @@ Please provide the following information for each company:
 I will format this into the standard earnings calendar report.
 ```
 
-**Process Manual Input**:
-1. Parse user-provided earnings data
-2. Organize by date, timing, and market cap
-3. Generate report using same template
-4. Note in report: "Data Source: Manual Entry"
+**处理手动输入**：
+1. 解析用户提供的财报数据
+2. 按日期、时间和市值进行组织
+3. 使用相同的模板生成报告
+4. 在报告中注明：“数据来源：手动输入”
 
-## Use Cases and Examples
+## 使用案例和示例
 
-### Use Case 1: Weekly Review (Primary Use Case)
+### 使用案例1：每周回顾（主要使用案例）
 
-**User Request**: "Get next week's earnings calendar"
+**用户请求**：“获取下周的财报日历”
 
-**Workflow**:
-1. Get current date (e.g., November 2, 2025)
-2. Calculate target week (November 3-9, 2025)
-3. Load FMP API guide
-4. Detect/request API key
-5. Fetch earnings data:
+**工作流程**：
+1. 获取当前日期（例如，2025年11月2日）
+2. 计算目标周（2025年11月3日至9日）
+3. 加载FMP API指南
+4. 检测/请求API密钥
+5. 获取财报数据：
    ```bash
    python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09 > earnings_data.json
    ```
-6. Generate markdown report:
+6. 生成Markdown报告：
    ```bash
    python scripts/generate_report.py earnings_data.json earnings_calendar_2025-11-02.md
    ```
-7. Notify user with summary
+7. 向用户提供摘要
 
-**Complete One-Liner**:
+**完整的一句话**：
 ```bash
 python scripts/fetch_earnings_fmp.py 2025-11-03 2025-11-09 > earnings_data.json && \
 python scripts/generate_report.py earnings_data.json earnings_calendar_2025-11-02.md
 ```
 
-### Use Case 2: Focused on Specific Day
+### 使用案例2：关注特定日期
 
-**User Request**: "What earnings are coming out Monday?"
+**用户请求**：“周一有哪些财报？”
 
-**Workflow**:
-1. Get current date and identify next Monday (e.g., November 4, 2025)
-2. Fetch full week data (same as Use Case 1)
-3. Generate full report but highlight Monday section
-4. Provide verbal summary of Monday's earnings with emphasis
+**工作流程**：
+1. 获取当前日期并确定下一个周一（例如，2025年11月4日）
+2. 获取完整周的数据（与使用案例1相同）
+3. 生成完整报告，但突出显示周一的部分
+4. 提供周一财报的口头总结
 
-### Use Case 3: Mega-Cap Focus
+### 使用案例3：关注巨型股
 
-**User Request**: "Show me earnings for companies over $100B market cap next week"
+**用户请求**：“显示下周市值超过100亿美元公司的财报”
 
-**Workflow**:
-1. Fetch full earnings data (script already filters >$2B)
-2. Process and organize as normal
-3. When generating report, add a "Mega-Cap Focus" section at top
-4. Filter tables to show only companies >$100B
-5. Note: Still include full data in appendix for reference
+**工作流程**：
+1. 获取完整的财报数据（脚本已经筛选出市值超过20亿美元的公司）
+2. 按常规处理和组织数据
+3. 在生成报告时，在顶部添加“巨型股重点”部分
+4. 在表格中筛选出市值超过100亿美元的公司
+5. 注意：附录中仍包含完整数据以供参考
 
-### Use Case 4: Sector-Specific
+### 使用案例4：特定行业
 
-**User Request**: "What tech companies have earnings next week?"
+**用户请求**：“下周有哪些科技公司的财报？”
 
-**Workflow**:
-1. Fetch full earnings data
-2. Process and organize as normal
-3. Filter results by sector = "Technology"
-4. Generate report with focus on technology sector
-5. Note: Template structure remains the same; content is filtered
+**工作流程**：
+1. 获取完整的财报数据
+2. 按常规处理和组织数据
+3. 按行业（例如“科技”）筛选结果
+4. 生成专注于科技行业的报告
+5. 注意：模板结构保持不变；内容经过筛选
 
-## Troubleshooting
+## 故障排除
 
-### Problem: API key not working
+### 问题：API密钥无法使用
 
-**Solutions**:
-- Verify API key is correct (copy-paste carefully)
-- Check if API key is active (login to FMP dashboard)
-- Ensure no extra spaces before/after key
-- Try generating new API key from FMP dashboard
+**解决方案**：
+- 验证API密钥是否正确（小心复制粘贴）
+- 检查API密钥是否有效（登录FMP仪表板）
+- 确保密钥前后没有额外的空格
+- 尝试从FMP仪表板获取新的API密钥
 
-### Problem: Script returns empty results
+### 问题：脚本返回空结果
 
-**Solutions**:
-- Verify date range is in future (not past dates)
-- Check date format is YYYY-MM-DD
-- Try wider date range (e.g., 14 days instead of 7)
-- Verify companies actually have announced earnings dates for that week
+**解决方案**：
+- 确认日期范围在未来（不是过去的日期）
+- 检查日期格式是否为YYYY-MM-DD
+- 尝试更宽的日期范围（例如，14天而不是7天）
+- 确认该公司确实在该周发布了财报日期
 
-### Problem: Missing major companies
+### 问题：缺少主要公司
 
-**Solutions**:
-- Company may not have announced earnings date yet
-- Some companies announce dates very late (1-2 days before)
-- Cross-reference with company investor relations website
-- Market cap may have dropped below $2B threshold
+**解决方案**：
+- 公司可能尚未公布财报日期
+- 有些公司会在最后一天（提前1-2天）公布日期
+- 与公司的投资者关系网站进行交叉核对
+- 市值可能降至20亿美元的阈值以下
 
-### Problem: Rate limit hit (429 error)
+### 问题：达到速率限制（429错误）
 
-**Solutions**:
-- Free tier: 250 calls/day
-- Each weekly report uses ~3-5 API calls
-- Check if other tools/scripts are using same API key
-- Wait 24 hours for rate limit reset
-- Consider upgrading to paid tier if needed frequently
+**解决方案**：
+- 免费 tier：每天250次调用
+- 每份每周报告大约使用3-5次API调用
+- 检查是否有其他工具/脚本正在使用相同的API密钥
+- 等待24小时以重置速率限制
+- 如果需要，考虑升级到付费tier
 
-### Problem: Script execution error
+### 问题：脚本执行错误
 
-**Solutions**:
-- Verify Python 3 is installed: `python3 --version`
-- Install requests library: `pip install requests`
-- Check script has execute permissions: `chmod +x fetch_earnings_fmp.py`
-- Run with python3 explicitly: `python3 fetch_earnings_fmp.py ...`
+**解决方案**：
+- 验证是否安装了Python 3：`python3 --version`
+- 安装requests库：`pip install requests`
+- 检查脚本是否有执行权限：`chmod +x fetch_earnings_fmp.py`
+- 显式使用python3运行：`python3 fetch_earnings_fmp.py ...`
 
-## Best Practices
+## 最佳实践
 
-### Do's
-✓ Always get current date first before any data retrieval
-✓ Use FMP API as primary source for reliability
-✓ Store API key in environment variable for CLI usage
-✓ Sort by market cap to prioritize high-impact companies
-✓ Group by date then timing for logical organization
-✓ Include summary statistics for quick overview
-✓ Credit data sources in report footer
-✓ Use clean markdown tables for readability
-✓ Provide timing reference section for clarity
-✓ Note data freshness and potential for changes
-✓ Include EPS and revenue estimates when available
+### 应该做的
+✓ 在任何数据检索之前，始终先获取当前日期
+✓ 使用FMP API作为主要数据来源以确保可靠性
+✓ 将API密钥存储在环境变量中，以便在CLI中使用
+✓ 按市值排序，以优先显示高影响力公司
+✓ 按日期和时间分组，以便逻辑清晰
+✓ 包括摘要统计信息以便快速查看
+✓ 在报告页脚中注明数据来源
+✓ 使用清晰的Markdown表格以便阅读
+✓ 提供时间参考部分以便清晰
+✓ 注意数据的新鲜度和可能的变化
+✓ 如果有，包括EPS和收入估算
 
-### Don'ts
-✗ Don't assume "next week" without calculating from current date
-✗ Don't omit timing information (BMO/AMC/TAS)
-✗ Don't mix date formats within report (stay consistent)
-✗ Don't include micro/small-cap unless specifically requested
-✗ Don't forget to sort by market cap within sections
-✗ Don't share API key in conversations or reports
-✗ Don't include earnings from current week or past dates
-✗ Don't generate report without quality assurance checks
-✗ Don't commit API keys to version control
+### 不应该做的
+✗ 不要在不根据当前日期计算的情况下假设“下周”
+✗ 不要省略时间信息（BMO/AMC/TAS）
+✗ 不要在报告中混合日期格式（保持一致）
+✗ 除非特别要求，否则不要包括微型股/小型股
+✗ 不要忘记按市值在各个部分内进行排序
+✗ 不要在对话或报告中分享API密钥
+✗ 不要包括当前周或过去日期的财报
+✗ 不要在没有质量保证检查的情况下生成报告
+✗ 不要将API密钥提交到版本控制系统中
 
-## Security Notes
+## 安全注意事项
 
-### API Key Security
+### API密钥安全
 
-**Important Reminders**:
-1. ✓ Use free tier API keys for testing
-2. ✓ Rotate keys regularly
-3. ✓ Don't share conversations containing API keys
-4. ✓ Set API key as environment variable for CLI
-5. ✓ Keys provided in chat are session-only (forgotten after session ends)
-6. ✗ Never commit API keys to Git repositories
-7. ✗ Never use production API keys with sensitive data access
+**重要提醒**：
+1. ✓ 使用免费tier API密钥进行测试
+2. ✓ 定期轮换密钥
+3. ✓ 不要在对话中分享包含API密钥的内容
+4. ✓ 将API密钥设置为CLI的环境变量
+5. ✓ 在聊天中提供的密钥仅限当前会话使用（会话结束后即被遗忘）
+6. ✗ 永远不要将API密钥提交到Git仓库
+7. ✗ 永远不要在生产环境中使用API密钥访问敏感数据
 
-**Best Practice**:
-For Claude Code (CLI), always use environment variable:
+**最佳实践**：
+对于Claude Code（CLI），始终使用环境变量：
 ```bash
 # Add to ~/.zshrc or ~/.bashrc
 export FMP_API_KEY="your-key-here"
 ```
 
-For Claude Web, understand that:
-- API key entered in chat is temporary
-- Stored only in conversation context
-- Not saved to disk
-- Forgotten when session ends
+对于Claude网页，需要注意：
+- 在聊天中输入的API密钥是临时的
+- 仅存储在聊天上下文中
+- 不会保存到磁盘
+- 会话结束后即被遗忘
 
-## Resources
+## 资源
 
-**FMP API**:
-- Main Documentation: https://site.financialmodelingprep.com/developer/docs
-- Get API Key: https://site.financialmodelingprep.com/developer/docs
-- Earnings Calendar API: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api
-- Company Profile API: https://site.financialmodelingprep.com/developer/docs/companies-key-metrics-api
-- Pricing/Rate Limits: https://site.financialmodelingprep.com/developer/docs/pricing
+**FMP API**：
+- 主要文档：https://site.financialmodelingprep.com/developer/docs
+- 获取API密钥：https://site.financialmodelingprep.com/developer/docs
+- 财报日历API：https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api
+- 公司概况API：https://site.financialmodelingprep.com/developer/docs/companies-key-metrics-api
+- 定价/速率限制：https://site.financialmodelingprep.com/developer/docs/pricing
 
-**Supplementary Sources** (for verification):
-- Seeking Alpha: https://seekingalpha.com/earnings/earnings-calendar
-- Yahoo Finance: https://finance.yahoo.com/calendar/earnings
-- MarketWatch: https://www.marketwatch.com/tools/earnings-calendar
+**补充资源**（用于验证）：
+- Seeking Alpha：https://seekingalpha.com/earnings/earnings-calendar
+- Yahoo Finance：https://finance.yahoo.com/calendar/earnings
+- MarketWatch：https://www.marketwatch.com/tools/earnings-calendar
 
-**Skill Resources**:
-- FMP API Guide: `references/fmp_api_guide.md`
-- Python Script: `scripts/fetch_earnings_fmp.py`
-- Report Template: `assets/earnings_report_template.md`
+**技能资源**：
+- FMP API指南：`references/fmp_api_guide.md`
+- Python脚本：`scripts/fetch_earnings_fmp.py`
+- 报告模板：`assets/earnings_report_template.md`
 
 ---
 
-## Summary
+## 总结
 
-This skill provides a reliable, API-driven approach to generating weekly earnings calendars for US stocks. By using FMP API, it ensures structured, accurate data with additional insights like EPS/revenue estimates. The multi-environment support makes it flexible for CLI, Desktop, and Web usage, while the fallback mode ensures functionality even without API access.
+该技能提供了一种可靠的、基于API的方法来生成美国股票的每周财报日历。通过使用FMP API，它可以确保数据结构化且准确，并提供额外的信息，如EPS/收入估算。多环境支持使其适用于CLI、桌面应用和网页，而备用模式则确保在没有API访问的情况下也能正常工作。
 
-**Key Workflow**: Date Calculation → API Key Setup → API Data Retrieval → Processing → Report Generation → QA → Delivery
+**关键工作流程**：日期计算 → API密钥设置 → API数据检索 → 数据处理 → 报告生成 → 质量保证 → 交付
 
-**Output**: Clean, organized markdown report with earnings grouped by date/timing/market cap, including summary statistics and trading considerations.
+**输出**：清晰、组织良好的Markdown报告，其中财报按日期/时间/市值分组，包括汇总统计信息和交易注意事项。

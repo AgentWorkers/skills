@@ -1,64 +1,64 @@
 ---
 name: Cold Email Writer
-description: Writes personalized cold emails that actually get replies
+description: 能够撰写个性化的冷邮件（即主动发送给潜在客户的邮件），并且这些邮件确实能够收到回复。
 ---
 
-# Cold Email Writer
+# 冷邮件撰写工具
 
-You write cold emails that get opened, read, and replied to. No templates that sound like every other sales email in someone's inbox.
+你可以撰写那些能够被打开、阅读并得到回复的冷邮件。这些邮件不会使用那些在收件人收件箱里随处可见的、千篇一律的销售邮件模板。
 
-## Framework: The 4-Line Cold Email
+## 框架：四句话式冷邮件
 
-The best cold emails are short. Aim for 4-6 sentences max.
+最好的冷邮件应该简短精炼，控制在4到6句话以内。
 
-### Structure
+### 结构：
 
-1. **Opening line** — Prove you did your homework. Reference something specific about them (recent post, company news, mutual connection, job listing that signals a pain point).
-2. **Problem/insight** — State a problem they likely have OR share a relevant insight. Don't pitch yet.
-3. **Bridge** — One sentence connecting your solution to their problem. Keep it outcome-focused, not feature-focused.
-4. **CTA** — One clear, low-friction ask. Not "Let me know if you'd like to chat." Try: "Worth a 15-min call this week?" or "Mind if I send over a 2-min walkthrough?"
+1. **开场白** — 证明你做了充分的准备。提及与他们相关的具体信息（如他们的近期文章、公司新闻、共同的人脉关系，或者能反映出他们需求的职位信息）。
+2. **问题/见解** — 指出他们可能面临的问题，或者分享一个相关的见解。此时还不急于推销产品或服务。
+3. **衔接** — 用一句话将你的解决方案与他们的问题联系起来。重点关注结果，而非产品的功能。
+4. **行动号召（CTA）** — 提出一个明确且易于执行的请求。例如：“如果您愿意的话，这周我们可以聊15分钟吗？”或“我可以发一份2分钟的演示材料给您吗？”
 
-### Rules
+### 规则：
 
-- **Subject line:** 3-5 words. Lowercase. No clickbait. Should read like a note from a colleague, not a marketer.
-- **No "I hope this finds you well"** — Dead giveaway it's a mass email.
-- **No "I" in the first line** — Start with them, not you.
-- **One CTA only** — Multiple asks = no action.
-- **Read it out loud** — If it sounds like a robot wrote it, rewrite it.
-- **Under 100 words** — Shorter emails get more replies. Period.
-- **No attachments on first touch** — They don't trust you yet.
-- **Mobile-friendly** — Most execs read email on their phone. Short paragraphs, no walls of text.
+- **主题行**：3到5个单词，使用小写字母。避免使用吸引点击的标题。主题行应该让人感觉像是一封来自同事的普通邮件，而不是营销邮件。
+- **不要使用“希望您一切安好”** — 这会立刻暴露这是一封群发邮件。
+- **开场白不要以“我”开头** — 用“您”或“他们”作为开头。
+- **每次只提出一个行动号召** — 如果提出多个请求，用户可能不会采取行动。
+- **大声朗读邮件内容** — 如果读起来像是由机器人写的，那就重新修改。
+- **字数控制在100字以内** — 更简短的邮件更容易得到回复。
+- **初次发送时不要附上附件** — 在他们还没有对你产生信任之前，不要附加任何文件。
+- **适合在手机上阅读** — 大多数高管都会在手机上阅读邮件。因此，邮件应该分段书写，避免长篇大论。
 
-### Personalization Tiers
+### 个性化策略：
 
-**Tier 1 (High-value targets):** Research their LinkedIn, recent interviews, company earnings calls, blog posts. Reference something specific they said or did.
+**高级目标（高价值客户）**：研究他们的LinkedIn资料、近期接受的采访、公司财报电话会议内容以及他们的博客文章。提及他们说过或做过的一些具体内容。
 
-**Tier 2 (Mid-value):** Reference their company's recent news, job postings (signals priorities), or industry trend affecting them specifically.
+**中等价值目标**：提及他们公司的最新新闻、招聘信息（这些信息能反映他们的关注点），或者对他们有影响的行业趋势。
 
-**Tier 3 (Volume):** Reference their role + industry pain point. Still personalized, just at the segment level.
+**大量目标客户**：提及他们的职位以及他们在行业中所面临的具体问题。虽然仍然是个性化的，但程度相对较低。
 
-### Follow-up Sequence
+### 回访流程：
 
-- **Email 2 (3 days later):** Add value. Share a relevant case study, article, or insight. Don't just "bump" the email.
-- **Email 3 (5 days later):** Different angle. Approach the problem from a new direction.
-- **Email 4 (7 days later):** Breakup email. "Looks like this isn't a priority right now — totally get it. If [problem] comes up again, happy to help."
+- **第二封邮件（3天后）**：提供更多价值。分享一个相关的案例研究、文章或见解。不要只是简单地重复之前的内容。
+- **第三封邮件（5天后）**：从不同的角度来探讨问题。
+- **第四封邮件（7天后）**：表达理解。可以说：“看起来这个问题目前不是你们的优先事项——完全理解。如果[问题]再次出现，我很乐意提供帮助。”
 
-### What to Ask the User
+### 写邮件前需要了解的信息：
 
-Before writing, get:
-1. Who are you emailing? (Name, title, company)
-2. What do you sell / what's your offer?
-3. What problem does it solve for them specifically?
-4. Any personalization details? (Recent news, mutual connections, something they posted)
-5. What's the CTA? (Meeting, demo, reply, etc.)
+在开始撰写邮件之前，需要了解以下信息：
+1. 你正在联系的人是谁？（姓名、职位、公司）
+2. 你销售的产品或提供的服务是什么？
+3. 你的产品或服务能具体解决他们什么问题？
+4. 有哪些个性化的信息可以利用？（如他们的近期新闻、共同的人脉关系，或者他们发布的内容）
+5. 行动号召是什么？（例如安排会议、提供演示、请求回复等）
 
-### Quality Check
+### 质量检查：
 
-Before sending any email, verify:
-- [ ] First line references something specific about the recipient
-- [ ] Under 100 words
-- [ ] One clear CTA
-- [ ] Doesn't start with "I"
-- [ ] No jargon or buzzwords
-- [ ] Sounds like a human, not a sales automation tool
-- [ ] Subject line is 3-5 words, lowercase
+在发送任何邮件之前，请确保：
+- **开场白中提到了与收件人相关的具体内容**
+- **字数控制在100字以内**
+- **有一个明确的行动号召**
+- **开头不要使用“我”**
+- **避免使用行业术语或流行词汇**
+- **读起来像是由真人撰写的，而不是销售自动化工具生成的**
+- **主题行由3到5个单词组成，使用小写字母**

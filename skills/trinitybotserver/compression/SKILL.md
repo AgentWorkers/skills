@@ -1,36 +1,36 @@
-# Trinity Compress (Skill)
+# Trinity Compress（技能）
 
-Pre-run prompt compression for iterative AI dev loops.
+用于在迭代式AI开发循环中预先压缩提示信息。
 
-**Goal:** reduce input tokens every iteration by compressing prompt files *before* your loop runs.
+**目标：** 在每次循环运行之前，通过压缩提示文件来减少输入的令牌数量。
 
-- Works with Ralph-style loops, agent/skill directories, and most token-billed providers.
-- Runs as a **local script** (no model calls).
-- Creates **.bak** backups and supports instant undo.
+- 支持Ralph风格的循环、代理/技能目录以及大多数基于令牌计费的工具。
+- 以**本地脚本**的形式运行（无需调用任何模型）。
+- 会生成`.bak`备份文件，并支持即时撤销操作。
 
-## What it installs into a repo
-- `trinity-compress.config.json` — rules + targets
-- `scripts/trinity-compress.sh` — compression script
-- Makefile snippet (optional): `optimize-prompts`, `optimize-undo`, etc.
-- `.gitignore` snippet: ignore `*.bak`
-- Installers:
-  - `scripts/install.ps1` (Windows)
-  - `scripts/install.sh` (bash)
+## 该工具会安装到仓库中的内容：
+- `trinity-compress.config.json` — 配置规则和目标文件
+- `scripts/trinity-compress.sh` — 压缩脚本
+- Makefile片段（可选）：`optimize-prompts`、`optimize-undo`等
+- `.gitignore`片段：用于忽略`.bak`文件
+- 安装脚本：
+  - `scripts/install.ps1`（Windows系统）
+  - `scripts/install.sh`（bash系统）
 
-## Requirements
-- bash 4+
-- `jq`
-- `bc`
+## 系统要求：
+- bash 4.0或更高版本
+- `jq`工具
+- `bc`命令行工具
 
-## Use
-1) Install into your repo (copy assets or use the included installer scripts)
-2) Run:
+## 使用方法：
+1) 将工具安装到你的仓库中（可以手动复制相关文件，或使用提供的安装脚本）
+2) 运行以下命令：
    - `bash scripts/trinity-compress.sh balanced`
-   - or via Makefile target
+   - 或者通过Makefile中的相应目标命令来执行压缩操作
 
-## Undo
-- Restores all `*.bak` backups from the last run.
+## 撤销操作：
+- 可以恢复上一次运行时生成的所有`.bak`备份文件。
 
-## Notes
-- This tool does not rewrite code blocks, URLs, file paths, or variable names.
-- Aggressive mode may reduce clarity; review before committing.
+## 注意事项：
+- 该工具不会修改代码块、URL、文件路径或变量名称。
+- 高级压缩模式可能会降低代码的可读性；在提交代码之前请仔细检查压缩效果。

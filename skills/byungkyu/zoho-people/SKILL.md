@@ -17,9 +17,9 @@ metadata:
 
 # Zoho People
 
-Access the Zoho People API with managed OAuth authentication. Manage employees, departments, designations, attendance, leave, and custom HR forms with full CRUD operations.
+您可以使用受管理的 OAuth 认证来访问 Zoho People API。该 API 允许您对员工、部门、职位、考勤记录以及自定义人力资源表单进行完整的创建（Create）、读取（Read）、更新（Update）和删除（Delete, CRUD）操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all employees
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/zoho-people/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Zoho People API endpoint path. The gateway proxies requests to `people.zoho.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Zoho People API 端点路径。该网关会将请求代理到 `people.zoho.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho People OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Zoho People OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho People connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Zoho People 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,21 +140,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Forms Operations
+### 表单操作
 
-#### List All Forms
+#### 列出所有表单
 
-Get a list of all available forms in your Zoho People account.
+获取您 Zoho People 账户中所有可用表单的列表。
 
 ```bash
 GET /zoho-people/people/api/forms
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -165,7 +165,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "response": {
@@ -193,25 +193,25 @@ EOF
 }
 ```
 
-### Employee Operations
+### 员工操作
 
-#### List Employees (Bulk Records)
+#### 列出员工（批量记录）
 
 ```bash
 GET /zoho-people/people/api/forms/employee/getRecords?sIndex={startIndex}&limit={limit}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `sIndex` | integer | 1 | Starting index (1-based) |
-| `limit` | integer | 200 | Number of records (max 200) |
-| `SearchColumn` | string | - | `EMPLOYEEID` or `EMPLOYEEMAILALIAS` |
-| `SearchValue` | string | - | Value to search for |
-| `modifiedtime` | long | - | Timestamp in milliseconds for modified records |
+| `sIndex` | 整数 | 1 | 开始索引（从 1 开始） |
+| `limit` | 整数 | 200 | 记录数量（最多 200 条） |
+| `SearchColumn` | 字符串 | - | `EMPLOYEEID` 或 `EMPLOYEEMAILALIAS` |
+| `SearchValue` | 字符串 | - | 要搜索的值 |
+| `modifiedtime` | 长整型 | - | 记录修改的时间戳（以毫秒为单位） |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -222,7 +222,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "response": {
@@ -250,13 +250,13 @@ EOF
 }
 ```
 
-#### List Employees (View-based)
+#### 列出员工（按视图查看）
 
 ```bash
 GET /zoho-people/api/forms/{viewName}/records?rec_limit={limit}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -267,13 +267,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Search Employee by ID
+#### 按 ID 搜索员工
 
 ```bash
 GET /zoho-people/people/api/forms/employee/getRecords?SearchColumn=EMPLOYEEID&SearchValue={employeeId}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -284,21 +284,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Search Employee by Email
+#### 按电子邮件搜索员工
 
 ```bash
 GET /zoho-people/people/api/forms/employee/getRecords?SearchColumn=EMPLOYEEMAILALIAS&SearchValue={email}
 ```
 
-### Department Operations
+### 部门操作
 
-#### List Departments
+#### 列出部门
 
 ```bash
 GET /zoho-people/people/api/forms/department/getRecords?sIndex={startIndex}&limit={limit}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -309,7 +309,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "response": {
@@ -331,15 +331,15 @@ EOF
 }
 ```
 
-### Designation Operations
+### 职位操作
 
-#### List Designations
+#### 列出职位信息
 
 ```bash
 GET /zoho-people/people/api/forms/designation/getRecords?sIndex={startIndex}&limit={limit}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -350,7 +350,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "response": {
@@ -371,9 +371,9 @@ EOF
 }
 ```
 
-### Insert Record
+### 插入记录
 
-Add a new record to any form.
+向任何表单中添加新记录。
 
 ```bash
 POST /zoho-people/people/api/forms/json/{formLinkName}/insertRecord
@@ -382,7 +382,7 @@ Content-Type: application/x-www-form-urlencoded
 inputData={field1:'value1',field2:'value2'}
 ```
 
-**Example - Create Department:**
+**示例 - 创建部门：**
 
 ```bash
 python <<'EOF'
@@ -399,7 +399,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "response": {
@@ -413,9 +413,9 @@ EOF
 }
 ```
 
-### Update Record
+### 更新记录
 
-Modify an existing record.
+修改现有记录。
 
 ```bash
 POST /zoho-people/people/api/forms/json/{formLinkName}/updateRecord
@@ -424,7 +424,7 @@ Content-Type: application/x-www-form-urlencoded
 inputData={field1:'newValue'}&recordId={recordId}
 ```
 
-**Example - Update Employee:**
+**示例 - 更新员工信息：**
 
 ```bash
 python <<'EOF'
@@ -444,43 +444,26 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Leave Operations
+### 考勤操作
 
-#### List Leave Records
+**注意：** 考勤相关的 API 需要额外的 OAuth 权限范围。
 
-```bash
-GET /zoho-people/people/api/forms/leave/getRecords?sIndex={startIndex}&limit={limit}
-```
-
-#### Add Leave
-
-```bash
-POST /zoho-people/people/api/forms/json/leave/insertRecord
-Content-Type: application/x-www-form-urlencoded
-
-inputData={Employee_ID:'EMP001',Leavetype:'123456',From:'01-Feb-2026',To:'02-Feb-2026'}
-```
-
-### Attendance Operations
-
-Note: Attendance endpoints require additional OAuth scopes.
-
-#### Get Attendance Entries
+#### 获取考勤记录
 
 ```bash
 GET /zoho-people/people/api/attendance/getAttendanceEntries?date={date}&dateFormat={format}
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `date` | string | Date in organization format |
-| `dateFormat` | string | Date format (e.g., `dd-MMM-yyyy`) |
-| `empId` | string | Employee ID (optional) |
-| `emailId` | string | Employee email (optional) |
+| `date` | 字符串 | 组织规定的日期格式 |
+| `dateFormat` | 字符串 | 日期格式（例如：`dd-MMM-yyyy`） |
+| `empId` | 字符串 | 员工 ID（可选） |
+| `emailId` | 字符串 | 员工电子邮件（可选） |
 
-#### Check-In/Check-Out
+#### 登录/签出
 
 ```bash
 POST /zoho-people/people/api/attendance
@@ -489,33 +472,33 @@ Content-Type: application/x-www-form-urlencoded
 dateFormat=dd/MM/yyyy HH:mm:ss&checkIn={datetime}&checkOut={datetime}&empId={empId}
 ```
 
-## Common Form Link Names
+## 常见表单链接名称
 
-| Form | formLinkName | Description |
+| 表单 | 表单链接名称 | 描述 |
 |------|--------------|-------------|
-| Employee | `employee` | Employee records |
-| Department | `department` | Departments |
-| Designation | `designation` | Job titles |
-| Leave | `leave` | Leave requests |
-| Clients | `P_ClientDetails` | Client information |
+| Employee | `employee` | 员工记录 |
+| Department | `department` | 部门信息 |
+| Designation | `designation` | 职位信息 |
+| Leave | `leave` | 休假申请 |
+| Clients | `P_ClientDetails` | 客户信息 |
 
-## Pagination
+## 分页
 
-Zoho People uses index-based pagination:
+Zoho People 使用基于索引的分页方式：
 
 ```bash
 GET /zoho-people/people/api/forms/{formLinkName}/getRecords?sIndex=1&limit=200
 ```
 
-- `sIndex`: Starting index (1-based)
-- `limit`: Number of records per request (max 200)
+- `sIndex`：开始索引（从 1 开始）
+- `limit`：每次请求的记录数量（最多 200 条）
 
-For subsequent pages:
-- Page 1: `sIndex=1&limit=200`
-- Page 2: `sIndex=201&limit=200`
-- Page 3: `sIndex=401&limit=200`
+对于后续页面：
+- 第 1 页：`sIndex=1&limit=200`
+- 第 2 页：`sIndex=201&limit=200`
+- 第 3 页：`sIndex=401&limit=200`
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -545,47 +528,47 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Record IDs are numeric strings (e.g., `943596000000294355`)
-- The `Zoho_ID` field in responses contains the record ID
-- Maximum 200 records per GET request
-- Insert/Update operations use form-urlencoded data with `inputData` JSON
-- Date format varies by field and organization settings
-- Some endpoints (attendance, leave) require additional OAuth scopes. If you receive an `INVALID_OAUTHSCOPE` error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- Response structure wraps data in `response.result[]` array
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain special characters
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 记录 ID 是数字字符串（例如：`943596000000294355`）
+- 响应中的 `Zoho_ID` 字段包含记录 ID
+- 每次 GET 请求最多返回 200 条记录
+- 插入/更新操作使用 `inputData`（以 JSON 格式编码的数据）
+- 日期格式因字段和组织设置而异
+- 某些 API（如考勤、休假）需要额外的 OAuth 权限范围。如果您收到 `INVALID_OAUTHSCOPE` 错误，请联系 Maton 支持团队（support@maton.ai），并提供具体的操作、API 以及使用场景
+- 响应数据包含在 `response.result[]` 数组中
+- 重要提示：当 URL 包含特殊字符时，使用 `curl -g` 命令
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析 `$MATON_API_KEY` 环境变量
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho People connection or invalid request |
-| 401 | Invalid or missing Maton API key, or invalid OAuth scope |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho People API |
+| 400 | 未找到 Zoho People 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失，或 OAuth 权限范围无效 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Zoho People API 的传递错误 |
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 7011 | Invalid form name |
-| 7012 | Invalid view name |
-| 7021 | Maximum record limit exceeded (200) |
-| 7024 | No records found |
-| 7042 | Invalid search value |
-| 7218 | Invalid OAuth scope |
+| 7011 | 表单名称无效 |
+| 7012 | 视图名称无效 |
+| 7021 | 记录数量超过限制（最多 200 条） |
+| 7024 | 未找到记录 |
+| 7042 | 搜索值无效 |
+| 7218 | OAuth 权限范围无效 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -596,21 +579,20 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `zoho-people`. For example:
+1. 确保您的 URL 路径以 `zoho-people` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/zoho-people/people/api/forms`
+- 错误的路径：`https://gateway.maton.ai/people/api/forms`
 
-- Correct: `https://gateway.maton.ai/zoho-people/people/api/forms`
-- Incorrect: `https://gateway.maton.ai/people/api/forms`
+## 资源
 
-## Resources
-
-- [Zoho People API Overview](https://www.zoho.com/people/api/overview.html)
-- [Get Bulk Records API](https://www.zoho.com/people/api/bulk-records.html)
-- [Fetch Forms API](https://www.zoho.com/people/api/forms-api/fetch-forms.html)
-- [Insert Record API](https://www.zoho.com/people/api/insert-records.html)
-- [Update Record API](https://www.zoho.com/people/api/update-records.html)
-- [Attendance API](https://www.zoho.com/people/api/attendance-entries.html)
-- [Leave API](https://www.zoho.com/people/api/add-leave.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Zoho People API 概述](https://www.zoho.com/people/api/overview.html)
+- [批量记录 API](https://www.zoho.com/people/api/bulk-records.html)
+- [获取表单 API](https://www.zoho.com/people/api/forms-api/fetch-forms.html)
+- [插入记录 API](https://www.zoho.com/people/api/insert-records.html)
+- [更新记录 API](https://www.zoho.com/people/api/update-records.html)
+- [考勤 API](https://www.zoho.com/people/api/attendance-entries.html)
+- [休假 API](https://www.zoho.com/people/api/add-leave.html)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

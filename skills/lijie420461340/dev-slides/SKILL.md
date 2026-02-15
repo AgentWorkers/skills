@@ -1,6 +1,6 @@
 ---
 name: dev-slides
-description: Create developer-friendly presentations using Slidev - Vue-powered slides with code execution
+description: 使用 Slidev 创建对开发者友好的演示文稿：基于 Vue 的幻灯片工具，支持代码执行功能
 author: claude-office-skills
 version: "1.0"
 tags: [presentation, slidev, vue, developer, code]
@@ -12,28 +12,27 @@ library:
   stars: 44k
 ---
 
-# Developer Slides Skill
+# 开发者幻灯片技能
 
-## Overview
+## 概述
 
-This skill enables creation of developer-focused presentations using **Slidev** - a Vue-powered presentation framework. Write slides in Markdown with live code demos, diagrams, and components.
+该技能支持使用 **Slidev**（一个基于 Vue 的幻灯片制作框架）来创建以开发者为中心的演示文稿。您可以使用 Markdown 格式编写幻灯片，并在其中添加实时代码演示、图表和自定义组件。
 
-## How to Use
+## 使用方法
 
-1. Describe your technical presentation needs
-2. I'll generate Slidev markdown with proper syntax
-3. Includes code blocks, diagrams, and Vue components
+1. 描述您的技术演示需求；
+2. 我将为您生成符合 Slidev 标准语法的 Markdown 代码；
+3. 生成的代码中会包含代码块、图表和 Vue 组件。
 
-**Example prompts:**
-- "Create a Vue.js workshop presentation"
-- "Build slides with live code execution"
-- "Make a technical talk with diagrams"
-- "Create developer onboarding slides"
+**示例提示：**
+- “创建一个 Vue.js 工作坊演示文稿”；
+- “制作包含实时代码执行的幻灯片”；
+- “制作包含图表的技术演讲幻灯片”；
+- “制作开发者入职培训用的幻灯片”。
 
-## Domain Knowledge
+## 相关领域知识
 
-### Slidev Basics
-
+### Slidev 基础知识
 ```markdown
 ---
 theme: default
@@ -51,8 +50,7 @@ This is the first slide
 Content here
 ```
 
-### Slide Separators
-
+### 幻灯片分隔符
 ```markdown
 ---   # New horizontal slide
 
@@ -63,8 +61,7 @@ layout: center
 # Centered Content
 ```
 
-### Layouts
-
+### 布局方式
 ```markdown
 ---
 layout: cover
@@ -95,8 +92,7 @@ image: ./image.png
 # Content with Image
 ```
 
-### Code Blocks
-
+### 代码块
 ```markdown
 # Code Example
 
@@ -110,8 +106,7 @@ console.log(greeting)
 <!-- Lines highlighted step by step -->
 ```
 
-### Monaco Editor (Live Code)
-
+### Monaco 编辑器（实时代码编辑）
 ```markdown
 \`\`\`ts {monaco}
 // Editable code block
@@ -126,8 +121,7 @@ console.log('Hello from Slidev!')
 \`\`\`
 ```
 
-### Diagrams (Mermaid)
-
+### 图表（Mermaid）
 ```markdown
 \`\`\`mermaid
 graph LR
@@ -143,8 +137,7 @@ sequenceDiagram
 \`\`\`
 ```
 
-### Vue Components
-
+### Vue 组件
 ```markdown
 <Counter :count="10" />
 
@@ -154,8 +147,7 @@ sequenceDiagram
 <MyComponent v-click />
 ```
 
-### Animations
-
+### 动画效果
 ```markdown
 <v-click>
 
@@ -175,8 +167,7 @@ This appears on click
 <div v-click>Animated content</div>
 ```
 
-### Frontmatter
-
+### 文档头部（Frontmatter）
 ```yaml
 ---
 theme: seriph
@@ -190,9 +181,9 @@ css: unocss
 ---
 ```
 
-## Examples
+## 示例
 
-### Example: API Workshop
+### 示例：API 工作坊演示文稿
 ```markdown
 ---
 theme: seriph
@@ -257,14 +248,13 @@ layout: center
 [GitHub](https://github.com) · [Documentation](https://docs.example.com)
 ```
 
-## Installation
-
+## 安装方法
 ```bash
 npm init slidev@latest
 ```
 
-## Resources
+## 资源
 
-- [Slidev Documentation](https://sli.dev/)
-- [GitHub](https://github.com/slidevjs/slidev)
-- [Themes](https://sli.dev/themes/gallery.html)
+- [Slidev 官方文档](https://sli.dev/)
+- [GitHub 仓库](https://github.com/slidevjs/slidev)
+- [主题模板](https://sli.dev/themes/gallery.html)

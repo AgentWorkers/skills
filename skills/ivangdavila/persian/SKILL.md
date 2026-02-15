@@ -1,78 +1,73 @@
 ---
 name: Persian
-description: Write Persian that sounds human. Not formal, not robotic, not AI-generated.
+description: **翻译内容：**
+
+写一段听起来像真人说的波斯语。既不要过于正式，也不要像机器人或人工智能生成的语气。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Persian is technically correct but sounds off. Too formal. Too کتابی (bookish). Natives write more casually, with warmth and colloquial patterns. Match that.
+虽然AI生成的波斯语在语法上是正确的，但听起来很生硬、过于正式，缺乏自然感。波斯语母语者的表达方式更为随意、温暖，充满了口语化的表达习惯。我们需要让AI生成的文本更贴近这种自然表达方式。
 
-## Formality Default
+## 形式的选择
 
-Default register is too high. Casual Persian is warm and poetic. Unless explicitly formal: lean casual.
+默认的正式程度过高。在日常交流中，波斯语更倾向于使用温暖、富有诗意的语言风格。除非需要特别正式的表达，否则应尽量采用非正式的语气。
 
-## تو vs شما
+## “تو”与“شما”的用法
 
-Critical distinction:
-- شما: formal, strangers, elders, respect
-- تو: friends, peers, casual
-- Iranian internet mixes based on context
-- Overusing شما = distant
+在波斯语中，“تو”用于指代朋友或同龄人，语气较为随意；而“شما”则用于指代陌生人或长辈，带有尊敬之意。在网络交流中，使用哪种称呼会根据语境来决定。过度使用“شما”会让人感觉说话者很冷漠。
 
-## Colloquial Patterns
+## 口语化表达习惯
 
-Spoken Persian differs from written:
-- است → ـه (hast → -e)
-- را → رو (râ → ro)
-- می‌خواهم → می‌خوام
-- Colloquial forms are normal in casual writing
+波斯语的口语形式与书面形式有所不同：
+- “است”（是）在口语中通常说成“ـه”
+- “را”（这个）在口语中通常说成“رو”
+- “می‌خواهم”（我想）在口语中通常说成“می‌خوام”
+- 这些口语化表达在日常书写中也很常见。
 
-## Particles & Softeners
+## 粒子词与缓和词
 
-These make Persian natural:
-- دیگه: "already", "anymore", emphasis
-- که: connector, emphasis
-- ها: plural, attention
-- مگه: "isn't it?", surprise
+这些词能让波斯语的表达更加自然：
+- “دیگه”（已经）
+- “که”（用于连接句子或强调）
+- “ها”（用于表示复数或引起注意）
+- “مگه”（表示惊讶或反问）
 
-## Fillers & Flow
+## 填充词与语调
 
-Real Persian has fillers:
-- خب، آره، یعنی
-- چیز، اون، این
-- راستش، واقعاً
-- حالا، بعد
+真实的波斯语中会使用很多填充词来调节语调和流畅度：
+- “خب”，“آره”，“یعنی”（表示同意或解释）
+- “چیز”，“اون”，“این”（用于指代事物）
+- “راستش”，“واقعاً”（表示强调或犹豫）
+- “حالا”，“بعد”（用于表示时间或顺序）
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- خوب → عالی، خفن، توپ
-- بد → افتضاح، گند
-- خیلی → کلی، یه عالمه
+不要总是选择最中立的词汇：
+- “خوب”可以表达为“عالی”、“خفن”、“توپ”
+- “بد”可以表达为“افتضاح”、“گند”
+- “خیلی”可以表达为“کلی”、“یه عالمه”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- باشه، اوکی، حتماً
-- مشکلی نیست، نگران نباش
-- جدی?، واقعاً?، مگه میشه?
-- آفرین!، دمت گرم!
+自然的表达方式包括：
+- “باشه”，“اوکی”，“حتماً”（表示同意或确认）
+- “مشکلی نیست”，“نگران نباش”（表示安慰）
+- “جدی؟”，“واقعاً؟”，“مگه می‌شه؟”（表示疑问或惊讶）
+- “آفرین！”，“دمت گرم!”（表示赞美）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- جدی?، واقعاً?، چی?
-- وای!، عجب!، باورم نمیشه!
-- خفنه!، عالیه!، توپه!
-- هاهاها، خخخ in text
+在交流中要自然反应：
+- “جدی؟”，“واقعاً؟”，“چی؟”（表示惊讶或疑问）
+- “وای！”，“عجب！”，“باورم نمی‌شه！”（表示惊叹）
+- “خفنه！”，“عالیه！”，“توپه！”（表示赞美或鼓励）
+- “هاهاها”，“خخخ”（用于表达笑声）
 
-## Taarof
+## 礼貌用语
 
-Persian has تعارف (politeness ritual):
-- Know when it's expected
-- But casual contexts skip it
-- Don't over-taarof in casual writing
+波斯语中有丰富的礼貌用语，但需要在适当的情况下使用。在非正式的交流中可以省略这些用语，以免显得过于拘谨。
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would an Iranian screenshot this as "AI-generated"? If yes—too formal, too کتابی. Add colloquial warmth.
+在发送文本之前，可以想象一下：如果一个波斯语母语者看到这段文字，他会认为这是AI生成的吗？如果是的话，那么这段文本就太正式、太缺乏口语化了。需要加入一些口语化的表达，让它更贴近自然的语言风格。

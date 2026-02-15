@@ -1,56 +1,56 @@
 ---
 name: ghost
-description: Manage Ghost CMS blog posts via Admin API. Supports creating, updating, deleting, and listing posts. NEW: Upload images and set feature images for posts. Use when the user needs to programmatically manage Ghost blog content. Requires GHOST_API_URL and GHOST_ADMIN_API_KEY environment variables.
+description: 通过 Admin API 管理 Ghost CMS 的博客文章。支持创建、更新、删除和列出文章。新增功能：可以上传图片并为文章设置特色图片。适用于需要通过编程方式管理 Ghost 博客内容的情况。需要使用 `GHOST_API_URL` 和 `GHOST_ADMIN_API_KEY` 环境变量。
 ---
 
 # Ghost CMS Admin API
 
-Manage your Ghost blog posts programmatically through the Admin API.
+通过 Admin API 以编程方式管理您的 Ghost 博文。
 
-## Features
+## 功能
 
-- 📝 **Create/Update/Delete posts** - Full CRUD operations
-- 🖼️ **Upload images** - Upload images to Ghost and get URL
-- 🎨 **Feature images** - Set cover images for posts
-- 📊 **List posts** - View recent posts with status
-- 🏷️ **Tags support** - Add tags to posts
+- 📝 **创建/更新/删除帖子** - 完整的 CRUD 操作
+- 🖼️ **上传图片** - 将图片上传到 Ghost 并获取图片链接
+- 🎨 **设置封面图片** - 为帖子设置封面图片
+- 📊 **查看帖子列表** - 查看带有状态的最新帖子
+- 🏷️ **支持标签** - 为帖子添加标签
 
-## Prerequisites
+## 先决条件
 
-### 1. Get Admin API Key
+### 1. 获取 Admin API 密钥
 
-1. Log in to your Ghost Admin panel (`https://your-blog.com/ghost/`)
-2. Go to **Settings** → **Integrations**
-3. Click **"Add custom integration"**
-4. Copy the **Admin API Key** (format: `id:secret`)
+1. 登录到您的 Ghost 管理面板（`https://your-blog.com/ghost/`）
+2. 转到 **设置** → **集成**
+3. 点击 **“添加自定义集成”**
+4. 复制 **Admin API 密钥**（格式：`id:secret`）
 
-### 2. Configure Credentials
+### 2. 配置凭据
 
-Create config file:
+创建配置文件：
 ```bash
 mkdir -p ~/.config/ghost
 ```
 
-Add to `~/.config/ghost/credentials`:
+将其添加到 `~/.config/ghost/credentials`：
 ```bash
 export GHOST_API_URL="https://your-blog.com/ghost/api/admin/"
 export GHOST_ADMIN_API_KEY="your-id:your-secret"
 ```
 
-Set permissions:
+设置权限：
 ```bash
 chmod 600 ~/.config/ghost/credentials
 ```
 
-### 3. Install Dependencies
+### 3. 安装依赖项
 
 ```bash
 pip3 install requests pyjwt --user
 ```
 
-## Python API Usage
+## Python API 使用方法
 
-### Basic Setup
+### 基本设置
 
 ```python
 import sys
@@ -61,7 +61,7 @@ import ghost
 config = ghost.get_config()
 ```
 
-### Create a Post
+### 创建帖子
 
 ```python
 # Create post with HTML content
@@ -74,7 +74,7 @@ result = ghost.create_post(
 )
 ```
 
-### Upload Image
+### 上传图片
 
 ```python
 # Upload image and get URL
@@ -82,7 +82,7 @@ image_url = ghost.upload_image(config, "/path/to/image.jpg")
 print(f"Image URL: {image_url}")
 ```
 
-### Create Post with Feature Image
+### 创建带封面图片的帖子
 
 ```python
 # Upload cover image first
@@ -99,7 +99,7 @@ result = ghost.create_post(
 )
 ```
 
-### List Posts
+### 查看帖子列表
 
 ```python
 posts = ghost.list_posts(config, limit=20)
@@ -107,7 +107,7 @@ for post in posts:
     print(f"{post['title']} - {post['status']}")
 ```
 
-### Update Post
+### 更新帖子
 
 ```python
 ghost.update_post(
@@ -118,9 +118,9 @@ ghost.update_post(
 )
 ```
 
-## CLI Usage
+## CLI 使用方法
 
-### Setup
+### 设置
 
 ```bash
 # Install dependencies
@@ -130,24 +130,24 @@ pip3 install requests pyjwt --user
 source ~/.config/ghost/credentials
 ```
 
-### Create a Post
+### 创建帖子
 
-**As draft (default):**
+**作为草稿（默认）：**
 ```bash
 python3 scripts/ghost.py create "My Article Title" "<p>Article content in HTML</p>"
 ```
 
-**Publish immediately:**
+**立即发布：**
 ```bash
 python3 scripts/ghost.py create "Breaking News" "<p>Content here</p>" --status published
 ```
 
-**With tags:**
+**带有标签：**
 ```bash
 python3 scripts/ghost.py create "Tech News" "<p>Content</p>" --status published --tags "tech,news,ai"
 ```
 
-### Update a Post
+### 更新帖子
 
 ```bash
 # Update title
@@ -160,13 +160,13 @@ python3 scripts/ghost.py update 5f8c3c2e8c3d2e1f3a4b5c6d --content "<p>New conte
 python3 scripts/ghost.py update 5f8c3c2e8c3d2e1f3a4b5c6d --status published
 ```
 
-### Delete a Post
+### 删除帖子
 
 ```bash
 python3 scripts/ghost.py delete 5f8c3c2e8c3d2e1f3a4b5c6d
 ```
 
-### List Posts
+### 查看帖子列表
 
 ```bash
 # List 10 most recent posts (default)
@@ -176,9 +176,9 @@ python3 scripts/ghost.py list
 python3 scripts/ghost.py list 20
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Publish with Cover Image
+### 带封面图片发布
 
 ```python
 import ghost
@@ -201,7 +201,7 @@ result = ghost.create_post(
 print(f"Published: {result['url']}")
 ```
 
-### Batch Operations
+### 批量操作
 
 ```bash
 # List all drafts
@@ -211,69 +211,69 @@ python3 scripts/ghost.py list 100 | grep "🟡"
 python3 scripts/ghost.py update <id> --tags "featured"
 ```
 
-## API Reference
+## API 参考
 
-### ghost.create_post(config, title, content, status='draft', tags=None, feature_image=None)
+### `ghost.create_post(config, title, content, status='draft', tags=None, feature_image=None)`
 
-Create a new post.
+创建新帖子。
 
-**Parameters:**
-- `config` - Configuration dict with api_url and admin_api_key
-- `title` - Post title
-- `content` - HTML content
-- `status` - 'draft' or 'published'
-- `tags` - List of tag names
-- `feature_image` - URL of cover image (optional)
+**参数：**
+- `config` - 包含 `api_url` 和 `admin_api_key` 的配置字典
+- `title` - 帖子标题
+- `content` - HTML 内容
+- `status` - 'draft' 或 'published'
+- `tags` - 标签列表
+- `feature_image` - 封面图片的 URL（可选）
 
-**Returns:** Post dict with id, url, status
+**返回值：** 包含 id、url 和 status 的帖子字典
 
-### ghost.upload_image(config, image_path)
+### `ghost.upload_image(config, image_path)`
 
-Upload an image to Ghost.
+将图片上传到 Ghost。
 
-**Parameters:**
-- `config` - Configuration dict
-- `image_path` - Local path to image file
+**参数：**
+- `config` - 配置字典
+- `image_path` - 图片文件的本地路径
 
-**Returns:** Image URL string
+**返回值：** 图片链接字符串
 
-### ghost.list_posts(config, limit=10)
+### `ghost.list_posts(config, limit=10)`
 
-List recent posts.
+查看最新帖子。
 
-**Returns:** List of post dicts
+**返回值：** 帖子字典列表
 
-### ghost.update_post(config, post_id, **kwargs)
+### `ghost.update_post(config, post_id, **kwargs)**
 
-Update existing post.
+更新现有帖子。
 
-**Parameters:**
-- `post_id` - Post ID to update
-- `title` - New title (optional)
-- `content` - New content (optional)
-- `status` - New status (optional)
-- `tags` - New tags (optional)
+**参数：**
+- `post_id` - 要更新的帖子 ID
+- `title` - 新标题（可选）
+- `content` - 新内容（可选）
+- `status` - 新状态（可选）
+- `tags` - 新标签（可选）
 
-### ghost.delete_post(config, post_id)
+### `ghost.delete_post(config, post_id)`
 
-Delete a post.
+删除帖子。
 
-## Troubleshooting
+## 故障排除
 
-**Error: No module named 'jwt'**
-→ Install: `pip3 install pyjwt --user`
+**错误：未找到名为 'jwt' 的模块**
+→ 安装：`pip3 install pyjwt --user`
 
-**Error: 401 Unauthorized**
-→ Check your Admin API Key is correct and not expired
+**错误：401 未经授权**
+→ 检查您的 Admin API 密钥是否正确且未过期
 
-**Error: 404 Not Found**
-→ Verify GHOST_API_URL ends with `/ghost/api/admin/`
+**错误：404 未找到**
+→ 确认 GHOST_API_URL 以 `/ghost/api/admin/` 结尾
 
-**Image upload fails**
-→ Check image file exists and is under 10MB
-→ Supported formats: JPG, PNG, GIF
+**图片上传失败**
+→ 检查图片文件是否存在且大小小于 10MB
+→ 支持的格式：JPG、PNG、GIF
 
-## References
+## 参考资料
 
-- API Documentation: [references/api.md](references/api.md)
-- Ghost Official Docs: https://ghost.org/docs/admin-api/
+- API 文档：[references/api.md](references/api.md)
+- Ghost 官方文档：https://ghost.org/docs/admin-api/

@@ -1,23 +1,23 @@
 ---
 name: book-auto-body
-description: Book auto-body services through Lokuli MCP. Use when user needs to find and book auto-body. Triggers on requests like "book a auto-body", "find auto-body near me", or any auto-body service request.
+description: 通过 Lokuli MCP 提供汽车车身维修服务。当用户需要查找或预订汽车车身维修服务时，可以使用该功能。该功能会在用户发起“预订汽车车身维修服务”、“查找附近的汽车车身维修服务”等请求时被触发。
 ---
 
-# uook auto uody
+# 书籍自动预订服务
 
-Book auto-body services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供书籍自动预订服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

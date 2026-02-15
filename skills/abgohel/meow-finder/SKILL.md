@@ -1,36 +1,36 @@
 ---
 name: meow-finder
 version: 1.0.0
-description: CLI tool to discover AI tools. Search 40+ curated tools by category, pricing, and use case.
+description: 这是一个用于发现AI工具的命令行（CLI）工具。用户可以根据类别、价格和使用场景来搜索40多种精选的AI工具。
 homepage: https://github.com/abgohel/meow-finder
 metadata: {"clawdbot":{"emoji":"😼","category":"productivity"}}
 ---
 
 # Meow Finder
 
-CLI tool to discover AI tools. Search 40+ curated tools by category.
+这是一个命令行工具（CLI），用于发现各种人工智能（AI）工具。用户可以根据类别搜索40多种精选的工具。
 
-## When to Use
+## 使用场景
 
-- "Find AI tools for video editing"
-- "What free image generators are there?"
-- "Show me coding assistants"
-- "List social media tools"
+- “查找用于视频编辑的AI工具”
+- “有哪些免费的图像生成工具？”
+- “展示一些编程辅助工具”
+- “列出一些社交媒体管理工具”
 
-## Installation
+## 安装方法
 
 ```bash
 npm install -g meow-finder
 ```
 
-Or clone:
+或者，您也可以通过克隆代码来实现安装：
 ```bash
 git clone https://github.com/abgohel/meow-finder.git
 cd meow-finder
 npm link
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Search for tools
@@ -49,20 +49,20 @@ meow-finder --all            # List all tools
 meow-finder --list           # Show categories
 ```
 
-## Categories
+## 工具分类
 
-- `video` - Video editing, generation, reels
-- `image` - Image generation, editing, design
-- `writing` - Copywriting, content, blogs
-- `code` - Programming, IDEs, assistants
-- `chat` - AI assistants, chatbots
-- `audio` - Voice, music, podcasts
-- `social` - Social media management
-- `productivity` - Workflow, automation
-- `research` - Search, analysis
-- `marketing` - Ads, SEO, growth
+- `video`：视频编辑、生成、制作短视频
+- `image`：图像生成、编辑、设计
+- `writing`：文案创作、内容管理、博客写作
+- `code`：编程、集成开发环境（IDEs）、编程辅助工具
+- `chat`：AI助手、聊天机器人
+- `audio`：语音处理、音乐制作、播客制作
+- `social`：社交媒体管理工具
+- `productivity`：工作流程管理、自动化工具
+- `research`：搜索、数据分析工具
+- `marketing`：广告制作、搜索引擎优化（SEO）、业务增长工具
 
-## Example Output
+## 示例输出
 
 ```
 🔍 Found 5 tool(s):
@@ -78,10 +78,10 @@ meow-finder --list           # Show categories
 └─────────────────────────────────────────────
 ```
 
-## Data
+## 数据来源
 
-40+ curated AI tools in `data/tools.json`. PRs welcome to add more!
+所有工具的信息都存储在 `data/tools.json` 文件中。欢迎提交Pull Request（PR）来添加更多工具！
 
 ---
 
-Built by **Meow 😼** for the Moltbook community 🦞
+由 **Meow 😼** 为 Moltbook 社区 🦞 开发

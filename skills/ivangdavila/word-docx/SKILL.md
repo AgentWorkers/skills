@@ -1,61 +1,61 @@
 ---
 name: DOCX
-description: Read and generate Word documents with correct structure, styles, and cross-platform compatibility.
+description: 能够读取并生成结构正确、样式一致且具有跨平台兼容性的 Word 文档。
 metadata: {"clawdbot":{"emoji":"📘","os":["linux","darwin","win32"]}}
 ---
 
-## Structure
+## 文档结构
 
-- DOCX is a ZIP containing XML files—`word/document.xml` has main content, `word/styles.xml` has styles
-- Text splits into runs (`<w:r>`)—each run has uniform formatting; one word may span multiple runs
-- Paragraphs (`<w:p>`) contain runs—never assume one paragraph = one text block
-- Sections control page layout—headers/footers, margins, orientation are per-section
+- DOCX 文件实际上是一个 ZIP 文件，其中包含多个 XML 文件：`word/document.xml` 包含文档的主要内容，`word/styles.xml` 包含文档的样式信息。
+- 文本被分割成多个文本单元（`<w:r>`），每个文本单元具有统一的格式；一个单词可能跨越多个文本单元。
+- 段落（`<w:p>`）由多个文本单元组成；切勿认为一个段落就代表一个完整的文本块。
+- 节（section）用于控制页面布局，如页眉、页脚、页边距和页面方向等，这些设置是针对每个节单独设置的。
 
-## Styles vs Direct Formatting
+## 样式与直接格式化
 
-- Styles (Heading 1, Normal) are named and reusable—direct formatting is inline and overrides style
-- Removing direct formatting reveals underlying style—useful for cleanup
-- Character styles apply to runs, paragraph styles to paragraphs—they layer together
-- Linked styles can be both—applying to paragraph or selected text behaves differently
+- 样式（如标题 1、普通文本等）都有明确的名称，可以重复使用；而直接格式化则是内联的，会覆盖原有的样式设置。
+- 删除直接格式化后，可以查看底层的样式设置，这对于清理文档非常有用。
+- 字符样式适用于单个文本单元，段落样式适用于整个段落；这两种样式会叠加在一起。
+- 链接的样式既可以应用于整个段落，也可以应用于选中的文本，具体取决于使用方式。
 
-## Lists & Numbering
+## 列表与编号
 
-- Numbering is complex: `abstractNum` defines pattern, `num` references it, paragraphs reference `numId`
-- Restart numbering not automatic—need explicit `<w:numPr>` with restart flag
-- Bullets and numbers share the numbering system—both use `numId`
-- Indentation controlled separately from numbering—list can exist without visual indent
+- 文档的编号系统比较复杂：`abstractNum` 定义了编号的规则，`num` 参考这个规则，而段落则通过 `numId` 来引用编号。
+- 重新开始编号不是自动完成的，需要使用带有“重启”标志的 `<w:numPr>` 标签。
+- 列表项和编号使用相同的编号系统（`numId`）。
+- 缩进与编号是分开控制的；一个列表可以没有明显的视觉缩进效果。
 
-## Headers, Footers, Sections
+## 页眉、页脚与节
 
-- Each section can have different headers/footers—first page, odd, even pages
-- Section breaks: next page, continuous, even/odd page—affects pagination
-- Headers/footers stored in separate XML files—referenced by section properties
-- Page numbers are fields, not static text—update on open or print
+- 每个节都可以有不同的页眉和页脚设置；这些设置可能因页面类型（首页、奇数页、偶数页）而有所不同。
+- 节的划分方式会影响页面的连续性（下一页是否继续使用相同的页眉/页脚、是否换行等）。
+- 页眉和页脚信息存储在单独的 XML 文件中，并通过节属性来引用。
+- 页码是动态生成的，不是静态文本；在打开文档或打印时才会更新。
 
-## Track Changes & Comments
+## 版本控制与注释
 
-- Track changes stores original and revised in same document—accept/reject to finalize
-- Deleted text still present with `<w:del>` wrapper—don't assume visible = all content
-- Comments reference ranges via bookmark IDs—`<w:commentRangeStart>` to `<w:commentRangeEnd>`
-- Revision IDs track who changed what—metadata persists even after accepting
+- 文档的版本控制功能会同时保存原始内容和修改后的内容；用户可以选择接受或拒绝修改才能最终确定文档的版本。
+- 被删除的文本仍然以 `<w:del>` 标签的形式存在于文档中；切勿认为被标记为删除的文本就一定不会显示。
+- 注释通过书签 ID 来标识被注释的范围（`<w:commentRangeStart>` 到 `<w:commentRangeEnd>`）。
+- 修改记录会记录谁修改了哪些内容；即使修改被接受，这些元数据也会保留下来。
 
-## Fields & Dynamic Content
+## 字段与动态内容
 
-- Fields have code and cached result—`{ DATE \@ "yyyy-MM-dd" }` vs displayed date
-- TOC, page numbers, cross-references are fields—update fields to refresh
-- Hyperlinks can be fields or direct `<w:hyperlink>`—both valid
-- MERGEFIELD for mail merge—placeholder until merge executes
+- 文档中的某些内容（如日期）是通过字段来存储的（例如 `{ DATE \@ "yyyy-MM-dd" }`），而不是直接显示的文本。
+- 目录（TOC）、页码、交叉引用等都是字段；更新这些字段可以刷新文档的内容。
+- 超链接可以是字段的形式，也可以是直接使用的 `<w:hyperlink>` 标签；两种形式都是合法的。
+- `MERGEFIELD` 标签用于邮件合并功能；在实际合并之前，这些字段只是占位符。
 
-## Compatibility
+## 兼容性
 
-- Compatibility mode limits features to earlier Word version—check `w:compat` settings
-- LibreOffice/Google Docs: complex formatting may shift—test roundtrip
-- Embedded fonts may not transfer—fallback fonts substitute
-- DOCM contains macros (security risk); DOC is legacy binary format
+- 文档的兼容性模式会限制某些功能的可用性（例如，某些高级格式可能只在早期版本的 Word 中可用）；请检查 `w:compat` 设置。
+- 在 LibreOffice 或 Google Docs 中，文档的格式可能会发生一些变化；请进行来回测试以确保兼容性。
+- 嵌入的字体可能无法在目标文档中正确显示；系统会使用替代字体。
+- DOCM 格式包含宏（存在安全风险）；DOC 格式是较旧的二进制格式。
 
-## Common Pitfalls
+## 常见的问题
 
-- Empty paragraphs for spacing—prefer space before/after in paragraph style
-- Manual page breaks inside paragraphs—use section breaks for layout control
-- Images in headers: relationship IDs are per-part—same image needs separate relationship in header
-- Copy-paste brings source styles—can pollute style gallery with duplicates
+- 为了增加间距，有些人会在段落中插入空段落；建议在段落样式中设置适当的间距。
+- 在段落内部手动添加分页符可能会影响文档的布局；建议使用节的分页功能来控制页面布局。
+- 如果在页眉中使用图片，需要为每张图片单独设置引用关系；否则相同的图片可能会在多个地方重复显示。
+- 复制粘贴操作可能会引入源文档中的样式设置，导致样式混乱。

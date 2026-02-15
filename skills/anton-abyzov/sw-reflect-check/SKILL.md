@@ -1,114 +1,63 @@
 ---
 name: reflect-check
-description: Diagnostic tool for validating SpecWeave reflection system health and troubleshooting issues. Use when reflection seems stuck, learnings aren't being captured, or MEMORY.md files aren't updating. Checks configuration, permissions, and system state.
+description: 这是一个用于验证 SpecWeave 反射系统运行状态并排查故障的诊断工具。当反射过程出现卡顿、学习数据无法被正确捕获，或者 MEMORY.md 文件未能及时更新时，可以使用该工具。该工具会检查系统的配置、权限设置以及整体运行状态。
 allowed-tools: Read, Bash
 ---
 
-# Reflect Health Check
+# 反射系统健康检查
 
-**Version**: 1.0.0
-**Category**: Diagnostics
-**Status**: Active
+**版本**: 1.0.0  
+**类别**: 诊断工具  
+**状态**: 正在运行中  
 
-## Purpose
+## 目的  
+用于验证反射系统的运行状态并排查相关问题。  
 
-Diagnostic command to validate reflection system health and troubleshoot issues.
+## 触发激活的命令/关键词  
+- `reflect-check`  
+- `reflect check`  
+- `check reflect`  
+- `reflection health`  
+- `reflect status`  
+- `reflect diagnostics`  
 
-## Activation Triggers
+## 用法说明  
+- 用于检查反射功能是否正常工作。  
+- 当遇到反射功能异常（如无法学习新数据、自动反射功能未启用等）时，可使用该工具进行诊断。  
 
-**Primary keywords**:
-- `reflect-check`
-- `reflect check`
-- `check reflect`
-- `reflection health`
-- `reflect status`
-- `reflect diagnostics`
+## 功能概述  
+该工具会对反射系统执行全面的健康检查：  
+1. **配置验证**：检查 `reflect-config.json` 文件是否存在且格式正确。  
+2. **脚本语法检查**：确保 `reflect.sh` 脚本没有语法错误。  
+3. **最近的操作记录**：显示最近10次反射操作的详细信息。  
+4. **内存状态**：列出所有相关内存文件及数据学习情况。  
+5. **自动停止反射功能**：验证 `stop-reflect.sh` 脚本是否正常工作。  
+6. **预启动检查**：执行与 `stop-reflect.sh` 相同的检查流程。  
 
-**Natural language**:
-- "Check if reflection is working"
-- "Why isn't reflection learning?"
-- "Is auto-reflect enabled?"
-- "Diagnose reflection issues"
-- "Reflection not working"
+## 执行方式  
+当该功能被激活后，会生成格式化的健康检查报告：  
+- 通过的检查会显示绿色勾号（✅）；  
+- 失败的检查会显示红色叉号（❌）；  
+- 包含系统状态信息；  
+- 提供相应的修复建议。  
 
-## What This Skill Does
+## 输出格式  
+报告内容以特定格式呈现（具体格式见 **CODE_BLOCK_1___**）。  
 
-Runs comprehensive health checks on the reflection system:
+## 使用场景  
+- 当反射功能出现异常（如无法学习新数据）时。  
+- 在市场更新后进行系统检查。  
+- 当用户反馈“反射功能无法正常使用”时。  
+- 用于调试系统中的隐藏性问题（如无声错误）。  
+- 用于验证系统的整体运行状态。  
 
-1. **Config validation**: Checks reflect-config.json exists and is valid
-2. **Script syntax**: Validates reflect.sh has no syntax errors
-3. **Recent activity**: Shows last 10 reflection attempts
-4. **Memory status**: Lists memory files and learning counts
-5. **Hook status**: Verifies stop-reflect.sh is working
-6. **Pre-flight checks**: Runs same checks as stop-reflect.sh
+## 成功标准  
+- 所有检查均通过（显示绿色勾号）。  
+- 最近的操作记录显示反射操作成功完成。  
+- 内存文件得到及时更新。  
+- 若发现故障，会提供明确的修复建议。  
 
-## Execution
-
-When activated:
-
-```bash
-# Run health check
-bash plugins/specweave/scripts/reflect-check.sh
-```
-
-Returns formatted health report with:
-- ✅ Green checkmarks for passing checks
-- ❌ Red X for failing checks
-- 📊 Status information
-- 💡 Suggestions for fixes
-
-## Output Format
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔍 REFLECT HEALTH CHECK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✅ Configuration
-   Auto-reflect: ON
-   Max learnings: 10
-   Confidence: medium
-
-✅ Script Syntax
-   reflect.sh: Valid
-
-✅ Dependencies
-   jq: Found
-   bash: 5.2.26
-
-📊 Recent Activity (last 10 attempts)
-   2026-01-07 08:00: Pre-flight checks passed
-   2026-01-07 07:30: No signals detected
-   ...
-
-📚 Memory Status
-   general.md: 4 learnings
-   testing.md: 3 learnings
-   git.md: 2 learnings
-
-💡 RECOMMENDATIONS
-   - None - system healthy
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-## When to Use
-
-- Reflection seems stuck or not learning
-- After marketplace updates
-- User reports "reflection not working"
-- Debugging silent failures
-- Verifying system health
-
-## Success Criteria
-
-- All checks pass (green checkmarks)
-- Recent activity shows successful reflections
-- Memory files are being updated
-- Clear actionable recommendations if issues found
-
-## Related
-
-- `/sw:reflect` - Manual reflection
-- `/sw:reflect-status` - Show config and stats
-- `stop-reflect.sh` - Auto-reflection hook
+## 相关命令/工具  
+- `/sw:reflect`：手动触发反射功能。  
+- `/sw:reflect-status`：显示配置信息和统计数据。  
+- `stop-reflect.sh`：用于自动停止反射功能。

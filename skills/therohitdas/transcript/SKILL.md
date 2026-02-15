@@ -1,45 +1,45 @@
 ---
 name: transcript
-description: Get transcripts from any YouTube video — for summarization, research, translation, quoting, or content analysis. Use when the user shares a video link or asks "what did they say", "get the transcript", "transcribe this video", "summarize this video", or wants to analyze spoken content.
+description: 从任何YouTube视频中获取文字记录——可用于总结、研究、翻译、引用或内容分析。当用户分享视频链接，或者询问“他们说了什么”、“获取视频的文字记录”、“将这个视频转录成文字”或希望分析视频中的语音内容时，都可以使用该功能。
 homepage: https://transcriptapi.com
 user-invocable: true
 metadata: {"openclaw":{"emoji":"📝","requires":{"env":["TRANSCRIPT_API_KEY"],"bins":["node"],"config":["~/.openclaw/openclaw.json"]},"primaryEnv":"TRANSCRIPT_API_KEY"}}
 ---
 
-# Transcript
+# 文本转录
 
-Fetch video transcripts via [TranscriptAPI.com](https://transcriptapi.com).
+通过 [TranscriptAPI.com](https://transcriptapi.com) 获取视频字幕。
 
-## Setup
+## 设置
 
-If `$TRANSCRIPT_API_KEY` is not set, help the user create an account (100 free credits, no card):
+如果 `$TRANSCRIPT_API_KEY` 未设置，请帮助用户创建一个账户（免费提供 100 个信用点，无需使用信用卡）：
 
-**Step 1 — Register:** Ask user for their email.
+**步骤 1 — 注册：** 询问用户的电子邮件地址。
 
 ```bash
 node ./scripts/tapi-auth.js register --email USER_EMAIL
 ```
 
-→ OTP sent to email. Ask user: _"Check your email for a 6-digit verification code."_
+→ 会向用户的电子邮件发送 OTP（一次性密码）。询问用户：“请查看您的电子邮件以获取 6 位数的验证码。”
 
-**Step 2 — Verify:** Once user provides the OTP:
+**步骤 2 — 验证：** 用户提供 OTP 后：
 
 ```bash
 node ./scripts/tapi-auth.js verify --token TOKEN_FROM_STEP_1 --otp CODE
 ```
 
-> API key saved to `~/.openclaw/openclaw.json`. See **File Writes** below for details. Existing file is backed up before modification.
+> API 密钥将保存到 `~/.openclaw/openclaw.json` 文件中。具体操作请参见下面的 **文件写入** 部分。修改前会备份现有文件。
 
-Manual option: [transcriptapi.com/signup](https://transcriptapi.com/signup) → Dashboard → API Keys.
+**手动注册方式：** [transcriptapi.com/signup](https://transcriptapi.com/signup) → 仪表板 → API 密钥。
 
-## File Writes
+## 文件写入
 
-The verify and save-key commands save the API key to `~/.openclaw/openclaw.json` (sets `skills.entries.transcriptapi.apiKey` and `enabled: true`). **Existing file is backed up to `~/.openclaw/openclaw.json.bak` before modification.**
+`verify` 和 `save-key` 命令会将 API 密钥保存到 `~/.openclaw/openclaw.json` 文件中（设置 `skills.entries.transcriptapi.apiKey` 为该密钥，并将 `enabled` 设置为 `true`）。修改前会将现有文件备份到 `~/.openclaw/openclaw.json.bak`。
 
-To use the API key in terminal/CLI outside the agent, add to your shell profile manually:
+若要在代理程序之外的终端/命令行（CLI）中使用该 API 密钥，请手动将其添加到 shell 配置文件中：
 `export TRANSCRIPT_API_KEY=<your-key>`
 
-## GET /api/v2/youtube/transcript
+## 请求接口 `/api/v2/youtube/transcript`
 
 ```bash
 curl -s "https://transcriptapi.com/api/v2/youtube/transcript\
@@ -47,19 +47,19 @@ curl -s "https://transcriptapi.com/api/v2/youtube/transcript\
   -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 ```
 
-| Param               | Required | Default | Values                          |
+| 参数               | 是否必填 | 默认值 | 可选值                          |
 | ------------------- | -------- | ------- | ------------------------------- |
-| `video_url`         | yes      | —       | YouTube URL or 11-char video ID |
-| `format`            | no       | `json`  | `json`, `text`                  |
-| `include_timestamp` | no       | `true`  | `true`, `false`                 |
-| `send_metadata`     | no       | `false` | `true`, `false`                 |
+| `video_url`         | 是      | —       | YouTube 视频链接或 11 位的视频 ID             |
+| `format`            | 否       | `json`  | `json` 或 `text`                     |
+| `include_timestamp` | 否       | `true`  | `true` 或 `false`                     |
+| `send_metadata`     | 否       | `false` | `true` 或 `false`                     |
 
-Accepts: full URLs (`youtube.com/watch?v=ID`), short URLs (`youtu.be/ID`), shorts (`youtube.com/shorts/ID`), or bare video IDs.
+支持的输入格式：完整的 YouTube 链接（`youtube.com/watch?v=ID`）、简短链接（`youtu.be/ID`）、YouTube 短视频链接（`youtube.com/shorts/ID`）或仅包含视频 ID 的字符串。
 
-**Default:** Always use `format=text&include_timestamp=true&send_metadata=true` unless user specifies otherwise.
+**默认设置：** 除非用户另有指定，否则始终使用 `format=text&include_timestamp=true&send_metadata=true`。
 
-**Response** (`format=json`):
-
+**响应格式：**  
+- **`format=json`**  
 ```json
 {
   "video_id": "dQw4w9WgXcQ",
@@ -77,8 +77,7 @@ Accepts: full URLs (`youtube.com/watch?v=ID`), short URLs (`youtu.be/ID`), short
 }
 ```
 
-**Response** (`format=text`):
-
+- **`format=text`**  
 ```json
 {
   "video_id": "dQw4w9WgXcQ",
@@ -88,20 +87,20 @@ Accepts: full URLs (`youtube.com/watch?v=ID`), short URLs (`youtu.be/ID`), short
 }
 ```
 
-## Errors
+## 错误代码及处理方式
 
-| Code | Meaning       | Action                              |
-| ---- | ------------- | ----------------------------------- |
-| 401  | Bad API key   | Check key or re-setup               |
-| 402  | No credits    | Top up at transcriptapi.com/billing |
-| 404  | No transcript | Video may not have captions enabled |
-| 408  | Timeout       | Retry once after 2s                 |
-| 429  | Rate limited  | Wait and retry                      |
+| 错误代码 | 错误原因 | 处理方式                          |
+| -------- | ------------- | ----------------------------------- |
+| 401     | API 密钥无效 | 请检查密钥或重新设置 API 密钥                |
+| 402     | 信用点不足 | 请访问 transcriptapi.com/billing 进行充值          |
+| 404     | 无法获取字幕   | 视频可能未启用字幕功能                   |
+| 408     | 超时     | 2 秒后重试                        |
+| 429     | 请求次数过多 | 请稍后重试                        |
 
-## Tips
+## 使用建议：
 
-- For long videos, summarize key points first, offer full transcript on request.
-- Use `format=json` when you need precise timestamps for quoting specific moments.
-- Use `include_timestamp=false` for clean text suitable for translation or analysis.
-- 1 credit per successful request. Errors don't cost credits.
-- Free tier: 100 credits, 300 req/min.
+- 对于较长的视频，可以先总结关键内容，根据用户需求提供完整字幕。
+- 当需要精确的时间戳来引用视频中的特定片段时，使用 `format=json`。
+- 若需要用于翻译或分析的纯文本，可将 `include_timestamp` 设置为 `false`。
+- 每次成功请求消耗 1 个信用点。错误请求不会消耗信用点。
+- 免费套餐提供 100 个信用点，每分钟最多 300 次请求。

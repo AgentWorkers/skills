@@ -1,47 +1,48 @@
 ---
 name: voice-wake-say
-description: Speak responses aloud on macOS using the built-in `say` command when user input indicates Voice Wake/voice recognition (for example, messages starting with "User talked via voice recognition on <device>").
+description: 在 macOS 上，当用户输入表明使用了语音唤醒/语音识别功能时（例如，以 “User talked via voice recognition on <device>” 开头的消息），可以使用内置的 `say` 命令将响应内容大声朗读出来。
 ---
 
-# Voice Wake Say
+# 语音唤醒功能（Voice Wake）
 
-## Overview
-Use macOS `say` to read the assistant's response out loud whenever the conversation came from Voice Wake/voice recognition. Do **not** use the `tts` tool (it calls cloud providers).
+## 概述
+当对话是通过语音唤醒或语音识别功能发起时，使用 macOS 的 `say` 命令将助手的回复内容大声读出来。**请勿** 使用 `tts` 工具（因为它会调用云服务）。
 
-## When to Use `say` (CHECK EVERY MESSAGE INDIVIDUALLY)
+## 何时使用 `say`（需逐条检查每条消息）
 
-**IF** the user message STARTS WITH: `User talked via voice recognition on m3`
-- **Step 1:** Acknowledge with `say` first (so the user knows you heard them)
-- **Step 2:** Then perform the task
-- **Step 3:** Optionally speak again when done if it makes sense
+**如果** 用户的消息以以下内容开头：“User talked via voice recognition on m3”：
+- **步骤 1：** 首先使用 `say` 回应用户（让用户知道你听到了他们的声音）。
+- **步骤 2：** 然后执行相应的任务。
+- **步骤 3：** 如果合适的话，在任务完成后再次用语音回复用户。
 
-**IF** the user message does NOT start with that exact phrase
-- THEN: Do NOT use `say`. Text-only response only.
+**如果** 用户的消息并非以该短语开头：
+- **则** 不要使用 `say`，仅提供文本回复。
 
-**Critical:**
-- Check EACH message individually — context does NOT carry over
-- The trigger phrase must be at the VERY START of the message
-- For tasks that take time, acknowledge FIRST so the user knows you're working
+**重要提示：**
+- 必须逐条检查每条消息——上下文信息不会被保留。
+- 触发短语必须出现在消息的开头部分。
+- 对于需要较长时间完成的任务，要先进行确认，让用户知道你正在处理。
 
-## Workflow
-1) Detect Voice Wake context
-- Trigger ONLY when the latest user/system message STARTS WITH `User talked via voice recognition on m3`
-- If the message instructs "repeat prompt first", keep that behavior in the response.
+## 工作流程：
+1. 检测语音唤醒的触发条件：
+   - 仅当最新的用户/系统消息以 “User talked via voice recognition on m3” 开头时，才触发该功能。
+   - 如果消息中要求 “先重复提示内容”，则在回复中保持这一行为。
 
-2) Prepare spoken text
-- Use the final response text as the basis.
-- Strip markdown/code blocks; if the response is long or code-heavy, speak a short summary and mention that details are on screen.
+2. 准备要朗读的文本：
+   - 以最终的回复文本为基础。
+   - 删除所有的 markdown 或代码块；如果回复内容较长或包含大量代码，可以简要总结内容，并说明详细信息会显示在屏幕上。
 
-3) Speak with `say` (local macOS TTS)
+3. 使用 `say` 命令进行朗读（macOS 的本地 TTS 功能）。
+
 ```bash
 printf '%s' "$SPOKEN_TEXT" | say
 ```
 
-Optional controls (use only if set):
+**可选控制选项（仅在已启用时使用）：**
 ```bash
 printf '%s' "$SPOKEN_TEXT" | say -v "$SAY_VOICE"
 printf '%s' "$SPOKEN_TEXT" | say -r "$SAY_RATE"
 ```
 
-## Failure handling
-- If `say` is unavailable or errors, still send the text response and note that TTS failed.
+## 故障处理：
+- 如果 `say` 命令无法使用或出现错误，仍然要发送文本回复，并说明 TTS 功能失败了。

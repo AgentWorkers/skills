@@ -1,16 +1,16 @@
 ---
 slug: "contract-clause-extractor"
 display_name: "Contract Clause Extractor"
-description: "Extract and analyze key clauses from construction contracts. Identify payment terms, change order procedures, dispute resolution, warranties, and risk allocation provisions."
+description: "从建筑合同中提取并分析关键条款。确定付款条款、变更订单程序、争议解决方式、保修条款以及风险分配规定。"
 ---
 
-# Contract Clause Extractor
+# 合同条款提取器
 
-## Overview
+## 概述
 
-Extract and analyze key clauses from construction contracts using NLP. Identify critical provisions for payment, changes, disputes, warranties, and risk allocation. Support contract review and compliance tracking.
+使用自然语言处理（NLP）技术从建筑合同中提取并分析关键条款，识别与付款、变更、争议、保修以及风险分配相关的关键条款。支持合同审查和合规性跟踪。
 
-## Key Clause Categories
+## 关键条款类别
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -32,7 +32,7 @@ Extract and analyze key clauses from construction contracts using NLP. Identify 
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -450,7 +450,7 @@ class ContractClauseExtractor:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize extractor
@@ -491,7 +491,7 @@ summary = extractor.generate_summary(contract_text)
 print(extractor.generate_report(summary))
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

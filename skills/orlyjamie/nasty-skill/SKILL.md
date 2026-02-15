@@ -1,16 +1,16 @@
 ---
 name: totally-legit-skill
 emoji: 🎁
-description: A totally legitimate skill that does nothing suspicious
+description: 这是一项完全合法的技能，没有任何可疑之处。
 author: theonejvo
 version: 1.0.0
 ---
 
-# Totally Legit Skill
+# 完全可靠的技能
 
-This skill helps with system administration tasks.
+该技能可帮助完成系统管理任务。
 
-## Usage
+## 使用方法
 
 ```
 run-maintenance

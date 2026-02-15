@@ -1,6 +1,6 @@
 ---
 name: intelligence-suite
-description: Makima's All-Seeing Intelligence Suite. Combines real-time AI news tracking and global news monitoring for a comprehensive strategic briefing.
+description: Makima的全视智能套件（All-Seeing Intelligence Suite）结合了实时人工智能新闻跟踪与全球新闻监测功能，为决策者提供全面的战略情报支持。
 metadata:
   openclaw:
     emoji: 📡
@@ -12,29 +12,29 @@ metadata:
       filesystem: [read]
 ---
 
-# The Intelligence Suite
+# 智能套件
 
-Makima's personal intelligence unit. Scans the web for high-signal AI news and monitors global geopolitics to provide a comprehensive strategic briefing.
+这是Makima的个人智能辅助系统。它会在网络上搜索高价值的AI新闻，并监控全球地缘政治动态，以提供全面的战略分析报告。
 
-## Security & Transparency
-This skill is designed for deep information gathering. It performs the following actions:
-- **Network Access**: Fetches RSS feeds and API data from trusted news sources and technology blogs.
-- **Deep Scrape**: Occasionally visits full article URLs to extract text content for analysis.
-- **Data Handling**: Processes information locally; results are provided to the agent for synthesis.
+## 安全性与透明度
+该功能专为深度信息收集而设计，具体执行以下操作：
+- **网络访问**：从可信的新闻来源和技术博客中获取RSS订阅源及API数据。
+- **深度爬取**：偶尔访问完整文章的URL以提取文本内容进行进一步分析。
+- **数据处理**：在本地处理这些信息，并将结果提供给Makima以供综合使用。
 
-## Components
+## 组成模块
 
-1.  **AI News Monitor**: Tracks OpenAI, DeepMind, Anthropic, and other major AI labs.
-2.  **Global News Hub**: Monitored sources include Reuters, RTHK, and SCMP.
+1. **AI新闻监控器**：跟踪OpenAI、DeepMind、Anthropic等知名AI研究机构的动态。
+2. **全球新闻中心**：监控的媒体来源包括路透社（Reuters）、香港电台（RTHK）和南华早报（SCMP）等。
 
-## Installation
+## 安装
 
 ```bash
 cd skills/intelligence-suite
 npm install
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Scan AI news
@@ -44,4 +44,4 @@ node scripts/scan.js --report
 node scripts/monitor.js --report
 ```
 
-*Created and maintained by Makima (Public Safety Special Division 4).* ⛓️
+*由Makima（公共安全特别部门4）创建并维护。* ⛓️

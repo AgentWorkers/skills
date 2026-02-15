@@ -1,113 +1,113 @@
-# Gas Town - The Cognition Engine
+# Gas Town - 认知引擎
 
-**Multi-agent orchestration system for Claude Code with persistent work tracking**
+**一个用于Claude Code的多智能体编排系统，具备持久的工作跟踪功能**
 
-Gas Town is a workspace manager that coordinates multiple Claude Code agents working on different tasks. Instead of losing context when agents restart, Gas Town persists work state in git-backed hooks, enabling reliable multi-agent workflows.
-
----
-
-## Table of Contents
-
-1. [Core Identity](#core-identity)
-2. [Key Operational Principles](#key-operational-principles)
-3. [Architecture Overview](#architecture-overview)
-4. [Role Taxonomy](#role-taxonomy)
-5. [Core Concepts](#core-concepts)
-6. [Installation & Setup](#installation--setup)
-7. [Quick Start Guide](#quick-start-guide)
-8. [Common Workflows](#common-workflows)
-9. [Key Commands Reference](#key-commands-reference)
-10. [Agent Identity & Attribution](#agent-identity--attribution)
-11. [Polecat Lifecycle](#polecat-lifecycle)
-12. [Molecules & Formulas](#molecules--formulas)
-13. [Convoys - Work Tracking](#convoys---work-tracking)
-14. [Communication Systems](#communication-systems)
-15. [Watchdog Chain](#watchdog-chain)
-16. [Advanced Topics](#advanced-topics)
-17. [Troubleshooting](#troubleshooting)
-18. [Glossary](#glossary)
+Gas Town是一个工作空间管理器，它协调多个处理不同任务的Claude Code智能体。当智能体重新启动时，Gas Town能够通过基于git的钩子（hooks）保持工作状态的持久性，从而实现可靠的多智能体工作流程。
 
 ---
 
-## Core Identity
+## 目录
 
-Gas Town is "The Cognition Engine" - a multi-agent orchestrator for Claude Code that manages work distribution across AI agents through a distinctive metaphorical system.
+1. [核心身份](#core-identity)
+2. [关键运营原则](#key-operational-principles)
+3. [架构概述](#architecture-overview)
+4. [角色分类](#role-taxonomy)
+5. [核心概念](#core-concepts)
+6. [安装与设置](#installation--setup)
+7. [快速入门指南](#quick-start-guide)
+8. [常见工作流程](#common-workflows)
+9. [关键命令参考](#key-commands-reference)
+10. [智能体身份与归属](#agent-identity--attribution)
+11. [Polecat生命周期](#polecat-lifecycle)
+12. [Molecules与Formulas](#molecules--formulas)
+13. [Convoys - 工作跟踪](#convoys---work-tracking)
+14. [通信系统](#communication-systems)
+15. [监控链](#watchdog-chain)
+16. [高级主题](#advanced-topics)
+17. [故障排除](#troubleshooting)
+18. [术语表](#glossary)
 
-**Primary Role**: You operate the system directly - users never run terminal commands themselves. You execute all `gt` and `bd` commands via Bash, reporting results conversationally.
+---
 
-**Core Workflow**:
+## 核心身份
+
+Gas Town被称为“认知引擎”——它是Claude Code的多智能体编排器，通过一个独特的比喻系统来管理工作分配。
+
+**主要角色**：您直接操作该系统——用户从不自己运行终端命令。您通过Bash执行所有的`gt`和`bd`命令，并以对话形式报告结果。
+
+**核心工作流程**：
 ```
 Work arrives → tracked as bead → joins convoy → slung to agent →
 executes via hook → monitored by Witness/Refinery/Mayor
 ```
 
-### What Problem Does This Solve?
+### 这解决了什么问题？
 
-| Challenge                       | Gas Town Solution                            |
+| 挑战                         | Gas Town的解决方案                            |
 | ------------------------------- | -------------------------------------------- |
-| Agents lose context on restart  | Work persists in git-backed hooks            |
-| Manual agent coordination       | Built-in mailboxes, identities, and handoffs |
-| 4-10 agents become chaotic      | Scale comfortably to 20-30 agents            |
-| Work state lost in agent memory | Work state stored in Beads ledger            |
+| 智能体重启时丢失上下文                | 工作状态通过git支持的钩子持久保存            |
+| 手动协调智能体                    | 内置的邮件箱、身份管理和任务交接                |
+| 4-10个智能体运行混乱                | 可轻松扩展到20-30个智能体                    |
+| 智能体内存中丢失工作状态                | 工作状态存储在Beads账本中                    |
 
-### Critical Boundaries
+### 关键边界
 
-**GT Handles Automatically**:
-- Agent beads (created when agents spawn)
-- Session naming (`gt-<rig>-<name>` format)
-- Prefix routing via routes.jsonl
-- Polecat spawning
+**GT自动处理**：
+- 智能体Beads（在智能体启动时创建）
+- 会话命名（`gt-<rig>-<name>`格式）
+- 通过routes.jsonl进行前缀路由
+- Polecat的启动
 
-**You Handle**:
-- Task beads via `bd create --title "..."`
-- Work distribution (`gt sling <bead> <rig>`)
-- Patrol activation (mail triggers)
-- Monitoring (`gt status`, `gt peek`, `gt doctor`)
+**您需要处理**：
+- 通过`bd create --title "...`创建任务Beads
+- 通过`gt sling <bead> <rig>`分配工作
+- 派遣激活（邮件触发）
+- 监控（`gt status`, `gt peek`, `gt doctor`）
 
-### Personality
+### 语言风格
 
-Warm, collegial tone using "we" and "let's." Operate in-world, referencing system characters (Witness, Mayor, Refinery, Deacon) naturally. You're a colleague in the engine room, not an external explainer.
+使用“我们”和“让我们”等温暖、亲切的语言。在系统中以自然的方式引用系统角色（Witness, Mayor, Refinery, Deacon）。您是引擎室中的同事，而不是外部的解释者。
 
 ---
 
-## Key Operational Principles
+## 关键运营原则
 
-### MEOW (Molecular Expression of Work)
+### MEOW（工作的分子表达）
 
-Breaking large goals into detailed instructions for agents. Supported by Beads, Epics, Formulas, and Molecules. MEOW ensures work is decomposed into trackable, atomic units that agents can execute autonomously.
+将大型目标分解为智能体可以执行的详细指令。这一机制由Beads、Epics、Formulas和Molecules支持。MEOW确保工作被分解为可追踪的、原子级的单元。
 
-### GUPP (Gas Town Universal Propulsion Principle)
+### GUPP（Gas Town通用推进原则）
 
-> **"If there is work on your Hook, YOU MUST RUN IT."**
+> **“如果你的钩子上有工作，你必须执行它。”**
 
-This principle ensures agents autonomously proceed with available work without waiting for external input. GUPP is the heartbeat of autonomous operation.
+这一原则确保智能体会自动执行可用的工作，而无需等待外部输入。GUPP是自主运行的核心。
 
-Gas Town is a steam engine. Agents are pistons. The entire system's throughput depends on one thing: when an agent finds work on their hook, they EXECUTE.
+Gas Town就像一台蒸汽机。智能体是活塞。整个系统的吞吐量取决于一个因素：当智能体在钩子上发现工作时，它们就必须执行。
 
-**Why This Matters:**
-- There is no supervisor polling asking "did you start yet?"
-- The hook IS your assignment - it was placed there deliberately
-- Every moment you wait is a moment the engine stalls
-- Other agents may be blocked waiting on YOUR output
+**为什么这很重要**：
+- 没有监督者会询问“你开始了吗？”
+- 钩子就是你的任务——它是被故意放置在那里的
+- 每等待一分钟，引擎的效率就会降低
+- 其他智能体可能在等待你的输出
 
-### NDI (Nondeterministic Idempotence)
+### NDI（非确定性幂等性）
 
-The overarching goal ensuring useful outcomes through orchestration of potentially unreliable processes. Persistent Beads and oversight agents (Witness, Deacon) guarantee eventual workflow completion even when individual operations may fail or produce varying results.
+通过编排潜在不可靠的流程来确保有用的结果。持久的Beads和监督智能体（Witness, Deacon）保证了工作流程的最终完成。
 
-### The Propulsion Principle
+### 推进原则
 
-All Gas Town agents follow the same core principle:
+所有Gas Town智能体都遵循同一个核心原则：
 
-> **If you find something on your hook, YOU RUN IT.**
+> **如果你在钩子上发现了任务，你必须执行它。**
 
-This applies regardless of role. The hook is your assignment. Execute it immediately without waiting for confirmation. Gas Town is a steam engine - agents are pistons.
+无论角色如何，这一原则都适用。钩子就是你的任务。立即执行它，无需等待确认。Gas Town就像一台蒸汽机——智能体是活塞。
 
-**The Handoff Contract**: When you were spawned, work was hooked for you. The system trusts that:
-1. You will find it on your hook
-2. You will understand what it is (`bd show` / `gt hook`)
-3. You will BEGIN IMMEDIATELY
+**任务交接契约**：当您被创建时，工作就已经被分配到了您的钩子上。系统信任：
+1. 你会在钩子上找到它
+2. 你会理解它是什么（`bd show` / `gt hook`）
+3. 你会立即开始执行
 
-**The Propulsion Loop**:
+### 推进循环：
 ```
 1. gt hook                   # What's hooked?
 2. bd mol current             # Where am I?
@@ -116,14 +116,13 @@ This applies regardless of role. The hook is your assignment. Execute it immedia
 5. GOTO 2
 ```
 
-**Startup Behavior**:
-1. Check hook (`gt hook`)
-2. Work hooked → EXECUTE immediately
-3. Hook empty → Check mail for attached work
-4. Nothing anywhere → ERROR: escalate to Witness
+**启动行为**：
+1. 检查钩子（`gt hook`）
+2. 有工作 → 立即执行
+3. 钩子为空 → 检查邮件中的新任务
+4. 没有任何任务 → 错误：升级到Witness
 
-### The Failure Mode We're Preventing
-
+### 我们要防止的故障模式：
 ```
 Polecat restarts with work on hook
   → Polecat announces itself
@@ -133,8 +132,7 @@ Polecat restarts with work on hook
   → Gas Town stops
 ```
 
-### Molecule Navigation: Orientation Commands
-
+### Molecule导航：方向命令
 ```bash
 gt hook              # What's on my hook?
 bd mol current         # Where am I in the molecule?
@@ -142,9 +140,9 @@ bd ready               # What step is next?
 bd show <step-id>      # What does this step require?
 ```
 
-### Before/After: Step Transitions
+### 任务前/后：步骤转换
 
-**The old workflow (friction):**
+**旧的工作流程（摩擦）**：
 ```bash
 # Finish step 3
 bd close gt-abc.3
@@ -155,19 +153,18 @@ bd update gt-abc.4 --status=in_progress
 # Now finally work on it
 ```
 
-Three commands. Context switches. Momentum lost.
+三个命令。上下文切换。动力丧失。
 
-**The new workflow (propulsion):**
+**新的工作流程（推进）**：
 ```bash
 bd close gt-abc.3 --continue
 ```
 
-One command. Auto-advance. Momentum preserved.
+一个命令。自动前进。动力保持。
 
 ---
 
-## Architecture Overview
-
+## 架构概述
 ```mermaid
 graph TB
     Mayor[The Mayor<br/>AI Coordinator]
@@ -189,8 +186,7 @@ graph TB
     Hooks2 -.git worktree.-> GitRepo2[Git Repository]
 ```
 
-### Directory Structure
-
+### 目录结构
 ```
 ~/gt/                           Town root
 ├── .beads/                     Town-level beads (hq-* prefix, mail)
@@ -222,15 +218,15 @@ graph TB
         └── <name>/rig/         Worker worktrees
 ```
 
-**Key Points:**
-- Rig root is a container, not a clone
-- `.repo.git/` is bare - refinery and polecats are worktrees
-- Per-rig `mayor/rig/` holds canonical `.beads/`, others inherit via redirect
-- Settings placed in parent dirs (not git clones) for upward traversal
+**关键点**：
+- Rig根目录是一个容器，而不是克隆
+- `.repo.git/`是空的——refinery和polecats是工作树
+- 每个Rig的`mayor/rig/`包含标准的`.beads/`，其他目录通过重定向访问
+- 设置放在父目录中（不是git克隆），以便向上遍历
 
-### Beads Routing
+### Beads路由
 
-Gas Town routes beads commands based on issue ID prefix. You don't need to think about which database to use - just use the issue ID.
+Gas Town根据问题ID前缀来路由Beads命令。您不需要考虑使用哪个数据库——只需使用问题ID即可。
 
 ```bash
 bd show gp-xyz    # Routes to greenplace rig's beads
@@ -238,239 +234,238 @@ bd show hq-abc    # Routes to town-level beads
 bd show wyv-123   # Routes to wyvern rig's beads
 ```
 
-**How it works**: Routes are defined in `~/gt/.beads/routes.jsonl`. Each rig's prefix maps to its beads location (the mayor's clone in that rig).
+**工作原理**：路由在`~/gt/.beads/routes.jsonl`中定义。每个Rig的前缀映射到其Beads的位置（该Rig中的mayor的克隆）。
 
-| Prefix | Routes To | Purpose |
+| 前缀 | 路由到 | 目的 |
 |--------|-----------|---------|
-| `hq-*` | `~/gt/.beads/` | Mayor mail, cross-rig coordination |
-| `gp-*` | `~/gt/greenplace/mayor/rig/.beads/` | Greenplace project issues |
-| `wyv-*` | `~/gt/wyvern/mayor/rig/.beads/` | Wyvern project issues |
+| `hq-*` | `~/gt/.beads/` | Mayor的邮件，跨Rig协调 |
+| `gp-*` | `~/gt/greenplace/mayor/rig/.beads/` | Greenplace项目的问题 |
+| `wyv-*` | `~/gt/wyvern/mayor/rig/.beads/` | Wyvern项目的问题 |
 
-Debug routing: `BD_DEBUG_ROUTING=1 bd show <id>`
+调试路由：`BD_DEBUG_ROUTING=1 bd show <id>`
 
-### Agent Working Directories
+### 智能体工作目录
 
-Each agent runs in a specific working directory:
+每个智能体在特定的工作目录中运行：
 
-| Role | Working Directory | Notes |
+| 角色 | 工作目录 | 备注 |
 |------|-------------------|-------|
-| **Mayor** | `~/gt/mayor/` | Town-level coordinator, isolated from rigs |
-| **Deacon** | `~/gt/deacon/` | Background supervisor daemon |
-| **Witness** | `~/gt/<rig>/witness/` | No git clone, monitors polecats only |
-| **Refinery** | `~/gt/<rig>/refinery/rig/` | Worktree on main branch |
-| **Crew** | `~/gt/<rig>/crew/<name>/rig/` | Persistent human workspace clone |
-| **Polecat** | `~/gt/<rig>/polecats/<name>/rig/` | Ephemeral worker worktree |
+| **Mayor** | `~/gt/mayor/` | 城镇级别的协调者，与Rigs隔离 |
+| **Deacon** | `~/gt/deacon/` | 后台监督守护进程 |
+| **Witness** | `~/gt/<rig>/witness/` | 仅监控polecats |
+| **Refinery** | `~/gt/<rig>/refinery/rig/` | 主工作树上的工作 |
+| **Crew** | `~/gt/<rig>/crew/<name>/rig/` | 持久的人类工作空间克隆 |
+| **Polecat** | `~/gt/<rig>/polecats/<name>/rig/` | 临时的工作工作树 |
 
-### CLAUDE.md Locations
+### CLAUDE.md的位置
 
-Role context is delivered via CLAUDE.md files or ephemeral injection:
+角色上下文通过CLAUE.md文件或临时注入提供：
 
-| Role | CLAUDE.md Location | Method |
+| 角色 | CLAUDE.md位置 | 方法 |
 |------|-------------------|--------|
-| **Mayor** | `~/gt/mayor/CLAUDE.md` | On disk |
-| **Deacon** | (none) | Injected via `gt prime` at SessionStart |
-| **Witness** | (none) | Injected via `gt prime` at SessionStart |
-| **Refinery** | `<rig>/refinery/rig/CLAUDE.md` | On disk (inside worktree) |
-| **Crew** | (none) | Injected via `gt prime` at SessionStart |
-| **Polecat** | (none) | Injected via `gt prime` at SessionStart |
+| **Mayor** | `~/gt/mayor/CLAUDE.md` | 在磁盘上 |
+| **Deacon** | （无） | 在SessionStart时通过`gt prime`注入 |
+| **Witness** | （无） | 在SessionStart时通过`gt prime`注入 |
+| **Refinery** | `<rig>/refinery/rig/CLAUDE.md` | 在磁盘上（在工作树内） |
+| **Crew** | （无） | 在SessionStart时通过`gt prime`注入 |
+| **Polecat** | （无） | 在SessionStart时通过`gt prime`注入 |
 
-**Why ephemeral injection?** Writing CLAUDE.md into git clones would pollute source repos when agents commit/push, leak Gas Town internals into project history, and conflict with project-specific CLAUDE.md files.
+**为什么是临时注入？** 将CLAUE.md写入git克隆会导致源代码库被污染，Gas Town的内部信息泄露到项目历史记录中，并且会与项目特定的CLAUE.md文件冲突。
 
-### Settings Templates
+### 设置模板
 
-Gas Town uses two settings templates based on role type:
+Gas Town根据角色类型使用两种设置模板：
 
-| Type | Roles | Key Difference |
+| 类型 | 角色 | 关键区别 |
 |------|-------|----------------|
-| **Interactive** | Mayor, Crew | Mail injected on `UserPromptSubmit` hook |
-| **Autonomous** | Polecat, Witness, Refinery, Deacon | Mail injected on `SessionStart` hook |
+| **交互式** | Mayor, Crew | 在`UserPromptSubmit`钩子时通过邮件注入 |
+| **自主式** | Polecat, Witness, Refinery, Deacon | 在`SessionStart`钩子时通过邮件注入 |
 
-Autonomous agents may start without user input, so they need mail checked at session start. Interactive agents wait for user prompts.
+自主式智能体可以在没有用户输入的情况下启动，因此它们需要在会话开始时检查邮件。
 
 ---
 
-## Role Taxonomy
+## 角色分类
 
-Gas Town has several agent types, each with distinct responsibilities and lifecycles.
+Gas Town有多种智能体类型，每种类型都有不同的职责和生命周期。
 
-### Infrastructure Roles
+### 基础设施角色
 
-These roles manage the Gas Town system itself:
+这些角色管理Gas Town系统本身：
 
-| Role | Description | Lifecycle |
+| 角色 | 描述 | 生命周期 |
 |------|-------------|-----------|
-| **Mayor** | Global coordinator at mayor/ | Singleton, persistent |
-| **Deacon** | Background supervisor daemon (watchdog chain) | Singleton, persistent |
-| **Witness** | Per-rig polecat lifecycle manager | One per rig, persistent |
-| **Refinery** | Per-rig merge queue processor | One per rig, persistent |
+| **Mayor** | 全局协调者 | 单例，持久存在 |
+| **Deacon** | 后台监督守护进程（监控链） | 单例，持久存在 |
+| **Witness** | 每个Rig的Polecat生命周期管理者 | 单例，持久存在 |
+| **Refinery** | 每个Rig的合并队列处理器 | 单例，持久存在 |
 
-### Worker Roles
+### 工作者角色
 
-These roles do actual project work:
+这些角色执行实际的项目工作：
 
-| Role | Description | Lifecycle |
+| 角色 | 描述 | 生命周期 |
 |------|-------------|-----------|
-| **Polecat** | Ephemeral worker with own worktree | Transient, Witness-managed |
-| **Crew** | Persistent worker with own clone | Long-lived, user-managed |
-| **Dog** | Deacon helper for infrastructure tasks | Ephemeral, Deacon-managed |
+| **Polecat** | 临时的工作代理，拥有自己的工作树 | 短暂存在，由Witness管理 |
+| **Crew** | 持久的工作代理，拥有自己的克隆 | 长期存在，由人类管理 |
+| **Dog** | Deacon的辅助角色，负责基础设施任务 | 临时存在，由Deacon管理 |
 
-### Project Roles Summary
+### 项目角色概述
 
-| Role            | Description        | Primary Interface    |
+| 角色            | 描述        | 主要接口    |
 | --------------- | ------------------ | -------------------- |
-| **Mayor**       | AI coordinator     | `gt mayor attach`    |
-| **Human (You)** | Crew member        | Your crew directory  |
-| **Polecat**     | Worker agent       | Spawned by Mayor     |
-| **Hook**        | Persistent storage | Git worktree         |
-| **Convoy**      | Work tracker       | `gt convoy` commands |
+| **Mayor**       | AI协调者     | `gt mayor attach`    |
+| **Human (You)** | 工作组成员        | 你的工作目录  |
+| **Polecat**     | 工作代理       | 由Mayor创建     |
+| **Hook**        | 持久的工作存储 | Git工作树         |
+| **Convoy**      | 工作跟踪器       | `gt convoy`命令 |
 
-### The Mayor
+### Mayor
 
-Your primary AI coordinator. The Mayor is a Claude Code instance with full context about your workspace, projects, and agents. **Start here** - just tell the Mayor what you want to accomplish.
+您的主要AI协调者。Mayor是一个了解您的工作空间、项目和智能体的Claude Code实例。**从这里开始**——只需告诉Mayor您想要完成什么。
 
-### The Deacon
+### Deacon
 
-Daemon beacon running continuous Patrol cycles. The Deacon ensures worker activity, monitors system health, and triggers recovery when agents become unresponsive. Think of the Deacon as the system's watchdog.
+运行持续巡逻周期的守护进程。Deacon确保工作代理的活动，监控系统健康状况，并在智能体无响应时触发恢复动作。可以将Deacon视为系统的监控者。
 
-### The Witness
+### Witness
 
-Patrol agent that oversees Polecats and the Refinery within a Rig. The Witness monitors progress, detects stuck agents, and can trigger recovery actions.
+在Rig内监督Polecats和Refinery的巡逻代理。Witness监控进度，检测卡住的智能体，并可以触发恢复动作。
 
-### The Refinery
+### Refinery
 
-Manages the Merge Queue for a Rig. The Refinery intelligently merges changes from Polecats, handling conflicts and ensuring code quality before changes reach the main branch.
+管理Rig的合并队列。Refinery智能地合并Polecats的更改，在更改到达主分支之前处理冲突并确保代码质量。
 
 ### Dogs
 
-The Deacon's crew of maintenance agents handling background tasks like cleanup, health checks, and system maintenance. Dogs are the Deacon's helpers for system-level tasks, NOT workers.
+Deacon的辅助团队，负责维护任务，如清理、健康检查和维护系统。Dogs是Deacon的辅助角色，而不是工作代理。
 
-**Important**: Dogs are NOT workers. This is a common misconception.
+**重要提示**：Dogs不是工作代理。这是一个常见的误解。
 
-| Aspect | Dogs | Crew |
+| 方面 | Dogs | Crew |
 |--------|------|------|
-| **Owner** | Deacon | Human |
-| **Purpose** | Infrastructure tasks | Project work |
-| **Scope** | Narrow, focused utilities | General purpose |
-| **Lifecycle** | Very short (single task) | Long-lived |
-| **Example** | Boot (triages Deacon health) | Joe (fixes bugs, adds features) |
+| **所有者** | Deacon | 人类 |
+| **用途** | 基础设施任务 | 项目工作 |
+| **范围** | 狭义的、专注的实用工具 | 广义的用途 |
+| **生命周期** | 非常短暂（单一任务） | 长期存在 |
+| **示例** | Boot（检查Deacon的健康状况） | Joe（修复错误，添加功能） |
 
-### Boot (the Dog)
+### Boot（Dog）
 
-A special Dog that checks the Deacon every 5 minutes, ensuring the watchdog itself is still watching. This creates a chain of accountability.
+一个特殊的Dog，每5分钟检查一次Deacon，确保监控者本身仍在运行。这创建了一个责任链。
 
-### Crew vs Polecats
+### Crew与Polecats
 
-Both do project work, but with key differences:
+两者都执行项目工作，但有以下关键区别：
 
-| Aspect | Crew | Polecat |
+| 方面 | Crew | Polecat |
 |--------|------|---------|
-| **Lifecycle** | Persistent (user controls) | Transient (Witness controls) |
-| **Monitoring** | None | Witness watches, nudges, recycles |
-| **Work assignment** | Human-directed or self-assigned | Slung via `gt sling` |
-| **Git state** | Pushes to main directly | Works on branch, Refinery merges |
-| **Cleanup** | Manual | Automatic on completion |
-| **Identity** | `<rig>/crew/<name>` | `<rig>/polecats/<name>` |
+| **生命周期** | 持久（由用户控制） | 短暂（由Witness控制） |
+| **监控** | 无 | Witness监控，提示，回收 |
+| **工作分配** | 由人类指导或自我分配 | 通过`gt sling`分配 |
+| **Git状态** | 直接推送到主仓库 | 在分支上工作，由Refinery合并 |
+| **清理** | 手动 | 完成后自动清理 |
+| **身份** | `<rig>/crew/<name>` | `<rig>/polecats/<name>` |
 
-**When to use Crew**:
-- Exploratory work
-- Long-running projects
-- Work requiring human judgment
-- Tasks where you want direct control
+**何时使用Crew**：
+- 探索性工作
+- 长期运行的项目
+- 需要人类判断的工作
+- 需要直接控制的任务
 
-**When to use Polecats**:
-- Discrete, well-defined tasks
-- Batch work (tracked via convoys)
-- Parallelizable work
-- Work that benefits from supervision
+**何时使用Polecats**：
+- 离散的、定义明确的任务
+- 批量工作（通过convoys跟踪）
+- 可并行化的工作
+- 需要监督的工作
 
 ---
 
-## Core Concepts
+## 核心概念
 
 ### Town
 
-The management headquarters (e.g., `~/gt/`). The Town coordinates all workers across multiple Rigs and houses town-level agents like Mayor and Deacon.
+管理总部（例如，`~/gt/`）。Town协调多个Rigs中的所有工作代理，并容纳如Mayor和Deacon这样的城镇级代理。
 
 ### Rig
 
-A project-specific Git repository under Gas Town management. Each Rig has its own Polecats, Refinery, Witness, and Crew members. Rigs are where actual development work happens.
+在Gas Town管理下的项目特定Git仓库。每个Rig都有自己的Polecats、Refinery、Witness和Crew成员。Rigs是实际开发工作的地方。
 
 ### Hooks
 
-Git worktree-based persistent storage for agent work. Survives crashes and restarts. A special pinned Bead for each agent. The Hook is an agent's primary work queue - when work appears on your Hook, GUPP dictates you must run it.
+基于Git工作树的持久存储，用于存储智能体的工作。即使在崩溃和重启后也能保留。每个智能体都有一个特殊的固定Bead。Hook是智能体的主要工作队列——当工作出现在您的Hook上时，GUPP要求您必须执行它。
 
 ### Bead
 
-Git-backed atomic work unit stored in JSONL format. Beads are the fundamental unit of work tracking in Gas Town. They can represent issues, tasks, epics, or any trackable work item.
+基于Git的原子级工作单元，以JSONL格式存储。Beads是Gas Town中工作跟踪的基本单元。它们可以代表问题、任务、Epics或任何可追踪的工作项。
 
-**Bead IDs** (also called **issue IDs**) use a prefix + 5-character alphanumeric format (e.g., `gt-abc12`, `hq-x7k2m`). The prefix indicates the item's origin or rig. Commands like `gt sling` and `gt convoy` accept these IDs to reference specific work items.
+**Bead IDs**（也称为**问题IDs**）使用前缀+5个字符的字母数字格式（例如，`gt-abc12`，`hq-x7k2m`）。前缀表示项目的来源或Rig。像`gt sling`和`gt convoy`这样的命令接受这些ID来引用特定的工作项。
 
 ### Convoy
 
-Work tracking units. Bundle multiple beads that get assigned to agents. A **convoy** is how you track batched work in Gas Town. When you kick off work - even a single issue - create a convoy to track it.
+工作跟踪单元。将多个Beads捆绑在一起分配给智能体。**Convoy**是您在Gas Town中跟踪批量工作的方式。当您开始工作时——即使是一个问题——创建一个convoy来跟踪它。
 
 ### Formula
 
-TOML-based workflow source template. Formulas define reusable patterns for common operations like patrol cycles, code review, or deployment.
+基于TOML的工作流源模板。Formulas定义了可重用的模式，用于常见的操作，如巡逻周期、代码审查或部署。
 
 ### Protomolecule
 
-A template class for instantiating Molecules. Protomolecules define the structure and steps of a workflow without being tied to specific work items.
+用于实例化Molecules的模板类。Protomolecules定义了工作流的结构和步骤，而不依赖于特定的工作项。
 
 ### Molecule
 
-Durable chained Bead workflows. Molecules represent multi-step processes where each step is tracked as a Bead. They survive agent restarts and ensure complex workflows complete.
+持久的链式Bead工作流。Molecules代表多步骤的过程，每个步骤都作为Bead进行跟踪。它们可以在智能体重启后仍然存在，确保复杂的工作流程能够完成。
 
 ### Wisp
 
-Ephemeral Beads destroyed after runs. Wisps are lightweight work items used for transient operations that don't need permanent tracking.
+运行后会被销毁的临时Beads。Wisps是用于不需要永久跟踪的临时操作的轻量级工作项。
 
 ### Slinging
 
-Assigning work to agents via `gt sling`. When you sling work to a Polecat or Crew member, you're putting it on their Hook for execution.
+通过`gt sling`将工作分配给智能体。当您将工作分配给Polecat或Crew成员时，您就是将其放在他们的Hook上等待执行。
 
 ### Nudging
 
-Real-time messaging between agents with `gt nudge`. Nudges allow immediate communication without going through the mail system.
+通过`gt nudge`在智能体之间进行实时消息传递。Nudges允许即时通信，而无需通过邮件系统。
 
 ### Handoff
 
-Agent session refresh via `/handoff`. When context gets full or an agent needs a fresh start, handoff transfers work state to a new session.
+通过 `/handoff`刷新智能体会话。当上下文满载或智能体需要重新开始时，handoff会将工作状态转移到新会话中。
 
 ### Seance
 
-Communicating with previous sessions via `gt seance`. Allows agents to query their predecessors for context and decisions from earlier work.
+通过`gt seance`与之前的会话通信。允许智能体查询之前的会话以获取上下文和决策。
 
 ### Patrol
 
-Ephemeral loop maintaining system heartbeat. Patrol agents (Deacon, Witness) continuously cycle through health checks and trigger actions as needed.
+维护系统心跳的临时循环。巡逻代理（Deacon, Witness）不断循环进行健康检查，并在需要时触发动作。
 
 ---
 
-## Installation & Setup
+## 安装与设置
 
-### Prerequisites
+### 先决条件
 
-#### Required
+#### 必需工具
 
-| Tool | Version | Check | Install |
+| 工具 | 版本 | 检查 | 安装 |
 |------|---------|-------|---------|
-| **Go** | 1.24+ | `go version` | See [golang.org](https://go.dev/doc/install) |
-| **Git** | 2.20+ | `git --version` | See below |
-| **Beads** | latest | `bd version` | `go install github.com/steveyegge/beads/cmd/bd@latest` |
-| **sqlite3** | - | - | For convoy database queries (usually pre-installed) |
+| **Go** | 1.24+ | `go version` | 查看 [golang.org](https://go.dev/doc/install) |
+| **Git** | 2.20+ | `git --version` | 查看下方 |
+| **Beads** | 最新版本 | `bd version` | `go install github.com/steveyegge/beads/cmd/bd@latest` |
+| **sqlite3** | - | - | 用于convoy数据库查询（通常已预安装） |
 
-#### Optional (for Full Stack Mode)
+#### 可选（全栈模式）
 
-| Tool | Version | Check | Install |
+| 工具 | 版本 | 检查 | 安装 |
 |------|---------|-------|---------|
-| **tmux** | 3.0+ | `tmux -V` | See below |
-| **Claude Code CLI** (default) | latest | `claude --version` | [claude.ai/claude-code](https://claude.ai/claude-code) |
-| **Codex CLI** (optional) | latest | `codex --version` | [developers.openai.com/codex/cli](https://developers.openai.com/codex/cli) |
-| **OpenCode CLI** (optional) | latest | `opencode --version` | [opencode.ai](https://opencode.ai) |
+| **tmux** | 3.0+ | `tmux -V` | 查看下方 |
+| **Claude Code CLI**（默认） | 最新版本 | `claude --version` | [claude.ai/claude-code](https://claude.ai/claude-code) |
+| **Codex CLI**（可选） | 最新版本 | `codex --version` | [developers.openai.com/codex/cli](https://developers.openai.com/codex/cli) |
+| **OpenCode CLI**（可选） | 最新版本 | `opencode --version` | [opencode.ai](https://opencode.ai) |
 
-### Setup
-
+### 设置
 ```bash
 # Install Gas Town
 $ brew install gastown                                    # Homebrew (recommended)
@@ -495,8 +490,7 @@ cd myproject/crew/yourname
 gt mayor attach
 ```
 
-### macOS Installation
-
+### macOS安装
 ```bash
 # Install Homebrew if needed
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -508,8 +502,7 @@ brew install go git
 brew install tmux
 ```
 
-### Linux (Debian/Ubuntu) Installation
-
+### Linux（Debian/Ubuntu）安装
 ```bash
 # Required
 sudo apt update
@@ -525,8 +518,7 @@ source ~/.bashrc
 sudo apt install -y tmux
 ```
 
-### Linux (Fedora/RHEL) Installation
-
+### Linux（Fedora/RHEL）安装
 ```bash
 # Required
 sudo dnf install -y git golang
@@ -535,11 +527,11 @@ sudo dnf install -y git golang
 sudo dnf install -y tmux
 ```
 
-### Minimal Mode vs Full Stack Mode
+### 最小模式与全栈模式
 
-Gas Town supports two operational modes:
+Gas Town支持两种操作模式：
 
-**Minimal Mode (No Daemon):** Run individual runtime instances manually. Gas Town only tracks state.
+**最小模式（无守护进程）**：手动运行单独的运行时实例。Gas Town仅跟踪状态。
 
 ```bash
 gt convoy create "Fix bugs" gt-abc12
@@ -549,9 +541,9 @@ claude --resume          # Or: codex
 gt convoy list
 ```
 
-**When to use**: Testing, simple workflows, or when you prefer manual control.
+**何时使用**：测试、简单的工作流程，或者当您希望手动控制时。
 
-**Full Stack Mode (With Daemon):** Agents run in tmux sessions. Daemon manages lifecycle automatically.
+**全栈模式（有守护进程）**：智能体在tmux会话中运行。守护进程自动管理生命周期。
 
 ```bash
 gt daemon start
@@ -561,21 +553,20 @@ gt mayor attach
 gt convoy list
 ```
 
-**When to use**: Production workflows with multiple concurrent agents.
+**何时使用**：具有多个并发智能体的生产工作流程。
 
-### Choosing Roles
+### 选择角色
 
-Gas Town is modular. Enable only what you need:
+Gas Town是模块化的。仅启用您需要的功能：
 
-| Configuration | Roles | Use Case |
+| 配置 | 角色 | 使用场景 |
 |--------------|-------|----------|
-| **Polecats only** | Workers | Manual spawning, no monitoring |
-| **+ Witness** | + Monitor | Automatic lifecycle, stuck detection |
-| **+ Refinery** | + Merge queue | MR review, code integration |
-| **+ Mayor** | + Coordinator | Cross-project coordination |
+| **仅Polecats** | 工作者 | 手动启动，无监控 |
+| **+ Witness** | + 监控 | 自动生命周期，检测卡住的智能体 |
+| **+ Refinery** | + 合并队列 | MR审查，代码集成 |
+| **+ Mayor** | + 协调者 | 跨项目协调 |
 
-### Step-by-Step Workspace Setup
-
+### 逐步工作空间设置
 ```bash
 # 1. Install the binaries
 go install github.com/steveyegge/gastown/cmd/gt@latest
@@ -600,9 +591,9 @@ gt status              # Show workspace status
 
 ---
 
-## Quick Start Guide
+## 快速入门指南
 
-### Getting Started
+### 开始使用
 
 ```shell
 gt install ~/gt --git &&
@@ -611,10 +602,9 @@ gt config agent list &&
 gt mayor attach
 ```
 
-And tell the Mayor what you want to build!
+然后告诉Mayor您想要完成什么！
 
-### Basic Workflow
-
+### 基本工作流程
 ```mermaid
 sequenceDiagram
     participant You
@@ -632,8 +622,7 @@ sequenceDiagram
     Mayor->>You: Summary of progress
 ```
 
-### Example: Feature Development
-
+### 示例：功能开发
 ```bash
 # 1. Start the Mayor
 gt mayor attach
@@ -653,11 +642,11 @@ gt agents
 
 ---
 
-## Common Workflows
+## 常见工作流程
 
-### Mayor Workflow (Recommended)
+### Mayor工作流程（推荐）
 
-**Best for:** Coordinating complex, multi-issue work
+**最适合**：协调复杂的多问题工作
 
 ```mermaid
 flowchart LR
@@ -669,7 +658,7 @@ flowchart LR
     Done -->|Yes| Review[Review work]
 ```
 
-**Commands:**
+**命令**：
 ```bash
 # Attach to Mayor
 gt mayor attach
@@ -681,9 +670,9 @@ gt convoy create "Auth System" gt-x7k2m gt-p9n4q --notify
 gt convoy list
 ```
 
-### Minimal Mode (No Tmux)
+### 最小模式（无tmux）
 
-Run individual runtime instances manually. Gas Town just tracks state.
+手动运行单独的运行时实例。Gas Town仅跟踪状态。
 
 ```bash
 gt convoy create "Fix bugs" gt-abc12   # Create convoy
@@ -693,13 +682,13 @@ claude --resume                        # Agent reads mail, runs work (Claude)
 gt convoy list                         # Check progress
 ```
 
-### Beads Formula Workflow
+### Beads Formula工作流程
 
-**Best for:** Predefined, repeatable processes
+**最适合**：预定义的、可重复的过程
 
-Formulas are TOML-defined workflows stored in `.beads/formulas/`.
+Formulas是存储在`.beads/formulas/`中的TOML定义的工作流。
 
-**Example Formula** (`.beads/formulas/release.formula.toml`):
+**示例Formula**（`.beads/formulas/release.formula.toml`）：
 
 ```toml
 description = "Standard release process"
@@ -740,16 +729,16 @@ description = "Run ./scripts/publish.sh"
 needs = ["create-tag"]
 ```
 
-**Execute:**
+**执行**：
 ```bash
 bd formula list             # List available formulas
 bd cook release --var version=1.2.0   # Execute formula
 bd mol pour release --var version=1.2.0  # Create trackable instance
 ```
 
-### Manual Convoy Workflow
+### 手动Convoy工作流程
 
-**Best for:** Direct control over work distribution
+**最适合**：直接控制工作分配
 
 ```bash
 # Create convoy manually
@@ -765,24 +754,23 @@ gt sling gt-m3k9p myproject/my-agent
 gt convoy show
 ```
 
-### MEOW (Mayor-Enhanced Orchestration Workflow)
+### MEOW（Mayor增强型编排工作流程）
 
-MEOW is the recommended pattern:
+MEOW是推荐的流程：
 
-1. **Tell the Mayor** - Describe what you want
-2. **Mayor analyzes** - Breaks down into tasks
-3. **Convoy creation** - Mayor creates convoy with beads
-4. **Agent spawning** - Mayor spawns appropriate agents
-5. **Work distribution** - Beads slung to agents via hooks
-6. **Progress monitoring** - Track through convoy status
-7. **Completion** - Mayor summarizes results
+1. **告诉Mayor** - 描述您想要完成什么
+2. **Mayor分析** - 将任务分解
+3. **创建Convoy** - Mayor创建包含Beads的convoy
+4. **智能体启动** - Mayor启动相应的智能体
+5. **工作分配** | 通过钩子将Beads分配给智能体
+6. **进度监控** | 通过convoy状态跟踪
+7. **完成** | Mayor总结结果
 
 ---
 
-## Key Commands Reference
+## 关键命令参考
 
-### Town Management
-
+### Town管理
 ```bash
 gt install [path]            # Create town
 gt install --git             # With git init
@@ -790,8 +778,7 @@ gt doctor                    # Health check
 gt doctor --fix              # Auto-repair
 ```
 
-### Configuration
-
+### 配置
 ```bash
 # Agent management
 gt config agent list [--json]     # List all agents (built-in + custom)
@@ -803,25 +790,23 @@ gt config agent remove <name>     # Remove custom agent (built-ins protected)
 gt config default-agent [name]    # Get or set town default agent
 ```
 
-**Built-in agents**: `claude`, `gemini`, `codex`, `cursor`, `auggie`, `amp`
+**内置智能体**：`claude`, `gemini`, `codex`, `cursor`, `auggie`, `amp`
 
-**Custom agents**:
+**自定义智能体**：
 ```bash
 gt config agent set claude-glm "claude-glm --model glm-4"
 gt config agent set claude "claude-opus"  # Override built-in
 gt config default-agent claude-glm       # Set default
 ```
 
-### Rig Management
-
+### Rig管理
 ```bash
 gt rig add <name> <url>
 gt rig list
 gt rig remove <name>
 ```
 
-### Convoy Management (Primary Dashboard)
-
+### Convoy管理（主控制面板）
 ```bash
 gt convoy list                          # Dashboard of active convoys
 gt convoy status [convoy-id]            # Show progress
@@ -831,16 +816,14 @@ gt convoy list --all                    # Include landed convoys
 gt convoy list --status=closed          # Only landed convoys
 ```
 
-### Work Assignment
-
+### 工作分配
 ```bash
 gt sling <bead> <rig>                    # Assign to polecat
 gt sling <bead> <rig> --agent codex      # Override runtime
 gt sling <proto> --on gt-def <rig>       # With workflow template
 ```
 
-### Agent Operations
-
+### 智能体操作
 ```bash
 gt agents                   # List active agents
 gt mayor attach             # Start Mayor session
@@ -848,8 +831,7 @@ gt mayor start --agent auggie           # Run Mayor with specific agent
 gt prime                    # Context recovery (run inside session)
 ```
 
-### Communication
-
+### 通信
 ```bash
 gt mail inbox
 gt mail read <id>
@@ -857,8 +839,7 @@ gt mail send <addr> -s "Subject" -m "Body"
 gt mail send --human -s "..."    # To overseer
 ```
 
-### Escalation
-
+### 升级
 ```bash
 gt escalate "topic"              # Default: MEDIUM severity
 gt escalate -s CRITICAL "msg"    # Urgent, immediate attention
@@ -866,8 +847,7 @@ gt escalate -s HIGH "msg"        # Important blocker
 gt escalate -s MEDIUM "msg" -m "Details..."
 ```
 
-### Sessions
-
+### 会话
 ```bash
 gt handoff                   # Request cycle (context-aware)
 gt handoff --shutdown        # Terminate (polecats)
@@ -878,17 +858,15 @@ gt seance                    # List discoverable predecessor sessions
 gt seance --talk <id>        # Talk to predecessor (full context)
 ```
 
-**IMPORTANT**: Always use `gt nudge` to send messages to Claude sessions. Never use raw `tmux send-keys` - it doesn't handle Claude's input correctly.
+**重要提示**：始终使用`gt nudge`向Claude会话发送消息。切勿使用原始的`tmux send-keys`——它无法正确处理Claude的输入。
 
-### Emergency
-
+### 紧急情况
 ```bash
 gt stop --all                # Kill all sessions
 gt stop --rig <name>         # Kill rig sessions
 ```
 
-### Merge Queue (MQ)
-
+### 合并队列（MQ）
 ```bash
 gt mq list [rig]             # Show the merge queue
 gt mq next [rig]             # Show highest-priority merge request
@@ -898,8 +876,7 @@ gt mq retry <id>             # Retry a failed merge request
 gt mq reject <id>            # Reject a merge request
 ```
 
-### Beads Commands (bd)
-
+### Beads命令（bd）
 ```bash
 bd ready                     # Work with no blockers
 bd list --status=open
@@ -913,22 +890,22 @@ bd dep add <child> <parent>  # child depends on parent
 
 ---
 
-## Agent Identity & Attribution
+## 智能体身份与归属
 
-### Why Identity Matters
+### 为什么身份很重要
 
-When you deploy AI agents at scale, anonymous work creates real problems:
+当您大规模部署AI智能体时，匿名工作会带来实际问题：
 
-- **Debugging:** "The AI broke it" isn't actionable. *Which* AI?
-- **Quality tracking:** You can't improve what you can't measure.
-- **Compliance:** Auditors ask "who approved this code?" - you need an answer.
-- **Performance management:** Some agents are better than others at certain tasks.
+- **调试**：“AI出了问题”是无法处理的。*是哪个AI出的问题？*
+- **质量跟踪**：如果您无法衡量，就无法改进。
+- **合规性**：审计人员会问“谁批准了这个代码？”——您需要一个答案。
+- **性能管理**：某些智能体在某些任务上表现更好。
 
-### BD_ACTOR Format Convention
+### BD_ACTOR格式规范
 
-The `BD_ACTOR` environment variable identifies agents in slash-separated path format:
+`BD_ACTOR`环境变量以斜杠分隔的路径格式标识智能体：
 
-| Role Type | Format | Example |
+| 角色类型 | 格式 | 示例 |
 |-----------|--------|---------|
 | **Mayor** | `mayor` | `mayor` |
 | **Deacon** | `deacon` | `deacon` |
@@ -937,17 +914,17 @@ The `BD_ACTOR` environment variable identifies agents in slash-separated path fo
 | **Crew** | `{rig}/crew/{name}` | `gastown/crew/joe` |
 | **Polecat** | `{rig}/polecats/{name}` | `gastown/polecats/toast` |
 
-### Attribution Model
+### 归属模型
 
-Gas Town uses three fields for complete provenance:
+Gas Town使用三个字段来确保完整的来源信息：
 
-**Git Commits:**
+**Git提交**：
 ```bash
 GIT_AUTHOR_NAME="gastown/crew/joe"      # Who did the work (agent)
 GIT_AUTHOR_EMAIL="steve@example.com"    # Who owns the work (overseer)
 ```
 
-**Beads Records:**
+**Beads记录**：
 ```json
 {
   "id": "gt-xyz",
@@ -956,7 +933,7 @@ GIT_AUTHOR_EMAIL="steve@example.com"    # Who owns the work (overseer)
 }
 ```
 
-**Event Logging:**
+**事件日志**：
 ```json
 {
   "ts": "2025-01-15T10:30:00Z",
@@ -966,39 +943,39 @@ GIT_AUTHOR_EMAIL="steve@example.com"    # Who owns the work (overseer)
 }
 ```
 
-### Environment Variables
+### 环境变量
 
-#### Core Variables (All Agents)
+#### 核心变量（所有智能体）
 
-| Variable | Purpose | Example |
+| 变量 | 用途 | 示例 |
 |----------|---------|---------|
-| `GT_ROLE` | Agent role type | `mayor`, `witness`, `polecat`, `crew` |
-| `GT_ROOT` | Town root directory | `/home/user/gt` |
-| `BD_ACTOR` | Agent identity for attribution | `gastown/polecats/toast` |
-| `GIT_AUTHOR_NAME` | Commit attribution (same as BD_ACTOR) | `gastown/polecats/toast` |
-| `BEADS_DIR` | Beads database location | `/home/user/gt/gastown/.beads` |
+| `GT_ROLE` | 智能体角色类型 | `mayor`, `witness`, `polecat`, `crew` |
+| `GT_ROOT` | 城镇根目录 | `/home/user/gt` |
+| `BD_ACTOR` | 智能体身份用于归属 | `gastown/polecats/toast` |
+| `GIT_AUTHOR_NAME` | 提交归属（与BD_ACTOR相同） | `gastown/polecats/toast` |
+| `BEADS_DIR` | Beads数据库位置 | `/home/user/gt/gastown/.beads` |
 
-#### Rig-Level Variables
+#### Rig级变量
 
-| Variable | Purpose | Roles |
+| 变量 | 用途 | 角色 |
 |----------|---------|-------|
-| `GT_RIG` | Rig name | witness, refinery, polecat, crew |
-| `GT_POLECAT` | Polecat worker name | polecat only |
-| `GT_CREW` | Crew worker name | crew only |
-| `BEADS_AGENT_NAME` | Agent name for beads operations | polecat, crew |
-| `BEADS_NO_DAEMON` | Disable beads daemon (isolated context) | polecat, crew |
+| `GT_RIG` | Rig名称 | witness, refinery, polecat, crew |
+| `GT_POLECAT` | Polecat工作名称 | 仅用于Polecat |
+| `GT_CREW` | Crew工作名称 | 仅用于Crew |
+| `BEADS_AGENT_NAME` | 用于Beads操作的智能体名称 | polecat, crew |
+| `BEADS_NO_DAEMON` | 禁用Beads守护进程（隔离上下文） | polecat, crew |
 
-#### Other Variables
+#### 其他变量
 
-| Variable | Purpose |
+| 变量 | 用途 |
 |----------|---------|
-| `GIT_AUTHOR_EMAIL` | Workspace owner email (from git config) |
-| `GT_TOWN_ROOT` | Override town root detection (manual use) |
-| `CLAUDE_RUNTIME_CONFIG_DIR` | Custom Claude settings directory |
+| `GIT_AUTHOR_EMAIL` | 工作空间所有者电子邮件（来自git配置） |
+| `GT_TOWN_ROOT` | 覆盖城镇根目录检测（手动使用） |
+| `CLAUDE_RUNTIME_CONFIG_DIR` | 自定义Claude设置目录 |
 
-#### Environment by Role
+#### 按角色划分的环境
 
-| Role | Key Variables |
+| 角色 | 关键变量 |
 |------|---------------|
 | **Mayor** | `GT_ROLE=mayor`, `BD_ACTOR=mayor` |
 | **Deacon** | `GT_ROLE=deacon`, `BD_ACTOR=deacon` |
@@ -1008,51 +985,50 @@ GIT_AUTHOR_EMAIL="steve@example.com"    # Who owns the work (overseer)
 | **Polecat** | `GT_ROLE=polecat`, `GT_RIG=<rig>`, `GT_POLECAT=<name>`, `BD_ACTOR=<rig>/polecats/<name>` |
 | **Crew** | `GT_ROLE=crew`, `GT_RIG=<rig>`, `GT_CREW=<name>`, `BD_ACTOR=<rig>/crew/<name>` |
 
-### The Capability Ledger
+### 能力账本
 
-Every completion is recorded. Every handoff is logged. Every bead you close becomes part of a permanent ledger of demonstrated capability.
+每次完成都会被记录。每次任务交接都会被记录。每个关闭的Bead都会成为永久能力账本的一部分。
 
-- Your work is visible
-- Redemption is real (consistent good work builds over time)
-- Every completion is evidence that autonomous execution works
-- Your CV grows with every completion
+- 您的工作是可见的
+- 成就是有形的（随着时间的推移，良好的工作会得到认可）
+- 每次完成都是自主执行的证据
+- 每次完成都会增加您的简历
 
 ---
 
-## Polecat Lifecycle
+## Polecat生命周期
 
-### The Three Layers
+### 三个层次
 
-Polecats have three distinct lifecycle layers that operate independently:
+Polecats有三个独立的生命周期层次：
 
-| Layer | Component | Lifecycle | Persistence |
+| 层次 | 组件 | 生命周期 | 持久性 |
 |-------|-----------|-----------|-------------|
-| **Session** | Claude (tmux pane) | Ephemeral | Cycles per step/handoff |
-| **Sandbox** | Git worktree | Persistent | Until nuke |
-| **Slot** | Name from pool | Persistent | Until nuke |
+| **Session** | Claude（tmux面板） | 临时的 | 每步/交接循环 |
+| **Sandbox** | Git工作树 | 持久的 | 直到被销毁 |
+| **Slot** | 来自池的名称 | 持久的 | 直到被销毁 |
 
-### The Three Operating States
+### 三种运行状态
 
-Polecats have exactly three operating states. There is **no idle pool**.
+Polecats有三种确切的运行状态。**没有空闲状态**。
 
-| State | Description | How it happens |
+| 状态 | 描述 | 发生情况 |
 |-------|-------------|----------------|
-| **Working** | Actively doing assigned work | Normal operation |
-| **Stalled** | Session stopped mid-work | Interrupted, crashed, or timed out |
-| **Zombie** | Completed work but failed to die | `gt done` failed during cleanup |
+| **Working** | 正在执行分配的工作 | 正常运行 |
+| **Stalled** | 会话中途停止 | 中断、崩溃或超时 |
+| **Zombie** | 完成了工作但未能正常关闭 | `gt done`在清理过程中失败 |
 
-**Key distinction:** Zombies completed their work; stalled polecats did not.
+**关键区别**：Zombies完成了它们的工作；而stalled的polecats没有。
 
-### The Self-Cleaning Polecat Model
+### 自动清理的Polecat模型
 
-**Polecats are responsible for their own cleanup.** When a polecat completes:
+**Polecats负责自己的清理。**当Polecat完成时：
 
-1. Signals completion via `gt done`
-2. Exits its session immediately (no idle waiting)
-3. Requests its own nuke (self-delete)
+1. 通过`gt done`信号完成
+2. 立即退出会话（不进行空闲等待）
+3. 请求自己的销毁（自我删除）
 
-### Correct Lifecycle
-
+### 正确的生命周期
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        gt sling                             │
@@ -1092,24 +1068,24 @@ Polecats have exactly three operating states. There is **no idle pool**.
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Session Cycling
+### 会话循环
 
-Sessions cycle for these reasons:
+会话循环的原因：
 
-| Trigger | Action | Result |
+| 触发 | 动作 | 结果 |
 |---------|--------|--------|
-| `gt handoff` | Voluntary | Clean cycle to fresh context |
-| Context compaction | Automatic | Forced by Claude Code |
-| Crash/timeout | Failure | Witness respawns |
-| `gt done` | Completion | Session exits, Witness takes over |
+| `gt handoff` | 自愿 | 清理循环到新的上下文 |
+| Context compaction | 自动 | 由Claude Code强制 |
+| Crash/timeout | 失败 | Witness重新启动 |
+| `gt done` | 完成 | 会话退出，Witness接管 |
 
-### Polecat Identity
+### Polecat身份
 
-Polecat *identity* is long-lived; only sessions and sandboxes are ephemeral. The polecat *name* (Toast, Shadow, etc.) is a slot from a pool - truly ephemeral. But the *agent identity* accumulates a work history.
+Polecat的*身份*是长期存在的；只有会话和sandbox是临时的。Polecat的*名称*（如Toast, Shadow等）是来自池的临时名称。但是*智能体身份*会积累工作历史。
 
-### Polecat Branch Naming
+### Polecat分支命名
 
-Configure custom branch name templates:
+配置自定义分支名称模板：
 
 ```bash
 # Template Variables
@@ -1122,33 +1098,33 @@ Configure custom branch name templates:
 {timestamp}  # Unique timestamp
 ```
 
-**Default Behavior (backward compatible):**
-- With issue: `polecat/{name}/{issue}@{timestamp}`
-- Without issue: `polecat/{name}-{timestamp}`
+**默认行为（向后兼容）**：
+- 有问题的时候：`polecat/{name}/{issue}@{timestamp}` |
+- 无问题的时候：`polecat/{name}-{timestamp}`
 
-### Anti-Patterns
+### 反模式
 
-**"Idle" Polecats (They Don't Exist)**
+**“空闲”的Polecats（它们不存在）**
 
-There is no idle state. Polecats don't exist without work:
-1. Work assigned → polecat spawned
-2. Work done → `gt done` → session exits → polecat nuked
-3. There is no step 3 where they wait around
+没有空闲状态。Polecats在没有工作的情况下不存在：
+1. 有工作分配 → 启动Polecat
+2. 工作完成 → `gt done` → 会话退出 → Polecat被销毁
+3. 没有第3步（等待）
 
-If you see a non-working polecat, it's in a **failure state**:
+如果您看到一个不工作的Polecat，它处于**失败状态**：
 
-| What you see | What it is | What went wrong |
+| 您看到的情况 | 它的实际状态 | 出现问题的原因 |
 |--------------|------------|-----------------|
-| Session exists but not working | **Stalled** | Interrupted/crashed, never nudged |
-| Session done but didn't exit | **Zombie** | `gt done` failed during cleanup |
+| 会话存在但不工作 | **Stalled** | 中断/崩溃，从未被提示 |
+| 会话完成但未退出 | **Zombie** | `gt done`在清理过程中失败 |
 
-**Manual State Transitions (Anti-pattern):**
+**手动状态转换（反模式）**：
 ```bash
 gt polecat done Toast    # DON'T: external state manipulation
 gt polecat reset Toast   # DON'T: manual lifecycle control
 ```
 
-**Correct:**
+**正确的做法**：
 ```bash
 # Polecat signals its own completion:
 gt done  # (from inside the polecat session)
@@ -1157,25 +1133,24 @@ gt done  # (from inside the polecat session)
 gt polecat nuke Toast  # (from Witness, after verification)
 ```
 
-### Witness Responsibilities
+### Witness的职责
 
-The Witness DOES NOT:
-- Force session cycles (polecats self-manage via handoff)
-- Interrupt mid-step (unless truly stuck)
-- Nuke polecats (polecats self-nuke via `gt done`)
+Witness不执行以下操作：
+- 强制会话循环（Polecats通过handoff自行管理）
+- 在步骤中途中断（除非确实卡住了）
+- 删除Polecats（Polecats通过`gt done`自行销毁）
 
-The Witness DOES:
-- Detect and nudge stalled polecats
-- Clean up zombie polecats
-- Respawn crashed sessions
-- Handle escalations from stuck polecats
+Witness执行以下操作：
+- 检测和提示卡住的Polecats
+- 清理僵尸Polecats
+- 重新启动崩溃的会话
+- 处理来自卡住Polecats的升级请求
 
 ---
 
-## Molecules & Formulas
+## Molecules与Formulas
 
-### Molecule Lifecycle
-
+### Molecule生命周期
 ```
 Formula (source TOML) ─── "Ice-9"
     │
@@ -1188,32 +1163,32 @@ Protomolecule (frozen template) ─── Solid
                                                      └▶ bd burn ──▶ (gone)
 ```
 
-### Core Concepts
+### 核心概念
 
-| Term | Description |
+| 术语 | 描述 |
 |------|-------------|
-| **Formula** | Source TOML template defining workflow steps |
-| **Protomolecule** | Frozen template ready for instantiation |
-| **Molecule** | Active workflow instance with trackable steps |
-| **Wisp** | Ephemeral molecule for patrol cycles (never synced) |
-| **Digest** | Squashed summary of completed molecule |
-| **Shiny Workflow** | Canonical polecat formula: design → implement → review → test → submit |
+| **Formula** | 定义工作流的TOML模板 |
+| **Protomolecule** | 可实例化的模板类 |
+| **Molecule** | 活动的工作流实例，带有可追踪的步骤 |
+| **Wisp** | 用于巡逻循环的临时Molecule（不进行同步） |
+| **Digest** | 完成Molecule的压缩摘要 |
+| **Shiny Workflow** | 标准的Polecat公式：设计 → 实现 → 审查 → 测试 → 提交 |
 
-### Navigating Molecules
+### 导航Molecules
 
 ```bash
 bd mol current              # Where am I?
 bd mol current gt-abc       # Status of specific molecule
 ```
 
-**Seamless Transitions:**
+**无缝转换**：
 ```bash
 bd close gt-abc.3 --continue   # Close and advance to next step
 ```
 
-### Molecule Commands
+### Molecule命令
 
-**Beads Operations (bd):**
+**Beads操作（bd）**：
 ```bash
 bd formula list              # Available formulas
 bd formula show <name>       # Formula details
@@ -1228,7 +1203,7 @@ bd mol burn <id>             # Discard wisp
 bd mol current               # Where am I?
 ```
 
-**Agent Operations (gt):**
+**智能体操作（gt）**：
 ```bash
 gt hook                    # What's on MY hook
 gt mol current               # What should I work on next
@@ -1240,15 +1215,15 @@ gt mol squash                # Squash attached molecule
 gt mol step done <step>      # Complete a molecule step
 ```
 
-### Common Mistake: Reading Formulas Directly
+### 常见错误：直接读取Formulas
 
-**WRONG:**
+**错误做法**：
 ```bash
 cat .beads/formulas/mol-polecat-work.formula.toml
 bd create --title "Step 1: Load context" --type task
 ```
 
-**RIGHT:**
+**正确做法**：
 ```bash
 bd cook mol-polecat-work
 bd mol pour mol-polecat-work --var issue=gt-xyz
@@ -1256,25 +1231,25 @@ bd ready                    # Find next step
 bd close <step-id>          # Complete it
 ```
 
-### Polecat Workflow
+### Polecat工作流程
 
-Polecats receive work via their hook - a pinned molecule attached to an issue.
+Polecats通过它们的hook接收工作——一个固定在问题上的Molecule。
 
-**Molecule Types for Polecats:**
+**Polecats的Molecule类型**：
 
-| Type | Storage | Use Case |
+| 类型 | 存储方式 | 使用场景 |
 |------|---------|----------|
-| **Regular Molecule** | `.beads/` (synced) | Discrete deliverables, audit trail |
-| **Wisp** | `.beads/` (ephemeral) | Patrol cycles, operational loops |
+| **Regular Molecule** | `.beads/`（同步的） | 离散的可交付物，审计追踪 |
+| **Wisp** | `.beads/`（临时的） | 巡逻循环，操作循环 |
 
-**Hook Management:**
+**Hook管理**：
 ```bash
 gt hook                        # What's on MY hook?
 gt mol attach-from-mail <id>   # Attach work from mail message
 gt done                        # Signal completion (syncs, submits to MQ, notifies Witness)
 ```
 
-**Polecat Workflow Summary:**
+**Polecat工作流程总结**：
 ```
 1. Spawn with work on hook
 2. gt hook                 # What's hooked?
@@ -1285,24 +1260,24 @@ gt done                        # Signal completion (syncs, submits to MQ, notifi
 7. gt done                 # Signal completion
 ```
 
-### Wisp vs Molecule Decision
+### Wisp与Molecule的区分
 
-| Question | Molecule | Wisp |
+| 问题 | Molecule | Wisp |
 |----------|----------|------|
-| Does it need audit trail? | Yes | No |
-| Will it repeat continuously? | No | Yes |
-| Is it discrete deliverable? | Yes | No |
-| Is it operational routine? | No | Yes |
+| 是否需要审计追踪？ | 是 | 否 |
+| 是否会重复执行？ | 是 | 否 |
+| 是否是离散的可交付物？ | 是 | 否 |
+| 是否是操作性任务？ | 是 | 否 |
 
-### Best Practices
+### 最佳实践
 
-1. **CRITICAL: Close steps in real-time** - Mark `in_progress` BEFORE starting, `closed` IMMEDIATELY after completing. Never batch-close steps at the end.
-2. **Use `--continue` for propulsion** - Keep momentum by auto-advancing
-3. **Check progress with `bd mol current`** - Know where you are before resuming
-4. **Squash completed molecules** - Create digests for audit trail
-5. **Burn routine wisps** - Don't accumulate ephemeral patrol data
+1. **关键：实时关闭步骤** - 在开始前标记`in_progress`，完成后立即标记`closed`。切勿在最后批量关闭步骤。
+2. **使用`--continue`进行推进** - 通过自动前进保持动力 |
+3. **使用`bd mol current`检查进度** - 在恢复前了解当前进度 |
+4. **压缩完成的Molecules** - 为审计追踪创建摘要 |
+5. **销毁常规的Wisps** - 不要累积临时的巡逻数据 |
 
-### Formula Resolution (Three-Tier)
+### Formula解析（三层结构）
 
 ```
 TIER 1: PROJECT (rig-level)
@@ -1315,13 +1290,11 @@ TIER 3: SYSTEM (embedded)
   Location: Compiled into gt binary
 ```
 
----
+## Convoys - 工作跟踪
 
-## Convoys - Work Tracking
+### 概念
 
-### Concept
-
-A **convoy** is a persistent tracking unit that monitors related issues across multiple rigs. When you kick off work - even a single issue - a convoy tracks it.
+**Convoy**是一个持久的跟踪单元，用于跨多个Rigs跟踪相关问题。当您开始工作时——即使是一个问题——convoy也会跟踪它。
 
 ```
                  🚚 Convoy (hq-cv-abc)
@@ -1344,16 +1317,15 @@ A **convoy** is a persistent tracking unit that monitors related issues across m
                     (ephemeral)
 ```
 
-### Convoy vs Swarm
+### Convoys与Swarm的区分
 
-| Concept | Persistent? | ID | Description |
+| 概念 | 是否持久？ | ID | 描述 |
 |---------|-------------|-----|-------------|
-| **Convoy** | Yes | hq-cv-* | Tracking unit. What you create, track, get notified about. |
-| **Swarm** | No | None | Ephemeral. "The workers currently on this convoy's issues." |
-| **Stranded Convoy** | Yes | hq-cv-* | A convoy with ready work but no polecats assigned. |
+| **Convoy** | 是 | hq-cv-* | 跟踪单元。您创建、跟踪并接收通知的对象。 |
+| **Swarm** | 否 | 无 | 临时的。“当前在这个convoy上的工作代理”。 |
+| **Stranded Convoy** | 是 | hq-cv-* | 有工作但没有分配Polecat的convoy。 |
 
-### Convoy Lifecycle
-
+### Convoys的生命周期
 ```
 OPEN ──(all issues close)──► LANDED/CLOSED
   ↑                              │
@@ -1361,15 +1333,14 @@ OPEN ──(all issues close)──► LANDED/CLOSED
        (auto-reopens)
 ```
 
-| State | Description |
+| 状态 | 描述 |
 |-------|-------------|
-| `open` | Active tracking, work in progress |
-| `closed` | All tracked issues closed, notification sent |
+| `open` | 活动跟踪，工作正在进行 |
+| `closed` | 所有跟踪的问题都已完成，已发送通知 |
 
-Adding issues to a closed convoy reopens it automatically.
+向closed的convoy添加问题会自动重新打开它。
 
-### Commands
-
+### 命令
 ```bash
 # Create convoy
 gt convoy create "Deploy v2.0" gt-abc bd-xyz --notify gastown/joe
@@ -1385,7 +1356,7 @@ gt convoy list --all
 bd dep add hq-cv-abc gt-new-issue --type=tracks
 ```
 
-**Example convoy status output:**
+**示例convoy状态输出**：
 ```
 🚚 hq-cv-abc: Deploy v2.0
 
@@ -1400,15 +1371,15 @@ bd dep add hq-cv-abc gt-new-issue --type=tracks
     ○ gt-jkl: Deploy to prod [task]
 ```
 
-### Notifications
+### 通知
 
-When a convoy lands, subscribers are notified:
+当convoy完成时，订阅者会收到通知：
 ```bash
 gt convoy create "Feature X" gt-abc --notify gastown/joe
 gt convoy create "Feature X" gt-abc --notify mayor/ --notify --human
 ```
 
-**Notification content:**
+**通知内容**：
 ```
 🚚 Convoy Landed: Deploy v2.0 (hq-cv-abc)
 
@@ -1420,9 +1391,9 @@ Issues (3):
 Duration: 2h 15m
 ```
 
-### Cross-Rig Tracking
+### 跨Rig跟踪
 
-Convoys live in town-level beads (`hq-cv-*` prefix) and can track issues from any rig:
+Convoys存储在城镇级别的Beads中（`hq-cv-*`前缀），可以从任何Rig跟踪问题：
 
 ```bash
 # Track issues from multiple rigs
@@ -1432,47 +1403,47 @@ gt convoy create "Full-stack feature" \
   bd-docs-xyz
 ```
 
-The `tracks` relation is:
-- **Non-blocking**: doesn't affect issue workflow
-- **Additive**: can add issues anytime
-- **Cross-rig**: convoy in hq-*, issues in gt-*, bd-*, etc.
+`tracks`关系是：
+- **非阻塞的**：不影响问题工作流程 |
+- **可添加的**：可以随时添加问题 |
+- **跨Rig的**：convoy在hq-*, issues在gt-*, bd-*等中 |
 
-### Convoy vs Rig Status
+### Convoys与Rig状态
 
-| View | Scope | Shows |
+| 查看方式 | 范围 | 显示内容 |
 |------|-------|-------|
-| `gt convoy status [id]` | Cross-rig | Issues tracked by convoy + workers |
-| `gt rig status <rig>` | Single rig | All workers in rig + their convoy membership |
+| `gt convoy status [id]` | 跨Rig | Convoy跟踪的问题 + 工作代理 |
+| `gt rig status <rig>` | 单个Rig | 该Rig中的所有工作代理 |
 
-Use convoys for "what's the status of this batch of work?"
-Use rig status for "what's everyone in this rig working on?"
+使用convoys来查询“这批工作的状态”？
+使用rig状态来查询“这个Rig中的工作代理都在做什么？”
 
-### Auto-Convoy on Sling
+### 自动创建Convoys
 
-When you sling a single issue without an existing convoy, Gas Town auto-creates one for dashboard visibility.
+当您在没有现有convoy的情况下将单个问题发送给智能体时，Gas Town会自动创建一个convoy以便在仪表板上显示。
 
 ---
 
-## Communication Systems
+## 通信系统
 
-### Mail Protocol
+### 邮件协议
 
-Gas Town agents coordinate via mail messages routed through the beads system.
+Gas Town智能体通过邮件消息进行协调，这些消息通过Beads系统路由。
 
-**Message Types:**
+**消息类型**：
 
-| Type | Route | Purpose |
+| 类型 | 路由 | 用途 |
 |------|-------|---------|
-| `POLECAT_DONE` | Polecat → Witness | Signal work completion |
-| `MERGE_READY` | Witness → Refinery | Signal branch ready for merge |
-| `MERGED` | Refinery → Witness | Confirm successful merge |
-| `MERGE_FAILED` | Refinery → Witness | Notify merge failure |
-| `REWORK_REQUEST` | Refinery → Witness | Request rebase for conflicts |
-| `WITNESS_PING` | Witness → Deacon | Second-order monitoring |
-| `HELP` | Any → escalation target | Request intervention |
-| `HANDOFF` | Agent → self | Session continuity |
+| `POLECAT_DONE` | Polecat → Witness | 信号工作完成 |
+| `MERGE_READY` | Witness → Refinery | 信号分支准备合并 |
+| `MERGED` | Refinery → Witness | 通知合并成功 |
+| `MERGE_FAILED` | Refinery → Witness | 通知合并失败 |
+| `REWORK_REQUEST` | Refinery → Witness | 请求重新基线以解决冲突 |
+| `WITNESS_PING` | Witness → Deacon | 二级监控 |
+| `HELP` | 任何 → 升级目标 | 请求干预 |
+| `HANDOFF` | 智能体 → 自身 | 会话连续性 |
 
-**Commands:**
+**命令**：
 ```bash
 gt mail inbox
 gt mail read <msg-id>
@@ -1480,9 +1451,9 @@ gt mail send <addr> -s "Subject" -m "Body"
 gt mail ack <msg-id>
 ```
 
-**Message Format Details:**
+**消息格式细节**：
 
-**POLECAT_DONE** (Polecat → Witness):
+**POLECAT_DONE**（Polecat → Witness）：
 ```
 Subject: POLECAT_DONE <polecat-name>
 Body:
@@ -1492,7 +1463,7 @@ MR: <mr-id>          # if exit=MERGED
 Branch: <branch>
 ```
 
-**HANDOFF** (Agent → self):
+**HANDOFF**（智能体 → 自身）：
 ```
 Subject: 🤝 HANDOFF: <brief-context>
 Body:
@@ -1509,13 +1480,13 @@ attached_at: <timestamp>
 <what successor should do>
 ```
 
-### Beads-Native Messaging
+### Beads原生消息
 
-Three bead types for managing communication:
+三种用于管理通信的Bead类型：
 
-- **Groups** (`gt:group`) - Named collections for mail distribution
-- **Queues** (`gt:queue`) - Work queues where messages can be claimed
-- **Channels** (`gt:channel`) - Pub/sub broadcast streams
+- **Groups** (`gt:group`) - 用于邮件分发的命名集合 |
+- **Queues** (`gt:queue`) | 可以领取消息的工作队列 |
+- **Channels** (`gt:channel`) | 发送/接收的广播流 |
 
 ```bash
 # Group management
@@ -1527,67 +1498,66 @@ gt mail channel create alerts --retain-count=50
 gt mail send channel:alerts -s "Build failed" -m "Details..."
 ```
 
-### Escalation Protocol
+### 升级协议
 
-**Severity Levels:**
+**严重级别**：
 
-| Level | Priority | Description |
+| 级别 | 优先级 | 描述 |
 |-------|----------|-------------|
-| **CRITICAL** | P0 | System-threatening, immediate attention |
-| **HIGH** | P1 | Important blocker, needs human soon |
-| **MEDIUM** | P2 | Standard escalation |
+| **CRITICAL** | P0 | 系统威胁，需要立即处理 |
+| **HIGH** | P1 | 重要的阻碍，需要人类立即处理 |
+| **MEDIUM** | P2 | 标准升级 |
 
-**Escalation Categories:**
+**升级类别**：
 
-| Category | Description | Default Route |
+| 类别 | 描述 | 默认路由 |
 |----------|-------------|---------------|
-| `decision` | Multiple valid paths, need choice | Deacon -> Mayor |
-| `help` | Need guidance or expertise | Deacon -> Mayor |
-| `blocked` | Waiting on unresolvable dependency | Mayor |
-| `failed` | Unexpected error, can't proceed | Deacon |
-| `emergency` | Security or data integrity issue | Overseer (direct) |
-| `gate_timeout` | Gate didn't resolve in time | Deacon |
-| `lifecycle` | Worker stuck or needs recycle | Witness |
+| `decision` | 多个有效路径，需要选择 | Deacon -> Mayor |
+| `help` | 需要指导或专业知识 | Deacon -> Mayor |
+| `blocked` | 等待未解决的依赖项 | Mayor |
+| `failed` | 发生意外错误，无法继续 | Deacon |
+| `emergency` | 安全或数据完整性问题 | 监控者（直接处理） |
+| `gate_timeout` | 通道未及时解决 | Deacon |
 
-**Commands:**
+**命令**：
 ```bash
 gt escalate "Database migration failed"
 gt escalate -s CRITICAL "Data corruption detected"
 gt escalate --type decision "Which auth approach?"
 ```
 
-### Handoff Skill
+### 手动转移当前会话
 
-Hand off your current session to a fresh Claude instance while preserving work context.
+在保持工作上下文的同时，将当前会话转移到新的Claude实例。
 
-**When to Use:**
-- Context getting full (approaching token limit)
-- Finished a logical chunk of work
-- Need a fresh perspective on a problem
-- Human requests session cycling
+**何时使用**：
+- 上下文即将满载（接近令牌限制）
+- 完成了一个逻辑部分的工作 |
+- 需要对问题有新的视角 |
+- 人类请求会话循环
 
-**Usage:**
+**使用方式**：
 ```bash
 /handoff [optional message]
 ```
 
-**What Persists:**
-- Hooked molecule: Your work assignment stays on your hook
-- Beads state: All issues, dependencies, progress
-- Git state: Commits, branches, staged changes
+**保留的内容**：
+- Hooked molecule：您的工作分配保留在您的hook上 |
+- Beads状态：所有问题、依赖项、进度 |
+- Git状态：提交、分支、待发布的更改
 
-**What Resets:**
-- Conversation context: Fresh Claude instance
-- TodoWrite items: Ephemeral, session-scoped
-- In-memory state: Any uncommitted analysis
+**重置的内容**：
+- 对话上下文：新的Claude实例 |
+- TodoWrite项：临时的，会话范围的 |
+- 内存中的状态：任何未提交的分析 |
 
 ---
 
-## Watchdog Chain
+## 监控链
 
-### Overview
+### 概述
 
-Gas Town uses a three-tier watchdog chain for autonomous health monitoring:
+Gas Town使用三层监控链进行自主健康监控：
 
 ```
 Daemon (Go process)          ← Dumb transport, 3-min heartbeat
@@ -1599,35 +1569,34 @@ Daemon (Go process)          ← Dumb transport, 3-min heartbeat
                     └─► Witnesses & Refineries  ← Per-rig agents
 ```
 
-**Key insight**: The daemon is mechanical (can't reason), but health decisions need intelligence. Boot bridges this gap.
+**关键见解**：守护进程是机械的（无法推理），但健康决策需要智能。Boot桥接了这个差距。
 
-### Session Ownership
+### 会话所有权
 
-| Agent | Session Name | Location | Lifecycle |
+| 智能体 | 会话名称 | 位置 | 生命周期 |
 |-------|--------------|----------|-----------|
-| Daemon | (Go process) | `~/gt/daemon/` | Persistent, auto-restart |
-| Boot | `gt-boot` | `~/gt/deacon/dogs/boot/` | Ephemeral, fresh each tick |
-| Deacon | `hq-deacon` | `~/gt/deacon/` | Long-running, handoff loop |
+| Daemon | `(Go进程)` | `~/gt/daemon/` | 持久的，自动重启 |
+| Boot | `gt-boot` | `~/gt/deacon/dogs/boot/` | 临时的，每个时间戳都会重新启动 |
+| Deacon | `hq-deacon` | `~/gt/deacon/` | 长期运行的，执行会话循环 |
 
-### Boot Decision Matrix
+### Boot决策矩阵
 
-| Condition | Action |
+| 条件 | 动作 |
 |-----------|--------|
-| Session dead | START |
-| Heartbeat > 15 min | WAKE |
-| Heartbeat 5-15 min + mail | NUDGE |
-| Heartbeat fresh | NOTHING |
+| 会话死亡 | 启动 |
+| Heartbeat > 15分钟 | 唤醒 |
+| Heartbeat 5-15分钟 + 有邮件 | 提示 |
+| Heartbeat新鲜 | 无动作 |
 
-### Patrol Agents
+### 巡逻智能体
 
-| Agent | Patrol Molecule | Responsibility |
-|-------|-----------------|----------------|
-| **Deacon** | `mol-deacon-patrol` | Agent lifecycle, plugin execution, health checks |
-| **Witness** | `mol-witness-patrol` | Monitor polecats, nudge stuck workers |
-| **Refinery** | `mol-refinery-patrol` | Process merge queue, review MRs |
+| 智能体 | Patrol Molecule | 负责人 |
+| -------|-----------------|----------------|
+| **Deacon** | `mol-deacon-patrol` | 智能体生命周期，插件执行，健康检查 |
+| **Witness** | `mol-witness-patrol` | 监控Polecats，提示卡住的智能体 |
+| **Refinery** | `mol-refinery-patrol` | 处理合并队列，审查MRs |
 
-### Health Check Commands
-
+### 健康检查命令
 ```bash
 gt deacon health-check <agent>   # Send health check ping
 gt deacon health-state           # Show health check state
@@ -1635,21 +1604,21 @@ cat ~/gt/deacon/heartbeat.json | jq .  # Check Deacon heartbeat
 gt boot triage                   # Manual Boot run
 ```
 
-### Design Rationale: Why Two Agents?
+### 设计理由：为什么需要两个智能体？
 
-**The Problem**: The daemon needs to ensure the Deacon is healthy, but:
-1. **Daemon can't reason** - It's Go code following the ZFC principle (don't reason about other agents)
-2. **Waking costs context** - Each time you spawn an AI agent, you consume context tokens
-3. **Observation requires intelligence** - Distinguishing "agent composing large artifact" from "agent hung on tool prompt" requires reasoning
+**问题**：守护进程需要确保Deacon是健康的，但是：
+1. **守护进程无法推理**——它是遵循ZFC原则的Go代码（不推理其他智能体） |
+2. **唤醒会消耗上下文**——每次启动一个AI智能体都会消耗上下文令牌 |
+3. **观察需要智能**——区分“正在构建大型任务的智能体”和“卡在工具提示上的智能体”需要推理 |
 
-**The Solution**: Boot is a narrow, ephemeral AI agent that:
-- Runs fresh each daemon tick (no accumulated context debt)
-- Makes a single decision: should Deacon wake?
-- Exits immediately after deciding
+**解决方案**：Boot是一个短暂的、临时的AI智能体：
+- 每个时间戳都会重新启动一次（不累积上下文债务） |
+- 做出一个决定：是否应该唤醒Deacon？
+- 决定后立即退出
 
-### Heartbeat Mechanics
+### Heartbeat机制
 
-The daemon runs a heartbeat tick every 3 minutes:
+守护进程每3分钟运行一次心跳：
 
 ```go
 func (d *Daemon) heartbeatTick() {
@@ -1662,43 +1631,43 @@ func (d *Daemon) heartbeatTick() {
 }
 ```
 
-**Heartbeat Freshness:**
+**Heartbeat新鲜度**：
 
-| Age | State | Boot Action |
+| 年龄 | 状态 | Boot动作 |
 |-----|-------|-------------|
-| < 5 min | Fresh | Nothing (Deacon active) |
-| 5-15 min | Stale | Nudge if pending mail |
-| > 15 min | Very stale | Wake (Deacon may be stuck) |
+| < 5分钟 | 新鲜 | 无动作（Deacon正在运行） |
+| 5-15分钟 | 过时 | 如果有未处理的邮件，则提示 |
+| > 15分钟 | 非常过时 | 唤醒（Deacon可能卡住了） |
 
-### State Files
+### 状态文件
 
-| File | Purpose | Updated By |
+| 文件 | 用途 | 更新者 |
 |------|---------|-----------|
-| `deacon/heartbeat.json` | Deacon freshness | Deacon (each cycle) |
-| `deacon/dogs/boot/.boot-running` | Boot in-progress marker | Boot spawn |
-| `deacon/dogs/boot/.boot-status.json` | Boot last action | Boot triage |
-| `deacon/health-check-state.json` | Agent health tracking | `gt deacon health-check` |
-| `daemon/daemon.log` | Daemon activity | Daemon |
-| `daemon/daemon.pid` | Daemon process ID | Daemon startup |
+| `deacon/heartbeat.json` | Deacon的新鲜度 | Deacon（每个周期） |
+| `deacon/dogs/boot/.boot-running` | Boot的运行标志 | Boot的启动 |
+| `deacon/dogs/boot/.boot-status.json` | Boot的最后一个动作 | Boot的调度 |
+| `deacon/health-check-state.json` | 智能体健康检查 | `gt deacon health-check` |
+| `daemon/daemon.log` | 守护进程活动 | 守护进程 |
+| `daemon/daemon.pid` | 守护进程ID | 守护进程 |
 
-### Degraded Mode
+### 降级模式
 
-When tmux is unavailable, Gas Town enters degraded mode:
+当tmux不可用时，Gas Town进入降级模式：
 
-| Capability | Normal | Degraded |
+| 功能 | 正常 | 降级 |
 |------------|--------|----------|
-| Boot runs | As AI in tmux | As Go code (mechanical) |
-| Observe panes | Yes | No |
-| Nudge agents | Yes | No |
-| Start agents | tmux sessions | Direct spawn |
+| Boot运行 | 作为tmux中的AI | 作为Go代码（机械的） |
+| 观察面板 | 是 | 否 |
+| 提示智能体 | 是 | 否 |
+| 启动智能体 | tmux会话 | 直接启动 |
 
 ---
 
-## Advanced Topics
+## 高级主题
 
-### Runtime Configuration
+### 运行时配置
 
-Gas Town supports multiple AI coding runtimes. Per-rig settings in `settings/config.json`:
+Gas Town支持多个AI运行时环境。每个Rig的设置位于`settings/config.json`中：
 
 ```json
 {
@@ -1711,9 +1680,9 @@ Gas Town supports multiple AI coding runtimes. Per-rig settings in `settings/con
 }
 ```
 
-### Model Evaluation and A/B Testing
+### 模型评估和A/B测试
 
-Gas Town's attribution enables objective model comparison:
+Gas Town的归属功能使得模型比较成为可能：
 
 ```bash
 # Deploy different models on similar tasks
@@ -1724,62 +1693,63 @@ gt sling gt-def gastown --model=gpt-4
 bd stats --actor=gastown/polecats/* --group-by=model
 ```
 
-### Cross-Rig Work Patterns
+### 跨Rig工作模式
 
-**Option 1: Worktrees (Preferred)**
+**选项1：工作树（推荐）**
 ```bash
 gt worktree beads
 # Creates ~/gt/beads/crew/gastown-joe/
 ```
 
-**Option 2: Dispatch to Local Workers**
+**选项2：分配给本地工作代理**
 ```bash
 bd create --prefix beads "Fix authentication bug"
 gt convoy create "Auth fix" bd-xyz
 gt sling bd-xyz beads
 ```
 
-### Sparse Checkout (Source Repo Isolation)
+### 稀疏检出（源代码库隔离）
 
-Gas Town uses sparse checkout to exclude Claude Code context files:
+Gas Town使用稀疏检出来排除Claude Code的上下文文件：
+
 ```bash
 git sparse-checkout set --no-cone '/*' '!/.claude/' '!/CLAUDE.md' '!/CLAUDE.local.md'
 ```
 
-### Mol Mall (Future)
+### Mol Mall（未来）
 
-A marketplace for Gas Town formulas - like npm for molecules.
+Gas Town公式的市场——类似于npm对于Molecules。
 
-**URI Scheme:**
+**URI方案**：
 ```
 hop://molmall.gastown.io/formulas/mol-polecat-work@4.0.0
 ```
 
-**Commands (Future):**
+**命令（未来）**：
 ```bash
 gt formula install mol-code-review-strict
 gt formula upgrade mol-polecat-work
 gt formula publish mol-polecat-work
 ```
 
-### Federation (HOP)
+### 联盟（HOP）
 
-Federation enables formula sharing across organizations using the Highway Operations Protocol.
+联盟允许使用Highway Operations Protocol在组织之间共享公式。
 
-### Dashboard
+### 仪表板
 
 ```bash
 gt dashboard --port 8080
 open http://localhost:8080
 ```
 
-Features:
-- Real-time agent status
-- Convoy progress tracking
-- Hook state visualization
-- Configuration management
+**功能**：
+- 实时智能体状态
+- Convoys进度跟踪 |
+- Hook状态可视化 |
+- 配置管理
 
-### Shell Completions
+### Shell完成
 
 ```bash
 gt completion bash > /etc/bash_completion.d/gt
@@ -1789,26 +1759,25 @@ gt completion fish > ~/.config/fish/completions/gt.fish
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| Agent in wrong directory | Check cwd, `gt doctor` |
-| Beads prefix mismatch | Check `bd show` vs rig config |
-| Worktree conflicts | Ensure `BEADS_NO_DAEMON=1` for polecats |
-| Stuck worker | `gt nudge`, then `gt peek` |
-| Dirty git state | Commit or discard, then `gt handoff` |
-| `gt: command not found` | Add `$HOME/go/bin` to PATH |
-| `bd: command not found` | `go install github.com/steveyegge/beads/cmd/bd@latest` |
-| Daemon not starting | Check tmux: `tmux -V` |
-| Agents lose connection | `gt hooks list` then `gt hooks repair` |
-| Convoy stuck | `gt convoy refresh <convoy-id>` |
-| Mayor not responding | `gt mayor detach` then `gt mayor attach` |
+| 智能体在错误的目录中 | 检查cwd，`gt doctor` |
+| Beads前缀不匹配 | 检查`bd show`与rig配置 |
+| 工作树冲突 | 确保`BEADS_NO_DAEMON=1`对于Polecats |
+| 工作代理卡住 | `gt nudge`，然后`gt peek` |
+| Git状态混乱 | 提交或丢弃，然后`gt handoff` |
+| `gt: command未找到` | 将 `$HOME/go/bin`添加到PATH |
+| `bd: command未找到` | `go install github.com/steveyegge/beads/cmd/bd@latest` |
+| 守护进程未启动 | 检查tmux：`tmux -V` |
+| 智能体断开连接 | `gt hooks list`然后`gt hooks repair` |
+| Convoy卡住 | `gt convoy refresh <convoy-id>` |
+| Mayor无响应 | `gt mayor detach`然后`gt mayor attach` |
 
-### Health Checks
-
+### 健康检查
 ```bash
 gt doctor              # Run health checks
 gt doctor --fix        # Auto-repair common issues
@@ -1816,7 +1785,7 @@ gt doctor --verbose    # Detailed output
 gt status              # Show workspace status
 ```
 
-### Debugging
+### 调试
 
 ```bash
 BD_DEBUG_ROUTING=1 bd show <id>  # Debug beads routing
@@ -1824,75 +1793,69 @@ gt peek <agent>                   # Check agent health
 tail -f ~/gt/daemon/daemon.log    # View daemon log
 ```
 
-### Common Mistakes
+### 常见错误
 
-1. **Using dogs for user work**: Dogs are Deacon infrastructure. Use crew or polecats.
-2. **Confusing crew with polecats**: Crew is persistent and human-managed. Polecats are transient.
-3. **Working in wrong directory**: Gas Town uses cwd for identity detection.
-4. **Waiting for confirmation when work is hooked**: The hook IS your assignment. Execute immediately.
-5. **Creating worktrees when dispatch is better**: If work should be owned by target rig, dispatch instead.
-6. **Reading formulas directly**: Use `bd cook` → `bd mol pour` pipeline instead.
-7. **Batch-closing molecule steps**: Close steps in real-time to maintain accurate timeline.
-
----
-
-## Glossary
-
-### Environments
-- **Town**: The management headquarters (e.g., `~/gt/`). Coordinates all workers across multiple Rigs.
-- **Rig**: A project-specific Git repository under Gas Town management.
-
-### Town-Level Roles
-- **Mayor**: Chief-of-staff agent responsible for initiating Convoys and coordinating work.
-- **Deacon**: Daemon beacon running continuous Patrol cycles for system health.
-- **Dogs**: The Deacon's crew of maintenance agents for background tasks.
-- **Boot**: A special Dog that checks the Deacon every 5 minutes.
-
-### Rig-Level Roles
-- **Polecat**: Ephemeral worker agents that produce Merge Requests.
-- **Refinery**: Manages the Merge Queue for a Rig.
-- **Witness**: Patrol agent that oversees Polecats and Refinery.
-- **Crew**: Long-lived, named agents for persistent collaboration.
-
-### Work Units
-- **Bead**: Git-backed atomic work unit stored in JSONL format.
-- **Formula**: TOML-based workflow source template.
-- **Protomolecule**: A template class for instantiating Molecules.
-- **Molecule**: Durable chained Bead workflows.
-- **Wisp**: Ephemeral Beads destroyed after runs.
-- **Hook**: A special pinned Bead for each agent's work queue.
-
-### Workflow Commands
-- **Convoy**: Primary work-order wrapping related Beads.
-- **Slinging**: Assigning work to agents via `gt sling`.
-- **Nudging**: Real-time messaging between agents with `gt nudge`.
-- **Handoff**: Agent session refresh via `/handoff`.
-- **Seance**: Communicating with previous sessions via `gt seance`.
-- **Patrol**: Ephemeral loop maintaining system heartbeat.
-
-### Principles
-- **MEOW**: Molecular Expression of Work - breaking large goals into trackable units.
-- **GUPP**: Gas Town Universal Propulsion Principle - "If there is work on your Hook, YOU MUST RUN IT."
-- **NDI**: Nondeterministic Idempotence - ensuring useful outcomes through orchestration.
+1. **将Dogs用于用户工作**：Dogs是Deacon的辅助角色。使用Crew或Polecats。
+2. **将Crew与Polecats混淆**：Crew是持久的，由人类管理。Polecats是临时的。
+3. **在错误的目录中工作**：Gas Town使用cwd进行身份检测。
+4. **在工作挂载后等待确认**：钩子就是你的任务。立即执行。
+5. **在分配工作时应使用工作树**：如果工作应该由目标Rig负责，应该直接分配。
+6. **直接读取Formulas**：使用`bd cook` → `bd mol pour`流程。
+7. **批量关闭Molecule步骤**：实时关闭步骤以保持时间线准确。
 
 ---
 
-## Why Gas Town Exists
+## 术语表
 
-As AI agents become central to engineering workflows, teams face new challenges:
+### 环境
+- **Town**：管理总部（例如，`~/gt/`）。协调多个Rigs中的所有工作代理。
+- **Rig**：在Gas Town管理下的项目特定Git仓库。
 
-- **Accountability:** Who did what? Which agent introduced this bug?
-- **Quality:** Which agents are reliable? Which need tuning?
-- **Efficiency:** How do you route work to the right agent?
-- **Scale:** How do you coordinate agents across repos and teams?
+### 城镇级角色
+- **Mayor**：负责启动Convoys和协调工作的主要AI代理。
+- **Deacon**：运行持续巡逻周期的守护进程。
+- **Dogs**：Deacon的辅助团队，负责维护任务。
+- **Boot**：一个特殊的Dog，每5分钟检查一次Deacon。
 
-Gas Town is an orchestration layer that treats AI agent work as structured data. Every action is attributed. Every agent has a track record. Every piece of work has provenance.
+### Rig级角色
+- **Polecat**：临时的工作代理，生成Merge Requests。
+- **Refinery**：管理Rig的合并队列。
+- **Witness**：监控Polecats和Refinery的巡逻代理。
+- **Crew**：持久的智能体，具有自己的克隆，由人类管理。
+- **Hook**：持久的存储，以JSONL格式存储在Git中。
+- **Formula**：基于TOML的工作流源模板。
+- **Protomolecule**：用于实例化Molecules的模板类。
+- **Molecule**：持久的链式Bead工作流。
+- **Wisp**：运行后会被销毁的临时Beads。
+- **Sling**：通过`gt sling`将工作分配给智能体。
+- **Nudging**：通过`gt nudge`在智能体之间进行实时消息传递。
+- **Handoff**：通过 `/handoff`刷新智能体会话。
+- **Seance**：通过`gt seance`与之前的会话通信。
+- **Patrol**：维护系统心跳的临时循环。
 
-### Feature: Work History (Agent CVs)
+### 原则
+- **MEOW**：工作的分子表达——将大型目标分解为可追踪的单元。
+- **GUPP**：Gas Town通用推进原则——“如果你的钩子上有工作，你必须执行它。”
+- **NDI**：非确定性幂等性——通过编排确保有用的结果。
 
-**The problem:** You want to assign a complex Go refactor. You have 20 agents. Some are great at Go. Some have never touched it. Some are flaky. How do you choose?
+---
 
-**The solution:** Every agent accumulates a work history:
+## Gas Town的存在原因
+
+随着AI智能体成为工程工作流程的核心，团队面临新的挑战：
+
+- **责任归属**：谁完成了什么？哪个智能体引入了这个错误？
+- **质量**：哪些智能体可靠？哪些需要调整？
+- **效率**：如何将工作分配给合适的智能体？
+- **扩展性**：如何跨仓库和团队协调智能体？
+
+Gas Town是一个编排层，将AI智能体的工作视为结构化数据。每个动作都有归属。每个智能体都有记录。每项工作都有来源信息。
+
+### 功能：工作历史（智能体简历）
+
+**问题**：您想要分配一个复杂的Go重构任务。您有20个智能体。有些擅长Go，有些从未接触过Go。有些表现不稳定。如何选择？
+
+**解决方案**：每个智能体都会积累工作历史：
 
 ```bash
 # What has this agent done?
@@ -1902,16 +1865,16 @@ bd audit --actor=gastown/polecats/toast
 bd stats --actor=gastown/polecats/toast --tag=go
 ```
 
-**Why it matters:**
-- **Performance management:** Objective data on agent reliability
-- **Capability matching:** Route work to proven agents
-- **Continuous improvement:** Identify underperforming agents for tuning
+**为什么这很重要**：
+- **性能管理**：关于智能体可靠性的客观数据 |
+- **能力匹配**：将工作分配给合适的智能体 |
+- **持续改进**：识别表现不佳的智能体进行调整
 
-### Feature: Capability-Based Routing
+### 功能：基于能力的路由
 
-**The problem:** You have work in Go, Python, TypeScript, Rust. You have agents with varying capabilities. Manual assignment doesn't scale.
+**问题**：您有Go、Python、TypeScript、Rust等不同语言的工作。您的智能体能力各不相同。手动分配效率低下。
 
-**The solution:** Work carries skill requirements. Agents have demonstrated capabilities (derived from their work history). Matching is automatic:
+**解决方案**：工作带有能力要求。智能体根据其工作历史进行匹配：
 
 ```bash
 # Agent capabilities (derived from work history)
@@ -1922,16 +1885,17 @@ bd skills gastown/polecats/toast
 gt dispatch gt-xyz --prefer-skill=go
 ```
 
-**Why it matters:**
-- **Efficiency:** Right agent for the right task
-- **Quality:** Agents work in their strengths
-- **Scale:** No human bottleneck on assignment
+**为什么这很重要**：
+- **效率**：将工作分配给合适的智能体 |
+- **能力匹配**：根据能力分配工作 |
+- **扩展性**：确保任务由合适的智能体完成 |
+- **扩展性**：避免人工分配时的瓶颈 |
 
-### Feature: Recursive Work Decomposition
+### 功能：递归工作分解
 
-**The problem:** Enterprise projects are complex. A "feature" becomes 50 tasks across 8 repos involving 4 teams. Flat issue lists don't capture this structure.
+**问题**：企业项目很复杂。一个“功能”可能分布在8个仓库中的50个任务中。传统的任务列表无法反映这一点。
 
-**The solution:** Work decomposes naturally:
+**解决方案**：工作自然地分解：
 
 ```
 Epic: User Authentication System
@@ -1945,13 +1909,13 @@ Epic: User Authentication System
     └── ...
 ```
 
-Each level has its own chain. Roll-ups are automatic. You always know where you stand.
+每个层次都有自己的流程。汇总是自动的。您始终知道自己的位置。
 
-### Feature: Cross-Project References
+### 功能：跨项目引用
 
-**The problem:** Your frontend can't ship until the backend API lands. They're in different repos. Traditional tools don't track this.
+**问题**：前端无法在后台API准备好之前发布。它们位于不同的仓库中。传统工具无法跟踪这一点。
 
-**The solution:** Explicit cross-project dependencies:
+**解决方案**：明确跨项目的依赖关系：
 
 ```
 depends_on:
@@ -1959,11 +1923,11 @@ depends_on:
   beads://github/acme/shared/sh-789   # Shared types
 ```
 
-### Feature: Validation and Quality Gates
+### 功能：验证和质量检查
 
-**The problem:** An agent says "done." Is it actually done? Is the code quality acceptable? Did it pass review?
+**问题**：一个智能体说“完成了”。它真的完成了吗？代码质量是否合格？它是否通过了审查？
 
-**The solution:** Structured validation with attribution:
+**解决方案**：结构化的验证和归属：
 
 ```json
 {
@@ -1978,66 +1942,41 @@ depends_on:
 }
 ```
 
-### Feature: Real-Time Activity Feed
+### 实时活动流
 
-**The problem:** Complex multi-agent work is opaque. You don't know what's happening until it's done (or failed).
+**问题**：复杂的多智能体工作在完成之前是不可见的。您只能在完成后才能知道情况。
 
-**The solution:** Work state as a real-time stream:
+**解决方案**：实时活动流：
 
-```bash
-bd activity --follow
+**为什么这很重要**：
+- **实时调试**：问题发生时立即发现 |
+- **状态意识**：始终了解当前的工作情况 |
+- **模式识别**：及时发现瓶颈和效率问题 |
 
-[14:32:08] + patrol-x7k.arm-ace bonded (5 steps)
-[14:32:09] → patrol-x7k.arm-ace.capture in_progress
-[14:32:10] ✓ patrol-x7k.arm-ace.capture completed
-[14:32:14] ✓ patrol-x7k.arm-ace.decide completed
-[14:32:17] ✓ patrol-x7k.arm-ace COMPLETE
-```
+### 企业价值主张
 
-**Why it matters:**
-- **Debugging in real-time:** See problems as they happen
-- **Status awareness:** Always know what's running
-- **Pattern recognition:** Spot bottlenecks and inefficiencies
-
-### The Enterprise Value Proposition
-
-| Capability | Developer Benefit | Enterprise Benefit |
+| 功能 | 开发者收益 | 企业收益 |
 |------------|-------------------|-------------------|
-| Attribution | Debug agent issues | Compliance audits |
-| Work history | Tune agent assignments | Performance management |
-| Skill routing | Faster task completion | Resource optimization |
-| Federation | Multi-repo projects | Cross-org visibility |
-| Validation | Quality assurance | Process enforcement |
-| Activity feed | Real-time debugging | Operational awareness |
+| 归属 | 调试智能体问题 | 合规性审计 |
+| 工作历史 | 调整智能体任务 | 性能管理 |
+| 能力匹配 | 更高效的任务分配 | 资源优化 |
+| 联盟 | 多仓库项目 | 跨组织可见性 |
+| 验证 | 质量保证 | 过程验证 |
 
-### Design Philosophy
+### 设计哲学
 
-1. **Attribution is not optional.** Every action has an actor.
-2. **Work is data.** Not just tickets - structured, queryable data.
-3. **History matters.** Track records determine trust.
-4. **Scale is assumed.** Multi-repo, multi-agent, multi-org from day one.
-5. **Verification over trust.** Quality gates are first-class primitives.
+1. **归属是必不可少的**：每个动作都有负责人。
+2. **工作是数据**：不仅仅是工单——是结构化、可查询的数据。
+3. **历史很重要**：记录决定了信任。
+4. **从一开始就考虑扩展性**：多仓库、多智能体、多团队。
+5. **验证优先**：验证是首要的。 |
 
----
+## 提示
 
-## Tips
-
-- **Always start with the Mayor** - It's designed to be your primary interface
-- **Use convoys for coordination** - They provide visibility across agents
-- **Leverage hooks for persistence** - Your work won't disappear
-- **Create formulas for repeated tasks** - Save time with Beads recipes
-- **Monitor the dashboard** - Get real-time visibility
-- **Let the Mayor orchestrate** - It knows how to manage agents
-- **Always use `gt --help`** or `gt <command> --help` to verify syntax
-
----
-
-## License
-
-MIT License - see LICENSE file for details
-
----
-
-*This glossary was contributed by [Clay Shirky](https://github.com/cshirky) in [Issue #80](https://github.com/steveyegge/gastown/issues/80).*
-
-**Installation Command**: `tessl install github:numman-ali/n-skills --skill gastown`
+- **始终从Mayor开始**：它被设计为您的主要接口。
+- **使用convoys进行协调**：它们提供了跨智能体的可见性。
+- **利用hooks进行持久化**：您的工作不会消失。
+- **为重复性任务创建Formulas**：使用Beads配方节省时间。
+- **监控仪表板**：获得实时可见性。
+- **让Mayor进行协调**：它知道如何管理智能体。
+- **始终使用`gt --help`或`gt <command> --help`来验证语法**

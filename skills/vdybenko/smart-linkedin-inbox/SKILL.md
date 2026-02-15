@@ -1,115 +1,98 @@
 ---
 name: smart-linkedin-inbox
-description: Access your LinkedIn inbox through Linxa using MCP.
+description: 通过 Linxa 使用 MCP 访问您的 LinkedIn 收件箱。
 List and search neriched conversations, and fetch messages — without sharing LinkedIn passwords.
 summary: Access your LinkedIn inbox through Linxa using MCP.
 ---
 
-#Smart LinkedIn Inbox from Linxa
+# Linxa的智能LinkedIn收件箱功能
 
-## What this skill does
+## 该功能的作用
 
-This skill connects OpenClaw to your Linxa Smart Inbox and lets you:
-	- List and search inbox conversations
-	- Fetch messages from a specific conversation
+该功能将OpenClaw与您的Linxa智能收件箱连接起来，让您能够：
+- 列出并搜索收件箱中的对话记录；
+- 获取特定对话中的消息。
 
+## 快速入门（3分钟）
 
-## Quickstart (3 minutes)
+### 1) 安装 [inxa Chrome扩展程序](https://chromewebstore.google.com/detail/ai-smart-inbox-for-linked/ggkdnjblijkchfmgapnbhbhnphacmabm)
 
+### 2) 使用LinkedIn登录[Linxa](https://app.uselinxa.com/)
 
-### 1) Install the [inxa Chrome Extension](https://chromewebstore.google.com/detail/ai-smart-inbox-for-linked/ggkdnjblijkchfmgapnbhbhnphacmabm)
+### 3) [生成](https://app.uselinxa.com/setup-mcp) 访问令牌
 
-
-### 2) Sign in to [Linxa](https://app.uselinxa.com/) with LinkedIn
-
-
-### 3) [Generate](https://app.uselinxa.com/setup-mcp) an access token
-
-###  4) Install the skill
+### 4) 安装该功能
 ```
 clawhub install smart-linkedin-inbox
 ```
 
-### 5) Set the token
+### 5) 设置令牌
 ```
 export LINXA_TOKEN=YOUR_TOKEN
 ```
 
-### 6) Tell OpenClaw to run the skill smart-linkedin-inbox read SKILL.md and use for LinkedIn 
+### 6) 告诉OpenClaw运行`smart-linkedin-inbox read`功能，并将其用于处理LinkedIn数据
 
-## Using the skill (example prompts)
+## 使用该功能（示例指令）
 
-You can interact with the skill using natural language:
-- Who am I on LinkedIn?
-- What are my latest LinkedIn messages?
-- Show my last messages with Mahde Shalaby
-- List hot conversations
+您可以使用自然语言与该功能进行交互：
+- 我在LinkedIn上的信息是什么？
+- 我最新的LinkedIn消息有哪些？
+- 显示我与Mahde Shalaby的最近对话记录；
+- 列出热门对话记录。
 
 ---
 
-Authentication
+**身份验证**
 
-All requests require an authorization header:
+所有请求都需要包含授权头部信息：
 ```
 Authorization: Bearer $LINXA_TOKEN
 ```
-Security notes
-- No LinkedIn password sharing
-- Uses your active LinkedIn browser session
-- Token-based access only
+
+**安全说明**
+- 不会共享您的LinkedIn密码；
+- 仅使用您当前活跃的LinkedIn浏览器会话；
+- 仅支持基于令牌的访问方式。
 
 ---
 
-## Available endpoints (tools)
+**可用的API端点**
 
-### 1) Verify current user
+### 1) 验证当前用户身份
 ```
 GET /api/mcp/current-li-user
 ```
 
-Verifies authentication and returns the current LinkedIn profile.
+该端点用于验证用户身份并返回当前的LinkedIn个人资料信息。
 
+### 2) 列出对话记录
 
-### 2) List conversations
+**查询参数：**
+- `limit` — 对话记录的数量（默认值：50）
+- `search` — 关键字搜索
+- `label` — 按类别过滤：
+  - 热门对话、需要跟进的对话、私人对话、投资者相关对话、客户相关对话、收件箱中的对话、招聘相关对话、垃圾邮件、合作伙伴相关对话、已归档的对话、计划中的对话、未联系的对话
+- `sentiment` — 情感倾向（正面、负面、中性）
+- `primary(intent` — 操作目的（例如：销售相关）
+- `intent_direction` — 消息的发送方向（发给我或来自我）
 
-```
-GET /api/mcp/conversations
-```
+### 3) 获取特定对话中的消息
 
-Query parameters:
-- limit — number of conversations (default: 50)
-- search — keyword search
-- label — filter by category
-Available values:
-Hot, Need Follow Up, Personal, Investors, Clients,
-Inbox, Hiring, Junk, Partnership, archived,
-scheduled, not-contacted
-- sentiment — POSITIVE, NEGATIVE, NEUTRAL
-- primary_intent — e.g. sales
-- intent_direction — to_me | from_me
+**返回指定对话中的所有消息**
 
+---
 
+**手动测试（使用curl命令）**
 
-### 3) Fetch messages from a conversation
-
-```
-GET /api/mcp/messages/{chatId}
-```
-
-Returns all messages for the specified conversation.
-
-
-## Manual testing (curl)
-
-Verify identity
+- 验证用户身份：
 ```
 curl -L \
   -H "Authorization: Bearer $LINXA_TOKEN" \
   https://app.uselinxa.com/api/mcp/current-li-user
 ```
 
-
-List hot conversations
+- 列出热门对话记录：
 ```
 curl -L \
   -H "Authorization: Bearer $LINXA_TOKEN" \
@@ -118,7 +101,7 @@ curl -L \
 
 ---
 
-Notes
-- URL-encode chatId if it contains special characters
-- This skill connects to the public Linxa API (app.uselinxa.com)
-- Message sync depends on an active Linxa + Chrome extension session
+**注意事项：**
+- 如果`chatId`包含特殊字符，请对其进行URL编码；
+- 该功能通过Linxa的公共API（app.uselinxa.com）进行数据交互；
+- 消息同步依赖于您当前激活的Linxa浏览器会话以及inxa Chrome扩展程序。

@@ -1,15 +1,15 @@
 ---
 name: skill-deps
-description: Track and manage dependencies between OpenClaw skills. Scan skills for dependencies, visualize skill trees, detect circular dependencies, and manage skill versioning. Use when analyzing skill relationships, checking which skills depend on others, or managing skill installations.
+description: 跟踪和管理 OpenClaw 技能之间的依赖关系。扫描技能以检测依赖项，可视化技能树结构，识别循环依赖关系，并管理技能的版本控制。适用于分析技能之间的关系、检查哪些技能依赖于其他技能，或管理技能的安装过程。
 ---
 
-# Skill Dependencies
+# 技能依赖关系
 
-Manage dependencies between OpenClaw skills — like npm for skills.
+用于管理 OpenClaw 技能之间的依赖关系（类似于 npm 对于普通软件包的管理方式）。
 
-## Version Constraints
+## 版本约束
 
-Supports semver-style version constraints:
+支持 semver 格式的版本约束：
 
 ```yaml
 depends:
@@ -20,9 +20,9 @@ depends:
   - github@1.5.0         # Exact version
 ```
 
-## Conflict Detection
+## 冲突检测
 
-Declare skills that cannot coexist:
+声明那些不能同时使用的技能：
 
 ```yaml
 conflicts:
@@ -30,11 +30,12 @@ conflicts:
   - legacy-calendar
 ```
 
-## Concepts
+## 概念
 
-### Declaring Dependencies
+### 声明依赖关系
 
-In a skill's `SKILL.md` frontmatter:
+在技能的 `SKILL.md` 文件的 `frontmatter` 部分中，可以声明技能之间的依赖关系：
+
 ```yaml
 ---
 name: my-skill
@@ -47,15 +48,15 @@ optional:
 ---
 ```
 
-### Dependency Types
+### 依赖类型
 
-- **depends** — Required skills (fail if missing)
-- **optional** — Enhanced functionality if present
-- **conflicts** — Cannot be used with these skills
+- **depends**：必需的技能（如果缺少，则安装失败）
+- **optional**：如果存在，则提供额外的功能
+- **conflicts**：不能与这些技能同时使用
 
-## Commands
+## 命令
 
-### Scan Skills
+### 扫描技能
 ```bash
 # Scan all installed skills for dependencies
 ./scripts/scan-skills.sh
@@ -64,7 +65,7 @@ optional:
 ./scripts/scan-skills.sh weather
 ```
 
-### Dependency Tree
+### 依赖关系树
 ```bash
 # Show full dependency tree
 ./scripts/skill-tree.sh my-skill
@@ -77,15 +78,16 @@ optional:
 #     └── github (optional)
 ```
 
-### Check Missing
+### 检查缺失的依赖关系
 ```bash
 # Find skills with unmet dependencies
 ./scripts/check-deps.sh
 ```
 
-## Registry Format
+## 注册表格式
 
-Skills can declare their metadata in `skill.json`:
+技能可以通过 `skill.json` 文件来声明自己的元数据：
+
 ```json
 {
   "name": "my-skill",
@@ -100,16 +102,16 @@ Skills can declare their metadata in `skill.json`:
 }
 ```
 
-## Skill Locations
+## 技能的存放位置
 
-Scans these directories:
-1. `/usr/lib/node_modules/openclaw/skills/` — Built-in skills
-2. `~/.openclaw/workspace/skills/` — User skills
-3. `./skills/` — Project-local skills
+系统会扫描以下目录来查找技能：
+1. `/usr/lib/node_modules/openclaw/skills/` — 内置技能
+2. `~/.openclaw/workspace/skills/` — 用户自定义的技能
+3. `./skills/` — 项目内部的技能
 
-## ClawHub Registry Integration
+## 与 ClawHub 注册表的集成
 
-Install skills from clawhub.com:
+可以从 clawhub.com 安装技能：
 
 ```bash
 # Install a skill (auto-resolves dependencies)
@@ -125,9 +127,10 @@ Install skills from clawhub.com:
 ./scripts/skill-list.sh --outdated
 ```
 
-## Auto-Resolution
+## 自动解析依赖关系
 
-When installing a skill with dependencies:
+在安装带有依赖关系的技能时，系统会自动处理这些依赖关系：
+
 ```
 $ ./scripts/skill-install.sh travel-planner
 
@@ -148,13 +151,13 @@ $ ./scripts/skill-install.sh travel-planner
 Done! Installed 4 skills.
 ```
 
-## Commands Summary
+## 命令汇总
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `scan-skills.sh` | List all skills with their deps |
-| `skill-tree.sh <name>` | Show dependency tree |
-| `check-deps.sh` | Find missing dependencies |
-| `skill-install.sh <name>` | Install from ClawHub |
-| `skill-search.sh <query>` | Search registry |
-| `check-conflicts.sh` | Detect conflicts |
+| `scan-skills.sh` | 列出所有技能及其依赖关系 |
+| `skill-tree.sh <名称>` | 显示技能的依赖关系树 |
+| `check-deps.sh` | 检查缺失的依赖关系 |
+| `skill-install.sh <名称>` | 从 ClawHub 安装技能 |
+| `skill-search.sh <查询>` | 在注册表中搜索技能 |
+| `check-conflicts.sh` | 检测技能之间的冲突 |

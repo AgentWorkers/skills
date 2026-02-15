@@ -1,16 +1,16 @@
-# Tork Guardian for OpenClaw
+# OpenClaw 的 Tork Guardian
 
-> OpenClaw is powerful. Tork makes it safe.
+> OpenClaw 是一款功能强大的工具，而 Tork 则为其提供了安全保障。
 
-Enterprise-grade security and governance layer for OpenClaw agents. Detect PII, enforce policies, generate compliance receipts, control tool access, and scan skills for vulnerabilities before installation.
+Tork 是专为 OpenClaw 代理设计的、企业级安全与治理解决方案。它能够检测个人身份信息（PII），执行政策规定，生成合规性报告，控制工具访问权限，并在安装技能之前扫描其中可能存在的漏洞。
 
-## Installation
+## 安装
 
 ```bash
 npm install @torknetwork/guardian
 ```
 
-## Quick Start
+## 快速入门
 
 ```typescript
 import { TorkGuardian } from '@torknetwork/guardian';
@@ -35,11 +35,11 @@ const decision = guardian.governTool({
 // { allowed: false, reason: 'Blocked shell command pattern: "rm -rf"' }
 ```
 
-## Network Security
+## 网络安全
 
-Tork Guardian governs all network activity — port binds, outbound connections, and DNS lookups — with SSRF prevention, reverse shell detection, and per-skill rate limiting.
+Tork Guardian 可以监控所有网络活动——包括端口绑定、出站连接以及 DNS 查询——并通过 SSRF 防御、反向 shell 检测以及针对每种技能的速率限制来保障网络安全。
 
-### Using the network handler
+### 使用网络处理功能
 
 ```typescript
 const guardian = new TorkGuardian({
@@ -68,7 +68,7 @@ const log = network.getActivityLog();
 const report = network.getMonitor().getNetworkReport();
 ```
 
-### Standalone functions
+### 独立功能
 
 ```typescript
 import { validatePortBind, validateEgress, validateDNS } from '@torknetwork/guardian';
@@ -80,7 +80,7 @@ validateEgress(config, 'my-skill', 'api.openai.com', 443);
 validateDNS(config, 'my-skill', 'api.openai.com');
 ```
 
-### Switching policies
+### 更改策略设置
 
 ```typescript
 // Default — balanced for dev & production
@@ -105,11 +105,11 @@ const guardian = new TorkGuardian({
 });
 ```
 
-See [docs/NETWORK-SECURITY.md](docs/NETWORK-SECURITY.md) for full details on threat coverage, policy comparison, and compliance receipts.
+有关威胁覆盖范围、策略比较及合规性报告的详细信息，请参阅 [docs/NETWORK-SECURITY.md](docs/NETWORK-SECURITY.md)。
 
-## Example Configs
+## 示例配置
 
-Pre-built configurations for common environments:
+以下是针对常见环境的预构建配置：
 
 ```typescript
 import {
@@ -120,12 +120,12 @@ import {
 } from '@torknetwork/guardian';
 ```
 
-| Config | Policy | Network | Description |
+| 配置 | 策略 | 网络设置 | 说明 |
 |--------|--------|---------|-------------|
-| `MINIMAL_CONFIG` | standard | default | Just an API key, all defaults |
-| `DEVELOPMENT_CONFIG` | minimal | default | Permissive policies, full logging |
-| `PRODUCTION_CONFIG` | standard | default | Blocked exfil domains (pastebin, ngrok, burp) |
-| `ENTERPRISE_CONFIG` | strict | strict | Explicit domain allowlist, 20 conn/min, TLS only |
+| `MINIMAL_CONFIG` | 标准配置 | 默认设置 | 仅需要 API 密钥，所有设置均使用默认值 |
+| `DEVELOPMENT_CONFIG` | 最简配置 | 默认设置 | 放松的策略设置，详细日志记录 |
+| `PRODUCTION_CONFIG` | 标准配置 | 默认设置 | 禁止某些数据泄露相关域名（如 pastebin、ngrok、burp） |
+| `ENTERPRISE_CONFIG` | 严格配置 | 严格策略设置 | 明确允许的域名列表，每分钟最多 20 次连接，仅支持 TLS 协议 |
 
 ```typescript
 import { TorkGuardian, PRODUCTION_CONFIG } from '@torknetwork/guardian';
@@ -136,7 +136,7 @@ const guardian = new TorkGuardian({
 });
 ```
 
-## Configuration
+## 配置设置
 
 ```typescript
 const guardian = new TorkGuardian({
@@ -171,15 +171,15 @@ const guardian = new TorkGuardian({
 });
 ```
 
-## Policies
+## 策略规则
 
-| Policy | PII | Shell | Files | Network |
-|--------|-----|-------|-------|---------|
-| **strict** | Deny on detection | Block all | Whitelist only | Block all |
-| **standard** | Redact | Block dangerous | Block sensitive | Allow |
-| **minimal** | Redact | Allow all | Allow all | Allow all |
+| 策略类型 | 对个人身份信息（PII）的处理方式 | 对 shell 命令的处理方式 | 对文件的处理方式 | 对网络活动的处理方式 |
+|--------|------------------|------------------|------------------|-------------------------|
+| **严格** | 检测到 PII 时立即拒绝访问 | 完全阻止所有相关操作 | 仅允许白名单中的文件访问 | 完全阻止所有网络连接 |
+| **标准** | 对 PII 进行模糊处理 | 阻止危险操作 | 阻止敏感文件访问 | 允许所有网络连接 |
+| **最简** | 对 PII 进行模糊处理 | 允许所有操作 | 允许所有文件访问 | 允许所有网络连接 |
 
-## Standalone Functions
+## 独立功能
 
 ```typescript
 import { redactPII, generateReceipt, governToolCall } from '@torknetwork/guardian';
@@ -197,11 +197,11 @@ const decision = governToolCall(
 );
 ```
 
-## Security Scanner
+## 安全扫描器
 
-Scan any OpenClaw skill for vulnerabilities **before** installing it. The scanner checks for 14 security patterns across code and network categories.
+在安装任何 OpenClaw 技能之前，可以使用该扫描器检查其中是否存在安全漏洞。扫描器会针对代码和网络层面检测 14 种常见的安全风险。
 
-### CLI
+### 命令行界面（CLI）
 
 ```bash
 # Scan a skill directory
@@ -217,7 +217,7 @@ npx tork-scan ./my-skill --json
 npx tork-scan ./my-skill --strict
 ```
 
-### Programmatic
+### 程序化接口
 
 ```typescript
 import { SkillScanner, generateBadge } from '@torknetwork/guardian';
@@ -229,17 +229,17 @@ console.log(`Risk: ${report.riskScore}/100`);
 console.log(`Verdict: ${report.verdict}`); // 'verified' | 'reviewed' | 'flagged'
 ```
 
-See [docs/SCANNER.md](docs/SCANNER.md) for the full rule reference, severity weights, and example output.
+有关完整规则参考、风险等级说明以及示例输出，请参阅 [docs/SCANNER.md](docs/SCANNER.md)。
 
-## Tork Verified Badges
+## Tork 验证的徽章
 
-Skills that pass the security scanner receive a Tork Verified badge:
+通过安全扫描的技能会获得 Tork 验证的徽章：
 
-| Badge | Score | Meaning |
-|-------|-------|---------|
-| **Tork Verified** (green) | 0 - 29 | Safe to install |
-| **Tork Reviewed** (yellow) | 30 - 49 | Manual review recommended |
-| **Tork Flagged** (red) | 50 - 100 | Security risks detected |
+| 徽章类型 | 得分 | 含义 |
+|---------|-------|---------|
+| **Tork 验证**（绿色） | 0 - 29 分 | 安全可靠，可放心安装 |
+| **Tork 审查中**（黄色） | 30 - 49 分 | 建议进行人工审核 |
+| **Tork 警告**（红色） | 50 - 100 分 | 发现安全风险 |
 
 ```typescript
 import { SkillScanner, generateBadge, generateBadgeMarkdown } from '@torknetwork/guardian';
@@ -252,6 +252,6 @@ const badge = generateBadge(report);
 console.log(generateBadgeMarkdown(badge));
 ```
 
-## Get Your API Key
+## 获取您的 API 密钥
 
-Sign up at [tork.network](https://tork.network) to get your API key.
+请访问 [tork.network](https://tork.network) 注册以获取您的 API 密钥。

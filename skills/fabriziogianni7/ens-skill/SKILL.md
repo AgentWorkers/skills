@@ -1,6 +1,6 @@
 ---
 name: ens
-description: Resolve ENS names (.eth) to Ethereum addresses and vice versa. Use when a user provides an .eth name (e.g. "send to vitalik.eth"), when displaying addresses (show ENS names), looking up ENS profiles, or helping users register, renew, or manage .eth names.
+description: 将 ENS 名称（.eth）解析为以太坊地址，反之亦然。当用户提供一个 .eth 名称（例如 “send to vitalik.eth”）时，或者在显示地址、查询 ENS 详情、帮助用户注册、续费或管理 .eth 名称时，都需要使用此功能。
 homepage: https://docs.ens.domains/
 metadata:
   openclaw:
@@ -8,176 +8,151 @@ metadata:
     requires: { env: [] }
 ---
 
-# ENS (Ethereum Name Service) — Skill
+# ENS（以太坊名称服务）——技能
 
-## What this skill does
+## 该技能的功能
 
-Enables Gundwane to:
-1. **Resolve ENS names** to Ethereum addresses (forward resolution)
-2. **Resolve addresses** to ENS names (reverse resolution)
-3. **Look up ENS profiles** (avatar, social records, text records)
-4. **Help users register, renew, and manage** .eth names on Ethereum mainnet
+该技能使Gundwane能够：
+1. **将ENS名称解析为以太坊地址**（正向解析）
+2. **将地址解析为ENS名称**（反向解析）
+3. **查询ENS资料**（头像、社交信息、文本记录）
+4. **帮助用户在以太坊主网上注册、续费和管理`.eth`名称
 
-## When to use
+## 使用场景
 
-- User mentions any `.eth` name: "send to vitalik.eth", "look up nick.eth", "who is luc.eth"
-- Displaying wallet addresses to the user — show the ENS primary name alongside the address
-- User asks "what's my ENS?", "do I have an ENS name?", "set my ENS"
-- User asks to register a new .eth name, renew an existing one, or update records
-- User sends to or receives from an `.eth` address
+- 当用户提到`.eth`名称时：例如“发送到vitalik.eth”、“查找nick.eth”、“谁是luc.eth”
+- 向用户显示钱包地址时——在地址旁边显示ENS的名称
+- 当用户询问“我的ENS名称是什么？”、“我有ENS名称吗？”、“设置我的ENS名称”
+- 当用户想要注册新的`.eth`名称、续费现有名称或更新记录时
+- 当用户向`.eth`地址发送或接收交易时
 
-## ENS Name Detection
+## ENS名称检测
 
-Any token matching `*.eth` in user input is likely an ENS name. Examples:
-- "send 0.1 ETH to vitalik.eth" → resolve `vitalik.eth`
-- "what's the address for nick.eth?" → resolve `nick.eth`
-- "register myname.eth" → check availability for `myname`
+用户输入中任何以`.eth`结尾的标记都可能是ENS名称。例如：
+- “向vitalik.eth发送0.1 ETH” → 解析为`vitalik.eth`
+- “nick.eth的地址是什么？” → 解析为`nick.eth`
+- “注册myname.eth” → 检查`myname`的可用性
 
-**Always resolve before using.** Never pass a `.eth` name directly to LI.FI or transaction tools — resolve to a `0x` address first.
+**使用前务必进行解析。**切勿直接将`.eth`名称传递给LI.FI或交易工具——先将其解析为`0x`地址。
 
-## Resolution
+## 解析方法
 
-### Forward Resolution (Name → Address)
+### 正向解析（名称 → 地址）
 
-Use `curl` to resolve an ENS name to its Ethereum address. Try in priority order.
+使用`curl`将ENS名称解析为其对应的以太坊地址。优先尝试以下方法：
 
-#### Approach 1: ENS Subgraph (The Graph)
+#### 方法1：ENS Subgraph（The Graph）
 
-Best for detailed data (expiry, registrant, resolver). Requires `GRAPH_API_KEY` env var.
+适用于获取详细信息（有效期、注册者、解析器）。需要`GRAPH_API_KEY`环境变量。
 
-```bash
-curl -s -X POST \
-  --url "https://gateway.thegraph.com/api/$GRAPH_API_KEY/subgraphs/id/5XqPmWe6gjyrJtFn9cLy237i4cWw2j9HcUJEXsP5qGtH" \
-  --header 'Content-Type: application/json' \
-  --data '{"query":"{ domains(where: { name: \"vitalik.eth\" }) { name resolvedAddress { id } expiryDate registration { registrant { id } expiryDate } } }"}'
+**代码块：**
+```plaintext
+response: data.domains[0].resolvedAddress.id` 是 `0x` 地址。
 ```
 
-Response: `data.domains[0].resolvedAddress.id` = the `0x` address.
+#### 方法2：web3.bio API（免费，无需密钥）
 
-#### Approach 2: web3.bio API (free, no key needed)
+适用于快速解析并一次性获取资料。
 
-Good for quick resolution + profile data in one call.
-
-```bash
-curl -s "https://api.web3.bio/profile/vitalik.eth"
+**代码块：**
+```plaintext
+返回包含`address`、`identity`、`displayName`、`avatar`、`description`和链接的社交资料的JSON。使用`address`字段获取解析后的`0x`地址。
 ```
 
-Returns JSON with `address`, `identity`, `displayName`, `avatar`, `description`, and linked social profiles. Use the `address` field for the resolved `0x` address.
+#### 方法3：使用Node.js和viem（备用方案）
 
-#### Approach 3: Node.js with viem (fallback)
+如果API不可用且Node.js可用（viem在项目依赖中）：
 
-If APIs are down and `node` is available (viem is in the project deps):
-
-```bash
-node --input-type=module -e "
-import { createPublicClient, http } from 'viem';
-import { mainnet } from 'viem/chains';
-import { normalize } from 'viem/ens';
-const c = createPublicClient({ chain: mainnet, transport: http('https://eth.llamarpc.com') });
-const addr = await c.getEnsAddress({ name: normalize('REPLACE_NAME') });
-console.log(JSON.stringify({ address: addr }));
-"
+**代码块：**
+```plaintext
+将`REPLACE_NAME`替换为实际的ENS名称。
 ```
 
-Replace `REPLACE_NAME` with the actual ENS name.
+**优先级：** 方法1 → 方法2 → 方法3。选择可用且最快的方法。
 
-**Priority:** Approach 1 → 2 → 3. Use whichever is available and fastest.
+### 反向解析（地址 → 名称）
 
-### Reverse Resolution (Address → Name)
+给定一个`0x`地址，查找其对应的ENS名称：
 
-Given a `0x` address, find the primary ENS name.
+#### 通过ENS Subgraph
 
-#### Via ENS Subgraph
-
-```bash
-curl -s -X POST \
-  --url "https://gateway.thegraph.com/api/$GRAPH_API_KEY/subgraphs/id/5XqPmWe6gjyrJtFn9cLy237i4cWw2j9HcUJEXsP5qGtH" \
-  --header 'Content-Type: application/json' \
-  --data '{"query":"{ domains(where: { resolvedAddress: \"0xd8da6bf26964af9d7eed9e03e53415d37aa96045\" }) { name } }"}'
+**代码块：**
+```plaintext
+注意：查询中的地址必须为小写。
 ```
 
-Note: address must be **lowercase** in the query.
+#### 通过web3.bio
 
-#### Via web3.bio
-
-```bash
-curl -s "https://api.web3.bio/profile/0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+**代码块：**
+```plaintext
+如果设置了主名称，则返回ENS名称和资料。
 ```
 
-Returns ENS name and profile if a primary name is set.
+#### 通过viem（备用方案）
 
-#### Via viem (fallback)
-
-```bash
-node --input-type=module -e "
-import { createPublicClient, http } from 'viem';
-import { mainnet } from 'viem/chains';
-const c = createPublicClient({ chain: mainnet, transport: http('https://eth.llamarpc.com') });
-const name = await c.getEnsName({ address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045' });
-console.log(JSON.stringify({ name }));
-"
+**代码块：**
+```plaintext
 ```
 
-### Profile Lookup
+### 查看资料
 
-Get ENS profile details: avatar, description, social links, text records.
+获取ENS资料详情：头像、描述、社交链接、文本记录。
 
-```bash
-curl -s "https://api.web3.bio/profile/nick.eth"
+**代码块：**
+```plaintext
 ```
 
-Common text record keys (for reference):
-- `com.twitter` — Twitter/X handle
-- `com.github` — GitHub username
-- `url` — Website
-- `email` — Email address
-- `avatar` — Avatar URL or NFT reference
-- `description` — Bio/description
-- `com.discord` — Discord handle
+**常见的文本记录键（供参考）：**
+- `com.twitter` — Twitter/X账号
+- `com.github` — GitHub用户名
+- `url` — 网站地址
+- `email` — 电子邮件地址
+- `avatar` — 头像URL或NFT引用
+- `description` — 个人简介/描述
+- `com.discord` — Discord账号
 
-### ENS Avatar URL
+### ENS头像URL
 
-Direct avatar image:
+直接获取头像图片：
+
+**代码块：**
+```plaintext
 ```
-https://metadata.ens.domains/mainnet/avatar/{name}
+示例：`https://metadata.ens.domains/mainnet/avatar/nick.eth`
 ```
 
-Example: `https://metadata.ens.domains/mainnet/avatar/nick.eth`
+在消息中显示用户ENS头像时使用此URL。
 
-Use this URL when displaying a user's ENS avatar in messages.
+## 显示规则
 
-## Display Rules
+### 显示地址时
+- 通过`defi_get_wallet`获取用户钱包信息后，可选地检查其ENS名称。
+- 如果用户有主ENS名称，显示该名称：`fabri.eth (0xabc...def)`
+- 在投资组合视图中，优先显示ENS名称。
+- 不要在每条消息中都进行解析——为会话缓存结果。
 
-### When showing addresses
-- After getting a user's wallet via `defi_get_wallet`, optionally check for a reverse ENS name.
-- If user has a primary ENS name, display it: `fabri.eth (0xabc...def)`
-- In portfolio views, prefer the ENS name when available.
-- Don't resolve on every message — cache the result for the session.
+### 进行交易解析时
+- **在执行交易前务必确认解析结果：**
+  **代码块：**
+  **切勿盲目信任解析结果——ENS记录可能会更改。始终显示`0x`地址。**
+```
 
-### When resolving for transactions
-- **Always confirm the resolved address** before executing:
-  ```
-  vitalik.eth → 0xd8dA...6045
-  Send 0.1 ETH to this address?
-  ```
-- Never blindly trust resolution — ENS records can change. Always show the `0x` address.
+### 在交易摘要中
+- 使用两种格式：`0.1 ETH → vitalik.eth (0xd8d...6045) on Base`
 
-### In transaction summaries
-- Use both: `0.1 ETH → vitalik.eth (0xd8d...6045) on Base`
+## 注册
 
-## Registration
+### `.eth`名称注册
 
-### .eth Name Registration
+注册仅在以太坊主网上进行。需要支付ETH作为名称费用和Gas费用。如果用户的ETH位于L2链上，需提示他们先进行桥接。
 
-Registration happens on **Ethereum mainnet only**. Requires ETH for the name price + gas. If the user's ETH is on L2, flag that they need to bridge first.
+**费用标准：**
+- 5个以上字符：每年5 ETH
+- 4个字符：每年160 ETH
+- 3个字符：每年640 ETH
 
-**Pricing:**
-- 5+ characters: $5/year in ETH
-- 4 characters: $160/year in ETH
-- 3 characters: $640/year in ETH
-
-**Contracts (Mainnet):**
-| Contract | Address |
+**相关合约（主网）：**
+| 合约 | 地址 |
 |----------|---------|
 | ENS Registry | `0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e` |
 | ETH Registrar Controller | `0x253553366Da8546fC250F225fe3d25d0C782303b` |
@@ -186,136 +161,100 @@ Registration happens on **Ethereum mainnet only**. Requires ETH for the name pri
 | Name Wrapper | `0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401` |
 | Universal Resolver | `0xce01f8eee7E479C928F8919abD53E553a36CeF67` |
 
-### Check Availability
+### 检查可用性
 
-Via the ENS subgraph:
+通过ENS Subgraph检查：
 
-```bash
-curl -s -X POST \
-  --url "https://gateway.thegraph.com/api/$GRAPH_API_KEY/subgraphs/id/5XqPmWe6gjyrJtFn9cLy237i4cWw2j9HcUJEXsP5qGtH" \
-  --header 'Content-Type: application/json' \
-  --data '{"query":"{ registrations(where: { labelName: \"myname\" }) { labelName expiryDate } }"}'
+**代码块：**
+```plaintext
+```
+如果没有结果或`expiryDate`在过去（+90天宽限期内），则名称可用。
 ```
 
-If no result or `expiryDate` is in the past (+ 90 day grace period), the name is available.
+或者直接链接让用户自行查看：`https://ens.app/myname.eth`
 
-Or link the user to check directly: `https://ens.app/myname.eth`
+### 注册流程
 
-### Registration Flow
+注册分为两步：提交和确认：
 
-Registration uses a 2-step commit/reveal process (prevents front-running):
+1. **检查可用性**（使用上述Subgraph查询）。
+2. **查看费用**：5个以上字符的名称每年费用约为5 ETH。实际费用取决于当前ETH价格。
+3. **展示信息**：
+   **代码块：**
+4. **步骤1 — 提交**：通过`defi_send_transaction`调用`ETH Registrar Controller`的`commit(bytes32)`（chainId: 1）。提交哈希值需根据名称、所有者地址、期限和随机密钥计算得出。
+5. **等待60秒**（告知用户：“提交已完成。注册将在约1分钟后完成。”）
+6. **步骤2 — 注册**：通过`defi_send_transaction`调用`register(name, owner, duration, secret, resolver, data, reverseRecord, fuses)`，并将名称费用作为`value`参数传递。
+7. **确认**：“myname.eth已注册！有效期为1年（截止日期2027年2月）。[查看交易详情](...)”
+8. **存储在策略中**并建议设置主名称。
 
-1. **Check availability** (subgraph query above).
-2. **Check price**: ~$5/year for 5+ char names. Current ETH price determines the exact cost.
-3. **Present summary**:
-   ```
-   Register myname.eth:
-   • Cost: ~0.002 ETH ($5) for 1 year
-   • Chain: Ethereum mainnet
-   • 2-step process (~2 min total)
+**更简单的注册方式：**直接引导用户使用ENS Manager App进行注册：`https://ens.app/myname.eth`——该应用提供友好的用户界面。建议首次注册时使用此方式。
 
-   Register?
-   ```
-4. **Step 1 — Commit**: Call `commit(bytes32)` on the ETH Registrar Controller via `defi_send_transaction` (chainId: 1). The commitment hash must be computed from the name, owner address, duration, and a random secret.
-5. **Wait 60 seconds** (tell the user: "Commitment submitted. Registration completes in ~1 minute.").
-6. **Step 2 — Register**: Call `register(name, owner, duration, secret, resolver, data, reverseRecord, fuses)` with the name price as `value`.
-7. **Confirm**: `myname.eth registered! Yours for 1 year (expires Feb 2027). [View tx](...)`
-8. **Store in strategy** and suggest setting a primary name.
+## 续费
 
-**Simpler alternative:** Direct the user to the ENS Manager App for registration: `https://ens.app/myname.eth` — this handles the full flow with a nice UI. Recommend this for first-time registrations.
+比注册简单——只需一次交易，无需提交步骤。
 
-## Renewal
+当用户请求“续费myname.eth”时：
 
-Simpler than registration — single transaction, no commit step.
+1. 通过Subgraph或策略查询当前有效期。
+2. 获取续费费用（与注册费用相同）。
+3. 展示信息：
+   **代码块：**
+4. 经用户确认后，通过`defi_send_transaction`调用`ETH Registrar Controller`的`renew(string name, uint256 duration)`（chainId: 1），并将续费费用作为`value`参数传递。期限以秒为单位（1年=31536000秒）。
+5. 在策略中更新有效期。
 
-When user says "renew myname.eth":
+**宽限期：**名称在过期后有90天的宽限期。仅原所有者可以在此期间续费。宽限期过后，名称将进入公开拍卖，价格会逐渐降低。
 
-1. Look up current expiry via subgraph or strategy.
-2. Get renewal price (same as registration pricing).
-3. Present summary:
-   ```
-   Renew myname.eth:
-   • Current expiry: Feb 8, 2027
-   • Cost: ~0.002 ETH ($5) for 1 year
-   • New expiry: Feb 8, 2028
-   ```
-4. On approval: Call `renew(string name, uint256 duration)` on the ETH Registrar Controller via `defi_send_transaction` (chainId: 1) with the renewal price as `value`. Duration in seconds (1 year = 31536000).
-5. Update expiry in strategy.
+## 设置记录
 
-**Grace period:** Names have a 90-day grace period after expiry. Only the original owner can renew during this window. After grace period, name goes to public auction with a temporary premium that decreases over 21 days.
+### 设置主名称（反向记录）
 
-## Setting Records
+当用户请求“设置我的ENS主名称”或“将myname.eth设为主名称”时：
 
-### Set Primary Name (Reverse Record)
+- 通过`defi_send_transaction`在主网上调用`Reverse Registrar`（`0xa58E81fe9b61B5c3fE2AFD33CF304c454AbFc7Cb`）的`setName(string name)`方法。
+- 这会使用户的地址在反向查询中解析为`myname.eth`。
+- 用户必须拥有该名称，并且该名称必须指向他们的地址。
 
-When user says "set my ENS primary name" or "make myname.eth my primary":
-- Call `setName(string name)` on the Reverse Registrar (`0xa58E81fe9b61B5c3fE2AFD33CF304c454AbFc7Cb`) via `defi_send_transaction` on mainnet (chainId: 1).
-- This makes the user's address resolve to `myname.eth` in reverse lookups.
-- The user must own the name and it must point to their address.
+### 设置文本记录
 
-### Set Text Records
+通过Public Resolver（`0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63`）更新社交/文本记录：
 
-Update social/text records via the Public Resolver (`0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63`):
-- Function: `setText(bytes32 node, string key, string value)`
-- The `node` is the namehash of the full name.
-- Common keys: `com.twitter`, `com.github`, `url`, `email`, `avatar`, `description`
+- 函数：`setText(bytes32 node, string key, string value)`
+- `node`是完整名称的哈希值。
+- 常见的键包括：`com.twitter`、`com.github`、`url`、`email`、`avatar`、`description`
 
-For complex record updates, recommend the ENS Manager App: `https://ens.app/myname.eth`
+对于复杂的记录更新，建议使用ENS Manager App：`https://ens.app/myname.eth`
 
-## Expiry Monitoring
+## 到期监控
 
-Store registered ENS names in the user's strategy for heartbeat monitoring:
+将注册的ENS名称存储在用户的策略中以进行定期检查：
 
-```json
-{
-  "ensNames": [
-    {
-      "name": "fabri.eth",
-      "expiry": "2027-02-08T00:00:00Z",
-      "isPrimary": true
-    }
-  ]
-}
+**代码块：**
+```plaintext
+```
+在定期检查期间，从每个用户的策略中获取`ensNames`：
+- **到期前30天**：`您的名称fabri.eth将在30天后过期。需要续费吗？`
+- **到期前7天**：`fabri.eth将在7天后过期。立即续费以保持有效。`
+- **已过期（在宽限期内）**：`fabri.eth已过期！您有90天时间进行续费。`
 ```
 
-During heartbeats, check `ensNames` from each user's strategy:
-- **30 days before expiry**: "Your name fabri.eth expires in 30 days. Want to renew?"
-- **7 days before expiry**: "fabri.eth expires in 7 days. Renew now to keep it."
-- **Expired (in grace period)**: "fabri.eth expired! You have 90 days to renew before it's released."
+## 数据存储——策略JSON
 
-## Data Storage — Strategy JSON
+ENS数据存储在用户的策略JSON文件中（通过`defi_set_strategy`）：
 
-ENS data is stored per-user in strategy JSON (via `defi_set_strategy`):
-
-```json
-{
-  "ensNames": [
-    {
-      "name": "fabri.eth",
-      "expiry": "2027-02-08T00:00:00Z",
-      "isPrimary": true
-    }
-  ],
-  "ensPreferences": {
-    "showEnsInPortfolio": true,
-    "expiryAlertDays": 30
-  }
-}
+**代码块：**
+```plaintext
+```
+通过`defi_get_strategy`读取数据，通过`defi_set_strategy`写入数据。数据按用户单独存储。
 ```
 
-Read via `defi_get_strategy`, write via `defi_set_strategy`. Automatically per-user.
-
-Narrative data (e.g., "resolved vitalik.eth for a 0.1 ETH transfer") goes to per-user daily memory.
-
-## Rules
-
-1. **Always resolve before transacting.** Never pass `.eth` names to LI.FI or transaction tools. Resolve to a `0x` address first.
-2. **Confirm resolved address.** Always show the user the resolved `0x` address before sending funds. ENS records can change.
-3. **Mainnet only for registration/renewal.** .eth names live on Ethereum mainnet. Flag if user needs to bridge ETH for gas + fees.
-4. **No permission for lookups.** ENS resolution and profile lookups are read operations — do them silently.
-5. **Cache within session.** If you resolve a name in a conversation, reuse the result. Don't re-resolve every message.
-6. **Handle failures gracefully.** If resolution fails (name doesn't exist, API down), tell the user clearly. Never guess an address.
-7. **Monitor expiry during heartbeats.** Check `ensNames` in user strategies. Alert before names expire.
-8. **Per-user isolation.** ENS data lives in the user's strategy JSON. Never cross-read.
-9. **Suggest ENS once.** If user doesn't have an ENS name and frequently uses their raw address, mention ENS once. Don't push it.
-10. **ENSv2 awareness.** ENS is migrating to a new L2-based system (ENSv2). Current mainnet registration still works. Be aware this may change.
+**其他注意事项：**
+- **交易前务必进行解析。**切勿将`.eth`名称直接传递给LI.FI或交易工具。先将其解析为`0x`地址。
+- **确认解析结果。**在发送资金前始终向用户显示解析后的`0x`地址。ENS记录可能会更改。
+- **仅限主网进行注册/续费**。`.eth`名称存储在以太坊主网上。如果用户需要，需提示他们桥接ETH以支付Gas费用。
+- **禁止查询功能**。ENS解析和资料查询属于只读操作，应默默执行。
+- **会话内缓存结果**。如果在对话中解析了名称，可重用结果，无需每次都重新解析。
+- **优雅处理错误**。如果解析失败（名称不存在或API不可用），请向用户明确说明情况。切勿猜测地址。
+- **定期检查到期时间**。在定期检查中检查用户的策略中的`ensNames`。
+- **用户数据隔离**。ENS数据存储在用户的策略JSON文件中，禁止跨用户访问。
+- **建议使用ENS**。如果用户没有ENS名称但经常使用原始地址，建议提醒他们使用ENS。不要强行推荐。
+- **注意ENSv2的更新**。ENS正在迁移到新的L2基础系统（ENSv2）。当前的主网注册方式仍然有效，但未来可能会有变化。

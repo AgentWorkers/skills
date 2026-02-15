@@ -1,71 +1,72 @@
 ---
 name: openviking
-description: RAG and semantic search via OpenViking Context Database MCP server. Query documents, search knowledge base, add files/URLs to vector memory. Use for document Q&A, knowledge management, AI agent memory, file search, semantic retrieval. Triggers on "openviking", "search documents", "semantic search", "knowledge base", "vector database", "RAG", "query pdf", "document query", "add resource".
+description: 通过 OpenViking Context Database MCP 服务器实现 RAG（Retrieval with Annotation and Graph）和语义搜索功能。可以查询文档、搜索知识库，并将文件/URL 添加到向量内存中。该系统可用于文档问答、知识管理、AI 代理的记忆存储、文件搜索以及语义信息检索等场景。相关操作可通过以下命令触发：`openviking`、`search documents`、`semantic search`、`knowledge base`、`vector database`、`RAG`、`query pdf`、`document query`、`add resource`。
 ---
 
-# OpenViking - Context Database for AI Agents
+# OpenViking – 专为AI代理设计的上下文数据库
 
-OpenViking is ByteDance's open-source **Context Database** designed for AI Agents — a next-generation RAG system that replaces flat vector storage with a filesystem paradigm for managing memories, resources, and skills.
+OpenViking 是字节跳动（ByteDance）开发的开源**上下文数据库**，专为AI代理设计。它是一种新一代的RAG（Retrieval-Augmentation）系统，通过文件系统范式替代了传统的扁平向量存储方式，用于管理记忆、资源和技能。
 
-**Key Features:**
-- **Filesystem paradigm**: Organize context like files with URIs (`viking://resources/...`)
-- **Tiered context (L0/L1/L2)**: Abstract → Overview → Full content, loaded on demand
-- **Directory recursive retrieval**: Better accuracy than flat vector search
-- **MCP server included**: Full RAG pipeline via Model Context Protocol
+**主要特性：**
+- **文件系统范式**：使用URI（如 `viking://resources/...`）来组织上下文数据。
+- **分层上下文结构（L0/L1/L2）**：数据从抽象层逐步细化到详细内容，按需加载。
+- **目录递归检索**：比扁平向量搜索具有更高的准确性。
+- **内置MCP服务器**：通过Model Context Protocol提供完整的RAG处理流程。
 
 ---
 
-## Quick Check: Is It Set Up?
+## 快速检查：是否已安装？
 
 ```bash
 test -f ~/code/openviking/examples/mcp-query/ov.conf && echo "Ready" || echo "Needs setup"
 curl -s http://localhost:2033/mcp && echo "Running" || echo "Not running"
 ```
 
-## If Not Set Up → Initialize
+## 如果未安装 → 初始化
 
-Run the init script (one-time):
+运行初始化脚本（仅需执行一次）：
 
 ```bash
 bash ~/.openclaw/skills/openviking-mcp/scripts/init.sh
 ```
 
-This will:
-1. Clone OpenViking from `https://github.com/volcengine/OpenViking`
-2. Install dependencies with `uv sync`
-3. Create `ov.conf` template
-4. **Pause for you to add API keys** (embedding.dense.api_key, vlm.api_key)
+该脚本将：
+1. 从 `https://github.com/volcengine/OpenViking` 克隆OpenViking代码。
+2. 使用 `uv sync` 安装所需依赖项。
+3. 创建 `ov.conf` 配置文件。
+4. **提示您输入API密钥**（`embeddingdense.api_key` 和 `vlm.api_key`）。
 
-**Required: Volcengine/Ark API Keys**
+**所需密钥：Volcengine/Ark API密钥**
 
-| Config Key | Purpose |
+| 配置键 | 用途 |
 |------------|---------|
-| `embedding.dense.api_key` | Semantic search embeddings |
-| `vlm.api_key` | LLM for answer generation |
+| `embeddingdense.api_key` | 用于语义搜索的嵌入模型 |
+| `vlm.api_key` | 用于生成答案的LLM（Large Language Model） |
 
-Get keys from: https://console.volcengine.com/ark
+请在 [https://console.volcengine.com/ark] 获取API密钥。
 
-## Start the Server
+## 启动服务器
 
 ```bash
 cd ~/code/openviking/examples/mcp-query
 uv run server.py
 ```
 
-Options:
-- `--port 2033` - Listen port
-- `--host 127.0.0.1` - Bind address
-- `--data ./data` - Data directory
+可选参数：
+- `--port 2033`：指定服务器监听端口。
+- `--host 127.0.0.1`：设置服务器绑定地址。
+- `--data ./data`：指定数据目录。
 
-Server will be at: `http://127.0.0.1:2033/mcp`
+服务器地址为：`http://127.0.0.1:2033/mcp`
 
-## Connect to Claude
+## 连接到Claude
 
 ```bash
 claude mcp add --transport http openviking http://localhost:2033/mcp
 ```
 
-Or add to `~/.mcp.json`:
+或者，您也可以将服务器配置信息添加到 `~/.mcp.json` 文件中：
+
 ```json
 {
   "mcpServers": {
@@ -77,17 +78,17 @@ Or add to `~/.mcp.json`:
 }
 ```
 
-## Tools Available
+## 可用工具
 
-| Tool | Description |
+| 工具 | 功能描述 |
 |------|-------------|
-| `query` | Full RAG pipeline — search + LLM answer |
-| `search` | Semantic search only, returns docs |
-| `add_resource` | Add files, directories, or URLs |
+| `query` | 完整的RAG处理流程：同时支持搜索和LLM生成答案。 |
+| `search` | 仅支持语义搜索，返回文档内容。 |
+| `add_resource` | 用于添加文件、目录或URL。 |
 
-## Example Usage
+## 示例用法
 
-Once connected via MCP:
+连接成功后，您可以按照以下步骤使用OpenViking：
 
 ```
 "Query: What is OpenViking?"
@@ -96,16 +97,16 @@ Once connected via MCP:
 "Add ~/documents/report.pdf"
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Fix |
+| 问题 | 解决方案 |
 |-------|-----|
-| Port in use | `uv run server.py --port 2034` |
-| Auth errors | Check API keys in ov.conf |
-| Server not found | Ensure it's running: `curl localhost:2033/mcp` |
+| 端口已被占用 | 使用 `uv run server.py --port 2034` 重新启动服务器。 |
+| 认证错误 | 检查 `ov.conf` 文件中的API密钥是否正确。 |
+| 服务器未启动 | 确保服务器正在运行：`curl localhost:2033/mcp`。
 
-## Files
+## 相关文件
 
-- `ov.conf` - Configuration (API keys, models)
-- `data/` - Vector database storage
-- `server.py` - MCP server implementation
+- `ov.conf`：配置文件（包含API密钥和模型信息）。 |
+- `data/`：用于存储向量数据的目录。 |
+- `server.py`：MCP服务器的实现代码。

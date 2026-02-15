@@ -1,17 +1,17 @@
 ---
 name: search
-description: "Search the web using Tavily's LLM-optimized search API. Returns relevant results with content snippets, scores, and metadata. Use when you need to find web content on any topic without writing code."
+description: "使用 Tavily 的 LLM 优化搜索 API 在网络上进行搜索。该 API 会返回包含内容片段、评分和元数据的相关结果。当您需要查找任何主题的网页内容而无需编写代码时，可以使用该服务。"
 ---
 
-# Search Skill
+# 搜索技能
 
-Search the web and get relevant results optimized for LLM consumption.
+该功能可在线搜索网页，并返回针对大型语言模型（LLM）使用而优化的相关结果。
 
-## Prerequisites
+## 先决条件
 
-**Tavily API Key Required** - Get your key at https://tavily.com
+**需要 Tavily API 密钥** - 请在 [https://tavily.com](https://tavily.com) 获取您的密钥。
 
-Add to `~/.claude/settings.json`:
+将密钥添加到 `~/.claude/settings.json` 文件中：
 ```json
 {
   "env": {
@@ -20,15 +20,15 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-## Quick Start
+## 快速入门
 
-### Using the Script
+### 使用脚本
 
 ```bash
 ./scripts/search.sh '<json>'
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Basic search
 ./scripts/search.sh '{"query": "python async patterns"}'
@@ -43,7 +43,7 @@ Add to `~/.claude/settings.json`:
 ./scripts/search.sh '{"query": "machine learning", "include_domains": ["arxiv.org", "github.com"], "search_depth": "advanced"}'
 ```
 
-### Basic Search
+### 基本搜索
 
 ```bash
 curl --request POST \
@@ -56,7 +56,7 @@ curl --request POST \
   }'
 ```
 
-### Advanced Search
+### 高级搜索
 
 ```bash
 curl --request POST \
@@ -72,38 +72,38 @@ curl --request POST \
   }'
 ```
 
-## API Reference
+## API 参考
 
-### Endpoint
+### 端点
 
 ```
 POST https://api.tavily.com/search
 ```
 
-### Headers
+### 请求头
 
-| Header | Value |
-|--------|-------|
+| 头部字段 | 值         |
+|---------|------------|
 | `Authorization` | `Bearer <TAVILY_API_KEY>` |
 | `Content-Type` | `application/json` |
 
-### Request Body
+### 请求体
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `query` | string | Required | Search query (keep under 400 chars) |
-| `max_results` | integer | 5 | Maximum results (0-20) |
-| `search_depth` | string | `"basic"` | `ultra-fast`, `fast`, `basic`, `advanced` |
-| `topic` | string | `"general"` | `general`, `news`, `finance` |
-| `chunks_per_source` | integer | 3 | Chunks per source (advanced/fast only) |
-| `time_range` | string | null | `day`, `week`, `month`, `year` |
-| `include_domains` | array | [] | Domains to include (max 300) |
-| `exclude_domains` | array | [] | Domains to exclude (max 150) |
-| `include_answer` | boolean | false | Include AI-generated answer |
-| `include_raw_content` | boolean | false | Include full page content |
-| `include_images` | boolean | false | Include image results |
+| 字段        | 类型          | 默认值       | 说明                |
+|------------|--------------|-------------|-------------------|
+| `query`     | string        | 必填        | 搜索查询（长度不超过 400 个字符）     |
+| `max_results` | integer       | 5           | 最大返回结果数量（0-20）       |
+| `search_depth` | string        | `"basic"`       | `ultra-fast`, `fast`, `basic`, `advanced` |
+| `topic`     | string        | `"general"`       | `general`, `news`, `finance`     |
+| `chunks_per_source` | integer       | 3           | 每个来源返回的片段数量（仅限高级/快速搜索） |
+| `time_range` | string        | null          | `day`, `week`, `month`, `year`     |
+| `include_domains` | array        | []          | 要包含的域名（最多 300 个）       |
+| `exclude_domains` | array        | []          | 要排除的域名（最多 150 个）       |
+| `include_answer` | boolean       | false         | 是否包含 AI 生成的结果     |
+| `include_raw_content` | boolean       | false         | 是否包含完整页面内容         |
+| `include_images` | boolean       | false         | 是否包含图片结果         |
 
-### Response Format
+### 响应格式
 
 ```json
 {
@@ -120,24 +120,24 @@ POST https://api.tavily.com/search
 }
 ```
 
-## Search Depth
+## 搜索深度
 
-| Depth | Latency | Relevance | Content Type |
-|-------|---------|-----------|--------------|
-| `ultra-fast` | Lowest | Lower | NLP summary |
-| `fast` | Low | Good | Chunks |
-| `basic` | Medium | High | NLP summary |
-| `advanced` | Higher | Highest | Chunks |
+| 深度       | 响应延迟      | 相关性      | 内容类型            |
+|------------|-------------|-------------|-------------------|
+| `ultra-fast`  | 最低          | 最低          | NLP 摘要             |
+| `fast`     | 较低          | 较高          | 分段式结果           |
+| `basic`     | 中等          | 较高          | NLP 摘要             |
+| `advanced`  | 最高          | 最高          | 分段式结果           |
 
-**When to use each:**
-- `ultra-fast`: Real-time chat, autocomplete
-- `fast`: Need chunks but latency matters
-- `basic`: General-purpose, balanced
-- `advanced`: Precision matters (default recommendation)
+**使用建议：**
+- `ultra-fast`：适用于实时聊天、自动完成等场景。
+- `fast`：需要分段式结果，但对响应延迟有要求。
+- `basic`：通用搜索方式，性能与准确性平衡。
+- `advanced`：注重搜索结果的精确性（推荐使用）。
 
-## Examples
+## 示例
 
-### News Search
+### 新闻搜索
 
 ```bash
 curl --request POST \
@@ -152,7 +152,7 @@ curl --request POST \
   }'
 ```
 
-### Domain-Filtered Search
+### 域名过滤搜索
 
 ```bash
 curl --request POST \
@@ -166,7 +166,7 @@ curl --request POST \
   }'
 ```
 
-### Search with Full Content
+### 带有完整内容的搜索
 
 ```bash
 curl --request POST \
@@ -180,7 +180,7 @@ curl --request POST \
   }'
 ```
 
-### Finance Search
+### 金融领域搜索
 
 ```bash
 curl --request POST \
@@ -194,10 +194,9 @@ curl --request POST \
   }'
 ```
 
-## Tips
-
-- **Keep queries under 400 characters** - Think search query, not prompt
-- **Break complex queries into sub-queries** - Better results than one massive query
-- **Use `include_domains`** to focus on trusted sources
-- **Use `time_range`** for recent information
-- **Filter by `score`** (0-1) to get highest relevance results
+## 提示：
+- **查询长度不超过 400 个字符**：请注意输入的是搜索内容，而非提示语。
+- **将复杂查询拆分为多个子查询**：这样通常能获得更好的搜索结果。
+- **使用 `include_domains` 限定搜索范围**：仅获取来自可信来源的信息。
+- **使用 `time_range` 筛选最新内容**。
+- **根据 `score`（0-1）筛选结果**：分数越高，相关性越高。

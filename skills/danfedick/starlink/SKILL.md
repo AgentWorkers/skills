@@ -1,102 +1,99 @@
 ---
 name: starlink
 version: 1.0.0
-description: Control Starlink dish via local gRPC API. Get status, list WiFi clients, run speed tests, stow/unstow dish, reboot, and get GPS location. Use when the user asks about Starlink, internet status, connected devices, or satellite connectivity.
+description: 通过本地的 gRPC API 来控制 Starlink 卫星天线：可以查询天线的状态、列出连接的 WiFi 设备、执行速度测试、收放天线、重启天线以及获取 GPS 位置信息。当用户询问有关 Starlink 的使用情况、网络状态、已连接的设备或卫星连接情况时，可以使用该接口。
 homepage: https://github.com/danfedick/starlink-cli
 metadata: {"clawdbot":{"emoji":"📡","requires":{"bins":["starlink"]},"install":[{"id":"cargo","kind":"cargo","git":"https://github.com/danfedick/starlink-cli","bins":["starlink"],"label":"Install starlink-cli (cargo)"}]}}
 ---
 
 # Starlink CLI
 
-Control your Starlink dish from the command line via its local gRPC API at `192.168.100.1:9200`.
+您可以通过命令行，通过其本地的 gRPC API（地址为 `192.168.100.1:9200`）来控制您的 Starlink 卫星天线。
 
-## Installation
+## 安装
 
 ```bash
 cargo install --git https://github.com/danfedick/starlink-cli
 ```
 
-Requires Rust and `protoc` (Protocol Buffers compiler).
+需要安装 Rust 和 `protoc`（Protocol Buffers 编译器）。
 
-## Commands
+## 命令
 
-### Status
-Get dish state, uptime, SNR, latency, throughput, obstructions:
+### 状态查询
+查询天线的状态、运行时间、信噪比（SNR）、延迟、吞吐量以及是否存在遮挡：
 ```bash
 starlink status
 starlink status --json
 ```
 
-### WiFi Clients
-List devices connected to the Starlink router:
+### WiFi 客户端
+列出连接到 Starlink 路由器的设备：
 ```bash
 starlink clients
 starlink clients --json
 ```
 
-Output includes: name, MAC, IP, signal strength, interface (2.4GHz/5GHz/ETH), connection time.
+输出信息包括：设备名称、MAC 地址、IP 地址、信号强度、连接类型（2.4GHz/5GHz/以太网）以及连接时间。
 
-### Speed Test
-Run a speed test through the dish:
+### 速度测试
+通过天线进行速度测试：
 ```bash
 starlink speedtest
 starlink speedtest --json
 ```
 
-Returns download/upload Mbps and latency.
+测试结果会显示下载/上传速度（以 Mbps 为单位）以及延迟。
 
-### Stow/Unstow
-Stow dish flat for transport or storage:
+### 收纳/展开天线
+将天线折叠起来以便运输或存储：
 ```bash
 starlink stow           # stow
 starlink stow --unstow  # unstow and resume
 ```
 
-### Reboot
-Reboot the dish:
+### 重启天线
+重启天线：
 ```bash
 starlink reboot
 ```
 
-### Location
-Get GPS coordinates (must be enabled in Starlink app → Settings → Advanced → Debug Data → "allow access on local network"):
-```bash
-starlink location
-starlink location --json
-```
+### 获取位置信息
+获取天线的 GPS 坐标（需在 Starlink 应用中启用相应设置）：
+- **步骤**：设置 → 高级选项 → 调试数据 → “允许本地网络访问”
 
-## Output Formats
+## 输出格式
 
-- **Default**: Human-readable colored output
-- **--json**: JSON for scripting/parsing
+- **默认格式**：易于阅读的彩色文本
+- **--json**：以 JSON 格式输出（适用于脚本编写或数据解析）
 
-Example JSON parsing:
+**JSON 格式示例**：
 ```bash
 starlink status --json | jq '.latency_ms'
 starlink clients --json | jq '.[] | .name'
 ```
 
-## Requirements
+## 使用要求
 
-- Connected to Starlink network
-- Dish reachable at `192.168.100.1:9200`
-- For location: enable in Starlink app first
+- 必须连接到 Starlink 网络
+- 天线必须能够通过 `192.168.100.1:9200` 进行访问
+- 如需获取位置信息，请先在 Starlink 应用中启用相关功能
 
-## Troubleshooting
+## 故障排除
 
-**"Failed to connect to Starlink dish"**
-- Verify you're on the Starlink WiFi or wired to the router
-- Check: `ping 192.168.100.1`
-- If using bypass mode with your own router, ensure 192.168.100.1 is still routable
+**“无法连接到 Starlink 天线”**
+- 确保您已连接到 Starlink 的 WiFi 或者通过有线方式连接到路由器
+- 测试命令：`ping 192.168.100.1`
+- 如果使用自定义路由器进行绕过设置，请确认 `192.168.100.1` 仍然可被访问
 
-**Location returns empty**
-- Enable in Starlink app: Settings → Advanced → Debug Data → "allow access on local network"
+**位置信息为空**
+- 请在 Starlink 应用中启用相关设置：设置 → 高级选项 → 调试数据 → “允许本地网络访问”
 
-## Limitations
+## 限制
 
-- Device pause/unpause is NOT available (cloud-only feature via Starlink app)
-- Only works on local network, not remotely
+- 不支持通过 CLI 暂停/恢复天线的运行状态（该功能仅通过 Starlink 应用实现）
+- 仅支持在本地网络中使用，不支持远程操作
 
-## Source
+## 项目来源
 
 https://github.com/danfedick/starlink-cli

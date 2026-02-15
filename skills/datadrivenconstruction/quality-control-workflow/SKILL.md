@@ -1,18 +1,19 @@
 ---
 slug: "quality-control-workflow"
 display_name: "Quality Control Workflow"
-description: "Construction quality control workflow automation. Manage QC inspections, track defects, generate NCRs, and ensure specification compliance throughout the project."
+description: "**施工质量控制工作流程自动化**  
+实现质量控制（QC）检查的自动化管理，追踪缺陷，生成不合格报告（NCR），并确保整个项目始终符合相关规范要求。"
 ---
 
-# Quality Control Workflow
+# 质量控制工作流程
 
-## Overview
+## 概述
 
-Automate construction quality control workflows from inspection planning through defect resolution. Track quality metrics, manage non-conformance reports (NCRs), and ensure specification compliance.
+自动化构建质量控制工作流程，从检查计划到缺陷解决的全过程。跟踪质量指标，管理不合格报告（NCRs），并确保符合规范要求。
 
-> "Structured QC workflows reduce rework by 40% and improve first-time quality" — DDC Community
+> “结构化的质量控制工作流程可将返工率降低40%，并提高首次交付产品的质量”——DDC社区
 
-## QC Workflow Stages
+## 质量控制工作流程阶段
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -28,7 +29,7 @@ Automate construction quality control workflows from inspection planning through
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -347,7 +348,7 @@ class QualityControlManager:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize QC Manager
@@ -389,7 +390,7 @@ qc.issue_ncr(ncr.id)
 print(qc.generate_qc_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

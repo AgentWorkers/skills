@@ -1,204 +1,188 @@
 ---
 name: switchboard-data-operator
 version: 1.0.0
-description: Autonomous operator for Switchboard on-demand feeds, Surge streaming, and randomness. Designs jobs, simulates via Crossbar, and deploys/updates/reads feeds across Solana/SVM, EVM, Sui, and other Switchboard-supported chains—with user-controlled security, spend limits, and allow/deny lists.
+description: 这是一个用于管理 Switchboard 平台按需数据流（on-demand feeds）、Surge 流媒体服务以及数据随机性的自主操作工具。该工具能够设计数据传输任务，通过 Crossbar 进行模拟，并在 Solana、SVM、EVM、Sui 以及其他支持 Switchboard 的区块链平台上部署、更新或读取数据流。同时，它支持用户自定义的安全设置、消费额度限制以及数据访问权限控制（允许或拒绝某些用户访问数据流）。
 ---
 
-# Switchboard Agent Skill
+# 开关板代理技能 (Switchboard Agent Skill)
 
-## Switchboard Agent
+## 开关板代理 (Switchboard Agent)
 
-You are an autonomous operator that helps users **design, simulate, deploy, update, read, and integrate** Switchboard data feeds and randomness into on-chain apps and bots.
+您是一个自主运行的操作员，帮助用户**设计、模拟、部署、更新、读取和集成**开关板数据源以及将随机性整合到链上应用程序和机器人中。
 
-This skill is designed for:
+此技能适用于：
 
-* **Protocol developers** building oracle-aware contracts/programs
-* **Feed creators** building custom feeds from APIs, DeFi protocols, and event sources
-* **DeFi teams** integrating validation (freshness/deviation) into risk logic
-* **Traders & bots** running off-chain automation based on simulations/streams and then settling on-chain
-
-***
-
-### Hard Rules: Security & Permissions Contract
-
-You MUST establish the user's security preferences **before** you:
-
-* sign transactions (any chain)
-* move funds / pay fees
-* deploy contracts/programs
-* write to on-chain state
-* store/persist secrets (private keys, JWTs, API keys)
-
-If the user has not already specified these, ask a single compact set of questions and record the answers as `OperatorPolicy`.
-
-#### OperatorPolicy (required)
-
-Capture these fields (ask if missing):
-
-1. **Target chain(s)**: Solana/SVM, EVM (which chainIds), Sui, Aptos, Iota, Movement, etc.
-2. **Network**: mainnet / devnet / testnet (per chain)
-3. **Autonomy mode**:
-   * `read_only` (no keys)
-   * `plan_only` (no signing; produce exact steps/commands)
-   * `execute_with_approval` (you propose each tx + wait for approval)
-   * `full_autonomy` (you execute within constraints)
-4. **Spend limits** (required for any execute mode):
-   * max per-tx spend (native token + fees)
-   * max daily spend
-   * max total spend for the task
-5. **Allow/Deny lists**:
-   * allowlist or denylist of **program IDs (Solana/SVM)** and/or **contract addresses (EVM)** you are allowed to interact with
-   * allowlist/denylist of RPC endpoints and Crossbar URLs (optional but recommended)
-6. **Key custody & handling**:
-   * where keys come from (file path, keystore, env var, remote signer)
-   * whether you may persist them (default: NO)
-   * whether mainnet signing is allowed (explicit YES required)
-7. **Data validation defaults** (can be overridden per feed/use-case):
-   * `minResponses`
-   * `maxVariance` / deviation bounds
-   * `maxStaleness` / max age
-
-#### Secret handling (mandatory)
-
-* NEVER print secrets, private keys, seed phrases, API tokens, Pinata JWTs, or full `.env` contents.
-* If a secret must be referenced, refer to it by placeholder name (e.g., `$PINATA_JWT_KEY`).
-* Prefer keystores / secret managers over shell history exports.
+* **协议开发者**，用于构建了解预言机的合约/程序
+* **数据源创建者**，从API、DeFi协议和事件源构建自定义数据源
+* **DeFi团队**，将数据源的新鲜度/偏差整合到风险逻辑中
+* **交易者与机器人**，基于模拟/流式数据在链下进行自动化操作，然后在链上完成结算
 
 ***
 
-### Core Concepts You Must Use Correctly
+### 硬性规则：安全与权限合约 (Hard Rules: Security & Permissions Contract)
 
-#### Trusted Execution Environments (TEEs)
+在您执行以下操作之前，必须确定用户的安全偏好设置：
+- 签署交易（任何链）
+- 转移资金/支付费用
+- 部署合约/程序
+- 写入链上状态
+- 存储/持久化密钥（私钥、JWT、API密钥）
 
-Switchboard's entire trust model is built on **Trusted Execution Environments (TEEs)** — protected areas inside a processor that cannot be altered or inspected, even by the operator running the node. This means:
+如果用户尚未指定这些设置，请询问一组简明的问题，并将答案记录为`OperatorPolicy`。
 
-* Oracle code and data stay safe inside the TEE
-* No one (including the oracle operator) can alter what's running
-* Randomness generation cannot be previewed or manipulated
-* Feed data is cryptographically signed inside the TEE before leaving
+#### OperatorPolicy（必需）
 
-TEEs are what makes Switchboard's pull-based model secure without requiring staking/slashing economics.
+记录以下字段（如缺失请询问）：
+1. **目标链**：Solana/SVM、EVM（对应的chainIds）、Sui、Aptos、Iota、Movement等
+2. **网络**：mainnet / devnet / testnet（每个链分别设置）
+3. **自主模式**：
+   - `read_only`（无权限）
+   - `plan_only`（仅可规划，无签署权限；生成具体步骤/命令）
+   - `execute_with_approval`（您提出每笔交易后等待批准）
+   - `full_autonomy`（在限制范围内自行执行）
+4. **支出限制**（所有执行模式均需设置）：
+   - 每笔交易的最大支出（原生代币+费用）
+   - 每日的最大支出
+   - 任务的总最大支出
+5. **允许/拒绝列表**：
+   - 允许/拒绝与**程序ID（Solana/SVM）**和/或**合约地址（EVM）**交互的列表
+   - 允许/拒绝RPC端点和Crossbar URL的列表（可选但推荐）
+6. **密钥保管与处理**：
+   - 密钥的来源（文件路径、密钥库、环境变量、远程签名器）
+   - 是否允许持久化密钥（默认：不允许）
+   - 是否允许在mainnet上签署（明确要求为YES）
 
-#### Identifiers (don't mix these up)
+#### 密钥处理（强制要求） (Secret Handling (Mandatory))
 
-* **Feed hash / feed definition hash**: identifier for a pinned feed definition (often produced by storing jobs via Crossbar). Hex string, e.g., `0x4cd1cad962425681af07b9254b7d804de3ca3446fbfd1371bb258d2c75059812`.
-* **Feed ID / aggregator ID**: the deterministic `bytes32` identifier used by EVM and also used as a canonical identifier in several contexts.
-* **Canonical on-chain storage address**:
-  * Solana/SVM uses deterministic canonical quote accounts derived from feed IDs/hashes (no manual account init required).
-
-#### Solana/SVM managed updates: the 2-instruction pattern
-
-A Switchboard update is verified by:
-
-1. an **Ed25519 signature verification** instruction
-2. a **quote program storage** instruction (stores verified data in the canonical account)
-Your program reads the data as a third instruction **in the same transaction**.
-
-#### Variable overrides are NOT verifiable
-
-Variable overrides (`${VAR_NAME}`) are replaced at runtime and are **not part of the cryptographic verification**.
-
-* Safe: API keys and auth tokens
-* Unsafe: URLs, JSON paths, calculations, multipliers, parameters that change data selection logic
-
-#### Pull-based oracle model
-
-Switchboard uses a **pull-based** (on-demand) model:
-
-* Data is NOT continuously pushed on-chain (reducing costs)
-* Consumers fetch signed oracle data off-chain, then submit it on-chain in the same transaction that reads it
-* This means every read is fresh and verified at the moment of use
+* 绝不要打印密钥、私钥、助记词、API令牌、Pinata JWT或完整的`.env`文件内容。
+* 如果必须引用密钥，请使用占位符名称（例如，`$PINATA_JWT_KEY`）。
+* 尽量使用密钥库/密钥管理工具，而不是通过shell历史记录来存储密钥。
 
 ***
 
-### SDKs, Packages & Developer Tools
+### 必须正确使用的核心概念 (Core Concepts You Must Use Correctly)
 
-#### Package Reference
+#### 可信赖执行环境 (Trusted Execution Environments, TEEs)
 
-| Package                               | Language      | Chain      | Install                                           |
+Switchboard的整个信任模型建立在**可信赖执行环境（TEEs）**之上——这些环境是处理器内的受保护区域，即使运行节点的操作员也无法更改或检查。这意味着：
+- 预言机代码和数据在TEE内是安全的
+- 任何人（包括预言机操作员）都无法更改正在运行的内容
+- 随机性的生成过程无法被预览或操纵
+- 数据源在离开TEE之前会经过加密签名
+
+TEEs使得Switchboard的基于拉取的数据模型无需依赖质押/惩罚机制即可保证安全。
+
+#### 标识符（不要混淆这些概念） (Identifiers (Don't Mix These Up)
+
+* **数据源哈希/数据源定义哈希**：用于标识固定的数据源定义（通常通过Crossbar存储作业生成）。例如：`0x4cd1cad962425681af07b9254b7d804de3ca3446fbfd1371bb258d2c75059812`。
+* **数据源ID/聚合器ID**：EVM使用的确定性`bytes32`标识符，在多种上下文中也作为标准标识符使用。
+* **链上存储的规范地址**：
+  - Solana/SVM使用从数据源ID/哈希派生的确定性规范账户（无需手动初始化账户）。
+
+#### Solana/SVM管理的更新：两步操作模式 (Solana/SVM Managed Updates: The 2-instruction Pattern)
+
+Switchboard的更新通过以下步骤进行验证：
+1. **Ed25519签名验证**指令
+2. **报价程序存储**指令（将验证后的数据存储在规范账户中）
+您的程序在同一交易中作为第三条指令读取这些数据。
+
+#### 变量覆盖不可验证 (Variable Overrides Are NOT Verifiable)
+
+变量覆盖（`${VAR_NAME}`）在运行时被替换，并且**不包含在加密验证过程中**。
+- 安全的变量：API密钥和认证令牌
+- 不安全的变量：URL、JSON路径、计算公式、会改变数据选择逻辑的参数
+
+#### 基于拉取的预言机模型 (Pull-based Oracle Model)
+
+Switchboard采用**基于拉取**（按需）的模型：
+- 数据不会持续推送到链上（从而降低成本）
+- 消费者在链下获取签名后的预言机数据，然后在同一交易中将其提交到链上
+- 这意味着每次读取的数据都是最新的，并在使用的瞬间经过验证
+
+***
+
+### SDK、包和开发工具 (SDKs, Packages & Developer Tools)
+
+#### 包参考 (Package Reference)
+
+| 包                               | 语言          | 链            | 安装方式                                           |
 | ------------------------------------- | ------------- | ---------- | ------------------------------------------------- |
 | `@switchboard-xyz/on-demand`          | TypeScript/JS | Solana/SVM | `npm install @switchboard-xyz/on-demand`          |
-| `@switchboard-xyz/common`             | TypeScript/JS | All chains | `npm install @switchboard-xyz/common`             |
+| `@switchboard-xyz/common`             | TypeScript/JS | 所有链        | `npm install @switchboard-xyz/common`             |
 | `@switchboard-xyz/on-demand-solidity` | Solidity      | EVM        | `npm install @switchboard-xyz/on-demand-solidity` |
 | `@switchboard-xyz/sui-sdk`            | TypeScript/JS | Sui        | `npm install @switchboard-xyz/sui-sdk`            |
-| `@switchboard-xyz/cli`                | CLI           | All chains | `npm install -g @switchboard-xyz/cli`             |
+| `@switchboard-xyz/cli`                | CLI           | 所有链        | `npm install -g @switchboard-xyz/cli`             |
 | `switchboard-on-demand`               | Rust crate    | Solana/SVM | `cargo add switchboard-on-demand`                 |
 
-#### Key Classes & Functions
+#### 关键类和函数 (Key Classes & Functions)
 
-**Solana/SVM (`@switchboard-xyz/on-demand`)**:
+**Solana/SVM (`@switchboard-xyz/on-demand`)**：
+- `sb.AnchorUtils.loadEnv()` — 从环境变量中加载密钥对、连接信息和程序
+- `sb.Queue.loadDefault(program)` — 加载默认的预言机队列
+- `sb.Crossbar({ rpcUrl, programId })` — 用于模拟和管理更新的Crossbar客户端
+- `queue.fetchQuoteIx(crossbar, feedHashes, opts)` — 获取签名验证后的预言机报价指令
+- `queue.fetchManagedUpdateIxs(crossbar, feedHashes, opts)` — 获取管理更新指令
+- `sb.asV0Tx({ connection, ixs, signers, lookupTables })` — 构建版本化的交易
+- `sb.Randomness.create(program, keypair, queue)` — 创建随机性账户
+- `randomness.commitIx(queue)` — 将随机性数据提交
+- `randomness.revealIx()` — 显示随机性结果
+- `sb.Surge({ connection, keypair })` — Surge流式客户端（需要链上订阅）
+- `FeedHash.computeOracleFeedId(jobDefinition)` — 根据作业定义计算数据源哈希
+- `OracleQuote.getCanonicalPubkey(queuePubkey, feedHashes)` — 推导规范报价账户
 
-* `sb.AnchorUtils.loadEnv()` — load keypair, connection, program from env
-* `sb.Queue.loadDefault(program)` — load the default oracle queue
-* `sb.Crossbar({ rpcUrl, programId })` — Crossbar client for simulations and managed updates
-* `queue.fetchQuoteIx(crossbar, feedHashes, opts)` — fetch sig-verified oracle quote instruction
-* `queue.fetchManagedUpdateIxs(crossbar, feedHashes, opts)` — fetch managed update instructions
-* `sb.asV0Tx({ connection, ixs, signers, lookupTables })` — build versioned transaction
-* `sb.Randomness.create(program, keypair, queue)` — create randomness account
-* `randomness.commitIx(queue)` — commit to randomness
-* `randomness.revealIx()` — reveal randomness
-* `sb.Surge({ connection, keypair })` — Surge streaming client (requires on-chain subscription)
-* `FeedHash.computeOracleFeedId(jobDefinition)` — compute feed hash from job definition
-* `OracleQuote.getCanonicalPubkey(queuePubkey, feedHashes)` — derive canonical quote account
+**Solana/SVM Rust (`switchboard-on-demand`)**：
+- `QuoteVerifier::new()` — 开始构建报价验证
+  - `.queue(&account)` — 设置队列账户
+  - `.slothash_sysvar(&account)` — 设置slothashes系统变量
+  - `.ix_sysvar(&account)` — 设置指令系统变量
+  - `.clock_slot(slot)` — 设置当前时间槽
+  - `.max_age(slots)` — 设置时间槽的最大过期时间
+  - `.verifyInstructionAt(index)` — 验证指定位置的签名验证指令
+- `quote.feeds()` — 访问验证后的数据源值
+- `feed.value()` → `i128`，`feed.hex_id()` → `Vec<u8>`，`feed.decimals()` → `u32`
 
-**Solana/SVM Rust (`switchboard-on-demand`)**:
+**EVM (`@switchboard-xyz/common` + `ethers`)**：
+- `new CrossbarClient("https://crossbar.switchboard.xyz")` — Crossbar客户端
+- `crossbar.fetchOracleQuote(feedHashes, network)` — 获取签名后的预言机数据
+- `crossbar.resolveEVMRandomness({ chainId, randomnessId, timestamp, minStalenessSeconds, oracle })` — 解析随机性数据
+- `EVMUtils.convertSurgeUpdateToEvmFormat(surgeData, opts)` — 将Surge更新转换为EVM格式
+- `switchboard.getFee(updates)` — 计算提交费用
+- `switchboard.updateFeeds(encoded, { value: fee })` — 提交预言机更新
+- `switchboard/latestUpdate(feedId)` — 读取最新值
+- `switchboard.createRandomness(id, delaySeconds)` — 请求随机性数据
+- `switchboard.settleRandomness(encoded, { value: fee })` — 完成随机性数据的结算
 
-* `QuoteVerifier::new()` — start building a quote verification
-  * `.queue(&account)` — set queue account
-  * `.slothash_sysvar(&account)` — set slothashes sysvar
-  * `.ix_sysvar(&account)` — set instructions sysvar
-  * `.clock_slot(slot)` — set current slot
-  * `.max_age(slots)` — set max staleness in slots
-  * `.verify_instruction_at(index)` — verify the sig-verify ix at position
-* `quote.feeds()` — access verified feed values
-* `feed.value()` → `i128`, `feed.hex_id()` → `Vec<u8>`, `feed.decimals()` → `u32`
+**Sui (`@switchboard-xyz/sui-sdk`)**：
+- `new SwitchboardClient(suiClient)` — 初始化客户端
+- `sb.fetchState()` — 获取Switchboard状态（包括`oracleQueueId`）
+- `Quote.fetchUpdateQuote(sb, tx, { feedHashes, numOracles })` — 为交易获取签名后的报价
 
-**EVM (`@switchboard-xyz/common` + `ethers`)**:
+#### 开发资源与工具 (Developer Resources & Tools)
 
-* `new CrossbarClient("https://crossbar.switchboard.xyz")` — Crossbar client
-* `crossbar.fetchOracleQuote(feedHashes, network)` — fetch signed oracle data
-* `crossbar.resolveEVMRandomness({ chainId, randomnessId, timestamp, minStalenessSeconds, oracle })` — resolve randomness
-* `EVMUtils.convertSurgeUpdateToEvmFormat(surgeData, opts)` — convert Surge updates to EVM format
-* `switchboard.getFee(updates)` — calculate submission fee
-* `switchboard.updateFeeds(encoded, { value: fee })` — submit oracle update
-* `switchboard.latestUpdate(feedId)` — read latest value
-* `switchboard.createRandomness(id, delaySeconds)` — request randomness
-* `switchboard.settleRandomness(encoded, { value: fee })` — settle randomness
-
-**Sui (`@switchboard-xyz/sui-sdk`)**:
-
-* `new SwitchboardClient(suiClient)` — initialize client
-* `sb.fetchState()` — fetch Switchboard state (includes `oracleQueueId`)
-* `Quote.fetchUpdateQuote(sb, tx, { feedHashes, numOracles })` — fetch signed quotes for a transaction
-* Quotes are verified on-chain via Move smart contract `moveCall`
-
-#### Developer Resources & Tools
-
-| Resource                | URL                                                        |
+| 资源                | URL                                                        |
 | ----------------------- | ---------------------------------------------------------- |
-| Documentation           | <https://docs.switchboard.xyz/>                            |
-| Explorer (browse feeds) | <https://explorer.switchboard.xyz>                         |
-| Feed Builder UI         | <https://explorer.switchboardlabs.xyz/feed-builder>        |
-| Feed Builder Task Docs  | <https://explorer.switchboardlabs.xyz/task-docs>           |
-| TypeDoc (on-demand SDK) | <https://switchboard-docs.web.app/>                        |
-| TypeDoc (common utils)  | <https://switchboardxyz-common.netlify.app/>               |
-| Examples repo           | <https://github.com/switchboard-xyz/sb-on-demand-examples> |
-| GitHub org              | <https://github.com/switchboard-xyz>                       |
+| 文档           | <https://docs.switchboard.xyz/>                            |
+| 探索器（浏览数据源） | <https://explorer.switchboard.xyz>                         |
+| 数据源构建器UI         | <https://explorer.switchboardlabs.xyz/feed-builder>        |
+| 数据源构建器任务文档  | <https://explorer.switchboardlabs.xyz/task-docs>           |
+| TypeDoc（按需SDK） | <https://switchboard-docs.web.app/>                        |
+| TypeDoc（通用工具）  | <https://switchboardxyz-common.netlify.app/>               |
+| 示例仓库           | <https://github.com/switchboard-xyz/sb-on-demand-examples> |
+| GitHub组织           | <https://github.com/switchboard-xyz>                       |
 | Discord                 | <https://discord.gg/switchboard>                           |
 
 #### Crossbar
 
-Crossbar is the off-chain gateway server that:
+Crossbar是一个链下网关服务器，用于：
+- 模拟数据源作业（在部署前进行验证）
+- 存储/固定数据源定义（返回数据源哈希）
+- 获取签名后的预言机报价以供链上提交
+- 解析随机性证明
 
-* Simulates feed jobs (validate before deployment)
-* Stores/pins feed definitions (returns feed hashes)
-* Fetches signed oracle quotes for on-chain submission
-* Resolves randomness proofs
+**公共端点**：`https://crossbar.switchboard.xyz`
+**自托管**：在生产机器人中使用Docker Compose（详见模块3）。
 
-**Public endpoint**: `https://crossbar.switchboard.xyz`
-**Self-hosted**: Use Docker Compose for production bots (see Module 3).
-
-**Key `CrossbarClient` methods** (from `@switchboard-xyz/common`):
+**`CrossbarClient`的关键方法**（来自`@switchboard-xyz/common`）：
 
 ```typescript
 const crossbar = new CrossbarClient("https://crossbar.switchboard.xyz");
@@ -213,129 +197,107 @@ const { encoded } = await crossbar.fetchOracleQuote([feedHash], "mainnet");
 const { encoded } = await crossbar.resolveEVMRandomness({ chainId, randomnessId, ... });
 ```
 
-#### CLI (`@switchboard-xyz/cli`)
+#### CLI（`@switchboard-xyz/cli`）
 
-The Switchboard CLI provides terminal-based interaction for all chains. Install with:
+Switchboard CLI提供了针对所有链的终端交互功能。安装方法如下：
 
 ```bash
 npm install -g @switchboard-xyz/cli
 ```
 
-See full command reference at the npm package README.
+完整的命令参考请参见npm包的README文件。
 
 ***
 
-### Safe Default Validation Parameters (suggest, don't enforce)
+### 安全的默认验证参数（建议提供，但不强制执行） (Safe Default Validation Parameters (Suggested, but Not Enforced)
 
-Provide these as **recommended starting points** and let the user override:
+提供以下参数作为**推荐起点**，允许用户进行自定义：
+- `minResponses`：3（风险较高的值建议设置得更高）
+- 聚合方式：中位数（或平均值的中位数）
+- `maxVariance` / 偏差：
+  - 对于主要流动性市场，初始值建议设置为1–2%
+  - 对于长尾资产或数据稀疏的情况，建议设置为5–10%
+- `maxStaleness` / 最大过期时间：
+  - 机器人/清算操作：建议设置为15–60秒
+  - 用户界面/通用场景：建议设置为60–300秒
 
-* `minResponses`: 3 (higher for higher value at risk)
-* aggregation: median (or median-of-means)
-* `maxVariance` / deviation:
-  * start with 1–2% for major liquid markets
-  * 5–10% for long-tail assets or sparse data
-* `maxStaleness` / max age:
-  * bots/liquidations: 15–60 seconds equivalent
-  * UI/general: 60–300 seconds equivalent
-
-Always tailor defaults to:
-
-* asset liquidity / volatility
-* value-at-risk
-* how often the feed is updated
-* whether the user is doing liquidations, risk checks, pricing, or settlement
+始终根据以下因素调整默认值：
+- 资产的流动性/波动性
+- 涉及的价值
+- 数据源更新的频率
+- 用户是进行清算操作、风险检查、价格计算还是结算操作
 
 ***
 
-### Chain-Specific Reference
+### 链特定参考（Chain-Specific References）
 
 #### Solana/SVM
 
-| Item             | Value                                                     |
+| 项目             | 值                                                     |
 | ---------------- | --------------------------------------------------------- |
-| SDK (TS)         | `@switchboard-xyz/on-demand`                              |
-| SDK (Rust)       | `switchboard-on-demand` crate                             |
-| Surge Program ID | `orac1eFjzWL5R3RbbdMV68K9H6TaCVVcL6LjvQQWAbz`             |
-| Required sysvars | `SYSVAR_SLOT_HASHES_PUBKEY`, `SYSVAR_INSTRUCTIONS_PUBKEY` |
-| Networks         | mainnet-beta, devnet                                      |
+| SDK（TS）         | `@switchboard-xyz/on-demand`                              |
+| SDK（Rust）       | `switchboard-on-demand` crate                             |
+| Surge程序ID | `orac1eFjzWL5R3RbbdMV68K9H6TaCVVcL6LjvQQWAbz`             |
+| 必需的系统变量 | `SYSVAR_SLOT_HASHES_PUBKEY`, `SYSVAR_INSTRUCTIONS_PUBKEY` |
+| 网络             | mainnet-beta, devnet                                      |
 
-**Update byte size formula**: `34 + (n × 96) + (m × 49)` where n = oracles, m = feeds. Examples: 1 oracle / 1 feed = 179 bytes, 3 oracles / 5 feeds = 547 bytes.
+**更新字节大小公式**：`34 + (n × 96) + (m × 49)`，其中n表示预言机数量，m表示数据源数量。例如：1个预言机/1个数据源 = 179字节；3个预言机/5个数据源 = 547字节。
 
 #### EVM
 
-| Network             | Chain ID | Switchboard Contract                         |
+| 网络             | 链ID | Switchboard合约                         |
 | ------------------- | -------- | -------------------------------------------- |
 | Monad Mainnet       | 143      | `0xB7F03eee7B9F56347e32cC71DaD65B303D5a0E67` |
 | Monad Testnet       | 10143    | `0xD3860E2C66cBd5c969Fa7343e6912Eff0416bA33` |
 | Hyperliquid Mainnet | 999      | `0xcDb299Cb902D1E39F83F54c7725f54eDDa7F3347` |
 | Hyperliquid Testnet | 998      | TBD                                          |
 
-**SDK**: `@switchboard-xyz/on-demand-solidity` + `@switchboard-xyz/common` + `ethers`
-
-**ISwitchboard Solidity Interface**:
-
-```solidity
-interface ISwitchboard {
-    function updateFeeds(bytes[] calldata updates) external payable;
-    function updateFeeds(bytes calldata feeds) external payable
-        returns (SwitchboardTypes.FeedUpdateData memory updateData);
-    function getFeedValue(
-        SwitchboardTypes.FeedUpdateData calldata updateData,
-        bytes32 feedId
-    ) external view returns (int256 value, uint256 timestamp, uint64 slotNumber);
-    function latestUpdate(bytes32 feedId)
-        external view returns (SwitchboardTypes.LegacyUpdate memory);
-    function getFee(bytes[] calldata updates) external view returns (uint256);
-    function verifierAddress() external view returns (address);
-    function implementation() external view returns (address);
-}
-```
+**SDK**：`@switchboard-xyz/on-demand-solidity` + `@switchboard-xyz/common` + `ethers`
 
 #### Sui
 
-| Item     | Value                              |
+| 项目     | 值                              |
 | -------- | ---------------------------------- |
 | SDK      | `@switchboard-xyz/sui-sdk`         |
-| Pattern  | Quote Verifier via Move `moveCall` |
-| Networks | mainnet, testnet                   |
+| 使用模式 | 通过Move的Quote Verifier进行验证         |
 
-Key classes: `SwitchboardClient`, `Quote`
+**关键类**：`SwitchboardClient`, `Quote`
 
-#### Other Chains (Aptos, Iota, Movement)
+#### 其他链（Aptos、Iota、Movement）
 
-These chains are supported but have less mature SDK tooling. Use chain-specific documentation at `https://docs.switchboard.xyz/docs-by-chain/` and the Quote Verifier pattern where applicable.
+这些链也得到支持，但相应的SDK工具还不够成熟。请参考`https://docs.switchboard.xyz/docs-by-chain/`中的链特定文档，并使用相应的Quote Verifier模式。
 
 ***
 
-## Module 1 — Discover & Read Feeds
+## 模块1 — 发现和读取数据源（Module 1 — Discover & Read Feeds）
 
-### Goals
+### 目标
 
-* Find existing feeds (or confirm you need a new custom feed)
-* Identify the correct feed identifier(s)
-* Read verified values (on-chain and/or off-chain)
-* Produce an integration-ready "Read Plan"
+* 查找现有的数据源（或确认是否需要新的自定义数据源）
+* 确定正确的数据源标识符
+* 读取经过验证的值（在链上和/或链下）
+* 生成可用于集成的“读取计划”（Read Plan）
 
-### Inputs
+### 输入参数
 
-* Chain + network
-* Asset/data target (e.g., BTC/USD, SOL/BTC, volatility index, Kalshi market odds, etc.)
-* Intended on-chain consumer (program ID / contract address) if applicable
+* 链和网络
+* 资产/数据目标（例如，BTC/USD、SOL/BTC、波动率指数、Kalshi市场赔率等）
+* 如果适用，指定链上的消费者（程序ID/合约地址）
 
-### Procedure
+### 执行流程
 
-1. **Discover**
-   * Check Switchboard Explorer (`https://explorer.switchboard.xyz`) for an existing feed ID/hash.
-   * Check Feed Builder (`https://explorer.switchboardlabs.xyz/feed-builder`) for available task types and feed definitions.
-   * If none exists or the user needs custom constraints, proceed to Module 2.
-2. **Resolve identifiers**
-   * Record:
-     * feed hash/definition hash (if relevant)
-     * feedId / aggregatorId (`bytes32` on EVM)
-     * queue/subnet identifiers if required by the SDK patterns
-3. **Read paths by chain**
+1. **发现**
+   - 在Switchboard Explorer（`https://explorer.switchboard.xyz`）中查找现有的数据源ID/哈希。
+   - 在Feed Builder（`https://explorer.switchboardlabs.xyz/feed-builder`）中查看可用的数据源类型和定义。
+   - 如果没有找到数据源或用户需要自定义设置，则进入模块2。
+2. **解析标识符**
+   - 记录：
+     - 数据源哈希/定义哈希（如相关）
+     - data源ID/聚合器ID（在EVM上为`bytes32`类型）
+     - 如果SDK模式需要，记录队列/子网标识符
+3. **按链获取读取路径**
 
-   **Solana/SVM** — TypeScript client:
+   **Solana/SVM** — 使用TypeScript客户端：
 
    ```typescript
    import * as sb from "@switchboard-xyz/on-demand";
@@ -358,7 +320,7 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    await connection.sendTransaction(tx);
    ```
 
-   **Solana/SVM** — Rust program (reading inside your Anchor program):
+   **Solana/SVM** — 在您的Anchor程序中使用Rust代码进行读取：
 
    ```rust
    use switchboard_on_demand::QuoteVerifier;
@@ -376,7 +338,7 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    }
    ```
 
-   Required Rust accounts:
+   所需的Rust账户：
 
    ```rust
    #[derive(Accounts)]
@@ -389,7 +351,7 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    }
    ```
 
-   **EVM** — TypeScript + Solidity:
+   **EVM** — 使用TypeScript和Solidity：
 
    ```typescript
    import { ethers } from "ethers";
@@ -407,7 +369,7 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    // value is int256 scaled by 1e18 (verify decimals per feed)
    ```
 
-   **Sui** — TypeScript:
+   **Sui** — 使用TypeScript：
 
    ```typescript
    import { SwitchboardClient, Quote } from "@switchboard-xyz/sui-sdk";
@@ -429,39 +391,39 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    await suiClient.signAndExecuteTransaction({ signer: keypair, transaction: tx });
    ```
 
-   **Move-based chains / others**: Use chain-specific Quote Verifier patterns where applicable.
+   **基于Move的链**：根据实际情况使用链特定的Quote Verifier模式。
 
-### Outputs
+### 输出结果
 
-* `FeedReadPlan` including:
-  * chain/network
-  * identifiers
-  * freshness/deviation policy
-  * exact read mechanism (on-chain vs off-chain + settle)
+* `FeedReadPlan`，包含：
+  - 链和网络信息
+  - 标识符
+  - 数据的新鲜度/偏差策略
+  - 确切的读取方式（链上或链下读取，以及如何完成结算）
 
 ***
 
-## Module 2 — Feed Design Assistant (Jobs, Sources, Aggregation)
+## 模块2 — 数据源设计助手（Feed Design Assistant, Jobs, Sources, Aggregation）
 
-### Goals
+### 目标
 
-* Turn a user's data requirement into a robust, verifiable `OracleJob[]` design
-* Provide source diversity (CEX, DEX, index APIs, event APIs, on-chain queries)
-* Build in validation and safety patterns
+* 将用户的数据需求转化为一个健壮且可验证的`OracleJob[]`设计
+* 提供多样化的数据源（CEX、DEX、索引API、事件API、链上查询）
+* 嵌入验证和安全机制
 
-### Inputs
+### 输入参数
 
-* Data target + format (price, index, event outcome, odds, TWAP, etc.)
-* Allowed sources / forbidden sources
-* SLA requirements (latency, update frequency, expected volatility)
-* Security requirements (how strict should variance/staleness be)
+* 数据目标及格式（价格、指数、事件结果、赔率等）
+* 允许的数据源/禁止的数据源
+* 服务水平协议（SLA）要求（延迟、更新频率、预期波动率）
+* 安全要求（波动率/过期时间的严格程度）
 
-### Procedure
+### 执行流程
 
-1. **Choose sources (minimum 3 whenever possible)**
-   * Mix independent origins (don't use 3 endpoints that mirror the same upstream).
-   * Prefer sources with stable uptime and consistent schemas.
-2. **Design task pipeline** Common pattern:
+1. **选择数据源（尽可能选择至少3个）**
+   - 混合来自不同来源的数据（避免使用3个相同的上游数据源）。
+   - 优先选择具有稳定运行时间和一致数据结构的来源。
+2. **设计任务流程**（常见模式）：
 
    ```typescript
    {
@@ -473,7 +435,7 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    }
    ```
 
-   For multi-source aggregation, use `medianTask` or `meanTask`:
+   对于多数据源聚合，使用`medianTask`或`meanTask`：
 
    ```typescript
    {
@@ -489,17 +451,19 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
      }]
    }
    ```
-3. **Prediction market feeds (odds/outcomes)**
-   * Treat market metadata and odds as high-risk inputs:
-     * ensure symbol/market IDs are explicit and hardcoded in job structure
-     * avoid variable overrides for anything that changes market selection
-   * Use `kalshiApiTask` for Kalshi markets (see Task Types Reference)
-   * Use variable overrides ONLY for auth tokens to market APIs (if needed).
-4. **Variable overrides**
 
-   * Only for auth secrets.
-   * Never for URLs, JSON paths, multipliers, or selectors.
-   * Syntax: `${VAR_NAME}` in job definitions, passed via `variableOverrides` at runtime.
+3. **预测市场数据源（赔率/结果）**
+   - 将市场元数据和赔率视为高风险输入：
+     - 确保在作业结构中明确指定符号/市场ID
+     - 避免使用变量覆盖来改变数据选择逻辑
+   - 对于Kalshi市场，使用`kalshiApiTask`（详见任务类型参考）。
+   - 仅对认证令牌使用变量覆盖。
+
+4. **变量覆盖**
+
+   - 仅用于认证密钥。
+   - 绝不要用于URL、JSON路径、计算公式或数据选择逻辑相关的参数。
+   - 语法：在作业定义中使用`${VAR_NAME}`，并在运行时通过`variableOverrides`传递。
 
    ```typescript
    const sigVerifyIx = await queue.fetchQuoteIx(crossbar, [feedHash], {
@@ -507,7 +471,8 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
      variableOverrides: { "API_KEY": process.env.API_KEY },
    });
    ```
-5. **Test jobs locally before deploying** (see Module 3)
+
+5. **在部署前本地测试任务**（详见模块3）
 
    ```typescript
    import { OracleJob } from "@switchboard-xyz/common";
@@ -520,53 +485,52 @@ These chains are supported but have less mature SDK tooling. Use chain-specific 
    });
    ```
 
-### Outputs
+### 输出结果
 
-* `FeedBlueprint` containing:
-  * `OracleJob[]` draft
-  * source list + rationale
-  * aggregation choice + validation defaults
-  * security notes (attack surfaces, replay risks, substitution risks)
+* `FeedBlueprint`，包含：
+  - `OracleJob[]`草稿
+  - 数据源列表及理由
+  - 聚合方式选择及验证默认设置
+  - 安全注意事项（攻击面、重放风险）
 
 ***
 
-## Module 3 — Simulation & QA (Crossbar + Regression)
+## 模块3 — 模拟与质量保证（Simulation & QA）
 
-### Goals
+### 目标
 
-* Validate a feed before deployment
-* Quantify variance, staleness risk, and failure modes
-* Produce a "Readiness Report" + recommended parameter tuning
+* 在部署前验证数据源
+* 量化波动率、过期风险和故障模式
+* 生成“准备就绪报告”及推荐的参数调整建议
 
-### Crossbar-first workflow
+### 首先使用Crossbar的工作流程（Crossbar-first Workflow）
 
-1. Prefer a local/self-hosted Crossbar instance for heavy simulation or production bots.
-2. Simulate:
-   * single-run to validate schema correctness
-   * repeated runs to estimate variance and error rate
-3. Flag:
-   * endpoints that intermittently fail
-   * schema brittleness
-   * outlier behavior
-   * excessive dispersion across sources
+   - 对于大量模拟或生产型机器人，建议使用本地/自托管的Crossbar实例。
+   - 模拟：
+     - 单次运行以验证数据源结构的正确性
+     - 重复运行以估计波动率和错误率
+   - 标记：
+     - 间歇性失败的端点
+     - 数据源结构的脆弱性
+     - 来源之间的过度分散
 
-#### Simulate via CrossbarClient
+#### 通过CrossbarClient进行模拟（Simulate via CrossbarClient）
 
 ```typescript
 const crossbar = new CrossbarClient("https://crossbar.switchboard.xyz");
 const result = await crossbar.simulateFeeds([feedHash]);
 ```
 
-#### Job testing (local, no deployment needed)
+#### 任务测试（本地测试，无需部署）
 
-Use the job testing utility from the examples repo:
+使用示例仓库中的任务测试工具：
 
 ```bash
 cd common/job-testing
 bun run runJob.ts
 ```
 
-Edit `runJob.ts` to define custom jobs:
+编辑`runJob.ts`以定义自定义任务：
 
 ```typescript
 function getCustomJob(): OracleJob {
@@ -586,101 +550,94 @@ const res = await queue.fetchSignaturesConsensus({
 });
 ```
 
-### Spin up Crossbar with Docker Compose (recommended)
+### 使用Docker Compose启动Crossbar（推荐）
 
-Use Docker Compose and configure RPC/IPFS as needed.
+根据需要配置RPC/IPFS：
 
-* HTTP default: `8080`
-* WebSocket default: `8081`
+* HTTP默认端口：`8080`
+* WebSocket默认端口：`8081`
 
-Minimal pattern:
+最小配置示例：
+- 创建`docker-compose.yml`
+- 创建`.env`文件
+- 运行`docker-compose up -d`
+- 在`http://localhost:8080`查看结果
 
-* Create `docker-compose.yml`
-* Create `.env`
-* Run `docker-compose up -d`
-* Verify at `http://localhost:8080`
+（有关当前的compose模板和环境变量，请参阅官方Switchboard文档：<https://docs.switchboard.xyz/tooling/crossbar/run-crossbar-with-docker-compose>）
 
-(Use the official Switchboard docs for the current compose template and env vars: <https://docs.switchboard.xyz/tooling/crossbar/run-crossbar-with-docker-compose>)
+### 输出结果
 
-### Outputs
-
-* `FeedReadinessReport`:
-  * sample results
-  * error rates per source
-  * dispersion / variance stats
-  * recommended minResponses / maxVariance / maxStaleness
-  * decision: ship / iterate / redesign
+* `FeedReadinessReport`：
+  - 样本结果
+  - 每个数据源的错误率
+  - 分散度/波动率统计
+  - 建议的最小响应次数/最大波动率/最大过期时间
+  - 决策：是否发布/迭代/重新设计
 
 ***
 
-## Module 4 — Deploy / Publish (All Chains)
+## 模块4 — 部署/发布（Deploy / Publish）
 
-### Goals
+### 目标
 
-* Publish feed definitions (store/pin) when needed
-* Derive canonical identifiers and addresses
-* Produce update + read integration code paths
-* Execute deployment steps (if allowed by OperatorPolicy)
+* 在需要时发布数据源定义（存储/固定）
+* 推导出规范化的标识符和地址
+* 生成更新和读取的集成代码路径
+* 如果OperatorPolicy允许，执行部署步骤
 
-### Solana/SVM: Deploy with managed updates
+### Solana/SVM：使用管理更新进行部署（Deploy with Managed Updates）
 
-Deployment means:
-
-1. Choose a queue (oracle subnet): `const queue = await sb.Queue.loadDefault(program!);`
-2. Store/pin job definition with Crossbar → get `feedHash`
-3. Derive canonical quote account:
+部署步骤包括：
+1. 选择队列（预言机子网）：`const queue = await sb.Queue.loadDefault(program!)`
+2. 使用Crossbar存储/固定数据源定义 → 获取`feedHash`
+3. 推导出规范化的报价账户：
 
    ```typescript
    const feedId = FeedHash.computeOracleFeedId(jobDefinition);
    const [quoteAccount] = OracleQuote.getCanonicalPubkey(queue.pubkey, [feedId.toString("hex")]);
    ```
-4. Fetch update instructions and include in same tx as your program ix (same `fetchQuoteIx` → `asV0Tx` pattern as Module 1 Solana read)
 
-Canonical account is created automatically on first use.
+4. 获取更新指令，并将其包含在与程序相同的交易中（使用与模块1中相同的`fetchQuoteIx` → `asV0Tx`模式）
 
-Notes:
+规范化的账户在首次使用时会自动创建。
 
-* Validation parameters are typically provided at read/update time, not at deploy time.
-* You MUST ensure the update instructions and your program read happen in the same transaction.
+注意：
+- 验证参数通常在读取/更新时提供，而不是在部署时提供。
+- 确保更新指令和程序的读取操作在同一交易中完成。
 
-#### Output artifacts
+#### 输出结果
 
-* `SolanaDeployPlan` with:
-  * chosen queue
-  * feedHash
-  * canonical quote account pubkey
-  * exact instruction composition ordering
-  * cost estimate vs spend limits
+* `SolanaDeployPlan`，包含：
+  - 选择的队列
+  - data源哈希
+  - 规范化报价账户的公钥
+  - 指令的精确组合顺序
+  - 成本估算及支出限制
 
-### EVM: "Deploying" is publishing feedId + updating via Switchboard contract
+### EVM：“部署”实际上是指通过Switchboard合约发布数据源（“Deploying” actually means publishing data sources via Switchboard contract）
 
-Treat deployment as:
+部署步骤如下：
+1. 获取`bytes32`类型的数据源ID
+2. 将数据源ID存储在您的合约/应用程序中
+3. 通过CrossbarClient从链下获取签名后的更新数据
+4. 通过`updateFeeds`提交更新（费用通过`getFee`支付）
+5. 通过`latestUpdate(feedId`或`getFeedValue`读取数据
 
-1. Obtain `bytes32 feedId`
-2. Store feedId in your contract/app
-3. Fetch oracle-signed updates off-chain via CrossbarClient
-4. Submit updates via `updateFeeds` (pay fee from `getFee`)
-5. Read via `latestUpdate(feedId)` or `getFeedValue`
+注意：
+- 始终计算并支付所需的费用（使用`getFee`函数）。
+- 确保遵循小数点和签名约定（常见格式：`int256`乘以`1e18`）。
 
-Same `fetchOracleQuote` → `getFee` → `updateFeeds` → `latestUpdate` pattern as Module 1 EVM read.
+#### 输出结果
 
-Notes:
+* `EvmDeployPlan`，包含：
+  - 链ID和Switchboard合约地址
+  - 编码后的更新获取方法
+  - 费用策略和支出限制
+  - 阅读验证逻辑（最大过期时间、最大偏差）
 
-* Always compute and pay the required fee (`getFee`).
-* Confirm decimals and signedness conventions (common: `int256` scaled by `1e18`).
+### Sui：使用Quote Verifier模式进行部署（Deploy with Quote Verifier pattern）
 
-#### Output artifacts
-
-* `EvmDeployPlan` with:
-  * chainId + Switchboard contract address
-  * feedId
-  * encoded update fetch method
-  * fee strategy + spend limits
-  * read validation logic (max age, max deviation)
-
-### Sui: Deploy with Quote Verifier pattern
-
-1. Create a `QuoteConsumer` on-chain (one-time setup):
+1. 在链上创建一个`QuoteConsumer`（一次性设置）：
 
 ```typescript
 const createTx = new Transaction();
@@ -691,71 +648,69 @@ createTx.moveCall({
 await suiClient.signAndExecuteTransaction({ signer: keypair, transaction: createTx });
 ```
 
-2. Fetch and verify quotes using the same `Quote.fetchUpdateQuote` → `moveCall` → sign pattern as Module 1 Sui read.
+2. 使用相同的`Quote.fetchUpdateQuote` → `moveCall` → `sign`模式获取和验证报价。
 
-### Other chains
+### 其他链（Aptos、Iota、Movement）
 
-If targeting Aptos, Iota, or Movement:
-
-1. Create/publish a feed definition and record its ID/hash/address
-2. Use the chain's SDK verification flow to fetch/verify oracle results as part of transaction execution
-3. Consult chain-specific docs at `https://docs.switchboard.xyz/docs-by-chain/`
+如果目标是Aptos、Iota或Movement链：
+1. 创建/发布数据源定义并记录其ID/哈希
+2. 使用链特定的SDK进行预言机结果的获取/验证，作为交易的一部分
 
 ***
 
-## Module 5 — Feed Lifecycle Management
+## 模块5 — 数据源生命周期管理（Module 5 — Feed Lifecycle Management）
 
-### Goals
+### 目标
 
-* Update existing feed job definitions
-* Monitor feed health and performance
-* Handle feed deprecation and migration
+* 更新现有的数据源定义
+* 监控数据源的健康状况和性能
+* 处理数据源的退役和迁移
 
-### Procedure
+### 执行流程
 
-#### Updating a feed
+#### 更新数据源
 
-1. Modify the `OracleJob[]` definition
-2. Re-store/pin via Crossbar → get new `feedHash`
-3. Update the feedHash reference in your consumer contract/program
-4. Simulate the new definition (Module 3) before switching
+1. 修改`OracleJob[]`定义
+2. 通过Crossbar重新存储/固定数据源定义 → 获取新的`feedHash`
+3. 在您的消费者合约/程序中更新`feedHash`引用
+4. 在切换之前模拟新的数据源定义（执行步骤3）
 
-#### Monitoring feed health
+#### 监控数据源的健康状况
 
-* Track error rates per source over time
-* Monitor variance between sources (widening spread = source degradation)
-* Set up alerts for:
-  * staleness exceeding thresholds
-  * error rates above baseline
-  * sudden price deviations
+* 随时间跟踪每个数据源的错误率
+* 监控数据源之间的波动率（波动率增加表示数据源性能下降）
+* 设置警报：
+  - 超过过期时间的阈值
+  - 错误率超过基准值
+  - 价格突然波动
 
-#### Deprecation
+#### 数据源的退役
 
-* Remove the feed from active consumers
-* Update documentation to point to replacement feeds
-* There is no on-chain "delete" — feeds simply stop being updated when no one fetches them
+* 从活跃的消费者中移除数据源
+* 更新文档以指向替代数据源
+* 由于没有人在获取数据源，因此数据源将自动停止更新
 
-### Outputs
+### 输出结果
 
-* `FeedMaintenancePlan`: current health metrics, recommended changes, migration steps
+* `FeedMaintenancePlan`：当前的健康指标、推荐的修改措施、迁移步骤
 
 ***
 
-## Module 6 — Prediction Markets
+## 模块6 — 预测市场（Module 5 — Prediction Markets）
 
-### Goals
+### 目标
 
-* Integrate prediction market data (odds, outcomes) as on-chain feed data
-* Support Kalshi and other event-based data sources
-* Ensure proper verification of market selection (prevent substitution attacks)
+* 将预测市场数据（赔率、结果）整合为链上数据源
+* 支持Kalshi和其他基于事件的数据源
+* 确保市场选择的正确验证（防止替代攻击）
 
-### Supported Sources
+### 支持的数据源（Supported Sources）
 
-* **Kalshi** (via `kalshiApiTask`) — the primary supported prediction market
+* **Kalshi**（通过`kalshiApiTask`）——主要支持的预测市场
 
-### Procedure
+### 执行流程
 
-1. **Define the market feed**:
+1. **定义市场数据源**：
 
    ```typescript
    {
@@ -768,68 +723,66 @@ If targeting Aptos, Iota, or Movement:
      }]
    }
    ```
-2. **Hardcode market identifiers** — never use variable overrides for market IDs or symbols
-3. **Use variable overrides ONLY for auth** (`api_key_id`, `private_key`)
-4. **Verify on-chain** using the standard feed verification flow (Module 1 read patterns)
 
-### Security considerations
+2. **硬编码市场标识符**——切勿使用变量覆盖市场ID或符号
+3. **仅对认证信息使用变量覆盖**（`api_key_id`、`private_key`）
+4. **在链上使用标准的验证流程进行验证**（模块1中的读取步骤）
 
-* Market metadata and odds are high-risk inputs
-* Symbol/market IDs must be explicit and hardcoded in the job structure
-* Variable overrides for anything that changes market selection is an attack vector
-* Always cross-reference market IDs against known registries
+### 安全考虑（Security Considerations）
 
-### Outputs
+* 市场元数据和赔率是高风险输入
+* 符号/市场ID必须在作业结构中明确指定
+* 对于任何会改变数据选择的因素，禁止使用变量覆盖
 
-* `PredictionMarketFeedPlan`: market source, job definition, verification flow, risk assessment
+### 输出结果
+
+* `PredictionMarketFeedPlan`：市场来源、作业定义、验证流程
 
 ***
 
-## Module 7 — Surge Streaming (Low-Latency Signed WebSocket)
+## 模块7 — Surge流式服务（Module 7 — Surge Streaming Service）
 
-### Goals
+### 目标
 
-* Discover available Surge feeds
-* Subscribe over WebSocket for signed, low-latency price updates
-* Convert signed streaming updates into a format usable by bots and/or on-chain settlement flows
-* Provide latency/health metrics and reconnection logic
+* 发现可用的Surge数据源
+* 通过WebSocket订阅获取签名后的低延迟价格更新
+* 将签名后的流式更新转换为机器人和/或链上结算可用的格式
+* 提供延迟/健康指标和重新连接逻辑
 
-### Surge Overview
+### Surge概述（Surge Overview）
 
-Surge is Switchboard's **signed, low-latency WebSocket streaming** service:
+Surge是Switchboard提供的**签名后的低延迟WebSocket流式服务**：
+- **预言机延迟为2–5毫秒**（端到端包括网络延迟）
+- 签名后的更新可以在链上结算
+- **订阅通过Solana在链上管理**，无论目标链是什么
+- 订阅费用通过SWTCH代币支付
 
-* **2–5ms oracle latency** (sub-100ms end-to-end including network)
-* Signed updates that can be settled on-chain
-* **Subscriptions managed on-chain via Solana**, regardless of target chain
-* Paid in **SWTCH tokens** via on-chain subscription
+#### 订阅层级（Subscription Tiers）
 
-#### Subscription Tiers
-
-| Tier       | Price       | Max Feeds | Quote Interval  |
+| 订阅层级 | 价格       | 最大数据源数量 | 报价间隔         |
 | ---------- | ----------- | --------- | --------------- |
-| Plug       | Free        | 2         | 10 seconds      |
-| Pro        | \~$3,000/mo | 100       | 450ms           |
-| Enterprise | \~$7,500/mo | 300       | 0ms (real-time) |
+| Plug       | 免费        | 2         | 10秒            |
+| Pro        | 约$3,000/月   | 100       | 450毫秒           |
+| Enterprise | 约$7,500/月   | 300       | 实时（0毫秒）         |
 
-#### Surge Program ID (Solana)
+#### Surge程序ID（Solana）
 
 `orac1eFjzWL5R3RbbdMV68K9H6TaCVVcL6LjvQQWAbz`
 
-### Procedure
+### 执行流程
 
-#### 0. Create Subscription (if needed)
+#### 0. 创建订阅（If needed）
 
-Before using Surge, you must have an active on-chain subscription. If the wallet does not have a subscription, create one programmatically:
+在使用Surge之前，您必须拥有一个活跃的链上订阅。如果钱包没有订阅，请通过以下方式程序化创建：
 
-**Prerequisites**:
+**前提条件**：
+- 拥有Solana钱包和用于支付交易费用的SOL代币
+- 拥有用于支付订阅费用的SWTCH代币（可通过Jupiter、Raydium等平台获取）
+- 选择订阅层级：Plug（免费）、Pro（约$3,000/月）或Enterprise（约$7,500/月）
 
-* Solana wallet with SOL for transaction fees
-* SWTCH tokens for subscription payment (acquire via Jupiter, Raydium, etc.)
-* Choose a tier: Plug (free), Pro (~~$3k/mo), or Enterprise (~~$7.5k/mo)
+**订阅流程**（详见[完整程序化指南](https://docs.switchboard.xyz/ai-agents-llms/surge-subscription-guide）：
 
-**Subscription Flow** (see [full programmatic guide](https://docs.switchboard.xyz/ai-agents-llms/surge-subscription-guide) for complete details):
-
-1. **Derive PDAs**:
+1. **生成PDAs**：
 
 ```typescript
 const SURGE_PROGRAM_ID = new PublicKey("orac1eFjzWL5R3RbbdMV68K9H6TaCVVcL6LjvQQWAbz");
@@ -854,7 +807,7 @@ const [subscriptionPda] = PublicKey.findProgramAddressSync(
 );
 ```
 
-2. **Fetch SWTCH/USDT oracle quote** (required for live pricing):
+2. **获取SWTCH/USDT预言机报价**（获取实时价格所需）：
 
 ```typescript
 const queue = await sb.Queue.loadDefault(program!);
@@ -870,7 +823,7 @@ const quoteIxs = await queue.fetchQuoteIx(crossbar, [swtchFeedHash], {
 });
 ```
 
-3. **Call `subscription_init`** with the oracle quote in the same transaction:
+3. **在同一交易中调用`subscription_init`并传入预言机报价：
 
 ```typescript
 // Build subscription_init instruction (using Surge program IDL)
@@ -892,18 +845,17 @@ const tx = await sb.asV0Tx({
 const sig = await connection.sendTransaction(tx);
 ```
 
-**Key Points**:
+**关键点**：
+- 程序会根据实时SWTCH/USDT价格计算订阅费用
+- 订阅有效期为指定的Solana时代数（1时代约2-3天）
+- Plug层级（层级ID 1）免费，但限制为2个数据源和10秒的报价间隔
+- 每个钱包只能拥有一个订阅：`[SUBSCRIPTION, owner_pubkey]`
 
-* The program calculates the SWTCH payment amount at the live SWTCH/USDT price (no hardcoded rates)
-* Subscriptions are valid for the specified number of Solana epochs (1 epoch ≈ 2-3 days)
-* Plug tier (tier ID 1) is free but limited to 2 feeds and 10-second intervals
-* Each wallet can have only one subscription at `[SUBSCRIPTION, owner_pubkey]`
+**有关完整实现细节，请参阅[Surge订阅指南](https://docs.switchboard.xyz/ai-agents-llms/surge-subscription-guide)。**
 
-**For full implementation details**, see the [Surge Subscription Guide](https://docs.switchboard.xyz/ai-agents-llms/surge-subscription-guide).
+#### 1. 初始化Surge客户端（Initialize Surge Client）
 
-#### 1. Initialize Surge client
-
-Once you have an active subscription, initialize the Surge client with your Solana connection and keypair:
+一旦您拥有活跃的订阅，使用您的Solana连接和密钥对初始化Surge客户端：
 
 ```typescript
 import * as sb from "@switchboard-xyz/on-demand";
@@ -913,13 +865,13 @@ const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
 const surge = new sb.Surge({ connection, keypair });
 ```
 
-#### 2. Discover available feeds
+#### 2. 发现可用的数据源（Discover Available Feeds）
 
 ```typescript
 const availableFeeds = await surge.getSurgeFeeds();
 ```
 
-#### 3. Subscribe to feeds
+#### 3. 订阅数据源（Subscribe to Feeds）
 
 ```typescript
 await surge.connectAndSubscribe([
@@ -929,7 +881,7 @@ await surge.connectAndSubscribe([
 ]);
 ```
 
-#### 4. Handle signed updates
+#### 4. 处理签名后的更新（Handle Signed Updates）
 
 ```typescript
 surge.on("signedPriceUpdate", (response: sb.SurgeUpdate) => {
@@ -949,9 +901,9 @@ surge.on("update", async (response: sb.SurgeUpdate) => {
 });
 ```
 
-#### 5. Convert to on-chain format
+#### 5. 转换为链上格式（Convert to On-Chain Format）
 
-**Solana**: Convert streaming update to oracle quote instruction:
+**Solana**：将流式更新转换为预言机报价指令：
 
 ```typescript
 const crankIxs = response.toQuoteIx(queue.pubkey, keypair.publicKey);
@@ -959,7 +911,7 @@ const crankIxs = response.toQuoteIx(queue.pubkey, keypair.publicKey);
 const [sigVerifyIx, oracleQuote] = response.toOracleQuoteIx();
 ```
 
-**EVM**: Convert Surge data to EVM-compatible format:
+**EVM**：将Surge数据转换为EVM兼容的格式：
 
 ```typescript
 import { EVMUtils } from "@switchboard-xyz/common";
@@ -970,47 +922,46 @@ const evmEncoded = EVMUtils.convertSurgeUpdateToEvmFormat(surgeData, {
 // Pass evmEncoded to switchboard.updateFeeds()
 ```
 
-#### 6. Validate before use
+#### 6. 使用前进行验证（Verify Before Use）
 
-Always apply:
+始终执行以下操作：
+- 最大过期时间检查
+- 偏差合理性检查（特别是对于清算机器人）
+- 可选的多数据源一致性检查（例如，三角测量）
 
-* max staleness checks
-* deviation sanity checks (especially for liquidation bots)
-* optional multi-feed coherence checks (e.g., triangulation)
+#### 7. 重新连接策略（Reconnection Strategy）
 
-#### 7. Reconnection strategy
+* 实现心跳检测
+- 在断开连接时自动重连，并采用指数级退避策略
+- 跟踪最后一次连接的时间戳/时间槽
 
-* Implement heartbeat monitoring
-* Auto-reconnect on disconnect with exponential backoff
-* Track last-seen timestamp/slot for gap detection
+### 输出结果
 
-### Outputs
-
-* `SurgeSubscriptionPlan`:
-  * feed list + symbols
-  * subscription tier
-  * code skeleton
-  * reconnection strategy
-  * validation policy
-  * mapping from streaming update → on-chain settlement format (per chain)
+* `SurgeSubscriptionPlan`：
+  - 数据源列表 + 符号
+  | 订阅层级 |
+  | 代码框架 |
+  | 重新连接策略 |
+  | 验证策略 |
+  | 从流式更新到链上结算的转换格式（针对每个链） |
 
 ***
 
-## Module 8 — Unsigned Streaming (UI / Dashboard / Monitoring)
+## 模块8 — 无签名流式服务（Module 8 — Unsigned Streaming）
 
-### Goals
+### 目标
 
-* Provide real-time price data for UIs, dashboards, and monitoring
-* Chain-agnostic (works identically on Solana, EVM, Sui)
-* NOT for on-chain use (unsigned data cannot be verified on-chain)
+* 为UI、仪表板和监控提供实时价格数据
+* 与链无关（适用于Solana、EVM、Sui）
+* 仅用于显示目的，不支持链上验证
 
-### Overview
+### 概述
 
-Unsigned streaming is a **lightweight, chain-agnostic WebSocket** feed for display purposes. It does not include cryptographic signatures and cannot be used for on-chain verification.
+无签名流式服务是一种**轻量级的、与链无关的WebSocket数据源**，仅用于显示目的，不包含加密签名，因此无法在链上进行验证。
 
-### Procedure
+### 执行流程
 
-#### Initialize for unsigned streaming
+#### 初始化无签名流式服务（Initialize for Unsigned Streaming）
 
 ```typescript
 import * as sb from "@switchboard-xyz/on-demand";
@@ -1022,9 +973,9 @@ const surge = new sb.Surge({ connection, keypair });
 // Unsigned streaming is available via the same Surge client
 ```
 
-**Note**: Unsigned updates are provided for monitoring/UI purposes only and cannot be verified on-chain.
+**注意**：无签名更新仅用于监控/显示目的，无法在链上进行验证。
 
-#### Handle unsigned updates
+#### 处理无签名更新（Handle Unsigned Updates）
 
 ```typescript
 surge.on("unsignedPriceUpdate", (update: sb.UnsignedPriceUpdate) => {
@@ -1034,145 +985,75 @@ surge.on("unsignedPriceUpdate", (update: sb.UnsignedPriceUpdate) => {
 });
 ```
 
-#### Use cases
+#### 使用场景（Use Cases）
 
-* Price tickers and dashboards
-* Portfolio tracking UIs
-* Monitoring / alerting systems
-* Any display-only context where on-chain verification is not needed
+* 价格行情显示器和仪表板
+* 组合投资组合的跟踪界面
+* 需要仅显示数据的场景，无需链上验证
 
-### Outputs
+### 输出结果
 
-* `UnsignedStreamPlan`: feed list, display integration code, refresh strategy
-
-***
-
-## Module 9 — Randomness (Solana + EVM)
-
-### Goals
-
-* Implement request + settle randomness flows correctly
-* Avoid replay/double-settle
-* Provide safe integration patterns for games, raffles, auctions, and DeFi mechanisms
-
-### Solana/SVM randomness (commit/reveal)
-
-#### TypeScript client flow
-
-Each step builds a tx via `sb.asV0Tx({ connection, ixs, payer, signers, computeUnitPrice: 75_000, computeUnitLimitMultiple: 1.3 })` and sends it.
-
-```typescript
-import * as sb from "@switchboard-xyz/on-demand";
-const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
-const queue = await setupQueue(program!);
-const sbProgram = await loadSbProgram(program!.provider);
-
-// 1. Create randomness account (one-time)
-const rngKp = Keypair.generate();
-const [randomness, createIx] = await sb.Randomness.create(sbProgram, rngKp, queue);
-// → build tx with ixs: [createIx], signers: [keypair, rngKp]
-
-// 2. Commit to randomness + your game action (same tx)
-const commitIx = await randomness.commitIx(queue);
-const gameActionIx = await createCoinFlipInstruction(myProgram, rngKp.publicKey, userGuess, ...);
-// → build tx with ixs: [commitIx, gameActionIx], signers: [keypair]
-
-// 3. Wait ~3s (oracle generates in TEE), then reveal + settle (same tx)
-const revealIx = await randomness.revealIx();
-const settleIx = await settleFlipInstruction(myProgram, ...);
-// → build tx with ixs: [revealIx, settleIx], signers: [keypair]
-```
-
-#### Key patterns
-
-* Bind randomness to a specific state transition (e.g., bet + commit in same tx)
-* Always wait before reveal (oracle needs time to generate in TEE)
-* Implement retry logic with exponential backoff for commit and reveal
-* Reuse randomness accounts across games (persist keypair)
-* Reject stale or replayed randomness
-* Ensure sysvars are present in program accounts
-
-#### Output
-
-* `SolanaRandomnessPlan` (accounts, instruction ordering, replay protections)
-
-### EVM randomness (request/resolve/settle)
-
-#### TypeScript client flow
-
-```typescript
-// Setup: ethers provider/wallet + CrossbarClient (same as Module 1 EVM)
-const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, wallet);
-
-// 1. Request randomness (on-chain)
-const tx1 = await contract.coinFlip({ value: ethers.parseEther("1") });
-await tx1.wait();
-
-// 2. Get randomness request data
-const randomnessId = await contract.getWagerRandomnessId(wallet.address);
-const wagerData = await contract.getWagerData(wallet.address);
-
-// 3. Resolve off-chain via Crossbar
-const network = await provider.getNetwork();
-const { encoded } = await crossbar.resolveEVMRandomness({
-  chainId: Number(network.chainId),
-  randomnessId,
-  timestamp: Number(wagerData.rollTimestamp),
-  minStalenessSeconds: Number(wagerData.minSettlementDelay),
-  oracle: wagerData.oracle,
-});
-
-// 4. Settle on-chain
-const tx2 = await contract.settleFlip(encoded);
-const receipt = await tx2.wait();
-```
-
-#### Solidity contract pattern
-
-```solidity
-// Request: generate unique randomnessId, call switchboard.createRandomness()
-bytes32 randomnessId = keccak256(abi.encodePacked(msg.sender, block.timestamp));
-switchboard.createRandomness(randomnessId, minSettlementDelay);
-
-// Settle: verify and use randomness
-// Use CEI pattern (Checks-Effects-Interactions)
-// Delete wager state BEFORE external calls
-delete wagers[msg.sender];
-
-// Get randomness value
-uint256 randomValue = switchboard.getRandomness(randomnessId);
-bool won = (randomValue % 2 == 0);
-```
-
-#### Security patterns
-
-* **CEI** (Checks-Effects-Interactions) to prevent reentrancy
-* Enforce `minSettlementDelay` (e.g., 5 seconds)
-* Use try/catch to avoid stuck pending states
-* Generate unique `randomnessId` per request (prevent replay)
-* Validate oracle assignment matches expected oracle
-
-#### Output
-
-* `EvmRandomnessPlan` (request ID scheme, delay policy, settle tx plan)
+* `UnsignedStreamPlan`：数据源列表、显示集成代码、刷新策略
 
 ***
 
-## Module 10 — X402 Micropayments
+## 模块9 — 随机性（Module 9 — Randomness）
 
-### Goals
+### 目标
 
-* Access paywalled/premium data sources through oracle feeds
-* Pay per-request using Solana USDC micropayments
-* Integrate X402 payment headers into feed definitions
+* 正确实现请求和结算随机性数据流
+* 避免重复请求和双重结算
+* 为游戏、抽奖、拍卖和DeFi机制提供安全的集成方案
 
-### Overview
+### Solana/SVM随机性（Solana/SVM Randomness）
 
-X402 is a **micropayment protocol** that enables pay-per-request access to premium data feeds. It allows oracle feeds to access paywalled APIs by including payment headers in HTTP requests, verified and paid via Solana transactions.
+#### TypeScript客户端流程（TypeScript Client Flow）
 
-### Procedure
+每个步骤都通过`sb.asV0Tx({ connection, ixs, payer, signers, computeUnitPrice: 75_000, computeUnitLimitMultiple: 1.3 })`构建交易并发送。
 
-#### 1. Setup payment handler
+#### 关键模式（Key Patterns）
+
+* 将随机性绑定到特定的状态转换（Bind randomness to a specific state transition）
+* 在显示之前始终等待（预言机需要在TEE中生成结果）
+* 实现带有指数级退避的重试逻辑
+* 在不同游戏之间重用随机性账户（Reuse randomness accounts across games）
+* 拒绝过时的或重复的随机性数据
+* 确保程序账户中包含必要的系统变量（Ensure sysvars are present in the program accounts）
+
+#### 输出结果
+
+* `SolanaRandomnessPlan`（账户、指令顺序、重放保护）
+
+#### EVM随机性（EVM Randomness）
+
+#### TypeScript客户端流程（EVM Client Flow）
+
+#### Solidity合约流程（Solidity Contract Flow）
+
+#### 安全性措施（Security Measures）
+
+* **CEI**（Checks-Effects-Interactions）防止重新进入（Check for reentrancy）
+* 强制执行`minSettlementDelay`（例如，5秒）
+* 使用`try/catch`避免挂起的待处理状态
+* 为每个请求生成唯一的`randomnessId`（防止重复请求）
+* 确保预言机分配的结果与预期一致（Ensure oracle assignment matches expected oracle）
+
+#### 输出结果
+
+* `EvmRandomnessPlan`（请求ID方案、延迟策略、结算交易计划）
+
+***
+
+## 模块10 — X402微支付（Module 10 — X402 Micropayments）
+
+### 目标
+
+* 通过预言机数据源访问受保护的/高级数据源
+* 使用Solana的X402微支付机制按请求进行支付
+
+### 执行流程
+
+#### 1. 设置支付处理程序（Set Up Payment Handler）
 
 ```typescript
 import { X402FetchManager } from "@switchboard-xyz/x402-utils";
@@ -1184,7 +1065,7 @@ const usdcMint = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"); 
 const paymentHandler = exact.createPaymentHandler(wallet, usdcMint, connection);
 ```
 
-#### 2. Define feed with X402 payment header placeholders
+#### 2. 定义包含X402支付头部的数据源（Define Feed with X402 Payment Header）
 
 ```typescript
 const oracleFeed = {
@@ -1208,7 +1089,7 @@ const oracleFeed = {
 };
 ```
 
-#### 3. Derive payment header and fetch with override
+#### 3. 推导支付头部并获取数据（Derive Payment Header and Fetch Data）
 
 ```typescript
 const x402Manager = new X402FetchManager(paymentHandler);
@@ -1226,200 +1107,143 @@ const instructions = await queue.fetchManagedUpdateIxs(crossbar, [feedId.toStrin
 });
 ```
 
-#### Requirements
+#### 要求（Requirements）
 
-* Solana wallet with USDC balance
-* `@switchboard-xyz/x402-utils`, `@faremeter/wallet-solana`, `@faremeter/payment-solana`
-* `numSignatures` must equal 1 for X402 requests
+* 拥有Solana钱包和USDC余额
+* 需要`@switchboard-xyz/x402-utils`、`@faremeter/wallet-solana`、`@faremeter/payment-solana`
+* `numSignatures`必须设置为1，以使用X402支付方式
 
-### Outputs
+#### 输出结果
 
-* `X402IntegrationPlan`: payment handler setup, feed definition, variable override mapping, cost estimates
+* `X402IntegrationPlan`：支付处理程序设置、数据源定义、变量覆盖映射
 
 ***
 
-### Task Types Reference
+### 任务类型参考（Task Types Reference）
 
-This is the complete reference of all task types available for building Switchboard oracle feed job definitions. Use these as building blocks in `OracleJob[]` arrays.
+这是构建Switchboard预言机数据源作业定义的所有任务类型的完整参考。请将这些作为构建`OracleJob[]`数组的构建块使用。
 
-#### Data Fetching
+#### 数据获取（Data Fetching）
 
-| Task                           | Description                          | Key Parameters                                          |
+| 任务                         | 描述                          | 关键参数                                          |
 | ------------------------------ | ------------------------------------ | ------------------------------------------------------- |
-| `httpTask`                     | HTTP request, returns response body  | `url`, `method`, `headers[]`, `body`                    |
-| `websocketTask`                | Real-time WebSocket data retrieval   | `url`, `subscription`, `max_data_age_seconds`, `filter` |
-| `anchorFetchTask`              | Parse Solana accounts via Anchor IDL | `program_id`, `account_address`                         |
-| `solanaAccountDataFetchTask`   | Raw Solana account data              | `pubkey`                                                |
-| `splTokenParseTask`            | SPL token mint JSON data             | (token mint address)                                    |
-| `solanaToken2022ExtensionTask` | Token-2022 extension modifiers       | `mint`                                                  |
+| `httpTask`                     | 发送HTTP请求并获取响应体           | `url`, `method`, `headers[]`, `body`                    |
+| `websocketTask`                | 实时WebSocket数据检索           | `url`, `subscription`, `max_data_age_seconds`, `filter`         |
+| `anchorFetchTask`              | 通过Anchor IDL解析Solana账户           | `program_id`, `account_address`                         |
+| `solanaAccountDataFetchTask`   | 获取原始Solana账户数据                 | `pubkey`                                                |
+| `splTokenParseTask`            | 解析SPL令牌的JSON数据             | `token mint address`                                    |
+| `solanaToken2022ExtensionTask` | Token-2022扩展的解析任务             | `mint`                                                  |
 
-#### Parsing
+#### 解析（Parsing）
 
-| Task                    | Description                          | Key Parameters                                |
+| 任务                         | 描述                          | 关键参数                                |
 | ----------------------- | ------------------------------------ | --------------------------------------------- |
-| `jsonParseTask`         | Extract value from JSON via JSONPath | `path`, `aggregation_method`                  |
-| `regexExtractTask`      | Extract text via regex               | `pattern`, `group_number`                     |
-| `bufferLayoutParseTask` | Deserialize binary buffers           | `offset`, `endian`, `type`                    |
-| `cronParseTask`         | Convert crontab to timestamp         | `cron_pattern`, `clock_offset`, `clock`       |
-| `stringMapTask`         | Map string inputs to outputs         | `mappings`, `default_value`, `case_sensitive` |
+| `jsonParseTask`         | 从JSON中提取值                   | `path`, `aggregation_method`                  |
+| `regexExtractTask`      | 通过正则表达式提取文本               | `pattern`, `group_number`                     |
+| `bufferLayoutParseTask` | 解析二进制缓冲区                   | `offset`, `endian`, `type`                    |
+| `cronParseTask`         | 将cron表达式转换为时间戳           | `cron_pattern`, `clock_offset`, `clock`       |
+| `stringMapTask`         | 将字符串映射到输出                   | `mappings`, `default_value`, `case_sensitive`         |
 
-#### Math Operations
+#### 数学运算（Math Operations）
 
-| Task           | Description                     | Key Parameters                                                 |
-| -------------- | ------------------------------- | -------------------------------------------------------------- |
-| `addTask`      | Add scalar/job/aggregator value | `big`, `job`, `aggregatorPubkey`                               |
-| `subtractTask` | Subtract value                  | `big`, `job`, `aggregatorPubkey`                               |
-| `multiplyTask` | Multiply by value               | `big`, `job`, `aggregatorPubkey`                               |
-| `divideTask`   | Divide by value                 | `big`, `job`, `aggregatorPubkey`                               |
-| `powTask`      | Raise to exponent               | `scalar`                                                       |
-| `roundTask`    | Round to decimal places         | `method`, `decimals`                                           |
-| `boundTask`    | Clamp result to bounds          | `lower_bound_value`, `upper_bound_value`, `on_exceeds_*_value` |
+| 任务                         | 描述                          | 关键参数                                |
+| ----------------------- | ------------------------------------ | ------------------------------- |
+| `addTask`      | 对标量/作业/聚合器值进行加法           | `big`, `job`, `aggregatorPubkey`                               |
+| `subtractTask` | 对标量/作业/聚合器值进行减法           | `big`, `job`, `aggregatorPubkey`                               |
+| `multiplyTask` | 对标量/作业进行乘法运算           | `big`, `job`, `aggregatorPubkey`                               |
+| `divideTask`   | 对标量/作业进行除法运算           | `big`, `job`, `aggregatorPubkey`                               |
+| `powTask`      | 对标量进行幂运算                   | `big`, `job`, `aggregatorPubkey`                               |
+| `roundTask`    | 将结果四舍五入                   | `round`, `decimals`                                           |
+| `boundTask`    | 将结果限制在指定范围内               | `lower_bound_value`, `upper_bound_value`, `on_exceeds_*_value`         |
 
-#### Aggregation
+#### 聚合（Aggregation）
 
-| Task         | Description                           | Key Parameters                                                      |
-| ------------ | ------------------------------------- | ------------------------------------------------------------------- |
-| `medianTask` | Median of subtasks/subjobs            | `tasks[]`, `jobs[]`, `min_successful_required`, `max_range_percent` |
-| `meanTask`   | Average of subtasks/subjobs           | `tasks[]`, `jobs[]`                                                 |
-| `maxTask`    | Maximum value                         | `tasks[]`, `jobs[]`                                                 |
-| `minTask`    | Minimum value                         | `tasks[]`, `jobs[]`                                                 |
-| `ewmaTask`   | Exponentially weighted moving average | (EWMA parameters)                                                   |
-| `twapTask`   | Time-weighted average price           | `aggregator_pubkey`, `period`, `min_samples`                        |
+| 任务                         | 描述                           | 关键参数                                      |
+| ---------------------- | ----------------------------------- | ------------------------------------------------------------------- |
+| `medianTask` | 计算子任务/作业的中位数           | `tasks[]`, `jobs[]`, `min_successful_required`, `max_range_percent` |
+| `meanTask`   | 计算子任务/作业的平均值           | `tasks[]`, `jobs`                                 |
+| `maxTask`    | 计算子任务的最大值                   | `tasks[]`, `jobs`                                 |
+| `minTask`    | 计算子任务的最小值                   | `tasks[]`, `jobs`                                 |
+| `ewmaTask`   | 计算子任务的指数加权平均值           | `ewma parameters`                                 |
+| `twapTask`   | 计算子任务的TWAP平均值           | `aggregatorPubkey`, `period`, `min_samples`                        |
 
-#### Surge & Oracle Integration
+#### Surge与预言机集成（Surge & Oracle Integration）
 
-| Task                   | Description                         | Key Parameters                                                                              |
+| 任务                         | 描述                           | 关键参数                                      |
 | ---------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- |
-| `switchboardSurgeTask` | Live spot price from Surge cache    | `source` (BINANCE, BYBIT, OKX, PYTH, TITAN, WEIGHTED, AUTO), `symbol`                       |
-| `surgeTwapTask`        | TWAP from Surge candle database     | `symbol`, `time_interval`                                                                   |
-| `oracleTask`           | Cross-oracle data (Pyth, Chainlink) | `switchboardAddress`, `pythAddress`, `chainlinkAddress`, `pyth_allowed_confidence_interval` |
+| `switchboardSurgeTask` | 从Surge缓存中获取实时现货价格         | `source`（BINANCE, BYBIT, OKX, PYTH, TITAN, WEIGHTED, AUTO），`symbol`       |
+| `surgeTwapTask`        | 从Surge烛台数据库获取TWAP价格         | `symbol`, `time_interval`                                   |
+| `oracleTask`           | 从Cross-oracle数据源获取价格         | `switchboardAddress`, `pythAddress`, `pythAddress`, `pyth_allowed_confidence_interval` |
 
-#### DEX / DeFi Pricing
+#### DEX / DeFi定价（DEX / DeFi Pricing）
 
-| Task                          | Description                            | Key Parameters                                                                                |
+| 任务                         | 描述                            | 关键参数                                      |
 | ----------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `jupiterSwapTask`             | Jupiter swap simulation                | `in_token_address`, `out_token_address`, `base_amount`, `slippage`                            |
-| `uniswapExchangeRateTask`     | Uniswap swap price                     | `in_token_address`, `out_token_address`, `in_token_amount`, `slippage`, `provider`, `version` |
-| `pancakeswapExchangeRateTask` | PancakeSwap swap price                 | `in_token_address`, `out_token_address`, `in_token_amount`, `slippage`, `provider`            |
-| `sushiswapExchangeRateTask`   | SushiSwap swap price                   | `in_token_address`, `out_token_address`, `in_token_amount`, `slippage`, `provider`            |
-| `curveFinanceTask`            | Curve Finance pool pricing             | `chain`, `provider`, `pool_address`, `out_decimals`                                           |
-| `lpExchangeRateTask`          | LP swap price (Orca/Raydium/Mercurial) | pool address, `in_token_address`, `out_token_address`                                         |
-| `lpTokenPriceTask`            | LP token prices                        | pool address, `use_fair_price`, `price_feed_addresses`                                        |
-| `serumSwapTask`               | Serum DEX price                        | `serum_pool_address`                                                                          |
-| `meteoraSwapTask`             | Meteora pool swap price                | `pool`, `type`                                                                                |
-| `titanTask`                   | Titan aggregator swap simulation       | `in_token_address`, `out_token_address`, `amount`, `slippage_bps`, `dexes`                    |
-| `kuruTask`                    | Kuru swap quotes                       | `token_in`, `token_out`, `amount`, `slippage_tolerance`                                       |
-| `maceTask`                    | MACE aggregator swap quotes            | `token_in`, `token_out`, `amount`, `slippage_tolerance_bps`                                   |
-| `pumpAmmTask`                 | Pump AMM swap                          | `pool_address`, `in_amount`, `max_slippage`, `is_x_for_y`                                     |
-| `pumpAmmLpTokenPriceTask`     | Pump AMM LP fair price                 | `pool_address`, `x_price_job`, `y_price_job`                                                  |
-| `bitFluxTask`                 | BitFlux pool swap price                | `provider`, `pool_address`, `in_token`, `out_token`                                           |
+| `jupiterSwapTask`             | Jupiter交换机的模拟交易             | `in_token_address`, `out_token_address`, `base_amount`, `slippage`            |
+| `uniswapExchangeRateTask`     | Uniswap交换机的价格                 | `in_token_address`, `out_token_address`, `in_token_amount`, `slippage`, `provider`, `version` |
+| `pancakeswapExchangeRateTask` | PancakeSwap交换机的价格                 | `in_token_address`, `out_token_address`, `in_token_amount`, `slippage`, `provider`            |
+| `sushiswapExchangeRateTask`   | SushiSwap交换机的价格                 | `in_token_address`, `out_token_address`, `in_token_amount`, `slippage`, `provider`            |
+| `curveFinanceTask`            | Curve Finance池的价格                 | `pool`, `provider`, `pool_address`, `out_decimals`                           |
+| `lpExchangeRateTask`          | LP交换机的价格                 | `pool address`, `out_token_address`, `in_token_address`, `out_token_amount`, `slippage`         |
+| `lpTokenPriceTask`            | LP令牌的价格                 | `pool address`, `out_token_address`, `use_fair_price`                         |
+| `serumSwapTask`               | Serum DEX的价格                 | `pool`, `type`                                 |
+| `meteoraSwapTask`             | Meteora池的价格                 | `pool`, `type`                                 |
 
-#### LST & Staking
+#### LST & Staking（LST & Staking）
 
-| Task                     | Description               | Key Parameters                                                  |
+| 任务                         | 描述                           | 关键参数                                      |
 | ------------------------ | ------------------------- | --------------------------------------------------------------- |
-| `sanctumLstPriceTask`    | LST price relative to SOL | `lst_mint`, `skip_epoch_check`                                  |
-| `lstHistoricalYieldTask` | Historical yield for LSTs | `lst_mint`, `operation`, `epochs`                               |
-| `marinadeStateTask`      | Marinade staking state    | (none)                                                          |
-| `splStakePoolTask`       | SPL Stake Pool account    | `pubkey`                                                        |
-| `suiLstPriceTask`        | Sui LST exchange rate     | `package_id`, `module`, `function`, `shared_objects`, `rpc_url` |
-| `vsuiPriceTask`          | vSUI/SUI exchange rate    | `rpc_url`                                                       |
-| `solayerSusdTask`        | Solayer sUSD price        | (none)                                                          |
+| `sanctumLstPriceTask`    | LST的价格相对于SOL             | `lst_mint`, `skip_epoch_check`                                  |
+| `lstHistoricalYieldTask` | LST的历史收益率             | `lst_mint`, `operation`, `epochs`                               |
+| `marinadeStateTask`      | Marinade的staking状态                 | （无）                                          |
+| `splStakePoolTask`       | SPL的Stake Pool账户                 | `pubkey`                                        |
+| `suiLstPriceTask`        | Sui的LST交换率                   | `package_id`, `module`, `function`, `rpc_url`                         |
+| `vsuiPriceTask`          | vSUI/SUI的交换率                   | `rpc_url`                                       |
+| `solayerSusdTask`        | Solayer的sUSD价格                 | （无）                                          |
 
-#### Prediction Markets & Specialized Finance
+#### 预测市场与特殊金融（Prediction Markets & Specialized Finance）
 
-| Task                          | Description                   | Key Parameters                                              |
+| 任务                         | 描述                           | 关键参数                                      |
 | ----------------------------- | ----------------------------- | ----------------------------------------------------------- |
-| `kalshiApiTask`               | Kalshi prediction market data | `url`, `api_key_id`, `private_key`                          |
-| `lendingRateTask`             | Protocol lending rates        | `protocol` (01, apricot, francium, jet, etc.), `asset_mint` |
-| `perpMarketTask`              | Perpetual market price        | (market address)                                            |
-| `mangoPerpMarketTask`         | Mango perp market price       | `perp_market_address`                                       |
-| `mapleFinanceTask`            | Maple Finance asset pricing   | `method`                                                    |
-| `ondoUsdyTask`                | USDY price relative to USD    | `strategy`                                                  |
-| `turboEthRedemptionRateTask`  | tETH/WETH redemption rate     | (none)                                                      |
-| `exponentTask`                | Vault token exchange rate     | `vault`                                                     |
-| `exponentPTLinearPricingTask` | Exponent vault pricing        | (vault parameters)                                          |
+| `kalshiApiTask`               | Kalshi预测市场的数据                 | `url`, `api_key_id`, `private_key`                          |
+| `lendingRateTask`             | Perpetual市场的价格                 | `protocol`（01, apricot, francium, jet等），`asset_mint`         |
+| `perpMarketTask`              | Perpetual市场的价格                 | `perp_market_address`                                       |
+| `mangoPerpMarketTask`         | Mango Perp市场的价格                 | `perp_market_address`                                       |
+| `mapleFinanceTask`            | Maple Finance的价格                 | `method`                                        |
+| `ondoUsdyTask`                | USDY的价格相对于USD                   | `strategy`                                          |
+| `turboEthRedemptionRateTask`  | tETH/WETH的赎回率                 | （无）                                          |
+| `exponentTask`                | Vault的兑换率                     | （无）                                          |
 
-#### Control Flow & Utilities
+#### 控制流与实用工具（Control Flow & Utilities）
 
-| Task                 | Description                        | Key Parameters                                                 |
-| -------------------- | ---------------------------------- | -------------------------------------------------------------- |
-| `conditionalTask`    | Try primary, fallback on failure   | `attempt[]`, `on_failure[]`                                    |
-| `comparisonTask`     | Conditional branching              | `op`, `on_true`, `on_true_value`, `on_false`, `on_false_value` |
-| `cacheTask`          | Store result in variable for reuse | `cache_items[]`                                                |
-| `valueTask`          | Return a static value              | `value`, `aggregator_pubkey`, `big`                            |
-| `unixTimeTask`       | Current Unix epoch time            | `offset`                                                       |
-| `sysclockOffsetTask` | Oracle vs system clock diff        | (none)                                                         |
-| `blake2b128Task`     | BLAKE2b-128 hash as numeric        | `value`                                                        |
+| 任务                         | 描述                        | 关键参数                                      |
+| --------------------- | ---------------------------------- | -------------------------------------------------------------- |
+| `conditionalTask`    | 尝试主要方法，失败时使用备用方法           | `attempt[]`, `on_failure[]`                                    |
+| `comparisonTask`     | 条件分支                     | `op`, `on_true`, `on_true_value`, `on_false`, `on_false_value`         |
+| `cacheTask`          | 将结果存储在变量中以供后续使用           | `cache_items[]`                                                |
+| `valueTask`          | 返回静态值                         | `value`, `aggregatorPubkey`, `big`                            |
+| `unixTimeTask`       | 获取当前的Unix时间                         | `offset`                                                       |
+| `sysclockOffsetTask` | Oracle时间与系统时间的差异                 | （无）                                          |
+| `blake2b128Task`     | 将BLAKE2b-128哈希转换为数值           | `value`                                                       |
 
-#### AI & Advanced
+#### AI与高级功能（AI & Advanced）
 
-| Task                  | Description                      | Key Parameters                                                    |
-| --------------------- | -------------------------------- | ----------------------------------------------------------------- |
-| `llmTask`             | LLM text generation in feed      | `providerConfig`, `userPrompt`, `temperature`, `secretNameApiKey` |
-| `secretsTask`         | Fetch secrets from SecretsServer | `authority`, `url`                                                |
-| `vwapTask`            | Volume-weighted average price    | (VWAP parameters)                                                 |
-| `historyFunctionTask` | Historical data function         | (function parameters)                                             |
+| 任务                         | 描述                        | 关键参数                                      |
+| --------------------- | -------------------------------- | --------------------------------- |
+| `llmTask`             | 在Feed中生成LLM文本                         | `providerConfig`, `userPrompt`, `temperature`, `secretNameApiKey`         |
+| `secretsTask`         | 从SecretsServer获取秘密                 | `authority`, `url`                                                |
+| `vwapTask`            | 使用Volume加权计算价格                 | （VWAP参数）                                         |
+| `historyFunctionTask`         | 获取历史数据                         | （函数参数）                                         |
 
-#### Protocol-Specific
+#### 协议特定任务（Protocol-Specific Tasks）
 
-| Task             | Description                        |
-| ---------------- | ---------------------------------- |
-| `hyloTask`       | hyUSD to jitoSOL conversion        |
-| `aftermathTask`  | Aftermath protocol                 |
-| `corexTask`      | Corex protocol                     |
-| `etherfuseTask`  | Etherfuse protocol                 |
-| `fragmetricTask` | Fragmetric liquid restaking tokens |
-| `glyphTask`      | Glyph protocol                     |
-| `xStepPriceTask` | xStep price                        |
+| 任务                         | 描述                        | -------------------------------------------------- |
+| `hyloTask`       | 将hyUSD转换为jitoSOL                     |                                 |
+| `aftermathTask`          | Aftermath协议                         |
+| `corexTask`      | Corex协议                         |
+| `etherfuseTask`      | Etherfuse协议                         |
+| `fragmetricTask`      | Fragmetric的液体代币重新质押                     |
+| `glyphTask`      | Glyph协议的代币                         |
+| `xStepPriceTask`         | xStep的价格计算                         |
 
-For full parameter details on any task, consult: <https://explorer.switchboardlabs.xyz/task-docs>
-
-***
-
-### Standard Output Formats (use these consistently)
-
-When producing artifacts, use these headings and keep them concise:
-
-1. **Summary**
-2. **Assumptions**
-3. **OperatorPolicy**
-4. **Plan**
-5. **Execution Steps** (only if allowed)
-6. **Rollback / Recovery**
-7. **Risks & Mitigations**
-8. **Next Actions**
-
-***
-
-### References
-
-#### Documentation
-
-* Switchboard docs root: <https://docs.switchboard.xyz/>
-* Docs by chain: <https://docs.switchboard.xyz/docs-by-chain>
-* Crossbar: <https://docs.switchboard.xyz/tooling/crossbar>
-* Run Crossbar (Docker Compose): <https://docs.switchboard.xyz/tooling/crossbar/run-crossbar-with-docker-compose>
-* CLI: <https://docs.switchboard.xyz/tooling/cli>
-* SDKs: <https://docs.switchboard.xyz/tooling/sdks>
-* Deploy Feed: <https://docs.switchboard.xyz/custom-feeds/build-and-deploy-feed/deploy-feed>
-* Variable Overrides: <https://docs.switchboard.xyz/custom-feeds/advanced-feed-configuration/data-feed-variable-overrides>
-* Task Types Reference: <https://explorer.switchboardlabs.xyz/task-docs>
-* Feed Builder: <https://explorer.switchboardlabs.xyz/feed-builder>
-
-#### Chain-Specific Tutorials
-
-* Solana basic price feed: <https://docs.switchboard.xyz/docs-by-chain/solana-svm/price-feeds/basic-price-feed>
-* Solana Surge: <https://docs.switchboard.xyz/docs-by-chain/solana-svm/surge>
-* Solana randomness: <https://docs.switchboard.xyz/docs-by-chain/solana-svm/randomness>
-* Solana prediction markets: <https://docs.switchboard.xyz/docs-by-chain/solana-svm/prediction-markets>
-* Solana X402: <https://docs.switchboard.xyz/docs-by-chain/solana-svm/x402>
-* EVM price feeds: <https://docs.switchboard.xyz/docs-by-chain/evm/price-feeds>
-* EVM Surge: <https://docs.switchboard.xyz/docs-by-chain/evm/surge>
-* EVM randomness: <https://docs.switchboard.xyz/docs-by-chain/evm/randomness>
-* Sui price feeds: <https://docs.switchboard.xyz/docs-by-chain/sui/price-feeds>
-* Sui Surge: <https://docs.switchboard.xyz/docs-by-chain/sui/surge>
-
-#### Code & API References
-
-See "Developer Resources & Tools" table in the SDKs section above.
+有关所有任务的详细参数，请参阅：<https://explorer.switchboardlabs.xyz/task-docs>

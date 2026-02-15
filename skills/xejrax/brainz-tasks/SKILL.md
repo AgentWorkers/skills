@@ -1,6 +1,6 @@
 ---
 name: tasks
-description: "Manage Todoist tasks using the `todoist` CLI. Add, list, and complete tasks from the command line."
+description: "使用 `todoist` CLI 管理 Todoist 任务。可以通过命令行添加、列出和完成任务。"
 metadata:
   {
     "openclaw":
@@ -21,35 +21,35 @@ metadata:
   }
 ---
 
-# Tasks Skill
+# 任务技能
 
-Wraps Todoist / Microsoft To-Do APIs to add, list, and complete tasks. Requires `TODOIST_API_TOKEN` or `MSGRAPH_TOKEN` env var.
+该技能封装了 Todoist 和 Microsoft To-Do 的 API，用于添加、列出和完成任务。需要使用环境变量 `TODOIST_API_TOKEN` 或 `MSGRAPH_TOKEN`。
 
-## Listing Tasks
+## 列出任务
 
-Show all pending tasks:
+显示所有待办任务：
 
 ```bash
 todoist list
 ```
 
-## Adding Tasks
+## 添加任务
 
-Create a new task with an optional due date:
+创建一个新任务（可选设置截止日期）：
 
 ```bash
 todoist add "Review PR #42" --due "2026-02-05"
 ```
 
-## Completing Tasks
+## 完成任务
 
-Mark a task as done:
+将任务标记为已完成：
 
 ```bash
 todoist complete <task_id>
 ```
 
-## Install
+## 安装
 
 ```bash
 pip install todoist-api-python

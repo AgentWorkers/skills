@@ -1,15 +1,14 @@
 ---
 name: estimation-patterns
 model: standard
-description: Practical estimation techniques for software tasks — methods comparison, decomposition, complexity multipliers, buffer calculation, bias awareness, and communication strategies. Use when estimating features, sprint planning, or presenting timelines to stakeholders.
+description: 实用的软件任务估算技术——包括方法比较、任务分解、复杂性估算、缓冲时间计算、偏差识别以及沟通策略。这些技术适用于在估算功能需求、制定冲刺计划或向利益相关者展示项目进度时使用。
 ---
 
-# Estimation Patterns (Meta-Skill)
+# 估算模式（元技能）
 
-Systematic approaches for producing accurate, defensible software estimates.
+系统化的方法，用于生成准确且可辩护的软件估算结果。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,212 +19,206 @@ npx clawhub@latest install estimation-patterns
 
 ---
 
-## When to Use
+## 适用场景
 
-- Estimating a feature, bug fix, or project timeline
-- Breaking down work for sprint planning or roadmap forecasting
-- Presenting estimates to stakeholders or product managers
-- Reviewing historical accuracy to calibrate future estimates
-- Noticing a pattern of missed deadlines or blown budgets
+- 估算功能、漏洞修复或项目时间线
+- 将工作分解以进行冲刺计划或路线图预测
+- 向利益相关者或产品经理展示估算结果
+- 审查历史数据的准确性，以校准未来的估算
+- 发现经常错过截止日期或预算超支的情况
 
 ---
 
-## Estimation Methods
+## 估算方法
 
-Choose the method that matches your context and audience.
+选择适合您当前情境和受众的方法。
 
-| Method | Best For | Granularity | Pros | Cons |
+| 方法 | 适用场景 | 估算粒度 | 优点 | 缺点 |
 |----------------------|-------------------------------|-----------------|-----------------------------------------------|-----------------------------------------------|
-| T-Shirt Sizing | Roadmap planning, backlog grooming | XS, S, M, L, XL | Fast, low-friction, good for relative ranking | Not actionable for scheduling |
-| Story Points | Sprint planning, team velocity | Fibonacci (1-21) | Abstracts away individual speed, tracks velocity | Meaningless outside the team, gaming risk |
-| Time-Based | Client quotes, contractor work | Hours / days | Universally understood, maps to budgets | Anchoring bias, implies false precision |
-| Three-Point | High-uncertainty tasks | Min / likely / max | Captures uncertainty range, enables PERT | Requires discipline to set honest bounds |
-| Reference Comparison | Recurring task types | Relative to past | Grounded in real data, hard to argue with | Requires historical records, breaks on novelty |
+| T恤尺码法 | 路线图规划、待办事项整理 | XS、S、M、L、XL | 快速、操作简单、适合相对排序 | 不适合用于安排具体时间 |
+| 故事点法 | 冲刺计划、团队效率评估 | 使用斐波那契数列（1-21） | 忽略了个体差异，能追踪团队效率 | 在团队外部没有实际意义，存在估算风险 |
+| 基于时间的方法 | 客户报价、承包商工作 | 以小时/天为单位 | 全球通用，便于与预算对齐 | 受锚定效应影响，可能产生误导 |
+| 三点估算法 | 高不确定性任务 | 估算最小值/最可能值/最大值 | 能捕捉不确定性范围，适用于PERT分析 | 需要自律才能设定准确的界限 |
+| 参考比较法 | 重复性任务 | 与历史数据对比 | 基于实际数据，难以反驳 | 需要历史记录，对新任务不适用 |
 
-**Three-point formula (PERT):**
+**三点估算法（PERT）：**
 
 ```
 Expected = (Optimistic + 4 x Likely + Pessimistic) / 6
 Standard Deviation = (Pessimistic - Optimistic) / 6
 ```
 
-Use the standard deviation to express confidence ranges (e.g., "3-5 days at 68% confidence, 2-6 days at 95%").
+使用标准差来表示置信区间（例如：“68%的置信度下为3-5天，95%的置信度下为2-6天”）。
 
 ---
 
-## Task Decomposition
+## 任务分解
 
-Break work down until every sub-task is **< 4 hours** of effort. Anything larger hides unknowns.
+将工作分解到每个子任务的耗时**< 4小时**。超过这个时间范围的子任务通常隐藏了未知因素。
 
-| Level | Example | Target Size |
+| 任务层级 | 例子 | 目标耗时 |
 |----------------|-------------------------------------------|---------------|
-| Epic | User authentication system | 2-6 weeks |
-| Feature | OAuth2 login with Google | 3-10 days |
-| Task | Implement callback handler | 1-3 days |
-| Sub-task | Parse and validate OAuth token | 1-4 hours |
-| Atomic step | Write token expiry check function | 30-90 minutes |
+| 巨型任务 | 用户认证系统 | 2-6周 |
+| 功能性任务 | 使用Google的OAuth2登录 | 3-10天 |
+| 任务 | 实现回调处理函数 | 1-3天 |
+| 子任务 | 解析和验证OAuth令牌 | 1-4小时 |
+| 原子级步骤 | 编写令牌过期检查函数 | 30-90分钟 |
 
-**Decomposition checklist:**
+**分解检查清单：**
 
-1. Can I describe what "done" looks like in one sentence?
-2. Is there exactly one unknown, or zero?
-3. Could a teammate pick this up without a walkthrough?
-4. Is it under 4 hours? If no — split again.
+1. 我能否用一句话描述“完成”这个任务的具体内容？
+2. 是否存在唯一一个未知因素，还是完全没有未知因素？
+3. 同事能否在不需要指导的情况下独立完成这个任务？
+4. 该任务的耗时是否小于4小时？如果不能——则继续分解。
 
-**If you cannot decompose a task**, it signals a spike is needed. Timebox the spike (2-4 hours), then re-estimate.
+**如果无法分解某个任务**，说明需要为该任务设置一个临时期限（2-4小时），然后重新估算。
 
 ---
 
-## Complexity Multipliers
+## 复杂性乘数
 
-Apply these multipliers to your base estimate when complexity factors are present. Multipliers stack multiplicatively.
+当存在复杂性因素时，将这些乘数应用于基础估算值。乘数之间是累积效应。
 
-| Factor | Multiplier | Rationale |
+| 复杂性因素 | 乘数 | 说明 |
 |--------------------------|------------|----------------------------------------------------|
-| New technology / stack | 1.5x | Learning curve, unexpected gotchas, doc-hunting |
-| Unclear requirements | 2.0x | Discovery work, rework cycles, stakeholder alignment |
-| Legacy code | 1.5x | Undocumented behavior, fragile tests, hidden coupling |
-| Cross-team dependency | 1.5x | Coordination overhead, blocking, API negotiation |
-| First-time task | 2.0x | No reference point, unknown unknowns dominate |
-| Regulatory / compliance | 1.5x | Audit trails, review gates, documentation overhead |
+| 新技术/新技术栈 | 1.5倍 | 学习曲线、意外问题、文档查找 |
+| 需求不明确 | 2.0倍 | 发现问题、返工周期、利益相关者协调 |
+| 旧代码 | 1.5倍 | 代码未文档化、测试不稳定、耦合性强 |
+| 跨团队依赖 | 1.5倍 | 协调开销、阻碍进度、API协商 |
+| 首次执行的任务 | 2.0倍 | 没有参考依据，未知因素较多 |
+| 法规/合规性要求 | 1.5倍 | 审计流程、审查环节、文档编写 |
 
-**Example:** A 2-day base estimate on legacy code (1.5x) with unclear requirements (2.0x) becomes `2 x 1.5 x 2.0 = 6 days`.
+**示例：** 对于基于旧代码的任务（基础估算为2天），如果需求不明确（乘数为2.0），则总估算时间为 `2 x 1.5 x 2.0 = 6天`。
 
-**Rule:** Never apply more than 3 multipliers — if that many factors converge, the task needs a spike or a scope reduction, not a bigger number.
+**规则：** 不要同时应用超过3个乘数——如果多个因素同时存在，说明需要为该任务设置临时期限或调整任务范围，而不是简单地增加估算时间。
 
 ---
 
-## Buffer Calculation
+## 缓冲区计算
 
-Raw estimates are point predictions. Reality is a distribution.
+原始估算只是点预测，实际情况通常是分布式的。
 
-| Buffer Type | Rule of Thumb | When to Apply |
+| 缓冲区类型 | 经验法则 | 适用场景 |
 |------------------------|-------------------------|-------------------------------------------------|
-| Known unknowns | +20% of total estimate | Integration points, third-party APIs, minor gaps |
-| Unknown unknowns | +50% of total estimate | New domain, first release, greenfield system |
-| Team velocity factor | / focus ratio (e.g., 0.7) | Account for meetings, reviews, context switching |
-| Sequential dependency | +10% per handoff | Each team/person boundary adds coordination drag |
+| 已知的未知因素 | 总估算值的20% | 集成点、第三方API、小范围差异 |
+| 未知的未知因素 | 总估算值的50% | 新领域、首次发布、全新系统 |
+| 团队效率系数 | / 专注度系数（例如0.7） | 考虑会议、审查、上下文切换等因素 |
+| 顺序依赖关系 | 每次交接增加10% | 每个团队/个人交接都会增加协调成本 |
 
-**Effective estimate formula:**
+**有效的估算公式：**
 
 ```
 Effective = (Base Estimate x Multipliers) / Focus Ratio + Buffer
 ```
 
-**Focus ratio guidelines:**
+**专注度系数指南：**
 
-| Scenario | Typical Focus Ratio |
+| 情况 | 典型专注度系数 |
 |-----------------------------------|---------------------|
-| Dedicated to one project | 0.75-0.85 |
-| Split across 2 projects | 0.50-0.60 |
-| On-call rotation active | 0.60-0.70 |
-| Heavy meeting load (> 3h/day) | 0.45-0.55 |
+| 专注于一个项目 | 0.75-0.85 |
+| 分配给两个项目 | 0.50-0.60 |
+| 轮流值班中 | 0.60-0.70 |
+| 每天会议时间超过3小时 | 0.45-0.55 |
 
 ---
 
-## Historical Calibration
+## 历史数据校准
 
-Track actual vs estimated to improve over time. This is the single most effective way to get better at estimation.
+通过跟踪实际完成时间与估算时间，逐步提高估算准确性。这是提升估算能力的最有效方法。
 
-**Tracking table:**
+**跟踪表格：**
 
-| Task | Estimated | Actual | Ratio (A/E) | Notes |
+| 任务 | 估算时间 | 实际完成时间 | 完成比率（实际/估算） | 备注 |
 |---------------------|-----------|--------|-------------|--------------------------|
-| Auth flow | 3 days | 5 days | 1.67 | OAuth docs were outdated |
-| Dashboard charts | 5 days | 4 days | 0.80 | Reused existing component |
-| DB migration | 2 days | 6 days | 3.00 | Discovered data quality issues |
+| 用户认证流程 | 3天 | 5天 | 1.67 | OAuth文档过时 |
+| 仪表盘图表 | 5天 | 4天 | 0.80 | 重复使用了现有组件 |
+| 数据库迁移 | 2天 | 6天 | 3.00 | 发现数据质量问题 |
 
-**Accuracy ratio:** Calculate your rolling average of `Actual / Estimated` over the last 10-20 tasks.
+**准确性比率：** 计算过去10-20个任务的`实际完成时间 / 估算时间`的滚动平均值。
 
-- Ratio **< 0.8** — you're overestimating (sandbagging or excessive buffers)
-- Ratio **0.8-1.2** — well calibrated
-- Ratio **> 1.2** — you're underestimating (apply the ratio as a correction factor)
+- 比率 **< 0.8** — 表示你高估了（可能预留了过多缓冲时间）
+- 比率 **0.8-1.2** — 估算较为准确
+- 比率 **> 1.2** — 表示你低估了（需要用该比率进行修正）
 
-**Calibration action:** Multiply future estimates by your rolling accuracy ratio until it converges toward 1.0.
+**校准步骤：** 将未来的估算结果乘以这个滚动准确性比率，直到比率趋近于1.0。
 
 ---
 
-## Common Estimation Biases
+## 常见的估算偏差
 
-Recognize these cognitive traps — awareness alone reduces their effect.
+了解这些认知偏差，提高警惕性可以减少它们的影响。
 
-| Bias | Description | Mitigation |
+| 偏差 | 描述 | 应对方法 |
 |---------------------|----------------------------------------------------------|---------------------------------------------------|
-| Planning Fallacy | Assuming best-case scenario despite past evidence | Use historical data, not intuition |
-| Anchoring | First number heard dominates all subsequent estimates | Estimate independently before discussing |
-| Optimism Bias | "It'll be simpler than last time" | Apply the three-point method, honor the pessimistic |
-| Scope Creep | Estimate stays fixed while scope grows | Re-estimate when scope changes, always |
-| Hofstadter's Law | "It always takes longer, even when you account for it" | Add buffer, then add more buffer for novel work |
-| Dunning-Kruger | Novices underestimate; experts sometimes overestimate | Cross-check with a second estimator |
-| Sunk Cost Pressure | Refusing to re-estimate because the original was "approved" | Treat estimates as living artifacts, update often |
+| 规划谬误 | 尽管有历史数据仍假设最佳情况 | 使用历史数据，而非直觉判断 |
+| 锚定效应 | 第一个听到的数字会影响后续所有估算 | 在讨论前先独立估算 |
+| 乐观偏差 | “这次会比上次简单” | 使用三点估算法，并考虑最坏情况 |
+| 范围膨胀 | 估算范围固定不变，而实际需求在增加 | 需要需求变化时重新估算 |
+| 霍夫施塔特定律 | “即使考虑了各种因素，实际耗时总是更长” | 为新任务预留更多缓冲时间 |
+| 邓宁-克鲁格效应 | 新手容易低估；专家有时会高估 | 请第二位估算者进行交叉验证 |
+| 沉没成本效应 | 因为最初的估算已经“获得批准”而拒绝重新估算 | 将估算视为动态变化的成果，定期更新 |
 
----
+## 不同任务类型的估算方法
 
-## Estimation by Task Type
+使用这些范围作为初始参考，再根据实际情况和历史数据进行调整。
 
-Use these ranges as starting heuristics, then adjust with multipliers and historical data.
-
-| Task Type | Typical Range | Key Variables |
+| 任务类型 | 估算范围 | 关键影响因素 |
 |---------------------|------------------|------------------------------------------------|
-| Bug fix (isolated) | 2-8 hours | Reproducibility, code familiarity, test coverage |
-| Bug fix (systemic) | 1-3 days | Root cause depth, blast radius, regression risk |
-| Small feature | 1-3 days | Spec clarity, UI complexity, number of endpoints |
-| Medium feature | 3-10 days | Cross-cutting concerns, data model changes |
-| Large feature | 2-4 weeks | Architecture decisions, team coordination |
-| Refactor (local) | 1-3 days | Test coverage, coupling, blast radius |
-| Refactor (systemic) | 1-4 weeks | Number of callers, migration strategy needed |
-| Spike / research | 2-8 hours (timeboxed) | Always timebox — output is knowledge, not code |
-| DevOps / infra | 1-5 days | Provider docs quality, IAM complexity, testing |
+| 单个漏洞修复 | 2-8小时 | 代码的可复现性、熟悉程度、测试覆盖范围 |
+| 系统性漏洞修复 | 1-3天 | 根本原因的复杂性、影响范围、回归风险 |
+| 小型功能 | 1-3天 | 需求的清晰度、用户界面复杂性、接口数量 |
+| 中型功能 | 3-10天 | 跨领域问题、数据模型变更 |
+| 大型功能 | 2-4周 | 架构决策、团队协作 |
+| 本地重构 | 1-3天 | 测试覆盖范围、代码耦合度 |
+| 系统性重构 | 1-4周 | 调用方的数量、迁移策略 |
+| 临时性任务/研究 | 2-8小时（设置时间限制） | 产出是知识，而非代码 |
+| DevOps/基础设施 | 1-5天 | 提供商文档的质量、身份管理复杂性、测试难度 |
 
 ---
 
-## Communication
+## 沟通技巧
 
-How you present an estimate matters as much as the number itself.
+估算结果的呈现方式与估算数值本身同样重要。
 
-**Always present as a range, never a single number:**
+**始终以范围的形式呈现，而不是单一数字：**
 
-- Bad: "It'll take 5 days."
-- Good: "3-7 days, most likely 5. The range depends on the payment API response format — I'll know more after the spike."
+- 错误的方式：“需要5天。”
+- 正确的方式：“预计需要3-7天，最有可能的是5天。具体时间取决于支付API的响应格式——完成后再确认。”
 
-**Confidence levels:**
+**置信度级别：**
 
-| Confidence | What It Means | When to Use |
+| 置信度 | 含义 | 适用场景 |
 |------------|--------------------------------------------|------------------------------------|
-| High (+-15%) | Well-understood scope, done similar before | Familiar task, clear spec |
-| Medium (+-30%) | Some unknowns, reasonable decomposition | Most sprint-level estimates |
-| Low (+-50%+) | Significant unknowns, rough order of magnitude | Roadmap forecasts, presale quotes |
+| 高（±15%） | 任务范围明确，之前有类似经验 | 熟悉的任务，需求清晰 |
+| 中等（±30%） | 存在一些未知因素，但分解合理 | 大多数冲刺级别的估算 |
+| 低（±50%以上） | 存在重大未知因素，仅是粗略估计 | 路线图预测、售前报价 |
 
-**Stakeholder communication rules:**
+**与利益相关者的沟通规则：**
 
-1. State the range and the confidence level together
-2. Name the top 1-3 risks that could push toward the upper bound
-3. Offer to de-risk with a timeboxed spike before committing
-4. Explicitly state what is **not** included (e.g., "does not include QA, deployment, or docs")
-5. Update estimates proactively when new information surfaces — don't wait until the deadline
+1. 同时说明估算范围和置信度
+2. 列出可能导致估算值偏高的前3个风险因素
+3. 提议在最终确定前通过临时任务来降低风险
+4. 明确说明不包括哪些内容（例如：“不包括质量测试、部署或文档编写）
+5. 新信息出现时及时更新估算结果——不要等到截止日期才更新**
 
----
+## 应避免的错误做法
 
-## Anti-Patterns
-
-| Anti-Pattern | Why It's Harmful | Better Approach |
+| 错误做法 | 为何有害 | 更好的做法 |
 |------------------------|-----------------------------------------------------|----------------------------------------------|
-| Padding silently | Erodes trust when discovered; hides real uncertainty | Use explicit buffers with stated rationale |
-| Sandbagging | Destroys velocity data; breeds complacency | Track accuracy ratio, aim for calibration |
-| Not decomposing | Large estimates hide unknowns and compound errors | Break to < 4-hour sub-tasks, estimate bottom-up |
-| Single-point estimates | Implies false certainty, no room for variance | Always give a range with confidence level |
-| Estimating under pressure | Anchoring to what the stakeholder wants to hear | Ask for time to decompose; never estimate on the spot |
-| Copy-paste estimates | Every task has different context and risk profile | Estimate fresh, use references as starting points only |
-| Ignoring rework cycles | First pass is rarely final — reviews, feedback, QA | Factor in at least one review-and-revise loop |
+| 悄悄增加估算时间 | 发现后会破坏信任；掩盖真实不确定性 | 明确说明缓冲时间的理由 |
+| 隐瞒实际情况 | 会破坏团队的工作效率；导致自满 | 记录实际的完成时间，并解释原因 |
+| 不进行任务分解 | 大型任务会隐藏未知因素，导致估算错误 | 将任务分解为小于4小时的子任务，自下而上进行估算 |
+| 给出固定数值的估算 | 会给人一种虚假的确定性 | 必须给出带有置信范围的估算 |
+| 在压力下进行估算 | 受到利益相关者意愿的影响 | 请求时间进行详细分解，切勿当场估算 |
+| 直接复制他人给出的估算 | 每个任务的背景和风险都不同 | 应根据实际情况重新估算 |
+| 忽视返工环节 | 第一次估算很少是最终结果——需要多次审查和修改 |
 
----
+## 绝对不能做的事情
 
-## NEVER Do
-
-1. **NEVER give a single-number estimate without a range** — it communicates false precision and sets you up for failure
-2. **NEVER estimate a task you haven't decomposed** — large estimates are guesses wearing a suit
-3. **NEVER let an old estimate stand after scope changes** — estimates are invalidated the moment requirements shift
-4. **NEVER estimate in someone else's units** — your days are not their days; clarify assumptions about focus time and interrupts
-5. **NEVER skip recording actuals** — estimation without feedback is astrology, not engineering
-6. **NEVER commit to an estimate made under pressure** — say "let me break this down and get back to you in an hour"
-7. **NEVER treat an estimate as a promise or a deadline** — estimates are probabilistic forecasts, not contracts
+1. **绝不要给出没有范围的单一数字估算** — 这会给人一种虚假的精确度，导致估算失败
+2. **绝不要在没有分解任务的情况下进行估算** — 大范围的估算只是猜测
+3. **在需求变更后仍使用旧的估算结果** — 需求变化时，估算结果立即失效
+4. **绝不要用他人的时间单位进行估算** — 你的工作时间与他人的工作时间不同；要明确工作时间和干扰因素
+5. **绝不要忽略记录实际完成时间** — 没有反馈的估算只是猜测
+6. **绝不要在压力下做出估算** — 说“让我先分解一下，一小时后再回复”
+7. **绝不要将估算视为承诺或截止日期** — 估算只是概率性的预测，不是固定不变的承诺

@@ -1,45 +1,42 @@
 ---
 name: compare-pools
-description: Compare all Uniswap pools for a token pair across fee tiers and versions. Use when the user asks which pool is best, wants to compare V3 vs V4, or wants to find the optimal fee tier.
+description: 比较所有 Uniswap 池对于特定代币对的收费层级和版本情况。当用户询问哪个池子最好、想要比较 V3 和 V4 版本，或者希望找到最优的收费层级时，可以使用此功能。
 model: opus
 allowed-tools: [Task(subagent_type:pool-researcher)]
 ---
 
-# Compare Pools
+# 比较交易池
 
-## Overview
+## 概述
 
-Compares all available Uniswap pools for a token pair across fee tiers (1bp, 5bp, 30bp, 100bp) and protocol versions (V2, V3, V4). Delegates to `pool-researcher` in comparison mode to rank pools by APY, liquidity depth, and utilization.
+该功能会对比所有可用的Uniswap交易池，针对特定的代币对（token pair），在不同的费用层级（1bp、5bp、30bp、100bp）以及协议版本（V2、V3、V4）下进行比较。它会委托`pool-researcher`在比较模式下，根据年化收益率（APY）、流动性深度（liquidity depth）和利用率（utilization）对交易池进行排名。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下问题时，可激活此功能：
+- “比较ETH/USDC的交易池”
+- “哪个交易池最适合ETH/USDC？”
+- “对于这个代币对，V3和V4哪个版本更好？”
+- “WETH/USDC的最佳费用层级是什么？”
+- “哪个费用层级的年化收益率最高？”
+- “比较不同费用层级的流动性”
 
-- "Compare ETH/USDC pools"
-- "Which pool is best for ETH/USDC?"
-- "V3 vs V4 for this pair"
-- "Best fee tier for WETH/USDC"
-- "Which fee tier has the best APY?"
-- "Compare liquidity across fee tiers"
+## 参数
 
-## Parameters
+| 参数            | 是否必填 | 默认值       | 描述                                      |
+|-----------------|--------|-----------|--------------------------------------------|
+| token0          | 是      | —           | 第一个代币的名称、符号或地址                         |
+| token1          | 是      | —           | 第二个代币的名称、符号或地址                         |
+| chain           | 否       | 所有链       | 链名；设置为“all”可进行跨链比较                     |
+| compareBy        | 否       | all         | 比较依据：tvl（交易量）、volume（交易额）、apy（年化收益率）或all（全部因素） |
 
-| Parameter | Required | Default     | Description                                    |
-| --------- | -------- | ----------- | ---------------------------------------------- |
-| token0    | Yes      | —           | First token name, symbol, or address           |
-| token1    | Yes      | —           | Second token name, symbol, or address          |
-| chain     | No       | All chains  | Chain name or "all" for cross-chain comparison |
-| compareBy | No       | all         | Focus: "tvl", "volume", "apy", or "all"        |
+## 工作流程
 
-## Workflow
+1. 从用户请求中提取参数。
+2. 委托`pool-researcher`执行任务：调用`Task(subagent_type:pool-researcher)`，请求对比该代币对的所有交易池。该代理会查找不同费用层级和协议版本下的交易池，收集相关数据并进行排名。
+3. 以对比表格的形式展示结果，并给出明确的推荐建议。
 
-1. **Extract parameters** from the user's request.
-
-2. **Delegate to pool-researcher**: Invoke `Task(subagent_type:pool-researcher)` asking for a comparison of all pools for the token pair. The agent will discover pools across fee tiers and versions, gather data for each, and rank them.
-
-3. **Present comparison**: Format as a comparison table with a clear recommendation.
-
-## Output Format
+## 输出格式
 
 ```text
 Pool Comparison: WETH/USDC (Ethereum)
@@ -54,15 +51,15 @@ Pool Comparison: WETH/USDC (Ethereum)
   Recommendation: V3 0.05% pool — highest APY with deepest liquidity.
 ```
 
-## Important Notes
+## 重要说明
 
-- Delegates to `pool-researcher` — no direct MCP tool calls.
-- Pools with zero liquidity or no activity are excluded from comparison.
-- Ranking considers multiple factors: APY, depth, stability, and utilization.
+- 该功能通过`pool-researcher`来执行具体操作，不直接调用MCP工具。
+- 流动性为零或无交易活动的交易池将被排除在比较范围之外。
+- 排名时会综合考虑多个因素：年化收益率（APY）、流动性深度（depth）、稳定性（stability）和利用率（utilization）。
 
-## Error Handling
+## 错误处理
 
-| Error              | User-Facing Message                        | Suggested Action                |
-| ------------------ | ------------------------------------------ | ------------------------------- |
-| No pools found     | "No active pools found for X/Y."           | Check token names or try another chain |
-| Single pool only   | "Only one pool exists for X/Y."            | Shows single pool analysis instead     |
+| 错误类型            | 显示给用户的消息                                      | 建议的操作                                      |
+|------------------|------------------------------------------|----------------------------------------------|
+| 未找到交易池         | “未找到X/Y对应的活跃交易池。”                         | 请检查代币名称或尝试其他链                     |
+| 仅找到一个交易池       | “X/Y仅存在一个交易池。”                             | 显示该交易池的详细分析                         |

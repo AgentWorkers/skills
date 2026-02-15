@@ -1,25 +1,25 @@
 ---
 name: telegram
-description: Send messages, photos, and files via Telegram Bot API. Use when you need to send notifications, alerts, or content to Telegram chats, channels, or groups. Supports text formatting, media, and inline keyboards.
+description: 通过 Telegram Bot API 发送消息、照片和文件。当您需要向 Telegram 聊天、频道或群组发送通知、提醒或内容时，可以使用该功能。支持文本格式化、媒体文件以及内联键盘（inline keyboards）的使用。
 ---
 
-# Telegram Bot API
+# Telegram机器人API
 
-Send messages to Telegram using a bot token.
+使用机器人令牌向Telegram发送消息。
 
-## Setup
+## 设置
 
-1. Create bot via @BotFather on Telegram
-2. Copy the bot token
-3. Store token:
+1. 通过Telegram上的@BotFather创建机器人。
+2. 复制机器人令牌。
+3. 存储令牌：
 ```bash
 mkdir -p ~/.config/telegram
 echo "YOUR_BOT_TOKEN" > ~/.config/telegram/bot_token
 ```
-4. Get chat ID: Send `/start` to your bot, then visit:
+4. 获取聊天ID：向您的机器人发送`/start`命令，然后访问：
    `https://api.telegram.org/bot<TOKEN>/getUpdates`
 
-## Send Text Message
+## 发送文本消息
 
 ```bash
 TOKEN=$(cat ~/.config/telegram/bot_token)
@@ -30,7 +30,7 @@ curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
   -d "{\"chat_id\": \"${CHAT_ID}\", \"text\": \"Hello from Clawdbot!\"}"
 ```
 
-## Formatting (MarkdownV2)
+## 格式化（MarkdownV2）
 
 ```bash
 curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
@@ -42,9 +42,9 @@ curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
   }'
 ```
 
-Escape these chars in MarkdownV2: `_*[]()~>#+-=|{}.!`
+在MarkdownV2中转义这些字符：`_*[]()~>#+-=|{}.!`
 
-## Send Photo
+## 发送图片
 
 ```bash
 # From URL
@@ -63,7 +63,7 @@ curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendPhoto" \
   -F "caption=Image caption"
 ```
 
-## Send Document
+## 发送文档
 
 ```bash
 curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendDocument" \
@@ -72,7 +72,7 @@ curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendDocument" \
   -F "caption=File description"
 ```
 
-## Inline Keyboard (Buttons)
+## 内联键盘（按钮）
 
 ```bash
 curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
@@ -89,7 +89,7 @@ curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
   }'
 ```
 
-## Silent Message
+## 静默消息
 
 ```bash
 curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
@@ -101,28 +101,28 @@ curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
   }'
 ```
 
-## Get Updates (Polling)
+## 获取更新（轮询）
 
 ```bash
 curl -s "https://api.telegram.org/bot${TOKEN}/getUpdates" | jq
 ```
 
-## Error Handling
+## 错误处理
 
-Check `ok` field in response:
+检查响应中的`ok`字段：
 ```json
 {"ok": true, "result": {...}}
 {"ok": false, "error_code": 400, "description": "Bad Request: chat not found"}
 ```
 
-## Common Chat IDs
+## 常见聊天ID
 
-- User chat: Positive number (e.g., `123456789`)
-- Group: Negative number (e.g., `-123456789`)
-- Channel: `@channel_username` or negative ID
+- 用户聊天：正数（例如：`123456789`）
+- 群组：负数（例如：`-123456789`）
+- 频道：`@channel_username` 或负数ID
 
-## Rate Limits
+## 速率限制
 
-- 30 messages/second to same chat
-- 20 messages/minute to same group
-- Bulk: 30 messages/second across all chats
+- 同一聊天每秒最多30条消息
+- 同一群组每分钟最多20条消息
+- 批量发送：所有聊天每秒最多30条消息

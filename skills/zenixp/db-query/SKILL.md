@@ -1,44 +1,44 @@
 ---
 name: db-query
-description: Query project databases with automatic SSH tunnel management. Use when you need to execute SQL queries against configured databases, especially those accessible only via SSH tunnels. Automatically manages SSH connection lifecycle (establishes tunnel before query, closes after). Supports multiple databases distinguished by description/name from config file.
+description: 查询项目数据库，并具备自动SSH隧道管理功能。适用于需要针对已配置的数据库执行SQL查询的情况，尤其是那些仅能通过SSH隧道访问的数据库。系统会自动管理SSH连接的生命周期（在查询前建立隧道，在查询后关闭隧道）。支持根据配置文件中的描述或名称来区分不同的数据库。
 ---
 
-# Database Query
+# 数据库查询
 
-## Overview
+## 概述
 
-Query databases through a centralized configuration file with automatic SSH tunnel management. Handles connection details, SSH tunnel setup/teardown, and query execution.
+通过一个集中式的配置文件来查询数据库，并实现自动的 SSH 隧道管理。该脚本负责处理连接细节、SSH 隧道的建立/销毁以及查询的执行。
 
-## Configuration
+## 配置
 
-### Setup
+### 设置
 
-1. **Create config file** at `~/.config/clawdbot/db-config.json`:
+1. 在 `~/.config/clawdbot/db-config.json` 文件中创建配置文件：
    ```bash
    mkdir -p ~/.config/clawdbot
    # Copy example config and edit
    cp /usr/lib/node_modules/clawdbot/skills/db-query/scripts/config.example.json ~/.config/clawdbot/db-config.json
    ```
 
-2. **Add database entries** with these fields:
-   - `name`: Description used to find the database (required)
-   - `host`: Database host (required)
-   - `port`: Database port (default: 3306)
-   - `database`: Database name (required)
-   - `user`: Database user (required)
-   - `password`: Database password (required)
-   - `ssh_tunnel`: Optional SSH tunnel configuration
+2. 添加数据库条目，包含以下字段：
+   - `name`：用于识别数据库的描述（必填）
+   - `host`：数据库主机（必填）
+   - `port`：数据库端口（默认：3306）
+   - `database`：数据库名称（必填）
+   - `user`：数据库用户名（必填）
+   - `password`：数据库密码（必填）
+   - `ssh_tunnel`：可选的 SSH 隧道配置
 
-3. **SSH tunnel configuration** (if needed):
-   - `enabled`: true/false
-   - `ssh_host`: Remote SSH host
-   - `ssh_user`: SSH username
-   - `ssh_port`: SSH port (default: 22)
-   - `local_port`: Local port to forward (e.g., 3307)
-   - `remote_host`: Remote database host behind SSH (default: localhost)
-   - `remote_port`: Remote database port (default: 3306)
+3. **SSH 隧道配置**（如需要）：
+   - `enabled`：是否启用 SSH 隧道（true/false）
+   - `ssh_host`：远程 SSH 主机
+   - `ssh_user`：SSH 用户名
+   - `ssh_port`：SSH 端口（默认：22）
+   - `local_port`：用于转发的本地端口（例如：3307）
+   - `remote_host`：SSH 隧道后的远程数据库主机（默认：localhost）
+   - `remote_port`：远程数据库端口（默认：3306）
 
-### Example Config
+### 示例配置
 
 ```json
 {
@@ -61,15 +61,15 @@ Query databases through a centralized configuration file with automatic SSH tunn
 }
 ```
 
-## Usage
+## 使用方法
 
-### List Databases
+### 列出所有数据库
 
 ```bash
 python3 /usr/lib/node_modules/clawdbot/skills/db-query/scripts/db_query.py --list
 ```
 
-### Query a Database
+### 查询数据库
 
 ```bash
 python3 /usr/lib/node_modules/clawdbot/skills/db-query/scripts/db_query.py \
@@ -77,13 +77,13 @@ python3 /usr/lib/node_modules/clawdbot/skills/db-query/scripts/db_query.py \
   --query "SELECT * FROM users LIMIT 10"
 ```
 
-The script will:
-1. Find database by matching description in config
-2. Start SSH tunnel (if configured)
-3. Execute query
-4. **Automatically close SSH tunnel** (important for cleanup)
+脚本将执行以下操作：
+1. 根据配置文件中的描述查找对应的数据库
+2. （如果已配置）启动 SSH 隧道
+3. 执行查询
+4. **自动关闭 SSH 隧道**（确保系统整洁）
 
-### With Custom Config Path
+### 使用自定义配置文件路径
 
 ```bash
 python3 /usr/lib/node_modules/clawdbot/skills/db-query/scripts/db_query.py \
@@ -92,15 +92,15 @@ python3 /usr/lib/node_modules/clawdbot/skills/db-query/scripts/db_query.py \
   --query "SHOW TABLES"
 ```
 
-## Requirements
+## 系统要求
 
-- MySQL client: `apt install mysql-client` or equivalent
-- SSH client: usually pre-installed on Linux/Mac
-- Python 3.6+
+- MySQL 客户端：`apt install mysql-client` 或相应软件
+- SSH 客户端：通常已预装在 Linux/Mac 系统上
+- Python 3.6 或更高版本
 
-## Notes
+## 注意事项
 
-- SSH tunnels are automatically closed after query execution
-- Use `--list` to see all configured databases and their descriptions
-- Database search is case-insensitive partial match on `name` field
-- Local ports for SSH tunnels should be unique per database
+- 查询执行完成后，SSH 隧道会自动关闭
+- 使用 `--list` 命令可以查看所有配置的数据库及其描述
+- 数据库名称的搜索支持不区分大小写的部分匹配
+- 每个数据库的本地端口必须是唯一的

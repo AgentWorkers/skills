@@ -1,18 +1,18 @@
 ---
 name: coding-agent
-description: Run Codex CLI, Claude Code, OpenCode, or Pi Coding Agent via background process for programmatic control.
+description: 通过后台进程运行 Codex CLI、Claude Code、OpenCode 或 Pi Coding Agent，以实现程序化的控制。
 metadata: {"moltbot":{"emoji":"🧩","requires":{"anyBins":["claude","codex","opencode","pi"]}}}
 ---
 
-# Coding Agent (bash-first)
+# 编码代理（优先使用 bash）
 
-Use **bash** (with optional background mode) for all coding agent work. Simple and effective.
+所有编码代理任务均使用 **bash**（支持后台模式）来完成。简单且高效。
 
-## ⚠️ PTY Mode Required!
+## ⚠️ 必须启用 PTY 模式！
 
-Coding agents (Codex, Claude Code, Pi) are **interactive terminal applications** that need a pseudo-terminal (PTY) to work correctly. Without PTY, you'll get broken output, missing colors, or the agent may hang.
+编码代理（如 Codex、Claude Code、Pi）是 **交互式终端应用程序**，需要伪终端（PTY）才能正常运行。如果没有 PTY，可能会导致输出异常、颜色显示缺失或代理程序挂起。
 
-**Always use `pty:true`** when running coding agents:
+**运行编码代理时，请始终设置 `pty:true`：**
 
 ```bash
 # ✅ Correct - with PTY
@@ -22,35 +22,35 @@ bash pty:true command:"codex exec 'Your prompt'"
 bash command:"codex exec 'Your prompt'"
 ```
 
-### Bash Tool Parameters
+### Bash 工具参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `command` | string | The shell command to run |
-| `pty` | boolean | **Use for coding agents!** Allocates a pseudo-terminal for interactive CLIs |
-| `workdir` | string | Working directory (agent sees only this folder's context) |
-| `background` | boolean | Run in background, returns sessionId for monitoring |
-| `timeout` | number | Timeout in seconds (kills process on expiry) |
-| `elevated` | boolean | Run on host instead of sandbox (if allowed) |
+| `command` | 字符串 | 要执行的 shell 命令 |
+| `pty` | 布尔值 | **用于编码代理**：为交互式 CLI 分配伪终端 |
+| `workdir` | 字符串 | 工作目录（代理仅识别该目录下的文件） |
+| `background` | 布尔值 | 在后台运行，并返回会话 ID 以便监控 |
+| `timeout` | 数字 | 超时时间（秒）（超时后终止进程） |
+| `elevated` | 布尔值 | 在主机上运行（如果允许的话） |
 
-### Process Tool Actions (for background sessions)
+### 进程工具操作（用于后台会话）
 
-| Action | Description |
+| 操作 | 描述 |
 |--------|-------------|
-| `list` | List all running/recent sessions |
-| `poll` | Check if session is still running |
-| `log` | Get session output (with optional offset/limit) |
-| `write` | Send raw data to stdin |
-| `submit` | Send data + newline (like typing and pressing Enter) |
-| `send-keys` | Send key tokens or hex bytes |
-| `paste` | Paste text (with optional bracketed mode) |
-| `kill` | Terminate the session |
+| `list` | 列出所有正在运行或最近运行的会话 |
+| `poll` | 检查会话是否仍在运行 |
+| `log` | 获取会话输出（可指定偏移量或限制） |
+| `write` | 向标准输入发送原始数据 |
+| `submit` | 发送数据并附加换行符（类似于手动输入并按下 Enter 键） |
+| `send-keys` | 发送键值或十六进制字节 |
+| `paste` | 粘贴文本（可指定括号模式） |
+| `kill` | 终止会话 |
 
 ---
 
-## Quick Start: One-Shot Tasks
+## 快速启动：一次性任务
 
-For quick prompts/chats, create a temp git repo and run:
+对于简单的提示或聊天，可以创建一个临时 git 仓库并执行以下操作：
 
 ```bash
 # Quick chat (Codex needs a git repo!)
@@ -60,13 +60,13 @@ SCRATCH=$(mktemp -d) && cd $SCRATCH && git init && codex exec "Your prompt here"
 bash pty:true workdir:~/Projects/myproject command:"codex exec 'Add error handling to the API calls'"
 ```
 
-**Why git init?** Codex refuses to run outside a trusted git directory. Creating a temp repo solves this for scratch work.
+**为什么需要使用 git init？** 因为 Codex 只能在受信任的 git 目录中运行。创建临时仓库可以解决这个问题，方便进行临时性的工作。
 
 ---
 
-## The Pattern: workdir + background + pty
+## 使用模式：`workdir + background + pty`
 
-For longer tasks, use background mode with PTY:
+对于较长的任务，请启用后台模式并使用 PTY：
 
 ```bash
 # Start agent in target directory (with PTY!)
@@ -89,41 +89,42 @@ process action:submit sessionId:XXX data:"yes"
 process action:kill sessionId:XXX
 ```
 
-**Why workdir matters:** Agent wakes up in a focused directory, doesn't wander off reading unrelated files (like your soul.md 😅).
+**工作目录的重要性：** 代理会在指定的目录中运行，不会读取无关的文件（例如你的 `soul.md` 文件）。
 
 ---
 
-## Fallback Strategy
+## 备用策略
 
-When primary agent hits limits, fall back in order:
+当主要代理达到使用限制时，按以下顺序切换代理：
 
-| Priority | Agent | When to Use |
+| 优先级 | 代理 | 使用场景 |
 |----------|-------|-------------|
-| 1 | **Codex** | Default for coding tasks |
-| 2 | **Claude Code** | Codex usage limits or errors |
-| 3 | **Gemini** | Claude unavailable or for Gemini-specific tasks |
-| 4 | **Pi/OpenCode** | All above unavailable |
+| 1 | **Codex** | 默认的编码任务代理 |
+| 2 | **Claude Code** | 当 Codex 使用受限或出现错误时 |
+| 3 | **Gemini** | 当 Claude 不可用或需要执行 Gemini 特定任务时 |
+| 4 | **Pi/OpenCode** | 当上述代理都不可用时 |
 
-**Signs you need to fall back:**
-- "You've hit your usage limit"
-- Rate limit / 429 errors
-- Model overloaded messages
+**需要切换代理的提示：**
+- “您已达到使用限制”
+- 出现速率限制错误（429 错误）
+- 模型过载提示
 
 ---
 
 ## Codex CLI
 
-**Model:** `gpt-5.2-codex` is the default (set in ~/.codex/config.toml)
+**默认模型：** `gpt-5.2-codex`（配置在 `~/.codex/config.toml` 中）
 
-### Flags
+### 标志参数
 
-| Flag | Effect |
+| 标志 | 功能 |
 |------|--------|
-| `exec "prompt"` | One-shot execution, exits when done |
-| `--full-auto` | Sandboxed but auto-approves in workspace |
-| `--yolo` | NO sandbox, NO approvals (fastest, most dangerous) |
+| `exec "prompt"` | 一次性执行命令，执行完成后退出 |
+| `--full-auto` | 在沙箱环境中运行，但会自动批准请求 |
+| `--yolo` | 不使用沙箱环境，不进行任何审批（最快，但风险最高） |
 
-### Building/Creating
+### 构建/创建代理
+
 ```bash
 # Quick one-shot (auto-approves) - remember PTY!
 bash pty:true workdir:~/project command:"codex exec --full-auto 'Build a dark mode toggle'"
@@ -132,10 +133,10 @@ bash pty:true workdir:~/project command:"codex exec --full-auto 'Build a dark mo
 bash pty:true workdir:~/project background:true command:"codex --yolo 'Refactor the auth module'"
 ```
 
-### Reviewing PRs
+### 审查 Pull Request（PR）
 
-**⚠️ CRITICAL: Never review PRs in Moltbot's own project folder!**
-Clone to temp folder or use git worktree.
+**⚠️ 重要提示：** **绝不要在 Moltbot 的项目目录中审查 PR！**  
+请将 PR 克隆到临时文件夹或使用 git worktree。
 
 ```bash
 # Clone to temp for safe review
@@ -150,7 +151,8 @@ git worktree add /tmp/pr-130-review pr-130-branch
 bash pty:true workdir:/tmp/pr-130-review command:"codex review --base main"
 ```
 
-### Batch PR Reviews (parallel army!)
+### 批量审阅 PR（并行处理）
+
 ```bash
 # Fetch all PR refs first
 git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
@@ -170,47 +172,29 @@ gh pr comment <PR#> --body "<review content>"
 
 ## Claude Code
 
-**Fallback when Codex unavailable.**
+**当 Codex 不可用时的备用方案**
 
-| Codex | Claude Equivalent |
+| Codex 操作 | Claude 的对应操作 |
 |-------|-------------------|
 | `codex exec "prompt"` | `claude -p "prompt"` |
 | `codex --full-auto` | `claude -p --permission-mode acceptEdits` |
 | `codex --yolo` | `claude -p --dangerously-skip-permissions` |
 
-```bash
-# Non-interactive
-claude -p "Add error handling to src/api.ts"
-claude -p --permission-mode acceptEdits "Fix the bug"
-
-# Interactive (with PTY)
-bash pty:true workdir:~/project command:"claude 'Your task'"
-```
-
-**Detailed docs:** See `references/claude-code.md`
+**详细文档：** 请参阅 `references/claude-code.md`。
 
 ---
 
 ## Gemini CLI
 
-**Alternative fallback with different model family.**
+**使用不同模型的备用方案**
 
-| Codex | Gemini Equivalent |
+| Codex 操作 | Gemini 的对应操作 |
 |-------|-------------------|
 | `codex exec "prompt"` | `gemini "prompt"` |
 | `codex --full-auto` | `gemini --approval-mode auto_edit "prompt"` |
 | `codex --yolo` | `gemini -y "prompt"` |
 
-```bash
-# Non-interactive (one-shot)
-gemini "Add error handling to src/api.ts"
-gemini -y "Build a REST API"  # yolo mode
-
-# Interactive (with PTY)
-bash pty:true workdir:~/project command:"gemini -i 'Your task'"
-```
-
-**Detailed docs:** See `references/gemini-cli.md`
+**详细文档：** 请参阅 `references/gemini-cli.md`。
 
 ---
 
@@ -222,7 +206,7 @@ bash pty:true workdir:~/project command:"opencode run 'Your task'"
 
 ---
 
-## Pi Coding Agent
+## Pi 编码代理
 
 ```bash
 # Install: npm install -g @mariozechner/pi-coding-agent
@@ -235,13 +219,13 @@ bash pty:true command:"pi -p 'Summarize src/'"
 bash pty:true command:"pi --provider openai --model gpt-4o-mini -p 'Your task'"
 ```
 
-**Note:** Pi now has Anthropic prompt caching enabled (PR #584, merged Jan 2026)!
+**注意：** Pi 现在已启用 Anthropic 提示缓存功能（PR #584，2026 年 1 月合并！）
 
 ---
 
-## Parallel Issue Fixing with git worktrees
+## 使用 git worktree 并行修复问题
 
-For fixing multiple issues in parallel, use git worktrees:
+要同时修复多个问题，可以使用 git worktree：
 
 ```bash
 # 1. Create worktrees for each issue
@@ -267,22 +251,22 @@ git worktree remove /tmp/issue-99
 
 ---
 
-## tmux Orchestration (Alternative)
+## tmux 配置（高级多代理管理）
 
-For advanced multi-agent control, use the **tmux skill** instead of bash background mode.
+对于复杂的多代理管理，建议使用 **tmux** 而不是简单的 bash 后台模式。
 
-### When to Use tmux vs bash background
+### 使用 tmux 与 bash 后台的场景对比
 
-| Use Case | Recommended |
+| 使用场景 | 推荐方案 |
 |----------|-------------|
-| Quick one-shot tasks | `bash pty:true` |
-| Long-running with monitoring | `bash background:true` |
-| Multiple parallel agents | **tmux** |
-| Agent forking (context transfer) | **tmux** |
-| Session persistence (survives disconnects) | **tmux** |
-| Interactive debugging (pdb, REPL) | **tmux** |
+| 快速的一次性任务 | `bash pty:true` |
+| 长时间运行的任务（需要监控） | `bash background:true` |
+| 多个并行代理 | **tmux** |
+| 代理之间的上下文传递 | **tmux** |
+| 会话持久化（防止断开连接） | **tmux** |
+| 交互式调试（如使用 pdb、REPL） | **tmux** |
 
-### Quick Example
+### 示例
 
 ```bash
 SOCKET="${TMPDIR:-/tmp}/coding-agents.sock"
@@ -302,9 +286,9 @@ tmux -S "$SOCKET" capture-pane -p -t agent-1 -S -100
 tmux -S "$SOCKET" attach -t agent-1
 ```
 
-### Agent Forking
+### 代理之间的上下文传递
 
-Transfer context between agents (e.g., plan with Codex, execute with Claude):
+例如：在 Codex 中规划任务，然后在 Claude 中执行：
 
 ```bash
 # Capture context from current agent
@@ -317,45 +301,45 @@ tmux -S "$SOCKET" send-keys -t executor "claude -p 'Based on this plan: $CONTEXT
 Execute step 1.'" Enter
 ```
 
-**Full docs:** See the `tmux` skill for socket conventions, wait-for-text helpers, and cleanup.
+**详细文档：** 请参阅 `tmux` 的相关文档，了解套接字协议、等待文本的辅助功能以及清理操作。
 
 ---
 
-## ⚠️ Rules
+## ⚠️ 规则
 
-1. **Always use pty:true** - coding agents need a terminal!
-2. **Respect tool choice** - if user asks for Codex, use Codex.
-   - Orchestrator mode: do NOT hand-code patches yourself.
-   - If an agent fails/hangs, respawn it or ask the user for direction, but don't silently take over.
-3. **Be patient** - don't kill sessions because they're "slow"
-4. **Monitor with process:log** - check progress without interfering
-5. **--full-auto for building** - auto-approves changes
-6. **vanilla for reviewing** - no special flags needed
-7. **Parallel is OK** - run many Codex processes at once for batch work
-8. **NEVER start Codex in ~/clawd/** - it'll read your soul docs and get weird ideas about the org chart!
-9. **NEVER checkout branches in ~/Projects/moltbot/** - that's the LIVE Moltbot instance!
-
----
-
-## Progress Updates (Critical)
-
-When you spawn coding agents in the background, keep the user in the loop.
-
-- Send 1 short message when you start (what's running + where).
-- Then only update again when something changes:
-  - a milestone completes (build finished, tests passed)
-  - the agent asks a question / needs input
-  - you hit an error or need user action
-  - the agent finishes (include what changed + where)
-- If you kill a session, immediately say you killed it and why.
-
-This prevents the user from seeing only "Agent failed before reply" and having no idea what happened.
+1. **始终设置 `pty:true`**：编码代理需要伪终端来正常运行。 |
+2. **尊重用户的选择**：如果用户请求使用 Codex，请使用 Codex。  
+   - 在编排模式下，不要手动编写补丁。  
+   - 如果代理失败或挂起，重新启动它或询问用户下一步操作，不要擅自接管。  
+3. **要有耐心**：不要因为会话运行缓慢就直接终止它。  
+4. **使用 `process:log` 监控进程进度**：在不干扰用户的情况下查看进度。  
+5. **构建任务时使用 `--full-auto`**：自动批准更改。  
+6. **审阅任务时使用默认设置**：无需特殊标志。  
+7. **并行执行是可行的**：可以同时运行多个 Codex 进程以加快处理速度。  
+8. **切勿在 `~/clawd/**` 目录下启动 Codex**：否则它可能会读取用户的文档并产生误解。  
+9. **切勿在 `~/Projects/moltbot/**` 目录下检出分支**：那是 Moltbot 的实时运行环境！  
 
 ---
 
-## Auto-Notify on Completion
+## 进度更新（非常重要）
 
-For long-running background tasks, append a wake trigger to your prompt so Moltbot gets notified immediately when the agent finishes (instead of waiting for the next heartbeat):
+在后台启动编码代理时，要及时通知用户：
+
+- 启动时发送一条简短的消息，说明正在运行的任务和位置。  
+- 仅在以下情况下再次更新：  
+  - 任务完成（构建完成、测试通过）  
+  - 代理需要用户输入  
+  - 出现错误或需要用户操作  
+  - 代理任务完成（说明具体变更内容和位置）  
+- 如果终止了会话，立即告知用户原因。  
+
+这样可以避免用户看到“代理失败”后却不知道发生了什么的情况。
+
+---
+
+## 完成任务后的自动通知
+
+对于长时间运行的后台任务，可以在提示中添加自动通知功能，以便 Moltbot 在代理任务完成后立即收到通知（而不是等待下一次心跳信号）：
 
 ```
 ... your task here.
@@ -364,21 +348,20 @@ When completely finished, run this command to notify me:
 moltbot gateway wake --text "Done: [brief summary of what was built]" --mode now
 ```
 
-**Example:**
+**示例：**  
 ```bash
 bash pty:true workdir:~/project background:true command:"codex --yolo exec 'Build a REST API for todos.
 
 When completely finished, run: moltbot gateway wake --text \"Done: Built todos REST API with CRUD endpoints\" --mode now'"
 ```
 
-This triggers an immediate wake event — Skippy gets pinged in seconds, not 10 minutes.
+这样可以在几秒钟内立即通知用户任务已完成。
 
 ---
 
-## Learnings (Jan 2026)
-
-- **PTY is essential:** Coding agents are interactive terminal apps. Without `pty:true`, output breaks or agent hangs.
-- **Git repo required:** Codex won't run outside a git directory. Use `mktemp -d && git init` for scratch work.
-- **exec is your friend:** `codex exec "prompt"` runs and exits cleanly - perfect for one-shots.
-- **submit vs write:** Use `submit` to send input + Enter, `write` for raw data without newline.
-- **Sass works:** Codex responds well to playful prompts. Asked it to write a haiku about being second fiddle to a space lobster, got: *"Second chair, I code / Space lobster sets the tempo / Keys glow, I follow"* 🦞
+## 2026 年 1 月的经验总结：  
+- **PTY 的重要性**：编码代理是交互式终端应用程序，必须启用 `pty:true`。  
+- **需要 git 仓库**：Codex 只能在 git 目录中运行。可以使用 `mktemp -d && git init` 创建临时仓库。  
+- `exec` 命令非常实用：`codex exec "prompt"` 可以快速执行任务并干净地退出。  
+- **`submit` 与 `write` 的区别**：使用 `submit` 时需要发送带有换行符的输入，而 `write` 仅发送原始数据。  
+- **Sass 的使用**：Codex 对于创意性提示反应良好。例如，当要求它写一首关于“第二把椅子”的俳句时，它给出了这样的回答：“第二把椅子，我编写代码 / 太空龙虾定下节奏 / 键盘发光，我随之而动” 🦞

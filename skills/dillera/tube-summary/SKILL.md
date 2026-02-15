@@ -1,75 +1,82 @@
 ---
 name: tube-summary
-description: Search YouTube for videos on any topic and get intelligent summaries from video subtitles. Use when you need to: (1) Find and preview YouTube videos on a subject, (2) Get a detailed description of what a video covers based on its actual content, (3) Quickly understand video topics without watching. Workflow: search YouTube → pick a video → extract and summarize subtitles.
+description: 在 YouTube 上搜索任何主题的视频，并从视频字幕中获取智能摘要。这些功能适用于以下场景：  
+(1) 查找并预览关于某个主题的 YouTube 视频；  
+(2) 根据视频的实际内容获取其详细描述；  
+(3) 在不观看视频的情况下快速了解视频的主题。  
+工作流程如下：  
+1. 在 YouTube 上进行搜索；  
+2. 选择所需的视频；  
+3. 提取并总结视频的字幕内容。
 ---
 
 # tube-summary
 
-Search YouTube for videos on any topic, then extract and summarize their content using subtitles.
+在 YouTube 上搜索任何主题的视频，然后使用字幕提取并总结这些视频的内容。
 
-## Quick Start
+## 快速入门
 
-### Step 1: Search for Videos
+### 第一步：搜索视频
 
-When asked about a topic, search YouTube and list the top 10 results:
+当被问及某个主题时，在 YouTube 上进行搜索，并列出前 10 个搜索结果：
 
 ```bash
 python3 scripts/youtube-search.py "your search query"
 ```
 
-This returns a numbered list of videos with titles, channels, and view counts.
+这将返回一个包含视频标题、频道和观看次数的编号列表。
 
-### Step 2: User Picks a Video
+### 第二步：用户选择视频
 
-The user selects one video by number (e.g., "3" for the third video).
+用户通过编号选择其中一个视频（例如，选择“3”表示第三个视频）。
 
-### Step 3: Download Subtitles
+### 第三步：下载字幕
 
-Extract English subtitles from the selected video using yt-dlp:
+使用 `yt-dlp` 命令从选定的视频中提取英文字幕：
 
 ```bash
 yt-dlp --write-subs --sub-langs en --skip-download "VIDEO_URL"
 ```
 
-This creates a `.en.vtt` subtitle file without downloading the video.
+这会生成一个 `.en.vtt` 格式的字幕文件，而不会下载视频本身。
 
-### Step 4: Process & Summarize
+### 第四步：处理并总结
 
-Use the subtitle processor to analyze and summarize:
+使用字幕处理工具对字幕进行分析和总结：
 
 ```bash
 python3 scripts/process-subtitles.py "path/to/subtitle-file.vtt"
 ```
 
-This generates:
-- **Key Topics**: Main subjects covered in the video
-- **Summary**: Concise 2-3 paragraph description of content
-- **Timestamps**: Notable moments with context
-- **Key Quotes**: Important statements from speakers
+该工具会生成以下内容：
+- **关键主题**：视频中涵盖的主要内容
+- **总结**：对视频内容的简短描述（2-3 段）
+- **时间戳**：带有上下文的重要时刻
+- **关键引语**：演讲者说出的重要语句
 
-## Workflow
+## 工作流程
 
-1. **Search** → `youtube-search.py "<topic>"` → Display top 10 videos
-2. **User selects** → e.g., "Video 5"
-3. **Extract URL** → From the search results
-4. **Download subs** → `yt-dlp --write-subs --sub-langs en --skip-download "URL"`
-5. **Process** → `process-subtitles.py "subtitle.vtt"`
-6. **Present** → Formatted summary with key points
+1. **搜索** → `youtube-search.py "<主题>"` → 显示前 10 个视频
+2. **用户选择** → 例如，选择“视频 5”
+3. **提取视频链接** → 从搜索结果中获取链接
+4. **下载字幕** → `yt-dlp --write-subs --sub-langs en --skip-download "视频链接"`
+5. **处理字幕** → `process-subtitles.py "subtitle.vtt"`
+6. **展示结果** → 以格式化的方式呈现总结内容
 
-## Prerequisites
+## 先决条件
 
-- `yt-dlp` (install: `pip install yt-dlp`)
-- `requests` (for YouTube search fallback)
-- Python 3.7+
+- `yt-dlp`（安装方法：`pip install yt-dlp`）
+- `requests`（用于 YouTube 搜索的备用方案）
+- Python 3.7 或更高版本
 
-## Notes
+## 注意事项
 
-- If YouTube search API is unavailable, the fallback uses web scraping via requests
-- Subtitles may be auto-generated if not manually authored
-- Some videos may not have English subtitles available
-- The subtitle file is created in the same directory as yt-dlp is run
+- 如果 YouTube 搜索 API 不可用，系统会使用 `requests` 进行网页抓取
+- 字幕可能是自动生成的（而非手动添加的）
+- 有些视频可能没有英文字幕
+- 字幕文件会保存在运行 `yt-dlp` 的同一目录中
 
-## Example Usage
+## 示例用法
 
 ```
 User: "Tell me about Rust programming language"

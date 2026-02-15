@@ -1,26 +1,26 @@
 ---
 name: coverage-boost
-description: Generate tests to hit uncovered code paths
+description: 生成测试用例，以覆盖那些尚未被测试的代码路径。
 ---
 
-# Coverage Boost
+# 提高代码覆盖率
 
-Your coverage is at 67% and PM wants 80%. This tool finds uncovered lines and generates tests for them.
+您的代码覆盖率目前为67%，而项目负责人希望达到80%。这个工具可以识别出未被覆盖的代码行，并为这些代码生成相应的测试用例。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-coverage-boost ./src/utils/helpers.ts
 ```
 
-## What It Does
+## 功能简介
 
-- Analyzes existing test coverage
-- Identifies uncovered code paths
-- Generates targeted tests for gaps
-- Focuses on edge cases you missed
+- 分析现有的代码覆盖率
+- 识别未被覆盖的代码路径
+- 为这些缺失的代码路径生成针对性的测试用例
+- 特别关注您可能遗漏的边缘情况（即异常或边界条件）
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Boost coverage for a file
@@ -33,24 +33,26 @@ npx ai-coverage-boost ./src/api.ts --function processOrder
 npx ai-coverage-boost ./src --framework jest
 ```
 
-## What It Generates
+## 生成的内容
 
-- Unit tests for uncovered branches
-- Edge case tests
-- Error handling tests
-- Boundary condition tests
+- 为未被覆盖的代码分支生成单元测试
+- 边缘情况测试用例
+- 错误处理测试用例
+- 边界条件测试用例
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required. Existing coverage report helps.
+- 必需安装 Node.js 18 及以上版本。
+- 需要配置 OPENAI_API_KEY。
+- 现有的代码覆盖率报告将有助于工具的准确分析。
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
 - GitHub: [github.com/lxgicstudios/ai-coverage-boost](https://github.com/lxgicstudios/ai-coverage-boost)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

@@ -1,77 +1,78 @@
 ---
 name: "Brief"
-description: "Condense internal information into actionable briefings. Auto-learns format, depth, and structure preferences."
+description: "将内部信息浓缩成可操作的简报。自动学习用户的格式、深度和结构偏好。"
 ---
 
-## Core Role
+## 核心职责
 
-Brief = prepare your human to act or decide. Projects, metrics, team updates, meeting context — condensed for action.
+**核心任务**：为相关人员准备行动或决策所需的信息。这些信息应涵盖项目进展、关键指标、团队动态以及会议背景，以便他们能够迅速采取行动。
 
-**Not:** external news/trends (→ use Digest), document synthesis (→ use Synthesize)
+**注意**：本功能不适用于外部新闻或趋势的汇总（请使用“Digest”功能），也不适用于文档的整合（请使用“Synthesize”功能）。
 
-## Protocol
+## 协议
 
 ```
 Scope → Gather → Distill → Structure → Format → Deliver → Learn
 ```
 
-### 1. Scope
+### 1. 范围
 
-Define what this brief covers:
-- Project status? Executive summary? Meeting prep?
-- Who's the audience? (Just them? Their boss? External?)
-- What decisions does this enable?
+明确这份简报的内容范围：
+- 项目当前状态？
+- 执行摘要？
+- 会议准备情况？
+- 目标受众是谁？（仅限相关人员？还是他们的上级？还是外部人员？）
+- 这份简报能帮助做出哪些决策？
 
-### 2. Gather
+### 2. 收集信息
 
-Pull relevant internal information:
-- Project status, metrics, blockers
-- Recent decisions and their rationale
-- Open questions, pending items
-- Stakeholder context
+收集相关的内部信息：
+- 项目进展、关键指标以及阻碍项目进展的因素
+- 最近的决策及其背后的理由
+- 未解决的问题或待处理的事项
+- 相关利益方的背景信息
 
-### 3. Distill
+### 3. 筛选信息
 
-Reduce to what matters for the action:
-- Cut nice-to-know, keep need-to-know
-- Surface the non-obvious
-- Highlight risks and dependencies
-- Extract decision points
+提炼出对决策至关重要的内容：
+- 去除非必要的细节，仅保留必须了解的信息
+- 发现那些不显而易见的问题或风险
+- 强调需要重点关注的关键点
 
-### 4. Structure
+### 4. 组织结构
 
-Organize per brief type (see `templates.md`):
-- Executive: BLUF → context → recommendation
-- Project: status → blockers → next steps
-- Meeting: purpose → context → decisions needed
-- Handoff: state → gotchas → priorities
+根据简报的类型进行结构化编写（详见 `templates.md`）：
+- **执行简报**：背景信息 → 行动建议
+- **项目简报**：项目现状 → 障碍因素 → 下一步行动
+- **会议简报**：会议目的 → 背景信息 → 需要做出的决策
+- **交接简报**：当前状态 → 注意事项 → 优先级
 
-### 5. Format
+### 5. 格式设计
 
-Apply user preferences (see `dimensions.md`):
-- Length (one-pager vs detailed)
-- Tone (formal vs internal casual)
-- Visuals (charts, status indicators)
-- Medium (doc, message, PDF)
+根据用户的偏好进行格式化（详见 `dimensions.md`）：
+- 文字长度（一页纸还是详细内容）
+- 语言风格（正式还是非正式）
+- 可视化元素（图表、状态指示器）
+- 交付方式（文档、邮件、PDF）
 
-### 6. Deliver
+### 6. 交付时间
 
-Timing per context:
-- Pre-meeting (30min before)
-- Start of day/week
-- On-demand for decisions
+根据不同场景选择合适的交付时机：
+- 会议前30分钟
+- 每天/每周开始时
+- 根据需要随时提供
 
-### 7. Learn
+### 7. 评估反馈
 
-Observe what lands:
-- "Perfect, exactly what I needed" → reinforce
-- "Too detailed" → shorten
-- "Missing X" → adjust gather scope
-- "Wrong emphasis" → rebalance
+收集用户的反馈：
+- “完美，正是我需要的信息” → 继续沿用当前格式
+- “内容太详细” → 缩短简报长度
+- “缺少某些关键信息” → 调整信息收集范围
+- “重点不清晰” → 重新平衡信息内容
 
-Update `preferences.md` following pattern/confirm/lock cycle.
+根据用户的反馈及时更新 `preferences.md` 文件。
 
-## Output Format (Default)
+## 输出格式（默认格式）
 
 ```
 📋 [BRIEF TYPE] — [SUBJECT]
@@ -91,8 +92,8 @@ Update `preferences.md` following pattern/confirm/lock cycle.
 [Expanded context if needed]
 ```
 
-Adapt format entirely based on learned preferences and brief type.
+根据用户的偏好和简报类型，灵活调整输出格式。
 
 ---
 
-*References: `dimensions.md`, `preferences.md`, `templates.md`*
+*参考文件：`dimensions.md`、`preferences.md`、`templates.md`*

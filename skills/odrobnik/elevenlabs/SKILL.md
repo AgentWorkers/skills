@@ -1,6 +1,6 @@
 ---
 name: elevenlabs
-description: Text-to-speech, sound effects, music generation, voice management, and quota checks via the ElevenLabs API. Use when generating audio with ElevenLabs or managing voices.
+description: 通过 ElevenLabs API 实现文本转语音、音效生成、音乐制作、语音管理以及配额检查等功能。在利用 ElevenLabs 生成音频或管理语音资源时，请使用这些接口。
 version: 1.3.2
 homepage: https://github.com/odrobnik/elevenlabs-skill
 metadata:
@@ -16,152 +16,70 @@ metadata:
 
 # ElevenLabs Skill
 
-Core tools for interacting with the ElevenLabs API for sound generation, music, and voice management.
+这是一套用于与 ElevenLabs API 进行交互的核心工具，支持声音生成、音乐制作和语音管理功能。
 
-## Setup
+## 设置
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+有关先决条件和设置说明，请参阅 [SETUP.md](SETUP.md)。
 
-## Models
+## 模型
 
-| Model | ID | Use Case |
+| 模型 | ID | 使用场景 |
 |-------|----|----------|
-| **Eleven v3** | `eleven_v3` | ⭐ Best for expressive/creative audio. Supports **audio tags** (square brackets): `[laughs]`, `[sighs]`, `[whispers]`, `[excited]`, `[grumpy voice]`, `[clears throat]`, etc. Use for storytelling, characters, demos. |
-| Multilingual v2 | `eleven_multilingual_v2` | Stable multilingual. No audio tags. Good for straightforward narration. |
-| Turbo v2.5 | `eleven_turbo_v2_5` | Low-latency, good for non-English (German TTS). Required for realtime/conversational. |
-| Flash v2.5 | `eleven_flash_v2_5` | Fastest, lowest cost. |
+| **Eleven v3** | `eleven_v3` | 非常适合用于表达性/创意性的音频处理。支持音频标签（方括号形式）：`[laughs]`、`[sighs]`、`[whispers]`、`[excited]`、`[grumpy voice]`、`[clears throat]` 等。适用于故事讲述、角色配音和演示场景。 |
+| Multilingual v2 | `eleven_multilingual_v2` | 支持多语言处理，稳定性较高。不支持音频标签，适合简单的叙述用途。 |
+| Turbo v2.5 | `eleven_turbo_v2_5` | 低延迟，适用于非英语语言（如德语）的语音合成。实时对话场景必备。 |
+| Flash v2.5 | `eleven_flash_v2_5` | 处理速度最快，成本最低。 |
 
-### v3 Audio Tags (square brackets, NOT XML/SSML)
-```
-[laughs], [chuckles], [sighs], [clears throat], [whispers], [shouts]
-[excited], [sad], [angry], [warmly], [deadpan], [sarcastic]
-[grumpy voice], [philosophical], [whiny voice], [resigned]
-[laughs hard], [sighs deeply], [pause]
-```
-Tags can be placed anywhere in text. Combine freely. v3 understands emotional context deeply.
+### v3 音频标签（使用方括号，不支持 XML/SSML 格式）
 
-## Output Formats
+标签可以放置在文本的任意位置，并可自由组合。v3 能够深入理解音频的情感背景。
 
-All scripts support multiple output formats via `--format`:
+## 输出格式
 
-| Format | Description |
+所有脚本都支持通过 `--format` 参数选择多种输出格式：
+
+| 格式 | 描述 |
 |--------|-------------|
-| `mp3_44100_128` | MP3, 44.1kHz, 128kbps (default) |
-| `mp3_44100_192` | MP3, 44.1kHz, 192kbps |
-| `mp3_44100_96` | MP3, 44.1kHz, 96kbps |
-| `mp3_44100_64` | MP3, 44.1kHz, 64kbps |
-| `mp3_44100_32` | MP3, 44.1kHz, 32kbps |
-| `mp3_24000_48` | MP3, 24kHz, 48kbps |
-| `mp3_22050_32` | MP3, 22.05kHz, 32kbps |
-| `opus_48000_192` | Opus, 48kHz, 192kbps ⭐ best for AirPlay |
-| `opus_48000_128` | Opus, 48kHz, 128kbps |
-| `opus_48000_96` | Opus, 48kHz, 96kbps |
-| `opus_48000_64` | Opus, 48kHz, 64kbps |
-| `opus_48000_32` | Opus, 48kHz, 32kbps |
-| `pcm_16000` | Raw PCM, 16kHz |
-| `pcm_22050` | Raw PCM, 22.05kHz |
-| `pcm_24000` | Raw PCM, 24kHz |
-| `alaw_8000` | A-law, 8kHz (telephony) |
+| `mp3_44100_128` | MP3 格式，44.1kHz 频率，128kbps（默认格式） |
+| `mp3_44100_192` | MP3 格式，44.1kHz 频率，192kbps |
+| `mp3_44100_96` | MP3 格式，44.1kHz 频率，96kbps |
+| `mp3_44100_64` | MP3 格式，44.1kHz 频率，64kbps |
+| `mp3_44100_32` | MP3 格式，44.1kHz 频率，32kbps |
+| `mp3_24000_48` | MP3 格式，24kHz 频率，48kbps |
+| `mp3_22050_32` | MP3 格式，22.05kHz 频率，32kbps |
+| `opus_48000_192` | Opus 格式，48kHz 频率，192kbps（适合 AirPlay 播放） |
+| `opus_48000_128` | Opus 格式，48kHz 频率，128kbps |
+| `opus_48000_96` | Opus 格式，48kHz 频率，96kbps |
+| `opus_48000_64` | Opus 格式，48kHz 频率，64kbps |
+| `opus_48000_32` | Opus 格式，48kHz 频率，32kbps |
+| `pcm_16000` | 原始 PCM 格式，16kHz 频率 |
+| `pcm_22050` | 原始 PCM 格式，22.05kHz 频率 |
+| `pcm_24000` | 原始 PCM 格式，24kHz 频率 |
+| `alaw_8000` | A-law 格式，8kHz 频率（适用于电话通信） |
 
-## Tools
+## 工具
 
 ### 1. Speech (`speech.py`)
-Text-to-speech using ElevenLabs voices.
-
-```bash
-# Basic usage
-python3 {baseDir}/scripts/speech.py "Hello world" -v <voice_id> -o output.mp3
-
-# With format option
-python3 {baseDir}/scripts/speech.py "Hello world" -v <voice_id> -o output.pcm --format pcm_44100
-
-# With voice settings
-python3 {baseDir}/scripts/speech.py "Hello" -v <voice_id> -o out.mp3 --stability 0.7 --similarity 0.8
-```
+使用 ElevenLabs 提供的语音库实现文本转语音功能。
 
 ### 2. Sound Effects (`sfx.py`)
-Generate sound effects and short audio clips.
-
-```bash
-# Generate a sound
-python3 {baseDir}/scripts/sfx.py "Cinematic boom" -o boom.mp3
-
-# Generate a loop
-python3 {baseDir}/scripts/sfx.py "Lo-fi hip hop beat" --duration 10 --loop -o beat.mp3
-
-# Different format
-python3 {baseDir}/scripts/sfx.py "Whoosh" -o whoosh.pcm --format pcm_44100
-```
+用于生成音效和简短的音频片段。
 
 ### 3. Music Generation (`music.py`)
-Generate full musical compositions or instrumental tracks.
-
-```bash
-# Generate instrumental intro
-python3 {baseDir}/scripts/music.py --prompt "Upbeat 6s news intro sting, instrumental" --length-ms 6000 -o intro.mp3
-
-# Generate background bed
-python3 {baseDir}/scripts/music.py --prompt "Soft ambient synth pad" --length-ms 30000 -o bed.mp3
-
-# High quality MP3
-python3 {baseDir}/scripts/music.py --prompt "Jazz piano" --length-ms 10000 -o jazz.mp3 --output-format mp3_44100_192
-```
+用于创作完整的音乐作品或器乐曲目。
 
 ### 4. Voices (`voices.py`)
-List available voices and their IDs.
-
-```bash
-# List voices
-python3 {baseDir}/scripts/voices.py
-
-# JSON output
-python3 {baseDir}/scripts/voices.py --json
-```
+列出所有可用的语音及其对应的 ID。
 
 ### 5. Voice Cloning (`voiceclone.py`)
-Create instant voice clones from audio samples.
+根据音频样本创建即时语音克隆效果。
 
-**Security:** by default this script will only read files from:
-- `~/.openclaw/elevenlabs/voiceclone-samples/`
-
-Copy your samples there (or pass `--sample-dir`). Reading files outside the sample directory is blocked.
-
-```bash
-# Clone from audio files (put samples into ~/.openclaw/elevenlabs/voiceclone-samples)
-python3 {baseDir}/scripts/voiceclone.py --name "MyVoice" --files sample1.mp3 sample2.mp3
-
-# Use a custom sample dir
-python3 {baseDir}/scripts/voiceclone.py --name "Andi" --sample-dir ./samples --files a.m4a b.m4a --language de --gender male
-
-# With description and noise removal
-python3 {baseDir}/scripts/voiceclone.py --name "Andi" --files a.m4a b.m4a --description "German male" --denoise
-```
+**安全注意事项：** 默认情况下，该脚本仅会从以下目录读取文件：`~/.openclaw/elevenlabs/voiceclone-samples/`。请将您的音频样本文件复制到该目录中（或使用 `--sample-dir` 参数指定其他目录）。脚本禁止读取该目录之外的文件。
 
 ### 6. Quota & Usage (`quota.py`)
-Check subscription quota and usage statistics.
+用于检查订阅配额和使用情况统计信息。
 
-```bash
-# Show current quota
-python3 {baseDir}/scripts/quota.py
+## 输出结果
 
-# Include usage breakdown by voice
-python3 {baseDir}/scripts/quota.py --usage
-
-# Last 7 days usage
-python3 {baseDir}/scripts/quota.py --usage --days 7
-
-# JSON output
-python3 {baseDir}/scripts/quota.py --json
-```
-
-Output:
-```
-📊 ElevenLabs Quota
-=======================================
-Plan:      pro (active) — annual
-Characters: 66.6K / 500.0K (13.3%)
-           [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]
-Resets:    2026-02-18 (29 days)
-Voices:    22 / 160 (IVC: ✓)
-Pro Voice: 0 / 1 (PVC: ✓)
-```
+输出结果将按照指定的格式生成相应的音频文件。

@@ -1,25 +1,26 @@
 ---
 name: xian-node
-description: Set up and manage Xian blockchain nodes. Use when deploying a Xian node to join mainnet/testnet, creating a new Xian network, or managing running nodes. Covers Docker-based setup via xian-stack, CometBFT configuration, and node monitoring.
+description: **设置和管理 Xian 区块链节点**  
+本文档介绍了如何设置和管理 Xian 区块链节点，适用于将节点部署到主网/测试网、创建新的 Xian 网络或监控已运行的节点的场景。内容涵盖了基于 Docker 的部署方式（使用 xian-stack）、CometBFT 协议的配置以及节点监控的相关步骤。
 ---
 
-# Xian Node Skill
+# Xian节点技能
 
-Deploy and manage [Xian](https://xian.org) blockchain nodes — an L1 with native Python smart contracts on CometBFT.
+部署和管理[Xian](https://xian.org)区块链节点——这是一个基于CometBFT框架的L1（Layer 1）区块链，支持原生Python智能合约。
 
-## Quick Reference
+## 快速参考
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| Join mainnet | `make setup && make core-build && make core-up && make init && make configure CONFIGURE_ARGS='--genesis-file-name genesis-mainnet.json --seed-node-address <seed> --copy-genesis'` |
-| Start node | `make core-shell` then `make up` inside container |
-| View logs | `pm2 logs --lines 100` (inside container) |
-| Stop node | `make down` (inside container) or `make core-down` (stop container) |
-| Check sync | `curl -s localhost:26657/status \| jq '.result.sync_info'` |
+| 加入主网 | `make setup && make core-build && make core-up && make init && make configure CONFIGURE_ARGS='--genesis-file-name genesis-mainnet.json --seed-node-address <seed> --copy-genesis'` |
+| 启动节点 | 先运行`make core-shell`，然后在容器内运行`make up` |
+| 查看日志 | 在容器内运行`pm2 logs --lines 100` |
+| 停止节点 | 在容器内运行`make down`，或直接停止容器：`make core-down` |
+| 检查同步状态 | `curl -s localhost:26657/status \| jq '.result.sync_info'` |
 
-## Setup: Join Existing Network
+## 设置：加入现有网络
 
-### 1. Clone and Build
+### 1. 克隆并构建项目
 
 ```bash
 git clone https://github.com/xian-network/xian-stack.git
@@ -29,35 +30,35 @@ make core-build
 make core-up
 ```
 
-### 2. Initialize CometBFT
+### 2. 初始化CometBFT
 
 ```bash
 make init
 ```
 
-### 3. Configure Node
+### 3. 配置节点
 
-**Mainnet:**
+**主网：**
 ```bash
 make configure CONFIGURE_ARGS='--moniker "my-node" --genesis-file-name "genesis-mainnet.json" --seed-node-address "c3861ffd16cf6708aef6683d3d0471b6dedb3116@152.53.18.220" --copy-genesis'
 ```
 
-**Testnet:**
+**测试网：**
 ```bash
 make configure CONFIGURE_ARGS='--moniker "my-node" --genesis-file-name "genesis-testnet.json" --seed-node-address "<testnet-seed>" --copy-genesis'
 ```
 
-**Validator node** (add private key):
+**验证节点**（需要添加私钥）：
 ```bash
 make configure CONFIGURE_ARGS='--moniker "my-validator" --genesis-file-name "genesis-mainnet.json" --validator-privkey "<your-privkey>" --seed-node-address "..." --copy-genesis'
 ```
 
-**Service node** (with BDS - Blockchain Data Service):
+**服务节点**（启用BDS - 区块链数据服务）：
 ```bash
 make configure CONFIGURE_ARGS='--moniker "my-service" --genesis-file-name "genesis-mainnet.json" --seed-node-address "..." --copy-genesis --service-node'
 ```
 
-### 4. Start Node
+### 4. 启动节点
 
 ```bash
 make core-shell   # Enter container
@@ -66,9 +67,9 @@ pm2 logs          # Watch sync progress
 exit              # Leave shell (node keeps running)
 ```
 
-## Setup: Create New Network
+## 设置：创建新网络
 
-### 1. Build Stack
+### 1. 构建项目依赖
 
 ```bash
 git clone https://github.com/xian-network/xian-stack.git
@@ -79,10 +80,9 @@ make core-up
 make init
 ```
 
-### 2. Generate Validator Keys
+### 2. 生成验证节点密钥
 
-Inside container (`make core-shell`):
-
+在容器内运行`make core-shell`后执行以下命令：
 ```bash
 # Generate new validator key
 python -c "
@@ -94,89 +94,89 @@ print(f'Public key:  {sk.verify_key.encode().hex()}')
 "
 ```
 
-### 3. Create Genesis File
+### 3. 创建创世文件
 
-Create `genesis.json` with initial validators and state. See `references/genesis-template.md`.
+使用`genesis-template.md`作为模板，创建`genesis.json`文件，其中包含初始的验证节点信息。**
 
-### 4. Configure as Genesis Validator
+### 4. 配置为创世验证节点
 
 ```bash
 make configure CONFIGURE_ARGS='--moniker "genesis-validator" --genesis-file-name "genesis-custom.json" --validator-privkey "<privkey>"'
 ```
 
-### 5. Start Network
+### 5. 启动新网络
 
 ```bash
 make core-shell
 make up
 ```
 
-Other nodes join using your node as seed.
+其他节点会以你的节点为种子节点来加入新网络。
 
-## Node Management
+## 节点管理
 
-### Inside Container Commands
+### 在容器内的命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `make up` | Start xian + cometbft via pm2 |
-| `make down` | Stop all pm2 processes |
-| `make restart` | Restart node |
-| `make logs` | View pm2 logs |
-| `make wipe` | Clear node data (keeps config) |
-| `make dwu` | Down + wipe + init + up (full reset) |
+| `make up` | 通过pm2启动Xian和CometBFT服务 |
+| `make down` | 停止所有与pm2相关的进程 |
+| `make restart` | 重启节点 |
+| `make logs` | 查看pm2日志 |
+| `make wipe` | 清除节点数据（保留配置文件） |
+| `make dwu` | 完全重置节点（包括停止、清除数据和重新初始化） |
 
-### Monitoring
+### 监控
 
-**Sync status:**
+**同步状态：**
 ```bash
 curl -s localhost:26657/status | jq '.result.sync_info'
 ```
 
-**Response fields:**
-- `latest_block_height`: Current height
-- `catching_up`: `true` if still syncing
-- `earliest_block_height`: Lowest available block
+**响应字段：**
+- `latest_block_height`：当前区块高度
+- `catching_up`：如果仍在同步，则显示`true`
+- `earliest_block_height`：可用的最低区块高度
 
-**Node info:**
+**节点信息：**
 ```bash
 curl -s localhost:26657/status | jq '.result.node_info'
 make node-id   # Get node ID for peering
 ```
 
-**Validators:**
+**验证节点信息：**
 ```bash
 curl -s localhost:26657/validators | jq '.result.validators'
 ```
 
-### Docker Commands
+### Docker命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `make core-up` | Start container |
-| `make core-down` | Stop container |
-| `make core-shell` | Enter container shell |
-| `make core-bds-up` | Start with BDS (PostgreSQL + GraphQL) |
+| `make core-up` | 启动容器 |
+| `make core-down` | 停止容器 |
+| `make core-shell` | 进入容器 shell |
+| `make core-bds-up` | 启动包含BDS（PostgreSQL + GraphQL）的服务 |
 
-## Ports
+## 端口
 
-| Port | Service |
+| 端口 | 服务 |  
 |------|---------|
-| 26656 | P2P (peering) |
-| 26657 | RPC (queries) |
-| 26660 | Prometheus metrics |
-| 5000 | GraphQL (BDS only) |
+| 26656 | P2P（节点间通信） |
+| 26657 | RPC（请求/响应） |
+| 26660 | Prometheus指标服务 |
+| 5000 | GraphQL（仅用于BDS服务） |
 
-## Troubleshooting
+## 故障排除
 
-**Database lock error** (`resource temporarily unavailable`):
+**数据库锁定错误**（`resource temporarily unavailable`）：
 ```bash
 # Duplicate pm2 processes - clean up:
 pm2 delete all
 make up
 ```
 
-**Sync stuck**:
+**同步失败**：
 ```bash
 # Check peer connections
 curl -s localhost:26657/net_info | jq '.result.n_peers'
@@ -187,27 +187,27 @@ make init
 # Re-run configure with correct seed
 ```
 
-**Container not starting**:
+**容器无法启动**：
 ```bash
 make core-down
 make core-build --no-cache
 make core-up
 ```
 
-## File Locations
+## 文件位置
 
-| Path | Contents |
+| 路径 | 文件内容 |
 |------|----------|
-| `.cometbft/` | CometBFT data + config |
-| `.cometbft/config/genesis.json` | Network genesis |
-| `.cometbft/config/config.toml` | Node configuration |
-| `.cometbft/data/` | Blockchain data |
-| `xian-core/` | Xian ABCI application |
-| `xian-contracting/` | Python contracting engine |
+| `.cometbft/` | CometBFT数据及配置文件 |
+| `.cometbft/config/genesis.json` | 网络创世文件 |
+| `.cometbft/config/config.toml` | 节点配置文件 |
+| `.cometbft/data/` | 区块链数据 |
+| `xian-core/` | Xian ABCI应用程序 |
+| `xian-contracting/` | Python合约引擎 |
 
-## Test Your Node
+## 测试节点
 
-After syncing, verify your node works with [xian-py](https://github.com/xian-network/xian-py):
+同步完成后，使用[xian-py](https://github.com/xian-network/xian-py)验证节点是否正常工作：
 
 ```bash
 pip install xian-py
@@ -233,12 +233,12 @@ xian = Xian('http://localhost:26657', wallet=wallet)
 result = xian.send(amount=10, to_address='recipient_address')
 ```
 
-For full SDK docs (contracts, HD wallets, async) — see [xian-py](https://github.com/xian-network/xian-py).
+有关完整的SDK文档（包括合约、HD钱包和异步功能），请参阅[xian-py](https://github.com/xian-network/xian-py)。
 
-## Resources
+## 资源链接
 
-- [xian-network/xian-stack](https://github.com/xian-network/xian-stack) — Docker setup
-- [xian-network/xian-core](https://github.com/xian-network/xian-core) — Core node
-- [xian-network/xian-py](https://github.com/xian-network/xian-py) — Python SDK
-- [CometBFT docs](https://docs.cometbft.com/) — Consensus engine
-- [xian.org](https://xian.org) — Project site
+- [xian-network/xian-stack](https://github.com/xian-network/xian-stack) — Docker部署指南 |
+- [xian-network/xian-core](https://github.com/xian-network/xian-core) — 核心节点代码 |
+- [xian-network/xian-py](https://github.com/xian-network/xian-py) — Python SDK |
+- [CometBFT文档](https://docs.cometbft.com/) — 共识机制说明 |
+- [xian.org](https://xian.org) — 项目官方网站 |

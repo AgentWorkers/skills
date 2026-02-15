@@ -1,17 +1,17 @@
 ---
 name: ogt-docs-define
-description: General guide for creating definition documents. Use when you need to define WHAT something IS - concepts, entities, systems, or domains. Routes to specialized sub-skills for specific definition types (business, features, code, marketing, branding, tools).
+description: 创建定义文档的通用指南。当您需要明确说明某事物的本质（如概念、实体、系统或领域）时，请参考本指南。针对不同类型的定义（业务、功能、代码、市场营销、品牌建设、工具等），可参考相应的子指南。
 ---
 
-# OGT Docs - Define
+# OGT 文档 - 定义（Definition Documentation）
 
-Guide for creating definition documents that establish WHAT things ARE in your system.
+本指南用于创建定义文档，明确系统中各项内容的含义。
 
-## Philosophy
+## 哲学理念
 
-**Definitions are the foundation of shared understanding.**
+**定义是共同理解的基础。**
 
-Before anyone can implement, market, or discuss something, there must be a clear, agreed-upon definition of what it IS.
+在任何人能够实施、推广或讨论某个概念之前，必须首先对其有一个清晰、共识一致的定义。
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -29,26 +29,28 @@ Before anyone can implement, market, or discuss something, there must be a clear
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## When to Use This Skill
+## 何时使用该技能
 
-Use `ogt-docs-define` when you need to:
+当您需要以下操作时，请使用 `ogt-docs-define`：
 
-- Understand the definitions folder structure
-- Choose the right definition sub-skill
-- Create a definition that doesn't fit specialized categories
+- 了解定义文档的文件夹结构；
+- 选择合适的定义子技能；
+- 创建无法归类到特定类别的定义内容。
 
-**For specific definition types, use:**
+**针对不同类型的定义，可使用以下子技能：**
 
-| Type                   | Sub-Skill                   | Use When                               |
-| ---------------------- | --------------------------- | -------------------------------------- |
-| Business concepts      | `ogt-docs-define-business`  | Pricing, users, revenue, market        |
-| Product features       | `ogt-docs-define-feature`   | New capabilities, user-facing features |
-| Technical architecture | `ogt-docs-define-code`      | Services, data models, APIs            |
-| Marketing concepts     | `ogt-docs-define-marketing` | Messaging, positioning, audience       |
-| Brand identity         | `ogt-docs-define-branding`  | Visual identity, tone, guidelines      |
-| Developer tools        | `ogt-docs-define-tools`     | CLI, scripts, dev workflows            |
+| 定义类型            | 子技能                          | 使用场景                          |
+| ---------------------------- | ----------------------------- | -------------------------------------- |
+| 商业概念            | `ogt-docs-define-business`       | 定价策略、用户群体、收入模型             |
+| 产品特性            | `ogt-docs-define-feature`       | 新功能、用户交互界面                 |
+| 技术架构            | `ogt-docs-define-code`       | 服务架构、数据模型、API                 |
+| 营销概念            | `ogt-docs-define-marketing`       | 营销策略、目标受众                   |
+| 品牌标识            | `ogt-docs-define-branding`       | 视觉标识、品牌调性、使用指南                 |
+| 开发工具            | `ogt-docs-define-tools`       | 命令行工具、脚本、开发工作流程             |
 
-## Folder Structure
+## 文件夹结构
+
+每个定义内容都对应一个文件夹，文件夹的命名规则如下：
 
 ```
 docs/definitions/
@@ -103,9 +105,9 @@ docs/definitions/
     └── workflows/
 ```
 
-## The Folder-as-Entity Pattern
+## 文件夹作为实体（Folder-as-Entity）的模式
 
-Every definition is a **folder** containing:
+每个定义文档都包含以下文件：
 
 ```
 {definition_slug}/
@@ -115,40 +117,23 @@ Every definition is a **folder** containing:
 └── .{signals}                  # Status and metadata
 ```
 
-### Primary File Naming
+### 主文件命名规则
 
-| Definition Type | Primary File    |
-| --------------- | --------------- |
-| Business        | `definition.md` |
-| Feature         | `feature.md`    |
-| Technical       | `definition.md` |
-| Domain          | `definition.md` |
-| Marketing       | `definition.md` |
-| Branding        | `definition.md` |
-| Tools           | `definition.md` |
+| 定义类型            | 主文件名                          |
+| ---------------------------- | -------------------------------------- |
+| 商业概念            | `definition.md`                     |
+| 产品特性            | `feature.md`                        |
+| 技术架构            | `technical_definition.md`                |
+| 领域相关            | `domain_definition.md`                   |
+| 营销策略            | `marketing_definition.md`                   |
+| 品牌标识            | `branding_definition.md`                   |
+| 开发工具            | `tools_definition.md`                   |
 
-## Definition Lifecycle
+## 定义文档的生命周期
 
-```mermaid
-flowchart LR
-    subgraph lifecycle ["Definition Lifecycle"]
-        D[draft] --> R[review]
-        R --> A[approved]
-        R --> REJ[rejected]
-        REJ --> D
-        A --> DEP[deprecated]
-    end
+### 草稿阶段
 
-    style D fill:#fef3c7
-    style R fill:#e0e7ff
-    style A fill:#d1fae5
-    style REJ fill:#fecaca
-    style DEP fill:#e5e7eb
-```
-
-### Draft State
-
-Definition is being written, not yet ready for review.
+定义文档正在编写中，尚未准备好接受审核。
 
 ```
 {definition_slug}/
@@ -157,9 +142,9 @@ Definition is being written, not yet ready for review.
 └── .draft                      # Empty signal: still in draft
 ```
 
-### Review State
+### 审核阶段
 
-Definition is complete and awaiting approval.
+定义文档已完成，等待审核通过。
 
 ```
 {definition_slug}/
@@ -169,9 +154,9 @@ Definition is complete and awaiting approval.
 └── .review_requested_at        # Timestamp
 ```
 
-### Approved State
+### 审核通过阶段
 
-Definition is approved and can be referenced/implemented.
+定义文档已通过审核，可以用于参考或实际应用。
 
 ```
 {definition_slug}/
@@ -182,9 +167,9 @@ Definition is approved and can be referenced/implemented.
 └── .approved_at                # When approved
 ```
 
-### Rejected State
+### 被拒绝阶段
 
-Definition was rejected, needs rework.
+定义文档被拒绝，需要重新编写。
 
 ```
 {definition_slug}/
@@ -195,9 +180,9 @@ Definition was rejected, needs rework.
 └── .rejected_at                # When rejected
 ```
 
-### Deprecated State
+### 已过时阶段
 
-Definition is outdated, replaced by something else.
+定义文档已过时，被新的内容替代。
 
 ```
 {definition_slug}/
@@ -211,47 +196,30 @@ Definition is outdated, replaced by something else.
 
 ---
 
-## Creating a Definition: The Process
+## 创建定义文档的流程
 
-```mermaid
-flowchart TD
-    A[Need to define something] --> B{What type?}
-    B -->|Business| C[ogt-docs-define-business]
-    B -->|Feature| D[ogt-docs-define-feature]
-    B -->|Technical| E[ogt-docs-define-code]
-    B -->|Marketing| F[ogt-docs-define-marketing]
-    B -->|Brand| G[ogt-docs-define-branding]
-    B -->|Tools| H[ogt-docs-define-tools]
-    B -->|Other| I[Use this skill]
+### 第一步：提出澄清性问题
 
-    I --> J[Ask clarifying questions]
-    J --> K[Draft definition]
-    K --> L[Request review]
-    L --> M{Approved?}
-    M -->|Yes| N[Mark approved]
-    M -->|No| O[Address feedback]
-    O --> K
-```
+在编写定义之前，收集相关信息：
 
-### Step 1: Ask Clarifying Questions
+**核心问题（务必询问）：**
+1. 这个概念的名称/标识是什么？
+2. 用一句话概括它的含义是什么？
+3. 为什么需要这个概念？它能解决什么问题？
+4. 它不包括哪些内容？（明确边界）
+5. 它与其他哪些概念相关？
 
-Before writing any definition, gather information:
+**根据具体情况，还可以询问：**
+6. 相关的利益相关者是谁？
+7. 是否已有类似的概念？
+8. 是哪些决策导致了这个概念的产生？
+9. 成功的标准是什么？
 
-**Core Questions (always ask):**
+### 第二步：起草定义文档
 
-1. What is the name/identifier for this concept?
-2. In one sentence, what IS it?
-3. Why does it need to exist? What problem does it solve?
-4. What is it NOT? (boundaries)
-5. What other concepts does it relate to?
+根据定义类型选择相应的模板（参见相应的子技能）。
 
-**Context Questions (ask as relevant):** 6. Who are the stakeholders? 7. Are there existing similar concepts? 8. What decisions led to this concept? 9. What are the success criteria?
-
-### Step 2: Draft the Definition
-
-Use the appropriate template based on type (see sub-skills).
-
-**Generic Definition Template:**
+**通用定义文档模板：**
 
 ```markdown
 # Definition: {Name}
@@ -307,7 +275,7 @@ Unresolved questions that need future discussion.
 - Question 2?
 ```
 
-### Step 3: Add Signal Files
+### 第三步：添加辅助文件
 
 ```bash
 # Create version file
@@ -317,7 +285,7 @@ echo '{"schema": "1.0", "created": "'$(date -Iseconds)'"}' > .version
 touch .draft
 ```
 
-### Step 4: Request Review
+### 第四步：请求审核
 
 ```bash
 # Remove draft signal
@@ -328,9 +296,9 @@ touch .ready_for_review
 echo "$(date -Iseconds)" > .review_requested_at
 ```
 
-### Step 5: Handle Review Outcome
+### 第五步：处理审核结果
 
-**If Approved:**
+**如果审核通过：**
 
 ```bash
 rm .ready_for_review .review_requested_at
@@ -339,7 +307,7 @@ touch .approved_by_{reviewer_name}
 echo "$(date -Iseconds)" > .approved_at
 ```
 
-**If Rejected:**
+**如果被拒绝：**
 
 ```bash
 rm .ready_for_review .review_requested_at
@@ -351,51 +319,51 @@ echo "$(date -Iseconds)" > .rejected_at
 
 ---
 
-## Signal Files Reference
+## 辅助文件说明
 
-### Status Signals (empty files)
+### 状态标识文件（empty files）
 
-| Signal              | Meaning                |
-| ------------------- | ---------------------- |
-| `.draft`            | Still being written    |
-| `.ready_for_review` | Ready for review       |
-| `.approved`         | Approved for use       |
-| `.rejected`         | Rejected, needs rework |
-| `.deprecated`       | No longer current      |
+| 文件标识            | 含义                                      |
+| ----------------------------- | -------------------------------------- |
+| `.draft`            | 文档仍在编写中                         |
+| `.ready_for_review`     | 已准备好接受审核                         |
+| `.approved`         | 审核通过，可以投入使用                         |
+| `.rejected`         | 被拒绝，需要重新编写                         |
+| `.deprecated`       | 已过时，不再适用                         |
 
-### Attribution Signals (empty files)
+### 作者/审核者标识文件（empty files）
 
-| Signal                | Meaning      |
-| --------------------- | ------------ |
-| `.approved_by_{name}` | Who approved |
-| `.created_by_{name}`  | Who created  |
-| `.reviewed_by_{name}` | Who reviewed |
+| 文件标识            | 含义                                      |
+| ----------------------------- | -------------------------------------- |
+| `.approved_by_{name}`     | 审核者姓名                             |
+| `.created_by_{name}`     | 创建者姓名                             |
+| `.reviewed_by_{name}`     | 审核者姓名                             |
 
-### Content Signals (contain text)
+### 内容标识文件（包含文本内容）
 
-| Signal                 | Content                                     |
-| ---------------------- | ------------------------------------------- |
-| `.version`             | JSON: `{"schema": "1.0", "created": "..."}` |
-| `.rejected_reason`     | Why rejected                                |
-| `.deprecated_reason`   | Why deprecated                              |
-| `.superseded_by`       | Path to replacement definition              |
-| `.review_requested_at` | ISO timestamp                               |
-| `.approved_at`         | ISO timestamp                               |
-| `.rejected_at`         | ISO timestamp                               |
-| `.deprecated_at`       | ISO timestamp                               |
+| 文件标识            | 文件内容                                      |
+| ----------------------------- | -------------------------------------- |
+| `.version`         | JSON 格式，包含版本信息（例如：`{"schema": "1.0", "created": "..."}`） |
+| `.rejected_reason`     | 被拒绝的原因                         |
+| `.deprecated_reason`     | 被标记为过时的原因                         |
+| `.superseded_by`      | 替代文档的路径                         |
+| `.review_requested_at`    | 提交审核的时间戳                         |
+| `.approved_at`     | 被批准的时间戳                         |
+| `.rejected_at`     | 被拒绝的时间戳                         |
+| `.deprecated_at`     | 被标记为过时的时间戳                         |
 
 ---
 
-## Referencing Definitions
+## 引用定义文档
 
-When other documents reference a definition:
+当其他文档需要引用某个定义时：
 
 ```markdown
 See [Definition: User Types](docs/definitions/business/user_types/)
 Per the [Service Layer Definition](docs/definitions/technical/service_layer/)
 ```
 
-When code implements a definition, add a comment:
+当代码实现某个定义时，应在代码中添加相应的注释：
 
 ```typescript
 /**
@@ -409,29 +377,28 @@ export class UserService implements IService {
 
 ---
 
-## Common Mistakes
+## 常见错误
 
-| Mistake                      | Why It's Wrong                             | Correct Approach                        |
-| ---------------------------- | ------------------------------------------ | --------------------------------------- |
-| Mixing definition with rules | Conflates WHAT with HOW                    | Keep definition pure, put HOW in rules/ |
-| No boundaries section        | Unclear scope leads to scope creep         | Always define what it is NOT            |
-| Skipping review              | Unvalidated definitions cause misalignment | Always get approval                     |
-| Editing approved definitions | Breaks references                          | Create new version or deprecate         |
-| No relationships section     | Isolated definitions miss connections      | Map relationships explicitly            |
-| Too abstract                 | Can't be implemented                       | Include concrete examples               |
-| Too specific                 | Can't adapt to change                      | Keep at concept level                   |
+| 错误类型                | 错误原因                                      | 正确的做法                                      |
+| ---------------------- | -------------------------------------- | -------------------------------------------------------- |
+| 将定义与规则混为一谈        | 将“是什么”与“如何实现”混淆                   | 保持定义的纯粹性，将实现方式放在规则中                 |
+| 未明确界定定义范围        | 范围不明确可能导致理解偏差                   | 必须明确界定定义的内容                         |
+| 跳过审核流程            | 未经审核的定义可能导致不一致性                   | 必须完成审核流程                             |
+| 修改已通过的定义          | 可能破坏引用关系                         | 应创建新版本或标记文档为过时                         |
+| 未标注定义之间的关系        | 各自独立的定义难以协同使用                     | 明确标注定义之间的关联                         |
+| 定义过于抽象            | 过于抽象的内容难以实现                         | 应提供具体的示例                         |
+| 定义过于具体            | 过于具体的定义难以适应变化                     | 保持定义的抽象性                         |
 
 ---
 
-## Quality Checklist
+## 质量检查清单
 
-Before requesting review, verify:
-
-- [ ] Overview explains WHAT and WHY in one paragraph
-- [ ] Core concept is detailed enough to understand
-- [ ] Boundaries clearly state what this is NOT
-- [ ] Relationships map to other definitions
-- [ ] At least 2 concrete examples provided
-- [ ] Open questions listed (if any)
-- [ ] .version file created
-- [ ] .draft signal present (will be removed when requesting review)
+在提交审核之前，请确认以下内容：
+- [ ] 概述部分能用一段话清晰解释定义的内容及其目的；
+- [ ] 核心概念描述得足够详细，便于理解；
+- [ ] 明确界定了定义的范围（即它不包括哪些内容）；
+- [ ] 明确了该定义与其他定义之间的关系；
+- [ ] 提供了至少两个具体的示例；
+- [ ] 列出了所有未解决的问题（如果有）；
+- [ ] 已创建了 `.version` 文件；
+- [ ] 存在 `.draft` 文件（提交审核时会自动删除）。

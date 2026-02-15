@@ -1,67 +1,62 @@
 ---
-description: Generate Anki/Quizlet-compatible flashcards from text, notes, or documents using learning science principles.
+description: 根据学习科学原理，您可以使用文本、笔记或文档生成兼容 Anki/Quizlet 的闪卡。
 ---
 
-# Flashcard Maker
+# 闪卡制作工具
 
-Generate study flashcards from any text in Anki/Quizlet-importable format.
+该工具能够将任何文本转换为适合在 Anki 或 Quizlet 中使用的闪卡格式。
 
-**Use when** creating flashcards, converting notes to study materials, or preparing for exams.
+**适用场景**：  
+- 制作闪卡  
+- 将笔记转换为学习资料  
+- 备考  
 
-## Requirements
+## 使用要求：  
+- 生成 TSV 格式的输出文件时无需外部工具  
+- 可选：使用 Anki 桌面应用程序导入 `.apkg` 格式的文件  
+- 无需 API 密钥  
 
-- No external tools required for TSV output
-- Optional: Anki desktop app for `.apkg` import
-- No API keys needed
-
-## Instructions
-
-1. **Read input material** — text, notes, file, or URL. Identify key concepts, definitions, facts, formulas, and relationships.
-
-2. **Generate Q&A pairs** following learning science principles:
-   - **One concept per card** — avoid compound questions
-   - **Active recall** — ask "What is X?" not "Is X true?"
-   - **Cloze deletions** — use `{{c1::answer}}` format for Anki cloze cards
-   - **Avoid yes/no questions** — they don't test understanding
-   - **Use mnemonics** where helpful
-   - **Bidirectional cards** for definitions (term→definition AND definition→term)
-
-3. **Output in requested format** (default: TSV):
-
-   **TSV (Anki/Quizlet import):**
-   ```
+## 使用步骤：  
+1. **读取输入内容**：可以是文本、笔记、文件或 URL。提取关键概念、定义、事实、公式及其之间的关系。  
+2. **根据学习科学原理生成问答对**：  
+   - 每张卡片只包含一个概念（避免复合问题）  
+   - 采用“主动回忆”式问题（例如：“X 是什么？”而非“X 是否正确？”）  
+   - 对于 Anki 的填空题，使用 `{{c1::answer}}` 格式  
+   - 避免使用“是/否”类型的问题（这类问题无法检验理解程度）  
+   - 在适当的情况下使用助记法  
+   - 为定义创建双向卡片（包括“术语→定义”和“定义→术语”两种形式）  
+3. **按照指定格式输出结果**：  
+   - **TSV 格式（适用于 Anki/Quizlet）**：  
+     ```
    front\tback
    What is photosynthesis?\tThe process by which plants convert light energy into chemical energy (glucose) using CO2 and water
-   ```
-
-   **With Anki tags (3-column TSV):**
-   ```
+   ```  
+   - **带标签的 TSV 格式（适用于 Anki）**：  
+     ```
    front\tback\ttag1 tag2
-   ```
+   ```  
+   - **Markdown 表格格式（用于预览）**：  
+     | 前面 | 后面 |  
+     |-------|------|  
+     | 问题 | 答案 |  
 
-   **Markdown table** (for preview):
-   | Front | Back |
-   |-------|------|
-   | Question | Answer |
+4. **按需保存结果**：可以保存为 `flashcards.tsv` 文件，或用户指定的路径。  
 
-4. **Save to file** when requested: `flashcards.tsv` or user-specified path.
+## 使用指南：  
+- 每个主题建议生成 10–30 张卡片（除非用户另有要求）  
+- 答案应简洁明了（最多 1–2 句）  
+- 支持卡片内容中的多种语言  
+- 对于代码/编程相关主题：将代码放在卡片前面，解释放在后面（或反之亦然）  
+- 对于词汇类内容：添加例句和发音提示  
 
-## Guidelines
+## 特殊情况处理：  
+- **内容过长**：优先处理最重要的概念。询问用户是需要包含所有内容还是仅保留关键点。  
+- **包含图片**：将图片中的信息以文字形式描述在卡片中。  
+- **内容模糊不清**：请用户明确说明需要生成的内容范围（例如：“是需要包含所有术语的卡片，还是仅需要章节总结？”）  
+- **重复的概念**：将相似的内容合并成一张卡片，并提供完整的解释。  
 
-- Aim for **10-30 cards** per topic unless user specifies a count
-- Keep answers **concise but complete** — 1-2 sentences max
-- Support **multiple languages** in card content
-- For **code/programming** topics: put code on front, explanation on back (or vice versa)
-- For **vocabulary**: include example sentences and pronunciation hints
-
-## Edge Cases
-
-- **Very long source material**: Prioritize the most important concepts. Ask user if they want comprehensive or key-points-only.
-- **Images in source**: Describe the visual content in text form for the card.
-- **Ambiguous content**: Ask user to clarify scope (e.g., "Do you want cards for all terms or just chapter summaries?").
-- **Duplicate concepts**: Merge similar ideas into a single card with a comprehensive answer.
-
-## Import Instructions
-
-- **Anki**: File → Import → select TSV file → set separator to Tab
-- **Quizlet**: Create Set → Import → paste TSV content → set delimiter to Tab
+## 导入说明：  
+- **Anki**：  
+  - 文件 → 导入 → 选择 TSV 文件 → 将分隔符设置为制表符（Tab）  
+- **Quizlet**：  
+  - 创建新卡片集 → 导入 TSV 文件 → 将分隔符设置为制表符（Tab）

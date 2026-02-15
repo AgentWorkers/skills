@@ -1,53 +1,53 @@
 ---
 name: QR
-description: Generate, customize, and deploy QR codes with proper sizing, error correction, and use-case optimization.
+description: 生成、自定义并部署具有适当尺寸、纠错功能以及针对特定使用场景进行优化的二维码。
 ---
 
-## Before Generating
+## 在生成之前
 
-1. **Choose correct type** — URL is not the only option. See `types.md` for vCard, WiFi, email, SMS, geo, etc.
-2. **Shorten dynamic URLs** — Long URLs = dense codes = harder to scan. Use short links for tracking too.
-3. **Set error correction** — L (7%) for clean environments, M (15%) default, Q (25%) with logos, H (30%) for harsh conditions
+1. **选择正确的类型** — URL 并非唯一的选择。请参阅 `types.md` 以了解 vCard、WiFi、电子邮件、短信、地理位置数据等类型的详细信息。
+2. **缩短动态 URL** — 过长的 URL 会导致代码过于复杂，难以扫描；同时，使用短链接也有助于追踪。
+3. **设置错误校正级别**：在干净的环境中使用 L（7%）；默认设置为 M（15%）；如果包含 logo，则使用 Q（25%）；在恶劣的环境中则使用 H（30%）。
 
-## Sizing Rules
+## 尺寸规则
 
-**Minimum sizes by scan distance:**
-- Phone at arm's length (~30cm): 2x2 cm minimum
-- Table tent (~50cm): 3x3 cm
-- Poster (~1m): 5x5 cm
-- Billboard (~5m): 25x25 cm
+**根据扫描距离确定最小尺寸：**
+- 手臂长度范围内的手机（约 30 厘米）：最小尺寸为 2x2 厘米
+- 桌面帐篷（约 50 厘米）：3x3 厘米
+- 海报（约 1 米）：5x5 厘米
+- 广告牌（约 5 米）：25x25 厘米
 
-**Formula:** QR size = scan distance ÷ 10
+**计算公式：** QR 码尺寸 = 扫描距离 ÷ 10
 
-## Color & Contrast
+## 颜色与对比度
 
-- **Minimum 70% contrast** between foreground and background
-- Dark on light ONLY — scanners expect dark modules
-- Never invert (white on black fails on many readers)
-- Avoid gradients on modules — solid colors only
-- Background can have subtle texture if contrast maintained
+- **前景和背景之间的对比度至少为 70%**  
+- 仅允许背景为深色、文字为浅色的设计——扫描器通常能识别深色模块  
+- 绝不要将颜色反转（白色背景上的黑色文字在许多扫描器上无法识别）  
+- 避免在模块上使用渐变效果——仅使用纯色  
+- 只要保持足够的对比度，背景可以有轻微的纹理。
 
-## Testing Checklist
+## 测试检查清单
 
-Before printing/deploying:
-- [ ] Scan with 3+ different phones (iOS, Android old/new)
-- [ ] Test in target lighting conditions
-- [ ] Verify destination loads correctly
-- [ ] Check at actual print size, not screen preview
-- [ ] Test after any logo/customization applied
+在打印或部署之前，请完成以下步骤：
+- [ ] 使用 3 种及以上不同的手机（iOS、Android，包括旧版本和新版本）进行扫描  
+- [ ] 在目标光照条件下进行测试  
+- [ ] 确认目标设备能正确显示 QR 码内容  
+- [ ] 根据实际打印尺寸进行检查，而不仅仅是屏幕预览  
+- [ ] 在应用任何 logo 或自定义内容后再次进行测试
 
-## Common Failures
+## 常见问题及解决方法
 
-| Symptom | Cause | Fix |
+| 症状 | 原因 | 解决方法 |
 |---------|-------|-----|
-| Won't scan | Too small / low contrast | Increase size, check colors |
-| Scans but wrong content | URL changed after print | Use dynamic QR / redirect |
-| Works on some phones | Over-customized, low error correction | Reduce customization, increase EC |
-| Slow to recognize | Too dense | Shorten URL, reduce data |
+| 无法扫描 | QR 码尺寸过小或对比度过低 | 增大尺寸并检查颜色设置 |
+| 扫描到错误的代码 | 打印后 URL 发生变化 | 使用动态 QR 码或设置重定向链接 |
+| 仅在部分手机上能正常扫描 | 自定义内容过多或错误校正级别过低 | 减少自定义内容并提高错误校正级别 |
+| 扫描速度较慢 | QR 码信息过于密集 | 缩短 URL 长度并减少数据量 |
 
-## Use Case Guides
+## 使用场景指南
 
-| Context | See |
+| 使用场景 | 参考文档 |
 |---------|-----|
-| Data types (WiFi, vCard, etc.) | `types.md` |
-| Business deployment patterns | `deployment.md` |
+| 数据类型（WiFi、vCard 等） | `types.md` |
+| 业务部署方案 | `deployment.md` |

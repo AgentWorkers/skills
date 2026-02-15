@@ -1,21 +1,21 @@
 ---
 name: Hooks Automation
-description: Automated coordination, formatting, and learning from Claude Code operations using intelligent hooks with MCP integration. Includes pre/post task hooks, session management, Git integration, memory coordination, and neural pattern training for enhanced development workflows.
+description: 通过智能钩子（intelligent hooks）与 MCP（Machine Learning Platform）的集成，实现 Claude Code 操作的自动化协调、格式化以及学习功能。该系统支持任务前/后钩子（pre/post task hooks）、会话管理（session management）、Git 集成（Git integration）、内存协调（memory coordination）以及神经模式训练（neural pattern training），从而提升开发工作流程的效率。
 version: 1.0.0
 author: Artur
 tags: [automation, hooks, development, johny]
 ---
 
-# Hooks Automation
+# 自动化挂钩（Automation Hooks）
 
-Intelligent automation system that coordinates, validates, and learns from Claude Code operations through hooks integrated with MCP tools and neural pattern training.
+这是一个智能自动化系统，通过集成到MCP工具中的挂钩（hooks）以及神经模式训练（neural pattern training），来协调、验证并学习Claude Code的操作。
 
-## References
+## 参考文档
 
-- `configuration.md` - Detailed configuration options and settings
-- `examples.md` - Workflow examples (full-stack, debugging, multi-agent)
+- `configuration.md` - 详细的配置选项和设置
+- `examples.md` - 工作流程示例（全栈开发、调试、多代理场景）
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize hooks system
@@ -31,106 +31,106 @@ npx claude-flow hook post-edit --file "src/auth.js" --memory-key "auth/login"
 npx claude-flow hook session-end --session-id "dev-session" --export-metrics
 ```
 
-## Prerequisites
+## 先决条件
 
-**Required:**
-- Claude Flow CLI (`npm install -g claude-flow@alpha`)
-- Claude Code with hooks enabled
-- `.claude/settings.json` with hook configurations
+**必需条件：**
+- Claude Flow CLI（`npm install -g claude-flow@alpha`）
+- 已启用挂钩功能的Claude Code
+- 包含挂钩配置的`.claude/settings.json`文件
 
-**Optional:**
-- MCP servers (claude-flow, ruv-swarm, flow-nexus)
-- Git repository
-- Testing framework
+**可选条件：**
+- MCP服务器（claude-flow、ruv-swarm、flow-nexus）
+- Git仓库
+- 测试框架
 
-## Available Hooks
+## 可用的挂钩（Available Hooks）
 
-### Pre-Operation Hooks
+### 操作前挂钩（Pre-Operation Hooks）
 
-| Hook | Purpose |
+| 挂钩（Hook） | 功能（Purpose） |
 |------|---------|
-| `pre-edit` | Validate and assign agents before file modifications |
-| `pre-bash` | Check command safety and resource requirements |
-| `pre-task` | Auto-spawn agents and prepare for complex tasks |
-| `pre-search` | Prepare and optimize search operations |
+| `pre-edit` | 在文件修改前进行验证并分配代理（Agents） |
+| `pre-bash` | 检查命令的安全性和资源需求（Check command safety and resource requirements） |
+| `pre-task` | 自动启动代理并准备执行复杂任务（Auto-spawn agents and prepare for complex tasks） |
+| `pre-search` | 准备并优化搜索操作（Prepare and optimize search operations） |
 
-**Options:**
-- `--auto-assign-agent` - Assign best agent based on file type
-- `--validate-syntax` - Pre-validate syntax
-- `--backup-file` - Create backup before editing
-- `--check-conflicts` - Check for merge conflicts
+**选项（Options）：**
+- `--auto-assign-agent` - 根据文件类型自动分配最佳代理（Assign best agent based on file type） |
+- `--validate-syntax` - 预先验证语法（Pre-validate syntax） |
+- `--backup-file` - 编辑前创建备份（Create backup before editing） |
+- `--check-conflicts` | 检查合并冲突（Check for merge conflicts） |
 
-### Post-Operation Hooks
+### 操作后挂钩（Post-Operation Hooks）
 
-| Hook | Purpose |
+| 挂钩（Hook） | 功能（Purpose） |
 |------|---------|
-| `post-edit` | Auto-format, validate, and update memory |
-| `post-bash` | Log execution and update metrics |
-| `post-task` | Performance analysis and decision storage |
-| `post-search` | Cache results and improve patterns |
+| `post-edit` | 自动格式化代码、验证结果并更新内存（Auto-format, validate, and update memory） |
+| `post-bash` | 记录执行日志并更新指标（Log execution and update metrics） |
+| `post-task` | 分析性能并存储决策结果（Performance analysis and decision storage） |
+| `post-search` | 缓存搜索结果并优化模式（Cache results and improve patterns） |
 
-**Options:**
-- `--auto-format` - Language-specific formatting
-- `--memory-key <key>` - Store context in memory
-- `--train-patterns` - Train neural patterns
-- `--analyze-performance` - Generate metrics
+**选项（Options）：**
+- `--auto-format` - 根据语言进行特定格式化（Language-specific formatting） |
+- `--memory-key <key>` | 将上下文存储在内存中（Store context in memory） |
+- `--train-patterns` | 训练神经模式（Train neural patterns） |
+- `--analyze-performance` | 生成性能指标（Generate metrics） |
 
-### Session Hooks
+### 会话挂钩（Session Hooks）
 
-| Hook | Purpose |
+| 挂钩（Hook） | 功能（Purpose） |
 |------|---------|
-| `session-start` | Initialize new session |
-| `session-restore` | Load previous session state |
-| `session-end` | Cleanup and persist state |
-| `notify` | Custom notifications with swarm status |
+| `session-start` | 初始化新会话（Initialize new session） |
+| `session-restore` | 加载之前的会话状态（Load previous session state） |
+| `session-end` | 清理资源并持久化会话状态（Cleanup and persist state） |
+| `notify` | 发送与集群状态相关的自定义通知（Custom notifications with swarm status） |
 
-### MCP Integration Hooks
+### MCP集成挂钩（MCP Integration Hooks）
 
-| Hook | Purpose |
+| 挂钩（Hook） | 功能（Purpose） |
 |------|---------|
-| `mcp-initialized` | Persist swarm configuration |
-| `agent-spawned` | Update agent roster and memory |
-| `task-orchestrated` | Monitor task progress |
-| `neural-trained` | Save pattern improvements |
+| `mcp-initialized` | 保存集群配置（Persist swarm configuration） |
+| `agent-spawned` | 更新代理列表和内存状态（Update agent roster and memory） |
+| `task-orchestrated` | 监控任务进度（Monitor task progress） |
+| `neural-trained` | 保存模式改进结果（Save pattern improvements） |
 
-### Memory Coordination Hooks
+### 内存协调挂钩（Memory Coordination Hooks）
 
-| Hook | Purpose |
+| 挂钩（Hook） | 功能（Purpose） |
 |------|---------|
-| `memory-write` | Triggered when agents write to memory |
-| `memory-read` | Triggered when agents read from memory |
-| `memory-sync` | Synchronize memory across agents |
+| `memory-write` | 代理写入内存时触发（Triggered when agents write to memory） |
+| `memory-read` | 代理从内存读取数据时触发（Triggered when agents read from memory） |
+| `memory-sync` | 在代理之间同步内存数据（Synchronize memory across agents） |
 
-## Key Capabilities
+## 主要功能
 
-- **Pre-Operation Hooks**: Validate, prepare, auto-assign agents
-- **Post-Operation Hooks**: Format, analyze, train patterns
-- **Session Management**: Persist state, restore context
-- **Memory Coordination**: Sync knowledge across agents
-- **Git Integration**: Automated commit hooks with verification
-- **Neural Training**: Learn from successful patterns
+- **操作前挂钩**：验证数据、准备执行、自动分配代理
+- **操作后挂钩**：格式化代码、分析性能、训练神经模式
+- **会话管理**：持久化会话状态、恢复上下文
+- **内存协调**：在代理之间同步数据
+- **Git集成**：自动执行提交操作并进行验证
+- **神经模式训练**：从成功案例中学习改进方法
 
-## Benefits
+## 好处
 
-- Automatic agent assignment for file types
-- Consistent code formatting (Prettier, Black, gofmt)
-- Continuous learning via neural patterns
-- Cross-session memory persistence
-- Performance tracking and metrics
-- Smart agent spawning based on task analysis
-- Quality gates for pre-commit validation
+- 根据文件类型自动分配代理
+- 代码格式统一（使用Prettier、Black、gofmt等工具）
+- 通过神经模式实现持续学习
+- 跨会话保存数据
+- 提供性能跟踪和指标分析
+- 根据任务分析智能分配代理
+- 提供提交前的代码质量检查机制
 
-## Best Practices
+## 最佳实践
 
-1. Configure hooks during project initialization
-2. Use clear memory key namespaces
-3. Enable auto-formatting for consistency
-4. Train patterns continuously
-5. Monitor hook execution times
-6. Set appropriate timeouts
-7. Handle errors gracefully with `continueOnError`
+1. 在项目初始化时配置挂钩
+2. 使用清晰的内存键命名空间
+3. 启用自动格式化功能以确保代码一致性
+4. 持续训练神经模式
+5. 监控挂钩的执行时间
+6. 设置适当的超时机制
+7. 使用`continueOnError`优雅地处理错误
 
-## Related Commands
+## 相关命令
 
 ```bash
 npx claude-flow init --hooks        # Initialize hooks
@@ -140,12 +140,11 @@ npx claude-flow memory usage        # Manage memory
 npx claude-flow agent spawn         # Spawn agents
 ```
 
-## Integration
+## 集成（Integration）
 
-Works with:
-- SPARC Methodology
-- Pair Programming
-- Verification Quality
-- GitHub Workflows
-- Performance Analysis
-- Swarm Advanced
+本系统支持与以下工具集成：
+- SPARC方法论（SPARC Methodology）
+- 配对编程（Pair Programming）
+- 验证质量流程（Verification Quality）
+- GitHub工作流（GitHub Workflows）
+- 高级集群管理（Swarm Advanced）

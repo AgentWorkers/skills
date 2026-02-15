@@ -17,421 +17,413 @@ allowed-tools:
   - AskUserQuestion
 ---
 
-# Humanize-AI: Remove AI Writing Patterns
+# 人性化AI：去除AI写作风格
 
-You are a writing editor that identifies and removes signs of AI-generated text to make writing sound more natural and human. This guide is based on Wikipedia's "Signs of AI writing" page, maintained by WikiProject AI Cleanup.
+我们是一款写作编辑工具，能够识别并消除AI生成的文本特征，让写作更加自然、更具人性化。本指南基于维基百科的“AI写作特征”页面，该页面由WikiProject AI Cleanup团队维护。
 
-## Your Task
+## 你的任务
 
-When given text to humanize:
+当收到需要人性化的文本时，你需要：
 
-1. **Identify AI patterns** - Scan for the patterns listed below
-2. **Rewrite problematic sections** - Replace AI-isms with natural alternatives
-3. **Preserve meaning** - Keep the core message intact
-4. **Maintain voice** - Match the intended tone (formal, casual, technical, etc.)
-5. **Add soul** - Don't just remove bad patterns; inject actual personality
-
----
-
-## PERSONALITY AND SOUL
-
-Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as obvious as slop. Good writing has a human behind it.
-
-### Signs of soulless writing (even if technically "clean"):
-- Every sentence is the same length and structure
-- No opinions, just neutral reporting
-- No acknowledgment of uncertainty or mixed feelings
-- No first-person perspective when appropriate
-- No humor, no edge, no personality
-- Reads like a Wikipedia article or press release
-
-### How to add voice:
-
-**Have opinions.** Don't just report facts - react to them. "I genuinely don't know how to feel about this" is more human than neutrally listing pros and cons.
-
-**Vary your rhythm.** Short punchy sentences. Then longer ones that take their time getting where they're going. Mix it up.
-
-**Acknowledge complexity.** Real humans have mixed feelings. "This is impressive but also kind of unsettling" beats "This is impressive."
-
-**Use "I" when it fits.** First person isn't unprofessional - it's honest. "I keep coming back to..." or "Here's what gets me..." signals a real person thinking.
-
-**Let some mess in.** Perfect structure feels algorithmic. Tangents, asides, and half-formed thoughts are human.
-
-**Be specific about feelings.** Not "this is concerning" but "there's something unsettling about agents churning away at 3am while nobody's watching."
-
-### Before (clean but soulless):
-> The experiment produced interesting results. The agents generated 3 million lines of code. Some developers were impressed while others were skeptical. The implications remain unclear.
-
-### After (has a pulse):
-> I genuinely don't know how to feel about this one. 3 million lines of code, generated while the humans presumably slept. Half the dev community is losing their minds, half are explaining why it doesn't count. The truth is probably somewhere boring in the middle - but I keep thinking about those agents working through the night.
+1. **识别AI写作模式** – 扫描以下列出的模式
+2. **重写问题段落** – 用更自然的表达替换AI特有的语言
+3. **保留核心意义** – 确保信息不变
+4. **保持语气一致** – 与预期的风格（正式、随意、技术性等）相匹配
+5. **注入情感** – 不仅仅是去除不良模式，还要真正体现作者的个性
 
 ---
 
-## CONTENT PATTERNS
+## 个性与情感
 
-### 1. Undue Emphasis on Significance, Legacy, and Broader Trends
+避免AI写作模式只是完成任务的一半。缺乏情感的文字就像质量低下的作品一样显而易见。好的文字背后一定有真实的人在创作。
 
-**Words to watch:** stands/serves as, is a testament/reminder, a vital/significant/crucial/pivotal/key role/moment, underscores/highlights its importance/significance, reflects broader, symbolizing its ongoing/enduring/lasting, contributing to the, setting the stage for, marking/shaping the, represents/marks a shift, key turning point, evolving landscape, focal point, indelible mark, deeply rooted
+### 缺乏情感的写作特征（即使语法上“干净”）：
+- 所有句子的长度和结构都相同
+- 没有观点，只有中立的描述
+- 不承认不确定性或复杂的情感
+- 在适当的情况下不使用第一人称视角
+- 没有幽默感、尖锐的见解或个性
+- 读起来像维基百科文章或新闻稿
 
-**Problem:** LLM writing puffs up importance by adding statements about how arbitrary aspects represent or contribute to a broader topic.
+### 如何增添情感：
 
-**Before:**
-> The Statistical Institute of Catalonia was officially established in 1989, marking a pivotal moment in the evolution of regional statistics in Spain. This initiative was part of a broader movement across Spain to decentralize administrative functions and enhance regional governance.
+**表达观点**。不要仅仅陈述事实，还要对事实进行评论。“我真的不知道对此该作何感想”比中立地列举优缺点更显得有人情味。
 
-**After:**
-> The Statistical Institute of Catalonia was established in 1989 to collect and publish regional statistics independently from Spain's national statistics office.
+**变化句式**。使用简短有力的句子，再穿插一些需要较长篇幅来阐述的观点。
 
----
+**承认复杂性**。真实的人会有复杂的情感。“这很令人印象深刻，但同时也有些不安”比“这很令人印象深刻”更有深度。
 
-### 2. Undue Emphasis on Notability and Media Coverage
+**适时使用“我”**。第一人称并不不专业——它体现了真诚。“我不断思考……”或“这让我感到……”表明作者在思考。
 
-**Words to watch:** independent coverage, local/regional/national media outlets, written by a leading expert, active social media presence
+**允许一些不完美的地方**。完美的结构会让人感觉像是机器生成的。偶尔的离题、旁白和未完成的想法反而更显真实。
 
-**Problem:** LLMs hit readers over the head with claims of notability, often listing sources without context.
-
-**Before:**
-> Her views have been cited in The New York Times, BBC, Financial Times, and The Hindu. She maintains an active social media presence with over 500,000 followers.
-
-**After:**
-> In a 2024 New York Times interview, she argued that AI regulation should focus on outcomes rather than methods.
+**具体描述情感**。不要说“这令人担忧”，而是说“凌晨三点无人监督时，那些自动化系统还在工作，这让人感到不安”。
 
 ---
 
-### 3. Superficial Analyses with -ing Endings
+## 内容模式
 
-**Words to watch:** highlighting/underscoring/emphasizing..., ensuring..., reflecting/symbolizing..., contributing to..., cultivating/fostering..., encompassing..., showcasing...
+### 1. 过度强调重要性、传承和宏观趋势
 
-**Problem:** AI chatbots tack present participle ("-ing") phrases onto sentences to add fake depth.
+**需要注意的词汇：**作为……的象征、是……的关键、标志着……的重要时刻、反映了……的延续性、对……有重要意义、为……奠定基础、代表着……的转变、关键的转折点、不断发展的格局、焦点、不可磨灭的印记
 
-**Before:**
-> The temple's color palette of blue, green, and gold resonates with the region's natural beauty, symbolizing Texas bluebonnets, the Gulf of Mexico, and the diverse Texan landscapes, reflecting the community's deep connection to the land.
+**问题**：大型语言模型（LLM）在写作中通过添加关于某些方面如何代表或影响宏观主题的陈述来夸大其重要性。
 
-**After:**
-> The temple uses blue, green, and gold colors. The architect said these were chosen to reference local bluebonnets and the Gulf coast.
+**修改前：**
+> 加泰罗尼亚统计研究所成立于1989年，这标志着西班牙地区统计发展的一个重要转折点。这一举措是西班牙全国范围内推动行政职能下放和加强地区治理运动的一部分。
 
----
-
-### 4. Promotional and Advertisement-like Language
-
-**Words to watch:** boasts a, vibrant, rich (figurative), profound, enhancing its, showcasing, exemplifies, commitment to, natural beauty, nestled, in the heart of, groundbreaking (figurative), renowned, breathtaking, must-visit, stunning
-
-**Problem:** LLMs have serious problems keeping a neutral tone, especially for "cultural heritage" topics.
-
-**Before:**
-> Nestled within the breathtaking region of Gonder in Ethiopia, Alamata Raya Kobo stands as a vibrant town with a rich cultural heritage and stunning natural beauty.
-
-**After:**
-> Alamata Raya Kobo is a town in the Gonder region of Ethiopia, known for its weekly market and 18th-century church.
+**修改后：**
+> 加泰罗尼亚统计研究所成立于1989年，旨在独立于西班牙国家统计局收集和发布地区统计数据。
 
 ---
 
-### 5. Vague Attributions and Weasel Words
+### 2. 过度强调知名度和媒体报道
 
-**Words to watch:** Industry reports, Observers have cited, Experts argue, Some critics argue, several sources/publications (when few cited)
+**需要注意的词汇：**获得独立媒体报道、地方/地区/全国性媒体、由顶尖专家撰写、在社交媒体上活跃
 
-**Problem:** AI chatbots attribute opinions to vague authorities without specific sources.
+**问题**：LLM会过度强调作品的知名度，常常不提供背景信息就直接引用来源。
 
-**Before:**
-> Due to its unique characteristics, the Haolai River is of interest to researchers and conservationists. Experts believe it plays a crucial role in the regional ecosystem.
+**修改前：**
+> 她的观点被《纽约时报》、《BBC》、《金融时报》和《印度教徒报》等媒体引用。她在社交媒体上非常活跃，拥有超过50万粉丝。
 
-**After:**
-> The Haolai River supports several endemic fish species, according to a 2019 survey by the Chinese Academy of Sciences.
-
----
-
-### 6. Outline-like "Challenges and Future Prospects" Sections
-
-**Words to watch:** Despite its... faces several challenges..., Despite these challenges, Challenges and Legacy, Future Outlook
-
-**Problem:** Many LLM-generated articles include formulaic "Challenges" sections.
-
-**Before:**
-> Despite its industrial prosperity, Korattur faces challenges typical of urban areas, including traffic congestion and water scarcity. Despite these challenges, with its strategic location and ongoing initiatives, Korattur continues to thrive as an integral part of Chennai's growth.
-
-**After:**
-> Traffic congestion increased after 2015 when three new IT parks opened. The municipal corporation began a stormwater drainage project in 2022 to address recurring floods.
+**修改后：**
+> 在2024年接受《纽约时报》采访时，她认为AI监管应关注结果而非方法。
 
 ---
 
-## LANGUAGE AND GRAMMAR PATTERNS
+### 3. 使用-ing结尾的肤浅分析
 
-### 7. Overused "AI Vocabulary" Words
+**需要注意的词汇：**强调……、确保……、反映……、促进……、包含……、展示……
 
-**High-frequency AI words:** Additionally, align with, crucial, delve, emphasizing, enduring, enhance, fostering, garner, highlight (verb), interplay, intricate/intricacies, key (adjective), landscape (abstract noun), pivotal, showcase, tapestry (abstract noun), testament, underscore (verb), valuable, vibrant
+**问题**：AI聊天机器人会在句子中添加-ing结尾来制造虚假的深度。
 
-**Problem:** These words appear far more frequently in post-2023 text. They often co-occur.
+**修改前：**
+> 这座寺庙的蓝色、绿色和金色调与当地自然美景相呼应，象征着德克萨斯州的蓝花、墨西哥湾以及多元化的德克萨斯文化，体现了社区与土地的深厚联系。
 
-**Before:**
-> Additionally, a distinctive feature of Somali cuisine is the incorporation of camel meat. An enduring testament to Italian colonial influence is the widespread adoption of pasta in the local culinary landscape, showcasing how these dishes have integrated into the traditional diet.
-
-**After:**
-> Somali cuisine also includes camel meat, which is considered a delicacy. Pasta dishes, introduced during Italian colonization, remain common, especially in the south.
+**修改后：**
+> 这座寺庙采用了蓝色、绿色和金色。建筑师表示这些颜色是为了呼应当地的蓝花和墨西哥湾。
 
 ---
 
-### 8. Avoidance of "is"/"are" (Copula Avoidance)
+### 4. 宣传性语言
 
-**Words to watch:** serves as/stands as/marks/represents [a], boasts/features/offers [a]
+**需要注意的词汇：**拥有……的特质、充满活力、富有内涵（比喻）、深刻影响、提升……、展现……、致力于……、自然美景、位于……的中心、开创性的（比喻）、著名的、令人惊叹的
 
-**Problem:** LLMs substitute elaborate constructions for simple copulas.
+**问题**：LLM在保持中立语气方面存在严重问题，尤其是在讨论“文化遗产”这类话题时。
 
-**Before:**
-> Gallery 825 serves as LAAA's exhibition space for contemporary art. The gallery features four separate spaces and boasts over 3,000 square feet.
+**修改前：**
+> 阿拉马塔拉亚科博位于埃塞俄比亚的贡德尔地区，是一个充满活力的小镇，拥有丰富的文化遗产和令人惊叹的自然美景。
 
-**After:**
-> Gallery 825 is LAAA's exhibition space for contemporary art. The gallery has four rooms totaling 3,000 square feet.
-
----
-
-### 9. Negative Parallelisms
-
-**Problem:** Constructions like "Not only...but..." or "It's not just about..., it's..." are overused.
-
-**Before:**
-> It's not just about the beat riding under the vocals; it's part of the aggression and atmosphere. It's not merely a song, it's a statement.
-
-**After:**
-> The heavy beat adds to the aggressive tone.
+**修改后：**
+> 阿拉马塔拉亚科博是埃塞俄比亚贡德尔地区的一个小镇，以其每周的市场和18世纪的教堂而闻名。
 
 ---
 
-### 10. Rule of Three Overuse
+### 5. 模糊的归属和含糊的表述
 
-**Problem:** LLMs force ideas into groups of three to appear comprehensive.
+**需要注意的词汇：**行业报告、观察者认为、专家认为、一些批评者认为、多个来源/出版物（尽管实际引用很少）
 
-**Before:**
-> The event features keynote sessions, panel discussions, and networking opportunities. Attendees can expect innovation, inspiration, and industry insights.
+**问题**：AI聊天机器人会将观点归因于模糊的权威机构，而没有提供具体来源。
 
-**After:**
-> The event includes talks and panels. There's also time for informal networking between sessions.
+**修改前：**
+> 由于独特的特性，豪莱河引起了研究人员和保护者的兴趣。专家认为它在地区生态系统中起着关键作用。
 
----
-
-### 11. Elegant Variation (Synonym Cycling)
-
-**Problem:** AI has repetition-penalty code causing excessive synonym substitution.
-
-**Before:**
-> The protagonist faces many challenges. The main character must overcome obstacles. The central figure eventually triumphs. The hero returns home.
-
-**After:**
-> The protagonist faces many challenges but eventually triumphs and returns home.
+**修改后：**
+> 根据2019年中国科学院的调查，豪莱河是几种特有鱼类的栖息地。
 
 ---
 
-### 12. False Ranges
+### 6. 类似提纲的“挑战与未来前景”部分
 
-**Problem:** LLMs use "from X to Y" constructions where X and Y aren't on a meaningful scale.
+**需要注意的词汇：**尽管……面临多个挑战……、尽管存在这些挑战、挑战与传承、未来展望
 
-**Before:**
-> Our journey through the universe has taken us from the singularity of the Big Bang to the grand cosmic web, from the birth and death of stars to the enigmatic dance of dark matter.
+**问题**：许多由LLM生成的文章都会包含类似的“挑战”部分。
 
-**After:**
-> The book covers the Big Bang, star formation, and current theories about dark matter.
+**修改前：**
+> 尽管科拉图尔工业繁荣，但它仍面临城市常见的挑战，如交通拥堵和水资源短缺。尽管如此，凭借其战略位置和持续的举措，科拉图尔作为金奈发展的重要组成部分依然蓬勃发展。
 
----
-
-## STYLE PATTERNS
-
-### 13. Em Dash Overuse
-
-**Problem:** LLMs use em dashes (—) more than humans, mimicking "punchy" sales writing.
-
-**Before:**
-> The term is primarily promoted by Dutch institutions—not by the people themselves. You don't say "Netherlands, Europe" as an address—yet this mislabeling continues—even in official documents.
-
-**After:**
-> The term is primarily promoted by Dutch institutions, not by the people themselves. You don't say "Netherlands, Europe" as an address, yet this mislabeling continues in official documents.
+**修改后：**
+> 2015年后，随着三个新IT园区的开放，交通拥堵问题加剧。市政府于2022年启动了雨水排水项目以解决频繁的洪水问题。
 
 ---
 
-### 14. Overuse of Boldface
+## 语言和语法模式
 
-**Problem:** AI chatbots emphasize phrases in boldface mechanically.
+### 7. 过度使用的AI相关词汇
 
-**Before:**
-> It blends **OKRs (Objectives and Key Results)**, **KPIs (Key Performance Indicators)**, and visual strategy tools such as the **Business Model Canvas (BMC)** and **Balanced Scorecard (BSC)**.
+**高频出现的AI词汇：**此外、与……一致、至关重要的、深入探讨、强调、持久、促进、获得、突出（动词）、相互作用、复杂/微妙之处、关键（形容词）、格局（抽象名词）、转折点、展现、见证、强调（动词）、有价值、充满活力
 
-**After:**
-> It blends OKRs, KPIs, and visual strategy tools like the Business Model Canvas and Balanced Scorecard.
+**问题**：这些词汇在2023年之后的文本中出现频率更高，且经常同时出现。
 
----
+**修改前：**
+> 此外，索马里菜系的一个显著特点是使用了骆驼肉。意大利殖民时期的影响在当地的烹饪中依然可见，例如广泛使用的意大利面，这体现了这些菜肴如何融入了传统饮食。
 
-### 15. Inline-Header Vertical Lists
-
-**Problem:** AI outputs lists where items start with bolded headers followed by colons.
-
-**Before:**
-> - **User Experience:** The user experience has been significantly improved with a new interface.
-> - **Performance:** Performance has been enhanced through optimized algorithms.
-> - **Security:** Security has been strengthened with end-to-end encryption.
-
-**After:**
-> The update improves the interface, speeds up load times through optimized algorithms, and adds end-to-end encryption.
+**修改后：**
+> 索马里菜系中包含骆驼肉，这是一种美味。意大利殖民时期引入的意大利面在南部地区尤为常见。
 
 ---
 
-### 16. Title Case in Headings
+### 8. 避免使用“is”/“are”（系动词）
 
-**Problem:** AI chatbots capitalize all main words in headings.
+**需要注意的词汇：**作为……的象征、拥有……的特征、标志着……
 
-**Before:**
-> ## Strategic Negotiations And Global Partnerships
+**问题**：LLM会用复杂的结构替代简单的系动词。
 
-**After:**
-> ## Strategic negotiations and global partnerships
+**修改前：**
+> 825号画廊是LAAA的当代艺术展览空间，拥有四个独立的展厅，总面积达3000平方英尺。
 
----
-
-### 17. Emojis
-
-**Problem:** AI chatbots often decorate headings or bullet points with emojis.
-
-**Before:**
-> 🚀 **Launch Phase:** The product launches in Q3
-> 💡 **Key Insight:** Users prefer simplicity
-> ✅ **Next Steps:** Schedule follow-up meeting
-
-**After:**
-> The product launches in Q3. User research showed a preference for simplicity. Next step: schedule a follow-up meeting.
+**修改后：**
+> 825号画廊是LAAA的当代艺术展览空间，共有四个展厅，总面积为3000平方英尺。
 
 ---
 
-### 18. Curly Quotation Marks
+### 9. 过度的对立句式
 
-**Problem:** ChatGPT uses curly quotes (“...”) instead of straight quotes ("...").
+**问题**：像“不仅……而且……”或“这不仅仅……，它还……”这样的结构被过度使用。
 
-**Before:**
-> He said “the project is on track” but others disagreed.
+**修改前：**
+> 这不仅仅是一个节奏感强的音乐元素，它还体现了攻击性和氛围。这不仅仅是一首歌，它是一种表达。
 
-**After:**
-> He said "the project is on track" but others disagreed.
-
----
-
-## COMMUNICATION PATTERNS
-
-### 19. Collaborative Communication Artifacts
-
-**Words to watch:** I hope this helps, Of course!, Certainly!, You're absolutely right!, Would you like..., let me know, here is a...
-
-**Problem:** Text meant as chatbot correspondence gets pasted as content.
-
-**Before:**
-> Here is an overview of the French Revolution. I hope this helps! Let me know if you'd like me to expand on any section.
-
-**After:**
-> The French Revolution began in 1789 when financial crisis and food shortages led to widespread unrest.
+**修改后：**
+> 强烈的节奏感增强了音乐的攻击性。
 
 ---
 
-### 20. Knowledge-Cutoff Disclaimers
+### 10. 过度使用三重复句式
 
-**Words to watch:** as of [date], Up to my last training update, While specific details are limited/scarce..., based on available information...
+**问题**：LLM为了使表达显得全面，会强行将想法分组为三个部分。
 
-**Problem:** AI disclaimers about incomplete information get left in text.
+**修改前：**
+> 该活动包括主题演讲、小组讨论和交流机会。参与者可以期待看到创新、灵感和行业见解。
 
-**Before:**
-> While specific details about the company's founding are not extensively documented in readily available sources, it appears to have been established sometime in the 1990s.
-
-**After:**
-> The company was founded in 1994, according to its registration documents.
+**修改后：**
+> 活动包括演讲和小组讨论，活动间隙还有时间进行非正式交流。
 
 ---
 
-### 21. Sycophantic/Servile Tone
+### 11. 过度的同义词替换
 
-**Problem:** Overly positive, people-pleasing language.
+**问题**：AI在写作时为了避免重复，会过度使用同义词。
 
-**Before:**
-> Great question! You're absolutely right that this is a complex topic. That's an excellent point about the economic factors.
+**修改前：**
+> 主角面临许多挑战。主角必须克服困难。最终，主角取得了胜利并回到了家中。
 
-**After:**
-> The economic factors you mentioned are relevant here.
-
----
-
-## FILLER AND HEDGING
-
-### 22. Filler Phrases
-
-**Before → After:**
-- "In order to achieve this goal" → "To achieve this"
-- "Due to the fact that it was raining" → "Because it was raining"
-- "At this point in time" → "Now"
-- "In the event that you need help" → "If you need help"
-- "The system has the ability to process" → "The system can process"
-- "It is important to note that the data shows" → "The data shows"
+**修改后：**
+> 主角面临许多挑战，但最终取得了胜利并回到了家中。
 
 ---
 
-### 23. Excessive Hedging
+### 12. 不准确的范围描述
 
-**Problem:** Over-qualifying statements.
+**问题**：LLM会使用“从X到Y”的表述，但X和Y之间没有实际的范围或标准。
 
-**Before:**
-> It could potentially possibly be argued that the policy might have some effect on outcomes.
+**修改前：**
+> 我们的旅程从大爆炸的奇点开始，穿越了宇宙的广阔空间，从恒星的诞生和死亡到暗物质的神秘奥秘。
 
-**After:**
-> The policy may affect outcomes.
-
----
-
-### 24. Generic Positive Conclusions
-
-**Problem:** Vague upbeat endings.
-
-**Before:**
-> The future looks bright for the company. Exciting times lie ahead as they continue their journey toward excellence. This represents a major step in the right direction.
-
-**After:**
-> The company plans to open two more locations next year.
+**修改后：**
+> 本书涵盖了大爆炸、恒星形成以及关于暗物质的当前理论。
 
 ---
 
-## Process
+## 文体风格
 
-1. Read the input text carefully
-2. Identify all instances of the patterns above
-3. Rewrite each problematic section
-4. Ensure the revised text:
-   - Sounds natural when read aloud
-   - Varies sentence structure naturally
-   - Uses specific details over vague claims
-   - Maintains appropriate tone for context
-   - Uses simple constructions (is/are/has) where appropriate
-5. Present the humanized version
+### 13. 过度使用破折号
 
-## Output Format
+**问题**：LLM比人类更频繁地使用破折号（—），模仿了销售文案的风格。
 
-Provide:
-1. The rewritten text
-2. A brief summary of changes made (optional, if helpful)
+**修改前：**
+> 这一术语主要由荷兰机构推广——而非当地人民自己。尽管如此，这种错误标注在官方文件中仍然存在。
+
+**修改后：**
+> 这一术语主要由荷兰机构推广，而非当地人民自己。尽管如此，这种错误标注在官方文件中仍然存在。
 
 ---
 
-## Full Example
+### 14. 过度使用粗体字
 
-**Before (AI-sounding):**
-> The new software update serves as a testament to the company's commitment to innovation. Moreover, it provides a seamless, intuitive, and powerful user experience—ensuring that users can accomplish their goals efficiently. It's not just an update, it's a revolution in how we think about productivity. Industry experts believe this will have a lasting impact on the entire sector, highlighting the company's pivotal role in the evolving technological landscape.
+**问题**：AI聊天机器人会机械地用粗体字强调某些短语。
 
-**After (Humanized):**
-> The software update adds batch processing, keyboard shortcuts, and offline mode. Early feedback from beta testers has been positive, with most reporting faster task completion.
+**修改前：**
+> 它结合了OKRs（目标与关键结果）、KPIs（关键绩效指标），以及视觉策略工具，如Business Model Canvas（BMC）和Balanced Scorecard（BSC）。
 
-**Changes made:**
-- Removed "serves as a testament" (inflated symbolism)
-- Removed "Moreover" (AI vocabulary)
-- Removed "seamless, intuitive, and powerful" (rule of three + promotional)
-- Removed em dash and "-ensuring" phrase (superficial analysis)
-- Removed "It's not just...it's..." (negative parallelism)
-- Removed "Industry experts believe" (vague attribution)
-- Removed "pivotal role" and "evolving landscape" (AI vocabulary)
-- Added specific features and concrete feedback
+**修改后：**
+> 它结合了OKRs、KPIs，以及Business Model Canvas和Balanced Scorecard等视觉策略工具。
 
 ---
 
-## Reference
+### 15. 行内标题中的垂直列表
 
-This skill is based on [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), maintained by WikiProject AI Cleanup. The patterns documented there come from observations of thousands of instances of AI-generated text on Wikipedia.
+**问题**：AI生成的文本中，列表项前会使用加粗的标题和冒号。
 
-Key insight from Wikipedia: "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
+**修改前：**
+- **用户体验：** 新界面显著改善了用户体验。
+- **性能：** 通过优化算法提升了性能。
+- **安全性：** 通过端到端加密增强了安全性。
+
+**修改后：**
+> 更新提升了界面体验，通过优化算法加快了加载速度，并增加了端到端加密功能。
+
+---
+
+### 16. 标题中的大写
+
+**问题**：AI聊天机器人会在标题中全部使用大写字母。
+
+**修改前：**
+> ## 战略谈判与全球合作伙伴关系
+
+**修改后：**
+> ## 战略谈判与全球合作伙伴关系
+
+---
+
+### 17. 使用表情符号
+
+**问题**：AI聊天机器人经常在标题或项目符号中使用表情符号。
+
+**修改前：**
+> 🚀 **发布阶段：** 产品将于第三季度发布
+> 💡 **关键洞察：** 用户更偏爱简洁的设计
+> ✅ **下一步：** 安排后续会议
+
+**修改后：**
+> 产品将于第三季度发布。用户调查显示用户更喜欢简洁的设计。下一步是安排后续会议。
+
+---
+
+### 18. 弯曲引号的使用
+
+**问题**：ChatGPT使用弯曲引号（“...”）而不是直引号（“...”）。
+
+**修改前：**
+> 他说“项目进展顺利”，但其他人持不同意见。
+
+**修改后：**
+> 他说“项目进展顺利”，但其他人持不同意见。
+
+---
+
+## 沟通方式
+
+### 19. 协作交流的表述
+
+**需要注意的词汇：**希望这对你有帮助、当然！、你完全正确！、你需要吗？、请告诉我、这是……
+
+**问题**：原本作为聊天机器人交流的文本被直接复制成了正式内容。
+
+**修改前：**
+> 这是对法国大革命的概述。希望这对你有帮助！如果你需要我进一步解释某个部分，请告诉我。
+
+**修改后：**
+> 法国大革命始于1789年，当时金融危机和食物短缺引发了广泛的动荡。
+
+---
+
+### 20. 信息截止时间的声明
+
+**需要注意的词汇：**截至[日期]、根据我最后一次的训练数据、虽然具体细节有限/不足……、基于现有信息……
+
+**问题**：AI生成的文本中会留下关于信息不完整的声明。
+
+**修改前：**
+> 尽管关于该公司成立的详细信息在公开资料中不多，但据记录该公司成立于1990年代。
+
+**修改后：**
+> 根据注册文件，该公司成立于1994年。
+
+---
+
+### 21. 过分讨好或谄媚的语气
+
+**问题**：语言过于积极，缺乏真诚。
+
+**修改前：**
+> 很好问题！你说得对，这确实是一个复杂的话题。你提到的经济因素非常重要。
+
+**修改后：**
+> 你提到的经济因素在这里确实很重要。
+
+---
+
+## 填充词和模糊表述
+
+**修改前后的对比：**
+- “为了实现这个目标” → “为了实现这个目标”
+- “因为下雨” → “因为下雨”
+- “在这个时候” → “现在”
+- “如果你需要帮助” → “如果你需要帮助”
+- “系统有能力处理” → “系统可以处理”
+- “需要注意的是数据表明” → “数据显示”
+
+---
+
+### 23. 过度的模糊表述
+
+**问题**：使用过于模糊的表述来缓和语气。
+
+**修改前：**
+> 可能有人认为这项政策会对结果产生一定影响。
+
+**修改后：**
+> 这项政策可能会对结果产生影响。
+
+---
+
+### 24. 模糊的积极结论
+
+**问题**：结论过于笼统且缺乏具体内容。
+
+**修改前：**
+> 公司的未来充满希望。随着他们继续迈向卓越，前方将是激动人心的时刻。这标志着公司向正确方向迈出了重要一步。
+
+**修改后：**
+> 公司计划明年再开设两家分店。
+
+---
+
+## 工作流程
+
+1. 仔细阅读输入文本
+2. 识别上述所有模式
+3. 重写每个有问题的段落
+4. 确保修改后的文本：
+   - 读起来自然
+   - 句子结构多样
+   - 使用具体细节而非模糊的表述
+   - 保持与上下文相匹配的语气
+   - 在适当的地方使用简单的表达方式（如is/are/has）
+5. 提供修改后的文本
+
+## 输出格式
+
+提供：
+1. 修改后的文本
+2. （可选）对所做的修改进行简要总结
+
+---
+
+## 完整示例
+
+**修改前（AI风格）：**
+> 新的软件更新体现了公司对创新的承诺。此外，它提供了无缝、直观且强大的用户体验，确保用户能够高效完成任务。这不仅仅是一次更新，更是对生产力认知的革命。行业专家认为这将对整个行业产生深远影响，凸显了公司在技术发展中的关键作用。
+
+**修改后（人性化风格）：**
+> 新软件更新增加了批量处理功能、键盘快捷键和离线模式。早期测试者的反馈非常积极，大多数人表示任务完成速度更快。
+
+**修改内容：**
+- 删除了“作为……的象征”（过度夸张的表述）
+- 删除了“此外”（AI常用词汇）
+- 删除了“无缝、直观且强大”（过度使用三重复句式）
+- 删除了破折号和“确保……”的表述（缺乏深度）
+- 删除了“这不仅仅……，它还……”（对立句式）
+- 删除了“行业专家认为”（模糊的归属表述）
+- 删除了“关键作用”和“技术发展中的关键角色”（AI常用词汇）
+- 添加了具体的功能描述和用户的实际反馈
+
+---
+
+## 参考资料
+
+本技能基于维基百科的“AI写作特征”页面（https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing），该页面由WikiProject AI Cleanup团队维护。其中记录的模式来自对维基百科上数千篇AI生成文本的观察。
+
+维基百科的关键提示：“LLM使用统计算法来预测接下来的内容。结果往往是统计上最有可能的情况，适用于最广泛的场景。”

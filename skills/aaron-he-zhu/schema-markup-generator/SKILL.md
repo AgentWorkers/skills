@@ -1,84 +1,74 @@
 ---
 name: schema-markup-generator
-description: Generates structured data markup (Schema.org JSON-LD) to enable rich results in search engines including FAQ snippets, How-To cards, Product listings, Reviews, and more.
+description: 生成结构化数据标记（Schema.org JSON-LD），以便在搜索引擎中呈现丰富的搜索结果，包括常见问题解答（FAQ）片段、操作指南卡片、产品列表、评论等。
 geo-relevance: "medium"
 ---
 
-# Schema Markup Generator
+# 架构标记生成器（Schema Markup Generator）
 
-This skill creates Schema.org structured data markup in JSON-LD format to help search engines understand your content and enable rich results in SERPs.
+此技能能够生成符合 Schema.org 标准的结构化数据标记（JSON-LD 格式），帮助搜索引擎更好地理解您的内容，从而在搜索结果页面（SERPs）中呈现更丰富的信息。
 
-## When to Use This Skill
+## 适用场景
 
-- Adding FAQ schema for expanded SERP presence
-- Creating How-To schema for step-by-step content
-- Adding Product schema for e-commerce pages
-- Implementing Article schema for blog posts
-- Adding Local Business schema for location pages
-- Creating Review/Rating schema
-- Implementing Organization schema for brand presence
-- Any page where rich results would improve visibility
+- 为常见问题解答（FAQ）页面添加结构化数据，以提升在搜索结果中的显示效果
+- 为操作指南（How-To）内容生成结构化数据
+- 为电子商务产品页面生成结构化数据
+- 为博客文章生成结构化数据
+- 为本地商家页面生成结构化数据
+- 生成评论/评分信息
+- 为组织页面生成结构化数据
+- 适用于任何可以通过结构化数据提升页面可见性的场景
 
-## What This Skill Does
+## 功能概述
 
-1. **Schema Type Selection**: Recommends appropriate schema types
-2. **JSON-LD Generation**: Creates valid structured data markup
-3. **Property Mapping**: Maps your content to schema properties
-4. **Validation Guidance**: Ensures schema meets requirements
-5. **Nested Schema**: Handles complex, multi-type schemas
-6. **Rich Result Eligibility**: Identifies which rich results you can target
+1. **选择合适的结构化数据类型**
+2. **生成有效的 JSON-LD 标记**
+3. **将内容映射到相应的结构化数据属性**
+4. **提供验证指导**
+5. **处理复杂的多类型结构化数据**
+6. **确定哪些内容适合生成丰富的搜索结果**
 
-## How to Use
+## 使用方法
 
-### Generate Schema for Content
+### 为内容生成结构化数据
 
 ```
 Generate schema markup for this [content type]: [content/URL]
 ```
 
-```
-Create FAQ schema for these questions and answers: [Q&A list]
-```
-
-### Specific Schema Types
+### 具体的结构化数据类型
 
 ```
 Create Product schema for [product name] with [details]
 ```
 
-```
-Generate LocalBusiness schema for [business name and details]
-```
-
-### Audit Existing Schema
+### 审查现有的结构化数据
 
 ```
 Review and improve this schema markup: [existing schema]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的相关信息。
 
-**With ~~web crawler connected:**
-Automatically crawl and extract page content (visible text, headings, lists, tables), existing schema markup, page metadata, and structured content elements that map to schema properties.
+**使用网络爬虫时：**
+- 自动爬取页面内容（可见文本、标题、列表、表格）、现有的结构化数据标记、页面元数据以及与结构化数据属性匹配的内容元素。
+**仅使用手动提供的数据时：**
+- 要求用户提供：
+  - 页面 URL 或完整的 HTML 内容
+  - 页面类型（文章、产品、常见问题解答等）
+  - 结构化数据所需的具体信息（价格、日期、作者信息、问答对等）
+  - 当前使用的结构化数据标记（如需优化现有数据）
 
-**With manual data only:**
-Ask the user to provide:
-1. Page URL or full HTML content
-2. Page type (article, product, FAQ, how-to, local business, etc.)
-3. Specific data needed for schema (prices, dates, author info, Q&A pairs, etc.)
-4. Current schema markup (if optimizing existing)
+根据提供的数据完成整个工作流程。请在输出中明确标注哪些数据来自自动提取，哪些数据是用户提供的。
 
-Proceed with the full workflow using provided data. Note in the output which data is from automated extraction vs. user-provided data.
+## 使用说明
 
-## Instructions
+当用户请求生成结构化数据标记时：
 
-When a user requests schema markup:
-
-1. **Identify Content Type and Rich Result Opportunity**
-
-   Reference the [CORE-EEAT Benchmark](../../references/core-eeat-benchmark.md) item **O05 (Schema Markup)** for content-type to schema mapping:
+1. **确定内容类型及是否适合生成丰富的搜索结果**
+   参考 [CORE-EEAT 基准](../../references/core-eeat-benchmark.md) 中的 **O05（结构化数据标记）** 部分，了解如何将内容类型映射到相应的结构化数据类型：
 
    ```markdown
    ### CORE-EEAT Schema Mapping (O05)
@@ -121,7 +111,7 @@ When a user requests schema markup:
    2. [Secondary schema type] - [reason]
    ```
 
-2. **Generate FAQ Schema**
+2. **生成常见问题解答（FAQ）结构化数据**
 
    ```markdown
    ### FAQ Schema (FAQPage)
@@ -141,18 +131,18 @@ When a user requests schema markup:
      "mainEntity": [
        {
          "@type": "Question",
-         "name": "[Question 1 - exactly as shown on page]",
+         "name": "[页面上显示的问题 1]",
          "acceptedAnswer": {
            "@type": "Answer",
-           "text": "[Complete answer text]"
+           "text": "[完整答案]"
          }
        },
        {
          "@type": "Question",
-         "name": "[Question 2]",
+         "name": "[页面上显示的问题 2]",
          "acceptedAnswer": {
            "@type": "Answer",
-           "text": "[Complete answer text]"
+           "text": "[完整答案]"
          }
        }
      ]
@@ -161,18 +151,18 @@ When a user requests schema markup:
    
    **Rich Result Preview**:
    ```
-   [Page Title]
+   [页面标题]
    [URL]
-   [Meta Description]
+   [元描述]
    
-   ▼ Question 1?
-     [Answer preview...]
-   ▼ Question 2?
-     [Answer preview...]
+   ▼ 问题 1？
+     [答案预览...]
+   ▼ 问题 2？
+     [答案预览...]
    ```
    ```
 
-3. **Generate How-To Schema**
+3. **生成操作指南（How-To）结构化数据**
 
    ```markdown
    ### How-To Schema (HowTo)
@@ -188,47 +178,47 @@ When a user requests schema markup:
    {
      "@context": "https://schema.org",
      "@type": "HowTo",
-     "name": "[How-to title]",
-     "description": "[Brief description of what this teaches]",
+     "name": "[操作指南标题]",
+     "description": "[内容简介]",
      "totalTime": "PT[X]M",
      "estimatedCost": {
        "@type": "MonetaryAmount",
        "currency": "USD",
-       "value": "[cost]"
+       "value": "[费用]"
      },
      "supply": [
        {
          "@type": "HowToSupply",
-         "name": "[Supply item 1]"
+         "name": "[供应项 1]"
        }
      ],
      "tool": [
        {
          "@type": "HowToTool",
-         "name": "[Tool 1]"
+         "name": "[工具 1]"
        }
      ],
      "step": [
        {
          "@type": "HowToStep",
-         "name": "[Step 1 title]",
-         "text": "[Step 1 detailed instructions]",
+         "name": "[步骤 1 标题]",
+         "text": "[步骤 1 详细说明]",
          "url": "[URL]#step1",
-         "image": "[Step 1 image URL]"
+         "image": "[步骤 1 图片 URL]"
        },
        {
          "@type": "HowToStep",
-         "name": "[Step 2 title]",
-         "text": "[Step 2 detailed instructions]",
+         "name": "[步骤 2 标题]",
+         "text": "[步骤 2 详细说明]",
          "url": "[URL]#step2",
-         "image": "[Step 2 image URL]"
+         "image": "[步骤 2 图片 URL]"
        }
      ]
    }
    ```
    ```
 
-4. **Generate Article Schema**
+4. **生成文章（Article）结构化数据**
 
    ```markdown
    ### Article Schema
@@ -245,37 +235,36 @@ When a user requests schema markup:
    {
      "@context": "https://schema.org",
      "@type": "Article",
-     "headline": "[Article title - max 110 chars]",
-     "description": "[Article summary]",
+     "headline": "[文章标题 - 最多 110 个字符]",
+     "description": "[文章摘要]",
      "image": [
-       "[Image URL 1 - 1200px wide]",
-       "[Image URL 2 - 4:3 ratio]",
-       "[Image URL 3 - 16:9 ratio]"
+       "[图片 URL 1 - 宽度 1200px]",
+       "[图片 URL 2 - 4:3 比例]",
+       "[图片 URL 3 - 16:9 比例]"
      ],
-     "datePublished": "[ISO 8601 date: 2024-01-15T08:00:00+00:00]",
-     "dateModified": "[ISO 8601 date]",
+     "datePublished": "[ISO 8601 格式日期: 2024-01-15T08:00:00+00:00]",
+     "dateModified": "[ISO 8601 格式日期]",
      "author": {
        "@type": "Person",
-       "name": "[Author Name]",
-       "url": "[Author profile URL]"
+       "name": "[作者名称]",
+       "url": "[作者个人资料 URL]"
      },
      "publisher": {
        "@type": "Organization",
-       "name": "[Publisher Name]",
+       "name": "[出版商名称]",
        "logo": {
          "@type": "ImageObject",
-         "url": "[Logo URL - 60px high max]"
-       }
+         "url": "[标志 URL - 高度最大 60px]"
      },
      "mainEntityOfPage": {
        "@type": "WebPage",
-       "@id": "[Canonical URL]"
+       "@id": "[页面的 canonical URL]"
      }
    }
    ```
    ```
 
-5. **Generate Product Schema**
+5. **生成产品（Product）结构化数据**
 
    ```markdown
    ### Product Schema
@@ -293,28 +282,28 @@ When a user requests schema markup:
    {
      "@context": "https://schema.org",
      "@type": "Product",
-     "name": "[Product Name]",
+     "name": "[产品名称]",
      "image": [
-       "[Product image URL 1]",
-       "[Product image URL 2]"
+       "[产品图片 URL 1]",
+       "[产品图片 URL 2]"
      ],
-     "description": "[Product description]",
-     "sku": "[SKU]",
-     "mpn": "[Manufacturer Part Number]",
+     "description": "[产品描述]",
+     "sku": "[产品库存单位（SKU）]",
+     "mpn": "[制造商部件编号]",
      "brand": {
        "@type": "Brand",
-       "name": "[Brand Name]"
+       "name": "[品牌名称]"
      },
      "offers": {
        "@type": "Offer",
-       "url": "[Product URL]",
+       "url": "[产品购买链接]",
        "priceCurrency": "USD",
-       "price": "[Price]",
-       "priceValidUntil": "[Date]",
+       "price": "[价格]",
+       "priceValidUntil": "[有效期]",
        "availability": "https://schema.org/InStock",
        "seller": {
          "@type": "Organization",
-         "name": "[Seller Name]"
+         "name": "[卖家名称]"
        }
      },
      "aggregateRating": {
@@ -330,15 +319,15 @@ When a user requests schema markup:
        },
        "author": {
          "@type": "Person",
-         "name": "[Reviewer Name]"
+         "name": "[评论者名称]"
        },
-       "reviewBody": "[Review text]"
+       "reviewBody": "[评论内容]"
      }
    }
    ```
    ```
 
-6. **Generate Local Business Schema**
+6. **生成本地商家（Local Business）结构化数据**
 
    ```markdown
    ### LocalBusiness Schema
@@ -349,29 +338,29 @@ When a user requests schema markup:
    {
      "@context": "https://schema.org",
      "@type": "[LocalBusiness/Restaurant/Store/etc.]",
-     "name": "[Business Name]",
-     "image": "[Business image URL]",
-     "@id": "[Business URL]",
-     "url": "[Website URL]",
-     "telephone": "[Phone number]",
+     "name": "[商家名称]",
+     "image": "[商家图片 URL]",
+     "@id": "[商家 URL]",
+     "url": "[网站 URL]",
+     "telephone": "[电话号码]",
      "priceRange": "[$$]",
      "address": {
        "@type": "PostalAddress",
-       "streetAddress": "[Street Address]",
-       "addressLocality": "[City]",
-       "addressRegion": "[State]",
-       "postalCode": "[ZIP]",
+       "streetAddress": "[街道地址]",
+       "addressLocality": "[城市]",
+       "addressRegion": "[州]",
+       "postalCode": "[邮政编码]",
        "addressCountry": "US"
      },
      "geo": {
        "@type": "GeoCoordinates",
-       "latitude": [latitude],
-       "longitude": [longitude]
+       "latitude": [纬度],
+       "longitude": [经度]
      },
      "openingHoursSpecification": [
        {
          "@type": "OpeningHoursSpecification",
-         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+         "dayOfWeek": ["周一", "周二", "周三", "周四", "周五"],
          "opens": "09:00",
          "closes": "17:00"
        }
@@ -385,7 +374,7 @@ When a user requests schema markup:
    ```
    ```
 
-7. **Generate Organization Schema**
+7. **生成组织（Organization）结构化数据**
 
    ```markdown
    ### Organization Schema
@@ -396,9 +385,9 @@ When a user requests schema markup:
    {
      "@context": "https://schema.org",
      "@type": "Organization",
-     "name": "[Organization Name]",
-     "url": "[Website URL]",
-     "logo": "[Logo URL]",
+     "name": "[组织名称]",
+     "url": "[网站 URL]",
+     "logo": "[标志 URL]",
      "sameAs": [
        "[Facebook URL]",
        "[Twitter URL]",
@@ -407,15 +396,15 @@ When a user requests schema markup:
      ],
      "contactPoint": {
        "@type": "ContactPoint",
-       "telephone": "[Phone]",
-       "contactType": "customer service",
-       "availableLanguage": ["English"]
+       "telephone": "[电话号码]",
+       "contactType": "客户服务",
+       "availableLanguage": ["英语"]
      }
    }
    ```
    ```
 
-8. **Generate Breadcrumb Schema**
+8. **生成导航栏（Breadcrumb）结构化数据**
 
    ```markdown
    ### BreadcrumbList Schema
@@ -430,27 +419,27 @@ When a user requests schema markup:
        {
          "@type": "ListItem",
          "position": 1,
-         "name": "Home",
-         "item": "[Homepage URL]"
+         "name": "首页",
+         "item": "[首页 URL]"
        },
        {
          "@type": "ListItem",
          "position": 2,
-         "name": "[Category Name]",
-         "item": "[Category URL]"
+         "name": "[分类名称]",
+         "item": "[分类页面 URL]"
        },
        {
          "@type": "ListItem",
          "position": 3,
-         "name": "[Page Name]",
-         "item": "[Page URL]"
+         "name": "[页面名称]",
+         "item": "[当前页面 URL]"
        }
      ]
    }
    ```
    ```
 
-9. **Combine Multiple Schema Types**
+9. **组合多种结构化数据类型**
 
    ```markdown
    ### Combined Schema Implementation
@@ -463,25 +452,25 @@ When a user requests schema markup:
      {
        "@context": "https://schema.org",
        "@type": "Article",
-       "headline": "[Article title]",
-       "author": { "@type": "Person", "name": "[Author name]" }
+       "headline": "[文章标题]",
+       "author": { "@type": "Person", "name": "[作者名称]" }
      },
      {
        "@context": "https://schema.org",
        "@type": "FAQPage",
-       "mainEntity": [{ "@type": "Question", "name": "[Question]", "acceptedAnswer": { "@type": "Answer", "text": "[Answer]" } }]
+       "mainEntity": [{ "@type": "Question", "name": "[问题]", "acceptedAnswer": { "@type": "Answer", "text": "[答案]" } }]
      },
      {
        "@context": "https://schema.org",
        "@type": "BreadcrumbList",
-       "itemListElement": [{ "@type": "ListItem", "position": 1, "name": "Home", "item": "[URL]" }]
+       "itemListElement": [{ "@type": "ListItem", "position": 1, "name": "首页", "item": "[首页 URL]" }]
      }
    ]
    </script>
    ```
    ```
 
-10. **Provide Implementation and Validation**
+10. **提供实现和验证**
 
     ```markdown
     ## Implementation Guide
@@ -492,7 +481,7 @@ When a user requests schema markup:
     ```html
     <head>
       <script type="application/ld+json">
-        [Your JSON-LD schema here]
+        [您的 JSON-LD 结构化数据代码]
       </script>
     </head>
     ```
@@ -500,7 +489,7 @@ When a user requests schema markup:
     **Option 2: Before closing </body>**
     ```html
       <script type="application/ld+json">
-        [Your JSON-LD schema here]
+        [您的 JSON-LD 结构化数据代码]
       </script>
     </body>
     ```
@@ -529,28 +518,28 @@ When a user requests schema markup:
     - [ ] No policy violations
     ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Page URL or content provided
-- [ ] Schema type appropriate for content (Article for blog, Product for e-commerce, etc.)
-- [ ] All required data available (author, dates, prices, etc. depending on schema type)
-- [ ] Content eligibility for rich results confirmed
+### 输入验证
+- 是否提供了页面 URL 或内容
+- 选择的结构化数据类型是否适合内容类型（例如：文章适用于博客，产品适用于电子商务等）
+- 是否提供了所有必需的数据（根据结构化数据类型，如作者信息、日期、价格等）
+- 确认内容是否符合生成丰富搜索结果的条件
 
-### Output Validation
-- [ ] JSON syntax validates (no trailing commas, proper quotes)
-- [ ] All required properties present for chosen schema type
-- [ ] URLs are absolute, not relative
-- [ ] Dates in ISO 8601 format (YYYY-MM-DDTHH:MM:SS+00:00)
-- [ ] Schema content matches visible page content exactly
-- [ ] Passes ~~schema validator with no errors
-- [ ] Source of each data point clearly stated (~~web crawler extraction, user-provided, or manual entry)
+### 输出验证
+- JSON 语法是否正确（无多余的逗号，引号使用正确）
+- 是否为所选的结构化数据类型提供了所有必需的属性
+- URL 是否为绝对路径（而非相对路径）
+- 日期是否采用 ISO 8601 格式（YYYY-MM-DDTHH:MM:SS+00:00）
+- 结构化数据内容是否与页面实际显示的内容完全一致
+- 通过结构化数据验证工具的检查（无错误）
+- 明确标注每个数据点的来源（来自网络爬虫提取、用户提供或手动输入）
 
-## Example
+## 示例
 
-**User**: "Generate FAQ schema for a page about SEO with 3 questions"
+**用户请求：** 为一篇关于 SEO 的页面生成常见问题解答（FAQ）结构化数据
 
-**Output**:
+**输出：**
 
 ```markdown
 ## FAQ Schema for SEO Page
@@ -564,26 +553,26 @@ When a user requests schema markup:
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is SEO?",
+      "name": "什么是 SEO？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SEO (Search Engine Optimization) is the practice of optimizing websites and content to rank higher in search engine results pages (SERPs). It involves technical optimizations, content creation, and link building to increase organic visibility and drive qualified traffic to your website."
+        "text": "SEO（搜索引擎优化）是指通过优化网站和内容来提高在搜索结果页面（SERPs）中的排名。它包括技术优化、内容创作和链接建设，以增加网站的自然曝光率并吸引目标流量。"
       }
     },
     {
       "@type": "Question",
-      "name": "How long does SEO take to work?",
+      "name": "SEO 需要多长时间才能见效？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SEO typically takes 3-6 months to show significant results, though this varies based on competition, domain authority, and effort invested. New websites may take 6-12 months, while established sites with existing authority can see improvements in 1-3 months for less competitive keywords."
+        "text": "SEO 通常需要 3-6 个月才能看到显著效果，但这取决于竞争情况、网站权威度和投入的努力。新网站可能需要 6-12 个月，而具有现有权威度的网站在竞争较少的关键词上可能在 1-3 个月内看到改进。"
       }
     },
     {
       "@type": "Question",
-      "name": "Is SEO better than paid advertising?",
+      "name": "SEO 比付费广告更好吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SEO and paid advertising serve different purposes. SEO provides sustainable, long-term traffic without per-click costs but takes time to build. Paid advertising delivers immediate results but stops when you stop paying. Most successful businesses use both: paid ads for immediate leads and SEO for long-term growth."
+        "text": "SEO 和付费广告有不同的作用。SEO 可以提供可持续的长期流量，且无需每次点击付费，但需要时间来建立效果。付费广告可以立即带来流量，但在停止支付后效果也会消失。大多数成功的企业会同时使用这两种方式：付费广告用于快速获取潜在客户，SEO 用于长期发展。"
       }
     }
   ]
@@ -600,31 +589,30 @@ When a user requests schema markup:
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is SEO?",
+      "name": "什么是 SEO？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SEO (Search Engine Optimization) is the practice of optimizing websites and content to rank higher in search engine results pages (SERPs). It involves technical optimizations, content creation, and link building to increase organic visibility and drive qualified traffic to your website."
+        "text": "SEO（搜索引擎优化）是指通过优化网站和内容来提高在搜索结果页面（SERPs）中的排名。它包括技术优化、内容创作和链接建设，以增加网站的自然曝光率并吸引目标流量。"
       }
     },
     {
       "@type": "Question",
-      "name": "How long does SEO take to work?",
+      "name": "SEO 需要多长时间才能见效？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SEO typically takes 3-6 months to show significant results, though this varies based on competition, domain authority, and effort invested. New websites may take 6-12 months, while established sites with existing authority can see improvements in 1-3 months for less competitive keywords."
+        "text": "SEO 通常需要 3-6 个月才能看到显著效果，但这取决于竞争情况、网站权威度和投入的努力。新网站可能需要 6-12 个月，而具有现有权威度的网站在竞争较少的关键词上可能在 1-3 个月内看到改进。」
       }
     },
     {
       "@type": "Question",
-      "name": "Is SEO better than paid advertising?",
+      "name": "SEO 比付费广告更好吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SEO and paid advertising serve different purposes. SEO provides sustainable, long-term traffic without per-click costs but takes time to build. Paid advertising delivers immediate results but stops when you stop paying. Most successful businesses use both: paid ads for immediate leads and SEO for long-term growth."
+        "text": "SEO 和付费广告有不同的作用。SEO 可以提供可持续的长期流量，且无需每次点击付费，但需要时间来建立效果。付费广告可以立即带来流量，但在停止支付后效果也会消失。大多数成功的企业会同时使用这两种方式：付费广告用于快速获取潜在客户，SEO 用于长期发展。」
       }
     }
   ]
 }
-</script>
 ```
 
 ### Validation
@@ -634,109 +622,109 @@ Test with ~~schema validator
 ### SERP Preview
 
 ```
-SEO Guide: Complete Beginner's Tutorial
+SEO 指南：全面初学者教程
 yoursite.com/seo-guide/
-Learn SEO from scratch with our comprehensive guide...
+从零开始学习 SEO，通过我们的综合指南...
 
-▼ What is SEO?
-  SEO (Search Engine Optimization) is the practice of optimizing...
-▼ How long does SEO take to work?
-  SEO typically takes 3-6 months to show significant results...
-▼ Is SEO better than paid advertising?
-  SEO and paid advertising serve different purposes...
+▼ 什么是 SEO？
+  SEO（搜索引擎优化）是指通过优化网站和内容来提高在搜索结果页面（SERPs）中的排名...
+▼ SEO 需要多长时间才能见效？
+  SEO 通常需要 3-6 个月才能看到显著效果...
+▼ SEO 比付费广告更好吗？
+  SEO 和付费广告有不同的作用...
+
 ```
 ```
 
-## Schema Type Quick Reference
+## 结构化数据类型快速参考
 
-| Content Type | Schema Type | Key Properties |
+| 内容类型 | 结构化数据类型 | 关键属性 |
 |--------------|-------------|----------------|
-| Blog Post | BlogPosting/Article | headline, datePublished, author |
-| Product | Product | name, price, availability |
-| FAQ | FAQPage | Question, Answer |
-| How-To | HowTo | step, totalTime |
-| Local Business | LocalBusiness | address, geo, openingHours |
-| Recipe | Recipe | ingredients, cookTime |
-| Event | Event | startDate, location |
-| Video | VideoObject | uploadDate, duration |
-| Course | Course | provider, name |
-| Review | Review | itemReviewed, ratingValue |
+| 博文文章 | BlogPosting/Article | headline, datePublished, author |
+| 产品 | Product | name, price, availability |
+| 常见问题解答 | FAQPage | Question, Answer |
+| 操作指南 | HowTo | step, totalTime |
+| 本地商家 | LocalBusiness | address, geo, openingHours |
+| 食谱 | Recipe | ingredients, cookTime |
+| 活动 | Event | startDate, location |
+| 视频 | VideoObject | uploadDate, duration |
+| 课程 | Course | provider, name |
+| 评论 | Review | itemReviewed, ratingValue |
 
-## Tips for Success
+## 成功技巧
 
-1. **Match visible content** - Schema must reflect what users see
-2. **Don't spam** - Only add schema for relevant content
-3. **Keep updated** - Update dates and prices when they change
-4. **Test thoroughly** - Validate before deploying
-5. **Monitor Search Console** - Watch for errors and warnings
+1. **确保结构化数据与页面实际显示的内容一致**
+2. **避免滥用** - 仅对相关内容添加结构化数据
+3. **保持数据更新** - 当数据发生变化时及时更新日期和价格
+4. **彻底测试** - 部署前进行验证
+5. **监控搜索控制台** - 注意错误和警告
 
-## Schema Type Decision Tree
+## 结构化数据类型决策树
 
-### When to Use Which Schema
+### 根据内容选择合适的结构化数据类型
 
-| Your Content | Primary Schema | Add If Applicable | Rich Result Eligibility |
+| 内容类型 | 主要使用的结构化数据类型 | 如适用可添加的其他结构化数据类型 | 是否适合生成丰富的搜索结果 |
 |-------------|---------------|-------------------|----------------------|
-| Blog post / article | Article | FAQ, HowTo, Speakable | Article carousel, FAQ rich result |
-| Product page | Product | Review, Offer, AggregateRating | Product snippet with price/rating |
-| Service page | Service | FAQ, LocalBusiness | Service snippet |
-| How-to guide | HowTo | Article, FAQ | How-to rich result with steps |
-| FAQ page | FAQPage | Article | FAQ accordion in SERP |
-| Recipe | Recipe | Video, AggregateRating | Recipe carousel |
-| Event | Event | Offer, Organization | Event snippet with date/location |
-| Video | VideoObject | Article | Video carousel, key moments |
-| Local business | LocalBusiness | Review, OpeningHoursSpecification | Local pack, knowledge panel |
-| Person/author | Person | Organization | Knowledge panel |
-| Organization | Organization | ContactPoint, Logo | Knowledge panel |
-| Course | Course | Organization | Course rich result |
-| Job posting | JobPosting | Organization | Google for Jobs listing |
-| Breadcrumb | BreadcrumbList | (Always add alongside other schema) | Breadcrumb trail in SERP |
-| Software/App | SoftwareApplication | Review, Offer | App snippet |
+| 博文文章 | Article | FAQ, HowTo | 文章轮播、FAQ 结果 |
+| 产品页面 | Product | Review, Offer, AggregateRating | 带有价格/评分的产品摘要 |
+| 服务页面 | Service | FAQ, LocalBusiness | 服务摘要 |
+| 操作指南 | HowTo | Article, FAQ | 带有步骤的操作指南结果 |
+| 常见问题解答页面 | FAQPage | Article | SERP 中的 FAQ 折叠面板 |
+| 食谱 | Recipe | Video, AggregateRating | 食谱轮播 |
+| 活动 | Event | Offer, Organization | 带有日期/地点的活动摘要 |
+| 视频 | VideoObject | Article | 视频轮播、关键时刻 |
+| 本地商家 | LocalBusiness | Review, OpeningHoursSpecification | 本地商家信息、知识面板 |
+| 个人/作者 | Person | Organization | 个人资料、组织信息 | 知识面板 |
+| 组织 | Organization | ContactPoint, Logo | 信息面板 |
+| 课程 | Course | Organization | 课程信息 | 课程结果 |
+| 招聘信息 | JobPosting | Organization | Google for Jobs 招聘信息 |
+| 导航栏 | BreadcrumbList | （始终与其他结构化数据一起添加） | SERP 中的导航栏 |
+| 软件/应用 | SoftwareApplication | Review, Offer | 应用程序摘要 |
 
-### Industry-Specific Schema Recommendations
+## 行业特定的结构化数据推荐
 
-| Industry | Essential Schema | High-Value Additions |
+| 行业 | 必需的结构化数据类型 | 高价值附加结构化数据类型 |
 |----------|-----------------|---------------------|
-| E-commerce | Product, BreadcrumbList, Organization | AggregateRating, FAQ, Review |
+| 电子商务 | Product, BreadcrumbList, Organization | AggregateRating, FAQ, Review |
 | SaaS | SoftwareApplication, FAQPage, Organization | HowTo, VideoObject, Review |
-| Local Services | LocalBusiness, Service | FAQ, Review, Event |
-| Publishing/Media | Article, Person, Organization | FAQ, Speakable, VideoObject |
-| Education | Course, Organization | FAQ, HowTo, Event |
-| Healthcare | MedicalWebPage, Organization | FAQ, Physician, MedicalClinic |
-| Real Estate | RealEstateListing, Organization | LocalBusiness, FAQ |
-| Restaurants | Restaurant, Menu | Review, Event, FAQ |
+| 本地服务 | LocalBusiness, Service | FAQ, Review, Event |
+| 出版/媒体 | Article, Person, Organization | FAQ, Speakable, VideoObject |
+| 教育 | Course, Organization | FAQ, HowTo, Event |
+| 医疗保健 | MedicalWebPage, Organization | FAQ, Physician, MedicalClinic |
+| 房地产 | RealEstateListing, Organization | LocalBusiness, FAQ |
+| 餐厅 | Restaurant, Menu | Review, Event, FAQ |
 
-### Schema Implementation Priority
+## 结构化数据实施优先级
 
-| Priority | Schema Types | Why |
+| 优先级 | 结构化数据类型 | 原因 |
 |----------|-------------|-----|
-| P0 -- Always | Organization, BreadcrumbList, WebSite (SearchAction) | Foundation for all sites |
-| P1 -- Content | Article, FAQPage, HowTo | Direct rich result eligibility |
-| P2 -- Commercial | Product, Review, AggregateRating, Offer | Revenue-impacting rich results |
-| P3 -- Authority | Person, SameAs, Speakable | E-E-A-T signals, AI citation |
-| P4 -- Specialized | Industry-specific types | Niche rich results |
+| P0 -- 必须添加 | Organization, BreadcrumbList, WebSite (SearchAction) | 所有网站的基础 |
+| P1 -- 核心内容 | Article, FAQPage, HowTo | 直接生成丰富的搜索结果 |
+| P2 -- 商业内容 | Product, Review, AggregateRating, Offer | 有助于增加收入的丰富结果 |
+| P3 -- 增强权威性 | Person, SameAs, Speakable | 有助于提升搜索引擎排名 |
+| P4 -- 专业领域 | 行业特定的结构化数据类型 | 生成特定领域的丰富结果 |
 
-### Schema Validation Quick Reference
+## 结构化数据验证快速参考
 
-| Issue | Impact | Fix |
+| 问题 | 影响 | 解决方法 |
 |-------|--------|-----|
-| Missing required property | Schema ignored by Google | Add all required fields (check schema.org) |
-| Invalid date format | Warning, may lose rich result | Use ISO 8601: "2026-02-11" |
-| Incorrect @type | Schema misinterpreted | Match @type exactly to schema.org |
-| Self-referencing sameAs | Warning | sameAs should link to EXTERNAL profiles |
-| Missing image for Article | Loses article rich result | Add image property with valid URL |
-| Review without itemReviewed | Review not connected | Nest review inside Product/Service/etc. |
+| 缺少必需的属性 | Google 会忽略该结构化数据 | 添加所有必需的字段（参考 schema.org） |
+| 日期格式错误 | 可能导致结构化数据无法被正确解析 | 使用 ISO 8601 格式（例如：2026-02-11） |
+| 使用错误的类型 | 结构化数据可能被误解 | 确保类型与 schema.org 中的定义完全匹配 |
+| self-referencing sameAs （自我引用） | 可能导致错误 | sameAs 应该链接到外部个人资料 |
+| 文章缺少图片 | 会导致文章无法显示为丰富搜索结果 | 添加带有有效 URL 的图片属性 |
+| 评论缺少 itemReviewed | 评论无法显示 | 将评论嵌套在 Product/Service 等结构化数据中 |
 
-## Reference Materials
+## 参考资料
 
-- [Schema Templates](./references/schema-templates.md) - Copy-ready JSON-LD templates for all schema types
-- [Validation Guide](./references/validation-guide.md) - Common errors, required properties, testing workflow
+- [结构化数据模板](./references/schema-templates.md) - 所有结构化数据类型的现成 JSON-LD 模板
+- [验证指南](./references/validation-guide.md) - 常见错误、必需的属性、测试流程
 
-## Related Skills
+## 相关技能
 
-- [seo-content-writer](../seo-content-writer/) — Create content worth marking up
-- [geo-content-optimizer](../geo-content-optimizer/) — Optimize FAQ content
-- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — Audit existing schema
-- [technical-seo-checker](../../optimize/technical-seo-checker/) — Technical validation
-- [entity-optimizer](../../cross-cutting/entity-optimizer/) — Entity audit informs Organization, Person, Product schema
-- [meta-tags-optimizer](../meta-tags-optimizer/) — Optimize meta tags alongside structured data
-
+- [seo-content-writer](../seo-content-writer/) — 创建适合标记的结构化内容
+- [geo-content-optimizer](../geo-content-optimizer/) — 优化常见问题解答内容
+- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — 审查现有的结构化数据
+- [technical-seo-checker](../../optimize/technical-seo-checker/) — 进行技术验证
+- [entity-optimizer](../../cross-cutting/entity-optimizer/) — 审查 Person、Organization、Product 等实体信息 |
+- [meta-tags-optimizer](../meta-tags-optimizer/) — 优化元标签和结构化数据

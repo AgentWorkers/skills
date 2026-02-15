@@ -1,49 +1,49 @@
 ---
 name: linkedin-lead-gen
-description: Search for, research, and verify non-tech founders on LinkedIn to identify high-value prospects for technology services (Web Dev, ERP, CRM, App Dev, SEO, AI). Generates professional PDF reports. Use when asked to find potential clients or leads.
+description: 在 LinkedIn 上搜索、调研并核实非技术领域的创始人，以识别对技术服务（Web 开发、ERP、CRM、应用程序开发、SEO、AI）有需求的高价值潜在客户。生成专业的 PDF 报告，可用于寻找潜在客户或销售线索。
 ---
 
-# LinkedIn Lead Generation & Research
+# LinkedIn潜在客户开发与调研
 
-This skill provides a structured workflow for identifying and verifying high-quality business leads.
+本技能提供了一种系统化的方法，用于识别和验证高质量的潜在商业客户。
 
-## Workflow
+## 工作流程
 
-1.  **Target Selection**: Define industries that need digital transformation but aren't tech-native (e.g., Textile, Manufacturing, Real Estate, Healthcare, Energy, D2C Brands).
-2.  **LinkedIn Search**:
-    -   Use `browser` tool to search LinkedIn: `https://www.linkedin.com/search/results/people/?keywords=founder+CEO+[Industry]+[Location]`
-    -   Filter for 2nd-degree connections for easier outreach.
-3.  **Strict Filtering**:
-    -   EXCLUDE any founder already in the IT, Software, or Digital Marketing space.
-    -   EXCLUDE founders whose profiles indicate they already have a strong internal tech team.
-4.  **Deep Research**:
-    -   Visit each candidate's LinkedIn profile.
-    -   Find their company website URL.
-    -   Visit the company website using `web_fetch` or `browser`.
-5.  **Gap Analysis**:
-    -   Analyze the website for: Speed, Mobile Responsiveness, SEO, E-commerce capabilities, and overall modern aesthetic.
-    -   Identify specific needs (e.g., "No mobile app", "Outdated UI", "No CRM/ERP integration").
-6.  **Reporting**:
-    -   Compile a list of 10 qualified prospects.
-    -   Include: Name, LinkedIn URL, Company, Website Status, Specific Needs, and a "Pitch Idea".
-    -   Generate a professional HTML-based PDF report.
+1. **目标选择**：确定那些需要数字化转型但并非技术领域的行业（例如：纺织、制造、房地产、医疗保健、能源、D2C品牌）。
+2. **LinkedIn搜索**：
+   - 使用 `browser` 工具在 LinkedIn 上进行搜索：`https://www.linkedin.com/search/results/people/?keywords=founder+CEO+[Industry]+[Location]`
+   - 通过筛选二级联系人来简化后续的沟通流程。
+3. **严格筛选**：
+   - 排除那些已经在 IT、软件或数字营销领域工作的创始人。
+   - 排除那些在个人资料中显示拥有强大内部技术团队的创始人。
+4. **深入调研**：
+   - 查看每位候选人的 LinkedIn 个人资料。
+   - 找到他们的公司网站地址。
+   - 使用 `web_fetch` 或 `browser` 访问公司网站。
+5. **差距分析**：
+   - 分析网站在速度、移动设备适应性、搜索引擎优化（SEO）、电子商务功能以及整体设计风格等方面的表现。
+   - 识别具体的需求（例如：“没有移动应用”、“用户界面过时”、“没有 CRM/ERP 系统集成”）。
+6. **报告编制**：
+   - 制作一份包含 10 位合格潜在客户的清单。
+   - 报告中应包括：姓名、LinkedIn 链接、公司名称、网站状态、具体需求以及一个“推销建议”。
+   - 生成一份专业的基于 HTML 的 PDF 报告。
 
-## Tools to Use
+## 使用的工具
 
--   **browser**: For LinkedIn search and profile viewing.
--   **web_fetch**: For quick website analysis.
--   **write**: To create the HTML template for the PDF.
+- **browser**：用于在 LinkedIn 上搜索和查看个人资料。
+- **web_fetch**：用于快速分析网站。
+- **write**：用于创建 PDF 报告的 HTML 模板。
 
-## PDF Template (HTML Structure)
+## PDF 模板（HTML 结构）
 
-Use the following CSS principles for a premium feel:
--   LinkedIn Blue (`#0077b5`) for headers.
--   Clean, modern typography (sans-serif).
--   Priority badges (High/Medium/Low).
--   Structured grids for easy scanning.
+请遵循以下 CSS 设计原则，以提升报告的专业感：
+- 使用 LinkedIn 的蓝色背景色（`#0077b5`）作为标题。
+- 采用简洁、现代的无衬线字体。
+- 使用不同颜色的徽章来表示优先级（高/中/低）。
+- 使用结构化的网格布局以便于阅读。
 
-## Outreach Principles
+## 沟通原则
 
--   **Personalized**: Reference something specific from their profile or website.
--   **Problem-First**: Focus on the gap identified (e.g., "Your brand is growing on social, but your website is broken").
--   **Local Advantage**: If in the same city (Surat), emphasize face-to-face consultation.
+- **个性化沟通**：提及他们个人资料或网站中的具体信息。
+- **先解决问题**：重点强调发现的问题（例如：“您的品牌在社交媒体上发展迅速，但网站存在问题”）。
+- **本地优势**：如果候选人与您在同一城市（例如苏拉特），可以提议进行面对面的交流。

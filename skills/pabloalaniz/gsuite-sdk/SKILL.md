@@ -1,6 +1,6 @@
 ---
 name: gsuite-sdk
-description: Interact with Google Workspace APIs (Gmail, Calendar, Drive, Sheets) using gsuite-sdk.
+description: 使用 gSuite-sdk 与 Google Workspace API（Gmail、Calendar、Drive、Sheets）进行交互。
 metadata:
   openclaw:
     requires:
@@ -14,27 +14,27 @@ metadata:
     homepage: https://github.com/PabloAlaniz/google-suite
 ---
 
-# Google Suite Skill
+# Google Suite 技能
 
-Skill para interactuar con Google Workspace APIs (Gmail, Calendar, Drive, Sheets) usando `gsuite-sdk`.
+本技能用于使用 `gsuite-sdk` 与 Google Workspace API（Gmail、Calendar、Drive、 Sheets）进行交互。
 
-## Instalación
+## 安装
 
 ```bash
 pip install gsuite-sdk
 ```
 
-Con extras opcionales:
+（可选的额外组件：）
 ```bash
 pip install gsuite-sdk[cloudrun]  # Para Secret Manager
 pip install gsuite-sdk[all]       # Todas las dependencias
 ```
 
-## Autenticación
+## 认证
 
-### Primera vez (requiere navegador)
+### 首次使用（需要浏览器）
 
-El usuario debe obtener `credentials.json` de Google Cloud Console y luego autenticarse:
+用户需要从 Google Cloud Console 获取 `credentials.json` 文件，然后进行认证：
 
 ```bash
 # Via CLI
@@ -46,11 +46,11 @@ auth = GoogleAuth()
 auth.authenticate()
 ```
 
-Ver [GETTING_CREDENTIALS.md](../docs/GETTING_CREDENTIALS.md) para guía completa.
+请参阅 [GETTING_CREDENTIALS.md](../docs/GETTING_CREDENTIALS.md) 以获取完整指南。
 
-### Sesiones siguientes
+### 之后的会话
 
-Una vez autenticado, los tokens se guardan localmente y se refrescan automáticamente:
+认证成功后，令牌会保存在本地并自动更新：
 
 ```python
 from gsuite_core import GoogleAuth
@@ -66,7 +66,7 @@ else:
 
 ## Gmail
 
-### Leer mensajes
+### 阅读邮件
 
 ```python
 from gsuite_core import GoogleAuth
@@ -93,7 +93,7 @@ mensajes = gmail.search(
 msg.mark_as_read()
 ```
 
-### Enviar email
+### 发送邮件
 
 ```python
 gmail.send(
@@ -113,7 +113,7 @@ gmail.send(
 
 ## Calendar
 
-### Leer eventos
+### 阅读事件
 
 ```python
 from gsuite_core import GoogleAuth
@@ -140,7 +140,7 @@ events = calendar.get_events(
 )
 ```
 
-### Crear eventos
+### 创建事件
 
 ```python
 from datetime import datetime
@@ -164,7 +164,7 @@ calendar.create_event(
 
 ## Drive
 
-### Listar y descargar archivos
+### 列出和下载文件
 
 ```python
 from gsuite_core import GoogleAuth
@@ -185,7 +185,7 @@ file = drive.get("file_id_aqui")
 file.download("/tmp/archivo.pdf")
 ```
 
-### Subir archivos
+### 上传文件
 
 ```python
 # Subir archivo
@@ -202,7 +202,7 @@ drive.upload("q1.pdf", parent_id=folder.id)
 
 ## Sheets
 
-### Leer datos
+### 读取数据
 
 ```python
 from gsuite_core import GoogleAuth
@@ -223,7 +223,7 @@ records = ws.get_all_records()
 # [{"Nombre": "Alice", "Edad": 30}, ...]
 ```
 
-### Escribir datos
+### 编写数据
 
 ```python
 # Actualizar celda
@@ -244,7 +244,7 @@ ws.append([
 
 ## CLI
 
-Si instalaste `gsuite-cli`:
+如果您已安装了 `gsuite-cli`：
 
 ```bash
 # Autenticación
@@ -267,12 +267,12 @@ gsuite drive upload archivo.pdf
 gsuite sheets read SPREADSHEET_ID --range "A1:C10"
 ```
 
-## Notas para agentes
+## 代理注意事项：
 
-1. **Primera autenticación requiere navegador** - El usuario debe completar OAuth manualmente la primera vez
-2. **Tokens persisten** - Después de autenticar, los tokens se guardan en `tokens.db` y se refrescan automáticamente
-3. **Scopes** - Por defecto pide acceso a Gmail, Calendar, Drive y Sheets. Se puede limitar con `--scopes`
-4. **Errores comunes:**
-   - `CredentialsNotFoundError`: Falta `credentials.json`
-   - `TokenRefreshError`: Token expiró y no se pudo refrescar (re-autenticar)
-   - `NotFoundError`: Recurso no existe o sin permisos
+1. **首次认证需要浏览器**：用户必须首次手动完成 OAuth 认证。
+2. **令牌持久化**：认证成功后，令牌会保存在 `tokens.db` 文件中，并自动更新。
+3. **权限范围**：默认情况下，该技能会请求访问 Gmail、Calendar、Drive 和 Sheets 的权限。您可以使用 `--scopes` 参数来限制权限范围。
+4. **常见错误**：
+   - `CredentialsNotFoundError`：`credentials.json` 文件缺失。
+   - `TokenRefreshError`：令牌过期，无法更新（需要重新认证）。
+   - `NotFoundError`：资源不存在或没有相应的权限。

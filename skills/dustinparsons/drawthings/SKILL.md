@@ -1,6 +1,6 @@
 ---
 name: drawthings
-description: Generate images with DrawThings (Stable Diffusion) via API. Use when creating images from text prompts, running image generation workflows, or batch generating images. DrawThings runs locally on Mac with MLX/CoreML acceleration.
+description: 通过 API 使用 DrawThings（Stable Diffusion）生成图像。该工具适用于从文本提示创建图像、运行图像生成工作流程或批量生成图像的场景。DrawThings 在 Mac 上以本地模式运行，并支持 MLX/CoreML 加速技术。
 metadata:
   openclaw:
     emoji: "🎨"
@@ -8,40 +8,40 @@ metadata:
       env: ["DRAWTHINGS_URL"]
 ---
 
-# DrawThings Image Generation
+# DrawThings 图像生成
 
-Generate images using DrawThings, a local Stable Diffusion implementation for Mac with MLX/CoreML acceleration. DrawThings exposes an Automatic1111-compatible API for programmatic image generation.
+使用 DrawThings 生成图像，这是一个基于 MLX/CoreML 加速的本地 Stable Diffusion 实现工具。DrawThings 提供了一个与 Automatic1111 兼容的 API，用于程序化图像生成。
 
-## When to Use
+## 使用场景
 
-Use this skill when you need to:
-- Generate images from text prompts
-- Create variations of a concept
-- Batch generate multiple images
-- Test different models/samplers/settings
-- Generate images with specific dimensions or quality settings
+当您需要以下操作时，可以使用此功能：
+- 根据文本提示生成图像
+- 创建某个概念的多种变体
+- 批量生成多张图像
+- 测试不同的模型/采样器/设置
+- 生成具有特定尺寸或质量要求的图像
 
-## Configuration
+## 配置
 
-Set the `DRAWTHINGS_URL` environment variable (defaults to http://127.0.0.1:7860):
+设置 `DRAWTHINGS_URL` 环境变量（默认值为 http://127.0.0.1:7860）：
 
 ```bash
 export DRAWTHINGS_URL="http://127.0.0.1:7860"
 ```
 
-Or configure in OpenClaw:
+或在 OpenClaw 中进行配置：
 ```bash
 openclaw config set env.DRAWTHINGS_URL "http://127.0.0.1:7860"
 ```
 
-## Quick Start
+## 快速入门
 
-Generate a single image:
+生成单张图像：
 ```bash
 python3 scripts/generate.py "a cyberpunk cat in neon city"
 ```
 
-With custom settings:
+使用自定义设置：
 ```bash
 python3 scripts/generate.py "a cyberpunk cat" \
   --steps 20 \
@@ -51,54 +51,54 @@ python3 scripts/generate.py "a cyberpunk cat" \
   --sampler "DPM++ 2M Karras"
 ```
 
-Batch generation (5 variations):
+批量生成（5 种变体）：
 ```bash
 python3 scripts/generate.py "a fantasy landscape" --batch-size 5
 ```
 
-Save to specific location:
+将图像保存到指定位置：
 ```bash
 python3 scripts/generate.py "portrait photo" --output ./outputs/portrait.png
 ```
 
-## API Usage
+## API 使用方法
 
-The skill provides a Python script that wraps the DrawThings API (Automatic1111-compatible):
+该功能提供了一个 Python 脚本，用于调用 DrawThings 的 API（兼容 Automatic1111）：
 
-**Main endpoint:** `POST /sdapi/v1/txt2img`
+**主要接口：** `POST /sdapi/v1/txt2img`
 
-**Common parameters:**
-- `prompt` - Text description of the image
-- `negative_prompt` - What to avoid in the image
-- `steps` - Number of diffusion steps (8-50, default: 20)
-- `sampler_name` - Sampler algorithm (default: "DPM++ 2M Karras")
-- `cfg_scale` - Classifier-free guidance scale (1.0-20.0, default: 7.0)
-- `width` / `height` - Image dimensions (default: 512x512)
-- `batch_size` - Number of images to generate (default: 1)
-- `seed` - Random seed for reproducibility (-1 for random)
+**常用参数：**
+- `prompt` - 图像的文本描述
+- `negative_prompt` - 图像中应避免的内容
+- `steps` - 扩散步骤数（8-50，默认值：20）
+- `sampler_name` - 采样器算法（默认值：“DPM++ 2M Karras”）
+- `cfg_scale` - 无分类器的引导比例（1.0-20.0，默认值：7.0）
+- `width` / `height` - 图像尺寸（默认值：512x512）
+- `batch_size` - 要生成的图像数量（默认值：1）
+- `seed` - 用于保证结果一致性的随机种子（-1 表示随机生成）
 
-See `references/api-reference.md` for complete API documentation.
+请参阅 `references/api-reference.md` 以获取完整的 API 文档。
 
-## Presets
+## 预设配置
 
-**Fast (8 steps, UniPC Trailing):**
+**快速模式（8 步骤，使用 UniPC Trailing 算法）：**
 ```bash
 python3 scripts/generate.py "your prompt" --preset fast
 ```
 
-**Quality (30 steps, DPM++ 2M Karras):**
+**高质量模式（30 步骤，使用 DPM++ 2M Karras 算法）：**
 ```bash
 python3 scripts/generate.py "your prompt" --preset quality
 ```
 
-**NFT (optimized for 512x512 with good detail):**
+**NFT 优化模式（适用于 512x512 图像，细节丰富）：**
 ```bash
 python3 scripts/generate.py "your prompt" --preset nft
 ```
 
-## Workflow Examples
+## 工作流程示例
 
-**Character variations:**
+- **生成角色变体：**
 ```bash
 python3 scripts/generate.py "electric sheep, glowing wool, cyberpunk" \
   --batch-size 10 \
@@ -106,7 +106,7 @@ python3 scripts/generate.py "electric sheep, glowing wool, cyberpunk" \
   --cfg-scale 7.5
 ```
 
-**High-res output:**
+- **生成高分辨率图像：**
 ```bash
 python3 scripts/generate.py "detailed portrait" \
   --width 1024 \
@@ -115,56 +115,56 @@ python3 scripts/generate.py "detailed portrait" \
   --sampler "DPM++ 2M Karras"
 ```
 
-**Reproducible generation:**
+- **确保结果可重复：**
 ```bash
 python3 scripts/generate.py "landscape" --seed 42
 # Re-run with same seed for identical output
 ```
 
-## Output
+## 输出结果
 
-Images are saved as PNG files with metadata embedded:
-- Prompt, negative prompt
-- Generation parameters (steps, sampler, cfg_scale, etc.)
-- Timestamp and seed
+生成的图像将以 PNG 格式保存，并包含以下元数据：
+- 文本提示
+- 避免的内容
+- 生成参数（步骤数、采样器、引导比例等）
+- 时间戳和随机种子
 
-Default location: `./drawthings_output_YYYYMMDD_HHMMSS.png`
+默认保存路径：`./drawthings_output_YYYYMMDD_HHMMSS.png`
 
-## Troubleshooting
+## 故障排除
 
-**"Connection refused"**
-- Ensure DrawThings is running
-- Check the API server is enabled in DrawThings preferences
-- Verify the port matches (default: 7860)
+**“连接失败”**
+- 确保 DrawThings 正在运行
+- 检查 DrawThings 的偏好设置中是否启用了 API 服务器
+- 确认端口号正确（默认值：7860）
 
-**"Generation failed"**
-- Check prompt length (max ~75 tokens per CLIP model)
-- Reduce dimensions if out of memory
-- Try a different sampler
+**“生成失败”**
+- 检查提示内容的长度（每个 CLIP 模型的最大长度约为 75 个字符）
+- 如果内存不足，请减小图像尺寸
+- 尝试使用其他采样器
 
-**Slow generation**
-- Use fewer steps (8-12 for drafts)
-- Reduce image dimensions (512x512)
-- Use faster samplers (UniPC, Euler A)
+**生成速度较慢**
+- 减少步骤数（草图生成时使用 8-12 步骤）
+- 减小图像尺寸（例如 512x512）
+- 使用更快的采样器（如 UniPC、Euler A）
 
-**Canvas display quirk (visual only)**
-- DrawThings UI doesn't clear the canvas between generations
-- New images appear to render on top of previous ones in the app
-- This is purely cosmetic - API outputs are unaffected
+**画布显示问题（仅影响视觉效果）**
+- DrawThings 的用户界面在生成新图像时不会清除旧图像
+- 新图像会显示在旧图像之上，但这仅是视觉上的问题，API 输出不受影响
 
-## Tips
+## 提示
 
-- **CFG Scale**: Lower (1-3) for creative/artistic, higher (7-12) for prompt adherence
-- **Steps**: 8-12 for drafts, 20-30 for final images, 50+ rarely needed
-- **Samplers**: UniPC/Euler A are fast, DPM++ 2M Karras is quality, LCM for ultra-fast
-- **Dimensions**: Keep to multiples of 64 (512, 768, 1024)
-- **Batch processing**: Use `--batch-size` for variations, not multiple script calls
+- **CFG Scale**：数值较低（1-3）适合创意/艺术性生成；数值较高（7-12）适合精确遵循文本提示
+- **步骤数**：草图生成时使用 8-12 步骤，最终图像使用 20-30 步骤，超过 50 步骤的情况较少见
+- **采样器**：UniPC 和 Euler A 生成速度快，DPM++ 2M Karras 生成图像质量较高，LCM 生成速度最快
+- **图像尺寸**：建议使用 64 的倍数（如 512、768、1024）
+- **批量处理**：使用 `--batch-size` 参数进行批量生成，无需多次调用脚本
 
-## Models
+## 模型
 
-DrawThings supports Stable Diffusion models. To change models:
-1. Open DrawThings app
-2. Select model from the UI
-3. The API will use the currently selected model
+DrawThings 支持多种 Stable Diffusion 模型。要更换模型，请执行以下操作：
+1. 打开 DrawThings 应用程序
+2. 从用户界面中选择所需的模型
+3. API 会自动使用当前选定的模型
 
-See `references/models.md` for recommended models and download sources.
+有关推荐模型和下载来源，请参阅 `references/models.md`。

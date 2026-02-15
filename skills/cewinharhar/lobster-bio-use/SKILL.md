@@ -20,14 +20,13 @@ description: |
   run `lobster config-test` and fix any errors before proceeding.
 ---
 
-# Lobster AI Usage Guide
+# Lobster AI 使用指南
 
-Lobster AI is a multi-agent bioinformatics platform. You interact via natural language
-or slash commands — Lobster routes to specialist agents automatically.
+Lobster AI 是一个多智能体的生物信息学平台。您可以通过自然语言或斜杠命令与之交互，Lobster 会自动将请求路由到相应的专业智能体。
 
-## Installation
+## 安装
 
-If Lobster is not installed, guide the user to the right command for their platform:
+如果尚未安装 Lobster，请指导用户根据其使用的平台执行相应的命令：
 
 ### macOS / Linux
 ```bash
@@ -39,60 +38,61 @@ curl -fsSL https://install.lobsterbio.com | bash
 irm https://install.lobsterbio.com/windows | iex
 ```
 
-### Manual install (any platform)
+### 手动安装（适用于所有平台）
 ```bash
 uv tool install 'lobster-ai[full,anthropic]' && lobster init
 # or: pip install 'lobster-ai[full]' && lobster init
 ```
 
-After install, `lobster init` configures API keys and selects agent packages.
+安装完成后，运行 `lobster init` 命令以配置 API 密钥并选择所需的智能体包。
 
-### Upgrading
-- uv tool: `uv tool upgrade lobster-ai`
-- pip: `pip install --upgrade lobster-ai`
+## 升级
+- 使用 `uv tool` 升级：`uv tool upgrade lobster-ai`
+- 使用 `pip` 升级：`pip install --upgrade lobster-ai`
 
-### Adding Agents (uv tool installs)
-Users with uv tool installs add agents via:
+## 添加智能体（使用 `uv tool`）
+
+已安装 `uv tool` 的用户可以通过以下命令添加智能体：
 `uv tool install lobster-ai --with lobster-transcriptomics --with lobster-proteomics`
-Running `lobster init` will guide this process and generate the command.
+运行 `lobster init` 后，系统会指导您完成这一过程并生成相应的命令。
 
-## Quick Reference
+## 快速参考
 
-| Task | Reference |
+| 任务 | 参考文档 |
 |------|-----------|
-| **CLI commands** | [references/cli-commands.md](references/cli-commands.md) |
-| **Single-cell analysis** | [references/single-cell-workflow.md](references/single-cell-workflow.md) |
-| **Bulk RNA-seq analysis** | [references/bulk-rnaseq-workflow.md](references/bulk-rnaseq-workflow.md) |
-| **Literature & datasets** | [references/research-workflow.md](references/research-workflow.md) |
-| **Visualization** | [references/visualization.md](references/visualization.md) |
-| **Available agents** | [references/agents.md](references/agents.md) |
+| **命令行界面（CLI）命令** | [references/cli-commands.md](references/cli-commands.md) |
+| **单细胞分析** | [references/single-cell-workflow.md](references/single-cell-workflow.md) |
+| **批量 RNA-seq 分析** | [references/bulk-rnaseq-workflow.md](references/bulk-rnaseq-workflow.md) |
+| **文献与数据集** | [references/research-workflow.md](references/research-workflow.md) |
+| **可视化** | [references/visualization.md](references/visualization.md) |
+| **可用智能体** | [references/agents.md](references/agents.md) |
 
-## Interaction Modes
+## 交互方式
 
-### Interactive Chat
+### 交互式聊天
 ```bash
 lobster chat                          # Start interactive session
 lobster chat --workspace ./myproject  # Custom workspace
 lobster chat --reasoning              # Enable detailed reasoning
 ```
 
-### Single Query
+### 单次查询
 ```bash
 lobster query "Your request"
 lobster query --session-id latest "Follow-up request"
 ```
 
-## Core Patterns
+## 核心操作模式
 
-### Natural Language (Primary)
-Just describe what you want:
+### 自然语言交互（主要方式）
+只需描述您的需求即可：
 ```
 "Download GSE109564 and run quality control"
 "Cluster the cells and find marker genes"
 "Compare hepatocytes vs stellate cells"
 ```
 
-### Slash Commands (System Operations)
+### 斜杠命令（系统操作）
 ```
 /data                    # Show loaded data info
 /files                   # List workspace files
@@ -104,7 +104,7 @@ Just describe what you want:
 /help                    # All commands
 ```
 
-### Session Continuity
+### 会话连续性
 ```bash
 # Start named session
 lobster query --session-id "my_analysis" "Load GSE109564"
@@ -114,37 +114,37 @@ lobster query --session-id latest "Now cluster the cells"
 lobster query --session-id latest "Find markers for cluster 3"
 ```
 
-## Agent System
+## 智能体系统
 
-Lobster routes to specialist agents automatically:
+Lobster 会自动将请求路由到相应的专业智能体：
 
-| Agent | Handles |
+| 智能体 | 负责任务 |
 |-------|---------|
-| **Supervisor** | Routes queries, coordinates agents |
-| **Research Agent** | PubMed search, GEO discovery, paper extraction |
-| **Data Expert** | File loading, format conversion, downloads |
-| **Transcriptomics Expert** | scRNA-seq: QC, clustering, markers |
-| **DE Analysis Expert** | Differential expression, statistical testing |
-| **Annotation Expert** | Cell type annotation, gene set enrichment |
-| **Visualization Expert** | UMAP, heatmaps, volcano plots |
-| **Proteomics Expert** | Mass spec analysis [alpha] |
-| **Genomics Expert** | VCF, GWAS, variant analysis [alpha] |
-| **ML Expert** | Embeddings, classification [alpha] |
+| **管理员** | 路由请求、协调各个智能体 |
+| **研究智能体** | PubMed 搜索、基因组定位（GEO）、论文提取 |
+| **数据专家** | 文件加载、格式转换、数据下载 |
+| **转录组学专家** | 单细胞 RNA-seq 分析（scRNA-seq）：数据质量控制（QC）、聚类、特征分析 |
+| **差异表达分析专家** | 差异表达分析（DE analysis）、统计测试 |
+| **注释专家** | 细胞类型注释、基因集富集 |
+| **可视化专家** | 数据可视化（UMAP、热图、火山图等） |
+| **蛋白质组学专家** | 质谱分析 |
+| **基因组学专家** | VCF 文件处理、全基因组关联研究（GWAS）、变异分析 |
+| **机器学习专家** | 数据嵌入、分类分析 |
 
-## Workspace & Outputs
+## 工作空间与输出文件
 
-**Default workspace**: `.lobster_workspace/`
+**默认工作空间**：`.lobster_workspace/`
 
-**Output files**:
-| Extension | Content |
+**输出文件格式**：
+| 文件扩展名 | 文件内容 |
 |-----------|---------|
-| `.h5ad` | Processed AnnData objects |
-| `.html` | Interactive visualizations |
-| `.png` | Publication-ready plots |
-| `.csv` | Exported tables |
-| `.json` | Metadata, provenance |
+| `.h5ad` | 处理后的数据对象 |
+| `.html` | 交互式可视化结果 |
+| `.png` | 适用于发表的图表 |
+| `.csv` | 导出的表格数据 |
+| `.json` | 元数据及数据来源信息 |
 
-**Managing outputs**:
+**输出文件管理**：
 ```
 /files              # List all outputs
 /plots              # View visualizations
@@ -152,7 +152,7 @@ Lobster routes to specialist agents automatically:
 /read summary.csv   # Preview file contents
 ```
 
-## Typical Workflow
+## 常见工作流程
 
 ```bash
 # 1. Start session
@@ -181,21 +181,21 @@ lobster chat --workspace ./my_analysis
 /save
 ```
 
-## Troubleshooting Quick Reference
+## 常见问题解决方法
 
-| Issue | Check |
+| 问题 | 解决方法 |
 |-------|-------|
-| Lobster not responding | `lobster config-test` |
-| No data loaded | `/data` to verify, `/workspace list` to see available |
-| Analysis fails | Try with `--reasoning` flag |
-| Missing outputs | Check `/files` and workspace directory |
+| Lobster 无响应 | 运行 `lobster config-test` 检查配置 |
+| 未加载数据 | 检查 `/data` 目录，使用 `/workspace list` 查看可用数据 |
+| 分析失败 | 尝试使用 `--reasoning` 参数重新运行命令 |
+| 输出文件缺失 | 检查 `/files` 目录及工作空间目录 |
 
-## Documentation
+## 文档资料
 
-Online docs: **docs.omics-os.com**
+在线文档：**docs.omics-os.com**
 
-Key sections:
-- Guides → CLI Commands
-- Guides → Data Analysis Workflows
-- Tutorials → Single-Cell RNA-seq
-- Agents → Package documentation
+主要文档章节：
+- **命令行界面（CLI）命令**  
+- **数据分析工作流程**  
+- **单细胞 RNA-seq 分析教程**  
+- **智能体相关文档**

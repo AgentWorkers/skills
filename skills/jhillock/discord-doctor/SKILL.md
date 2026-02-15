@@ -1,14 +1,14 @@
 ---
 name: discord-doctor
-description: Quick diagnosis and repair for Discord bot, Gateway, OAuth token, and legacy config issues. Checks connectivity, token expiration, and cleans up old Clawdis artifacts.
+description: 针对 Discord 机器人、Gateway、OAuth 令牌以及旧配置问题，提供快速诊断和修复方案。该方案会检查连接状态、令牌的有效期，并清理旧的 Clawdis 相关文件。
 metadata: {"clawdbot":{"emoji":"🩺","os":["darwin","linux"],"requires":{"bins":["node","curl"]}}}
 ---
 
 # Discord Doctor
 
-Quick diagnosis and repair for Discord/Gateway availability issues, OAuth token problems, and legacy Clawdis configuration conflicts.
+这是一个用于快速诊断和修复 Discord/Gateway 可用性问题、OAuth 令牌问题以及旧版 Clawdis 配置冲突的工具。
 
-## Usage
+## 使用方法
 
 ```bash
 # Check status (diagnostic only)
@@ -18,55 +18,55 @@ discord-doctor
 discord-doctor --fix
 ```
 
-## What It Checks
+## 检查内容
 
-1. **Discord App** - Is the Discord desktop app running (optional, for monitoring)
-2. **Gateway Process** - Is the Clawdbot gateway daemon running
-3. **Gateway HTTP** - Is the gateway responding on port 18789
-4. **Discord Connection** - Is the bot actually connected to Discord (via `clawdbot health`)
-5. **Anthropic OAuth** - Is your OAuth token valid or expired
-6. **Legacy Clawdis** - Detects old launchd services and config directories that cause conflicts
-7. **Recent Activity** - Shows recent Discord sessions
+1. **Discord 应用**：Discord 桌面应用是否正在运行（可选，用于监控）
+2. **Gateway 进程**：Clawdbot 的 Gateway 守护进程是否正在运行
+3. **Gateway HTTP**：Gateway 是否在端口 18789 上响应请求
+4. **Discord 连接**：机器人是否已成功连接到 Discord（通过 `clawdbot health` 检查）
+5. **Anthropic OAuth**：您的 OAuth 令牌是否有效或已过期
+6. **旧版 Clawdis**：检测可能导致冲突的旧版启动服务（launchd）和配置文件
+7. **最近的活动**：显示最近的 Discord 会话记录
 
-## Auto-Fix Capabilities
+## 自动修复功能
 
-When run with `--fix`, it can:
+当使用 `--fix` 参数运行时，它可以执行以下操作：
 
-- **Start gateway** if not running
-- **Install missing npm packages** (like discord.js, strip-ansi)
-- **Restart gateway** after fixing dependencies
-- **Remove legacy launchd service** (`com.clawdis.gateway.plist`)
-- **Backup legacy config** (moves `~/.clawdis` to `~/.clawdis-backup`)
+- **启动 Gateway**（如果未运行）
+- **安装缺失的 npm 包**（如 `discord.js`、`strip-ansi`）
+- **修复依赖关系后重启 Gateway**
+- **删除旧版的启动服务（`com.clawdis.gateway.plist`）
+- **备份旧版配置文件**（将 `~/.clawdis` 文件夹移动到 `~/.clawdis-backup`）
 
-## Common Issues & Fixes
+## 常见问题及解决方法
 
-| Issue | Auto-Fix Action |
+| 问题 | 自动修复操作 |
 |-------|-----------------|
-| Gateway not running | Starts gateway on port 18789 |
-| Missing npm packages | Runs `npm install` + installs specific package |
-| Discord disconnected | Restarts gateway to reconnect |
-| OAuth token expired | Shows instructions to re-authenticate |
-| Legacy launchd service | Removes old `com.clawdis.gateway.plist` |
-| Legacy ~/.clawdis config | Moves to `~/.clawdis-backup` |
+| Gateway 未运行 | 在端口 18789 上启动 Gateway |
+| 缺少 npm 包 | 运行 `npm install` 并安装所需包 |
+| Discord 连接断开 | 重启 Gateway 以重新连接 |
+| OAuth 令牌过期 | 显示重新认证的提示 |
+| 旧版启动服务 | 删除旧的 `com.clawdis.gateway.plist` 文件 |
+| 旧版配置文件 | 将旧配置文件移动到 `~/.clawdis-backup` |
 
-## OAuth Token Issues
+## OAuth 令牌问题
 
-If you see "Access token EXPIRED", run:
+如果出现“访问令牌已过期”的提示，请运行以下命令：
 ```bash
 cd ~/Clawdis && npx clawdbot configure
 ```
-Then select "Anthropic OAuth (Claude Pro/Max)" to re-authenticate.
+然后选择“Anthropic OAuth (Claude Pro/Max)”进行重新认证。
 
-## Legacy Clawdis Migration
+## 旧版 Clawdis 迁移
 
-If you upgraded from Clawdis to Clawdbot, you may have legacy artifacts causing OAuth token conflicts:
+如果您从 Clawdis 升级到了 Clawdbot，可能会遇到导致 OAuth 令牌冲突的旧版文件：
 
-- **Old launchd service**: `~/Library/LaunchAgents/com.clawdis.gateway.plist`
-- **Old config directory**: `~/.clawdis/`
+- **旧版启动服务**：`~/Library/LaunchAgents/com.clawdis.gateway.plist`
+- **旧版配置目录**：`~/.clawdis/`
 
-Run `discord-doctor --fix` to clean these up automatically.
+运行 `discord-doctor --fix` 可以自动清理这些旧文件。
 
-## Example Output
+## 示例输出
 
 ```
 Discord Doctor

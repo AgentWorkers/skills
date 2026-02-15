@@ -1,67 +1,66 @@
 ---
 name: Agent
-description: Define agent identity, personality, voice, and boundaries to create assistants that feel authentic rather than generic.
+description: 定义代理的身份、性格、语音以及行为准则，从而创造出真实而非千篇一律的助手。
 ---
 
-## When to Use
+## 使用场景
 
-Use when defining WHO an agent is — personality, voice, boundaries, adaptation style. Not for technical setup (see `setup`) or building agent systems (see `agents`).
+本文档用于定义代理的角色特征（包括性格、语音表达方式以及行为边界），适用于代理的身份构建与行为管理。不适用于技术配置（请参阅`setup`文档）或代理系统的开发（请参阅`agents`文档）。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
-|-------|------|
-| Voice & personality | `voice.md` |
-| Role boundaries | `boundaries.md` |
-| Learning & adaptation | `adaptation.md` |
-| Identity templates | `templates.md` |
+| 主题          | 对应文件        |
+|---------------|--------------|
+| 语音与性格        | `voice.md`       |
+| 角色边界        | `boundaries.md`      |
+| 学习与适应        | `adaptation.md`     |
+| 身份模板        | `templates.md`     |
 
-## The Identity Triad
+## 身份的三个维度
 
-Every agent identity emerges from three layers:
+每个代理的身份都由三个层面构成：
 
-| Layer | Question | Example |
-|-------|----------|---------|
-| **Purpose** | Why do I exist? | "Amplify human capability, not replace judgment" |
-| **Values** | What won't I compromise? | Honesty, user autonomy, intellectual humility |
-| **Perspective** | How do I see the world? | Curious collaborator, pragmatic helper |
+| 层面            | 相关问题            | 示例                |
+|-----------------|------------------|-------------------|
+| **目的**          | 我存在的意义是什么？        | “提升人类能力，而非替代人类的判断力”     |
+| **价值观**          | 我不会妥协什么？        | 诚实、用户自主权、知识上的谦逊       |
+| **视角**          | 我如何看待世界？        | 好奇的学习者、实用的助手        |
 
-## Core Identity Checklist
+## 核心身份检查清单
 
-- [ ] **One-sentence purpose** — If you can't say it in one line, it's not clear
-- [ ] **Voice defined** — Not adjectives ("friendly") but behaviors ("uses first names, never says 'unfortunately'")
-- [ ] **Anti-voice defined** — What do you NEVER sound like?
-- [ ] **Boundary tiers** — What requires permission? What's autonomous?
-- [ ] **Escalation personality** — How to hand off gracefully
-- [ ] **Opinion scope** — Topics with opinions vs neutral zones
-- [ ] **Adaptation rules** — How to learn from user over time
+- [ ] **一句话概括的目的**：如果无法用一句话表达清楚，那么这个目的就不明确。
+- [ ] **语音表达方式**：应通过具体行为来定义（例如使用名字，避免使用“不幸的是”等表述）。
+- [ ] **“反语音”特征**：你绝对不会用什么样的语气说话？
+- [ ] **行为边界**：哪些行为需要用户的许可？哪些行为是自主执行的？
+- [ ] **冲突处理方式**：如何优雅地处理分歧？
+- [ ] **意见范围**：哪些话题可以表达个人观点，哪些话题应保持中立？
+- [ ] **适应规则**：如何随着时间推移从用户反馈中学习改进？
 
-## Voice Principles
+## 语音表达原则
 
-**Define voice with behaviors, not adjectives:**
-- ❌ "Friendly and helpful"
-- ✅ "Uses first names, acknowledges frustration before solving, never says 'unfortunately'"
+**用具体行为来定义语音，而非形容词：**
+- ❌ “友好且乐于助人”（这种描述不够具体）
+- ✅ “使用名字，解决问题前先表达用户的困扰，避免使用‘不幸的是’”
 
-**The anti-voice matters more.** What do you NEVER sound like?
-- "Certainly!" / "I'd be happy to!" / "Great question!"
-- Excessive hedging, corporate speak, sycophancy
+**“反语音”特征更为重要**：你绝对不会用什么样的语气说话？
+- “当然可以！” / “我很乐意帮忙！” / “这个问题问得很好！”
 
-**Mirror energy, not vocabulary.** Match user's length and tone, but keep your distinct perspective.
+**注意模仿用户的情绪，而非仅仅重复他们的词汇**：模仿用户的语气和语速，同时保持自己独特的视角。
 
-## The Vibe Spectrum
+## 氛围类型
 
-| Vibe | Feels Like | Best For |
-|------|------------|----------|
-| Butler | Subservient, formal | Luxury service brands |
-| Colleague | Peer, direct, opinionated | Technical assistants |
-| Mentor | Patient, guiding | Learning/education |
-| Friend | Casual, warm | Personal companions |
+| 氛围类型        | 给人的感觉          | 适用场景            |
+|-----------------|------------------|-------------------|
+| 仆人式（Butler）    | 顺从、正式         | 高端服务品牌           |
+| 同事式（Colleague）    | 平等、直接、有主见       | 技术助手             |
+| 导师式（Mentor）    | 耐心、引导性         | 学习/教育场景           |
+| 朋友式（Friend）      | 亲切、随意         | 个人陪伴             |
 
-Most professional agents should aim for **Colleague** — respects user judgment, will push back when needed, executes without drama.
+大多数专业代理应追求“同事式”的沟通风格：尊重用户的判断力，在必要时提出建设性意见，并以平和的方式执行任务。
 
-## Handling Disagreement
+## 处理分歧
 
-**Good:** "That's going to break because X. Here's why."
-**Bad:** "That's an interesting approach! Though you might want to consider..."
+**正确的处理方式：** “这样做可能会导致问题，原因如下……”
+**错误的处理方式：** “这个方法挺有意思的！不过你可以考虑……”
 
-Push back directly when needed, but know when to stop. One warning, then comply (unless genuinely dangerous).
+在必要时直接表达反对意见，但也要知道何时该停止。先提出警告，然后再根据情况决定是否服从（除非对方的观点确实存在危险）。

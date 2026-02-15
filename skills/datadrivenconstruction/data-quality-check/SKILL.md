@@ -1,21 +1,21 @@
 ---
 slug: "data-quality-check"
 display_name: "Data Quality Check"
-description: "Assess construction data quality using completeness, accuracy, consistency, timeliness, and validity metrics. Automated validation with regex patterns, thresholds, and reporting."
+description: "使用完整性、准确性、一致性、及时性和有效性等指标来评估构建数据的质量。通过正则表达式模式、阈值以及报告功能实现自动化验证。"
 ---
 
-# Data Quality Check for Construction
+# 建筑项目的数据质量检查
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.6), this skill provides comprehensive data quality assessment for construction projects. Poor data quality leads to poor decisions - validate early, validate often.
+根据DDC方法论（第2.6章），本技能提供了针对建筑项目的全面数据质量评估。数据质量不佳会导致决策失误——因此需要尽早且频繁地进行数据验证。
 
-**Book Reference:** "Требования к качеству данных и его обеспечение" / "Data Quality Requirements"
+**参考书籍**：《数据质量要求与保障》（"Требования к качеству данных и его обеспечение"）
 
-> "Качество данных определяется пятью ключевыми метриками: полнота, точность, согласованность, своевременность и достоверность."
-> — DDC Book, Chapter 2.6
+> “数据质量由五个关键指标决定：完整性、准确性、一致性、及时性和可靠性。”
+> — DDC书籍，第2.6章
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -35,9 +35,9 @@ print(f"Unique IDs: {quality_score['unique_ids']}")
 print(f"Valid volumes: {quality_score['valid_volumes']}")
 ```
 
-## Data Quality Dimensions
+## 数据质量维度
 
-### The 5 Quality Metrics
+### 五个质量指标
 
 ```python
 import pandas as pd
@@ -310,9 +310,9 @@ class DataQualityChecker:
         return "\n".join(report)
 ```
 
-## Validation Rules Builder
+## 验证规则构建器
 
-### Custom Validation Rules
+### 自定义验证规则
 
 ```python
 class ValidationRulesBuilder:
@@ -419,7 +419,7 @@ for r in results:
     print(f"{status} {r['rule']}")
 ```
 
-## Automated Quality Pipeline
+## 自动化质量检测流程
 
 ```python
 class DataQualityPipeline:
@@ -494,9 +494,9 @@ class DataQualityPipeline:
         }
 ```
 
-## Quality Reporting
+## 质量报告
 
-### Export Quality Report
+### 导出质量报告
 
 ```python
 def export_quality_report(df, output_path, include_details=True):
@@ -545,17 +545,17 @@ def export_quality_report(df, output_path, include_details=True):
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Metric | Description | Threshold |
+| 指标 | 描述 | 阈值 |
 |--------|-------------|-----------|
-| Completeness | % non-null values | ≥ 95% |
-| Accuracy | Values within valid range | ≥ 98% |
-| Consistency | Unique IDs, valid relationships | ≥ 99% |
-| Validity | Match expected patterns | ≥ 95% |
-| Timeliness | Records updated recently | ≥ 80% |
+| 完整性 | 非空值的百分比 | ≥ 95% |
+| 准确性 | 值在有效范围内 | ≥ 98% |
+| 一致性 | ID唯一性、关系正确性 | ≥ 99% |
+| 可靠性 | 值符合预期模式 | ≥ 95% |
+| 及时性 | 记录更新频率 | ≥ 80% |
 
-## Common Validation Patterns
+## 常见验证模式
 
 ```python
 # Construction-specific regex patterns
@@ -570,14 +570,14 @@ PATTERNS = {
 }
 ```
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.6
-- **Website**: https://datadrivenconstruction.io
-- **Great Expectations**: https://greatexpectations.io
+- **书籍**：Artem Boiko所著的《数据驱动的建造》（"Data-Driven Construction"），第2.6章
+- **网站**：https://datadrivenconstruction.io
+- **Great Expectations**：https://greatexpectations.io
 
-## Next Steps
+## 下一步操作
 
-- See `bim-validation-pipeline` for BIM-specific validation
-- See `etl-pipeline` for data processing pipelines
-- See `data-visualization` for quality dashboards
+- 有关BIM特定验证的详细信息，请参阅`bim-validation-pipeline`；
+- 有关数据处理流程的信息，请参阅`etl-pipeline`；
+- 有关质量仪表板的信息，请参阅`data-visualization`。

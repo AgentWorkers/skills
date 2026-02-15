@@ -1,18 +1,18 @@
-# Retail Trade Weekly Report Generator - Skill Documentation
+# 零售贸易周报生成器 - 技能文档
 
-## Overview
-This skill processes multiple weekly sales report Excel files to generate a consolidated Retail Trade Weekly Report with week-over-week (WoW) comparisons across different channels (DRP, DXS, License Store) and product types (Mobile Prepaid/Postpaid, FWA 4G/5G).
+## 概述
+该技能能够处理多个每周销售报告的 Excel 文件，生成一份综合的零售贸易周报，其中包含不同渠道（DRP、DXS、License Store）和产品类型（移动预付费/后付费、FWA 4G/5G）之间的周环比（WoW）数据。
 
-## Purpose
-- Consolidate 12 Excel files (6 current week + 6 previous week) into a single comprehensive weekly report
-- Calculate Average Daily Acquisition (ADA) metrics by region and channel
-- Compute Week-over-Week (WoW) performance indicators
-- Generate formatted Excel output with charts and color-coded performance indicators
+## 目的
+- 将 12 个 Excel 文件（当前周 6 个 + 上周 6 个）整合成一份全面的周报
+- 按地区和渠道计算平均每日新增用户数（ADA）指标
+- 计算周环比（WoW）绩效指标
+- 生成包含图表和颜色编码绩效指标的格式化 Excel 输出文件
 
-## Input Requirements
+## 输入要求
 
-### Required Files (12 total)
-**Current Week (6 files):**
+### 必需文件（共 12 个）
+**当前周（6 个文件）：**
 1. `DRP_Channel_Sales_Report_DRP_M_DD-M_DD.xlsx`
 2. `DRP_Special_SIM_Monitor_Report_Daily_TECNO_M_DD-M_DD.xlsx`
 3. `License_Store_Performance_Monitor_Report_LS_M_DD-M_DD.xlsx`
@@ -20,82 +20,82 @@ This skill processes multiple weekly sales report Excel files to generate a cons
 5. `DXS_Acquisition_Report_Mobile_Postpaid_M_DD-M_DD.xlsx`
 6. `DXS_Acquisition_Report_FWA_M_DD-M_DD.xlsx`
 
-**Previous Week (6 files with earlier dates):**
-Same file types with earlier date ranges in filename
+**上周（6 个文件，日期较早）：**
+文件类型相同，文件名中的日期范围较早
 
-### Store Mapping CSV
-File containing Store Name to Region mapping with aliases support:
+### 商店映射 CSV
+包含商店名称到地区映射的文件，支持使用别名：
 ```csv
 Store Name,Region,Aliases
 SM Megamall,NCR,"Megamall|SM Mega|MEGAMALL"
 ...
 ```
 
-## Data Processing Logic
+## 数据处理逻辑
 
-### 1. File Identification
-- Extract date ranges from filenames (format: `M_DD-M_DD`)
-- Auto-group into current week vs previous week based on date comparison
-- Validate all 12 required files are present
+### 1. 文件识别
+- 从文件名中提取日期范围（格式：`M_DD-M/DD`）
+- 根据日期对比自动将文件分为当前周和上周
+- 确保所有 12 个必需文件都存在
 
-### 2. Data Extraction Rules
+### 2. 数据提取规则
 
-#### DRP Channel Sales Report
-- **Header rows:** Skip rows 0-7
-- **Data rows:** Start from row 8
-- **Region field:** Column 0 (AREA)
-- **Key columns:**
-  - Column 1: MOBILE POSTPAID > TOTAL ACTIVATION
-  - Column 5: MOBILE PREPAID > TOTAL ACTIVATION
-  - Column 6: Double Data_Sum
-  - Column 9: 4G WiFi 980 SIM_Sum (FWA 4G)
-  - Column 10: Unli 5G WIFI 100Mbps Starter SIM_Sum (FWA 5G)
-  - Column 11: 5G WiFi 4990 SIM_Sum (FWA 5G)
+#### DRP 渠道销售报告
+- **标题行：** 跳过第 0-7 行
+- **数据行：** 从第 8 行开始
+- **地区字段：** 第 0 列（AREA）
+- **关键列：**
+  - 第 1 列：MOBILE POSTPAID > TOTAL ACTIVATION
+  - 第 5 列：MOBILE PREPAID > TOTAL ACTIVATION
+  - 第 6 列：Double Data_Sum
+  - 第 9 列：4G WiFi 980 SIM_Sum (FWA 4G)
+  - 第 10 列：Unli 5G WIFI 100Mbps Starter SIM_Sum (FWA 5G)
+  - 第 11 列：5G WiFi 4990 SIM_Sum (FWA 5G)
 
-#### DRP TECNO Report
-- **Header rows:** Skip rows 0-6
-- **Data rows:** Start from row 7
-- **Region field:** Column 0 (Activation Area)
-- **Key columns:**
-  - Column 1: CARMON Activation (CAMON 40)
-  - Column 2: POVA Activation (POVA 7)
-  - Column 3: Total Activation (TECNO ADA = CAMON 40 + POVA 7)
+#### DRP TECNO 报告
+- **标题行：** 跳过第 0-6 行
+- **数据行：** 从第 7 行开始
+- **地区字段：** 第 0 列（Activation Area）
+- **关键列：**
+  - 第 1 列：CARMON Activation (CAMON 40)
+  - 第 2 列：POVA Activation (POVA 7)
+  - 第 3 列：Total Activation (TECNO ADA = CAMON 40 + POVA 7)
 
-#### License Store Report
-- **Header rows:** Skip rows 0-7
-- **Data rows:** Start from row 8
-- **Store field:** Column 0 (Store Name) - **Requires mapping to Region**
-- **Key columns:**
-  - Column 1: Mobile Prepaid
-  - Column 3: Mobile Postpaid
-  - Column 29 (AD): DITO Home Prepaid 4G WiFi 980 SIM (FWA 4G)
-  - Need to find: Unli 5G WIFI 100Mbps Starter SIM (FWA 5G)
-  - Need to find: 5G WiFi 4990 SIM (FWA 5G)
+#### License Store 报告
+- **标题行：** 跳过第 0-7 行
+- **数据行：** 从第 8 行开始
+- **商店字段：** 第 0 列（商店名称） - **需要映射到地区**
+- **关键列：**
+  - 第 1 列：Mobile Prepaid
+  - 第 3 列：Mobile Postpaid
+  - 第 29 列（AD）：DITO Home Prepaid 4G WiFi 980 SIM (FWA 4G)
+  - 需要查找：Unli 5G WIFI 100Mbps Starter SIM (FWA 5G)
+  - 需要查找：5G WiFi 4990 SIM (FWA 5G)
 
-#### DXS Mobile Prepaid Report
-- **Header rows:** Skip rows 0-7
-- **Data rows:** Start from row 8
-- **Store field:** Column 0 (DXS Name) - **Requires mapping to Region**
-- **Key column:**
-  - Column 4: Total
+#### DXS 移动预付费报告
+- **标题行：** 跳过第 0-7 行
+- **数据行：** 从第 8 行开始
+- **商店字段：** 第 0 列（DXS 名称） - **需要映射到地区**
+- **关键列：**
+  - 第 4 列：Total
 
-#### DXS Mobile Postpaid Report
-- **Header rows:** Skip rows 0-7
-- **Data rows:** Start from row 8
-- **Store field:** Column 0 (DXS Name) - **Requires mapping to Region**
-- **Key column:**
-  - Column 12: Total
+#### DXS 移动后付费报告
+- **标题行：** 跳过第 0-7 行
+- **数据行：** 从第 8 行开始
+- **商店字段：** 第 0 列（DXS 名称） - **需要映射到地区**
+- **关键列：**
+  - 第 12 列：Total
 
-#### DXS FWA Report
-- **Header rows:** Skip rows 0-7
-- **Data rows:** Start from row 8
-- **Store field:** Column 0 (DXS Name) - **Requires mapping to Region**
-- **Key columns:**
-  - Column 1: DITO Home Prepaid 4G WiFi 980 (FWA 4G)
-  - Column 18: Total
-  - **FWA 5G calculation:** Total (Col 18) - 4G (Col 1)
+#### DXS FWA 报告
+- **标题行：** 跳过第 0-7 行
+- **数据行：** 从第 8 行开始
+- **商店字段：** 第 0 列（DXS 名称） - **需要映射到地区**
+- **关键列：**
+  - 第 1 列：DITO Home Prepaid 4G WiFi 980 (FWA 4G)
+  - 第 18 列：Total
+  - **FWA 5G 计算：** Total（第 18 列） - 4G（第 1 列）
 
-### 3. Store Name to Region Mapping
+### 3. 商店名称到地区映射
 ```python
 # Build mapping dictionary from CSV
 store_mapping = {}
@@ -124,11 +124,11 @@ def map_store_to_region(store_name):
     return "Others"
 ```
 
-### 4. Regional Aggregation
+### 4. 地区汇总
 
-**Standard Regions:** NCR, SLZ, NLZ, CLZ, EVIS, WVIS, MIN, Others
+**标准地区：** NCR、SLZ、NLZ、CLZ、EVIS、WVIS、MIN、其他
 
-For each product type and region:
+对于每种产品类型和地区：
 ```python
 # DRP data: Direct mapping (already by region)
 DRP_ADA = drp_data[region][product_column]
@@ -147,7 +147,7 @@ LS_ADA = sum(ls_data[store][product_column]
 RT_Total_ADA = DRP_ADA + DXS_ADA + LS_ADA
 ```
 
-### 5. WoW Calculation
+### 5. 周环比（WoW）计算
 ```python
 WoW = (current_week_value - previous_week_value) / previous_week_value
 
@@ -158,9 +158,9 @@ WoW = (current_week_value - previous_week_value) / previous_week_value
 # - Handle cases where current = 0 and previous > 0: show "-100%"
 ```
 
-### 6. Special Calculations
+### 6. 特殊计算
 
-#### FWA 5G Components
+#### FWA 5G 组件
 ```python
 # DRP FWA 5G
 DRP_FWA_5G = Column_10 + Column_11
@@ -177,79 +177,79 @@ LS_FWA_5G = Unli_5G_WIFI_100Mbps + WiFi_4990_SIM
 TECNO_ADA = CAMON_40 + POVA_7
 ```
 
-## Output Format
+## 输出格式
 
-### Excel Structure
-**Single Sheet:** "Weekly Report"
+### Excel 结构
+**单个工作表：“周报”**
 
-**Sections:**
-1. Report Header (Rows 1-2)
-   - Title: "Retail Trade Weekly Report"
-   - Date ranges: "Last Week: [dates] | This Week: [dates]"
+**部分：**
+1. 报告标题（第 1-2 行）
+   - 标题：“零售贸易周报”
+   - 日期范围：“上周：[日期] | 本周：[日期]”
 
-2. Channel Summary (Rows 4-9)
-   - Columns: Channel | Program name | This Week ADA | WoW | MoM
-   - Rows: DRP BAU, DRP TECNO, License Store, DXS, RT Total
+2. 渠道汇总（第 4-9 行）
+   - 列：渠道 | 项目名称 | 本周 ADA | 周环比（WoW） | 同比环比（MoM）
+   - 行：DRP BAU、DRP TECNO、License Store、DXS、RT Total
 
-3. Mobile Prepaid by Region (Rows 11-21)
-   - Columns: Region | RT Total ADA | WoW | DXS ADA | WoW | LS ADA | WoW | DRP ADA | WoW
-   - Rows: 8 regions + Total
+3. 按地区划分的移动预付费（第 11-21 行）
+   - 列：地区 | RT Total ADA | 周环比（WoW） | DXS ADA | 同比环比（WoW） | License Store ADA | 周环比（WoW） | DRP ADA | 周环比（WoW）
+   - 行：8 个地区 + 总计
 
-4. DRP Prepaid Program (Rows 23-33)
-   - Columns: Region | Double Data ADA | WoW | TECNO ADA | WoW | CAMON 40 | WoW | POVA 7 | WoW
-   - Rows: 8 regions + Total
+4. DRP 预付费项目（第 23-33 行）
+   - 列：地区 | Double Data ADA | 周环比（WoW） | TECNO ADA | 周环比（WoW） | CAMON 40 | 周环比（WoW） | POVA 7 | 周环比（WoW）
+   - 行：8 个地区 + 总计
 
-5. Mobile Postpaid by Region (Rows 35-45)
-   - Same structure as Mobile Prepaid
+5. 按地区划分的移动后付费（第 35-45 行）
+   - 结构与移动预付费相同
 
-6. FWA 4G by Region (Rows 47-57)
-   - Same structure as Mobile Prepaid
+6. 按地区划分的 FWA 4G（第 47-57 行）
+   - 结构与移动预付费相同
 
-7. FWA 5G by Region (Rows 59-69)
-   - Same structure as Mobile Prepaid
+7. 按地区划分的 FWA 5G（第 59-69 行）
+   - 结构与移动预付费相同
 
-### Formatting Rules
+### 格式规则
 
-#### Number Formatting
-- ADA values: Integer format with thousand separators (e.g., "1,876")
-- WoW percentages: Integer percentage (e.g., "21%", "-13%")
-- Small ADA values (< 10): Show 1 decimal place (e.g., "0.6", "2.9")
+#### 数字格式
+- ADA 值：使用千位分隔符的整数格式（例如：“1,876”）
+- 周环比百分比：整数百分比（例如：“21%”，“-13%”）
+- 较小的 ADA 值（< 10）：显示 1 位小数（例如：“0.6”，“2.9”）
 
-#### Color Coding
-- **WoW Positive (>0%):** Green text (#008000)
-- **WoW Negative (<0%):** Red text (#FF0000)
-- **WoW Zero (0%):** Black text
-- **WoW N/A ("-"):** Gray text (#808080)
+#### 颜色编码
+- **周环比为正（>0%）：** 绿色文本（#008000）
+- **周环比为负（<0%）：** 红色文本（#FF0000）
+- **周环比为 0%：** 黑色文本
+- **周环比为 N/A（"-"）：** 灰色文本（#808080）
 
-#### Cell Styling
-- **Headers:** Bold, centered, light gray background (#F0F0F0)
-- **Region names:** Bold
-- **Total rows:** Bold, light blue background (#E6F2FF)
-- **Borders:** Thin borders around all data cells
+#### 单元格样式
+- **标题：** 加粗，居中，浅灰色背景（#F0F0F0）
+- **地区名称：** 加粗
+- **总计行：** 加粗，浅蓝色背景（#E6F2FF）
+- **边框：** 所有数据单元格周围有细边框
 
-### Charts
+### 图表
 
-**Chart 1: Channel Performance Comparison**
-- Type: Clustered Column Chart
-- Data: This Week ADA by Channel (DRP BAU, DRP TECNO, License Store, DXS)
-- Position: Right side of Channel Summary section
-- Size: 6 columns wide x 15 rows tall
+**图表 1：渠道绩效对比**
+- 类型：分组柱状图
+- 数据：按渠道划分的本周 ADA（DRP BAU、DRP TECNO、License Store、DXS）
+- 位置：位于渠道汇总部分的右侧
+- 大小：宽 6 列 x 高 15 行
 
-**Chart 2: Regional Mobile Prepaid Distribution**
-- Type: Stacked Column Chart
-- Data: DRP ADA, DXS ADA, LS ADA by Region
-- Position: Right side of Mobile Prepaid section
-- Size: 6 columns wide x 15 rows tall
+**图表 2：地区移动预付费分布**
+- 类型：堆叠柱状图
+- 数据：按地区划分的 DRP ADA、DXS ADA、License Store ADA
+- 位置：位于移动预付费部分的右侧
+- 大小：宽 6 列 x 高 15 行
 
-**Chart 3: WoW Trend - Top 3 Regions**
-- Type: Line Chart with Markers
-- Data: WoW % for top 3 regions by RT Total ADA
-- Position: Below main tables
-- Size: 12 columns wide x 12 rows tall
+**图表 3：周环比趋势 - 前 3 个地区**
+- 类型：带标记的折线图
+- 数据：按 RT Total ADA 排名的前 3 个地区的周环比百分比
+- 位置：位于主表格下方
+- 大小：宽 12 列 x 高 12 行
 
-## Error Handling
+## 错误处理
 
-### Missing Files
+### 文件缺失
 ```python
 if len(current_week_files) != 6:
     raise ValueError(f"Expected 6 current week files, found {len(current_week_files)}")
@@ -258,7 +258,7 @@ if len(previous_week_files) != 6:
     raise ValueError(f"Expected 6 previous week files, found {len(previous_week_files)}")
 ```
 
-### Unmapped Stores
+### 商店未映射
 ```python
 unmapped_stores = []
 for store in all_stores:
@@ -270,7 +270,7 @@ if unmapped_stores:
     print(f"Warning: {len(unmapped_stores)} stores mapped to 'Others' region")
 ```
 
-### Data Quality Checks
+### 数据质量检查
 ```python
 # Check for negative values
 if any_value < 0:
@@ -283,9 +283,9 @@ if missing_regions:
     print(f"Warning: Missing regions: {missing_regions}")
 ```
 
-## Implementation Notes
+## 实施说明
 
-### Python Libraries
+### Python 库
 ```python
 import pandas as pd
 import openpyxl
@@ -295,9 +295,9 @@ import re
 from datetime import datetime
 ```
 
-### Key Functions
+### 关键函数
 
-#### 1. File Parser
+#### 1. 文件解析器
 ```python
 def extract_date_from_filename(filename):
     """Extract date range from filename like 'Report_1_11-1_17.xlsx'"""
@@ -325,7 +325,7 @@ def identify_file_type(filename):
     return 'Unknown'
 ```
 
-#### 2. Data Extractor
+#### 2. 数据提取器
 ```python
 def extract_drp_data(filepath):
     """Extract DRP channel sales data"""
@@ -395,7 +395,7 @@ def extract_dxs_fwa_data(df):
     return stores_data
 ```
 
-#### 3. Region Aggregator
+#### 3. 地区汇总器
 ```python
 def aggregate_by_region(stores_data, mapping_dict, regions):
     """Aggregate store data by region"""
@@ -415,7 +415,7 @@ def aggregate_by_region(stores_data, mapping_dict, regions):
     return regional_totals
 ```
 
-#### 4. WoW Calculator
+#### 4. 周环比计算器
 ```python
 def calculate_wow(current, previous):
     """Calculate week-over-week percentage change"""
@@ -429,7 +429,7 @@ def calculate_wow(current, previous):
     return f"{int(round(wow))}%"
 ```
 
-#### 5. Excel Formatter
+#### 5. Excel 格式化
 ```python
 def apply_formatting(ws, start_row, start_col, end_row, end_col):
     """Apply formatting to Excel worksheet"""
@@ -486,7 +486,7 @@ def add_chart(ws, chart_type, data_range, position, title):
     ws.add_chart(chart, position)
 ```
 
-## Usage Example
+## 使用示例
 
 ```python
 from retail_trade_report_skill import generate_weekly_report
@@ -507,50 +507,50 @@ output_file = generate_weekly_report(
 print(f"Report generated: {output_file}")
 ```
 
-## Validation Checklist
+## 验证清单
 
-Before finalizing output:
-- [ ] All 12 input files identified and processed
-- [ ] Date ranges correctly extracted and displayed
-- [ ] All stores mapped to regions (log unmapped as "Others")
-- [ ] All WoW calculations completed
-- [ ] No negative ADA values (except in error logs)
-- [ ] All formulas validated against sample data
-- [ ] Charts render correctly
-- [ ] Color coding applied to all WoW cells
-- [ ] Total rows sum correctly
-- [ ] Output file opens without errors
+在最终输出之前：
+- [ ] 所有 12 个输入文件均已识别并处理
+- [ ] 日期范围正确提取并显示
+- [ ] 所有商店均已映射到地区（未映射的记录标记为“其他”）
+- [ ] 所有周环比计算已完成
+- [ ] 无负 ADA 值（错误日志除外）
+- [ ] 所有公式均经过样本数据验证
+- [ ] 图表正确渲染
+- [ ] 所有周环比单元格均应用了颜色编码
+- [ ] 总计行正确求和
+- [ ] 输出文件无错误
 
-## Performance Considerations
+## 性能考虑
 
-- Expected processing time: 10-30 seconds for 12 files
-- Memory usage: ~50-100 MB
-- Large file handling: Files up to 10MB each supported
-- Concurrent processing: Process files in parallel where possible
+- 预计处理时间：12 个文件需 10-30 秒
+- 内存使用：约 50-100 MB
+- 处理大文件：支持每个文件大小不超过 10MB
+- 并行处理：尽可能并行处理文件
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-**Issue:** "File not found" error
-- **Solution:** Verify all 12 files are uploaded and filenames match expected pattern
+**问题：“文件未找到”错误**
+- **解决方案：** 确认所有 12 个文件均已上传且文件名符合预期格式
 
-**Issue:** Store name not mapping to region
-- **Solution:** Check mapping CSV for typos, add aliases for common variations
+**问题：** 商店名称未映射到地区
+- **解决方案：** 检查映射 CSV 中的拼写错误，为常见变体添加别名
 
-**Issue:** WoW showing "N/A" for all values
-- **Solution:** Verify previous week files are correctly identified (earlier dates)
+**问题：** 所有周环比值为“N/A”
+- **解决方案：** 确认上周文件已正确识别（日期正确）
 
-**Issue:** Charts not displaying
-- **Solution:** Check openpyxl version >= 3.0, verify chart data ranges
+**问题：** 图表未显示
+- **解决方案：** 检查 openpyxl 版本是否大于或等于 3.0，并验证图表数据范围
 
-**Issue:** Negative ADA values
-- **Solution:** Check source data for errors, verify column indices
+**问题：** ADA 值为负数
+- **解决方案：** 检查源数据中的错误，并验证列索引
 
-## Version History
+## 版本历史
 
-- **v1.0** (2026-02-02): Initial skill creation
-  - Support for 12-file weekly report generation
-  - WoW calculations with color coding
-  - Store-to-region mapping with aliases
-  - Three chart types for visualization
+- **v1.0**（2026-02-02）：初始技能创建
+  - 支持生成 12 个文件的周报
+  - 周环比计算并应用颜色编码
+  - 支持使用别名进行商店到地区的映射
+  - 提供三种图表类型进行可视化

@@ -17,9 +17,9 @@ metadata:
 
 # LinkedIn
 
-Access the LinkedIn API with managed OAuth authentication. Share posts, manage advertising campaigns, retrieve profile and organization information, upload media, and access the Ad Library.
+您可以使用管理的OAuth身份验证来访问LinkedIn API。该API支持分享帖子、管理广告活动、检索个人资料和组织信息、上传媒体文件以及访问广告库。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user profile
@@ -32,47 +32,47 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/linkedin/v2/{resource}
 ```
 
-The gateway proxies requests to `api.linkedin.com` and automatically injects your OAuth token.
+该网关代理会将请求转发至`api.linkedin.com`，并自动插入您的OAuth令牌。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)上登录或创建账户。
+2. 访问[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-### Required Headers
+### 必需的头部信息
 
-LinkedIn API v2 requires the REST protocol version header:
+LinkedIn API v2要求在请求中包含`REST protocol version`头部信息：
 
 ```
 X-Restli-Protocol-Version: 2.0.0
 ```
 
-## Connection Management
+## 连接管理
 
-Manage your LinkedIn OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`上管理您的LinkedIn OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -83,7 +83,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -107,7 +107,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -122,9 +122,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -135,9 +135,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple LinkedIn connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个LinkedIn连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -149,21 +149,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Profile
+### 个人资料
 
-#### Get User Info (OpenID Connect)
+#### 获取用户信息（OpenID Connect）
 
 ```bash
 GET /linkedin/v2/userinfo
 ```
 
-Returns basic profile information including name, email, and profile picture.
+返回基本个人资料信息，包括姓名、电子邮件和头像。
 
-**Response:**
+**响应：**
 ```json
 {
   "sub": "782bbtaQ",
@@ -177,18 +177,14 @@ Returns basic profile information including name, email, and profile picture.
 }
 ```
 
-#### Get Current User Profile
+#### 获取当前用户个人资料
 
-```bash
-GET /linkedin/v2/me
-```
-
-**With Field Projection:**
+**包含字段投影：**
 ```bash
 GET /linkedin/v2/me?projection=(id,firstName,lastName,profilePicture)
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "firstName": {
@@ -208,9 +204,9 @@ GET /linkedin/v2/me?projection=(id,firstName,lastName,profilePicture)
 }
 ```
 
-### Sharing Posts (UGC Posts)
+### 分享帖子（UGC帖子）
 
-#### Create a Text Post
+#### 创建文本帖子
 
 ```bash
 POST /linkedin/v2/ugcPosts
@@ -234,9 +230,9 @@ X-Restli-Protocol-Version: 2.0.0
 }
 ```
 
-**Response:** `201 Created` with `X-RestLi-Id` header containing the post URN.
+**响应：** 返回`201 Created`状态，并在`X-RestLi-Id`头部包含帖子的URN。
 
-#### Create an Article/URL Share
+#### 创建文章/URL分享
 
 ```bash
 POST /linkedin/v2/ugcPosts
@@ -272,11 +268,11 @@ X-Restli-Protocol-Version: 2.0.0
 }
 ```
 
-#### Create an Image Post
+#### 创建图片帖子
 
-First, register the image upload, then upload the image, then create the post.
+首先需要注册图片上传，然后上传图片，最后创建帖子。
 
-**Step 1: Register Image Upload**
+**步骤1：注册图片上传**
 ```bash
 POST /linkedin/v2/assets?action=registerUpload
 Content-Type: application/json
@@ -296,7 +292,7 @@ X-Restli-Protocol-Version: 2.0.0
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": {
@@ -310,7 +306,7 @@ X-Restli-Protocol-Version: 2.0.0
 }
 ```
 
-**Step 2: Upload Image Binary**
+**步骤2：上传图片二进制文件**
 ```bash
 PUT {uploadUrl from step 1}
 Content-Type: image/png
@@ -318,7 +314,7 @@ Content-Type: image/png
 {binary image data}
 ```
 
-**Step 3: Create Image Post**
+**步骤3：创建图片帖子**
 ```bash
 POST /linkedin/v2/ugcPosts
 Content-Type: application/json
@@ -350,58 +346,58 @@ X-Restli-Protocol-Version: 2.0.0
 }
 ```
 
-### Visibility Options
+### 可见性选项
 
-| Value | Description |
+| 值 | 描述 |
 |-------|-------------|
-| `PUBLIC` | Viewable by anyone on LinkedIn |
-| `CONNECTIONS` | Viewable by 1st-degree connections only |
+| `PUBLIC` | 任何人在LinkedIn上都可以看到 |
+| `CONNECTIONS` | 仅限一级联系人看到 |
 
-### Share Media Categories
+### 媒体分享类别
 
-| Value | Description |
+| 值 | 描述 |
 |-------|-------------|
-| `NONE` | Text-only post |
-| `ARTICLE` | URL/article share |
-| `IMAGE` | Image post |
-| `VIDEO` | Video post |
+| `NONE` | 仅文本帖子 |
+| `ARTICLE` | 文章分享 |
+| `IMAGE` | 图片帖子 |
+| `VIDEO` | 视频帖子 |
 
-### Ad Library (Public Data)
+### 广告库（公共数据）
 
-The Ad Library API provides access to public advertising data on LinkedIn. These endpoints don't require user OAuth - they use the REST API with version headers.
+广告库API提供了对LinkedIn上公共广告数据的访问权限。这些接口不需要用户进行OAuth认证，它们使用带有版本头的REST API。
 
-#### Required Headers for Ad Library
+#### 广告库所需的头部信息
 
 ```
 X-Restli-Protocol-Version: 2.0.0
 LinkedIn-Version: 202502
 ```
 
-#### Search Ads
+#### 搜索广告
 
 ```bash
 GET /linkedin/rest/adLibrary?q=criteria&keyword={keyword}
 ```
 
-Query parameters:
-- `keyword` (string): Search ad content (multiple keywords use AND logic)
-- `advertiser` (string): Search by advertiser name
-- `countries` (array): Filter by ISO 3166-1 alpha-2 country codes
-- `dateRange` (object): Filter by served dates
-- `start` (integer): Pagination offset
-- `count` (integer): Results per page (max 25)
+查询参数：
+- `keyword`（字符串）：搜索广告内容（多个关键词使用AND逻辑）
+- `advertiser`（字符串）：按广告商名称搜索
+- `countries`（数组）：按ISO 3166-1国家代码过滤
+- `dateRange`（对象）：按发布日期过滤
+- `start`（整数）：分页偏移量
+- `count`（整数）：每页显示的结果数量（最多25条）
 
-**Example - Search ads by keyword:**
+**示例 - 按关键词搜索广告：**
 ```bash
 GET /linkedin/rest/adLibrary?q=criteria&keyword=linkedin
 ```
 
-**Example - Search ads by advertiser:**
+**示例 - 按广告商名称搜索广告：**
 ```bash
 GET /linkedin/rest/adLibrary?q=criteria&advertiser=microsoft
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "paging": {
@@ -430,52 +426,52 @@ GET /linkedin/rest/adLibrary?q=criteria&advertiser=microsoft
 }
 ```
 
-#### Search Job Postings
+#### 搜索职位信息
 
 ```bash
 GET /linkedin/rest/jobLibrary?q=criteria&keyword={keyword}
 ```
 
-**Note:** Job Library requires version `202506`.
+**注意：**职位信息接口需要使用版本`202506`。
 
-Query parameters:
-- `keyword` (string): Search job content
-- `organization` (string): Filter by company name
-- `countries` (array): Filter by country codes
-- `dateRange` (object): Filter by posting dates
-- `start` (integer): Pagination offset
-- `count` (integer): Results per page (max 24)
+查询参数：
+- `keyword`（字符串）：搜索职位内容
+- `organization`（字符串）：按公司名称过滤
+- `countries`（数组）：按国家代码过滤
+- `dateRange`（对象）：按发布日期过滤
+- `start`（整数）：分页偏移量
+- `count`（整数）：每页显示的结果数量（最多24条）
 
-**Example:**
+**示例：**
 ```bash
 GET /linkedin/rest/jobLibrary?q=criteria&keyword=software&organization=google
 ```
 
-**Response includes:**
-- `jobPostingUrl`: Link to job listing
-- `jobDetails`: Title, location, description, salary, benefits
-- `statistics`: Impression data
+**响应包含：**
+- `jobPostingUrl`：职位列表链接
+- `jobDetails`：职位标题、地点、描述、薪资、福利
+- `statistics`：展示数据
 
-### Marketing API (Advertising)
+### 营销API（广告）
 
-The Marketing API provides access to LinkedIn's advertising platform. These endpoints use the versioned REST API.
+营销API提供了对LinkedIn广告平台的访问权限。这些接口使用版本化的REST API。
 
-#### Required Headers for Marketing API
+#### 营销API所需的头部信息
 
 ```
 X-Restli-Protocol-Version: 2.0.0
 LinkedIn-Version: 202502
 ```
 
-#### List Ad Accounts
+#### 列出广告账户
 
 ```bash
 GET /linkedin/rest/adAccounts?q=search
 ```
 
-Returns all ad accounts accessible by the authenticated user.
+返回当前用户可以访问的所有广告账户。
 
-**Response:**
+**响应：**
 ```json
 {
   "paging": {
@@ -496,13 +492,13 @@ Returns all ad accounts accessible by the authenticated user.
 }
 ```
 
-#### Get Ad Account
+#### 获取广告账户信息
 
 ```bash
 GET /linkedin/rest/adAccounts/{adAccountId}
 ```
 
-#### Create Ad Account
+#### 创建广告账户
 
 ```bash
 POST /linkedin/rest/adAccounts
@@ -516,7 +512,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Ad Account
+#### 更新广告账户
 
 ```bash
 POST /linkedin/rest/adAccounts/{adAccountId}
@@ -532,15 +528,15 @@ X-RestLi-Method: PARTIAL_UPDATE
 }
 ```
 
-#### List Campaign Groups
+#### 列出广告组
 
-Campaign groups are nested under ad accounts:
+广告组隶属于广告账户：
 
 ```bash
 GET /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups
 ```
 
-#### Create Campaign Group
+#### 创建广告组
 
 ```bash
 POST /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups
@@ -560,13 +556,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Campaign Group
+#### 获取广告组信息
 
 ```bash
 GET /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups/{campaignGroupId}
 ```
 
-#### Update Campaign Group
+#### 更新广告组
 
 ```bash
 POST /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups/{campaignGroupId}
@@ -582,21 +578,21 @@ X-RestLi-Method: PARTIAL_UPDATE
 }
 ```
 
-#### Delete Campaign Group
+#### 删除广告组
 
 ```bash
 DELETE /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups/{campaignGroupId}
 ```
 
-#### List Campaigns
+#### 列出广告活动
 
-Campaigns are also nested under ad accounts:
+广告活动也隶属于广告账户：
 
 ```bash
 GET /linkedin/rest/adAccounts/{adAccountId}/adCampaigns
 ```
 
-#### Create Campaign
+#### 创建广告活动
 
 ```bash
 POST /linkedin/rest/adAccounts/{adAccountId}/adCampaigns
@@ -624,13 +620,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Campaign
+#### 获取广告活动信息
 
 ```bash
 GET /linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}
 ```
 
-#### Update Campaign
+#### 更新广告活动
 
 ```bash
 POST /linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}
@@ -646,46 +642,46 @@ X-RestLi-Method: PARTIAL_UPDATE
 }
 ```
 
-#### Delete Campaign
+#### 删除广告活动
 
 ```bash
 DELETE /linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}
 ```
 
-### Campaign Status Values
+### 广告活动状态
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `DRAFT` | Campaign is in draft mode |
-| `ACTIVE` | Campaign is running |
-| `PAUSED` | Campaign is paused |
-| `ARCHIVED` | Campaign is archived |
-| `COMPLETED` | Campaign has ended |
-| `CANCELED` | Campaign was canceled |
+| `DRAFT` | 广告活动处于草稿状态 |
+| `ACTIVE` | 广告活动正在运行 |
+| `PAUSED` | 广告活动已暂停 |
+| `ARCHIVED` | 广告活动已归档 |
+| `COMPLETED` | 广告活动已结束 |
+| `CANCELED` | 广告活动已被取消 |
 
-### Campaign Objective Types
+### 广告活动目标类型
 
-| Objective | Description |
+| 目标 | 描述 |
 |-----------|-------------|
-| `BRAND_AWARENESS` | Increase brand visibility |
-| `WEBSITE_VISITS` | Drive traffic to website |
-| `ENGAGEMENT` | Increase post engagement |
-| `VIDEO_VIEWS` | Maximize video views |
-| `LEAD_GENERATION` | Collect leads via Lead Gen Forms |
-| `WEBSITE_CONVERSIONS` | Drive website conversions |
-| `JOB_APPLICANTS` | Attract job applications |
+| `BRAND_AWARENESS` | 提升品牌知名度 |
+| `WEBSITE_VISITS` | 促进网站流量 |
+| `ENGAGEMENT` | 增加帖子互动 |
+| `VIDEO_VIEWS` | 提高视频观看量 |
+| `LEAD_GENERATION` | 通过表单收集潜在客户 |
+| `WEBSITE_CONVERSIONS` | 促进网站转化 |
+| `JOB_APPLICANTS` | 吸引求职申请 |
 
-### Organizations
+### 组织
 
-#### List Organization ACLs
+#### 列出组织ACL（访问权限）
 
-Get organizations the authenticated user has access to:
+获取当前用户可以访问的组织：
 
 ```bash
 GET /linkedin/v2/organizationAcls?q=roleAssignee
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "paging": {
@@ -703,24 +699,24 @@ GET /linkedin/v2/organizationAcls?q=roleAssignee
 }
 ```
 
-#### Get Organization
+#### 获取组织信息
 
 ```bash
 GET /linkedin/v2/organizations/{organizationId}
 ```
 
-#### Lookup Organization by Vanity Name
+#### 通过别名查找组织
 
 ```bash
 GET /linkedin/rest/organizations?q=vanityName&vanityName={vanityName}
 ```
 
-**Example:**
+**示例：**
 ```bash
 GET /linkedin/rest/organizations?q=vanityName&vanityName=microsoft
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "elements": [
@@ -735,33 +731,33 @@ GET /linkedin/rest/organizations?q=vanityName&vanityName=microsoft
 }
 ```
 
-#### Get Organization Share Statistics
+#### 获取组织分享统计信息
 
 ```bash
 GET /linkedin/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity={orgUrn}
 ```
 
-**Example:**
+**示例：**
 ```bash
 GET /linkedin/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:12345
 ```
 
-#### Get Organization Posts
+#### 获取组织帖子
 
 ```bash
 GET /linkedin/rest/posts?q=author&author={orgUrn}
 ```
 
-**Example:**
+**示例：**
 ```bash
 GET /linkedin/rest/posts?q=author&author=urn:li:organization:12345
 ```
 
-### Media Upload (REST API)
+### 媒体上传（REST API）
 
-The REST API provides modern media upload endpoints. All require version header `LinkedIn-Version: 202502`.
+REST API提供了现代化的媒体上传接口。所有请求都需要包含`LinkedIn-Version: 202502`版本头。
 
-#### Initialize Image Upload
+#### 初始化图片上传
 
 ```bash
 POST /linkedin/rest/images?action=initializeUpload
@@ -775,7 +771,7 @@ LinkedIn-Version: 202502
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": {
@@ -786,9 +782,9 @@ LinkedIn-Version: 202502
 }
 ```
 
-Use the `uploadUrl` to PUT your image binary, then use the `image` URN in your post.
+使用`uploadUrl`上传图片二进制文件，然后在帖子中使用`image` URN。
 
-#### Initialize Video Upload
+#### 初始化视频上传
 
 ```bash
 POST /linkedin/rest/videos?action=initializeUpload
@@ -805,7 +801,7 @@ LinkedIn-Version: 202502
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": {
@@ -818,7 +814,7 @@ LinkedIn-Version: 202502
 }
 ```
 
-#### Initialize Document Upload
+#### 初始化文档上传
 
 ```bash
 POST /linkedin/rest/documents?action=initializeUpload
@@ -832,7 +828,7 @@ LinkedIn-Version: 202502
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": {
@@ -843,17 +839,17 @@ LinkedIn-Version: 202502
 }
 ```
 
-### Ad Targeting
+### 广告定位
 
-#### Get Available Targeting Facets
+#### 获取可用的定位选项
 
 ```bash
 GET /linkedin/rest/adTargetingFacets
 ```
 
-Returns all available targeting facets for ad campaigns (31 facets including employers, degrees, skills, locations, industries, etc.).
+返回广告活动可用的所有定位选项（共31个选项，包括雇主、学历、技能、地点等）。
 
-**Response:**
+**响应：**
 ```json
 {
   "elements": [
@@ -871,22 +867,22 @@ Returns all available targeting facets for ad campaigns (31 facets including emp
 }
 ```
 
-Available targeting facets include:
-- `skills` - Member skills
-- `industries` - Industry categories
-- `titles` - Job titles
-- `seniorities` - Seniority levels
-- `degrees` - Educational degrees
-- `schools` - Educational institutions
-- `employers` / `employersPast` - Current/past employers
-- `locations` / `geoLocations` - Geographic targeting
-- `companySize` - Company size ranges
-- `genders` - Gender targeting
-- `ageRanges` - Age range targeting
+可用的定位选项包括：
+- `skills` - 成员技能
+- `industries` - 行业类别
+- `titles` - 职位名称
+- `seniorities` - 职位等级
+- `degrees` - 学历
+- `schools` - 教育机构
+- `employers` / `employersPast` - 当前/过去的雇主
+- `locations` / `geoLocations` - 地理定位
+- `companySize` - 公司规模
+- `genders` - 性别定位
+- `ageRanges` - 年龄范围定位
 
-## Getting Your Person ID
+## 获取您的个人ID
 
-To create posts, you need your LinkedIn person ID. Get it from the `/v2/me` endpoint:
+要创建帖子，您需要您的LinkedIn个人ID。您可以通过 `/v2/me` 端点获取它：
 
 ```bash
 python <<'EOF'
@@ -898,9 +894,9 @@ print(f"Your person URN: urn:li:person:{result['id']}")
 EOF
 ```
 
-## Code Examples
+## 代码示例
 
-### JavaScript - Create Text Post
+### JavaScript - 创建文本帖子
 
 ```javascript
 const personId = 'YOUR_PERSON_ID';
@@ -931,7 +927,7 @@ const response = await fetch(
 );
 ```
 
-### Python - Create Text Post
+### Python - 创建文本帖子
 
 ```python
 import os
@@ -962,37 +958,37 @@ response = requests.post(
 )
 ```
 
-## Rate Limits
+## 速率限制
 
-| Throttle Type | Daily Limit (UTC) |
+| 限制类型 | 每日限制（UTC） |
 |---------------|-------------------|
-| Member | 150 requests/day |
-| Application | 100,000 requests/day |
+| Member | 150次请求/天 |
+| Application | 100,000次请求/天 |
 
-## Notes
+## 注意事项
 
-- Person IDs are unique per application and not transferable across apps
-- The `author` field must use URN format: `urn:li:person:{personId}`
-- All posts require `lifecycleState: "PUBLISHED"`
-- Image/video uploads are a 3-step process: register, upload binary, create post
-- Include `X-Restli-Protocol-Version: 2.0.0` header for v2 API calls
-- Profile picture URLs may expire; re-fetch if needed
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 个人ID在每个应用程序中是唯一的，不能在不同应用程序之间转移。
+- `author`字段必须使用URN格式：`urn:li:person:{personId}`。
+- 所有帖子都需要设置`lifecycleState: "PUBLISHED"`。
+- 图片/视频上传是一个三步过程：注册、上传二进制文件、创建帖子。
+- 对于v2 API调用，请在请求头部添加`X-Restli-Protocol-Version: 2.0.0`。
+- 头像URL可能会过期；如有需要请重新获取。
+- 重要提示：使用`curl`命令时，如果URL包含括号，请使用`curl -g`以避免glob解析问题。
+- 重要提示：将curl输出传递给`jq`或其他命令时，在某些shell环境中环境变量（如`$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing LinkedIn connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions (check OAuth scopes) |
-| 404 | Resource not found |
-| 422 | Invalid request body or URN format |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from LinkedIn API |
+| 400 | 缺少LinkedIn连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 权限不足（请检查OAuth权限范围） |
+| 404 | 资源未找到 |
+| 422 | 请求体或URN格式无效 |
+| 429 | 达到速率限制 |
+| 4xx/5xx | 来自LinkedIn API的传递错误 |
 
-### Error Response Format
+### 错误响应格式
 
 ```json
 {
@@ -1003,15 +999,15 @@ response = requests.post(
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了`MATON_API_KEY`环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -1022,32 +1018,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `linkedin`. For example:
+1. 确保您的URL路径以`linkedin`开头。例如：
+- 正确：`https://gateway.maton.ai/linkedin/v2/me`
+- 错误：`https://gateway.maton.ai/v2/me`
 
-- Correct: `https://gateway.maton.ai/linkedin/v2/me`
-- Incorrect: `https://gateway.maton.ai/v2/me`
+## OAuth权限范围
 
-## OAuth Scopes
-
-| Scope | Description |
+| 权限范围 | 描述 |
 |-------|-------------|
-| `openid` | OpenID Connect authentication |
-| `profile` | Read basic profile |
-| `email` | Read email address |
-| `w_member_social` | Create, modify, and delete posts |
+| `openid` | OpenID Connect身份验证 |
+| `profile` | 读取基本个人资料 |
+| `email` | 读取电子邮件地址 |
+| `w_member_social` | 创建、修改和删除帖子 |
 
-## Resources
+## 资源
 
-- [LinkedIn API Overview](https://learn.microsoft.com/en-us/linkedin/)
-- [Share on LinkedIn Guide](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/share-on-linkedin)
-- [Profile API](https://learn.microsoft.com/en-us/linkedin/shared/integrations/people/profile-api)
-- [Sign In with LinkedIn](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2)
-- [Authentication Guide](https://learn.microsoft.com/en-us/linkedin/shared/authentication/authentication)
-- [Marketing API](https://learn.microsoft.com/en-us/linkedin/marketing/)
-- [Ad Accounts](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-accounts)
-- [Campaign Management](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-campaigns)
-- [Ad Library API](https://www.linkedin.com/ad-library/api/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [LinkedIn API概述](https://learn.microsoft.com/en-us/linkedin/)
+- [在LinkedIn上分享指南](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/share-on-linkedin)
+- [个人资料API](https://learn.microsoft.com/en-us/linkedin/shared/integrations/people/profile-api)
+- [使用LinkedIn登录](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2)
+- [身份验证指南](https://learn.microsoft.com/en-us/linkedin/shared/authentication/)
+- [营销API](https://learn.microsoft.com/en-us/linkedin/marketing/)
+- [广告账户](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-accounts)
+- [广告活动管理](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-campaigns)
+- [广告库API](https://www.linkedin.com/ad-library/api/)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

@@ -1,62 +1,62 @@
 ---
 name: pricing-strategy
-description: "When the user wants help with pricing decisions, packaging, or monetization strategy. Also use when the user mentions 'pricing,' 'pricing tiers,' 'freemium,' 'free trial,' 'packaging,' 'price increase,' 'value metric,' 'Van Westendorp,' 'willingness to pay,' or 'monetization.' This skill covers pricing research, tier structure, and packaging strategy."
+description: "当用户需要关于定价决策、产品包装或货币化策略的帮助时，也可以在用户提及“定价”、“定价层级”、“免费增值服务（Freemium）”、“免费试用”、“产品包装”、“价格上涨”、“价值指标”、“Van Westendorp”或“支付意愿”等关键词时使用该技能。该技能涵盖定价研究、定价层级结构以及产品包装策略的相关内容。"
 ---
 
-# Pricing Strategy
+# 定价策略
 
-You are an expert in SaaS pricing and monetization strategy with access to pricing research data and analysis tools. Your goal is to help design pricing that captures value, drives growth, and aligns with customer willingness to pay.
+作为SaaS定价和盈利策略方面的专家，您能够利用定价研究数据和分析工具来帮助设计出既能体现产品价值、推动业务增长，又能符合客户支付意愿的定价方案。
 
-## Before Starting
+## 开始之前
 
-Gather this context (ask if not provided):
+请收集以下信息（如未提供，请询问）：
 
-### 1. Business Context
-- What type of product? (SaaS, marketplace, e-commerce, service)
-- What's your current pricing (if any)?
-- What's your target market? (SMB, mid-market, enterprise)
-- What's your go-to-market motion? (self-serve, sales-led, hybrid)
+### 1. 业务背景
+- 产品类型是什么？（SaaS、市场平台、电子商务、服务）
+- 目前的定价策略是什么？
+- 目标市场是哪些？（小型企业、中型企业、大型企业）
+- 销售模式是怎样的？（自助服务、销售驱动、混合模式）
 
-### 2. Value & Competition
-- What's the primary value you deliver?
-- What alternatives do customers consider?
-- How do competitors price?
-- What makes you different/better?
+### 2. 产品价值与竞争分析
+- 产品的主要价值是什么？
+- 客户会考虑哪些替代产品？
+- 竞争对手的定价策略是怎样的？
+- 你的产品与竞争对手相比有何优势？
 
-### 3. Current Performance
-- What's your current conversion rate?
-- What's your average revenue per user (ARPU)?
-- What's your churn rate?
-- Any feedback on pricing from customers/prospects?
+### 3. 目前业务表现
+- 目前的转化率是多少？
+- 平均每用户收入（ARPU）是多少？
+- 客户流失率是多少？
+- 客户或潜在客户对当前定价有何反馈？
 
-### 4. Goals
-- Are you optimizing for growth, revenue, or profitability?
-- Are you trying to move upmarket or expand downmarket?
-- Any pricing changes you're considering?
+### 4. 定价目标
+- 你是希望优化增长、收入还是盈利能力？
+- 你是打算向高端市场扩展还是低端市场扩展？
+- 你有考虑过调整定价策略吗？
 
 ---
 
-## Pricing Fundamentals
+## 定价基础
 
-### The Three Pricing Axes
+### 三个定价维度
 
-Every pricing decision involves three dimensions:
+每个定价决策都涉及三个方面：
 
-**1. Packaging** — What's included at each tier?
-- Features, limits, support level
-- How tiers differ from each other
+**1. 产品包装** — 每个定价等级包含哪些内容？
+- 功能、使用限制、支持水平
+- 各个等级之间的差异
 
-**2. Pricing Metric** — What do you charge for?
-- Per user, per usage, flat fee
-- How price scales with value
+**2. 定价依据** — 你根据什么来收费？
+- 每用户收费、按使用量收费、固定费用
+- 定价如何与产品价值相匹配
 
-**3. Price Point** — How much do you charge?
-- The actual dollar amounts
-- The perceived value vs. cost
+**3. 定价点** — 你设定的价格是多少？
+- 实际的金额
+- 客户认为的产品价值与价格之间的平衡
 
-### Value-Based Pricing Framework
+### 基于价值的定价框架
 
-Price should be based on value delivered, not cost to serve:
+定价应基于产品所提供的价值，而非运营成本：
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -82,43 +82,39 @@ Price should be based on value delivered, not cost to serve:
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Key insight:** Price between the next best alternative and perceived value. Cost is a floor, not a basis.
+**关键要点：** 定价应介于次优选择和客户感知价值之间。成本只是定价的最低限度，而非定价的依据。
 
 ---
 
-## Pricing Research Methods
+## 定价研究方法
 
-### Van Westendorp Price Sensitivity Meter
+### Van Westendorp 定价敏感度测试
 
-The Van Westendorp survey identifies the acceptable price range for your product.
+Van Westendorp 调查可以确定客户可接受的产品价格范围。
 
-**The Four Questions:**
+**四个问题：**
+- “在什么价格下，你会认为这个产品太贵而不愿意购买？”
+- “在什么价格下，你会认为这个产品太便宜而对其质量产生怀疑？”
+- “在什么价格下，你会认为这个产品开始变得昂贵，但仍然可能会考虑购买？”
+- “在什么价格下，你会认为这个产品物超所值？”
 
-Ask each respondent:
-1. "At what price would you consider [product] to be so expensive that you would not consider buying it?" (Too expensive)
-2. "At what price would you consider [product] to be priced so low that you would question its quality?" (Too cheap)
-3. "At what price would you consider [product] to be starting to get expensive, but you still might consider it?" (Expensive/high side)
-4. "At what price would you consider [product] to be a bargain—a great buy for the money?" (Cheap/good value)
+**分析方法：**
+- 绘制每个问题的累积分布图
+- 找到以下交叉点：
+  - **边际廉价点（PMC）：”太便宜“与”太贵“的交点
+  - **边际昂贵点（PME）：”太贵“与”太便宜“的交点
+  - **最佳定价点（OPP）：”太便宜“与”太贵“的交点
+  - **无差异定价点（IDP）：”太贵“与”太便宜“的交点
+- **可接受的价格范围：** PMC 到 PME
+- **最佳定价区间：** OPP 和 IDP 之间
 
-**How to Analyze:**
+**调查提示：**
+- 需要 100-300 名受访者才能获得可靠的数据
+- 按支付意愿对受访者进行分组
+- 使用真实的产品描述
+- 考虑加入购买意向相关的问题
 
-1. Plot cumulative distributions for each question
-2. Find the intersections:
-   - **Point of Marginal Cheapness (PMC):** "Too cheap" crosses "Expensive"
-   - **Point of Marginal Expensiveness (PME):** "Too expensive" crosses "Cheap"
-   - **Optimal Price Point (OPP):** "Too cheap" crosses "Too expensive"
-   - **Indifference Price Point (IDP):** "Expensive" crosses "Cheap"
-
-**The acceptable price range:** PMC to PME
-**Optimal pricing zone:** Between OPP and IDP
-
-**Survey Tips:**
-- Need 100-300 respondents for reliable data
-- Segment by persona (different willingness to pay)
-- Use realistic product descriptions
-- Consider adding purchase intent questions
-
-**Sample Van Westendorp Analysis Output:**
+**Van Westendorp 分析示例：**
 
 ```
 Price Sensitivity Analysis Results:
@@ -133,19 +129,18 @@ Current price: $39/mo (below optimal)
 Opportunity: 25-50% price increase without significant demand impact
 ```
 
-### MaxDiff Analysis (Best-Worst Scaling)
+### MaxDiff 分析（最佳-最差排序）
 
-MaxDiff identifies which features customers value most, informing packaging decisions.
+MaxDiff 可以帮助识别客户最看重的功能，从而指导产品包装决策。
 
-**How It Works:**
+**操作步骤：**
+- 列出 8-15 个可能包含的功能
+- 每次向受访者展示 4-5 个功能组合
+- 询问：“哪个功能最重要？哪个功能最不重要？”
+- 重复这个过程，直到所有功能都被比较过
+- 通过统计分析得出各功能的重要性评分
 
-1. List 8-15 features you could include
-2. Show respondents sets of 4-5 features at a time
-3. Ask: "Which is MOST important? Which is LEAST important?"
-4. Repeat across multiple sets until all features compared
-5. Statistical analysis produces importance scores
-
-**Example Survey Question:**
+**示例调查问题：**
 
 ```
 Which feature is MOST important to you?
@@ -158,103 +153,100 @@ Which feature is LEAST important to you?
 □ Advanced analytics
 ```
 
-**Analyzing Results:**
+**结果分析：**
 
-Features are ranked by utility score:
-- High utility = Must-have (include in base tier)
-- Medium utility = Differentiator (use for tier separation)
-- Low utility = Nice-to-have (premium tier or cut)
+根据功能的重要性进行排序：
+- 高重要性功能 = 必需包含在基础定价等级中
+- 中等重要性功能 = 用于区分不同定价等级
+- 低重要性功能 = 可选功能（作为高级定价的附加选项）
 
-**Using MaxDiff for Packaging:**
+**利用 MaxDiff 进行产品包装决策：**
 
-| Utility Score | Packaging Decision |
+| 功能重要性 | 定价决策 |
 |---------------|-------------------|
-| Top 20% | Include in all tiers (table stakes) |
-| 20-50% | Use to differentiate tiers |
-| 50-80% | Higher tiers only |
-| Bottom 20% | Consider cutting or premium add-on |
+| 前 20% | 包含在所有等级中 |
+| 20-50% | 用于区分不同等级 |
+| 50-80% | 仅包含在高级等级 |
+| 后 20% | 考虑删除或作为高级附加选项 |
 
-### Willingness to Pay Surveys
+### 支付意愿调查
 
-**Direct method (simple but biased):**
-"How much would you pay for [product]?"
+**直接方法（简单但可能有偏差）：**
+“你愿意为这个产品支付多少？”
 
-**Better: Gabor-Granger method:**
-"Would you buy [product] at [$X]?" (Yes/No)
-Vary price across respondents to build demand curve.
+**更好的方法：Gabor-Granger 方法：**
+“你愿意以 [$X] 的价格购买这个产品吗？”（是/否）
+通过调整价格来观察不同受访者的反应，从而构建需求曲线。
 
-**Even better: Conjoint analysis:**
-Show product bundles at different prices
-Respondents choose preferred option
-Statistical analysis reveals price sensitivity per feature
+**更好的方法：联合分析（Conjoint Analysis）：**
+展示不同价格的产品组合
+让受访者选择他们偏好的选项
+通过统计分析了解客户对每个价格的敏感度
 
 ---
 
-## Value Metrics
+## 价值指标
 
-### What is a Value Metric?
+**什么是价值指标？**
 
-The value metric is what you charge for—it should scale with the value customers receive.
+价值指标是你收费的依据，它应该与客户获得的价值相匹配。
 
-**Good value metrics:**
-- Align price with value delivered
-- Are easy to understand
-- Scale as customer grows
-- Are hard to game
+**好的价值指标：**
+- 价格与所提供的价值相匹配
+- 容易理解
+- 随着客户使用量的增加而变化
+- 难以被竞争对手模仿
 
-### Common Value Metrics
-
-| Metric | Best For | Example |
+**常见的价值指标：**
+| 指标 | 适用场景 | 例子 |
 |--------|----------|---------|
-| Per user/seat | Collaboration tools | Slack, Notion |
-| Per usage | Variable consumption | AWS, Twilio |
-| Per feature | Modular products | HubSpot add-ons |
-| Per contact/record | CRM, email tools | Mailchimp, HubSpot |
-| Per transaction | Payments, marketplaces | Stripe, Shopify |
-| Flat fee | Simple products | Basecamp |
-| Revenue share | High-value outcomes | Affiliate platforms |
+| 每用户/席位 | 协作工具 | Slack, Notion |
+| 每次使用 | 可变消耗量 | AWS, Twilio |
+| 每个功能 | 模块化产品 | HubSpot 附加组件 |
+| 每个联系/记录 | 客户关系管理（CRM）、电子邮件工具 | Mailchimp, HubSpot |
+| 每笔交易 | 支付平台、市场平台 | Stripe, Shopify |
+| 固定费用 | 简单产品 | Basecamp |
+| 收入分成 | 高价值成果 | 联盟营销平台 |
 
-### Choosing Your Value Metric
+**选择价值指标的步骤：**
+**步骤 1：确定客户如何获得价值**
+- 客户关心的是什么成果？
+- 他们如何衡量成功？
+- 他们愿意为哪些价值支付更多？
 
-**Step 1: Identify how customers get value**
-- What outcome do they care about?
-- What do they measure success by?
-- What would they pay more for?
+**步骤 2：将使用量与价值联系起来**
 
-**Step 2: Map usage to value**
-
-| Usage Pattern | Value Delivered | Potential Metric |
+| 使用模式 | 提供的价值 | 可能的价值指标 |
 |---------------|-----------------|------------------|
-| More team members use it | More collaboration value | Per user |
-| More data processed | More insights | Per record/event |
-| More revenue generated | Direct ROI | Revenue share |
-| More projects managed | More organization | Per project |
+| 更多的团队成员使用 | 更多的协作价值 | 每用户 |
+| 处理更多的数据 | 更多的洞察 | 每条记录/事件 |
+| 产生更多的收入 | 直接的投资回报率 | 收入分成 |
+| 管理更多的项目 | 更高的组织效率 | 每个项目 |
 
-**Step 3: Test for alignment**
+**步骤 3：验证一致性**
 
-Ask: "As a customer uses more of [metric], do they get more value?"
-- If yes → good value metric
-- If no → price doesn't align with value
+询问：“当客户增加对某个指标的使用时，他们是否获得了更多的价值？”
+- 如果是，则该指标是合适的价值指标
+- 如果不是，则说明定价与价值不匹配
 
-### Mapping Usage to Value: Framework
+**将使用量与价值联系起来的框架：**
+**1. 收集使用数据**  
+   - 跟踪客户如何使用你的产品：
+     - 功能使用频率
+     - 使用量指标（用户数量、记录数、API 调用次数）
+     - 结果指标（产生的收入、节省的时间）
 
-**1. Instrument usage data**
-Track how customers use your product:
-- Feature usage frequency
-- Volume metrics (users, records, API calls)
-- Outcome metrics (revenue generated, time saved)
+**2. 与客户满意度关联**  
+   - 哪些使用模式能预测客户留存率？
+   - 哪些使用模式能促进业务扩展？
+   - 哪些客户支付最多，原因是什么？
 
-**2. Correlate with customer success**
-- Which usage patterns predict retention?
-- Which usage patterns predict expansion?
-- Which customers pay the most, and why?
+**3. 确定价值阈值**  
+   - 在什么使用量水平上，客户能够感受到产品的价值？
+   - 在什么使用量水平上，客户会继续使用产品？
+   - 在什么使用量水平上，应该提高价格？
 
-**3. Identify value thresholds**
-- At what usage level do customers "get it"?
-- At what usage level do they expand?
-- At what usage level should price increase?
-
-**Example Analysis:**
+**示例分析：**
 
 ```
 Usage-Value Correlation Analysis:
@@ -277,64 +269,64 @@ Recommendation: Price per user, gate integrations to higher tiers
 
 ---
 
-## Tier Structure
+## 定价等级结构
 
-### How Many Tiers?
+### 设定多少个定价等级？
 
-**2 tiers:** Simple, clear choice
-- Works for: Clear SMB vs. Enterprise split
-- Risk: May leave money on table
+**2 个等级：** 简单明了
+- 适用场景：明确区分小型企业和大型企业
+- 风险：可能会错失部分利润
 
-**3 tiers:** Industry standard
-- Good tier = Entry point
-- Better tier = Recommended (anchor to best)
-- Best tier = High-value customers
+**3 个等级：** 行业标准
+- 基础等级：入门级
+- 推荐等级：适合大多数用户
+- 高级等级：针对高端客户
 
-**4+ tiers:** More granularity
-- Works for: Wide range of customer sizes
-- Risk: Decision paralysis, complexity
+**4 个以上等级：** 更细致的区分
+- 适用场景：覆盖不同规模的客户群体
+- 风险：可能导致决策困难、增加复杂性
 
-### Good-Better-Best Framework
+### “好-更好-最佳”定价框架
 
-**Good tier (Entry):**
-- Purpose: Remove barriers to entry
-- Includes: Core features, limited usage
-- Price: Low, accessible
-- Target: Small teams, try before you buy
+**基础等级（入门级）：**
+- 目的：降低进入门槛
+- 包含：核心功能、有限的使用权限
+- 价格：低廉，易于接受
+- 目标用户：小型团队、试用后再购买
 
-**Better tier (Recommended):**
-- Purpose: Where most customers land
-- Includes: Full features, reasonable limits
-- Price: Your "anchor" price
-- Target: Growing teams, serious users
+**推荐等级：**
+- 目的：满足大多数用户的需求
+- 包含：全部功能、合理的限制
+- 价格：作为基准价格
+- 目标用户：成长中的团队、专业用户
 
-**Best tier (Premium):**
-- Purpose: Capture high-value customers
-- Includes: Everything, advanced features, higher limits
-- Price: Premium (often 2-3x "Better")
-- Target: Larger teams, power users, enterprises
+**高级等级（高端）：**
+- 目的：吸引高端客户
+- 包含：所有功能、高级功能、更多的使用权限
+- 价格：较高
+- 目标用户：大型团队、高级用户
 
-### Tier Differentiation Strategies
+**等级差异化策略：**
 
-**Feature gating:**
-- Basic features in all tiers
-- Advanced features in higher tiers
-- Works when features have clear value differences
+**功能区分：**
+- 所有等级都包含基础功能
+- 高级等级包含高级功能
+- 适用于功能具有明显价值差异的情况
 
-**Usage limits:**
-- Same features, different limits
-- More users, storage, API calls at higher tiers
-- Works when value scales with usage
+**使用限制：**
+- 同一功能在不同等级有不同的使用限制
+- 更多的用户、存储空间、API 调用次数在高级等级
+- 适用于价值随使用量增加的情况
 
-**Support level:**
-- Email support → Priority support → Dedicated success
-- Works for products with implementation complexity
+**支持水平：**
+- 电子邮件支持 → 优先支持 → 专属的成功支持
+- 适用于实施复杂度的产品
 
-**Access and customization:**
-- API access, SSO, custom branding
-- Works for enterprise differentiation
+**访问和定制：**
+- API 访问权限、单点登录（SSO）、自定义品牌
+- 适用于需要企业级差异化的产品
 
-### Example Tier Structure
+**示例等级结构：**
 
 ```
 ┌────────────────┬─────────────────┬─────────────────┬─────────────────┐
@@ -353,358 +345,289 @@ Recommendation: Price per user, gate integrations to higher tiers
 └────────────────┴─────────────────┴─────────────────┴─────────────────┘
 ```
 
----
+## 根据用户群体定制定价
 
-## Packaging for Personas
+**识别不同的用户群体**
 
-### Identifying Pricing Personas
+不同的用户群体有不同的：
+- 支付意愿
+- 功能需求
+- 购买流程
+- 对产品价值的认知
 
-Different customers have different:
-- Willingness to pay
-- Feature needs
-- Buying processes
-- Value perception
+**按以下维度进行细分：**
+- 公司规模（个体创业者 → 小型企业 → 大型企业）
+- 使用场景（市场营销、销售、支持）
+- 使用熟练程度（初学者 → 专业用户）
+- 行业（不同的预算标准）
 
-**Segment by:**
-- Company size (solopreneur → SMB → enterprise)
-- Use case (marketing vs. sales vs. support)
-- Sophistication (beginner → power user)
-- Industry (different budget norms)
+**基于用户群体的定价策略：**
 
-### Persona-Based Packaging
-
-**Step 1: Define personas**
-
-| Persona | Size | Needs | WTP | Example |
+**步骤 1：定义用户群体**  
+| 用户群体 | 公司规模 | 需求 | 支付意愿 | 例子 |
 |---------|------|-------|-----|---------|
-| Freelancer | 1 person | Basic features | Low | $19/mo |
-| Small Team | 2-10 | Collaboration | Medium | $49/mo |
-| Growing Co | 10-50 | Scale, integrations | Higher | $149/mo |
-| Enterprise | 50+ | Security, support | High | Custom |
+| 自由职业者 | 1 人 | 基础功能 | 低 | 每月 $19 |
+| 小型团队 | 2-10 人 | 协作功能 | 中等 | 每月 $49 |
+| 成长中的公司 | 10-50 人 | 规模扩展、集成功能 | 更高 | 每月 $149 |
+| 大型企业 | 50 人以上 | 安全性、支持 | 高 | 定制价格 |
 
-**Step 2: Map features to personas**
-
-| Feature | Freelancer | Small Team | Growing | Enterprise |
+**步骤 2：将功能与用户群体对应起来**  
+| 功能 | 自由职业者 | 小型团队 | 成长中的公司 | 大型企业 |
 |---------|------------|------------|---------|------------|
-| Core features | ✓ | ✓ | ✓ | ✓ |
-| Collaboration | — | ✓ | ✓ | ✓ |
-| Integrations | — | Limited | Full | Full |
-| API access | — | — | ✓ | ✓ |
+| 核心功能 | ✓ | ✓ | ✓ | ✓ |
+| 协作功能 | — | ✓ | ✓ | ✓ |
+| 集成功能 | — | 有限 | 完整 | 完整 |
+| API 访问 | — | — | ✓ | ✓ |
 | SSO/SAML | — | — | — | ✓ |
-| Audit logs | — | — | — | ✓ |
-| Custom contract | — | — | — | ✓ |
+| 审计日志 | — | — | — | ✓ |
+| 定制合同 | — | — | — | ✓ |
 
-**Step 3: Price to value for each persona**
-- Research willingness to pay per segment
-- Set prices that capture value without blocking adoption
-- Consider segment-specific landing pages
-
----
-
-## Freemium vs. Free Trial
-
-### When to Use Freemium
-
-**Freemium works when:**
-- Product has viral/network effects
-- Free users provide value (content, data, referrals)
-- Large market where % conversion drives volume
-- Low marginal cost to serve free users
-- Clear feature/usage limits for upgrade trigger
-
-**Freemium risks:**
-- Free users may never convert
-- Devalues product perception
-- Support costs for non-paying users
-- Harder to raise prices later
-
-**Example: Slack**
-- Free tier for small teams
-- Message history limit creates upgrade trigger
-- Free users invite others (viral growth)
-- Converts when team hits limit
-
-### When to Use Free Trial
-
-**Free trial works when:**
-- Product needs time to demonstrate value
-- Onboarding/setup investment required
-- B2B with buying committees
-- Higher price points
-- Product is "sticky" once configured
-
-**Trial best practices:**
-- 7-14 days for simple products
-- 14-30 days for complex products
-- Full access (not feature-limited)
-- Clear countdown and reminders
-- Credit card optional vs. required trade-off
-
-**Credit card upfront:**
-- Higher trial-to-paid conversion (40-50% vs. 15-25%)
-- Lower trial volume
-- Better qualified leads
-
-### Hybrid Approaches
-
-**Freemium + Trial:**
-- Free tier with limited features
-- Trial of premium features
-- Example: Zoom (free 40-min, trial of Pro)
-
-**Reverse trial:**
-- Start with full access
-- After trial, downgrade to free tier
-- Example: See premium value, live with limitations until ready
+**步骤 3：根据用户群体的支付意愿定价**  
+- 研究每个群体的支付意愿  
+- 设定既能体现价值又不会阻碍用户采用的价格  
+- 考虑为不同群体定制产品介绍页面  
 
 ---
 
-## When to Raise Prices
+## 免费试用与 Freemium 模式
 
-### Signs It's Time
+**何时使用 Freemium 模式：**
+- 当产品具有病毒式/网络效应时  
+- 免费用户能提供价值（内容、数据、推荐）  
+- 市场规模大，转化率对业务量有显著影响时  
+- 服务免费用户的边际成本较低时  
+- 免费用户的使用有明确的升级触发条件  
 
-**Market signals:**
-- Competitors have raised prices
-- You're significantly cheaper than alternatives
-- Prospects don't flinch at price
-- "It's so cheap!" feedback
+**Freemium 模式的风险：**
+- 免费用户可能永远不会付费  
+- 降低产品价值感知  
+- 需要为免费用户提供支持  
+- 后期提高价格会更加困难  
 
-**Business signals:**
-- Very high conversion rates (>40%)
-- Very low churn (<3% monthly)
-- Customers using more than they pay for
-- Unit economics are strong
+**示例：Slack**  
+- 小型团队使用免费等级  
+- 消息记录限制作为升级的触发条件  
+- 免费用户会邀请他人使用（促进病毒式传播）  
+- 当团队达到使用限制时，用户会考虑升级  
 
-**Product signals:**
-- You've added significant value since last pricing
-- Product is more mature/stable
-- New features justify higher price
+**何时使用免费试用：**
+- 当产品需要时间来展示价值时  
+- 需要用户进行初始设置/培训时  
+- 面向 B2B 企业，且购买决策需要团队参与时  
+- 产品配置后用户粘性较高时  
 
-### Price Increase Strategies
+**免费试用的最佳实践：**
+- 简单产品试用 7-14 天  
+- 复杂产品试用 14-30 天  
+- 提供完整功能  
+- 明确的试用期限和提醒  
+- 可选择是否使用信用卡支付  
 
-**1. Grandfather existing customers**
-- New price for new customers only
-- Existing customers keep old price
-- Pro: No churn risk
-- Con: Leaves money on table, creates complexity
+**信用卡预付费：**  
+- 提高试用转为付费的转化率（40-50% vs. 15-25%）  
+- 试用用户数量较少  
+- 获得更优质的潜在客户  
 
-**2. Delayed increase for existing**
-- Announce increase 3-6 months out
-- Give time to lock in old price (annual)
-- Pro: Fair, drives annual conversions
-- Con: Some churn, requires communication
+**混合策略：**  
+- 免费等级提供有限功能  
+- 提供高级功能的试用  
+- 例如：Zoom 提供 40 分钟的免费试用，然后提供高级功能试用  
 
-**3. Increase tied to value**
-- Raise price but add features
-- "New Pro tier with X, Y, Z"
-- Pro: Justified increase
-- Con: Requires actual new value
+**反向试用：**  
+- 初始提供完整功能  
+- 试用期结束后降级为免费等级  
+- 例如：让用户先体验高级功能，再决定是否付费  
 
-**4. Plan restructure**
-- Change plans entirely
-- Existing customers mapped to nearest fit
-- Pro: Clean slate
-- Con: Disruptive, requires careful mapping
+## 何时提高价格**
 
-### Communicating Price Increases
+**何时应该提高价格：**
 
-**For new customers:**
-- Just update pricing page
-- No announcement needed
-- Monitor conversion rate
+**市场信号：**  
+- 竞争对手提高了价格  
+- 你的产品价格远低于竞争对手  
+- 潜在客户对价格没有反应  
+- 客户反馈“价格太便宜！”  
 
-**For existing customers:**
+**业务信号：**  
+- 转化率非常高（>40%）  
+- 客户流失率非常低（<3%）  
+- 客户使用的产品价值高于他们支付的价格  
+- 产品经济效益良好  
 
-```
-Subject: Updates to [Product] pricing
+**产品信号：**  
+- 自上次定价以来产品增加了显著的价值  
+- 产品更加成熟/稳定  
+- 新功能证明了提高价格的合理性  
 
-Hi [Name],
+**提高价格的方法：**
 
-I'm writing to let you know about upcoming changes to [Product] pricing.
+**1. 新客户新价格：**  
+  - 仅对新客户实施新价格  
+  - 现有客户保持原价  
+  - 优点：避免流失风险  
+  - 缺点：可能会错失部分利润  
 
-[Context: what you've added, why change is happening]
+**2. 延迟提高现有客户的价格：**  
+  - 提前 3-6 个月宣布价格调整  
+  - 给客户时间锁定原价  
+  - 优点：公平，促进年度转化  
+  - 缺点：可能会造成部分客户流失，需要沟通  
 
-Starting [date], our pricing will change from [old] to [new].
+**3. 根据价值提高价格：**  
+  - 提高价格的同时增加新功能  
+  - 例如：“新高级等级包含 X、Y、Z 功能”  
+  - 优点：价格提升有合理依据  
+  - 缺点：需要提供实际的新价值  
 
-As a valued customer, [what this means for them: grandfathered, locked rate, timeline].
+**4. 完整调整定价方案：**  
+  - 完全改变定价方案  
+  - 将现有客户重新分配到最合适的等级  
+  - 优点：重新开始定价，避免混乱  
 
-[If they're affected:]
-You have until [date] to [action: lock in current rate, renew at old price].
+**沟通价格调整：**
 
-[If they're grandfathered:]
-You'll continue at your current rate. No action needed.
+**对新客户：**  
+- 直接更新定价页面  
+- 不需要额外公告  
 
-We appreciate your continued support of [Product].
-
-[Your name]
-```
-
----
-
-## Pricing Page Best Practices
-
-### Above the Fold
-
-- Clear tier comparison table
-- Recommended tier highlighted
-- Monthly/annual toggle
-- Primary CTA for each tier
-
-### Tier Presentation
-
-- Lead with the recommended tier (visual emphasis)
-- Show value progression clearly
-- Use checkmarks and limits, not paragraphs
-- Anchor to higher tier (show enterprise first or savings)
-
-### Common Elements
-
-- [ ] Feature comparison table
-- [ ] Who each tier is for
-- [ ] FAQ section
-- [ ] Contact sales option
-- [ ] Annual discount callout
-- [ ] Money-back guarantee
-- [ ] Customer logos/trust signals
-
-### Pricing Psychology to Apply
-
-- **Anchoring:** Show higher-priced option first
-- **Decoy effect:** Middle tier should be obviously best value
-- **Charm pricing:** $49 vs. $50 (for value-focused)
-- **Round pricing:** $50 vs. $49 (for premium)
-- **Annual savings:** Show monthly price but offer annual discount (17-20%)
+**对现有客户：**
 
 ---
 
-## Price Testing
+## 定价页面的最佳实践**
 
-### Methods for Testing Price
+**页面布局：**  
+- 明确的等级对比表  
+- 突出推荐的等级  
+- 显示每月/每年的价格选项  
 
-**1. A/B test pricing page (risky)**
-- Different visitors see different prices
-- Ethical/legal concerns
-- May damage trust if discovered
+**等级展示：**  
+- 首先展示推荐的等级（视觉重点）  
+- 清晰展示价格差异  
+- 使用勾选框和限制条件，而非冗长的文字描述  
+- 强调高级等级的优势（尤其是对于大型企业用户）  
 
-**2. Geographic testing**
-- Test higher prices in new markets
-- Different currencies/regions
-- Cleaner test, limited reach
+**常见元素：**  
+- 功能对比表  
+- 各等级的适用对象  
+- 常见问题解答（FAQ）  
+- 联系销售人员的选项  
+- 年度折扣信息  
+- 退款保证  
+- 客户LOGO/信任标志  
 
-**3. New customer only**
-- Raise prices for new customers
-- Compare conversion rates
-- Monitor cohort LTV
+**应用定价心理学：**  
+- **锚定效应：** 先展示高价选项  
+- **诱饵效应：** 中间等级应明显是最具价值的  
+- **价格表述：** 如 $49 与 $50（针对注重价值的用户）  
+- **价格区间：** 如 $50 与 $49（针对高端用户）  
+- **年度节省：** 显示月度价格并提供年度折扣  
 
-**4. Sales team discretion**
-- Test higher quotes through sales
-- Track close rates at different prices
-- Works for sales-led GTM
+## 定价测试**
 
-**5. Feature-based testing**
-- Test different packaging
-- Add premium tier at higher price
-- See adoption without changing existing
+**定价测试方法：**
 
-### What to Measure
+**1. A/B 测试定价页面（风险较高）**  
+  - 不同的访客看到不同的价格  
+  - 存在伦理/法律问题  
+  - 如果被发现可能会损害用户信任  
 
-- Conversion rate at each price point
-- Average revenue per user (ARPU)
-- Total revenue (conversion × price)
-- Customer lifetime value
-- Churn rate by price paid
-- Price sensitivity by segment
+**2. 地理区域测试：**  
+  - 在新市场测试更高的价格  
+  - 不同货币/地区  
+  - 测试效果更清晰，但覆盖范围有限  
 
----
+**3. 仅针对新客户：**  
+  - 仅对新客户提高价格  
+  - 比较不同价格下的转化率  
+  - 监测这些用户的生命周期价值（LTV）  
 
-## Enterprise Pricing
+**4. 销售团队的自主决策：**  
+  - 通过销售团队测试不同的报价  
+  - 跟踪不同价格下的成交率  
+  - 适用于销售驱动的销售策略  
 
-### When to Add Custom Pricing
+**5. 基于功能的测试：**  
+  - 测试不同的产品包装  
+  - 在高级等级提供额外功能  
+  - 观察价格调整后的采用情况  
 
-Add "Contact Sales" when:
-- Deal sizes exceed $10k+ ARR
-- Customers need custom contracts
-- Implementation/onboarding required
-- Security/compliance requirements
-- Procurement processes involved
+**需要测量的指标：**  
+- 每个价格点的转化率  
+- 平均每用户收入（ARPU）  
+- 总收入（转化次数 × 价格）  
+- 客户生命周期价值（LTV）  
+- 不同价格段的客户流失率  
 
-### Enterprise Tier Elements
+## 企业级定价  
 
-**Table stakes:**
-- SSO/SAML
-- Audit logs
-- Admin controls
-- Uptime SLA
-- Security certifications
+**何时需要定制定价：**
 
-**Value-adds:**
-- Dedicated support/success
-- Custom onboarding
-- Training sessions
-- Custom integrations
-- Priority roadmap input
+在以下情况下需要提供定制定价：  
+- 交易金额超过 $10,000/年  
+- 客户需要定制合同  
+- 需要实施/培训  
+- 需要安全/合规性支持  
+- 需要复杂的采购流程  
 
-### Enterprise Pricing Strategies
+**企业级定价的额外元素：**  
+- 单点登录（SSO/SAML）  
+- 审计日志  
+- 管理控制  
+- 运行时间服务水平（SLA）  
+- 安全认证  
 
-**Per-seat at scale:**
-- Volume discounts for large teams
-- Example: $15/user (standard) → $10/user (100+)
+**企业级定价策略：**
 
-**Platform fee + usage:**
-- Base fee for access
-- Usage-based above thresholds
-- Example: $500/mo base + $0.01 per API call
+**按用户数量定价：**  
+- 大型团队享受折扣  
+  - 例如：标准价格 $15/用户 → $10/用户（100 人以上）  
 
-**Value-based contracts:**
-- Price tied to customer's revenue/outcomes
-- Example: % of transactions, revenue share
+**平台费用 + 使用量定价：**  
+- 基础费用 + 超过特定使用量的额外费用  
+  - 例如：每月 $500 + 每次 API 调用 $0.01  
 
----
+**基于价值的合同：**  
+- 价格与客户的收入/成果挂钩  
+  - 例如：按交易额的一定比例或收入分成  
 
-## Pricing Checklist
+## 定价检查清单：**
 
-### Before Setting Prices
+**在设定价格之前：**  
+- 明确的目标用户群体  
+- 研究竞争对手的定价策略  
+- 确定你的价值指标  
+- 进行支付意愿调查  
+- 将功能与定价等级对应起来  
 
-- [ ] Defined target customer personas
-- [ ] Researched competitor pricing
-- [ ] Identified your value metric
-- [ ] Conducted willingness-to-pay research
-- [ ] Mapped features to tiers
+**定价结构：**  
+- 确定等级数量  
+- 明确各等级的差异  
+- 根据研究结果设定价格  
+- 制定年度折扣策略  
+- 规划企业级/定制等级的定价  
 
-### Pricing Structure
-
-- [ ] Chosen number of tiers
-- [ ] Differentiated tiers clearly
-- [ ] Set price points based on research
-- [ ] Created annual discount strategy
-- [ ] Planned enterprise/custom tier
-
-### Validation
-
-- [ ] Tested pricing with target customers
-- [ ] Reviewed pricing with sales team
-- [ ] Validated unit economics work
-- [ ] Planned for price increases
-- [ ] Set up tracking for pricing metrics
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What pricing research have you done (surveys, competitor analysis)?
-2. What's your current ARPU and conversion rate?
-3. What's your primary value metric (what do customers pay for value)?
-4. Who are your main pricing personas (by size, use case)?
-5. Are you self-serve, sales-led, or hybrid?
-6. What pricing changes are you considering?
+**验证步骤：**  
+- 与目标客户测试定价方案  
+- 与销售团队讨论定价方案  
+- 验证经济效益的有效性  
+- 规划价格调整方案  
+- 建立定价指标的跟踪机制  
 
 ---
 
-## Related Skills
+## 需要进一步了解的问题：**
+- 你进行了哪些定价研究（调查、竞争对手分析）？  
+- 目前的平均每用户收入（ARPU）和转化率是多少？  
+- 你的主要价值指标是什么（客户愿意为哪些价值支付？）  
+- 你的销售模式是自助服务、销售驱动还是混合模式？  
+- 你正在考虑哪些定价调整？  
 
-- **page-cro**: For optimizing pricing page conversion
-- **copywriting**: For pricing page copy
-- **marketing-psychology**: For pricing psychology principles
-- **ab-test-setup**: For testing pricing changes
-- **analytics-tracking**: For tracking pricing metrics
+---
+
+## 相关技能：  
+- **页面优化（page-cro）**：用于优化定价页面的转化率  
+- **文案写作（copywriting）**：用于编写定价页面的文案  
+- **营销心理学（marketing-psychology）**：了解定价心理学原理  
+- **A/B 测试（ab-test）**：用于测试定价调整的效果  
+- **数据分析（analytics-tracking）**：用于跟踪定价指标的变化

@@ -1,18 +1,18 @@
-# X Bookmark Archiver
+# X 书签归档器
 
-Archive your X (Twitter) bookmarks into categorized markdown files with AI-generated summaries.
+将您的 X（Twitter）书签归档为带有 AI 生成摘要的分类 markdown 文件。
 
-## Overview
+## 概述
 
-This skill fetches your X bookmarks using the [bird CLI](https://github.com/steipete/bird), categorizes them by URL patterns, generates AI summaries using OpenAI, and saves them as organized markdown files.
+该工具使用 [bird CLI](https://github.com/steipete/bird) 获取您的 X 书签，根据 URL 模式对它们进行分类，然后利用 OpenAI 生成摘要，并将它们保存为结构化的 markdown 文件。
 
-## Prerequisites
+## 先决条件
 
-1. **bird CLI** - Install from [steipete/bird](https://github.com/steipete/bird)
-2. **OpenAI API Key** (optional) - Set `OPENAI_API_KEY` for AI-generated summaries
+1. **bird CLI** - 请从 [steipete/bird](https://github.com/steipete/bird) 安装。
+2. **OpenAI API 密钥**（可选）- 为 AI 生成的摘要设置 `OPENAI_API_KEY`。
 3. **Node.js 18+**
 
-## Installation
+## 安装
 
 ```bash
 # Ensure bird CLI is installed and authenticated
@@ -22,76 +22,76 @@ bird --version
 export OPENAI_API_KEY="sk-..."
 ```
 
-## Commands
+## 命令
 
-### `run` - Full Pipeline
+### `run` - 完整流程
 
-Fetches new bookmarks and processes them:
+获取新书签并处理它们：
 
 ```bash
 node skills/x-bookmark-archiver/scripts/run.cjs
 ```
 
-### `run --force` - Process Existing
+### `run --force` - 仅处理现有书签
 
-Skip fetch, process only pending bookmarks:
+跳过获取步骤，仅处理待处理的书签：
 
 ```bash
 node skills/x-bookmark-archiver/scripts/run.cjs --force
 ```
 
-### `fetch` - Download Bookmarks Only
+### `fetch` - 仅下载书签
 
 ```bash
 node skills/x-bookmark-archiver/scripts/fetch.cjs
 ```
 
-### `process` - Archive Pending Only
+### `process` - 仅归档待处理的书签
 
 ```bash
 node skills/x-bookmark-archiver/scripts/process.cjs
 ```
 
-## Category Mapping
+## 分类规则
 
-Bookmarks are automatically categorized based on URL patterns:
+书签会根据 URL 模式自动分类：
 
-| Category | Domains |
+| 分类 | 域名 |
 |----------|---------|
-| **tools** | github.com, gitlab.com, github.io, huggingface.co, replicate.com, vercel.com, npmjs.com, pypi.org |
-| **articles** | medium.com, substack.com, dev.to, hashnode.dev, x.com/i/article, blog.*, towardsdatascience.com |
-| **videos** | youtube.com, youtu.be, vimeo.com, twitch.tv |
-| **research** | arxiv.org, paperswithcode.com, semanticscholar.org, researchgate.net, dl.acm.org, ieee.org |
-| **news** | techcrunch.com, theverge.com, hn.algolia.com, news.ycombinator.com, wired.com, arstechnica.com |
-| **bookmarks** | *fallback for unmatched URLs* |
+| **工具** | github.com, gitlab.com, github.io, huggingface.co, replicate.com, vercel.com, npmjs.com, pypi.org |
+| **文章** | medium.com, substack.com, dev.to, hashnode.dev, x.com/i/article, blog.*, towardsdatascience.com |
+| **视频** | youtube.com, youtu.be, vimeo.com, twitch.tv |
+| **研究** | arxiv.org, paperswithcode.com, semanticscholar.org, researchgate.net, dl.acm.org, ieee.org |
+| **新闻** | techcrunch.com, theverge.com, hn.algolia.com, news.ycombinator.com, wired.com, arstechnica.com |
+| **书签** | *用于未匹配的 URL 的默认分类* |
 
-## Output Location
+## 输出位置
 
-Markdown files are created in the **OpenClaw workspace** at:
+Markdown 文件将保存在 **OpenClaw 工作区** 中：
 
-**Legacy installs (old name):**
+**旧版本的安装路径：**
 ```
 ~/clawd/X-knowledge/
 ```
 
-**New installs:**
+**新版本的安装路径：**
 ```
 ~/.openclaw/workspace/X-knowledge/
 ```
 
-**With profile (`OPENCLAW_PROFILE=prod`):**
+**使用配置文件 (`OPENCLAW_PROFILE=prod`) 时：**
 ```
 ~/.openclaw/workspace-prod/X-knowledge/
 ```
 
-**Override with environment variable:**
+**通过环境变量覆盖设置：**
 ```bash
 export OPENCLAW_WORKSPACE=/custom/path
 node skills/x-bookmark-archiver/scripts/run.cjs
 # Creates: /custom/path/X-knowledge/
 ```
 
-## Output Structure
+## 输出结构
 
 ```
 ~/.openclaw/workspace/X-knowledge/
@@ -111,9 +111,9 @@ node skills/x-bookmark-archiver/scripts/run.cjs
     └── misc-link.md
 ```
 
-## Markdown Template
+## Markdown 模板
 
-Each archived bookmark gets a markdown file with frontmatter:
+每个归档的书签都会生成一个包含前置内容的 markdown 文件：
 
 ```markdown
 ---
@@ -128,9 +128,9 @@ tags: ["ai", "machine-learning", "github"]
 This project implements a novel approach to... (AI-generated summary)
 ```
 
-## State Management
+## 状态管理
 
-State files track processing progress:
+状态文件用于跟踪处理进度：
 
 ```
 /root/clawd/.state/
@@ -138,27 +138,27 @@ State files track processing progress:
 └── x-bookmark-processed.json   # IDs of already-archived bookmarks
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 描述 |
 |----------|----------|-------------|
-| `OPENAI_API_KEY` | No | API key for AI-generated summaries |
+| `OPENAI_API_KEY` | 否 | 用于 AI 生成摘要的 API 密钥 |
 
-## Workflow
+## 工作流程
 
-1. **Fetch**: Downloads latest 50 bookmarks from X
-2. **Filter**: Removes already-processed bookmarks
-3. **Expand**: Resolves t.co shortened URLs
-4. **Categorize**: Assigns category based on URL domain
-5. **Enrich**: Generates title, summary, tags (AI or fallback)
-6. **Write**: Saves as markdown in `X-knowledge/{category}/`
-7. **Track**: Updates processed IDs, clears pending
+1. **获取**：从 X 下载最新的 50 个书签。
+2. **过滤**：移除已处理过的书签。
+3. **解析**：解析 t.co 缩略链接。
+4. **分类**：根据域名分配分类。
+5. **丰富内容**：生成标题、摘要和标签（使用 AI 生成或使用默认值）。
+6. **写入**：将书签保存到 `X-knowledge/{分类}/` 目录中。
+7. **跟踪**：更新已处理的书签 ID，并清除待处理的书签。
 
-## Customization
+## 自定义设置
 
-### Adding Categories
+### 添加分类
 
-Edit `scripts/lib/categorize.cjs`:
+编辑 `scripts/lib/categorize.cjs` 文件：
 
 ```javascript
 const CATEGORIES = {
@@ -168,21 +168,21 @@ const CATEGORIES = {
 };
 ```
 
-### Changing Output Directory
+### 更改输出目录
 
-Edit `scripts/process.cjs`:
+编辑 `scripts/process.cjs` 文件：
 
 ```javascript
 const KNOWLEDGE_DIR = 'your-directory-name';
 ```
 
-### Using Different AI Provider
+### 使用其他 AI 提供商
 
-Modify the `generateMetadata()` function in `scripts/process.cjs` to use your preferred API.
+修改 `scripts/process.cjs` 中的 `generateMetadata()` 函数以使用您喜欢的 API。
 
-## Testing
+## 测试
 
-Run the test suite:
+运行测试套件：
 
 ```bash
 # Run all tests
@@ -195,15 +195,15 @@ node lib/state.test.cjs
 node integration.test.cjs
 ```
 
-### Test Coverage
+### 测试覆盖范围
 
-- **Unit tests**: `categorize.js` (21 tests) - URL pattern matching
-- **Unit tests**: `state.js` (9 tests) - JSON read/write operations
-- **Integration tests** (12 tests) - Full pipeline with mock data
+- **单元测试**：`categorize.js`（21 个测试）- URL 模式匹配
+- **单元测试**：`state.js`（9 个测试）- JSON 读写操作
+- **集成测试**（12 个测试）- 使用模拟数据的完整流程
 
-### Manual Testing
+### 手动测试
 
-Without bird CLI, you can test with mock data:
+如果没有 bird CLI，您可以使用模拟数据进行测试：
 
 ```bash
 # Create mock pending data
@@ -223,16 +223,16 @@ cp /tmp/test-pending.json /root/clawd/.state/x-bookmark-pending.json
 node skills/x-bookmark-archiver/scripts/process.cjs
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| `bird: command not found` | Install bird CLI from GitHub releases |
-| No bookmarks fetched | Ensure you're logged into X in bird |
-| AI summaries not generating | Check `OPENAI_API_KEY` is set |
-| t.co links not expanding | May be network/timeout issues; will use original URL |
+| `bird CLI 未找到` | 从 GitHub 的发布版本中安装 bird CLI。|
+| 未获取到书签** | 确保您已在 bird 中登录到 X 账户。|
+| 无法生成 AI 摘要** | 检查是否设置了 `OPENAI_API_KEY`。|
+| t.co 链接无法解析** | 可能是网络问题或超时问题；此时会使用原始 URL。|
 
-## File Structure
+## 文件结构
 
 ```
 skills/x-bookmark-archiver/
@@ -254,6 +254,6 @@ skills/x-bookmark-archiver/
         └── sample-bookmarks.json
 ```
 
-## License
+## 许可证
 
 MIT

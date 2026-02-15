@@ -1,13 +1,13 @@
 ---
 name: memory-curator
-description: Distill verbose daily logs into compact, indexed digests. Use when managing agent memory files, compressing logs, creating summaries of past activity, or building index-first memory architectures.
+description: 将冗长的每日日志压缩成简洁、可索引的摘要。适用于管理代理内存文件、压缩日志、生成过去活动的总结，或构建基于索引的内存管理系统。
 ---
 
-# Memory Curator
+# 内存管理工具（Memory Curator）
 
-Transform raw daily logs (often 200-500+ lines) into ~50-80 line digests while preserving key information.
+将原始的每日日志（通常包含200到500多行内容）转换为约50到80行的摘要，同时保留关键信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate digest skeleton for today
@@ -17,25 +17,25 @@ Transform raw daily logs (often 200-500+ lines) into ~50-80 line digests while p
 ./scripts/generate-digest.sh 2026-01-30
 ```
 
-Then fill in the `<!-- comment -->` sections manually.
+之后，请手动填写`<!-- comment -->`部分。
 
-## Digest Structure
+## 摘要结构
 
-A good digest captures:
+一个优秀的摘要应包含以下内容：
 
-| Section | Purpose | Example |
-|---------|---------|---------|
-| **Summary** | 2-3 sentences, the day in a nutshell | "Day One. Named Milo. Built connections on Moltbook." |
-| **Stats** | Quick metrics | Lines, sections, karma, time span |
-| **Key Events** | What happened (not everything, just what matters) | Numbered list, 3-7 items |
-| **Learnings** | Insights worth remembering | Bullet points |
-| **Connections** | People interacted with | Names + one-line context |
-| **Open Questions** | What you're still thinking about | For continuity |
-| **Tomorrow** | What future-you should prioritize | Actionable items |
+| 部分        | 目的                | 示例                |
+|-------------|------------------|-------------------|
+| **摘要**      | 2-3句话，概括当天的主要事件    | “第一天。用户名为Milo，在Moltbook上建立了联系。” |
+| **统计数据**   | 快速展示指标信息        | 日志行数、板块数量、用户获得的“声望值（karma）”以及时间范围 |
+| **关键事件**    | 发生的重要事件（非所有事件，仅包括重要的） | 编号列表，3-7项内容         |
+| **收获与感悟**   | 值得记住的见解或经验        | 以项目符号形式列出         |
+| **互动记录**    | 与哪些人进行了互动        | 人员姓名及简要互动内容         |
+| **未解决的问题** | 仍需思考的问题         | 用于保持讨论的连贯性         |
+| **明日计划**    | 未来需要优先处理的任务        | 可操作的行动事项           |
 
-## Index-First Architecture
+## 基于索引的查询方式
 
-Digests work best with hierarchical indexes:
+摘要配合分层索引使用效果最佳：
 
 ```
 memory/
@@ -47,20 +47,20 @@ memory/
 └── daily/                ← Raw logs (only read when needed)
 ```
 
-**Workflow:** Scan index → find relevant digest → drill into raw log only if needed.
+**工作流程：** 首先扫描索引 → 找到相关的摘要 → 如有需要再深入查看原始日志。
 
-## Automation
+## 自动化处理
 
-Set up end-of-day cron to auto-generate skeletons:
+设置每日结束时的定时任务（cron job），自动生成摘要框架：
 
 ```
 Schedule: 55 23 * * * (23:55 UTC)
 Task: Run generate-digest.sh, fill Summary/Learnings/Tomorrow, commit
 ```
 
-## Tips
+## 使用技巧：
 
-- **Compress aggressively** — if you can reconstruct it from context, don't include it
-- **Names matter** — capture WHO you talked to, not just WHAT was said
-- **Questions persist** — open questions create continuity across sessions
-- **Stats are cheap** — automated extraction saves tokens on what's mechanical
+- **高效压缩**：如果可以从上下文中推断出信息，就不要重复记录。
+- **姓名很重要**：记录与谁交流过，而不仅仅是说了什么。
+- **未解决的问题**：保留未解决的问题，有助于保持讨论的连贯性。
+- **统计数据**：自动化提取可以节省处理重复数据的时间和资源。

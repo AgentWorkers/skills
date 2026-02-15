@@ -1,58 +1,56 @@
 ---
 name: ralph-loop
-description: Generate copy-paste bash scripts for Ralph Wiggum/AI agent loops (Codex, Claude Code, OpenCode, Goose). Use when asked for a “Ralph loop”, “Ralph Wiggum loop”, or an AI loop to plan/build code via PROMPT.md + AGENTS.md, SPECS, and IMPLEMENTATION_PLAN.md, including PLANNING vs BUILDING modes, backpressure, sandboxing, and completion conditions.
+description: 生成可复制的 Bash 脚本，用于实现 Ralph Wiggum 或 AI 代理的循环执行逻辑（适用于 Codex、Claude Code、OpenCode、Goose 等平台）。当需要使用 “Ralph 循环” 或 “Ralph Wiggum 循环” 时，这些脚本可以根据 PROMPT.md、AGENTS.md、SPECS 和 IMPLEMENTATION_PLAN.md 文件的内容来规划或构建代码。脚本应支持规划（PLANNING）与构建（BUILDING）两种模式，并具备回压（backpressure）控制、沙箱环境（sandboxing）以及完成条件（completion conditions）等功能。
 ---
 
-# Ralph Loop
+# Ralph 循环（Ralph Loop）
 
-## Overview
-Generate a ready-to-run bash script that runs an AI coding CLI in a loop. Align with the Ralph playbook flow:
+## 概述  
+生成一个可立即运行的 Bash 脚本，用于循环执行 AI 编程命令行界面（CLI）工具。该脚本遵循 Ralph 演练流程：  
 
-1) **Define requirements** → JTBD → topics of concern → `specs/*.md`
-2) **PLANNING loop** → create/update `IMPLEMENTATION_PLAN.md` (no implementation)
-3) **BUILDING loop** → implement tasks, run tests (backpressure), update plan, commit
+1) **定义需求** → 任务待定（JTBD, “To-Be-Done”） → 相关主题 → `specs/*.md` 文件  
+2) **规划阶段** → 创建/更新 `IMPLEMENTATION_PLAN.md` 文件（此时不进行实际开发）  
+3) **执行阶段** → 实施任务、运行测试（使用“背压”机制）、更新计划并提交代码  
 
-The loop persists context via `PROMPT.md` + `AGENTS.md` (loaded every iteration) plus the on-disk plan/specs.
+该循环通过 `PROMPT.md` 和 `AGENTS.md` 文件来保持上下文信息（每次迭代时都会加载这些文件），同时依赖磁盘上的计划和规范文件。  
 
-## Workflow
+## 工作流程  
 
-### 1) Collect inputs (ask if missing)
-- **Goal / JTBD** (what outcome is needed)
-- CLI (`codex`, `claude-code`, `opencode`, `goose`, other)
-- **Mode**: `PLANNING`, `BUILDING`, or `BOTH`
-- **Completion condition**
-  - Promise phrase (string to detect), **or**
-  - Test/command to run each iteration, **or**
-  - Plan sentinel (e.g., a line `STATUS: COMPLETE` in `IMPLEMENTATION_PLAN.md`)
-- Max iterations
-- Sandbox choice (`none` | `docker` | other) + **security posture**
-- **Backpressure commands** (tests/lints/build) to embed in `AGENTS.md`
-- **Auto‑approve flags** (ask explicitly)
-  - Codex: `--full-auto`
-  - Claude Code: `--dangerously-skip-permissions`
+### 1) 收集输入（如信息缺失则进行询问）  
+- **目标/任务待定**（需要实现什么结果）  
+- 可使用的 CLI 工具：`codex`、`claude-code`、`opencode`、`goose` 等  
+- **模式**：`PLANNING`（规划阶段）、`BUILDING`（执行阶段）或 `BOTH`（同时进行规划与执行）  
+- **完成条件**：  
+  - 用于检测完成状态的字符串；  
+  - 每次迭代需要执行的测试或命令；  
+  - `IMPLEMENTATION PLAN.md` 文件中的完成标志（例如 `STATUS: COMPLETE`）；  
+- 最大迭代次数；  
+- 沙箱环境选择（`none`、`docker` 等）及相应的安全配置；  
+- 需要嵌入到 `AGENTS.md` 中的测试/代码检查命令；  
+- **自动批准选项**（需明确请求）：  
+  - `Codex`：`--full-auto`  
+  - `Claude Code`：`--dangerously-skip-permissions`  
 
-### 2) Phase 1 — Requirements → specs
-If the user wants “full Ralph” (or unclear requirements), do this before the loop:
-- Break the JTBD into **topics of concern** (1 topic = 1 spec file).
-- For each topic, draft `specs/<topic>.md`.
-- Use subagents to load URLs or existing docs into context for spec quality.
-- Keep specs short and testable.
+### 2) 第一阶段 — 定义需求 → 编写规范文件  
+如果用户希望使用完整的 Ralph 工作流程（或需求不明确），请执行以下操作：  
+- 将任务待定内容分解为具体的主题（每个主题对应一个规范文件 `specs/<topic>.md`）；  
+- 使用辅助工具（subagents）加载相关 URL 或现有文档，以提升规范文件的质量；  
+- 保持规范文件的简洁性，并确保其可被有效测试。  
 
-### 3) Phase 2/3 — PROMPT.md + AGENTS.md
-- **Context loaded each iteration:** `PROMPT.md` + `AGENTS.md`.
-- `AGENTS.md` should include:
-  - project test commands (backpressure)
-  - build/run instructions
-  - any operational learnings
-- `PROMPT.md` should reference:
-  - `specs/*.md`
-  - `IMPLEMENTATION_PLAN.md`
-  - any relevant project files/dirs
+### 3) 第二/三阶段 — 加载 `PROMPT.md` 和 `AGENTS.md`  
+- 每次迭代时都会加载 `PROMPT.md` 和 `AGENTS.md` 文件：  
+- `AGENTS.md` 应包含：  
+  - 项目测试命令；  
+  - 构建/执行指令；  
+  - 任何运营过程中的经验或反馈；  
+- `PROMPT.md` 应引用：  
+  - 所有的规范文件（`specs/*.md`）；  
+  - `IMPLEMENTATION_PLAN.md`；  
+  - 任何相关的项目文件或目录。  
 
-### 4) Two prompt templates (PLANNING vs BUILDING)
-Create **two prompts** and swap `PROMPT.md` based on mode.
-
-**PLANNING prompt (no implementation):**
+### 4) 创建两种提示模板（用于规划与执行阶段）  
+根据当前模式切换使用不同的提示模板：  
+**规划阶段提示（不进行实际开发）：**  
 ```
 You are running a Ralph PLANNING loop for: <JTBD/GOAL>.
 
@@ -65,9 +63,9 @@ Rules:
 
 Completion:
 If the plan is complete, add line: STATUS: COMPLETE
-```
+```  
 
-**BUILDING prompt:**
+**执行阶段提示：**  
 ```
 You are running a Ralph BUILDING loop for: <JTBD/GOAL>.
 
@@ -87,26 +85,28 @@ Tasks:
 
 Completion:
 If all tasks are done, add line: STATUS: COMPLETE
-```
+```  
 
-### 5) Build the per‑iteration command
-- Codex: `codex exec <FLAGS> "$(cat PROMPT.md)"`
-  - Requires git repo.
-- Claude Code: `claude <FLAGS> "$(cat PROMPT.md)"`
-- OpenCode: `opencode run "$(cat PROMPT.md)"`
-- Goose: `goose run "$(cat PROMPT.md)"` (ask if they want the Goose recipe)
+### 5) 构建每次迭代的命令  
+- 使用 `Codex`：`codex exec <FLAGS> "$(cat PROMPT.md)"`  
+  - 需要 Git 仓库的支持；  
+- 使用 `Claude Code`：`claude <FLAGS> "$(cat PROMPT.md)"`  
+- 使用 `OpenCode`：`opencode run "$(cat PROMPT.md)"`  
+- 使用 `Goose`：`goose run "$(cat PROMPT.md)"`（询问用户是否需要使用 Goose 工具）  
 
-If the CLI is unknown, ask for the exact command to run each iteration.
+如果用户不知道具体的 CLI 命令，需在每次迭代时询问正确的命令。  
 
-### 6) Output a copy‑paste script
-Provide **either** a minimal loop or a controlled loop with max iters + stop conditions.
+### 6) 生成可执行的脚本  
+提供两种类型的脚本：  
+- **最小化版本的循环脚本**；  
+- **带有限制条件的循环脚本（推荐使用）**。  
 
-**Minimal loop (Geoff style):**
+**最小化版本的循环脚本（Geoff 风格）：**  
 ```bash
 while :; do cat PROMPT.md | claude ; done
-```
+```  
 
-**Controlled loop (recommended):**
+**带有限制条件的循环脚本（推荐使用）：**  
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -147,14 +147,14 @@ done
 
 echo "❌ Max iterations reached without completion." | tee -a "$LOG_FILE"
 exit 1
-```
+```  
 
-## Safety/Sandbox Guidance (must mention)
-- Running with `--dangerously-skip-permissions` or `--full-auto` implies **trust + risk**.
-- Recommend a **sandbox** (docker/e2b/fly) with minimal credentials and restricted network.
-- Escape hatches: `Ctrl+C` to stop; `git reset --hard` to revert.
+## 安全与沙箱使用指南  
+- 使用 `--dangerously-skip-permissions` 或 `--full-auto` 选项会带来信任风险；  
+- 建议使用沙箱环境（如 Docker、e2b 或 Fly）以限制权限和网络访问；  
+- 紧急退出方式：使用 `Ctrl+C` 停止执行；使用 `git reset --hard` 恢复到初始状态。  
 
-## Guardrails
-- If requirements are unclear, insist on specs before BUILDING.
-- If the plan looks stale/wrong, regenerate it (PLANNING loop).
-- If backpressure commands are missing, ask for them and add to `AGENTS.md`.
+## 规范与限制  
+- 如果需求不明确，必须在执行构建步骤之前完成规范文件的编写；  
+- 如果计划内容过时或错误，需重新进入规划阶段；  
+- 如果缺少测试命令，请要求用户提供并添加到 `AGENTS.md` 中。

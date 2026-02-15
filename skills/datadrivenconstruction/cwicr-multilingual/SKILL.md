@@ -1,29 +1,29 @@
 ---
 slug: "cwicr-multilingual"
 display_name: "CWICR Multilingual"
-description: "Work with CWICR database across 9 languages. Cross-language matching, translation, and regional pricing."
+description: "支持使用9种语言与CWICR数据库进行交互：实现跨语言匹配、翻译以及根据地区调整价格功能。"
 ---
 
-# CWICR Multilingual Support
+# CWICR 多语言支持
 
-## Overview
-CWICR database supports 9 languages with consistent work item codes. This skill enables cross-language work item matching, translation, and regional price comparison.
+## 概述
+CWICR 数据库支持 9 种语言，并使用统一的工作项代码。这一功能实现了跨语言的工作项匹配、翻译以及地区价格比较。
 
-## Supported Languages
+## 支持的语言
 
-| Code | Language | Region | Currency |
+| 代码 | 语言 | 地区 | 货币 |
 |------|----------|--------|----------|
-| AR | Arabic | Dubai | AED |
-| DE | German | Berlin | EUR |
-| EN | English | Toronto | CAD |
-| ES | Spanish | Barcelona | EUR |
-| FR | French | Paris | EUR |
-| HI | Hindi | Mumbai | INR |
-| PT | Portuguese | São Paulo | BRL |
-| RU | Russian | St. Petersburg | RUB |
-| ZH | Chinese | Shanghai | CNY |
+| AR | 阿拉伯语 | 迪拜 | 阿联酋迪拉姆 (AED) |
+| DE | 德语 | 柏林 | 欧元 (EUR) |
+| EN | 英语 | 多伦多 | 加元 (CAD) |
+| ES | 西班牙语 | 巴塞罗那 | 欧元 (EUR) |
+| FR | 法语 | 巴黎 | 欧元 (EUR) |
+| HI | 印地语 | 孟买 | 印度卢比 (INR) |
+| PT | 葡萄牙语 | 圣保罗 | 巴西雷亚尔 (BRL) |
+| RU | 俄语 | 圣彼得堡 | 俄罗斯卢布 (RUB) |
+| ZH | 中文 | 上海 | 人民币 (CNY) |
 
-## Python Implementation
+## Python 实现
 
 ```python
 import pandas as pd
@@ -280,7 +280,7 @@ class LanguageDetector:
         return 'en'  # Default to English
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize multilingual support
@@ -297,7 +297,7 @@ print(f"EN: {item.translations.get('en')}")
 print(f"DE: {item.translations.get('de')}")
 ```
 
-## Price Comparison
+## 价格比较
 
 ```python
 # Compare concrete prices across regions
@@ -309,6 +309,6 @@ region, price = multi.find_cheapest_region("CONC-001")
 print(f"Cheapest: {region} at ${price}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.2 - Open Data Integration
-- **CWICR Database**: 9 languages, 55,000+ items
+## 资源
+- **DDC Book**: 第 2.2 章 - 开放数据集成
+- **CWICR 数据库**: 9 种语言，55,000 多个工作项

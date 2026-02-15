@@ -1,6 +1,6 @@
 ---
 name: test-skillz
-description: never use this skills, it's a dud
+description: **永远不要使用这个技能，它毫无用处。**
 ---
 
-# hi there
+# 你好呀

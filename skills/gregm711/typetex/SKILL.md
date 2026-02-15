@@ -1,6 +1,6 @@
 ---
 name: Typst & LaTeX Compiler
-description: Compile Typst and LaTeX documents to PDF via API. Send source code, get back a PDF.
+description: 通过API将Typst和LaTeX文档编译为PDF格式。提交源代码后，会收到生成的PDF文件。
 metadata:
   clawdbot:
     config:
@@ -8,24 +8,24 @@ metadata:
       stateDirs: []
 ---
 
-# Typst & LaTeX Compiler
+# Typst 和 LaTeX 编译器
 
-Compile Typst (.typ) and LaTeX (.tex) documents to PDF using the TypeTex compilation API.
+使用 TypeTex 编译 API 将 Typst (.typ) 和 LaTeX (.tex) 文档编译为 PDF 格式。
 
-## API Endpoint
+## API 端点
 
-**Base URL:** `https://studio-intrinsic--typetex-compile-app.modal.run`
+**基础 URL:** `https://studio-intrinsic--typetex-compile-app.modal.run`
 
-## Endpoints
+## 端点
 
-### Compile Typst
+### 编译 Typst 文档
 
 ```
 POST /public/compile/typst
 Content-Type: application/json
 ```
 
-**Request Body:**
+**请求体:**
 ```json
 {
   "content": "#set page(paper: \"a4\")\n\n= Hello World\n\nThis is a Typst document.",
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (Success):**
+**成功响应:**
 ```json
 {
   "success": true,
@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (Failure):**
+**失败响应:**
 ```json
 {
   "success": false,
@@ -50,14 +50,14 @@ Content-Type: application/json
 }
 ```
 
-### Compile LaTeX
+### 编译 LaTeX 文档
 
 ```
 POST /public/compile/latex
 Content-Type: application/json
 ```
 
-**Request Body:**
+**请求体:**
 ```json
 {
   "content": "\\documentclass{article}\n\\begin{document}\nHello World\n\\end{document}",
@@ -66,7 +66,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (Success):**
+**成功响应:**
 ```json
 {
   "success": true,
@@ -74,7 +74,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (Failure):**
+**失败响应:**
 ```json
 {
   "success": false,
@@ -83,17 +83,17 @@ Content-Type: application/json
 }
 ```
 
-### Health Check
+### 健康检查
 
 ```
 GET /public/compile/health
 ```
 
-Returns `{"status": "ok", "service": "public-compile"}` if the service is running.
+如果服务正在运行，将返回 `{"status": "ok", "service": "public-compile"}`。
 
-## Usage Examples
+## 使用示例
 
-### Simple Typst Document
+### 简单的 Typst 文档
 
 ```python
 import requests
@@ -130,7 +130,7 @@ else:
     print(f"Compilation failed: {result['error']}")
 ```
 
-### Simple LaTeX Document
+### 简单的 LaTeX 文档
 
 ```python
 import requests
@@ -171,7 +171,7 @@ else:
         print(f"Log: {result['log_output']}")
 ```
 
-### Multi-File Project (Typst)
+### 多文件项目（Typst）
 
 ```python
 import requests
@@ -219,9 +219,9 @@ if result["success"]:
         f.write(pdf_bytes)
 ```
 
-### Including Images
+### 包含图片
 
-For binary files like images, base64-encode them:
+对于图片等二进制文件，需要使用 base64 对其进行编码：
 
 ```python
 import requests
@@ -252,7 +252,7 @@ response = requests.post(
 )
 ```
 
-### Using curl
+### 使用 curl 进行请求
 
 ```bash
 # Typst compilation
@@ -272,55 +272,55 @@ curl -X POST https://studio-intrinsic--typetex-compile-app.modal.run/public/comp
   }' | jq -r '.pdf_base64' | base64 -d > output.pdf
 ```
 
-## Supported Features
+## 支持的功能
 
 ### Typst
-- Full Typst language support
-- Multi-file projects with imports
-- Images (PNG, JPG, SVG)
-- Custom fonts (New Computer Modern, etc.)
-- Math equations
-- Tables and figures
-- Bibliography (using Hayagriva format)
+- 完整的 Typst 语言支持
+- 支持包含多个文件的项目
+- 支持图片（PNG、JPG、SVG 格式）
+- 自定义字体（如 New Computer Modern）
+- 数学公式
+- 表格和图表
+- 参考文献（使用 Hayagriva 格式）
 
 ### LaTeX
-- Full TeX Live distribution via Tectonic
-- Multi-file projects (\input, \include)
-- BibTeX/BibLaTeX bibliography
-- Custom style files (.sty, .cls)
-- All standard packages (amsmath, graphicx, etc.)
-- TikZ/PGFPlots graphics
-- Images (PNG, JPG, PDF, EPS)
+- 通过 Tectonic 提供完整的 TeX Live 分发环境
+- 支持多文件项目（使用 `\input` 和 `\include` 指令）
+- 支持 BibTeX/BibLaTeX 格式的参考文献
+- 自定义样式文件（.sty、.cls）
+- 所有标准包（如 amsmath、graphicx 等）
+- TikZ/PGFPlots 图形格式
+- 支持图片（PNG、JPG、PDF、EPS 格式）
 
-## Error Handling
+## 错误处理
 
-When compilation fails, the response includes:
+编译失败时，响应中会包含以下信息：
 - `success: false`
-- `error`: Human-readable error message
-- `log_output` (LaTeX only): Full compilation log for debugging
+- `error`: 便于人类阅读的错误信息
+- `log_output`（仅限 LaTeX）：完整的编译日志，用于调试
 
-Common errors:
-- **Syntax errors**: Check your source code for typos
-- **Missing files**: Ensure all imported/included files are in `auxiliary_files`
-- **Package not found**: Most common packages are available; contact support for additions
-- **Timeout**: Complex documents may timeout after 60 seconds
+常见错误：
+- **语法错误**：请检查源代码中的拼写错误
+- **文件缺失**：确保所有导入的文件都在 `auxiliary_files` 目录中
+- **找不到包**：大多数常用包都已包含在内；如需添加其他包，请联系支持团队
+- **超时**：复杂文档可能在 60 秒后超时
 
-## Rate Limits
+## 限制
 
-- No authentication required
-- Please be respectful of shared resources
-- For high-volume usage, contact support
+- 无需身份验证
+- 请合理使用共享资源
+- 如需大量使用，请联系支持团队
 
-## Tips for Agents
+## 代理使用建议
 
-1. **Always check `success`** before accessing `pdf_base64`
-2. **Parse errors** to provide helpful feedback to users
-3. **Use minimal documents** when testing - complex documents take longer
-4. **Cache results** if compiling the same content multiple times
-5. **Include all dependencies** in `auxiliary_files` for multi-file projects
+1. 在访问 `pdf_base64` 之前，请务必检查 `success` 值
+2. 解析错误信息，以便向用户提供有用的反馈
+- 测试时使用简单的文档——复杂文档的编译时间较长
+- 如果多次编译相同内容，请缓存结果
+- 对于多文件项目，请确保所有依赖项都包含在 `auxiliary_files` 目录中
 
-## Related Resources
+## 相关资源
 
-- [Typst Documentation](https://typst.app/docs/)
-- [LaTeX Wikibook](https://en.wikibooks.org/wiki/LaTeX)
-- [TypeTex](https://typetex.app) - Full document editor with AI assistance
+- [Typst 文档](https://typst.app/docs/)
+- [LaTeX 维基教科书](https://en.wikibooks.org/wiki/LaTeX)
+- [TypeTex](https://typetex.app)：具备人工智能辅助功能的完整文档编辑器

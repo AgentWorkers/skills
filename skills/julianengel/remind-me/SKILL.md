@@ -1,135 +1,95 @@
 ---
 name: remind-me
-description: Set reminders using natural language. Automatically creates one-time cron jobs and logs to markdown.
+description: 使用自然语言设置提醒。会自动创建一次性定时任务（cron jobs），并将相关日志记录到 Markdown 文件中。
 metadata: {"clawdbot":{"emoji":"⏰","requires":{"bins":["bash","date"]}}}
 ---
 
-# Remind Me
+# 提醒我  
+（Remind Me）  
+这是一个能够自动触发提醒的自然语言工具，通过 `cron` 来安排任务，并使用 Markdown 格式记录提醒记录。  
 
-Natural language reminders that fire automatically. Uses cron for scheduling, markdown for logging.
+## 使用方法  
 
-## Usage
+### 一次性提醒  
+只需自然地提出请求：  
+- “提醒我今天晚些时候支付 Gumroad 的费用”  
+- “提醒我明天下午 3 点给妈妈打电话”  
+- “2 小时后提醒我检查烤箱”  
+- “下周一早上 9 点提醒我关于会议的安排”  
 
-### One-Time Reminders
-Just ask naturally:
-- "Remind me to pay for Gumroad later today"
-- "Remind me to call mom tomorrow at 3pm"
-- "Remind me in 2 hours to check the oven"
-- "Remind me next Monday at 9am about the meeting"
+### 定期提醒  
+对于需要重复执行的提醒：  
+- “每小时提醒我伸展一下身体”  
+- “每天早上 9 点提醒我查看邮件”  
+- “每周一下午 2 点提醒我关于会议的安排”  
+- “每周提醒我提交时间表”  
 
-### Recurring Reminders
-For repeating reminders:
-- "Remind me every hour to stretch"
-- "Remind me every day at 9am to check email"
-- "Remind me every Monday at 2pm about the meeting"
-- "Remind me weekly to submit timesheet"
+## 工作原理  
+1. 从用户输入的文本中解析时间信息。  
+2. 使用 `--at` 参数创建一个一次性 cron 任务。  
+3. 将提醒记录到 `/home/julian/clawd/reminders.md` 文件中以供后续查看。  
+4. 在预定时间，系统会向用户发送提醒信息。  
 
-## How It Works
+## 时间解析  
 
-1. Parse the time from your message
-2. Create a one-time cron job with `--at`
-3. Log to `/home/julian/clawd/reminders.md` for history
-4. At the scheduled time, you get a message
+### 一次性提醒  
+- **相对时间**：  
+  - “5 分钟后” / “2 小时后” / “3 天后”  
+  - “今天晚些时候” → 今天 17:00  
+  - “今天下午” → 今天 15:00  
+  - “今晚” → 今天 20:00  
 
-## Time Parsing
+- **绝对时间**：  
+  - “明天” → 明天早上 9:00  
+  - “明天下午 3 点” → 明天 15:00  
+  - “下周一” → 下周一早上 9:00  
+  - “下周一下午 2 点” → 下周一 14:00  
 
-### One-Time Reminders
+- **日期**：  
+  - “1 月 15 日” → 1 月 15 日早上 9:00  
+  - “1 月 15 日下午 3 点” → 1 月 15 日 15:00  
+  - “2026-01-15” → 2026 年 1 月 15 日早上 9:00  
+  - “2026-01-15 14:30” → 2026 年 1 月 15 日 14:30  
 
-**Relative:**
-- "in 5 minutes" / "in 2 hours" / "in 3 days"
-- "later today" → 17:00 today
-- "this afternoon" → 15:00 today
-- "tonight" → 20:00 today
+### 定期提醒  
+- **间隔**：  
+  - “每 30 分钟”  
+  - “每 2 小时”  
 
-**Absolute:**
-- "tomorrow" → tomorrow 9am
-- "tomorrow at 3pm" → tomorrow 15:00
-- "next Monday" → next Monday 9am
-- "next Monday at 2pm" → next Monday 14:00
+- **每日**：  
+  - “每天早上 9 点”  
+  - “每天下午 3 点”  
 
-**Dates:**
-- "January 15" → Jan 15 at 9am
-- "Jan 15 at 3pm" → Jan 15 at 15:00
-- "2026-01-15" → Jan 15 at 9am
-- "2026-01-15 14:30" → Jan 15 at 14:30
+- **每周**：  
+  - “每周一早上 9 点”  
+  - “每周一下午 2 点”  
+  - “每周五下午 5 点”  
 
-### Recurring Reminders
+## 提醒记录  
+所有提醒都会被记录到 `/home/julian/clawd/reminders.md` 文件中：  
 
-**Intervals:**
-- "every 30 minutes"
-- "every 2 hours"
+**状态说明**：  
+- `[scheduled]` — 一次性提醒，正在等待执行  
+- `[recurring]` — 定期提醒（正在运行中）  
+- `[sent]` — 一次性提醒已发送给用户  
 
-**Daily:**
-- "daily at 9am"
-- "every day at 3pm"
+## 手动命令  
+（Manual commands）  
 
-**Weekly:**
-- "weekly" → every Monday at 9am
-- "every Monday at 2pm"
-- "every Friday at 5pm"
+## 代理实现（Agent Implementation）  
+- 当用户输入 “提醒我……” 时，系统会自动执行相应的操作。  
 
-## Reminder Log
+**示例**：  
+（Examples）  
 
-All reminders are logged to `/home/julian/clawd/reminders.md`:
+### 一次性提醒  
+（Examples for one-time reminders）  
 
-```markdown
-- [scheduled] 2026-01-06 17:00 | Pay for Gumroad (id: abc123)
-- [recurring] every 2h | Stand up and stretch (id: def456)
-- [recurring] cron: 0 9 * * 1 | Weekly meeting (id: ghi789)
-```
+### 定期提醒  
+（Examples for recurring reminders）  
 
-**Status:**
-- `[scheduled]` — one-time reminder waiting to fire
-- `[recurring]` — repeating reminder (active)
-- `[sent]` — one-time reminder already delivered
-
-## Manual Commands
-
-```bash
-# List pending reminders
-cron list
-
-# View reminder log
-cat /home/julian/clawd/reminders.md
-
-# Remove a scheduled reminder
-cron rm <job-id>
-```
-
-## Agent Implementation
-
-### One-Time Reminders
-
-When the user says "remind me to X at Y":
-
-```bash
-bash /home/julian/clawd/skills/remind-me/create-reminder.sh "X" "Y"
-```
-
-**Examples:**
-```bash
-bash /home/julian/clawd/skills/remind-me/create-reminder.sh "Pay for Gumroad" "later today"
-bash /home/julian/clawd/skills/remind-me/create-reminder.sh "Call dentist" "tomorrow at 3pm"
-bash /home/julian/clawd/skills/remind-me/create-reminder.sh "Check email" "in 2 hours"
-```
-
-### Recurring Reminders
-
-When the user says "remind me every X to Y":
-
-```bash
-bash /home/julian/clawd/skills/remind-me/create-recurring.sh "Y" "every X"
-```
-
-**Examples:**
-```bash
-bash /home/julian/clawd/skills/remind-me/create-recurring.sh "Stand up and stretch" "every 2 hours"
-bash /home/julian/clawd/skills/remind-me/create-recurring.sh "Check email" "daily at 9am"
-bash /home/julian/clawd/skills/remind-me/create-recurring.sh "Weekly team meeting" "every Monday at 2pm"
-```
-
-Both scripts automatically:
-1. Parse the time/schedule
-2. Create a cron job (one-time with `--at` or recurring with `--every`/`--cron`)
-3. Log to `/home/julian/clawd/reminders.md`
-4. Return confirmation with job ID
+这两个脚本都会自动完成以下操作：  
+1. 解析用户的时间/日程要求。  
+2. 创建相应的 cron 任务（一次性提醒使用 `--at`，定期提醒使用 `--every`/`--cron`）。  
+3. 将提醒记录到 `/home/julian/clawd/reminders.md`。  
+4. 向用户返回任务 ID 作为确认信息。

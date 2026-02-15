@@ -1,28 +1,28 @@
 ---
 slug: "llm-document-extraction"
 display_name: "Llm Document Extraction"
-description: "Extract structured data from construction documents using LLMs. Process RFIs, submittals, contracts, specifications. Convert unstructured PDFs to structured JSON/Excel."
+description: "使用大型语言模型（LLMs）从施工文档中提取结构化数据。处理请求报价（RFIs）、提交文件、合同以及技术规范。将非结构化的PDF文件转换为结构化的JSON或Excel格式。"
 ---
 
-# LLM Document Extraction
+# LLM 文本提取技术
 
-## Overview
+## 概述
 
-Construction documents (RFIs, submittals, specs, contracts) contain critical data trapped in unstructured formats. This skill uses LLMs to extract structured data automatically.
+建筑行业的相关文档（如请求提案（RFIs）、提交文件、技术规范和合同）中包含大量以非结构化格式存储的关键数据。本技术利用大型语言模型（LLMs）自动提取这些数据。
 
-> "The construction industry is drowning in a flood of new data: the volume of information has grown from 15 zettabytes in 2015 to 181 zettabytes in 2025, and 90% of all existing data has been created in just the last few years." — Artem Boiko
+> “建筑行业正面临着海量新数据的冲击：信息量从 2015 年的 15 泽字节增长到了 2025 年的 181 泽字节，而其中 90% 的数据是在最近几年产生的。” — Artem Boiko
 
-## Use Cases
+## 使用场景
 
-| Document Type | Extract |
+| 文档类型 | 需要提取的信息 |
 |---------------|---------|
-| RFI | Question, response, dates, parties |
-| Submittal | Product specs, approval status, materials |
-| Contract | Parties, amounts, dates, scope, clauses |
-| Specification | Materials, standards, requirements |
-| Daily Report | Weather, labor, equipment, progress |
+| 请求提案（RFI） | 问题、回复内容、日期、相关方信息 |
+| 提交文件 | 产品规格、审批状态、所需材料 |
+| 合同 | 合同各方、金额、日期、项目范围、合同条款 |
+| 技术规范 | 使用材料、相关标准、具体要求 |
+| 日报 | 天气情况、劳动力信息、设备使用情况、项目进度 |
 
-## Quick Start
+## 快速入门
 
 ```python
 from openai import OpenAI
@@ -64,9 +64,9 @@ def extract_from_pdf(pdf_path: str, extraction_schema: dict) -> dict:
     return json.loads(response.choices[0].message.content)
 ```
 
-## Extraction Schemas
+## 数据提取框架
 
-### RFI Schema
+### 请求提案（RFI）数据提取框架
 
 ```python
 rfi_schema = {
@@ -88,7 +88,7 @@ rfi_schema = {
 rfi_data = extract_from_pdf("RFI-0042.pdf", rfi_schema)
 ```
 
-### Submittal Schema
+### 提交文件数据提取框架
 
 ```python
 submittal_schema = {
@@ -112,7 +112,7 @@ submittal_schema = {
 }
 ```
 
-### Contract Schema
+### 合同数据提取框架
 
 ```python
 contract_schema = {
@@ -141,7 +141,7 @@ contract_schema = {
 }
 ```
 
-## Batch Processing with n8n
+## 使用 n8n 进行批量处理
 
 ```json
 {
@@ -186,7 +186,7 @@ contract_schema = {
 }
 ```
 
-## Vision Model for Drawings
+## 绘图内容的视觉识别模型
 
 ```python
 import base64
@@ -224,7 +224,7 @@ areas = extract_from_drawing(
 )
 ```
 
-## RAG for Large Documents
+## 大型文档的随机问答（RAG）技术
 
 ```python
 from langchain_community.document_loaders import PyPDFLoader
@@ -278,13 +278,13 @@ index = create_document_index("contract_100pages.pdf")
 answer = query_document(index, "What are the liquidated damages terms?")
 ```
 
-## Requirements
+## 技术要求
 
 ```bash
 pip install openai pdfplumber langchain langchain-openai qdrant-client
 ```
 
-## Resources
+## 可用资源
 
-- OpenAI Vision: https://platform.openai.com/docs/guides/vision
-- LangChain RAG: https://python.langchain.com/docs/tutorials/rag/
+- OpenAI Vision：https://platform.openai.com/docs/guides/vision
+- LangChain RAG：https://python.langchain.com/docs/tutorials/rag/

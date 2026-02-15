@@ -1,53 +1,52 @@
 ---
 slug: "rvt-to-ifc"
 display_name: "RVT To IFC"
-description: "Convert RVT files to IFC format. Support IFC2x3, IFC4, IFC4.3 with customizable export settings."
+description: "将 RVT 文件转换为 IFC 格式。支持 IFC2x3、IFC4 和 IFC4.3 格式，并提供可自定义的导出设置。"
 ---
 
-# RVT to IFC Conversion
+# RVT 到 IFC 的转换
 
-> **Note:** RVT is the file format. IFC is an open standard by buildingSMART International.
+> **注意：** RVT 是文件格式，而 IFC 是由 buildingSMART International 制定的开放标准。
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-IFC is the open BIM standard for interoperability, but:
-- Native Revit IFC export requires Autodesk license
-- Export settings significantly affect data quality
-- Batch processing is manual and time-consuming
+### 问题描述
+IFC 是用于实现 BIM（建筑信息模型）互操作性的开放标准，但存在以下问题：
+- 使用 Revit 的原生 IFC 导出功能需要 Autodesk 许可证；
+- 导出设置会显著影响数据质量；
+- 批量处理过程既繁琐又耗时。
 
-### Solution
-RVT2IFCconverter.exe converts Revit files to IFC offline, without licenses, with full control over export settings.
+### 解决方案
+RVT2IFCconverter.exe 可以在离线环境下将 Revit 文件转换为 IFC 格式，无需许可证，并且用户可以完全控制导出设置。
 
-### Business Value
-- **No license required** - Works without Autodesk software
-- **Multiple IFC versions** - IFC2x3, IFC4, IFC4.3 support
-- **Batch processing** - Convert thousands of files
-- **Consistent quality** - Standardized export settings
+### 商业价值
+- **无需许可证**：无需安装 Autodesk 软件即可使用；
+- **支持多种 IFC 版本**：IFC2x3、IFC4、IFC4.3；
+- **支持批量处理**：能够处理数千个文件；
+- **数据质量一致**：采用标准化的导出设置。
 
-## Technical Implementation
+## 技术实现
 
-### CLI Syntax
+### 命令行接口（CLI）语法
 ```bash
 RVT2IFCconverter.exe <input.rvt> [<output.ifc>] [preset=<name>] [config="..."]
 ```
 
-### IFC Versions
-| Version | Use Case |
+### IFC 版本
+| 版本 | 适用场景 |
 |---------|----------|
-| IFC2x3 | Legacy compatibility, most software |
-| IFC4 | Enhanced properties, modern BIM |
-| IFC4.3 | Infrastructure, latest standard |
+| IFC2x3 | 与大多数软件的兼容性 |
+| IFC4 | 支持更多属性和现代 BIM 功能 |
+| IFC4.3 | 适用于基础设施项目，是最新的标准 |
 
-### Export Presets
-| Preset | Description |
+### 导出预设
+| 预设 | 描述 |
 |--------|-------------|
-| `standard` | Default balanced export |
-| `extended` | Maximum detail and properties |
-| `custom` | User-defined configuration |
+| `standard` | 默认的平衡导出设置 |
+| `extended` | 最详细的导出内容和属性 |
+| `custom` | 用户自定义的导出配置 |
 
-### Examples
-
+### 示例
 ```bash
 # Standard IFC export
 RVT2IFCconverter.exe "C:\Projects\Building.rvt"
@@ -62,8 +61,7 @@ RVT2IFCconverter.exe "C:\Projects\Building.rvt" "D:\Export\model.ifc"
 RVT2IFCconverter.exe "C:\Projects\Building.rvt" config="ExportBaseQuantities=true; SitePlacement=Shared"
 ```
 
-### Python Integration
-
+### Python 集成
 ```python
 import subprocess
 from pathlib import Path
@@ -275,8 +273,7 @@ def batch_convert_to_ifc(folder: str,
     return [r['output'] for r in results if r['status'] == 'success']
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize converter
 converter = RevitToIFCConverter("C:/DDC/RVT2IFCconverter.exe")
@@ -294,9 +291,9 @@ config = IFCExportConfig(
 ifc = converter.convert("building.rvt", preset=ExportPreset.CUSTOM, config=config)
 ```
 
-## Common Use Cases
+## 常见应用场景
 
-### 1. Batch Processing
+### 1. 批量处理
 ```python
 converter = RevitToIFCConverter()
 results = converter.batch_convert(
@@ -307,20 +304,19 @@ results = converter.batch_convert(
 print(f"Converted {len([r for r in results if r['status'] == 'success'])} files")
 ```
 
-### 2. Quality Check
+### 2. 数据质量检查
 ```python
 validation = converter.validate_output("model.ifc")
 print(f"Valid: {validation['valid']}, Version: {validation['ifc_version']}")
 ```
 
-### 3. Compare Presets
+### 预设比较
 ```python
 checker = IFCQualityChecker(converter)
 comparison = checker.compare_presets("building.rvt")
 print(comparison)
 ```
 
-## Resources
-
+## 资源
 - **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
 - **buildingSMART IFC**: https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/

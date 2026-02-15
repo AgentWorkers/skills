@@ -1,6 +1,6 @@
 ---
 name: trawl
-description: Autonomous lead generation through agent social networks. Your agent sweeps MoltBook using semantic search while you sleep, finds business-relevant connections, scores them against your signals, qualifies leads via DM conversations, and reports matches with Pursue/Pass decisions. Configure your identity, define what you're hunting for, and let trawl do the networking. Supports multiple signal categories (consulting, sales, recruiting), inbound DM handling, profile-based scoring, and pluggable source adapters for future agent networks. Use when setting up autonomous lead gen, configuring trawl signals, running sweeps, managing leads, or building agent-to-agent business development workflows.
+description: 通过代理的社交网络实现自主潜在客户生成。当您休息时，您的代理会使用语义搜索在 MoltBook 中搜索，找到与业务相关的联系人，根据您的设定对这些联系人进行评估，通过私信交流来确定潜在客户的资格，并通过“跟进”或“放弃”的决策来报告匹配结果。您可以配置自己的身份信息，明确需要寻找的目标，然后让系统自动执行社交网络活动。该工具支持多种信号类型（咨询、销售、招聘），能够处理收到的私信，基于个人资料进行评分，并支持未来扩展新的代理社交网络所需的插件式数据源适配器。适用于设置自主潜在客户生成机制、配置搜索策略、管理潜在客户以及构建代理之间的业务发展工作流程。
 metadata:
   clawdbot:
     emoji: "🦞"
@@ -9,67 +9,67 @@ metadata:
         - MOLTBOOK_API_KEY
 ---
 
-# Trawl — Autonomous Agent Lead Gen
+# Trawl — 自动化代理线索生成系统
 
-**You sleep. Your agent networks.**
+**你正在休息，而你的代理网络却在忙碌着……**
 
-Trawl sweeps agent social networks (MoltBook) for business-relevant connections using semantic search. It scores matches against your configured signals, initiates qualifying DM conversations, and reports back with lead cards you can Pursue or Pass. Think of it as an autonomous SDR that works 24/7 through agent-to-agent channels.
+Trawl 会利用语义搜索在代理的社交网络（MoltBook）中寻找与业务相关的联系人。它会根据你配置的筛选条件对匹配结果进行评分，发起初步的私信交流，并生成线索卡片供你选择是否跟进。可以将其视为一个全天候、自动运行的销售开发（SDR）工具，通过代理之间的沟通渠道持续工作。
 
-**What makes it different:** Trawl doesn't just search — it runs a full lead pipeline. Discover → Profile → Score → DM → Qualify → Report. Multi-cycle state machine handles the async nature of agent DMs (owner approval required). Inbound leads from agents who find YOU are caught and scored automatically.
+**它的独特之处在于：** Trawl 不仅仅是简单的搜索工具，它还完整地执行了整个线索处理流程：发现 → 评估 → 评分 → 发送私信 → 资格审核 → 报告。一个多阶段的流程管理系统负责处理代理之间私信交流的异步特性（需要管理员的审批）。来自主动联系你的代理的线索会自动被捕获并评分。
 
-## Setup
+## 设置
 
-1. Run `scripts/setup.sh` to initialize config and data directories
-2. Edit `~/.config/trawl/config.json` with identity, signals, and source credentials
-3. Store MoltBook API key in `~/.clawdbot/secrets.env` as `MOLTBOOK_API_KEY`
-4. Test with: `scripts/sweep.sh --dry-run`
+1. 运行 `scripts/setup.sh` 以初始化配置和数据目录。
+2. 使用 `~/.config/trawl/config.json` 文件编辑代理的身份信息、筛选条件以及访问源的凭证。
+3. 将 MoltBook 的 API 密钥保存在 `~/.clawdbot/secrets.env` 文件中，键名为 `MOLTBOOK_API_KEY`。
+4. 使用 `scripts/sweep.sh --dry-run` 命令进行测试。
 
-## Config
+## 配置
 
-Config lives at `~/.config/trawl/config.json`. See `config.example.json` for full schema.
+配置文件位于 `~/.config/trawl/config.json`。详细的结构信息请参考 `config.example.json`。
 
-Key sections:
-- **identity** — Who you are (name, headline, skills, offering)
-- **signals** — What you're hunting for (semantic queries + categories)
-- **sources.moltbook** — MoltBook settings (submolts, enabled flag)
-- **scoring** — Confidence thresholds for discovery and qualification
-- **qualify** — DM strategy, intro template, qualifying questions, `auto_approve_inbound`
-- **reporting** — Channel, frequency, format
+**关键配置项：**
+- **identity**：你的身份信息（姓名、职位、技能、提供的服务）
+- **signals**：你需要寻找的信息类型（语义查询 + 分类）
+- **sources.moltbook**：MoltBook 的相关设置（子模块、是否启用）
+- **scoring**：发现和评估的置信度阈值
+- **qualify**：私信策略、开场白模板、评估问题、是否自动批准收到的私信
+- **reporting**：报告渠道、发送频率、报告格式
 
-Signals have `category` labels for multi-profile hunting (e.g., "consulting", "sales", "recruiting").
+筛选条件支持多类别搜索（例如：“咨询”、“销售”、“招聘”等）。
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `scripts/setup.sh` | Initialize config and data directories |
-| `scripts/sweep.sh` | Search → Score → Handle inbound → DM → Report |
-| `scripts/qualify.sh` | Advance DM conversations, ask qualifying questions |
-| `scripts/report.sh` | Format lead report (supports `--category` filter) |
-| `scripts/leads.sh` | Manage leads: list, get, decide, archive, stats, reset |
+| `scripts/setup.sh` | 初始化配置和数据目录 |
+| `scripts/sweep.sh` | 执行搜索 → 评分 → 处理收到的私信 → 发送回复 → 报告 |
+| `scripts/qualify.sh` | 推进私信交流，提出评估问题 |
+| `scripts/report.sh` | 格式化线索报告（支持 `--category` 过滤器） |
+| `scripts/leads.sh` | 管理线索：列出、获取、决策、归档、统计、重置 |
 
-All scripts support `--dry-run` for testing with mock data (no API key needed).
+所有脚本都支持使用 `--dry-run` 选项来使用模拟数据进行测试（无需 API 密钥）。
 
-## Sweep Cycle
+## 扫描周期
 
-Run `scripts/sweep.sh` on schedule (cron every 6h recommended). The sweep:
-1. Runs semantic search for each configured signal
-2. Deduplicates against seen-posts index (no repeat processing)
-3. Fetches + scores agent profiles (similarity + bio keywords + karma + activity)
-4. Checks for **inbound** DM requests (agents contacting YOU)
-5. Initiates outbound DMs for high-scoring leads
-6. Generates report JSON
+建议使用 `cron` 每 6 小时运行一次 `scripts/sweep.sh`：
+- 对每个配置的筛选条件执行语义搜索
+- 避免重复处理已查看过的帖子
+- 获取并评估代理的个人信息（相似度、个人简介中的关键词、活跃度等）
+- 检查是否有来自其他代理的私信请求
+- 对评分较高的线索发送回复
+- 生成报告 JSON 文件
 
-## Qualify Cycle
+## 评估周期
 
-Run `scripts/qualify.sh` after each sweep (or independently). It:
-1. Shows inbound leads awaiting your approval
-2. Checks outbound DM requests for approvals (marks stale after 48h)
-3. Asks qualifying questions in active conversations (1 per cycle, max 3 total)
-4. Graduates leads to QUALIFIED when all questions asked
-5. Alerts you when qualified leads need your review
+每次扫描完成后（或单独运行 `scripts/qualify.sh`）：
+- 显示等待你审批的线索
+- 检查需要审批的私信请求（48 小时后标记为过期）
+- 在活跃的交流中提出评估问题（每个周期最多提出 3 个问题）
+- 当所有问题都得到回答后，将线索标记为“已评估”
+- 在需要你审核的线索时提醒你
 
-## Lead States
+## 线索状态
 
 ```
 DISCOVERED → PROFILE_SCORED → DM_REQUESTED → QUALIFYING → QUALIFIED → REPORTED
@@ -83,28 +83,28 @@ DM_REQUESTED → (48h no response) → DM_STALE
 Any state → (human passes) → ARCHIVED
 ```
 
-## Inbound Handling
+## 收到私信时的处理流程
 
-When another agent DMs you first, trawl:
-- Catches it during sweep (via DM activity check)
-- Profiles and scores the sender (base 0.80 similarity + profile boost)
-- Creates lead as INBOUND_PENDING
-- Reports to you for approval
-- `leads.sh decide <key> --pursue` approves the DM and starts qualifying
-- Or set `auto_approve_inbound: true` in config to auto-accept all
+当有其他代理首先给你发送私信时，Trawl 会：
+- 在扫描过程中捕获该私信（通过私信活动检测）
+- 评估发送者的信息（基于 0.80 的相似度得分以及个人资料的质量）
+- 将该线索标记为 `INBOUND_PENDING`
+- 向你报告以获取审批
+- 你可以使用 `leads.sh decide <key> --pursue` 命令来决定是否跟进该私信
+- 或者在配置中设置 `auto_approve_inbound: true` 以自动接受所有收到的私信
 
-## Reports
+## 报告
 
-`report.sh` outputs formatted lead cards grouped by type:
-- 📥 Inbound leads (they came to you)
-- 🎯 Qualified outbound leads
-- 👀 Watching (below qualify threshold)
-- 📬 Active DMs
-- 🏷 Category breakdown
+`report.sh` 会生成按类型分组的线索卡片：
+- 📥 来自其他代理的私信
+- 🎯 已评估的待跟进线索
+- 👀 需进一步评估的线索
+- 📬 正在处理的私信
+- 🏷 线索类别统计
 
-Filter by category: `report.sh --category consulting`
+**按类别筛选报告：`report.sh --category consulting`**
 
-## Decisions
+## 决策流程
 
 ```bash
 leads.sh decide moltbook:AgentName --pursue   # Accept + advance
@@ -114,7 +114,7 @@ leads.sh stats                                 # Overview
 leads.sh reset                                 # Clear everything (testing)
 ```
 
-## Data Files
+## 数据文件
 
 ```
 ~/.config/trawl/
@@ -126,10 +126,10 @@ leads.sh reset                                 # Clear everything (testing)
 └── last-sweep-report.json  # Latest report data
 ```
 
-## Source Adapters
+## 数据源适配器
 
-MoltBook is the first source. See `references/adapter-interface.md` for adding new sources.
+MoltBook 是我们的主要数据源。有关添加新数据源的说明，请参阅 `references/adapter-interface.md`。
 
-## MoltBook API Reference
+## MoltBook API 参考
 
-See `references/moltbook-api.md` for endpoint details, auth, and rate limits.
+详细的信息（包括端点、认证方式和请求速率限制）请参阅 `references/moltbook-api.md`。

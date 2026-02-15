@@ -1,15 +1,15 @@
 ---
 name: gousto
-description: Search and browse 9,000+ Gousto recipes. Get full ingredients and step-by-step cooking instructions via official API.
+description: 搜索并浏览超过9,000道Gousto食谱。通过官方API获取完整的食材列表和详细的烹饪步骤。
 homepage: https://github.com/dhruvkelawala/gousto-agent-skill
 metadata: {"openclaw":{"emoji":"🍳","requires":{"bins":["curl","jq"]}}}
 ---
 
-# Gousto Recipe Skill
+# Gousto 食谱管理技能
 
-Search and browse 9,000+ Gousto recipes from the command line.
+您可以通过命令行搜索和浏览 Gousto 上的 9,000 多道食谱。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # First time: build the cache (~3 min)
@@ -23,34 +23,34 @@ Search and browse 9,000+ Gousto recipes from the command line.
 ./scripts/recipe.sh honey-soy-chicken-with-noodles
 ```
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `search.sh <query>` | Search recipes by title (uses local cache) |
-| `recipe.sh <slug>` | Get full recipe details with ingredients and cooking steps |
-| `update-cache.sh` | Rebuild local cache from Gousto API (~3 min) |
+| `search.sh <查询>` | 按标题搜索食谱（使用本地缓存） |
+| `recipe.sh <slug>` | 获取包含食材和烹饪步骤的完整食谱详情 |
+| `update-cache.sh` | 从 Gousto API 更新本地缓存（约 3 分钟） |
 
-## API Details
+## API 详情
 
-**Official Gousto API** (recipe listing):
+**官方 Gousto API**（食谱列表）：
 ```
 https://production-api.gousto.co.uk/cmsreadbroker/v1/recipes?limit=50&offset=0
 ```
-- Returns metadata: title, rating, prep_time, url
-- Paginate with `offset` parameter (NOT `skip` — that's broken!)
-- ~9,300 recipes total
+- 返回元数据：标题、评分、准备时间、网址
+- 使用 `offset` 参数进行分页（注意：不要使用 `skip` 参数，因为该参数存在问题！）
+- 总共约 9,300 道食谱
 
-**Official Gousto API** (single recipe):
+**官方 Gousto API**（单条食谱）：
 ```
 https://production-api.gousto.co.uk/cmsreadbroker/v1/recipe/{slug}
 ```
-- Full recipe with ingredients, cooking steps, nutritional info
-- HTML in steps is stripped to plain text by the script
+- 包含食材、烹饪步骤和营养信息的完整食谱
+- 脚本会将步骤中的 HTML 格式转换为纯文本
 
-## Cache Format
+## 缓存格式
 
-`data/recipes.json` — array of objects:
+`data/recipes.json` — 对象数组：
 ```json
 {
   "title": "Chicken Tikka Masala",
@@ -62,8 +62,8 @@ https://production-api.gousto.co.uk/cmsreadbroker/v1/recipe/{slug}
 }
 ```
 
-## Notes
+## 注意事项
 
-- Cache is gitignored — run `update-cache.sh` after cloning
-- Search is instant (local jq filter)
-- Recipe fetch requires network (vfjr.dev proxy)
+- 本地缓存文件被 Git 忽略（git ignored），克隆仓库后请运行 `update-cache.sh` 命令来更新缓存
+- 搜索操作是即时完成的（使用本地 jQuery 过滤器）
+- 获取食谱详情需要网络请求（通过 vfjr.dev 代理）

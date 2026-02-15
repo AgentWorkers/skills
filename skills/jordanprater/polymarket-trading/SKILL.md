@@ -1,27 +1,27 @@
 ---
 name: polymarket
-description: Trade prediction markets on Polymarket. Analyze odds, place bets, track positions, automate alerts, and maximize returns from event outcomes. Covers sports, politics, entertainment, and more.
+description: 在 Polymarket 上进行交易预测市场操作。您可以分析各种事件的胜算、下注、跟踪自己的投资组合、设置自动提醒，并从事件结果中获取最大收益。该平台覆盖体育、政治、娱乐等多个领域。
 homepage: https://polymarket.com
 metadata: {"clawdbot":{"emoji":"🎯","requires":{"bins":["jq","curl"],"env":["POLYMARKET_ADDRESS"]}}}
 ---
 
-# Polymarket Trading Skill
+# Polymarket交易技巧
 
-Trade prediction markets and profit from your knowledge directly from Clawdbot.
+通过Clawdbot直接在预测市场中进行交易，并从你的知识中获利。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Understand Polymarket mechanics
-- Find profitable trading opportunities
-- Analyze market odds and sentiment
-- Track positions and P&L
-- Build automated alerts and strategies
-- Prepare for the upcoming POLY distribution
+本技巧可帮助你：
+- 理解Polymarket的运作机制
+- 寻找有利可图的交易机会
+- 分析市场概率和情绪
+- 跟踪持仓及盈亏情况
+- 构建自动化警报和交易策略
+- 为即将到来的POLY分配做好准备
 
-## What is Polymarket?
+## 什么是Polymarket？
 
-Polymarket is a decentralized prediction market platform where you trade shares representing outcomes of real-world events. If your prediction is correct, shares pay out $1. If wrong, they're worth $0.
+Polymarket是一个去中心化的预测市场平台，你可以在其中交易代表现实世界事件结果的“份额”。如果你的预测正确，这些份额将支付1美元；如果预测错误，它们的价值将为0美元。
 
 ```
 Example: "Will it rain tomorrow?"
@@ -38,9 +38,9 @@ If it doesn't rain:
 - Loss: $0.65
 ```
 
-## Getting Started
+## 入门
 
-### 1. Setup Account
+### 1. 设置账户
 
 ```
 1. Visit polymarket.com
@@ -49,7 +49,7 @@ If it doesn't rain:
 4. Start trading
 ```
 
-### 2. Understanding Shares
+### 2. 了解份额
 
 ```
 Each market has YES and NO shares
@@ -65,20 +65,20 @@ You can:
 
 ## Polymarket API
 
-### Base URL
+### 基本URL
 ```
 https://clob.polymarket.com
 https://gamma-api.polymarket.com
 ```
 
-### Get Active Markets
+### 获取活跃市场
 
 ```bash
 # List all active markets
 curl -s "https://gamma-api.polymarket.com/markets?closed=false&limit=100" | jq '.[] | {question, slug, outcomePrices}'
 ```
 
-### Get Market Details
+### 获取市场详情
 
 ```bash
 # Get specific market by slug
@@ -86,21 +86,21 @@ SLUG="will-trump-win-2024"
 curl -s "https://gamma-api.polymarket.com/markets?slug=$SLUG" | jq '.[0]'
 ```
 
-### Get Market by Condition ID
+### 根据条件ID获取市场
 
 ```bash
 CONDITION_ID="0x..."
 curl -s "https://gamma-api.polymarket.com/markets?condition_id=$CONDITION_ID" | jq
 ```
 
-### Search Markets
+### 搜索市场
 
 ```bash
 # Search by keyword
 curl -s "https://gamma-api.polymarket.com/markets?tag=politics&closed=false" | jq '.[] | {question, outcomePrices}'
 ```
 
-### Get Order Book
+### 获取订单簿
 
 ```bash
 # CLOB API for order book data
@@ -108,16 +108,16 @@ MARKET_ID="your-market-id"
 curl -s "https://clob.polymarket.com/book?market=$MARKET_ID" | jq
 ```
 
-### Get Trade History
+### 获取交易历史
 
 ```bash
 # Recent trades for a market
 curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 ```
 
-## Market Categories
+## 市场分类
 
-### 🏛️ Politics
+### 🏛️ 政治
 ```
 - Elections (US, global)
 - Policy decisions
@@ -126,7 +126,7 @@ curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 - Geopolitical events
 ```
 
-### ⚽ Sports
+### ⚽ 体育
 ```
 - Game outcomes
 - Championship winners
@@ -135,7 +135,7 @@ curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 - Season records
 ```
 
-### 💼 Business
+### 💼 商业
 ```
 - Earnings reports
 - Product launches
@@ -144,7 +144,7 @@ curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 - Executive changes
 ```
 
-### 🎬 Entertainment
+### 🎬 娱乐
 ```
 - Award shows
 - Box office performance
@@ -153,7 +153,7 @@ curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 - Streaming numbers
 ```
 
-### 🌡️ Science & Weather
+### 🌡️ 科学与天气
 ```
 - Climate data
 - Space missions
@@ -162,7 +162,7 @@ curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 - Health/pandemic
 ```
 
-### 📈 Economics
+### 📈 经济
 ```
 - Fed rate decisions
 - Inflation data
@@ -171,10 +171,9 @@ curl -s "https://clob.polymarket.com/trades?market=$MARKET_ID&limit=50" | jq
 - Market indices
 ```
 
-## Trading Strategies
+## 交易策略
 
-### 1. Information Edge
-
+### 1. 信息优势策略
 ```
 Strategy: Trade when you have better information than the market
 
@@ -191,8 +190,7 @@ Process:
 4. Monitor for new information
 ```
 
-### 2. Arbitrage
-
+### 2. 套利策略
 ```
 Strategy: Exploit price discrepancies
 
@@ -209,8 +207,7 @@ Arbitrage: Can't win championship without making finals
 Action: Buy "makes finals" if you believe championship odds
 ```
 
-### 3. Momentum Trading
-
+### 3. 动量交易策略
 ```
 Strategy: Follow price trends
 
@@ -228,8 +225,7 @@ Process:
 5. Exit when momentum fades
 ```
 
-### 4. Mean Reversion
-
+### 4. 均值回归策略
 ```
 Strategy: Bet on overreactions correcting
 
@@ -244,8 +240,7 @@ Example:
 - Price should revert
 ```
 
-### 5. Event-Driven
-
+### 5. 事件驱动策略
 ```
 Strategy: Trade around scheduled events
 
@@ -263,10 +258,9 @@ Process:
 4. Or wait for live trading opportunities
 ```
 
-## Position Sizing
+## 持仓规模调整
 
-### Kelly Criterion
-
+### Kelly准则
 ```
 Optimal bet size = (bp - q) / b
 
@@ -291,8 +285,7 @@ Kelly = 0.33 (33% of bankroll)
 Most traders use fractional Kelly (25-50%) for safety
 ```
 
-### Risk Management Rules
-
+### 风险管理规则
 ```
 Conservative:
 - Max 5% per position
@@ -310,10 +303,9 @@ Aggressive:
 - Accept higher variance
 ```
 
-## Analysis Framework
+## 分析框架
 
-### Market Efficiency Check
-
+### 市场效率检查
 ```bash
 # Questions to ask:
 
@@ -333,8 +325,7 @@ Aggressive:
    - Faster reaction?
 ```
 
-### Probability Assessment
-
+### 概率评估
 ```
 Base rate analysis:
 1. Find historical frequency
@@ -352,8 +343,7 @@ Example: "Will Company X beat earnings?"
 - Action: Consider buying YES
 ```
 
-### Liquidity Analysis
-
+### 流动性分析
 ```bash
 # Check order book depth
 curl -s "https://clob.polymarket.com/book?market=$MARKET_ID" | jq '{
@@ -374,10 +364,9 @@ Poor liquidity warnings:
 - Few recent trades
 ```
 
-## Monitoring & Alerts
+## 监控与警报
 
-### Price Alert Script
-
+### 价格警报脚本
 ```bash
 #!/bin/bash
 # Monitor market price and alert on threshold
@@ -407,8 +396,7 @@ while true; do
 done
 ```
 
-### Portfolio Tracker
-
+### 投资组合追踪器
 ```bash
 #!/bin/bash
 # Track multiple positions
@@ -448,8 +436,7 @@ done
 echo "=== Total Portfolio Value: \$$TOTAL_VALUE ==="
 ```
 
-### New Market Scanner
-
+### 新市场扫描器
 ```bash
 #!/bin/bash
 # Find newly created markets
@@ -464,17 +451,16 @@ curl -s "https://gamma-api.polymarket.com/markets?closed=false&limit=50&order=st
   }'
 ```
 
-## POLY Distribution Preparation
+## POLY分配准备
 
-### Expected Timeline
+### 预计时间表
 ```
 - Status: Confirmed Q1-Q2 2026
 - US market relaunch completed
 - Distribution to active traders
 ```
 
-### Qualifying Activities
-
+### 合格活动
 ```
 High Value:
 ✓ Trading volume (most important)
@@ -494,8 +480,7 @@ Low/Unknown:
 ? Winning percentage
 ```
 
-### Optimization Strategy
-
+### 优化策略
 ```
 Weekly targets:
 □ Trade in 5+ different markets
@@ -511,10 +496,9 @@ Monthly review:
 □ Consistent engagement
 ```
 
-## Risk Factors
+## 风险因素
 
-### Market Risks
-
+### 市场风险
 ```
 ⚠️ Resolution Risk
 - Ambiguous outcomes
@@ -532,8 +516,7 @@ Monthly review:
 - Insider trading
 ```
 
-### Platform Risks
-
+### 平台风险
 ```
 ⚠️ Smart Contract Risk
 - Potential vulnerabilities
@@ -549,8 +532,7 @@ Monthly review:
 - Oracle manipulation
 ```
 
-### Mitigation
-
+### 风险缓解措施
 ```
 Best Practices:
 □ Diversify across markets
@@ -561,10 +543,9 @@ Best Practices:
 □ Understand market rules before trading
 ```
 
-## Advanced Techniques
+## 高级技巧
 
-### Correlation Trading
-
+### 相关性交易
 ```
 Find related markets and trade the spread:
 
@@ -577,8 +558,7 @@ If A must win primary to win general:
 - Look for mispricings
 ```
 
-### Live Event Trading
-
+### 实时事件交易
 ```
 Strategy for real-time events (sports, elections):
 
@@ -593,8 +573,7 @@ Tools needed:
 - Pre-planned scenarios
 ```
 
-### Hedging
-
+### 对冲策略
 ```
 Reduce risk by offsetting positions:
 
@@ -607,31 +586,27 @@ Example:
 Cost of hedge = insurance premium
 ```
 
-## Useful Queries
+## 有用查询
 
-### Top Volume Markets
-
+### 成交量最大的市场
 ```bash
 curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=volume&ascending=false&limit=20" | \
   jq '.[] | {question, volume, liquidity}'
 ```
 
-### Markets Closing Soon
-
+### 即将关闭的市场
 ```bash
 curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=endDate&ascending=true&limit=20" | \
   jq '.[] | {question, endDate, outcomePrices}'
 ```
 
-### High Liquidity Markets
-
+### 流动性高的市场
 ```bash
 curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=liquidity&ascending=false&limit=20" | \
   jq '.[] | {question, liquidity, spread}'
 ```
 
-### Markets by Category
-
+### 按类别划分的市场
 ```bash
 # Politics
 curl -s "https://gamma-api.polymarket.com/markets?tag=politics&closed=false" | jq
@@ -643,8 +618,7 @@ curl -s "https://gamma-api.polymarket.com/markets?tag=sports&closed=false" | jq
 curl -s "https://gamma-api.polymarket.com/markets?tag=business&closed=false" | jq
 ```
 
-## Tracking Spreadsheet
-
+## 跟踪电子表格
 ```
 | Date | Market | Side | Shares | Entry | Current | P&L | Notes |
 |------|--------|------|--------|-------|---------|-----|-------|
@@ -653,23 +627,23 @@ curl -s "https://gamma-api.polymarket.com/markets?tag=business&closed=false" | j
 | 1/20 | Event Z | YES | 75 | $0.60 | $0.55 | -$3.75 | Stop? |
 ```
 
-## Resources
+## 资源
 
-### Official
+### 官方资源
 ```
 - polymarket.com - Main platform
 - docs.polymarket.com - Documentation
 - Discord - Community (search Polymarket Discord)
 ```
 
-### Analytics
+### 分析工具
 ```
 - polymarket.com/activity - Platform activity
 - dune.com - On-chain analytics
 - parsec.finance - DeFi tracking
 ```
 
-### News & Research
+### 新闻与研究
 ```
 - @Polymarket on X
 - @PolymarketBets on X  
@@ -677,7 +651,7 @@ curl -s "https://gamma-api.polymarket.com/markets?tag=business&closed=false" | j
 - Event-specific news sources
 ```
 
-### Competitors (for arbitrage)
+### 竞争对手（用于套利）
 ```
 - Kalshi (US regulated)
 - Manifold Markets (play money)
@@ -687,4 +661,4 @@ curl -s "https://gamma-api.polymarket.com/markets?tag=business&closed=false" | j
 
 ---
 
-**Disclaimer:** Prediction market trading involves risk. Past performance doesn't guarantee future results. Always trade responsibly and never risk more than you can afford to lose. This guide is for educational purposes only. Check local regulations before trading.
+**免责声明：**预测市场交易存在风险。过去的表现并不能保证未来的结果。请始终负责任地进行交易，并且切勿冒险投入超出你能承受的损失。本指南仅用于教育目的。在交易前，请查阅当地法规。

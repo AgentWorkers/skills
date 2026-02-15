@@ -1,38 +1,38 @@
 ---
 name: odoo
-description: "Query Odoo data including salesperson performance, customer analytics, orders, invoices, CRM, accounting, VAT, inventory, and AR/AP. Generates WhatsApp cards, PDFs, Excel. Use when user explicitly mentions Odoo or asks for Odoo data."
+description: "查询Odoo数据，包括销售人员的绩效、客户分析、订单、发票、客户关系管理（CRM）信息、会计数据、增值税（VAT）信息、库存情况以及应收账款（AR）和应付账款（AP）信息。可以生成WhatsApp卡片、PDF文件和Excel报表。当用户明确提到Odoo或请求Odoo数据时，请使用此功能。"
 ---
 
-# Odoo Financial Intelligence
+# Odoo财务智能
 
-**Read-only, Evidence-First, Ledger-Based Reports**
+**仅限读取、以证据为先、基于账目的报告**
 
-## Quick Reference: Common Odoo Models
+## 快速参考：常见的Odoo模型**
 
-| Model | What It Contains | Use For |
+| 模型 | 包含内容 | 用途 |
 |-------|------------------|---------|
-| `res.users` | Users/Salespeople | Find salesperson by name, get user_id |
-| `sale.order` | Sales Orders | Revenue by salesperson, order counts, status |
-| `account.move` | Invoices/Journal Entries | Invoice tracking, payments, P&L data |
-| `res.partner` | Contacts/Customers | Customer info, top customers by revenue |
-| `product.product` | Products | Product sales, inventory |
-| `account.account` | Chart of Accounts | Financial reporting, balance sheet |
-| `account.move.line` | Journal Lines | Detailed ledger entries |
+| `res.users` | 用户/销售人员 | 按名称查找销售人员，获取user_id |
+| `sale.order` | 销售订单 | 按销售人员划分的收入、订单数量、状态 |
+| `account.move` | 发票/日记账分录 | 发票跟踪、付款、损益数据 |
+| `res.partner` | 客户/联系人 | 客户信息、按收入排名的高客户 |
+| `product.product` | 产品 | 产品销售、库存 |
+| `account.account` | 账户科目表 | 财务报告、资产负债表 |
+| `account.move.line` | 日记账分录行 | 详细的账目记录 |
 
-## Security & Credentials
+## 安全性与凭证
 
-### Required Environment Variables
+### 所需的环境变量
 
-This skill requires Odoo connection credentials stored in `assets/autonomous-cfo/.env`:
+此技能需要存储在`assets/autonomous-cfo/.env`中的Odoo连接凭证：
 
-| Variable | Description | Secret |
+| 变量 | 描述 | 是否为秘密信息 |
 |----------|-------------|--------|
-| `ODOO_URL` | Odoo instance URL (e.g., `https://your-odoo.com`) | No |
-| `ODOO_DB` | Odoo database name | No |
-| `ODOO_USER` | Odoo username/email | No |
-| `ODOO_PASSWORD` | Odoo password or API key | **Yes** |
+| `ODOO_URL` | Odoo实例URL（例如：`https://your-odoo.com`） | 否 |
+| `ODOO_DB` | Odoo数据库名称 | 否 |
+| `ODOO_USER` | Odoo用户名/电子邮件 | 否 |
+| `ODOO_PASSWORD` | Odoo密码或API密钥 | **是** |
 
-**Setup:**
+**设置：**
 ```bash
 cd skills/odoo/assets/autonomous-cfo
 cp .env.example .env
@@ -40,147 +40,143 @@ cp .env.example .env
 nano .env
 ```
 
-### Model Invocation Policy
+### 模型调用策略
 
-**Model invocation is DISABLED** per `skill.json` policy. This skill handles sensitive financial data and external Odoo connections — it must be explicitly invoked by the user.
+根据`skill.json`的策略，**模型调用是被禁用的**。此技能处理敏感的财务数据和外部Odoo连接——必须由用户明确调用。
 
-**Data Handling:** All queries are read-only. No data is modified or exfiltrated.
+**数据处理：**所有查询均为只读操作，不会修改或泄露任何数据。
 
-### Data Handling
+### 数据处理规则：
+- **仅限读取**：所有修改数据的方法（如`create`、`write`、`unlink`等）在客户端层面被阻止。
+- **无数据泄露**：报告在`assets/autonomous-cfo/output/`目录下生成。
+- **网络端点**：仅连接到`.env`中指定的Odoo URL。
+- **输出格式**：PDF、Excel和WhatsApp图片卡片（仅限本地文件）。
 
-- **Read-only:** All mutating methods (`create`, `write`, `unlink`, etc.) are blocked at the client level
-- **No exfiltration:** Reports are generated locally in `assets/autonomous-cfo/output/`
-- **Network endpoints:** Only connects to the Odoo URL specified in `.env`
-- **Output formats:** PDF, Excel, and WhatsApp image cards (local files only)
+### 安装
 
-### Installation
-
-The skill requires a Python virtual environment with specific packages:
+此技能需要一个包含特定包的Python虚拟环境：
 
 ```bash
 cd skills/odoo/assets/autonomous-cfo
 ./install.sh
 ```
 
-Or manually:
+或者手动安装：
 ```bash
 cd skills/odoo/assets/autonomous-cfo
 python3 -m venv venv
 ./venv/bin/pip install -r requirements.txt
 ```
 
-**Dependencies:** `requests`, `matplotlib`, `pillow`, `fpdf2`, `openpyxl`
+**依赖库：`requests`、`matplotlib`、`pillow`、`fpdf2`、`openpyxl`
 
-## Critical Rules
+## 重要规则：
+1. **切勿假设**——在生成报告之前，务必询问相关细节。
+2. **多公司检查**——如果存在多个公司，请询问使用哪个公司的数据。
+3. **基于账目**——使用账户科目表和日记账分录（`account.move.line`），而不仅仅是发票摘要。
+4. **验证时间范围**——运行报告前请与用户确认日期范围。
+5. **无默认设置**——所有假设都必须得到确认。
 
-1. **NEVER assume** - Always ask clarifying questions before generating reports
-2. **Multi-company check** - If multiple companies exist, ASK which one to use
-3. **Ledger-based** - Use Chart of Accounts and journal entries (account.move.line), not just invoice summaries
-4. **Verify periods** - Confirm date ranges with user before running
-5. **No silent defaults** - Every assumption must be confirmed
+## 在生成任何报告之前，请询问：
+1. “应该使用哪个公司的数据？”（如果有多个公司）
+2. “时间范围是什么？（起始/结束日期）”
+3. “需要包含哪些账户或账户类型？”
+4. “是否有特定的细分需求？”（按账户、合作伙伴、日记账等）
+5. **输出格式偏好是什么？”（PDF、WhatsApp图片卡片，还是两者都需要）
 
-## Before Any Report, Ask:
+## 入口点
 
-1. "Which company should I use?" (if multiple exist)
-2. "What period? (from/to dates)"
-3. "Which accounts or account types to include?"
-4. "Any specific breakdown needed?" (by account, by partner, by journal, etc.)
-5. "Output format preference?" (PDF, WhatsApp cards, or both)
-
-## Entrypoint
-
-Uses the venv with fpdf2, matplotlib, pillow for proper PDF/chart generation:
+使用包含`fpdf2`、`matplotlib`、`pillow`的虚拟环境来生成正确的PDF/图表：
 
 ```bash
 ./skills/odoo/assets/autonomous-cfo/venv/bin/python ./skills/odoo/assets/autonomous-cfo/src/tools/cfo_cli.py <command>
 ```
 
-Or from the skill directory:
+或者从技能目录直接调用：
 ```bash
 cd skills/odoo/assets/autonomous-cfo && ./venv/bin/python src/tools/cfo_cli.py <command>
 ```
 
-## Chart of Accounts Based Reporting
+## 基于账户科目表的报告
 
-Reports should be built from:
-- `account.account` - Chart of Accounts structure (code, name, type, internal_group)
-- `account.move.line` - Journal entry lines (debit, credit, account_id, date)
-- `account.journal` - Source journals (type: sale, purchase, cash, bank, general)
+报告应基于以下数据构建：
+- `account.account`：账户科目表结构（代码、名称、类型、内部组）
+- `account.move.line`：日记账分录行（借方、贷方、账户ID、日期）
+- `account.journal`：来源日记账（类型：销售、采购、现金、银行、普通）
 
-### Account Internal Groups
-- **ASSET** - Assets (current, non-current, cash, receivables)
-- **LIABILITY** - Liabilities (payables, taxes, accrued)
-- **EQUITY** - Owner's equity
-- **INCOME** - Revenue accounts
-- **EXPENSE** - Cost and expense accounts
-- **OFF_BALANCE** - Off-balance sheet accounts
+### 账户内部组：
+- **资产**：资产（流动资产、非流动资产、现金、应收账款）
+- **负债**：负债（应付账款、税费、应计费用）
+- **所有者权益**：所有者权益
+- **收入**：收入账户
+- **费用**：成本和费用账户
+- **资产负债表外账户**：资产负债表外的账户
 
-### Common Account Types
-- `asset_cash` - Bank and cash accounts
-- `asset_receivable` - Accounts receivable
-- `asset_current` - Current assets
-- `liability_payable` - Accounts payable
-- `income` - Revenue
-- `expense` - Expenses
+### 常见账户类型：
+- `asset_cash`：银行和现金账户
+- `asset_receivable`：应收账款
+- `asset_current`：流动资产
+- `liability_payable`：应付账款
+- `income`：收入账户
+- `expense`：费用账户
 
-### Special Equity Types (Odoo-Specific)
-- `equity` - Standard equity accounts (share capital, retained earnings)
-- `equity_unaffected` - **Suspense account** for undistributed profits/losses (e.g., 999999)
+### 特殊的权益类型（Odoo特定）：
+- `equity`：标准权益账户（股本、留存收益）
+- `equity_unaffected`：**暂挂账户**，用于未分配的利润/亏损（例如，999999）
 
-**CRITICAL for Balance Sheet:**
-Odoo's `equity_unaffected` is a SUSPENSE account. Do NOT use its ledger balance directly.
+**对于资产负债表至关重要：**
+Odoo的`equity_unaffected`是一个暂挂账户。**切勿直接使用其账目余额**。
 
-**Correct Equity Calculation:**
-1. **Equity Proper** (type: `equity`) - Use ledger balance (credit - debit)
-2. **Retained Earnings** (prior years) - Ledger balance from `equity_unaffected`
-3. **Current Year Earnings** - Compute real-time: Income - Expenses
+**正确的权益计算方法：**
+1. **正确的权益计算**（类型：`equity`）——使用账目余额（贷方 - 借方）。
+2. **留存收益**（往年）——从`equity_unaffected`中获取账目余额。
+3. **当年收益**——实时计算：收入 - 费用。
 
 ```
 Total Equity = Equity Proper + Retained Earnings + Current Year Earnings
 ```
 
-Where Current Year Earnings = Σ(income credit-debit) - Σ(expense debit-credit)
+当年收益 = Σ（收入贷方 - 费用借方）
 
-**Why this matters:** Odoo computes Current Year Earnings in real-time on the Balance Sheet. Using only the `equity_unaffected` ledger balance will cause the balance sheet to NOT balance.
+**为什么这很重要：**Odoo在资产负债表中实时计算当年收益。如果仅使用`equity_unaffected`的账目余额，会导致资产负债表不平衡。
 
-## Automatic Reporting Standard Detection
+## 自动检测报告标准
 
-The skill automatically detects the company's accounting standard based on country/jurisdiction and formats reports accordingly.
+该技能会根据国家/司法管辖区自动检测公司的会计标准，并相应地格式化报告。
 
-**Supported Standards:**
-| Standard | Jurisdiction | Notes |
+**支持的会计标准：**
+| 标准 | 司法管辖区 | 备注 |
 |----------|--------------|-------|
-| IFRS | International | Default for most countries |
-| US GAAP | United States | SEC registrants |
-| Ind-AS | India | Indian GAAP converged with IFRS |
-| UK GAAP | United Kingdom | FRS 102 |
-| SOCPA | Saudi Arabia | IFRS adopted |
-| EU IFRS | European Union | IAS Regulation |
-| CAS | China | Chinese Accounting Standards |
-| JGAAP | Japan | Japanese GAAP |
-| ASPE | Canada | Private enterprises |
-| AASB | Australia | Australian standards |
+| IFRS | 国际 | 大多数国家的默认标准 |
+| US GAAP | 美国 | 在SEC注册的公司 |
+| Ind-AS | 印度 | 与IFRS趋同的印度会计准则 |
+| UK GAAP | 英国 | FRS 102 |
+| SOCPA | 沙特阿拉伯 | 采用IFRS |
+| EU IFRS | 欧盟 | IAS规定 |
+| CAS | 中国 | 中国会计准则 |
+| JGAAP | 日本 | 日本会计准则 |
+| ASPE | 加拿大 | 私营企业 |
+| AASB | 澳大利亚 | 澳大利亚会计准则 |
 
-**Detection Logic:**
-1. Query company's country from `res.company`
-2. Map country code to reporting standard
-3. Apply standard-specific formatting:
-   - Number format (1,234.56 vs 1.234,56)
-   - Negative display ((123) vs -123)
-   - Date format (DD/MM/YYYY vs MM/DD/YYYY)
-   - Statement titles (Balance Sheet vs Statement of Financial Position)
-   - Cash flow method (indirect vs direct)
+**检测逻辑：**
+1. 从`res.company`中查询公司的国家。
+2. 将国家代码映射到相应的会计标准。
+3. 应用特定标准的格式：
+   - 数字格式（1,234.56 vs 1.234,56）
+   - 负数的显示方式（(123) vs -123）
+   - 日期格式（DD/MM/YYYY vs MM/DD/YYYY）
+   - 报表标题（资产负债表 vs 财务状况表）
+   - 现金流量方法（间接法 vs 直接法）
 
-**Override:**
+**自定义设置：**
 ```python
 # Force a specific standard
 reporter.generate(..., standard="US_GAAP")
 ```
 
-## Commands
+## 命令
 
-### Sales & CRM Queries
-
+### 销售与CRM查询
 ```bash
 # Salesperson performance - use direct RPC for flexibility
 ./venv/bin/python -c "
@@ -196,8 +192,7 @@ from src.visualizers.whatsapp_cards import WhatsAppCardGenerator
 # - res.partner (customer info)
 ```
 
-### Pre-built Reports
-
+### 预制报告
 ```bash
 # Financial Health - cash flow, liquidity, burn rate, runway
 cfo_cli.py health --from YYYY-MM-DD --to YYYY-MM-DD --company-id ID
@@ -215,9 +210,9 @@ cfo_cli.py expenses --from YYYY-MM-DD --to YYYY-MM-DD --company-id ID
 cfo_cli.py executive --from YYYY-MM-DD --to YYYY-MM-DD --company-id ID
 ```
 
-### Direct RPC Queries (Advanced)
+### 直接RPC查询（高级）
 
-For sales/CRM data not covered by pre-built commands, use direct RPC:
+对于预制命令未涵盖的销售/CRM数据，可以使用直接RPC查询：
 
 ```python
 # Query sales orders by salesperson
@@ -236,8 +231,7 @@ users = jsonrpc('res.users', 'search_read',
     {'fields': ['id', 'name', 'login']})
 ```
 
-### Ad-hoc Reports
-
+### 临时报告
 ```bash
 # Custom comparison
 cfo_cli.py adhoc --from YYYY-MM-DD --to YYYY-MM-DD --metric-a "revenue" --metric-b "expenses"
@@ -247,8 +241,7 @@ cfo_cli.py adhoc --metric-a "cash in" --metric-b "cash out"
 cfo_cli.py adhoc --metric-a "direct expenses" --metric-b "indirect expenses"
 ```
 
-### Output Formats
-
+### 输出格式
 ```bash
 --output whatsapp   # Dark theme 1080x1080 PNG cards
 --output pdf        # Light theme A4 PDF
@@ -257,79 +250,74 @@ cfo_cli.py adhoc --metric-a "direct expenses" --metric-b "indirect expenses"
 --output all        # PDF + Excel + WhatsApp cards
 ```
 
-## Automatic Visualizations
+## 自动可视化
 
-**Reports always include appropriate visualizations by default:**
+**报告默认包含适当的可视化内容：**
 
-| Report | Auto-Included Charts |
+| 报告类型 | 自动包含的图表 |
 |--------|---------------------|
-| Financial Health | Cash position, burn rate trend, runway |
-| Revenue | MoM trend, top customers, growth KPI |
-| AR/AP Aging | Aging buckets pie, overdue highlights |
-| Expenses | Category breakdown, trend, top vendors |
-| Executive | All KPI cards, summary charts |
-| Balance Sheet | Asset/liability composition |
-| P&L | Revenue vs expense, margin trend |
-| Cash Flow | Operating breakdown, cash trend |
+| 财务健康状况 | 现金状况、烧钱速度趋势、资金预测 |
+| 收入 | 季度趋势、主要客户、增长关键指标 |
+| 应收账款/应付账款账龄 | 账龄分布图、逾期重点显示 |
+| 费用 | 类别细分、趋势、主要供应商 |
+| 高管报告 | 所有关键指标卡片、汇总图表 |
+| 资产负债表 | 资产/负债构成 |
+| 损益表 | 收入与费用对比、利润率趋势 |
+| 现金流量 | 经营活动明细、现金趋势 |
 
-**Rule:** If visualization makes the report clearer, include it automatically. Never ask "do you want charts?" — just add them.
+**规则：**如果可视化内容能让报告更清晰，请自动包含它们。切勿询问“是否需要图表”——直接添加即可。
 
-## Interactive Param Collection
+## 交互式参数收集
 
-If required params are missing, the skill will ask:
+如果缺少必要的参数，该技能会询问：
+1. **公司**：“使用哪个公司的数据？”（列出可用选项）
+2. **时间范围**：“时间范围是什么？（例如：‘上个月’、‘2024年第四季度’、自定义日期）”
+3. **账户**：“需要包含哪些账户或账户组？”（例如：‘所有收入’、‘仅银行账户’）
+4. **细分方式**：“按什么进行分组？（月份、客户、类别、账户）”
+5. **输出格式**：“输出格式是什么？（WhatsApp图片卡片、PDF、两者都需要）”
 
-1. **Company:** "Which company?" (list available options)
-2. **Period:** "What period? (e.g., 'last month', 'Q4 2024', custom dates)"
-3. **Accounts:** "Which accounts or groups?" (e.g., 'all income', 'bank accounts only')
-4. **Breakdown:** "Group by? (Month, Customer, Category, Account)"
-5. **Output:** "Output format? (WhatsApp cards, PDF, Both)"
+## 如何在聊天中使用
 
-## How to Use in Chat
+只需自然地提问：
 
-Just ask naturally:
+**销售与CRM：**
+- “[姓名]销售人员的表现如何？”
+- “显示[销售人员]的主要客户”
+- “比较销售团队的表现”
+- “哪位销售人员的订单最多？”
 
-**Sales & CRM:**
-- "How is [name] salesperson performance?"
-- "Show me top customers for [salesperson]"
-- "Compare sales team performance"
-- "Which salesperson has the most orders?"
+**财务报告：**
+- “给我上季度的财务健康状况报告”
+- “显示过去6个月的收入与费用情况”
+- “我的应收账款账龄是多少？”
+- “生成本月的执行摘要”
+- “根据账户科目表显示损益表”
 
-**Financial Reports:**
-- "Give me a financial health report for last quarter"
-- "Show revenue vs expenses for the past 6 months"
-- "What's my AR aging?"
-- "Generate an executive summary for this month"
-- "Show me profit & loss statement based on chart of accounts"
+**通用查询：**
+- “本月我们收到了多少订单？”
+- “前10位客户是谁？”
+- “显示[客户名称]的发票状态”
 
-**General Queries:**
-- "How many orders did we get this month?"
-- "Who are the top 10 customers?"
-- "Show invoice status for [customer name]"
+该技能将：
+1. 检查是否存在多个公司，并询问使用哪个公司的数据。
+2. 解析您的请求。
+3. 询问任何缺失的信息。
+4. 从Odoo中获取数据（使用日记账分录或直接RPC）。
+5. 生成图表和WhatsApp图片卡片。
+6. 通过WhatsApp图片卡片和/或PDF形式提供报告。
 
-The skill will:
-1. Check for multiple companies and ask which one
-2. Parse your request
-3. Ask for any missing info
-4. Fetch data from Odoo using ledger entries or direct RPC
-5. Generate charts + WhatsApp cards
-6. Deliver via WhatsApp cards and/or PDF
+## 严格规则：
+1. Odoo的RPC输出是最终依据。
+2. 严格遵循只读原则（禁止创建/修改/删除数据）。
+3. 除非用户请求，否则不采取任何主动操作。
+4. 每个数字都附带方法说明。
+5. 在做出任何假设之前，务必与用户确认。
+6. **始终包含可视化内容**——如果报告需要图表，应自动添加，无需询问。
 
-## Hard Rules
-
-1. Odoo RPC output is source of truth
-2. Strict read-only (no create/write/unlink)
-3. No proactive actions unless requested
-4. Every number includes methodology note
-5. Always verify with user before assuming
-6. **Always include visualizations** - If a report benefits from charts/graphs, include them automatically without asking. Reports should be visually complete.
-
-## Diagnostics
-
+## 诊断工具
 ```bash
 python3 ./skills/odoo/assets/autonomous-cfo/src/tools/cfo_cli.py doctor
 ```
 
-## Report Themes
-
-- **WhatsApp Cards:** "Midnight Ledger" — Navy-black (#0a0e1a), copper glow (#cd7f32)
-- **PDF Reports:** Clean white, copper accents, professional layout
+## 报告主题：
+- **WhatsApp图片卡片**：**“午夜账目”（颜色：#0a0e1a，铜色渐变）；**“PDF报告”：**纯白色背景，铜色点缀，专业布局

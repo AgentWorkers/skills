@@ -1,43 +1,43 @@
 ---
 name: campaign-orchestrator
-description: Multi-channel follow-up campaign orchestrator for ShapeScale sales. Schedules and executes SMS + Email sequences with CRM logging and auto-termination on replies. Use when following up with demo leads or managing outreach campaigns.
+description: ShapeScale销售的多渠道跟进活动管理工具：该工具能够根据CRM系统中的数据安排并执行短信（SMS）和电子邮件（Email）发送序列，同时在收到回复时自动终止相关流程。适用于跟进潜在客户或管理外展营销活动。
 homepage: https://github.com/kesslerio/shapescale-moltbot-skills
 metadata: {"moltbot":{"emoji":"📋","requires":{"env":["DIALPAD_API_KEY","ATTIO_API_KEY","GOG_KEYRING_PASSWORD"]},"primaryEnv":"DIALPAD_API_KEY"}}
 ---
 
-# Campaign Orchestrator Skill
+# Campaign Orchestrator 技能
 
-Multi-channel follow-up campaign orchestrator for ShapeScale sales. Executes scheduled SMS + Email sequences with CRM integration and auto-termination on replies.
+这是一个用于 ShapeScale 销售的多渠道跟进活动编排工具。它能够通过 CRM 系统执行预定的短信（SMS）和电子邮件（Email）发送序列，并在收到回复时自动终止活动。
 
-## Overview
+## 概述
 
-A **Campaign** is a defined sequence of steps (SMS/Email) that executes over time. When a lead replies to any message, the campaign automatically terminates.
+**活动（Campaign）** 是一系列按时间顺序执行的步骤（短信/电子邮件）。当潜在客户（lead）回复任何消息时，该活动会自动终止。
 
-### Key Features
+### 主要特性
 
-- **Multi-channel**: SMS (Dialpad) + Email (Gmail)
-- **Scheduled**: Cron-based execution with configurable delays
-- **Personalized**: Templates filled from Attio CRM data
-- **Auto-terminating**: Replies stop all future scheduled steps
-- **Logged**: All activities recorded in Attio
+- **多渠道**：支持短信（Dialpad）和电子邮件（Gmail）发送
+- **定时执行**：基于 Cron 表达式的定时任务，可配置延迟时间
+- **个性化**：模板内容从 Attio CRM 系统中获取
+- **自动终止**：收到回复后，所有后续的预定步骤都会停止
+- **日志记录**：所有操作都会被记录在 Attio 系统中
 
-## Setup
+## 设置
 
-**Environment variables required:**
+**所需的环境变量：**
 ```bash
 DIALPAD_API_KEY=your_dialpad_api_key
 ATTIO_API_KEY=your_attio_api_key
 GOG_KEYRING_PASSWORD=your_google_password  # For Gmail access
 ```
 
-**Also ensure:**
-- Dialpad webhook is configured to hit this server
-- Attio has company/contact records for leads
-- Gmail API access enabled for sales email
+**还需确保：**
+- Dialpad 的 Webhook 被配置为能够触发服务器响应
+- Attio 中已包含潜在客户的记录
+- 已为销售邮件启用 Gmail API 访问权限
 
-## Usage
+## 使用方法
 
-### Start a Campaign
+### 启动活动
 
 ```bash
 # Start primary follow-up campaign for a lead
@@ -50,29 +50,25 @@ python3 campaign.py start "primary" --lead "Apex Fitness" --delay 2
 python3 campaign.py start "post-demo" --lead "Apex Fitness" --attio-id "deal-uuid"
 ```
 
-### Pre-Campaign Checklist (MANDATORY)
+### 活动启动前的检查（必填）
 
-Before starting ANY campaign, verify:
+在启动任何活动之前，请务必进行以下检查：
+1. **客户状态检查**：
+   - 在数据库或 CRM 系统中查找“已经是客户”或“已购买”的标记
+   - 确认潜在客户不在排除列表中
+   - 验证潜在客户的电子邮件域名是否存在于客户数据库中
+2. **电子邮件格式检查**（针对电子邮件步骤）：
+   - 预览模板内容，确保其显示为正确的段落格式
+   - 每段内容包含 2-4 句话，段落之间使用空行分隔
+   - 避免出现单独的、没有上下文的句子
+   - 段落内不要使用硬换行符
+3. **语气检查**：
+   - 语言要专业，避免使用道歉性或敷衍的语气（例如“没关系”、“抱歉打扰您”）
+   - 语言要表明专业态度，而非表现出迫切的需求
 
-1. **Customer Status Check**
-   - Search memory/CRM for "already a customer" or "purchased" flags
-   - Check exclusion list in campaigns.json
-   - Verify email domain not in customer database
+**除非客户明确要求进行升级销售，否则切勿向现有客户发送活动。**
 
-2. **Email Formatting Check** (for email steps)
-   - Preview template renders as proper paragraphs
-   - 2-4 sentences per paragraph, blank line between
-   - No single-sentence orphan paragraphs
-   - No hard line breaks mid-paragraph
-
-3. **Tone Check**
-   - No apologetic language ("no worries", "sorry to bother")
-   - No easy outs ("if not relevant, no problem")
-   - Professional, not needy
-
-**NEVER campaign to existing customers unless explicitly requested for upsell.**
-
-### Check Campaign Status
+### 检查活动状态
 
 ```bash
 # Status for specific lead
@@ -82,21 +78,21 @@ python3 campaign.py status "Apex Fitness"
 python3 campaign.py list
 ```
 
-### Stop a Campaign
+### 停止活动
 
 ```bash
 # Manual termination (lead replied, not interested, etc.)
 python3 campaign.py stop "Apex Fitness" --reason "replied_interested"
 ```
 
-### Remove a Lead
+### 删除潜在客户记录
 
 ```bash
 # Remove lead from campaigns (opted out, not interested)
 python3 campaign.py remove "Apex Fitness"
 ```
 
-### Check for Responses
+### 检查回复情况
 
 ```bash
 # Check if lead has responded to any prior messages
@@ -105,7 +101,7 @@ python3 campaign.py check "Apex Fitness"
 # Warns if responses detected (safe to proceed or terminate)
 ```
 
-### View Pending Steps
+### 查看待执行的步骤
 
 ```bash
 # Show all pending campaign steps sorted by time
@@ -113,7 +109,7 @@ python3 campaign.py pending
 # Useful for seeing what's due soon across all campaigns
 ```
 
-### Template Management
+### 模板管理
 
 ```bash
 # List available templates
@@ -123,19 +119,19 @@ python3 campaign.py templates
 python3 campaign.py preview "primary"
 ```
 
-## Campaign Templates
+## 活动模板
 
-| Template | Timing | Channel | Purpose |
+| 模板名称 | 发送时间 | 发送渠道 | 发送目的 |
 |----------|--------|---------|---------|
-| `primary` | +4 hours | SMS | Recap demo, share recording |
-| `secondary` | +1 day | Email | Pricing, detailed ROI |
-| `tertiary` | +4 days | SMS | Quick check-in |
-| `quaternary` | +7 days | Email | Final follow-up, case study |
-| `post-demo` | +0 hours | SMS | Immediate thank you |
+| `primary` | +4 小时 | SMS | 回顾演示内容、分享录像 |
+| `secondary` | +1 天 | 电子邮件 | 提供价格信息、详细的投资回报分析 |
+| `tertiary` | +4 天 | SMS | 迅速跟进 |
+| `quaternary` | +7 天 | 电子邮件 | 最终跟进、分享案例研究 |
+| `post-demo` | +0 小时 | SMS | 立即发送感谢信息 |
 
-### Template Variables
+### 模板变量
 
-Templates support variable substitution:
+模板支持变量替换：
 
 ```
 {name}      - Lead first name
@@ -146,7 +142,7 @@ Templates support variable substitution:
 {checkout_link} - Personalized checkout URL
 ```
 
-## Architecture
+## 架构
 
 ```
 campaign-orchestrator/
@@ -160,9 +156,9 @@ campaign-orchestrator/
     └── campaigns.json    # Campaign state persistence
 ```
 
-## State Management
+## 状态管理
 
-Campaign state is stored in `<workspace>/state/campaigns.json`:
+活动状态存储在 `<workspace>/state/campaigns.json` 文件中：
 
 ```json
 {
@@ -184,33 +180,31 @@ Campaign state is stored in `<workspace>/state/campaigns.json`:
 }
 ```
 
-## Cron Integration
+## Cron 任务集成
 
-Campaign steps are executed via Clawdbot's cron system:
+活动步骤通过 Clawdbot 的 Cron 任务系统来执行：
+- **执行器任务**：每 5 分钟运行一次，检查是否有需要执行的步骤
+- **每个活动的任务**：为每个预定的步骤创建单独的任务
 
-- **Executor job**: Runs every 5 minutes to check for due steps
-- **Per-campaign jobs**: Created for each scheduled step
+调度脚本会自动创建和管理这些任务。
 
-The scheduler script creates and manages these jobs automatically.
+## Webhook 处理流程
 
-## Webhook Handling
+当 Dialpad 收到对活动消息的回复时：
+1. Dialpad 会向服务器发送 Webhook 请求
+2. `webhook_handler.py` 脚本解析回复内容
+3. 确定该回复属于哪个活动
+4. 将该活动标记为已终止
+5. 将回复信息记录到 Attio 系统中
 
-When Dialpad receives a reply to a campaign message:
+## 集成点
 
-1. Dialpad sends webhook to server
-2. `webhook_handler.py` parses the reply
-3. Looks up which campaign the original message belonged to
-4. Marks campaign as terminated
-5. Logs the reply to Attio
-
-## Integration Points
-
-### Dialpad SMS
+### Dialpad SMS 发送
 ```bash
 python3 /home/art/niemand/skills/dialpad/send_sms.py --to "+14155551234" --message "..."
 ```
 
-### Gmail (via gog)
+### Gmail（通过 gog）
 ```bash
 gog-shapescale --account martin@shapescale.com send-email --to "lead@company.com" --subject "..." --body "..."
 ```
@@ -220,9 +214,9 @@ gog-shapescale --account martin@shapescale.com send-email --to "lead@company.com
 attio note companies "company-uuid" "Campaign message sent: {message}"
 ```
 
-## Examples
+## 示例
 
-### Full Campaign Workflow
+### 完整的活动工作流程
 
 ```bash
 # 1. After demo, start campaign
@@ -240,7 +234,7 @@ attio note companies "company-uuid" "Campaign message sent: {message}"
 /campaign start "secondary" --lead "Dr. Smith's Clinic" --delay 0
 ```
 
-### Monitoring Active Campaigns
+### 监控正在进行的活动
 
 ```bash
 # List all active
@@ -253,22 +247,22 @@ attio note companies "company-uuid" "Campaign message sent: {message}"
 # - Wellness Center (tertiary) - Step 1/3, next: sms
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Campaign not sending:**
-- Check `cron` is running: `crontab -l`
-- Check logs: `journalctl -u moltbot` or campaign logs
-- Verify API keys: `echo $DIALPAD_API_KEY`
+**活动未发送：**
+- 检查 Cron 任务是否正在运行：`crontab -l`
+- 查看日志：`journalctl -u moltbot` 或活动日志
+- 验证 API 密钥是否正确：`echo $DIALPAD_API_KEY`
 
-**Webhook not terminating:**
-- Verify Dialpad webhook URL is configured
-- Check webhook handler is running
-- Check `campaigns.json` for matching lead
+**Webhook 未触发终止：**
+- 确认 Dialpad 的 Webhook URL 是否配置正确
+- 检查 Webhook 处理脚本是否正在运行
+- 查看 `campaigns.json` 文件中是否存在对应的潜在客户记录
 
-**Template variables not filling:**
-- Verify lead exists in Attio with required fields
-- Check template syntax: `{variable}` not `{ variable }`
+**模板变量未填充：**
+- 确认潜在客户在 Attio 系统中存在，并且具有所需的字段
+- 检查模板语法是否正确（例如使用 `{variable}` 而不是 `{ variable }`）
 
-## License
+## 许可证
 
-Part of shapescale-moltbot-skills. See parent repository.
+本功能属于 shapescale-moltbot-skills 的一部分。详细信息请参阅父仓库。

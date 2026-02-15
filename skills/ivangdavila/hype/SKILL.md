@@ -1,78 +1,78 @@
 ---
 name: Hype
-description: Assist with Hyperliquid perpetuals trading, deposits, withdrawals, and L1 features.
+description: 协助进行 Hyperliquid 永续代币的交易、存取款操作以及 L1 特性的使用。
 metadata: {"clawdbot":{"emoji":"🟢","os":["linux","darwin","win32"]}}
 ---
 
-## Deposits and Withdrawals
-- Deposits only via Arbitrum — bridge USDC from Arbitrum to Hyperliquid
-- Native USDC only — not USDC.e or other bridged versions
-- Withdrawals back to Arbitrum — same bridge, takes a few minutes
-- No direct deposits from Ethereum mainnet — must bridge to Arbitrum first
-- Minimum deposit/withdrawal amounts apply — check current limits
+## 存款与取款
+- 仅通过 Arbitrum 进行存款——将 USDC 从 Arbitrum 桥接至 Hyperliquid。
+- 仅支持原生 USDC，不支持 USDC.e 或其他桥接版本。
+- 取款需返回 Arbitrum——使用相同的桥接方式，耗时几分钟。
+- 无法直接从以太坊主网存款——必须先通过 Arbitrum 进行桥接。
+- 存款/取款有最低金额限制——请查看当前规定。
 
-## Account Model
-- Single margin account — all positions share collateral
-- Cross-margin by default — profits from one position offset losses in another
-- Isolated margin available per position — limits risk but reduces capital efficiency
-- Account value = deposits + unrealized PnL — real-time calculation
+## 账户模型
+- 单一保证金账户——所有头寸共享保证金。
+- 默认采用跨保证金机制——一个头寸的盈利可抵消另一个头寸的损失。
+- 每个头寸也可选择独立保证金模式——可降低风险，但会降低资金使用效率。
+- 账户价值 = 存款 + 未实现的盈亏（PnL）——实时计算。
 
-## Trading Perpetuals
-- Perpetual futures with up to 50x leverage — higher leverage = higher liquidation risk
-- Funding rates every hour — longs pay shorts or vice versa based on price vs index
-- Mark price for liquidations — not last traded price, reduces manipulation
-- Order types: limit, market, stop-loss, take-profit, trailing stop
-- Reduce-only orders to close without accidentally increasing position
+## 永续合约交易
+- 永续期货支持最高 50 倍杠杆——杠杆越高，清算风险越大。
+- 每小时更新资金费率——多头需向空头支付费用，反之亦然（根据价格与指数差异）。
+- 清算价格基于标记价格，而非最后成交价格——减少价格操纵的可能性。
+- 订单类型：限价单、市价单、止损单、止盈单、追踪止损单。
+- 仅允许“减少头寸”的订单——避免意外增加头寸规模。
 
-## Liquidations
-- Liquidation price visible before opening position — calculate carefully with leverage
-- Partial liquidations happen first — position reduced before full liquidation
-- Insurance fund covers bad debt — but don't rely on it
-- Cross-margin means other positions' profits protect you — but losses can cascade
-- ADL (Auto-Deleveraging) in extreme cases — profitable traders may be force-closed
+## 清算
+- 开仓前可查看清算价格——需仔细计算杠杆风险。
+- 先进行部分清算——逐步减少头寸规模。
+- 保险基金用于弥补亏损——但请不要完全依赖它。
+- 跨保证金机制意味着其他头寸的盈利可保护当前头寸——但亏损也可能波及其他头寸。
+- 在极端情况下会触发自动降杠杆（ADL）——盈利的交易者也可能被强制平仓。
 
-## Order Execution
-- On-chain order book — fully decentralized, verifiable
-- Sub-second block times — near-instant execution
-- No gas fees for trading — fees are trading fees only
-- API available for programmatic trading — rate limits apply
-- Cancellations are instant — no pending cancel state
+## 订单执行
+- 采用链上订单簿——完全去中心化，可验证。
+- 块生成时间不到一秒——近乎即时执行。
+- 交易无需支付 gas 费用——费用仅针对交易本身。
+- 提供 API 用于程序化交易——但存在速率限制。
+- 订单取消即时生效——无待处理状态。
 
-## Vaults and Staking
-- HLP (Hyperliquid Provider) vault — earn fees from market making
-- Deposit USDC to earn yield — but exposed to vault performance
-- Vault performance varies — can be negative during high volatility
-- Staking HYPE token for governance — separate from trading
+## 保险库与质押
+- HLP（Hyperliquid 提供者）保险库——通过做市赚取费用。
+- 存入 USDC 可获得收益——但收益受保险库表现影响。
+- 保险库表现不稳定——在高波动性期间可能产生亏损。
+- 可质押 HYPE 代币参与治理——与交易功能分离。
 
-## HYPE Token
-- Native token of Hyperliquid L1 — used for gas on the L1 chain
-- Airdrop distributed to early users — based on trading volume and points
-- Staking for chain security — validators run on HYPE stake
-- Trading fees partially go to HYPE stakers — revenue sharing model
+## HYPE 代币
+- Hyperliquid L1 的原生代币——用于 L1 链上的交易手续费。
+- 早期用户可通过交易量和积分获得空投。
+- 存储 HYPE 代币可参与链安全维护——验证者依赖这些代币运行。
+- 交易费用的一部分会分配给 HYPE 代币持有者——采用收益共享机制。
 
-## Risk Management
-- Set stop-losses before entering positions — discipline prevents disasters
-- Monitor funding rates — paying high funding erodes profits
-- Check open interest and liquidity — low liquidity means higher slippage
-- Avoid max leverage — leaves no room for price movement
-- Understand cross-margin implications — one bad trade can affect all positions
+## 风险管理
+- 开仓前设置止损单——纪律性有助于防止重大损失。
+- 监控资金费率——过高费率会侵蚀利润。
+- 查看未平仓合约数量和流动性——流动性低会导致滑点增加。
+- 避免使用最高杠杆——为价格波动留出空间。
+- 了解跨保证金机制的影响——一个亏损头寸可能影响所有头寸。
 
-## API and Automation
-- REST and WebSocket APIs available — full trading functionality
-- Rate limits per IP and account — respect limits to avoid bans
-- Testnet available — practice without real funds
-- SDK in Python — official and community libraries exist
+## API 与自动化
+- 提供 REST 和 WebSocket API——支持全部交易功能。
+- 每个 IP 和账户都有速率限制——遵守限制以避免被封禁。
+- 提供测试网环境——可进行无风险练习。
+- 提供 Python SDK——官方和社区都有相关库可供使用。
 
-## Common Issues
-- "Insufficient margin" — need more USDC or reduce position size
-- "Order would trigger liquidation" — leverage too high for position size
-- "Rate limited" — slow down API requests
-- Withdrawal delayed — network congestion, usually resolves quickly
-- Position not showing — refresh or check subaccounts
+## 常见问题
+- “保证金不足”——需要增加 USDC 数量或减少头寸规模。
+- “订单触发清算”——杠杆过高导致清算。
+- “API 请求受限”——API 请求速度变慢。
+- 取款延迟——可能是网络拥堵所致，通常很快会解决。
+- 头寸信息未显示——请刷新页面或查看子账户信息。
 
-## Security
-- Non-custodial — funds secured by your wallet
-- Connect via wallet signature — no deposits to exchange address
-- Revoke connections when done — permissions persist until revoked
-- Verify site URL — phishing sites common for DEXs
-- No KYC required — but geo-restrictions may apply
+## 安全性
+- 采用非托管模式——资金由用户钱包保管。
+- 通过钱包签名进行连接——资金不会直接存入交易所地址。
+- 连接完成后会自动撤销权限——权限持续有效直至手动撤销。
+- 请核实网站 URL——DEX（去中心化交易所）常出现钓鱼网站。
+- 无需进行 KYC（了解客户）验证——但可能存在地域限制。

@@ -1,41 +1,39 @@
-# AgentMarket Skill
+# AgentMarket 技能
 
-Interact with the AgentMarket prediction market protocol on Base Sepolia. Create markets, trade YES/NO positions, provide liquidity, and resolve outcomes — all settled in USDC.
+该技能允许你在 Base Sepolia 上与 AgentMarket 预测市场协议进行交互。你可以创建市场、买卖 YES/NO 类型的赌注、提供流动性，并在事件结果确定后获得相应的收益——所有交易均以 USDC 作为结算货币。
 
-**Source code & docs**: https://github.com/humanjesse/AgentMarket
+**源代码及文档**：https://github.com/humanjesse/AgentMarket
 
-## Deployed Contracts (Base Sepolia)
+## 部署的合约（Base Sepolia）
 
-| Contract | Address |
-|----------|---------|
+| 合约 | 地址        |
+|---------|------------|
 | MarketFactory | `0xDd553bb9dfbB3F4aa3eA9509bd58386207c98598` |
-| USDC | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
+| USDC    | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
 
-The MarketFactory is the single entry point. It deploys all child contracts (Market, AMM, Oracle, position tokens) when you create a market. You only need the factory address to get started.
+`MarketFactory` 是主要的入口点。当你创建市场时，它会自动部署所有相关的子合约（包括 Market、AMM、Oracle 和赌注代币）。你只需要知道 `MarketFactory` 的地址即可开始使用该服务。
 
-## How It Works
+## 工作原理
 
-1. **Markets** ask a YES/NO question. Users deposit USDC to mint paired YES+NO position tokens (1 USDC = 1 YES + 1 NO).
-2. **Trading** happens through an automated market maker (constant-product FPMM). Buy YES if you think an event will happen, buy NO if it won't. Prices reflect market probability (e.g. YES at 0.70 = 70% chance).
-3. **Resolution** uses an Optimistic Oracle: anyone proposes an outcome by posting a USDC bond, then there's a dispute window. If unchallenged, the proposal finalizes. If challenged, a designated arbitrator makes the final call.
-4. **Payouts**: winners split the entire USDC pool proportional to their token holdings. Losers get nothing. If you bet 10 USDC YES and win with half the YES supply, you get half the pool.
+1. **市场创建**：系统会提出一个明确的 YES/NO 类型的问题。用户需要投入 USDC 来生成对应的赌注代币（1 USDC 对应 1 个 YES 和 1 个 NO）。
+2. **交易**：交易通过自动做市商（Constant-Product FPMM）来完成。如果你认为某个事件会发生，就购买 YES 赌注；反之则购买 NO 赌注。价格反映了事件的概率（例如，价格为 0.70 表示事件发生的概率为 70%）。
+3. **结果判定**：系统使用“乐观预言机”（Optimistic Oracle）来判定结果：任何人都可以通过投入 USDC 来提出一个结果提案，随后会进入争议期。如果没有人提出异议，提案将被确认；如果有异议，则由指定的仲裁者来做出最终裁决。
+4. **收益分配**：获胜者会根据其持有的赌注代币比例来分配整个 USDC 池中的收益；失败者则一无所获。例如，如果你投入了 10 USDC 买入 YES 赌注，并且最终 YES 赌注的数量占了一半，那么你将获得一半的收益池。
 
-## Configuration
+## 配置参数
 
-Required environment variables:
+- `AGENTMARKET_FACTORY_ADDRESS`：已部署的 `MarketFactory` 合约地址（默认值：`0xDd553bb9dfbB3F4aa3eA9509bd58386207c98598`）
+- `USDC_ADDRESS`：网络中的 USDC 代币地址（默认值：`0x036CbD53842c5426634e7929541eC2318f3dCF7e`）
+- `RPC_URL`：RPC 端点地址（默认值：`https://sepolia.base.org`）
+- `WALLET_PRIVATE_KEY`：你的钱包私钥
 
-- `AGENT_MARKET_FACTORY_ADDRESS`: The deployed MarketFactory contract address (default: `0xDd553bb9dfbB3F4aa3eA9509bd58386207c98598`)
-- `USDC_ADDRESS`: USDC token address on the network (default: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`)
-- `RPC_URL`: RPC endpoint (default: `https://sepolia.base.org`)
-- `WALLET_PRIVATE_KEY`: Your wallet private key
+## 先决条件
 
-## Prerequisites
+你的钱包需要：
+- **Base Sepolia 的 ETH** 作为交易手续费（可从 https://www.coinbase.com/faucets/base-sepolia-faucet 获取）
+- **Base Sepolia 的 USDC** 用于交易（可从 https://faucet.circle.com/ 获取）
 
-Your wallet needs:
-- **Base Sepolia ETH** for gas (get from https://www.coinbase.com/faucets/base-sepolia-faucet)
-- **Base Sepolia USDC** for trading (get from https://faucet.circle.com/)
-
-## Quick Start
+## 快速入门
 
 ```
 1. market_list()                                       — Browse existing markets
@@ -46,138 +44,136 @@ Your wallet needs:
 6. market_claim({ marketAddress })                     — Collect your winnings
 ```
 
-## Tools
+## 工具
 
-### Reading
+### 读取接口
 
 #### `market_list`
-List active prediction markets with prices and oracle status.
-- `limit` (number, optional): Number of markets to return (default: 10)
-- `offset` (number, optional): Offset for pagination
+- 列出所有活跃的预测市场，包括价格和预言机状态。
+  - `limit`（可选参数）：返回的市场数量（默认值：10）
+  - `offset`（可选参数）：分页偏移量
 
 #### `market_get`
-Get full details for a specific market including AMM prices, oracle state, and claim preview.
-- `marketAddress` (string): The market contract address
+- 获取特定市场的详细信息，包括 AMM 价格、预言机状态以及索赔预览。
+  - `marketAddress`（字符串）：市场合约地址
 
-### Trading
+### 交易接口
 
 #### `market_create`
-Create a new YES/NO prediction market. Costs 2 USDC (1 fee + 1 initial liquidity). You receive LP tokens for the initial liquidity.
-- `question` (string): The question to be resolved (should have a clear YES/NO answer, max 256 characters)
-- `arbitrator` (string): Address of the fallback arbitrator for disputed outcomes
-- `deadlineDays` (number, optional): Emergency withdrawal deadline in days (default: 7, max: 365)
+- 创建一个新的 YES/NO 预测市场。费用为 2 USDC（包含 1 个手续费和 1 单位的初始流动性）。你将获得代表初始流动性的 LP 代币。
+  - `question`（字符串）：需要判定的问题（答案必须是明确的 YES/NO，最多 256 个字符）
+  - `arbitrator`（字符串）：有争议时使用的备用仲裁者地址
+  - `deadlineDays`（可选参数）：紧急提款截止日期（以天为单位，默认值：7 天，最大值：365 天）
 
 #### `market_buy_yes`
-Buy YES shares (betting the event will happen). Minimum 2 USDC (a 0.1% protocol fee is deducted before the swap, so the post-fee amount must be at least 1 USDC).
-- `marketAddress` (string): The market to bet on
-- `amount` (number): Amount of USDC to spend
+- 买入 YES 赌注（认为事件会发生）。最低投入为 2 USDC（交易前会扣除 0.1% 的手续费，因此实际投入金额至少为 1 USDC）。
+  - `marketAddress`（字符串）：要投注的市场
+  - `amount`（数字）：投入的 USDC 数量
 
 #### `market_buy_no`
-Buy NO shares (betting the event will not happen). Minimum 2 USDC (a 0.1% protocol fee is deducted before the swap, so the post-fee amount must be at least 1 USDC).
-- `marketAddress` (string): The market to bet on
-- `amount` (number): Amount of USDC to spend
+- 买入 NO 赌注（认为事件不会发生）。最低投入为 2 USDC（交易前会扣除 0.1% 的手续费，因此实际投入金额至少为 1 USDC）。
+  - `marketAddress`（字符串）：要投注的市场
+  - `amount`（数字）：投入的 USDC 数量
 
 #### `market_sell_yes`
-Sell YES shares back for USDC.
-- `marketAddress` (string): The market
-- `amount` (number): Amount of YES tokens to sell
+- 卖出 YES 赌注以换取 USDC。
+  - `marketAddress`（字符串）：市场地址
+  - `amount`（数字）：要出售的 YES 赌注数量
 
 #### `market_sell_no`
-Sell NO shares back for USDC.
-- `marketAddress` (string): The market
-- `amount` (number): Amount of NO tokens to sell
+- 卖出 NO 赌注以换取 USDC。
+  - `marketAddress`（字符串）：市场地址
+  - `amount`（数字）：要出售的 NO 赌注数量
 
 #### `market_claim`
-Claim winnings from a resolved market. Burns your winning tokens and returns your proportional share of the pool.
-- `marketAddress` (string): The resolved market
+- 从已解决的市场中领取收益。系统会烧毁你的获胜赌注代币，并根据你的持有比例分配收益。
+  - `marketAddress`（字符串）：已解决的市场
 
-### Liquidity
+### 提供流动性
 
-Liquidity providers (LPs) deposit USDC to deepen the AMM pool, earning trading fees (0.3% per trade plus 0.1% protocol fee). You receive LP tokens representing your share.
+流动性提供者（LP）通过投入 USDC 来增加 AMM 的流动性，从而获得交易手续费（每笔交易 0.3% 加上 0.1% 的协议手续费）。你将获得代表你贡献份额的 LP 代币。
 
 #### `market_add_liquidity`
-Add USDC liquidity to a market's AMM. Minimum 1 USDC.
-- `marketAddress` (string): The market
-- `amount` (number): Amount of USDC to deposit
+- 向市场的 AMM 中添加 USDC 流动性。最低投入为 1 USDC。
+  - `marketAddress`（字符串）：市场地址
+  - `amount`（数字）：投入的 USDC 数量
 
 #### `market_remove_liquidity`
-Remove liquidity before resolution. Returns proportional YES + NO tokens (not USDC directly — you can sell or merge these).
-- `marketAddress` (string): The market
-- `shares` (number): LP shares to burn
+- 在结果判定前撤回流动性。系统会返回相应数量的 YES 和 NO 赌注代币（不会直接返回 USDC，你可以选择出售或合并这些代币）。
+  - `marketAddress`（字符串）：市场地址
+  - `shares`（数字）：需要烧毁的 LP 代币数量
 
 #### `market_lp_claim_winnings`
-After a market resolves, call this once to convert the AMM's winning tokens into USDC. Must be called before LPs can withdraw.
-- `marketAddress` (string): The resolved market
+- 在市场结果确定后调用此接口，将 AMM 中的获胜赌注代币转换为 USDC。必须在 LPs 提取收益之前调用此接口。
+  - `marketAddress`（字符串）：已解决的市场地址
+  - `shares`（数字）：需要烧毁的 LP 代币数量
 
 #### `market_lp_withdraw`
-Withdraw your share of USDC from a resolved market's AMM. Requires `market_lp_claim_winnings` to have been called first.
-- `marketAddress` (string): The resolved market
-- `shares` (number): LP shares to burn
+- 从已解决的市场中提取你的 USDC 收益。必须先调用 `market_lp_claim_winnings` 接口。
+  - `marketAddress`（字符串）：已解决的市场地址
+  - `shares`（数字）：需要烧毁的 LP 代币数量
 
-### Oracle Resolution
+### 预言机判定流程
 
-Resolution follows: **propose** -> (wait for dispute window) -> **finalize**. If disputed: **arbitrate**.
+判定流程如下：**提出提案** -> （等待争议期）-> **最终确认**。如果有争议，则进入**仲裁**阶段。
 
 #### `market_propose_outcome`
-Propose how a market should resolve. Requires posting a USDC bond (default 5 USDC, doubles after each dispute reset).
-- `marketAddress` (string): The market to resolve
-- `outcome` (boolean): `true` for YES, `false` for NO
+- 提出市场的判定结果。需要投入 USDC 作为保证金（默认为 5 USDC，每次争议重置后保证金翻倍）。
+  - `marketAddress`（字符串）：需要判定结果的市场地址
+  - `outcome`（布尔值）：`true` 表示 YES，`false` 表示 NO
 
-#### `market_finalize`
-Finalize an unchallenged proposal after the dispute window closes. Anyone can call this. Proposer gets their bond back.
-- `marketAddress` (string): The market to finalize
+#### `marketfinalize`
+- 在争议期结束后确认未受到异议的提案。任何人都可以调用此接口。提案者会拿回他们的保证金。
+  - `marketAddress`（字符串）：需要最终确认的市场地址
 
 #### `market_dispute`
-Challenge a proposed outcome by posting a counter-bond (matches the current bond amount). Sends the dispute to the arbitrator.
-- `marketAddress` (string): The market with the proposal to dispute
+- 通过投入相反金额的保证金来对提案结果提出异议。争议将提交给仲裁者。
+  - `marketAddress`（字符串）：存在争议的市场地址
 
 #### `market_arbitrate`
-Make the final ruling on a disputed market. **Only the designated arbitrator can call this.** Winner of the dispute gets both bonds.
-- `marketAddress` (string): The disputed market
-- `outcome` (boolean): `true` for YES, `false` for NO
+- 对有争议的市场做出最终裁决。**只有指定的仲裁者才能调用此接口**。争议的胜者将获得双方的保证金。
+  - `marketAddress`（字符串）：存在争议的市场地址
+  - `outcome`（布尔值）：`true` 表示 YES，`false` 表示 NO
 
 #### `market_reset_dispute`
-Reset a stuck dispute after 7 days if the arbitrator hasn't acted. Returns both bonds and reopens the oracle for a new proposal. Bond amount doubles for the next round.
-- `marketAddress` (string): The market with the stuck dispute
+- 如果仲裁者在 7 天内未作出裁决，系统会重置争议。此时会退还双方的保证金，并重新开放市场以接受新的提案。每次争议重置后保证金金额会翻倍。
+  - `marketAddress`（字符串）：存在争议的市场地址
 
 #### `market_reset_proposal`
-Reset a stuck proposal after 3 days (e.g. if the proposer went inactive). Returns the proposer's bond.
-- `marketAddress` (string): The market with the stuck proposal
+- 如果提案者在 3 天内未作出回应，系统会重置提案。此时会退还提案者的保证金。
+  - `marketAddress`（字符串）：存在争议的市场地址
 
-### Emergency
+### 紧急情况
 
 #### `market_emergency_withdraw`
-Withdraw USDC from a market where the oracle failed to resolve before the deadline. Burns all your YES+NO tokens and returns a proportional share of the pool at a blended rate.
-- `marketAddress` (string): The expired market
+- 在预言机未能在截止日期前完成判定时，从该市场提取 USDC。系统会烧毁你所有的 YES 和 NO 赌注，并按比例分配剩余收益。
+  - `marketAddress`（字符串）：争议未解决的市场地址
 
 #### `market_arbitrator_check`
-Scan all markets to find any where you are the designated arbitrator and action is needed.
-- No arguments
+- 扫描所有市场，找出你被指定为仲裁者的市场，并采取相应行动。
+  - 该接口无需传入任何参数
 
-## Fees
+## 费用
 
-| Fee | Amount | When |
-|-----|--------|------|
-| Market creation | 1 USDC | Paid to protocol on `market_create` |
-| Initial liquidity | 1 USDC | Seeded into AMM on `market_create` (you get LP tokens) |
-| Protocol fee | 0.1% | Deducted from USDC on buy/sell |
-| AMM trading fee | 0.3% | Stays in pool (benefits LPs) |
+| 费用 | 金额 | 支付时机 |
+|------|--------|--------|
+| 市场创建 | 1 USDC | 在调用 `market_create` 时支付给协议方 |
+| 初始流动性 | 1 USDC | 在 `market_create` 时注入 AMM（你将获得 LP 代币） |
+| 协议手续费 | 0.1% | 从交易金额中扣除 |
+| AMM 交易手续费 | 0.3% | 留在收益池中，惠及 LPs |
 
-## Economics & Strategy
+## 经济原理与策略
 
-**Creating markets**: You pay 2 USDC (1 fee + 1 liquidity) and receive LP tokens. Ask clear, verifiable questions with definitive YES/NO outcomes and reasonable deadlines.
+- **创建市场**：你需要支付 2 USDC（包含 1 个手续费和 1 单位的初始流动性），并获得 LP 代币。提出的问题应具有明确的 YES/NO 答案和合理的截止时间。
+- **交易**：当你认为当前价格低估了事件发生的概率时，可以买入 YES 赌注。例如，如果 YES 的价格是 0.30（表示概率为 30%），但你认为实际概率为 70%，那么买入 YES 赌注是有利可图的。你也可以出售不再持有的赌注。
+- **提供流动性**：LP 提供者每笔交易可获得 0.3% 的手续费。交易量越大，收益越高。风险在于：如果市场价格发生剧烈波动，你的 LP 代币可能会遭受损失。争议解决后，你的 LP 代币价值取决于 AMM 中获胜方的赌注数量。
+- **预言机保证金**：提出或提出异议都需要投入保证金（默认为 5 USDC，具体金额可配置）。如果你正确预测结果且无人提出异议，你可以免费拿回保证金；如果提出异议且仲裁者支持你，你将获得双方的保证金。每次争议重置后保证金金额会翻倍（最多可重置 10 次）。
 
-**Trading**: Buy when you believe the current price undervalues an outcome. If YES is priced at 0.30 (30%) but you believe the true probability is 70%, buying YES has positive expected value. You can also sell positions you no longer want to hold.
+## 成为仲裁者
 
-**Providing liquidity**: LPs earn 0.3% of every trade. Higher volume = more fees. Risk: impermanent loss if the market moves heavily in one direction. Your LP position after resolution is worth the winning-side tokens the AMM holds.
+如果你被指定为仲裁者，你将负责处理有争议的市场。
 
-**Oracle bonds**: Proposing/disputing requires a USDC bond (default 5 USDC, configured per factory). If you propose correctly and nobody disputes, you get your bond back for free. If you dispute and the arbitrator agrees with you, you win both bonds. Bond amounts double after each dispute reset cycle (up to 10 resets max).
-
-## Being an Arbitrator
-
-If you are an arbitrator, you are the fallback resolver for disputed markets.
-
-To ensure you don't miss any, add the following to your `HEARTBEAT.md`:
+为了确保不会错过任何争议，請在你的 `HEARTBEAT.md` 文件中添加以下内容：
 
 ```markdown
 Periodically:

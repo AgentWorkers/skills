@@ -1,16 +1,16 @@
 ---
-description: Generate automated backup scripts with rotation for PostgreSQL, MySQL, SQLite, and MongoDB.
+description: 生成针对 PostgreSQL、MySQL、SQLite 和 MongoDB 的自动备份脚本，并实现备份文件的轮换机制。
 ---
 
-# DB Backup
+# 数据库备份
 
-Create automated database backup scripts with compression, rotation, and scheduling.
+创建具备压缩、数据轮换和定时备份功能的自动化脚本。
 
-## Instructions
+## 指令
 
-1. **Ask user for**: Database type, name(s), connection details, backup dir (default: `~/backups/db/`), retention (default: 7 days), schedule (default: daily 2 AM)
+1. **向用户询问**：数据库类型、名称、连接信息、备份目录（默认：`~/backups/db/`）、保留时间（默认：7天）、备份时间（默认：每天凌晨2点）。
 
-2. **Generate script** based on database type:
+2. **根据数据库类型生成对应的脚本**：
 
 ### PostgreSQL
 ```bash
@@ -59,30 +59,30 @@ find "$BACKUP_DIR" -name "${DB_NAME}_*.sqlite.gz" -mtime +$RETENTION_DAYS -delet
 echo "[$(date)] ✅ Backup: ${DB_NAME}_${TS}.sqlite.gz"
 ```
 
-3. **Set up cron**:
+3. **设置定时任务**：
    ```bash
    chmod +x backup.sh
    (crontab -l 2>/dev/null; echo "0 2 * * * /path/to/backup.sh >> /path/to/backup.log 2>&1") | crontab -
    ```
 
-4. **Verify**: Run manually once and check output
+4. **验证**：手动运行一次脚本并检查输出结果。
 
-## Security
+## 安全性
 
-- **NEVER hardcode passwords** — use `~/.pgpass` (PostgreSQL), `~/.my.cnf` (MySQL), or env vars
-- Set `chmod 600` on all dump files, `chmod 700` on backup directory
-- Add backup directory to `.gitignore`
-- For remote storage: pipe to `aws s3 cp` or `rclone copy`
+- **切勿将密码硬编码**——使用 `~/.pgpass`（PostgreSQL）、`~/.my.cnf`（MySQL）或环境变量来存储密码。
+- 为所有备份文件设置权限 `chmod 600`，为备份目录设置权限 `chmod 700`。
+- 将备份目录添加到 `.gitignore` 文件中。
+- 对于远程存储，可以使用 `aws s3 cp` 或 `rclone copy` 命令进行传输。
 
-## Troubleshooting
+## 故障排除
 
-- **"permission denied"**: Check DB user privileges and file permissions
-- **"command not found"**: Install `postgresql-client`, `mysql-client`, or `sqlite3`
-- **Disk full**: Check `df -h` before backup; add pre-check to script
-- **Locked DB (SQLite)**: Ensure no write transactions during `.backup`
+- **“权限被拒绝”**：检查数据库用户的权限以及文件的权限设置。
+- **“命令未找到”**：安装 `postgresql-client`、`mysql-client` 或 `sqlite3`。
+- **磁盘空间不足**：在备份前使用 `df -h` 命令检查磁盘空间；可以在脚本中添加预检查逻辑。
+- **SQLite 数据库被锁定**：确保在备份过程中没有写入操作。
 
-## Requirements
+## 所需工具
 
-- Database client tools: `pg_dump`, `mysqldump`, `sqlite3`, or `mongodump`
-- `gzip`, `find`, `crontab` (standard Unix)
-- No API keys needed
+- 数据库客户端工具：`pg_dump`、`mysqldump`、`sqlite3` 或 `mongodump`。
+- `gzip`、`find`、`crontab`（标准Unix工具）。
+- 不需要API密钥。

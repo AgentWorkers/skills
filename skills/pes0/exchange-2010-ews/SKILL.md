@@ -1,10 +1,10 @@
 # exchange2010
 
-Exchange 2010 EWS integration for emails, calendar, contacts, and tasks.
+Exchange 2010 提供了对电子邮件、日历、联系人和任务的集成支持。
 
-## Setup
+## 设置
 
-Requires credentials in `.env.credentials`:
+需要 `.env.credentials` 文件中的凭据：
 ```
 EXCHANGE_SERVER=mail.company.com
 EXCHANGE_DOMAIN=company
@@ -12,23 +12,23 @@ EXCHANGE_EMAIL=user@company.com
 EXCHANGE_PASSWORD=your_password
 ```
 
-## Features
+## 功能
 
-- ✅ **Email**: Read unread, send, search, mark as read
-- ✅ **Email Attachments**: Download, extract text (PDF, TXT)
-- ✅ **Email Folders**: Browse Sent, Drafts, Trash, Junk
-- ✅ **Calendar**: View, create, update, delete, search events
-- ✅ **Recurring Events**: Detect and manage series
-- ✅ **Shared Calendars**: Access other Exchange mailboxes
-- ✅ **Contacts**: Search address book, resolve names (GAL)
-- ✅ **Tasks/To-Do**: Manage, create, complete tasks
-- ✅ **Out-of-Office**: Read and set absence messages
-- ✅ **EWS Filters**: Fast search with `subject__contains`, `start__gte`, etc.
-- ✅ **List Calendars**: Show all calendar folders
+- ✅ **电子邮件**：查看未读邮件、发送邮件、搜索邮件、将邮件标记为已读
+- ✅ **电子邮件附件**：下载附件、提取附件文本（PDF、TXT格式）
+- ✅ **电子邮件文件夹**：浏览已发送邮件、草稿邮件、垃圾邮件文件夹
+- ✅ **日历**：查看、创建、更新、删除日历事件
+- ✅ **重复事件**：检测和管理重复事件
+- ✅ **共享日历**：访问其他 Exchange 邮箱的日历
+- ✅ **联系人**：搜索联系人信息、解析联系人名称（GAL 数据库）
+- ✅ **任务/待办事项**：管理、创建和完成任务
+- ✅ **外出办公**：查看和设置外出办公状态
+- ✅ **EWS 过滤器**：使用 `subject__contains`、`start__gte` 等条件进行快速搜索
+- ✅ **日历文件夹列表**：显示所有日历文件夹
 
-## Examples
+## 示例
 
-### Read Emails
+### 查看电子邮件
 
 ```python
 from skills.exchange2010 import get_account, get_unread_emails
@@ -39,7 +39,7 @@ for email in emails:
     print(f"{email['subject']} from {email['sender']}")
 ```
 
-### Today's Events
+### 查看今日事件
 
 ```python
 from skills.exchange2010 import get_today_events
@@ -51,7 +51,7 @@ today = get_today_events()
 today = get_today_events('shared@company.com')
 ```
 
-### Search Events
+### 搜索日历事件
 
 ```python
 from skills.exchange2010 import search_calendar_by_subject
@@ -67,7 +67,7 @@ ekadashi = search_calendar_by_subject(
 print(f"Found: {len(ekadashi)} events")
 ```
 
-### Create Event
+### 创建日历事件
 
 ```python
 from skills.exchange2010 import create_calendar_event
@@ -82,7 +82,7 @@ create_calendar_event(
 )
 ```
 
-### Update Event
+### 更新日历事件
 
 ```python
 from skills.exchange2010 import update_calendar_event
@@ -97,7 +97,7 @@ update_calendar_event(
 )
 ```
 
-### Browse Email Folders
+### 浏览电子邮件文件夹
 
 ```python
 from skills.exchange2010 import get_folder_emails, list_email_folders
@@ -117,7 +117,7 @@ drafts = get_folder_emails('drafts')
 trash = get_folder_emails('trash')
 ```
 
-### Search Emails
+### 搜索电子邮件
 
 ```python
 from skills.exchange2010 import search_emails
@@ -132,7 +132,7 @@ emails = search_emails(subject='Invoice', folder='inbox')
 emails = search_emails(is_unread=True, limit=20)
 ```
 
-### Mark Email as Read
+### 将电子邮件标记为已读
 
 ```python
 from skills.exchange2010 import mark_email_as_read
@@ -140,7 +140,7 @@ from skills.exchange2010 import mark_email_as_read
 mark_email_as_read(email_id='AAQkAG...')
 ```
 
-### Download Attachments
+### 下载附件
 
 ```python
 from skills.exchange2010 import get_email_attachments
@@ -157,9 +157,9 @@ attachments = get_email_attachments(
 )
 ```
 
-### Extract Text from Attachments
+### 从附件中提取文本
 
-**Prerequisite**: `pip install PyPDF2` for PDF text extraction
+**前提条件**：需要安装 `pip install PyPDF2` 以支持 PDF 文本提取
 
 ```python
 from skills.exchange2010 import process_attachment_content
@@ -171,7 +171,7 @@ for result in results:
         print(f"Content: {result['extracted_text'][:500]}...")
 ```
 
-### Search Contacts
+### 搜索联系人
 
 ```python
 from skills.exchange2010 import search_contacts, resolve_name
@@ -187,7 +187,7 @@ if result:
     print(f"Found: {result['name']} - {result['email']}")
 ```
 
-### Manage Tasks
+### 管理任务
 
 ```python
 from skills.exchange2010 import get_tasks, create_task, complete_task, delete_task
@@ -214,7 +214,7 @@ complete_task(task_id)
 delete_task(task_id)
 ```
 
-### Find Recurring Events
+### 查找重复事件
 
 ```python
 from skills.exchange2010 import get_recurring_events
@@ -227,7 +227,7 @@ for r in recurring:
     print(f"{r['subject']}: {r['recurrence']}")
 ```
 
-### Out-of-Office
+### 设置外出办公状态
 
 ```python
 from skills.exchange2010 import get_out_of_office, set_out_of_office
@@ -251,7 +251,7 @@ set_out_of_office(
 set_out_of_office(enabled=False, internal_reply="")
 ```
 
-### Send Email
+### 发送电子邮件
 
 ```python
 from skills.exchange2010 import send_email
@@ -264,71 +264,71 @@ send_email(
 )
 ```
 
-## API Reference
+## API 参考
 
-### Email
+### 电子邮件
 
-| Function | Description |
+| 函数 | 描述 |
 |----------|-------------|
-| `get_account()` | Connect to Exchange |
-| `get_unread_emails(account, limit=50)` | Get unread emails |
-| `search_emails(search_term, sender, subject, is_unread, folder, limit)` | Search emails |
-| `send_email(to, subject, body, cc, bcc)` | Send email |
-| `mark_email_as_read(email_id)` | Mark as read |
-| `get_email_attachments(email_id, download_path)` | Download attachments |
-| `process_attachment_content(email_id, attachment_name)` | Extract text |
+| `get_account()` | 连接到 Exchange 服务器 |
+| `get_unread_emails(account, limit=50)` | 获取未读邮件 |
+| `search_emails(search_term, sender, subject, is_unread, folder, limit)` | 搜索电子邮件 |
+| `send_email(to, subject, body, cc, bcc)` | 发送电子邮件 |
+| `mark_email_as_read(email_id)` | 将邮件标记为已读 |
+| `get_emailattachments(email_id, download_path)` | 下载附件 |
+| `process_attachment_content(email_id, attachment_name)` | 提取附件内容 |
 
-### Email Folders
+### 电子邮件文件夹
 
-| Function | Description |
-|----------|-------------|
-| `get_folder_emails(folder_name, limit, is_unread)` | Emails from folder |
-| `list_email_folders(account)` | List all folders |
+| 函数 | 描述 |
+| ----------|-------------|
+| `get_folder_emails(folder_name, limit, is_unread)` | 获取文件夹中的电子邮件 |
+| `list_email_folders(account)` | 列出所有文件夹 |
 
-### Calendar
+### 日历
 
-| Function | Description |
-|----------|-------------|
-| `get_today_events(email_address)` | Today's events |
-| `get_upcoming_events(email_address, days)` | Next N days |
-| `get_calendar_events(account, start, end)` | Events in range |
-| `get_shared_calendar_events(email, start, end)` | Shared calendar |
-| `search_calendar_by_subject(email, term, start, end)` | Fast search |
-| `create_calendar_event(subject, start, end, body, location)` | Create event |
-| `update_calendar_event(event_id, ...)` | Update event |
-| `get_event_details(event_id)` | Show details |
-| `delete_calendar_event(event_id)` | Delete event |
-| `get_recurring_events(email, start, end)` | Recurring events |
-| `list_available_calendars(account)` | List calendars |
-| `count_ekadashi_events(email, start_year)` | Count Ekadashi |
+| 函数 | 描述 |
+| ----------|-------------|
+| `get_today_events(email_address)` | 获取今日事件 |
+| `get_upcoming_events(email_address, days)` | 获取未来 N 天内的事件 |
+| `get_calendar_events(account, start, end)` | 获取指定时间范围内的事件 |
+| `get_shared_calendar_events(email, start, end)` | 获取共享日历的事件 |
+| `search_calendar_by_subject(email, term, start, end)` | 快速搜索日历事件 |
+| `create_calendar_event(subject, start, end, body, location)` | 创建日历事件 |
+| `update_calendar_event(event_id, ...)` | 更新日历事件 |
+| `get_event_details(event_id)` | 查看事件详情 |
+| `delete_calendar_event(event_id)` | 删除日历事件 |
+| `get_recurring_events(email, start, end)` | 获取重复事件 |
+| `list_available_calendars(account)` | 列出可用的日历 |
+| `count_ekadashi_events(email, start_year)` | 统计特定日期的 Ekadashi 事件数量 |
 
-### Contacts
+### 联系人
 
-| Function | Description |
-|----------|-------------|
-| `search_contacts(search_term, limit)` | Search contacts |
-| `resolve_name(name)` | Resolve name (GAL) |
+| 函数 | 描述 |
+| ----------|-------------|
+| `search_contacts(search_term, limit)` | 搜索联系人 |
+| `resolve_name(name)` | 解析联系人名称（GAL 数据库） |
 
-### Tasks
+### 任务
 
-| Function | Description |
-|----------|-------------|
-| `get_tasks(status, folder)` | Get tasks |
-| `create_task(subject, body, due_date, importance, categories)` | Create task |
-| `complete_task(task_id)` | Mark complete |
-| `delete_task(task_id)` | Delete task |
+| 函数 | 描述 |
+| ----------|-------------|
+| `get_tasks(status, folder)` | 获取任务列表 |
+| `create_task(subject, body, due_date, importance, categories)` | 创建任务 |
+| `complete_task(task_id)` | 完成任务 |
+| `delete_task(task_id)` | 删除任务 |
 
-### Out-of-Office
+### 外出办公状态
 
-| Function | Description |
-|----------|-------------|
-| `get_out_of_office(email_address)` | Read status |
-| `set_out_of_office(enabled, internal_reply, ...)` | Set OOF |
+| 函数 | 描述 |
+| ----------|-------------|
+| `get_out_of_office(email_address)` | 查看外出办公状态 |
+| `set_out_of_office.enabled, internal_reply, ...)` | 设置外出办公状态 |
 
-## Notes
+## 注意事项
 
-- **Exchange 2010 SP2** explicitly used as version
-- **DELEGATE** access type for own and shared mailboxes
-- **EWS Filters** (`subject__contains`, `start__gte`) are faster than iteration
-- **Timezones**: Automatic conversion to EWSDateTime with UTC
-- **27 functions** available in total
+- 明确使用 Exchange 2010 SP2 版本
+- 对于自己的邮箱和共享邮箱，使用 `DELEGATE` 访问权限类型
+- **EWS 过滤器**（如 `subject__contains`、`start__gte`）比传统遍历方式更高效
+- 时间区自动转换为 UTC 格式
+- 共提供 27 个相关函数

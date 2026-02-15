@@ -1,77 +1,76 @@
 ---
 name: JWT
-description: Implement secure JWT authentication with proper validation and token handling.
+description: 实现安全的 JWT（JSON Web Tokens）认证机制，包括适当的验证流程和令牌管理。
 metadata: {"clawdbot":{"emoji":"🔐","os":["linux","darwin","win32"]}}
 ---
 
-## Security Fundamentals
+## 安全基础
 
-- JWTs are signed, not encrypted—anyone can decode and read the payload; never store secrets in it
-- Always verify signature before trusting claims—decode without verify is useless for auth
-- The `alg: none` attack: reject tokens with algorithm "none"—some libraries accepted unsigned tokens
-- Use strong secrets: HS256 needs 256+ bit key; short secrets are brute-forceable
+- JSON Web Tokens (JWTs) 是经过签名处理的，而非加密的；任何人都可以解码并读取其中的数据；切勿在其中存储敏感信息。
+- 在信任 JWT 中的声明之前，务必验证其签名；未经验证的解码数据对身份验证毫无用处。
+- **“alg: none”攻击**：应拒绝使用 “alg: none” 算法的 JWT——某些库会接受未经签名的 JWT。
+- 使用强密码：HS256 算法需要至少 256 位的密钥；过短的密钥容易被暴力破解。
 
-## Algorithm Choice
+## 算法选择
 
-- HS256 (HMAC): symmetric, same key signs and verifies—good for single service
-- RS256 (RSA): asymmetric, private key signs, public verifies—good for distributed systems
-- ES256 (ECDSA): smaller signatures than RSA, same security—preferred for size-sensitive cases
-- Never let the token dictate algorithm—verify against expected algorithm server-side
+- **HS256 (HMAC)**：对称算法，使用相同的密钥进行签名和验证——适用于单一服务。
+- **RS256 (RSA)**：非对称算法，使用私钥签名、公钥验证——适用于分布式系统。
+- **ES256 (ECDSA)**：签名长度比 RSA 更短，安全性相同——在空间受限的情况下更受欢迎。
+- **切勿让 JWT 决定使用哪种算法**：应在服务器端根据预期的算法进行验证。
 
-## Required Claims
+## 必需的声明字段
 
-- `exp` (expiration): always set and verify—tokens without expiry live forever
-- `iat` (issued at): when token was created—useful for invalidation policies
-- `nbf` (not before): token not valid until this time—for scheduled access
-- Clock skew: allow 30-60 seconds leeway when verifying time claims
+- `exp`（过期时间）：必须设置并验证；没有过期时间的 JWT 会永久有效。
+- `iat`（发行时间）：表示 JWT 的创建时间——有助于制定失效策略。
+- `nbf`（“not before”）：指定 JWT 在此时间之前无效——适用于需要控制访问时间的场景。
+- 在验证时间声明时，允许存在 30-60 秒的时间偏差。
 
-## Audience & Issuer
+## 目标受众与发行者
 
-- `iss` (issuer): who created the token—verify to prevent cross-service token theft
-- `aud` (audience): intended recipient—API should reject tokens for other audiences
-- `sub` (subject): who the token represents—typically user ID
-- Token confusion attack: without aud/iss validation, token for Service A works on Service B
+- `iss`（发行者）：创建 JWT 的实体——通过验证 `iss` 可以防止跨服务之间的令牌盗用。
+- `aud`（受众）：JWT 的预期接收者——API 应拒绝发给其他受众的 JWT。
+- `sub`（主体）：JWT 代表的用户或实体——通常为用户的 ID。
+- **令牌混淆攻击**：如果不对 `aud` 和 `iss` 进行验证，一个服务的 JWT 可能在另一个服务上被误用。
 
-## Token Lifecycle
+## 令牌生命周期
 
-- Access tokens: short-lived (5-15 min)—limits damage if stolen
-- Refresh tokens: longer-lived, stored securely—used only to get new access tokens
-- Refresh token rotation: issue new refresh token on each use, invalidate old one
-- Revocation is hard—JWTs are stateless; use short expiry + refresh, or maintain blacklist
+- **访问令牌**：生命周期较短（5-15 分钟），即使被窃取也能将损失降到最低。
+- **刷新令牌**：生命周期较长，存储方式需安全，仅用于获取新的访问令牌。
+- **令牌轮换**：每次使用时都应生成新的刷新令牌，并使旧令牌失效。
+- **令牌撤销**：由于 JWT 是无状态的，因此撤销较为困难；可以采用设置较短过期时间并结合刷新机制，或使用黑名单来实现。
 
-## Storage
+## 存储方式
 
-- httpOnly cookie: immune to XSS, but needs CSRF protection
-- localStorage: vulnerable to XSS, but simpler for SPAs
-- Memory only: most secure, but lost on page refresh
-- Never store in URL parameters—visible in logs, history, referrer headers
+- **httpOnly` cookie**：可防止 XSS 攻击，但需要额外的 CSRF 防护措施。
+- **localStorage**：容易受到 XSS 攻击，但对于单页应用程序（SPA）来说使用更简单。
+- **仅存储在内存中**：安全性最高，但页面刷新时会丢失数据。
+- **切勿将 JWT 存储在 URL 参数中**：否则它们会出现在日志、浏览历史记录或引用头中。
 
-## Validation Checklist
+## 验证流程
 
-- Verify signature with correct algorithm (don't trust header's alg)
-- Check `exp` is in future (with clock skew tolerance)
-- Check `iat` is not unreasonably old (optional policy)
-- Verify `iss` matches expected issuer
-- Verify `aud` includes your service
-- Check `nbf` if present
+- 使用正确的算法验证签名（不要依赖请求头中的 `alg` 值）。
+- 确保 `exp` 值在未来有效（允许存在时间偏差）。
+- 检查 `iat` 值是否合理（可选）。
+- 验证 `iss` 是否与预期的发行者匹配。
+- 如果存在 `nbf` 字段，也需要进行验证。
 
-## Common Mistakes
+## 常见错误
 
-- Storing sensitive data in payload—it's just base64, not encrypted
-- Huge payloads—JWTs go in headers; many servers limit header size to 8KB
-- No expiration—indefinite tokens are security nightmares
-- Same secret across environments—dev tokens work in production
-- Logging tokens—they're credentials; treat as passwords
+- 在 JWT 的有效载荷中存储敏感数据——这些数据只是经过 Base64 编码，并未加密。
+- 使用过大的有效载荷——JWT 的头部大小有限制（例如，许多服务器将头部大小限制在 8KB 内）。
+- 不设置过期时间——会导致令牌永久有效，从而带来安全风险。
+- 在不同环境中使用相同的密钥——开发环境中的令牌可能无法在生产环境中正常使用。
+- 记录 JWT 的相关信息——这些信息属于敏感数据，应像处理密码一样加以保护。
 
-## Key Rotation
+## 密钥管理
 
-- Use `kid` (key ID) claim to identify which key signed the token
-- JWKS (JSON Web Key Set) endpoint for public key distribution
-- Overlap period: accept old key while transitioning to new
-- After rotation, old tokens still valid until they expire—plan accordingly
+- 使用 `kid`（密钥 ID）字段来标识生成 JWT 的密钥。
+- 使用 **JWKS (JSON Web Key Set)** 服务来分发公钥。
+- 在过渡期间，新旧密钥可以同时使用。
+- 密钥轮换后，旧令牌仍会在其过期前有效——请做好相应的计划。
 
-## Implementation
+## 实现方式
 
-- Use established libraries—don't implement JWT parsing yourself
-- Libraries: `jsonwebtoken` (Node), `PyJWT` (Python), `java-jwt` (Java), `golang-jwt` (Go)
-- Middleware should reject invalid tokens early—before any business logic
+- 使用成熟的库来实现 JWT 的解析和生成功能，切勿自行编写相关代码。
+- 可用的库包括：`jsonwebtoken`（Node.js）、`PyJWT`（Python）、`java-jwt`（Java）、`golang-jwt`（Go）。
+- 中间件应在任何业务逻辑之前及时拒绝无效的 JWT。

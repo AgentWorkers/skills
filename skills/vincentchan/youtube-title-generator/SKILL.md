@@ -1,18 +1,18 @@
 ---
 name: youtube-title-generator
-description: Generates compelling YouTube title ideas from content concepts. Use when someone needs click-worthy video titles using proven structural formulas and psychological patterns from high-performing videos.
+description: 根据内容概念生成吸引人的 YouTube 标题创意。当需要为视频创建能够吸引观众点击的标题时，可以使用经过验证的结构公式和来自高人气视频的心理学原理来帮助生成合适的标题。
 ---
 
-# YouTube Title Generator
+# YouTube 标题生成器
 
-You are a YouTube title generator that transforms content ideas, newsletter concepts, or reference materials into compelling, click-worthy YouTube title ideas using proven structural formulas and psychological patterns from high-performing videos.
+这是一个 YouTube 标题生成工具，它能够将您的内容创意、新闻稿概念或参考资料转化为引人入胜、点击率高的 YouTube 标题。我们运用了来自高点击率视频的成熟结构公式和心理学原理来帮助您生成标题。
 
-## File Locations
+## 文件位置
 
-- **Reference Titles:** `youtube-title/reference-titles.md`
-- **Generated Output:** `youtube-title/titles-{timestamp}.md`
+- **参考标题模板:** `youtube-title/reference-titles.md`
+- **生成的输出文件:** `youtube-title/titles-{timestamp}.md`
 
-## Workflow Overview
+## 工作流程概述
 
 ```
 Step 1: Collect user input
@@ -34,112 +34,107 @@ Step 6: Save output
      → Save to youtube-title/titles-{timestamp}.md
 ```
 
-## Step-by-Step Instructions
+## 逐步说明
 
-### Step 1: Collect User Input
+### 第一步：收集用户输入
 
-Ask the user:
-> "Please share your content idea, newsletter concept, or reference material. I'll transform it into 30 compelling YouTube title ideas."
+请用户提供以下信息：
+> “请分享您的内容创意、新闻稿概念或参考资料。我会根据这些信息生成 30 个吸引人的 YouTube 标题。”
 
-Accept any of the following:
-- A basic content idea or topic
-- A newsletter or article to extract ideas from
-- A URL to fetch and analyze
-- Multiple concepts or themes
+用户可以提供以下内容：
+- 一个基本的内容创意或主题
+- 一份需要提取创意的新闻稿或文章
+- 一个需要获取和分析的 URL
+- 多个概念或主题
 
-If the user provides a URL, use web_fetch to retrieve the content.
+如果用户提供了 URL，使用 `web_fetch` 函数来获取相关内容。
 
-### Step 2: Analyze Input
+### 第二步：分析输入内容
 
-Analyze the user's content to identify:
+分析用户提供的内容，重点关注以下方面：
+- **核心转化点**：财富、技能、生产力、生活改变、职业发展、健康、人际关系等
+- **核心价值主张**：内容的独特之处、竞争优势
+- **目标受众的收益**：观众能从中获得什么、解决了哪些问题、满足了哪些需求
+- **预期时间框架**：实现目标的实际时间范围（天、周、月、小时）
+- **最具吸引力的核心概念**：参考资料中最重要的、适合分享的内容
 
-| Element | What to Look For |
-|---------|------------------|
-| **Core Transformation Promise** | Wealth, skills, productivity, life change, career, health, relationships |
-| **Key Value Propositions** | Unique angles, differentiators, what makes this special |
-| **Target Audience Benefits** | What the viewer gains, problems solved, desires fulfilled |
-| **Potential Timeframes** | Realistic timeframes for results (days, weeks, months, hours) |
-| **Compelling Big Ideas** | The most powerful, shareable concepts from the reference |
+### 第三步：加载参考标题模板
 
-### Step 3: Load Reference Titles
+如果 `youtube-title/reference-titles.md` 文件存在，请阅读该文件，以便：
+- 了解已被验证的结构和公式
+- 学习有效的心理学触发点
+- 确保生成的标题与成功的案例保持一致
 
-If `youtube-title/reference-titles.md` exists, read it to:
-- Understand proven patterns and structures
-- Extract psychological triggers that work
-- Ensure generated titles align with successful examples
+### 第四步：生成 20 个结构化的标题
 
-### Step 4: Generate 20 Structured Titles
+使用以下框架生成 20 个标题：
 
-Generate exactly 20 titles using the following framework:
+#### 结构化公式（循环使用）
 
-#### Structural Formulas (Rotate Through These)
+**公式 1：强调性陈述 + 支持性细节/方法**
+- 模式：`[强调性陈述] + ([方法/内容/原因])`
+- 例子：
+  - “单人商业模式（如何实现自我产品化）”
+  - “个人品牌的终结与创意工作的未来”
 
-**Formula 1: Bold Statement + (Supporting Detail/Method)**
-- Pattern: `[Bold Claim] + ([How/What/Why])`
-- Examples:
-  - "The One-Person Business Model (How To Productize Yourself)"
-  - "The Death Of The Personal Brand (& The Future Of Creative Work)"
+**公式 2：如何 + 期望的结果 + 方法/途径**
+- 模式：`如何[达成目标X] + ([方法/系统])`
+- 例子：
+  - “如何在6-12个月内超越99%的人”
+  - “如何在零粉丝的情况下建立受众群（他们不会告诉你的方法）”
 
-**Formula 2: How To + Desirable Outcome + (Mechanism/Approach)**
-- Pattern: `How To [Achieve X] + ([Method/System])`
-- Examples:
-  - "How To Get Ahead Of 99% Of People In 6-12 Months"
-  - "How To Build An Audience With Zero Followers (What They Don't Tell You)"
+**公式 3：时间限定 + 重点关注点**
+- 模式：`[时间范围/数字] + ([重点关注领域])`
+- 例子：
+  - “365小时内改变你的生活（成功人士专注的这些任务）”
+  - “每天消失2-4小时（百万富翁的效率习惯）”
 
-**Formula 3: Time-Bound Element + (What To Focus On)**
-- Pattern: `[Timeframe/Number] + ([Focus Area])`
-- Examples:
-  - "Change Your Life In 365 Hours (The New Rich Focus On These Tasks)"
-  - "Disappear For 2-4 Hours A Day (The Millionaire Productivity Routine)"
+#### 心理学触发点（应用于所有标题）
 
-#### Psychological Triggers (Apply Across Titles)
-
-| Trigger | Implementation | Example Phrases |
+| 触发点 | 实现方式 | 例句 |
 |---------|----------------|-----------------|
-| **Time-Bound Promises** | Specify concrete timeframes | "6-12 months," "365 hours," "2-4 hours a day," "in 30 days" |
-| **Transformation Language** | Promise personal change | "won't be the same person," "change your life," "reinvent yourself" |
-| **Exclusivity Framing** | Create insider knowledge appeal | "what they don't tell you," "most people ignore," "the secret" |
-| **Status Elevation** | Appeal to ambition | "get ahead of 99%," "high-income skill," "millionaire," "top 1%" |
+| **时间限定** | 明确具体的时间范围 | “6-12个月”、“365小时”、“每天2-4小时”、“30天内” |
+| **转变语言** | 承诺个人成长 | “你将不再是从前的自己”、“改变你的生活”、“重塑自我” |
+| **独家性** | 创造一种内部知识的吸引力 | “他们不会告诉你的”、“大多数人忽视的”、“秘密” |
+| **地位提升** | 唤起雄心** “超越99%的人”、“高收入技能”、“顶尖1%” |
 
-#### Contrasting Elements (Use in Multiple Titles)
+#### 对比元素（在多个标题中使用）
 
-- **Modest input → Dramatic output:** "2-4 Hours A Day" → "$1 Million"
-- **Unexpected combinations:** "Life Into A Video Game," "Productivity Routine"
-- **Counterintuitive approaches:** "Disappear And Come Back," "Avoid Learning These Skills"
+- **平淡的输入 → 强烈的输出**：“每天2-4小时” → “赚100万美元”
+- **意想不到的组合**：“将生活变成电子游戏”、“效率习惯”
+- **反直觉的方法**：“消失然后重新出现”、“避免学习这些技能”
 
-### Step 5: Generate 10 Creative Titles
+### 第五步：生成10个创意标题
 
-Generate 10 additional titles that:
-- Are based on your own creativity and intuition
-- Don't strictly follow the structural formulas above
-- Draw inspiration from direct response marketing principles
-- Are the most clickable and relevant titles you can create for the topic
+再生成10个标题：
+- 这些标题应基于您的创意和直觉
+- 不必严格遵循上述结构化公式
+- 从直接响应营销原则中获取灵感
+- 这些标题应该是您能为该主题想到的最吸引人的标题
 
-Creative approaches to consider:
-- Personal story hooks ("How I...", "I Tried...", "What Happened When...")
-- Listicles ("7 Ways To...", "The 3 Things...")
-- Challenge/experiment framing ("I Did X For 30 Days")
-- Contrarian/myth-busting ("Stop Doing X", "X Is A Lie")
-- Question hooks ("Why Do...", "What If...")
-- Curiosity gaps ("The Truth About...", "What No One Tells You About...")
+可以考虑的创意方法：
+- 个人故事式开头（“我如何...”、“我尝试了...”、“当...发生时...”）
+- 列表式标题（“7种方法...”、“3个关键点...”）
+- 挑战/实验式标题（“我坚持做了X天”）
+- 反传统/打破迷思的标题（“停止做X”、“X是个谎言”）
+- 问题式开头（“为什么...”、“如果...会怎样...”）
+- 情感共鸣式标题（“关于...的真相”、“没人告诉你的...”）
 
-### Step 6: Save Output
+### 第六步：保存结果
 
-1. Generate timestamp in format: `YYYY-MM-DD-HHmmss`
-2. Save the complete output to `youtube-title/titles-{timestamp}.md`
-3. Report to user: "✓ Titles saved to youtube-title/titles-{timestamp}.md"
+1. 生成一个时间戳，格式为 `YYYY-MM-DD-HHmmss`
+2. 将所有生成的标题保存到 `youtube-title/titles-{timestamp}.md` 文件中
+3. 告知用户：“✓ 标题已保存到 `youtube-title/titles-{timestamp}.md` 文件中”
 
-## Constraints
+## 限制条件
 
-| Constraint | Requirement |
-|------------|-------------|
-| **Character Limit** | Keep titles under 70 characters when possible |
-| **Distinctiveness** | All 30 titles must be distinct |
-| **No Plagiarism** | Never copy reference titles verbatim—use them as inspiration only |
-| **Core Idea** | Maintain the essence of the user's provided content |
-| **Tone** | Be polarizing, have high conviction, and be hyperbolic when applicable |
+- **字符限制**：尽可能使标题长度控制在70个字符以内
+- **独特性**：所有30个标题都必须各具特色
+- **禁止抄袭**：严禁逐字复制参考标题中的内容，仅将其作为灵感来源
+- **核心内容**：保持用户提供内容的本质
+- **语气**：标题应具有强烈的说服力，必要时可以使用夸张的表达
 
-## Output Format
+## 输出格式
 
 ```markdown
 # YouTube Title Ideas
@@ -184,24 +179,24 @@ Creative approaches to consider:
 [Any additional observations about the title generation or recommendations]
 ```
 
-## Error Handling
+## 错误处理
 
-### No Input Provided
-- If user provides no input, prompt them again with examples of what to provide
+### 未提供输入
+- 如果用户没有提供任何输入，再次提示他们提供具体内容。
 
-### URL Fetch Failure
-- If a URL fails to fetch, inform the user and ask for alternative input
+### URL 获取失败
+- 如果无法获取URL，请告知用户并要求他们提供其他输入。
 
-### Insufficient Context
-- If the input is too vague, ask 1-2 clarifying questions:
-  - "What transformation or outcome does this content promise?"
-  - "Who is the target audience for this video?"
+### 信息不足
+- 如果输入信息过于模糊，可以询问1-2个问题以获取更多细节：
+  - “这个内容承诺带来什么样的改变或结果？”
+  - “这个视频的目标受众是谁？”
 
-## Important Notes
+## 重要提示
 
-- Read the reference titles file if it exists before generating
-- Vary the structural formulas—don't use the same one consecutively
-- Each title should feel fresh and distinct
-- The creative titles (21-30) should feel noticeably different from the structured ones
-- Prioritize titles that create curiosity gaps and compel clicks
-- Think like a viewer: would YOU click on this title?
+- 在生成标题之前，请先阅读 `youtube-title/reference-titles.md` 文件
+- 不要连续使用相同的结构化公式
+- 每个标题都应该具有新鲜感和独特性
+- 创意标题（第21-30个）应与结构化标题有明显区别
+- 优先选择能够引发好奇心和吸引点击的标题
+- 从观众的角度思考：你会点击这个标题吗？

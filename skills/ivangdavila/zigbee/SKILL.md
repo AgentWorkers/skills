@@ -1,53 +1,53 @@
 ---
 name: Zigbee
-description: Deploy and troubleshoot Zigbee mesh networks for home automation.
+description: 部署并排查用于家庭自动化的Zigbee网状网络中的故障。
 metadata: {"clawdbot":{"emoji":"🐝","os":["linux","darwin","win32"]}}
 ---
 
-## Mesh Network Traps
-- Battery devices don't route — only mains-powered devices extend mesh
-- Mesh needs routers every 10-15m — one coordinator alone has limited range
-- Adding routers requires rebuilding routes — devices don't automatically find new paths
-- First devices paired become mesh backbone — pair routers before sensors
+## 网状网络相关问题  
+- 电池供电的设备无法参与网络路由，只有使用市电的设备才能扩展网络覆盖范围。  
+- 每10至15米就需要设置一个路由器；单独一个协调器的覆盖范围非常有限。  
+- 添加路由器后需要重新配置网络路由，因为设备不会自动寻找新的传输路径。  
+- 首先配对的设备会成为网络的核心节点；在连接传感器之前，应先配对路由器。  
 
-## Coordinator Issues
-- Only one coordinator per network — two coordinators create two separate networks
-- Coordinator stick placement matters — USB extension away from computer reduces interference
-- Coordinator migration loses all pairings — backup before switching hardware
-- Some sticks need firmware flash — Sonoff, CC2531 don't work out of box
+## 协调器相关问题  
+- 每个网络只能有一个协调器；如果使用两个协调器，则会形成两个独立的网络。  
+- 协调器的安装位置很重要：将USB扩展线远离电脑可以减少干扰。  
+- 更换协调器会导致所有设备之间的配对关系丢失；更换硬件前请先备份数据。  
+- 部分设备需要更新固件（例如Sonoff、CC2531等设备出厂时可能无法正常使用）。  
 
-## WiFi Interference
-- Zigbee shares 2.4GHz spectrum — WiFi channels overlap with Zigbee channels
-- Zigbee channel 11 = WiFi channel 1, Zigbee 25 = WiFi 11 — pick non-overlapping
-- Default Zigbee channel 11 often worst — conflicts with common WiFi defaults
-- Changing Zigbee channel requires re-pairing all devices — choose carefully initially
+## WiFi干扰问题  
+- Zigbee与WiFi共享2.4GHz频段，两者之间的频道可能会重叠。  
+- Zigbee的第11频道与WiFi的第11频道相同；应选择不会重叠的频道。  
+- 默认的Zigbee第11频道通常性能较差，容易与常见的WiFi频道发生冲突。  
+- 更改Zigbee频道需要重新配对所有设备；初次使用时请谨慎选择频道。  
 
-## Compatibility Issues
-- "Zigbee compatible" doesn't mean interoperable — some devices only work with their hub
-- Xiaomi/Aqara devices drop off generic coordinators — need specific handling
-- Tuya Zigbee often requires their gateway — may not pair with Zigbee2MQTT
-- Check device compatibility list before buying — not all Zigbee is equal
+## 兼容性问题  
+- 虽然设备标明“兼容Zigbee”，但并不一定能够与其他设备互操作；有些设备只能与特定的中心设备配合使用。  
+- 小米/Aqara品牌的产品可能无法与通用协调器配合使用，需要特殊处理。  
+- Tuya品牌的Zigbee设备通常需要通过其专属网关进行控制，可能无法与Zigbee2MQTT协议兼容。  
+- 购买前请查看设备的兼容性列表，因为并非所有Zigbee设备都是一样的。  
 
-## Pairing Problems
-- Pairing mode timeout is short — be ready before enabling
-- Factory reset required if previously paired — hold button 5-10 seconds
-- Distance during pairing matters — pair close to coordinator, move after
-- Some devices need multiple reset attempts — keep trying
+## 配对问题  
+- 配对过程的超时时间较短；在启用配对功能前请确保设备已准备好。  
+- 如果设备之前已经配对过，需要先进行出厂重置（长按按钮5至10秒）。  
+- 配对时的距离很重要；应尽量将设备靠近协调器进行配对，之后再移动设备位置。  
+- 有些设备可能需要多次重试才能成功配对。  
 
-## Groups vs Binding
-- Groups: coordinator sends one command to all — requires coordinator online
-- Binding: direct device-to-device — works without coordinator, lower latency
-- Binding a switch to bulbs survives coordinator reboot — groups don't
-- Not all devices support binding — check before planning automation
+## 组与绑定机制  
+- **组（Groups）**：协调器向所有设备发送同一条指令；这种方式需要协调器处于在线状态。  
+- **绑定（Binding）**：设备之间直接建立连接；无需协调器参与，延迟更低。  
+- 将开关与灯泡绑定后，即使协调器重启，这种连接也会保持；而组机制则无法保证这一点。  
+- 并非所有设备都支持绑定功能；在规划自动化控制时请提前确认设备的兼容性。  
 
-## Battery Devices
-- Battery sensors sleep aggressively — commands only received on wake
-- Check-in intervals vary by device — some wake every hour, others every few seconds
-- Reporting thresholds affect battery life — frequent updates drain faster
-- Replacing battery sometimes requires re-pairing — device forgets network
+## 电池供电设备的相关问题  
+- 电池供电的设备处于睡眠状态时几乎不接收指令；只有在设备唤醒时才会响应。  
+- 不同设备的唤醒间隔各不相同；有些设备每小时唤醒一次，有些则每几秒唤醒一次。  
+- 报告数据的频率会影响电池寿命；频繁的数据传输会加速电池耗电。  
+- 更换电池时有时需要重新配对设备；因为设备可能会忘记网络配置。  
 
-## Common Failures
-- Device shows online but doesn't respond — try power cycle, check routing
-- Intermittent responses — mesh too sparse, add routers
-- Delayed commands — routing through many hops, add closer router
-- New device won't pair — network in wrong mode, coordinator issue, or device not reset
+## 常见故障及解决方法  
+- 设备显示为在线状态但无响应：尝试重启设备或检查网络路由设置。  
+- 设备响应不稳定：可能是网络覆盖范围太窄，需要添加更多路由器。  
+- 命令传输延迟：可能是由于数据需要经过多个节点转发，建议添加更靠近协调器的路由器。  
+- 新设备无法配对：可能是网络模式设置错误、协调器出现问题，或者设备本身未完成重置。

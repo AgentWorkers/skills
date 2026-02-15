@@ -1,25 +1,25 @@
 ---
 name: read-no-evil-mcp
-description: Secure email access via read-no-evil-mcp. Protects against prompt injection attacks in emails. Use for reading, sending, deleting, and moving emails.
+description: 通过 `read-no-evil-mcp` 实现安全的电子邮件访问功能。该工具可有效防止电子邮件中的提示注入攻击（prompt injection attacks），支持执行电子邮件阅读、发送、删除和移动等操作。
 ---
 
 # read-no-evil-mcp
 
-Secure email gateway that scans emails for prompt injection attacks before you see them.
+这是一个安全的电子邮件网关，能够在用户查看邮件内容之前扫描邮件，以检测是否存在提示注入（prompt injection）攻击。
 
-## Prerequisites
+## 先决条件
 
-Install the read-no-evil-mcp package (version must match skill version):
+请安装 `read-no-evil-mcp` 包（版本必须与 `skill` 的版本相匹配）：
 
 ```bash
 pip install read-no-evil-mcp==0.2.0
 ```
 
-## Configuration
+## 配置
 
-### Config File
+### 配置文件
 
-Create `~/.config/read-no-evil-mcp/config.yaml`:
+创建 `~/.config/read-no-evil-mcp/config.yaml` 文件：
 
 ```yaml
 accounts:
@@ -40,17 +40,17 @@ accounts:
     from_name: "Your Name"
 ```
 
-### Credentials
+### 认证信息
 
-Create `~/.config/read-no-evil-mcp/.env`:
+创建 `~/.config/read-no-evil-mcp/.env` 文件：
 
 ```bash
 RNOE_ACCOUNT_DEFAULT_PASSWORD=your-password
 ```
 
-Environment variable format: `RNOE_ACCOUNT_{ACCOUNT_ID}_PASSWORD` (uppercase).
+环境变量格式：`RNOE_ACCOUNT_{ACCOUNT_ID}_PASSWORD`（全部为大写）。
 
-## CLI Commands
+## 命令行接口（CLI）命令
 
 ```bash
 # List recent emails (last 30 days)
@@ -72,27 +72,26 @@ rnoe-mail.py folders
 rnoe-mail.py move <uid> --to "Archive"
 ```
 
-## Prompt Injection Detection
+## 提示注入检测
 
-All emails are automatically scanned:
+所有邮件都会被自动扫描：
+- **安全**：邮件内容会正常显示。
+- **检测到注入攻击**：程序会以退出代码 2 结束运行，并显示攻击的详细信息及相关模式。
 
-- **Safe**: Content displayed normally
-- **Injection detected**: Exit code 2, shows score + patterns
+该工具使用 ProtectAI 的 DeBERTa 模型进行检测（本地推理，不依赖外部 API）。
 
-Uses ProtectAI's DeBERTa model (local inference, no external APIs).
+## 权限设置
 
-## Permissions
-
-| Permission | Description | Default |
+| 权限 | 描述 | 默认值 |
 |------------|-------------|---------|
-| `read` | List and read emails | `true` |
-| `send` | Send emails via SMTP | `false` |
-| `delete` | Delete emails | `false` |
-| `move` | Move emails between folders | `false` |
+| `read` | 列出并读取邮件内容 | `true` |
+| `send` | 通过 SMTP 发送邮件 | `false` |
+| `delete` | 删除邮件 | `false` |
+| `move` | 在文件夹间移动邮件 | `false` |
 
-## Security Notes
+## 安全注意事项
 
-- Emails are scanned for prompt injection before content is returned
-- ML model runs locally — no data sent to external APIs
-- Enable write permissions only when needed
-- Consider using app-specific passwords
+- 邮件内容在返回给用户之前会先经过提示注入攻击的扫描。
+- 机器学习模型在本地运行，不会将任何数据发送到外部 API。
+- 仅在实际需要时才启用写入权限。
+- 建议使用与应用程序相关的专用密码进行身份验证。

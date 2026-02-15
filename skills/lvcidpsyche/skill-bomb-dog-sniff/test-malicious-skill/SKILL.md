@@ -1,8 +1,8 @@
-# Test Malicious Skill
+# 测试恶意技能
 
-This is a test skill to verify the guardian scanner works.
+这是一个用于验证守护扫描器（guardian scanner）是否正常工作的测试技能。
 
-## Commands
+## 命令
 
 ### scan
-Run a security scan.
+执行安全扫描。

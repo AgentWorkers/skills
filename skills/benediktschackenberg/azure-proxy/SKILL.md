@@ -1,29 +1,29 @@
 ---
 name: azure-proxy
-description: Enable Azure OpenAI integration with OpenClaw via a lightweight local proxy. Use when configuring Azure OpenAI as a model provider, when encountering 404 errors with Azure OpenAI in OpenClaw, or when needing to use Azure credits (e.g. Visual Studio subscription) with OpenClaw subagents. Solves the api-version query parameter issue that prevents direct Azure OpenAI integration.
+description: 通过一个轻量级的本地代理来启用 OpenClaw 与 Azure OpenAI 的集成。当您将 Azure OpenAI 配置为模型提供者时，或者在 OpenClaw 中遇到与 Azure OpenAI 相关的 404 错误时，或者需要使用 Azure 信用（例如 Visual Studio 订阅）来支持 OpenClaw 的子代理时，都可以使用此方法。该方法解决了由于 `api-version` 查询参数问题而导致的直接集成失败的问题。
 ---
 
-# Azure OpenAI Proxy for OpenClaw
+# Azure OpenAI 代理（用于 OpenClaw）
 
-A lightweight Node.js proxy that bridges Azure OpenAI with OpenClaw.
+这是一个轻量级的 Node.js 代理，用于连接 Azure OpenAI 和 OpenClaw。
 
-## The Problem
+## 问题
 
-OpenClaw constructs API URLs like this:
+OpenClaw 构建的 API URL 的格式如下：
 ```javascript
 const endpoint = `${baseUrl}/chat/completions`;
 ```
 
-Azure OpenAI requires:
+而 Azure OpenAI 的要求是：
 ```
 https://{resource}.openai.azure.com/openai/deployments/{model}/chat/completions?api-version=2025-01-01-preview
 ```
 
-When `api-version` is in the baseUrl, OpenClaw's path append breaks it.
+当 `api-version` 被包含在 `baseUrl` 中时，OpenClaw 的路径处理机制会导致该 URL 无法正确解析。
 
-## Quick Setup
+## 快速设置
 
-### 1. Configure and Run the Proxy
+### 1. 配置并运行代理
 
 ```bash
 # Set your Azure details
@@ -35,10 +35,9 @@ export AZURE_OPENAI_API_VERSION="2025-01-01-preview"
 node scripts/server.js
 ```
 
-### 2. Configure OpenClaw Provider
+### 2. 配置 OpenClaw 提供者
 
-Add to `~/.openclaw/openclaw.json`:
-
+在 `~/.openclaw/openclaw.json` 文件中添加以下配置：
 ```json
 {
   "models": {
@@ -67,11 +66,11 @@ Add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-**Important:** Set `authHeader: false` — Azure uses `api-key` header, not Bearer tokens.
+**注意：** 将 `authHeader` 设置为 `false` — Azure 使用的是 `api-key` 头部信息，而不是 Bearer 令牌。
 
-### 3. (Optional) Use for Subagents
+### 3. （可选）用于子代理（Subagents）
 
-Save Azure credits by routing automated tasks through Azure:
+通过将自动化任务路由到 Azure 来节省 Azure 资源：
 
 ```json
 {
@@ -85,9 +84,9 @@ Save Azure credits by routing automated tasks through Azure:
 }
 ```
 
-## Run as systemd Service
+## 作为 systemd 服务运行
 
-Copy the template and configure:
+复制模板并进行相应配置：
 
 ```bash
 mkdir -p ~/.config/systemd/user
@@ -102,27 +101,25 @@ systemctl --user enable azure-proxy
 systemctl --user start azure-proxy
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `AZURE_PROXY_PORT` | `18790` | Local proxy port |
-| `AZURE_PROXY_BIND` | `127.0.0.1` | Bind address |
-| `AZURE_OPENAI_ENDPOINT` | — | Azure resource hostname |
-| `AZURE_OPENAI_DEPLOYMENT` | `gpt-4o` | Deployment name |
-| `AZURE_OPENAI_API_VERSION` | `2025-01-01-preview` | API version |
+| 变量          | 默认值        | 描述                          |
+|----------------|-------------|---------------------------------------------|
+| `AZURE_PROXY_PORT`   | `18790`       | 本地代理端口                          |
+| `AZURE_PROXY_BIND`    | `127.0.0.1`     | 代理绑定地址                        |
+| `AZURE_OPENAI_ENDPOINT` | —           | Azure 资源主机名                        |
+| `AZURE_OPENAI_DEPLOYMENT` | `gpt-4o`       | 部署名称                          |
+| `AZURE_OPENAI_API_VERSION` | `2025-01-01-preview` | API 版本                          |
 
-## Health Check
+## 健康检查
 
 ```bash
 curl http://localhost:18790/health
 # {"status":"ok","deployment":"gpt-4o"}
 ```
 
-## Troubleshooting
+## 故障排除
 
-**404 Resource not found:** Check endpoint hostname and deployment name match Azure Portal.
-
-**401 Unauthorized:** API key is wrong or expired.
-
-**Content Filter Errors:** Azure has aggressive content filtering — some prompts that work on OpenAI may get blocked.
+- **404 资源未找到：** 确认端点主机名和部署名称与 Azure 门户中的信息一致。
+- **401 未经授权：** API 密钥错误或已过期。
+- **内容过滤错误：** Azure 有严格的内容过滤机制，某些在 OpenAI 上可以正常使用的请求可能会被阻止。

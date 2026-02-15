@@ -1,59 +1,59 @@
 ---
 name: theme-factory
 model: fast
-description: Curated collection of professional color and typography themes for styling artifacts — slides, docs, reports, landing pages. Use when applying visual themes to presentations, generating themed content, or creating custom brand palettes. Triggers on theme, color palette, font pairing, slide styling, presentation theme, brand colors.
+description: 这是一套精心挑选的专业色彩与排版主题集合，适用于设计各种文档（如幻灯片、报告、登录页面等）。您可以在为演示文稿应用视觉主题、生成具有特定风格的文本内容，或创建自定义品牌调色板时使用这些主题。这些主题涵盖了主题设计、色彩搭配、字体选择、幻灯片样式以及品牌色彩等多个方面。
 ---
 
-# Theme Factory
+# 主题工厂（Theme Factory）
 
-Apply consistent, professional styling to any artifact using curated themes with color palettes and font pairings.
-
----
-
-## When to Use
-
-- Styling slide decks, reports, or documents with a cohesive visual identity
-- Applying color palettes and font pairings to HTML pages or landing pages
-- Choosing a pre-built theme for quick professional styling
-- Creating a custom theme when none of the presets fit
+使用精心设计的主题和颜色搭配，为任何文档或界面应用一致、专业的样式。
 
 ---
 
-## How to Use
+## 使用场景
 
-### Step 1: Present Available Themes
+- 为幻灯片、报告或文档添加统一的视觉风格
+- 为 HTML 页面或 landing 页面设置颜色方案和字体组合
+- 选择预设主题以快速实现专业化的样式设计
+- 当现有预设主题都不适用时，创建自定义主题
 
-Show the user the 10 available themes with their descriptions:
+---
 
-| # | Theme | Vibe | Best For |
+## 使用方法
+
+### 第一步：展示可用主题
+
+向用户展示 10 个可用主题及其描述：
+
+| 编号 | 主题名称 | 风格 | 适用场景 |
 |---|-------|------|----------|
-| 1 | Ocean Depths | Professional, calming maritime | Corporate, financial, consulting |
-| 2 | Sunset Boulevard | Warm, vibrant energy | Creative pitches, marketing, events |
-| 3 | Forest Canopy | Natural, grounded earth tones | Environmental, sustainability, wellness |
-| 4 | Modern Minimalist | Clean, contemporary grayscale | Tech, architecture, design showcases |
-| 5 | Golden Hour | Rich, warm autumnal | Hospitality, lifestyle, artisan brands |
-| 6 | Arctic Frost | Cool, crisp precision | Healthcare, technology, clean tech |
-| 7 | Desert Rose | Soft, sophisticated dusty tones | Fashion, beauty, interior design |
-| 8 | Tech Innovation | Bold, high-contrast modern | Startups, software launches, AI/ML |
-| 9 | Botanical Garden | Fresh, organic vibrancy | Food, garden, natural products |
-| 10 | Midnight Galaxy | Dramatic, cosmic depth | Entertainment, gaming, luxury brands |
+| 1 | **Ocean Depths** | 专业、宁静的海洋风格 | 企业、金融、咨询领域 |
+| 2 | **Sunset Boulevard** | 温暖、充满活力的风格 | 创意提案、市场营销、活动 |
+| 3 | **Forest Canopy** | 自然、质朴的色调 | 环保、可持续性、健康主题 |
+| 4 | **Modern Minimalist** | 简洁、现代的灰度风格 | 科技、建筑、设计展示 |
+| 5 | **Golden Hour** | 丰富、温暖的秋日风格 | 酒店、生活方式、手工品牌 |
+| 6 | **Arctic Frost** | 凉爽、清晰的风格 | 医疗保健、科技、清洁技术 |
+| 7 | **Desert Rose** | 软柔和雅的色调 | 时尚、美容、室内设计 |
+| 8 | **Tech Innovation** | 大胆、对比强烈的现代风格 | 初创企业、软件发布、人工智能/机器学习 |
+| 9 | **Botanical Garden** | 清新、自然的风格 | 食品、园艺、天然产品 |
+| 10 | **Midnight Galaxy** | 剧烈、宇宙般的风格 | 娱乐、游戏、奢侈品牌 |
 
-### Step 2: Get User Selection
+### 第二步：获取用户选择
 
-Ask which theme to apply. Wait for explicit confirmation before proceeding.
+询问用户希望应用哪个主题，并在得到明确确认后再继续下一步。
 
-### Step 3: Apply the Theme
+### 第三步：应用主题
 
-1. Read the selected theme file from `themes/` directory
-2. Apply colors and fonts consistently throughout the artifact
-3. Ensure proper contrast and readability
-4. Maintain the theme's visual identity across all pages/slides
+1. 从 `themes/` 目录中读取选定的主题文件
+2. 在整个文档或界面中一致地应用所选主题的颜色和字体
+3. 确保对比度和可读性符合要求
+4. 保持所有页面/幻灯片上的视觉风格一致
 
 ---
 
-## Theme File Structure
+## 主题文件结构
 
-Each theme in `themes/` follows this format:
+`themes/` 目录下的每个主题文件都遵循以下格式：
 
 ```markdown
 # Theme Name
@@ -76,83 +76,74 @@ Context and audience descriptions.
 
 ---
 
-## Applying Themes to Different Artifacts
+## 如何将主题应用于不同类型的文档/界面
 
-### Slide Decks
+### 幻灯片
 
-- **Background**: Use the primary dark color for title slides, light color for content slides
-- **Headers**: Apply the header font in the accent color
-- **Body text**: Use the body font in the primary dark color on light backgrounds
-- **Accents**: Use accent/secondary colors for charts, highlights, dividers
+- **背景**：使用主题中的主要深色作为标题幻灯片的背景，浅色作为内容幻灯片的背景
+- **标题**：使用标题字体和主题中的强调色
+- **正文**：在浅色背景上使用正文字体和主题中的主要深色
+- **强调元素**：使用强调色或次要颜色来标注图表、重点内容等
 
-### HTML / Landing Pages
+### HTML / Landing 页面
 
-```css
-:root {
-  --theme-primary: #hex;     /* From theme's primary dark */
-  --theme-accent: #hex;      /* From theme's accent color */
-  --theme-secondary: #hex;   /* From theme's secondary */
-  --theme-bg: #hex;          /* From theme's light/background */
-  --theme-font-heading: "Theme Header Font", sans-serif;
-  --theme-font-body: "Theme Body Font", sans-serif;
-}
-```
+---（具体应用方式在此处省略，可根据实际需求补充）
 
-### Documents / Reports
+### 文档 / 报告
 
-- **Cover page**: Primary dark background with light text
-- **Section headers**: Accent color with header font
-- **Body**: Body font on light background
-- **Charts/tables**: Use accent and secondary for data series
-- **Callout boxes**: Secondary color as background with primary text
+- **封面页**：使用主题中的主要深色背景和浅色文字
+- **章节标题**：使用标题字体和强调色
+- **正文**：在浅色背景上使用正文字体
+- **图表/表格**：使用强调色和次要颜色来标注数据系列
+- **提示框**：使用次要颜色作为背景，文字使用主要颜色
 
 ---
 
-## Creating a Custom Theme
+## 创建自定义主题
 
-When no preset fits, generate a custom theme:
+当现有预设主题都不适用时，可以按照以下步骤创建自定义主题：
 
-1. **Gather input** — Ask about the brand, audience, mood, and context
-2. **Select palette** — Choose 4 colors that form a cohesive palette:
-   - One dark anchor color (backgrounds, text)
-   - One primary accent (emphasis, CTAs)
-   - One secondary accent (supporting elements)
-   - One light/neutral (backgrounds, whitespace)
-3. **Pair fonts** — Choose complementary heading and body fonts:
-   - Heading: distinctive, personality-driven
-   - Body: readable, clean
-4. **Validate contrast** — Ensure WCAG AA compliance for text on backgrounds
-5. **Name the theme** — Give it an evocative name describing the visual feeling
-6. **Document** — Write a theme file matching the standard format
-7. **Review** — Show the theme for approval before applying
+1. **收集信息**：了解品牌、目标受众、主题氛围和适用场景
+2. **选择颜色搭配**：选择 4 种能够形成统一风格的颜色：
+   - 一种深色（用于背景和文字）
+   - 一种主要强调色（用于重点内容、呼叫行动按钮）
+   - 一种次要强调色（用于辅助元素）
+   - 一种浅色或中性色（用于背景和空白区域）
+3. **搭配字体**：选择相互搭配的标题字体和正文字体：
+   - 标题字体：具有辨识度、能体现主题特色的字体
+   - 正文字体：易于阅读、简洁的字体
+4. **检查对比度**：确保文本在背景上的可读性符合 WCAG AA 标准
+5. **命名主题**：为主题起一个能够体现其视觉风格的名称
+6. **编写主题文件**：按照标准格式编写主题文件
+7. **审核**：在应用之前展示主题文件以获得批准
 
-### Palette Harmony Rules
+### 颜色搭配规则
 
-- **Complementary**: Colors opposite on the wheel (high contrast)
-- **Analogous**: Colors adjacent on the wheel (harmonious)
-- **Triadic**: Three evenly spaced colors (vibrant but balanced)
-- **Split-complementary**: Base + two colors adjacent to its complement (versatile)
+- **互补色**：色轮上相对的颜色（对比度较高）
+- **类似色**：色轮上相邻的颜色（和谐统一）
+- **三原色**：三种等间距的颜色（色彩丰富但平衡）
+- **分裂互补色**：基础色加上其互补色（用途广泛）
 
 ---
 
-## Contrast Guidelines
+## 对比度指南
 
-Ensure readability when applying any theme:
+应用任何主题时，请确保可读性：
 
-| Combination | Minimum Ratio | WCAG Level |
+| 颜色组合 | 最小对比度 | WCAG 级别 |
 |-------------|--------------|------------|
-| Body text on background | 4.5:1 | AA |
-| Large text (18px+) on background | 3:1 | AA |
-| UI components / borders | 3:1 | AA |
-| Enhanced readability | 7:1 | AAA |
+| 正文在背景上 | 4.5:1 | AA |
+| 大字号文本（18px 及以上）在背景上 | 3:1 | AA |
+- **用户界面元素/边框** | 3:1 | AA |
+- **提高可读性** | 7:1 | AAA |
 
-Test accent colors against both light and dark backgrounds before finalizing.
+在最终确定颜色之前，需要在浅色和深色背景下测试强调色。
 
 ---
 
-## Available Themes
+## 可用主题列表
 
-All theme definitions are in the `themes/` directory:
+所有主题的详细信息都位于 `themes/` 目录中：
 
 - [themes/ocean-depths.md](themes/ocean-depths.md)
 - [themes/sunset-boulevard.md](themes/sunset-boulevard.md)
@@ -167,18 +158,18 @@ All theme definitions are in the `themes/` directory:
 
 ---
 
-## NEVER Do
+## 注意事项
 
-- **Apply a theme without confirmation** — always get explicit user selection
-- **Mix colors from different themes** — each theme is a cohesive unit
-- **Ignore contrast ratios** — readability trumps aesthetics
-- **Use accent colors for large text blocks** — accents are for emphasis only
-- **Skip font pairing** — headers and body fonts must complement each other
-- **Hardcode theme values** — use CSS variables for easy theme switching
+- **未经确认切勿应用主题** — 必须得到用户的明确选择
+- **不要混合不同主题的颜色** — 每个主题都是一个独立的、完整的风格单元
+- **不要忽略对比度要求** — 可读性比美观更重要
+- **不要将强调色用于大段文字** — 强调色仅用于突出重点
+- **不要忽略字体搭配** — 标题字体和正文字体必须相互搭配
+- **不要硬编码主题样式** — 使用 CSS 变量以便于灵活切换主题
 
 ---
 
-## Related Skills
+## 相关技能
 
-- [design-system-patterns](../design-system-patterns/) — Token architecture and theming infrastructure
-- [distinctive-design-systems](../distinctive-design-systems/) — Aesthetic documentation and unique visual identity
+- [design-system-patterns](../design-system-patterns/) — 设计系统模式和主题设计基础
+- [distinctive-design-systems](../distinctive-design-systems/) — 独特的设计系统和视觉识别度构建

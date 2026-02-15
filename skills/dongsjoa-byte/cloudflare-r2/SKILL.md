@@ -1,20 +1,20 @@
 ---
 name: cloudflare-r2
-description: Upload files to Cloudflare R2 storage using wrangler CLI. Use when needing to upload images, videos, or files to R2 for CDN hosting, or manage R2 bucket contents. Triggers on "upload to R2", "upload to Cloudflare", "上传到R2", "存到CDN".
+description: 使用 `wrangler CLI` 将文件上传到 Cloudflare 的 R2 存储空间。适用于需要将图片、视频或其他文件上传到 R2 以用于 CDN 托管，或管理 R2 存储桶内容的情况。该命令会在执行“上传到 R2”、“上传到 Cloudflare”等操作时被触发。
 metadata:
   {"openclaw": {"requires": {"bins": ["wrangler"]}, "install": [{"id": "node", "kind": "node", "package": "wrangler", "bins": ["wrangler"], "label": "Install Wrangler CLI (npm)"}]}}
 ---
 
 # Cloudflare R2
 
-Upload and manage files in Cloudflare R2 storage buckets.
+在 Cloudflare R2 存储桶中上传和管理文件。
 
-## Prerequisites
+## 先决条件
 
-- `wrangler` CLI: `npm install -g wrangler`
-- R2 config at `~/.config/cloudflare/r2.json`
+- `wrangler` CLI：`npm install -g wrangler`
+- R2 配置文件位于 `~/.config/cloudflare/r2.json`
 
-## Config Format
+## 配置格式
 
 ```json
 {
@@ -25,19 +25,19 @@ Upload and manage files in Cloudflare R2 storage buckets.
 }
 ```
 
-## Quick Upload
+## 快速上传
 
-Single file:
+单个文件：
 ```bash
 scripts/r2-upload.sh <local-file> [remote-path]
 ```
 
-Batch upload:
+批量上传：
 ```bash
 scripts/r2-upload.sh <directory> <remote-prefix>
 ```
 
-## Manual Commands
+## 手动命令
 
 ```bash
 # Set credentials
@@ -55,11 +55,11 @@ wrangler r2 object list $BUCKET --prefix "path/" --remote
 wrangler r2 object delete "$BUCKET/path/to/file.png" --remote
 ```
 
-## Public URL
+## 公共 URL
 
-After upload, files are accessible at:
+上传完成后，文件可以通过以下地址访问：
 ```
 https://<publicDomain>/<remote-path>
 ```
 
-Example: `https://pub-xxx.r2.dev/article/image.png`
+示例：`https://pub-xxx.r2.dev/article/image.png`

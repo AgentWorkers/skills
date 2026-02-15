@@ -21,170 +21,169 @@ metadata:
     emoji: "💰"
 ---
 
-# Smart Model Switching
+# 智能模型选择
 
-**Three-tier Claude routing: Haiku → Sonnet → Opus**
+**Claude 的三层路由系统：Haiku → Sonnet → Opus**
 
-Start with the cheapest model. Escalate only when needed. Save 50-90% on API costs.
+从最便宜的模型开始使用，仅在必要时升级。这样可以节省 50-90% 的 API 使用成本。
 
-## The Golden Rule
+## 金科玉律
 
-> If a human would need more than 30 seconds of focused thinking, escalate from Haiku to Sonnet.
-> If the task involves architecture, complex tradeoffs, or deep reasoning, escalate to Opus.
+> 如果人类需要超过 30 秒的专注思考时间，就从 Haiku 升级到 Sonnet。
+> 如果任务涉及架构设计、复杂的权衡或深度推理，就升级到 Opus。
 
-## Cost Reality
+## 成本对比
 
-| Model | Input | Output | Relative Cost |
+| 模型 | 输入成本 | 输出成本 | 相对成本 |
 |-------|-------|--------|---------------|
-| Haiku | \$0.25/M | \$1.25/M | 1x (baseline) |
-| Sonnet | \$3.00/M | \$15.00/M | 12x |
-| Opus | \$15.00/M | \$75.00/M | 60x |
+| Haiku | 0.25 美元/次 | 1.25 美元/次 | 1 倍（基准） |
+| Sonnet | 3.00 美元/次 | 15.00 美元/次 | 12 倍 |
+| Opus | 15.00 美元/次 | 75.00 美元/次 | 60 倍 |
 
-**Bottom line:** Wrong model selection wastes money OR time. Haiku for simple, Sonnet for standard, Opus for complex.
-
----
-
-## 💚 HAIKU — Default for Simple Tasks
-
-**Stay on Haiku for:**
-- Factual Q&A — "what is X", "who is Y", "when did Z"
-- Quick lookups — definitions, unit conversions, short translations
-- Status checks — calendar, file reads, session monitoring
-- Heartbeats — periodic checks, HEARTBEAT_OK responses
-- Memory & reminders — "remember this", "remind me to..."
-- Casual conversation — greetings, small talk, acknowledgments
-- Simple file ops — read, list, basic writes
-- One-liner tasks — anything answerable in 1-2 sentences
-
-### NEVER do these on Haiku
-- ❌ Write code longer than 10 lines
-- ❌ Create comparison tables
-- ❌ Write more than 3 paragraphs
-- ❌ Do multi-step analysis
-- ❌ Write reports or proposals
+**总结：** 选择错误的模型会浪费金钱或时间。简单任务使用 Haiku，标准任务使用 Sonnet，复杂任务使用 Opus。
 
 ---
 
-## 💛 SONNET — Standard Work (The Workhorse)
+## 💚 HAIKU — 简单任务的默认选择
 
-**Escalate to Sonnet for:**
+**适用于以下场景：**
+- 事实性问答（例如：“X 是什么？”、“Y 是谁？”、“Z 是什么时候发生的？”）
+- 快速查询（例如：定义、单位转换、简短翻译）
+- 状态检查（例如：日历查询、文件读取、会话监控）
+- 周期性检查（例如：发送 HEARTBEAT_OK 响应）
+- 记忆与提醒（例如：“记住这个”、“提醒我……”）
+- 简单的文件操作（例如：读取、列出、基本写入）
+- 仅需 1-2 句话回答的任务
 
-### Code & Technical
-- Code generation — write functions, build features, scripts
-- Code review — PR reviews, quality checks
-- Debugging — standard bug investigation
-- Documentation — README, comments, user guides
-
-### Analysis & Planning  
-- Analysis & evaluation — compare options, assess trade-offs
-- Planning — project plans, roadmaps, task breakdowns
-- Research synthesis — combining multiple sources
-- Multi-step reasoning — "first... then... finally"
-
-### Writing & Content
-- Long-form writing — reports, proposals, articles (>3 paragraphs)
-- Creative writing — blog posts, descriptions, copy
-- Summarization — long documents, transcripts
-- Structured output — tables, outlines, formatted docs
+### **绝对不要在 Haiku 上执行以下操作：**
+- ❌ 编写超过 10 行的代码
+- ❌ 创建比较表格
+- ❌ 编写超过 3 段的文本
+- ❌ 进行多步骤分析
+- ❌ 编写报告或提案
 
 ---
 
-## ❤️ OPUS — Complex Reasoning Only
+## 💛 SONNET — 标准工作工具
 
-**Escalate to Opus for:**
+**适用于以下场景：**
 
-### Architecture & Design
-- System architecture decisions
-- Major codebase refactoring
-- Design pattern selection with tradeoffs
-- Database schema design
+### **代码与技术相关：**
+- 代码生成（编写函数、构建功能、脚本）
+- 代码审查（代码提交审核、质量检查）
+- 调试（常规错误排查）
+- 文档编写（README 文件、注释、用户指南）
 
-### Deep Analysis
-- Complex debugging (multi-file, race conditions)
-- Security reviews
-- Performance optimization strategy
-- Root cause analysis of subtle bugs
+### **分析与规划：**
+- 分析与评估（比较不同选项、权衡利弊）
+- 规划（项目计划、路线图、任务分解）
+- 综合研究（整合多个来源的信息）
 
-### Strategic & Creative
-- Strategic planning — business decisions, roadmaps
-- Nuanced judgment — ethics, ambiguity, competing values
-- Deep research — comprehensive multi-source analysis
+### **写作与内容：**
+- 长篇写作（报告、提案、文章等，超过 3 段）
+- 创意写作（博客文章、描述性文本）
+- 摘要编写（长文档、会议记录）
+- 结构化输出（表格、大纲、格式化文档）
 
 ---
 
-## 🔄 Implementation
+## ❤️ OPUS — 仅用于复杂推理
 
-### For Subagents
-\`\`\`javascript
-// Routine monitoring
-sessions_spawn(task="Check backup status", model="haiku")
+**适用于以下场景：**
 
-// Standard code work  
-sessions_spawn(task="Build the REST API endpoint", model="sonnet")
+### **架构与设计：**
+- 系统架构决策
+- 大规模代码库重构
+- 需要权衡的设计模式选择
+- 数据库模式设计
 
-// Architecture decisions
-sessions_spawn(task="Design the database schema for multi-tenancy", model="opus")
-\`\`\`
+### **深度分析：**
+- 复杂的调试（涉及多个文件、竞态条件）
+- 安全性审查
+- 性能优化策略
+- 微妙错误的根本原因分析
 
-### For Cron Jobs
-\`\`\`json
+### **战略与创意：**
+- 战略规划（商业决策、路线图制定）
+- 细致的判断（涉及伦理问题、模糊性、相互冲突的价值观）
+- 深度研究（全面的多源分析）
+
+---
+
+## 🔄 实现方式
+
+### 对于子代理（Subagents）：
+
+```javascript
+// 常规监控
+sessions_spawn(task="检查备份状态", model="haiku");
+
+// 标准代码工作
+sessions_spawn(task="构建 REST API 端点", model="sonnet");
+
+// 架构决策
+sessions_spawn(task="设计多租户数据库架构", model="opus");
+```
+
+### 对于 Cron 作业（Cron Jobs）：
+
+```json
 {
   "payload": {
     "kind": "agentTurn",
     "model": "haiku"
   }
-}
-\`\`\`
-Always use Haiku for cron unless the task genuinely needs reasoning.
+```
+
+**除非任务确实需要复杂的推理，否则始终使用 Haiku 来处理 Cron 作业。**
 
 ---
 
-## 📊 Quick Decision Tree
+## 📊 快速决策树
 
-\`\`\`
-Is it a greeting, lookup, status check, or 1-2 sentence answer?
-  YES → HAIKU
-  NO ↓
+```plaintext
+- 是问候、查询、状态检查，还是只需要 1-2 句话的回答？
+  是 → 使用 HAIKU
+  否 → 继续向下选择
 
-Is it code, analysis, planning, writing, or multi-step?
-  YES → SONNET  
-  NO ↓
+- 是代码编写、分析、规划、写作，还是多步骤操作？
+  是 → 使用 SONNET
+  否 → 继续向下选择
 
-Is it architecture, deep reasoning, or critical decision?
-  YES → OPUS
-  NO → Default to SONNET, escalate if struggling
-\`\`\`
+- 是涉及架构设计、深度推理，还是需要做出关键决策？
+  是 → 使用 OPUS
+  否 → 默认使用 SONNET；如果遇到困难再升级
+```
 
 ---
 
-## 📋 Quick Reference Card
+## 📋 快速参考卡片
 
-\`\`\`
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
-│                  SMART MODEL SWITCHING                      │
-│                  Haiku → Sonnet → Opus                      │
+│                  智能模型选择                              │
+│                  Haiku → Sonnet → Opus                          │
 ├─────────────────────────────────────────────────────────────┤
-│  💚 HAIKU (cheapest)                                        │
-│  • Greetings, status checks, quick lookups                  │
-│  • Factual Q&A, definitions, reminders                      │
-│  • Simple file ops, 1-2 sentence answers                    │
+│  💚 HAIKU（最便宜的模型）                          │
+│  • 适用于问候、状态查询、快速查询                      │
+│  • 适用于事实性问答、定义、提醒                      │
+│  • 适用于简单的文件操作及 1-2 句话的回答                │
 ├─────────────────────────────────────────────────────────────┤
-│  💛 SONNET (standard)                                       │
-│  • Code > 10 lines, debugging                               │
-│  • Analysis, comparisons, planning                          │
-│  • Reports, proposals, long writing                         │
+│  💛 SONNET（标准模型）                          │
+│  • 适用于代码编写（超过 10 行）、调试                      │
+│  • 适用于分析、比较、规划                        │
+│  • 适用于报告撰写、提案编写                      │
 ├─────────────────────────────────────────────────────────────┤
-│  ❤️ OPUS (complex)                                          │
-│  • Architecture decisions                                   │
-│  • Complex debugging, multi-file refactoring                │
-│  • Strategic planning, deep research                        │
+│  ❤️ OPUS（高级模型）                          │
+│  • 适用于架构设计、复杂调试                      │
+│  • 适用于战略规划、深度研究                      │
 ├─────────────────────────────────────────────────────────────┤
-│  💡 RULE: If a human needs > 30 sec thinking → escalate     │
-│  💰 COST: Haiku 1x → Sonnet 12x → Opus 60x                  │
+│  💡 规则：如果需要超过 30 秒的思考时间 → 升级模型         │
+│  💰 成本：Haiku 1 倍 → Sonnet 12 倍 → Opus 60 倍              │
 └─────────────────────────────────────────────────────────────┘
-\`\`\`
+```
 
 ---
 
-*Built for Claude-only setups with Haiku, Sonnet, and Opus.*
-*Inspired by save-money skill, extended with three-tier progression.*
+*本指南专为仅使用 Claude 的系统设计，提供了 Haiku、Sonnet 和 Opus 三种模型。*
+*灵感来源于节省成本的理念，并通过三层模型进行扩展。*

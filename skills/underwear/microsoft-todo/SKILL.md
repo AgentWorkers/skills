@@ -1,6 +1,6 @@
 ---
 name: microsoft-todo
-description: "Manage Microsoft To Do tasks via the `todo` CLI. Use when user wants to add, list, complete, remove tasks, manage subtasks (steps), notes, or organize task lists."
+description: "通过 `todo` CLI 管理 Microsoft To Do 任务。适用于用户需要添加、查看、完成任务、删除任务、管理子任务（步骤）、添加备注或整理任务列表的场景。"
 homepage: https://github.com/underwear/microsoft-todo-cli
 metadata:
   {
@@ -24,22 +24,22 @@ metadata:
 
 # Microsoft To Do CLI
 
-Manage tasks in Microsoft To Do using the `todo` command.
+使用 `todo` 命令管理 Microsoft To Do 中的任务。
 
-## References
+## 参考资料
 
-- `references/setup.md` (Azure app registration + OAuth configuration)
+- `references/setup.md`（Azure 应用注册 + OAuth 配置）
 
-## Prerequisites
+## 先决条件
 
-1. `todo` CLI installed (`pip install microsoft-todo-cli`)
-2. Microsoft Azure app registered (see `references/setup.md`)
-3. Credentials configured at `~/.config/microsoft-todo-cli/keys.yml`
-4. First run completes OAuth flow in browser
+1. 已安装 `todo` CLI（通过 `pip install microsoft-todo-cli` 安装）
+2. 已注册 Microsoft Azure 应用（请参阅 `references/setup.md`）
+3. 凭据已配置在 `~/.config/microsoft-todo-cli/keys.yml` 文件中
+4. 首次运行时需要在浏览器中完成 OAuth 认证流程
 
-## Commands
+## 命令
 
-### Tasks
+### 任务（Tasks）
 
 ```bash
 # List tasks
@@ -76,7 +76,7 @@ todo uncomplete "Task" --json
 todo rm "Task" -y --json
 ```
 
-### Subtasks (Steps)
+### 子任务（Subtasks）
 
 ```bash
 todo new-step "Task" "Step text" --json
@@ -86,7 +86,7 @@ todo uncomplete-step "Task" "Step" --json
 todo rm-step "Task" 0 --json
 ```
 
-### Notes
+### 备注（Notes）
 
 ```bash
 todo note "Task" "Note content"
@@ -94,7 +94,7 @@ todo show-note "Task"
 todo clear-note "Task"
 ```
 
-### Lists
+### 列表（Lists）
 
 ```bash
 todo lists --json
@@ -103,57 +103,57 @@ todo rename-list "Old" "New" --json
 todo rm-list "Project X" -y --json
 ```
 
-## Task Identification
+## 任务识别（Task Identification）
 
-| Method           | Stability | Use Case            |
+| 方法           | 稳定性 | 使用场景            |
 | ---------------- | --------- | ------------------- |
-| `--id "AAMk..."` | Stable    | Automation, scripts |
-| Index (`0`, `1`) | Unstable  | Interactive only    |
-| Name (`"Task"`)  | Unstable  | Unique names only   |
+| `--id "AAMk..."` | 稳定    | 自动化、脚本操作           |
+| 索引（`0`, `1`）     | 不稳定  | 仅限交互式操作         |
+| 名称（`"Task"`）     | 不稳定  | 名称必须唯一           |
 
-Use ID for multi-step operations:
+**多步骤操作时使用任务 ID：**
 
 ```bash
 ID=$(todo new "Task" -l Work --json | jq -r '.id')
 todo complete --id "$ID" -l Work --json
 ```
 
-## Date & Time Formats
+## 日期和时间格式（Date & Time Formats）
 
-| Type     | Examples                            |
+| 类型       | 示例                          |
 | -------- | ----------------------------------- |
-| Relative | `1h`, `30m`, `2d`, `1h30m`          |
-| Time     | `9:30`, `9am`, `17:00`, `5:30pm`    |
-| Days     | `tomorrow`, `monday`, `fri`         |
-| Date     | `2026-12-31`, `31.12.2026`          |
-| Keywords | `morning` (7:00), `evening` (18:00) |
+| 相对时间    | `1h`, `30m`, `2d`, `1h30m`          |
+| 时间        | `9:30`, `9am`, `17:00`, `5:30pm`    |
+| 天数        | `tomorrow`, `monday`, `fri`         |
+| 日期        | `2026-12-31`, `31.12.2026`          |
+| 关键词      | `morning` (7:00), `evening` (18:00)     |
 
-## Recurrence Patterns
+## 重复模式（Recurrence Patterns）
 
-| Pattern              | Description      |
-| -------------------- | ---------------- |
-| `daily`              | Every day        |
-| `weekly`             | Every week       |
-| `monthly`            | Every month      |
-| `yearly`             | Every year       |
-| `weekdays`           | Monday to Friday |
-| `weekly:mon,wed,fri` | Specific days    |
-| `every 2 days`       | Custom interval  |
+| 模式          | 描述                |
+| ---------------- | ------------------- |
+| 每日（daily）     | 每天                |
+| 每周（weekly）     | 每周                |
+| 每月（monthly）    | 每月                |
+| 每年（yearly）     | 每年                |
+| 工作日（weekdays）   | 星期一至周五            |
+| 每周：周一、周三、周五（weekly:mon,wed,fri） | 指定工作日            |
+| 每隔两天（every 2 days） | 自定义间隔            |
 
-## Aliases
+## 别名（Aliases）
 
-| Alias | Command      |
-| ----- | ------------ |
-| `t`   | `tasks`      |
-| `n`   | `new`        |
-| `c`   | `complete`   |
-| `d`   | `rm`         |
-| `sn`  | `show-note`  |
-| `cn`  | `clear-note` |
+| 别名       | 命令                |
+| ------------ | ------------------- |
+| `t`       | `tasks`            |
+| `n`       | `new`              |
+| `c`       | `complete`            |
+| `d`       | `rm`                |
+| `sn`       | `show-note`            |
+| `cn`       | `clear-note`            |
 
-## Notes
+## 注意事项
 
-- **Always use `--json`** for all commands to get structured output
-- **Always use `-y`** with `rm` commands to skip confirmation
-- Use `--id` with `-l ListName` for list context
-- First run opens browser for OAuth authentication
+- 所有命令均需使用 `--json` 选项以获取结构化输出
+- 使用 `rm` 命令时请务必加上 `-y` 选项以跳过确认步骤
+- 使用 `--id` 和 `-l ListName` 可以获取特定列表的任务信息
+- 首次运行时系统会自动在浏览器中打开页面进行 OAuth 认证

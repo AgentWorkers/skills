@@ -1,23 +1,23 @@
 ---
 name: book-car-wash
-description: Book car-wash services through Lokuli MCP. Use when user needs to find and book car-wash. Triggers on requests like "book a car-wash", "find car-wash near me", or any car-wash service request.
+description: 通过 Lokuli MCP 预订洗车服务。当用户需要查找或预订洗车服务时使用该功能。该功能会在用户发出“预订洗车”、“查找附近的洗车店”或任何与洗车服务相关的请求时被触发。
 ---
 
-# uook car wash
+# uook 洗车服务
 
-Book car-wash services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订洗车服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 预订服务（Create Booking）
 ```json
 {
   "method": "tools/call",

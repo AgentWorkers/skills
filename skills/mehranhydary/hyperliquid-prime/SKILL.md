@@ -1,31 +1,31 @@
 ---
 name: hyperliquid-prime
-description: Trade on Hyperliquid's perp markets (native + HIP-3) with intelligent order routing and cross-market splitting. Use when the user wants to trade crypto, stocks, or commodities on Hyperliquid, get best execution across fragmented markets, split large orders across multiple venues, compare funding rates, view aggregated orderbooks, or manage positions across multiple collateral types. Routes across both native HL perps (ETH, BTC) and HIP-3 deployer markets. Handles collateral swaps (USDC→USDH/USDT0) automatically during execution when the best liquidity requires it.
+description: 在 Hyperliquid 的衍生品市场中（包括原生市场及 HIP-3 市场）进行交易，支持智能订单路由和跨市场拆分功能。适用于用户需要在 Hyperliquid 平台上交易加密货币、股票或商品的情况，可确保在分散的市场中获得最佳执行效果；支持将大订单拆分到多个交易场所；允许用户比较不同市场的资金费率；提供聚合的订单簿视图；并支持管理多种类型的抵押品。系统能够同时处理原生 Hyperliquid 衍生品（如 ETH、BTC）以及 HIP-3 市场的交易。在执行过程中，当需要最佳流动性时，系统会自动处理抵押品兑换（例如 USDC 到 USDH/USDT0）。
 ---
 
 # Hyperliquid Prime
 
-A TypeScript SDK that acts as a **prime broker layer** on top of Hyperliquid's perp markets — both native (ETH, BTC) and HIP-3 deployer markets. Automatically discovers all markets for an asset, compares liquidity/funding/cost, and routes to the best execution — or splits across multiple venues for optimal fills with automatic collateral swaps.
+这是一个TypeScript SDK，它作为Hyperliquid原生市场（包括ETH、BTC）以及HIP-3部署市场的**中间层**（即“代理经纪层”）。该SDK能够自动发现某种资产的所有可交易市场，比较各市场的流动性、资金费用和执行成本，并将订单路由到最佳执行路径；或者在多个市场之间分散订单以获得最优的成交结果，同时支持自动的抵押品转换。
 
-## When to Use This Skill
+## 适用场景
 
-- Trading crypto, stocks (AAPL, NVDA, TSLA), indexes, or commodities (GOLD, SILVER) on Hyperliquid
-- Need best execution across multiple perp markets (native + HIP-3) for the same asset
-- Splitting large orders across venues for better fills and lower price impact
-- Comparing funding rates across different collateral types
-- Aggregated orderbook view across fragmented markets
-- Managing positions that may be spread across multiple collateral types
-- Automatic collateral swaps (USDC → USDH, USDT0) when non-USDC markets offer better prices
+- 在Hyperliquid平台上交易加密货币、股票（如AAPL、NVDA、TSLA）、指数或商品（如GOLD、SILVER）；
+- 需要在多个市场（包括原生市场和HIP-3市场）中为同一资产选择最佳执行路径；
+- 为提高成交效果和降低价格波动，将大额订单分散到多个市场；
+- 比较不同抵押品类型的资金费用；
+- 查看分散在不同市场中的汇总订单簿；
+- 管理可能涉及多种抵押品类型的头寸；
+- 当非USDC市场提供更优惠的价格时，自动进行抵押品转换（例如将USDC转换为USDH或USDT0）。
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 npm install hyperliquid-prime
 ```
 
-### Read-Only Usage (no wallet needed)
+### 仅读模式（无需钱包）
 
 ```typescript
 import { HyperliquidPrime } from 'hyperliquid-prime'
@@ -49,7 +49,7 @@ const funding = await hp.getFundingComparison('TSLA')
 await hp.disconnect()
 ```
 
-### Trading (wallet required)
+### 交易模式（需要钱包）
 
 ```typescript
 const hp = new HyperliquidPrime({
@@ -77,7 +77,7 @@ const positions = await hp.getGroupedPositions()
 await hp.disconnect()
 ```
 
-### CLI
+### 命令行接口（CLI）
 
 ```bash
 # Show all perp markets for an asset (native + HIP-3)
@@ -109,47 +109,44 @@ HP_PRIVATE_KEY=0x... hp balance
 hp markets TSLA --testnet
 ```
 
-## Important: Fees & Automatic Actions
+## 重要说明：费用与自动操作
 
-**Builder Fee**: A 1 basis point (0.01%) builder fee is charged by default on all SDK-executed orders via Hyperliquid's native builder fee mechanism. On the first trading order from a wallet, the SDK sends an on-chain approval transaction to authorize this fee. To disable entirely, set `builder: null` in the config.
+**构建费**：所有通过SDK执行的订单默认会收取1个基点（0.01%）的构建费，该费用由Hyperliquid的原生构建费机制收取。首次使用钱包进行交易时，SDK会发送一条链上交易以确认这笔费用。如需完全禁用此费用，请在配置文件中设置`builder: null`。
 
-**Collateral Swaps (Split Orders Only)**: When `executeSplit()` routes orders to non-USDC collateral markets, the SDK automatically:
-1. Enables DEX abstraction on the user's account
-2. Transfers USDC from the perp account to the spot account
-3. Places a spot order to swap USDC into the required collateral token (e.g., USDH, USDT0)
-4. A 1% buffer is added to swap amounts to account for slippage
+**抵押品转换（仅适用于拆分订单）**：当`executeSplit()`方法将订单路由到非USDC抵押品市场时，SDK会自动执行以下操作：
+1. 启用用户账户的DEX（去中心化交易所）功能；
+2. 从衍生品账户向现货账户转移USDC；
+3. 下单将USDC转换为所需的抵押品代币（如USDH或USDT0）；
+4. 在转换金额中加上1%的缓冲费以应对价格滑点。
 
-These actions only occur during split order execution and only when the best liquidity requires non-USDC collateral.
+这些操作仅在拆分订单执行时发生，并且仅在需要使用非USDC抵押品时才会执行。
 
-**Read-Only Operations**: Quotes, orderbooks, funding comparisons, and market discovery require no wallet, no fees, and perform no on-chain actions.
+**仅读操作**：查询报价、查看订单簿、比较资金费用以及发现市场功能无需钱包，也不会产生任何链上操作。
 
-**Credentials**: Trading operations require a private key via `HP_PRIVATE_KEY` environment variable or the `privateKey` config option. The key is used to sign transactions sent to the Hyperliquid API. Source code is available for audit at <https://github.com/mehranhydary/hl-prime>.
+**认证信息**：交易操作需要使用`HP_PRIVATE_KEY`环境变量或`privateKey`配置选项提供的私钥。该私钥用于签署发送到Hyperliquid API的交易。源代码可在<https://github.com/mehranhydary/hl-prime>处查看，可供审计使用。
 
-**User Confirmation Flow**: The SDK uses a quote-then-execute pattern as the confirmation mechanism:
-1. `quote()` / `quoteSplit()` are **read-only** — they return an execution plan with estimated prices, markets, and costs. No on-chain actions are taken.
-2. The caller reviews the plan (programmatically or via CLI output).
-3. `execute()` / `executeSplit()` must be **explicitly called** to perform on-chain actions (place orders, approve fees, swap collateral).
-4. One-step convenience methods (`long()`, `short()`, `longSplit()`, `shortSplit()`) combine both steps — use quote-then-execute for explicit control.
+**用户确认流程**：SDK采用“先报价后执行”的确认机制：
+- `quote()` / `quoteSplit()`方法仅用于获取执行计划（包括预估价格、市场和费用），不会触发任何链上操作；
+- 调用者需（通过编程方式或CLI输出）审查该计划；
+- `execute()` / `executeSplit()`方法必须被显式调用才能执行链上操作（如下单、确认费用或转换抵押品）；
+- 便捷的一键操作方法（`long()`、`short()`、`longSplit()`、`shortSplit()`）结合了这两个步骤，以实现更直观的控制。
 
-**Implementation Note**: This skill bundle contains instructions only (SKILL.md). The SDK implementation must be installed separately via `npm install hyperliquid-prime`. The source code is open-source and available for audit at the GitHub repository before installation.
+**实现说明**：此技能包仅包含使用说明（SKILL.md文件），SDK的实现需要通过`npm install hyperliquid-prime`单独安装。源代码为开源项目，可在安装前在GitHub仓库中查看。
 
-## How Routing Works
+## 路由原理
 
-When you call `hp.quote("TSLA", "buy", 50)`, the router:
+当你调用`hp.quote("TSLA", "buy", 50)`时，SDK会执行以下操作：
+1. 获取TSLA在所有市场中的订单簿信息；
+2. 遍历所有订单簿，估算平均成交价格和价格波动；
+3. 根据以下因素对各个市场进行评分：
+   - **价格波动**：完成交易所需的成本（以基点计）；
+   **资金费用**：偏好更有利的资金方向；
+   **抵押品转换成本**：转换为所需抵押品所需的预估费用；
+4. 选择评分最低的市场并生成执行计划。
 
-1. **Fetches** the orderbook for every TSLA market
-2. **Simulates** walking each book to estimate average fill price and price impact
-3. **Scores** each market using:
-   - **Price impact** (dominant) — cost in basis points to fill
-   - **Funding rate** (secondary) — prefers favorable funding direction
-   - **Collateral swap cost** (penalty) — estimated cost to swap into the required collateral
-4. **Selects** the lowest-score market and builds an execution plan
+对于拆分订单（`quoteSplit`），SDK会合并所有订单簿的信息，优先使用最便宜的流动性在多个市场完成交易，并生成相应的拆分执行路径。抵押品要求和转换操作会在`executeSplit()`方法执行时根据实时余额进行估算和执行。如果报价选项中包含了杠杆比例，执行时会根据每个市场的情况应用相应的杠杆比例。
 
-For split orders (`quoteSplit`), the router merges all orderbooks, walks the combined book greedily to consume the cheapest liquidity first across all venues, and builds split execution legs. Collateral requirements and swaps are estimated and executed at `executeSplit(...)` time using live balances. If leverage is included in the quote options, execution applies that leverage per market leg before order placement.
-
-For single-market orders, leverage included in `quote(...)` is carried into the execution plan and applied before the order is sent.
-
-## Configuration
+## 配置设置
 
 ```typescript
 interface HyperliquidPrimeConfig {
@@ -163,43 +160,43 @@ interface HyperliquidPrimeConfig {
 }
 ```
 
-### Builder Fee
+### 构建费
 
-A 1 basis point (0.01%) builder fee is included by default on all SDK-executed orders via Hyperliquid's native builder fee mechanism. The fee is auto-approved on the trader's first order. Set `builder: null` to disable, or provide a custom `{ address, feeBps }` to override.
+所有通过SDK执行的订单默认会收取1个基点（0.01%）的构建费。你可以通过设置`builder: null`来禁用此费用，或者提供自定义的`{ address, feeBps }`配置来覆盖默认值。
 
-## Key Methods
+## 主要方法
 
-### Read-Only
-- `getMarkets(asset)` — All perp markets for an asset (native + HIP-3)
-- `getAggregatedMarkets()` — Asset groups with multiple markets
-- `getAggregatedBook(asset)` — Merged orderbook across all markets
-- `getFundingComparison(asset)` — Funding rates compared across markets
-- `quote(asset, side, size, options?)` — Routing quote for single best market
-- `quoteSplit(asset, side, size, options?)` — Split quote across multiple markets
+### 仅读模式
+- `getMarkets(asset)`：获取某种资产的所有可交易市场（包括原生市场和HIP-3市场）；
+- `getAggregatedMarkets()`：获取包含多个市场的资产组合；
+- `getAggregatedBook(asset)`：获取所有市场的合并订单簿；
+- `getFundingComparison(asset)`：比较不同市场的资金费用；
+- `quote(asset, side, size, options?)`：为单个市场生成报价；
+- `quoteSplit(asset, side, size, options?)`：为多个市场生成拆分报价。
 
-### Trading (wallet required)
-- `execute(plan)` — Execute a single-market quote
-- `executeSplit(plan)` — Execute a split quote (handles collateral swaps)
-- `long(asset, size, options?)` — Quote + execute a long on best market
-- `short(asset, size, options?)` — Quote + execute a short on best market
-- `longSplit(asset, size, options?)` — Split quote + execute a long across markets
-- `shortSplit(asset, size, options?)` — Split quote + execute a short across markets
-- `close(asset)` — Close all positions for an asset
+### 交易模式（需要钱包）
+- `execute(plan)`：执行单个市场的报价；
+- `executeSplit(plan)`：执行拆分报价（包括抵押品转换）；
+- `long(asset, size, options?)`：在最佳市场生成买单并执行；
+- `short(asset, size, options?)`：在最佳市场生成卖单并执行；
+- `longSplit(asset, size, options?)`：在多个市场生成拆分买单并执行；
+- `shortSplit(asset, size, options?)`：在多个市场生成拆分卖单并执行；
+- `close(asset)`：关闭某种资产的所有头寸。
 
-### Trade Options
-- `leverage?: number` — Positive number, e.g. `5` for 5x.
-- `isCross?: boolean` — Default `true` (cross); set `false` for isolated.
-- `isCross` requires `leverage`. If leverage is omitted, no leverage-setting API call is made.
+### 交易选项
+- `leverage?: number`：正数，例如5表示5倍杠杆；
+- `isCross?: boolean`：默认值为`true`（跨市场交易）；设置为`false`表示仅在一个市场内交易；
+- 如果设置了`isCross`，则必须同时设置`leverage`；如果省略`isCross`，SDK不会尝试设置杠杆比例。
 
-### Position & Balance
-- `getPositions()` — All positions with market metadata
-- `getGroupedPositions()` — Positions grouped by base asset
-- `getBalance()` — Account margin summary
+### 头寸与余额
+- `getPositions()`：获取所有头寸及其市场相关信息；
+- `getGroupedPositions()`：按基础资产分组头寸；
+- `getBalance()`：获取账户的保证金概览。
 
-## Repository
+## 项目仓库
 
 <https://github.com/mehranhydary/hl-prime>
 
-## License
+## 许可证
 
-MIT
+MIT许可证

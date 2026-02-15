@@ -1,110 +1,110 @@
 ---
 name: Humanize CLI - AI Text Detection & Rewriting
-description: Detect AI-generated text patterns and get fixes. Score detection risk, find AI vocabulary, suggest improvements. Free CLI for writers and content creators.
+description: 检测由人工智能生成的文本模式，并提供相应的修复建议。评估文本被篡改的风险，识别其中使用的AI生成词汇，提出改进方案。为作家和内容创作者提供免费的命令行工具（CLI）。
 ---
 
-# Humanize CLI
+# 优化命令行界面（CLI）以提升用户体验
 
-Analyze text for AI patterns and get actionable fixes. Helps content pass AI detectors by identifying robotic patterns.
+该工具能够分析文本中的AI特征，并提供可操作的修改建议，帮助内容通过AI检测器的审核。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g humanize-cli
 ```
 
-## Commands
+## 命令
 
-### Score Detection Risk
+### 检测风险等级
 
 ```bash
 humanize score "Your text here"
 humanize score -f article.txt
 ```
 
-Returns 0-100% risk score:
-- 0-20%: Low risk (appears human)
-- 21-40%: Moderate risk
-- 41-70%: High risk (likely flagged)
-- 71-100%: Very high risk
+返回0-100%的风险等级：
+- 0-20%：低风险（看起来像人类编写）
+- 21-40%：中等风险
+- 41-70%：高风险（可能被标记为AI生成）
+- 71-100%：非常高风险
 
-### Analyze AI Markers
+### 分析AI写作特征
 
 ```bash
 humanize analyze "This comprehensive solution leverages cutting-edge technology."
 ```
 
-Detects:
-- AI vocabulary (delve, leverage, comprehensive, robust, seamless)
-- Structural patterns (uniform sentences, perfect intro/conclusion)
-- Missing human elements (no contractions, no opinions)
+检测以下AI写作特征：
+- AI常用的词汇（如“delve”、“leverage”、“comprehensive”、“robust”、“seamless”等）
+- 重复的结构模式（如所有句子长度相同、引言和结论过于完美）
+- 缺乏人类语言的元素（如不使用缩写、没有个人观点）
 
-### Get Improvement Suggestions
+### 获取改进建议
 
 ```bash
 humanize suggest "It is important to note that our solution utilizes..."
 ```
 
-Returns prioritized fixes with before/after examples.
+提供优先级排序的修改建议，并附上修改前后的对比示例。
 
-### Auto-Transform Text
+### 自动转换文本
 
 ```bash
 humanize transform "The solution utilizes robust methodologies."
 # Output: "The solution uses strong methods."
 ```
 
-Automatically replaces AI vocabulary and adds human elements.
+自动替换AI风格的词汇，并添加更自然的人类语言表达。
 
-### Watch Directory
+### 监控目录
 
 ```bash
 humanize watch ./content --threshold 60
 ```
 
-Monitor files and alert when detection risk exceeds threshold.
+实时监控文件内容，当检测风险超过预设阈值时发出警报。
 
-## Common Use Cases
+## 常见使用场景
 
-**Check blog post before publishing:**
+**发布前检查博客文章：**
 ```bash
 humanize score -f blog-post.md
 ```
 
-**Fix AI-sounding content:**
+**修正具有AI特征的文本：**
 ```bash
 humanize transform -f draft.txt > improved.txt
 ```
 
-**Pipe from clipboard (macOS):**
+**从剪贴板导入内容（macOS）：**
 ```bash
 pbpaste | humanize suggest
 ```
 
-## Options
+## 选项
 
-| Flag | Description |
+| 选项 | 描述 |
 |------|-------------|
-| `-f, --file` | Read from file |
-| `-j, --json` | JSON output |
-| `-q, --quiet` | Minimal output |
-| `-t, --threshold` | Alert threshold (0-100) |
+| `-f, --file` | 从文件中读取内容 |
+| `-j, --json` | 以JSON格式输出结果 |
+| `-q, --quiet` | 减少输出信息 |
+| `-t, --threshold` | 设置风险阈值（0-100） |
 
-## What It Catches
+## 主要检测内容
 
-**AI Vocabulary:**
+**AI常用词汇：**
 - delve, leverage, utilize, comprehensive, robust, seamless
 - stakeholder, synergy, actionable, paradigm
 - furthermore, moreover, consequently, nevertheless
 
-**Structural Issues:**
-- No contractions (sounds robotic)
-- Same-length sentences
-- Perfect intro/body/conclusion
-- Overuse of transitions
+**结构问题：**
+- 不使用缩写（使文本听起来像机器生成）
+- 所有句子长度相同
+- 引言、正文和结论过于完美
+- 过度使用过渡词
 
 ---
 
-**Built by [LXGIC Studios](https://lxgicstudios.com)**
+**由 [LXGIC Studios](https://lxgicstudios.com) 开发**
 
 🔗 [GitHub](https://github.com/lxgicstudios/humanize-cli) · [Twitter](https://x.com/lxgicstudios)

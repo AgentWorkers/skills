@@ -1,28 +1,28 @@
 ---
 name: x-oauth-api
-description: Post to X (Twitter) using the official OAuth 1.0a API. Free tier compatible.
+description: 使用官方的 OAuth 1.0a API 将内容发布到 X（Twitter）上。该 API 支持免费 tier（基础功能）。
 metadata:
   { "openclaw": { "requires": { "env": ["X_API_KEY", "X_API_SECRET", "X_ACCESS_TOKEN", "X_ACCESS_TOKEN_SECRET"] } } }
 ---
 
-# X OAuth API Skill
+# X OAuth API 技能
 
-Post to X (formerly Twitter) using the official X API with OAuth 1.0a authentication.
+使用官方的 X API 和 OAuth 1.0a 认证方式，向 X（原名 Twitter）发布内容。
 
-## Overview
+## 概述
 
-This skill provides direct access to X API v2 for posting tweets, managing threads, and monitoring mentions. No proxy or third-party service required — uses your X API credentials directly.
+该技能提供了直接访问 X API v2 的功能，可用于发布推文、管理话题以及监控提及信息。无需使用代理或第三方服务，直接使用您的 X API 凭据即可进行操作。
 
-**Use when:**
-- User says "post to X", "tweet this", "post on Twitter"
-- Need to create threads or media posts
-- Want to check mentions or engage with replies
+**适用场景：**
+- 用户请求“在 X 上发布内容”、“发这条推文”或“在 Twitter 上发布”
+- 需要创建话题或媒体帖子
+- 希望查看提及信息或回复评论
 
-## Quick Start
+## 快速入门
 
-### 1. Configure X API Credentials
+### 1. 配置 X API 凭据
 
-Store these environment variables (from your X Developer Account):
+请将以下环境变量（来自您的 X 开发者账户）保存到系统中：
 ```
 X_API_KEY              # Consumer Key (API Key)
 X_API_SECRET           # Consumer Secret
@@ -31,19 +31,19 @@ X_ACCESS_TOKEN_SECRET  # Access Token Secret
 X_USER_ID              # Optional: Your numeric user ID (speeds up mentions)
 ```
 
-### Free Tier vs Paid Tier
+### 免费 tier 与付费 tier
 
-**Free tier supports:**
-- ✅ Posting tweets and threads
-- ✅ Deleting tweets
-- ✅ Account info lookup (`x me`)
+**免费 tier 支持的功能：**
+- ✅ 发布推文和话题
+- ✅ 删除推文
+- ✅ 查看账户信息（`x me`）
 
-**Requires Basic+ tier:**
-- 🔒 Search tweets
-- 🔒 Fetch mentions
-- 🔒 Media uploads
+**需要 Basic+ tier 才能使用的功能：**
+- 🔒 搜索推文
+- 🔒 获取提及信息
+- 🔒 上传媒体文件
 
-### 2. Basic Usage
+### 2. 基本用法
 
 ```bash
 # Post a simple tweet
@@ -59,25 +59,25 @@ x mentions --limit 10
 x search "AI agents" --limit 5
 ```
 
-## Commands
+## 命令
 
 ### `x post <text>`
-Post a single tweet.
+发布一条推文。
 
-**Options:**
-- `--reply-to <tweet-id>` - Reply to a specific tweet
-- `--quote <tweet-id>` - Quote tweet
-- `--media <file>` - Attach image/video
+**可选参数：**
+- `--reply-to <tweet-id>` - 回复特定的推文
+- `--quote <tweet-id>` - 引用某条推文
+- `--media <file>` - 附加图片/视频
 
-**Example:**
+**示例：**
 ```bash
 x post "Check this out" --media image.jpg
 ```
 
 ### `x thread <tweet1> <tweet2> ...`
-Post a tweet thread.
+发布一个包含多条推文的话题。
 
-**Example:**
+**示例：**
 ```bash
 x thread \
   "Thread about AI" \
@@ -86,57 +86,57 @@ x thread \
 ```
 
 ### `x mentions [options]`
-Get recent mentions of your account.
+获取您账户的最近提及信息。
 
-**Options:**
-- `--limit <n>` - Number of mentions (default: 10, max: 100)
-- `--since <tweet-id>` - Only mentions after this ID
-- `--format json` - Output as JSON
+**可选参数：**
+- `--limit <n>` - 提及信息的数量（默认：10，最大：100）
+- `--since <tweet-id>` - 仅获取该 ID 之后的提及信息
+- `--format json` - 以 JSON 格式输出
 
-**Note:** Requires `X_USER_ID` env var OR will fetch it automatically (slower).
+**注意：** 需要 `X_USER_ID` 环境变量；否则系统会自动获取该信息（但速度较慢）。
 
 ### `x search <query> [options]`
-Search recent tweets.
+搜索最近的推文。
 
-**Options:**
-- `--limit <n>` - Number of results (default: 10, max: 100)
-- `--format json` - Output as JSON
+**可选参数：**
+- `--limit <n>` - 搜索结果的数量（默认：10，最大：100）
+- `--format json` - 以 JSON 格式输出
 
 ### `x delete <tweet-id>`
-Delete a tweet.
+删除一条推文。
 
 ### `x me`
-Show current account info (name, username, follower counts, user ID).
+显示当前账户的信息（名称、用户名、关注者数量、用户 ID）。
 
-## API Rate Limits
+## API 使用频率限制
 
-X API v2 has rate limits per endpoint:
+X API v2 对每个端点都设置了使用频率限制：
 
-| Endpoint | Limit | Window |
+| 端点 | 使用频率限制 | 限制时间窗口 |
 |----------|-------|--------|
-| POST /2/tweets | 200 | 15 min (Free tier) |
-| GET /2/tweets/search/recent | 100 | 15 min (Free tier) |
-| GET /2/users/:id/mentions | 100 | 15 min (Free tier) |
+| POST /2/tweets | 200 次/15 分钟（免费 tier） |
+| GET /2/tweets/search/recent | 100 次/15 分钟（免费 tier） |
+| GET /2/users/:id/mentions | 100 次/15 分钟（免费 tier） |
 
-Rate limits vary by access tier. See [X API documentation](https://developer.twitter.com/en/docs/twitter-api/rate-limits) for details.
+不同使用等级的频率限制可能有所不同。详情请参阅 [X API 文档](https://developer.twitter.com/en/docs/twitter-api/rate-limits)。
 
-## Authentication
+## 认证
 
-OAuth 1.0a is handled transparently. Just provide your credentials via environment variables. The skill will sign all requests automatically.
+OAuth 1.0a 的认证过程是透明的。只需通过环境变量提供您的凭据，该技能会自动为所有请求添加认证信息。
 
-## Examples
+## 示例
 
-### Post with media
+### 带附件发布推文
 ```bash
 x post "Check out this screenshot" --media screenshot.png
 ```
 
-### Reply to a tweet
+### 回复推文
 ```bash
 x post "Great point!" --reply-to 1234567890123456789
 ```
 
-### Create a 3-tweet thread
+### 创建一个包含三条推文的话题
 ```bash
 x thread \
   "Just launched x-oauth-api skill" \
@@ -144,7 +144,7 @@ x thread \
   "No proxies, direct OAuth 1.0a authentication"
 ```
 
-### Search and reply
+### 搜索并回复推文
 ```bash
 # Find interesting tweets
 x search "agent framework"
@@ -153,38 +153,38 @@ x search "agent framework"
 x post "Have you tried this?" --reply-to 1234567890123456789
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"Unauthorized" error**
-- Check X API credentials are correct
-- Verify credentials are set in environment
-- Ensure your app has write permissions in X Developer Portal
+**出现 “Unauthorized” 错误**
+- 确保 X API 凭据正确
+- 验证环境变量中是否已设置正确的凭据
+- 确保您的应用程序在 X 开发者门户中具有写入权限
 
-**"Rate limit exceeded"**
-- Wait 15 minutes for limit to reset
-- Reduce request frequency
-- Check your tier limits at https://developer.twitter.com/en/portal/dashboard
+**出现 “Rate limit exceeded” 错误**
+- 等待 15 分钟后重试
+- 减少请求频率
+- 查看 [X 开发者门户](https://developer.twitter.com/en/portal/dashboard) 上的频率限制信息
 
-**"This endpoint requires a paid X API tier"**
-- Search and mentions require Basic+ tier on X API
-- Free tier only supports posting, deleting, and account lookup
-- Upgrade at https://developer.twitter.com/en/portal/products
+**出现 “This endpoint requires a paid X API tier” 错误**
+- 搜索和获取提及信息需要 Basic+ 级别的权限
+- 免费 tier 仅支持发布、删除和查看账户信息
+- 可在 [https://developer.twitter.com/en/portal/products] 升级账户等级
 
-**Tweet not posting**
-- Check tweet is < 280 characters (or < 4000 with X Premium)
-- Verify no special formatting issues
-- Check X API status at https://api.twitterstat.us/
+**推文无法发布**
+- 确保推文内容长度不超过 280 个字符（使用 X Premium 服务时长度限制为 4000 个字符）
+- 检查是否存在特殊的格式问题
+- 查看 [api.twitterstat.us](https://api.twitterstat.us/) 上的 API 状态
 
-## Requirements
+## 所需条件**
 
-- X Developer Account with API access
-- OAuth 1.0a credentials configured
-- Network access to api.twitter.com
+- 拥有具备 API 访问权限的 X 开发者账户
+- 配置了 OAuth 1.0a 凭据
+- 能够访问 api.twitter.com
 
-## Cost
+## 成本
 
-Free. X API is free for basic usage. Check your app's rate limits in X Developer Portal.
+免费。基本使用功能是免费的。请在 X 开发者门户中查看您的应用程序的使用频率限制。
 
-## Support
+## 技术支持
 
-For X API issues, see: https://developer.twitter.com/en/docs/twitter-api
+如有关于 X API 的问题，请参阅：[https://developer.twitter.com/en/docs/twitter-api]

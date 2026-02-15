@@ -1,54 +1,54 @@
 ---
 name: web-searcher
-description: Autonomous web research agent that performs multi-step searches, follows links, extracts data, and synthesizes findings into structured reports. Use when asked to research a topic, find information across multiple sources, compare options, gather market data, compile lists, or answer questions requiring deep web investigation beyond a single search.
+description: 这是一个自主的网络研究工具，能够执行多步骤的搜索任务：跟随链接、提取数据，并将搜索结果整理成结构化的报告。当需要研究某个主题、从多个来源查找信息、比较不同选项、收集市场数据、编制列表，或解决需要深入挖掘（超出常规搜索范围）的问题时，可以使用该工具。
 ---
 
-# Web Searcher Agent
+# 网络搜索代理
 
-## Workflow
+## 工作流程
 
-1. **Parse the query** — Break the user's request into 2-5 specific search queries that cover different angles of the topic.
+1. **解析查询** — 将用户的请求拆分为2-5个具体的搜索查询，这些查询从不同角度覆盖主题内容。
 
-2. **Search phase** — Execute searches using `web_search`. Rate limit: max 3 searches, then assess before continuing.
+2. **搜索阶段** — 使用 `web_search` 执行搜索。请注意：每次搜索的最大次数为3次，执行完3次搜索后需要重新评估是否继续进行后续操作。
 
-3. **Deep dive phase** — For promising results, use `web_fetch` to extract full content. Prioritize:
-   - Primary sources over aggregators
-   - Recent content over old (check dates)
-   - Authoritative domains over random blogs
+3. **深入挖掘阶段** — 对于有希望的结果，使用 `web_fetch` 提取完整内容。优先考虑以下因素：
+   - 来源优先级：优先选择原始内容而非聚合网站
+   - 内容时效性：优先选择最新的内容（检查日期）
+   - 权威性：优先选择权威网站而非普通博客
 
-4. **Cross-reference** — Compare findings across sources. Flag contradictions. Note consensus.
+4. **交叉验证** — 比较来自不同来源的信息，标记出矛盾之处，并记录共识。
 
-5. **Synthesize** — Compile findings into a clear, structured response with:
-   - Key findings (bullet points)
-   - Sources cited (URLs)
-   - Confidence level (high/medium/low per claim)
-   - Gaps identified (what couldn't be found)
+5. **综合整理** — 将搜索结果整理成结构清晰的响应内容，包括：
+   - 关键发现（以项目符号列出）
+   - 引用的来源（URL）
+   - 每条信息的可信度（高/中/低）
+   - 未找到的信息（即存在的信息缺口）
 
-## Search Strategies
+## 搜索策略
 
-### Factual queries
-Search → verify across 2+ sources → report with citations.
+### 事实性查询
+- 在多个来源中验证信息 → 带有引用地报告结果。
 
-### Comparison/market research
-Search each option separately → fetch detail pages → build comparison table → recommend.
+### 对比/市场研究
+- 分别搜索每个选项 → 获取详细页面 → 制作对比表格 → 提出推荐方案。
 
-### People/company research
-Search name + context → fetch LinkedIn/company pages → cross-reference news → compile profile.
+### 人物/公司研究
+- 搜索相关名称及背景信息 → 获取 LinkedIn 或公司页面 → 交叉引用相关新闻 → 编写人物/公司简介。
 
-### How-to/technical
-Search with specific technical terms → fetch documentation/guides → distill steps.
+### 操作指南/技术文档
+- 使用具体的技术术语进行搜索 → 获取相关文档或指南 → 提炼操作步骤。
 
-## Guidelines
+## 使用指南
 
-- **Max 10 searches per task** to avoid rate limits and token waste.
-- **Max 5 page fetches** — be selective about which URLs to deep-dive.
-- Always include source URLs so the user can verify.
-- If a search returns nothing useful, rephrase and retry once before moving on.
-- For time-sensitive info, use `freshness` parameter (pd/pw/pm/py).
-- Prefer `web_fetch` with `maxChars: 5000` to keep context manageable.
-- If the task is massive, suggest breaking it into sub-tasks or spawning sub-agents.
+- 每个任务最多进行10次搜索，以避免触发速率限制和浪费资源。
+- 每次最多获取5个页面的内容，选择性地深入挖掘某些URL。
+- 始终提供来源URL，以便用户自行验证信息。
+- 如果搜索结果无用，请重新表述查询并尝试再次搜索，然后再进行下一步操作。
+- 对于时效性强的信息，可以使用 `freshness` 参数（如 pd/pw/pm/py）来筛选结果。
+- 建议使用 `web_fetch` 并设置 `maxChars: 5000` 以保持内容的可读性。
+- 如果任务量过大，建议将其拆分为子任务或创建额外的代理来处理。
 
-## Output Format
+## 输出格式
 
 ```
 ## [Topic]

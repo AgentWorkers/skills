@@ -1,21 +1,21 @@
 ---
 name: pet
-description: Simple command-line snippet manager. Use it to save and reuse complex commands.
+description: 这是一个简单的命令行片段管理器，用于保存和重用复杂的命令。
 metadata: {"clawdbot":{"emoji":"🐘","requires":{"bins":["pet"]}}}
 ---
 
-# pet (Simple Command-Line Snippet Manager)
+# pet（简单的命令行片段管理器）
 
-Pet acts as a CLI snippet manager. It helps you save complex commands and reuse them.
+Pet 是一个命令行（CLI）片段管理工具，帮助您保存复杂的命令并重复使用它们。
 
-## Usage
+## 使用方法
 
-### Create a new snippet
+### 创建新的片段
 ```bash
 pet new
 ```
-This opens an editor. Enter the command and a description.
-Format:
+该命令会打开一个编辑器，让您输入命令及其描述。
+格式要求：
 ```toml
 [[snippets]]
   command = "echo 'hello'"
@@ -23,21 +23,21 @@ Format:
   output = ""
 ```
 
-### Search and List snippets
+### 搜索和列出片段
 ```bash
 pet search
 ```
 
-### Execute a snippet directly
+### 直接执行片段
 ```bash
 pet exec
 ```
 
-### Sync with Gist (Optional)
-If configured in `~/.config/pet/config.toml`, you can sync snippets to a GitHub Gist:
+### 与 Gist 同步（可选）
+如果在 `~/.config/pet/config.toml` 中进行了配置，您可以将片段同步到 GitHub Gist：
 ```bash
 pet sync
 ```
 
-## Storage
-Snippets are stored in `~/.config/pet/snippet.toml`.
+## 存储方式
+片段存储在 `~/.config/pet/snippet.toml` 文件中。

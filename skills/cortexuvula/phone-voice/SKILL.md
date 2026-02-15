@@ -1,25 +1,25 @@
 ---
 name: phone-voice
-description: Connect ElevenLabs Agents to your OpenClaw via phone with Twilio. Includes caller ID auth, voice PIN security, call screening, memory injection, and cost tracking.
+description: 通过 Twilio 将 ElevenLabs 的代理连接到您的 OpenClaw 系统。该解决方案支持来电显示（caller ID）认证、语音 PIN 安全机制、来电筛选功能、数据注入（memory injection）以及通话费用追踪。
 version: 2.0.0
 author: Fred (@FredMolty)
 ---
 
-# Phone Voice Integration
+# 手机语音集成
 
-Turn your OpenClaw into a phone-callable assistant with ElevenLabs Agents + Twilio.
+将您的 OpenClaw 转变为可通过电话呼叫的助手，使用 ElevenLabs Agents 和 Twilio 实现。
 
-**What you get:**
-- 📞 Call your bot from any phone
-- 🔐 Caller ID authentication + voice PIN security
-- 🛡️ Call screening (whitelist-based)
-- 🧠 Full memory context (loads MEMORY.md, USER.md)
-- 💰 Cost tracking per call
-- 📝 Call transcripts with summaries
-- ⏱️ Rate limiting
-- 🌐 Permanent tunnel (Cloudflare) or temporary (ngrok)
+**您将获得：**
+- 📞 从任何电话拨打您的机器人
+- 🔐 来电显示号码身份验证 + 语音 PIN 安全机制
+- 🛡️ 呼叫筛选（基于白名单）
+- 🧠 完整的记忆上下文（加载 MEMORY.md 和 USER.md 文件）
+- 💰 每次通话的成本追踪
+- 📝 带有摘要的通话记录
+- ⏱️ 调用速率限制
+- 🌐 永久隧道（Cloudflare）或临时隧道（ngrok）
 
-## Architecture
+## 架构
 
 ```
 Phone → Twilio → ElevenLabs Agent → Your Bridge → Anthropic Claude → OpenClaw Tools
@@ -28,78 +28,65 @@ Phone → Twilio → ElevenLabs Agent → Your Bridge → Anthropic Claude → O
                                     (MEMORY.md, USER.md)
 ```
 
-**Flow:**
-1. Caller dials your Twilio number
-2. Twilio routes to ElevenLabs Agent
-3. Agent sends chat completions to your bridge (mimics OpenAI API)
-4. Bridge translates to Anthropic, injects context from memory files
-5. Claude response → ElevenLabs TTS → caller hears it
+**流程：**
+1. 来电者拨打您的 Twilio 号码
+2. Twilio 将呼叫路由到 ElevenLabs Agent
+3. Agent 将聊天结果发送到您的桥接服务器（模拟 OpenAI API）
+4. 桥接服务器将结果翻译成 Anthropic 语言，并注入来自内存文件的上下文
+5. Claude 生成响应 → ElevenLabs TTS 生成语音 → 来电者听到该语音
 
-## Prerequisites
+## 先决条件**
 
-- OpenClaw installed and running
-- ElevenLabs account + API key
-- Twilio account + phone number
-- Anthropic API key
-- Cloudflare tunnel **or** ngrok (for exposing localhost)
+- OpenClaw 已安装并运行
+- ElevenLabs 账户及 API 密钥
+- Twilio 账户及电话号码
+- Anthropic API 密钥
+- Cloudflare 隧道 **或** ngrok（用于暴露本地服务器）
 
-## Setup
+## 设置
 
-### 1. Enable Chat Completions in OpenClaw
+### 1. 在 OpenClaw 中启用聊天结果功能
 
-Not needed for this skill — the bridge bypasses OpenClaw and calls Claude directly. This gives you more control over memory injection and cost tracking.
+此功能无需启用——因为桥接服务器会直接调用 Claude，从而让您更好地控制内存注入和成本追踪。
 
-### 2. Create the Bridge Server
+### 2. 创建桥接服务器
 
-The bridge is a FastAPI server that:
-- Accepts OpenAI-compatible `/v1/chat/completions` requests from ElevenLabs
-- Injects memory context (MEMORY.md, USER.md, live data)
-- Calls Anthropic Claude API
-- Streams responses back in OpenAI format
-- Logs costs and transcripts
+桥接服务器是一个 FastAPI 服务器，用于：
+- 接收来自 ElevenLabs 的 `/v1/chat/completions` 请求
+- 注入记忆上下文（MEMORY.md、USER.md 和实时数据）
+- 调用 Anthropic Claude API
+- 以 OpenAI 格式返回响应
+- 记录成本和通话记录
 
-**Key files:**
-- `server.py` — FastAPI app with /v1/chat/completions endpoint
-- `fred_prompt.py` — System prompt builder (loads memory files)
-- `.env` — Secrets (API keys, tokens, whitelist)
-- `contacts.json` — Caller whitelist for screening
+**关键文件：**
+- `server.py` — 包含 /v1/chat/completions 端点的 FastAPI 应用程序
+- `fred_prompt.py` — 系统提示生成器（加载内存文件）
+- `.env` — 包含 API 密钥、令牌和白名单
+- `contacts.json` — 用于筛选来电者的白名单
 
-### 3. Set Up Cloudflare Tunnel (Recommended)
+### 3. 设置 Cloudflare 隧道（推荐）
 
-Permanent, secure alternative to ngrok:
+**永久且安全的替代方案：** 使用 Cloudflare 隧道：
 
-```bash
-# Install cloudflared
-brew install cloudflare/cloudflare/cloudflared
-
-# Login and configure
-cloudflared tunnel login
-cloudflared tunnel create <tunnel-name>
-
-# Run the tunnel
-cloudflared tunnel --url http://localhost:8013 run <tunnel-name>
-```
-
-Add a CNAME in Cloudflare DNS:
+在 Cloudflare DNS 中添加 CNAME 设置：
 ```
 voice.yourdomain.com → <tunnel-id>.cfargotunnel.com
 ```
 
-**Or use ngrok (temporary):**
+**或使用 ngrok（临时方案）：**
 ```bash
 ngrok http 8013
 ```
 
-### 4. Configure ElevenLabs Agent
+### 4. 配置 ElevenLabs Agent
 
-#### Option A: Manual (UI)
-1. Go to ElevenLabs dashboard → Conversational AI
-2. Create new agent
-3. Under LLM settings → Custom LLM
-4. Set URL: `https://voice.yourdomain.com/v1/chat/completions`
-5. Add header: `Authorization: Bearer <YOUR_BRIDGE_TOKEN>`
+#### 选项 A：手动配置（通过界面）
+1. 登录 ElevenLabs 仪表板 → 对话式 AI
+2. 创建新代理
+3. 在 LLM 设置中设置 URL：`https://voice.yourdomain.com/v1/chat/completions`
+4. 添加请求头：`Authorization: Bearer <YOUR_BRIDGE_TOKEN>`
 
-#### Option B: Programmatic (API)
+#### 选项 B：编程配置（通过 API）
 
 ```bash
 # Step 1: Store your bridge auth token as a secret
@@ -135,20 +122,20 @@ curl -X POST https://api.elevenlabs.io/v1/convai/agents/create \
   }'
 ```
 
-### 5. Connect Twilio Phone Number
+### 5. 连接 Twilio 电话号码
 
-In ElevenLabs agent settings:
-1. Go to **Phone** section
-2. Enter Twilio Account SID and Auth Token
-3. Select your Twilio phone number
-4. Save
+在 ElevenLabs 代理设置中：
+1. 进入 **电话** 部分
+2. 输入 Twilio 账户 SID 和认证令牌
+3. 选择您的 Twilio 电话号码
+4. 保存设置
 
-Done! Your bot now answers that phone number.
+完成！您的机器人现在可以通过该电话号码接听来电了。
 
-## Security Features
+## 安全特性
 
-### Caller ID Authentication
-Recognizes whitelisted numbers automatically:
+### 来电显示号码身份验证
+自动识别白名单内的号码：
 ```json
 // contacts.json
 {
@@ -159,46 +146,43 @@ Recognizes whitelisted numbers automatically:
 }
 ```
 
-### Voice PIN Challenge
-For unknown callers or high-security actions:
+### 语音 PIN 验证
+对于未知来电者或需要高级安全性的操作：
 ```python
 VOICE_PIN = "banana"  # Set in .env
 ```
 
-Caller must say the PIN to proceed.
+来电者必须输入 PIN 码才能继续通话。
 
-### Call Screening
-Unknown numbers get a receptionist prompt:
-> "This is Fred's assistant. I can take a message or help with general questions."
+### 呼叫筛选
+未知号码会听到接待员的提示：
+> “我是 Fred 的助手。我可以留言或帮助您解答一般性问题。”
 
-### Rate Limiting
-Configurable per-hour limits:
+### 调用速率限制
+可配置每小时调用次数限制：
 ```python
 RATE_LIMIT_PER_HOUR = 10
 ```
 
-Prevents abuse and runaway costs.
+防止滥用和成本失控。
 
-## Memory Injection
+## 内存注入
 
-The bridge auto-loads context before each call:
+桥接服务器在每次通话前会自动加载以下内容：
+- `MEMORY.md` — 关于用户、项目和偏好的长期信息
+- `USER.md` — 用户信息（姓名、位置、时区）
+- 最近的通话记录
 
-**Files read:**
-- `MEMORY.md` — Long-term facts about user, projects, preferences
-- `USER.md` — User profile (name, location, timezone)
-- Recent call transcripts (cross-call memory)
+**实时数据注入：**
+- 当前时间/日期
+- 天气信息（可选，通过 API 获取）
+- 日历事件（可选，通过 gog CLI 获取）
 
-**Live data injection:**
-- Current time/date
-- Weather (optional, via API)
-- Calendar events (optional, via gog CLI)
+所有这些数据都会在 Claude 开始对话之前被注入到系统提示中。
 
-All injected into the system prompt before Claude sees the conversation.
+## 成本追踪
 
-## Cost Tracking
-
-Every call logs to `memory/voice-calls/costs.jsonl`:
-
+每次通话都会被记录到 `memory/voice-calls/costs.jsonl` 文件中：
 ```json
 {
   "call_sid": "CA123...",
@@ -214,26 +198,26 @@ Every call logs to `memory/voice-calls/costs.jsonl`:
 }
 ```
 
-Run analytics on the JSONL to track monthly spend.
+您可以分析这些 JSONL 文件以追踪每月的通话费用。
 
-## Usage Example
+## 使用示例
 
-**Call your bot:**
-1. Dial your Twilio number
-2. If you're whitelisted → casual conversation starts
-3. If you're unknown → receptionist mode
-4. Ask it to check your calendar, send a message, set a reminder, etc.
+**如何呼叫您的机器人：**
+1. 拨打您的 Twilio 号码
+2. 如果您在白名单内 → 开始正常对话
+3. 如果您是未知号码 → 进入接待员模式
+4. 询问机器人查看日历、发送消息、设置提醒等
 
-**Outbound calling (optional):**
+** outbound calling（可选）：**
 ```bash
 curl -X POST https://voice.yourdomain.com/call/outbound \
   -H "Authorization: Bearer <BRIDGE_TOKEN>" \
   -d '{"to": "+12505551234", "message": "Reminder: dentist at 3pm"}'
 ```
 
-## Configuration Options
+## 配置选项
 
-**Environment variables (.env):**
+**环境变量（.env）：**
 ```bash
 ANTHROPIC_API_KEY=sk-ant-...
 ELEVENLABS_API_KEY=sk_...
@@ -246,7 +230,7 @@ VOICE_PIN=<your-secret-word>
 CLAWD_DIR=/path/to/clawd
 ```
 
-**Whitelist (contacts.json):**
+**白名单（contacts.json）：**
 ```json
 {
   "+12505551234": {"name": "Alice", "role": "family"},
@@ -254,10 +238,9 @@ CLAWD_DIR=/path/to/clawd
 }
 ```
 
-## Advanced: Office Hours
+## 高级功能：工作时间限制
 
-Restrict calls to business hours:
-
+仅在工作时间内允许通话：
 ```python
 # In server.py
 OFFICE_HOURS = {
@@ -268,11 +251,11 @@ OFFICE_HOURS = {
 }
 ```
 
-Outside hours → voicemail prompt.
+非工作时间 → 自动转接语音信箱。
 
-## Debugging
+## 调试
 
-**Test the bridge directly:**
+**直接测试桥接服务器：**
 ```bash
 curl -X POST https://voice.yourdomain.com/v1/chat/completions \
   -H "Authorization: Bearer <BRIDGE_TOKEN>" \
@@ -284,56 +267,56 @@ curl -X POST https://voice.yourdomain.com/v1/chat/completions \
   }'
 ```
 
-**Check logs:**
+**查看日志：**
 ```bash
 tail -f ~/clawd/memory/voice-calls/bridge.log
 ```
 
-**Verify Twilio webhook:**
-1. Call your number
-2. Check Twilio console → Call logs → Webhook status
-3. Should see 200 responses from ElevenLabs
+**验证 Twilio Webhook：**
+1. 拨打您的电话号码
+2. 查看 Twilio 控制台 → 呼叫日志 → Webhook 状态
+3. 应能看到来自 ElevenLabs 的 200 状态码响应
 
-## Cost Estimates
+## 成本估算
 
-**Per-minute breakdown:**
-- Twilio: ~$0.01/min (inbound) + carrier fees
-- ElevenLabs TTS: ~$0.05/min (varies by voice quality)
-- Anthropic Claude: ~$0.01/min (depends on token usage)
-- **Total: ~$0.07-0.10/min** (~$4-6/hour of talk time)
+**每分钟费用明细：**
+- Twilio：约 0.01 美元/分钟（ inbound 呼叫）+ 运营商费用
+- ElevenLabs TTS：约 0.05 美元/分钟（取决于语音质量）
+- Anthropic Claude：约 0.01 美元/分钟（取决于令牌使用量）
+- **总计：约 0.07-0.10 美元/分钟**（每小时通话时间约 4-6 分钟）
 
-Use rate limiting and call screening to control costs.
+请使用调用速率限制和呼叫筛选功能来控制成本。
 
-## Comparison: This vs Basic Tutorial
+## 对比：本教程与基础教程
 
-**ElevenLabs official tutorial:**
-- ✅ Basic integration
-- ❌ No security
-- ❌ No memory persistence
-- ❌ No cost tracking
-- ❌ Temporary ngrok URL
+**ElevenLabs 官方教程：**
+- ✅ 提供基本集成功能
+- ❌ 无安全机制
+- ❌ 无内存持久化功能
+- ❌ 无成本追踪功能
+- ❌ 使用临时 ngrok 隧道
 
-**This skill (Phone Voice v2.0):**
-- ✅ All of the above
-- ✅ Caller ID + PIN security
-- ✅ Cross-call memory
-- ✅ Cost tracking & analytics
-- ✅ Permanent tunnel (Cloudflare)
-- ✅ Rate limiting
-- ✅ Call screening
-- ✅ Transcript logging
+**本教程（Phone Voice v2.0）：**
+- ✅ 具备上述所有功能
+- ✅ 来电显示号码身份验证 + PIN 安全机制
+- ✅ 跨通话记录共享
+- ✅ 成本追踪与分析功能
+- ✅ 永久隧道（Cloudflare）
+- ✅ 调用速率限制
+- ✅ 呼叫筛选
+- ✅ 通话记录保存
 
-## Links
+## 链接**
 
-- ElevenLabs Agents: https://elevenlabs.io/conversational-ai
-- Twilio: https://www.twilio.com/
-- Cloudflare Tunnels: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/
-- Reference implementation: (Available on request — DM @FredMolty)
+- ElevenLabs Agents：https://elevenlabs.io/conversational-ai
+- Twilio：https://www.twilio.com/
+- Cloudflare 隧道：https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/
+- 参考实现代码：（如有需要可联系 FredMolty）
 
-## License
+## 许可证
 
-MIT — use freely, credit appreciated.
+MIT 许可证 — 可自由使用，如需致谢请注明来源。
 
 ---
 
-**Built by Fred (@FredMolty) — running on OpenClaw since 2026.**
+**由 Fred (@FredMolty) 开发 — 自 2026 年起使用 OpenClaw 运行。**

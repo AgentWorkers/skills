@@ -1,6 +1,6 @@
 ---
 name: flaw0
-description: Security and vulnerability scanner for OpenClaw code, plugins, skills, and Node.js dependencies. Powered by OpenClaw AI models.
+description: OpenClaw 代码、插件、技能以及 Node.js 依赖项的安全性和漏洞扫描工具。该工具基于 OpenClaw 的 AI 模型进行开发。
 version: 1.0.0
 author: Tom
 homepage: https://github.com/yourusername/flaw0
@@ -17,38 +17,38 @@ tags:
   - openclaw
 ---
 
-# flaw0 - Zero Flaws Security Scanner
+# flaw0 - 零缺陷安全扫描器
 
-Security and vulnerability scanner for OpenClaw ecosystems. Analyzes source code, plugins, skills, and Node.js dependencies to detect potential security flaws.
+这是一个专为 OpenClaw 生态系统设计的安全与漏洞扫描工具。它通过分析源代码、插件、技能以及 Node.js 依赖项来检测潜在的安全隐患。
 
-**Goal: Achieve flaw 0** (zero flaws detected) 🎯
+**目标：实现零缺陷（flaw 0）** 🎯
 
-## Installation
+## 安装
 
-Install this skill via [ClawHub](https://www.clawhub.ai):
+您可以通过 [ClawHub](https://www.clawhub.ai) 安装此工具：
 
 ```bash
 npx clawhub@latest install flaw0
 ```
 
-Or install globally via npm:
+或者通过 npm 全局安装：
 
 ```bash
 npm install -g flaw0
 ```
 
-## When to Use This Skill
+## 何时使用此工具
 
-Use **flaw0** to ensure your OpenClaw code and dependencies are secure:
+使用 **flaw0** 可以确保您的 OpenClaw 代码及其依赖项的安全性：
 
-### Before Installing Skills
+### 安装技能之前
 
 ```bash
 # Check a skill before installing
 flaw0 scan ~/.openclaw/skills/new-skill
 ```
 
-### During Development
+### 开发过程中
 
 ```bash
 # Scan your code as you develop
@@ -58,14 +58,14 @@ flaw0 scan src/
 flaw0 deps
 ```
 
-### Before Committing
+### 提交代码之前
 
 ```bash
 # Full security audit
 flaw0 audit
 ```
 
-### Auditing OpenClaw Installation
+### 审计 OpenClaw 安装情况
 
 ```bash
 # Scan all OpenClaw components
@@ -77,11 +77,11 @@ flaw0 scan --target plugins
 flaw0 scan --target core
 ```
 
-## Usage
+## 使用方法
 
-### Basic Commands
+### 基本命令
 
-#### Scan Code
+#### 扫描代码
 
 ```bash
 # Scan current directory
@@ -94,7 +94,7 @@ flaw0 scan /path/to/code
 flaw0 scan --model claude-opus-4-6
 ```
 
-#### Check Dependencies
+#### 检查依赖项
 
 ```bash
 # Quick dependency scan
@@ -104,7 +104,7 @@ flaw0 deps
 flaw0 deps --deep
 ```
 
-#### Full Security Audit
+#### 进行全面安全审计
 
 ```bash
 # Comprehensive scan (code + dependencies)
@@ -117,7 +117,7 @@ flaw0 audit --output report.json
 flaw0 audit --json
 ```
 
-#### Scan OpenClaw Components
+#### 扫描 OpenClaw 组件
 
 ```bash
 # Scan OpenClaw core
@@ -133,82 +133,82 @@ flaw0 scan --target skills
 flaw0 scan --target all
 ```
 
-## What flaw0 Detects
+## flaw0 能检测到哪些问题
 
-### Code Vulnerabilities (12+ Types)
+### 代码漏洞（12 种以上类型）
 
-1. **Command Injection**
-   - `exec()` with unsanitized input
-   - Shell command construction with user input
+1. **命令注入**
+   - 使用未经清理的输入调用 `exec()`
+   - 使用用户输入构建 Shell 命令
 
-2. **Code Injection**
-   - `eval()` usage
-   - `Function()` constructor with strings
+2. **代码注入**
+   - 使用 `eval()`
+   - 使用字符串创建 `Function()` 对象
 
-3. **SQL Injection**
-   - String concatenation in SQL queries
-   - Unparameterized queries
+3. **SQL 注入**
+   - 在 SQL 查询中拼接字符串
+   - 使用未参数化的查询
 
-4. **Cross-Site Scripting (XSS)**
-   - `innerHTML` assignments
-   - `dangerouslySetInnerHTML` usage
+4. **跨站脚本攻击（XSS）**
+   - 使用 `innerHTML` 赋值
+   - 使用 `dangerouslySetInnerHTML`
 
-5. **Path Traversal**
-   - Unvalidated file path operations
-   - `readFile()` with user input
+5. **路径遍历**
+   - 对文件路径的操作未经验证
+   - 使用用户输入调用 `readFile()`
 
-6. **Hardcoded Secrets**
-   - API keys in source code
-   - Passwords and tokens
-   - AWS credentials
+6. **硬编码的秘密信息**
+   - 源代码中的 API 密钥
+   - 密码和令牌
+   - AWS 凭据
 
-7. **Weak Cryptography**
-   - MD5 and SHA1 usage
-   - Weak hashing algorithms
+7. **弱加密**
+   - 使用 MD5 和 SHA1 加密算法
+   - 使用弱哈希算法
 
-8. **Insecure Randomness**
-   - `Math.random()` for security operations
-   - Predictable token generation
+8. **不安全的随机数生成**
+   - 在安全操作中使用 `Math.random()`
+   - 生成的令牌可预测
 
-9. **Unsafe Deserialization**
-   - `JSON.parse()` without validation
-   - Unvalidated input parsing
+9. **不安全的反序列化**
+   - 未经验证地使用 `JSON.parse()`
+   - 未经验证的输入解析
 
-10. **Missing Authentication**
-    - API endpoints without auth middleware
-    - Unprotected routes
+10. **缺乏身份验证**
+    - API 端点没有身份验证中间件
+    - 路由未受保护
 
-### Dependency Issues
+### 依赖项问题
 
-1. **Known CVEs** - Vulnerabilities from CVE database
-2. **Outdated Packages** - Packages with security updates available
-3. **Malicious Packages** - Known malware or suspicious packages
-4. **Duplicate Dependencies** - Bloated dependency trees
+1. **已知的 CVE（安全漏洞）** - 来自 CVE 数据库的漏洞
+2. **过时的包** - 有安全更新可用的包
+3. **恶意包** - 已知的恶意软件或可疑包
+4. **重复的依赖项** - 依赖项树过于庞大
 
-## Understanding Results
+## 理解扫描结果
 
-### Flaw Score
+### 漏洞评分
 
-Results are reported with a **flaw score** - lower is better:
+扫描结果会附带一个 **漏洞评分**——评分越低表示安全性越好：
 
-- **flaw 0** 🎯 - Perfect! No issues detected
-- **flaw 1-3** 🟡 - Minor issues
-- **flaw 4-10** 🟠 - Needs attention
-- **flaw 10+** 🔴 - Critical issues
+- **flaw 0** 🎯 - 完美！未检测到任何问题
+- **flaw 1-3** 🟡 - 轻微问题
+- **flaw 4-10** 🟠 - 需要关注
+- **flaw 10+** 🔴 - 严重问题
 
-### Score Calculation
+### 评分计算方式
 
-Each issue is weighted by severity:
-- **Critical**: 3 points
-- **High**: 2 points
-- **Medium**: 1 point
-- **Low**: 0.5 points
+每个问题的严重程度会被赋予相应的分数：
+- **严重**：3 分
+- **较高**：2 分
+- **中等**：1 分
+- **较低**：0.5 分
 
-**Total flaw score** = sum of all weighted issues (rounded)
+**总漏洞评分** = 所有问题分数之和（四舍五入）
 
-### Example Output
+### 示例输出
 
-#### Clean Code (flaw 0)
+#### 代码干净（flaw 0）
 
 ```
 🔍 flaw0 Security Scan Results
@@ -223,7 +223,7 @@ Each issue is weighted by severity:
 Great job! 🎉
 ```
 
-#### Issues Found (flaw 12)
+#### 检测到的问题（flaw 12）
 
 ```
 🔍 flaw0 Security Scan Results
@@ -270,55 +270,51 @@ Detailed Report:
 ...
 ```
 
-## AI-Powered Analysis
+## 基于 AI 的分析
 
-flaw0 uses OpenClaw's AI models for intelligent code review:
+flaw0 利用 OpenClaw 的 AI 模型进行智能代码审查：
 
-### Available Models
+### 可用的 AI 模型
 
-#### claude-sonnet-4-5 (default)
-- Balanced speed and accuracy
-- Best for most use cases
-- Good false positive reduction
+#### claude-sonnet-4-5（默认模型）
+- 速度和准确性平衡
+- 适用于大多数场景
+- 减少误报的效果较好
 
 ```bash
 flaw0 scan --model claude-sonnet-4-5
 ```
 
 #### claude-opus-4-6
-- Most thorough analysis
-- Deepest context understanding
-- Slower but most accurate
+- 分析最为彻底
+- 对代码上下文的理解最深入
+- 扫描速度较慢，但准确性最高
 
 ```bash
 flaw0 scan --model claude-opus-4-6
 ```
 
 #### claude-haiku-4-5
-- Fastest scanning
-- Good for quick checks
-- Use in CI/CD for speed
+- 扫描速度最快
+- 适合快速检查
+- 适用于持续集成/持续部署（CI/CD）流程
 
-```bash
-flaw0 scan --model claude-haiku-4-5
-```
+### AI 功能
 
-### AI Features
+- **上下文感知分析** - 理解代码流程和上下文
+- **减少误报** - 过滤非安全问题
+- **置信度评分** - 评估检测结果的可靠性
+- **修复建议** - 提供具体的修复步骤
 
-- **Context-aware analysis** - Understands code flow and context
-- **False positive reduction** - Filters out non-issues
-- **Confidence scoring** - Rates detection confidence
-- **Fix suggestions** - Provides specific remediation steps
+## 配置
 
-## Configuration
-
-### Create Config File
+### 创建配置文件
 
 ```bash
 flaw0 init
 ```
 
-This creates `.flaw0rc.json`:
+这将生成一个 `.flaw0rc.json` 文件：
 
 ```json
 {
@@ -341,16 +337,16 @@ This creates `.flaw0rc.json`:
 }
 ```
 
-### Configuration Options
+### 配置选项
 
-- **severity.failOn** - Exit with error on this severity level or higher
-- **severity.ignore** - Skip these severity levels
-- **targets** - What to scan (code, dependencies)
-- **exclude** - File patterns to ignore
-- **model** - AI model to use
-- **maxFlawScore** - Maximum acceptable flaw score
+- **severity.failOn** - 在达到此严重程度或更高级别时退出程序
+- **severity.ignore** - 跳过这些严重程度的问题
+- **targets** - 需要扫描的内容（代码、依赖项）
+- **exclude** - 需要忽略的文件模式
+- **model** - 使用的 AI 模型
+- **maxFlawScore** - 可接受的最高漏洞评分
 
-## CI/CD Integration
+## 集成到持续集成/持续部署（CI/CD）流程中
 
 ### GitHub Actions
 
@@ -384,7 +380,7 @@ jobs:
           echo "✅ No flaws: flaw 0"
 ```
 
-### Pre-commit Hook
+### 提交代码前的钩子
 
 ```bash
 #!/bin/bash
@@ -397,9 +393,9 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
-## Examples
+## 示例
 
-### Scan Before Installing a Skill
+### 在安装技能之前进行扫描
 
 ```bash
 # Download a skill to review
@@ -412,7 +408,7 @@ flaw0 scan /tmp/some-skill
 # If flaw > 0, review issues first
 ```
 
-### Audit Your OpenClaw Skills
+### 审计您的 OpenClaw 技能
 
 ```bash
 # Scan all installed skills
@@ -426,7 +422,7 @@ flaw0 scan --target skills
 # Overall: flaw 3
 ```
 
-### Check Dependencies After Install
+### 安装后检查依赖项
 
 ```bash
 # After installing new packages
@@ -436,7 +432,7 @@ npm install some-package
 flaw0 deps
 ```
 
-### Full Project Audit
+### 对整个项目进行安全审计
 
 ```bash
 # Comprehensive security check
@@ -446,9 +442,9 @@ flaw0 audit --output security-report.json
 cat security-report.json | jq '.flawScore'
 ```
 
-## API Usage
+## 程序化使用 flaw0
 
-Use flaw0 programmatically in your own tools:
+您可以在自己的工具中编程方式使用 flaw0：
 
 ```javascript
 const Flaw0 = require('flaw0');
@@ -474,109 +470,109 @@ if (results.flawScore === 0) {
 }
 ```
 
-## How It Works
+## 工作原理
 
-1. **Pattern Matching** - Fast regex-based detection of common vulnerabilities
-2. **AI Analysis** - Claude AI reviews each issue in context
-3. **False Positive Filtering** - AI identifies and removes non-issues
-4. **Dependency Checking** - Integrates with npm audit and CVE databases
-5. **Scoring** - Calculates weighted flaw score
-6. **Reporting** - Generates detailed, actionable reports
+1. **模式匹配** - 基于正则表达式快速检测常见漏洞
+2. **AI 分析** - Claude AI 在上下文中审查每个问题
+3. **误报过滤** - AI 识别并排除非安全问题
+4. **依赖项检查** - 与 npm 审计工具和 CVE 数据库集成
+5. **评分** - 计算漏洞总分
+6. **生成报告** - 生成详细且可操作的报告
 
-## Tips for Achieving flaw 0
+## 实现零缺陷的建议
 
-1. **Fix Critical issues first** - Biggest security impact
-2. **Update dependencies** - Resolve known CVEs quickly
-3. **Use parameterized queries** - Prevent SQL injection
-4. **Validate all inputs** - Stop injection attacks
-5. **Use environment variables** - No hardcoded secrets
-6. **Apply security headers** - Use helmet.js
-7. **Implement authentication** - Protect all endpoints
-8. **Use strong crypto** - SHA-256 or better
-9. **Sanitize output** - Prevent XSS
-10. **Review AI suggestions** - Learn from recommendations
+1. **优先修复严重问题** - 这些问题对安全性的影响最大
+2. **更新依赖项** - 及时修复已知的 CVE
+3. **使用参数化查询** - 防止 SQL 注入
+4. **验证所有输入** - 防止注入攻击
+5. **使用环境变量** - 避免硬编码秘密信息
+6. **添加安全头部** - 使用 helmet.js
+7. **实施身份验证** - 保护所有 API 端点
+8. **使用强加密算法** - 优先选择 SHA-256 或更高级的加密算法
+9. **清理输出** - 防止 XSS 攻击
+10. **参考 AI 建议** - 根据建议进行修复
 
-## Comparison with Other Tools
+## 与其他工具的比较
 
-| Feature | flaw0 | npm audit | Snyk | ESLint Security |
+| 功能 | flaw0 | npm audit | Snyk | ESLint Security |
 |---------|-------|-----------|------|-----------------|
-| Dependency CVEs | ✅ | ✅ | ✅ | ❌ |
-| AI Code Analysis | ✅ | ❌ | ❌ | ❌ |
-| OpenClaw-specific | ✅ | ❌ | ❌ | ❌ |
-| Context-aware | ✅ | ❌ | ⚠️ | ⚠️ |
-| False positive reduction | ✅ | ❌ | ⚠️ | ❌ |
-| Fix suggestions | ✅ | ⚠️ | ✅ | ⚠️ |
+| 依赖项的 CVE 检查** | ✅ | ✅ | ✅ | ❌ |
+| 基于 AI 的代码分析** | ✅ | ❌ | ❌ | ❌ |
+| 适用于 OpenClaw 的特性** | ✅ | ❌ | ❌ | ❌ |
+| 上下文感知分析** | ✅ | ❌ | ⚠️ | ⚠️ |
+| 减少误报** | ✅ | ❌ | ⚠️ | ❌ |
+| 提供修复建议** | ✅ | ⚠️ | ✅ | ⚠️ |
 
-## Requirements
+## 系统要求
 
-- **Node.js**: 14+
-- **API Key**: Anthropic API key for AI analysis
-- **npm**: For dependency checking
+- **Node.js**：版本 14 及以上
+- **API 密钥**：用于 AI 分析的 Anthropic API 密钥
+- **npm**：用于检查依赖项
 
-### Setup API Key
+### 设置 API 密钥
 
 ```bash
 export ANTHROPIC_API_KEY='your-api-key-here'
 ```
 
-Get your API key from: https://console.anthropic.com/
+从以下链接获取您的 API 密钥：https://console.anthropic.com/
 
-## Troubleshooting
+## 故障排除
 
-### "No API key found"
+### “未找到 API 密钥”
 
 ```bash
 export ANTHROPIC_API_KEY='sk-...'
 # Or add to ~/.bashrc or ~/.zshrc
 ```
 
-### "npm audit failed"
+### “npm audit 失败”
 
-Ensure you have a valid package.json:
+请确保您拥有有效的 `package.json` 文件：
 
 ```bash
 npm init -y
 npm install
 ```
 
-### Rate Limit Exceeded
+### 超过 API 使用频率限制
 
-If you hit API rate limits:
-1. Use haiku model: `--model haiku`
-2. Scan smaller portions
-3. Wait and retry
+如果遇到 API 使用频率限制：
+1. 使用 `haiku` 模型：`--model haiku`
+2. 扫描较小的代码片段
+3. 等待一段时间后重试
 
-## Support
+## 支持
 
-- **Documentation**: See USAGE.md for detailed guide
-- **Examples**: Check examples/ directory
-- **Issues**: Report at GitHub repository
-- **Demo**: Run `./demo.sh` for interactive demo
+- **文档**：请参阅 USAGE.md 以获取详细指南
+- **示例**：查看 examples/ 目录
+- **问题报告**：在 GitHub 仓库中报告问题
+- **演示**：运行 `./demo.sh` 进行交互式演示
 
-## About
+## 关于 flaw0
 
-**flaw0** helps the OpenClaw community achieve secure, vulnerability-free code.
+**flaw0** 帮助 OpenClaw 社区实现代码的安全性，消除所有漏洞。
 
-- Built with OpenClaw/Claude AI
-- Uses industry-standard security patterns
-- Continuously updated with new vulnerabilities
-- Open source under MIT license
+- 由 OpenClaw 和 Claude AI 构建
+- 遵循行业标准的安全实践
+- 随着新漏洞的出现持续更新
+- 采用 MIT 许可证，代码开源
 
-## Contributing
+## 贡献方式
 
-Contributions welcome! Areas for contribution:
-- New vulnerability patterns
-- Additional AI models
-- Python/Go support
-- Web dashboard
-- Custom rule engine
+欢迎贡献！可以参与以下方面的开发：
+- 新的漏洞检测规则
+- 新的 AI 模型
+- 对 Python/Go 的支持
+- 开发 Web 管理面板
+- 定制规则引擎
 
-## License
+## 许可证
 
-MIT License - see LICENSE file
+MIT 许可证 - 详情请参阅 LICENSE 文件
 
 ---
 
-**Goal: flaw 0 for everyone! 🎯**
+**目标：让每个人都能实现零缺陷（flaw 0）！🎯**
 
-**Remember**: Security is not a one-time check. Run flaw0 regularly to maintain **flaw 0** status!
+**请记住**：安全性不是一次性检查的结果。定期运行 flaw0 以保持代码的零缺陷状态！

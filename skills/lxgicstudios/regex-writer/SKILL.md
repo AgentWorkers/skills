@@ -1,19 +1,19 @@
 ---
 name: regex-writer
-description: Generate regex patterns from plain English descriptions. Use when the user needs to create regular expressions without memorizing syntax.
+description: 根据用户提供的英文描述生成正则表达式模式。这种方法适用于用户在不熟悉正则表达式语法的情况下，仍能够快速创建所需的正则表达式。
 ---
 
-# Regex Writer
+# 正则表达式生成器（Regex Writer）
 
-Turn plain English into working regex patterns. Describe what you want to match and get a tested pattern back with explanation and examples.
+将普通的英文描述转换为可执行的正则表达式模式。请详细说明您想要匹配的内容，并提供经过测试的正则表达式模式，同时附上解释和示例。
 
-## Usage
+## 使用方法
 
 ```bash
 npx ai-regex "your description here"
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Match email addresses
@@ -26,7 +26,7 @@ npx ai-regex "US phone numbers with optional country code"
 npx ai-regex --json "URLs starting with https"
 ```
 
-## Notes
-- Free, open source, MIT licensed
-- Built by LXGIC Studios
-- GitHub: https://github.com/LXGIC-Studios/ai-regex
+## 注意事项：
+- 该项目为免费、开源软件，采用 MIT 许可协议。
+- 由 LXGIC Studios 开发。
+- 项目托管在 GitHub 上：https://github.com/LXGIC-Studios/ai-regex

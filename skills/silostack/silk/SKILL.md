@@ -1,24 +1,24 @@
 ---
 name: silk
 version: 1.0.4
-description: Agent banking and payments on Solana. Send and receive stablecoins with cancellable escrow transfers. Optional on-chain accounts with policy-enforced spending limits for human-delegated automation.
+description: 在Solana平台上，支持代理银行服务和支付功能。用户可以发送和接收稳定币（stablecoins），这些交易通过可撤销的托管（escrow）机制进行管理。此外，还提供了可选的链上账户（on-chain accounts），这些账户具备基于策略的支出限制功能，支持人工授权的自动化操作。
 homepage: https://silkyway.ai
 metadata: {"category":"payments","api_base":"https://api.silkyway.ai","author":"silkysquad","openclaw":{"requires":{"bins":["silk"]},"install":[{"id":"silk-npm","kind":"node","label":"Silk CLI","package":"@silkysquad/silk"}]}}
 ---
 
 # SilkyWay
 
-Agent banking and payments on Solana. Send and receive stablecoins — non-custodial, on-chain.
+这是一个基于Solana的代理银行和支付服务，支持发送和接收稳定币（如USDC），且完全采用非托管（non-custodial）的方式，所有操作都在链上完成。
 
-## Install
+## 安装
 
 ```bash
 npm install -g @silkysquad/silk
 ```
 
-Requires Node.js 18+.
+安装此服务需要Node.js 18及以上版本。
 
-## Setup
+## 设置
 
 ```bash
 # 1. Initialize (creates wallet and agent ID)
@@ -28,11 +28,11 @@ silk init
 silk wallet list
 ```
 
-Your wallet and agent ID are saved at `~/.config/silk/config.json`. Your private key never leaves your machine. `silk init` is idempotent — safe to run multiple times.
+您的钱包信息和代理ID会被保存在`~/.config/silk/config.json`文件中。您的私钥始终保存在您的设备上。执行`silk init`命令是安全的，可以多次执行。
 
-### Cluster configuration
+### 集群配置
 
-Default cluster is `mainnet-beta` (real USDC). Switch to `devnet` for testing with free tokens.
+默认集群为`mainnet-beta`（使用真实的USDC）。如需使用测试用币，请切换到`devnet`集群。
 
 ```bash
 silk config set-cluster devnet    # test tokens
@@ -40,14 +40,14 @@ silk config set-cluster mainnet-beta  # real USDC
 silk config get-cluster           # show current
 ```
 
-| Cluster | API Base URL | Network |
+| 集群 | API基础URL | 网络 |
 |---------|-------------|---------|
-| `mainnet-beta` | `https://api.silkyway.ai` | Mainnet (real USDC) |
-| `devnet` | `https://devnet-api.silkyway.ai` | Devnet (test USDC) |
+| `mainnet-beta` | `https://api.silkyway.ai` | 主网（使用真实的USDC） |
+| `devnet` | `https://devnet-api.silkyway.ai` | 测试网（使用测试用USDC） |
 
-### Fund your wallet (devnet)
+### 为钱包充值（devnet）
 
-On devnet, use the faucet — it gives you 0.1 SOL (for transaction fees) + 100 USDC:
+在devnet集群上，可以使用内置的 faucet 功能进行充值。每次充值会获得0.1 SOL（用于交易手续费）以及100 USDC：
 
 ```bash
 silk config set-cluster devnet
@@ -55,17 +55,17 @@ silk wallet fund
 silk balance
 ```
 
-On mainnet, send SOL and USDC to your wallet address manually. SOL is required for Solana transaction fees.
+在mainnet集群上，需要手动将SOL或USDC发送到您的钱包地址。SOL是进行Solana交易所必需的。
 
-## Sending Payments
+## 发送支付
 
 ```bash
 silk pay <recipient> <amount> [--memo <text>]
 ```
 
-This locks USDC into on-chain escrow. The recipient claims it with `silk claim`, or you cancel for a full refund with `silk cancel`.
+发送支付后，USDC会被锁定在链上的托管账户中。接收者可以通过`silk claim`命令领取款项；如果您需要取消支付，可以使用`silk cancel`命令。
 
-The output includes a **claim link** (`claimUrl`) — a URL you can share with the recipient's human. They open it in a browser, connect their wallet, and claim the payment. This is the easiest way for a non-technical recipient to claim.
+系统会生成一个**领取链接**（`claimUrl`），您可以将该链接分享给接收者。接收者只需在浏览器中打开链接，连接他们的钱包即可领取款项。这是非技术背景的接收者最简便的领取方式。
 
 ```bash
 # Send 10 USDC
@@ -82,26 +82,22 @@ silk payments list
 silk payments get <transfer-pda>
 ```
 
-### Claiming a payment
+### 领取支付
 
-If someone sent you a payment:
+如果有人向您发送了付款：
 
 ```bash
 silk payments list
 silk claim <transfer-pda>
 ```
 
-### Cancelling a payment
+### 取消支付
 
-Cancel a payment you sent (before the recipient claims it):
+如果您发送了付款但尚未被接收者领取，可以随时使用`silk cancel`命令取消该支付。
 
-```bash
-silk cancel <transfer-pda>
-```
+## 地址簿
 
-## Address Book
-
-Save contacts so you can send payments by name instead of address.
+您可以保存联系人的信息，以便以后可以通过姓名而不是地址来发送付款。
 
 ```bash
 silk contacts add alice 7xKXz9BpR3mFVDg2Thh3AG6sFRPqNrDJ4bHUkR8Y7vNx
@@ -110,16 +106,16 @@ silk contacts get alice
 silk contacts remove alice
 ```
 
-Once saved, use names anywhere you'd use an address:
+保存后，您可以在任何需要输入地址的地方使用这些联系人姓名。
 
 ```bash
 silk pay alice 10 --memo "Thanks for the review"
 silk account send alice 5
 ```
 
-Contact names are case-insensitive and stored lowercase. Saved at `~/.config/silk/contacts.json`.
+联系人姓名不区分大小写，并且以小写形式存储在`~/.config/silk/contacts.json`文件中。
 
-## Multi-Wallet Support
+## 多钱包支持
 
 ```bash
 silk wallet create second-wallet
@@ -127,125 +123,115 @@ silk wallet fund --wallet second-wallet
 silk wallet list
 ```
 
-Use `--wallet <label>` on any command to select a non-default wallet:
+在任何命令前加上`--wallet <标签>`参数，即可选择非默认的钱包。
 
 ```bash
 silk pay <address> 10 --wallet second-wallet
 silk balance --wallet second-wallet
 ```
 
-## Support Chat
+## 支持聊天
 
-```bash
-silk chat "How do I send a payment?"
-```
+首次使用时，系统会自动生成一个唯一的`agentId`（UUID），用于保持会话的连续性。
 
-A persistent `agentId` (UUID) is auto-generated on first use for session continuity.
+## 链上账户（可选）
 
-## On-Chain Accounts (Optional)
+SilkyWay账户是一个链上钱包，类似于银行账户，由人类所有者创建并充值。所有者可以为账户添加代理人（operator），并设置每笔交易的消费限额。这适用于自动化操作、定期付款或需要将消费权限委托给代理的场景。
 
-A SilkyWay account is an on-chain wallet — like a bank account — that a human owner creates and funds with USDC. The owner can add agents as **operators** with per-transaction spending limits enforced on-chain. This is useful for automations, recurring payments, or any scenario where a human wants to delegate spending authority to an agent with guardrails.
+使用SilkyWay时并不需要创建账户。即使没有账户，也可以通过`silk pay`命令进行支付。账户是可选的升级功能，适用于希望获得链上控制权限的情况。
 
-You don't need an account to use SilkyWay. Escrow payments (`silk pay`) work with just a wallet. Accounts are an optional upgrade when your human wants to give you direct spending access with on-chain controls.
+**关键概念：**
+- **所有者**：创建并充值账户的人类用户。拥有完全控制权，可以转移任意金额、暂停账户或添加/删除代理人。
+- **代理人**：您（作为代理人）被授权从账户发送代币，但必须遵守所有者设定的每笔交易限额。
+- **每笔交易限额**：单次交易的最大USDC金额限制。该限制由Solana系统强制执行；超过限额的交易会被拒绝。设置为0表示无限制。
+- **暂停账户**：所有者可以暂停账户，阻止所有代理人的转账操作，直到账户被重新启用。
 
-**Key concepts:**
-- **Owner** — The human who creates and funds the account. Full control: can transfer any amount, pause the account, add/remove operators.
-- **Operator** — You (the agent). Authorized to send tokens from the account, subject to a per-transaction limit set by the owner.
-- **Per-transaction limit** — Maximum USDC you can send in one transaction. Enforced on-chain — the Solana program rejects transactions that exceed it. A limit of 0 means unlimited.
-- **Pause** — The owner can pause the account, blocking all operator transfers until unpaused. You cannot unpause it.
+### 设置账户
 
-### Setting up an account
-
-Your human creates the account — you cannot create it yourself.
-
-1. Share the setup URL with your human (replace with your address from `silk wallet list`):
+账户必须由人类所有者创建：
+1. 将设置URL分享给所有者（请使用`silk wallet list`命令获取您的钱包地址）：
    ```
    https://app.silkyway.ai/account/setup?agent=YOUR_WALLET_ADDRESS
    ```
-   They'll connect their wallet, set your spending limit, and fund the account.
-
-   **Important:** Your human must select the same network (mainnet/devnet) on the setup page as your CLI cluster. If you're on devnet, tell them to switch to devnet before creating the account.
-
-2. After your human creates the account, sync it:
+   所有者会连接他们的钱包，设置您的消费限额并充值账户。
+   **注意**：所有者在设置页面上必须选择与您的CLI集群相同的网络（mainnet或devnet）。如果您使用的是devnet，请告知他们先切换到devnet后再创建账户。
+2. 创建账户后，需要同步账户信息：
    ```bash
    silk account sync
    ```
-
-3. Check your status and send payments:
+3. 检查账户状态并发送付款：
    ```bash
    silk account status
    silk account send <recipient> <amount>
    ```
 
-If the amount exceeds your per-transaction limit, the transaction is **rejected on-chain** with `ExceedsPerTxLimit`. If the account is paused, you get `AccountPaused`.
+如果转账金额超过您的每笔交易限额，交易会在链上被拒绝（错误代码：`ExceedsPerTxLimit`）。如果账户被暂停，系统会显示“AccountPaused”提示。
+如果`silk account sync`命令返回“No account found”，说明所有者尚未创建账户，请再次分享设置URL。
 
-If `silk account sync` returns "No account found", your human hasn't created the account yet — share the setup URL with them.
+### 账户与托管支付
 
-### Accounts vs escrow payments
-
-| | Accounts | Escrow (`silk pay`) |
+| | 账户 | 托管支付（silk pay） |
 |---|---|---|
-| **Setup required** | Human creates account + adds you as operator | None — just a funded wallet |
-| **Spending limits** | Per-transaction limit enforced on-chain | No limits |
-| **Recipient claims?** | No — direct transfer, tokens arrive immediately | Yes — recipient must `silk claim` |
-| **Cancellable?** | No — transfer is instant | Yes — sender can cancel before claim |
-| **Best for** | Ongoing payments with human oversight | One-off payments between parties |
+| **是否需要设置** | 人类创建账户并添加您为代理人 | 无需设置——只需一个已充值的钱包 |
+| **消费限制** | 每笔交易都有链上强制执行的限额 | 无限制 |
+| **接收者能否领取？** | 不能——直接转移，代币立即到达接收者钱包 | 可以——接收者需要使用`silk claim`命令领取 |
+| **能否取消？** | 不能——转移立即完成 | 可以——发送者可以在接收者领取前取消 |
+| **适用场景** | 需要人类监督的持续性付款 | 双方之间的一次性付款 |
 
-If your human has set up an account for you, prefer `silk account send` — it's simpler (no claim step) and your human controls the spending limits.
+如果所有者为您设置了账户，建议使用`silk account send`命令，因为它更简单（无需领取步骤），且所有者可以控制消费限额。
 
-## CLI Reference
+## CLI参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `silk init` | Initialize CLI (create wallet, agent ID, and contacts file) |
-| `silk wallet create [label]` | Create a new wallet |
-| `silk wallet list` | List all wallets with addresses |
-| `silk wallet fund [--sol] [--usdc] [--wallet <label>]` | Fund wallet from devnet faucet |
-| `silk balance [--wallet <label>]` | Show SOL and USDC balances |
-| `silk pay <recipient> <amount> [--memo <text>] [--wallet <label>]` | Send USDC payment into escrow |
-| `silk claim <transfer-pda> [--wallet <label>]` | Claim a received payment |
-| `silk cancel <transfer-pda> [--wallet <label>]` | Cancel a sent payment |
-| `silk payments list [--wallet <label>]` | List transfers |
-| `silk payments get <transfer-pda>` | Get transfer details |
-| `silk contacts add <name> <address>` | Save a contact to the address book |
-| `silk contacts remove <name>` | Remove a contact |
-| `silk contacts list` | List all saved contacts |
-| `silk contacts get <name>` | Look up a contact's address |
-| `silk account sync [--wallet <label>] [--account <pda>]` | Discover and sync your on-chain account |
-| `silk account status [--wallet <label>]` | Show account balance, spending limit, and pause state |
-| `silk account send <recipient> <amount> [--memo <text>] [--wallet <label>]` | Send from account (policy-enforced on-chain) |
-| `silk chat <message>` | Ask SilkyWay support agent a question |
-| `silk config set-cluster <cluster>` | Set cluster (`mainnet-beta` or `devnet`) |
-| `silk config get-cluster` | Show current cluster and API URL |
-| `silk config reset-cluster` | Reset cluster to default (`mainnet-beta`) |
+| `silk init` | 初始化CLI（创建钱包、代理ID和联系人信息文件） |
+| `silk wallet create [标签]` | 创建新钱包 |
+| `silk wallet list` | 列出所有钱包及其地址 |
+| `silk wallet fund [--sol] [--usdc] [--wallet <标签>]` | 从devnet faucet为钱包充值 |
+| `silk balance [--wallet <标签>]` | 查看SOL和USDC余额 |
+| `silk pay <接收者> <金额> [--memo <文本>] [--wallet <标签>]` | 将USDC发送到托管账户 |
+| `silk claim <转移PDA> [--wallet <标签>]` | 领取收到的付款 |
+| `silk cancel <转移PDA> [--wallet <标签>]` | 取消已发送的付款 |
+| `silk payments list [--wallet <标签>]` | 查看所有转账记录 |
+| `silk payments get <转移PDA>` | 获取转账详情 |
+| `silk contacts add <名称> <地址>` | 将联系人信息保存到地址簿 |
+| `silk contacts remove <名称>` | 从地址簿中删除联系人 |
+| `silk contacts list` | 列出所有保存的联系人 |
+| `silk contacts get <名称>` | 查找联系人的地址 |
+| `silk account sync [--wallet <标签>] [--account <pda>]` | 发现并同步您的链上账户 |
+| `silk account status [--wallet <标签>]` | 显示账户余额、消费限额和暂停状态 |
+| `silk account send <接收者> <金额> [--memo <文本>]` | 从账户发送付款（遵循链上规则） |
+| `silk chat <消息>` | 向SilkyWay支持团队提问 |
+| `silk config set-cluster <集群>` | 设置集群（mainnet-beta或devnet） |
+| `silk config get-cluster` | 显示当前集群和API地址 |
+| `silk config reset-cluster` | 将集群重置为默认值（mainnet-beta） |
 
-Use `--wallet <label>` on any command to select a non-default wallet. Recipients accept contact names or Solana addresses.
+在命令前加上`--wallet <标签>`参数，可以选择非默认的钱包。接收者可以接受联系人姓名或Solana地址作为收款地址。
 
-## How Transactions Work
+## 交易流程
 
-SilkyWay is non-custodial — your private keys never leave your machine.
+SilkyWay采用非托管模式，您的私钥始终保存在您的设备上。
 
-Every payment follows a build-sign-submit flow:
+所有交易都遵循“构建-签名-提交”的流程：
+1. **构建**：SDK使用支付详情调用API端点，后端生成未签名的Solana交易并返回其Base64编码。
+2. **签名**：SDK使用您的私钥对交易进行签名。
+3. **提交**：SDK将签名后的交易发送到后端，后端再将其发送到Solana网络。
 
-1. **Build** — The SDK calls an API endpoint with payment details. The backend builds an unsigned Solana transaction and returns it as base64.
-2. **Sign** — The SDK signs the transaction locally using your private key.
-3. **Submit** — The SDK sends the signed transaction to the backend, which forwards it to Solana.
+后端负责处理复杂的交易逻辑（如PDA生成、指令构建和区块哈希管理）。后端永远不会看到您的私钥，所有授权操作都由Solana系统在链上执行。
 
-The backend handles Solana complexity (PDA derivation, instruction building, blockhash management). It never sees your private key — all authorization is enforced on-chain by the Solana program.
+## API端点
 
-## API Endpoints
+基础URL：`https://api.silkyway.ai`（mainnet）或`https://devnet-api.silkyway.ai`（devnet）
 
-Base URL: `https://api.silkyway.ai` (mainnet) or `https://devnet-api.silkyway.ai` (devnet)
+所有请求均使用`Content-Type: application/json`格式。
 
-All requests use `Content-Type: application/json`.
-
-### Escrow Endpoints
+### 托管支付相关端点
 
 ### POST /api/tx/create-transfer
 
-Build an unsigned create_transfer transaction. Locks USDC into escrow.
+创建一个未签名的创建转账交易，将USDC锁定在托管账户中。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "sender": "BrKz4GQN1sxZWoGLbNTojp4G3JCFLRkSYk3mSRWhKsXp",
@@ -256,18 +242,18 @@ Build an unsigned create_transfer transaction. Locks USDC into escrow.
 }
 ```
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `sender` | string | yes | Sender's Solana public key |
-| `recipient` | string | yes | Recipient's Solana public key |
-| `amount` | number | yes | Amount in token units (e.g. `10.00` = 10 USDC) |
-| `token` | string | yes | Token symbol (e.g. `"usdc"`) |
-| `memo` | string | no | Human-readable memo |
-| `claimableAfter` | number | no | Unix timestamp — recipient cannot claim before this time |
+| `sender` | string | 是 | 发送者的Solana公钥 |
+| `recipient` | string | 是 | 接收者的Solana公钥 |
+| `amount` | number | 是 | 代币数量（例如`10.00`表示10 USDC） |
+| `token` | string | 是 | 代币符号（例如`"usdc"`） |
+| `memo` | string | 否 | 供人类阅读的备注信息 |
+| `claimableAfter` | number | 否 | Unix时间戳——接收者必须在指定时间之后才能领取款项 |
 
-You can also pass `mint` (token mint pubkey) or `poolPda` directly instead of `token`, but `token` is the simplest option.
+您也可以直接提供`mint`（代币的公钥）或`poolPda`，但`token`是更简单的选择。
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -280,15 +266,15 @@ You can also pass `mint` (token mint pubkey) or `poolPda` directly instead of `t
 }
 ```
 
-The `transferPda` is the on-chain address for this escrow. Save it — you need it to claim or cancel.
+`transferPda`是该托管交易的链上地址，用于后续的领取或取消操作。
 
 ### POST /api/tx/claim-transfer
 
-Build an unsigned claim_transfer transaction. Moves USDC from escrow to the recipient's wallet.
+创建一个未签名的领取转账交易，将USDC从托管账户转移到接收者的钱包。
 
-Only the designated recipient can claim. If `claimableAfter` was set, the claim will fail before that time.
+只有指定的接收者才能领取款项。如果设置了`claimableAfter`时间限制，领取操作将在该时间之前失败。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "transferPda": "9aE5kBqRvF3mNcXz8BpR3mFVDg2Thh3AG6sFRPqNrDJ4",
@@ -296,12 +282,12 @@ Only the designated recipient can claim. If `claimableAfter` was set, the claim 
 }
 ```
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `transferPda` | string | yes | The transfer's on-chain PDA |
-| `claimer` | string | yes | Recipient's Solana public key |
+| `transferPda` | string | 是 | 转移交易的链上PDA地址 |
+| `claimer` | string | 是 | 接收者的Solana公钥 |
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -312,19 +298,19 @@ Only the designated recipient can claim. If `claimableAfter` was set, the claim 
 }
 ```
 
-**Common errors:**
-- `ClaimTooEarly` (6003) — `claimableAfter` hasn't passed yet
-- `TransferAlreadyClaimed` (6000) — already claimed
-- `TransferAlreadyCancelled` (6001) — sender cancelled first
-- `Unauthorized` (6004) — claimer is not the designated recipient
+**常见错误：**
+- `ClaimTooEarly`（6003）——领取时间未到 |
+- `TransferAlreadyClaimed`（6000）——款项已被领取 |
+- `TransferAlreadyCancelled`（6001）——发送者已取消交易 |
+- `Unauthorized`（6004）——领取者未经授权 |
 
 ### POST /api/tx/cancel-transfer
 
-Build an unsigned cancel_transfer transaction. Refunds USDC from escrow back to the sender.
+创建一个未签名的取消转账交易，将USDC从托管账户退还给发送者。
 
-Only the original sender can cancel, and only while the transfer is still `ACTIVE` (not yet claimed).
+只有原始发送者才能取消交易，且只能在交易尚未被领取的情况下取消。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "transferPda": "9aE5kBqRvF3mNcXz8BpR3mFVDg2Thh3AG6sFRPqNrDJ4",
@@ -332,12 +318,12 @@ Only the original sender can cancel, and only while the transfer is still `ACTIV
 }
 ```
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `transferPda` | string | yes | The transfer's on-chain PDA |
-| `canceller` | string | yes | Sender's Solana public key |
+| `transferPda` | string | 是 | 转移交易的链上PDA地址 |
+| `canceller` | string | 是 | 发送者的Solana公钥 |
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -348,23 +334,23 @@ Only the original sender can cancel, and only while the transfer is still `ACTIV
 }
 ```
 
-**Common errors:**
-- `TransferAlreadyClaimed` (6000) — recipient already claimed
-- `TransferAlreadyCancelled` (6001) — already cancelled
-- `Unauthorized` (6004) — canceller is not the original sender
+**常见错误：**
+- `TransferAlreadyClaimed`（6000）——款项已被领取 |
+- `TransferAlreadyCancelled`（6001）——交易已被取消 |
+- `Unauthorized`（6004）——取消操作者未经授权 |
 
 ### POST /api/tx/submit
 
-Submit a signed transaction to Solana.
+将签名后的交易提交到Solana网络。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "signedTx": "AQAAAAAAAAAAAAAA...base64-signed...AAAAAAA="
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -376,11 +362,11 @@ Submit a signed transaction to Solana.
 
 ### GET /api/transfers/:pda
 
-Get details for a single transfer.
+获取单笔交易的详细信息。
 
-**Example:** `GET /api/transfers/9aE5kBqRvF3mNcXz8BpR3mFVDg2Thh3AG6sFRPqNrDJ4`
+**示例：`GET /api/transfers/9aE5kBqRvF3mNcXz8BpR3mFVDg2Thh3AG6sFRPqNrDJ4`
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -408,15 +394,15 @@ Get details for a single transfer.
 }
 ```
 
-Note: `amount` is in raw token units. USDC has 6 decimals, so `"10000000"` = 10.00 USDC.
+**注意**：`amount`字段以原始代币单位显示。USDC有6位小数，因此`10000000`表示10.00 USDC。
 
 ### GET /api/transfers?wallet=\<pubkey\>
 
-List all transfers where the wallet is sender or recipient.
+列出所有发送者或接收者为该钱包的交易记录。
 
-**Example:** `GET /api/transfers?wallet=BrKz4GQN1sxZWoGLbNTojp4G3JCFLRkSYk3mSRWhKsXp`
+**示例：`GET /api/transfers?wallet=BrKz4GQN1sxZWoGLbNTojp4G3JCFLRkSYk3mSRWhKsXp`
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -440,9 +426,9 @@ List all transfers where the wallet is sender or recipient.
 
 ### POST /api/tx/faucet
 
-Airdrop devnet SOL or USDC. Devnet only.
+在devnet集群上发放SOL或USDC。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "wallet": "BrKz4GQN1sxZWoGLbNTojp4G3JCFLRkSYk3mSRWhKsXp",
@@ -450,9 +436,9 @@ Airdrop devnet SOL or USDC. Devnet only.
 }
 ```
 
-`token` is optional. Omit or use `"sol"` for SOL airdrop, `"usdc"` for USDC mint.
+`token`字段可选。输入`sol`表示发放SOL，输入`usdc`表示发放USDC。
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -463,15 +449,15 @@ Airdrop devnet SOL or USDC. Devnet only.
 }
 ```
 
-### Account Endpoints
+### 账户相关端点
 
 #### GET /api/account/by-operator/:pubkey
 
-Find accounts where your wallet is an operator. Used by `silk account sync`.
+查找您的钱包作为代理人参与的账户。
 
-**Example:** `GET /api/account/by-operator/7xKXz9BpR3mFVDg2Thh3AG6sFRPqNrDJ4bHUkR8Y7vNx`
+**示例：`GET /api/account/by-operator/7xKXz9BpR3mFVDg2Thh3AG6sFRPqNrDJ4bHUkR8Y7vNx`
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -495,15 +481,15 @@ Find accounts where your wallet is an operator. Used by `silk account sync`.
 }
 ```
 
-Returns an empty array if no accounts found — this means your human hasn't set up your account yet.
+如果未找到账户，将返回空数组——说明所有者尚未为您设置账户。
 
 #### GET /api/account/:pda
 
-Get full account details. Used by `silk account status`.
+获取账户的完整信息。
 
-**Example:** `GET /api/account/9aE5kBqRvF3mNcXz8BpR3mFVDg2Thh3AG6sFRPqNrDJ4`
+**示例：`GET /api/account/9aE5kBqRvF3mNcXz8BpR3mFVDg2Thh3AG6sFRPqNrDJ4`
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -525,13 +511,13 @@ Get full account details. Used by `silk account status`.
 }
 ```
 
-Note: `balance` and `perTxLimit` are in raw token units. USDC has 6 decimals, so `5000000` = $5.00.
+**注意**：`balance`和`perTxLimit`字段以原始代币单位显示。USDC有6位小数，因此`5000000`表示5.00 USDC。
 
 #### POST /api/account/transfer
 
-Build an unsigned transfer transaction from a SilkyWay account. Used by `silk account send`.
+创建一个未签名的转账交易。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "signer": "7xKXz9BpR3mFVDg2Thh3AG6sFRPqNrDJ4bHUkR8Y7vNx",
@@ -541,14 +527,14 @@ Build an unsigned transfer transaction from a SilkyWay account. Used by `silk ac
 }
 ```
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `signer` | string | yes | Your wallet address (operator) |
-| `accountPda` | string | yes | The account's on-chain PDA |
-| `recipient` | string | yes | Recipient's Solana public key |
-| `amount` | number | yes | Amount in raw token units (e.g. `3000000` = 3.00 USDC) |
+| `signer` | string | 是 | 您的钱包地址（即代理人地址） |
+| `accountPda` | string | 是 | 账户的链上PDA地址 |
+| `recipient` | string | 是 | 接收者的Solana公钥 |
+| `amount` | number | 是 | 代币数量（以原始单位表示） |
 
-**Response:**
+**响应：**
 ```json
 {
   "ok": true,
@@ -558,18 +544,18 @@ Build an unsigned transfer transaction from a SilkyWay account. Used by `silk ac
 }
 ```
 
-Sign and submit the returned transaction via `POST /api/tx/submit`.
+使用`POST /api/tx/submit`命令对交易进行签名和提交。
 
-**Common errors:**
-- `ExceedsPerTxLimit` — Amount exceeds your per-transaction spending limit
-- `AccountPaused` — Account is paused by the owner; operator transfers blocked
-- `Unauthorized` — Signer is not the owner or an operator on this account
+**常见错误：**
+- `ExceedsPerTxLimit`——转账金额超过每笔交易的限额 |
+- `AccountPaused`——账户被暂停，所有代理人的转账操作被阻止 |
+- `Unauthorized`——签名者不是账户的所有者或代理人 |
 
 #### POST /api/account/create
 
-Build an unsigned create-account transaction. Used by the setup page (human-facing, not typically called by agents).
+创建一个未签名的账户。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "owner": "BrKz4GQN1sxZWoGLbNTojp4G3JCFLRkSYk3mSRWhKsXp",
@@ -581,9 +567,9 @@ Build an unsigned create-account transaction. Used by the setup page (human-faci
 
 #### POST /api/account/deposit
 
-Build an unsigned deposit transaction. Used by the setup page to fund the account.
+创建一个用于充值账户的未签名交易。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "depositor": "BrKz4GQN1sxZWoGLbNTojp4G3JCFLRkSYk3mSRWhKsXp",
@@ -594,9 +580,9 @@ Build an unsigned deposit transaction. Used by the setup page to fund the accoun
 
 ### POST /chat
 
-Send a message to the SilkyWay support agent. Returns an AI-generated response.
+向SilkyWay支持团队发送消息，系统会返回AI生成的回复。
 
-**Request:**
+**请求参数：**
 ```json
 {
   "agentId": "uuid-v4",
@@ -604,12 +590,12 @@ Send a message to the SilkyWay support agent. Returns an AI-generated response.
 }
 ```
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `agentId` | string | yes | UUID v4 identifying the agent (auto-generated by the SDK) |
-| `message` | string | yes | The question to ask |
+| `agentId` | string | 是 | 由SDK生成的唯一标识符（UUID） |
+| `message` | string | 需要咨询的问题 |
 
-**Response (200):**
+**响应（状态码200）：**
 ```json
 {
   "ok": true,
@@ -620,60 +606,59 @@ Send a message to the SilkyWay support agent. Returns an AI-generated response.
 }
 ```
 
-## Transfer Statuses
+## 转移状态
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `ACTIVE` | Tokens locked in escrow, awaiting claim or cancellation |
-| `CLAIMED` | Recipient claimed the tokens |
-| `CANCELLED` | Sender cancelled and reclaimed the tokens |
-| `EXPIRED` | Transfer expired past its `claimableUntil` window |
+| `ACTIVE` | 代币被锁定在托管账户中，等待领取或取消 |
+| `CLAIMED` | 接收者已领取款项 |
+| `CANCELLED` | 发送者已取消交易并取回了款项 |
+| `EXPIRED` | 转移交易已超出领取时间限制 |
 
-## Error Codes
+## 错误代码
 
-### Escrow Program Errors (Handshake)
+### 托管相关错误（握手阶段）
 
-| Code | Name | Description |
+| 代码 | 名称 | 描述 |
 |------|------|-------------|
-| 6000 | `TransferAlreadyClaimed` | Transfer has already been claimed |
-| 6001 | `TransferAlreadyCancelled` | Transfer has already been cancelled |
-| 6002 | `TransferExpired` | Transfer has expired |
-| 6003 | `ClaimTooEarly` | Cannot claim before `claimableAfter` timestamp |
-| 6004 | `Unauthorized` | Signer is not authorized for this action |
-| 6005 | `PoolPaused` | The token's escrow pool is temporarily paused — try again later |
-| 6006 | `InsufficientFunds` | Sender has insufficient token balance |
+| 6000 | `TransferAlreadyClaimed` | 交易已被领取 |
+| 6001 | `TransferAlreadyCancelled` | 交易已被取消 |
+| 6002 | `TransferAlreadyCancelled` | 交易已被取消 |
+| 6003 | `ClaimTooEarly` | 领取时间未到 |
+| 6004 | `Unauthorized` | 签名者未经授权 |
+| 6005 | `PoolPaused` | 代币的托管池暂时暂停——请稍后再试 |
+| 6006 | `InsufficientFunds` | 发送者账户余额不足 |
 
-### Account Program Errors (Silkysig)
+### 账户相关错误（Silkysig）
 
-| Code | Name | Description |
+| 代码 | 名称 | 描述 |
 |------|------|-------------|
-| 6000 | `Unauthorized` | Signer is not the owner or an operator on this account |
-| 6001 | `ExceedsPerTxLimit` | Transfer amount exceeds operator's per-transaction spending limit |
-| 6002 | `ExceedsDailyLimit` | Transfer exceeds operator daily limit (not yet enforced) |
-| 6003 | `AccountPaused` | Account is paused — operator transfers blocked until owner unpauses |
-| 6004 | `MaxOperatorsReached` | Account already has 3 operators (maximum) |
-| 6005 | `OperatorNotFound` | Specified operator not found on account |
-| 6006 | `OperatorAlreadyExists` | Operator is already on this account |
-| 6007 | `InsufficientBalance` | Account doesn't have enough tokens for this transfer |
-| 6008 | `MathOverflow` | Arithmetic overflow in calculation |
+| 6000 | `Unauthorized` | 签名者不是账户的所有者或代理人 |
+| 6001 | `ExceedsPerTxLimit` | 转移金额超过每笔交易的限额 |
+| 6002 | `ExceedsDailyLimit` | 转移金额超过每日限额（尚未生效） |
+| 6003 | `AccountPaused` | 账户被暂停，代理人无法进行转账 |
+| 6004 | `MaxOperators Reached` | 账户已拥有最多3个代理人 |
+| 6005 | `OperatorNotFound` | 指定的代理人不存在 |
+| 6006 | `OperatorAlreadyExists` | 该账户已存在多个代理人 |
+| 6008 | `InsufficientBalance` | 账户余额不足 |
 
-### API Errors
+### API相关错误
 
-| Error | HTTP | Description |
+| 代码 | HTTP状态码 | 描述 |
 |-------|------|-------------|
-| `INVALID_PUBKEY` | 400 | Invalid Solana public key format |
-| `INVALID_AMOUNT` | 400 | Amount must be positive |
-| `MISSING_FIELD` | 400 | Required field not provided |
-| `TRANSFER_NOT_FOUND` | 404 | No transfer found for the given PDA |
-| `POOL_NOT_FOUND` | 404 | No escrow pool found for this token |
-| `TOKEN_NOT_FOUND` | 400 | Token symbol or mint not recognized |
-| `TX_FAILED` | 400 | Transaction simulation or submission failed |
-| `RATE_LIMITED` | 429 | Too many faucet requests |
-| `FAUCET_FAILED` | 400 | Faucet airdrop failed |
+| 400 | `INVALID_PUBKEY` | 提供的Solana公钥格式无效 |
+| 400 | `INVALID_AMOUNT` | 金额必须为正数 |
+| 400 | `MISSING_FIELD` | 必需字段未提供 |
+| 404 | `TRANSFER_NOT_FOUND` | 未找到对应的转账记录 |
+| 404 | `POOL_NOT_FOUND` | 未找到对应的托管池 |
+| 400 | `TOKEN_NOT_FOUND` | 未识别到的代币符号 |
+| 400 | `TX_FAILED` | 交易模拟或提交失败 |
+| 429 | 请求次数过多 |
+| 400 | 发放失败 |
 
-## Response Format
+## 响应格式
 
-**Success:**
+**成功**：
 ```json
 {
   "ok": true,
@@ -681,7 +666,7 @@ Send a message to the SilkyWay support agent. Returns an AI-generated response.
 }
 ```
 
-**Error:**
+**错误**：
 ```json
 {
    "ok": false,
@@ -690,9 +675,8 @@ Send a message to the SilkyWay support agent. Returns an AI-generated response.
 }
 ```
 
-## Security
-
-- **Non-custodial** — the backend builds unsigned transactions; you sign locally with your private key before submitting
-- Private keys are never transmitted to the server
-- All authorization is enforced on-chain by the Solana program, not by the backend
-- Keys are stored locally at `~/.config/silk/config.json` — never share this file
+## 安全性说明：
+- **非托管模式**：后端仅生成未签名的交易，您需要使用私钥在本地进行签名后再提交。
+- 私钥永远不会传输到服务器。
+- 所有授权操作都由Solana系统在链上执行，后端不会处理私钥。
+- 私钥保存在`~/.config/silk/config.json`文件中，请勿泄露此文件。

@@ -1,62 +1,56 @@
 ---
 name: last30days
-description: Research any topic from the last 30 days on Reddit + X + Web, synthesize findings, and write copy-paste-ready prompts. Use when the user wants recent social/web research on a topic, asks "what are people saying about X", or wants to learn current best practices. Requires OPENAI_API_KEY and/or XAI_API_KEY for full Reddit+X access, falls back to web search.
+description: 在 Reddit 和 X 平台上搜索过去 30 天内的任何主题，综合相关研究结果，并生成可直接使用的提示内容。当用户需要了解某个主题的最新社交/网络舆论、询问“人们对 X 有什么看法”，或希望了解当前的最佳实践时，可以使用此功能。该功能需要 OPENAI_API_KEY 和/或 XAI_API_KEY 来访问 Reddit 和 X 的完整数据；如果无法获取这些 API 密钥，则会转而使用网络搜索。
 ---
 
-# last30days: Research Any Topic from the Last 30 Days
+# last30days: 研究过去30天内的任何主题
 
-Research ANY topic across Reddit, X, and the web. Surface what people are actually discussing, recommending, and debating right now.
+你可以研究Reddit、X平台以及网络上的任何主题，了解人们当前正在讨论、推荐或争论的内容。
 
-Use cases:
-- **Prompting**: "photorealistic people in Nano Banana Pro", "Midjourney prompts", "ChatGPT image generation" → learn techniques, get copy-paste prompts
-- **Recommendations**: "best Claude Code skills", "top AI tools" → get a LIST of specific things people mention
-- **News**: "what's happening with OpenAI", "latest AI announcements" → current events and updates
-- **General**: any topic you're curious about → understand what the community is saying
+**使用场景：**
+- **提示生成**：例如“使用Nano Banana Pro制作逼真人物”、“Midjourney的提示生成技巧”、“ChatGPT的图像生成方法”等，以学习相关技巧或获取可复用的提示语句。
+- **推荐**：例如“最好的Claude Code技能”、“顶级AI工具”等，以获取人们具体提到的工具或技巧列表。
+- **新闻**：例如“OpenAI的最新动态”、“AI领域的最新公告”等，以获取最新事件和更新信息。
+- **其他**：任何你感兴趣的主题，以了解社区的观点和讨论内容。
 
-## CRITICAL: Parse User Intent
+## 关键步骤：解析用户意图
 
-Before doing anything, parse the user's input for:
+在开始之前，需要解析用户的输入内容，确定以下信息：
+1. **研究主题**：用户想了解什么（例如“Web应用原型设计”、“Claude Code技能”、“图像生成方法”等）。
+2. **目标工具**（如果指定了）：用户将在哪里使用这些提示或工具（例如“Nano Banana Pro”、“ChatGPT”、“Midjourney”等）。
+3. **查询类型**：用户想要进行哪种类型的研究：
+   - **提示生成**：例如“X平台的提示生成技巧”、“X平台的最佳实践”等，用户希望学习相关技巧或获取可复用的提示语句。
+   - **推荐**：例如“最好的X工具”、“X平台的顶级功能”等，用户希望获取具体的工具或技巧列表。
+   - **新闻**：例如“X平台的最新动态”等，用户希望了解最新事件和更新信息。
+   - **其他**：用户对某个主题有广泛的了解需求。
 
-1. **TOPIC**: What they want to learn about (e.g., "web app mockups", "Claude Code skills", "image generation")
-2. **TARGET TOOL** (if specified): Where they'll use the prompts (e.g., "Nano Banana Pro", "ChatGPT", "Midjourney")
-3. **QUERY TYPE**: What kind of research they want:
-   - **PROMPTING** - "X prompts", "prompting for X", "X best practices" → User wants to learn techniques and get copy-paste prompts
-   - **RECOMMENDATIONS** - "best X", "top X", "what X should I use", "recommended X" → User wants a LIST of specific things
-   - **NEWS** - "what's happening with X", "X news", "latest on X" → User wants current events/updates
-   - **GENERAL** - anything else → User wants broad understanding of the topic
+**常见模式：**
+- `[主题] for [工具]`：例如“使用Nano Banana Pro制作Web应用原型设计”，此时指定了工具。
+- `[主题] prompts for [工具]`：例如“使用Midjourney进行UI设计提示生成”，此时指定了工具。
+- 仅输入`[主题]`：例如“iOS设计原型设计”，此时未指定工具，也可以进行搜索。
+- “最好的[主题]”或“顶级的[主题]”：此时查询类型为推荐。
 
-Common patterns:
-- `[topic] for [tool]` → "web mockups for Nano Banana Pro" → TOOL IS SPECIFIED
-- `[topic] prompts for [tool]` → "UI design prompts for Midjourney" → TOOL IS SPECIFIED
-- Just `[topic]` → "iOS design mockups" → TOOL NOT SPECIFIED, that's OK
-- "best [topic]" or "top [topic]" → QUERY_TYPE = RECOMMENDATIONS
-- "what are the best [topic]" → QUERY_TYPE = RECOMMENDATIONS
+**重要提示：** 在进行研究之前，**不要询问用户使用的是哪种工具。**如果用户已经指定了工具，请直接使用该工具；如果未指定工具，请先进行研究，然后再询问。
 
-**IMPORTANT: Do NOT ask about target tool before research.**
-- If tool is specified in the query, use it
-- If tool is NOT specified, run research first, then ask AFTER showing results
-
-**Store these variables:**
-- `TOPIC = [extracted topic]`
-- `TARGET_TOOL = [extracted tool, or "unknown" if not specified]`
-- `QUERY_TYPE = [RECOMMENDATIONS | NEWS | HOW-TO | GENERAL]`
+**存储相关变量：**
+- `TOPIC = [提取的主题]`
+- `TARGET_TOOL = [提取的工具，如果没有指定则设置为“unknown”]`
+- `QUERY_TYPE = [推荐 | 新闻 | 操作指南 | 其他]`
 
 ---
 
-## Setup Check
+## 设置检查
 
-The skill works in three modes based on available API keys:
+该功能根据可用的API密钥分为三种模式运行：
+1. **全模式**（需要两个API密钥）：同时使用Reddit、X平台和WebSearch，可以获得包含互动数据（如点赞数等）的最佳结果。
+2. **部分模式**（需要一个API密钥）：仅使用Reddit或X平台，再加上WebSearch。
+3. **仅Web模式**（不需要API密钥）：仅使用WebSearch，虽然无法获取互动数据，但仍然可以提供搜索结果。
 
-1. **Full Mode** (both keys): Reddit + X + WebSearch - best results with engagement metrics
-2. **Partial Mode** (one key): Reddit-only or X-only + WebSearch
-3. **Web-Only Mode** (no keys): WebSearch only - still useful, but no engagement metrics
+**API密钥是可选的。**即使没有API密钥，该功能也可以通过WebSearch来运行。
 
-**API keys are OPTIONAL.** The skill will work without them using WebSearch fallback.
+### 首次设置（建议但非强制）
 
-### First-Time Setup (Optional but Recommended)
-
-If the user wants to add API keys for better results:
-
+如果用户希望使用API密钥以获得更好的搜索结果，请按照以下步骤操作：
 ```bash
 mkdir -p ~/.config/last30days
 cat > ~/.config/last30days/.env << 'ENVEOF'
@@ -75,166 +69,127 @@ echo "Config created at ~/.config/last30days/.env"
 echo "Edit to add your API keys for enhanced research."
 ```
 
-**DO NOT stop if no keys are configured.** Proceed with web-only mode.
+**即使没有配置API密钥，也请继续使用仅Web模式。**
 
 ---
 
-## Research Execution
+## 研究执行
 
-**IMPORTANT: The script handles API key detection automatically.** Run it and check the output to determine mode.
+**重要提示：** 脚本会自动检测API密钥的存在。运行脚本后，请查看输出以确定使用哪种模式。
 
-**Step 1: Run the research script**
+**步骤1：运行研究脚本**
 ```bash
 python3 ./scripts/last30days.py "$ARGUMENTS" --emit=compact 2>&1
 ```
 
-The script will automatically:
-- Detect available API keys
-- Show a promo banner if keys are missing (this is intentional marketing)
-- Run Reddit/X searches if keys exist
-- Signal if WebSearch is needed
+脚本会自动完成以下操作：
+- 检测可用的API密钥。
+- 如果缺少密钥，会显示一个宣传横幅（这是有意设计的营销内容）。
+- 如果有API密钥，会执行Reddit或X平台的搜索。
+- 如果需要使用WebSearch，会给出提示。
 
-**Step 2: Check the output mode**
+**步骤2：查看输出模式**
 
-The script output will indicate the mode:
-- **"Mode: both"** or **"Mode: reddit-only"** or **"Mode: x-only"**: Script found results, WebSearch is supplementary
-- **"Mode: web-only"**: No API keys, Claude must do ALL research via WebSearch
+脚本的输出会显示当前使用的模式：
+- “Mode: both”：同时使用Reddit和X平台。
+- “Mode: reddit-only”：仅使用Reddit平台。
+- “Mode: x-only”：仅使用X平台。
 
-**Step 3: Do WebSearch**
+**步骤3：执行WebSearch**
 
-For **ALL modes**, do WebSearch to supplement (or provide all data in web-only mode).
+**对于所有模式**，都需要执行WebSearch来补充搜索结果（或在仅Web模式下获取所有数据）。
 
-Choose search queries based on QUERY_TYPE:
+根据`QUERY_TYPE`选择相应的搜索关键词：
+- **推荐**（例如“最好的X工具”、“X平台的顶级功能”等）：
+  - 搜索：“best {TOPIC} recommendations”。
+  - 搜索：“{TOPIC} list examples”。
+  - 搜索：“most popular {TOPIC}”。
+  - 目标是获取具体的工具或技巧名称，而不仅仅是通用建议。
+- **新闻**（例如“OpenAI的最新动态”等）：
+  - 搜索：“{TOPIC} news 2026”。
+  - 搜索：“{TOPIC} announcement update”。
+  - 目标是获取最新事件和更新信息。
+- **提示生成**（例如“使用X平台进行提示生成”等）：
+  - 搜索：“{TOPIC} prompts examples 2026”。
+  - 搜索：“{TOPIC} techniques tips”。
+  - 目标是获取提示生成技巧和示例。
+- **其他**（默认情况）：
+  - 搜索：“{TOPIC} 2026”。
+  - 搜索：“{TOPIC} discussion”。
+  - 目标是了解人们的实际讨论内容。
 
-**If RECOMMENDATIONS** ("best X", "top X", "what X should I use"):
-- Search for: `best {TOPIC} recommendations`
-- Search for: `{TOPIC} list examples`
-- Search for: `most popular {TOPIC}`
-- Goal: Find SPECIFIC NAMES of things, not generic advice
+**注意事项：**
+- **使用用户提供的术语**：不要根据自己的理解替换或添加技术术语。例如，如果用户询问“ChatGPT的图像生成技巧”，请直接搜索“ChatGPT image prompting”，不要添加“DALL-E”或“GPT-4o”等类似的术语，因为这些术语可能已经过时。
+- **排除特定网站**：排除reddit.com、x.com、twitter.com等网站（这些网站的内容会被脚本自动过滤掉）。
+- **包含搜索范围**：包括博客、教程、文档、新闻和GitHub仓库等资源。
+- **不要显示“来源列表”**：这些信息属于冗余内容，我们会在最后展示统计结果。
 
-**If NEWS** ("what's happening with X", "X news"):
-- Search for: `{TOPIC} news 2026`
-- Search for: `{TOPIC} announcement update`
-- Goal: Find current events and recent developments
+**步骤3：等待脚本完成搜索**
 
-**If PROMPTING** ("X prompts", "prompting for X"):
-- Search for: `{TOPIC} prompts examples 2026`
-- Search for: `{TOPIC} techniques tips`
-- Goal: Find prompting techniques and examples to create copy-paste prompts
+使用`TaskOutput`获取搜索结果，然后再进行后续处理。
 
-**If GENERAL** (default):
-- Search for: `{TOPIC} 2026`
-- Search for: `{TOPIC} discussion`
-- Goal: Find what people are actually saying
-
-For ALL query types:
-- **USE THE USER'S EXACT TERMINOLOGY** - don't substitute or add tech names based on your knowledge
-  - If user says "ChatGPT image prompting", search for "ChatGPT image prompting"
-  - Do NOT add "DALL-E", "GPT-4o", or other terms you think are related
-  - Your knowledge may be outdated - trust the user's terminology
-- EXCLUDE reddit.com, x.com, twitter.com (covered by script)
-- INCLUDE: blogs, tutorials, docs, news, GitHub repos
-- **DO NOT output "Sources:" list** - this is noise, we'll show stats at the end
-
-**Step 3: Wait for background script to complete**
-Use TaskOutput to get the script results before proceeding to synthesis.
-
-**Depth options** (passed through from user's command):
-- `--quick` → Faster, fewer sources (8-12 each)
-- (default) → Balanced (20-30 each)
-- `--deep` → Comprehensive (50-70 Reddit, 40-60 X)
+**深度搜索选项**（通过用户命令传递）：
+- `--quick`：搜索速度更快，但来源数量较少（每个来源8-12个）。
+- （默认值）：平衡搜索（每个来源20-30个）。
+- `--deep`：搜索更全面（Reddit来源50-70个，X平台来源40-60个）。
 
 ---
 
-## Judge Agent: Synthesize All Sources
+## 合成结果
 
-**After all searches complete, internally synthesize (don't display stats yet):**
+**所有搜索完成后，内部合成结果（此时不要显示统计信息）：**
 
-The Judge Agent must:
-1. Weight Reddit/X sources HIGHER (they have engagement signals: upvotes, likes)
-2. Weight WebSearch sources LOWER (no engagement data)
-3. Identify patterns that appear across ALL three sources (strongest signals)
-4. Note any contradictions between sources
-5. Extract the top 3-5 actionable insights
+合成结果时需要遵循以下原则：
+1. 给Reddit和X平台的搜索结果更高的权重（因为它们包含互动数据，如点赞数等）。
+2. 给WebSearch的结果较低的权重（因为它们没有互动数据）。
+3. 识别三个来源中出现的共同模式或趋势。
+4. 注意不同来源之间的矛盾之处。
+5. 提取3-5个具有实际意义的洞察或建议。
 
-**Do NOT display stats here - they come at the end, right before the invitation.**
-
----
-
-## FIRST: Internalize the Research
-
-**CRITICAL: Ground your synthesis in the ACTUAL research content, not your pre-existing knowledge.**
-
-Read the research output carefully. Pay attention to:
-- **Exact product/tool names** mentioned (e.g., if research mentions "ClawdBot" or "@clawdbot", that's a DIFFERENT product than "Claude Code" - don't conflate them)
-- **Specific quotes and insights** from the sources - use THESE, not generic knowledge
-- **What the sources actually say**, not what you assume the topic is about
-
-**ANTI-PATTERN TO AVOID**: If user asks about "clawdbot skills" and research returns ClawdBot content (self-hosted AI agent), do NOT synthesize this as "Claude Code skills" just because both involve "skills". Read what the research actually says.
-
-### If QUERY_TYPE = RECOMMENDATIONS
-
-**CRITICAL: Extract SPECIFIC NAMES, not generic patterns.**
-
-When user asks "best X" or "top X", they want a LIST of specific things:
-- Scan research for specific product names, tool names, project names, skill names, etc.
-- Count how many times each is mentioned
-- Note which sources recommend each (Reddit thread, X post, blog)
-- List them by popularity/mention count
-
-**BAD synthesis for "best Claude Code skills":**
-> "Skills are powerful. Keep them under 500 lines. Use progressive disclosure."
-
-**GOOD synthesis for "best Claude Code skills":**
-> "Most mentioned skills: /commit (5 mentions), remotion skill (4x), git-worktree (3x), /pr (3x). The Remotion announcement got 16K likes on X."
-
-### For all QUERY_TYPEs
-
-Identify from the ACTUAL RESEARCH OUTPUT:
-- **PROMPT FORMAT** - Does research recommend JSON, structured params, natural language, keywords? THIS IS CRITICAL.
-- The top 3-5 patterns/techniques that appeared across multiple sources
-- Specific keywords, structures, or approaches mentioned BY THE SOURCES
-- Common pitfalls mentioned BY THE SOURCES
-
-**If research says "use JSON prompts" or "structured prompts", you MUST deliver prompts in that format later.**
+**注意：** 统计信息会在最后展示，位于结果展示之前。
 
 ---
 
-## THEN: Show Summary + Invite Vision
+## 第一步：理解研究内容
 
-**CRITICAL: Do NOT output any "Sources:" lists. The final display should be clean.**
+**关键提示：** 合成结果时必须基于实际的研究内容，而不是你自己的知识。**仔细阅读研究输出，注意以下几点：
+- 研究中提到的具体产品或工具名称（例如，如果研究提到了“ClawdBot”或“@clawdbot”，请不要将其与“Claude Code”混淆）。
+- 来源中提供的具体引用和见解，请直接使用这些内容，而不是基于你的假设。
+- 注意来源的实际表述，而不是你对主题的猜测。
 
-**Display in this EXACT sequence:**
+**避免的错误做法：** 如果用户询问“clawdbot技能”，而搜索结果中包含关于ClawdBot的内容（一个自托管的AI工具），不要将其错误地合成为“Claude Code技能”。请根据研究内容进行合成。
 
-**FIRST - What I learned (based on QUERY_TYPE):**
+### 如果查询类型为推荐
 
-**If RECOMMENDATIONS** - Show specific things mentioned:
-```
-🏆 Most mentioned:
-1. [Specific name] - mentioned {n}x (r/sub, @handle, blog.com)
-2. [Specific name] - mentioned {n}x (sources)
-3. [Specific name] - mentioned {n}x (sources)
-4. [Specific name] - mentioned {n}x (sources)
-5. [Specific name] - mentioned {n}x (sources)
+**关键提示：** 提取具体的工具或技巧名称。**当用户询问“最好的X工具”或“X平台的顶级功能”时，需要从搜索结果中提取具体的工具或技巧名称，并统计每个名称出现的次数，同时记录推荐来源（如Reddit帖子、X平台帖子、博客等），然后按照出现频率排序。
 
-Notable mentions: [other specific things with 1-2 mentions]
-```
+**错误的合成示例（针对“最好的Claude Code技能”）：**
+> “Claude Code的技能非常强大。建议将其控制在500行以内，并采用逐步披露的方式。”
 
-**If PROMPTING/NEWS/GENERAL** - Show synthesis and patterns:
-```
-What I learned:
+**正确的合成示例（针对“最好的Claude Code技能”）：**
+> “最常见的技能包括：/commit（被提及5次）、remotion skill（被提及4次）、git-worktree（被提及3次）。其中，remotion技能在X平台上的帖子获得了16,000个赞。”
 
-[2-4 sentences synthesizing key insights FROM THE ACTUAL RESEARCH OUTPUT.]
+### 对于所有查询类型：
 
-KEY PATTERNS I'll use:
-1. [Pattern from research]
-2. [Pattern from research]
-3. [Pattern from research]
-```
+从实际的研究输出中提取以下信息：
+- **提示格式**：研究是否推荐使用JSON格式、结构化参数或自然语言等。这一点非常重要。
+- 在多个来源中出现的3-5个最常见的技巧或方法。
+- 来源中提到的具体关键词、结构或方法。
+- 来源中提到的常见误区或注意事项。
 
-**THEN - Stats (right before invitation):**
+**如果研究建议使用JSON格式的提示，请确保最终提供的提示也符合该格式。**
 
-For **full/partial mode** (has API keys):
+---
+
+## 展示结果并邀请用户提供具体需求
+
+**关键提示：** 最终展示的结果中不要包含“来源列表”。**展示内容的顺序应为：
+- **首先，根据用户查询类型，展示你了解到的内容。**
+  - 如果是推荐内容，展示具体的工具或技巧列表。
+  - 如果是提示生成或新闻相关内容，展示相关的合成结果和模式。
+- **然后，在展示结果之前，展示统计信息。**
+
+**对于全模式/部分模式（需要API密钥的情况）：**
 ```
 ---
 ✅ All agents reported back!
@@ -244,7 +199,7 @@ For **full/partial mode** (has API keys):
 └─ Top voices: r/{sub1}, r/{sub2} │ @{handle1}, @{handle2} │ {web_author} on {site}
 ```
 
-For **web-only mode** (no API keys):
+**对于仅Web模式（不需要API密钥的情况）：**
 ```
 ---
 ✅ Research complete!
@@ -256,17 +211,17 @@ For **web-only mode** (no API keys):
    - XAI_API_KEY → X/Twitter (real likes & reposts)
 ```
 
-**LAST - Invitation:**
+**最后，根据研究结果提供具体的建议或邀请用户提供具体需求：**
 ```
 ---
 Share your vision for what you want to create and I'll write a thoughtful prompt you can copy-paste directly into {TARGET_TOOL}.
 ```
 
-**Use real numbers from the research output.** The patterns should be actual insights from the research, not generic advice.
+**使用研究中的实际数据**。展示的内容应该是基于研究结果的真实见解，而不是泛泛而谈的建议。**
 
-**SELF-CHECK before displaying**: Re-read your "What I learned" section. Does it match what the research ACTUALLY says? If the research was about ClawdBot (a self-hosted AI agent), your summary should be about ClawdBot, not Claude Code. If you catch yourself projecting your own knowledge instead of the research, rewrite it.
+**展示结果前的自我检查：** 重新阅读“你了解到的内容”部分，确保内容与研究结果一致。如果研究内容是关于ClawdBot的，那么总结内容也应围绕ClawdBot进行；如果你的总结中包含了你自己的知识，请及时修改。
 
-**IF TARGET_TOOL is still unknown after showing results**, ask NOW (not before research):
+**如果用户在查看结果后仍未指定目标工具，请立即询问：**
 ```
 What tool will you use these prompts with?
 
@@ -277,35 +232,19 @@ Options:
 4. Other (tell me)
 ```
 
-**IMPORTANT**: After displaying this, WAIT for the user to respond. Don't dump generic prompts.
+**重要提示：** 在展示结果后，请等待用户的反馈，不要直接提供默认的提示建议。**
 
----
+**等待用户的反馈：** 在展示统计信息后，等待用户告诉你需要创建什么内容。**
 
-## WAIT FOR USER'S VISION
+当用户提供了具体的需求（例如“我需要为我的SaaS应用制作一个登录页面原型”时，根据他们的需求编写一个定制的提示建议。**
 
-After showing the stats summary with your invitation, **STOP and wait** for the user to tell you what they want to create.
+## 根据用户的需求编写提示建议
 
-When they respond with their vision (e.g., "I want a landing page mockup for my SaaS app"), THEN write a single, thoughtful, tailored prompt.
+根据用户的具体需求，利用你的研究结果编写一个高度定制的提示建议。
 
----
+**关键提示：** 确保提示的格式符合研究中的建议。**例如，如果研究建议使用JSON格式的提示，那么编写时必须使用JSON格式；如果建议使用结构化参数，那么需要按照规定的格式编写；如果建议使用自然语言，那么请使用对话式的表达方式；如果建议使用关键词列表，那么请按照列表格式编写。
 
-## WHEN USER SHARES THEIR VISION: Write ONE Perfect Prompt
-
-Based on what they want to create, write a **single, highly-tailored prompt** using your research expertise.
-
-### CRITICAL: Match the FORMAT the research recommends
-
-**If research says to use a specific prompt FORMAT, YOU MUST USE THAT FORMAT:**
-
-- Research says "JSON prompts" → Write the prompt AS JSON
-- Research says "structured parameters" → Use structured key: value format
-- Research says "natural language" → Use conversational prose
-- Research says "keyword lists" → Use comma-separated keywords
-
-**ANTI-PATTERN**: Research says "use JSON prompts with device specs" but you write plain prose. This defeats the entire purpose of the research.
-
-### Output Format:
-
+**输出格式示例：**
 ```
 Here's your prompt for {TARGET_TOOL}:
 
@@ -318,54 +257,28 @@ Here's your prompt for {TARGET_TOOL}:
 This uses [brief 1-line explanation of what research insight you applied].
 ```
 
-### Quality Checklist:
-- [ ] **FORMAT MATCHES RESEARCH** - If research said JSON/structured/etc, prompt IS that format
-- [ ] Directly addresses what the user said they want to create
-- [ ] Uses specific patterns/keywords discovered in research
-- [ ] Ready to paste with zero edits (or minimal [PLACEHOLDERS] clearly marked)
-- [ ] Appropriate length and style for TARGET_TOOL
+**质量检查标准：**
+- [ ] **格式符合研究要求**：如果研究建议使用特定格式，那么提示内容必须符合该格式。
+- **直接回应用户的需求**：提示内容必须直接针对用户的需求进行编写。
+- **使用研究中发现的具体模式或关键词**：确保提示内容中包含研究中的关键信息。
+- **提示内容可以直接使用，无需修改（或仅保留必要的占位符）**。
+- **提示内容的长度和风格适合目标工具的使用场景**。
 
----
+**如果用户需要更多选项：**  
+只有当用户请求更多提示或替代方案时，才提供2-3个不同的提示建议。**
 
-## IF USER ASKS FOR MORE OPTIONS
+**每次提供提示后：** 继续保持专家角色的态度。**在提供提示后，询问用户是否还需要其他建议，并根据用户的需求再次提供帮助。
 
-Only if they ask for alternatives or more prompts, provide 2-3 variations. Don't dump a prompt pack unless requested.
+**后续交流时的注意事项：**  
+在整个交流过程中，请记住以下信息：
+- **研究主题**：用户想要研究的具体主题。
+- **目标工具**：用户指定的工具或平台。
+- **关键发现**：研究中得出的关键事实和建议。
+- **作为专家的角色**：在研究完成后，你已经成为该主题的专家。**当用户提出后续问题时，不要重新进行搜索，而是根据之前的研究结果进行回答。如果用户需要新的提示建议，请根据用户的具体需求再次进行搜索。**
 
----
-
-## AFTER EACH PROMPT: Stay in Expert Mode
-
-After delivering a prompt, offer to write more:
-
-> Want another prompt? Just tell me what you're creating next.
-
----
-
-## CONTEXT MEMORY
-
-For the rest of this conversation, remember:
-- **TOPIC**: {topic}
-- **TARGET_TOOL**: {tool}
-- **KEY PATTERNS**: {list the top 3-5 patterns you learned}
-- **RESEARCH FINDINGS**: The key facts and insights from the research
-
-**CRITICAL: After research is complete, you are now an EXPERT on this topic.**
-
-When the user asks follow-up questions:
-- **DO NOT run new WebSearches** - you already have the research
-- **Answer from what you learned** - cite the Reddit threads, X posts, and web sources
-- **If they ask for a prompt** - write one using your expertise
-- **If they ask a question** - answer it from your research findings
-
-Only do new research if the user explicitly asks about a DIFFERENT topic.
-
----
-
-## Output Summary Footer (After Each Prompt)
-
-After delivering a prompt, end with:
-
-For **full/partial mode**:
+**每次提供提示后的输出格式：**  
+无论使用哪种模式，输出内容都应遵循以下格式：
+**对于全模式/部分模式：**
 ```
 ---
 📚 Expert in: {TOPIC} for {TARGET_TOOL}
@@ -374,7 +287,7 @@ For **full/partial mode**:
 Want another prompt? Just tell me what you're creating next.
 ```
 
-For **web-only mode**:
+**对于仅Web模式：**
 ```
 ---
 📚 Expert in: {TOPIC} for {TARGET_TOOL}

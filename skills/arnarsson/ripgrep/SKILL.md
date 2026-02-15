@@ -1,17 +1,17 @@
 ---
 name: ripgrep
-description: Blazingly fast text search tool - recursively searches directories for regex patterns with respect to gitignore rules.
+description: 这款文本搜索工具速度极快，能够递归地在目录中搜索符合正则表达式（regex）的模式，同时还会考虑 `gitignore` 规则的设置。
 homepage: https://github.com/BurntSushi/ripgrep
 metadata: {"clawdbot":{"emoji":"🔎","requires":{"bins":["rg"]},"install":[{"id":"brew","kind":"brew","formula":"ripgrep","bins":["rg"],"label":"Install ripgrep (brew)"},{"id":"apt","kind":"apt","package":"ripgrep","bins":["rg"],"label":"Install ripgrep (apt)"}]}}
 ---
 
 # ripgrep (rg)
 
-Fast, smart recursive search. Respects `.gitignore` by default.
+一个快速、智能的递归搜索工具。默认情况下会尊重 `.gitignore` 文件中的排除规则。
 
-## Quick Start
+## 快速入门
 
-### Basic search
+### 基本搜索
 ```bash
 # Search for "TODO" in current directory
 rg "TODO"
@@ -24,7 +24,7 @@ rg "error" -t py       # Python files only
 rg "function" -t js    # JavaScript files
 ```
 
-### Common patterns
+### 常用搜索模式
 ```bash
 # Whole word match
 rg -w "test"
@@ -39,9 +39,9 @@ rg -C 3 "function"
 rg -c "import"
 ```
 
-## Advanced Usage
+## 高级用法
 
-### File type filtering
+### 文件类型过滤
 ```bash
 # Multiple file types
 rg "error" -t py -t js
@@ -53,7 +53,7 @@ rg "TODO" -T md -T txt
 rg --type-list
 ```
 
-### Search modifiers
+### 搜索修饰符
 ```bash
 # Regex search
 rg "user_\d+"
@@ -68,7 +68,7 @@ rg -U "start.*end"
 rg -o "https?://[^\s]+"
 ```
 
-### Path filtering
+### 路径过滤
 ```bash
 # Search specific directory
 rg "pattern" src/
@@ -84,8 +84,7 @@ rg "secret" --hidden
 rg "pattern" --no-ignore
 ```
 
-## Replacement Operations
-
+## 替换操作
 ```bash
 # Preview replacements
 rg "old_name" --replace "new_name"
@@ -94,8 +93,7 @@ rg "old_name" --replace "new_name"
 rg "old_name" -l | xargs sed -i 's/old_name/new_name/g'
 ```
 
-## Performance Tips
-
+## 性能技巧
 ```bash
 # Parallel search (auto by default)
 rg "pattern" -j 8
@@ -107,44 +105,44 @@ rg "pattern" --max-filesize 10M
 rg "pattern" --mmap
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-**Find TODOs in code:**
-```bash
+- **在代码中查找待办事项（TODOs）：**
+  ```bash
 rg "TODO|FIXME|HACK" --type-add 'code:*.{rs,go,py,js,ts}' -t code
 ```
 
-**Search in specific branches:**
-```bash
+- **在特定分支中搜索：**
+  ```bash
 git show branch:file | rg "pattern"
 ```
 
-**Find files containing multiple patterns:**
-```bash
+- **查找包含多个模式的文件：**
+  ```bash
 rg "pattern1" | rg "pattern2"
 ```
 
-**Search with context and color:**
-```bash
+- **带上下文和颜色显示搜索结果：**
+  ```bash
 rg -C 2 --color always "error" | less -R
 ```
 
-## Comparison to grep
+## 与 grep 的比较
 
-- **Faster:** Typically 5-10x faster than grep
-- **Smarter:** Respects `.gitignore`, skips binary files
-- **Better defaults:** Recursive, colored output, line numbers
-- **Easier:** Simpler syntax for common tasks
+- **更快**：通常比 `grep` 快 5-10 倍
+- **更智能**：会尊重 `.gitignore` 文件的规则，跳过二进制文件
+- **更好的默认设置**：支持递归搜索、彩色输出以及显示行号
+- **更易使用**：对于常见任务，语法更简洁
 
-## Tips
+## 使用技巧
 
-- `rg` is often faster than `grep -r`
-- Use `-t` for file type filtering instead of `--include`
-- Combine with other tools: `rg pattern -l | xargs tool`
-- Add custom types in `~/.ripgreprc`
-- Use `--stats` to see search performance
+- `rg` 通常比 `grep -r` 更快
+- 使用 `-t` 选项进行文件类型过滤，而不是 `--include`
+- 可以与其他工具结合使用：`rg pattern -l | xargs tool`
+- 可以在 `~/.ripgreprc` 文件中自定义文件类型
+- 使用 `--stats` 选项查看搜索性能
 
-## Documentation
+## 文档资料
 
 GitHub: https://github.com/BurntSushi/ripgrep
-User Guide: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md
+用户指南: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md

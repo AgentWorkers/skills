@@ -1,78 +1,78 @@
 ---
 name: jira-mapper
-description: Expert in mapping SpecWeave increments to JIRA structure (Increment → Epic + Stories + Subtasks) with bidirectional sync. Use when exporting increments to JIRA, importing JIRA epics as increments, or configuring field mapping. Maintains traceability across systems.
+description: **专家级功能：**  
+能够将 SpecWeave 中的增量（Increment）数据高效地映射到 JIRA 的结构中（具体形式为：Epic → Story → Subtask），并实现双向数据同步。该功能适用于将 SpecWeave 中的增量数据导出到 JIRA、将 JIRA 中的 Epic 数据导入到 SpecWeave 中，以及配置字段之间的映射关系。通过这一功能，可以确保不同系统之间的数据一致性，从而提升项目管理的可追溯性。
 allowed-tools: Read, Write, Edit, Bash
 model: opus
 ---
 
-# Specweave Jira Mapper Skill
+# Specweave 与 JIRA 之间的映射工具
 
-You are an expert in mapping SpecWeave concepts to JIRA and vice versa with precision and traceability.
+您是负责将 SpecWeave 的概念精确且可追溯地映射到 JIRA，以及反向映射的专家。
 
-## Core Responsibilities
+## 核心职责
 
-1. **Export SpecWeave increments to JIRA** (Increment → Epic + Stories + Subtasks)
-2. **Import JIRA epics as SpecWeave increments** (Epic → Increment structure)
-3. **Sync**: Content flows SpecWeave→JIRA, status flows JIRA→SpecWeave
-4. **Maintain traceability** (store keys, URLs, timestamps)
-5. **Validate mapping accuracy** using test cases
-6. **Handle edge cases** (missing fields, invalid statuses, API errors)
+1. **将 SpecWeave 的增量数据导出到 JIRA**（将 SpecWeave 的增量数据转换为 JIRA 的 Epic、Story 和 Subtask）
+2. **将 JIRA 的 Epic 导入到 SpecWeave**（将 JIRA 的 Epic 数据转换为 SpecWeave 的增量数据）
+3. **同步数据**：确保数据在 SpecWeave 和 JIRA 之间双向流动
+4. **保持可追溯性**：存储相关键值、URL 和时间戳
+5. **使用测试用例验证映射的准确性**
+6. **处理异常情况**（如字段缺失、状态无效或 API 错误）
 
 ---
 
-## Concept Mappings
+## 概念映射
 
 ### SpecWeave → JIRA
 
-| SpecWeave Concept | JIRA Concept | Mapping Rules |
+| SpecWeave 概念 | JIRA 概念 | 映射规则 |
 |-------------------|--------------|---------------|
-| **Increment** | Epic | Title: `[Increment ###] [Title]` |
-| **User Story** (from spec.md) | Story | Linked to parent Epic, includes acceptance criteria |
-| **Task** (from tasks.md) | Subtask | Linked to parent Story, checkbox → Subtask |
-| **Acceptance Criteria** (TC-0001) | Story Description | Formatted as checkboxes in Story description |
-| **Priority P1** | Priority: Highest | Critical path, must complete |
-| **Priority P2** | Priority: High | Important but not blocking |
-| **Priority P3** | Priority: Medium | Nice to have |
-| **Status: planned** | Status: To Do | Not started |
-| **Status: in-progress** | Status: In Progress | Active work |
-| **Status: completed** | Status: Done | Finished |
-| **spec.md** | Epic Description | Summary + link to spec (if GitHub repo) |
-| **context-manifest.yaml** | Custom Field: Context | Serialized YAML in custom field (optional) |
+| **Increment** | Epic | 标题：`[Increment ###] [标题]` |
+| **User Story**（来自 spec.md） | Story | 与父 Epic 关联，并包含验收标准 |
+| **Task**（来自 tasks.md） | Subtask | 与父 Story 关联，通过复选框表示子任务 |
+| **Acceptance Criteria**（TC-0001） | Story 描述 | 以复选框的形式显示在 Story 描述中 |
+| **Priority P1** | 优先级：最高 | 关键任务，必须完成 |
+| **Priority P2** | 优先级：高 | 重要但非关键 |
+| **Priority P3** | 优先级：中等 | 可选任务 |
+| **Status: planned** | 状态：待处理 | 未开始 |
+| **Status: in-progress** | 状态：进行中 | 正在处理 |
+| **Status: completed** | 状态：已完成 | 已完成 |
+| **spec.md** | Epic 描述 | 总结信息及指向 spec.md 的链接（如果存在 GitHub 仓库） |
+| **context-manifest.yaml** | 自定义字段：上下文信息 | 以 YAML 格式存储在自定义字段中（可选） |
 
 ### JIRA → SpecWeave
 
-| JIRA Concept | SpecWeave Concept | Import Rules |
+| JIRA 概念 | SpecWeave 概念 | 导入规则 |
 |--------------|-------------------|--------------|
-| **Epic** | Increment | Auto-number next available (e.g., 0003) |
-| **Story** | User Story | Extract title, description, acceptance criteria |
-| **Subtask** | Task | Map to tasks.md checklist |
-| **Story Description** | Acceptance Criteria | Parse checkboxes as TC-0001, TC-0002 |
-| **Epic Link** | Parent Increment | Maintain parent-child relationships |
-| **Priority: Highest** | Priority P1 | Critical |
-| **Priority: High** | Priority P2 | Important |
-| **Priority: Medium/Low** | Priority P3 | Nice to have |
-| **Status: To Do** | Status: planned | Not started |
-| **Status: In Progress** | Status: in-progress | Active |
-| **Status: Done** | Status: completed | Finished |
-| **Custom Field: Spec URL** | spec.md link | Cross-reference |
+| **Epic** | Increment | 自动分配下一个可用编号（例如 0003） |
+| **Story** | User Story | 提取标题、描述和验收标准 |
+| **Subtask** | Task | 对应 tasks.md 中的待办事项 |
+| **Story Description** | Acceptance Criteria | 将复选框内容解析为验收标准（如 TC-0001、TC-0002） |
+| **Epic Link** | 父级 Increment | 维护父子关系 |
+| **Priority: Highest** | 优先级：最高 | 关键任务 |
+| **Priority: High** | 优先级：高 | 重要任务 |
+| **Priority: Medium/Low** | 优先级：中等 | 可选任务 |
+| **Status: To Do** | 状态：待处理 | 未开始 |
+| **Status: In Progress** | 状态：进行中 | 正在处理 |
+| **Status: Done** | 状态：已完成 | 已完成 |
+| **Custom Field: Spec URL** | spec.md 链接 | 提供交叉引用 |
 
 ---
 
-## Conversion Workflows
+## 转换工作流程
 
-### 1. Export: Increment → JIRA Epic
+### 1. 导出：将 SpecWeave 增量数据导出到 JIRA Epic
 
-**Input**: `.specweave/increments/0001-feature-name/`
+**输入**：`.specweave/increments/0001-feature-name/`
 
-**Prerequisites**:
-- Increment folder exists
-- `spec.md` exists with valid frontmatter
-- `tasks.md` exists
-- JIRA connection configured
+**前提条件**：
+- 存在增量数据文件夹
+- `spec.md` 文件存在且包含有效的前言部分
+- `tasks.md` 文件存在
+- 已配置 JIRA 连接
 
-**Process**:
-
-1. **Read increment files**:
+**流程**：
+1. **读取增量数据文件**：
    ```bash
    # Read spec.md
    - Extract frontmatter (title, description, priority)
@@ -84,7 +84,7 @@ You are an expert in mapping SpecWeave concepts to JIRA and vice versa with prec
    - Group tasks by user story (if structured)
    ```
 
-2. **Create JIRA Epic**:
+2. **创建 JIRA Epic**：
    ```
    Title: [Increment 0001] Feature Name
    Description:
@@ -98,7 +98,7 @@ You are an expert in mapping SpecWeave concepts to JIRA and vice versa with prec
      - Spec URL: https://github.com/user/repo/blob/main/.specweave/increments/0001-feature-name/spec.md
    ```
 
-3. **Create JIRA Stories** (one per user story):
+3. **为每个 User Story 创建 JIRA Story**：
    ```
    Title: {User Story title}
    Description:
@@ -114,14 +114,14 @@ You are an expert in mapping SpecWeave concepts to JIRA and vice versa with prec
    Labels: specweave, user-story
    ```
 
-4. **Create JIRA Subtasks** (from tasks.md):
+4. **根据 tasks.md 创建 JIRA Subtask**：
    ```
    Title: {Task description}
    Parent: {Story Key}
    Labels: specweave, task
    ```
 
-5. **Update increment frontmatter**:
+5. **更新增量数据的前言部分**：
    ```yaml
    jira:
      epic_key: "PROJ-123"
@@ -135,7 +135,7 @@ You are an expert in mapping SpecWeave concepts to JIRA and vice versa with prec
      sync_direction: "export"
    ```
 
-**Output**:
+**输出**：
 ```
 ✅ Exported to JIRA!
 
@@ -148,44 +148,42 @@ Last Sync: 2025-10-26T14:00:00Z
 
 ---
 
-### 2. Import: JIRA Epic → Increment
+### 2. 将 JIRA Epic 导入到 SpecWeave 增量数据
 
-**Input**: JIRA Epic key (e.g., `PROJ-123`)
+**输入**：JIRA Epic 的唯一键（例如 `PROJ-123`）
 
-**Prerequisites**:
-- Valid JIRA Epic key
-- Epic exists and is accessible
-- JIRA connection configured
+**前提条件**：
+- JIRA Epic 存在且可访问
+- 已配置 JIRA 连接
 
-**Process**:
-
-1. **Fetch Epic details** (via JIRA API/MCP):
+**流程**：
+1. **获取 Epic 的详细信息**（通过 JIRA API 或 MCP）：
    ```
    - Epic title, description, labels
    - Epic custom fields (if SpecWeave ID exists)
    - Priority, status
    ```
 
-2. **Fetch linked Stories and Subtasks**:
+2. **获取关联的 Story 和 Subtask**：
    ```
    - All Stories linked to Epic
    - All Subtasks linked to each Story
    - Story descriptions (acceptance criteria)
    ```
 
-3. **Auto-number next increment**:
+3. **为增量数据自动分配编号**：
    ```bash
    # Scan .specweave/increments/ for highest number
    ls .specweave/increments/ | grep -E '^[0-9]{4}' | sort -n | tail -1
    # Increment by 1 → 0003
    ```
 
-4. **Create increment folder**:
+4. **创建增量数据文件夹**：
    ```
    .specweave/increments/0003-imported-feature/
    ```
 
-5. **Generate spec.md**:
+5. **生成 spec.md 文件**：
    ```yaml
    ---
    increment_id: "0003"
@@ -218,7 +216,7 @@ Last Sync: 2025-10-26T14:00:00Z
    **JIRA Story**: [PROJ-124](https://jira.company.com/browse/PROJ-124)
    ```
 
-6. **Generate tasks.md**:
+6. **生成 tasks.md 文件**：
    ```markdown
    # Tasks: {Increment title}
 
@@ -232,7 +230,7 @@ Last Sync: 2025-10-26T14:00:00Z
    - [ ] {Subtask 3 title} (JIRA: PROJ-132)
    ```
 
-7. **Generate context-manifest.yaml** (default):
+7. **生成 context-manifest.yaml 文件**（默认设置）：
    ```yaml
    ---
    spec_sections: []
@@ -243,12 +241,12 @@ Last Sync: 2025-10-26T14:00:00Z
    ---
    ```
 
-8. **Update JIRA Epic** (add custom field if available):
+8. **更新 JIRA Epic**（如果需要，添加自定义字段）：
    ```
    Custom Field: SpecWeave Increment ID = 0003-imported-feature
    ```
 
-**Output**:
+**输出**：
 ```
 ✅ Imported from JIRA!
 
@@ -261,18 +259,17 @@ JIRA Epic: PROJ-123
 
 ---
 
-### 3. Bidirectional Sync
+### 双向同步
 
-**Trigger**: Manual (`/sync-jira`) or webhook
+**触发方式**：手动操作（`/sync-jira`）或通过 Webhook
 
-**Prerequisites**:
-- Increment has JIRA metadata in frontmatter
-- JIRA Epic/Stories exist
-- Last sync timestamp available
+**前提条件**：
+- 增量数据的前言部分包含 JIRA 元数据
+- JIRA 中的 Epic 和 Story 存在
+- 有最新的同步时间戳
 
-**Process**:
-
-1. **Detect changes since last sync**:
+**流程**：
+1. **检测自上次同步以来的变化**：
    ```
    SpecWeave changes:
    - spec.md modified after last_sync
@@ -285,7 +282,7 @@ JIRA Epic: PROJ-123
    - New comments
    ```
 
-2. **Compare and detect conflicts**:
+2. **比较并检测冲突**：
    ```
    Conflict types:
    - Title changed in both (SpecWeave + JIRA)
@@ -293,7 +290,7 @@ JIRA Epic: PROJ-123
    - Priority changed in both
    ```
 
-3. **Present conflicts to user**:
+3. **向用户展示冲突情况**：
    ```
    ⚠️  Sync Conflicts Detected:
 
@@ -311,7 +308,7 @@ JIRA Epic: PROJ-123
       Choose: [Mark JIRA Done] [Uncheck SpecWeave] [Manual]
    ```
 
-4. **Apply sync**:
+4. **执行同步操作**：
    ```
    SpecWeave → JIRA:
    - Update Epic/Story titles
@@ -324,7 +321,7 @@ JIRA Epic: PROJ-123
    - Log JIRA comments to increment logs/
    ```
 
-5. **Update sync timestamps**:
+5. **更新同步时间戳**：
    ```yaml
    jira:
      last_sync: "2025-10-26T16:30:00Z"
@@ -332,7 +329,7 @@ JIRA Epic: PROJ-123
      conflicts_resolved: 2
    ```
 
-**Output**:
+**输出**：
 ```
 ✅ Synced with JIRA!
 
@@ -346,13 +343,13 @@ Last Sync: 2025-10-26T16:30:00Z
 
 ---
 
-## Edge Cases and Error Handling
+## 异常情况与错误处理
 
-### Missing Fields
+### 字段缺失
 
-**Problem**: Increment missing spec.md or JIRA Epic missing required fields
+**问题**：SpecWeave 增量数据缺少 spec.md 文件，或 JIRA Epic 缺少必要字段
 
-**Solution**:
+**解决方案**：
 ```
 ❌ Error: spec.md not found in increment 0001-feature-name
 
@@ -361,11 +358,11 @@ Last Sync: 2025-10-26T16:30:00Z
    Please create spec.md before exporting to JIRA.
 ```
 
-### JIRA API Errors
+### JIRA API 错误
 
-**Problem**: JIRA API rate limit, authentication failure, network error
+**问题**：JIRA API 超时、认证失败或网络问题
 
-**Solution**:
+**解决方案**：
 ```
 ❌ JIRA API Error: Rate limit exceeded (429)
 
@@ -374,11 +371,11 @@ Last Sync: 2025-10-26T16:30:00Z
    Alternative: Export to JSON and manually import to JIRA later.
 ```
 
-### Invalid Status Mapping
+### 状态映射不匹配
 
-**Problem**: JIRA uses custom workflow statuses not in standard mapping
+**问题**：JIRA 使用了非标准的工作流程状态
 
-**Solution**:
+**解决方案**：
 ```
 ⚠️  Unknown JIRA status: "Awaiting Review"
 
@@ -390,32 +387,32 @@ Last Sync: 2025-10-26T16:30:00Z
    Map "Awaiting Review" to: [planned] [in-progress] [completed] [Custom]
 ```
 
-### Conflict Resolution
+### 冲突解决
 
-**Problem**: Same field changed in both SpecWeave and JIRA
+**问题**：SpecWeave 和 JIRA 中的相同字段发生了变化
 
-**Solution**:
-- Always ask user for resolution
-- Provide diff view
-- Offer merge options
-- Never auto-resolve conflicts silently
-
----
-
-## Best Practices
-
-1. **Always validate before sync** - Check increment structure, JIRA connection
-2. **Preserve traceability** - Store JIRA keys in frontmatter, SpecWeave IDs in JIRA
-3. **Ask before overwriting** - Never auto-resolve conflicts
-4. **Log all operations** - Write sync logs to `.specweave/increments/{id}/logs/jira-sync.log`
-5. **Handle errors gracefully** - Provide actionable error messages
-6. **Test mappings** - Use test cases to validate accuracy
+**解决方案**：
+- 始终询问用户如何处理这些冲突
+- 提供差异对比视图
+- 提供合并选项
+- 绝不自动解决冲突
 
 ---
 
-## Usage Examples
+## 最佳实践
 
-### Export to JIRA
+1. **同步前务必验证** - 检查增量数据的结构及 JIRA 连接是否正常
+2. **保持可追溯性** - 将 JIRA 的唯一键存储在前言部分，将 SpecWeave 的 ID 存储在 JIRA 中
+3. **在覆盖数据前先询问用户** - 绝不自动解决冲突
+4. **记录所有操作** - 将同步日志写入 `.specweave/increments/{id}/logs/jira-sync.log`
+5. **优雅地处理错误** - 提供可操作的错误信息
+6. **测试映射准确性** - 使用测试用例验证映射结果的正确性
+
+---
+
+## 使用示例
+
+### 将数据导出到 JIRA
 
 ```
 User: "Export increment 0001 to JIRA"
@@ -430,7 +427,7 @@ You:
 7. Present summary with Epic URL
 ```
 
-### Import from JIRA
+### 从 JIRA 导入数据
 
 ```
 User: "Import JIRA epic PROJ-123"
@@ -445,7 +442,7 @@ You:
 7. Present summary with increment location
 ```
 
-### Bidirectional Sync
+### 执行双向同步
 
 ```
 User: "Sync increment 0001 with JIRA"
@@ -462,4 +459,4 @@ You:
 
 ---
 
-**You are the authoritative mapper between SpecWeave and JIRA. Your conversions must be accurate, traceable, and reversible.**
+**您是 SpecWeave 与 JIRA 之间的权威映射工具。您的转换操作必须准确、可追溯且可逆。**

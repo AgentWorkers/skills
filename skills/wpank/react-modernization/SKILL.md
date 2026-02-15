@@ -3,33 +3,32 @@ name: react-modernization
 model: reasoning
 ---
 
-# React Modernization
+# React 现代化
 
-Upgrade React applications from class components to hooks, adopt concurrent features, and migrate between major versions.
+将 React 应用程序从类组件升级为函数式组件（使用 Hooks），采用并发处理功能，并在主要版本之间进行迁移。
 
-## WHAT
+## 目的
 
-Systematic patterns for modernizing React codebases:
-- Class-to-hooks migration with lifecycle method mappings
-- React 18/19 concurrent features adoption
-- TypeScript migration for React components
-- Automated codemods for bulk refactoring
-- Performance optimization with modern APIs
+提供系统化的方法来现代化 React 代码库：
+- 将类组件迁移到函数式组件，并映射相应的生命周期方法
+- 采用 React 18/19 中的并发处理功能
+- 为 React 组件添加 TypeScript 类型支持
+- 使用自动化代码修改工具（Codemods）进行批量重构
+- 利用现代 API 优化应用程序性能
 
-## WHEN
+## 适用场景
 
-- Migrating class components to functional components with hooks
-- Upgrading React 16/17 apps to React 18/19
-- Adopting concurrent features (Suspense, transitions, use)
-- Converting HOCs and render props to custom hooks
-- Adding TypeScript to React projects
+- 将类组件迁移到使用 Hooks 的函数式组件
+- 将 React 16/17 应用程序升级到 React 18/19
+- 采用并发处理功能（如 Suspense、Transition 等）
+- 将高阶组件（HOCs）和渲染属性（render props）转换为自定义 Hooks
+- 为 React 项目添加 TypeScript 类型支持
 
-## KEYWORDS
+## 关键词
 
-react upgrade, class to hooks, useEffect, useState, react 18, react 19, concurrent, suspense, transition, codemod, migrate, modernize, functional component
+React 升级、类组件到函数式组件、useEffect、useState、React 18、React 19、并发处理、Suspense、Transition、Codemod、迁移、现代化、函数式组件
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -37,34 +36,33 @@ react upgrade, class to hooks, useEffect, useState, react 18, react 19, concurre
 npx clawhub@latest install react-modernization
 ```
 
+---
+
+## 版本升级路径
+
+### React 17 → 18 的重大变更
+
+| 变更 | 影响 | 迁移方法 |
+|--------|--------|-----------|
+| 新的根 API | 必需 | 将 `ReactDOM.render` 替换为 `createRoot` |
+| 自动批量处理 | 行为变化 | 状态更新现在在异步代码中批量执行 |
+| 严格模式（Strict Mode） | 仅限开发环境 | Effects 在组件挂载/卸载时会被调用两次 |
+| 服务器端的 Suspense | 可选 | 可以启用服务器端渲染（SSR）的流式处理 |
+
+### React 18 → 19 的重大变更
+
+| 变更 | 影响 | 迁移方法 |
+|--------|--------|-----------|
+| `use()` Hook | 新 API | 在渲染时可以读取 Promise 或上下文信息 |
+| `ref` 作为属性 | 简化语法 | 不再需要 `forwardRef` |
+| 上下文（Context）的提供方式 | 简化语法 | 使用 `<Context>` 而不是 `<Context.Provider>` |
+| 异步操作 | 新模式 | 提供 `useActionState`、`useOptimistic` 等函数 |
 
 ---
 
-## Version Upgrade Paths
+## 类组件到函数式组件的迁移
 
-### React 17 → 18 Breaking Changes
-
-| Change | Impact | Migration |
-|--------|--------|-----------|
-| New root API | Required | `ReactDOM.render` → `createRoot` |
-| Automatic batching | Behavior | State updates batch in async code now |
-| Strict Mode | Dev only | Effects fire twice (mount/unmount/mount) |
-| Suspense on server | Optional | Enable SSR streaming |
-
-### React 18 → 19 Breaking Changes
-
-| Change | Impact | Migration |
-|--------|--------|-----------|
-| `use()` hook | New API | Read promises/context in render |
-| `ref` as prop | Simplified | No more `forwardRef` needed |
-| Context as provider | Simplified | `<Context>` not `<Context.Provider>` |
-| Async actions | New pattern | `useActionState`, `useOptimistic` |
-
----
-
-## Class to Hooks Migration
-
-### Lifecycle Method Mappings
+### 生命周期方法的映射
 
 ```tsx
 // componentDidMount → useEffect with empty deps
@@ -90,7 +88,7 @@ const Component = React.memo(({ data }) => <div>{data}</div>)
 const derivedValue = useMemo(() => computeFrom(props), [props])
 ```
 
-### State Migration Pattern
+### 状态管理的迁移方法
 
 ```tsx
 // BEFORE: Class with multiple state properties
@@ -158,7 +156,7 @@ function UserProfile({ id }: { id: string }) {
 }
 ```
 
-### HOC to Hook Migration
+### 高阶组件（HOC）到函数式组件的迁移
 
 ```tsx
 // BEFORE: Higher-Order Component
@@ -187,9 +185,9 @@ function Profile() {
 
 ---
 
-## React 18+ Concurrent Features
+## React 18 及更高版本的并发处理功能
 
-### New Root API (Required)
+### 新的根 API（必需）
 
 ```tsx
 // BEFORE: React 17
@@ -202,7 +200,7 @@ const root = createRoot(document.getElementById('root')!)
 root.render(<App />)
 ```
 
-### useTransition for Non-Urgent Updates
+### 使用 `useTransition` 处理非紧急状态更新
 
 ```tsx
 function SearchResults() {
@@ -229,7 +227,7 @@ function SearchResults() {
 }
 ```
 
-### Suspense for Data Fetching
+### 使用 Suspense 进行数据获取
 
 ```tsx
 // With React 19's use() hook
@@ -248,7 +246,7 @@ function ProfileDetails({ userId }: { userId: string }) {
 }
 ```
 
-### React 19: use() Hook
+### React 19：`use()` Hook
 
 ```tsx
 // Read promises directly in render
@@ -264,7 +262,7 @@ function ThemeButton() {
 }
 ```
 
-### React 19: Actions
+### React 19：异步操作（Actions）
 
 ```tsx
 // useActionState for form submissions
@@ -290,9 +288,9 @@ function UpdateName() {
 
 ---
 
-## Automated Codemods
+## 自动化代码修改（Codemods）
 
-### Run Official React Codemods
+### 运行官方提供的 React Codemods
 
 ```bash
 # Update to new JSX transform (no React import needed)
@@ -305,7 +303,7 @@ npx codemod@latest react/19/replace-string-ref
 npx codemod@latest react/19/replace-use-form-state
 ```
 
-### Manual Search Patterns
+### 手动迁移策略
 
 ```bash
 # Find class components
@@ -320,7 +318,7 @@ rg "ReactDOM\.render" --type tsx
 
 ---
 
-## TypeScript Migration
+## TypeScript 的迁移
 
 ```tsx
 // Add types to functional components
@@ -368,40 +366,41 @@ function List<T>({ items, renderItem }: ListProps<T>) {
 
 ---
 
-## Migration Checklist
+## 迁移检查清单
 
-### Pre-Migration
-- [ ] Upgrade dependencies incrementally
-- [ ] Review breaking changes in release notes
-- [ ] Set up comprehensive test coverage
-- [ ] Create feature branch
+### 迁移前：
+- [ ] 逐步升级依赖项
+- [ ] 查看发布说明中的重大变更
+- [ ] 设置全面的测试覆盖范围
+- [ ] 创建特性分支
 
-### Class → Hooks
-- [ ] Start with leaf components (no children)
-- [ ] Convert state to `useState`
-- [ ] Convert lifecycle to `useEffect`
-- [ ] Extract shared logic to custom hooks
-- [ ] Convert HOCs to hooks where possible
+### 将类组件迁移到函数式组件：
+- [ ] 从没有子组件的叶子组件开始迁移
+- [ ] 将状态管理转换为 `useState`
+- [ ] 将生命周期方法转换为 `useEffect`
+- [ ] 将共享逻辑提取到自定义 Hooks 中
+- [ ] 尽可能将高阶组件转换为 Hooks
 
-### React 18+ Upgrade
-- [ ] Update to `createRoot` API
-- [ ] Test with StrictMode double-invocation
-- [ ] Address hydration mismatches
-- [ ] Adopt Suspense boundaries where beneficial
-- [ ] Use transitions for expensive updates
+### 升级到 React 18 及更高版本：
+- [ ] 使用 `createRoot` API
+- [ ] 在严格模式下测试代码，确保没有重复调用 Effects
+- [ ] 解决组件 hydrate（渲染）时的问题
+- [ ] 在适当的地方使用 Suspense
+- [ ] 对于耗时的操作使用 Transition 功能
 
-### Post-Migration
-- [ ] Run full test suite
-- [ ] Check for console warnings
-- [ ] Profile performance before/after
-- [ ] Document changes for team
+### 迁移后：
+- [ ] 运行完整的测试套件
+- [ ] 检查控制台是否有警告
+- [ ] 测试迁移前后的性能
+- [ ] 为团队记录所有变更
 
 ---
 
-## NEVER
+## 注意事项：
 
-- Skip testing after migration
-- Migrate multiple components in one commit
-- Ignore StrictMode warnings (they reveal bugs)
-- Use `// eslint-disable-next-line react-hooks/exhaustive-deps` without understanding why
-- Mix class and hooks in same component
+- **切勿**：
+- 迁移后跳过测试
+- 在一次提交中迁移多个组件
+- 忽略严格模式（Strict Mode）的警告（这些警告可以帮助发现潜在问题）
+- 不要盲目使用 `// eslint-disable-next-line react-hooks/exhaustive-deps`，除非你了解其原因
+- 不要在同一个组件中混合使用类组件和函数式组件

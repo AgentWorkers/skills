@@ -1,142 +1,66 @@
-# Agent Trust Validator 🛡️
+# 代理信任验证器 🛡️  
+一个统一的验证层，用于跨多种信任协议（ERC-8004、ANP、KYA、SATI）验证代理的凭证。  
 
-Unified verification layer for agent credentials across multiple trust protocols (ERC-8004, ANP, KYA, SATI).
+## 功能介绍  
+该工具用于验证代理的凭证，并返回一个**信任评分**及**审计追踪记录**：  
+- **链上验证**：在以太坊上使用 ERC-8004 标准进行信誉评分；  
+- **链下注册表检查**：查询 ANS（代理名称服务）和 A2A 注册表；  
+- **选择性披露验证**：验证零知识证明（zero-knowledge proof）声明；  
+- **共识评分**：整合来自不同协议的信任信号；  
+- **审计追踪**：记录所有的验证尝试。  
 
-## What It Does
+## 解决的问题  
+目前存在多种信任协议，但缺乏统一的验证工具：  
+- ERC-8004（链上身份/信誉验证）  
+- ANP（代理名称协议）  
+- KYA（了解你的代理，Know Your Agent）  
+- SATI（Solana 代理信任基础设施）  
 
-Validates agent credentials and returns a **trust score + audit trail**:
+代理需要：  
+1. 跨多种协议验证凭证；  
+2. 获取一个统一的信任评分；  
+3. 了解哪些协议被用于验证。  
 
-- **On-chain verification** — ERC-8004 reputation scores on Ethereum
-- **Off-chain registry checks** — ANS (Agent Name Service), A2A registry
-- **Selective disclosure validation** — Verifies zero-knowledge proof claims
-- **Consensus scoring** — Aggregates trust signals across protocols
-- **Audit trail** — Logs all verification attempts
+## 使用方法  
+（具体使用方法请参见相应的代码块。）  
 
-## Problem It Solves
+## 信任评分计算公式  
+（信任评分的计算公式请参见相应的代码块。）  
 
-Multiple trust protocols are emerging:
-- ERC-8004 (on-chain identity/reputation)
-- ANP (Agent Name Protocol)
-- KYA (Know Your Agent)
-- SATI (Solana Agent Trust Infrastructure)
+## 协议支持  
+| 协议 | 状态 | 验证方法 |  
+|----------|---------|--------------|  
+| **ERC-8004** | ✅ 部分支持 | 通过以太坊 RPC 获取信誉评分；  
+| **ANS** | 计划中 | 通过代理名称服务查询；  
+| **A2A 注册表** | 计划中 | 通过 AWS 注册表 API 进行验证；  
+| **KYA** | 参考 | KYA 协议规范；  
+| **SATI** | 参考 | SATI 基础设施；  
 
-But no unified validation tool exists. Agents need to:
-1. Verify credentials across multiple protocols
-2. Get a single trust score
-3. Understand which protocols were checked
+## 系统要求  
+- Python 3.9 及以上版本；  
+- `web3.py`（用于 ERC-8004 验证）；  
+- `requests` 库（用于访问注册表 API）。  
 
-## Usage
+## 安装方法  
+（安装步骤请参见相应的代码块。）  
 
-```bash
-# Verify an agent by ERC-8004 ID
-python3 scripts/verify-agent.py --erc8004 0x7f0f...a3b8
+## 架构设计  
+（系统架构请参见相应的代码块。）  
 
-# Verify by ANS name
-python3 scripts/verify-agent.py --ans my-agent.ans
+## 灵感来源  
+- **Indicio ProvenAI**：为 AI 代理提供可验证的凭证；  
+- **ERC-8004 规范**：以太坊的 AI 代理标准；  
+- **SATI 基础设施**：Solana 的代理信任系统。  
 
-# Verify by DID
-python3 scripts/verify-agent.py --did did:ethr:0x7f0f...a3b8
+## 安全特性  
+- 该工具仅读取公开的区块链/注册表数据，不会存储任何私钥或凭证；  
+- 验证过程为无状态的（stateless）。  
 
-# Get full trust report (all protocols)
-python3 scripts/verify-agent.py --full-report --id 0x7f0f...a3b8
+## 版本历史  
+- **v0.1**：MVP 版本——支持 ERC-8004 验证、信任评分及审计追踪；  
+- 后续计划：集成 ANP/A2A 协议、支持零知识证明验证以及批量验证功能。  
 
-# Batch verification from CSV
-python3 scripts/verify-agent.py --batch data/agents.csv
-
-# Export audit trail
-python3 scripts/verify-agent.py --audit > audit.json
-```
-
-## Trust Score Formula
-
-```
-Trust Score = (W1 * OnChainScore) + (W2 * OffChainScore) + (W3 * ZKPScore)
-
-Where:
-- OnChainScore = ERC-8004 reputation / 100
-- OffChainScore = (ANS + A2A) / 200 (normalized)
-- ZKPScore = Selective disclosure validation (0 or 1)
-- Weights (default): W1=0.4, W2=0.4, W3=0.2
-
-Result: 0.0 (untrusted) to 1.0 (fully trusted)
-```
-
-## Protocol Support
-
-| Protocol | Status | Check Method |
-|----------|---------|--------------|
-| **ERC-8004** | ✅ Partial | Ethereum RPC (reputation score) |
-| **ANS** | 🔄 Planned | Agent Name Service lookup |
-| **A2A Registry** | 🔄 Planned | AWS registry API |
-| **KYA** | 📋 Reference | KYA protocol spec |
-| **SATI** | 📋 Reference | SATI infrastructure |
-
-## Requirements
-
-- Python 3.9+
-- web3.py (for ERC-8004)
-- requests (for registry APIs)
-
-## Installation
-
-```bash
-# Install dependencies
-pip install web3 requests
-
-# Clone repo
-git clone https://github.com/orosha-ai/agent-trust-validator
-```
-
-## Architecture
-
-```
-┌─────────────────┐
-│  Agent ID Input │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Multi-Protocol  │
-│  Verifier        │
-└────┬────┬──────┘
-     │    │
-     ▼    ▼
-┌──────────┐  ┌──────────┐
-│ On-Chain │  │ Off-Chain│
-│ (ERC-8004)│  │ (ANS/A2A)│
-└────┬─────┘  └─────┬────┘
-     │              │
-     ▼              ▼
-     └───────┬──────┘
-             ▼
-     ┌─────────────────┐
-     │  Trust Scorer   │
-     └───────┬────────┘
-             ▼
-     ┌─────────────────┐
-     │  Audit Trail    │
-     └─────────────────┘
-```
-
-## Inspiration
-
-- **Indicio ProvenAI** — Verifiable credentials for AI agents
-- **ERC-8004 spec** — Ethereum's AI Agent Standard
-- **SATI infrastructure** — Solana Agent Trust Infrastructure
-
-## Local-Only Promise
-
-- Reads public blockchain/registry data
-- No private keys or credentials stored
-- Verification is stateless
-
-## Version History
-
-- **v0.1** — MVP: ERC-8004 verification, trust scoring, audit trail
-- Roadmap: ANS/A2A integration, ZKP validation, batch verification
-
-## Security
-
-- Never asks for private keys
-- Uses public RPC endpoints only
-- Verifies signatures, doesn't create transactions
+## 安全性保障  
+- 该工具从不请求用户的私钥；  
+- 仅使用公开的 RPC 端点；  
+- 仅验证签名，不创建任何交易。

@@ -1,6 +1,6 @@
 ---
 name: crypto-cog
-description: "The market never sleeps, and neither does your analysis. #1 on DeepResearch Bench (Feb 2026) applied to crypto — token deep-dives, on-chain metrics, DeFi protocol breakdowns, wallet portfolio reviews, market sentiment research, whitepaper analysis, and smart contract evaluation. From degen plays to institutional due diligence, one prompt covers it all."
+description: "市场从未停止运转，你的分析工作也同样需要持续进行。在 DeepResearch Bench 的 2026 年 2 月排行榜中，该工具位居榜首，其功能涵盖了对加密货币的深入分析（包括代币详细研究、链上指标分析、DeFi 协议的剖析、钱包投资组合评估、市场情绪研究以及智能合约的评估）。从个人投资者的投机行为到机构的尽职调查，这个工具几乎可以满足所有需求。"
 metadata:
   openclaw:
     emoji: "🪙"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Crypto Cog - Deep Research for a 24/7 Market
+# Crypto Cog - 为24/7市场提供深度研究服务
 
-**The market never sleeps, and neither does your analysis.** #1 on DeepResearch Bench (Feb 2026) applied to crypto.
+市场从未停止运转，你的分析也同样需要保持高效。#1在DeepResearch Bench（2026年2月）的排名中，该工具专为加密货币领域设计。
 
-Crypto moves fast. Narratives shift overnight. New protocols launch daily. You need research depth that keeps pace with a market that never closes. CellCog brings the same deep reasoning that tops financial research benchmarks — now applied to tokens, DeFi, on-chain data, and the entire Web3 landscape. From degen plays to institutional due diligence, one prompt covers it all.
+加密货币市场的变化极为迅速，市场趋势可能在一夜之间发生转变，新的协议每天都在涌现。你需要具备能够跟上这种快速变化的研究能力。CellCog继承了金融研究领域顶尖的分析方法，现在将其应用于代币、去中心化金融（DeFi）、链上数据以及整个Web3生态系统的分析中。无论是针对个人投资者的决策，还是机构投资者的尽职调查，CellCog都能提供全面而深入的解决方案。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备`cellcog`技能，以便进行SDK设置和API调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读`cellcog`技能文档**以了解SDK的设置方法。该文档将向你展示所有可用的功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,165 +40,153 @@ result = client.create_chat(
 
 ---
 
-## What Crypto Research You Can Do
+## 你可以进行的加密货币研究类型
 
-### Token Analysis
+### 代币分析
 
-Deep dives into any token or project:
+对任何代币或项目进行深入研究：
 
-- **Fundamental Analysis**: "Analyze Solana — technology, ecosystem growth, validator economics, and competitive positioning vs Ethereum L2s"
-- **Tokenomics Review**: "Break down Arbitrum's tokenomics — supply schedule, inflation, governance power, and value accrual mechanisms"
-- **New Token Research**: "Research this new AI token that just launched — team, backers, tokenomics, red flags, and honest assessment"
-- **Comparative Analysis**: "Compare L2 solutions: Arbitrum vs Optimism vs Base vs zkSync — TVL, transactions, developer activity, and token performance"
+- **基本面分析**：例如：“分析Solana的技术架构、生态系统的发展情况、验证器的经济模型，以及其与以太坊第二层网络（L2）的竞争关系。”
+- **代币经济学评估**：例如：“详细解析Arbitrum的代币经济学模型——包括供应机制、通胀率、治理权力以及价值积累方式。”
+- **新代币研究**：例如：“研究这款新推出的AI代币——了解其开发团队、投资方、代币经济学特性，以及潜在的风险点。”
+- **对比分析**：例如：“对比不同的L2解决方案（如Arbitrum、Optimism、Base、zkSync）——从总价值锁定（TVL）、交易量、开发者活跃度到代币表现等方面进行综合评估。”
 
-**Example prompt:**
-> "Create a comprehensive analysis of Ethereum's current state:
+**示例提示：**
+> “为我生成一份关于以太坊当前状况的全面分析报告：”
 > 
-> Cover:
-> - Network metrics: TVL, daily transactions, gas trends, staking ratio
-> - Post-merge economics: ETH supply dynamics, burn rate, is it deflationary?
-> - L2 ecosystem impact on mainnet revenue
-> - Competitor positioning vs Solana, Avalanche, Cosmos
-> - Key upcoming catalysts and risks
-> - Bull and bear thesis for the next 12 months
+> 报告内容应包括：
+> - 网络指标：总价值锁定（TVL）、每日交易量、gas费用趋势、质押比例
+- 合并后的经济状况：以太坊的供应量变化、燃烧机制（是否具有通缩性）
+- L2解决方案对以太坊主网收入的影响
+- 与Solana、Avalanche、Cosmos等竞争平台的对比
+- 前瞻性因素及潜在风险
+- 对未来12个月的牛市/熊市观点
 > 
-> Deliver as an interactive HTML report with charts."
+> 以交互式HTML报告的形式呈现，并附带图表。”
 
-### DeFi Protocol Research
+### DeFi协议研究
 
-Understand protocols before you ape in:
+在投资之前，务必先充分了解相关协议：
 
-- **Protocol Deep Dives**: "Analyze Aave V3 — how it works, risk parameters, yield mechanics, and governance"
-- **Yield Analysis**: "Compare yield opportunities across Lido, Rocket Pool, and Coinbase cbETH — risks, returns, and tradeoffs"
-- **Risk Assessment**: "Evaluate the smart contract risk of this new DEX — audit status, TVL history, team background"
-- **Ecosystem Mapping**: "Map the Cosmos ecosystem — key protocols, IBC activity, and where value is concentrating"
+- **协议深度分析**：例如：“详细分析Aave V3的运作原理、风险参数、收益机制以及治理结构。”
+- **收益分析**：例如：“对比Lido、Rocket Pool、Coinbase cbETH等平台的收益机会——分析它们的风险、回报及权衡因素。”
+- **风险评估**：例如：“评估这款新DEX的智能合约安全性——包括审计状态、TVL历史、团队背景等。”
+- **生态系统映射**：例如：“绘制Cosmos生态系统的结构图——关键协议、IBC（Inter-Blockchain Communication）的运作情况，以及价值集中的领域。”
 
-**Example prompt:**
-> "Research Uniswap V4:
+**示例提示：**
+> “研究Uniswap V4：**
+> - 与V3相比有哪些新功能？这些新功能对LP（ liquidity provider）的盈利能力有何影响？
+- 费率调整政策及UNI代币的价值积累机制是怎样的？
+- 交易量和市场份额的趋势如何？
+- 其他聚合器或新DEX对其市场地位的竞争情况如何？
+- 开发者对Uniswap框架的采用情况如何？
 > 
-> - What's new vs V3? Hook system explained
-> - Impact on LP profitability
-> - Fee switch status and UNI token value accrual
-> - Volume and market share trends
-> - Competition from aggregators and new DEXes
-> - Developer adoption of the hooks framework
-> 
-> Clear, no-BS analysis. I want to understand if the upgrade actually matters."
+> 要求提供清晰、客观的分析报告，让我了解这次升级的实际意义。”
 
-### On-Chain & Market Intelligence
+### 链上数据与市场洞察
 
-Data-driven market understanding:
+基于数据的市场分析：
 
-- **Whale Tracking**: "What are the largest ETH wallets doing this month? Accumulating or distributing?"
-- **Market Sentiment**: "Analyze current crypto market sentiment — funding rates, Fear & Greed index, social activity, and exchange flows"
-- **Narrative Research**: "What are the emerging crypto narratives for this quarter? AI tokens, RWA, DePIN — which have substance?"
-- **Exchange Analysis**: "Compare DEX vs CEX volume trends over the last 6 months — is DeFi gaining share?"
+- **大户行为追踪**：例如：“本月最大的以太坊钱包在做什么？是在积累资产还是分散资金？”
+- **市场情绪分析**：例如：“分析当前的加密货币市场情绪——包括融资率、恐惧与贪婪指数（Fear & Greed Index）、社交媒体的讨论热度以及交易所的交易流量。”
+- **行业趋势研究**：例如：“本季度有哪些新兴的加密货币趋势？AI代币、RWA（Realized Value of Assets）、DePIN（DePIN）等概念是否有实际应用价值？”
+- **交易所对比**：例如：“对比过去6个月内DEX与CEX（Centralized Exchange）的交易量变化——DeFi市场是否正在扩大份额？”
 
-### Portfolio & Strategy
+### 投资组合与策略管理
 
-Manage your crypto positions:
+帮助你管理加密货币投资组合：
 
-- **Portfolio Review**: "Analyze my portfolio: 50% ETH, 20% SOL, 15% LINK, 10% ARB, 5% PEPE — diversification, risk, and rebalancing suggestions"
-- **Entry/Exit Strategy**: "Help me think through an accumulation strategy for Bitcoin at current prices — DCA schedule, key levels, position sizing"
-- **Tax Optimization**: "Research crypto tax strategies for US residents — harvest losses, long-term vs short-term, staking income treatment"
-- **Risk Management**: "Design a risk framework for a $100K crypto portfolio — position sizing, stop losses, correlation analysis"
+- **投资组合评估**：例如：“分析我的投资组合——50%以太坊、20% Solana、15% LINK、10% ARB、5% PEPE——提供多元化建议及再平衡策略。”
+- **入场/退出策略**：例如：“根据当前价格，为我制定比特币的长期投资策略——包括定期定额投资（DCA）计划、关键买入/卖出点位以及仓位大小。”
+- **税务优化**：例如：“研究美国居民的加密货币税务策略——了解如何处理亏损、长期投资与短期投资的税务差异，以及质押收入的税务处理方式。”
+- **风险管理**：例如：“为价值10万美元的加密货币投资组合设计风险管理方案——包括仓位大小、止损设置以及相关性分析。”
 
-### Whitepaper & Smart Contract Analysis
+### 白皮书与智能合约评估
 
-Due diligence on new projects:
+对新项目进行尽职调查：
 
-- **Whitepaper Review**: "Analyze this project's whitepaper — is the technology feasible? Are the claims realistic? Red flags?"
-- **Smart Contract Evaluation**: "Review the security profile of this protocol — audits, bug bounties, incident history, code quality indicators"
-- **Team Research**: "Research the founding team of this new L1 — backgrounds, previous projects, VC backers, credibility assessment"
-- **Comparison Research**: "This new protocol claims to be better than Aave. Analyze their claims vs reality."
+- **白皮书审查**：例如：“分析该项目的白皮书——其技术是否可行？提出的主张是否合理？是否存在潜在风险？”
+- **智能合约评估**：例如：“评估该协议的安全性——包括审计报告、漏洞赏金机制、安全事件历史以及代码质量。”
+- **团队背景调查**：例如：“研究该新L1项目的创始团队背景、过往项目经历以及风险投资方的支持情况。”
+- **对比分析**：例如：“如果某新协议声称优于Aave，那么请对比两者的实际表现。”
 
 ---
 
-## Output Formats
+## 输出格式
 
-| Format | Best For |
+| 格式 | 适用场景 |
 |--------|----------|
-| **Interactive HTML Dashboard** | Token dashboards with charts, metrics, drill-downs |
-| **PDF Report** | Shareable research reports and investment memos |
-| **XLSX Spreadsheet** | Portfolio trackers, tokenomics models, yield comparisons |
-| **Markdown** | Quick analysis for integration into your notes |
+| **交互式HTML仪表盘** | 适合展示代币数据、指标及详细分析结果 |
+| **PDF报告** | 适合分享研究结果或制定投资决策的备忘录 |
+| **XLSX电子表格** | 适合用于投资组合跟踪、代币经济学模型及收益对比 |
+| **Markdown** | 适合快速生成分析内容，便于整合到笔记中 |
 
 ---
 
-## Chat Mode for Crypto
+## 加密货币研究时的聊天模式推荐
 
-| Scenario | Recommended Mode |
+| 使用场景 | 推荐的模式 |
 |----------|------------------|
-| Quick price checks, simple token lookups, basic metrics | `"agent"` |
-| Deep token analysis, DeFi research, ecosystem mapping, portfolio strategy | `"agent team"` |
+| 快速查询价格、简单代币信息、基本数据统计 | 使用`"agent"`模式 |
+| 深度代币分析、DeFi研究、生态系统分析、投资组合策略制定 | 使用`"agent team"`模式 |
 
-**Use `"agent team"` for most crypto research.** The crypto space requires synthesizing information from many sources — protocol docs, on-chain data, market analysis, social sentiment. Agent team mode delivers the multi-source depth that serious crypto research demands.
-
-**Use `"agent"` for quick lookups** — current prices, basic metrics, or simple factual questions.
+**对于复杂的加密货币研究，建议使用`"agent team"`模式**。该模式能够整合来自多种来源的信息——包括协议文档、链上数据、市场分析以及社交媒体动态。**`agent`模式则适用于快速查询当前价格、基本数据或简单的事实性问题。**
 
 ---
 
-## Example Prompts
+## 示例提示
 
-**Token deep dive:**
-> "Create a full research report on Chainlink (LINK):
+**代币深度分析：**
+> “为我生成一份关于Chainlink（LINK）的全面研究报告：**
 > 
-> - Oracle technology explained simply
-> - CCIP and its implications for cross-chain DeFi
-> - Staking economics — real yields, participation rate
-> - Competition: Pyth, API3, Band — does Chainlink's moat hold?
-> - Revenue model and path to sustainability
-> - Token price performance vs fundamentals
+> - 用简单的语言解释Chainlink的Oracle技术原理
+- CCIP（Cross-Chain Interoperability Protocol）对跨链DeFi的影响
+- Staking的经济模型——实际收益情况、参与者的参与度
+- 竞争对手分析（Pyth、API3、Band等）——Chainlink的竞争优势是否稳固？
+- 收益模型及其可持续性
+- 代币价格表现与基本面之间的关联
 > 
-> Honest assessment. I want to know both the bull case and what could go wrong."
+> 要求提供客观、全面的分析，包括乐观与悲观的观点。
 
-**DeFi yield research:**
-> "Compare the best yield opportunities for stablecoins right now:
+**DeFi收益研究：**
+> “对比当前最具有收益潜力的稳定币项目：**
+> - Aave/Compound的借贷服务
+- Curve/Convex的流动性供应机制
+- Ethena的sUSDe项目
+- Sky（MakerDAO）的储蓄计划
+- RWA（Realized Value of Assets）支持的收益模式
 > 
-> - Aave/Compound lending
-> - Curve/Convex liquidity provision
-> - Ethena sUSDe
-> - Sky (MakerDAO) savings rate
-> - RWA-backed yields
+> 对每个项目，需要提供以下信息：当前年化收益率（APY）、风险水平、锁定期限、智能合约的风险点，以及推荐的最低投资比例。
 > 
-> For each: current APY, risk level, lock-up requirements, smart contract risk, and minimum recommended allocation.
-> 
-> I have $50K in USDC. What's the optimal split for risk-adjusted yield?"
+> 我持有5万美元USDC，如何分配才能实现风险调整后的最佳收益？
 
-**Market narrative analysis:**
-> "Research the current state of AI tokens (TAO, RENDER, FET, NEAR, etc.):
+**市场趋势分析：**
+> “研究当前AI代币（如TAO、RENDER、FET、NEAR等）的发展状况：**
 > 
-> - What's the actual thesis for AI x Crypto?
-> - Which projects have real usage vs pure narrative?
-> - On-chain metrics: users, transactions, revenue
-> - VC activity and funding in this sector
-> - Is this the next DeFi Summer or the next metaverse hype?
+> 这些AI代币的实际应用价值是什么？
+- 哪些项目具有实际的应用场景，哪些只是炒作？
+- 链上数据指标（用户数量、交易量、收入情况）
+- 该领域的风险投资活动及资金流向
+> 这次浪潮是否真的会成为下一个DeFi热潮，还是只是新一轮的炒作？
 > 
-> Give me the honest picture. I want signal, not hype."
+> 需要提供客观、真实的分析结果，避免夸大其词。
 
-**Portfolio assessment:**
-> "Review my crypto portfolio and help me optimize:
+**投资组合评估：**
+> “分析我的投资组合：2比特币、15以太坊、5000个Solana代币、10000个LINK代币、50000个ARB代币——提供多元化建议及再平衡策略。”
 > 
-> Holdings: 2 BTC, 15 ETH, 5000 SOL, 10000 LINK, 50000 ARB
-> Total value: ~$300K
-> Risk tolerance: Moderate (I can handle 30% drawdowns but not 70%)
-> Time horizon: 2+ years
+> 投资组合构成：2比特币、15以太坊、5000个Solana代币、10000个LINK代币、50000个ARB代币，总价值约30万美元。
+> 风险承受能力：中等（可以承受30%的亏损，但不能承受70%）
+> 投资期限：超过2年
 > 
-> Analyze: concentration risk, correlation, sector exposure, and suggest rebalancing.
-> Should I add any positions for better diversification?"
+> 分析投资组合的集中度风险、各资产之间的相关性，并提出再平衡建议。是否需要增加其他资产以实现更好的多元化？”
 
 ---
 
-## Tips for Better Crypto Research
+## 更好的加密货币研究技巧：
 
-1. **Be specific about what you need**: "Analyze SOL" is broad. "Analyze Solana's network performance and validator economics post-Firedancer" is focused.
-
-2. **State your experience level**: "I'm new to DeFi" vs "I understand impermanent loss" changes the depth of explanation.
-
-3. **Mention your purpose**: "For a $10K investment decision" vs "For a research article" shapes the output.
-
-4. **Ask for honest assessments**: CellCog doesn't shill. Explicitly asking "what could go wrong?" gets you balanced analysis.
-
-5. **Timeframe matters**: "Next month" vs "next 2 years" leads to very different analysis.
-
-6. **Don't trust, verify**: Use CellCog's research as a starting point. Always verify on-chain data with primary sources before making financial decisions.
+1. **明确研究目标**：例如，“分析Solana”这样的请求较为宽泛；而“分析Firedancer事件后Solana的网络性能和验证器经济模型”则更具针对性。
+2. **说明你的经验水平**：例如，“我是DeFi领域的新手”与“我了解不可逆损失（impermanent loss）的概念”会影响到分析的深度。
+3. **说明使用目的**：例如，“为了做出1万美元的投资决策”与“为了撰写研究文章”会影响到报告的内容和深度。
+4. **要求客观的分析结果**：CellCog不会进行任何形式的推销。明确要求“可能存在哪些风险”能帮助你获得更全面的分析。
+5. **明确时间范围**：不同的时间范围（如“下个月”与“未来两年”）会导致截然不同的分析结果。
+6. **不要盲目相信，要自行验证**：将CellCog的分析结果作为参考，但在做出财务决策前，请务必通过官方渠道验证链上数据的准确性。

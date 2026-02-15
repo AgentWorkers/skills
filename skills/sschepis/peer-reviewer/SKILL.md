@@ -1,58 +1,58 @@
 ---
 name: peer-reviewer
-description: AI-powered academic paper reviewer. Uses a multi-agent system (Deconstructor, Devil's Advocate, Judge) to analyze papers for logical flaws, contradictions, and empirical validity.
+description: 这款由人工智能驱动的学术论文评审工具采用多智能体系统（包括“Deconstructor”、“Devil's Advocate”和“Judge”三个智能体）来分析论文中的逻辑错误、矛盾之处以及实证研究的有效性。
 version: 1.0.0
 ---
 
-# Peer Reviewer
+# 同行评审器（Peer Reviewer）
 
-A rigorous academic review system that uses multiple AI agents to deconstruct, attack, and judge scientific papers.
+这是一个严谨的学术评审系统，它利用多个人工智能代理来分析、评估和评判科学论文。
 
-## When to use
+## 使用场景
 
-Use this skill when:
-- The user asks to "review this paper" or "find flaws in this logic".
-- You need to check an academic paper for contradictions with established literature.
-- You want a "Reviewer 2" style critique of a text.
+在以下情况下使用该工具：
+- 当用户请求“评审这篇论文”或“找出其中的逻辑错误”时；
+- 当你需要检查一篇学术论文是否与现有文献存在矛盾时；
+- 当你希望获得类似“第二位评审者”（Reviewer 2）风格的批评意见时。
 
-## How to use
+## 使用方法
 
-Run the tool via the Node.js CLI in the installation directory.
+通过 Node.js 命令行界面（CLI）在安装目录中运行该工具。
 
-**Directory:** `/Users/sschepis/Development/peer-reviewer`
+**目录示例：** `/Users/sschepis/Development/peer-reviewer`
 
-### Command
+### 命令
 
 ```bash
 node dist/index.js "<path_to_paper_or_raw_text>"
 ```
 
-### Arguments
+### 参数
 
-- `path_to_paper_or_raw_text`: either a file path (absolute or relative to the package root) OR the raw text of the paper/claim.
+- `path_to_paper_or_raw_text`：论文或声明的文件路径（绝对路径或相对于包根目录的相对路径），或论文/声明的原始文本。
 
-### Output
+### 输出结果
 
-The tool outputs a "Merit Report" in JSON format, containing:
-- `overallScore` (0-10)
-- `defenseStrategy`
-- `suggestions` (list of improvements)
-- `dimensions` (scores for logic, novelty, etc.)
+该工具会以 JSON 格式输出一份“评审报告”，其中包含以下内容：
+- `overallScore`（0-10 分）
+- `defenseStrategy`（论文的辩护策略）
+- `suggestions`（改进建议列表）
+- `dimensions`（逻辑性、创新性等方面的评分）
 
-## Examples
+## 示例
 
-**Review a local file:**
-```bash
+- **评审本地文件：**
+  ```bash
 cd /Users/sschepis/Development/peer-reviewer
 node dist/index.js "/Users/sschepis/Desktop/research/draft_v1.txt"
 ```
 
-**Review a raw claim:**
-```bash
+- **评审原始声明：**
+  ```bash
 cd /Users/sschepis/Development/peer-reviewer
 node dist/index.js "Claim: P=NP because I can solve Traveling Salesman in O(1) by guessing."
 ```
 
-## Configuration
+## 配置要求
 
-Ensure `google.json` is present in the root directory or `GOOGLE_APPLICATION_CREDENTIALS` is set if running in a new environment.
+确保根目录下存在 `google.json` 文件；或者如果在新的环境中运行，请设置 `GOOGLE_APPLICATION_CREDENTIALS` 环境变量。

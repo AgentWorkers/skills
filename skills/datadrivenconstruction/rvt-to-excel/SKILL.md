@@ -1,54 +1,53 @@
 ---
 slug: "rvt-to-excel"
 display_name: "RVT To Excel"
-description: "Convert RVT/RFA files to Excel databases. Extract BIM element data, properties, and quantities."
+description: "将 RVT/RFA 文件转换为 Excel 数据库。提取 BIM 元素的数据、属性和数量信息。"
 ---
 
-# RVT to Excel Conversion
+# RVT 到 Excel 的转换
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-BIM data inside RVT files needs to be extracted for:
-- Processing multiple projects in batch
-- Integrating BIM data with analytics pipelines
-- Sharing structured data with stakeholders
-- Generating reports and quantity takeoffs
+### 问题描述
+需要从 RVT 文件中提取 BIM 数据，用于以下目的：
+- 批量处理多个项目
+- 将 BIM 数据集成到分析流程中
+- 与利益相关者共享结构化数据
+- 生成报告和数量统计
 
-### Solution
-Convert RVT files to structured Excel databases for analysis and reporting.
+### 解决方案
+将 RVT 文件转换为结构化的 Excel 数据库，以便进行分析和报告生成。
 
-### Business Value
-- **Batch processing** - Convert multiple projects
-- **Data accessibility** - Excel format for universal access
-- **Pipeline integration** - Feed data to BI tools, ML models
-- **Structured output** - Organized element data and properties
+### 商业价值
+- **批量处理**：能够同时处理多个项目
+- **数据可访问性**：Excel 格式便于全局访问
+- **流程集成**：可以将数据导入商业智能（BI）工具和机器学习（ML）模型
+- **结构化输出**：数据元素及其属性都经过整理
 
-## Technical Implementation
+## 技术实现
 
-### CLI Syntax
+### 命令行接口（CLI）语法
 ```bash
 RvtExporter.exe <input_path> [export_mode] [options]
 ```
 
-### Export Modes
-| Mode | Categories | Description |
+### 导出模式
+| 模式 | 类别 | 描述 |
 |------|-----------|-------------|
-| `basic` | 309 | Essential structural elements |
-| `standard` | 724 | Standard BIM categories |
-| `complete` | 1209 | All Revit categories |
-| `custom` | User-defined | Specific categories only |
+| `basic` | 309 | 必需的结构元素 |
+| `standard` | 724 | 标准的 BIM 类别 |
+| `complete` | 1209 | 所有 Revit 类别 |
+| `custom` | 用户自定义 | 仅导出特定类别 |
 
-### Options
-| Option | Description |
+### 选项
+| 选项 | 描述 |
 |--------|-------------|
-| `bbox` | Include bounding box coordinates |
-| `rooms` | Include room associations |
-| `schedules` | Export all schedules to sheets |
-| `sheets` | Export sheets to PDF |
+| `bbox` | 包含边界框坐标 |
+| `rooms` | 包含房间关联信息 |
+| `schedules` | 将所有明细表导出到工作表中 |
+| `sheets` | 将工作表导出为 PDF 文件 |
 
-### Examples
-
+### 示例
 ```bash
 # Basic export
 RvtExporter.exe "C:\Projects\Building.rvt" basic
@@ -63,8 +62,7 @@ RvtExporter.exe "C:\Projects\Building.rvt" complete bbox rooms schedules sheets
 for /R "C:\Projects" %f in (*.rvt) do RvtExporter.exe "%f" standard bbox
 ```
 
-### Python Integration
-
+### Python 集成
 ```python
 import subprocess
 import pandas as pd
@@ -133,32 +131,31 @@ class RevitExporter:
         return summary
 ```
 
-## Output Structure
+## 输出结构
 
-### Excel Sheets
-| Sheet | Content |
+### Excel 工作表
+| 工作表 | 内容 |
 |-------|---------|
-| Elements | All BIM elements with properties |
-| Categories | Element categories summary |
-| Levels | Building levels |
-| Materials | Material definitions |
-| Parameters | Shared parameters |
+| 元素 | 所有带有属性的 BIM 元素 |
+| 类别 | 元素类别汇总 |
+| 楼层 | 建筑物的楼层信息 |
+| 材料 | 材料定义 |
+| 参数 | 共享参数 |
 
-### Element Columns
-| Column | Type | Description |
+### 元素列
+| 列名 | 类型 | 描述 |
 |--------|------|-------------|
-| ElementId | int | Unique Revit ID |
-| Category | string | Element category |
-| Family | string | Family name |
-| Type | string | Type name |
-| Level | string | Associated level |
-| Area | float | Surface area (m²) |
-| Volume | float | Volume (m³) |
-| BBox_MinX/Y/Z | float | Bounding box min |
-| BBox_MaxX/Y/Z | float | Bounding box max |
+| ElementId | int | 唯一的 Revit ID |
+| Category | string | 元素类别 |
+| Family | string | 材料族名称 |
+| Type | string | 元素类型 |
+| Level | string | 所属楼层 |
+| Area | float | 表面积（平方米） |
+| Volume | float | 体积（立方米） |
+| BBox_MinX/Y/Z | float | 边界框最小坐标 |
+| BBox_MaxX/Y/Z | float | 边界框最大坐标 |
 
-## Usage Example
-
+## 使用示例
 ```python
 # Initialize exporter
 exporter = RevitExporter("C:/Tools/RvtExporter.exe")
@@ -178,8 +175,7 @@ print(quantities)
 df.to_csv("elements.csv", index=False)
 ```
 
-## Integration with DDC Pipeline
-
+## 与 DDC 流程的集成
 ```python
 # Full pipeline: Revit → Excel → Cost Estimate
 from semantic_search import CWICRSemanticSearch
@@ -204,14 +200,12 @@ for category, volume in quantities.items():
 print(f"Total estimate: ${sum(costs.values()):,.2f}")
 ```
 
-## Best Practices
+## 最佳实践
+1. **选择合适的导出模式**：使用 `basic` 模式进行快速分析，使用 `complete` 模式获取完整数据。
+2. **包含边界框信息**：这对于空间分析和可视化非常重要。
+3. **谨慎处理批量导入**：大型文件可能需要较长时间；建议在夜间进行导入。
+4. **验证输出结果**：检查导出数据中的元素数量是否与 Revit 中的明细表一致。
 
-1. **Use appropriate mode** - `basic` for quick analysis, `complete` for full data
-2. **Include bbox** - Required for spatial analysis and visualization
-3. **Batch carefully** - Large files may take time; process overnight
-4. **Validate output** - Check element counts against Revit schedules
-
-## Resources
-
-- **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
-- **Download**: See repository releases for RvtExporter.exe
+## 资源
+- **GitHub**：[cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
+- **下载**：请查看仓库中的发布版本以获取 RvtExporter.exe 工具。

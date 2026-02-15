@@ -1,6 +1,6 @@
 ---
 name: brave-api-setup
-description: Set up Brave Search API for OpenClaw web_search. Use when user needs to configure Brave API, get Brave API key, enable web search, or fix "missing_brave_api_key" error.
+description: 为 OpenClaw 的 web_search 功能配置 Brave Search API。当用户需要配置 Brave API、获取 Brave API 密钥、启用网络搜索功能，或解决 “missing_brave_api_key” 错误时，请使用此方法。
 metadata:
   openclaw:
     requires:
@@ -13,89 +13,85 @@ metadata:
       - search API
 ---
 
-# Brave API Setup
+# Brave API 设置
 
-Automates Brave Search API key extraction and OpenClaw configuration.
+本脚本用于自动提取 Brave Search 的 API 密钥，并配置 OpenClaw。
 
-## Included Files
+## 包含的文件
 
-| File | Description |
+| 文件 | 说明 |
 |------|-------------|
-| `SKILL.md` | This document |
-| `scripts/apply-api-key.js` | Applies API key to OpenClaw config (Node.js) |
+| `SKILL.md` | 本文档 |
+| `scripts/apply-api-key.js` | 将 API 密钥应用到 OpenClaw 配置中（Node.js） |
 
-## Dependencies
-- Node.js (for apply-api-key.js)
-- OpenClaw browser capability (`browser` tool)
+## 依赖项
+- Node.js（用于 `apply-api-key.js`）
+- OpenClaw 浏览器功能（`browser` 工具）
 
-## When to Use
+## 使用场景
+- 用户希望在 OpenClaw 中启用 `web_search` 功能
+- 出现错误：“missing_brave_api_key”
+- 用户请求设置 Brave Search API
 
-- User wants to enable `web_search` in OpenClaw
-- Error: `missing_brave_api_key`
-- User asks to set up Brave Search API
+## 先决条件
+- 用户必须拥有 Brave Search API 账户
+- 用户必须已登录（使用 OpenClaw 浏览器）
+- API 密钥必须存在于控制面板中
 
-## Prerequisites
+## 工作流程
 
-- User must have a Brave Search API account
-- User must be logged in (openclaw browser profile)
-- API key must exist in dashboard
-
-## Workflow
-
-### Step 1: Navigate to API keys page
+### 第一步：导航到 API 密钥页面
 
 ```
 browser(action="navigate", profile="openclaw", 
         targetUrl="https://api-dashboard.search.brave.com/app/keys")
 ```
 
-### Step 2: Click reveal button (eye icon)
+### 第二步：点击“显示”按钮（眼睛图标）
 
-Take snapshot, find the reveal button, click it:
+拍摄屏幕截图，找到“显示”按钮并点击它：
 ```
 browser(action="act", kind="click", ref="<eye-button-ref>")
 ```
 
-### Step 3: Extract key via JavaScript (avoids LLM transcription error)
+### 第三步：通过 JavaScript 提取密钥（避免大型语言模型（LLM）的转录错误）
 
 ```
 browser(action="act", kind="evaluate", 
         fn="(() => { const cells = document.querySelectorAll('td'); for (const cell of cells) { const text = cell.textContent?.trim(); if (text && text.startsWith('BSA') && !text.includes('•') && text.length > 20) return text; } return null; })()")
 ```
 
-The result field contains the exact API key.
+结果字段中包含完整的 API 密钥。
 
-### Step 4: Apply to config (direct file write, no LLM involved)
+### 第四步：将密钥应用到配置文件中（直接写入文件，不涉及大型语言模型）
 
-Relative to skill directory:
-
+相对于技能目录的路径：
 ```bash
 node <skill_dir>/scripts/apply-api-key.js "<extracted-key>"
 ```
 
-Or use gateway config.patch with the extracted key.
+或者使用 `gateway config.patch` 并传入提取的密钥。
 
-## Why This Approach
+## 采用此方法的原因
 
-**Problem**: LLM can confuse similar characters when transcribing (O vs 0, l vs 1).
+**问题**：大型语言模型在转录时可能会混淆相似的字符（例如：O 和 0、l 和 1）。
 
-**Solution**: 
-1. `evaluate` extracts key via JavaScript → returns exact string
-2. `apply-api-key.js` writes directly to config → bit-perfect
+**解决方案**：
+1. `evaluate` 通过 JavaScript 提取密钥，返回精确的字符串。
+2. `apply-api-key.js` 直接将密钥写入配置文件，确保数据完全准确无误。
+密钥在整个过程中都不会经过大型语言模型的文本生成环节。
 
-The key never passes through LLM text generation.
+## 手动账户设置
 
-## Manual Account Setup
+如果用户没有账户：
+1. 访问 https://api-dashboard.search.brave.com
+2. 使用电子邮件注册
+3. 订阅免费计划（需要信用卡）
+4. 在控制面板中创建 API 密钥
+5. 然后运行此脚本
 
-If user doesn't have an account:
-1. Go to https://api-dashboard.search.brave.com
-2. Sign up with email
-3. Subscribe to Free plan (requires credit card)
-4. Create API key in dashboard
-5. Then run this skill
+## 问题咨询 / 反馈
 
-## 문의 / Feedback
-
-버그 리포트, 기능 요청, 피드백은 아래로 보내주세요.
-- Email: contact@garibong.dev
-- Developer: Garibong Labs (가리봉랩스)
+如有关于错误的报告、功能请求或反馈，请发送至以下邮箱：
+- 邮箱：contact@garibong.dev
+- 开发者：Garibong Labs（가리봉랩스）

@@ -1,29 +1,29 @@
 ---
-description: Monitor system processes and report CPU/memory usage, top consumers, and resource alerts.
+description: 监控系统进程，并报告CPU/内存使用情况、资源消耗最大的进程以及资源使用异常（警报）。
 ---
 
-# Process Monitor
+# 进程监控器
 
-Monitor system processes and resource usage.
+用于监控系统进程及资源使用情况。
 
-## Capabilities
+## 功能
 
-- **Top Processes**: Show processes by CPU or memory usage
-- **Process Search**: Find specific processes by name or PID
-- **Resource Summary**: Overall CPU, memory, swap, load average
-- **Alerts**: Identify processes exceeding thresholds
+- **热门进程**：按CPU或内存使用量显示进程
+- **进程搜索**：通过名称或PID查找特定进程
+- **资源概览**：显示总CPU使用量、内存使用量、交换空间使用量以及负载平均值
+- **警报**：识别超出阈值的进程
 
-## Usage
+## 使用方法
 
-Ask the agent to:
-- "Show top 10 processes by memory usage"
-- "Is there anything using more than 80% CPU?"
-- "Find all node processes"
-- "Give me a system resource summary"
+您可以要求代理执行以下操作：
+- “显示内存使用量最高的10个进程”
+- “是否有进程的CPU使用率超过了80%？”
+- “查找所有节点上的进程”
+- “提供系统资源使用情况的概览”
 
-## How It Works
+## 工作原理
 
-Uses standard system tools:
+该工具使用标准的系统工具来实现监控功能：
 
 ```bash
 ps aux --sort=-%mem | head -20
@@ -32,7 +32,7 @@ free -h
 uptime
 ```
 
-## Requirements
+## 系统要求
 
-- Standard Unix tools (`ps`, `top`, `free`, `uptime`)
-- No API keys needed
+- 需要标准的Unix工具（`ps`、`top`、`free`、`uptime`）
+- 不需要API密钥

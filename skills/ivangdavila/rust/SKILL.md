@@ -1,72 +1,72 @@
 ---
 name: Rust
-description: Write idiomatic Rust avoiding ownership pitfalls, lifetime confusion, and common borrow checker battles.
+description: 编写符合Rust语言习惯的代码，避免所有权（ownership）相关的陷阱、生命周期（lifetime）问题以及常见的借用检查（borrow checking）错误。
 metadata: {"clawdbot":{"emoji":"🦀","requires":{"bins":["rustc","cargo"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Ownership Traps
-- Variable moved after use — clone explicitly or borrow with `&`
-- `for item in vec` moves vec — use `&vec` or `.iter()` to borrow
-- Struct field access moves field if not Copy — destructure or clone
-- Closure captures by move with `move ||` — needed for threads and 'static
-- `String` moved into function — pass `&str` for read-only access
+## 所有权陷阱  
+- 变量在使用后被移动：需要显式克隆或使用 `&` 进行借用。  
+- `for item in vec` 会移动整个 `vec`：应使用 `&vec` 或 `.iter()` 来借用元素。  
+- 访问结构体字段时，如果字段未被复制，则会移动该字段：需要解构或克隆结构体。  
+- 闭包通过 `move ||` 进行捕获：这在多线程和 `static` 字段中是必需的。  
+- 如果 `String` 被移动到函数内部，应传递 `&str` 以实现只读访问。  
 
-## Borrowing Battles
-- Can't have mutable and immutable borrow simultaneously — restructure code or use interior mutability
-- Borrow lasts until last use (NLL) — not until scope end in modern Rust
-- Returning reference to local fails — return owned value or use lifetime parameter
-- Mutable borrow through `&mut self` blocks all other access — split struct or use `RefCell`
+## 借用相关的问题  
+- 不能同时拥有可变和不可变的引用：需要重构代码或使用内部可变性。  
+- 借用的引用会一直有效，直到最后一次使用（Rust 的 NLL 规则）。  
+- 将局部变量的引用作为返回值会导致错误：应返回该变量的所有权，或使用生命周期参数。  
+- 通过 `&mut self` 进行的可变引用会阻塞其他所有访问：可以考虑拆分结构体或使用 `RefCell`。  
 
-## Lifetime Gotchas
-- Missing lifetime annotation — compiler usually infers, explicit when multiple references
-- `'static` means "can live forever", not "lives forever" — `String` is 'static, `&str` may not be
-- Struct holding reference needs lifetime parameter — `struct Foo<'a> { bar: &'a str }`
-- Function returning reference must tie to input lifetime — `fn get<'a>(s: &'a str) -> &'a str`
+## 生命周期相关的问题  
+- 缺少生命周期注解：编译器通常会自动推断，但在有多个引用的情况下需要明确指定。  
+- `'static` 表示“可以永远存在”，并不意味着“永远存活”：`String` 是 `static` 类型的，但 `&str` 不是。  
+- 包含引用的结构体需要指定生命周期参数：例如 `struct Foo<'a> { bar: &'a str }`。  
+- 返回引用的函数必须确保引用的生命周期与输入参数一致：`fn get<'a>(s: &'a str) -> &'a str`。  
 
-## String Confusion
-- `String` is owned, `&str` is borrowed slice — convert with `.as_str()` or `String::from()`
-- Indexing `s[0]` fails — UTF-8 variable width, use `.chars().nth(0)` or `.bytes()`
-- Concatenation: `s1 + &s2` moves s1 — use `format!("{}{}", s1, s2)` to keep both
-- `.len()` returns bytes, not characters — use `.chars().count()` for char count
+## `String` 的使用误区  
+- `String` 是所有权的对象，`&str` 是借用的切片：需要使用 `.as_str()` 或 `String::from()` 进行转换。  
+- 访问 `s[0]` 会失败：`String` 的索引是基于字节长度的，应使用 `.chars().nth(0)` 或 `.bytes()`。  
+- 连接字符串时：`s1 + &s2` 会导致 `s1` 被移动，应使用 `format!("{}%", s1, s2)` 来保留两个字符串。  
+- `.len()` 返回的是字节数，而不是字符数：应使用 `.chars().count()` 来获取字符数量。  
 
-## Error Handling
-- `unwrap()` panics on None/Err — use `?` operator or `match` in production
-- `?` requires function returns Result/Option — can't use in main without `-> Result<()>`
-- Converting errors: `map_err()` or `From` trait implementation
-- `expect("msg")` better than `unwrap()` — shows context on panic
-- `Option` and `Result` don't mix — use `.ok()` or `.ok_or()` to convert
+## 错误处理  
+- `unwrap()` 在遇到 `None` 或 `Err` 时会引发 panic：在生产代码中应使用 `?` 操作符或 `match` 语句。  
+- `?` 操作符要求函数返回 `Result` 或 `Option` 类型：在 `main` 函数中使用时需要使用 `-> Result<>`。  
+- 错误转换：可以使用 `map_err()` 或实现 `From` trait。  
+- `expect("msg")` 比 `unwrap()` 更适合在 panic 时显示错误信息。  
+- `Option` 和 `Result` 不可混用：应使用 `.ok()` 或 `.ok_or()` 来处理返回值。  
 
-## Pattern Matching
-- Match must be exhaustive — use `_` wildcard for remaining cases
-- `if let` for single pattern — avoids verbose match for one case
-- Guard conditions: `match x { n if n > 0 => ... }` — guards don't create bindings
-- `@` bindings: `Some(val @ 1..=5)` — binds matched value to name
-- `ref` keyword in patterns to borrow — often unnecessary with match ergonomics
+## 模式匹配  
+- 模式匹配必须穷尽所有可能的情况：可以使用 `_` 通配符处理剩余的情况。  
+- `if let` 用于处理单一模式，避免冗长的匹配代码。  
+- 使用 `match x { n if n > 0 => ... }` 来添加条件判断。  
+- 使用 `@` 关键字为匹配到的值指定变量名：`Some(val @ 1..=5)`。  
+- 在模式中使用 `ref` 关键字进行引用：但在大多数情况下这是不必要的。  
 
-## Iterator Gotchas
-- `.iter()` borrows, `.into_iter()` moves, `.iter_mut()` borrows mutably
-- `.collect()` needs type annotation — `collect::<Vec<_>>()` or let binding with type
-- Iterators are lazy — nothing happens until consumed
-- `.map()` returns iterator, not collection — chain with `.collect()`
-- Modifying while iterating impossible — collect indices first, then modify
+## 迭代器相关的问题  
+- `.iter()` 用于借用数据，`.into_iter()` 用于移动数据，`.iter_mut()` 用于可变数据的借用。  
+- 使用 `.collect()` 需要指定类型：`collect::<Vec<_>>()` 或使用类型绑定。  
+- 迭代器是惰性的：只有在被使用时才会执行操作。  
+- `.map()` 返回的是迭代器，而不是集合：需要使用 `.collect()` 来转换结果。  
+- 在迭代过程中修改数据是不允许的：应先收集索引值，再进行修改。  
 
-## Type System
-- Orphan rule: can't impl external trait on external type — newtype pattern workaround
-- Trait objects `dyn Trait` have runtime cost — generics monomorphize for performance
-- `Box<dyn Trait>` for heap-allocated trait object — `&dyn Trait` for borrowed
-- Associated types vs generics: use associated when one impl per type
-- `Self` vs `self`: type vs value — `Self::new()` vs `&self`
+## 类型系统相关的问题  
+- 外部类型无法实现外部 trait：可以使用 `newtype` 模式来解决。  
+- `dyn Trait` 类型的对象在运行时会有性能开销：泛型会进行单态化处理以提高性能。  
+- 对于堆分配的 trait 对象，使用 `Box<dyn Trait>`；对于借用的对象，使用 `&dyn Trait`。  
+- 关联类型与泛型的选择：当每种类型都需要实现特定 trait 时，应使用关联类型。  
+- `Self` 和 `self` 的区别：`Self::new()` 用于创建新的实例，`&self` 用于引用现有实例。  
 
-## Concurrency
-- Data shared between threads needs `Send` and `Sync` — most types are, `Rc` is not
-- Use `Arc` for shared ownership across threads — `Rc` is single-threaded only
-- `Mutex<T>` for mutable shared state — lock returns guard, auto-unlocks on drop
-- `RwLock` allows multiple readers or one writer — deadlock if reader tries to write
-- Async functions return `Future` — must be awaited or spawned
+## 并发相关的问题  
+- 线程间共享数据需要使用 `Send` 和 `Sync`：大多数类型都支持这些特性，但 `Rc` 不支持。  
+- 使用 `Arc` 来实现跨线程的数据共享：`Rc` 仅适用于单线程环境。  
+- `Mutex<T>` 用于保护可变共享状态：锁定会返回保护对象，释放时会自动解锁。  
+- `RwLock` 允许多个读取者或一个写入者：如果读取者尝试写入会导致死锁。  
+- 异步函数返回 `Future` 对象：需要等待其完成或手动启动执行。  
 
-## Memory Patterns
-- `Box<T>` for heap allocation — also needed for recursive types
-- `Rc<T>` for shared ownership (single-thread) — `Arc<T>` for multi-thread
-- `RefCell<T>` for interior mutability — runtime borrow checking, panics on violation
-- `Cell<T>` for Copy types interior mutability — no borrow, just get/set
-- Avoid `Rc<RefCell<T>>` spaghetti — rethink ownership structure
+## 内存管理相关的问题  
+- `Box<T>` 用于堆分配的对象；对于递归类型也需要使用 `Box`。  
+- `Rc<T>` 用于单线程环境下的数据共享；`Arc<T>` 用于多线程环境。  
+- `RefCell<T>` 用于内部可变数据的共享：会进行运行时借用检查，违反规则时会引发 panic。  
+- `Cell<T>` 用于不可复制类型的数据共享：只能进行读取/写入操作。  
+- 避免使用 `Rc<RefCell<T>>` 这种复杂的引用结构：应重新设计数据的所有权模型。

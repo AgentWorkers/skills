@@ -1,74 +1,75 @@
 ---
 name: parallel-extract
-description: "URL content extraction via Parallel API. Extracts clean markdown from webpages, articles, PDFs, and JS-heavy sites. Use for reading specific URLs with LLM-ready output."
+description: "**通过Parallel API提取URL内容**：该功能可以从网页、文章、PDF文件以及JavaScript代码较多的网站中提取干净的Markdown格式内容。适用于需要使用大型语言模型（LLM）处理特定URL数据的场景。"
 homepage: https://parallel.ai
 ---
 
-# Parallel Extract
+# 并行提取（Parallel Extract）
 
-Extract clean, LLM-ready content from URLs. Handles webpages, articles, PDFs, and JavaScript-heavy sites that need rendering.
+从URL中提取干净、适合大型语言模型（LLM）使用的内容。支持处理网页、文章、PDF文件以及需要渲染的JavaScript含量较高的网站。
 
-## When to Use
+## 使用场景
 
-Trigger this skill when the user asks for:
-- "read this URL", "fetch this page", "extract from..."
-- "get the content from [URL]"
-- "what does this article say?"
-- Reading PDFs, JS-heavy pages, or paywalled content
-- Getting clean markdown from messy web pages
+当用户提出以下请求时，可使用此功能：
+- “阅读这个URL”
+- “从...中提取内容”
+- “从[URL]获取内容”
+- “这篇文章讲了什么？”
+- 阅读PDF文件、JavaScript含量较高的页面或需要付费才能访问的内容
+- 从杂乱无章的网页中提取清晰的Markdown格式内容
 
-**Use Search to discover; use Extract to read.**
+**使用“搜索”功能来发现目标内容，再使用“提取”功能来读取所需信息。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 parallel-cli extract "https://example.com/article" --json
 ```
 
-## CLI Reference
+## 命令行接口（CLI）参考
 
-### Basic Usage
+### 基本用法
 
 ```bash
 parallel-cli extract "<url>" [options]
 ```
 
-### Common Flags
+### 常用参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `--url "<url>"` | URL to extract (repeatable, max 10) |
-| `--objective "<focus>"` | Focus extraction on specific content |
-| `--json` | Output as JSON |
-| `--excerpts` / `--no-excerpts` | Include relevant excerpts (default: on) |
-| `--full-content` / `--no-full-content` | Include full page content |
-| `--excerpts-max-chars N` | Max chars per excerpt |
-| `--excerpts-max-total-chars N` | Max total excerpt chars |
-| `--full-max-chars N` | Max full content chars |
-| `-o <file>` | Save output to file |
+| `--url "<url>"` | 需要提取内容的URL（最多可输入10个URL） |
+| `--objective "<focus>"` | 指定提取的具体内容范围 |
+| `--json` | 以JSON格式输出结果 |
+| `--excerpts` / `--no-excerpts` | 是否包含相关摘录（默认为包含） |
+| `--full-content` / `--no-full-content` | 是否包含完整页面内容 |
+| `--excerpts-max-chars N` | 每条摘录的最大字符数 |
+| `--excerpts-max-total-chars N` | 所有摘录的最大总字符数 |
+| `--full-max-chars N` | 完整页面内容的最大字符数 |
+| `-o <file>` | 将输出结果保存到指定文件 |
 
-### Examples
+### 示例
 
-**Basic extraction:**
+**基本提取：**
 ```bash
 parallel-cli extract "https://example.com/article" --json
 ```
 
-**Focused extraction:**
+**针对性提取：**
 ```bash
 parallel-cli extract "https://example.com/pricing" \
   --objective "pricing tiers and features" \
   --json
 ```
 
-**Full content for PDFs:**
+**提取PDF文件的完整内容：**
 ```bash
 parallel-cli extract "https://example.com/whitepaper.pdf" \
   --full-content \
   --json
 ```
 
-**Multiple URLs:**
+**处理多个URL：**
 ```bash
 parallel-cli extract \
   --url "https://example.com/page1" \
@@ -76,79 +77,79 @@ parallel-cli extract \
   --json
 ```
 
-## Default Workflow
+## 默认工作流程
 
-1. **Search** with an objective + keyword queries
-2. **Inspect** titles/URLs/dates; choose the best sources
-3. **Extract** the specific pages you need (top N URLs)
-4. **Answer** using the extracted excerpts/content
+1. 使用带有目标关键词的查询进行“搜索”；
+2. 查看标题、URL和发布日期，选择最合适的来源；
+3. 提取所需的特定页面内容（前N个URL）；
+4. 使用提取到的摘录或内容进行回答。
 
-## Best-Practice Prompting
+## 最佳提示方式
 
-### Objective
-When extracting, provide context:
-- What specific information you're looking for
-- Why you need it (helps focus extraction)
+### 提供明确的目标
 
-**Good:** `--objective "Find the installation steps and system requirements"`
+在请求提取内容时，应提供以下信息：
+- 你需要查找的具体信息是什么？
+- 你为什么需要这些信息（这有助于精确定位提取内容）。
 
-**Poor:** `--objective "Read the page"`
+**示例：** `--objective "查找安装步骤和系统要求"`
 
-## Response Format
+**错误示例：** `--objective "阅读页面内容"`
 
-Returns structured JSON with:
-- `url` — source URL
-- `title` — page title
-- `excerpts[]` — relevant text excerpts (if enabled)
-- `full_content` — complete page content (if enabled)
-- `publish_date` — when available
+## 输出格式
 
-## Output Handling
+返回结构化的JSON格式数据，包含以下字段：
+- `url`：来源URL
+- `title`：页面标题
+- `excerpts[]`：相关文本摘录（如果启用）
+- `full_content`：完整页面内容（如果启用）
+- `publish_date`：页面的发布日期
 
-When turning extracted content into a user-facing answer:
-- Keep content **verbatim** — do not paraphrase unnecessarily
-- Extract **ALL** list items exhaustively
-- Strip noise: nav menus, footers, ads, "click here" links
-- Preserve all facts, names, numbers, dates, quotes
-- Include **URL + publish_date** for transparency
+## 输出处理
 
-## Running Out of Context?
+在将提取的内容呈现给用户时，请注意以下几点：
+- 保持内容原样，避免不必要的改写；
+- 彻底提取所有列表项；
+- 去除无关内容（如导航菜单、页脚、广告、“点击这里”链接等）；
+- 保留所有事实、名称、数字、日期和引文；
+- 显示URL和发布日期以确保信息的透明度。
 
-For long conversations, save results and use `sessions_spawn`:
+## 缺乏上下文怎么办？
+
+对于较长的对话，可以先保存提取结果，然后使用`sessions_spawn`功能启动子代理来继续处理：
 
 ```bash
 parallel-cli extract "<url>" --json -o /tmp/extract-<topic>.json
 ```
 
-Then spawn a sub-agent:
-```json
+之后，可以通过````json
 {
   "tool": "sessions_spawn",
   "task": "Read /tmp/extract-<topic>.json and summarize the key content.",
   "label": "extract-summary"
 }
-```
+````启动子代理来继续执行后续任务。
 
-## Error Handling
+## 错误处理
 
-| Exit Code | Meaning |
+| 错误代码 | 含义 |
 |-----------|---------|
-| 0 | Success |
-| 1 | Unexpected error (network, parse) |
-| 2 | Invalid arguments |
-| 3 | API error (non-2xx) |
+| 0 | 操作成功 |
+| 1 | 发生意外错误（网络问题或解析错误） |
+| 2 | 参数无效 |
+| 3 | API调用失败（非2xx状态码） |
 
-## Prerequisites
+## 先决条件
 
-1. Get an API key at [parallel.ai](https://parallel.ai)
-2. Install the CLI:
+1. 在[parallel.ai](https://parallel.ai)获取API密钥；
+2. 安装相应的命令行工具。
 
 ```bash
 curl -fsSL https://parallel.ai/install.sh | bash
 export PARALLEL_API_KEY=your-key
 ```
 
-## References
+## 参考资料
 
-- [API Docs](https://docs.parallel.ai)
-- [Extract API Reference](https://docs.parallel.ai/api-reference/extract)
+- [API文档](https://docs.parallel.ai)
+- [提取API参考](https://docs.parallel.ai/api-reference/extract)

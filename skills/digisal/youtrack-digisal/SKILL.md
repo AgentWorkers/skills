@@ -1,29 +1,29 @@
 ---
 name: youtrack
-description: Interact with YouTrack project management system via REST API. Read projects and issues, create tasks, generate invoices from time tracking data, and manage knowledge base articles. Use for reading projects and work items, creating or updating issues, generating client invoices from time tracking, and working with knowledge base articles.
+description: 通过 REST API 与 YouTrack 项目管理系统进行交互。可以读取项目信息和问题详情、创建任务、根据时间跟踪数据生成发票，以及管理知识库文章。该系统可用于查看项目和工作项、创建或更新问题、根据时间跟踪数据生成客户发票，以及处理知识库文章。
 ---
 
 # YouTrack
 
-YouTrack integration for project management, time tracking, and knowledge base.
+YouTrack 提供了项目管理、时间跟踪和知识库集成功能。
 
-## Quick Start
+## 快速入门
 
-### Authentication
+### 认证
 
-To generate a permanent token:
-1. From the main navigation menu, select **Administration** > **Access Management** > **Users**
-2. Find your user and click to open settings
-3. Generate a new permanent API token
-4. Set the token as an environment variable:
+要生成一个永久性的 API 令牌，请按照以下步骤操作：
+1. 从主导航菜单中选择 **管理** > **访问管理** > **用户**
+2. 找到您的用户并点击以打开设置
+3. 生成一个新的永久性 API 令牌
+4. 将该令牌设置为环境变量：
 
 ```bash
 export YOUTRACK_TOKEN=your-permanent-token-here
 ```
 
-**Important:** Configure your hourly rate (default $100/hour) by passing `--rate` to invoice_generator.py or updating `hourly_rate` parameter in your code.
+**重要提示：** 请通过传递 `--rate` 参数到 `invoice_generator.py` 或在代码中更新 `hourly_rate` 参数来配置您的每小时费用（默认为 $100/小时）。
 
-Then use any YouTrack script:
+然后您可以使用任何 YouTrack 脚本：
 
 ```bash
 # List all projects
@@ -36,13 +36,13 @@ python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud --lis
 python3 scripts/invoice_generator.py --url https://your-instance.youtrack.cloud --project MyProject --month "January 2026" --from-date "2026-01-01"
 ```
 
-## Python Scripts
+## Python 脚本
 
 ### `scripts/youtrack_api.py`
 
-Core API client for all YouTrack operations.
+这是一个用于所有 YouTrack 操作的核心 API 客户端。
 
-**In your Python code:**
+**在您的 Python 代码中：**
 ```python
 from youtrack_api import YouTrackAPI
 
@@ -69,7 +69,7 @@ article = api.get_article('article-id')
 api.create_article('project-id', 'Title', 'Content')
 ```
 
-**CLI usage:**
+**命令行使用方法：**
 ```bash
 python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud \
     --token YOUR_TOKEN \
@@ -84,9 +84,9 @@ python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud \
 
 ### `scripts/invoice_generator.py`
 
-Generate client invoices from time tracking data.
+该脚本根据时间跟踪数据生成客户发票。
 
-**In your Python code:**
+**在您的 Python 代码中：**
 ```python
 from youtrack_api import YouTrackAPI
 from invoice_generator import InvoiceGenerator
@@ -102,7 +102,7 @@ invoice_text = generator.generate_invoice_text(project_data, month='January 2026
 print(invoice_text)
 ```
 
-**CLI usage:**
+**命令行使用方法：**
 ```bash
 python3 scripts/invoice_generator.py \
     --url https://your-instance.youtrack.cloud \
@@ -113,18 +113,16 @@ python3 scripts/invoice_generator.py \
     --format text
 ```
 
-Save the text output and print to PDF for clients.
+将脚本的输出保存为文本文件，并将其转换为 PDF 格式提供给客户。
 
-## Common Workflows
+## 常见工作流程
 
-### 1. List All Projects
-
+### 1. 列出所有项目
 ```bash
 python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud --list-projects
 ```
 
-### 2. Find Issues in a Project
-
+### 2. 在项目中查找问题
 ```bash
 # All issues in a project
 python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud --list-issues "project: MyProject"
@@ -136,8 +134,7 @@ python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud --lis
 python3 scripts/youtrack_api.py --url https://your-instance.youtrack.cloud --list-issues "assignee: me"
 ```
 
-### 3. Create a New Issue
-
+### 3. 创建新问题
 ```python
 from youtrack_api import YouTrackAPI
 
@@ -149,8 +146,7 @@ api.create_issue(
 )
 ```
 
-### 4. Generate Monthly Invoice
-
+### 4. 生成月度发票
 ```bash
 # Generate invoice for January 2026
 python3 scripts/invoice_generator.py \
@@ -162,10 +158,9 @@ python3 scripts/invoice_generator.py \
     --format text > invoice.txt
 ```
 
-Save the text output and print to PDF for clients.
+将脚本的输出保存为文本文件，并将其转换为 PDF 格式提供给客户。
 
-### 5. Read Knowledge Base
-
+### 5. 阅读知识库
 ```python
 from youtrack_api import YouTrackAPI
 
@@ -181,38 +176,37 @@ articles = api.get_articles(project_id='MyProject')
 article = api.get_article('article-id')
 ```
 
-## Billing Logic
+## 开票逻辑
 
-Invoice generator uses this calculation:
+发票生成器使用以下计算方式：
+1. 将每个问题所记录的总时间（以分钟为单位）相加
+2. 将时间转换为 30 分钟的增量（向上取整）
+3. 最小收费时间为 30 分钟（按配置的费率计算）
+4. 将结果乘以费率（默认为 $100/小时，即每半小时 $50）
 
-1. Sum all time tracked per issue (in minutes)
-2. Convert to 30-minute increments (round up)
-3. Minimum charge is 30 minutes (at configured rate/2)
-4. Multiply by rate (default $100/hour = $50 per half-hour)
+示例：
+- 15 分钟 → $50（最低收费 30 分钟）
+- 35 分钟 → $100（向上取整为 60 分钟）
+- 60 分钟 → $100
+- 67 分钟 → $150（向上取整为 90 分钟）
 
-Examples:
-- 15 minutes → $50 (30 min minimum)
-- 35 minutes → $100 (rounded to 60 min)
-- 60 minutes → $100
-- 67 minutes → $150 (rounded to 90 min)
+## 环境变量
 
-## Environment Variables
+- `YOUTRACK_TOKEN`：您的永久性 API 令牌（建议使用环境变量而非作为参数传递）
+- 通过 `export YOUTRACK_TOKEN=your-token` 来设置该变量
 
-- `YOUTRACK_TOKEN`: Your permanent API token (recommended over passing as argument)
-- Set with `export YOUTRACK_TOKEN=your-token`
+## API 详情
 
-## API Details
+请参阅 `REFERENCES.md` 以获取以下信息：
+- 完整的 API 端点文档
+- 查询语言示例
+- 字段 ID 和结构
 
-See `REFERENCES.md` for:
-- Complete API endpoint documentation
-- Query language examples
-- Field IDs and structures
+## 错误处理
 
-## Error Handling
+如果出现以下情况，脚本将抛出错误：
+- 令牌缺失或无效
+- 网络问题
+- API 错误（如 404、403 等）
 
-Scripts will raise errors for:
-- Missing or invalid token
-- Network issues
-- API errors (404, 403, etc.)
-
-Check stderr for error details.
+请查看 `stderr` 文件以获取错误详细信息。

@@ -1,10 +1,10 @@
 # Dropbox Manager Skill
 
-Manage Dropbox files via MCP server and CLI. Swift-native implementation using SwiftyDropbox SDK with OAuth 2.0 PKCE and secure Keychain token storage.
+通过MCP服务器和CLI管理Dropbox文件。该功能采用Swift原生实现，基于SwiftyDropbox SDK，并支持OAuth 2.0的PKCE认证机制以及安全的Keychain令牌存储。
 
-## Setup
+## 设置
 
-### Prerequisites
+### 先决条件
 
 ```bash
 # Clone and build Dropbook
@@ -13,11 +13,11 @@ cd Dropbook
 make build
 ```
 
-### Authentication
+### 认证
 
-#### Option 1: OAuth Login with Keychain (Recommended)
+#### 选项1：使用Keychain进行OAuth登录（推荐）
 
-Use the interactive OAuth flow with secure Keychain storage:
+使用带有安全Keychain存储功能的交互式OAuth流程：
 
 ```bash
 export DROPBOX_APP_KEY="your_dropbox_app_key"
@@ -26,22 +26,22 @@ make login
 # or: swift run dropbook login
 ```
 
-This will:
-1. Generate PKCE code verifier and challenge (SHA256, RFC 7636)
-2. Open an authorization URL with state parameter (CSRF protection)
-3. Prompt you to paste the authorization code
-4. Exchange code for access and refresh tokens
-5. **Save tokens to macOS Keychain** (hardware-backed encryption)
-6. Fall back to `~/.dropbook/auth.json` if Keychain unavailable
-7. Enable automatic token refreshing
+此过程将：
+1. 生成PKCE代码验证器和挑战码（SHA256格式，符合RFC 7636标准）
+2. 打开一个包含状态参数的授权URL（具有CSRF保护机制）
+3. 提示用户粘贴授权码
+4. 将代码兑换为访问令牌和刷新令牌
+5. **将令牌保存到macOS的Keychain中**（采用硬件加密方式）
+6. 如果Keychain不可用，会回退到`~/.dropbook/auth.json`文件中存储令牌
+7. 启用令牌的自动刷新功能
 
-**Security Features (RFC 9700 compliant):**
-- PKCE with S256 challenge method
-- State parameter for CSRF protection
-- Keychain storage with `kSecAttrAccessibleWhenUnlocked`
-- CryptoKit for cryptographic operations
+**安全特性（符合RFC 9700标准）：**
+- 使用PKCE和S256挑战码机制
+- 通过状态参数实现CSRF保护
+- 令牌存储采用`kSecAttrAccessibleWhenUnlocked`属性
+- 使用CryptoKit进行加密操作
 
-#### Option 2: Environment Variables (Legacy)
+#### 选项2：使用环境变量（旧版本）
 
 ```bash
 export DROPBOX_APP_KEY="your_dropbox_app_key"
@@ -49,46 +49,46 @@ export DROPBOX_APP_SECRET="your_dropbox_app_secret"
 export DROPBOX_ACCESS_TOKEN="your_dropbox_access_token"
 ```
 
-**Note**: Manual tokens don't support automatic refreshing. Use OAuth login for production use.
+**注意**：手动生成的令牌不支持自动刷新。在生产环境中请使用OAuth登录方式。
 
-### Logout
+### 登出
 
-Clear stored tokens from both Keychain and file storage:
+从Keychain和文件存储中清除所有保存的令牌：
 
 ```bash
 make logout
 # or: swift run dropbook logout
 ```
 
-## MCP Server (Recommended)
+## MCP服务器（推荐）
 
-Start the MCP server:
+启动MCP服务器：
 
 ```bash
 make mcp
 # or: ./.build/debug/dropbook mcp
 ```
 
-### MCP Tools
+### MCP工具
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `list_directory` | List files and folders in a Dropbox directory |
-| `search` | Search for files by name or content |
-| `upload` | Upload a file to Dropbox |
-| `download` | Download a file from Dropbox |
-| `delete` | Delete a file or folder (moves to trash) |
-| `get_account_info` | Get account name and email |
-| `read_file` | Read contents of a text file |
+| `list_directory` | 列出Dropbox目录中的文件和文件夹 |
+| `search` | 按名称或内容搜索文件 |
+| `upload` | 将文件上传到Dropbox |
+| `download` | 从Dropbox下载文件 |
+| `delete` | 删除文件或文件夹（文件会被移至回收站） |
+| `get_account_info` | 获取账户名称和电子邮件 |
+| `read_file` | 读取文本文件的内容 |
 
 #### list_directory
 
-List files and folders in a Dropbox directory.
+列出Dropbox目录中的文件和文件夹。
 
-**Parameters:**
-- `path` (string, optional): Directory path. Default: "/"
+**参数：**
+- `path`（字符串，可选）：目录路径。默认值："/"
 
-**Response:**
+**响应：**
 ```json
 {
   "files": [
@@ -100,13 +100,13 @@ List files and folders in a Dropbox directory.
 
 #### search
 
-Search for files by name or content.
+按名称或内容搜索文件。
 
-**Parameters:**
-- `query` (string, required): Search term
-- `path` (string, optional): Path to search within. Default: "/"
+**参数：**
+- `query`（字符串，必填）：搜索关键字
+- `path`（字符串，可选）：搜索范围路径。默认值："/"
 
-**Response:**
+**响应：**
 ```json
 {
   "count": 2,
@@ -118,14 +118,14 @@ Search for files by name or content.
 
 #### upload
 
-Upload a file to Dropbox.
+将文件上传到Dropbox。
 
-**Parameters:**
-- `localPath` (string, required): Absolute path to local file
-- `remotePath` (string, required): Destination in Dropbox
-- `overwrite` (boolean, optional): Replace if exists. Default: false
+**参数：**
+- `localPath`（字符串，必填）：本地文件的绝对路径
+- `remotePath`（字符串，必填）：Dropbox中的目标路径
+- `overwrite`（布尔值，可选）：如果目标文件存在则覆盖。默认值：false
 
-**Response:**
+**响应：**
 ```json
 {
   "uploaded": true,
@@ -137,13 +137,13 @@ Upload a file to Dropbox.
 
 #### download
 
-Download a file from Dropbox.
+从Dropbox下载文件。
 
-**Parameters:**
-- `remotePath` (string, required): File path in Dropbox
-- `localPath` (string, required): Local destination path
+**参数：**
+- `remotePath`（字符串，必填）：Dropbox中的文件路径
+- `localPath`（字符串，必填）：本地目标路径
 
-**Response:**
+**响应：**
 ```json
 {
   "downloaded": true,
@@ -153,12 +153,12 @@ Download a file from Dropbox.
 
 #### delete
 
-Delete a file or folder from Dropbox (moves to trash).
+从Dropbox删除文件或文件夹（文件会被移至回收站）。
 
-**Parameters:**
-- `path` (string, required): Path to delete in Dropbox
+**参数：**
+- `path`（字符串，必填）：要删除的文件或文件夹路径
 
-**Response:**
+**响应：**
 ```json
 {
   "deleted": true,
@@ -168,11 +168,11 @@ Delete a file or folder from Dropbox (moves to trash).
 
 #### get_account_info
 
-Get Dropbox account information.
+获取Dropbox账户信息。
 
-**Parameters:** None
+**参数：** 无
 
-**Response:**
+**响应：**
 ```json
 {
   "name": "Ryan Lisse",
@@ -182,15 +182,14 @@ Get Dropbox account information.
 
 #### read_file
 
-Read and return the contents of a text file from Dropbox.
+从Dropbox读取并返回文本文件的内容。
 
-**Parameters:**
-- `path` (string, required): Path to file in Dropbox
+**参数：**
+- `path`（字符串，必填）：Dropbox中的文件路径
 
-**Response:**
-Returns the file contents as text. Only works with UTF-8 encoded text files.
+**响应：** 返回文件的文本内容。仅支持UTF-8编码的文本文件。
 
-## CLI Commands
+## CLI命令
 
 ```bash
 # Authentication
@@ -214,11 +213,11 @@ swift run dropbook download /remote/path /local/path
 make mcp
 ```
 
-## MCP Client Configuration
+## MCP客户端配置
 
-### Claude Code (Project-level)
+### Claude代码（项目级）
 
-The project includes a `.mcp.json` file that configures the MCP server:
+项目中包含一个`.mcp.json`文件，用于配置MCP服务器：
 
 ```json
 {
@@ -235,14 +234,15 @@ The project includes a `.mcp.json` file that configures the MCP server:
 }
 ```
 
-Enable project MCP servers in Claude Code settings.json:
+在Claude Code的settings.json配置文件中启用MCP服务器：
+
 ```json
 {
   "enableAllProjectMcpServers": true
 }
 ```
 
-### Claude Desktop
+### Claude桌面应用
 
 ```json
 {
@@ -259,16 +259,16 @@ Enable project MCP servers in Claude Code settings.json:
 }
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误类型 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `notConfigured` | Missing env vars | Set DROPBOX_APP_KEY, DROPBOX_APP_SECRET |
-| `invalidArguments` | Missing required params | Check tool parameters |
-| `notFound` | Path doesn't exist | Use `list_directory` to verify paths |
-| `itemNotFound` | No token in Keychain | Run `make login` to authenticate |
+| `notConfigured` | 缺少环境变量 | 设置`DROPBOX_APP_KEY`和`DROPBOX_APP_SECRET` |
+| `invalidArguments` | 缺少必需的参数 | 检查工具参数是否正确 |
+| `notFound` | 路径不存在 | 使用`list_directory`命令验证路径 |
+| `itemNotFound` | Keychain中找不到令牌 | 运行`make login`命令进行身份验证 |
 
-## Architecture
+## 架构
 
 ```
 Dropbook/
@@ -287,17 +287,17 @@ Dropbook/
 └── Package.swift
 ```
 
-## Bulk Operations with rclone
+## 使用rclone进行批量操作
 
-For large-scale operations like backups, syncing, or bulk transfers, use [rclone](https://rclone.org/) - a powerful cloud sync tool with native Dropbox support.
+对于大规模操作（如备份、同步或批量传输），可以使用[rclone](https://rclone.org/)——这是一个支持Dropbox功能的强大云同步工具。
 
-### Install rclone
+### 安装rclone
 
 ```bash
 brew install rclone
 ```
 
-### Configure rclone for Dropbox
+### 配置rclone以使用Dropbox
 
 ```bash
 # Interactive setup (opens browser for OAuth)
@@ -312,7 +312,7 @@ token = {"access_token":"...paste token here..."}
 EOF
 ```
 
-### Backup to Network Drive / Time Capsule
+### 将文件备份到网络驱动器或Time Capsule
 
 ```bash
 # Full backup with progress
@@ -330,7 +330,7 @@ rclone sync dropbox: /Volumes/Backup/Dropbox --progress
 rclone copy dropbox: /Volumes/Backup --dry-run
 ```
 
-### Common rclone Commands
+### 常用的rclone命令
 
 ```bash
 # List remote contents
@@ -349,22 +349,22 @@ rclone bisync dropbox: /local/path --resync
 rclone mount dropbox: /mnt/dropbox --vfs-cache-mode full
 ```
 
-### rclone Flags for Reliability
+### rclone的可靠性相关选项
 
-| Flag | Description |
+| 选项 | 描述 |
 |------|-------------|
-| `--progress` | Show real-time transfer progress |
-| `--transfers 4` | Number of parallel transfers |
-| `--checkers 8` | Number of parallel checkers |
-| `--retries 10` | Retry failed operations |
-| `--low-level-retries 20` | Retry low-level errors |
-| `--log-file path` | Write logs to file |
-| `--dry-run` | Show what would be done |
-| `--checksum` | Verify with checksums |
+| `--progress` | 显示实时传输进度 |
+| `--transfers 4` | 并行传输的任务数量 |
+| `--checkers 8` | 并行检查的任务数量 |
+| `--retries 10` | 重试失败的操作次数 |
+| `--low-level-retries 20` | 重试底层错误 |
+| `--log-file path` | 将日志写入指定文件 |
+| `--dry-run` | 显示即将执行的操作 |
+| `--checksum` | 使用校验和进行数据验证 |
 
-### Rate Limiting
+### 速率限制
 
-Dropbox has strict API rate limits. If you see `too_many_requests` errors:
+Dropbox对API请求有严格的速率限制。如果遇到`too_many_requests`错误：
 
 ```bash
 # Use bandwidth limiting
@@ -374,38 +374,38 @@ rclone copy dropbox: /backup --bwlimit 1M
 rclone copy dropbox: /backup --tpslimit 2
 ```
 
-rclone handles rate limits automatically with exponential backoff.
+rclone会通过指数级退避策略自动处理速率限制问题。
 
-## Best Practices
+## 最佳实践
 
-1. **Use OAuth login** - Secure Keychain storage with automatic token refresh
-2. **Use MCP for agents** - More reliable for programmatic access
-3. **Use rclone for bulk ops** - Better for backups and large transfers
-4. **Validate paths first** - Use `list_directory` before operations
-5. **Handle errors gracefully** - Check responses for error fields
-6. **Respect rate limits** - Add delays between bulk operations
-7. **Use absolute paths** - Always provide full paths for file operations
+1. **使用OAuth登录**：采用安全的Keychain存储方式，并启用令牌自动刷新功能。
+2. **使用MCP进行程序化访问**：更可靠。
+3. **使用rclone进行批量操作**：适用于备份和大规模数据传输。
+4. **先验证路径**：在执行操作前使用`list_directory`命令确认路径是否存在。
+5. **优雅地处理错误**：检查响应中的错误信息。
+6. **遵守速率限制**：在批量操作之间添加适当的延迟。
+7. **使用绝对路径**：进行文件操作时始终提供完整的路径。
 
-## Security
+## 安全性措施
 
-- **Keychain Storage**: Tokens stored with hardware-backed encryption
-- **PKCE**: Proof Key for Code Exchange prevents authorization code interception
-- **State Parameter**: CSRF protection for OAuth flow
-- **Token Refresh**: Automatic refresh before expiration
-- **CryptoKit**: Modern Swift cryptographic library
+- **Keychain存储**：令牌采用硬件加密方式存储。
+- **PKCE**：通过代码交换机制防止授权码被截获。
+- **状态参数**：提供CSRF保护。
+- **令牌自动刷新**：在令牌过期前自动更新。
+- **CryptoKit**：使用现代的Swift加密库。
 
-## Dependencies
+## 所需依赖库
 
-- **SwiftyDropbox** (v10.2.4+): Official Dropbox Swift SDK
-- **MCP (swift-sdk)**: Model Context Protocol SDK
-- **CryptoKit**: Apple's cryptographic framework
-- **rclone** (optional): For bulk operations and backups (`brew install rclone`)
+- **SwiftyDropbox**（v10.2.4及以上版本）：官方的Dropbox Swift SDK
+- **MCP (swift-sdk)**：用于模型上下文管理的SDK
+- **CryptoKit**：Apple提供的加密框架
+- **rclone**（可选）：用于批量操作和备份（使用`brew install rclone`安装）
 
-## See Also
+## 相关资源
 
-- [Dropbook GitHub](https://github.com/RyanLisse/Dropbook)
-- [CLAUDE.md](../CLAUDE.md) - Full project documentation
-- [Dropbox API Docs](https://www.dropbox.com/developers/documentation)
-- [rclone Dropbox Docs](https://rclone.org/dropbox/) - Bulk sync and backup
-- [RFC 7636 - PKCE](https://datatracker.ietf.org/doc/html/rfc7636)
-- [RFC 9700 - OAuth 2.0 Security Best Practices](https://datatracker.ietf.org/doc/html/rfc9700)
+- [Dropbook GitHub仓库](https://github.com/RyanLisse/Dropbook)
+- [CLAUDE.md](../CLAUDE.md)：完整的项目文档
+- [Dropbox API文档](https://www.dropbox.com/developers/documentation)
+- [rclone官方文档](https://rclone.org/dropbox/)：关于rclone的使用说明
+- [RFC 7636 - PKCE协议](https://datatracker.ietf.org/doc/html/rfc7636)
+- [RFC 9700 - OAuth 2.0安全最佳实践](https://datatracker.ietf.org/doc/html/rfc9700)

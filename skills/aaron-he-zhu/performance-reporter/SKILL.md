@@ -1,49 +1,49 @@
 ---
 name: performance-reporter
-description: Generates comprehensive SEO and GEO performance reports combining rankings, traffic, backlinks, and AI visibility metrics. Creates executive summaries and detailed analyses for stakeholder reporting.
+description: 生成全面的SEO和GEO性能报告，涵盖排名、流量、反向链接以及AI可见性指标。为利益相关者提供执行摘要和详细分析报告。
 geo-relevance: "medium"
 ---
 
-# Performance Reporter
+# 性能报告工具
 
-This skill creates comprehensive SEO and GEO performance reports that combine multiple metrics into actionable insights. It produces executive summaries, detailed analyses, and visual data presentations for stakeholder communication.
+该工具能够生成全面的SEO和GEO性能报告，将多种指标整合为可操作的洞察结果。它提供执行摘要、详细分析以及可视化数据展示，以便与利益相关者进行沟通。
 
-## When to Use This Skill
+## 适用场景
 
-- Monthly/quarterly SEO reporting
-- Executive stakeholder updates
-- Client reporting for agencies
-- Tracking campaign performance
-- Combining multiple SEO metrics
-- Creating GEO visibility reports
-- Documenting ROI from SEO efforts
+- 月度/季度SEO报告
+- 执行层利益相关者更新
+- 机构为客户提供的报告
+- 跟踪营销活动效果
+- 综合多种SEO指标
+- 制作GEO可见性报告
+- 记录SEO工作的投资回报率（ROI）
 
-## What This Skill Does
+## 工具功能
 
-1. **Data Aggregation**: Combines multiple SEO data sources
-2. **Trend Analysis**: Identifies patterns across metrics
-3. **Executive Summaries**: Creates high-level overviews
-4. **Visual Reports**: Presents data in clear formats
-5. **Benchmark Comparison**: Tracks against goals and competitors
-6. **Content Quality Tracking**: Integrates CORE-EEAT scores across audited pages
-7. **ROI Calculation**: Measures SEO investment returns
-8. **Recommendations**: Suggests actions based on data
+1. **数据聚合**：整合多个SEO数据源
+2. **趋势分析**：识别各项指标之间的模式
+3. **执行摘要**：生成高层次的概览
+4. **可视化报告**：以清晰的形式呈现数据
+5. **基准对比**：根据目标和竞争对手进行跟踪
+6. **内容质量监控**：整合审核页面的CORE-EEAT评分
+7. **ROI计算**：衡量SEO投资回报
+8. **建议**：基于数据提出行动方案
 
-## How to Use
+## 使用方法
 
-### Generate Performance Report
+### 生成性能报告
 
 ```
 Create an SEO performance report for [domain] for [time period]
 ```
 
-### Executive Summary
+### 执行摘要
 
 ```
 Generate an executive summary of SEO performance for [month/quarter]
 ```
 
-### Specific Report Types
+### 具体报告类型
 
 ```
 Create a GEO visibility report for [domain]
@@ -53,29 +53,32 @@ Create a GEO visibility report for [domain]
 Generate a content performance report
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅[CONNECTORS.md](../../CONNECTORS.md)以获取工具类别的占位符信息。
 
-**With ~~analytics + ~~search console + ~~SEO tool + ~~AI monitor connected:**
-Automatically aggregate traffic metrics from ~~analytics, search performance data from ~~search console, ranking and backlink data from ~~SEO tool, and GEO visibility metrics from ~~AI monitor. Creates comprehensive multi-source reports with historical trends.
+**当连接到以下工具时：**
+- **分析工具**：自动聚合来自分析工具的流量数据
+- **搜索控制台**：来自搜索控制台的搜索性能数据
+- **SEO工具**：来自SEO工具的排名和反向链接数据
+- **AI监控工具**：来自AI监控工具的GEO可见性数据。这些工具将生成包含历史趋势的综合性多源报告。
 
-**With manual data only:**
-Ask the user to provide:
-1. Analytics screenshots or traffic data export (sessions, users, conversions)
-2. Search Console data (impressions, clicks, average position)
-3. Keyword ranking data for the reporting period
-4. Backlink metrics (referring domains, new/lost links)
-5. Key performance indicators and goals for comparison
-6. AI citation data if tracking GEO metrics
+**仅使用手动数据时：**
+- 要求用户提供以下数据：
+  - 分析工具的截图或流量数据导出（会话数、用户数、转化次数）
+  - 搜索控制台数据（展示次数、点击次数、平均排名）
+  - 报告期间的关键词排名数据
+  - 反向链接指标（引用域名、新增/丢失的链接）
+  - 关键绩效指标和用于比较的目标
+  - 如果需要跟踪GEO指标，请提供AI引用数据
 
-Proceed with the full analysis using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+使用提供的数据进行完整分析。在输出中注明哪些指标是自动收集的，哪些是用户提供的。
 
-## Instructions
+## 操作步骤
 
-When a user requests a performance report:
+当用户请求性能报告时：
 
-1. **Define Report Parameters**
+1. **定义报告参数**
 
    ```markdown
    ## Report Configuration
@@ -88,7 +91,7 @@ When a user requests a performance report:
    **Focus Areas**: [Rankings/Traffic/Content/Backlinks/GEO]
    ```
 
-2. **Create Executive Summary**
+2. **生成执行摘要**
 
    ```markdown
    # SEO Performance Report
@@ -134,7 +137,7 @@ When a user requests a performance report:
    **ROI**: [Z]%
    ```
 
-3. **Report Organic Traffic Performance**
+3. **报告自然搜索流量表现**
 
    ```markdown
    ## Organic Traffic Analysis
@@ -153,10 +156,10 @@ When a user requests a performance report:
    ### Traffic Trend
    
    ```
-   [Month 1]  ████████████████████ [X]
-   [Month 2]  █████████████████████ [Y]
-   [Month 3]  ███████████████████████ [Z]
-   [Current]  ████████████████████████ [W]
+   [月份1]  ████████████████████ [X]
+   [月份2]  █████████████████████ [Y]
+   [月份3]  ███████████████████████ [Z]
+   [当前]  ████████████████████████ [W]
    ```
    
    ### Traffic by Source
@@ -185,7 +188,7 @@ When a user requests a performance report:
    | Tablet | [X] ([Y]%) | [+/-Z%] | [%] |
    ```
 
-4. **Report Keyword Rankings**
+4. **报告关键词排名**
 
    ```markdown
    ## Keyword Ranking Performance
@@ -203,35 +206,11 @@ When a user requests a performance report:
    ### Ranking Distribution Change
    
    ```
-   Last Period:  ▓▓▓▓░░░░░░░░░░░░
-   This Period:  ▓▓▓▓▓▓░░░░░░░░░░
-                 ↑ More keywords in top positions
-   ```
-   
-   ### Top Ranking Improvements
-   
-   | Keyword | Previous | Current | Change | Traffic |
-   |---------|----------|---------|--------|---------|
-   | [kw 1] | [X] | [Y] | +[Z] | [sessions] |
-   | [kw 2] | [X] | [Y] | +[Z] | [sessions] |
-   | [kw 3] | [X] | [Y] | +[Z] | [sessions] |
-   
-   ### Rankings That Declined
-   
-   | Keyword | Previous | Current | Change | Impact | Action |
-   |---------|----------|---------|--------|--------|--------|
-   | [kw 1] | [X] | [Y] | -[Z] | -[sessions] | [action] |
-   
-   ### SERP Feature Performance
-   
-   | Feature | Won | Lost | Opportunities |
-   |---------|-----|------|---------------|
-   | Featured Snippets | [X] | [Y] | [Z] |
-   | People Also Ask | [X] | [Y] | [Z] |
-   | Local Pack | [X] | [Y] | [Z] |
-   ```
+   上一期： ▓▓▓▓░░░░░░░░░░░░
+   本期： ▓▓▓▓▓▓░░░░░░░░░
+                 ↑ 更多关键词进入顶级排名
 
-5. **Report GEO/AI Performance**
+5. **报告GEO/AI表现**
 
    ```markdown
    ## GEO (AI Visibility) Performance
@@ -267,9 +246,9 @@ When a user requests a performance report:
    | [query] | Yes | No | [gap] | [action] |
    ```
 
-6. **Report Domain Authority (CITE Score)**
+6. **报告域名权威度（CITE评分）**
 
-   If a CITE domain audit has been run previously (via domain-authority-auditor), include domain authority trends:
+   如果之前已经使用`domain-authority-auditor`工具进行了域名权威度审计，请包括域名权威度的变化趋势：
 
    ```markdown
    ## Domain Authority (CITE Score)
@@ -294,11 +273,11 @@ When a user requests a performance report:
    _For full 40-item evaluation, run `/seo:audit-domain`_
    ```
 
-   **Note**: If no previous CITE audit exists, note this section as "Not yet evaluated — run domain-authority-auditor for baseline" and skip.
+**注意**：如果之前没有进行过CITE审计，请将此部分标记为“尚未评估 — 需要运行`domain-authority-auditor`以获取基准数据”，并跳过此步骤。
 
-7. **Content Quality (CORE-EEAT Score)**
+7. **内容质量（CORE-EEAT评分）**
 
-   If content-quality-auditor has been run on key pages (via `/seo:audit-page`), include content quality metrics:
+   如果已经使用`/seo:audit-page`工具对关键页面进行了内容质量审计，请包括内容质量指标：
 
    ```markdown
    ## Content Quality (CORE-EEAT Score)
@@ -334,9 +313,9 @@ When a user requests a performance report:
    _For full 80-item evaluation, run `/seo:audit-page` on individual pages. See CORE-EEAT benchmark for methodology._
    ```
 
-   **Note**: If no content quality audit exists, note this section as "Content quality not yet evaluated — run `/seo:audit-page` on key landing pages to establish baseline" and skip.
+**注意**：如果之前没有进行过内容质量审计，请将此部分标记为“内容质量尚未评估 — 需要对关键着陆页运行`/seo:audit-page`以建立基准数据”，并跳过此步骤。
 
-8. **Report Backlink Performance**
+8. **报告反向链接表现**
 
    ```markdown
    ## Backlink Performance
@@ -372,7 +351,7 @@ When a user requests a performance report:
    Your referring domains rank #[X] of [Y] competitors.
    ```
 
-9. **Report Content Performance**
+9. **报告内容表现**
 
    ```markdown
    ## Content Performance
@@ -407,7 +386,7 @@ When a user requests a performance report:
    | [Title 2] | $[X] | $[Y] | [Z]% |
    ```
 
-10. **Generate Recommendations**
+10. **生成建议**
 
    ```markdown
    ## Recommendations & Next Steps
@@ -442,7 +421,7 @@ When a user requests a performance report:
    | Referring Domains | [X] | [Y] | [action] |
    ```
 
-11. **Compile Full Report**
+11. **编制完整报告**
 
    ```markdown
    # [Company] SEO & GEO Performance Report
@@ -489,25 +468,25 @@ When a user requests a performance report:
    - [Additional terms]
    ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Reporting period clearly defined with comparison period
-- [ ] All required data sources available or alternatives noted
-- [ ] Target audience identified (executive/technical/client)
-- [ ] Performance goals and KPIs established for benchmarking
+### 输入验证
+- [ ] 报告周期明确，并与对比周期一致
+- [ ] 所有所需的数据来源均已获取或已注明替代方案
+- [ ] 确定了目标受众（执行层/技术团队/客户）
+- [ ] 已确定用于基准测试的性能目标和KPI
 
-### Output Validation
-- [ ] Every metric cites its data source and collection date
-- [ ] Trends include period-over-period comparisons
-- [ ] Recommendations are specific, prioritized, and actionable
-- [ ] Source of each data point clearly stated (~~analytics data, ~~search console data, ~~SEO tool data, user-provided, or estimated)
+### 输出验证
+- [ ] 每个指标都标明了数据来源和收集日期
+- [ ] 趋势包括同比对比
+- [ ] 建议具体、有优先级且可执行
+- [ ] 每个数据点的来源都明确标注（分析工具数据、搜索控制台数据、SEO工具数据、用户提供的数据或估算值）
 
-## Example
+## 示例
 
-**User**: "Create a monthly SEO report for cloudhosting.com for January 2025"
+**用户请求**：“为cloudhosting.com生成2025年1月的月度SEO报告”
 
-**Output**:
+**输出示例**：
 
 ```markdown
 # CloudHosting SEO & GEO Performance Report
@@ -638,159 +617,158 @@ _For full 40-item evaluation, run `/seo:audit-domain`_
 | P2 | Build Wikidata entry and Schema.org for CloudHost Inc. | Strengthen CITE Identity score by +10 pts | SEO lead |
 ```
 
-## Report Templates by Audience
+## 根据受众定制的报告模板
 
-### Executive Report (1 page)
+### 执行报告（1页）
 
-Focus on: Business impact, ROI, top-line metrics, key recommendations
+重点内容：业务影响、ROI、主要指标、关键建议
 
-### Marketing Team Report (3-5 pages)
+### 营销团队报告（3-5页）
 
-Focus on: Detailed metrics, content performance, campaign results
+重点内容：详细指标、内容表现、营销活动结果
 
-### Technical SEO Report (5-10 pages)
+### 技术SEO报告（5-10页）
 
-Focus on: Crawl data, technical issues, detailed rankings, backlink analysis
+重点内容：爬虫数据、技术问题、详细排名、反向链接分析
 
-### Client Report (2-3 pages)
+### 客户报告（2-3页）
 
-Focus on: Progress against goals, wins, clear recommendations
+重点内容：达成目标的进度、成功案例、具体建议
 
-## Tips for Success
+## 成功技巧
 
-1. **Lead with insights** - Start with what matters, not raw data
-2. **Visualize data** - Charts and graphs improve comprehension
-3. **Compare periods** - Context makes data meaningful
-4. **Include actions** - Every report should drive decisions
-5. **Customize for audience** - Executives need different info than technical teams
-6. **Track GEO metrics** - AI visibility is increasingly important
+1. **先提供洞察**：从重要的信息开始，而不是直接展示原始数据
+2. **数据可视化**：图表和图形有助于更好地理解数据
+3. **对比不同时间段**：上下文使数据更有意义
+4. **包含行动建议**：每份报告都应能推动决策
+5. **根据受众定制**：执行层和技术团队需要的信息不同
+6. **跟踪GEO指标**：AI可见性越来越重要
 
-## SEO/GEO Metric Definitions and Benchmarks
+## SEO/GEO指标定义及基准
 
-### Organic Search Metrics
+### 自然搜索指标
 
-| Metric | Definition | Good Range | Warning | Source |
+| 指标 | 定义 | 合适范围 | 警示值 | 来源 |
 |--------|-----------|-----------|---------|--------|
-| Organic sessions | Visits from organic search | Growing MoM | >10% decline | ~~analytics |
-| Keyword visibility | % of target keywords in top 100 | >60% | <40% | ~~SEO tool |
-| Average position | Mean position across tracked keywords | <20 | >30 | ~~search console |
-| Organic CTR | Clicks / impressions from search | >3% | <1.5% | ~~search console |
-| Pages indexed | Pages in Google index | Growing | Dropping | ~~search console |
-| Organic conversion rate | Conversions / organic sessions | >2% | <0.5% | ~~analytics |
-| Non-brand organic traffic | Organic traffic minus brand searches | >50% of total organic | <30% | ~~analytics |
+| 自然搜索会话数 | 来自自然搜索的访问量 | 每月增长 | 下降超过10% | 分析工具 |
+| 关键词可见性 | 目标关键词在前100名中的占比 | 超过60% | 低于40% | SEO工具 |
+| 平均排名 | 被跟踪关键词的平均排名 | 低于20 | 高于30 | 搜索控制台 |
+| 自然搜索点击率 | 搜索中的点击次数与展示次数的比率 | 超过3% | 低于1.5% | 搜索控制台 |
+| 被索引的页面数 | 被谷歌索引的页面数 | 持续增长 | 持续减少 | 搜索控制台 |
+| 自然转化率 | 自然搜索转化次数与自然搜索会话数的比率 | 超过2% | 低于0.5% | 分析工具 |
+| 非品牌自然流量 | 自然流量中去除品牌搜索后的流量 | 占自然流量的比例超过50% | 低于30% | 分析工具 |
 
-### GEO/AI Visibility Metrics
+### GEO/AI可见性指标
 
-| Metric | Definition | Good Range | Warning | Source |
+| 指标 | 定义 | 合适范围 | 警示值 | 来源 |
 |--------|-----------|-----------|---------|--------|
-| AI citation rate | % of monitored queries citing your content | >20% | <5% | ~~AI monitor |
-| AI citation position | Average position in AI response citations | Top 3 sources | Not cited | ~~AI monitor |
-| AI answer coverage | % of your topics appearing in AI answers | Growing | Declining | ~~AI monitor |
-| Brand mention in AI | Times your brand is mentioned in AI responses | Growing | Zero | ~~AI monitor |
+| AI引用率 | 被监控查询中引用您内容的比例 | 超过20% | 低于5% | AI监控工具 |
+| AI引用排名 | 在AI回答中被引用的平均排名 | 前3个来源 | 未被引用 | AI监控工具 |
+| AI答案覆盖率 | 您的主题在AI答案中出现的比例 | 持续增长 | 持续下降 | AI监控工具 |
+| 品牌在AI中的提及次数 | 您的品牌在AI回答中被提及的次数 | 持续增长 | 为零 | AI监控工具 |
 
-### Domain Authority Metrics
+### 域名权威度指标
 
-| Metric | Definition | Good Range | Warning | Source |
+| 指标 | 定义 | 合适范围 | 警示值 | 来源 |
 |--------|-----------|-----------|---------|--------|
-| Domain Rating/Authority | Overall domain strength | Growing | Declining | ~~SEO tool |
-| Referring domains | Unique domains linking to you | Growing MoM | Loss >10% MoM | ~~link database |
-| Backlink growth rate | Net new backlinks per month | Positive | Negative trend | ~~link database |
-| Toxic link ratio | Toxic links / total links | <5% | >10% | ~~link database |
+| 域名评分/权威度 | 域名的整体强度 | 持续增长 | 持续下降 | SEO工具 |
+| 引用域名 | 链接到您的唯一域名数量 | 每月增长 | 每月减少超过10% | 链接数据库 |
+| 反向链接增长率 | 每月的新增反向链接数量 | 正值 | 负值趋势 | 链接数据库 |
+| 有害链接比例 | 有害链接与总链接的比例 | 低于5% | 高于10% | 链接数据库 |
 
-## Reporting Templates by Audience
+## 根据受众定制的报告模板
 
-### Executive Report (C-Suite / Leadership)
+### 执行报告（高管层/领导层）
 
-**Focus:** Business outcomes, ROI, competitive position
-**Length:** 1 page + appendix
-**Frequency:** Monthly or Quarterly
+**重点内容：**业务成果、ROI、竞争地位
+**长度：**1页 + 附录
+**频率：**每月或每季度
 
-| Section | Content |
+| 部分 | 内容 |
 |---------|---------|
-| Traffic & Revenue | Organic traffic trend + attributed revenue |
-| Competitive Position | Visibility share vs. top 3 competitors |
-| AI Visibility | AI citation trend and coverage |
-| Key Wins | Top 3 achievements with business impact |
-| Risks | Top 3 concerns with proposed mitigation |
-| Investment Ask | Resources needed for next period |
+| 流量与收入 | 自然搜索流量趋势及带来的收入 |
+| 竞争地位 | 与前三名竞争对手的可见性对比 |
+| AI可见性 | AI引用趋势及覆盖范围 |
+| 关键成果 | 产生业务影响的关键成果 |
+| 风险 | 需要解决的三大问题 |
+| 投资需求 | 下一阶段所需的资源 |
 
-### Marketing Team Report
+### 营销团队报告
 
-**Focus:** Channel performance, content effectiveness, technical health
-**Length:** 2-3 pages
-**Frequency:** Monthly
+**重点内容：**渠道表现、内容效果、技术状况
+**长度：**2-3页
+**频率：**每月
 
-| Section | Content |
+| 部分 | 内容 |
 |---------|---------|
-| Keyword Performance | Rankings gained/lost, new keywords discovered |
-| Content Performance | Top pages by traffic, engagement, conversions |
-| Technical Health | Crawl errors, speed scores, indexation |
-| Backlink Profile | New links, lost links, quality assessment |
-| GEO Performance | AI citation changes, new citations |
-| Action Items | P0-P3 prioritized task list |
+| 关键词表现 | 排名变化、新发现的关键词 |
+| 内容表现 | 流量最高、参与度最高、转化率最高的页面 |
+| 技术状况 | 爬虫错误、页面速度、索引情况 |
+| 反向链接情况 | 新增链接、丢失的链接、质量评估 |
+| GEO表现 | AI引用变化、新引用 |
+| 行动事项 | 优先级排序的任务列表 |
 
-### Technical SEO Report
+### 技术SEO报告
 
-**Focus:** Crawlability, indexation, speed, errors
-**Length:** Detailed
-**Frequency:** Weekly or Bi-weekly
+**重点内容：**可爬取性、索引情况、页面速度、错误情况
+**长度：**详细
+**频率：**每周或每两周
 
-| Section | Content |
+| 部分 | 内容 |
 |---------|---------|
-| Crawl Stats | Pages crawled, errors, crawl budget usage |
-| Index Coverage | Indexed/excluded/errored pages |
-| Core Web Vitals | LCP, CLS, INP trends |
-| Error Log | New 4xx/5xx errors with resolution status |
-| Schema Validation | New warnings, rich result eligibility |
-| Technical Debt | Outstanding issues by priority |
+| 爬虫统计 | 爬取的页面数、错误情况、爬虫预算使用情况 |
+| 索引情况 | 被索引的页面、被排除的页面、出错的页面 |
+| 核心网页健康指标 | LCP、CLS、INP的趋势 |
+| 错误日志 | 新出现的4xx/5xx错误及解决状态 |
+| 结构验证 | 新出现的警告、富结果资格 |
+| 技术问题 | 按优先级排列的未解决问题 |
 
-## Trend Analysis Framework
+## 趋势分析框架
 
-### Period-Over-Period Analysis
+### 同比分析
 
-| Comparison | Best For | Limitation |
+| 分析方法 | 适用场景 | 限制 |
 |-----------|---------|-----------|
-| Week over week (WoW) | Detecting sudden changes | Noisy, affected by day-of-week patterns |
-| Month over month (MoM) | Identifying trends | Seasonal bias |
-| Year over year (YoY) | Accounting for seasonality | Does not reflect recent trajectory |
-| Rolling 30-day average | Smoothing noise | Lags behind real changes |
+| 周与周（WoW） | 发现突然变化 | 受工作日模式影响，数据波动较大 |
+| 月与月（MoM） | 识别趋势 | 季节性偏差 |
+| 年与年（YoY） | 考虑季节性因素 | 无法反映最新变化 |
+| 连续30天平均值 | 平滑数据波动 | 可能滞后于实际变化 |
 
-### Trend Interpretation Guidelines
+### 趋势解读指南
 
-| Pattern | Likely Cause | Recommended Action |
+| 趋势 | 可能原因 | 建议措施 |
 |---------|-------------|-------------------|
-| Steady growth | Strategy is working | Continue, optimize high performers |
-| Sudden spike then drop | Viral content or algorithm volatility | Investigate cause, build on if repeatable |
-| Gradual decline | Content decay, competition, technical debt | Comprehensive audit needed |
-| Flat line | Plateau — existing strategy maxed out | New content areas, new link strategies |
-| Seasonal pattern | Industry/demand cycles | Plan content calendar around peaks |
+| 持续增长 | 策略有效 | 继续执行，优化表现优异的部分 |
+| 突然上升后下降 | 内容传播迅速或算法波动 | 调查原因，如可重复则继续优化 |
+| 逐渐下降 | 内容质量下降、竞争加剧、技术问题 | 需要进行全面审计 |
+| 横盘 | 现有策略达到极限 | 需要开发新的内容领域或链接策略 |
+| 季节性波动 | 行业/需求周期 | 根据周期规划内容发布计划 |
 
-## SEO Attribution Guidance
+## SEO归因指南
 
-### Attribution Challenges in SEO
+### SEO中的归因挑战
 
-| Challenge | Impact | Mitigation |
+| 挑战 | 影响 | 应对措施 |
 |----------|--------|-----------|
-| Long conversion paths | SEO rarely gets last-touch credit | Use assisted conversions report |
-| Brand vs. non-brand | Brand searches inflate organic metrics | Always separate brand/non-brand |
-| Cross-device journeys | Mobile search to desktop conversion | Enable cross-device tracking |
-| SEO + paid overlap | Cannibalization or lift? | Test turning off paid for branded terms |
-| Content assists sales | Hard to attribute | Track content touches in CRM |
+| 长转化路径 | SEO很少获得最终转化的功劳 | 使用辅助转化报告 |
+| 品牌与非品牌内容 | 品牌搜索会影响自然搜索数据 | 始终区分品牌内容和非品牌内容 |
+| 跨设备转化路径 | 移动搜索到桌面设备的转化 | 启用跨设备跟踪 |
+| SEO与付费推广的交叉影响 | 是否存在互相影响 | 测试关闭针对品牌关键词的付费推广 |
+| 内容对销售的辅助作用 | 难以准确归因 | 在CRM系统中追踪内容的触达情况 |
 
-## Reference Materials
+## 参考资料
 
-- [KPI Definitions](../../references/kpi-definitions.md) — Complete SEO/GEO metric definitions with benchmarks, good ranges, and warning thresholds
-- [Report Templates](./references/report-templates.md) — Report templates by audience (executive, marketing, technical, client)
+- [KPI定义](../../references/kpi-definitions.md) — 完整的SEO/GEO指标定义，包括基准值、合适范围和警告阈值
+- [报告模板](./references/report-templates.md) — 根据受众定制的报告模板（执行层、营销团队、技术团队、客户）
 
-## Related Skills
+## 相关工具
 
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Include CORE-EEAT scores as page-level content quality KPIs
-- [domain-authority-auditor](../../cross-cutting/domain-authority-auditor/) — Include CITE score as a domain-level KPI in periodic reports
-- [rank-tracker](../rank-tracker/) — Detailed ranking data
-- [backlink-analyzer](../backlink-analyzer/) — Link profile data
-- [alert-manager](../alert-manager/) — Set up report triggers
-- [serp-analysis](../../research/serp-analysis/) — SERP composition data
-- [memory-management](../../cross-cutting/memory-management/) — Archive reports in project memory
-- [entity-optimizer](../../cross-cutting/entity-optimizer/) — Track branded search and Knowledge Panel metrics
-- [technical-seo-checker](../../optimize/technical-seo-checker/) — Technical health data feeds into reports
-
+- [内容质量审计工具](../../cross-cutting/content-quality-auditor/) — 将CORE-EEAT评分作为页面级别的内容质量KPI
+- [域名权威度审计工具](../../cross-cutting/domain-authority-auditor/) — 在定期报告中包含CITE评分作为域名级别的KPI
+- [排名追踪工具](../rank-tracker/) — 详细的排名数据
+- [反向链接分析工具](../backlink-analyzer/) — 反向链接分析工具
+- [警报管理工具](../alert-manager/) — 设置报告触发条件
+- [SERP分析工具](../../research/serp-analysis/) — SERP组成数据
+- [内存管理工具](../../cross-cutting/memory-management/) — 将报告存档在项目内存中
+- [实体优化工具](../../cross-cutting/entity-optimizer/) — 跟踪品牌搜索和知识面板指标
+- [技术SEO检查工具](../../optimize/technical-seo-checker/) — 将技术健康数据纳入报告

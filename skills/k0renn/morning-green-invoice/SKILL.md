@@ -1,62 +1,62 @@
 ---
 name: morning
-description: Use to authenticate with Morning (GreenInvoice) and create/manage clients, items, and accounting documents (invoice/receipt/quote/order/credit).
+description: 用于与 Morning (GreenInvoice) 服务进行身份验证，以及创建/管理客户、商品信息以及会计文档（发票/收据/报价单/订单/信用记录）。
 ---
 
 # Morning (GreenInvoice)
 
-## When to use
-Use this skill when you need to interact with **Morning / GreenInvoice** to:
-- Get an auth token (JWT) using API key credentials
-- Create/update **clients**
-- Create/update **items**
-- Create **documents** (invoice / receipt / quote / order / credit / debit)
-- Retrieve document outputs (e.g., IDs / links) if the tool supports it
+## 使用场景
+当您需要与 **Morning / GreenInvoice** 工具进行交互时，请使用此技能：
+- 使用 API 密钥凭据获取认证令牌（JWT）
+- 创建/更新 **客户端**（clients）
+- 创建/更新 **商品**（items）
+- 创建 **文档**（发票、收据、报价单、订单、贷项通知单、借项通知单）
+- 如果工具支持，检索文档输出信息（如文档 ID 或链接）
 
-## What you need from the user
-Collect only what’s required for the action:
+## 用户需要提供的信息
+仅收集执行相应操作所需的信息：
 
-### Authentication
+### 认证
 - `apiKeyId`
 - `apiKeySecret`
 
-### Client (if creating or searching)
+### 客户端（创建或查询时）
 - `name`
-- Optional: `taxId`, `email`, `phone`, `address`, `city`, `country`
+- 可选：`taxId`, `email`, `phone`, `address`, `city`, `country`
 
-### Item (if creating)
+### 商品（创建时）
 - `name`
 - `price`
-- Optional: `description`, `currency`
+- 可选：`description`, `currency`
 
-### Document (if creating)
-- `documentType` (Invoice / Receipt / Quote / Order / CreditInvoice / DebitInvoice)
-- `clientId` (or enough info to create the client)
-- `lines[]` (each line: description or itemId, quantity, unitPrice)
-- Optional: `currency`, `language`, `description`, `discount`
+### 文档（创建时）
+- `documentType`（发票、收据、报价单、订单、贷项通知单、借项通知单）
+- `clientId`（或用于创建客户端的足够信息）
+- `lines[]`（每行包含：商品描述、商品 ID、数量、单价）
+- 可选：`currency`, `language`, `description`, `discount`
 
-## Tool contract
-Use the `morning` tool with an `action` field.
+## 工具使用规范
+使用 `morning` 工具，并指定相应的 `action` 参数。
 
-### Supported actions
+### 支持的操作
 - `getToken`
 - `createClient`
 - `createItem`
 - `createDocument`
-- (Optional, if implemented in your tool): `findClient`, `findItem`, `getDocument`, `listDocuments`
+- （如果您的工具支持）`findClient`, `findItem`, `getDocument`, `listDocuments`
 
-## Guardrails
-- Never log or echo `apiKeySecret` or JWTs back to the user.
-- Prefer reusing existing `clientId` / `itemId` when available.
-- Validate document lines:
-  - `quantity` > 0
-  - `unitPrice` >= 0
-- Currency: default to `"ILS"` unless the user specifies otherwise.
-- Language: default to `"Hebrew"` unless the user specifies otherwise.
+## 安全规范
+- 绝不要将 `apiKeySecret` 或 JWT 信息反馈给用户。
+- 在可能的情况下，优先使用现有的 `clientId`/`itemId`。
+- 验证文档信息：
+  - `quantity` 必须大于 0
+  - `unitPrice` 必须大于等于 0
+- 货币默认设置为 “ILS”，除非用户另有指定
+- 语言默认设置为 “Hebrew”，除非用户另有指定
 
-## Examples
+## 示例
 
-### 1) Authenticate (JWT)
+### 1) 获取认证令牌（JWT）
 ```json
 {
   "action": "getToken",
@@ -65,7 +65,7 @@ Use the `morning` tool with an `action` field.
 }
 ```
 
-### 2) Create a client
+### 2) 创建客户端
 ```json
 {
   "action": "createClient",
@@ -82,7 +82,7 @@ Use the `morning` tool with an `action` field.
 }
 ```
 
-### 3) Create an item
+### 3) 创建商品
 ```json
 {
   "action": "createItem",
@@ -96,7 +96,7 @@ Use the `morning` tool with an `action` field.
 }
 ```
 
-### 4) Create a document (Invoice)
+### 4) 创建发票文档
 ```json
 {
   "action": "createDocument",
@@ -118,7 +118,7 @@ Use the `morning` tool with an `action` field.
 }
 ```
 
-### 5) Create a document (Receipt) using itemId
+### 5) 使用商品 ID 创建收据文档
 ```json
 {
   "action": "createDocument",
@@ -139,14 +139,14 @@ Use the `morning` tool with an `action` field.
 }
 ```
 
-## Error handling
-- If token is rejected (401/403): call `getToken` again and retry the request once.
-- If client/item already exists:
-  - Prefer returning the existing ID (if tool supports lookup),
-  - Otherwise surface a clear message: “Client already exists; provide clientId or unique identifier.”
-- If validation fails: ask for the missing/invalid fields only (e.g., “quantity must be > 0”).
+## 错误处理
+- 如果令牌验证失败（401/403 错误），请重新调用 `getToken` 并重试请求。
+- 如果客户端或商品已存在：
+  - 如果工具支持查询，优先返回现有 ID；
+  - 否则，显示明确提示：“客户端已存在；请提供 clientId 或唯一标识符。”
+- 如果验证失败，仅提示缺失或无效的字段（例如：“数量必须大于 0”）。
 
-## Output expectations
-Return minimally:
-- Created resource IDs (`clientId`, `itemId`, `documentId`)
-- Any relevant URLs (PDF / view links) if the API/tool provides them
+## 输出结果
+返回以下信息：
+- 创建的资源 ID（`clientId`, `itemId`, `documentId`）
+- 如果 API 或工具提供相关内容，还包括相关 URL（PDF 文件链接或查看链接）

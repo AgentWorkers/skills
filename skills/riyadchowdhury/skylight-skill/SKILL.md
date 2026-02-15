@@ -1,6 +1,6 @@
 ---
 name: skylight
-description: Interact with Skylight Calendar frame - manage calendar events, chores, lists, task box items, and rewards. Use when the user wants to view/create calendar events, manage family chores, work with shopping or to-do lists, check reward points, or interact with their Skylight smart display.
+description: 与Skylight Calendar框架进行交互——可以管理日历事件、家务任务、待办事项列表以及奖励信息。适用于用户需要查看/创建日历事件、管理家庭事务、处理购物清单或待办事项、查看奖励积分，或与Skylight智能显示屏进行交互的场景。
 homepage: https://ourskylight.com
 metadata:
   clawdbot:
@@ -13,30 +13,30 @@ metadata:
     primaryEnv: SKYLIGHT_EMAIL
 ---
 
-# Skylight Calendar
+# Skylight 日历
 
-Control Skylight Calendar frame via the unofficial API.
+通过非官方 API 控制 Skylight 日历的功能。
 
-## Setup
+## 设置
 
-Set environment variables:
-- `SKYLIGHT_URL`: Base URL (default: `https://app.ourskylight.com`)
-- `SKYLIGHT_FRAME_ID`: Your frame (household) ID — find this by logging into [ourskylight.com](https://ourskylight.com/), clicking your calendar, and copying the number from the URL (e.g., `4197102` from `https://ourskylight.com/calendar/4197102`)
+配置环境变量：
+- `SKYLIGHT_URL`：基础 URL（默认值：`https://app.ourskylight.com`）
+- `SKYLIGHT_FRAME_ID`：您的日历 ID — 请登录 [ourskylight.com](https://ourskylight.com/)，点击您的日历，然后从 URL 中复制该 ID（例如，`4197102` 来自 `https://ourskylight.com/calender/4197102`）
 
-**Authentication (choose one):**
+**身份验证（请选择一种方式）：**
 
-Option A - Email/Password (recommended):
-- `SKYLIGHT_EMAIL`: Your Skylight account email
-- `SKYLIGHT_PASSWORD`: Your Skylight account password
+**选项 A - 电子邮件/密码（推荐）：**
+- `SKYLIGHT_EMAIL`：您的 Skylight 账户邮箱
+- `SKYLIGHT_PASSWORD`：您的 Skylight 账户密码
 
-Option B - Pre-captured token:
-- `SKYLIGHT_TOKEN`: Full Authorization header value (e.g., `Basic abc123...`)
+**选项 B - 预先捕获的令牌：**
+- `SKYLIGHT_TOKEN`：完整的授权头信息（例如，`Basic abc123...`）
 
-## Authentication
+## 身份验证
 
-### Option A: Login with Email/Password (Recommended)
+### 选项 A：使用电子邮件/密码登录（推荐）
 
-Generate a token by logging in with email and password:
+通过输入电子邮件和密码登录后，系统会生成一个令牌：
 
 ```bash
 # Login and get user credentials
@@ -62,63 +62,62 @@ SKYLIGHT_TOKEN="Basic $(echo -n "${USER_ID}:${USER_TOKEN}" | base64)"
 # Now use $SKYLIGHT_TOKEN for all API requests
 ```
 
-The login endpoint returns:
-- `data.id`: User ID
-- `data.attributes.token`: User token
+登录接口返回以下信息：
+- `data.id`：用户 ID
+- `data.attributes.token`：用户令牌
 
-Combine as `{user_id}:{user_token}` and base64 encode for Basic auth.
+将这两个信息组合成 `{user_id}:{user_token}`，然后使用 Base64 编码进行基本身份验证。
 
-### Option B: Capture Token via Proxy
+### 选项 B：通过代理捕获令牌
 
-If you prefer to capture a token manually:
+如果您希望手动捕获令牌，请按照以下步骤操作：
+1. 安装 Proxyman/Charles/mitmproxy 并信任其根证书。
+2. 为 `app.ourskylight.com` 启用 SSL 代理。
+3. 登录 Skylight 应用程序并捕获所有 API 请求。
+4. 复制 `Authorization` 头信息（例如，`Basic <token>`）。
 
-1. Install Proxyman/Charles/mitmproxy and trust root certificate
-2. Enable SSL proxying for `app.ourskylight.com`
-3. Log into Skylight app and capture any API request
-4. Copy `Authorization` header value (e.g., `Basic <token>`)
+令牌在用户登出后会失效；重新登录时需要重新捕获令牌。
 
-Tokens rotate on logout; recapture after re-login.
+## API 格式
 
-## API Format
+API 响应采用 JSON 格式，包含 `data`、`included` 和 `relationships` 字段。
 
-Responses use JSON:API format with `data`, `included`, and `relationships` fields.
+## 日历事件
 
-## Calendar Events
-
-### List events
+### 列出事件
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/calendar_events?date_min=2025-01-27&date_max=2025-01-31" \
   -H "Authorization: $SKYLIGHT_TOKEN" \
   -H "Accept: application/json"
 ```
 
-Query params:
-- `date_min` (required): Start date YYYY-MM-DD
-- `date_max` (required): End date YYYY-MM-DD
-- `timezone`: Timezone string (optional)
-- `include`: CSV of related resources (`categories,calendar_account,event_notification_setting`)
+查询参数：
+- `date_min`（必填）：开始日期（YYYY-MM-DD 格式）
+- `date_max`（必填）：结束日期（YYYY-MM-DD 格式）
+- `timezone`：时区字符串（可选）
+- `include`：相关资源的 CSV 列表（`categories`、`calendar_account`、`event_notification_setting`）
 
-### List source calendars
+### 列出源日历
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/source_calendars" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-## Chores
+## 家务任务
 
-### List chores
+### 列出家务任务
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/chores?after=2025-01-27&before=2025-01-31" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-Query params:
-- `after`: Start date YYYY-MM-DD
-- `before`: End date YYYY-MM-DD
-- `include_late`: Include overdue chores (bool)
-- `filter`: Filter by `linked_to_profile`
+查询参数：
+- `after`：开始日期（YYYY-MM-DD 格式）
+- `before`：结束日期（YYYY-MM-DD 格式）
+- `include_late`：是否包含逾期任务（布尔值）
+- `filter`：根据 `linked_to_profile` 进行过滤
 
-### Create chore
+### 创建家务任务
 ```bash
 curl -s -X POST "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/chores" \
   -H "Authorization: $SKYLIGHT_TOKEN" \
@@ -142,41 +141,41 @@ curl -s -X POST "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/chores" \
   }'
 ```
 
-Chore attributes:
-- `summary`: Chore title
-- `status`: `pending` or `completed`
-- `start`: Date YYYY-MM-DD
-- `start_time`: Time HH:MM (optional)
-- `recurring`: Boolean
-- `recurrence_set`: RRULE string for recurring chores
-- `reward_points`: Integer (optional)
-- `emoji_icon`: Emoji (optional)
+家务任务的属性：
+- `summary`：任务标题
+- `status`：`pending`（待处理）或 `completed`（已完成）
+- `start`：开始日期（YYYY-MM-DD 格式）
+- `start_time`：开始时间（HH:MM 格式，可选）
+- `recurring`：是否重复执行（布尔值）
+- `recurrence_set`：重复任务的规则（RRULE 格式）
+- `reward_points`：奖励积分（整数，可选）
+- `emoji_icon`：表情符号（可选）
 
-## Lists (Shopping/To-Do)
+## 列表（购物/待办事项）
 
-### List all lists
+### 列出所有列表
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/lists" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-### Get list with items
+### 获取列表中的项目
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/lists/{listId}" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-Response includes `data.attributes.kind` (`shopping` or `to_do`) and `included` array with list items.
+响应包含 `data.attributes.kind`（`shopping` 或 `to_do`）以及包含列表项的 `included` 数组。
 
-List item attributes:
-- `label`: Item text
-- `status`: `pending` or `completed`
-- `section`: Section name (optional)
-- `position`: Sort order
+列表项的属性：
+- `label`：项目名称
+- `status`：`pending`（待处理）或 `completed`（已完成）
+- `section`：分类名称（可选）
+- `position`：排序顺序
 
-## Task Box
+## 任务框
 
-### Create task box item
+### 创建任务框项
 ```bash
 curl -s -X POST "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/task_box/items" \
   -H "Authorization: $SKYLIGHT_TOKEN" \
@@ -191,59 +190,59 @@ curl -s -X POST "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/task_box/items" \
   }'
 ```
 
-Task box attributes:
-- `summary`: Task title
-- `emoji_icon`: Emoji (optional)
-- `routine`: Boolean (optional)
-- `reward_points`: Integer (optional)
+任务框的属性：
+- `summary`：任务标题
+- `emoji_icon`：表情符号（可选）
+- `routine`：是否重复执行（布尔值）
+- `reward_points`：奖励积分（整数，可选）
 
-## Categories
+## 分类
 
-### List categories
+### 列出分类
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/categories" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-Categories are used to assign chores to family members. Attributes include:
-- `label`: Category name (e.g., "Mom", "Dad", "Kids")
-- `color`: Hex color `#RRGGBB`
-- `profile_pic_url`: Avatar URL
+分类用于将家务任务分配给家庭成员。属性包括：
+- `label`：分类名称（例如，“Mom”（妈妈），“Dad”（爸爸），“Kids”（孩子）
+- `color`：十六进制颜色代码（#RRGGBB）
+- `profile_pic_url`：头像 URL
 
-## Rewards
+## 奖励
 
-### List rewards
+### 列出奖励
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/rewards" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-Optional query: `redeemed_at_min` (datetime) to filter by redemption date.
+可选查询参数：`redeemed_at_min`（日期时间），用于按兑换日期过滤奖励。
 
-### List reward points
+### 列出奖励积分
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/reward_points" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-## Frame Info
+## 日历信息
 
-### Get frame details
+### 获取日历详情
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-### List devices
+### 列出设备
 ```bash
 curl -s "$SKYLIGHT_URL/api/frames/$SKYLIGHT_FRAME_ID/devices" \
   -H "Authorization: $SKYLIGHT_TOKEN"
 ```
 
-## Notes
+## 注意事项：
 
-- API is **unofficial** and reverse-engineered; endpoints may change
-- Tokens expire on logout; recapture as needed
-- Responses return 304 Not Modified when data unchanged
-- Use `jq` to parse JSON:API responses
-- Frame ID is your household identifier; all resources are scoped to it
+- 该 API 是非官方的，通过反向工程实现的；接口可能会发生变化。
+- 令牌在用户登出后会失效；需要时需要重新获取。
+- 如果数据未发生变化，响应会返回 304 Not Modified（未修改）状态。
+- 使用 `jq` 工具解析 JSON 格式的 API 响应。
+- `frame_id` 是您的家庭标识符；所有资源都与该日历相关联。

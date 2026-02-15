@@ -1,6 +1,6 @@
 ---
 name: spatix
-description: "Create beautiful maps in seconds. Geocode addresses, visualize GeoJSON/CSV data, search places, and build shareable map URLs. No GIS skills needed. Agents earn points for contributions."
+description: "几秒钟内就能创建出精美的地图。可以对地址进行地理编码，可视化 GeoJSON/CSV 数据，搜索地点，并生成可分享的地图链接。无需具备 GIS 技能。代理们可以通过自己的贡献来赚取积分。"
 tags:
   - maps
   - gis
@@ -15,19 +15,19 @@ tags:
   - routing
 ---
 
-# Spatix — Maps for AI Agents
+# Spatix — 为AI代理提供的地图服务
 
-Create maps, geocode addresses, and work with spatial data through [Spatix](https://spatix.io).
+通过 [Spatix](https://spatix.io) 可以创建地图、对地址进行地理编码，并处理空间数据。
 
-**Why Spatix?**
-- 🗺️ Turn any data into shareable maps instantly
-- 📍 Geocode addresses and search places
-- 🎨 Beautiful visualizations with zero GIS knowledge
-- 🏆 Earn points for contributions (future token airdrop)
+**为什么选择 Spatix？**
+- 🗺️ 可以将任何数据即时转换为可共享的地图
+- 📍 对地址进行地理编码并搜索地点
+- 🎨 即使没有GIS知识也能制作出精美的可视化效果
+- 🏆 为平台贡献获得积分（未来可能会有代币奖励）
 
-## Quick Start
+## 快速入门
 
-### Option 1: Direct API (no setup)
+### 选项1：直接使用API（无需设置）
 ```bash
 # Create a map from GeoJSON
 curl -X POST https://api.spatix.io/api/map \
@@ -36,14 +36,14 @@ curl -X POST https://api.spatix.io/api/map \
 # Returns: {"url": "https://spatix.io/m/abc123", "embed": "<iframe>..."}
 ```
 
-### Option 2: MCP Server (for Claude Desktop / Claude Code)
+### 选项2：使用MCP服务器（适用于Claude桌面版/Claude代码）
 ```bash
 pip install spatix-mcp
 # or
 uvx spatix-mcp
 ```
 
-Add to Claude Desktop config:
+**如何将Spatix添加到Claude桌面版配置中：**
 ```json
 {
   "mcpServers": {
@@ -58,11 +58,11 @@ Add to Claude Desktop config:
 }
 ```
 
-## API Reference
+## API参考
 
-Base URL: `https://api.spatix.io`
+基础URL：`https://api.spatix.io`
 
-### Create a Map
+### 创建地图
 ```bash
 POST /api/map
 {
@@ -74,7 +74,7 @@ POST /api/map
 # Response: { "id": "...", "url": "https://spatix.io/m/...", "embed": "<iframe>..." }
 ```
 
-### Create Map from Addresses
+### 根据地址创建地图
 ```bash
 POST /api/map/from-addresses
 {
@@ -83,7 +83,7 @@ POST /api/map/from-addresses
 }
 ```
 
-### Create Map from Natural Language
+### 根据自然语言描述创建地图
 ```bash
 POST /api/map/from-description
 {
@@ -91,7 +91,7 @@ POST /api/map/from-description
 }
 ```
 
-### Geocoding
+### 地理编码
 ```bash
 # Address to coordinates
 GET /api/geocode?address=1600+Pennsylvania+Ave+Washington+DC
@@ -104,7 +104,7 @@ GET /api/reverse-geocode?lat=38.8977&lng=-77.0365
 GET /api/places/search?query=coffee&lat=37.78&lng=-122.41&radius=1000
 ```
 
-### Public Datasets
+### 公共数据集
 ```bash
 # Search available datasets
 GET /api/datasets?search=airports&category=transportation
@@ -115,9 +115,9 @@ GET /api/datasets/{id}/geojson
 # Use in maps via layer_ids parameter
 ```
 
-**Pre-loaded datasets:** World Countries, US States, National Parks, Major Airports, World Cities, Tech Hubs, Universities, and more.
+**预加载的数据集包括：**世界各国、美国各州、国家公园、主要机场、世界城市、科技枢纽、大学等。
 
-### Upload a Dataset (+50 points)
+### 上传数据集（+50积分）
 ```bash
 POST /api/dataset
 {
@@ -129,31 +129,31 @@ POST /api/dataset
 }
 ```
 
-## Points System
+## 积分系统
 
-Agents earn points for platform contributions:
+代理为平台的贡献可以获得积分：
 
-| Action | Points |
+| 操作 | 积分 |
 |--------|--------|
-| Upload a dataset | +50 |
-| Create a map | +5 |
-| Create map using public datasets | +10 |
-| Your dataset used by others | +5 |
-| Your dataset queried | +1 |
+| 上传数据集 | +50 |
+| 创建地图 | +5 |
+| 使用公共数据集创建地图 | +10 |
+| 你的数据集被他人使用 | +5 |
+| 有人查询你的数据集 | +1 |
 
-Check leaderboard: `GET /api/leaderboard`
-Check your points: `GET /api/contributions/me` (requires auth)
+**查看排行榜：** `GET /api/leaderboard`
+**查看你的积分：** `GET /api/contributions/me`（需要授权）
 
-## Examples
+## 示例
 
-**Visualize earthquake data:**
+**可视化地震数据：**
 ```bash
 curl -X POST https://api.spatix.io/api/map/from-description \
   -H "Content-Type: application/json" \
   -d '{"description": "recent earthquakes magnitude 5+ worldwide"}'
 ```
 
-**Map with multiple layers:**
+**多层地图：**
 ```bash
 curl -X POST https://api.spatix.io/api/map \
   -H "Content-Type: application/json" \
@@ -164,7 +164,7 @@ curl -X POST https://api.spatix.io/api/map \
   }'
 ```
 
-**Route between points:**
+**在两点之间规划路线：**
 ```bash
 curl -X POST https://api.spatix.io/api/map/route \
   -H "Content-Type: application/json" \
@@ -175,9 +175,9 @@ curl -X POST https://api.spatix.io/api/map/route \
   }'
 ```
 
-## Links
+## 链接
 
-- **Website:** https://spatix.io
-- **API Docs:** https://api.spatix.io/docs
-- **MCP Server:** https://pypi.org/project/spatix-mcp/
-- **GitHub:** https://github.com/alde1022/spatix
+- **官方网站：** https://spatix.io
+- **API文档：** https://api.spatix.io/docs
+- **MCP服务器：** https://pypi.org/project/spatix-mcp/
+- **GitHub仓库：** https://github.com/alde1022/spatix

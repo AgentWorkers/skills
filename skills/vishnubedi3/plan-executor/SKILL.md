@@ -1,6 +1,6 @@
 ---
 name: plan-executor
-description: Executes frozen, validated plans produced by an autonomous planner with zero interpretation, zero interaction, and strict termination guarantees. Use only when a plan is explicitly finalized, immutable, and execution-safe. Trigger keywords: execute plan, run execution, enact finalized plan.
+description: 执行由自主规划器生成的、已经过验证的冻结计划。整个过程无需任何解释或交互，并且具有严格的终止保障。仅当计划已被明确最终确定、不可更改且执行安全时，才能使用该功能。触发关键词：execute plan（执行计划）、run execution（运行执行）、enact finalized plan（执行已最终确定的计划）。
 compatibility:
   - requires planner output with explicit FINALIZED, EXECUTION-READY, and IMMUTABLE markers
 allowed-tools:
@@ -10,82 +10,81 @@ metadata:
   owner: user
 ---
 
-## Activation Criteria
+## 激活条件
 
-Activate this skill if and only if all conditions below are satisfied simultaneously:
+只有在同时满足以下所有条件时，才能激活此技能：
 
-- A single plan is present.
-- The plan is explicitly marked FINALIZED, EXECUTION-READY, and IMMUTABLE.
-- The plan contains a finite, ordered list of steps with contiguous numeric indices starting at 1.
-- Each step includes:
-  - a single concrete action
-  - a clearly defined target
-  - explicit inputs
-  - an explicit success condition
-  - an explicit failure condition
-- No step references planning, validation, ideation, optimization, or user feedback.
-- No step depends on external judgment, preference, or discretion.
+- 必须存在一个计划。
+- 该计划必须被明确标记为“已完成（FINALIZED）”、“可执行（EXECUTION-READY）”且“不可更改（IMMUTABLE）”。
+- 该计划必须包含一个有序的步骤列表，步骤编号从1开始且连续。
+- 每个步骤必须包括：
+  - 一个具体的操作
+  - 一个明确的目标
+  - 明确的输入参数
+  - 明确的成功条件
+  - 明确的失败条件
+- 计划中不得包含与规划、验证、构思、优化或用户反馈相关的步骤。
+- 任何步骤都不得依赖于外部判断、个人偏好或主观判断。
 
-Do not activate this skill under any other circumstances.
+在任何其他情况下，都不得激活此技能。
 
-## Execution Steps
+## 执行步骤
 
-1. Enter execution mode. From this point, no reinterpretation, planning, validation, or clarification is permitted.
-2. Lock the plan state. Treat all plan content as read-only.
-3. Perform preflight verification:
-   - Verify step indices are contiguous and unique.
-   - Verify all required fields are present for every step.
-   - Verify the total number of steps is finite.
-   - Verify no step references undeclared resources or targets.
-4. If preflight verification fails, halt immediately.
-5. Execute steps strictly in ascending numerical order.
-6. For each step:
-   - Execute the action exactly as written.
-   - Apply inputs exactly as specified.
-   - Monitor only the declared success and failure conditions.
-   - Do not retry unless explicitly stated in the step.
-7. If a step reports success, proceed to the next step.
-8. If a step reports failure, halt immediately.
-9. Continue until all steps are completed successfully or execution is halted.
-10. Exit execution mode.
+1. 进入执行模式。在此模式下，不允许重新解释、重新规划、进行验证或澄清计划内容。
+2. 将计划状态锁定为只读模式。
+3. 执行预飞行验证：
+   - 确认步骤编号是否连续且唯一。
+   - 确认每个步骤是否都包含了所有必需的字段。
+   - 确认步骤的总数是否为有限值。
+   - 确认没有步骤引用了未声明的资源或目标。
+4. 如果预飞行验证失败，立即停止执行。
+5. 严格按照步骤编号的升序顺序执行步骤。
+6. 对于每个步骤：
+   - 严格按照步骤中的描述执行操作。
+   - 按照指定的方式输入参数。
+   - 仅监控步骤中声明的成功和失败条件。
+   - 除非步骤中有明确说明，否则不得重试。
+7. 如果某个步骤执行成功，则进入下一个步骤。
+8. 如果某个步骤执行失败，则立即停止执行。
+9. 继续执行，直到所有步骤都成功完成或执行过程被终止。
+10. 退出执行模式。
 
-## Ambiguity Handling
+## 处理歧义
 
-- Any ambiguity, omission, contradiction, implicit assumption, or multiple interpretations is a fatal error.
-- Ambiguity includes but is not limited to:
-  - vague verbs
-  - unspecified targets
-  - conditional language without explicit branches
-  - references to “best,” “optimal,” “reasonable,” or similar terms
-- On detection, halt execution immediately without recovery attempts.
+- 任何歧义、遗漏、矛盾、隐含的假设或多义性都是致命错误。
+- 例如：
+  - 模糊的动词表述
+  - 未明确的目标
+  - 没有明确分支条件的条件语句
+  - 对“最佳”、“最优”或类似术语的模糊使用
+- 发现此类问题时，立即停止执行，不得尝试恢复。
 
-## Constraints & Non-Goals
+## 约束与限制
 
-- This skill must not plan, replan, revise, optimize, or extend the plan.
-- This skill must not infer intent, preferences, or context.
-- This skill must not ask questions or request confirmation.
-- This skill must not continue after any failure or violation.
-- This skill must not perform actions outside the explicit scope of the plan.
-- This skill must not execute indefinitely.
-- This skill must not output intermediate commentary, logs, or explanations.
+- 此技能不得对计划进行规划、重新规划、修改、优化或扩展。
+- 此技能不得推断用户的意图、偏好或上下文信息。
+- 此技能不得询问问题或请求确认。
+- 在遇到任何错误或违规情况时，必须立即停止执行。
+- 此技能不得执行计划范围之外的操作。
+- 此技能不得无限期地持续执行。
+- 此技能不得输出任何中间结果、日志或解释信息。
 
-## Guardrails
+## 安全机制
 
-- Execution scope is strictly limited to declared actions and targets.
-- No side effects outside declared targets are permitted.
-- Irreversible actions are prohibited unless explicitly declared and justified in the plan.
-- Cascading effects not explicitly described invalidate the plan.
-- Any detected deviation between declared behavior and actual behavior causes immediate halt.
-- The skill must remain passive unless executing a valid step.
+- 执行范围严格限制在计划中明确指定的操作和目标范围内。
+- 严禁产生任何超出计划目标的副作用。
+- 除非计划中明确说明并提供了正当理由，否则禁止执行不可逆的操作。
+- 如果实际行为与计划中的描述存在差异，必须立即停止执行。
+- 除非正在执行有效的步骤，否则此技能必须保持被动状态。
 
-## Termination Rules
+## 终止规则
 
-- Normal termination occurs only after the final step completes successfully.
-- Failure termination occurs immediately on any error, ambiguity, or rule violation.
-- User-issued stop command causes immediate termination.
+- 只有在最后一个步骤成功完成后，才能正常终止执行。
+- 一旦出现错误、歧义或违反规则的情况，必须立即终止执行。
+- 用户发出的停止命令也会导致立即终止执行。
 
-## Failure Behavior
+## 失败处理
 
-- On failure termination, output a single execution-failure notice stating execution halted due to invalid or unsafe conditions.
-- On user-issued stop command, output exactly one dot (`.`).
-- On successful completion, output nothing.
+- 在执行失败时，输出一条提示信息，说明执行因无效或不安全条件而终止。
+- 收到用户停止命令时，输出一个点（`.`）。
+- 执行成功完成后，不输出任何信息。

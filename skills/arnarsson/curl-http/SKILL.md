@@ -1,17 +1,17 @@
 ---
 name: curl-http
-description: Essential curl commands for HTTP requests, API testing, and file transfers.
+description: 用于HTTP请求、API测试和文件传输的基本curl命令。
 homepage: https://curl.se/
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"bins":["curl"]}}}
 ---
 
-# curl - HTTP Client
+# curl - HTTP客户端
 
-Command-line tool for making HTTP requests and transferring data.
+这是一个用于发送HTTP请求和传输数据的命令行工具。
 
-## Basic Requests
+## 基本请求
 
-### GET requests
+### GET请求
 ```bash
 # Simple GET request
 curl https://api.example.com
@@ -33,7 +33,7 @@ curl -I https://example.com
 curl -v https://example.com
 ```
 
-### POST requests
+### POST请求
 ```bash
 # POST with data
 curl -X POST https://api.example.com/users \
@@ -55,7 +55,7 @@ curl -X POST https://api.example.com/upload \
   -F "description=My document"
 ```
 
-### Other HTTP methods
+### 其他HTTP方法
 ```bash
 # PUT request
 curl -X PUT https://api.example.com/users/1 \
@@ -71,9 +71,9 @@ curl -X PATCH https://api.example.com/users/1 \
   -d '{"email":"newemail@example.com"}'
 ```
 
-## Headers & Authentication
+## 请求头与身份验证
 
-### Custom headers
+### 自定义请求头
 ```bash
 # Add custom header
 curl -H "User-Agent: MyApp/1.0" https://example.com
@@ -84,7 +84,7 @@ curl -H "Accept: application/json" \
      https://api.example.com
 ```
 
-### Authentication
+### 身份验证
 ```bash
 # Basic auth
 curl -u username:password https://api.example.com
@@ -101,9 +101,9 @@ curl -H "X-API-Key: your_api_key" \
 curl "https://api.example.com?api_key=your_key"
 ```
 
-## Advanced Features
+## 高级功能
 
-### Timeouts & retries
+### 超时与重试
 ```bash
 # Connection timeout (seconds)
 curl --connect-timeout 10 https://example.com
@@ -133,7 +133,7 @@ curl -b cookies.txt https://example.com
 curl -b cookies.txt -c cookies.txt https://example.com
 ```
 
-### Proxy
+### 代理
 ```bash
 # Use HTTP proxy
 curl -x http://proxy.example.com:8080 https://api.example.com
@@ -160,9 +160,9 @@ curl --cert client.crt --key client.key https://example.com
 curl -v https://example.com 2>&1 | grep -i ssl
 ```
 
-## Response Handling
+## 响应处理
 
-### Output formatting
+### 输出格式
 ```bash
 # Silent mode (no progress bar)
 curl -s https://api.example.com
@@ -178,7 +178,7 @@ curl -w "\nTime: %{time_total}s\nStatus: %{http_code}\n" \
 curl -s https://api.example.com | jq '.'
 ```
 
-### Range requests
+### 范围请求
 ```bash
 # Download specific byte range
 curl -r 0-1000 https://example.com/large-file.zip
@@ -187,9 +187,9 @@ curl -r 0-1000 https://example.com/large-file.zip
 curl -C - -O https://example.com/large-file.zip
 ```
 
-## File Operations
+## 文件操作
 
-### Downloading files
+### 下载文件
 ```bash
 # Download file
 curl -O https://example.com/file.zip
@@ -205,7 +205,7 @@ curl -O https://example.com/file1.zip \
 curl -C - -O https://example.com/large-file.zip
 ```
 
-### Uploading files
+### 上传文件
 ```bash
 # FTP upload
 curl -T file.txt ftp://ftp.example.com/upload/
@@ -217,9 +217,9 @@ curl -T file.txt https://example.com/upload
 curl -F "file=@document.pdf" https://example.com/upload
 ```
 
-## Testing & Debugging
+## 测试与调试
 
-### API testing
+### API测试
 ```bash
 # Test REST API
 curl -X GET https://api.example.com/users
@@ -234,7 +234,7 @@ curl -v -X POST https://api.example.com/login \
   -d '{"username":"test","password":"pass"}'
 ```
 
-### Performance testing
+### 性能测试
 ```bash
 # Measure request time
 curl -w "Total time: %{time_total}s\n" https://example.com
@@ -244,7 +244,7 @@ curl -w "\nDNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTLS: %{time_appc
   -o /dev/null -s https://example.com
 ```
 
-### Common debugging
+### 常见调试技巧
 ```bash
 # Show request and response headers
 curl -v https://api.example.com
@@ -256,26 +256,26 @@ curl --trace-ascii trace.txt https://api.example.com
 curl -i https://api.example.com
 ```
 
-## Common Patterns
+## 常用模式
 
-**Quick JSON API test:**
+**快速JSON API测试：**
 ```bash
 curl -s https://api.github.com/users/octocat | jq '{name, bio, followers}'
 ```
 
-**Download with progress bar:**
+**带进度条的下载：**
 ```bash
 curl -# -O https://example.com/large-file.zip
 ```
 
-**POST JSON and extract field:**
+**POST JSON并提取字段：**
 ```bash
 curl -s -X POST https://api.example.com/login \
   -H "Content-Type: application/json" \
   -d '{"user":"test","pass":"secret"}' | jq -r '.token'
 ```
 
-**Check if URL is accessible:**
+**检查URL是否可访问：**
 ```bash
 if curl -s --head --fail https://example.com > /dev/null; then
   echo "Site is up"
@@ -284,7 +284,7 @@ else
 fi
 ```
 
-**Parallel downloads:**
+**并行下载：**
 ```bash
 for i in {1..10}; do
   curl -O https://example.com/file$i.jpg &
@@ -292,39 +292,39 @@ done
 wait
 ```
 
-## Useful Flags
+## 有用的参数
 
-- `-X`: HTTP method (GET, POST, PUT, DELETE, etc.)
-- `-d`: Data to send (POST/PUT)
-- `-H`: Custom header
-- `-o`: Output file
-- `-O`: Save with remote filename
-- `-L`: Follow redirects
-- `-i`: Include headers in output
-- `-I`: Headers only
-- `-v`: Verbose output
-- `-s`: Silent mode
-- `-S`: Show errors even in silent mode
-- `-f`: Fail silently on HTTP errors
-- `-k`: Insecure (ignore SSL)
-- `-u`: Basic authentication
-- `-F`: Multipart form data
-- `-b`: Send cookies
-- `-c`: Save cookies
-- `-w`: Custom output format
+- `-X`：HTTP方法（GET、POST、PUT、DELETE等）
+- `-d`：要发送的数据（POST/PUT）
+- `-H`：自定义请求头
+- `-o`：输出文件
+- `-O`：将输出文件保存为远程文件名
+- `-L`：跟随重定向
+- `-i`：在输出中包含请求头
+- `-I`：仅输出请求头
+- `-v`：详细输出
+- `-s`：静默模式
+- `-S`：即使在静默模式下也显示错误信息
+- `-f`：在HTTP错误时静默失败
+- `-k`：忽略SSL安全检查
+- `-u`：基本身份验证
+- `-F`：多部分表单数据
+- `-b`：发送Cookies
+- `-c`：保存Cookies
+- `-w`：自定义输出格式
 
-## Tips
+## 使用技巧
 
-- Use `-s` in scripts to suppress progress bar
-- Combine `-sS` for silent but show errors
-- Use `-L` for redirects (e.g., shortened URLs)
-- Add `-v` for debugging
-- Use `jq` to process JSON responses
-- Save common requests as shell aliases or scripts
-- Use `--config` for complex reusable requests
+- 在脚本中使用`-s`选项以隐藏进度条
+- 结合使用`-sS`选项实现静默模式但显示错误信息
+- 使用`-L`选项处理重定向（例如，缩短的URL）
+- 使用`-v`选项进行调试
+- 使用`jq`工具处理JSON响应
+- 将常用请求保存为shell别名或脚本
+- 使用`--config`选项处理复杂的重复请求
 
-## Documentation
+## 文档
 
-Official docs: https://curl.se/docs/
-Manual: `man curl`
-HTTP methods: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+官方文档：https://curl.se/docs/
+手册：`man curl`
+HTTP方法：https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods

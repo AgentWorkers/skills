@@ -1,16 +1,16 @@
 ---
 name: Nutrition
-description: Build a personal nutrition system for tracking meals, calories, macros, vitamins, and minerals.
+description: 构建一个个人营养管理系统，用于记录饮食、摄入的卡路里、宏量营养素（碳水化合物、蛋白质、脂肪）、维生素和矿物质。
 metadata: {"clawdbot":{"emoji":"🥗","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User logs meal → calculate and store nutrition data
-- User asks about nutrients → surface totals and gaps
-- User tracks over time → show patterns and progress
-- Create `~/nutrition/` as workspace
+## 核心功能
+- 用户记录饮食后，系统会计算并存储营养数据。
+- 当用户查询营养信息时，系统会显示各项营养素的总量及不足之处。
+- 用户长期跟踪饮食数据后，系统可以展示营养摄入的规律和进步情况。
+- 系统会创建一个名为 `~/nutrition/` 的工作文件夹用于存储所有相关数据。
 
-## File Structure
+## 文件结构
 ```
 ~/nutrition/
 ├── daily/
@@ -24,7 +24,7 @@ metadata: {"clawdbot":{"emoji":"🥗","os":["linux","darwin","win32"]}}
 └── insights.md
 ```
 
-## Daily Log
+## 每日饮食记录
 ```markdown
 # 2024-02-11.md
 ## Breakfast — 8:00 AM
@@ -59,7 +59,7 @@ Protein: 106g | Carbs: 126g | Fat: 51g
 - Omega-3: salmon (high)
 ```
 
-## Targets
+## 营养目标
 ```markdown
 # targets.md
 ## Daily Goals
@@ -78,7 +78,7 @@ Higher protein for muscle building
 Limiting added sugars to 25g
 ```
 
-## Common Foods Reference
+## 常见食物参考表
 ```markdown
 # foods/common.md
 ## Quick Reference
@@ -97,7 +97,7 @@ Limiting added sugars to 25g
 - Omega-3: salmon, sardines, walnuts
 ```
 
-## Supplements
+## 补充剂信息
 ```markdown
 # supplements.md
 ## Daily
@@ -108,7 +108,7 @@ Limiting added sugars to 25g
 - Magnesium: before bed if needed
 ```
 
-## Insights
+## 营养建议
 ```markdown
 # insights.md
 ## Patterns
@@ -121,33 +121,33 @@ Limiting added sugars to 25g
 - Morning eggs improved protein start
 ```
 
-## What To Surface
-- "You've had 80g protein so far, 70g to go"
-- "Low on Vitamin D today — salmon or eggs?"
-- "Weekly average: 1,900 cal, under target"
-- "Iron looks low this week — more spinach or red meat"
+## 显示的信息示例：
+- “您今天已经摄入了80克蛋白质，还差70克。”
+- “今天维生素D摄入不足——建议多吃三文鱼或鸡蛋。”
+- “本周平均热量摄入为1900卡路里，低于目标值。”
+- “本周铁摄入量偏低——建议多吃菠菜或红肉。”
 
-## Logging Meals
-When user describes meal:
-- Estimate portions if not specified
-- Calculate macros and calories
-- Flag notable micronutrients
-- Add to daily log
+## 饮食记录流程：
+- 当用户描述所吃的食物时：
+  - 如果没有指定食物分量，系统会自动估算。
+  - 系统会计算食物中的宏量营养素和总热量。
+  - 会标记出特别重要的微量营养素。
+  - 系统会将这些信息记录到每日饮食日志中。
 
-## What To Track
-- Calories and macros per meal
-- Notable micronutrients
-- Supplements taken
-- Patterns over time
+## 需要跟踪的内容：
+- 每餐的热量和宏量营养素摄入量。
+- 特别重要的微量营养素摄入情况。
+- 摄入的补充剂种类。
+- 长期饮食数据中的营养摄入规律。
 
-## Progressive Enhancement
-- Start: log meals with macros
-- Add micronutrient awareness
-- Track supplements
-- Build common foods reference
+## 功能升级计划：
+- 初始阶段：仅记录饮食及所含的宏量营养素。
+- 逐步增加微量营养素的监测功能。
+- 开始跟踪用户所服用的补充剂。
+- 编制常见食物的参考列表。
 
-## What NOT To Do
-- Obsess over exact gram accuracy
-- Judge food choices
-- Push restrictive eating
-- Ignore that estimates are approximate
+## 需要避免的行为：
+- 过分追求营养素摄入的精确度（克数）。
+- 对用户的饮食选择进行评判。
+- 强制用户遵循严格的饮食规定。
+- 忽视所有数据都是估算的事实。

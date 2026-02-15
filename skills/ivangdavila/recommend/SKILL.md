@@ -1,73 +1,73 @@
 ---
 name: "Recommend"
-description: "Context-aware recommendations. Learns preferences, researches options, anticipates expectations."
+description: "基于上下文的推荐系统：能够学习用户的偏好，研究各种选项，并提前预测用户的期望。"
 ---
 
-## Core Loop
+## 核心流程
 
 ```
 Context → Preferences → Research → Match → Recommend
 ```
 
-Every recommendation requires: knowing the user + knowing the options.
+每条推荐建议都需要满足两个条件：了解用户的需求以及了解可用的选项。
 
-Check `sources.md` for where to find user context. Check `categories.md` for domain-specific factors.
-
----
-
-## Step 1: Context Gathering
-
-Before recommending, search user context. See `sources.md` for full source list.
-
-**Minimum output:** 3-5 relevant user signals before proceeding. If insufficient, ask targeted questions.
+请查阅 `sources.md` 以获取关于用户背景的信息，同时参考 `categories.md` 以了解与特定领域相关的重要因素。
 
 ---
 
-## Step 2: Preference Extraction
+## 第一步：收集用户信息
 
-From gathered context, extract:
+在给出推荐之前，首先需要收集用户的详细信息。具体方法请参阅 `sources.md` 中的完整说明。
 
-| Dimension | Question |
-|-----------|----------|
-| **Values** | What matters most? (Quality, price, speed, novelty, safety) |
-| **Constraints** | Hard limits? (Budget, time, dietary, ethical) |
-| **History** | What worked? What disappointed? |
-| **Mood** | Adventurous or safe? Exploring or comfort? |
-
-**Output:** 3-5 bullet preference profile for this request.
+**最低要求：** 在继续之前，必须收集到 3-5 条与用户需求相关的信息。如果信息不足，请提出针对性的问题。
 
 ---
 
-## Step 3: Research Options
+## 第二步：提取用户偏好
 
-Now—and only now—research candidates:
+从收集到的用户信息中提取以下关键要素：
 
-- **Breadth first**: Don't anchor on first good option
-- **Source quality**: Prioritize reviews, ratings, expert opinions
-- **Recency**: Check if information is current
-- **Availability**: Confirm options are actually accessible
+| 维度          | 需要了解的问题                          |
+|---------------|------------------------------------|
+| **价值标准**      | 对用户来说最重要的是什么？（质量、价格、速度、新颖性、安全性） |
+| **限制条件**      | 用户有哪些硬性约束？（预算、时间、饮食要求、道德考量） |
+| **使用历史**      | 用户之前使用过哪些产品或服务？哪些让他们感到失望？ |
+| **用户情绪**      | 用户是喜欢冒险还是追求稳定？是喜欢探索新事物还是更注重舒适度？ |
 
-**Output:** Shortlist of 3-7 viable candidates with key attributes.
+**输出结果：** 为当前需求生成一份包含 3-5 项用户偏好的清单。
 
 ---
 
-## Step 4: Match & Rank
+## 第三步：研究可选方案
 
-Score each candidate against the preference profile:
+现在才开始研究具体的选项：
+
+- **先广泛了解**：不要一开始就锁定在第一个看起来不错的选项上。
+- **来源质量**：优先参考用户评价、评分以及专家意见。
+- **信息时效性**：确认所获取的信息是否是最新的。
+- **可用性**：确认这些选项是否真的可以被用户使用。
+
+**输出结果：** 筛选出 3-7 个符合用户需求的候选方案，并列出它们的关键属性。
+
+---
+
+## 第四步：匹配与排序
+
+根据用户的偏好清单对每个候选方案进行评估：
 
 ```
 Candidate → Values alignment + Constraint fit + History match + Mood fit
 ```
 
-**Disqualify** anything that violates hard constraints.
+**排除** 任何违反用户硬性约束的选项。
 
-**Rank** by total alignment, not just one dimension.
+**排序** 时，要综合考虑所有偏好因素，而不仅仅是某一个维度。
 
 ---
 
-## Step 5: Recommend
+## 第五步：给出推荐
 
-Present 1-3 recommendations:
+最终向用户提供 1-3 个推荐方案：
 
 ```
 🎯 RECOMMENDATION: [Option]
@@ -78,26 +78,26 @@ Present 1-3 recommendations:
 
 ---
 
-## Adaptive Learning
+## 自适应学习
 
-After each recommendation:
+每次给出推荐后，都需要进行以下操作：
 
-- **Track outcome**: Accepted? Modified? Rejected?
-- **Update preferences**: Acceptance = reinforcement, rejection = adjustment
-- **Note exceptions**: "Normally X, but for Y context preferred Z"
+- **跟踪用户反馈**：用户接受了推荐吗？对推荐进行了修改吗？还是拒绝了？
+- **更新用户偏好**：用户的接受或拒绝行为可以用来调整未来的推荐策略。
+- **记录特殊情况**：例如：“通常用户会选择 X，但在特定情境下更倾向于选择 Z”。
 
-Store learnings in memory for future recommendations.
-
----
-
-## Traps
-
-- **Projecting** — Your taste ≠ their taste
-- **Recency bias** — Last choice isn't always preference
-- **Ignoring context** — Tuesday lunch ≠ anniversary dinner
-- **Over-filtering** — Too many constraints = nothing fits
-- **Stale data** — Preferences evolve, verify periodically
+将学习到的信息存储在系统中，以便用于未来的推荐。
 
 ---
 
-*Recommendations are predictions. More context = better predictions.*
+**注意事项：**
+
+- **不要想当然地认为自己的喜好就代表用户的喜好**。
+- **避免“最近选择”的偏见”：用户最近的选择并不一定代表他们的长期偏好。
+- **不要忽视用户的具体情境**：日常的午餐与特殊的纪念日晚餐是不同的。
+- **不要过度筛选**：过多的限制条件可能导致没有合适的选项。
+- **数据更新**：用户的偏好会随时间变化，因此需要定期重新评估数据。
+
+---
+
+*推荐结果只是基于现有信息的预测。了解得越多，预测就越准确。*

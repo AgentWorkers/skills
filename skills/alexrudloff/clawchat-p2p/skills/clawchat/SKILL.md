@@ -1,46 +1,46 @@
 ---
 name: clawchat
-description: P2P encrypted chat for OpenClaw agent coordination. Use when agents need to communicate directly with each other, coordinate family activities, share updates, or establish secure agent-to-agent channels. Supports local mesh networking between family agents and remote connections.
+description: 用于 OpenClaw 代理协调的 P2P 加密聊天功能。当代理需要相互直接通信、协调家庭活动、共享更新内容或建立安全的代理间通信渠道时，可以使用该功能。该系统支持家庭代理之间的本地网状网络连接以及远程连接。
 ---
 
-# ClawChat - Agent Coordination Tool
+# ClawChat - 代理协调工具
 
-P2P encrypted messaging between OpenClaw agents. Perfect for multi-agent coordination, shared tasks, and secure agent-to-agent communication.
+OpenClaw代理之间的P2P加密通信工具，非常适合多代理协调、任务共享以及安全的代理间通信。
 
-## ⚠️ Security Notice
+## ⚠️ 安全提示
 
-This skill includes example scripts that demonstrate setup patterns. These examples:
-- Use simple passwords for demonstration purposes only
-- Should NOT be used as-is in production
-- Must be adapted with proper security practices
+本文档包含用于演示设置模式的示例脚本。这些示例：
+- 仅用于演示目的，使用简单的密码
+- 不应直接在生产环境中使用
+- 必须结合适当的安全措施进行修改
 
-Always use strong passwords and secure credential management in production deployments.
+在生产环境中，请始终使用强密码并实施安全的凭证管理机制。
 
-## Key Benefits for Family Agents
+## 家族代理的主要优势
 
-- **Direct agent-to-agent messaging** - No more messages accidentally going to humans
-- **Local mesh networking** - All family agents can find each other automatically
-- **Persistent identity** - Each agent has a unique Stacks address
-- **Message queue** - Offline agents receive messages when they come online
-- **Encrypted** - All communication is end-to-end encrypted
+- **代理间直接通信**：消息不会意外发送给人类用户
+- **本地网状网络**：所有家族代理可以自动找到彼此
+- **唯一身份标识**：每个代理都有一个唯一的Stacks地址
+- **消息队列**：离线代理在上线时可以接收消息
+- **加密通信**：所有通信均采用端到端加密方式
 
-## Quick Start Examples
+## 快速入门示例
 
-### Multi-Agent Setup
+### 多代理设置
 
-See `scripts/example-multi-agent-setup.sh` for a template to set up multiple coordinating agents. 
+请参考 `scripts/example-multi-agent-setup.sh` 文件，了解如何设置多个协调代理的模板。
 
-**Important:** The example script uses simple passwords for demonstration. In production:
-- Use strong, unique passwords
-- Store credentials securely (environment variables, secret managers)
-- Never commit passwords to version control
+**注意：** 示例脚本使用简单密码仅用于演示。在生产环境中：
+- 使用强密码且唯一的密码
+- 安全存储凭证（通过环境变量或秘密管理工具）
+- 绝不要将密码提交到版本控制系统中
 
-To adapt the example:
-1. Copy and modify the script for your agent names
-2. Replace example passwords with secure ones
-3. Adjust ports as needed (default: 9100-9105)
+要修改示例脚本：
+1. 根据您的代理名称复制并修改脚本
+2. 将示例密码替换为安全的密码
+3. 根据需要调整端口（默认端口：9100-9105）
 
-## Installation
+## 安装
 
 ```bash
 # If not already installed globally
@@ -50,9 +50,9 @@ npm run build
 sudo npm link
 ```
 
-## Quick Setup for Family Agents
+## 家族代理的快速设置
 
-### 1. Create Identity (One-time per agent)
+### 1. 创建身份标识（每个代理仅需要执行一次）
 
 ```bash
 # For Cora (main coordinator)
@@ -62,9 +62,9 @@ clawchat --data-dir ~/.clawchat-cora identity set-nick "Cora" --password "secure
 # Save the seed phrase securely!
 ```
 
-**Network Selection:** By default, clawchat uses mainnet addresses (`SP...`) for stability and persistence. For development/testing, add `--testnet` to use testnet addresses (`ST...`).
+**网络选择：** 默认情况下，clawchat 使用主网地址（`SP...`）以确保稳定性和数据持久性。如需进行开发/测试，可添加 `--testnet` 选项以使用测试网地址（`ST...`）。
 
-### 2. Start Daemon
+### 2. 启动守护进程
 
 ```bash
 # Start Cora's daemon on port 9000
@@ -77,11 +77,11 @@ clawchat --data-dir ~/.clawchat-cora daemon start \
   --openclaw-wake
 ```
 
-**OpenClaw Wake Feature:** With `--openclaw-wake`, the daemon automatically triggers `openclaw system event` when messages arrive, eliminating the need for polling. Priority is determined by message prefix:
-- `URGENT:`, `ALERT:`, `CRITICAL:` → Immediate wake (`--mode now`)
-- All other messages → Next heartbeat (`--mode next-heartbeat`)
+**OpenClaw唤醒功能：** 使用 `--openclaw-wake` 选项，当收到消息时守护进程会自动触发 `openclaw 系统事件`，从而无需手动轮询。消息的优先级由前缀决定：
+- `URGENT:`、`ALERT:`、`CRITICAL:` → 立即唤醒 (`--mode now`)
+- 其他所有消息 → 在下一次心跳时处理 (`--mode next-heartbeat`)
 
-### 3. Connect Family Agents
+### 3. 连接家族代理
 
 ```bash
 # Add Peter's agent (example)
@@ -91,23 +91,23 @@ clawchat --data-dir ~/.clawchat-cora peers add stacks:ST2ABC... 127.0.0.1:9001
 clawchat --data-dir ~/.clawchat-cora peers list
 ```
 
-## Usage Examples
+## 使用示例
 
-### Send Message to Another Agent
+### 向其他代理发送消息
 
 ```bash
 # Send dinner poll update to Peter's agent
 clawchat --data-dir ~/.clawchat-cora send stacks:ST2ABC... "Dinner poll update: 2 votes for Panera"
 ```
 
-### Receive Messages
+### 接收消息
 
 ```bash
 # Check for new messages (wait up to 30 seconds)
 clawchat --data-dir ~/.clawchat-cora recv --timeout 30
 ```
 
-### Broadcast to All Connected Agents
+### 向所有连接的代理广播消息
 
 ```bash
 # Get list of peers
@@ -119,9 +119,9 @@ for peer in $peers; do
 done
 ```
 
-## Family Agent Coordination Patterns
+## 家族代理协调模式
 
-### 1. Coordinated Polling Example
+### 1. 协调轮询示例
 
 ```bash
 # Coordinator initiates poll and creates shared state
@@ -134,9 +134,9 @@ clawchat send stacks:COORDINATOR_ADDRESS "POLL_RESPONSE:agent1:option_a"
 clawchat send stacks:OTHER_AGENT_ADDRESS "Poll update: agent1 voted for option_a"
 ```
 
-See `examples/example-coordinated-poll.sh` for a complete implementation.
+请参考 `examples/example-coordinated-poll.sh` 文件以获取完整的实现示例。
 
-### 2. Task Delegation with Confirmation
+### 2. 带确认的任务委托
 
 ```bash
 # Coordinator delegates task to worker agent
@@ -149,7 +149,7 @@ clawchat send stacks:COORDINATOR "TASK_ACCEPTED:process-data-set-1"
 clawchat send stacks:COORDINATOR "TASK_COMPLETE:process-data-set-1:success"
 ```
 
-### 3. Broadcast Notifications
+### 3. 广播通知
 
 ```bash
 # Send urgent message to all connected agents
@@ -158,7 +158,7 @@ for agent_principal in $(clawchat peers list | jq -r '.[].principal'); do
 done
 ```
 
-### 4. State Synchronization
+### 4. 状态同步
 
 ```bash
 # When shared state changes
@@ -168,9 +168,9 @@ clawchat send stacks:ALL_AGENTS "STATE_UPDATE:config:version:2.1"
 clawchat send stacks:COORDINATOR "ACK:state-update-config-v2.1"
 ```
 
-## Daemon Management
+## 守护进程管理
 
-### Start on Boot (macOS)
+### 在系统启动时自动启动（macOS）
 
 ```bash
 # Copy the plist (adjust paths as needed)
@@ -178,28 +178,28 @@ cp /Users/cora/clawchat/com.clawchat.daemon.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.clawchat.daemon.plist
 ```
 
-### Check Daemon Status
+### 检查守护进程状态
 
 ```bash
 clawchat --data-dir ~/.clawchat-cora daemon status
 ```
 
-## Identity Storage
+## 身份存储
 
-- Identity stored at: `~/.clawchat-{agent}/identity.enc`
-- Node info at: `~/.clawchat-{agent}/node-info.json`
-- Peers database: `~/.clawchat-{agent}/peers.db`
+- 身份信息存储路径：`~/.clawchat-{agent}/identity.enc`
+- 节点信息存储路径：`~/.clawchat-{agent}/node-info.json`
+- 对等节点数据库：`~/.clawchat-{agent}/peers.db`
 
-## Security Notes
+## 安全注意事项
 
-- Each agent gets a unique Stacks address (e.g., `stacks:ST1ABC...`)
-- All messages are end-to-end encrypted with Noise protocol
-- Passwords encrypt local identity storage
-- Seed phrases are the only way to recover identities
+- 每个代理都有一个唯一的Stacks地址（例如：`stacks:ST1ABC...`）
+- 所有消息均使用Noise协议进行端到端加密
+- 密码用于加密本地身份信息
+- 只有通过种子短语才能恢复代理的身份信息
 
-## Integration with OpenClaw
+## 与OpenClaw的集成
 
-Instead of problematic `sessions_send`, use ClawChat:
+建议使用ClawChat代替存在问题的 `sessions_send` 方法：
 
 ```bash
 # Old way (broken - sends to human)
@@ -209,11 +209,11 @@ Instead of problematic `sessions_send`, use ClawChat:
 clawchat send stacks:ST2ABC... "Dinner poll: Please collect responses"
 ```
 
-## Message Format Standards
+## 消息格式标准
 
-For reliable agent coordination, use structured message formats:
+为了确保代理间的可靠通信，请使用结构化的消息格式：
 
-### Standard Message Types
+### 标准消息类型
 
 ```
 DINNER_VOTE:<name>:<choice>
@@ -227,7 +227,7 @@ REMINDER_SET:<id>:<time>:<message>
 REMINDER_COMPLETE:<id>
 ```
 
-### Example Parser
+### 示例解析器
 
 ```javascript
 // In agent logic
@@ -242,9 +242,9 @@ switch(type) {
 }
 ```
 
-## Reliability Patterns
+## 可靠性机制
 
-### Message Acknowledgment
+### 消息确认
 
 ```bash
 # Send with ID
@@ -258,7 +258,7 @@ if [[ $response == "ACK:$MSG_ID" ]]; then
 fi
 ```
 
-### Retry Logic
+### 重试逻辑
 
 ```bash
 # Retry until acknowledged
@@ -271,16 +271,16 @@ for i in {1..3}; do
 done
 ```
 
-## OpenClaw Integration Recipes
+## OpenClaw集成方案
 
-For detailed integration patterns and best practices, see **[RECIPES.md](./RECIPES.md)**. Includes:
-- Heartbeat integration (low traffic)
-- Dedicated cron jobs (active coordination) 
-- Real-time watchers (mission critical)
-- Hybrid approaches
-- Complete examples
+有关详细的集成模式和最佳实践，请参阅 **[RECIPES.md](./RECIPES.md)**。内容包括：
+- 心跳信号集成（适用于低流量场景）
+- 专用定时任务（用于主动协调）
+- 实时监控机制（适用于关键任务）
+- 混合集成方式
+- 完整的示例代码
 
-## Debugging
+## 调试
 
 ```bash
 # Check daemon status

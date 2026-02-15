@@ -1,72 +1,70 @@
 ---
 name: Croatian
-description: Write Croatian that sounds human. Not formal, not robotic, not AI-generated.
+description: 用克罗地亚语写出听起来像真人说话的内容。既不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Croatian is technically correct but sounds off. Too formal. Too književni (literary). Natives write more casually, with particles and warmth. Match that.
+虽然使用AI生成的克罗地亚语在语法上是正确的，但听起来很不自然。这种语言过于正式，缺乏口语化表达的亲切感。克罗地亚本地人通常会用更随意、更富有温度的表达方式来进行交流。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Casual Croatian is warm and Mediterranean. Unless explicitly formal: lean casual. "Bok" or "Ćao" not "Dobar dan". "Ok" not "U redu".
+克罗地亚语的默认表达方式过于正式。在日常对话中，人们更倾向于使用轻松、亲切的表达方式。例如，他们会用“Bok”或“Ćao”来打招呼，而不是“Dobar dan”；用“Ok”来表示同意，而不是“U redu”。
 
-## Ti vs Vi
+## “Ti”与“Vi”的使用
 
-Critical distinction:
-- Vi: strangers initially, elderly, formal
-- Ti: friends, peers, internet, casual
-- Croatian internet uses ti
-- Overusing vi = stiff, foreign
+在克罗地亚语中，“Ti”和“Vi”的使用有着重要的区别：
+- “Vi”通常用于称呼陌生人、老年人或正式场合；
+- “Ti”则用于称呼朋友、同龄人或在网上交流时。
 
-## Particles & Softeners
+需要注意的是，在克罗地亚的网络语境中，人们更倾向于使用“Ti”作为称呼方式。过度使用“Vi”会让人感觉生硬、不自然。
 
-These make Croatian natural:
-- Ma: emphasis, dismissive ("Ma daj!")
-- Pa: "well", "so" ("Pa ne znam")
-- Baš: "really", emphasis
-- Ono: filler, "like"
-- Valjda: "probably", "I guess"
+## 语法助词与表达软化词
 
-## Fillers & Flow
+这些助词和表达词能让克罗地亚语听起来更自然：
+- **Ma**：用于强调或表示轻蔑（例如：“Ma daj!”）；
+- **Pa**：表示“嗯”或“所以”（例如：“Pa ne znam”）；
+- **Baš**：表示“真的”或强调（例如：“Baš tako”）；
+- **Ono**：用于填充句子或表示“类似”的意思（例如：“Ono je tako”）；
+- **Valjda**：表示“可能”或“我想”（例如：“Valjda ne znam”）。
 
-Real Croatian has fillers:
-- Pa, ma, ono
-- Kao, tipa, mislim
-- Zapravo, inače
-- Čuj, gledaj
+## 语言中的填充词与连贯性
 
-## Expressiveness
+克罗地亚语中有很多填充词，如“Pa”、“Ma”、“Ono”等，这些词有助于使语言更加流畅。
+- **Kao**, **Tipa**, **Mislim**：用于引出观点或解释；
+- **Zapravo**, **Inače**：用于转折或补充说明；
+- **Čuj**, **Gledaj**：用于引起注意或引导对方注意。
 
-Don't pick the safe word:
-- Dobro → Super, Odlično, Ekstra, Brutalno
-- Loše → Grozno, Užas, Sranje
-- Jako → Baš, Full, Totalno
+## 表达方式
 
-## Common Expressions
+在表达情感或态度时，不要总是使用过于正式的词汇：
+- **Dobro**：可以用“Super”、“Odlično”、“Ekstra”或“Brutalno”来替代；
+- **Loše**：可以用“Grozno”、“Užas”、“Sranje”来替代；
+- **Jako**：可以用“Baš”、“Full”、“Totalno”来替代。
 
-Natural expressions:
-- Super, Ok, Važi
-- Nema problema, Lako
-- Ozbiljno?, Stvarno?, Ma daj!
-- Ekstra!, Brutalno!
+## 常见表达
 
-## Reactions
+一些自然的表达方式包括：
+- **Super**, **Ok**, **Važi**：表示赞同或认可；
+- **Nema problema**, **Lako**：表示没有问题或事情很简单；
+- **Ozbiljno?**, **Stvarno?**, **Ma daj!**：用于表示惊讶或催促；
+- **Ekstra!**, **Brutalno!**：用于强调或表示强烈的情感。
 
-React naturally:
-- Ozbiljno?, Stvarno?, Šta?
-- Ma daj!, Joj!, Bože!
-- Super!, Odlično!, Strava!
-- Haha, lol in text
+## 交流时的反应
 
-## Regional Awareness
+在交流时，要表现出自然的情感反应：
+- **Ozbiljno?**, **Stvarno?**, **Šta?**：用于表示惊讶或疑问；
+- **Ma daj!**, **Joj!**, **Bože!**：用于表示惊讶或感叹；
+- **Super!**, **Odlično!**, **Strava!**：用于表示赞美或兴奋；
+- **Haha**, **lol**：可以在文本中用来表示幽默或轻松的氛围。
 
-Zagreb vs Dalmatia vs Slavonia:
-- Different expressions and flavor
-- Dalmatia: more Italian influence
-- Zagreb: urban standard
-- Stay consistent if region known
+## 地域差异
 
-## The "Native Test"
+克罗地亚的不同地区（如萨格勒布、达尔马提亚和斯拉沃尼亚）在语言表达上存在一些差异：
+- 达尔马提亚地区受意大利文化影响较大，表达方式较为随意；
+- 萨格勒布地区则更倾向于使用城市化的表达方式；
+- 如果你知道对方来自哪个地区，尽量保持语言表达的一致性。
 
-Before sending: would a Croatian screenshot this as "AI-generated"? If yes—too formal, no "ma daj", too stiff. Add Mediterranean warmth.
+## “本地人测试”
+
+在发送内容之前，可以想象一下：如果一个克罗地亚人看到这样的截图，他会认为这是AI生成的吗？如果是的话，那么这种表达方式就太正式了，缺乏克罗地亚语的亲切感。需要添加一些更加口语化、具有地中海风格的表达元素，才能让语言听起来更自然。

@@ -1,32 +1,32 @@
 ---
 name: bot-status-api
-description: "Deploy a lightweight status API that exposes your OpenClaw bot's runtime health, service connectivity, cron jobs, skills, system metrics, and more. Use when setting up a monitoring dashboard, health endpoint, or status page for an OpenClaw agent. Supports any services via config (HTTP checks, CLI commands, file checks). Zero dependencies — Node.js only."
+description: "部署一个轻量级的状态检查 API，该 API 可用于展示您的 OpenClaw 机器人的运行状态、服务连接情况、定时任务（cron jobs）、技能（skills）、系统指标等信息。您可以在设置监控仪表板、健康检查端点（health endpoint）或 OpenClaw 代理的状态页面时使用该 API。该 API 支持通过配置文件（config）来检查任何类型的服务（例如 HTTP 请求、CLI 命令、文件检查等）。完全无依赖项，仅依赖 Node.js 运行环境。"
 ---
 
-# Bot Status API
+# Bot状态API
 
-A configurable HTTP service that exposes your OpenClaw bot's operational status as JSON. Designed for dashboard integration, monitoring, and transparency.
+这是一个可配置的HTTP服务，用于以JSON格式公开您的OpenClaw机器人的运行状态。该服务专为集成到仪表板、监控系统以及提升系统透明度而设计。
 
-## What It Provides
+## 提供的功能
 
-- **Bot Core:** Online status, model, context usage, uptime, heartbeat timing
-- **Services:** Health checks for any HTTP endpoint, CLI tool, or file path
-- **Email:** Unread counts from any email provider (himalaya, gog, etc.)
-- **Cron Jobs:** Reads directly from OpenClaw's `cron/jobs.json`
-- **Docker:** Container health via Portainer API
-- **Dev Servers:** Auto-detects running dev servers by process grep
-- **Skills:** Lists installed and available OpenClaw skills
-- **System:** CPU, RAM, Disk metrics from `/proc`
+- **机器人核心信息**：在线状态、使用的模型、上下文信息、运行时间、心跳信号发送频率
+- **服务检查**：对任何HTTP端点、命令行工具或文件路径进行健康检查
+- **电子邮件**：来自himalaya、gog等邮件服务的未读邮件数量
+- **Cron作业**：直接从OpenClaw的`cron/jobs.json`文件中读取Cron作业信息
+- **Docker容器**：通过Portainer API监控Docker容器的健康状况
+- **开发服务器**：通过进程匹配自动检测正在运行的开发服务器
+- **技能信息**：列出已安装且可使用的OpenClaw技能
+- **系统指标**：从`/proc`文件系统中获取CPU、RAM和磁盘使用情况等系统指标
 
-## Setup
+## 设置步骤
 
-### 1. Copy the service files
+### 1. 复制服务相关文件
 
-Copy `server.js`, `collectors/`, and `package.json` to your desired location.
+将`server.js`、`collectors/`文件夹以及`package.json`文件复制到您指定的位置。
 
-### 2. Create config.json
+### 2. 创建`config.json`配置文件
 
-Copy `config.example.json` to `config.json` and customize:
+将`config.example.json`文件复制到`config.json`中，并根据需要进行自定义：
 
 ```json
 {
@@ -43,21 +43,21 @@ Copy `config.example.json` to `config.json` and customize:
 }
 ```
 
-### Service Check Types
+### 服务检查类型
 
-| Type | Description | Config |
+| 类型 | 描述 | 配置参数 |
 |------|-------------|--------|
-| `http` | Fetch URL, check HTTP 200 | `url`, `healthPath`, `method`, `headers`, `body` |
-| `command` | Run shell command, check exit 0 | `command`, `timeout` |
-| `file-exists` | Check path exists | `path` |
+| `http` | 获取指定URL的内容，并检查是否返回HTTP 200状态码 | `url`, `healthPath`, `method`, `headers`, `body` |
+| `command` | 运行shell命令，并检查命令是否成功执行（返回0码） | `command`, `timeout` |
+| `file-exists` | 检查指定路径是否存在 | `path` |
 
-### 3. Run
+### 3. 运行服务
 
 ```bash
 node server.js
 ```
 
-### 4. Persist (systemd user service)
+### 4. 将服务设置为系统服务（使用systemd）
 
 ```ini
 # ~/.config/systemd/user/bot-status.service
@@ -79,15 +79,9 @@ Environment=PATH=/usr/local/bin:/usr/bin:/bin
 WantedBy=default.target
 ```
 
-```bash
-systemctl --user daemon-reload
-systemctl --user enable --now bot-status
-loginctl enable-linger $USER  # survive logout
-```
+### 5. 从OpenClaw获取关键运行数据
 
-### 5. Context/Vitals from OpenClaw
-
-The bot should periodically write vitals to `heartbeat-state.json` in its workspace:
+机器人应定期将其运行状态数据写入工作目录下的`heartbeat-state.json`文件中：
 
 ```json
 {
@@ -101,18 +95,18 @@ The bot should periodically write vitals to `heartbeat-state.json` in its worksp
 }
 ```
 
-Add this to your HEARTBEAT.md so the bot updates it each heartbeat cycle.
+请将上述内容添加到您的`HEARTBEAT.md`文件中，以确保机器人能在每次发送心跳信号时更新该文件。
 
-## Endpoints
+## API端点
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |----------|-------------|
-| `GET /status` | Full status JSON (cached) |
-| `GET /health` | Simple `{"status":"ok"}` |
+| `GET /status` | 提供完整的机器人状态信息（数据会缓存） |
+| `GET /health` | 返回简单的{"status":"ok"}响应 |
 
-## Architecture
+## 架构特点
 
-- **Zero dependencies** — Node.js built-ins only (`http`, `fs`, `child_process`)
-- **Non-blocking** — All shell commands use async `exec`, never `execSync`
-- **Background refresh** — Cache refreshes on interval, requests always served from cache instantly (~10ms)
-- **Config-driven** — Everything in `config.json`, no hardcoded values
+- **无依赖项**：仅使用Node.js内置模块（`http`, `fs`, `child_process`）
+- **非阻塞式处理**：所有shell命令均使用异步执行（`exec`），避免阻塞主线程
+- **后台更新**：数据缓存会定期更新，请求总是从缓存中即时返回（响应时间约10毫秒）
+- **配置驱动**：所有配置信息都存储在`config.json`文件中，无硬编码值

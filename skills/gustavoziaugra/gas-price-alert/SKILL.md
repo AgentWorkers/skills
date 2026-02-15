@@ -1,35 +1,47 @@
 ---
 name: gas-price-alert
-description: Find and monitor gas prices with daily notifications. Use when searching for the cheapest gas in a specific area, tracking Costco and other discount fuel stations, or setting up daily gas price alerts. Supports any US location with configurable radius and fuel type.
+description: **功能概述：**  
+该工具用于查找并监控汽油价格，并提供每日价格更新通知。适用于在特定区域内寻找最便宜的汽油、追踪Costco等折扣加油站，或设置每日汽油价格提醒。支持美国境内的任意地点，用户可自定义搜索半径和所需的燃料类型。  
+
+**使用场景：**  
+- 在特定区域内寻找最便宜的汽油；  
+- 监控Costco等折扣加油站的汽油价格变化；  
+- 设置每日汽油价格提醒，以便及时了解价格动态。  
+
+**技术特性：**  
+- 支持美国境内的任意地点；  
+- 允许用户自定义搜索半径；  
+- 支持多种燃料类型（如普通汽油、乙醇汽油等）；  
+- 提供每日价格更新通知，帮助用户及时掌握价格信息。
 ---
 
-# Gas Price Alert
+# 汽油价格提醒
 
-## Overview
+## 概述
 
-Automatically search for the cheapest gas prices in your area, with a focus on Costco and other discount stations. Get daily notifications with the best options within a specified radius.
+自动搜索您所在地区最便宜的汽油价格，重点关注Costco及其他折扣加油站。每天会在指定范围内推送最佳价格的通知。
 
-## Quick Start
+## 快速入门
 
-1. **Configure location** - Set your city/coordinates and search radius
-2. **Run search** - Find gas stations and estimated prices
-3. **Schedule daily alerts** - Get morning notifications with cheapest options
-4. **Focus on Costco** - Costco typically has gas $0.15-0.25 below market average
+1. **配置位置** - 设置您的城市/坐标和搜索半径
+2. **执行搜索** - 查找加油站及预估价格
+3. **设置每日提醒** - 每天早上接收最便宜加油站的通知
+4. **优先选择Costco** - Costco的汽油价格通常比市场平均价格低0.15-0.25美元
 
-## Workflow
+## 工作流程
 
-### Step 1: Configure Your Location
+### 第一步：配置您的位置
 
-**Option A: Use ZIP code (recommended)**
+**选项A：使用邮政编码（推荐）**
 
 ```bash
 # Search by ZIP code
 python3 scripts/gas_alternative.py --zip 43215 --radius 20 --fuel 87 --summary
 ```
 
-**Option B: Use coordinates**
+**选项B：使用坐标**
 
-Default locations are pre-configured for Columbus, Ohio:
+俄亥俄州哥伦布市的默认位置已预先配置：
 
 ```bash
 # Columbus, OH (downtown)
@@ -38,20 +50,20 @@ lon: -82.9988
 radius: 20 miles
 ```
 
-To use a different location:
+要使用其他位置，请执行以下操作：
 
 ```bash
 python3 scripts/gas_alternative.py --lat <latitude> --lon <longitude> --radius <miles>
 ```
 
-**Common US cities:**
-- Columbus, OH: 39.9612, -82.9988
-- Chicago, IL: 41.8781, -87.6298
-- New York, NY: 40.7128, -74.0060
-- Los Angeles, CA: 34.0522, -118.2437
-- Miami, FL: 25.7617, -80.1918
+**美国常见城市：**
+- 俄亥俄州哥伦布市：39.9612, -82.9988
+- 伊利诺伊州芝加哥市：41.8781, -87.6298
+- 纽约州纽约市：40.7128, -74.0060
+- 加利福尼亚州洛杉矶市：34.0522, -118.2437
+- 佛罗里达州迈阿密市：25.7617, -80.1918
 
-### Step 2: Search for Gas Stations
+### 第二步：搜索加油站
 
 ```bash
 # Search with summary output
@@ -61,19 +73,19 @@ python3 scripts/gas_alternative.py --lat 39.9612 --lon -82.9988 --radius 20 --fu
 python3 scripts/gas_alternative.py --lat 39.9612 --lon -82.9988 --radius 20 --fuel 87 --output gas_prices.json
 ```
 
-**Parameters:**
-- `--zip`: ZIP code (overrides lat/lon, e.g., `--zip 43215`)
-- `--lat`: Latitude (default: 39.9612 - Columbus, OH)
-- `--lon`: Longitude (default: -82.9988 - Columbus, OH)
-- `--radius`: Search radius in miles (default: 20)
-- `--fuel`: Fuel type - 87, 89, 91, diesel (default: 87)
-- `--base-price`: Base price for estimation (default: 2.89)
-- `--output`: Output file (default: gas_prices.json)
-- `--summary`: Print human-readable summary to stdout
+**参数：**
+- `--zip`：邮政编码（会覆盖经纬度参数，例如：`--zip 43215`）
+- `--lat`：纬度（默认值：39.9612 - 俄亥俄州哥伦布市）
+- `--lon`：经度（默认值：-82.9988 - 俄亥俄州哥伦布市）
+- `--radius`：搜索半径（单位：英里，默认值：20）
+- `--fuel`：燃料类型（87、89、91、柴油，默认值：87）
+- `--base-price`：价格估算的基准值（默认值：2.89美元）
+- `--output`：输出文件（默认值：gas_prices.json）
+- `--summary`：将结果以人类可读的格式输出到标准输出
 
-### Step 3: Set Up Daily Alerts
+### 第三步：设置每日提醒
 
-Use OpenClaw cron to receive daily morning notifications:
+使用OpenClaw的cron任务来接收每日早晨的通知：
 
 ```json
 {
@@ -91,17 +103,17 @@ Use OpenClaw cron to receive daily morning notifications:
 }
 ```
 
-This runs every day at 8 AM Eastern Time.
+该任务每天东部时间8点自动执行。
 
-### Step 4: Receive Notifications
+### 第四步：接收通知
 
-The agent will:
-1. Search for gas stations in your area
-2. Identify Costco and discount stations
-3. Generate a summary with the cheapest options
-4. Send the summary via Telegram
+系统将：
+1. 在您所在地区搜索加油站
+2. 筛选出Costco及其他折扣加油站
+3. 生成包含最便宜价格信息的摘要
+4. 通过Telegram发送通知
 
-**Example notification:**
+**示例通知内容：**
 
 ```
 ⛽ Gas Prices (87 Octane) - Columbus, OH
@@ -114,9 +126,9 @@ The agent will:
 💡 Tip: Costco typically has gas $0.15-0.25 below market average.
 ```
 
-## Output Format
+## 输出格式
 
-Each station includes:
+每个加油站的信息包括：
 
 ```json
 {
@@ -135,81 +147,79 @@ Each station includes:
 }
 ```
 
-## How It Works
+## 工作原理
 
-1. **OpenStreetMap/Overpass API** - Finds all gas stations in the area
-2. **Costco database** - Known Costco locations are matched and prioritized
-3. **Price estimation** - Costco prices estimated $0.15-0.25 below market average
-4. **Distance calculation** - Uses geodesic distance for accurate mileage
-5. **Smart filtering** - Removes duplicates and sorts by relevance
+1. **OpenStreetMap/Overpass API**：查找该区域内的所有加油站
+2. **Costco数据库**：匹配并优先显示Costco的位置
+3. **价格估算**：Costco的汽油价格比市场平均价格低0.15-0.25美元
+4. **距离计算**：使用测地距离来计算实际行驶里程
+5. **智能过滤**：去除重复数据并按相关性排序
 
-## Limitations
+## 限制
 
-- **Real-time prices:** Currently uses estimated prices for Costco. For exact prices, check GasBuddy.com or station apps.
-- **Coverage:** Relies on OpenStreetMap data completeness
-- **Estimation accuracy:** Costco prices estimated based on typical discount patterns
+- **实时价格**：目前使用的是Costco的预估价格。如需查看实时价格，请访问GasBuddy.com或使用加油站的应用程序。
+- **覆盖范围**：依赖于OpenStreetMap数据的完整性
+- **价格估算的准确性**：Costco的价格是基于其常见的折扣政策进行估算的
 
-## For Real-Time Prices
+## 获取实时价格的方法
 
-To get actual real-time prices:
+- **GasBuddy.com**：手动查询或使用其商业API
+- **加油站应用程序**：Costco、Kroger、Shell等加油站都提供实时价格信息
+- **AAA**：提供按地区划分的平均价格
+- **Waze**：通过社区贡献实时更新价格信息
 
-1. **GasBuddy.com** - Check manually or use their commercial API
-2. **Station apps** - Costco, Kroger, Shell, etc., have apps with current prices
-3. **AAA** - Provides average prices by region
-4. **Waze** - Community-sourced price updates
+## 故障排除
 
-## Troubleshooting
+### 未找到加油站
 
-### No stations found
+- 增加`--radius`参数的值
+- 确认坐标是否正确
+- 检查该地区是否有完整的OpenStreetMap数据覆盖
 
-- Increase the `--radius` parameter
-- Verify coordinates are correct
-- Check if the area has good OpenStreetMap coverage
+### 价格不准确
 
-### Incorrect prices
+- 非Costco加油站的价格显示为“N/A”
+- Costco的价格是基于其常见的折扣政策进行估算的
+- 如需获取实时价格，请使用GasBuddy或加油站的应用程序
 
-- Prices for non-Costco stations are estimated as "N/A"
-- Costco prices are estimates based on typical discount patterns
-- For exact prices, use GasBuddy or the station's app
-
-### Geopy not installed
+### 如果未安装Geopy
 
 ```bash
 pip install geopy
 ```
 
-## Resources
+## 资源
 
 ### scripts/gas_alternative.py
-Main script for searching gas stations using OpenStreetMap and Overpass API.
+使用OpenStreetMap和Overpass API搜索加油站的主要脚本。
 
-**Features:**
-- Finds all gas stations within radius
-- Identifies Costco locations
-- Estimates Costco prices
-- Calculates distances
-- Generates human-readable summaries
+**功能：**
+- 查找指定范围内的所有加油站
+- 识别Costco的位置
+- 估算Costco的汽油价格
+- 计算距离
+- 生成易于阅读的摘要
 
 ### scripts/gasbuddy_search.py
-Alternative script for GasBuddy integration (requires Playwright or API key).
+用于集成GasBuddy的备用脚本（需要Playwright或API密钥）。
 
-**Use when:**
-- You have a GasBuddy API key
-- You need real-time prices
-- You're willing to use Playwright for JavaScript rendering
+**适用场景：**
+- 您拥有GasBuddy的API密钥
+- 需要实时价格信息
+- 希望使用Playwright进行JavaScript渲染
 
 ### references/locations.md
-Coordinates and configurations for common US cities.
+包含美国常见城市的坐标和配置信息。
 
-## Dependencies
+## 依赖项
 
-Install required packages:
+安装所需软件包：
 
 ```bash
 pip install requests geopy
 ```
 
-For Playwright-based GasBuddy scraping (optional):
+（如需使用基于Playwright的GasBuddy爬虫功能，请安装以下依赖项：）
 
 ```bash
 pip install playwright

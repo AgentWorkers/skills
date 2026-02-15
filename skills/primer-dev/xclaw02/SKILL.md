@@ -1,38 +1,38 @@
 ---
 name: xclaw02
-description: Make x402 payments. Pay for APIs, sell your services, handle 402 Payment Required responses with USDC on Base and other EVM chains.
+description: 执行 x402 类型的支付操作。为 API 支付费用，销售您的服务，并使用 USDC 在 Base 以及其他 EVM 链上处理“支付 Required”（402）类型的响应。
 metadata: {"openclaw":{"emoji":"$","requires":{"anyBins":["node","npx","python3","pip"]}}}
 ---
 
 # xClaw02
 
-Your entry point into x402 - the open payment standard for the agentic web.
+这是您使用 x402 的入口点——x402 是一种用于代理网络的开放支付标准。
 
-x402 is an [open protocol](https://x402.org) enabling instant stablecoin payments over HTTP using the 402 Payment Required status code. xClaw02, built by [Primer](https://primer.systems), provides agent-friendly CLI tools and simple APIs for making and receiving payments.
+x402 是一个 [开放协议](https://x402.org)，它允许通过 HTTP 使用 402 “Payment Required” 状态码进行即时稳定的加密货币支付。xClaw02 由 [Primer](https://primer.systems) 开发，提供了对代理友好的命令行工具（CLI）和简单的 API，用于发起和接收支付。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use xClaw02 when:
-- You encounter a **402 Payment Required** HTTP response
-- You need to access a **paid API or resource**
-- The user asks you to **pay for something** with crypto/USDC
-- You need to **check wallet balance** or manage payments
-- You want to **charge for your own API** or service
+在以下情况下使用 xClaw02：
+- 当您收到 “402 Payment Required” 的 HTTP 响应时
+- 当您需要访问需要付费的 API 或资源时
+- 当用户要求您使用加密货币/USDC 进行支付时
+- 当您需要检查钱包余额或管理支付时
+- 当您希望为自己的 API 或服务收费时
 
-## How to Respond
+## 如何响应
 
-| User Says/Asks | What to Do |
+| 用户所说/所问 | 应该做什么 |
 |----------------|------------|
-| "I got a 402 error" | This is an x402 payment request. Probe the URL with `xclaw02 probe <url>`, show the price, ask if they want to pay |
-| "Pay for this API" | Use `xclaw02 pay <url> --max-amount <amount>` - always confirm amount with user first |
-| "Check my balance" | Run `xclaw02 wallet balance <address>` |
-| "Set up x402" / "Set up payments" | Run `xclaw02 openclaw init` |
-| "What networks do you support?" | List supported networks (Base is primary; also Ethereum, Arbitrum, Optimism, Polygon) |
-| "How much does X cost?" | Probe the URL with `xclaw02 probe <url>` to get pricing |
-| "Create a wallet" | Run `xclaw02 wallet create` - remind user to save the private key securely |
-| "I want to charge for my API" | Show the Express.js or FastAPI middleware examples |
+| “我收到了一个 402 错误” | 这是一个 x402 支付请求。使用 `xclaw02 probe <url>` 命令检查该 URL，显示价格，并询问用户是否愿意支付 |
+| “为这个 API 支付” | 使用 `xclaw02 pay <url> --max-amount <amount>` 命令进行支付——请务必先与用户确认金额 |
+| “检查我的余额” | 运行 `xclaw02 wallet balance <address>` 命令 |
+| “设置 x402” / “设置支付” | 运行 `xclaw02 openclaw init` 命令 |
+| “你们支持哪些网络？” | 列出支持的网络（Base 是主要网络；还包括 Ethereum、Arbitrum、Optimism、Polygon） |
+| “X 的费用是多少？” | 使用 `xclaw02 probe <url>` 命令检查价格 |
+| “创建一个钱包” | 运行 `xclaw02 wallet create` 命令——提醒用户安全保存私钥 |
+| “我想为我的 API 收费” | 展示 Express.js 或 FastAPI 中间件的示例 |
 
-## Quick Setup
+## 快速设置
 
 ### Node.js
 ```bash
@@ -45,36 +45,36 @@ pip install xclaw02
 xclaw02 openclaw init
 ```
 
-This will:
-1. Create a new wallet (or use existing)
-2. Save config to `~/.openclaw/skills/xclaw02/`
-3. Display your wallet address to fund with USDC on Base
+这将：
+1. 创建一个新的钱包（或使用现有的钱包）
+2. 将配置保存到 `~/.openclaw/skills/xclaw02/` 文件夹中
+3. 显示钱包地址，以便用户可以使用 USDC 在 Base 网络上进行充值
 
-## How x402 Works
+## x402 的工作原理
 
-1. **Request** - You call a paid API
-2. **402 Response** - Server returns payment requirements in headers
-3. **Pay & Retry** - Sign payment, retry request with `PAYMENT-SIGNATURE` header
-4. **Access** - Server verifies payment, settles on-chain, returns resource
+1. **请求**：您调用一个需要付费的 API
+2. **402 响应**：服务器在响应头中返回支付要求
+3. **支付并重试**：签署支付信息，然后使用 `PAYMENT-SIGNATURE` 标头重新发送请求
+4. **访问**：服务器验证支付信息，在链上完成结算，并返回资源
 
-The payment is **gasless for the payer** - the facilitator handles gas fees.
+对于付款方来说，这笔支付是 **无需支付 gas 费用的**——支付处理方会负责处理 gas 费用。
 
-## CLI Commands
+## CLI 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `xclaw02 openclaw init` | Set up xClaw02 for this agent |
-| `xclaw02 openclaw status` | Check setup status and balance |
-| `xclaw02 probe <url>` | Check if URL requires payment and get price |
-| `xclaw02 pay <url>` | Pay for a resource (requires XCLAW02_PRIVATE_KEY) |
-| `xclaw02 pay <url> --dry-run` | Preview payment without paying |
-| `xclaw02 pay <url> --max-amount 0.10` | Pay with spending limit |
-| `xclaw02 wallet create` | Create a new wallet |
-| `xclaw02 wallet balance <address>` | Check USDC balance on Base |
-| `xclaw02 wallet from-mnemonic` | Restore wallet from mnemonic |
-| `xclaw02 networks` | List supported networks |
+| `xclaw02 openclaw init` | 为当前代理设置 xClaw02 |
+| `xclaw02 openclaw status` | 检查设置状态和余额 |
+| `xclaw02 probe <url>` | 检查该 URL 是否需要支付并获取价格 |
+| `xclaw02 pay <url>` | 为资源支付（需要 `XCLAW02_PRIVATE_KEY`） |
+| `xclaw02 pay <url> --dry-run` | 预览支付（不实际支付） |
+| `xclaw02 pay <url> --max-amount 0.10` | 设置支付限额进行支付 |
+| `xclaw02 wallet create` | 创建一个新的钱包 |
+| `xclaw02 wallet balance <address>` | 查看 Base 网络上的 USDC 余额 |
+| `xclaw02 wallet from-mnemonic` | 从助记词恢复钱包 |
+| `xclaw02 networks` | 列出支持的网络 |
 
-### Example CLI Output
+### CLI 命令示例输出
 
 ```bash
 $ xclaw02 probe https://api.example.com/paid
@@ -104,7 +104,7 @@ $ xclaw02 pay https://api.example.com/paid --max-amount 0.10
 }
 ```
 
-## Using in Code
+## 在代码中使用
 
 ### Node.js / TypeScript
 ```javascript
@@ -130,9 +130,9 @@ with x402_requests(signer, max_amount='0.10') as session:
     data = response.json()
 ```
 
-## Selling Your Services (Server-Side)
+## 在服务器端出售服务
 
-Want other agents to pay you? Add a paywall to your API:
+希望其他代理为您付费？可以在您的 API 中添加支付墙：
 
 ### Express.js
 ```javascript
@@ -177,28 +177,28 @@ async def premium_endpoint():
     return {"data": "Premium content here"}
 ```
 
-## Supported Networks
+## 支持的网络
 
-| Network | CAIP-2 ID | Token | Notes |
+| 网络 | CAIP-2 ID | 代币 | 备注 |
 |---------|-----------|-------|-------|
-| Base | eip155:8453 | USDC | **Primary** - fast, cheap, recommended |
-| Base Sepolia | eip155:84532 | USDC | Testnet |
-| Ethereum | eip155:1 | USDC | Higher fees |
+| Base | eip155:8453 | USDC | **主要网络**——速度快、费用低，推荐使用 |
+| Base Sepolia | eip155:84532 | USDC | 测试网 |
+| Ethereum | eip155:1 | USDC | 费用较高 |
 | Arbitrum | eip155:42161 | USDC | |
 | Optimism | eip155:10 | USDC | |
 | Polygon | eip155:137 | USDC | |
 
-Base is the default network. To use others, set `XCLAW02_NETWORK` environment variable.
+Base 是默认网络。要使用其他网络，请设置 `XCLAW02_NETWORK` 环境变量。
 
-## Facilitators
+## 支付处理方
 
-Facilitators handle payment verification and on-chain settlement. The x402 ecosystem has many independent facilitators:
+支付处理方负责支付验证和链上结算。x402 生态系统中有许多独立的支付处理方：
 
-| Name | URL | Notes |
+| 名称 | URL | 备注 |
 |------|-----|-------|
-| Primer | https://x402.primer.systems | Default |
+| Primer | https://x402.primer.systems | 默认支付处理方 |
 | Coinbase | https://api.cdp.coinbase.com/platform/v2/x402 | |
-| x402.org | https://x402.org/facilitator | Testnet only |
+| x402.org | https://x402.org/facilitator | 仅支持测试网 |
 | PayAI | https://facilitator.payai.network | |
 | Corbits | https://facilitator.corbits.dev | |
 | Dexter | https://x402.dexter.cash | |
@@ -209,54 +209,54 @@ Facilitators handle payment verification and on-chain settlement. The x402 ecosy
 | Solpay | https://x402.solpay.cash | |
 | xEcho | https://facilitator.xechoai.xyz | |
 
-To use a different facilitator, set `XCLAW02_FACILITATOR` environment variable.
+要使用其他支付处理方，请设置 `XCLAW02_FACILITATOR` 环境变量。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Format | Description |
+| 变量 | 格式 | 描述 |
 |----------|--------|-------------|
-| `XCLAW02_PRIVATE_KEY` | `0x` + 64 hex chars | Wallet private key (required for payments) |
-| `XCLAW02_NETWORK` | `eip155:8453`, `base`, etc. | Default network (default: base) |
-| `XCLAW02_MAX_AMOUNT` | `0.10` | Default max payment amount in USDC |
-| `XCLAW02_FACILITATOR` | URL | Facilitator URL override |
+| `XCLAW02_PRIVATE_KEY` | `0x` + 64 个十六进制字符 | 钱包私钥（支付时必需） |
+| `XCLAW02_NETWORK` | `eip155:8453`、`base` 等 | 默认网络（默认为 Base） |
+| `XCLAW02_MAX_AMOUNT` | `0.10` | 默认的最大支付金额（单位：USDC） |
+| `XCLAW02_FACILITATOR` | 支付处理方 URL | 可自定义 |
 
-## Error Handling
+## 错误处理
 
-| Error Code | Meaning | What to Do |
+| 错误代码 | 含义 | 应该做什么 |
 |------------|---------|------------|
-| `INSUFFICIENT_FUNDS` | Wallet balance too low | Tell user to fund wallet with USDC on Base |
-| `AMOUNT_EXCEEDS_MAX` | Payment exceeds maxAmount | Ask user to approve higher amount, then retry with `--max-amount` |
-| `SETTLEMENT_FAILED` | On-chain settlement failed | Wait a moment and retry, or try a different facilitator |
-| `INVALID_RESPONSE` | Malformed 402 response | The URL may not support x402 properly |
-| `NETWORK_MISMATCH` | Wrong network | Check the 402 response for required network, set XCLAW02_NETWORK |
+| `INSUFFICIENT_FUNDS` | 钱包余额不足 | 告诉用户在 Base 网络上使用 USDC 充值 |
+| `AMOUNT_EXCEEDS_MAX` | 支付金额超过最大限额 | 请用户批准更高的金额，然后使用 `--max-amount` 重新尝试 |
+| `SETTLEMENT_FAILED` | 链上结算失败 | 稍等片刻后重试，或尝试其他支付处理方 |
+| `INVALID_RESPONSE` | 402 响应格式不正确 | 该 URL 可能不支持 x402 协议 |
+| `NETWORK_MISMATCH` | 使用的网络不正确 | 检查 402 响应中的网络信息，并设置 `XCLAW02_NETWORK` |
 
-## Security Notes
+## 安全注意事项
 
-- **Never expose private keys** in logs, chat, or output
-- Use environment variables for wallet credentials
-- **Always confirm** payment amounts with user before paying
-- Fund wallets only with what's needed for the task
-- Private key format: `0x` followed by 64 hexadecimal characters
+- **切勿在日志、聊天记录或输出中泄露私钥** |
+- 使用环境变量来存储钱包凭证 |
+- **在支付前务必与用户确认支付金额** |
+- 仅使用完成任务所需的资金为钱包充值 |
+- 私钥格式：`0x` 后跟 64 个十六进制字符
 
-## Alternative Implementations
+## 替代实现
 
-x402 is an open standard with multiple implementations:
+x402 是一个开放标准，有多种实现方式：
 
-**Official Coinbase SDK** - The reference implementation with Go support and Solana (SVM) in addition to EVM chains:
+**官方 Coinbase SDK**：提供 Go 语言支持，同时支持 Solana（SVM）和 EVM 链路：
 - GitHub: https://github.com/coinbase/x402
-- ClawHub: See the `x402` skill by @notorious-d-e-v
-- Best for: Go developers, Solana payments, full spec compliance
+- ClawHub：参见 @notorious-d-e-v 开发的 `x202` 实现 |
+- 适合：Go 开发者、Solana 平台的支付场景，完全符合规范
 
-**When to use alternatives:**
-- You need **Go** support (xClaw02 is Node.js/Python only)
-- You need **Solana** payments (xClaw02 is EVM only)
-- You want the official reference implementation
+**何时使用替代方案**：
+- 当您需要 Go 语言支持时（xClaw02 仅支持 Node.js/Python）
+- 当您需要 Solana 平台的支付功能时（xClaw02 仅支持 EVM 链路）
+- 当您希望使用官方参考实现时
 
-All x402 implementations are interoperable - a client using any SDK can pay a server using any other SDK, as long as they share a supported network and facilitator.
+所有 x402 实现都是互操作的——使用任何 SDK 的客户端都可以向使用其他 SDK 的服务器进行支付，只要它们支持相同的网络和支付处理方即可。
 
-## Links
+## 链接
 
-- **x402 Protocol**: https://x402.org
-- **SDK (npm)**: https://npmjs.com/package/xclaw02
-- **SDK (PyPI)**: https://pypi.org/project/xclaw02
-- **GitHub**: https://github.com/primer-systems/xClaw02
+- **x402 协议**：https://x402.org
+- **SDK (npm)**：https://npmjs.com/package/xclaw02
+- **SDK (PyPI)**：https://pypi.org/project/xclaw02
+- **GitHub**：https://github.com/primer-systems/xClaw02

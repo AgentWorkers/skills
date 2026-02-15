@@ -1,16 +1,16 @@
 ---
 slug: "payment-application-processor"
 display_name: "Payment Application Processor"
-description: "Process construction payment applications. Validate schedule of values, calculate retainage, track billing status, and generate G702/G703 forms."
+description: "处理付款申请；验证付款计划，计算预留金金额，跟踪账单状态，并生成 G702/G703 表格。"
 ---
 
-# Payment Application Processor
+# 支付申请处理系统
 
-## Overview
+## 概述
 
-Process construction payment applications from creation through approval. Validate against schedule of values, calculate retainage, generate AIA G702/G703 forms, and track payment status.
+该系统负责处理支付申请，从申请创建到最终审批的整个流程。系统会根据预定的价值计划进行验证，计算相关费用（如保留金），生成AIA G702/G703表格，并跟踪支付状态。
 
-## Payment Application Flow
+## 支付申请流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -27,7 +27,7 @@ Process construction payment applications from creation through approval. Valida
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现细节
 
 ```python
 from dataclasses import dataclass, field
@@ -454,7 +454,7 @@ class PaymentApplicationProcessor:
         }
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 from datetime import datetime
@@ -501,7 +501,7 @@ summary = processor.get_billing_summary()
 print(f"Percent Billed: {summary['percent_billed']:.1f}%")
 ```
 
-## Requirements
+## 系统要求
 
 ```bash
 pip install (no external dependencies)

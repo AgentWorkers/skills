@@ -1,21 +1,21 @@
 ---
 slug: "bim-validation-pipeline"
 display_name: "BIM Validation Pipeline"
-description: "Build automated BIM validation pipelines for IFC/Revit data. Continuous validation against IDS, LOD requirements, COBie, and project-specific BEP standards."
+description: "为 IFC/Revit 数据构建自动化的 BIM 验证流程。持续验证数据是否符合 IDS（Industry Data Standard）、LOD（Level of Detail）要求、COBie（Construction Operations Building Information Model）标准以及项目特定的 BEP（Building Environment Performance）标准。"
 ---
 
-# BIM Validation Pipeline
+# BIM 验证流程
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 4.3), this skill provides automated BIM data validation pipelines. Validate BIM models against Information Delivery Specification (IDS), Level of Development (LOD) requirements, and project standards.
+本技能基于 DDC 方法论（第 4.3 章），提供了自动化的 BIM 数据验证流程。该流程用于验证 BIM 模型是否符合信息交付规范（IDS）、开发等级（LOD）要求以及项目标准。
 
-**Book Reference:** "Автоматический ETL конвейер для валидации данных" / "Automated ETL Pipeline for Data Validation"
+**参考书籍**：《Автоматический ETL конвейер для валидации данных》（Automated ETL Pipeline for Data Validation）
 
-> "Автоматизированная валидация BIM-данных позволяет выявлять ошибки на ранних стадиях и обеспечивать соответствие требованиям BEP."
-> — DDC Book, Chapter 4.3
+> “自动化 BIM 数据验证能够在早期阶段发现错误，并确保模型符合 BEP（Building Execution Plan）的要求。”
+> — DDC 书籍，第 4.3 章
 
-## Quick Start
+## 快速入门
 
 ```python
 import ifcopenshell
@@ -38,9 +38,9 @@ for wall in walls:
 print(f"Issues found: {len(issues)}")
 ```
 
-## BIM Validation Framework
+## BIM 验证框架
 
-### Core Validator Class
+### 核心验证类
 
 ```python
 import ifcopenshell
@@ -240,9 +240,9 @@ class BIMValidator:
         }
 ```
 
-## LOD Validation
+## LOD 验证
 
-### Level of Development Checker
+### 开发等级检查器
 
 ```python
 class LODValidator:
@@ -369,9 +369,9 @@ class LODValidator:
         }
 ```
 
-## IDS Validation
+## IDS 验证
 
-### Information Delivery Specification
+### 信息交付规范（Information Delivery Specification）
 
 ```python
 import xml.etree.ElementTree as ET
@@ -464,9 +464,9 @@ class IDSValidator:
         return issues
 ```
 
-## Pipeline Automation
+## 流程自动化
 
-### Automated Validation Pipeline
+### 自动化验证流程
 
 ```python
 import os
@@ -593,36 +593,36 @@ class BIMValidationPipeline:
         return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Rule ID | Description | Severity |
+| 规则 ID | 描述 | 严重程度 |
 |---------|-------------|----------|
-| GEO-001 | Invalid/missing geometry | ERROR |
-| PROP-001 | Missing PropertySet | WARNING |
-| REL-001 | No spatial containment | WARNING |
-| MAT-001 | No material assigned | WARNING |
-| NAME-001 | Invalid naming convention | INFO |
-| CLASS-001 | No classification | INFO |
+| GEO-001 | 几何形状无效/缺失 | 错误（ERROR） |
+| PROP-001 | 属性集缺失 | 警告（WARNING） |
+| REL-001 | 缺少空间包含关系 | 警告（WARNING） |
+| MAT-001 | 未分配材料 | 警告（WARNING） |
+| NAME-001 | 命名规则无效 | 信息提示（INFO） |
+| CLASS-001 | 未进行分类 | 信息提示（INFO） |
 
-## LOD Requirements Summary
+## LOD 要求汇总
 
-| LOD | Geometry | Properties | Quantities |
+| LOD 等级 | 几何形状 | 属性 | 数量信息 |
 |-----|----------|------------|------------|
-| 100 | No | - | - |
-| 200 | Approximate | Category | - |
-| 300 | Exact | Material, Type | L, A, V |
-| 350 | Exact + connections | Manufacturer | All |
-| 400 | Fabrication-ready | All details | All |
+| 100 | 无 | - | - |
+| 200 | 近似值 | 类别 | - |
+| 300 | 精确值 | 材料、类型 | 数量、长度、体积 |
+| 350 | 精确值 + 连接关系 | 制造商信息 | 全部信息 |
+| 400 | 可用于施工 | 所有详细信息 | 全部数据 |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 4.3
-- **Website**: https://datadrivenconstruction.io
-- **IDS Standard**: https://technical.buildingsmart.org/projects/information-delivery-specification-ids/
-- **IfcOpenShell**: https://ifcopenshell.org
+- **书籍**：Artem Boiko 著的《Data-Driven Construction》，第 4.3 章
+- **网站**：https://datadrivenconstruction.io
+- **IDS 标准**：https://technical.buildingsmart.org/projects/information-delivery-specification-ids/
+- **IfcOpenShell**：https://ifcopenshell.org
 
-## Next Steps
+## 下一步操作
 
-- See `ifc-data-extraction` for extracting data from IFC
-- See `data-quality-check` for general data validation
-- See `qto-report` for quantity take-off from validated models
+- 请参阅 `ifc-data-extraction` 以从 IFC 文件中提取数据
+- 请参阅 `data-quality-check` 以进行一般性的数据验证
+- 请参阅 `qto-report` 以从经过验证的模型中获取数量信息

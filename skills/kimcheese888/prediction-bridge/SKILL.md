@@ -1,23 +1,23 @@
 ---
 name: prediction-bridge
-description: Query live prediction market data from the Prediction Bridge API. Use when the user asks about prediction markets, event odds, market prices, whale trades, trader analytics, or news related to prediction markets. Provides semantic search across 9+ platforms (Polymarket, Kalshi, Limitless, Probable, PredictFun, SxBet, Myriad, PancakeSwap), on-chain whale trade monitoring, Smart PnL analytics, and trader leaderboards. Run the bundled Python script to fetch real-time data.
+description: 从 Prediction Bridge API 查询实时预测市场数据。当用户询问关于预测市场、赛事赔率、市场价格、大额交易（whale trades）、交易者分析或与预测市场相关的新闻时，可以使用该功能。该服务支持在 9 个以上平台上进行语义搜索（Polymarket、Kalshi、Limitless、Probable、PredictFun、SxBet、Myriad、PancakeSwap），并提供链上大额交易监控、智能盈亏（Smart PnL）分析以及交易者排行榜等功能。请运行捆绑的 Python 脚本来获取实时数据。
 ---
 
 # Prediction Bridge
 
-Query live prediction market data across 9+ platforms via the Prediction Bridge API.
+通过 Prediction Bridge API，您可以查询来自 9 个以上平台的实时预测市场数据。
 
-## How to Use
+## 使用方法
 
-Run the script at `scripts/prediction_bridge.py` with the appropriate command. It uses only Python stdlib — no pip install needed.
+在 `scripts/prediction_bridge.py` 脚本中运行相应的命令。该脚本仅使用 Python 标准库，无需安装任何第三方库（如 pip）。
 
 ```bash
 python scripts/prediction_bridge.py <command> [args] [options]
 ```
 
-## Commands
+## 命令
 
-### Search events by meaning
+### 按事件含义搜索
 
 ```bash
 python scripts/prediction_bridge.py search "trump tariff" --limit 5
@@ -25,7 +25,7 @@ python scripts/prediction_bridge.py search "will bitcoin hit 100k"
 python scripts/prediction_bridge.py search "2028 election" --include-inactive
 ```
 
-### Browse events
+### 浏览事件
 
 ```bash
 python scripts/prediction_bridge.py events --limit 10
@@ -34,19 +34,19 @@ python scripts/prediction_bridge.py events --status active --category "Crypto"
 python scripts/prediction_bridge.py event 1839                          # detail by ID
 ```
 
-### News matched to events
+### 与事件相关的新闻
 
 ```bash
 python scripts/prediction_bridge.py news --limit 10
 ```
 
-### Platform statistics
+### 平台统计信息
 
 ```bash
 python scripts/prediction_bridge.py stats
 ```
 
-### Whale trades (on-chain large trades)
+### 大额交易（链上交易）
 
 ```bash
 python scripts/prediction_bridge.py whale-trades --limit 10
@@ -56,14 +56,14 @@ python scripts/prediction_bridge.py whale-trades --only-alerts          # above 
 python scripts/prediction_bridge.py whale-trades --event-slug "us-election"
 ```
 
-### Market price data
+### 市场价格数据
 
 ```bash
 python scripts/prediction_bridge.py market-history polymarket 18454
 python scripts/prediction_bridge.py market-candles polymarket 18454 --interval 1h
 ```
 
-### Analytics
+### 分析工具
 
 ```bash
 python scripts/prediction_bridge.py smart-pnl 18454                    # market Smart PnL
@@ -73,36 +73,36 @@ python scripts/prediction_bridge.py user-summary 0x1234...              # wallet
 python scripts/prediction_bridge.py user-pnl 0x1234...                  # realized PnL
 ```
 
-### Other
+### 其他功能
 
 ```bash
 python scripts/prediction_bridge.py languages                           # supported languages
 python scripts/prediction_bridge.py --help                              # full help
 ```
 
-## Typical Workflows
+## 常见使用场景
 
-**"What are the hottest prediction markets right now?"**
-→ `events --limit 10` (sorted by volume)
+**“当前最热门的预测市场有哪些？”**
+→ `events --limit 10`（按交易量排序）
 
-**"Find markets about AI regulation"**
-→ `search "AI regulation"` (semantic search)
+**“查找关于 AI 监管的新闻”**
+→ `search "AI regulation"`（语义搜索）
 
-**"Show me recent whale trades on Polymarket"**
+**“显示 Polymarket 上的最新大额交易”**
 → `whale-trades --limit 10`
 
-**"Who are the top traders and what are they betting on?"**
-→ `leaderboard --limit 10`, then `user-summary <address>` for details
+**“哪些是顶级交易者？他们正在投注什么？”**
+→ 先使用 `leaderboard --limit 10` 查看排行榜，然后使用 `user-summary <address>` 查看详细信息
 
-**"What's the Smart PnL signal for a specific market?"**
-→ Get market ID from `event <id>`, then `smart-pnl <market_id>`
+**“某个市场的智能盈亏（Smart PnL）信号是什么？”**
+→ 先从 `event <id>` 获取市场 ID，然后使用 `smart-pnl <market_id>`
 
-**"Any news moving prediction markets today?"**
+**“今天有哪些影响预测市场的新闻？”**
 → `news --limit 10`
 
-## Environment
+## 环境配置
 
-Set `PREDICTION_BRIDGE_URL` to override the default API base URL:
+您可以通过设置 `PREDICTION_BRIDGE_URL` 来覆盖默认的 API 基本地址：
 
 ```bash
 export PREDICTION_BRIDGE_URL=https://prediction-bridge.onrender.com

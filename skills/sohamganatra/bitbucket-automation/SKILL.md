@@ -1,224 +1,228 @@
 ---
 name: bitbucket-automation
-description: Automate Bitbucket repositories, pull requests, branches, issues, and workspace management via Rube MCP (Composio). Always search tools first for current schemas.
+description: 通过 Rube MCP (Composio) 自动化 Bitbucket 仓库的管理，包括拉取请求（pull requests）、分支（branches）、问题（issues）以及工作区的管理。在使用任何工具之前，请务必先搜索最新的使用规范和架构信息。
 requires:
   mcp: [rube]
 ---
 
-# Bitbucket Automation via Rube MCP
+# 通过 Rube MCP 实现 Bitbucket 自动化
 
-Automate Bitbucket operations including repository management, pull request workflows, branch operations, issue tracking, and workspace administration through Composio's Bitbucket toolkit.
+通过 Composio 的 Bitbucket 工具包，可以自动化 Bitbucket 的各种操作，包括仓库管理、拉取请求工作流、分支操作、问题跟踪和工作区管理。
 
-## Prerequisites
+## 先决条件
 
-- Rube MCP must be connected (RUBE_SEARCH_TOOLS available)
-- Active Bitbucket connection via `RUBE_MANAGE_CONNECTIONS` with toolkit `bitbucket`
-- Always call `RUBE_SEARCH_TOOLS` first to get current tool schemas
+- 必须已连接 Rube MCP（支持使用 `RUBE_SEARCH_TOOLS`）
+- 通过 `RUBE_MANAGE_CONNECTIONS` 使用 `bitbucket` 工具包建立活跃的 Bitbucket 连接
+- 在执行任何操作之前，务必先调用 `RUBE_SEARCH_TOOLS` 以获取当前的工具配置信息
 
-## Setup
+## 设置
 
-**Get Rube MCP**: Add `https://rube.app/mcp` as an MCP server in your client configuration. No API keys needed — just add the endpoint and it works.
+**获取 Rube MCP**：在客户端配置中添加 `https://rube.app/mcp` 作为 MCP 服务器。无需 API 密钥，只需添加该端点即可。
 
+1. 通过确认 `RUBE_SEARCH_TOOLS` 是否有响应来验证 Rube MCP 是否可用。
+2. 使用 `bitbucket` 工具包调用 `RUBE_MANAGE_CONNECTIONS`。
+3. 如果连接未激活，请按照返回的链接完成 Bitbucket OAuth 验证。
+4. 在运行任何工作流之前，确认连接状态显示为“ACTIVE”（活跃）。
 
-1. Verify Rube MCP is available by confirming `RUBE_SEARCH_TOOLS` responds
-2. Call `RUBE_MANAGE_CONNECTIONS` with toolkit `bitbucket`
-3. If connection is not ACTIVE, follow the returned auth link to complete Bitbucket OAuth
-4. Confirm connection status shows ACTIVE before running any workflows
+## 核心工作流
 
-## Core Workflows
+### 1. 管理拉取请求
 
-### 1. Manage Pull Requests
+**使用场景**：用户需要创建、审阅或检查拉取请求。
 
-**When to use**: User wants to create, review, or inspect pull requests
+**操作步骤**：
+1. `BITBUCKET_LIST_WORKSPACES` - 查找可访问的工作区（先决条件）
+2. `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` - 查找目标仓库（先决条件）
+3. `BITBUCKET_LIST_BRANCHES` - 确认源分支和目标分支存在（先决条件）
+4. `BITBUCKET_CREATE_pull_REQUEST` - 创建新的拉取请求，指定标题、源分支和可选的审阅者（必选）
+5. `BITBUCKET_LIST_pull_REQUESTS` - 按状态（OPEN、MERGED、DECLINED）筛选拉取请求（可选）
+6. `BITBUCKET_GETPull_REQUEST` - 通过 ID 获取特定拉取请求的详细信息（可选）
+7. `BITBUCKET_GET.Pull_REQUEST_DIFF` - 获取代码差异以供审阅（可选）
+8. `BITBUCKET_GET_pull_REQUESTDIFFSTAT` - 获取更改的文件及其添加/删除的行数（可选）
 
-**Tool sequence**:
-1. `BITBUCKET_LIST_WORKSPACES` - Discover accessible workspaces [Prerequisite]
-2. `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` - Find the target repository [Prerequisite]
-3. `BITBUCKET_LIST_BRANCHES` - Verify source and destination branches exist [Prerequisite]
-4. `BITBUCKET_CREATE_PULL_REQUEST` - Create a new PR with title, source branch, and optional reviewers [Required]
-5. `BITBUCKET_LIST_PULL_REQUESTS` - List PRs filtered by state (OPEN, MERGED, DECLINED) [Optional]
-6. `BITBUCKET_GET_PULL_REQUEST` - Get full details of a specific PR by ID [Optional]
-7. `BITBUCKET_GET_PULL_REQUEST_DIFF` - Fetch unified diff for code review [Optional]
-8. `BITBUCKET_GET_PULL_REQUEST_DIFFSTAT` - Get changed files with lines added/removed [Optional]
+**关键参数**：
+- `workspace`：工作区名称或 UUID（所有操作均需提供）
+- `repo_slug`：适合 URL 的仓库名称
+- `source_branch`：要合并的源分支
+- `destination_branch`：目标分支（如果省略，则默认为仓库的主分支）
+- `reviewers`：用于分配审阅者的对象列表（包含 `uuid` 字段）
+- `state`：用于 `BITBUCKET_LIST_pull_REQUESTS` 的筛选条件（OPEN、MERGED、DECLINED）
+- `max_chars`：用于 `BITBUCKET_GET_pull_REQUESTDIFF` 的截断长度，以处理大型差异
 
-**Key parameters**:
-- `workspace`: Workspace slug or UUID (required for all operations)
-- `repo_slug`: URL-friendly repository name
-- `source_branch`: Branch with changes to merge
-- `destination_branch`: Target branch (defaults to repo main branch if omitted)
-- `reviewers`: List of objects with `uuid` field for reviewer assignment
-- `state`: Filter for LIST_PULL_REQUESTS - `OPEN`, `MERGED`, or `DECLINED`
-- `max_chars`: Truncation limit for GET_PULL_REQUEST_DIFF to handle large diffs
+**注意事项**：
+- `reviewers` 需要一个包含 `uuid` 字段的数组，而不是用户名（格式：`[{"uuid": "{...}"]`）
+- UUID 格式必须使用大括号：`{123e4567-e89b-12d3-a456-426614174000}`）
+- 如果省略 `destination_branch`，默认使用仓库的主分支，但主分支可能不一定是 `main` 分支
+- `pull_request_id` 在 `GETPull_REQUEST` 和 `GET_pull_REQUESTDIFF` 操作中是整数，但在拉取请求列表中会以字符串形式返回
+- 大型差异可能导致显示混乱；在 `GET_pull_REQUESTDIFF` 中务必设置 `max_chars`（例如 50000）
 
-**Pitfalls**:
-- `reviewers` expects an array of objects with `uuid` key, NOT usernames: `[{"uuid": "{...}"}]`
-- UUID format must include curly braces: `{123e4567-e89b-12d3-a456-426614174000}`
-- `destination_branch` defaults to the repo's main branch if omitted, which may not be `main`
-- `pull_request_id` is an integer for GET/DIFF operations but comes back as part of PR listing
-- Large diffs can overwhelm context; always set `max_chars` (e.g., 50000) on GET_PULL_REQUEST_DIFF
+### 2. 管理仓库和工作区
 
-### 2. Manage Repositories and Workspaces
+**使用场景**：用户需要列出、创建或删除仓库，或探索工作区。
 
-**When to use**: User wants to list, create, or delete repositories or explore workspaces
+**操作步骤**：
+1. `BITBUCKET_LIST_WorkSPACES` - 列出所有可访问的工作区（必选）
+2. `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` - 列出工作区内的仓库（支持 BBQL 筛选）
+3. `BITBUCKET_CREATE_REPOSITORY` - 创建新仓库，并设置语言、隐私和项目属性（可选）
+4. `BITBUCKET_DELETE_REPOSITORY` - 永久删除仓库（不可恢复）（可选）
+5. `BITBUCKET_LIST_WORKSPACE_MEMBERS` - 列出工作区成员（用于分配审阅者或权限检查）
 
-**Tool sequence**:
-1. `BITBUCKET_LIST_WORKSPACES` - List all accessible workspaces [Required]
-2. `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` - List repos with optional BBQL filtering [Required]
-3. `BITBUCKET_CREATE_REPOSITORY` - Create a new repo with language, privacy, and project settings [Optional]
-4. `BITBUCKET_DELETE_REPOSITORY` - Permanently delete a repository (irreversible) [Optional]
-5. `BITBUCKET_LIST_WORKSPACE_MEMBERS` - List members for reviewer assignment or access checks [Optional]
+**关键参数**：
+- `workspace`：工作区名称（通过 `BITBUCKET_LIST_WORKSPACES` 获取）
+- `repo_slug`：用于创建/删除操作的仓库名称
+- `q`：BBQL 查询过滤器（例如：`name~"api"`、`project.key="PROJ"`、`is_private=true`）
+- `role`：按用户角色筛选仓库（member、contributor、admin、owner）
+- `sort`：排序字段，可以使用 `-` 前缀进行降序排序（例如：`-updated_on`）
+- `is_private`：仓库的可见性（默认为 `true`）
+- `project_key`：Bitbucket 项目键；省略时使用工作区的默认项目
 
-**Key parameters**:
-- `workspace`: Workspace slug (find via LIST_WORKSPACES)
-- `repo_slug`: URL-friendly name for create/delete
-- `q`: BBQL query filter (e.g., `name~"api"`, `project.key="PROJ"`, `is_private=true`)
-- `role`: Filter repos by user role: `member`, `contributor`, `admin`, `owner`
-- `sort`: Sort field with optional `-` prefix for descending (e.g., `-updated_on`)
-- `is_private`: Boolean for repository visibility (defaults to `true`)
-- `project_key`: Bitbucket project key; omit to use workspace's oldest project
+**注意事项**：
+- `BITBUCKET_DELETE_REPOSITORY` 是不可逆操作，且不会影响仓库的分支
+- BBQL 字符串值必须使用双引号括起来（例如：`name~"my-repo"`）
+- `repository` 不是一个有效的 BBQL 字段，应使用 `name` 代替
+- 默认每页显示 10 个结果；如需完整列表，请明确设置 `pagelen`
+- `CREATE_REPOSITORY` 默认创建私有仓库；如需公共仓库，请设置 `is_private: false`
 
-**Pitfalls**:
-- `BITBUCKET_DELETE_REPOSITORY` is **irreversible** and does not affect forks
-- BBQL string values MUST be enclosed in double quotes: `name~"my-repo"` not `name~my-repo`
-- `repository` is NOT a valid BBQL field; use `name` instead
-- Default pagination is 10 results; set `pagelen` explicitly for complete listings
-- `CREATE_REPOSITORY` defaults to private; set `is_private: false` for public repos
+### 3. 管理问题
 
-### 3. Manage Issues
+**使用场景**：用户需要创建、更新、列出或评论仓库中的问题。
 
-**When to use**: User wants to create, update, list, or comment on repository issues
+**操作步骤**：
+1. `BITBUCKET_LIST_ISSUES` - 列出问题（支持状态、优先级和类型的筛选）
+2. `BITBUCKET_CREATE_ISSUE` - 创建新问题，并指定标题、内容和优先级（必选）
+3. `BITBUCKET_UPDATE_ISSUE` - 修改问题属性（如状态、优先级、分配者等）（可选）
+4. `BITBUCKET_CREATE_ISSUECOMMENT` - 为现有问题添加 Markdown 评论（可选）
+5. `BITBUCKET_DELETE_ISSUE` - 永久删除问题（可选）
 
-**Tool sequence**:
-1. `BITBUCKET_LIST_ISSUES` - List issues with optional filters for state, priority, kind, assignee [Required]
-2. `BITBUCKET_CREATE_ISSUE` - Create a new issue with title, content, priority, and kind [Required]
-3. `BITBUCKET_UPDATE_ISSUE` - Modify issue attributes (state, priority, assignee, etc.) [Optional]
-4. `BITBUCKET_CREATE_ISSUE_COMMENT` - Add a markdown comment to an existing issue [Optional]
-5. `BITBUCKET_DELETE_ISSUE` - Permanently delete an issue [Optional]
+**关键参数**：
+- `issue_id`：问题的唯一标识符
+- `title`、`content`：创建问题时必填
+- `kind`：问题类型（bug、enhancement、proposal、task）
+- `priority`：问题的优先级（trivial、minor、major、critical、blocker）
+- `state`：问题的状态（new、open、resolved、on hold、invalid、duplicate、wontfix、closed）
+- `assignee`：创建问题时使用 Bitbucket 用户名；更新问题时使用 `assignee_account_id`（UUID）
+- `due_on`：问题的截止日期（ISO 8601 格式字符串）
 
-**Key parameters**:
-- `issue_id`: String identifier for the issue
-- `title`, `content`: Required for creation
-- `kind`: `bug`, `enhancement`, `proposal`, or `task`
-- `priority`: `trivial`, `minor`, `major`, `critical`, or `blocker`
-- `state`: `new`, `open`, `resolved`, `on hold`, `invalid`, `duplicate`, `wontfix`, `closed`
-- `assignee`: Bitbucket username for CREATE; `assignee_account_id` (UUID) for UPDATE
-- `due_on`: ISO 8601 format date string
+**注意事项**：
+- 仓库必须启用问题跟踪功能（`has_issues: true`），否则 API 调用会失败
+- `CREATE_ISSUE` 使用 `assignee`（用户名字符串），而 `UPDATE_ISSUE` 使用 `assignee_account_id`（UUID）——这两个字段不同
+- `DELETE_ISSUE` 是不可逆操作，无法撤销
+- `state` 值中包含空格（例如：`on hold` 应写为 `"on_hold"`）
+- 在 `LIST_ISSUES` 中按 `assignee` 筛选时使用账户 ID，而不是用户名；未分配问题时使用 `"null"` 字符串
 
-**Pitfalls**:
-- Issue tracker must be enabled on the repository (`has_issues: true`) or API calls will fail
-- `CREATE_ISSUE` uses `assignee` (username string), but `UPDATE_ISSUE` uses `assignee_account_id` (UUID) -- they are different fields
-- `DELETE_ISSUE` is permanent with no undo
-- `state` values include spaces: `"on hold"` not `"on_hold"`
-- Filtering by `assignee` in LIST_ISSUES uses account ID, not username; use `"null"` string for unassigned
+### 4. 管理分支
 
-### 4. Manage Branches
+**使用场景**：用户需要创建分支或查看分支结构。
 
-**When to use**: User wants to create branches or explore branch structure
+**操作步骤**：
+1. `BITBUCKET_LIST_BRANCHES` - 列出分支（支持 BBQL 筛选和排序）
+2. `BITBUCKET_CREATE.Branch` - 根据特定的提交哈希创建新分支（必选）
 
-**Tool sequence**:
-1. `BITBUCKET_LIST_BRANCHES` - List branches with optional BBQL filter and sorting [Required]
-2. `BITBUCKET_CREATE_BRANCH` - Create a new branch from a specific commit hash [Required]
+**关键参数**：
+- `name`：分支名称（不包含 `refs/heads/` 前缀）
+- `target_hash`：要创建分支的提交哈希（必须存在于仓库中）
+- `q`：BBQL 筛选器（例如：`name~"feature/"`、`name="main"`）
+- `sort`：按名称排序或按提交日期降序排序（`-target.date`）
+- `pagelen`：每页显示 1-100 个结果（默认为 10）
 
-**Key parameters**:
-- `name`: Branch name without `refs/heads/` prefix (e.g., `feature/new-login`)
-- `target_hash`: Full SHA1 commit hash to branch from (must exist in repo)
-- `q`: BBQL filter (e.g., `name~"feature/"`, `name="main"`)
-- `sort`: Sort by `name` or `-target.date` (descending commit date)
-- `pagelen`: 1-100 results per page (default is 10)
+**注意事项**：
+- `CREATE.Branch` 需要完整的提交哈希，而不是分支名称
+- 分支名称必须遵循 Bitbucket 的命名规则（字母数字、`/`、`.`、`_`）
+- BBQL 字符串值必须使用双引号括起来（例如：`name~"feature/"`）
 
-**Pitfalls**:
-- `CREATE_BRANCH` requires a full commit hash, NOT a branch name as `target_hash`
-- Do NOT include `refs/heads/` prefix in branch names
-- Branch names must follow Bitbucket naming conventions (alphanumeric, `/`, `.`, `_`, `-`)
-- BBQL string values need double quotes: `name~"feature/"` not `name~feature/`
+### 5. 为拉取请求添加评论
 
-### 5. Review Pull Requests with Comments
+**使用场景**：用户需要为拉取请求添加评论，包括内联代码评论。
 
-**When to use**: User wants to add review comments to pull requests, including inline code comments
+**操作步骤**：
+1. `BITBUCKET_GET_pull_REQUEST` - 获取拉取请求的详细信息并确认其存在（先决条件）
+2. `BITBUCKET_GET.Pull_REQUESTDIFF` - 查看实际的代码更改（先决条件）
+3. `BITBUCKET_GET_pull_REQUESTDIFFSTAT` - 获取更改的文件列表（可选）
+4. `BITBUCKET_CREATE_pull_REQUESTCOMMENT` - 发布评论（必选）
 
-**Tool sequence**:
-1. `BITBUCKET_GET_PULL_REQUEST` - Get PR details and verify it exists [Prerequisite]
-2. `BITBUCKET_GET_PULL_REQUEST_DIFF` - Review the actual code changes [Prerequisite]
-3. `BITBUCKET_GET_PULL_REQUEST_DIFFSTAT` - Get list of changed files [Optional]
-4. `BITBUCKET_CREATE_PULL_REQUEST_COMMENT` - Post review comments [Required]
+**关键参数**：
+- `pull_request_id`：拉取请求的 ID
+- `content_raw`：Markdown 格式的评论文本
+- `content_markup`：默认为 `markdown`；也支持 `plaintext`
+- `inline`：包含 `path`、`from`、`to` 的对象，用于创建内联评论
+- `parent_comment_id`：现有评论的 ID（用于创建关联的回复）
 
-**Key parameters**:
-- `pull_request_id`: String ID of the PR
-- `content_raw`: Markdown-formatted comment text
-- `content_markup`: Defaults to `markdown`; also supports `plaintext`
-- `inline`: Object with `path`, `from`, `to` for inline code comments
-- `parent_comment_id`: Integer ID for threaded replies to existing comments
+**注意事项**：
+- `pull_request_id` 在 `CREATE_pull_REQUESTCOMMENT` 中是字符串类型，但在 `GET_pull_REQUEST` 中是整数类型
+- 创建内联评论时至少需要提供 `inline.path`；`from`/`to` 是可选的行号
+- `parent_comment_id` 用于创建关联的回复；对于顶级评论可以省略
 
-**Pitfalls**:
-- `pull_request_id` is a string in CREATE_PULL_REQUEST_COMMENT but an integer in GET_PULL_REQUEST
-- Inline comments require `inline.path` at minimum; `from`/`to` are optional line numbers
-- `parent_comment_id` creates a threaded reply; omit for top-level comments
-- Line numbers in inline comments reference the diff, not the source file
+## 常见模式
 
-## Common Patterns
+### ID 解析
 
-### ID Resolution
-Always resolve human-readable names to IDs before operations:
-- **Workspace**: `BITBUCKET_LIST_WORKSPACES` to get workspace slugs
-- **Repository**: `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` with `q` filter to find repo slugs
-- **Branch**: `BITBUCKET_LIST_BRANCHES` to verify branch existence before PR creation
-- **Members**: `BITBUCKET_LIST_WORKSPACE_MEMBERS` to get UUIDs for reviewer assignment
+在操作之前，始终将人类可读的名称转换为 ID：
+- **工作区**：使用 `BITBUCKET_LIST_WORKSPACES` 获取工作区名称
+- **仓库**：使用 `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` 和 `q` 筛选器获取仓库名称
+- **分支**：使用 `BITBUCKET_LIST_BRANCHES` 在创建拉取请求前确认分支存在
+- **成员**：使用 `BITBUCKET_LIST_WORKSPACE_MEMBERS` 获取审阅者的 UUID
 
-### Pagination
-Bitbucket uses page-based pagination (not cursor-based):
-- Use `page` (starts at 1) and `pagelen` (items per page) parameters
-- Default page size is typically 10; set `pagelen` explicitly (max 50 for PRs, 100 for others)
-- Check response for `next` URL or total count to determine if more pages exist
-- Always iterate through all pages for complete results
+### 分页
 
-### BBQL Filtering
-Bitbucket Query Language is available on list endpoints:
-- String values MUST use double quotes: `name~"pattern"`
-- Operators: `=` (exact), `~` (contains), `!=` (not equal), `>`, `>=`, `<`, `<=`
-- Combine with `AND` / `OR`: `name~"api" AND is_private=true`
+Bitbucket 使用基于页面的分页机制（非基于游标的）：
+- 使用 `page`（从 1 开始）和 `pagelen`（每页显示的项数）参数
+- 默认每页显示 10 个结果；请明确设置 `pagelen`（拉取请求最多 50 个，其他操作最多 100 个）
+- 通过检查响应中的 `next` URL 或总记录数来判断是否存在更多页面
+- 为获取完整结果，请遍历所有页面
 
-## Known Pitfalls
+### BBQL 筛选
 
-### ID Formats
-- Workspace: slug string (e.g., `my-workspace`) or UUID in braces (`{uuid}`)
-- Reviewer UUIDs must include curly braces: `{123e4567-e89b-12d3-a456-426614174000}`
-- Issue IDs are strings; PR IDs are integers in some tools, strings in others
-- Commit hashes must be full SHA1 (40 characters)
+Bitbucket 的查询语言支持在列表端点中使用：
+- 字符串值必须使用双引号括起来（例如：`name~"pattern"`）
+- 运算符：`=`（等于）、`~`（包含）、`!=`（不等于）、`>`、`>=`、`<`、`<=`
+- 可以使用 `AND` / `OR` 进行组合（例如：`name~"api" AND is_private=true`
 
-### Parameter Quirks
-- `assignee` vs `assignee_account_id`: CREATE_ISSUE uses username, UPDATE_ISSUE uses UUID
-- `state` values for issues include spaces: `"on hold"`, not `"on_hold"`
-- `destination_branch` omission defaults to repo main branch, not `main` literally
-- BBQL `repository` is not a valid field -- use `name`
+## 常见问题
 
-### Rate Limits
-- Bitbucket Cloud API has rate limits; large batch operations should include delays
-- Paginated requests count against rate limits; minimize unnecessary page fetches
+### ID 格式
 
-### Destructive Operations
-- `BITBUCKET_DELETE_REPOSITORY` is irreversible and does not remove forks
-- `BITBUCKET_DELETE_ISSUE` is permanent with no recovery option
-- Always confirm with the user before executing delete operations
+- **工作区**：使用字符串格式（例如：`my-workspace`）或大括号中的 UUID（例如：`{uuid}`）
+- **审阅者 UUID** 必须使用大括号括起来（例如：`{123e4567-e89b-12d3-a456-426614174000}`）
+- **问题 ID** 是字符串；在某些工具中拉取请求 ID 是整数，在其他工具中是字符串
+- 提交哈希必须是完整的 SHA1 格式（40 个字符）
 
-## Quick Reference
+### 参数注意事项
 
-| Task | Tool Slug | Key Params |
+- `assignee` 与 `assignee_account_id`：`CREATE_ISSUE` 使用用户名，`UPDATE_ISSUE` 使用 UUID
+- 问题状态的值中包含空格（例如：`on hold` 应写为 `"on_hold"`）
+- 如果省略 `destination_branch`，默认使用仓库的主分支，但主分支不一定是 `main`
+- `repository` 不是一个有效的 BBQL 字段，应使用 `name`
+
+### 速率限制
+
+Bitbucket Cloud API 有速率限制；批量操作时应适当延迟
+- 分页请求会计入速率限制；尽量减少不必要的页面请求
+
+### 破坏性操作
+
+- `BITBUCKET_DELETE_REPOSITORY` 是不可逆操作，且不会删除分支
+- `BITBUCKET_DELETE_ISSUE` 是永久性的操作，无法恢复
+- 在执行删除操作前请务必确认用户同意
+
+## 快速参考
+
+| 操作 | 工具名称 | 关键参数 |
 |------|-----------|------------|
-| List workspaces | `BITBUCKET_LIST_WORKSPACES` | `q`, `sort` |
-| List repos | `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` | `workspace`, `q`, `role` |
-| Create repo | `BITBUCKET_CREATE_REPOSITORY` | `workspace`, `repo_slug`, `is_private` |
-| Delete repo | `BITBUCKET_DELETE_REPOSITORY` | `workspace`, `repo_slug` |
-| List branches | `BITBUCKET_LIST_BRANCHES` | `workspace`, `repo_slug`, `q` |
-| Create branch | `BITBUCKET_CREATE_BRANCH` | `workspace`, `repo_slug`, `name`, `target_hash` |
-| List PRs | `BITBUCKET_LIST_PULL_REQUESTS` | `workspace`, `repo_slug`, `state` |
-| Create PR | `BITBUCKET_CREATE_PULL_REQUEST` | `workspace`, `repo_slug`, `title`, `source_branch` |
-| Get PR details | `BITBUCKET_GET_PULL_REQUEST` | `workspace`, `repo_slug`, `pull_request_id` |
-| Get PR diff | `BITBUCKET_GET_PULL_REQUEST_DIFF` | `workspace`, `repo_slug`, `pull_request_id`, `max_chars` |
-| Get PR diffstat | `BITBUCKET_GET_PULL_REQUEST_DIFFSTAT` | `workspace`, `repo_slug`, `pull_request_id` |
-| Comment on PR | `BITBUCKET_CREATE_PULL_REQUEST_COMMENT` | `workspace`, `repo_slug`, `pull_request_id`, `content_raw` |
-| List issues | `BITBUCKET_LIST_ISSUES` | `workspace`, `repo_slug`, `state`, `priority` |
-| Create issue | `BITBUCKET_CREATE_ISSUE` | `workspace`, `repo_slug`, `title`, `content` |
-| Update issue | `BITBUCKET_UPDATE_ISSUE` | `workspace`, `repo_slug`, `issue_id` |
-| Comment on issue | `BITBUCKET_CREATE_ISSUE_COMMENT` | `workspace`, `repo_slug`, `issue_id`, `content` |
-| Delete issue | `BITBUCKET_DELETE_ISSUE` | `workspace`, `repo_slug`, `issue_id` |
-| List members | `BITBUCKET_LIST_WORKSPACE_MEMBERS` | `workspace` |
+| 列出工作区 | `BITBUCKET_LIST_WORKSPACES` | `q`, `sort` |
+| 列出仓库 | `BITBUCKET_LIST_REPOSITORIES_IN_WORKSPACE` | `workspace`, `q`, `role` |
+| 创建仓库 | `BITBUCKET_CREATE_REPOSITORY` | `workspace`, `repo_slug`, `is_private` |
+| 删除仓库 | `BITBUCKET_DELETE_REPOSITORY` | `workspace`, `repo_slug` |
+| 列出分支 | `BITBUCKET_LIST_BRANCHES` | `workspace`, `repo_slug`, `q` |
+| 创建分支 | `BITBUCKET_CREATE.Branch` | `workspace`, `repo_slug`, `name`, `target_hash` |
+| 列出拉取请求 | `BITBUCKET_LIST_pull_REQUESTS` | `workspace`, `repo_slug`, `state` |
+| 创建拉取请求 | `BITBUCKET_CREATE_pull_REQUEST` | `workspace`, `repo_slug`, `title`, `source_branch` |
+| 获取拉取请求详细信息 | `BITBUCKET_GET_pull_REQUEST` | `workspace`, `repo_slug`, `pull_request_id` |
+| 获取拉取请求差异 | `BITBUCKET_GET_pull_REQUESTDIFF` | `workspace`, `repo_slug`, `pull_request_id`, `max_chars` |
+| 获取拉取请求差异统计信息 | `BITBUCKET_GET_pull_REQUESTDIFFSTAT` | `workspace`, `repo_slug`, `pull_request_id` |
+| 为拉取请求添加评论 | `BITBUCKET_CREATE_pull_REQUESTCOMMENT` | `workspace`, `repo_slug`, `pull_request_id`, `content_raw` |
+| 列出问题 | `BITBUCKET_LIST_ISSUES` | `workspace`, `repo_slug`, `state`, `priority` |
+| 创建问题 | `BITBUCKET_CREATE_ISSUE` | `workspace`, `repo_slug`, `title`, `content` |
+| 更新问题 | `BITBUCKET_UPDATE_ISSUE` | `workspace`, `repo_slug`, `issue_id` |
+| 为问题添加评论 | `BITBUCKET_CREATE_ISSUECOMMENT` | `workspace`, `repo_slug`, `issue_id`, `content` |
+| 删除问题 | `BITBUCKET_DELETE_ISSUE` | `workspace`, `repo_slug`, `issue_id` |
+| 列出工作区成员 | `BITBUCKET_LIST_WORKSPACE_MEMBERS` | `workspace` |

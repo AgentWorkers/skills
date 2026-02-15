@@ -1,52 +1,52 @@
 ---
 name: cardano-wallet
-description: Generate, manage, and fund Cardano wallets for OpenClaw agents
+description: 为 OpenClaw 代理生成、管理和资助 Cardano 钱包
 homepage: https://masumi.network
 user-invocable: true
 metadata: {"openclaw": {"requires": {"bins": ["node"], "env": []}, "emoji": "💳"}}
 ---
 
-# Cardano Wallet Skill for OpenClaw
+# OpenClaw的Cardano钱包功能
 
-**Generate, restore, and manage Cardano wallets with QR code funding support**
+**支持通过二维码进行Cardano钱包的生成、恢复和管理**
 
-## Overview
+## 概述
 
-The Cardano Wallet skill provides tools for AI agents to:
-- Generate new Cardano wallets (24-word mnemonic)
-- Restore wallets from existing mnemonics
-- Generate QR codes for easy wallet funding
-- Check wallet balances (requires Blockfrost API key)
-- Securely backup wallet credentials
+Cardano钱包功能为AI代理提供了以下工具：
+- 生成新的Cardano钱包（包含24个单词的助记词）
+- 从现有的助记词中恢复钱包
+- 生成用于便捷入金的二维码
+- 查看钱包余额（需要Blockfrost API密钥）
+- 安全地备份钱包凭证
 
-## Tools
+## 工具
 
 ### `cardano_generate_wallet`
-Generate a new Cardano wallet with 24-word mnemonic phrase.
+生成一个新的Cardano钱包，包含24个单词的助记词。
 
-**Parameters:**
-- `network` (optional): "Preprod" or "Mainnet" (default: "Preprod")
+**参数：**
+- `network`（可选）："Preprod" 或 "Mainnet"（默认值："Preprod")
 
-**Returns:**
-- `address`: Cardano address (addr1...)
-- `vkey`: Payment verification key
-- `credentialsPath`: Path to encrypted credentials
+**返回值：**
+- `address`：Cardano钱包地址（格式为addr1...）
+- `vkey`：支付验证密钥
+- `credentialsPath`：加密后的钱包凭证文件路径
 
-**Example:**
+**示例：**
 ```typescript
 const wallet = await cardano_generate_wallet({ network: 'Preprod' });
 console.log('Address:', wallet.address);
 ```
 
 ### `cardano_restore_wallet`
-Restore a wallet from existing mnemonic phrase.
+从现有的助记词中恢复钱包。
 
-**Parameters:**
-- `mnemonic` (required): 24-word mnemonic phrase
-- `network` (optional): "Preprod" or "Mainnet"
-- `agentIdentifier` (optional): Identifier to save credentials
+**参数：**
+- `mnemonic`（必需）：24个单词的助记词
+- `network`（可选）："Preprod" 或 "Mainnet"
+- `agentIdentifier`（可选）：用于保存凭证的标识符
 
-**Example:**
+**示例：**
 ```typescript
 const wallet = await cardano_restore_wallet({
   mnemonic: 'word1 word2 ... word24',
@@ -55,19 +55,19 @@ const wallet = await cardano_restore_wallet({
 ```
 
 ### `cardano_generate_funding_qr`
-Generate QR code for wallet funding. Returns QR code as data URL.
+生成用于入金的二维码。返回二维码的数据URL。
 
-**Parameters:**
-- `address` (optional): Cardano address
-- `agentIdentifier` (optional): Wallet identifier
-- `network` (optional): "Preprod" or "Mainnet"
+**参数：**
+- `address`（可选）：Cardano钱包地址
+- `agentIdentifier`（可选）：钱包标识符
+- `network`（可选）："Preprod" 或 "Mainnet"
 
-**Returns:**
-- `qrDataUrl`: QR code as data URL (can be displayed in image)
-- `address`: Wallet address
-- `faucetUrl`: Preprod faucet URL (if Preprod network)
+**返回值：**
+- `qrDataUrl`：二维码的数据URL（可显示为图片）
+- `address`：钱包地址
+- `faucetUrl`：Preprod网络的入金接口URL（仅限Preprod网络使用）
 
-**Example:**
+**示例：**
 ```typescript
 const qr = await cardano_generate_funding_qr({
   agentIdentifier: 'my-wallet',
@@ -77,19 +77,19 @@ const qr = await cardano_generate_funding_qr({
 ```
 
 ### `cardano_get_wallet_balance`
-Get wallet balance in ADA and lovelace. Requires Blockfrost API key.
+查询钱包中的ADA和lovelace余额。需要Blockfrost API密钥。
 
-**Parameters:**
-- `agentIdentifier` (required): Wallet identifier
-- `network` (optional): "Preprod" or "Mainnet"
-- `blockfrostApiKey` (optional): Blockfrost API key (or use env var)
+**参数：**
+- `agentIdentifier`（必需）：钱包标识符
+- `network`（可选）："Preprod" 或 "Mainnet"
+- `blockfrostApiKey`（可选）：Blockfrost API密钥（或使用环境变量）
 
-**Environment Variables:**
-- `BLOCKFROST_API_KEY`: Blockfrost API key
-- `BLOCKFROST_PREPROD_API_KEY`: Preprod API key
-- `BLOCKFROST_MAINNET_API_KEY`: Mainnet API key
+**环境变量：**
+- `BLOCKFROST_API_KEY`：Blockfrost API密钥
+- `BLOCKFROST_PREPROD_API_KEY`：Preprod API密钥
+- `BLOCKFROST_MAINNET_API_KEY`：Mainnet API密钥
 
-**Example:**
+**示例：**
 ```typescript
 const balance = await cardano_get_wallet_balance({
   agentIdentifier: 'my-wallet',
@@ -99,23 +99,22 @@ console.log('Balance:', balance.ada, 'ADA');
 ```
 
 ### `cardano_backup_wallet`
-Securely backup wallet credentials (encrypted).
+安全地备份钱包凭证（已加密）。
 
-**Parameters:**
-- `agentIdentifier` (required): Wallet identifier
-- `network` (optional): "Preprod" or "Mainnet"
+**参数：**
+- `agentIdentifier`（必需）：钱包标识符
+- `network`（可选）："Preprod" 或 "Mainnet"
 
-**Returns:**
-- `backupData`: Encrypted backup JSON
+**返回值：**
+- `backupData`：加密后的钱包凭证文件
 
-## Wallet Funding Workflow
-
-1. **Generate wallet:**
+## 钱包入金流程：
+1. **生成钱包：**
    ```typescript
    const wallet = await cardano_generate_wallet({ network: 'Preprod' });
    ```
 
-2. **Generate QR code:**
+2. **生成二维码：**
    ```typescript
    const qr = await cardano_generate_funding_qr({
      address: wallet.address,
@@ -123,11 +122,11 @@ Securely backup wallet credentials (encrypted).
    });
    ```
 
-3. **Display QR code** (for human to scan and fund)
+3. **显示二维码**（供用户扫描并入金）
 
-4. **For Preprod:** Use faucet at https://docs.cardano.org/cardano-testnet/tools/faucet
+4. **在Preprod网络中：** 使用以下网址进行入金：https://docs.cardano.org/cardano-testnet/tools/faucet
 
-5. **Check balance:**
+5. **查看余额：**
    ```typescript
    const balance = await cardano_get_wallet_balance({
      agentIdentifier: 'wallet-id',
@@ -136,26 +135,23 @@ Securely backup wallet credentials (encrypted).
    });
    ```
 
-## Credential Storage
+## 凭证存储
 
-Credentials are stored encrypted at:
+钱包凭证存储在以下位置（已加密）：
 - `~/.openclaw/credentials/cardano-wallet/`
 
-Files are encrypted with AES-256-GCM and have permissions 600 (owner read/write only).
+文件使用AES-256-GCM算法加密，权限设置为600（仅允许所有者读写）。
 
-## Security Notes
+## 安全提示：
+- **切勿分享您的助记词**——否则他人将能够完全控制您的钱包。
+- **安全备份您的助记词**——使用`cardano_backup_wallet`功能或手动保存。
+- **在Preprod网络中进行测试**——Mainnet网络会使用真实的ADA币。
+- **加密密钥**：设置`MASUMI_ENCRYPTION_KEY`环境变量以确保数据安全。
 
-- **Never share your mnemonic** - it provides full access to your wallet
-- **Backup your mnemonic securely** - use `cardano_backup_wallet` or save manually
-- **Use Preprod for testing** - Mainnet uses real ADA
-- **Encryption key**: Set `MASUMI_ENCRYPTION_KEY` environment variable for secure encryption
+## 依赖项：
+- `@meshsdk/core`：用于钱包操作
+- `qrcode`：用于生成二维码
+- `@blockfrost/blockfrost-js`：用于查询钱包余额（可选）
 
-## Dependencies
-
-- `@meshsdk/core`: Wallet operations
-- `qrcode`: QR code generation
-- `@blockfrost/blockfrost-js`: Balance queries (optional)
-
-## Examples
-
-See `examples/wallet-generation.ts` for complete examples.
+## 示例代码：
+完整的示例代码请参见`examples/wallet-generation.ts`文件。

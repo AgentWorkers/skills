@@ -26,78 +26,78 @@ metadata:
         label: "Install ffmpeg (brew)"
 ---
 
-# Video Understanding (Gemini)
+# 视频理解（Gemini）
 
-Analyze videos using Google Gemini's multimodal video understanding. Supports 1000+ video sources via yt-dlp.
+使用 Google Gemini 的多模态视频理解功能来分析视频。支持通过 `yt-dlp` 下载 1000 多种视频来源。
 
-## Requirements
+## 所需工具
 
-- `yt-dlp` — `brew install yt-dlp` / `pip install yt-dlp`
-- `ffmpeg` — `brew install ffmpeg` (for merging video+audio streams)
-- `GEMINI_API_KEY` environment variable
+- `yt-dlp` — 使用 `brew install yt-dlp` 或 `pip install yt-dlp` 安装
+- `ffmpeg` — 使用 `brew install ffmpeg` （用于合并视频和音频流）
+- 环境变量 `GEMINI_API_KEY`
 
-## Default Output
+## 默认输出结果
 
-Returns structured JSON:
-- **transcript** — Verbatim transcript with `[MM:SS]` timestamps
-- **description** — Visual description (people, setting, UI, text on screen, flow)
-- **summary** — 2-3 sentence summary
-- **duration_seconds** — Estimated duration
-- **speakers** — Identified speakers
+返回结构化的 JSON 数据：
+- **transcript**：包含时间戳 `[MM:SS]` 的逐字转录内容
+- **description**：视频中的视觉元素描述（人物、场景、用户界面、屏幕上的文字、视频流程）
+- **summary**：2-3 句的总结
+- **duration_seconds**：视频时长（以秒为单位）
+- **speakers**：识别出的说话者
 
-## Usage
+## 使用方法
 
-### Analyze a video (structured JSON output)
+### 分析视频（返回结构化 JSON 数据）
 
 ```bash
 uv run {baseDir}/scripts/analyze_video.py "<video-url>"
 ```
 
-### Ask a question (adds "answer" field)
+### 提出问题（输出中包含 “answer” 字段）
 
 ```bash
 uv run {baseDir}/scripts/analyze_video.py "<video-url>" -q "What product is shown?"
 ```
 
-### Override prompt entirely
+### 完全替换提示语
 
 ```bash
 uv run {baseDir}/scripts/analyze_video.py "<video-url>" -p "Custom prompt" --raw
 ```
 
-### Download only (no analysis)
+### 仅下载视频（不进行分析）
 
 ```bash
 uv run {baseDir}/scripts/analyze_video.py "<video-url>" --download-only -o video.mp4
 ```
 
-## Options
+## 选项
 
-| Flag | Description | Default |
+| 选项 | 描述 | 默认值 |
 |------|-------------|---------|
-| `-q` / `--question` | Question to answer (added to default fields) | none |
-| `-p` / `--prompt` | Override entire prompt (ignores -q) | structured JSON |
-| `-m` / `--model` | Gemini model | gemini-2.5-flash |
-| `-o` / `--output` | Save output to file | stdout |
-| `--keep` | Keep downloaded video file | false |
-| `--download-only` | Download only, skip analysis | false |
-| `--max-size` | Max file size in MB | 500 |
-| `--raw` | Raw text output instead of JSON | false |
+| `-q` / `--question` | 需要回答的问题（添加到默认输出字段中） | 无 |
+| `-p` / `--prompt` | 完全替换提示语（忽略 `-q` 选项） | 结构化 JSON 数据 |
+| `-m` / `--model` | 使用的 Gemini 模型 | `gemini-2.5-flash` |
+| `-o` / `--output` | 将输出结果保存到文件 | `stdout` |
+| `--keep` | 保留下载的视频文件 | `false` |
+| `--download-only` | 仅下载视频，不进行分析 | `false` |
+| `--max-size` | 文件最大大小（MB） | 500 |
+| `--raw` | 输出原始文本而非 JSON 格式 | `false` |
 
-## How It Works
+## 工作原理
 
-1. **YouTube URLs** → Passed directly to Gemini (no download needed)
-2. **All other URLs** → Downloaded via yt-dlp → uploaded to Gemini File API → poll until processed
-3. Gemini analyzes video with structured prompt → returns JSON
-4. Temp files and Gemini uploads cleaned up automatically
+1. **YouTube 链接**：直接传递给 Gemini（无需下载）
+2. **其他所有链接**：通过 `yt-dlp` 下载后上传到 Gemini 的文件 API，然后等待处理结果
+3. Gemini 使用结构化的提示语分析视频，并返回 JSON 数据
+4. 使用过程中生成的临时文件会自动清理
 
-## Supported Sources
+## 支持的视频来源
 
-Any URL supported by [yt-dlp](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md): Loom, YouTube, TikTok, Vimeo, Twitter/X, Instagram, Dailymotion, Twitch, and 1000+ more.
+所有支持 [yt-dlp](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) 的视频来源：Loom、YouTube、TikTok、Vimeo、Twitter/X、Instagram、Dailymotion、Twitch 等。
 
-## Tips
+## 使用技巧
 
-- Use `-q` for targeted questions on top of the full analysis
-- YouTube is fastest (no download step)
-- Large videos (10min+) work fine — Gemini File API supports up to 2GB (free) / 20GB (paid)
-- The script auto-installs Python dependencies via `uv`
+- 使用 `-q` 选项可以针对特定内容提出问题
+- YouTube 的分析速度最快（无需下载视频）
+- 大文件（超过 10 分钟）也能正常处理 — Gemini File API 支持免费存储 2GB 的视频，付费用户可存储 20GB
+- 该脚本会通过 `uv` 自动安装 Python 依赖库

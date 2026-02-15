@@ -1,22 +1,22 @@
 ---
 name: jb-deploy-ui
-description: Generate minimal frontends for deploying Juicebox V5 projects and hooks. Creates standalone HTML files with wallet connection, transaction forms, and live status updates.
+description: 生成用于部署 Juicebox V5 项目及其相关组件的最小化前端界面。这些前端界面为独立的 HTML 文件，具备钱包连接功能、交易表单以及实时状态更新功能。
 ---
 
-# Juicebox V5 Deployment UI Generator
+# Juicebox V5 部署用户界面生成器
 
-Generate simple frontends for deploying Juicebox projects, hooks, and configurations. Uses shared styles and viem for blockchain interactions.
+该工具用于生成用于部署 Juicebox 项目、插件（hooks）及配置的简单前端界面。它采用了统一的样式框架（shared styles）以及 viem 库来处理区块链交互相关功能。
 
-## Philosophy
+## 设计理念
 
-> **Show users exactly what they're doing. Make wallet connection trivial. Display transactions in flight.**
+> **让用户清晰地了解自己的操作内容。简化钱包连接流程，实时显示交易信息。**
 
-- Single HTML file, no build step
-- viem from ESM CDN
-- Shared CSS from `/shared/styles.css`
-- Clear transaction previews before signing
+- 仅使用一个 HTML 文件，无需任何构建步骤
+- 使用来自 ESM CDN 的 viem 库
+- 从 `/shared/styles.css` 文件中加载统一的 CSS 样式
+- 在用户签名之前会清除交易预览信息
 
-## Template: Project Deployment UI
+## 模板：项目部署界面（Project Deployment UI）
 
 ```html
 <!DOCTYPE html>
@@ -242,7 +242,7 @@ Generate simple frontends for deploying Juicebox projects, hooks, and configurat
 </html>
 ```
 
-## Template: 721 NFT Project Deployment
+## 模板：721 NFT 项目部署界面（721 NFT Project Deployment）
 
 ```html
 <!DOCTYPE html>
@@ -408,7 +408,7 @@ This template provides the structure - see /jb-project for full deployment scrip
 </html>
 ```
 
-## Template: Revnet Deployment
+## 模板：Revnet 部署界面（Revnet Deployment）
 
 ```html
 <!DOCTYPE html>
@@ -522,9 +522,9 @@ This template provides the structure - see /jb-project for full deployment scrip
 </html>
 ```
 
-## V5 Contract Addresses
+## V5 合同地址的获取方式
 
-Load from shared chain config:
+合同地址从共享的链配置文件中获取：
 
 ```javascript
 import { loadChainConfig } from '/shared/wallet-utils.js';
@@ -539,9 +539,9 @@ const terminal = config.chains[1].contracts.JBMultiTerminal;
 const revDeployer = config.chains[1].contractsV5.REVDeployer;
 ```
 
-## Related Skills
+## 相关技能
 
-- `/jb-project` - Project configuration details
-- `/jb-ruleset` - Ruleset parameters
-- `/jb-interact-ui` - UIs for interacting with existing projects
-- `/jb-omnichain-ui` - Multi-chain deployments
+- `/jb-project`：项目配置详情
+- `/jb-ruleset`：规则集参数
+- `/jb-interact-ui`：用于与现有项目交互的用户界面
+- `/jb-omnichain-ui`：支持多链部署的功能

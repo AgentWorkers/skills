@@ -1,23 +1,23 @@
 ---
 name: book-pool-service
-description: Book pool-service services through Lokuli MCP. Use when user needs to find and book pool-service. Triggers on requests like "book a pool-service", "find pool-service near me", or any pool-service service request.
+description: 通过 Lokuli MCP 来预订池服务（pool-service）。当用户需要查找或预订池服务时，可以使用该功能。该功能会在收到诸如“预订池服务”（book a pool-service）、“查找附近的池服务”（find pool-service near me）或任何与池服务相关的请求时被触发。
 ---
 
-# uook pool service
+# uook 预订池服务
 
-Book pool-service services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来使用预订池服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

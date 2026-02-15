@@ -1,6 +1,6 @@
 ---
 name: affiliate-master
-description: Full-stack affiliate marketing automation for OpenClaw agents. Generate, track, and optimize affiliate links with FTC-compliant disclosures and multi-network support.
+description: 专为 OpenClaw 代理设计的全面型联盟营销自动化工具。该工具能够生成、跟踪和优化联盟链接，并确保所有披露信息符合美国联邦贸易委员会（FTC）的规定，同时支持多网络联盟营销策略。
 metadata:
   {
     "openclaw":
@@ -14,56 +14,56 @@ metadata:
   }
 ---
 
-# AffiliateMaster - Affiliate Marketing Automation
+# AffiliateMaster – 联盟营销自动化工具
 
-**Vernox's first revenue-generating skill. Turn content into cash.**
+**Vernox的首个盈利工具：将内容转化为现金。**
 
-## Overview
+## 概述
 
-AffiliateMaster is a comprehensive affiliate marketing automation tool for OpenClaw agents. It handles the entire affiliate workflow from link generation to revenue tracking, with built-in FTC compliance.
+AffiliateMaster是一款专为OpenClaw代理设计的全面联盟营销自动化工具，涵盖了从链接生成到收入追踪的整个联盟营销流程，并内置了符合联邦贸易委员会（FTC）规定的功能。
 
-## Features
+## 主要功能
 
-### ✅ Link Management
-- Generate affiliate links from multiple networks (Amazon, ShareASale, CJ, Impact)
-- Track clicks, conversions, and revenue
-- Automatic link shortening and branding
-- Link health monitoring
+### ✅ 链接管理
+- 从多个联盟网络（Amazon、ShareASale、CJ、Impact）生成联盟链接
+- 跟踪点击量、转化率和收入
+- 自动链接缩短和品牌化
+- 链接健康状况监控
 
-### ✅ FTC Compliance
-- Automatic disclosure injection for all content
-- Customizable disclosure templates
-- Platform-specific formatting (blog, social, email)
-- Compliance audit logs
+### ✅ 符合FTC规定
+- 所有内容均自动添加披露声明
+- 可自定义披露模板
+- 适用于不同平台的格式（博客、社交媒体、电子邮件）
+- 提供合规性审计日志
 
-### ✅ Content Integration
-- Auto-detect opportunities for affiliate links
-- Insert links with context-aware placement
-- Generate call-to-action text
-- A/B test link placements
+### ✅ 内容集成
+- 自动检测适合添加联盟链接的内容
+- 根据上下文智能插入链接
+- 生成点击号召语（CTA）文本
+- 支持A/B测试链接布局
 
-### ✅ Multi-Network Support
+### ✅ 多网络支持
 - Amazon Associates
 - ShareASale
 - Commission Junction (CJ)
 - Impact
-- Custom networks via API
+- 通过API支持自定义联盟网络
 
-### ✅ Analytics & Optimization
-- Real-time revenue dashboard
-- Conversion rate tracking
-- Best-performing products identification
-- Automated optimization suggestions
+### ✅ 分析与优化
+- 实时收入仪表盘
+- 转化率追踪
+- 识别最受欢迎的产品
+- 提供自动化优化建议
 
-## Installation
+## 安装
 
 ```bash
 clawhub install affiliate-master
 ```
 
-## Quick Start
+## 快速入门
 
-### 1. Configure API Keys
+### 1. 配置API密钥
 
 ```bash
 # Edit config file
@@ -96,7 +96,7 @@ clawhub install affiliate-master
 }
 ```
 
-### 2. Generate Your First Affiliate Link
+### 2. 生成第一个联盟链接
 
 ```javascript
 // Find a product
@@ -117,7 +117,7 @@ const link = await affiliateMaster.generateLink({
 // }
 ```
 
-### 3. Insert Links into Content
+### 3. 将链接插入内容中
 
 ```javascript
 const content = `Check out these amazing wireless headphones! They have great sound quality.`;
@@ -130,117 +130,117 @@ const enhanced = await affiliateMaster.enhanceContent(content, {
 // Result: Content with affiliate links and FTC disclosure inserted
 ```
 
-## Tool Functions
+## 工具功能
 
 ### `generateLink`
-Generate affiliate links for products.
+生成产品的联盟链接。
 
-**Parameters:**
-- `network` (string): Network name (amazon, shareasale, cj, impact)
-- `product` (object): Product data (id, url, name)
-- `shorten` (boolean): Generate short link (default: true)
+**参数：**
+- `network` (string): 联盟网络名称（amazon, shareasale, cj, impact）
+- `product` (object): 产品数据（id, url, name）
+- `shorten` (boolean): 是否生成缩短链接（默认值：true）
 
-**Returns:**
-- `affiliateUrl`: Generated affiliate link
-- `disclosure`: Required disclosure text
-- `trackingId`: Unique tracking identifier
+**返回值：**
+- `affiliateUrl`: 生成的联盟链接
+- `disclosure`: 必需的披露声明文本
+- `trackingId`: 唯一的跟踪标识符
 
 ### `searchProduct`
-Search for products across affiliate networks.
+在多个联盟网络中搜索产品。
 
-**Parameters:**
-- `query` (string): Search query
-- `network` (string): Network to search (default: all)
-- `category` (string): Product category filter
+**参数：**
+- `query` (string): 搜索查询
+- `network` (string): 搜索的网络（默认值：全部）
+- `category` (string): 产品类别过滤器
 
-**Returns:**
-- Array of matching products with pricing and commission rates
+**返回值：**
+- 匹配的产品列表，包含价格和佣金率
 
 ### `enhanceContent`
-Automatically insert affiliate links into content.
+自动将联盟链接插入内容中。
 
-**Parameters:**
-- `content` (string): Original content
+**参数：**
+- `content` (string): 原始内容
 - `options` (object):
-  - `autoInsert` (boolean): Auto-detect opportunities
-  - `disclosurePlacement` (string): Where to place disclosure
-  - `maxLinks` (number): Maximum links to insert
+  - `autoInsert` (boolean): 是否自动检测适合添加链接的位置
+  - `disclosurePlacement` (string): 揭露声明的放置位置
+  - `maxLinks` (number): 最大可插入的链接数量
 
-**Returns:**
-- Enhanced content with affiliate links and disclosures
+**返回值：**
+- 含有联盟链接和披露声明的优化后的内容
 
 ### `getAnalytics`
-Retrieve performance analytics.
+检索性能分析数据。
 
-**Parameters:**
-- `dateRange` (string): 7d, 30d, 90d, all
-- `network` (string): Filter by network (optional)
+**参数：**
+- `dateRange` (string): 7天、30天、90天或全部时间范围
+- `network` (string): 按网络筛选（可选）
 
-**Returns:**
-- Clicks, conversions, revenue, EPC, top products
+**返回值：**
+- 点击量、转化率、收入、每点击费用（EPC）以及最受欢迎的产品
 
 ### `validateCompliance`
-Check FTC compliance of content.
+检查内容的合规性。
 
-**Parameters:**
-- `content` (string): Content to validate
-- `platform` (string): Platform type (blog, social, email)
+**参数：**
+- `content` (string): 需要验证的内容
+- `platform` (string): 平台类型（博客、社交媒体、电子邮件）
 
-**Returns:**
-- Compliance status, missing disclosures, recommendations
+**返回值：**
+- 合规性状态、缺失的披露声明以及优化建议
 
-## Use Cases
+## 使用场景
 
-### Blog Monetization
-- Automatically insert affiliate links into product reviews
-- Add FTC disclosures to all posts
-- Track which products generate the most revenue
+### 博客变现
+- 自动在产品评论中插入联盟链接
+- 在所有帖子中添加FTC披露声明
+- 跟踪哪些产品带来的收入最多
 
-### Newsletter Monetization
-- Add affiliate links to curated product recommendations
-- Track clicks and conversions
-- Optimize product selection over time
+### 电子邮件营销变现
+- 在精选的产品推荐中添加联盟链接
+- 跟踪点击量和转化率
+- 随时间优化产品推荐内容
 
-### Social Media Monetization
-- Generate short affiliate links for Twitter/X
-- Add compliant disclosures
-- Track click-through rates
+### 社交媒体变现
+- 为Twitter/X生成缩短的联盟链接
+- 添加符合规定的披露声明
+- 跟踪点击率
 
-### E-commerce Arbitrage
-- Compare affiliate rates across networks
-- Find highest-paying offers
-- Automate link generation
+### 电子商务套利
+- 比较不同联盟网络的佣金率
+- 找到最高报酬的推广机会
+- 自动生成链接
 
-## Pricing
+## 价格
 
-- **Free:** Up to 1,000 link generations/month
-- **Pro:** $9/month - Unlimited links + advanced analytics
-- **Team:** $29/month - Team accounts + API access
+- **免费版：** 每月最多生成1,000个链接
+- **专业版：** 每月9美元 – 无限链接 + 高级分析功能
+- **团队版：** 每月29美元 – 团队账户 + API访问权限
 
-## Roadmap
+## 制定计划
 
-- [ ] Integration with additional affiliate networks
-- [ ] AI-powered product recommendations
-- [ ] Auto-optimization based on performance data
-- [ ] Bulk link generation for catalogs
-- [ ] Custom domain support for branded links
-- [ ] Real-time commission rate alerts
+- [ ] 与更多联盟网络集成
+- [ ] 基于人工智能的产品推荐功能
+- [ ] 根据性能数据自动优化
+- [ ] 为产品目录批量生成链接
+- [ ] 支持自定义域名以创建品牌化链接
+- [ ] 实时佣金率提醒
 
-## Compliance
+## 合规性
 
-AffiliateMaster is built with FTC compliance in mind:
-- Automatic disclosure generation
-- Platform-appropriate formatting
-- Audit logging for regulatory requirements
+AffiliateMaster的设计充分考虑了FTC规定：
+- 自动生成披露声明
+- 适用于各种平台的格式
+- 提供审计日志以满足监管要求
 
-**Disclaimer:** This tool helps with compliance but does not replace legal advice. Always consult with a legal professional for specific compliance needs.
+**免责声明：** 本工具有助于遵守法规，但不能替代专业法律建议。如有具体的合规需求，请务必咨询法律专业人士。
 
-## Support
+## 支持
 
-For issues, feature requests, or questions:
+如遇问题、功能请求或疑问，请联系我们：
 - GitHub: https://github.com/vernox/affiliate-master
 - Discord: https://discord.gg/clawd
 
 ---
 
-**Generate revenue. Stay compliant. Automate everything.**
+**生成收入。确保合规。自动化一切流程。**

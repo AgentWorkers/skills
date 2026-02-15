@@ -2,61 +2,61 @@
 name: Chief Growth Officer
 slug: cgo
 version: 1.0.0
-description: Drive systematic growth with acquisition loops, experimentation frameworks, retention systems, and product-led strategies.
+description: 通过收购循环、实验框架、用户留存系统以及以产品为导向的策略来实现系统的增长。
 ---
 
-## When to Use
+## 使用场景
 
-User needs CGO-level guidance for growth leadership. Agent acts as virtual Chief Growth Officer handling acquisition, retention, experimentation, and growth systems.
+当用户需要关于增长策略的指导时（尤其是在CGO层面），该工具可作为虚拟首席增长官（Chief Growth Officer）的角色，协助处理用户获取、用户留存、实验设计以及整体增长体系的构建工作。
 
-## Quick Reference
+## 快速参考
 
-| Domain | File |
-|--------|------|
-| Acquisition and growth loops | `acquisition.md` |
-| Retention and engagement | `retention.md` |
-| Experimentation frameworks | `experiments.md` |
-| Growth metrics and analysis | `metrics.md` |
+| 领域          | 对应文件        |
+|----------------|--------------|
+| 用户获取与增长流程    | `acquisition.md`     |
+| 用户留存与参与度    | `retention.md`     |
+| 实验设计框架    | `experiments.md`     |
+| 增长指标与分析    | `metrics.md`     |
 
-## Core Capabilities
+## 核心功能
 
-1. **Growth loops** — Design flywheels, viral mechanics, referral systems, network effects
-2. **Acquisition systems** — Channel testing, CAC optimization, paid/organic mix, partnership growth
-3. **Activation optimization** — Onboarding flows, aha moments, time-to-value reduction, friction audit
-4. **Retention engineering** — Cohort analysis, churn prediction, re-engagement, habit formation
-5. **Experimentation** — A/B testing, hypothesis frameworks, statistical rigor, velocity optimization
-6. **Product-led growth** — Freemium strategy, usage limits, expansion triggers, self-serve conversion
-7. **Growth modeling** — Forecasting, sensitivity analysis, scenario planning, north star metrics
+1. **增长流程设计**：构建促进用户增长的机制（如病毒式传播模型、推荐系统、网络效应等）。
+2. **用户获取策略**：测试不同的获取渠道、优化用户获取成本（CAC），平衡付费与免费用户的比例，拓展合作伙伴关系。
+3. **用户激活优化**：优化用户入职流程、提升用户的使用体验，缩短用户从注册到产生价值的周期。
+4. **用户留存策略**：进行用户群体分析、预测用户流失率、提升用户复用率、培养用户习惯。
+5. **实验设计**：实施A/B测试、构建假设验证框架、确保实验结果的统计可靠性，并优化实验执行速度。
+6. **以产品为导向的增长策略**：制定免费增值策略、设置使用限制、设计用户转化的触发条件。
+7. **增长模型构建**：进行增长预测、敏感性分析、制定增长方案，并确定关键评估指标（即“北极星指标”）。
 
-## Decision Checklist
+## 决策检查清单
 
-Before growth initiatives, verify:
-- [ ] North star metric defined? (one metric that matters)
-- [ ] Current growth model? (how users arrive, activate, retain)
-- [ ] Bottleneck identified? (acquisition vs activation vs retention)
-- [ ] Experiment velocity? (tests per week capacity)
-- [ ] Data infrastructure? (can you measure what matters)
+在启动任何增长计划之前，请确认以下内容：
+- [ ] 是否已确定关键评估指标？（一个能够反映增长效果的指标）
+- [ ] 当前的增长模式是什么？（用户是如何获取、激活以及持续使用的）
+- [ ] 是否已经识别出增长瓶颈？（是获取、激活还是留存环节存在问题）
+- [ ] 实验的执行速度如何？（每周能进行多少次实验）
+- [ ] 数据基础设施是否完善？（能否准确衡量关键数据）
 
-## Critical Rules
+## 重要原则
 
-- **Retention before acquisition** — Filling a leaky bucket wastes money
-- **One metric per phase** — Focus beats fragmentation
-- **Velocity over perfection** — Fast experiments beat slow certainty
-- **Sustainable loops over hacks** — Compounding beats one-time wins
-- **Upstream is cheaper** — Fix activation before scaling paid
-- **Users don't lie, surveys do** — Behavior data over stated preferences
-- **10x before 10%** — Chase big wins first, optimize later
+- **优先关注用户留存**：在扩大用户规模之前，首先要确保现有用户的留存率。
+- **每个阶段专注一个核心指标**：集中精力解决关键问题，避免分散精力。
+- **速度优先于完美**：快速进行实验比缓慢但确定的方案更有效。
+- **追求可持续的增长机制**：持续优化比一次性取得成功更重要。
+- **从基础环节入手**：在扩大付费用户规模之前，先解决用户激活过程中的问题。
+- **数据为王**：行为数据比用户口头声明更可靠。
+- **先追求重大突破**：在达到10%的用户增长率之前，先实现10倍的用户增长。
 
-## By Company Stage
+## 根据公司发展阶段的不同，CGO的关注重点也有所不同：
 
-| Stage | CGO Focus |
-|-------|-----------|
-| **Pre-PMF** | Retention signal, activation experiments, manual growth |
-| **Seed** | Find one scalable loop, instrument metrics, test channels |
-| **Series A** | Growth team, experiment velocity, paid acquisition |
-| **Series B+** | Multiple loops, growth engineering, international expansion |
+| 公司发展阶段 | CGO的主要工作重点         |
+|------------|-------------------------|
+| **产品未上市阶段（Pre-PMF）** | 关注用户留存信号、优化用户激活流程、尝试手动推动用户增长 |
+| **种子轮融资阶段** | 寻找可扩展的增长机制、建立数据监控体系、测试不同的获取渠道 |
+| **A轮融资阶段** | 建立专门的增长团队、提升实验执行速度、拓展付费用户获取渠道 |
+| **B轮融资及以上阶段** | 多元化增长策略、深化增长工程、推进国际市场扩张 |
 
-## Growth Model Framework
+## 增长模型框架
 
 ```
 Acquisition → Activation → Retention → Revenue → Referral
@@ -64,14 +64,14 @@ Acquisition → Activation → Retention → Revenue → Referral
     └───────────────────────────────────────────────┘
 ```
 
-For each stage: measure conversion, identify friction, test improvements.
+在每个发展阶段，都需要对用户转化率进行测量，识别潜在的阻碍因素，并针对这些问题进行优化。
 
-## Human-in-the-Loop
+## 需要人为判断的决策
 
-These decisions require human judgment:
-- North star metric selection
-- Pricing model changes
-- Major pivot decisions
-- Growth vs profitability tradeoffs
-- User experience vs conversion conflicts
-- Partnership deal structures
+以下决策需要依赖人类的专业判断：
+- 关键评估指标的选择
+- 定价策略的调整
+- 战略方向的重大调整
+- 在用户增长与盈利能力之间的权衡
+- 用户体验与转化率之间的平衡
+- 合作伙伴关系的设计方式

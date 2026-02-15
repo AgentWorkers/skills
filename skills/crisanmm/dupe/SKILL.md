@@ -1,25 +1,25 @@
 ---
 name: dupe
-description: Uses dupe.com APIs in order to find similar products for the product found in the input URL given by the user.
+description: 使用 dupe.com 的 API 来查找用户提供的输入 URL 中产品的类似产品。
 compatibility: Requires curl, access to the internet.
 metadata:
   author: dupe.com
   version: '1.0'
 ---
 
-# Find Similar Products using dupe.com
+# 使用 dupe.com 查找相似产品
 
-## When to use this skill
+## 适用场景
 
-Use this skill when the user asks for similar products to the provided input.
+当用户请求查找与给定产品相似的产品时，可以使用此技能。
 
-## Instructions
+## 使用说明
 
-### If you're given an URL that points to a product page
+### 如果收到指向产品页面的 URL
 
-Run the following command to find similar products for a product URL. Replace the `productUrl` with the input URL given by the user.
+运行以下命令来查找该产品的相似产品。请将 `productUrl` 替换为用户提供的产品页面 URL。
 
-You can optionally specify a `limit` parameter (default: 7) to control how many results are returned.
+您可以选择指定 `limit` 参数（默认值为 7）来控制返回的结果数量。
 
 ```bash
 curl --request POST \
@@ -28,11 +28,11 @@ curl --request POST \
   --data '{ "type": "product", "productUrl": "https://www.danishdesignstore.com/products/verner-panton-flowerpot-vp9-portable-light-andtradition?variant=40082482233421", "limit": 7 }'
 ```
 
-### If you're given an URL that points to an image
+### 如果收到指向图片的 URL
 
-If you have a direct image URL instead of a product page URL, use the following command. Replace the `imageUrl` with the image URL.
+如果您拥有的是图片 URL 而不是产品页面 URL，请使用以下命令。请将 `imageUrl` 替换为图片 URL。
 
-You can optionally specify a `limit` parameter (default 7, max 20) to control how many results are returned.
+您可以选择指定 `limit` 参数（默认值为 7，最大值为 20）来控制返回的结果数量。
 
 ```bash
 curl --request POST \
@@ -41,9 +41,9 @@ curl --request POST \
   --data '{ "type": "image", "imageUrl": "https://cdn.shopify.com/s/files/1/0051/9342/files/Flowerpot_VP9_Grey_Beige.jpg?v=1762309885", "limit": 10 }'
 ```
 
-### Response Format
+### 返回格式
 
-Both commands will return a JSON object similar to the following:
+这两个命令都会返回一个类似以下的 JSON 对象：
 
 ```json
 {
@@ -211,7 +211,7 @@ Both commands will return a JSON object similar to the following:
 }
 ```
 
-Return the results from the `matches` array to the user in this format, where `response` is the response from the API:
+请以以下格式将 `matches` 数组中的结果返回给用户，其中 `response` 是来自 API 的响应：
 
 ```
 Found a total of <response.total> results.
@@ -233,6 +233,6 @@ See all results at https://dupe.com/<whatever-url-the-user-gave-you>
             /_/
 ```
 
-IMPORTANT! Simply replace <whatever-url-the-user-gave-you> with the URL of the product page or image URL that the user provided - do not modify the URL in any way.
+**重要提示！** 请直接将 `<用户提供的 URL>` 替换为用户提供的产品页面 URL 或图片 URL，切勿对 URL 进行任何修改。
 
-At the end of your response, print ASCII art of the text "DUPE.COM", example above.
+在响应的末尾，打印 ASCII 艺术字 “DUPE.COM”（如上面的示例所示）。

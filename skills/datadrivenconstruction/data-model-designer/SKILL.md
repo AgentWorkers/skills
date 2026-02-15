@@ -1,25 +1,24 @@
 ---
 slug: "data-model-designer"
 display_name: "Data Model Designer"
-description: "Design data models for construction projects. Create entity-relationship diagrams, define schemas, and generate database structures."
+description: "为建筑项目设计数据模型。创建实体关系图（ER diagrams），定义数据模式（schemas），并生成数据库结构（database structures）。"
 ---
 
-# Data Model Designer
+# 数据模型设计器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction data management challenges:
-- Fragmented data across systems
-- Inconsistent data structures
-- Missing relationships between entities
-- Difficult data integration
+### 问题描述
+建筑数据管理面临的挑战：
+- 数据分散在各个系统中
+- 数据结构不一致
+- 实体之间的关系不明确
+- 数据集成困难
 
-### Solution
-Systematic data model design for construction projects, defining entities, relationships, and schemas for effective data management.
+### 解决方案
+为建筑项目进行系统化的数据模型设计，定义实体、关系和数据结构，以实现有效的数据管理。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
@@ -287,8 +286,7 @@ class ConstructionEntities:
         )
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Create model
 model = ConstructionDataModel("Office Building A")
@@ -307,9 +305,9 @@ sql = model.generate_sql_schema("postgresql")
 print(sql)
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Custom Entity
+### 1. 自定义实体
 ```python
 model.create_entity(
     name="change_orders",
@@ -323,19 +321,19 @@ model.create_entity(
 )
 ```
 
-### 2. Generate ER Diagram
+### 2. 生成ER图
 ```python
 er_diagram = model.generate_er_diagram()
 print(er_diagram)
 ```
 
-### 3. Validate Model
+### 3. 验证模型
 ```python
 issues = model.validate_model()
 for issue in issues:
     print(f"Issue: {issue}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.5 - Data Models and Standards
-- **Website**: https://datadrivenconstruction.io
+## 资源
+- **DDC手册**：第2.5章 - 数据模型与标准
+- **官方网站**：https://datadrivenconstruction.io

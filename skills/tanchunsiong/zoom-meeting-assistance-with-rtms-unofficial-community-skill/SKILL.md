@@ -1,189 +1,120 @@
 ---
 name: zoom-meeting-assistance-rtms-unofficial-community
-description: Zoom RTMS Meeting Assistant — start on-demand to capture meeting audio, video, transcript, screenshare, and chat via Zoom Real-Time Media Streams. Handles meeting.rtms_started and meeting.rtms_stopped webhook events. Provides AI-powered dialog suggestions, sentiment analysis, and live summaries with WhatsApp notifications. Use when a Zoom RTMS webhook fires or the user asks to record/analyze a meeting.
+description: Zoom RTMS 会议助手——可根据需求启动，通过 Zoom 的实时媒体流（Real-Time Media Streams）捕获会议音频、视频、文字记录、屏幕共享内容以及聊天记录。该工具能够处理 `meeting.rtms_started` 和 `meeting.rtms_stopped` 这两种 Webhook 事件，并提供基于人工智能的对话建议、情感分析以及实时会议摘要，同时会通过 WhatsApp 发送通知。适用于 Zoom RTMS Webhook 被触发时，或用户请求录制/分析会议数据的情况。
 ---
 
-# Zoom RTMS Meeting Assistant
+# Zoom RTMS 会议助手
 
-Headless capture service for Zoom meetings using Real-Time Media Streams (RTMS). Receives webhook events, connects to RTMS WebSockets, records all media, and runs AI analysis via OpenClaw.
+这是一个用于捕获 Zoom 会议内容的无头（headless）服务，它利用实时媒体流（RTMS）技术来实现数据捕获。该服务能够接收 Webhook 事件，连接到 RTMS 的 WebSocket，记录所有媒体数据，并通过 OpenClaw 进行人工智能分析。
 
-## Webhook Events Handled
+## 支持的 Webhook 事件
 
-This skill processes two Zoom webhook events:
+该服务可以处理两种 Zoom Webhook 事件：
 
-- **`meeting.rtms_started`** — Zoom sends this when RTMS is activated for a meeting. Contains `server_urls`, `rtms_stream_id`, and `meeting_uuid` needed to connect to the RTMS WebSocket.
-- **`meeting.rtms_stopped`** — Zoom sends this when RTMS ends (meeting ended or RTMS disabled). Triggers cleanup: closes WebSocket connections, generates screenshare PDF, sends summary notification.
+- **`meeting.rtms_started`**：当 Zoom 为会议启用 RTMS 时，会发送此事件。该事件包含连接到 RTMS WebSocket 所需的 `server_urls`、`rtms_stream_id` 和 `meeting_uuid` 参数。
+- **`meeting.rtms_stopped`**：当 RTMS 停用或会议结束时，Zoom 会发送此事件。此时服务会执行清理操作：关闭 WebSocket 连接，生成屏幕共享内容的 PDF 文件，并发送通知。
 
-## Webhook Dependency
+## Webhook 依赖
 
-This skill needs a public webhook endpoint to receive these events from Zoom.
+该服务需要一个公开的 Webhook 端点来接收来自 Zoom 的事件。**推荐使用** `ngrok-unofficial-webhook-skill`（位于 `skills/ngrok-unofficial-webhook-skill` 目录下）。该工具会自动检测到该服务，并通过 `skill.json` 文件中的 `webhookEvents` 配置来通知用户，同时提供将事件路由到该服务的功能。
 
-**Preferred:** Use the **ngrok-unofficial-webhook-skill** (`skills/ngrok-unofficial-webhook-skill`). It auto-discovers this skill via `webhookEvents` in `skill.json`, notifies the user, and offers to route events here.
+其他 Webhook 解决方案（如自定义服务器或云函数）也可以使用，但可能需要额外的集成步骤才能将数据转发给该服务。
 
-Other webhook solutions (e.g. custom servers, cloud functions) will work but require additional integration to forward payloads to this service.
+## 先决条件
 
-## Prerequisites
+**注意：** 该服务运行需要 `ffmpeg` 工具，用于会议后的媒体文件转换。
 
-```bash
-cd skills/zoom-meeting-assistance-rtms-unofficial-community
-npm install
-```
+## 环境变量
 
-Requires `ffmpeg` for post-meeting media conversion.
+请在服务的 `.env` 文件中配置以下环境变量：
 
-## Environment Variables
+- **必填：**
+  - `ZOOM_SECRET_TOKEN`：Zoom Webhook 的秘密令牌
+  - `ZOOM_CLIENT_ID`：Zoom 应用的客户端 ID
+  - `ZOOM_CLIENT_SECRET`：Zoom 应用的客户端密钥
 
-Set these in the skill's `.env` file:
+- **可选：**
+  - `PORT`：服务器端口（默认值：`3000`
+  - `AI_PROCESSING_INTERVAL_MS`：AI 分析的频率（单位：毫秒，默认值：`30000`）
+  - `AI_FUNCTION_STAGGER_MS`：AI 调用之间的延迟时间（单位：毫秒，默认值：`5000`）
+  - `AUDIO_DATA_OPT`：
+    - `1`：混合音频流
+    - `2`：多音频流（默认值：`2`
+  - `OPENCLAW_NOTIFY_CHANNEL`：通知通道（默认值：`whatsapp`）
+  - `OPENCLAW_NOTIFY_TARGET`：接收通知的电话号码或目标对象
 
-**Required:**
-- `ZOOM_SECRET_TOKEN` — Zoom webhook secret token
-- `ZOOM_CLIENT_ID` — Zoom app Client ID
-- `ZOOM_CLIENT_SECRET` — Zoom app Client Secret
+## 启动服务
 
-**Optional:**
-- `PORT` — Server port (default: `3000`)
-- `AI_PROCESSING_INTERVAL_MS` — AI analysis frequency in ms (default: `30000`)
-- `AI_FUNCTION_STAGGER_MS` — Delay between AI calls in ms (default: `5000`)
-- `AUDIO_DATA_OPT` — `1` = mixed stream, `2` = multi-stream (default: `2`)
-- `OPENCLAW_NOTIFY_CHANNEL` — Notification channel (default: `whatsapp`)
-- `OPENCLAW_NOTIFY_TARGET` — Phone number / target for notifications
+该服务会启动一个 Express 服务器，监听指定端口上的 Zoom Webhook 事件。
 
-## Starting the Service
+**⚠️ 重要提示：** 在将 Webhook 数据转发给该服务之前，请务必确认服务已正常运行。
 
-```bash
-cd skills/zoom-meeting-assistance-rtms-unofficial-community
-node index.js
-```
+如果服务未响应，请先启动服务后再进行数据转发。
 
-This starts an Express server listening for Zoom webhook events on `PORT`.
+**典型工作流程：**
+1. 以后台进程的形式启动服务器。
+2. Zoom 发送 `meeting.rtms_started` Webhook 事件 → 服务连接到 RTMS 的 WebSocket。
+3. 实时捕获音频、视频、文字记录、屏幕共享内容和聊天记录等媒体数据。
+4. 定期执行 AI 分析（生成对话建议、情感分析结果等）。
+5. 收到 `meeting.rtms_stopped` 事件后，服务会关闭连接并生成屏幕共享内容的 PDF 文件。
 
-**⚠️ Important:** Before forwarding webhooks to this service, always check if it's running:
+## 录制数据的存储结构
 
-```bash
-# Check if service is listening on port 3000
-lsof -i :3000
-```
+所有录制文件按日期进行分类存储：
 
-If nothing is returned, start the service first before forwarding any webhook events.
+每个媒体流对应的文件夹包含以下文件：
 
-**Typical flow:**
-1. Start the server as a background process
-2. Zoom sends `meeting.rtms_started` webhook → service connects to RTMS WebSocket
-3. Media streams in real-time: audio, video, transcript, screenshare, chat
-4. AI processing runs periodically (dialog suggestions, sentiment, summary)
-5. `meeting.rtms_stopped` → service closes connections, generates screenshare PDF
-
-## Recorded Data
-
-All recordings are stored organized by date:
-```
-skills/zoom-meeting-assistance-rtms-unofficial-community/recordings/YYYY/MM/DD/{streamId}/
-```
-
-Each stream folder contains:
-
-| File | Content | Searchable |
+| 文件名 | 文件内容 | 是否可搜索 |
 |------|---------|-----------|
-| `metadata.json` | Meeting metadata (UUID, stream ID, operator, start time) | ✅ |
-| `transcript.txt` | Plain text transcript with timestamps and speaker names | ✅ Best for searching — grep-friendly, one line per utterance |
-| `transcript.vtt` | VTT format transcript with timing cues | ✅ |
-| `transcript.srt` | SRT format transcript | ✅ |
-| `events.log` | Participant join/leave, active speaker changes (JSON lines) | ✅ |
-| `chat.txt` | Chat messages with timestamps | ✅ |
-| `ai_summary.md` | AI-generated meeting summary (markdown) | ✅ Key document — read this first for meeting overview |
-| `ai_dialog.json` | AI dialog suggestions | ✅ |
-| `ai_sentiment.json` | Sentiment analysis per participant | ✅ |
-| `mixedaudio.raw` | Mixed audio stream (raw PCM) | ❌ Binary |
-| `activespeakervideo.h264` | Active speaker video (raw H.264) | ❌ Binary |
-| `processed/screenshare.pdf` | Deduplicated screenshare frames as PDF | ❌ Binary |
+| `metadata.json` | 会议元数据（UUID、流 ID、操作员、开始时间） | ✅ |
+| `transcript.txt` | 带时间戳的纯文本记录（每条发言占一行，便于搜索） | ✅ |
+| `transcript.vtt` | 带时间戳的 VTT 格式记录 | ✅ |
+| `transcript.srt` | SRT 格式的记录文件 | ✅ |
+| `events.log` | 参与者加入/离开、当前发言者变更记录（JSON 格式） | ✅ |
+| `chat.txt` | 带时间戳的聊天记录 | ✅ |
+| `ai_summary.md` | 由 AI 生成的会议总结（Markdown 格式） | ✅ | 首先阅读此文件以获取会议概览 |
+| `ai_dialog.json` | AI 生成的对话建议 | ✅ |
+| `ai_sentiment.json` | 每位参与者的情绪分析结果 | ✅ |
+| `mixedaudio.raw` | 混合音频流（原始 PCM 格式） | ❌ | 二进制文件 |
+| `activespeakervideo.h264` | 当前发言者的视频流（原始 H.264 格式） | ❌ | 二进制文件 |
+| `processed/screenshare.pdf` | 去重后的屏幕共享图片（PDF 格式） | ❌ | 二进制文件 |
 
-All summaries are also copied to a central folder for easy access:
-```
-skills/zoom-meeting-assistance-rtms-unofficial-community/summaries/summary_YYYY-MM-DDTHH-MM-SS_{streamId}.md
-```
+所有生成的会议总结文件也会被复制到一个中央文件夹中，以便统一管理和查询。
 
-## Searching & Querying Past Meetings
+## 查找和查询过去的会议记录
 
-To find and review past meeting data:
+`.txt`、`.md`、`.json` 和 `.log` 文件均为文本格式，支持搜索。可以先查看 `ai_summary.md` 以获取会议概览，然后根据需要深入查看 `transcript.txt` 文件中的具体内容。
 
-```bash
-# List all recorded meetings by date
-ls -R recordings/
+## API 端点
 
-# List meetings for a specific date
-ls recordings/2026/01/28/
+（相关 API 端点信息请参见文档中的说明。）
 
-# Search across all transcripts for a keyword
-grep -rl "keyword" recordings/*/*/*/*/transcript.txt
+## 会议后的处理流程
 
-# Search for what a specific person said
-grep "Chun Siong Tan" recordings/*/*/*/*/transcript.txt
+当 `meeting.rtms_stopped` 事件触发时，服务会自动执行以下操作：
+1. 从屏幕共享图片生成 PDF 文件。
+2. 将 `mixedaudio.raw` 文件转换为 `mixedaudio.wav` 格式。
+3. 将 `activespeakervideo.h264` 文件转换为 `activespeakervideo.mp4` 格式。
+4. 将混合音频流与当前发言者的视频流合并为 `final_output.mp4` 文件。
 
-# Read a meeting summary
-cat recordings/YYYY/MM/DD/<streamId>/ai_summary.md
+虽然提供了手动转换脚本，但由于自动转换会在会议结束时执行，因此通常不需要手动重新转换。
 
-# Search summaries for a topic
-grep -rl "topic" recordings/*/*/*/*/ai_summary.md
+## 查阅会议数据
 
-# Check who attended a meeting
-cat recordings/YYYY/MM/DD/<streamId>/events.log
+会议结束后或进行中，可以通过以下路径读取相关文件：
 
-# Get sentiment for a meeting
-cat recordings/YYYY/MM/DD/<streamId>/ai_sentiment.json
-```
+（文件路径格式：`recordings/YYYY/MM/DD/{streamId}/`）
 
-The `.txt`, `.md`, `.json`, and `.log` files are all text-based and searchable. Start with `ai_summary.md` for a quick overview, then drill into `transcript.txt` for specific quotes or details.
+## 自定义提示信息
 
-## API Endpoints
+如果您希望调整会议总结的样式或分析内容，可以自定义相关的提示信息：
 
-```bash
-# Toggle WhatsApp notifications on/off
-curl -X POST http://localhost:3000/api/notify-toggle -H "Content-Type: application/json" -d '{"enabled": false}'
-
-# Check notification status
-curl http://localhost:3000/api/notify-toggle
-```
-
-## Post-Meeting Processing
-
-When `meeting.rtms_stopped` fires, the service automatically:
-1. Generates PDF from screenshare images
-2. Converts `mixedaudio.raw` → `mixedaudio.wav`
-3. Converts `activespeakervideo.h264` → `activespeakervideo.mp4`
-4. Muxes mixed audio + active speaker video into `final_output.mp4`
-
-Manual conversion scripts are available but note that auto-conversion runs on meeting end, so manual re-runs are rarely needed.
-
-## Reading Meeting Data
-
-After or during a meeting, read files from `recordings/YYYY/MM/DD/{streamId}/`:
-
-```bash
-# List recorded meetings by date
-ls -R recordings/
-
-# Read transcript
-cat recordings/YYYY/MM/DD/<streamId>/transcript.txt
-
-# Read AI summary
-cat recordings/YYYY/MM/DD/<streamId>/ai_summary.md
-
-# Read sentiment analysis
-cat recordings/YYYY/MM/DD/<streamId>/ai_sentiment.json
-```
-
-## Prompt Customization
-
-Want different summary styles or analysis? Customize the AI prompts to fit your needs!
-
-Edit these files to change AI behavior:
-
-| File | Purpose | Example Customizations |
+| 文件名 | 用途 | 自定义示例 |
 |------|---------|----------------------|
-| `summary_prompt.md` | Meeting summary generation | Bullet points vs prose, focus areas, length |
-| `query_prompt.md` | Query response formatting | Response style, detail level |
-| `query_prompt_current_meeting.md` | Real-time meeting analysis | What to highlight during meetings |
-| `query_prompt_dialog_suggestions.md` | Dialog suggestion style | Formal vs casual, suggestion count |
-| `query_prompt_sentiment_analysis.md` | Sentiment scoring logic | Custom sentiment categories, thresholds |
+| `summary_prompt.md` | 会议总结生成 | 概述格式（项目符号列表 vs 散文格式）、重点内容、长度设置 |
+| `query.prompt.md` | 查询结果格式 | 响应内容的显示方式、详细程度设置 |
+| `query.prompt_current_meeting.md` | 实时会议分析 | 会议中需要重点展示的内容 |
+| `query.prompt_dialog_suggestions.md` | 对话建议的显示风格 | 正式 vs 非正式的语气、建议条数设置 |
+| `query.prompt_sentiment_analysis.md` | 情感分析逻辑 | 自定义情感分析类别、阈值设置 |
 
-**Tip:** Back up the originals before editing, so you can revert if needed.
+**提示：** 修改相关文件前请先备份原始文件，以便在需要时恢复原始设置。

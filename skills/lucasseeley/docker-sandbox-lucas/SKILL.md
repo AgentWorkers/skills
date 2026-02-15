@@ -1,40 +1,40 @@
 ---
 name: docker-sandbox
-description: Create and manage Docker sandboxed VM environments for safe agent execution. Use when running untrusted code, exploring packages, or isolating agent workloads. Supports Claude, Codex, Copilot, Gemini, and Kiro agents with network proxy controls.
+description: 创建并管理基于 Docker 的沙箱化虚拟机环境，以确保代理程序的安全执行。适用于运行不受信任的代码、探索软件包或隔离代理工作负载的场景。该环境支持 Claude、Codex、Copilot、Gemini 和 Kiro 等代理程序，并提供了网络代理控制功能。
 metadata: {"clawdbot":{"emoji":"🐳","requires":{"bins":["docker"]},"primaryEnv":"","homepage":"https://docs.docker.com/desktop/features/sandbox/","os":["linux","darwin","win32"]}}
 ---
 
-# Docker Sandbox
+# Docker沙箱
 
-Run agents and commands in **isolated VM environments** using Docker Desktop's sandbox feature. Each sandbox gets its own lightweight VM with filesystem isolation, network proxy controls, and workspace mounting via virtiofs.
+使用Docker Desktop的沙箱功能，在**隔离的虚拟机环境中**运行代理程序和命令。每个沙箱都拥有自己的轻量级虚拟机，具备文件系统隔离、网络代理控制以及通过virtiofs挂载的工作区功能。
 
-## When to Use
+## 使用场景
 
-- Exploring **untrusted packages** or skills before installing them system-wide
-- Running **arbitrary code** from external sources safely
-- Testing **destructive operations** without risking the host
-- Isolating **agent workloads** that need network access controls
-- Setting up **reproducible environments** for experiments
+- 在全局安装之前，探索**不可信的软件包**或相关技术
+- 安全地运行来自外部来源的**任意代码**
+- 在不危及主机系统的情况下测试**可能造成破坏的操作**
+- 隔离需要网络访问控制的**代理工作负载**
+- 为实验创建**可复现的环境**
 
-## Requirements
+## 系统要求
 
-- Docker Desktop 4.49+ with the `docker sandbox` plugin
-- Verify: `docker sandbox version`
+- Docker Desktop 4.49及以上版本，并安装了`docker sandbox`插件
+- 需要验证Docker沙箱的版本信息
 
-## Quick Start
+## 快速入门
 
-### Create a sandbox for the current project
+### 为当前项目创建沙箱
 
 ```bash
 docker sandbox create --name my-sandbox claude .
 ```
 
-This creates a VM-isolated sandbox with:
-- The current directory mounted via virtiofs
-- Node.js, git, and standard dev tools pre-installed
-- Network proxy with allowlist controls
+此操作会创建一个虚拟机隔离的沙箱环境：
+- 通过virtiofs将当前目录挂载到沙箱中
+- 预先安装了Node.js、git和标准开发工具
+- 配置了具有允许列表控制功能的网络代理
 
-### Run commands inside
+### 在沙箱内运行命令
 
 ```bash
 docker sandbox exec my-sandbox node --version
@@ -42,7 +42,7 @@ docker sandbox exec my-sandbox npm install -g some-package
 docker sandbox exec -w /path/to/workspace my-sandbox bash -c "ls -la"
 ```
 
-### Run an agent directly
+### 直接运行代理程序
 
 ```bash
 # Create and run in one step
@@ -52,9 +52,9 @@ docker sandbox run claude . -- -p "What files are in this project?"
 docker sandbox run my-sandbox -- -p "Analyze this codebase"
 ```
 
-## Commands Reference
+## 命令参考
 
-### Lifecycle
+### 沙箱的生命周期
 
 ```bash
 # Create a sandbox (agents: claude, codex, copilot, gemini, kiro, cagent)
@@ -88,9 +88,9 @@ docker sandbox reset
 docker sandbox save <sandbox>
 ```
 
-### Network Controls
+### 网络控制
 
-The sandbox includes a network proxy for controlling outbound access.
+沙箱内置了网络代理，用于控制出站网络访问。
 
 ```bash
 # Allow specific domains
@@ -114,7 +114,7 @@ docker sandbox network proxy <sandbox> --policy allow  # Allow everything, then 
 docker sandbox network log <sandbox>
 ```
 
-### Custom Templates
+### 自定义模板
 
 ```bash
 # Use a custom container image as base
@@ -124,29 +124,29 @@ docker sandbox create --template my-custom-image:latest claude .
 docker sandbox save my-sandbox
 ```
 
-## Workspace Mounting
+## 工作区挂载
 
-The workspace path on the host is mounted into the sandbox via virtiofs. The mount path inside the sandbox preserves the host path structure:
+主机上的工作区路径会通过virtiofs挂载到沙箱中。沙箱内的路径结构与主机保持一致：
 
-| Host OS | Host Path | Sandbox Path |
+| 主机操作系统 | 主机路径 | 沙箱路径 |
 |---|---|---|
 | Windows | `H:\Projects\my-app` | `/h/Projects/my-app` |
 | macOS | `/Users/me/projects/my-app` | `/Users/me/projects/my-app` |
 | Linux | `/home/me/projects/my-app` | `/home/me/projects/my-app` |
 
-The agent's home directory is `/home/agent/` with a symlinked `workspace/` directory.
+代理程序的根目录为`/home/agent/`，其中包含一个链接到`workspace/`的目录。
 
-## Environment Inside the Sandbox
+## 沙箱内的环境配置
 
-Each sandbox VM includes:
-- **Node.js** (v20.x LTS)
-- **Git** (latest)
-- **Python** (system)
-- **curl**, **wget**, standard Linux utilities
-- **npm** (global install directory at `/usr/local/share/npm-global/`)
-- **Docker socket** (at `/run/docker.sock` - Docker-in-Docker capable)
+每个沙箱虚拟机都包含以下软件：
+- **Node.js**（v20.x LTS）
+- **Git**（最新版本）
+- **Python**（系统默认安装）
+- **curl**、**wget**等标准Linux工具
+- **npm**（全局安装目录位于`/usr/local/share/npm-global/`）
+- **Docker套接字**（位于`/run/docker.sock`，支持Docker-in-Docker功能）
 
-### Proxy Configuration (auto-set)
+### 代理配置（自动设置）
 
 ```
 HTTP_PROXY=http://host.docker.internal:3128
@@ -155,7 +155,7 @@ NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/proxy-ca.crt
 SSL_CERT_FILE=/usr/local/share/ca-certificates/proxy-ca.crt
 ```
 
-**Important**: Node.js `fetch` (undici) does NOT respect `HTTP_PROXY` env vars by default. For npm packages that use `fetch`, create a require hook:
+**注意**：Node.js的`fetch`函数默认不尊重`HTTP_PROXY`环境变量。对于使用`fetch`的npm包，需要创建一个`require`钩子来设置代理：
 
 ```javascript
 // /tmp/proxy-fix.js
@@ -170,77 +170,28 @@ if (proxy) {
 }
 ```
 
-Run with: `node -r /tmp/proxy-fix.js your-script.js`
+使用以下命令运行脚本：`node -r /tmp/proxy-fix.js your-script.js`
 
-## Patterns
+## 常见问题解决方法
 
-### Safe Package Exploration
+### “客户端版本太旧”
+请将Docker Desktop升级到4.49及以上版本。沙箱插件要求Docker引擎API版本达到v1.44或更高。
 
-```bash
-# Create isolated sandbox
-docker sandbox create --name pkg-test claude .
+### 沙箱内“fetch操作失败”
+Node.js的`fetch`函数不使用代理设置。请使用上述的`proxy-fix.js`钩子，或改用`curl`来发送请求：
 
-# Restrict network to only npm registry
-docker sandbox network proxy pkg-test --policy deny
-docker sandbox network proxy pkg-test --allow-host registry.npmjs.org
-docker sandbox network proxy pkg-test --allow-host api.npmjs.org
-
-# Install and inspect the package
-docker sandbox exec pkg-test npm install -g suspicious-package
-docker sandbox exec pkg-test bash -c "find /usr/local/share/npm-global/lib/node_modules/suspicious-package -name '*.js' | head -20"
-
-# Check for post-install scripts, network calls, file access
-docker sandbox network log pkg-test
-
-# Clean up
-docker sandbox rm pkg-test
-```
-
-### Persistent Dev Environment
-
-```bash
-# Create once
-docker sandbox create --name dev claude ~/projects/my-app
-
-# Use across sessions
-docker sandbox exec dev npm test
-docker sandbox exec dev npm run build
-
-# Save as template for team sharing
-docker sandbox save dev
-```
-
-### Locked-Down Agent Execution
-
-```bash
-# Deny-all network, allow only what's needed
-docker sandbox create --name secure claude .
-docker sandbox network proxy secure --policy deny
-docker sandbox network proxy secure --allow-host api.openai.com
-docker sandbox network proxy secure --allow-host github.com
-
-# Run agent with restrictions
-docker sandbox run secure -- -p "Review this code for security issues"
-```
-
-## Troubleshooting
-
-### "client version X is too old"
-Update Docker Desktop to 4.49+. The sandbox plugin requires engine API v1.44+.
-
-### "fetch failed" inside sandbox
-Node.js `fetch` doesn't use the proxy. Use the proxy-fix.js require hook above, or use `curl` instead:
 ```bash
 docker sandbox exec my-sandbox curl -sL https://api.example.com/data
 ```
 
-### Path conversion on Windows (Git Bash / MSYS2)
-Git Bash converts `/path` to `C:/Program Files/Git/path`. Prefix commands with:
+### Windows（Git Bash / MSYS2）下的路径转换
+Git Bash会将路径`/path`转换为`C:/Program Files/Git/path`。在命令前添加相应的路径前缀：
+
 ```bash
 MSYS_NO_PATHCONV=1 docker sandbox exec my-sandbox ls /home/agent
 ```
 
-### Sandbox won't start after Docker update
+### 更新Docker后沙箱无法启动
 ```bash
 docker sandbox reset  # Clears all sandbox state
 ```

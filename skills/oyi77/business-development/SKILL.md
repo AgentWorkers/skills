@@ -1,82 +1,81 @@
 ---
 name: business-development
 version: 1.0.0
-description: "Partnership outreach, market research, competitor analysis, and proposal generation. Transform your AI agent into a strategic business development partner that identifies and cultivates growth opportunities."
+description: "合作伙伴拓展、市场研究、竞争对手分析以及提案制定——将您的人工智能代理转变为一个战略性的业务发展伙伴，帮助您识别并培育增长机会。"
 author: openclaw
 ---
 
-# Business Development Skill 🤝
+# 商业发展技能 🤝
 
-**Turn your AI agent into a strategic growth partner.**
+**将您的人工智能代理打造成战略性的增长伙伴。**
 
-Research markets, identify partnerships, analyze competitors, and generate compelling proposals that open doors.
-
----
-
-## What This Skill Does
-
-✅ **Partnership Outreach** — Identify, research, and approach potential partners
-✅ **Market Research** — Analyze market size, trends, and opportunities
-✅ **Competitor Analysis** — Track competitors and identify advantages
-✅ **Proposal Generation** — Create compelling partnership and business proposals
-✅ **Opportunity Tracking** — Manage BD pipeline from lead to deal
-✅ **Strategic Planning** — Support business expansion decisions
+研究市场、寻找合作伙伴、分析竞争对手，并制定有吸引力的提案，从而打开新的商业机会。
 
 ---
 
-## Quick Start
+## 该技能的作用
 
-1. Configure your BD focus in `TOOLS.md`:
+✅ **合作伙伴拓展** — 识别、研究并联系潜在合作伙伴  
+✅ **市场调研** — 分析市场规模、趋势和机会  
+✅ **竞争对手分析** — 跟踪竞争对手并识别其优势  
+✅ **提案制定** — 创建有说服力的合作伙伴关系和商业提案  
+✅ **机会跟踪** — 从潜在客户到达成交易的全过程管理  
+✅ **战略规划** — 为业务扩展决策提供支持  
+
+---
+
+## 快速入门
+
+1. 在 `TOOLS.md` 中配置您的商业发展重点：  
 ```markdown
 ### Business Development
 - Target markets: [Industries/Geographies]
 - Partnership types: [Integration/Reseller/Co-marketing/etc.]
 - Competitor watch list: [Key competitors]
 - Proposal templates: [Location]
-```
+```  
 
-2. Set up your workspace:
+2. 设置您的工作空间：  
 ```bash
 ./scripts/bd-init.sh
-```
+```  
 
-3. Start building partnerships!
+3. 开始建立合作伙伴关系吧！  
 
 ---
 
-## Partnership Development
+## 合作伙伴开发
 
-### Partnership Types
+### 合作伙伴类型
 
-| Type | Description | Value Proposition |
+| 类型 | 描述 | 价值主张 |
 |------|-------------|-------------------|
-| **Integration** | Technical product connection | Expand functionality, reach new users |
-| **Reseller/Distribution** | Sell through partners | Access new channels, scale faster |
-| **Co-Marketing** | Joint marketing efforts | Share audiences, reduce CAC |
-| **Referral** | Lead sharing | Lower-friction partnership |
-| **Strategic** | Deep collaboration | Market expansion, shared resources |
-| **White-Label** | Rebrand product for partner | New revenue stream |
+| **集成** | 产品技术整合 | 扩展功能，覆盖新用户群体 |
+| **经销商/分销** | 通过合作伙伴进行销售 | 进入新渠道，加速业务扩张 |
+| **联合营销** | 共同开展营销活动 | 分享受众，降低客户获取成本（CAC） |
+| **推荐合作** | 共享潜在客户 | 降低合作门槛 |
+| **战略合作** | 深度协作 | 扩大市场，共享资源 |
+| **白标合作** | 为合作伙伴重新包装产品 | 开辟新的收入来源 |
 
-### Partner Qualification Framework
+### 合作伙伴评估框架
 
-**PARTNER Score:**
+**合作伙伴评分标准：**
 
-| Criteria | Question | Weight |
+| 标准 | 问题 | 权重 |
 |----------|----------|--------|
-| **P**otential | What's the upside? | 20% |
-| **A**lignment | Do goals/values match? | 20% |
-| **R**each | What audience can they access? | 15% |
-| **T**iming | Are they ready now? | 15% |
-| **N**eed | Do they need what we offer? | 15% |
-| **E**xperience | Have they done this before? | 10% |
-| **R**isk | What could go wrong? | 5% |
+| **潜力** | 合作能带来什么好处？ | 20% |
+| **契合度** | 目标和价值观是否一致？ | 20% |
+| **覆盖范围** | 他们能接触到哪些受众？ | 15% |
+| **时机** | 他们现在是否准备好合作？ | 15% |
+| **需求** | 他们是否有我们的产品需求？ | 15% |
+| **经验** | 他们之前是否有类似的合作经验？ | 10% |
+| **风险** | 可能会出现哪些问题？ | 5% |
 
-**Score 70+:** Prioritize actively
-**Score 50-70:** Keep warm
-**Score <50:** Deprioritize
+**评分 70+：** 优先考虑合作  
+**评分 50-70：** 保持关注  
+**评分 <50：** 降低优先级  
 
-### Partner Profile Template
-
+### 合作伙伴资料模板  
 ```markdown
 # Partner Profile: [Company Name]
 
@@ -121,25 +120,24 @@ Research markets, identify partnerships, analyze competitors, and generate compe
 - **Current stage:** [Prospect/Outreach/Discussion/Negotiation/Active]
 - **Last contact:** [Date]
 - **Next action:** [Action] — Due: [Date]
-```
+```  
 
 ---
 
-## Partnership Outreach
+## 合作伙伴拓展
 
-### Outreach Sequence
+### 拓展流程
 
-**Phase 1: Research (Before Contact)**
-- [ ] Company website deep dive
-- [ ] Key personnel LinkedIn research
-- [ ] Recent news/press releases
-- [ ] Existing partnerships they have
-- [ ] Mutual connections check
-- [ ] Their tech stack (if relevant)
+**第1阶段：调研（联系前）**  
+- [ ] 深入研究公司官网  
+- [ ] 在 LinkedIn 上查找关键人员信息  
+- [ ] 查看近期新闻/新闻稿  
+- [ ] 了解他们现有的合作伙伴关系  
+- [ ] 检查彼此之间的社交联系  
+- [ ] （如适用）了解他们的技术栈  
 
-**Phase 2: Initial Outreach**
-
-Email Template:
+**第2阶段：初步联系**  
+邮件模板：  
 ```
 Subject: Partnership idea: [Specific value proposition]
 
@@ -157,11 +155,10 @@ Would you be open to a quick call to explore?
 
 Best,
 [Your name]
-```
+```  
 
-**Phase 3: Follow-up**
-
-Day 5:
+**第3阶段：跟进**  
+第5天：  
 ```
 Subject: Re: Partnership idea
 
@@ -174,9 +171,8 @@ Wanted to follow up on my note below. I've been thinking more about how [specifi
 Worth 15 minutes to discuss?
 
 [Your name]
-```
-
-Day 12 (Value-add):
+```  
+第12天（提供额外价值）：  
 ```
 Subject: [Relevant resource/insight]
 
@@ -189,10 +185,9 @@ Found this [article/report/insight] and thought of you: [link]
 Still think there's something interesting here if you're open to exploring.
 
 [Your name]
-```
+```  
 
-### Partnership Meeting Agenda
-
+### 合作伙伴会议议程  
 ```markdown
 # Partnership Discussion: [Company]
 **Date:** [Date]
@@ -224,24 +219,23 @@ Still think there's something interesting here if you're open to exploring.
 - What's your typical partnership process?
 - Who else needs to be involved?
 - What's your timeline for decision?
-```
+```  
 
 ---
 
-## Market Research
+## 市场调研
 
-### Market Research Framework
+### 市场调研框架
 
-**1. Market Sizing (TAM/SAM/SOM)**
+**1. 市场规模评估（TAM/SAM/SOM）**  
 
-| Metric | Definition | How to Calculate |
+| 指标 | 定义 | 计算方法 |
 |--------|------------|------------------|
-| **TAM** | Total Addressable Market | Total revenue if you had 100% market share |
-| **SAM** | Serviceable Addressable Market | Portion you can actually reach |
-| **SOM** | Serviceable Obtainable Market | Realistic near-term capture |
+| **TAM** | 总可到达市场（Total Addressable Market） | 如果拥有100%市场份额时的总收入 |
+| **SAM** | 可服务市场（Serviceable Addressable Market） | 实际能够覆盖的市场份额 |
+| **SOM** | 可获取市场（Serviceable Obtainable Market） | 短期内可实现的市场份额 |
 
-**2. Market Analysis Template**
-
+**2. 市场分析模板**  
 ```markdown
 # Market Research: [Market/Industry]
 
@@ -285,25 +279,24 @@ Still think there's something interesting here if you're open to exploring.
 ## Sources
 - [Source 1]
 - [Source 2]
-```
+```  
 
-### Research Sources
+### 研究来源  
 
-| Type | Sources | Best For |
+| 类型 | 来源 | 适用场景 |
 |------|---------|----------|
-| **Industry reports** | Gartner, Forrester, IBISWorld | Market size, trends |
-| **Financial data** | SEC filings, Crunchbase, PitchBook | Company data |
-| **News** | Google News, industry publications | Recent developments |
-| **Social** | LinkedIn, Twitter/X | Sentiment, personnel |
-| **Technical** | G2, Capterra, BuiltWith | Product research |
-| **Primary** | Interviews, surveys | Deep insights |
+| **行业报告** | Gartner、Forrester、IBISWorld | 市场规模、趋势分析 |
+| **财务数据** | SEC 文件、Crunchbase、PitchBook | 公司财务数据 |
+| **新闻** | Google News、行业出版物 | 最新市场动态 |
+| **社交媒体** | LinkedIn、Twitter/X | 市场舆论、关键人物动态 |
+| **技术资源** | G2、Capterra、BuiltWith | 产品相关信息 |
+| **第一手资料** | 采访、调查 | 深入了解市场情况 |
 
 ---
 
-## Competitor Analysis
+## 竞争对手分析
 
-### Competitor Profile Template
-
+### 竞争对手资料模板  
 ```markdown
 # Competitor Analysis: [Company Name]
 
@@ -350,10 +343,9 @@ Still think there's something interesting here if you're open to exploring.
 - **When we lose against them:** [Scenarios]
 - **Key talking points:** [What to emphasize]
 - **Their objections to us:** [How to counter]
-```
+```  
 
-### Competitive Landscape Matrix
-
+### 竞争格局矩阵  
 ```markdown
 # Competitive Landscape: [Category]
 
@@ -383,13 +375,13 @@ Still think there's something interesting here if you're open to exploring.
 - **Our primary competition:** [Company]
 - **Our differentiation:** [Key differentiator]
 - **Market gaps we can exploit:** [Opportunities]
-```
+```  
 
 ---
 
-## Proposal Generation
+## 提案制定
 
-### Proposal Structure
+### 提案结构  
 
 ```markdown
 # Partnership Proposal: [Your Company] × [Partner Company]
@@ -487,36 +479,35 @@ Still think there's something interesting here if you're open to exploring.
 [Title]
 [Email]
 [Phone]
-```
+```  
 
-### Proposal Best Practices
+### 提案撰写最佳实践  
 
-1. **Lead with their value** — Partner's benefits first
-2. **Be specific** — Vague proposals get ignored
-3. **Show you understand them** — Reference their business
-4. **Make it easy** — Clear next steps
-5. **Keep it scannable** — Execs skim
-6. **Include social proof** — Other partnerships, traction
-7. **Address risk** — Show you've thought it through
+1. **首先强调合作带来的价值** — 强调对合作伙伴的好处  
+2. **具体明确** — 含糊的提案容易被忽略  
+3. **展现对他们的理解** — 参考他们的业务模式  
+4. **简化流程** — 明确下一步行动  
+5. **保持清晰易读** — 高管能够快速阅读  
+6. **提供佐证** — 例如其他合作伙伴关系和实际成果  
+7 **评估风险** — 显示你已经充分考虑了各种可能性  
 
 ---
 
-## BD Pipeline Management
+## 商业发展流程管理
 
-### Pipeline Stages
+### 流程阶段  
 
-| Stage | Definition | Exit Criteria |
+| 阶段 | 定义 | 完成标准 |
 |-------|------------|---------------|
-| **Research** | Identifying and qualifying prospects | Profile complete, score >50 |
-| **Outreach** | Initial contact attempts | Response received |
-| **Discussion** | Exploring mutual interest | Aligned on concept |
-| **Proposal** | Formal proposal submitted | Proposal delivered |
-| **Negotiation** | Terms discussion | Terms agreed |
-| **Legal** | Contracts in review | Signed agreement |
-| **Active** | Partnership live | Launched |
+| **调研** | 识别并评估潜在合作伙伴 | 完整填写合作伙伴资料，评分超过70分 |
+| **联系** | 发送初步联系 | 收到回复 |
+| **讨论** | 探讨共同兴趣 | 双方对合作概念达成一致 |
+**提案** | 提交正式提案 | 提案已发送 |
+| **谈判** | 协商合作条款 | 达成协议条款 |
+| **法律审核** | 审查合同 | 合同签署完毕 |
+| **执行阶段** | 合作正式开始 | 合作项目启动 |
 
-### Pipeline Tracking
-
+### 流程跟踪  
 ```markdown
 # BD Pipeline — [Month/Quarter]
 
@@ -551,14 +542,13 @@ Still think there's something interesting here if you're open to exploring.
 ## Stale Opportunities (>30 days no activity)
 | Partner | Stage | Last Activity | Action |
 |---------|-------|---------------|--------|
-```
+```  
 
 ---
 
-## Strategic Planning
+## 战略规划
 
-### SWOT Analysis Template
-
+### SWOT 分析模板  
 ```markdown
 # SWOT Analysis: [Initiative/Partnership/Market]
 
@@ -583,12 +573,11 @@ Still think there's something interesting here if you're open to exploring.
 - **Improve:** [Address weaknesses to enable opportunities]
 - **Defend:** [Use strengths to mitigate threats]
 - **Watch:** [Monitor weakness × threat combinations]
-```
+```  
 
-### Decision Framework
+### 决策框架  
 
-For major BD decisions, use:
-
+对于重要的商业发展决策，请使用以下框架：  
 ```markdown
 # Decision: [What we're deciding]
 
@@ -617,67 +606,63 @@ For major BD decisions, use:
 ## Next Steps
 1. [Action]
 2. [Action]
-```
+```  
 
 ---
 
-## Scripts
+## 脚本  
 
-### bd-init.sh
-Initialize your BD workspace with templates and tracking.
+### bd-init.sh  
+使用模板和跟踪工具初始化您的商业发展工作空间。  
 
-### partner-research.sh
-Quick partner research and profile generation.
-
+### partner-research.sh  
+快速进行合作伙伴调研并生成资料。  
 ```bash
 # Research a company
 ./scripts/partner-research.sh "Company Name"
 
 # Generate partner profile
 ./scripts/partner-research.sh "Company Name" --profile
-```
+```  
 
-### pipeline-report.sh
-Generate BD pipeline reports.
-
+### pipeline-report.sh  
+生成商业发展流程报告。  
 ```bash
 # Weekly pipeline summary
 ./scripts/pipeline-report.sh weekly
 
 # Quarterly review
 ./scripts/pipeline-report.sh quarterly
-```
+```  
 
 ---
 
-## Best Practices
+## 最佳实践  
 
-1. **Research before outreach** — Personalized > Generic
-2. **Lead with value** — What's in it for them?
-3. **Build relationships, not transactions** — Long-term thinking
-4. **Document everything** — Conversations, decisions, context
-5. **Follow up persistently** — Most deals need 5+ touchpoints
-6. **Know your competition** — Updated battlecards win deals
-7. **Start small** — Pilot before big commitment
-8. **Measure what matters** — Partners closed, not meetings held
-
----
-
-## Common Mistakes
-
-❌ **Pitching too early** — Understand their needs first
-❌ **Overselling** — Under-promise, over-deliver
-❌ **Ignoring internal champions** — Find and nurture them
-❌ **No mutual accountability** — Both sides need commitments
-❌ **Slow follow-up** — Momentum matters
-❌ **Vague proposals** — Specific asks get specific answers
+1. **联系前先进行充分调研** — 个性化沟通优于通用模板  
+2. **首先强调合作价值** — 明确合作对双方的好处  
+3. **建立长期关系，而非单纯追求交易**  
+4. **详细记录所有沟通内容** — 包括对话、决策和背景信息  
+5. **持续跟进** — 大多数交易需要多次沟通  
+6. **深入了解竞争对手** — 更新相关信息以增加谈判优势  
+7 **从小规模合作开始** — 在做出重大承诺前先进行试点  
+8 **关注关键指标** — 以实际达成的合作数量而非会议次数来衡量成果  
 
 ---
 
-## License
+## 常见错误  
 
-**License:** MIT — use freely, modify, distribute.
+❌ **过早推销** — 先了解对方需求  
+❌ **过度承诺或交付不足**  
+❌ **忽视内部支持者** — 发现并培养内部推动合作的人士  
+❌ **缺乏相互责任** — 双方都需要明确承诺  
+❌ **跟进不及时** — 保持沟通的连续性很重要  
+❌ **提案含糊不清** — 具体的要求才能得到具体的回应  
 
 ---
 
-*"Opportunities don't happen, you create them." — Chris Grosser*
+## 许可证  
+
+**许可证：** MIT 许可证 — 可自由使用、修改和分发。  
+
+*"机会不会主动出现，你需要自己去创造它们。" — Chris Grosser*

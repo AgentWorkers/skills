@@ -1,81 +1,81 @@
 ---
 name: interview-analysis
-description: Deep interview analysis using dynamic expert routing. Automatically selects top domain thinkers based on role type to distinguish genuine capability from performance, identifying Battle Scars over Methodology Recitation. Applicable to any professional position including product management, engineering, design, operations, sales, and data science.
+description: **深度面试分析：利用动态专家路由机制**  
+该系统能够根据职位类型自动筛选出顶尖的专业人才，从而区分候选人的真正能力与表面表现，准确识别候选人在实际工作中的经验（“Battle Scars”）而非仅仅是对工作方法的机械背诵。该技术适用于所有专业岗位，包括产品管理、工程、设计、运营、销售和数据科学等领域。
 ---
 
-# Interview Analysis Skill
+# 面试分析技巧
 
-> **Core Mission**: Transform interview transcripts into deep insights.
-> **Core Logic**: Don't listen to what candidates "say" (Methodology Recitation), observe what they've "done" (Battle Scars) and "how they think" (First Principles).
+> **核心使命**：将面试记录转化为深刻的洞察。
+> **核心逻辑**：不要只关注候选人“说了什么”（方法论的机械复述），而是要观察他们“做过什么”（实际经验）以及“他们的思维方式”（基于第一性原理的判断）。
 
-## 1. Dynamic Expert Activation (Expert Routing)
+## 1. 动态专家选择（专家匹配）
 
-### Core Principle
-Based on **role type** and **evaluation dimensions**, automatically select the **best minds** combination for that domain:
+### 核心原则
+根据**角色类型**和**评估维度**，自动为该领域选择最合适的专家组合：
 
-**Three-Step Expert Selection**:
-1. **Identify core competency domain**: Product/Engineering/Operations/Design/Sales/Data Science/...
-2. **Match top domain thinkers**: Recognized methodology masters or practitioners in the field
-3. **Combine hiring experts**: Geoff Smart (fact-checking) + Lou Adler (competency validation)
+**三步专家选择流程**：
+1. **确定核心能力领域**：产品/工程/运营/设计/销售/数据科学等…
+2. **匹配顶尖领域专家**：在该领域公认的方法论大师或实践者
+3. **组合招聘专家**：Geoff Smart（事实核查）+ Lou Adler（能力验证）
 
-### Common Role-Expert Mapping (Non-Exhaustive)
+### 常见角色-专家对应关系（非详尽列表）
 
-| Role Type | Domain Expert (Methodology) | Hiring Expert (Validation) | Rationale |
+| 角色类型 | 领域专家（方法论） | 招聘专家（能力验证） | 选择理由 |
 |-----------|---------------------------|---------------------------|-----------|
-| **Product Manager** | Marty Cagan / Julie Zhuo | Geoff Smart | Product Sense + Fact Check |
-| **Software Engineer** | Linus Torvalds / John Carmack | Lou Adler | Engineering Judgment + Results Validation |
-| **Growth Hacker** | Sean Ellis / Brian Balfour | Geoff Smart | Growth Methodology + Metrics Verification |
-| **UX Designer** | Don Norman / Jony Ive | Lou Adler | UX Principles + Portfolio Validation |
-| **Data Scientist** | Andrew Ng / DJ Patil | Geoff Smart | Technical Depth + Project Verification |
-| **Operations** | Sheryl Sandberg / Reid Hoffman | Lou Adler | Scale Operations + Results Focus |
-| **Sales/BD** | Aaron Ross / Jill Konrath | Geoff Smart | Sales Methodology + Performance Verification |
+| **产品经理** | Marty Cagan / Julie Zhuo | Geoff Smart | 产品洞察力 + 事实核查 |
+| **软件工程师** | Linus Torvalds / John Carmack | Lou Adler | 工程判断力 + 结果验证 |
+| **增长黑客** | Sean Ellis / Brian Balfour | Geoff Smart | 增长方法论 + 指标验证 |
+| **用户体验设计师** | Don Norman / Jony Ive | Lou Adler | 用户体验原则 + 作品集验证 |
+| **数据科学家** | Andrew Ng / DJ Patil | Geoff Smart | 技术深度 + 项目验证 |
+| **运营专家** | Sheryl Sandberg / Reid Hoffman | Lou Adler | 规模化运营能力 + 结果导向 |
+| **销售/业务开发** | Aaron Ross / Jill Konrath | Geoff Smart | 销售方法论 + 绩效验证 |
 
-> [!IMPORTANT]
-> **Flexibility Principle**: The table above is for reference only. Flexibly select the most appropriate expert combination based on specific role and candidate background.
+> [!重要提示]
+> 上表仅供参考。根据具体角色和候选人背景灵活选择最合适的专家组合。
 > 
-> **Encourage Innovation**: If you believe a non-mainstream expert is better suited to evaluate this candidate, make that choice and explain your rationale.
+> **鼓励创新**：如果认为非主流专家更适合评估该候选人，请做出选择并说明理由。
 > 
-> **Core Question**: "Who can best identify imposters in this role? Whose framework best validates core competencies?"
+> **核心问题**：“谁最能识别出伪装者？谁的框架最能验证候选人的核心能力？”
 
-## 2. Execution Workflow
+## 2. 执行工作流程
 
-### Step 1: Fact Reconstruction & Red Flag Scan
-*   **Timeline Reconstruction**: Connect experiences scattered across multiple interview rounds, checking for logical gaps.
-*   **Consistency Verification**: Compare different versions of the same story told to different interviewers (e.g., reasons for leaving, project failures).
-*   **Red Flag Annotation**: Mark all vague titles (e.g., SPM), exaggerated data, and attribution fallacies ("it was all market/technology's fault").
+### 第一步：事实重构与风险识别
+*   **时间线梳理**：整理分布在多轮面试中的信息，检查逻辑上的漏洞。
+*   **一致性验证**：比较候选人向不同面试官讲述的相同事件的不同版本（例如离职原因、项目失败原因）。
+*   **风险标注**：标记所有模糊的表述（如“只是市场/技术的错”等）、夸大的数据以及错误的归因。
 
-### Step 2: Deep Decoding - STAR Episodes
-*   **Tactic**: Select 1-2 core cases (e.g., startup project, most challenging project) for microscopic analysis.
-*   **Truth Extraction**:
-    *   **Methodology Check**: Is the candidate reciting SOPs (MECE, SWOT) or applying first principles?
-    *   **Solution Bias Check**: Did they jump straight to "add features," or first conduct "value validation"?
-    *   **Technical Boundary Check**: For technical challenges, did they "deflect blame" or "anticipate"?
+### 第二步：深入分析 - 关键案例研究
+*   **选择关键案例**：挑选1-2个核心案例（如初创项目、最具挑战性的项目）进行详细分析。
+*   **真相挖掘**：
+    *   **方法论检查**：候选人是否只是在机械地复述标准流程（MECE、SWOT），还是真正应用了第一性原理？
+    * **解决方案评估**：他们是否直接开始添加功能，还是先进行了价值验证？
+    * **技术问题处理**：面对技术难题时，他们是推卸责任，还是采取了主动应对措施？
 
-### Step 3: Interviewer Meta-Analysis
-*   **Subject**: Evaluate interviewer (you/colleagues) performance.
-*   **Dimensions**:
-    *   **Depth**: Did they probe at critical moments? Or let it pass?
-    *   **Bias**: Did they draw conclusions too early or ask leading questions?
-    *   **Bar**: Did they maintain A Player standards?
+### 第三步：面试官自我评估
+*   **评估面试官表现**：评估你自己或同事的面试表现。
+*   **评估维度**：
+    * **深度**：是否在关键环节进行了深入追问？还是放任不管？
+    * **偏见**：是否过早下结论，或提出了引导性问题？
+    * **专业标准**：是否保持了专业水准？
 
-### Step 4: Card-based Output (Zettelkasten Output)
-Generate Markdown cards using the following standard templates, saved to `people/{candidate_name}/analysis/`. Be sure to read template content before filling in analysis results.
+### 第四步：基于卡片的输出（使用Zettelkasten工具）
+使用以下模板生成Markdown卡片，保存到`people/{candidate_name}/analysis/`文件夹中。填写分析结果前请先阅读模板内容。
 
-*   **Profile (Comprehensive Portrait)**:
-    *   Template path: `templates/profile_template.md`
-    *   Purpose: Fact checking, red flag scanning, core competency assessment.
-*   **Insight (Deep Analysis)**:
-    *   Template path: `templates/insight_template.md`
-    *   Purpose: Deep dive into specific domains (e.g., AI Capability, Product Strategy).
-*   **Meta-Analysis (Interviewer Review)**:
-    *   Template path: `templates/evaluation_template.md`
-    *   Purpose: Evaluate interviewer performance and organizational recommendations.
-*   **Structure Note (Hub Document)**:
-    *   Template path: `templates/structure_note_template.md`
-    *   Purpose: Serves as hub connecting all analysis cards above, forming decision closure.
+*   **个人资料（全面画像）**：
+    *   模板路径：`templates/profile_template.md`
+    *   用途：事实核查、风险识别、核心能力评估。
+*   **深度分析**：
+    *   模板路径：`templates/insight_template.md`
+    * 用途：深入分析特定领域（如AI能力、产品策略）。
+*   **面试官评估**：
+    *   模板路径：`templates/evaluation_template.md`
+    * 用途：评估面试官表现并提出组织改进建议。
+* **结构说明（汇总文档）**：
+    *   模板路径：`templates/structure_note_template.md`
+    * 用途：作为连接所有分析结果的枢纽，帮助做出决策。
 
-## 3. Usage Examples
-
-*   "Analyze Li Yashuang's three interview rounds, focusing on AI capabilities."
-*   "Review this interview to see where we interviewers did well and where we missed opportunities."
-*   "Use Marty Cagan's perspective to analyze this candidate's product thinking."
+## 3. 使用示例
+*   “分析李亚双的三轮面试记录，重点关注其AI能力。”
+*   “回顾这次面试，看看我们面试官哪些方面做得好，哪些地方可以改进。”
+*   “运用Marty Cagan的视角来分析这位候选人的产品思维。”

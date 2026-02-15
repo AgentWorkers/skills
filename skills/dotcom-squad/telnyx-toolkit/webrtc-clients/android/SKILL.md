@@ -13,13 +13,13 @@ metadata:
 
 # Telnyx WebRTC - Android SDK
 
-Build real-time voice communication into Android applications using Telnyx WebRTC.
+使用 Telnyx WebRTC 将实时语音通信功能集成到 Android 应用程序中。
 
-> **Prerequisites**: Create WebRTC credentials and generate a login token using the Telnyx server-side SDK. See the `telnyx-webrtc-*` skill in your server language plugin (e.g., `telnyx-python`, `telnyx-javascript`).
+> **前提条件**：使用 Telnyx 服务器端 SDK 创建 WebRTC 凭据并生成登录令牌。请参考您的服务器语言插件（例如 `telnyx-python`、`telnyx-javascript`）中的 `telnyx-webrtc-*` 技能文档。
 
-## Installation
+## 安装
 
-Add JitPack repository to your project's `build.gradle`:
+将 JitPack 仓库添加到项目的 `build.gradle` 文件中：
 
 ```gradle
 allprojects {
@@ -29,7 +29,7 @@ allprojects {
 }
 ```
 
-Add the dependency:
+添加相应的依赖项：
 
 ```gradle
 dependencies {
@@ -37,9 +37,9 @@ dependencies {
 }
 ```
 
-## Required Permissions
+## 所需权限
 
-Add to `AndroidManifest.xml`:
+在 `AndroidManifest.xml` 中添加以下权限：
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -54,9 +54,9 @@ Add to `AndroidManifest.xml`:
 
 ---
 
-## Authentication
+## 认证
 
-### Option 1: Credential-Based Login
+### 选项 1：基于凭据的登录
 
 ```kotlin
 val telnyxClient = TelnyxClient(context)
@@ -75,7 +75,7 @@ val credentialConfig = CredentialConfig(
 telnyxClient.credentialLogin(credentialConfig)
 ```
 
-### Option 2: Token-Based Login (JWT)
+### 选项 2：基于令牌的登录（JWT）
 
 ```kotlin
 val tokenConfig = TokenConfig(
@@ -90,23 +90,23 @@ val tokenConfig = TokenConfig(
 telnyxClient.tokenLogin(tokenConfig)
 ```
 
-### Configuration Options
+### 配置选项
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `sipUser` / `sipToken` | String | Credentials from Telnyx Portal |
-| `sipCallerIDName` | String? | Caller ID name displayed to recipients |
-| `sipCallerIDNumber` | String? | Caller ID number |
-| `fcmToken` | String? | Firebase Cloud Messaging token for push |
-| `ringtone` | Any? | Raw resource ID or URI for ringtone |
-| `ringBackTone` | Int? | Raw resource ID for ringback tone |
+| `sipUser` / `sipToken` | String | 来自 Telnyx Portal 的凭据 |
+| `sipCallerIDName` | String? | 显示给接收方的来电显示名称 |
+| `sipCallerIDNumber` | String? | 来电显示号码 |
+| `fcmToken` | String? | 用于推送通知的 Firebase Cloud Messaging 令牌 |
+| `ringtone` | Any? | 铃声的原始资源 ID 或 URI |
+| `ringBackTone` | Int? | 回拨音的原始资源 ID |
 | `logLevel` | LogLevel | NONE, ERROR, WARNING, DEBUG, INFO, ALL |
-| `autoReconnect` | Boolean | Auto-retry login on failure (3 attempts) |
+| `autoReconnect` | Boolean | 失败时自动重试登录（最多尝试 3 次） |
 | `region` | Region | AUTO, US_EAST, US_WEST, EU_WEST |
 
 ---
 
-## Making Outbound Calls
+## 发出外拨电话
 
 ```kotlin
 // Create a new outbound call
@@ -120,9 +120,9 @@ telnyxClient.call.newInvite(
 
 ---
 
-## Receiving Inbound Calls
+## 接收来电
 
-Listen for socket events using SharedFlow (recommended):
+建议使用 SharedFlow 监听套接字事件：
 
 ```kotlin
 lifecycleScope.launch {
@@ -174,7 +174,7 @@ lifecycleScope.launch {
 
 ---
 
-## Call Controls
+## 通话控制
 
 ```kotlin
 // Get current call
@@ -193,7 +193,7 @@ currentCall?.onHoldUnholdPressed(callId)
 currentCall?.dtmf(callId, "1")
 ```
 
-### Handling Multiple Calls
+### 处理多个通话
 
 ```kotlin
 // Get all active calls
@@ -207,11 +207,11 @@ calls.forEach { (callId, call) ->
 
 ---
 
-## Push Notifications (FCM)
+## 推送通知（FCM）
 
-### 1. Setup Firebase
+### 1. 设置 Firebase
 
-Add Firebase to your project and get an FCM token:
+将 Firebase 添加到项目中并获取 FCM 令牌：
 
 ```kotlin
 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
@@ -222,9 +222,9 @@ FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
 }
 ```
 
-### 2. Handle Incoming Push
+### 2. 处理收到的推送通知
 
-In your `FirebaseMessagingService`:
+在您的 `FirebaseMessagingService` 中处理推送通知：
 
 ```kotlin
 class MyFirebaseService : FirebaseMessagingService() {
@@ -244,7 +244,7 @@ class MyFirebaseService : FirebaseMessagingService() {
 }
 ```
 
-### 3. Decline Push Call (Simplified)
+### 3. 拒绝推送呼叫（简化版）
 
 ```kotlin
 // The SDK now handles decline automatically
@@ -255,7 +255,7 @@ telnyxClient.connectWithDeclinePush(
 // SDK connects, sends decline, and disconnects automatically
 ```
 
-### Android 14+ Requirements
+### Android 14+ 版本的要求
 
 ```xml
 <service
@@ -266,9 +266,9 @@ telnyxClient.connectWithDeclinePush(
 
 ---
 
-## Call Quality Metrics
+## 通话质量指标
 
-Enable metrics to monitor call quality in real-time:
+启用指标以实时监控通话质量：
 
 ```kotlin
 val credentialConfig = CredentialConfig(
@@ -287,7 +287,7 @@ lifecycleScope.launch {
 }
 ```
 
-| Quality Level | MOS Range |
+| 质量等级 | MOS 分数范围 |
 |---------------|-----------|
 | EXCELLENT | > 4.2 |
 | GOOD | 4.1 - 4.2 |
@@ -297,11 +297,11 @@ lifecycleScope.launch {
 
 ---
 
-## AI Agent Integration
+## 与 AI 代理集成
 
-Connect to a Telnyx Voice AI Agent without traditional SIP credentials:
+无需使用传统的 SIP 凭据即可连接到 Telnyx 语音 AI 代理：
 
-### 1. Anonymous Login
+### 1. 匿名登录
 
 ```kotlin
 telnyxClient.connectAnonymously(
@@ -312,7 +312,7 @@ telnyxClient.connectAnonymously(
 )
 ```
 
-### 2. Start Conversation
+### 2. 开始对话
 
 ```kotlin
 // After anonymous login, call the AI Agent
@@ -328,7 +328,7 @@ telnyxClient.newInvite(
 )
 ```
 
-### 3. Receive Transcripts
+### 3. 接收转录内容
 
 ```kotlin
 lifecycleScope.launch {
@@ -341,7 +341,7 @@ lifecycleScope.launch {
 }
 ```
 
-### 4. Send Text to AI Agent
+### 4. 向 AI 代理发送文本
 
 ```kotlin
 // Send text message during active call
@@ -350,9 +350,9 @@ telnyxClient.sendAIAssistantMessage("Hello, I need help with my account")
 
 ---
 
-## Custom Logging
+## 自定义日志记录
 
-Implement your own logger:
+实现自己的日志记录功能：
 
 ```kotlin
 class MyLogger : TxLogger {
@@ -371,9 +371,9 @@ val config = CredentialConfig(
 
 ---
 
-## ProGuard Rules
+## ProGuard 规则
 
-If using code obfuscation, add to `proguard-rules.pro`:
+如果使用代码混淆，请将以下规则添加到 `proguard-rules.pro` 文件中：
 
 ```proguard
 -keep class com.telnyx.webrtc.** { *; }
@@ -384,18 +384,18 @@ If using code obfuscation, add to `proguard-rules.pro`:
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| No audio | Check RECORD_AUDIO permission is granted |
-| Push not received | Verify FCM token is passed in config |
-| Login fails | Verify SIP credentials in Telnyx Portal |
-| Call drops | Check network stability, enable `autoReconnect` |
-| sender_id_mismatch (push) | FCM project mismatch - ensure app's `google-services.json` matches server credentials |
+| 无法播放音频 | 确保已授予 `RECORD_AUDIO` 权限 |
+| 未收到推送通知 | 验证配置中是否传递了 FCM 令牌 |
+| 登录失败 | 验证 Telnyx Portal 中的 SIP 凭据 |
+| 通话中断 | 检查网络稳定性，启用 `autoReconnect` 功能 |
+| 发送者 ID 不匹配（推送通知） | FCM 项目不匹配——确保应用的 `google-services.json` 文件与服务器凭据一致 |
 
-## Resources
+## 资源
 
-- [Official Documentation](https://developers.telnyx.com/docs/voice/webrtc/android-sdk/quickstart)
-- [Push Notification Setup](https://developers.telnyx.com/docs/voice/webrtc/android-sdk/push-notification/portal-setup)
-- [GitHub Repository](https://github.com/team-telnyx/telnyx-webrtc-android)
+- [官方文档](https://developers.telnyx.com/docs/voice/webrtc/android-sdk/quickstart)
+- [推送通知设置](https://developers.telnyx.com/docs/voice/webrtc/android-sdk/push-notification/portal-setup)
+- [GitHub 仓库](https://github.com/team-telnyx/telnyx-webrtc-android)

@@ -1,34 +1,63 @@
-# FutureFulfillment Picqer Dashboard v2
+# FutureFulfillment Picqer 仪表盘 v2
 
-JSON-only API for dashboard data. No markdown responses.
+这是一个仅提供 JSON 格式数据的 API，用于获取仪表盘信息。不返回 Markdown 格式的响应。
 
-## Commands
+## 命令
 
-All commands return JSON. No chat explanations.
+所有命令的返回值均为 JSON 格式，不提供任何文字说明。
 
 ### `dashboard.fetch`
-Returns complete DashboardData object with KPIs, picklists, stock, and revenue.
+返回包含关键绩效指标（KPIs）、选项列表（picklists）、库存信息以及收入数据的完整仪表盘数据对象。
 
-**Input:** `{ "command": "dashboard.fetch", "filters": { "dateFrom": "2024-01-01", "dateTo": "2024-01-31", "picker": "", "client": "" } }`
+**输入格式：**
+```json
+{
+  "command": "dashboard.fetch",
+  "filters": {
+    "dateFrom": "2024-01-01",
+    "dateTo": "2024-01-31",
+    "picker": "",
+    "client": ""
+  }
+}
+```
 
 ### `picklists.fetch`
-Returns only picklists data (open, closed, picker stats).
+仅返回选项列表的数据（包括选项的状态、选择情况以及相关统计数据）。
 
-**Input:** `{ "command": "picklists.fetch", "filters": {} }`
+**输入格式：**
+```json
+{
+  "command": "picklists.fetch",
+  "filters": {}
+}
+```
 
 ### `stock.fetch`
-Returns stock movements with slow/fast mover categorization.
+返回库存变动情况，并对库存商品进行分类（分为“慢动商品”和“快动商品”）。
 
-**Input:** `{ "command": "stock.fetch", "filters": {} }`
+**输入格式：**
+```json
+{
+  "command": "stock.fetch",
+  "filters": {}
+}
+```
 
 ### `revenue.fetch`
-Returns revenue per client for sell-stock clients.
+返回销售库存商品的客户的收入数据。
 
-**Input:** `{ "command": "revenue.fetch", "filters": {} }`
+**输入格式：**
+```json
+{
+  "command": "revenue.fetch",
+  "filters": {}
+}
+```
 
-## Response Format
+## 响应格式
 
-Always returns JSON. Example success:
+所有响应均以 JSON 格式返回。成功响应的示例：
 ```json
 {
   "kpis": { "openPicklists": 42, "closedPicklists": 128, ... },
@@ -39,13 +68,13 @@ Always returns JSON. Example success:
 }
 ```
 
-Example error:
+错误响应的示例：
 ```json
 { "error": "Picqer API not configured" }
 ```
 
-## Security
+## 安全性
 
-- API key only in local .env file
-- No credentials in OpenClaw config
-- Access via Tailscale only
+- API 密钥仅存储在本地 `.env` 文件中；
+- OpenClaw 配置文件中不包含任何认证信息；
+- 仅通过 Tailscale 进行访问。

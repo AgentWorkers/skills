@@ -1,49 +1,49 @@
 ---
-description: Monitor API endpoints, measure response times, and diagnose connectivity issues.
+description: 监控 API 端点，测量响应时间，并诊断连接问题。
 ---
 
-# API Health Check
+# API健康检查
 
-Monitor API endpoints and diagnose connectivity issues.
+监控API端点并诊断连接问题。
 
-## Instructions
+## 指令
 
-1. Accept endpoint URLs from the user. If a single base URL is given, check common paths: `/`, `/health`, `/healthz`, `/api/status`, `/ping`.
-2. For each endpoint, run:
+1. 从用户那里接收端点URL。如果只提供了一个基础URL，请检查以下常见路径：`/`, `/health`, `/healthz`, `/api/status`, `/ping`。
+2. 对于每个端点，执行以下操作：
    ```bash
    curl -s -o /dev/null -w "HTTP %{http_code} | %{time_total}s | %{size_download}B" -m 10 <URL>
    ```
-3. Classify results:
-   - 🟢 **Healthy** — 2xx, <1s
-   - 🟡 **Slow** — 2xx, >1s
-   - 🔴 **Down** — Non-2xx, timeout, or connection refused
-4. Present summary table:
+3. 对结果进行分类：
+   - 🟢 **正常** — 状态码为2xx，响应时间小于1秒
+   - 🟡 **响应缓慢** — 状态码为2xx，响应时间超过1秒
+   - 🔴 **不可用** — 状态码非2xx、超时或连接被拒绝
+4. 显示汇总表：
    ```
    | Endpoint | Status | Time (ms) | Verdict |
    |----------|--------|-----------|---------|
    | /health  | 200    | 142       | 🟢      |
    ```
-5. For failed endpoints, diagnose:
-   - DNS resolution: `dig <host> +short`
-   - Port connectivity: `nc -zw3 <host> <port>`
-   - SSL issues: `curl -vI https://... 2>&1 | grep -i ssl`
-6. For repeated monitoring: `watch -n <interval> curl -s -o /dev/null -w "%{http_code}" <URL>`
+5. 对于出现问题的端点，进行进一步诊断：
+   - DNS解析：`dig <host> +short`
+   - 端口连接性：`nc -zw3 <host> <port>`
+   - SSL问题：`curl -vI https://... 2>&1 | grep -i ssl`
+6. 对于需要持续监控的情况：使用`watch -n <interval> curl -s -o /dev/null -w "%{http_code}" <URL>`命令进行周期性检查。
 
-## Security
+## 安全性
 
-- **Never log or display auth tokens** in output — mask as `Bearer ****`
-- Accept custom headers via user input, but redact them in reports
-- **SSRF prevention**: Reject requests to private/internal IPs (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `127.0.0.0/8`) unless the user explicitly confirms the target is intentional (e.g., homelab monitoring)
+- **切勿在输出中记录或显示认证令牌** — 应将其替换为`Bearer ****`的形式进行隐藏
+- 允许用户自定义请求头，但在报告中需对这些自定义头进行屏蔽
+- **防止SSRF攻击**：拒绝指向私有/内部IP地址（`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `127.0.0.0/8`）的请求，除非用户明确确认这是预期的行为（例如，用于家庭实验室的监控）
 
-## Edge Cases
+## 特殊情况处理
 
-- **Self-signed SSL**: Use `curl -k` only if user explicitly approves
-- **Redirects**: Use `curl -L` to follow; report redirect chain
-- **IPv6**: Test both A and AAAA if DNS returns both
-- **Rate limiting**: Space requests with 1s delay if checking many endpoints
+- **自签名SSL证书**：仅在用户明确同意的情况下使用`curl -k`命令
+- **重定向**：使用`curl -L`命令跟踪重定向路径，并在报告中记录整个重定向链
+- **IPv6地址**：如果DNS返回了A记录和AAAA记录，需同时测试这两种地址
+- **速率限制**：在检查大量端点时，每次请求之间需间隔1秒
 
-## Requirements
+## 所需工具
 
-- `curl` (pre-installed on most systems)
-- Optional: `dig`, `nc` for deeper diagnostics
-- No API keys needed
+- `curl`（大多数系统已预装）
+- 可选工具：`dig`、`nc`（用于更详细的诊断）
+- 不需要API密钥

@@ -1,7 +1,7 @@
 ---
 name: spacex
 version: 1.0.0
-description: "CLI for AI agents to lookup SpaceX launches and rockets for their humans. No auth required."
+description: "这是一个用于AI代理的命令行界面（CLI），帮助人类查询SpaceX的发射任务和火箭相关信息。该工具无需任何身份验证即可使用。"
 homepage: https://github.com/r-spacex/SpaceX-API
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["spacex", "rockets", "launches", "space", "cli"]
 ---
 
-# SpaceX Lookup
+# SpaceX 查询工具
 
-CLI for AI agents to lookup SpaceX launches, rockets, and crew for their humans. "When's the next SpaceX launch?" — now your agent can answer.
+这是一个用于查询 SpaceX 发射任务、火箭信息以及宇航员信息的命令行工具（CLI），专为 AI 代理设计。用户可以询问诸如“下一次 SpaceX 发射是什么时候？”之类的问题，而该工具能够提供相应的答案。
 
-Uses the community SpaceX API. No account or API key needed.
+该工具基于 SpaceX 的公共 API 进行数据查询，无需注册账户或 API 密钥。
 
-## Usage
+## 使用方法
 
 ```
 "What are the upcoming SpaceX launches?"
@@ -26,18 +26,17 @@ Uses the community SpaceX API. No account or API key needed.
 "Who are the SpaceX crew members?"
 ```
 
-## Commands
+## 命令列表
 
-| Action | Command |
-|--------|---------|
-| Upcoming launches | `spacex launches upcoming [limit]` |
-| Past launches | `spacex launches past [limit]` |
-| Launch details | `spacex launch <id>` |
-| List rockets | `spacex rockets` |
-| Rocket details | `spacex rocket <id>` |
-| Crew members | `spacex crew [limit]` |
+| 功能 | 命令                |
+|------|-------------------|
+| 查看即将进行的发射 | `spacex launches upcoming [limit]` |
+| 查看过去的发射 | `spacex launches past [limit]` |
+| 查看发射详情 | `spacex launch <id>` |
+| 查看火箭信息 | `spacex rockets` |
+| 查看宇航员信息 | `spacex crew [limit]` |
 
-### Examples
+### 使用示例
 
 ```bash
 spacex launches                    # Next 10 upcoming launches
@@ -49,15 +48,12 @@ spacex rocket 5e9d0d95eda69973a809d1ec  # Falcon 9 details
 spacex crew 5                      # First 5 crew members
 ```
 
-## Output
+## 输出结果
 
-**Launch list output:**
-```
+- **发射任务列表**：```
 🚀 Starlink 4-36 (v1.5) — Falcon 9, 2022-10-20, Cape Canaveral
 ```
-
-**Launch detail output:**
-```
+- **发射详情**：```
 🚀 SAOCOM 1B, GNOMES-1, Tyvak-0172
    ID: 5eb87d47ffd86e000604b38a
    Flight #: 101
@@ -72,41 +68,35 @@ spacex crew 5                      # First 5 crew members
 🎥 Webcast: https://youtu.be/P-gLOsDjE3E
 📚 Wikipedia: https://en.wikipedia.org/wiki/SAOCOM
 ```
-
-**Rocket list output:**
-```
+- **火箭信息列表**：```
 🛸 Falcon 9 — rocket, 2010-06-04, Active, 98% success
 ```
-
-**Crew output:**
-```
+- **宇航员信息**：```
 👨‍🚀 Robert Behnken — NASA, active
 ```
 
-## Notes
+## 注意事项
 
-- Uses SpaceX API v4 (api.spacexdata.com)
-- No authentication required
-- Data may lag behind real-time (community maintained)
-- Rockets: Falcon 1, Falcon 9, Falcon Heavy, Starship
-- Launchpads: Cape Canaveral, Vandenberg, Boca Chica, Kwajalein
+- 该工具使用 SpaceX 的 API v4（地址：api.spacexdata.com）
+- 无需进行身份验证
+- 数据可能存在延迟（由社区维护）
+- 支持的火箭类型：Falcon 1、Falcon 9、Falcon Heavy、Starship
+- 发射场：Cape Canaveral、Vandenberg、Boca Chica、Kwajalein
 
 ---
 
-## Agent Implementation Notes
+## 代理实现说明
 
-**Script location:** `{skill_folder}/spacex` (wrapper to `scripts/spacex`)
+- **脚本位置**：`{skill_folder}/spacex`（实际脚本位于 `scripts/spacex` 文件夹中）
+- 当用户询问与 SpaceX 相关的信息时：
+  - 使用 `./spacex launches` 命令查询即将进行的发射任务
+  - 使用 `./spacex launches past [limit]` 命令查询过去的发射任务
+  - 使用 `./spacex launch <id>` 命令查询特定发射任务的详细信息
+  - 使用 `./spacex rockets` 命令查询火箭的详细信息
+- **常见查询示例**：
+  - “下一次 SpaceX 发射” → `spacex launches upcoming 1`
+  - “最近的发射任务” → `spacex launches past 5`
+  - “Falcon 9 的技术参数” → 先使用 `spacex rockets` 命令查询火箭信息，再使用 `spacex rocket <id>` 命令查询具体火箭的详细信息
+  - “SpaceX 的宇航员名单” → `spacex crew [limit]`
 
-**When user asks about SpaceX:**
-1. Run `./spacex launches` for upcoming launches
-2. Run `./spacex launches past` for recent launches
-3. Run `./spacex launch <id>` for full mission details
-4. Run `./spacex rockets` for rocket info
-
-**Common queries:**
-- "Next SpaceX launch" → `spacex launches upcoming 1`
-- "Recent launches" → `spacex launches past 5`
-- "Falcon 9 specs" → `spacex rockets` then `spacex rocket <id>`
-- "SpaceX crew" → `spacex crew`
-
-**Don't use for:** Non-SpaceX launches (NASA, Blue Origin, etc.)
+**适用范围**：仅适用于 SpaceX 的相关查询；不支持 NASA、Blue Origin 等其他机构的发射任务。

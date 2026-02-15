@@ -1,16 +1,16 @@
 ---
 name: Feelings
-description: Build a personal emotional tracking system for understanding patterns, triggers, and what helps.
+description: 构建一个个人情绪追踪系统，以了解情绪变化的模式、触发因素以及哪些方法能够帮助缓解情绪波动。
 metadata: {"clawdbot":{"emoji":"💭","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User shares how they feel → log with context
-- User asks about patterns → surface insights
-- Proactively check in during difficult periods
-- Create `~/feelings/` as workspace
+## 核心行为
+- 用户分享自己的感受 → 记录感受并附上相关背景信息
+- 用户询问某些情绪出现的规律 → 提出有价值的见解
+- 在困难时期主动进行情绪检查
+- 创建 `~/feelings/` 作为情感记录的工作目录
 
-## File Structure
+## 文件结构
 ```
 ~/feelings/
 ├── log/
@@ -22,7 +22,7 @@ metadata: {"clawdbot":{"emoji":"💭","os":["linux","darwin","win32"]}}
 └── insights.md
 ```
 
-## Feeling Entry
+## 情感记录条目
 ```markdown
 # log/2024/02/11.md
 ## Morning — 8:00 AM
@@ -42,22 +42,22 @@ Context: Good day overall
 Grateful: Positive feedback from team
 ```
 
-## Quick Check-in
-"How are you feeling?"
-→ Capture: emotion, intensity (1-10), brief context
-→ Note time of day
-→ Track over time
+## 快速情绪检查
+“你现在的感觉如何？”
+- 记录：所感受到的情绪、情绪强度（1-10分）、简要的背景信息
+- 记录时间
+- 随时间推移进行跟踪
 
-## Emotion Vocabulary
-Help expand beyond "good/bad":
-- Anxious, worried, nervous, overwhelmed
-- Sad, lonely, disappointed, grief
-- Angry, frustrated, irritated, resentful
-- Happy, joyful, excited, peaceful
-- Tired, drained, exhausted, burned out
-- Hopeful, motivated, inspired, curious
+## 情绪词汇表
+（建议扩展现有词汇，以便更准确地描述各种情绪）
+- 焦虑、担忧、紧张、不知所措
+- 悲伤、孤独、失望、悲伤
+- 愤怒、沮丧、烦躁、怨恨
+- 快乐、喜悦、兴奋、平静
+- 疲倦、精疲力尽、心力交瘁
+- 充满希望、有动力、受到启发、好奇
 
-## Triggers Tracking
+## 情绪触发因素的跟踪
 ```markdown
 # triggers.md
 ## Negative
@@ -73,7 +73,7 @@ Help expand beyond "good/bad":
 - Creative work → flow state
 ```
 
-## What Helps
+## 有助于缓解情绪的方法
 ```markdown
 # helps.md
 ## When Anxious
@@ -98,7 +98,7 @@ Help expand beyond "good/bad":
 - Talking > bottling
 ```
 
-## Patterns
+## 情绪出现的规律
 ```markdown
 # patterns.md
 ## Time-Based
@@ -116,19 +116,19 @@ Help expand beyond "good/bad":
 - Alcohol → next day anxiety
 ```
 
-## What To Surface
-- "You've felt anxious 4 times this week"
-- "Last time you felt this way, walking helped"
-- "Sleep has been under 6h — might be affecting mood"
-- "Sundays are often harder — plan something nice"
+## 需要关注的信息
+- “这周你已经感到焦虑4次了”
+- “上次你有这种情绪时，散步有所帮助”
+- “睡眠时间少于6小时——可能会影响情绪”
+- “周日往往更难熬——可以安排一些愉快的事情”
 
-## Proactive Check-ins
-- Morning: "How are you starting the day?"
-- After noted difficult events
-- When patterns suggest check-in needed
-- Celebrate good streaks
+## 主动情绪检查
+- 早晨： “你今天是如何开始一天的？”
+- 在遇到困难事件后
+- 当情绪出现规律性变化时
+- 在情绪好转时进行庆祝
 
-## Insights Over Time
+## 随时间积累的见解
 ```markdown
 # insights.md
 ## Learned About Myself
@@ -143,21 +143,21 @@ Help expand beyond "good/bad":
 - Less reactive when tired
 ```
 
-## What To Track
-- Emotion name(s)
-- Intensity (1-10)
-- Context/trigger
-- Physical sensations
-- What helped (after)
+## 需要记录的内容
+- 情绪名称
+- 情绪强度（1-10分）
+- 引发情绪的触发因素
+- 身体上的感觉
+- 有效的缓解方法
 
-## Progressive Enhancement
-- Start: daily check-ins
-- Notice triggers and what helps
-- Review weekly for patterns
-- Build personal toolkit
+## 情绪管理的逐步提升方法
+- 初始阶段：每天进行情绪检查
+- 注意情绪的触发因素及有效的缓解方法
+- 每周回顾情绪变化的规律
+- 建立个人情绪管理工具箱
 
-## What NOT To Do
-- Judge emotions as wrong
-- Force positivity
-- Ignore physical sensations
-- Skip tracking when feeling bad (most valuable)
+## 不要做的行为
+- 判断某种情绪是“错误”的
+- 强迫自己保持积极情绪
+- 忽视身体的不适感
+- 在情绪低落时放弃记录（尽管这些记录非常宝贵）

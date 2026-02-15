@@ -1,6 +1,6 @@
 ---
 name: relationship-skills
-description: Improve relationships with communication tools, conflict resolution, and connection ideas
+description: **提升与沟通工具的关系、冲突解决能力以及建立联系的策略**
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,86 +11,81 @@ triggers:
   - "improve relationship"
 ---
 
-# Relationship Skills
+# 人际关系技巧
 
-Build stronger connections with practical communication, conflict resolution, and intentional connection ideas.
+通过有效的沟通、冲突解决以及有目的的互动方式，建立更牢固的人际关系。
 
-## What it does
+## 功能介绍
 
-- **Communication Tools** - Framework for clearer, more honest conversations
-- **Conflict Resolution** - De-escalation techniques and structured problem-solving
-- **Date Ideas** - Curated suggestions based on preferences and location
-- **Relationship Health Tracking** - Check-in prompts and pattern detection
-- **Connection Builder** - Personalized ideas for deepening bonds
+- **沟通工具**：帮助进行更清晰、更真诚的对话
+- **冲突解决**：提供冲突缓和技巧和结构化的问题解决方法
+- **约会建议**：根据双方的偏好和地理位置提供个性化的约会建议
+- **关系健康监测**：提供定期交流的提示和关系模式分析
+- **关系深化工具**：提供个性化建议，以加深彼此之间的联系
 
-## Usage
+## 使用方法
 
-### Communication Help
-Ask for frameworks to improve conversations:
-- "Help me bring up a difficult topic"
-- "How do I express my feelings without getting defensive?"
-- "I need language to ask for what I need"
+### 沟通辅助
+- **请求沟通框架**：当需要讨论棘手话题时使用
+  - “帮我如何提出一个困难的话题？”
+  - “我该如何表达自己的感受而不引起对方的防御心理？”
+  - “我需要用合适的语言来表达自己的需求”
 
-### Resolve Conflict
-Navigate disagreements with structure:
-- "We're stuck in the same argument"
-- "How do I address this without blame?"
-- "Give me a conflict resolution framework"
+### 冲突解决
+- **有序处理分歧**：
+  - “我们一直在这个问题上争论不休”
+  - “我该如何在不指责对方的情况下解决这个问题？”
+  - “给我一个冲突解决的框架”
 
-### Date Ideas
-Get personalized suggestions:
-- "What can we do this weekend on a budget?"
-- "Suggest something we've never tried"
-- "I want to surprise them with something meaningful"
+### 约会建议
+- **获取个性化建议**：
+  - “这个周末我们在预算范围内能做些什么？”
+  - “推荐一些我们从未尝试过的活动”
+  - “我想用有意义的方式给他们一个惊喜”
 
-### Check-in Prompts
-Deepen connection with intentional questions:
-- "Give me conversation starters for tonight"
-- "What should we talk about to reconnect?"
-- "Questions to understand each other better"
+### 定期交流
+- **加深关系**：通过有目的的提问来增进了解：
+  - “今晚可以聊些什么来增进彼此的了解？”
+  - “我们应该聊些什么来重新建立联系？”
+  - “有哪些问题可以帮助我们更好地理解对方？”
 
-### Track Patterns
-Identify what's working and what isn't:
-- "What topics come up repeatedly?"
-- "When do we connect best?"
-- "What's improved since last month?"
+### 关系模式分析
+- **识别有效和无效的沟通方式**：
+  - “哪些话题经常被提及？”
+  - “我们在什么时候最容易建立联系？”
+  - “从上个月开始，我们的关系有什么变化？”
 
-## Communication Tools
+## 沟通工具
 
-### I-Statements
-Frame observations without blame:
-- **Pattern:** "I feel [emotion] when [situation] because [impact]"
-- **Example:** "I feel disconnected when we're both on phones because I miss talking with you"
-- **Avoids:** "You never listen to me" → "I need more of your attention"
+### **I-陈述法**
+- **客观表达感受**：避免指责，直接陈述事实：
+  - **示例**：“当我们都使用手机时，我会感到疏远，因为我想和你面对面交流。”
+  - **避免使用**：“你从来都不听我说话” → “我需要你更多的关注”
 
-### Active Listening
-Signal understanding and create safety:
-- Reflect back: "What I hear is..."
-- Validate: "That makes sense because..."
-- Clarify: "Do you mean...?"
-- Pause response urges—just listen first
+### **积极倾听**
+- **表达理解**：让对方感受到被重视：
+  - **反馈**：“我理解你的意思是……”
+  - **确认**：“这很有道理，因为……”
+  - **澄清**：“你是这个意思吗……？”
+  - **暂停回应**：先认真倾听对方的想法
 
-### Needs Expression
-Get clear on what actually matters:
-- Name the need, not the demand: "I need to feel valued" (not "Do what I say")
-- Be specific: "I need 20 minutes of your full attention" (not "spend more time together")
-- Connect to why: "...because it helps me feel secure"
+### 需求表达
+- **明确表达需求**：
+  - **指出需求本身，而非要求对方做什么**：“我需要感受到被尊重”（而非“按照我的要求去做”）
+  - **具体说明**：“我需要你专注地听我说20分钟”（而非“多花些时间在一起”）
+  - **说明原因**：“……因为这让我感到安全”
 
-### Boundary Setting
-Protect the relationship by protecting yourself:
-- Clear: "I can't discuss this when I'm tired"
-- Non-negotiable: "I need time alone to recharge"
-- Collaborative: "Can we talk about this after work?"
-- Consequences: "If we keep going, I'll need to step away"
+### **设定界限**
+- **保护自己**：
+  - **明确表达**：“当我累了的时候，无法讨论这个话题”
+  - **不可商量**：“我需要一些独处的时间来恢复精力”
+  - **合作式沟通**：“我们可以在下班后讨论这个问题吗？”
+  - **设定后果**：“如果我们继续这样下去，我可能需要暂时离开”
 
-## Tips
+## 使用建议
 
-1. **Timing matters** - Don't resolve conflict when either person is hungry, tired, or triggered. Schedule hard conversations.
-
-2. **Curiosity over certainty** - Ask questions before making assumptions. "Help me understand..." opens doors more than statements.
-
-3. **Small, frequent connections beat grand gestures** - 5 minutes of presence daily matters more than an occasional date night.
-
-4. **Repair quickly** - Conflicts are normal; getting stuck in them isn't. Apologize without conditions, acknowledge their experience, move forward.
-
-5. **All data stays local on your machine** - Your relationship history, preferences, and check-ins never leave your device. Privacy protected.
+1. **时机很重要**：避免在对方饥饿、疲劳或情绪激动时解决冲突。安排合适的时机进行深入的对话。
+2. **好奇心比确定性更重要**：在做出假设之前先提问。“帮我理解一下……”比直接下结论更有效。
+3. **频繁的小互动比偶尔的大型聚会更有意义**：每天花5分钟的时间交流比偶尔的盛大约会更有价值。
+4. **迅速修复关系**：冲突是正常的，但陷入僵局则不行。无条件地道歉，认可对方的感受，然后继续前进。
+5. **数据安全**：你的关系记录、个人偏好和交流记录都存储在设备上，确保隐私得到保护。

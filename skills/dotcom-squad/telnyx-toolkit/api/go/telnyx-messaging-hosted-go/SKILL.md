@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Messaging Hosted - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,9 +38,9 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List messaging hosted number orders
+## 列出托管消息服务的号码订单
 
 `GET /messaging_hosted_number_orders`
 
@@ -52,7 +52,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a messaging hosted number order
+## 创建托管消息服务的号码订单
 
 `POST /messaging_hosted_number_orders`
 
@@ -64,7 +64,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", messagingHostedNumberOrder.Data)
 ```
 
-## Retrieve a messaging hosted number order
+## 获取托管消息服务的号码订单信息
 
 `GET /messaging_hosted_number_orders/{id}`
 
@@ -76,9 +76,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", messagingHostedNumberOrder.Data)
 ```
 
-## Delete a messaging hosted number order
+## 删除托管消息服务的号码订单
 
-Delete a messaging hosted number order and all associated phone numbers.
+删除托管消息服务的号码订单及其所有关联的电话号码。
 
 `DELETE /messaging_hosted_number_orders/{id}`
 
@@ -90,7 +90,7 @@ Delete a messaging hosted number order and all associated phone numbers.
 	fmt.Printf("%+v\n", messagingHostedNumberOrder.Data)
 ```
 
-## Upload hosted number document
+## 上传托管号码文档
 
 `POST /messaging_hosted_number_orders/{id}/actions/file_upload`
 
@@ -106,11 +106,11 @@ Delete a messaging hosted number order and all associated phone numbers.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Validate hosted number codes
+## 验证托管号码的验证码
 
-Validate the verification codes sent to the numbers of the hosted order.
+验证发送到托管号码的验证码。
 
-`POST /messaging_hosted_number_orders/{id}/validation_codes` — Required: `verification_codes`
+`POST /messaging_hosted_number_orders/{id}/validation_codes` — 必需参数：`verification_codes`
 
 ```go
 	response, err := client.MessagingHostedNumberOrders.ValidateCodes(
@@ -129,11 +129,11 @@ Validate the verification codes sent to the numbers of the hosted order.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Create hosted number verification codes
+## 生成托管号码的验证码
 
-Create verification codes to validate numbers of the hosted order.
+为托管号码生成验证码。
 
-`POST /messaging_hosted_number_orders/{id}/verification_codes` — Required: `phone_numbers`, `verification_method`
+`POST /messaging_hosted_number_orders/{id}/verification_codes` — 必需参数：`phone_numbers`, `verification_method`
 
 ```go
 	response, err := client.MessagingHostedNumberOrders.NewVerificationCodes(
@@ -150,9 +150,9 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Check hosted messaging eligibility
+## 检查托管号码的适用性
 
-`POST /messaging_hosted_number_orders/eligibility_numbers_check` — Required: `phone_numbers`
+`POST /messaging_hosted_number_orders/eligibility_numbers_check` — 必需参数：`phone_numbers`
 
 ```go
 	response, err := client.MessagingHostedNumberOrders.CheckEligibility(context.TODO(), telnyx.MessagingHostedNumberOrderCheckEligibilityParams{
@@ -164,7 +164,7 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", response.PhoneNumbers)
 ```
 
-## Delete a messaging hosted number
+## 删除托管消息服务的号码
 
 `DELETE /messaging_hosted_numbers/{id}`
 
@@ -176,9 +176,9 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", messagingHostedNumber.Data)
 ```
 
-## Send an RCS message
+## 发送 RCS 消息
 
-`POST /messages/rcs` — Required: `agent_id`, `to`, `messaging_profile_id`, `agent_message`
+`POST /messages/rcs` — 必需参数：`agent_id`, `to`, `messaging_profile_id`, `agent_message`
 
 ```go
 	response, err := client.Messages.Rcs.Send(context.TODO(), telnyx.MessageRcSendParams{
@@ -193,7 +193,7 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all RCS agents
+## 列出所有 RCS 代理
 
 `GET /messaging/rcs/agents`
 
@@ -205,7 +205,7 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve an RCS agent
+## 获取 RCS 代理信息
 
 `GET /messaging/rcs/agents/{id}`
 
@@ -217,7 +217,7 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", rcsAgentResponse.Data)
 ```
 
-## Modify an RCS agent
+## 修改 RCS 代理
 
 `PATCH /messaging/rcs/agents/{id}`
 
@@ -233,9 +233,9 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", rcsAgentResponse.Data)
 ```
 
-## Check RCS capabilities (batch)
+## 检查 RCS 功能（批量）
 
-`POST /messaging/rcs/bulk_capabilities` — Required: `agent_id`, `phone_numbers`
+`POST /messaging/rcs/bulk_capabilities` — 必需参数：`agent_id`, `phone_numbers`
 
 ```go
 	response, err := client.Messaging.Rcs.ListBulkCapabilities(context.TODO(), telnyx.MessagingRcListBulkCapabilitiesParams{
@@ -248,7 +248,7 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Check RCS capabilities
+## 检查 RCS 功能
 
 `GET /messaging/rcs/capabilities/{agent_id}/{phone_number}`
 
@@ -266,11 +266,11 @@ Create verification codes to validate numbers of the hosted order.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Add RCS test number
+## 添加 RCS 测试号码
 
-Adds a test phone number to an RCS agent for testing purposes.
+为 RCS 代理添加测试电话号码以供测试使用。
 
-`PUT /messaging/rcs/test_number_invite/{id}/{phone_number}`
+`PUT /messages/rcs/test_numberInvite/{id}/{phone_number}`
 
 ```go
 	response, err := client.Messaging.Rcs.InviteTestNumber(
@@ -286,9 +286,9 @@ Adds a test phone number to an RCS agent for testing purposes.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Generate RCS deeplink
+## 生成 RCS 深链接
 
-Generate a deeplink URL that can be used to start an RCS conversation with a specific agent.
+生成一个深链接，用于与特定代理启动 RCS 对话。
 
 `GET /messages/rcs_deeplinks/{agent_id}`
 
@@ -304,9 +304,9 @@ Generate a deeplink URL that can be used to start an RCS conversation with a spe
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List Verification Requests
+## 列出验证请求
 
-Get a list of previously-submitted tollfree verification requests
+获取之前提交的免费电话验证请求列表
 
 `GET /messaging_tollfree/verification/requests`
 
@@ -321,11 +321,11 @@ Get a list of previously-submitted tollfree verification requests
 	fmt.Printf("%+v\n", page)
 ```
 
-## Submit Verification Request
+## 提交验证请求
 
-Submit a new tollfree verification request
+提交新的免费电话验证请求
 
-`POST /messaging_tollfree/verification/requests` — Required: `businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
+`POST /messaging_tollfree/verification/requests` — 必需参数：`businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
 
 ```go
 	verificationRequestEgress, err := client.MessagingTollfree.Verification.Requests.New(context.TODO(), telnyx.MessagingTollfreeVerificationRequestNewParams{
@@ -365,9 +365,9 @@ Submit a new tollfree verification request
 	fmt.Printf("%+v\n", verificationRequestEgress.ID)
 ```
 
-## Get Verification Request
+## 获取验证请求信息
 
-Get a single verification request by its ID.
+通过 ID 获取单个验证请求的详细信息。
 
 `GET /messaging_tollfree/verification/requests/{id}`
 
@@ -379,11 +379,11 @@ Get a single verification request by its ID.
 	fmt.Printf("%+v\n", verificationRequestStatus.ID)
 ```
 
-## Update Verification Request
+## 更新验证请求
 
-Update an existing tollfree verification request.
+更新现有的免费电话验证请求。
 
-`PATCH /messaging_tollfree/verification/requests/{id}` — Required: `businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
+`PATCH /messaging_tollfree/verification/requests/{id}` — 必需参数：`businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
 
 ```go
 	verificationRequestEgress, err := client.MessagingTollfree.Verification.Requests.Update(
@@ -427,11 +427,9 @@ Update an existing tollfree verification request.
 	fmt.Printf("%+v\n", verificationRequestEgress.ID)
 ```
 
-## Delete Verification Request
+## 删除验证请求
 
-Delete a verification request
-
-A request may only be deleted when when the request is in the "rejected" state.
+只有在请求处于“被拒绝”状态时，才能删除该请求。
 
 `DELETE /messaging_tollfree/verification/requests/{id}`
 

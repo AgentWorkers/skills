@@ -1,16 +1,16 @@
 ---
 name: trade-signal
 version: 1.0.2
-description: Real-time trade signals with executable Buy/Sell/Hold recommendations for stocks. Use when asked about trading decisions, stock analysis, technicals, buy/sell calls, earnings plays, price targets, analyst ratings, entry/exit points, portfolio rebalancing, or any investment decision requiring actionable intelligence. Supports US + Global markets, Asia emerging markets, individual stocks, ETFs, and options strategies. 
+description: 实时交易信号，提供可执行的买入/卖出/持有建议，适用于股票交易决策、股票分析、技术分析、买卖建议、盈利策略、价格目标、分析师评级、入场/出场点、投资组合再平衡等需要具体操作建议的场合。支持美国及全球市场、亚洲新兴市场、个股、交易型开放式指数基金（ETFs）和期权策略。
 homepage: https://terminal-x.ai
 metadata: {"category":"finance","api_base":"https://app.terminal-x.ai/api"}
 ---
 
-# Trade Signal
+# 交易信号
 
-Buy/Sell/Hold Trade Signals for AI agents. Transform complex market intelligence into clear, executable Buy/Sell/Hold recommendations on global stocks and other public securities. Trade-signal gives specific price targets on any given securities, real-time data and institution-grade trade thesis. Trade-signal is forward looking but also capable of technical and fundamental analysis on current/historical price actions, with a qualitative and quantitiave explanation as to why a certain securities (stock) price moved the way it did. 
+为AI代理提供买入/卖出/持有交易建议。将复杂的市场情报转化为关于全球股票及其他公开证券的清晰、可执行的买入/卖出/持有建议。该服务会为特定证券提供具体的价格目标、实时数据以及机构级别的交易分析。虽然该服务具有前瞻性，但也能对当前或历史的价格走势进行技术分析和基本面分析，并对证券价格变动的原因给出定性和定量的解释。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get trade signal for a stock
@@ -26,67 +26,64 @@ Buy/Sell/Hold Trade Signals for AI agents. Transform complex market intelligence
 ./scripts/search.sh "What's the best trade ahead of NVDA's upcoming earnings? Give me specific options strategy with prices."
 ```
 
-**Base URL:** `https://app.terminal-x.ai/api`
+**基础URL:** `https://app.terminal-x.ai/api`
 
 ---
 
-## Features
+## 功能
 
-### 📊 Trade Signals Capabilities
+### 📊 交易信号功能
 
-| Query Type | Examples |
+| 查询类型 | 示例 |
 |------------|----------|
-| **Trade Decisions** | Buy/sell/hold calls, entry/exit timing, position sizing |
-| **Earnings Plays** | Pre-earnings positioning, post-earnings reactions, historical patterns |
-| **Price Catalysts** | What's moving the stock, macro events, technical triggers |
-| **Analyst Actions** | Upgrades, downgrades, price target changes, investment thesis |
-| **Technical Analysis** | Support/resistance, volatility, momentum indicators |
-| **Risk Assessment** | Stop loss levels, downside scenarios, risk/reward analysis |
+| **交易决策** | 买入/卖出/持有建议、入场/出场时机、持仓规模 |
+| **收益预测** | 盈利预发布前的布局、盈利发布后的反应、历史模式 |
+| **价格驱动因素** | 影响股价的因素、宏观经济事件、技术指标 |
+| **分析师观点** | 评级上调/下调、价格目标调整、投资观点 |
+| **技术分析** | 支撑/阻力位、波动性、动量指标 |
+| **风险评估** | 止损水平、下行风险、风险/回报分析 |
 
+#### 每条回复包含：
 
-#### Each response includes:
+- **信号**：明确的买入/卖出/持有/避免交易的建议，以及时间范围（T+1、T+5等） |
+- **技术分析**：入场、出场、止损位以及支撑/阻力区 |
+- **原因分析**：推动交易决策的宏观经济、技术及市场情绪因素 |
+- **证券代码**：主要证券代码及相关ETF和关联金融产品 |
+- **数据来源**：引用编号[1]、[2]、[3]，链接至华尔街研究、SEC文件和市场数据
 
-- **Signal**: Clear BUY / SELL / HOLD / AVOID recommendation with time horizon (T+1, T+5, etc.)
-- **Technicals**: Entry, exit, stop loss, and support/resistance zones
-- **Answer**: Macro, technical, and sentiment factors driving the trade thesis
-- **Tickers**: Primary symbol plus related ETFs and correlated instruments
-- **Sources**: Numbered citations [1], [2], [3] linking to Wall Street research, SEC filings, and market data
+### 📈 市场覆盖范围
 
+**涵盖37,565只全球股票和6,104只ETF，覆盖所有主要交易所：**
 
-
-### 📈 Market Coverage
-
-**37,565 Global Tickers + 6,104 ETFs** across all major exchanges:
-
-| Region | Tickers | ETFs |
+| 地区 | 股票代码 | ETF代码 |
 |--------|---------|------|
-| **US** (incl. ADRs) | 7,301 | 4,979 |
-| **Western Europe** | 11,123 | — |
-| **Canada** | 4,690 | — |
-| **Japan** | 3,873 | 200 |
-| **Korea** | 3,856 | 500 |
-| **Hong Kong** | 2,638 | 176 |
-| **Shanghai** | 2,315 | — |
-| **Taiwan** | 1,072 | 200 |
-| **Singapore** | 565 | 49 |
-| **Other** | 132 | — |
+| **美国**（含ADR） | 7,301 | 4,979 |
+| **西欧** | 11,123 | — |
+| **加拿大** | 4,690 | — |
+| **日本** | 3,873 | 200 |
+| **韩国** | 3,856 | 500 |
+| **香港** | 2,638 | 176 |
+| **上海** | 2,315 | — |
+| **台湾** | 1,072 | 200 |
+| **新加坡** | 565 | 49 |
+| **其他** | 132 | — |
 
-**Asset Classes**: Global Equities, ETFs, Global macro, FX, commodities, crypto content available.
+**资产类别**：全球股票、ETF、全球宏观市场、外汇、商品、加密货币相关数据。
 
-### 🔬 Data Sources
+### 🔬 数据来源
 
--  **Wall Street Research** — Analyst reports, investment thesis from Goldman, Morgan Stanley, JP Morgan, Citi, UBS, Bank of America, Stifel, etc.
-- **Analyst Actions** — Upgrades, downgrades, initiations, PT changes
-- **SEC Filings** — 10-K, 10-Q, 8-K, insider transactions, 13F holdings, 13D, 13G, DEF14A, and everything filed on EDGAR
-- **Call Transcripts** — Live transcripts from earnings calls, M&A calls, management discussions, Conference calls, Investor Day calls, etc. 
-- **Real-Time News** — Bloomberg, Reuters, CNBC, FT, WSJ
-- **Company Filings** — Company Press Release, earnings materials, company presentations, Investor day materials, guidance updates, Company Financials and Supplements
+- **华尔街研究** — 高盛、摩根士丹利、JP摩根、花旗、UBS、美国银行、Stifel等机构的分析师报告和投资观点 |
+- **分析师观点**：评级上调/下调、新研报发布、价格目标调整 |
+- **SEC文件**：10-K年报、10-Q季度报告、8-K临时报告、内幕交易信息、13F年度报告、13D季度报告、DEF14A文件等，均可在EDGAR平台上获取 |
+- **会议记录**：财报电话会议、并购电话会议、管理层讨论会、投资者日会议的实时记录 |
+- **实时新闻**：彭博社、路透社、CNBC、FT、WSJ等媒体 |
+- **公司文件**：公司新闻稿、财报、公司演示文稿、投资者日活动资料、财务报告等
 
 ---
 
-## Response Format
+## 回复格式
 
-Running the script returns JSON:
+运行脚本后返回JSON格式的数据：
 
 ```json
 {
@@ -132,23 +129,23 @@ Running the script returns JSON:
 }
 ```
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `query` | Your original question |
-| `tickers` | Relevant stock tickers |
-| `tradeSignal` | BUY, SELL, or HOLD recommendation |
-| `priceTarget` | Entry, exit, stop loss, time horizon |
-| `agentAnswer` | AI analysis with citation references [1], [2] |
-| `sources` | Citations with title, source name, date |
-| `technicals` | RSI, MACD, support/resistance, trend |
-| `relatedAnalysis` | Related research topics |
+| `query` | 您的原始查询 |
+| `tickers` | 相关股票代码 |
+| `tradeSignal` | 买入/卖出/持有建议 |
+| `priceTarget` | 入场价格、出场价格、止损价格、时间范围 |
+| `agentAnswer` | 基于AI的分析结果及引用来源[1]、[2] |
+| `sources` | 引用的标题、来源名称及日期 |
+| `technicals` | 相关技术指标（RSI、MACD、支撑/阻力位、趋势分析） |
+| `relatedAnalysis` | 相关研究主题 |
 
 ---
 
-## Sample Output
+## 示例输出
 
-### Example 1: Catalyst Analysis with Trade Decision
-**Query:** `./scripts/search.sh "What's driving the fall in silver prices? Identify all the catalysts and make a trade decision for tomorrow."`
+### 示例1：基于驱动因素的分析及交易建议
+**查询：** `./scripts/search.sh "是什么导致了白银价格的下跌？请为明天制定交易策略。"`
 
 ```
 📊 **Silver Price Decline: Catalyst Analysis**
@@ -194,9 +191,8 @@ before considering new long positions. [3][11]
 [21] CME Group — Margin Requirement Update
 ```
 
-### Example 2: Price Target with Hold Recommendation
-
-**Query:** `./scripts/search.sh "Give me a clear buy/sell/hold call and an optimal target price for T+5."`
+### 示例2：买入/卖出建议及价格目标
+**查询：** `./scripts/search.sh "请给出一个明确的买入/卖出/持有建议，并提供T+5的时间范围内的目标价格。"`
 
 ```
 📊 **Silver Trade Signal: 5-Day Outlook**
@@ -242,10 +238,8 @@ potential for minor upward corrections within volatile environment.
 
 ```
 
-
-### Example 3: Analyst Coverage
-
-**Query:** `./scripts/search.sh "What are analysts saying about NVIDIA?"`
+### 示例3：分析师观点
+**查询：** `./scripts/search.sh "分析师对NVIDIA的看法是什么？"`
 
 ```
 📊 **NVIDIA Analyst Sentiment**
@@ -272,22 +266,21 @@ from AMD MI300X intensifies in 2025. [3]
 
 ---
 
-## Integration
+## 集成
 
-### With AI Agents
+### 与AI代理的集成
 
-The agent will automatically use this skill when asked:
-- "Should I buy NVDA?"
-- "What's your call on AAPL?"
-- "Sell or hold TSLA?"
-- "Give me a trade signal for META"
-- "Is now a good entry for AMD?"
-- "Analyze GOOGL before earnings"
-- "What are analysts saying about MSFT?"
-- "Best tech stocks to buy right now"
+当代理被问及以下问题时，会自动使用此功能：
+- “我应该买入NVDA吗？”
+- “你对AAPL有什么看法？”
+- “应该卖出还是持有TSLA？”
+- “请为META股票提供一个交易建议。”
+- “现在买入AMD合适吗？”
+- “在财报发布前分析GOOGL的情况。”
+- “分析师对MSFT有什么评价？”
+- “目前最适合购买的科技股有哪些？”
 
-
-### Example Agent Flow
+### 代理使用流程示例
 
 ```
 1. User: "How is NVIDIA doing?"
@@ -303,7 +296,7 @@ The agent will automatically use this skill when asked:
    initial yield curves, per CFO commentary on earnings call."
 ```
 
-### Combining with Other Skills
+### 与其他功能的结合
 
 ```bash
 # Get financial data then execute trade
@@ -315,24 +308,18 @@ The agent will automatically use this skill when asked:
 
 ---
 
-## Tips for Better Results
+## 提高查询效果的建议
 
-| Do This | Not This |
+| 推荐做法 | 不推荐的做法 |
 |---------|----------|
-| "NVIDIA data center revenue Q4 2024" | "NVIDIA revenue" |
-| "AAPL gross margin vs MSFT" | "Apple margins" |
-| "What did Jensen Huang say about AI demand" | "NVDA CEO comments" |
-| "Tesla deliveries Q3 2024 vs Q3 2023" | "Tesla cars" |
-
-**Best Practices:**
-- **Be specific** — Include timeframes, metrics, and company names
-- **Use ticker symbols** — "AAPL" is clearer than "Apple"
-- **Ask direct questions** — "What is..." or "How much..." get precise answers
-- **Include context** — "last quarter", "FY 2024", "year-over-year"
+| 使用具体信息** | 只使用通用词汇 |
+| 使用证券代码** | 例如使用“AAPL”而非“Apple” |
+| 提出明确问题** | 例如“AAPL的毛利率与MSFT相比如何？” |
+| 提供背景信息** | 例如“上个季度”、“2024财年”、“同比” |
 
 ---
 
-## Error Handling
+## 错误处理
 
 ```json
 {
@@ -341,14 +328,14 @@ The agent will automatically use this skill when asked:
 }
 ```
 
-| Error Code | Meaning | Resolution |
+| 错误代码 | 含义 | 解决方案 |
 |------------|---------|------------|
-| 400 | Missing query | Include `?query=` parameter |
-| 500 | Server error | Retry request |
+| 400 | 查询参数缺失 | 请添加`?query=`参数 |
+| 500 | 服务器错误 | 请重试请求 |
 
 ---
 
-## Support
+## 帮助支持
 
-- **Homepage:** https://terminal-x.ai
-- **Email:** hello@terminal-x.ai
+- **官网：** https://terminal-x.ai |
+- **邮箱：** hello@terminal-x.ai

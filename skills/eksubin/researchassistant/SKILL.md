@@ -1,50 +1,49 @@
 ---
 name: ResearchMonitor
-description: Monitors research topics for new papers, conferences, and journals.
+description: 监控研究主题，以获取新的论文、会议和期刊信息。
 ---
 
 # ResearchMonitor
 
-This skill helps you keep the user updated on their specific research field.
+此功能可帮助用户及时了解其所在研究领域的最新动态。
 
-## Workflow
+## 工作流程
 
-1.  **Check Configuration**:
-    -   Read `research_config.json` in this directory to find the user's research topics and last checked date.
-    -   If the file doesn't exist or topics are empty, ask the user what research topics they are interested in and save them using `scripts/daily_briefing.py --add-topic "topic"`.
+1. **检查配置**：
+   - 读取该目录下的 `research_config.json` 文件，以获取用户的研究主题和上次查看的日期。
+   - 如果文件不存在或研究主题为空，请询问用户他们感兴趣的研究主题，并使用 `scripts/daily_briefing.py --add-topic "topic"` 命令将其保存下来。
 
-2.  **Daily Check**:
-    -   Get the current date.
-    -   Compare with `last_checked` in `research_config.json`.
-    -   If already checked today, do nothing unless explicitly asked.
+2. **每日检查**：
+   - 获取当前日期。
+   - 与 `research_config.json` 文件中的 `last-checked` 日期进行比较。
+   - 如果今天已经检查过相关内容，则除非用户另有要求，否则无需再次检查。
 
-3.  **Perform Search**:
-    -   For each topic, use `search_web` to look for:
-        -   "new research papers [topic] [current month/year]"
-        -   "upcoming conferences [topic] [current year]"
-        -   "new journal issues [topic] [current month/year]"
-        -   Check specialized platforms like arXiv, IEEE Xplore, Google Scholar (via web search), or X (Twitter) if relevant.
+3. **执行搜索**：
+   - 对于每个研究主题，使用 `search_web` 命令搜索以下信息：
+     - “[主题] [当前月份/年份] 的新研究论文”
+     - “[主题] [当前年份] 即将举行的会议”
+     - “[主题] [当前月份/年份] 的新期刊文章”
+     - 如有必要，还可以搜索 arXiv、IEEE Xplore、Google Scholar 或 X（Twitter）等专业平台。
 
-4.  **Filter & Analyze**:
-    -   For each potential item found, use `scripts/daily_briefing.py --check-seen "URL or Unique Title"`.
-    -   If it returns "true", SKIP IT.
-    -   Compare found items with what might have been seen yesterday (this requires some memory or just checking if the publication date is very recent, e.g., last 24-48 hours).
-    -   **CRITICAL**: If there is *nothing significantly new* (no new major papers, no new conference announcements), **DO NOT BOTHER THE USER**.
+4. **筛选与分析**：
+   - 对于每个搜索到的结果，使用 `scripts/daily_briefing.py --check-seen "URL 或唯一标题"` 命令进行验证。
+   - 如果返回 “true”，则表示该内容已被用户查看过，可以直接跳过。
+   - 将搜索结果与昨天查看的内容进行比较（可以通过检查发布日期是否在最近 24-48 小时内来判断）。
+   - **重要提示**：如果没有任何新的重要信息（没有新的研究论文或会议公告），则无需通知用户。
 
-5.  **Report**:
-    -   If new items are found, compile a brief markdown report.
-    -   Include:
-        -   **Title**: News/Paper Title
-        -   **Source**: URL/Journal Name
-        -   **Summary**: 1-sentence summary of why it's relevant.
-    -   Present this to the user.
-    -   Mark the items as seen using `scripts/daily_briefing.py --mark-seen "URL or Unique Title"`.
-    -   Update the `last_checked` date using `scripts/daily_briefing.py --update-date`.
+5. **生成报告**：
+   - 如果发现新的内容，生成一份简短的 Markdown 报告，内容包括：
+     - **标题**：新闻/论文的标题
+     - **来源**：URL 或期刊名称
+     **摘要**：简要说明该内容为何重要。
+   - 将报告呈现给用户。
+   - 使用 `scripts/daily_briefing.py --mark-seen "URL 或唯一标题"` 命令将相关内容标记为已查看。
+   - 使用 `scripts/daily_briefing.py --update-date` 命令更新 `last-checked` 日期。
 
-## Scripts
+## 脚本
 
--   `python scripts/daily_briefing.py --add-topic "topic"`: Adds a new research topic.
--   `python scripts/daily_briefing.py --list-topics`: Lists current topics.
--   `python scripts/daily_briefing.py --update-date`: Updates the last checked timestamp to now.
--   `python scripts/daily_briefing.py --check-seen "ID"`: Checks if an item ID (URL/Title) is already in memory.
--   `python scripts/daily_briefing.py --mark-seen "ID"`: Marks an item ID as seen.
+- `python scripts/daily_briefing.py --add-topic "主题"`：添加一个新的研究主题。
+- `python scripts/daily_briefing.py --list-topics`：列出当前的所有研究主题。
+- `python scripts/daily_briefing.py --update-date`：将上次查看的日期更新为当前时间。
+- `python scripts/daily_briefing.py --check-seen "ID"`：检查某个内容 ID（URL 或标题）是否已被记录在系统中。
+- `python scripts/daily_briefing.py --mark-seen "ID"`：将某个内容 ID 标记为已查看。

@@ -1,60 +1,61 @@
 ---
 name: dispatch-multiple-agents
-description: "Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies. Dispatch subagents to work concurrently."
+description: "**使用场景：**  
+当面临 2 个或更多独立的任务时，这些任务可以无需共享状态或遵循特定顺序即可并行执行。此时，可以派遣子代理（subagents）来同时处理这些任务。"
 ---
 
-# Dispatch Multiple Agents
+# 分配多个代理任务
 
-When you have multiple independent tasks, don't do them sequentially. Dispatch agents to work in parallel.
+当你有多个独立任务需要处理时，不要依次执行它们，而是应该同时分配代理任务让它们并行工作。
 
-## When to Use
+## 适用场景
 
-**Use when:**
-- 3+ independent tasks need attention
-- Tasks don't share state or resources
-- No dependencies between tasks
-- Speed matters
+**适用情况：**
+- 需要处理3个或更多独立任务；
+- 这些任务之间没有状态或资源的共享；
+- 任务之间不存在依赖关系；
+- 时间效率至关重要。
 
-**Don't use when:**
-- Tasks are related (fixing one might fix others)
-- Tasks share files/resources (would conflict)
-- You need full system context for all tasks
-- Tasks must happen in specific order
+**不适用情况：**
+- 任务之间存在关联（解决其中一个任务可能会影响到其他任务）；
+- 任务需要共享文件或资源（这可能导致冲突）；
+- 所有任务都需要完整的系统上下文；
+- 任务必须按照特定顺序执行。
 
-## The Pattern
+## 实施步骤
 
-### 1. Identify Independent Domains
+### 1. 确定独立的任务领域
 
-Group work by what's needed:
-- Task A: Research competitor A
-- Task B: Research competitor B  
-- Task C: Research competitor C
+根据任务内容将它们分组：
+- 任务A：研究竞争对手A
+- 任务B：研究竞争对手B
+- 任务C：研究竞争对手C
 
-Each is independent.
+每个任务都是独立的。
 
-### 2. Create Focused Tasks
+### 2. 为每个代理任务指定具体任务
 
-Each subagent gets:
-- **Specific scope:** One clear task
-- **All context needed:** Don't make them hunt
-- **Clear output:** What should they return?
-- **Constraints:** What NOT to touch
+为每个代理任务分配以下内容：
+- **明确的任务范围**；
+- **所需的所有相关信息**（避免让代理任务自行寻找所需资料）；
+- **明确的输出结果**；
+- **禁止操作的内容**（明确指出哪些部分不可修改）。
 
-### 3. Dispatch in Parallel
+### 3. 并行执行任务
 
-Using sessions_spawn for concurrent execution.
+使用`sessions_spawn`函数来同时启动这些代理任务。
 
-### 4. Review and Integrate
+### 4. 审查与整合结果
 
-When agents return:
-- Read each result
-- Verify no conflicts
-- Integrate findings
-- Report summary
+当代理任务完成并返回结果后：
+- 逐一查看每个任务的结果；
+- 确认没有冲突或重复的信息；
+- 整合所有收集到的信息；
+- 提交总结报告。
 
-## Integration with Other Skills
+## 与其他技能的结合使用
 
-Use dispatch-multiple-agents WITHIN the workflow:
+可以在工作流程中结合使用`dispatch-multiple-agents`功能：
 
 ```
 brainstorming → write-plan → dispatch-multiple-agents → verify-task
@@ -62,15 +63,15 @@ brainstorming → write-plan → dispatch-multiple-agents → verify-task
                             doing-tasks (per subagent)
 ```
 
-## Example
+## 示例
 
-**Problem:** Research 5 competitors
+**问题：**研究5个竞争对手
 
-**Dispatch:**
-- Agent 1 → Competitor A
-- Agent 2 → Competitor B
-- Agent 3 → Competitor C
-- Agent 4 → Competitor D
-- Agent 5 → Competitor E
+**任务分配：**
+- 代理1 → 竞争对手A
+- 代理2 → 竞争对手B
+- 代理3 → 竞争对手C
+- 代理4 → 竞争对手D
+- 代理5 → 竞争对手E
 
-**Result:** Full analysis in minutes, not hours.
+**结果：**几分钟内即可完成全部分析。

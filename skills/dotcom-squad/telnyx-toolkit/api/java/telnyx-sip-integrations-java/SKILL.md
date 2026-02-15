@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Sip Integrations - Java
+# Telnyx Sip 集成 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all call recordings
+## 列出所有通话记录
 
-Returns a list of your call recordings.
+返回您的通话记录列表。
 
 `GET /recordings`
 
@@ -44,9 +45,9 @@ import com.telnyx.sdk.models.recordings.RecordingListParams;
 RecordingListPage page = client.recordings().list();
 ```
 
-## Retrieve a call recording
+## 获取通话记录
 
-Retrieves the details of an existing call recording.
+检索现有通话记录的详细信息。
 
 `GET /recordings/{recording_id}`
 
@@ -57,9 +58,9 @@ import com.telnyx.sdk.models.recordings.RecordingRetrieveResponse;
 RecordingRetrieveResponse recording = client.recordings().retrieve("recording_id");
 ```
 
-## Delete a call recording
+## 删除通话记录
 
-Permanently deletes a call recording.
+永久删除通话记录。
 
 `DELETE /recordings/{recording_id}`
 
@@ -70,9 +71,9 @@ import com.telnyx.sdk.models.recordings.RecordingDeleteResponse;
 RecordingDeleteResponse recording = client.recordings().delete("recording_id");
 ```
 
-## Delete a list of call recordings
+## 删除通话记录列表
 
-Permanently deletes a list of call recordings.
+永久删除通话记录列表。
 
 `POST /recordings/actions/delete`
 
@@ -86,9 +87,9 @@ ActionDeleteParams params = ActionDeleteParams.builder()
 client.recordings().actions().delete(params);
 ```
 
-## List all recording transcriptions
+## 列出所有通话转录内容
 
-Returns a list of your recording transcriptions.
+返回您的通话转录内容列表。
 
 `GET /recording_transcriptions`
 
@@ -99,9 +100,9 @@ import com.telnyx.sdk.models.recordingtranscriptions.RecordingTranscriptionListR
 RecordingTranscriptionListResponse recordingTranscriptions = client.recordingTranscriptions().list();
 ```
 
-## Retrieve a recording transcription
+## 获取通话转录内容
 
-Retrieves the details of an existing recording transcription.
+检索现有通话转录内容的详细信息。
 
 `GET /recording_transcriptions/{recording_transcription_id}`
 
@@ -112,9 +113,9 @@ import com.telnyx.sdk.models.recordingtranscriptions.RecordingTranscriptionRetri
 RecordingTranscriptionRetrieveResponse recordingTranscription = client.recordingTranscriptions().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a recording transcription
+## 删除通话转录内容
 
-Permanently deletes a recording transcription.
+永久删除通话转录内容。
 
 `DELETE /recording_transcriptions/{recording_transcription_id}`
 
@@ -125,9 +126,9 @@ import com.telnyx.sdk.models.recordingtranscriptions.RecordingTranscriptionDelet
 RecordingTranscriptionDeleteResponse recordingTranscription = client.recordingTranscriptions().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Retrieve a stored credential
+## 获取存储的凭据
 
-Returns the information about custom storage credentials.
+返回关于自定义存储凭据的信息。
 
 `GET /custom_storage_credentials/{connection_id}`
 
@@ -138,9 +139,9 @@ import com.telnyx.sdk.models.customstoragecredentials.CustomStorageCredentialRet
 CustomStorageCredentialRetrieveResponse customStorageCredential = client.customStorageCredentials().retrieve("connection_id");
 ```
 
-## Create a custom storage credential
+## 创建自定义存储凭据
 
-Creates a custom storage credentials configuration.
+创建自定义存储凭据配置。
 
 `POST /custom_storage_credentials/{connection_id}`
 
@@ -162,9 +163,9 @@ CustomStorageCredentialCreateParams params = CustomStorageCredentialCreateParams
 CustomStorageCredentialCreateResponse customStorageCredential = client.customStorageCredentials().create(params);
 ```
 
-## Update a stored credential
+## 更新存储的凭据
 
-Updates a stored custom credentials configuration.
+更新存储的自定义凭据配置。
 
 `PUT /custom_storage_credentials/{connection_id}`
 
@@ -186,9 +187,9 @@ CustomStorageCredentialUpdateParams params = CustomStorageCredentialUpdateParams
 CustomStorageCredentialUpdateResponse customStorageCredential = client.customStorageCredentials().update(params);
 ```
 
-## Delete a stored credential
+## 删除存储的凭据
 
-Deletes a stored custom credentials configuration.
+删除存储的自定义凭据配置。
 
 `DELETE /custom_storage_credentials/{connection_id}`
 
@@ -198,9 +199,9 @@ import com.telnyx.sdk.models.customstoragecredentials.CustomStorageCredentialDel
 client.customStorageCredentials().delete("connection_id");
 ```
 
-## Retrieve stored Dialogflow Connection
+## 获取存储的 Dialogflow 连接信息
 
-Return details of the Dialogflow connection associated with the given CallControl connection.
+返回与给定 CallControl 连接关联的 Dialogflow 连接的详细信息。
 
 `GET /dialogflow_connections/{connection_id}`
 
@@ -211,9 +212,9 @@ import com.telnyx.sdk.models.dialogflowconnections.DialogflowConnectionRetrieveR
 DialogflowConnectionRetrieveResponse dialogflowConnection = client.dialogflowConnections().retrieve("connection_id");
 ```
 
-## Create a Dialogflow Connection
+## 创建 Dialogflow 连接
 
-Save Dialogflow Credentiails to Telnyx, so it can be used with other Telnyx services.
+将 Dialogflow 凭据保存到 Telnyx，以便与其他 Telnyx 服务一起使用。
 
 `POST /dialogflow_connections/{connection_id}`
 
@@ -240,9 +241,9 @@ DialogflowConnectionCreateParams params = DialogflowConnectionCreateParams.build
 DialogflowConnectionCreateResponse dialogflowConnection = client.dialogflowConnections().create(params);
 ```
 
-## Update stored Dialogflow Connection
+## 更新存储的 Dialogflow 连接
 
-Updates a stored Dialogflow Connection.
+更新存储的 Dialogflow 连接信息。
 
 `PUT /dialogflow_connections/{connection_id}`
 
@@ -269,9 +270,9 @@ DialogflowConnectionUpdateParams params = DialogflowConnectionUpdateParams.build
 DialogflowConnectionUpdateResponse dialogflowConnection = client.dialogflowConnections().update(params);
 ```
 
-## Delete stored Dialogflow Connection
+## 删除存储的 Dialogflow 连接
 
-Deletes a stored Dialogflow Connection.
+删除存储的 Dialogflow 连接。
 
 `DELETE /dialogflow_connections/{connection_id}`
 
@@ -281,9 +282,9 @@ import com.telnyx.sdk.models.dialogflowconnections.DialogflowConnectionDeletePar
 client.dialogflowConnections().delete("connection_id");
 ```
 
-## List all External Connections
+## 列出所有外部连接
 
-This endpoint returns a list of your External Connections inside the 'data' attribute of the response.
+此端点会返回响应中的 "data" 属性所包含的所有外部连接列表。
 
 `GET /external_connections`
 
@@ -294,11 +295,11 @@ import com.telnyx.sdk.models.externalconnections.ExternalConnectionListParams;
 ExternalConnectionListPage page = client.externalConnections().list();
 ```
 
-## Creates an External Connection
+## 创建外部连接
 
-Creates a new External Connection based on the parameters sent in the request.
+根据请求中发送的参数创建新的外部连接。
 
-`POST /external_connections` — Required: `external_sip_connection`, `outbound`
+`POST /external_connections` — 必需参数：`external_sip_connection`, `outbound`
 
 ```java
 import com.telnyx.sdk.models.externalconnections.ExternalConnectionCreateParams;
@@ -311,9 +312,9 @@ ExternalConnectionCreateParams params = ExternalConnectionCreateParams.builder()
 ExternalConnectionCreateResponse externalConnection = client.externalConnections().create(params);
 ```
 
-## Retrieve an External Connection
+## 获取外部连接信息
 
-Return the details of an existing External Connection inside the 'data' attribute of the response.
+返回响应中的 "data" 属性所包含的现有外部连接的详细信息。
 
 `GET /external_connections/{id}`
 
@@ -324,11 +325,11 @@ import com.telnyx.sdk.models.externalconnections.ExternalConnectionRetrieveRespo
 ExternalConnectionRetrieveResponse externalConnection = client.externalConnections().retrieve("id");
 ```
 
-## Update an External Connection
+## 更新外部连接
 
-Updates settings of an existing External Connection based on the parameters of the request.
+根据请求的参数更新现有外部连接的设置。
 
-`PATCH /external_connections/{id}` — Required: `outbound`
+`PATCH /external_connections/{id}` — 必需参数：`outbound`
 
 ```java
 import com.telnyx.sdk.models.externalconnections.ExternalConnectionUpdateParams;
@@ -343,9 +344,9 @@ ExternalConnectionUpdateParams params = ExternalConnectionUpdateParams.builder()
 ExternalConnectionUpdateResponse externalConnection = client.externalConnections().update(params);
 ```
 
-## Deletes an External Connection
+## 删除外部连接
 
-Permanently deletes an External Connection.
+永久删除外部连接。
 
 `DELETE /external_connections/{id}`
 
@@ -356,9 +357,9 @@ import com.telnyx.sdk.models.externalconnections.ExternalConnectionDeleteRespons
 ExternalConnectionDeleteResponse externalConnection = client.externalConnections().delete("id");
 ```
 
-## List all civic addresses and locations
+## 列出所有公民地址和位置信息
 
-Returns the civic addresses and locations from Microsoft Teams.
+从 Microsoft Teams 中获取公民地址和位置信息。
 
 `GET /external_connections/{id}/civic_addresses`
 
@@ -369,9 +370,9 @@ import com.telnyx.sdk.models.externalconnections.civicaddresses.CivicAddressList
 CivicAddressListResponse civicAddresses = client.externalConnections().civicAddresses().list("id");
 ```
 
-## Retrieve a Civic Address
+## 获取公民地址信息
 
-Return the details of an existing Civic Address with its Locations inside the 'data' attribute of the response.
+返回响应中的 "data" 属性所包含的现有公民地址及其位置的详细信息。
 
 `GET /external_connections/{id}/civic_addresses/{address_id}`
 
@@ -386,9 +387,9 @@ CivicAddressRetrieveParams params = CivicAddressRetrieveParams.builder()
 CivicAddressRetrieveResponse civicAddress = client.externalConnections().civicAddresses().retrieve(params);
 ```
 
-## Update a location's static emergency address
+## 更新位置的静态紧急地址
 
-`PATCH /external_connections/{id}/locations/{location_id}` — Required: `static_emergency_address_id`
+`PATCH /external_connections/{id}/locations/{location_id}` — 必需参数：`static_emergency_address_id`
 
 ```java
 import com.telnyx.sdk.models.externalconnections.ExternalConnectionUpdateLocationParams;
@@ -402,9 +403,9 @@ ExternalConnectionUpdateLocationParams params = ExternalConnectionUpdateLocation
 ExternalConnectionUpdateLocationResponse response = client.externalConnections().updateLocation(params);
 ```
 
-## List all phone numbers
+## 列出所有电话号码
 
-Returns a list of all active phone numbers associated with the given external connection.
+返回与给定外部连接关联的所有活动电话号码列表。
 
 `GET /external_connections/{id}/phone_numbers`
 
@@ -415,9 +416,9 @@ import com.telnyx.sdk.models.externalconnections.phonenumbers.PhoneNumberListPar
 PhoneNumberListPage page = client.externalConnections().phoneNumbers().list("id");
 ```
 
-## Retrieve a phone number
+## 获取电话号码信息
 
-Return the details of a phone number associated with the given external connection.
+返回与给定外部连接关联的电话号码的详细信息。
 
 `GET /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -432,9 +433,9 @@ PhoneNumberRetrieveParams params = PhoneNumberRetrieveParams.builder()
 PhoneNumberRetrieveResponse phoneNumber = client.externalConnections().phoneNumbers().retrieve(params);
 ```
 
-## Update a phone number
+## 更新电话号码信息
 
-Asynchronously update settings of the phone number associated with the given external connection.
+异步更新与给定外部连接关联的电话号码的设置。
 
 `PATCH /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -449,9 +450,9 @@ PhoneNumberUpdateParams params = PhoneNumberUpdateParams.builder()
 PhoneNumberUpdateResponse phoneNumber = client.externalConnections().phoneNumbers().update(params);
 ```
 
-## List all Releases
+## 列出所有发布记录
 
-Returns a list of your Releases for the given external connection.
+返回与给定外部连接关联的所有发布记录列表。
 
 `GET /external_connections/{id}/releases`
 
@@ -462,9 +463,9 @@ import com.telnyx.sdk.models.externalconnections.releases.ReleaseListParams;
 ReleaseListPage page = client.externalConnections().releases().list("id");
 ```
 
-## Retrieve a Release request
+## 获取发布请求信息
 
-Return the details of a Release request and its phone numbers.
+返回发布请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/releases/{release_id}`
 
@@ -479,9 +480,9 @@ ReleaseRetrieveParams params = ReleaseRetrieveParams.builder()
 ReleaseRetrieveResponse release = client.externalConnections().releases().retrieve(params);
 ```
 
-## List all Upload requests
+## 列出所有上传请求
 
-Returns a list of your Upload requests for the given external connection.
+返回与给定外部连接关联的所有上传请求列表。
 
 `GET /external_connections/{id}/uploads`
 
@@ -492,11 +493,11 @@ import com.telnyx.sdk.models.externalconnections.uploads.UploadListParams;
 UploadListPage page = client.externalConnections().uploads().list("id");
 ```
 
-## Creates an Upload request
+## 创建上传请求
 
-Creates a new Upload request to Microsoft teams with the included phone numbers.
+创建一个新的上传请求，关联指定的电话号码。
 
-`POST /external_connections/{id}/uploads` — Required: `number_ids`
+`POST /external_connections/{id}/uploads` — 必需参数：`number_ids`
 
 ```java
 import com.telnyx.sdk.models.externalconnections.uploads.UploadCreateParams;
@@ -515,9 +516,9 @@ UploadCreateParams params = UploadCreateParams.builder()
 UploadCreateResponse upload = client.externalConnections().uploads().create(params);
 ```
 
-## Refresh the status of all Upload requests
+## 刷新所有上传请求的状态
 
-Forces a recheck of the status of all pending Upload requests for the given external connection in the background.
+强制重新检查给定外部连接的所有待处理上传请求的状态。
 
 `POST /external_connections/{id}/uploads/refresh`
 
@@ -528,9 +529,9 @@ import com.telnyx.sdk.models.externalconnections.uploads.UploadRefreshStatusResp
 UploadRefreshStatusResponse response = client.externalConnections().uploads().refreshStatus("id");
 ```
 
-## Get the count of pending upload requests
+## 获取待处理上传请求的数量
 
-Returns the count of all pending upload requests for the given external connection.
+返回给定外部连接的所有待处理上传请求的数量。
 
 `GET /external_connections/{id}/uploads/status`
 
@@ -541,9 +542,9 @@ import com.telnyx.sdk.models.externalconnections.uploads.UploadPendingCountRespo
 UploadPendingCountResponse response = client.externalConnections().uploads().pendingCount("id");
 ```
 
-## Retrieve an Upload request
+## 获取上传请求信息
 
-Return the details of an Upload request and its phone numbers.
+返回上传请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/uploads/{ticket_id}`
 
@@ -558,9 +559,9 @@ UploadRetrieveParams params = UploadRetrieveParams.builder()
 UploadRetrieveResponse upload = client.externalConnections().uploads().retrieve(params);
 ```
 
-## Retry an Upload request
+## 重试上传请求
 
-If there were any errors during the upload process, this endpoint will retry the upload request.
+如果上传过程中出现错误，此端点将重试上传请求。
 
 `POST /external_connections/{id}/uploads/{ticket_id}/retry`
 
@@ -575,9 +576,9 @@ UploadRetryParams params = UploadRetryParams.builder()
 UploadRetryResponse response = client.externalConnections().uploads().retry(params);
 ```
 
-## List all log messages
+## 列出所有日志消息
 
-Retrieve a list of log messages for all external connections associated with your account.
+检索与您的账户关联的所有外部连接的日志消息列表。
 
 `GET /external_connections/log_messages`
 
@@ -588,9 +589,9 @@ import com.telnyx.sdk.models.externalconnections.logmessages.LogMessageListParam
 LogMessageListPage page = client.externalConnections().logMessages().list();
 ```
 
-## Retrieve a log message
+## 获取日志消息
 
-Retrieve a log message for an external connection associated with your account.
+检索与您的账户关联的某个外部连接的日志消息。
 
 `GET /external_connections/log_messages/{id}`
 
@@ -601,9 +602,9 @@ import com.telnyx.sdk.models.externalconnections.logmessages.LogMessageRetrieveR
 LogMessageRetrieveResponse logMessage = client.externalConnections().logMessages().retrieve("id");
 ```
 
-## Dismiss a log message
+## 删除日志消息
 
-Dismiss a log message for an external connection associated with your account.
+删除与您的账户关联的某个外部连接的日志消息。
 
 `DELETE /external_connections/log_messages/{id}`
 
@@ -614,9 +615,9 @@ import com.telnyx.sdk.models.externalconnections.logmessages.LogMessageDismissRe
 LogMessageDismissResponse response = client.externalConnections().logMessages().dismiss("id");
 ```
 
-## Refresh Operator Connect integration
+## 刷新 Operator Connect 集成
 
-This endpoint will make an asynchronous request to refresh the Operator Connect integration with Microsoft Teams for the current user.
+此端点将异步请求以刷新当前用户与 Microsoft Teams 的 Operator Connect 集成。
 
 `POST /operator_connect/actions/refresh`
 
@@ -627,9 +628,9 @@ import com.telnyx.sdk.models.operatorconnect.actions.ActionRefreshResponse;
 ActionRefreshResponse response = client.operatorConnect().actions().refresh();
 ```
 
-## List uploaded media
+## 列出上传的媒体文件
 
-Returns a list of stored media files.
+返回存储的媒体文件列表。
 
 `GET /media`
 
@@ -640,11 +641,11 @@ import com.telnyx.sdk.models.media.MediaListResponse;
 MediaListResponse media = client.media().list();
 ```
 
-## Upload media
+## 上传媒体文件
 
-Upload media file to Telnyx so it can be used with other Telnyx services
+将媒体文件上传到 Telnyx，以便与其他 Telnyx 服务一起使用。
 
-`POST /media` — Required: `media_url`
+`POST /media` — 必需参数：`media_url`
 
 ```java
 import com.telnyx.sdk.models.media.MediaUploadParams;
@@ -656,9 +657,9 @@ MediaUploadParams params = MediaUploadParams.builder()
 MediaUploadResponse response = client.media().upload(params);
 ```
 
-## Retrieve stored media
+## 获取存储的媒体文件信息
 
-Returns the information about a stored media file.
+返回存储的媒体文件的详细信息。
 
 `GET /media/{media_name}`
 
@@ -669,9 +670,9 @@ import com.telnyx.sdk.models.media.MediaRetrieveResponse;
 MediaRetrieveResponse media = client.media().retrieve("media_name");
 ```
 
-## Update stored media
+## 更新存储的媒体文件
 
-Updates a stored media file.
+更新存储的媒体文件。
 
 `PUT /media/{media_name}`
 
@@ -682,9 +683,9 @@ import com.telnyx.sdk.models.media.MediaUpdateResponse;
 MediaUpdateResponse media = client.media().update("media_name");
 ```
 
-## Deletes stored media
+## 删除存储的媒体文件
 
-Deletes a stored media file.
+删除存储的媒体文件。
 
 `DELETE /media/{media_name}`
 
@@ -694,9 +695,9 @@ import com.telnyx.sdk.models.media.MediaDeleteParams;
 client.media().delete("media_name");
 ```
 
-## Download stored media
+## 下载存储的媒体文件
 
-Downloads a stored media file.
+下载存储的媒体文件。
 
 `GET /media/{media_name}/download`
 
@@ -705,4 +706,5 @@ import com.telnyx.sdk.core.http.HttpResponse;
 import com.telnyx.sdk.models.media.MediaDownloadParams;
 
 HttpResponse response = client.media().download("media_name");
+```
 ```

@@ -1,6 +1,6 @@
 ---
 name: network-debug
-description: Debug network connectivity issues
+description: **调试网络连接问题**
 ---
-# Network Debug
-Diagnose network problems.
+# 网络调试
+用于诊断网络问题。

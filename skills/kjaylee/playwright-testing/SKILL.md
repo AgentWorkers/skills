@@ -1,23 +1,23 @@
 ---
 name: playwright-testing
-description: Test web applications and games using Playwright on MiniPC. Use when verifying frontend functionality, debugging UI behavior, capturing screenshots, or QA testing games. Supports headless browser automation via nodes.run or browser.proxy.
+description: 使用 Playwright 在 MiniPC 上测试 Web 应用程序和游戏。适用于验证前端功能、调试用户界面行为、捕获截图或进行游戏的质量保证（QA）测试。该工具支持通过 `nodes.run` 或 `browser.proxy` 实现无头浏览器自动化。
 metadata:
   author: misskim
   version: "1.0"
   origin: Concept from Anthropic webapp-testing, adapted for Clawdbot + MiniPC environment
 ---
 
-# Playwright Testing (MiniPC)
+# Playwright 测试（MiniPC）
 
-MiniPC에 설치된 Playwright를 활용한 웹앱/게임 테스트.
+利用安装在 MiniPC 上的 Playwright 进行 Web 应用程序/游戏的测试。
 
-## 환경
+## 环境
 
-- **실행 위치:** MiniPC (nodes.run 또는 browser.proxy)
-- **브라우저:** Chromium headless
-- **용도:** 게임 QA, 웹앱 기능 테스트, 스크린샷, 콘솔 로그 캡처
+- **执行位置：** MiniPC（通过 `nodes.run` 或 `browser.proxy`）
+- **浏览器：** 无头版 Chromium
+- **用途：** 游戏质量保证（QA）、Web 应用功能测试、截图、控制台日志捕获
 
-## 판단 트리
+## 判断流程
 
 ```
 테스트 대상 → 정적 HTML인가?
@@ -32,9 +32,9 @@ MiniPC에 설치된 Playwright를 활용한 웹앱/게임 테스트.
         4. 동작 실행
 ```
 
-## 핵심 패턴
+## 核心测试模式
 
-### 정찰-행동 (Reconnaissance-Then-Action)
+### 侦察-行动（Reconnaissance-Then-Action）模式
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -57,7 +57,7 @@ with sync_playwright() as p:
     browser.close()
 ```
 
-### 게임 QA 테스트
+### 游戏质量保证（QA）测试
 
 ```python
 # 게임 로드 확인
@@ -81,15 +81,15 @@ errors = []
 page.on('console', lambda msg: errors.append(msg.text) if msg.type == 'error' else None)
 ```
 
-## ⚠️ 핵심 주의사항
+## ⚠️ 重要注意事项
 
-- **networkidle 먼저!** 동적 앱은 반드시 JS 실행 완료 후 DOM 검사
-- **headless=True 필수** (MiniPC에 모니터 없음)
-- **MiniPC에서 실행** — 맥 스튜디오에서 직접 브라우저 금지
-- **코드 리뷰만으로 QA 불충분** — 실제 플레이 테스트 필수
-- **browser.proxy 또는 nodes.run 활용**
+- **务必先使用 `networkidle`！** 对于动态应用程序，必须等待 JavaScript 执行完毕后再进行 DOM 检查。
+- **必须设置 `headless=True`（MiniPC 没有显示器）。
+- **必须在 MiniPC 上执行测试** — 禁止在 Mac Studio 中直接使用浏览器进行测试。
+- **仅通过代码审查无法完成质量保证** — 必须进行实际的游戏测试。
+- **建议使用 `browser.proxy` 或 `nodes.run` 来执行测试。
 
-## Clawdbot에서 실행 방법
+## 在 Clawdbot 上的执行方法
 
 ```
 # 방법 1: browser tool (proxy)

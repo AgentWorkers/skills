@@ -1,7 +1,7 @@
 ---
 name: test-google-chat
-description: Test skill for Google Chat messaging
+description: 测试用于 Google Chat 消息传递的技能
 ---
 
-# Test Skill
-This is a test skill.
+# 测试技能
+这是一个用于测试技能的示例。

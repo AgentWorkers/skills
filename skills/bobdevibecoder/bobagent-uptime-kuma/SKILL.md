@@ -1,29 +1,29 @@
 ---
 name: uptime-kuma
-description: Interact with Uptime Kuma monitoring server. Use for checking monitor status, adding/removing monitors, pausing/resuming checks, viewing heartbeat history. Triggers on mentions of Uptime Kuma, server monitoring, uptime checks, or service health monitoring.
+description: 与 Uptime Kuma 监控服务器进行交互。可用于查看监控状态、添加/删除监控项、暂停/恢复检查、查看心跳历史记录。当提到 Uptime Kuma、服务器监控、运行时间检查或服务健康监控时，该功能会自动触发。
 ---
 
-# Uptime Kuma Skill
+# Uptime Kuma 技能
 
-Manage Uptime Kuma monitors via CLI wrapper around the Socket.IO API.
+通过基于 Socket.IO API 的 CLI 包装器来管理 Uptime Kuma 监控器。
 
-## Setup
+## 设置
 
-Requires `uptime-kuma-api` Python package:
+需要 `uptime-kuma-api` Python 包：
 ```bash
 pip install uptime-kuma-api
 ```
 
-Environment variables (set in shell or Clawdbot config):
-- `UPTIME_KUMA_URL` - Server URL (e.g., `http://localhost:3001`)
-- `UPTIME_KUMA_USERNAME` - Login username
-- `UPTIME_KUMA_PASSWORD` - Login password
+环境变量（在 shell 或 Clawdbot 配置中设置）：
+- `UPTIME_KUMA_URL` - 服务器地址（例如：`http://localhost:3001`）
+- `UPTIME_KUMA_USERNAME` - 登录用户名
+- `UPTIME_KUMA_PASSWORD` - 登录密码
 
-## Usage
+## 使用方法
 
-Script location: `scripts/kuma.py`
+脚本位置：`scripts/kuma.py`
 
-### Commands
+### 命令
 
 ```bash
 # Overall status summary
@@ -55,33 +55,33 @@ python scripts/kuma.py heartbeats <id> --hours 24
 python scripts/kuma.py notifications
 ```
 
-### Monitor Types
+### 监控类型
 
-- `http` - HTTP/HTTPS endpoint
-- `ping` - ICMP ping
-- `port` - TCP port check
-- `keyword` - HTTP + keyword search
-- `dns` - DNS resolution
-- `docker` - Docker container
-- `push` - Push-based (passive)
-- `mysql`, `postgres`, `mongodb`, `redis` - Database checks
-- `mqtt` - MQTT broker
-- `group` - Monitor group
+- `http` - HTTP/HTTPS 端点
+- `ping` - ICMP ping 检测
+- `port` - TCP 端口检查
+- `keyword` - 基于 HTTP 和关键词的搜索
+- `dns` - DNS 解析
+- `docker` - Docker 容器监控
+- `push` - 基于推送的被动监控
+- `mysql`, `postgres`, `mongodb`, `redis` - 数据库检查
+- `mqtt` - MQTT 代理监控
+- `group` - 监控组
 
-### Common Workflows
+### 常见工作流程
 
-**Check what's down:**
+**检查哪些服务处于关闭状态：**
 ```bash
 python scripts/kuma.py status
 python scripts/kuma.py list  # Look for 🔴
 ```
 
-**Add HTTP monitor with 30s interval:**
+**添加一个每 30 秒执行一次的 HTTP 监控：**
 ```bash
 python scripts/kuma.py add --name "API Health" --type http --url https://api.example.com/health --interval 30
 ```
 
-**Maintenance mode (pause all):**
+**维护模式（暂停所有监控）：**
 ```bash
 for id in $(python scripts/kuma.py list --json | jq -r '.[].id'); do
   python scripts/kuma.py pause $id

@@ -1,28 +1,28 @@
 ---
 name: skill-sharer
-description: Share a skill publicly to the Enterprise-Crew-skills GitHub repo. Strips personal/security info, generates a README, and updates the repo index.
+description: 将某项技能公开分享到 Enterprise-Crew-skills GitHub 仓库中。在此过程中，需要删除所有个人信息/安全相关的数据，自动生成一个 README 文件，并更新仓库的索引。
 ---
 
 # Skill Sharer
 
-Publishes a local skill to **henrino3/Enterprise-Crew-skills** on GitHub.
+该脚本用于将本地技能文件发布到 GitHub 的 `henrino3/Enterprise-Crew-skills` 仓库中。
 
-## What it does
+## 功能说明
 
-1. Copies the skill into a sanitized folder
-2. Strips personal information, secrets, IPs, paths, and credentials
-3. Generates a standalone README for the skill
-4. Updates the repo's root README with the new skill entry
-5. Commits and pushes
+1. 将技能文件复制到一个经过清理处理的文件夹中。
+2. 删除文件中的个人信息、密码、IP 地址、路径以及认证信息。
+3. 为该技能文件生成一个独立的 `README.md` 文件。
+4. 更新仓库根目录下的 `README.md` 文件，添加新的技能条目。
+5. 提交并推送更改到 GitHub。
 
-## Usage
+## 使用方法
 
 ```bash
 # Share a skill (interactive — reviews sanitization before pushing)
 ~/clawd/skills/skill-sharer/scripts/share-skill.sh <skill-folder-path> [--description "Short description"]
 ```
 
-### Examples
+### 示例
 
 ```bash
 # Share session-cleaner
@@ -32,30 +32,29 @@ Publishes a local skill to **henrino3/Enterprise-Crew-skills** on GitHub.
 ~/clawd/skills/skill-sharer/scripts/share-skill.sh ~/clawd/skills/weather/ --description "Get weather forecasts with no API key"
 ```
 
-## Sanitization rules
+## 清理规则
 
-The script strips:
-- **IP addresses** — Tailscale IPs, public IPs, local IPs (replaced with `<REDACTED_IP>`)
-- **Paths with usernames** — `/home/henrymascot/`, `/home/jamify/` → generic paths
-- **API keys and tokens** — anything matching key/token/secret patterns
-- **Email addresses** — real emails replaced with `user@example.com`
-- **SSH connection strings** — `ssh user@host` → `ssh user@<your-host>`
-- **Server URLs with real hosts** — internal URLs replaced with placeholders
-- **Secret file references** — `~/clawd/secrets/*` → `<YOUR_SECRET_FILE>`
-- **Tailscale hostnames** — machine names replaced
-- **Environment variable values** — actual values stripped, variable names kept
+该脚本会删除以下内容：
+- **IP 地址**：Tailscale 的 IP 地址、公共 IP 地址、本地 IP 地址（替换为 `<REDACTED_IP>`）
+- **包含用户名的路径**：例如 `/home/henrymascot/`、`/home/jamify/` 等，这些路径会被替换为通用路径。
+- **API 密钥和令牌**：任何与 “key”/“token”/“secret” 相关的内容都会被删除。
+- **电子邮件地址**：真实的电子邮件地址会被替换为 `user@example.com`。
+- **SSH 连接字符串**：例如 `ssh user@host` 会被替换为 `ssh user@<your-host>`。
+- **包含真实主机名的服务器 URL**：内部 URL 会被替换为占位符。
+- **秘密文件引用**：例如 `~/clawd/secrets/*` 会被替换为 `<YOUR_SECRET_FILE>`。
+- **Tailscale 服务器的名称**：服务器名称会被替换为占位符。
+- **环境变量值**：环境变量的实际值会被删除，仅保留变量名。
 
-## Agent workflow
+## 代理工作流程
 
-When Henry asks to share a skill:
+当 Henry 请求分享某个技能时，系统会执行以下步骤：
+1. **确定** 需要分享的技能文件所在的路径。
+2. **运行** `share-skill.sh <path> --description "..."` 命令。
+3. **查看** 经过清理处理后的文件内容（脚本会暂停等待用户审核）。
+4. **确认** 是否要推送文件到 GitHub。
+5. **将** GitHub 的仓库地址告知 Henry。
 
-1. **Identify** the skill folder path
-2. **Run** `share-skill.sh <path> --description "..."`
-3. **Review** the sanitized output (script pauses for review)
-4. **Confirm** to push
-5. **Report** the GitHub URL to Henry
-
-## Repo structure
+## 仓库结构
 
 ```
 Enterprise-Crew-skills/

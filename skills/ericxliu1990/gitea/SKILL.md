@@ -1,201 +1,201 @@
 ---
 name: gitea
-description: "Interact with Gitea using the `tea` CLI. Use `tea issues`, `tea pulls`, `tea releases`, and other commands for issues, PRs, releases, and repository management."
+description: "使用 `tea` CLI 与 Gitea 进行交互。可以通过 `tea issues`、`tea pulls`、`tea releases` 等命令来管理问题（issues）、 Pull Request（PRs）和仓库（repository）的发布（releases）。"
 ---
 
-# Gitea Skill
+# Gitea 使用技巧
 
-Use the `tea` CLI to interact with Gitea servers. Use `--repo owner/repo` when not in a git directory, or `--login instance.com` to specify a Gitea instance.
+使用 `tea` 命令行工具（CLI）与 Gitea 服务器进行交互。当不在 Git 目录中时，可以使用 `--repo owner/repo` 参数；或者使用 `--login instance.com` 参数来指定 Gitea 实例。
 
-## Setup
+## 设置
 
-Add a login once to get started:
+首次使用前，请先完成登录：
 ```bash
 tea login add
 ```
 
-Check current logged in user:
+查看当前登录的用户：
 ```bash
 tea whoami
 ```
 
-## Repositories
+## 仓库
 
-List repositories you have access to:
+列出您有权访问的仓库：
 ```bash
 tea repos list
 ```
 
-Create a new repository:
+创建一个新的仓库：
 ```bash
 tea repos create --name my-repo --description "My project" --init
 ```
 
-Create a private repository:
+创建一个私有仓库：
 ```bash
 tea repos create --name my-repo --private --init
 ```
 
-Fork a repository:
+克隆一个仓库：
 ```bash
 tea repos fork owner/repo
 ```
 
-Delete a repository:
+删除一个仓库：
 ```bash
 tea repos delete --name my-repo --owner myuser --force
 ```
 
-## Pull Requests
+## 提交请求（Pull Requests）
 
-List open pull requests:
+列出所有未处理的提交请求：
 ```bash
 tea pulls --repo owner/repo
 ```
 
-View a specific PR:
+查看特定的提交请求：
 ```bash
 tea pr 55 --repo owner/repo
 ```
 
-Checkout a PR locally:
+将提交请求拉取到本地：
 ```bash
 tea pr checkout 55
 ```
 
-Create a new PR:
+创建一个新的提交请求：
 ```bash
 tea pr create --title "Feature title" --description "Description"
 ```
 
-## Issues
+## 问题（Issues）
 
-List open issues:
+列出所有未解决的问题：
 ```bash
 tea issues --repo owner/repo
 ```
 
-View a specific issue:
+查看特定的问题：
 ```bash
 tea issue 189 --repo owner/repo
 ```
 
-Create a new issue:
+创建一个新的问题：
 ```bash
 tea issue create --title "Bug title" --body "Description"
 ```
 
-View issues for a milestone:
+查看某个里程碑下的问题：
 ```bash
 tea milestone issues 0.7.0
 ```
 
-## Comments
+## 评论（Comments）
 
-Add a comment to an issue or PR:
+在问题或提交请求中添加评论：
 ```bash
 tea comment 189 --body "Your comment here"
 ```
 
-## Releases
+## 发布版本（Releases）
 
-List releases:
+列出所有已发布的版本：
 ```bash
 tea releases --repo owner/repo
 ```
 
-Create a new release:
+创建一个新的版本：
 ```bash
 tea release create --tag v1.0.0 --title "Release 1.0.0"
 ```
 
-## Actions (CI/CD)
+## 自动化任务（CI/CD）
 
-List repository action secrets:
+列出仓库的自动化任务相关配置（动作秘密）：
 ```bash
 tea actions secrets list
 ```
 
-Create a new secret:
+创建一个新的自动化任务配置：
 ```bash
 tea actions secrets create API_KEY
 ```
 
-List action variables:
+列出自动化任务中的变量：
 ```bash
 tea actions variables list
 ```
 
-Set an action variable:
+设置自动化任务中的变量：
 ```bash
 tea actions variables set API_URL https://api.example.com
 ```
 
-## Webhooks
+## Webhook
 
-List repository webhooks:
+列出仓库的 Webhook 配置：
 ```bash
 tea webhooks list
 ```
 
-List organization webhooks:
+列出组织的 Webhook 配置：
 ```bash
 tea webhooks list --org myorg
 ```
 
-Create a webhook:
+创建一个新的 Webhook：
 ```bash
 tea webhooks create https://example.com/hook --events push,pull_request
 ```
 
-## Other Entities
+## 其他实体
 
-List branches:
+列出仓库的分支：
 ```bash
 tea branches --repo owner/repo
 ```
 
-List labels:
+列出仓库的标签：
 ```bash
 tea labels --repo owner/repo
 ```
 
-List milestones:
+列出所有的里程碑：
 ```bash
 tea milestones --repo owner/repo
 ```
 
-List organizations:
+列出所有的组织：
 ```bash
 tea organizations
 ```
 
-Show repository details:
+查看仓库的详细信息：
 ```bash
 tea repo --repo owner/repo
 ```
 
-## Helpers
+## 辅助功能
 
-Open something in browser:
+在浏览器中打开某个文件：
 ```bash
 tea open 189                 # open issue/PR 189
 tea open milestones          # open milestones page
 ```
 
-Clone a repository:
+克隆一个仓库：
 ```bash
 tea clone owner/repo
 ```
 
-Show notifications:
+查看通知信息：
 ```bash
 tea notifications --mine
 ```
 
-## Output Formats
+## 输出格式
 
-Use `--output` or `-o` to control output format:
+使用 `--output` 或 `-o` 参数来控制输出格式：
 ```bash
 tea issues --output simple   # simple text output
 tea issues --output csv      # CSV format

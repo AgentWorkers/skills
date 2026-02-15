@@ -14,23 +14,23 @@ metadata:
 
 # ms-todo-sync
 
-A Microsoft To Do command-line client for managing tasks and lists via Microsoft Graph API.
+这是一个基于Microsoft Graph API的命令行客户端，用于通过Microsoft To Do管理任务和列表。
 
-## Prerequisites
+## 前提条件
 
-1. **Python >= 3.9** must be installed.
-2. **uv** (Python package manager) must be installed. Install via `pip install uv` or see https://docs.astral.sh/uv/.
-3. **Working directory**: All commands MUST be run from the root of this skill (the directory containing this SKILL.md file).
-4. **Network access**: Requires internet access to Microsoft Graph API endpoints.
-5. **Authentication**: First-time use requires interactive login via browser. See [Authentication](#authentication) section.
-   - **Token cache**: `~/.mstodo_token_cache.json` (persists across sessions, auto-refreshed)
-   - **Device flow cache**: `~/.mstodo_device_flow.json` (temporary)
+1. 必须安装Python 3.9或更高版本。
+2. 必须安装`uv`（Python包管理器）。可以通过`pip install uv`来安装，或访问https://docs.astral.sh/uv/获取更多信息。
+3. **工作目录**：所有命令必须从这个技能文件（即SKILL.md所在的目录）的根目录下执行。
+4. **网络访问**：需要互联网连接才能访问Microsoft Graph API的端点。
+5. **身份验证**：首次使用时需要通过浏览器进行交互式登录。请参阅[身份验证](#authentication)部分。
+   - **令牌缓存**：`~/.mstodo_token_cache.json`（在会话间保持持久性，会自动刷新）
+   - **设备代码流缓存**：`~/.mstodo_device_flow.json`（临时文件）
 
-## Installation & Setup
+## 安装与设置
 
-### First-Time Setup
+### 首次设置
 
-Before using this skill for the first time, dependencies must be installed:
+在首次使用此技能之前，需要先安装依赖项：
 
 ```bash
 # Navigate to skill directory
@@ -43,14 +43,14 @@ uv sync
 pip install -r requirements.txt
 ```
 
-**Dependencies:**
-- Requires `msal` (Microsoft Authentication Library) and `requests`
-- Specified in `requirements.txt`
-- `uv` creates an isolated virtual environment to avoid conflicts
+**依赖项：**
+- 需要`msal`（Microsoft身份验证库）和`requests`
+- 在`requirements.txt`中列出
+- `uv`会创建一个隔离的虚拟环境以避免依赖冲突
 
-### Environment Verification
+### 环境验证
 
-After installation, verify the setup:
+安装完成后，验证设置是否正确：
 
 ```bash
 # Check if uv can find the script
@@ -59,51 +59,51 @@ uv run scripts/ms-todo-sync.py --help
 # Expected: Command help text should be displayed
 ```
 
-**Troubleshooting:**
-- If `uv: command not found`, install uv: `pip install uv`
-- If `Python not found`, install Python 3.9 or higher from https://python.org
-- If script fails with import errors, ensure dependencies are installed: `uv sync` or `pip install -r requirements.txt`
+**故障排除：**
+- 如果出现“uv: command not found”的错误，请安装`uv`：`pip install uv`
+- 如果找不到Python，请从https://python.org下载并安装Python 3.9或更高版本
+- 如果脚本在执行过程中出现导入错误，请确保所有依赖项都已安装：`uv sync`或`pip install -r requirements.txt`
 
-### Security Notes
+### 安全说明
 
-- Uses official Microsoft Graph API via Microsoft's `msal` library
-- All code is plain Python (.py files), readable and auditable
-- Tokens stored locally in `~/.mstodo_token_cache.json`
-- All API calls go directly to Microsoft endpoints
+- 该工具通过Microsoft的`msal`库使用官方的Microsoft Graph API
+- 所有代码都是纯Python（.py文件），易于阅读和审计
+- 令牌存储在本地文件`~/.mstodo_token_cache.json`中
+- 所有API请求都直接发送到Microsoft的端点
 
-## Command Reference
+## 命令参考
 
-All commands follow this pattern:
+所有命令都遵循以下格式：
 
 ```
 uv run scripts/ms-todo-sync.py [GLOBAL_OPTIONS] <command> [COMMAND_OPTIONS]
 ```
 
-### Global Options
+### 全局选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `-v, --verbose` | Show detailed information (IDs, dates, notes). **Must be placed BEFORE the subcommand.** |
-| `--debug` | Enable debug mode to display API requests and responses. Useful for troubleshooting. **Must be placed BEFORE the subcommand.** |
+| `-v, --verbose` | 显示详细信息（ID、日期、备注）。**必须放在子命令之前** |
+| `--debug` | 启用调试模式，以显示API请求和响应。有助于故障排除。**必须放在子命令之前** |
 
-> ⚠️ **Common mistake**: Global options MUST come before the subcommand.
+> ⚠️ **常见错误**：全局选项必须放在子命令之前。
 > - ✅ `uv run scripts/ms-todo-sync.py -v lists`
 > - ✅ `uv run scripts/ms-todo-sync.py --debug add "Task"`
 > - ❌ `uv run scripts/ms-todo-sync.py lists -v`
 
 ---
 
-### Authentication
+### 身份验证
 
-Authentication uses a two-step device code flow designed for non-interactive/agent environments.
+身份验证采用两步设备代码流机制，适用于非交互式/代理环境。
 
-#### `login get` — Get verification code
+#### `login get` — 获取验证码
 
 ```bash
 uv run scripts/ms-todo-sync.py login get
 ```
 
-**Output example:**
+**输出示例：**
 ```
 ✓ Verification code generated
 
@@ -115,48 +115,48 @@ Enter verification code: ABC123XYZ
 Verify with command: ms-todo-sync.py login verify
 ```
 
-**Agent behavior**: Present the URL and verification code to the user. Wait for the user to confirm they have completed the browser login before proceeding.
+**代理行为**：向用户展示URL和验证码。等待用户确认完成浏览器登录后再继续操作。
 
-#### `login verify` — Complete login
+#### `login verify` — 完成登录
 
 ```bash
 uv run scripts/ms-todo-sync.py login verify
 ```
 
-**Output on success:**
+**成功输出：**
 ```
 ✓ Authentication successful! Login information saved, you will be logged in automatically next time.
 ```
 
-**Output on failure:**
+**失败输出：**
 ```
 ✗ Authentication failed: <error description>
 ```
 
-> ⚠️ **This command blocks** until Microsoft's server confirms the user completed browser authentication. Do NOT run this until the user confirms they have completed the browser step.
+> ⚠️ 此命令会阻塞，直到Microsoft的服务器确认用户已完成浏览器身份验证。在用户确认完成登录之前，请勿运行此命令。
 
-**Exit code**: 0 on success, 1 on failure.
+**退出代码**：成功时为0，失败时为1。
 
-#### `logout` — Clear saved login
+#### `logout` — 清除保存的登录信息
 
 ```bash
 uv run scripts/ms-todo-sync.py logout
 ```
 
-Only use when the user explicitly asks to switch accounts or clear login data. Under normal circumstances, the token is cached and login is automatic.
+仅当用户明确要求切换账户或清除登录信息时使用。通常情况下，令牌会被缓存，登录是自动完成的。
 
 ---
 
-### List Management
+### 列表管理
 
-#### `lists` — List all task lists
+#### `lists` — 列出所有任务列表
 
 ```bash
 uv run scripts/ms-todo-sync.py lists
 uv run scripts/ms-todo-sync.py -v lists  # with IDs and dates
 ```
 
-**Output example:**
+**输出示例：**
 ```
 📋 Task Lists (3 total):
 
@@ -165,107 +165,107 @@ uv run scripts/ms-todo-sync.py -v lists  # with IDs and dates
 3. Shopping
 ```
 
-#### `create-list` — Create a new list
+#### `create-list` — 创建新列表
 
 ```bash
 uv run scripts/ms-todo-sync.py create-list "<name>"
 ```
 
-| Argument | Required | Description |
+| 参数 | 必需 | 描述 |
 |----------|----------|-------------|
-| `name` | Yes | Name of the new list |
+| `name` | 是 | 新列表的名称 |
 
-Output: `✓ List created: <name>`
+输出：`✓ 列表创建成功：<name>`
 
-#### `delete-list` — Delete a list
+#### `delete-list` — 删除列表
 
 ```bash
 uv run scripts/ms-todo-sync.py delete-list "<name>" [-y]
 ```
 
-| Argument/Option | Required | Description |
+| 参数/选项 | 必需 | 描述 |
 |-----------------|----------|-------------|
-| `name` | Yes | Name of the list to delete |
-| `-y, --yes` | No | Skip confirmation prompt |
+| `name` | 是 | 要删除的列表名称 |
+| `-y, --yes` | 否 | 跳过确认提示 |
 
-> ⚠️ **This is a destructive operation**. Without `-y`, the command will prompt for confirmation. Consider asking the user before deleting important lists.
+> ⚠️ 这是一个破坏性操作。如果不使用`-y`，命令会提示用户确认。在删除重要列表之前，请先询问用户。
 
-Output: `✓ List deleted: <name>`
+输出：`✓ 列表删除成功：<name>`
 
 ---
 
-### Task Operations
+### 任务操作
 
-#### `add` — Add a new task
+#### `add` — 添加新任务
 
 ```bash
 uv run scripts/ms-todo-sync.py add "<title>" [options]
 ```
 
-| Option | Required | Default | Description |
+| 选项 | 必需 | 默认值 | 描述 |
 |--------|----------|---------|-------------|
-| `title` | Yes | — | Task title (positional argument) |
-| `-l, --list` | No | (default list) | Target list name. If not specified, uses your Microsoft To Do default list. |
-| `-p, --priority` | No | `normal` | Priority: `low`, `normal`, `high` |
-| `-d, --due` | No | — | Due date. Accepts days from now (`3` or `3d`) or date (`2026-02-15`). **Note:** Only date is supported, not time. |
-| `-r, --reminder` | No | — | Reminder datetime. Formats: `3h` (hours), `2d` (days), `2026-02-15 14:30` (date+time with space, needs quotes), `2026-02-15T14:30:00` (ISO format), `2026-02-15` (date only, defaults to 09:00). |
-| `-R, --recurrence` | No | — | Recurrence pattern. Formats: `daily` (every day), `weekdays` (Mon-Fri), `weekly` (every week), `monthly` (every month). With interval: `daily:2` (every 2 days), `weekly:3` (every 3 weeks), `monthly:2` (every 2 months). **Note:** Automatically sets start date. |
-| `-D, --description` | No | — | Task description/notes |
-| `-t, --tags` | No | — | Comma-separated tags (e.g., `"work,urgent"`) |
+| `title` | 是 | — | 任务标题 |
+| `-l, --list` | 否 | （默认列表） | 目标列表名称。如果未指定，将使用用户的默认列表。 |
+| `-p, --priority` | 否 | `normal` | 优先级：`low`、`normal`、`high` |
+| `-d, --due` | 否 | — | 截止日期。支持从现在起的天数（如`3`或`3d`）或日期（如`2026-02-15`）。**注意**：仅支持日期，不支持时间。 |
+| `-r, --reminder` | 否 | — | 提醒时间。格式：`3h`（小时）、`2d`（天）、`2026-02-15 14:30`（日期+时间，需要加引号）、`2026-02-15T14:30:00`（ISO格式）、`2026-02-15`（仅日期，默认为09:00）。 |
+| `-R, --recurrence` | 否 | — | 重复模式。格式：`daily`（每天）、`weekdays`（周一至周五）、`weekly`（每周）、`monthly`（每月）。间隔示例：`daily:2`（每2天）、`weekly:3`（每3周）、`monthly:2`（每2个月）。**注意**：会自动设置开始日期。 |
+| `-D, --description` | 否 | — | 任务描述/备注 |
+| `-t, --tags` | 否 | — | 逗号分隔的标签（例如，“work,urgent”） |
 
-**Behavior:** If the specified list doesn't exist, it will be automatically created.
+**行为**：如果指定的列表不存在，系统会自动创建该列表。
 
-**Output example:**
+**输出示例：**
 ```
 ✓ List created: Work
 ✓ Task added: Complete report
 ```
 
-#### `complete` — Mark a task as completed
+#### `complete` — 将任务标记为已完成
 
 ```bash
 uv run scripts/ms-todo-sync.py complete "<title>" [-l "<list>"]
 ```
 
-| Option | Required | Default | Description |
+| 选项 | 必需 | 默认值 | 描述 |
 |--------|----------|---------|-------------|
-| `title` | Yes | — | Exact task title |
-| `-l, --list` | No | (default list) | List name where the task resides. If not specified, uses your default list. |
+| `title` | 是 | — | 任务标题 |
+| `-l, --list` | 否 | （默认列表） | 任务所在的列表名称。如果未指定，将使用用户的默认列表。 |
 
-Output: `✓ Task completed: <title>`
+输出：`✓ 任务已完成：<title>`
 
-#### `delete` — Delete a task
+#### `delete` — 删除任务
 
 ```bash
 uv run scripts/ms-todo-sync.py delete "<title>" [-l "<list>"] [-y]
 ```
 
-| Option | Required | Default | Description |
+| 选项 | 必需 | 默认值 | 描述 |
 |--------|----------|---------|-------------|
-| `title` | Yes | — | Exact task title |
-| `-l, --list` | No | (default list) | List name. If not specified, uses your default list. |
-| `-y, --yes` | No | — | Skip confirmation prompt |
+| `title` | 是 | — | 任务标题 |
+| `-l, --list` | 否 | （默认列表） | 列表名称。如果未指定，将使用用户的默认列表。 |
+| `-y, --yes` | 否 | — | 跳过确认提示 |
 
-> ⚠️ **This is a destructive operation**. Without `-y`, the command will prompt for confirmation. For routine cleanup or when user intent is clear, `-y` can be used to avoid blocking.
+> ⚠️ 这是一个破坏性操作。如果不使用`-y`，命令会提示用户确认。在常规清理或用户明确表示同意删除时，可以使用`-y`来避免阻塞。
 
-Output: `✓ Task deleted: <title>`
+输出：`✓ 任务删除成功：<title>`
 
 ---
 
-### Task Views
+### 任务视图
 
-#### `tasks` — List tasks in a specific list
+#### `tasks` — 列出特定列表中的任务
 
 ```bash
 uv run scripts/ms-todo-sync.py tasks "<list>" [-a]
 ```
 
-| Option | Required | Default | Description |
+| 选项 | 必需 | 默认值 | 描述 |
 |--------|----------|---------|-------------|
-| `list` | Yes | — | List name (positional argument) |
-| `-a, --all` | No | — | Include completed tasks (default: only incomplete) |
+| `list` | 是 | — | 列表名称 |
+| `-a, --all` | 否 | — | 包括已完成的任务（默认：仅显示未完成的任务） |
 
-**Output example:**
+**输出示例：**
 ```
 📋 Tasks in list "Work" (2 total):
 
@@ -273,17 +273,17 @@ uv run scripts/ms-todo-sync.py tasks "<list>" [-a]
 2. [In Progress] Review PR
 ```
 
-#### `pending` — All incomplete tasks across all lists
+#### `pending` — 查看所有列表中未完成的任务
 
 ```bash
 uv run scripts/ms-todo-sync.py pending [-g]
 ```
 
-| Option | Required | Description |
+| 选项 | 必需 | 描述 |
 |--------|----------|-------------|
-| `-g, --group` | No | Group results by list |
+| `-g, --group` | 否 | 按列表分组结果 |
 
-**Output example (with `-g`):**
+**使用`-g`时的输出示例：**
 ```
 📋 All incomplete tasks (3 total):
 
@@ -295,21 +295,21 @@ uv run scripts/ms-todo-sync.py pending [-g]
   [In Progress] Buy groceries
 ```
 
-#### `today` — Tasks due today
+#### `today` — 查看今天到期的任务
 
 ```bash
 uv run scripts/ms-todo-sync.py today
 ```
 
-Lists incomplete tasks with due date matching today. Output: `📅 No tasks due today` if none found.
+列出今天到期的未完成任务。如果没有找到到期任务，输出：`📅 今天没有到期的任务`。
 
-#### `overdue` — Overdue tasks
+#### `overdue` — 查看逾期任务
 
 ```bash
 uv run scripts/ms-todo-sync.py overdue
 ```
 
-**Output example:**
+**输出示例：**
 ```
 ⚠️  Overdue tasks (1 total):
 
@@ -318,28 +318,28 @@ uv run scripts/ms-todo-sync.py overdue
    Overdue: 3 days
 ```
 
-#### `detail` — View full task details
+#### `detail` — 查看任务详细信息
 
 ```bash
 uv run scripts/ms-todo-sync.py detail "<title>" [-l "<list>"]
 ```
 
-| Option | Required | Default | Description |
+| 选项 | 必需 | 默认值 | 描述 |
 |--------|----------|---------|-------------|
-| `title` | Yes | — | Task title (supports **partial/fuzzy match**) |
-| `-l, --list` | No | (default list) | List name. If not specified, uses your default list. |
+| `title` | 是 | — | 任务标题（支持**部分/模糊匹配**） |
+| `-l, --list` | 否 | （默认列表） | 列表名称。如果未指定，将使用用户的默认列表。 |
 
-When multiple tasks match, returns the most recently modified **incomplete** task. If all matches are completed, returns the most recently modified completed task.
+当有多个匹配项时，返回最近修改的**未完成**任务。如果所有匹配项都已完成，则返回最近修改的已完成任务。
 
-#### `search` — Search tasks by keyword
+#### `search` — 按关键词搜索任务
 
 ```bash
 uv run scripts/ms-todo-sync.py search "<keyword>"
 ```
 
-Searches across all lists in both task titles and notes (case-insensitive).
+在所有列表中搜索任务标题和备注（不区分大小写）。
 
-**Output example:**
+**输出示例：**
 ```
 🔍 Search results (1 found):
 
@@ -347,13 +347,13 @@ Searches across all lists in both task titles and notes (case-insensitive).
    List: Work
 ```
 
-#### `stats` — Task statistics
+#### `stats` — 任务统计信息
 
 ```bash
 uv run scripts/ms-todo-sync.py stats
 ```
 
-**Output example:**
+**输出示例：**
 ```
 📊 Task Statistics:
 
@@ -367,64 +367,65 @@ uv run scripts/ms-todo-sync.py stats
   Completion rate: 66.7%
 ```
 
-#### `export` — Export all tasks to JSON
+#### `export` — 将所有任务导出为JSON
 
 ```bash
 uv run scripts/ms-todo-sync.py export [-o "<filename>"]
 ```
 
-| Option | Required | Default | Description |
+| 选项 | 必需 | 默认值 | 描述 |
 |--------|----------|---------|-------------|
-| `-o, --output` | No | `todo_export.json` | Output file path |
+| `-o, --output` | 否 | `todo_export.json` | 输出文件路径 |
 
-Output: `✓ Tasks exported to: <filename>`
+输出：`✓ 任务已导出至：<filename>`
 
 ---
 
-## Error Handling
+## 错误处理
 
-### Exit Codes
+### 错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| `0` | Success |
-| `1` | Failure (not logged in, API error, invalid arguments, etc.) |
+| `0` | 成功 |
+| `1` | 失败（未登录、API错误、参数无效等） |
 
-### Common Error Messages
+### 常见错误信息
 
-| Error | Cause | Resolution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|------------|
-| `❌ Not logged in` | No cached token or token expired | Run `login get` then `login verify` |
-| `ModuleNotFoundError: No module named 'msal'` | Dependencies not installed | Run `uv sync` or `pip install -r requirements.txt` |
-| `❌ List not found: <name>` | Specified list does not exist | Check list name with `lists` command |
-| `❌ Task not found: <name>` | No task with exact matching title | Check task title with `tasks` or `search` |
-| `❌ Error: <message>` | API or network error | Retry; check network; use `--debug` for details |
+| `❌ 未登录` | 未缓存令牌或令牌过期 | 先运行`login get`，然后运行`login verify` |
+| `ModuleNotFoundError: 未找到名为'msal'的模块` | 依赖项未安装 | 运行`uv sync`或`pip install -r requirements.txt` |
+| `❌ 列表未找到：<name>` | 指定的列表不存在 | 使用`lists`命令检查列表名称 |
+| `❌ 任务未找到：<name>` | 未找到具有指定标题的任务 | 使用`tasks`或`search`命令检查任务标题 |
+| `❌ 错误：<message>` | API或网络错误 | 重试；检查网络连接；使用`--debug`获取详细信息 |
 
 ---
 
-## Agent Usage Guidelines
+## 代理使用指南
 
-### Critical Rules
+### 关键规则
 
-1. **Working directory**: Always `cd` to the directory containing this SKILL.md before running commands.
-2. **Dependency installation**: Before first use or when encountering import errors, run `uv sync` to ensure all dependencies are installed.
-3. **Task list organization**: When adding tasks:
-   - First, run `lists` to see available task lists
-   - If user doesn't specify a list, tasks will be added to their **default list** (wellknownListName: "defaultList")
-   - Intelligently categorize tasks into appropriate lists (e.g., "Work", "Personal", "Shopping")
-   - If user mentions a context (work, home, shopping, etc.), use or create an appropriate list
-   - Lists will be auto-created if they don't exist, so feel free to use meaningful list names
-4. **Destructive operations**: For `delete` and `delete-list` commands:
-   - These commands will prompt for confirmation by default (blocking behavior)
-   - Use `-y` flag to skip confirmation ONLY when:
-     - User has explicitly requested to delete without confirmation
-     - The deletion intent is unambiguous and confirmed through conversation
-   - When in doubt, ask the user for confirmation instead of using `-y`
-5. **Global option placement**: `-v` and `--debug` must come BEFORE the subcommand, not after.
-6. **Do not retry `login verify` automatically**: This command blocks waiting for user browser interaction. Only call it after the user confirms completion.
-7. **Check login status first**: Before performing any task operations, run a lightweight command (e.g., `lists`) to verify authentication. Handle the "Not logged in" error gracefully.
+1. **工作目录**：在运行命令之前，务必使用`cd`进入包含此SKILL.md文件的目录。
+2. **依赖项安装**：首次使用或遇到导入错误时，运行`uv sync`以确保所有依赖项都已安装。
+3. **任务列表管理**：
+   - 添加任务时：
+     - 首先运行`lists`查看可用的任务列表
+     - 如果用户未指定列表，任务将添加到他们的**默认列表**（`wellknownListName: "defaultList"`）
+     - 智能地将任务分类到相应的列表中（例如，“Work”、“Personal”、“Shopping”）
+     - 如果用户指定了上下文（工作、家庭、购物等），使用或创建相应的列表
+     - 如果列表不存在，系统会自动创建，因此请使用有意义的列表名称
+4. **破坏性操作**：对于`delete`和`delete-list`命令：
+     - 这些命令默认会提示用户确认（会导致阻塞）
+     - 仅在以下情况下使用`-y`标志跳过确认：
+       - 用户明确要求不进行确认
+       - 删除操作意图明确且已通过对话确认
+     - 如果有疑问，请先询问用户确认
+5. **全局选项的位置**：`-v`和`--debug`必须放在子命令之前。
+6. **不要自动重试`login verify`：此命令会阻塞，等待用户完成浏览器操作。只有在用户确认后才能调用它。
+7. **先检查登录状态**：在执行任何任务操作之前，先运行一个简单的命令（如`lists`）来验证身份。优雅地处理“未登录”的错误。
 
-### Recommended Workflow for Agents
+### 代理的推荐工作流程
 
 ```
 1. cd <skill_directory>
@@ -446,27 +447,27 @@ Output: `✓ Tasks exported to: <filename>`
 5. Verify results (e.g., list tasks after adding)
 ```
 
-**Example task categorization:**
-- \"Buy milk\" → Shopping list (or default list if no context)
-- \"Prepare report for meeting\" → Work list
-- \"Call dentist\" → Personal list (or default list)
-- \"Review PR for auth service\" → Work or project-specific list
+**任务分类示例：**
+- “购买牛奶” → 添加到购物列表（或使用默认列表）
+- “准备会议报告” → 添加到工作列表
+- “预约牙医” → 添加到个人列表（或使用默认列表）
+- “审查认证服务的PR” → 添加到工作或项目特定列表
 
-**Note:** If no list is specified, tasks are added to the user's default Microsoft To Do list.
+**注意**：如果没有指定列表，任务将添加到用户的默认Microsoft To Do列表中。
 
-### Task Title Matching
+### 任务标题匹配
 
-- `complete` and `delete` require **exact title match**.
-- `detail` and `search` support **partial/fuzzy keyword match** (case-insensitive).
-- When in doubt, use `search` first to find the exact title, then use it in subsequent commands.
+- `complete`和`delete`操作要求**完全匹配任务标题**。
+- `detail`和`search`操作支持**部分/模糊关键词匹配**（不区分大小写）。
+- 如果有疑问，先使用`search`找到准确的标题，然后再使用相应的命令。
 
-### Default List Behavior
+### 默认列表行为
 
-When `-l` is not specified, the tool uses your Microsoft To Do default list (typically "Tasks"). To target a specific list, provide the `-l` option.
+当未指定`-l`选项时，工具会使用用户的默认Microsoft To Do列表（通常是“Tasks”）。要指定特定列表，请使用`-l`选项。
 
 ---
 
-## Quick Examples
+## 快速示例
 
 ```bash
 # Check existing lists first
@@ -502,7 +503,3 @@ uv run scripts/ms-todo-sync.py -v pending -g          # all pending, grouped
 uv run scripts/ms-todo-sync.py -v detail "report"      # task detail with fuzzy match
 uv run scripts/ms-todo-sync.py export -o "backup.json"  # export all
 ```
-
-
-
-

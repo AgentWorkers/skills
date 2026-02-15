@@ -1,6 +1,6 @@
 ---
 name: mediaproc
-description: Process media files (video, audio, images) via a locked-down SSH container with ffmpeg, sox, and imagemagick
+description: 通过一个经过安全配置的 SSH 容器（使用 ffmpeg、sox 和 imagemagick 工具），处理媒体文件（视频、音频、图片）。
 homepage: https://github.com/psyb0t/docker-mediaproc
 user-invocable: true
 metadata:
@@ -16,11 +16,11 @@ metadata:
 
 # mediaproc
 
-## Setup Required
+## 必需的设置
 
-This skill requires `MEDIAPROC_HOST` and `MEDIAPROC_PORT` environment variables pointing to a running mediaproc instance.
+使用此技能需要设置 `MEDIAPROC_HOST` 和 `MEDIAPROC_PORT` 环境变量，这些变量应指向正在运行的 mediaproc 实例。
 
-**Configure OpenClaw** (`~/.openclaw/openclaw.json`):
+**配置 OpenClaw**（文件：`~/.openclaw/openclaw.json`）：
 
 ```json
 {
@@ -37,7 +37,7 @@ This skill requires `MEDIAPROC_HOST` and `MEDIAPROC_PORT` environment variables 
 }
 ```
 
-Or set the environment variables directly:
+或者直接设置环境变量：
 
 ```bash
 export MEDIAPROC_HOST=localhost
@@ -46,57 +46,57 @@ export MEDIAPROC_PORT=2222
 
 ---
 
-Locked-down media processing over SSH. Uses a Python wrapper that whitelists commands - no shell access, no injection, no bullshit.
+通过 SSH 进行安全的媒体处理。该系统使用 Python 封装层来限制可执行的命令，仅允许预定义的命令；禁止访问 shell、防止代码注入等安全风险。
 
-## First Connection
+## 首次连接
 
-Before running any commands, you must accept the host key so it gets added to `known_hosts`. Run a simple `ls` and accept the fingerprint:
+在运行任何命令之前，您必须接受目标主机的密钥，以便将其添加到 `known_hosts` 文件中。运行 `ls` 命令并接受显示的主机密钥指纹：
 
 ```bash
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "ls"
 ```
 
-If this is the first time connecting, SSH will prompt to verify the host key. Type `yes` to accept. This only needs to happen once per host. If you skip this step, all subsequent SSH commands will fail with a host key verification error.
+如果这是首次连接，SSH 会提示您验证主机密钥。输入 `yes` 即可完成验证。每个主机只需执行此操作一次。如果跳过此步骤，后续的 SSH 命令将会因密钥验证失败而失败。
 
-## How It Works
+## 工作原理
 
-All commands are executed via SSH against the mediaproc container. The container forces every connection through a Python wrapper that only allows whitelisted commands. All file paths are locked to `/work` inside the container.
+所有命令都是通过 SSH 传递给 mediaproc 容器执行的。该容器强制所有连接都必须通过一个 Python 封装层，该层仅允许执行预定义的命令。所有文件路径都被限制在容器内的 `/work` 目录内。
 
-**SSH command format:**
+**SSH 命令格式：**
 
 ```bash
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "<command> [args]"
 ```
 
-## Media Tools
+## 媒体处理工具
 
-| Command    | Binary             | Description                                  |
-| ---------- | ------------------ | -------------------------------------------- |
-| `ffmpeg`   | `/usr/bin/ffmpeg`  | Video/audio encoding, transcoding, filtering |
-| `ffprobe`  | `/usr/bin/ffprobe` | Media file analysis                          |
-| `sox`      | `/usr/bin/sox`     | Audio processing                             |
-| `soxi`     | `/usr/bin/soxi`    | Audio file info                              |
-| `convert`  | `/usr/bin/convert` | Image conversion/manipulation (ImageMagick)  |
-| `identify` | `/usr/bin/identify`| Image file info (ImageMagick)                |
-| `magick`   | `/usr/bin/magick`  | ImageMagick CLI                              |
+| 命令            | 可执行文件                | 功能描述                                      |
+| ------------------------- | ---------------------- | -------------------------------------------- |
+| `ffmpeg`       | `/usr/bin/ffmpeg`         | 视频/音频编码、转码、过滤                     |
+| `ffprobe`      | `/usr/bin/ffprobe`         | 媒体文件分析                                    |
+| `sox`         | `/usr/bin/sox`          | 音频处理                                    |
+| `soxi`         | `/usr/bin/soxi`          | 音频文件信息获取                              |
+| `convert`      | `/usr/bin/convert`         | 图像转换/处理（使用 ImageMagick）                |
+| `identify`     | `/usr/bin/identify`        | 图像文件信息获取（使用 ImageMagick）                |
+| `magick`       | `/usr/bin/magick`         | ImageMagick 命令行工具                        |
 
-## File Operations
+## 文件操作
 
-All paths are relative to `/work`. Traversal attempts are blocked. Absolute paths get remapped under `/work`.
+所有文件路径都是相对于 `/work` 目录的。尝试访问其他目录会被阻止；绝对路径会被重定向到 `/work` 目录下。
 
-| Command  | Description                                       | Example                                    |
-| -------- | ------------------------------------------------- | ------------------------------------------ |
-| `ls`     | List `/work` or a subdirectory (`ls -alph` style, use `--json` for JSON) | `ls` or `ls --json subdir` |
-| `put`    | Upload file from stdin                            | `put video.mp4` (pipe file via stdin)      |
-| `get`    | Download file to stdout                           | `get output.mp4` (redirect stdout to file) |
-| `rm`     | Delete a file (not directories)                   | `rm old.mp4`                               |
-| `mkdir`  | Create directory (recursive)                      | `mkdir project1`                           |
-| `rmdir`  | Remove empty directory                            | `rmdir project1`                           |
-| `rrmdir` | Remove directory and everything in it recursively | `rrmdir project1`                          |
+| 命令            | 功能描述                                      | 示例                                        |
+| ------------------------- | ------------------------------------------------- | ------------------------------------------ |
+| `ls`          | 列出 `/work` 目录或其子目录                        | `ls` 或 `ls --json subdir`                        |
+| `put`          | 从标准输入（stdin）上传文件                         | `put video.mp4`                                   |
+| `get`          | 将文件下载到标准输出（stdout）                         | `get output.mp4`                                   |
+| `rm`          | 删除文件（不支持删除目录）                          | `rm old.mp4`                                   |
+| `mkdir`        | 创建目录（支持递归）                              | `mkdir project1`                                |
+| `rmdir`        | 删除空目录                                  | `rmdir project1`                                |
+| `rrmdir`       | 递归删除目录及其所有内容                          | `rrmdir project1`                                |
 
-## Usage Examples
+## 使用示例
 
-### Upload and process a file
+### 上传并处理文件
 
 ```bash
 # Upload
@@ -113,7 +113,7 @@ ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "rm input.mp4"
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "rm output.mp4"
 ```
 
-### Video operations
+### 视频操作
 
 ```bash
 # Get video info as JSON
@@ -129,7 +129,7 @@ ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "ffmpeg -i /work/video.mp4 -vn 
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "ffmpeg -i /work/video.mp4 -ss 00:00:05 -vframes 1 /work/thumb.jpg"
 ```
 
-### Audio operations
+### 音频操作
 
 ```bash
 # Convert audio format
@@ -142,7 +142,7 @@ ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "soxi /work/audio.wav"
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "sox /work/input.wav /work/output.wav norm"
 ```
 
-### Image operations
+### 图像操作
 
 ```bash
 # Resize image
@@ -155,7 +155,7 @@ ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "convert /work/input.jpg -thumb
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "identify /work/image.png"
 ```
 
-### File management
+### 文件管理
 
 ```bash
 # List files (ls -alph style, no . and ..)
@@ -177,21 +177,21 @@ ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "mkdir project1"
 ssh -p $MEDIAPROC_PORT mediaproc@$MEDIAPROC_HOST "rrmdir project1"
 ```
 
-## Available Plugins
+## 可用的插件
 
-- **frei0r** - Video effect plugins (used via `-vf frei0r=...`)
-- **LADSPA** - Audio effect plugins: SWH, TAP, CMT (used via `-af ladspa=...`)
-- **LV2** - Audio plugins (used via `-af lv2=...`)
+- **frei0r** - 视频效果插件（通过 `-vf frei0r=...` 使用）  
+- **LADSPA** - 音频效果插件（支持 SWH、TAP、CMT 等效果，通过 `-af ladspa=...` 使用）  
+- **LV2** - 音频插件（通过 `-af lv2=...` 使用）  
 
-## Fonts
+## 字体
 
-2200+ fonts included covering emoji, CJK, Arabic, Thai, Indic, monospace, and more. Custom fonts can be mounted to `/usr/share/fonts/custom`.
+系统内置了 2200 多种字体，支持emoji、CJK、阿拉伯文、泰文、印度文等多种文字类型。自定义字体可以安装到 `/usr/sharefonts/custom` 目录下。
 
-## Security Notes
+## 安全注意事项
 
-- No shell access - all commands go through a Python wrapper
-- Whitelist only - unlisted commands are rejected
-- No injection - `&&`, `;`, `|`, `$()` are treated as literal arguments (no shell involved)
-- SSH key auth only - no passwords
-- All forwarding disabled
-- All file paths locked to `/work`
+- 禁止访问 shell：所有命令都必须通过 Python 封装层执行  
+- 仅允许预定义的命令：未列出的命令将被拒绝  
+- 防止代码注入：`&&`、`;`、`|`、`$()` 等符号被视为普通参数，不会被解释为 shell 命令  
+- 仅使用 SSH 密钥认证：不支持密码输入  
+- 禁止所有数据转发功能  
+- 所有文件路径都被限制在 `/work` 目录内

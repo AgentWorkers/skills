@@ -1,54 +1,54 @@
-# AetherLang Ω — AI Workflow Orchestration Skill
+# AetherLang Ω — 人工智能工作流编排技能
 
-> Production-grade DSL for building AI workflows with 39 node types and enterprise security.
+> 一款用于构建人工智能工作流的商用级DSL（Domain-Specific Language），支持39种节点类型，并具备企业级安全防护功能。
 
-**Source Code**: [github.com/contrario/aetherlang](https://github.com/contrario/aetherlang)
-**Homepage**: [neurodoc.app/aether-nexus-omega-dsl](https://neurodoc.app/aether-nexus-omega-dsl)
-**Author**: NeuroAether (info@neurodoc.app)
-**License**: MIT
+**源代码**: [github.com/contrario/aetherlang](https://github.com/contrario/aetherlang)
+**官方网站**: [neurodoc.app/aether-nexus-omega-dsl](https://neurodoc.app/aether-nexus-omega-dsl)
+**作者**: NeuroAether (info@neurodoc.app)
+**许可证**: MIT
 
-## Privacy & Data Handling
+## 隐私与数据处理
 
-⚠️ **External API Notice**: This skill sends user-provided flow code and query text to the AetherLang API at `api.neurodoc.app` for processing. By using this skill, you consent to this data transmission.
+⚠️ **外部API说明**: 该技能会将用户提供的流程代码和查询文本发送到`api.neurodoc.app`处的AetherLang API进行处理。使用该技能即表示您同意此类数据传输。
 
-- **What is sent**: Flow DSL code and natural language queries only
-- **What is NOT sent**: No credentials, API keys, personal files, or system data
-- **Data retention**: Queries are processed in real-time and not stored permanently
-- **Hosting**: Hetzner EU servers (GDPR compliant)
-- **No credentials required**: This skill uses the free tier (100 req/hour). No API keys needed.
+- **传输内容**: 仅包括流程DSL代码和自然语言查询。
+- **不传输的内容**: 不会传输任何凭证、API密钥、个人文件或系统数据。
+- **数据保留**: 查询内容会实时处理，不会被永久存储。
+- **托管服务**: Hetzner EU服务器（符合GDPR法规）。
+- **无需凭证**: 该技能使用免费 tier，每小时允许100次请求，无需API密钥。
 
-Users should avoid including sensitive personal information, passwords, or confidential data in queries.
+用户应避免在查询中包含敏感的个人信息、密码或机密数据。
 
-## Overview
+## 概述
 
-AetherLang Ω is a domain-specific language for AI that orchestrates multi-model workflows with built-in safety, debugging, and real-time collaboration.
+AetherLang Ω 是一种专为人工智能设计的语言，能够编排多模型工作流，并内置了安全防护、调试功能以及实时协作机制。
 
-All user inputs are validated and sanitized server-side before processing. The security middleware source code is publicly available in the [GitHub repository](https://github.com/contrario/aetherlang/blob/main/aetherlang/middleware/security.py).
+所有用户输入在处理前都会在服务器端进行验证和清洗。安全中间件的源代码可在[GitHub仓库](https://github.com/contrario/aetherlang/blob/main/aetherlang/middleware/security.py)中查看。
 
-## Supported Engines
+## 支持的引擎
 
-| Engine | Trigger Keywords | Description |
+| 引擎 | 触发关键词 | 描述 |
 |--------|-----------------|-------------|
-| `chef` | recipe, cook, food | Michelin-grade recipes with HACCP, costs, MacYuFBI |
-| `molecular` | molecular, spherification | Molecular gastronomy techniques |
-| `apex` | strategy, business, analysis | Nobel-level analysis (McKinsey/HBR quality) |
-| `assembly` | debate, perspectives, council | 26 AI archetypes with Gandalf Veto |
-| `consulting` | consulting, SWOT, roadmap | Strategic consulting with KPIs |
-| `lab` | science, research, experiment | Scientific analysis across 50 domains |
-| `marketing` | campaign, viral, social media | Campaign generation with content calendars |
-| `oracle` | lottery, OPAP, lucky numbers | Greek lottery statistics and analysis |
-| `cyber` | security, threat, vulnerability | Threat assessment with defense strategies |
-| `academic` | paper, arXiv, PubMed | Multi-source research synthesis |
-| `vision` | image, analyze, detect | Computer vision analysis |
-| `brain` | think, analyze, comprehensive | General AI analysis |
+| `chef` | recipe, cook, food | 配备HACCP标准的米其林级食谱，包含成本信息 |
+| `molecular` | molecular, spherification | 分子美食烹饪技术 |
+| `apex` | strategy, business, analysis | 诺贝尔级分析（麦肯锡/HBR质量标准） |
+| `assembly` | debate, perspectives, council | 26种人工智能架构模型，支持Gandalf Veto机制 |
+| `consulting` | consulting, SWOT, roadmap | 带有KPI的战略咨询服务 |
+| `lab` | science, research, experiment | 涵盖50个领域的科学分析 |
+| `marketing` | campaign, viral, social media | 基于内容日历的营销活动生成工具 |
+| `oracle` | lottery, OPAP, lucky numbers | 希腊彩票的统计与分析服务 |
+| `cyber` | security, threat, vulnerability | 危险评估及防御策略 |
+| `academic` | paper, arXiv, PubMed | 多源研究整合工具 |
+| `vision` | image, analyze, detect | 计算机视觉分析 |
+| `brain` | think, analyze, comprehensive | 通用人工智能分析工具 |
 
-## API Endpoint
+## API端点
 ```
 POST https://api.neurodoc.app/aetherlang/execute
 Content-Type: application/json
 ```
 
-### Request Format
+### 请求格式
 ```json
 {
   "code": "<aetherlang_flow>",
@@ -56,7 +56,7 @@ Content-Type: application/json
 }
 ```
 
-### Building Flows
+### 构建工作流
 ```
 flow <FlowName> {
   using target "neuroaether" version ">=0.2";
@@ -66,7 +66,7 @@ flow <FlowName> {
 }
 ```
 
-#### Chef Flow
+#### Chef工作流示例
 ```
 flow Chef {
   using target "neuroaether" version ">=0.2";
@@ -76,7 +76,7 @@ flow Chef {
 }
 ```
 
-#### APEX Strategy Flow
+#### APEX策略工作流示例
 ```
 flow Strategy {
   using target "neuroaether" version ">=0.2";
@@ -89,27 +89,27 @@ flow Strategy {
 }
 ```
 
-## Security Architecture
+## 安全架构
 
-Security middleware source code: [middleware/security.py](https://github.com/contrario/aetherlang/blob/main/aetherlang/middleware/security.py)
+安全中间件的源代码: [middleware/security.py](https://github.com/contrario/aetherlang/blob/main/aetherlang/middleware/security.py)
 
-### Input Validation (Server-Side)
-- **Field whitelist**: Only `code`, `query`, `language` fields accepted
-- **Length enforcement**: Query max 5000 chars, Code max 10000 chars, Body max 50KB
-- **Type validation**: All fields type-checked before processing
+### 输入验证（服务器端）
+- **字段白名单**: 仅接受`code`、`query`、`language`字段。
+- **长度限制**: 查询内容最长5000个字符，代码最长10000个字符，请求体最大50KB。
+- **类型验证**: 所有字段在处理前都会进行类型检查。
 
-### Injection Prevention
-Blocks: code execution (`eval`, `exec`), SQL injection, XSS, template injection, OS commands, prompt manipulation.
+### 防注入机制
+- 防止代码执行（`eval`、`exec`）、SQL注入、XSS攻击、模板注入、操作系统命令以及提示框篡改等安全问题。
 
-### Rate Limiting
-- **Free tier**: 100 req/hour, 10 req/10s burst (no credentials needed)
+### 速率限制
+- **免费 tier**: 每小时100次请求，每10秒内允许10次请求（无需凭证）。
 
-### Safety Guards
-- **GUARD node**: STRICT/MODERATE/PERMISSIVE content filtering
-- **Gandalf Veto**: AI safety review on Assembly outputs
-- **Audit logging**: All blocked requests logged
+### 安全防护措施
+- **GUARD节点**: 提供严格/中等/宽松三种内容过滤级别。
+- **Gandalf Veto**: 对`assembly`引擎的输出内容进行人工智能安全审核。
+- **审计日志**: 所有被阻止的请求都会被记录下来。
 
-## Response Structure
+## 响应结构
 ```json
 {
   "status": "success",
@@ -127,26 +127,26 @@ Blocks: code execution (`eval`, `exec`), SQL injection, XSS, template injection,
 }
 ```
 
-## Error Responses
+## 错误代码及其含义
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 400 | Invalid input or injection detected |
-| 413 | Request too large |
-| 429 | Rate limit exceeded |
-| 500 | Server error |
+| 400 | 输入无效或检测到注入攻击 |
+| 413 | 请求过大 |
+| 429 | 超过速率限制 |
+| 500 | 服务器错误 |
 
-## Languages
+## 支持的语言
 
-- **English** (default)
-- **Greek** (Ελληνικά) — add `language="el"` to any node
+- **英语**（默认）
+- **希腊语**（Ελληνικά）——在节点配置中添加`language="el"`即可使用。
 
-## Technology
+## 技术架构
 
-- **Backend**: FastAPI + Python 3.12 ([source](https://github.com/contrario/aetherlang))
-- **AI Models**: GPT-4o via OpenAI
-- **Parser**: 39 node types with validation
-- **Hosting**: Hetzner EU (GDPR compliant)
+- **后端**: FastAPI + Python 3.12（[源代码](https://github.com/contrario/aetherlang) |
+- **人工智能模型**: 通过OpenAI提供的GPT-4o模型 |
+- **解析器**: 支持39种节点类型并进行类型验证 |
+- **托管服务**: Hetzner EU服务器（符合GDPR法规）
 
 ---
-*Built by NeuroAether — From Kitchen to Code* 🧠
+*由NeuroAether开发——从厨房到代码的智慧之旅* 🧠

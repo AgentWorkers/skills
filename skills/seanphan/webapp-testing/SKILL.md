@@ -1,19 +1,19 @@
 ---
 name: webapp-testing
-description: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
+description: 这是一个用于与本地Web应用程序交互和测试的工具包，支持验证前端功能、调试用户界面行为、捕获浏览器截图以及查看浏览器日志。
 license: Complete terms in LICENSE.txt
 ---
 
-# Web Application Testing
+# Web 应用程序测试
 
-To test local web applications, write native Python Playwright scripts.
+要测试本地的 Web 应用程序，请编写原生 Python Playwright 脚本。
 
-**Helper Scripts Available**:
-- `scripts/with_server.py` - Manages server lifecycle (supports multiple servers)
+**可用的辅助脚本**：
+- `scripts/with_server.py` - 管理服务器的生命周期（支持多个服务器）
 
-**Always run scripts with `--help` first** to see usage. DO NOT read the source until you try running the script first and find that a customized solution is abslutely necessary. These scripts can be very large and thus pollute your context window. They exist to be called directly as black-box scripts rather than ingested into your context window.
+**在运行脚本之前，请务必先使用 `--help` 选项查看使用方法。** 在尝试运行脚本之前，不要直接阅读源代码；只有当确实需要自定义解决方案时才阅读源代码。这些脚本可能体积较大，可能会占用较多的系统资源（例如，导致界面窗口变得拥挤）。它们的设计目的是作为“黑盒脚本”直接使用，而不是被集成到你的应用程序中。
 
-## Decision Tree: Choosing Your Approach
+## 决策树：选择你的测试方法
 
 ```
 User task → Is it static HTML?
@@ -32,16 +32,16 @@ User task → Is it static HTML?
             4. Execute actions with discovered selectors
 ```
 
-## Example: Using with_server.py
+## 示例：使用 `with_server.py`
 
-To start a server, run `--help` first, then use the helper:
+要启动服务器，请先运行 `--help`，然后使用相应的辅助脚本：
 
-**Single server:**
+**单台服务器：**
 ```bash
 python scripts/with_server.py --server "npm run dev" --port 5173 -- python your_automation.py
 ```
 
-**Multiple servers (e.g., backend + frontend):**
+**多台服务器（例如，后端 + 前端）：**
 ```bash
 python scripts/with_server.py \
   --server "cd backend && python server.py" --port 3000 \
@@ -49,7 +49,7 @@ python scripts/with_server.py \
   -- python your_automation.py
 ```
 
-To create an automation script, include only Playwright logic (servers are managed automatically):
+要创建自动化脚本，请仅包含 Playwright 逻辑（服务器的配置由辅助脚本自动处理）：
 ```python
 from playwright.sync_api import sync_playwright
 
@@ -62,35 +62,35 @@ with sync_playwright() as p:
     browser.close()
 ```
 
-## Reconnaissance-Then-Action Pattern
+## “侦察-行动”模式
 
-1. **Inspect rendered DOM**:
+1. **检查渲染后的 DOM 结构**：
    ```python
    page.screenshot(path='/tmp/inspect.png', full_page=True)
    content = page.content()
    page.locator('button').all()
    ```
 
-2. **Identify selectors** from inspection results
+2. **从检查结果中识别目标元素（选择器）**
 
-3. **Execute actions** using discovered selectors
+3. **使用识别出的选择器执行相应的操作**
 
-## Common Pitfall
+## 常见错误
 
-❌ **Don't** inspect the DOM before waiting for `networkidle` on dynamic apps
-✅ **Do** wait for `page.wait_for_load_state('networkidle')` before inspection
+❌ **不要** 在动态应用程序中等待 `networkidle` 信号之前就检查 DOM 结构
+✅ **务必** 在检查之前等待 `page.wait_for_load_state('networkidle')`
 
-## Best Practices
+## 最佳实践
 
-- **Use bundled scripts as black boxes** - To accomplish a task, consider whether one of the scripts available in `scripts/` can help. These scripts handle common, complex workflows reliably without cluttering the context window. Use `--help` to see usage, then invoke directly. 
-- Use `sync_playwright()` for synchronous scripts
-- Always close the browser when done
-- Use descriptive selectors: `text=`, `role=`, CSS selectors, or IDs
-- Add appropriate waits: `page.wait_for_selector()` or `page.wait_for_timeout()`
+- **将辅助脚本作为“黑盒”工具使用**：在需要完成某项任务时，查看 `scripts/` 目录中的脚本是否能提供帮助。这些脚本能够可靠地处理常见的复杂工作流程，而不会使应用程序界面变得混乱。使用 `--help` 查看使用方法，然后直接调用相应的脚本。
+- 对于同步执行的脚本，请使用 `sync_playwright()`。
+- 完成测试后务必关闭浏览器。
+- 使用描述性强的选择器：`text=`, `role=`, CSS 选择器或 ID。
+- 添加适当的等待机制：`page.wait_for_selector()` 或 `page.wait_for_timeout()`。
 
-## Reference Files
+## 参考文件
 
-- **examples/** - Examples showing common patterns:
-  - `element_discovery.py` - Discovering buttons, links, and inputs on a page
-  - `static_html_automation.py` - Using file:// URLs for local HTML
-  - `console_logging.py` - Capturing console logs during automation
+- **examples/** - 包含常见测试模式的示例脚本：
+  - `element_discovery.py` - 在页面上查找按钮、链接和输入元素
+  - `static_html_automation.py` - 使用 `file://` URL 测试静态 HTML 页面
+  - `console_logging.py` - 在自动化过程中捕获控制台日志

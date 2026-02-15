@@ -1,100 +1,98 @@
 ---
 name: Mobile
-description: Build mobile applications with proper lifecycle handling, offline support, and platform conventions.
+description: 构建具有适当生命周期管理、离线支持以及符合平台规范的移动应用程序。
 metadata: {"clawdbot":{"emoji":"📱","os":["linux","darwin","win32"]}}
 ---
 
-## Lifecycle Awareness
+## 应用生命周期管理
 
-- App can be killed anytime in background—save state before backgrounding
-- Restore state on return—user expects to continue where they left off
-- Handle low memory warnings—release caches, non-essential resources
-- Background tasks have time limits—complete or request extension
+- 应用可以在后台随时被终止——在后台运行前请保存应用状态。
+- 应用返回到前台时需要恢复用户之前的操作状态——用户期望能够继续之前的工作。
+- 需要处理内存不足的警告——释放缓存和不必要的资源。
+- 后台任务有时间限制——任务必须完成，否则需要请求延时处理。
 
-## Permissions
+## 权限管理
 
-- Ask in context, not at launch—explain why when requesting
-- Degrade gracefully if denied—app should still work with reduced features
-- Don't ask for unnecessary permissions—users notice and distrust
-- Re-request after demonstrating value—not immediately after denial
+- 在需要使用权限时才进行请求，而不要在应用启动时就请求——请求权限时请解释原因。
+- 如果权限被拒绝，应用应能以降级后的功能继续运行。
+- 不要请求不必要的权限——用户会注意到这一点，并可能对应用产生不信任。
+- 在展示出权限的必要性后，再重新请求权限——不要在权限被拒绝后立即再次请求。
 
-## Offline First
+## 网络优先策略（Offline First）
 
-- Assume network is unreliable—design for offline, sync when possible
-- Cache aggressively—previous content better than loading spinner
-- Queue actions for retry—don't fail on network error
-- Conflict resolution strategy—last write wins or manual merge
-- Show sync status—user should know if data is current
+- 假设网络不可靠——设计时应考虑离线使用，尽可能在网络可用时进行数据同步。
+- 大力使用缓存——缓存之前的数据比显示加载动画更好。
+- 对需要重试的操作进行排队处理——网络错误时不要导致任务失败。
+- 制定冲突解决策略——采用“最后写入者胜出”的原则或手动合并数据。
+- 显示数据同步状态——让用户知道数据是否是最新的。
 
-## Performance
+## 性能优化
 
-- Target 60fps—dropped frames feel janky
-- Main thread for UI only—heavy work on background threads
-- Memory matters more than desktop—constrained devices, aggressive OS killing
-- Battery awareness—reduce location polling, network requests when possible
-- Startup time under 2 seconds—first impression matters
+- 目标是保持每秒60帧的帧率——帧率下降会导致应用运行不流畅。
+- UI操作仅在主线程中处理——耗时的任务应在后台线程中执行。
+- 对于资源有限的设备来说，内存使用至关重要——操作系统可能会在内存不足时终止应用。
+- 注意电池使用情况——尽可能减少位置信息的获取和网络请求。
+- 应用启动时间应控制在2秒以内——良好的启动体验对用户很重要。
 
-## Navigation Patterns
+## 导航设计
 
-- Follow platform conventions—iOS back gesture, Android back button
-- Navigation stack manageable—don't go 10 levels deep
-- Deep link to any screen—shareable, notification taps work
-- Preserve scroll position on return—don't jump to top
+- 遵循平台的导航规范——iOS使用返回手势，Android使用返回按钮。
+- 导航层级不宜过深——避免超过10层。
+- 可以创建深度链接到任何界面——方便用户分享或通过通知进行操作。
+- 应用返回到前台时，应保留用户的滚动位置——不要自动跳回到页面顶部。
 
-## Notifications
+## 通知机制
 
-- Push for time-sensitive external events—new message, delivery update
-- Local for reminders, timers—user-initiated
-- Don't spam—users will disable; quality over quantity
-- Actionable when possible—reply, mark done from notification
-- Group related notifications—less intrusive
+- 对于时间敏感的外部事件（如新消息、配送更新）使用推送通知。
+- 对于提醒和定时任务，使用本地通知——由用户主动触发。
+- 避免频繁发送通知——用户可能会禁用通知功能；通知的质量比数量更重要。
+- 通知应具有可操作性——用户可以通过通知进行回复或标记任务已完成。
+- 将相关通知分组显示——减少通知的干扰。
 
-## Deep Linking
+## 深度链接（Deep Linking）
 
-- Universal Links (iOS) / App Links (Android) for owned domains
-- Handle gracefully when app not installed—fallback to web
-- Parse parameters safely—malicious links exist
-- Test all entry points—not just main launch
+- 对于自己的域名，使用通用链接（iOS）/应用链接（Android）。
+- 如果用户未安装应用，应能优雅地处理这种情况——引导用户访问网页版本。
+- 安全地解析链接参数——因为存在恶意链接的风险。
+- 测试所有的链接入口——而不仅仅是应用的首页。
 
-## Storage
+## 数据存储
 
-- Secure storage for tokens, credentials—Keychain, Keystore
-- User data survives reinstall where appropriate—cloud backup
-- Cache is cache—can be cleared; don't store critical data
-- Large files: consider on-demand download—not bundled in app
+- 为令牌和凭证使用安全的存储方式——如Keychain（iOS）或Keystore（Android）。
+- 在适当的情况下，用户数据应在重新安装应用后仍然保留——可以考虑使用云备份。
+- 缓存只是临时存储数据——不要存储关键数据。
+- 对于大文件，可以考虑按需下载——不要将文件捆绑在应用中。
 
-## Input Handling
+## 输入处理
 
-- Keyboard avoidance—content shifts to stay visible
-- Dismiss keyboard appropriately—tap outside, scroll, submit
-- Input accessories for relevant actions—next field, done, toolbar
-- Paste, autofill support—reduce typing on small keyboards
+- 避免使用键盘输入——通过其他方式（如滑动、滚动或点击工具栏）来操作界面。
+- 提供相应的输入辅助功能——例如跳转到下一个输入字段、标记操作完成等。
+- 支持复制和自动填充功能——减少在小键盘上的输入操作。
 
-## Touch and Gestures
+## 触控与手势操作
 
-- 44pt minimum touch target—consistent with platform guidelines
-- System gestures reserved—don't override swipe from edge
-- Gesture discoverability—hint or teach, don't assume knowledge
-- Haptic feedback for significant actions—confirmation, errors
+- 触控目标区域的最小尺寸应为44像素——符合各平台的规范。
+- 保留系统的默认手势功能——不要自定义边缘滑动手势。
+- 提供手势操作的提示或教学功能——不要假设用户已经了解这些手势。
+- 对于重要的操作提供触觉反馈——例如确认操作或错误提示。
 
-## Accessibility
+## 可访问性（Accessibility）
 
-- VoiceOver (iOS) / TalkBack (Android) testing—navigate entire app
-- Dynamic type support—text scales with user preference
-- Sufficient contrast—check in accessibility inspector
-- Labels on all interactive elements—not just visible text
+- 测试应用在VoiceOver（iOS）/TalkBack（Android）等辅助技术下的使用情况——确保用户可以顺利使用应用。
+- 支持动态字体大小调整——根据用户的偏好调整文本显示大小。
+- 确保所有交互元素都有清晰的标签——而不仅仅是可见的文本。
 
-## Testing
+## 测试策略
 
-- Real devices essential—simulators miss performance, sensors, edge cases
-- Multiple OS versions—support at least current minus 2
-- Different screen sizes—small phones to tablets
-- Network conditions—slow, intermittent, offline
+- 必须在真实设备上进行测试——模拟器无法完全模拟实际设备的性能、传感器反应和边缘情况。
+- 测试至少包括当前版本及前两个旧版本的系统。
+- 测试不同屏幕尺寸的设备——从小屏幕手机到平板电脑。
+- 考虑各种网络环境——包括网络速度慢、网络不稳定或离线的情况。
 
-## App Store Survival
+## 应用在App Store中的表现
 
-- Read rejection reasons before submitting—common pitfalls documented
-- Privacy policy required—explain data collection
-- Login test account for reviewers—if auth required
-- No placeholder content—everything functional in review build
-- Update regularly—abandoned apps get deprioritized
+- 在提交应用之前，请仔细阅读应用被拒绝的原因——了解常见的失败原因。
+- 必须提供隐私政策——明确说明数据收集的目的。
+- 如果应用需要登录功能，为审核人员准备一个测试账户。
+- 提交的版本中所有功能都必须能够正常使用——不要包含占位内容。
+- 定期更新应用——否则应用可能会被优先级降低。

@@ -1,29 +1,29 @@
 ---
 name: stripe
-description: Stripe payment platform integration. Manage payments, subscriptions, invoices, and customers via Stripe API.
+description: **Stripe支付平台集成**：通过Stripe API管理支付、订阅、发票和客户信息。
 metadata: {"clawdbot":{"emoji":"💵","always":true,"requires":{"bins":["curl","jq"]},"primaryEnv":"STRIPE_API_KEY"}}
 ---
 
 # Stripe 💵
 
-Stripe payment platform integration.
+Stripe 是一个流行的在线支付平台，支持多种支付方式。以下是关于如何将您的应用程序与 Stripe 集成的指南。
 
-## Setup
+## 设置
 
 ```bash
 export STRIPE_API_KEY="sk_live_..."
 ```
 
-## Features
+## 主要功能
 
-- Create payment intents
-- Manage subscriptions
-- Send invoices
-- Customer management
-- Refund processing
-- Webhook handling
+- 创建支付请求（Payment Intents）
+- 管理订阅服务
+- 发送发票
+- 客户管理
+- 退款处理
+- Webhook 功能（用于接收支付状态更新）
 
-## Usage Examples
+## 使用示例
 
 ```
 "Create a $50 payment link"
@@ -32,7 +32,7 @@ export STRIPE_API_KEY="sk_live_..."
 "Show subscription for customer@email.com"
 ```
 
-## API Reference
+## API 参考文档
 
 ```bash
 # List recent charges

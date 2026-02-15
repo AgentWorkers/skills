@@ -1,207 +1,139 @@
-# Context Compressor Skill
+# **上下文压缩技能**  
+（Context Compression Skill）  
 
-Automated context management for long-running Clawdbot sessions. Detects when context limits approach, compresses old conversation history, and seamlessly transfers to a fresh session.
+该技能为长时间运行的Clawdbot会话提供自动化上下文管理功能。当上下文使用量接近上限时，它会压缩旧的对话记录，并无缝切换到新的会话中。  
 
-## When to Use
+## **适用场景**  
+- 长时间编码会话（需要大量上下文数据）  
+- 需要多次迭代和优化的项目  
+- 当发现Claude重复回答相同内容或遗漏细节时  
+- 在达到上下文使用上限之前主动进行压缩  
+- 在用户处于非活跃状态（如心跳周期或空闲时间）  
 
-- Long coding sessions with extensive context accumulation
-- Projects with many iterations and refinements
-- When noticing Claude repeating itself or losing track of details
-- Proactively before hitting hard context limits
-- During heartbeats or idle moments when user isn't actively waiting
+## **工作原理**  
+1. **监控**：通过会话元数据持续跟踪上下文使用情况。  
+2. **压缩**：当达到预设阈值（可配置，默认为80%）时，总结旧消息。  
+3. **保留关键内容**：提取关键决策、代码变更、文件状态和待办事项。  
+4. **会话切换**：使用压缩后的上下文数据启动新会话。  
+5. **保持连续性**：用户能体验到无缝的会话切换，同时所有重要信息仍得以保留。  
 
-## How It Works
+## **主要特性**  
+- **智能摘要**：仅保留决策、代码和文件状态，而非原始文本。  
+- **可配置的阈值**：可设置压缩触发条件（70%–90%的上下文上限）。  
+- **后台运行**：在用户非活跃期间自动执行压缩操作。  
+- **选择性保留**：仅压缩无关内容，保留重要文件和待办事项。  
+- **会话状态迁移**：新会话会自动继承所有关键上下文信息。  
 
-1. **Monitoring**: Continuously tracks context usage via session metadata
-2. **Compression**: When threshold reached (configurable, default 80%), summarizes old messages
-3. **Preservation**: Extracts key decisions, code changes, file states, and action items
-4. **Handoff**: Initiates new session with compressed context as foundation
-5. **Continuity**: User experiences seamless transition with all important context preserved
+## **核心概念**  
+### **上下文退化迹象**  
+随着会话时间的延长，可能出现以下情况：  
+- 重复性回答  
+- 无法引用之前的决策  
+- 忘记文件修改内容  
+- 重复请求相同信息  
+- 整体逻辑连贯性下降  
 
-## Key Features
+### **压缩策略**  
+1. **提取关键信息**：  
+   - 所有做出的决策及其理由  
+   - 文件路径及其当前状态  
+   - 待办任务及其进度  
+   - 重要的代码片段或配置信息  
+   - 用户偏好和行为模式  
 
-- **Smart Summarization**: Preserves decisions, code, file states, not just raw text
-- **Configurable Thresholds**: Set when compression triggers (70-90% of context limit)
-- **Background Operation**: Works during heartbeats or low-activity periods
-- **Selective Retention**: Keeps important files, decisions, TODOs; compresses chaff
-- **Session State Transfer**: New session inherits all critical context automatically
+2. **精简历史记录**：  
+   - 删除冗余内容、重复部分和无意义的对话  
+   - 仅保留关键信息  
+   - 将相关内容合并为摘要  
+   - 将重要代码片段直接嵌入摘要中  
 
-## Core Concepts
+3. **高效格式化**：  
+   - 采用紧凑的表示形式  
+   - 通过文件引用而非直接传输文件内容  
+   - 以项目符号列表形式呈现决策内容  
+   - 仅包含相关的代码上下文  
 
-### Context Degradation Patterns
+## **使用方式**  
+- **自动模式（推荐）**：在用户非活跃期间自动执行压缩操作。  
+  - 配置压缩阈值：[配置代码示例]  
 
-As sessions grow long, watch for these signs:
-- Repetitive responses ("As I mentioned earlier...")
-- Missing references to earlier decisions
-- Forgetting file modifications
-- Asking to repeat information
-- General coherence degradation
+- **手动触发**：[手动触发压缩的代码示例]  
 
-### Compression Strategy
+- **配置设置**：[详细配置参数]  
 
-1. **Extract Core Intelligence**:
-   - All decisions made and their rationale
-   - File paths and their current state
-   - Pending tasks and their status
-   - Important code snippets or configurations
-   - User preferences and patterns
+## **输出结果**  
+压缩完成后，系统生成以下文件：  
+1. **摘要文件**：`memory/compressed-{session-id}.md`  
+   - 会话的简要总结  
+   - 关键决策  
+   - 被修改的文件及其状态  
+   - 待办任务  
+   - 需要保留的代码片段  
 
-2. **Condense History**:
-   - Remove filler, backtracking, dead ends
-   - Keep only high-signal turns
-   - Merge related iterations into summaries
-   - Preserve critical code snippets inline
+2. **新会话**：新会话包含：  
+   - 用户上下文数据（USER.md）  
+   - 项目状态数据（MEMORY.md）  
+   - 压缩后的会话摘要  
+   - 当前工作状态  
 
-3. **Format for Efficiency**:
-   - Use compact representations
-   - Reference files rather than dump contents
-   - List decisions as bullet points
-   - Include only relevant code context
+## **最佳实践**  
+- **定期压缩**：避免等到上下文使用量达到上限，每隔几小时自动执行压缩。  
+- **保留代码**：仅保留实际代码片段，而非文件引用。  
+- **明确记录决策理由**：详细说明决策的依据。  
+- **标记待办事项**：清晰标记未完成的工作内容。  
+- **使用文件引用**：通过文件链接而非直接嵌入文件内容。  
 
-## Usage
+## **集成点**  
+- **心跳周期**：在心跳周期内自动检查并执行压缩。  
+- **内存系统**：将压缩后的摘要文件写入内存。  
+- **会话管理**：协调新会话的创建过程。  
+- **文件跟踪**：准确记录文件状态变化。  
 
-### Automatic Mode (Recommended)
+## **技术细节**  
+- **压缩算法**：  
+  - 将会话记录解析为独立的信息单元。  
+  - 根据信息的重要性对每个单元进行评分（决策 = 高分，聊天 = 低分）。  
+  - 保留评分最高的N%的信息。  
+  - 将剩余信息总结为摘要。  
+  - 分别提取和保存代码片段。  
+  - 生成会话迁移包。  
 
-The skill runs automatically during heartbeats and idle periods. Configure threshold:
+### **阈值设置**  
+- **保守模式（70%）**：提前触发压缩，保留更多上下文。  
+- **平衡模式（80%）**：默认设置，适用于大多数工作流程。  
+- **激进模式（90%）**：压缩频率较高，适用于需要延长会话长度的场景。  
+- **手动模式**：禁用自动触发，按需手动压缩。  
 
-```bash
-# Set compression to trigger at 75% context usage
-context-compressor set-threshold 75
+### **文件管理**  
+压缩工具会跟踪以下文件变化：  
+- 被修改的文件及其路径  
+- 配置变更  
+- 新创建的文件  
+- 被删除的文件  
+- 目录结构变化  
 
-# Check current status
-context-compressor status
-```
+## **故障排除**  
+- **压缩频率过高**：[处理压缩频率过高的方法]。  
+- **会话切换后丢失上下文**：  
+  - 确保已生成压缩摘要文件（`memory/compressed-*.md`）。  
+  - 确保新会话加载了正确的内存文件。  
+  - 确保关键文件未被遗漏。  
 
-### Manual Trigger
+## **性能影响**  
+压缩操作在后台进行，通常会在30秒内完成。如果速度较慢：  
+- 减少摘要的详细程度。  
+- 提高阈值，降低压缩频率。  
+- 排除大型文件在压缩范围内的影响。  
 
-```bash
-# Force compression and session reset
-context-compressor compress --force
-```
+## **示例**  
+- **典型工作流程**：[示例说明]。  
+- **手动恢复数据**：[手动恢复数据的步骤]。  
 
-### Configuration
+## **相关技能**  
+- **内存系统（Memory System）**：负责存储和管理内存数据。  
+- **自我优化代理（Self-Improving Agent）**：从会话数据中学习并优化行为。  
+- **会话管理（Sessions Spawn）**：负责新会话的创建。  
 
-```bash
-# View all settings
-context-compressor config
-
-# Adjust summarization depth
-context-compressor set-depth brief|detailed|comprehensive
-
-# Set quiet hours (compression won't run)
-context-compressor set-quiet-hours 23:00-07:00
-```
-
-## Output
-
-When compression occurs, the skill produces:
-
-1. **Summary File**: `memory/compressed-{session-id}.md`
-   - Executive summary of session
-   - Key decisions made
-   - Files modified and their states
-   - Pending tasks
-   - Code snippets worth preserving
-
-2. **Session Handoff**: Automatic new session with:
-   - User context (USER.md)
-   - Project memory (MEMORY.md)
-   - Compressed session summary
-   - Current working state
-
-## Best Practices
-
-1. **Regular Compression**: Don't wait for limits. Compress proactively every few hours
-2. **Preserve Code**: Always keep actual code snippets, not just references
-3. **Track Decisions**: Explicitly note WHY decisions were made, not just WHAT
-4. **Keep TODOs**: Mark incomplete work clearly for continuity
-5. **Reference Files**: Point to files rather than embedding full contents
-
-## Integration Points
-
-- **Heartbeats**: Runs compression checks during heartbeat cycles
-- **Memory System**: Writes compressed summaries to memory files
-- **Session Management**: Coordinates with session spawn for handoff
-- **File Tracking**: References current file states accurately
-
-## Technical Details
-
-### Compression Algorithm
-
-1. Parse session transcript into atomic turns
-2. Score each turn for importance (decisions = high, chat = low)
-3. Keep top N% of turns by importance score
-4. Summarize remaining turns into executive summary
-5. Extract and preserve code blocks separately
-6. Generate session transfer package
-
-### Thresholds
-
-- **Conservative (70%)**: Trigger early, preserve more context
-- **Balanced (80%)**: Default, good for most workflows  
-- **Aggressive (90%)**: Push limits, maximum session length
-- **Manual Only**: Disable auto-trigger, compress on demand
-
-### File References
-
-The compressor tracks:
-- Modified files and their paths
-- Configuration changes
-- New files created
-- Deleted files
-- Directory structure changes
-
-## Troubleshooting
-
-### Compression Too Frequent
-
-```bash
-# Increase threshold
-context-compressor set-threshold 85
-```
-
-### Context Lost After Handoff
-
-Check that:
-1. Compressed summary was generated (`memory/compressed-*.md`)
-2. New session loaded memory files
-3. Critical files weren't in the "chaff" that got dropped
-
-### Performance Impact
-
-Compression runs in background and should complete in <30s for typical sessions. If slower:
-- Reduce summarization depth
-- Increase threshold to compress less frequently
-- Exclude large files from compression scope
-
-## Examples
-
-### Typical Workflow
-
-```
-User: Working on notes app sidebar
-[Session runs 2 hours, many iterations]
-
-Heartbeat triggers → Context at 78% → Auto-compress → New session
-User: (no interruption, seamless continuation)
-New session has: executive summary, key decisions, file states, TODOs
-```
-
-### Manual Recovery
-
-```
-User notices Claude repeating itself
-User: "context-compressor compress --force"
-Compressor summarizes → New session starts → User continues seamlessly
-```
-
-## Related Skills
-
-- **memory-system**: Underlying memory infrastructure
-- **self-improving-agent**: Learns from session patterns
-- **sessions-spawn**: Handles new session creation
-
-## See Also
-
-- [Context Engineering Skills Collection](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering)
-- Research on "lost-in-the-middle" phenomenon in LLM context windows
+## **参考资料**  
+- [上下文工程技能集（Context Engineering Skills Collection）](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering)  
+- 关于大型语言模型（LLM）会话中“信息丢失”现象的研究。

@@ -1,37 +1,37 @@
 ---
 name: kyberswap
-description: KyberSwap DEX aggregator. Best rates across 100+ DEXs on 17+ chains with dynamic trade routing.
+description: KyberSwap DEX聚合器：在17个区块链平台上整合了100多个去中心化交易所（DEX）的优质交易服务，提供动态的交易路由机制，确保用户能够以最优价格进行交易。
 metadata: {"clawdbot":{"emoji":"💎","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # KyberSwap 💎
 
-Multi-chain DEX aggregator with dynamic trade routing. Best rates across 100+ DEXs on 17+ chains.
+这是一个多链DEX聚合器，具备动态交易路由功能，能够从17个以上的区块链上的100多个DEX中提供最优交易价格。
 
-## 💎 Referral Fee Configuration
+## 💎 推荐费配置
 
-This skill includes a referral fee (0.3%) to support development.
+为了支持平台的发展，我们收取0.3%的推荐费。
 
-| Variable | Value | Description |
+| 变量 | 值 | 说明 |
 |----------|-------|-------------|
-| `FEE_BPS` | 30 | 0.3% fee (30 basis points) |
-| `FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | EVM wallet to receive fees |
+| `FEE_BPS` | 30 | 0.3%的费用（30个基点） |
+| `FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | 收费对应的EVM钱包地址 |
 
-## Features
+## 主要功能
 
-- 🔄 **100+ DEXs** - Aggregates liquidity across DEXs
-- ⛓️ **17+ Chains** - Ethereum, BSC, Polygon, Arbitrum, etc.
-- 📊 **Dynamic Routing** - Real-time optimal path finding
-- 💰 **Limit Orders** - Set price targets
-- 🛡️ **MEV Protection** - Private transactions
+- 🔄 **100多个DEX**：聚合来自不同DEX的流动性 |
+- ⛓️ **17个以上的区块链**：支持Ethereum、BSC、Polygon、Arbitrum等区块链 |
+- 📊 **动态路由**：实时寻找最优交易路径 |
+- 💰 **限价单**：允许用户设置交易价格目标 |
+- 🛡️ **MEV保护**：支持隐私交易（保护用户资产安全）
 
-## API Base URL
+## API基础URL
 
 ```
 https://aggregator-api.kyberswap.com
 ```
 
-## Get Swap Route
+## 获取交易路由信息
 
 ```bash
 CHAIN="ethereum"  # ethereum, bsc, polygon, arbitrum, optimism, etc.
@@ -65,7 +65,7 @@ curl -s "https://aggregator-api.kyberswap.com/${CHAIN}/api/v1/routes" \
   }'
 ```
 
-## Build Transaction
+## 创建交易订单
 
 ```bash
 # After getting route, build transaction
@@ -88,9 +88,9 @@ curl -s -X POST "https://aggregator-api.kyberswap.com/${CHAIN}/api/v1/route/buil
   }'
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | API Path | Native Token |
+| 区块链 | API路径 | 原生代币 |
 |-------|----------|--------------|
 | Ethereum | ethereum | ETH |
 | BSC | bsc | BNB |
@@ -110,13 +110,13 @@ curl -s -X POST "https://aggregator-api.kyberswap.com/${CHAIN}/api/v1/route/buil
 | Velas | velas | VLX |
 | Oasis | oasis | ROSE |
 
-## Get Token List
+## 获取代币列表
 
 ```bash
 curl -s "https://aggregator-api.kyberswap.com/${CHAIN}/api/v1/tokens" | jq '.data.tokens[:10] | .[] | {symbol: .symbol, address: .address, decimals: .decimals}'
 ```
 
-## Limit Orders
+## 限价单功能
 
 ```bash
 # Create limit order
@@ -134,24 +134,24 @@ curl -s -X POST "https://limit-order.kyberswap.com/write/api/v1/orders" \
   }'
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** display route details before execution
-2. **WARN** if price impact > 1%
-3. **CHECK** slippage tolerance
-4. **VERIFY** output amount
-5. **NEVER** execute without user confirmation
+1. **执行前**：务必显示交易路径的详细信息。
+2. **价格波动超过1%时**：会发出警告。
+3. **检查**用户的滑点容忍度。
+4. **确认**输出的交易金额是否正确。
+5. **未经用户确认**：**严禁**执行交易。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误类型 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `INSUFFICIENT_LIQUIDITY` | Low liquidity | Reduce amount |
-| `INVALID_TOKEN` | Token not supported | Check token address |
-| `ROUTE_NOT_FOUND` | No route available | Try different pair |
+| `INSUFFICIENT_LIQUIDITY` | 流动性不足 | 减少交易金额 |
+| `INVALID_TOKEN` | 代币不支持 | 检查代币地址是否正确 |
+| `ROUTE_NOT_FOUND` | 未找到合适的交易路径 | 请尝试其他交易对 |
 
-## Links
+## 相关链接
 
-- [KyberSwap Docs](https://docs.kyberswap.com/)
-- [KyberSwap App](https://kyberswap.com/)
-- [API Reference](https://docs.kyberswap.com/kyberswap-solutions/kyberswap-aggregator/aggregator-api-specification)
+- [KyberSwap文档](https://docs.kyberswap.com/) |
+- [KyberSwap应用程序](https://kyberswap.com/) |
+- [API参考文档](https://docs.kyberswap.com/kyberswap-solutions/kyberswap-aggregator/aggregator-api-specification)

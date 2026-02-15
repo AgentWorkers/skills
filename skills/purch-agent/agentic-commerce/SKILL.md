@@ -9,37 +9,37 @@ description: |
   - Signing and submitting blockchain transactions for purchases
 ---
 
-# Purch Public API
+# 购物公共API
 
-Base URL: `https://api.purch.xyz`
+基础URL：`https://api.purch.xyz`
 
-## Rate Limits
+## 速率限制
 
-60 requests/minute per IP. Headers in every response:
-- `X-RateLimit-Limit`: Max requests per window
-- `X-RateLimit-Remaining`: Requests left
-- `X-RateLimit-Reset`: Seconds until reset
+每个IP每分钟允许60次请求。每个响应中包含以下头部信息：
+- `X-RateLimit-Limit`：当前时间窗口内的最大请求次数
+- `X-RateLimit-Remaining`：剩余的请求次数
+- `X-RateLimit-Reset`：距离重置还有多少秒
 
-## Endpoints
+## 端点
 
-### GET /search - Structured Product Search
+### GET /search - 结构化产品搜索
 
-Query products with filters.
+通过过滤器查询产品。
 
 ```bash
 curl "https://api.purch.xyz/search?q=headphones&priceMax=100"
 ```
 
-**Parameters:**
-| Param | Type | Required | Description |
+**参数：**
+| 参数 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| q | string | Yes | Search query |
-| priceMin | number | No | Minimum price |
-| priceMax | number | No | Maximum price |
-| brand | string | No | Filter by brand |
-| page | number | No | Page number (default: 1) |
+| q | 字符串 | 是 | 搜索查询 |
+| priceMin | 数字 | 否 | 最低价格 |
+| priceMax | 数字 | 否 | 最高价格 |
+| brand | 字符串 | 否 | 按品牌过滤 |
+| page | 数字 | 否 | 页码（默认：1） |
 
-**Response:**
+**响应：**
 ```json
 {
   "products": [
@@ -61,9 +61,9 @@ curl "https://api.purch.xyz/search?q=headphones&priceMax=100"
 }
 ```
 
-### POST /shop - AI Shopping Assistant
+### POST /shop - 人工智能购物助手
 
-Natural language product search. Returns 20+ products from both Amazon and Shopify.
+使用自然语言搜索产品。返回来自Amazon和Shopify的20多个产品。
 
 ```bash
 curl -X POST "https://api.purch.xyz/shop" \
@@ -71,7 +71,7 @@ curl -X POST "https://api.purch.xyz/shop" \
   -d '{"message": "comfortable running shoes under $100"}'
 ```
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "message": "comfortable running shoes under $100",
@@ -82,7 +82,7 @@ curl -X POST "https://api.purch.xyz/shop" \
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "reply": "Found 22 running shoes. Top pick: Nike Revolution 6 at $65...",
@@ -110,13 +110,13 @@ curl -X POST "https://api.purch.xyz/shop" \
 }
 ```
 
-### POST /buy - Create Purchase Order
+### POST /buy - 创建购买订单
 
-Create an order and get a transaction to sign. **Chain is auto-detected from wallet format:**
-- Solana wallet (base58): `7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU`
-- Base/EVM wallet (0x): `0x1234567890abcdef1234567890abcdef12345678`
+创建订单并获取待签名的交易信息。**交易链信息会自动从钱包格式中检测出来：**
+- Solana钱包（base58格式）：`7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU`
+- Base/EVM钱包（0x格式）：`0x1234567890abcdef1234567890abcdef12345678`
 
-**Amazon Products (Solana)**:
+**Solana平台上的Amazon产品：**
 ```bash
 curl -X POST "https://api.purch.xyz/buy" \
   -H "Content-Type: application/json" \
@@ -137,7 +137,7 @@ curl -X POST "https://api.purch.xyz/buy" \
   }'
 ```
 
-**Amazon Products (Base)**:
+**Base平台上的Amazon产品：**
 ```bash
 curl -X POST "https://api.purch.xyz/buy" \
   -H "Content-Type: application/json" \
@@ -156,7 +156,7 @@ curl -X POST "https://api.purch.xyz/buy" \
   }'
 ```
 
-**Shopify Products** - Use `productUrl` AND `variantId`:
+**Shopify平台上的产品**：需要使用`productUrl`和`variantId`：
 ```bash
 curl -X POST "https://api.purch.xyz/buy" \
   -H "Content-Type: application/json" \
@@ -176,7 +176,7 @@ curl -X POST "https://api.purch.xyz/buy" \
   }'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "orderId": "550e8400-e29b-41d4-a716-446655440000",
@@ -192,11 +192,11 @@ curl -X POST "https://api.purch.xyz/buy" \
 }
 ```
 
-## CLI Scripts
+## CLI脚本
 
-This skill includes ready-to-use CLI scripts for all endpoints. Available in Python and TypeScript/Bun.
+该技能提供了适用于所有端点的现成CLI脚本，支持Python和TypeScript/Bun语言。
 
-**Dependencies (Solana):**
+**Solana平台的依赖项：**
 ```bash
 # Python
 pip install solana solders base58
@@ -205,13 +205,13 @@ pip install solana solders base58
 bun add @solana/web3.js bs58
 ```
 
-**Dependencies (Base/EVM):**
+**Base/EVM平台的依赖项：**
 ```bash
 # TypeScript/Bun
 bun add viem
 ```
 
-### Search Products
+### 搜索产品
 
 ```bash
 # Python
@@ -222,7 +222,7 @@ python scripts/search.py "running shoes" --brand Nike --page 2
 bun run scripts/search.ts "wireless headphones" --price-max 100
 ```
 
-### AI Shopping Assistant
+### 人工智能购物助手
 
 ```bash
 # Python
@@ -232,7 +232,7 @@ python scripts/shop.py "comfortable running shoes under $100"
 bun run scripts/shop.ts "wireless headphones with good noise cancellation"
 ```
 
-### Create Order (without signing)
+### 创建订单（不进行签名）
 
 ```bash
 # Amazon by ASIN
@@ -244,11 +244,11 @@ bun run scripts/buy.ts --url "https://store.com/products/item" --variant 4191394
   --email buyer@example.com --wallet 7xKXtg... --address "John Doe,123 Main St,NYC,NY,10001,US"
 ```
 
-Address format: `Name,Line1,City,State,PostalCode,Country[,Line2][,Phone]`
+地址格式：`姓名,街道1号,城市,州,邮政编码,国家[,街道2号][,电话]`
 
-### Create Order AND Sign Transaction (Solana)
+### 创建订单并签名交易（Solana平台）
 
-End-to-end purchase flow - creates order and signs/submits the Solana transaction:
+端到端的购买流程：创建订单并签名/提交Solana交易：
 
 ```bash
 # Python
@@ -262,9 +262,9 @@ bun run scripts/buy_and_sign.ts --url "https://store.com/products/item" --varian
   --address "John Doe,123 Main St,NYC,NY,10001,US"
 ```
 
-### Create Order AND Sign Transaction (Base)
+### 创建订单并签名交易（Base平台）
 
-End-to-end purchase flow using Base/EVM wallet:
+使用Base/EVM钱包的端到端购买流程：
 
 ```bash
 bun run scripts/buy_and_sign_base.ts --asin B0CXYZ1234 --email buyer@example.com \
@@ -273,9 +273,9 @@ bun run scripts/buy_and_sign_base.ts --asin B0CXYZ1234 --email buyer@example.com
   --address "John Doe,123 Main St,New York,NY,10001,US"
 ```
 
-### Sign Transaction Only (Solana)
+### 仅签名交易（Solana平台）
 
-If you already have a `serializedTransaction` from the `/buy` endpoint:
+如果您已经从 `/buy` 端点获得了 `serializedTransaction`：
 
 ```bash
 # Python
@@ -285,29 +285,29 @@ python scripts/sign_transaction.py "<serialized_tx>" "<private_key_base58>"
 bun run scripts/sign_transaction.ts "<serialized_tx>" "<private_key_base58>"
 ```
 
-### Sign Transaction Only (Base)
+### 仅签名交易（Base平台）
 
 ```bash
 bun run scripts/sign_transaction_base.ts "<serialized_tx_hex>" "<private_key_hex>"
 ```
 
-**Output (Solana):**
+**输出（Solana平台）：**
 ```
 ✅ Transaction successful!
    Signature: 5UfgJ3vN...
    Explorer:  https://solscan.io/tx/5UfgJ3vN...
 ```
 
-**Output (Base):**
+**输出（Base平台）：**
 ```
 ✅ Transaction successful!
    Hash:     0x1234...
    Explorer: https://basescan.org/tx/0x1234...
 ```
 
-## Signing Transactions Programmatically
+## 程序化签名交易
 
-For custom integrations without using the bundled scripts:
+对于不使用捆绑脚本的自定义集成：
 
 ### JavaScript/TypeScript
 
@@ -339,7 +339,7 @@ async function signAndSendTransaction(
 }
 ```
 
-### React with Wallet Adapter
+### 使用钱包适配器的React应用
 
 ```typescript
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
@@ -370,7 +370,7 @@ function CheckoutButton({ serializedTransaction }: { serializedTransaction: stri
 }
 ```
 
-### Python (with solana-py)
+### 使用`solana-py`的Python应用
 
 ```python
 import base58
@@ -393,11 +393,11 @@ def sign_and_send(serialized_tx: str, keypair: Keypair) -> str:
     return result.value  # transaction signature
 ```
 
-## Signing Base/EVM Transactions
+## 签名Base/EVM平台上的交易
 
-For Base chain orders, the `serializedTransaction` is an EVM transaction that needs to be signed with an EVM wallet.
+对于Base链上的订单，`serializedTransaction`是一个需要使用EVM钱包进行签名的EVM交易。
 
-### TypeScript with viem
+### 使用`viem`的TypeScript应用
 
 ```typescript
 import { createWalletClient, http, parseTransaction } from "viem";
@@ -427,7 +427,7 @@ async function signAndSendBaseTransaction(
 }
 ```
 
-### React with wagmi
+### 使用`wagmi`的React应用
 
 ```typescript
 import { useSendTransaction } from "wagmi";
@@ -445,7 +445,7 @@ function CheckoutButton({ serializedTransaction }: { serializedTransaction: stri
 }
 ```
 
-## Complete Checkout Flow (Solana)
+## 完整的结账流程（Solana平台）
 
 ```typescript
 // 1. Search for products
@@ -485,7 +485,7 @@ await connection.confirmTransaction(signature, "confirmed");
 console.log(`Order ${orderId} paid. Tx: ${signature}`);
 ```
 
-## Complete Checkout Flow (Base)
+## 完整的结账流程（Base平台）
 
 ```typescript
 import { parseTransaction } from "viem";
@@ -525,9 +525,9 @@ const hash = await walletClient.sendTransaction(tx);
 console.log(`Order ${orderId} paid. Tx: ${hash}`);
 ```
 
-## Fallback: Browser Checkout
+## 备用方案：浏览器结账
 
-If wallet signing fails or isn't available, redirect to `checkoutUrl` for browser-based payment:
+如果钱包签名失败或不可用，会重定向到 `checkoutUrl` 以进行浏览器支付：
 
 ```typescript
 if (!wallet.connected) {
@@ -535,19 +535,10 @@ if (!wallet.connected) {
 }
 ```
 
-## Error Handling
+## 错误处理
 
-All endpoints return errors as:
-```json
-{
-  "code": "VALIDATION_ERROR",
-  "message": "Invalid email format",
-  "details": { "field": "email" }
-}
-```
-
-Common error codes:
-- `VALIDATION_ERROR` (400) - Invalid request parameters
-- `NOT_FOUND` (404) - Product not found
-- `RATE_LIMITED` (429) - Too many requests
-- `INTERNAL_ERROR` (500) - Server error
+所有端点都会返回错误信息，错误代码如下：
+- `VALIDATION_ERROR` (400) - 请求参数无效
+- `NOT_FOUND` (404) - 产品未找到
+- `RATE_LIMITED` (429) - 请求次数过多
+- `INTERNAL_ERROR` (500) - 服务器错误

@@ -1,73 +1,60 @@
 ---
 name: 4todo
-description: Manage 4todo (4to.do) from chat. Capture tasks, prioritize with the Eisenhower Matrix, reorder, complete, and manage recurring tasks across workspaces.
+description: 管理来自聊天工具的 4todo（4to.do）任务：捕获任务信息，使用艾森豪威尔矩阵对任务进行优先级排序，重新排列任务顺序，完成任务，并在工作空间之间管理重复出现的任务。
 ---
 
-# 4todo
-[4to.do](https://4to.do) Eisenhower Matrix To‑Do List
+# 4todo  
+[4to.do] 艾森豪威尔矩阵待办事项列表  
 
-## Goal
+## 目标  
+- 使用 `curl` 调用 4todo API (`https://4to.do/api/v0`) 来管理：  
+  - 工作区（workspaces）  
+  - 待办事项（todos）  
+  - 定期重复的任务（recurring todos）  
+- 以一种安全的方式存储 API 令牌（避免泄露风险；建议使用 OpenClaw 在每次运行时动态注入令牌；切勿将令牌粘贴到聊天记录、日志或仓库文件中）。  
 
-- Use `curl` to call the 4todo API (`https://4to.do/api/v0`) to manage:
-  - workspaces
-  - todos
-  - recurring todos
-- Store the token in a way that is injectable but not leak-prone (prefer OpenClaw per-run env injection; do not paste secrets into prompts, logs, or repo files).
+## 必需的环境变量  
+- `FOURTODO_API_TOKEN`：你的 4todo API 令牌（Bearer 令牌）  
+- 如果该变量缺失，请让用户通过 OpenClaw 配置来设置它（切勿要求用户在聊天中输入令牌）。  
 
-## Required Environment Variable
+## 运行时要求  
+- `curl` 必须在 `PATH` 中可用（如果代理处于沙箱环境中，也需要在沙箱容器内可用）。  
 
-- `FOURTODO_API_TOKEN`: your 4todo API token (Bearer token)
-- If missing, ask the user to set it via OpenClaw config (do not ask them to paste the token into chat).
+## 面向用户的输出规则（非常重要）  
+- 默认情况下，输出应保持非技术性，重点关注任务的结果，而非实现细节。  
+  - 避免提及：`curl`、端点（endpoints）、请求头（headers）、API 机制（API mechanics）、JSON 数据格式（JSON payloads）或配置修改（config patches）。  
+  - 仅在调试时或用户明确询问“它是如何工作的？”时才提供技术细节。  
+- 默认情况下，不要显示内部 ID：  
+    - 除非用户请求，否则不要显示 `ws_...`、`todo_...`、`rec_todo_...` 等内容。  
+    - 使用任务的**名称**来引用工作区和任务。  
+    - 如果需要区分同名任务，请先询问用户以获取明确的信息，然后提供任务的名称列表；只有在用户要求时才显示 ID。  
+  - 对于任务的分类（四个象限），在聊天中使用通俗的语言，例如：“紧急且重要”、“重要（不紧急）”、“紧急（不重要）”、“两者都不是”。  
+  - 在内部调用 API 时使用 `IU | IN | NU | NN` 这些缩写；只有当用户首先提及代码或明确要求时才显示代码。  
 
-## Runtime Requirement
-
-- `curl` must be available on `PATH` (and inside the sandbox container, if the agent is sandboxed).
-
-## User-facing output rules (important)
-
-- Be non-technical by default. Focus on outcomes, not implementation.
-  - Avoid mentioning: curl, endpoints, headers, API mechanics, JSON payloads, config patches.
-  - Mention technical details only when debugging or if the user explicitly asks “how does it work?”.
-- Do not print internal IDs by default:
-  - Do **not** show `ws_...`, `todo_...`, `rec_todo_...` unless the user asks.
-  - Refer to workspaces and tasks by **name**.
-  - If disambiguation is needed (duplicate names), ask a clarifying question and present a short numbered list of names; only offer IDs if the user requests them.
-- Quadrants:
-  - In chat, prefer plain language: “urgent & important”, “important (not urgent)”, “urgent (not important)”, “neither”.
-  - Use `IU | IN | NU | NN` internally for API calls. Only show codes if the user uses codes first or explicitly asks.
-
-### Examples (preferred)
-
-Workspaces:
-
-```
+### 示例（推荐）  
+- 工作区（Workspaces）：  
+  ```
 Your workspaces:
 1) Haoya (default)
 2) 4todo
 3) Echopark
-```
-
-Todos (summary):
-
-```
+```  
+- 待办事项（Todos）：  
+  ```
 Urgent & important:
 1) UK company dissolution
 2) Hetzner monthly payment (recurring, monthly)
 
 Important (not urgent):
 1) Weekly review (recurring, Fridays)
-```
+```  
 
-## Store / Inject the Token in OpenClaw (recommended)
+## 在 OpenClaw 中存储/注入令牌（推荐）  
+OpenClaw 只能在代理运行期间注入环境变量（运行结束后会恢复原始环境设置），这有助于保护敏感信息的安全。  
+**生产环境推荐做法**：使用托管提供商提供的秘密存储服务，在 Gateway 进程中设置 `FOURTODO_API_TOKEN`，切勿将令牌保存在聊天记录中。  
 
-OpenClaw can inject environment variables only for the duration of an agent run (then restores the original env), which helps keep secrets out of prompts.
-
-Recommended (production): set `FOURTODO_API_TOKEN` in your Gateway process environment using your hosting provider’s secret store, and do not store tokens in chat logs.
-
-### Host runs (not sandboxed): use `skills.entries`
-
-Edit `~/.openclaw/openclaw.json`:
-
+### 非沙箱环境（非沙箱运行）：使用 `skills.entries`  
+编辑 `~/.openclaw/openclaw.json`：  
 ```json5
 {
   skills: {
@@ -81,15 +68,13 @@ Edit `~/.openclaw/openclaw.json`:
     }
   }
 }
-```
+```  
 
-Notes:
-- `skills.entries.<skill>.env` is injected only if the variable is not already set.
+**注意事项**：  
+- `skills.entries.<skill>.env` 仅在变量尚未设置时才会被注入。  
 
-### Sandboxed sessions: use `agents.defaults.sandbox.docker.env`
-
-When a session is sandboxed, skill env injection does **not** propagate into the Docker container. Provide the token via Docker env:
-
+### 沙箱环境：使用 `agentsdefaults.sandbox.docker.env`  
+当会话处于沙箱环境中时，技能相关的环境变量不会传播到 Docker 容器中。请通过 Docker 环境变量提供令牌：  
 ```json5
 {
   agents: {
@@ -104,58 +89,50 @@ When a session is sandboxed, skill env injection does **not** propagate into the
     }
   }
 }
-```
+```  
 
-## Request Conventions
+## 请求规范  
+- 每个请求都必须包含 `Authorization: Bearer <token>`。  
+- 带有 JSON 数据体的请求必须指定 `Content-Type: application/json`。  
+- 请求 `/todos` 时需要提供 `workspace` 查询参数。  
+- 任务分类使用 `IU | IN | NU | NN` 这些缩写。  
 
-- Every request must include `Authorization: Bearer <token>`.
-- Requests with a JSON body must include `Content-Type: application/json`.
-- `GET /todos` requires a `workspace` query parameter.
-- Quadrants: `IU | IN | NU | NN` (internal).
-
-## Workflow (recommended order)
-
-Copy this checklist and keep it updated while executing:
-
+## 工作流程（推荐顺序）  
+复制此清单并在执行过程中持续更新：  
 ```
 Task checklist:
 - [ ] List workspaces (pick `ws_...`)
 - [ ] List todos for that workspace
 - [ ] Perform the requested mutation (create / complete / reorder / recurring)
 - [ ] Re-fetch to verify the change
-```
+```  
+1. `GET /workspaces`：选择一个目标工作区（通常为默认工作区）。  
+2. `GET /todos?workspace=ws_...`：获取按分类分组的所有待办事项。  
+3. 创建新任务：`POST /todos`。  
+4. 完成任务：`POST /todos/:id/complete`（该操作是幂等的）。  
+5. 重新排序或移动任务：`POST /todos/reorder`。  
+6. 管理定期重复的任务：使用 `/recurring-todos` 端点。  
 
-1. `GET /workspaces`: pick a target `ws_...` (usually the default workspace).
-2. `GET /todos?workspace=ws_...`: fetch todos (grouped by quadrant).
-3. Create: `POST /todos`.
-4. Complete: `POST /todos/:id/complete` (idempotent).
-5. Reorder / move quadrant: `POST /todos/reorder`.
-6. Recurring todos: use the `/recurring-todos` endpoints.
-
-## HTTP Examples (curl)
-
-This skill intentionally uses `curl` for maximum portability across OSes and environments.
-
-Notes:
-- HTTPS only (`https://4to.do/api/v0`).
-- Always pass the token via `FOURTODO_API_TOKEN` (never paste tokens into chat).
-
+## HTTP 请求示例（使用 `curl`）  
+本技能特意使用 `curl`，以确保其在不同操作系统和环境中的兼容性。  
+**注意事项**：  
+- 仅使用 HTTPS 协议（`https://4to.do/api/v0`）。  
+- 始终通过 `FOURTODO_API_TOKEN` 传递令牌（切勿将令牌粘贴到聊天记录中）。  
 ```bash
 curl -sS -H "Authorization: Bearer $FOURTODO_API_TOKEN" -H "Accept: application/json" "https://4to.do/api/v0/workspaces"
 curl -sS -H "Authorization: Bearer $FOURTODO_API_TOKEN" -H "Accept: application/json" "https://4to.do/api/v0/todos?workspace=ws_...&show=all"
 curl -sS -X POST -H "Authorization: Bearer $FOURTODO_API_TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" --data-raw '{"name":"...","quadrant":"IU","workspace_id":"ws_..."}' "https://4to.do/api/v0/todos"
 curl -sS -X POST -H "Authorization: Bearer $FOURTODO_API_TOKEN" -H "Accept: application/json" "https://4to.do/api/v0/todos/todo_.../complete"
 curl -sS -X POST -H "Authorization: Bearer $FOURTODO_API_TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" --data-raw '{"moved_todo_id":"todo_...","previous_todo_id":"todo_...","next_todo_id":null,"quadrant":"IN"}' "https://4to.do/api/v0/todos/reorder"
-```
-Note: if `moved_todo_id` starts with `rec_todo_`, the API updates only the recurring todo quadrant and ignores `previous_todo_id/next_todo_id`.
+```  
 
-## Common Error Handling (agent guidance)
+**注意**：如果 `moved_todo_id` 以 `rec_todo_` 开头，API 仅更新该定期重复任务的分类，而不会修改 `previous_todo_id` 或 `next_todo_id`。  
 
-- `401 token_expired / invalid_token`: stop retrying; ask the user to create a new token in 4todo settings and update OpenClaw config.
-- `402 WORKSPACE_RESTRICTED`: the workspace is read-only; do not retry mutations; switch workspace or prompt user to upgrade/unlock.
-- `429 rate_limited`: honor `Retry-After` / `X-RateLimit-*` and back off before retry.
-- `400 Invalid quadrant type`: ensure quadrant is one of `IU|IN|NU|NN`.
+## 常见错误处理（给代理的提示）  
+- `401 token_expired`/`invalid_token`：停止重试；请用户重新生成令牌并更新 OpenClaw 配置。  
+- `402 WORKSPACE_RESTRICTED`：当前工作区为只读模式；请切换工作区或提示用户升级/解锁权限。  
+- `429 rate_limited`：遵守 `Retry-After` 或 `X-RateLimit-*` 的限制，适当延迟后再重试。  
+- `400 Invalid quadrant type`：确保任务分类属于 `IU | IN | NU | NN` 中的一个。  
 
-## Reference
-
-- Full API doc bundled with this skill: `{baseDir}/references/api_v0.md`
+## 参考资料  
+- 该技能的完整 API 文档位于：`{baseDir}/references/api_v0.md`

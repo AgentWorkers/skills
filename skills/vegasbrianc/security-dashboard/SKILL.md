@@ -1,94 +1,80 @@
 ---
 name: security-dashboard
-description: Real-time security monitoring dashboard for OpenClaw and Linux server infrastructure. Monitors gateway status, network security, public exposure, system updates, SSH access, TLS certificates, and resource usage.
+description: OpenClaw 和 Linux 服务器基础设施的实时安全监控仪表板。该仪表板可监控网关状态、网络安全状况、系统公开程度、系统更新情况、SSH 访问情况、TLS 证书以及资源使用情况。
 ---
 
-# Security Dashboard Skill
+# 安全监控面板技能  
+（Security Monitoring Dashboard Skill）  
 
-Real-time security monitoring dashboard for OpenClaw and Linux server infrastructure.
+这是一个用于 OpenClaw 和 Linux 服务器基础设施的实时安全监控面板。  
 
-## Features
+## 主要功能  
+- **OpenClaw 安全性监控：** 网关状态、绑定配置、身份验证、会话信息、版本跟踪  
+- **网络安全：** Tailscale 连接状态、公共端口、防火墙状态、活跃连接数  
+- **公开暴露风险：** 端口绑定分析、面板安全性评估、暴露程度判定  
+- **系统安全性：** 系统更新信息、运行时间、负载情况、登录失败记录  
+- **SSH 与访问控制：** 密码认证状态、fail2ban 配置、被禁止的 IP 地址、活跃会话  
+- **证书与 TLS：** Caddy 服务器状态、TLS 配置、WireGuard 加密设置  
+- **资源使用情况：** CPU/内存/磁盘使用率、配置文件权限  
 
-- **OpenClaw Security:** Gateway status, binding, authentication, sessions, version tracking
-- **Network Security:** Tailscale status, public ports, firewall, active connections
-- **Public Exposure:** Port binding analysis, dashboard security, exposure level assessment
-- **System Security:** Updates, uptime, load, failed login attempts
-- **SSH & Access:** Password auth status, fail2ban, banned IPs, active sessions
-- **Certificates & TLS:** Caddy status, TLS configuration, WireGuard encryption
-- **Resource Security:** CPU/memory/disk usage, config file permissions
+## 安装步骤  
 
-## Installation
-
-### 1. Install the Skill
-
+### 1. 安装该技能  
 ```bash
 cd /root/clawd/skills/security-dashboard
 sudo ./scripts/install.sh
-```
+```  
 
-This will:
-- **Ask user preference:** Run as dedicated user (recommended) or root
-- Create `openclaw-dashboard` user with limited sudo privileges (if non-root)
-- Create systemd service with security hardening
-- Configure localhost binding (127.0.0.1 only)
-- Start the dashboard on port 18791
-- Enable auto-start on boot
+安装过程将：  
+- **询问用户偏好：** 是否以专用用户（推荐）或 root 用户身份运行  
+- 如果非 root 用户，创建具有有限 sudo 权限的 `openclaw-dashboard` 用户  
+- 创建带有安全加固功能的 systemd 服务  
+- 配置仅绑定到本地主机（127.0.0.1）  
+- 在端口 18791 上启动监控面板  
+- 设置系统启动时自动启动该服务  
 
-**Security Note:** Running as a dedicated user with limited sudo is recommended. The dashboard only needs sudo for security checks (fail2ban, firewall, systemctl status) - not full root access.
+**安全提示：** 建议以具有有限 sudo 权限的专用用户身份运行该服务。监控面板仅在需要执行安全检查（如 fail2ban、防火墙配置、systemctl 命令）时才需要 root 权限，无需完全的 root 权限。  
 
-### 2. Access the Dashboard
-
-**Localhost only (secure by default):**
-
-Via SSH port forwarding:
+### 2. 访问监控面板  
+**仅限本地主机（默认为安全模式）：**  
+通过 SSH 端口转发访问：  
 ```bash
 ssh -L 18791:localhost:18791 root@YOUR_SERVER_IP
-```
+```  
+然后访问：`http://localhost:18791`  
 
-Then visit: http://localhost:18791
-
-## Usage
-
-### Start/Stop/Restart
-
+## 使用方法  
+- **启动/停止/重启监控面板：**  
 ```bash
 sudo systemctl start security-dashboard
 sudo systemctl stop security-dashboard
 sudo systemctl restart security-dashboard
-```
-
-### Check Status
-
+```  
+- **查看面板状态：**  
 ```bash
 sudo systemctl status security-dashboard
-```
-
-### View Logs
-
+```  
+- **查看日志：**  
 ```bash
 sudo journalctl -u security-dashboard -f
-```
-
-### API Endpoint
-
-Get raw security metrics:
+```  
+- **获取原始安全数据：**  
 ```bash
 curl http://localhost:18791/api/security | jq
-```
+```  
 
-## Security Hardening
+## 安全加固措施  
+该监控面板遵循最佳安全实践，以最小化攻击面：  
 
-The dashboard follows security best practices to minimize attack surface:
+### 推荐使用专用用户  
+安装脚本会创建一个具有 **有限 sudo 权限** 的 `openclaw-dashboard` 用户：  
+- ✅ 无 shell 访问权限（`/bin/false`）  
+- ✅ 无个人目录  
+- ✅ 仅允许执行特定的 sudo 命令（如 fail2ban、防火墙配置、systemctl 命令）  
+- ✅ 无法执行任意命令  
 
-### Dedicated User (Recommended)
-The install script creates a `openclaw-dashboard` user with **limited sudo privileges**:
-- ✅ No shell access (`/bin/false`)
-- ✅ No home directory
-- ✅ Only specific sudo commands allowed (fail2ban, firewall, systemctl status)
-- ✅ Cannot execute arbitrary commands
-
-### Systemd Hardening
-Service runs with security restrictions:
+### systemd 安全加固  
+该服务运行时受到严格的安全限制：  
 ```ini
 NoNewPrivileges=true      # Cannot escalate privileges
 PrivateTmp=true          # Isolated tmp directory
@@ -96,241 +82,183 @@ ProtectSystem=strict     # Read-only filesystem except skill dir
 ProtectHome=true         # No access to /home
 ReadWritePaths=...       # Only skill directory is writable
 Restart=on-failure       # Restart only on crashes (not always)
-```
+```  
 
-### Network Binding
-- **Default:** `127.0.0.1` (localhost only)
-- Not accessible from network without SSH tunnel or VPN
-- No public exposure risk
+### 网络绑定设置  
+- **默认设置：** 仅绑定到本地主机（127.0.0.1）  
+- 无法通过非 SSH 隧道或 VPN 从外部访问  
+- 无公开暴露风险  
 
-### Running as Root (Not Recommended)
-If you choose `root` during install:
-- ⚠️ Full system access if compromised
-- ⚠️ No privilege separation
-- ⚠️ Only suitable for trusted, isolated environments
+### 不建议以 root 用户身份运行  
+如果在安装时选择 root 用户：  
+- ⚠️ 一旦被攻击，将获得完整系统访问权限  
+- ⚠️ 无法实现权限分离  
+- ⚠️ 仅适用于受信任的、隔离的环境  
 
-Use the dedicated user option for production deployments.
+在生产环境中，请务必使用专用用户。  
 
-## Configuration
+## 配置选项  
 
-### Change Port
-
-Edit `/root/clawd/skills/security-dashboard/server.js`:
+### 更改端口号  
+编辑 `/root/clawd/skills/security-dashboard/server.js` 文件：  
 ```javascript
 const PORT = 18791; // Change this
-```
-
-Then restart:
+```  
+然后重启服务：  
 ```bash
 sudo systemctl restart security-dashboard
-```
+```  
 
-### Change Binding
-
-**Default:** `127.0.0.1` (localhost only - secure)  
-**Alternative:** `0.0.0.0` (all interfaces - only with Tailscale!)
-
-Edit `server.js` line 445:
+### 更改绑定地址  
+- **默认设置：** 仅绑定到本地主机（127.0.0.1）  
+- **备选设置：** 绑定到所有网络接口（0.0.0.0，仅适用于使用 Tailscale 的环境）  
+编辑 `server.js` 文件的第 445 行：  
 ```javascript
 server.listen(PORT, '127.0.0.1', () => {
   // Change '127.0.0.1' to '0.0.0.0' if needed
 });
-```
+```  
+**注意：** 仅在通过 Tailscale 或防火墙保护的环境下才能将绑定地址设置为 0.0.0.0！  
 
-⚠️ **Security Warning:** Only bind to `0.0.0.0` if behind Tailscale or firewall!
+### 自定义监控指标  
+可以在 `server.js` 文件中添加自定义监控指标：  
+- `getOpenClawMetrics()`：OpenClaw 相关指标  
+- `getNetworkMetrics()`：网络安全指标  
+- `getSystemMetrics()`：系统级指标  
+- `getPublicExposure()`：端口/绑定配置分析  
 
-### Customize Metrics
+## 监控面板各部分说明  
 
-Add custom checks in `server.js`:
-- `getOpenClawMetrics()` - OpenClaw-specific metrics
-- `getNetworkMetrics()` - Network security
-- `getSystemMetrics()` - System-level checks
-- `getPublicExposure()` - Port/binding analysis
+### 🦞 OpenClaw 安全性  
+- 网关运行状态  
+- 绑定配置（本地/公共网络）  
+- 身份验证令牌长度及模式  
+- 活跃会话数及子代理数量  
+- 技能（Skill）数量  
+- 当前版本及更新可用性  
 
-## Dashboard Sections
+### 🌐 网络安全  
+- Tailscale 连接状态及 IP 地址  
+- 公共端口数量  
+- 防火墙状态（UFW/Firewalld）  
+- 活跃的 TCP 连接数  
 
-### 🦞 OpenClaw Security
-- Gateway running/stopped status
-- Binding configuration (loopback/public)
-- Auth token length and mode
-- Active sessions + subagents
-- Skills count
-- Current version + update availability
+### 🌍 公开暴露风险  
+- 暴露程度（优秀/最低/警告/高）  
+- 公共端口详细信息  
+- Kanban 板绑定状态  
+- OpenClaw 网关绑定状态  
+- Tailscale 的激活/关闭状态  
+- 安全建议  
 
-### 🌐 Network Security
-- Tailscale connection status + IP
-- Public ports count
-- Firewall status (UFW/firewalld)
-- Active TCP connections
+### 🖥️ 系统安全性  
+- 可用的系统更新  
+- 服务器运行时间  
+- 平均负载  
+- 24 小时内的登录失败记录  
+- root 进程数量  
 
-### 🌍 Public Exposure
-- Exposure level (Excellent/Minimal/Warning/High)
-- Public port details (service names)
-- Kanban board binding
-- Security dashboard binding
-- OpenClaw gateway binding
-- Tailscale active/inactive
-- Security recommendations
+### 🔑 SSH 与访问控制  
+- SSH 服务状态  
+- 密码认证状态（启用/禁用）  
+- fail2ban 配置  
+- 被禁止的 IP 地址数量  
+- 活跃的 SSH 会话  
 
-### 🖥️ System Security
-- Updates available
-- Server uptime
-- Load average
-- Failed SSH logins (24h)
-- Root processes count
+### 📜 证书与 TLS  
+- Caddy 服务器状态  
+- TLS 功能的启用/禁用  
+- WireGuard 加密状态  
 
-### 🔑 SSH & Access Control
-- SSH service status
-- Password authentication (enabled/disabled)
-- fail2ban status
-- Banned IPs count
-- Active SSH sessions
+### 📊 资源使用情况  
+- CPU/内存/磁盘使用率  
+- 配置文件权限（应为 600）  
 
-### 📜 Certificates & TLS
-- Caddy status
-- Public TLS enabled/disabled
-- Tailscale WireGuard encryption
+## 安全警报  
+监控面板会生成实时警报：  
+- **严重警告（红色）：** 网关令牌长度过短（< 32 个字符）  
+- SSH 密码认证功能启用  
+- 配置文件权限不安全（非 600 权限）  
+- 防火墙未启用（UFW/Firewalld 不运行）  
+- fail2ban 功能未启用（SSH 暴力破解保护未激活）  
+- **警告（黄色）：** Tailscale 连接中断  
+- 有 20 多个系统更新可用  
+- 24 小时内有 10 次以上登录失败  
+- 磁盘使用率超过 80%  
+- **信息提示（蓝色）：** 未使用 Tailscale 时网关暴露  
 
-### 📊 Resource Security
-- CPU usage percentage
-- Memory usage percentage
-- Disk usage percentage
-- Config file permissions (should be 600)
+## 集成方式  
+- **晨间报告：** 将安全状态信息添加到晨间报告中  
+- **心跳检测：** 监控严重警报  
+- **警报通知：** 将警报信息发送到通知系统  
 
-## Security Alerts
+## 架构说明  
+- **后端：** Node.js HTTP 服务器  
+- **前端：** 纯 JavaScript（无框架）  
+- **端口：** 18791（可配置）  
+- **绑定地址：** 仅绑定到本地主机（127.0.0.1）  
+- **服务管理：** 使用 systemd 管理  
 
-Dashboard generates real-time alerts:
+**相关文件：**  
+- `server.js`：主要后端逻辑（数据收集与 API 接口）  
+- `public/index.html`：监控面板用户界面  
+- `lib/`：共享工具库（如需使用）  
 
-**Critical (Red):**
-- Weak gateway token (< 32 chars)
-- SSH password authentication enabled
-- Insecure config permissions (not 600)
-- **Firewall inactive** (UFW/firewalld not running)
-- **fail2ban inactive** (SSH brute-force protection disabled)
+## 所需依赖库  
+- Node.js（版本 18 及以上）  
+- `systemctl`：服务管理工具  
+- `ss`：套接字统计工具  
+- `ufw` 或 `firewalld`：防火墙检查工具  
+- `tailscale`：VPN 状态检测工具（可选）  
+- `fail2ban`：禁止访问记录工具（可选）  
+- `openclaw`：网关监控工具  
 
-**Warning (Yellow):**
-- Tailscale disconnected
-- 20+ system updates available
-- 10+ failed login attempts in 24h
-- Disk > 80% full
+所有依赖库均为标准 Linux 工具，除 OpenClaw 本身外。  
 
-**Info (Blue):**
-- Gateway exposed without Tailscale
-- Non-standard configurations
-
-## Integration Points
-
-### Morning Briefing
-Add security status to morning report:
-```bash
-curl -s http://localhost:18791/api/security | jq '.status'
-```
-
-### Heartbeat Checks
-Monitor for critical alerts:
-```bash
-curl -s http://localhost:18791/api/security | \
-  jq '.alerts[] | select(.level == "critical")'
-```
-
-### Alerting Integration
-Pipe alerts to notification systems:
-```bash
-./scripts/check-alerts.sh | xargs -I {} notify-send "Security Alert" "{}"
-```
-
-## Architecture
-
-**Backend:** Node.js HTTP server  
-**Frontend:** Vanilla JavaScript (no frameworks)  
-**Port:** 18791 (configurable)  
-**Binding:** 127.0.0.1 (localhost only)  
-**Service:** systemd unit  
-
-**Files:**
-- `server.js` - Main backend (metrics collection + API)
-- `public/index.html` - Dashboard UI
-- `lib/` - Shared utilities (if needed)
-
-## Dependencies
-
-- Node.js (v18+)
-- `systemctl` - Service management
-- `ss` - Socket statistics
-- `ufw` or `firewalld` - Firewall check
-- `tailscale` - VPN status (optional)
-- `fail2ban` - Ban tracking (optional)
-- `openclaw` - Gateway monitoring
-
-All dependencies are standard Linux utilities except OpenClaw.
-
-## Troubleshooting
-
-### Dashboard not loading
-
-1. Check service status:
-   ```bash
+## 故障排除  
+- **监控面板无法加载？**  
+  1. 检查服务状态：```bash
    sudo systemctl status security-dashboard
-   ```
-
-2. Check logs:
-   ```bash
+   ```  
+  2. 查看日志：```bash
    sudo journalctl -u security-dashboard -n 50
-   ```
-
-3. Verify port is listening:
-   ```bash
+   ```  
+  3. 确认端口是否正在监听：```bash
    ss -tlnp | grep 18791
-   ```
-
-4. Test API directly:
-   ```bash
+   ```  
+  4. 直接测试 API 接口：```bash
    curl http://localhost:18791/api/security
-   ```
+   ```  
 
-### Gateway Status "Unknown"
-
-- Verify OpenClaw gateway is running:
-  ```bash
+- **网关状态显示为“未知”？**  
+  1. 确认 OpenClaw 网关正在运行：```bash
   pgrep -f openclaw-gateway
-  ```
-
-- Check OpenClaw config exists:
-  ```bash
+  ```  
+  2. 检查 OpenClaw 配置文件是否存在：```bash
   cat ~/.openclaw/openclaw.json
-  ```
+  ```  
 
-### Metrics showing "Unknown"
+- **指标显示为“未知”？**  
+  1. 可能需要 sudo 权限来执行某些命令  
+  2. 检查脚本的执行权限  
+  3. 确认相关文件路径存在（如会话数据、配置文件等）  
 
-- Commands may require sudo permissions
-- Check script execution permissions
-- Verify paths exist (sessions, skills, etc.)
-
-## Uninstall
-
+## 卸载该技能  
 ```bash
 sudo systemctl stop security-dashboard
 sudo systemctl disable security-dashboard
 sudo rm /etc/systemd/system/security-dashboard.service
 sudo systemctl daemon-reload
-```
-
-Then remove skill directory:
-```bash
+```  
+卸载后请删除对应的技能目录：```bash
 rm -rf /root/clawd/skills/security-dashboard
-```
+```  
 
-## Publishing
+## 发布方式  
+若需将此技能发布到 ClawdHub，可参考相关文档。  
 
-To publish to ClawdHub:
-```bash
-clawdhub publish security-dashboard
-```
+## 许可证  
+该技能采用 MIT 许可协议。  
 
-## License
-
-MIT
-
-## Author
-
-Created by Erdma for Brian Christner's infrastructure monitoring.
+**作者说明：**  
+由 Erdma 为 Brian Christner 的基础设施监控项目开发。

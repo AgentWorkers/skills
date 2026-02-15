@@ -1,17 +1,17 @@
 ---
 name: local-stt
-description: Local STT with selectable backends - Parakeet (best accuracy) or Whisper (fastest, multilingual).
+description: 本地语音转文本（STT）功能支持多种后端选择：Parakeet（准确率最高）或Whisper（转换速度最快，支持多语言）。
 metadata: {"openclaw":{"emoji":"🎙️","requires":{"bins":["ffmpeg"]}}}
 ---
 
-# Local STT (Parakeet / Whisper)
+# 本地语音转文本（Parakeet / Whisper）
 
-Unified local speech-to-text using ONNX Runtime with int8 quantization. Choose your backend:
+通过 ONNX Runtime 实现统一的本地语音转文本功能，并采用 int8 量化技术。您可以选择以下后端之一：
 
-- **Parakeet** (default): Best accuracy for English, correctly captures names and filler words
-- **Whisper**: Fastest inference, supports 99 languages
+- **Parakeet**（默认）：针对英语具有最高的准确性，能够准确识别人名和填充词。
+- **Whisper**：推理速度最快，支持 99 种语言。
 
-## Usage
+## 使用方法
 
 ```bash
 # Default: Parakeet v2 (best English accuracy)
@@ -25,37 +25,37 @@ Unified local speech-to-text using ONNX Runtime with int8 quantization. Choose y
 ~/.openclaw/skills/local-stt/scripts/local-stt.py audio.ogg --quiet
 ```
 
-## Options
+## 参数选项
 
-- `-b/--backend`: `parakeet` (default), `whisper`
-- `-m/--model`: Model variant (see below)
-- `--no-int8`: Disable int8 quantization
-- `-q/--quiet`: Suppress progress
-- `--room-id`: Matrix room ID for direct message
+- `-b/--backend`：`parakeet`（默认），`whisper`
+- `-m/--model`：模型版本（详见下文）
+- `--no-int8`：禁用 int8 量化
+- `-q/--quiet`：抑制进度显示
+- `--room-id`：用于直接消息传递的房间 ID
 
-## Models
+## 模型
 
-### Parakeet (default backend)
-| Model | Description |
+### Parakeet（默认后端）
+| 模型 | 描述 |
 |-------|-------------|
-| **v2** (default) | English only, best accuracy |
-| v3 | Multilingual |
+| **v2**（默认） | 仅支持英语，具有最高的准确性 |
+| v3 | 支持多种语言 |
 
 ### Whisper
-| Model | Description |
+| 模型 | 描述 |
 |-------|-------------|
-| tiny | Fastest, lower accuracy |
-| **base** (default) | Good balance |
-| small | Better accuracy |
-| large-v3-turbo | Best quality, slower |
+| tiny | 推理速度最快，但准确性较低 |
+| **base**（默认） | 性能与准确性之间的平衡较好 |
+| small | 准确性更高 |
+| large-v3-turbo | 转换质量最佳，但速度较慢 |
 
-## Benchmark (24s audio)
+## 基准测试（24 秒音频）
 
-| Backend/Model | Time | RTF | Notes |
+| 后端/模型 | 处理时间 | RTF（实时转文本） | 备注 |
 |---------------|------|-----|-------|
-| Whisper Base int8 | 0.43s | 0.018x | Fastest |
-| **Parakeet v2 int8** | 0.60s | 0.025x | Best accuracy |
-| Parakeet v3 int8 | 0.63s | 0.026x | Multilingual |
+| Whisper Base int8 | 0.43 秒 | 0.018 倍 | 推理速度最快 |
+| **Parakeet v2 int8** | 0.60 秒 | 0.025 倍 | 准确性最高 |
+| Parakeet v3 int8 | 0.63 秒 | 0.026 倍 | 支持多种语言 |
 
 ## openclaw.json
 

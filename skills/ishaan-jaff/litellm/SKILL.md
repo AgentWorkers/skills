@@ -1,20 +1,20 @@
 ---
 name: litellm
-description: Call 100+ LLM providers through LiteLLM's unified API. Use when you need to call a different model than your primary (e.g., use GPT-4 for code review while running on Claude), compare outputs from multiple models, route to cheaper models for simple tasks, or access models your runtime doesn't natively support.
+description: 通过 LiteLLM 的统一 API，您可以调用 100 多个大型语言模型（LLM）提供商的服务。当您需要使用与当前模型不同的模型时（例如，在使用 Claude 的同时调用 GPT-4 进行代码审查），或者需要比较多个模型的输出结果，又或者需要为简单任务选择成本更低的模型，或者访问您的运行时环境不原生支持的模型时，都可以使用此功能。
 ---
 
-# LiteLLM - Multi-Model LLM Calls
+# LiteLLM - 多模型大语言模型（LLM）调用
 
-Use LiteLLM when you need to call LLMs beyond your primary model.
+当您需要调用超出自己主要模型范围的其他大语言模型（LLM）时，可以使用 LiteLLM。
 
-## When to Use
+## 使用场景
 
-- **Model comparison**: Get outputs from multiple models and compare
-- **Specialized routing**: Use code-optimized models for code, writing models for prose
-- **Cost optimization**: Route simple queries to cheaper models
-- **Fallback access**: Access models your runtime doesn't support
+- **模型比较**：从多个模型获取输出并进行对比
+- **特定任务处理**：使用针对特定任务优化的模型（如代码生成或文本创作）
+- **成本优化**：将简单查询路由到成本更低的模型
+- **备用模型**：访问运行时未支持的模型
 
-## Quick Start
+## 快速入门
 
 ```python
 import litellm
@@ -27,9 +27,9 @@ response = litellm.completion(
 print(response.choices[0].message.content)
 ```
 
-## Common Patterns
+## 常见用法
 
-### Compare Multiple Models
+### 比较多个模型
 
 ```python
 import litellm
@@ -42,7 +42,7 @@ for model in models:
     print(f"{model}: {resp.choices[0].message.content[:200]}...")
 ```
 
-### Route by Task Type
+### 按任务类型路由请求
 
 ```python
 import litellm
@@ -62,9 +62,9 @@ def smart_call(task_type: str, prompt: str) -> str:
     return resp.choices[0].message.content
 ```
 
-### Use LiteLLM Proxy (Recommended)
+### 推荐使用 LiteLLM 代理
 
-If a LiteLLM proxy is available, point to it for caching, rate limiting, and observability:
+如果可用，建议使用 LiteLLM 代理来实现缓存、速率限制和性能监控功能：
 
 ```python
 import litellm
@@ -78,9 +78,9 @@ response = litellm.completion(
 )
 ```
 
-## Environment Setup
+## 环境配置
 
-Ensure `litellm` is installed and API keys are set:
+确保已安装 `litellm` 并配置好 API 密钥：
 
 ```bash
 pip install litellm
@@ -90,12 +90,12 @@ export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-..."
 ```
 
-## Model Reference
+## 模型参考
 
-Common model identifiers:
-- **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `o1-preview`, `o1-mini`
-- **Anthropic**: `claude-sonnet-4-20250514`, `claude-opus-4-20250514`
-- **Google**: `gemini/gemini-1.5-pro`, `gemini/gemini-1.5-flash`
-- **Mistral**: `mistral/mistral-large-latest`
+常见模型标识符：
+- **OpenAI**：`gpt-4o`, `gpt-4o-mini`, `o1-preview`, `o1-mini`
+- **Anthropic**：`claude-sonnet-4-20250514`, `claude-opus-4-20250514`
+- **Google**：`gemini/gemini-1.5-pro`, `gemini/gemini-1.5-flash`
+- **Mistral**：`mistral/mistral-large-latest`
 
-Full list: https://docs.litellm.ai/docs/providers
+完整模型列表：https://docs.litellm.ai/docs/providers

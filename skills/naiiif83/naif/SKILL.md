@@ -1,38 +1,38 @@
 ---
 name: vibetrader
-description: Create and manage AI-powered trading bots via natural language. Paper & live trading, portfolio monitoring, backtesting, stock quotes, and options chains.
+description: 通过自然语言创建和管理基于人工智能的交易机器人。支持模拟交易（Paper Trading）和实时交易（Live Trading）、投资组合监控（Portfolio Monitoring）、回测（Backtesting）、股票报价（Stock Quotes）以及期权链（Option Chains）功能。
 homepage: https://vibetrader.markets
 metadata: {"openclaw":{"homepage":"https://vibetrader.markets","category":"finance","requires":{"env":["VIBETRADER_API_KEY"]}}}
 ---
 
-# VibeTrader - AI Trading Bots
+# VibeTrader - 人工智能交易机器人
 
-Create and manage AI-powered trading bots using natural language. Trade stocks, ETFs, crypto, and options with automated strategies.
+使用自然语言创建和管理由人工智能驱动的交易机器人，可自动执行股票、ETF、加密货币和期权的交易策略。
 
-## What You Can Do
+## 您可以做什么
 
-### 🤖 Bot Management
-- **Create bots** from natural language: "Create a bot that buys AAPL when RSI drops below 30"
-- **List, start, pause, delete** your bots
-- **View bot performance** and trade history
-- **Backtest strategies** before going live
+### 🤖 机器人管理
+- **通过自然语言创建机器人**：例如：“创建一个在RSI指数低于30时买入AAPL的机器人”
+- **列出、启动、暂停或删除您的机器人**
+- **查看机器人性能**和交易历史记录**
+- **在上线前对策略进行回测**
 
-### 📊 Portfolio & Trading
-- **View positions** and account balance
-- **Get real-time quotes** for stocks, ETFs, and crypto
-- **Place manual orders** (buy/sell)
-- **Switch between paper and live trading**
+### 📊 投资组合与交易
+- **查看持仓**和账户余额**
+- **获取股票、ETF和加密货币的实时报价**
+- **下达手动交易指令（买入/卖出）**
+- **在模拟交易和真实交易模式之间切换**
 
-### 📈 Market Data
-- Stock and ETF quotes
-- Options chains with Greeks
-- Market status checks
+### 📈 市场数据
+- **股票和ETF的报价**
+- **包含希腊字母的期权链**
+- **市场状态查询**
 
-## Setup
+## 设置
 
-1. **Get your API key** from [vibetrader.markets/settings](https://vibetrader.markets/settings)
+1. 从 [vibetrader.markets/settings](https://vibetrader.markets/settings) 获取您的API密钥。
 
-2. **Set the environment variable** in your OpenClaw config (`~/.openclaw/openclaw.json`):
+2. 在您的OpenClaw配置文件（`~/.openclaw/openclaw.json`）中设置环境变量：
 
 ```json
 {
@@ -48,76 +48,76 @@ Create and manage AI-powered trading bots using natural language. Trade stocks, 
 }
 ```
 
-Or export it in your shell:
+或者通过shell导出该密钥：
 ```bash
 export VIBETRADER_API_KEY="vt_your_api_key_here"
 ```
 
-## Available Tools
+## 可用工具
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `authenticate` | Connect with your API key (auto-uses env var if set) |
-| `create_bot` | Create a trading bot from natural language |
-| `list_bots` | List all your bots with status |
-| `get_bot` | Get detailed bot info and strategy |
-| `start_bot` | Start a paused bot |
-| `pause_bot` | Pause a running bot |
-| `delete_bot` | Delete a bot |
-| `get_portfolio` | View positions and balance |
-| `get_positions` | View current open positions |
-| `get_account_summary` | Get account balance and buying power |
-| `place_order` | Place a buy/sell order |
-| `close_position` | Close an existing position |
-| `get_quote` | Get stock/ETF/crypto quotes |
-| `get_trade_history` | See recent trades |
-| `run_backtest` | Backtest a bot's strategy |
-| `get_market_status` | Check if markets are open |
+| `authenticate` | 使用API密钥进行连接（如果设置了环境变量，则自动使用该密钥） |
+| `create_bot` | 通过自然语言创建交易机器人 |
+| `list_bots` | 列出所有机器人的状态 |
+| `get_bot` | 获取机器人的详细信息和交易策略 |
+| `start_bot` | 启动暂停的机器人 |
+| `pause_bot` | 暂停正在运行的机器人 |
+| `delete_bot` | 删除机器人 |
+| `get_portfolio` | 查看持仓和余额 |
+| `get_positions` | 查看当前未平仓的头寸 |
+| `get_account_summary` | 获取账户余额和可用资金 |
+| `place_order` | 下达买入/卖出订单 |
+| `close_position` | 平仓现有头寸 |
+| `get_quote` | 获取股票/ETF/加密货币的报价 |
+| `get_trade_history` | 查看最近的交易记录 |
+| `run_backtest` | 对机器人的策略进行回测 |
+| `get_market_status` | 检查市场是否开放 |
 
-## Example Prompts
+## 示例指令
 
-### Create Trading Bots
-- "Create a momentum bot that buys TSLA when RSI crosses below 30 and sells above 70"
-- "Make an NVDA bot with a 5% trailing stop loss"
-- "Create a crypto scalping bot for BTC/USD on the 5-minute chart"
-- "Build an iron condor bot for SPY when IV rank is above 50"
+### 创建交易机器人
+- “创建一个在RSI指数低于30时买入TSLA、在高于70时卖出的动量交易机器人”
+- “创建一个带有5%追踪止损的NVDA交易机器人”
+- “创建一个在5分钟图表上针对BTC/USD的加密货币剥头皮交易机器人”
+- “当IV等级高于50时，为SPY创建一个铁秃鹫交易机器人”
 
-### Manage Your Bots
-- "Show me all my bots and how they're performing"
-- "Pause my AAPL momentum bot"
-- "What trades did my bots make today?"
-- "Delete all my paused bots"
+### 管理您的机器人
+- “显示我所有的机器人及其运行状态”
+- “暂停我的AAPL动量机器人”
+- “我的机器人今天进行了哪些交易？”
+- “删除我所有暂停的机器人”
 
-### Portfolio Management
-- "What's my current portfolio value?"
-- "Show my open positions with P&L"
-- "Buy $500 worth of NVDA"
-- "Close my TSLA position"
+### 投资组合管理
+- “我的当前投资组合价值是多少？”
+- “显示我的未平仓头寸及其盈亏情况”
+- “买入价值500美元的NVDA”
+- “平仓我的TSLA头寸”
 
-### Market Research
-- "What's the current price of Apple stock?"
-- "Get the options chain for SPY expiring this Friday"
-- "Is the market open right now?"
+### 市场研究
+- “苹果股票的当前价格是多少？”
+- “获取本周五到期的SPY期权链”
+- “市场现在是否开放？”
 
-### Backtesting
-- "Backtest my RSI bot on the last 30 days"
-- "How would a moving average crossover strategy have performed on QQQ?"
+### 回测
+- “对我的RSI机器人进行过去30天的回测”
+- “移动平均线交叉策略在QQQ上的表现如何？”
 
-## Trading Modes
+## 交易模式
 
-- **Paper Trading** (default): Practice with virtual money, no risk
-- **Live Trading**: Real money trades via Alpaca brokerage
+- **模拟交易**（默认）：使用虚拟资金进行练习，无风险
+- **真实交易**：通过Alpaca经纪平台进行真实资金交易
 
-Switch modes with: "Switch to live trading mode" or "Use paper trading"
+使用以下命令切换模式：“Switch to live trading mode” 或 “Use paper trading”
 
-## MCP Server
+## MCP服务器
 
-This skill connects to the VibeTrader MCP server at:
+此功能连接到VibeTrader的MCP服务器：
 ```
 https://vibetrader-mcp-289016366682.us-central1.run.app/mcp
 ```
 
-## Support
+## 支持
 
-- Website: [vibetrader.markets](https://vibetrader.markets)
-- Documentation: [vibetrader.markets/docs](https://vibetrader.markets/docs)
+- 网站：[vibetrader.markets](https://vibetrader.markets)
+- 文档：[vibetrader.markets/docs](https://vibetrader.markets/docs)

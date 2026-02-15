@@ -7,57 +7,53 @@ description: |
   The simple "X% of proportional share" is WRONG - must use bonding curve formula.
 ---
 
-# Juicebox V5 Cash Out Bonding Curve
+# Juicebox V5 现金提取的债券曲线（Cash Out Bonding Curve）
 
-## Problem
+## 问题
 
-When displaying cash out / redemption values in Juicebox V5 UIs, it's tempting to show
-a simple message like "Cashing out returns 90% of proportional treasury share" (for a
-10% tax rate). This is **incorrect** and misleading to users.
+在 Juicebox V5 的用户界面中显示现金提取/赎回金额时，很容易使用类似“现金提取可返还 90% 的储备份额”（假设税率为 10%）这样的简单信息。这种表述是**错误的**，并且会误导用户。
 
-The actual redemption amount depends on a bonding curve formula where the percentage
-of supply being cashed out affects the return.
+实际的可赎回金额取决于一个债券曲线公式，该公式会根据提取的代币比例来影响最终的回报率。
 
-## Context / Trigger Conditions
+## 背景/触发条件
 
-- Building UI that shows cash out / redemption values
-- Explaining to users what they'll receive when cashing out
-- Any display of `cashOutTaxRate` impact on redemptions
-- When you see code like `retainedPercent = 100 - cashOutTax` - this is WRONG
+- 开发用于显示现金提取/赎回金额的用户界面
+- 向用户解释他们提取现金后能获得什么
+- 任何与 `cashOutTaxRate` 相关的显示内容
+- 当看到类似 `retainedPercent = 100 - cashOutTax` 的代码时，这种计算方法是错误的
 
-## Solution
+## 解决方案
 
-### The Bonding Curve Formula
+### 债券曲线公式
 
 ```
 reclaimAmount = (x * s / y) * ((1 - r) + (r * x / y))
 ```
 
-Where:
-- `x` = number of tokens being cashed out
-- `s` = surplus (treasury overflow available for redemption)
-- `y` = total token supply
-- `r` = cash out tax rate as decimal (0 to 1, where 0.1 = 10%)
+其中：
+- `x` = 被提取的代币数量
+- `s` = 可用于赎回的储备份额（多余库存）
+- `y` = 总代币供应量
+- `r` = 现金提取税率（以小数形式表示，0 到 1，其中 0.1 表示 10%）
 
-### Normalized Form
+### 标准化形式
 
-When working with fractions (what % of supply is being cashed out):
+当处理分数（即提取的代币占总供应量的比例）时：
 
 ```
 Let f = x/y (fraction of supply being cashed out)
 reclaimFraction = f * ((1 - r) + (r * f))
 ```
 
-Where `reclaimFraction` is the fraction of surplus received.
+其中 `reclaimFraction` 表示用户实际能够获得的储备份额比例。
 
-### Key Insight
+### 关键要点
 
-The return depends on HOW MUCH of the supply is being cashed out, not just the tax rate.
-Cashing out a larger percentage of supply returns proportionally less per token.
+回报率取决于提取的代币比例，而不仅仅是税率。提取的代币比例越大，每单位代币的回报率反而越低。
 
-### Example Calculation
+### 示例计算
 
-With 10% cash out tax rate (`r = 0.1`), cashing out 10% of supply (`f = 0.1`):
+假设税率为 10%（`r = 0.1`），提取 10% 的代币（`f = 0.1`）：
 
 ```javascript
 reclaimFraction = 0.1 * ((1 - 0.1) + (0.1 * 0.1))
@@ -66,9 +62,9 @@ reclaimFraction = 0.1 * 0.91
 reclaimFraction = 0.091  // 9.1% of surplus
 ```
 
-So cashing out 10% of the supply gets ~9.1% of the surplus (not 9% as simple math would suggest).
+因此，提取 10% 的代币实际上只能获得大约 9.1% 的储备份额（而不是简单的数学计算结果 9%）。
 
-### Code Implementation
+### 代码实现
 
 ```typescript
 // WRONG - Don't do this:
@@ -99,17 +95,17 @@ const returnPercent = (returnFraction * 100).toFixed(1)
 message = `Cashing out 10% of ${tokenSymbol} gets ~${returnPercent}% of treasury`
 ```
 
-## Verification
+## 验证
 
-Test with known values:
-- `r = 0` (no tax): `reclaimFraction = f` (linear, full proportional return)
-- `r = 1` (100% tax): `reclaimFraction = f * f` (quadratic, harsh penalty)
-- `r = 0.1, f = 0.1`: `reclaimFraction = 0.091` (9.1%)
-- `r = 0.1, f = 0.5`: `reclaimFraction = 0.5 * (0.9 + 0.05) = 0.475` (47.5%)
+使用已知数值进行测试：
+- `r = 0`（无税）：`reclaimFraction = f`（线性关系，全额返还）
+- `r = 1`（100% 税率）：`reclaimFraction = f * f`（二次方关系，惩罚性较高）
+- `r = 0.1, f = 0.1`：`reclaimFraction = 0.091`（9.1%）
+- `r = 0.1, f = 0.5`：`reclaimFraction = 0.5 * (0.9 + 0.05) = 0.475`（47.5%）
 
-## Example
+## 示例
 
-In the RulesetSchedule component's Juicy Summary:
+在 `RulesetSchedule` 组件的摘要信息中：
 
 ```typescript
 // Cash out - redemption value using bonding curve formula
@@ -127,16 +123,16 @@ if (cashOutTaxRate >= 1) {
 }
 ```
 
-## Notes
+## 注意事项
 
-- The `cashOutTaxRate` in Juicebox V5 is stored in basis points (0-10000)
-- A rate of 10000 (100%) means cash outs are effectively disabled
-- The formula assumes the treasury "overflow" is the redeemable amount
-- This bonding curve incentivizes holding - early/small cash outs get better rates
-- The CashOutCurve visualization component can show this graphically
+- Juicebox V5 中的 `cashOutTaxRate` 以基点（0-10000）的形式存储
+- 税率为 10000（100%）时，实际上禁止了任何现金提取操作
+- 该公式假设可赎回的金额等于储备份额的“剩余部分”
+- 这种债券曲线机制鼓励用户长期持有代币——因为提前或少量提取代币会获得更高的回报率
+- `CashOutCurve` 可视化组件可以图形化地展示这一关系
 
-## References
+## 参考资料
 
-- Juicebox V5 JBRulesets contract
-- Cash out bonding curve formula: `y = (o * x / s) * ((1 - r) + (r * x / s))`
-  - Normalized to: `y = x * ((1 - r) + (r * x))` where x is fraction of supply
+- Juicebox V5 的 JBRulesets 合同
+- 现金提取债券曲线公式：`y = (o * x / s) * ((1 - r) + (r * x / s))`
+  - 标准化后的公式为：`y = x * ((1 - r) + (r * x))`，其中 `x` 表示提取的代币比例

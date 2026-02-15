@@ -3,7 +3,7 @@ emoji: 📈
 name: maxxit-lazy-trading
 version: 1.0.0
 author: Maxxit
-description: Execute perpetual trades on Ostium via Maxxit's Lazy Trading API
+description: 通过 Maxxit 的懒惰交易（Lazy Trading）API，在 Ostium 平台上执行永久性交易（即长期有效的交易）。
 homepage: https://maxxit.ai
 repository: https://github.com/Maxxit-ai/maxxit-latest
 disableModelInvocation: true
@@ -21,39 +21,39 @@ metadata:
     primaryCredential: MAXXIT_API_KEY
 ---
 
-# Maxxit Lazy Trading
+# Maxxit 懒人交易（Lazy Trading）
 
-Execute perpetual futures trades on Ostium protocol through Maxxit's Lazy Trading API. This skill enables automated trading based on signals you send programmatically.
+通过 Maxxit 的懒人交易 API，在 Ostium 协议上执行永续期货交易。该功能支持基于您编程发送的交易信号进行自动化交易。
 
-## When to Use This Skill
+## 适用场景
 
-- User wants to execute trades on Ostium
-- User wants to send trading signals programmatically
-- User asks about their lazy trading account details
-- User wants to check their USDC/ETH balance
-- User wants to view their open positions or portfolio
-- User wants to see their closed position history or PnL
-- User mentions "lazy trade", "perps", "perpetuals", or "futures trading"
-- User wants to automate their trading workflow
+- 用户希望在 Ostium 上执行交易
+- 用户希望编程方式发送交易信号
+- 用户询问懒人交易账户的详细信息
+- 用户想查看自己的 USDC/ETH 余额
+- 用户想查看未平仓头寸或投资组合
+- 用户想查看已平仓头寸的历史记录或盈亏情况
+- 用户提到“懒人交易”、“永续合约”或“期货交易”
+- 用户希望自动化自己的交易流程
 
-## Authentication
+## 认证
 
-All requests require an API key with prefix `lt_`. Pass it via:
-- Header: `X-API-KEY: lt_your_api_key`
-- Or: `Authorization: Bearer lt_your_api_key`
+所有请求都需要一个以 `lt_` 为前缀的 API 密钥。可以通过以下方式传递该密钥：
+- 在请求头中添加：`X-API-KEY: lt_你的_api_key`
+- 或者：`Authorization: Bearer lt_你的_api_key`
 
-## API Endpoints
+## API 端点
 
-### Get Account Details
+### 获取账户详情
 
-Retrieve lazy trading account information including agent status, Telegram connection, and trading preferences.
+检索懒人交易账户信息，包括代理状态、Telegram 连接状态和交易偏好设置。
 
 ```bash
 curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/club-details" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -82,9 +82,9 @@ curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/club-details" \
 }
 ```
 
-### Send Trading Signal
+### 发送交易信号
 
-Send a trading signal/message that will be processed by your lazy trading agent.
+发送一个交易信号，该信号将由您的懒人交易代理进行处理。
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/send-message" \
@@ -93,14 +93,14 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/send-message" \
   -d '{"message": "Long BTC 10x leverage, entry 65000, TP 70000, SL 62000"}'
 ```
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "message": "Your trading signal text"
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -109,11 +109,11 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/send-message" \
 }
 ```
 
-### Get Account Balance
+### 获取账户余额
 
-Retrieve USDC and ETH balance for the user's Ostium wallet address.
+检索用户 Ostium 钱包地址的 USDC 和 ETH 余额。
 
-**Note:** The user's Ostium wallet address (`user_wallet`) can be fetched from the `/api/lazy-trading/programmatic/club-details` endpoint first.
+**注意：** 用户的 Ostium 钱包地址（`user_wallet`）可以通过 `/api/lazy-trading/programmatic/club-details` 端点获取。
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/balance" \
@@ -122,7 +122,7 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/balance" \
   -d "{"address": "0x..."}"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -132,11 +132,11 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/balance" \
 }
 ```
 
-### Get Portfolio Positions
+### 获取投资组合头寸
 
-Get all open positions for the user's Ostium trading account.
+获取用户 Ostium 交易账户的所有未平仓头寸。
 
-**Note:** The user's Ostium wallet address can be fetched from the `/api/lazy-trading/programmatic/club-details` endpoint.
+**注意：** 用户的 Ostium 钱包地址可以通过 `/api/lazy-trading/programmatic/club-details` 端点获取。
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/positions" \
@@ -145,14 +145,14 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/positions" \
   -d "{"address": "0x..."}"
 ```
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "address": "0x..."  // User's Ostium wallet address (required)
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -175,11 +175,11 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/positions" \
 }
 ```
 
-### Get Position History
+### 获取头寸历史记录
 
-Get raw trading history for an address (includes open, close, cancelled orders, etc.).
+获取某个地址的原始交易历史记录（包括已开仓、已平仓、已取消的订单等）。
 
-**Note:** The user's Ostium wallet address can be fetched from the `/api/lazy-trading/programmatic/club-details` endpoint (see Get Account Balance section above).
+**注意：** 用户的 Ostium 钱包地址可以通过 `/api/lazy-trading/programmatic/club-details` 端点获取（参见上述“获取账户余额”部分）。
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
@@ -188,7 +188,7 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
   -d '{"address": "0x...", "count": 50}'
 ```
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "address": "0x...",  // User's Ostium wallet address (required)
@@ -196,7 +196,7 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -220,49 +220,49 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
 }
 ```
 
-## Signal Format Examples
+## 信号格式示例
 
-The lazy trading system processes natural language trading signals. Here are examples:
+懒人交易系统支持处理自然语言形式的交易信号。以下是一些示例：
 
-### Opening Positions
-- `"Long ETH with 5x leverage, entry at 3200"`
-- `"Short BTC 10x, TP 60000, SL 68000"`
-- `"Buy 100 USDC worth of ETH perpetual"`
+### 开仓指令
+- `"以 5 倍杠杆买入 ETH，入场价格为 3200"`
+- `"以 10 倍杠杆卖出 BTC，止盈价格为 60000，止损价格为 68000"`
+- `"买入价值 100 USDC 的 ETH 永续合约"`
 
-### With Risk Management
-- `"Long SOL 3x leverage, entry 150, take profit 180, stop loss 140"`
-- `"Short AVAX 5x, risk 2% of portfolio"`
+### 带有风险管理的指令
+- `"以 3 倍杠杆买入 SOL，入场价格为 150，盈利目标为 180，止损价格为 140"`
+- `"以 5 倍杠杆卖出 AVAX，风险控制在投资组合的 2% 内"`
 
-### Closing Positions
-- `"Close ETH long position"`
-- `"Take profit on BTC short"`
+### 平仓指令
+- `"平仓 ETH 多头头寸"`
+- `"卖出 BTC 空头头寸并获利"`
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Example |
+| 变量 | 描述 | 示例 |
 |----------|-------------|---------|
-| `MAXXIT_API_KEY` | Your lazy trading API key (starts with `lt_`) | `lt_abc123...` |
-| `MAXXIT_API_URL` | Maxxit API base URL | `https://maxxit.ai` |
+| `MAXXIT_API_KEY` | 懒人交易 API 密钥（以 `lt_` 开头） | `lt_abc123...` |
+| `MAXXIT_API_URL` | Maxxit API 基本地址 | `https://maxxit.ai` |
 
-## Error Handling
+## 错误处理
 
-| Status Code | Meaning |
+| 状态码 | 含义 |
 |-------------|---------|
-| 401 | Invalid or missing API key |
-| 404 | Lazy trader agent not found (complete setup first) |
-| 400 | Missing or invalid message |
-| 405 | Wrong HTTP method |
-| 500 | Server error |
+| 401 | API 密钥无效或缺失 |
+| 404 | 未找到懒人交易代理（请先完成设置） |
+| 400 | 信号内容缺失或无效 |
+| 405 | HTTP 方法错误 |
+| 500 | 服务器错误 |
 
-## Getting Started
+## 入门步骤
 
-1. **Set up Lazy Trading**: Visit https://maxxit.ai/lazy-trading to connect your wallet and configure your agent
-2. **Generate API Key**: Go to your dashboard and create an API key
-3. **Configure Environment**: Set `MAXXIT_API_KEY` and `MAXXIT_API_URL`
-4. **Start Trading**: Use this skill to send signals!
+1. **设置懒人交易**：访问 https://maxxit.ai/lazy-trading，连接您的钱包并配置代理设置。
+2. **生成 API 密钥**：进入您的仪表板并创建 API 密钥。
+3. **配置环境变量**：设置 `MAXXIT_API_KEY` 和 `MAXXIT_API_URL`。
+4. **开始交易**：使用此功能发送交易信号！
 
-## Security Notes
+## 安全提示
 
-- Never share your API key
-- API keys can be revoked and regenerated from the dashboard
-- All trades execute on-chain with your delegated wallet permissions
+- 请勿泄露您的 API 密钥。
+- API 密钥可以在仪表板上随时撤销和重新生成。
+- 所有交易都在链上执行，并使用您委托的钱包权限进行操作。

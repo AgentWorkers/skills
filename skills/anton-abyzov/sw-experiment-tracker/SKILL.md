@@ -4,31 +4,31 @@ description: |
   Manages ML experiment tracking with MLflow, Weights & Biases, or SpecWeave's built-in tracking. Activates for "track experiments", "MLflow", "wandb", "experiment logging", "compare experiments", "hyperparameter tracking". Automatically configures tracking tools to log to SpecWeave increment folders, ensuring all experiments are documented and reproducible. Integrates with SpecWeave's living docs for persistent experiment knowledge.
 ---
 
-# Experiment Tracker
+# 实验跟踪器
 
-## Overview
+## 概述
 
-Transforms chaotic ML experimentation into organized, reproducible research. Every experiment is logged, versioned, and tied to a SpecWeave increment, ensuring team knowledge is preserved and experiments are reproducible.
+该工具将混乱的机器学习（ML）实验转化为有序、可复现的研究过程。每个实验都会被记录下来，打上版本标签，并与 SpecWeave 的版本增量关联起来，从而确保团队知识得到保存，实验结果能够被准确复现。
 
-## Problem This Solves
+## 该工具解决的问题
 
-**Without structured tracking**:
-- ❌ "Which hyperparameters did we use for model v2?"
-- ❌ "Why did we choose XGBoost over LightGBM?"
-- ❌ "Can't reproduce results from 3 months ago"
-- ❌ "Team member left, all knowledge in their notebooks"
+**在没有结构化跟踪机制的情况下**：
+- ❌ “我们为模型 v2 使用了哪些超参数？”
+- ❌ “为什么选择 XGBoost 而不是 LightGBM？”
+- ❌ “无法复现三个月前的实验结果”
+- ❌ 团队成员离职后，所有知识都留在了他们的个人笔记本中
 
-**With experiment tracking**:
-- ✅ All experiments logged with params, metrics, artifacts
-- ✅ Decisions documented ("XGBoost: 5% better precision, chose it")
-- ✅ Reproducible (environment, data version, code hash)
-- ✅ Team knowledge in living docs, not individual notebooks
+**使用实验跟踪机制后**：
+- ✅ 所有实验都会被记录下来，包括参数、指标和实验产生的结果文件
+- ✅ 决策过程会被详细记录（例如：“选择 XGBoost，因为其精度提高了 5%”）
+- ✅ 实验环境、数据版本和代码哈希值都是可复现的
+- ✅ 团队知识存储在统一的文档中，而不仅仅是在个人笔记本中
 
-## How It Works
+## 工作原理
 
-### Auto-Configuration
+### 自动配置
 
-When you create an ML increment, the skill detects tracking tools:
+当你创建一个 ML 实验版本增量时，该工具会自动检测可用的跟踪工具：
 
 ```python
 # No configuration needed - automatically detects and configures
@@ -41,9 +41,9 @@ with track_experiment("baseline-model") as exp:
     exp.log_metric("accuracy", accuracy)
 ```
 
-### Tracking Backends
+### 跟踪后端
 
-**Option 1: SpecWeave Built-in** (default, zero-config)
+**选项 1：SpecWeave 内置**（默认设置，无需额外配置）
 ```python
 from specweave import track_experiment
 
@@ -61,7 +61,7 @@ with track_experiment("xgboost-v1") as exp:
 # └── metadata.yaml
 ```
 
-**Option 2: MLflow** (if detected in project)
+**选项 2：MLflow**（如果在项目中检测到该工具）
 ```python
 import mlflow
 from specweave import configure_mlflow
@@ -77,7 +77,7 @@ with mlflow.start_run(run_name="xgboost-v1"):
 # Still logs to increment folder, just uses MLflow as backend
 ```
 
-**Option 3: Weights & Biases**
+**选项 3：Weights & Biases**（用于权重和偏差的跟踪）
 ```python
 import wandb
 from specweave import configure_wandb
@@ -92,7 +92,7 @@ run.log_model("model.pkl")
 # W&B dashboard + local logs in increment folder
 ```
 
-### Experiment Comparison
+### 实验比较
 
 ```python
 from specweave import compare_experiments
@@ -104,7 +104,7 @@ comparison = compare_experiments(increment="0042")
 # .specweave/increments/0042.../experiments/comparison.md
 ```
 
-**Output**:
+**输出结果**：
 ```markdown
 | Experiment         | Accuracy | Precision | Recall | F1   | Training Time |
 |--------------------|----------|-----------|--------|------|---------------|
@@ -120,55 +120,26 @@ comparison = compare_experiments(increment="0042")
 - Selected for deployment
 ```
 
-### Living Docs Integration
+### 集成到实时文档中
 
-After completing increment:
+实验完成后，相关内容会自动更新到实时文档中：
 
 ```bash
 /sw:sync-docs update
 ```
 
-Automatically updates:
+## 适用场景
 
-```markdown
-<!-- .specweave/docs/internal/architecture/ml-experiments.md -->
+在以下情况下应使用该工具：
+- 需要系统地跟踪 ML 实验
+- 客观地比较多个模型
+- 为团队记录实验决策过程
+- 精确地复现过去的实验结果
+- 在不同实验版本之间维护实验历史记录
 
-## Recommendation Model (Increment 0042)
+## 主要功能
 
-### Experiments Conducted: 7
-- exp-001-baseline: Random classifier (acc=0.12)
-- exp-002-popularity: Popularity baseline (acc=0.18)
-- exp-003-xgboost: XGBoost classifier (acc=0.26) ✅ **SELECTED**
-- ...
-
-### Selection Rationale
-XGBoost chosen for:
-- Best accuracy (0.26 vs baseline 0.18, +44% improvement)
-- Fast inference (<50ms)
-- Good explainability (SHAP values)
-- Stable across cross-validation (std=0.02)
-
-### Hyperparameters (exp-003)
-- n_estimators: 200
-- max_depth: 6
-- learning_rate: 0.1
-- subsample: 0.8
-```
-
-## When to Use This Skill
-
-Activate when you need to:
-
-- **Track ML experiments** systematically
-- **Compare multiple models** objectively
-- **Document experiment decisions** for team
-- **Reproduce past results** exactly
-- **Maintain experiment history** across increments
-
-## Key Features
-
-### 1. Automatic Logging
-
+### 1. 自动记录实验过程
 ```python
 # Logs everything automatically
 from specweave import AutoTracker
@@ -187,8 +158,7 @@ def train_model():
 model, score = train_model()
 ```
 
-### 2. Hyperparameter Tracking
-
+### 2. 超参数跟踪
 ```python
 from specweave import track_hyperparameters
 
@@ -210,8 +180,7 @@ results = track_hyperparameters(
 # Generates parameter importance analysis
 ```
 
-### 3. Cross-Validation Tracking
-
+### 3. 交叉验证跟踪
 ```python
 from specweave import track_cross_validation
 
@@ -227,8 +196,7 @@ cv_results = track_cross_validation(
 # Logs: mean, std, per-fold scores, fold distribution
 ```
 
-### 4. Artifact Management
-
+### 4. 实验结果文件管理
 ```python
 from specweave import track_artifacts
 
@@ -249,8 +217,7 @@ with track_experiment("xgboost-v1") as exp:
     exp.save_artifact("conda_env.yaml", conda_env)
 ```
 
-### 5. Experiment Metadata
-
+### 5. 实验元数据管理
 ```python
 from specweave import ExperimentMetadata
 
@@ -268,10 +235,9 @@ with track_experiment(metadata) as exp:
     pass
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Name Experiments Clearly
-
+- **为实验起明确的名称**  
 ```python
 # ❌ Bad: Generic names
 with track_experiment("exp1"):
@@ -282,8 +248,7 @@ with track_experiment("xgboost-tuned-depth6-lr0.1"):
     ...
 ```
 
-### 2. Log Everything
-
+- **记录所有相关数据**  
 ```python
 # Log more than you think you need
 exp.log_param("random_seed", 42)
@@ -294,8 +259,7 @@ exp.log_param("sklearn_version", sklearn.__version__)
 # Future you will thank present you
 ```
 
-### 3. Document Failures
-
+- **详细记录实验失败的原因**  
 ```python
 try:
     with track_experiment("neural-net-attempt") as exp:
@@ -308,8 +272,7 @@ except Exception as e:
 # Failure documentation prevents repeating mistakes
 ```
 
-### 4. Use Experiment Series
-
+- **使用实验系列进行管理**  
 ```python
 # Related experiments in series
 experiments = [
@@ -322,8 +285,7 @@ experiments = [
 # Track progression and improvements
 ```
 
-### 5. Link to Data Versions
-
+- **关联数据版本**  
 ```python
 with track_experiment("xgboost-v1") as exp:
     exp.log_param("data_commit", "dvc:a3b8c9d")
@@ -332,36 +294,16 @@ with track_experiment("xgboost-v1") as exp:
 # Enables exact reproduction
 ```
 
-## Integration with SpecWeave
+## 与其他工具的集成
 
-### With Increments
+- **与 SpecWeave 的集成**：
+  - 在创建实验版本增量时自动进行集成
+  - 与实时文档系统同步实验信息
+  - 与 GitHub 集成，便于团队协作
 
-```bash
-# Experiments automatically tied to increment
-/sw:inc "0042-recommendation-model"
-# All experiments logged to: .specweave/increments/0042.../experiments/
-```
+## 示例
 
-### With Living Docs
-
-```bash
-# Sync experiment findings to docs
-/sw:sync-docs update
-# Updates: architecture/ml-models.md, runbooks/model-training.md
-```
-
-### With GitHub
-
-```bash
-# Create issue for model retraining
-/sw:github:create-issue "Retrain model with Q1 2024 data"
-# Links to previous experiments in increment
-```
-
-## Examples
-
-### Example 1: Baseline Experiments
-
+- **示例 1：基线实验**  
 ```python
 from specweave import track_experiment
 
@@ -379,8 +321,7 @@ for strategy in baselines:
 # Generates baseline comparison report
 ```
 
-### Example 2: Hyperparameter Grid Search
-
+- **示例 2：超参数网格搜索**  
 ```python
 from sklearn.model_selection import GridSearchCV
 from specweave import track_grid_search
@@ -402,8 +343,7 @@ best_model, results = track_grid_search(
 # Creates visualization of parameter importance
 ```
 
-### Example 3: Model Comparison
-
+- **示例 3：模型比较**  
 ```python
 from specweave import compare_models
 
@@ -426,10 +366,9 @@ comparison = compare_models(
 # Generates markdown comparison table
 ```
 
-## Tool Compatibility
+## 兼容性
 
-### MLflow
-
+- **与 MLflow 的兼容性**  
 ```python
 # Option 1: Pure MLflow (auto-configured)
 import mlflow
@@ -442,8 +381,7 @@ with sw_mlflow.start_run("xgboost"):
     pass
 ```
 
-### Weights & Biases
-
+- **与 Weights & Biases 的兼容性**  
 ```python
 # Option 1: Pure wandb
 import wandb
@@ -455,8 +393,7 @@ run = sw_wandb.init(increment="0042", name="xgboost")
 # Syncs to increment folder + W&B dashboard
 ```
 
-### TensorBoard
-
+- **与 TensorBoard 的兼容性**  
 ```python
 from specweave import TensorBoardCallback
 
@@ -473,7 +410,7 @@ model.fit(
 )
 ```
 
-## Commands
+## 命令行操作
 
 ```bash
 # List all experiments in increment
@@ -489,17 +426,17 @@ model.fit(
 /ml:export-experiments 0042 --format csv
 ```
 
-## Tips
+## 使用建议：
 
-1. **Start tracking early** - Track from first experiment, not after 20 failed attempts
-2. **Tag production models** - `exp.add_tag("production")` for deployed models
-3. **Version everything** - Data, code, environment, dependencies
-4. **Document decisions** - Why model A over model B (not just metrics)
-5. **Prune old experiments** - Archive experiments >6 months old
+- **尽早开始跟踪**：从第一个实验开始就进行记录，而不要等到失败了 20 次后再开始。
+- **为生产环境中的模型添加标签**：使用 `exp.add_tag("production")` 标记已部署的模型。
+- **对所有内容进行版本控制**：包括数据、代码、实验环境和依赖项。
+- **详细记录决策过程**：解释为什么选择某个模型而非另一个模型（而不仅仅是指标）。
+- **定期清理旧实验**：将超过 6 个月的实验归档。
 
-## Advanced: Multi-Stage Experiments
+## 高级用法：多阶段实验
 
-For complex pipelines with multiple stages:
+对于包含多个阶段的复杂实验流程，可以使用以下方法：
 
 ```python
 from specweave import ExperimentPipeline
@@ -525,11 +462,11 @@ with pipeline.stage("training") as stage:
 # Logs entire pipeline with stage dependencies
 ```
 
-## Integration Points
+## 集成点：
 
-- **ml-pipeline-orchestrator**: Auto-tracks experiments during pipeline execution
-- **model-evaluator**: Uses experiment data for model comparison
-- **ml-engineer agent**: Reviews experiment results and suggests improvements
-- **Living docs**: Syncs experiment findings to architecture docs
+- **ml-pipeline-orchestrator**：在实验流程执行过程中自动跟踪实验。
+- **model-evaluator**：利用实验数据来评估模型性能。
+- **ml-engineer agent**：审查实验结果并提出改进建议。
+- **实时文档系统**：将实验结果同步到项目架构文档中。
 
-This skill ensures ML experimentation is never lost, always reproducible, and well-documented.
+该工具确保 ML 实验过程不会丢失，结果始终可复现，并且有完整的文档记录。

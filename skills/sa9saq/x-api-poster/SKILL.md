@@ -1,18 +1,18 @@
 ---
-description: Post tweets to X/Twitter via API v2 with OAuth 1.0a — text, images, replies, and threads.
+description: 通过 OAuth 1.0a API v2 将推文发布到 X/Twitter，支持文本、图片、回复和话题（threads）的发布。
 ---
 
-# X API Poster
+# 使用X API在Twitter上发布内容
 
-Post to X (Twitter) using the official API v2 with OAuth 1.0a authentication.
+通过官方的v2 API和OAuth 1.0a认证方式在X（Twitter）上发布内容。
 
-## Requirements
+## 所需条件
 
-- Python 3.8+
-- `requests` library (`pip install requests`)
-- X API credentials (Consumer Key/Secret + Access Token/Secret)
+- Python 3.8及以上版本
+- `requests`库（使用`pip install requests`安装）
+- X API的认证信息（消费者密钥/密钥以及对访问令牌/密钥）
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Post a tweet
@@ -28,46 +28,46 @@ python3 {skill_dir}/post.py "Reply text" 1234567890123456789
 python3 {skill_dir}/post.py "Reply with pic" 1234567890123456789 /path/to/image.png
 ```
 
-## Configuration
+## 配置
 
-### Required Environment Variables
+### 必需的环境变量
 
-| Variable | Description |
-|----------|-------------|
-| `X_CONSUMER_KEY` | API Consumer Key |
-| `X_CONSUMER_SECRET` | API Consumer Secret |
-| `X_ACCESS_TOKEN` | OAuth 1.0a Access Token |
-| `X_ACCESS_TOKEN_SECRET` | OAuth 1.0a Access Token Secret |
+| 变量          | 描述                                      |
+|---------------|-----------------------------------------|
+| `X_CONSUMER_KEY`    | API消费者密钥                                      |
+| `X_CONSUMER_SECRET` | API消费者密钥的对称密钥                               |
+| `X_ACCESS_TOKEN`    | OAuth 1.0a访问令牌                                      |
+| `X_ACCESS_TOKEN_SECRET` | OAuth 1.0a访问令牌的对称密钥                               |
 
-Store in `~/.openclaw/secrets.env` with `chmod 600`.
+将这些变量保存在`~/.openclaw/secrets.env`文件中，并设置文件权限为`chmod 600`。
 
-### Getting API Keys
+### 获取API密钥
 
-1. Visit [developer.x.com](https://developer.x.com/)
-2. Create a project and app
-3. Enable OAuth 1.0a with **Read and Write** permissions
-4. Generate Consumer Keys and Access Tokens
-5. Add to `~/.openclaw/secrets.env`
+1. 访问[developer.x.com](https://developer.x.com/)
+2. 创建一个项目和应用
+3. 启用具有“读取和写入”权限的OAuth 1.0a认证
+4. 生成消费者密钥和访问令牌
+5. 将它们添加到`~/.openclaw/secrets.env`文件中
 
-## API Details
+## API详细信息
 
-- **Post**: `POST https://api.twitter.com/2/tweets` (v2)
-- **Media upload**: `POST https://upload.twitter.com/1.1/media/upload.json` (v1.1)
-- **Auth**: OAuth 1.0a with HMAC-SHA1 signature (built-in, no external OAuth library needed)
+- **发布内容**：`POST https://api.twitter.com/2/tweets`（v2）
+- **上传媒体文件**：`POST https://upload.twitter.com/1.1/media/upload.json`（v1.1）
+- **认证方式**：使用HMAC-SHA1签名进行OAuth 1.0a认证（内置功能，无需外部OAuth库）
 
-## Edge Cases & Troubleshooting
+## 特殊情况与故障排除
 
-- **280 char limit**: Validate text length before posting. URLs count as ~23 chars (t.co wrapping).
-- **Duplicate tweet**: X rejects identical tweets in quick succession. Vary the text or wait.
-- **Image format**: Supports PNG, JPEG, GIF, WEBP. Max 5MB for images, 15MB for GIFs.
-- **401 Unauthorized**: Tokens expired or permissions insufficient. Regenerate at developer.x.com.
-- **403 Forbidden**: App may need elevated access. Check project tier.
-- **429 Rate limited**: Free tier allows ~50 tweets/24h. Back off and retry after `x-rate-limit-reset` header.
-- **Missing env vars**: Script should check all 4 vars exist before attempting to post. Fail with clear error.
+- **字符长度限制**：发布前请验证文本长度。URL通常占用约23个字符（包括t.co链接）。
+- **重复推文**：X会拒绝连续发送相同的推文。请修改推文内容或稍后重试。
+- **图片格式**：支持PNG、JPEG、GIF、WEBP格式。图片文件大小上限为5MB，GIF文件为15MB。
+- **401 Unauthorized**：访问令牌过期或权限不足。请在developer.x.com重新生成令牌。
+- **403 Forbidden**：应用程序可能需要更高的访问权限。请检查项目等级。
+- **429 Rate Limited**：免费账户每24小时只能发布约50条推文。收到`x-rate-limit-reset`头部信息后，请稍后重试。
+- **缺少环境变量**：脚本在尝试发布前应检查所有4个环境变量是否都已设置。如果缺少任何变量，应立即报错并终止操作。
 
-## Security
+## 安全性注意事项
 
-- **Never log or display API credentials** — mask in any error output.
-- Store credentials in `secrets.env` with `chmod 600`, never in code or git.
-- Validate tweet content before posting (no accidental credential leaks).
-- Review posts before sending — automated posting should have human approval.
+- **切勿记录或显示API认证信息**——在任何错误输出中都应对其进行屏蔽。
+- 将认证信息保存在`secrets.env`文件中，并设置文件权限为`chmod 600`，切勿将其存储在代码或Git仓库中。
+- 发布前请验证推文内容，以防意外泄露认证信息。
+- 在发送推文前请进行审核——自动发布的推文应经过人工审核。

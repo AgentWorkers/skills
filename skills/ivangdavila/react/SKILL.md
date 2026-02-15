@@ -1,42 +1,42 @@
 ---
 name: React
-description: Build fast, accessible React apps with hooks, state, and component patterns.
+description: 使用 Hooks、状态（State）以及组件模式（Component Patterns），快速构建易于使用的 React 应用程序。
 metadata: {"clawdbot":{"emoji":"⚛️","requires":{"bins":["node"]},"os":["linux","darwin","win32"]}}
 ---
 
-# React Production Rules
+# React 开发最佳实践
 
-## Common Mistakes
-- `{count && <Component />}` renders "0" when count is 0 — always use `{count > 0 && <Component />}` for numeric conditions
-- Never mutate state directly (`array.push()` then `setState(array)`) — React won't detect the change. Always spread: `setState([...array, item])`
-- Keys generated during render (`key={Math.random()}`) destroy and recreate components every render — generate stable IDs when data is created
-- Uninitialized controlled inputs (`useState()` without default) flip between controlled/uncontrolled — always initialize with empty string or appropriate default
+## 常见错误
+- 当 `count` 为 0 时，表达式 `{count && <Component />` 会渲染出 “0” — 对于数值条件，应始终使用 `{count > 0 && <Component />`。
+- 绝不要直接修改状态（例如：`array.push()` 后再调用 `setState(array)` — React 无法检测到这种变化。应该使用 `setState([...array, item])` 来更新状态。
+- 在渲染过程中生成的键（如 `key={Math.random()}`）会导致组件在每次渲染时都被重新创建 — 应在数据生成时生成稳定的键值对。
+- 未初始化的受控输入（使用 `useState()` 且未设置默认值）会导致组件状态在受控与非受控状态之间切换 — 必须使用空字符串或适当的默认值进行初始化。
 
-## Hooks Traps
-- `useEffect` callback cannot be async directly — define async function inside the effect and call it
-- Missing cleanup in effects causes memory leaks — return cleanup function for subscriptions, intervals, and event listeners
-- Dependencies array with objects/arrays triggers on every render (new reference each time) — memoize with `useMemo` or extract primitive values
-- `useState` setter with same reference won't trigger re-render — for objects/arrays, always create new reference
+## Hooks 的使用误区
+- `useEffect` 回调函数不能直接声明为异步函数 — 应在 `useEffect` 内部定义异步函数并调用它。
+- 如果未正确清理副作用（如订阅、定时器或事件监听器），可能会导致内存泄漏 — 必须为这些副作用提供清理函数。
+- 如果依赖项数组中包含对象或数组，每次渲染时都会触发重新计算（因为依赖项的引用会改变） — 可使用 `useMemo` 来缓存结果。
+- 如果 `useState` 的设置函数返回相同的引用，将不会触发重新渲染 — 对于对象或数组，必须创建新的引用。
 
-## Performance
-- Sequential awaits create waterfalls — use `Promise.all([fetchA(), fetchB()])` for independent requests
-- Barrel imports (`import { X } from '@/components'`) pull entire module — use direct path imports for tree-shaking
-- Expensive computations in render body recalculate every render — wrap in `useMemo` with proper dependencies
-- Use `startTransition` for non-urgent UI updates (filtering, sorting large lists) — keeps input responsive while heavy renders process in background
-- Use `useRef` instead of `useState` for values that don't need to trigger re-renders (timers, previous values, DOM measurements)
+## 性能优化
+- 对于独立的请求，应使用 `Promise.all([fetchA(), fetchB()])` 来并行执行。
+- 使用 `import { X } from '@/components'` 这样的导入方式会导入整个模块 — 应使用直接路径导入来避免不必要的代码加载。
+- 在渲染过程中进行耗时的计算会导致每次渲染时都重新计算结果 — 应使用 `useMemo` 并指定正确的依赖项来缓存结果。
+- 对于非紧急的 UI 更新（如过滤、排序大量列表），可以使用 `useTransition` — 这可以在后台进行复杂操作的同时保持用户界面的响应性。
+- 对于不需要触发重新渲染的值（如计时器、之前的状态值、DOM 测量结果），应使用 `useRef` 而不是 `useState`。
 
-## State Architecture
-- Colocate state as close as possible to where it's used — lifting state too high causes unnecessary re-renders in the entire subtree
-- Derive values from existing state instead of syncing with useEffect — computed values don't need their own state
-- When multiple state updates happen together, use `useReducer` — prevents impossible state combinations that separate `useState` calls allow
-- URL search params are state too — use them for filter/sort/pagination state so users can share and bookmark
+## 状态管理架构
+- 尽可能将状态存储在需要使用它的地方附近 — 将状态存储得过高会导致整个子树不必要的重新渲染。
+- 应从现有状态中派生新的值，而不是通过 `useEffect` 来获取状态 — 计算得到的值不需要单独的状态管理。
+- 当多个状态更新同时发生时，应使用 `useReducer` — 这可以避免因 `useState` 调用分离而导致的状态组合问题。
+- URL 的搜索参数也应作为状态的一部分进行管理 — 可以利用它们来实现过滤、排序和分页功能，让用户能够分享和书签页面。
 
-## Forms (React 19+)
-- Prefer form actions over useEffect for mutations — actions handle pending states, errors, and optimistic updates built-in
-- Use `useActionState` for form submission status — replaces manual loading/error state management
-- `useOptimistic` updates UI immediately before server confirms — revert automatically on error
+## 表单（React 19 及以上版本）
+- 对于状态的更新，建议使用 `useAction` 而不是 `useEffect` — 因为 `useAction` 可以处理未完成的操作、错误情况以及乐观更新。
+- 使用 `useActionState` 来管理表单提交的状态 — 这可以替代手动管理加载和错误状态的方式。
+- 使用 `useOptimistic` 可以在服务器确认之前立即更新 UI — 出错时可以自动回滚到之前的状态。
 
-## Common Mistakes
-- Fetching data in useEffect without abort controller — race conditions when component remounts or deps change fast
-- Returning objects from custom hooks without memoizing — consumers re-render on every call even if data hasn't changed
-- Using index as key in lists that reorder, filter, or insert — causes subtle bugs where component state gets attached to wrong items
+## 其他常见错误
+- 在 `useEffect` 中获取数据时如果没有设置异常处理机制，可能会导致组件在重新挂载或依赖项快速变化时出现竞态条件。
+- 如果自定义 Hook 返回的对象没有被缓存，即使数据没有变化，使用它的地方也会重新渲染。
+- 在需要重新排序、过滤或插入数据的列表中，使用索引作为键可能会导致组件状态错误地绑定到错误的元素上。

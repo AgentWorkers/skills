@@ -1,24 +1,24 @@
 ---
 slug: "specification-extractor"
 display_name: "Specification Extractor"
-description: "Extract structured data from construction specifications. Parse CSI sections, requirements, submittals, and product data from spec documents."
+description: "从施工规范中提取结构化数据。解析规范文件中的CSI（Construction Specification Information）部分、需求信息、提交资料以及产品数据。"
 ---
 
-# Specification Extractor for Construction
+# 建筑工程规范提取器
 
-## Overview
+## 概述
 
-Extract structured data from construction specification documents. Parse CSI MasterFormat sections, identify requirements, submittals, product standards, and compile actionable data for estimating and procurement.
+本工具用于从建筑工程规范文档中提取结构化数据。它可以解析 CSI MasterFormat 格式的内容，识别项目需求、所需提交的文件、产品标准，并生成可用于估算和采购的实用数据。
 
-## Business Case
+## 商业价值
 
-Automated spec extraction enables:
-- **Faster Estimating**: Quickly identify scope and requirements
-- **Procurement Accuracy**: Extract exact product specifications
-- **Submittal Tracking**: Identify all required submittals
-- **Compliance Checking**: Verify specs against standards
+自动化规范提取功能可带来以下优势：
+- **更快的估算速度**：快速明确项目范围和需求
+- **更准确的采购流程**：准确获取产品规格信息
+- **全面的提交文件管理**：全面追踪所有需要提交的文件
+- **合规性检查**：验证各项规范是否符合相关标准
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -386,7 +386,7 @@ class SpecificationExtractor:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize extractor
@@ -412,7 +412,7 @@ report = extractor.generate_report(result)
 print(report)
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pdfplumber

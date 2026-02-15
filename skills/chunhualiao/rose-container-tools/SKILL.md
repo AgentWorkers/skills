@@ -1,32 +1,32 @@
 ---
 name: rose-container-tools
 version: 0.1.0
-description: Build and run ROSE compiler tools using ROSE installed in a Docker container. Use when developing source-to-source translators, call graph analyzers, AST processors, or any tool that links against librose.so. Triggers on "ROSE tool", "callgraph", "AST traversal", "source-to-source", "build with ROSE", "librose".
+description: 使用部署在 Docker 容器中的 ROSE 工具来构建和运行 ROSE 编译器工具。这些工具适用于开发源到源翻译器、调用图分析器、抽象语法树（AST）处理器，或任何需要链接到 librose.so 的工具。相关命令包括：“ROSE tool”、“callgraph”、“AST traversal”、“source-to-source”、“build with ROSE”以及“librose”。
 ---
 
-# ROSE Container Tools
+# ROSE容器工具
 
-Build and run ROSE-based source code analysis tools using ROSE installed in a container.
+使用安装在容器中的ROSE来构建和运行基于ROSE的源代码分析工具。
 
-## ⚠️ ALWAYS Use Makefile
+## ⚠️ 必须使用Makefile
 
-**Never use ad-hoc scripts or command-line compilation for ROSE tools.**
+**切勿使用自定义脚本或命令行进行ROSE工具的编译。**
 
-- Use `Makefile` for all builds
-- Enables `make -j` parallelism
-- Ensures consistent flags
-- Supports `make check` for testing
+- 所有构建操作都应使用`Makefile`；
+- 支持使用`make -j`进行并行编译；
+- 确保编译参数的一致性；
+- 支持使用`make check`进行测试。
 
-## Why Container?
+## 为什么使用容器？
 
-ROSE requires GCC 7-10 and specific Boost versions. Most modern hosts don't have these. The container provides:
-- Pre-installed ROSE at `/rose/install`
-- Correct compiler toolchain
-- All dependencies configured
+ROSE需要GCC 7-10版本以及特定的Boost版本，而大多数现代主机并不具备这些环境。容器提供了以下优势：
+- 容器中预先安装了ROSE（位于`/rose/install`目录）；
+- 配置了正确的编译工具链；
+- 所有依赖项都已预先配置好。
 
-## Quick Start
+## 快速入门
 
-### 1. Start the Container
+### 1. 启动容器
 
 ```bash
 # If container exists
@@ -41,9 +41,9 @@ docker run -it --name rose-tools-dev \
   rose-dev:latest bash
 ```
 
-### 2. Build with Makefile
+### 2. 使用Makefile进行构建
 
-**Always use Makefile to build ROSE tools. Never use ad-hoc scripts.**
+**构建ROSE工具时必须使用Makefile，切勿使用自定义脚本。**
 
 ```bash
 # Inside container
@@ -51,15 +51,15 @@ make        # Build all tools
 make check  # Build and test
 ```
 
-### 3. Run the Tool
+### 3. 运行工具
 
 ```bash
 ./build/my_tool -c input.c
 ```
 
-## Makefile (Required)
+## Makefile（必备）
 
-Create `Makefile` for your tool:
+为你的工具创建一个`Makefile`文件：
 
 ```makefile
 ROSE_INSTALL = /rose/install
@@ -91,9 +91,9 @@ clean:
 	rm -rf $(BUILDDIR)
 ```
 
-## Example: Identity Translator
+## 示例：身份转换器（Identity Translator）
 
-Minimal ROSE tool that parses and unparses code:
+这是一个简单的ROSE工具，用于解析和反解析代码：
 
 ```cpp
 // tools/identity.cpp
@@ -108,14 +108,14 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-Build and run:
+构建并运行该工具：
 ```bash
 make
 ./build/identity -c tests/hello.c
 # Output: rose_hello.c (unparsed)
 ```
 
-## Example: Call Graph Generator
+## 示例：调用图生成器（Call Graph Generator）
 
 ```cpp
 // tools/callgraph.cpp
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-## Example: AST Node Counter
+## 示例：AST节点计数器（AST Node Counter）
 
 ```cpp
 // tools/ast_stats.cpp
@@ -166,18 +166,18 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-## Common ROSE Headers
+## 常用的ROSE头文件
 
-| Header | Purpose |
+| 头文件 | 用途 |
 |--------|---------|
-| `rose.h` | Main header (includes most things) |
-| `CallGraph.h` | Call graph construction |
-| `AstDOTGeneration.h` | DOT output for AST/graphs |
-| `sageInterface.h` | AST manipulation utilities |
+| `rose.h` | 主要头文件（包含大部分功能） |
+| `CallGraph.h` | 用于生成调用图 |
+| `AstDOTGeneration.h` | 用于生成AST图的DOT格式输出 |
+| `sageInterface.h` | 用于操作AST的实用函数 |
 
-## AST Traversal Patterns
+## AST遍历模式
 
-### Simple Traversal (preorder/postorder)
+### 简单遍历（先序/后序）
 ```cpp
 class MyTraversal : public AstSimpleProcessing {
     void visit(SgNode* node) override {
@@ -189,7 +189,7 @@ MyTraversal t;
 t.traverseInputFiles(project, preorder);
 ```
 
-### Top-Down with Inherited Attributes
+### 自上而下的遍历（包含继承属性）
 ```cpp
 class MyTraversal : public AstTopDownProcessing<int> {
     int evaluateInheritedAttribute(SgNode* node, int depth) override {
@@ -198,7 +198,7 @@ class MyTraversal : public AstTopDownProcessing<int> {
 };
 ```
 
-### Bottom-Up with Synthesized Attributes
+### 自下而上的遍历（包含合成属性）
 ```cpp
 class MyTraversal : public AstBottomUpProcessing<int> {
     int evaluateSynthesizedAttribute(SgNode* node, 
@@ -210,7 +210,7 @@ class MyTraversal : public AstBottomUpProcessing<int> {
 };
 ```
 
-## Testing in Container
+## 在容器中进行测试
 
 ```bash
 # Run from host
@@ -222,39 +222,39 @@ cd /work
 make && make check
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "rose.h not found"
+### “找不到rose.h”
 ```bash
 # Check include path
 echo $ROSE/include/rose
 ls $ROSE/include/rose/rose.h
 ```
 
-### "cannot find -lrose"
+### “无法找到-lrose”
 ```bash
 # Check library path
 ls $ROSE/lib/librose.so
 ```
 
-### Runtime: "librose.so not found"
+### 运行时错误：“找不到librose.so”
 ```bash
 # Set library path
 export LD_LIBRARY_PATH=$ROSE/lib:$LD_LIBRARY_PATH
 ```
 
-### Segfault on large files
+### 处理大文件时出现段错误（Segment Fault）
 ```bash
 # Increase stack size
 ulimit -s unlimited
 ```
 
-## Container Reference
+## 容器目录结构
 
-| Path | Contents |
+| 目录 | 内容 |
 |------|----------|
-| `/rose/install` | ROSE installation (headers, libs, bins) |
-| `/rose/install/include/rose` | Header files |
-| `/rose/install/lib` | librose.so and dependencies |
-| `/rose/install/bin` | ROSE tools (identityTranslator, etc.) |
-| `/work` | Mounted workspace (your code) |
+| `/rose/install` | ROSE的安装目录（头文件、库文件、可执行文件） |
+| `/rose/install/include/rose` | 头文件目录 |
+| `/rose/install/lib` | librose.so及依赖库文件 |
+| `/rose/install/bin` | ROSE工具（如identityTranslator等） |
+| `/work` | 挂载的工作区（用于存放你的代码） |

@@ -1,18 +1,18 @@
 ---
 name: media-backup
-description: Archive Clawdbot conversation media (photos, videos) to a local folder. Works with any sync service (Dropbox, iCloud, Google Drive, OneDrive).
+description: 将 Clawdbot 的对话媒体（照片、视频）存档到本地文件夹中。该功能支持与任何同步服务（Dropbox、iCloud、Google Drive、OneDrive）配合使用。
 metadata: {"clawdbot":{"env":["MEDIA_BACKUP_DEST"]}}
 ---
 
-# Media Backup
+# 媒体备份
 
-Simple backup of Clawdbot inbound media to a local folder. No APIs, no OAuth - just file copy.
+该功能用于将 Clawdbot 收到的媒体文件简单备份到本地文件夹中。无需使用任何 API 或 OAuth，仅通过文件复制实现备份。
 
-Works with any cloud sync service since it's just copying to a local folder.
+由于备份内容仅存储在本地文件夹中，因此该功能可与任何云同步服务配合使用。
 
-## Setup
+## 设置
 
-Set your destination folder:
+1. 设置目标文件夹：
 ```bash
 export MEDIA_BACKUP_DEST="$HOME/Dropbox/Clawdbot/media"
 # or
@@ -21,7 +21,7 @@ export MEDIA_BACKUP_DEST="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Cla
 export MEDIA_BACKUP_DEST="$HOME/Google Drive/Clawdbot/media"
 ```
 
-Or add to clawdbot config:
+2. 或者将此设置添加到 Clawdbot 的配置文件中：
 ```json
 {
   "skills": {
@@ -36,7 +36,7 @@ Or add to clawdbot config:
 }
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Run backup
@@ -52,27 +52,27 @@ uv run skills/media-backup/scripts/backup.py --source ~/.clawdbot/media/inbound 
 uv run skills/media-backup/scripts/backup.py status
 ```
 
-## How It Works
+## 工作原理
 
-1. Scans `~/.clawdbot/media/inbound/` for media files
-2. Organizes by date: `YYYY-MM-DD/filename.jpg`
-3. Tracks archived files by content hash (no duplicates)
-4. Your cloud service syncs the folder automatically
+1. 扫描 `~/.clawdbot/media/inbound/` 目录下的所有媒体文件。
+2. 按日期对文件进行排序：`YYYY-MM-DD/filename.jpg`。
+3. 通过文件内容哈希值来跟踪已备份的文件（确保文件不会重复）。
+4. 你的云服务会自动同步该本地文件夹。
 
-## Cron Setup
+## 定时备份设置
 
-Run hourly backup:
+- 每小时执行一次备份：
 ```
 0 * * * * cd ~/clawd && uv run skills/media-backup/scripts/backup.py >> /tmp/media-backup.log 2>&1
 ```
 
-Or via Clawdbot cron job with task:
+- 或者通过 Clawdbot 的定时任务来执行备份：
 ```
 Run media backup: uv run skills/media-backup/scripts/backup.py
 If files archived, reply: 📸 Archived [N] media files
 If none, reply: HEARTBEAT_OK
 ```
 
-## Supported Formats
+## 支持的文件格式
 
 jpg, jpeg, png, gif, webp, heic, mp4, mov, m4v, webm

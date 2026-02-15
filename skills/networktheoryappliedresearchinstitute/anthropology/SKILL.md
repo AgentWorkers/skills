@@ -2,102 +2,101 @@
 summary: Comprehensive AI instructor skill covering cultural, biological, archaeological, and linguistic anthropology with 580K tokens of educational content and narrative-driven teaching frameworks.
 ---
 
-# Anthropology Instructor
+# 人类学教学技能
 
-A comprehensive AI skill for teaching and discussing anthropology across all four subfields: cultural, biological, archaeological, and linguistic anthropology.
+这是一项综合性的AI技能，用于教授和讨论人类学的四个子领域：文化人类学、生物人类学、考古人类学和语言人类学。
 
-## Overview
+## 概述
 
-This skill provides access to a comprehensive anthropology knowledge base containing 580,000 tokens of carefully curated educational content. It enables AI agents to engage in rich, narrative-driven conversations about human diversity, cultural practices, biological evolution, archaeological discoveries, and linguistic variation.
+该技能提供了一个包含58万个精心策划的教育内容的全面人类学知识库，使AI代理能够就人类多样性、文化实践、生物进化、考古发现和语言变异等主题进行丰富、以叙事为基础的对话。
 
-## Knowledge Base
+## 知识库
 
-- **580K tokens** of anthropological content
-- - **152 markdown files** covering comprehensive topics
-  - - **Four subfields**: Cultural, Biological, Archaeological, and Linguistic Anthropology
-    - - **Global coverage**: Ethnographies from Africa, Americas, Asia, Pacific, Middle East, and Europe
-      - - **Theoretical frameworks**: From classical evolutionism to contemporary ontological approaches
-        - - **Pedagogical design**: Socratic dialogue methods and conversational teaching frameworks
-         
-          - ## Key Topics
-         
-          - ### Cultural Anthropology
-          - - Kinship systems and social organization
-            - - Economic anthropology and exchange systems
-              - - Political organization and power structures
-                - - Religion, ritual, and symbolic systems
-                  - - Gender, sexuality, and medical anthropology
-                    - - Material culture and performance
-                     
-                      - ### Biological Anthropology
-                      - - Human evolution and hominin timeline
-                        - - Primate diversity and behavior
-                          - - Genetic variation and adaptation
-                            - - Bioarchaeology and forensic anthropology
-                              - - Evolutionary medicine and nutritional anthropology
-                               
-                                - ### Archaeological Anthropology
-                                - - Survey, excavation, and dating methods
-                                  - - Stone tool traditions and behavioral modernity
-                                    - - Domestication and Neolithic transitions
-                                      - - Early states and urban development
-                                        - - Regional archaeological sequences
-                                         
-                                          - ### Linguistic Anthropology
-                                          - - Language families and global diversity
-                                            - - Sociolinguistics and language variation
-                                              - - Discourse, performance, and meaning-making
-                                                - - Endangered languages and revitalization
-                                                 
-                                                  - ## Teaching Approach
-                                                 
-                                                  - This skill employs:
-                                                  - - **Rich ethnographic storytelling** to make abstract concepts concrete
-                                                    - - **Socratic questioning** to encourage critical thinking
-                                                      - - **Multiple theoretical perspectives** on contested topics
-                                                        - - **Defamiliarization techniques** to question familiar assumptions
-                                                          - - **Contemporary connections** linking historical insights to current issues
-                                                            - - **Cultural sensitivity** and reflexivity about anthropology's colonial history
-                                                             
-                                                              - ## Usage
-                                                             
-                                                              - The skill enables AI agents to:
-                                                              - - Answer questions about anthropological concepts and theories
-                                                                - - Share relevant ethnographic examples from global cultures
-                                                                  - - Discuss human biological evolution and diversity
-                                                                    - - Explain archaeological methods and discoveries
-                                                                      - - Analyze linguistic diversity and language practices
-                                                                        - - Engage in conversational, adaptive teaching
-                                                                          - - Connect concepts across subfields and topics
-                                                                           
-                                                                            - ## Content Organization
-                                                                           
-                                                                            - Content is organized in seven phases:
-                                                                            - 1. **Foundations**: Disciplinary overview and core methods
-                                                                              2. 2. **Cultural Anthropology**: In-depth exploration of cultural topics
-                                                                                 3. 3. **Biological Anthropology**: Human evolution and biological diversity
-                                                                                    4. 4. **Archaeological Anthropology**: Methods and prehistoric sequences
-                                                                                       5. 5. **Linguistic Anthropology**: Language diversity and communication
-                                                                                          6. 6. **Regional & Topical Studies**: Geographic and specialized topics
-                                                                                             7. 7. **Integration & Pedagogy**: Cross-cutting themes and teaching frameworks
-                                                                                               
-                                                                                                8. ## Example Queries
-                                                                                               
-                                                                                                9. - "What are the four subfields of anthropology?"
-                                                                                                   - - "Explain the Kula ring exchange system"
-                                                                                                     - - "What do we know about Neanderthals?"
-                                                                                                       - - "How do kinship systems vary across cultures?"
-                                                                                                         - - "What are the major language families?"
-                                                                                                           - - "Discuss the relationship between culture and biology"
-                                                                                                             - - "What is linguistic relativism?"
-                                                                                                               - - "Explain archaeological dating methods"
-                                                                                                                
-                                                                                                                 - ## License
-                                                                                                                
-                                                                                                                 - AGPL-3.0 license
-                                                                                                                
-                                                                                                                 - ---
-                                                                                                                 
-                                                                                                                 **Status**: Complete and ready for deployment
-                                                                                                                 **Version**: 2.0
-                                                                                                                 **Last Updated**: January 2026
+- **58万个条目**的人类学内容
+  - **152个markdown文件**，涵盖广泛的主题
+    - **四个子领域**：文化人类学、生物人类学、考古人类学和语言人类学
+      - **全球范围**：来自非洲、美洲、亚洲、太平洋地区、中东和欧洲的民族志资料
+        - **理论框架**：从经典进化论到当代本体论方法
+        - **教学设计**：苏格拉底式对话方法和对话式教学框架
+
+## 关键主题
+
+### 文化人类学
+- 亲属关系系统与社会组织
+- 经济人类学与交换体系
+- 政治组织与权力结构
+- 宗教、仪式与符号系统
+- 性别、性取向与医学人类学
+- 物质文化与表演艺术
+
+### 生物人类学
+- 人类进化与人类祖先的时间线
+- 灵长类动物的多样性与行为
+- 基因变异与适应
+- 生物考古学与法医人类学
+- 进化医学与营养人类学
+
+### 考古人类学
+- 调查、发掘与年代测定方法
+- 石器传统与行为现代化
+- 驯化与新石器时代的转变
+- 早期国家与城市发展
+- 地区性考古序列
+
+### 语言人类学
+- 语言家族与全球语言多样性
+- 社会语言学与语言变异
+- 话语、表演与意义构建
+- 濒危语言与语言复兴
+
+## 教学方法
+
+- 采用丰富的民族志故事讲述方式，将抽象概念具体化
+- 通过苏格拉底式提问鼓励批判性思维
+- 对有争议的话题提供多种理论视角
+- 使用“去熟悉化”技术来质疑固有的假设
+- 将历史见解与当前问题联系起来
+- 具备文化敏感性，并反思人类学的殖民历史
+
+## 使用方式
+
+- 该技能使AI代理能够：
+- 回答关于人类学概念和理论的问题
+- 分享来自全球文化的相关民族志案例
+- 讨论人类的生物进化与多样性
+- 解释考古方法和发现
+- 分析语言多样性与语言使用习惯
+- 进行对话式、灵活的教学
+- 在不同子领域和主题之间建立联系
+
+## 内容组织
+
+内容分为七个阶段：
+1. **基础**：学科概述与核心方法
+2. **文化人类学**：深入探讨文化主题
+3. **生物人类学**：人类进化与生物多样性
+4. **考古人类学**：方法与史前序列
+5. **语言人类学**：语言多样性与交流方式
+6. **区域与专题研究**：地理与特定主题
+7. **整合与教学法**：跨领域的主题与教学框架
+
+## 示例问题
+
+- “人类学的四个子领域是什么？”
+- “请解释库拉环交换系统。”
+- “我们对尼安德特人了解多少？”
+- “不同文化中的亲属关系系统有何差异？”
+- “主要的语言家族有哪些？”
+- “讨论文化与生物学之间的关系。”
+- “什么是语言相对论？”
+- “请解释考古年代测定方法。”
+
+## 许可证
+
+AGPL-3.0许可证
+
+**状态**：已完成，随时可部署
+
+**版本**：2.0
+
+**最后更新时间**：2026年1月

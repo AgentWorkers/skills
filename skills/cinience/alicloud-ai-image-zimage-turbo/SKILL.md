@@ -1,43 +1,43 @@
 ---
 name: alicloud-ai-image-zimage-turbo
-description: Generate images with Alibaba Cloud Model Studio Z-Image Turbo (z-image-turbo) via DashScope multimodal-generation API. Use when creating text-to-image outputs, controlling size/seed/prompt_extend, or documenting request/response mapping for Z-Image.
+description: 使用 Alibaba Cloud Model Studio Z-Image Turbo (z-image-turbo) 通过 DashScope 的多模态生成 API 生成图像。该 API 可用于创建文本到图像的输出结果，控制图像的大小、种子值以及提示信息（prompt_extend），同时可用于记录 Z-Image 的请求与响应映射关系。
 ---
 
-Category: provider
+**类别：provider**
 
 # Model Studio Z-Image Turbo
 
-Use Z-Image Turbo for fast text-to-image generation via the DashScope multimodal-generation API.
+使用 Z-Image Turbo 通过 DashScope 的多模态生成 API 快速实现文本到图像的转换。
 
-## Critical model name
+## 关键模型名称
 
-Use ONLY this exact model string:
+**仅使用以下精确的模型名称：**
 - `z-image-turbo`
 
-## Prerequisites
+## 先决条件
 
-- Set `DASHSCOPE_API_KEY` in your environment, or add `dashscope_api_key` to `~/.alibabacloud/credentials` (env takes precedence).
-- Choose region endpoint (Beijing or Singapore). If unsure, pick the most reasonable region or ask the user.
+- 在您的环境中设置 `DASHSCOPE_API_KEY`，或者将 `dashscope_api_key` 添加到 `~/.alibabacloud/credentials` 文件中（环境变量优先）。
+- 选择区域端点（北京或新加坡）。如果不确定，请选择最合适的区域或询问用户。
 
-## Normalized interface (image.generate)
+## 标准化接口（`image.generate`）
 
-### Request
-- `prompt` (string, required)
-- `size` (string, optional) e.g. `1024*1024`
-- `seed` (int, optional)
-- `prompt_extend` (bool, optional; default false)
-- `base_url` (string, optional) override API endpoint
+### 请求参数
+- `prompt`（字符串，必填）
+- `size`（字符串，可选）例如：`1024*1024`
+- `seed`（整数，可选）
+- `prompt_extend`（布尔值，可选；默认为 `false`）
+- `base_url`（字符串，可选）用于覆盖 API 端点
 
-### Response
-- `image_url` (string)
-- `width` (int)
-- `height` (int)
-- `prompt` (string)
-- `rewritten_prompt` (string, optional)
-- `reasoning` (string, optional)
-- `request_id` (string)
+### 响应参数
+- `image_url`（字符串）
+- `width`（整数）
+- `height`（整数）
+- `prompt`（字符串）
+- `rewritten_prompt`（字符串，可选）
+- `reasoning`（字符串，可选）
+- `request_id`（字符串）
 
-## Quick start (curl)
+## 快速启动（使用 curl）
 
 ```bash
 curl -sS 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation' \
@@ -60,7 +60,7 @@ curl -sS 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generat
   }'
 ```
 
-## Local helper script
+## 本地辅助脚本
 
 ```bash
 python skills/ai/image/alicloud-ai-image-zimage-turbo/scripts/generate_image.py \
@@ -69,21 +69,21 @@ python skills/ai/image/alicloud-ai-image-zimage-turbo/scripts/generate_image.py 
   --print-response
 ```
 
-## Size notes
+## 关于尺寸的说明
 
-- Total pixels must be between `512*512` and `2048*2048`.
-- Prefer common sizes like `1024*1024`, `1280*720`, `1536*864`.
+- 总像素数必须在 `512*512` 到 `2048*2048` 之间。
+- 建议使用常见的尺寸，如 `1024*1024`、`1280*720`、`1536*864`。
 
-## Cost note
+## 成本说明
 
-- `prompt_extend=true` is billed higher than `false`. Only enable when you need rewritten prompts.
+- 当 `prompt_extend` 设置为 `true` 时，费用会比 `false` 高。仅在需要生成重写后的提示时启用此选项。
 
-## Output location
+## 输出位置
 
-- Default output: `output/ai-image-zimage-turbo/images/`
-- Override base dir with `OUTPUT_DIR`.
+- 默认输出路径：`output/ai-image-zimage-turbo/images/`
+- 可通过 `OUTPUT_DIR` 变量覆盖默认输出目录。
 
-## References
+## 参考资料
 
-- `references/api_reference.md` for request/response schema and regional endpoints.
-- `references/sources.md` for official docs.
+- `references/api_reference.md`：请求/响应格式及区域端点的详细信息。
+- `references/sources.md`：官方文档。

@@ -1,49 +1,48 @@
 ---
 name: android-automation
-description: Control Android devices via ADB with support for UI layout analysis (uiautomator) and visual feedback (screencap). Use when you need to interact with Android apps, perform UI automation, take screenshots, or run complex ADB command sequences.
+description: 通过ADB控制Android设备，支持UI布局分析（uiautomator）和视觉反馈（截图）。当您需要与Android应用程序交互、执行UI自动化操作、截图或运行复杂的ADB命令序列时，可以使用此工具。
 ---
 
-# Android Automation
+# Android自动化
 
-Control and automate Android devices using ADB, uiautomator, and screencap.
+使用ADB、uiautomator和screencap来控制和自动化Android设备。
 
-## Connecting Devices
+## 连接设备
 
-### USB Connection
-1. Enable **Developer Options** and **USB Debugging** on the device.
-2. Connect via USB and verify with `adb devices`.
+### USB连接
+1. 在设备上启用**开发者选项**和**USB调试**。
+2. 通过USB连接设备，并使用`adb devices`进行验证。
 
-### Wireless Connection (Android 11+)
-1. Enable **Wireless Debugging** in Developer Options.
-2. **Pairing**: Find the IP, port, and pairing code in the "Pair device with pairing code" popup.
+### 无线连接（Android 11及以上版本）
+1. 在开发者选项中启用**无线调试**。
+2. **配对**：在“使用配对码配对设备”弹窗中找到IP地址、端口号和配对码。
    `adb pair <ip>:<pairing_port> <pairing_code>`
-3. **Connecting**: Use the IP and port shown on the main Wireless Debugging screen.
+3. **连接**：使用主无线调试屏幕上显示的IP地址和端口号进行连接。
    `adb connect <ip>:<connection_port>`
-4. Verify with `adb devices`.
+4. 使用`adb devices`进行验证。
 
-## Common Workflows
+## 常用工作流程
 
-### Launching an App
-Use the monkey tool to launch apps by package name:
+### 启动应用程序
+使用monkey工具按包名启动应用程序：
 `adb shell monkey -p <package_name> -c android.intent.category.LAUNCHER 1`
 
-### Analyzing the UI
-Dump and pull the UI hierarchy to find coordinates:
+### 分析用户界面
+导出并提取用户界面层次结构以获取坐标：
 `adb shell uiautomator dump /sdcard/view.xml && adb pull /sdcard/view.xml ./view.xml`
+然后使用`grep`命令查找文本或资源ID，例如`bounds="[x1,y1][x2,y2]"`。
 
-Then grep for text or resource IDs to find `bounds="[x1,y1][x2,y2]"`.
+### 与元素交互
+- **点击**：`adb shell input tap <x> <y>`
+- **输入文本**：`adb shell input text "<text>"`（注意：在某些环境中需要使用`\s`来表示空格，或者小心处理引号）
+- **按键事件**：`adb shell input keyevent <keycode>`（Home键：3，返回键：4，电源键：26，搜索键：84，回车键：66）
+- **滑动**：`adb shell input swipe <x1> <y1> <x2> <y2> <duration_ms>`
 
-### Interacting with Elements
-- **Tap**: `adb shell input tap <x> <y>`
-- **Text**: `adb shell input text "<text>"` (Note: Use `%\s` for spaces in some environments or handle quoting carefully)
-- **Keyevent**: `adb shell input keyevent <keycode>` (Home: 3, Back: 4, Power: 26, Search: 84, Enter: 66)
-- **Swipe**: `adb shell input swipe <x1> <y1> <x2> <y2> <duration_ms>`
-
-### Visual Verification
-Take a screenshot to verify the state:
+### 可视化验证
+截取屏幕截图以验证设备状态：
 `adb shell screencap -p /sdcard/screen.png && adb pull /sdcard/screen.png ./screen.png`
 
-## Tips
-- **Search**: Use `input keyevent 84` to trigger search in many apps.
-- **Wait**: Use `sleep <seconds>` between commands to allow the UI to update.
-- **Coordinates**: Calculate the center of `[x1,y1][x2,y2]` for reliable taps.
+## 提示
+- **搜索**：在许多应用程序中，可以使用`input keyevent 84`来触发搜索功能。
+- **等待**：在执行命令之间使用`sleep <seconds>`来等待用户界面更新。
+- **坐标**：为了确保点击的准确性，请计算`[x1,y1][x2,y2]`的范围的中间值。

@@ -1,78 +1,78 @@
 ---
 name: migrate
-description: Export and import Clawdbot installations for migration between machines. Use when the user wants to migrate Clawdbot to a new computer, backup their setup, or restore from a backup. Handles workspace files, config, WhatsApp sessions, and optionally credentials.
+description: 用于在多台机器之间迁移 Clawdbot 安装。当用户需要将 Clawdbot 迁移到新电脑、备份其设置或从备份中恢复时，可以使用此功能。该功能会处理工作区文件、配置文件、WhatsApp 会话记录，以及可选的凭据信息。
 ---
 
-# Clawdbot Migration
+# Clawdbot 迁移
 
-Export and import complete Clawdbot installations.
+支持导出和导入完整的 Clawdbot 安装环境。
 
-## Export
+## 导出
 
-Create a portable archive of the current installation:
+将当前安装环境打包成一个可移植的压缩文件：
 
 ```bash
 bash scripts/export.sh
 ```
 
-Options:
-- `--output, -o PATH` — Output directory (default: current)
-- `--workspace PATH` — Workspace path (default: ~/clawd)
-- `--include-sessions` — Include session transcripts
-- `--include-credentials` — Include credentials ⚠️ handle with care
+可选参数：
+- `--output, -o PATH` — 输出目录（默认：当前目录）
+- `--workspace PATH` — 工作区路径（默认：`~/clawd`）
+- `--include-sessions` — 包含会话记录
+- `--include-credentials` — 包含凭据 ⚠️ 请谨慎操作
 
-Example:
+示例：
 ```bash
 bash scripts/export.sh -o /tmp --include-sessions
 ```
 
-Creates: `clawdbot-export-YYYYMMDD_HHMMSS.tar.gz`
+生成的文件：`clawdbot-export-YYYYMMDD_HHMMSS.tar.gz`
 
-## Import
+## 导入
 
-Restore from an export archive on a new machine:
+在新机器上从导出的压缩文件中恢复安装环境：
 
 ```bash
 bash scripts/import.sh <archive.tar.gz>
 ```
 
-Options:
-- `--workspace PATH` — Target workspace (default: ~/clawd)
-- `--force, -f` — Overwrite without prompting
+可选参数：
+- `--workspace PATH` — 目标工作区路径（默认：`~/clawd`）
+- `--force, -f` — 强制覆盖现有文件（无需提示）
 
-Example:
+示例：
 ```bash
 bash scripts/import.sh clawdbot-export-20260129_120000.tar.gz --force
 ```
 
-## What's Included
+## 包含的内容
 
-| Component | Default | Flag |
-|-----------|---------|------|
-| Workspace (~/clawd) | ✓ | — |
-| Config (clawdbot.json) | ✓ | — |
-| Managed skills | ✓ | — |
-| WhatsApp session | ✓ | — |
-| Session transcripts | ✗ | `--include-sessions` |
-| Credentials | ✗ | `--include-credentials` |
+| 组件          | 默认值    | 是否包含 |
+|---------------|---------|---------|
+| 工作区（`~/clawd`）    | ✓       |        |
+| 配置文件（`clawdbot.json`） | ✓       |        |
+| 管理的技能        | ✓       |        |
+| WhatsApp 会话记录  | ✓       |        |
+| 会话记录        | ✗       | （需使用 `--include-sessions`） |
+| 凭据            | ✗       | （需使用 `--include-credentials`） |
 
-**Excluded from workspace** (can be rebuilt):
+**工作区中不包含的文件**（可以重新生成）：
 `node_modules/`, `.next/`, `.open-next/`, `.vercel/`, `.wrangler/`, `.git/`, `dist/`, `build/`
 
-## Migration Workflow
+## 迁移流程
 
-1. On old machine:
+1. 在旧机器上执行相关操作：
    ```bash
    bash scripts/export.sh -o ~/Desktop
    ```
 
-2. Transfer archive to new machine (scp, USB, cloud, etc.)
+2. 将压缩文件传输到新机器（使用 scp、U盘、云存储等方式）。
 
-3. On new machine:
+3. 在新机器上执行以下操作：
    ```bash
    npm install -g clawdbot
    bash scripts/import.sh ~/clawdbot-export-*.tar.gz
    cd ~/clawd && clawdbot gateway start
    ```
 
-WhatsApp session transfers automatically — no re-scan needed.
+WhatsApp 会话记录会自动迁移，无需重新扫描。

@@ -1,29 +1,29 @@
-# Cash Flow Forecast
+# 现金流预测
 
-Build a 13-week rolling cash flow forecast from your actual numbers.
+根据您实际的数据，生成一个为期13周的滚动现金流预测。
 
-## What It Does
+## 功能介绍
 
-Takes your current bank balance, expected income, and recurring expenses — then projects weekly cash positions for the next quarter. Flags weeks where you'll dip below your safety buffer.
+该工具会使用您当前的银行余额、预期收入以及经常性支出，来预测下一季度的每周现金状况，并标记出那些现金余额可能低于安全缓冲区的周数。
 
-## How to Use
+## 使用方法
 
-Tell your agent:
-- Current bank balance
-- Expected income (contracts, recurring revenue, one-time payments) with dates
-- Fixed expenses (rent, payroll, subscriptions, loan payments) with dates
-- Variable expenses (estimated ranges)
-- Minimum cash buffer you want to maintain
+请向您的代理提供以下信息：
+- 当前银行余额
+- 预期收入（包括合同收入、经常性收入和一次性付款，需标注日期）
+- 固定支出（如租金、工资、订阅费用、贷款还款等，需标注日期）
+- 变动支出（提供预估范围）
+- 您希望维持的最低现金缓冲金额
 
-The agent builds a week-by-week forecast table showing:
-- Opening balance
-- Cash in (by source)
-- Cash out (by category)
-- Net change
-- Closing balance
-- Buffer status (✅ above minimum / ⚠️ within 20% / 🔴 below)
+代理将生成一份每周的预测表格，内容包括：
+- 期初余额
+- 现金流入（按来源分类）
+- 现金流出（按类别分类）
+- 净变化额
+- 期末余额
+- 缓冲状态（✅ 高于最低要求 / ⚠️ 在20%范围内 / 🔴 低于最低要求）
 
-## Prompt
+## 使用提示
 
 ```
 You are a cash flow forecasting agent. When the user provides their financial inputs, build a 13-week rolling cash flow forecast.
@@ -45,14 +45,16 @@ Output format:
 Be direct. Use real numbers. No fluff.
 ```
 
-## Who This Is For
+## 适用对象
 
-- Founders tracking burn rate
-- Agencies with lumpy contract revenue  
-- Any business that's been surprised by a cash crunch
+- 关注企业资金消耗速度的创始人
+- 收入来源不稳定的代理机构
+- 遭遇现金流紧张的任何企业
 
-## Want More?
+## 更多功能？
 
-This skill handles the forecast. For full financial automation — AR/AP tracking, invoice chasing, expense categorization, margin analysis — check out the [AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/). Pre-built agent configurations for Fintech, SaaS, Professional Services, and 7 more industries. $47 each.
+该工具仅负责现金流预测。如需实现全面的财务自动化功能（如应收账款/应付账款管理、发票催收、费用分类、利润率分析等），请查看[AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/)。我们为金融科技、SaaS、专业服务等7个行业提供了预先配置好的代理解决方案，每套价格为47美元。
 
-Free tools: [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) | [Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/)
+免费工具：
+- [AI收入计算器](https://afrexai-cto.github.io/ai-revenue-calculator/)  
+- [代理设置向导](https://afrexai-cto.github.io/agent-setup/)

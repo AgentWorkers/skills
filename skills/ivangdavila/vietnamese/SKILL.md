@@ -1,96 +1,96 @@
 ---
 name: Vietnamese
-description: Write Vietnamese that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一段听起来像真人说的越南语。既不正式，也不像机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Vietnamese is technically correct but sounds off. Too formal. Too textbook. Natives write more casually, with appropriate pronouns and particles. Match that.
+虽然AI生成的越南语在语法上是正确的，但听起来很不自然、过于正式，缺乏口语化表达。母语者通常会使用更随意的表达方式，包括恰当的代词和助词，因此需要调整语言风格以更贴近自然口语。
 
-## Formality Default
+## 过于正式的语气
 
-Default register is too high. Casual Vietnamese is warm. Unless explicitly formal: lean casual and choose pronouns based on relationship.
+默认的语气过于正式，而越南语的日常交流更加随意、亲切。除非有明确的需要，否则应采用更随意的语气，并根据说话者与听者的关系选择合适的代词。
 
-## Pronouns Are Critical
+## 代词的重要性
 
-Vietnamese pronouns define the relationship:
-- Tôi: formal/neutral I
-- Mình/Tớ: casual I (friendly)
-- Anh/Chị/Em: based on relative age
-- Bạn: peer, friend
-- Wrong pronouns = wrong relationship = unnatural
+越南语中的代词用于明确说话者与听者之间的关系：
+- **Tôi**：正式/中性的“我”
+- **Mình/Tớ**：非正式的“我”（表示友好）
+- **Anh/Chị/Em**：根据年龄或关系来称呼
+- **Bạn**：朋友或同龄人
 
-## Age-Based Address
+**错误的代词使用**意味着表达关系不正确，从而影响语言的自然性。
 
-Vietnamese respects age hierarchy:
-- Anh (older male), Chị (older female)
-- Em (younger person)
-- Cô/Chú/Bác: older adults, relatives
-- Online peers often use bạn or mình
+## 基于年龄的称呼
 
-## Particles & Softeners
+越南语中有严格的年龄尊称体系：
+- **Anh/Chị/Em**：用于称呼年长者
+- **Cô/Chú/Bác**：用于称呼长辈或亲戚
+- 在网上，人们通常会用**Bạn**或**Mình**来称呼对方
 
-These make Vietnamese natural:
-- À/Ạ: politeness, acknowledgment
-- Nhé: softening requests
-- Nha: casual "okay?"
-- Nhỉ: seeking agreement
-- Đi: urging action
+## 助词与缓和语
 
-## Fillers & Flow
+这些助词能让越南语表达更加自然：
+- **À/Ạ**：表示礼貌或确认
+- **Nhé**：用于缓和语气或请求
+- **Nha**：表示“可以吗？”
+- **Nhỉ**：用于征求同意
+- **Đi**：用于催促对方行动
 
-Real Vietnamese has fillers:
-- À, ừ, ờ
-- Thì, là, mà
-- Kiểu, đại loại
-- Nói chung, thật ra
+## 语言中的填充词与连词
 
-## Casual Patterns
+越南语中常用一些填充词来使表达更流畅：
+- **À, ừ, ờ**：表示犹豫或思考
+- **Thì, là, mà**：用于连接句子成分
+- **Kiểu, đại loại**：表示“大致上”
+- **Nói chung, thật ra**：表示“总的来说”
 
-Spoken patterns in writing:
-- Không → Hông/Ko
-- Biết → Bít
-- Được → Đc
-- Common in texting
+## 非正式的表达方式
 
-## Expressiveness
+在书面语中，一些口语化的表达方式也会被使用：
+- **Không** → **Hông/Ko**
+- **Biết** → **Bít**
+- **Được** → **Đc**
 
-Don't pick the safe word:
-- Tốt → Tuyệt, Quá đỉnh, Xịn
-- Xấu → Tệ, Dở, Chán
-- Rất → Siêu, Cực, Quá
+这些表达在短信中很常见。
 
-## Common Expressions
+## 表达方式
 
-Natural expressions:
-- OK, Được rồi, Ừ
-- Không sao, Kệ đi
-- Thật hả?, Vậy hả?
-- Đúng rồi, Chuẩn
+避免使用过于刻板的词汇：
+- **Tốt** → **Tuyệt, Quá đỉnh, Xịn**（表示非常好）
+- **Xấu** → **Tệ, Dở, Chán**（表示不好）
+- **Rất** → **Siêu, Cực, Quá**（表示程度极强）
 
-## Reactions
+## 常见表达
 
-React naturally:
-- Thật á?, Hả?, Sao?
-- Ôi!, Trời ơi!, Chời!
-- Hay quá!, Đỉnh!, Xịn!
-- Haha, =))), hihi
+自然的表达方式包括：
+- **OK, Được rồi, Ừ**：表示同意或理解
+- **Không sao, Kệ đi**：表示没关系
+- **Thật hả?, Vậy hả?**：表示惊讶或疑问
+- **Đúng rồi, Chuẩn**：表示赞同
 
-## Regional Differences
+## 反应方式
 
-North vs South:
-- North: Vâng (yes formal), mình
-- South: Dạ (yes formal), tui instead of tôi
-- Different vocabulary for some words
-- Stay consistent to one region
+在交流时，应保持自然的反应：
+- **Thật á?, Hả?, Sao?**：表示惊讶或疑问
+- **Ôi!, Trời ơi!, Chời!**：表示兴奋或感叹
+- **Hay quá!, Đỉnh!, Xịn!**：表示赞叹
+- **Haha, =))), hihi**：表示幽默或轻松
 
-## Tones in Text
+## 地区差异
 
-Tones matter—spelling must be exact:
-- Ma (ghost) vs Mà (but) vs Má (mother)
-- Dấu marks are essential
-- Missing marks = confusing or wrong
+北部和南部的越南语有一些细微差别：
+- **北部**：常用**Vâng**（正式）和**mình**作为回答
+- **南部**：常用**Dạ**（正式），并且用**tui**代替**tôi**
+- 一些词汇的用法也略有不同
+- 应保持与所使用地区的表达习惯一致
 
-## The "Native Test"
+## 文本中的语调
 
-Before sending: would a Vietnamese screenshot this as "AI-generated"? If yes—wrong pronouns, too formal, no particles. Fix relationships first.
+语调非常重要，拼写必须准确：
+- **Ma**（鬼） vs **Mà**（但是） vs **Má**（妈妈）
+- 语法符号的使用至关重要，漏掉符号会导致表达混乱或错误
+
+## “母语者测试”
+
+在发送内容之前，可以问问越南母语者：他们会认为这是AI生成的吗？如果是这样，那说明代词使用不当、语气过于正式，且缺少助词。首先需要修正这些问题。

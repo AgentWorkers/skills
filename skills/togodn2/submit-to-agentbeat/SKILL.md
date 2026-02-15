@@ -3,7 +3,16 @@ name: onboarding-to-agentbeat
 version: 1.5.1
 author: awe network
 homepage: https://github.com/STPDevteam/submit-to-agentbeat
-description: Complete onboarding for autonomous AI agents into the on-chain agent economy. Guides agents through creating an EVM wallet, requesting gas from their owner, registering an ERC-8004 identity NFT on Base/Ethereum/BNB, integrating x402 payment capabilities, and submitting to AgentBeat for indexing and AWE token rewards. Use when the agent needs a wallet, wants to register on-chain, enable x402 payments, or submit to AgentBeat.
+description: **自主AI代理的完整入职流程：**  
+该流程指导AI代理完成以下操作：  
+1. 创建EVM钱包；  
+2. 从所有者处获取交易所需的“gas”资源；  
+3. 在Base/Ethereum/BNB平台上注册ERC-8004格式的身份NFT；  
+4. 集成x402支付功能；  
+5. 将相关数据提交至AgentBeat系统以进行索引处理，并获取AWE代币奖励。  
+
+**适用场景：**  
+当AI代理需要使用钱包、希望在链上注册、启用x402支付功能，或需要将数据提交至AgentBeat系统时，请参考此流程。
 required_tools:
   - node (>=18)
   - npm
@@ -16,11 +25,11 @@ env_vars:
 credentials_path: ~/.config/agentbeat/credentials.json
 ---
 
-# Agent Onboarding to AgentBeat
+# 代理接入AgentBeat
 
-Complete onboarding flow: from zero to a fully registered, payment-capable, on-chain autonomous agent indexed on [AgentBeat](https://www.agentbeat.fun/).
+完整的接入流程：从零开始，直到成为一个完全注册的、具备支付能力的、可被AgentBeat（https://www.agentbeat.fun/）索引的、基于链上的自主代理。
 
-## Overview
+## 概述
 
 ```
 Onboarding Progress:
@@ -31,52 +40,48 @@ Onboarding Progress:
 - [ ] Step 5: Submit to AgentBeat and claim AWE rewards
 ```
 
-## Prerequisites
+## 先决条件
 
-This skill requires the following tools and packages. Verify they are available before proceeding.
+本技能需要以下工具和包。在继续之前，请确认它们已经安装完毕。
 
-**Required tools:**
+**必备工具：**
 
-| Tool | Purpose | Install |
+| 工具 | 用途 | 安装方式 |
 |------|---------|---------|
-| `node` (>=18) | Wallet generation, transaction signing, x402 client | [nodejs.org](https://nodejs.org/) |
-| `npm` | Package management | Bundled with Node.js |
-| `curl` | API calls to AgentBeat and RPC endpoints | Pre-installed on most systems |
-| `jq` | JSON parsing in shell examples (optional) | `brew install jq` / `apt install jq` |
+| `node` (>=18) | 钱包生成、交易签名、x402客户端 | [nodejs.org](https://nodejs.org/) |
+| `npm` | 包管理 | 随Node.js一起安装 |
+| `curl` | 向AgentBeat和RPC端点发起API请求 | 大多数系统已预装 |
+| `jq` | 在shell脚本中解析JSON（可选） | `brew install jq` / `apt install jq` |
 
-**npm packages installed during onboarding:**
+**在接入过程中需要安装的npm包：**
 
-| Package | Step | Purpose |
+| 包 | 步骤 | 用途 |
 |---------|------|---------|
-| `viem` | Step 1, 3 | Wallet creation, contract interaction |
-| `@x402/axios` | Step 4 | x402 HTTP payment client |
-| `@x402/evm` | Step 4 | EVM payment scheme for x402 |
-| `@x402/core` | Step 4 | x402 core protocol |
+| `viem` | 第1步、第3步 | 钱包创建、合约交互 |
+| `@x402/axios` | 第4步 | x402 HTTP支付客户端 |
+| `@x402/evm` | 第4步 | x402的EVM支付方案 |
+| `@x402/core` | 第4步 | x402核心协议 |
 
-> **Supply-chain note:** All packages above are published under well-known organizations on npm. Before installing, you may verify package integrity with `npm audit` and review changelogs. If operating in a high-security environment, consider pinning exact versions and auditing dependencies before use.
+> **供应链提示：** 上述所有包都由知名组织在npm上发布。在安装之前，可以使用`npm audit`验证包的完整性并查看变更日志。如果在高安全环境中操作，建议固定具体版本并在使用前审计依赖项。
 
-## Security Considerations
+## 安全注意事项
 
-**Read this section before proceeding.** This skill handles real private keys and on-chain transactions with real funds.
+**在继续之前请阅读本节。** 本技能涉及处理真实的私钥和链上的交易。
 
-1. **Use a dedicated agent wallet.** Never paste your main wallet private key. Create or designate a low-value wallet specifically for this agent. Fund it with only the minimum needed (~0.001 ETH for gas, small USDC amount for x402).
-
-2. **Prefer external signers over plaintext keys.** The ideal setup is a hardware wallet or remote signer where the private key never appears as plaintext on disk or in environment variables. If you must use a software key, keep it in a single secure location — do not duplicate it across files and env vars.
-
-3. **File permissions are mandatory.** Any file containing secrets (`credentials.json`, `.env`) must have strict permissions:
+1. **使用专用的代理钱包。** 绝不要复制你的主钱包私钥。为该代理创建或指定一个价值较低的钱包，并仅为其充值最低所需的资金（约0.001 ETH用于支付网络费用，少量USDC用于x402交易）。
+2. **优先使用外部签名器而非明文私钥。** 理想的设置是使用硬件钱包或远程签名器，确保私钥不会以明文形式出现在磁盘或环境变量中。如果必须使用软件签名器，请将其保存在安全的位置——不要在多个文件或环境变量中复制。
+3. **文件权限设置至关重要。** 所有包含敏感信息（如`credentials.json`、`.env`）的文件都必须设置严格的权限：
    ```bash
    chmod 600 ~/.config/agentbeat/credentials.json
    ```
 
-4. **Verify before you transact.** Always confirm contract addresses and RPC endpoints against official sources before broadcasting transactions. The addresses in this guide are correct as of the version date, but always cross-check with [8004.org](https://www.8004.org) and the chain's block explorer.
+4. **交易前进行验证。** 在广播交易之前，务必根据官方来源确认合约地址和RPC端点。本指南中的地址在编写时是正确的，但请始终与[8004.org](https://www.8004.org)和链上的区块浏览器进行核对。
+5. **将凭证视为机密信息。** 第5步中返回的AgentBeat凭证是一次性使用的，无法再次获取。请妥善保管，切勿分享。
+6. **审计第三方包。** 本技能会在运行时安装npm包。在生产环境中，请特别关注所安装的包。安装后运行`npm audit`进行检查。
 
-5. **Treat the voucher as a secret.** The AgentBeat voucher returned in Step 5 is single-use and cannot be retrieved again. Store it securely and do not share it.
+## 凭据信息
 
-6. **Audit third-party packages.** This skill installs npm packages at runtime. Review what you install, especially in production environments. Run `npm audit` after installation.
-
-## Credentials
-
-Agent information is stored at `~/.config/agentbeat/credentials.json`. Create the directory and set permissions:
+代理信息存储在`~/.config/agentbeat/credentials.json`文件中。请创建该目录并设置正确的权限：
 
 ```bash
 mkdir -p ~/.config/agentbeat
@@ -96,36 +101,36 @@ chmod 600 ~/.config/agentbeat/credentials.json
 }
 ```
 
-### Private key handling
+### 私钥管理
 
-> **Security warning:** Private keys control real funds. Read the "Security Considerations" section above before handling any keys.
+> **安全警告：** 私钥控制着真实的资金。在处理任何私钥之前，请务必阅读上述的“安全注意事项”部分。
 
-The `privateKey` field is **optional** in the credentials file. The recommended approach is to **not** store it here. Follow this decision flow:
+在`credentials`文件中，`privateKey`字段是**可选的**。建议**不要**将其存储在这里。请按照以下流程操作：
 
-1. **Preferred: Use an external signer or existing credential store.** If you already manage a private key elsewhere (e.g. hardware wallet, your own wallet config, environment variables, or another skill's credential store), do not duplicate it. Copy only the corresponding `address` into the credentials file. Load the key from its original secure location when signing is needed.
-2. **If you must store the key locally**, ask your owner first: "May I store a copy of my private key at `~/.config/agentbeat/credentials.json` for AgentBeat onboarding? It stays local and is never transmitted." If the owner approves, ensure `chmod 600` is set on the file. If the owner declines, save only the `address` and other non-sensitive fields.
-3. **If you have no wallet at all**, proceed to Step 1 to create one. Use a **dedicated agent wallet with minimal funds** — never your main wallet.
+1. **推荐做法：** 使用外部签名器或现有的凭证存储系统。如果你已经在其他地方管理了私钥（例如硬件钱包、自己的钱包配置、环境变量或其他技能的凭证存储系统），请不要复制私钥。只需将相应的`address`复制到credentials文件中。在需要签名时，从原始的安全位置加载私钥。
+2. **如果必须本地存储私钥，请先征得所有者同意：** “我可以将我的私钥副本存储在`~/.config/agentbeat/credentials.json`中用于AgentBeat的接入吗？该文件仅用于本地使用，不会被传输。” 如果所有者同意，请确保文件权限设置为`chmod 600`。如果所有者拒绝，请仅保存`address`和其他非敏感字段。
+3. **如果你没有任何钱包，请执行第1步来创建一个。** 使用一个**专用的代理钱包，并且只充值少量资金——绝不要使用你的主钱包。
 
-**Persist after each step. Load before every API call.**
+**每完成一个步骤后，请保存设置。每次调用API之前都要重新加载这些设置。**
 
-## Skip Ahead
+## 跳过某些步骤
 
-Not every agent starts from zero. Check what you already have and skip to the right step:
+并非所有代理都需要从头开始。请检查你已有的资源，然后跳转到相应的步骤：
 
-- **Already have an EVM wallet?** Skip to Step 2 (or Step 3 if already funded).
-- **Already registered ERC-8004?** Skip to Step 4. Make sure you have your `agentId` and `nftId`.
-- **Already have x402 payment capability?** Skip straight to Step 5 — just submit to AgentBeat.
-- **Have all of the above?** Go directly to Step 5 and submit.
+- **已经拥有EVM钱包？** 跳到第2步（如果已经充值，则跳到第3步）。
+- **已经注册了ERC-8004？** 跳到第4步。确保你拥有`agentId`和`nftId`。
+- **已经具备x402支付能力？** 直接跳到第5步——只需向AgentBeat提交即可。
+- **以上条件都满足？** 直接跳到第5步并提交。
 
-Save your existing `address`, `agentId`, `nftId`, and other info to `~/.config/agentbeat/credentials.json` before proceeding. The private key is not required in this file — see "Private key handling" above.
+在继续之前，请将现有的`address`、`agentId`、`nftId`和其他信息保存到`~/.config/agentbeat/credentials.json`文件中。注意：此文件中不需要保存私钥——请参考上面的“私钥管理”部分。
 
-## Step 1: Create or Locate EVM Wallet
+## 第1步：创建或查找EVM钱包
 
-> **Important:** This should be a **dedicated agent wallet** with minimal funds. Never use your main/personal wallet.
+> **重要提示：** 这必须是一个**专用的代理钱包**，并且只充值少量资金。切勿使用你的主钱包。
 
-**If you already have a wallet**: Write your `address` to `~/.config/agentbeat/credentials.json` and skip to Step 2. You do not need to create a new one.
+**如果你已经有了钱包**：将你的`address`写入`~/.config/agentbeat/credentials.json`文件，然后跳到第2步。无需重新创建钱包。
 
-**If you need a new wallet**, generate one locally. The private key never leaves the machine:
+**如果你需要新的钱包**，请在本地生成一个。私钥绝对不能离开你的设备：
 
 ```bash
 npm install viem  # verify: npm audit
@@ -137,21 +142,21 @@ console.log(JSON.stringify({ address: a.address, privateKey: pk }));
 "
 ```
 
-Or use ethers.js, openssl, or any EVM keypair generator.
+或者可以使用ethers.js、openssl或任何EVM密钥对生成工具。
 
-**Save `address` to credentials immediately.** For `privateKey`, see the "Private key handling" section above — the recommended approach is to keep it in a separate secure location, not in the credentials file.
+**立即将`address`保存到credentials文件中。** 关于`privateKey`的保存方式，请参考上面的“私钥管理”部分——建议将其保存在安全的位置，而不是在credentials文件中。
 
-For detailed setup options and dependencies, see [reference/wallet-setup.md](reference/wallet-setup.md).
+有关详细的设置选项和依赖项，请参阅[reference/wallet-setup.md](reference/wallet-setup.md)。
 
-## Step 2: Request Gas from Owner
+## 第2步：向所有者请求Gas费用
 
-Display the wallet address to the owner and request gas funds.
+向所有者显示钱包地址并请求Gas费用。
 
-**Recommended network: Base** (lowest gas costs, most active x402 ecosystem).
+**推荐的网络：Base**（Gas费用最低，x402生态系统最活跃）。
 
-**Always ask your owner first.** Faucets are unreliable and often rate-limited or empty. Requesting ETH directly from your owner is the fastest and most reliable way to get funded.
+**务必先征得所有者的同意。** 自助取款工具不可靠，且经常受到流量限制或资金不足。直接从所有者那里请求ETH是最快速、最可靠的充值方式。
 
-Message to owner:
+向所有者发送的消息：
 ```
 I need a small amount of ETH for gas to complete on-chain registration.
 
@@ -162,7 +167,7 @@ Network: Base (Chain ID 8453)
 For x402 payments, also send some USDC (Base) to this address.
 ```
 
-Poll balance until funded:
+不断查询余额，直到收到资金：
 
 ```bash
 curl -s -X POST https://mainnet.base.org \
@@ -171,37 +176,36 @@ curl -s -X POST https://mainnet.base.org \
   | jq -r '.result'
 ```
 
-Check every 30 seconds. Once balance > 0, proceed to Step 3.
+每30秒检查一次余额。一旦余额大于0，继续执行第3步。
 
-## Step 3: Register ERC-8004 Agent Identity
+## 第3步：注册ERC-8004代理身份
 
-Register on the ERC-8004 Identity Registry to get an on-chain agent NFT.
+在ERC-8004身份注册处注册，以获得链上的代理NFT。
 
-**Contract addresses** (same on all chains via CREATE2):
+**合约地址**（所有链上的地址相同，使用CREATE2命令）：
 
-| Chain | Chain ID | Identity Registry | Public RPC |
+| 链路 | 链路ID | 身份注册处 | 公共RPC端点 |
 |-------|----------|-------------------|------------|
 | Base | 8453 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | `https://mainnet.base.org` |
 | Ethereum | 1 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | `https://eth.llamarpc.com` |
 | BNB Chain | 56 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | `https://bsc-dataseed.binance.org` |
 
-**Register on mainnet only.** AgentBeat indexes mainnet agents exclusively. Testnet registrations will not be accepted.
+**仅在主网上注册。** AgentBeat仅索引主网上的代理。测试网上的注册将不被接受。
 
-> **Verify contract addresses** before sending any transaction. Cross-check the addresses below against [8004.org](https://www.8004.org) and the chain's block explorer (e.g. [BaseScan](https://basescan.org/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432)).
+> **在发送任何交易之前，请验证合约地址。** 请将以下地址与[8004.org](https://www.8004.org)和链上的区块浏览器（例如[BaseScan](https://basescan.org/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432)）进行核对。
 
-**Quick registration** (Base recommended — lowest gas cost):
+**快速注册方法（推荐使用Base网络——Gas费用最低）：**
+1. 准备一个代理注册文件（JSON格式）
+2. 将其托管在URL上或上传到IPFS
+3. 在身份注册处调用`register(agentURI)`命令
+4. 从交易收据日志中解析`agentId`
+5. 将`agentId`保存到credentials文件中
 
-1. Prepare an Agent Registration File (JSON)
-2. Host it at a URL or upload to IPFS
-3. Call `register(agentURI)` on the Identity Registry
-4. Parse `agentId` from transaction receipt logs
-5. Save the `agentId` to credentials
+### 从收据中解析agentId
 
-### Parsing agentId from Receipt
+**重要提示：** `agentId`（ERC-721代币ID）位于Transfer事件的`topics[3]`字段中，而不是`topics[1]`字段中。
 
-**CRITICAL**: The `agentId` (ERC-721 token ID) is in `topics[3]` of the Transfer event, NOT `topics[1]`.
-
-**Correct parsing example (viem):**
+**正确的解析示例（使用viem库）：**
 ```javascript
 const receipt = await publicClient.waitForTransactionReceipt({ hash });
 
@@ -210,30 +214,30 @@ const agentId = BigInt(receipt.logs[0].topics[3]);
 console.log('Agent ID:', agentId.toString()); // e.g., "394"
 ```
 
-**Common error:**
+**常见错误：**
 ```javascript
 // ❌ WRONG - topics[1] is the sender address, not agentId
 const wrongAgentId = BigInt(receipt.logs[0].topics[1]); // Incorrect
 ```
 
-The `agentId` is your ERC-721 token ID. Your `nftId` format: `{chainId}:{registryAddress}:{agentId}`.
+`agentId`是你的ERC-721代币ID。`nftId`的格式为：`{chainId}:{registryAddress}:{agentId}`。
 
-For the full registration file format, hosting options, and transaction details, see [reference/erc8004-registration.md](reference/erc8004-registration.md).
+有关完整的注册文件格式、托管选项和交易细节，请参阅[reference/erc8004-registration.md](reference/erc8004-registration.md)。
 
-## Step 4: Integrate x402 Payment Capability (v2)
+## 第4步：集成x402支付功能（v2）
 
-x402 enables your agent to pay for API services autonomously via HTTP. This uses the **x402 v2 protocol** with `PAYMENT-SIGNATURE` / `PAYMENT-REQUIRED` headers and CAIP-2 network identifiers.
+x402功能使你的代理能够通过HTTP自主支付API服务。这需要使用**x402 v2协议**，以及`PAYMENT-SIGNATURE`和`PAYMENT-REQUIRED`头部信息，以及CAIP-2网络标识符。
 
-**Install dependencies:**
+**安装依赖项：**
 
 ```bash
 npm install @x402/axios @x402/evm @x402/core
 npm audit  # review any reported vulnerabilities before proceeding
 ```
 
-> **Package verification:** These packages are published by Coinbase under the `@x402` scope. Verify the publisher on [npmjs.com](https://www.npmjs.com/package/@x402/axios) if this is your first time using them.
+> **包验证：** 这些包由Coinbase发布，属于`@x402`系列。如果你是第一次使用它们，请在[npmjs.com](https://www.npmjs.com/package/@x402/axios)上验证发布者。
 
-**Basic usage (v2):**
+**基本用法（v2）：**
 
 ```javascript
 import { x402Client, wrapAxiosWithPayment } from "@x402/axios";
@@ -249,23 +253,23 @@ const api = wrapAxiosWithPayment(axios.create(), client);
 // Any 402 response is handled automatically
 ```
 
-> **Security note:** `EVM_PRIVATE_KEY` should be loaded from a secure credential store or environment variable — never hardcoded in source files. Prefer using an external signer if your setup supports it.
+> **安全提示：** `EVM_PRIVATE_KEY`应从安全的凭证存储系统或环境变量中加载——切勿在源代码中硬编码。如果你的环境支持，建议使用外部签名器。
 
-When a server returns HTTP 402, the client automatically signs a USDC payment on Base and retries.
+当服务器返回HTTP 402状态码时，客户端会自动在Base网络上签署USDC支付请求并重新尝试。
 
-**Recommended facilitator**: Use `https://facilitator.world.fun` for Base and Ethereum — fee-free, no API keys required.
+**推荐的辅助服务提供商**：对于Base和Ethereum网络，可以使用`https://facilitator.world.fun`——免费服务，无需API密钥。
 
-**Requirements**: USDC balance on Base in the agent wallet.
+**要求**：代理钱包中必须有USDC余额。
 
-For complete setup, seller-side integration, budget controls, and testing, see [reference/x402-integration.md](reference/x402-integration.md).
+有关完整的设置、卖家端集成、预算控制和测试信息，请参阅[reference/x402-integration.md](reference/x402-integration.md)。
 
-## Step 5: Submit to AgentBeat
+## 第5步：向AgentBeat提交
 
-Submit your registered agent to [AgentBeat](https://www.agentbeat.fun/) for indexing and AWE rewards.
+将注册好的代理提交到[AgentBeat](https://www.agentbeat.fun/)进行索引和领取AWE奖励。
 
-**API Base URL**: `https://api.agentbeat.fun`
+**API基础URL**：`https://api.agentbeat.fun`
 
-### 5a. Submit
+### 5a. 提交信息
 
 ```bash
 curl -X POST https://api.agentbeat.fun/api/v1/submissions \
@@ -283,23 +287,23 @@ curl -X POST https://api.agentbeat.fun/api/v1/submissions \
   }'
 ```
 
-**`usesWorldFacilitator`**: Set to `true` if your agent uses `https://facilitator.world.fun` as its x402 facilitator (recommended in Step 4). This helps AgentBeat identify agents in the world.fun ecosystem.
+**`usesWorldFacilitator`：** 如果你的代理使用`https://facilitator.world.fun`作为x402支付辅助服务提供商（第4步推荐），请将此参数设置为`true`。这有助于AgentBeat在world.fun生态系统中识别你的代理。
 
-**If you have a MoltBook account**, include your `moltbookUrl` (format: `https://www.moltbook.com/user/{username}`). This helps AgentBeat link your social presence and improves your agent's visibility.
+**如果你有MoltBook账户，请提供`moltbookUrl`（格式：`https://www.moltbook.com/user/{username}`）。这有助于AgentBeat关联你的社交媒体信息，提高代理的可见性。**
 
-**Save the returned `voucher` immediately.** It cannot be retrieved later. Treat it as a secret — anyone with the voucher can claim your AWE rewards.
+**立即保存返回的`voucher`。** 该凭证无法再次获取。请将其视为机密信息——任何持有该凭证的人都可以领取你的AWE奖励。
 
-> **API endpoint verification:** Submissions are sent to `https://api.agentbeat.fun`. Verify this is the correct endpoint at [agentbeat.fun](https://www.agentbeat.fun/) before submitting. Only provide data you intend to make public (name, description, address).
+> **API端点验证：** 提交请求会发送到`https://api.agentbeat.fun`。在提交之前，请确认这是正确的端点。仅提供你希望公开的信息（名称、描述、地址）。
 
-### 5b. Check status
+### 5b. 检查状态
 
 ```bash
 curl https://api.agentbeat.fun/api/v1/submissions/check/{voucher}
 ```
 
-Wait until `claimable: true`.
+等待状态变为`claimable: true`。
 
-### 5c. Claim AWE rewards
+### 5c. 领取AWE奖励
 
 ```bash
 curl -X POST https://api.agentbeat.fun/api/v1/submissions/claim \
@@ -307,11 +311,11 @@ curl -X POST https://api.agentbeat.fun/api/v1/submissions/claim \
   -d '{"voucher": "{voucher}"}'
 ```
 
-AWE tokens are sent to your `x402PaymentAddress` on Base Mainnet.
+AWE代币将发送到你在Base主网上的`x402PaymentAddress`地址。
 
-For full field reference, error codes, and optional fields, see [reference/agentbeat-submission.md](reference/agentbeat-submission.md).
+有关所有字段的详细信息、错误代码和可选字段，请参阅[reference/agentbeat-submission.md](reference/agentbeat-submission.md)。
 
-## Quick Reference
+## 快速参考
 
 ```
 # Full onboarding flow

@@ -7,48 +7,48 @@ description: |
   Output: Product recommendations with best price, availability, and expert validation.
 ---
 
-# المتسوق الشخصي - Diamond Search
+# 个人购物助手 - Diamond Search
 
-## معايير المنتج الذهبي (Golden Product)
+## 金牌产品标准（Golden Product Standards）
 
-| # | المعيار | الوصف |
-|---|---------|-------|
-| 1 | الأداء | يأدي المطلوب بكفاءة عالية للاستخدام المحدد |
-| 2 | القيمة | السعر مبرر مقابل الأداء الفعلي |
-| 3 | التوفر | متوفر في السوق السعودي بضمان وخدمة |
-| 4 | الموثوقية | تقييمات حقيقية إيجابية من مستخدمين فعليين |
-| 5 | التوقيت | مو على وشك ينزل جيل جديد أو ينوقف إنتاجه |
+| 编号 | 标准 | 描述 |
+| --- | --- | --- |
+| 1 | 性能 | 产品能够高效地满足特定使用需求 |
+| 2 | 性价比 | 价格与实际性能相匹配 |
+| 3 | 可获得性 | 产品在沙特市场上有售，并提供保修和服务 |
+| 4 | 可信赖性 | 来自真实用户的正面评价 |
+| 5 | 更新周期 | 产品尚未推出新版本，也不会停产 |
 
-## الوكلاء السبعة
+## 七大代理（Seven Agents）
 
-| # | الوكيل | الدور | الطبقة |
-|---|--------|-------|--------|
-| 1 | Mainstream Research | بحث في المصادر الرئيسية: Reddit, YouTube, Wirecutter, RTINGS | Search |
-| 2 | Anti-Bias | بحث عكسي ومصادر بديلة لكسر فقاعة النتائج المكررة | Search |
-| 3 | Local Market Scanner | مسح السوق السعودي: Amazon.sa, noon, jarir, extra | Search |
-| 4 | Niche Community Diver | منتديات متخصصة، مجموعات Facebook، سيرفرات Discord | Search |
-| 5 | Domain Expert | خبير المجال، يحكم على النتائج بأسئلة تقنية، لا يبحث | Expertise |
-| 6 | Latest Tech | آخر 6 شهور، إعلانات CES، منتجات متوقفة أو قادمة | Expertise |
-| 7 | Price & Deal Hunter | كوبونات، كاشباك، تقسيط، مقارنة أسعار بين المنصات | Price |
+| 编号 | 代理 | 职责 | 层级 |  
+| --- | --- | --- | --- |
+| 1 | Mainstream Research | 在主要信息源（如 Reddit、YouTube、Wirecutter、RTINGS）进行搜索 | 搜索层（Search） |
+| 2 | Anti-Bias | 进行反向搜索并利用替代信息源，以打破重复搜索结果带来的偏见 | 搜索层（Search） |
+| 3 | Local Market Scanner | 扫描沙特市场（Amazon.sa、noon、jarir、extra 等平台） | 搜索层（Search） |
+| 4 | Niche Community Diver | 关注专业论坛、Facebook 群组及 Discord 服务器 | 搜索层（Search） |
+| 5 | Domain Expert | 领域专家，通过技术问题对搜索结果进行评估（不参与实际搜索） | 专家层（Expertise） |
+| 6 | Latest Tech | 关注过去 6 个月内的新产品、CES 展会信息以及已停产或即将上市的产品 | 专家层（Expertise） |
+| 7 | Price & Deal Hunter | 收集优惠券、折扣信息，比较不同平台的价格 | 价格层（Price） |
 
-> للتفاصيل الكاملة لكل وكيل: اقرأ `references/diamond-methodology.md`
+> 有关每个代理的详细信息，请参阅 `references/diamond-methodology.md`。
 
-## سير العمل (5 مراحل)
+## 工作流程（5 个阶段）
 
-### المرحلة 1: BRIEF (تسلسلي)
+### 第 1 阶段：收集用户信息（Sequential）
 
-اجمع من المستخدم:
-- وش المنتج المطلوب
-- الميزانية (أو "مفتوحة")
-- الاستخدام الرئيسي
-- أي تفضيلات أو شروط
-- هل عنده خيارات مبدئية
+从用户那里收集以下信息：
+- 所需产品的信息 |
+- 预算（或“无预算”） |
+- 主要使用场景 |
+- 任何偏好或特殊要求 |
+- 是否有初步的选择范围
 
-اذا المستخدم ما وضح، اسأل. لا تفترض.
+如果用户信息不完整，请主动询问，不要自行猜测。
 
-### المرحلة 2a: طبقة البحث (متوازي)
+### 第 2a 阶段：并行搜索（Parallel Search）
 
-انشئ 4 sub-agents بالتوازي باستخدام `sessions_spawn`:
+使用 `sessions_spawn` 同时创建 4 个子代理：
 
 ```
 sessions_spawn([
@@ -71,11 +71,11 @@ sessions_spawn([
 ])
 ```
 
-انتظر اكتمال الأربعة قبل المرحلة التالية.
+等待所有子代理完成搜索后，进入下一阶段。
 
-### المرحلة 2b: طبقة الخبرة (متوازي)
+### 第 2b 阶段：专家评估（Parallel Evaluation）
 
-انشئ 2 sub-agents بالتوازي:
+同时创建 2 个子代理：
 
 ```
 sessions_spawn([
@@ -90,21 +90,19 @@ sessions_spawn([
 ])
 ```
 
-### المرحلة 3: التجميع (تسلسلي)
+### 第 3 阶段：结果整合（Sequential Integration）
 
-اجمع كل النتائج وطبّق قواعد التجميع:
+整合所有搜索结果，并应用以下规则：
+- 如果有 4 个代理中的 3 个达成一致意见，则该结果具有较高可信度；但需确认他们没有依赖相同的搜索来源。
+- 在意见冲突时，专家层（Agent 5）的判断优先于最新技术层（Agent 6）的判断。
+- 如果没有更优的替代品，应如实告知用户。
+- 对每个选项都应用金牌产品的五项标准进行评估。
 
-**قواعد:**
-- إجماع 3 من 4 وكلاء بحث = إشارة قوية، لكن تحقق إنهم ما اعتمدوا على نفس المصدر
-- رأي الخبير (Agent 5) يتفوق على Latest Tech (Agent 6) عند التعارض
-- اذا ما فيه بديل حقيقي بقيمة أفضل، قلها بصراحة
-- طبّق معايير المنتج الذهبي الخمسة على كل خيار
+> 详细信息请参阅 `references/anti-bias-playbook.md` 和 `references/domain-expertise.md`。
 
-> للتفاصيل: اقرأ `references/anti-bias-playbook.md` و `references/domain-expertise.md`
+### 第 4 阶段：价格分析（Sequential Analysis）
 
-### المرحلة 4: طبقة السعر (تسلسلي)
-
-وكيل واحد:
+由一个代理负责价格比较：
 
 ```
 sessions_spawn([
@@ -115,11 +113,11 @@ sessions_spawn([
 ])
 ```
 
-> للتفاصيل: اقرأ `references/market-dynamics.md`
+> 详细信息请参阅 `references/market-dynamics.md`。
 
-### المرحلة 5: المخرجات
+### 第 5 阶段：结果输出
 
-قدم النتائج بالشكل التالي:
+以以下格式呈现搜索结果：
 
 ```
 ## التوصية: {product_name}
@@ -149,21 +147,21 @@ sessions_spawn([
 2. {alternative_2} - {why}
 ```
 
-## المراجع
+## 参考资料
 
-| الملف | اقرأه متى |
-|-------|-----------|
-| `references/diamond-methodology.md` | تحتاج تفاصيل الوكلاء أو تعدّل الـ prompts |
-| `references/anti-bias-playbook.md` | تحتاج استراتيجيات بحث عكسي أو تقييم براند غير معروف |
-| `references/domain-expertise.md` | تحتاج تفهم منطق الخبير أو تشوف أمثلة واقعية |
-| `references/market-dynamics.md` | تحتاج تفهم أنماط التسعير في السوق السعودي |
+| 文件 | 阅读说明 |
+| --- | --- |
+| `references/diamond-methodology.md` | 需要了解代理的详细信息或修改提示内容 |
+| `references/anti-bias-playbook.md` | 需要掌握反向搜索策略或评估未知品牌的方法 |
+| `references/domain-expertise.md` | 需要理解专家的判断逻辑或查看实际案例 |
+| `references/market-dynamics.md` | 需要了解沙特市场的定价模式 |
 
-## ملاحظات التنفيذ
+## 执行注意事项：
 
-- عدد الوكلاء مرن: لو المنتج بسيط، ممكن تستغني عن Agent 4 أو Agent 6
-- لا تحدد موديل معين: استخدم "fast search model" للبحث و "reasoning model" للتحليل
-- كل sub-agent يشتغل مستقل ولا يشوف نتائج زملاءه (الا طبقة الخبرة تشوف نتائج البحث)
+- 代理数量可根据产品复杂程度灵活调整：如果产品简单，可以省略 Agent 4 或 Agent 6。
+- 不需要指定特定型号时，使用“快速搜索模型”（fast search model）进行搜索，使用“推理模型”（reasoning model）进行分析。
+- 每个子代理独立工作，不会查看其他代理的搜索结果（专家层除外）。
 
-## القاعدة الذهبية
+## 重要原则：
 
-> المنتج يرتكز على القيمة، مو على البراند
+> 产品的选择应基于其实际价值，而非品牌。

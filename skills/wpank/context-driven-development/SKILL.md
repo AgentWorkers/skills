@@ -9,12 +9,11 @@ description: >
 tags: [context, documentation, ai-alignment, team-workflow, methodology]
 ---
 
-# Context-Driven Development
+# 基于上下文的开发（Context-Driven Development）
 
-Treat project context as a first-class artifact managed alongside code. Instead of relying on ad-hoc prompts or scattered documentation, establish a persistent, structured foundation that informs all AI interactions.
+将项目上下文视为一等重要的资产，与代码一同进行管理。不要依赖临时的提示或零散的文档，而应建立一个持久、结构化的基础，为所有与人工智能（AI）的交互提供支持。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -22,32 +21,31 @@ Treat project context as a first-class artifact managed alongside code. Instead 
 npx clawhub@latest install context-driven-development
 ```
 
+## 该技能的作用
 
-## WHAT This Skill Does
+创建并维护一套上下文文档，这些文档包括：
+- 定义你正在构建的内容及其目的（product.md）
+- 规定技术选择和约束条件（tech-stack.md）
+- 明确团队的工作方式（workflow.md）
+- 记录项目进展（tracks.md）
 
-Creates and maintains a set of context documents that:
-- Define what you're building and why (product.md)
-- Specify technology choices and constraints (tech-stack.md)
-- Establish how the team works (workflow.md)
-- Track what's happening (tracks.md)
+## 适用场景
 
-## WHEN to Use
+**适用于：**
+- 设置需要AI辅助开发的新项目
+- 新团队成员加入现有代码库时
+- 确保不同会话中AI行为的一致性
+- 记录影响代码生成的决策
+- 管理有多个贡献者或AI助手参与的项目
 
-**Use for:**
-- Setting up new projects with AI-assisted development
-- Onboarding team members to existing codebases
-- Ensuring consistent AI behavior across sessions
-- Documenting decisions that affect code generation
-- Managing projects with multiple contributors or AI assistants
+**不适用场景：**
+- 单人实验或一次性原型
+- 单文件脚本
+- 无需AI辅助的项目
 
-**Skip for:**
-- Solo experiments or throwaway prototypes
-- Single-file scripts
-- Projects without AI assistance
+**关键词：**上下文（Context）、项目设置（Project Setup）、文档（Documentation）、AI一致性（AI Alignment）、团队工作流程（Team Workflow）、产品愿景（Product Vision）、技术栈（Tech Stack）
 
-**Keywords:** context, project setup, documentation, AI alignment, team workflow, product vision, tech stack
-
-## Core Philosophy
+## 核心理念
 
 ```
 Context precedes code.
@@ -56,92 +54,91 @@ Single source of truth.
 AI alignment.
 ```
 
-1. **Context precedes code** — Define what you're building and how before implementation
-2. **Living documentation** — Context artifacts evolve with the project
-3. **Single source of truth** — One canonical location for each type of information
-4. **AI alignment** — Consistent context produces consistent AI behavior
+1. **上下文先于代码**——在实施之前明确你要构建什么以及如何构建。
+2. **动态文档**——上下文资产会随着项目的发展而演变。
+3. **唯一的信息源**——每种类型的信息都应有一个权威的存储位置。
+4. **AI一致性**——一致的上下文能够确保AI行为的一致性。
 
-## The Workflow
+## 工作流程
 
 ```
 Context → Spec & Plan → Implement
 ```
 
-1. **Context Phase:** Establish or verify project context artifacts exist and are current
-2. **Specification Phase:** Define requirements and acceptance criteria for work units
-3. **Planning Phase:** Break specifications into phased, actionable tasks
-4. **Implementation Phase:** Execute tasks following established workflow patterns
+1. **上下文阶段**：确保项目上下文文档的存在并保持最新。
+2. **规范阶段**：为工作单元定义需求和验收标准。
+3. **规划阶段**：将规范分解为可执行的阶段性任务。
+4. **实施阶段**：按照既定的工作流程执行任务。
 
-## The Context Documents
+## 上下文文档
 
-### product.md — WHAT and WHY
+### product.md — 产品内容与目的
 
-Purpose: Captures product vision, goals, target users, and business context.
+**目的：**记录产品愿景、目标用户和业务背景。
 
-**Contents:**
-- Product name and one-line description
-- Problem statement and solution approach
-- Target user personas
-- Core features and capabilities
-- Success metrics and KPIs
-- Product roadmap (high-level)
+**内容：**
+- 产品名称及简短描述
+- 问题陈述及解决方案
+- 目标用户群体
+- 核心功能与能力
+- 成功指标和关键绩效指标（KPIs）
+- 产品路线图（概览）
 
-**Update when:**
-- Product vision or goals change
-- New major features are planned
-- Target audience shifts
+**更新时机：**
+- 产品愿景或目标发生变化时
+- 计划新增重要功能时
+- 目标受众发生变化时
 
-### tech-stack.md — WITH WHAT
+### tech-stack.md — 技术栈
 
-Purpose: Documents technology choices, dependencies, and architectural decisions.
+**目的：**记录技术选择、依赖关系和架构决策。
 
-**Contents:**
-- Primary languages and frameworks
-- Key dependencies with versions
-- Infrastructure and deployment targets
-- Development tools and environment
-- Testing frameworks
-- Code quality tools
+**内容：**
+- 主要使用的语言和框架
+- 关键依赖项及其版本
+- 基础设施和部署目标
+- 开发工具和环境
+- 测试框架
+- 代码质量工具
 
-**Update when:**
-- Adding new dependencies
-- Upgrading major versions
-- Changing infrastructure
-- Adopting new tools or patterns
+**更新时机：**
+- 添加新的依赖项时
+- 升级主要版本时
+- 基础设施发生变化时
+- 采用新工具或模式时
 
-### workflow.md — HOW to Work
+### workflow.md — 开发流程
 
-Purpose: Establishes development practices, quality gates, and team workflows.
+**目的：**明确开发实践、质量检查点（Quality Gates）和团队工作流程。
 
-**Contents:**
-- Development methodology (TDD, trunk-based, etc.)
-- Git workflow and commit conventions
-- Code review requirements
-- Testing requirements and coverage targets
-- Quality assurance gates
-- Deployment procedures
+**内容：**
+- 开发方法（如测试驱动开发TDD等）
+- Git工作流程和提交规范
+- 代码审查要求
+- 测试要求和覆盖目标
+- 质量保证流程
 
-**Update when:**
-- Team practices evolve
-- Quality standards change
-- New workflow patterns are adopted
+**更新时机：**
+- 团队实践发生变化时
+- 质量标准更新时
+- 采用新的工作流程模式时
 
-### tracks.md — WHAT'S HAPPENING
+### tracks.md — 项目进展记录
 
-Purpose: Registry of all work units with status and metadata.
+**目的：**记录所有工作单元的状态和元数据。
 
-**Contents:**
-- Active tracks with current status
-- Completed tracks with completion dates
-- Track metadata (type, priority, assignee)
-- Links to individual track specs
+**内容：**
+- 正在进行中的工作单元及其当前状态
+- 已完成的工作单元及其完成日期
+- 工作单元的元数据（类型、优先级、负责人）
+- 链接到各个工作单元的详细规范
 
-**Update when:**
-- New work starts
-- Work status changes
-- Work completes
+**更新时机：**
+- 开始新的工作时
+- 工作状态发生变化时
+- 工作完成时
 
-## Directory Structure
+## 目录结构
 
 ```
 context/
@@ -155,145 +152,143 @@ context/
     └── ...
 ```
 
-## Setup: New Project (Greenfield)
+## 新项目设置（从零开始）
 
-For new projects, create all artifacts from scratch:
+对于新项目，从头开始创建所有文档：
 
-1. **Create `context/product.md`:**
-   - Define the problem you're solving
-   - Describe target users
-   - List core features for v1
-   - Define success metrics
+1. **创建 `context/product.md`：**
+   - 明确你要解决的问题
+   - 描述目标用户
+   - 列出第一版本的核心功能
+   - 定义成功指标
 
-2. **Create `context/tech-stack.md`:**
-   - Choose languages and frameworks
-   - Document key dependencies with versions
-   - Specify infrastructure targets
-   - List development tools
+2. **创建 `context/tech-stack.md`：**
+   - 选择使用的语言和框架
+   - 记录关键依赖项及其版本
+   - 指定基础设施目标
+   - 列出开发工具
 
-3. **Create `context/workflow.md`:**
-   - Define branching strategy
-   - Set commit conventions
-   - Establish testing requirements
-   - Document deployment process
+3. **创建 `context/workflow.md`：**
+   - 明确分支策略
+   - 设定提交规范
+   - 规定测试要求
+   - 记录部署流程
 
-4. **Create `context/tracks.md`:**
-   - Start with empty registry
-   - Add work units as they're created
+4. **创建 `context/tracks.md`：**
+   - 初始时保持文档为空
+   - 随着工作的进行逐步添加相关内容
 
-## Setup: Existing Project (Brownfield)
+## 现有项目设置（基于现有代码库）
 
-For existing codebases, extract context from what exists:
+对于现有的代码库，从现有内容中提取上下文信息：
 
-1. **Analyze the codebase:**
-   - Read package.json, requirements.txt, go.mod, etc.
-   - Look at existing README and docs
-   - Check git history for patterns
+1. **分析代码库：**
+   - 阅读 `package.json`、`requirements.txt`、`go.mod` 等文件
+   - 查看现有的 `README` 和文档
+   - 分析 Git 历史记录中的模式
 
-2. **Create `context/tech-stack.md`:**
-   - Document discovered dependencies
-   - Note infrastructure from configs (Docker, CI, etc.)
+2. **创建 `context/tech-stack.md`：**
+   - 记录发现的依赖项
+   - 标注配置文件（如 Docker、CI 等）中指定的基础设施
 
-3. **Create `context/product.md`:**
-   - Infer product purpose from code
-   - Document current feature set
-   - Note any README content
+3. **创建 `context/product.md`：**
+   - 从代码中推断产品目的
+   - 记录当前的功能集
+   - 读取现有的 `README` 内容
 
-4. **Create `context/workflow.md`:**
-   - Document existing practices
-   - Note any established patterns
+4. **创建 `context/workflow.md`：**
+   - 记录现有的开发实践
+   - 注意已建立的流程模式
 
-## Maintenance Principles
+## 维护原则
 
-### Keep Artifacts Synchronized
+### 保持文档同步
 
-Changes in one artifact should reflect in related documents:
-- New feature in product.md → Update tech-stack.md if new dependencies needed
-- Completed track → Update product.md to reflect new capabilities
-- Workflow change → Update all affected track plans
+一个文档的更改应反映在相关文档中：
+- 如果产品功能新增依赖项，需更新 `tech-stack.md`。
+- 工作单元完成后，需更新 `product.md` 以反映新的功能。
+- 工作流程发生变化时，需更新所有受影响的文档。
 
-### Update tech-stack.md When Adding Dependencies
+### 添加依赖项时更新 `tech-stack.md`
 
-Before adding any new dependency:
-1. Check if existing dependencies solve the need
-2. Document the rationale for new dependencies
-3. Add version constraints
-4. Note any configuration requirements
+在添加任何新依赖项之前：
+1. 检查现有依赖项是否能够满足需求。
+2. 记录添加新依赖项的理由。
+3. 添加版本约束。
+4. 记录任何配置要求。
 
-### Verify Context Before Implementation
+### 实施前验证上下文
 
-Before starting any work:
-1. Read all context artifacts
-2. Flag any outdated information
-3. Propose updates before proceeding
-4. Confirm context accuracy
+在开始任何工作之前：
+1. 阅读所有上下文文档。
+2. 标出任何过时的信息。
+3. 在继续之前提出更新建议。
+4. 确认上下文的准确性。
 
-## Validation Checklist
+## 验证清单
 
-Before starting implementation, validate:
+在开始实施之前，需验证以下内容：
+**产品上下文：**
+- [ ] `product.md` 是否反映了当前的愿景。
+- [ ] 目标用户描述是否准确。
+- [ ] 功能列表是否是最新的。
 
-**Product Context:**
-- [ ] product.md reflects current vision
-- [ ] Target users are accurately described
-- [ ] Feature list is up to date
+**技术上下文：**
+- [ ] `tech-stack.md` 是否列出了所有当前的依赖项。
+- [ ] 版本号是否正确。
+- [ ] 基础设施目标是否准确。
 
-**Technical Context:**
-- [ ] tech-stack.md lists all current dependencies
-- [ ] Version numbers are accurate
-- [ ] Infrastructure targets are correct
+**工作流程上下文：**
+- [ ] `workflow.md` 是否描述了当前的工作流程。
+- [ ] 是否定义了质量检查点。
+- [ ] 提交规范是否已记录。
 
-**Workflow Context:**
-- [ ] workflow.md describes current practices
-- [ ] Quality gates are defined
-- [ ] Commit conventions are documented
+## 避免的错误做法
 
-## Anti-Patterns
-
-| Anti-Pattern | Problem | Fix |
+| 错误做法 | 问题 | 解决方法 |
 |--------------|---------|-----|
-| Stale Context | Documents become outdated and misleading | Update context as part of each track's completion |
-| Context Sprawl | Information scattered across multiple locations | Use defined artifact structure; resist new document types |
-| Implicit Context | Relying on knowledge not captured in artifacts | If referenced repeatedly, add to appropriate artifact |
-| Over-Specification | Context so detailed it's impossible to maintain | Keep focused on decisions affecting AI behavior and team alignment |
+| 上下文过时 | 文档变得过时且具有误导性 | 在每个工作单元完成后更新上下文。 |
+| 上下文分散 | 信息分散在多个位置 | 使用定义好的文档结构；避免创建新的文档类型。 |
+| 依赖项描述过于详细 | 详细到难以维护 | 专注于影响AI行为和团队协作的决策。 |
 
-## Session Continuity
+## 会话连续性
 
-### Starting a New Session
+### 开始新会话
 
-1. Read context/product.md to orient yourself
-2. Check context/tracks.md for active work
-3. Read relevant track specs for current task
-4. Verify context artifacts are current
+1. 阅读 `context/product.md` 以了解项目背景。
+2. 查看 `context/tracks.md` 以了解正在进行的工作。
+3. 阅读与当前任务相关的工作单元规范。
+4. 确认上下文文档是否是最新的。
 
-### Ending a Session
+### 结束会话
 
-1. Update track status with current progress
-2. Note any blockers or decisions made
-3. Commit in-progress work with clear status
-4. Update tracks.md if status changed
+1. 根据当前进度更新工作单元的状态。
+2. 记录任何阻碍因素或做出的决策。
+3. 提交正在进行的工作，并明确标注状态。
+4. 如果状态发生变化，更新 `tracks.md`。
 
-## Benefits
+## 好处
 
-**Team Alignment:**
-- New team members onboard faster with explicit context
-- Consistent terminology across the team
-- Shared understanding of product goals
+**团队协作：**
+- 新团队成员能更快地了解项目背景。
+- 团队内部使用统一的术语。
+- 共享对产品目标的理解。
 
-**AI Consistency:**
-- AI assistants produce aligned outputs across sessions
-- Reduced need to re-explain context
-- Predictable behavior based on documented standards
+**AI一致性：**
+- AI助手在不同会话中产生一致的输出。
+- 减少了重复解释上下文的需求。
+- 基于文档化的标准，AI行为更加可预测。
 
-**Institutional Memory:**
-- Decisions and rationale are preserved
-- Context survives team changes
-- Historical context informs future decisions
+**知识传承：**
+- 决策和理由得以保存。
+- 上下文信息在团队成员变动后仍然可用。
+- 历史上下文为未来的决策提供参考。
 
-## NEVER Do
+## 绝对不要做的事情：
 
-1. **NEVER start implementation without reading context** — context precedes code
-2. **NEVER add dependencies without updating tech-stack.md** — keep the source of truth current
-3. **NEVER let context documents get stale** — update them as part of completing work
-4. **NEVER scatter context across ad-hoc documents** — use the defined structure
-5. **NEVER assume AI remembers previous sessions** — context must be in artifacts
-6. **NEVER skip context for "quick" changes** — small changes compound into drift
+1. **绝对不要在未阅读上下文的情况下开始实施**——上下文先于代码。
+2. **绝对不要在添加依赖项时不更新 `tech-stack.md`——保持信息来源的准确性。
+3. **绝对不要让上下文文档过时**——在完成工作后及时更新它们。
+4. **绝对不要将上下文分散到零散的文档中**——使用定义好的结构。
+5. **绝对不要假设AI会记住之前的会话**——上下文必须记录在文档中。
+6. **绝对不要为了“快速”修改而忽略上下文**——小改动可能会累积成大的问题。

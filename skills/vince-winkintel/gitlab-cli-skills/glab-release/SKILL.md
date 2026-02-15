@@ -1,11 +1,11 @@
 ---
 name: glab-release
-description: Manage GitLab releases including create, list, view, delete, download, and upload release assets. Use when publishing software versions, managing release notes, uploading binaries/artifacts, downloading release files, or viewing release history. Triggers on release, version, tag, publish release, release notes, download release.
+description: 管理 GitLab 的发布版本，包括创建、列出、查看、删除以及上传/下载发布相关的资产。该工具适用于发布软件版本、管理发布说明、上传二进制文件/工件、下载发布文件或查看发布历史等场景。它会根据发布事件（如版本更新、标签变更、发布操作、发布说明的更新或发布文件的下载等）自动触发相应的操作。
 ---
 
-# glab release
+# glab 发布版
 
-## Overview
+## 概述
 
 ```
 
@@ -30,12 +30,12 @@ description: Manage GitLab releases including create, list, view, delete, downlo
     -R --repo                            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab release --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

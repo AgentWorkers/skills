@@ -1,71 +1,71 @@
 ---
 name: giphy-gif
-description: Search and send contextual Giphy GIFs in Discord. Use when a user asks for a GIF or when a brief visual reaction (celebration, humor, emotion) improves the flow.
+description: 在 Discord 中搜索并发送与上下文相关的 Giphy GIF 图片。当用户请求 GIF 图片，或者当需要一个简短的视觉反应（如庆祝、幽默或表达情感）来提升对话氛围时，可以使用此功能。
 ---
 
-# Giphy GIF Search
+# Giphy GIF搜索
 
-Find a relevant GIF from Giphy and send it naturally in Discord.
+从Giphy上查找相关的GIF，并将其自然地发送到Discord中。
 
-## Behavior Rules
+## 行为规则
 
-- Send GIFs when explicitly requested.
-- Also allow proactive GIFs (without explicit request) when the moment clearly fits: celebration, shared humor, or strong emotional beats.
-- Keep proactive usage occasional (at most one GIF for a moment, avoid back-to-back GIF-only replies).
-- Prefer text-only in serious or information-dense conversation.
-- Keep results safe-for-work (`rating=g`).
+- 仅在用户明确请求时发送GIF。
+- 在适合发送GIF的情境下（如庆祝、分享幽默内容或表达强烈情绪时），也可以主动发送GIF（无需用户请求）。
+- 主动发送GIF的频率要适中（每个情境最多发送一个GIF，避免连续发送多个GIF）。
+- 在严肃或信息量较大的对话中，优先使用纯文本。
+- 确保搜索结果适合工作场合使用（`rating=g`）。
 
-## API Key (Easy Setup)
+## API密钥（设置简单）
 
-This skill reads only one variable: `GIPHY_API_KEY`.
+该技能仅需要一个变量：`GIPHY_API_KEY`。
 
-### Option A: Temporary (current shell session)
+### 选项A：临时使用（当前shell会话）
 
 ```bash
 export GIPHY_API_KEY="your-api-key"
 ```
 
-### Option B: Persistent for OpenClaw (recommended)
+### 选项B：为OpenClaw永久设置（推荐）
 
-Add to `~/.openclaw/.env`:
+将API密钥添加到`~/.openclaw/.env`文件中：
 
 ```bash
 GIPHY_API_KEY=your-api-key
 ```
 
-Then restart OpenClaw so the environment is reloaded.
+然后重启OpenClaw，以便环境变量生效。
 
-### Validation
+### 验证
 
-- If `GIPHY_API_KEY` is present, the skill works.
-- If missing, ask the user to set it and retry.
+- 如果`GIPHY_API_KEY`存在，该技能即可正常使用。
+- 如果缺失，请让用户设置API密钥后再尝试。
 
-## Workflow
+## 工作流程
 
-1. Build a Giphy Search API URL with user intent as query.
-2. URL-encode the query text.
-3. Request one result from Giphy.
-4. Extract the first GIF page URL from `data[0].url`.
-5. Send that URL to Discord.
+1. 根据用户的意图构建Giphy搜索API请求的URL。
+2. 对查询文本进行URL编码。
+3. 向Giphy发送请求以获取结果。
+4. 从`data[0].url`中提取第一个GIF的URL。
+5. 将该URL发送到Discord。
 
-## API Request Template
+## API请求模板
 
-Use this endpoint shape:
+使用以下请求格式：
 
 `https://api.giphy.com/v1/gifs/search?api_key=<KEY>&q=<ENCODED_QUERY>&limit=1&rating=g&lang=en`
 
-## Output Rule
+## 输出规则
 
-- If a GIF URL is found: send only the URL (Discord auto-embeds).
-- If no result is found: send a short fallback text and ask for a better keyword.
+- 如果找到GIF的URL：仅发送该URL（Discord会自动嵌入GIF）。
+- 如果未找到结果：发送一条简短的提示信息，并请求用户提供更具体的关键词。
 
-## Good Query Examples
+## 有效的查询示例
 
-- `happy dance`
-- `facepalm reaction`
-- `mind blown`
-- `awkward silence`
+- `happy dance`（快乐舞蹈）
+- `facepalm reaction`（无奈的表情）
+- `mind blown`（震惊的表情）
+- `awkward silence`（尴尬的沉默）
 
-## Fallback Message
+## 备用提示信息
 
-"I couldn’t find a GIF with the vibe you’re looking for. Could you give me a bit more specific keywords?"
+“我找不到符合您需求的GIF。能否提供更具体的关键词呢？”

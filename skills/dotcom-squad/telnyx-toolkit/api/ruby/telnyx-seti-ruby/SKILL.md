@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Seti - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 配置
 
 ```ruby
 require "telnyx"
@@ -30,11 +31,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Retrieve Black Box Test Results
+## 获取黑盒测试结果
 
-Returns the results of the various black box tests
+返回各种黑盒测试的结果
 
 `GET /seti/black_box_test_results`
 
@@ -42,4 +43,5 @@ Returns the results of the various black box tests
 response = client.seti.retrieve_black_box_test_results
 
 puts(response)
+```
 ```

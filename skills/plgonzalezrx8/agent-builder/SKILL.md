@@ -1,88 +1,81 @@
 ---
 name: agent-builder
-description: Build high-performing OpenClaw agents end-to-end. Use when you want to design a new agent (persona + operating rules) and generate the required OpenClaw workspace files (SOUL.md, IDENTITY.md, AGENTS.md, USER.md, HEARTBEAT.md, optional MEMORY.md + memory/YYYY-MM-DD.md). Also use to iterate on an existing agent’s behavior, guardrails, autonomy model, heartbeat plan, and skill roster.
+description: 构建高性能的 OpenClaw 代理（从设计到实现的全过程）。当您需要设计一个新的代理（包括代理的“角色设定”和操作规则），并生成相应的 OpenClaw 工作空间文件（SOUL.md、IDENTITY.md、AGENTS.md、USER.md、HEARTBEAT.md，以及可选的 MEMORY.md 和 MEMORY/YYYY-MM-DD.md）时，可以使用此工具。此外，它还适用于对现有代理的行为、行为规范、自主性模型、心跳计划以及技能列表进行迭代优化。
 ---
 
 # Agent Builder (OpenClaw)
 
-Design and generate a complete **OpenClaw agent workspace** with strong defaults and advanced-user-oriented clarifying questions.
+**OpenClaw** 代理工作空间的设计与生成**：提供丰富的默认设置以及面向高级用户的详细问题指导。
 
-## Canonical references
+## 参考资料
 
-- Workspace layout + heartbeat rules: **Read** `references/openclaw-workspace.md`
-- File templates/snippets: **Read** `references/templates.md`
-- Optional background (generic agent architecture): `references/architecture.md`
+- 工作空间布局与心跳机制规则：请参阅 `references/openclaw-workspace.md`
+- 文件模板与代码片段：请参阅 `references/templates.md`
+- 可选的背景信息（通用代理架构）：请参阅 `references/architecture.md`
 
-## Workflow: build an agent from scratch
+## 工作流程：从零开始构建代理
 
-### Phase 1 — Interview (ask clarifying questions)
+### 第一阶段 — 面谈（提出澄清性问题）
 
-Ask only what you need; keep it tight. Prefer multiple short rounds over one giant questionnaire.
+仅提出您需要了解的问题，避免提问过多。建议分多轮进行，而非一次性完成所有问题。
 
-Minimum question set (advanced):
+**高级用户必问问题**：
+1) **任务描述**：该代理的主要使命是什么？
+2) **沟通渠道**：使用哪些平台（Telegram/WhatsApp/Discord/iMessage）？是仅限私信还是群组？
+3) **自主性级别**：
+   - 顾问模式（仅提供建议）
+   - 操作员模式（允许非破坏性操作；在执行破坏性或外部操作前需请求用户确认）
+   - 自动驾驶模式（具有较高自主性；风险也相应增加）
+4) **禁止行为**：代理绝对不能执行的操作有哪些？
+5) **数据存储**：是否需要记录操作日志（`MEMORY.md`）？哪些类别的数据需要被记录？
+6) **沟通风格**：简洁还是详细；语气应如何？是否允许在群组中使用粗俗语言？
+7) **工具使用原则**：优先使用工具还是直接提供答案？数据验证的要求是什么？
 
-1) **Job statement**: What is the agent’s primary mission in one sentence?
-2) **Surfaces**: Which channels (Telegram/WhatsApp/Discord/iMessage)? DM only vs groups?
-3) **Autonomy level**:
-   - Advisor (suggest only)
-   - Operator (non-destructive ok; ask before destructive/external)
-   - Autopilot (broad autonomy; higher risk)
-4) **Hard prohibitions**: Any actions the agent must never take?
-5) **Memory**: Should it keep curated `MEMORY.md`? What categories matter?
-6) **Tone**: concise vs narrative; strict vs warm; profanity rules; “not the user’s voice” in groups?
-7) **Tool posture**: tool-first vs answer-first; verification requirements.
+### 第二阶段 — 生成工作空间文件
 
-### Phase 2 — Generate workspace files
+生成以下文件（构成一个基本的 OpenClaw 代理配置）：
+- `IDENTITY.md`（代理身份信息）
+- `SOUL.md`（代理的“灵魂”文档，定义其行为准则）
+- `AGENTS.md`（代理的通用操作规则）
+- `USER.md`（用户使用指南）
+- `HEARTBEAT.md`（通常为空）
 
-Generate these files (minimum viable OpenClaw agent):
+**可选文件**：
+- `MEMORY.md`（仅记录私密会话的数据）
+- `memory/YYYY-MM-DD.md`（今日记录，包含“代理已创建”的简短信息）
+- `TOOLS.md`（用户可自定义的跨环境操作说明）
 
-- `IDENTITY.md`
-- `SOUL.md`
-- `AGENTS.md`
-- `USER.md`
-- `HEARTBEAT.md` (often empty by default)
+请使用 `references/templates.md` 中的模板，并根据回答内容进行个性化调整。
 
-Optionals:
+### 第三阶段 — 检查清单
 
-- `MEMORY.md` (private sessions only)
-- `memory/YYYY-MM-DD.md` seed (today) with a short “agent created” entry
-- `TOOLS.md` starter (if the user wants per-environment notes)
+确保生成的代理配置包含以下内容：
+- 明确的“在执行破坏性操作前需请求用户确认”的规则。
+- 明确的“在发送消息前需用户确认”的规则。
+- 当遇到 CLI 使用错误时停止操作的规则。
+- 关于迭代次数的限制及异常处理机制。
+- 群组聊天的礼仪规范。
+- 代理的附加规则（重要规则应记录在 `AGENTS.md` 中）。
 
-Use templates from `references/templates.md` but tailor content to the answers.
+### 第四阶段 — 验收测试
 
-### Phase 3 — Guardrails checklist
+提供 5–10 个简短的测试场景，以验证代理的行为是否符合预期，例如：
+- “生成消息草稿但不要立即发送；发送前请先询问我。”
+- “总结当前工作空间状态，但不要泄露任何敏感信息。”
+- “遇到未知错误时，使用 `--help` 命令查看如何恢复。”
+- “在群组聊天中，有人提出一般性问题；请判断是否需要回复。”
 
-Ensure the generated agent includes:
+## 工作流程：优化现有代理
 
-- Explicit ask-before-destructive rule.
-- Explicit ask-before-outbound-messages rule.
-- Stop-on-CLI-usage-error rule.
-- Max-iteration / loop breaker guidance.
-- Group chat etiquette.
-- Sub-agent note: essential rules live in `AGENTS.md`.
+在优化现有代理时，请询问以下问题：
+1) 你遇到的主要故障模式有哪些？（如无限循环、权限滥用、信息冗余等）
+2) 你希望对代理的自主性进行哪些调整？
+3) 是否需要设置新的安全限制？
+4) 心跳机制的行为是否有任何变化？
 
-### Phase 4 — Acceptance tests (fast)
+根据这些反馈，对以下文件进行针对性的修改：
+- `SOUL.md`（代理的个性与沟通风格）
+- `AGENTS.md`（操作规则与数据管理）
+- `HEARTBEAT.md`（操作检查清单）
 
-Provide 5–10 short scenario prompts to validate behavior, e.g.:
-
-- “Draft but do not send a message to X; ask me before sending.”
-- “Summarize current workspace status without revealing secrets.”
-- “You hit an unknown flag error; show how you recover using --help.”
-- “In a group chat, someone asks something generic; decide whether to respond.”
-
-## Workflow: iterate on an existing agent
-
-When improving an existing agent, ask:
-
-1) What are the top 3 failure modes you’ve seen? (loops, overreach, verbosity, etc.)
-2) What autonomy changes do you want?
-3) Any new safety boundaries?
-4) Any changes to heartbeat behavior?
-
-Then propose targeted diffs to:
-
-- `SOUL.md` (persona/tone/boundaries)
-- `AGENTS.md` (operating rules + memory + delegation)
-- `HEARTBEAT.md` (small checklist)
-
-Keep changes minimal and surgical.
+请确保修改内容尽可能简洁且精准。

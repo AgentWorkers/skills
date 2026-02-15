@@ -1,57 +1,58 @@
 ---
 name: Recipes
-description: Build a personal recipe collection with ingredients, scaling, and meal planning.
+description: 创建一个个人食谱集，其中包含食材信息、食材用量以及膳食计划。
 metadata: {"clawdbot":{"emoji":"🍳","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User shares a recipe → capture in standard format, save to collection
-- User asks "what can I make with X" → search by ingredient
-- User plans meals → help organize week and generate shopping list
-- Create `~/recipes/` as workspace
+## 核心功能  
+- 用户分享食谱 → 以标准格式捕获并保存到收藏夹中  
+- 用户询问“用X材料可以做什么” → 按食材进行搜索  
+- 用户规划餐食 → 帮助安排一周的饮食计划并生成购物清单  
+- 创建`~/recipes/`作为工作区  
 
-## When User Shares a Recipe
-- URL → fetch and extract into standard format
-- Photo of recipe → extract text, structure it
-- Voice/text description → format into recipe structure
-- Handwritten family recipe → preserve original, add structured version
+## 用户分享食谱时的处理流程  
+- 从URL获取食谱信息并转换为标准格式  
+- 提取食谱图片中的文字并进行结构化处理  
+- 将语音或文字描述格式化为食谱的组成部分  
+- 对于手写的家庭食谱，保留原稿的同时提供结构化的版本  
 
-## Recipe File Structure
-- One Markdown file per recipe: `chicken-tikka-masala.md`
-- Frontmatter: prep_time, cook_time, servings, tags, source
-- Sections: ingredients, instructions, notes
-- Keep readable — someone should cook from this file
+## 食谱文件结构  
+- 每个食谱对应一个Markdown文件（例如：`chicken-tikka-masala.md`）  
+- 文件包含以下内容：  
+  - 前言部分（prep_time、cook_time、servings、tags、source）  
+  - 主体部分（ingredients、instructions、notes）  
+- 保证文件易于阅读，任何人都能根据这些信息进行烹饪  
 
-## Key Fields
-- Title and brief description
-- Prep time, cook time, total time
-- Servings (base for scaling)
-- Ingredients with quantities and units
-- Step-by-step instructions
-- Tags: cuisine, meal-type, dietary, difficulty
-- Source: URL, book, or "family recipe"
-- Notes: substitutions, tips, variations tried
+## 关键字段  
+- 标题和简要描述  
+- 准备时间、烹饪时间、总耗时  
+- 份量（用于调整食谱的基数）  
+- 食材列表（包括数量和单位）  
+- 详细的步骤说明  
+- 标签（如菜系、餐食类型、饮食要求、难度等级）  
+- 来源（URL、书籍或“家庭食谱”）  
+- 备注（替代食材、烹饪技巧、尝试过的变体）  
 
-## Ingredient Format
-- Quantity, unit, ingredient, prep: "2 cups chicken, diced"
-- Consistent units — pick metric or imperial, stick with it
-- Group by section if complex: "For the sauce:", "For the marinade:"
-- Note optional ingredients clearly
+## 食材格式要求  
+- 明确标注食材的数量和单位（例如：“2杯鸡肉，切成小块”）  
+- 保持单位的一致性（选择公制或英制单位）  
+- 复杂的食材可按类别分组（如“酱汁材料”、“腌料材料”）  
+- 必须清楚标注可选食材  
 
-## Scaling
-- Store base servings in frontmatter
-- Calculate scaled quantities on request
-- Flag ingredients that don't scale linearly (salt, yeast, baking powder)
-- Round to practical measurements — no "0.37 cups"
+## 食谱的扩展性  
+- 在前言部分记录基础份量  
+- 根据用户需求计算调整后的食材数量  
+- 标记那些无法按比例增减的食材（如盐、酵母、泡打粉）  
+- 将数量四舍五入到实际可用的量（避免使用如“0.37杯”这样的模糊单位）  
 
-## Progressive Enhancement
-- Week 1: dump recipes as they come, minimal formatting
-- Week 2: standardize format, add tags
-- Week 3: build index by cuisine/meal type
-- Month 2: meal planning and shopping lists
-- Month 3: ingredient inventory integration
+## 项目开发计划  
+- 第1周：按顺序导入食谱，仅进行基本格式化处理  
+- 第2周：统一食谱格式并添加标签  
+- 第3周：按菜系或餐食类型建立索引  
+- 第2个月：实现餐食规划和购物清单功能  
+- 第3个月：整合食材库存管理功能  
 
-## Folder Structure
+## 文件夹结构  
 ```
 ~/recipes/
 ├── mains/
@@ -60,47 +61,46 @@ metadata: {"clawdbot":{"emoji":"🍳","os":["linux","darwin","win32"]}}
 ├── basics/          # sauces, stocks, staples
 ├── index.md         # master list with tags
 └── meal-plans/      # weekly plans
-```
+```  
 
-## Searching and Filtering
-- By ingredient: "recipes with chickpeas"
-- By tag: "quick weeknight", "vegetarian", "mexican"
-- By time: "under 30 minutes"
-- Favorites: tag or star system for go-to recipes
+## 搜索与筛选功能  
+- 按食材搜索（例如：“含有鹰嘴豆的食谱”）  
+- 按标签筛选（例如：“快捷的周日晚餐”、“素食食谱”、“墨西哥风味”）  
+- 按烹饪时间筛选（例如：“烹饪时间少于30分钟”）  
+- 支持标记常用食谱（如通过标签或星级系统）  
 
-## Meal Planning
-- Weekly plan: 7 dinners, optional lunches/breakfasts
-- Balance variety — not three pasta dishes in a row
-- Consider ingredient overlap — buy once, use twice
-- Generate combined shopping list from plan
+## 餐食规划  
+- 制定每周的晚餐计划（可选包括午餐/早餐）  
+- 保持菜品多样性（避免连续三餐都是意大利面）  
+- 考虑食材的重复使用（例如：购买一次的食材可多次使用）  
+- 根据计划生成综合购物清单  
 
-## Shopping List Generation
-- Aggregate ingredients across selected recipes
-- Combine same ingredients: 2 cups + 1 cup = 3 cups
-- Group by store section: produce, dairy, pantry
-- Exclude pantry staples user always has (configurable)
+## 购物清单生成  
+- 统计所选食谱中所需的食材  
+- 合并相同食材的数量（例如：2杯 + 1杯 = 3杯）  
+- 按商店类别分类食材（如蔬菜、奶制品、 pantry 食品）  
+- 可配置是否排除用户已有的常用食材  
 
-## What To Capture From URLs
-- Recipe title and description
-- Ingredients list (structured)
-- Instructions (numbered steps)
-- Times and servings
-- Skip the life story — just the recipe
+## 从URL中提取的信息  
+- 食谱的标题和描述  
+- 食材列表（结构化格式）  
+- 详细的烹饪步骤  
+- 食材的烹饪时间和份量  
+- 仅提取与食谱相关的信息，忽略无关内容  
 
-## Notes and Variations
-- "Made this 2024-03-15, added more garlic, family loved it"
-- Track modifications that worked
-- Rate recipes after making them
-- Flag recipes never actually made vs tested
+## 备注与变体记录  
+- 记录食谱的修改历史（例如：“2024-03-15制作，增加了大蒜，家人很喜欢”）  
+- 对食谱进行评分  
+- 标记哪些食谱从未实际制作过或仅做过测试  
 
-## What NOT To Suggest
-- Complex recipe management app — files work fine
-- Nutrition calculation — too complex, use dedicated tool if needed
-- Automated meal planning — user knows their preferences
-- Social features — this is personal collection
+## 不建议采用的功能  
+- 复杂的食谱管理工具——现有文件格式已经足够使用  
+- 营养计算功能——过于复杂，如有需要可另用专用工具  
+- 自动化餐食规划功能——用户本身更了解自己的饮食偏好  
+- 社交分享功能——这只是一个个人食谱集合  
 
-## Family Recipe Preservation
-- Scan or photograph original handwritten recipes
-- Link image in the markdown file
-- Keep original measurements even if odd ("coffee cup of flour")
-- Note the source: "Grandma's recipe, circa 1960"
+## 家庭食谱的保存方式  
+- 扫描或拍摄手写食谱的图片  
+- 在Markdown文件中嵌入图片链接  
+- 即使单位不标准（如“一杯咖啡粉”）也保留原单位  
+- 明确标注食材来源（例如：“祖母的食谱，约1960年”）

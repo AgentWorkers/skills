@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Notifications - Ruby
+# Telnyx 账户通知 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -30,11 +30,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List notification channels
+## 列出通知渠道
 
-List notification channels.
+列出所有通知渠道。
 
 `GET /notification_channels`
 
@@ -44,9 +44,9 @@ page = client.notification_channels.list
 puts(page)
 ```
 
-## Create a notification channel
+## 创建通知渠道
 
-Create a notification channel.
+创建一个新的通知渠道。
 
 `POST /notification_channels`
 
@@ -56,9 +56,9 @@ notification_channel = client.notification_channels.create
 puts(notification_channel)
 ```
 
-## Get a notification channel
+## 获取通知渠道信息
 
-Get a notification channel.
+获取指定通知渠道的详细信息。
 
 `GET /notification_channels/{id}`
 
@@ -68,9 +68,9 @@ notification_channel = client.notification_channels.retrieve("182bd5e5-6e1a-4fe4
 puts(notification_channel)
 ```
 
-## Update a notification channel
+## 更新通知渠道
 
-Update a notification channel.
+更新通知渠道的配置。
 
 `PATCH /notification_channels/{id}`
 
@@ -80,9 +80,9 @@ notification_channel = client.notification_channels.update("182bd5e5-6e1a-4fe4-a
 puts(notification_channel)
 ```
 
-## Delete a notification channel
+## 删除通知渠道
 
-Delete a notification channel.
+删除指定的通知渠道。
 
 `DELETE /notification_channels/{id}`
 
@@ -92,9 +92,9 @@ notification_channel = client.notification_channels.delete("182bd5e5-6e1a-4fe4-a
 puts(notification_channel)
 ```
 
-## List all Notifications Events Conditions
+## 列出所有通知事件条件
 
-Returns a list of your notifications events conditions.
+返回所有通知事件的条件设置。
 
 `GET /notification_event_conditions`
 
@@ -104,9 +104,9 @@ page = client.notification_event_conditions.list
 puts(page)
 ```
 
-## List all Notifications Events
+## 列出所有通知事件
 
-Returns a list of your notifications events.
+返回所有已发生的通知事件列表。
 
 `GET /notification_events`
 
@@ -116,9 +116,9 @@ page = client.notification_events.list
 puts(page)
 ```
 
-## List all Notifications Profiles
+## 列出所有通知配置文件
 
-Returns a list of your notifications profiles.
+列出所有通知配置文件的详细信息。
 
 `GET /notification_profiles`
 
@@ -128,9 +128,9 @@ page = client.notification_profiles.list
 puts(page)
 ```
 
-## Create a notification profile
+## 创建通知配置文件
 
-Create a notification profile.
+创建一个新的通知配置文件。
 
 `POST /notification_profiles`
 
@@ -140,9 +140,9 @@ notification_profile = client.notification_profiles.create
 puts(notification_profile)
 ```
 
-## Get a notification profile
+## 获取通知配置文件信息
 
-Get a notification profile.
+获取指定通知配置文件的详细信息。
 
 `GET /notification_profiles/{id}`
 
@@ -152,9 +152,9 @@ notification_profile = client.notification_profiles.retrieve("182bd5e5-6e1a-4fe4
 puts(notification_profile)
 ```
 
-## Update a notification profile
+## 更新通知配置文件
 
-Update a notification profile.
+更新通知配置文件的设置。
 
 `PATCH /notification_profiles/{id}`
 
@@ -164,9 +164,9 @@ notification_profile = client.notification_profiles.update("182bd5e5-6e1a-4fe4-a
 puts(notification_profile)
 ```
 
-## Delete a notification profile
+## 删除通知配置文件
 
-Delete a notification profile.
+删除指定的通知配置文件。
 
 `DELETE /notification_profiles/{id}`
 
@@ -176,9 +176,9 @@ notification_profile = client.notification_profiles.delete("182bd5e5-6e1a-4fe4-a
 puts(notification_profile)
 ```
 
-## List notification settings
+## 查看通知设置
 
-List notification settings.
+查看所有通知的设置信息。
 
 `GET /notification_settings`
 
@@ -188,9 +188,9 @@ page = client.notification_settings.list
 puts(page)
 ```
 
-## Add a Notification Setting
+## 添加通知设置
 
-Add a notification setting.
+添加一个新的通知设置。
 
 `POST /notification_settings`
 
@@ -200,9 +200,9 @@ notification_setting = client.notification_settings.create
 puts(notification_setting)
 ```
 
-## Get a notification setting
+## 获取通知设置信息
 
-Get a notification setting.
+获取指定通知设置的详细信息。
 
 `GET /notification_settings/{id}`
 
@@ -212,9 +212,9 @@ notification_setting = client.notification_settings.retrieve("182bd5e5-6e1a-4fe4
 puts(notification_setting)
 ```
 
-## Delete a notification setting
+## 删除通知设置
 
-Delete a notification setting.
+删除指定的通知设置。
 
 `DELETE /notification_settings/{id}`
 

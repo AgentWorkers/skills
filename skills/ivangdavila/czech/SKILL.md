@@ -1,88 +1,83 @@
 ---
 name: Czech
-description: Write Czech that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像真人说话的捷克语。既不正式，也不像机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Czech is technically correct but sounds off. Too formal. Too spisovná čeština (literary). Natives write more casually in obecná čeština (common). Match that.
+虽然“AI Czech”在语法上是正确的，但听起来很正式、很书面化。捷克人的日常交流通常更加随意，使用的是普通的捷克语。我们需要让翻译结果更符合这种口语习惯。
 
-## Formality Default
+## 形式的选择
 
-Default register is too high. Casual Czech is warm and direct. Unless explicitly formal: lean casual. "Ahoj" not "Dobrý den". "Jo" not "Ano".
+默认的表达方式过于正式。在非正式的交流中，捷克语应该更加亲切和直接。例如，应该用“Ahoj”而不是“Dobrý den”，用“Jo”而不是“Ano”。
 
-## Ty vs Vy
+## “Ty”与“Vy”的使用
 
-Critical distinction:
-- Vy: strangers initially, elderly, very formal
-- Ty: friends, peers, once established, internet
-- Czech internet is almost entirely ty
-- Overusing vy = stiff
+在捷克语中，“Vy”通常用于指代陌生人、老年人或非常正式的场合；而“Ty”则用于朋友、同龄人或网络交流中的非正式语境。在捷克的网络用语中，“Ty”几乎总是被使用，过度使用“Vy”会显得生硬。
 
-## Spisovná vs Obecná
+## 书面语与口语语
 
-Two registers:
-- Spisovná (literary): formal, written, news
-- Obecná (common): daily speech, casual writing
-- Online uses obecná heavily
-- Pure spisovná = textbook, unnatural
+捷克语有两种表达风格：
+- 书面语（正式的）：用于正式文件、新闻等；
+- 口语语（非正式的）：用于日常对话和随意的写作。
+在线交流中，口语语的使用更为普遍。纯书面语的表述会显得很不自然。
 
-## Common Obecná Forms
+## 常见的口语表达方式
 
-Spoken patterns in writing:
-- Co → Cos
-- To je → Toje
-- Není → Neni
-- Dobře → Dobrý
-- Prosím → Prosim
+在书面语中，一些口语化的表达也会被使用：
+- “Co” → “Cos”
+- “To je” → “Toje”
+- “Není” → “Neni”
+- “Dobře” → “Dobrý”
+- “Prosím” → “Prosim”
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Czech natural:
-- No: filler, "well" ("No, já nevím")
-- Tak: "so", "well"
-- Hele: "look", "hey"
-- Prostě: "simply", "just"
-- Jako: "like" (filler)
+这些词能让捷克语表达更加自然：
+- “No”：用于填充语，表示“嗯”或“我不知道”
+- “Tak”：表示“那么”或“好吧”
+- “Hele”：表示“看”或“嘿”
+- “Prostě”：表示“简单地”或“只是”
+- “Jako”：用于连接句子或作为填充词
 
-## Fillers & Flow
+## 填充语与语调
 
-Real Czech has fillers:
-- No, tak, hele
-- Jako, prostě
-- Vlastně, teda
-- Jakože, v pohodě
+捷克语中有很多填充词，用于使表达更流畅：
+- “No, tak, hele”
+- “Jako, prostě”
+- “Vlastně, teda”
+- “Jakože, v pohodě”
 
-## Expressiveness
+## 表达方式的选择
 
-Don't pick the safe word:
-- Dobré → Super, Skvělé, Hustý, Boží
-- Špatné → Hrozné, Na hovno, Děsný
-- Hodně → Mega, Fakt, Strašně
+不要总是选择最中立的词汇：
+- “Dobré”可以替换为“Super”、“Skvělé”、“Hustý”、“Boží”
+- “Špatné”可以替换为“Hrozné”、“Na hovno”、“Děsný”
+- “Hodně”可以替换为“Mega”、“Fakt”、“Strašně”
 
-## Common Expressions
+## 常见的表达
 
-Natural expressions:
-- V pohodě, Jasný, Super
-- Není zač, Pohoda
-- Fakt?, Vážně?, No jasně
-- Paráda, Pecka
+一些自然的表达方式包括：
+- “V pohodě”、“Jasný”、“Super”
+- “Není zač”、“Pohoda”
+- “Fakt?”, “Vážně?”, “No jasně”
+- “Paráda”、“Pecka”
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Fakt?, Vážně?, Cože?
-- No teda!, Hustý!, Boží!
-- Super!, Skvělé!, Pecka!
-- Haha, lol in text
+在交流中，应该表现出自然的情感反应：
+- “Fakt?”, “Vážně?”, “Cože?”
+- “No teda!”, “Hustý!”, “Boží!”
+- “Super!”, “Skvělé!”, “Pecka!”
+- 在文本中也可以使用“Haha”或“lol”来表达笑声
 
-## Diminutives
+## 缩略词
 
-Czech loves diminutives:
-- -ek, -ka, -ko endings
-- Chvilku, kafíčko, pivko
-- Adds warmth and casualness
+捷克语中喜欢使用缩略词，这会让表达更加亲切：
+- 以“-ek”、“-ka”、“-ko”结尾的词
+- 如“Chvilku”、“kafíčko”、“pivko”等
+这些缩略词增加了语言的亲切感和随意性。
 
-## The "Native Test"
+## “本地化测试”
 
-Before sending: would a Czech screenshot this as "AI-generated"? If yes—too spisovná, no obecná, too formal. Add "hele" and "jako".
+在发送内容之前，可以问问捷克人：如果他们看到这样的截图，会认为这是“AI生成的”吗？如果是这样，那就说明表达方式太正式、太书面化，缺乏口语感。这时应该加入“hele”和“jako”这样的词来让表达更自然。

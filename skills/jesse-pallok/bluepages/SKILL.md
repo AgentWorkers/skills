@@ -14,66 +14,65 @@ metadata:
 
 # Bluepages
 
-800K+ verified Ethereum address <> Twitter/X mappings, plus Farcaster.
+Bluepages 支持查询超过 80 万个经过验证的以太坊地址及其对应的 Twitter 账号信息（包括 Farcaster 账号），并提供相应的 API 功能。
 
-## Setup
+## 设置
 
-Requires the Bluepages MCP server: `npx -y github:bluepagesdoteth/bluepages-mcp`
-or direct API calls (see below). The MCP server is the recommended way to use Bluepages.
+使用 Bluepages 需要安装 Bluepages MCP 服务器：`npx -y github:bluepagesdoteth/bluepages-mcp`，或者直接使用 API 调用（详见下文）。MCP 服务器是推荐的使用方式。
 
-## Authentication
+## 认证
 
-Requires one of these env vars:
+需要设置以下环境变量之一：
 
-- **`BLUEPAGES_API_KEY`** (recommended) — 20% cheaper, 2x rate limits.
-- **`PRIVATE_KEY`** — Ethereum private key for x402 pay-per-request (USDC on Base).
+- **`BLUEPAGES_API_KEY`**（推荐）：使用此密钥可节省 20% 的费用，并且每分钟的请求次数限制更高。
+- **`PRIVATE_KEY`**：使用以太坊私钥通过 x402 方式支付请求费用（费用以 USDC 计算）。
 
-> **Security note**: Never use a main wallet key. Use a dedicated, funded-only-as-needed agent wallet if providing `PRIVATE_KEY`.
+> **安全提示**：切勿使用主钱包的私钥。如果使用 `PRIVATE_KEY`，请使用专门用于支付的代理钱包。
 
-**With a private key**, you can either pay per request via x402 or purchase a `BLUEPAGES_API_KEY` using the `get_api_key` and `purchase_credits` MCP tools.
+**使用私钥**时，可以选择通过 x402 方式按请求付费，或者使用 `get_api_key` 和 `purchase_credits` 工具购买 `BLUEPAGES_API_KEY`。
 
-**Without a private key**, the user must get an API key at [bluepages.fyi/api-keys](https://bluepages.fyi/api-keys.html) and set `BLUEPAGES_API_KEY`.
+**不使用私钥**时，用户需要从 [bluepages.fyi/api-keys](https://bluepages.fyi/api-keys.html) 获取 API 密钥，并将其设置为 `BLUEPAGES_API_KEY`。
 
-## Tools (quick reference)
+## 工具（快速参考）
 
-| Tool                       | Cost                   | Description                                        |
+| 工具                        | 费用                   | 描述                                        |
 | -------------------------- | ---------------------- | -------------------------------------------------- |
-| `check_address`            | 1 credit ($0.001)      | Check if address has data                          |
-| `check_twitter`            | 1 credit ($0.001)      | Check if Twitter handle has data                   |
-| `get_data_for_address`     | 50 credits ($0.05)     | Full identity data for address (free if not found) |
-| `get_data_for_twitter`     | 50 credits ($0.05)     | Full identity data for handle (free if not found)  |
-| `batch_check`              | 40 credits ($0.04)     | Check up to 50 items at once                       |
-| `batch_get_data`           | 40 credits/found item  | Data for up to 50 items (x402: $2.00 flat/batch)   |
-| `batch_check_streaming`    | same as batch_check    | For large lists (100+), shows progress             |
-| `batch_get_data_streaming` | same as batch_get_data | For large lists (100+), shows progress             |
-| `check_credits`            | free                   | Check remaining credits (API key only)             |
-| `set_credit_alert`         | free                   | Set low-credit warning threshold (API key only)    |
-| `get_api_key`              | free                   | Get/create API key via wallet signature            |
-| `purchase_credits`         | $5–$600 USDC           | Buy credits via x402 (PRIVATE_KEY only)            |
+| `check_address`            | 1 信用点（0.001 美元）      | 检查地址是否包含相关数据                          |
+| `check_twitter`            | 1 信用点（0.001 美元）      | 检查 Twitter 账号是否包含相关数据                   |
+| `get_data_for_address`     | 50 信用点（0.05 美元）     | 获取地址的完整身份信息（未找到时免费）             |
+| `get_data_for_twitter`     | 50 信用点（0.05 美元）     | 获取 Twitter 账号的完整身份信息（未找到时免费）             |
+| `batch_check`              | 40 信用点（0.04 美元）     | 一次检查最多 50 个条目                       |
+| `batch_get_data`           | 40 信用点/每个找到的条目  | 获取最多 50 个条目的数据（x402 方式：每次批量请求 2.00 美元）   |
+| `batch_check_streaming`    | 与 `batch_check` 相同    | 适用于大量条目（100 个以上），可显示处理进度             |
+| `batch_get_data_streaming` | 与 `batch_get_data` 相同 | 适用于大量条目（100 个以上），可显示处理进度             |
+| `check_credits`            | 免费                   | 查看剩余信用点数（仅限使用 API 密钥的情况）             |
+| `set_credit_alert`         | 免费                   | 设置低信用点数警告阈值（仅限使用 API 密钥的情况）    |
+| `get_api_key`              | 免费                   | 通过钱包签名获取/创建 API 密钥            |
+| `purchase_credits`         | 5–600 美元             | 通过 x402 方式购买信用点（仅限使用 `PRIVATE_KEY`）            |
 
-## Input format
+## 输入格式
 
-- **Addresses**: 0x-prefixed, 42-char hex. Case-insensitive.
-- **Twitter handles**: With or without `@`.
+- **地址**：以 `0x` 开头的 42 位十六进制字符串，大小写不敏感。
+- **Twitter 账号**：可包含或不包含 `@` 符号。
 
-## Cost-saving workflow
+## 节省费用的方法
 
-- **Single lookups**: `check_address`/`check_twitter` first (1 credit), then `get_data_*` only if found (50 credits). Skipping the check wastes credits on misses.
-- **Batch lookups**: Always two-phase — `batch_check` then `batch_get_data` on found items only. This saves ~90% vs fetching everything blind.
-- **Large lists (100+)**: Use `_streaming` variants for progress updates.
+- **单次查询**：先使用 `check_address`/`check_twitter`（1 信用点），只有在找到相关数据后才使用 `get_data_*`（50 信用点）。跳过这些步骤会在未找到数据时浪费信用点。
+- **批量查询**：始终分两步进行——先使用 `batch_check`，然后在找到相关数据后使用 `batch_get_data`。这种方式比一次性获取所有数据节省约 90% 的费用。
+- **处理大量条目（100 个以上）**：使用 `_streaming` 系列工具来获取处理进度。
 
-## Rate limits
+## 请求限制
 
-- API Key: 60 req/min
-- x402: 30 req/min
-- Batch: max 50 items per request
+- API 密钥：每分钟 60 次请求。
+- x402 方式：每分钟 30 次请求。
+- 批量请求：每次请求最多处理 50 个条目。
 
-## Alternative: Direct HTTP API
+## 替代方案：直接使用 HTTP API
 
-If MCP is unavailable, call the API directly. Auth depends on your setup:
+如果 MCP 服务器不可用，可以直接调用 API。认证方式取决于您的设置：
 
-- **API key**: pass `X-API-KEY` header
-- **Private key (x402)**: endpoints return a 402 with payment details; sign and resend with `X-PAYMENT` header
+- **API 密钥**：在请求头中添加 `X-API-KEY`。
+- **使用私钥（x402 方式）**：API 端点会返回 402 错误代码并提示支付详情；需要使用 `X-PAYMENT` 请求头进行签名并重新发送请求。
 
 ```bash
 # With API key
@@ -86,4 +85,4 @@ curl -X POST "https://bluepages.fyi/batch/check" \
   -d '{"addresses": ["0x...", "0x..."]}'
 ```
 
-Full API docs: [bluepages.fyi/docs](https://bluepages.fyi/docs.html)
+完整 API 文档：[bluepages.fyi/docs](https://bluepages.fyi/docs.html)

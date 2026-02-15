@@ -1,6 +1,6 @@
 ---
 name: pod-cog
-description: "A great podcast needs three things: compelling content, natural-sounding voices, and polished production. CellCog delivers all three — #1 on DeepResearch Bench (Feb 2026) for script depth, frontier multi-voice dialogue, and automatic music + editing. Podcast production, episode scripts, show notes, interview prep, audiograms — single prompt to finished MP3."
+description: "一个优秀的播客需要具备三个要素：引人入胜的内容、自然流畅的配音以及精良的制作质量。CellCog完美地满足了这些要求——在2026年2月的DeepResearch Bench榜单中名列第一，其优势在于剧本的深度、多角色的对话设计，以及自动音乐处理和编辑功能。从播客制作、剧集脚本编写、节目笔记整理到采访准备，再到最终音频文件的生成，整个流程只需一个简单的指令即可完成。"
 metadata:
   openclaw:
     emoji: "🎙️"
@@ -8,27 +8,27 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Pod Cog - Complete Podcast Production
+# Pod Cog - 全面播客制作服务
 
-**A great podcast needs three things: compelling content, natural-sounding voices, and polished production.** CellCog delivers all three.
+**一个优秀的播客需要三个要素：引人入胜的内容、自然流畅的配音以及精良的制作质量。** CellCog能够同时满足这三个要求。
 
-- **Content quality:** #1 on DeepResearch Bench (Feb 2026) — scripts built on deep reasoning, not surface-level takes
-- **Voice quality:** Frontier multi-voice dialogue with natural delivery, emotion, and pacing across distinct speakers
-- **Production quality:** Automatic intro/outro music generation, mixing, and final MP3 delivery — all from a single prompt
+- **内容质量**：在 DeepResearch Bench 的排名中位列第一（2026年2月）——脚本基于深入的思考与分析，而非表面的观点。
+- **配音质量**：采用 Frontier 的多声部对话技术，确保每位嘉宾的发音自然、情感表达真实，节奏把控得当。
+- **制作质量**：从单一指令开始，即可自动生成开场/结尾音乐、进行混音，并最终生成可发布的 MP3 文件。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能前，您需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先学习 `cellcog` 技能**，以了解如何进行 SDK 设置。该技能将向您展示其全部功能。
 
-**Quick pattern (v1.0+):**
+**快速操作指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -42,301 +42,279 @@ result = client.create_chat(
 
 ---
 
-## What You Can Create
+## 您可以创建的内容
 
-### Episode Scripts
+### 剧集脚本
 
-Full scripts or outlines:
+- **单人剧集**：为 20 分钟的单人播客剧集编写脚本。
+- **访谈准备**：为采访初创公司创始人准备问题及访谈流程。
+- **小组讨论**：为三人讨论节目编写结构化的提纲。
+- **叙事类播客**：为犯罪题材的叙事类播客编写脚本。
 
-- **Solo Episodes**: "Write a script for a 20-minute solo episode on productivity"
-- **Interview Prep**: "Create questions and flow for interviewing a startup founder"
-- **Panel Shows**: "Write a structured outline for a 3-person discussion"
-- **Narrative Podcasts**: "Script a true-crime style narrative episode"
-
-**Example prompt:**
-> "Write a script for a 25-minute solo podcast episode:
+**示例提示：**
+> “为 25 分钟的单人播客剧集编写脚本：
 > 
-> Show: 'The Indie Hacker Pod' - for bootstrapped founders
-> Topic: Why I stopped chasing product-market fit
+> 节目名称：《The Indie Hacker Pod》——面向自筹资金的创业者
+> 主题：我为何不再追求产品与市场的完美契合
 > 
-> Structure:
-> - Hook (why this matters)
-> - Story (my journey with 3 failed products)
-> - Framework (what I do instead now)
-> - Actionable takeaways
-> - CTA (newsletter signup)
+> 脚本结构：
+  - 开场白（解释该主题的重要性）
+  - 故事部分（分享我三次产品失败的经历）
+  - 新策略（我现在采用的方法）
+  - 实用建议
+  - 行动号召（鼓励听众订阅新闻通讯）
 > 
-> Tone: Conversational, honest, like talking to a friend who's building something
+> 语气：像与朋友聊天一样自然、真诚
 > 
-> Include: Suggested timestamps for chapters"
+> 包括：各章节的建议时间戳**
 
-### Show Notes
+### 节目笔记
 
-Professional episode documentation:
+- **标准节目笔记**：包含时间戳和链接的节目详细记录。
+- **优化搜索引擎排名**：编写适合搜索引擎的节目笔记。
+- **新闻通讯格式**：将节目内容转换为适合新闻通讯的格式。
+- **章节标记**：自动生成带有时间戳的章节标记。
 
-- **Standard Show Notes**: "Create show notes with timestamps and links"
-- **SEO-Optimized**: "Write show notes optimized for search"
-- **Newsletter Format**: "Convert episode into newsletter-style show notes"
-- **Chapter Markers**: "Generate chapter markers with timestamps"
-
-**Example prompt:**
-> "Create show notes for Episode 47: 'The Art of Cold Email'
+**示例提示：**
+> “为第 47 集《The Art of Cold Email》编写节目笔记：
 > 
-> Episode summary: Interview with Sarah, who booked 50 meetings with cold email
+> 节目简介：采访通过冷邮件成功预约了 50 次会面的 Sarah
 > 
-> Include:
-> - Episode summary (2-3 paragraphs)
-> - Key timestamps (I'll add exact times later)
-> - Guest bio with links
-> - Resources mentioned
-> - Key quotes from the episode
-> - CTA to subscribe
+> 包括：
+  - 节目概述（2-3 段）
+  - 关键时间戳（我会稍后补充具体时间）
+  - 嘉宾简介及链接
+  - 节目中的关键引语
+  - 订阅新闻通讯的号召
 > 
-> Format for both website and podcast app descriptions"
+> 格式适用于网站和播客应用展示**
 
-### Intros & Outros
+### 开场/结尾音乐
 
-Consistent show branding:
+- **统一的品牌风格**：
+  - **开场音乐**：编写 30 秒的播客开场脚本。
+  - **剧集开场**：为特定剧集创建开场模板。
+  - **结尾音乐**：编写带有行动号召的结尾脚本。
+  **广告朗读**：创建主持人朗读的广告脚本。
 
-- **Show Intros**: "Write a 30-second podcast intro script"
-- **Episode Intros**: "Create a template for episode-specific intros"
-- **Outros**: "Write an outro with CTAs"
-- **Ad Reads**: "Create a host-read ad script template"
-
-**Example prompt:**
-> "Write a podcast intro script (30 seconds when spoken):
+**示例提示：**
+> “编写 30 秒的播客开场脚本：
 > 
-> Show: 'Build in Public' - weekly show about transparent entrepreneurship
-> Host: Jamie
+> 节目名称：《Build in Public》——每周一期的创业透明度主题节目
+> 主持人：Jamie
 > 
-> Should include:
-> - Show name and hook
-> - What listeners will learn
-> - Quick credibility (without being braggy)
-> - Energy: Enthusiastic but not cheesy
+> 应包含：
+  - 节目名称和开场白
+  - 听众将学到的内容
+  - 简洁介绍自己的可信度（避免自夸）
+  - 语气：热情但不过分浮夸
 > 
-> Also create a short outro (15 seconds) with:
-> - Thank you
-> - Subscribe CTA
-> - Social media mention"
+> 同时编写 15 秒的结尾脚本，内容包括：
+  - 感谢听众
+  - 订阅号召
+  - 社交媒体推荐**
 
-### Audiograms & Clips
+### 音频片段与截图
 
-Social content from episodes:
+- **精选片段**：从转录文本中提取适合分享的音频片段。
+- **引语卡片**：设计可用于分享的引语图片。
+- **视频片段**：生成用于社交推广的短视频片段。
+- **预告片**：为节目制作 60 秒的预告视频。
 
-- **Audiogram Clips**: "Create 3 audiogram-worthy clips from this transcript"
-- **Quote Cards**: "Design shareable quote images from episode highlights"
-- **Video Clips**: "Generate short video clips for social promotion"
-- **Teaser Content**: "Create a 60-second teaser for the episode"
+### 采访准备
 
-### Interview Preparation
+- **成为最佳主持人**：
+  - **背景资料研究**：深入了解嘉宾并准备相关资料。
+  **问题列表**：为嘉宾准备 20 个采访问题。
+  **后续问题**：为后续讨论准备问题。
+  **采访指南**：为嘉宾提供采访前的参考指南。
 
-Be the best host:
-
-- **Research Briefs**: "Research this guest and prepare background notes"
-- **Question Lists**: "Generate 20 interview questions for this guest"
-- **Follow-up Questions**: "Create follow-up questions for these topics"
-- **Pre-Interview Guide**: "Create a pre-interview guide to share with guest"
-
-**Example prompt:**
-> "Prepare for interviewing Alex Chen, founder of TechStartup (acquired for $50M):
+**示例提示：**
+> “准备采访 TechStartup 的创始人 Alex Chen（该公司以 5000 万美元被收购）：”
 > 
-> Research:
-> - Their journey
-> - Key decisions that led to success
-> - Public content they've created
-> - Unique angles not often covered
+> 研究内容：
+  - 他们的创业历程
+  - 促成成功的关键决策
+  - 他们发布的公开内容
+  - 避免讨论的常见话题
 > 
-> Generate:
-> - 15 main questions (mix of story, tactical, and personal)
-> - 5 rapid-fire questions for end of show
-> - Topics to avoid (if any obvious ones)
-> - Suggested episode structure
+> 准备问题：
+  - 15 个主要问题（涵盖故事、策略和个人经历）
+  - 5 个快速提问（用于节目结尾）
+  - 应避免的话题
+  - 建议的节目结构
 > 
-> My show focuses on the emotional journey, not just tactics"
+> 我的节目重点关注嘉宾的情感历程，而不仅仅是具体策略。
 
-### Podcast Planning
+### 播客规划
 
-Strategic content development:
-
-- **Content Calendars**: "Plan 12 episodes for next quarter"
-- **Series Planning**: "Outline a 5-part series on fundraising"
-- **Topic Generation**: "Generate 20 episode ideas for a marketing podcast"
-- **Season Planning**: "Plan Season 2 themes and episode flow"
+- **内容规划**：为下一季度规划 12 集节目。
+- **系列策划**：策划关于融资的系列节目。
+- **主题构思**：为营销类播客生成 20 个节目主题。
+- **季播规划**：规划第二季的主题和节目流程。
 
 ---
 
-## Podcast Formats
+## 播客类型
 
-| Format | Structure | CellCog Helps With |
+| 格式 | 结构 | CellCog 提供的帮助 |
 |--------|-----------|-------------------|
-| **Solo** | Just you, sharing expertise | Scripts, outlines, talking points |
-| **Interview** | Host + Guest | Questions, research, show notes |
-| **Co-Hosted** | Two regular hosts | Discussion outlines, segment ideas |
-| **Panel** | Multiple guests | Structure, moderation flow |
-| **Narrative** | Produced, story-driven | Scripts, story structure |
-| **News/Recap** | Current events | Research, summaries, takes |
+| **单人播客** | 仅主持人分享专业知识 | 脚本、提纲、演讲要点 |
+| **访谈节目** | 主持人 + 嘉宾 | 问题设计、背景资料研究、节目笔记 |
+| **联合主持** | 两位主持人共同主持 | 讨论大纲、环节设计 |
+| **小组讨论** | 多位嘉宾参与 | 节目结构设计、主持流程 |
+| **叙事类** | 以故事为主线 | 脚本、故事结构设计 |
+| **新闻/回顾** | 当前事件报道 | 背景资料研究、内容总结 |
 
 ---
 
-## Content Types
+## 内容类型
 
-### Pre-Production
-- Research briefs
-- Interview questions
-- Episode outlines
-- Guest prep materials
+### 制作前准备
+- 背景资料研究
+- 采访问题
+- 剧集提纲
+- 嘉宾准备材料
 
-### Production
-- Full scripts
-- Talking points
-- Ad read scripts
-- Intro/outro scripts
+### 制作阶段
+- 完整脚本
+- 演讲要点
+- 广告朗读脚本
+- 开场/结尾音乐脚本
 
-### Post-Production
-- Show notes
-- Transcripts
-- Chapter markers
-- Summaries
+### 制作后处理
+- 节目笔记
+- 转录文本
+- 章节标记
+- 节目总结
 
-### Promotion
-- Audiogram clips
-- Social posts
-- Newsletter content
-- Quote cards
+### 推广素材
+- 音频片段
+- 社交媒体内容
+- 新闻通讯素材
+- 引语卡片
 
 ---
 
-## Chat Mode for Podcasts
+## 播客的协作模式
 
-| Scenario | Recommended Mode |
+| 任务类型 | 推荐协作模式 |
 |----------|------------------|
-| Scripts, show notes, interview questions, individual episodes | `"agent"` |
-| Season planning, narrative series, comprehensive guest research | `"agent team"` |
+| 脚本编写、节目笔记、采访问题、单集制作 | 使用 `"agent"` 协作模式 |
+| 系列策划、叙事类节目、深度嘉宾研究 | 使用 `"agent team"` 协作模式 |
 
-**Use `"agent"` for most podcast work.** Episode scripts, show notes, and interview prep execute well in agent mode.
+**大多数播客工作适合使用 `"agent"` 协作模式**，例如脚本编写、节目笔记和采访准备。
 
-**Use `"agent team"` for deep work** - researching complex guests, planning multi-episode narratives, or developing comprehensive content strategies.
-
----
-
-## Example Prompts
-
-**Full episode script:**
-> "Write a complete script for a 30-minute podcast episode:
-> 
-> Show: 'Design Matters' - UX/product design podcast
-> Episode: 'Why most redesigns fail'
-> 
-> Format: Solo episode with examples
-> 
-> Cover:
-> 1. The redesign trap (why we love to redesign)
-> 2. Case study: 3 famous failed redesigns
-> 3. Framework: When to redesign vs iterate
-> 4. How to do a redesign right
-> 5. Listener action items
-> 
-> Tone: Authoritative but conversational, include specific examples
-> Length: ~4,000 words spoken"
-
-**Interview preparation:**
-> "Prepare me for interviewing the CEO of a climate tech startup:
-> 
-> Guest: Maya Williams, CEO of CarbonCapture.io
-> Company: Direct air capture technology, raised $30M Series A
-> 
-> My podcast: Tech for Good - technology solving real problems
-> 
-> I want:
-> - Background research summary
-> - 12 thoughtful questions (avoid generic founder questions)
-> - 3 questions about the science (for non-expert audience)
-> - 2 questions about the personal journey
-> - Suggested follow-ups
-> - Episode title options"
-
-**Show notes:**
-> "Create comprehensive show notes:
-> 
-> Episode: Interview with productivity expert about deep work
-> Duration: 45 minutes
-> 
-> Key topics covered:
-> - Why multitasking is a myth
-> - The 4-hour deep work day
-> - Digital minimalism in practice
-> - Building a distraction-free environment
-> 
-> Include:
-> - Episode summary (SEO-friendly)
-> - Detailed timestamps
-> - Key quotes (I'll verify exact wording)
-> - All resources mentioned
-> - Related episodes to link
-> - Subscribe CTAs"
+**对于需要深入研究嘉宾、规划多集节目或制定综合内容策略的任务，建议使用 `"agent team"` 协作模式。**
 
 ---
 
-## Full Audio Production
+## 示例提示
 
-When you request a **full podcast episode with audio**, CellCog produces a complete, ready-to-publish file with this default structure:
+**完整剧集脚本：**
+> “为 30 分钟的播客剧集编写完整脚本：
+> 
+> 节目名称：《Design Matters》——关于用户体验与产品设计的播客
+> 主题：为什么大多数重新设计都是失败的**
+> 
+> 脚本结构：
+  - 开场白（解释重新设计的常见误区）
+  - 案例研究：三个失败的重新设计案例
+  - 判断何时需要重新设计或持续迭代
+  - 正确进行重新设计的方法
+  - 听众应采取的行动建议
+> 
+> 语气：权威且富有对话感，包含具体实例
+> 长度：约 4000 字（口语表达）
+
+**访谈准备：**
+> “准备采访 ClimateTech 公司的 CEO Maya Williams：**
+> 
+> 嘉宾：Maya Williams，CarbonCapture.io 的 CEO
+> 公司业务：直接空气捕获技术，已获得 3000 万美元 A 轮投资
+> 节目名称：《Tech for Good》——解决实际问题的技术
+> 
+> 我需要：
+  - 关于她的背景资料总结
+  - 12 个有深度的问题（避免泛泛而谈）
+  - 3 个关于技术原理的问题（适合非技术背景的听众）
+  - 2 个关于她个人经历的问题
+  - 建议的后续讨论话题
+  - 多个节目标题选项”
+
+**节目笔记：**
+> “为这期节目编写详细的笔记：
+> 
+> 节目主题：与效率专家的访谈
+> 时长：45 分钟
+> 
+> 主要讨论内容：
+  - 为什么多任务处理是个误区
+  - “高效工作”的概念（4 小时工作制）
+  - 数字极简主义的实际应用
+  - 如何打造无干扰的工作环境
+> 
+> 包括：
+  - 节目概述（适合搜索引擎优化）
+  - 详细的时间戳
+  - 关键引语（我会核实具体表述）
+  - 所提及的所有资源链接
+  - 鼓励听众订阅的新闻通讯链接**
+
+## 完整音频制作
+
+当您请求制作 **包含音频的完整播客剧集** 时，CellCog 会生成一个结构完整的文件，可直接发布：
 
 ```
 [Intro Music] → [Dialogue/Conversation] → [Outro Music]
 ```
 
-**CellCog generates all three parts automatically** — the multi-voice dialogue AND short intro/outro music tracks — then stitches them into one final MP3.
+**CellCog 可自动生成三个部分**——多声部对话、开场/结尾音乐，并将它们合并成最终的 MP3 文件。
 
-### Customizing the Music
+### 音乐定制
 
-You can control the intro and outro music in your prompt:
+您可以在提示中指定音乐风格：
 
-**Specific direction:**
-> "Intro music: 8 seconds of upbeat electronic, think tech podcast energy. Outro music: 6 seconds of the same theme but softer, winding down."
+- **具体要求：**
+  - **开场音乐**：8 秒的欢快电子音乐，适合科技类播客。
+  - **结尾音乐**：6 秒的相同风格音乐，但节奏更柔和。
 
-**Genre/mood direction:**
-> "Use jazzy lo-fi intro music and a calm acoustic outro."
+- **音乐风格建议：**
+  - 开场音乐：使用爵士风格的低音音乐。
+  - 结尾音乐：使用舒缓的 acoustic 风格音乐。
 
-**Let CellCog decide:**
-> "Choose intro and outro music that fits the topic."
+- **让 CellCog 自行选择：**
+  - 如果您不指定音乐风格，CellCog 会根据主题和语气自动选择合适的音乐。
 
-If you say nothing about music, CellCog will choose something appropriate for your topic and tone.
+### 您将获得的内容
 
-### What You Get
-
-| Component | What CellCog Produces |
+| 组件 | CellCog 的制作成果 |
 |-----------|----------------------|
-| **Intro music** | ~8 second original track matching your podcast vibe |
-| **Dialogue** | Full multi-voice conversation with natural delivery |
-| **Outro music** | ~6 second wind-down track |
-| **Final file** | Single MP3 with all three concatenated, ready to publish |
+| **开场音乐** | 8 秒的原创音乐，符合您的播客风格 |
+| **对话部分**：包含自然发音的多声部对话录音 |
+| **结尾音乐**：6 秒的舒缓音乐 |
+| **最终文件**：包含所有内容的完整 MP3 文件，可直接发布 |
 
-### Example with Music Direction
+### 音乐风格示例
 
-> "Create a 10-minute podcast episode:
+> “为 10 分钟的播客剧集编写脚本：**
 > 
-> Topic: Why startups should hire generalists first
-> Format: Interview between a host and a 3x founder
-> Tone: Casual, insightful, with some humor
+> 主题：为什么初创公司应优先招聘通才
+> 格式：主持人与三位创始人之间的访谈
+> 语气：轻松、富有洞察力，适当加入幽默元素
 > 
-> Intro music: Upbeat indie rock, 8 seconds, energetic but not overwhelming
-> Outro music: Same vibe but mellower, 6 seconds
+> 开场音乐：8 秒的独立摇滚音乐，充满活力但不过分喧闹。
+> 结尾音乐：同样风格的音乐，但节奏更舒缓。
 > 
-> Or if you prefer: just say 'Choose music that fits' and CellCog will pick."
+> 或者您也可以简单说明“选择合适的音乐”，CellCog 会为您挑选合适的音乐。
 
 ---
 
-## Tips for Better Podcast Content
+## 提高播客内容质量的建议
 
-1. **Know your format**: "Conversational interview" vs "structured interview" changes the prep.
-
-2. **Share your voice**: Give examples of your speaking style so scripts sound like you.
-
-3. **Context on guests**: More background = better, more unique questions.
-
-4. **Specify length**: "25 minutes spoken" helps calibrate script length.
-
-5. **Include CTAs**: Tell us what actions you want listeners to take.
-
-6. **Think about chapters**: Modern podcast apps support chapters. Plan for them.
+1. **明确节目类型**：了解“对话式访谈”与“结构化访谈”的区别，以便做好准备工作。
+2. **展示您的风格**：提供自己的说话风格示例，让脚本更贴近您的实际发音。
+3. **深入了解嘉宾**：了解嘉宾的背景信息，提出更具深度的问题。
+4. **指定时长**：明确说明脚本的时长（例如“25 分钟”），有助于准确编写脚本。
+5. **包含行动号召**：明确告诉听众您希望他们采取的行动。
+6. **考虑章节划分**：现代播客应用支持章节功能，提前规划好章节结构。

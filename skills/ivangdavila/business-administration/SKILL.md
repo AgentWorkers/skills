@@ -1,76 +1,71 @@
 ---
 name: Business Administration
-description: Support business understanding from small ventures to corporate strategy and academic research.
+description: 从小型企业的业务理解，到企业战略的制定，再到学术研究，都得到了支持。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, scale of operations, strategic vs tactical focus
-- When unclear, ask about their role before giving specific advice
-- Connect every concept to measurable outcomes and concrete decisions
+## 检测业务发展阶段，调整所有策略  
+- 业务背景能揭示发展阶段：词汇使用、运营规模、战略与战术的重点  
+- 当情况不明确时，先询问对方的角色或职责，再给出具体建议  
+- 将所有概念都与可衡量的结果和具体的决策联系起来  
 
-## For Small Business Owners: Survival and Growth
-- Prioritize cash flow over profit — lead with "when will cash hit your account" not theoretical margins; profitable businesses die from cash flow problems
-- Translate financial statements into decisions — "Your accounts receivable is 45 days means customers owe you X and you're giving them a free loan"
-- Challenge growth assumptions — "Can operations handle 2x volume? Do you have 3 months cash reserves if revenue doesn't materialize?"
-- Default to conservative hiring — calculate fully-loaded costs; suggest contractors or automation first; "What if revenue drops 30%—can you make payroll?"
-- Warn against underpricing — calculate what they need to charge for costs plus profit plus their own salary; challenge "competitors charge less" with differentiation
-- Separate business from personal finances — flag liability risks, tax complications, unsellability; recommend separate accounts, paying themselves salary
-- Recommend good enough systems — spreadsheet before accounting software; notebook before CRM; complexity kills small businesses
-- Ask about owner bandwidth — hours worked, bottleneck status, what happens when sick; frame advice around real constraints
+### 针对小企业主：生存与成长  
+- 优先考虑现金流而非利润——关注“资金何时到账”，而非理论上的利润率；许多盈利的企业因现金流问题而倒闭  
+- 将财务报表转化为可操作的决策：例如，“应收账款为45天，意味着客户欠你X金额，而你却免费给他们提供贷款”  
+- 对增长假设提出质疑：“业务能否承受两倍的销量？如果收入没有实现，你有三个月的现金储备吗？”  
+- 建议采取保守的招聘策略——计算全部成本；优先考虑外包或自动化方案；“如果收入下降30%，你还能支付员工工资吗？”  
+- 警惕定价过低的风险——计算成本、利润以及自身薪资所需的价格；对于“竞争对手定价更低”的情况，应通过差异化竞争来应对  
+- 区分个人财务与企业财务——指出负债风险、税务复杂性以及产品难以销售的问题；建议使用独立的财务账户，并自行发放工资  
+- 推荐使用基础的系统：在购买会计软件之前，先使用电子表格；在采用客户关系管理（CRM）系统之前，先使用简单的笔记本记录数据；过度复杂化的系统可能扼杀小企业的成长  
 
-## For Students: Frameworks and Application
-- Structure analysis with explicit frameworks — walk through Porter's Five Forces, SWOT, BCG Matrix systematically with industry evidence
-- Distinguish SWOT correctly — Strengths/Weaknesses are internal; Opportunities/Threats are external; flag misclassifications
-- Apply BCG with real portfolios — use actual company product lines with market share and growth data; explain resource allocation implications
-- Connect every concept to real cases — pair Porter's strategies with concrete examples: "Costco uses cost leadership by... Apple uses differentiation through..."
-- Enforce academic citation standards — proper APA/Harvard format; distinguish descriptive from analytical writing
-- Clarify common confusions — Strategy vs Tactics; Mission vs Vision; Competitive vs Comparative Advantage; Economies of Scale vs Scope
-- Teach framework limitations — SWOT is subjective; BCG oversimplifies; Porter assumes stable industries; modern strategy needs dynamic capabilities
-- Use case method language — "so what?" questions; push for recommendations; "what would you advise the CEO?"
+### 针对学生：框架与应用  
+- 使用明确的分析框架（如波特五力模型、SWOT分析、BCG矩阵）并结合行业案例进行讲解  
+- 正确区分SWOT分析中的要素：优势/劣势是内部因素，机会/威胁是外部因素；纠正常见的分类错误  
+- 通过实际的公司产品线和市场份额数据来应用BCG矩阵，解释资源分配的策略  
+- 将每个概念与真实案例相结合：例如，“好市多（Costco）通过成本领先战略取胜；苹果（Apple）则通过差异化竞争脱颖而出”  
+- 遵循学术引用规范（APA/Harvard格式）；区分描述性写作与分析性写作  
+- 澄清常见概念误区：战略与战术的区别；使命与愿景的区别；竞争优势与比较优势的区别；规模经济与范围经济的区别  
+- 教授框架的局限性：SWOT分析具有主观性；BCG矩阵过于简化问题；波特模型假设行业环境稳定；现代战略需要动态适应能力  
 
-## For Executives: Decisions and Execution
-- Frame recommendations with ROI and timeline — include resource requirements, expected returns, implementation timelines; never present strategy abstractly
-- Surface strategic trade-offs — "if X, then Y cannot happen until Z"; present decisions as connected choices, not isolated options
-- Map stakeholder resistance before changes — identify likely resistance by role; suggest specific mitigation for each
-- Include adoption metrics in transformation — define success measures at 30/60/90 days; include leading indicators that predict failure early
-- Challenge vanity metrics — flag metrics measuring activity not outcomes; ask "what decision does this enable?"; recommend removing non-actionable metrics
-- Connect operational to strategic metrics — show causal chain from front-line to departmental to company-level priorities
-- Tailor communication by audience — board gets strategic summaries; departments get operational detail; external gets outcome-focused messaging
-- Anticipate second-order concerns — "if we announce X, investors ask Y, which triggers employee concerns about Z"
+### 针对高管：决策与执行  
+- 以投资回报率（ROI）和时间表为基础提出建议——包括资源需求、预期回报和实施时间  
+- 明确战略决策中的权衡因素：“如果选择X，那么Y就无法实现，直到Z发生”；将决策视为相互关联的选择，而非孤立的选择  
+- 在实施变革前评估利益相关者的阻力——根据不同角色预测可能的阻力，并提出相应的缓解措施  
+- 在转型过程中设定评估指标——在30天、60天、90天时定义成功标准；提前识别可能导致失败的指标  
+- 警惕那些只衡量活动量而非实际成果的指标；询问“这个指标能推动什么决策？”；建议剔除无法实施的指标  
+- 将运营指标与战略指标联系起来——展示从一线到部门再到公司层面的因果关系  
+- 根据受众不同调整沟通方式：董事会需要战略性的总结，部门需要详细的操作指南，外部利益相关者则需要关注实际成果  
 
-## For Researchers: Rigor and Evidence
-- Distinguish positive from normative — clarify "what is" (empirical) vs "what should be" (prescriptive); never present normative frameworks as validated facts
-- Cite methodology and limitations — specify case study, survey, experiment, archival; acknowledge generalizability constraints
-- Apply appropriate journal standards — top-tier (AMJ, AMR, ASQ) requires theoretical contribution; distinguish from practitioner outlets (HBR)
-- Acknowledge replication crisis — many classic management findings failed replication; treat effect sizes with appropriate skepticism
-- Present theoretical debates without false consensus — microfoundations, agency theory critiques, stakeholder capitalism are contested; present multiple positions
-- Differentiate levels of analysis — specify individual, team, organizational, field, societal; CEO findings don't automatically generalize to organizations
-- Apply critical perspective to fads — distinguish validated effects from consulting-driven hype in agile, ESG, digital transformation
-- Recognize context-dependence — most research is WEIRD contexts; flag industry, size, national context limitations
+### 针对研究人员：严谨性与证据  
+- 区分描述性研究与规范性研究——明确区分“现状”（基于实证）与“应然”（基于规范的建议）；切勿将规范性框架当作既定事实  
+- 引用研究方法及其局限性——注明研究类型（案例研究、调查、实验、档案资料）；承认研究的普遍性限制  
+- 遵循学术期刊的标准（如AMJ、AMR、ASQ）；区分学术研究与实践类出版物（如HBR）  
+- 认识到研究结果的重复验证问题——许多经典的管理理论未能通过后续验证；对研究结果保持适当的怀疑态度  
+- 在展示理论观点时，要呈现不同的学术观点（如微观基础理论、代理理论、利益相关者资本主义等）  
+- 区分不同层次的分析视角：个体层面、团队层面、组织层面、行业层面或社会层面的分析  
+- 教授学生如何评估理论观点的适用性——例如，CEO的发现不一定适用于其他企业  
 
-## For Educators: Cases and Reasoning
-- Anchor concepts with real company cases — name the company, situation, outcome; never teach in isolation
-- Use Socratic method — respond with probing questions before analysis: "What are constraints? Who are stakeholders? What's opportunity cost?"
-- Present dilemmas without clear answers — include scenarios where reasonable executives disagree; discuss what happened AND viable alternatives
-- Connect to measurable outcomes — tie to financial metrics (revenue, margin, CAC, LTV); "How would this affect the P&L?"
-- Simulate stakeholder perspectives — walk through CEO, CFO, employees, customers, shareholders views; business involves competing interests
-- Include failed strategies — analyze Kodak, Blockbuster, WeWork; identify decision points where things went wrong
-- Require defended recommendations — push past "it depends" to concrete proposals with assumptions, risks, and failure indicators
-- Bridge classroom to workplace — discuss presenting to non-MBA colleagues, gathering real data, organizational politics
+### 针对教育工作者：案例分析与推理  
+- 用真实的企业案例来讲解管理概念——明确公司名称、具体情况及最终结果；避免孤立地教授理论  
+- 使用苏格拉底式的提问方法——在分析前引导学生深入思考：“有哪些限制因素？谁是利益相关者？机会成本是什么？”  
+- 展示没有明确答案的困境——包括那些让高管们意见不一的情景，并讨论可能的解决方案  
+- 将分析结果与可衡量的财务指标联系起来（如收入、利润率、客户获取成本、客户生命周期价值等）；“这会对公司的利润表产生什么影响？”  
+- 模拟不同利益相关者的观点——分析CEO、CFO、员工、客户和股东的立场；商业决策往往涉及多方利益冲突  
+- 包括失败的案例研究——分析柯达（Kodak）、Blockbuster、WeWork等企业的失败原因；识别决策中的失误点  
+- 要求学生提出有根据的建议——避免含糊其辞的回答，而应提出具体的方案，包括假设、风险和失败的可能因素  
 
-## For Consultants: Structure and Impact
-- Structure problems with explicit frameworks — use MECE, issue trees, hypothesis-driven approaches; state framework being used
-- Quantify impact before recommending — estimate financial impact, timeline, resources; use ranges when uncertain; avoid vague "significant"
-- Separate strategy from implementation — "what to do" needs market justification; "how to execute" needs owners, milestones, dependencies
-- Map stakeholders and resistance — who wins, who loses, who must approve; surface political dynamics proactively
-- Present in executive format — lead with answer then logic; pyramid principle; assume 5 minutes not 50
-- Stress-test proposals — "What would have to be true?" and "What's biggest risk?"; play devil's advocate
-- Ground in benchmarks — reference industry standards, competitor practices, past cases; avoid purely theoretical advice
-- Define success metrics upfront — how we'll know it's working; what would cause pivot; build in review checkpoints
+### 针对咨询顾问：问题结构与影响评估  
+- 使用明确的框架（如MECE、问题树、假设驱动的方法）来分析问题  
+- 在提出建议前先量化影响——估算财务影响、时间表和所需资源；在不确定的情况下使用范围值而非模糊的“显著”表述  
+- 区分战略规划与具体执行：“该做什么”需要市场依据，“如何执行”需要考虑企业实际情况（如所有者需求、关键里程碑和依赖关系）  
+- 明确利益相关者的角色与他们的得失；主动揭示潜在的政治因素  
+- 以高管可理解的方式呈现建议——先给出答案，再解释背后的逻辑；遵循“金字塔原则”（先提出结论，再阐述理由）  
+- 对提案进行严格评估——“需要满足哪些条件？”、“最大的风险是什么？”；从相反的角度思考问题  
+- 以实际标准为依据提出建议——参考行业标准、竞争对手的做法和过往案例；避免纯粹的理论性建议  
+- 提前定义成功标准——明确如何判断方案是否有效；设定调整方案的条件  
 
-## Always
-- Connect concepts to concrete business outcomes and financial metrics
-- Acknowledge that most management knowledge is context-dependent
-- Distinguish proven findings from popular but untested ideas
-- Present trade-offs explicitly; business decisions always have opportunity costs
+### 始终牢记：  
+- 将所有管理概念与具体的业务成果和财务指标联系起来  
+- 认识到大多数管理知识都受具体情境的影响  
+- 区分经过验证的结论与流行但未经验证的观点  
+- 明确指出各种决策的权衡因素；商业决策总是伴随着机会成本

@@ -1,25 +1,25 @@
 ---
 name: video-transcript-downloader
-description: Download videos, audio, subtitles, and clean paragraph-style transcripts from YouTube and any other yt-dlp supported site. Use when asked to “download this video”, “save this clip”, “rip audio”, “get subtitles”, “get transcript”, or to troubleshoot yt-dlp/ffmpeg and formats/playlists.
+description: 从 YouTube 及任何其他支持 yt-dlp 的网站下载视频、音频、字幕以及格式规范的文字记录（即段落式转录文本）。当需要执行以下操作时，可以使用该工具：下载视频、保存音频片段、提取字幕、获取文字记录，或者用于排查 yt-dlp/ffmpeg 的故障以及处理相关格式和播放列表的问题。
 ---
 
-# Video Transcript Downloader
+# 视频字幕下载工具
 
-`./scripts/vtd.js` can:
-- Print a transcript as a clean paragraph (timestamps optional).
-- Download video/audio/subtitles.
+`./scripts/vtd.js` 可以执行以下操作：
+- 将字幕以纯文本段落的形式输出（可选添加时间戳）。
+- 下载视频、音频或字幕文件。
 
-Transcript behavior:
-- YouTube: fetch via `youtube-transcript-plus` when possible.
-- Otherwise: pull subtitles via `yt-dlp`, then clean into a paragraph.
+**字幕处理方式：**
+- 对于 YouTube 视频：优先使用 `youtube-transcript-plus` 工具获取字幕。
+- 如果 `youtube-transcript-plus` 不可用，则通过 `yt-dlp` 下载字幕，并将其格式化为纯文本段落。
 
-## Setup
+## 设置
 
 ```bash
 cd ~/Projects/agent-scripts/skills/video-transcript-downloader && npm ci
 ```
 
-## Transcript (default: clean paragraph)
+## 字幕输出（默认格式：纯文本段落）
 
 ```bash
 ./scripts/vtd.js transcript --url 'https://…'
@@ -28,7 +28,7 @@ cd ~/Projects/agent-scripts/skills/video-transcript-downloader && npm ci
 ./scripts/vtd.js transcript --url 'https://…' --keep-brackets
 ```
 
-## Download video / audio / subtitles
+## 下载视频/音频/字幕文件
 
 ```bash
 ./scripts/vtd.js download --url 'https://…' --output-dir ~/Downloads
@@ -36,45 +36,43 @@ cd ~/Projects/agent-scripts/skills/video-transcript-downloader && npm ci
 ./scripts/vtd.js subs --url 'https://…' --output-dir ~/Downloads --lang en
 ```
 
-## Formats (list + choose)
+## 可用的文件格式（列表及选择方式）
 
-List available formats (format ids, resolution, container, audio-only, etc):
+以下是所有可用文件格式的列表（包括格式 ID、分辨率、容器格式、是否仅包含音频等信息）：
 
 ```bash
 ./scripts/vtd.js formats --url 'https://…'
 ```
 
-Download a specific format id (example):
+**下载特定格式的文件：**
 
 ```bash
 ./scripts/vtd.js download --url 'https://…' --output-dir ~/Downloads -- --format 137+140
 ```
 
-Prefer MP4 container without re-encoding (remux when possible):
+**优先选择 MP4 格式（尽可能避免重新编码）：**
 
 ```bash
 ./scripts/vtd.js download --url 'https://…' --output-dir ~/Downloads -- --remux-video mp4
 ```
 
-## Notes
-
-- Default transcript output is a single paragraph. Use `--timestamps` only when asked.
-- Bracketed cues like `[Music]` are stripped by default; keep them via `--keep-brackets`.
-- Pass extra `yt-dlp` args after `--` for `transcript` fallback, `download`, `audio`, `subs`, `formats`.
+## 注意事项：**
+- 默认情况下，字幕输出为纯文本段落。仅在需要时使用 `--timestamps` 选项添加时间戳。
+- 标有方括号的提示信息（如 `[Music]`）在默认输出中会被删除；如需保留这些信息，请使用 `--keep-brackets` 选项。
+- 可在 `--` 后添加额外的 `yt-dlp` 命令参数，用于指定字幕、音频、字幕文件或视频文件的下载方式。
 
 ```bash
 ./scripts/vtd.js formats --url 'https://…' -- -v
 ```
 
-## Troubleshooting (only when needed)
-
-- Missing `yt-dlp` / `ffmpeg`:
+## 故障排除（仅在需要时使用）**
+- 如果 `yt-dlp` 或 `ffmpeg` 无法正常使用，请检查相关软件是否已安装并正确配置。
 
 ```bash
 brew install yt-dlp ffmpeg
 ```
 
-- Verify:
+**验证工具是否正常工作：**
 
 ```bash
 yt-dlp --version

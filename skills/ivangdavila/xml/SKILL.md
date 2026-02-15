@@ -1,51 +1,51 @@
 ---
 name: XML
-description: Parse, generate, and transform XML with correct namespace handling and encoding.
+description: 解析、生成和转换 XML 数据，同时确保正确处理命名空间和编码。
 metadata: {"clawdbot":{"emoji":"📄","os":["linux","darwin","win32"]}}
 ---
 
-## Namespaces
+## 命名空间（Namespaces）
 
-- XPath `/root/child` fails if document has default namespace—use `//*[local-name()='child']` or register prefix
-- Default namespace (`xmlns="..."`) applies to elements, not attributes—attributes need explicit prefix
-- Namespace prefix is arbitrary—`<foo:element>` and `<bar:element>` are identical if both prefixes map to same URI
-- Child elements don't inherit parent's prefixed namespace—each must declare or use prefix explicitly
+- 如果文档使用了默认命名空间，使用XPath `/root/child` 会失败——应使用 `//*[local-name()='child']` 或为元素注册前缀。
+- 默认命名空间（`xmlns="..."`）仅适用于元素，不适用于属性——属性需要明确的前缀。
+- 命名空间前缀是任意的——如果两个前缀映射到相同的URI，`<foo:element>` 和 `<bar:element>` 是等价的。
+- 子元素不会继承父元素的前缀命名空间——每个元素都必须显式声明或使用前缀。
 
-## Encoding
+## 编码（Encoding）
 
-- `<?xml version="1.0" encoding="UTF-8"?>` must match actual file encoding—mismatch corrupts non-ASCII
-- Encoding declaration must be first thing in file—no whitespace or BOM before it (except UTF-8 BOM allowed)
-- Default encoding is UTF-8 if declaration omitted—but explicit is safer across parsers
+- `<?xml version="1.0" encoding="UTF-8"?>` 必须与文件的实际编码相匹配——编码不匹配会导致非ASCII字符损坏。
+- 编码声明必须是文件的第一行——前面不能有空白字符或BOM（UTF-8格式的BOM除外）。
+- 如果省略了编码声明，默认编码为UTF-8——但明确指定编码可以确保解析器的兼容性。
 
-## Escaping & CDATA
+## 转义（Escaping）与CDATA（CDATA）
 
-- Five entities always escape in text: `&amp;` `&lt;` `&gt;` `&quot;` `&apos;`
-- CDATA sections `<![CDATA[...]]>` for blocks with many special chars—but `]]>` inside CDATA breaks it
-- Attribute values: use `&quot;` if delimited by `"`, or `&apos;` if delimited by `'`
-- Numeric entities `&#60;` and `&#x3C;` work everywhere—useful for edge cases
+- 以下五个实体在文本中总是需要被转义：`&`、`<`、`>`、`"`、`'`。
+- CDATA部分使用 `<![CDATA[...]]>` 来包含包含特殊字符的文本块——但 `]]>` 不能出现在CDATA内部。
+- 属性值：如果属性值由双引号 `"` 包围，则使用 `&quot;`；如果由单引号 `'` 包围，则使用 `&apos;`。
+- 数字实体 `&#60;` 和 `&#x3C;` 在任何地方都有效——在处理特殊情况时非常有用。
 
-## Whitespace
+## 空白字符（Whitespace）
 
-- Whitespace between elements is preserved by default—pretty-printing adds nodes that may break processing
-- `xml:space="preserve"` attribute signals whitespace significance—but not all parsers respect it
-- Normalize-space in XPath: `normalize-space(text())` trims and collapses internal whitespace
+- 元素之间的空白字符默认会被保留——但某些格式化工具可能会添加额外的空白字符，从而影响解析。
+- `xml:space="preserve"` 属性用于指定是否保留空白字符——但并非所有解析器都支持这一属性。
+- 在XPath中可以使用 `normalize-space(text())` 来统一空白字符的处理方式。
 
-## XPath Pitfalls
+## XPath的注意事项（XPath Pitfalls）
 
-- `//element` is expensive—traverses entire document; use specific paths when structure is known
-- Position is 1-indexed: `[1]` is first, not `[0]`
-- `text()` returns direct text children only—use `string()` or `.` for concatenated descendant text
-- Boolean in predicates: `[@attr]` tests existence, `[@attr='']` tests empty value—different results
+- `//element` 的查询效率较低——当文档结构已知时，应使用具体的路径。
+- 在XPath中，位置的索引是从1开始的：`[1]` 表示第一个元素，而不是 `[0]`。
+- `text()` 函数仅返回直接的文本子节点——如果需要连接多个文本子节点，应使用 `string()` 或 `.`。
+- 在谓词中，`[@attr]` 表示属性的存在，`[@attr='']` 表示属性值为空——这两种表达式的结果不同。
 
-## Structure
+## 结构（Structure）
 
-- Self-closing `<tag/>` and empty `<tag></tag>` are semantically identical—but some legacy systems choke on self-closing
-- Comments cannot contain `--`—will break parser even inside string content
-- Processing instructions `<?target data?>` cannot have `?>` in data
-- Root element required—document with only comments/PIs and no element is invalid
+- 自闭合的 `<tag/>` 和空的 `<tag></tag>` 在语义上是等价的——但某些旧版本的解析器可能无法正确处理自闭合的标签。
+- 注释中不能包含 `--`——这可能会导致解析器错误，即使在字符串内容中也是如此。
+- 处理指令 `<?target data?>` 中不能包含 `?>`。
+- 文档必须包含一个根元素——仅包含注释和处理指令而没有元素的文档是无效的。
 
-## Validation
+## 验证（Validation）
 
-- Well-formed ≠ valid—parser may accept structure but fail against schema
-- DTD validates but can't express complex constraints—prefer XSD or RelaxNG for new projects
-- XSD namespace `xmlns:xs="http://www.w3.org/2001/XMLSchema"` commonly confused with instance namespace
+- 文档格式正确（Well-formed）并不意味着文档有效——解析器可能接受某种结构，但仍然可能不符合规范的要求。
+- DTD可以验证文档的结构，但无法表达复杂的约束条件——对于新项目，建议使用XSD或RelaxNG。
+- XSD的命名空间 `xmlns:xs="http://www.w3.org/2001/XMLSchema"` 常常与实例命名空间混淆。

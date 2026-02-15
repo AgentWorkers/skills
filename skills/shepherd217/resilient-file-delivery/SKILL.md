@@ -1,52 +1,34 @@
-# Resilient File Delivery
+# 弹性文件传输工具  
+**版本：** 1.0.0  
+**作者：** Midas Skills  
+**许可证：** MIT  
 
-**Version:** 1.0.0  
-**Author:** Midas Skills  
-**License:** MIT
+## 产品描述  
+该工具可绕过沙箱限制及电子邮件发送限制，通过多种渠道（Telegram、Discord、Google Drive、S3、IPFS）实现文件传输，并具备自动重试和传输验证功能。  
 
-## Description
-Bypass sandbox restrictions and email blocks. Deliver files via multi-channel fallback (Telegram, Discord, Google Drive, S3, IPFS).
+## 产品优势  
+- **灵活的传输渠道**：支持多种传输方式，确保文件能够成功送达目标用户。  
+- **自动重试机制**：在传输失败时自动尝试重新传输，采用指数级退避策略提高传输成功率。  
+- **文件分块传输**：适用于大文件传输，提高传输效率。  
+- **数据完整性验证**：使用MD5/SHA256算法验证文件完整性。  
+- **传输记录与追踪**：提供详细的传输记录和追踪信息。  
+- **速率限制支持**：根据网络状况调整传输速率，避免系统过载。  
 
-## Value Proposition
-Bypass sandbox restrictions and email blocks. Deliver files via multi-channel fallback (Telegram, Discord, Google Drive, S3, IPFS) with automatic retry logic and delivery verification.
+## 适用场景  
+- **电子邮件传输失败时的替代方案**：在电子邮件发送失败时，通过其他渠道继续传输文件。  
+- **跨平台文件发送**：支持将文件发送到不同平台的用户。  
+- **自动化备份分发**：实现自动化备份文件的分发。  
+- **受限环境下的安全传输**：适用于需要安全传输文件的受限环境。  
+- **零信任文件传输**：符合零信任安全架构的要求。  
 
-## Category
-file-delivery
-
-## Tags
-file-transfer, multi-channel, fallback, automation, integration
-
-## Skill Type
-integration
-
-## Pricing
-- **Free:** $0
-- **Pro:** $29.99
-
-## Key Features
-- ✅ Multi-channel delivery (Telegram, Discord, Google Drive, S3, IPFS)
-- ✅ Automatic fallback on failure
-- ✅ Retry logic with exponential backoff
-- ✅ File chunking for large payloads
-- ✅ Integrity verification (MD5/SHA256)
-- ✅ Delivery receipts & tracking
-- ✅ Rate limiting aware
-
-## Use Cases
-- Deliver large datasets when email fails
-- Send files to users across multiple platforms
-- Automated backup distribution
-- Secure file handoff in restricted environments
-- Zero-trust file delivery pipelines
-
-## Installation
+## 安装说明  
 ```bash
 npm install resilient-file-delivery
 # or
 pip install resilient-file-delivery
-```
+```  
 
-## Quick Start
+## 快速入门指南  
 ```javascript
 const FileDelivery = require('resilient-file-delivery');
 
@@ -61,11 +43,11 @@ await delivery.send({
   recipient: 'user@example.com',
   metadata: { sender: 'bot', priority: 'high' }
 });
-```
+```  
 
-## Repository
-https://github.com/midas-skills/resilient-file-delivery
+## 项目仓库  
+https://github.com/midas-skills/resilient-file-delivery  
 
-## Support
-📧 support@midas-skills.com  
-🔗 Docs: https://docs.midas-skills.com/resilient-file-delivery
+## 技术支持  
+📧 联系方式：support@midas-skills.com  
+🔗 文档链接：https://docs.midas-skills.com/resilient-file-delivery

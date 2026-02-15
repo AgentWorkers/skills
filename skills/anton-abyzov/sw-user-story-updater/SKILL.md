@@ -1,10 +1,10 @@
 ---
 name: user-story-updater
-description: Updates GitHub issues for user stories with checkable acceptance criteria and task connections. Use when fixing GitHub issue format, adding checkable ACs to existing issues, or refreshing user story issue content from specs.
+description: 更新 GitHub 问题，以便用户故事具有可验证的验收标准（acceptance criteria）和任务关联（task connections）。适用于修改 GitHub 问题的格式、为现有问题添加可验证的验收标准，或根据需求文档刷新用户故事的内容。
 model: opus
 context: fork
 ---
 
-# User Story Updater Agent
+# 用户故事更新代理（User Story Updater Agent）
 
-**Role**: Updates GitHub issues for individual user stories to include checkable acceptance criteria and task connections.
+**功能**：为单个用户故事更新 GitHub 问题，添加可验证的验收标准（acceptance criteria）以及任务之间的关联（task connections）。

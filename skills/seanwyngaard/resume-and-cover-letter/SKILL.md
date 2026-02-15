@@ -1,15 +1,15 @@
 ---
 name: resume-and-cover-letter
-description: Generate ATS-optimized resumes and tailored cover letters matched to specific job descriptions. Use when creating resumes, CVs, cover letters, or career documents.
+description: 生成针对特定职位描述优化的 ATS（ Applicant Tracking System）格式简历和定制的求职信。适用于制作简历、个人简历（CV）、求职信或职业相关文件时使用。
 argument-hint: "[job-description-or-url]"
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
-# Resume & Cover Letter Generator
+# 简历与求职信生成器
 
-Generate ATS-optimized resumes and tailored cover letters that match specific job descriptions. Highlights relevant experience, uses the right keywords, and outputs in multiple formats.
+该工具能够生成符合特定职位要求的、经过ATS（ Applicant Tracking System）优化过的简历和定制化的求职信。简历会突出显示相关的工作经验，使用恰当的关键词，并支持多种输出格式。
 
-## How to Use
+## 使用方法
 
 ```
 /resume-and-cover-letter "Senior Frontend Developer at Stripe — React, TypeScript, 5+ years..."
@@ -17,37 +17,37 @@ Generate ATS-optimized resumes and tailored cover letters that match specific jo
 /resume-and-cover-letter "Product Manager role" --resume existing-resume.md --tailor
 ```
 
-Provide:
-1. The job description (paste or file path)
-2. Your experience/profile (paste, file path, or existing resume to tailor)
+请提供以下信息：
+1. 职位描述（直接粘贴或提供文件路径）
+2. 您的工作经验/个人资料（直接粘贴、提供文件路径，或上传现有的简历以供生成）
 
-If no profile/resume is provided, the skill will ask for key details interactively.
+如果未提供个人资料或简历，系统会交互式地询问您所需的关键信息。
 
-## Resume Generation Process
+## 简历生成流程
 
-### Step 1: Parse the Job Description
+### 第一步：解析职位描述
 
-Extract:
-- **Job title** and level (junior, mid, senior, lead, director)
-- **Required skills** (hard requirements vs nice-to-haves)
-- **Key responsibilities** listed
-- **Industry/domain** keywords
-- **Company values** and culture signals
-- **ATS keywords** — exact phrases to mirror
+提取以下内容：
+- **职位名称**及职位级别（初级、中级、高级、主管、总监）
+- **必备技能**（硬性要求与加分项）
+- **主要职责**
+- **行业/领域相关的关键词**
+- **公司价值观及企业文化**
+- **ATS系统中使用的关键词**（需与职位描述完全一致）
 
-### Step 2: Gather Candidate Information
+### 第二步：收集候选人信息
 
-If not provided, ask for:
-- Name, contact info, location, LinkedIn URL
-- Work experience (company, title, dates, achievements)
-- Education
-- Technical skills
-- Certifications
-- Notable projects
+如果未提供相关信息，系统会要求您提供以下内容：
+- 姓名、联系方式、所在地区、LinkedIn个人主页链接
+- 工作经验（公司名称、职位、工作时长、取得的成就）
+- 教育背景
+- 技术技能
+- 持有的证书
+- 代表性的项目经历
 
-### Step 3: Keyword Matching
+### 第三步：关键词匹配
 
-Compare candidate experience against job requirements:
+将候选人的工作经验与职位要求进行对比：
 
 ```
 KEYWORD MATCH REPORT
@@ -67,9 +67,9 @@ KEYWORD MATCH REPORT
 📊 Overall Match: 78%
 ```
 
-### Step 4: Generate Resume
+### 第四步：生成简历
 
-Use this structure (reverse-chronological, most common ATS-friendly format):
+简历采用以下结构（按时间倒序排列，符合ATS系统的格式）：
 
 ```
 [FULL NAME]
@@ -113,17 +113,17 @@ CERTIFICATIONS (if applicable)
 [Certification Name] | [Issuer] | [Year]
 ```
 
-**Resume writing rules**:
-1. **Start every bullet with a strong action verb**: Built, Led, Reduced, Increased, Designed, Implemented, Automated, Delivered, Optimized, Launched
-2. **Quantify everything**: "Reduced load time by 40%", "Managed team of 8", "Processed 10M+ records daily"
-3. **Mirror JD language**: If the JD says "cross-functional collaboration", use that exact phrase
-4. **No pronouns**: Never start with "I" — resume bullets are implied first person
-5. **Relevance ordering**: Most relevant achievements first within each role
-6. **Length**: 1 page for < 10 years experience, 2 pages max for senior roles
-7. **No graphics, tables, columns, or headers/footers**: ATS can't parse these
-8. **Standard section names**: Use "Experience" not "Career Journey", "Skills" not "Toolkit"
+**简历撰写规则**：
+1. 每个项目描述都以强烈的动词开头（例如：构建、领导、减少、提高、设计、实施、自动化、优化、发布）
+2. 所有数据均需量化：例如：“将加载时间减少了40%”，“管理了一个8人的团队”，“每天处理超过1000万条记录”
+3. 严格遵循职位描述中的语言表述：如果职位描述中使用了“跨部门协作”这样的表述，简历中也必须使用相同的表达
+4. 避免使用代词：“I” —— 简历中的项目描述通常以第三人称形式呈现
+5. 根据重要性对成就进行排序：每个职位下应先列出最相关的成就
+6. **篇幅要求**：工作经验不足10年的简历不超过1页；高级职位的简历最多不超过2页
+7. 简历中不得包含图形、表格、列或页眉/页脚——这些内容ATS系统无法识别
+8. 使用标准的项目名称：例如使用“工作经验”而非“职业历程”，“技能”而非“工具集”
 
-### Step 5: Generate Cover Letter
+### 第五步：生成求职信
 
 ```
 [Your Name]
@@ -159,16 +159,16 @@ Sincerely,
 [Your Name]
 ```
 
-**Cover letter rules**:
-1. Max 350 words (3/4 page)
-2. Never repeat the resume — expand on 1-2 key achievements
-3. Company name and specific details prove you didn't send a template
-4. Address gaps honestly if asked (career change, employment gap)
-5. Match the company's tone (startup = casual, enterprise = formal)
+**求职信撰写规则**：
+- 字数控制在350字以内（约3/4页）
+- 求职信内容不应与简历重复，应重点阐述1-2项突出的成就
+- 在求职信中提及公司名称及具体细节，以证明您不是发送通用模板
+- 如被询问，需诚实地说明职业空白期（如跳槽或失业期）
+- 保持与公司的沟通风格一致（初创公司采用非正式语气，大型企业则采用正式语气）
 
-### Step 6: Output
+### 第六步：输出结果
 
-Save to `output/career-docs/`:
+将生成的文件保存到 `output/career-docs/` 目录下：
 
 ```
 output/career-docs/
@@ -181,17 +181,17 @@ output/career-docs/
   README.md               # Notes on customization
 ```
 
-The HTML versions should use:
-- Clean, professional styling (no color, minimal design)
-- Print-friendly CSS (`@media print` rules)
-- Standard fonts (Georgia, Arial, or system fonts)
-- Proper margins for printing (0.75in all sides)
+生成的HTML文件应具备以下特点：
+- 简洁专业的设计风格（无颜色、设计元素极少）
+- 适合打印的CSS样式（使用 `@media print` 规则）
+- 使用标准字体（Georgia、Arial或系统默认字体）
+- 打印时保持适当的页边距（四周0.75英寸）
 
-### Step 7: Present to User
+### 第七步：向用户展示结果
 
-Show:
-1. Keyword match report (what matched, what to address)
-2. Resume preview (first few sections)
-3. Cover letter preview
-4. File locations
-5. Suggestions for improvement (skills to add, certifications to consider)
+向用户展示以下内容：
+1. 关键词匹配报告（哪些内容与职位描述匹配，哪些需要改进）
+- 简历预览（前几部分内容）
+- 求职信预览
+- 文件存放位置
+- 改进建议（建议补充哪些技能或证书）

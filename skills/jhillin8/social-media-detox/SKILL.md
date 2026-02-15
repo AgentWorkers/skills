@@ -1,6 +1,6 @@
 ---
 name: social-media-detox
-description: Break social media addiction with screen-free streaks, urge tracking, and digital wellness
+description: 通过“无屏幕时间”来戒除对社交媒体的依赖，鼓励用户进行自我监控，并促进数字健康（即合理使用数字设备）。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,22 +11,23 @@ triggers:
   - "digital detox"
 ---
 
-# Social Media Detox
+# 社交媒体戒断计划
 
-*Reclaim your attention. One screen-free day at a time.*
+*重新掌控你的注意力。从每天远离屏幕开始。*
 
-## What it does
+## 功能介绍
 
-Social Media Detox helps you break the scroll cycle through three core mechanics:
+“社交媒体戒断计划”通过以下三种核心机制帮助你打破对社交媒体的依赖：
 
-- **Screen-Free Streaks** — Track consecutive days without social media apps. Build momentum and celebrate milestones (7 days, 30 days, 100 days).
-- **Urge Logging** — When temptation hits, log it. Record time of day, platform, and trigger. Over time, patterns emerge. You learn when willpower is weakest.
-- **Time Reclaimed** — Calculate hours saved. See exactly how much attention you've recovered. Visualize the compound effect of small decisions.
+- **无屏幕日**——记录连续几天未使用任何社交媒体的日子。积累动力，并在达到重要里程碑时庆祝（7天、30天、100天）。
+- **冲动记录**——当感到想使用社交媒体的冲动时，立即记录下来。记录时间、使用的平台以及触发冲动的原因（无聊、错失恐惧、压力、习惯等）。随着时间的推移，你会发现自己的行为模式。
+- **节省的时间**——计算节省下来的时间。直观地了解自己重新获得的注意力有多少。通过数据看到这些小改变的累积效果。
 
-## Usage
+## 使用方法
 
-### Start Detox
-Initialize a new detox streak. Specify which platforms you're taking a break from (Instagram, TikTok, Twitter, YouTube, etc.). Set optional goals: duration, daily screen time limit, or apps to block.
+### 开始戒断
+- 初始化一个新的戒断周期。指定你要暂时远离哪些平台（Instagram、TikTok、Twitter、YouTube等）。
+- 设置可选的目标：戒断时长、每日使用时间限制，或需要屏蔽的应用程序。
 
 ```
 "Start my social media detox"
@@ -34,8 +35,8 @@ Initialize a new detox streak. Specify which platforms you're taking a break fro
 "Begin digital detox - no social media"
 ```
 
-### Log Urges
-When you feel the urge to check a platform, log it. Record the app name, time, emotional state, and what triggered it (boredom, FOMO, stress, habit).
+### 记录冲动
+- 当你想要使用某个平台时，立即记录下来。记录应用程序名称、时间、你的情绪状态以及触发冲动的因素。
 
 ```
 "I wanted to check Instagram at 2pm"
@@ -43,8 +44,8 @@ When you feel the urge to check a platform, log it. Record the app name, time, e
 "I almost scrolled Twitter, but didn't"
 ```
 
-### Track Time Saved
-See how much time you've reclaimed. Breaks down savings by day, week, and month. Compare against your previous usage baseline.
+### 查看节省的时间
+- 查看你节省了多少时间。按天、周和月进行统计，并与之前的使用情况对比。
 
 ```
 "How much time have I saved?"
@@ -52,8 +53,8 @@ See how much time you've reclaimed. Breaks down savings by day, week, and month.
 "Time reclaimed this week"
 ```
 
-### Set Boundaries
-Configure app blockers, notification settings, or time-based restrictions. Disable push notifications from social platforms. Schedule check-in times if you want moderation instead of abstinence.
+### 设置限制
+- 配置应用程序屏蔽器、通知设置或基于时间的限制。关闭来自社交平台的推送通知。如果你希望适度使用而非完全戒除，可以安排固定的检查时间。
 
 ```
 "Block Instagram on my phone"
@@ -61,8 +62,8 @@ Configure app blockers, notification settings, or time-based restrictions. Disab
 "Set a 15-minute daily limit for YouTube"
 ```
 
-### Check Progress
-View your streak, urge patterns, and cumulative time saved. See which apps are hardest to resist. Identify your peak weakness times.
+### 检查进度
+- 查看你的戒断记录、冲动模式以及累计节省的时间。了解哪些应用程序最难抗拒。找出自己最容易失控的时间段。
 
 ```
 "Show my detox progress"
@@ -70,27 +71,23 @@ View your streak, urge patterns, and cumulative time saved. See which apps are h
 "Which app do I miss most?"
 ```
 
-## Time Reclaimed
+## 节省的时间
 
-Every minute away from social media compounds. Here's what one month of detox looks like:
+远离社交媒体的每一分钟都会带来累积效果。以下是一个月的戒断成果示例：
 
-| Metric | Hours | Days |
+| 指标 | 节省时间（小时） | 戒断天数 |
 |--------|-------|------|
-| Daily baseline (avg user) | 2-3 hours | — |
-| Monthly reclaimed (30 days) | 60-90 hours | 2.5-3.75 days |
-| Weekly average | 14-21 hours | 0.6-0.9 days |
-| Hourly impact | 1 hour logged = 100+ minutes of mental clarity | — |
+| 平均每日使用时间（用户） | 2-3小时 | — |
+| 一个月内节省的时间（30天） | 60-90小时 | 2.5-3.75天 |
+| 平均每周时间 | 14-21小时 | 0.6-0.9天 |
+| 每小时的效果 | 每记录一次使用时间，就能获得100多分钟的精神清晰度 | — |
 
-*Customize your baseline. The math adapts to your actual usage.*
+*你可以根据自己的实际使用情况调整基准数据。*
 
-## Tips
+## 小贴士
 
-1. **Log every urge, even wins** — If you *almost* checked Instagram but stopped, log it. These are the moments you're rewiring your brain.
-
-2. **Identify your peak weakness window** — Most relapses happen at specific times (commute, lunch break, before bed). Once you know yours, prepare a replacement activity.
-
-3. **Replace, don't just remove** — Deleting the app is step one. Step two is having something better to do with that dopamine-seeking moment (walk, read, message a friend).
-
-4. **Celebrate small streaks** — Day 3 is harder than day 1. When you hit 7, 14, 30 days, recognize it. Small wins build momentum.
-
-5. **All data stays local on your machine** — Your detox logs, urge patterns, and time saved never leave your device. Privacy is built in.
+1. **记录每一次冲动**——即使你差点打开了Instagram但最终没有使用，也要记录下来。这些时刻正是你在重塑自己行为习惯的关键。
+2. **找出最容易失控的时间段**——大多数复发的情况发生在特定时间（通勤、午休、睡前）。一旦确定了这些时间段，就准备好替代活动。
+3. **寻找替代方案**——删除应用程序只是第一步。第二步是在那些渴望使用社交媒体的时刻找到更有意义的事情来做（散步、阅读、给朋友发消息）。
+4. **庆祝每一个小成就**——第三天比第一天更难坚持。当你达到7天、14天、30天的戒断目标时，一定要庆祝。小小的胜利会带来持续的动力。
+5. **所有数据都保存在本地设备上**——你的戒断记录、冲动模式和节省的时间都不会离开你的设备。隐私得到了充分保障。

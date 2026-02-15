@@ -1,36 +1,36 @@
 ---
 name: windows-control
-description: Full Windows desktop control. Mouse, keyboard, screenshots - interact with any Windows application like a human.
+description: **完全的 Windows 桌面控制功能**：支持鼠标、键盘操作以及截图功能，您可以像人类一样与任何 Windows 应用程序进行交互。
 ---
 
-# Windows Control Skill
+# Windows 控制技能
 
-Full desktop automation for Windows. Control mouse, keyboard, and screen like a human user.
+实现 Windows 的全桌面自动化，能够像人类用户一样控制鼠标、键盘和屏幕。
 
-## Quick Start
+## 快速入门
 
-All scripts are in `skills/windows-control/scripts/`
+所有脚本都位于 `skills/windows-control/scripts/` 目录下。
 
-### Screenshot
+### 截图
 ```bash
 py screenshot.py > output.b64
 ```
-Returns base64 PNG of entire screen.
+返回整个屏幕的 Base64 编码 PNG 图像。
 
-### Click
+### 点击
 ```bash
 py click.py 500 300              # Left click at (500, 300)
 py click.py 500 300 right        # Right click
 py click.py 500 300 left 2       # Double click
 ```
 
-### Type Text
+### 输入文本
 ```bash
 py type_text.py "Hello World"
 ```
-Types text at current cursor position (10ms between keys).
+在当前光标位置输入文本（按键之间有 10 毫秒的延迟）。
 
-### Press Keys
+### 按键
 ```bash
 py key_press.py "enter"
 py key_press.py "ctrl+s"
@@ -38,19 +38,19 @@ py key_press.py "alt+tab"
 py key_press.py "ctrl+shift+esc"
 ```
 
-### Move Mouse
+### 移动鼠标
 ```bash
 py mouse_move.py 500 300
 ```
-Moves mouse to coordinates (smooth 0.2s animation).
+将鼠标移动到指定坐标（动画效果平滑，耗时 0.2 秒）。
 
-### Scroll
+### 滚动屏幕
 ```bash
 py scroll.py up 5      # Scroll up 5 notches
 py scroll.py down 10   # Scroll down 10 notches
 ```
 
-### Window Management (NEW!)
+### 窗口管理（新增！）
 ```bash
 py focus_window.py "Chrome"           # Bring window to front
 py minimize_window.py "Notepad"       # Minimize window
@@ -59,7 +59,7 @@ py close_window.py "Calculator"       # Close window
 py get_active_window.py               # Get title of active window
 ```
 
-### Advanced Actions (NEW!)
+### 高级操作（新增！）
 ```bash
 # Click by text (No coordinates needed!)
 py click_text.py "Save"               # Click "Save" button anywhere
@@ -75,24 +75,24 @@ py find_text.py "Login" "Chrome"      # Get coordinates of text
 py list_windows.py                    # List all open windows
 ```
 
-### Read Window Text
+### 读取窗口文本
 ```bash
 py read_window.py "Notepad"           # Read all text from Notepad
 py read_window.py "Visual Studio"     # Read text from VS Code
 py read_window.py "Chrome"            # Read text from browser
 ```
-Uses Windows UI Automation to extract actual text (not OCR). Much faster and more accurate than screenshots!
+使用 Windows UI 自动化技术提取实际文本（而非使用 OCR 技术），速度更快且更准确！
 
-### Read UI Elements (NEW!)
+### 读取 UI 元素（新增！）
 ```bash
 py read_ui_elements.py "Chrome"               # All interactive elements
 py read_ui_elements.py "Chrome" --buttons-only  # Just buttons
 py read_ui_elements.py "Chrome" --links-only    # Just links
 py read_ui_elements.py "Chrome" --json          # JSON output
 ```
-Returns buttons, links, tabs, checkboxes, dropdowns with coordinates for clicking.
+返回按钮、链接、标签页、复选框、下拉菜单的坐标，以便进行点击操作。
 
-### Read Webpage Content (NEW!)
+### 读取网页内容（新增！）
 ```bash
 py read_webpage.py                     # Read active browser
 py read_webpage.py "Chrome"            # Target Chrome specifically
@@ -101,9 +101,9 @@ py read_webpage.py "Chrome" --links    # Include links with coords
 py read_webpage.py "Chrome" --full     # All elements (inputs, images)
 py read_webpage.py "Chrome" --json     # JSON output
 ```
-Enhanced browser content extraction with headings, text, buttons, and links.
+增强型网页内容提取功能，可识别标题、文本、按钮和链接。
 
-### Handle Dialogs (NEW!)
+### 处理对话框（新增！）
 ```bash
 # List all open dialogs
 py handle_dialog.py list
@@ -128,9 +128,9 @@ py handle_dialog.py dismiss
 py handle_dialog.py wait --timeout 10
 py handle_dialog.py wait "Save As" --timeout 5
 ```
-Handles Save/Open dialogs, message boxes, alerts, confirmations, etc.
+处理保存/打开对话框、消息框、警告框等界面。
 
-### Click Element by Name (NEW!)
+### 通过名称点击元素（新增！）
 ```bash
 py click_element.py "Save"                    # Click "Save" anywhere
 py click_element.py "OK" --window "Notepad"   # In specific window
@@ -139,32 +139,32 @@ py click_element.py "File" --type MenuItem    # Menu items
 py click_element.py --list                    # List clickable elements
 py click_element.py --list --window "Chrome"  # List in specific window
 ```
-Click buttons, links, menu items by name without needing coordinates.
+无需坐标即可通过名称点击按钮、链接或菜单项。
 
-### Read Screen Region (OCR - Optional)
+### 读取屏幕区域内容（OCR - 可选）
 ```bash
 py read_region.py 100 100 500 300     # Read text from coordinates
 ```
-Note: Requires Tesseract OCR installation. Use read_window.py instead for better results.
+注意：需要安装 Tesseract OCR 工具。建议使用 `read_window.py` 以获得更好的效果。
 
-## Workflow Pattern
+## 工作流程
 
-1. **Read window** - Extract text from specific window (fast, accurate)
-2. **Read UI elements** - Get buttons, links with coordinates
-3. **Screenshot** (if needed) - See visual layout
-4. **Act** - Click element by name or coordinates
-5. **Handle dialogs** - Interact with popups/save dialogs
-6. **Read window** - Verify changes
+1. **读取窗口内容** - 从指定窗口中提取文本（快速且准确）。
+2. **读取 UI 元素** - 获取带有坐标的按钮和链接信息。
+3. **截图**（如需） - 查看界面布局。
+4. **执行操作** - 通过名称或坐标点击元素。
+5. **处理对话框** - 与弹出窗口或保存对话框进行交互。
+6. **再次读取窗口内容** - 验证操作结果。
 
-## Screen Coordinates
+## 屏幕坐标
 
-- Origin (0, 0) is top-left corner
-- Your screen: 2560x1440 (check with screenshot)
-- Use coordinates from screenshot analysis
+- 原点（0, 0）位于屏幕的左上角。
+- 你的屏幕分辨率：2560x1440（可通过截图确认）。
+- 坐标数据来自屏幕截图分析结果。
 
-## Examples
+## 示例
 
-### Open Notepad and type
+### 打开记事本并输入文本
 ```bash
 # Press Windows key
 py key_press.py "win"
@@ -182,7 +182,7 @@ py type_text.py "Hello from AI!"
 py key_press.py "ctrl+s"
 ```
 
-### Click in VS Code
+### 在 VS Code 中点击
 ```bash
 # Read current VS Code content
 py read_window.py "Visual Studio Code"
@@ -200,7 +200,7 @@ py key_press.py "enter"
 py read_window.py "Visual Studio Code"
 ```
 
-### Monitor Notepad changes
+### 监控记事本中的变化
 ```bash
 # Read current content
 py read_window.py "Notepad"
@@ -211,55 +211,53 @@ py read_window.py "Notepad"
 py read_window.py "Notepad"
 ```
 
-## Text Reading Methods
+## 文本读取方法
 
-**Method 1: Windows UI Automation (BEST)**
-- Use `read_window.py` for any window
-- Use `read_ui_elements.py` for buttons/links with coordinates
-- Use `read_webpage.py` for browser content with structure
-- Gets actual text data (not image-based)
+**方法 1：Windows UI 自动化（最佳选择）**
+- 对于任何窗口，使用 `read_window.py`。
+- 对于带有坐标的按钮/链接，使用 `read_ui_elements.py`。
+- 对于结构化的网页内容，使用 `read_webpage.py`。
+- 该方法能获取实际文本数据（而非基于图像的文本）。
 
-**Method 2: Click by Name (NEW)**
-- Use `click_element.py` to click buttons/links by name
-- No coordinates needed - finds elements automatically
-- Works across all windows or target specific window
+**方法 2：通过名称点击元素（新增）**
+- 使用 `click_element.py` 通过名称点击按钮或链接。
+- 无需提供坐标，系统会自动定位元素。
+- 适用于所有窗口或特定窗口。
 
-**Method 3: Dialog Handling (NEW)**
-- Use `handle_dialog.py` for popups, save dialogs, alerts
-- Read dialog content, click buttons, type text
-- Auto-dismiss with common buttons (OK, Cancel, etc.)
+**方法 3：处理对话框（新增）**
+- 使用 `handle_dialog.py` 处理弹出窗口、保存对话框和警告框。
+- 读取对话框内容，点击按钮，输入文本。
+- 可使用常见的按钮（如“确定”或“取消”）自动关闭对话框。
 
-**Method 4: Screenshot + Vision (Fallback)**
-- Take full screenshot
-- AI reads text visually
-- Slower but works for any content
+**方法 4：截图 + 人工智能识别（备用方案）**
+- 截取整个屏幕的图片。
+- 通过人工智能技术识别文本。
+- 效率较低，但适用于所有类型的屏幕内容。
 
-**Method 5: OCR (Optional)**
-- Use `read_region.py` with Tesseract
-- Requires additional installation
-- Good for images/PDFs with text
+**方法 5：OCR 技术（可选）**
+- 使用 `read_region.py` 和 Tesseract 工具。
+- 需要额外安装 Tesseract。
+- 适用于包含文本的图片或 PDF 文件。
 
-## Safety Features
+## 安全特性
 
-- `pyautogui.FAILSAFE = True` (move mouse to top-left to abort)
-- Small delays between actions
-- Smooth mouse movements (not instant jumps)
+- 设置 `pyautogui.failSAFE = True` 可在操作失败时将鼠标移动到屏幕左上角。
+- 操作之间有短暂延迟，避免突然的屏幕移动。
 
-## Requirements
+## 系统要求
 
-- Python 3.11+
-- pyautogui (installed ✅)
-- pillow (installed ✅)
+- Python 3.11 或更高版本。
+- 已安装 `pyautogui` 和 `pillow` 库。
 
-## Tips
+## 提示
 
-- Always screenshot first to see current state
-- Coordinates are absolute (not relative to windows)
-- Wait briefly after clicks for UI to update
-- Use `ctrl+z` friendly actions when possible
+- 建议先截图以查看当前界面状态。
+- 坐标是绝对坐标（相对于屏幕的左上角）。
+- 点击后稍作等待，等待 UI 更新完成。
+- 尽量使用 `Ctrl+Z` 等快捷键来终止操作。
 
 ---
 
-**Status:** ✅ READY FOR USE (v2.0 - Dialog & UI Elements)
-**Created:** 2026-02-01
-**Updated:** 2026-02-02
+**状态：** ✅ 已可使用（版本 2.0 - 支持对话框和 UI 元素处理）
+**创建时间：** 2026-02-01
+**更新时间：** 2026-02-02

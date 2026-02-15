@@ -1,7 +1,7 @@
 ---
 name: ecto-connection
 version: 1.0.0
-description: Connect OpenClaw to the internet via Tailscale Funnel. Use when user says "connect with ecto", "setup ecto connection", "expose openclaw publicly", or "enable external access".
+description: 通过 Tailscale Funnel 将 OpenClaw 连接到互联网。当用户输入“connect with ecto”、“setup ecto connection”、“expose openclaw publicly”或“enable external access”时，请使用此功能。
 metadata:
   openclaw:
     emoji: "🔌"
@@ -12,67 +12,67 @@ metadata:
       - disconnect
 ---
 
-# Ecto Connection Skill
+# Ecto 连接功能
 
-One-command setup to expose OpenClaw to the internet via Tailscale Funnel with secure authentication.
+通过一个命令即可完成设置，使 OpenClaw 通过 Tailscale Funnel 接入互联网，并实现安全认证。
 
-## What It Does
+## 功能概述
 
-1. **Installs Tailscale** (if not present)
-2. **Authenticates** with your Tailscale account
-3. **Starts Tailscale service** with proper permissions
-4. **Enables Funnel** to expose port 18789 publicly
-5. **Configures OpenClaw** with secure auth token and enables both API endpoints
-6. **Restarts gateway** with new settings
+1. **安装 Tailscale**（如果尚未安装）。
+2. **使用您的 Tailscale 账户进行身份验证**。
+3. **以适当的权限启动 Tailscale 服务**。
+4. **启用 Funnel 功能，将端口 18789 公开暴露**。
+5. **使用安全认证令牌配置 OpenClaw，并启用其 API 端点**。
+6. **使用新的配置重新启动网关**。
 
-## Usage
+## 使用方法
 
-When user says "connect with ecto" or similar:
+当用户输入 “connect with ecto” 或类似指令时，脚本将执行以下操作：
 
 ```bash
 ~/.openclaw/workspace/skills/ecto-connection/scripts/connect.sh
 ```
 
-### Commands
+### 命令
 
-**Connect (full setup):**
+**完整连接设置：**
 ```bash
 ./scripts/connect.sh
 ```
 
-**Check status:**
+**检查状态：**
 ```bash
 ./scripts/status.sh
 ```
 
-**Disconnect (disable funnel):**
+**断开连接（禁用 Funnel 功能）：**
 ```bash
 ./scripts/disconnect.sh
 ```
 
-## Output
+## 输出结果
 
-On success, the script outputs:
-- Public URL: `https://<machine>.tail<xxxxx>.ts.net/v1/chat/completions`
-- Auth token for API access
-- Example curl command
+成功连接后，脚本会输出以下信息：
+- 公共访问地址：`https://<machine>.tail<xxxxx>.ts.net/v1/chat/completions`
+- API 访问所需的认证令牌
+- 一个示例 curl 命令
 
-## Requirements
+## 系统要求
 
-- macOS with Homebrew
-- Tailscale account (free at tailscale.com)
-- sudo access (for Tailscale service)
+- 安装了 Homebrew 的 macOS 系统
+- 拥有 Tailscale 账户（可在 tailscale.com 免费注册）
+- 具有 sudo 权限（用于启动 Tailscale 服务）
 
-## Security
+## 安全性
 
-- Generates cryptographically random 32-byte auth token
-- Requires Bearer token for all API requests
-- Funnel uses Tailscale's automatic TLS certificates
-- Gateway binds to loopback (only accessible via Funnel)
+- 生成一个 32 字节的随机认证令牌。
+- 所有 API 请求都需要使用该认证令牌。
+- Funnel 功能使用 Tailscale 自动提供的 TLS 证书进行加密传输。
+- 网关仅通过 Funnel 可以访问。
 
-## After Setup
+## 设置完成后
 
-Use the OpenAI-compatible API:
+您可以使用与 OpenAI 兼容的 API 进行交互：
 
 ```bash
 curl https://<your-url>/v1/chat/completions \
@@ -81,16 +81,16 @@ curl https://<your-url>/v1/chat/completions \
   -d '{"messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Funnel not working?**
-- Ensure Funnel is enabled on your tailnet: https://login.tailscale.com/admin/machines
-- Check: `tailscale funnel status`
+**Funnel 功能无法使用？**
+- 确保在您的 Tailscale 系统中启用了 Funnel 功能：https://login.tailscale.com/admin/machines
+- 检查：`tailscale funnel status`
 
-**Auth errors?**
-- Token is in: `~/.openclaw/ecto-credentials.json`
-- Regenerate with: `./scripts/connect.sh --regenerate-token`
+**认证错误？**
+- 认证令牌存储在：`~/.openclaw/ecto-credentials.json` 文件中
+- 重新生成令牌：`./scripts/connect.sh --regenerate-token`
 
-**Gateway not responding?**
-- Check logs: `cat /tmp/openclaw-gateway.log`
-- Restart: `./scripts/connect.sh --restart`
+**网关无响应？**
+- 查看日志文件：`cat /tmp/openclaw-gateway.log`
+- 重新启动网关：`./scripts/connect.sh --restart`

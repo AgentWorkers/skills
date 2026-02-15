@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Video - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,9 +31,9 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## View a list of room compositions.
+## 查看房间组合列表
 
 `GET /room_compositions`
 
@@ -43,9 +43,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a room composition.
+## 创建房间组合
 
-Asynchronously create a room composition.
+异步创建房间组合。
 
 `POST /room_compositions`
 
@@ -54,7 +54,7 @@ room_composition = client.room_compositions.create()
 print(room_composition.data)
 ```
 
-## View a room composition.
+## 查看房间组合信息
 
 `GET /room_compositions/{room_composition_id}`
 
@@ -65,9 +65,9 @@ room_composition = client.room_compositions.retrieve(
 print(room_composition.data)
 ```
 
-## Delete a room composition.
+## 删除房间组合
 
-Synchronously delete a room composition.
+同步删除房间组合。
 
 `DELETE /room_compositions/{room_composition_id}`
 
@@ -77,7 +77,7 @@ client.room_compositions.delete(
 )
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表
 
 `GET /room_participants`
 
@@ -87,7 +87,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## View a room participant.
+## 查看房间参与者信息
 
 `GET /room_participants/{room_participant_id}`
 
@@ -98,7 +98,7 @@ room_participant = client.room_participants.retrieve(
 print(room_participant.data)
 ```
 
-## View a list of room recordings.
+## 查看房间录制列表
 
 `GET /room_recordings`
 
@@ -108,7 +108,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Delete several room recordings in a bulk.
+## 批量删除房间录制文件
 
 `DELETE /room_recordings`
 
@@ -117,7 +117,7 @@ response = client.room_recordings.delete_bulk()
 print(response.data)
 ```
 
-## View a room recording.
+## 查看房间录制文件信息
 
 `GET /room_recordings/{room_recording_id}`
 
@@ -128,9 +128,9 @@ room_recording = client.room_recordings.retrieve(
 print(room_recording.data)
 ```
 
-## Delete a room recording.
+## 删除房间录制文件
 
-Synchronously delete a Room Recording.
+同步删除房间录制文件。
 
 `DELETE /room_recordings/{room_recording_id}`
 
@@ -140,7 +140,7 @@ client.room_recordings.delete(
 )
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表
 
 `GET /room_sessions`
 
@@ -150,7 +150,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## View a room session.
+## 查看房间会话信息
 
 `GET /room_sessions/{room_session_id}`
 
@@ -161,9 +161,9 @@ session = client.rooms.sessions.retrieve(
 print(session.data)
 ```
 
-## End a room session.
+## 结束房间会话
 
-Note: this will also kick all participants currently present in the room
+注意：此操作也会将当前在房间中的所有参与者踢出。
 
 `POST /room_sessions/{room_session_id}/actions/end`
 
@@ -174,7 +174,7 @@ response = client.rooms.sessions.actions.end(
 print(response.data)
 ```
 
-## Kick participants from a room session.
+## 将参与者从房间会话中踢出
 
 `POST /room_sessions/{room_session_id}/actions/kick`
 
@@ -185,7 +185,7 @@ response = client.rooms.sessions.actions.kick(
 print(response.data)
 ```
 
-## Mute participants in room session.
+## 静音房间中的参与者
 
 `POST /room_sessions/{room_session_id}/actions/mute`
 
@@ -196,7 +196,7 @@ response = client.rooms.sessions.actions.mute(
 print(response.data)
 ```
 
-## Unmute participants in room session.
+## 恢复房间中参与者的发言权
 
 `POST /room_sessions/{room_session_id}/actions/unmute`
 
@@ -207,7 +207,7 @@ response = client.rooms.sessions.actions.unmute(
 print(response.data)
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表
 
 `GET /room_sessions/{room_session_id}/participants`
 
@@ -219,7 +219,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## View a list of rooms.
+## 查看房间列表
 
 `GET /rooms`
 
@@ -229,9 +229,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a room.
+## 创建房间
 
-Synchronously create a Room.
+同步创建房间。
 
 `POST /rooms`
 
@@ -240,7 +240,7 @@ room = client.rooms.create()
 print(room.data)
 ```
 
-## View a room.
+## 查看房间信息
 
 `GET /rooms/{room_id}`
 
@@ -251,9 +251,9 @@ room = client.rooms.retrieve(
 print(room.data)
 ```
 
-## Update a room.
+## 更新房间信息
 
-Synchronously update a Room.
+同步更新房间信息。
 
 `PATCH /rooms/{room_id}`
 
@@ -264,9 +264,9 @@ room = client.rooms.update(
 print(room.data)
 ```
 
-## Delete a room.
+## 删除房间
 
-Synchronously delete a Room.
+同步删除房间。
 
 `DELETE /rooms/{room_id}`
 
@@ -276,9 +276,9 @@ client.rooms.delete(
 )
 ```
 
-## Create Client Token to join a room.
+## 创建客户端令牌以加入房间
 
-Synchronously create an Client Token to join a Room.
+同步生成客户端令牌以加入房间。
 
 `POST /rooms/{room_id}/actions/generate_join_client_token`
 
@@ -289,11 +289,11 @@ response = client.rooms.actions.generate_join_client_token(
 print(response.data)
 ```
 
-## Refresh Client Token to join a room.
+## 刷新客户端令牌以加入房间
 
-Synchronously refresh an Client Token to join a Room.
+同步刷新客户端令牌以加入房间。
 
-`POST /rooms/{room_id}/actions/refresh_client_token` — Required: `refresh_token`
+`POST /rooms/{room_id}/actions/refresh_client_token` — 需要参数：`refresh_token`
 
 ```python
 response = client.rooms.actions.refresh_client_token(
@@ -303,7 +303,7 @@ response = client.rooms.actions.refresh_client_token(
 print(response.data)
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表
 
 `GET /rooms/{room_id}/sessions`
 

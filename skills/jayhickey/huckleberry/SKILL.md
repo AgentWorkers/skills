@@ -1,21 +1,21 @@
 ---
 name: huckleberry
-description: Track baby sleep, feeding, diapers, and growth via the Huckleberry CLI. Use when the user asks about logging baby activities, starting/stopping sleep, bottle feeding, diaper changes, or growth measurements.
+description: 通过 Huckleberry CLI 追踪婴儿的睡眠、喂食、换尿布以及生长情况。当用户询问关于记录婴儿活动、开始/结束睡眠、使用奶瓶喂食、更换尿布或测量婴儿生长数据的相关信息时，可以使用该工具。
 ---
 
 # Huckleberry CLI
 
-Command-line interface for [Huckleberry](https://huckleberrycare.com/), a baby tracking app. Authenticate once and log sleep, feeds, diapers, and growth from your terminal.
+这是一个用于 [Huckleberry](https://huckleberrycare.com/)（一款婴儿跟踪应用程序）的命令行接口。只需进行一次身份验证，即可在终端中记录宝宝的睡眠情况、喂食情况、换尿布情况以及成长数据。
 
-> **Note:** This is an unofficial tool and is not affiliated with Huckleberry.
+> **注意：** 这是一个非官方工具，与 Huckleberry 无任何关联。
 
-## Install
+## 安装
 
 ```bash
 pip install huckleberry-cli
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 huckleberry login
@@ -23,9 +23,9 @@ huckleberry children
 huckleberry sleep start
 ```
 
-## Commands
+## 命令
 
-### Sleep
+### 睡眠记录
 
 ```bash
 huckleberry sleep start      # Start sleep timer
@@ -35,9 +35,9 @@ huckleberry sleep resume     # Resume paused sleep
 huckleberry sleep cancel     # Cancel without saving
 ```
 
-### Feeding
+### 喂食记录
 
-**Breastfeeding:**
+**母乳喂养：**
 ```bash
 huckleberry feed start --side=left    # Start nursing (left side)
 huckleberry feed start --side=right   # Start nursing (right side)
@@ -45,7 +45,7 @@ huckleberry feed switch               # Switch sides mid-feed
 huckleberry feed stop                 # Complete feeding
 ```
 
-**Bottle:**
+**配方奶喂养：**
 ```bash
 huckleberry feed bottle <amount> [--type=TYPE] [--units=UNITS]
 
@@ -55,10 +55,10 @@ huckleberry feed bottle 4 --units=oz                  # 4oz formula
 huckleberry feed bottle 100 --type="Breast Milk"      # 100ml pumped milk
 ```
 
-Types: `Formula`, `Breast Milk`, `Mixed`
-Units: `ml` (default), `oz`
+**喂食类型：** `Formula`（配方奶）、`Breast Milk`（母乳）、`Mixed`（混合喂养）
+**单位：** `ml`（默认单位）、`oz`（盎司）
 
-### Diapers
+### 换尿布记录
 
 ```bash
 huckleberry diaper pee                              # Wet only
@@ -72,10 +72,10 @@ huckleberry diaper poo --consistency=soft           # With consistency
 huckleberry diaper both --color=brown --consistency=runny
 ```
 
-Colors: `yellow`, `green`, `brown`, `black`, `red`
-Consistency: `runny`, `soft`, `solid`, `hard`
+**尿布颜色：** `yellow`（黄色）、`green`（绿色）、`brown`（棕色）、`black`（黑色）、`red`（红色）
+**尿布质地：** `runny`（稀薄）、`soft`（柔软）、`solid`（固态）、`hard`（硬质）
 
-### Growth
+### 宝宝成长记录
 
 ```bash
 huckleberry growth --weight=7.5                     # Weight in kg
@@ -87,7 +87,7 @@ huckleberry growth --weight=7.5 --height=65 --head=42  # All at once
 huckleberry growth --weight=16.5 --units=imperial   # Weight in lbs
 ```
 
-### Info
+### 信息查询
 
 ```bash
 huckleberry children           # List children
@@ -95,35 +95,35 @@ huckleberry --json children    # JSON output (--json before subcommand)
 huckleberry status             # Current status
 ```
 
-### Multiple Children
+### 多个宝宝的管理
 
 ```bash
 huckleberry --child="Baby" sleep start   # Specify child by name
 huckleberry -c "Baby" diaper pee
 ```
 
-## Authentication
+## 身份验证
 
-Config stored at `~/.config/huckleberry/config.json`. 
+身份验证配置存储在 `~/.config/huckleberry/config.json` 文件中。
 
 ```bash
 huckleberry login                        # Interactive setup
 ```
 
-Or use environment variables:
+或者，您也可以通过环境变量进行身份验证：
 ```bash
 export HUCKLEBERRY_EMAIL="your@email.com"
 export HUCKLEBERRY_PASSWORD="your-password"
 export HUCKLEBERRY_TIMEZONE="America/Los_Angeles"
 ```
 
-## Requirements
+## 系统要求
 
-- Python 3.11+
-- [huckleberry-api](https://github.com/Woyken/py-huckleberry-api)
+- Python 3.11 或更高版本
+- [huckleberry-api](https://github.com/Woyken/py-huckleberry-api) 库
 
-## Unit Conversions
+## 单位换算
 
-- 1 oz ≈ 30 ml
-- 1 lb ≈ 0.45 kg
-- 1 inch ≈ 2.54 cm
+- 1盎司（oz）约等于 30 毫升（ml）
+- 1磅（lb）约等于 0.45 千克（kg）
+- 1英寸（inch）约等于 2.54 厘米（cm）

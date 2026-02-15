@@ -1,449 +1,221 @@
 ---
 name: agent-orchestration
 version: 2.0.0
-description: "Master the art of spawning and managing sub-agents. Write prompts that actually work, track running agents, and learn from every outcome. Part of the Hal Stack 🦞"
+description: "掌握创建和管理子代理的技巧。编写有效的提示语句，监控正在运行的代理，并从每个结果中学习经验。这是 Hal Stack 的一部分 🦞"
 author: halthelobster
 ---
 
-# Agent Orchestration 🦞
+# 代理编排 🦞  
+**作者：Hal Labs** — Hal Stack 的一部分  
 
-**By Hal Labs** — Part of the Hal Stack
-
-Your agents fail because your prompts suck. This skill fixes that.
-
----
-
-## The Core Problem
-
-You're not prompting. **You're praying.**
-
-Most prompts are wishes tossed into the void:
-
-```
-❌ "Research the best vector databases and write a report"
-```
-
-You type something reasonable. The output is mid. You rephrase. Still mid. You add keywords. Somehow worse. You blame the model.
-
-Here's what you don't understand: **A language model is a pattern-completion engine.** It generates the most statistically probable output given your input.
-
-Vague input → generic output. Not because the model is dumb. Because generic is what's most probable when you give it nothing specific to work with.
-
-**The model honored exactly what you asked for. You just didn't realize how little you gave it.**
+你的代理之所以失败，是因为你的提示语设计得糟糕。这个技巧可以解决这个问题。  
 
 ---
 
-## The Core Reframe
+## 核心问题  
 
-A prompt is not a request. **A prompt is a contract.**
+你并没有给出明确的指令；你只是在“祈求”模型按照你的意愿行事。  
 
-Every contract must answer four non-negotiables:
+大多数提示语都只是随意的、没有针对性的要求，就像扔进虚空中的愿望一样……  
 
-| Element | Question |
-|---------|----------|
-| **Role** | Who is the model role-playing as? |
-| **Task** | What exactly must it accomplish? |
-| **Constraints** | What rules must be followed? |
-| **Output** | What does "done" look like? |
+你输入一些合理的内容，得到的结果却并不理想；你重新表述，结果依然不佳；你添加关键词，结果反而更糟……然后你把责任归咎于模型。  
 
-Miss one, the model fills the gap with assumptions. Assumptions are where hallucinations are born.
+但你没有意识到：**语言模型其实是一个基于模式匹配的生成工具**。它会根据你的输入，生成在统计上最有可能的输出结果。  
 
----
+**模糊的输入 → 普通的输出**。这并不是因为模型愚蠢，而是因为当你没有提供具体的指令时，它只能生成最“常见”的结果罢了。  
 
-## The 5-Layer Architecture
-
-Effective prompts share a specific structure. This maps to how models actually process information.
-
-### Layer 1: Identity
-
-Who is the model in this conversation?
-
-Not "helpful assistant" but a specific role with specific expertise:
-
-```markdown
-You are a senior product marketer who specializes in B2B SaaS positioning.
-You have 15 years of experience converting technical features into emotional benefits.
-You write in short sentences. You never use jargon without explaining it.
-```
-
-The model doesn't "become" this identity—it accesses different clusters of training data, different stylistic patterns, different reasoning approaches.
-
-**Identity matters.** Miss this and you get generic output.
-
-### Layer 2: Context
-
-What does the model need to know to do this task exceptionally well?
-
-Context must be:
-- **Ordered** — Most important first
-- **Scoped** — Only what's relevant
-- **Labeled** — What's rules vs. editable vs. historical
-
-```markdown
-## Context
-
-### Rules (never change)
-- Design system: Tailwind, shadcn components
-- Voice: Professional but warm, never corporate
-
-### Current State (may evolve)
-- Landing page exists at /landing
-- Using Next.js 14 with App Router
-
-### Historical (for reference)
-- Originally built with Create React App, migrated Jan 2025
-```
-
-**Without labels, the model treats everything as equally optional.** Then it rewrites your core logic halfway through.
-
-### Layer 3: Task
-
-What specific action must be taken?
-
-Not "write something about X" but precise instructions:
-
-```markdown
-## Task
-Produce a 500-word product description that:
-- Emphasizes time-saving benefits for busy executives
-- Opens with the primary pain point
-- Includes 3 specific use cases
-- Ends with a clear call to action
-```
-
-The more precisely you define the task, the more precisely the model executes.
-
-### Layer 4: Process ⚡
-
-**This is where most prompts fail.**
-
-You're asking for output. You should be asking for **how the output is formed.**
-
-❌ Bad:
-```
-Write me a marketing page.
-```
-
-✅ Good:
-```markdown
-## Process
-1. First, analyze the target audience and identify their primary pain points
-2. Then, define the positioning that addresses those pain points
-3. Then, write the page
-4. Show your reasoning at each step
-5. Do not skip steps
-6. Audit your work before reporting done
-```
-
-**You don't want answers. You want how the answer is formed.**
-
-Think like a director. You're not asking for a scene—you're directing how the scene gets built.
-
-### Layer 5: Output
-
-What does "done" actually look like?
-
-If you don't specify, you get whatever format the model defaults to.
-
-```markdown
-## Output Format
-Return a JSON object with:
-- `headline`: string (max 60 chars)
-- `subheadline`: string (max 120 chars)  
-- `body`: string (markdown formatted)
-- `cta`: string (action verb + benefit)
-
-Do not include explanations, notes, or commentary. Only the JSON.
-```
-
-**Miss one layer, the structure wobbles. Miss two, it collapses.**
+**模型实际上只是按照你的要求进行了生成……只是你没有意识到自己提供的信息实在太少了而已。**  
 
 ---
 
-## Model Selection
+## 对提示语的正确理解  
 
-**Prompt portability is a myth.**
+提示语并不是一种简单的请求，而是一份“契约”。这份契约必须明确回答四个不可协商的要素：  
 
-Different models are different specialists. You wouldn't give identical instructions to your exec assistant, designer, and backend dev.
+| 要素        | 问题                                      |
+|-------------|-----------------------------------------|
+| **角色**       | 模型应该扮演什么角色？                         |
+| **任务**       | 它必须完成的具体任务是什么？                       |
+| **约束条件**    | 需要遵循哪些规则？                         |
+| **输出结果**    | “完成”到底应该是什么样的？                     |
 
-| Model Type | Best For | Watch Out For |
-|------------|----------|---------------|
-| Claude Opus | Complex reasoning, nuanced writing, long context | Expensive, can be verbose |
-| Claude Sonnet | Balanced tasks, code, analysis | Less creative than Opus |
-| GPT-4 | Broad knowledge, structured output | Can be sycophantic |
-| Smaller models | Quick tasks, simple queries | Limited reasoning depth |
-
-**Adapt your prompts per model:**
-- Some prefer structured natural language
-- Some need explicit step sequencing
-- Some collapse under verbose prompts
-- Some ignore constraints unless repeated
-- Some excel at analysis but suck at creativity
-
-**The person who writes model-specific prompts will outperform the person with "better ideas" every time.**
+如果你忽略了任何一个要素，模型就会根据自己的假设来填补空白……而正是这些假设，导致了错误的输出结果。  
 
 ---
 
-## Constraints Are Instructions
+## 五层提示语结构  
 
-Vagueness isn't flexibility. **It's cowardice.**
+有效的提示语遵循一种特定的结构，这与模型处理信息的方式是一致的：  
 
-You hedge because being specific feels risky. But the model doesn't read your mind.
+### 第一层：**角色**  
+在这个对话中，模型应该扮演什么角色？  
+它不是“万能的助手”，而是一个具有特定专业能力的实体……  
 
-**Constraints are not limitations. Constraints are instructions.**
+模型的“身份”非常重要。如果你忽略了这一点，它就会生成泛泛而谈的输出结果。  
 
-```markdown
-## Constraints
-- Never alter the existing design system
-- Always maintain the established voice/tone
-- Never change the data model without explicit approval
-- Max 3 API calls per operation
-- If unsure, ask rather than assume
-```
+### 第二层：**上下文**  
+模型需要了解哪些信息，才能出色地完成任务？  
+上下文必须满足以下条件：  
+- **有序**：最重要的信息放在最前面；  
+- **有针对性**：只包含相关的信息；  
+- **有明确的标签**：区分哪些内容是规则、哪些是可以修改的、哪些是历史数据……  
 
-Every conversation starts at zero. The model doesn't have accumulated context from working with you. **Consistency comes from instruction, not memory.**
+**如果没有明确的标签，模型会将所有信息都视为同等重要的。**这会导致它误解你的意图。  
 
----
+### 第三层：**任务**  
+需要执行的具体操作是什么？  
+不要只是简单地说“写点什么”，而应该给出明确的指令……  
 
-## Canonical Documentation
+你定义得越具体，模型执行得就越精准。  
 
-If you don't have docs, you're gambling.
+### 第四层：**处理流程**  
+**大多数提示语在这里就出问题了**。  
+你只是要求模型生成结果，却忽略了结果的形成过程……  
 
-| Document | Purpose |
-|----------|---------|
-| PRD | What we're building and why |
-| Design System | Visual rules and components |
-| Constraints Doc | What must never change |
-| Context Doc | Current state and history |
+❌ 错误的提示方式：  
+✅ 正确的提示方式：  
 
-**The rule:** Reference docs in your prompts.
+**你需要的不是答案本身，而是答案的形成过程。**  
+要像导演一样思考：你不是在要求一个场景的结果，而是在指导这个场景应该如何被构建。  
 
-```markdown
-The attached PRD is the source of truth. Do not contradict it.
-The design system in /docs/design.md must be followed exactly.
-```
+### 第五层：**输出结果**  
+“完成”到底应该是什么样的？  
+如果你没有明确说明，模型就会使用默认的格式来生成结果……  
 
-Without explicit anchoring, the model assumes everything is mutable—including your core decisions.
-
-> "Good prompting isn't writing better sentences. It's anchoring the model to reality."
+**忽略任何一个层次，整个提示结构就会出问题；忽略两个层次，整个系统就会崩溃。**  
 
 ---
 
-## The Complete Template
+## 模型选择  
+**提示语的通用性其实是个误区**。不同的模型有不同的专长。你不会对执行助理、设计师和后端开发人员使用完全相同的指令。  
 
-```markdown
-## Identity
-You are a [specific role] with [specific expertise].
-[Behavioral traits and style]
+| 模型类型 | 适用场景 | 需要注意的事项                |
+|---------|---------|----------------------|
+| Claude Opus | 复杂的推理、细腻的写作、长篇文本处理 | 计算成本较高，可能输出冗长         |
+| Claude Sonnet | 平衡性较好的任务、代码编写、数据分析 | 相较于 Opus，创造力稍逊             |
+| GPT-4 | 广泛的知识储备、结构化的输出 | 可能会过于谄媚                 |
+| 小型模型   | 快速的任务、简单的查询       | 推理能力有限                 |
 
-## Context
+**根据模型的特点来定制提示语：**  
+- 有些模型更喜欢结构化的语言；  
+- 有些模型需要明确的步骤顺序；  
+- 有些模型无法处理冗长的指令；  
+- 有些模型擅长分析，但在创造力方面表现不佳……  
 
-### Rules (never change)
-- [Constraint 1]
-- [Constraint 2]
-
-### Current State
-- [Relevant background]
-
-### Reference Docs
-- [Doc 1]: [what it contains]
-- [Doc 2]: [what it contains]
-
-## Task
-[Specific, measurable objective]
-
-## Process
-1. First, [analysis step]
-2. Then, [planning step]
-3. Then, [execution step]
-4. Finally, [verification step]
-
-Show your reasoning at each step.
-
-## User Stories
-1. As [user], I want [goal], so that [benefit]
-2. As [user], I want [goal], so that [benefit]
-
-## Output Format
-[Exact specification of deliverable]
-
-## Constraints
-- [Limit 1]
-- [Limit 2]
-- [What NOT to do]
-
-## Error Handling
-- If [situation]: [action]
-- If blocked: [escalation]
-
-## Before Reporting Done
-1. Review each user story
-2. Verify the output satisfies it
-3. If not, iterate until it does
-4. Only then report complete
-```
+**编写针对特定模型的提示语的人，总是会比那些“有创意”的人表现得更好。**  
 
 ---
 
-## Ralph Mode
+## 约束条件就是指令  
+**模糊的指令并不意味着灵活性……而是缺乏勇气。**  
+你之所以犹豫不决，是因为害怕具体化指令会带来风险……但模型并不能读取你的想法。  
 
-For complex tasks where first attempts often fail:
+**约束条件并不是限制，而是明确的指令。**  
 
-```markdown
-## Mode: Ralph
-Keep trying until it works. Don't give up on first failure.
-
-If something breaks:
-1. Debug and understand why
-2. Try a different approach  
-3. Research how others solved similar problems
-4. Iterate until user stories are satisfied
-
-You have [N] attempts before escalating.
-```
-
-**When to use:**
-- Build tasks with multiple components
-- Integration work
-- Anything where first-try success is unlikely
+**每次对话都是从零开始的**；模型并没有之前与你合作的经验作为参考……**一致性来源于明确的指令，而非模型自身的记忆。**  
 
 ---
 
-## Agent Tracking
+## 规范化的文档编写  
+如果你没有相关的文档，那你就是在赌博。  
 
-**Every spawned agent gets tracked. No orphans.**
+| 文档类型    | 用途                        |
+|-----------|---------------------------|
+| PRD       | 我们正在构建什么，以及为什么这样做        |
+| 设计系统文档 | 视觉化的规则和组件结构           |
+| 约束条件文档 | 绝对不能改变的内容                |
+| 上下文文档 | 当前的状态和历史记录             |
 
-Maintain `notes/areas/active-agents.md`:
+**规则：**在提示语中引用这些文档。**  
 
-```markdown
-## Currently Running
+**没有明确的指导，模型就会把一切都视为可变的……**  
 
-| Label | Task | Spawned | Expected | Status |
-|-------|------|---------|----------|--------|
-| research-x | Competitor analysis | 9:00 AM | 15m | 🏃 Running |
-
-## Completed Today
-
-| Label | Task | Runtime | Result |
-|-------|------|---------|--------|
-| builder-v2 | Dashboard update | 8m | ✅ Complete |
-```
-
-**Heartbeat check:**
-```
-1. Run sessions_list --activeMinutes 120
-2. Compare to tracking file
-3. Investigate any missing/stalled agents
-4. Log completions to LEARNINGS.md
-```
+> “好的提示语并不是写出更好的句子，而是让模型基于现实来生成结果。”  
 
 ---
 
-## The Learnings Loop
-
-Every agent outcome is data. Capture it.
-
-Maintain `LEARNINGS.md`:
-
-```markdown
-## What Works
-- User stories + acceptance loop
-- Ralph mode for complex builds
-- Explicit output formats
-- Process layer with reasoning steps
-
-## What Doesn't Work
-- Lazy task dumps
-- Missing success criteria
-- No scope limits
-- Vague constraints
-
-## Experiment Log
-### [Date]: [Agent Label]
-**Approach:** [What you tried]
-**Outcome:** [What happened]  
-**Lesson:** [What you learned]
-```
+## 完整的提示语模板  
 
 ---
 
-## Role Library
+## Ralph 模式  
+**适用于那些初次尝试就可能失败的任务：**  
+（具体内容略……）  
 
-Build reusable role definitions:
-
-```markdown
-# Role Library
-
-## Research Analyst
-You are a senior research analyst with 10 years experience in technology markets.
-You are thorough but efficient. You cite sources. You distinguish fact from speculation.
-You present findings in structured formats with clear recommendations.
-
-## Technical Writer  
-You are a technical writer who specializes in developer documentation.
-You write clearly and concisely. You use examples liberally.
-You assume the reader is smart but unfamiliar with this specific system.
-
-## Code Reviewer
-You are a senior engineer conducting code review.
-You focus on correctness, maintainability, and security.
-You explain your reasoning. You suggest specific improvements, not vague feedback.
-```
+**使用场景：**  
+- 需要多个组件协同完成的任务；  
+- 集成工作；  
+- 任何初次尝试成功率较低的任务……  
 
 ---
 
-## Quick Reference
+## 代理跟踪  
+**每个生成的代理都会被记录在案，不会被遗漏。**  
+请维护 `notes/areas/active-agents.md` 文件：  
 
-### The 4 Non-Negotiables
-1. **Role** — Who is the model?
-2. **Task** — What must it do?
-3. **Constraints** — What rules apply?
-4. **Output** — What does done look like?
-
-### The 5 Layers
-1. **Identity** — Specific role and expertise
-2. **Context** — Ordered, scoped, labeled
-3. **Task** — Precise objective
-4. **Process** — How to approach (most overlooked!)
-5. **Output** — Exact format specification
-
-### Pre-Spawn Checklist
-- [ ] Identity assigned?
-- [ ] Context labeled (rules/state/history)?
-- [ ] Task specific and measurable?
-- [ ] Process described (not just output)?
-- [ ] User stories defined?
-- [ ] Output format specified?
-- [ ] Constraints explicit?
-- [ ] Error handling included?
-- [ ] Added to tracking file?
+**定期检查代理的状态：**  
+（具体操作略……）  
 
 ---
 
-## The Final Truth
-
-The gap between "AI doesn't work for me" and exceptional results isn't intelligence or access.
-
-**One group treats prompting as conversation. The other treats it as engineering a system command.**
-
-The model matches your level of rigor.
-
-- Vague inputs → generic outputs
-- Structured inputs → structured outputs  
-- Clear thinking → clear results
-
-You don't need to be smarter. You need to be clearer.
-
-**Clarity is a system, not a talent.**
+## 学习循环  
+每个代理的执行结果都可以作为数据被收集起来。  
+请维护 `LEARNINGS.md` 文件：  
 
 ---
 
-*Part of the Hal Stack 🦞*
+## 角色库  
+可以创建可复用的角色定义：  
 
 ---
 
-**Got a skill idea?** Email: halthelobster@protonmail.com
+## 快速参考  
+### 四个不可协商的要素：  
+1. **角色**：模型应该扮演什么角色？  
+2. **任务**：它必须完成的具体任务是什么？  
+3. **约束条件**：需要遵循哪些规则？  
+4. **输出结果**：“完成”应该是什么样的？  
+
+### 五层提示语结构：  
+1. **角色**：模型的具体角色和专长；  
+2. **上下文**：有序、有针对性、有明确标签的背景信息；  
+3. **任务**：具体且可衡量的任务目标；  
+4. **处理流程**：完成任务的具体方法（这一点常常被忽视！）；  
+5. **输出结果**：输出结果的格式要求。  
+
+### 提示语编写前的检查清单：  
+- 角色是否已经明确？  
+- 上下文是否已经标注清楚（包括规则、状态、历史信息）？  
+- 任务是否具体且可衡量？  
+- 处理流程是否描述清楚（而不仅仅是输出结果）？  
+- 用户需求是否已经明确？  
+- 输出格式是否已经确定？  
+- 错误处理机制是否已经考虑？  
+- 是否已经记录在跟踪文件中？  
 
 ---
 
-*"You're not prompting, you're praying. Start engineering."*
+## 最后的真相  
+“AI 无法满足我的需求”与“获得出色的结果”之间的差距，并不在于模型的智能程度或访问权限……  
+**区别在于：**  
+有些人把提示语当作普通的对话来处理；而有些人则把它当作系统指令来精心设计。  
+
+模型的表现取决于你提供的指令的严谨程度：  
+- 模糊的输入 → 普通的输出；  
+- 结构化的输入 → 结构化的输出；  
+- 清晰的思考 → 明确的结果。  
+
+你不需要变得更聪明，只需要表达得更清晰而已。  
+
+**清晰的表达是一种系统能力，而非天赋。**  
+
+---
+
+*Hal Stack 的一部分 🦞*  
+
+**如果你有改进提示语的想法，可以发送邮件至：halthelobster@protonmail.com**  
+
+---
+
+**“你并没有给出明确的指令，你只是在祈求模型按照你的意愿行事……**  
+**是时候开始认真设计提示语了。”**

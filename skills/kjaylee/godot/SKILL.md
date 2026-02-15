@@ -1,17 +1,17 @@
 ---
 name: godot
-description: "Godot Engine 게임 개발. 프로젝트 생성, GDScript 코딩, 2D/3D 게임 제작, 노드 시스템, Scene 구조, 물리/애니메이션/UI 구현 지원. Godot 프로젝트 작업 시 사용."
+description: "Godot引擎游戏开发：支持项目创建、GDScript编程、2D/3D游戏制作，以及节点系统、场景结构、物理效果/动画/用户界面（UI）的实现。适用于Godot项目的开发工作。"
 keywords: [godot, game-engine, gdscript, 2d-game, 3d-game, game-development]
 version: 1.0.0
 ---
 
-# Godot Engine Skill
+# Godot引擎技能指南
 
-Godot 4.x 게임 엔진 개발을 위한 종합 가이드. 프로젝트 생성부터 빌드, GDScript 코딩, Scene/Node 시스템, 2D/3D 게임 제작까지 전 과정을 지원합니다.
+本指南为Godot 4.x游戏引擎的开发提供了全面指导，涵盖了从项目创建、构建到GDScript编程、场景/节点系统设计，以及2D/3D游戏制作的整个流程。
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### 신규 프로젝트 생성 (CLI)
+### 新项目创建（通过CLI）
 ```bash
 # MiniPC에서 실행 (Godot 4.6 설치됨)
 cd $HOME/
@@ -21,7 +21,7 @@ godot4 --headless --path . --create-project "MyGame"
 # (nodes.run 또는 ssh 사용)
 ```
 
-### 프로젝트 구조
+### 项目结构
 ```
 MyGame/
 ├── project.godot       # 프로젝트 설정
@@ -39,15 +39,15 @@ MyGame/
 └── export_presets.cfg  # 빌드 설정
 ```
 
-### 첫 씬 생성
-1. **Node2D** (2D 게임) 또는 **Node3D** (3D 게임) 루트 노드 생성
-2. 자식 노드 추가 (Sprite2D, CharacterBody2D, Camera2D 등)
-3. 스크립트 첨부 (Attach Script)
-4. `_ready()`, `_process(delta)` 함수 작성
+### 创建第一个场景
+1. 创建**Node2D**（2D游戏）或**Node3D**（3D游戏）根节点
+2. 添加子节点（如Sprite2D、CharacterBody2D、Camera2D等）
+3. 附加脚本（Attach Script）
+4. 编写 `_ready()` 和 `_process(delta)` 函数
 
-## 📚 GDScript Basics
+## 📚 GDScript基础
 
-### 핵심 라이프사이클 함수
+### 核心生命周期函数
 ```gdscript
 extends Node2D
 
@@ -64,7 +64,7 @@ func _physics_process(delta):
     move_and_slide()
 ```
 
-### 변수 & 타입
+### 变量与类型
 ```gdscript
 # 타입 추론
 var speed := 200.0           # float
@@ -80,7 +80,7 @@ var sprite: Sprite2D
 @export_range(0, 100) var hp: int = 100
 ```
 
-### Signal (신호)
+### Signal（信号）
 ```gdscript
 # 신호 정의
 signal health_changed(new_health)
@@ -101,7 +101,7 @@ func _on_player_health_changed(new_health):
     print("Health: ", new_health)
 ```
 
-### Node 접근
+### 访问节点
 ```gdscript
 # 자식 노드 가져오기
 var sprite = $Sprite2D
@@ -115,9 +115,9 @@ var sibling = get_parent().get_node("OtherNode")
 GlobalScript.some_function()
 ```
 
-## 🎮 2D Game Workflows
+## 🎮 2D游戏开发流程
 
-### 플레이어 이동 (8방향)
+### 玩家移动（8个方向）
 ```gdscript
 extends CharacterBody2D
 
@@ -129,7 +129,7 @@ func _physics_process(delta):
     move_and_slide()
 ```
 
-### 애니메이션 (AnimatedSprite2D)
+### 动画（AnimatedSprite2D）
 ```gdscript
 @onready var anim = $AnimatedSprite2D
 
@@ -140,7 +140,7 @@ func _process(delta):
         anim.play("idle")
 ```
 
-### 충돌 감지 (Area2D)
+### 碰撞检测（Area2D）
 ```gdscript
 extends Area2D
 
@@ -153,7 +153,7 @@ func _on_body_entered(body):
         queue_free()  # 자신 제거
 ```
 
-### TileMap 사용
+### 使用TileMap
 ```gdscript
 @onready var tilemap = $TileMap
 
@@ -162,9 +162,9 @@ func _ready():
     tilemap.set_cell(0, Vector2i(0, 0), 1)
 ```
 
-## 🌍 3D Game Workflows
+## 🌍 3D游戏开发流程
 
-### FPS 플레이어 컨트롤러
+### FPS玩家控制器
 ```gdscript
 extends CharacterBody3D
 
@@ -190,7 +190,7 @@ func _physics_process(delta):
     move_and_slide()
 ```
 
-### 카메라 회전 (마우스)
+### 摄像头旋转（通过鼠标）
 ```gdscript
 extends Camera3D
 
@@ -206,9 +206,9 @@ func _input(event):
         rotation.x = clamp(rotation.x, -PI/2, PI/2)
 ```
 
-## 🛠️ Common Patterns
+## 🛠️ 常见开发模式
 
-### 씬 전환
+### 场景切换
 ```gdscript
 # 다음 씬으로 이동
 get_tree().change_scene_to_file("res://scenes/level2.tscn")
@@ -219,7 +219,7 @@ var enemy = enemy_scene.instantiate()
 add_child(enemy)
 ```
 
-### 타이머
+### 定时器
 ```gdscript
 # 타이머 노드 사용
 @onready var timer = $Timer
@@ -232,14 +232,14 @@ func _on_timer_timeout():
     print("Timer finished!")
 ```
 
-### 트윈 (Tween) 애니메이션
+### Tween动画
 ```gdscript
 func fade_out():
     var tween = create_tween()
     tween.tween_property($Sprite2D, "modulate:a", 0.0, 1.0)  # 1초간 투명화
 ```
 
-### UI 업데이트
+### 用户界面更新
 ```gdscript
 extends Control
 
@@ -249,15 +249,15 @@ func update_score(score):
     label.text = "Score: %d" % score
 ```
 
-## 🏗️ 빌드 & Export (MiniPC)
+## 🏗️ 构建与导出（适用于MiniPC）
 
-### Web (HTML5) 빌드
+### Web（HTML5）构建
 ```bash
 cd $HOME/
 godot4 --headless --path MyGame --export-release "Web" output/index.html
 ```
 
-### Export Preset 설정 (project.godot)
+### 设置导出预设（project.godot）
 ```ini
 [export]
 name="Web"
@@ -266,35 +266,35 @@ runnable=true
 export_path="export/web/index.html"
 ```
 
-### 커스텀 부트 스플래시
+### 自定义启动界面
 ```bash
 # East Sea Games 로고 사용
 cp $HOME/godot-demo/boot_splash.png MyGame/
 ```
 
-## 📖 References
+## 📖 参考资料
 
-### 자주 쓰는 노드
-- **2D**: Node2D, Sprite2D, CharacterBody2D, RigidBody2D, Area2D, Camera2D, TileMap, AnimatedSprite2D
-- **3D**: Node3D, MeshInstance3D, CharacterBody3D, RigidBody3D, Area3D, Camera3D
-- **UI**: Control, Label, Button, Panel, HBoxContainer, VBoxContainer
-- **오디오**: AudioStreamPlayer, AudioStreamPlayer2D, AudioStreamPlayer3D
-- **기타**: Timer, AnimationPlayer, CollisionShape2D/3D
+### 常用节点
+- **2D节点**：Node2D、Sprite2D、CharacterBody2D、RigidBody2D、Area2D、Camera2D、TileMap、AnimatedSprite2D
+- **3D节点**：Node3D、MeshInstance3D、CharacterBody3D、RigidBody3D、Area3D、Camera3D
+- **UI元素**：Control、Label、Button、Panel、HBoxContainer、VBoxContainer
+- **音频组件**：AudioStreamPlayer、AudioStreamPlayer2D、AudioStreamPlayer3D
+- **其他组件**：Timer、AnimationPlayer、CollisionShape2D/3D
 
-### 유용한 링크
-- [Godot 공식 문서](https://docs.godotengine.org/en/stable/)
-- [GDQuest 튜토리얼](https://www.gdquest.com/tutorial/godot/)
-- [First 2D Game 튜토리얼](https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html)
+### 有用链接
+- [Godot官方文档](https://docs.godotengine.org/en/stable/)
+- [GDQuest教程](https://www.gdquest.com/tutorial/godot/)
+- [First 2D Game教程](https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html)
 
-### References 디렉토리
-- `references/gdscript-cheatsheet.md`: GDScript 문법 치트시트
-- `references/nodes-reference.md`: 자주 쓰는 노드 목록
-- `references/best-practices.md`: Godot 베스트 프랙티스
-- `references/2d-patterns.md`: 2D 게임 공통 패턴
-- `references/3d-patterns.md`: 3D 게임 공통 패턴
+### 参考资料目录
+- `references/gdscript-cheatsheet.md`：GDScript语法速查表
+- `references/nodes-reference.md`：常用节点列表
+- `references/best-practices.md`：Godot最佳实践
+- `references/2d-patterns.md`：2D游戏开发通用模式
+- `references/3d-patterns.md`：3D游戏开发通用模式
 
 ---
 
-**Version**: 1.0.0  
-**Author**: Miss Kim  
-**Date**: 2026-02-05
+**版本**：1.0.0  
+**作者**：Miss Kim  
+**日期**：2026-02-05

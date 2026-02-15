@@ -1,22 +1,22 @@
 # Readme Writer
 
-Generate polished README.md files from your codebase automatically. No more staring at a blank page.
+这款工具能够自动从您的代码库中生成格式规范的 README.md 文件，让您再也不用面对空白的页面了。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-readme
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes your codebase structure
-- Generates professional README with all sections
-- Adds appropriate badges (npm, license, etc.)
-- Creates install/usage instructions from your code
-- Includes API documentation from your exports
+- 分析您的代码库结构  
+- 生成包含所有必要部分的专业级 README.md 文件  
+- 自动添加相应的徽章（如 npm、许可证等）  
+- 根据您的代码生成安装及使用说明  
+- 从您的代码中提取 API 文档并包含在 README 中  
 
-## Usage
+## 使用方法
 
 ```bash
 # Generate README for current project
@@ -26,25 +26,25 @@ npx ai-readme
 npx ai-readme --output ./README.md
 ```
 
-## Generated Sections
+## 生成的文件内容
 
-- Project title and description
-- Installation instructions
-- Usage examples
-- API reference
-- Contributing guidelines
-- License info
+- 项目名称及描述  
+- 安装指南  
+- 使用示例  
+- API 参考  
+- 贡献指南  
+- 许可证信息  
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-One of 110+ free developer tools from LXGIC Studios. No paywalls, no sign-ups.
+LXGIC Studios 提供的 110 多款免费开发者工具之一，无需付费，也无需注册账号即可使用。  
 
-**Find more:**
-- GitHub: https://github.com/lxgic-studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+**了解更多：**  
+- GitHub: https://github.com/lxgic-studios  
+- Twitter: https://x.com/lxgicstudios  
+- Substack: https://lxgicstudios.substack.com  
+- 官网: https://lxgicstudios.com  
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。

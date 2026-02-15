@@ -1,13 +1,13 @@
 ---
 name: openspec
-description: Spec-driven development with OpenSpec CLI. Use when building features, migrations, refactors, or any structured development work. Manages proposal → specs → design → tasks → implementation workflows. Supports custom schemas (TDD, rapid, etc.). Trigger on requests involving feature planning, spec writing, change management, or when /opsx commands are mentioned.
+description: 使用 OpenSpec CLI 进行基于规范的开发。适用于构建新功能、进行代码迁移、重构或任何结构化的开发工作。该工具管理从提案到规范、设计、任务再到实现的整个开发流程。支持自定义开发模式（如测试驱动开发（TDD）、快速开发等）。会在涉及功能规划、规范编写、变更管理的请求中自动触发相应的流程，或者在用户执行 `/opsx` 命令时启动相关流程。
 ---
 
-# OpenSpec — Spec-Driven Development
+# OpenSpec — 基于规范的开发（Spec-Driven Development）
 
-OpenSpec structures AI-assisted development into trackable changes with artifacts (proposal, specs, design, tasks) that guide implementation.
+OpenSpec 将人工智能辅助的开发过程转化为可追踪的变更，通过生成各种文档（提案、规范、设计文档和任务列表）来指导开发实施。
 
-## Setup
+## 设置（Setup）
 
 ```bash
 # Install globally
@@ -21,11 +21,11 @@ openspec init --tools claude
 openspec update
 ```
 
-## Core Workflow
+## 核心工作流程（Core Workflow）
 
-Each change follows: **new → plan → apply → verify → archive**
+每个变更都遵循以下步骤：**新建 → 规划 → 应用 → 验证 → 归档**
 
-### 1. Start a Change
+### 1. 启动变更（Start a Change）
 
 ```bash
 # Create change folder with default schema
@@ -35,9 +35,9 @@ openspec new change <name>
 openspec new change <name> --schema tdd-driven
 ```
 
-### 2. Plan (Create Artifacts)
+### 2. 规划（Create Artifacts）
 
-Use the CLI `instructions` command to get enriched prompts for each artifact:
+使用 CLI 的 `instructions` 命令来获取每个文档的创建指南：
 
 ```bash
 # Get instructions for next artifact
@@ -47,82 +47,78 @@ openspec instructions --change <name> --json
 openspec status --change <name> --json
 ```
 
-**Artifact sequence (spec-driven schema):**
-1. `proposal.md` — Why and what (intent, scope, approach)
-2. `specs/` — Requirements + scenarios (Given/When/Then)
-3. `design.md` — Technical approach and architecture decisions
-4. `tasks.md` — Implementation checklist with checkboxes
+**文档创建顺序（基于规范的流程）：**
+1. `proposal.md` — 变更的背景、目的和范围
+2. `specs/` — 需求与测试场景（Given/When/Then）
+3. `design.md` — 技术实现方案和架构设计
+4. `tasks.md` — 实现任务清单（包含复选框）
 
-### 3. Implement
+### 3. 实施（Implement）
 
-Read `tasks.md` and work through items, marking `[x]` as complete.
+阅读 `tasks.md`，完成其中的各项任务，并将已完成的任务标记为 `[x]`。
 
-### 4. Verify
+### 4. 验证（Verify）
 
 ```bash
 openspec validate --change <name> --json
 ```
 
-Checks completeness, correctness, and coherence.
+验证变更的完整性、正确性和逻辑一致性。
 
-### 5. Archive
+### 5. 归档（Archive）
 
-```bash
-openspec archive <name> --yes
-```
+将修改后的文档合并到主目录 `openspec/specs/` 中，并将变更状态标记为已归档。
 
-Merges delta specs into main `openspec/specs/` and moves change to archive.
+## 作为 AI 代理的使用方法（Agent Workflow）
 
-## Agent Workflow (How to Use as an AI Agent)
+当用户请求使用 OpenSpec 进行构建、迁移或重构代码时，代理会执行以下操作：
 
-When the user asks to build/migrate/refactor something with OpenSpec:
-
-1. **Check project state:**
+1. **检查项目状态：**
    ```bash
    openspec list --json           # Active changes
    openspec list --specs --json   # Current specs
    openspec schemas --json        # Available schemas
    ```
 
-2. **Create the change:**
+2. **创建变更：**
    ```bash
    openspec new change <name> [--schema <schema>]
    ```
 
-3. **For each artifact**, get instructions and create the file:
+3. **针对每个文档**，获取创建指南并生成相应的文件：
    ```bash
    openspec instructions <artifact> --change <name> --json
    openspec status --change <name> --json
    ```
-   Then write the artifact file to `openspec/changes/<name>/`.
+   然后将生成的文档保存到 `openspec/changes/<名称>/` 目录下。
 
-4. **Implement** tasks from `tasks.md`.
+4. **执行 `tasks.md` 中列出的任务。**
 
-5. **Validate and archive:**
+5. **验证并归档：**
    ```bash
    openspec validate <name> --json
    openspec archive <name> --yes
    ```
 
-## CLI Quick Reference
+## CLI 快速参考（CLI Quick Reference）
 
-| Command | Purpose |
+| 命令 | 功能 |
 |---------|---------|
-| `openspec list [--specs] [--json]` | List changes or specs |
-| `openspec show <name> [--json]` | Show change/spec details |
-| `openspec status --change <name> [--json]` | Artifact completion status |
-| `openspec instructions [artifact] --change <name> [--json]` | Get enriched creation instructions |
-| `openspec validate [name] [--all] [--json]` | Validate changes/specs |
-| `openspec archive <name> [--yes]` | Archive completed change |
-| `openspec schemas [--json]` | List available schemas |
-| `openspec templates [--json]` | Show template paths |
-| `openspec config` | View/modify settings |
+| `openspec list [--specs] [--json]` | 列出所有变更或规范 |
+| `openspec show <名称> [--json]` | 显示指定变更或规范的详细信息 |
+| `openspec status --change <名称> [--json]` | 查看变更的完成状态 |
+| `openspec instructions [文档名称] --change <名称> [--json]` | 获取创建该文档的详细指南 |
+| `openspec validate [名称] [--all] [--json]` | 验证所有变更或规范的有效性 |
+| `openspec archive <名称> [--yes]` | 将已完成的任务归档 |
+| `openspec schemas [--json]` | 列出所有可用的文档模板 |
+| `openspec templates [--json]` | 显示文档模板的路径 |
+| `openspec config` | 查看或修改配置设置 |
 
-Always use `--json` for programmatic/agent use.
+在使用 CLI 时，请务必加上 `--json` 参数以支持程序化或自动化操作。
 
-## Custom Schemas
+## 自定义文档模板（Custom Schemas）
 
-Schemas define artifact sequences. Create custom ones for different workflows:
+文档模板用于定义文档的创建顺序。可以根据不同的工作流程创建自定义模板：
 
 ```bash
 # Fork built-in schema
@@ -135,11 +131,11 @@ openspec schema init my-workflow
 openspec schema validate my-workflow
 ```
 
-Schema files live in `openspec/schemas/<name>/schema.yaml` with templates in `templates/`.
+自定义模板文件保存在 `openspec/schemas/<名称>/schema.yaml` 中，模板文件则保存在 `templates/` 目录下。
 
-For schema structure details, see [references/schemas.md](references/schemas.md).
+有关模板结构的详细信息，请参阅 [references/schemas.md](references/schemas.md)。
 
-## Project Structure
+## 项目结构（Project Structure）
 
 ```
 project/
@@ -157,27 +153,17 @@ project/
 └── .claude/skills/          # Auto-generated Claude integration
 ```
 
-## Spec Format
+## 规范格式（Spec Format）
 
-Specs use RFC 2119 keywords (SHALL/MUST/SHOULD/MAY) with Given/When/Then scenarios:
+规范文件使用 RFC 2119 中的定义关键字（SHALL/MUST/SHOULD/MAY），并结合 Given/When/Then 测试场景来描述需求。
 
-```markdown
-### Requirement: User Authentication
-The system SHALL issue a JWT token upon successful login.
+## 变更文档（Delta Specs）
 
-#### Scenario: Valid credentials
-- GIVEN a user with valid credentials
-- WHEN the user submits login form
-- THEN a JWT token is returned
-```
+变更不会直接重写原始规范，而是生成描述具体修改内容的文档（如新增内容、修改内容或删除内容），这些文档会在归档时合并到主规范中。
 
-## Delta Specs
+## 配置文件（Config）
 
-Changes don't rewrite specs — they describe deltas (ADDED/MODIFIED/REMOVED) that merge into main specs on archive.
-
-## Config
-
-`openspec/config.yaml` sets defaults:
+`openspec/config.yaml` 文件用于设置项目的默认配置：
 
 ```yaml
 schema: spec-driven      # or tdd-driven, rapid, custom

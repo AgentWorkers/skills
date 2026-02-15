@@ -1,200 +1,197 @@
 ---
 name: web-architecture
-description: Multi-agent orchestration for complex TypeScript/Next.js/Convex projects. Phased builds, functional verification, the full playbook for delegating to sub-agents without chaos.
+description: 针对复杂的 TypeScript/Next.js/Convex 项目，提供了多代理协调解决方案。该方案支持分阶段构建（phased builds）和功能验证（functional verification），并具备完整的代理调度机制（full playbook），能够确保在代理执行任务时不会出现混乱或错误。
 ---
 
-# Web Architecture
+# 网络架构
 
-Multi-agent development workflow for TypeScript/Next.js/Convex projects.
+适用于 TypeScript/Next.js/Convex 项目的多代理开发工作流程。
 
-*Born from: 29 agents, 50K lines, 212 errors, 1 hard lesson*
-
----
-
-## ⚠️ SUB-AGENT POLICY (READ FIRST)
-
-### No Timeouts
-**Sub-agents MUST run without timeout limits.** A 10-minute timeout that cuts off an agent mid-implementation leaves broken, partial code. Let agents finish.
-
-### Completion Means Working, Not Compiling
-**"Build passes" is necessary but NOT sufficient.**
-
-Before marking ANY phase complete, verify:
-1. **Functions actually work** — Call them, verify data flows
-2. **UI actually renders data** — Not just loading spinners forever
-3. **User flows complete end-to-end** — Click through, verify state changes persist
-4. **Error states are handled** — Not just happy path
-
-### The Lesson
-An agent produced 15K lines of "working" code that:
-- ✅ Compiled with zero TypeScript errors
-- ✅ Passed `bun run build`
-- ❌ Had ZERO actual functionality
-- ❌ All data was mocked or hardcoded
-- ❌ Every button was a no-op
-
-**Self-grade: 5/10** — A prototype, not a product.
+*起源：29 个代理任务、5 万行代码、212 个错误、一个惨痛的教训*
 
 ---
 
-## The Core Lesson
+## ⚠️ 代理策略（请先阅读）
 
-> **Single agent with full context > Many agents with partial context**
+### 不允许超时
+**代理任务必须无超时限制地运行。** 如果在任务执行过程中设置超时（例如 10 分钟），可能会导致代码出现错误或运行不完整。请让代理任务顺利完成。**
 
-29 parallel agents wrote 50K lines of code that didn't compile. Why?
-- No schema coordination → duplicate table definitions
-- No type contracts → frontend expected `user.role`, backend returned `profile.plan`
-- No initialization → `npx convex dev` never ran, no generated types
-- No integration checkpoints → errors discovered only at the end
+### “完成”并不意味着代码正确运行，而只是通过了编译
+**虽然“构建成功”是必要的，但还不够。**
 
-**The fix:** One agent with full context rewrote the entire Convex backend in 11 minutes.
+在标记任何阶段为“完成”之前，请验证以下内容：
+1. **函数是否真正能够正常工作** — 调用这些函数并验证数据流是否正确。
+2. **用户界面是否能够正确显示数据** — 而不仅仅是无限循环的加载提示。
+3. **用户交互流程是否能够从头到尾顺利完成** — 点击操作后，状态变化是否能够被正确保存。
+4. **错误情况是否得到了处理** — 不仅仅是检查了正常路径下的行为。
 
----
+### 惨痛的教训
+有一个代理任务生成了 1.5 万行的“可运行”代码，但：
+- ✅ 编译时没有出现 TypeScript 错误。
+- ✅ 通过了 `bun run build` 的测试。
+- ❌ 实际上没有任何功能。
+- ❌ 所有的数据都是通过模拟或硬编码实现的。
+- ❌ 所有的按钮都没有实际的作用。
 
-## When to Use Multi-Agent
-
-✅ **Good for parallel work:**
-- Marketing pages (after design system exists)
-- Documentation files (independent)
-- Isolated features with clear contracts
-
-❌ **Bad for parallel work:**
-- Schema design (needs single owner)
-- Core type definitions (must be shared)
-- Interconnected backend functions
-- Component library (needs consistency)
+**自我评分：5/10** — 这只是一个原型，并不是一个可用的产品。
 
 ---
 
-## The Workflow
+## 核心原则
 
-### Phase 0: Bootstrap (SEQUENTIAL — One Agent)
+> **使用具有完整上下文的单一代理任务，而不是多个上下文不完整的代理任务**
 
-**Must complete before spawning ANY other agents.**
+29 个并行运行的代理任务生成了 5 万行代码，但这些代码无法编译。原因是什么？
+- **缺乏模式协调** — 导致表定义重复。
+- **没有类型契约** — 前端期望获取 `user.role`，后端却返回了 `profile.plan`。
+- **没有初始化步骤** — 未能执行 `npx convex dev` 命令，因此没有生成类型信息。
+- **没有集成检查点** — 问题直到最后才被发现。
 
-1. Initialize project structure
-2. Initialize Convex: `npx convex dev --once`
-3. Create complete `schema.ts` (ALL tables)
-4. Run `npx convex dev` to generate types
-5. Create `CONTRACTS.md` (all data shapes)
-6. Create shared types in `lib/types.ts`
-7. Verify: `bun run build` passes
-
-**Deliverables:**
-- [ ] `convex/schema.ts` — Complete, no TODOs
-- [ ] `convex/_generated/` — Types generated
-- [ ] `CONTRACTS.md` — API shapes documented
-- [ ] `lib/types.ts` — Shared frontend types
-- [ ] `bun run build` — Passes with 0 errors
+**解决方案：** 一个具有完整上下文的代理任务在 11 分钟内重新编写了整个 Convex 后端代码。
 
 ---
 
-### Phase 1: Foundation Documents (CAN BE PARALLEL)
+## 何时使用多代理任务
 
-Only spawn AFTER Phase 0 completes.
+✅ **适用于需要并行处理的场景：**
+- **营销页面**（在设计系统完成后）。
+- **文档文件**（各自独立开发）。
+- **具有明确接口定义的独立功能模块**。
 
-| Agent | Output | Dependencies |
+❌ **不适合并行处理的场景：**
+- **模式设计**（需要专人负责）。
+- **核心类型定义**（需要共享）。
+- **相互关联的后端功能**。
+- **组件库**（需要保持一致性）。
+
+---
+
+## 工作流程
+
+### 第 0 阶段：项目初始化（顺序执行，由一个代理任务完成）
+
+在启动其他任何代理任务之前，必须完成此阶段：
+1. 初始化项目结构。
+2. 初始化 Convex：`npx convex dev --once`
+3. 创建完整的 `schema.ts` 文件（包含所有表定义）。
+4. 运行 `npx convex dev` 以生成类型信息。
+5. 创建 `CONTRACTS.md` 文件（记录所有数据结构）。
+6. 在 `lib/types.ts` 文件中定义共享类型。
+7. 验证：`bun run build` 的测试是否通过。
+
+**交付成果：**
+- [ ] `convex/schema.ts` — 完整无误。
+- [ ] `convex/_generated/` — 生成了类型信息。
+- [ ] `CONTRACTS.md` — 文档记录了 API 的数据结构。
+- [ ] `lib/types.ts` — 共享的前端类型定义。
+- [ ] `bun run build` 的测试结果无误。
+
+---
+
+### 第 1 阶段：基础文档编写（可以并行执行）
+
+此阶段仅在第 0 阶段完成后启动。
+
+| 代理任务 | 产出 | 依赖文件 |
 |-------|--------|--------------|
-| Tech Requirements | `TECH-REQ.md` | None |
-| Compliance | `COMPLIANCE.md` | None |
-| Design Principles | `DESIGN.md` | None |
-| Coding Standards | `STANDARDS.md` | None |
+| 技术需求 | `TECH-REQ.md` | 无 |
+| 合规性要求 | `COMPLIANCE.md` | 无 |
+| 设计原则 | `DESIGN.md` | 无 |
+| 编码规范 | `STANDARDS.md` | 无 |
 
-**Rule:** These agents READ the schema. They do NOT modify it.
-
----
-
-### Phase 2: Backend Implementation (SEQUENTIAL or CAREFUL PARALLEL)
-
-**Option A: Single Backend Agent (Recommended)**
-- One agent implements all Convex functions
-- Consistent patterns, no conflicts
-
-**Option B: Parallel with File Locks**
-- Each agent owns specific files
-- NO shared file writes
-- Must reference CONTRACTS.md
-
-**Functional Requirements:**
-1. Test CRUD operations — Create, read, update, delete
-2. Verify queries return data — Not empty arrays
-3. Check mutations persist — Data survives refresh
-4. Test auth guards — Protected functions reject unauthorized
-5. Verify indexes work — Queries return correct filtered data
+**规则：** 这些代理任务仅负责阅读模式文件，不得对其进行修改。
 
 ---
 
-### Phase 3: Component Library (SEQUENTIAL)
+### 第 2 阶段：后端实现（顺序执行或谨慎地并行执行）
 
-**Single agent builds the component library.**
+**选项 A：由一个代理任务完成后端实现（推荐）**
+- 一个代理任务负责实现所有的 Convex 功能。
+- 确保代码风格一致，避免冲突。
 
-Why? Components reference each other. Parallel work creates duplicate components with different APIs.
+**选项 B：并行执行但需使用文件锁定机制**
+- 每个代理任务只负责处理特定的文件。
+- 禁止对共享文件进行写入操作。
+- 必须参考 `CONTRACTS.md` 文件中的接口定义。
 
-**Functional Requirements:**
-1. Interactive states work — Buttons trigger onClick
-2. Form components submit — Not just styled divs
-3. Loading/error states exist
-4. Accessibility basics — Labels, ARIA, keyboard nav
-5. Consistent API — All components follow same patterns
+**功能要求：**
+1. 测试创建、读取、更新和删除等 CRUD 操作。
+2. 确保查询能够返回有效的数据（而不是空数组）。
+3. 验证数据在刷新后仍然能够保持不变。
+4. 测试身份验证机制，确保受保护的函数能够正确处理未授权的请求。
+5. 确保索引功能正常工作，查询能够返回正确过滤后的数据。
 
 ---
 
-### Phase 4: Features & Pages (CAN BE PARALLEL)
+### 第 3 阶段：组件库开发（顺序执行）
 
-Now safe to parallelize because schema is locked, types exist, components exist.
+**由一个代理任务负责构建组件库。**
 
-| Agent | Scope | Can Modify |
+为什么需要单独进行这个步骤？因为组件之间会相互引用。如果并行执行，可能会导致生成具有不同接口的重复组件。
+
+**功能要求：**
+1. 组件的交互状态能够正常工作（按钮点击后能够触发相应的操作）。
+2. 表单组件能够正常提交数据。
+3. 显示加载/错误状态。
+4. 遵循无障碍设计规范（如使用 ARIA 标签和键盘导航）。
+5. 组件的 API 接口必须保持一致。
+
+---
+
+### 第 4 阶段：功能模块和页面开发（可以并行执行）
+
+此时可以安全地进行并行开发，因为模式文件已经锁定，类型信息也已经生成，组件也准备就绪。
+
+| 代理任务 | 负责范围 | 是否可以修改文件 |
 |-------|-------|------------|
-| Admin Suite | `/app/(admin)/**` | Own files only |
-| Support Portal | `/app/(support)/**` | Own files only |
-| Marketing Pages | `/app/(marketing)/**` | Own files only |
-| User Flows | `/app/(app)/**` | Own files only |
+| 管理后台 | `/app/(admin)/**` | 仅修改属于自己的文件 |
+| 支持门户 | `/app/(support)/**` | 仅修改属于自己的文件 |
+| 营销页面 | `/app/(marketing)/**` | 仅修改属于自己的文件 |
+| 用户交互流程 | `/app/(app)/**` | 仅修改属于自己的文件 |
 
-**Rules:**
-1. Read schema, types, contracts — don't modify
-2. Use existing components — don't recreate
-3. Write to assigned directories only
+**规则：**
+1. 必须阅读模式文件、类型定义和接口契约，不得对其进行修改。
+2. 必须使用现有的组件，不得重新创建组件。
+3. 仅将代码写入指定的目录中。
 
-**Functional Requirements:**
-- [ ] Page loads without console errors
-- [ ] Data appears (not mock/placeholder)
-- [ ] Forms submit and persist data
-- [ ] Can complete full user flow (create → view → edit → delete)
-- [ ] Refresh preserves state
+**功能要求：**
+- 页面加载时不会出现控制台错误。
+- 数据能够正确显示（不是模拟数据或占位符）。
+- 表单提交后数据能够被保存。
+- 用户交互流程能够完整地完成（创建 → 查看 → 编辑 → 删除）。
+- 页面刷新后状态能够保持不变。
 
-**Red flags (NOT complete):**
-- `// TODO` comments in business logic
-- Hardcoded arrays instead of useQuery
-- onClick handlers that console.log instead of mutate
-- "Coming soon" placeholders in core features
-
----
-
-### Phase 5: Integration & QA (SEQUENTIAL)
-
-1. `bun run build` (must pass)
-2. `npx convex dev --once` (must pass)
-3. Generate sitemap from routes
-4. Route crawl & 404 check
-5. Browser smoke test (all routes return 200)
-6. **End-to-end flow verification**
-
-**E2E Verification Checklist:**
-
-Auth Flow:
-- [ ] Sign up creates user in database
-- [ ] Sign in authenticates and redirects
-- [ ] Protected routes redirect to sign-in
-
-Core CRUD Flow:
-- [ ] Create: Form submits → record appears
-- [ ] Read: List shows real data
-- [ ] Update: Edit form saves → changes persist
-- [ ] Delete: Remove action → record gone
+**需要注意的问题（未完成的状态）：**
+- 业务逻辑中存在 `// TODO` 标注。
+- 使用硬编码的数据结构而不是 `useQuery` 函数。
+- 点击事件处理函数中使用 `console.log` 而不是直接修改数据。
+- 核心功能中使用了“即将推出”的占位符。
 
 ---
 
-## Directory Structure
+### 第 5 阶段：集成与质量测试（顺序执行）
+
+1. 运行 `bun run build` 命令，确保构建成功。
+2. 再次运行 `npx convex dev --once` 命令，确保所有功能都能正常运行。
+3. 生成站点地图。
+4. 检查所有路由是否能够正确响应（404 错误是否被处理）。
+5. 进行浏览器测试，确保所有路由都能返回正确的响应状态（200 状态码）。
+**端到端测试检查清单：**
+
+**身份验证流程：**
+- 注册后用户信息能够被正确保存到数据库中。
+- 登录后能够正常重定向。
+- 受保护的路由能够正确引导用户到登录页面。
+
+**核心 CRUD 功能：**
+- 创建操作后记录能够被保存到数据库中。
+- 查看操作后列表能够显示正确的数据。
+- 更新操作后修改的内容能够被保存。
+- 删除操作后记录能够从数据库中删除。
+
+---
+
+## 目录结构
 
 ```
 project/
@@ -215,11 +212,11 @@ project/
 └── CONTRACTS.md             # 🔒 Phase 0 only
 ```
 
-🔒 = Locked after Phase 0. Agents read, don't modify.
+🔒 = 第 0 阶段完成后，这些目录将被锁定。代理任务只能读取文件，不得进行修改。
 
 ---
 
-## Agent Spawn Order
+## 代理任务的启动顺序
 
 ```
 1. Bootstrap Agent (MUST COMPLETE FIRST)
@@ -248,24 +245,19 @@ project/
 
 ---
 
-## Anti-Patterns
+## 应避免的错误做法
 
-❌ **Spawn all agents at once** — No coordination, duplicate work
-
-❌ **Let agents invent types** — Use CONTRACTS.md, not imagination
-
-❌ **Skip Phase 0** — "We'll figure out the schema later" = disaster
-
-❌ **Parallel schema writes** — One owner only
-
-❌ **Frontend before backend types** — Generates type mismatches
-
-❌ **No build checkpoints** — Errors compound
+❌ **同时启动所有代理任务** — 会导致缺乏协调，造成重复工作。
+❌ **让代理任务自行定义数据结构** — 应该参考 `CONTRACTS.md` 文件，而不是凭空猜测。
+❌ **跳过第 0 阶段** — 这会导致严重的错误。
+❌ **同时进行模式文件的修改** — 必须由专人负责模式设计。
+❌ **在前端开发完成后再进行后端类型定义** — 这会导致类型不匹配的问题。
+❌ **没有构建检查点** — 问题会逐渐累积。
 
 ---
 
-## Related Files
+## 相关文件
 
-- [TECH-REQ.md](./TECH-REQ.md) — Full stack specification
-- [CODING-STANDARDS.md](./CODING-STANDARDS.md) — TypeScript/React/Convex patterns
-- [CONTRACTS-TEMPLATE.md](./CONTRACTS-TEMPLATE.md) — API contracts template
+- [TECH-REQ.md](./TECH-REQ.md) — 全栈开发规范。
+- [CODING-STANDARDS.md](./CODING-STANDARDS.md) — TypeScript/React/Convex 的编码规范。
+- [CONTRACTS-TEMPLATE.md](./CONTRACTS-TEMPLATE.md) — API 接口契约的模板文件。

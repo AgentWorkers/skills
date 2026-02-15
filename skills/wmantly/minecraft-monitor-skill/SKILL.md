@@ -1,21 +1,20 @@
 ---
 name: minecraft-monitor
-description: Monitor Minecraft servers by checking online status, player counts, latency, and version info using the Server List Ping protocol. Use when the user asks to check Minecraft server status, monitor a Minecraft server, verify if a server is online, get player counts, or mentions Minecraft server monitoring. Example servers include corejourney.org.
+description: 通过使用“Server List Ping”协议，可以监控Minecraft服务器的在线状态、玩家数量、延迟以及版本信息。当用户需要查询Minecraft服务器的状态、监控服务器运行情况、验证服务器是否在线、获取玩家数量，或者讨论Minecraft服务器的监控相关问题时，可以使用该工具。示例服务器包括corejourney.org。
 ---
 
-# Minecraft Server Monitoring
+# Minecraft 服务器监控
 
-Quickly check Minecraft server status without installing any external dependencies.
+无需安装任何外部依赖，即可快速检查 Minecraft 服务器的状态。
 
-## Quick Check
+## 快速检查
 
-Check if a server is online:
-
-```bash
+- 检查服务器是否在线：
+  ```bash
 python3 ~/.openclaw/workspace/skills/public/minecraft-monitor/scripts/minecraft-status.py corejourney.org
 ```
 
-```
+  ```
 🟢 corejourney.org:25565 - ONLINE (45ms)
    Version: 1.20.4
    Players: 3/20
@@ -23,17 +22,17 @@ python3 ~/.openclaw/workspace/skills/public/minecraft-monitor/scripts/minecraft-
    MOTD: Welcome to Core Journey!
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 python3 ~/.openclaw/workspace/skills/public/minecraft-monitor/scripts/minecraft-status.py <host[:port]> [timeout]
 ```
 
-- **host**: Server hostname or IP address (e.g., `corejourney.org`, `192.168.1.10`)
-- **port**: Optional, defaults to `25565`
-- **timeout**: Optional connection timeout in seconds (default: 5)
+- **host**: 服务器主机名或 IP 地址（例如：`corejourney.org`、`192.168.1.10`）
+- **port**: 可选，默认值为 `25565`
+- **timeout**: 可选的连接超时时间（以秒为单位，默认为 5 秒）
 
-### Examples
+### 示例
 
 ```bash
 # Check default port
@@ -46,40 +45,37 @@ python3 ~/.openclaw/workspace/skills/public/minecraft-monitor/scripts/minecraft-
 python3 ~/.openclaw/workspace/skills/public/minecraft-monitor/scripts/minecraft-status.py 192.168.1.10 10
 ```
 
-## Output
+## 输出结果
 
-**Online server:**
-- 🟢 Green (good ping) / 🟡 Yellow (moderate) / 🟠 Orange (slow)
-- Server address and port
-- Response time in milliseconds
-- Minecraft version
-- Current/maximum player count
-- List of online players (up to 5 shown)
-- Server MOTD (message of the day)
+**在线服务器：**
+- 🟢 绿色（ping 值良好）/ 🟡 黄色（ping 值中等）/ 🟠 橙色（ping 值较低）
+- 服务器地址和端口
+- 响应时间（以毫秒为单位）
+- Minecraft 版本
+- 当前/最大玩家数量
+- 在线玩家列表（最多显示 5 名玩家）
+- 服务器的每日信息（MOTD）
 
-**Offline server:**
-- 🔴 Red indicator
-- Error message (timeout, connection refused, etc.)
+**离线服务器：**
+- 🔴 红色指示灯
+- 错误信息（超时、连接被拒绝等）
 
-## What's Being Monitored
+## 监控内容：
+- ✅ 服务器在线/离线状态
+- ✅ 玩家数量（当前/最大）
+- ✅ 响应时间/延迟
+- ✅ 服务器版本
+- ✅ 在线玩家列表（如有）
+- ✅ 服务器的每日信息（MOTD）
 
-- ✅ Online/offline status
-- ✅ Player count (current/max)
-- ✅ Response time/latency
-- ✅ Server version
-- ✅ Online player list (if available)
-- ✅ Server MOTD
+## 注意事项：
+- 该工具使用 Minecraft 服务器列表 Ping（SLP）协议，适用于所有现代版本的 Minecraft 服务器
+- 不需要服务器端的插件或 RCON 访问权限
+- 如果服务器在线，退出代码为 0；如果离线，退出代码为 1（适用于脚本/自动化）
+- SRV 记录不会自动解析，请使用实际的服务器地址
 
-## Notes
-
-- Uses Minecraft Server List Ping (SLP) protocol - works with all modern Minecraft servers
-- No server-side plugins or RCON access required
-- Exit code 0 if online, 1 if offline (useful for scripts/automation)
-- SRV records are not automatically resolved - use the actual server address
-
-## Integration Ideas
-
-- Add to a cron job for periodic health checks
-- Wrap in a monitoring script that alerts if server goes offline
-- Use in automation pipelines that depend on server availability
-- Create a dashboard showing server status history
+## 集成建议：
+- 将该工具添加到 cron 作业中，定期检查服务器状态
+- 将其集成到监控脚本中，以便在服务器离线时发出警报
+- 在依赖服务器可用性的自动化流程中使用该工具
+- 创建一个仪表板，显示服务器状态的历史记录

@@ -1,6 +1,6 @@
 ---
 name: paddleocr-doc-parsing
-description: Parse documents using PaddleOCR's API. Supports both sync and async modes for images and PDFs.
+description: 使用 PaddleOCR 的 API 解析文档。支持对图片和 PDF 文件进行同步（sync）和异步（async）解析。
 homepage: https://www.paddleocr.com
 metadata:
   {
@@ -17,32 +17,32 @@ metadata:
   }
 ---
 
-# PaddleOCR Document Parsing
+# PaddleOCR 文档解析
 
-Parse images and PDF files using PaddleOCR's API. Supports both synchronous and asynchronous parsing modes with structured output.
+使用 PaddleOCR 的 API 解析图片和 PDF 文件。支持同步和异步解析模式，并提供结构化的输出结果。
 
-## Resource Links
+## 资源链接
 
-| Resource              | Link                                                                           |
+| 资源              | 链接                                                                           |
 | --------------------- | ------------------------------------------------------------------------------ |
-| **Official Website**  | [https://www.paddleocr.com](https://www.paddleocr.com)                                     |
-| **API Documentation** | [https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)         |
+| **官方网站**  | [https://www.paddleocr.com](https://www.paddleocr.com)                                     |
+| **API 文档** | [https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)         |
 | **GitHub**            | [https://github.com/PaddlePaddle/PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) |
 
-## Key Features
+## 主要特性
 
-- **Multi-format support**: PDF and image files (JPG, PNG, BMP, TIFF)
-- **Two parsing modes**:
-  - **Sync mode**: Fast response for small files (<600s timeout)
-  - **Async mode**: For large files with progress polling
-- **Layout analysis**: Automatic detection of text blocks, tables, formulas
-- **Multi-language**: Support for 110+ languages
-- **Structured output**: Markdown format with preserved document structure
+- **多格式支持**：PDF 和图片文件（JPG、PNG、BMP、TIFF）
+- **两种解析模式**：
+  - **同步模式**：适用于小文件，响应速度快（超时时间 < 600 秒）
+  - **异步模式**：适用于大文件，支持进度监控
+- **布局分析**：自动检测文本块、表格和公式
+- **多语言支持**：支持 110 多种语言
+- **结构化输出**：以 Markdown 格式输出，保留文档结构
 
-## Setup
+## 设置
 
-1. Visit [PaddleOCR](https://www.paddleocr.com) to obtain your API credentials
-2. Set environment variables:
+1. 访问 [PaddleOCR](https://www.paddleocr.com) 获取 API 凭据
+2. 设置环境变量：
 
 ```bash
 export PADDLEOCR_ACCESS_TOKEN="your_token_here"
@@ -53,11 +53,11 @@ export PADDLEOCR_JOB_URL="https://your-job-endpoint.aistudio-app.com/api/v2/ocr/
 export PADDLEOCR_MODEL="PaddleOCR-VL-1.5"
 ```
 
-## Usage Examples
+## 使用示例
 
-### Sync Mode (Default)
+### 同步模式（默认）
 
-For small files and quick processing:
+适用于小文件和快速处理：
 
 ```bash
 # Parse local image
@@ -76,9 +76,9 @@ For small files and quick processing:
 {baseDir}/paddleocr_parse.sh -v document.jpg
 ```
 
-### Async Mode
+### 异步模式
 
-For large files with progress tracking:
+适用于大文件，并支持进度跟踪：
 
 ```bash
 # Parse large PDF with async mode
@@ -91,7 +91,7 @@ For large files with progress tracking:
 {baseDir}/paddleocr_parse.sh --async -o result.json document.pdf
 ```
 
-### Using Python Script Directly
+### 直接使用 Python 脚本
 
 ```bash
 # Sync mode
@@ -104,7 +104,7 @@ python3 {baseDir}/paddleocr_parse.py --async-mode document.pdf
 python3 {baseDir}/paddleocr_parse.py -o result.json --async-mode document.pdf
 ```
 
-## Response Structure
+## 响应结构
 
 ```json
 {
@@ -128,31 +128,31 @@ python3 {baseDir}/paddleocr_parse.py -o result.json --async-mode document.pdf
 }
 ```
 
-**Important Fields:**
+**重要字段**：
 
-- **`prunedResult`** - Contains detailed layout element information including positions, categories, etc.
-- **`markdown`** - Stores the document content converted to Markdown format with preserved structure and formatting.
+- **`prunedResult`**：包含详细的布局元素信息（位置、类别等）
+- **`markdown`**：以 Markdown 格式存储文档内容，保留结构和格式
 
-## Mode Selection Guide
+## 模式选择指南
 
-| Use Case | Recommended Mode |
+| 使用场景 | 推荐模式 |
 |----------|-----------------|
-| Small images (< 10MB) | Sync |
-| Single page PDFs | Sync |
-| Large PDFs (> 10MB) | Async |
-| Multi-page documents | Async |
-| Batch processing | Async |
-| Quick text extraction | Sync |
+| 小图片（< 10MB） | 同步 |
+| 单页 PDF | 同步 |
+| 大文件（> 10MB） | 异步 |
+| 多页文档 | 异步 |
+| 批量处理 | 异步 |
+| 快速提取文本 | 同步 |
 
-## Error Handling
+## 错误处理
 
-The script will exit with code 1 and print error message for:
-- Missing required environment variables
-- File not found
-- API authentication failures
-- Invalid JSON responses
-- API error codes (non-zero)
+在以下情况下，脚本将退出并显示错误信息：
+- 缺少必要的环境变量
+- 文件未找到
+- API 认证失败
+- JSON 响应无效
+- API 错误代码（非零）
 
-## Quota Information
+## 配额信息
 
-See official documentation: https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam
+请参阅官方文档：https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam

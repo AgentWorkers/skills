@@ -17,9 +17,9 @@ metadata:
 
 # SendGrid
 
-Access the SendGrid API with managed OAuth authentication. Send transactional and marketing emails, manage contacts, templates, suppressions, and analyze email performance.
+您可以使用托管的 OAuth 认证来访问 SendGrid API。该 API 支持发送交易邮件和营销邮件、管理联系人、模板以及分析邮件发送效果。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get user profile
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/sendgrid/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual SendGrid API endpoint path. The gateway proxies requests to `api.sendgrid.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 SendGrid API 端点路径。该代理会将请求转发到 `api.sendgrid.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your SendGrid OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 SendGrid OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple SendGrid connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 SendGrid 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,11 +140,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，代理将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-All SendGrid API endpoints follow this pattern:
+所有 SendGrid API 端点都遵循以下格式：
 
 ```
 /sendgrid/v3/{resource}
@@ -152,9 +152,9 @@ All SendGrid API endpoints follow this pattern:
 
 ---
 
-## Mail Send
+## 发送邮件
 
-### Send Email
+### 发送邮件
 
 ```bash
 POST /sendgrid/v3/mail/send
@@ -177,7 +177,7 @@ Content-Type: application/json
 }
 ```
 
-**With HTML content:**
+**使用 HTML 内容：**
 ```bash
 POST /sendgrid/v3/mail/send
 Content-Type: application/json
@@ -199,7 +199,7 @@ Content-Type: application/json
 }
 ```
 
-**With template:**
+**使用模板：**
 ```bash
 POST /sendgrid/v3/mail/send
 Content-Type: application/json
@@ -221,15 +221,15 @@ Content-Type: application/json
 
 ---
 
-## User Profile
+## 用户信息
 
-### Get User Profile
+### 获取用户信息
 
 ```bash
 GET /sendgrid/v3/user/profile
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "type": "user",
@@ -237,7 +237,7 @@ GET /sendgrid/v3/user/profile
 }
 ```
 
-### Get Account Details
+### 获取账户详情
 
 ```bash
 GET /sendgrid/v3/user/account
@@ -245,15 +245,15 @@ GET /sendgrid/v3/user/account
 
 ---
 
-## Marketing Contacts
+## 营销联系人
 
-### List Contacts
+### 列出联系人
 
 ```bash
 GET /sendgrid/v3/marketing/contacts
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "result": [],
@@ -264,7 +264,7 @@ GET /sendgrid/v3/marketing/contacts
 }
 ```
 
-### Search Contacts
+### 搜索联系人
 
 ```bash
 POST /sendgrid/v3/marketing/contacts/search
@@ -275,7 +275,7 @@ Content-Type: application/json
 }
 ```
 
-### Add/Update Contacts
+### 添加/更新联系人
 
 ```bash
 PUT /sendgrid/v3/marketing/contacts
@@ -292,22 +292,22 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "job_id": "2387e363-4104-4225-8960-4a5758492351"
 }
 ```
 
-**Note:** Contact operations are asynchronous. Use the job status endpoint to check progress.
+**注意：** 联人操作是异步的。请使用作业状态端点来检查进度。
 
-### Get Import Job Status
+### 获取导入作业状态
 
 ```bash
 GET /sendgrid/v3/marketing/contacts/imports/{job_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "2387e363-4104-4225-8960-4a5758492351",
@@ -321,19 +321,19 @@ GET /sendgrid/v3/marketing/contacts/imports/{job_id}
 }
 ```
 
-### Delete Contacts
+### 删除联系人
 
 ```bash
 DELETE /sendgrid/v3/marketing/contacts?ids=contact_id_1,contact_id_2
 ```
 
-### Get Contact by ID
+### 通过 ID 获取联系人
 
 ```bash
 GET /sendgrid/v3/marketing/contacts/{contact_id}
 ```
 
-### Get Contact by Email
+### 通过电子邮件获取联系人
 
 ```bash
 POST /sendgrid/v3/marketing/contacts/search/emails
@@ -346,15 +346,15 @@ Content-Type: application/json
 
 ---
 
-## Marketing Lists
+## 营销列表
 
-### List All Lists
+### 列出所有列表
 
 ```bash
 GET /sendgrid/v3/marketing/lists
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "result": [],
@@ -364,7 +364,7 @@ GET /sendgrid/v3/marketing/lists
 }
 ```
 
-### Create List
+### 创建列表
 
 ```bash
 POST /sendgrid/v3/marketing/lists
@@ -375,7 +375,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "name": "My Contact List",
@@ -387,13 +387,13 @@ Content-Type: application/json
 }
 ```
 
-### Get List by ID
+### 通过 ID 获取列表
 
 ```bash
 GET /sendgrid/v3/marketing/lists/{list_id}
 ```
 
-### Update List
+### 更新列表
 
 ```bash
 PATCH /sendgrid/v3/marketing/lists/{list_id}
@@ -404,13 +404,13 @@ Content-Type: application/json
 }
 ```
 
-### Delete List
+### 删除列表
 
 ```bash
 DELETE /sendgrid/v3/marketing/lists/{list_id}
 ```
 
-### Add Contacts to List
+### 将联系人添加到列表
 
 ```bash
 PUT /sendgrid/v3/marketing/contacts
@@ -426,15 +426,15 @@ Content-Type: application/json
 
 ---
 
-## Segments
+## 分段
 
-### List Segments
+### 列出分段
 
 ```bash
 GET /sendgrid/v3/marketing/segments
 ```
 
-### Create Segment
+### 创建分段
 
 ```bash
 POST /sendgrid/v3/marketing/segments
@@ -446,13 +446,13 @@ Content-Type: application/json
 }
 ```
 
-### Get Segment by ID
+### 通过 ID 获取分段
 
 ```bash
 GET /sendgrid/v3/marketing/segments/{segment_id}
 ```
 
-### Delete Segment
+### 删除分段
 
 ```bash
 DELETE /sendgrid/v3/marketing/segments/{segment_id}
@@ -460,20 +460,20 @@ DELETE /sendgrid/v3/marketing/segments/{segment_id}
 
 ---
 
-## Templates
+## 模板
 
-### List Templates
+### 列出模板
 
 ```bash
 GET /sendgrid/v3/templates
 ```
 
-**With generation filter:**
+**使用生成过滤器：**
 ```bash
 GET /sendgrid/v3/templates?generations=dynamic
 ```
 
-### Create Template
+### 创建模板
 
 ```bash
 POST /sendgrid/v3/templates
@@ -485,7 +485,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "d-ffcdb43ed8a04beba48a702e1717ddb5",
@@ -496,13 +496,13 @@ Content-Type: application/json
 }
 ```
 
-### Get Template by ID
+### 通过 ID 获取模板
 
 ```bash
 GET /sendgrid/v3/templates/{template_id}
 ```
 
-### Update Template
+### 更新模板
 
 ```bash
 PATCH /sendgrid/v3/templates/{template_id}
@@ -513,13 +513,13 @@ Content-Type: application/json
 }
 ```
 
-### Delete Template
+### 删除模板
 
 ```bash
 DELETE /sendgrid/v3/templates/{template_id}
 ```
 
-### Create Template Version
+### 创建模板版本
 
 ```bash
 POST /sendgrid/v3/templates/{template_id}/versions
@@ -533,7 +533,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "54230a99-1e89-4edf-821d-d4925b40c64b",
@@ -551,15 +551,15 @@ Content-Type: application/json
 
 ---
 
-## Senders
+## 发件人
 
-### List Senders
+### 列出发件人
 
 ```bash
 GET /sendgrid/v3/senders
 ```
 
-### Create Sender
+### 创建发件人
 
 ```bash
 POST /sendgrid/v3/senders
@@ -575,7 +575,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 8513177,
@@ -592,15 +592,15 @@ Content-Type: application/json
 }
 ```
 
-**Note:** Sender verification is required before use. Check `verified.status`.
+**注意：** 使用前需要验证发件人。请检查 `verified.status` 属性。
 
-### Get Sender by ID
+### 通过 ID 获取发件人
 
 ```bash
 GET /sendgrid/v3/senders/{sender_id}
 ```
 
-### Update Sender
+### 更新发件人
 
 ```bash
 PATCH /sendgrid/v3/senders/{sender_id}
@@ -611,7 +611,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Sender
+### 删除发件人
 
 ```bash
 DELETE /sendgrid/v3/senders/{sender_id}
@@ -619,9 +619,9 @@ DELETE /sendgrid/v3/senders/{sender_id}
 
 ---
 
-## Suppressions
+## 邮件拦截
 
-### Bounces
+### 拒收邮件
 
 ```bash
 # List bounces
@@ -639,7 +639,7 @@ Content-Type: application/json
 }
 ```
 
-### Blocks
+### 阻止发送邮件
 
 ```bash
 # List blocks
@@ -657,7 +657,7 @@ Content-Type: application/json
 }
 ```
 
-### Invalid Emails
+### 无效邮件
 
 ```bash
 # List invalid emails
@@ -672,7 +672,7 @@ Content-Type: application/json
 }
 ```
 
-### Spam Reports
+### 垃圾邮件报告
 
 ```bash
 # List spam reports
@@ -687,7 +687,7 @@ Content-Type: application/json
 }
 ```
 
-### Global Unsubscribes
+### 全局取消订阅
 
 ```bash
 # List global unsubscribes
@@ -704,15 +704,15 @@ Content-Type: application/json
 
 ---
 
-## Unsubscribe Groups (ASM)
+## 取消订阅组（ASM）
 
-### List Groups
+### 列出组
 
 ```bash
 GET /sendgrid/v3/asm/groups
 ```
 
-### Create Group
+### 创建组
 
 ```bash
 POST /sendgrid/v3/asm/groups
@@ -724,7 +724,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "name": "Weekly Newsletter",
@@ -734,13 +734,13 @@ Content-Type: application/json
 }
 ```
 
-### Get Group by ID
+### 通过 ID 获取组
 
 ```bash
 GET /sendgrid/v3/asm/groups/{group_id}
 ```
 
-### Update Group
+### 更新组
 
 ```bash
 PATCH /sendgrid/v3/asm/groups/{group_id}
@@ -751,13 +751,13 @@ Content-Type: application/json
 }
 ```
 
-### Delete Group
+### 删除组
 
 ```bash
 DELETE /sendgrid/v3/asm/groups/{group_id}
 ```
 
-### Add Suppressions to Group
+### 向组添加拦截规则
 
 ```bash
 POST /sendgrid/v3/asm/groups/{group_id}/suppressions
@@ -768,7 +768,7 @@ Content-Type: application/json
 }
 ```
 
-### List Suppressions in Group
+### 查看组内的拦截规则
 
 ```bash
 GET /sendgrid/v3/asm/groups/{group_id}/suppressions
@@ -776,20 +776,20 @@ GET /sendgrid/v3/asm/groups/{group_id}/suppressions
 
 ---
 
-## Statistics
+## 统计数据
 
-### Get Global Stats
+### 获取全局统计信息
 
 ```bash
 GET /sendgrid/v3/stats?start_date=2026-02-01
 ```
 
-**With end date:**
+**指定结束日期：**
 ```bash
 GET /sendgrid/v3/stats?start_date=2026-02-01&end_date=2026-02-28
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -820,19 +820,19 @@ GET /sendgrid/v3/stats?start_date=2026-02-01&end_date=2026-02-28
 ]
 ```
 
-### Category Stats
+### 类别统计信息
 
 ```bash
 GET /sendgrid/v3/categories/stats?start_date=2026-02-01&categories=category1,category2
 ```
 
-### Mailbox Provider Stats
+### 邮箱提供商统计信息
 
 ```bash
 GET /sendgrid/v3/mailbox_providers/stats?start_date=2026-02-01
 ```
 
-### Browser Stats
+### 浏览器统计信息
 
 ```bash
 GET /sendgrid/v3/browsers/stats?start_date=2026-02-01
@@ -840,15 +840,15 @@ GET /sendgrid/v3/browsers/stats?start_date=2026-02-01
 
 ---
 
-## API Keys
+## API 密钥
 
-### List API Keys
+### 列出 API 密钥
 
 ```bash
 GET /sendgrid/v3/api_keys
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "result": [
@@ -860,7 +860,7 @@ GET /sendgrid/v3/api_keys
 }
 ```
 
-### Create API Key
+### 创建 API 密钥
 
 ```bash
 POST /sendgrid/v3/api_keys
@@ -872,13 +872,13 @@ Content-Type: application/json
 }
 ```
 
-### Get API Key by ID
+### 通过 ID 获取 API 密钥
 
 ```bash
 GET /sendgrid/v3/api_keys/{api_key_id}
 ```
 
-### Update API Key
+### 更新 API 密钥
 
 ```bash
 PATCH /sendgrid/v3/api_keys/{api_key_id}
@@ -889,7 +889,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete API Key
+### 删除 API 密钥
 
 ```bash
 DELETE /sendgrid/v3/api_keys/{api_key_id}
@@ -897,15 +897,15 @@ DELETE /sendgrid/v3/api_keys/{api_key_id}
 
 ---
 
-## Pagination
+## 分页
 
-SendGrid uses token-based pagination for marketing endpoints:
+SendGrid 的营销 API 端点使用基于令牌的分页机制：
 
 ```bash
 GET /sendgrid/v3/marketing/lists?page_size=100&page_token={token}
 ```
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "result": [...],
@@ -916,13 +916,13 @@ GET /sendgrid/v3/marketing/lists?page_size=100&page_token={token}
 }
 ```
 
-For suppression endpoints, use `limit` and `offset`:
+对于邮件拦截端点，请使用 `limit` 和 `offset` 参数进行分页：
 
 ```bash
 GET /sendgrid/v3/suppression/bounces?limit=100&offset=0
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -966,37 +966,37 @@ for day in data:
     print(f"{day['date']}: {metrics['delivered']} delivered, {metrics['opens']} opens")
 ```
 
-## Notes
+## 注意事项
 
-- All requests use JSON content type
-- Dates are in YYYY-MM-DD format
-- Template IDs for dynamic templates start with `d-`
-- Mail send returns 202 Accepted on success (not 200)
-- Marketing contact operations are asynchronous - use job status endpoints
-- Suppression endpoints support date filtering with `start_time` and `end_time` (Unix timestamps)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有请求都使用 JSON 格式的数据。
+- 日期格式为 YYYY-MM-DD。
+- 动态模板的 ID 以 `d-` 开头。
+- 邮件发送成功时返回状态码 202（而非 200）。
+- 营销联系人操作是异步的，请使用作业状态端点来查看进度。
+- 邮件拦截端点支持使用 `start_time` 和 `end_time`（Unix 时间戳）进行日期过滤。
+- **重要提示：** 当 URL 中包含括号时，使用 `curl -g` 选项来禁用全局解析。
+- **重要提示：** 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析 `$MATON_API_KEY` 环境变量。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or validation error |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 500 | Internal server error |
+| 400 | 请求错误或验证失败 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足 |
+| 404 | 资源未找到 |
+| 429 | 请求频率限制 |
+| 500 | 服务器内部错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥的有效性：
 
 ```bash
 python <<'EOF'
@@ -1007,18 +1007,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `sendgrid`. For example:
+1. 确保您的 URL 路径以 `sendgrid` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/sendgrid/v3/user/profile`
+- 错误格式：`https://gateway.maton.ai/v3/user/profile`
 
-- Correct: `https://gateway.maton.ai/sendgrid/v3/user/profile`
-- Incorrect: `https://gateway.maton.ai/v3/user/profile`
+## 资源
 
-## Resources
-
-- [SendGrid API Documentation](https://www.twilio.com/docs/sendgrid/api-reference)
-- [Mail Send API](https://www.twilio.com/docs/sendgrid/api-reference/mail-send)
-- [Marketing Campaigns API](https://www.twilio.com/docs/sendgrid/api-reference/contacts)
-- [Suppressions Overview](https://www.twilio.com/docs/sendgrid/api-reference/suppressions)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [SendGrid API 文档](https://www.twilio.com/docs/sendgrid/api-reference)
+- [发送邮件 API](https://www.twilio.com/docs/sendgrid/api-reference/mail-send)
+- [营销活动 API](https://www.twilio.com/docs/sendgrid/api-reference/contacts)
+- [邮件拦截概述](https://www.twilio.com/docs/sendgrid/api-reference/suppressions)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

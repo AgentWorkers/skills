@@ -1,16 +1,16 @@
 ---
 slug: "portfolio-dashboard"
 display_name: "Portfolio Dashboard"
-description: "Multi-project portfolio analytics dashboard. Aggregate KPIs across projects, track portfolio health, compare performance, and support executive decision-making."
+description: "多项目组合分析仪表板：汇总各个项目的关键绩效指标（KPI），监控项目组合的整体状况，比较项目表现，并为高层决策提供支持。"
 ---
 
-# Portfolio Dashboard
+# 组合投资仪表板
 
-## Overview
+## 概述
 
-Aggregate and analyze data across multiple construction projects for portfolio-level visibility. Track KPIs, identify trends, compare project performance, and support strategic resource allocation decisions.
+该仪表板能够汇总并分析多个建设项目的数据，从而提供组合投资层面的整体视图。它可用于跟踪关键绩效指标（KPIs）、识别项目发展趋势、比较项目表现，并为战略资源分配决策提供支持。
 
-## Portfolio Analytics Framework
+## 组合投资分析框架
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -34,7 +34,7 @@ Aggregate and analyze data across multiple construction projects for portfolio-l
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -451,7 +451,7 @@ class PortfolioDashboard:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -521,7 +521,7 @@ print(f"Best CPI: {cpi_comparison.best[0]} ({cpi_comparison.best[1]:.2f})")
 print(dashboard.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

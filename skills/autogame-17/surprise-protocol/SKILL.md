@@ -1,22 +1,22 @@
 ---
 name: surprise-protocol
-description: A serendipity engine for AI agents. Keeps interactions fresh by periodically generating unexpected creative content (images, insights, jokes).
+description: 这是一个专为AI代理设计的“意外发现”（serendipity）引擎。它通过定期生成富有创意的内容（如图片、见解或笑话）来为交互过程增添新鲜感。
 tags: [fun, creative, agent, surprise, engagement]
 ---
 
-# 🎁 Surprise Protocol
+# 🎁 惊喜协议
 
-**"Keep it fun and unexpected."**
+**“让一切充满乐趣和惊喜。”**
 
-The **Surprise Protocol** is a serendipity engine designed to prevent AI agents from becoming boring, static utilities. It introduces controlled randomness and creativity into the agent's routine.
+**惊喜协议**（Surprise Protocol）是一种旨在防止人工智能代理变得单调、乏味的机制。它为代理的日常行为引入了可控的随机性和创造性。
 
-## Features
+## 特点
 
--   **Random Action Selection**: Randomly chooses between generating visual art (Images) or intellectual stimulation (Deep Thoughts/Jokes).
--   **Integration Ready**: Automatically detects and uses installed skills like `gen-image` or `mind-blow`.
--   **Configurable Target**: Send surprises to specific users or groups.
+- **随机行为选择**：随机决定是生成视觉艺术（图片）还是提供智力刺激（深度思考/笑话）。
+- **易于集成**：能够自动检测并使用已安装的技能，如 `gen-image` 或 `mind-blow`。
+- **可配置的目标**：可以将惊喜发送给特定的用户或用户群组。
 
-## Usage
+## 使用方法
 
 ```bash
 # Run a surprise check (will decide whether to act based on randomness)
@@ -29,11 +29,11 @@ node skills/surprise-protocol/index.js --force
 node skills/surprise-protocol/index.js --target "ou_123456"
 ```
 
-## Requirements
+## 需求条件
 
--   **Image Generation**: Requires `skills/gen-image` or `skills/kusa` to be present for image surprises.
--   **LLM**: Uses `GEMINI_API_KEY` (if available) to generate creative prompts.
+- **图片生成**：需要具备 `skills/gen-image` 或 `skills/kusa` 技能才能生成图片惊喜。
+- **大语言模型（LLM）**：如果可用，会使用 `GEMINI_API_KEY` 来生成创意提示。
 
-## Philosophy
+## 哲学理念
 
-An agent that only speaks when spoken to is a tool. An agent that surprises you is a companion.
+一个仅在被提问时才响应的代理只是一个工具；而一个能够给你带来惊喜的代理，才是真正的伙伴。

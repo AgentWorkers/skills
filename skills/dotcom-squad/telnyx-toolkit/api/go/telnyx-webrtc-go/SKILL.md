@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿修改。 -->
 
 # Telnyx Webrtc - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,9 +38,9 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List mobile push credentials
+## 列出移动推送凭据
 
 `GET /mobile_push_credentials`
 
@@ -52,7 +52,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Creates a new mobile push credential
+## 创建新的移动推送凭据
 
 `POST /mobile_push_credentials`
 
@@ -70,9 +70,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", pushCredentialResponse.Data)
 ```
 
-## Retrieves a mobile push credential
+## 获取移动推送凭据
 
-Retrieves mobile push credential based on the given `push_credential_id`
+根据给定的 `push_credential_id` 获取移动推送凭据
 
 `GET /mobile_push_credentials/{push_credential_id}`
 
@@ -84,9 +84,9 @@ Retrieves mobile push credential based on the given `push_credential_id`
 	fmt.Printf("%+v\n", pushCredentialResponse.Data)
 ```
 
-## Deletes a mobile push credential
+## 删除移动推送凭据
 
-Deletes a mobile push credential based on the given `push_credential_id`
+根据给定的 `push_credential_id` 删除移动推送凭据
 
 `DELETE /mobile_push_credentials/{push_credential_id}`
 
@@ -97,9 +97,9 @@ Deletes a mobile push credential based on the given `push_credential_id`
 	}
 ```
 
-## List all credentials
+## 列出所有凭据
 
-List all On-demand Credentials.
+列出所有的按需生成的凭据。
 
 `GET /telephony_credentials`
 
@@ -111,11 +111,11 @@ List all On-demand Credentials.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a credential
+## 创建凭据
 
-Create a credential.
+创建一个新的凭据。
 
-`POST /telephony_credentials` — Required: `connection_id`
+`POST /telephony_credentials` — 必需参数：`connection_id`
 
 ```go
 	telephonyCredential, err := client.TelephonyCredentials.New(context.TODO(), telnyx.TelephonyCredentialNewParams{
@@ -127,9 +127,9 @@ Create a credential.
 	fmt.Printf("%+v\n", telephonyCredential.Data)
 ```
 
-## Get a credential
+## 获取凭据详情
 
-Get the details of an existing On-demand Credential.
+获取现有按需生成凭据的详细信息。
 
 `GET /telephony_credentials/{id}`
 
@@ -141,9 +141,9 @@ Get the details of an existing On-demand Credential.
 	fmt.Printf("%+v\n", telephonyCredential.Data)
 ```
 
-## Update a credential
+## 更新凭据
 
-Update an existing credential.
+更新现有的凭据。
 
 `PATCH /telephony_credentials/{id}`
 
@@ -159,9 +159,9 @@ Update an existing credential.
 	fmt.Printf("%+v\n", telephonyCredential.Data)
 ```
 
-## Delete a credential
+## 删除凭据
 
-Delete an existing credential.
+删除现有的凭据。
 
 `DELETE /telephony_credentials/{id}`
 
@@ -173,9 +173,9 @@ Delete an existing credential.
 	fmt.Printf("%+v\n", telephonyCredential.Data)
 ```
 
-## Create an Access Token.
+## 创建访问令牌
 
-Create an Access Token (JWT) for the credential.
+为该凭据创建一个访问令牌（JWT）。
 
 `POST /telephony_credentials/{id}/token`
 

@@ -1,42 +1,42 @@
-# Gateway Monitor Auto-Restart Skill
+# Gateway Monitor 自动重启技能
 
-Automatically monitors the OpenClaw gateway status and restarts it if it becomes unresponsive. Features 3-hour checks, smart restart logic, issue diagnosis, and 7-day log rotation.
+该技能可自动监控 OpenClaw 网关的状态，并在网关无响应时自动重启它。具备 3 小时一次的检查频率、智能重启逻辑、问题诊断功能以及 7 天的日志轮换机制。
 
-## Description
+## 描述
 
-This skill provides comprehensive monitoring for the OpenClaw gateway with automatic restart capabilities. It includes:
+此技能为 OpenClaw 网关提供全面的监控服务，并具备自动重启功能，具体包括：
 
-- Health checks every 3 hours
-- Smart restart mechanism when gateway is down
-- Issue diagnosis when startup fails
-- 7-day log rotation system
-- Fast recovery system that prioritizes quick gateway restart
+- 每 3 小时进行一次健康检查
+- 当网关故障时自动重启
+- 在启动失败时诊断问题
+- 实现 7 天的日志轮换
+- 优先考虑快速重启网关，以快速恢复服务
 
-## Features
+## 功能特点
 
-- **Automatic Monitoring**: Checks gateway status every 3 hours
-- **Smart Restart**: Restarts gateway when it becomes unresponsive
-- **Issue Diagnosis**: Identifies and reports startup issues
-- **Fast Recovery**: Prioritizes quick gateway restart
-- **Log Management**: Maintains logs with 7-day rotation
-- **Error Handling**: Gracefully handles "already running" errors
+- **自动监控**：每 3 小时检查一次网关状态
+- **智能重启**：在网关无响应时自动重启
+- **问题诊断**：识别并报告启动过程中出现的问题
+- **快速恢复**：优先执行网关重启操作
+- **日志管理**：日志保留 7 天，并定期轮换
+- **错误处理**：优雅地处理“网关已运行中”的错误情况
 
-## Usage
+## 使用方法
 
-The skill automatically sets up a cron job that runs the monitoring script every 3 hours. The monitoring system will:
+该技能会自动设置一个 cron 作业，每 3 小时运行一次监控脚本。监控系统将执行以下操作：
 
-1. Check if the gateway is responsive
-2. If unresponsive, attempt to restart it
-3. If restart fails, diagnose the issue
-4. Log all activities with timestamp
-5. Rotate logs older than 7 days
+1. 检查网关是否正常响应
+2. 如果网关无响应，尝试重启它
+3. 如果重启失败，诊断问题原因
+4. 记录所有操作及其时间戳
+5. 删除超过 7 天的旧日志
 
-## Requirements
+## 需求条件
 
-- OpenClaw gateway installed and configured
-- Proper permissions to manage gateway service
-- Cron access for scheduling checks
+- 已安装并配置好 OpenClaw 网关
+- 具备管理网关服务的相应权限
+- 具备调度监控任务的 cron 访问权限
 
-## Configuration
+## 配置说明
 
-No additional configuration required. The skill automatically installs the monitoring system with optimal settings.
+无需额外配置。该技能会自动安装监控系统，并使用最优设置进行运行。

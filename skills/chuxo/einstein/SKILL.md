@@ -19,11 +19,11 @@ metadata:
       env: ["EINSTEIN_X402_PRIVATE_KEY"]
 ---
 
-# Einstein — Blockchain Analytics via x402
+# Einstein — 通过 x402 协议提供区块链分析服务
 
-Einstein provides 27 blockchain analytics services accessible via x402 micropayments (USDC on Base). Each query costs $0.25–$1.15 depending on complexity.
+Einstein 提供了 27 种区块链分析服务，这些服务可以通过 x402 微支付（基于 Base 网络的 USDC）来使用。每次查询的费用根据复杂度不同，范围在 0.25 美元到 1.15 美元之间。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Install dependencies (manual step — the setup wizard will NOT run npm for you)
@@ -42,31 +42,31 @@ node scripts/einstein.mjs services
 node scripts/einstein.mjs top-movers --chain base --limit 10
 ```
 
-**Requirements:**
-- Node.js 18+
-- Dependencies installed via `npm install` (not auto-installed)
-- A **dedicated** wallet private key with USDC on Base network (do NOT use your main wallet)
-- Set `EINSTEIN_X402_PRIVATE_KEY` environment variable (preferred) or run setup with `--save-config`
+**所需条件：**
+- Node.js 18 及以上版本
+- 通过 `npm install` 安装所有依赖项（不会自动安装）
+- 一个专门用于 x402 支付的钱包私钥（请勿使用您的主钱包）
+- 设置 `EINSTEIN_X402_PRIVATE_KEY` 环境变量（推荐）；或者使用 `--save-config` 选项进行配置安装
 
-## Service Categories
+## 服务分类
 
-| Tier | Price (Raw) | Price (+AI) | Services |
+| 服务等级 | 原始价格 | 带 AI 分析的价格 | 提供的服务 |
 |------|-------------|-------------|----------|
-| Basic | $0.25 | $0.40 | Latest tokens, token chart |
-| Standard | $0.40 | $0.55 | Top movers, top tokens, OHLCV, Virtuals, wallet holdings, holder concentration |
-| Platform | $0.60 | $0.75 | Zora launches/volume, Pump.fun launches/volume/graduation, BSC alpha, liquidity shifts |
-| Advanced | $0.85 | $1.00 | Whale intel, smart money, top traders, DEX capital, token sniping, Polymarket events |
-| Comprehensive | $1.00 | $1.15 | Investment report, NFT analytics, MEV detection, arbitrage scanner, rug pull scanner, Polymarket compare |
+| 基础 | 0.25 美元 | 0.40 美元 | 最新代币信息、代币图表 |
+| 标准 | 0.40 美元 | 0.55 美元 | 行情波动较大的代币、代币交易量、OHLCV 数据、虚拟资产信息、钱包持有情况、持有者集中度 |
+| 平台级 | 0.60 美元 | 0.75 美元 | Zora 项目发布信息、Pump.fun 项目发布信息/交易量、BSC 测试版信息、流动性变化 |
+| 高级 | 0.85 美元 | 1.00 美元 | 大额投资者信息、智能资金流动分析、顶级交易者信息、DEX 资本流动分析、代币抢购信息、Polymarket 活动信息 |
+| 全面分析 | 1.00 美元 | 1.15 美元 | 投资报告、NFT 分析、MEV（最大价值提取）检测、套利机会扫描、诈骗行为检测、Polymarket 对比分析 |
 
-**Raw** = structured data only. **+AI** = includes AI-generated analysis and insights (default).
+**原始价格**：仅包含结构化数据。**带 AI 分析**：包含 AI 生成的分析结果和洞察（默认选项）。
 
-## Free Services
+## 免费服务
 
-These commands are free and do not require x402 payment or a wallet key.
+以下命令是免费的，无需支付 x402 费用或提供钱包私钥：
 
-### Epstein Files Search
+### Epstein 文件搜索
 
-Search 44,886+ DOJ-released Jeffrey Epstein documents (Jan 2026 release) via the DugganUSA public index.
+可以通过 DugganUSA 公共索引搜索美国司法部公布的 44,886 多份 Jeffrey Epstein 相关文件（2026 年 1 月发布）。
 
 ```bash
 # Search by name
@@ -79,14 +79,14 @@ node scripts/einstein.mjs epstein-search --query "flight logs" --limit 20
 node scripts/einstein.mjs epstein-search --query "Little St James"
 ```
 
-| Flag | Description | Default |
+| 参数 | 说明 | 默认值 |
 |------|-------------|---------|
-| `--query <terms>` | Search query (required) | — |
-| `--limit <N>` | Number of results (1-500) | `10` |
+| `--query <查询词>` | 搜索关键词 | — |
+| `--limit <结果数量>` | 结果数量（1-500 条） | `10` |
 
-## Usage Examples
+## 使用示例
 
-### Market Analysis
+### 市场分析
 
 ```bash
 # Top movers on Base in the last 24 hours
@@ -99,7 +99,7 @@ node scripts/einstein.mjs top-tokens --chain ethereum --limit 20
 node scripts/einstein.mjs latest-tokens --chain base --limit 15
 ```
 
-### Whale & Smart Money Intelligence
+### 大额投资者与智能资金流动分析
 
 ```bash
 # Track whale accumulation on Ethereum
@@ -112,7 +112,7 @@ node scripts/einstein.mjs smart-money --chain base --limit 20 --timeperiod 7d
 node scripts/einstein.mjs dex-capital --chain base --limit 10 --timeperiod 3d
 ```
 
-### Security & Risk Analysis
+### 安全性与风险分析
 
 ```bash
 # Scan a token for rug pull risk
@@ -125,7 +125,7 @@ node scripts/einstein.mjs mev-detect --chain ethereum --limit 10 --timeperiod 1d
 node scripts/einstein.mjs token-snipe --chain base --token 0x1234...abcd --limit 20
 ```
 
-### Launchpad Monitoring
+### 新项目发布监控
 
 ```bash
 # Latest Pump.fun launches on Solana
@@ -141,7 +141,7 @@ node scripts/einstein.mjs zora-launches --limit 10 --timeperiod 3d
 node scripts/einstein.mjs virtuals --limit 10 --timeperiod 7d
 ```
 
-### Portfolio & Token Analysis
+### 投资组合与代币分析
 
 ```bash
 # Check wallet holdings
@@ -157,7 +157,7 @@ node scripts/einstein.mjs chart --chain base --token 0x1234... --timeperiod 7d
 node scripts/einstein.mjs ohlcv --chain base --token 0x1234... --timeperiod 30d
 ```
 
-### Advanced Reports
+### 高级报告
 
 ```bash
 # Multi-chain investment report
@@ -170,7 +170,7 @@ node scripts/einstein.mjs arbitrage --chain ethereum --limit 10 --timeperiod 1d
 node scripts/einstein.mjs nft-analytics --chain ethereum --limit 10 --timeperiod 7d
 ```
 
-### Prediction Markets
+### 预测市场分析
 
 ```bash
 # Polymarket events (Polygon)
@@ -180,84 +180,66 @@ node scripts/einstein.mjs polymarket --limit 10 --timeperiod 7d
 node scripts/einstein.mjs polymarket-compare --limit 10
 ```
 
-## How Payment Works
+## 支付方式
 
-Einstein uses the **x402 protocol** — an HTTP-native micropayment standard. Payment is automatic:
+Einstein 使用 **x402 协议**——一种基于 HTTP 的微支付标准。支付过程是自动完成的：
+1. 您的请求发送到 Einstein 的接口
+2. 服务器返回 HTTP 402 错误码，并要求您进行支付确认
+3. 您需要使用私钥签署一个 USDC 转账请求（使用 EIP-3009 协议）
+4. 重新发送请求时会包含支付签名
+5. Coinbase 的 CDP 服务会完成 USDC 的转账
+6. 您随后会收到分析结果
 
-1. Your request hits Einstein's endpoint
-2. Server responds with HTTP 402 + payment challenge
-3. The skill signs a USDC TransferWithAuthorization (EIP-3009) using your private key
-4. Request is re-sent with the payment signature
-5. Coinbase CDP facilitator settles the USDC transfer on Base
-6. You receive the analytics data
+**无需注册账户、API 密钥或订阅服务。** 只需要拥有 Base 网络上的 USDC 和相应的私钥即可。
 
-**No accounts, no API keys, no subscriptions.** Just USDC on Base and a private key.
+## 命令行工具参考
 
-## Options Reference
+### `einstein.mjs`（查询工具）
 
-### `einstein.mjs` (query CLI)
-
-| Flag | Description | Default |
+| 参数 | 说明 | 默认值 |
 |------|-------------|---------|
-| `--chain <chain>` | Blockchain network | `base` |
-| `--limit <N>` | Number of results (1-500) | `10` |
-| `--timeperiod <period>` | Time window: 1d, 3d, 7d, 30d | `7d` |
-| `--token <address>` | Token contract address | — |
-| `--wallet <address>` | Wallet address | — |
-| `--chains <c1,c2>` | Comma-separated chains | — |
-| `--raw` | Data-only response (cheaper) | `false` |
-| `--yes` / `-y` | Skip payment confirmation prompt | `false` |
+| `--chain <区块链网络>` | 需要查询的区块链网络 | `base` |
+| `--limit <结果数量>` | 结果数量（1-500 条） | `10` |
+| `--timeperiod <时间周期>` | 时间范围：1 天、3 天、7 天、30 天 | `7d` |
+| `--token <代币合约地址>` | 需要查询的代币合约地址 | — |
+| `--wallet <钱包地址>` | 使用的钱包地址 | — |
+| `--chains <区块链网络列表>` | 用逗号分隔的区块链网络列表 | — |
+| `--raw` | 仅返回原始数据（更便宜） | `false` |
+| `--yes` / `-y` | 跳过支付确认提示 | `false` |
 
-To skip the confirmation prompt globally, set `EINSTEIN_AUTO_CONFIRM=true` or add `"autoConfirm": true` to config.json.
+若要全局跳过支付确认提示，可以设置 `EINSTEIN_AUTO_CONFIRM=true`，或在 `config.json` 文件中添加 `"autoConfirm": true`。
 
-### `einstein-setup.mjs` (setup wizard)
+### `einstein-setup.mjs`（配置工具）
 
-| Flag | Description | Default |
+| 参数 | 说明 | 默认值 |
 |------|-------------|---------|
-| `--key <privateKey>` | Private key (skips interactive prompt) | — |
-| `--url <baseUrl>` | Base URL for Einstein API | `https://emc2ai.io` |
-| `--chain <chain>` | Default blockchain network | `base` |
-| `--save-config` | Write config.json to disk (otherwise prints env var exports) | `false` |
+| `--key <私钥>` | 钱包私钥（跳过交互式提示） | — |
+| `--url <Einstein API 地址>` | Einstein API 的基础 URL | `https://emc2ai.io` |
+| `--chain <区块链网络>` | 默认区块链网络 | `base` |
+| `--save-config` | 将配置信息写入文件（否则会输出到环境变量） | `false` |
 
-**Supported chains:** base, ethereum, bsc, solana, arbitrum, polygon, optimism, zksync
+**支持的区块链网络：** base、ethernet、bsc、solana、arbitrum、polygon、optimism、zksync
 
-## Security Best Practices
+## 安全最佳实践
 
-**Use a dedicated wallet.** Create a separate wallet funded with a small amount of USDC for this skill. Do NOT use your primary wallet or any wallet holding significant funds.
+- **使用专用钱包**：为该服务创建一个专门的钱包，并存入少量 USDC。请勿使用您的主钱包或持有大量资金的钱包。
+- **优先使用环境变量**：建议使用环境变量 `EINSTEIN_X402_PRIVATE_KEY`，因为这些变量不会被保存到文件中，从而降低数据泄露的风险。如果必须使用 `config.json`，请确保限制文件的访问权限。
 
-**Prefer environment variables over config.json.** Environment variables (`EINSTEIN_X402_PRIVATE_KEY`) are not persisted to disk and are harder to accidentally commit to git. If you must use config.json (`--save-config`), restrict file permissions:
+**重要说明：**
+- 每次付费查询都会生成一个 EIP-3009 协议的转账请求，用于授权从您的钱包向 Einstein 服务地址转移相应金额的 USDC。该签名是一次性使用的，并且具有时效限制。
+- 默认情况下，每次付费前都会显示费用确认提示。若要自动执行查询，可以在命令行中添加 `--yes` 或 `-y`；或者全局设置 `EINSTEIN_AUTO_confirm=true`。
+- **无需自动安装依赖项**：配置工具不会自动执行 `npm install`，您需要手动安装所有依赖项，以便了解实际安装了哪些包。
+- **配置文件安全**：配置信息仅从环境变量和 `config.json` 文件中读取，不会扫描项目目录外的文件。
 
-```bash
-chmod 600 config.json
-```
+## 常见问题解决方法：
 
-**What gets signed.** Each paid query signs an EIP-3009 `TransferWithAuthorization` message that authorizes a USDC transfer of the exact query price (shown before confirmation) from your wallet to the Einstein service address. The signature is single-use (unique nonce) and time-limited. No blanket approvals are granted.
+- **“未配置私钥”**：设置 `EINSTEIN_X402_PRIVATE_KEY` 环境变量，或运行 `node scripts/einstein-setup.mjs --save-config` 进行配置。
+- **“支付被拒绝”/“余额不足”**：确保您的钱包中拥有足够的 USDC（Base 网络）。可以使用 [https://bridge.base.org] 进行资金转移。
+- **“无法访问 emc2ai.io”**：检查网络连接，服务可能处于临时停机状态。
+- **“未知服务”**：运行 `node scripts/einstein.mjs services` 查看所有可用命令。
+- **“依赖项未安装”**：在项目目录中执行 `npm install`：`cd packages/project-einstein/openclaw-skill/einstein && npm install`。
 
-**Payment confirmation.** By default, the CLI prompts before every paid query showing the exact cost. To skip the prompt for scripted/automated use, pass `--yes` / `-y` per-command or set `EINSTEIN_AUTO_CONFIRM=true` globally.
-
-**No auto-installed packages.** The setup wizard does NOT run `npm install` automatically. You must install dependencies yourself so you can audit what is being installed.
-
-**No home directory scanning.** Configuration is loaded only from environment variables and the skill-local `config.json`. No paths outside the skill directory are read.
-
-## Troubleshooting
-
-**"No private key configured"**
-Set `EINSTEIN_X402_PRIVATE_KEY` environment variable or run `node scripts/einstein-setup.mjs --save-config`.
-
-**"Payment rejected" / "Insufficient balance"**
-Your wallet needs USDC on Base. Bridge via https://bridge.base.org. Use a dedicated wallet with a small balance.
-
-**"Cannot reach emc2ai.io"**
-Check internet connection. The service may have temporary downtime.
-
-**"Unknown service"**
-Run `node scripts/einstein.mjs services` to see all available commands.
-
-**"Dependencies not installed"**
-Run `npm install` in the skill directory: `cd packages/project-einstein/openclaw-skill/einstein && npm install`
-
-## References
-
-- `references/services-catalog.md` — Full service catalog with parameters
-- `references/payment-guide.md` — Detailed x402 payment protocol guide
-- `references/examples.md` — Extended usage examples by category
+## 参考资料：
+- `references/services-catalog.md`：完整的服务目录及参数说明
+- `references/payment-guide.md`：详细的 x402 支付协议指南
+- `references/examples.md`：按类别分类的扩展使用示例

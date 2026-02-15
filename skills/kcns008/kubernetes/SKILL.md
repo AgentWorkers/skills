@@ -14,13 +14,13 @@ metadata:
   version: "1.0.0"
 ---
 
-# Kubernetes & OpenShift Cluster Management
+# Kubernetes与OpenShift集群管理
 
-Comprehensive skill for Kubernetes and OpenShift clusters covering operations, troubleshooting, manifests, security, and GitOps.
+涵盖Kubernetes和OpenShift集群的全面管理技能，包括操作、故障排除、配置文件（manifests）管理、安全配置以及GitOps流程。
 
-## Current Versions (January 2026)
+## 当前版本（2026年1月）
 
-| Platform | Version | Documentation |
+| 平台 | 版本 | 文档链接 |
 |----------|---------|---------------|
 | **Kubernetes** | 1.31.x | https://kubernetes.io/docs/ |
 | **OpenShift** | 4.17.x | https://docs.openshift.com/ |
@@ -28,27 +28,27 @@ Comprehensive skill for Kubernetes and OpenShift clusters covering operations, t
 | **AKS** | 1.31 | https://learn.microsoft.com/azure/aks/ |
 | **GKE** | 1.31 | https://cloud.google.com/kubernetes-engine/docs |
 
-### Key Tools
+### 主要工具
 
-| Tool | Version | Purpose |
+| 工具 | 版本 | 功能 |
 |------|---------|---------|
-| **ArgoCD** | v2.13.x | GitOps deployments |
-| **Flux** | v2.4.x | GitOps toolkit |
-| **Kustomize** | v5.5.x | Manifest customization |
-| **Helm** | v3.16.x | Package management |
-| **Velero** | 1.15.x | Backup/restore |
-| **Trivy** | 0.58.x | Security scanning |
-| **Kyverno** | 1.13.x | Policy engine |
+| **ArgoCD** | v2.13.x | GitOps部署工具 |
+| **Flux** | v2.4.x | GitOps集成工具包 |
+| **Kustomize** | v5.5.x | 配置文件定制工具 |
+| **Helm** | v3.16.x | 应用包管理工具 |
+| **Velero** | 1.15.x | 数据备份与恢复工具 |
+| **Trivy** | 0.58.x | 安全扫描工具 |
+| **Kyverno** | 1.13.x | 策略管理工具 |
 
-## Command Convention
+## 命令规范
 
-**IMPORTANT**: Use `kubectl` for standard Kubernetes. Use `oc` for OpenShift/ARO.
+**重要提示**：使用`kubectl`命令来操作Kubernetes集群；使用`oc`命令来操作OpenShift/ARO集群。
 
 ---
 
-## 1. CLUSTER OPERATIONS
+## 1. 集群操作
 
-### Node Management
+### 节点管理
 
 ```bash
 # View nodes
@@ -64,31 +64,31 @@ kubectl uncordon ${NODE}
 kubectl top nodes
 ```
 
-### Cluster Upgrades
+### 集群升级
 
-**AKS:**
+**AKS:**  
 ```bash
 az aks get-upgrades -g ${RG} -n ${CLUSTER} -o table
 az aks upgrade -g ${RG} -n ${CLUSTER} --kubernetes-version ${VERSION}
 ```
 
-**EKS:**
+**EKS:**  
 ```bash
 aws eks update-cluster-version --name ${CLUSTER} --kubernetes-version ${VERSION}
 ```
 
-**GKE:**
+**GKE:**  
 ```bash
 gcloud container clusters upgrade ${CLUSTER} --master --cluster-version ${VERSION}
 ```
 
-**OpenShift:**
+**OpenShift:**  
 ```bash
 oc adm upgrade --to=${VERSION}
 oc get clusterversion
 ```
 
-### Backup with Velero
+### 使用Velero进行数据备份
 
 ```bash
 # Install Velero
@@ -103,26 +103,26 @@ velero restore create --from-backup ${BACKUP_NAME}
 
 ---
 
-## 2. TROUBLESHOOTING
+## 2. 故障排除
 
-### Health Assessment
+### 集群健康检查
 
-Run the bundled script for comprehensive health check:
+运行内置脚本进行全面的集群健康状况检查：
 ```bash
 bash scripts/cluster-health-check.sh
 ```
 
-### Pod Status Interpretation
+### Pod状态解析
 
-| Status | Meaning | Action |
+| 状态 | 含义 | 处理方法 |
 |--------|---------|--------|
-| `Pending` | Scheduling issue | Check resources, nodeSelector, tolerations |
-| `CrashLoopBackOff` | Container crashing | Check logs: `kubectl logs ${POD} --previous` |
-| `ImagePullBackOff` | Image unavailable | Verify image name, registry access |
-| `OOMKilled` | Out of memory | Increase memory limits |
-| `Evicted` | Node pressure | Check node resources |
+| `Pending` | 正在调度中 | 检查资源分配、节点选择条件（nodeSelector）和容错策略（tolerations） |
+| `CrashLoopBackOff` | 容器崩溃 | 查看日志：`kubectl logs ${POD} --previous` |
+| `ImagePullBackOff` | 镜像无法获取 | 验证镜像名称及注册库访问权限 |
+| `OOMKilled` | 内存不足 | 增加内存限制 |
+| `Evicted` | 节点负载过高 | 检查节点资源使用情况 |
 
-### Debugging Commands
+### 调试命令
 
 ```bash
 # Pod logs (current and previous)
@@ -141,7 +141,7 @@ kubectl describe pod ${POD} | grep -A 20 Events
 kubectl get events -A --sort-by='.lastTimestamp' | tail -50
 ```
 
-### Network Troubleshooting
+### 网络故障排除
 
 ```bash
 # Test DNS
@@ -156,9 +156,9 @@ kubectl get endpoints ${SVC}
 
 ---
 
-## 3. MANIFEST GENERATION
+## 3. 配置文件（Manifest）生成
 
-### Production Deployment Template
+### 生产环境部署模板
 
 ```yaml
 apiVersion: apps/v1
@@ -238,7 +238,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
 ```
 
-### Service & Ingress
+### 服务（Service）与Ingress配置
 
 ```yaml
 apiVersion: v1
@@ -278,7 +278,7 @@ spec:
                   name: http
 ```
 
-### OpenShift Route
+### OpenShift路由配置
 
 ```yaml
 apiVersion: route.openshift.io/v1
@@ -296,23 +296,23 @@ spec:
     insecureEdgeTerminationPolicy: Redirect
 ```
 
-Use the bundled script for manifest generation:
+使用内置脚本生成配置文件：
 ```bash
 bash scripts/generate-manifest.sh deployment myapp production
 ```
 
 ---
 
-## 4. SECURITY
+## 4. 安全配置
 
-### Security Audit
+### 安全审计
 
-Run the bundled script:
+运行内置脚本进行安全审计：
 ```bash
 bash scripts/security-audit.sh [namespace]
 ```
 
-### Pod Security Standards
+### Pod安全标准
 
 ```yaml
 apiVersion: v1
@@ -325,7 +325,7 @@ metadata:
     pod-security.kubernetes.io/warn: restricted
 ```
 
-### NetworkPolicy (Zero Trust)
+### 网络策略（Zero Trust）
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -366,7 +366,7 @@ spec:
           port: 53
 ```
 
-### RBAC Best Practices
+### RBAC最佳实践
 
 ```yaml
 apiVersion: v1
@@ -396,7 +396,7 @@ roleRef:
   name: ${APP_NAME}-role
 ```
 
-### Image Scanning
+### 镜像扫描
 
 ```bash
 # Scan image with Trivy
@@ -411,9 +411,9 @@ trivy image --format spdx-json -o sbom.json ${IMAGE}:${TAG}
 
 ---
 
-## 5. GITOPS
+## 5. GitOps
 
-### ArgoCD Application
+### ArgoCD应用管理
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -440,7 +440,7 @@ spec:
       - CreateNamespace=true
 ```
 
-### Kustomize Structure
+### Kustomize配置
 
 ```
 k8s/
@@ -457,7 +457,7 @@ k8s/
         └── kustomization.yaml
 ```
 
-**base/kustomization.yaml:**
+**base/kustomization.yaml:**  
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -466,7 +466,7 @@ resources:
   - service.yaml
 ```
 
-**overlays/prod/kustomization.yaml:**
+**overlays/prod/kustomization.yaml:**  
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -482,7 +482,7 @@ images:
     newTag: v1.2.3
 ```
 
-### GitHub Actions CI/CD
+### GitHub Actions与CI/CD集成
 
 ```yaml
 name: Build and Deploy
@@ -516,27 +516,27 @@ jobs:
           git push
 ```
 
-Use the bundled script for ArgoCD sync:
+使用内置脚本同步ArgoCD配置：
 ```bash
 bash scripts/argocd-app-sync.sh ${APP_NAME} --prune
 ```
 
 ---
 
-## Helper Scripts
+## 辅助脚本
 
-This skill includes automation scripts in the `scripts/` directory:
+本技能包含`scripts/`目录中的自动化脚本：
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `cluster-health-check.sh` | Comprehensive cluster health assessment with scoring |
-| `security-audit.sh` | Security posture audit (privileged, root, RBAC, NetworkPolicy) |
-| `node-maintenance.sh` | Safe node drain and maintenance prep |
-| `pre-upgrade-check.sh` | Pre-upgrade validation checklist |
-| `generate-manifest.sh` | Generate production-ready K8s manifests |
-| `argocd-app-sync.sh` | ArgoCD application sync helper |
+| `cluster-health-check.sh` | 进行全面的集群健康状况评估 |
+| `security-audit.sh` | 安全配置审计（权限管理、root账户使用、RBAC配置、网络策略） |
+| `node-maintenance.sh` | 安全地清理和维护集群节点 |
+| `pre-upgrade-check.sh` | 升级前的验证检查清单 |
+| `generate-manifest.sh` | 生成适用于生产环境的Kubernetes配置文件 |
+| `argocd-app-sync.sh` | 用于同步ArgoCD配置的辅助脚本 |
 
-Run any script:
+要运行任意脚本，请执行：
 ```bash
 bash scripts/<script-name>.sh [arguments]
 ```

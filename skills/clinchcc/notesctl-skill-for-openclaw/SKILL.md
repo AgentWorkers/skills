@@ -1,6 +1,6 @@
 ---
 name: notesctl
-description: Manage Apple Notes via deterministic local scripts (create, append, list, search, export, and edit). Use when a user asks OpenClaw to add a note, list notes, search notes, or manage note folders.
+description: 通过确定性的本地脚本来管理 Apple Notes（创建、添加、列出、搜索、导出和编辑）。当用户要求 OpenClaw 添加笔记、列出笔记、搜索笔记或管理笔记文件夹时，可以使用这些脚本。
 metadata:
   {
     "openclaw": {
@@ -11,29 +11,29 @@ metadata:
   }
 ---
 
-# notesctl (Apple Notes, low-token)
+# notesctl（用于 Apple Notes，低令牌使用量）
 
-## Goal
+## 目标
 
-Minimize token usage and avoid fragile quoting by routing Apple Notes operations through bundled scripts.
+通过将 Apple Notes 操作路由到预打包的脚本中，最小化令牌的使用量并避免因引用方式不当而导致的错误。
 
-## Quick start
+## 快速入门
 
-### Create a new note (deterministic title/body)
+### 创建新笔记（标题和内容固定）
 
-- JSON stdin (recommended):
+- 推荐使用 JSON 格式通过标准输入（stdin）：
 
 ```bash
 echo '{"title":"Title","body":"Line 1\nLine 2","folder":"Notes"}' | {baseDir}/scripts/notes_post.sh
 ```
 
-- Direct args:
+- 直接使用命令参数：
 
 ```bash
 {baseDir}/scripts/notes_new.sh "Title" $'Body line 1\nBody line 2' "Notes"
 ```
 
-### List/search/export
+### 列出/搜索/导出笔记
 
 ```bash
 {baseDir}/scripts/notes_list.sh "Notes"
@@ -41,12 +41,12 @@ echo '{"title":"Title","body":"Line 1\nLine 2","folder":"Notes"}' | {baseDir}/sc
 {baseDir}/scripts/notes_export.sh "query" "Notes" "/tmp"  # interactive select then export
 ```
 
-## Output conventions
+## 输出格式规范
 
-- Keep receipts short: `Wrote to Notes: <title>`. 
+- 输出信息应简洁明了：例如：“已写入 Notes：<标题>”。
 
-## Notes on editing
+## 关于编辑现有笔记的注意事项
 
-Editing existing notes is inherently more fragile:
-- Prefer append workflows or create a new note with a reference.
-- If the user explicitly wants interactive editing, use `memo notes -e` (manual selection + editor).
+编辑现有笔记存在一定的风险：
+- 建议采用追加内容的方式，或者创建一个新笔记并引用原有笔记。
+- 如果用户确实需要交互式编辑功能，可以使用 `memo notes -e`（手动选择内容后使用编辑器进行编辑）。

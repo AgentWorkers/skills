@@ -1,32 +1,32 @@
 ---
 name: browser
-description: Automate web browser interactions using natural language via CLI commands. Use when the user asks to browse websites, navigate web pages, extract data from websites, take screenshots, fill forms, click buttons, or interact with web applications.
+description: 通过 CLI 命令，利用自然语言自动化网页浏览器的交互操作。适用于用户需要浏览网站、导航网页、从网站中提取数据、截图、填写表单、点击按钮或与网页应用程序进行交互的场景。
 allowed-tools: Bash
 ---
 
-# Browser Automation
+# 浏览器自动化
 
-Automate browser interactions using Stagehand CLI with Claude.
+使用 Stagehand CLI 和 Claude 自动化浏览器操作。
 
-### First: Environment Selection (Local vs Remote)
+### 第一步：环境选择（本地环境 vs 远程环境）
 
-The skill automatically selects between local and remote browser environments:
-- **If Browserbase API keys exist** (BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID in .env file): Uses remote Browserbase environment
-- **If no Browserbase API keys**: Falls back to local Chrome browser
-- **No user prompting**: The selection happens automatically based on available configuration
+该功能会自动在本地环境和远程浏览器环境之间进行切换：
+- **如果存在 Browserbase API 密钥**（.env 文件中的 BROWSERBASE_API_KEY 和 BROWSERBASE_PROJECT_ID）：使用远程 Browserbase 环境
+- **如果没有 Browserbase API 密钥**：则使用本地的 Chrome 浏览器
+- **无需用户提示**：根据可用配置自动选择环境
 
-## Setup (First Time Only)
+## 设置（仅首次使用）
 
-Check `setup.json` in this directory. If `setupComplete: false`:
+请检查该目录下的 `setup.json` 文件。如果 `setupComplete` 的值为 `false`，则需要执行相应的设置操作：
 
 ```bash
 npm install    # Install dependencies
 npm link       # Create global 'browser' command
 ```
 
-## Commands
+## 命令
 
-All commands work identically in both modes:
+所有命令在本地环境和远程环境中都具有相同的功能和用法：
 
 ```bash
 browser navigate <url>                    # Go to URL
@@ -37,7 +37,7 @@ browser screenshot                        # Take screenshot
 browser close                             # Close browser
 ```
 
-## Quick Example
+## 快速示例
 
 ```bash
 browser navigate https://example.com
@@ -46,28 +46,26 @@ browser extract "get the page title"
 browser close
 ```
 
-## Mode Comparison
+## 环境对比
 
-| Feature | Local | Browserbase |
+| 特性 | 本地环境 | Browserbase 环境 |
 |---------|-------|-------------|
-| Speed | Faster | Slightly slower |
-| Setup | Chrome required | API key required |
-| Stealth mode | No | Yes |
-| Proxy/CAPTCHA | No | Yes |
-| Best for | Development | Production/scraping |
+| 执行速度 | 更快 | 略慢 |
+| 设置要求 | 需要安装 Chrome 浏览器 | 需要 API 密钥 |
+| 隐私模式 | 不支持 | 支持 |
+| 代理/验证码处理 | 不支持 | 支持 |
+| 适用场景 | 开发 | 生产环境/数据抓取 |
 
-## Best Practices
+## 最佳实践：
+1. 在执行任何操作之前，先进行页面导航。
+2. 每执行完一个命令后，查看截图以确认操作结果。
+3. 在描述操作时请务必具体明确。
+4. 操作完成后，请关闭浏览器。
 
-1. **Always navigate first** before interacting
-2. **View screenshots** after each command to verify
-3. **Be specific** in action descriptions
-4. **Close browser** when done
+## 常见问题解决方法：
+- **找不到 Chrome 浏览器**：请安装 Chrome 或切换到 Browserbase 环境。
+- 操作失败：使用 `browser observe` 命令查看可用的页面元素。
+- Browserbase 环境出现问题：请确认 API 密钥和项目 ID 是否设置正确。
 
-## Troubleshooting
-
-- **Chrome not found**: Install Chrome or use Browserbase mode
-- **Action fails**: Use `browser observe` to discover available elements
-- **Browserbase fails**: Verify API key and project ID are set
-
-For detailed examples, see [EXAMPLES.md](EXAMPLES.md).
-For API reference, see [REFERENCE.md](REFERENCE.md).
+详细示例请参见 [EXAMPLES.md]。
+API 参考请参见 [REFERENCE.md]。

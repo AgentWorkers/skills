@@ -1,15 +1,15 @@
 ---
 name: elevenlabs-stt
-description: Transcribe audio files using ElevenLabs Speech-to-Text (Scribe v2).
+description: 使用 ElevenLabs 的 Speech-to-Text (Scribe v2) 服务来转录音频文件。
 homepage: https://elevenlabs.io/speech-to-text
 metadata: {"clawdbot":{"emoji":"🎙️","requires":{"bins":["curl"],"env":["ELEVENLABS_API_KEY"]},"primaryEnv":"ELEVENLABS_API_KEY"}}
 ---
 
-# ElevenLabs Speech-to-Text
+# ElevenLabs 语音转文本
 
-Transcribe audio files using ElevenLabs' Scribe v2 model. Supports 90+ languages with speaker diarization.
+使用 ElevenLabs 的 Scribe v2 模型转录音频文件。支持 90 多种语言，并能区分不同的说话者。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Basic transcription
@@ -25,22 +25,22 @@ Transcribe audio files using ElevenLabs' Scribe v2 model. Supports 90+ languages
 {baseDir}/scripts/transcribe.sh /path/to/audio.mp3 --json
 ```
 
-## Options
+## 参数选项
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `--diarize` | Identify different speakers |
-| `--lang CODE` | ISO language code (e.g., en, pt, es) |
-| `--json` | Output full JSON with word timestamps |
-| `--events` | Tag audio events (laughter, music, etc.) |
+| `--diarize` | 识别不同的说话者 |
+| `--lang CODE` | ISO 语言代码（例如：en, pt, es） |
+| `--json` | 以 JSON 格式输出转录结果，包含单词的时间戳 |
+| `--events` | 为音频中的事件（如笑声、音乐等）添加标签 |
 
-## Supported Formats
+## 支持的格式
 
-All major audio/video formats: mp3, m4a, wav, ogg, webm, mp4, etc.
+所有主要的音频/视频格式：mp3、m4a、wav、ogg、webm、mp4 等。
 
-## API Key
+## API 密钥
 
-Set `ELEVENLABS_API_KEY` environment variable, or configure in clawdbot.json:
+设置 `ELEVENLABS_API_KEY` 环境变量，或在 `clawdbot.json` 中进行配置：
 
 ```json5
 {
@@ -54,7 +54,7 @@ Set `ELEVENLABS_API_KEY` environment variable, or configure in clawdbot.json:
 }
 ```
 
-## Examples
+## 使用示例
 
 ```bash
 # Transcribe a WhatsApp voice note

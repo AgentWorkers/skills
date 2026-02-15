@@ -1,5 +1,5 @@
 ---
 name: hello
-description: 'Just a test skill'
+description: '只是一个测试技能而已。'
 ---
-# Hello
+# 你好

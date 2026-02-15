@@ -1,6 +1,6 @@
 ---
 name: skills-search
-description: Search skills.sh registry from CLI. Find and discover agent skills from the skills.sh ecosystem.
+description: 通过命令行界面（CLI）搜索 skills.sh 注册表。从 skills.sh 生态系统中查找并发现代理技能（agent skills）。
 metadata:
   version: 1.0.4
   tags: ["search", "skills.sh", "cli"]
@@ -15,17 +15,17 @@ metadata:
         label: "Install skills-search skill"
 ---
 
-# Skills.sh Search CLI
+# Skills.sh 搜索命令行界面 (Search CLI)
 
-Search skills from skills.sh registry directly from your terminal.
+您可以直接在终端中从 skills.sh 注册表中搜索技能。
 
-## Install (Clawdbot)
+## 安装 (Clawdbot)
 
 ```bash
 clawdhub install skills-search
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Search for skills by name
@@ -41,7 +41,7 @@ skills-search --popular --limit 10
 skills-search "web design" --show-install
 ```
 
-## Examples
+## 示例
 
 ```
 skills-search "web design"
@@ -56,7 +56,7 @@ skills-search "web design"
 #    Install: npx skills add anthropics/skills
 ```
 
-### Popular Skills
+### 热门技能
 
 ```
 skills-search --popular --limit 5
@@ -72,56 +72,56 @@ skills-search --popular --limit 5
 #    Source: expo/skills
 ```
 
-## Automation (Clawdbot)
+## 自动化 (Clawdbot)
 
-### Step 1: Search for a skill
+### 第一步：搜索技能
 
 ```bash
 npx @thesethrose/skills-search "react"
 ```
 
-### Step 2: Install found skill via skills CLI
+### 第二步：通过 skills CLI 安装找到的技能
 
-After finding a skill, install it using the `skills` CLI:
+找到技能后，使用 `skills` CLI 进行安装：
 
 ```bash
 npx skills add vercel-labs/agent-skills
 ```
 
-**TUI Navigation Guidance:**
+**TUI 导航指南:**
 
-The `skills` CLI uses an interactive menu. Watch for prompts and navigate accordingly:
+`skills` CLI 使用交互式菜单进行操作。请按照提示进行操作：
 
-1. **Select skills** - Toggle skills you want with `space`, confirm with `enter`
-2. **Select agents** - Navigate with `up`/`down`, select `Clawdbot` with `space`, confirm with `enter`
-3. **Installation scope** - Choose Project (recommended) with `enter`
-4. **Confirm** - Press `enter` to proceed
+1. **选择技能** - 使用空格键切换技能，按回车键确认
+2. **选择代理 (Agent)** - 使用上下箭头键导航，使用空格键选择 `Clawdbot`，按回车键确认
+3. **安装范围** - 选择项目（推荐）并按回车键确认
+4. **确认** - 按回车键继续操作
 
-**Important:** The TUI may change. Pay attention to the menu options and select `Clawdbot` when prompted for agents. If unsure about any selection, ask the user for guidance.
+**注意:** TUI 界面可能会发生变化。请注意菜单选项，并在需要选择代理时选择 `Clawdbot`。如果对任何选项不确定，请向用户寻求帮助。
 
-### Step 3: Verify installation
+### 第三步：验证安装结果
 
 ```bash
 ls ~/.clawdbot/workspace/.agents/skills/
 ```
 
-## Adding Your Own Skill
+## 添加自己的技能
 
-Skills.sh automatically indexes GitHub repos containing `SKILL.md` files. To add your skill:
+Skills.sh 会自动索引包含 `SKILL.md` 文件的 GitHub 仓库。要添加自己的技能，请按照以下步骤操作：
 
-1. **Create a skill folder** with `SKILL.md` in your GitHub repo
-2. **Publish to ClawdHub** for Clawdbot-specific discovery:
+1. 在您的 GitHub 仓库中创建一个包含 `SKILL.md` 文件的文件夹
+2. 将该文件夹发布到 ClawdHub，以便 Clawdbot 能够识别您的技能：
    ```bash
    clawdhub publish ./your-skill/ --slug your-skill --name "Your Skill" --version 1.0.0
    ```
-3. **Install in Clawdbot:**
+3. 在 Clawdbot 中安装该技能：
    ```bash
    clawdhub install your-skill
    ```
 
-## Notes
+## 注意事项
 
-- Queries https://skills.sh/api/skills (official skills.sh API)
-- Results sorted by install count (most popular first)
-- **Clawdbot-only**: Install via `clawdhub install skills-search`
-- Skills.sh leaderboard requires GitHub repo (not needed for ClawdHub-only skills)
+- 可以通过 https://skills.sh/api/skills 查询技能信息（官方 skills.sh API）
+- 结果按安装次数排序（最受欢迎的技能排在最前面）
+- **仅适用于 Clawdbot**：使用 `clawdhub install skills-search` 命令进行安装
+- Skills.sh 的排行榜需要一个 GitHub 仓库（仅针对在 ClawdHub 中使用的技能）

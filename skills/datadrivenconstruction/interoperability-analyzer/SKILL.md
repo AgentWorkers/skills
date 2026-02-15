@@ -1,24 +1,24 @@
 ---
 slug: "interoperability-analyzer"
 display_name: "Interoperability Analyzer"
-description: "Analyze data interoperability issues in construction projects. Identify format incompatibilities and data loss points."
+description: "分析建设项目中的数据互操作性问题。识别格式不兼容性和数据丢失的环节。"
 ---
 
-# Interoperability Analyzer
+# 互操作性分析器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Data interoperability challenges:
-- Multiple proprietary formats
-- Data loss in conversions
-- Incompatible systems
-- Missing standard adoption
+### 问题描述
+数据互操作性面临以下挑战：
+- 多种专有数据格式
+- 转换过程中数据丢失
+- 系统不兼容
+- 缺乏对标准的采用
 
-### Solution
-Analyze data exchange patterns, identify interoperability issues, and recommend solutions for seamless data flow.
+### 解决方案
+分析数据交换模式，识别互操作性问题，并提出解决方案，以实现数据流的顺畅传输。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -306,7 +306,7 @@ class InteroperabilityAnalyzer:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize analyzer
@@ -319,9 +319,9 @@ print(f"Preserved: {analysis.data_preserved}")
 print(f"Lost: {analysis.data_lost}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Workflow Analysis
+### 1. 工作流程分析
 ```python
 workflow = analyzer.analyze_workflow([
     DataFormat.RVT, DataFormat.IFC, DataFormat.NWC
@@ -330,18 +330,18 @@ print(f"Overall: {workflow['overall_level']}")
 print(f"Total data lost: {workflow['total_data_lost']}")
 ```
 
-### 2. Compatibility Matrix
+### 2. 兼容性矩阵
 ```python
 matrix = analyzer.generate_compatibility_matrix()
 print(matrix)
 ```
 
-### 3. Export Report
+### 3. 导出报告
 ```python
 analyzer.export_analysis("interoperability_report.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.5 - Data Challenges in Construction
-- **buildingSMART**: IFC Standards
-- **Website**: https://datadrivenconstruction.io
+## 资源参考
+- **DDC手册**：第3.5章 - 建筑领域的数据挑战
+- **buildingSMART**：IFC标准
+- **官方网站**：https://datadrivenconstruction.io

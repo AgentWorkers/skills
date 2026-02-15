@@ -1,50 +1,50 @@
 ---
 name: plugin-validator
-description: Validates SpecWeave plugin installation when EXPLICITLY requested by user. Use for checking if plugins are installed correctly, validating marketplace registration, or troubleshooting missing plugins. Only triggers on explicit requests to avoid false positives during normal workflow.
+description: 在用户明确请求的情况下，该功能用于验证 SpecWeave 插件的安装情况。它可以用来检查插件是否正确安装、验证插件在 marketplace 上的注册状态，或解决插件缺失的问题。该功能仅在用户明确请求时触发，以避免在正常工作流程中出现误报（即错误地提示插件问题）。
 allowed-tools: Read, Bash, Grep
 ---
 
-# Plugin Validator Skill
+# 插件验证器技能（Plugin Validator Skill）
 
-**Purpose**: Validate and install SpecWeave plugins when explicitly requested by the user.
+**功能**：在用户明确请求时，验证并安装 SpecWeave 插件。
 
-**Activation**: Triggers ONLY when user explicitly requests plugin validation (e.g., "validate plugins", "check plugins", or runs `specweave validate-plugins` command). Does NOT auto-activate for workflow commands to prevent false positive errors.
+**激活条件**：仅当用户明确请求插件验证时才会触发（例如：输入“validate plugins”或运行 `specweave validate-plugins` 命令）。不会因工作流命令而自动激活，以避免误报。
 
-## What This Skill Does
+## 该技能的作用
 
-This skill ensures that your SpecWeave environment is properly configured with all required plugins BEFORE you start working. It prevents frustrating errors and wasted time from missing components.
+该技能确保在您开始工作之前，您的 SpecWeave 环境已正确配置所有必需的插件。这可以避免因缺少组件而导致的错误和浪费时间。
 
-### Key Features
+### 主要特性
 
-1. **Marketplace Validation**: Ensures SpecWeave marketplace is registered in `~/.claude/settings.json`
-2. **Core Plugin Check**: Verifies `specweave` plugin is installed
-3. **Context Detection**: Analyzes your increment description and suggests relevant plugins
-4. **Auto-Installation**: Can automatically install missing components (with your permission)
-5. **Clear Guidance**: Shows exactly what's missing and how to fix it
+1. **市场places 验证**：确保 `~/.claude/settings.json` 中注册了 SpecWeave 市场places。
+2. **核心插件检查**：验证是否已安装了 `specweave` 插件。
+3. **上下文感知**：分析您的增量描述并推荐相关插件。
+4. **自动安装**：在获得您的许可后，可以自动安装缺失的组件。
+5. **清晰指导**：明确显示缺少什么以及如何解决。
 
-## When This Skill Activates
+## 该技能何时激活
 
-✅ **ONLY activates when explicitly requested**:
-- You mention "plugin validation" or "validate plugins"
-- You mention "environment setup" or "check plugins"
-- You run: `specweave validate-plugins`
-- You ask: "Can you validate my plugins?"
-- You report: "I'm getting plugin errors"
-- During: `specweave init` (initial setup only)
+✅ **仅在以下情况下激活**：
+- 您输入了“plugin validation”或“validate plugins”。
+- 您输入了“environment setup”或“check plugins”。
+- 您运行了 `specweave validate-plugins` 命令。
+- 您询问：“可以验证我的插件吗？”
+- 您报告：“我遇到了插件错误”。
+- 在执行 `specweave init`（初始设置）时。
 
-❌ **Does NOT auto-activate for**:
-- `/sw:increment` commands
-- `/sw:do` commands
-- Any other workflow commands
-- Reason: Prevents false positive errors when plugins are installed but detection fails
+❌ **不会因以下命令自动激活**：
+- `/sw:increment` 命令
+- `/sw:do` 命令
+- 任何其他工作流命令
+- **原因**：防止在插件已安装但检测失败时产生误报。
 
-## Validation Process
+## 验证流程
 
-### Phase 1: Marketplace Check
+### 第一阶段：市场places 检查
 
-**What**: Checks if SpecWeave marketplace is registered in Claude Code
-**Where**: `~/.claude/settings.json`
-**Expected**:
+**检查内容**：验证 SpecWeave 市场places 是否已注册在 Claude 代码中。
+**位置**：`~/.claude/settings.json`
+**预期结果**：
 ```json
 {
   "extraKnownMarketplaces": {
@@ -59,53 +59,52 @@ This skill ensures that your SpecWeave environment is properly configured with a
 }
 ```
 
-**If missing**: Auto-creates the configuration
+**如果缺失**：会自动创建相应的配置。
 
-### Phase 2: Core Plugin Check
+### 第二阶段：核心插件检查
 
-**What**: Verifies `specweave` plugin is installed
-**Command**: `/plugin list --installed | grep "specweave"`
-**Expected**: Plugin appears in the list
+**检查内容**：验证是否已安装 `specweave` 插件。
+**命令**：`/plugin list --installed | grep "specweave"`
+**预期结果**：插件应出现在列表中。
+**如果缺失**：会建议安装 `/plugin install specweave`。
 
-**If missing**: Suggests `/plugin install specweave`
+### 第三阶段：上下文感知的插件检测
 
-### Phase 3: Context-Aware Plugin Detection
+**检查内容**：扫描您的增量描述中的关键词。
+**示例**：
 
-**What**: Scans your increment description for keywords
-**Examples**:
-
-| Your Description | Detected Keywords | Suggested Plugin |
+| 描述 | 检测到的关键词 | 建议的插件 |
 |-----------------|-------------------|------------------|
-| "Add GitHub sync" | github, sync | specweave-github |
-| "Stripe billing with React UI" | stripe, billing, react, ui | specweave-payments, specweave-frontend |
-| "Deploy to Kubernetes" | kubernetes, deploy | specweave-kubernetes |
-| "Add Jira integration" | jira, integration | specweave-jira |
+| “添加 GitHub 同步” | github, sync | specweave-github |
+| “使用 React UI 进行 Stripe 支付” | stripe, billing, react, ui | specweave-payments, specweave-frontend |
+| “部署到 Kubernetes” | kubernetes, deploy | specweave-kubernetes |
+| “添加 Jira 集成” | jira, integration | specweave-jira |
 
-**Full Keyword Map** (15+ plugins):
-- **specweave-github**: github, git, issues, pull request, pr, repository
-- **specweave-jira**: jira, epic, story, sprint, backlog
-- **specweave-ado**: azure devops, ado, work item, boards
-- **specweave-payments**: stripe, billing, payment, subscription, invoice
-- **specweave-frontend**: react, nextjs, vue, angular, frontend, ui
-- **specweave-kubernetes**: kubernetes, k8s, helm, pod, deployment
-- **specweave-ml**: machine learning, ml, tensorflow, pytorch, model
-- **specweave-observability**: prometheus, grafana, monitoring, metrics
-- **specweave-security**: security, owasp, vulnerability, audit
-- **specweave-diagrams**: diagram, c4, mermaid, architecture
-- **specweave-backend-nodejs**: nodejs, express, fastify, nestjs, backend
-- **specweave-backend-python**: python, fastapi, django, flask
-- **specweave-backend-dotnet**: dotnet, .net, aspnet, c#
-- **specweave-e2e-testing**: playwright, e2e, end-to-end, browser
+**完整关键词映射**（15 个以上插件）：
+- **specweave-github**：github, git, issues, pull request, pr, repository
+- **specweave-jira**：jira, epic, story, sprint, backlog
+- **specweave-ado**：azure devops, ado, work item, boards
+- **specweave-payments**：stripe, billing, payment, subscription, invoice
+- **specweave-frontend**：react, nextjs, vue, angular, frontend, ui
+- **specweave-kubernetes**：kubernetes, k8s, helm, pod, deployment
+- **specweave-ml**：machine learning, ml, tensorflow, pytorch, model
+- **specweave-observability**：prometheus, grafana, monitoring, metrics
+- **specweave-security**：security, owasp, vulnerability, audit
+- **specweave-diagrams**：diagram, c4, mermaid, architecture
+- **specweave-backend-nodejs**：nodejs, express, fastify, nestjs, backend
+- **specweave-backend-python**：python, fastapi, django, flask
+- **specweave-backend-dotnet**：dotnet, .net, aspnet, c#
+- **specweave-e2e-testing**：playwright, e2e, end-to-end, browser
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Fresh Environment
+### 示例 1：新环境
 
-**Scenario**: You cloned a project to a new VM and want to start working.
+**场景**：您将项目克隆到新的虚拟机上并准备开始工作。
 
-**Action**: Run `/sw:increment "Add authentication"`
+**操作**：运行 `/sw:increment "Add authentication"`。
 
-**What Happens**:
+**结果**：
 ```
 🔍 Validating SpecWeave environment...
 
@@ -120,13 +119,13 @@ This skill ensures that your SpecWeave environment is properly configured with a
 🎉 Environment ready! Proceeding with increment planning...
 ```
 
-### Example 2: Context Detection
+### 示例 2：上下文检测
 
-**Scenario**: You're adding a new feature that uses GitHub and React.
+**场景**：您正在添加一个使用 GitHub 和 React 的新功能。
 
-**Action**: Run `/sw:increment "Add GitHub sync with React UI"`
+**操作**：运行 `/sw:increment "Add GitHub sync with React UI"`。
 
-**What Happens**:
+**结果**：
 ```
 🔍 Validating SpecWeave environment...
 
@@ -150,13 +149,13 @@ This skill ensures that your SpecWeave environment is properly configured with a
 Your choice [1]:
 ```
 
-### Example 3: Manual Validation
+### 示例 3：手动验证
 
-**Scenario**: You want to check your environment without running a command.
+**场景**：您想在不运行命令的情况下检查环境。
 
-**Action**: Run `specweave validate-plugins --verbose`
+**操作**：运行 `specweave validate-plugins --verbose`。
 
-**What Happens**:
+**结果**：
 ```
 [PluginValidator] Checking marketplace registration...
 [PluginValidator] Marketplace registered ✓
@@ -168,13 +167,13 @@ Your choice [1]:
    • Cache: miss
 ```
 
-### Example 4: Dry-Run Mode
+### 示例 4： dry-run 模式
 
-**Scenario**: You want to see what would be installed without actually installing.
+**场景**：您想查看在不实际安装的情况下会安装哪些插件。
 
-**Action**: Run `specweave validate-plugins --context="Add Stripe billing" --dry-run`
+**操作**：运行 `specweave validate-plugins --context="Add Stripe billing" --dry-run`。
 
-**What Happens**:
+**结果**：
 ```
 🔍 Validating SpecWeave environment...
 
@@ -190,97 +189,97 @@ Your choice [1]:
    To install, remove --dry-run flag.
 ```
 
-## CLI Command Reference
+## CLI 命令参考
 
-**Basic validation**:
+**基本验证**：
 ```bash
 specweave validate-plugins
 ```
 
-**Auto-install missing components**:
+**自动安装缺失组件**：
 ```bash
 specweave validate-plugins --auto-install
 ```
 
-**With context detection**:
+**结合上下文检测**：
 ```bash
 specweave validate-plugins --context="Add GitHub sync for mobile app"
 ```
 
-**Dry-run (preview only)**:
+** dry-run（仅预览）**：
 ```bash
 specweave validate-plugins --dry-run --context="Add Stripe billing"
 ```
 
-**Verbose mode**:
+**详细模式**：
 ```bash
 specweave validate-plugins --verbose
 ```
 
-**Combined flags**:
+**组合标志**：
 ```bash
 specweave validate-plugins --auto-install --context="Deploy to Kubernetes" --verbose
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Error: "Claude CLI not available"
+### 错误：“Claude CLI 未找到”
 
-**Symptom**: Validation fails with "command not found"
+**症状**：验证失败，显示“命令未找到”。
 
-**Solution**:
-1. Ensure Claude Code is installed
-2. Restart your terminal
-3. Verify: `claude --version`
-4. If still failing, install plugins manually using `/plugin install` command
+**解决方案**：
+1. 确保已安装 Claude 代码。
+2. 重启终端。
+3. 验证：`claude --version`。
+4. 如果仍然失败，请使用 `/plugin install` 命令手动安装插件。
 
-### Error: "Marketplace configuration invalid"
+### 错误：“市场places 配置无效”
 
-**Symptom**: Marketplace is registered but validation fails
+**症状**：市场places 已注册，但验证失败。
 
-**Solution**:
-1. Check `~/.claude/settings.json` structure
-2. Ensure marketplace points to GitHub source
-3. If using local marketplace (dev mode), this is expected
-4. Re-run validation to auto-fix configuration
+**解决方案**：
+1. 检查 `~/.claude/settings.json` 的结构。
+2. 确保市场places 指向正确的 GitHub 源。
+3. 如果使用本地市场places（开发模式），这是正常的。
+4. 重新运行验证以自动修复配置。
 
-### Error: "Plugin installation failed"
+### 错误：“插件安装失败”
 
-**Symptom**: Auto-install tries but fails
+**症状**：自动安装尝试失败。
 
-**Solution**:
-1. Check internet connection (GitHub access required)
-2. Verify Claude Code is running
-3. Try manual installation: `/plugin install specweave`
-4. Check Claude Code logs for detailed errors
+**解决方案**：
+1. 检查网络连接（需要访问 GitHub）。
+2. 确保 Claude 代码正在运行。
+3. 尝试手动安装：`/plugin install specweave`。
+4. 查看 Claude 代码的日志以获取详细错误信息。
 
-### False Positive: Wrong Plugin Suggested
+### 误报：推荐的插件不相关
 
-**Symptom**: Context detection suggests irrelevant plugin
+**症状**：上下文检测推荐了不相关的插件。
 
-**Example**: Description "Add GitHub Actions" suggests specweave-github (but you meant CI/CD, not issue tracking)
+**示例**：描述为“Add GitHub Actions”，但实际需要的是 CI/CD 功能，而不是问题跟踪功能，因此推荐了 specweave-github。
 
-**Solution**:
-1. Skip the suggestion (choose option 2)
-2. Install correct plugin manually later
-3. This is rare (2+ keyword matches required for suggestion)
+**解决方案**：
+1. 跳过该建议（选择其他选项）。
+2. 稍后手动安装正确的插件。
+3. 这种情况很少见（需要匹配多个关键词才会推荐相关插件）。
 
-## Performance
+## 性能
 
-**Validation Speed**:
-- ✅ With cache: <2 seconds
-- ✅ Without cache: <5 seconds
-- ✅ With auto-install: <30 seconds (1-2 plugins)
+**验证速度**：
+- ✅ 使用缓存：<2 秒
+- ✅ 不使用缓存：<5 秒
+- ✅ 使用自动安装：<30 秒（1-2 个插件）
 
-**Caching**:
-- Results cached for 5 minutes
-- Speeds up repeated commands
-- Invalidated after plugin changes
-- Cache location: `~/.specweave/validation-cache.json`
+**缓存**：
+- 结果缓存 5 分钟。
+- 加速重复命令的执行。
+- 插件更改后缓存失效。
+- 缓存位置：`~/.specweave/validation-cache.json`。
 
-## Configuration
+## 配置
 
-**Validation can be configured** in `.specweave/config.json`:
+**验证配置**可以在 `.specweave/config.json` 中进行设置：
 
 ```json
 {
@@ -294,7 +293,7 @@ specweave validate-plugins --auto-install --context="Deploy to Kubernetes" --ver
 }
 ```
 
-**Disable validation** (not recommended):
+**禁用验证**（不推荐）：
 ```json
 {
   "pluginValidation": {
@@ -303,17 +302,16 @@ specweave validate-plugins --auto-install --context="Deploy to Kubernetes" --ver
 }
 ```
 
-## Integration with Commands
+## 与命令的集成
 
-**All SpecWeave commands validate plugins** before execution (STEP 0):
+**所有 SpecWeave 命令在执行前都会验证插件（步骤 0）**：
+- `/sw:increment` - 在 PM 代理运行前验证
+- `/sw:do` - 在任务执行前验证
+- `/sw:next` - 在下一个增量之前验证
+- `/sw:done` - 在完成之前验证
+- ...（所有 22 个命令）
 
-- `/sw:increment` - Validates before PM agent runs
-- `/sw:do` - Validates before task execution
-- `/sw:next` - Validates before next increment
-- `/sw:done` - Validates before completion
-- ... (all 22 commands)
-
-**Workflow**:
+**工作流**：
 ```
 User: /sw:increment "Add feature"
         ↓
@@ -326,44 +324,43 @@ User: /sw:increment "Add feature"
    [STEP 3: Implementation]
 ```
 
-## Benefits
+## 好处
 
-✅ **Zero manual setup** - Plugins install automatically
-✅ **Seamless migration** - Works across local/VM/Cloud IDE
-✅ **Context-aware** - Suggests relevant plugins based on your work
-✅ **Clear errors** - No more cryptic "command not found" messages
-✅ **Fast** - Caching ensures minimal overhead (<2s cached, <5s uncached)
-✅ **Non-blocking** - Can skip validation if needed (not recommended)
+✅ **零手动设置** - 插件自动安装。
+✅ **无缝迁移** - 支持本地/虚拟机/云 IDE。
+✅ **上下文感知** - 根据您的工作推荐相关插件。
+✅ **清晰的错误信息** - 不再出现难以理解的“命令未找到”错误。
+✅ **快速**：缓存确保最低开销（缓存 <2 秒，未缓存 <5 秒）。
+✅ **非阻塞** - 如有需要可以跳过验证（不推荐）。
 
-## Edge Cases
+## 特殊情况
 
-**1. Offline Mode**
-- Validation detects missing plugins but can't install
-- Shows manual instructions instead
-- Validation still useful (identifies what's missing)
+**1. 离线模式**
+- 验证会检测到缺失的插件，但无法安装。
+- 会显示手动安装说明。
+- 验证仍然有用（可以识别缺失的插件）。
 
-**2. Development Mode**
-- Local marketplace detected (not GitHub)
-- Shows warning: "Development mode detected"
-- Validation passes (assumes dev knows what they're doing)
+**2. 开发模式**
+- 检测到本地市场places（非 GitHub）。
+- 显示警告：“检测到开发模式”。
+- 验证通过（假设开发者知道自己在做什么）。
 
-**3. Concurrent Validation**
-- Multiple commands run simultaneously
-- Uses cache to prevent duplicate validations
-- Race conditions handled gracefully
+**3. 同时验证**
+- 多个命令同时运行时，使用缓存避免重复验证。
+- 得到优雅的处理。
 
-**4. Partial Installation**
-- Marketplace exists, but plugin missing (or vice versa)
-- Installs only missing components
-- Doesn't reinstall existing components
+**4. 部分安装**
+- 市场places 存在，但某些插件缺失（或相反情况）。
+- 仅安装缺失的组件。
+- 不会重新安装已存在的组件。
 
-## Manual Installation (Fallback)
+## 手动安装（备用方案）
 
-**If auto-install fails**, follow these steps:
+**如果自动安装失败**，请按照以下步骤操作：
 
-### Step 1: Register Marketplace
+### 第一步：注册市场places
 
-Edit `~/.claude/settings.json`:
+编辑 `~/.claude/settings.json`：
 ```json
 {
   "extraKnownMarketplaces": {
@@ -378,52 +375,52 @@ Edit `~/.claude/settings.json`:
 }
 ```
 
-### Step 2: Install Core Plugin
+### 第二步：安装核心插件
 
-In Claude Code, run:
+在 Claude 代码中运行：
 ```
 /plugin install specweave
 ```
 
-### Step 3: Restart Claude Code
+### 第三步：重启 Claude 代码
 
-Close and reopen Claude Code for changes to take effect.
+关闭并重新打开 Claude 代码以使更改生效。
 
-### Step 4: Verify Installation
+### 第四步：验证安装
 
-Run:
+运行：
 ```bash
 specweave validate-plugins
 ```
 
-Should show:
+应显示：
 ```
 ✅ All plugins validated!
    • Core plugin: installed (v0.9.4)
 ```
 
-### Step 5: Install Context Plugins (Optional)
+### 第五步：安装相关插件（可选）
 
-If you need specific plugins:
+如果您需要特定插件：
 ```
 /plugin install sw-github@specweave
 /plugin install sw-payments@specweave
 /plugin install sw-frontend@specweave
 ```
 
-## Summary
+## 总结
 
-**This skill ensures you NEVER waste time debugging plugin issues.**
+**该技能确保您永远不会浪费时间调试插件问题。**
 
-It proactively validates your environment, auto-installs missing components, and suggests relevant plugins based on your work. The result: you focus on building features, not troubleshooting setup.
+它主动验证您的环境，自动安装缺失的组件，并根据您的工作推荐相关插件。这样，您可以专注于构建功能，而不是处理设置问题。
 
-**Questions?**
-- Check troubleshooting section above
-- Run `specweave validate-plugins --help`
-- Visit: https://spec-weave.com/docs/plugin-validation
+**有问题吗？**
+- 查看上面的故障排除部分。
+- 运行 `specweave validate-plugins --help`。
+- 访问：https://spec-weave.com/docs/plugin-validation
 
 ---
 
-**Skill Version**: 1.0.0
-**Introduced**: SpecWeave v0.9.4
-**Last Updated**: 2025-11-09
+**技能版本**：1.0.0
+**引入版本**：SpecWeave v0.9.4
+**最后更新时间**：2025-11-09

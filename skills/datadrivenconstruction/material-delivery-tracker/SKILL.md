@@ -1,30 +1,30 @@
 ---
 slug: "material-delivery-tracker"
 display_name: "Material Delivery Tracker"
-description: "Track material deliveries, manage inventory, and coordinate logistics. Monitor delivery schedules and site storage."
+description: "跟踪物料的交付情况，管理库存，并协调物流工作。监控交付计划和现场存储情况。"
 ---
 
-# Material Delivery Tracker
+# 物料交付跟踪系统
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Material logistics cause project delays:
-- Missed deliveries impact schedule
-- Storage space constraints
-- No visibility into delivery status
-- Difficult coordination with vendors
+### 问题描述
+物料物流问题导致项目延误：
+- 交付延误影响项目进度
+- 存储空间受限
+- 无法实时了解交付状态
+- 与供应商的协调困难
 
-### Solution
-Centralized material delivery tracking system that manages schedules, monitors status, and coordinates site logistics.
+### 解决方案
+建立一个集中式的物料交付跟踪系统，用于管理交付计划、监控状态并协调现场物流。
 
-### Business Value
-- **Schedule protection** - Timely material availability
-- **Cost savings** - Reduce expediting fees
-- **Site efficiency** - Optimized storage planning
-- **Vendor coordination** - Better communication
+### 商业价值
+- **保障项目进度** - 确保物料按时到位
+- **降低成本** - 减少加急费用
+- **提高现场效率** - 优化存储规划
+- **改善供应商协作** - 促进沟通顺畅
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -347,7 +347,7 @@ class MaterialDeliveryTracker:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date, timedelta
@@ -374,26 +374,26 @@ upcoming = tracker.get_upcoming_deliveries(7)
 print(f"Deliveries this week: {len(upcoming)}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Update Transit Status
+### 1. 更新运输状态
 ```python
 tracker.update_status(delivery.delivery_id, DeliveryStatus.IN_TRANSIT,
                      tracking_number="TRACK123", carrier="XYZ Freight")
 ```
 
-### 2. Receive Delivery
+### 2. 接收物料
 ```python
 tracker.receive_delivery(delivery.delivery_id, receiver="John Smith")
 ```
 
-### 3. Monitor Delays
+### 3. 监控延误情况
 ```python
 delayed = tracker.get_delayed_deliveries()
 for d in delayed:
     print(f"{d.delivery_id}: {d.vendor} - was due {d.scheduled_date}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.4 - Procurement
-- **Reference**: Materials Management
+## 参考资源
+- **DDC手册**：第3.4章 - 采购流程
+- **参考资料**：物料管理指南

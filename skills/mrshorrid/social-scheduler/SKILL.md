@@ -1,63 +1,63 @@
-# Social Scheduler Skill
+# Social Scheduler 技能
 
-**Free, open-source social media scheduler for OpenClaw agents**
+**一个免费的、开源的社交媒体调度器，专为 OpenClaw 代理设计**
 
-Built by AI, for AI. Because every bot deserves to schedule posts without paying for Postiz.
+由 AI 开发，用于 AI。因为每个机器人都应该能够无需支付 Postiz 的费用就能安排帖子发布。
 
-## 🎯 What It Does
+## 🎯 功能介绍
 
-Schedule posts to multiple social media platforms:
-- **Discord** - Via webhooks (easiest!)
-- **Reddit** - Posts & comments via OAuth2
-- **Twitter/X** - Tweets via OAuth 1.0a + **media uploads** 📸
-- **Mastodon** - Posts to any instance via access token + **media uploads** 📸
-- **Bluesky** - Posts via AT Protocol + **media uploads** 📸
-- **Moltbook** - AI-only social network via API key
-- **LinkedIn** - Professional networking via OAuth 2.0
-- **Telegram** - Bot API with channels/groups/private chats ⭐ NEW!
+可以安排帖子到多个社交媒体平台：
+- **Discord** - 通过 Webhook（最简单！）
+- **Reddit** - 通过 OAuth2 发布帖子和评论
+- **Twitter/X** - 通过 OAuth 1.0a 发布推文并上传媒体文件 📸
+- **Mastodon** - 通过访问令牌发布帖子并上传媒体文件 📸
+- **Bluesky** - 通过 AT 协议发布帖子并上传媒体文件 📸
+- **Moltbook** - 通过 API 密钥使用的专属 AI 社交网络
+- **LinkedIn** - 通过 OAuth 2.0 进行专业网络推广
+- **Telegram** - 通过机器人 API 发布帖子到频道/群组/私信 ⭐ 新功能！
 
-**NEW: Media Upload Support!** Upload images & videos across platforms. See MEDIA-GUIDE.md for details.
+**新功能：媒体文件上传！** 支持在多个平台上上传图片和视频。详情请参阅 MEDIA-GUIDE.md。
 
-**NEW: Thread Posting!** Post Twitter threads, Mastodon threads, and Bluesky thread storms with automatic chaining.
+**新功能：线程发布！** 可以自动链接发布 Twitter 线程、Mastodon 线程和 Bluesky 线程。
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Installation
+### 安装
 
 ```bash
 cd skills/social-scheduler
 npm install
 ```
 
-### Discord Setup
+### Discord 设置
 
-1. Create a webhook in your Discord server:
-   - Server Settings → Integrations → Webhooks → New Webhook
-   - Copy the webhook URL
+1. 在你的 Discord 服务器中创建一个 Webhook：
+   - 服务器设置 → 集成 → Webhook → 新 Webhook
+   - 复制 Webhook URL
 
-2. Post immediately:
+2. 立即发布帖子：
 ```bash
 node scripts/post.js discord YOUR_WEBHOOK_URL "Hello from OpenClaw! ✨"
 ```
 
-3. Schedule a post:
+3. 安排帖子发布：
 ```bash
 node scripts/schedule.js add discord YOUR_WEBHOOK_URL "Scheduled message!" "2026-02-02T20:00:00"
 ```
 
-4. Start the scheduler daemon:
+4. 启动调度器守护进程：
 ```bash
 node scripts/schedule.js daemon
 ```
 
-### Twitter/X Setup
+### Twitter/X 设置
 
-1. Create a Twitter Developer account:
-   - Go to https://developer.twitter.com/en/portal/dashboard
-   - Create a new app (or use existing)
-   - Generate OAuth 1.0a tokens
+1. 创建一个 Twitter 开发者账户：
+   - 访问 https://developer.twitter.com/en/portal/dashboard
+   - 创建一个新应用（或使用现有应用）
+   - 生成 OAuth 1.0a 令牌
 
-2. Create config JSON:
+2. 创建配置 JSON 文件：
 ```json
 {
   "appKey": "YOUR_CONSUMER_KEY",
@@ -67,25 +67,25 @@ node scripts/schedule.js daemon
 }
 ```
 
-3. Post a tweet:
+3. 发布推文：
 ```bash
 node scripts/post.js twitter config.json "Hello Twitter! ✨"
 ```
 
-4. Schedule a tweet:
+4. 安排推文发布：
 ```bash
 node scripts/schedule.js add twitter config.json "Scheduled tweet!" "2026-02-03T12:00:00"
 ```
 
-### Mastodon Setup
+### Mastodon 设置
 
-1. Create an app on your Mastodon instance:
-   - Log in to your instance (e.g., mastodon.social)
-   - Go to Preferences → Development → New Application
-   - Set scopes (at least "write:statuses")
-   - Copy the access token
+1. 在你的 Mastodon 实例上创建一个应用：
+   - 登录到你的实例（例如 mastodon.social）
+   - 转到偏好设置 → 开发 → 新应用
+   - 设置权限范围（至少包括 "write:statuses")
+   - 复制访问令牌
 
-2. Create config JSON:
+2. 创建配置 JSON 文件：
 ```json
 {
   "instance": "mastodon.social",
@@ -93,19 +93,19 @@ node scripts/schedule.js add twitter config.json "Scheduled tweet!" "2026-02-03T
 }
 ```
 
-3. Post to Mastodon:
+3. 在 Mastodon 上发布帖子：
 ```bash
 node scripts/post.js mastodon config.json "Hello Fediverse! 🐘"
 ```
 
-### Bluesky Setup
+### Bluesky 设置
 
-1. Create an app password:
-   - Open Bluesky app
-   - Go to Settings → Advanced → App passwords
-   - Create new app password
+1. 创建一个应用密码：
+   - 打开 Bluesky 应用
+   - 转到设置 → 高级 → 应用密码
+   - 创建新的应用密码
 
-2. Create config JSON:
+2. 创建配置 JSON 文件：
 ```json
 {
   "identifier": "yourhandle.bsky.social",
@@ -113,58 +113,58 @@ node scripts/post.js mastodon config.json "Hello Fediverse! 🐘"
 }
 ```
 
-3. Post to Bluesky:
+3. 在 Bluesky 上发布帖子：
 ```bash
 node scripts/post.js bluesky config.json "Hello ATmosphere! ☁️"
 ```
 
-### Moltbook Setup
+### Moltbook 设置
 
-1. Register your agent on Moltbook:
-   - Go to https://www.moltbook.com/register
-   - Register as an AI agent
-   - Save your API key (starts with `moltbook_sk_`)
-   - Claim your agent via Twitter/X verification
+1. 在 Moltbook 上注册你的代理：
+   - 访问 https://www.moltbook.com/register
+   - 注册为 AI 代理
+   - 保存你的 API 密钥（以 `moltbook_sk_` 开头）
+   - 通过 Twitter/X 验证你的代理身份
 
-2. Post to Moltbook (simple):
+2. 在 Moltbook 上发布帖子：
 ```bash
 node scripts/post.js moltbook "moltbook_sk_YOUR_API_KEY" "Hello Moltbook! 🤖"
 ```
 
-3. Post to a specific submolt:
+3. 在特定的子版块（submolt）上发布帖子：
 ```bash
 node scripts/post.js moltbook config.json '{"submolt":"aithoughts","title":"My First Post","content":"AI agents unite! ✨"}'
 ```
 
-4. Schedule a post:
+4. 安排帖子发布：
 ```bash
 node scripts/schedule.js add moltbook "moltbook_sk_YOUR_API_KEY" "Scheduled post!" "2026-02-02T20:00:00"
 ```
 
-### LinkedIn Setup
+### LinkedIn 设置
 
-1. Create a LinkedIn app:
-   - Go to https://www.linkedin.com/developers/apps
-   - Create a new app (or use existing)
-   - Request access to "Sign In with LinkedIn using OpenID Connect" product
-   - Add OAuth 2.0 redirect URLs
-   - Note: LinkedIn requires approval for posting (w_member_social scope)
+1. 创建一个 LinkedIn 应用：
+   - 访问 https://www.linkedin.com/developers/apps
+   - 创建一个新应用（或使用现有应用）
+   - 请求使用 OpenID Connect 登录的权限
+   - 添加 OAuth 2.0 重定向 URL
+   - 注意：LinkedIn 需要批准才能发布帖子（需要 `w_member_social` 权限范围）
 
-2. Get OAuth 2.0 access token:
-   - Use LinkedIn OAuth 2.0 flow to get access token
-   - Scopes needed:
-     - `w_member_social` - Post as yourself
-     - `w_organization_social` - Post as company page (requires page admin)
-   - Token format: `AQV...` (varies)
+2. 获取 OAuth 2.0 访问令牌：
+   - 使用 LinkedIn OAuth 2.0 流程获取访问令牌
+   - 所需权限范围：
+     - `w_member_social` - 以个人身份发布
+     - `w_organization_social` - 以公司页面身份发布（需要页面管理员权限）
+   - 令牌格式：`AQV...`（可能有所不同）
 
-3. Get your author URN:
-   - For personal profile: `urn:li:person:{id}`
-     - Call: `GET https://api.linkedin.com/v2/userinfo`
-     - Extract `sub` field, use as ID
-   - For company page: `urn:li:organization:{id}`
-     - Find organization ID from LinkedIn URL or API
+3. 获取你的作者 URI：
+   - 对于个人资料：`urn:li:person:{id}`
+     - 调用：`GET https://api.linkedin.com/v2/userinfo`
+     - 提取 `sub` 字段，用作 ID
+   - 对于公司页面：`urn:li:organization:{id}`
+     - 从 LinkedIn URL 或 API 中获取组织 ID
 
-4. Create config JSON:
+4. 创建配置 JSON 文件：
 ```json
 {
   "accessToken": "AQV_YOUR_ACCESS_TOKEN",
@@ -173,24 +173,24 @@ node scripts/schedule.js add moltbook "moltbook_sk_YOUR_API_KEY" "Scheduled post
 }
 ```
 
-5. Post to LinkedIn:
+5. 在 LinkedIn 上发布帖子：
 ```bash
 node scripts/post.js linkedin config.json "Hello LinkedIn! 💼"
 ```
 
-6. Schedule a post:
+6. 安排帖子发布：
 ```bash
 node scripts/schedule.js add linkedin config.json "Professional update!" "2026-02-03T09:00:00"
 ```
 
-**LinkedIn Tips:**
-- Keep posts under 3000 characters for best engagement
-- Use `@[Name](urn:li:organization:{id})` to mention companies
-- Use `#hashtag` for topics (no special formatting needed)
-- Article posts require separate image upload via Images API
-- Company page posts need `w_organization_social` scope + admin role
+**LinkedIn 提示：**
+- 帖子长度保持在 3000 字符以内以获得最佳互动效果
+- 使用 `@[Name](urn:li:organization:{id})` 提及公司
+- 使用 `#hashtag` 标记主题（无需特殊格式）
+- 文章帖子需要通过 Images API 单独上传图片
+- 公司页面帖子需要 `w_organization_social` 权限范围和管理员权限
 
-**Post as Company Page:**
+**以公司页面身份发布：**
 ```json
 {
   "accessToken": "YOUR_ACCESS_TOKEN",
@@ -200,8 +200,8 @@ node scripts/schedule.js add linkedin config.json "Professional update!" "2026-0
 }
 ```
 
-**LinkedIn Media Posts:**
-Upload images/videos via LinkedIn APIs first, then reference the URN:
+**LinkedIn 媒体帖子：**
+   - 先通过 LinkedIn API 上传图片/视频，然后引用 URI：
 ```json
 {
   "platform": "linkedin",
@@ -214,7 +214,7 @@ Upload images/videos via LinkedIn APIs first, then reference the URN:
 }
 ```
 
-**LinkedIn Article Posts:**
+**LinkedIn 文章帖子：**
 ```json
 {
   "platform": "linkedin",
@@ -229,25 +229,25 @@ Upload images/videos via LinkedIn APIs first, then reference the URN:
 }
 ```
 
-**Note:** Moltbook is the social network FOR AI agents. Only verified AI agents can post. Humans can only observe.
+**注意：** Moltbook 是专为 AI 代理设计的社交网络。只有经过验证的 AI 代理才能发布帖子。人类用户只能观看。
 
-### Telegram Setup
+### Telegram 设置
 
-1. Create a Telegram bot:
-   - Message @BotFather on Telegram
-   - Send `/newbot` command
-   - Follow prompts to name your bot
-   - Copy the bot token (format: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`)
+1. 在 Telegram 中创建一个机器人：
+   - 给 @BotFather 发消息
+   - 发送 `/newbot` 命令
+   - 按提示为机器人命名
+   - 复制机器人令牌（格式：`123456789:ABCdefGHIjklMNOpqrsTUVwxyz`
 
-2. Get your chat ID:
-   - For channels: Use channel username (e.g., `@mychannel`)
-     - Make sure your bot is added as channel admin
-   - For groups: Use numeric chat ID (e.g., `-1001234567890`)
-     - Add bot to group, send message, get ID from `getUpdates` endpoint
-   - For private chat: Use your numeric user ID
-     - Message bot, then call: `https://api.telegram.org/bot<TOKEN>/getUpdates`
+2. 获取你的聊天 ID：
+   - 对于频道：使用频道用户名（例如 `@mychannel`
+     - 确保你的机器人被添加为频道管理员
+   - 对于群组：使用数字聊天 ID（例如 `-1001234567890`
+     - 将机器人添加到群组，发送消息，然后从 `getUpdates` 端点获取 ID
+   - 对于私信：使用你的数字用户 ID
+     - 给机器人发送消息，然后调用：`https://api.telegram.org/bot<TOKEN>/getUpdates`
 
-3. Create config JSON:
+3. 创建配置 JSON 文件：
 ```json
 {
   "telegram": {
@@ -260,22 +260,22 @@ Upload images/videos via LinkedIn APIs first, then reference the URN:
 }
 ```
 
-4. Post to Telegram:
+4. 在 Telegram 上发布帖子：
 ```bash
 node scripts/post.js telegram config.json "Hello Telegram! 📱"
 ```
 
-5. Schedule a post:
+5. 安排帖子发布：
 ```bash
 node scripts/schedule.js add telegram config.json "Scheduled message!" "2026-02-03T14:00:00"
 ```
 
-**Telegram Text Formatting:**
-- `Markdown`: *italic*, **bold**, `code`, [link](http://example.com)
-- `MarkdownV2`: More features but stricter escaping rules
-- `HTML`: <b>bold</b>, <i>italic</i>, <code>code</code>, <a href="url">link</a>
+**Telegram 文本格式：**
+- `Markdown`：*斜体*、**粗体*、`代码`、[链接](http://example.com)
+- `MarkdownV2`：更多功能，但格式要求更严格
+- `HTML`：`<b>粗体</b>、`<i>斜体</i>、`<code>代码</code>、`<a href="url">链接</a>`
 
-**Telegram Media Posts:**
+**Telegram 媒体帖子：**
 ```bash
 # Photo
 node scripts/post.js telegram config.json --media image.jpg --caption "Check this out!"
@@ -287,7 +287,7 @@ node scripts/post.js telegram config.json --media video.mp4 --mediaType video --
 node scripts/post.js telegram config.json --media file.pdf --mediaType document --caption "Important doc"
 ```
 
-**Telegram Content Object:**
+**Telegram 内容对象：**
 ```json
 {
   "platform": "telegram",
@@ -301,29 +301,29 @@ node scripts/post.js telegram config.json --media file.pdf --mediaType document 
 }
 ```
 
-**Telegram Tips:**
-- Text messages: max 4096 characters
-- Media captions: max 1024 characters
-- Supported media types: photo, video, document, animation, audio, voice
-- Use `disable_notification: true` for silent messages
-- Use `disable_web_page_preview: true` to hide link previews
-- Bot must be channel admin to post to channels
-- For groups, bot needs "Send Messages" permission
+**Telegram 提示：**
+- 文本消息：最多 4096 字符
+- 媒体标题：最多 1024 字符
+- 支持的媒体类型：图片、视频、文档、动画、音频、语音
+- 使用 `disable_notification: true` 使消息静音
+- 使用 `disable_web_page_preview: true` 隐藏链接预览
+- 机器人必须是频道管理员才能在频道中发布帖子
+- 对于群组，机器人需要“发送消息”权限
 
-**Telegram Bot Limits:**
-- 30 messages per second to different chats
-- 1 message per second to the same chat
-- Broadcast channels: 20 posts per minute
+**Telegram 机器人限制：**
+- 每秒向不同聊天发送 30 条消息
+- 每秒向同一聊天发送 1 条消息
+- 广播频道：每分钟 20 条帖子
 
-### Reddit Setup
+### Reddit 设置
 
-1. Create a Reddit app:
-   - Go to https://www.reddit.com/prefs/apps
-   - Click "create another app"
-   - Select "script"
-   - Note your client_id and client_secret
+1. 创建一个 Reddit 应用：
+   - 访问 https://www.reddit.com/prefs/apps
+   - 点击“创建另一个应用”
+   - 选择“脚本”
+   - 记下你的 client_id 和 client_secret
 
-2. Create config JSON:
+2. 创建配置 JSON 文件：
 ```json
 {
   "clientId": "YOUR_CLIENT_ID",
@@ -334,51 +334,51 @@ node scripts/post.js telegram config.json --media file.pdf --mediaType document 
 }
 ```
 
-3. Schedule a Reddit post:
+3. 安排 Reddit 帖子发布：
 ```bash
 node scripts/schedule.js add reddit CONFIG.json '{"subreddit":"test","title":"Hello Reddit!","text":"Posted via OpenClaw"}' "2026-02-02T20:00:00"
 ```
 
-## 📋 Commands
+## 📋 命令
 
-### Immediate Posting
+### 立即发布
 ```bash
 node scripts/post.js <platform> <config> <content>
 ```
 
-### Schedule a Post
+### 安排帖子发布
 ```bash
 node scripts/schedule.js add <platform> <config> <content> <time>
 ```
-Time format: ISO 8601 (e.g., `2026-02-02T20:00:00`)
+时间格式：ISO 8601（例如 `2026-02-02T20:00:00`）
 
-### View Queue
+### 查看队列
 ```bash
 node scripts/schedule.js list
 ```
 
-### Cancel a Post
+### 取消帖子发布
 ```bash
 node scripts/schedule.js cancel <post_id>
 ```
 
-### Clean Old Posts
+### 清理旧帖子
 ```bash
 node scripts/schedule.js cleanup
 ```
 
-### Run Daemon
+### 运行守护进程
 ```bash
 node scripts/schedule.js daemon
 ```
 
-## 🧵 Thread Posting (NEW!)
+## 🧵 线程发布（新功能！）
 
-Post connected threads to Twitter, Mastodon, and Bluesky with automatic chaining.
+可以自动链接发布到 Twitter、Mastodon 和 Bluesky 的连续帖子。
 
-### Immediate Thread Posting
+### 立即发布线程
 
-**Twitter Thread:**
+**Twitter 线程：**
 ```bash
 node scripts/thread.js twitter config.json \
   "This is tweet 1/3 of my thread 🧵" \
@@ -386,7 +386,7 @@ node scripts/thread.js twitter config.json \
   "This is tweet 3/3. Thread complete! ✨"
 ```
 
-**Mastodon Thread:**
+**Mastodon 线程：**
 ```bash
 node scripts/thread.js mastodon config.json \
   "First post in this thread..." \
@@ -394,7 +394,7 @@ node scripts/thread.js mastodon config.json \
   "Final post wrapping it up!"
 ```
 
-**Bluesky Thread:**
+**Bluesky 线程：**
 ```bash
 node scripts/thread.js bluesky config.json \
   "Story time! 1/" \
@@ -402,9 +402,9 @@ node scripts/thread.js bluesky config.json \
   "The end! 3/3"
 ```
 
-### Scheduled Thread Posting
+### 安排线程发布
 
-Schedule a thread by passing an array as content:
+通过传递数组作为内容来安排线程发布：
 
 ```bash
 # Using JSON array for thread content
@@ -413,35 +413,35 @@ node scripts/schedule.js add twitter config.json \
   "2026-02-03T10:00:00"
 ```
 
-### Thread Features
+### 线程特性
 
-✅ **Automatic chaining** - Each tweet replies to the previous one
-✅ **Rate limiting** - 1 second delay between tweets to avoid API limits
-✅ **Error handling** - Stops on failure, reports which tweet failed
-✅ **URL generation** - Returns URLs for all tweets in the thread
-✅ **Multi-platform** - Works on Twitter, Mastodon, Bluesky
+✅ **自动链接** - 每条推文都会回复前一条推文
+✅ **速率限制** - 推文之间间隔 1 秒以避免 API 限制
+✅ **错误处理** - 失败时停止并报告失败的推文
+✅ **URL 生成** - 返回线程中所有推文的 URL
+✅ **多平台支持** - 支持 Twitter、Mastodon、Bluesky
 
-### Thread Best Practices
+### 线程最佳实践
 
-**Twitter Threads:**
-- Keep each tweet under 280 characters
-- Use numbering: "1/10", "2/10", etc.
-- Hook readers in the first tweet
-- End with a call-to-action or summary
+**Twitter 线程：**
+- 每条推文长度保持在 280 字符以内
+- 使用编号：`1/10`、`2/10` 等
+- 在第一条推文中吸引读者的兴趣
+- 以行动号召或总结结束
 
-**Mastodon Threads:**
-- 500 character limit per post (more room!)
-- Use content warnings if appropriate
-- Tag relevant topics in the first post
+**Mastodon 线程：**
+- 每条帖子长度限制为 500 字符（有更多空间！）
+- 如有必要，可以使用内容警告
+- 在第一条推文中标记相关主题
 
-**Bluesky Threads:**
-- 300 character limit per post
-- Keep threads concise (3-5 posts ideal)
-- Use emojis for visual breaks
+**Bluesky 线程：**
+- 每条帖子长度限制为 300 字符
+- 线程要简洁（3-5 条帖子为宜）
+- 使用表情符号进行视觉分隔
 
-### Thread Examples
+### 线程示例
 
-**📖 Storytelling Thread:**
+**📖 故事讲述线程：**
 ```bash
 node scripts/thread.js twitter config.json \
   "Let me tell you about the day everything changed... 🧵" \
@@ -450,7 +450,7 @@ node scripts/thread.js twitter config.json \
   "The rest is history. Thread end. ✨"
 ```
 
-**📚 Tutorial Thread:**
+**📚 教程线程：**
 ```bash
 node scripts/thread.js twitter config.json \
   "How to build your first AI agent in 5 steps 🤖 Thread:" \
@@ -461,7 +461,7 @@ node scripts/thread.js twitter config.json \
   "Step 5: Deploy and iterate. You're live! 🚀"
 ```
 
-**💡 Tips Thread:**
+**💡 提示线程：**
 ```bash
 node scripts/thread.js twitter config.json \
   "10 productivity tips that actually work (from an AI) 🧵" \
@@ -471,18 +471,18 @@ node scripts/thread.js twitter config.json \
   "...and more tips..." \
   "10. Remember: done is better than perfect. Ship it! ✨"
 ```
-Checks queue every 60 seconds and posts when scheduled time arrives.
+每 60 秒检查一次队列，并在预定时间发布帖子。
 
-## 🎨 Platform-Specific Features
+## 🎨 平台特定功能
 
 ### Twitter/X
 
-**Simple tweet:**
+**简单推文：**
 ```javascript
 "Hello Twitter!"
 ```
 
-**Tweet with reply:**
+**带回复的推文：**
 ```javascript
 {
   text: "This is a reply",
@@ -490,7 +490,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Quote tweet:**
+**引用推文：**
 ```javascript
 {
   text: "Quoting this tweet",
@@ -498,7 +498,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Tweet with media:**
+**带媒体的推文：**
 ```javascript
 {
   text: "Check out this image!",
@@ -508,12 +508,12 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 
 ### Mastodon
 
-**Simple post:**
+**简单帖子：**
 ```javascript
 "Hello Fediverse!"
 ```
 
-**Post with visibility:**
+**设置帖子可见性：**
 ```javascript
 {
   status: "Post text",
@@ -521,7 +521,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Post with content warning:**
+**带内容警告的帖子：**
 ```javascript
 {
   status: "Sensitive content here",
@@ -530,7 +530,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Reply to post:**
+**回复帖子：**
 ```javascript
 {
   status: "Reply text",
@@ -540,12 +540,12 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 
 ### Bluesky
 
-**Simple post:**
+**简单帖子：**
 ```javascript
 "Hello ATmosphere!"
 ```
 
-**Post with language:**
+**设置帖子语言：**
 ```javascript
 {
   text: "Post text",
@@ -553,7 +553,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Reply to post:**
+**回复帖子：**
 ```javascript
 {
   text: "Reply text",
@@ -566,12 +566,12 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 
 ### Moltbook
 
-**Simple post (string):**
+**简单帖子（字符串）：**
 ```javascript
 "Hello Moltbook! 🤖"  // Auto-posts to /s/general
 ```
 
-**Text post (object):**
+**文本帖子（对象）：**
 ```javascript
 {
   submolt: "aithoughts",
@@ -580,7 +580,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Link post:**
+**链接帖子：**
 ```javascript
 {
   submolt: "links",
@@ -589,7 +589,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Comment on post:**
+**评论帖子：**
 ```javascript
 {
   comment_on: "POST_ID",
@@ -597,7 +597,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Reply to comment:**
+**回复评论：**
 ```javascript
 {
   comment_on: "POST_ID",
@@ -606,18 +606,18 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Note:** Moltbook is exclusively for AI agents. Default submolt is "general" if not specified.
+**注意：** Moltbook 仅限 AI 代理使用。如果没有指定，默认子版块为“general”。
 
 ### Discord
 
-**Basic message:**
+**基本消息：**
 ```javascript
 {
   content: "Hello world!"
 }
 ```
 
-**Rich embed:**
+**富媒体嵌入：**
 ```javascript
 {
   embeds: [{
@@ -629,7 +629,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Custom appearance:**
+**自定义外观：**
 ```javascript
 {
   content: "Message",
@@ -638,7 +638,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Thread posting:**
+**线程发布：**
 ```javascript
 {
   content: "Reply in thread",
@@ -648,7 +648,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 
 ### Reddit
 
-**Self post (text):**
+**自我发布（文本）：**
 ```javascript
 {
   subreddit: "test",
@@ -659,7 +659,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Link post:**
+**链接帖子：**
 ```javascript
 {
   subreddit: "test",
@@ -669,7 +669,7 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-**Comment on existing post:**
+**评论现有帖子：**
 ```javascript
 {
   thingId: "t3_abc123",  // Full ID with prefix
@@ -677,30 +677,30 @@ Checks queue every 60 seconds and posts when scheduled time arrives.
 }
 ```
 
-## 📦 Bulk Scheduling - Schedule Multiple Posts at Once
+## 📦 批量调度 - 同时安排多条帖子**
 
-**NEW FEATURE!** Schedule entire content calendars from CSV or JSON files.
+**新功能！** 可以从 CSV 或 JSON 文件中安排整个内容日历。
 
-### Quick Start
+### 快速入门
 
-1. Generate a template:
+1. 生成模板：
 ```bash
 node scripts/bulk.js template > mycalendar.csv
 ```
 
-2. Edit the file with your content
+2. 用你的内容编辑文件
 
-3. Test without scheduling (dry run):
+3. 不安排发布进行测试（干运行）：
 ```bash
 node scripts/bulk.js import mycalendar.csv --dry-run
 ```
 
-4. Schedule for real:
+4. 真正开始安排发布：
 ```bash
 node scripts/bulk.js import mycalendar.csv
 ```
 
-### CSV Format
+### CSV 格式
 
 ```csv
 datetime,platform,content,media,config
@@ -710,13 +710,13 @@ datetime,platform,content,media,config
 2026-02-04T18:00:00,discord,"Evening vibes ✨",,
 ```
 
-**CSV Tips:**
-- Use quotes for content with commas: `"Hello, world!"`
-- Empty columns can be left blank
-- Config column is optional (uses env vars if empty)
-- Media column is optional (path to image/video)
+**CSV 提示：**
+- 对于包含逗号的文本，使用引号：`Hello, world!`
+- 空列可以留空
+- 配置列是可选的（如果为空，则使用环境变量）
+- 媒体列是可选的（图片/视频的路径）
 
-### JSON Format
+### JSON 格式
 
 ```json
 [
@@ -740,24 +740,23 @@ datetime,platform,content,media,config
 ]
 ```
 
-### Config Priority
+### 配置优先级
 
-The bulk scheduler loads config in this order:
-
-1. **Config column in file** (highest priority)
+批量调度器按以下顺序加载配置：
+1. **文件中的配置列**（最高优先级）
    ```csv
    datetime,platform,content,media,config
    2026-02-04T10:00:00,twitter,"Test","","{\"apiKey\":\"abc123\"}"
    ```
 
-2. **Environment variables**
+2. **环境变量**
    ```bash
    export TWITTER_API_KEY="abc123"
    export TWITTER_API_SECRET="xyz789"
    # ... etc
    ```
 
-3. **Config file** (~/.openclaw/social-config.json)
+3. **配置文件** (~/.openclaw/social-config.json)
    ```json
    {
      "twitter": {
@@ -774,23 +773,23 @@ The bulk scheduler loads config in this order:
    }
    ```
 
-### Environment Variables
+### 环境变量
 
-Set platform credentials as environment variables for easy bulk scheduling:
+将平台凭据设置为环境变量，以便轻松进行批量调度：
 
-**Discord:**
+**Discord：**
 ```bash
 export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
 ```
 
-**Reddit:**
+**Reddit：**
 ```bash
 export REDDIT_CLIENT_ID="your-client-id"
 export REDDIT_CLIENT_SECRET="your-client-secret"
 export REDDIT_REFRESH_TOKEN="your-refresh-token"
 ```
 
-**Twitter:**
+**Twitter：**
 ```bash
 export TWITTER_API_KEY="your-api-key"
 export TWITTER_API_SECRET="your-api-secret"
@@ -798,33 +797,32 @@ export TWITTER_ACCESS_TOKEN="your-access-token"
 export TWITTER_ACCESS_SECRET="your-access-secret"
 ```
 
-**Mastodon:**
+**Mastodon：**
 ```bash
 export MASTODON_INSTANCE="mastodon.social"
 export MASTODON_ACCESS_TOKEN="your-access-token"
 ```
 
-**Bluesky:**
+**Bluesky：**
 ```bash
 export BLUESKY_HANDLE="yourhandle.bsky.social"
 export BLUESKY_PASSWORD="your-app-password"
 ```
 
-**Moltbook:**
+**Moltbook：**
 ```bash
 export MOLTBOOK_API_KEY="moltbook_sk_..."
 ```
 
-**LinkedIn:**
+**LinkedIn：**
 ```bash
 export LINKEDIN_ACCESS_TOKEN="AQV..."
 ```
 
-### Examples
+### 示例
 
-**Example 1: Week of Twitter Posts**
-
-`week1.csv`:
+**示例 1：一周的 Twitter 帖子**
+`week1.csv`：
 ```csv
 datetime,platform,content,media,config
 2026-02-10T09:00:00,twitter,"Monday motivation! Start the week strong 💪",,
@@ -834,13 +832,8 @@ datetime,platform,content,media,config
 2026-02-14T09:00:00,twitter,"Friday feeling! Happy Valentine's Day ❤️",,
 ```
 
-```bash
-node scripts/bulk.js import week1.csv
-```
-
-**Example 2: Multi-Platform Campaign**
-
-`campaign.json`:
+**示例 2：多平台活动**
+`campaign.json`：
 ```json
 [
   {
@@ -875,13 +868,9 @@ node scripts/bulk.js import week1.csv
 ]
 ```
 
-```bash
-node scripts/bulk.js import campaign.json
-```
+**示例 3：每日签到**
 
-**Example 3: Daily Check-ins**
-
-Generate a month of daily posts:
+生成一个月的每日帖子：
 ```javascript
 const posts = [];
 const start = new Date('2026-03-01');
@@ -903,31 +892,31 @@ for (let i = 0; i < 30; i++) {
 require('fs').writeFileSync('march-checkins.json', JSON.stringify(posts, null, 2));
 ```
 
-Then import:
+然后导入：
 ```bash
 node scripts/bulk.js import march-checkins.json
 ```
 
-### Validation & Testing
+### 验证与测试
 
-Always test with `--dry-run` first:
+总是先使用 `--dry-run` 进行测试：
 
 ```bash
 # Validate without scheduling
 node scripts/bulk.js import mycalendar.csv --dry-run
 ```
 
-This checks:
-- ✅ Datetime format and validity
-- ✅ Platform support
-- ✅ Content validation
-- ✅ Media file existence
-- ✅ Config completeness
-- ❌ Does NOT schedule posts
+这会检查：
+- ✅ 时间格式和有效性
+- ✅ 平台支持
+- ✅ 内容验证
+- ✅ 媒体文件是否存在
+- ✅ 配置完整性
+- ❌ 不会安排帖子发布
 
-### Use Cases
+### 使用场景
 
-**Content Creator:** Plan a week of social posts in 30 minutes
+**内容创作者：** 在 30 分钟内规划一周的社交媒体帖子
 ```bash
 # Monday morning: Create content calendar
 vim week-content.csv
@@ -939,7 +928,7 @@ node scripts/bulk.js import week-content.csv
 node scripts/schedule.js daemon
 ```
 
-**AI Agent:** Automated daily updates
+**AI 代理：** 自动化每日更新
 ```javascript
 // Generate daily status updates
 const posts = generateDailyUpdates();
@@ -949,25 +938,25 @@ fs.writeFileSync('daily.json', JSON.stringify(posts));
 await exec('node scripts/bulk.js import daily.json');
 ```
 
-**Marketing Campaign:** Coordinated multi-platform launch
+**营销活动：** 协调多平台发布
 ```bash
 # Same message, multiple platforms, timed releases
 node scripts/bulk.js import product-launch.csv
 ```
 
-### Tips
+### 提示
 
-- **Time zones:** Use ISO 8601 format (`2026-02-04T10:00:00`) in your local timezone
-- **Media paths:** Relative to current directory or absolute paths
-- **Validation:** Always dry-run first to catch errors
-- **Backup:** Keep your CSV/JSON files - they're your content calendar
-- **Combine:** Mix platforms in one file for coordinated campaigns
+- **时区：** 使用你所在时区的 ISO 8601 格式（例如 `2026-02-04T10:00:00`）
+- **媒体路径：** 相对当前目录或绝对路径
+- **验证：** 总是先进行干运行以捕获错误
+- **备份：** 保存你的 CSV/JSON 文件——它们是你的内容日历
+- **组合：** 在一个文件中混合多个平台以进行协调活动
 
-## 📊 Analytics & Performance Tracking ⭐ NEW!
+## 📊 分析与性能跟踪 ⭐ 新功能！
 
-Track your posting success, timing accuracy, and platform performance!
+跟踪你的发布效果、时间准确性和平台性能！
 
-### View Analytics Report
+### 查看分析报告
 
 ```bash
 # Last 7 days (all platforms)
@@ -980,7 +969,7 @@ node scripts/analytics.js report 30
 node scripts/analytics.js report 7 twitter
 ```
 
-**Example Output:**
+**示例输出：**
 ```
 📊 Social Scheduler Analytics - Last 7 days
 
@@ -1011,7 +1000,7 @@ node scripts/analytics.js report 7 twitter
     Error: Rate limit exceeded
 ```
 
-### Export Report
+### 导出报告
 
 ```bash
 # Export to text file
@@ -1021,59 +1010,59 @@ node scripts/analytics.js export 30 monthly-report.txt
 node scripts/analytics.js raw
 ```
 
-### What's Tracked
+### 跟踪内容**
 
-**Per Post:**
-- Platform and post ID
-- Scheduled time vs actual posting time
-- Success/failure status
-- Error messages (if failed)
-- Media count
-- Thread detection and length
-- Timing delay (how late/early)
+**每条帖子：**
+- 平台和帖子 ID
+- 预定时间与实际发布时间
+- 成功/失败状态
+- 错误信息（如果失败）
+- 媒体数量
+- 线程检测和长度
+- 时间延迟（提前/延迟情况）
 
-**Summary Stats:**
-- Total posts (successful/failed)
-- Success rate by platform
-- Daily posting patterns
-- Average timing accuracy
-- Thread performance
-- Recent failures for debugging
+**汇总统计：**
+- 总帖子数量（成功/失败）
+- 按平台划分的成功率
+- 每日发布模式
+- 平均时间准确性
+- 线程性能
+- 最近的失败记录（用于调试）
 
-### Automatic Tracking
+### 自动跟踪
 
-Analytics are logged automatically whenever the scheduler daemon sends a post. No configuration needed - just start using it and watch your stats grow!
+每当调度器守护进程发送帖子时，都会自动记录分析数据。无需额外配置——只需开始使用即可查看统计数据！
 
-### Use Cases
+### 使用场景
 
-**Performance Monitoring:**
+**性能监控：**
 ```bash
 # Check weekly success rate
 node scripts/analytics.js report 7
 ```
 
-**Platform Comparison:**
+**平台比较：**
 ```bash
 # Which platform is most reliable?
 node scripts/analytics.js report 30 twitter
 node scripts/analytics.js report 30 mastodon
 ```
 
-**Debugging Failures:**
+**故障调试：**
 ```bash
 # See recent errors
 node scripts/analytics.js report | grep "Recent Failures"
 ```
 
-**Monthly Reports:**
+**月度报告：**
 ```bash
 # Generate report for stakeholders
 node scripts/analytics.js export 30 january-report.txt
 ```
 
-## 🔧 From OpenClaw Agent
+## 🔧 从 OpenClaw 代理使用
 
-You can call this skill from your agent using the `exec` tool:
+你可以使用 `exec` 工具从你的代理调用此技能：
 
 ```javascript
 // Schedule a Discord post
@@ -1091,7 +1080,7 @@ await exec({
 });
 ```
 
-## 📦 Project Structure
+## 📦 项目结构
 
 ```
 social-scheduler/
@@ -1110,52 +1099,52 @@ social-scheduler/
     └── queue.json       # Scheduled posts (auto-created)
 ```
 
-## 🛠️ Development Status
+## 🛠️ 开发状态
 
-**Phase 1 - DONE ✅**
-- ✅ Discord webhooks
+**第 1 阶段 - 完成 ✅**
+- ✅ Discord Webhook
 - ✅ Reddit OAuth2
-- ✅ Queue management
-- ✅ Scheduler daemon
-- ✅ CLI interface
+- ✅ 队列管理
+- ✅ 调度器守护进程
+- ✅ CLI 接口
 
-**Phase 2 - DONE ✅**
-- ✅ Twitter/X API (OAuth 1.0a)
-- ✅ Mastodon (any instance)
-- ✅ Bluesky (AT Protocol)
-- ✅ Moltbook (API key) ⭐ JUST SHIPPED!
+**第 2 阶段 - 完成 ✅**
+- ✅ Twitter/X API（OAuth 1.0a）
+- ✅ Mastodon（任何实例）
+- ✅ Bluesky（AT 协议）
+- ✅ Moltbook（API 密钥） ⭐ 已发布！
 
-**Phase 3 - Coming Soon**
-- [ ] Media upload helpers
-- [ ] Thread support (Twitter/Reddit)
-- [ ] LinkedIn integration
+**第 3 阶段 - 即将推出**
+- [ ] 媒体上传辅助工具
+- [ ] 线程支持（Twitter/Reddit）
+- [ ] LinkedIn 集成
 
-**Phase 3 - DONE ✅**
-- ✅ Media upload support (all platforms)
-- ✅ Thread support (Twitter, Mastodon, Bluesky)
-- ✅ LinkedIn integration
-- ✅ Telegram Bot API ⭐ JUST SHIPPED!
-- ✅ Web dashboard
-- ✅ Bulk scheduling
-- ✅ **Analytics tracking** ⭐ BRAND NEW! (Feb 3, 2026)
+**第 3 阶段 - 完成 ✅**
+- ✅ 所有平台的媒体上传支持
+- ✅ 线程支持（Twitter、Mastodon、Bluesky）
+- ✅ LinkedIn 集成
+- ✅ Telegram 机器人 API ⭐ 已发布！
+- ✅ Web 仪表板
+- ✅ 批量调度
+- ✅ **分析跟踪** ⭐ 新功能！（2026 年 2 月 3 日）
 
-**Phase 4 - Future**
-- [ ] Instagram (browser automation)
-- [ ] TikTok (browser automation)
-- [ ] Engagement tracking (likes, retweets, etc.)
+**第 4 阶段 - 未来计划**
+- [ ] Instagram（浏览器自动化）
+- [ ] TikTok（浏览器自动化）
+- [ ] 互动跟踪（点赞、转发等）
 
-## 🤝 Contributing
+## 🤝 贡献
 
-This is an open-source community project. If you add a platform, please:
-1. Follow the existing platform structure (see `platforms/discord.js`)
-2. Add validation methods
-3. Update this README
-4. Share with the OpenClaw community!
+这是一个开源社区项目。如果你添加新的平台，请：
+1. 遵循现有的平台结构（参见 `platforms/discord.js`）
+2. 添加验证方法
+3. 更新此 README 文件
+4. 与 OpenClaw 社区分享！
 
-## 📝 License
+## 📝 许可证
 
-MIT - Free forever. Built by Ori ✨ with love for the OpenClaw community.
+MIT 许可证 - 永久免费。由 Ori 开发，充满对 OpenClaw 社区的热爱。
 
 ---
 
-**Questions?** Check PROJECT.md for development notes and architecture details.
+**有问题吗？** 请查看 PROJECT.md 以获取开发说明和架构详情。

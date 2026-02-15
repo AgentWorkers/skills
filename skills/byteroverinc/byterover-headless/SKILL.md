@@ -1,35 +1,34 @@
 ---
 name: byterover-headless
-description: "Query and curate knowledge-base using ByteRover CLI. Use `brv query` for knowledge retrieval, `brv curate` for adding context, and `brv push/pull` for syncing."
+description: "使用 ByteRover CLI 查询和整理知识库。使用 `brv query` 进行知识检索，使用 `brv curate` 添加上下文信息，使用 `brv push/pull` 进行同步操作。"
 metadata: {"moltbot":{"emoji":"🧠","requires":{"bins":["brv"]},"install":[{"id":"npm","kind":"node","package":"@byterover/cli","bins":["brv"],"label":"Install ByteRover CLI (npm)"}]}}
 ---
 
-# ByteRover Knowledge Management
+# ByteRover 知识管理
 
-Use the `brv` CLI to manage your own knowledgebase. ByteRover maintains a context tree that stores patterns, decisions, and implementation details about a project.
+使用 `brv` 命令行工具（CLI）来管理您的知识库。ByteRover 会维护一个上下文树，其中存储了项目的模式、决策和实现细节。
 
-**IMPORTANT**: For headless/automated use, always add `--headless --format json` flags to get machine-parseable JSON output.
+**重要提示**：在无头/自动化模式下使用时，务必添加 `--headless --format json` 标志，以获取机器可解析的 JSON 输出。
 
-## Setup (Headless)
+## 设置（无头模式）
 
-- ByteRover can be fully set up in headless mode. If user has not logged in or initialized `.brv/` in the current working directory (check via `projectInitialized` and and `authStatus` in `brv status --headless --format json
-` response), ask them to provide:
-1. **API key** - for authentication (obtain from https://app.byterover.dev/settings/keys)
-2. **Team and space** - names or IDs for project initialization
+- ByteRover 可以完全设置为无头模式。如果用户未登录或当前工作目录中未初始化 `.brv/` 文件（可通过 `brv status --headless --format json` 命令检查 `projectInitialized` 和 `authStatus` 字段），请用户提供以下信息：
+  1. **API 密钥** - 用于身份验证（从 https://app.byterover.dev/settings/keys 获取）
+  2. **团队名称和空间名称** - 用于项目初始化
 
-### Login with API Key
+### 使用 API 密钥登录
 
-Authenticate using an API key:
+使用 API 密钥进行身份验证：
 
 ```bash
 brv login --api-key <key>
 ```
 
-Outputs text: `Logged in as <email>` on success.
+成功登录后，输出文本为：`已登录为 <email>`。
 
-### Initialize Project
+### 初始化项目
 
-Initialize ByteRover for a project (requires team and space for headless mode - can use either ID or name):
+为项目初始化 ByteRover（无头模式需要团队名称和空间名称，可以使用 ID 或名称）：
 
 ```bash
 # Using names
@@ -39,12 +38,12 @@ brv init --headless --team my-team --space my-space --format json
 brv init --headless --team team-abc123 --space space-xyz789 --format json
 ```
 
-Force re-initialization:
+强制重新初始化：
 ```bash
 brv init --headless --team my-team --space my-space --force --format json
 ```
 
-Example response:
+示例响应：
 ```json
 {
   "success": true,
@@ -58,17 +57,17 @@ Example response:
 }
 ```
 
-**Note**: You can use either team/space names or IDs. Names are matched case-insensitively.
+**注意**：您可以使用团队名称或空间名称，系统不区分大小写。
 
-### Check Status
+### 检查状态
 
-Check the current status of ByteRover and the project:
+检查 ByteRover 和项目的当前状态：
 
 ```bash
 brv status --headless --format json
 ```
 
-Example response:
+示例响应：
 ```json
 {
   "success": true,
@@ -86,15 +85,15 @@ Example response:
 }
 ```
 
-## Query Knowledge
+## 查询知识
 
-Ask questions to retrieve relevant knowledge:
+提问以检索相关知识：
 
 ```bash
 brv query "How is authentication implemented?" --headless --format json
 ```
 
-Example response:
+示例响应：
 ```json
 {
   "success": true,
@@ -107,20 +106,20 @@ Example response:
 }
 ```
 
-## Curate Context
+## 编辑内容
 
-Add new knowledge or context to the project's context tree:
+向项目的上下文树中添加新知识或内容：
 
 ```bash
 brv curate "Auth uses JWT with 24h expiry. Tokens stored in httpOnly cookies via authMiddleware.ts" --headless --format json
 ```
 
-Include specific files for comprehensive context (max 5 files):
+可以包含特定文件以提供更全面的上下文（最多 5 个文件）：
 ```bash
 brv curate "Authentication middleware validates JWT tokens" --files src/middleware/auth.ts --headless --format json
 ```
 
-Example response:
+示例响应：
 ```json
 {
   "success": true,
@@ -133,22 +132,22 @@ Example response:
 }
 ```
 
-## Push Context Tree
+## 推送上下文树
 
-Push local context tree changes to ByteRover cloud storage:
+将本地上下文树的更改推送到 ByteRover 云存储：
 
 ```bash
 brv push --headless --format json -y
 ```
 
-The `-y` flag skips confirmation prompt (required for headless mode).
+`-y` 标志会跳过确认提示（无头模式必需）。
 
-Push to a specific branch:
+将更改推送到特定分支：
 ```bash
 brv push --branch feature-branch --headless --format json -y
 ```
 
-Example response:
+示例响应：
 ```json
 {
   "success": true,
@@ -164,27 +163,26 @@ Example response:
 }
 ```
 
-Possible statuses:
+可能的返回状态：
+- `success` - 推送成功
+- `no_changes` - 无需要推送的上下文更改
+- `cancelled` - 推送被取消
+- `error` - 推送失败
 
-- `success` - Push completed
-- `no_changes` - No context changes to push
-- `cancelled` - Push was cancelled
-- `error` - Push failed
+## 拉取上下文树
 
-## Pull Context Tree
-
-Pull context tree from ByteRover cloud storage:
+从 ByteRover 云存储中拉取上下文树：
 
 ```bash
 brv pull --headless --format json
 ```
 
-Pull from a specific branch:
+从特定分支拉取内容：
 ```bash
 brv pull --branch feature-branch --headless --format json
 ```
 
-Example response:
+示例响应：
 ```json
 {
   "success": true,
@@ -200,29 +198,27 @@ Example response:
 }
 ```
 
-Possible statuses:
+可能的返回状态：
+- `success` - 拉取成功
+- `local_changes` - 本地存在更改，需要先推送本地更改
+- `error` - 拉取失败
 
-- `success` - Pull completed
-- `local_changes` - Local changes exist, push first
-- `error` - Pull failed
+## 错误处理
 
-## Error Handling
+始终检查 JSON 响应中的 `success` 字段：
+- `success: true` - 操作成功完成
+- `success: false` - 操作失败，请查看 `data.error` 或 `data.message` 以获取详细信息
 
-Always check the `success` field in JSON responses:
+常见错误情况：
+- **未授权**：运行 `brv login --api-key <key>`
+- **项目未初始化**：运行 `brv init --headless --team <team> --space <space> --format json`
+- **本地存在更改**：在拉取之前先推送本地更改
 
-- `success: true` - Operation completed successfully
-- `success: false` - Operation failed, check `data.error` or `data.message` for details
-
-Common error scenarios:
-- **Not authenticated**: Run `brv login --api-key <key>`
-- **Project not initialized**: Run `brv init --headless --team <team> --space <space> --format json`
-- **Local changes exist**: Push local changes before pulling
-
-## Tips
-1. For pull and push operations, you should ask for user permission first.
-2. Always use `--headless --format json` for automation (except `brv login` which outputs text).
-3. Check `brv status --headless --format json` first to verify auth and project state.
-4. For curate operations, include relevant files with `--files` for better context.
-5. Query responses may include tool call details showing what knowledge was searched.
-6. For push operations, always use `-y` to skip confirmation in headless mode. For re-initialization, use `-f` to force re-initialization.
-7. Pull will fail if there are unpushed local changes - push first.
+## 提示
+1. 在执行拉取和推送操作之前，应先获取用户权限。
+2. 在自动化操作中始终使用 `--headless --format json` 标志（`brv login` 除外，因为它输出文本）。
+3. 先运行 `brv status --headless --format json` 以验证身份验证和项目状态。
+4. 在编辑内容时，使用 `--files` 参数包含相关文件以提供更好的上下文。
+5. 查询响应可能包含工具调用详情，显示搜索到的知识内容。
+6. 在推送操作中，无头模式下务必使用 `-y` 标志跳过确认步骤。重新初始化时使用 `-f` 标志强制重新初始化。
+7. 如果本地有未推送的更改，拉取操作会失败——请先推送本地更改。

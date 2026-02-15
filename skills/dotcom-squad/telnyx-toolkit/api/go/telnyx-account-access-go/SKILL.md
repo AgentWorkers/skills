@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Access - Go
+# Telnyx 账户访问 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all addresses
+## 列出所有地址
 
-Returns a list of your addresses.
+返回您的地址列表。
 
 `GET /addresses`
 
@@ -53,11 +53,11 @@ Returns a list of your addresses.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Creates an address
+## 创建地址
 
-Creates an address.
+创建一个新的地址。
 
-`POST /addresses` — Required: `first_name`, `last_name`, `business_name`, `street_address`, `locality`, `country_code`
+`POST /addresses` — 必需参数：`first_name`、`last_name`、`business_name`、`street_address`、`locality`、`country_code`
 
 ```go
 	address, err := client.Addresses.New(context.TODO(), telnyx.AddressNewParams{
@@ -74,9 +74,9 @@ Creates an address.
 	fmt.Printf("%+v\n", address.Data)
 ```
 
-## Retrieve an address
+## 查询地址信息
 
-Retrieves the details of an existing address.
+查询现有地址的详细信息。
 
 `GET /addresses/{id}`
 
@@ -88,9 +88,9 @@ Retrieves the details of an existing address.
 	fmt.Printf("%+v\n", address.Data)
 ```
 
-## Deletes an address
+## 删除地址
 
-Deletes an existing address.
+删除现有的地址。
 
 `DELETE /addresses/{id}`
 
@@ -102,7 +102,7 @@ Deletes an existing address.
 	fmt.Printf("%+v\n", address.Data)
 ```
 
-## Accepts this address suggestion as a new emergency address for Operator Connect and finishes the uploads of the numbers associated with it to Microsoft.
+## 接受此地址建议作为新的紧急联系地址，并完成将其关联的号码上传至 Microsoft 的操作。
 
 `POST /addresses/{id}/actions/accept_suggestions`
 
@@ -118,11 +118,11 @@ Deletes an existing address.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Validate an address
+## 验证地址
 
-Validates an address for emergency services.
+验证地址是否适合用于紧急服务。
 
-`POST /addresses/actions/validate` — Required: `country_code`, `street_address`, `postal_code`
+`POST /addresses/actions/validate` — 必需参数：`country_code`、`street_address`、`postal_code`
 
 ```go
 	response, err := client.Addresses.Actions.Validate(context.TODO(), telnyx.AddressActionValidateParams{
@@ -136,9 +136,9 @@ Validates an address for emergency services.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all SSO authentication providers
+## 列出所有 SSO（单点登录）认证提供者
 
-Returns a list of your SSO authentication providers.
+返回您的所有 SSO 认证提供者列表。
 
 `GET /authentication_providers`
 
@@ -150,11 +150,11 @@ Returns a list of your SSO authentication providers.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Creates an authentication provider
+## 创建认证提供者
 
-Creates an authentication provider.
+创建一个新的认证提供者。
 
-`POST /authentication_providers` — Required: `name`, `short_name`, `settings`
+`POST /authentication_providers` — 必需参数：`name`、`short_name`、`settings`
 
 ```go
 	authenticationProvider, err := client.AuthenticationProviders.New(context.TODO(), telnyx.AuthenticationProviderNewParams{
@@ -172,9 +172,9 @@ Creates an authentication provider.
 	fmt.Printf("%+v\n", authenticationProvider.Data)
 ```
 
-## Retrieve an authentication provider
+## 查询认证提供者信息
 
-Retrieves the details of an existing authentication provider.
+查询现有认证提供者的详细信息。
 
 `GET /authentication_providers/{id}`
 
@@ -186,9 +186,9 @@ Retrieves the details of an existing authentication provider.
 	fmt.Printf("%+v\n", authenticationProvider.Data)
 ```
 
-## Update an authentication provider
+## 更新认证提供者设置
 
-Updates settings of an existing authentication provider.
+更新现有认证提供者的设置。
 
 `PATCH /authentication_providers/{id}`
 
@@ -214,9 +214,9 @@ Updates settings of an existing authentication provider.
 	fmt.Printf("%+v\n", authenticationProvider.Data)
 ```
 
-## Deletes an authentication provider
+## 删除认证提供者
 
-Deletes an existing authentication provider.
+删除现有的认证提供者。
 
 `DELETE /authentication_providers/{id}`
 
@@ -228,7 +228,9 @@ Deletes an existing authentication provider.
 	fmt.Printf("%+v\n", authenticationProvider.Data)
 ```
 
-## List all billing groups
+## 列出所有计费组
+
+返回您的所有计费组列表。
 
 `GET /billing_groups`
 
@@ -240,7 +242,9 @@ Deletes an existing authentication provider.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a billing group
+## 创建计费组
+
+创建一个新的计费组。
 
 `POST /billing_groups`
 
@@ -254,7 +258,9 @@ Deletes an existing authentication provider.
 	fmt.Printf("%+v\n", billingGroup.Data)
 ```
 
-## Get a billing group
+## 获取计费组信息
+
+查询特定计费组的详细信息。
 
 `GET /billing_groups/{id}`
 
@@ -266,7 +272,9 @@ Deletes an existing authentication provider.
 	fmt.Printf("%+v\n", billingGroup.Data)
 ```
 
-## Update a billing group
+## 更新计费组设置
+
+更新现有计费组的设置。
 
 `PATCH /billing_groups/{id}`
 
@@ -284,7 +292,9 @@ Deletes an existing authentication provider.
 	fmt.Printf("%+v\n", billingGroup.Data)
 ```
 
-## Delete a billing group
+## 删除计费组
+
+删除现有的计费组。
 
 `DELETE /billing_groups/{id}`
 
@@ -296,9 +306,9 @@ Deletes an existing authentication provider.
 	fmt.Printf("%+v\n", billingGroup.Data)
 ```
 
-## List integration secrets
+## 列出所有集成密钥
 
-Retrieve a list of all integration secrets configured by the user.
+获取用户配置的所有集成密钥列表。
 
 `GET /integration_secrets`
 
@@ -310,11 +320,11 @@ Retrieve a list of all integration secrets configured by the user.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a secret
+## 创建集成密钥
 
-Create a new secret with an associated identifier that can be used to securely integrate with other services.
+创建一个新的集成密钥，并为其指定一个标识符，以便与其他服务安全地集成。
 
-`POST /integration_secrets` — Required: `identifier`, `type`
+`POST /integration_secrets` — 必需参数：`identifier`、`type`
 
 ```go
 	integrationSecret, err := client.IntegrationSecrets.New(context.TODO(), telnyx.IntegrationSecretNewParams{
@@ -328,9 +338,9 @@ Create a new secret with an associated identifier that can be used to securely i
 	fmt.Printf("%+v\n", integrationSecret.Data)
 ```
 
-## Delete an integration secret
+## 删除集成密钥
 
-Delete an integration secret given its ID.
+根据 ID 删除指定的集成密钥。
 
 `DELETE /integration_secrets/{id}`
 
@@ -341,7 +351,9 @@ Delete an integration secret given its ID.
 	}
 ```
 
-## List all Access IP Addresses
+## 列出所有访问 IP 地址
+
+获取您的所有访问 IP 地址列表。
 
 `GET /access_ip_address`
 
@@ -353,9 +365,11 @@ Delete an integration secret given its ID.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create new Access IP Address
+## 创建新的访问 IP 地址
 
-`POST /access_ip_address` — Required: `ip_address`
+创建一个新的访问 IP 地址。
+
+`POST /access_ip_address` — 必需参数：`ip_address`
 
 ```go
 	accessIPAddressResponse, err := client.AccessIPAddress.New(context.TODO(), telnyx.AccessIPAddressNewParams{
@@ -367,7 +381,9 @@ Delete an integration secret given its ID.
 	fmt.Printf("%+v\n", accessIPAddressResponse.ID)
 ```
 
-## Retrieve an access IP address
+## 查询访问 IP 地址信息
+
+查询特定访问 IP 地址的详细信息。
 
 `GET /access_ip_address/{access_ip_address_id}`
 
@@ -379,7 +395,9 @@ Delete an integration secret given its ID.
 	fmt.Printf("%+v\n", accessIPAddressResponse.ID)
 ```
 
-## Delete access IP address
+## 删除访问 IP 地址
+
+删除指定的访问 IP 地址。
 
 `DELETE /access_ip_address/{access_ip_address_id}`
 
@@ -391,7 +409,9 @@ Delete an integration secret given its ID.
 	fmt.Printf("%+v\n", accessIPAddressResponse.ID)
 ```
 
-## List all Access IP Ranges
+## 列出所有访问 IP 范围
+
+获取您的所有访问 IP 范围列表。
 
 `GET /access_ip_ranges`
 
@@ -403,9 +423,11 @@ Delete an integration secret given its ID.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create new Access IP Range
+## 创建新的访问 IP 范围
 
-`POST /access_ip_ranges` — Required: `cidr_block`
+创建一个新的访问 IP 范围。
+
+`POST /access_ip_ranges` — 必需参数：`cidr_block`
 
 ```go
 	accessIPRange, err := client.AccessIPRanges.New(context.TODO(), telnyx.AccessIPRangeNewParams{
@@ -417,7 +439,9 @@ Delete an integration secret given its ID.
 	fmt.Printf("%+v\n", accessIPRange.ID)
 ```
 
-## Delete access IP ranges
+## 删除访问 IP 范围
+
+删除指定的访问 IP 范围。
 
 `DELETE /access_ip_ranges/{access_ip_range_id}`
 

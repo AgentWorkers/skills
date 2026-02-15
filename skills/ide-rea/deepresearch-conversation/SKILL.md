@@ -1,49 +1,49 @@
 ---
 name: deepresearch-conversation
-description: Deep ReSearch Conversation is provided by Baidu for multi-round streaming conversations with "Deep Research" agents. "In-depth research" is a long-process task involving multi-step reasoning and execution, which is different from the ordinary "question-and-answer". A dialogue that requires the user to repeatedly verify and correct it until a satisfactory answer is reached.
+description: Deep ReSearch Conversation 是由百度提供的一项服务，支持与“深度研究”代理进行多轮流式对话。这种“深度研究”任务是一个涉及多步骤推理和执行的长过程，与普通的“问答”方式有所不同。它需要用户不断验证和修正自己的回答，直到得到令人满意的答案为止。
 metadata: { "openclaw": { "emoji": "📌", "requires": { "bins": ["python3", "curl"], "env": ["BAIDU_API_KEY"] }, "primaryEnv": "BAIDU_API_KEY" } }
 ---
 
-# Deep Research Conversation
+# 深度研究对话
 
-This skill allows OpenClaw agents to conduct in-depth research discussions with users on a given topic. The API Key is automatically loaded from the OpenClaw config — no manual setup is needed.
+该功能允许 OpenClaw 代理与用户就特定主题进行深入的研究讨论。API 密钥会自动从 OpenClaw 配置文件中加载，无需手动设置。
 
-## API Table
-|    name    |               path              |            description                |
+## API 表格
+|    名称    |               路径              |            描述                |
 |------------|---------------------------------|---------------------------------------|
-|DeepresearchConversation|/v2/agent/deepresearch/run|Multi-round streaming deep research conversation (via Python script)|
-|ConversationCreate|/v2/agent/deepresearch/create|Create a new conversation session, returns conversation_id|
-|FileUpload|/v2/agent/file/upload|Upload a file for the conversation|
-|FileParseSubmit|/v2/agent/file/parse/submit|Submit an uploaded file for parsing|
-|FileParseQuery|/v2/agent/file/parse/query|Query the status of a file parsing task|
+|DeepresearchConversation|/v2/agent/deepresearch/run|多轮流式深度研究对话（通过 Python 脚本实现）|
+|ConversationCreate|/v2/agent/deepresearch/create|创建新的对话会话，返回会话 ID|
+|FileUpload|/v2/agent/file/upload|为对话上传文件|
+|FileParseSubmit|/v2/agent/file/parse/submit|提交上传的文件以进行解析|
+|FileParseQuery|/v2/agent/file/parse/query|查询文件解析任务的进度|
 
-## Workflow
+## 工作流程
 
-### Path A: Topic discussion without files
-1. Call **DeepresearchConversation** directly with the user's query. A new conversation is created automatically.
+### 方式 A：无文件的主题讨论
+1. 直接使用用户的查询内容调用 **DeepresearchConversation**。系统会自动创建一个新的对话会话。
 
-### Path B: Topic discussion with files
-1. Call **ConversationCreate** to get a `conversation_id`.
-2. Call **FileUpload** with the `conversation_id` to upload files.
-3. Call **FileParseSubmit** with the returned `file_id`.
-4. Poll **FileParseQuery** every few seconds until parsing succeeds.
-5. Call **DeepresearchConversation** with the `query`, `conversation_id`, and `file_ids`.
+### 方式 B：包含文件的主题讨论
+1. 调用 **ConversationCreate** 以获取 `conversation_id`。
+2. 使用 `conversation_id` 调用 **FileUpload** 上传文件。
+3. 使用返回的 `file_id` 调用 **FileParseSubmit**。
+4. 每隔几秒调用一次 **FileParseQuery**，直到文件解析完成。
+5. 使用 `query`、`conversation_id` 和 `file_ids` 调用 **DeepresearchConversation**。
 
-### Multi-round conversation rules
-- The DeepresearchConversation API is a **SSE streaming** interface that returns data incrementally.
-- After the first call, you **must** pass `conversation_id` in all subsequent calls.
-- If the response contains an `interrupt_id` (for "demand clarification" or "outline confirmation"), the next call **must** include that `interrupt_id`.
-- If the response contains a `structured_outline`, present it to the user for confirmation/modification, then pass the final outline in the next call.
-- Keep calling DeepresearchConversation iteratively until the user is satisfied with the result.
+### 多轮对话规则
+- **DeepresearchConversation** API 是一个 **SSE 流式** 接口，会逐步返回数据。
+- 在第一次调用之后，后续的所有调用都必须传递 `conversation_id`。
+- 如果响应中包含 `interrupt_id`（表示需要“进一步澄清”或“确认大纲内容”），下一次调用必须包含该 `interrupt_id`。
+- 如果响应中包含 `structured_outline`，请将其展示给用户以供确认或修改，然后在下一次调用中传递最终的大纲内容。
+- 重复调用 **DeepresearchConversation**，直到用户对结果满意为止。
 
-## APIS
+## API
 
 ### ConversationCreate API
 
-#### Parameters
-no parameters
+#### 参数
+无参数
 
-#### Execute shell
+#### 执行 shell 命令
 ```bash
 curl -X POST "https://qianfan.baidubce.com/v2/agent/deepresearch/create" \
   -H "X-Appbuilder-From: openclaw" \
@@ -54,17 +54,17 @@ curl -X POST "https://qianfan.baidubce.com/v2/agent/deepresearch/create" \
 
 ### FileUpload API
 
-#### Parameters
-- `agent_code`: Fixed value `"deepresearch"` (required)
-- `conversation_id`: From ConversationCreate response (required)
-- `file`: Local file binary (mutually exclusive with file_url). Max 10 files. Supported formats:
-  - Text: .doc, .docx, .txt, .pdf, .ppt, .pptx (txt ≤ 10MB, pdf ≤ 100MB/3000 pages, doc/docx ≤ 100MB/2500 pages, ppt/pptx ≤ 400 pages)
-  - Table: .xlsx, .xls (≤ 100MB, single Sheet only)
-  - Image: .png, .jpg, .jpeg, .bmp (≤ 10MB each)
-  - Audio: .wav, .pcm (≤ 10MB)
-- `file_url`: Public URL of the file (mutually exclusive with file)
+#### 参数
+- `agent_code`: 固定值 `"deepresearch"`（必填）
+- `conversation_id`: 来自 `ConversationCreate` 的响应（必填）
+- `file`: 本地文件二进制文件（与 `file_url` 互斥）。最多支持上传 10 个文件。支持的文件格式：
+  - 文本文件：.doc, .docx, .txt, .pdf, .ppt, .pptx（txt 文件大小不超过 10MB，pdf 文件不超过 100MB/3000 页，doc/docx 文件不超过 100MB/2500 页，ppt/pptx 文件不超过 400 页）
+  - 电子表格文件：.xlsx, .xls（文件大小不超过 100MB，仅支持单个工作表）
+  - 图像文件：.png, .jpg, .jpeg, .bmp（每个文件大小不超过 10MB）
+  - 音频文件：.wav, .pcm（文件大小不超过 10MB）
+- `file_url`: 文件的公共 URL（与 `file` 互斥）
 
-#### Local file upload
+#### 本地文件上传
 ```bash
 curl -X POST "https://qianfan.baidubce.com/v2/agent/file/upload" \
   -H "Authorization: Bearer $BAIDU_API_KEY" \
@@ -75,7 +75,7 @@ curl -X POST "https://qianfan.baidubce.com/v2/agent/file/upload" \
   -F "file=@local_file_path"
 ```
 
-#### File URL upload
+#### 文件 URL 上传
 ```bash
 curl -X POST "https://qianfan.baidubce.com/v2/agent/file/upload" \
   -H "Authorization: Bearer $BAIDU_API_KEY" \
@@ -88,10 +88,10 @@ curl -X POST "https://qianfan.baidubce.com/v2/agent/file/upload" \
 
 ### FileParseSubmit API
 
-#### Parameters
-- `file_id`: From FileUpload response (required)
+#### 参数
+- `file_id`: 来自 `FileUpload` 的响应（必填）
 
-#### Execute shell
+#### 执行 shell 命令
 ```bash
 curl -X POST "https://qianfan.baidubce.com/v2/agent/file/parse/submit" \
   -H "Authorization: Bearer $BAIDU_API_KEY" \
@@ -102,10 +102,10 @@ curl -X POST "https://qianfan.baidubce.com/v2/agent/file/parse/submit" \
 
 ### FileParseQuery API
 
-#### Parameters
-- `task_id`: From FileParseSubmit response (required)
+#### 参数
+- `task_id`: 来自 `FileParseSubmit` 的响应（必填）
 
-#### Execute shell
+#### 执行 shell 命令
 ```bash
 curl -X GET "https://qianfan.baidubce.com/v2/agent/file/parse/query?task_id=$task_id" \
   -H "Authorization: Bearer $BAIDU_API_KEY" \
@@ -114,12 +114,12 @@ curl -X GET "https://qianfan.baidubce.com/v2/agent/file/parse/query?task_id=$tas
 
 ### DeepresearchConversation API
 
-#### Parameters
-- `query`: The user's question or research topic (required)
-- `conversation_id`: Optional on first call (auto-generated). Required on subsequent calls.
-- `file_ids`: List of parsed file IDs (optional, only when discussing files)
-- `interrupt_id`: Required when responding to "demand clarification" or "outline confirmation" from previous round. Found in `content.text.data` of the previous SSE response.
-- `structured_outline`: The research report outline. Required on subsequent calls if the previous round generated one. Structure:
+#### 参数
+- `query`: 用户的问题或研究主题（必填）
+- `conversation_id`：首次调用时可选（系统自动生成），后续调用时必填。
+- `file_ids`: 已解析文件的 ID 列表（可选，仅在讨论文件时使用）
+- `interrupt_id`: 在响应“需要进一步澄清”或“确认大纲内容”时必填。该 ID 可在之前 SSE 响应的 `content.text.data` 中找到。
+- `structured_outline`: 研究报告的大纲内容。如果上一轮生成了大纲，则在后续调用中必填。大纲结构如下：
 ```json
 {
     "title": "string",
@@ -135,14 +135,14 @@ curl -X GET "https://qianfan.baidubce.com/v2/agent/file/parse/query?task_id=$tas
     ]
 }
 ```
-- `version`: `"Lite"` (faster, within 10 min) or `"Standard"` (deeper, slower). Default: `"Standard"`.
+- `version`: `"Lite"`（速度更快，耗时约 10 分钟）或 `"Standard"`（解析更详细，耗时较长）。默认值为 `"Standard"`。
 
-#### Execute shell
+#### 执行 shell 命令
 ```bash
 python3 scripts/deepresearch_conversation.py '{"query": "your question here", "version": "Standard"}'
 ```
 
-#### Example with all parameters
+#### 包含所有参数的示例
 ```bash
 python3 scripts/deepresearch_conversation.py '{"query": "the question", "file_ids": ["file_id_1"], "interrupt_id": "interrupt_id", "conversation_id": "conversation_id", "structured_outline": {"title": "Report Title", "locale": "zh", "description": "desc", "sub_chapters": [{"title": "Chapter 1", "locale": "zh", "description": "chapter desc", "sub_chapters": []}]}, "version": "Standard"}'
 ```

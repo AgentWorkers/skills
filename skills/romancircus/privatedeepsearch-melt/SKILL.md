@@ -1,53 +1,51 @@
 # privatedeepsearch-melt
 
-> *"Google wants to know everything about you. I want to know nothing."*
-> — melt, probably
+> “谷歌想知道关于你的所有事情。而我什么都不想知道。”
+> — 可能是 melt 说的
 
-**melt** is your privacy-obsessed research assistant. She searches the web deeply, synthesizes findings with citations, and forgets everything the moment she's done.
+**melt** 是一个极度注重隐私的研究助手。它会深入地搜索网络，将搜索结果与相关引用整合在一起，完成任务后便会立即忘记所有信息。
 
-Powered by [SearXNG](https://github.com/searxng/searxng). No Google. No tracking. No API keys. No BS.
+该工具由 [SearXNG](https://github.com/searxng/searxng) 提供支持。无需使用谷歌，无需跟踪用户行为，也无需任何 API 密钥，完全避免了隐私泄露的风险。
 
 ---
 
-## What melt Does
+## melt 的功能
 
-### 🔍 She Searches (Privately)
+### 🔍 私密搜索
 ```bash
 searx "best password managers 2026" 5
 ```
-melt queries DuckDuckGo, Brave, Startpage, and friends. Google and Bing are blocked at the door.
+melt 会同时使用 DuckDuckGo、Brave、Startpage 等搜索引擎进行搜索。谷歌和 Bing 被完全屏蔽在外。
 
-### 🔬 She Researches (Deeply)
+### 🔬 深度研究
 ```bash
 deep-research "zero knowledge proofs practical applications"
 ```
-melt doesn't just search once and call it a day. She:
-1. Searches your query
-2. Reads the results
-3. Thinks "hmm, I need more context"
-4. Searches again with refined terms
-5. Scrapes full article content
-6. Repeats up to 5 times
-7. Synthesizes everything into a report with citations
+melt 不会仅仅搜索一次就结束工作：
+1. 它会执行你的搜索请求；
+2. 阅读搜索结果；
+3. 思考“需要更多背景信息”；
+4. 用更精确的关键词再次搜索；
+5. 抓取完整文章内容；
+6. 可能会重复搜索多达 5 次；
+7. 最后将所有信息整合成一份带有引用的报告。
 
-Like Perplexity, but she doesn't sell your soul to investors.
+它的工作原理类似于 Perplexity，但不会为了吸引投资而泄露用户的隐私。
 
-### 🛡️ She Protects (Always)
-
-| What Big Tech Does | What melt Does |
-|--------------------|----------------|
-| Logs every search | Logs nothing |
-| Builds a profile on you | Forgets you exist |
-| Sells your data | Has no data to sell |
-| Runs on their servers | Runs on YOUR machine |
-| Costs $20/month | Costs $0/forever |
+### 🛡️ 永远保护你的隐私
+| 大型科技公司的行为 | melt 的行为 |
+|----------------|----------------|
+| 记录用户的每次搜索 | 从不记录任何信息 |
+| 构建用户档案 | 完全忘记你的存在 |
+| 出售用户数据 | 没有任何数据可供出售 |
+| 在他们的服务器上运行 | 在你的机器上运行 |
+| 每月费用 20 美元 | 永远免费 |
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Wake melt Up
-
+### 1. 启动 melt
 ```bash
 # Auto-setup (generates secret key + starts container)
 ./setup.sh
@@ -56,10 +54,9 @@ Like Perplexity, but she doesn't sell your soul to investors.
 cd docker && docker-compose up -d
 ```
 
-She'll be ready at `http://localhost:8888`
+你可以通过 `http://localhost:8888` 来启动 melt。
 
-### 2. Teach Her to Your AI
-
+### 2. 教会 melt 使用你的 AI 数据
 ```bash
 cp -r skills/* ~/.clawdbot/skills/
 
@@ -67,9 +64,8 @@ cp -r skills/* ~/.clawdbot/skills/
 clawdhub install privatedeepsearch-melt
 ```
 
-### 3. (Optional) Fire the Competition
-
-Tell Clawdbot to stop using Brave API:
+### 3. （可选）禁止竞争对手使用相关服务
+你可以命令 Clawdbot 停止使用 Brave 的 API：
 
 ```json
 {
@@ -83,8 +79,7 @@ Tell Clawdbot to stop using Brave API:
 
 ---
 
-## How Deep Research Actually Works
-
+## 深度研究的实际工作原理
 ```
 You: "explain quantum computing"
                     │
@@ -126,8 +121,7 @@ You: "explain quantum computing"
 
 ---
 
-## Privacy Architecture
-
+## 隐私保护机制
 ```
 Your brain
     │
@@ -155,46 +149,42 @@ Your brain
 └─────────────────┘
 ```
 
-**Who sees what:**
-- **Google**: Nothing. Blocked.
-- **Your ISP**: Encrypted traffic. They mad.
-- **melt**: Everything. But she has amnesia.
+**谁能看到什么：**
+- **谷歌**：什么也看不到（因为被屏蔽了）。
+- **你的互联网服务提供商 (ISP)**：只能看到加密后的网络流量（他们对此很恼火）。
+- **melt**：能看到所有信息，但它会“忘记”这些信息。
 
 ---
 
-## Why Open Source Matters
+## 为什么开源很重要
+melt 使用 MIT 许可协议，原因如下：
+1. **你可以审核代码** — 没有隐藏的跟踪机制；
+2. **你可以对其进行修改** — 可以创建自己的版本；
+3. **你可以对其进行改进** — 欢迎提交 Pull Request；
+4. **你的数据由你掌控** — 数据永远不会离开你的机器。
 
-melt is MIT licensed because:
-
-1. **You can audit the code** — No hidden trackers
-2. **You can fork it** — Make your own version
-3. **You can improve it** — PRs welcome
-4. **You own your data** — It never leaves your machine
-
-Closed-source "privacy" tools ask you to trust them. melt asks you to verify.
+相比之下，闭源的“隐私保护”工具依赖你的信任，而 melt 则要求你自己来验证其安全性。
 
 ---
 
-## Engines melt Trusts
+## melt 支持的搜索引擎
+✅ **支持的搜索引擎：**
+- DuckDuckGo、Brave Search、Startpage
+- Qwant、Mojeek
+- 维基百科、GitHub、StackOverflow、Reddit、arXiv
+- Piped、Invidious（类似 YouTube 但无广告）
 
-✅ **Enabled:**
-- DuckDuckGo, Brave Search, Startpage
-- Qwant, Mojeek
-- Wikipedia, GitHub, StackOverflow, Reddit, arXiv
-- Piped, Invidious (YouTube without YouTube)
-
-❌ **Blocked:**
-- Google (all of it)
-- Bing (all of it)
-- Anything that tracks you
+❌ **被屏蔽的搜索引擎：**
+- Google（所有服务）
+- Bing（所有服务）
+- 任何会追踪用户行为的搜索引擎
 
 ---
 
-## Requirements
-
-- Docker & Docker Compose
-- Python 3.8+
-- A healthy distrust of Big Tech
+## 系统要求
+- Docker 及 Docker Compose
+- Python 3.8 或更高版本
+- 对大型科技公司保持警惕（即不信任它们的行为）
 
 ```bash
 pip install aiohttp beautifulsoup4
@@ -202,8 +192,7 @@ pip install aiohttp beautifulsoup4
 
 ---
 
-## Files
-
+## 相关文件
 ```
 privatedeepsearch-melt/
 ├── README.md              ← You are here
@@ -220,21 +209,19 @@ privatedeepsearch-melt/
 
 ---
 
-## Credits
-
-- **[SearXNG](https://github.com/searxng/searxng)** — The real hero. Privacy-respecting meta-search that makes this possible.
-- **[OpenWebUI Deep Research](https://github.com/teodorgross/research-openwebui)** — Algorithm inspiration
-- **[Clawdbot](https://clawd.bot)** — AI assistant framework
-
----
-
-## License
-
-MIT — Do whatever you want. Just don't be evil.
+## 致谢
+- **[SearXNG](https://github.com/searxng/searxng)** — 这个工具背后的真正功臣，它提供了尊重用户隐私的搜索功能。
+- **[OpenWebUI Deep Research](https://github.com/teodorgross/research-openwebui)** — 算法设计的灵感来源。
+- **[Clawdbot](https://clawd.bot)** — 人工智能助手的框架。
 
 ---
 
-*"The best search history is no search history."*
+## 许可协议
+MIT 许可协议：你可以自由使用 melt，但请勿用于恶意目的。
+
+---
+
+*“最好的搜索记录，其实就是没有记录。”*
 — melt
 
 **[SearXNG](https://searxng.org)** 🛡️

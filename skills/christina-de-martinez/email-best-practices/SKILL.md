@@ -1,13 +1,22 @@
 ---
 name: email-best-practices
-description: Use when building email features, emails going to spam, high bounce rates, setting up SPF/DKIM/DMARC authentication, implementing email capture, ensuring compliance (CAN-SPAM, GDPR, CASL), handling webhooks, retry logic, or deciding transactional vs marketing.
+description: **使用场景：**  
+- 在构建电子邮件功能时；  
+- 当邮件被归类为垃圾邮件（spam）时；  
+- 面对高退信率（high bounce rates）时；  
+- 设置 SPF/DKIM/DMARC 认证机制时；  
+- 实现邮件捕获（email capture）功能时；  
+- 确保合规性（如 CAN-SPAM、GDPR、CASL 等法规要求）时；  
+- 处理 Webhook 事件时；  
+- 实现重试逻辑（retry logic）时；  
+- 判断邮件属于交易类（transactional）还是营销类（marketing）时。
 ---
 
-# Email Best Practices
+# 电子邮件最佳实践
 
-Guidance for building deliverable, compliant, user-friendly emails.
+本指南旨在帮助您构建可交付、符合规范且用户友好的电子邮件系统。
 
-## Architecture Overview
+## 架构概述
 
 ```
 [User] → [Email Form] → [Validation] → [Double Opt-In]
@@ -29,31 +38,31 @@ Guidance for building deliverable, compliant, user-friendly emails.
               [List Hygiene Jobs]
 ```
 
-## Quick Reference
+## 快速参考
 
-| Need to... | See |
+| 需要完成的任务 | 参考资料 |
 |------------|-----|
-| Set up SPF/DKIM/DMARC, fix spam issues | [Deliverability](./resources/deliverability.md) |
-| Build password reset, OTP, confirmations | [Transactional Emails](./resources/transactional-emails.md) |
-| Plan which emails your app needs | [Transactional Email Catalog](./resources/transactional-email-catalog.md) |
-| Build newsletter signup, validate emails | [Email Capture](./resources/email-capture.md) |
-| Send newsletters, promotions | [Marketing Emails](./resources/marketing-emails.md) |
-| Ensure CAN-SPAM/GDPR/CASL compliance | [Compliance](./resources/compliance.md) |
-| Decide transactional vs marketing | [Email Types](./resources/email-types.md) |
-| Handle retries, idempotency, errors | [Sending Reliability](./resources/sending-reliability.md) |
-| Process delivery events, set up webhooks | [Webhooks & Events](./resources/webhooks-events.md) |
-| Manage bounces, complaints, suppression | [List Management](./resources/list-management.md) |
+| 设置 SPF/DKIM/DMARC，解决垃圾邮件问题 | [邮件送达性](./resources/deliverability.md) |
+| 创建密码重置、一次性密码（OTP）及确认邮件 | [交易类邮件](./resources/transactional-emails.md) |
+| 确定应用程序需要发送的邮件类型 | [交易类邮件目录](./resources/transactional-email-catalog.md) |
+| 创建新闻通讯注册功能并验证用户邮箱地址 | [邮件捕获](./resources/email-capture.md) |
+| 发送新闻通讯和促销邮件 | [营销邮件](./resources/marketing-emails.md) |
+| 确保符合 CAN-SPAM/GDPR/CASL 法规要求 | [合规性](./resources/compliance.md) |
+| 判断邮件类型（交易类邮件还是营销邮件） | [邮件类型](./resources/email-types.md) |
+| 处理重试、幂等性及错误 | [发送可靠性](./resources/sending-reliability.md) |
+| 处理邮件送达事件并设置 Webhook | [Webhook 与事件](./resources/webhooks-events.md) |
+| 管理邮件退回、用户投诉及邮件抑制机制 | [列表管理](./resources/list-management.md) |
 
-## Start Here
+## 从这里开始
 
-**New app?**
-Start with the [Catalog](./resources/transactional-email-catalog.md) to plan which emails your app needs (password reset, verification, etc.), then set up [Deliverability](./resources/deliverability.md) (DNS authentication) before sending your first email.
+**新开发的应用程序？**
+首先参考 [交易类邮件目录](./resources/transactional-email-catalog.md)，确定应用程序需要发送的邮件类型（如密码重置、验证邮件等），然后设置 [邮件送达性](./resources/deliverability.md)（包括 DNS 认证），再发送第一封邮件。
 
-**Spam issues?**
-Check [Deliverability](./resources/deliverability.md) first—authentication problems are the most common cause. Gmail/Yahoo reject unauthenticated emails.
+**遇到垃圾邮件问题？**
+请先查看 [邮件送达性](./resources/deliverability.md)——认证问题是导致邮件被拒绝的最常见原因。Gmail 和 Yahoo 会拒绝未经认证的邮件。
 
-**Marketing emails?**
-Follow this path: [Email Capture](./resources/email-capture.md) (collect consent) → [Compliance](./resources/compliance.md) (legal requirements) → [Marketing Emails](./resources/marketing-emails.md) (best practices).
+**发送营销邮件？**
+按照以下步骤操作：[邮件捕获](./resources/email-capture.md)（收集用户同意信息）→ [合规性](./resources/compliance.md)（满足法律要求）→ [营销邮件](./resources/marketing-emails.md)（最佳实践）。
 
-**Production-ready sending?**
-Add reliability: [Sending Reliability](./resources/sending-reliability.md) (retry + idempotency) → [Webhooks & Events](./resources/webhooks-events.md) (track delivery) → [List Management](./resources/list-management.md) (handle bounces).
+**准备投入生产环境？**
+提升邮件发送的可靠性：[发送可靠性](./resources/sending-reliability.md)（实现重试和幂等性）→ [Webhook 与事件](./resources/webhooks-events.md)（跟踪邮件送达情况）→ [列表管理](./resources/list-management.md)（处理邮件退回问题）。

@@ -1,92 +1,92 @@
 ---
 name: Sui
-description: Assist with SUI transactions, object model, staking, and Move smart contracts.
+description: 协助处理SUI交易、对象模型、质押（staking）以及Move智能合约的相关操作。
 metadata: {"clawdbot":{"emoji":"💧","os":["linux","darwin","win32"]}}
 ---
 
-## Object Model (Critical Difference)
-- Sui uses objects, not accounts — everything is an object with unique ID
-- Objects are owned or shared — owned objects enable parallel transactions
-- Coins are objects too — SUI balance is sum of coin objects you own
-- Object IDs are permanent — address doesn't change but objects move
-- Different from Ethereum's account model — requires different mental model
+## 对象模型（关键区别）  
+- SUI 使用对象而非账户进行管理——所有内容都是具有唯一 ID 的对象。  
+- 对象可以被拥有或共享；被拥有的对象支持并行交易。  
+- 硬币也是对象的一部分——SUI 的余额等于你拥有的所有硬币对象的总和。  
+- 对象的 ID 是永久性的（地址不会改变，但对象本身可以移动）。  
+- 这与以太坊的账户模型不同，需要调整思维方式来理解。  
 
-## SUI Token
-- Native gas token — required for all transactions
-- Total supply fixed at creation — no inflation, but distribution ongoing
-- Gas fees burned — deflationary pressure
-- Staking rewards from fees — validators and delegators earn from gas
+## SUI 代币  
+- SUI 是一种原生气体代币，所有交易都依赖于它。  
+- 总供应量在创建时就已经固定，不存在通货膨胀，但代币的分配是持续进行的。  
+- 交易过程中会消耗气体（gas），从而产生通缩压力。  
+- 验证者和委托者可以通过收取气体费用来获得收益。  
 
-## Transaction Characteristics
-- Sub-second finality — extremely fast confirmation
-- Parallel execution for owned objects — independent transactions don't wait
-- Gas is predictable — know exact cost before submitting
-- Transactions are atomic — all or nothing, no partial execution
-- Sponsored transactions possible — someone else pays gas
+## 交易特性  
+- 交易确认速度极快（不到一秒）。  
+- 被拥有的对象可以并行执行；独立交易之间无需等待。  
+- 气体费用是可预测的，提交交易前即可知道确切成本。  
+- 交易具有原子性（要么全部成功，要么全部失败，不存在部分执行的情况）。  
+- 支持“赞助交易”功能——即由他人代为支付气体费用。  
 
-## Address Format
-- Addresses start with "0x" — 64 hex characters
-- One address per wallet — but many objects owned
-- Not the same as Ethereum addresses — different derivation
-- Same seed gives different addresses than other chains
+## 地址格式  
+- 地址以 “0x” 开头，由 64 个十六进制字符组成。  
+- 每个钱包对应一个地址，但可以拥有多个对象。  
+- SUI 的地址格式与以太坊不同，其生成方式也有所区别。  
+- 使用相同的种子短语可能会生成与其他区块链不同的地址。  
 
-## Wallet Options
-- Sui Wallet (official) — browser extension
-- Suiet, Ethos — alternative wallets with good UX
-- Ledger support coming — check current status
-- Mobile wallets available — Sui Wallet has mobile app
+## 钱包选项  
+- **Sui Wallet**（官方钱包）：浏览器扩展程序。  
+- **Suiet**、**Ethos**：其他具有良好用户体验的钱包。  
+- **Ledger** 的支持即将推出，请关注最新动态。  
+- **移动钱包** 也可使用（Sui Wallet 提供移动应用）。  
 
-## Staking
-- Delegate to validators — no minimum to stake
-- Epoch-based rewards — epochs are ~24 hours
-- Staking locks SUI — but liquid staking options exist
-- Choose validators carefully — commission rates vary
-- Rewards compound automatically — unless you withdraw
+## 质押机制  
+- 可以委托给验证者进行质押；没有最低质押要求。  
+- 奖励基于“时代”（epoch）周期发放，每个时代周期大约为 24 小时。  
+- 质押期间 SUI 会被锁定，但存在流动性质押选项。  
+- 需谨慎选择验证者，因为他们的佣金率各不相同。  
+- 奖励会自动累积，除非用户主动提取。  
 
-## Gas and Fees
-- Gas denominated in MIST — 1 SUI = 10^9 MIST
-- Gas budget set per transaction — unused gas refunded
-- Storage fees separate — pay for object storage
-- Gas prices stable — reference gas price updated per epoch
-- Very cheap transactions — fractions of a cent
+## 气体与费用  
+- 气体费用以 **MIST** 为单位进行计价（1 SUI = 10^9 MIST）。  
+- 每笔交易都会设置气体预算，未使用的气体会被退还。  
+- 存储费用需单独支付。  
+- 气体价格相对稳定，每个时代周期都会更新参考价格。  
+- 交易费用非常低廉（通常只有几美分）。  
 
-## Move Language
-- Smart contracts written in Move — not Solidity
-- Object-centric programming — different from EVM
-- Strong safety guarantees — resources can't be copied or lost
-- Abilities system — controls what objects can do
-- Package upgrades possible — but original stays on chain
+## 语言与编程模型  
+- 智能合约使用 **Move** 语言编写，而非 **Solidity**。  
+- SUI 采用以对象为中心的编程模型，与以太坊的 EVM（Ethereum Virtual Machine）不同。  
+- 具有强大的安全性保障：资源无法被复制或丢失。  
+- 系统提供了对对象行为的控制机制。  
+- 可以升级软件包，但原始代码仍保留在区块链上。  
 
-## DeFi and NFTs
-- Cetus, Turbos for DEX — major decentralized exchanges
-- NFTs are objects — natural fit for Sui's model
-- Kiosk standard for NFT trading — built-in marketplace primitives
-- SuiFrens and other NFT collections — active NFT ecosystem
-- Dynamic NFTs easy — objects can change over time
+## DeFi 与 NFT  
+- **Cetus** 和 **Turbos** 是主要的去中心化交易所（DEX）。  
+- NFT 在 SUI 系统中属于对象的一种，非常适合其模型。  
+- SUI 内置了 NFT 交易的市场机制。  
+- 有 **SuiFrens** 等活跃的 NFT 收藏平台。  
+- NFT 对象可以随时间发生变化（动态 NFT）。  
 
-## Common Issues
-- "Insufficient gas" — need more SUI for transaction
-- Object not found — object was consumed or transferred
-- Transaction failed — check error message, often gas or permission
-- Coins fragmented — many small coin objects, merge them
-- Staking delayed — rewards start next epoch after staking
+## 常见问题  
+- “气体不足”：交易失败可能是因为气体费用不足。  
+- 对象找不到：可能是因为对象已被消耗或转移。  
+- 交易失败：请查看错误信息，通常是由于气体费用问题或权限问题导致的。  
+- 硬币碎片化：如果硬币被分割成多个小对象，可以尝试合并它们。  
+- 质押延迟：奖励会在下一个时代周期开始发放。  
 
-## Coin Management
-- Coins are separate objects — can have many coin objects
-- Merge coins to simplify — combine into fewer objects
-- Split coins for exact amounts — needed for some dApps
-- Gas paid from one coin object — automatically selected
-- Wallet usually manages this — but understand the model
+## 硬币管理  
+- 硬币是独立的对象，可以拥有多个硬币对象。  
+- 可以合并硬币以简化管理（将多个硬币对象合并为一个）。  
+- 可以分割硬币以满足特定需求（某些去中心化应用需要）。  
+- 气体费用从对应的硬币对象中自动扣除。  
+- 通常由钱包负责管理这些操作，但用户需要理解相关规则。  
 
-## Cross-Chain
-- Wormhole bridge available — connect to other chains
-- Bridged assets are wrapped — not native on other chains
-- Bridge verification important — verify official bridge addresses
-- Native USDC coming — Circle deploying natively
+## 跨链功能  
+- 提供了 **Wormhole** 桥接服务，可以连接到其他区块链。  
+- 跨链资产会被“封装”（wrapped）后传输，而非以原始形式存在。  
+- 使用官方桥接服务时请务必验证地址的合法性。  
+- **USDC** 将作为原生货币在 SUI 上支持。  
 
-## Security
-- Seed phrase controls everything — standard 12/24 word recovery
-- Transaction preview shows effects — review before signing
-- dApp permissions matter — revoke unused connections
-- Objects can have transfer restrictions — check before assuming transferable
-- Verify package addresses — scam dApps exist
+## 安全性  
+- 使用 12/24 个单词的种子短语进行账户恢复。  
+- 交易预览功能可帮助用户查看交易结果，签署前请仔细确认。  
+- 去中心化应用的权限设置很重要，需及时撤销不必要的连接。  
+- 对象的转移可能受到限制，请在尝试转移前仔细确认。  
+- 需要验证相关地址，以防遇到欺诈性去中心化应用。

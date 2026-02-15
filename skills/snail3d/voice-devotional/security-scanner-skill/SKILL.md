@@ -1,22 +1,22 @@
 ---
 name: security-scanner
-description: Comprehensive vulnerability and malware scanner for skills and code. Detects code execution vulnerabilities (eval, exec, dynamic require), credential theft patterns, network calls to suspicious domains, obfuscation, and more. Provides risk assessment (SAFE/CAUTION/DANGEROUS) with detailed findings and actionable recommendations. Use before installing untrusted skills or when reviewing code for security issues.
+description: 一款全面的功能与代码漏洞扫描工具，能够检测代码执行漏洞（如 `eval`, `exec`, `dynamicRequire` 等）、凭证窃取行为、对可疑域名的网络请求、代码混淆等问题。该工具提供风险评估结果（分为“安全”/“谨慎”/“危险”三个等级），并附有详细的发现报告及可操作的改进建议。在安装不受信任的功能或审查代码的安全性时，建议使用该工具。
 ---
 
-# Security Scanner Skill
+# 安全扫描器技能
 
-Comprehensive static analysis tool for detecting vulnerabilities, malware patterns, and security issues in code and skills.
+这是一个全面的静态分析工具，用于检测代码和技能中的漏洞、恶意软件模式以及安全问题。
 
-## Overview
+## 概述
 
-Security Scanner performs deep static analysis on:
-- **Code files** (.js, .ts, .jsx, .tsx, .py, .go, .java, .rb, .php, .sh)
-- **Skill directories** (recursively scans all code)
-- **Inline code snippets**
+安全扫描器会对以下内容进行深度静态分析：
+- **代码文件**（.js、.ts、.jsx、.tsx、.py、.go、.java、.rb、.php、.sh）
+- **技能目录**（递归扫描所有代码）
+- **内联代码片段**
 
-It flags dangerous patterns, suspicious behaviors, and obfuscation, then provides actionable recommendations.
+它会标记危险的模式、可疑的行为和混淆代码，并提供可操作的建议。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Scan a skill directory
@@ -35,65 +35,65 @@ security-scanner ./skill --output json
 security-scanner ./skill --fix
 ```
 
-## Risk Levels & Recommendations
+## 风险等级与建议
 
-### 🔴 DANGEROUS → REJECT
-**Verdict:** Do not install this code.
+### 🔴 危险 → 拒绝安装
+**结论：** 不要安装此代码。
 
-Detected patterns:
-- `eval()` - Arbitrary code execution
-- `exec()` - Command execution
-- Dynamic `require()` with variable paths
-- Evidence of code injection vulnerabilities
+检测到的模式：
+- `eval()` - 任意代码执行
+- `exec()` - 命令执行
+- 带有变量路径的动态 `require()`  
+- 代码注入漏洞的迹象
 
-**Action:** Request source code review from maintainer or reject entirely.
+**操作：** 要求维护者审查源代码或完全拒绝安装。
 
-### 🟡 CAUTION → QUARANTINE
-**Verdict:** Review before installation.
+### 🟡 警告 → 隔离
+**结论：** 安装前请先审查。
 
-Detected patterns:
-- `child_process` calls (spawning external commands)
-- Environment variable access (potential secret theft)
-- Network calls to unknown domains
-- Obfuscated/minified code
-- Low-level socket access (net, dgram)
-- Encoded strings (hex/Unicode escapes)
+检测到的模式：
+- `child_process` 调用（启动外部命令）
+- 访问环境变量（可能导致秘密信息泄露）
+- 对未知域的网络调用
+- 混淆/压缩的代码
+- 低级别的套接字访问（net、dgram）
+- 编码字符串（十六进制/Unicode转义）
 
-**Action:** Examine findings, ask maintainer about suspicious patterns, install with caution.
+**操作：** 检查发现的问题，向维护者咨询可疑模式，谨慎安装。
 
-### 🟢 SAFE → INSTALL
-**Verdict:** No obvious malicious patterns detected.
+### 🟢 安全 → 可以安装
+**结论：** 未检测到明显的恶意模式。
 
-**Action:** Safe to install. Standard security practices still recommended (keep updated, monitor permissions).
+**操作：** 安装是安全的。但仍建议遵循标准的安全实践（保持更新，监控权限设置）。
 
-## What It Detects
+## 它能检测什么
 
-### Code Execution (Highest Risk)
+### 代码执行（最高风险）
 - ✗ `eval()`
 - ✗ `exec()`
-- ✗ Dynamic `require()` with variable paths
-- ⚠ `child_process` module imports
+- ✗ 带有变量路径的动态 `require()`
+- ⚠ `child_process` 模块的导入
 
-### Credential Theft
-- ✗ `process.env.SECRET`, `process.env.API_KEY`, etc.
-- ⚠ Dynamic environment variable access `process.env[varName]`
-- ⚠ `fs.readFileSync()` on sensitive system files (`/etc/`, `~/`)
+### 凭据窃取
+- ✗ `process.env.SECRET`、`process.env.API_KEY` 等
+- ⚠ 动态访问环境变量 `process.env[varName]`
+- ⚠ 在敏感系统文件（`/etc/`、`~/`）上使用 `fs.readFileSync()`
 
-### Network/Data Exfiltration
-- ⚠ Network calls to unknown external domains (via `fetch`, `http.get`, etc.)
-- ⚠ HTTP/HTTPS module imports (potential network calls)
-- ⚠ Low-level socket access (`net`, `dgram`)
+### 网络/数据泄露
+- ⚠ 对未知外部域的网络调用（通过 `fetch`、`http.get` 等）
+- ⚠ HTTP/HTTPS 模块的导入（可能涉及网络调用）
+- ⚠ 低级别的套接字访问（`net`、`dgram`）
 
-### Obfuscation (Red Flag)
-- ⚠ Minified code (unusually high symbol density, very short lines)
-- ⚠ Hex-encoded strings (`\x41\x42\x43`)
-- ⚠ Unicode-encoded strings (`\u0041\u0042`)
+### 混淆代码（危险信号）
+- ⚠ 压缩代码（符号密度异常高，行非常短）
+- ⚠ 十六进制编码的字符串（`\x41\x42\x43`）
+- ⚠ Unicode 编码的字符串（`\u0041\u0042`）
 
-**Why it matters:** Obfuscated code hides malicious logic. Legitimate libraries don't need to be obfuscated.
+**为什么这很重要：** 混淆代码会隐藏恶意逻辑。合法的库通常不需要进行混淆。
 
-## Output Formats
+## 输出格式
 
-### Text (Human-Readable, Default)
+### 文本格式（人类可读，默认）
 
 ```
 === Security Scanner Report ===
@@ -128,24 +128,24 @@ Suggested Fixes:
     Difficulty: MEDIUM
 ```
 
-### JSON (Programmatic)
+### JSON 格式（程序化）
 
 ```bash
 scanner --output json
 ```
 
-Returns structured JSON with:
-- `target`: Path/name scanned
-- `timestamp`: ISO timestamp
-- `riskLevel`: SAFE | CAUTION | DANGEROUS
-- `findings[]`: Array of detected issues with line numbers
-- `scannedFiles[]`: List of files analyzed
-- `recommendation`: Action and reasoning
-- `fixes[]`: (if `--fix` used) Suggested code changes
+返回结构化的 JSON 数据，包含：
+- `target`：被扫描的路径/名称
+- `timestamp`：ISO 时间戳
+- `riskLevel`：安全 | 警告 | 危险
+- `findings[]`：检测到的问题列表及其行号
+- `scannedFiles[]`：分析的文件列表
+- `recommendation`：建议的操作及原因
+- `fixes[]`：（如果使用了 `--fix` 选项）建议的代码修改
 
-## Using It in Your Workflow
+## 在您的工作流程中使用
 
-### Pre-Installation Check
+### 安装前检查
 
 ```bash
 # Before installing a new skill
@@ -156,7 +156,7 @@ security-scanner ~/downloads/mystery-skill/
 # If SAFE → Good to go
 ```
 
-### Code Review
+### 代码审查
 
 ```bash
 # Check your own skill for issues
@@ -166,7 +166,7 @@ security-scanner ./my-skill/ --output json > security-report.json
 security-scanner ./my-skill/ --fix
 ```
 
-### Automated CI/CD
+### 自动化 CI/CD 流程
 
 ```bash
 # In your build pipeline - fail if DANGEROUS detected
@@ -177,69 +177,69 @@ if [ $? -eq 2 ]; then
 fi
 ```
 
-### Sub-Agent Invocation
+### 通过子代理调用扫描器
 
 ```bash
 # From a sub-agent or CLI
 /Users/ericwoodard/clawd/security-scanner-skill/scripts/scanner.js ~/clawd/some-skill/
 ```
 
-## Common Findings & How to Interpret
+## 常见问题及解读方法
 
 ### eval() / exec()
-**Finding:** "eval() allows arbitrary code execution"
+**问题：** “eval() 允许任意代码执行”
 
-**Interpretation:** Code can run any arbitrary JavaScript at runtime. Extremely dangerous.
+**解读：** 代码可以在运行时执行任意 JavaScript 代码。极其危险。
 
-**Response:** 
-- ❌ If malicious: REJECT
-- ⚠️ If legitimate: Ask author why eval is needed (usually there's a safer way)
+**应对措施：**
+- ❌ 如果是恶意代码：拒绝安装。
+- ⚠️ 如果是合法代码：询问作者为何需要使用 `eval()`（通常有更安全的方法）。
 
-### child_process Import
-**Finding:** "child_process allows spawning external commands"
+### child_process 模块的导入
+**问题：** “child_process` 可以启动外部命令”
 
-**Interpretation:** Code can run system commands. Used legitimately by build tools, but also by malware.
+**解读：** 代码可以执行系统命令。虽然构建工具会合法使用它，但恶意软件也可能利用它。
 
-**Response:**
-- Check where it's used
-- Does it run user input? → DANGEROUS
-- Does it run hardcoded commands? → Probably safe, but review
+**应对措施：**
+- 检查其使用位置。
+- 它是否执行用户输入？→ 危险。
+- 它是否执行硬编码的命令？→ 可能安全，但需要审查。
 
 ### process.env.API_KEY
-**Finding:** "Accessing sensitive environment variables"
+**问题：** “访问敏感的环境变量”
 
-**Interpretation:** Code reads secret keys from environment. This is standard, but verify:
-- Is it documented?
-- Is the key actually used for intended purpose?
-- Could it be exfiltrated?
+**解读：** 代码从环境中读取密钥。这是常见的操作，但需要验证：
+- 是否有文档说明？
+- 密钥是否确实用于预期目的？
+- 是否有可能被泄露？
 
-**Response:**
-- Normal for legitimate skills that need API keys
-- Check if the API call goes to the expected domain
+**应对措施：**
+- 对于需要 API 密钥的合法技能来说这是正常的操作。
+- 检查 API 调用是否指向预期的域名。
 
-### Minified Code
-**Finding:** "Code appears to be minified or obfuscated"
+### 压缩代码
+**问题：** “代码似乎被压缩或混淆了”
 
-**Interpretation:** Source code is intentionally hidden. Why?
+**解读：** 源代码被有意隐藏。为什么？
 
-**Response:**
-- ❌ Single-file skill that's minified → Suspicious, ask for source
-- ✅ Node module with both `.js` and `.min.js` → Standard practice
-- ⚠️ Hex-encoded strings → Request deobfuscation
+**应对措施：**
+- ❌ 单文件技能被压缩 → 可疑，请求查看源代码。
+- ✅ 同时包含 `.js` 和 `.min.js` 的 Node 模块 → 是标准做法。
+- ⚠️ 十六进制编码的字符串 → 请求进行反混淆处理。
 
-### Fetch to Unknown Domain
-**Finding:** "Network call to external domain"
+### 对未知域的 `fetch` 调用
+**问题：** “对未知域进行了网络调用”
 
-**Interpretation:** Code calls some external API. Is it expected?
+**解读：** 代码调用了某个外部 API。这是预期的行为吗？
 
-**Response:**
-- ✅ `fetch('https://api.github.com/...')` → Normal
-- ❌ `fetch('https://malware-collection.ru/...')` → Dangerous
-- ⚠️ `fetch(userProvidedUrl)` → Dangerous (open redirect)
+**应对措施：**
+- ✅ `fetch('https://api.github.com/...')` → 正常。
+- ❌ `fetch('https://malware-collection.ru/...')` → 危险。
+- ⚠️ `fetch(userProvidedUrl)` → 危险（可能打开恶意链接）。
 
-## How to Use with Sub-Agents
+## 如何通过子代理使用扫描器
 
-From a sub-agent, invoke the scanner:
+从子代理中调用扫描器：
 
 ```bash
 # Run scan
@@ -259,19 +259,19 @@ result=$(/Users/ericwoodard/clawd/security-scanner-skill/scripts/scanner.js <pat
 riskLevel=$(echo "$result" | jq -r '.riskLevel')
 ```
 
-## Limitations
+## 限制
 
-⚠️ **Static analysis only** - Does not execute code, so:
-- Runtime tricks might not be detected
-- Obfuscated strings that are decoded at runtime won't be flagged
-- Complex control flow analysis not performed
+⚠️ **仅进行静态分析** - 不会执行代码，因此：
+- 运行时的技巧可能无法被检测到。
+- 运行时解码的混淆字符串不会被标记。
+- 不会进行复杂的控制流分析。
 
-**Still safe:** Unless the scanner says DANGEROUS, you should be fine. CAUTION requires manual review but many are false positives.
+**仍然安全：** 除非扫描器显示“危险”，否则通常可以放心使用。虽然“警告”等级需要手动审查，但很多情况都是误报。
 
-## Commands
+## 命令
 
 ### `security-scanner <path>`
-Scan a file or directory.
+扫描一个文件或目录。
 
 ```bash
 security-scanner ./my-skill/
@@ -279,57 +279,56 @@ security-scanner ./code.js
 ```
 
 ### `security-scanner --code "<snippet>"`
-Scan inline code without creating a file.
+扫描内联代码（无需创建新文件）。
 
 ```bash
 security-scanner --code "eval(userInput)"
 ```
 
 ### `security-scanner <path> --output json`
-Output results as JSON for programmatic parsing.
+以 JSON 格式输出结果，便于程序化处理。
 
 ```bash
 security-scanner ./skill --output json > report.json
 ```
 
 ### `security-scanner <path> --output text`
-Output as human-readable text (default).
+以人类可读的文本格式输出结果（默认设置）。
 
 ### `security-scanner <path> --fix`
-Show suggested code fixes and mitigation strategies.
+显示建议的代码修改和缓解策略。
 
 ```bash
 security-scanner ./skill --fix
 ```
 
 ### `security-scanner --help`
-Show usage information.
+显示使用说明。
 
-## Exit Codes
+## 退出代码
 
-- `0` - SAFE (no dangerous patterns)
-- `1` - CAUTION (suspicious patterns found, manual review needed)
-- `2` - DANGEROUS (malicious patterns detected, do not install)
+- `0` - 安全（未检测到危险模式）
+- `1` - 警告（发现可疑模式，需要手动审查）
+- `2` - 危险（检测到恶意模式，禁止安装）
 
-## Implementation Notes
+## 实现说明
 
-- Pattern matching via regular expressions
-- Obfuscation detection via heuristics (symbol density, encoding)
-- Line-accurate reporting (can pinpoint exact locations)
-- Multi-language support (.js, .ts, .py, .go, .java, .rb, .php, .sh)
-- Automatic filtering of non-code directories (node_modules, .git, dist, etc.)
+- 通过正则表达式进行模式匹配
+- 通过启发式方法检测混淆代码（符号密度、编码方式）
+- 精确到行的报告（可以定位问题位置）
+- 支持多种语言（.js、.ts、.py、.go、.java、.rb、.php、.sh）
+- 自动过滤非代码目录（如 `node_modules`、.git、dist 等）
 
-## Future Enhancements
+## 未来改进计划
 
-Potential additions:
-- Semantic analysis (understand variable data flow)
-- Signature-based detection (known malware patterns)
-- Configuration audit (unusual permissions, suspicious settings)
-- Quarantine mode (automatically remove/comment suspicious code)
-- Integration with malware databases
-- Supply chain attack detection (pinning specific versions, checksum verification)
+- 增加语义分析（理解变量数据流）
+- 基于签名的检测（已知恶意代码模式）
+- 配置审计（异常权限设置、可疑配置）
+- 隔离模式（自动移除/注释可疑代码）
+- 与恶意软件数据库集成
+- 供应链攻击检测（锁定特定版本、校验哈希值）
 
 ---
 
-**Last Updated:** 2025-01-29
-**Status:** Production Ready
+**最后更新时间：** 2025-01-29
+**状态：** 已准备好投入生产使用

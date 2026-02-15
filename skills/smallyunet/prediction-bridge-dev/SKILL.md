@@ -1,193 +1,99 @@
 ---
 name: prediction-bridge-search
-description: Search Prediction Bridge prediction-market events by text or X (Twitter) link via the backend API.
+description: 通过后端API，可以根据文本或X（Twitter）链接来搜索Search Prediction Bridge平台上的预测市场事件。
 homepage: https://www.predictionbridge.xyz
 metadata: {"openclaw":{"skillKey":"prediction-bridge-search","homepage":"https://www.predictionbridge.xyz","requires":{"bins":["curl"]}}}
 ---
 
-Use this skill when the user wants to find relevant prediction markets/events for:
-- a short text query (topic, question, headline)
-- a URL to an article
-- an X (Twitter) status link (the backend resolves and extracts the tweet text)
+**使用说明：**  
+当用户需要查找与以下内容相关的预测市场/事件时，请使用此技能：  
+- 简短文本查询（主题、问题、标题）  
+- 文章的URL  
+- X（Twitter）状态链接（后端会解析并提取推文内容）  
 
-## Usage scenarios (when to use)
+**使用场景：**  
+当用户提出以下请求时，请使用此技能：  
+- “查找与这个主题/标题相关的预测市场”  
+- “哪些市场与这条推文/X链接相关？”  
+- “在Polymarket/Kalshi中搜索关于……的事件”  
 
-Use this skill when the user asks:
-- “Find prediction markets for this topic/headline”
-- “What markets match this tweet/X link?”
-- “Search Polymarket/Kalshi for events about …”
+**适用场景：**  
+- 将非结构化文本（或X链接）转换为排名靠前的、可操作的事件链接  
+- 快速显示前5-10个匹配结果，并提供每个市场的简要信息  
 
-This skill is best for:
-- turning unstructured text (or an X URL) into ranked, actionable event links
-- quickly surfacing the top 5–10 matches with a brief market snapshot
+**不适用场景：**  
+- 用户需要查看完整的市场订单簿或历史数据（请使用市场数据端点）  
+- 需要深入分析市场情绪或时间线（请使用事件深度分析端点）  
 
-Not a good fit when the user wants:
-- full market orderbooks or historical candles (use the market-data endpoints instead)
-- deep-dive sentiment/timeline generation (use the event deep-dive endpoints instead)
+**技术原理：**  
+此技能会调用现有的`Prediction Bridge`后端端点：`POST /api/v1/search/unified`。  
 
-This skill calls the existing Prediction Bridge backend endpoint:
-- `POST /api/v1/search/unified`
+**返回数据：**  
+该请求返回匹配到的`events`（预测市场事件）以及可选的`news`（相关新闻）。  
 
-It returns matched `events` (prediction market events) and optionally matched `news`.
+**配置参数：**  
+- **API地址**（默认为生产环境）：`PREDICTION_BRIDGE_API_URL`  
+  - 生产环境：`https://prediction-bridge.onrender.com/api/v1`  
+  - 本地开发环境（如果后端运行在本地）：`http://localhost:8000/api/v1`  
 
-## Configuration
+**使用步骤：**  
+1. **构建查询内容**：  
+   - 如果用户提供了X状态链接，直接将其作为`text`参数传递；后端会自动解析该链接。  
+   - 如果用户提供了纯文本，直接传递该文本。  
 
-API base (defaults to production):
-- `PREDICTION_BRIDGE_API_URL`
+2. **执行搜索**：  
+   使用`curl`命令执行`exec`操作：  
 
-Defaults:
-- Production: `https://prediction-bridge.onrender.com/api/v1`
-- Local dev (if you run the backend locally): `http://localhost:8000/api/v1`
+**注意事项：**  
+- 设置`markets_per_event: 1`以减小数据量，同时仍能显示主要的市场信息。  
+- 如果用户需要查看更多市场信息，可增加`markets_per_event`的值。  
 
-## How to run
-
-1) Build the query text
-- If the user provides an X status link, pass the URL as `text` unchanged. The backend will resolve it.
-- If the user provides plain text, pass it as-is.
-
-2) Call unified search
-
-Use `exec` with `curl`:
-
-```bash
-API_URL="${PREDICTION_BRIDGE_API_URL:-https://prediction-bridge.onrender.com/api/v1}"
-
-curl -sS -X POST "$API_URL/search/unified" \
-  -H "Content-Type: application/json" \
-  -H "X-Request-ID: pb-$(date +%s)" \
-  --data-binary @- <<'JSON'
-{
-  "text": "<USER_TEXT_OR_X_URL>",
-  "limit": 10,
-  "offset": 0,
-  "include_inactive": false,
-  "include_markets": true,
-  "markets_per_event": 1,
-  "include_translations": false
-}
-JSON
-```
-
-Notes:
-- Use `markets_per_event: 1` to keep payload small but still show the leading market.
-- If the user explicitly asks for more markets per event, increase `markets_per_event`.
-
-## API response format (what you will receive)
-
-`POST /search/unified` returns JSON with this shape (fields may be omitted or `null` depending on data availability):
+**API响应格式：**  
+`POST /search/unified`返回的JSON数据结构如下（部分字段可能根据数据可用性而缺失或为`null`）：  
 
 ```json
 {
-  "source": {
-    "type": "x" ,
-    "url": "https://x.com/.../status/...",
-    "text": "resolved tweet text (optional)",
-    "id": "optional"
-  },
   "events": [
     {
       "score": 0.82,
       "event": {
-        "id": 123,
-        "title": "...",
-        "description": "...",
-        "source": "polymarket",
-        "source_url": "https://polymarket.com/event/...",
-        "status": "active",
-        "volume_usd": 12345.67,
-        "liquidity_usd": 2345.0,
-        "end_date": "2026-12-31T00:00:00Z",
+        "source_url": "https://www.polymarket.com/event/12345",
         "markets": [
           {
-            "id": 999,
-            "question": "...",
-            "outcomes": ["Yes", "No"],
-            "outcome_prices": {"Yes": 0.61, "No": 0.39},
-            "volume": 1000.0,
-            "active": true,
-            "closed": false
+            "name": "Polymarket",
+            "outcome_prices": {
+              "Yes": 100.0,
+              "Long": 95.0
+            }
           }
-        ]
+        }
       }
-    }
+    },
+    // ...
   ],
   "news": [
-    {
-      "score": 0.74,
-      "news": {
-        "id": 456,
-        "title": "...",
-        "summary": "...",
-        "url": "https://...",
-        "image_url": "https://...",
-        "source": "...",
-        "published_at": "2026-02-01T12:34:56Z"
-      }
-    }
+    // ...
   ]
 }
 ```
 
-Key points:
-- `events[]` is the primary output. Each item has `{ score, event }`.
-- `score` is a relevance score; higher is better.
-- `event.markets` is present when you requested `include_markets: true`.
-  - When you set `markets_per_event`, the backend may return only a preview subset.
-- `news[]` is optional supporting context; do not let it crowd out event results.
+**结果处理方式：**  
+1. **不要直接显示原始JSON响应**：  
+   - 必须先解析和验证响应内容，再以易于阅读的形式展示匹配到的事件。  
+2. **排序和筛选结果**：  
+   - 按`score`降序排列结果（即使后端已经进行了排序）。  
+   - 默认显示前5个结果；如用户请求更多结果，则显示前10个。  
+3. **提取市场信息**：  
+   - 优先使用`event.source_url`作为点击链接；如果缺失，则使用前端详情页链接（`https://www.predictionbridge.xyz/event/<event.id>`）。  
+   - 如果`event.markets[0].outcome_prices`存在，显示“YES/Long”价格；否则显示第一个可用的价格。  
+4. **简洁展示结果**：  
+   - 包括事件标题、来源/平台、相关性得分（四舍五入显示）、链接以及市场概要（概率和成交量/流动性）。  
+5. **可选：显示相关新闻**：  
+   - 如果有相关新闻，最多展示1-3条，包含标题和链接作为补充信息。  
+6. **处理空结果**：  
+   - 如果没有匹配结果，说明未找到相关内容；可要求用户提供更具体的查询条件。  
 
-## How the agent should parse + handle results
-
-Important:
-- Do NOT show the raw JSON response to the user.
-- Always parse/validate the response first, then present the matched `events` as a clean, human-readable list.
-
-1) Validate payload shape
-- Treat missing/invalid JSON as a failure and retry once (or ask the user to retry).
-- If `events` is missing or not an array, treat it as empty.
-
-2) Rank and select
-- Sort `events` by `score` descending (even if the backend already sorted).
-- Default to presenting top 5 results; show up to 10 if the user asked for “more”.
-
-3) Extract a “market snapshot” per event (best-effort)
-- Prefer `event.source_url` as the click-through link.
-- If `event.source_url` is missing, fall back to the frontend detail page:
-  - `https://www.predictionbridge.xyz/event/<event.id>`
-- If `event.markets[0].outcome_prices` exists:
-  - show the YES/Long price if present: `outcome_prices.Yes` or `outcome_prices.Long`
-  - otherwise show the first available outcome price
-
-4) Present concise output
-- For each event, output:
-  - Title
-  - Source/platform (`event.source`)
-  - Relevance score (rounded, e.g. 0.82)
-  - Link (`event.source_url` preferred)
-  - 1-line snapshot: probability (if available) + volume/liquidity (if available)
-
-5) Optional: include related news
-- If `news` exists, include at most 1–3 items with title + URL as extra context.
-
-6) Empty results
-- If `events` is empty:
-  - say no strong matches found
-  - ask for 1 clarifying detail (timeframe, geography, person/org name, or paste the text instead of a shortened link)
-
-## How to present results
-
-After you receive JSON:
-- If `events` is empty, say no matches were found and ask for a more specific query.
-- Otherwise list the top results (usually 5–10):
-  - event title
-  - platform/source (e.g. Polymarket, Kalshi)
-  - score (higher is better)
-  - a link to the event (`event.source_url` when present)
-  - quick market snapshot (from the first market in `event.markets`, if present)
-
-If `news` is present, optionally show 1–3 related news items as context.
-
-## Error handling
-
-- HTTP 400: invalid input or X resolve error → ask the user to paste a different link or provide plain text.
-- HTTP 503: backend DB unavailable → suggest retrying later.
-- Any network error: confirm `PREDICTION_BRIDGE_API_URL` and whether the API is reachable.
+**错误处理：**  
+- **HTTP 400**：输入无效或链接解析错误 → 请用户提供新的链接或纯文本。  
+- **HTTP 503**：后端数据库不可用 → 建议稍后重试。  
+- **网络错误**：确认`PREDICTION_BRIDGE_API_URL`是否可访问。

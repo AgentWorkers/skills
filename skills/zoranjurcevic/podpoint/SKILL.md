@@ -1,41 +1,41 @@
-# Pod Point Watcher
+# Pod Point 监控器
 
-This skill monitors the live status of a specific Pod Point charging pod using Pod Point's public status endpoint.
+该技能通过 Pod Point 的公共状态接口来实时监控特定 Pod Point 充电设备的状态。
 
-It mirrors the behaviour of a native Pod Point watcher:
-- Tracks connector **A** and **B**
-- Detects when a charger goes from **Charging → Available**
-- Detects when **both connectors become available**
-- Can either return current status or wait and notify when availability changes
+它的功能与原生的 Pod Point 监控器相同：
+- 跟踪连接器 A 和连接器 B 的状态
+- 检测充电设备从“充电中”状态变为“可用”状态
+- 检测两个连接器都变为可用状态
+- 可以返回当前状态，也可以等待状态变化后进行通知
 
-No authentication or API keys are required.
-
----
-
-## When to use this skill
-
-Use this skill when the user asks things like:
-
-- "Is my Pod Point charger free?"
-- "Check pod 10059"
-- "Watch my charger and tell me when it's available"
-- "Are both connectors free at my Pod Point?"
-- "Monitor this Pod Point"
-
-This skill is specifically for **live availability**, not for maps or locations.
+使用该技能无需任何认证信息或 API 密钥。
 
 ---
 
-## Actions
+## 何时使用该技能
+
+当用户提出以下问题时，可以使用该技能：
+- “我的 Pod Point 充电器是否空闲？”
+- “检查设备编号为 10059 的充电设备”
+- “监控我的充电设备，并在设备可用时通知我”
+- “我的 Pod Point 上的两个连接器都空闲吗？”
+- “监控这个 Pod Point 的状态”
+
+请注意，该技能仅用于实时监控设备的可用性，不支持查看设备的位置或地图信息。
+
+---
+
+## 操作
 
 ### `podpoint_status`
 
-Returns the current state of connectors A and B.
+返回连接器 A 和连接器 B 的当前状态。
 
-Example input:
+示例输入：
 
 ```json
 {
   "action": "podpoint_status",
   "podId": "10059"
 }
+```

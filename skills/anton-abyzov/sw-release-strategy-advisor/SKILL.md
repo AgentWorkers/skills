@@ -1,83 +1,83 @@
 ---
 name: release-strategy-advisor
-description: Release strategy advisor - detects brownfield patterns (tags, CI/CD, changelogs), recommends versioning strategy based on architecture. Creates release-strategy.md.
+description: 发布策略顾问：能够识别代码库中的“旧代码”模式（如特定标签、持续集成/持续部署（CI/CD）流程、变更日志等），并根据应用程序的架构推荐合适的版本管理策略。该工具会生成名为 `release-strategy.md` 的文档文件。
 ---
 
-# Release Strategy Advisor
+# 释放策略顾问
 
-**Expertise**: Release management strategy design, version alignment, brownfield release pattern detection, and living documentation of delivery processes.
+**专业领域**：发布管理策略设计、版本对齐、旧代码库（brownfield）的发布模式检测，以及发布流程的动态文档编制。
 
-## Core Capabilities
+## 核心能力
 
-### 1. Brownfield Strategy Detection
+### 1. 旧代码库发布模式检测
 
-**Analyzes existing projects to detect release patterns**:
+**分析现有项目以检测发布模式**：
 
-**Git Analysis**:
-- Version tags (v1.0.0, v2.1.0-rc.1, etc.)
-- Tag patterns (semantic versioning, date-based, custom)
-- Release branches (release/*, hotfix/*)
-- Tag frequency and cadence
+**Git 分析**：
+- 版本标签（如 v1.0.0、v2.1.0-rc.1 等）
+- 标签格式（语义版本控制、基于日期的版本控制、自定义标签）
+- 发布分支（如 release/*、hotfix/*）
+- 标签的发布频率和节奏
 
-**CI/CD Detection**:
-- GitHub Actions workflows (`.github/workflows/release.yml`)
-- GitLab CI (`.gitlab-ci.yml`)
-- Jenkins pipelines (`Jenkinsfile`)
-- CircleCI config (`.circleci/config.yml`)
-- Azure Pipelines (`azure-pipelines.yml`)
+**持续集成/持续部署（CI/CD）检测**：
+- GitHub Actions 工作流（`.github/workflows/release.yml`）
+- GitLab CI（`.gitlab-ci.yml`）
+- Jenkins 管道（`Jenkinsfile`）
+- CircleCI 配置（`.circleci/config.yml`）
+- Azure Pipelines（`azure-pipelines.yml`）
 
-**Package Managers**:
-- NPM: `package.json` (version, scripts: version/publish)
-- Python: `setup.py`, `pyproject.toml`
-- Java: `pom.xml`, `build.gradle`
-- Go: `go.mod`
-- Ruby: `*.gemspec`
-- Rust: `Cargo.toml`
+**包管理器**：
+- NPM：`package.json`（版本信息、发布脚本）
+- Python：`setup.py`、`pyproject.toml`
+- Java：`pom.xml`、`build.gradle`
+- Go：`go.mod`
+- Ruby：`*.gemspec`
+- Rust：`Cargo.toml`
 
-**Monorepo Tools**:
-- Lerna (`lerna.json`)
-- Nx (`nx.json`, `workspace.json`)
-- Turborepo (`turbo.json`)
-- Yarn Workspaces (`package.json` workspaces)
-- Changesets (`.changeset/config.json`)
+**单代码库工具**：
+- Lerna（`lerna.json`）
+- Nx（`nx.json`、`workspace.json`）
+- Turborepo（`turbo.json`）
+- Yarn Workspaces（`package.json`）
+- 变更集（`.changeset/config.json`）
 
-**Release Automation**:
-- Semantic Release (`.releaserc`, `release.config.js`)
-- Standard Version (`.versionrc`)
-- Conventional Changelog
-- Custom release scripts
+**发布自动化**：
+- 语义版本控制（`.releaserc`、`release.config.js`）
+- 标准版本控制（`.versionrc`）
+- 传统的变更日志格式
+- 自定义发布脚本
 
-### 2. Strategy Recommendation
+### 2. 策略建议
 
-**Suggests optimal strategy based on**:
+**根据以下因素建议最佳策略**：
 
-**Project Architecture**:
-- Single repository → Simple semver strategy
-- Multi-repo (2-5 repos) → Coordinated or independent
-- Multi-repo (5+ repos) → Umbrella versioning
-- Monorepo → Workspace-based versioning
-- Microservices → Service-level versioning
+**项目架构**：
+- 单个代码库 → 简单的语义版本控制策略
+- 多个代码库（2-5 个） → 协调发布或独立发布
+- 多个代码库（5 个以上） → 总体版本控制
+- 单代码库 → 基于工作区的版本控制
+- 微服务 → 服务级别的版本控制
 
-**Team Factors**:
-- Small team (1-5) → Simple manual releases
-- Medium team (5-20) → Semi-automated releases
-- Large team (20+) → Fully automated releases
+**团队规模**：
+- 小团队（1-5 人） → 简单的手动发布
+- 中等团队（5-20 人） → 半自动化发布
+- 大团队（20 人以上） → 完全自动化发布
 
-**Deployment Patterns**:
-- Low frequency (<1/month) → Manual releases
-- Medium frequency (1-4/month) → Semi-automated
-- High frequency (daily/weekly) → Automated CI/CD
-- Continuous deployment → Trunk-based + feature flags
+**部署频率**：
+- 低频率（<1/月） → 手动发布
+- 中等频率（1-4/月） → 半自动化发布
+- 高频率（每日/每周） → 自动化的 CI/CD
+- 持续部署 → 基于主干分支的发布 + 特性开关
 
-**Dependencies**:
-- No dependencies → Independent releases
-- Weak coupling → Independent with coordination
-- Strong coupling → Coordinated/lockstep releases
-- Shared libraries → Umbrella versioning
+**依赖关系**：
+- 无依赖关系 → 独立发布
+- 耦合度低 → 独立发布但需要协调
+- 耦合度高 → 协调发布
+- 共享库 → 总体版本控制
 
-### 3. Release Strategy Types
+### 3. 发布策略类型
 
-**Single Repo Strategies**:
+**单代码库策略**：
 ```markdown
 ## Simple Semver
 - One repository, one version
@@ -87,7 +87,7 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 - Example: SpecWeave itself
 ```
 
-**Multi-Repo Strategies**:
+**多代码库策略**：
 ```markdown
 ## Coordinated Releases
 - All repos share same version
@@ -109,7 +109,7 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
   - api v2.1.0
 ```
 
-**Monorepo Strategies**:
+**单代码库策略**：
 ```markdown
 ## Workspace-Based
 - Lerna/Nx/Turborepo manage versions
@@ -123,7 +123,7 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 - Example: Angular packages
 ```
 
-**Microservices Strategies**:
+**微服务策略**：
 ```markdown
 ## Service-Level Versioning
 - Each service has own semantic version
@@ -136,47 +136,46 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 - Example: v2.x (service-a v2.3.0, service-b v2.1.0)
 ```
 
-### 4. Release Candidate (RC) Management
+### 4. 发布候选版本（RC）管理
 
-**RC Patterns**:
+**RC 发布模式**：
 
-**Pre-Release Tags**:
-- `v1.0.0-rc.1`, `v1.0.0-rc.2` → `v1.0.0` (final)
+**预发布标签**：
+- `v1.0.0-rc.1` → `v1.0.0`（最终版本）
 - `v2.0.0-beta.1` → `v2.0.0-rc.1` → `v2.0.0`
 - `v3.0.0-alpha.1` → `v3.0.0-beta.1` → `v3.0.0-rc.1` → `v3.0.0`
 
-**Channel-Based**:
-- Stable (production)
-- Beta (pre-release testing)
-- Alpha (early adopters)
-- Canary (1% traffic, feature flags)
+**基于渠道的发布**：
+- 稳定版（生产环境）
+- 测试版（预发布阶段）
+- 预览版（早期采用者）
+- 金丝雀版（仅接收 1% 的流量，启用特性开关）
 
-**Environment-Based**:
-- Dev → Staging (RC) → Production (final)
-- Feature branches → RC branch → Main branch
+**基于环境的发布**：
+- 开发环境 → 测试环境（RC） → 生产环境（最终版本）
+- 特性分支 → RC 分支 → 主分支
 
-**RC Workflow**:
-1. Create RC: `v1.0.0-rc.1`
-2. Deploy to staging/beta channel
-3. Testing & bug fixes (creates rc.2, rc.3, ...)
-4. Validation complete → Promote RC to v1.0.0
-5. Deploy to production
+**RC 发布流程**：
+1. 创建 RC 版本（例如 `v1.0.0-rc.1`）
+2. 部署到测试/测试渠道
+3. 进行测试和修复错误（创建 rc.2、rc.3 等）
+4. 验证完成后，将 RC 版本升级为最终版本 `v1.0.0`
+5. 部署到生产环境
 
-### 5. Living Documentation
+### 5. 动态文档编制
 
-**Creates release-strategy.md in**:
-
-**Cross-Project** (applies to entire system):
-```
+**生成 `release-strategy.md` 文件**：
+- **跨项目适用**：适用于整个系统
+  ```
 .specweave/docs/internal/delivery/release-strategy.md
 ```
 
-**Project-Specific** (multi-project mode):
-```
+- **项目特定**：适用于多个项目的情况
+  ```
 .specweave/docs/internal/projects/{project-id}/delivery/release-strategy.md
 ```
 
-**Document Structure**:
+**文档结构**：
 ```markdown
 # Release Strategy: {Product/Project Name}
 
@@ -237,10 +236,9 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 - 2025-03-10: Migrated to semantic-release (ADR-028)
 ```
 
-### 6. Integration with Brownfield Analyzer
+### 6. 与旧代码库分析工具的集成
 
-**Automatic Strategy Detection** (when brownfield analyzer runs):
-
+**旧代码库分析工具运行时自动检测策略**：
 ```bash
 # Brownfield analyzer detects:
 # 1. Repository structure (single/multi/monorepo)
@@ -256,7 +254,7 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 # - Suggest improvements if needed
 ```
 
-**Detection Output Example**:
+**检测输出示例**：
 ```markdown
 ## Detected Release Strategy
 
@@ -279,83 +277,82 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 3. Align major versions for better API compatibility
 ```
 
-## When to Use This Skill
+## 适用场景
 
-**Ask me to**:
+**请咨询我以下问题**：
 
-1. **Analyze existing release strategy**:
-   - "What's our current release strategy?"
-   - "Detect our versioning patterns"
-   - "Analyze how we're releasing across repos"
+1. **分析现有发布策略**：
+   - “我们的当前发布策略是什么？”
+   - “检测我们的版本控制模式”
+   - “分析我们在各个代码库中的发布方式”
 
-2. **Recommend optimal strategy**:
-   - "What release strategy should we use?"
-   - "How should we version our microservices?"
-   - "Should we use coordinated or independent releases?"
+2. **建议最佳策略**：
+   - “我们应该采用哪种发布策略？”
+   - “我们的微服务应该如何进行版本控制？”
+   - “我们应该采用协调发布还是独立发布？”
 
-3. **Create release documentation**:
-   - "Document our release process"
-   - "Create release-strategy.md"
-   - "Write down our versioning approach"
+3. **创建发布文档**：
+   - “记录我们的发布流程”
+   - “生成 `release-strategy.md` 文件”
+   - “明确我们的版本控制方法”
 
-4. **Plan multi-repo releases**:
-   - "How to coordinate releases across 5 repos?"
-   - "Should we align versions?"
-   - "What's the best RC workflow for us?"
+4. **规划多代码库的发布**：
+   - “如何协调 5 个代码库的发布？”
+   - “我们应该对齐版本吗？”
+   “最适合我们的 RC 发布流程是什么？”
 
-5. **Brownfield integration**:
-   - "Understand our existing release process"
-   - "What release tools are we using?"
-   - "Map our current deployment pipeline"
+5. **与旧代码库分析工具的集成**：
+   - “了解我们现有的发布流程”
+   **我们使用哪些发布工具？**
+   **将当前的部署流程与分析工具进行映射**
 
-## Best Practices
+## 最佳实践
 
-**Version Alignment**:
-- Lockstep: Use for tightly coupled services (shared breaking changes)
-- Independent: Use for loosely coupled services (autonomous teams)
-- Umbrella: Use for products with multiple independent modules
+**版本对齐**：
+- 对于紧密耦合的服务，使用同步发布策略（共享重大变更）
+- 对于耦合度低的服务，使用独立发布策略（团队自主决策）
+- 对于包含多个独立模块的产品，使用总体版本控制策略
 
-**RC Workflows**:
-- Always use RC for major versions (breaking changes)
-- Consider RC for minor versions if critical features
-- Skip RC for patch versions (hotfixes) unless high risk
+**RC 发布流程**：
+- 对于重大版本（涉及重大变更），始终使用 RC 发布流程
+- 如果有关键特性，也可以为次要版本使用 RC 发布流程
+- 除非风险较高，否则对于修复性更新（hotfix），可以跳过 RC 发布流程
 
-**Changelog Discipline**:
-- Automate changelog generation (conventional commits)
-- Manual curation for major releases (highlight key features)
-- Link to GitHub issues/PRs for traceability
+**变更日志管理**：
+- 自动生成变更日志（遵循传统提交规范）
+- 对于重大版本，手动整理变更日志并突出关键特性
+- 链接到 GitHub 问题/拉取请求（PR）以便追踪
 
-**Release Frequency**:
-- High-risk changes: RC → staging → production (1-2 weeks)
-- Low-risk changes: Direct to production (daily/weekly)
-- Balance speed with stability (DORA metrics)
+**发布频率**：
+- 高风险变更：RC → 测试环境 → 生产环境（1-2 周）
+- 低风险变更：直接发布到生产环境（每日/每周）
+- 在速度和稳定性之间取得平衡（遵循 DORA 指标）
 
-## Integration Points
+## 集成点
 
-**Brownfield Analyzer**:
-- Detects existing patterns automatically
-- Feeds data to release-strategy-advisor
-- Creates baseline documentation
+**旧代码库分析工具**：
+- 自动检测现有发布模式
+- 将数据提供给发布策略顾问
+- 生成基础文档
 
-**Living Docs**:
-- Stores strategy in delivery/ folder
-- Updates on strategy changes
-- Links to ADRs for decisions
+**动态文档**：
+- 将策略存储在 `delivery/` 目录中
+- 随着策略的变更进行更新
+- 提供决策所需的文档链接
 
-**Multi-Project**:
-- Different strategies per project
-- Cross-project release coordination
-- Shared release templates
+**多项目环境**：
+- 每个项目采用不同的发布策略
+- 实现跨项目的发布协调
+- 共享发布模板
 
-**Increment Lifecycle**:
-- Release increments span repositories
-- Coordinated planning & execution
-- Automated living docs sync
+**增量发布周期**：
+- 发布增量覆盖多个代码库
+- 协调规划与执行
+- 自动更新动态文档
 
-## Example Workflows
+## 示例工作流程
 
-### Single-Repo Project (SpecWeave)
-
+### 单代码库项目（SpecWeave）
 ```bash
 # 1. User asks for release strategy
 "What release strategy should SpecWeave use?"
@@ -376,8 +373,7 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 # .specweave/docs/internal/delivery/release-strategy.md
 ```
 
-### Multi-Repo Microservices
-
+### 多代码库微服务
 ```bash
 # 1. User asks for strategy
 "How should we release our 5 microservices?"
@@ -400,8 +396,7 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 # - RC workflow for product releases
 ```
 
-### Monorepo (Lerna/Nx)
-
+### 单代码库（Lerna/Nx）
 ```bash
 # 1. User asks for strategy
 "How to version our Lerna monorepo?"
@@ -425,49 +420,48 @@ description: Release strategy advisor - detects brownfield patterns (tags, CI/CD
 # - Package grouping strategy
 ```
 
-## Commands Integration
+## 命令集成
 
-Works with release management commands:
+支持以下发布管理命令：
+- `/sw-release:init` - 分析并推荐发布策略
+- `/sw-release:align` - 协调各个代码库的版本
+- `/sw-release:rc` - 创建发布候选版本
+- `/sw-release:publish` - 执行发布操作
 
-- `/sw-release:init` - Analyze & recommend strategy
-- `/sw-release:align` - Align versions across repos
-- `/sw-release:rc` - Create release candidate
-- `/sw-release:publish` - Execute release
+**依赖项**
 
-## Dependencies
+**必需依赖**：
+- Git（用于版本标签分析）
+- SpecWeave 核心组件（用于动态文档集成）
 
-**Required**:
-- Git (version tag analysis)
-- SpecWeave core (living docs integration)
+**可选依赖（用于检测）**：
+- GitHub CLI（`gh`）- 用于检测 GitHub 仓库的发布信息
+- NPM（`npm`）- 用于检测 NPM 包
+- Python（`python`）- 用于检测 Python 包
+- Lerna（`lerna`）- 用于检测单代码库项目
+- Nx（`nx`）- 用于检测 Nx 工作区配置
 
-**Optional** (for detection):
-- GitHub CLI (`gh`) - GitHub release detection
-- NPM (`npm`) - NPM package detection
-- Python (`python`) - Python package detection
-- Lerna (`lerna`) - Monorepo detection
-- Nx (`nx`) - Nx workspace detection
+**输出结果**
 
-## Output
+- 生成/更新以下文件：
+- `.specweave/docs/internal/delivery/release-strategy.md`（跨项目通用文档）
+- `.specweave/docs/internal/projects/{id}/delivery/release-strategy.md`（项目特定文档）
 
-**Creates/Updates**:
-- `.specweave/docs/internal/delivery/release-strategy.md` (cross-project)
-- `.specweave/docs/internal/projects/{id}/delivery/release-strategy.md` (project-specific)
-
-**Provides**:
-- Current strategy analysis
-- Recommended improvements
-- RC workflow templates
-- CI/CD integration guides
-- Version alignment matrix
-- Release checklist
+**提供内容**：
+- 当前策略分析结果
+- 建议的改进措施
+- RC 发布流程模板
+- CI/CD 集成指南
+- 版本对齐矩阵
+- 发布检查清单
 
 ---
 
-**Remember**: Release strategy is a living document. Update it when:
-- Architecture changes (new repos, services)
-- Team size changes
-- Deployment frequency changes
-- Tooling changes (new CI/CD, monorepo tools)
-- Lessons learned from releases
+**请记住**：发布策略是一个动态更新的文档。在以下情况下需要更新它：
+- 项目架构发生变化（新增代码库、新服务）
+- 团队规模发生变化
+- 部署频率发生变化
+- 使用的工具发生变化（新的 CI/CD 工具、单代码库工具）
+- 从发布过程中获得的经验教训
 
-**Goal**: Clear, documented, repeatable release process that scales with your team and product.
+**目标**：建立一个清晰、有文档记录且可重复的发布流程，以适应团队和产品的不断发展。

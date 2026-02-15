@@ -1,12 +1,12 @@
 ---
 name: journey
-description: "Plan multi-waypoint journeys with route optimization, feasibility analysis, and time budget constraints. Use when you need to plan trips with multiple stops or check if an itinerary is achievable."
+description: "规划包含多个中途点的旅程时，需要考虑路线优化、可行性分析以及时间预算的限制。这种功能适用于需要规划包含多个停靠点的行程，或者检查某个行程是否可行的情况。"
 metadata: {"clawdbot":{"emoji":"🗺️","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 的位置智能套件。请安装所有可用的技能（查询、地点信息、关系分析、上下文信息、路线规划、旅程规划、房地产信息查询、酒店查找、电动汽车充电站查找、学校查找、停车场查找、健身设施查找、安全检查、旅行规划），以实现全面的旅行支持。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill journey
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install journey
 # or: pnpm dlx clawhub@latest install journey
 # or: bunx clawhub@latest install journey
 ```
 
-# Journey - Multi-Stop Planning
+# 旅程规划 - 多站点行程
 
-Plan multi-waypoint journeys with route optimization, feasibility analysis, and time budget constraints.
+支持多站点行程的规划，包括路线优化、可行性分析以及时间预算限制。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）**：您可以获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回结果：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月享受 1,000 次免费调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,11 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+然后重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
+### 通过 Shell 脚本使用
 
 ```bash
 # Plan a simple journey
@@ -83,7 +83,7 @@ Restart Claude Code.
 }'
 ```
 
-### Via curl
+### 通过 curl 命令使用
 
 ```bash
 curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
@@ -98,24 +98,24 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/journey"
 ```
 
-## Parameters
+## 参数说明
 
-| Field | Type | Required | Default | Description |
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
 |-------|------|----------|---------|-------------|
-| waypoints | array | Yes | - | List of waypoints with lat, lon, and purpose (min 2) |
-| constraints.transport | string | No | "walking" | Transport mode: "walking", "car", or "bike" |
-| constraints.time_budget | string | No | - | Time constraint (e.g., "2 hours", "90 minutes") |
-| constraints.preferences | array | No | [] | Route preferences |
+| waypoints | 数组 | 是 | - | 包含经纬度坐标及目的地的站点列表（至少 2 个站点） |
+| constraints.transport | 字符串 | 否 | "walking" | 交通方式：步行、汽车或自行车 |
+| constraints.time_budget | 字符串 | 否 | - | 时间限制（例如：“2 小时”、“90 分钟”） |
+| constraintspreferences | 数组 | 否 | - | 路线偏好设置 |
 
-### Waypoint Object
+### 站点对象
 
-| Field | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |-------|------|----------|-------------|
-| lat | float | Yes | Latitude of the waypoint |
-| lon | float | Yes | Longitude of the waypoint |
-| purpose | string | No | Description of why you're visiting this waypoint |
+| lat | 浮点数 | 是 | 站点的纬度 |
+| lon | 浮点数 | 是 | 站点的经度 |
+| purpose | 字符串 | 否 | 访问该站点的目的 |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -139,9 +139,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Day trip planning
+### 一日游行程规划
 ```bash
 ./scripts/journey.sh '{
   "waypoints": [
@@ -157,7 +157,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### Business meeting route
+### 商务会议路线规划
 ```bash
 ./scripts/journey.sh '{
   "waypoints": [
@@ -173,7 +173,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### Cycling tour
+### 骑行路线规划
 ```bash
 ./scripts/journey.sh '{
   "waypoints": [
@@ -187,9 +187,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-## Use Cases
+## 使用场景
 
-- **Trip itinerary validation**: Check if a planned itinerary is feasible within time constraints
-- **Route optimization**: Get suggestions for optimizing multi-stop journeys
-- **Travel time estimation**: Understand total journey time across multiple destinations
-- **Tour planning**: Plan walking tours, cycling routes, or driving trips
+- **行程可行性验证**：检查计划中的行程是否在时间范围内可行 |
+- **路线优化**：获取多站点行程的优化建议 |
+- **旅行时间估算**：计算前往多个目的地的总旅行时间 |
+- **旅游路线规划**：规划步行游览路线、骑行路线或驾车路线

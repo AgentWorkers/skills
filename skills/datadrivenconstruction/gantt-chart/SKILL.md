@@ -1,24 +1,24 @@
 ---
 slug: "gantt-chart"
 display_name: "Gantt Chart"
-description: "Generate Gantt charts for construction scheduling. Create visual project timelines with dependencies and progress tracking."
+description: "生成用于施工调度的甘特图（Gantt charts），创建包含依赖关系和进度跟踪的可视化项目时间线（visual project timelines）。"
 ---
 
-# Gantt Chart Generator
+# 甘特图生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Schedule visualization challenges:
-- Complex task dependencies
-- Progress tracking
-- Critical path visibility
-- Multi-level WBS display
+### 问题描述
+在日程安排可视化方面存在以下挑战：
+- 任务之间的依赖关系复杂
+- 进度跟踪困难
+- 无法清晰地识别关键路径
+- 需要展示多级工作分解结构（WBS）
 
-### Solution
-Generate interactive Gantt charts from schedule data with dependency visualization, progress tracking, and export capabilities.
+### 解决方案
+根据日程数据生成交互式甘特图，支持依赖关系可视化、进度跟踪功能，并支持导出。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -297,7 +297,7 @@ class GanttChartGenerator:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date, timedelta
@@ -319,27 +319,27 @@ gantt.add_dependency("T2", "T3")
 print(gantt.generate_text_gantt())
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Mermaid Diagram
+### 1. Mermaid 图表生成
 ```python
 mermaid = gantt.generate_mermaid_gantt()
 print(mermaid)  # Copy to Mermaid editor
 ```
 
-### 2. HTML Export
+### 2. HTML 格式导出
 ```python
 html = gantt.generate_html_gantt()
 with open("gantt.html", "w") as f:
     f.write(html)
 ```
 
-### 3. Critical Path
+### 3. 关键路径分析
 ```python
 critical = gantt.get_critical_path()
 print(f"Critical tasks: {critical}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.3 - 4D Scheduling and BIM
-- **Website**: https://datadrivenconstruction.io
+## 参考资源
+- **DDC 书籍**：第 3.3 章 – 4D 日程安排与 BIM
+- **官方网站**：https://datadrivenconstruction.io

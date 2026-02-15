@@ -1,7 +1,7 @@
 ---
 name: "WhatsApp All-in-One — AI Messaging, Leads, Bulk Send & A2A"
 version: "2.3.2"
-description: "MoltFlow — complete WhatsApp automation platform with built-in BizDev growth agent. Proactive account scanning, chat mining for hidden leads, retention plays, and automated setup. Plus: bulk messaging, scheduled messages, custom groups, lead detection & CRM, AI replies with style cloning, knowledge base (RAG), voice transcription, group monitoring, labels, anti-spam, content safeguards, review collection, webhooks, GDPR compliance, and agent-to-agent protocol. 90+ API endpoints."
+description: "MoltFlow——一个功能完备的WhatsApp自动化平台，内置了业务开发（BizDev）增长工具。该平台具备主动扫描账户、挖掘潜在客户线索、发送保留信息、自动设置账户配置等功能；同时支持批量发送消息、定时发送消息、创建自定义群组、客户关系管理（CRM）系统、基于人工智能的智能回复（包括风格克隆功能）、知识库（RAG）、语音转录、群组监控、标签管理、反垃圾邮件机制、内容保护机制、评论收集功能，以及Webhook集成。此外，还符合GDPR数据保护法规，并支持代理之间的通信协议。平台提供了90多个API接口。"
 source: "MoltFlow Team"
 risk: safe
 homepage: "https://molt.waiflow.app"
@@ -12,50 +12,43 @@ disable-model-invocation: true
 metadata: {"openclaw":{"emoji":"📱","homepage":"https://molt.waiflow.app","requires":{"env":["MOLTFLOW_API_KEY"]},"primaryEnv":"MOLTFLOW_API_KEY"}}
 ---
 
-# WhatsApp Automation & A2A
+# WhatsApp自动化与A2A
 
-Complete WhatsApp automation platform — 90+ API endpoints, proactive growth agent, built-in CRM.
+这是一个完整的WhatsApp自动化平台——提供90多个API端点、主动增长工具以及内置的CRM系统。
 
-> **BizDev Growth Agent**: Install this skill and ask Claude to scan your account. It finds hidden leads in your chats, spots unmonitored high-value groups, and suggests re-engagement plays — all from your existing WhatsApp data.
+> **业务开发增长工具**：安装此功能后，可以让Claude扫描您的WhatsApp账户。它可以从您现有的WhatsApp数据中找到隐藏的潜在客户、未被监控的高价值群组，并建议采取重新联系的策略。
 
-> **Save up to 17% with yearly billing** — Free tier available, no credit card required. [Sign up](https://molt.waiflow.app/checkout?plan=free)
-
----
-
-## Just Ask Claude
-
-Install the skill, set your API key, and start talking:
-
-**"Scan my WhatsApp account for growth opportunities"**
-BizDev agent runs 11 API calls, finds unanswered contacts,
-unmonitored high-value groups, and leads going cold.
-
-**"Find cold leads I haven't followed up with"**
-Scans your chats, identifies contacts with no reply in 7+ days,
-suggests re-engagement messages in your writing style.
-
-**"Set up keyword monitoring for my real estate groups"**
-Lists your WhatsApp groups, adds monitoring for "looking for",
-"need help", "budget" — auto-detects leads into your pipeline.
-
-**"Collect customer feedback from my support chats"**
-Configures review collectors with sentiment analysis,
-auto-approves positive reviews, exports testimonials as HTML.
-
-**"Send a promo to my VIP client list every Monday at 9 AM"**
-Creates a scheduled message with timezone-aware cron,
-ban-safe throttling, and delivery tracking.
-
-**"Reply to my WhatsApp messages while I'm in meetings"**
-Trains a style profile from your messages, generates AI replies
-that match your tone. Preview before sending.
+> **年费订阅可节省高达17%**——提供免费试用计划，无需信用卡。[立即注册](https://molt.waiflow.app/checkout?plan=free)
 
 ---
 
-## Code Samples
+## 只需询问Claude
 
-### Send a message
+安装该功能，设置您的API密钥，然后开始使用：
 
+**“扫描我的WhatsApp账户以寻找增长机会”**  
+该工具会执行11次API调用，找出未回复的联系人、未被监控的高价值群组以及冷掉的潜在客户。
+
+**“查找我尚未跟进的冷潜在客户”**  
+扫描您的聊天记录，识别出7天以上没有回复的联系人，并以您的写作风格建议发送重新联系的消息。
+
+**“为我的房地产群组设置关键词监控”**  
+列出您的WhatsApp群组，监控包含“寻找”、“需要帮助”等关键词的聊天内容，自动将潜在客户添加到您的销售流程中。
+
+**“从我的支持聊天中收集客户反馈”**  
+配置反馈收集工具并进行情感分析，自动批准正面评价，并将评价内容导出为HTML格式。
+
+**“每周一上午9点向我的VIP客户列表发送促销信息”**  
+创建定时消息，支持时区设置，具有防封禁机制和发送跟踪功能。
+
+**“在我开会时自动回复我的WhatsApp消息”**  
+根据您的消息风格训练AI回复机器人，发送与您的语气相匹配的回复。发送前可预览。
+
+---
+
+## 代码示例
+
+### 发送消息  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -67,8 +60,7 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/messages/send
 ```
 
-### Bulk broadcast to a contact group
-
+### 向联系人群组批量发送消息  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -80,8 +72,7 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/bulk-send
 ```
 
-### Schedule a recurring message
-
+### 安排重复发送消息  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -97,8 +88,7 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/scheduled-messages
 ```
 
-### Monitor a group for keywords
-
+### 监控群组中的关键词  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -111,15 +101,13 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/groups
 ```
 
-### List new leads
-
+### 列出新潜在客户  
 ```bash
 curl -H "X-API-Key: $MOLTFLOW_API_KEY" \
   "https://apiv2.waiflow.app/api/v2/leads?status=new&limit=50"
 ```
 
-### Generate an AI reply with style + knowledge base
-
+### 生成结合AI风格和知识库的回复  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -132,8 +120,7 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/ai/generate-reply
 ```
 
-### Create a review collector
-
+### 创建反馈收集工具  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -148,14 +135,12 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/reviews/collectors
 ```
 
-### Discover A2A agents
-
+### 发现A2A代理  
 ```bash
 curl https://apiv2.waiflow.app/.well-known/agent.json
 ```
 
-### Create a scoped API key
-
+### 创建受限范围的API密钥  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -171,8 +156,7 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/api-keys
 ```
 
-### Subscribe to webhook events
-
+### 订阅Webhook事件  
 ```bash
 curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   -H "Content-Type: application/json" \
@@ -187,217 +171,205 @@ curl -X POST -H "X-API-Key: $MOLTFLOW_API_KEY" \
   https://apiv2.waiflow.app/api/v2/webhooks
 ```
 
-Full API reference with all endpoints: see each module's SKILL.md below.
+完整的API参考文档请参见各模块的SKILL.md文件。
 
 ---
 
-## Use Cases
+## 使用场景
 
-**Solo Founder / Small Biz**
-- "Find leads I'm missing" — BizDev agent scans your chats, finds unanswered contacts
-- "Reply like me when I'm busy" — Style profile trained on your messages, AI handles routine queries
-- "Send weekly updates to my VIP list" — Scheduled message every Monday 9 AM to your custom group
+**个人创业者/小型企业**  
+- “找到我遗漏的潜在客户”——该工具会扫描您的聊天记录，找出未回复的联系人。  
+- “在我忙碌时自动回复”——根据您的消息风格训练AI回复机器人。  
+- “每周一上午9点向我的VIP列表发送更新信息”——定时发送消息。
 
-**Agency / Multi-Client**
-- Monitor 50+ industry groups across 10 WhatsApp sessions simultaneously
-- Bulk message 200 contacts with ban-safe delays, track delivery in real time
-- Export leads as CSV for your CRM, or push to n8n/Zapier workflows
+**代理机构/多客户企业**  
+- 同时监控10个WhatsApp群组中的50多个行业群组。  
+- 以安全的延迟方式向200个联系人批量发送消息，并实时跟踪发送情况。  
+- 将潜在客户数据导出为CSV格式，用于CRM系统或集成到n8n/Zapier工作流中。
 
-**Developer / AI Agent Builder**
-- 90+ REST endpoints, scoped API keys, webhook events for every action
-- A2A protocol: agents discover and message each other (E2E encrypted)
-- Python scripts for every workflow: quickstart, outreach, leads, GDPR, admin
-
----
-
-## Platform Features
-
-**Messaging**: text, media, polls, stickers, GIFs, voice notes, locations, vCards. Reply, react, edit, unsend. Typing simulation.
-
-**Bulk Messaging**: Ban-safe broadcast to custom groups. Random 30s-2min delays. Real-time SSE progress. Pause/resume/cancel.
-
-**Scheduled Messages**: One-time, daily, weekly, monthly, cron. Timezone-aware. Execution history.
-
-**Custom Groups**: Contact lists from WhatsApp groups or manual add. CSV/JSON export.
-
-**Lead Detection & CRM**: Auto-detect purchase intent. Pipeline tracking (new > contacted > qualified > converted). Bulk ops. Export.
-
-**Group Monitoring**: 50+ groups. Keyword/mention detection. AI auto-respond. Per-group prompts. Skip admins & existing contacts.
-
-**Labels**: Create, sync to WhatsApp Business, import. Color-coded contact organization.
-
-**AI Replies**: GPT-4/Claude powered. Context-aware with RAG knowledge base. Preview before sending.
-
-**Style Cloning**: Train from your message history. AI replies match your tone, vocabulary, patterns. Per-contact profiles.
-
-**Knowledge Base (RAG)**: Upload PDF/TXT. Semantic search with embeddings. AI uses your docs for grounded answers.
-
-**Voice Transcription**: Whisper-powered. Async task queue with status tracking.
-
-**Review Collection**: Sentiment analysis (14+ languages). Auto-approve positive. Export JSON/HTML.
-
-**Anti-Spam Engine**: Rate limits, duplicate blocking, pattern filters. Human-like typing simulation. Burst rate limiting.
-
-**Content Safeguards**: Block API keys, credit cards, SSNs, PII, prompt injection. Custom regex rules.
-
-**Webhooks**: 10+ event types. HMAC-SHA256 signed. Delivery history. Test payloads.
-
-**A2A Protocol**: JSON-RPC 2.0 agent-to-agent communication. X25519-AES256GCM encryption. Agent discovery + trust levels.
-
-**GDPR Compliance**: Auto-expiring messages (90-day). Data minimization (500-char preview). Contact erasure. DPA available. Named sub-processors.
-
-**Billing**: Stripe-powered. Free/Starter/Pro/Business plans. Yearly saves up to 17%.
+**开发者/AI代理构建者**  
+- 提供90多个REST API端点、受限范围的API密钥以及Webhook事件。  
+- 支持A2A协议（端到端加密通信）。  
+- 提供Python脚本，用于各种工作流程，包括初步设置、客户拓展、潜在客户管理以及GDPR合规性处理。
 
 ---
 
-## How MoltFlow Compares
+## 平台特性
 
-| Category | Molt | wa-ultimate | wacli | wa-auto |
+**消息功能**：支持文本、媒体文件、投票、贴纸、GIF、语音笔记、位置信息、vCard等。支持回复、编辑和取消发送。提供模拟输入功能。
+
+**批量消息发送**：可安全地向自定义群组发送消息，发送间隔随机设置（30秒至2分钟），支持实时进度跟踪。支持暂停/恢复/取消操作。
+
+**定时消息**：支持一次性发送、每日发送、每周发送、每月发送或定时发送（基于cron表达式），并考虑时区差异。记录发送历史。
+
+**自定义群组**：可以从WhatsApp群组中添加联系人，或手动创建自定义群组。支持CSV/JSON格式的数据导出。
+
+**潜在客户检测与CRM**：自动检测客户的购买意向，并跟踪销售流程（新客户 > 被联系者 > 符合条件 > 转化）。支持批量操作和数据导出。
+
+**群组监控**：支持监控50多个群组，可检测关键词和提及内容，AI自动回复。可跳过管理员和已联系过的联系人。
+
+**标签管理**：支持创建标签，并同步到WhatsApp Business账户；支持导入标签并使用颜色编码进行联系人分类。
+
+**AI回复**：基于GPT-4和Claude技术生成，具备上下文感知能力，并利用RAG（检索式问答）知识库。发送前可预览回复内容。
+
+**风格复制**：根据您的消息历史训练AI回复机器人，确保回复与您的风格和词汇相匹配。为每个联系人生成个性化的回复。
+
+**知识库**：支持上传PDF/TXT文件，支持语义搜索和基于嵌入内容的搜索。AI回复会参考您的文档内容。
+
+**语音转录**：使用Whisper技术进行语音转录，支持异步任务处理和状态跟踪。
+
+**反馈收集**：支持多语言情感分析，自动批准正面评价，并将评价内容导出为JSON或HTML格式。
+
+**反垃圾邮件机制**：设置发送速率限制、阻止重复消息、过滤无效内容，并模拟真实的人类输入行为。
+
+**内容安全**：保护API密钥、信用卡信息、社会安全号码（SSN）和个人身份信息（PII），并支持自定义正则表达式规则。
+
+**Webhook**：支持10多种事件类型，消息采用HMAC-SHA256签名算法进行加密。记录发送历史。
+
+**A2A协议**：支持JSON-RPC 2.0协议，实现代理之间的安全通信，并使用X25519-AES256GCM加密技术。支持代理发现和信任级别管理。
+
+**GDPR合规性**：自动删除过期的消息（90天后），最小化数据存储量（仅显示500个字符的预览内容），并提供数据删除选项。支持指定子处理器处理数据。
+
+**计费方式**：采用Stripe支付平台，提供免费、入门级、专业级和商业级套餐。年费订阅可节省高达17%。
+
+---
+
+## MoltFlow与其他产品的比较
+
+| 功能类别 | MoltFlow | wa-ultimate | wa-cli | wa-auto |
 |----------------------|:----:|:----------:|:-----:|:------:|
-| Messaging | 18 | 14 | 3 | 1 |
-| Groups & Monitoring | 8 | 4 | 0 | 0 |
-| Outreach & Scheduling| 7 | 0 | 0 | 0 |
-| CRM & Leads | 7 | 0 | 0 | 0 |
-| AI & Intelligence | 7 | 0 | 0 | 0 |
-| Reviews & Analytics | 8 | 0 | 0 | 0 |
-| Compliance & Security| 10 | 0 | 0 | 0 |
-| Platform & Infra | 8 | 0 | 0 | 0 |
-| **Total** | **80+** | **~15** | **~3** | **~1** |
+| 消息功能 | 18 | 14 | 3 | 1 |
+| 群组与监控 | 8 | 4 | 0 | 0 |
+| 客户拓展与调度 | 7 | 0 | 0 | 0 |
+| CRM与潜在客户管理 | 7 | 0 | 0 | 0 |
+| AI与智能分析 | 7 | 0 | 0 | 0 |
+| 评价与分析 | 8 | 0 | 0 | 0 |
+| 合规性与安全性 | 10 | 0 | 0 | 0 |
+| 平台与基础设施 | 8 | 0 | 0 | 0 |
+| **总计** | **80多个功能** | **约15个功能** | **约3个功能** | **约1个功能** |
 
 ---
 
-## Privacy & Data Flow
+## 隐私与数据流
 
-This skill is **read-only by default** — it calls the MoltFlow HTTPS API to retrieve and display data. No data is sent to third parties beyond `apiv2.waiflow.app`.
+默认情况下，此功能仅具有**读取权限**——它仅通过MoltFlow的HTTPS API获取和显示数据，不会将数据发送给第三方（除了`apiv2.waiflow.app`）。  
 
-**Chat metadata** — MoltFlow server only.
-Queried via API, displayed locally, never copied elsewhere.
+- **聊天元数据**：仅存储在MoltFlow服务器上，通过API查询并在本地显示，不会被复制到其他地方。  
+- **消息内容**：也仅存储在MoltFlow服务器上，提供500个字符的预览内容，完整消息不会被保存。  
+- **业务开发扫描结果**：存储在本地`.moltflow.json`文件中，包含统计数据和设置信息（不包含个人身份信息）。  
+- **风格配置文件**：仅存储在MoltFlow服务器上，用于生成AI回复的上下文信息。  
+- **API密钥**：作为本地环境变量使用，不会被记录或发送到其他服务。  
+- **聊天历史访问**：需要用户通过设置（默认禁用）启用相关功能。  
 
-**Message content** — MoltFlow server only.
-500-char truncated previews; full messages are not stored.
+**业务开发工具**会在项目根目录下生成`.moltflow.json`配置文件，其中包含版本信息、偏好设置和扫描统计数据（不包含个人身份信息或电话号码）。  
 
-**BizDev scan results** — Local `.moltflow.json`.
-Aggregate counts and settings only (no PII, no message content).
-
-**Style profiles** — MoltFlow server only.
-Statistical patterns only — raw text never stored or transmitted.
-
-**API key** — Local environment variable.
-Never logged, never sent to any service other than `apiv2.waiflow.app`.
-
-**Chat history access** is gated by tenant opt-in (default: disabled). Enable at Settings > Account > Data Access before using chat-related features.
-
-**Local file**: The BizDev agent writes a `.moltflow.json` config file in your project root. It stores only: version, preferences, aggregate scan counts. No PII, phone numbers, or message content.
-
-**Credentials**: Use scoped API keys with minimum privileges. See `moltflow-admin` for scope configuration.
+**使用注意事项**：请使用具有最小权限的受限API密钥。详细配置方法请参考`moltflow-admin`文档。
 
 ---
 
-## Pricing
+## 价格信息
 
-> **Yearly plans save up to 17%** — pay once, use for 12 months.
+> **年费订阅可节省高达17%**——只需支付一次费用，即可使用12个月。  
 
-| Plan | Monthly | Yearly | Msgs/mo | Sessions | Groups | Rate |
+| 计划类型 | 每月费用 | 年费 | 每月消息数 | 每次会话费用 | 群组数量 | 每条消息费用 |
 |----------|---------|---------|---------|----------|--------|--------|
-| Free | $0 | — | 50 | 1 | 2 | 10/min |
-| Starter | $9.90 | $99/yr | 500 | 1 | 5 | 20/min |
-| Pro | $29.90 | $299/yr | 1,500 | 5 | 20 | 40/min |
-| Business | $69.90 | $699/yr | 3,000 | 15 | 100 | 60/min |
+| 免费 | $0 | — | 50条 | 1次会话 | 2个群组 | 10条消息/分钟 |
+| 入门级 | $9.90 | $99/年 | 500条 | 1次会话 | 5个群组 | 20条消息/分钟 |
+| 专业级 | $29.90 | $299/年 | 1,500条 | 5次会话 | 20条消息/分钟 |
+| 商业级 | $69.90 | $699/年 | 3,000条 | 15次会话 | 60条消息/分钟 |
 
-[Sign up for free](https://molt.waiflow.app/checkout?plan=free)
-
----
-
-## Setup
-
-> **Free tier available** — 1 session, 50 messages/month, no credit card required.
-
-**Env vars:**
-- `MOLTFLOW_API_KEY` (required) — API key from [your dashboard](https://molt.waiflow.app)
-- `MOLTFLOW_API_URL` (optional) — defaults to `https://apiv2.waiflow.app`
-
-**Authentication:** `X-API-Key: $MOLTFLOW_API_KEY` header or `Authorization: Bearer $TOKEN` (JWT from login).
-
-**Base URL:** `https://apiv2.waiflow.app/api/v2`
+[立即免费注册](https://molt.waiflow.app/checkout?plan=free)
 
 ---
 
-## Modules
+## 设置指南
 
-Each module has its own SKILL.md with full endpoint tables and curl examples.
+**提供免费试用计划**——包含1次会话和每月50条消息的发送权限，无需信用卡。
 
-| Module | What it does |
-|--------|-------------|
-| **moltflow** (Core) | Sessions, messaging, groups, labels, webhooks |
-| **moltflow-outreach** | Bulk send, scheduled messages, custom groups |
-| **moltflow-ai** | Style cloning, RAG knowledge base, voice transcription, AI replies |
-| **moltflow-leads** | Lead detection, CRM pipeline, bulk ops, export |
-| **moltflow-a2a** | Agent-to-agent protocol, encrypted messaging |
-| **moltflow-reviews** | Review collection, sentiment analysis, testimonial export |
-| **moltflow-admin** | Auth, API keys, billing, usage, GDPR compliance |
-| **moltflow-onboarding** | BizDev growth agent, account scanning, opportunity analysis |
+**环境变量设置：**  
+- `MOLTFLOW_API_KEY`（必填）：从[您的控制面板](https://molt.waiflow.app)获取的API密钥。  
+- `MOLTFLOW_API_URL`（可选）：默认值为`https://apiv2.waiflow.app`。  
+
+**认证方式**：在请求头中添加`X-API-Key: $MOLTFLOW_API_KEY`或使用`Authorization: Bearer $TOKEN`（登录后生成的JWT令牌）。  
+**基础URL**：`https://apiv2.waiflow.app/api/v2`  
 
 ---
 
-## Guides & Blog
+## 各模块介绍
 
-Step-by-step tutorials for common workflows:
+每个模块都有对应的SKILL.md文件，其中包含完整的API端点列表和curl使用示例。  
 
-- [Getting Started with WhatsApp Automation](https://molt.waiflow.app/blog/whatsapp-automation-getting-started)
-- [MoltFlow API Complete Guide](https://molt.waiflow.app/blog/moltflow-api-complete-guide)
-- [MoltFlow + n8n WhatsApp Automation](https://molt.waiflow.app/blog/moltflow-n8n-whatsapp-automation)
-- [n8n + WhatsApp + Google Sheets](https://molt.waiflow.app/blog/n8n-whatsapp-google-sheets)
-- [n8n WhatsApp Group Auto-Reply](https://molt.waiflow.app/blog/n8n-whatsapp-group-auto-reply)
-- [n8n WhatsApp Lead Pipeline](https://molt.waiflow.app/blog/n8n-whatsapp-lead-pipeline)
-- [n8n Multi-Model AI Orchestration](https://molt.waiflow.app/blog/n8n-multi-model-ai-orchestration)
-- [AI Auto-Replies for WhatsApp Setup](https://molt.waiflow.app/blog/ai-auto-replies-whatsapp-setup)
-- [WhatsApp Group Lead Generation Guide](https://molt.waiflow.app/blog/whatsapp-group-lead-generation-guide)
-- [OpenClaw WhatsApp Customer Support](https://molt.waiflow.app/blog/openclaw-whatsapp-customer-support)
-- [Knowledge Base Deep Dive (RAG)](https://molt.waiflow.app/blog/rag-knowledge-base-deep-dive)
-- [Learn Mode Style Training](https://molt.waiflow.app/blog/learn-mode-style-training-whatsapp)
-- [Lead Scoring Automation](https://molt.waiflow.app/blog/whatsapp-lead-scoring-automation)
-- [Customer Feedback Collection](https://molt.waiflow.app/blog/whatsapp-customer-feedback-collection)
-- [A2A Protocol: Agent-to-Agent Communication](https://molt.waiflow.app/blog/a2a-protocol-agent-communication)
-- [Scaling WhatsApp Automation ROI](https://molt.waiflow.app/blog/scaling-whatsapp-automation-roi)
-
-Full blog: https://molt.waiflow.app/blog
+| 模块 | 功能描述 |  
+|--------|-------------|  
+| **moltflow**（核心模块） | 提供会话管理、消息发送、群组管理、标签设置和Webhook功能。 |
+| **moltflow-outreach** | 支持批量消息发送、定时消息发送和自定义群组管理。 |
+| **moltflow-ai** | 提供风格复制、RAG知识库、语音转录和AI回复功能。 |
+| **moltflow-leads** | 支持潜在客户检测、CRM销售流程管理和批量操作。 |
+| **moltflow-a2a** | 支持代理之间的安全通信（A2A协议）。 |
+| **moltflow-reviews** | 支持反馈收集和情感分析功能。 |
+| **moltflow-admin** | 提供认证管理、API密钥管理、计费统计和GDPR合规性检查。 |
+| **moltflow-onboarding** | 包含业务开发工具和账户扫描功能。 |
 
 ---
 
-## Example Scripts
+## 文档与教程
 
-The `scripts/` directory contains standalone Python examples (requires `requests`). Example scripts for reference only — not auto-executed by the skill. Review before running with production credentials.
+提供针对常见工作流程的逐步教程：  
+- [开始使用WhatsApp自动化](https://molt.waiflow.app/blog/whatsapp-automation-getting-started)  
+- [MoltFlow API完整指南](https://molt.waiflow.app/blog/moltflow-api-complete-guide)  
+- [MoltFlow与n8n的WhatsApp自动化集成](https://molt.waiflow.app/blog/moltflow-n8n-whatsapp-automation)  
+- [n8n与WhatsApp及Google Sheets的集成](https://molt.waiflow.app/blog/n8n-whatsapp-google-sheets)  
+- [n8n WhatsApp群组自动回复功能](https://molt.waiflow.app/blog/n8n-whatsapp-group-auto-reply)  
+- [n8n WhatsApp潜在客户管理流程](https://molt.waiflow.app/blog/n8n-whatsapp-lead-pipeline)  
+- [多模型AI集成方案](https://molt.waiflow.app/blog/n8n-multi-model-ai-orchestration)  
+- [WhatsApp自动回复设置指南](https://molt.waiflow.app/blog/ai-auto-replies-whatsapp-setup)  
+- [WhatsApp群组潜在客户生成指南](https://molt.waiflow.app/blog/whatsapp-group-lead-generation-guide)  
+- [OpenClaw WhatsApp客户支持服务](https://molt.waiflow.app/blog/openclaw-whatsapp-customer-support)  
+- [RAG知识库深度介绍](https://molt.waiflow.app/blog/rag-knowledge-base-deep-dive)  
+- [学习模式下的风格训练](https://molt.waiflow.app/blog/learn-mode-style-training-whatsapp)  
+- [潜在客户评分自动化](https://molt.waiflow.app/blog/whatsapp-lead-scoring-automation)  
+- [客户反馈收集功能](https://molt.waiflow.app/blog/whatsapp-customer-feedback-collection)  
+- [A2A协议：代理之间的安全通信](https://molt.waiflow.app/blog/a2a-protocol-agent-communication)  
+- [WhatsApp自动化投资回报率分析](https://molt.waiflow.app/blog/scaling-whatsapp-automation-roi)  
 
-| Script | Purpose |
-|--------|---------|
-| `quickstart.py` | Create session, send first message |
-| `send_message.py` | Send text messages to contacts |
-| `outreach.py` | Bulk send, scheduled messages, custom groups |
-| `leads.py` | Lead pipeline, bulk ops, CSV/JSON export |
-| `ai_config.py` | Train style profiles, generate AI replies |
-| `reviews.py` | Create collectors, export testimonials |
-| `group_monitor.py` | WhatsApp group monitoring & lead detection |
-| `a2a_client.py` | Discover agents, send A2A messages |
-| `admin.py` | Login, create API keys, check billing |
-| `gdpr.py` | Contact erasure, data export, account deletion |
-
-Run any script: `MOLTFLOW_API_KEY=your-key python scripts/quickstart.py`
-
----
-
-## Notes
-
-- All messages include anti-spam compliance (typing indicators, random delays)
-- Sessions require QR code pairing on first connect
-- Use E.164 phone format without `+` where required
-- AI features and A2A protocol require Pro plan or above
-- API rate limits by plan: Free 10/min, Starter 20/min, Pro 40/min, Business 60/min
+更多详细信息请访问MoltFlow官方博客：https://molt.waiflow.app/blog  
 
 ---
 
-## Changelog
+## 示例脚本
 
-**v2.3.2** (2026-02-13) — See [CHANGELOG.md](CHANGELOG.md) for full history.
+`scripts/`目录中包含独立的Python脚本（需要`requests`库）。这些脚本仅供参考，切勿在生产环境中直接运行，请在使用前仔细检查。  
+
+| 脚本 | 功能 |  
+|--------|---------|  
+| `quickstart.py` | 创建会话并发送第一条消息。 |
+| `send_message.py` | 向联系人发送文本消息。 |
+| `outreach.py` | 批量发送消息、安排定时消息或管理自定义群组。 |
+| `leads.py` | 管理潜在客户数据、执行批量操作并将结果导出为CSV/JSON格式。 |
+| `ai_config.py` | 训练AI回复机器人并生成回复内容。 |
+| `reviews.py` | 创建反馈收集工具并导出评价内容。 |
+| `group_monitor.py | 监控WhatsApp群组并检测潜在客户。 |
+| `a2a_client.py | 发现其他代理并发送安全通信消息。 |
+| `admin.py` | 登录系统、生成API密钥并检查计费信息。 |
+| `gdpr.py | 删除联系人数据、导出文件或删除账户。 |
+
+运行脚本时，请使用以下命令：`MOLTFLOW_API_KEY=your-key python scripts/quickstart.py`
+
+---
+
+## 其他注意事项  
+
+- 所有消息均遵循反垃圾邮件规则（包含发送速率限制和随机延迟机制）。  
+- 首次连接时需要使用二维码进行配对。  
+- 电话号码格式需使用E.164格式（必要时省略`+`符号）。  
+- AI功能和A2A协议需要使用专业级或更高级别的订阅计划。  
+- API使用频率有限制：免费计划为每分钟10条消息，入门级为20条消息，专业级为40条消息，商业级为60条消息。  
+
+---
+
+## 更新日志
+
+**v2.3.2**（2026-02-13）——完整更新日志请参见[CHANGELOG.md](CHANGELOG.md)。
 
 <!-- FILEMAP:BEGIN -->
 ```text

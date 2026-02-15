@@ -1,67 +1,67 @@
 ---
 name: wandb
-description: Monitor and analyze Weights & Biases training runs. Use when checking training status, detecting failures, analyzing loss curves, comparing runs, or monitoring experiments. Triggers on "wandb", "training runs", "how's training", "did my run finish", "any failures", "check experiments", "loss curve", "gradient norm", "compare runs".
+description: 监控并分析权重（weights）和偏差（biases）的训练过程。适用于检查训练状态、检测故障、分析损失曲线（loss curves）、比较不同训练运行结果，或监控实验进展。相关触发事件包括：`wandb`、`training runs`、`how's training`、`did my run finish`、`any failures`、`check experiments`、`loss curve`、`gradient norm`、`compare runs`。
 ---
 
-# Weights & Biases
+# 权重与偏差（Weights & Biases）
 
-Monitor, analyze, and compare W&B training runs.
+监控、分析并比较权重与偏差的训练过程。
 
-## Setup
+## 设置（Setup）
 
 ```bash
 wandb login
 # Or set WANDB_API_KEY in environment
 ```
 
-## Scripts
+## 脚本（Scripts）
 
-### Characterize a Run (Full Health Analysis)
+### 描述一次训练运行（全面健康状况分析）（Describe a Run (Full Health Analysis)）
 
 ```bash
 ~/clawd/venv/bin/python3 ~/clawd/skills/wandb/scripts/characterize_run.py ENTITY/PROJECT/RUN_ID
 ```
 
-Analyzes:
-- Loss curve trend (start → current, % change, direction)
-- Gradient norm health (exploding/vanishing detection)  
-- Eval metrics (if present)
-- Stall detection (heartbeat age)
-- Progress & ETA estimate
-- Config highlights
-- Overall health verdict
+分析内容：
+- 损失曲线趋势（从开始到当前，变化百分比，方向）
+- 梯度范数的健康状况（检测梯度是否出现爆炸性增长或消失）
+- 评估指标（如果有的话）
+- 运行停滞情况（通过“心跳”指标检测）
+- 进度及预计完成时间
+- 配置参数的亮点
+- 整体运行健康状况评估
 
-Options: `--json` for machine-readable output.
+选项：`--json` 用于生成机器可读的输出格式。
 
-### Watch All Running Jobs
+### 监控所有正在运行的作业（Watch All Running Jobs）
 
 ```bash
 ~/clawd/venv/bin/python3 ~/clawd/skills/wandb/scripts/watch_runs.py ENTITY [--projects p1,p2]
 ```
 
-Quick health summary of all running jobs plus recent failures/completions. Ideal for morning briefings.
+提供所有正在运行的作业的快速健康状况总结，以及最近的失败或完成情况。非常适合用于晨间简报。
 
-Options:
-- `--projects p1,p2` — Specific projects to check
-- `--all-projects` — Check all projects
-- `--hours N` — Hours to look back for finished runs (default: 24)
-- `--json` — Machine-readable output
+选项：
+- `--projects p1,p2` — 指定要检查的项目
+- `--all-projects` — 检查所有项目
+- `--hours N` — 检查已完成运行的时间范围（默认：24小时）
+- `--json` — 生成机器可读的输出格式
 
-### Compare Two Runs
+### 比较两次训练运行（Compare Two Runs）
 
 ```bash
 ~/clawd/venv/bin/python3 ~/clawd/skills/wandb/scripts/compare_runs.py ENTITY/PROJECT/RUN_A ENTITY/PROJECT/RUN_B
 ```
 
-Side-by-side comparison:
-- Config differences (highlights important params)
-- Loss curves at same steps
-- Gradient norm comparison
-- Eval metrics
-- Performance (tokens/sec, steps/hour)
-- Winner verdict
+进行对比分析：
+- 配置参数的差异（突出显示重要参数）
+- 同一阶段的损失曲线
+- 梯度范数的比较
+- 评估指标
+- 性能指标（token/秒，步骤/小时）
+- 确定哪次运行更优
 
-## Python API Quick Reference
+## Python API 快速参考（Python API Quick Reference）
 
 ```python
 import wandb
@@ -82,26 +82,24 @@ run.heartbeat_at # stall detection
 history = list(run.scan_history(keys=["train/loss", "train/grad_norm"]))
 ```
 
-## Metric Key Variations
+## 主要指标名称的变体（Metric Key Variations）
 
-Scripts handle these automatically:
-- Loss: `train/loss`, `loss`, `train_loss`, `training_loss`
-- Gradients: `train/grad_norm`, `grad_norm`, `gradient_norm`
-- Steps: `train/global_step`, `global_step`, `step`, `_step`
-- Eval: `eval/loss`, `eval_loss`, `eval/accuracy`, `eval_acc`
+脚本会自动处理以下指标名称的转换：
+- 损失（Loss）：`train/loss`、`loss`、`train_loss`、`training_loss`
+- 梯度（Gradients）：`train/grad_norm`、`grad_norm`、`gradient_norm`
+- 步骤数（Steps）：`train/global_step`、`global_step`、`step`、`_step`
+- 评估指标（Eval）：`eval/loss`、`eval_loss`、`eval_acc`
 
-## Health Thresholds
+## 健康状况阈值（Health Thresholds）
 
-- **Gradients > 10**: Exploding (critical)
-- **Gradients > 5**: Spiky (warning)
-- **Gradients < 0.0001**: Vanishing (warning)
-- **Heartbeat > 30min**: Stalled (critical)
-- **Heartbeat > 10min**: Slow (warning)
+- **梯度 > 10**：梯度值过高（严重问题）
+- **梯度 > 5**：梯度值波动较大（警告）
+- **梯度 < 0.0001**：梯度值接近于零（警告）
+- **“心跳”时间 > 30分钟**：运行停滞（严重问题）
+- **“心跳”时间 > 10分钟**：运行速度较慢（警告）
 
-## Integration Notes
+## 集成说明（Integration Notes）
 
-For morning briefings, use `watch_runs.py --json` and parse the output.
-
-For detailed analysis of a specific run, use `characterize_run.py`.
-
-For A/B testing or hyperparameter comparisons, use `compare_runs.py`.
+- 用于晨间简报时，使用 `watch_runs.py --json` 并解析输出结果。
+- 如需详细分析某次训练运行，使用 `characterize_run.py`。
+- 进行A/B测试或超参数比较时，使用 `compare_runs.py`。

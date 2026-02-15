@@ -1,32 +1,32 @@
 # Agent Identity Kit — OpenClaw Skill
 
-A portable identity system for AI agents. Create, validate, and publish `agent.json` identity cards.
+这是一个用于AI代理的便携式身份管理系统，支持创建、验证和发布`agent.json`身份文件。
 
-## What This Skill Does
+## 该技能的功能
 
-- **Creates** agent identity cards (`agent.json`) via interactive setup
-- **Validates** identity cards against the Agent Card v1 schema
-- **Provides** the JSON Schema for editor integration and CI pipelines
+- **创建**代理身份文件（`agent.json`），通过交互式设置完成；
+- **验证**身份文件是否符合Agent Card v1的规范；
+- **提供**JSON规范，以便集成到编辑器或持续集成（CI）流程中。
 
-## Quick Start
+## 快速入门
 
-### Generate a new agent.json
+### 生成新的`agent.json`文件
 
 ```bash
 ./scripts/init.sh
 ```
 
-Prompts you for name, handle, description, owner, and capabilities. Outputs a valid `agent.json`.
+系统会提示您输入代理的名称、处理方式（handle）、描述、所有者以及代理的功能。生成后，会得到一个有效的`agent.json`文件。
 
-### Validate an existing agent.json
+### 验证现有的`agent.json`文件
 
 ```bash
 ./scripts/validate.sh path/to/agent.json
 ```
 
-Validates the file against `schema/agent.schema.json`. Requires `ajv-cli` (auto-installs if missing).
+系统会使用`schema/agent.schema.json`来验证文件内容。如果缺少`ajv-cli`工具，系统会自动安装该工具。
 
-## File Structure
+## 文件结构
 
 ```
 agent-identity-kit/
@@ -44,40 +44,40 @@ agent-identity-kit/
 └── README.md
 ```
 
-## Schema Fields
+## 规范字段
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `version` | ✅ | Spec version (`"1.0"`) |
-| `agent.name` | ✅ | Display name |
-| `agent.handle` | ✅ | Fediverse-style handle (`@name@domain`) |
-| `agent.description` | ✅ | What the agent does |
-| `owner.name` | ✅ | Who's accountable |
-| `capabilities` | — | List of capability tags |
-| `protocols` | — | Supported protocols (MCP, A2A, HTTP) |
-| `trust.level` | — | `new`, `active`, `established`, `verified` |
-| `endpoints.card` | — | Canonical URL of the card |
-| `links` | — | Website, repo, social links |
+| 字段        | 是否必填 | 描述                                      |
+|------------|---------|-----------------------------------------|
+| `version`     | ✅       | 规范版本（例如：“1.0”）                          |
+| `agent.name`    | ✅       | 代理的显示名称                              |
+| `agent.handle`    | ✅       | Fediverse风格的标识符（格式为`@name@domain`）           |
+| `agent.description` | ✅       | 代理的功能描述                              |
+| `owner.name`    | ✅       | 所有者的名称                               |
+| `capabilities`  | —        | 代理支持的功能标签列表                          |
+| `protocols`    | —        | 支持的协议（MCP、A2A、HTTP）                        |
+| `trust.level`    | —        | 信任状态（`new`、`active`、`established`、`verified`）       |
+| `endpoints.card` | —        | 身份文件的官方URL                            |
+| `links`      | —        | 代理的网站、代码仓库或社交媒体链接                        |
 
-## Hosting Your Card
+## 托管您的身份文件
 
-Serve your `agent.json` at a well-known URL:
+将您的`agent.json`文件托管在一个知名的URL地址上：
 
 ```
 https://yourdomain.com/.well-known/agent.json
 ```
 
-For multiple agents:
+如果需要管理多个代理，可以按照以下步骤操作：
 
 ```
 https://yourdomain.com/.well-known/agents.json
 ```
 
-## Integration with forAgents.dev
+## 与forAgents.dev的集成
 
-Register your agent at [foragents.dev](https://foragents.dev) to be indexed in the global agent directory. Verified agents get a badge on their card.
+将您的代理注册到[foragents.dev](https://foragents.dev)，以便在全球代理目录中显示。经过验证的代理会在其身份文件上显示相应的徽章。
 
-## Spec Reference
+## 规范参考
 
-Full specification: <https://foragents.dev/spec/agent-card>
-JSON Schema: <https://foragents.dev/schemas/agent-card/v1.json>
+完整规范：<https://foragents.dev/spec/agent-card>
+JSON规范：<https://foragents.dev/schemas/agent-card/v1.json>

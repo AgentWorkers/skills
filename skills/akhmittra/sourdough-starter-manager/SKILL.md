@@ -1,6 +1,6 @@
 ---
 name: sourdough-starter-manager
-description: Manage sourdough starters with feeding schedules, hydration calculations, health tracking, and baking preparation. Use when the user wants to maintain a sourdough starter, plan feedings, calculate ratios, troubleshoot starter problems, or prepare for baking.
+description: 管理酸面团发酵剂，包括制定喂养计划、进行水分含量计算、跟踪发酵剂的状态以及为烘焙做准备。适用于用户希望维护酸面团发酵剂、规划喂养时间、计算原料比例、解决发酵剂相关问题或为烘焙做准备的情况。
 metadata:
   openclaw:
     emoji: "🍞"
@@ -13,101 +13,95 @@ metadata:
       config: []
 ---
 
-# Sourdough Starter Manager
+# 酸面包发酵剂管理器
 
-## Description
+## 介绍
 
-The Sourdough Starter Manager helps bakers maintain healthy, active sourdough starters through intelligent feeding schedules, precise hydration calculations, health monitoring, and baking preparation planning. Whether you're a beginner or experienced baker, this skill ensures your starter stays healthy and ready for any baking project.
+酸面包发酵剂管理器通过智能的喂养计划、精确的水分计算、健康监测以及烘焙准备规划，帮助面包师保持发酵剂的活性和健康状态。无论你是初学者还是有经验的面包师，这个工具都能确保你的发酵剂始终处于最佳状态，随时可以用于烘焙。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Feeding Schedule Management
-- Calculate feeding ratios (starter:flour:water)
-- Generate maintenance schedules (daily, weekly, refrigerated)
-- Create pre-bake preparation timelines
-- Track feeding history and patterns
-- Set reminders for upcoming feedings
+### 1. 喂养计划管理
+- 计算喂养比例（发酵剂：面粉：水）
+- 生成维护计划（每日、每周、冷藏）
+- 创建烘焙前的准备时间表
+- 记录喂养历史和模式
+- 设置即将进行的喂养提醒
 
-### 2. Hydration Calculations
-- Calculate current starter hydration percentage
-- Convert between different hydration levels (e.g., 100% to 75%)
-- Adjust recipes for different starter hydrations
-- Calculate flour and water needed for target amounts
+### 2. 水分计算
+- 计算当前发酵剂的水分百分比
+- 在不同水分水平之间进行转换（例如，100% 到 75%）
+- 根据不同的水分比例调整食谱
+- 计算所需的面粉和水量
 
-### 3. Health Monitoring & Troubleshooting
-- Diagnose common starter problems
-- Track rise times and peak activity
-- Monitor smell, consistency, and appearance
-- Provide recovery protocols for neglected starters
-- Identify contamination vs. normal fermentation
+### 3. 健康监测与故障排除
+- 诊断常见的发酵剂问题
+- 监测发酵时间和峰值活性
+- 监控发酵剂的气味、质地和外观
+- 提供恢复被忽视的发酵剂的方案
+- 区分污染和正常发酵
 
-### 4. Baking Preparation
-- Calculate starter amounts needed for recipes
-- Generate feeding schedules to reach target amounts
-- Plan multi-day preparation timelines
-- Adjust for room temperature variations
-- Optimize timing for specific bake schedules
+### 4. 烘焙准备
+- 计算食谱所需的发酵剂用量
+- 生成达到目标用量所需的喂养计划
+- 规划多日的准备时间表
+- 根据室温变化进行调整
+- 优化特定烘焙时间的安排
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Daily Maintenance Feeding
-**User**: "I need to feed my starter. I have 50g of starter right now."
+### 示例 1：日常维护喂养
+**用户**：“我需要喂养我的发酵剂。我现在有 50 克发酵剂。”
+**助手回复**：
+- 建议使用 1:1:1 的喂养比例（50 克发酵剂 : 50 克面粉 : 50 克水）
+- 提示这会产生总共 150 克的发酵剂
+- 建议如果不立即烘焙，可以丢弃多余的发酵剂
+- 提供时间表：现在喂养，室温 68-75°F（20-24°C）下 4-8 小时后可以使用
 
-**Assistant Response**:
-- Suggests 1:1:1 ratio feeding (50g starter : 50g flour : 50g water)
-- Notes this will yield 150g total
-- Recommends discarding excess if not baking soon
-- Provides timeline: feed now, ready in 4-8 hours at room temp (68-75°F)
+### 示例 2：烘焙前准备
+**用户**：“我想在周六早上烤面包。我的食谱需要 200 克活性发酵剂。”
+**助手回复**：
+- 从周六早上倒推计算时间表
+- 建议的喂养计划：周四晚上和周五晚上
+- 提供每个阶段的喂养用量
+- 提醒注意室温的影响
+- 提供如果发酵剂没有按预期发酵的应急方案
 
-### Example 2: Pre-Bake Preparation
-**User**: "I want to bake bread on Saturday morning. My recipe needs 200g of active starter."
+### 示例 3：水分转换
+**用户**：“我的发酵剂目前水分百分比为 100%，但食谱要求 75%。如何转换？”
+**助手回复**：
+- 解释水分百分比的概念
+- 计算所需的面粉和水量
+- 提供逐步转换的过程
+- 建议如何保持 75% 的水分比例
+- 提及不同水分比例下的质地差异
 
-**Assistant Response**:
-- Calculates backward timeline from Saturday morning
-- Suggests feeding schedule: Thursday night and Friday evening
-- Provides specific amounts to feed at each stage
-- Warns about room temperature considerations
-- Offers contingency plan if starter doesn't rise as expected
+### 示例 4：故障排除
+**用户**：“我的发酵剂有指甲油去除剂的气味，并且已经几天没有发酵了。”
+**助手回复**：
+- 判断可能的原因：发酵剂缺乏营养（“hooch”现象）
+- 提供恢复方案：
+  1. 倒掉表面的液体
+  2. 丢弃 75% 的发酵剂
+  3. 使用 1:2:2 的比例喂养
+  4. 每 12 小时喂养一次，持续 3-4 天
+  5. 监测发酵剂的气味和是否膨胀
+- 提供合理的恢复时间表
+- 解释何时需要丢弃发酵剂并重新开始
 
-### Example 3: Hydration Conversion
-**User**: "My starter is at 100% hydration but the recipe calls for 75% hydration. How do I convert?"
+### 示例 5：长期储存
+**用户**：“我要去度假两周。如何储存我的发酵剂？”
+**助手回复**：
+- 建议冷藏方法
+- 储存前的喂养比例：1:5:5
+- 储存说明：使用有膨胀空间的密封容器
+- 返回后的恢复步骤
+- 另一种选择：脱水储存方法
+- 提及发酵剂的耐储存性（在冰箱中可以保存数月）
 
-**Assistant Response**:
-- Explains hydration percentage concept
-- Calculates flour/water adjustments needed
-- Provides step-by-step conversion process
-- Suggests how to maintain a 75% starter vs. one-time conversion
-- Notes texture and consistency differences
+## 关键公式与计算
 
-### Example 4: Troubleshooting
-**User**: "My starter smells like nail polish remover and hasn't risen in days."
-
-**Assistant Response**:
-- Identifies likely cause: hooch formation and starvation
-- Diagnoses: needs more frequent feeding
-- Provides recovery protocol:
-  1. Pour off liquid (hooch)
-  2. Discard 75% of starter
-  3. Feed with 1:2:2 ratio (more food to revive it)
-  4. Feed every 12 hours for 3-4 days
-  5. Monitor for sweet-sour smell and doubling
-- Sets realistic recovery timeline
-- Explains when to discard and start fresh
-
-### Example 5: Long-Term Storage
-**User**: "I'm going on vacation for 2 weeks. How do I store my starter?"
-
-**Assistant Response**:
-- Recommends refrigeration method
-- Feeding protocol before storage: 1:5:5 ratio (well-fed)
-- Storage instructions: airtight container with room to expand
-- Revival instructions for return
-- Alternative: dehydration method for longer storage
-- Notes on starter resilience (can survive months in fridge)
-
-## Key Formulas & Calculations
-
-### Hydration Percentage
+### 水分百分比
 ```
 Hydration % = (Water Weight / Flour Weight) × 100
 
@@ -116,7 +110,7 @@ Example:
 50g flour + 37.5g water = 75% hydration
 ```
 
-### Feeding Ratio Notation
+### 喂养比例表示法
 ```
 1:1:1 = 1 part starter : 1 part flour : 1 part water
 1:2:2 = 1 part starter : 2 parts flour : 2 parts water
@@ -125,7 +119,7 @@ Example with 50g starter:
 1:2:2 = 50g starter + 100g flour + 100g water = 250g total
 ```
 
-### Target Amount Calculation
+### 目标用量计算
 ```
 To get X grams of starter at ratio R:S:F:W
 
@@ -136,149 +130,148 @@ If ratio is 1:2:2 and you need 200g:
 - Water needed = 200/5 × 2 = 80g
 ```
 
-## Troubleshooting Guide
+## 故障排除指南
 
-### Common Issues
+### 常见问题
 
-**Not Rising / Slow Activity**
-- Likely causes: Too cold, needs more frequent feeding, weak starter
-- Solutions: Move to warmer spot (75-80°F), increase feeding frequency, try 1:2:2 ratio
+**发酵不充分/活性低**
+- 可能原因：温度过低、喂养频率不够、发酵剂较弱
+- 解决方案：将发酵剂移到温度较高的地方（75-80°F，约 24-27°C），增加喂养频率，尝试使用 1:2:2 的比例
 
-**Liquid on Top (Hooch)**
-- Cause: Starter is hungry and has consumed available food
-- Solution: Stir back in or pour off, then feed immediately
+**表面有液体（hooch）**
+- 原因：发酵剂缺乏营养
+- 解决方案：将表面的液体搅拌回发酵剂中或倒掉，然后立即喂养
 
-**Mold Growth**
-- Identification: Fuzzy colored spots (green, pink, orange)
-- Action: Discard entire starter, sanitize container, start fresh
-- Prevention: Regular feeding, clean utensils, proper ratios
+**霉菌生长**
+- 识别方法：出现绿色、粉色或橙色的斑点
+- 行动：丢弃整个发酵剂，消毒容器，重新开始
+- 预防措施：定期喂养，清洁工具，保持正确的比例
 
-**Acetone/Nail Polish Smell**
-- Cause: Starvation and alcohol production
-- Solution: Feed more frequently with higher flour ratios
+**有丙酮味/指甲油去除剂气味**
+- 原因：发酵剂缺乏营养并产生酒精
+- 解决方案：增加喂养频率，使用更高比例的面粉
 
-**No Bubbles After Several Days**
-- Possible causes: Chlorinated water, non-organic flour, too cold
-- Solutions: Use filtered water, try organic flour, increase temperature
+**几天后没有气泡**
+- 可能原因：水中含有氯离子、使用非有机面粉、温度过低
+- 解决方案：使用过滤水，尝试使用有机面粉，提高温度
 
-### Health Indicators
+### 健康指标
 
-**Healthy Starter Signs:**
-- Doubles in size within 4-8 hours of feeding
-- Pleasant sweet-sour smell
-- Bubbles throughout
-- Passes float test (drop in water and it floats)
-- Elastic, stretchy consistency
+**健康发酵剂的特征**：
+- 喂养后 4-8 小时内体积翻倍
+- 有宜人的酸甜气味
+- 整个发酵剂内部有气泡
+- 放入水中能浮起
 
-**Unhealthy Starter Signs:**
-- No rise after 12+ hours
-- Offensive smell (not just sour)
-- No bubbles
-- Watery consistency that doesn't improve
-- Colored spots or mold
+**不健康的发酵剂特征**：
+- 12 小时后仍不发酵
+- 有难闻的气味（不仅仅是酸味）
+- 没有气泡
+- 流质且质地不佳
+- 出现斑点或霉菌
 
-## Storage Methods
+## 储存方法
 
-### Refrigeration (Best for 1-4 week breaks)
-1. Feed with 1:5:5 ratio
-2. Let rise to peak (4-8 hours)
-3. Seal in container with room to expand
-4. Refrigerate
-5. Can last months with occasional feeding (every 2-4 weeks)
+### 冷藏（适合 1-4 周的短期储存）
+1. 使用 1:5:5 的比例喂养
+2. 让发酵剂发酵至峰值（4-8 小时）
+3. 将发酵剂密封在有膨胀空间的容器中
+4. 放入冰箱
+5. 可以每隔 2-4 周喂养一次
 
-### Dehydration (Best for long-term storage)
-1. Feed starter and wait until peak rise
-2. Spread thin layer on parchment paper
-3. Air dry completely (2-3 days) or use dehydrator
-4. Break into flakes and store in airtight container
-5. Rehydrate with equal parts flour and water
+### 脱水（适合长期储存）
+1. 喂养发酵剂，等待其发酵至峰值
+2. 将发酵剂均匀涂抹在烘焙纸上
+3. 完全风干（2-3 天）或使用脱水机
+4. 将发酵剂弄碎后储存在密封容器中
+5. 用等量的面粉和水重新水化
 
-### Freezing (Not recommended)
-- Can damage yeast and bacterial cultures
-- May not revive successfully
+### 冻结（不推荐）
+- 可能会损坏酵母和细菌菌群
+- 可能无法成功恢复活性
 
-## Temperature Guidelines
+## 温度指南
 
-| Temperature | Activity Level | Feeding Frequency |
+| 温度 | 发酵活性 | 喂养频率 |
 |-------------|----------------|-------------------|
-| 65-70°F     | Slow           | Every 24 hours    |
-| 70-75°F     | Moderate       | Every 12-24 hours |
-| 75-80°F     | Active         | Every 8-12 hours  |
-| 80-85°F     | Very Active    | Every 6-8 hours   |
-| 85°F+       | Too Hot        | Risk of bad bacteria |
+| 65-70°F     | 发酵缓慢     | 每 24 小时     |
+| 70-75°F     | 中等活性    | 每 12-24 小时   |
+| 75-80°F     | 高活性     | 每 8-12 小时   |
+| 80-85°F     | 非常活跃    | 每 6-8 小时   |
+| 85°F以上     | 温度过高     | 可能导致细菌变质 |
 
-## Baking Preparation Timeline
+## 烘焙准备时间表
 
-### Same-Day Bake (8-12 hours notice)
-- Take refrigerated starter out
-- Feed 1:2:2 ratio
-- Use when doubled (4-8 hours depending on temp)
+### 当天烘焙（提前 8-12 小时）
+- 取出冷藏的发酵剂
+- 使用 1:2:2 的比例喂养
+- 等待发酵剂体积翻倍后使用（根据温度不同，时间可能为 4-8 小时）
 
-### Next-Day Bake
-- **Evening before**: Feed refrigerated starter 1:1:1
-- **Morning of bake**: Starter should be at peak, ready to use
+### 下一天烘焙
+- **前一天晚上**：使用冷藏的发酵剂，喂养比例为 1:1:1
+- **烘焙当天早上**：发酵剂应达到峰值，可以立即使用
 
-### Weekend Bake Planning
-- **Thursday evening**: Remove from fridge, feed 1:2:2
-- **Friday morning**: Discard all but 50g, feed 1:2:2
-- **Friday evening**: Check rise, feed 1:1:1 (or according to recipe needs)
-- **Saturday morning**: Use at peak rise
+### 周末烘焙计划
+- **周四晚上**：从冰箱中取出发酵剂，喂养比例为 1:2:2
+- **周五早上**：丢弃大部分发酵剂（保留 50 克），然后喂养比例为 1:2:2
+- **周五晚上**：检查发酵情况，再次喂养比例为 1:1:1（或根据食谱需要）
+- **周六早上**：在发酵剂达到峰值时使用
 
-## Best Practices
+## 最佳实践
 
-1. **Consistency is Key**: Try to feed at similar times each day
-2. **Ratios Matter**: Adjust feeding ratios based on schedule and temperature
-3. **Trust Your Senses**: Smell and appearance tell you more than the clock
-4. **Keep Records**: Track feedings and outcomes for better understanding
-5. **Don't Stress**: Sourdough starters are resilient and forgiving
-6. **The Float Test**: Not perfect but helpful - drop starter in water, it should float when ready
-7. **Room Temperature**: Affects everything - adjust expectations accordingly
-8. **Discard Uses**: Don't waste - use in pancakes, crackers, pizza dough
+1. **保持一致性**：尽量每天在相同的时间喂养发酵剂
+2. **比例很重要**：根据计划和温度调整喂养比例
+3. **依靠感官判断**：气味和外观比时间更可靠
+4. **记录喂养情况**：记录喂养时间和结果，以便更好地了解发酵剂的状态
+5. **不要过度担心**：发酵剂具有很强的恢复能力
+6. **浮力测试**：虽然不完全准确，但很有帮助——将发酵剂放入水中，如果它浮起来，说明已经准备好使用
+7. **室温的影响**：室温会影响所有发酵过程，需相应调整
+8. **废弃物的利用**：未使用的发酵剂可以用来制作煎饼、饼干或披萨面团
 
-## Recipe Adjustments
+## 食谱调整
 
-When a recipe calls for different starter than you maintain:
+当食谱要求的发酵剂水分比例与你现有的不同：
 
-**Your starter is 100% hydration, recipe calls for stiff (50-60%)**:
-- Reduce water in recipe by 10-20%
-- Or convert portion of your starter temporarily
+**你的发酵剂水分百分比为 100%，食谱要求 50-60%**：
+- 减少食谱中的水量 10-20%
+- 或暂时调整发酵剂的用量
 
-**Your starter is 100%, recipe calls for liquid (125%)**:
-- Add extra water to recipe
-- Or adjust your starter for one feeding
+**你的发酵剂水分百分比为 100%，食谱要求 125%**：
+- 在食谱中添加额外的水
+- 或调整一次喂养的发酵剂用量
 
-## Advanced Tips
+## 高级技巧
 
-- **Peak vs. Past Peak**: Use at peak for maximum rise, past peak for more sour flavor
-- **Flour Types**: Whole wheat and rye ferment faster than white flour
-- **Water Quality**: Chlorinated water can inhibit growth - use filtered if possible
-- **Seasonal Variations**: May need more frequent feeding in summer, less in winter
-- **Whole Grain Boost**: Add 10-20% whole wheat/rye to feeding for more activity
-- **Starter Names**: Many bakers name their starters - it's tradition!
+- **使用峰值发酵剂**：在发酵剂处于峰值时使用，可以获得最大的膨胀效果
+- **不同类型的面粉**：全麦和黑麦面粉比白面粉发酵更快
+- **水质**：含氯的水会抑制发酵——尽可能使用过滤水
+- **季节性变化**：夏季可能需要更频繁的喂养，冬季则较少
+- **添加全谷物**：在喂养中添加 10-20% 的全麦或黑麦面粉，以增强发酵活性
+- **发酵剂的命名**：许多面包师会给发酵剂起名字——这是一种传统
 
-## When to Use This Skill
+## 何时使用此工具
 
-Use the Sourdough Starter Manager when users:
-- Ask about feeding their sourdough starter
-- Need help calculating hydration or ratios
-- Want to prepare starter for baking
-- Have questions about starter health or troubleshooting
-- Need storage advice for vacations or breaks
-- Want to convert between different starter hydrations
-- Ask about timelines for baking preparation
-- Need help reviving a neglected or weak starter
-- Want to understand fermentation schedules
-- Ask about temperature effects on starter activity
+当用户遇到以下情况时，可以使用酸面包发酵剂管理器：
+- 需要了解如何喂养发酵剂
+- 需要帮助计算水分比例或喂养比例
+- 需要为烘焙准备发酵剂
+- 对发酵剂的健康状况或故障排除有疑问
+- 需要关于储存的建议（如度假或暂时中断）
+- 需要转换不同的发酵剂水分比例
+- 需要了解烘焙前的准备时间表
+- 需要帮助恢复被忽视或弱化的发酵剂
+- 需要了解发酵时间表
+- 需要了解温度对发酵剂活性的影响
 
-## Important Notes
+## 重要提示
 
-- Every starter is unique and may behave slightly differently
-- Trust your senses (smell, sight, texture) over rigid timing
-- Room temperature significantly affects all timelines
-- When in doubt, feed your starter - it's hard to overfeed
-- Starters can survive weeks of neglect in the refrigerator
-- Start fresh if you see mold (colored fuzzy spots) - don't risk it
+- 每个发酵剂的特性都不同，表现可能会有所不同
+- 相信你的感官（气味、外观和质地）比严格的时间安排更重要
+- 室温对所有发酵过程都有显著影响
+- 如果不确定，就喂养发酵剂吧——过量喂养的可能性很小
+- 发酵剂在冰箱中可以保存数周
+- 如果发现霉菌（出现斑点），请丢弃并重新开始
 
 ---
 
-*Remember: Sourdough baking is an art and a science. These guidelines are starting points - adjust based on your environment, schedule, and starter's unique personality!*
+*记住：酸面包烘焙是一门艺术，也是一门科学。这些指南只是起点——根据你的环境、时间和发酵剂的特性进行调整！*

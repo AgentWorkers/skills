@@ -1,25 +1,30 @@
 ---
 slug: "safety-compliance-checker"
 display_name: "Safety Compliance Checker"
-description: "Automated safety compliance verification for construction sites. Check PPE usage, zone access, working at heights regulations, and generate compliance reports using rule-based and ML approaches."
+description: "**建筑工地自动化安全合规性验证系统**  
+该系统通过基于规则的方法和机器学习技术，对施工现场的安全合规情况进行实时监控与验证。具体功能包括：  
+- 检查工人是否正确佩戴个人防护装备（PPE）；  
+- 监控工人是否遵守不同工作区域的进入规定；  
+- 确认工人是否遵守高空作业的相关规定；  
+- 自动生成合规性报告，以便管理层及时了解现场的安全状况。"
 ---
 
-# Safety Compliance Checker
+# 安全合规检查器
 
-## Overview
+## 概述
 
-This skill implements automated safety compliance checking for construction projects. Verify regulatory requirements, track safety metrics, and identify potential violations before they become incidents.
+该技能实现了对建筑项目的自动化安全合规性检查。它可以验证法规要求、跟踪安全指标，并在潜在违规行为演变成事故之前及时发现它们。
 
-**Compliance Areas:**
-- Personal Protective Equipment (PPE)
-- Working at heights regulations
-- Confined space entry
-- Hot work permits
-- Excavation safety
-- Electrical safety
-- Fire prevention
+**合规检查领域：**
+- 个人防护装备（PPE）
+- 高空作业规定
+- 密闭空间进入
+- 热工作许可
+- 挖掘作业安全
+- 电气安全
+- 防火措施
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass
@@ -83,9 +88,9 @@ for r in results:
     print(f"{r.evidence}: {r.status.value} - {r.findings}")
 ```
 
-## Comprehensive Safety Compliance System
+## 全面安全合规系统
 
-### Safety Rules Engine
+### 安全规则引擎
 
 ```python
 from dataclasses import dataclass, field
@@ -359,7 +364,7 @@ class SafetyComplianceEngine:
         return actions.get(rule.category, "Review and correct violation immediately")
 ```
 
-### PPE Detection Integration
+### 个人防护装备检测集成
 
 ```python
 class PPEComplianceChecker:
@@ -422,7 +427,7 @@ class PPEComplianceChecker:
         return results
 ```
 
-### Site Inspection System
+### 现场检查系统
 
 ```python
 from datetime import datetime, date
@@ -614,7 +619,7 @@ class SiteInspectionSystem:
         }
 ```
 
-### Compliance Dashboard Data
+### 合规性仪表板数据
 
 ```python
 class SafetyDashboard:
@@ -671,25 +676,25 @@ class SafetyDashboard:
         }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Check Type | OSHA Reference | Risk Level | Frequency |
+| 检查类型 | OSHA 参考标准 | 风险等级 | 检查频率 |
 |------------|---------------|------------|-----------|
-| PPE Compliance | 1926.100-106 | High | Continuous |
-| Fall Protection | 1926.501-503 | Critical | Daily |
-| Scaffolding | 1926.451-454 | High | Before each use |
-| Excavation | 1926.651-652 | High | Daily |
-| Electrical | 1926.400-449 | Critical | Daily |
-| Confined Space | 1926.1200 | Critical | Before entry |
-| Hot Work | 1926.350-354 | High | Per activity |
+| 个人防护装备合规性 | 1926.100-106 | 高风险 | 持续性检查 |
+| 防坠落保护 | 1926.501-503 | 关键性要求 | 每日检查 |
+| 脚手架安全 | 1926.451-454 | 高风险 | 每次使用前检查 |
+| 挖掘作业安全 | 1926.651-652 | 高风险 | 每日检查 |
+| 电气安全 | 1926.400-449 | 关键性要求 | 每日检查 |
+| 密闭空间作业 | 1926.1200 | 关键性要求 | 进入前检查 |
+| 热工作 | 1926.350-354 | 高风险 | 每次作业前检查 |
 
-## Resources
+## 资源
 
-- **OSHA Construction Standards**: https://www.osha.gov/laws-regs/regulations/standardnumber/1926
-- **DDC Website**: https://datadrivenconstruction.io
+- **OSHA 建筑行业标准**：https://www.osha.gov/laws-regs/regulations/standardnumber/1926
+- **DDC 网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `progress-monitoring-cv` for PPE detection with computer vision
-- See `risk-assessment-ml` for predictive safety analytics
-- See `document-classification-nlp` for safety document processing
+- 请参阅 `progress-monitoring-cv` 以了解如何使用计算机视觉技术进行个人防护装备检测
+- 请参阅 `risk-assessment-ml` 以了解预测性安全分析功能
+- 请参阅 `document-classification-nlp` 以了解安全文档的处理流程

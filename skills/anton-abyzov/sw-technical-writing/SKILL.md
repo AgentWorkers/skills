@@ -1,95 +1,45 @@
 ---
 name: technical-writing
-description: Technical writing expert for API documentation, README files, tutorials, changelog management, and developer documentation. Covers style guides, information architecture, versioning docs, OpenAPI/Swagger, and documentation-as-code. Activates for technical writing, API docs, README, changelog, tutorial writing, documentation, technical communication, style guide, OpenAPI, Swagger, developer docs.
+description: 我是一名专注于技术文档编写的专业翻译人员，主要负责API文档、README文件、教程的编写，以及变更日志（changelog）的管理和开发者文档的生成。我的工作内容包括制定技术写作规范、设计信息架构、编写版本控制相关文档，同时熟悉OpenAPI和Swagger规范，以及将文档内容以代码形式（documentation-as-code）进行呈现。我的职责涵盖技术写作、API文档编写、README文件制作、变更日志管理、教程设计、技术沟通协调、技术写作指南的制定，以及OpenAPI和Swagger相关技术的应用。
 ---
 
-# Technical Writing Skill
+# 技术写作技能
 
-**Self-contained technical documentation expertise for ANY user project.**
+**适用于任何用户项目的独立技术文档编写能力。**
 
-Expert in developer-focused documentation: READMEs, API references, tutorials, and changelogs.
+擅长为开发者编写文档，包括 README 文件、API 参考文档、教程和变更日志等。
 
 ---
 
-## Core Documentation Types
+## 核心文档类型
 
-### 1. README Files
+### 1. README 文件
 
-**Essential Structure**:
-```markdown
-# Project Name
-
-One-sentence description.
-
-## Features
-- Key feature 1
-- Key feature 2
-
-## Installation
+**基本结构**：
 ```bash
 npm install project-name
-```
-
-## Quick Start
-```javascript
 import { ProjectName } from 'project-name';
 const instance = new ProjectName();
 ```
 
-## Usage
-[Basic example]
+**最佳实践**：
+- 以解决问题为核心来开头
+- 优先使用代码示例而非冗长的解释
+- 采用渐进式展示方式（从基础到高级）
+- 确保文档内容与代码保持同步更新
 
-## API Reference
-[Link or inline reference]
+### 2. API 文档
 
-## Contributing
-[Link to CONTRIBUTING.md]
+**函数/方法文档**：
+（具体内容在此处）
 
-## License
-MIT
-```
-
-**Best Practices**:
-- Lead with value (what problem solved?)
-- Code examples > long explanations
-- Progressive disclosure (quick start → advanced)
-- Keep updated with code
-
-### 2. API Documentation
-
-**Function/Method Documentation**:
-```typescript
-/**
- * Compress image with quality settings
- *
- * @param {string} input - Path to input image
- * @param {CompressOptions} options - Compression options
- * @param {number} options.quality - Quality 0-100 (default: 80)
- * @param {string} options.format - Output format: jpeg|png|webp
- *
- * @returns {Promise<CompressResult>} Compression result with saved bytes
- *
- * @example
- * const result = await compress('photo.jpg', { quality: 90 });
- * console.log(`Saved ${result.savedBytes} bytes`);
- */
-```
-
-**REST API Documentation**:
-```markdown
-### POST /api/users
-
-Create a new user.
-
-**Request**:
+**REST API 文档**：
 ```json
 {
   "email": "user@example.com",
   "name": "John Doe"
 }
 ```
-
-**Response** (201 Created):
 ```json
 {
   "id": "uuid",
@@ -99,435 +49,182 @@ Create a new user.
 }
 ```
 
-**Errors**:
-- 400: Invalid email format
-- 409: Email already exists
-```
+### 3. 教程
 
-### 3. Tutorials
-
-**Structure**:
-```markdown
-# Tutorial: Build X in 10 Minutes
-
-**You'll learn**:
-- How to set up X
-- Core concepts
-- Build a working example
-
-**Prerequisites**:
-- Node.js 18+
-- Basic JavaScript knowledge
-
-## Step 1: Setup
-
+**结构**：
 ```bash
 npm create vite@latest my-project
 cd my-project
 npm install
 ```
 
-## Step 2: Create Component
+**最佳实践**：
+- 在开头明确说明所需的前提条件
+- 将内容分解为可测试的小步骤
+- 在每个步骤中展示预期的输出结果
+- 提供相关文档的链接
 
-[Code with explanation]
+### 4. 变更日志
 
-## Step 3: Test It
+**遵循 keepachangelog.com 的格式**：
+（具体内容在此处）
 
-[How to run and verify]
-
-## Next Steps
-
-- Advanced feature 1
-- Advanced feature 2
-- Link to API docs
-```
-
-**Best Practices**:
-- State prerequisites up front
-- Break into small, testable steps
-- Show expected output at each step
-- Link to related docs
-
-### 4. Changelogs
-
-**Keep a Changelog Format** (keepachangelog.com):
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Added
-- New feature X for Y use case
-
-### Changed
-- Improved performance of Z by 40%
-
-### Fixed
-- Critical bug in authentication (CVE-2024-1234)
-
-## [1.2.0] - 2025-11-24
-
-### Added
-- Real-time notifications via WebSocket
-- Export to PDF functionality
-
-### Changed
-- Updated dependencies (React 19)
-
-### Deprecated
-- `oldMethod()` - use `newMethod()` instead
-
-### Removed
-- Legacy API v1 endpoints
-
-### Fixed
-- Memory leak in image processing
-- CORS issue with production domain
-
-### Security
-- Fixed SQL injection vulnerability (CVE-2025-5678)
-
-## [1.1.0] - 2025-11-01
-
-[Previous release notes]
-```
-
-**Categories**:
-- **Added**: New features
-- **Changed**: Changes in existing functionality
-- **Deprecated**: Soon-to-be removed features
-- **Removed**: Now removed features
-- **Fixed**: Bug fixes
-- **Security**: Vulnerability fixes
+**分类**：
+- **新增功能**：添加的新功能
+- **功能变更**：现有功能的修改
+- **已弃用**：即将被移除的功能
+- **已移除**：已被移除的功能
+- **修复问题**：bug 修复
+- **安全问题**：安全漏洞的修复
 
 ---
 
-## Style Guide Essentials
+## 文档编写风格指南
 
-### Voice & Tone
+### 语言风格与语气
 
-**Active Voice** (preferred):
-- ✅ "The function returns an array"
-- ❌ "An array is returned by the function"
+**使用主动语态**（推荐）：
+- ✅ “该函数返回一个数组”
+- ❌ “函数返回一个数组”
 
-**Present Tense** (preferred):
-- ✅ "The API validates input"
-- ❌ "The API will validate input"
+**使用现在时态**（推荐）：
+- ✅ “API 会验证输入”
+- ❌ “API 将验证输入”
 
-**Second Person** (for tutorials):
-- ✅ "You can configure the timeout"
-- ❌ "Users can configure the timeout"
+**教程中的第二人称表述**：
+- ✅ “你可以配置超时时间”
+- ❌ “用户可以配置超时时间”
 
-### Clarity Rules
+### 清晰度规则
 
-**Be Specific**:
-- ✅ "Set timeout to 5000ms"
-- ❌ "Set a reasonable timeout"
+**表达要具体**：
+- ✅ “将超时时间设置为 5000 毫秒”
+- ❌ “设置一个合理的超时时间”
 
-**Avoid Jargon** (or explain it):
-- ✅ "Idempotent (can be called multiple times safely)"
-- ❌ "The endpoint is idempotent"
+**避免使用专业术语**（或进行解释）：
+- ✅ “幂等操作（可以安全地多次调用）”
+- ❌ “该接口是幂等的”
 
-**Short Sentences**:
-- ✅ "Install the package. Then import it."
-- ❌ "After installing the package, you need to import it into your project."
+**使用简短句子**：
+- ✅ “先安装包，然后将其导入项目中。”
+- ❌ “安装包后，需要将其导入到项目中。”
 
-### Code Examples
+### 代码示例
 
-**Show Complete Examples**:
-```javascript
-// ✅ GOOD - Complete, runnable
-import { connect } from 'database';
+**展示完整的代码示例**：
+（具体代码示例在此处）
 
-const db = await connect({
-  host: 'localhost',
-  port: 5432
-});
-
-const users = await db.query('SELECT * FROM users');
-console.log(users);
-```
-
-```javascript
-// ❌ BAD - Incomplete
-db.query('SELECT * FROM users');
-```
-
-**Include Error Handling**:
-```javascript
-// ✅ GOOD
-try {
-  const result = await processImage('photo.jpg');
-  console.log('Success:', result);
-} catch (error) {
-  console.error('Failed to process image:', error.message);
-}
-```
+**包含错误处理**：
+（错误处理代码示例在此处）
 
 ---
 
-## Documentation Structure
+## 文档结构
 
-### Information Architecture
+### 信息架构
 
-**Organize by User Journey**:
-```
-docs/
-├── getting-started/
-│   ├── installation.md
-│   ├── quick-start.md
-│   └── first-project.md
-├── guides/
-│   ├── authentication.md
-│   ├── deployment.md
-│   └── troubleshooting.md
-├── api-reference/
-│   ├── client.md
-│   ├── server.md
-│   └── types.md
-└── examples/
-    ├── basic-crud.md
-    ├── real-time-updates.md
-    └── advanced-queries.md
-```
+**根据用户使用流程组织文档**：
+（具体组织结构在此处）
 
-**Progressive Disclosure**:
-1. **Getting Started**: Quickest path to value
-2. **Guides**: Task-oriented how-tos
-3. **API Reference**: Complete technical reference
-4. **Examples**: Real-world patterns
+**渐进式展示方式**：
+1. **快速入门**：最快获得价值的路径
+2. **指南**：面向任务的操作指南
+3. **API 参考**：完整的技术参考
+4. **示例**：实际应用中的代码示例
 
-### Navigation Best Practices
+### 导航最佳实践
 
-**Clear Hierarchy**:
-- Use consistent heading levels (H1 → H2 → H3)
-- Don't skip heading levels
-- One H1 per page
+**清晰的层次结构**：
+- 使用一致的标题级别（H1 → H2 → H3）
+- 不要跳过任何标题级别
+- 每页只使用一个 H1 标题
 
-**Cross-Linking**:
-- Link to related docs
-- Link to prerequisites
-- Link to next steps
+**跨页面链接**：
+- 链接到相关文档
+- 链接到所需的前提条件
+- 链接到下一步的操作
 
-**Table of Contents** (for long pages):
-```markdown
-## Table of Contents
-
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-  - [Basic Example](#basic-example)
-  - [Advanced Example](#advanced-example)
-- [API Reference](#api-reference)
-```
+**目录**（对于较长的文档）：
+（目录结构在此处）
 
 ---
 
 ## OpenAPI / Swagger
 
-### OpenAPI 3.0 Template
-
-```yaml
-openapi: 3.0.0
-info:
-  title: User API
-  version: 1.0.0
-  description: User management API
-
-servers:
-  - url: https://api.example.com/v1
-
-paths:
-  /users:
-    get:
-      summary: List all users
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-
-    post:
-      summary: Create user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUser'
-      responses:
-        '201':
-          description: User created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-
-    CreateUser:
-      type: object
-      required:
-        - email
-        - name
-      properties:
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-```
+**OpenAPI 3.0 模板**：
+（模板内容在此处）
 
 ---
 
-## Documentation Maintenance
+## 文档维护
 
-### Versioning Strategy
+### 版本控制策略
 
-**Version docs alongside code**:
-```
-docs/
-├── v1.0/
-│   ├── api.md
-│   └── guides.md
-├── v2.0/
-│   ├── api.md
-│   ├── guides.md
-│   └── migration.md
-└── latest/ → symlink to v2.0/
-```
+**将文档与代码同步更新**：
+（版本控制策略在此处）
 
-**Migration Guides**:
-```markdown
-# Migrating from v1 to v2
+**迁移指南**：
+（迁移指导文档在此处）
 
-## Breaking Changes
-
-### Authentication
-
-**v1**:
 ```javascript
 const api = new API({ token: 'abc123' });
 ```
-
-**v2**:
 ```javascript
 const api = new API({
   auth: { bearer: 'abc123' }
-});
+);
 ```
 
-### What Changed
-- `token` parameter renamed to `auth.bearer`
-- Supports multiple auth methods now
+### 保持文档的新鲜度
 
-### Migration Steps
+**自动化工具**：
+- 从代码自动生成 API 文档（JSDoc、TypeDoc、OpenAPI）
+- 自动更新文档中的版本号
+- 通过 CI/CD 工具检查链接是否有效
 
-1. Update API initialization
-2. Test authentication flow
-3. Update error handling (new error codes)
-```
-
-### Keep Docs Fresh
-
-**Automation**:
-- Generate API docs from code (JSDoc, TypeDoc, OpenAPI)
-- Auto-update version numbers in docs
-- CI/CD checks for broken links
-
-**Review Checklist**:
-- [ ] Code examples run without errors
-- [ ] All links work (no 404s)
-- [ ] Version numbers match package.json
-- [ ] Screenshots show current UI
-- [ ] Deprecation warnings added for old features
+**审核 checklist**：
+- [ ] 所有代码示例都能正常运行
+- [ ] 所有链接都能正常访问（无 404 错误）
+- 文档中的版本号与 package.json 一致
+- 屏幕截图显示当前的用户界面
+- 为过时功能添加弃用警告
 
 ---
 
-## Common Pitfalls
+## 常见误区
 
-**❌ Avoid**:
-- Outdated examples (don't run)
-- Missing prerequisites
-- Incomplete code snippets
-- Vague error messages ("something went wrong")
-- Over-explaining obvious things
-- Using future tense ("will do X")
+**避免以下错误**：
+- 使用过时的代码示例（确保示例能够正常运行）
+- 忽略所需的前提条件
+- 代码片段不完整
+- 错误信息模糊不清（如 “出了问题”）
+- 对显而易见的内容进行过度解释
+- 使用将来时态（如 “将来会实现某功能”）
 
-**✅ Do**:
-- Test all code examples
-- State prerequisites up front
-- Show complete, runnable code
-- Specific error messages with fixes
-- Respect reader's intelligence
-- Use present tense
+**应该这样做**：
+- 测试所有的代码示例
+- 在开头明确说明所需的前提条件
+- 提供完整、可运行的代码示例
+- 提供详细的错误信息及解决方法
+- 尊重读者的理解能力
+- 使用现在时态
 
 ---
 
-## Quick Reference Templates
+## 快速参考模板
 
-### Function Documentation
-```javascript
-/**
- * Brief description
- *
- * @param {Type} paramName - Description
- * @returns {Type} Description
- * @throws {ErrorType} When/why
- * @example
- * functionName(arg);
- */
-```
+### 函数文档
+（函数文档模板在此处）
 
-### CLI Command Documentation
-```markdown
-### command [options]
-
-Description of what command does.
-
-**Options**:
-- `-f, --flag`: Description (default: value)
-- `-o, --option <value>`: Description
-
-**Examples**:
+### 命令行接口（CLI）文档
 ```bash
 command --flag --option=value
 ```
-```
+（CLI 命令文档模板在此处）
 
-### Error Documentation
-```markdown
-### Error: ECONNREFUSED
-
-**Cause**: Cannot connect to database
-
-**Solutions**:
-1. Check database is running: `docker ps`
-2. Verify connection string in `.env`
-3. Check firewall allows port 5432
-```
+### 错误文档
+（错误处理文档模板在此处）
 
 ---
 
-**This skill is self-contained and works in ANY user project.**
+**这项技能具有独立性，适用于任何用户项目。**

@@ -1,18 +1,18 @@
 ---
 name: Compress
-description: Compress text semantically with iterative validation, anchor checksums, and verified information preservation.
+description: 通过迭代验证、锚点校验和经过验证的信息保留机制，实现文本的语义压缩。
 ---
 
-## ⚠️ Important Limitations
+## ⚠️ 重要限制
 
-**This is SEMANTIC compression, not bit-perfect lossless.**
-- L1-L2: Verified reconstruction, production-ready
-- L3-L4: Experimental, may lose subtle information
-- **Never use for:** Medical dosages, legal text, financial figures, safety-critical data
+**这仅是一种语义压缩方法，并非完全无损的压缩方式。**  
+- **L1-L2**：压缩后的数据可以准确重建，适用于生产环境。  
+- **L3-L4**：仍处于实验阶段，可能会丢失一些细微信息。  
+**严禁用于以下场景：** 医疗剂量、法律文本、财务数据或安全关键数据。
 
 ---
 
-## The Validation Loop
+## 验证流程
 
 ```
 1. Compress original O → compressed C
@@ -23,69 +23,68 @@ description: Compress text semantically with iterative validation, anchor checks
 6. Repeat until validated (max 3 iterations)
 ```
 
-**Convergence = verified. No convergence after 3 rounds = level too aggressive.**
+**如果经过3轮压缩后数据仍未收敛（即无法准确重建），则说明压缩级别设置过于激进。**
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Load |
-|------|------|
-| Compression levels (L1-L4) | `levels.md` |
-| Validation algorithm details | `validation.md` |
-| Format-specific strategies | `formats.md` |
-| Token budgeting and metrics | `metrics.md` |
-
----
-
-## Compression Levels
-
-| Level | Ratio | Reliability | Use Case |
-|-------|-------|-------------|----------|
-| L1 | ~0.8x | ✅ High | Production, human-readable |
-| L2 | ~0.5x | ✅ Good | System prompts, repeated use |
-| L3 | ~0.3x | ⚠️ Moderate | Experimental, review output |
-| L4 | ~0.15x | ⚠️ Low | Research only, expect losses |
+| 任务 | 所需压缩级别（L1-L4） | 参考文档 |
+|------|-----------------|---------|
+| 压缩级别详情 | `levels.md` |          |
+| 验证算法说明 | `validation.md` |          |
+| 格式相关策略 | `formats.md` |          |
+| 令牌分配与性能指标 | `metrics.md` |          |
 
 ---
 
-## Anchor Checksum System
+## 压缩级别
 
-Before compression, extract critical facts:
+| 压缩级别 | 压缩比例 | 可靠性 | 适用场景 |
+|-------|-----------|---------|---------|
+| L1   | 约0.8倍     | ✅ 高     | 生产环境、人类可读 |
+| L2   | 约0.5倍     | ✅ 良好     | 系统提示、重复使用场景 |
+| L3   | 约0.3倍     | ⚠️ 中等     | 实验性用途、需要人工审核压缩结果 |
+| L4   | 约0.15倍     | ⚠️ 低     | 仅适用于研究用途，可能会丢失部分数据 |
+
+---
+
+## 锚点校验系统
+
+在压缩之前，需要提取关键信息（如数字、名称、日期等）：  
 ```
 [ANCHORS: 3 people, $42,000, 2024-03-15, "Project Alpha"]
 ```
 
-Reconstruction MUST reproduce these exactly. If anchors mismatch → compression failed.
+压缩后的数据必须能够完全还原这些关键信息。如果提取的“锚点”与原始数据不匹配，说明压缩失败。
 
 ---
 
-## Core Rules
+## 核心规则
 
-1. **Always validate** — Never trust compression without reconstruction test
-2. **Use anchors** — Extract numbers, names, dates before compressing
-3. **Cap at L2 for production** — L3-L4 are experimental
-4. **Report confidence** — Include iteration count and anchor match rate
-5. **Independent verification** — Consider different model for reconstruction
+1. **务必进行验证**——切勿在没有重建验证的情况下直接使用压缩后的数据。  
+2. **使用锚点信息**——在压缩前提取所有重要的数字、名称和日期。  
+3. **生产环境建议使用L2级别**——L3-L4级别仅用于实验性用途。  
+4. **提供压缩结果的可信度信息**——包括压缩迭代次数和锚点匹配率。  
+5. **进行独立验证**——使用不同的模型来验证压缩结果的准确性。  
 
 ---
 
-## Cost-Benefit Reality
+## 成本效益分析
 
-Each compression costs 3-4 LLM calls. Break-even calculation:
+每次压缩操作需要消耗3-4次大型语言模型的计算资源。盈亏平衡分析如下：  
 ```
 break_even_retrievals = compression_tokens / saved_tokens_per_use
 ```
 
-**Only cost-effective if:** You'll retrieve the compressed content 6-8+ times.
-
-For one-time use → just use the original text.
+**只有当您预期会多次访问压缩后的数据时，这种压缩方法才具有成本效益。**  
+如果只是偶尔使用压缩后的数据，建议直接使用原始文本。
 
 ---
 
-## Before Compressing
+## 压缩前的准备步骤：
 
-- [ ] Content type is NOT safety-critical
-- [ ] Target level chosen (L1-L2 recommended)
-- [ ] Anchors identified (numbers, names, dates)
-- [ ] ROI makes sense (multiple retrievals expected)
+- [ ] 确保内容类型不属于安全关键数据。  
+- [ ] 选择合适的压缩级别（推荐使用L1-L2）。  
+- [ ] 提取所有需要保留的锚点信息（数字、名称、日期）。  
+- [ ] 确认压缩操作具有经济效益（即预期会多次访问压缩后的数据）。

@@ -1,36 +1,36 @@
 ---
 name: cross-pollination-engine
-description: Systematically borrow ideas from unrelated industries to solve problems. Innovation often comes from adjacent fields. Use when user says "cross-pollination", "how would X solve this", "borrow ideas from", "what can we learn from", "think outside the box", "how would Disney/Apple/Amazon do this", "different industry", "steal ideas".
+description: 系统性地借鉴来自不相关行业的想法来解决问题。创新往往来源于相邻领域。当用户提到“跨领域借鉴”、“X行业会如何解决这个问题”、“从……中汲取灵感”、“我们可以从……中学到什么”、“跳出思维定势”、“迪士尼/苹果/亚马逊会如何处理这个问题”或者“不同行业”的做法时，就可以采用这种方法。
 ---
 
-# Cross-Pollination Engine
+# 跨领域创新引擎（Cross-Pollination Engine）
 
-## The Core Insight
+## 核心理念
 
-Most "innovation" is applying proven solutions from one domain to another.
-- Resistance wheels → Rollerblades
-- Gaming XP systems → Duolingo
-- Hotel concierge → Software onboarding
+大多数“创新”其实都是将一个领域中已被验证的解决方案应用到另一个领域中：
+- 防滑轮（Resistance wheels）被应用于轮滑鞋（Rollerblades）；
+- 游戏经验系统（Gaming XP systems）被借鉴到语言学习软件（Duolingo）中；
+- 酒店礼宾服务（Hotel concierge）的理念被应用于软件用户引导流程（Software onboarding）。
 
-## The Process
+## 创新流程：
 
-1. **Define the core job** (strip away industry context)
-2. **Find who else solves it** (often surprising industries)
-3. **Extract principles** (not surface features)
-4. **Translate to your context** (adapt, don't copy)
+1. **明确核心需求**（剥离行业背景）；
+2. **寻找其他行业中的类似解决方案**（这些行业往往出人意料）；
+3. **提取其中的核心原理**（而非表面特征）；
+4. **将其适配到自己的场景中**（进行创新，而非简单复制）。
 
-## Industry Inspiration Library
+## 行业灵感库（Industry Inspiration Library）：
 
-| Need | Look At | Why |
+| 需求 | 可借鉴的行业 | 原因 |
 |------|---------|-----|
-| **Trust** | Banking, Healthcare, Aviation | Verification, credentials, checklists |
-| **Engagement** | Gaming, Fitness apps, Streaming | XP, streaks, personalization, progress |
-| **Onboarding** | Hotels, Theme parks, Luxury retail | Concierge, anticipation, personal touch |
-| **Simplicity** | Apple, IKEA, Google | Feature cutting, hidden complexity |
-| **Urgency** | E-commerce, Airlines, Fast food | Scarcity, anchoring, speed promises |
-| **Community** | CrossFit, Harley-Davidson, Peloton | Tribal identity, shared experience |
+| **信任机制**（Trust） | 银行业、医疗行业、航空业 | 验证机制、身份认证、检查清单（Verification, credentials, checklists） |
+| **用户参与度**（Engagement） | 游戏行业、健身应用、流媒体服务 | 经验值系统（XP）、连续完成任务的功能（Streaks）、个性化体验（Personalization, progress） |
+| **用户引导**（Onboarding） | 酒店、主题公园、奢侈品零售业 | 礼宾服务、提前沟通、个性化服务（Concierge, anticipation, personal touch） |
+| **简洁性**（Simplicity） | 苹果、宜家、谷歌 | 去除不必要的功能、隐藏复杂性的设计（Feature cutting, hidden complexity） |
+| **紧迫感**（Urgency） | 电子商务、航空公司、快餐行业 | 利用稀缺性、快速响应的承诺（Scarcity, speed promises） |
+| **社区建设**（Community） | CrossFit、哈雷戴维森、Peloton | 共同的价值观、共享体验（Tribal identity, shared experience） |
 
-## Output Format
+## 输出格式：
 
 ```
 PROBLEM: [What you're solving]
@@ -50,20 +50,19 @@ SYNTHESIS: [Combined approach]
 NEXT STEP: [Concrete action]
 ```
 
-## Prompt Starters
+## 问题引导语（Prompt Starters）：
 
-- "How would Disney solve our onboarding?"
-- "What would Amazon do with our data?"
-- "If this were a game, how would it work?"
-- "How do luxury hotels make people feel special?"
+- “迪士尼会如何解决我们的用户引导问题？”
+- “亚马逊会如何利用我们的数据？”
+- “如果这是一款游戏，它会如何运作？”
+- “奢侈品酒店是如何让顾客感受到特殊待遇的？”
 
-## Integration
+## 相关工具（Integration Tools）：
 
-Compounds with:
-- **jtbd-analyzer** → Understand job first, then find who else solves it
-- **first-principles-decomposer** → Strip context to find fundamental need
-- **six-thinking-hats** → Green Hat pairs naturally with cross-pollination
-- **app-planning-skill** → Apply borrowed patterns to new apps
+- **jtbd-analyzer**：首先理解具体工作需求，再寻找其他行业的解决方案；
+- **first-principles-decomposer**：剥离行业背景，找出根本需求；
+- **six-thinking-hats**：这种思维模式与跨领域创新方法非常契合；
+- **app-planning-skill**：将借鉴的解决方案应用到新的应用程序中。
 
 ---
-See references/examples.md for Artem-specific cross-pollinations
+有关Artem项目中的具体跨领域创新案例，请参阅 `references/examples.md` 文件。

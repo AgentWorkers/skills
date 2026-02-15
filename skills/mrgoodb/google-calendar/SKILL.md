@@ -1,34 +1,34 @@
 ---
 name: google-calendar
-description: Manage Google Calendar events - create, list, update, and delete events. Use when you need to check schedules, create meetings, or automate calendar management. Requires OAuth2 setup.
+description: 管理 Google 日历事件：创建、列出、更新和删除事件。适用于需要查看日程安排、安排会议或自动化日历管理的场景。使用前需完成 OAuth2 设置。
 ---
 
-# Google Calendar API
+# Google 日历 API
 
-Manage calendar events via Google Calendar API.
+通过 Google 日历 API 管理日历事件。
 
-## Setup (OAuth2)
+## 设置（OAuth2）
 
-1. Create project: https://console.cloud.google.com
-2. Enable Calendar API: APIs & Services → Enable APIs → Google Calendar API
-3. Create OAuth credentials: APIs & Services → Credentials → Create OAuth Client ID
-4. Download JSON → save as `~/.config/google/credentials.json`
-5. Get refresh token using oauth2 flow (see below)
+1. 创建项目：https://console.cloud.google.com
+2. 启用日历 API：APIs & Services → Enable APIs → Google 日历 API
+3. 创建 OAuth 凭据：APIs & Services → Credentials → Create OAuth 客户端 ID
+4. 下载 JSON 文件，并将其保存为 `~/.config/google/credentials.json`
+5. 使用 OAuth2 流程获取刷新令牌（详见下方）
 
-## Quick Auth (using gcalcli)
+## 快速认证（使用 gcalcli）
 
-Easiest setup using gcalcli:
+使用 gcalcli 的最简单设置方法：
 ```bash
 pip install gcalcli
 gcalcli init  # Opens browser for OAuth
 ```
 
-Or use gcloud:
+或者使用 gcloud：
 ```bash
 gcloud auth application-default login --scopes=https://www.googleapis.com/auth/calendar
 ```
 
-## API Basics
+## API 基础知识
 
 ```bash
 ACCESS_TOKEN=$(gcloud auth application-default print-access-token)
@@ -37,16 +37,16 @@ curl -s "https://www.googleapis.com/calendar/v3/users/me/calendarList" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | jq '.items[] | {id, summary}'
 ```
 
-## List Calendars
+## 列出日历
 
 ```bash
 curl -s "https://www.googleapis.com/calendar/v3/users/me/calendarList" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | jq '.items[] | {id, summary}'
 ```
 
-Primary calendar ID is usually your email or `primary`.
+主日历 ID 通常为你的电子邮件地址或 `primary`。
 
-## List Events
+## 列出事件
 
 ```bash
 CALENDAR_ID="primary"
@@ -57,7 +57,7 @@ curl -s "https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | jq '.items[] | {summary, start: .start.dateTime, end: .end.dateTime}'
 ```
 
-## Get Today's Events
+## 获取今日事件
 
 ```bash
 TODAY=$(date -u +"%Y-%m-%dT00:00:00Z")
@@ -67,7 +67,7 @@ curl -s "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | jq '.items[] | {summary, start: .start.dateTime}'
 ```
 
-## Create Event
+## 创建事件
 
 ```bash
 curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events" \
@@ -87,7 +87,7 @@ curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events
   }' | jq '{id, summary, htmlLink}'
 ```
 
-## Create Event with Attendees
+## 创建包含参与者的事件
 
 ```bash
 curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all" \
@@ -107,9 +107,9 @@ curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events
   }' | jq
 ```
 
-Add `sendUpdates=all` to send email invites.
+添加 `sendUpdates=all` 以发送电子邮件邀请。
 
-## Create All-Day Event
+## 创建全天事件
 
 ```bash
 curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events" \
@@ -122,9 +122,9 @@ curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events
   }'
 ```
 
-Use `date` (not `dateTime`) for all-day events.
+对于全天事件，请使用 `date`（而非 `dateTime`）。
 
-## Update Event
+## 更新事件
 
 ```bash
 EVENT_ID="event_id_here"
@@ -138,14 +138,14 @@ curl -s -X PATCH "https://www.googleapis.com/calendar/v3/calendars/primary/event
   }'
 ```
 
-## Delete Event
+## 删除事件
 
 ```bash
 curl -s -X DELETE "https://www.googleapis.com/calendar/v3/calendars/primary/events/${EVENT_ID}" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}"
 ```
 
-## Add Google Meet
+## 添加 Google Meet
 
 ```bash
 curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1" \
@@ -164,7 +164,7 @@ curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events
   }' | jq '.conferenceData.entryPoints[0].uri'
 ```
 
-## Free/Busy Query
+## 查询空闲/忙碌状态
 
 ```bash
 curl -s -X POST "https://www.googleapis.com/calendar/v3/freeBusy" \
@@ -177,14 +177,14 @@ curl -s -X POST "https://www.googleapis.com/calendar/v3/freeBusy" \
   }' | jq '.calendars.primary.busy'
 ```
 
-## Quick Add (Natural Language)
+## 快速添加事件（通过自然语言）
 
 ```bash
 curl -s -X POST "https://www.googleapis.com/calendar/v3/calendars/primary/events/quickAdd?text=Lunch%20with%20John%20tomorrow%20at%20noon" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | jq
 ```
 
-## Rate Limits
+## 速率限制
 
-- 1,000,000 queries/day (default)
-- 100 requests/100 seconds/user
+- 每天 1,000,000 次请求（默认值）
+- 每用户每 100 秒 100 次请求

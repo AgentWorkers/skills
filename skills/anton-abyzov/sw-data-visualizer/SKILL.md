@@ -4,17 +4,17 @@ description: |
   Automated data visualization for EDA, model performance, and business reporting. Activates for "visualize data", "create plots", "EDA", "exploratory analysis", "confusion matrix", "ROC curve", "feature distribution", "correlation heatmap", "plot results", "dashboard". Generates publication-quality visualizations integrated with SpecWeave increments.
 ---
 
-# Data Visualizer
+# 数据可视化工具
 
-## Overview
+## 概述
 
-Automated visualization generation for exploratory data analysis, model performance reporting, and stakeholder communication. Creates publication-quality plots, interactive dashboards, and business-friendly reports—all integrated with SpecWeave's increment workflow.
+该工具支持自动化数据可视化生成，适用于探索性数据分析、模型性能报告以及与利益相关者的沟通。它可以生成符合出版标准的图表、交互式仪表板以及易于理解的商务报告，并且所有这些功能都与 SpecWeave 的增量工作流程紧密集成。
 
-## Visualization Categories
+## 可视化类别
 
-### 1. Exploratory Data Analysis (EDA)
+### 1. 探索性数据分析（EDA）
 
-**Automated EDA Report**:
+**自动化 EDA 报告**：
 ```python
 from specweave import EDAVisualizer
 
@@ -33,7 +33,7 @@ report = visualizer.generate_eda_report(df)
 # - Feature relationships (pairplot for top features)
 ```
 
-**Individual EDA Plots**:
+**单个 EDA 图表**：
 ```python
 # Distribution plots
 visualizer.plot_distribution(
@@ -55,9 +55,9 @@ visualizer.plot_missing_values(df)
 visualizer.plot_outliers(df[numerical_columns])
 ```
 
-### 2. Model Performance Visualizations
+### 2. 模型性能可视化
 
-**Classification Performance**:
+**分类模型性能**：
 ```python
 from specweave import ClassificationVisualizer
 
@@ -95,7 +95,7 @@ viz.plot_calibration_curve(
 )
 ```
 
-**Regression Performance**:
+**回归模型性能**：
 ```python
 from specweave import RegressionVisualizer
 
@@ -126,9 +126,9 @@ viz.plot_error_analysis(
 )
 ```
 
-### 3. Feature Analysis Visualizations
+### 3. 特征分析可视化
 
-**Feature Importance**:
+**特征重要性分析**：
 ```python
 from specweave import FeatureVisualizer
 
@@ -162,9 +162,9 @@ viz.plot_feature_interaction(
 )
 ```
 
-### 4. Time Series Visualizations
+### 4. 时间序列可视化
 
-**Time Series Plots**:
+**时间序列图表**：
 ```python
 from specweave import TimeSeriesVisualizer
 
@@ -193,9 +193,9 @@ viz.plot_forecast(
 )
 ```
 
-### 5. Model Comparison Visualizations
+### 5. 模型比较可视化
 
-**Compare Multiple Models**:
+**多模型对比**：
 ```python
 from specweave import ModelComparisonVisualizer
 
@@ -221,9 +221,9 @@ viz.plot_roc_curves_comparison(
 )
 ```
 
-## Interactive Visualizations
+## 交互式可视化
 
-**Plotly Integration**:
+**与 Plotly 的集成**：
 ```python
 from specweave import InteractiveVisualizer
 
@@ -250,9 +250,9 @@ viz.plot_interactive_feature_importance(
 )
 ```
 
-## Business Reporting
+## 商务报告
 
-**Automated ML Report**:
+**自动化机器学习报告**：
 ```python
 from specweave import MLReportGenerator
 
@@ -277,7 +277,7 @@ report = generator.generate_report(
 # - Technical appendix
 ```
 
-**Report Output** (HTML/PDF):
+**报告输出（HTML/PDF）**：
 ```markdown
 # Fraud Detection Model - Executive Summary
 
@@ -303,9 +303,9 @@ report = generator.generate_report(
 3. Retrain model monthly with new data
 ```
 
-## Dashboard Creation
+## 仪表板创建
 
-**Real-Time Dashboard**:
+**实时仪表板**：
 ```python
 from specweave import DashboardCreator
 
@@ -328,9 +328,9 @@ dashboard = creator.create_dashboard(
 dashboard.export(format='grafana')
 ```
 
-## Visualization Best Practices
+## 可视化最佳实践
 
-### 1. Publication-Quality Plots
+### 1. 符合出版标准的图表**
 
 ```python
 # Set consistent styling
@@ -348,7 +348,7 @@ visualizer.save_figure(
 )
 ```
 
-### 2. Accessible Visualizations
+### 2. 易于理解的可视化效果**
 
 ```python
 # Colorblind-friendly palettes
@@ -364,7 +364,7 @@ visualizer.add_alt_text(
 visualizer.set_high_contrast_mode()
 ```
 
-### 3. Annotation and Context
+### 3. 图表注释与上下文说明**
 
 ```python
 # Add reference lines
@@ -383,10 +383,9 @@ viz.annotate_point(
 )
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-### Automated Visualization in Increments
-
+**自动化增量式可视化生成**：
 ```python
 # All visualizations auto-saved to increment folder
 visualizer = EDAVisualizer(increment="0042")
@@ -412,13 +411,12 @@ visualizer = EDAVisualizer(increment="0042")
 # │       └── technical_report.pdf
 ```
 
-### Living Docs Integration
-
+**与动态文档系统的集成**：
 ```bash
 /sw:sync-docs update
 ```
 
-Updates:
+**更新机制**：
 ```markdown
 <!-- .specweave/docs/internal/architecture/ml-model-performance.md -->
 
@@ -444,7 +442,7 @@ Top 5 features:
 5. location_distance_from_home (0.07)
 ```
 
-## Commands
+## 命令操作
 
 ```bash
 # Generate EDA report
@@ -460,9 +458,9 @@ Top 5 features:
 /ml:export-visualizations 0042 --format png,pdf,html
 ```
 
-## Advanced Features
+## 高级功能
 
-### 1. Automated Report Generation
+### 1. 自动化报告生成**
 
 ```python
 # Generate full increment report with all visualizations
@@ -479,7 +477,7 @@ report = generator.generate_full_report()
 # - Deployment readiness
 ```
 
-### 2. Custom Visualization Templates
+### 2. 自定义可视化模板**
 
 ```python
 # Create reusable templates
@@ -494,7 +492,7 @@ template.add_panel("fraud_trends_over_time")
 template.apply(increment="0042")
 ```
 
-### 3. Version Control for Visualizations
+### 3. 可视化的版本控制**
 
 ```python
 # Track visualization changes across model versions
@@ -509,13 +507,13 @@ viz_tracker.compare_versions(
 # Shows: Confusion matrix improved, ROC curve comparison, etc.
 ```
 
-## Summary
+## 总结
 
-Data visualization is critical for:
-- ✅ Exploratory data analysis (understand data before modeling)
-- ✅ Model performance communication (stakeholder buy-in)
-- ✅ Feature analysis (understand what drives predictions)
-- ✅ Business reporting (translate metrics to impact)
-- ✅ Model debugging (identify issues visually)
+数据可视化在以下方面至关重要：
+- ✅ 探索性数据分析（在建模前理解数据）
+- ✅ 模型性能沟通（获得利益相关者的认可）
+- ✅ 特征分析（了解影响预测的因素）
+- ✅ 商务报告（将指标转化为实际业务影响）
+- ✅ 模型调试（通过可视化方式发现问题）
 
-This skill automates visualization generation, ensuring all ML work is visual, accessible, and business-friendly within SpecWeave's increment workflow.
+该工具实现了自动化的可视化生成，确保所有机器学习相关工作都以直观、易于理解的方式呈现，并且完全符合 SpecWeave 的增量工作流程要求。

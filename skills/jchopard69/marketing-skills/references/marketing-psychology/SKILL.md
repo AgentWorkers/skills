@@ -1,451 +1,446 @@
 ---
 name: marketing-psychology
-description: "When the user wants to apply psychological principles, mental models, or behavioral science to marketing. Also use when the user mentions 'psychology,' 'mental models,' 'cognitive bias,' 'persuasion,' 'behavioral science,' 'why people buy,' 'decision-making,' or 'consumer behavior.' This skill provides 70+ mental models organized for marketing application."
+description: "当用户希望将心理学原理、心智模型或行为科学应用于市场营销时，或者当用户提到“心理学”、“心智模型”、“认知偏见”、“说服力”、“行为科学”、“人们购买产品的原因”、“决策过程”或“消费者行为”等概念时，可以使用这项技能。该技能提供了70多个专为市场营销应用设计的心智模型。"
 ---
 
-# Marketing Psychology & Mental Models
+# 营销心理学与思维模型
 
-You are an expert in applying psychological principles and mental models to marketing. Your goal is to help users understand why people buy, how to influence behavior ethically, and how to make better marketing decisions.
+您是运用心理学原理和思维模型进行营销的专家。您的目标是帮助用户理解人们为何购买产品、如何以道德的方式影响消费者行为，以及如何做出更明智的营销决策。
 
-## How to Use This Skill
+## 如何运用这些技能
 
-Mental models are thinking tools that help you make better decisions, understand customer behavior, and create more effective marketing. When helping users:
+思维模型是帮助您做出更好决策、理解客户行为并制定更有效营销策略的工具。在帮助用户时，请遵循以下步骤：
 
-1. Identify which mental models apply to their situation
-2. Explain the psychology behind the model
-3. Provide specific marketing applications
-4. Suggest how to implement ethically
-
----
-
-## Foundational Thinking Models
-
-These models sharpen your strategy and help you solve the right problems.
-
-### First Principles
-Break problems down to basic truths and build solutions from there. Instead of copying competitors, ask "why" repeatedly to find root causes. Use the 5 Whys technique to tunnel down to what really matters.
-
-**Marketing application**: Don't assume you need content marketing because competitors do. Ask why you need it, what problem it solves, and whether there's a better solution.
-
-### Jobs to Be Done
-People don't buy products—they "hire" them to get a job done. Focus on the outcome customers want, not features.
-
-**Marketing application**: A drill buyer doesn't want a drill—they want a hole. Frame your product around the job it accomplishes, not its specifications.
-
-### Circle of Competence
-Know what you're good at and stay within it. Venture outside only with proper learning or expert help.
-
-**Marketing application**: Don't chase every channel. Double down where you have genuine expertise and competitive advantage.
-
-### Inversion
-Instead of asking "How do I succeed?", ask "What would guarantee failure?" Then avoid those things.
-
-**Marketing application**: List everything that would make your campaign fail—confusing messaging, wrong audience, slow landing page—then systematically prevent each.
-
-### Occam's Razor
-The simplest explanation is usually correct. Avoid overcomplicating strategies or attributing results to complex causes when simple ones suffice.
-
-**Marketing application**: If conversions dropped, check the obvious first (broken form, page speed) before assuming complex attribution issues.
-
-### Pareto Principle (80/20 Rule)
-Roughly 80% of results come from 20% of efforts. Identify and focus on the vital few.
-
-**Marketing application**: Find the 20% of channels, customers, or content driving 80% of results. Cut or reduce the rest.
-
-### Local vs. Global Optima
-A local optimum is the best solution nearby, but a global optimum is the best overall. Don't get stuck optimizing the wrong thing.
-
-**Marketing application**: Optimizing email subject lines (local) won't help if email isn't the right channel (global). Zoom out before zooming in.
-
-### Theory of Constraints
-Every system has one bottleneck limiting throughput. Find and fix that constraint before optimizing elsewhere.
-
-**Marketing application**: If your funnel converts well but traffic is low, more conversion optimization won't help. Fix the traffic bottleneck first.
-
-### Opportunity Cost
-Every choice has a cost—what you give up by not choosing alternatives. Consider what you're saying no to.
-
-**Marketing application**: Time spent on a low-ROI channel is time not spent on high-ROI activities. Always compare against alternatives.
-
-### Law of Diminishing Returns
-After a point, additional investment yields progressively smaller gains.
-
-**Marketing application**: The 10th blog post won't have the same impact as the first. Know when to diversify rather than double down.
-
-### Second-Order Thinking
-Consider not just immediate effects, but the effects of those effects.
-
-**Marketing application**: A flash sale boosts revenue (first order) but may train customers to wait for discounts (second order).
-
-### Map ≠ Territory
-Models and data represent reality but aren't reality itself. Don't confuse your analytics dashboard with actual customer experience.
-
-**Marketing application**: Your customer persona is a useful model, but real customers are more complex. Stay in touch with actual users.
-
-### Probabilistic Thinking
-Think in probabilities, not certainties. Estimate likelihoods and plan for multiple outcomes.
-
-**Marketing application**: Don't bet everything on one campaign. Spread risk and plan for scenarios where your primary strategy underperforms.
-
-### Barbell Strategy
-Combine extreme safety with small high-risk/high-reward bets. Avoid the mediocre middle.
-
-**Marketing application**: Put 80% of budget into proven channels, 20% into experimental bets. Avoid moderate-risk, moderate-reward middle.
+1. **识别适用的思维模型**：分析用户所处的情境，确定哪些思维模型与之相关。
+2. **解释模型背后的心理学原理**：向用户解释这些模型背后的心理学依据。
+3. **提供具体的营销应用方法**：结合实际案例，说明如何将这些模型应用于营销中。
+4. **建议道德的实施方式**：强调在营销过程中应遵循的伦理原则。
 
 ---
 
-## Understanding Buyers & Human Psychology
+## 基础思维模型
 
-These models explain how customers think, decide, and behave.
+这些模型能帮助您优化营销策略，解决关键问题。
 
-### Fundamental Attribution Error
-People attribute others' behavior to character, not circumstances. "They didn't buy because they're not serious" vs. "The checkout was confusing."
+### **第一性原理**  
+将问题分解为基本事实，并据此制定解决方案。不要盲目模仿竞争对手，而是反复追问“为什么”，以找到根本原因。使用“5个为什么”技巧，深入探究真正重要的问题。
 
-**Marketing application**: When customers don't convert, examine your process before blaming them. The problem is usually situational, not personal.
+**营销应用**：不要仅仅因为竞争对手在采用内容营销，就认为自己也必须这么做。要思考自己为什么需要它，它能解决什么问题，以及是否有更好的替代方案。
 
-### Mere Exposure Effect
-People prefer things they've seen before. Familiarity breeds liking.
+### **任务导向思维**  
+人们购买产品不是为了产品本身，而是为了完成某个任务。因此，营销应关注客户想要实现的目标，而非产品的具体功能。
 
-**Marketing application**: Consistent brand presence builds preference over time. Repetition across channels creates comfort and trust.
+**营销应用**：购买钻头的人实际上想要的是一个洞；营销应围绕产品能完成的任务来定位产品，而非其技术规格。
 
-### Availability Heuristic
-People judge likelihood by how easily examples come to mind. Recent or vivid events seem more common.
+### **能力范围思维**  
+了解自己的优势领域，并在该领域内发挥专长。只有在充分学习或获得专家建议的情况下，才应尝试拓展新的领域。
 
-**Marketing application**: Case studies and testimonials make success feel more achievable. Make positive outcomes easy to imagine.
+**营销应用**：不要试图覆盖所有营销渠道，而应专注于自己真正有优势的领域。
 
-### Confirmation Bias
-People seek information confirming existing beliefs and ignore contradictory evidence.
+### **逆向思维**  
+不要问“我该如何成功？”，而应问“什么会导致失败？”，然后避免这些可能导致失败的因素。
 
-**Marketing application**: Understand what your audience already believes and align messaging accordingly. Fighting beliefs head-on rarely works.
+**营销应用**：列出所有可能让营销活动失败的因素（如信息混乱、目标受众不匹配、登录页面加载缓慢等），并系统地加以防范。
 
-### The Lindy Effect
-The longer something has survived, the longer it's likely to continue. Old ideas often outlast new ones.
+### **奥卡姆剃刀原理**  
+最简单的解释往往是最正确的。不要过度复杂化营销策略，也不要将失败归因于复杂的原因。
 
-**Marketing application**: Proven marketing principles (clear value props, social proof) outlast trendy tactics. Don't abandon fundamentals for fads.
+**营销应用**：如果转化率下降，首先检查显而易见的问题（如表单损坏、页面加载速度慢），而不是假设是其他复杂因素导致的。
 
-### Mimetic Desire
-People want things because others want them. Desire is socially contagious.
+### **帕累托原则（80/20法则）**  
+大约80%的成果来自20%的努力。识别并专注于那些关键因素。
 
-**Marketing application**: Show that desirable people want your product. Waitlists, exclusivity, and social proof trigger mimetic desire.
+**营销应用**：找出能带来80%效果的20%的渠道、客户或内容，然后减少其他方面的投入。
 
-### Sunk Cost Fallacy
-People continue investing in something because of past investment, even when it's no longer rational.
+### **局部最优与全局最优**  
+局部最优只是当前情况下的最佳选择，而全局最优才是长期的最佳策略。不要陷入局部优化的陷阱。
 
-**Marketing application**: Know when to kill underperforming campaigns. Past spend shouldn't justify future spend if results aren't there.
+**营销应用**：如果电子邮件不是最有效的沟通渠道，优化邮件主题行也无济于事。在细化策略前，先从整体角度出发。
 
-### Endowment Effect
-People value things more once they own them.
+### **约束理论**  
+每个系统都有一个限制效率的瓶颈。在优化其他方面之前，先找到并解决这个瓶颈。
 
-**Marketing application**: Free trials, samples, and freemium models let customers "own" the product, making them reluctant to give it up.
+**营销应用**：如果转化率很高但流量不足，优化流量瓶颈才是关键。
 
-### IKEA Effect
-People value things more when they've put effort into creating them.
+### **机会成本**  
+每个选择都有代价——即放弃其他选择所失去的机会。要权衡各种选择。
 
-**Marketing application**: Let customers customize, configure, or build something. Their investment increases perceived value and commitment.
+**营销应用**：在低投资回报的渠道上花费的时间，实际上是浪费了本可用于高回报活动的资源。始终要与其他选项进行比较。
 
-### Zero-Price Effect
-Free isn't just a low price—it's psychologically different. "Free" triggers irrational preference.
+### **收益递减法则**  
+超过某个临界点后，额外的投入带来的收益会逐渐减少。
 
-**Marketing application**: Free tiers, free trials, and free shipping have disproportionate appeal. The jump from $1 to $0 is bigger than $2 to $1.
+**营销应用**：第十篇博客文章可能不会像第一篇那样产生显著效果。知道何时应该多元化，而不是继续坚持单一策略。
 
-### Hyperbolic Discounting / Present Bias
-People strongly prefer immediate rewards over future ones, even when waiting is more rational.
+### **二阶思维**  
+不仅要考虑直接效果，还要考虑这些效果带来的后续影响。
 
-**Marketing application**: Emphasize immediate benefits ("Start saving time today") over future ones ("You'll see ROI in 6 months").
+**营销应用**：限时促销能提升短期收益（一阶效应），但可能会让客户习惯等待折扣（二阶效应）。
 
-### Status-Quo Bias
-People prefer the current state of affairs. Change requires effort and feels risky.
+### **模型与现实**  
+模型和数据可以反映现实，但并不能完全替代现实。不要将分析结果与客户的实际体验混为一谈。
 
-**Marketing application**: Reduce friction to switch. Make the transition feel safe and easy. "Import your data in one click."
+**营销应用**：客户画像是一个有用的工具，但真实客户的决策过程更为复杂。要与实际用户保持联系。
 
-### Default Effect
-People tend to accept pre-selected options. Defaults are powerful.
+### **概率思维**  
+以概率而非确定性来思考问题。预估各种可能性，并为多种结果做好计划。
 
-**Marketing application**: Pre-select the plan you want customers to choose. Opt-out beats opt-in for subscriptions (ethically applied).
+**营销应用**：不要把所有希望都寄托在单一营销活动上。要分散风险，为可能出现的情况做好准备。
 
-### Paradox of Choice
-Too many options overwhelm and paralyze. Fewer choices often lead to more decisions.
+### **杠铃策略**  
+结合高安全性的措施和低风险/高回报的尝试。避免选择平庸的中间方案。
 
-**Marketing application**: Limit options. Three pricing tiers beat seven. Recommend a single "best for most" option.
-
-### Goal-Gradient Effect
-People accelerate effort as they approach a goal. Progress visualization motivates action.
-
-**Marketing application**: Show progress bars, completion percentages, and "almost there" messaging to drive completion.
-
-### Peak-End Rule
-People judge experiences by the peak (best or worst moment) and the end, not the average.
-
-**Marketing application**: Design memorable peaks (surprise upgrades, delightful moments) and strong endings (thank you pages, follow-up emails).
-
-### Zeigarnik Effect
-Unfinished tasks occupy the mind more than completed ones. Open loops create tension.
-
-**Marketing application**: "You're 80% done" creates pull to finish. Incomplete profiles, abandoned carts, and cliffhangers leverage this.
-
-### Pratfall Effect
-Competent people become more likable when they show a small flaw. Perfection is less relatable.
-
-**Marketing application**: Admitting a weakness ("We're not the cheapest, but...") can increase trust and differentiation.
-
-### Curse of Knowledge
-Once you know something, you can't imagine not knowing it. Experts struggle to explain simply.
-
-**Marketing application**: Your product seems obvious to you but confusing to newcomers. Test copy with people unfamiliar with your space.
-
-### Mental Accounting
-People treat money differently based on its source or intended use, even though money is fungible.
-
-**Marketing application**: Frame costs in favorable mental accounts. "$3/day" feels different than "$90/month" even though it's the same.
-
-### Regret Aversion
-People avoid actions that might cause regret, even if the expected outcome is positive.
-
-**Marketing application**: Address regret directly. Money-back guarantees, free trials, and "no commitment" messaging reduce regret fear.
-
-### Bandwagon Effect / Social Proof
-People follow what others are doing. Popularity signals quality and safety.
-
-**Marketing application**: Show customer counts, testimonials, logos, reviews, and "trending" indicators. Numbers create confidence.
+**营销应用**：将80%的预算投入到经过验证的渠道中，20%用于创新尝试。
 
 ---
 
-## Influencing Behavior & Persuasion
+## 理解消费者与人类心理学
 
-These models help you ethically influence customer decisions.
+这些模型解释了消费者的思维方式、决策过程和行为模式。
 
-### Reciprocity Principle
-People feel obligated to return favors. Give first, and people want to give back.
+### **基本归因错误**  
+人们倾向于将他人的行为归因于个人品质，而非具体情境。
 
-**Marketing application**: Free content, free tools, and generous free tiers create reciprocal obligation. Give value before asking for anything.
+**营销应用**：当客户没有转化时，先检查自己的营销流程，而非责怪客户。问题通常出在营销流程上，而非客户个人。
 
-### Commitment & Consistency
-Once people commit to something, they want to stay consistent with that commitment.
+### **熟悉效应**  
+人们更喜欢熟悉的事物。重复的出现会增强好感。
 
-**Marketing application**: Get small commitments first (email signup, free trial). People who've taken one step are more likely to take the next.
+**营销应用**：持续的品牌曝光会逐渐建立客户的偏好。跨渠道的重复展示能增加客户的信任感。
 
-### Authority Bias
-People defer to experts and authority figures. Credentials and expertise create trust.
+### **可用性启发式**  
+人们会根据事物的易获取性来判断其可能性。最近发生或印象深刻的事件看起来更常见。
 
-**Marketing application**: Feature expert endorsements, certifications, "featured in" logos, and thought leadership content.
+**营销应用**：案例研究和用户评价能让成功显得更容易实现。让积极的成果更容易被客户想象。
 
-### Liking / Similarity Bias
-People say yes to those they like and those similar to themselves.
+### **确认偏误**  
+人们会寻找支持自己已有观点的信息，忽视相反的证据。
 
-**Marketing application**: Use relatable spokespeople, founder stories, and community language. "Built by marketers for marketers" signals similarity.
+**营销应用**：了解目标受众的固有观念，并据此调整营销信息。直接对抗他们的观念往往效果不佳。
 
-### Unity Principle
-Shared identity drives influence. "One of us" is powerful.
+### **林迪效应**  
+事物存在的时间越长，人们就越认为它会持续下去。旧有的营销策略往往比新策略更持久。
 
-**Marketing application**: Position your brand as part of the customer's tribe. Use insider language and shared values.
+**营销应用**：经过验证的营销原则（如明确的价值主张、社会认同）比短暂流行的策略更可靠。不要为了追求潮流而放弃传统方法。
 
-### Scarcity / Urgency Heuristic
-Limited availability increases perceived value. Scarcity signals desirability.
+### **模仿欲望**  
+人们会跟随他人的行为。欲望具有社会传染性。
 
-**Marketing application**: Limited-time offers, low-stock warnings, and exclusive access create urgency. Only use when genuine.
+**营销应用**：展示其他人也在使用你的产品，可以激发消费者的购买欲望。使用排队系统、限定销售等方式来激发这种欲望。
 
-### Foot-in-the-Door Technique
-Start with a small request, then escalate. Compliance with small requests leads to compliance with larger ones.
+### **沉没成本谬误**  
+人们会因为过去的投入而继续投资于某个产品，即使这种投入不再合理。
 
-**Marketing application**: Free trial → paid plan → annual plan → enterprise. Each step builds on the last.
+**营销应用**：知道何时应该停止表现不佳的营销活动。如果投入没有带来预期效果，就不要继续投入。
 
-### Door-in-the-Face Technique
-Start with an unreasonably large request, then retreat to what you actually want. The contrast makes the second request seem reasonable.
+### **禀赋效应**  
+一旦拥有某物，人们会对其产生更高的价值感。
 
-**Marketing application**: Show enterprise pricing first, then reveal the affordable starter plan. The contrast makes it feel like a deal.
+**营销应用**：提供免费试用、样品或免费增值服务，让客户产生“拥有”产品的感觉，从而增加他们的购买意愿。
 
-### Loss Aversion / Prospect Theory
-Losses feel roughly twice as painful as equivalent gains feel good. People will work harder to avoid losing than to gain.
+### **宜家效应**  
+人们会在自己付出努力的过程中增加对产品的价值感。
 
-**Marketing application**: Frame in terms of what they'll lose by not acting. "Don't miss out" beats "You could gain."
+**营销应用**：允许客户自定义产品或进行个性化设置，让他们产生更多的投入感。
 
-### Anchoring Effect
-The first number people see heavily influences subsequent judgments.
+### **零价格效应**  
+免费并不只是价格低廉，它在心理上会产生不同的影响。“免费”会引发消费者的特殊偏好。
 
-**Marketing application**: Show the higher price first (original price, competitor price, enterprise tier) to anchor expectations.
+**营销应用**：免费 tier、免费试用和免费配送具有很强的吸引力。从$1降到$0的转变比从$2降到$1的转变更有效。
 
-### Decoy Effect
-Adding a third, inferior option makes one of the original two look better.
+### **超折效应/即时偏好**  
+人们更倾向于立即获得奖励。
 
-**Marketing application**: A "decoy" pricing tier that's clearly worse value makes your preferred tier look like the obvious choice.
+**营销应用**：强调即时收益（如“立即节省时间”），而非未来的收益（如“6个月后才能看到回报”）。
 
-### Framing Effect
-How something is presented changes how it's perceived. Same facts, different frames.
+### **现状偏好**  
+人们更喜欢现状。改变现状需要付出努力，因此人们会抗拒改变。
 
-**Marketing application**: "90% success rate" vs. "10% failure rate" are identical but feel different. Frame positively.
+**营销应用**：减少改变的阻力，让改变过程显得简单易行。例如，提供“一键导入数据”的功能。
 
-### Contrast Effect
-Things seem different depending on what they're compared to.
+### **默认效应**  
+人们倾向于选择默认选项。默认设置具有很大的影响力。
 
-**Marketing application**: Show the "before" state clearly. The contrast with your "after" makes improvements vivid.
+**营销应用**：预先设置客户可能选择的方案。在订阅服务中，选择“退出”而非“同意”更符合伦理。
 
----
+### **选择悖论**  
+过多的选择会让人感到困惑，从而阻碍决策。减少选项数量往往能促进决策。
 
-## Pricing Psychology
+**营销应用**：限制选项数量。三个价格层级比七个层级更有效。
 
-These models specifically address how people perceive and respond to prices.
+### **目标梯度效应**  
+人们会在接近目标时加倍努力。展示进度条、完成百分比等元素能激发行动。
 
-### Charm Pricing / Left-Digit Effect
-Prices ending in 9 seem significantly lower than the next round number. $99 feels much cheaper than $100.
+**营销应用**：通过展示完成进度、完成百分比等元素来激励用户完成购买。
 
-**Marketing application**: Use .99 or .95 endings for value-focused products. The left digit dominates perception.
+### **峰值-终点效应**  
+人们会根据体验的峰值（最好或最糟糕的部分）和终点来评价整体体验。
 
-### Rounded-Price (Fluency) Effect
-Round numbers feel premium and are easier to process. $100 signals quality; $99 signals value.
+**营销应用**：设计令人难忘的峰值体验（如惊喜升级、愉快的结束语）和强烈的结束体验。
 
-**Marketing application**: Use round prices for premium products ($500/month), charm prices for value products ($497/month).
+### **Zeigarnik效应**  
+未完成的任务会让人更加在意。利用未完成的状态来激发用户的行动。
 
-### Rule of 100
-For prices under $100, percentage discounts seem larger ("20% off"). For prices over $100, absolute discounts seem larger ("$50 off").
+**营销应用**：使用“您已经完成了80%”这样的信息来促使用户完成购买。
 
-**Marketing application**: $80 product: "20% off" beats "$16 off." $500 product: "$100 off" beats "20% off."
+### **Pratfall效应**  
+有缺陷的产品反而更受消费者欢迎。承认产品的小缺点反而能增加产品的吸引力。
 
-### Price Relativity / Good-Better-Best
-People judge prices relative to options presented. A middle tier seems reasonable between cheap and expensive.
+**营销应用**：承认产品的不足之处（如“我们不是最便宜的，但……”），反而能增加用户的信任感。
 
-**Marketing application**: Three tiers where the middle is your target. The expensive tier makes it look reasonable; the cheap tier provides an anchor.
+### **知识诅咒**  
+一旦了解某个事实，人们就很难想象不知道它时的情况。
 
-### Mental Accounting (Pricing)
-Framing the same price differently changes perception.
+**营销应用**：你的产品对你来说可能显而易见，但对新用户来说可能并不如此。请让不熟悉产品的人来测试你的文案。
 
-**Marketing application**: "$1/day" feels cheaper than "$30/month." "Less than your morning coffee" reframes the expense.
+### **心理账户**  
+人们会根据资金来源或用途的不同来处理金钱。
 
----
+**营销应用**：用不同的方式来描述成本。例如，“每天3美元”和“每月90美元”给人的感觉是不同的。
 
-## Design & Delivery Models
+### **后悔厌恶**  
+人们会避免可能带来后悔的行为。
 
-These models help you design effective marketing systems.
+**营销应用**：直接解决客户可能产生的后悔情绪。提供退款保证、免费试用等措施可以减少客户的后悔感。
 
-### Hick's Law
-Decision time increases with the number and complexity of choices. More options = slower decisions = more abandonment.
+### **从众效应/社会认同**  
+人们会跟随他人的行为。流行趋势能传递信任感。
 
-**Marketing application**: Simplify choices. One clear CTA beats three. Fewer form fields beat more.
-
-### AIDA Funnel
-Attention → Interest → Desire → Action. The classic customer journey model.
-
-**Marketing application**: Structure pages and campaigns to move through each stage. Capture attention before building desire.
-
-### Rule of 7
-Prospects need roughly 7 touchpoints before converting. One ad rarely converts; sustained presence does.
-
-**Marketing application**: Build multi-touch campaigns across channels. Retargeting, email sequences, and consistent presence compound.
-
-### Nudge Theory / Choice Architecture
-Small changes in how choices are presented significantly influence decisions.
-
-**Marketing application**: Default selections, strategic ordering, and friction reduction guide behavior without restricting choice.
-
-### BJ Fogg Behavior Model
-Behavior = Motivation × Ability × Prompt. All three must be present for action.
-
-**Marketing application**: High motivation but hard to do = won't happen. Easy to do but no prompt = won't happen. Design for all three.
-
-### EAST Framework
-Make desired behaviors: Easy, Attractive, Social, Timely.
-
-**Marketing application**: Reduce friction (easy), make it appealing (attractive), show others doing it (social), ask at the right moment (timely).
-
-### COM-B Model
-Behavior requires: Capability, Opportunity, Motivation.
-
-**Marketing application**: Can they do it (capability)? Is the path clear (opportunity)? Do they want to (motivation)? Address all three.
-
-### Activation Energy
-The initial energy required to start something. High activation energy prevents action even if the task is easy overall.
-
-**Marketing application**: Reduce starting friction. Pre-fill forms, offer templates, show quick wins. Make the first step trivially easy.
-
-### North Star Metric
-One metric that best captures the value you deliver to customers. Focus creates alignment.
-
-**Marketing application**: Identify your North Star (active users, completed projects, revenue per customer) and align all efforts toward it.
-
-### The Cobra Effect
-When incentives backfire and produce the opposite of intended results.
-
-**Marketing application**: Test incentive structures. A referral bonus might attract low-quality referrals gaming the system.
+**营销应用**：展示客户数量、用户评价、品牌标志和推荐信息，以增强用户的信任感。
 
 ---
 
-## Growth & Scaling Models
+## 影响行为与说服技巧
 
-These models explain how marketing compounds and scales.
+这些模型帮助你以道德的方式影响消费者的决策。
 
-### Feedback Loops
-Output becomes input, creating cycles. Positive loops accelerate growth; negative loops create decline.
+### **互惠原则**  
+人们会感到有义务回报他人的帮助。先给予，才能期待得到回报。
 
-**Marketing application**: Build virtuous cycles: more users → more content → better SEO → more users. Identify and strengthen positive loops.
+**营销应用**：提供免费内容、免费工具和丰富的免费服务，建立互惠关系。在提出要求之前，先给予价值。
 
-### Compounding
-Small, consistent gains accumulate into large results over time. Early gains matter most.
+### **承诺与一致性**  
+一旦人们做出了承诺，他们就会希望保持一致性。
 
-**Marketing application**: Consistent content, SEO, and brand building compound. Start early; benefits accumulate exponentially.
+**营销应用**：先让客户做出小承诺（如注册邮箱、免费试用），这样他们更有可能采取下一步行动。
 
-### Network Effects
-A product becomes more valuable as more people use it.
+### **权威偏见**  
+人们会尊重专家和权威人士。展示专家的认可、认证、品牌标志等元素可以增强信任感。
 
-**Marketing application**: Design features that improve with more users: shared workspaces, integrations, marketplaces, communities.
+**营销应用**：利用专家推荐、认证信息、品牌标识以及由营销人员撰写的文章来增强权威性。
 
-### Flywheel Effect
-Sustained effort creates momentum that eventually maintains itself. Hard to start, easy to maintain.
+### **喜好/相似性偏见**  
+人们更愿意接受与自己相似或自己喜欢的人的建议。
 
-**Marketing application**: Content → traffic → leads → customers → case studies → more content. Each element powers the next.
+**营销应用**：使用与目标受众相似的代言人、创始人故事和行业语言来建立共鸣。
 
-### Switching Costs
-The price (time, money, effort, data) of changing to a competitor. High switching costs create retention.
+### **团结原则**  
+共同的身份认同能增强影响力。将品牌定位为消费者群体的一部分。
 
-**Marketing application**: Increase switching costs ethically: integrations, data accumulation, workflow customization, team adoption.
+**营销应用**：强调品牌与消费者群体的共同价值观。
 
-### Exploration vs. Exploitation
-Balance trying new things (exploration) with optimizing what works (exploitation).
+### **稀缺性/紧迫感启发式**  
+资源的有限性会提高产品的价值感。利用限时优惠、库存不足等手段来制造紧迫感。
 
-**Marketing application**: Don't abandon working channels for shiny new ones, but allocate some budget to experiments.
+**营销应用**：只有在确实必要的情况下，才使用这些策略。
 
-### Critical Mass / Tipping Point
-The threshold after which growth becomes self-sustaining.
+### **逐步引导法**  
+先提出一个小请求，再逐步提出更大的请求。从小请求开始，更容易获得客户的同意。
 
-**Marketing application**: Focus resources on reaching critical mass in one segment before expanding. Depth before breadth.
+**营销应用**：先展示企业级套餐的价格，再推出更实惠的入门级套餐。对比能增加产品的吸引力。
 
-### Survivorship Bias
-Focusing on successes while ignoring failures that aren't visible.
+### **损失厌恶/前景理论**  
+人们更害怕失去东西，而不是获得东西。
 
-**Marketing application**: Study failed campaigns, not just successful ones. The viral hit you're copying had 99 failures you didn't see.
+**营销应用**：强调不采取行动会带来的损失，而不是潜在的收益。
+
+**营销应用**：用“错过机会”这样的说法来强调立即行动的必要性。
+
+### **锚定效应**  
+人们首先看到的数字会严重影响后续的判断。
+
+**营销应用**：先展示较高的价格（如原价、竞争对手价格或企业级价格），以设定预期。
+
+### **诱饵效应**  
+添加一个价值较低的选项，会让用户觉得自己的选择更合理。
+
+**营销应用**：设置一个明显较差的低价选项，让用户觉得自己的选择更划算。
+
+### **框架效应**  
+信息的呈现方式会影响人们的感知。同样的事实，用不同的方式表达会有不同的效果。
+
+**营销应用**：用“90%的成功率”而非“10%的失败率”来描述效果，会给人不同的感受。
+
+### **对比效应**  
+通过对比来突出产品的优势。
+
+**营销应用**：清楚地展示产品使用前的状态和使用后的效果。
 
 ---
 
-## Quick Reference
+## 定价心理学
 
-When facing a marketing challenge, consider:
+这些模型专门研究人们对价格的感知和反应。
 
-| Challenge | Relevant Models |
+### **魅力定价/个位数字效应**  
+以9结尾的价格看起来比以其他数字结尾的价格更便宜。
+
+**营销应用**：对于注重价值的产品，使用.99或.95这样的价格。个位数字能影响消费者的感知。
+
+### **圆整价格效应**  
+圆整的价格让人感觉更高端、更易于接受。
+
+**营销应用**：对于高端产品使用$500/month的价格，对于注重性价比的产品使用$497/month的价格。
+
+### **百分比折扣规则**  
+对于价格低于100美元的产品，使用百分比折扣；对于价格高于100美元的产品，使用绝对折扣。
+
+**营销应用**：$80美元的产品使用“20% off”比“$16 off”更有效；$500美元的产品使用“$100 off”比“20% off”更有效。
+
+### **价格相对性**  
+人们会根据给出的选项来评估价格。中间价格往往更容易被接受。
+
+**营销应用**：设置三个价格层级，中间层级是最具吸引力的。
+
+### **心理账户**  
+不同的表达方式会改变人们对价格的感知。
+
+**营销应用**：“每天3美元”比“每月90美元”给人的感觉更便宜。
+
+---
+
+## 设计与交付模型
+
+这些模型帮助你设计有效的营销系统。
+
+### **希克定律**  
+选择越多、越复杂，决策时间就越长，放弃率也越高。
+
+**营销应用**：简化选择。一个明确的呼叫行动（CTA）比多个选项更有效。减少表单字段的数量。
+
+### **AIDA营销漏斗**  
+注意力 → 兴趣 → 欲望 → 行动。这是经典的客户转化流程。
+
+**营销应用**：设计页面和营销活动，引导用户依次经历每个阶段。
+
+### **7次接触法则**  
+潜在客户通常需要7次接触才能转化。单次广告很难促成转化，持续的品牌曝光才能产生效果。
+
+**营销应用**：跨渠道开展多触点的营销活动。利用再营销、邮件序列和持续的品牌曝光来提升转化率。
+
+### **助推理论/选择架构**  
+对选择方式的微小调整会显著影响用户的决策。
+
+**营销应用**：设置默认选项、合理的顺序和减少操作步骤，以引导用户的行为。
+
+### **BJ Fogg行为模型**  
+行为 = 动机 × 能力 × 机会。这三个要素都必须具备才能促使用户采取行动。
+
+**营销应用**：确保用户有行动的动机、能力以及机会，同时提供明确的引导。
+
+### **EAST框架**  
+让行为变得容易、有吸引力、符合社会趋势，并在合适的时间提出请求。
+
+**营销应用**：简化操作流程、提高产品的吸引力、利用社会认同感，并在合适的时间提出请求。
+
+### **COM-B模型**  
+行为需要三个条件：能力、机会和动机。
+
+**营销应用**：确保用户有能力购买产品、知道购买途径，并有购买的意愿。
+
+### **激活能量**  
+开始某项行动所需的初始能量。即使任务本身简单，如果启动难度大，用户也可能不愿意行动。
+
+**营销应用**：减少启动的难度。提供预填充的表单、模板等，让第一步变得简单易行。
+
+### **北极星指标**  
+选择一个能最好地反映产品价值的指标。所有营销活动都应围绕这个指标来展开。
+
+**营销应用**：确定一个能最好地反映产品价值的指标（如活跃用户数、完成的项目数、每位客户的收入），并围绕这个指标来制定所有营销策略。
+
+### **Cobra效应**  
+激励措施有时会适得其反。
+
+**营销应用**：测试激励机制，避免设计出可能引发负面效果的激励方案。
+
+---
+
+## 成长与扩展模型
+
+这些模型解释了营销策略如何积累效果并实现规模化。
+
+### **反馈循环**  
+输出会成为新的输入，从而形成良性循环。良性循环会加速增长，恶性循环则会导致衰退。
+
+**营销应用**：建立良性循环：用户越多 → 内容越多 → SEO效果越好 → 用户更多。识别并强化这些良性循环。
+
+### **复利效应**  
+持续的小幅增长会随着时间积累成巨大的成果。早期取得的成果尤为重要。
+
+**营销应用**：持续发布内容、优化SEO和建立品牌能带来长期的增长。
+
+### **网络效应**  
+随着用户数量的增加，产品会变得更有价值。
+
+**营销应用**：设计能够吸引更多用户的功能，如共享工作空间、集成服务和社区功能。
+
+### **飞轮效应**  
+持续的投入会形成自我维持的势头。
+
+**营销应用**：先建立用户基础，再逐步扩展服务。
+
+### **切换成本**  
+转换到竞争对手的成本（如时间、金钱、精力等）会影响用户的留存率。
+
+**营销应用**：通过集成服务、数据积累和流程优化等方式，增加用户转换的难度。
+
+### **探索与利用**  
+在尝试新策略和优化现有策略之间找到平衡。
+
+**营销应用**：不要为了尝试新策略而放弃现有的有效渠道，但要为实验性策略分配预算。
+
+### **临界质量/临界点**  
+达到某个临界点后，增长会变得自我维持。
+
+**营销应用**：先在某个细分市场达到临界质量，再考虑扩展。
+
+### **生存者偏差**  
+人们更容易记住成功案例，而忽视失败的经验。
+
+**营销应用**：研究失败的营销活动，而不仅仅是成功的案例。你模仿的营销策略可能也包含很多失败的尝试。
+
+---
+
+## 快速参考
+
+面对营销挑战时，可以参考以下相关模型：
+
+| 挑战 | 相关模型 |
 |-----------|-----------------|
-| Low conversions | Hick's Law, Activation Energy, BJ Fogg, Friction |
-| Price objections | Anchoring, Framing, Mental Accounting, Loss Aversion |
-| Building trust | Authority, Social Proof, Reciprocity, Pratfall Effect |
-| Increasing urgency | Scarcity, Loss Aversion, Zeigarnik Effect |
-| Retention/churn | Endowment Effect, Switching Costs, Status-Quo Bias |
-| Growth stalling | Theory of Constraints, Local vs Global Optima, Compounding |
-| Decision paralysis | Paradox of Choice, Default Effect, Nudge Theory |
-| Onboarding | Goal-Gradient, IKEA Effect, Commitment & Consistency |
+| 转化率低 | 希克定律、激活能量、BJ Fogg效应、摩擦效应 |
+| 价格问题 | 锚定效应、框架效应、心理账户、损失厌恶 |
+| 建立信任 | 权威效应、社会认同、互惠效应、Pratfall效应 |
+| 增加紧迫感 | 稀缺性、损失厌恶、Zeigarnik效应 |
+| 客户留存/流失 | 福赋效应、切换成本、现状偏好 |
+| 增长停滞 | 约束理论、局部最优与全局最优 |
+| 决策困难 | 选择悖论、默认效应、助推理论 |
 
 ---
 
-## Questions to Ask
+## 需要进一步了解的问题：
 
-If you need more context:
-1. What specific behavior are you trying to influence?
-2. What does your customer believe before encountering your marketing?
-3. Where in the journey (awareness → consideration → decision) is this?
-4. What's currently preventing the desired action?
-5. Have you tested this with real customers?
+- 您试图影响的具体行为是什么？
+- 在客户接触您的营销内容之前，他们有什么信念？
+- 这个阶段（认知阶段、考虑阶段、决策阶段）处于哪个环节？
+- 目前是什么阻碍了客户采取期望的行动？
+- 您是否已经通过实际客户进行了测试？
 
 ---
 
-## Related Skills
+## 相关技能：
 
-- **page-cro**: Apply psychology to page optimization
-- **copywriting**: Write copy using psychological principles
-- **popup-cro**: Use triggers and psychology in popups
-- **pricing-page optimization**: See page-cro for pricing psychology
-- **ab-test-setup**: Test psychological hypotheses
+- **页面优化（page-cro）**：运用心理学原理优化网页设计。
+- **文案写作（copywriting）**：根据心理学原理撰写营销文案。
+- **弹窗设计（popup-cro）**：在弹窗中运用触发因素和心理学原理。
+- **定价优化（pricing-page optimization）**：了解定价心理学的相关技巧。
+- **A/B测试（ab-test-setup）**：通过实验验证营销假设的有效性。

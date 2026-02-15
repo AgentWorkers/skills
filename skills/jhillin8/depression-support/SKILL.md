@@ -1,6 +1,37 @@
 ---
 name: depression-support
-description: Daily support for depression with mood tracking, behavioral activation, and self-care
+description: **每日抑郁症支持服务：情绪追踪、行为激活与自我护理**
+
+本服务旨在为抑郁症患者提供全面的日常支持，包括情绪追踪、行为激活建议以及自我护理指导，以帮助患者改善生活质量和心理健康。
+
+**一、情绪追踪**  
+通过每日填写情绪追踪表，患者可以记录自己的情绪状态（如快乐、悲伤、焦虑等），从而更直观地了解自己的情绪变化趋势。这有助于医生或心理治疗师及时发现情绪波动的异常情况，为后续的治疗提供依据。
+
+**二、行为激活**  
+我们提供一系列行为激活建议，帮助患者建立积极的生活习惯，如定期锻炼、保持社交活动、学习新技能等。这些活动有助于提升患者的自尊心、自信心和应对压力能力，从而改善抑郁症状。
+
+**三、自我护理**  
+自我护理是抑郁症康复的重要环节。我们提供有关自我护理的指导，包括健康饮食、充足睡眠、适度放松（如冥想、阅读等），以及如何建立应对压力的有效方法。患者可以通过这些方法提升自己的生活质量，增强自我照顾能力。
+
+**四、专业支持**  
+我们的服务还包括与专业心理治疗师或医生的在线沟通渠道，患者可以在需要时随时寻求专业建议和支持。我们的团队致力于为患者提供个性化的治疗方案，帮助其逐步康复。
+
+**五、隐私保护**  
+我们严格保护患者的个人信息，确保所有数据仅用于服务改进和患者治疗目的，绝不会用于其他用途。
+
+**六、服务流程**  
+1. **注册与评估**：患者首先注册并完成初步评估，以便我们了解其具体情况。
+2. **制定计划**：根据评估结果，我们为患者制定个性化的服务计划。
+3. **定期跟进**：我们会定期与患者联系，了解其进展，并根据需要调整服务内容。
+4. **持续支持**：在整个治疗过程中，我们提供持续的支持和指导。
+
+**七、适用人群**  
+适用于所有患有抑郁症的患者，无论病情轻重。
+
+**八、联系方式**  
+如需了解更多信息或预约服务，请访问我们的官方网站或联系我们的客服团队。
+
+我们致力于为抑郁症患者提供最专业、最贴心的支持，帮助他们走出困境，重拾健康与幸福。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,83 +42,78 @@ triggers:
   - "mental health check"
 ---
 
-# Depression Support
+# 抑郁症支持
 
-**Daily check-ins and small wins. One step at a time.**
+**每日情绪记录与小成就——一步一个脚印。**
 
-## What it does
+## 功能介绍
 
-This skill offers three core functions to support you through depression:
+该功能提供三项核心服务，帮助你应对抑郁症：
 
-- **Mood Tracking**: Log how you're feeling today with simple 1-10 scales or descriptive words. Track patterns over time to understand what helps.
-- **Behavioral Activation Suggestions**: When motivation is low, the skill suggests small, achievable tasks that don't require energy or willpower—just momentum.
-- **Self-Care Prompts**: Personalized reminders for hydration, movement, sleep, and connection tailored to what you find manageable.
+- **情绪追踪**：使用简单的1-10分评分标准或描述性词语记录你当天的情绪状态。通过长期追踪，了解哪些方法对你有效。
+- **行为激活建议**：当你的动力不足时，该功能会推荐一些无需耗费精力或意志力的小任务，只需付出一点点行动即可。
+- **自我关怀提醒**：根据你的实际情况，提供个性化的提醒，包括饮水、运动、睡眠和社交互动等自我关怀建议。
 
-## Usage
+## 使用方法
 
-### Log Mood
-Ask: "Log my mood" or "Check in on how I'm feeling"
-- Rate your mood on a scale (1-10 or descriptive: terrible, bad, okay, good, great)
-- Optional: Add a note about triggers or context
-- Data is stored locally so only you see it
+### 记录情绪
+- 询问：“记录我的情绪”或“查看我的情绪状态”
+- 用1-10分评分标准或描述性词语来评估你的情绪（如：糟糕、一般、不错、良好、非常好）
+- 可选：添加关于情绪触发因素或情境的备注
+- 数据仅存储在本地，只有你自己能看到
 
-### Get Suggestions
-Ask: "What should I do today?" or "I don't know what to do"
-- Receives 3-5 micro-tasks based on your energy level
-- Tasks take 5-15 minutes (no commitment required)
-- Examples: drink a glass of water, step outside for 30 seconds, text one person, open a window
+### 获取建议
+- 询问：“我今天应该做什么？”或“我不知道该做什么”
+- 根据你的精力状况，系统会推荐3-5项小任务
+- 每项任务耗时5-15分钟，无需刻意完成
+- 例如：喝一杯水、到户外走30秒、给某人发消息、打开窗户
 
-### Small Wins
-Ask: "Celebrate a win" or "I did something today"
-- Log any accomplishment, no matter how small
-- Tracks momentum over time
-- Builds evidence against the voice telling you nothing matters
+### 记录小成就
+- 询问：“庆祝一个小成就”或“我今天完成了某件事”
+- 无论成就多么微小，都请记录下来
+- 通过记录来积累积极情绪，对抗“一切都没有意义”的消极想法
 
-### Self-Care Check
-Ask: "Self-care reminder" or "Am I taking care of myself?"
-- Brief check on basics: sleep, food, water, movement, connection
-- No judgment—just awareness
-- Suggests one small thing you can do right now
+### 自我关怀检查
+- 询问：“自我关怀提醒”或“我是否在照顾好自己？”
+- 简单检查基本的自我关怀情况（睡眠、饮食、饮水、运动、社交）
+- 不会进行评判，只是帮助你提高自我意识
+- 提供一个你可以立即完成的小建议
 
-### Track Patterns
-Ask: "Show my mood history" or "What patterns do you see?"
-- Weekly or monthly overview of mood trends
-- Identifies what correlates with better days (more sleep? time outside? talking to someone?)
-- Helps spot early warning signs
+### 追踪情绪模式
+- 询问：“显示我的情绪历史”或“你发现了哪些情绪模式？”
+- 提供每周或每月的情绪趋势概览
+- 帮助你识别有助于改善情绪的因素（如：睡眠时间是否充足？是否经常到户外活动？是否与人交流？）
+- 有助于及早发现抑郁的预警信号
 
-## Behavioral Activation
+## 行为激活策略
 
-When depression tells you nothing matters and motivation is gone, behavioral activation breaks the cycle by decoupling action from feeling.
+当抑郁让你觉得一切都没有意义、失去动力时，行为激活策略通过将行动与情绪分离来打破这种恶性循环：
 
-**The principle:** You don't feel like doing something → so you wait until you feel like it → but you don't feel like it (depression) → so you do nothing → which makes depression worse.
+**原理**：你不想做某件事 → 于是等待直到有动力时再做 → 但等到有动力时却又觉得没心情 → 结果什么都没做 → 抑郁情绪会进一步恶化。
 
-**The flip:** Do the thing anyway, even at 5% capacity. The feeling follows the action, not the other way around.
+**解决方法**：即使只有5%的精力，也要尝试去做这件事。行动会带动情绪的改变，而不是相反。
 
-**Micro-tasks this skill suggests:**
-- Physical: stretch, stand, walk to the window, drink water, take a shower
-- Social: text one person, read one message, react to a post
-- Creative: draw one line, write three words, hum a song
-- Cognitive: read one paragraph, watch a 2-minute video, solve one puzzle
+**该功能推荐的小任务包括：**
+- **身体活动**：伸展身体、站立、走到窗边、喝水、洗澡
+- **社交互动**：给某人发消息、阅读一条信息、回复一条帖子
+- **创造性活动**：画一条线、写三个字、哼一首歌
+- **认知活动**：阅读一段文字、观看两分钟的视频、解决一个谜题
 
-Start with the smallest possible version. "Go for a walk" becomes "step outside." That's it. Momentum builds.
+从最简单的任务开始。比如，“去散步”可以简化为“到户外走30秒”。这样，就能逐渐建立起行动的动力。
 
-## Tips
+## 使用技巧：
 
-1. **Check in daily, not obsessively.** Once a day is enough. Depression loves spirals—don't track every hour.
+1. **每天记录一次情绪，无需过度频繁。**每天一次就足够了。抑郁情绪容易恶化——不必每小时都记录。
+2. **完成任务并不一定需要感觉好转。**完成任务本身就是一种成就，感觉好转只是附带效果，而非必要条件。
+3. **小成就也是成就。**在情绪低落的日子里洗澡，和在情绪良好的日子里爬山一样有意义。大脑不会区分这两者，它只知道你采取了行动。
+4. **在情绪好转时，为未来制定计划。**在状态较好的日子里，记录下哪些方法对你有效。这些信息在抑郁时期会派上用场。
+5. **所有数据都存储在本地设备上。**不会上传到云端。你的情绪记录、笔记和情绪模式仅保存在你的设备上，没有数据同步或分析功能，也不会被分享。
 
-2. **You don't need to feel better to complete a task.** The task is the win. Feeling better is a side effect, not a requirement.
+## 如遇危机
 
-3. **Small wins are still wins.** Taking a shower on a bad day is the same as climbing a mountain on a good day. Your brain doesn't know the difference—it only knows you did something.
+该功能不能替代专业医疗帮助：
 
-4. **When you're doing okay, set future self up.** On better days, note what helped. Write it down. Your depressed self will need that info later.
+- **988**（自杀与危机热线）
+- **发送短信“HOME”至741741**（危机短信热线）
 
-5. **All data stays local on your machine.** Nothing syncs to the cloud. Your mood history, notes, and patterns exist only on your device—no tracking, no analytics, no sharing.
-
-## If You're in Crisis
-
-This skill is not a substitute for professional help.
-
-- **988** (Suicide & Crisis Lifeline)
-- **Text HOME to 741741** (Crisis Text Line)
-
-If you're having thoughts of harming yourself, reach out now. These services are free, confidential, and available 24/7.
+如果你有自伤的念头，请立即寻求帮助。这些服务是免费且保密的，24小时全天候可用。

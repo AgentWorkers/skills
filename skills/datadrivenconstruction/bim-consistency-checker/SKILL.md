@@ -1,24 +1,24 @@
 ---
 slug: "bim-consistency-checker"
 display_name: "BIM Consistency Checker"
-description: "Check BIM model consistency: naming conventions, parameter completeness, spatial relationships, and data integrity across model elements."
+description: "检查 BIM 模型的一致性：包括命名规范、参数的完整性、空间关系以及模型元素之间的数据一致性。"
 ---
 
-# BIM Consistency Checker for Construction
+# 建筑行业BIM一致性检查工具
 
-## Overview
+## 概述
 
-Validate BIM model consistency including naming conventions, parameter completeness, spatial relationships, classification compliance, and cross-reference integrity.
+本工具用于验证BIM模型的一致性，包括命名规范、参数完整性、空间关系、分类合规性以及交叉引用的准确性。
 
-## Business Case
+## 业务价值
 
-BIM consistency checking ensures:
-- **Data Quality**: Complete and accurate model data
-- **Interoperability**: Models work across platforms
-- **Coordination**: Consistent information for all trades
-- **Deliverable Compliance**: Meet BIM execution plan requirements
+BIM一致性检查能够确保：
+- **数据质量**：模型数据完整且准确
+- **互操作性**：模型能够在不同平台上正常运行
+- **协调性**：所有相关方使用的数据信息保持一致
+- **交付物合规性**：符合BIM执行计划的要求
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -447,7 +447,7 @@ class BIMConsistencyChecker:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize checker
@@ -483,7 +483,7 @@ print(f"Issues Found: {len(report.issues)}")
 print(checker.generate_report(report))
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install (no external dependencies)

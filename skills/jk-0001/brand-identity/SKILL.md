@@ -1,156 +1,151 @@
 ---
 name: brand-identity
-description: Build a complete brand identity for a solopreneur business from scratch or refresh an existing one. Covers brand personality, voice and tone, visual identity system (colors, typography, logo direction, imagery style), tagline crafting, and a brand guidelines document. Use when creating a new brand, rebranding, or needing to make brand decisions consistent. Trigger on "create my brand", "brand identity", "brand guidelines", "define my brand voice", "brand personality", "what should my brand look like", "brand strategy", "rebrand", "brand tone".
+description: 从零开始为个人创业企业构建完整的品牌标识体系，或对现有品牌进行升级改造。内容包括品牌个性、品牌语言与风格、视觉识别系统（颜色、字体、标志设计方向、图像风格）、标语创作，以及品牌指南文档的制定。适用于新品牌创建、品牌重塑或需要统一品牌决策的场景。相关关键词包括：“创建我的品牌”、“品牌标识”、“品牌指南”、“定义品牌语言”、“品牌个性”、“我的品牌应该是什么样的”、“品牌策略”、“品牌重塑”、“品牌语言风格”。
 ---
 
-# Brand Identity
+# 品牌识别
 
-## Overview
-Brand identity is the system of signals that makes your business instantly recognizable and trustworthy. For solopreneurs, a strong brand punches above your weight — it makes a one-person operation feel as polished and credible as a funded startup. This playbook builds your brand from strategy down to execution, in the right order. Getting the strategy wrong and then designing around it is the #1 brand mistake.
-
----
-
-## Phase 1: Brand Foundations (Strategy First — Always)
-
-Do not pick colors or logos until these are locked. Everything visual flows from here.
-
-**1.1 Brand Purpose**
-Why does this business exist beyond making money? One sentence. This is your north star for every brand decision.
-
-Example: "To give independent consultants the client-facing polish that enterprise teams get for free."
-
-**1.2 Brand Values (pick exactly 3)**
-Values are the principles your brand consistently embodies. Three is the sweet spot — fewer is too vague, more is forgettable.
-
-Choose from or write your own:
-- Simplicity / Clarity
-- Trustworthiness / Reliability
-- Innovation / Forward-thinking
-- Warmth / Human connection
-- Efficiency / Respect for time
-- Boldness / Confidence
-- Transparency / Honesty
-- Craftsmanship / Attention to detail
-
-For each value, write one sentence describing what it looks like in practice for your business.
-
-**1.3 Brand Personality (the "If your brand were a person" exercise)**
-Describe your brand as if it were a person at a party. What are they like?
-
-Use this framework — pick one from each pair:
-- Serious vs. Playful
-- Formal vs. Casual
-- Reserved vs. Confident
-- Traditional vs. Modern
-- Understated vs. Bold
-
-Write 3-5 sentences describing this person's personality. This becomes the filter for every brand decision: "Would this person say it this way? Would they design it this way?"
-
-**1.4 Target Audience Reminder**
-Pull your primary persona from your niche-selection or market-research work. Your brand must resonate with THEM — not with you personally (unless you are your target customer).
+## 概述
+品牌识别是一系列能够让人立刻识别并信任你的企业的视觉和信息元素。对于独立创业者来说，一个强大的品牌能够提升你的影响力——让一个人独立运营的企业看起来也像是一家有资金支持的初创公司一样专业和可信。本指南将按照正确的顺序，从战略到执行，帮助你构建品牌。如果先制定了错误的战略，然后再据此进行设计，那将是品牌建设中的最大错误。
 
 ---
 
-## Phase 2: Voice and Tone
+## 第一阶段：品牌基础（始终优先考虑战略）
 
-Voice is who you are. Tone is how you adjust based on context.
+在确定品牌颜色和标志之前，请不要做出任何选择。所有的视觉元素都应该基于这个战略来设计。
 
-**2.1 Define Your Voice (3 adjectives)**
-Pick three words that describe how your brand always sounds, regardless of context.
+**1.1 品牌使命**
+这个企业存在的意义是什么？用一句话来表达。这将是你做出所有品牌决策的指导原则。
 
-Examples: "Clear, confident, human" or "Witty, knowledgeable, approachable"
+**示例：“为独立顾问提供企业团队才能享有的专业服务。”**
 
-**2.2 Voice Do's and Don'ts**
-For each of your three voice words, write:
-- One thing you ALWAYS do (e.g., "Use plain language. If a 14-year-old couldn't understand it, rewrite it.")
-- One thing you NEVER do (e.g., "Never use corporate jargon like 'synergy' or 'leverage' as a verb.")
+**1.2 品牌价值观（精确选择3个）**
+价值观是你品牌始终坚守的原则。选择3个是最理想的——太少会显得模糊，太多则容易让人遗忘。
+可以从以下选项中选择，或者自己创作：
+- 简洁 / 清晰
+- 可信赖 / 可靠
+- 创新 / 前瞻性
+- 温暖 / 人性关怀
+- 高效 / 尊重时间
+- 大胆 / 自信
+- 透明 / 诚实
+- 工艺精湛 / 注重细节
 
-**2.3 Tone Adjustments by Context**
-Your core voice stays the same, but tone shifts:
+对于每个价值观，用一句话描述它在实际业务中的体现方式。
 
-| Context | Tone Adjustment | Example |
+**1.3 品牌个性（想象“如果你的品牌是一个人”）**
+把你的品牌想象成一个在聚会中的人。他们是什么样的人？
+使用以下对比来描述：
+- 严肃 vs. 有趣
+- 正式 vs. 随和
+- 内敛 vs. 自信
+- 传统 vs. 现代
+- 低调 vs. 大胆
+
+写3-5句话来描述这个“人的”个性。这将成为你做出所有品牌决策的参考标准：“这个人会这样表达吗？他们会这样设计吗？”
+
+**1.4 目标受众提醒**
+从你的市场定位或用户研究中确定你的主要目标受众。你的品牌必须与他们产生共鸣——而不是与你个人产生共鸣（除非你就是目标客户）。
+
+---
+
+## 第二阶段：语言风格和语气
+
+语言风格代表了你的品牌形象，而语气则是你在不同情境下如何调整表达方式。
+
+**2.1 定义你的语言风格（3个形容词）**
+选择三个词来描述你的品牌在任何情况下都应保持的语气。
+
+**示例：“清晰、自信、亲切”或“机智、知识渊博、平易近人”
+
+**2.2 语言风格的注意事项**
+对于每个形容词，分别写出：
+- 你一定会做的事情（例如：“使用简单的语言。如果14岁的孩子都听不懂，那就重新写。”）
+- 你绝对不会做的事情（例如：“永远不要使用‘协同作用’或‘杠杆’这样的术语作为动词。”）
+
+**2.3 根据情境调整语气**
+你的核心语言风格保持不变，但语气可以根据情境进行调整：
+
+| 情境 | 语气调整 | 示例 |
 |---|---|---|
-| Marketing copy | Energetic, benefit-forward | Lead with the transformation, not the feature |
-| Error messages | Calm, helpful, never blaming | "Something went wrong on our end. Here's how to fix it." |
-| Success moments | Warm, celebratory | "You just saved 3 hours this week." |
-| Support interactions | Patient, empathetic, solution-focused | Acknowledge frustration before jumping to fixes |
-| Social media | Slightly more casual, conversational | Can use humor if it fits your personality |
+| 营销文案 | 充满活力、强调好处 | 重点介绍变化带来的好处，而不是具体功能 |
+| 错误信息 | 温和、有帮助、绝不指责 | “我们的系统出了问题。这是解决方法。” |
+| 成功时刻 | 温暖、庆祝 | “这周你节省了3个小时的时间。” |
+| 客户支持 | 耐心、富有同理心、以解决问题为中心 | 在提供解决方案之前先表达理解客户的困扰 |
+| 社交媒体 | 语气稍微随意一些、像聊天一样 | 如果适合你的风格，可以适当使用幽默 |
 
-**2.4 Voice Examples (Write 3)**
-Write the same message in your brand voice and in a "generic corporate" voice. The contrast will sharpen your instincts.
+**2.4 语言风格示例（写3个）**
+用你的品牌语言风格和“通用企业语言风格”分别写同一条信息。这种对比会帮助你更清晰地理解自己的表达方式。
 
-Example message: "We updated how invoices are generated."
-- Generic: "We have updated our invoice generation functionality to improve user experience."
-- Your voice: "Invoices are now 2x faster to create. Here's what changed and why."
-
----
-
-## Phase 3: Visual Identity System
-
-### 3.1 Color Palette
-
-Do not just pick colors you like. Build a palette with intention.
-
-**Primary color (1):** The color that appears most. Represents your brand at a glance. Should connect to your brand personality (e.g., blue = trust, green = growth, orange = energy).
-
-**Secondary color (1):** Complements the primary. Used for accents, CTAs, highlights.
-
-**Neutral colors (2-3):** Background, text, and UI surface colors. Usually a dark neutral (near-black) for text and a light neutral (near-white) for backgrounds. Avoid pure black (#000) and pure white (#FFF) — slightly off-tones feel more refined.
-
-**Accent/alert color (1):** For success, warning, error states. Functional, not decorative.
-
-**Format for each color:** Name, hex code, and one-sentence usage rule.
-
-**Color psychology quick reference:**
-- Blue: Trust, professionalism, calm
-- Green: Growth, health, money, success
-- Orange: Energy, creativity, friendliness
-- Purple: Innovation, luxury, creativity
-- Red: Urgency, passion, confidence
-- Yellow: Optimism, warmth, attention
-- Dark/neutral: Sophistication, seriousness
-
-### 3.2 Typography
-
-Pick two typefaces (one for headings, one for body). No more.
-
-**Heading font:** Can be more expressive. Sets the personality.
-**Body font:** Must be highly readable at small sizes. Clarity wins over style here.
-
-**Rules:**
-- Both fonts must be available for free (Google Fonts is your friend).
-- Test them together. Some pairings clash.
-- Define size scales: heading sizes (H1, H2, H3) and body sizes (default, small, large).
-- Define weight usage: when to use bold, when regular, when light.
-
-### 3.3 Logo Direction
-
-As a solopreneur, do not spend $5,000 on a custom logo on day one. Instead, define the direction and constraints so you (or a cheap freelancer later) can execute it.
-
-**Logo type — pick one:**
-- **Wordmark:** Your business name in a distinctive typeface. Simplest, most scalable.
-- **Lettermark:** Initials in a styled format (e.g., "KA" for Khatri Automations).
-- **Icon + Wordmark:** A simple icon/symbol alongside your name. More versatile but harder to design well.
-
-**Logo constraints to define:**
-- Must work at small sizes (favicon, app icon — 32×32px minimum)
-- Must work in one color (for single-color print, embossing, etc.)
-- Must work on both dark and light backgrounds
-
-**For now:** Use a clean wordmark in your heading font as a placeholder. Upgrade when you have revenue to justify the investment.
-
-### 3.4 Imagery Style
-Define the visual style of photos, illustrations, and graphics across your brand:
-- Realistic photography vs. illustration vs. abstract/geometric?
-- Bright and airy vs. dark and moody vs. clean and minimal?
-- People-focused vs. product-focused vs. concept-focused?
-- Stock photo style (if using stock): which aesthetic feels right? (Check Unsplash for tone reference)
+**示例信息：“我们更新了发票生成方式。”**
+- 通用语言： “我们改进了发票生成功能，以提升用户体验。”
+- 你的品牌语言： “现在发票生成速度提高了两倍。以下是具体变化和原因。”
 
 ---
 
-## Phase 4: Brand Guidelines Document
+## 第三阶段：视觉识别系统
 
-Compile everything above into a single reference document. This is what you hand to any freelancer, and what you check against every time you make a brand decision. Structure:
+### 3.1 颜色搭配
+不要随意选择颜色，而要有目的地构建一个颜色搭配方案。
+
+**主要颜色（1个）：** 最常出现的颜色。它能在第一时间代表你的品牌。这个颜色应该与你的品牌个性相符（例如：蓝色 = 可信赖，绿色 = 成长，橙色 = 活力）。
+
+**辅助颜色（1个）：** 与主要颜色相辅相成，用于强调或点击按钮等元素。
+
+**中性颜色（2-3个）：** 用于背景、文本和用户界面。通常选择深色调的中性色（接近黑色）作为文本颜色，浅色调的中性色（接近白色）作为背景颜色。避免使用纯黑色（#000）和纯白色（#FFF）——稍微偏离的色调会显得更精致。
+
+**强调/警告颜色（1个）：** 用于表示成功、警告或错误状态。这种颜色应具有功能性，而非装饰性。
+
+**每种颜色的格式：** 名称、十六进制代码以及使用规则。
+
+**颜色心理学快速参考：**
+- 蓝色：可信赖、专业、冷静
+- 绿色：成长、健康、财富、成功
+- 橙色：活力、创造力、友好
+- 紫色：创新、奢华、创意
+- 红色：紧迫感、激情、自信
+- 黄色：乐观、温暖、注意力
+- 深色调/中性色：优雅、严肃
+
+### 3.2 字体设计
+选择两种字体（一种用于标题，一种用于正文）。不要使用太多字体。
+
+**标题字体：** 可以更具表现力，有助于塑造品牌个性。
+**正文字体：** 即使在小字号下也必须易于阅读。在这里，清晰度比风格更重要。
+
+**规则：**
+- 两种字体都必须免费可用（Google Fonts是一个很好的资源）。
+- 将它们一起测试，有些字体搭配可能会不协调。
+- 定义字体大小：标题大小（H1、H2、H3）和正文大小（默认、小号、大号）。
+- 定义字体的粗细使用规则：何时使用粗体，何时使用常规字体，何时使用细体。
+
+### 3.3 标志设计方向
+作为独立创业者，不要在刚开始时就花费5000美元定制一个标志。相反，先确定标志的设计方向和限制条件，这样你或以后的低成本自由设计师才能按照这些要求来制作标志。
+
+**标志类型——选择一种：**
+- **文字标志：** 用独特的字体展示你的企业名称。这是最简单且最具扩展性的设计方式。
+- **字母标志：** 用特定格式展示首字母（例如：“KA”代表Khatri Automations）。
+- **图标+文字标志：** 在名称旁边添加一个简单的图标/符号。这种设计方式更灵活，但难度也更大。
+
+**标志设计的限制条件：**
+- 必须在较小尺寸下依然清晰可见（如网站图标、应用程序图标——至少32×32像素）。
+- 必须能适应单色打印、压印等多种使用场景。
+- 必须能在深色和浅色背景下都显示得清晰。
+
+**目前建议：** 先使用标题字体中的简单文字标志作为临时方案。等到有收入后，再考虑升级标志设计。**
+
+### 3.4 图像风格
+确定你的品牌在所有视觉元素（照片、插图、图形等）中的统一风格：
+- 选择真实照片、插图还是抽象/几何图案？
+- 图像风格是明亮的、轻松的、忧郁的，还是简洁的？
+- 以人物为中心还是以产品为中心，或者以概念为中心？
+- 如果使用库存图片，选择哪种风格更符合你的品牌形象？（可以参考Unsplash网站上的图片风格）
+
+---
+
+## 第四阶段：品牌指南文档
+
+将以上所有内容整理成一份参考文档。这份文档将作为你与任何自由设计师沟通的依据，也是你在做出任何品牌决策时都会参考的标准。
 
 ```
 1. Brand Purpose & Values
@@ -169,12 +164,12 @@ Compile everything above into a single reference document. This is what you hand
 
 ---
 
-## Brand Consistency Checklist (Ongoing)
-Every time you create something (website, social post, email, slide deck, proposal), run it through:
-- [ ] Uses only brand colors (no random colors creeping in)
-- [ ] Uses only brand fonts
-- [ ] Tone matches the context-specific tone guide
-- [ ] Imagery matches defined style
-- [ ] Logo usage follows the rules
+## 品牌一致性检查清单（持续执行）
+每次创建新的内容（网站、社交媒体帖子、电子邮件、幻灯片、提案等）时，都要检查以下内容：
+- [ ] 是否仅使用品牌规定的颜色（没有随意使用的其他颜色）
+- [ ] 是否仅使用品牌规定的字体
+- [ ] 语气是否符合特定情境下的要求
+- [ ] 图像是否符合设定的风格
+- [ ] 标志的使用是否遵循规定
 
-Inconsistency is the silent brand killer. One off-brand touchpoint erodes the trust you built with ten on-brand ones.
+品牌的一致性是维护品牌信任度的关键。一次不符合品牌风格的细节都可能破坏你之前建立起来的信任。

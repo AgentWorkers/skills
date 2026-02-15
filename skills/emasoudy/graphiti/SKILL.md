@@ -1,26 +1,26 @@
 ---
 name: graphiti
-description: Knowledge graph operations via Graphiti API. Search facts, add episodes, and extract entities/relationships.
+description: 通过 Graphiti API 进行知识图谱操作：搜索事实、添加新数据（episodes），以及提取实体（entities）和它们之间的关系（relationships）。
 homepage: https://github.com/getzep/graphiti
 metadata: {"clawdbot":{"emoji":"🕸️","requires":{"services":["neo4j","qdrant","graphiti"]},"install":[{"id":"docker","kind":"docker-compose","label":"Install Graphiti stack (Docker)"}]}}
 ---
 
-# Graphiti Knowledge Graph
+# Graphiti知识图谱
 
-Query and manage your knowledge graph using Graphiti's REST API with dynamic service discovery.
+您可以使用Graphiti的REST API查询和管理您的知识图谱，该API支持动态服务发现功能。
 
-## Prerequisites
+## 先决条件
 
-- Neo4j database (graph storage)
-- Qdrant (vector search)
-- Graphiti service running (default: http://localhost:8001)
+- Neo4j数据库（用于存储图结构）
+- Qdrant（用于向量搜索）
+- Graphiti服务已启动（默认地址：http://localhost:8001）
 
-## Tools
+## 工具
 
 ### graphiti_search
-Search the knowledge graph for relevant facts.
+用于在知识图谱中搜索相关信息。
 
-**Usage:**
+**使用方法：**
 ```bash
 bash command:"
 GRAPHITI_URL=\$({baseDir}/references/env-check.sh)
@@ -31,9 +31,9 @@ curl -s -X POST \"\$GRAPHITI_URL/facts/search\" \
 ```
 
 ### graphiti_add
-Add a new episode/memory to the knowledge graph.
+用于向知识图谱中添加新的条目/记忆（memory）。
 
-**Usage:**
+**使用方法：**
 ```bash
 bash command:"
 GRAPHITI_URL=\$({baseDir}/references/env-check.sh)
@@ -43,24 +43,24 @@ curl -s -X POST \"\$GRAPHITI_URL/messages\" \
 "
 ```
 
-## Dynamic Configuration
+## 动态配置
 
-The skill uses environment discovery to find Graphiti automatically:
+该功能通过环境变量自动查找Graphiti的地址：
 
-1. **Clawdbot config**: `clawdbot config get skills.graphiti.baseUrl`
-2. **Environment variable**: `$GRAPHITI_URL`
-3. **Default fallback**: `http://localhost:8001`
+1. **Clawdbot配置**：`clawdbot config get skills.graphitibaseUrl`
+2. **系统环境变量**：`$GRAPHITI_URL`
+3. **默认备用地址**：`http://localhost:8001`
 
-To change the Graphiti URL:
+要更改Graphiti的URL，请执行以下操作：
 ```bash
 export GRAPHITI_URL="http://10.0.0.10:8001"
 # OR
 clawdbot config set skills.graphiti.baseUrl "http://10.0.0.10:8001"
 ```
 
-## Examples
+## 示例
 
-Search for information:
+- 搜索信息：
 ```bash
 bash command:"
 GRAPHITI_URL=\$({baseDir}/references/env-check.sh)
@@ -70,7 +70,7 @@ curl -s -X POST \"\$GRAPHITI_URL/facts/search\" \
 "
 ```
 
-Add a memory:
+- 添加新条目：
 ```bash
 bash command:"
 GRAPHITI_URL=\$({baseDir}/references/env-check.sh)

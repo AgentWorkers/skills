@@ -1,6 +1,6 @@
 ---
 name: foreseek
-description: Trade prediction markets with natural language via Foreseek. 
+description: 通过 Foreseek，您可以使用自然语言在交易预测市场中进行操作。
   Matches your beliefs to Kalshi contracts and executes trades. Use when 
   user wants to bet on or trade predictions about elections, politics, 
   sports outcomes, economic data (Fed rates, CPI, GDP), crypto prices, 
@@ -14,24 +14,23 @@ metadata:
         - FORESEEK_API_KEY
 ---
 
-# Foreseek - Prediction Market Trading
+# Foreseek - 预测市场交易
 
-Trade prediction markets through natural language. Say what you believe, 
-get matched to the right contract on Kalshi.
+通过自然语言在预测市场中进行交易。说出你的预测，系统会为你匹配合适的合约在 Kalshi 平台上执行交易。
 
-## Setup
+## 设置
 
-Get your API key from [foreseek.ai/dashboard](https://foreseek.ai/dashboard) → API Keys tab.
+从 [foreseek.ai/dashboard](https://foreseek.ai/dashboard) 的“API Keys”页面获取你的 API 密钥。
 
 ```bash
 export FORESEEK_API_KEY="fsk_your_api_key_here"
 ```
 
-## Quick Commands
+## 快速命令
 
-### Parse a Prediction (Find Matching Markets)
+### 解析预测结果（查找匹配的市场）
 
-Converts natural language to matched Kalshi contracts.
+将自然语言输入转换为 Kalshi 平台上的相应合约。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -40,7 +39,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "parse", "prediction": "Fed will cut rates in March"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "matched": true,
@@ -57,9 +56,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### Execute a Trade
+### 执行交易
 
-Places an order on Kalshi through your connected account.
+通过你的账户在 Kalshi 平台上下达交易订单。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -75,7 +74,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   }'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -89,9 +88,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### View Positions
+### 查看持仓
 
-Shows your current open positions on Kalshi.
+显示你在 Kalshi 平台上的当前未平仓合约。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -100,7 +99,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "positions"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "count": 2,
@@ -119,9 +118,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### Search Markets
+### 搜索市场
 
-Browse available markets by keyword or category.
+通过关键词或类别浏览可用的市场。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -130,9 +129,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "markets", "query": "bitcoin", "limit": 5}'
 ```
 
-### View Pending Orders
+### 查看待定订单
 
-Shows your pending and recent orders on Kalshi.
+显示你在 Kalshi 平台上的待定订单和最近的交易记录。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -141,7 +140,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "orders"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "count": 3,
@@ -162,9 +161,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### Cancel an Order
+### 取消订单
 
-Cancels a pending order by order ID.
+通过订单 ID 取消待定订单。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -173,7 +172,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "cancel", "order_id": "abc123"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -182,9 +181,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### Check Account Status
+### 检查账户状态
 
-View your subscription tier, usage limits, and connection status.
+查看你的订阅等级、使用限制和连接状态。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -193,7 +192,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "status"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "tier": "pro",
@@ -211,9 +210,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### Check Account Balance
+### 查看账户余额
 
-View your Kalshi account balance and portfolio value.
+查看你的 Kalshi 账户余额和投资组合价值。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -222,7 +221,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "balance"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "balance": 1000.00,
@@ -232,9 +231,9 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-### View Watchlist
+### 查看关注列表
 
-View your saved markets with current prices.
+查看你保存的市场列表及其当前价格。
 
 ```bash
 curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli \
@@ -243,7 +242,7 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
   -d '{"operation": "watchlist"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "count": 2,
@@ -260,104 +259,85 @@ curl -X POST https://jxvtetqmzduvhgiyldgp.supabase.co/functions/v1/foreseek-cli 
 }
 ```
 
-## Prediction Examples
+## 预测示例
 
-| What You Say | Matched Market |
+| 你的预测 | 匹配的市场 |
 |--------------|----------------|
-| "Trump wins 2028" | KXPRES-2028-REP |
-| "Bitcoin above $100k by month end" | KXBTC-100K-JAN |
-| "Eagles win Super Bowl" | KXNFLSB-PHI |
-| "Fed cuts rates in March" | KXFED-25MAR-T475 |
-| "CPI above 3% next month" | KXCPI-FEB-3PCT |
-| "Nvidia hits $200" | KXNVDA-200 |
+| “特朗普在 2028 年获胜” | KXPRES-2028-REP |
+| “比特币在月底前涨到 10 万美元以上” | KXBTC-100K-JAN |
+| “老鹰队赢得超级碗” | KXNFLSB-PHI |
+| “美联储在 3 月降息” | KXFED-25MAR-T475 |
+| “下个月 CPI 超过 3%” | KXCPI-FEB-3PCT |
+| “英伟达股价达到 200 美元” | KXNVDA-200 |
 
-## Operations Reference
+## 操作参考
 
-| Operation | Description | Scope | Consumes Budget |
+| 操作 | 描述 | 范围 | 所需资源 |
 |-----------|-------------|-------|-----------------|
-| parse | AI prediction matching | parse | Yes |
-| trade | Execute Kalshi orders | trade | No |
-| positions | View open positions | positions | No |
-| markets | Search available markets | markets | No |
-| orders | View pending orders | orders | No |
-| cancel | Cancel pending order | cancel | No |
-| status | Check tier & usage | status | No |
-| balance | Get account balance | balance | No |
-| watchlist | View saved markets | watchlist | No |
+| parse   | 解析预测结果   | 是       | 需要 API 密钥       |
+| trade    | 执行交易     | 是       | 需要 API 密钥       |
+| positions | 查看持仓     | 是       | 需要 API 密钥       |
+| markets  | 搜索市场     | 是       | 需要 API 密钥       |
+| orders   | 查看待定订单   | 是       | 需要 API 密钥       |
+| cancel   | 取消订单     | 是       | 需要 API 密钥       |
+| status   | 检查账户状态   | 是       | 需要 API 密钥       |
+| balance | 查看账户余额   | 是       | 需要 API 密钥       |
+| watchlist | 查看关注列表   | 是       | 需要 API 密钥       |
 
-## Trade Parameters
+## 交易参数
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| operation | string | Yes | One of: parse, trade, positions, markets, orders, cancel, status, balance, watchlist |
-| prediction | string | For parse | Natural language prediction |
-| ticker | string | For trade | Market ticker (e.g., KXBTC-120K-JAN) |
-| side | string | For trade | "yes" or "no" |
-| action | string | For trade | "buy" or "sell" (default: buy) |
-| count | number | For trade | Number of contracts |
-| type | string | For trade | "market" or "limit" (default: market) |
-| yes_price | number | For limit | Limit price in cents (for YES side) |
-| no_price | number | For limit | Limit price in cents (for NO side) |
-| query | string | For markets | Search term |
-| category | string | For markets | Filter by category |
-| limit | number | For markets | Max results (default: 10, max: 50) |
-| order_id | string | For cancel | Order ID to cancel |
+| 参数        | 类型        | 是否必填 | 描述                        |
+|-----------|-----------|---------|-----------------------------------------|
+| operation    | string     | 是       | 操作类型（parse, trade, positions, markets, orders, cancel, status, balance, watchlist） |
+| prediction | string     | 是       | 预测内容（自然语言）                 |
+| ticker     | string     | 是       | 市场代码（例如：KXBTC-120K-JAN）             |
+| side       | string     | 是       | 交易方向（“yes” 或 “no”）                |
+| action      | string     | 是       | 交易类型（“buy” 或 “sell”，默认：buy）           |
+| count      | number     | 是       | 要交易的合约数量                   |
+| type       | string     | 是       | 交易类型（“market” 或 “limit”，默认：market）        |
+| yes_price   | number     | 是       | 限价单的买入价格（单位：美分）             |
+| no_price   | number     | 是       | 限价单的卖出价格（单位：美分）             |
+| query      | string     | 是       | 搜索关键词                     |
+| category    | string     | 是       | 过滤市场类别                     |
+| limit      | number     | 是       | 每页显示的结果数量（默认：10，最大：50）           |
+| order_id    | string     | 是       | 要取消的订单 ID                   |
 
-## Error Handling
+## 错误处理
 
-**401 - Unauthorized**
-```json
-{"error": "Invalid or revoked API key"}
-```
-→ Check your API key is correct and not revoked
+**401 - 未经授权**  
+→ 请确认你的 API 密钥正确且未被撤销。
 
-**403 - Forbidden**
-```json
-{"error": "API key does not have permission for 'trade' operation"}
-```
-→ API key scopes don't include this operation
+**403 - 禁止操作**  
+→ 你的 API 密钥权限不允许执行此操作。
 
-**429 - Rate Limited**
-```json
-{
-  "error": "rate_limited",
-  "tier": "free",
-  "daily_used": 10000,
-  "daily_limit": 10000,
-  "message": "Daily limit reached. Resets at midnight UTC.",
-  "upgrade_url": "https://foreseek.ai/pricing"
-}
-```
-→ Daily token limit reached. Upgrade for higher limits:
-  - Free: ~5 predictions/day
-  - Pro ($29/mo): ~75 predictions/day
-  - Ultra ($79/mo): ~200 predictions/day
+**429 - 日使用量限制**  
+→ 当日token使用量已达到上限。升级账户以获得更多使用权限：
+  - 免费账户：每天约 5 次预测
+  - Pro 账户（每月 29 美元）：每天约 75 次预测
+  - Ultra 账户（每月 79 美元）：每天约 200 次预测
 
-**400 - Bad Request**
-```json
-{"error": "Kalshi not connected", "message": "Connect your Kalshi account at https://foreseek.ai/dashboard"}
-```
-→ Connect your Kalshi API credentials in the dashboard
+**400 - 请求错误**  
+→ 请在控制台中重新连接你的 Kalshi API 认证信息。
 
-## Categories
+## 市场类别
 
-Available market categories for filtering:
-- Politics (elections, legislation)
-- Economics (Fed rates, CPI, GDP, unemployment)
-- Crypto (Bitcoin, Ethereum prices)
-- Sports (NFL, NBA, MLB, soccer)
-- Entertainment (Oscars, streaming)
-- Weather (temperature, hurricanes)
-- Tech (product launches, earnings)
+可用的市场类别（用于过滤）：
+- 政治（选举、立法）
+- 经济（美联储利率、CPI、GDP、失业率）
+- 加密货币（比特币、以太坊价格）
+- 体育（NFL、NBA、MLB、足球）
+- 娱乐（奥斯卡奖项、流媒体服务）
+- 天气（温度、飓风）
+- 科技（产品发布、财报）
 
-## Requirements
+## 使用要求
 
-1. **Foreseek Account**: Sign up at [foreseek.ai](https://foreseek.ai)
-2. **Kalshi Connection**: Connect your Kalshi API keys in the dashboard
-3. **API Key**: Generate one from Dashboard → API Keys
+1. **注册 Foreseek 账户**：访问 [foreseek.ai](https://foreseek.ai) 进行注册。
+2. **连接 Kalshi 平台**：在控制台中配置你的 Kalshi API 密钥。
+3. **获取 API 密钥**：在控制台的“API Keys”页面生成 API 密钥。
 
-## Links
+## 链接
 
-- Website: https://foreseek.ai
-- Dashboard: https://foreseek.ai/dashboard
-- Documentation: https://foreseek.ai/docs
+- 网站：https://foreseek.ai
+- 控制台：https://foreseek.ai/dashboard
+- 文档：https://foreseek.ai/docs

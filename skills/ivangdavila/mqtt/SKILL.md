@@ -1,45 +1,45 @@
 ---
 name: MQTT
-description: Implement MQTT messaging avoiding security, QoS, and connection management pitfalls.
+description: 实现 MQTT 消息传递时，需避免安全风险、服务质量（QoS）问题以及连接管理方面的常见错误。
 metadata: {"clawdbot":{"emoji":"📡","os":["linux","darwin","win32"]}}
 ---
 
-## Security Traps
-- Default Mosquitto allows anonymous connections — bots scan constantly, always configure auth
-- TLS mandatory for external access — credentials travel plaintext otherwise
-- Duplicate client IDs cause connection fights — both clients repeatedly disconnect each other
-- ACLs should restrict topic access — one compromised device shouldn't read all topics
+## 安全陷阱  
+- Mosquitto 默认允许匿名连接——机器人会持续扫描网络，因此务必配置身份验证机制。  
+- 对外部访问必须使用 TLS 协议——否则凭据会以明文形式传输。  
+- 客户端 ID 重复会导致连接冲突——两个客户端会反复断开连接。  
+- 访问控制列表（ACL）应限制对主题的访问权限——一个被攻破的设备不应能够读取所有主题的数据。  
 
-## QoS Misunderstandings
-- Effective QoS is minimum of publisher and subscriber — broker downgrades if subscriber requests lower
-- QoS 1 may duplicate messages — handlers must be idempotent
-- QoS 2 has significant overhead — only use for commands where duplicates cause problems
-- QoS applies per-message — can mix within same topic
+## QoS（服务质量）的误解  
+- 有效的 QoS 需要发布者和订阅者双方都支持相应级别的服务质量——如果订阅者请求较低的服务质量，代理服务器会自动降级服务。  
+- QoS 1 级可能会导致消息重复发送——处理程序必须具有幂等性（即多次执行相同操作结果相同）。  
+- QoS 2 级会带来较大的性能开销——仅适用于那些因重复消息而产生问题的场景。  
+- QoS 是针对每条消息单独应用的——同一主题内的消息可以混合使用不同级别的服务质量。  
 
-## Topic Design Pitfalls
-- Starting with `/` creates empty first level — `home/temp` not `/home/temp`
-- Wildcards only work in subscriptions — can't publish to `home/+/temperature`
-- `#` matches everything including nested — `home/#` gets `home/a/b/c/d`
-- Some brokers limit topic depth — check before designing deep hierarchies
+## 主题设计的常见错误  
+- 以 `/` 开头的主题会创建一个空级别的主题结构——例如，`/home/temp` 而不是 `/home/temp`。  
+- 通配符仅适用于订阅操作——不能向 `home/+/temperature` 这样的主题发布消息。  
+- `#` 可以匹配所有内容，包括嵌套的内容——例如，`home/#` 会接收 `home/a/b/c/d` 中的所有消息。  
+- 部分代理服务器会限制主题的深度——在设计复杂的主题结构前请先确认这一点。  
 
-## Connection Management
-- Clean session false preserves subscriptions — messages queue while disconnected, can surprise
-- Keep-alive too long = delayed dead client detection — 60s is reasonable default
-- Reconnection logic is client responsibility — most libraries don't auto-reconnect by default
-- Will message only fires on unexpected disconnect — clean disconnect doesn't trigger it
+## 连接管理  
+- 即使断开连接，会话信息也会被保留——这可能导致消息堆积，从而引发意外问题。  
+- 保持连接状态的机制如果设置时间过长，可能会导致客户端延迟被识别为“已断开”（默认设置为 60 秒）。  
+- 重新连接逻辑由客户端负责——大多数库默认不会自动重新连接。  
+- 仅当连接意外断开时，系统才会触发重新连接操作；正常的断开不会触发重新连接。  
 
-## Retained Message Traps
-- Retained messages persist until explicitly cleared — old data confuses new subscribers
-- Clear retained with empty message + retain flag — not obvious from docs
-- Birth/will pattern: publish "online" retained on connect, will publishes "offline"
+## 消息保留机制  
+- 保留的消息会一直存在，直到被明确清除——旧数据可能会干扰新订阅者。  
+- 清除保留的消息需要发送一条空消息并设置相应的标志——这一点在文档中并不明显。  
+- 在某些情况下，消息会在客户端“上线”时被保留，在“离线”时被发送。  
 
-## Mosquitto Specifics
-- `persistence true` survives restarts — without it, retained messages and subscriptions lost
-- `max_queued_messages` prevents memory exhaustion — one slow subscriber shouldn't crash broker
-- `listener 1883 0.0.0.0` binds all interfaces — use `127.0.0.1` for local-only
+## Mosquitto 的特殊设置  
+- `persistence` 设置为 `true` 可以使消息在重启后仍然保留——否则保留的消息和订阅关系都会丢失。  
+- `max_queued_messages` 可以防止内存耗尽——即使某个订阅者的处理速度较慢，也不会导致代理服务器崩溃。  
+- `listener 1883 0.0.0.0` 会绑定到所有网络接口——如果只需要本地访问，应使用 `127.0.0.1`。  
 
-## Debugging
-- Subscribe to `#` sees all traffic — never in production, leaks everything
-- `$SYS/#` exposes broker metrics — client count, bytes, subscriptions
-- Retained messages persist after fixing issues — explicitly clear them
-- `mosquitto_sub -v` shows topic with message — essential for debugging
+## 调试技巧  
+- 订阅 `#` 可以查看所有流量——但在生产环境中不建议这样做，因为这会泄露所有信息。  
+- `$SYS/#` 可以显示代理服务器的运行指标（如客户端数量、传输的字节数、订阅关系等）。  
+- 修复问题后，保留的消息仍然会存在——需要手动清除它们。  
+- 使用 `mosquitto_sub -v` 命令可以查看具体的主题和消息内容——这对调试非常有用。

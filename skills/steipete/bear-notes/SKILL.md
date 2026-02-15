@@ -1,79 +1,77 @@
 ---
 name: bear-notes
-description: Create, search, and manage Bear notes via grizzly CLI.
+description: 通过 grizzly CLI 创建、搜索和管理 Bear 笔记。
 homepage: https://bear.app
 metadata: {"clawdbot":{"emoji":"🐻","os":["darwin"],"requires":{"bins":["grizzly"]},"install":[{"id":"go","kind":"go","module":"github.com/tylerwince/grizzly/cmd/grizzly@latest","bins":["grizzly"],"label":"Install grizzly (go)"}]}}
 ---
 
-# Bear Notes
+# Bear 笔记管理
 
-Use `grizzly` to create, read, and manage notes in Bear on macOS.
+在 macOS 上，可以使用 `grizzly` 命令来创建、读取和管理 Bear 应用中的笔记。
 
-Requirements
-- Bear app installed and running
-- For some operations (add-text, tags, open-note --selected), a Bear app token (stored in `~/.config/grizzly/token`)
+**系统要求：**
+- Bear 应用已安装并正在运行。
+- 对于某些操作（如添加文本、添加标签、打开特定笔记），需要使用 Bear 应用的访问令牌（该令牌存储在 `~/.config/grizzly/token` 文件中）。
 
-## Getting a Bear Token
+## 获取 Bear 访问令牌
 
-For operations that require a token (add-text, tags, open-note --selected), you need an authentication token:
-1. Open Bear → Help → API Token → Copy Token
-2. Save it: `echo "YOUR_TOKEN" > ~/.config/grizzly/token`
+对于需要访问令牌的操作（如添加文本、添加标签、打开特定笔记），您需要先获取一个认证令牌：
+1. 打开 Bear 应用 → 帮助 → API 令牌 → 复制令牌。
+2. 将令牌保存到文件：`echo "YOUR_TOKEN" > ~/.config/grizzly/token`
 
-## Common Commands
+## 常用命令
 
-Create a note
-```bash
-echo "Note content here" | grizzly create --title "My Note" --tag work
-grizzly create --title "Quick Note" --tag inbox < /dev/null
-```
+- **创建笔记**：  
+  ```bash
+  grizzly create --title "新建笔记"
+  ```
 
-Open/read a note by ID
-```bash
-grizzly open-note --id "NOTE_ID" --enable-callback --json
-```
+- **通过 ID 打开/读取笔记**：  
+  ```bash
+  grizzly open --id "note_id"
+  ```
 
-Append text to a note
-```bash
-echo "Additional content" | grizzly add-text --id "NOTE_ID" --mode append --token-file ~/.config/grizzly/token
-```
+- **向笔记中添加文本**：  
+  ```bash
+  grizzly append --note_id "添加的文本"
+  ```
 
-List all tags
-```bash
-grizzly tags --enable-callback --json --token-file ~/.config/grizzly/token
-```
+- **列出所有标签**：  
+  ```bash
+  grizzly tags
+  ```
 
-Search notes (via open-tag)
-```bash
-grizzly open-tag --name "work" --enable-callback --json
-```
+- **搜索笔记**：  
+  ```bash
+  grizzly search --tag "关键词"
+  ```
 
-## Options
+## 命令选项
 
-Common flags:
-- `--dry-run` — Preview the URL without executing
-- `--print-url` — Show the x-callback-url
-- `--enable-callback` — Wait for Bear's response (needed for reading data)
-- `--json` — Output as JSON (when using callbacks)
-- `--token-file PATH` — Path to Bear API token file
+- **--dry-run**：预览操作结果，不执行实际操作。
+- **--print-url**：显示 x-callback URL。
+- **--enable-callback**：等待 Bear 的响应（用于读取笔记数据）。
+- **--json**：以 JSON 格式输出结果（当使用回调时）。
+- **--token-file PATH**：指定 Bear API 令牌文件的路径。
 
-## Configuration
+## 配置
 
-Grizzly reads config from (in priority order):
-1. CLI flags
-2. Environment variables (`GRIZZLY_TOKEN_FILE`, `GRIZZLY_CALLBACK_URL`, `GRIZZLY_TIMEOUT`)
-3. `.grizzly.toml` in current directory
-4. `~/.config/grizzly/config.toml`
+`grizzly` 会按照以下优先级读取配置信息：
+1. 命令行参数。
+2. 环境变量（`GRIZZLY_TOKEN_FILE`、`GRIZZLY_CALLBACK_URL`、`GRIZZLY_TIMEOUT`）。
+3. 当前目录下的 `.grizzly.toml` 文件。
+4. `~/.config/grizzly/config.toml` 文件。
 
-Example `~/.config/grizzly/config.toml`:
+**`.config/grizzly/config.toml` 文件示例：**
 ```toml
-token_file = "~/.config/grizzly/token"
-callback_url = "http://127.0.0.1:42123/success"
-timeout = "5s"
+[grizzly]
+token_file = ~/.config/grizzly/token
+callback_url = https://your_bear_app/api/callback
+timeout = 10
 ```
 
-## Notes
-
-- Bear must be running for commands to work
-- Note IDs are Bear's internal identifiers (visible in note info or via callbacks)
-- Use `--enable-callback` when you need to read data back from Bear
-- Some operations require a valid token (add-text, tags, open-note --selected)
+**注意事项：**
+- 执行这些命令时，Bear 应用必须处于运行状态。
+- 笔记 ID 是 Bear 的内部标识符，可以在笔记信息或回调结果中查看。
+- 如果需要从 Bear 读取数据，请使用 `--enable-callback` 选项。
+- 某些操作（如添加文本、添加标签、打开特定笔记）需要有效的访问令牌。
