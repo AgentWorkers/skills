@@ -1,13 +1,12 @@
 ---
-slug: "xml-reader"
-display_name: "Xml Reader"
-description: "从建筑系统中读取并解析 XML 数据（包括 P6 计划、BSDD 导出文件、IFC-XML 和 COBie-XML 格式），并将其转换为 pandas 数据框（DataFrame）。"
----
-
-# 用于建筑数据的XML读取器
+name: "xml-reader"
+description: "从建筑系统中读取并解析 XML 数据（包括 P6 时间表、BSDD 导出文件、IFC-XML 和 COBie-XML 格式），然后将其转换为 pandas DataFrame 数据结构。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🏷️", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 用于建筑数据的XML解析器
 
 ## 概述
-在建筑领域，XML被用于P6进度计划（XER）、IFC-XML、COBie-XML以及buildingSMART数据字典的导出。该工具能够解析XML文件，并将其转换为结构化的数据框（DataFrames）。
+在建筑领域，XML被广泛应用于P6进度计划（XER）、IFC-XML、COBie-XML以及buildingSMART数据字典的导出。该工具能够解析XML文件，并将其转换为结构化的数据框（DataFrames）。
 
 ## Python实现
 
@@ -227,7 +226,7 @@ df = reader.elements_to_dataframe(activities)
 
 ## 常见使用场景
 
-### 1. P6进度计划的导入
+### 1. 导入P6进度计划数据
 ```python
 p6_reader = P6XMLReader()
 schedule = p6_reader.parse_full_schedule("p6_export.xml")
@@ -236,7 +235,7 @@ activities = schedule['activities']
 print(f"Activities: {len(activities)}")
 ```
 
-### 2. COBie数据的处理
+### 2. 处理COBie数据
 ```python
 cobie_reader = COBieXMLReader()
 cobie_data = cobie_reader.parse_cobie("facility_cobie.xml")
@@ -244,7 +243,7 @@ cobie_data = cobie_reader.parse_cobie("facility_cobie.xml")
 components = cobie_data.get('Component', pd.DataFrame())
 ```
 
-### 3. IFC-XML的分析
+### 3. 分析IFC-XML文件
 ```python
 ifc_reader = IFCXMLReader()
 root = ifc_reader.parse_file("model.ifcxml")

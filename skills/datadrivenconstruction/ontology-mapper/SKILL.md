@@ -1,16 +1,15 @@
 ---
-slug: "ontology-mapper"
-display_name: "Ontology Mapper"
+name: "ontology-mapper"
 description: "将地图构建数据映射到标准的本体（ontologies）中，并在不同数据模式（data schemas）之间建立语义关联（semantic mappings）。"
----
-
-# 本体映射器（Ontology Mapper）
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🌐", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 本体映射器（Ontology Mapper）
 
 ## 概述
 
 该工具基于 DDC 方法论（第 2.2 章），将建筑数据映射到标准的本体（如 IFC、COBie、Uniclass 和 OmniClass），从而实现系统间的语义互操作性。
 
-**参考书籍**：《开放数据的优势》（"Доминирование открытых данных"）
+**参考书籍**：《开放数据的优势》（"Open Data Dominance"）
 
 ## 快速入门
 
@@ -497,7 +496,7 @@ class OntologyMapper:
 
 ## 常见用例
 
-### 将字段映射到 IFC
+### 将字段映射到 IFC 标准
 
 ```python
 mapper = OntologyMapper()
@@ -547,14 +546,14 @@ mapper.create_mapping(
 
 ## 快速参考
 
-| 组件            | 功能                        |
-|-----------------|---------------------------|
-| `OntologyMapper`    | 主要的映射引擎                |
+| 组件            | 功能                         |
+|-----------------|-----------------------------|
+| `OntologyMapper`    | 主要的映射引擎                    |
 | `OntologyType`     | 标准本体（如 IFC、COBie 等）             |
-| `SemanticMapping` | 概念之间的映射关系              |
-| `MappingResult`    | 映射操作的结果                   |
+| `SemanticMapping` | 概念之间的映射关系                |
+| `MappingResult`    | 映射操作的结果                    |
 | `RelationType`     | 关系类型                        |
-| `MappingConfidence` | 映射的置信度                    |
+| `MappingConfidence` | 映射的置信度                      |
 
 ## 资源
 
@@ -563,6 +562,6 @@ mapper.create_mapping(
 
 ## 下一步操作
 
-- 使用 [open-data-integrator](../open-data-integrator/SKILL.md) 进行开放数据的整合
+- 使用 [open-data-integrator](../open-data-integrator/SKILL.md) 进行开放数据整合
 - 使用 [data-model-designer](../../Chapter-2.5/data-model-designer/SKILL.md) 进行数据架构设计
 - 使用 [bim-validation-pipeline](../../Chapter-4.3/bim-validation-pipeline/SKILL.md) 进行数据验证

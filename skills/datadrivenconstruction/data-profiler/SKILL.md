@@ -1,25 +1,24 @@
 ---
-slug: "data-profiler"
-display_name: "Data Profiler"
-description: "用于构建数据档案的信息，以了解数据的特征、分布情况、质量指标及模式。这些信息对于数据质量评估和数据提取、转换、加载（ETL）流程的规划至关重要。"
----
-
-# 建筑数据分析工具
+name: "data-profiler"
+description: "用于构建数据档案的信息，以了解数据的特征、分布情况、质量指标及数据模式。这些信息对于数据质量评估和ETL（提取、转换、加载）流程的规划至关重要。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🏷️", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑数据分析工具
 
 ## 概述
 
-本工具用于分析建筑数据，以了解其特征、分布情况、质量及数据模式。这对于数据质量评估、数据提取与转换（ETL）流程的规划，以及在问题影响项目之前及时发现数据异常至关重要。
+该工具用于分析建筑数据，以了解数据的特征、分布情况、质量及模式。这对于数据质量评估、数据提取与转换（ETL）计划制定，以及在问题影响项目之前发现数据问题至关重要。
 
 ## 商业价值
 
 在使用任何建筑数据之前，您需要了解以下信息：
-- 数据中包含哪些类型的数据
+- 数据中存在哪些类型的数据
 - 数据值的分布情况
-- 数据缺失的模式
+- 缺失数据的模式
 - 异常值和离群值
-- 参考完整性方面的问题
+- 参考完整性问题
 
-本工具通过对数据进行剖析，帮助您回答这些问题并提供可操作的洞察。
+本工具通过对数据进行剖析，帮助您回答这些问题，并提供可操作的洞察。
 
 ## 技术实现
 
@@ -463,12 +462,12 @@ comparison = profiler.compare_profiles(old_profile, profile)
 print(f"Quality changed by: {comparison['quality_change']}")
 ```
 
-## 常见应用场景
+## 常见用例
 
-1. **ETL前分析**：在构建数据管道之前对源数据进行分析
+1. **预ETL分析**：在构建数据管道之前对源数据进行分析
 2. **质量监控**：跟踪数据质量的变化趋势
 3. **模式验证**：检测数据结构的意外变化
-4. **异常检测**：识别离群值和数据质量问题
+4. **异常检测**：发现离群值和数据质量问题
 
 ## 依赖项
 
@@ -476,7 +475,7 @@ print(f"Quality changed by: {comparison['quality_change']}")
 pip install pandas numpy
 ```
 
-## 参考资源
+## 资源
 
-- **数据分析最佳实践**：DAMA DMBOK
+- **数据剖析最佳实践**：DAMA DMBOK
 - **建筑数据标准**：CSI MasterFormat、UniFormat

@@ -1,16 +1,14 @@
 ---
-slug: "labor-rate"
-display_name: "Labor Rate"
-description: "计算建筑劳动力成本，包括间接费用、福利以及生产力因素。同时考虑地区性的费率数据库和劳动力构成。"
----
-
-# 劳动力成本计算器
+name: "labor-rate"
+description: "计算建筑劳动力成本，包括间接费用、福利以及生产力因素。同时考虑地区性费率数据库和劳动力构成。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🧮", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 劳动力成本计算器
 
 ## 概述
 劳动力成本占建筑成本的30%至50%。该工具用于计算包括工资、福利、管理费用以及地区性调整因素在内的综合劳动力成本。
 
 ## Python 实现
-
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -319,7 +317,6 @@ class CrewBuilder:
 ```
 
 ## 快速入门
-
 ```python
 calc = LaborRateCalculator()
 
@@ -333,7 +330,6 @@ print(rates)
 ```
 
 ## 常见使用场景
-
 ### 1. 人工成本计算
 ```python
 builder = CrewBuilder(calc)
@@ -341,7 +337,7 @@ concrete_crew = builder.get_crew('concrete_pour', 'Chicago')
 print(f"Crew cost: ${concrete_crew.total_hourly_cost}/hr")
 ```
 
-### 2. 生产力调整
+### 2. 生产效率调整
 ```python
 productivity = ProductivityFactor()
 factor = productivity.calculate_factor(

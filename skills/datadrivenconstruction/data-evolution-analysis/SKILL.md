@@ -1,16 +1,15 @@
 ---
-slug: "data-evolution-analysis"
-display_name: "Data Evolution Analysis"
-description: "分析建筑组织中的数据演变趋势。评估建筑公司的数字化成熟度及数据管理策略。"
----
-
-# 数据演化分析
+name: "data-evolution-analysis"
+description: "分析建筑组织中的数据演变模式。评估建筑公司的数字化成熟度及数据战略。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "📚", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 数据演变分析
 
 ## 概述
 
-基于DDC方法论（第1.1章），该技能用于分析建筑组织中的数据演化模式，评估从基于纸质的工作流程向完全数据驱动的运营的数字化成熟度水平。
+根据DDC方法论（第1.1章），该技能用于分析建筑组织中的数据演变模式，评估从纸质工作流程向完全数据驱动操作的数字化转型成熟度。
 
-**参考书籍**：《建筑行业中数据使用的演变》（"Эволюция использования данных в строительной отрасли"）
+**参考书籍**：《建筑行业中的数据使用演变》（"Эволюция использования данных в строительной отрасли"）
 
 ## 快速入门
 
@@ -649,7 +648,7 @@ print(f"Maturity Level: {assessment.overall_level.name}")
 print(f"Recommendations: {assessment.recommendations[:3]}")
 ```
 
-### 跟踪数据随时间的演化
+### 跟踪数据演变过程
 
 ```python
 tracker = DataEvolutionTracker("Construction Co")
@@ -684,15 +683,15 @@ with open("maturity_report.md", "w") as f:
 | `DataCategory` | 8个数据类别（设计、成本、进度等） |
 | `DataFlowAssessment` | 分析每个类别的数据流 |
 | `MaturityAssessment` | 提供完整的评估结果 |
-| `DataEvolutionTracker` | 跟踪数据演化的过程 |
+| `DataEvolutionTracker` | 跟踪数据演变的进程 |
 
 ## 资源
 
-- **书籍**：Artem Boiko所著的《数据驱动的建造》（"Data-Driven Construction"），第1.1章
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第1.1章 |
 - **网站**：https://datadrivenconstruction.io
 
 ## 下一步操作
 
-- 使用 [data-silo-detection](../../Chapter-1.2/data-silo-detection/SKILL.md) 识别系统集成中的漏洞
-- 使用 [erp-integration-analysis](../../Chapter-1.2/erp-integration-analysis/SKILL.md) 进行系统集成分析
-- 使用 [digital-maturity-assessment](../../Chapter-5.1/digital-maturity-assessment/SKILL.md) 进行详细的数据成熟度评估
+- 使用 [data-silo-detection](../../Chapter-1.2/data-silo-detection/SKILL.md) 识别系统集成中的漏洞 |
+- 使用 [erp-integration-analysis](../../Chapter-1.2/erp-integration-analysis/SKILL.md) 进行系统集成分析 |
+- 使用 [digital-maturity-assessment](../../Chapter-5.1/digital-maturity-assessment/SKILL.md) 进行详细的数据成熟度评估 |

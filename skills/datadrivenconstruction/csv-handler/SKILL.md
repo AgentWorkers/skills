@@ -1,13 +1,12 @@
 ---
-slug: "csv-handler"
-display_name: "CSV Handler"
-description: "处理来自建筑软件导出的 CSV 文件。自动检测分隔符、编码，并清理混乱的数据。"
----
-
-# 用于建筑数据的 CSV 处理工具
+name: "csv-handler"
+description: "处理来自建筑软件导出的 CSV 文件。自动检测分隔符、编码，并清理格式混乱的数据。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🏷️", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 用于建筑数据的 CSV 处理工具
 
 ## 概述
-CSV 是建筑行业中的通用数据交换格式，从施工进度导出文件到成本数据库，都广泛使用这种格式。本工具负责处理编码问题、分隔符检测以及数据清洗等工作。
+CSV 是建筑行业通用的数据交换格式，广泛应用于调度数据导出和成本数据库的创建。本工具负责处理编码问题、分隔符检测以及数据清洗等工作。
 
 ## Python 实现
 ```python
@@ -265,7 +264,7 @@ print(f"Loaded {len(df)} rows, {len(df.columns)} columns")
 
 ## 常见使用场景
 
-### 1. 合并多个导出文件
+### 1. 合并多个导出的数据文件
 ```python
 files = ["jan_export.csv", "feb_export.csv", "mar_export.csv"]
 merged = handler.merge_csvs(files)
@@ -276,7 +275,7 @@ merged = handler.merge_csvs(files)
 handler.split_csv(df, group_column='category', output_dir='./split_files')
 ```
 
-### 3. 导入施工进度数据
+### 3. 导入调度数据
 ```python
 schedule_handler = ScheduleCSVHandler()
 schedule = schedule_handler.parse_schedule("p6_export.csv")

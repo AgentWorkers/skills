@@ -1,16 +1,14 @@
 ---
-slug: "json-parser"
-display_name: "Json Parser"
-description: "从建筑API、物联网传感器以及BIM导出文件中解析并验证JSON数据。将嵌套的JSON数据转换为扁平化的DataFrames（数据框）。"
----
-
-# 用于建筑数据的 JSON 解析器
+name: "json-parser"
+description: "从建筑API、物联网传感器以及BIM导出文件中解析并验证JSON数据。将嵌套的JSON数据转换为扁平化的DataFrame结构。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🏷️", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 用于建筑数据的 JSON 解析器
 
 ## 概述
 建筑系统越来越多地使用 JSON 进行数据交换——从物联网传感器到建筑信息模型（BIM）元数据的导出。本技能涵盖了 JSON 结构的解析、验证以及扁平化处理。
 
 ## Python 实现
-
 ```python
 import json
 import pandas as pd
@@ -189,7 +187,6 @@ class IoTJSONParser(ConstructionJSONParser):
 ```
 
 ## 快速入门
-
 ```python
 parser = ConstructionJSONParser()
 
@@ -228,5 +225,5 @@ result = parser.parse_string(api_response)
 df = parser.to_dataframe(result.data)
 ```
 
-## 资源
-- **DDC 曲典**：第 2.1 章 - 半结构化数据
+## 参考资源
+- **DDC 书籍**：第 2.1 章 - 半结构化数据

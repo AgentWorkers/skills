@@ -1,429 +1,145 @@
 ---
 name: clawvault
-version: 2.4.2
-description: "**Agent内存系统**  
-该系统具备以下功能：  
-- 内存图谱（Memory Graph）  
-- 上下文信息分析（Context Profiles）  
-- 检点/恢复机制（Checkpoint/Recovery）  
-- 结构化存储（Structured Storage）  
-- 语义搜索（Semantic Search）  
-- 观测性内存管理（Observational Memory）  
-- 任务跟踪（Task Tracking）  
-- 画布式仪表板（Canvas Dashboards）  
-- 与Obsidian平台的集成（Integration with Obsidian）  
-- Tailscale网络支持（Tailscale Networking）  
-
-**适用场景：**  
-- 存储/搜索内存数据  
-- 防止上下文信息丢失（Preventing context loss）  
-- 基于内存图谱的上下文数据检索  
-- 修复损坏的会话（Recovering broken sessions）  
-- 任务跟踪与管理  
-- 生成可视化仪表板（Generating dashboards）  
-
-**不适用场景：**  
-- 通用文件输入/输出操作（General file I/O operations）"
+version: "2.5.11"
+description: Agent memory system with memory graph, context profiles, checkpoint/recover, structured storage, semantic search, and observational memory. Use when: storing/searching memories, preventing context death, graph-aware context retrieval, repairing broken sessions. Don't use when: general file I/O.
 author: Versatly
 repository: https://github.com/Versatly/clawvault
 homepage: https://clawvault.dev
-docs: https://docs.clawvault.dev
-metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🐘",
-        "kind": "cli",
-        "requires":
-          {
-            "bins": ["clawvault"],
-            "env_optional": ["CLAWVAULT_PATH", "GEMINI_API_KEY", "OPENCLAW_HOME", "OPENCLAW_STATE_DIR"]
-          },
-        "install":
-          [
-            {
-              "id": "node",
-              "kind": "node",
-              "package": "clawvault",
-              "bins": ["clawvault"],
-              "label": "Install ClawVault CLI (npm)"
-            }
-          ],
-        "hooks":
-          {
-            "clawvault":
-              {
-                "events": ["gateway:startup", "command:new"],
-                "capabilities":
-                  [
-                    "auto-checkpoint before session reset (/new)",
-                    "context death detection and alert injection on startup"
-                  ],
-                "does_not":
-                  [
-                    "make network calls (except optional GEMINI_API_KEY for observe/reflect, Tailscale for serve/peers)",
-                    "access external APIs or cloud services (except optional Tailscale mesh)",
-                    "send telemetry or analytics",
-                    "modify files outside vault directory and OpenClaw session transcripts"
-                  ]
-              }
-          },
-        "capabilities":
-          [
-            "reads/writes markdown files in vault directory",
-            "reads/modifies OpenClaw session transcripts (repair-session, with backup)",
-            "builds memory graph index (.clawvault/graph-index.json)",
-            "runs qmd for semantic search (optional, graceful fallback)",
-            "LLM API calls for observe/reflect (optional, requires GEMINI_API_KEY)",
-            "task tracking with status, priority, and blocking relationships",
-            "Obsidian JSON Canvas dashboard generation (4 templates: default, brain, project-board, sprint)",
-            "Obsidian Bases view generation (5 .base files for task management)",
-            "Neural graph theme with colored nodes by category",
-            "Tailscale-based vault networking, cross-vault search, observation forwarding"
-          ]
-      }
-  }
+user-invocable: true
+always: false
+openclaw: {"emoji":"🐘","requires":{"bins":["clawvault","qmd"]}}
+requires: {"bins":["clawvault","qmd"],"env_optional":["CLAWVAULT_PATH","OPENCLAW_HOME","OPENCLAW_STATE_DIR","GEMINI_API_KEY"]}
+install: [{"id":"node","kind":"node","package":"clawvault","bins":["clawvault"],"label":"Install ClawVault CLI (npm)"},{"id":"qmd","kind":"node","package":"github:tobi/qmd","bins":["qmd"],"label":"Install qmd backend (required for query/context workflows)"}]
+metadata: {"openclaw":{"emoji":"🐘","requires":{"bins":["clawvault","qmd"]},"install":[{"id":"node","kind":"node","package":"clawvault","bins":["clawvault"],"label":"Install ClawVault CLI (npm)"},{"id":"qmd","kind":"node","package":"github:tobi/qmd","bins":["qmd"],"label":"Install qmd backend (required for query/context workflows)"}],"env_optional":["CLAWVAULT_PATH","OPENCLAW_HOME","OPENCLAW_STATE_DIR","GEMINI_API_KEY"],"homepage":"https://clawvault.dev"}}
 ---
 
 # ClawVault 🐘
 
-大象永远不会忘记。专为AI代理设计的结构化记忆系统。
+大象永远不会忘记。专为 OpenClaw 代理设计的结构化存储解决方案。
 
-> **文档：** [docs.clawvault.dev](https://docs.clawvault.dev) | **npm：** [clawvault](https://www.npmjs.com/package/clawvault)
+> **专为 [OpenClaw](https://openclaw.ai) 开发**。标准安装方式：通过 npm CLI 安装后，再使用相应的钩子（hook）进行配置。
 
 ## 安全性与透明度
 
 **该工具的功能：**
-- 读取/写入您指定的vault目录（`CLAWVAULT_PATH`或自动检测到的目录）中的markdown文件
-- `repair-session` 功能可以读取和修改OpenClaw会话记录，并在写入前创建备份
-- 安装一个OpenClaw **钩子**（`hooks/clawvault/handler.js`），在 `gateway:startup` 和 `command:new` 事件触发时自动执行，用于检查会话状态并检测上下文丢失情况
-- `observe` 功能会调用LLM API（默认使用Gemini Flash）来压缩会话记录
-- `reflect` 功能会调用LLM API生成每周的总结报告
-- `serve` 功能会在您的Tailscale IP上启动一个HTTP API，实现跨vault之间的数据共享
+- 读写存储在 `CLAWVAULT_PATH` 目录中的 Markdown 文件（该路径可自动检测）；
+- `repair-session` 功能会读取并修改 OpenClaw 会话记录（位于 `~/.openclaw/agents/` 目录下），并在写入前创建备份；
+- 提供一个 OpenClaw 钩子包（`hooks/clawvault/handler.js`），包含多种生命周期事件处理逻辑（如 `gateway:startup`、`gateway:heartbeat`、`command:new`、`session:start`、`compaction:memoryFlush`、`cron.weekly`）。该钩子为可选配置，需手动安装并启用；
+- `observe --compress` 功能会通过 LLM API（默认使用 Gemini Flash）对会话记录进行压缩。
 
 **使用的环境变量：**
-- `CLAWVAULT_PATH` — vault的位置（可选，系统会自动检测）
-- `OPENCLAW_HOME` / `OPENCLAW_STATE_DIR` — `repair-session` 用于查找会话记录的目录
-- `GEMINI_API_KEY` — `observe` 和 `reflect` 用于LLM数据压缩的密钥（可选）
+- `CLAWVAULT_PATH`：存储目录（可选，若未设置则自动检测）；
+- `OPENCLAW_HOME` / `OPENCLAW_STATE_DIR`：`repair-session` 功能用于查找会话记录的路径；
+- `GEMINI_API_KEY`：`observe` 功能在压缩会话记录时使用（仅限启用相关功能时）。
 
-**所有数据均存储在本地，不进行云同步。**
+**注意：** 所有数据均存储在本地，除用于压缩的 LLM API 调用外，不进行任何网络传输。
 
-## 安装
+**说明：** 这是一个完整的命令行工具，不仅提供指令，还能实际执行文件写入、钩子注册和代码运行等操作。
 
-```bash
-npm install -g clawvault
-```
+**审计性：** 发布的 ClawHub 工具包包含 `SKILL.md`、`HOOK.md` 和 `hooks/clawvault/handler.js` 文件，用户可在启用钩子前查看其具体行为。
 
-## 初始化与设置
+## 安装（标准方式）
 
-```bash
-# Initialize a new vault (creates categories + ledger + templates + welcome note)
-clawvault init ~/my-vault
+使用 `clawhub install clawvault` 可以获取安装指南，但该命令不会自动安装钩子包。
 
-# Minimal vault (memory categories only, no tasks/bases/graph)
-clawvault init ~/my-vault --minimal
+### 推荐的安装流程
 
-# Custom categories
-clawvault init ~/my-vault --categories "notes,ideas,contacts,projects"
+#### 设置流程
 
-# Skip specific features
-clawvault init ~/my-vault --no-bases --no-tasks --no-graph
+#### 新代理的快速入门指南
 
-# Apply neural graph theme on init
-clawvault init ~/my-vault --theme neural
+#### 使用前的注意事项
 
-# Generate canvas on init
-clawvault init ~/my-vault --canvas brain
+**当前功能说明：**
 
-# Full Obsidian setup (theme + bases + canvas on existing vault)
-clawvault setup
-clawvault setup --theme neural --canvas brain --bases
+ClawVault 需依赖 `qmd` 来处理核心的存储和查询逻辑。
 
-# Or set env var to use existing vault
-export CLAWVAULT_PATH=/path/to/memory
-```
+### 功能概述
 
-### 初始化参数（v2.4.0及以上版本）
-
-| 参数 | 说明 |
-|------|-------------|
-| `-n, --name <名称>` | Vault的名称（默认为目录名称） |
-| `--minimal` | 仅显示内存分类信息，不显示任务、基础数据或图表 |
-| `--categories <列表>` | 以逗号分隔的自定义分类 |
-| `--no-bases` | 跳过Obsidian基础数据文件的生成 |
-| `--no-tasks` | 跳过任务和待办事项目录的生成 |
-| `--no-graph` | 跳过初始图表的生成 |
-| `--canvas <模板>` | 生成相应的仪表板模板（默认为“brain”、“project-board”或“sprint”） |
-| `--theme <样式>` | 图表的颜色主题（neural、minimal、none） |
-| `--qmd` | 设置qmd语义搜索功能 |
-
-### 设置参数（v2.4.0及以上版本）
-
-| 参数 | 说明 |
-|------|-------------|
-| `--theme <样式>` | 图表的颜色主题（默认为“neural”、“minimal”或“none” |
-| `--graph-colors` / `--no-graph-colors` | 是否启用图表颜色方案 |
-| `--bases` / `--no-bases` | 是否生成Obsidian基础数据视图 |
-| `--canvas <模板>` | 生成相应的仪表板模板 |
-| `--force` | 覆盖现有的配置文件 |
-| `-v, --vault <路径>` | 指定vault的路径 |
-
-## 快速入门
-
-```bash
-# Start your session
-clawvault wake
-
-# Capture and checkpoint during work
-clawvault capture "TODO: Review PR tomorrow"
-clawvault checkpoint --working-on "PR review" --focus "type guards"
-
-# End your session
-clawvault sleep "PR review + type guards" --next "respond to CI" --blocked "waiting for CI"
-
-# Health check
-clawvault doctor
-```
-
-## 新功能
-
-### v2.4.x 版本的新特性：
-- **自定义初始化参数**：`--minimal`、`--categories`、`--no-bases`、`--no-tasks`、`--no-graph`、`--canvas`、`--theme`、`--name`
-- **现有vault的处理**：在检测到现有vault时会发出错误提示，而不会直接覆盖原有数据
-- **新增仪表板模板**：默认模板包括“brain”（四象限架构）、“project-board”（以负责人为中心的视图）和“sprint”模板
-- **仪表板参数**：`--owner`、`--width`、`--height`、`--include-done`、`--list-templates`用于自定义仪表板显示内容
-- **图表样式**：支持深色背景、按类别/标签着色的节点、绿色的神经链接以及金色的高亮显示
-- **Obsidian基础数据**：自动生成5个`.base`文件（包括所有任务、待办事项、按项目分类的任务、按负责人分类的任务）
-- **日期处理改进**：文档中的日期格式现在不会导致命令执行失败
-
-### v2.3.0 版本的新特性：
-- **任务跟踪**：新增`clawvault task`（添加/列出/更新/完成/显示任务）和`clawvault backlog`（添加/列出/推进待办事项）命令
-- **仪表板**：`clawvault canvas`可生成Obsidian格式的JSON图表
-- **待办事项视图**：`clawvault blocked`用于快速查看被阻止的任务
-- **Tailscale网络支持**：新增`clawvault serve`、`clawvault peers`、`clawvault net-search`命令以实现网络通信
-
-### v2.2.0 版本的新特性：
-- **采用“账本优先”的数据结构**：`ledger/raw/`作为数据来源
-- **每周生成总结报告**：`clawvault reflect`功能
-- **回放/重建/归档**：新增`clawvault replay`、`clawvault rebuild`、`clawvault archive`命令
-
-### v2.0.0 版本的新特性：
-- **内存图表**：基于wiki链接、标签和文档前言生成内存图表
-- **上下文检索**：支持根据上下文生成图表（默认模式包括“规划”、“事件”和“交接”）
-- **兼容OpenClaw**：改进了与OpenClaw的兼容性
-
----
+- **知识图谱构建：** 从 Markdown 文件中的链接、标签和前置内容构建类型化的知识图谱（存储路径为 `.clawvault/graph-index.json`，支持版本控制和增量重建）；
+- **上下文检索：** 根据不同的需求（如 `default`、`planning`、`incident`、`handoff`、`auto` 等配置文件）提供相应的上下文检索功能；
+- **兼容性诊断：** 提供 OpenClaw 的兼容性检查工具。
 
 ## 核心命令
 
-### 启动/停止工具
+- **唤醒/休眠会话：** 控制会话的启动和结束；
+- **按类型存储数据：** 实现数据的分类存储；
+- **快速将数据发送到收件箱：** 提供便捷的数据传输机制；
+- **搜索功能：** 需要先安装 `qmd` 才能使用。
 
-```bash
-clawvault wake
-clawvault sleep "what I was working on" --next "ship v1" --blocked "waiting for API key"
-```
+### 使用前的检查事项
 
-### 按类型存储数据
+ClawVault 目前依赖 `qmd` 来处理核心的存储和查询逻辑。
 
-```bash
-clawvault remember decision "Use Postgres over SQLite" --content "Need concurrent writes"
-clawvault remember lesson "Context death is survivable" --content "Checkpoint before heavy work"
-clawvault remember relationship "Justin Dukes" --content "Client at Hale Pet Door"
-```
+## 现有功能列表
 
-### 快速捕获数据
+### 知识图谱构建
 
-```bash
-clawvault capture "TODO: Review PR tomorrow"
-```
+ClawVault 可从 Markdown 文件中的链接、标签和前置内容构建类型化的知识图谱。
 
-### 搜索功能
+### 钩子配置
 
-```bash
-clawvault search "client contacts"        # Keyword (fast)
-clawvault vsearch "database decision"     # Semantic (slower, more accurate)
-```
+### 文件夹结构
 
-## 任务跟踪（v2.3.0及以上版本）
+#### 最佳实践
 
-```bash
-clawvault task add "Ship v2.4.0" --priority high
-clawvault task list
-clawvault task list --status blocked
-clawvault task update <id> --status in-progress
-clawvault task done <id>
-clawvault blocked                          # Quick blocked view
-clawvault backlog add "Voice memo capture"
-clawvault backlog promote <id>
-```
+1. 会话开始时唤醒系统：使用 `clawvault wake` 恢复上下文；
+2. 在高负载工作时每 10-15 分钟创建一个检查点；
+3. 会话结束时进入休眠状态：使用 `clawvault sleep` 保存后续操作所需的上下文；
+4. 明确数据存储类型：了解数据的用途有助于选择合适的存储位置；
+5. 大量使用 Wiki 链接：`[[person-name]]` 格式可以帮助构建知识图谱。
 
-## 仪表板（v2.3.0及以上版本）
+#### AGENTS.md 的检查清单
 
-```bash
-# Generate with default template
-clawvault canvas
+请将此清单添加到现有的代理配置文件中。除非有特殊需求，否则不要替换原有的配置。
 
-# Choose template
-clawvault canvas --template brain           # 4-quadrant architecture view
-clawvault canvas --template project-board   # Owner-centric with agent/human cards
-clawvault canvas --template sprint          # Sprint-focused view
+## 会话记录修复（v1.5.0 及以上版本）
 
-# Filter and customize
-clawvault canvas --owner agent-alpha        # Filter to one owner
-clawvault canvas --include-done             # Include completed tasks
-clawvault canvas --width 1600 --height 1200
+当 Anthropic API 返回 “unexpected tool_use_id found in tool_result blocks” 错误时，请使用以下命令：
 
-# List available templates
-clawvault canvas --list-templates
-```
+**修复内容：**
+- 修复引用不存在的 `tool_use` ID 的孤立 `tool_result` 块；
+- 修复因 JSON 数据不完整导致的工具调用异常；
+- 修复损坏的父链引用问题。
 
-## 与Obsidian的集成（v2.4.0及以上版本）
+系统会自动创建备份（使用 `--no-backup` 可跳过备份操作）。
 
-### 神经图表样式
+### 常见问题解决方法：
 
-```bash
-clawvault setup --theme neural    # Dark bg, colored nodes, green links, golden glow
-clawvault setup --theme minimal   # Subtle category colors
-clawvault setup --theme none      # No theme changes
-```
+- **未安装 qmd**：请先安装 qmd，然后使用 `qmd --version` 确认版本；
+- **未找到 ClawVault**：运行 `clawvault init` 或设置 `CLAWVAULT_PATH`；
+- **CLAWVAULT_PATH 未配置**：运行 `clawvault shell-init` 并将其添加到 shell 配置文件中；
+- **存在过多孤立链接**：运行 `clawvault link --orphans` 修复问题；
+- **收件箱积压**：处理或归档收件箱中的数据；
+- **出现 “unexpected tool_use_id” 错误**：运行 `clawvault repair-session`；
+- **OpenClaw 集成问题**：运行 `clawvault compat` 检查兼容性；
+- **钩子配置失败/未找到**：运行 `openclaw hooks install clawvault`，然后 `openclaw hooks enable clawvault`，重启 OpenClaw 服务，并通过 `openclaw hooks list --verbose` 验证钩子状态；
+- **知识图谱过时**：运行 `clawvault graph --refresh` 更新图谱；
+- **上下文错误**：根据需要使用 `clawvault context --profile incident` 或 `--profile planning` 调用相应功能。
 
-### Obsidian基础数据视图
+## 稳定性测试
 
-自动生成的`.base`文件，用于Obsidian插件：
-- `all-tasks.base`：按状态分组的活动任务
-- `blocked.base`：被阻止的任务及其原因
-- `by-project.base`：按项目分组的任务
-- `by-owner.base`：按负责人分组的任务
-- `backlog.base`：按来源分类的待办事项
+- 代码类型检查通过（`npm run typecheck`）；
+- 测试套件全部通过（449 项测试全部通过）；
+- 对 Windows 平台进行了路径处理的优化：
+  - `qmd` 的 URI 和文档路径规范化；
+  - WebDAV 路径的安全性和文件系统解析；
+  - `shell-init` 的输出格式符合预期；
+- 通过 `clawvault compat --strict` 验证了 OpenClaw 的运行时兼容性（需安装本地 `openclaw` 可执行文件）。
 
-```bash
-clawvault setup --bases           # Generate bases files
-```
+## 与 qmd 的集成
 
-## 观察功能（v2.1.0及以上版本）
+ClawVault 使用 [qmd](https://github.com/tobi/qmd) 来支持搜索功能。
 
-```bash
-clawvault observe                  # Watch current session
-clawvault observe --compress file  # One-shot compression
-```
+## 环境变量配置
 
-观察结果会按照重要性进行排序：`[类型|置信度|i=重要性]`
+- `CLAWVAULT_PATH`：默认的存储目录路径（未设置时自动检测）；
+- `OPENCLAW_HOME`：OpenClaw 的主目录；
+- `OPENCLAW_STATE_DIR`：OpenClaw 的状态目录；
+- `GEMINI_API_KEY`：用于 LLM 压缩功能的配置项（可选）。
 
-## 账本功能（v2.2.0及以上版本）
+## 其他信息
 
-```bash
-clawvault reflect                  # Generate weekly reflection
-clawvault replay --last 7d         # Replay recent events
-clawvault rebuild                  # Rebuild from raw ledger
-clawvault archive --before 2026-01-01
-```
-
-## 内存图表（v2.0.0及以上版本）
-
-```bash
-clawvault graph                    # View graph summary
-clawvault graph --refresh          # Rebuild index
-clawvault context "topic"          # Graph-aware context retrieval
-clawvault context --profile planning "Q1 roadmap"
-clawvault entities                 # List linkable entities
-clawvault link --all               # Auto-link mentions
-```
-
-## 上下文丢失的恢复机制
-
-```bash
-clawvault wake                     # Start session (recover + recap)
-clawvault checkpoint --working-on "task" --focus "details"
-clawvault sleep "summary" --next "next steps" --blocked "blockers"
-clawvault recover --clear          # Manual recovery check
-clawvault handoff --working-on "task" --next "next" --blocked "blocker"
-```
-
-## Tailscale网络支持（v2.3.0及以上版本）
-
-```bash
-clawvault serve                    # Serve vault on Tailscale (port 7283)
-clawvault peers                    # Manage vault peers
-clawvault net-search "query"       # Cross-vault search
-```
-
-## 会话修复功能
-
-```bash
-clawvault repair-session --dry-run
-clawvault repair-session
-clawvault repair-session --list
-```
-
-修复孤立的工具结果、异常终止的工具调用以及损坏的父级数据链
-
-## Vault结构
-
-```
-vault/
-├── .clawvault.json          # Vault config
-├── .clawvault/              # Internal state (graph-index, checkpoints)
-├── decisions/
-├── lessons/
-├── people/
-├── projects/
-├── goals/
-├── preferences/
-├── patterns/
-├── commitments/
-├── handoffs/
-├── transcripts/
-├── agents/
-├── research/
-├── inbox/
-├── tasks/                   # Task tracking
-├── backlog/                 # Backlog items
-├── templates/               # 7 templates (daily-note, decision, checkpoint, etc.)
-├── ledger/
-│   ├── raw/                 # Raw session transcripts
-│   ├── observations/        # Compressed observations
-│   └── reflections/         # Weekly reflections
-├── *.base                   # Obsidian Bases views (5 files)
-├── dashboard.canvas         # Generated canvas
-└── README.md                # Auto-generated vault docs
-```
-
-**默认包含16个分类**：决策、经验教训、人员信息、项目、目标、偏好设置、模式、承诺事项、交接记录、会话记录、代理信息、研究资料、收件箱、任务列表、待办事项、模板
-
-可以通过`--categories`参数自定义分类
-
-## OpenClaw钩子
-
-捆绑的钩子（`hooks/clawvault/handler.js`）提供以下功能：
-- `gateway:startup`：在程序启动时执行`clawvault recover --clear`命令；如果检测到上下文丢失，则触发警报
-- `command:new`：在会话重置前自动创建备份
-
-**注意：** 该钩子还包含`session:start`处理程序，以兼容未来的OpenClaw版本
-
-**启用方法：**
-```bash
-openclaw hooks enable clawvault
-```
-
-## 环境变量
-
-| 变量 | 用途 |
-|----------|---------|
-| `CLAWVAULT_PATH` | 默认的vault路径（可忽略自动检测） |
-| `OPENCLAW_HOME` | OpenClaw的安装目录 |
-| `OPENCLAW_STATE_DIR` | OpenClaw的状态数据目录 |
-| `GEMINI_API_KEY` | 用于`observe`和`reflect`功能的LLM压缩密钥（可选）
-
-## 常见问题解决方法：
-- **qmd未安装**：运行`npm install -g qmd`或`bun install -g github:tobi/qmd`
-- **未找到vault**：运行`clawvault init`或设置`CLAWVAULT_PATH`
-- **初始化失败（提示“already exists”）**：该路径下已经存在vault
-- **出现“unexpected tool_use_id”错误**：运行`clawvault repair-session`
-- **图表数据过时**：运行`clawvault graph --refresh`更新图表
-- **旧版本的emoji格式问题**：运行`clawvault migrate-observations`修复问题
-- **OpenClaw版本不兼容**：运行`clawvault compat`进行兼容性检查
-
-## 链接：
-- 文档：https://docs.clawvault.dev
-- npm：https://www.npmjs.com/package/clawvault
-- GitHub仓库：https://github.com/Versatly/clawvault
+- **npm 包下载地址：** https://www.npmjs.com/package/clawvault
+- **GitHub 仓库：** https://github.com/Versatly/clawvault
+- **问题反馈：** https://github.com/Versatly/clawvault/issues

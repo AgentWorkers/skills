@@ -1,10 +1,9 @@
 ---
-slug: "price-api"
-display_name: "Price API"
-description: "从开放的 API 中获取建筑材料的价格信息。跟踪价格趋势、地区差异，并更新成本数据库。"
----
-
-# 建筑材料价格API
+name: "price-api"
+description: "从开放的API中获取建筑材料的价格信息。跟踪价格趋势、地区差异，并更新成本数据库。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🌐", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑材料价格API
 
 ## 概述
 建筑材料的价格会不断波动。该功能从开源数据源获取价格信息，跟踪价格趋势，并使用最新的市场数据更新成本数据库。
@@ -294,7 +293,7 @@ trend = tracker.calculate_trend(df)
 print(f"Steel trend: {trend.trend_direction}, YoY: {trend.year_change}%")
 ```
 
-## 常见用例
+## 常见使用场景
 
 ### 1. 更新成本数据库
 ```python

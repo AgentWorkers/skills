@@ -1,13 +1,12 @@
 ---
-slug: "weather-api"
-display_name: "Weather API"
-description: "获取天气数据以用于施工计划安排。包括历史数据、天气预报以及户外工作的风险评估信息。"
----
-
-# 用于建筑行业的天气API
+name: "weather-api"
+description: "获取用于施工计划制定的天气数据，包括历史天气数据、天气预报以及户外作业的风险评估信息。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🌐", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 用于建筑行业的天气API
 
 ## 概述
-天气状况对50%的建筑活动产生影响。该技能用于获取天气数据，以帮助进行施工计划安排、风险评估以及工作效率的调整。
+天气状况对50%的建筑活动有着直接影响。该技能用于获取天气数据，以便进行施工计划安排、风险评估以及生产力的调整。
 
 ## Python实现
 
@@ -311,5 +310,5 @@ print(f"Rain days in Q1: {rain_days}")
 ```
 
 ## 参考资源
-- **DDC手册**：第2.2章 - 开放数据集成（DDC Book: Chapter 2.2 - Open Data Integration）
+- **DDC手册**：第2.2章 - 开放数据集成
 - **Open-Meteo API**：https://open-meteo.com/

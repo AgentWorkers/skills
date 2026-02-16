@@ -1,0 +1,22 @@
+{
+  "owner": "cosformula",
+  "slug": "resilient-coding-agent",
+  "displayName": "Resilient Coding Agent",
+  "latest": {
+    "version": "0.4.0",
+    "publishedAt": 1771208885144,
+    "commit": "https://github.com/openclaw/skills/commit/ff5db98518d58f7e4f8024fee6927ab75102a941"
+  },
+  "history": [
+    {
+      "version": "0.2.0",
+      "publishedAt": 1771206087480,
+      "commit": "https://github.com/openclaw/skills/commit/250453fd1a9d1cb58481113694514f2ddd58f247"
+    },
+    {
+      "version": "0.1.0",
+      "publishedAt": 1771200607437,
+      "commit": "https://github.com/openclaw/skills/commit/3781f39658d7254e22e77347b3f9c53dc6661bd6"
+    }
+  ]
+}

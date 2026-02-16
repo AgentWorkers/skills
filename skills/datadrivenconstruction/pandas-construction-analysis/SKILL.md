@@ -1,18 +1,17 @@
 ---
-slug: "pandas-construction-analysis"
-display_name: "Pandas Construction Analysis"
+name: "pandas-construction-analysis"
 description: "一个全面的Pandas工具包，用于建筑数据分析。支持过滤、分组、汇总BIM元素，计算数量，合并数据集，并从结构化的建筑数据中生成报告。"
----
-
-# Pandas在建筑数据分析中的应用
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🐼", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# Pandas在建筑数据分析中的应用
 
 ## 概述
 
 本技能基于DDC方法论（第2.3章），提供了使用Pandas进行建筑数据处理的全面操作。Pandas堪称数据分析师的“瑞士军刀”——能够处理从简单的数据过滤到对数百万行数据进行复杂聚合的各种任务。
 
 **参考书籍**：《Pandas DataFrame与LLM ChatGPT》  
-> “通过使用Pandas，您可以管理和分析远超Excel功能的数据集。虽然Excel最多只能处理100万行数据，但Pandas可以轻松处理包含数千万行数据的数据集。”  
-—— DDC书籍，第2.3章
+> “通过使用Pandas，您可以管理和分析远超Excel处理能力的数据集。虽然Excel最多只能处理100万行数据，但Pandas可以轻松处理包含数千万行数据的数据集。”  
+——DDC书籍，第2.3章
 
 ## 快速入门
 
@@ -61,7 +60,7 @@ df_excel = pd.read_excel("project_data.xlsx", sheet_name="Elements")
 all_sheets = pd.read_excel("project.xlsx", sheet_name=None)  # Dict of DataFrames
 ```
 
-### 建筑领域中的数据类型
+### 建筑行业中的数据类型
 
 ```python
 # Common data types for construction
@@ -279,7 +278,7 @@ new_elements = pd.DataFrame({'ElementId': ['E004'], 'Category': ['Beam']})
 df = pd.concat([df, new_elements], ignore_index=True)
 ```
 
-## 建筑领域特有的分析
+## 建筑行业特有的分析
 
 ### 数量统计（QTO）
 
@@ -370,7 +369,7 @@ def analyze_by_level(df):
 
 ## 数据导出
 
-### 导出到包含多个工作表的Excel文件
+### 导出为包含多个工作表的Excel文件
 
 ```python
 def export_to_excel_formatted(df, summary, filepath):
@@ -387,7 +386,7 @@ def export_to_excel_formatted(df, summary, filepath):
 export_to_excel_formatted(elements, qto_summary, "project_report.xlsx")
 ```
 
-### 导出到CSV文件
+### 导出为CSV文件
 
 ```python
 # Basic export
@@ -419,26 +418,26 @@ print(df.memory_usage(deep=True).sum() / 1024**2, "MB")
 
 ## 快速参考
 
-| 操作            | 代码                          |
-|-----------------|---------------------------|
-| 读取Excel文件       | `pd.read_excel("file.xlsx")`            |
-| 读取CSV文件       | `pd.read_csv("file.csv")`            |
-| 过滤行           | `df[df['Column'] == 'Value']`           |
-| 选择列           | `df[['Col1', 'Col2']]`             |
-| 分组并求和       | `df.groupby('Cat')['Vol'].sum()`         |
-| 数据透视表       | `pd.pivot_table(df, values='Vol', index='Level')`     |
-| 合并DataFrame       | `df1.merge(df2, on='key')`            |
-| 添加新列         | `df['New'] = df['A'] * df['B']`         |
-| 导出到Excel       | `df.to_excel("out.xlsx", index=False)`        |
+| 操作          | 代码                |
+|---------------|-------------------|
+| 读取Excel文件     | `pd.read_excel("file.xlsx")`    |
+| 读取CSV文件     | `pd.read_csv("file.csv")`    |
+| 过滤行         | `df[df['Column'] == 'Value']`    |
+| 选择列         | `df[['Col1', 'Col2']]`     |
+| 分组并求和     | `df.groupby('Cat')['Vol'].sum()`   |
+| 数据透视表       | `pd.pivot_table(df, values='Vol', index='Level')` |
+| 合并DataFrame     | `df1.merge(df2, on='key')`     |
+| 添加新列       | `df['New'] = df['A'] * df['B']`    |
+| 导出为Excel文件   | `df.to_excel("out.xlsx", index=False)` |
 
 ## 资源
 
-- **书籍**：Artem Boiko的《Data-Driven Construction》，第2.3章  
+- **书籍**：Artem Boiko所著的《Data-Driven Construction》，第2.3章  
 - **网站**：https://datadrivenconstruction.io  
-- **Pandas官方文档**：https://pandas.pydata.org/docs/
+- **Pandas文档**：https://pandas.pydata.org/docs/
 
 ## 下一步
 
-- 可参考`llm-data-automation`了解如何利用AI生成Pandas代码  
-- 可参考`qto-report`进行专门的QTO（数量统计）计算  
-- 可参考`cost-estimation-resource`了解详细的成本计算方法
+- 可参考`llm-data-automation`以了解如何利用AI生成Pandas代码  
+- 可参考`qto-report`以获取专门的QTO计算工具  
+- 可参考`cost-estimation-resource`以获取详细的成本计算方法

@@ -1,14 +1,13 @@
 ---
-slug: "data-type-classifier"
-display_name: "Data Type Classifier"
-description: "按类型对构建数据进行分类（结构化数据、非结构化数据、半结构化数据）。分析数据来源，并推荐合适的存储/处理方法。"
----
-
-# 数据类型分类器
+name: "data-type-classifier"
+description: "按类型对构建数据（结构化数据、非结构化数据、半结构化数据）进行分类。分析数据来源，并推荐合适的存储/处理方法。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🏷️", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"], "anyBins": ["tesseract", "ifcopenshell"]}}}
+---# 数据类型分类器
 
 ## 概述
 
-本技能基于DDC方法论（第2.1章），对建筑数据按类型进行分类，分析数据来源，并推荐适当的存储、处理和集成方法。
+本技能基于DDC方法论（第2.1章），对建筑数据按类型进行分类，分析数据来源，并推荐合适的存储、处理和集成方法。
 
 **参考书籍**：《建筑中的数据类型》（Data Types in Construction）
 
@@ -635,14 +634,14 @@ with open("classification_report.md", "w") as f:
 
 ## 快速参考
 
-| 组件            | 功能                          |
-|-----------------|-----------------------------|
-| `DataTypeClassifier`   | 主要分类引擎                         |
-| `DataStructure`     | 数据结构类型（结构化、半结构化、非结构化）           |
-| `DataFormat`      | 文件格式检测                         |
-| `StorageRecommendation` | 存储系统推荐                         |
-| `DataClassification`   | 分类结果                         |
-| `ClassificationReport` | 多数据源报告                         |
+| 组件          | 功能                        |
+|--------------|---------------------------|
+| `DataTypeClassifier` | 主要分类引擎                |
+| `DataStructure` | 数据结构类型（结构化、半结构化、非结构化）     |
+| `DataFormat`    | 文件格式检测                    |
+| `StorageRecommendation` | 存储系统建议                    |
+| `DataClassification` | 数据分类结果                    |
+| `ClassificationReport` | 多源数据分类报告                |
 
 ## 资源
 

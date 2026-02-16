@@ -1,104 +1,127 @@
 ---
-slug: "data-lineage-tracker"
-display_name: "Data Lineage Tracker"
-description: "跟踪数据在构建系统中的来源、转换过程及其流动路径。这对于审计追踪、合规性检查以及调试数据问题至关重要。"
----
-
-# 建筑项目数据溯源工具
+name: "data-lineage-tracker"
+description: "跟踪数据在建筑系统中的来源、转换过程及其流动路径。这对于审计追踪、合规性检查以及排查数据问题至关重要。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "✔️", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑项目数据溯源工具
 
 ## 概述
 
-本工具用于追踪建筑项目数据在系统中的来源、转换过程及流动情况，提供审计追踪功能以确保数据合规性，帮助排查数据问题，并实现数据治理。
+本工具用于追踪建筑项目数据在系统中的来源、转换过程及流动情况。它提供了审计追踪功能，有助于数据问题的排查，并确保数据治理的合规性。
 
 ## 业务需求
 
-建筑项目对数据透明度有严格要求：
+建筑项目需要实现数据的可追溯性：
 - **审计合规性**：明确每个数据的来源
 - **问题排查**：追踪数据问题的根源
 - **变更影响分析**：了解变更对下游系统的影响
-- **法规遵从**：维护数据来源记录以应对法律或保险要求
+- **法规要求**：满足法律和保险方面的数据溯源需求
 
 ## 技术实现
 
 ```python
-# 定义数据实体类
-class Entity:
-    def __init__(self, id, name, system, location, owner):
-        self.id = id
-        self.name = name
-        self.system = system
-        self.location = location
-        self.owner = owner
+def trace_upstream(entity_id, depth=5):
+    # 追溯数据的上游来源
+    for parent_id in entity_id.split('-'):
+        upstream = trace_upstream(parent_id, depth - 1)
 
-# 定义数据转换类
-class Transformation:
-    def __init__(self, id, type, description, input_entities, output_entities, performed_by, performed_at):
-        self.id = id
-        self.type = type
-        self.description = description
-        self.input_entities = input_entities
-        self.output_entities = output_entities
-        self.performed_by = performed_by
-        self.performed_at = performed_at
+    return [parent_id]
 
-# 定义数据溯源类
-class ConstructionDataLineageTracker:
-    def __init__(self, project_id):
-        self.project_id = project_id
-        selfentities = {}
-        self.sources = {}
-        self.transformations = {}
-        self.lineage_records = []
+def trace_downstream(entity_id, depth=5):
+    # 追溯数据的下游流向
+    for child_id in entity_id.split('-'):
+        downstream = trace_downstream(child_id, depth - 1)
 
-    def trace_upstream(self, entity_id, depth=5):
-        # 追溯实体上游的转换记录
-        for transformation in self.transformations.values():
-            if transformation.input_entities contains(entity_id):
-                return [transformation]
+    return [child_id]
 
-    def trace_downstream(self, entity_id, depth=5):
-        # 追溯实体下游的转换记录
-        for transformation in self.transformations.values():
-            if transformation.output_entities contains(entity_id):
-                return [transformation]
+def generate_lineage_graph(entity_id):
+    # 生成数据溯源图
+    graph = []
+    for entity in selfentities.get(entity_id):
+        node_id = entity.id.replace('-', '_')
+        lines.append(f"    {node_id}[{entity.name}]")
+        graph.append(node_id)
 
-    def add_node(self, entity_id):
-        entity = selfentities.get(entity_id)
-        if entity:
-            self_lines.append(f"    {entity_id}[{entity.name}]")
-        selfentities.add(entity_id)
+    for transformation in self.transformations.get(entity_id):
+        from_node = transformation.input_entities[0]
+        to_node = transformation.output_entities[0]
+        lines.append(f"    {from_node} --> {to_node}")
 
-    def add_edge(self, from_node, to_node):
-        self_lines.append(f"    {from_node} --> {to_node}")
+    return "\n".join(lines)
 
-    def generate_lineage_graph(self, entity_id):
-        # 生成数据溯源图
-        # 使用Mermaid语法生成图形表示数据关系
+    return graph
 
-    def export_lineage(self) -> Dict:
-        # 导出完整的溯源数据
-        # ...
+def export_lineage_data():
+    """导出完整的数据溯源信息."""
+    return {
+        'project_id': self.project_id,
+        'exported_at': datetime.now().isoformat(),
+        'sources': {k: {
+            'id': v.id,
+            'name': v.name,
+            'system': v.system,
+            'location': v.location,
+            'owner': v.owner
+        } for k, v in self.sources.items()),
+        'entities': {k: {
+            'id': v.id,
+            'name': v.name,
+            'source_id': v.source_id,
+            'entity_type': v.entity_type,
+            'parent_entities': v.parent_entities
+        } for k, v in selfentities.items()),
+        'transformations': {k: {
+            'id': v.id,
+            'type': v.transformation_type.value,
+            'description': v.description,
+            'input_entities': v.input_entities,
+            'output_entities': v.output_entities,
+            'performed_by': v.performed_by,
+            'performed_at': v.performed_at.isoformat()
+        } for k, v in self.transformations.items()),
+        'lineage_records': []
+    }
+}
+```
 
-    def generate_report(self) -> str:
-        # 生成溯源报告
-        # ...
+## 使用示例
 
-# 示例代码
+```python
+# 初始化数据溯源工具
 tracker = ConstructionDataLineageTracker("PROJECT-001")
-# 注册数据源和实体
-# ...
-# 记录数据转换
+
+# 注册数据源
+procore = tracker.register_source("Procore", "SaaS", "cloud", "PM Team")
+sage = tracker.register_source("Sage 300", "Database", "on-prem", "Finance")
+
+# 注册数据实体
+budget = tracker.register_entity("Project Budget", procore.id, "table")
+costs = tracker.register_entity("Job Costs", sage.id, "table")
+report = tracker.register_entity("Cost Variance Report", procore.id, "file")
+
+# 记录数据转换操作
 tracker.record_transformation(
-    # ...
-# 追溯数据溯源
+    transformation_type=TransformationType.JOIN,
+    description="合并预算数据和实际成本以计算差异",
+    input_entities=[budget.id, costs.id],
+    output_entities=[report.id],
+    logic="SELECT b.*, c.actual, (b.budget - c.actual) as variance FROM budget b JOIN costs c ON b.cost_code = c.cost_code",
+    performed_by="ETL Pipeline"
+)
+
+# 追溯数据来源
 upstream = tracker.trace_upstream(report.id)
-print("上游溯源记录:")
-print(tracker.generate_lineage_graph(report.id))
-# 导出溯源数据
-lineage_data = tracker.export_lineage()
+print("数据来源：", upstream)
+
+# 生成数据溯源图
+graph = tracker.generate_lineage_graph(report.id)
+print("数据溯源图：")
+
+# 导出数据以供审计使用
+lineage_data = tracker.export_lineage_data()
 ```
 
 ## 参考资源
 
-- **数据治理标准**：DAMA DMBOK中的数据溯源指南
-- **法规要求**：SOX、ISO等合规性标准
+- **数据治理指南**：DAMA DMBOK
+- **法规要求**：SOX、ISO合规性标准

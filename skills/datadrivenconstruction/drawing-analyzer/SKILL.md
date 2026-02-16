@@ -1,10 +1,9 @@
 ---
-slug: "drawing-analyzer"
-display_name: "Drawing Analyzer"
-description: "分析施工图纸，提取尺寸、注释、符号和元数据。支持数量统计以及设计审查的自动化流程。"
----
-
-# 建筑绘图分析工具
+name: "drawing-analyzer"
+description: "分析施工图纸，提取尺寸、注释、符号和元数据。支持数量统计及设计审查的自动化流程。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "📑", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑绘图分析工具
 
 ## 概述
 

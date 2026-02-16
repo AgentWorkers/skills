@@ -1,25 +1,24 @@
 ---
-slug: "qto-report"
-display_name: "QTO Report"
+name: "qto-report"
 description: "根据BIM/CAD数据生成数量清单（QTO）报告。提取体积、面积以及按类别分类的计数结果。对元素进行分组，应用计算规则，并自动生成成本估算。"
----
-
-# 数量统计（QTO）报告生成
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "⚡", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"], "anyBins": ["ifcopenshell"]}}}
+---# 数量统计（QTO）报告生成
 
 ## 概述
 
-基于DDC方法论（第3.2章），此功能可自动从BIM/CAD数据中提取并分类各项数量信息。数量统计（QTO）是建筑项目中成本估算、进度安排和项目规划的基础。
+本功能基于DDC方法论（第3.2章），自动化地从BIM/CAD数据中提取并分类各项数量信息。数量统计（QTO）是建筑项目中成本估算、进度安排和项目规划的基础。
 
-**参考书籍**：《数量统计与自动估算》（"Quantity Take-Off и автоматическое создание смет"）
+**参考书籍**：《数量统计与自动估算生成》（"Quantity Take-Off и автоматическое создание смет"）
 
-> “通过按属性对数据进行分组，可以自动从BIM模型中提取数量和体积信息，从而用于成本计算。”
-> — DDC手册，第3.2章
+> “通过按属性对数据进行分类，可以自动从BIM模型中提取数量和体积信息，从而用于成本计算。”
+> —— DDC手册，第3.2章
 
 ## 5D BIM概念
 
 数量统计（QTO）过程是5D BIM的核心组成部分：
 - **3D**：几何形状（体积、面积、长度）
-- **4D**：时间（进度整合）
+- **4D**：时间（进度集成）
 - **5D**：成本（数量 × 单价）
 
 ## 快速入门
@@ -135,7 +134,7 @@ qto_pivot = generate_qto_pivot(df, values='Volume')
 qto_pivot.to_excel("qto_pivot.xlsx")
 ```
 
-## 从数量统计结果计算成本
+## 从数量统计结果中计算成本
 
 ### 应用单价
 
@@ -253,7 +252,7 @@ df = process_revit_export("revit_schedule.csv")
 qto = generate_qto(df)
 ```
 
-### 从IFC导出
+### 从IFC格式导出
 
 ```python
 # Using IfcOpenShell
@@ -328,7 +327,7 @@ material_qto = material_breakdown_qto(df)
 material_qto.to_excel("material_breakdown.xlsx")
 ```
 
-### 考虑损耗因素的数量统计
+### 考虑损耗因子的数量统计
 
 ```python
 def qto_with_waste(df, waste_factors):
@@ -425,12 +424,12 @@ export_qto_report(qto, "project_qto")
 | 使用数据透视表 | `pd.pivot_table(df, values='Volume', ...)` |
 | 应用单价 | `qto.merge(prices, on='Category')` |
 | 计算成本 | `df['Cost'] = df['Volume'] * df['Unit_Price']` |
-| 加入损耗因素 | `df['Gross'] = df['Net'] * waste_factor` |
+| 添加损耗因子 | `df['Gross'] = df['Net'] * waste_factor` |
 
-## 资源
+## 资源推荐
 
-- **参考书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第3.2章
-- **官方网站**：https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑工程》（"Data-Driven Construction"），第3.2章
+- **网站**：https://datadrivenconstruction.io
 - **IfcOpenShell**：https://ifcopenshell.org
 
 ## 下一步操作
