@@ -1,0 +1,55 @@
+name: Daily Sync & Translate
+
+on:
+  # 每天 UTC 0 点运行（北京时间 8 点）
+  schedule:
+    - cron: '0 0 * * *'
+  # 也可以手动触发
+  workflow_dispatch:
+
+jobs:
+  sync-translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: |
+          pip install httpx
+
+      - name: Download and translate upstream skills
+        env:
+          TRANSLATE_API_URL: ${{ secrets.TRANSLATE_API_URL }}
+          TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
+        run: |
+          # 可选：设置上游仓库 URL
+          # UPSTREAM_REPO_URL: https://github.com/your-fork/skills/archive/refs/heads/main.zip
+          
+          python translate.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # 检查是否有文件变更
+          if git diff --quiet --staged; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
+          # 添加翻译后的文件
+          git add skills/
+          git commit -m "chore: sync and translate upstream skills ($(date -u '+%Y-%m-%d %H:%M:%S UTC'))"
+          
+          # 推送到远程
+          git push origin main
