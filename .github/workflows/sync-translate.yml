@@ -41,14 +41,15 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
+          # 添加翻译后的文件
+          git add skills/
+          
           # 检查是否有文件变更
-          if git diff --quiet --staged; then
+          if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0
           fi
           
-          # 添加翻译后的文件
-          git add skills/
           git commit -m "chore: sync and translate upstream skills ($(date -u '+%Y-%m-%d %H:%M:%S UTC'))"
           
           # 推送到远程
