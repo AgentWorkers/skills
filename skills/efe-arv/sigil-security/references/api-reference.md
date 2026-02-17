@@ -100,6 +100,10 @@ Users toggle bundles on the Policy page at `app.sigil.codes/dashboard/policy`.
 - Factory: `0x20f926bd5f416c875a7ec538f499d21d62850f35`
 - Implementation: `0x625E2E03b9910B6816DF43A3080b2C2D743C2bd9`
 
+### Polygon (137)
+- Factory: `0x20f926bd5f416c875a7ec538f499d21d62850f35`
+- Implementation: `0x625E2E03b9910B6816DF43A3080b2C2D743C2bd9`
+
 ### Shared
 - EntryPoint (v0.7): `0x0000000071727De22E5E9d8BAf0edAc6f37da032`
 - Guardian: `0xD06fBe90c06703C4b705571113740AfB104e3C67`

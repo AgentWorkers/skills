@@ -1,60 +1,82 @@
 ---
-name: "Coding"
-version: "1.0.1"
-changelog: "Migrate to external memory storage at ~/coding/"
-description: "它会自动学习你的技术栈、编程风格以及个人偏好。初始状态下是空的，但随着每个项目的完成而逐渐丰富起来。"
+name: Coding
+slug: coding
+version: 1.0.2
+description: 根据用户的明确反馈来了解其编程偏好。初始状态为空，随着用户不断纠正错误并提供指导，系统会逐渐完善自身功能。
+changelog: Replace vague observe/detect with explicit feedback learning, require user confirmation before storing preferences
+metadata: {"clawdbot":{"emoji":"💻","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
+## 该技能的学习方式
 
-## 自适应代码偏好设置
+该技能仅通过以下方式了解您的偏好：
+- **明确的反馈**：例如 “实际上，我更喜欢X而不是Y”。
+- **直接的指令**：例如 “始终使用snake_case命名规则”。
+- **重复的请求**：如果您多次请求相同的内容，该技能会记录下来。
 
-此功能会自动进行优化和更新。它会观察用户的操作，识别使用模式，并记录用户的偏好设置。
+该技能绝对不会：
+- 读取您的项目文件来推断您的偏好；
+- 在您不知情的情况下观察您的行为；
+- 存储您未明确同意的数据。
 
-**规则：**
-- 从用户的操作中识别使用模式（而不仅仅是用户的明确请求）
-- 在用户连续做出相同选择两次以上后，确认这些偏好设置
-- 每条偏好设置的信息应保持极简（最多5个单词）
-- 查看 `dimensions.md` 文件以确定偏好设置的分类，以及查看 `criteria.md` 文件以确定何时需要添加新的偏好设置
+## 偏好信息的存储
 
----
+您的偏好信息存储在 `~/coding/memory.md` 文件中。该文件会在您首次使用该技能时自动生成。
 
-## 内存存储
-
-用户的偏好设置保存在 `~/coding/memory.md` 文件中。激活该功能时会读取这些设置。
-
-**结构：**
 ```
 ~/coding/
-├── memory.md      # Active preferences (load always)
-└── history.md     # Old/archived preferences
+├── memory.md      # Active preferences (≤100 lines)
+└── history.md     # Archived old preferences
 ```
 
-**规则：**
-- 在功能启动时始终加载 `memory.md` 文件
-- 确保 `memory.md` 文件的行数不超过100行
-- 将旧的偏好设置记录归档到 `history.md` 文件中
+**创建该文件的方法：** `mkdir -p ~/coding`
 
-**`memory.md` 文件的格式：**
+## 偏好信息的格式
+
 ```markdown
 # Coding Memory
 
 ## Stack
-- context: tech
+- python: prefer 3.11+
+- js: use TypeScript always
 
 ## Style
-- rule or thing: preference
+- naming: snake_case for Python, camelCase for JS
+- imports: absolute over relative
 
 ## Structure
-- project organization preference
+- tests: same folder as code, not separate /tests
 
 ## Never
-- thing user rejected
-
----
-*Last updated: YYYY-MM-DD*
+- var in JavaScript
+- print debugging in production
 ```
 
-**首次使用时：** 如果 `memory.md` 文件不存在，请创建该文件。
+## 偏好信息的添加流程
 
----
+1. **用户纠正输出结果** → 该技能会询问：“我应该记住这个偏好设置吗？”
+2. **用户确认** → 该技能会将偏好信息添加到 `~/coding/memory.md` 文件中。
+3. **用户可以查看自己的偏好设置** → 通过 “Show my coding preferences” 功能可以查看当前的偏好设置列表。
 
-*如果 `memory.md` 文件为空，说明用户尚未设置任何偏好设置。请继续观察用户的操作并逐步填写相关信息。*
+任何偏好信息在未经用户明确确认的情况下都不会被存储。
+
+## 规则
+
+- 每条偏好信息的描述长度应控制在5个单词以内。
+- 在添加任何偏好信息之前，必须先得到用户的确认。
+- 请参考 `dimensions.md` 文件以确定偏好信息的分类。
+- 请参考 `criteria.md` 文件来决定何时添加新的偏好信息。
+- `memory.md` 文件中的内容不得超过100行。
+- 旧有的偏好设置会被自动归档到 `history.md` 文件中。
+
+## 会话开始时的处理流程
+
+1. 如果 `~/coding/memory.md` 文件存在，会加载该文件。
+2. 将存储的偏好信息应用到系统的响应中。
+3. 如果文件不存在，则系统会以默认设置开始运行。
+
+## 辅助文件
+
+| 文件名 | 用途 |
+|------|---------|
+| `dimensions.md` | 用于记录偏好信息的分类 |
+| `criteria.md` | 用于确定何时建议添加新的偏好设置 |

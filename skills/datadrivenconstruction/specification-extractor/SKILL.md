@@ -1,21 +1,20 @@
 ---
-slug: "specification-extractor"
-display_name: "Specification Extractor"
-description: "从施工规范中提取结构化数据。解析规范文件中的CSI（Construction Specification Information）部分、需求信息、提交资料以及产品数据。"
----
-
-# 建筑工程规范提取器
+name: "specification-extractor"
+description: "从施工规范中提取结构化数据。解析规范文档中的CSI部分（Construction Specification Information）、需求信息、提交文件以及产品数据。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "📑", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 建筑工程规范提取工具
 
 ## 概述
 
-本工具用于从建筑工程规范文档中提取结构化数据。它可以解析 CSI MasterFormat 格式的内容，识别项目需求、所需提交的文件、产品标准，并生成可用于估算和采购的实用数据。
+本工具用于从建筑工程规范文档中提取结构化数据。它能够解析 CSI MasterFormat 格式的内容，识别相关需求、提交文件、产品标准，并生成可用于估算和采购的实用数据。
 
 ## 商业价值
 
-自动化规范提取功能可带来以下优势：
+自动化规范提取功能带来以下优势：
 - **更快的估算速度**：快速明确项目范围和需求
 - **更准确的采购流程**：准确获取产品规格信息
-- **全面的提交文件管理**：全面追踪所有需要提交的文件
+- **提交文件跟踪**：全面记录所有必要的提交文件
 - **合规性检查**：验证各项规范是否符合相关标准
 
 ## 技术实现

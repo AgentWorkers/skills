@@ -195,11 +195,82 @@ bash uninstall.sh
 
 The uninstaller exports all memories to `~/.openclaw/braindb-export/` (both JSON and readable markdown), stops containers, and removes the OpenClaw plugin config. Your workspace files are never modified. Docker volumes are preserved until you explicitly delete them.
 
+## How Memory Grows
+
+BrainDB starts with **brain fog** — and that's normal.
+
+When you first install, your AI has zero memories. It won't know your name, your projects, or your preferences. Just like a new team member on their first day.
+
+Over time, as you interact:
+- **Auto-capture** encodes important facts from conversations
+- **Hebbian reinforcement** strengthens memories you access frequently
+- **Decay** lets unused memories fade, keeping recall sharp
+- **Migration** can bootstrap from your existing workspace files
+
+The learning curve looks like this:
+
+```
+Accuracy
+  100% ┤                                    ●━━━━━━━━━━━
+       │                              ●━━━━━
+   80% ┤                        ●━━━━
+       │                  ●━━━━
+   60% ┤            ●━━━━
+       │      ●━━━━
+   40% ┤ ●━━━
+       │
+   20% ┤
+       └──────────────────────────────────────────────────
+        Day 1   Week 1   Month 1   Month 3   Month 6+
+```
+
+**Day 1:** Brain fog. AI relies on flat files + whatever you migrate.
+**Week 1:** Knows your name, preferences, key facts. Covers the basics.
+**Month 1:** Procedural knowledge builds. Knows your tools, workflows, team.
+**Month 3+:** Deep institutional knowledge. Remembers decisions, patterns, history.
+
+This is by design. A memory system that claims 100% accuracy from day one is lying — it just loaded your flat files into context and called it memory.
+
 ## Performance
+
+### Accuracy
+
+| Benchmark | Score | Notes |
+|-----------|-------|-------|
+| Core recall (50 tests) | 48/50 (96%) | Baseline + edge cases |
+| Accuracy suite (30 tests) | 30/30 (100%) | Personal, business, procedural, infra, decisions, vague |
+| Self-knowledge (10 tests) | 9/10 (90%) | Identity, tools, environment, personality |
+
+### vs Flat Files (MEMORY.md, USER.md, etc.)
+
+| Metric | Flat Files | BrainDB |
+|--------|-----------|---------|
+| Accuracy | 80% (24/30) | **100% (30/30)** |
+| Context per message | ~10,500 tokens | **~450 tokens** |
+| Context efficiency | 23x more burn | **23x less** |
+| Tokens per useful fact | ~8,100 | **~130** |
+| Context utilization | 2.5% relevant | **~100% relevant** |
+| Context ceiling | ~169 days | **Never** |
+| Cost at 80 msgs/day | ~$15.72/day | **~$0.67/day** |
+
+### Token Burn Over Time
+
+Flat files grow linearly — every new fact increases every message's cost. BrainDB stays constant.
+
+| Timeframe | Flat Files | BrainDB | Savings |
+|-----------|-----------|---------|---------|
+| 1 day | 1.9M tokens ($29) | 42K tokens ($0.63) | $28/day |
+| 1 month | 89M tokens ($1,314) | 1.2M tokens ($19) | $1,295/mo |
+| 1 year | 5.4B tokens ($80K) | 15M tokens ($227) | $80K/yr |
+
+*Assumptions: 80 messages/day, Opus @ $15/MTok input, flat files growing ~875 tokens/day.*
+
+The savings compound over time because flat file context grows while BrainDB stays flat.
+
+### Speed
 
 | Metric | Value |
 |--------|-------|
-| Recall accuracy | 98% (50-test benchmark suite) |
 | Average latency | 12–20 ms per query |
 | Cold query | ~60 ms |
 | Memory capacity | Tested to 2,000; projected to 10K+ |

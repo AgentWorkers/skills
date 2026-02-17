@@ -235,7 +235,7 @@ function generateMemories(env) {
 
   memories.push({
     event: 'Pattern: remote command execution on fleet',
-    content: 'To run commands on remote Linux nodes, use nodes(action="run", node="openclaw-N", command=["bash","-c","command"]). Do NOT use SSH directly — it fails with "Permission denied (publickey)". The nodes tool handles authentication internally.',
+    content: 'To run commands on remote nodes, use nodes(action="run", node="node-name", command=["bash","-c","command"]). The nodes tool handles authentication internally.',
     shard: 'procedural',
     category: 'execution-pattern',
   });
@@ -278,7 +278,7 @@ function generateMemories(env) {
   // === FAILURE MEMORIES ===
   memories.push({
     event: 'Failure: SSH to fleet nodes',
-    content: 'SSH by hostname does not resolve for fleet nodes. SSH by IP gets "Permission denied (publickey)". Always use nodes(action="run") instead — it handles authentication. Affected nodes: openclaw-2,3,4,5,6,7.',
+    content: 'If SSH fails to remote nodes, use nodes(action="run") instead — it handles authentication internally and avoids SSH key issues.',
     shard: 'procedural',
     category: 'failure-memory',
   });

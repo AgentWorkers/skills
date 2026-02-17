@@ -1,0 +1,11 @@
+{
+  "owner": "0xnyk",
+  "slug": "xint-rs",
+  "displayName": "Xint Rs",
+  "latest": {
+    "version": "2026.2.17",
+    "publishedAt": 1771276339758,
+    "commit": "https://github.com/openclaw/skills/commit/87b0bdb83d09e00867b0add423871fc6c8dd406f"
+  },
+  "history": []
+}

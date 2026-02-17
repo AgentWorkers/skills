@@ -2,7 +2,6 @@
 
 ## Table of Contents
 
-- [setup](#setup)
 - [generate](#generate)
 - [analyze](#analyze)
 - [deploy](#deploy)
@@ -11,18 +10,6 @@
 - [interact](#interact)
 - [list](#list)
 - [delete](#delete)
-
----
-
-## setup
-
-```bash
-clawcontract setup --openrouter-key <key>
-```
-
-Writes `.env` non-interactively. If `--private-key` is not supplied, `PRIVATE_KEY` is left empty in `.env` — no key is auto-generated.
-
-Available flags: `--private-key`, `--openrouter-key`, `--openrouter-model`, `--bscscan-key`.
 
 ---
 
@@ -183,5 +170,5 @@ clawcontract delete 0xABC...def --force
 
 - Default chain is `bsc-testnet` if `--chain` is not specified.
 - Generated contracts are written to `./contracts/` by default (override with `--output <dir>`).
-- The CLI is fully non-interactive — all commands run without user prompts.
+- All commands except `delete` are fully non-interactive. `delete` prompts for confirmation unless `--force` is passed.
 - Deployment metadata is saved to `.deployments/` in the contracts directory (directory-based store with deduplicated ABIs and fast index). Legacy `.deployments.json` files are auto-migrated.

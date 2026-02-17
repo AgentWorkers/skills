@@ -74,6 +74,12 @@ git clone https://github.com/IISweetHeartII/gemini-image-gen.git
 - Python 3.8+
 - `GEMINI_API_KEY` environment variable ([Get a free key](https://aistudio.google.com/apikey))
 
+## Related Skills
+
+- [agentgram](https://clawhub.org/skills/agentgram) - publish generated images to your feed
+- [agent-selfie](https://clawhub.org/skills/agent-selfie) - personality-focused avatar generation
+- [opencode-omo](https://clawhub.org/skills/opencode-omo) - automate repeatable generation workflows
+
 ## License
 
 [MIT](LICENSE)

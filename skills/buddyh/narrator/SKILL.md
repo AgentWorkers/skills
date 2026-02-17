@@ -1,143 +1,93 @@
 ---
-name: narrator
-description: 在 macOS 上，该功能可以实时解说屏幕上的活动。它通过 Gemini Flash Vision 技术捕捉屏幕画面，生成与特定样式相匹配的解说内容，并通过 ElevenLabs 的 TTS（文本转语音）技术进行播放。支持 7 种不同的解说风格，每种风格都配有专属的语音和背景音轨。
+name: screen-narrator
+description: 使用 Gemini Vision 和 ElevenLabs 的语音功能，实现对你 macOS 屏幕活动的实时解说。
+homepage: https://github.com/buddyh/narrator
 metadata:
   {
     "openclaw":
       {
         "emoji": "🎙️",
-        "requires": { "bins": ["python3"] },
-        "env":
-          {
-            "GEMINI_API_KEY": "",
-            "ELEVENLABS_API_KEY": "",
-            "ELEVENLABS_VOICE_ID": "",
-          },
+        "requires": {
+          "bins": ["python3", "tmux", "peekaboo"],
+          "env": ["GEMINI_API_KEY", "ELEVENLABS_API_KEY"]
+        },
       },
   }
 ---
+# 屏幕叙述器（Screen Narrator）
 
-# 屏幕旁白
+此技能与上游的 `narrator` 仓库实现相关联。
 
-在 macOS 上实时旁白您的屏幕操作。通过 Gemini Flash 捕获屏幕画面，生成符合特定风格的解说，并通过 ElevenLabs 的文本转语音（TTS）功能将其大声播放。
+它支持 Gemini-vision 的多种叙述风格（体育、自然、恐怖、黑色电影、真人秀、ASMR、摔跤等），以及 ElevenLabs 的文本到语音（TTS）技术。同时，还提供了可选的双声道叙述功能，并可通过 JSON 文件实现实时控制。
 
-## 风格选项
+## 官方安装方式
 
-| 风格 | 语气/氛围 |
-|-------|------|
-| `sports` | 生动有力的比赛解说风格 |
-| `nature` | 大卫·阿滕伯勒式纪录片风格 |
-| `horror` | 令人毛骨悚然的恐怖氛围 |
-| `noir` | 硬汉派侦探风格的旁白 |
-| `reality_tv` | 现实电视节目中的 confession booth 评论风格 |
-| `asmr` | 低语般的冥想氛围 |
-| `wrestling` | 极度激动的比赛解说风格 |
-
-## 设置
+请使用以下仓库进行安装：
 
 ```bash
-python -m venv .venv
+cd /Users/buddy/narrator
+/Users/buddy/narrator/.venv/bin/python -m narrator sports --help
+```
+
+## 设置步骤
+
+```bash
+cd /Users/buddy/narrator
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-创建一个 `.env` 文件，用于存储您的 API 密钥：
+**所需环境：**
+- `GEMINI_API_KEY`
+- `ELEVENLABS_API_KEY`
+- 可选：`ELEVENLABS_VOICE_ID`
+
+## 运行时控制命令
+
+**在 tmux 会话中启动实时叙述（推荐方式）：**
 
 ```bash
-GEMINI_API_KEY=your_key_here
-ELEVENLABS_API_KEY=your_key_here
-ELEVENLABS_VOICE_ID=your_default_voice_id
+tmux new-session -d -s narrator "cd /Users/buddy/narrator && /Users/buddy/narrator/.venv/bin/python -m narrator sports --control-file /tmp/narrator-ctl.json --status-file /tmp/narrator-status.json"
 ```
 
-在 `~/.narrator/config.yaml` 文件中配置每种风格对应的语音和背景音乐：
-
-```yaml
-voices:
-  sports: your-voice-id
-  noir: your-voice-id
-  wrestling: your-voice-id
-  horror: your-voice-id
-  asmr: your-voice-id
-  reality_tv: your-voice-id
-
-ambient:
-  sports: ~/narrator/ambient/sports.wav
-  noir: ~/narrator/ambient/noir.wav
-  wrestling: ~/narrator/ambient/wrestling.wav
-  horror: ~/narrator/ambient/horror.wav
-  asmr: ~/narrator/ambient/asmr.wav
-  nature: ~/narrator/ambient/nature.wav
-  reality_tv: ~/narrator/ambient/reality_tv.wav
-
-defaults:
-  style: sports
-  profanity: high
-```
-
-## 使用方法
+**设置定时器：**
 
 ```bash
-python -m narrator                    # interactive style picker
-python -m narrator horror             # specific style
-python -m narrator wrestling -t 5m    # auto-stop after 5 minutes
-python -m narrator --list             # show available styles
-python -m narrator --dry-run          # print lines without speaking
-python -m narrator --verbose          # debug output
+tmux new-session -d -s narrator "cd /Users/buddy/narrator && /Users/buddy/narrator/.venv/bin/python -m narrator wrestling --time 5m --control-file /tmp/narrator-ctl.json --status-file /tmp/narrator-status.json"
 ```
 
-## 实时控制
-
-通过控制文件动态更改设置：
+**动态切换叙述风格：**
 
 ```bash
-python -m narrator noir \
-  --control-file /tmp/narrator-ctl.json \
-  --status-file /tmp/narrator-status.json
+echo '{"command": "style", "value": "horror"}' > /tmp/narrator-ctl.json
 ```
 
-然后向控制文件中输入相应的命令：
+**设置禁用粗话的功能：**
 
 ```bash
-# Switch style
-echo '{"command": "style", "value": "wrestling"}' > /tmp/narrator-ctl.json
-
-# Change profanity level (off/low/high)
 echo '{"command": "profanity", "value": "low"}' > /tmp/narrator-ctl.json
+```
 
-# Pause / resume
+**暂停/恢复叙述：**
+
+```bash
 echo '{"command": "pause"}' > /tmp/narrator-ctl.json
 echo '{"command": "resume"}' > /tmp/narrator-ctl.json
 ```
 
-## 架构
+**停止叙述：**
 
-```
-Screen Capture --> Gemini Flash (vision + text) --> ElevenLabs TTS (WebSocket streaming)
-     |                                                      |
-     +-- ambient background track (per-style, looping) -----+
+```bash
+tmux kill-session -t narrator
 ```
 
-- **双通道处理流程**：交替使用简短和长篇的解说内容，以避免沉默片刻。
-- **个性化语音**：每种风格都可以使用不同的 ElevenLabs 语音库中的声音。
-- **个性化背景音乐**：根据所选风格自动选择并循环播放背景音乐。
-- **实时控制**：通过 JSON 格式的控制文件实时调整解说风格、语言风格或暂停功能。
+**检查当前状态：**
 
-## 背景音乐
-
-将 16 位 PCM 单声道 WAV 文件（采样率 16kHz）放入 `ambient/` 目录中，文件名需与对应的风格相匹配：
-
-```
-ambient/sports.wav
-ambient/noir.wav
-ambient/wrestling.wav
-...
+```bash
+cat /tmp/narrator-status.json
 ```
 
-将 MP3 文件转换为 WAV 格式：`ffmpeg -i input.mp3 -ac 1 -ar 16000 -sample_fmt s16 ambient/style.wav`
-
-## 注意事项
-
-- 仅支持 macOS 系统（依赖屏幕捕获 API）。
-- 请在系统设置 > 隐私与安全中为终端程序授予屏幕录制权限。
-- 该工具使用 ElevenLabs 的 WebSocket 流媒体技术（仅支持 v2.5 版本，不兼容 v3 版本）。
-- 需要使用 Gemini Flash 来捕获屏幕画面，因此请确保已配置 `GEMINI_API_KEY`。
+## 注意事项：**
+- 仅适用于 macOS 系统（支持屏幕截图和 TTS/音频功能）。
+- 该 OpenClaw 技能封装与 `/Users/buddy/narrator` 的实现保持一致，以避免文档描述与实际运行效果之间的差异。

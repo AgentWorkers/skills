@@ -1,207 +1,54 @@
 ---
 name: acestep
-description: 使用 ACE-Step API 生成音乐、编辑歌曲以及进行音乐混音。该 API 支持将文本转换为音乐、生成歌词、实现音频的连续播放以及修改音频内容。当用户提到“生成音乐”、“创作歌曲”、“音乐制作”、“混音”或“音频续写”等功能时，可以参考此技能。
+description: 使用 ACE-Step API 生成音乐、编辑歌曲以及进行音乐混音。该 API 支持将文本转换为音乐、生成歌词、实现音频的连续播放以及修改音频内容。当用户提到音乐生成、歌曲创作、音乐制作、音乐混音或音频编辑时，可以使用此技能。
 allowed-tools: Read, Write, Bash, Skill
 ---
-
 # ACE-Step 音乐生成技能
 
-使用 ACE-Step V1.5 API 进行音乐生成。脚本：`scripts/acestep.sh`（需要 curl 和 jq）。
+使用 ACE-Step V1.5 API 进行音乐生成。**请始终使用 `scripts/acestep.sh` 脚本**，**切勿直接调用 API 端点**。
 
-## 先决条件 - ACE-Step API 服务
-
-**重要提示**：此技能需要 ACE-Step API 服务器处于运行状态。
-
-### 所需依赖项
-
-`scripts/acestep.sh` 脚本需要以下工具：
-
-**1. curl** - 用于向 API 发送 HTTP 请求
-**2. jq** - 用于解析 JSON 响应
-
-#### 检查依赖项
-
-在使用此技能之前，请确认已安装所需的工具：
+## 快速入门
 
 ```bash
-# Check curl
-curl --version
+# 1. cd to this skill's directory
+cd {project_root}/{.claude or .codex}/skills/acestep/
 
-# Check jq
-jq --version
+# 2. Check API service health
+./scripts/acestep.sh health
+
+# 3. Generate with lyrics (recommended)
+./scripts/acestep.sh generate -c "pop, female vocal, piano" -l "[Verse] Your lyrics here..." --duration 120 --language zh
+
+# 4. Output saved to: {project_root}/acestep_output/
 ```
 
-#### 安装 jq
+## 工作流程
 
-如果未安装 jq，脚本会尝试自动安装。如果自动安装失败，请手动安装：
+对于需要人声的用户请求：
+1. 使用 **acestep-songwriting** 技能进行歌词创作、字幕生成、时长/节拍数/调性选择。
+2. 根据歌曲创作指南自行编写完整且结构清晰的歌词。
+3. 使用 `-c` 和 `-l` 参数通过“字幕模式”生成音乐。
 
-**Windows:**
-```bash
-# Using Chocolatey
-choco install jq
+仅在使用简单灵感或乐器探索时，才使用“简单/随机模式”（`-d` 或 `random`）。
 
-# Or download from: https://jqlang.github.io/jq/download/
-# Extract jq.exe and add to PATH
-```
+如果用户需要制作简单的音乐视频，请使用 **acestep-simplemv** 技能来生成带有波形可视化效果和同步歌词的视频。
 
-**macOS:**
-```bash
-# Using Homebrew
-brew install jq
-
-# Using MacPorts
-port install jq
-```
-
-**Linux:**
-```bash
-# Debian/Ubuntu
-sudo apt-get install jq
-
-# Fedora/RHEL/CentOS
-sudo yum install jq
-# or
-sudo dnf install jq
-
-# Arch Linux
-sudo pacman -S jq
-```
-
-**验证安装结果:**
-```bash
-jq --version
-# Should output: jq-1.x
-```
-
-如果用户遇到 jq 安装问题，请指导他们按照其操作系统进行手动安装。
-
-### 首次使用前的准备
-
-**询问用户的相关设置:**
-
-1. **“您是否配置并运行了 ACE-Step API 服务？”**
-
-   如果 **是**：
-   - 验证 API 端点：`curl -s http://127.0.0.1:8001/health`
-   - 如果使用远程服务，请获取 API URL 并更新 `scripts/config.json`
-   - 然后继续进行音乐生成
-
-   如果 **否** 或 **不确定**：
-   - 询问：“您是否安装了 ACE-Step？”
-
-     **如果已安装但未运行**：
-     - 使用 `acestep-docs` 技能帮助他们启动服务
-     - 指导他们完成启动过程
-
-     **如果未安装**：
-     - 提供帮助下载并安装 ACE-Step
-     - 询问：“您想使用 Windows 可移植包还是从源代码安装？”
-     - 使用 `acestep-docs` 技能指导安装过程
-
-### 服务配置
-
-**本地服务（默认）:**
-```json
-{
-  "api_url": "http://127.0.0.1:8001",
-  "api_key": ""
-}
-```
-
-**远程服务:**
-```json
-{
-  "api_url": "http://your-server-ip:8001",
-  "api_key": "your-api-key-if-needed"
-}
-```
-
-要配置远程服务，请更新 `scripts/config.json` 或使用：
-```bash
-cd {skill_directory}/scripts/
-./acestep.sh config --set api_url "http://remote-server:8001"
-./acestep.sh config --set api_key "your-key"
-```
-
-### 使用 `acestep-docs` 技能获取安装帮助
-
-**重要提示**：对于安装和启动操作，请始终使用 `acestep-docs` 技能以获得完整且准确的指导。
-
-当用户需要安装或启动帮助时，调用 `acestep-docs` 技能：
-
-```
-Use the Skill tool to invoke: acestep-docs
-```
-
-**请勿提供简化的启动命令**——每个用户的环境可能不同。务必引导他们使用 `acestep-docs` 进行正确的设置。
-
-### 健康检查
-
-**验证服务是否正在运行:**
-```bash
-curl http://127.0.0.1:8001/health
-# Should return: {"status":"ok",...}
-```
-
-如果健康检查失败，请使用 `acestep-docs` 技能帮助用户正确启动服务。
-
----
-
-**工作流程**：对于需要人声的音乐生成请求，您应该：
-1. 查阅 [音乐创作指南](./music-creation-guide.md) 以获取歌词创作、标题制作、时长/节拍/调性选择的相关信息。
-2. 根据指南自行编写完整且结构清晰的歌词。
-3. 使用 `-c` 和 `-l` 参数通过 **标题模式** 生成音乐。
-
-仅在使用 **简单/随机模式**（`-d` 或 `random`）时，用于快速获取灵感或进行器乐探索。
-
-## 输出文件
-
-生成完成后，脚本会自动将结果保存到项目根目录下的 `acestep_output` 文件夹中（与 `.claude` 文件位于同一层级）：
-
-```
-project_root/
-├── .claude/
-│   └── skills/acestep/...
-├── acestep_output/          # Output directory
-│   ├── <job_id>.json         # Complete task result (JSON)
-│   ├── <job_id>_1.mp3        # First audio file
-│   ├── <job_id>_2.mp3        # Second audio file (if batch_size > 1)
-│   └── ...
-└── ...
-```
-
-### JSON 结果结构
-
-**重要提示**：当启用语言模型（LM）增强功能（`use_format=true`）时，最终合成的内容可能与输入有所不同。请查看 JSON 文件中的实际值：
-
-| 字段 | 描述 |
-|-------|-------------|
-| `prompt` | 用于合成的实际标题（可能经过语言模型增强） |
-| `lyrics` | 用于合成的实际歌词（可能经过语言模型增强） |
-| `metas.prompt` | 原始输入的标题 |
-| `metas.lyrics` | 原始输入的歌词 |
-| `metas bpm` | 使用的节拍（BPM） |
-| `metas.keyscale` | 使用的调性音阶 |
-| `metas.duration` | 时长（秒） |
-| `generation_info` | 详细的定时和模型信息 |
-| `seed_value` | 使用的种子值（用于重现性） |
-| `lm_model` | 语言模型名称 |
-| `dit_model` | DiT 模型名称 |
-
-要获取实际的合成歌词，请解析 JSON 文件并读取顶层的 `lyrics` 字段，而不是 `metas.lyrics`。
+**音乐视频制作要求**：制作简单音乐视频需要安装以下三个技能：
+- **acestep-songwriting** — 用于编写歌词和规划歌曲结构
+- **acestep-lyrics-transcription** — 用于将音频转录为带时间戳的歌词（LRC 格式）
+- **acestep-simplemv** — 用于渲染最终的音乐视频
 
 ## 脚本命令
 
-**重要提示 - 必须提供完整歌词**: 当通过 `-l` 参数提供歌词时，必须传递所有歌词内容，不得有任何遗漏：
-- 如果用户提供歌词，请传递他们提供的全部文本
-- 如果您自己生成歌词，请传递您创建的完整歌词
-- 绝不要截断、缩短或仅传递部分歌词
-- 缺失的歌词会导致歌曲不完整或逻辑混乱
+**重要提示 - 必须提供完整歌词**：通过 `-l` 参数提供歌词时，**必须提供所有歌词内容，不得有任何遗漏**：
+- 如果用户提供了歌词，请传递他们提供的全部文本；
+- 如果您自己生成了歌词，请传递您创建的完整歌词；
+- **严禁**截断、缩短或仅提供部分歌词，否则会导致歌曲不完整或逻辑混乱。
 
-**音乐参数**: 请参考 [音乐创作指南](./music-creation-guide.md) 以了解如何计算时长、选择节拍、调性音阶和拍号。
+**音乐参数**：使用 **acestep-songwriting** 技能来设置时长、节拍数、调性音阶和拍号。
 
 ```bash
-# need to cd skills path
+# need to cd to this skill's directory first
 cd {project_root}/{.claude or .codex}/skills/acestep/
 
 # Caption mode - RECOMMENDED: Write lyrics first, then generate
@@ -225,20 +72,56 @@ cd {project_root}/{.claude or .codex}/skills/acestep/
 ./scripts/acestep.sh models
 ```
 
+## 输出文件
+
+生成完成后，脚本会自动将结果保存到项目根目录下的 `acestep_output` 文件夹中（与 `.claude` 文件位于同一层级）：
+
+```
+project_root/
+├── .claude/
+│   └── skills/acestep/...
+├── acestep_output/          # Output directory
+│   ├── <job_id>.json         # Complete task result (JSON)
+│   ├── <job_id>_1.mp3        # First audio file
+│   ├── <job_id>_2.mp3        # Second audio file (if batch_size > 1)
+│   └── ...
+└── ...
+```
+
+### JSON 结果结构
+
+**重要提示**：当启用语言模型（LM）增强功能（`use_format=true`）时，最终合成的内容可能与您的输入有所不同。请查看 JSON 文件中的实际值：
+
+| 字段 | 描述 |
+|-------|-------------|
+| `prompt` | 用于合成的实际字幕（可能经过语言模型增强） |
+| `lyrics` | 用于合成的实际歌词（可能经过语言模型增强） |
+| `metas.prompt` | 原始输入的字幕 |
+| `metas.lyrics` | 原始输入的歌词 |
+| `metas bpm` | 使用的节拍数 |
+| `metas.keyscale` | 使用的调性音阶 |
+| `metas.duration` | 时长（以秒为单位） |
+| `generation_info` | 详细的生成时间和模型信息 |
+| `seed_value` | 使用的种子值（用于保证结果的可重复性） |
+| `lm_model` | 语言模型名称 |
+| `dit_model` | DiT 模型名称 |
+
+要获取实际的合成歌词，请解析 JSON 文件并读取顶层的 `lyrics` 字段，而不是 `metas.lyrics`。
+
 ## 配置
 
-**重要提示**: 配置的优先级如下（从高到低）：
+**重要提示**：配置的优先级如下（从高到低）：
+1. **命令行参数** > **config.json** 的默认值
+2. 用户指定的参数 **会暂时覆盖** 默认值，但 **不要修改** `config.json` 文件
+3. **只有 `config --set` 命令** 才会 **永久修改** `config.json` 文件
 
-1. **命令行参数** > **config.json 的默认值**
-2. 用户指定的参数 **会暂时覆盖** 默认值，但 **不得修改** `config.json`
-3. 仅 `config --set` 命令 **会永久修改** `config.json`
-
-### 默认配置文件 (`scripts/config.json`)
+### 默认配置文件（`scripts/config.json`）
 
 ```json
 {
   "api_url": "http://127.0.0.1:8001",
   "api_key": "",
+  "api_mode": "completion",
   "generation": {
     "thinking": true,
     "use_format": false,
@@ -255,102 +138,112 @@ cd {project_root}/{.claude or .codex}/skills/acestep/
 |--------|---------|-------------|
 | `api_url` | `http://127.0.0.1:8001` | API 服务器地址 |
 | `api_key` | `""` | API 认证密钥（可选） |
+| `api_mode` | `completion` | API 模式：`completion`（OpenRouter，默认）或 `native`（轮询） |
 | `generation.thinking` | `true` | 启用 5Hz 语言模型（质量更高，但速度较慢） |
 | `generation.audio_format` | `mp3` | 输出格式（mp3/wav/flac） |
 | `generation.vocal_language` | `en` | 人声语言 |
 
-## API 参考
+## 先决条件 - ACE-Step API 服务
 
-所有响应的结构如下：`{"data": <payload>, "code": 200, "error": null, "timestamp": ...}`
+**重要提示**：此技能需要 ACE-Step API 服务器处于运行状态。
 
-| 端点 | 方法 | 描述 |
-|----------|--------|-------------|
-| `/health` | GET | 健康检查 |
-| `/release_task` | POST | 创建生成任务 |
-| `/query_result` | POST | 查询任务状态，请求体：`{"task_id_list": ["id"]` |
-| `/v1/models` | GET | 列出可用模型 |
-| `/v1/audio?path={path}` | GET | 下载音频文件 |
+### 所需依赖项
 
-### 查询结果响应
+`scripts/acestep.sh` 脚本需要以下工具：**curl** 和 **jq**。
 
-```json
-{
-  "data": [{
-    "task_id": "xxx",
-    "status": 1,
-    "result": "[{\"file\":\"/v1/audio?path=...\",\"metas\":{\"bpm\":120,\"duration\":60,\"keyscale\":\"C Major\"}}]"
-  }]
-}
+```bash
+# Check dependencies
+curl --version
+jq --version
 ```
 
-状态码：`0` = 处理中，`1` = 成功，`2` = 失败
+如果未安装 `jq`，脚本会尝试自动安装。如果自动安装失败：
+- **Windows**：`choco install jq` 或从 https://jqlang.github.io/jq/download/ 下载
+- **macOS**：`brew install jq`
+- **Linux**：`sudo apt-get install jq`（Debian/Ubuntu）或 `sudo dnf install jq`（Fedora）
 
-## 请求参数 (`/release_task`)
+### 首次使用前的注意事项
 
-参数可以放在 `param_obj` 对象中。
+**在使用前，您必须检查 API 密钥和 API 地址的状态。** 运行以下命令：
 
-### 生成模式
-
-| 模式 | 使用方法 | 适用场景 |
-|------|-------|-------------|
-| **标题模式**（推荐） | `generate -c "style" -l "lyrics"` | 适用于人声歌曲——先编写歌词 |
-| **简单模式** | `generate -d "description"` | 快速探索，由语言模型生成所有内容 |
-| **随机模式** | `random` | 随机生成以获取灵感 |
-
-### 核心参数
-
-| 参数 | 类型 | 默认值 | 描述 |
-|-----------|------|---------|-------------|
-| `prompt` | 字符串 | "" | 音乐风格描述（标题模式） |
-| `lyrics` | 字符串 | "" | **完整歌词内容**——必须提供全部歌词，不得遗漏。使用 `[inst]` 表示器乐。部分/截断的歌词会导致歌曲不完整 |
-| `sample_mode` | 布尔值 | `false` | 启用简单/随机模式 |
-| `sample_query` | 字符串 | "" | 简单模式的描述 |
-| `thinking` | 布尔值 | `false` | 启用 5Hz 语言模型以生成音频 |
-| `use_format` | 布尔值 | `false` | 使用语言模型增强标题/歌词 |
-| `model` | 字符串 | - | DiT 模型名称 |
-| `batch_size` | 整数 | 1 | 要生成的音频文件数量 |
-
-### 音乐属性
-
-| 参数 | 类型 | 默认值 | 描述 |
-|-----------|------|---------|-------------|
-| `audio_duration` | 浮点数 | - | 时长（秒） |
-| `bpm` | 整数 | - | 节拍（每分钟拍数） |
-| `key_scale` | 字符串 | "" | 调性（例如 "C 大调"） |
-| `time_signature` | 字符串 | "" | 拍号（例如 "4/4"） |
-| `vocal_language` | 字符串 | "en" | 语言代码（en, zh, ja 等） |
-| `audio_format` | 字符串 | "mp3" | 输出格式（mp3/wav/flac） |
-
-### 生成参数
-
-| 参数 | 类型 | 默认值 | 描述 |
-|-----------|------|---------|-------------|
-| `inference_steps` | 整数 | 8 | 扩散步骤 |
-| `guidance_scale` | 浮点数 | 7.0 | CFG 音阶 |
-| `seed` | 整数 | -1 | 随机种子（-1 表示随机） |
-| `infer_method` | 字符串 | "ode" | 扩散方法（ode/sde） |
-
-### 音频任务参数
-
-| 参数 | 类型 | 默认值 | 描述 |
-|-----------|------|---------|-------------|
-| `task_type` | 字符串 | "text2music" | text2music / continuation / repainting |
-| `src_audio_path` | 字符串 | - | 继续使用的源音频文件 |
-| `repainting_start` | 浮点数 | 0.0 | 继续开始的起始位置（秒） |
-| `repainting_end` | 浮点数 | - | 继续结束的位置（秒） |
-
-### 示例请求（简单模式）
-
-```json
-{
-  "sample_mode": true,
-  "sample_query": "A cheerful pop song about spring",
-  "thinking": true,
-  "param_obj": {
-    "duration": 60,
-    "bpm": 120,
-    "language": "en"
-  },
-  "batch_size": 2
-}
+```bash
+cd "{project_root}/{.claude or .codex}/skills/acestep/" && bash ./scripts/acestep.sh config --check-key
+cd "{project_root}/{.claude or .codex}/skills/acestep/" && bash ./scripts/acestep.sh config --get api_url
 ```
+
+#### 情况 1：使用官方云 API（`https://api.acemusic.ai`）且未配置 API 密钥
+
+如果 `api_url` 为 `https://api.acemusic.ai` 且 `api_key` 为空，您必须停止操作并指导用户配置 API 密钥：
+1. 告诉用户：“您正在使用 ACE-Step 官方云 API，但尚未配置 API 密钥。使用此服务需要 API 密钥。”
+2. 解释如何获取密钥：目前可以通过 ACE-Step 官方 Discord 社区（https://discord.gg/bGVxwUyD）获取 API 密钥。未来将添加更多获取方式。
+3. 使用 `AskUserQuestion` 命令请求用户提供 API 密钥。
+4. 获取密钥后，进行配置：
+   ```bash
+   cd "{project_root}/{.claude or .codex}/skills/acestep/" && bash ./scripts/acestep.sh config --set api_key <KEY>
+   ```
+5. 另外，告知用户：“如果您还想制作音乐视频（MV），建议同时配置歌词转录 API 密钥（如 OpenAI Whisper 或 ElevenLabs Scribe），以便自动将歌词转录为带时间戳的格式。您可以通过 `acestep-lyrics-transcription` 技能进行配置。”
+
+#### 情况 2：API 密钥已配置
+
+验证 API 端点：`./scripts/acestep.sh health`，然后继续进行音乐生成。
+
+#### 情况 3：使用本地/自定义 API 且未配置密钥
+
+本地服务（`http://127.0.0.1:*`）通常不需要密钥。使用 `./scripts/acestep.sh health` 进行验证后继续操作。
+
+如果验证失败：
+- 询问用户：“您是否安装了 ACE-Step？”
+- **如果已安装但未运行**：使用 `acestep-docs` 技能帮助用户启动服务
+- **如果未安装**：使用 `acestep-docs` 技能指导用户完成安装
+
+### 服务配置
+
+**官方云 API**：ACE-Step 提供的官方 API 端点为 `https://api.acemusic.ai`。要使用该 API，请按照以下步骤操作：
+```bash
+./scripts/acestep.sh config --set api_url "https://api.acemusic.ai"
+./scripts/acestep.sh config --set api_key "your-key"
+./scripts/acestep.sh config --set api_mode completion
+```
+API 密钥目前可以通过 ACE-Step 官方 Discord 社区获取。未来将添加更多获取方式。
+
+**本地服务（默认）**：无需配置——直接连接到 `http://127.0.0.1:8001`。
+
+**自定义远程服务**：更新 `scripts/config.json` 或使用以下命令进行配置：
+```bash
+./scripts/acestep.sh config --set api_url "http://remote-server:8001"
+./scripts/acestep.sh config --set api_key "your-key"
+```
+
+**API 密钥处理**：在检查 API 密钥是否已配置时，使用 `config --check-key` 命令，该命令仅显示 `configured` 或 `empty`，而不会显示实际的密钥。**切勿使用 `config --get api_key`** 或直接读取 `config.json`——这些操作会暴露用户的 API 密钥。`config --list` 命令是安全的，它会在输出中将 API 密钥替换为 `***`。
+
+### API 模式
+
+该技能支持两种 API 模式。可以通过 `scripts/config.json` 中的 `api_mode` 参数进行切换：
+
+| 模式 | 端点 | 描述 |
+|------|----------|-------------|
+| `completion`（默认） | `/v1/chat/completions` | 兼容 OpenRouter，同步请求，音频以 Base64 格式返回 |
+| `native` | `/release_task` + `/query_result` | 异步轮询模式，支持所有参数 |
+
+**切换模式**：
+```bash
+./scripts/acestep.sh config --set api_mode completion
+./scripts/acestep.sh config --set api_mode native
+```
+
+**完成模式注意事项**：
+- 无需轮询——单次请求即可直接获得结果
+- 音频以 Base64 编码的形式包含在响应中（会自动解码并保存）
+- `inference_steps`、`infer_method`、`shift` 等参数不可配置（由服务器默认设置）
+- `--no-wait` 和 `status` 命令在完成模式下无效
+- 需要 `model` 字段——如果未指定，则从 `/v1/models` 自动检测
+
+### 使用 `acestep-docs` 技能获取安装帮助
+
+**重要提示**：对于安装和启动操作，请始终使用 `acestep-docs` 技能以获得完整且准确的指导。
+
+**切勿提供简化的启动命令**——每个用户的环境可能不同。请始终指导用户使用 `acestep-docs` 进行正确配置。
+
+---
+
+有关 API 调试的详细信息，请参阅 [API 参考文档](./api-reference.md)。

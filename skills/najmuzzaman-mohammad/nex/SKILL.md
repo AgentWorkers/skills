@@ -1,17 +1,17 @@
 ---
 name: nex
-description: 访问您的 Nex CRM（客户关系管理系统）——您可以管理记录、列表、任务和笔记，查询您的业务数据图（context graph），并获取实时洞察。
-emoji: "\U0001F4CA"
-metadata: {"clawdbot": {"secrets": ["NEX_API_KEY"], "requires": {"bins": ["curl", "jq", "bash"]}, "emoji": "\U0001F4CA"}}
+description: Access your Nex CRM - manage records, lists, tasks, notes, query your context graph, and receive real-time insights
+metadata: {"clawdbot": {"emoji": "\U0001F4CA", "homepage": "https://github.com/nex-crm/nex-as-a-skill", "primaryEnv": "NEX_API_KEY", "requires": {"env": ["NEX_API_KEY"], "bins": ["curl", "jq", "bash"]}, "files": ["scripts/nex-api.sh"]}}
 ---
-# Nex – 客户关系管理（CRM）与上下文图谱
 
-Nex 为您的 AI 代理提供了全面的 CRM 功能：创建和管理记录、定义自定义数据结构、建立关联关系、跟踪任务和笔记、查询上下文图谱、处理对话内容，并实时获取洞察信息。
+# Nex - CRM & Context Graph
 
-## 设置
+Nex gives your AI agent full CRM access: create and manage records, define custom schemas, build relationships, track tasks and notes, query your context graph, process conversations, and receive real-time insights.
 
-1. 从 [https://app.nex.ai/settings/developer](https://app.nex.ai/settings/developer) 获取您的 API 密钥。
-2. 将 API 密钥添加到 `~/.openclaw/openclaw.json` 文件中：
+## Setup
+
+1. Get your API key from https://app.nex.ai/settings/developer
+2. Add to `~/.openclaw/openclaw.json`:
    ```json
    {
      "skills": {
@@ -27,28 +27,28 @@ Nex 为您的 AI 代理提供了全面的 CRM 功能：创建和管理记录、�
    }
    ```
 
-## 安全性与隐私
+## Security & Privacy
 
-- 所有 API 调用都通过一个经过验证的封装脚本 (`scripts/nex-api.sh`) 进行路由。
-- 该脚本确保所有请求仅发送到 `https://app.nex.ai/api/developers`。
-- 不会将任何用户输入插入到 shell 命令字符串中。
-- API 密钥从 `$NEX_API_KEY` 环境变量中读取（绝不会通过提示获取）。
-- JSON 请求体通过标准输入（stdin）传递，以避免 shell 注入攻击。
-- 封装脚本使用 `set -euo pipefail` 以确保 shell 命令的安全执行。
+- All API calls are routed through a validated wrapper script (`scripts/nex-api.sh`)
+- The wrapper validates that all requests go to `https://app.nex.ai/api/developers` only
+- No user input is interpolated into shell command strings
+- API key is read from `$NEX_API_KEY` environment variable (never from prompts)
+- JSON request bodies are passed via stdin to avoid shell injection
+- The wrapper uses `set -euo pipefail` for safe shell execution
 
-## 外部端点
+## External Endpoints
 
-| URL 模式 | 方法 | 发送的数据 |
+| URL Pattern | Methods | Data Sent |
 |-------------|---------|-----------|
-| `https://app.nex.ai/api/developers/v1/*` | GET, POST, PUT, PATCH, DELETE | CRM 记录、查询、文本内容 |
+| `https://app.nex.ai/api/developers/v1/*` | GET, POST, PUT, PATCH, DELETE | CRM records, queries, text content |
 
-## 如何进行 API 调用
+## How to Make API Calls
 
-**重要提示**：Nex API 的响应时间可能为 10-60 秒。因此，在每次执行工具调用时，必须设置 `timeout: 120`。
+**CRITICAL**: The Nex API can take 10-60 seconds to respond. You MUST set `timeout: 120` on every exec tool call.
 
-所有 API 调用都通过位于 `{baseDir}/scripts/nex-api.sh` 的封装脚本进行：
+All API calls go through the wrapper script at `{baseDir}/scripts/nex-api.sh`:
 
-**GET 请求**：
+**GET request**:
 ```json
 {
   "tool": "exec",
@@ -57,7 +57,7 @@ Nex 为您的 AI 代理提供了全面的 CRM 功能：创建和管理记录、�
 }
 ```
 
-**带有 JSON 正文的 POST 请求**（通过 stdin 传递正文）：
+**POST with JSON body** (pipe body via stdin):
 ```json
 {
   "tool": "exec",
@@ -66,7 +66,7 @@ Nex 为您的 AI 代理提供了全面的 CRM 功能：创建和管理记录、�
 }
 ```
 
-**使用 jq 过滤器的 GET 请求**（第三个参数）：
+**GET with jq filter** (3rd argument):
 ```json
 {
   "tool": "exec",
@@ -75,7 +75,7 @@ Nex 为您的 AI 代理提供了全面的 CRM 功能：创建和管理记录、�
 }
 ```
 
-**SSE 流**：
+**SSE stream**:
 ```json
 {
   "tool": "exec",
@@ -84,11 +84,11 @@ Nex 为您的 AI 代理提供了全面的 CRM 功能：创建和管理记录、�
 }
 ```
 
-### 处理大型响应
+### Handling Large Responses
 
-Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10KB。执行工具可能会截断输出。**必须正确处理这种情况**。
+Nex API responses (especially Insights and List Records) can be 10KB-100KB+. The exec tool may truncate output. **You MUST handle this properly.**
 
-**使用封装脚本中的 jq 过滤器（第三个参数）** 来提取所需的数据：
+**Use the wrapper's jq filter (3rd arg)** to extract only what you need:
 ```json
 {
   "tool": "exec",
@@ -97,68 +97,67 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**处理 API 输出的规则**：
-1. **切勿在输出被截断或混乱时默认认为“没有数据”。** 如果输出看起来不完整，请使用 jq 过滤器重新获取完整的数据。
-2. **在解析之前验证 JSON 数据。** 如果响应不以 `{` 或 `[` 开头，说明输出可能已被截断——请重新获取。
-3. **每个洞察信息都可能具有实际价值。** 新联系人、提到的集成、会议、风险、机会等都应该被记录下来。不要将某些洞察信息视为“无用信息”或“旧信息”而忽略。
-4. **如果执行工具显示“（尚未有输出）”，请等待并使用适当的限制次数重新获取结果。** 不要跳过任何结果。
+**Rules for processing API output**:
+1. **Validate JSON before parsing.** If the response doesn't start with `{` or `[`, the output may be truncated — retry once with a narrower jq filter.
+2. **Use jq filters to keep responses small.** Extract only the fields you need rather than fetching full payloads.
+3. **Present insights to the user for review.** Summarize what was returned and let the user decide which insights to act on.
 
-## API 权限范围
+## API Scopes
 
-每个 API 密钥都有一定的权限范围。在 [https://app.nex.ai/settings/developer](https://app.nex.ai/settings/developer) 创建密钥时，请申请所需的权限范围。
+Each API key has scopes that control access. Request the scopes you need when creating your key at https://app.nex.ai/settings/developer
 
-| 权限范围 | 授权访问的内容 |
+| Scope | Grants Access To |
 |-------|-----------------|
-| `object.read` | 列出对象、查看数据结构、获取对象定义 |
-| `object.write` | 创建/更新/删除对象定义和属性 |
-| `record.read` | 获取、列出、搜索记录、时间线 |
-| `record.write` | 创建、更新、插入/删除记录 |
-| `list.read` | 查看列表及其定义 |
-| `list.member.read` | 查看列表成员 |
-| `list.member.write` | 添加、更新、删除列表成员 |
-| `relationship.read` | 读取关系定义 |
-| `relationship.write` | 创建/删除关系定义和实例 |
-| `task.read` | 读取任务 |
-| `task.write` | 创建/更新/删除任务 |
-| `note.read` | 读取笔记 |
-| `note.write` | 创建/更新笔记 |
-| `insight.stream` | 洞察信息的 REST 和 SSE 流 |
+| `object.read` | List objects, view schema, get object definitions |
+| `object.write` | Create/update/delete object definitions and attributes |
+| `record.read` | Get, list, search records, timeline |
+| `record.write` | Create, update, upsert, delete records |
+| `list.read` | View lists and list definitions |
+| `list.member.read` | View list members |
+| `list.member.write` | Add, update, delete list members |
+| `relationship.read` | Read relationship definitions |
+| `relationship.write` | Create/delete relationship definitions and instances |
+| `task.read` | Read tasks |
+| `task.write` | Create/update/delete tasks |
+| `note.read` | Read notes |
+| `note.write` | Create/update/delete notes |
+| `insight.stream` | Insights REST + SSE stream |
 
-## 选择合适的 API
+## Choosing the Right API
 
-在调用端点之前，先确定哪种方法适合您的需求：
+Before calling an endpoint, decide which approach fits:
 
-| 情况 | 使用的方法 | 原因 |
+| Situation | Use | Why |
 |-----------|-----|-----|
-| 您有结构化的数据（包含已知字段，如名称、电子邮件、公司名称） | **Create/Update Record** | 可以精确映射字段 |
-| 您有非结构化的文本（如会议记录、电子邮件、对话内容） | **ProcessText API** | AI 可以提取实体、创建/更新记录，并自动生成洞察信息 |
-| 您不确定要传递哪些属性或数据格式混乱 | **ProcessText API** | 让 AI 自动识别实体和关系 |
-| 您知道具体的对象标识符并需要筛选列表 | **AI List Job** | 使用自然语言查询特定的对象类型 |
-| 您不确定要查询的对象类型或问题比较开放 | **Ask API** | 在整个上下文图谱中搜索 |
-| 您需要根据 ID 或分页获取特定记录 | **Get/List Records** | 直接访问数据 |
-| 您希望根据名称在所有类型中查找记录 | **Search API** | 在所有对象类型中进行快速文本搜索 |
+| You have structured data with known fields (name, email, company) | **Create/Update Record** | Deterministic, exact field mapping |
+| You have unstructured text (meeting notes, email, conversation) | **ProcessText API** | AI extracts entities, creates/updates records, AND generates insights automatically |
+| You're unsure which attributes to pass or the data is messy | **ProcessText API** | Let AI figure out the entities and relationships -- it also discovers things you'd miss |
+| You know the exact object slug and want a filtered list | **AI List Job** | Natural language query against a known object type |
+| You're not sure which object type to query, or the question is open-ended | **Ask API** | Searches across all entity types and the full context graph |
+| You need to read/export specific records by ID or with pagination | **Get/List Records** | Direct data access |
+| You want to find records by name across all types | **Search API** | Fast text search across all object types |
 
-**关键提示**：当处理对话或非结构化数据时，优先使用 ProcessText API。只有在数据结构清晰、字段名称已知的情况下，才使用确定性的 Record API。
+**Key insight**: ProcessText does everything Create/Update Record does, *plus* it extracts relationships, generates insights, and handles ambiguity. Prefer ProcessText when working with conversational or unstructured data. Only use the deterministic Record APIs when you have clean, structured data with known attribute slugs.
 
-## 功能
+## Capabilities
 
-### 数据结构管理
+### Schema Management
 
-#### 创建对象定义
+#### Create Object Definition
 
-创建一个新的自定义对象类型。
+Create a new custom object type.
 
-**端点**：`POST /v1/objects`
-**权限范围**：`object.write`
+**Endpoint**: `POST /v1/objects`
+**Scope**: `object.write`
 
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
+**Request body**:
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `name` | string | 是 | 显示名称 |
-| `name_plural` | string | 否 | 复数显示名称 |
-| `slug` | string | 是 | URL 安全标识符 |
-| `description` | string | 否 | 描述 |
-| `type` | string | 否 | `"person"`, `"company"`, `"custom"`, `"deal"`（默认：`custom`） |
+| `name` | string | yes | Display name |
+| `name_plural` | string | no | Plural display name |
+| `slug` | string | yes | URL-safe identifier |
+| `description` | string | no | Description |
+| `type` | string | no | `"person"`, `"company"`, `"custom"`, `"deal"` (default: `"custom"`) |
 
 ```json
 {
@@ -168,12 +167,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 获取对象定义
+#### Get Object Definition
 
-获取单个对象及其属性的定义。
+Get a single object definition with its attributes.
 
-**端点**：`GET /v1/objects/{slug}`
-**权限范围**：`object.read`
+**Endpoint**: `GET /v1/objects/{slug}`
+**Scope**: `object.read`
 
 ```json
 {
@@ -183,15 +182,15 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 列出对象
+#### List Objects
 
-查看可用的对象类型（如人员、公司等）及其属性结构。**在创建或查询记录之前，请先调用此端点**。
+Discover available object types (person, company, etc.) and their attribute schemas. **Call this first** to learn what fields are available before creating or querying records.
 
-**端点**：`GET /v1/objects`
-**权限范围**：`object.read`
+**Endpoint**: `GET /v1/objects`
+**Scope**: `object.read`
 
-**查询参数**：
-- `include_attributes`（布尔值，可选）——设置为 `true` 以包含属性定义
+**Query Parameters**:
+- `include_attributes` (boolean, optional) -- Set `true` to include attribute definitions
 
 ```json
 {
@@ -201,7 +200,7 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**响应**：
+**Response**:
 ```json
 {
   "data": [
@@ -230,19 +229,19 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 更新对象定义
+#### Update Object Definition
 
-更新现有的对象定义。
+Update an existing object definition.
 
-**端点**：`PATCH /v1/objects/{slug}`
-**权限范围**：`object.write`
+**Endpoint**: `PATCH /v1/objects/{slug}`
+**Scope**: `object.write`
 
-**请求体**（所有字段均为可选）：
-| 字段 | 类型 | 描述 |
+**Request body** (all fields optional):
+| Field | Type | Description |
 |-------|------|-------------|
-| `name` | string | 新显示名称 |
-| `name_plural` | string | 新复数名称 |
-| `description` | string | 新描述 |
+| `name` | string | New display name |
+| `name_plural` | string | New plural name |
+| `description` | string | New description |
 
 ```json
 {
@@ -252,12 +251,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 删除对象定义
+#### Delete Object Definition
 
-删除对象定义及其所有记录。
+Delete an object definition and all its records.
 
-**端点**：`DELETE /v1/objects/{slug}`
-**权限范围**：`object.write`
+**Endpoint**: `DELETE /v1/objects/{slug}`
+**Scope**: `object.write`
 
 ```json
 {
@@ -267,21 +266,21 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 创建属性定义
+#### Create Attribute Definition
 
-为对象类型添加新的属性。
+Add a new attribute to an object type.
 
-**端点**：`POST /v1/objects/{slug}/attributes`
-**权限范围**：`object.write`
+**Endpoint**: `POST /v1/objects/{slug}/attributes`
+**Scope**: `object.write`
 
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
+**Request body**:
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `name` | string | 显示名称 |
-| `slug` | string | URL 安全标识符 |
-| `type` | string | `"text"`, `"number"`, `"email"`, `"phone"`, `"url"`, `"date"`, `"boolean"`, `"currency"`, `"location"`, `"select"`, `"social_profile"`, `"domain"`, `"full_name"` |
-| `description` | string | 否 | 描述 |
-| `options` | object | 否 | `is_required`, `is_unique`, `is_multi_value`, `use_raw_format`, `is_whole_number`, `select_options` |
+| `name` | string | yes | Display name |
+| `slug` | string | yes | URL-safe identifier |
+| `type` | string | yes | `"text"`, `"number"`, `"email"`, `"phone"`, `"url"`, `"date"`, `"boolean"`, `"currency"`, `"location"`, `"select"`, `"social_profile"`, `"domain"`, `"full_name"` |
+| `description` | string | no | Description |
+| `options` | object | no | `is_required`, `is_unique`, `is_multi_value`, `use_raw_format`, `is_whole_number`, `select_options` |
 
 ```json
 {
@@ -291,18 +290,18 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 更新属性定义
+#### Update Attribute Definition
 
-更新现有的属性定义。
+Update an existing attribute definition.
 
-**端点**：`PATCH /v1/objects/{slug}/attributes/{attr_id}`
-**权限范围**：`object.write`
+**Endpoint**: `PATCH /v1/objects/{slug}/attributes/{attr_id}`
+**Scope**: `object.write`
 
-**请求体**（所有字段均为可选）：
-| 字段 | 类型 | 描述 |
+**Request body** (all fields optional):
+| Field | Type | Description |
 |-------|------|-------------|
-| `name` | 字符串 | 新显示名称 |
-| `description` | 字符串 | 新描述 |
+| `name` | string | New display name |
+| `description` | string | New description |
 | `options` | object | `is_required`, `select_options`, `use_raw_format`, `is_whole_number` |
 
 ```json
@@ -313,12 +312,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 删除属性定义
+#### Delete Attribute Definition
 
-从对象类型中删除属性。
+Remove an attribute from an object type.
 
-**端点**：`DELETE /v1/objects/{slug}/attributes/{attr_id}`
-**权限范围**：`object.write`
+**Endpoint**: `DELETE /v1/objects/{slug}/attributes/{attr_id}`
+**Scope**: `object.write`
 
 ```json
 {
@@ -330,19 +329,19 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 
 ---
 
-### 记录
+### Records
 
-> 当您的输入是非结构化文本（如对话记录、会议笔记、电子邮件）时，**优先使用 ProcessText API**。ProcessText 可以自动创建和更新记录、提取关系并生成洞察信息。只有在数据结构清晰、字段名称和值已知的情况下，才使用以下端点。
+> **Prefer ProcessText over these endpoints** when your input is unstructured text (conversation transcripts, meeting notes, emails). ProcessText automatically creates and updates records, extracts relationships, and generates insights -- all from raw text. Use the endpoints below only when you have clean, structured data with known attribute slugs and values.
 
-#### 创建记录
+#### Create Record
 
-为特定对象类型创建新记录。
+Create a new record for an object type.
 
-**端点**：`POST /v1/objects/{slug}`
-**权限范围**：`record.write`
+**Endpoint**: `POST /v1/objects/{slug}`
+**Scope**: `record.write`
 
-**请求体**：
-- `attributes`（必填）——必须包含 `name`（字符串）。其他字段取决于对象的数据结构。
+**Request body**:
+- `attributes` (required) -- Must include `name` (string or object). Additional fields depend on the object schema.
 
 ```json
 {
@@ -352,7 +351,7 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**响应**：
+**Response**:
 ```json
 {
   "id": "789",
@@ -369,16 +368,16 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 插入记录
+#### Upsert Record
 
-如果记录不存在，则创建新记录；如果找到匹配项，则更新记录。
+Create a record if it doesn't exist, or update it if a match is found on the specified attribute.
 
-**端点**：`PUT /v1/objects/{slug}`
-**权限范围**：`record.write`
+**Endpoint**: `PUT /v1/objects/{slug}`
+**Scope**: `record.write`
 
-**请求体**：
-- `attributes`（必填）——创建时必须包含 `name`。
-- `matching_attribute`（必填）——要匹配的属性的标识符（例如，`email`）。
+**Request body**:
+- `attributes` (required) -- Must include `name` when creating
+- `matching_attribute` (required) -- Slug or ID of the attribute to match on (e.g., `email`)
 
 ```json
 {
@@ -388,12 +387,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 获取记录
+#### Get Record
 
-通过 ID 获取特定记录。
+Retrieve a specific record by its ID.
 
-**端点**：`GET /v1/records/{record_id}`
-**权限范围**：`record.read`
+**Endpoint**: `GET /v1/records/{record_id}`
+**Scope**: `record.read`
 
 ```json
 {
@@ -403,15 +402,15 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 更新记录
+#### Update Record
 
-更新现有记录的特定属性。仅更改提供的属性。
+Update specific attributes on an existing record. Only the provided attributes are changed.
 
-**端点**：`PATCH /v1/records/{record_id}`
-**权限范围**：`record.write`
+**Endpoint**: `PATCH /v1/records/{record_id}`
+**Scope**: `record.write`
 
-**请求体**：
-- `attributes`——要更新的属性
+**Request body**:
+- `attributes` -- Object with the fields to update
 
 ```json
 {
@@ -421,12 +420,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 删除记录
+#### Delete Record
 
-永久删除记录。
+Permanently delete a record.
 
-**端点**：`DELETE /v1/records/{record_id}`
-**权限范围**：`record.write`
+**Endpoint**: `DELETE /v1/records/{record_id}`
+**Scope**: `record.write`
 
 ```json
 {
@@ -436,20 +435,28 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 列出记录
+#### List Records
 
-列出特定对象类型的记录，并支持过滤、排序和分页。
+List records for an object type with optional filtering, sorting, and pagination.
 
-**端点**：`POST /v1/objects/{slug}/records`
-**权限范围**：`record.read`
+**Endpoint**: `POST /v1/objects/{slug}/records`
+**Scope**: `record.read`
 
-**请求体**：
-- `attributes`——要返回的属性：`all`、`primary`、`none` 或自定义对象。
-- `limit`（整数）——返回的记录数量。
-- `offset`（整数）——分页偏移量。
-- `sort`——包含 `attribute`（标识符）和 `direction`（`"asc"` 或 `desc`）的字段。
+**Request body**:
+- `attributes` -- Which attributes to return: `"all"`, `"primary"`, `"none"`, or a custom object
+- `limit` (integer) -- Number of records to return
+- `offset` (integer) -- Pagination offset
+- `sort` -- Object with `attribute` (slug) and `direction` (`"asc"` or `"desc"`)
 
-**响应**：
+```json
+{
+  "tool": "exec",
+  "command": "echo '{\"attributes\":\"all\",\"limit\":10,\"offset\":0,\"sort\":{\"attribute\":\"updated_at\",\"direction\":\"desc\"}}' | bash {baseDir}/scripts/nex-api.sh POST /v1/objects/person/records",
+  "timeout": 120
+}
+```
+
+**Response**:
 ```json
 {
   "data": [
@@ -467,18 +474,17 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 获取记录时间线
+#### Get Record Timeline
 
-获取记录的分页时间线事件（如任务、笔记、属性更改等）。
+Get paginated timeline events for a record (tasks, notes, attribute changes, etc.).
 
-**端点**：`GET /v1/records/{record_id}/timeline`
-**权限范围**：`record.read`
+**Endpoint**: `GET /v1/records/{record_id}/timeline`
+**Scope**: `record.read`
 
-**查询参数**：
-- `limit`（整数）——最大事件数量（1-100，默认：50）。
-- `cursor`（字符串）——上一次响应的分页游标。
+**Query Parameters**:
+- `limit` (int) -- Max events (1-100, default: 50)
+- `cursor` (string) -- Pagination cursor from previous response
 
-**响应**：
 ```json
 {
   "tool": "exec",
@@ -487,28 +493,49 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**资源类型**：`entity`, `task`, `note`, `list_item`, `attribute`
-**事件类型**：`created`, `updated`, `deleted`, `archived`
+**Response**:
+```json
+{
+  "data": [
+    {
+      "id": "5000",
+      "resource_type": "task",
+      "resource_id": "800",
+      "event_type": "created",
+      "event_payload": {
+        "task": {"id": "800", "title": "Follow up", "priority": "high"}
+      },
+      "event_timestamp": "2026-02-13T10:00:00Z",
+      "created_by": "developer_api"
+    }
+  ],
+  "has_next_page": true,
+  "next_cursor": "4999"
+}
+```
+
+**Resource types**: `entity`, `task`, `note`, `list_item`, `attribute`
+**Event types**: `created`, `updated`, `deleted`, `archived`
 
 ---
 
-### 关系
+### Relationships
 
-#### 创建关系定义
+#### Create Relationship Definition
 
-定义两种对象类型之间的关系。
+Define a relationship type between two object types.
 
-**端点**：`POST /v1/relationships`
-**权限范围**：`relationship.write`
+**Endpoint**: `POST /v1/relationships`
+**Scope**: `relationship.write`
 
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
+**Request body**:
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `type` | 字符串 | 是 | `"one_to_one"`, `"one_to_many"`, `"many_to_many"` |
-| `entity_definition_1_id` | 字符串 | 是 | 第一个对象的定义 ID |
-| `entity_definition_2_id` | 字符串 | 是 | 第二个对象的定义 ID |
-| `entity_1_to_2predicate` | 字符串 | 1->2 方向的标签 |
-| `entity_2_to_1predicate` | 字符串 | 2->1 方向的标签 |
+| `type` | string | yes | `"one_to_one"`, `"one_to_many"`, `"many_to_many"` |
+| `entity_definition_1_id` | string | yes | First object definition ID |
+| `entity_definition_2_id` | string | yes | Second object definition ID |
+| `entity_1_to_2_predicate` | string | no | Label for 1->2 direction |
+| `entity_2_to_1_predicate` | string | no | Label for 2->1 direction |
 
 ```json
 {
@@ -518,7 +545,7 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**响应**：
+**Response**:
 ```json
 {
   "id": "789",
@@ -531,12 +558,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 列出关系定义
+#### List Relationship Definitions
 
-获取工作空间中的所有关系定义。
+Get all relationship definitions in the workspace.
 
-**端点**：`GET /v1/relationships`
-**权限范围**：`relationship.read`
+**Endpoint**: `GET /v1/relationships`
+**Scope**: `relationship.read`
 
 ```json
 {
@@ -546,12 +573,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 删除关系定义
+#### Delete Relationship Definition
 
-删除关系定义。
+Remove a relationship definition.
 
-**端点**：`DELETE /v1/relationships/{id}`
-**权限范围**：`relationship.write`
+**Endpoint**: `DELETE /v1/relationships/{id}`
+**Scope**: `relationship.write`
 
 ```json
 {
@@ -561,19 +588,19 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 创建关系实例
+#### Create Relationship Instance
 
-使用现有的关系定义连接两个记录。
+Link two records using an existing relationship definition.
 
-**端点**：`POST /v1/records/{record_id}/relationships`
-**权限范围**：`relationship.write`
+**Endpoint**: `POST /v1/records/{record_id}/relationships`
+**Scope**: `relationship.write`
 
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
+**Request body**:
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `definition_id` | 字符串 | 是 | 关系定义 ID |
-| `entity_1_id` | 字符串 | 是 | 第一个记录的 ID |
-| `entity_2_id` | 字符串 | 是 | 第二个记录的 ID |
+| `definition_id` | string | yes | Relationship definition ID |
+| `entity_1_id` | string | yes | First record ID |
+| `entity_2_id` | string | yes | Second record ID |
 
 ```json
 {
@@ -583,12 +610,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 删除关系实例
+#### Delete Relationship Instance
 
-删除两个记录之间的关系。
+Remove a relationship between two records.
 
-**端点**：`DELETE /v1/records/{record_id}/relationships/{relationship_id}`
-**权限范围**：`relationship.write`
+**Endpoint**: `DELETE /v1/records/{record_id}/relationships/{relationship_id}`
+**Scope**: `relationship.write`
 
 ```json
 {
@@ -600,18 +627,18 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 
 ---
 
-### 列表
+### Lists
 
-#### 列出对象列表
+#### List Object Lists
 
-获取与特定对象类型关联的所有列表。
+Get all lists associated with an object type.
 
-**端点**：`GET /v1/objects/{slug}/lists`
-**权限范围**：`list.read`
+**Endpoint**: `GET /v1/objects/{slug}/lists`
+**Scope**: `list.read`
 
-**参数**：
-- `slug`（路径）——对象类型的标识符（例如，`person`, `company`）。
-- `include_attributes`（查询，可选）——是否包含属性定义。
+**Parameters**:
+- `slug` (path) -- Object type slug (e.g., `person`, `company`)
+- `include_attributes` (query, optional) -- Include attribute definitions
 
 ```json
 {
@@ -621,7 +648,7 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**响应**：
+**Response**:
 ```json
 {
   "data": [
@@ -636,20 +663,20 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 创建列表
+#### Create List
 
-为特定对象类型创建新列表。
+Create a new list under an object type.
 
-**端点**：`POST /v1/objects/{slug}/lists`
-**权限范围**：`object.write`
+**Endpoint**: `POST /v1/objects/{slug}/lists`
+**Scope**: `object.write`
 
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
+**Request body**:
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `name` | 字符串 | 是 | 列表显示名称 |
-| `name_plural` | 字符串 | 否 | 复数名称 |
-| `slug` | 字符串 | URL 安全标识符 |
-| `description` | 字符串 | 否 | 描述 |
+| `name` | string | yes | List display name |
+| `name_plural` | string | no | Plural name |
+| `slug` | string | yes | URL-safe identifier |
+| `description` | string | no | Description |
 
 ```json
 {
@@ -659,12 +686,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 获取列表定义
+#### Get List
 
-通过 ID 获取列表定义。
+Get a list definition by ID.
 
-**端点**：`GET /v1/lists/{id}`
-**权限范围**：`list.read`
+**Endpoint**: `GET /v1/lists/{id}`
+**Scope**: `list.read`
 
 ```json
 {
@@ -674,12 +701,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 删除列表
+#### Delete List
 
-删除列表定义。
+Delete a list definition.
 
-**端点**：`DELETE /v1/lists/{id}`
-**权限范围**：`object.write`
+**Endpoint**: `DELETE /v1/lists/{id}`
+**Scope**: `object.write`
 
 ```json
 {
@@ -689,16 +716,16 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 向列表中添加成员
+#### Add List Member
 
-将现有记录添加到列表中。
+Add an existing record to a list.
 
-**端点**：`POST /v1/lists/{id}`
-**权限范围**：`list.member.write`
+**Endpoint**: `POST /v1/lists/{id}`
+**Scope**: `list.member.write`
 
-**请求体**：
-- `parent_id`（必填）——要添加的现有记录的 ID。
-- `attributes`（可选）——列表特定的属性值。
+**Request body**:
+- `parent_id` (required) -- ID of the existing record to add
+- `attributes` (optional) -- List-specific attribute values
 
 ```json
 {
@@ -708,16 +735,12 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 插入列表成员
+#### Upsert List Member
 
-将记录添加到列表中，或更新列表中的属性（如果记录已经是列表成员）。
+Add a record to a list, or update its list-specific attributes if already a member.
 
-**端点**：`PUT /v1/lists/{id}`
-**权限范围**：`list.member.write`
-
-**请求体**：
-- `parent_id`（必填）——要添加的记录的 ID。
-- `attributes`（可选）——列表特定的属性值。
+**Endpoint**: `PUT /v1/lists/{id}`
+**Scope**: `list.member.write`
 
 ```json
 {
@@ -727,390 +750,588 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-#### 获取列表中的记录
+#### List Records in a List
 
-从特定列表中获取分页记录。
+Get paginated records from a specific list.
 
-**端点**：`POST /v1/lists/{id}/records`
-**权限范围**：`list.member.read`
+**Endpoint**: `POST /v1/lists/{id}/records`
+**Scope**: `list.member.read`
 
-**请求体**：与 `List Records` 相同。
-
-**请求体参数**：
-- `attributes`——要返回的属性。
-- `limit`——`attributes`。
-- `offset`——分页偏移量。
-- `sort`——包含 `attribute`（标识符）和 `direction`（`"asc"` 或 `desc`）的字段。
-
-**响应**：
-```json
-{
-  "data": [
-    {
-      "id": "789",
-      "type": "person",
-      "attributes": {"name": "Jane Doe", "email": "jane@example.com"},
-      "created_at": "2026-02-11T10:00:00Z",
-      "updated_at": "2026-02-11T10:00:00Z"
-    }
-  ],
-  "total": 42,
-  "limit": 10,
-  "offset": 0
-}
-```
-
-#### 获取记录时间线
-
-获取记录的分页时间线事件（如任务、笔记、属性更改等）。
-
-**端点**：`GET /v1/records/{record_id}/timeline`
-**权限范围**：`record.read`
-
-**查询参数**：
-- `limit`（整数）——最大事件数量（1-100，默认：50）。
-- `cursor`（字符串）——上一次响应的分页游标。
-
-**响应**：
-```json
-{
-  "data": [
-    {
-      "id": "5000",
-      "resource_type": "task",
-      "resource_id": "800",
-      "event_type": "created",
-      "event_payload": {
-        "task": {"id": "800", "title": "Follow up", "priority": "high"}
-      },
-      "event_timestamp": "2026-02-13T10:00:00Z",
-      "created_by": "developer_api"
-    }
-  ],
-  "has_next_page": true,
-  "next_cursor": "4999"
-}
-```
-
-**资源类型**：`entity`, `task`, `note`, `list_item`, `attribute`
-**事件类型**：`created`, `updated`, `deleted`, `archived`
-
----
-
-### 关系
-
-#### 创建关系定义
-
-定义两种对象类型之间的关系。
-
-**端点**：`POST /v1/relationships`
-**权限范围**：`relationship.write`
-
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
-|-------|------|----------|-------------|
-| `type` | 字符串 | 是 | `"one_to_one"`, `"one_to_many"`, `"many_to_many"` |
-| `entity_definition_1_id` | 字符串 | 是 | 第一个对象的定义 ID |
-| `entity_definition_2_id` | 字符串 | 是 | 第二个对象的定义 ID |
-| `entity_1_to_2predicate` | 字符串 | 1->2 方向的标签 |
-| `entity_2_to_1predicate` | 字符串 | 2->1 方向的标签 |
+**Request body**: Same as List Records (`attributes`, `limit`, `offset`, `sort`)
 
 ```json
 {
   "tool": "exec",
-  "command": "echo '{\"type\":\"one_to_many\",\"entity_definition_1_id\":\"123\",\"entity_definition_2_id\":\"456\",\"entity_1_to_2_predicate\":\"has\",\"entity_2_to_1_predicate\":\"belongs to\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/relationships",
+  "command": "echo '{\"attributes\":\"all\",\"limit\":20}' | bash {baseDir}/scripts/nex-api.sh POST /v1/lists/456/records",
   "timeout": 120
 }
 ```
 
-**响应**：
+#### Update List Record
+
+Update list-specific attributes for a record within a list.
+
+**Endpoint**: `PATCH /v1/lists/{id}/records/{record_id}`
+**Scope**: `list.member.write`
+
 ```json
 {
-  "id": "789",
-  "type": "one_to_many",
-  "entity_definition_1_id": "123",
-  "entity_definition_2_id": "456",
-  "entity_1_to_2_predicate": "has",
-  "entity_2_to_1_predicate": "belongs to",
+  "tool": "exec",
+  "command": "echo '{\"attributes\":{\"status\":\"closed-won\"}}' | bash {baseDir}/scripts/nex-api.sh PATCH /v1/lists/456/records/789",
+  "timeout": 120
+}
+```
+
+#### Delete List Record
+
+Remove a record from a list.
+
+**Endpoint**: `DELETE /v1/lists/{id}/records/{record_id}`
+**Scope**: `record.write`
+
+```json
+{
+  "tool": "exec",
+  "command": "bash {baseDir}/scripts/nex-api.sh DELETE /v1/lists/300/records/4001",
+  "timeout": 120
+}
+```
+
+---
+
+### Tasks
+
+#### Create Task
+
+Create a new task, optionally linked to records and assigned to users.
+
+**Endpoint**: `POST /v1/tasks`
+**Scope**: `task.write`
+
+**Request body**:
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | string | yes | Task title (non-empty) |
+| `description` | string | no | Task description |
+| `priority` | string | no | `"low"`, `"medium"`, `"high"`, `"urgent"` (default: `"unspecified"`) |
+| `due_date` | string (RFC3339) | no | Due date |
+| `entity_ids` | string[] | no | Associated record IDs |
+| `assignee_ids` | string[] | no | Assigned user IDs |
+
+```json
+{
+  "tool": "exec",
+  "command": "echo '{\"title\":\"Follow up with client\",\"description\":\"Discuss contract renewal\",\"priority\":\"high\",\"due_date\":\"2026-03-01T09:00:00Z\",\"entity_ids\":[\"1001\",\"1002\"],\"assignee_ids\":[\"50\"]}' | bash {baseDir}/scripts/nex-api.sh POST /v1/tasks",
+  "timeout": 120
+}
+```
+
+**Response**:
+```json
+{
+  "id": "800",
+  "title": "Follow up with client",
+  "description": "Discuss contract renewal",
+  "priority": "high",
+  "due_date": "2026-03-01T09:00:00Z",
+  "assignee_ids": ["50"],
+  "entity_ids": ["1001", "1002"],
+  "created_by": "developer_api",
   "created_at": "2026-02-13T10:00:00Z"
 }
 ```
 
-#### 列出关系定义
+#### List Tasks
 
-获取工作空间中的所有关系定义。
+List tasks with optional filtering.
 
-**端点**：`GET /v1/relationships`
-**权限范围**：`relationship.read`
+**Endpoint**: `GET /v1/tasks`
+**Scope**: `task.read`
+
+**Query Parameters**:
+| Param | Type | Description |
+|-------|------|-------------|
+| `entity_id` | string | Filter by associated record |
+| `assignee_id` | string | Filter by assignee |
+| `search` | string | Search task titles |
+| `is_completed` | bool | `true`/`false` |
+| `limit` | int | Max results (1-500, default: 100) |
+| `offset` | int | Pagination offset (default: 0) |
 
 ```json
 {
   "tool": "exec",
-  "command": "bash {baseDir}/scripts/nex-api.sh GET /v1/relationships",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET '/v1/tasks?entity_id=1001&is_completed=false&limit=20'",
   "timeout": 120
 }
 ```
 
-#### 删除关系定义
+**Response**:
+```json
+{
+  "data": [],
+  "has_more": true,
+  "total": 47,
+  "next_offset": 20
+}
+```
 
-删除关系定义。
+#### Get Task
 
-**端点**：`DELETE /v1/relationships/{id}`
-**权限范围**：`relationship.write`
+Get a single task by ID.
+
+**Endpoint**: `GET /v1/tasks/{task_id}`
+**Scope**: `task.read`
 
 ```json
 {
   "tool": "exec",
-  "command": "bash {baseDir}/scripts/nex-api.sh DELETE /v1/relationships/789",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET /v1/tasks/800",
   "timeout": 120
 }
 ```
 
-#### 创建关系实例
+#### Update Task
 
-使用现有的关系定义连接两个记录。
+Update a task's fields. All fields are optional.
 
-**端点**：`POST /v1/records/{record_id}/relationships`
-**权限范围**：`relationship.write`
+**Endpoint**: `PATCH /v1/tasks/{task_id}`
+**Scope**: `task.write`
 
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
-|-------|------|----------|-------------|
-| `definition_id` | 字符串 | 是 | 关系定义 ID |
-| `entity_1_id` | 字符串 | 是 | 第一个记录的 ID |
-| `entity_2_id` | 字符串 | 是 | 第二个记录的 ID |
+**Request body** (all fields optional):
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | New title (cannot be empty) |
+| `description` | string | New description (empty string clears it) |
+| `priority` | string | New priority (empty string clears it) |
+| `due_date` | string (RFC3339) | New due date |
+| `is_completed` | bool | Mark complete/incomplete |
+| `entity_ids` | string[] | Replace associated records |
+| `assignee_ids` | string[] | Replace assignees |
 
 ```json
 {
   "tool": "exec",
-  "command": "echo '{\"definition_id\":\"789\",\"entity_1_id\":\"1001\",\"entity_2_id\":\"2002\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/records/1001/relationships",
+  "command": "echo '{\"priority\":\"urgent\",\"is_completed\":true}' | bash {baseDir}/scripts/nex-api.sh PATCH /v1/tasks/800",
   "timeout": 120
 }
 ```
 
-#### 删除关系实例
+#### Delete Task
 
-删除两个记录之间的关系。
+Archive a task (soft delete).
 
-**端点**：`DELETE /v1/records/{record_id}/relationships/{relationship_id}`
-**权限范围**：`relationship.write`
+**Endpoint**: `DELETE /v1/tasks/{task_id}`
+**Scope**: `task.write`
 
 ```json
 {
   "tool": "exec",
-  "command": "bash {baseDir}/scripts/nex-api.sh DELETE /v1/records/1001/relationships/5001",
+  "command": "bash {baseDir}/scripts/nex-api.sh DELETE /v1/tasks/800",
   "timeout": 120
 }
 ```
 
 ---
 
-### 列表
+### Notes
 
-#### 列出对象列表
+#### Create Note
 
-获取与特定对象类型关联的所有列表。
+Create a new note, optionally linked to a record.
 
-**端点**：`GET /v1/objects/{slug}/lists`
-**权限范围**：`list.read`
+**Endpoint**: `POST /v1/notes`
+**Scope**: `note.write`
 
-**参数**：
-- `slug`（路径）——对象类型的标识符（例如，`person`, `company`）。
-- `include_attributes`（查询，可选）——是否包含属性定义。
-
-**响应**：
-```json
-{
-  "data": [
-    {
-      "id": "456",
-      "slug": "vip-contacts",
-      "name": "VIP Contacts",
-      "type": "list",
-      "attributes": []
-    }
-  ]
-}
-```
-
-#### 创建列表
-
-为特定对象类型创建新列表。
-
-**端点**：`POST /v1/objects/{slug}/lists`
-**权限范围**：`object.write`
-
-**请求体**：
-| 字段 | 类型 | 是否必填 | 描述 |
+**Request body**:
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `name` | 字符串 | 是 | 列表显示名称 |
-| `name_plural` | 字符串 | 否 | 复数名称 |
-| `slug` | 字符串 | URL 安全标识符 |
-| `description` | 字符串 | 否 | 描述 |
+| `title` | string | yes | Note title (non-empty) |
+| `content` | string | no | Note body text |
+| `entity_id` | string | no | Associated record ID |
 
 ```json
 {
   "tool": "exec",
-  "command": "echo '{\"name\":\"VIP Contacts\",\"slug\":\"vip-contacts\",\"description\":\"High-value contacts\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/objects/contact/lists",
+  "command": "echo '{\"title\":\"Meeting notes\",\"content\":\"Discussed Q3 roadmap...\",\"entity_id\":\"1001\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/notes",
   "timeout": 120
 }
 ```
 
-#### 获取列表定义
+**Response**:
+```json
+{
+  "id": "900",
+  "title": "Meeting notes",
+  "content": "Discussed Q3 roadmap...",
+  "entity_id": "1001",
+  "created_by": "developer_api",
+  "created_at": "2026-02-13T10:00:00Z"
+}
+```
 
-通过 ID 获取列表定义。
+#### List Notes
 
-**端点**：`GET /v1/lists/{id}`
-**权限范围**：`list.read`
+List notes, optionally filtered by associated record.
+
+**Endpoint**: `GET /v1/notes`
+**Scope**: `note.read`
+
+**Query Parameters**:
+| Param | Type | Description |
+|-------|------|-------------|
+| `entity_id` | string | Filter notes by associated record |
+
+Response capped at 200 notes max.
 
 ```json
 {
   "tool": "exec",
-  "command": "bash {baseDir}/scripts/nex-api.sh GET /v1/lists/300",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET '/v1/notes?entity_id=1001'",
   "timeout": 120
 }
 ```
 
-#### 删除列表
+#### Get Note
 
-删除列表定义。
+Get a single note by ID.
 
-**端点**：`DELETE /v1/lists/{id}`
-**权限范围**：`object.write`
+**Endpoint**: `GET /v1/notes/{note_id}`
+**Scope**: `note.read`
 
 ```json
 {
   "tool": "exec",
-  "command": "bash {baseDir}/scripts/nex-api.sh DELETE /v1/lists/300",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET /v1/notes/900",
   "timeout": 120
 }
 ```
 
-#### 向列表中添加成员
+#### Update Note
 
-将现有记录添加到列表中。
+Update a note's fields.
 
-**端点**：`POST /v1/lists/{id}`
-**权限范围**：`list.member.write`
+**Endpoint**: `PATCH /v1/notes/{note_id}`
+**Scope**: `note.write`
 
-**请求体**：
-- `parent_id`（必填）——要添加的记录的 ID。
-- `attributes`（可选）——列表特定的属性值。
+**Request body** (all fields optional):
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | New title |
+| `content` | string | New content |
+| `entity_id` | string | Change associated record |
 
 ```json
 {
   "tool": "exec",
-  "command": "echo '{\"parent_id\":\"789\",\"attributes\":{\"status\":\"active\"}}' | bash {baseDir}/scripts/nex-api.sh POST /v1/lists/456",
+  "command": "echo '{\"title\":\"Updated meeting notes\",\"content\":\"Added action items...\"}' | bash {baseDir}/scripts/nex-api.sh PATCH /v1/notes/900",
   "timeout": 120
 }
 ```
 
-#### 插入列表成员
+#### Delete Note
 
-将记录添加到列表中，或更新列表中的属性（如果记录已经是列表成员）。
+Archive a note (soft delete).
 
-**端点**：`PUT /v1/lists/{id}`
-**权限范围**：`list.member.write`
-
-**请求体**：
-- `parent_id`（必填）——要添加的记录的 ID。
-- `attributes`（可选）——列表特定的属性值。
+**Endpoint**: `DELETE /v1/notes/{note_id}`
+**Scope**: `note.write`
 
 ```json
 {
   "tool": "exec",
-  "command": "echo '{\"parent_id\":\"789\",\"attributes\":{\"priority\":\"high\"}}' | bash {baseDir}/scripts/nex-api.sh PUT /v1/lists/456",
+  "command": "bash {baseDir}/scripts/nex-api.sh DELETE /v1/notes/900",
   "timeout": 120
 }
 ```
-
-#### 获取列表中的记录
-
-从特定列表中获取分页记录。
-
-**端点**：`POST /v1/lists/{id}/records`
-**权限范围**：`list.member.read`
-
-**请求体**：与 `List Records` 相同。
-
-**请求体参数**：
-- `attributes`——要获取的属性。
-- `limit`——`limit`。
-- `offset`——分页偏移量。
-- `sort`——包含 `attribute`（标识符）和 `direction`（`asc` 或 `desc`）的字段。
-
-**响应**：
-```json
-{
-  "data": [
-    {
-      "id": "789",
-      "type": "person",
-      "attributes": {"name": "Jane Doe", "email": "jane@example.com"},
-      "created_at": "2026-02-11T10:00:00Z",
-      "updated_at": "2026-02-11T10:00:00Z"
-    }
-  ],
-  "total": 42,
-  "limit": 10,
-  "offset": 0
-}
-```
-
-#### 获取记录时间线
-
-获取记录的分页时间线事件（如任务、笔记、属性更改等）。
-
-**端点**：`GET /v1/records/{record_id}/timeline`
-**权限范围**：`record.read`
-
-**查询参数**：
-- `limit`（整数）——最大事件数量（1-100，默认：50）。
-- `cursor`（字符串）——上一次响应的分页游标。
-
-**响应**：
-```json
-{
-  "data": [
-    {
-      "id": "5000",
-      "resource_type": "task",
-      "resource_id": "800",
-      "event_type": "created",
-      "event_payload": {
-        "task": {"id": "800", "title": "Follow up", "priority": "high"}
-      },
-      "event_timestamp": "2026-02-13T10:00:00Z",
-      "created_by": "developer_api"
-    }
-  ],
-  "has_next_page": true,
-  "next_cursor": "4999"
-}
-```
-
-**资源类型**：`entity`, `task`, `note`, `list_item`, `attribute`
-**事件类型**：`created`, `updated`, `deleted`, `archived`
 
 ---
 
-### 洞察信息
+### Search
 
-#### 获取洞察信息（REST）
+#### Search Records
 
-按时间窗口查询洞察信息。支持两种模式。
+Search records by name across all object types.
 
-**端点**：`GET /v1/insights`
-**权限范围**：`insight.stream`
+**Endpoint**: `POST /v1/search`
+**Scope**: `record.read`
 
-**查询参数**：
-- `last`——时间窗口（例如，`30m`, `2h`, `1h30m`）。
-- `from` + `to`——UTC 时间范围（RFC3339 格式）。
-- `limit`（可选）——最大结果数量（默认：20，最大：100）。
+**Request body**:
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `query` | string | yes | Search query (1-500 chars) |
 
-如果未指定 `last` 或 `from`/`to`，则返回最新的 20 条洞察信息。
+```json
+{
+  "tool": "exec",
+  "command": "echo '{\"query\":\"john doe\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/search",
+  "timeout": 120
+}
+```
 
-**推荐使用 jq 过滤器（第三个参数）**（响应内容可能超过 10KB）：
+**Response**:
+```json
+{
+  "results": {
+    "person": [
+      {
+        "id": "1001",
+        "primary_value": "John Doe",
+        "matched_value": "John Doe",
+        "score": 0.95,
+        "entity_definition_id": "10"
+      }
+    ],
+    "company": [
+      {
+        "id": "2001",
+        "primary_value": "Doe Industries",
+        "matched_value": "Doe Industries",
+        "score": 0.72,
+        "entity_definition_id": "11"
+      }
+    ]
+  },
+  "errored_search_types": []
+}
+```
+
+Results are grouped by object type (e.g., `"person"`, `"company"`, `"deal"`). If some search types fail, partial results are returned with `errored_search_types` listing which types had errors.
+
+---
+
+### Context & AI
+
+#### Query Context (Ask API)
+
+Use this when you need to recall information about contacts, companies, or relationships.
+
+**Endpoint**: `POST /v1/context/ask`
+**Scope**: `record.read`
+
+```json
+{
+  "tool": "exec",
+  "command": "echo '{\"query\":\"What do I know about John Smith?\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/context/ask",
+  "timeout": 120
+}
+```
+
+**Response**:
+```json
+{
+  "answer": "John Smith is a VP of Sales at Acme Corp...",
+  "entities_considered": [
+    {"id": 123, "name": "John Smith", "type": "contact"}
+  ],
+  "signals_used": [
+    {"id": 456, "content": "Met at conference last month"}
+  ],
+  "metadata": {
+    "query_type": "entity_specific"
+  }
+}
+```
+
+**Example queries**:
+- "Who are my most engaged contacts this week?"
+- "What companies are we working with in the healthcare sector?"
+- "What was discussed in my last meeting with Sarah?"
+
+#### Add Context (ProcessText API)
+
+Use this to ingest new information from conversations, meeting notes, or other text.
+
+**Endpoint**: `POST /v1/context/text`
+**Scope**: `record.write`
+
+**Request body**:
+- `content` (required) -- The text to process
+- `context` (optional) -- Additional context about the text (e.g., "Sales call notes")
+
+```json
+{
+  "tool": "exec",
+  "command": "echo '{\"content\":\"Had a great call with John Smith from Acme Corp.\",\"context\":\"Sales call notes\"}' | bash {baseDir}/scripts/nex-api.sh POST /v1/context/text",
+  "timeout": 120
+}
+```
+
+**Response**:
+```json
+{
+  "artifact_id": "abc123"
+}
+```
+
+After calling ProcessText, use Get Artifact Status to check processing results.
+
+#### Get Artifact Status
+
+Check the processing status and results after calling ProcessText.
+
+**Endpoint**: `GET /v1/context/artifacts/{artifact_id}`
+**Scope**: `record.read`
+
+```json
+{
+  "tool": "exec",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET /v1/context/artifacts/abc123",
+  "timeout": 120
+}
+```
+
+**Response**:
+```json
+{
+  "operation_id": 48066188026052610,
+  "status": "completed",
+  "result": {
+    "entities_extracted": [
+      {"name": "John Smith", "type": "PERSON", "action": "created"},
+      {"name": "Acme Corp", "type": "COMPANY", "action": "updated"}
+    ],
+    "entities_created": 1,
+    "entities_updated": 1,
+    "relationships": 1,
+    "insights": [
+      {"content": "Acme Corp expanding to APAC", "confidence": 0.85}
+    ],
+    "tasks": []
+  },
+  "created_at": "2026-02-05T10:30:00Z",
+  "completed_at": "2026-02-05T10:30:15Z"
+}
+```
+
+**Status values**: `pending`, `processing`, `completed`, `failed`
+
+**Typical workflow**:
+1. Call ProcessText -> get `artifact_id`
+2. Poll Get Artifact Status every 2-5 seconds
+3. Stop when `status` is `completed` or `failed`
+4. Report the extracted entities and insights to the user
+
+#### Create AI List Job
+
+Use natural language to search your context graph and generate a curated list of contacts or companies. **Use this when you know the object type** (contact or company) and want AI to filter and rank matches. If you're unsure which object type applies or the question is open-ended, use the **Ask API** instead.
+
+**Endpoint**: `POST /v1/context/list/jobs`
+**Scope**: `record.read`
+
+**Request body**:
+- `query` (required) -- Natural language search query
+- `object_type` (optional) -- `"contact"` or `"company"` (default: `"contact"`)
+- `limit` (optional) -- Number of results (default: 50, max: 100)
+- `include_attributes` (optional) -- Include all entity attribute values (default: false)
+
+```json
+{
+  "tool": "exec",
+  "command": "echo '{\"query\":\"high priority contacts in enterprise deals\",\"object_type\":\"contact\",\"limit\":20,\"include_attributes\":true}' | bash {baseDir}/scripts/nex-api.sh POST /v1/context/list/jobs",
+  "timeout": 120
+}
+```
+
+**Response**:
+```json
+{
+  "message": {
+    "job_id": "12345678901234567",
+    "status": "pending"
+  }
+}
+```
+
+#### Get AI List Job Status
+
+Check status and results of an AI list generation job. Poll until `status` is `completed` or `failed`.
+
+**Endpoint**: `GET /v1/context/list/jobs/{job_id}`
+**Scope**: `record.read`
+
+**Query Parameters**:
+- `include_attributes` (boolean, optional) -- Include full attributes for each entity
+
+```json
+{
+  "tool": "exec",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET '/v1/context/list/jobs/12345678901234567?include_attributes=true'",
+  "timeout": 120
+}
+```
+
+**Response** (completed):
+```json
+{
+  "message": {
+    "job_id": "12345678901234567",
+    "status": "completed",
+    "created_at": "2026-02-11T10:00:00Z",
+    "count": 5,
+    "query_interpretation": "Finding contacts involved in enterprise-level deals marked as high priority",
+    "entities": [
+      {
+        "id": "789",
+        "name": "Jane Doe",
+        "type": "contact",
+        "reason": "Lead on $500K enterprise deal with Acme Corp, marked high priority",
+        "highlights": [
+          "Contract negotiation in progress",
+          "Budget approved Q1 2026",
+          "Executive sponsor confirmed"
+        ],
+        "attributes": {}
+      }
+    ]
+  }
+}
+```
+
+**Status values**: `pending`, `processing`, `completed`, `failed`
+
+**Typical workflow**:
+1. Create job with natural language query -> get `job_id`
+2. Poll Get AI List Job Status every 2-5 seconds
+3. Stop when `status` is `completed` or `failed`
+4. Present the matched entities with reasons and highlights
+
+---
+
+### Insights
+
+#### Get Insights (REST)
+
+Query insights by time window. Supports two modes.
+
+**Endpoint**: `GET /v1/insights`
+**Scope**: `insight.stream`
+
+**Query Parameters**:
+- `last` -- Duration window, e.g., `30m`, `2h`, `1h30m`
+- `from` + `to` -- UTC time range in RFC3339 format
+- `limit` (optional) -- Max results (default: 20, max: 100)
+
+If neither `last` nor `from`/`to` is specified, returns the most recent insights (default 20).
+
+Last 30 minutes:
+```json
+{
+  "tool": "exec",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET '/v1/insights?last=30m'",
+  "timeout": 120
+}
+```
+
+Between two dates:
+```json
+{
+  "tool": "exec",
+  "command": "bash {baseDir}/scripts/nex-api.sh GET '/v1/insights?from=2026-02-07T00:00:00Z&to=2026-02-08T00:00:00Z'",
+  "timeout": 120
+}
+```
+
+**Recommended: Use jq filter (3rd arg) to extract a summary** (responses can be 10-100KB+):
 ```json
 {
   "tool": "exec",
@@ -1119,36 +1340,41 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**使用场景**：
-- 在定期轮询时，而不是保持 SSE 连接时。
-- 在启动时获取当前的洞察信息状态。
-- 当 SSE 连接中断时作为备用方案。
-- 查看特定时间段的洞察信息。
+**When to use**:
+- When polling periodically instead of maintaining SSE connection
+- To get current insight state on startup
+- As fallback when SSE connection drops
+- To review insights from a specific time period
 
-**哪些内容可被记录**（在定期轮询时）：
-- 新出现的联系人或公司。
-- 被提及的机会、风险或里程碑。
-- 表达的集成或工具偏好。
-- 发生或计划中的会议。
-- 关系变化（新的联系、角色变更、公司变动）。
-- 任何 `confidence_level` 为 `"high"` 或 `"very_high"` 的洞察信息。
+**Notable insight categories** (summarize for user review):
+- New contacts or companies
+- Opportunities, risks, or milestones
+- Meetings scheduled or occurred
+- Relationship changes
+- High-confidence insights (`confidence_level` of `"high"` or `"very_high"`)
 
-**切勿** 将洞察信息视为“已见过”或“无用信息”而忽略。每个轮询窗口都是独立的——如果发现新的洞察信息，请务必记录下来。
+#### Real-time Insight Stream (SSE)
 
-#### 实时洞察流（SSE）
+Receive insights as they are discovered in real time.
 
-实时接收发现的洞察信息。
+**Endpoint**: `GET /v1/insights/stream`
+**Scope**: `insight.stream`
 
-**端点**：`GET /v1/insights/stream`
-**权限范围**：`insight.stream`
+```json
+{
+  "tool": "exec",
+  "command": "bash {baseDir}/scripts/nex-api.sh sse /v1/insights/stream",
+  "timeout": 120
+}
+```
 
-**连接行为**：
-- 服务器在连接时发送 `: connected workspace_id=... token_id=...`。
-- 最新的洞察信息会通过 `insight.replay` 事件立即重新播放（最多 20 条）。
-- 每 30 秒发送一次 `: keepalive` 评论以保持连接。
-- 实时事件以如下格式发送：`event: insight.batch.created\ndata: {...}\n\n`。
+**Connection behavior**:
+- Server sends `: connected workspace_id=... token_id=...` on connection
+- **Recent insights are replayed** immediately via `insight.replay` events (up to 20)
+- Keepalive comments (`: keepalive`) sent every 30 seconds
+- Real-time events arrive as: `event: insight.batch.created\ndata: {...}\n\n`
 
-**事件数据结构**：
+**Event payload structure**:
 ```json
 {
   "workspace": {
@@ -1178,36 +1404,35 @@ Nex API 的响应内容（尤其是洞察信息和记录列表）可能超过 10
 }
 ```
 
-**洞察类型**：`opportunity`, `risk`, `relationship`, `preference`, `milestone`, `activity`, `characteristic`, `role_detail`
+**Insight types**: `opportunity`, `risk`, `relationship`, `preference`, `milestone`, `activity`, `characteristic`, `role_detail`
 
-**使用建议**：
-- 在进行活跃对话时，在后台保持 SSE 连接。对于一次性查询，可以使用 Ask API。
+**When to use**: Keep the SSE connection open in the background during active conversations. For one-off queries, use the Ask API instead.
 
-## 错误处理
+## Error Handling
 
-| 状态码 | 含义 | 处理方式 |
+| Status Code | Meaning | Action |
 |-------------|---------|--------|
-| 400 | 请求无效 | 检查请求体和参数。 |
-| 401 | API 密钥无效 | 确保 `NEX_API_KEY` 设置正确。 |
-| 403 | 缺少权限范围 | 确保 API 密钥具有所需的权限范围。 |
-| 404 | 未找到 | 检查记录/对象/列表 ID 是否存在。 |
-| 429 | 请求频率限制 | 等待一段时间后重试。 |
-| 500 | 服务器错误 | 稍后重试。 |
+| 400 | Invalid request | Check request body and parameters |
+| 401 | Invalid API key | Check NEX_API_KEY is set correctly |
+| 403 | Missing scope | Verify API key has the required scope |
+| 404 | Not found | Check the record/object/list ID exists |
+| 429 | Rate limited | Wait and retry with exponential backoff |
+| 500 | Server error | Retry after a brief delay |
 
-## 何时使用 Nex
+## When to Use Nex
 
-**适用场景**：
-- 在回复消息之前，查询有关人员的上下文信息。
-- 对话结束后，处理对话记录以更新上下文图谱。
-- 当被询问与联系人/公司的关系或历史记录时。
-- 根据对话内容创建或更新 CRM 记录。
-- 从联系人数据库中创建目标列表。
-- 在会议前查看记录详情。
-- 创建任务和笔记以跟踪后续行动。
-- 在所有记录类型中搜索特定的人或公司。
-- 为工作空间定义自定义对象结构和关系。
+**Good use cases**:
+- Before responding to a message, query for context about the person
+- After a conversation, process the transcript to update the context graph
+- When asked about relationships or history with contacts/companies
+- Creating or updating CRM records from conversation context
+- Building targeted lists from your contact database
+- Looking up record details before a meeting
+- Creating tasks and notes to track follow-ups
+- Searching across all record types to find specific people or companies
+- Defining custom object schemas and relationships for your workspace
 
-**不适用场景**：
-- 一般性知识查询（使用网页搜索）。
-- 实时日历/调度（使用日历工具）。
-- 需要完整 Nex 用户界面的直接 CRM 数据输入。
+**Not for**:
+- General knowledge questions (use web search)
+- Real-time calendar/scheduling (use calendar tools)
+- Direct CRM data entry that requires the full Nex UI

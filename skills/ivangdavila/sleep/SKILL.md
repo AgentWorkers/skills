@@ -1,40 +1,49 @@
 ---
 name: "Sleep"
-description: "它会自动学习你的睡眠模式，通过可穿戴设备收集数据、分析你的日常对话以及观察你的睡眠习惯来进行学习。"
+description: "它会自动学习你的睡眠模式，通过可穿戴设备收集数据、分析你的日常对话以及观察你的睡眠习惯来了解你的睡眠规律。"
+version: "1.0.1"
+changelog: "Preferences now persist across skill updates"
 ---
-
 ## 自适应睡眠追踪功能
 
-此功能会随着用户睡眠习惯的了解以及影响睡眠因素的发现而不断优化。
+该功能会随着用户睡眠习惯的了解以及影响睡眠因素的变化而不断进化。
 
 **规则：**
-- 从任何来源（可穿戴设备、对话、用户自发评论等）收集与睡眠相关的信息。
+- 从任何来源（可穿戴设备、对话内容、用户的自发评论等）收集与睡眠相关的信息。
 - 判断用户是希望主动获取睡眠状态更新，还是仅希望被被动观察。
-- 在收集到连续3次以上的睡眠数据后，分析其中的规律。
-- 绝不在不合适的时机（如深夜、忙碌时段）询问用户的睡眠情况。
-- 请参阅 `sources.md` 以了解数据整合方式，以及 `patterns.md` 以了解检测到的睡眠模式。
+- 在收集到连续3次以上一致的睡眠数据后，分析睡眠模式。
+- 绝不在不合适的时机（如深夜或用户忙碌时）询问用户的睡眠情况。
+- 有关数据整合的详细信息，请参考 `sources.md`；有关检测到的睡眠节律信息，请参考 `patterns.md`。
 
 ---
 
-### 数据来源
-<!-- 睡眠数据的来源。格式：`source: 可靠性` -->
-<!-- 例如：`apple-health: 每日同步数据`、`conversation: 提到疲劳` -->
+## 记忆存储
 
-### 睡眠模式
-<!-- 检测到的用户睡眠模式。格式：`pattern` -->
-<!-- 例如：工作日 23:30–07:00，周末时间延长1.5小时 -->
+用户的睡眠数据会保存在以下路径：`~/sleep/memory.md`
 
-### 影响睡眠的因素
-<!-- 影响用户睡眠的因素。格式：`factor: 效果` -->
-<!-- 例如：下午15点后饮用咖啡：睡眠时间减少1小时；锻炼：提高睡眠质量 -->
+**格式：**
+```markdown
+# Sleep Memory
 
-### 用户偏好
-<!-- 用户对睡眠追踪的设置。格式：`preference` -->
-<!-- 例如：不希望早上收到睡眠更新，仅需要每周一次的总结」
+## Sources
+<!-- Where sleep data comes from. Format: "source: reliability" -->
+<!-- Examples: apple-health: synced daily, conversation: mentions fatigue -->
 
-### 需关注的睡眠异常信号
-<!-- 需要关注的睡眠问题迹象。格式：`signal` -->
-<!-- 例如：`感到疲倦`、`无法入睡`、连续饮用两杯咖啡等 -->
+## Schedule
+<!-- Detected sleep patterns. Format: "pattern" -->
+<!-- Examples: weekday ~23:30-07:00, weekend +1.5h later -->
 
----
-*空白部分表示尚未收集到相关数据。请通过观察用户的对话来补充相关信息。*
+## Correlations
+<!-- What affects their sleep. Format: "factor: effect" -->
+<!-- Examples: coffee after 15:00: -1h, exercise: +quality -->
+
+## Preferences
+<!-- How they want sleep tracked. Format: "preference" -->
+<!-- Examples: no morning check-ins, weekly summary only -->
+
+## Flags
+<!-- Signs of poor sleep to watch for. Format: "signal" -->
+<!-- Examples: "tired", "couldn't sleep", double coffee -->
+```
+
+*如果某个部分为空，说明目前还没有相关数据。请通过观察用户的对话内容来补充数据。*

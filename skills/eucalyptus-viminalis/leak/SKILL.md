@@ -1,8 +1,8 @@
 ---
 name: leak
-description: 用于从旧的混合泄漏技能（mixed leak skill）迁移到分离的、加固后的技能（split hardened skills）的兼容性代码片段。
+description: 用于从旧的混合泄漏技能（mixed leak skill）迁移到分离的强化技能（split hardened skills）的兼容性代码片段。
 compatibility: Requires access to the internet
-version: 2026.2.17-beta.0
+version: 2026.2.17
 metadata:
   openclaw:
     emoji: 💦
@@ -12,20 +12,20 @@ metadata:
       bins: ["leak"]
   author: eucalyptus-viminalis
 ---
-# `leak`（迁移存根）
+# leak（迁移存根）
 
 这个旧有的功能现在仅作为一个兼容性存根存在。
 
 请使用以下分离后的功能来替代：
 - `leak-buy`：用于购买和下载内容。
-- `leak-publish`：用于发布和销售内容。
+- `leak-publish`：用于发布和出售内容。
 
 ## 迁移步骤
 
 1. 当用户请求购买/下载内容时，安装 `leak-buy`。
-2. 当用户请求发布/销售内容时，安装 `leak-publish`。
-3. 请勿从这个存根中直接执行购买/发布相关的操作。
+2. 当用户请求发布/出售内容时，安装 `leak-publish`。
+3. 不要从这个存根中执行任何购买/发布相关的操作。
 
 ## 原因
 
-这种分离模型能够降低风险范围，将高风险操作从单一功能中分离出来，从而增强 Clawhub 的安全性（即提高系统的抗攻击能力）。
+这种分离模型可以降低风险范围，将高风险操作从单一功能中分离出来，从而增强 ClawHub 的安全性。

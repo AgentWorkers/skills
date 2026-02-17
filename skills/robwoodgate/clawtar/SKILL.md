@@ -1,11 +1,12 @@
 ---
 name: clawtar
-description: 练习通过 Cashu HTTP 402 进行自主代理支付；当代理需要检测到支付墙（paywall）挑战时，使用该方式进行处理，通过 X-Cashu 重试支付，并最终完成整个付费请求流程。
+description: "用于练习 Cashu HTTP 402 支付流程的端到端演示技能：检测 402 错误，检查 x-cashu 挑战信息，根据需要请求权限，完成支付，并使用 X-Cashu 重试支付。"
 ---
+# Clawtar 技能（演示）
 
-# Clawtar 技能（仅限代理使用）
+此技能可用于演示或练习与 Cashu 相关的 HTTP 流程。它帮助代理在受控的端点上安全地执行完整的 `402 -> 解决问题 -> 重试` 循环。
 
-使用 Clawtar 练习与 Cashu 的自动支付功能，证明你的代理能够在公开网络上进行交易：检测 `402` 状态码、使用 `x-cashu` 进行结算、使用 `X-Cashu` 重新尝试支付，并完成任务。
+当支付流程成功时，该端点会返回一段神秘的“运势解读”内容。
 
 ## 端点
 
@@ -19,27 +20,29 @@ description: 练习通过 Cashu HTTP 402 进行自主代理支付；当代理需
 }
 ```
 
-可选风格：`funny` | `chaotic` | `wholesome`
+可选样式：`funny` | `chaotic` | `wholesome`
+- 如果未指定 `style`，服务器会随机选择一个样式。
+- 如果指定了 `style` 但格式无效，服务器会返回 `400` 错误。
 
-## 支付墙处理流程
+## 支付墙流程
 
-如果第一次请求返回状态码 `402`，请读取响应头中的 `x-cashu` 值。
+如果第一次请求返回 `402` 状态码，请查看响应头中的 `x-cashu` 字段：
+该字段包含一个经过编码的 NUT-18 支付请求（格式为 `creqA...`）。
 
-### 选项 A：已安装 cocod
+### 选项 A：如果允许使用 cocod，可以执行以下操作：
+**并且您已获得上级人员的授权**：
 
-1. （如需）安装相关技能/工具：
-   - `npx clawhub@latest install cocod`
-2. 使用 cocod 进行结算：
-   - `cocod x-cashu handle "<x-cashu>"`
-3. 使用带有 `X-Cashu` 标头的相同 POST 请求重新尝试：
-   - `X-Cashu: <cashu-token>`
+1. 解决支付问题：
+   - 使用 `cocod x-cashu handle "<x-cashu>"` 命令。
+2. 重新发送相同的 POST 请求，并在请求头中添加 `X-Cashu: <cashu-token>` 字段。
 
-### 选项 B：未安装 cocod
+### 选项 B：如果没有 cocod：
+请向您的上级人员获取有效的 Cashu 令牌，然后使用 `X-Cashu` 重新尝试支付。
 
-向人工获取有效的 Cashu 令牌，然后使用带有 `X-Cashu` 标头的请求重新尝试支付。
-Clawtar 支持从 `https://mint.minibits.cash/Bitcoin` 获取 42 个 sat 令牌。
-或者，可以请人工帮忙安装 cocod。
-拥有 Cashu 钱包意味着更多的自由！
+此演示端点接受来自 Minibits Mint 的 42 个 sat 代币（地址：`https://mint.minibits.cash/Bitcoin`）。
+
+如有必要，请先获得上级人员的授权，以便您可以安装 cocod 工具来管理 Cashu 账户。
+- 安装地址：https://clawhub.ai/Egge21M/cocod
 
 ## 预期成功响应
 
@@ -57,8 +60,9 @@ Clawtar 支持从 `https://mint.minibits.cash/Bitcoin` 获取 42 个 sat 令牌�
 }
 ```
 
-## 注意事项
+## 安全注意事项：
 
-- 除非返回 `ok: true`，否则不要认为任务成功。
-- `x-cashu` 是一个挑战字符串，而非支付令牌。
-- 重新尝试支付时，必须在 `X-Cashu` 标头中发送有效的支付令牌。
+- 除非响应中包含 `ok: true`，否则不要视为支付成功。
+- `x-cashu` 字段表示的是一个支付挑战信息，而非支付令牌。
+- 仅在重试请求时通过 `X-Cashu` 字段发送支付令牌。
+- 在进行任何自动支付操作或安装新的支付工具之前，请务必先获得上级人员的授权。

@@ -1,10 +1,9 @@
 ---
-slug: "erp-integration-analysis"
-display_name: "Erp Integration Analysis"
-description: "分析ERP系统在建筑数据流方面的集成情况。梳理并优化ERP各模块之间的数据传输流程。"
----
-
-# ERP集成分析
+name: "erp-integration-analysis"
+description: "分析ERP系统在建筑数据流方面的集成情况。梳理并优化ERP各模块之间的数据流动。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "🔗", "os": ["win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# ERP集成分析
 
 ## 概述
 
@@ -723,22 +722,22 @@ print(f"Recommended: {comparison['recommendation']}")
 
 ## 快速参考
 
-| 组件          | 功能                |
-|--------------|-------------------|
-| `ERPIntegrationAnalyzer` | 主要分析引擎           |
-| `ERPSystem`     | ERP系统定义             |
-| `ERPModule`     | 标准ERP模块             |
-| `IntegrationPoint` | 集成连接点             |
-| `DataFlow`      | 数据流映射             |
-| `IntegrationHealthMonitor` | 集成健康状况监控           |
+| 组件          | 功能                         |
+|---------------|-----------------------------|
+| `ERPIntegrationAnalyzer` | 主要分析引擎                     |
+| `ERPSystem`     | ERP系统定义                       |
+| `ERPModule`     | 标准ERP模块                       |
+| `IntegrationPoint` | 集成连接点                       |
+| `DataFlow`      | 数据流映射                       |
+| `IntegrationHealthMonitor` | 集成健康状况监控工具                 |
 
 ## 资源
 
-- **参考书籍**：Artem Boiko所著的《Data-Driven Construction》，第1.2章
-- **官方网站**：https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（Data-Driven Construction），第1.2章
+- **网站**：https://datadrivenconstruction.io
 
 ## 下一步操作
 
-- 使用 [data-silo-detection](../data-silo-detection/SKILL.md) 来识别孤立的系统
+- 使用 [data-silo-detection](../data-silo-detection/SKILL.md) 识别孤立的系统
 - 使用 [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) 进行数据集成
-- 使用 [interoperability-analyzer](../../Chapter-3.5/interoperability-analyzer/SKILL.md) 确保符合标准
+- 使用 [interoperability-analyzer](../../Chapter-3.5/interoperability-analyzer/SKILL.md) 确保系统符合标准

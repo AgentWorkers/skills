@@ -11,6 +11,13 @@ cd "$SCRIPT_DIR"
 echo "🧠 BrainDB Single-Node Setup"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+# Parse args
+for arg in "$@"; do
+  case "$arg" in
+    --port=*) BRAINDB_PORT="${arg#*=}" ;;
+  esac
+done
+
 # Check Docker
 if ! command -v docker &>/dev/null; then
   echo "❌ Docker not found. Install: https://docs.docker.com/get-docker/"
@@ -31,6 +38,27 @@ fi
 
 # Source .env for port variables
 set -a; source .env 2>/dev/null || true; set +a
+
+# Override port from --port flag if provided
+GATEWAY_PORT="${BRAINDB_PORT:-${GATEWAY_PORT:-3333}}"
+# Write port override back to .env if --port was used
+if [ -n "${BRAINDB_PORT:-}" ] && [ -f .env ]; then
+  if grep -q "^GATEWAY_PORT=" .env; then
+    sed -i'' -e "s/^GATEWAY_PORT=.*/GATEWAY_PORT=$BRAINDB_PORT/" .env
+  else
+    echo "GATEWAY_PORT=$BRAINDB_PORT" >> .env
+  fi
+fi
+
+# Check port availability
+if curl -sf "http://localhost:$GATEWAY_PORT/health" >/dev/null 2>&1; then
+  echo ""
+  echo "⚠️  Port $GATEWAY_PORT is already in use."
+  echo "   Use --port=<number> to pick a different port, e.g.:"
+  echo "   ./setup.sh --port=3345"
+  echo ""
+  exit 1
+fi
 
 # Build and start
 echo ""

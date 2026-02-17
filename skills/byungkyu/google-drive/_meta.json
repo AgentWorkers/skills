@@ -3,11 +3,16 @@
   "slug": "google-drive",
   "displayName": "Google Drive",
   "latest": {
-    "version": "1.0.5",
-    "publishedAt": 1770755860758,
-    "commit": "https://github.com/openclaw/skills/commit/52f0663261e2fe0783ab6afebce38aef9b827ec9"
+    "version": "1.0.6",
+    "publishedAt": 1771282127935,
+    "commit": "https://github.com/openclaw/skills/commit/3967888b07348246b14f1881e6d2131212aa345d"
   },
   "history": [
+    {
+      "version": "1.0.5",
+      "publishedAt": 1770755860758,
+      "commit": "https://github.com/openclaw/skills/commit/52f0663261e2fe0783ab6afebce38aef9b827ec9"
+    },
     {
       "version": "1.0.3",
       "publishedAt": 1770344124656,

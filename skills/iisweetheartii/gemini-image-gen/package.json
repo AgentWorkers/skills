@@ -1,6 +1,6 @@
 {
   "name": "gemini-image-gen",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Generate and edit images via Google Gemini API. Supports Gemini native generation, Imagen 3, style presets, and batch generation with HTML gallery. Zero dependencies — pure Python stdlib.",
   "homepage": "https://github.com/IISweetHeartII/gemini-image-gen",
   "repository": "https://github.com/IISweetHeartII/gemini-image-gen",
@@ -55,6 +55,10 @@
     "agent-selfie": {
       "description": "AI agent avatar generator",
       "complement": "Focused on agent identity; uses the same API key"
+    },
+    "opencode-omo": {
+      "description": "Sisyphus-first OpenCode workflow operator",
+      "complement": "Automate repeatable image pipelines with deterministic prompts"
     }
   }
 }

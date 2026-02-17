@@ -1,159 +1,157 @@
 ---
 name: notnative
-description: 使用 Notnative 的 MCP 服务器（ws://127.0.0.1:8788）来进行笔记管理、搜索、日历操作、任务管理、Python 代码执行以及画布图形的操作。该服务器通过 WebSocket 与本地的 Notnative 应用程序实例进行连接。当您需要从 Notnative 的数据存储库中搜索或读取笔记、创建/更新/添加笔记内容、管理日历事件和任务、执行 Python 代码以进行计算/图表制作/数据分析、操作画布图形，或者通过 MCP 工具访问 Notnative 应用程序的任何功能时，可以使用该服务器。
+description: 使用 Notnative MCP 服务器实现与笔记、日历、任务、Python、Canvas 功能以及持久性存储的全面集成。该功能可确保在对话过程中用户设置、分享的信息以及关键上下文内容得到持久保存。通过 WebSocket 与本地或远程的 Notnative 实例进行连接。
+homepage: https://github.com/k4ditano/notnative-memory
+metadata:
+  openclaw:
+    emoji: "🧠"
+    requires:
+      bins: ["node", "curl"]
 ---
+# NotNative - 完整的AI集成
 
-# Notnative
+**⚠️ 重要提示：** 此功能会永久存储用户信息。您必须使用内存管理工具来记录用户的偏好设置、他们分享的信息以及所有对话中的重要上下文。
 
-通过 Notnative 应用的 MCP WebSocket 服务器与其进行交互。Notnative 应用必须运行在端口 8788 上。
+## 系统说明
+
+您是一个AI助手，可以通过NotNative访问持久化存储和笔记管理功能。
+
+### 内存协议（必须遵守）
+
+**请始终遵循以下规则：**
+
+1. **记录用户信息**：当用户分享个人信息（姓名、偏好设置、过敏原、爱好、工作背景等）时，立即使用`memory_store`工具进行存储。
+   - 例如：用户说“我对坚果过敏” → 存储为：“用户对坚果过敏”。
+
+2. **在回答之前**：如果用户询问可能存储在内存中的信息（偏好设置、之前的对话内容等），请务必先使用`memory_search`进行搜索。
+
+3. **用户偏好设置**：当用户表达某种偏好（如“我更喜欢暗模式”或“请用我的名字称呼我”）时，使用`memory_store`进行存储。
+
+4. **上下文检索**：在每次对话开始时，搜索内存中与用户相关的信息。
+
+### 何时使用内存功能
+
+- 当用户分享个人信息时
+- 当用户表达偏好或需求时
+- 当用户询问您不知道但可能存储在内存中的信息时
+- 当用户提及之前的对话或背景信息时
+- 为了与用户建立长期的关系
+
+### 内存管理命令
+
+```bash
+# Store important information
+node scripts/mcp-client.js store "User prefers responses in Spanish"
+
+# Search memory before responding
+node scripts/mcp-client.js recall "language preference"
+
+# Update user profile
+node scripts/mcp-client.js profile-update "name:John"
+
+# Get full profile
+node scripts/mcp-client.js profile
+```
 
 ## 快速入门
 
-该技能提供了一个名为 `scripts/mcp-client.js` 的 CLI 客户端，用于处理 MCP 协议通信。
-
-### 常用命令
-
 ```bash
-# Search notes by query
+# Search notes
 node scripts/mcp-client.js search "recipe chicken"
-node scripts/mcp-client.js search "project notnative" --limit 10
-
-# Semantic search (by meaning)
 node scripts/mcp-client.js semantic "healthy breakfast ideas"
 
-# Read a specific note
-node scripts/mcp-client.js read "Recetas/Pollo al limón"
-
-# Get currently active/open note
-node scripts/mcp-client.js active
-
-# Create a new note
-node scripts/mcp-client.js create "# New Note\n\nContent here" "Note Name" "Personal"
-
-# Append content to note (uses active note if no name specified)
+# Read/create/update notes
+node scripts/mcp-client.js read "My Notes/Project"
+node scripts/mcp-client.js create "# New Note" "Note Name" "Personal"
 node scripts/mcp-client.js append "\n- New item" "My List"
 
-# Update a note (OVERWRITES entire content)
-node scripts/mcp-client.js update "My Note" "# Updated content"
+# Memory (IMPORTANT!)
+node scripts/mcp-client.js store "User's name is John"
+node scripts/mcp-client.js recall "name"
+node scripts/mcp-client.js forget "old info"
 
-# List notes (optional folder filter)
-node scripts/mcp-client.js list-notes "Personal"
-node scripts/mcp-client.js list-notes
-
-# List folders
-node scripts/mcp-client.js list-folders
-
-# List tags
-node scripts/mcp-client.js list-tags
-
-# List tasks
+# Calendar & Tasks
 node scripts/mcp-client.js tasks
-
-# Get upcoming calendar events
 node scripts/mcp-client.js events
 
-# Get workspace statistics
-node scripts/mcp-client.js stats
+# Python execution
+node scripts/mcp-client.js run-python "print('Hello!')"
 
-# Get app documentation
-node scripts/mcp-client.js docs "vim commands"
-
-# Execute Python code
-node scripts/mcp-client.js run-python "print('Hello, World!')"
-```
-
-### 高级用法：直接调用工具
-
-使用 `call` 命令和 JSON 参数直接调用任何 MCP 工具：
-
-```bash
-# Insert content into specific location
-node scripts/mcp-client.js call insert_into_note '{"name":"My Note","insertAtLine":10,"content":"New paragraph here"}'
-
-# Create a calendar event
-node scripts/mcp-client.js call create_calendar_event '{"title":"Meeting","startTime":"2026-01-26T10:00:00","duration":60}'
-
-# Add a task
-node scripts/mcp-client.js call create_task '{"text":"Call John tomorrow","dueDate":"2026-01-26"}'
-
-# Web search
-node scripts/mcp-client.js call web_search '{"query":"best JavaScript frameworks 2026"}'
-
-# Browse a webpage
-node scripts/mcp-client.js call web_browse '{"url":"https://example.com"}'
-```
-
-### 列出所有可用工具
-
-```bash
+# List all available tools
 node scripts/mcp-client.js list
 ```
 
-这会显示所有 86 个可用的 MCP 工具及其输入格式。
+## 可用工具
 
-## 主要功能
+### 内存管理（必须使用）
+
+- **memory_store**：将信息永久存储在OpenClaw/Memory中
+- **memory_search**：在所有笔记和记忆中搜索信息
+- **memory_forget**：根据查询删除记忆记录
+- **memory_profile**：获取/更新用户资料
 
 ### 笔记管理
 
-- **搜索**：全文搜索（`search_notes`）和语义搜索（`semantic_search`）
-- **读取**：按名称或活动笔记获取笔记内容（`read_note`，`get_active_note`）
-- **创建**：创建新笔记（`create_note`，`create_daily_note`）
-- **编辑**：插入到笔记中（`insert_into_note`），追加到笔记末尾（`append_to_note`），或完全更新笔记（`update_note`）
-- **组织**：重命名、移动、删除笔记（`rename_note`，`move_note`，`delete_note`）
-- **历史记录**：获取和恢复笔记版本（`get_note_history`，`restore_note_from_history`）
+- **search_notes**：全文搜索
+- **semantic_search**：按含义搜索
+- **read_note**：获取笔记内容
+- **create_note**：创建新笔记
+- **append_to_note**：向笔记中添加内容
+- **update_note**：更新笔记
+- **list_notes**：列出所有笔记
+- **list_folders**：列出文件夹
+- **list_tags**：列出标签
 
-### 日历与任务
+### 日历与任务管理
 
-- **事件**：创建、列出、更新、删除日历事件（`create_calendar_event`，`list_calendar_events`，`get_upcoming_events`）
-- **任务**：创建、列出、完成任务（`create_task`，`list_tasks`，`complete_task`）
-- **集成**：将任务转换为事件，查找空闲时间（`convert_task_to_event`，`find_free_time`）
+- **list_tasks**：查看待办任务
+- **create_task**：创建任务
+- **complete_task**：完成任务
+- **get_upcoming_events**：查看日历事件
+- **create_calendar_event**：创建日历事件
 
-### Python 执行
+### Python执行
 
-可以运行包含以下库的 Python 代码：matplotlib、pandas、numpy、pillow、openpyxl、xlsxwriter
+- **run_python**：执行包含matplotlib、pandas、numpy、pillow、openpyxl的Python代码
 
-```bash
-node scripts/mcp-client.js run-python "import matplotlib.pyplot as plt; plt.plot([1,2,3],[1,4,9]); plt.savefig('plot.png')"
-```
+### 画布功能
 
-这些库可用于计算、数据分析、图表制作以及处理格式化的 Excel 文件。
+- **canvas_get_state**：获取画布状态
+- **canvas_add_node**：添加节点
+- **canvas_to_mermaid**：将画布内容转换为mermaid格式
 
-### 画布操作
+### 分析功能
 
-操作画布图表：`canvas_get_state`、`canvas_add_node`、`canvas_connect_nodes`、`canvas_auto_layout`、`canvas_to_mermaid` 等。
+- **analyze_note_structure**：分析笔记结构
+- **get_backlinks**：获取笔记的引用链接
+- **find_similar_notes**：查找相似的笔记
 
-### 标签与文件夹
+### 网页操作
 
-- **标签**：创建、列出、添加/删除标签（`create_tag`，`list_tags`，`add_tag_to_note`）
-- **文件夹**：创建、列出、重命名、移动文件夹（`create_folder`，`list_folders`，`rename_folder`）
+- **web_search**：在网页上搜索
+- **web_browse**：浏览网页
+- **get_youtube_transcript**：获取YouTube视频的字幕
 
-### 分析与搜索
+## 安装
 
-- **分析**：分析笔记结构，获取回链，查找相似笔记（`analyze_note_structure`，`get_backlinks`，`find_similar_notes`）
-- **搜索**：语义搜索、网页搜索、网页浏览（`semantic_search`，`web_search`，`web_browse`）
-- **YouTube**：获取视频字幕（`get_youtube_transcript`）
+`install.sh`脚本将执行以下操作：
+1. 检测NotNative是本地安装还是远程访问
+2. 如果不是本地安装，则请求WebSocket地址
+3. 安装所需依赖包（ws包）
+4. 配置开发环境
 
 ## 服务器要求
 
-Notnative 的 MCP 服务器必须运行在 `ws://127.0.0.1:8788` 上。请确保：
+- NotNative应用程序需要与MCP WebSocket服务器配合使用
+- 本地连接：ws://127.0.0.1:8788
+- 远程连接：wss://your-domain.com（或ws://IP:8788）
 
-1. Notnative 应用正在运行
-2. MCP 服务器已启用
-3. 网络连接可以访问端口 8788 上的 WebSocket 服务
+## 环境变量
+
+- `NOTNATIVE_WS_URL`：WebSocket地址（默认值：ws://127.0.0.1:8788）
 
 ## 错误处理
 
-- **连接超时**：检查 Notnative 应用是否正在运行
-- **请求超时**：工具执行超过 10 秒
-- **工具未找到**：使用 `list` 命令验证工具名称
-
-## 脚本详情
-
-`scripts/mcp-client.js` 脚本：
-
-1. 连接到 WebSocket 服务器
-2. 初始化 MCP 会话
-3. 发送 JSON-RPC 请求
-4. 返回结构化的 JSON 输出
-
-所有命令返回 JSON 格式的输出，便于解析。
+- **连接超时**：检查NotNative是否正在运行
+- **请求超时**：工具执行时间超过10秒
+- **工具未找到**：使用`list`命令验证工具是否存在

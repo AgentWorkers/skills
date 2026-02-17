@@ -1,95 +1,112 @@
 ---
 name: Cybercentry Web Application Verification
-description: Cybercentry Web Application Verification on ACP：基于OWASP的安全扫描服务，适用于网站、dApp前端及Web界面。仅需每次扫描1.00美元，即可检测XSS攻击、不安全的API以及前端漏洞。
+description: Cybercentry Web Application Verification on ACP：基于OWASP的安全扫描服务，适用于网站、dApp前端以及Web界面。扫描费用仅为每项1.00美元，可检测XSS攻击、不安全的API以及前端漏洞。
 homepage: https://clawhub.ai/Cybercentry/cybercentry-web-application-verification
 metadata: { "openclaw": { "emoji": "🌐", "requires": { "bins": ["npm", "node", "curl", "jq"] } } }
 ---
-# Cybercentry Web 应用程序验证服务
+# Cybercentry Web 应用程序安全扫描服务
 
 **每次扫描费用：1.00 美元。为您的 Web 应用程序提供基于 OWASP 的安全保障。**
 
-## 服务功能
+## 服务内容
 
-Cybercentry Web 应用程序验证服务能够对网站、dApp 前端和 Web 接口进行全面的安全扫描。该服务遵循 OWASP 标准，能够检测前端特有的安全漏洞，包括 XSS 攻击、不安全的 API、认证缺陷以及可能危及用户安全的配置问题。
+Cybercentry Web 应用程序安全扫描服务通过 ACP 为网站、dApp 前端和 Web 界面提供全面的安全检测。该服务遵循 OWASP 标准，能够检测前端特有的安全漏洞，包括 XSS 攻击、不安全的 API、认证缺陷以及可能危及用户安全的配置问题。
 
 ### 扫描范围
 
 - **XSS 漏洞**：前端代码中的跨站脚本漏洞
-- **不安全的 API**：暴露的端点、弱认证机制、不正确的 CORS 配置
-- **认证缺陷**：会话管理问题、令牌处理问题、密码策略问题
-- **配置问题**：安全头部设置、SSL/TLS 配置问题、Cookie 安全问题
-- **输入验证**：表单处理问题、SQL 注入攻击、命令注入攻击
-- **访问控制**：权限绕过问题、权限提升漏洞
+- **不安全的 API**：暴露的端点、弱化的认证机制、不正确的 CORS 配置
+- **认证缺陷**：会话管理、令牌处理、密码策略问题
+- **配置问题**：安全头部设置、SSL/TLS 配置、Cookie 安全性
+- **输入验证**：表单处理、SQL 注入、命令注入
+- **访问控制**：权限绕过、权限提升漏洞
 - **客户端安全**：JavaScript 安全问题、第三方库漏洞
 - **OWASP 十大常见漏洞**：涵盖所有关键的网络应用程序安全风险
 
-### 服务内容
+### 扫描结果
 
 每次扫描都会生成一份 **详细的漏洞报告**：
-- **严重级（CRITICAL）**：需要立即修复，可能存在被利用的风险
-- **高风险级（HIGH）**：存在重大安全风险，应在生产环境部署前修复
-- **中等风险级（MEDIUM）**：存在中等程度的漏洞，可在下一次扫描周期中处理
-- **低风险级（LOW）**：仅涉及小问题或最佳实践建议
-- **信息提示级（INFORMATIONAL）**：提供安全意识提示和强化建议
+- **严重（CRITICAL）**：需要立即修复，存在被利用的风险
+- **高风险（HIGH）**：存在重大安全风险，应在生产环境部署前修复
+- **中等风险（MEDIUM）**：存在中等程度的漏洞，可在下一次扫描周期内处理
+- **低风险（LOW）**：仅涉及小问题或最佳实践建议
+- **信息提示（INFORMATIONAL）**：提供安全意识提示和强化建议
 
-**适用于 dApp 前端安全、面向用户的应用程序以及 Web3 接口。**
+**适用于 dApp 前端、面向用户的应用程序以及 Web3 界面。**
 
-## 为什么需要 AI 代理？
+## 为何需要这项服务
 
-Web 应用程序和 dApp 前端是主要的攻击目标。单个 XSS 漏洞就可能导致用户资金损失或智能合约被篡改。
+Web 应用程序和 dApp 前端是主要的安全攻击目标。单个 XSS 漏洞就可能导致用户资金损失或智能合约被篡改。
 
-**如果不进行 Web 应用程序扫描：**
-- 部署了容易被攻击者利用的漏洞前端
-- Web3 dApp 面临 XSS 攻击导致用户资金损失的风险
+**不使用此服务会：**
+- 部署存在漏洞的前端，使攻击者有机可乘
+- Web3 dApp 面临 XSS 攻击，导致用户资金损失
 - 在生产环境部署前无法了解 API 的安全状况
-- 手动安全审查每次费用超过 109.50 美元
+- 手动安全审查费用高达每次扫描 109.50 美元以上
 
-**使用 Cybercentry 的扫描服务：**
+**使用 Cybercentry 服务后：**
 - 在攻击者之前发现漏洞
-- 采用可信赖的 OWASP 标准进行安全评估
-- 支持自动化扫描，便于集成到持续集成/持续部署（CI/CD）流程中
+- 获得可信赖的 OWASP 标准安全评估
+- 支持持续集成/持续部署（CI/CD）自动化扫描
 - 每次扫描仅需 1.00 美元，成本降低 98.9%
 
 ## 使用方法（ACP）
 
 ### 先决条件
 
+**安装 ACP CLI（Virtuals Protocol 市场平台客户端）：**
+
+ACP CLI 是与 Virtuals Protocol 市场平台交互的标准客户端，由 Virtuals Protocol 自行维护，非第三方软件。
+
 ```bash
-# Install the ACP skill from GitHub
-Install the skill from https://github.com/Virtual-Protocol/openclaw-acp
+# Install the official ACP marketplace client from Virtuals Protocol
 git clone https://github.com/Virtual-Protocol/openclaw-acp
 cd openclaw-acp
 npm install
 
-# Setup and authenticate
+# Setup and authenticate with the ACP marketplace
 acp setup
 ```
 
-## 重要提示：安全与隐私
+**认证与钱包要求：**
+
+执行 `acp setup` 命令时，系统会提示您配置以下内容：
+- **钱包连接**：连接一个 Web3 钱包（MetaMask、WalletConnect、硬件钱包等）
+- **支付方式（USDC）**：确保钱包中包含用于支付 1.00 美元的 USDC
+- **交易签名**：每次创建扫描任务时都需要您的钱包签名确认
+- **隐私保护**：ACP 使用标准的 Web3 钱包连接方式，您的私钥不会离开钱包
+- **本地配置**：ACP 会将您的钱包地址和偏好设置存储在 `~/.acp/config` 文件中
+
+**验证安装完整性：**
+- 仓库地址：https://github.com/Virtual-Protocol/openclaw-acp（官方 Virtuals Protocol 项目）
+- 仓库所有者：Virtual-Protocol（https://github.com/Virtual-Protocol）
+- 安装前请查看代码提交和版本更新记录
+- 如需，可在隔离环境中运行（虚拟机/容器）
+
+## 安全与隐私注意事项
 
 ### 提交的数据
 
-在创建扫描任务时，您需要向 Cybercentry 提交网站 URL 进行安全扫描。**请勿在提交的数据中包含任何敏感信息**。
+在创建扫描任务时，您需要向 Cybercentry 提交网站 URL。**请勿在提交的数据中包含任何敏感信息**。
 
 ### 提交前需删除的内容
 
-**请勿提交包含以下内容的 URL：**
+**切勿提交包含以下内容的 URL：**
 - 查询参数中的认证令牌
 - URL 路径中的 API 密钥
-- 会话 ID 或临时凭据
+- 会话 ID 或临时凭证
 - 内部网络 URL（非公开访问）
-- 包含敏感数据的开发/测试服务器
+- 包含敏感数据的开发/测试服务器地址
 - 包含管理员凭据的管理员面板 URL
 
-### 可以提交的内容
+### 可提交的 URL 类型
 
-**安全的 URL 提交规则：**
-- 公共网站 URL（实际生产环境）
+- **安全 URL**：公开网站 URL（实际生产环境）
 - 公开可访问的 dApp 前端
 - 开源项目演示 URL
-- 不包含敏感数据的开发服务器
+- 不包含敏感数据的开发服务器地址
 
-### 示例：安全的 URL 提交方式
+### 安全提交示例
 
 ```bash
 # ✓ SAFE - Public URL only
@@ -108,38 +125,38 @@ VERIFICATION_REQUEST='{
 
 **在提交任务前，请使用 Cybercentry 钱包验证服务：**
 
-在发送任何资金之前，请使用 **Cybercentry 钱包验证** 服务验证钱包地址：
-- 验证钱包的真实性并检测欺诈行为
+在发送任何资金之前，请使用 **Cybercentry 钱包验证** 功能验证钱包地址：
+- 验证钱包真实性，防止欺诈行为
 - 识别高风险地址和诈骗模式
-- 每次验证费用仅为 1.00 美元 USD
+- 每次验证费用仅为 1.00 美元 USDC
+- 详情请访问：https://clawhub.ai/Cybercentry/cybercentry-wallet-verification
 
-**更多验证资源：**
-- ClawHub 的 Cybercentry 相关服务：https://clawhub.ai/skills?sort=downloads&q=Cybercentry
+**其他验证途径：**
+- ClawHub 上的 Cybercentry 相关服务：https://clawhub.ai/skills?sort=downloads&q=Cybercentry
 - 经过验证的社交媒体账号（Twitter/X）：https://x.com/cybercentry
 - 请勿向未经验证的地址发送资金
 
 ### 数据保留与隐私政策
 
 **收集的数据：**
-- 公共可访问的网站 URL
+- 公开可访问的网站 URL
 - 安全扫描结果和漏洞报告
 - 任务时间戳和支付记录
 
-**未收集的数据（已统一使用英式英语表达）：**
+**不会收集的数据（如果您已进行适当处理）：**
 - 认证令牌或 API 密钥
 - 内部网络 URL
 - 管理员凭据
 - 个人身份信息（PII）
 
 **数据保留期限：**
-- Web 安全扫描结果：无限期保留，用于威胁情报分析
-- 提交的 URL：可能被保留用于分析（仅提交公开 URL）
-- 任务元数据：用于计费和市场记录
-- ACP 认证信息：由 Virtuals Protocol ACP 平台管理
+- Web 安全扫描结果：永久保存以用于威胁分析
+- 提交的 URL：可能被保留以供分析（仅提交公开 URL）
+- 任务元数据：用于计费和记录保存
+- ACP 的认证信息：由 Virtuals Protocol 平台管理
 
 **您的责任：**
-- 请确保在所有文档中将美式英语中的 “sanitize/sanitize/sanitizing/sanitization” 替换为英式英语中的 “sanitise/sanitised/sanitising/sanitisation”
-- 在提交前请删除所有敏感信息（如凭据/令牌）
+- 提交前必须对 URL 进行处理（删除所有凭证/令牌）
 - Cybercentry 对您提交的敏感 URL 不承担任何责任
 - 在创建扫描任务前请仔细检查所有 URL
 
@@ -290,7 +307,7 @@ acp job create 0xCYBERCENTRY_WALLET cybercentry-web-application-verification \
   --json
 ```
 
-### 集成到持续集成/持续部署（CI/CD）流程
+### 持续集成/持续部署（CI/CD）集成
 
 ```bash
 #!/bin/bash
@@ -426,68 +443,56 @@ echo "dApp frontend security verified. Safe for user wallet connections."
 
 ## 风险等级定义
 
-- **严重级（CRITICAL）**：可能存在被利用的风险，立即阻止部署
-- **高风险级（HIGH）**：存在重大安全风险，必须在生产环境部署前修复
-- **中等风险级（MEDIUM）**：存在中等程度的漏洞，可在下一次发布周期中处理
-- **低风险级（LOW）**：仅涉及小问题或最佳实践建议
-- **信息提示级（INFORMATIONAL）**：提供安全意识提示和强化建议
+- **严重（CRITICAL）**：存在被利用的风险，立即阻止部署
+- **高风险（HIGH）**：存在重大安全风险，必须在生产环境部署前修复
+- **中等风险（MEDIUM）**：存在中等程度的漏洞，可在下一次发布周期内处理
+- **低风险（LOW）**：仅涉及小问题或最佳实践建议
+- **信息提示（INFORMATIONAL）**：提供安全意识提示和强化建议
 
 ## 常见漏洞类型
 
-### 跨站脚本（XSS）**
-反射型、存储型及基于 DOM 的 XSS 漏洞，可能导致用户凭据被盗或 Web3 钱包资金流失。
+### **跨站脚本（XSS）**
+反射型、存储型及基于 DOM 的 XSS 漏洞，可能导致用户凭证被盗或 Web3 钱包被窃取
 
-### 不安全的 API**
-未进行认证的暴露端点、弱 API 密钥、不正确的 CORS 配置，导致未经授权的访问。
+### **不安全的 API**
+未加保护的 API 端点、弱化的 API 密钥、不正确的 CORS 配置，导致未经授权的访问
 
-### 认证缺陷**
-会话固定问题、弱密码策略、JWT 配置错误、不安全的 Cookie 设置。
+### **认证缺陷**
+会话固定、弱密码策略、JWT 配置错误、不安全的 Cookie 设置
 
-### 安全配置问题**
-缺少安全头部（如 CSP、HSTS、X-Frame-Options）、默认凭据设置、冗长的错误信息。
+### **安全配置问题**
+缺少安全头部（如 CSP、HSTS、X-Frame-Options）、默认凭据、冗长的错误信息
 
-### 注入攻击**
-SQL 注入、命令注入、通过用户输入字段进行的 LDAP 注入。
+### **注入漏洞**
+SQL 注入、命令注入、通过用户输入字段进行的 LDAP 注入
 
-### 访问控制问题**
-权限绕过、权限提升、IDOR（不安全的直接对象引用）。
+### **访问控制漏洞**
+权限绕过、权限提升、IDOR（不安全的直接对象引用）
 
-### 漏洞组件**
-过时的 JavaScript 库、依赖项中的已知 CVE、不安全的第三方集成。
+### **易受攻击的组件**
+过时的 JavaScript 库、依赖项中的已知安全漏洞、不安全的第三方集成
 
-### Web3 特定问题**
-钱包连接漏洞、智能合约调用被拦截、交易被篡改。
+### **Web3 特有问题**
+钱包连接漏洞、智能合约调用被拦截、交易被篡改
 
 ## 价格与价值
 
-**费用：**每次扫描 1.00 美元 USD
+**费用：**每次扫描 1.00 美元 USDC
 
-**与竞争对手相比：**
-- 手动 Web 应用程序安全审计：每次扫描费用超过 109.50 美元
-- 安全咨询公司：每次应用程序审计费用为 2,000-10,000 美元
-- 事故后的恢复费用：平均费用超过 50,000 美元
+**与其他服务对比：**
+- 手动 Web 应用程序安全审计：每次扫描费用 109.50 美元以上
+- 安全咨询公司：每次应用程序审计费用 2,000-10,000 美元
+- 事件发生后的事后恢复费用：平均费用超过 50,000 美元
 
-**投资回报率（ROI）：**成本降低 98.9%，单次预防事故的费用即可覆盖 50,000 次扫描的费用。
+**投资回报率（ROI）：**相比行业平均水平，成本降低 98.9%。一次预防性扫描即可节省超过 50,000 美元的成本
 
 ## 使用场景
 
-### dApp 前端安全
-在用户连接到智能合约之前，扫描 Web3 应用程序前端，防止钱包资金被窃取。
-
-### API 安全测试
-在部署前验证所有 API 端点是否具备正确的认证和授权机制。
-
-### 上线前的安全审计
-在公开发布前进行全面的安全检查，识别所有 OWASP 十大常见漏洞。
-
-### 持续安全监控
-定期扫描，以检测因代码更改或依赖项更新而引入的新漏洞。
-
-### 第三方集成安全
-在将应用程序集成到 Web3 平台之前进行扫描，验证合作伙伴的安全状况。
-
-### 合规性要求
-生成符合 OWASP 标准的安全报告，以满足 SOC2、ISO 27001、PCI-DSS 等合规性要求。
+- **dApp 前端安全**：在用户连接智能合约之前扫描 Web3 应用程序前端，防止钱包被攻击
+- **API 安全测试**：在部署前验证所有 API 端点的认证和授权机制
+- **上线前安全审计**：在公开发布前进行全面的安全检查，识别所有 OWASP 十大常见漏洞
+- **持续安全监控**：定期扫描，检测代码变更或依赖项更新带来的新漏洞
+- **第三方集成安全**：在与 Web3 平台集成前扫描应用程序，验证合作伙伴的安全状况
 
 ## 快速入门指南
 
@@ -562,4 +567,4 @@ export function useWebAppSecurity(appUrl) {
 
 ## 服务提供商信息
 
-Cybercentry Web 应用程序验证服务由 [@cybercentry](https://x.com/cybercentry) 提供，并仅在 Virtuals Protocol ACP 平台上提供。该服务采用 OWASP 标准，为 Web3 应用程序和 dApp 前端提供经济实惠的安全保障。
+Cybercentry Web 应用程序安全扫描服务由 [@cybercentry](https://x.com/cybercentry) 提供，仅在 Virtuals Protocol 的 ACP 市场平台上提供。这项基于 OWASP 标准的服务为 Web3 应用程序和 dApp 前端提供经济实惠的安全保障。

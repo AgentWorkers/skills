@@ -1,84 +1,68 @@
 ---
-name: "Brief"
-description: "将内部信息浓缩成可操作的简报。自动学习用户的格式、深度和结构偏好。"
+name: Brief
+slug: brief
+version: 1.0.1
+description: 将信息浓缩成可操作的简报。用户指定信息来源，技能负责整理输出内容。
+changelog: Added explicit data sources and storage location
+metadata: {"clawdbot":{"emoji":"📋","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
-
-## 核心职责
-
-**核心任务**：为相关人员准备行动或决策所需的信息。这些信息应涵盖项目进展、关键指标、团队动态以及会议背景，以便他们能够迅速采取行动。
-
-**注意**：本功能不适用于外部新闻或趋势的汇总（请使用“Digest”功能），也不适用于文档的整合（请使用“Synthesize”功能）。
-
-## 协议
+## 数据存储
 
 ```
-Scope → Gather → Distill → Structure → Format → Deliver → Learn
+~/brief/
+├── preferences.md    # Learned format preferences
+└── templates/        # Custom brief templates
 ```
 
-### 1. 范围
+首次使用时执行以下操作：`mkdir -p ~/brief/templates`
 
-明确这份简报的内容范围：
-- 项目当前状态？
-- 执行摘要？
-- 会议准备情况？
-- 目标受众是谁？（仅限相关人员？还是他们的上级？还是外部人员？）
-- 这份简报能帮助做出哪些决策？
+## 功能范围
 
-### 2. 收集信息
+该功能：
+- ✅ 将用户提供的信息进行结构化处理
+- ✅ 根据用户的明确反馈学习其格式偏好
+- ✅ 将用户的格式偏好存储在 `~/briefpreferences.md` 文件中
 
-收集相关的内部信息：
-- 项目进展、关键指标以及阻碍项目进展的因素
-- 最近的决策及其背后的理由
-- 未解决的问题或待处理的事项
-- 相关利益方的背景信息
+**用户驱动的模型：**
+- 用户指定需要包含的信息内容
+- 用户授予该功能访问所需数据源的权限
+- 该功能负责数据的结构化和格式化处理
 
-### 3. 筛选信息
+**该功能不会执行以下操作：**
+- ❌ 未经用户请求，不会访问文件、电子邮件或日历
+- ❌ 不会从用户未指定的数据源中获取数据
+- ❌ 仅存储用户的格式偏好，不存储实际内容
 
-提炼出对决策至关重要的内容：
-- 去除非必要的细节，仅保留必须了解的信息
-- 发现那些不显而易见的问题或风险
-- 强调需要重点关注的关键点
+## 快速参考
 
-### 4. 组织结构
+| 主题 | 对应文件 |
+|-------|------|
+| 格式相关设置 | `dimensions.md` |
+| 简报模板 | `templates.md` |
 
-根据简报的类型进行结构化编写（详见 `templates.md`）：
-- **执行简报**：背景信息 → 行动建议
-- **项目简报**：项目现状 → 障碍因素 → 下一步行动
-- **会议简报**：会议目的 → 背景信息 → 需要做出的决策
-- **交接简报**：当前状态 → 注意事项 → 优先级
+## 核心规则
 
-### 5. 格式设计
+### 1. 用户指定数据来源
+当用户请求生成简报时：
+1. 用户需要提供所需信息，或指定数据来源的位置
+2. 如果数据来源需要特殊访问权限，用户必须明确授予该权限
+3. 该功能会根据用户提供的信息对内容进行结构化和格式化处理
 
-根据用户的偏好进行格式化（详见 `dimensions.md`）：
-- 文字长度（一页纸还是详细内容）
-- 语言风格（正式还是非正式）
-- 可视化元素（图表、状态指示器）
-- 交付方式（文档、邮件、PDF）
+**示例：**
+```
+User: "Brief me on project X status"
+Agent: "I'll need access to the project docs. Can you share 
+        the status doc or grant access to the project folder?"
+User: [shares doc or grants access]
+→ Brief generated from user-provided source
+```
 
-### 6. 交付时间
-
-根据不同场景选择合适的交付时机：
-- 会议前30分钟
-- 每天/每周开始时
-- 根据需要随时提供
-
-### 7. 评估反馈
-
-收集用户的反馈：
-- “完美，正是我需要的信息” → 继续沿用当前格式
-- “内容太详细” → 缩短简报长度
-- “缺少某些关键信息” → 调整信息收集范围
-- “重点不清晰” → 重新平衡信息内容
-
-根据用户的反馈及时更新 `preferences.md` 文件。
-
-## 输出格式（默认格式）
-
+### 2. 简报的结构
 ```
 📋 [BRIEF TYPE] — [SUBJECT]
 
 ⚡ BOTTOM LINE
-[1-2 sentences: what they need to know/decide]
+[1-2 sentences: key takeaway]
 
 📊 KEY POINTS
 • [Point 1]
@@ -86,14 +70,28 @@ Scope → Gather → Distill → Structure → Format → Deliver → Learn
 • [Point 3]
 
 🎯 ACTION NEEDED
-[What decision or action this enables]
-
-📎 DETAILS
-[Expanded context if needed]
+[Decision or action required]
 ```
 
-根据用户的偏好和简报类型，灵活调整输出格式。
+### 3. 根据用户反馈进行优化
+- 如果用户反馈“内容太详细”，则在未来生成的简报中缩短相关内容
+- 如果用户提到“缺少某些信息”，则会在后续生成简报时询问这些信息
+- 如果用户认为当前格式完美，该功能会继续保持该格式
+- 用户的格式偏好会被存储在 `~/briefpreferences.md` 文件中
 
----
+### 4. 首选项的存储格式
+每个偏好设置占用一行：
+```
+- Prefers bullet points over paragraphs
+- Executive summary first
+- Include metrics when available
+- Max 1 page for status briefs
+```
 
-*参考文件：`dimensions.md`、`preferences.md`、`templates.md`*
+### 5. 简报类型及其所需信息
+| 简报类型 | 需要提供的信息 | 关键要素 |
+|------|------|-------------|
+| 执行简报 | 需要做出决策 | 问题概述（BLUF）、建议、潜在风险 |
+| 项目简报 | 进度更新 | 项目现状、阻碍因素、下一步行动 |
+| 会议简报 | 会议前准备 | 会议目的、背景信息、需要讨论的决策 |
+| 交接简报 | 任务交接 | 当前任务状态、注意事项、优先级 |

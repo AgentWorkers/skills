@@ -1,8 +1,8 @@
 ---
 name: unifi-site-manager
-version: 3.2.0
+version: 3.2.1
 homepage: https://github.com/odrobnik/unifi-skill
-description: 监控并配置 UniFi 网络基础设施。实现本地网关与云连接器的自动路由功能。管理主机、站点、设备、客户端、无线局域网（WLAN）、无线电设备、固件以及各种网络事件。
+description: 监控并配置 UniFi 网络基础设施。实现本地网关与云连接器的自动路由。管理主机、站点、设备、客户端、无线局域网（WLAN）、无线电设备、固件以及各种网络事件。
 metadata:
   openclaw:
     requires:
@@ -21,15 +21,15 @@ metadata:
 
 配置文件（`config.json`）：
 - `api_key` — UniFi Cloud API 密钥（必需）
-- `gateway_ip` — 本地网关 IP 地址（用于更快的本地访问）
+- `gateway_ip` — 本地网关 IP 地址（用于更快速的本地访问）
 - `local_api_key` — 本地网关 API 密钥
 - `site_id` — 默认站点 UUID（如果只有一个站点，则会自动检测）
 
-路由是自动选择的：当可以访问本地网关时使用本地网关，当无法访问时使用云连接器。使用 `--local` 选项可强制使用本地网关。
+路由是自动的：当本地网关可用时使用本地网关；当本地网关不可用时使用云连接器。使用 `--local` 选项可强制使用本地网关。
 
 ## 命令
 
-所有命令都支持 `--json` 选项，用于输出原始 JSON 数据。
+所有命令都支持 `--json` 选项，以获取原始 JSON 格式的输出。
 
 ### 基础设施
 
@@ -56,7 +56,7 @@ python3 {baseDir}/scripts/unifi.py get-client <client_id>     # Single client de
 python3 {baseDir}/scripts/unifi.py label-client <mac> "Name"  # Set custom name for a client
 ```
 
-### 网络与无线网络（WLANs）
+### 网络与 WLAN
 
 ```bash
 python3 {baseDir}/scripts/unifi.py list-networks             # Configured networks (VLANs)
@@ -80,7 +80,7 @@ python3 {baseDir}/scripts/unifi.py set-network-dns Default \
   --dns1 auto                                                    # Disable override (use gateway)
 ```
 
-### 无线电配置
+### 无线网络配置
 
 ```bash
 python3 {baseDir}/scripts/unifi.py get-radio-config           # Radio config for all APs
@@ -99,6 +99,6 @@ python3 {baseDir}/scripts/unifi.py list-events --mac aa:bb:cc:dd:ee:ff  # Filter
 
 ## 注意事项：
 - 如果只有一个站点，则会自动检测该站点；否则请使用 `--site <siteId>` 选项指定站点。
-- 使用 `--local` 选项会强制使用本地网关；如果无法访问本地网关，则会引发错误。
-- 事件缓冲区有容量限制（根据事件数量，最多可保存约 3 周的历史记录）。
-- Apple 设备的 MAC 地址是随机生成的；可以使用 `label-client` 选项根据设备在各个网络上的 Wi-Fi 地址来识别它们。
+- 使用 `--local` 选项可强制使用本地网关；如果无法访问本地网关，则会报错。
+- 事件缓冲区有限（根据事件数量不同，最多可保存约 3 周的事件记录）。
+- Apple 设备使用随机生成的 MAC 地址；可以使用 `label-client` 选项根据设备的 Wi-Fi 地址来区分不同的设备。

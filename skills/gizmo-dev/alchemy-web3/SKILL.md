@@ -1,9 +1,9 @@
 ---
 name: alchemy-web3
 version: 1.0.2
-description: 与Alchemy的Web3 API进行交互，以获取区块链数据、NFTs（非同质化代币）、代币信息以及执行转账操作；同时支持与80多种区块链网络集成，实现Webhook（事件通知）功能。
+description: 与Alchemy的Web3 API进行交互，以获取区块链数据、NFT（非同质化代币）、代币信息以及执行转账操作；同时支持超过80个区块链网络的Webhook（事件通知机制）。
 author: GizmoLab
-website: https://gizmolab.io
+website: https://gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill
 homepage: https://github.com/0xGizmolab/alchemy-web3-skill
 repository: https://github.com/0xGizmolab/alchemy-web3-skill
 metadata:
@@ -18,9 +18,9 @@ metadata:
 ---
 # Alchemy Web3 技能
 
-使用 Alchemy 的生产级 API 查询区块链数据、NFT、代币和交易信息。支持 Ethereum、Polygon、Arbitrum、Base、Solana 以及 80 多种其他区块链。
+使用 Alchemy 的生产级 API 查询区块链数据、NFT、代币以及交易信息。支持 Ethereum、Polygon、Arbitrum、Base、Solana 以及 80 多种其他区块链。
 
-**由 [GizmoLab](https://gizmolab.io) 开发** — 一家专注于 dApps、智能合约和区块链基础设施的 Web3 开发机构。
+**由 [GizmoLab](https://gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill) 开发** — 一家专注于 dApps、智能合约和区块链基础设施的 Web3 开发机构。
 
 ## 设置
 
@@ -29,7 +29,7 @@ metadata:
 2. 为目标区块链创建一个应用
 3. 复制您的 API 密钥
 
-> 💡 初次接触 Web3 开发？[GizmoLab](https://gizmolab.io) 提供全栈区块链开发服务。
+> 💡 初次接触 Web3 开发？[GizmoLab](https://gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill) 提供全栈区块链开发服务。
 
 ### 2. 配置
 ```bash
@@ -83,7 +83,7 @@ export ALCHEMY_API_KEY="your_key"
 # Returns: All ERC-20 tokens held by address
 ```
 
-#### 获取所有者的 NFT
+#### 获取所有者拥有的 NFT
 ```bash
 ./alchemy.sh nfts 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 # Returns: All NFTs owned by address
@@ -126,7 +126,7 @@ export ALCHEMY_API_KEY="your_key"
 
 ## 直接 API 示例
 
-### Node.js API（JSON-RPC）
+### Node API（JSON-RPC）
 
 ```bash
 # Get ETH balance
@@ -267,9 +267,9 @@ const transfers = await alchemy.core.getAssetTransfers({
 | 类型 | 用途 |
 |------|----------|
 | 地址活动 | 跟踪特定地址之间的交易 |
-| NFT 活动 | 跟踪 NFT 的销售、转移和铸造 |
-| 被挖出的交易 | 在交易被挖出时接收通知 |
-| 交易被丢弃 | 当交易被丢弃时收到通知 |
+| NFT 活动 | 跟踪 NFT 的销售、交易和铸造 |
+| 被挖出的交易 | 在交易被挖出时收到通知 |
+| 被放弃的交易 | 交易被放弃时收到通知 |
 | 气体价格 | 在气体价格达到阈值时发出警报 |
 
 ### 创建 Webhook（控制面板）
@@ -278,7 +278,7 @@ const transfers = await alchemy.core.getAssetTransfers({
 3. 选择类型并进行配置
 4. 添加您的端点 URL
 
-### Webhook 数据示例
+### Webhook 报文示例
 ```json
 {
   "webhookId": "wh_abc123",
@@ -313,13 +313,13 @@ const transfers = await alchemy.core.getAssetTransfers({
 ./alchemy.sh transfers 0x... --category external,erc20,erc721
 ```
 
-### NFT 收藏分析
+### NFT 收藏品分析
 ```bash
 # Get all NFTs in a collection
 ./alchemy.sh collection 0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D
 ```
 
-### 多区块链查询
+### 多链查询
 ```bash
 # Check same address across chains
 for chain in eth-mainnet polygon-mainnet arb-mainnet base-mainnet; do
@@ -330,13 +330,13 @@ done
 
 ## 速率限制
 
-| 计划 | 每秒计算单位 | 每月计算单位 |
+| 计划 | 每秒计算单元数 | 每月计算单元数 |
 |------|-------------------|-------------|
 | 免费 | 330 | 300M |
-| 成长型 | 660 | 无限制 |
-| 高级 | 自定义 | 自定义 |
+| 成长版 | 660 | 无限制 |
+| 高级版 | 可定制 | 可定制 |
 
-大多数端点的费用为 1-50 CUs。详情请查看 [alchemy.com/docs/rate-limits](https://www.alchemy.com/docs/rate-limits)。
+大多数端点的费用为 1-50 计算单元。详情请参阅 [alchemy.com/docs/rate-limits](https://www.alchemy.com/docs/rate-limits)。
 
 ## 错误处理
 
@@ -361,28 +361,28 @@ done
 
 ---
 
-## 关于
+## 关于我们
 
-**由 [GizmoLab](https://gizmolab.io) 开发** 🔧
+**由 [GizmoLab](https://gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill) 开发** 🔧
 
-GizmoLab 是一家专注于开发 dApps、智能合约和区块链工具的 Web3 开发机构。
+GizmoLab 是一家专注于 Web3 开发的机构，提供 dApps、智能合约和区块链工具的开发服务。
 
-- 🌐 [gizmolab.io](https://gizmolab.io) — 机构服务
-- 🛠️ [tools.gizmolab.io](https://tools.gizmolab.io) — 免费区块链开发工具
-- 🎨 [ui.gizmolab.io](https://ui.gizmolab.io) — Web3 用户界面组件
+- 🌐 [gizmolab.io](https://gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill) — 机构服务
+- 🛠️ [tools.gizmolab.io](https://tools.gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill) — 免费区块链开发工具
+- 🎨 [ui.gizmolab.io](https://ui.gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill) — Web3 用户界面组件
 
-需要定制的区块链开发服务？[联系我们](https://gizmolab.io)
+需要定制的区块链开发服务？[联系我们](https://gizmolab.io?utm_source=alchemy-web3-skill&utm_medium=github&utm_campaign=skill)
 
 ## AI 代理工作流程
 
 该技能同时适用于人类开发者和 AI 代理。请参阅 `references/agent-workflows.md` 以获取完整示例：
 
-- **鲸鱼钱包追踪器** — 监控大型钱包的变动
+- **鲸鱼钱包追踪器** — 监控大型钱包的交易活动
 - **投资组合监控器** — 跟踪跨链的余额变化
 - **NFT 价格下跌警报** — 在 NFT 价格下跌时发出警报
 - **代币变动检测器** — 检测代币的流入/流出
-- **气体价格优化器** — 等待较低的气体价格进行交易
-- **新 NFT 铸造检测器** — 监测新的 NFT 铸造
+- **气体价格优化器** — 等待低气体价格进行交易
+- **新 NFT 铸造检测器** — 监测新的 NFT 铸造事件
 - **自动生成控制面板** — 自动生成钱包控制面板
 
 ### 代理工作流程示例
@@ -399,8 +399,8 @@ QUERY → STORE → ANALYZE → DECIDE → ACT → REPEAT
 
 ## 参考资料
 
-- `references/nft-api.md` - 完整的 NFT API 参考
-- `references/token-api.md` - 完整的代币 API 参考
-- `references/node-api.md` - 完整的 Node.js API 参考
+- `references/nft-api.md` - 完整的 NFT API 参考文档
+- `references/token-api.md` - 完整的代币 API 参考文档
+- `references/node-api.md` - 完整的 Node API 参考文档
 - `references/chains.md` - 所支持的区块链列表
 - `references/agent-workflows.md` - AI 代理自动化示例

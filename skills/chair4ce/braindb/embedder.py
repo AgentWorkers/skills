@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BrainDB Embedding Service — runs on Mac mini M4 via MPS acceleration."""
+"""BrainDB Embedding Service — sentence-transformers all-mpnet-base-v2."""
 
 import json
 import sys

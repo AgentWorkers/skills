@@ -1,118 +1,89 @@
 ---
 name: linear
-description: 通过 Linear API 管理 Linear 项目、问题（issues）和任务（tasks）。当您需要创建、更新、搜索或管理 Linear 项目、问题、团队（teams）、里程碑（milestones）、评论（comments）或标签（labels）时，请使用该 API。它支持所有的 Linear 操作，包括项目管理、问题跟踪、任务分配、状态转换以及协作工作流程。
+description: 您可以通过捆绑提供的 Node CLI 和官方 Linear API 来管理 Linear 项目、问题（issues）和任务。当您需要读取、创建、更新或组织 Linear 项目、问题、团队、里程碑、评论、周期（cycles）、标签（labels）以及文档时，可以使用这些工具。
+metadata: {"gracebot":{"always":false,"emoji":"📐","homepage":"https://github.com/MaTriXy/linear-skill","requires":{"bins":["node","npm"],"env":["LINEAR_API_KEY"]},"primaryEnv":"LINEAR_API_KEY","install":[{"id":"node-brew","kind":"brew","formula":"node","bins":["node","npm"],"label":"Install Node.js (brew)"}]},"clawdbot":{"always":false,"emoji":"📐","homepage":"https://github.com/MaTriXy/linear-skill","requires":{"bins":["node","npm"],"env":["LINEAR_API_KEY"]},"primaryEnv":"LINEAR_API_KEY","install":[{"id":"node-brew","kind":"brew","formula":"node","bins":["node","npm"],"label":"Install Node.js (brew)"}]}}
 ---
+# 线性工作流管理
 
-# 线性项目管理
+通过位于 `{baseDir}/scripts/linear-cli.js` 的命令行工具（CLI）来管理线性问题（Linear issues）和项目。
 
-使用官方的 Linear SDK 来管理线性项目、问题和工作流程。
+## 使用范围与运行时模型
 
-## 快速入门
+- 该功能通过运行 `node {baseDir}/scripts/linear-cli.js ...` 来执行。
+- 该 CLI 使用官方的 `@linear/sdk`。
+- 认证需要使用本地环境中的 `LINEAR_API_KEY`。
+- 预期的 API 地点是 Linear 的 GraphQL 接口（`https://api.linear.appgraphql`），并通过官方 SDK 进行交互。
 
-所有命令都依赖于 `skills/linear/scripts/linear-cli.js` 文件：
+## 先决条件
+
+1. 已安装 Node.js 和 npm。
+2. 首次运行时安装脚本依赖项：
+   - `cd {baseDir}/scripts && npm install`
+3. 设置您的 API 密钥：
+   - `export LINEAR_API_KEY="lin_api_..."`
+
+如果缺少依赖项或 `LINEAR_API_KEY`，请先完成设置，然后再进行问题/项目的操作。
+
+## 认证与凭证
+
+- 必需的凭证是 `LINEAR_API_KEY`。
+- 可以从 `https://linear.app/settings/api` 获取该密钥。
+- 自动化操作应使用最小权限的访问方式，并使用专用的访问令牌。
+
+## 必要的工作流程
+
+1. 明确意图和范围：
+   - 确定团队/项目、标签、周期、负责人、截止日期和优先级。
+2. 首先查看当前状态：
+   - 列出/获取问题、项目、状态、标签和用户信息。
+3. 然后执行修改操作：
+   - 创建/更新问题、评论、项目和里程碑以及标签。
+4. 详细说明发生了哪些变化：
+   - 提及问题的 ID、状态、负责人以及后续需要执行的操作。
+
+## 命令覆盖范围
+
+- 团队和项目：
+  `teams`, `projects`, `createProject`
+- 问题：
+  `issues`, `issue`, `createIssue`, `updateIssue`
+- 评论：
+  `createComment`
+- 状态和标签：
+  `states`, `labels`
+- 用户：
+  `user`
+
+## 快速示例
 
 ```bash
-node skills/linear/scripts/linear-cli.js <command> [args]
+node {baseDir}/scripts/linear-cli.js teams
+node {baseDir}/scripts/linear-cli.js projects
+node {baseDir}/scripts/linear-cli.js issues
+node {baseDir}/scripts/linear-cli.js issue ENG-123
+node {baseDir}/scripts/linear-cli.js createIssue "Title" "Description" "team-id" '{"priority":2}'
+node {baseDir}/scripts/linear-cli.js updateIssue "issue-id" '{"stateId":"state-id"}'
 ```
 
-## 核心命令
+## 实际工作流程示例
 
-### 团队与项目
+- **紧急漏洞处理**：
+  - 列出高优先级的未解决问题，分配负责人，将状态设置为“进行中”（In Progress），并添加处理说明。
+- **冲刺计划**：
+  - 审查周期范围，创建缺失的问题，设置优先级和估算时间，调整负责人分配。
+- **发布准备**：
+  - 检查阻碍项目进展的因素，更新项目状态，创建里程碑任务，并添加发布说明。
+- **文档清理**：
+  - 查找过时的文档或问题，创建后续处理任务，并关联相关记录。
 
-**列出团队：**
-```bash
-node skills/linear/scripts/linear-cli.js teams
-```
+## 安全与操作规则
 
-**列出项目：**
-```bash
-node skills/linear/scripts/linear-cli.js projects
-```
-
-**创建项目：**
-```bash
-node skills/linear/scripts/linear-cli.js createProject "Project Name" "Description" "teamId1,teamId2"
-```
-
-### 问题
-
-**列出问题：**
-```bash
-node skills/linear/scripts/linear-cli.js issues
-# With filter:
-node skills/linear/scripts/linear-cli.js issues '{"state":{"name":{"eq":"In Progress"}}}'
-```
-
-**获取问题详情：**
-```bash
-node skills/linear/scripts/linear-cli.js issue ENG-123
-```
-
-**创建问题：**
-```bash
-node skills/linear/scripts/linear-cli.js createIssue "Title" "Description" "teamId"
-# With options (priority, projectId, assigneeId, etc.):
-node skills/linear/scripts/linear-cli.js createIssue "Title" "Description" "teamId" '{"priority":2,"projectId":"project-id"}'
-```
-
-**更新问题：**
-```bash
-node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"stateId":"state-id","priority":1}'
-```
-
-### 评论
-
-**添加评论：**
-```bash
-node skills/linear/scripts/linear-cli.js createComment "issueId" "Comment text"
-```
-
-### 状态与标签
-
-**获取团队状态：**
-```bash
-node skills/linear/scripts/linear-cli.js states "teamId"
-```
-
-**获取团队标签：**
-```bash
-node skills/linear/scripts/linear-cli.js labels "teamId"
-```
-
-### 用户信息
-
-**获取当前用户：**
-```bash
-node skills/linear/scripts/linear-cli.js user
-```
+- **切勿自行生成 ID**；请在更新前从官方系统获取并确认 ID 的有效性。
+- **优先进行局部修改而非批量编辑**。
+- **进行批量编辑时**，请在应用更改前解释分组逻辑。
+- **不要在问题评论或描述中包含敏感信息**。
+- **不要将数据发送到 Linear API 范围之外的端点**。
 
 ## 参考资料
 
-- **API.md**：优先级级别、过滤示例以及常见的工作流程
-- 当需要复杂过滤或工作流程模式的示例时，请参考此文档
-
-## 常见工作流程
-
-### 为特定项目创建任务
-
-1. 获取你的团队 ID：`node skills/linear/scripts/linear-cli.js teams`
-2. 获取你的项目 ID：`node skills/linear/scripts/linear-cli.js projects`
-3. 使用这些 ID 创建问题：
-
-```bash
-node skills/linear/scripts/linear-cli.js createIssue "Implement login" "Add OAuth login flow" "your-team-id" '{"projectId":"your-project-id","priority":2}'
-```
-
-### 将问题状态更改
-
-1. 获取所有可用的状态：`node skills/linear/scripts/linear-cli.js states "teamId"`
-2. 更新问题状态：`node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"stateId":"state-uuid"}'`
-
-### 将问题分配给自己
-
-1. 获取你的用户 ID：`node skills/linear/scripts/linear-cli.js user`
-2. 将问题分配给自己：`node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"assigneeId":"your-user-id"}'`
-
-## 输出格式
-
-所有命令返回 JSON 格式的数据。你可以根据需要解析这些数据以供程序使用或直接显示给用户。
+- 有关优先级值和工作流模式的详细信息，请参考 `references/API.md`。

@@ -1,0 +1,11 @@
+{
+  "owner": "greatape42069",
+  "slug": "dogecoin-node",
+  "displayName": "Dogecoin Node",
+  "latest": {
+    "version": "1.0.3",
+    "publishedAt": 1771244597232,
+    "commit": "https://github.com/openclaw/skills/commit/3dd0b365a1b06c6c6a4de409d796b016af61358c"
+  },
+  "history": []
+}

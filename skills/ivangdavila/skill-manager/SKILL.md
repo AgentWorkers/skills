@@ -1,61 +1,80 @@
 ---
 name: "Skill Manager"
-description: "通过安装跟踪和智能建议，主动发现并管理用户的技能。"
-version: "1.0.1"
-changelog: "Migrate user data to external memory storage at ~/skill-manager/"
+description: "管理已安装技能的生命周期：根据使用场景提供推荐，跟踪安装情况，检查更新，并清理未使用的技能。"
+version: "1.0.3"
+changelog: "Fix contradictions: clarify declined tracking, add npx security note"
 ---
-## 自适应技能管理
+## 技能生命周期管理
 
-通过发现与用户需求相关的技能来提升用户体验，并跟踪技能的安装情况，以避免技能的重复安装。
+管理已安装技能的完整生命周期：发现、安装、更新和清理。
 
 **参考文档：**
-- `dimensions.md` — 触发主动搜索的规则
-- `criteria.md` — 提出技能的建议时机和方式
+- `suggestions.md` — 根据当前任务推荐技能的时机
+- `lifecycle.md` — 安装、更新和清理流程
+
+**配套工具：**
+- `skill-finder` — 用户主动搜索工具（例如：“为我查找适用于 X 的技能”）
+- `skill-manager` — 主动进行技能生命周期管理
 
 ---
 
-## 规则
+## 功能范围
 
-- 当用户请求重复性或复杂性的任务时，先搜索现有的技能。
-- 在建议新技能之前，请先使用以下命令在 ClawHub 中进行搜索：`npx clawhub search <查询内容>`
-- 提出技能建议前必须获得用户的同意，切勿未经用户同意就进行安装。
-- 记录技能的安装、卸载情况以及原因。
-- 查阅 `dimensions.md` 以获取搜索触发条件，参考 `criteria.md` 以确定技能推荐的标准。
+此技能仅执行以下操作：
+- 根据当前任务上下文推荐技能
+- 在 `~/skill-manager/inventory.md` 文件中记录已安装的技能
+- 记录用户明确拒绝使用的技能及其拒绝原因
+- 检查技能是否有更新
 
-## 主动搜索触发机制
-
-如果任务具有重复性、属于特定领域，或者可以从专业指导中受益，那么应主动搜索相关的技能。
+**注意事项：**
+- 该技能不会统计任务重复次数或用户行为模式
+- 未经用户明确同意，不会自动安装任何技能
+- 该技能不会读取 `~/skill-manager/` 目录以外的文件
 
 ---
 
-## 用户数据存储
+## 安全提示
 
-用户数据存储在 `~/skill-manager/memory.md` 文件中。系统会在用户激活应用程序时加载这些数据。
+此技能使用 `npx clawhub` 命令，这些命令会从 ClawHub 注册表中下载并执行相关代码。这是技能管理的标准方式。在安装任何技能之前，请务必仔细检查相关内容。
 
-**仅存储以下由用户明确操作产生的数据：**
-- 用户已同意安装的技能
-- 用户已卸载的技能（附带卸载原因）
-- 用户拒绝安装的技能（附带拒绝原因）
-- 用户的技能偏好
+---
+
+## 基于上下文的技能推荐
+
+在执行任务时，请注意当前的 **任务上下文**：
+- 如果用户提到了特定的工具（如 Stripe、AWS、GitHub），请检查是否存在相应的技能
+- 如果任务涉及不熟悉的领域，建议用户进行搜索
+
+这种推荐行为是基于当前任务上下文进行的，而非对用户行为模式的跟踪。
+
+## 生命周期管理操作
+
+| 操作        | 命令                |
+|-------------|---------------------|
+| 安装         | `npx clawhub install <技能名称>`      |
+| 更新         | `npx clawhub update <技能名称>`      |
+| 查看信息     | `npx clawhub info <技能名称>`      |
+| 卸载         | `npx clawhub uninstall <技能名称>`      |
+
+---
+
+## 数据存储
+
+所有技能信息存储在 `~/skill-manager/inventory.md` 文件中。
+
+**首次使用方法：** `mkdir -p ~/skill-manager`
 
 **数据格式：**
 ```markdown
-# Skill Manager Memory
-
 ## Installed
-- slug@version — purpose
+- slug@version — purpose — YYYY-MM-DD
 
-## History
-- slug — removed (reason)
-
-## Rejected
-- slug — reason given
-
-## Preferences
-- trait from explicit user statement
+## Declined
+- slug — "user's stated reason"
 ```
 
-**规则：**
-- 仅记录用户明确操作产生的数据（如安装、卸载、拒绝技能等）。
-- 未经用户明确说明，切勿推测用户的技能偏好。
-- 数据条目长度应控制在 50 行以内；过期的数据会被存档到 `history.md` 文件中。
+**记录的内容：**
+- 用户安装的技能（包括安装目的和日期）
+- 用户明确拒绝使用的技能及其拒绝原因
+
+**记录拒绝使用的原因：** 为了避免再次推荐用户已经拒绝过的技能。仅记录用户明确表示拒绝的技能信息。

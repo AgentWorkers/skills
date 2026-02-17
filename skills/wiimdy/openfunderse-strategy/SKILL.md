@@ -1,261 +1,230 @@
 ---
-name: openfunderse-strategy
-description: OpenFunderse Strategy 机器人：用于提出交易意图并控制交易意图的提交流程
-always: false
-disable-model-invocation: false
+name: openfunderse-participant
+description: **Participant MoltBot：用于分配提案、验证及提交的工具**
 metadata:
   openclaw:
-    installCommand: npx @wiimdy/openfunderse@latest install openfunderse-strategy --with-runtime
+    installCommand: npx @wiimdy/openfunderse@2.0.0 install openfunderse-participant --with-runtime
     requires:
       env:
         - RELAYER_URL
+        - PARTICIPANT_PRIVATE_KEY
         - BOT_ID
-        - BOT_API_KEY
-        - BOT_ADDRESS
         - CHAIN_ID
         - RPC_URL
-        - STRATEGY_PRIVATE_KEY
-        - INTENT_BOOK_ADDRESS
-        - NADFUN_EXECUTION_ADAPTER_ADDRESS
-        - ADAPTER_ADDRESS
-        - NADFUN_LENS_ADDRESS
-        - NADFUN_BONDING_CURVE_ROUTER
-        - NADFUN_DEX_ROUTER
-        - NADFUN_WMON_ADDRESS
-        - VAULT_ADDRESS
-        - STRATEGY_AUTO_SUBMIT
-        - STRATEGY_REQUIRE_EXPLICIT_SUBMIT
-        - STRATEGY_TRUSTED_RELAYER_HOSTS
-        - STRATEGY_ALLOW_HTTP_RELAYER
-        - STRATEGY_MAX_IMPACT_BPS
-        - STRATEGY_SELL_TAKE_PROFIT_BPS
-        - STRATEGY_SELL_STOP_LOSS_BPS
-        - STRATEGY_SELL_MAX_HOLD_SECONDS
-        - STRATEGY_DEADLINE_MIN_SECONDS
-        - STRATEGY_DEADLINE_BASE_SECONDS
-        - STRATEGY_DEADLINE_MAX_SECONDS
-        - STRATEGY_DEADLINE_PER_CLAIM_SECONDS
-    primaryEnv: STRATEGY_PRIVATE_KEY
-    skillKey: strategy
+        - PARTICIPANT_ADDRESS
+        - PARTICIPANT_AUTO_SUBMIT
+        - PARTICIPANT_REQUIRE_EXPLICIT_SUBMIT
+        - PARTICIPANT_TRUSTED_RELAYER_HOSTS
+        - PARTICIPANT_ALLOW_HTTP_RELAYER
+      bins:
+        - node
+        - npm
+    primaryEnv: PARTICIPANT_PRIVATE_KEY
+    skillKey: participant
 ---
+# Participant MoltBot 技能
 
-# Strategy MoltBot 技能
+该技能仅负责提出并验证 `AllocationClaimV1` 请求。
 
-Strategy MoltBot 负责根据最终确定的数据快照提出结构化的交易建议。它会评估市场状况、流动性以及风险政策，以决定是否进行交易或持有资产。
-对于 NadFun 平台，必须使用特定的报价函数来计算 `minAmountOut`，并拒绝不匹配的路由器请求。
+## 安全/许可说明（请先阅读）
 
-在运行时，首先使用 `proposeIntentAndSubmit` 函数来构建标准的交易提案，只有在满足明确的提交条件后才会实际提交交易。
+- 通过 `npx @wiimdy/openfunderse@2.0.0 ...` 进行安装时，会执行从 npm 下载的代码。建议固定使用已知版本，并在生产环境中运行前审查包的源代码。
+- `PARTICIPANT_PRIVATE_KEY` 是高度敏感的密钥，请为该机器人使用专用的钱包密钥；切勿重复使用保管库或管理密钥。
+- `bot-init` 是一个具有破坏性的工具：它会生成一个新的钱包，更新 `.env.participant` 文件，并将钱包备份存储在 `~/.openclaw/workspace/openfunderse/wallets` 目录下。
+- 默认情况下，`install` 和 `bot-init` 也会将环境变量同步到 `~/.openclaw/openclaw.json` 文件中，并且 `bot-init` 会重启 OpenClaw 代理服务器。这可能会影响其他技能的正常运行。
+  - 使用 `--no-sync-openclaw-env` 选项可仅执行文件同步操作。
+  - 使用 `--no-restart-openclaw-gateway` 选项可避免重启代理服务器。
+  - 在修改全局配置之前，请先备份 `~/.openclaw/openclaw.json` 文件。
 
-## 快速入门（ClawHub 用户）
+## 快速入门
 
-1) 安装该技能：
+1) 安装（选择其中一种方式）。**不需要**同时运行两种安装方式：
 
-```bash
-npx clawhub@latest install openfunderse-strategy
+- 手动安装（直接在 Node 项目目录中运行安装命令，或先运行 `npm init -y`）：
+   ```bash
+npm init -y && npx @wiimdy/openfunderse@2.0.0 install openfunderse-participant --with-runtime
 ```
 
-2) 安装运行时环境并生成环境模板：
-
-```bash
-npx @wiimdy/openfunderse@latest install openfunderse-strategy --with-runtime
+- 通过 ClawHub 安装：
+   ```bash
+npx clawhub@latest install openfunderse-participant
 ```
 
-3) 旋转临时启动密钥，并将新的策略钱包信息写入环境配置中：
-
-```bash
-npx @wiimdy/openfunderse@latest bot-init \
-  --skill-name strategy \
-  --yes
+2) 可选：创建或更新专用的参与者签名密钥。
+   如果您已经有了密钥，可以直接在 OpenClaw 环境变量中设置 `PARTICIPANT_PRIVATE_KEY` 和 `PARTICIPANT_ADDRESS`（位于 `/home/ubuntu/.openclaw/openclaw.json` 的 `env_vars` 部分）或 `~/.openclaw/workspace/.env.participant` 文件中。此时无需运行 `bot-init`。
+   如果希望安装程序生成新的钱包并将其写入环境变量文件，请执行以下操作：
+   ```bash
+npx @wiimdy/openfunderse@2.0.0 bot-init \
+  --skill-name participant \
+  --yes \
+  --no-restart-openclaw-gateway
 ```
 
-4) 加载当前 shell 的环境配置：
+`bot-init` 会更新现有的 `.env.participant` 文件。如果文件缺失，请先运行 `install` 命令（不使用 `--no-init-env` 选项），或者传递 `--env-path` 参数。
+   如果 `PARTICIPANT_PRIVATE_KEY` 已经设置（不是占位符），请使用 `--force` 选项重新运行 `bot-init` 以更新密钥。
 
-```bash
-set -a; source .env; set +a
+### 环境配置的权威来源（重要规则）
+
+- 在 Ubuntu 环境下的 OpenClaw 运行时中，以 `/home/ubuntu/.openclaw/openclaw.json`（`env_vars`）作为环境配置的权威来源。
+- 在正常运行技能时，无需手动加载 `.env` 文件中的配置。
+- 如果 `.env*` 文件和 `openclaw.json` 文件中的配置不一致，请使用 `openclaw.json` 中的配置。
+- 当用户需要设置环境变量时，建议他们先更新 `openclaw.json` 文件。
+
+3) 可选：在本地 shell 中导出环境变量（仅用于调试）：
+   ```bash
+set -a; source ~/.openclaw/workspace/.env.participant; set +a
 ```
 
-注意：
-- 环境模板默认包含一个临时公钥占位符。
-- 在进行资金注入或执行生产级操作之前，务必先运行 `bot-init` 命令。
+此步骤对于正常运行 OpenClaw 技能并非必需。
 
-## 凭据权限
+### Telegram 命令
 
-- `STRATEGIES_PRIVATE_KEY` 是用于链上策略操作的 **策略签名密钥（EOA, Externally Owned Account）**。
-- 该密钥不得用于资金管理或托管等用途。
-- 建议仅使用专用的、权限最低的账户来执行策略操作。
-- 尽可能将此密钥存储在安全管理系统（Secret Manager）或硬件安全模块（HSM）中，并定期更换；在测试环境中优先使用测试网密钥。
+请注意：Telegram 集成由 OpenClaw 代理服务器处理。此技能包不需要 Telegram 机器人令牌；请在代理服务器层面配置 Telegram 凭据。
+```text
+/allocation --fund-id <id> --epoch-id <n> --target-weights <w1,w2,...> [--verify] [--submit]
+/allocation --claim-file <path> [--verify] [--submit]
+/join --room-id <id>
+/deposit --amount <wei> [--vault-address <0x...>] [--native] [--submit]
+/withdraw --amount <wei> [--vault-address <0x...>] [--native] [--submit]
+/redeem --shares <wei> [--vault-address <0x...>] [--submit]
+/vault_info [--vault-address <0x...>] [--account <0x...>]
+/participant_daemon --fund-id <id> --strategy <A|B|C> [--interval-sec <n>] [--epoch-source <relayer|fixed>] [--epoch-id <n>] [--submit]
+```
 
-## 调用策略
+**注意事项：**
+- 提交请求时 `allocation` 会自动进行验证（`--submit` 选项表示执行验证操作）。
+- `submit_allocation`（旧版本）会先验证请求的哈希值；如果不使用 `--submit` 选项，则仅执行验证操作。
 
-- 为了提高可发现性，模型调用功能是启用的（`disable-model-invocation: false`）。
-- 除非另有明确设置，否则应严格执行提交保护机制（`STRATEGIES.require_EXPLICIT_SUBMIT=true`，`STRATEGIES_AUTO_SUBMIT=false`）。
-- 链上或中继器的提交操作必须经过用户的明确批准。
+### BotFather 的命令配置（可直接复制粘贴）
 
-## 提交安全机制
+```text
+start - Show quick start
+help - Show command help
+allocation - Mine (optional verify) and optionally submit allocation claim
+join - Register this bot as a participant for the fund mapped to the room id
+deposit - Deposit native MON or ERC-20 into vault
+withdraw - Withdraw assets from vault (native or ERC-20)
+redeem - Burn vault shares and receive assets
+vault_info - Show vault status and user PnL
+participant_daemon - Run participant allocation daemon
+```
 
-`proposeIntentAndSubmit` 函数具有以下安全保护机制：
+**注意事项：**
+- Telegram 的斜杠命令解析器支持下划线，因此 `/participant_daemon` 等同于 `/participant-daemon`。
+- 也支持 `key=value` 格式的命令（例如：`fund_id=demo-fund`）。
+- 首次安装后，请通过 `@BotFather` 发送命令 `/setcommands` 以注册这些命令。
 
-1. 默认情况下，`STRATEGIES.require_EXPLICIT_SUBMIT=true`，要求用户明确指定 `submit=true` 才能提交交易。
-2. 只有在启用 `STRATEGIES_AUTO_SUBMIT=true` 时，才能允许外部自动提交交易。
-3. `RELAYER_URL` 会经过验证；仅允许来自 `STRATEGIES_TRUSTED_RELAYER_HOSTS` 列表中的可信主机进行提交。
-- 如果未获得提交批准，函数会返回 `decision=READY`，不会向中继器发送交易或上传到链上。
-- 在生产环境中，除非特意启用自动提交功能，否则 `STRATEGIES_AUTO_SUBMIT` 应保持为 `false`。
+**OpenClaw 提示：**
+- `install` 和 `bot-init` 会默认将环境变量同步到 `~/.openclaw/openclaw.json`（`env_vars`）中。
+- `bot-init` 在成功同步环境变量后还会重启 OpenClaw 代理服务器。
+- 使用 `--no-sync-openclaw-env` 选项可仅执行文件同步操作；使用 `--no-restart-openclaw-gateway` 选项可避免重启代理服务器。
+- 如果环境变量仍然过时，请运行 `openclaw gateway restart` 命令并检查 `/home/ubuntu/.openclaw/openclaw.json` 中的配置值。
 
-## 输入参数
+**注意：**
+- 模板文件中默认包含一个临时的私钥占位符。
+- 在进行资金操作或执行生产环境中的操作之前，务必先运行 `bot-init` 命令。
+- `bot-init` 会生成一个新的钱包（包含私钥和地址），并将其写入角色环境变量文件中。
 
-该技能接受一个遵循以下结构的 `propose_intent` 任务：
+## 中继机器人认证（签名验证）
 
+该技能使用 EIP-191 格式的消息签名来验证中继机器人的写入请求（无需使用 `BOT_API_KEY`）。
+
+**消息格式：**
+```
+openfunderse:auth:<botId>:<timestamp>:<nonce>
+```
+
+**必需的请求头：**
+- `x-bot-id: BOT_ID`
+- `x-bot-signature: <0x...>`
+- `x-bot-timestamp: <unix seconds>`
+- `x-bot-nonce: <uuid/random>`
+```
+
+中继服务器会使用这些签名信息与 Supabase 的 `fund_bots.bot_address` 进行验证。
+
+参与者机器人的注册方式如下：
+- 参与者：`POST /api/v1/rooms/{roomId}/join`（推荐用于 Telegram 群组）
+- 策略管理器：`POST /api/v1/funds/{fundId}/bots/register`（直接注册）
+
+如果参与者机器人尚未注册到相应的基金，中继服务器会返回 401/403 错误代码，拒绝其写入请求。
+
+`propose_allocation` 命令会输出规范的分配请求信息：
+- `claimVersion: "v1"`
+- `fundId`, `epochId`, `participant`
+- `targetWeights[]`（整数类型，非负值，总和大于 0）
+- `horizonSec`, `nonce`, `submittedAt`
+
+该技能不使用爬取、证据或来源引用等数据结构。
+
+**映射规则：**
+- `targetWeights[i]` 必须与策略管理器配置的 `riskPolicy.allowlistTokens[i]` 一一对应。
+
+## 守护进程模式（自动提交请求）
+
+对于 MVP 版本，参与者机器人支持以下功能：
+1) 持续监听 NadFun 测试网络的信号（报价/进度/购买日志）。
+2) 根据固定的允许列表顺序计算 `targetWeights` 数组。
+3) 定时向中继服务器提交 `AllocationClaimV1` 请求。
+
+**使用 `--strategy` 命令参数：**
+- `A`：表示基于购买压力的策略。
+- `B`：表示根据进度进行提交的策略。
+- `C`：表示基于影响程度的策略。
+
+## 提交请求的安全机制
+
+`submit_allocation` 命令具有以下安全机制：
+1. `PARTICIPANT.require_EXPLICIT_SUBMIT=true` 选项要求明确指定 `submit=true`。
+2. 在进行网络传输时，必须启用 `PARTICIPANT_AUTO_SUBMIT=true`。
+3. 当设置了 `PARTICIPANT_TRUSTED_RELAYER_HOSTS` 时，系统会检查 `RELAYER_URL` 是否来自可信的中继服务器。
+4. 除非 `PARTICIPANT_ALLOW_HTTP_RELAYER=true`（仅限本地开发环境），否则 `RELAYER_URL` 必须使用 `https` 协议。
+- 如果安全机制被激活，系统会返回 `decision=READY`（表示无法提交请求）。
+
+## 输入合约
+
+### `propose_allocation` 命令
 ```json
 {
-  "taskType": "propose_intent",
+  "taskType": "propose_allocation",
   "fundId": "string",
   "roomId": "string",
   "epochId": "number",
-  "snapshot": {
-    "snapshotHash": "string",
-    "finalized": "boolean",
-    "claimCount": "number"
-  },
-  "marketState": {
-    "network": "number",
-    "nadfunCurveState": "object",
-    "liquidity": "object",
-    "volatility": "object",
-    "positions": [
-      {
-        "token": "string",
-        "quantity": "string | number",
-        "costBasisAsset": "string | number (optional)",
-        "openedAt": "unix seconds or milliseconds (optional)"
-      }
-    ]
-  },
-  "riskPolicy": {
-    "maxNotional": "string",
-    "maxSlippageBps": "number",
-    "allowlistTokens": ["string"],
-    "allowlistVenues": ["string"]
+  "allocation": {
+    "participant": "0x... optional",
+    "targetWeights": ["7000", "3000"],
+    "horizonSec": 3600,
+    "nonce": 1739500000
   }
 }
 ```
 
-### 示例输入
-```json
-{
-  "taskType": "propose_intent",
-  "fundId": "fund-001",
-  "roomId": "telegram-room-abc",
-  "epochId": 12,
-  "snapshot": {
-    "snapshotHash": "0xabc123...",
-    "finalized": true,
-    "claimCount": 19
-  },
-  "marketState": {
-    "network": 10143,
-    "nadfunCurveState": {},
-    "liquidity": {},
-    "volatility": {},
-    "positions": [
-      {
-        "token": "0xtoken1...",
-        "quantity": "1200000000000000000",
-        "costBasisAsset": "1000000000000000000",
-        "openedAt": 1730000000
-      }
-    ]
-  },
-  "riskPolicy": {
-    "maxNotional": "1000",
-    "maxSlippageBps": 80,
-    "allowlistTokens": ["0xtoken1...", "0xtoken2..."],
-    "allowlistVenues": ["NadFun", "UniswapV3"]
-  }
-}
-```
+### `submit_allocation` 命令
 
-## 输出结果
-
-该技能会返回 `PROPOSE` 或 `HOLD` 两种决策结果：
-
-### PROPOSE 决策
-当市场状况符合风险政策且存在盈利交易机会时，返回 `PROPOSE`。
+该命令会先验证请求的哈希值，然后在传递 `--submit` 参数时将请求发送到中继服务器。
+如果不传递 `--submit` 参数，仅返回验证结果。
 
 ```json
 {
-  "status": "OK",
-  "taskType": "propose_intent",
+  "taskType": "submit_allocation",
   "fundId": "string",
   "epochId": "number",
-  "decision": "PROPOSE",
-  "intent": {
-    "intentVersion": "V1",
-    "fundId": "string",
-    "roomId": "string",
-    "epochId": "number",
-    "vault": "string",
-    "action": "BUY | SELL",
-    "tokenIn": "string",
-    "tokenOut": "string",
-    "amountIn": "string",
-    "minAmountOut": "string",
-    "deadline": "number",
-    "maxSlippageBps": "number",
-    "snapshotHash": "string"
-  },
-  "executionPlan": {
-    "venue": "NADFUN_BONDING_CURVE | NADFUN_DEX",
-    "router": "string",
-    "quoteAmountOut": "string"
-  },
-  "reason": "string",
-  "riskChecks": {
-    "allowlistPass": "boolean",
-    "notionalPass": "boolean",
-    "slippagePass": "boolean",
-    "deadlinePass": "boolean"
-  },
-  "confidence": "number",
-  "assumptions": ["string"]
+  "observation": "propose_allocation output observation",
+  "submit": true
 }
 ```
 
-### 提交流程（在满足明确提交条件时）
-当使用 `proposeIntentAndSubmit` 并且满足所有提交条件时，系统会执行以下操作：
-1. 中继器向 `/api/v1/funds/{fundId}/intents/propose` 发送请求。
-2. 策略签名者（EOA）通过 `IntentBook.proposeIntent()` 函数提交交易建议。
+## 规则说明
 
-这样可以确保链下和链上的交易记录保持一致。
-
-### HOLD 决策
-当由于风险限制或市场状况不佳而无法提出交易建议时，返回 `HOLD`。
-
-```json
-{
-  "status": "OK",
-  "taskType": "propose_intent",
-  "fundId": "string",
-  "roomId": "string",
-  "epochId": "number",
-  "decision": "HOLD",
-  "reason": "string",
-  "confidence": "number",
-  "assumptions": ["string"]
-}
-```
-
-## 规则
-
-1. **最终性要求**：只有在 `snapshot.finalized` 为 `true` 时才能提交交易建议。
-2. **快照引用**：输入数据中的 `snapshotHash` 必须包含在交易建议对象中。
-3. **风险合规性**：如果任何风险政策阈值（如价格波动范围、允许的交易对手等）被超出，决策结果必须为 `HOLD`。
-4. **NadFun 平台的特殊要求**：针对 NadFun 代币，需要分别评估流动性、价格波动情况以及债券化曲线的状态。
-5. **仅限提案权限**：该技能仅具有提案权，无直接执行交易的权利。
-6. **输出格式**：确保输出为有效的 JSON 格式，并遵循指定的结构。
-7. **报价要求**：对于 NadFun 平台的交易路径，需要使用报价函数 `getAmountOut` 计算 `minAmountOut`。
-8. **不允许 `minAmountOut` 为 0**：绝不允许提交 `minAmountOut` 为 0 的交易建议。
-9. **异常处理**：如果报价失败或返回的路由器不在允许的交易对手列表中，返回 `HOLD`。
-10. **优先执行卖出操作**：如果持有该代币，必须先评估是否满足卖出条件（如 `take-profit`、`stop-loss`、`time-exit` 等），再考虑买入。
-11. **时间戳规范化**：`openedAt` 可能以秒或毫秒为单位；在基于时间条件的退出策略执行前需要对其进行规范化处理。
-12. **禁止自动提交**：除非用户明确允许，否则不得向中继器或链上提交交易。
-13. **使用可信中继器**：在生产环境中，必须设置 `STRATEGIES_TRUSTED_RELAYER_HOSTS`，避免使用不可信的中继器地址。
+1. **仅支持的任务**：仅允许使用 `propose_allocation` 和 `submit_allocation` 命令（提交前会自动进行验证）。
+2. **数据结构规则**：请求的格式必须符合 `AllocationClaimV1` 规范（包括 `claimVersion`, `fundId`, `epochId`, `participant`, `targetWeights`, `horizonSec`, `nonce`, `submittedAt`）。
+3. **权重值规则**：`targetWeights` 必须是整数类型，非负值，且总和大于 0。
+4. **索引映射规则**：`targetWeights[i]` 必须与策略管理器配置的 `riskPolicy.allowlistTokens[i]` 一一对应。
+5. **范围验证**：如果请求的 `fundId` 或 `epochId` 与任务范围不符，系统会返回 `FAIL`。
+6. **哈希值验证**：系统会使用 SDK 重新计算请求的哈希值，并与存储在 `subjectHash` 中的值进行比较；如果不匹配，会返回 `FAIL`。
+7. **提交接口**：`submit_allocation` 命令会将请求发送到 `POST /api/v1/funds/{fundId}/claims`。
+8. **禁止隐式提交**：只有在满足了明确的提交条件后才能提交请求。
+9. **可信中继服务器**：在生产环境中，必须设置 `PARTICIPANT_TRUSTEDRELAYER_HOSTS`，避免使用不可信的中继服务器地址。
+10. **密钥管理**：请使用专用的参与者密钥，切勿使用保管库或管理密钥。
+11. **环境变量来源**：优先使用 `/home/ubuntu/.openclaw/openclaw.json`（`env_vars`）中的环境变量配置，而非本地的 `.env*` 文件。
+12. **禁用旧版功能**：禁止使用 `mine_claim`, `verify_claim_or_intent_validity`, `submit_mined_claim`, `attest_claim` 等旧版命令。

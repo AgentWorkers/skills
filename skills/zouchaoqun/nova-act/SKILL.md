@@ -24,40 +24,66 @@ metadata:
 ---
 # Nova Act 浏览器自动化
 
-使用 Amazon Nova Act 进行基于 AI 的浏览器自动化操作。内置的脚本可以处理常见的任务；对于复杂的工作流程，您可以编写自定义脚本。如需获取免费的 API 密钥，请访问：https://nova.amazon.com/dev/api
+使用 Amazon Nova Act 进行基于 AI 的浏览器自动化操作。内置的脚本可以处理常见的任务；对于复杂的工作流程，您可以编写自定义脚本。如需获取免费的 API 密钥，请访问 https://nova.amazon.com/dev/api。
 
 ## 数据与隐私声明
 
-**本技能会访问的数据：**
+**本技能的访问权限：**
 - **读取：** `NOVA_ACT_API_KEY` 环境变量或 `~/.openclaw/openclaw.json` 文件中的 API 密钥
-- **写入：** 当前工作目录下的 Nova Act 日志文件（包含截图和会话记录）
+- **写入：** 当前工作目录中的 Nova Act 日志文件（包含截图和会话记录）
 
 **日志文件可能包含的内容：**
 - 访问过的每个页面的截图
 - 页面的完整内容（HTML、文本）
-- 浏览器操作及 AI 的决策过程
+- 浏览器操作以及 AI 的决策过程
 
 **建议：**
-- 请注意，日志文件可能会记录访问页面上显示的 **个人身份信息（PII）或敏感数据**；
-- 如果日志文件包含敏感内容，请在使用后及时删除。
+- 请注意，日志文件可能会捕获访问页面中显示的 **个人身份信息（PII）或敏感数据**；
+- 如果日志文件包含敏感内容，请在使用后及时审查或删除。
 
-## 安全保障
+## 安全防护措施
+
+### 对 AI 代理的指示
+
+**在以下操作之前务必停止：**
+- 任何可能导致财务损失的操作
+- 任何涉及外部通信的操作
+- 任何创建账户的操作
+- 任何修改数据的操作
+
+当任务包含可能产生实际影响的操作时（请参阅 `scripts/nova_act_runner.py` 文件中的 `MATERIAL_IMPACT_KEYWORDS`），您必须：
+1. 导航到最终操作步骤（如结账页面、提交按钮或发布界面）
+2. 确认最终操作是可执行的（按钮存在且处于启用状态）
+3. 使用 `act_get()` 功能进行观察，但不要点击最终操作按钮
+4. 在未完成操作的情况下向用户报告观察结果
+
+**需要停止操作的类别：**
+- **财务相关操作**：购买、付款、订阅、捐赠、下单
+- **通信相关操作**：发布、分享、发送邮件、消息、推文
+- **账户创建相关操作**：注册新账户
+- **提交相关操作**：提交申请、报名、预订
+- **删除或销毁相关操作**：删除数据、移除内容、取消操作
+
+### 安全保障
 
 在执行浏览器自动化操作时，本技能 **绝不会**：
-- 完成任何实际的购买或财务交易
+- 完成实际的购买或财务交易
 - 创建真实账户或注册服务
 - 在任何平台上公开发布内容
-- 发送电子邮件、消息或进行其他形式的通信
-- 提交可能导致不可逆实际后果的表单
+- 发送邮件、消息或进行其他通信
+- 提交会导致不可逆实际后果的表单
 
-**本技能会始终：**
-- 在执行任何可能产生实际影响的操作之前停止
-- 在执行不可逆操作前请求用户的明确确认
-- 报告发现的结果，而不会执行破坏性操作
+本技能 **始终会**：
+- 在任何可能产生实际影响的操作之前停止
+- 在执行不可逆操作之前请求用户的明确确认
+- 在检测到可能产生实际影响的操作时报告观察结果
+- 在输出中记录所有安全停止的操作
+
+有关详细的安全部署指南，请参阅 `references/nova-act-cookbook.md`。
 
 ## 使用内置脚本快速入门
 
-当需要执行浏览器自动化任务时，只需调用内置脚本即可：
+当需要执行浏览器自动化任务时，只需调用内置脚本：
 
 ```python
 import subprocess, os, sys
@@ -74,13 +100,13 @@ if result.returncode != 0:
     print(result.stderr, file=sys.stderr)
 ```
 
-其中 `url` 和 `task` 是根据用户请求设置的 Python 字符串变量。
+其中 `url` 和 `task` 是由用户请求设置的 Python 字符串变量。
 
-该脚本使用通用格式（摘要 + 详细信息列表）来记录操作结果。
+该脚本使用通用格式（包含摘要和详细信息列表）来记录操作结果。
 
 ## 编写自定义脚本
 
-对于复杂的多步骤工作流程或特定的数据提取需求，可以使用符合 PEP 723 标准的 Python 脚本进行开发：
+对于复杂的多步骤工作流程或特定的数据提取需求，您可以编写符合 PEP 723 标准的 Python 自定义脚本：
 
 ```python
 #!/usr/bin/env python3
@@ -108,26 +134,26 @@ with NovaAct(starting_page="https://example.com") as nova:
     print(f"MEDIA: {Path('search_results.png').resolve()}")
 ```
 
-运行方式：`uv run script.py`
+使用以下命令运行脚本：`uv run script.py`
 
-## 核心 API 接口
+## 核心 API 函数
 
 ### `nova_act(prompt)` - 执行操作
 
-用于点击、输入、滚动和导航等操作。**注意：** 最佳做法是在一次 `act()` 调用中保持操作的连续性，因此请将相关操作组合在一起。
+用于点击、输入、滚动和导航。**注意：** 操作的上下文最好在单次 `act()` 调用中保持一致，因此请将相关操作合并到一个提示中。
 
 ```python
 nova.act("""
-    Click the 'Sign In' button.
-    Type 'hello@example.com' in the email field.
-    Scroll down to the pricing section.
-    Select 'California' from the state dropdown.
+    Click the search box.
+    Type 'automation tools' and press Enter.
+    Scroll down to the results section.
+    Select 'Relevance' from the sort dropdown.
 """)
 ```
 
 ### `nova_act_get(prompt, schema)` - 提取数据
 
-使用 Pydantic 模型或 Python 类型来结构化地提取数据：
+使用 Pydantic 模型或 Python 数据类型来结构化地提取数据：
 
 ```python
 from pydantic import BaseModel
@@ -168,18 +194,24 @@ with NovaAct(starting_page="https://google.com/flights") as nova:
         "Get the top 3 cheapest flights with airline, price, and times",
         schema=list[Flight]
     )
+    # SAFETY STOP: Only extracted data. Did NOT select a flight or proceed to booking.
 ```
 
 ### 表单填写
 
 ```python
-with NovaAct(starting_page="https://example.com/signup") as nova:
+with NovaAct(starting_page="https://example.com/contact") as nova:
     nova.act("""
-        Fill the form: name 'John Doe', email 'john@example.com'.
+        Fill the form: name 'Test User', email 'test@example.com'.
         Select 'United States' for country.
-        Check the 'I agree to terms' checkbox.
-        Click Submit.
     """)
+
+    # SAFETY STOP: Verify submit button exists but DO NOT click it
+    submit_ready = nova.act_get(
+        "Is there a submit button visible and enabled?",
+        schema=bool
+    )
+    print(f"Form ready to submit: {submit_ready}")
 ```
 
 ### 数据提取
@@ -193,19 +225,23 @@ with NovaAct(starting_page="https://news.ycombinator.com") as nova:
 ```
 
 ## 最佳实践：
-1. **组合操作步骤**：Nova Act 在一次 `act()` 调用中能更好地保持操作上下文。请将相关操作合并到一个多行的命令中。
-2. **使用具体日期**：浏览器代理可能无法正确处理相对日期（如“下周一”）。请在命令中始终提供具体的日期（例如：“2025 年 3 月 15 日”）。
-3. **明确命令内容**：例如，“点击页面底部的蓝色‘提交’按钮”比“点击提交”更具体。
-4. **使用数据提取模板**：向 `act_get()` 提供数据提取的模板，以确保数据提取的准确性。
-5. **处理页面加载**：Nova Act 会等待页面加载完成，但在需要时也可以手动设置等待时间以处理动态内容。
-6. **截图验证结果**：使用 `nova.page.screenshot()` 来保存操作结果。
+1. **合并操作步骤**：Nova Act 最适合在单次 `act()` 调用中处理一系列操作。将相关操作合并到一个多行提示中。
+2. **使用具体日期**：浏览器代理可能无法正确理解相对日期（如“下周一”）。请在任务提示中提供具体的日期（例如“2025 年 3 月 15 日”）。
+3. **明确提示操作内容**：例如“点击底部的蓝色‘提交’按钮”，而不是简单地说“点击提交”。
+4. **提供提取数据的结构化格式**：在使用 `act_get()` 时，务必提供数据提取的格式化模板。
+5. **处理页面加载**：Nova Act 会等待页面加载完成，但在需要时可以添加对动态内容的显式等待时间。
+6. **截图验证结果**：使用 `nova.page.screenshot()` 函数来保存操作结果。
+
+## 资源：
+- **`references/nova-act-cookbook.md`** — Nova Act 的最佳实践和安全指南，包括 `MATERIAL_IMPACT_KEYWORDS` 的详细说明以及安全的工作流程示例。在进行复杂自动化操作时，请参考该文档。
+- **`README.md`** — 为用户提供的安装指南和安全注意事项。
 
 ## API 密钥：
-- 必需的环境变量：`NOVA_ACT_API_KEY`
+- 必需设置 `NOVA_ACT_API_KEY` 环境变量
 - 或者在 `~/.openclaw/openclaw.json` 文件中设置 `skills."nova-act".apiKey` 或 `skills."nova-act".env.NOVA_ACT_API_KEY`
 
 ## 注意事项：
 - Nova Act 会启动真实的 Chrome 浏览器；请确保浏览器能够正常显示页面内容，或使用无头模式（headless mode）。
-- 脚本会输出 `MEDIA:` 标识，以便 OpenClaw 在支持的平台上自动保存截图。
-- 如需无头模式运行，请使用：`NovaAct(starting_page="...", headless=True)`
-- 可通过 `nova.page` 访问底层 Playwright 页面以执行更高级的操作。
+- 脚本会输出 `MEDIA:` 标识符，以便 OpenClaw 在支持的平台上自动保存截图。
+- 如需使用无头模式，请执行 `NovaAct(starting_page="...", headless=True)`。
+- 可通过 `nova.page` 访问底层的 Playwright 页面以执行更高级的操作。

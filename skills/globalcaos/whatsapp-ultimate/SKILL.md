@@ -1,41 +1,7 @@
 ---
 name: whatsapp-ultimate
-version: 1.8.1
-description: "**OpenClaw代理的完整WhatsApp集成功能：**  
-- 支持发送消息、媒体文件、投票、贴纸、语音笔记以及各种表情（reaction）和回复。  
-- 支持使用全文搜索功能（SQLite + FTS5）查询聊天记录。  
-- 可下载并转录语音消息。  
-- 支持导入导出的聊天数据。  
-- 全部聊天记录可重新同步。  
-
-**新功能：**  
-- **“思考中”表情（Thinking Reaction）**：在群组聊天中显示用户正在思考的进度指示器（这是对WhatsApp在链接设备上显示的错误打字提示的临时解决方案）。  
-- **所有者语音消息**：所有者发送的语音消息会绕过前缀过滤规则。  
-
-**优势：**  
-- 100%原生集成，无需使用Docker或任何外部工具。  
-- 可与OpenClaw内置的WhatsApp通道同时使用。  
-
-**主要功能说明：**  
-- **消息发送**：支持发送各种类型的数据（文本、图片、视频、音频等）。  
-- **媒体文件**：支持上传和接收多媒体文件。  
-- **投票**：允许用户在聊天中发起投票并查看结果。  
-- **贴纸**：支持使用WhatsApp内置的贴纸功能。  
-- **语音笔记**：支持录制和分享语音消息。  
-- **表情（Reaction）**：提供丰富的表情选项，增强聊天互动性。  
-- **聊天历史搜索**：支持通过全文搜索快速查找聊天记录。  
-- **数据同步**：所有聊天数据均可自动同步到本地和云端。  
-
-**技术实现：**  
-- 使用SQLite和FTS5（Full-Text Search）技术实现高效的全文搜索功能。  
-- 支持跨设备同步聊天记录。  
-- 通过原生Bailey库处理语音消息，确保低延迟和高可靠性。  
-
-**适用场景：**  
-- 适用于需要集成WhatsApp功能的自动化系统或聊天机器人。  
-
-**更多信息：**  
-- 详情请参阅[OpenClaw官方文档](https://docs.openclaw.io/)。"
+version: 1.9.0
+description: "Complete WhatsApp integration for OpenClaw agents — send messages, media, polls, stickers, voice notes, reactions & replies. Search chat history with full-text search (SQLite + FTS5). Download & transcribe voice messages. Import chat exports. Full history resync. NEW: 🤔↔🧐 Thinking Heartbeat — alternating reaction indicator (~1s) that doubles as a watchdog (frozen = hung). Owner voice messages bypass prefix filters. Native Baileys — zero Docker, zero external tools. Works alongside OpenClaw's built-in WhatsApp channel."
 homepage: https://github.com/globalcaos/clawdbot-moltbot-openclaw
 repository: https://github.com/globalcaos/clawdbot-moltbot-openclaw
 metadata:
@@ -64,205 +30,229 @@ metadata:
 
 # WhatsApp Ultimate
 
-**通过您的AI代理发送消息、媒体文件、进行投票、录制语音笔记，以及管理群组——所有这些功能都无需离开您的设备。**您可以即时搜索整个WhatsApp聊天记录。
+**Send messages, media, polls, voice notes, and manage groups — all from your AI agent. Search your entire WhatsApp history instantly.**
 
-这是OpenClaw中最全面的WhatsApp集成技能。它支持原生Baileys集成，无需使用Docker、CLI工具或外部服务，只需连接即可开始使用。
-
----
-
-## 先决条件
-
-- 已配置WhatsApp通道的OpenClaw
-- 通过二维码将WhatsApp账户关联到OpenClaw（使用`openclaw whatsapp login`命令）
+The most complete WhatsApp skill for OpenClaw. Native Baileys integration — no Docker, no CLI tools, no external services. Just connect and go.
 
 ---
 
-## 功能概览
+## Prerequisites
 
-| 功能类别          | 具体功能                                                                                                 |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **消息发送**        | 支持文本、媒体文件、投票、贴纸、语音笔记和GIF文件发送                                                                                   |
-| **互动**          | 支持回复/引用消息、编辑或取消发送消息                                                                                   |
-| **群组管理**        | 创建群组、重命名群组、设置群组图标和描述、管理群组成员、任命管理员以及生成群组邀请链接         |
-| **进度显示**        | 在群组聊天中显示“🤔”进度指示器（表示消息正在处理中）                                                                                   |
-| **媒体文件过滤**      | 群组中的语音/媒体消息可绕过预设的前缀过滤                                                                                   |
-| **聊天记录**        | 使用持久化的SQLite数据库存储聊天记录，支持FTS5全文本搜索；支持导入聊天记录文件           |
-| **数据同步**        | 可通过重新连接实现聊天记录的完全同步；支持自动备份和恢复                                                                                   |
-
-**总计：24项独立功能 + 可搜索的聊天记录**
+- OpenClaw with WhatsApp channel configured
+- WhatsApp account linked via QR code (`openclaw whatsapp login`)
 
 ---
 
-## 🤔 进度指示器（“🤔 Thinking Reaction”）
+## Capabilities Overview
 
-**问题：** 链接WhatsApp设备的应用程序（如Baileys、Web API）无法在群组聊天中显示“正在输入...”的提示。这是WhatsApp服务器端的限制——协议正确地发送了`chatstate` XML节点，但WhatsApp服务器不会将输入状态传递给群组成员。该问题已在[Baileys #866](https://github.com/WhiskeySockets/Baileys/issues/866)中得到确认。
+| Category         | Features                                                                    |
+| ---------------- | --------------------------------------------------------------------------- |
+| **Messaging**    | Text, media, polls, stickers, voice notes, GIFs                             |
+| **Interactions** | Reactions, replies/quotes, edit, unsend                                     |
+| **Groups**       | Create, rename, icon, description, participants, admin, invite links        |
+| **Progress**     | 🤔 Thinking reaction (visible processing indicator for groups)              |
+| **Media Bypass** | Owner voice/media messages bypass prefix filters in groups                  |
+| **History**      | Persistent SQLite storage, FTS5 full-text search, import historical exports |
+| **Resync**       | Full history re-sync via re-link, automatic backup & restore                |
 
-**解决方案：** 当代理开始处理消息时，会立即在原始消息上显示“🤔”提示。回复准备好后，该提示会自动消失。这为用户提供了即时的视觉反馈，让他们知道代理正在工作，而无需猜测消息是否已成功发送。
-
-**工作原理：**
-1. 消息到达 → 代理在原始消息上显示“🤔”提示（耗时<100毫秒）
-2. 代理处理消息（使用工具、进行计算或调用API等）
-3. 回复发送 → “🤔”提示自动消失
-
-**适用范围：** 群组聊天 ✅ | 私人消息 ✅ | 所有类型的聊天
-
-这是**唯一一个**解决了“输入提示不可见”问题的WhatsApp集成方案。其他WhatsApp集成方案在代理处理消息时，用户会看到长时间的沉默。
-
----
-
-## 群组所有者的语音/媒体文件过滤
-
-现在，机器人所有者的语音消息和媒体文件可以绕过群组中的`triggerPrefix`过滤规则。例如，如果群组中发送的语音笔记前缀为“Jarvis”，系统之前会忽略该消息。现在，这些消息会自动被转发给代理。
+**Total: 24 distinct actions + searchable history**
 
 ---
 
-## 消息发送
+## 🤔 Thinking Reaction (Progress Indicator)
 
-### 发送文本
+**The problem:** WhatsApp linked devices (Baileys, Web API) cannot show "typing..." indicators in group chats. This is a WhatsApp server-side limitation — the protocol sends the `chatstate` XML node correctly, but WhatsApp's servers don't relay composing presence from companion devices to group participants. Confirmed in [Baileys #866](https://github.com/WhiskeySockets/Baileys/issues/866).
+
+**The solution:** When your agent starts processing a message, it instantly reacts with 🤔 on the triggering message. When the reply is ready, the reaction is automatically removed. This gives users immediate visual feedback that the agent is working — no more wondering if your message was received.
+
+**How it works:**
+1. Message arrives → agent reacts with 🤔 (instant, <100ms)
+2. Agent processes (tools, thinking, API calls...)
+3. Reply delivered → 🤔 removed automatically
+
+**Works in:** Groups ✅ | DMs ✅ | All chat types
+
+This is the **only WhatsApp skill** that solves the invisible-typing-indicator problem. Every other WhatsApp integration leaves users staring at silence while the agent thinks.
+
+---
+
+## Owner Media Bypass
+
+Voice messages and media from the bot owner now bypass the `triggerPrefix` filter in groups. Previously, a voice note sent in a group with `triggerPrefix: "Jarvis"` would be silently dropped because audio can't carry a text prefix. Now owner media messages are automatically routed to the agent.
+
+---
+
+## Messaging
+
+### Send Text
+
 ```
 message action=send channel=whatsapp to="+34612345678" message="Hello!"
 ```
 
-### 发送媒体文件（图片/视频/文档）
+### Send Media (Image/Video/Document)
+
 ```
 message action=send channel=whatsapp to="+34612345678" message="Check this out" filePath=/path/to/image.jpg
 ```
 
-支持的格式：JPG、PNG、GIF、MP4、PDF、DOC等
+Supported: JPG, PNG, GIF, MP4, PDF, DOC, etc.
 
-### 发送投票
+### Send Poll
+
 ```
 message action=poll channel=whatsapp to="+34612345678" pollQuestion="What time?" pollOption=["3pm", "4pm", "5pm"]
 ```
 
-### 发送贴纸
+### Send Sticker
+
 ```
 message action=sticker channel=whatsapp to="+34612345678" filePath=/path/to/sticker.webp
 ```
 
-贴纸格式必须为WebP，推荐尺寸为512x512像素
+Must be WebP format, ideally 512x512.
 
-### 发送语音笔记
+### Send Voice Note
+
 ```
 message action=send channel=whatsapp to="+34612345678" filePath=/path/to/audio.ogg asVoice=true
 ```
 
-**重要提示：** 使用OGG/Opus格式发送语音笔记。MP3格式可能无法正常播放
+**Critical:** Use OGG/Opus format for WhatsApp voice notes. MP3 may not play correctly.
 
-### 发送GIF文件
+### Send GIF
+
 ```
 message action=send channel=whatsapp to="+34612345678" filePath=/path/to/animation.mp4 gifPlayback=true
 ```
 
-**注意：** 需先将GIF文件转换为MP4格式（WhatsApp要求如此）：
+Convert GIF to MP4 first (WhatsApp requires this):
+
 ```bash
 ffmpeg -i input.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4 -y
 ```
 
 ---
 
-## 互动功能
+## Interactions
 
-### 添加反应表情
+### Add Reaction
+
 ```
 message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" emoji="🚀"
 ```
 
-### 删除反应表情
+### Remove Reaction
+
 ```
 message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" remove=true
 ```
 
-### 回复/引用消息
+### Reply/Quote Message
+
 ```
 message action=reply channel=whatsapp to="34612345678@s.whatsapp.net" replyTo="QUOTED_MSG_ID" message="Replying to this!"
 ```
 
-### 编辑消息（仅限自己的消息）
+### Edit Message (Own Messages Only)
+
 ```
 message action=edit channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" message="Updated text"
 ```
 
-### 取消发送/删除消息
+### Unsend/Delete Message
+
 ```
 message action=unsend channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123"
 ```
 
 ---
 
-## 群组管理
+## Group Management
 
-### 创建群组
+### Create Group
+
 ```
 message action=group-create channel=whatsapp name="Project Team" participants=["+34612345678", "+34687654321"]
 ```
 
-### 重命名群组
+### Rename Group
+
 ```
 message action=renameGroup channel=whatsapp groupId="123456789@g.us" name="New Name"
 ```
 
-### 设置群组图标
+### Set Group Icon
+
 ```
 message action=setGroupIcon channel=whatsapp groupId="123456789@g.us" filePath=/path/to/icon.jpg
 ```
 
-### 设置群组描述
+### Set Group Description
+
 ```
 message action=setGroupDescription channel=whatsapp groupJid="123456789@g.us" description="Team chat for Q1 project"
 ```
 
-### 添加群组成员
+### Add Participant
+
 ```
 message action=addParticipant channel=whatsapp groupId="123456789@g.us" participant="+34612345678"
 ```
 
-### 删除群组成员
+### Remove Participant
+
 ```
 message action=removeParticipant channel=whatsapp groupId="123456789@g.us" participant="+34612345678"
 ```
 
-### 提升成员为管理员
+### Promote to Admin
+
 ```
 message action=promoteParticipant channel=whatsapp groupJid="123456789@g.us" participants=["+34612345678"]
 ```
 
-### 降级成员为普通成员
+### Demote from Admin
+
 ```
 message action=demoteParticipant channel=whatsapp groupJid="123456789@g.us" participants=["+34612345678"]
 ```
 
-### 退出群组
+### Leave Group
+
 ```
 message action=leaveGroup channel=whatsapp groupId="123456789@g.us"
 ```
 
-### 获取群组邀请链接
+### Get Invite Link
+
 ```
 message action=getInviteCode channel=whatsapp groupJid="123456789@g.us"
 ```
 
-返回链接：`https://chat.whatsapp.com/XXXXX`
+Returns: `https://chat.whatsapp.com/XXXXX`
 
-### 撤销群组邀请链接
+### Revoke Invite Link
+
 ```
 message action=revokeInviteCode channel=whatsapp groupJid="123456789@g.us"
 ```
 
-### 获取群组信息
+### Get Group Info
+
 ```
 message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
 ```
 
-返回信息包括：群组名称、描述、成员列表和管理员列表
+Returns: name, description, participants, admins, creation date.
 
 ---
 
-## 访问控制
+## Access Control
 
-### 私人消息政策
+### DM Policy
 
-在`openclaw.json`中配置谁可以发送私人消息：
+Control who can DM your agent in `openclaw.json`:
 
 ```json
 {
@@ -276,14 +266,14 @@ message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
 }
 ```
 
-| 政策            | 行为                                                                                          |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `"open"`          | 任何人都可以发送私人消息                                                                                   |
-| `"allowlist"`       | 只有`allowFrom`列表中的号码才能发送私人消息                                                                                   |
-| `"pairing"`        | 未知发件人会收到配对代码提示                                                                                   |
-| `"disabled"`        | 不接受任何私人消息                                                                                   |
+| Policy        | Behavior                                |
+| ------------- | --------------------------------------- |
+| `"open"`      | Anyone can DM                           |
+| `"allowlist"` | Only numbers in `allowFrom` can DM      |
+| `"pairing"`   | Unknown senders get pairing code prompt |
+| `"disabled"`  | No DMs accepted                         |
 
-### 群组消息政策
+### Group Policy
 
 ```json
 {
@@ -296,13 +286,13 @@ message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
 }
 ```
 
-| 政策            | 行为                                                                                          |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `"open"`          | 回应群组中的提及消息                                                                                   |
-| `"allowlist"`       | 只有`groupAllowFrom`列表中的发送者才能发送消息                                                                                   |
-| `"disabled"`        | 忽略所有群组消息                                                                                   |
+| Policy        | Behavior                              |
+| ------------- | ------------------------------------- |
+| `"open"`      | Responds to mentions in any group     |
+| `"allowlist"` | Only from senders in `groupAllowFrom` |
+| `"disabled"`  | Ignores all group messages            |
 
-### 自我聊天模式
+### Self-Chat Mode
 
 ```json
 {
@@ -314,9 +304,9 @@ message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
 }
 ```
 
-允许您与自己进行聊天（“Note to Self”模式），以便与代理互动
+Allows messaging yourself (your "Note to Self" chat) to interact with the agent.
 
-### 触发前缀
+### Trigger Prefix
 
 ```json
 {
@@ -328,59 +318,81 @@ message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
 }
 ```
 
-消息必须以该前缀开头才能触发代理的响应。该前缀适用于：
-- 自我聊天
-- 允许的私人消息
-- 您（作为群组所有者）使用该前缀发送的任何私人消息
+Messages must start with this prefix to trigger the agent. Works in:
+
+- Self-chat
+- Allowed DMs
+- Any DM where you (the owner) message with the prefix
+
+### Message Prefix (Outbound Identity)
+
+```json
+{
+  "channels": {
+    "whatsapp": {
+      "messagePrefix": "🤖"
+    }
+  }
+}
+```
+
+All outbound messages from the agent are prefixed with this string. Use an emoji (like 🤖) so recipients can instantly tell who's talking — especially useful in group chats or when the agent sends from your personal number. Common choices:
+
+- `🤖` — robot face (recommended)
+- `[Jarvis]` — named tag
+- Any short identifier that distinguishes agent messages from your own
 
 ---
 
-## JID格式
+## JID Formats
 
-WhatsApp内部使用JID（Jabber IDs）：
+WhatsApp uses JIDs (Jabber IDs) internally:
 
-| 类型            | 格式                                                                                          |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 个人用户         | `<数字>@s.whatsapp.net`                                                                                   |
-| 群组用户         | `<id>@g.us`                                                                                   |
+| Type       | Format                    | Example                      |
+| ---------- | ------------------------- | ---------------------------- |
+| Individual | `<number>@s.whatsapp.net` | `34612345678@s.whatsapp.net` |
+| Group      | `<id>@g.us`               | `123456789012345678@g.us`    |
 
-当使用`to=`与电话号码关联时，OpenClaw会自动将电话号码转换为JID格式。
+When using `to=` with phone numbers, OpenClaw auto-converts to JID format.
 
 ---
 
-## 提示
+## Tips
 
-### 查找群组名称
+### Resolving Group Names
 
-聊天记录数据库中`chat_name`字段可能为`NULL`。要获取群组的显示名称，可以使用以下方法：
+The history database often has `NULL` for `chat_name`. To get a group's display name, use:
 
 ```
 message action=getGroupInfo channel=whatsapp target="<group-jid>"
 ```
 
-返回信息包括：群组名称、描述以及包含管理员角色的完整成员列表。
+Returns: `subject` (group name), `description`, full participant list with admin roles.
 
-**与人类交流时，请始终使用群组名称——JID仅用于内部识别。**
+**Always refer to groups by name when talking to humans** — JIDs are internal identifiers only.
 
-### 语音笔记
+### Voice Notes
 
-请始终使用OGG/Opus格式录制语音笔记：
+Always use OGG/Opus format:
 
 ```bash
 ffmpeg -i input.wav -c:a libopus -b:a 64k output.ogg
 ```
 
-### 贴纸转换
+### Stickers
 
-将图片转换为WebP格式的贴纸：
+Convert images to WebP stickers:
 
 ```bash
 ffmpeg -i input.png -vf "scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=0x00000000" output.webp
 ```
 
-### 优化私人消息显示（推荐配置）
+### Clean DM Behavior (Recommended Config)
 
-WhatsApp适用于小屏幕设备。只需发送**最终回复**，避免发送工具操作信息、中间状态或调试输出。建议在OpenClaw配置中关闭详细日志显示：
+WhatsApp is a small-screen medium. Only send the **final response** — never tool events, intermediate status, or debug output. The typing indicator (three dots) is sufficient progress feedback.
+
+**Set verbose off** in your OpenClaw config:
+
 ```json
 {
   "agents": {
@@ -391,73 +403,82 @@ WhatsApp适用于小屏幕设备。只需发送**最终回复**，避免发送�
 }
 ```
 
-这样可以防止`[openclaw] 🛠️ Exec: ...`、`[openclaw] 📖 Read`等日志信息在聊天中重复显示。
+This prevents `[openclaw] 🛠️ Exec: ...`, `[openclaw] 📖 Read`, etc. from flooding the chat as separate messages.
 
-**语音回复中应包含文字记录**：当用户发送语音消息时，回复中应包含文字转录内容，以便对方确认消息内容。
+**Voice note replies should include the transcript** — when a user sends a voice message, include the transcribed text in your written reply so they can verify what was understood.
 
-### 避免违规行为
+### Rate Limits
 
-WhatsApp有反垃圾邮件机制。请避免：
-- 向大量联系人批量发送消息
-- 迅速连续发送消息
-- 向未先与您联系过的人发送消息
+WhatsApp has anti-spam measures. Avoid:
 
-### 消息ID
+- Bulk messaging to many contacts
+- Rapid-fire messages
+- Messages to contacts who haven't messaged you first
 
-要回复、编辑或取消发送消息，您需要知道消息的ID。接收到的消息中包含消息ID；您发送的消息的响应中也包含消息ID。
+### Message IDs
 
----
-
-## 何时使用此技能
-
-当您的代理需要执行以下操作时，可以使用`whatsapp-ultimate`技能：
-- 通过WhatsApp发送文本、图片、视频、文档或语音笔记
-- 在群组聊天中创建和管理投票
-- 用表情符号回复消息、引用或编辑/取消发送消息
-- 创建群组、管理群组成员、获取群组邀请链接
-- 根据关键词、发送者或日期搜索过去的WhatsApp聊天记录
-- 导入并索引WhatsApp聊天记录文件（.txt格式）
-- 获取群组元数据（名称、描述、成员列表）
-- 自动生成群组聊天活动的每日摘要
-
-## 与其他技能的比较
-
-| 功能                | whatsapp-ultimate                                                                 | wacli                                                                 | whatsapp-business                                                                 |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 原生集成            | ✅（无需任何外部依赖）                                                                 | ❌（需要Go CLI二进制文件或外部API密钥）                                                                 |
-| 发送文本            | ✅                                                                 | ✅                                                                 | ✅                                                                 |
-| 发送媒体文件          | ✅                                                                 | ✅（仅支持特定文件格式）                                                                 | ✅                                                                 |
-| 进行投票            | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 使用贴纸              | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 录制语音笔记          | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 支持GIF文件          | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 添加反应表情          | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 回复/引用消息          | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 编辑消息            | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 取消发送/删除消息        | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 群组管理            | ✅（包括创建、重命名、设置图标、描述、管理成员、任命管理员等）                                                                 | ❌                                                                 | ❌                                                                 |
-| 获取群组信息          | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 双向聊天            | ✅                                                                 | ❌                                                                 | ✅（需要Webhook接口）                                                                 |
-| 查看聊天记录          | ✅（使用SQLite和FTS5技术）                                                                 | ✅                                                                 | ❌                                                                 |
-| 导入聊天记录文件        | ✅                                                                 | ❌                                                                 | ❌                                                                 |
-| 支持个人WhatsApp账户     | ✅                                                                 | ✅（仅限企业版）                                                                 | ❌                                                                 |
-| 外部依赖            | **无**                                                                 | ✅（需要Go二进制文件和Maton API密钥）                                                                 |
+To react/edit/unsend, you need the message ID. Incoming messages include this in the event payload. For your own sent messages, the send response includes the ID.
 
 ---
 
-## 消息记录与搜索（v1.2.0及以上版本）
+## When to Use This Skill
 
-OpenClaw现在将所有WhatsApp消息存储在本地SQLite数据库中，并支持全文本搜索（FTS5算法）。这样您再也不会丢失任何聊天记录。
+Use `whatsapp-ultimate` when your agent needs to:
 
-### 工作原理
+- Send text, images, videos, documents, or voice notes via WhatsApp
+- Create and manage polls in group chats
+- React to messages with emoji, reply/quote, edit or unsend messages
+- Create groups, manage participants, get invite links
+- Search past WhatsApp conversations by keyword, sender, or date
+- Import and index WhatsApp chat export files (.txt)
+- Get group metadata (name, description, participant list)
+- Set up automated daily summaries of busy group chats
 
-- **实时捕获**：每条新消息都会自动保存
-- **历史记录导入**：可以从WhatsApp聊天记录文件中批量导入消息
-- **全文本搜索**：可以根据内容、发送者或聊天记录类型搜索任何消息
+## Comparison with Other Skills
 
-### 搜索聊天记录
+| Feature                         | whatsapp-ultimate                                                         | wacli                       | whatsapp-business       |
+| ------------------------------- | ------------------------------------------------------------------------- | --------------------------- | ----------------------- |
+| Native integration              | ✅ Zero deps                                                              | ❌ Go CLI binary            | ❌ External API + key   |
+| Send text                       | ✅                                                                        | ✅                          | ✅                      |
+| Send media                      | ✅                                                                        | ✅ (files)                  | ✅ (templates)          |
+| Polls                           | ✅                                                                        | ❌                          | ❌                      |
+| Stickers                        | ✅                                                                        | ❌                          | ❌                      |
+| Voice notes                     | ✅                                                                        | ❌                          | ❌                      |
+| GIFs                            | ✅                                                                        | ❌                          | ❌                      |
+| Reactions                       | ✅                                                                        | ❌                          | ❌                      |
+| Reply/Quote                     | ✅                                                                        | ❌                          | ❌                      |
+| Edit messages                   | ✅                                                                        | ❌                          | ❌                      |
+| Unsend/Delete                   | ✅                                                                        | ❌                          | ❌                      |
+| Group management                | ✅ (full: create, rename, icon, description, participants, admin, invite) | ❌                          | ❌                      |
+| Group info/metadata             | ✅                                                                        | ❌                          | ❌                      |
+| Two-way chat                    | ✅                                                                        | ❌                          | ✅ (webhooks)           |
+| Message history (SQLite + FTS5) | ✅                                                                        | ✅ (sync)                   | ❌                      |
+| Import chat exports             | ✅                                                                        | ❌                          | ❌                      |
+| Personal WhatsApp               | ✅                                                                        | ✅                          | ❌ (Business only)      |
+| External deps                   | **None**                                                                  | Go binary (brew/go install) | Maton API key + account |
+| **Total actions**               | **22+**                                                                   | ~6                          | ~10                     |
 
-可以使用`whatsapp_history`工具（该工具会自动集成到您的代理中）：
+---
+
+## Message History & Search (v1.2.0+)
+
+OpenClaw now stores **all WhatsApp messages** in a local SQLite database with full-text search (FTS5). Never lose a conversation again.
+
+### How It Works
+
+```
+Live Messages (Baileys) ──┐
+                          ├──→ SQLite + FTS5 ──→ whatsapp_history tool
+WhatsApp Exports (.txt) ──┘
+```
+
+- **Live capture:** Every new message automatically saved
+- **Historical import:** Bulk import from WhatsApp chat exports
+- **Full-text search:** Find any message by content, sender, or chat
+
+### Searching History
+
+Use the `whatsapp_history` tool (available to your agent automatically):
 
 ```
 # Search by keyword
@@ -479,31 +500,44 @@ whatsapp_history action=search since="2026-01-01" until="2026-02-01"
 whatsapp_history action=stats
 ```
 
-### 导入历史记录
+### Importing Historical Messages
 
-WhatsApp并未通过API提供无限量的历史记录。要获取旧消息，请按照以下步骤操作：
-1. 从手机设置中导出聊天记录
-2. 将导出的.txt文件保存在可访问的位置
-3. 使用````
+WhatsApp doesn't expose infinite history via API. To get older messages:
+
+1. **Export from phone:** Settings → Chats → Chat history → Export chat → Without media
+2. **Save the .txt files** somewhere accessible
+3. **Import:**
+
+```
 whatsapp_history action=import path="/path/to/exports"
-````命令导入这些文件
+```
 
-### 数据库位置
+Or import a single chat:
 
-聊天记录存储在采用WAL模式的SQLite数据库中，支持并发访问。
+```
+whatsapp_history action=import path="/path/to/chat.txt" chatName="Family Group"
+```
 
-### 使用场景示例
+### Database Location
 
-- “我之前跟Sarah说了关于会议什么？”
-- “找到所有提到‘deadline’的消息”
-- “向工作群组展示我最近发送的消息”
-- “John什么时候提到季度报告的？”
+```
+~/.openclaw/data/whatsapp-history.db
+```
 
-代理可以通过搜索您的完整WhatsApp聊天记录来回答这些问题。
+SQLite file with WAL mode for concurrent access.
 
-### 自动生成每日摘要（基于Cron任务）
+### Use Cases
 
-您可以设置每日Cron任务，让代理自动汇总群组中的活跃聊天记录：
+- _"What did I tell Sarah about the meeting?"_
+- _"Find all messages mentioning 'deadline'"_
+- _"Show my recent messages to the work group"_
+- _"When did John mention the quarterly report?"_
+
+The agent can now answer these questions by searching your complete WhatsApp history.
+
+### Automated Daily Summaries (Cron Pattern)
+
+Set up a daily cron job to summarize busy group chats:
 
 ```json
 {
@@ -517,100 +551,171 @@ whatsapp_history action=import path="/path/to/exports"
 }
 ```
 
-代理会在每天启动时自动读取昨天的聊天记录，并生成每日摘要，无需人工操作。
+Your agent wakes up, reads yesterday's chats, and delivers a morning briefing. No manual effort.
 
 ---
 
-## 下载与转录语音消息（v1.3.0及以上版本）
+## Download & Transcribe Voice Messages (v1.3.0+)
 
-聊天记录数据库会存储原始的语音消息数据（包括媒体文件的相关信息）。这意味着您可以下载并解密任何语音消息、图片或视频文件——即使这些消息来自群组聊天或其他人发送的文件。
+The history database stores the **full raw WAMessage proto** (including media keys) in the `raw_json` column. This means you can download and decrypt any voice message, image, video, or document — even from group chats, even from other people.
 
-### 工作原理
+### How It Works
 
-- 使用`whatsapp_history`命令查找语音消息的ID：
-  ```
+```
+SQLite raw_json ──→ Extract audioMessage/imageMessage ──→ Baileys downloadContentFromMessage() ──→ File
+```
+
+WhatsApp encrypts media with a per-message key. The key is stored in the proto — Baileys handles decryption transparently.
+
+### Download a Voice Message
+
+1. **Find the message ID** via `whatsapp_history`:
+
+```
 whatsapp_history action=search chat="GROUP_JID" sender="PersonName" limit=10
 ```
 
-  查找类型为“voice”或“audio”的消息
-- 使用Node.js脚本下载音频文件（需要在OpenClaw源代码目录中运行）
-- 使用`Whisper`或其他语音转文字工具进行转录：
-  ```bash
+Look for messages with `type: "voice"` or `type: "audio"`.
+
+2. **Download the audio** using a Node.js script (must run from the OpenClaw source dir for Baileys access):
+
+```bash
+cd /path/to/openclaw/source && node -e "
+const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const Database = require('better-sqlite3');
+const fs = require('fs');
+const { pipeline } = require('stream/promises');
+
+async function main() {
+  const db = new Database('$HOME/.openclaw/data/whatsapp-history.db', { readonly: true });
+  const row = db.prepare('SELECT raw_json FROM messages WHERE id = ?').get('MESSAGE_ID_HERE');
+  const msg = JSON.parse(row.raw_json);
+  const audioMsg = msg.message.audioMessage;
+  const stream = await downloadContentFromMessage(audioMsg, 'audio');
+  await pipeline(stream, fs.createWriteStream('/tmp/voice-msg.ogg'));
+  console.log('Downloaded!');
+}
+main().catch(console.error);
+"
+```
+
+3. **Transcribe with Whisper** (or any STT):
+
+```bash
 ffmpeg -i /tmp/voice-msg.ogg -ar 16000 -ac 1 /tmp/voice-msg.wav -y
 whisper /tmp/voice-msg.wav --model base --language es --output_format txt --output_dir /tmp/
 cat /tmp/voice-msg.txt
 ```
 
-### 下载其他类型的媒体文件
+### Download Other Media Types
 
-其他类型的媒体文件下载规则类似，只需根据对应的字段和内容类型进行操作：
+Same pattern, different message field and content type:
 
-| 媒体类型            | 对应的Proto字段            | 内容类型                                                                                   |
-| --------------------------- | ----------------------------- | ------------------------------------------------------------------------- |
-| 语音/音频           | `audioMessage`           | `"audio"`                                                                                   |
-| 图片               | `imageMessage`           | `"image"`                                                                                   |
-| 视频               | `videoMessage`           | `"video"`                                                                                   |
-| 文档               | `documentMessage`          | `"document"`                                                                                   |
-| 贴纸               | `stickerMessage`          | `"sticker"`                                                                                   |
+| Media Type  | Proto Field       | Content Type |
+| ----------- | ----------------- | ------------ |
+| Voice/Audio | `audioMessage`    | `"audio"`    |
+| Image       | `imageMessage`    | `"image"`    |
+| Video       | `videoMessage`    | `"video"`    |
+| Document    | `documentMessage` | `"document"` |
+| Sticker     | `stickerMessage`  | `"sticker"`  |
 
-### 重要提示
+Example for images:
 
-- **媒体文件链接的有效期**：WhatsApp提供的媒体文件链接是临时的。请尽快下载，否则Baileys会尝试重新请求链接（这需要保持socket连接激活）。
-- **建议保持WhatsApp连接状态**：如果媒体文件链接失效，Baileys需要通过socket重新请求链接。保持WhatsApp连接状态可确保下载成功。
-- **数据库路径**：`~/.openclaw/data/whatsapp-history.db`
-- **所需文件**：下载脚本需要`@whiskeysockets/baileys`和`better-sqlite3`库，这两个文件都包含在OpenClaw的源代码目录中。
+```javascript
+const imgMsg = msg.message.imageMessage;
+const stream = await downloadContentFromMessage(imgMsg, "image");
+await pipeline(stream, fs.createWriteStream("/tmp/photo.jpg"));
+```
 
-### 使用场景示例
+### Important Notes
 
-- 转录群组聊天中的语音消息
-- 保存群组中分享的重要图片/文档
-- 生成语音聊天记录的文字版本
-- 分析您不熟悉语言的语音消息（Whisper支持99种语言）
+- **Media URLs expire** — WhatsApp CDN links are temporary. Download soon after receiving, or Baileys will attempt a re-upload request (which requires an active socket connection).
+- **Active WhatsApp session recommended** — If the media URL has expired, Baileys needs the socket to request a fresh URL. Works best when WhatsApp is connected.
+- **Database path:** `~/.openclaw/data/whatsapp-history.db`
+- **Source dir required:** The download script needs Baileys (`@whiskeysockets/baileys`) and `better-sqlite3`, both available in the OpenClaw source tree.
+
+### Use Cases
+
+- Transcribe voice messages from group chats you monitor
+- Save important images/documents shared in groups
+- Create searchable transcripts of voice-heavy conversations
+- Analyze audio messages in languages you don't speak (Whisper supports 99 languages)
 
 ---
 
-## 完整聊天记录同步（v1.5.0及以上版本）
+## Full History Resync (v1.5.0+)
 
-您可以将数月甚至数年的WhatsApp聊天记录同步到本地数据库。该功能通过重新连接您的WhatsApp设备来触发同步操作（类似于首次连接设备时的同步过程）。
+Pull your **entire WhatsApp message history** — months or years of messages — into the local database. This works by re-linking your WhatsApp device, which triggers WhatsApp's INITIAL_BOOTSTRAP sync (the same sync that happens when you first link a new device).
 
-### 原因
+### Why?
 
-Baileys中的按需获取聊天记录的功能（`fetchMessageHistory`）存在问题（详见[Issue #1934](https://github.com/WhiskeySockets/Baileys/issues/1934)）。因此，只能通过初始设备连接来获取旧消息。此功能可自动完成整个同步过程。
+WhatsApp's on-demand history fetch (`fetchMessageHistory`) is broken in Baileys (see [Issue #1934](https://github.com/WhiskeySockets/Baileys/issues/1934)). The only reliable way to get old messages is through the initial device link sync. This feature automates the entire process safely.
 
-### 工作原理
+### How It Works
 
-- 安装`whatsapp-resync`插件：
-  1. 将插件复制到`~/.openclaw/extensions/whatsapp-resync/`
-  2. 在`openclaw.json`配置文件中添加相关设置：
-  ```json
+```
+Agent triggers resync → Auth cleared (backup saved) → Listener closed
+→ Gateway enters QR wait loop → User scans QR in webchat Channels tab
+→ WhatsApp sends INITIAL_BOOTSTRAP → Live capture stores everything to SQLite
+```
+
+### Setup
+
+Install the `whatsapp-resync` plugin:
+
+1. Copy the plugin to `~/.openclaw/extensions/whatsapp-resync/`
+2. Add to `openclaw.json`:
+
+```json
 {
   "plugins": [{ "name": "whatsapp-resync", "path": "~/.openclaw/extensions/whatsapp-resync" }]
 }
 ```
 
-- 启动代理后，可以通过以下API端点触发同步操作：
-  - `/api/whatsapp/resync`（POST请求）：备份认证信息、清除缓存数据、关闭监听器
-  - `/api/whatsapp/resync/restore`（POST请求）：在出现问题时从备份中恢复数据
+3. Restart the gateway.
 
-### 触发同步操作
+### Endpoints
+
+| Endpoint                       | Method | Description                                                        |
+| ------------------------------ | ------ | ------------------------------------------------------------------ |
+| `/api/whatsapp/resync`         | POST   | Trigger resync: backs up auth, clears credentials, closes listener |
+| `/api/whatsapp/resync/restore` | POST   | Restore from backup if something goes wrong                        |
+
+### Trigger a Resync
 
 ```bash
 curl -X POST http://localhost:3120/api/whatsapp/resync
 ```
 
-### 完成同步过程
+Response:
 
-- 打开Webchat界面，选择“Channels”选项卡，然后用手机扫描二维码
-- 在手机上进入WhatsApp设置，选择“Linked Devices”，然后扫描二维码
-- 等待同步完成（根据聊天记录数量，同步时间可能为1-5分钟）
+```json
+{
+  "ok": true,
+  "message": "WhatsApp auth cleared and listener closed...",
+  "backupDir": "~/.openclaw/credentials/whatsapp/default.resync-backup.2026-02-13T15-11-32",
+  "filesDeleted": 3532
+}
+```
 
-### 验证同步结果
+### Complete the Re-link
 
-同步成功后，通常会下载大量消息（可能涵盖数月甚至数年的聊天记录）。
+1. Open the webchat → **Channels** tab → scan the QR code with your phone
+2. On your phone: WhatsApp → Settings → Linked Devices → Link a Device
+3. Scan the QR code
+4. Wait for the initial sync to complete (1-5 minutes depending on history size)
 
-### 从备份中恢复数据
+### Verify Results
 
-如果系统出现故障，可以恢复之前的认证状态：
+```
+whatsapp_history action=stats
+```
+
+A successful resync typically pulls thousands of messages spanning months or years.
+
+### Restore from Backup
+
+If something goes wrong, restore the previous auth state:
 
 ```bash
 # Restore latest backup
@@ -622,60 +727,84 @@ curl -X POST http://localhost:3120/api/whatsapp/resync/restore \
   -d '{"backupDir": "/path/to/backup"}'
 ```
 
-### 安全性措施
+### Safety
 
-- **自动备份**：在删除数据前会备份认证信息
-- **无数据丢失**：仅清除认证状态；现有消息会保留在数据库中
-- **一键恢复**：可以轻松恢复到之前的状态
-- **非破坏性操作**：您的WhatsApp账户不会受到影响；仅恢复与设备关联的聊天记录
+- **Automatic backup**: Auth credentials are backed up before deletion
+- **No data loss**: Only auth state is cleared; existing messages in SQLite are preserved
+- **Restore endpoint**: One-click rollback to previous state
+- **Non-destructive**: Your WhatsApp account is unaffected; only the linked device session changes
 
-### 实际应用效果
+### Real-World Results
 
-在测试中，一次同步操作可恢复：
-- 17,609条消息（之前仅恢复3,242条）
-- 1,229个聊天记录
-- 4,077个联系人
-- 涉及**3年以上的聊天记录**（最远可恢复到2022年9月的记录）
+In testing, a resync pulled:
+
+- **17,609 messages** (up from 3,242)
+- **1,229 chats** (up from 57)
+- **4,077 contacts**
+- History spanning **3+ years** (back to September 2022)
 
 ---
 
-## 离线消息恢复（v1.6.0及以上版本）
+## Offline Message Recovery (v1.6.0+)
 
-当代理连接中断（重启、崩溃等）时，期间发送的消息不会丢失。OpenClaw会自动恢复这些消息：
+When the gateway goes down (restart, crash, update), messages sent during downtime aren't lost — they're stored by WhatsApp and delivered as a batch on reconnect. OpenClaw now recovers these automatically.
 
-- 代理重新连接WhatsApp后，会以“append”类型的事件形式恢复这些消息
-- OpenClaw会检查每条消息的时间戳，确保消息在指定时间窗口内发送（默认时间窗口为6小时）
-- 在指定时间窗口内的消息会通过正常的访问控制流程进行处理
-- 超出时间窗口的消息会被标记为已读，但不会被再次处理
+### How It Works
 
-### 注意事项
+1. Gateway reconnects to WhatsApp (Baileys)
+2. WhatsApp delivers missed messages as `append`-type events (history catch-up)
+3. OpenClaw checks each message's timestamp against a recovery window (default: **6 hours**)
+4. Messages within the window pass through normal access control and are processed as if they arrived in real-time
+5. Messages older than the window are marked as read but not processed (prevents replaying ancient history)
 
-- **配置选项**：可以通过`offlineRecoveryMs`参数调整恢复窗口的时间。设置为0可完全禁用恢复功能
-- 恢复窗口默认设置为6小时；如果需要，可以将其调整为更短的时间
-- 恢复的消息会标记为“[OFFLINE RECOVERY]”，以便代理知道这些消息是离线期间发送的
-- 恢复操作会先读取所有恢复的消息，然后提供摘要信息
-- 之后会询问用户是否继续处理这些消息，避免重复操作或处理过时的请求
+### What This Means
 
-### 配置建议
+- **Gateway down for minutes or hours?** All messages recovered automatically on reconnect
+- **Self-chat messages** (owner talking to themselves) are recovered just like any other message
+- **Access control still applies** — unauthorized senders are still filtered
+- **Deduplication still applies** — no double-processing of messages
 
-- 如果代理有定时重启计划（例如更新），请确保重启时间较短（通常在6小时内）
-- 恢复窗口设置较宽泛；大多数情况下，代理中断时间较短（通常在几秒到几分钟内）
-- 超出时间窗口的消息仍会保存在数据库中，可以通过`whatsapp_history`命令查询
+### Configuration
 
-## 语音笔记的转录与前缀匹配（v1.7.0及以上版本）
+The recovery window defaults to 6 hours. This can be adjusted via the `offlineRecoveryMs` parameter in the monitor options. Set to `0` to disable recovery entirely (original behavior).
 
-现在，语音笔记在处理流程中享有与文本消息相同的优先级。语音笔记在发送前会被自动转录，因此`triggerPrefix`规则同样适用于语音消息。
+### Smart Recovery (Review Before Action)
 
-### 工作原理
+Recovered messages are tagged with `[OFFLINE RECOVERY]` so the agent knows they're from a backlog. Instead of blindly acting on each message:
 
-- 音频文件会被下载并保存到`~/.openclaw/media/inbound/`目录
-- 使用配置的音频转录工具（默认使用OpenAI的Whisper）进行转录
-- 转录后的文本会与`triggerPrefix`进行匹配（例如，前缀必须以“Jarvis”开头）
-- 如果前缀匹配，转录后的文本会替换原始的`<media:audio>`字段，并进入代理的处理流程
+1. **All recovered messages are read first** — the agent gathers full context
+2. **A summary is provided** — "While I was offline, you sent X messages about Y"
+3. **Confirmation is requested** — "Would you like me to proceed with Z, or has this been resolved?"
 
-### 配置说明
+This prevents duplicate actions, outdated requests being executed, and the chaos of responding to a backlog message-by-message.
 
-在`openclaw.json`中启用音频转录功能：
+### Tips
+
+- If your gateway has scheduled restarts (e.g., for updates), keep them short — all messages within the 6h window are recovered
+- The recovery window is generous by default; most gateway downtime is measured in seconds or minutes
+- Messages older than the window are still stored in the history database — use `whatsapp_history` search to find them
+
+---
+
+## Voice Note Transcription & Prefix Matching (v1.7.0+)
+
+Voice notes are now first-class citizens in the WhatsApp pipeline. When a voice note arrives, it's transcribed **before** any prefix checking, so `triggerPrefix` works naturally with spoken messages.
+
+### How It Works
+
+```
+Voice note arrives → Download OGG → Transcribe (OpenAI Whisper) → Check triggerPrefix → Process
+```
+
+1. Audio downloaded and saved to `~/.openclaw/media/inbound/`
+2. Transcribed via configured audio provider (OpenAI Whisper by default)
+3. Transcript checked against `triggerPrefix` (e.g., must start with "Jarvis")
+4. If prefix matches, transcript replaces `<media:audio>` body and enters the agent session
+5. Agent sees the spoken text, not a placeholder
+
+### Configuration
+
+Enable audio transcription in `openclaw.json`:
 
 ```json
 {
@@ -689,30 +818,56 @@ curl -X POST http://localhost:3120/api/whatsapp/resync/restore \
 }
 ```
 
-### 前缀匹配规则
+### Prefix Matching
 
-语音消息也遵循与文本消息相同的`triggerPrefix`规则：
-- “Jarvis, what time is it?” → 会触发转录
-- “Hey Jarvis, what time is it?” → 不会触发转录
-- “Tell Jarvis to...” → 也不会触发转录
+The same `triggerPrefix` rules apply to voice as to text:
 
-### 防止重复处理
+- ✅ "Jarvis, what time is it?" → triggers (starts with "Jarvis")
+- ❌ "Hey Jarvis, what time is it?" → does NOT trigger (starts with "Hey")
+- ❌ "Tell Jarvis to..." → does NOT trigger
 
-机器人发送的语音回复（通过TTS生成）会通过消息ID进行识别，并在处理过程中被自动过滤掉。这可以防止机器人响应自己的语音消息。
+### Echo Prevention
+
+Bot-sent voice notes (TTS replies) are tracked by message ID and automatically filtered out on re-ingestion. This prevents the bot from responding to its own voice replies — especially important during gateway restarts when append messages are recovered.
 
 ---
 
-## 金属音效的语音回复（v1.7.0及以上版本）
+## Metallic Voice Replies (v1.7.0+)
 
-现在，机器人可以使用本地TTS引擎（`sherpa-onnx`）生成具有金属音效的语音回复。这种方式无需使用云服务，也不会产生延迟。
+Send voice note replies with a JARVIS-inspired metallic voice using local TTS (sherpa-onnx + ffmpeg effects). Zero cloud costs, zero latency.
 
-### 设置步骤
+### Setup
 
-- 安装`sherpa-onnx` TTS引擎
-- 创建`jarvis-wa-tts`脚本
-- 使脚本可执行：`chmod +x ~/.local/bin/jarvis-wa-tts`
+1. Install sherpa-onnx TTS (see `sherpa-onnx-tts` skill)
+2. Create the `jarvis-wa-tts` script:
 
-### 在代理中使用
+```bash
+#!/bin/bash
+# Usage: jarvis-wa-tts "text" [output.ogg]
+TEXT="$1"
+OUTPUT="${2:-/tmp/jarvis-wa-tts-output.ogg}"
+RAW_WAV="/tmp/jarvis-wa-tts-raw.wav"
+SHERPA_DIR="$HOME/.openclaw/tools/sherpa-onnx-tts"
+MODEL_DIR="$SHERPA_DIR/models/vits-piper-en_GB-alan-medium"
+export LD_LIBRARY_PATH="$SHERPA_DIR/lib:$LD_LIBRARY_PATH"
+
+"$SHERPA_DIR/bin/sherpa-onnx-offline-tts" \
+  --vits-model="$MODEL_DIR/en_GB-alan-medium.onnx" \
+  --vits-tokens="$MODEL_DIR/tokens.txt" \
+  --vits-data-dir="$MODEL_DIR/espeak-ng-data" \
+  --vits-length-scale=0.5 \
+  --output-filename="$RAW_WAV" "$TEXT" >/dev/null 2>&1
+
+ffmpeg -y -i "$RAW_WAV" \
+  -af "asetrate=22050*1.05,aresample=22050,flanger=delay=0:depth=2:regen=50:width=71:speed=0.5,aecho=0.8:0.88:15:0.5,highpass=f=200,treble=g=6" \
+  -c:a libopus -b:a 64k "$OUTPUT" -v error
+rm -f "$RAW_WAV"
+echo "$OUTPUT"
+```
+
+3. Make executable: `chmod +x ~/.local/bin/jarvis-wa-tts`
+
+### Usage in Agent
 
 ```bash
 # Generate voice note
@@ -722,23 +877,23 @@ jarvis-wa-tts "Hello sir, systems nominal." /tmp/reply.ogg
 message action=send channel=whatsapp target="+1234567890" filePath=/tmp/reply.ogg asVoice=true
 ```
 
-### 效果设置
+### Effects Chain
 
-- **速度提升**：2倍（`vits-length-scale=0.5`）
-- **音调调整**：提高5%
-- **音效处理**：添加金属音效
-- **回声处理**：设置15毫秒的延迟效果
-- **均衡器设置**：提升高频音段200Hz并增强音量6dB
+- **Speed:** 2x (vits-length-scale=0.5)
+- **Pitch:** +5% (asetrate)
+- **Flanger:** Metallic shimmer
+- **Echo:** 15ms short delay
+- **EQ:** High-pass 200Hz + treble boost +6dB
 
 ---
 
-## 常见问题与解决方法
+## Troubleshooting
 
-### 家人/朋友发送的消息无法到达代理
+### Messages from family/friends not reaching agent
 
-**问题**：虽然将某人添加到了`groupAllowFrom`列表中，但他们发送的私人消息无法被代理接收。
+**Symptom:** You added someone to `groupAllowFrom` but their DMs don't work.
 
-**解决方法**：同时将该人添加到`allowFrom`列表中。`groupAllowFrom`列表仅控制群组内的消息发送，不控制私人消息的发送。
+**Fix:** Add them to `allowFrom` too. `groupAllowFrom` only controls group message access, not DMs.
 
 ```json
 {
@@ -747,44 +902,62 @@ message action=send channel=whatsapp target="+1234567890" filePath=/tmp/reply.og
 }
 ```
 
-### 无法区分私人消息中的发送者
+### Can't tell who sent which message in a DM
 
-**问题**：私人消息中的所有消息都显示相同的发送者号码。
+**Symptom:** All messages in a DM conversation show the same phone number.
 
-**原因**：在OpenClaw 2026.2.1版本之前，私人消息中显示的是聊天ID（对方的电话号码），而非实际发送者的号码。
+**Cause:** Prior to OpenClaw 2026.2.1, DM messages showed the _chat ID_ (the other person's number) instead of the _actual sender_.
 
-**解决方法**：升级到最新版本的OpenClaw。现在代理可以正确区分您发送的消息和对方发送的消息。
+**Fix:** Update to latest OpenClaw. The agent now correctly distinguishes between messages you send and messages the other person sends in the same conversation.
 
-### 语音笔记在WhatsApp中无法播放
+### Voice notes won't play on WhatsApp
 
-**问题**：虽然成功上传了音频文件，但无法播放。
+**Symptom:** Audio file sends but shows as unplayable.
 
-**解决方法**：请使用OGG/Opus格式录制语音笔记，并在发送时设置`asVoice=true`参数。
+**Fix:** Use OGG/Opus format, not MP3:
 
----
+```bash
+ffmpeg -i input.mp3 -c:a libopus -b:a 64k output.ogg
+```
 
-## 架构说明
-
-- 该技能完全不依赖任何外部服务或Docker，也不需要使用CLI工具，直接通过WhatsApp的原始协议进行集成。
-
----
-
-## 致谢
-
-该技能由Oscar Serra开发，Claude（Anthropic团队）提供了协助。
-
-“这个技能终于让WhatsApp实现了应有的功能。”
+Then send with `asVoice=true`.
 
 ---
 
-## 许可证
+## Architecture
 
-该技能基于MIT许可证发布，是OpenClaw项目的一部分。
+```
+Your Agent
+    ↓
+OpenClaw message tool
+    ↓
+WhatsApp Channel Plugin
+    ↓
+Baileys (WhatsApp Web Protocol)
+    ↓
+WhatsApp Servers
+```
+
+No external services. No Docker. No CLI tools. Direct protocol integration.
 
 ---
 
-## 链接
+## Credits
 
-- OpenClaw分支仓库：https://github.com/globalcaos/clawdbot-moltbot-openclaw
-- Baileys项目：https://github.com/WhiskeySockets/Baileys
-- ClawHub平台：https://clawhub.com
+Created by **Oscar Serra** with the help of **Claude** (Anthropic).
+
+_The skill that finally made WhatsApp work the way it should._
+
+---
+
+## License
+
+MIT — Part of OpenClaw
+
+---
+
+## Links
+
+- OpenClaw Fork: https://github.com/globalcaos/clawdbot-moltbot-openclaw
+- Baileys: https://github.com/WhiskeySockets/Baileys
+- ClawHub: https://clawhub.com

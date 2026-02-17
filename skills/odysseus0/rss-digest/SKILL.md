@@ -1,33 +1,30 @@
 ---
 name: rss-digest
-description: "使用 `feed CLI` 功能生成代理型 RSS 摘要。该工具负责获取 RSS 源、对内容进行分类筛选，并汇总其中的高质量文章。适用场景包括：  
-(1) 阅读 RSS 源或快速了解最新新闻；  
-(2) 用户请求获取近期文章的汇总或摘要；  
+description: "使用 `feed CLI` 功能生成代理式 RSS 摘要。该工具负责获取、筛选并汇总 RSS 源中的内容，以突出显示那些具有高关注度的文章。适用场景包括：  
+(1) 阅读 RSS 源或查看最新新闻；  
+(2) 用户请求获取近期文章的摘要或汇总；  
 (3) 用户询问当天有哪些新内容或有趣的文章；  
 (4) 用户提到相关 RSS 源、RSS 或博客时。"
 metadata: {"openclaw": {"emoji": "📡", "requires": {"bins": ["feed"]}, "install": [{"kind": "brew", "formula": "odysseus0/tap/feed", "bins": ["feed"], "label": "Install via Homebrew"}, {"kind": "go", "package": "github.com/odysseus0/feed/cmd/feed@latest", "bins": ["feed"], "label": "Install via Go"}]}}
 ---
-
 # RSS 摘要
 
 该工具会从 RSS 源中筛选出值得阅读的内容。需要使用 `feed` 命令行工具（可通过 `brew install odysseus0/tap/feed` 安装）。
 
 ## 工作流程
 
-0. **初始化**：运行 `feed get stats`。如果没有 RSS 源，可以导入预设的源列表：`feed import https://github.com/odysseus0/feed/raw/main/hn-popular-blogs-2025.opml`（包含 92 个精选的科技博客）。系统会询问用户是否希望添加自己的 RSS 源。
-1. **获取最新内容**：使用 `feed fetch` 命令获取最新的文章条目。
-2. **扫描**：使用 `feed get entries --limit 50` 命令获取最近的未读文章（包括标题、来源和发布日期）。
-3. **筛选**：从中挑选出 5-10 篇具有较高价值的文章。优先考虑与人工智能、系统工程、开发工具相关的内容，以及那些引人注目或观点独特的文章。
-4. **阅读**：使用 `feed get entry <id>` 命令查看每篇文章的完整内容（以 Markdown 格式显示）。
-5. **总结**：为每篇文章生成摘要，包括标题、来源以及简短的 2-3 句说明其重要性的内容。如果内容可以按主题分类，可以进行分类展示。
+1. **扫描**：使用 `feed get entries --limit 50` 命令获取最近的未读文章（包括标题、来源、日期和 URL）。如果数据过期，系统会自动重新获取。如果查询结果为空，可运行 `feed get stats`；如果没有任何 RSS 源可用，可以尝试导入示例数据集：`feed import https://github.com/odysseus0/feed/raw/main/hn-popular-blogs-2025.opml`，然后重新尝试扫描。
+2. **筛选**：根据用户的偏好，从筛选出的文章中挑选出 5-10 篇高质量的帖子。如果没有特定的阅读偏好，优先选择那些具有创新性、与众不同或见解深刻的文章。
+3. **阅读并总结**：对于每篇选中的文章，阅读全文并简要总结（2-3 句）。如果支持直接获取 URL（例如使用 WebFetch），建议直接获取内容；否则可以使用 `feed get entry <id>` 来读取存储的内容。尽可能并行处理这些操作。
+4. **生成摘要**：将所有总结内容整理成一份摘要报告。如果文章内容可以按主题分类，可以进行分类展示。
 
 ## 命令
 
 ```
-feed fetch                              # pull latest from all feeds
 feed get entries --limit N              # list unread entries (table)
 feed get entries --feed <id> --limit N  # filter by feed
-feed get entry <id>                     # read full post (Markdown)
+feed get entry <id>                     # read full post (markdown)
+feed fetch                              # pull latest from all feeds
 feed search "<query>"                   # full-text search
 feed update entries --read <id> ...     # batch mark read
 feed get feeds                          # list feeds with unread counts
@@ -36,6 +33,7 @@ feed get stats                          # database stats
 
 ## 注意事项
 
-- 默认输出格式为表格形式，便于快速浏览；如需以 JSON 格式查看内容，请使用 `-o json` 选项。
-- `feed get entry <id>` 命令会返回文章的 Markdown 内容。
-- 如果文章数量过多，可以使用 `--feed <feed_id>` 选项来过滤特定来源的文章。
+- 文章列表中包含完整的 URL。建议直接获取 URL（这样可以避免在阅读时出现内容上下文丢失的问题）。如果没有合适的网页获取工具，可以使用 `feed get entry <id>`。
+- 请勿将文章标记为已读——用户自己决定哪些文章需要标记为已读。
+- 默认输出格式为表格形式，这种格式在扫描大量数据时效率最高。避免使用 `-o json` 选项。
+- 如果文章数量过多，可以使用 `--feed <feed_id>` 参数来过滤特定来源的文章。

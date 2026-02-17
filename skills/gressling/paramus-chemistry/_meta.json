@@ -1,0 +1,11 @@
+{
+  "owner": "gressling",
+  "slug": "paramus-chemistry",
+  "displayName": "Paramus Chemistry",
+  "latest": {
+    "version": "1.0.3",
+    "publishedAt": 1771240954081,
+    "commit": "https://github.com/openclaw/skills/commit/00f9289ca2741114ca9a7bfe4255bab95ba8da15"
+  },
+  "history": []
+}

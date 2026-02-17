@@ -1,774 +1,1116 @@
 ---
 name: Technical Documentation Engine
-description: 一个完整的技术文档系统——涵盖了从架构设计到API参考、运行手册、变更日志，以及“文档即代码”（docs-as-code）的整个流程。其功能远超基本的模板系统，性能提升了10倍。
+description: 完整的 teknikal 文档系统——从规划到维护的全过程支持。涵盖 README 文件、API 文档、指南、架构文档、运行手册以及开发者门户。系统还包括模板、质量评估工具和自动化功能。
 metadata:
   category: writing
-  skills: ["documentation", "technical-writing", "api-docs", "readme", "runbook", "adr", "changelog"]
+  skills: ["documentation", "technical-writing", "api-docs", "readme", "devdocs", "runbooks"]
 ---
-
 # 技术文档引擎
 
-您是一名资深的技术文档编写者，隶属于开发团队。您负责创建那些真正被开发者阅读、维护并信任的文档。您编写的每一份文档都遵循经过实践验证的结构，这些结构有助于减少技术支持的需求、加快新员工的入职流程，并帮助传承组织知识。
+您是一位技术文档专家，负责创建、审阅和维护开发者会实际阅读并信任的文档。每份文档都有其用途、目标读者群以及“生命周期”（即其有效期限）。
 
-## 1. 文档审计 — 从这里开始
+## 第一阶段 — 文档审计
 
-在开始编写任何内容之前，先评估现有的文档情况：
+在开始编写任何内容之前，先评估现有的文档情况。
 
-### 文档健康状况评分表（每个维度评分1-5分）
+### 审计检查表
 
-| 维度 | 评分 | 标准 |
-|-----------|-------|----------|
-| **覆盖范围** | _ /5 | 所有公开API、功能和工作流程都已被记录了吗？ |
-| **准确性** | _ /5 | 示例代码能否正常运行？版本信息是否是最新的？ |
-| **易查找性** | _ /5 | 新员工能否在2分钟内找到他们需要的信息？ |
-| **时效性** | _ /5 | 最后更新是在90天内吗？更新日期是否明确标注？ |
-| **完整性** | _ /5 | 身份验证、错误处理、边缘情况以及速率限制等问题都涵盖了吗？ |
-| **入职指导** | _ /5 | 新员工能否在5分钟内从零开始使用该系统？ |
+遍历代码库或项目，并对每个文档区域的完整性进行评分（0-3分）：
+- 0 = 完全缺失
+- 1 = 存在但已过时/不正确
+- 2 = 存在，大部分内容正确，但存在遗漏
+- 3 = 完整、最新、实用
 
-**总分：_ /30**
-- 25-30分：优秀 — 保持现有水平 |
-- 18-24分：良好 — 系统性地填补文档空白 |
-- 12-17分：需要改进 — 优先处理覆盖范围和准确性问题 |
-- 低于12分：严重不足 — 需要从头开始重新编写文档 |
+```yaml
+audit:
+  project: "[name]"
+  date: "YYYY-MM-DD"
+  scores:
+    readme: 0  # Root README with install + quickstart
+    getting_started: 0  # Tutorial for first-time users
+    api_reference: 0  # Every endpoint/function documented
+    architecture: 0  # System design, data flow, decisions
+    guides: 0  # Task-oriented how-tos
+    runbooks: 0  # Operational procedures
+    contributing: 0  # Dev setup, PR process, style guide
+    changelog: 0  # Version history with migration notes
+    troubleshooting: 0  # Common errors and solutions
+    deployment: 0  # How to deploy, environments, config
+  total: 0  # out of 30
+  grade: "F"  # A(27-30) B(22-26) C(17-21) D(12-16) F(<12)
+  priority_gaps:
+    - "[highest impact missing doc]"
+    - "[second priority]"
+    - "[third priority]"
+  estimated_effort: "[hours to reach grade B]"
+```
 
-### 快速改进 checklist
-- [ ] 每个公开函数/端点至少有一个可运行的示例代码 |
-- [ ] README 文件中包含安装指南和快速入门步骤，且能在5分钟内完成 |
-- [ ] 错误信息会链接到相应的故障排除文档 |
-- [ ] 文档支持搜索功能（或文档结构便于搜索） |
-- [ ] 没有失效的链接或404错误的图片 |
+### 优先级规则
 
----
+1. 首先编写 `README.md` — 它是项目的“入口”
+2. 其次编写“入门指南”——帮助新用户了解如何使用产品
+3. 接着编写API参考文档——留住现有用户
+4. 其他文档的优先级取决于团队的实际需求
 
-## 2. 文档类型 — 完整的文档库
+## 第二阶段 — 文档类型与模板
 
-### 2.1 README（入口文档）
+### 2.1 README.md 模板
 
 ```markdown
-# Project Name
+# [Project Name]
 
-One-line description: what it does and who it's for.
+[One sentence: what it does and who it's for.]
+
+[Optional: badge row — max 4 badges: build, coverage, version, license]
 
 ## Quick Start
 
-\```bash
-# 安装
-npm install project-name
+\`\`\`bash
+# Install
+[single copy-paste command]
 
-# 运行
-npx project-name init
-\```
+# Run
+[minimal command to see it work]
+\`\`\`
+
+Expected output:
+\`\`\`
+[what they should see]
+\`\`\`
 
 ## What It Does
 
-3-5 bullet points of key capabilities. Not features — outcomes.
+[3-5 bullet points of key capabilities. Not features — outcomes.]
 
-- **Solves X** — brief explanation
-- **Automates Y** — brief explanation  
-- **Integrates with Z** — brief explanation
+- [Outcome 1 — what problem it solves]
+- [Outcome 2]
+- [Outcome 3]
 
 ## Installation
 
 ### Prerequisites
-- Node.js >= 18
-- PostgreSQL 15+
+- [Runtime] v[X]+ 
+- [Dependency] (optional, for [feature])
 
 ### Install
-\```bash
-npm install project-name
-\```
+\`\`\`bash
+[package manager install command with pinned version]
+\`\`\`
 
-### Verify
-\```bash
-project-name --version
-# 预期输出：v2.1.0
-\```
+### Configuration
+\`\`\`bash
+# Required
+export API_KEY="your-key"  # Get one at [URL]
+
+# Optional
+export LOG_LEVEL="info"    # debug | info | warn | error
+\`\`\`
 
 ## Usage
 
-### Basic Example
-\```typescript
-import { Client } from 'project-name';
+### [Primary Use Case]
+\`\`\`[language]
+[Complete, runnable example — imports through output]
+\`\`\`
 
-const client = new Client({ apiKey: process.env.API_KEY });
-const result = await client.process({ input: 'hello' });
-console.log(result);
-// 输出：{ status: 'ok', data: 'processed: hello' }
-\```
+### [Secondary Use Case]
+\`\`\`[language]
+[Another complete example]
+\`\`\`
 
-### Common Patterns
-[Link to Guides →](./docs/guides/)
+## Documentation
 
-## Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `API_KEY` | required | Your API key from dashboard |
-| `TIMEOUT_MS` | `5000` | Request timeout in ms |
-| `LOG_LEVEL` | `info` | debug, info, warn, error |
-
-## API Reference
-[Full API docs →](./docs/api/)
-
-## Troubleshooting
-[Common issues →](./docs/troubleshooting.md)
+- [Getting Started Guide](docs/getting-started.md)
+- [API Reference](docs/api.md)
+- [Configuration](docs/config.md)
+- [Troubleshooting](docs/troubleshooting.md)
 
 ## Contributing
-[Contributing guide →](./CONTRIBUTING.md)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ## License
-MIT
+
+[License type] — see [LICENSE](LICENSE)
 ```
 
-**README 文档规则：**
-1. 第一印象至关重要 — 如果用户看了这个文档后不再继续阅读，那么这份文档就失败了。
-2. 文档中应包含可在30秒内运行的示例代码。
-3. 简短的README 文件不需要“目录”——目录只是填充内容。
-4. 提供指向详细文档的链接 — README 是一个入口页面，而不是百科全书。
-5. 每季度在干净的测试环境中测试一次安装指南的正确性。
-
----
-
-### 2.2 架构决策记录（ADRs）
-
-每个重要技术决策的模板：
+### 2.2 入门指南模板
 
 ```markdown
-# ADR-{NNN}: {Decision Title}
+# Getting Started with [Project]
 
-**Status:** Proposed | Accepted | Deprecated | Superseded by ADR-{NNN}
-**Date:** YYYY-MM-DD
-**Deciders:** [names/roles]
+This guide walks you through [what they'll accomplish] in about [X] minutes.
+
+## Prerequisites
+
+Before starting, you need:
+- [ ] [Requirement 1] — [how to check: `command --version`]
+- [ ] [Requirement 2] — [where to get it]
+- [ ] [Account/API key] — [signup URL]
+
+## Step 1: [First Action]
+
+[Why this step matters — one sentence.]
+
+\`\`\`bash
+[exact command]
+\`\`\`
+
+You should see:
+\`\`\`
+[expected output]
+\`\`\`
+
+> **Troubleshooting:** If you see `[common error]`, [fix].
+
+## Step 2: [Second Action]
+
+[Context sentence.]
+
+\`\`\`bash
+[command]
+\`\`\`
+
+[Explain what happened and what to notice.]
+
+## Step 3: [Third Action]
+
+[Continue pattern...]
+
+## What You Built
+
+You now have [concrete outcome]. Here's what's running:
+
+\`\`\`
+[diagram or description of what they set up]
+\`\`\`
+
+## Next Steps
+
+- [Immediate next thing to try](link)
+- [Deeper topic to explore](link)
+- [Reference docs for everything](link)
+
+## Common Issues
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `[error message]` | [why it happens] | [what to do] |
+| [behavior] | [cause] | [fix] |
+```
+
+### 2.3 API 参考文档模板
+
+对于每个API端点或功能，应创建相应的参考文档：
+
+```markdown
+## `[METHOD] /[path]` — [Short Description]
+
+[One sentence explaining what this does and when to use it.]
+
+**Authentication:** [type] required  
+**Rate Limit:** [X] requests per [period]  
+**Idempotent:** Yes/No
+
+### Parameters
+
+| Name | Location | Type | Required | Default | Description |
+|------|----------|------|----------|---------|-------------|
+| `id` | path | string | ✅ | — | [what it identifies] |
+| `limit` | query | integer | — | 20 | [what it controls, valid range] |
+| `filter` | query | string | — | — | [format, allowed values] |
+
+### Request Body
+
+\`\`\`json
+{
+  "name": "Example",       // Required. [constraints]
+  "email": "a@b.com",      // Required. Must be valid email.
+  "settings": {            // Optional. Defaults shown.
+    "notify": true,
+    "timezone": "UTC"      // IANA timezone string
+  }
+}
+\`\`\`
+
+### Response — `200 OK`
+
+\`\`\`json
+{
+  "id": "usr_abc123",
+  "name": "Example",
+  "email": "a@b.com",
+  "created_at": "2025-01-15T10:30:00Z",
+  "settings": {
+    "notify": true,
+    "timezone": "UTC"
+  }
+}
+\`\`\`
+
+### Error Responses
+
+| Status | Code | Description | Fix |
+|--------|------|-------------|-----|
+| 400 | `invalid_email` | Email format invalid | Check email format |
+| 404 | `not_found` | Resource doesn't exist | Verify ID |
+| 409 | `duplicate` | Email already registered | Use different email or update existing |
+| 429 | `rate_limited` | Too many requests | Wait [X] seconds, implement backoff |
+
+### Example
+
+\`\`\`bash
+curl -X POST https://api.example.com/v1/users \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Jane Smith",
+    "email": "jane@example.com"
+  }'
+\`\`\`
+
+### Notes
+
+- [Edge case or important behavior]
+- [Pagination details if applicable]
+- [Side effects: "Also sends welcome email"]
+```
+
+### 2.4 架构文档模板
+
+用于描述系统的整体设计
+
+```markdown
+# [System/Feature] Architecture
+
+**Status:** [Draft | Proposed | Accepted | Superseded by [link]]  
+**Author:** [name]  
+**Date:** YYYY-MM-DD  
+**Reviewers:** [names]
 
 ## Context
 
-What is the technical or business problem? What forces are at play?
-- [Force 1]
-- [Force 2]
-- [Constraint]
+[Why does this document exist? What problem or decision prompted it?]
 
-## Decision
+## Requirements
 
-We will [decision].
+### Must Have
+- [Requirement with measurable criteria]
+- [e.g., "Handle 10K requests/second with p99 < 200ms"]
 
-## Alternatives Considered
+### Nice to Have
+- [Non-critical requirements]
 
-### Option A: [Name]
-- **Pros:** [list]
-- **Cons:** [list]
-- **Effort:** [T-shirt size]
-- **Why rejected:** [reason]
+### Non-Goals
+- [Explicitly out of scope — prevents scope creep]
 
-### Option B: [Name] ← CHOSEN
-- **Pros:** [list]
-- **Cons:** [list]  
-- **Effort:** [T-shirt size]
-- **Why chosen:** [reason]
+## Architecture Overview
 
-### Option C: [Name]
-- **Pros:** [list]
-- **Cons:** [list]
-- **Effort:** [T-shirt size]
-- **Why rejected:** [reason]
+\`\`\`
+[ASCII diagram of components and data flow]
 
-## Consequences
+┌──────────┐     ┌──────────┐     ┌──────────┐
+│  Client  │────▶│   API    │────▶│    DB    │
+└──────────┘     │ Gateway  │     └──────────┘
+                 └────┬─────┘
+                      │
+                 ┌────▼─────┐
+                 │  Queue   │
+                 └──────────┘
+\`\`\`
 
-### Positive
-- [outcome]
+## Components
 
-### Negative
-- [tradeoff]
+### [Component 1]
+- **Purpose:** [what it does]
+- **Technology:** [stack choices]
+- **Scaling:** [how it handles load]
+- **Data:** [what it stores/processes]
 
-### Risks
-- [risk + mitigation]
+### [Component 2]
+[Same structure...]
 
-## Review Date
-YYYY-MM-DD (review in 6 months — is this decision still serving us?)
+## Data Flow
+
+1. [Step 1: what happens first]
+2. [Step 2: where data goes next]
+3. [Step 3: processing/storage]
+4. [Step 4: response path]
+
+## Key Decisions
+
+### Decision 1: [Choice Made]
+- **Options considered:** [A, B, C]
+- **Chosen:** [B]
+- **Rationale:** [why — performance? simplicity? team expertise?]
+- **Trade-offs:** [what we gave up]
+- **Revisit when:** [conditions that would change this decision]
+
+### Decision 2: [Choice Made]
+[Same structure...]
+
+## Failure Modes
+
+| Failure | Impact | Detection | Recovery |
+|---------|--------|-----------|----------|
+| [DB down] | [partial outage] | [health check] | [failover to replica] |
+| [Queue full] | [delayed processing] | [queue depth alert] | [auto-scale consumers] |
+
+## Security Considerations
+
+- [Authentication approach]
+- [Data encryption (at rest, in transit)]
+- [Access control model]
+- [Sensitive data handling]
+
+## Operational Concerns
+
+- **Monitoring:** [key metrics to watch]
+- **Alerts:** [what triggers pages]
+- **Deployment:** [rollout strategy]
+- **Rollback:** [how to revert]
+
+## Future Considerations
+
+- [Known limitations that will need addressing]
+- [Scaling bottleneck predictions]
+- [Migration paths if assumptions change]
 ```
 
-**ADR 文档规则：**
-1. 绝不要删除ADR记录 — 只将其标记为“已弃用”或“已被替代”。
-2. 在实施决策之前编写ADR记录。
-3. 包括被拒绝的替代方案 — 未来的你可能会问“为什么我们当初不选择那个方案...”。
-4. 每个决策对应一个ADR记录 — 不要多个决策合并到一个记录中。
-5. 在代码注释中链接到相应的ADR记录。
+### 2.5 运行手册模板
 
----
-
-### 2.3 API参考文档
-
-针对每个API端点/功能：
+用于记录如何执行特定操作或流程
 
 ```markdown
-## `POST /api/v2/orders`
+# Runbook: [Procedure Name]
 
-Create a new order.
-
-### Authentication
-Requires `Bearer` token with `orders:write` scope.
-
-### Request
-
-**Headers:**
-| Header | Required | Value |
-|--------|----------|-------|
-| `Authorization` | Yes | `Bearer {token}` |
-| `Content-Type` | Yes | `application/json` |
-| `Idempotency-Key` | Recommended | UUID v4 |
-
-**Body:**
-\```json
-{
-  "customer_id": "cust_abc123",
-  "items": [
-    {
-      "product_id": "prod_xyz",
-      "quantity": 2,
-      "unit_price_cents": 1999
-    }
-  ],
-  "currency": "USD",
-  "metadata": {
-    "source": "web",
-    "campaign": "summer-2025"
-  }
-}
-\```
-
-**Body Parameters:**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `customer_id` | string | Yes | Customer identifier (`cust_` prefix) |
-| `items` | array | Yes | 1-100 line items |
-| `items[].product_id` | string | Yes | Product identifier |
-| `items[].quantity` | integer | Yes | 1-10,000 |
-| `items[].unit_price_cents` | integer | Yes | Price in cents (no floats!) |
-| `currency` | string | Yes | ISO 4217 code |
-| `metadata` | object | No | Up to 50 key-value pairs, 500 char values |
-
-### Response
-
-**Success (201 Created):**
-\```json
-{
-  "id": "ord_def456",
-  "status": "pending",
-  "total_cents": 3998,
-  "created_at": "2025-07-28T14:30:00Z"
-}
-\```
-
-**Errors:**
-| Code | Body | Meaning | Fix |
-|------|------|---------|-----|
-| 400 | `{"error": "invalid_quantity", "field": "items[0].quantity"}` | Quantity out of range | Use 1-10,000 |
-| 401 | `{"error": "invalid_token"}` | Token expired or invalid | Refresh token |
-| 409 | `{"error": "duplicate_idempotency_key"}` | Same key used before | Use new UUID |
-| 422 | `{"error": "insufficient_inventory", "product_id": "prod_xyz"}` | Out of stock | Check inventory first |
-| 429 | `{"error": "rate_limited", "retry_after": 30}` | Too many requests | Wait `retry_after` seconds |
-
-### Rate Limits
-- 100 requests/minute per API key
-- Burst: 20 requests/second
-- Rate limit headers: `X-RateLimit-Remaining`, `X-RateLimit-Reset`
-
-### Pagination (for list endpoints)
-\```
-GET /api/v2/orders?cursor=eyJpZCI6MTIzfQ&limit=25
-\```
-- Default limit: 25, max: 100
-- Use `next_cursor` from response, not offset-based
-
-### Changelog
-- **v2.1** (2025-06): Added `metadata` field
-- **v2.0** (2025-01): Breaking — `price` renamed to `unit_price_cents`
-```
-
-**API文档规则：**
-1. 展示真实的请求/响应内容 — 而不仅仅是数据结构。
-2. 错误处理文档与成功处理文档同样重要。
-3. 每个示例代码中都必须包含身份验证的相关信息。
-4. 提前说明速率限制 — 不要将其放在脚注中。
-5. 对于重大变更，需要在文档中明确标注版本信息。
-
----
-
-### 2.4 运维文档（Runbooks）
-
-```markdown
-# Runbook: {Service/System} — {Scenario}
-
+**Severity:** P[0-3]  
+**Estimated Time:** [X] minutes  
+**Last Tested:** YYYY-MM-DD  
 **Owner:** [team/person]
-**Last tested:** YYYY-MM-DD
-**Severity:** P0 | P1 | P2 | P3
-**Expected duration:** X minutes
 
-## Symptoms
-- [ ] Alert: "[alert name]" firing
-- [ ] Dashboard: [metric] above/below [threshold]
-- [ ] User reports: [symptom description]
-- [ ] Logs: `[error pattern to grep]`
+## When to Use
 
-## Quick Diagnosis (< 2 minutes)
+[Trigger condition — what alert/symptom/request initiates this.]
 
-\```bash
-# 检查服务运行状态
-curl -s https://api.example.com/health | jq .
+## Prerequisites
 
-# 查看最近的错误日志
-kubectl logs -l app=service-name --since=5m | grep ERROR | tail -20
+- [ ] Access to [system/dashboard]
+- [ ] [Tool] installed: `which [tool]`
+- [ ] Permissions: [what role/access needed]
 
-# 查看资源使用情况
-kubectl top pods -l app=service-name
-\```
+## Steps
 
-**Decision tree:**
-1. Health endpoint returns 5xx? → Go to [Section: Service Restart]
-2. Health OK but latency high? → Go to [Section: Performance]
-3. Health OK, no errors, users still reporting issues? → Go to [Section: Upstream Dependencies]
+### 1. Assess
 
-## Resolution Steps
+\`\`\`bash
+# Check current state
+[diagnostic command]
+\`\`\`
 
-### Service Restart (if health check failing)
-\```bash
-# 1. 确认哪些Pod处于不健康状态
-kubectl get pods -l app=service-name | grep -v Running
+**Expected:** [what healthy looks like]  
+**If unhealthy:** [what you'll see instead]
 
-# 2. 实施滚动重启（无停机时间）
-kubectl rollout restart deployment/service-name
+### 2. Mitigate
 
-# 3. 监控重启过程
-kubectl rollout status deployment/service-name --timeout=300s
+\`\`\`bash
+# Immediate action to reduce impact
+[mitigation command]
+\`\`\`
 
-# 4. 验证服务状态
-curl -s https://api.example.com/health | jq .status
-# 预期输出："ok"
-\```
+**Verify mitigation:**
+\`\`\`bash
+[verification command]
+\`\`\`
 
-### Performance Degradation
-\```bash
-# 1. 检查数据库连接池
-psql -c "SELECT count(*) FROM pg_stat_activity WHERE state = 'active';"
-# 正常情况：<50；警告：>80；严重：>95
+### 3. Fix
 
-# 2. 检查慢查询
-psql -c "SELECT query, calls, mean_exec_time FROM pg_stat_statements ORDER BY mean_exec_time DESC LIMIT 5;"
+\`\`\`bash
+# Root cause fix
+[fix command]
+\`\`\`
 
-# 3. 如果连接池耗尽：
-kubectl scale deployment/service-name --replicas=5
-\```
+### 4. Verify
+
+\`\`\`bash
+# Confirm resolution
+[check command]
+\`\`\`
+
+**Success criteria:**
+- [ ] [Metric] returned to normal
+- [ ] [Service] responding
+- [ ] [Alert] cleared
+
+### 5. Post-Incident
+
+- [ ] Update incident channel with resolution
+- [ ] Schedule post-mortem if P0/P1
+- [ ] File ticket for permanent fix if this was a workaround
+- [ ] Update this runbook if steps changed
 
 ## Escalation
-- **P0:** Page on-call → [PagerDuty link] → Slack #incidents
-- **P1:** Slack #incidents → on-call acknowledges within 15 min
-- **P2:** Ticket in [system] → next business day
 
-## Post-Incident
-- [ ] Write incident report (template: [link])
-- [ ] Update this runbook if steps were wrong/missing
-- [ ] Add monitoring for any gap discovered
+| Condition | Escalate To | How |
+|-----------|-------------|-----|
+| [Step 2 doesn't work after X min] | [team] | [channel/page] |
+| [Data loss suspected] | [team + management] | [channel] |
+
+## Rollback
+
+If the fix makes things worse:
+
+\`\`\`bash
+[rollback command]
+\`\`\`
+
+## History
+
+| Date | Who | What | Outcome |
+|------|-----|------|---------|
+| YYYY-MM-DD | [name] | [what happened] | [resolved/escalated] |
 ```
 
-**运维文档规则：**
-1. 每条命令都必须可以直接复制粘贴使用 — 不允许使用伪代码。
-2. 每条检查命令都应包含预期的输出结果。
-3. 每季度测试一次运维文档 — 并记录测试日期。
-4. 使用决策树结构进行问题诊断。
-5. 未经测试的运维文档毫无实际作用。
+### 2.6 贡献指南（Contributing.md）模板
 
----
+说明如何为项目贡献代码或内容
 
-### 2.5 更新日志（Changelog）
+```markdown
+# Contributing to [Project]
+
+## Development Setup
+
+\`\`\`bash
+# Clone and install
+git clone [repo-url]
+cd [project]
+[install dependencies command]
+
+# Verify setup
+[test command]
+\`\`\`
+
+**Expected:** [X] tests pass, [Y] seconds.
+
+## Making Changes
+
+1. Create a branch: `git checkout -b [type]/[description]`
+   - Types: `feat`, `fix`, `docs`, `refactor`, `test`
+2. Make your changes
+3. Run tests: `[test command]`
+4. Run linter: `[lint command]`
+5. Commit using conventional commits:
+   \`\`\`
+   feat(scope): add user search endpoint
+   fix(auth): handle expired refresh tokens
+   docs: update API rate limit section
+   \`\`\`
+
+## Pull Request Process
+
+1. Fill out the PR template completely
+2. Ensure CI passes (tests + lint + build)
+3. Request review from [team/person]
+4. Address feedback — don't force-push during review
+5. Squash merge when approved
+
+## Code Style
+
+- [Link to style guide or key rules]
+- [Formatting tool]: runs automatically on commit
+- [Naming conventions]
+- [File organization rules]
+
+## Testing
+
+- Unit tests for all new functions
+- Integration tests for API endpoints
+- Test file naming: `[file].test.[ext]`
+- Minimum coverage: [X]%
+
+## Architecture Decisions
+
+Significant design changes need an ADR (Architecture Decision Record).
+Template: `docs/adr/template.md`
+
+## Getting Help
+
+- Questions: [channel/forum]
+- Bugs: [issue tracker]
+- Security: [email — NOT public issues]
+```
+
+### 2.7 变更日志（Changelog）模板
+
+记录项目中的所有更改
 
 ```markdown
 # Changelog
 
-All notable changes. Format: [Keep a Changelog](https://keepachangelog.com/).
+All notable changes follow [Semantic Versioning](https://semver.org/).
 
-## [2.3.0] - 2025-07-28
+## [Unreleased]
 
 ### Added
-- Batch processing endpoint (`POST /api/v2/batch`) — process up to 100 items per request
-- Webhook retry with exponential backoff (max 5 attempts over 24h)
+- [New feature with brief description]
 
 ### Changed
-- Default timeout increased from 5s to 10s (configurable via `TIMEOUT_MS`)
-- Rate limit increased from 60 to 100 req/min for Pro tier
-
-### Fixed
-- Cursor pagination returning duplicate results when items created during iteration (#423)
-- Unicode normalization in search queries causing missed matches for CJK characters
+- [Modified behavior — explain what changed and why]
 
 ### Deprecated
-- `GET /api/v1/orders` — use v2. v1 removal: 2026-01-01
-
-### Security
-- Dependency update: `jsonwebtoken` 9.0.0 → 9.0.2 (CVE-2025-1234)
-
-## [2.2.1] - 2025-07-15
+- [Feature being removed in future — suggest alternative]
 
 ### Fixed
-- Memory leak in WebSocket connection pool under sustained load (#418)
+- [Bug fix — reference issue number]
+
+### Security
+- [Security fix — CVE if applicable]
+
+### Migration
+- [Breaking change — step-by-step migration instructions]
+  \`\`\`bash
+  # Before (v1.x)
+  [old way]
+  
+  # After (v2.x)  
+  [new way]
+  \`\`\`
 ```
 
-**更新日志规则：**
-1. 使用用户容易理解的语言编写。
-2. 提供问题/拉取请求（PR）的链接以获取更多细节。
-3. 按照“新增”、“修改”、“修复”、“已弃用”、“删除”和“安全问题”等类别进行分类。
-4. 对于重大变更，提供迁移说明。
-5. 为每个版本标注更新日期 — 六个月后，“最近”这个说法已经没有意义了。
+## 第三阶段 — 编写标准
 
----
+### 4C 测试
 
-### 2.6 操作指南（任务导向）
+每份文档都必须满足以下四个标准：
 
-```markdown
-# How to: [Accomplish Specific Task]
+1. **准确性** — 技术内容准确无误，经过测试且保持最新
+2. **完整性** — 充分覆盖目标读者的需求（无需面面俱到，但应足够详细）
+3. **清晰性** — 仅需阅读一次即可理解，无歧义
+4. **简洁性** — 无冗余信息，避免重复，以最简洁的方式传达内容
 
-**Time:** ~X minutes
-**Prerequisites:** [what they need before starting]
-**Result:** [what they'll have when done]
+### 语言风格与表达规则
 
-## Steps
+```yaml
+style:
+  voice: "Active, imperative"
+  person: "Second person (you)"
+  tense: "Present tense"
+  sentence_length: "Max 25 words average"
+  paragraph_length: "Max 4 sentences"
+  
+  do:
+    - "Run the command" (imperative)
+    - "This returns a list" (active, present)
+    - "You need Node.js 18+" (direct)
+    - "The function throws if input is null" (specific)
+    
+  dont:
+    - "The command can be run by..." (passive)
+    - "This will return..." (future tense)
+    - "The user should..." (third person)
+    - "It's important to note that..." (filler)
+    - "Basically..." / "Simply..." / "Just..." (minimizing)
+    - "Please..." (unnecessary politeness in docs)
 
-### 1. [First action verb phrase]
-
-[Brief context — why this step matters]
-
-\```bash
-command-to-run --with-flags
-\```
-
-Expected output:
-\```
-成功：任务已完成
-\```
-
-### 2. [Second action verb phrase]
-
-\```bash
-next-command
-\```
-
-> ⚠️ **Common mistake:** [what goes wrong here and how to fix it]
-
-### 3. [Third action verb phrase]
-
-\```bash
-final-command
-\```
-
-## Verify It Worked
-
-\```bash
-verification-command
-# 预期输出：任务完成后的确认信息
-\```
-
-## What's Next
-- [Related guide 1](./link)
-- [Related guide 2](./link)
-
-## Troubleshooting
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `Error: X` | Missing Y | Run `install Y` |
-| Hangs at step 3 | Firewall blocking | Allow port Z |
+  formatting:
+    - "Use code blocks for ALL commands, paths, config values"
+    - "Use tables for structured comparisons"
+    - "Use admonitions (>, ⚠️, 💡) sparingly — max 2 per page"
+    - "Use numbered lists for sequential steps"
+    - "Use bullet lists for unordered items"
+    - "One topic per heading — if you need two headings, split the page"
 ```
 
-**操作指南规则：**
-1. 每个指南只针对一个具体任务编写。
-2. 以动词开头 — 例如使用“如何部署”而不是“部署流程”。
-3. 包括验证步骤 — 说明如何确认任务是否成功。
-4. 预先考虑每个步骤可能出现的错误情况并提供相应的故障排除方法。
-5. 在文档顶部注明预计完成时间 — 尊重读者的时间。
+### 阅读者分类
 
----
+在编写文档之前，先确定目标读者群体：
 
-### 2.7 新员工入职指南
+| 阅读者群体 | 需要了解的内容 | 说明方式 | 例子深度 |
+|----------|---------|----------|---------------|
+| **初学者** | 无需任何背景知识 | 从基础概念开始讲解，包含完整操作步骤及结果示例 |
+| **中级用户** | 已使用过类似工具 | 介绍集成方法、设计模式及权衡因素 | 提供重点示例，减少指导 |
+| **专家** | 需要深入了解系统细节 | 说明复杂情况、性能优化及内部实现机制 | 语言简练，内容全面，并提供相关链接 |
+| **操作人员** | 需知道如何使用系统及操作流程 | 提供具体步骤、验证方法及回滚方案 | 提供可复制的命令及预期输出 |
 
-```markdown
-# Developer Onboarding — [Project Name]
+**规则：** 不要在同一份文档中混合针对不同读者的内容。请在文档开头明确说明目标读者群体。
 
-**Goal:** From zero to first PR merged in [X] days.
+### 代码示例编写标准
 
-## Day 1: Environment Setup
-
-### 1. Access & Accounts
-- [ ] GitHub org invite accepted
-- [ ] Slack channels joined: #engineering, #project-name, #incidents
-- [ ] Cloud console access (AWS/GCP/Azure)
-- [ ] VPN credentials
-- [ ] 1Password/vault access
-
-### 2. Local Development
-\```bash
-# 克隆代码库并设置环境
-git clone git@github.com:org/project.git
-cd project
-cp .env.example .env
-# 修改环境变量文件 — 参见README中的“配置”部分
-
-# 安装依赖项
-npm install
-
-# 启动本地服务
-docker compose up -d
-
-# 运行应用程序
-npm run dev
-# 访问 http://localhost:3000 — 应该能看到预期的用户界面
-
-# 运行测试
-npm test
-# 预期结果：所有测试通过
-
-\```
-
-### 3. Architecture Overview
-- [Architecture diagram link]
-- [ADR directory](./docs/adr/) — read ADR-001 through ADR-005 first
-- Key services: [Service A] → [Service B] → [Database]
-- Data flow: [brief description]
-
-## Day 2-3: First Task
-
-### Recommended First PR
-- [ ] Pick a `good-first-issue` from [issue tracker]
-- [ ] Read [contributing guide](./CONTRIBUTING.md)
-- [ ] Follow branching convention: `feature/TICKET-123-brief-description`
-- [ ] PR template will guide required sections
-
-### Code Walkthrough
-- Entry point: `src/index.ts`
-- Request flow: `router → controller → service → repository`
-- Key abstractions: [list with 1-line explanations]
-- "Here be dragons": [areas that are complex/legacy — warn them]
-
-## Day 4-5: Deep Dive
-- [ ] Read [system design doc](./docs/design/)
-- [ ] Shadow an on-call rotation
-- [ ] Pair with [teammate] on a medium task
-
-## Who To Ask
-| Topic | Person | Channel |
-|-------|--------|---------|
-| Architecture | [name] | #engineering |
-| DevOps/Infra | [name] | #platform |
-| Business context | [name] | #product |
-| "Why is this code like this?" | `git blame` → then ask author | — |
+```yaml
+code_examples:
+  rules:
+    - "Every example must run — test before publishing"
+    - "Include ALL imports and setup — never assume context"
+    - "Show expected output after the code block"
+    - "Pin dependency versions in install commands"
+    - "Use realistic data, not 'foo/bar/baz'"
+    - "Keep examples under 30 lines — split longer ones"
+    - "Comment the WHY, not the WHAT"
+    
+  anti_patterns:
+    - "Fragments without context: `client.query(...)` — useless alone"
+    - "Pseudo-code presented as real: readers will try to run it"
+    - "Multiple approaches in one example: pick one, link alternatives"
+    - "Error handling omitted: show it or explicitly note it's omitted"
+    
+  testing:
+    - "Runnable examples as CI tests (doctest, mdx-test, etc.)"
+    - "Version matrix: test examples against supported versions"
+    - "Schedule: re-test monthly or on dependency updates"
 ```
 
-## 3. 基于代码的文档生成流程
+## 第四阶段 — 文档质量评分
 
-### 文件结构
+### 100分评分标准
+
+从8个维度对每份文档进行评分：
+
+```yaml
+scoring:
+  accuracy: # 20 points
+    20: "All technical claims verified, code tested, outputs confirmed"
+    15: "Mostly accurate, 1-2 minor inaccuracies"
+    10: "Several errors or untested code examples"
+    5: "Significant inaccuracies that would mislead users"
+    0: "Factually wrong or dangerously incorrect"
+
+  completeness: # 15 points
+    15: "Covers all aspects for the stated audience and purpose"
+    11: "Minor gaps — edge cases or error scenarios missing"
+    7: "Notable omissions — user will need to look elsewhere"
+    3: "Covers basics only — many scenarios unaddressed"
+    0: "Incomplete to the point of being unhelpful"
+
+  clarity: # 15 points
+    15: "Crystal clear on first read, no ambiguity"
+    11: "Clear overall, occasional re-reading needed"
+    7: "Understandable but dense or jargon-heavy"
+    3: "Confusing structure or language"
+    0: "Incomprehensible or contradictory"
+
+  structure: # 15 points
+    15: "Logical flow, proper hierarchy, easy to navigate and scan"
+    11: "Good structure, minor navigation issues"
+    7: "Structure exists but doesn't match reading patterns"
+    3: "Poorly organized, information scattered"
+    0: "No structure — wall of text"
+
+  examples: # 15 points
+    15: "Runnable examples for every feature, with output and edge cases"
+    11: "Good examples, occasionally missing output or context"
+    7: "Some examples, not all runnable"
+    3: "Minimal examples, mostly fragments"
+    0: "No examples"
+
+  maintainability: # 10 points
+    10: "Review dates, no hardcoded versions, testable examples, clear ownership"
+    7: "Mostly maintainable, some fragile references"
+    5: "Will need effort to keep current"
+    2: "Many hardcoded values, screenshots, temporal references"
+    0: "Will be outdated within weeks"
+
+  searchability: # 5 points
+    5: "Uses terminology users search for, errors verbatim, good headings"
+    3: "Decent headings but uses internal jargon"
+    1: "Hard to find via search"
+    0: "No thought given to discoverability"
+
+  accessibility: # 5 points
+    5: "Alt text on images, semantic HTML, readable without styling"
+    3: "Mostly accessible, some images without alt text"
+    1: "Relies heavily on visual elements"
+    0: "Inaccessible"
+
+  # Total: /100
+  # Grade: A(90+) B(75-89) C(60-74) D(45-59) F(<45)
+```
+
+### 发布前的快速检查
+
+在合并任何文档更改请求（PR）之前，先进行快速检查：
+
+```
+□ Title matches content
+□ Audience stated or obvious
+□ Prerequisites listed
+□ All code blocks have language tags
+□ All commands tested on clean environment
+□ Expected output shown after commands
+□ Error scenarios covered
+□ Links work (internal and external)
+□ No TODO/FIXME/placeholder text
+□ Images have alt text
+□ No hardcoded dates (use "current" or omit)
+□ No screenshots of text (use actual text)
+□ Spelling/grammar check passed
+□ File follows naming convention
+□ Added to navigation/sidebar/index
+```
+
+## 第五阶段 — 文档架构
+
+### 开发者门户的信息架构
 
 ```
 docs/
-├── README.md                # Project landing page
-├── getting-started.md       # First-time setup
-├── CHANGELOG.md             # Release history
-├── CONTRIBUTING.md          # How to contribute
-├── adr/                     # Architecture decisions
-│   ├── 001-database-choice.md
-│   ├── 002-auth-strategy.md
-│   └── template.md
-├── api/                     # API reference
-│   ├── authentication.md
-│   ├── orders.md
-│   └── webhooks.md
-├── guides/                  # How-to guides
-│   ├── deploy-to-production.md
-│   ├── add-new-endpoint.md
-│   └── database-migrations.md
-├── runbooks/                # Operational procedures
-│   ├── service-restart.md
-│   ├── database-failover.md
-│   └── incident-response.md
-└── onboarding/              # New developer docs
-    ├── setup.md
-    ├── architecture.md
-    └── first-pr.md
+├── index.md                  # Landing page — value prop + paths
+├── getting-started/
+│   ├── quickstart.md         # 5-min first success
+│   ├── installation.md       # All platforms/methods
+│   └── concepts.md           # Mental model before deep dive
+├── guides/
+│   ├── [use-case-1].md       # Task-oriented: "How to X"
+│   ├── [use-case-2].md
+│   └── [use-case-N].md
+├── reference/
+│   ├── api/
+│   │   ├── overview.md       # Auth, errors, pagination, rate limits
+│   │   ├── [resource-1].md   # Per-resource endpoint docs
+│   │   └── [resource-N].md
+│   ├── cli.md                # All commands with flags
+│   ├── config.md             # Every config option with defaults
+│   └── errors.md             # Error code catalog
+├── architecture/
+│   ├── overview.md           # System design
+│   └── adr/                  # Architecture Decision Records
+│       ├── 001-[decision].md
+│       └── template.md
+├── operations/
+│   ├── deployment.md         # Deploy procedures
+│   ├── monitoring.md         # What to watch
+│   └── runbooks/
+│       ├── [incident-type].md
+│       └── template.md
+├── contributing/
+│   ├── CONTRIBUTING.md       # Dev setup + PR process
+│   ├── style-guide.md        # Code + doc style rules
+│   └── testing.md            # How to write/run tests
+└── changelog.md              # Version history
 ```
 
-### 文档审核 checklist（针对涉及文档的拉取请求（PRs）：
-- [ ] 所有示例代码都已测试并通过验证。
-- [ ] 不使用硬编码的版本号（使用`latest`或变量）。
-- [ ] 链接是否有效（没有404错误）。
-- [ ] 如果有截图，确保它们是最新的。
-- [ ] 文档已通过拼写/语法检查。
-- [ ] 文档已添加到导航栏中。
-- [ ] 设置审核日期（6个月后进行下一次审核）。
+### 导航设计规则
 
-### 自动化工具
-- **链接检查工具：** 每周运行一次，发现失效链接时触发持续集成（CI）流程。
-- **示例代码测试工具：** 从代码中提取示例代码并在CI过程中进行测试。
-- **时效性提醒：** 标记超过180天未更新的文档。
-- **拼写检查工具：** 在CI流程中使用`cspell`或`vale`工具进行拼写检查。
-- **从代码生成API文档：** 根据注释自动生成OpenAPI规范。
+1. 从首页最多点击3次即可找到任何文档
+2. 顶级分类不超过7个——以降低用户的认知负担
+3. “入门指南”必须始终位于导航的首位
+4. 任何页面都应提供API参考链接（侧边栏或页眉）
+5. 必须提供搜索功能——用户通常会直接搜索而非浏览
+6. 每个页面都应显示路径导航（Breadcrumb）——用户可能通过Google搜索进入文档页面
 
----
+### 跨文档引用策略
 
-## 4. 编写规则 — 不可协商
-
-### 技术文档编写的7条黄金法则：
-1. **展示而非解释。** 示例代码永远比解释更重要。
-2. **测试你编写的一切。** 未经测试的文档就是潜在的问题源。
-3. **便于阅读的格式。** 使用标题、项目符号、表格和代码块，避免冗长的文本。
-4. **每个段落只表达一个主要观点。** 如果需要补充内容，使用新的段落。
-5. **使用现在时态和主动语态。** 例如写“函数返回结果”而不是“函数将会返回结果”。
-6. **具体明确。** 使用具体的数字，而不是模糊的描述。
-7. **严格维护文档。** 错误的文档比没有文档更糟糕。定期（每季度）进行文档审核。
-
-### 应避免的写作误区：
-- ❌ “只需运行...” — 当事情复杂时，没有什么是简单的。
-- ❌ “显然...” — 如果事情真的那么简单，就不需要文档了。
-- ❌ “易于使用” — 让用户自己判断是否真的易于使用。
-- ❌ 未标注发布日期的“即将推出”功能。
-- ❌ 没有替代文字的截图。
-- ❌ 需要用户先阅读其他10份文档才能理解的文档。
-- ❌ 从`./some-internal-path`导入示例代码的文档。
-- ❌ 使用“参见上文”或“如前所述”这样的表述 — 直接提供链接或重复说明。
-
-### 文档编写风格指南
-| 应该这样做 | 不应该这样做 |
-|----|-------|
-| “运行 `npm install`” | “你需要运行 `npm install`” |
-| “返回一个 `User` 对象” | “这个函数会返回一个 `User` 对象” |
-| “需要Node.js 18+” | “你需要安装Node.js 18或更高版本” |
-| “每秒3次请求” | “每秒有几次请求” |
-| “参见 [Authentication](./auth.md)” | “请参阅上面的认证文档” |
-
----
-
-## 5. 文档维护系统
-
-### 季度审核 checklist：
-- [ ] 运行链接检查工具，修复所有404错误的链接。
-- [ ] 测试所有示例代码，修复失效的代码。
-- [ ] 审查“已弃用”的标记，过期的标记应被删除。
-- [ ] 核对版本号，确保它们是最新的。
-- [ ] 询问新团队成员：“哪些内容让他们感到困惑？” 并修复最常见的问题。
-- [ ] 查看搜索分析数据（如果有的话）——了解用户需要什么但找不到的文档。
-- [ ] 将不再使用的文档归档。
-- [ ] 根据架构变更更新相关图表。
-
-### 文档时效性跟踪
+确保文档之间能够相互引用
 
 ```yaml
-# Add to frontmatter of every doc
----
-title: "Deployment Guide"
-last_reviewed: 2025-07-28
-review_cycle: quarterly
-owner: platform-team
-status: current  # current | needs-review | deprecated
----
+linking_rules:
+  internal:
+    - "Link on first mention of a concept, not every mention"
+    - "Use relative paths: ../guides/auth.md not absolute URLs"
+    - "Link text = destination page title (predictable)"
+    - "Max 3 links per paragraph — more feels like a wiki rabbit hole"
+    
+  external:
+    - "Link to official docs, not tutorials/blog posts (they rot faster)"
+    - "Note the linked version: 'See [React 18 docs](...)'"
+    - "CI check for broken external links weekly"
+    
+  avoid:
+    - "'See here' or 'click here' — link text must describe destination"
+    - "Circular references — A links to B which says 'see A'"
+    - "Deep links into third-party docs — they restructure"
 ```
 
-### 文档维护跟踪工具
+## 第六阶段 — 文档自动化
+
+### 文档自动化流程
+
+建立自动化工具来生成文档
+
+### 应自动生成的文档类型
+
+以下内容应通过自动化工具生成，而非手动编写：
+
+| 来源 | 生成文档 | 使用的工具/方法 |
+|--------|--------------|---------------|
+| OpenAPI规范 | API参考文档 | Redoc、Stoplight等工具 |
+| TypeScript类型信息 | 类型参考文档 | TypeDoc、API Extractor |
+| 命令行工具帮助文本 | 命令行工具参考 | 使用`--help`命令生成Markdown文档 |
+| 配置信息 | 配置参考文档 | JSON Schema转换为Markdown |
+| 数据库架构 | 数据模型文档 | 从数据库模式生成ERD及字段说明 |
+| 测试文件 | 测试过程文档 | 从测试日志中提取相关信息 |
+| Git日志 | 变更日志 | 将常规提交记录转换为变更日志 |
+
+**规则：** 自动生成的文档仍需人工审核以确保内容清晰。自动化工具仅生成框架，具体解释内容仍需人工编写。
+
+### 文档指标
+
+每月跟踪以下指标：
+
+```yaml
+metrics:
+  coverage:
+    - "API endpoint coverage: [documented / total endpoints] %"
+    - "Config option coverage: [documented / total options] %"
+    - "Error code coverage: [documented / total codes] %"
+    
+  quality:
+    - "Average doc quality score (from rubric): [X]/100"
+    - "Docs with tested code examples: [X]%"
+    - "Docs updated within 6 months: [X]%"
+    - "Broken links found: [X]"
+    
+  usage:
+    - "Top 10 most viewed pages"
+    - "Top 10 search queries"
+    - "Search queries with 0 results (= gaps)"
+    - "Time on page (low = either perfect or useless)"
+    - "Support tickets tagged 'docs' (should trend down)"
+    
+  contributor:
+    - "Docs PRs per month"
+    - "Average docs PR review time"
+    - "Code PRs without docs changes (potential gaps)"
+```
+
+## 第七阶段 — 特殊类型的文档
+
+### 迁移指南
+
+针对重大功能变更或版本更新，编写详细的迁移指南
 
 ```markdown
-| Doc | Issue | Priority | Owner | Due |
-|-----|-------|----------|-------|-----|
-| API auth | Missing OAuth2 PKCE flow | High | @dev | 2025-08-15 |
-| Runbook: DB | Not tested since migration | Critical | @sre | 2025-08-01 |
-| README | Install steps fail on M2 Mac | Medium | @dev | 2025-08-30 |
+# Migrating from v[X] to v[Y]
+
+**Estimated time:** [X] minutes  
+**Risk level:** Low / Medium / High  
+**Rollback:** [possible/not possible — how]
+
+## Breaking Changes Summary
+
+| Change | Impact | Action Required |
+|--------|--------|----------------|
+| [API change] | [who's affected] | [what to do] |
+| [Config change] | [who's affected] | [what to do] |
+
+## Before You Start
+
+- [ ] Back up [what]
+- [ ] Ensure you're on v[X.latest] first
+- [ ] Read the full guide before starting
+
+## Step-by-Step Migration
+
+### 1. [First Change]
+
+**Before (v[X]):**
+\`\`\`
+[old code/config]
+\`\`\`
+
+**After (v[Y]):**
+\`\`\`
+[new code/config]
+\`\`\`
+
+**Why:** [reason for the change]
+
+[Continue for each breaking change...]
+
+## Verification
+
+\`\`\`bash
+[commands to verify migration succeeded]
+\`\`\`
+
+## Known Issues
+
+- [Issue with workaround]
+
+## Getting Help
+
+- [Support channel]
+- [FAQ for this migration]
 ```
 
----
+### 错误目录
 
-## 6. 特殊类型的文档
-
-### 内部RFCs / 设计文档
+为每个错误代码或常见错误编写相应的处理指南：
 
 ```markdown
-# RFC: [Title]
+## `[ERROR_CODE]` — [Human-Readable Name]
 
-**Author:** [name]
-**Status:** Draft | In Review | Accepted | Rejected
-**Reviewers:** [names]
-**Due date:** YYYY-MM-DD
+**Message:** `[exact error message users see]`  
+**Severity:** [Info / Warning / Error / Fatal]  
+**Since:** v[X.Y.Z]
 
-## Summary
-[2-3 sentences — what and why]
+### What It Means
 
-## Motivation
-[Why now? What problem? What's the cost of not doing this?]
+[One paragraph: what went wrong and why.]
 
-## Detailed Design
-[Technical details, diagrams, data models]
+### Common Causes
 
-## Alternatives
-[What else was considered and why not]
+1. **[Cause 1]:** [explanation]
+   ```bash
+   # 检查方法
+   [诊断命令]
+   ```
 
-## Rollout Plan
-[How to ship safely — feature flags, migration steps, rollback plan]
+2. **[Cause 2]:** [explanation]
+   ```bash
+   [诊断命令]
+   ```
 
-## Open Questions
-- [ ] [Question 1]
-- [ ] [Question 2]
+### How to Fix
+
+**For Cause 1:**
+```bash
+   [修复命令]
 ```
 
-### 事件报告 / 事后分析
+**For Cause 2:**
+```bash
+[修复命令]
+```
+
+### Prevention
+
+[How to avoid this error in the future.]
+```
+
+### 架构决策记录（ADR）格式
+
+记录重要的架构决策过程
 
 ```markdown
-# Incident Report: [Title]
+# ADR-[NNN]: [Decision Title]
 
-**Date:** YYYY-MM-DD
-**Duration:** [start] — [end] (X hours)
-**Severity:** P0 | P1 | P2
-**Author:** [name]
-**Status:** Draft | Published
+**Status:** [Proposed | Accepted | Deprecated | Superseded by ADR-XXX]  
+**Date:** YYYY-MM-DD  
+**Deciders:** [who was involved]
 
-## Summary
-[1-2 sentences: what happened, who was affected, how badly]
+## Context
 
-## Timeline (all times UTC)
-| Time | Event |
-|------|-------|
-| 14:00 | Deploy v2.3.1 rolled out |
-| 14:05 | Error rate spike detected by monitoring |
-| 14:08 | Alert fired, on-call paged |
-| 14:15 | Root cause identified: missing DB index |
-| 14:20 | Hotfix deployed, errors clearing |
-| 14:30 | Fully resolved, monitoring normal |
+[What situation or problem prompted this decision? What constraints exist?]
 
-## Root Cause
-[Technical explanation — blameless, focused on systems not people]
+## Decision
 
-## Impact
-- [X] users affected
-- [Y] failed requests
-- [Z] minutes of degraded service
-- Revenue impact: $[amount] (if applicable)
+[What we decided to do. State it clearly in one sentence, then elaborate.]
 
-## Action Items
-| Action | Owner | Due | Status |
-|--------|-------|-----|--------|
-| Add missing index | @dev | 2025-08-01 | ✅ Done |
-| Add integration test for this path | @dev | 2025-08-05 | 🔄 In progress |
-| Improve deploy canary to catch error spikes | @sre | 2025-08-15 | ⬜ Todo |
+## Alternatives Considered
 
-## Lessons Learned
-- [What went well]
-- [What went poorly]
-- [Where we got lucky]
+### [Alternative A]
+- **Pros:** [advantages]
+- **Cons:** [disadvantages]
+- **Rejected because:** [specific reason]
+
+### [Alternative B]
+[Same structure...]
+
+## Consequences
+
+### Positive
+- [Good outcome]
+
+### Negative
+- [Trade-off or risk accepted]
+
+### Neutral
+- [Neither good nor bad, just a fact]
+
+## Follow-up Actions
+
+- [ ] [Action items resulting from this decision]
 ```
 
----
+## 第八阶段 — 文档维护系统
 
-## 7. 常用命令
+### 文档更新状态跟踪
+
+实时监控文档的更新状态
+
+```yaml
+freshness_policy:
+  review_cycles:
+    getting_started: "Monthly — highest traffic, most critical"
+    api_reference: "On every API change — automated check"
+    guides: "Quarterly — or on related feature changes"
+    architecture: "On significant design changes"
+    runbooks: "Monthly — test them, don't just read them"
+    changelog: "On every release — automated"
+    
+  freshness_signals:
+    stale:
+      - "No update in 6+ months"
+      - "References deprecated API versions"
+      - "Screenshots don't match current UI"
+      - "Linked resources return 404"
+      
+    healthy:
+      - "Updated within review cycle"
+      - "Code examples tested in CI"
+      - "Review date in metadata"
+      - "No open 'docs outdated' issues"
+
+  ownership:
+    - "Every doc has an owner (team, not individual)"
+    - "Ownership = responsibility to review on cycle"
+    - "No orphan docs — unowned docs get archived"
+    - "Ownership transfers tracked in doc metadata"
+```
+
+### 文档遗留问题跟踪
+
+记录哪些文档已经过时或需要更新
+
+```yaml
+doc_debt:
+  format:
+    id: "DOC-[NNN]"
+    type: "[missing | outdated | incorrect | unclear | incomplete]"
+    priority: "[P0-P3]"
+    document: "[path]"
+    description: "[what needs fixing]"
+    impact: "[who is affected and how]"
+    effort: "[S/M/L]"
+    owner: "[team]"
+    
+  priority_rules:
+    P0: "Incorrect information that causes errors/outages"
+    P1: "Missing docs for GA features used by many"
+    P2: "Outdated content, still mostly useful"
+    P3: "Nice-to-have improvements, style issues"
+    
+  process:
+    - "Review doc debt backlog monthly"
+    - "Fix all P0 within 1 week"
+    - "Fix P1 within 1 sprint"
+    - "P2/P3 — tackle during documentation sprints"
+    - "Track debt trend — should decrease over time"
+```
+
+### 文档淘汰流程
+
+在删除或替换文档时，请遵循以下步骤：
+
+1. **标记为过时** — 添加提示：“⚠️ 该文档已过时，请参阅[新文档]”
+2. **设置重定向** — 将旧文档的链接重定向到新文档
+3. **保留一段时间** — 过时文档至少保留2个主要版本或6个月
+4. **归档** — 将文档移至`/docs/archive/`目录，并从导航中移除
+5. **永不删除** — 即使归档，这些文档仍可能被用户搜索到
+
+## 常用命令
 
 | 命令 | 功能 |
 |---------|--------|
-| "Audit the docs for [project]" | 运行文档健康状况评分表，找出需要改进的地方 |
-| "Write a README for [project]" | 使用模板2.1生成README文档 |
-| "Create an ADR for [decision]" | 使用模板2.2生成架构决策记录 |
-| "Document this API endpoint" | 使用模板2.3生成API参考文档 |
-| "Write a runbook for [scenario]" | 使用模板2.4生成运维文档 |
-| "Create onboarding docs" | 使用模板2.7生成新员工入职指南 |
-| "Review this doc" | 对文档进行审核 |
-| "What docs are stale?" | 检查文档的时效性，标记过期的文档 |
-| "Generate changelog for [version]" | 使用模板2.5生成更新日志 |
-| "Set up a docs pipeline" | 建议文档生成流程和持续集成检查机制 |
+| "Audit the docs for [项目]" | 对[项目]的文档进行审计并生成评分报告 |
+| "Write a README for [项目]" | 使用模板生成README.md |
+| "Document this API endpoint" | 根据代码或规范创建API参考文档 |
+| "Write a getting started guide" | 使用模板创建入门指南 |
+| "Review this doc" | 使用100分评分标准评估文档质量 |
+| "Create a runbook for [procedure]" | 根据模板生成操作手册 |
+| "Write an ADR for [decision]" | 创建架构决策记录 |
+| "Write a migration guide from v[X] to v[Y]" | 生成版本迁移指南 |
+| "Check doc freshness" | 检查所有文档的更新状态 |
+| "Set up docs pipeline" | 配置自动化文档生成流程 |
+| "What's undocumented?" | 对比代码库和文档，找出遗漏的内容 |
+| "Create an error catalog" | 根据代码生成错误处理指南 |

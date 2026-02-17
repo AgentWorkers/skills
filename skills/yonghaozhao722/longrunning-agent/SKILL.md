@@ -1,13 +1,17 @@
+---
+name: longrunning-agent
+description: "该功能允许人工智能代理在多个会话中处理长期运行的项目。可以跟踪项目进度，管理带有优先级和依赖关系的任务列表，并逐步推进复杂项目的进展。"
+---
 # OpenClaw 长期运行代理技能
 
 该技能使 AI 代理能够在多个会话中持续处理长期运行的项目。
 
 ## 目的
 
-长期运行代理技能提供了以下结构化的工作流程：
+长期运行代理技能提供了一个结构化的工作流程，用于：
 - 跨会话跟踪项目进度
-- 管理具有优先级和依赖关系的任务列表
-- 对复杂项目进行逐步、原子级的开发
+- 管理带有优先级和依赖关系的任务列表
+- 对复杂项目进行逐步、原子化的开发
 - 确保在恢复工作时能够保持工作的连续性
 
 ## 安装
@@ -32,8 +36,8 @@ claude -p "Initialize this project using the longrunning-agent workflow"
 
 该技能要求项目目录中包含以下文件：
 - `CLAUDE.md` - 项目说明和工作流程指南
-- `task.json` - 包含优先级和依赖关系的任务列表
-- `progress.txt` - 完成工作的记录
+- `task.json` - 带有优先级和依赖关系的任务列表
+- `progress.txt` - 已完成工作的日志
 - `init.sh` - 环境设置脚本（可选）
 
 ### 任务格式
@@ -59,7 +63,7 @@ claude -p "Initialize this project using the longrunning-agent workflow"
 }
 ```
 
-### 进度记录格式
+### 进度格式
 
 ```
 [2024-01-15 10:30:00] Started session
@@ -75,22 +79,22 @@ claude -p "Initialize this project using the longrunning-agent workflow"
 4. **实施** - 逐步完成一个任务。
 5. **测试** - 运行代码检查（lint）、构建（build）和测试（tests）。
 6. **记录进度** - 更新 `progress.txt`。
-7. **标记为已完成** - 在 `task.json` 中将 `passes` 设置为 `true`。
-8. **提交** - 执行原子级的 Git 提交。
+7. **标记完成** - 在 `task.json` 中将 `passes` 设置为 `true`。
+8. **提交** - 执行原子化的 Git 提交。
 
 ## 最佳实践
 
-- 每个会话仅处理一个任务。
-- 每个任务完成后立即提交代码。
+- 每个会话只处理一个任务。
+- 每个任务完成后立即提交更改。
 - 保持 `progress.txt` 简洁但信息丰富。
-- 使用依赖关系来管理任务的执行顺序。
-- 在标记任务为已完成之前进行彻底的测试。
+- 使用依赖关系来管理任务顺序。
+- 在标记任务为完成之前进行彻底的测试。
 
 ## 与 Web UI 的集成
 
-该技能与代理工作流 Web 应用程序集成：
+该技能与 Agent Workflow Web 应用程序集成：
 - 任务会与 Web 数据库同步。
-- 进度记录会被捕获。
+- 进度条目会被捕获。
 - 会话输出会被记录。
 - Git 提交会被跟踪。
 

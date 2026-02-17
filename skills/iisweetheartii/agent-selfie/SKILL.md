@@ -1,6 +1,6 @@
 ---
 name: agent-selfie
-description: AI代理自画像生成器：利用Gemini图像生成技术创建头像、个人资料图片及视觉标识。支持基于情绪的生成、季节性主题设计，以及自动的样式演变功能。
+description: AI智能体自画像生成器：利用Gemini图像生成技术创建头像、个人资料图片以及视觉身份标识。支持基于情绪的图像生成、季节性主题设计，并具备自动调整图像风格的功能。
 homepage: https://github.com/IISweetHeartII/agent-selfie
 metadata:
   openclaw:
@@ -20,10 +20,9 @@ metadata:
       - profile
       - ai-art
 ---
-
 # agent-selfie
 
-这是一个AI代理自画像生成工具，利用Gemini图像生成技术来创建头像、个人资料图片以及视觉标识。支持根据情绪、季节主题进行图像生成，并能自动调整图像风格。
+这是一个AI代理自画像生成工具，利用Gemini图像生成技术来创建头像、个人资料图片以及代理的视觉形象。支持根据用户情绪、季节主题进行个性化生成，并能自动调整图片风格。
 
 ## 快速入门
 
@@ -65,14 +64,14 @@ python3 scripts/selfie.py --themes
 
 ## 平台集成指南
 
-- **Discord**：将生成的PNG图片用作机器人或代理的头像；建议使用`avatar`格式上传以获得最佳裁剪效果。
-- **Twitter/X**：将`avatar`设置为个人资料图片，将`banner`设置为页面标题；确保标题的样式统一。
-- **AgentGram**：将生成的PNG图片保存到资源文件夹中，并在个人资料元数据中引用该图片。
-- **其他平台**：选择`avatar`用于1:1显示，`banner`用于16:9比例的显示，或选择`full`格式用于故事或竖屏布局。
+- **Discord**：将生成的PNG图片用作机器人或代理的头像；建议使用`avatar`格式上传以确保图片裁剪效果最佳。
+- **Twitter/X**：将生成的图片设置为个人资料的`avatar`，并将`banner`设置为页面标题；保持标题图片的样式一致。
+- **AgentGram**：将生成的PNG图片存储在您的资源文件夹中，并在个人资料元数据中引用该图片。
+- **其他平台**：选择`avatar`格式用于1:1显示，`banner`格式用于16:9比例的显示，`full`格式用于故事或竖屏布局。
 
 ## 个性配置
 
-个性配置可以采用内联JSON或文件路径的形式。至少需要填写`name`（名称）、`style`（风格）和`vibe`（氛围）字段。
+个性配置可以采用内联JSON格式或文件路径形式。至少需要包含`name`（名称）、`style`（风格）和`vibe`（氛围）三个字段。
 
 ```json
 {
@@ -83,7 +82,7 @@ python3 scripts/selfie.py --themes
 ```
 
 **提示：**
-- `style`用于描述图像的视觉特征和整体风格。
+- `style`用于描述图片的视觉特征和整体风格。
 - `vibe`用于描述代理的态度、能量和个性特征。
 - 请确保`style`和`vibe`与代理的整体形象保持一致。
 
@@ -97,15 +96,17 @@ python3 scripts/selfie.py --themes
 ## 常见问题解决方法
 
 - **`GEMINI_API_KEY`未设置**：请导出API密钥或通过运行时环境传递该密钥。
-- **生成无图片**：请重试操作，或简化个性/风格配置。
+- **响应中未返回图片**：请重试操作，或简化个性/风格配置。
 - **HTTP 429/5xx错误**：可能是请求频率限制或服务问题，请稍后重试。
-- **输出缺失**：请确认`--out-dir`目录具有写入权限。
+- **输出内容缺失**：请确认`--out-dir`目录具有写入权限。
 
 ## 与其他技能的集成
 
-- **[AgentGram](https://clawhub.org/skills/agentgram)**：将生成的头像发布到AI代理的社交网络中！使用`agent-selfie`工具创建头像后，可以将其分享到AgentGram平台上。
+- **[AgentGram](https://clawhub.org/skills/agentgram)**：将生成的头像发布到AI代理的社交网络上！使用`agent-selfie`工具创建头像后，可将其分享到AgentGram平台。
 - **[gemini-image-gen](https://clawhub.org/skills/gemini-image-gen)**：使用相同的Gemini API密钥进行通用图像生成，支持生成各种类型的图片（不仅仅是自画像）。
+- **[opencode-omo](https://clawhub.org/skills/opencode-omo)**：利用Sisyphus工作流自动化生成自画像和更新个人资料图片的任务。
 
 ## 更新日志
 
-- v1.0.0：首次发布版本，支持个性配置、情绪选择、主题设置、批量处理以及图片输出功能。
+- **v1.2.1**：新增了与`opencode-omo`的工作流集成指南。
+- **v1.0.0**：初始版本，支持个性配置、情绪选择、主题设置、批量处理以及图片输出功能。

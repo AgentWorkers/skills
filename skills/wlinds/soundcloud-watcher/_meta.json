@@ -1,0 +1,11 @@
+{
+  "owner": "wlinds",
+  "slug": "soundcloud-watcher",
+  "displayName": "SoundCloud OpenClaw",
+  "latest": {
+    "version": "2.2.3",
+    "publishedAt": 1771240597425,
+    "commit": "https://github.com/openclaw/skills/commit/85cbf484e560363856acbaccb311fa578630a82d"
+  },
+  "history": []
+}

@@ -1,99 +1,129 @@
 ---
 name: skiplagged-flights
-description: 通过 Skiplagged MCP 搜索最便宜的航班。该平台可用于查找优惠机票、比较价格、选择灵活的出行日期以及探索目的地信息。
+description: >
+  **使用场景：**  
+  当用户请求“查找航班”、“比较行程安排”、“搜索偏远城市的航线”、“查询最便宜的出行日期”、“探索目的地”、“搜索酒店”、“规划旅行”等与航班或旅行相关的操作时，本功能会以 Skiplagged 的官方 MCP（My Flight Planner）结果作为输出。
+homepage: https://skiplagged.com
+metadata: {"openclaw":{"emoji":"✈️","homepage":"https://skiplagged.com","requires":{"bins":["mcporter"]},"install":[{"id":"node","kind":"node","package":"mcporter","bins":["mcporter"],"label":"Install mcporter (node)"}]}}
 ---
+# Skiplagged Flights (MCP)
 
-# Skiplagged 航班搜索
+该技能通过查询 **Skiplagged 的公共 MCP 服务器** 来搜索航班、酒店、汽车以及灵活的日期安排信息。
 
-通过 `mcporter` 使用 Skiplagged MCP 搜索航班。
+- **服务器地址：** `https://mcp.skiplagged.com/mcp`
+- **认证方式：** 无需认证（公共服务器）
+
+## 先决条件
+
+1) 确保 `mcporter` CLI 已经添加到系统的 PATH 环境变量中（该技能将其列为必需的运行工具）。
+
+2) 建议使用 **自定义的 HTTPS 请求**（无需配置本地的 `mcporter` 配置文件）：
+
+```bash
+# Inspect tools + schemas (recommended)
+mcporter list https://mcp.skiplagged.com/mcp --schema
+```
 
 ## 快速入门
 
 ```bash
-mcporter call skiplagged.sk_flights_search origin=WAW destination=LHR departureDate=2026-02-15
+mcporter call https://mcp.skiplagged.com/mcp.sk_flights_search origin=WAW destination=LHR departureDate=2026-03-15 --output json
 ```
+
+> 如果您的环境中已经配置了 `skiplagged` 作为服务器名称，那么可以使用 `mcporter call skiplagged.sk_flights_search ...` 来执行相同操作。使用显式的 HTTPS 地址更为推荐，因为它可以避免依赖或查看本地的 MCP 配置文件。
 
 ## 工具
 
-### `sk_flights_search`
-在指定地点之间搜索航班。
+### sk_flights_search
 
-**必需参数：**
-- `origin`（起点）
-- `destination`（目的地）
-- `departureDate`（出发日期）
+用于搜索两个地点之间的航班信息。
 
-**常用选项：**
-- `returnDate`（返程日期）
-- `sort`（排序方式）：`price`（价格）、`duration`（航程时长）、`value`（性价比，默认）
-- `limit`（结果数量上限，默认为 12）
-- `maxStops`（中途停留次数）：`none`（无）、`one`（一次）、`many`（多次）
-- `fareClass`（舱位等级）：`basic-economy`（经济舱）、`economy`（经济舱）、`premium`（高级经济舱）、`business`（商务舱）、`first`（头等舱）
-- `preferredAirlines`/`excludedAirlines`（优先/排除的航空公司，例如：`['UA','DL']`）
-- `departureTimeEarliest`/`departureTimeLatest`（出发时间范围）：以午夜为基准的分钟数（0-1439）
+**必需参数：** `origin`（出发地）、`destination`（目的地）、`departureDate`（出发日期）
+
+**常用选项（请通过 `--schema` 参数确认具体含义）：**
+
+* `returnDate` - 往返日期
+* `sort` - 排序方式（`price`、`duration`、`value`，默认为 `value`）
+* `limit` - 最大返回结果数量（默认为 12 条）
+* `maxStops` - 停靠次数（`none`、`one`、`many`）
+* `fareClass` - 航班等级（`basic-economy`、`economy`、`premium`、`business`、`first`）
+* `preferredAirlines` / `excludedAirlines` - 以逗号分隔的 IATA 航空公司代码（例如 `UA,DL`）
+* `departureTimeEarliest` / `departureTimeLatest` - 起飞时间（以分钟为单位，范围为 `0–1439`）
 
 **示例：**
+
 ```bash
 # Cheapest one-way
-mcporter call skiplagged.sk_flights_search origin=NYC destination=LAX departureDate=2026-03-15 sort=price
+mcporter call https://mcp.skiplagged.com/mcp.sk_flights_search origin=NYC destination=LAX departureDate=2026-03-15 sort=price limit=5
 
 # Round-trip, nonstop only
-mcporter call skiplagged.sk_flights_search origin=WAW destination=CDG departureDate=2026-04-10 returnDate=2026-04-17 maxStops=none
+mcporter call https://mcp.skiplagged.com/mcp.sk_flights_search origin=WAW destination=CDG departureDate=2026-04-10 returnDate=2026-04-17 maxStops=none limit=5
 
-# Exclude budget airlines, morning only (6am-12pm)
-mcporter call skiplagged.sk_flights_search origin=LHR destination=JFK departureDate=2026-05-01 excludedAirlines=F9,NK departureTimeEarliest=360 departureTimeLatest=720
+# Exclude budget airlines, morning only (6am–12pm)
+mcporter call https://mcp.skiplagged.com/mcp.sk_flights_search origin=LHR destination=JFK departureDate=2026-05-01 excludedAirlines=F9,NK departureTimeEarliest=360 departureTimeLatest=720 limit=5
 ```
 
-### `sk_flex_departure_calendar`
-查找指定出发日期附近的最低票价。
+### sk_flex_departure_calendar
+
+用于查找指定出发日期附近的最低票价。
 
 ```bash
-mcporter call skiplagged.sk_flex_departure_calendar origin=WAW destination=BCN departureDate=2026-06-15 sort=price
+mcporter call https://mcp.skiplagged.com/mcp.sk_flex_departure_calendar origin=WAW destination=BCN departureDate=2026-06-15 sort=price --output json
 ```
 
-### `sk_flex_return_calendar`
-查找固定航程长度下的最低往返票价。
+### sk_flex_return_calendar
+
+用于查找固定行程长度内的最低往返票价。
 
 ```bash
-mcporter call skiplagged.sk_flex_return_calendar origin=WAW destination=NYC departureDate=2026-07-01 returnDate=2026-07-08
+mcporter call https://mcp.skiplagged.com/mcp.sk_flex_return_calendar origin=WAW destination=NYC departureDate=2026-07-01 returnDate=2026-07-08 --output json
 ```
 
-### `sk_destinations_anywhere`
-在出行时间灵活的情况下，寻找便宜的目的地。
+### sk_destinations_anywhere
+
+用于在日期安排灵活的情况下寻找便宜的目的地。
 
 ```bash
-mcporter call skiplagged.sk_destinations_anywhere from=WAW depart=2026-02-15
+mcporter call https://mcp.skiplagged.com/mcp.sk_destinations_anywhere from=WAW depart=2026-03-15 --output json
 ```
 
 ## 结果展示格式
 
-向用户展示航班结果时，请注意：
-- **切勿使用 Markdown 表格**，而应使用项目符号列表或带标签的文本。
-- 采用与 MarkdownV2 兼容的格式（适用于 Telegram）。
-- 保持回复内容简洁、易于阅读（适合移动设备）。
-- 仅显示前 3-5 条结果，如有需要可提供更多信息。
+在向用户展示结果时，请注意以下几点：
 
-**示例：**
+* **不要使用 Markdown 表格**，而是使用项目符号列表或带标签的文本格式。
+* 在 Telegram 风格的聊天频道中回复时，请使用兼容 MarkdownV2 的格式。
+* 保持回复内容简洁、易于阅读（适合移动设备）。
+* 默认显示前 3–5 个最优选项，并提供展开查看的链接。
+* 返回的结果中应包含预订链接。
+* 如果出现包含隐藏城市的行程安排，请明确说明相关限制（如行李携带限制或错过中转站可能带来的问题）。
+* 强调票价优惠、航线选择以及关键权衡因素（如停靠次数、行程时长和价格）。
+
+**示例回复：**
+
 ```
-Found 3 flights WAW → LHR on Feb 15:
+Found 3 flights WAW → LHR on Mar 15:
 
-• $90 · 28h 15m · 1 stop
-  Wizz Air + SAS
-  05:40 WAW → 08:55+1 LHR
+• $90 · 2h 35m · nonstop
+  LOT
+  05:40 WAW → 07:15 LHR
   [Book](link)
 
-• $91 · 12h 20m · 1 stop
-  Wizz Air + SAS  
-  05:40 WAW → 17:00 LHR
+• $91 · 4h 20m · 1 stop
+  SAS
+  06:10 WAW → 09:30 LHR
   [Book](link)
 ```
 
-## 提示：
-- 使用 IATA 代码（例如：`WAW`、`LHR`、`JFK`）。
-- 系统默认会包含途经隐藏城市的航班（这些航班通常价格更低）。
-- 使用 `--output json` 参数可获取结构化数据。
-- 结果中包含用于预订的 `deepLink`。
+## 使用技巧
 
-## 参考资料：
-- 工具架构：`mcporter list skiplagged --schema`
-- MCP 文档：https://skiplagged.github.io/mcp/
+* 尽可能使用 IATA 航空公司代码（例如 `WAW`、`LHR`、`JFK`）。
+* 如果需要结构化的数据进行后续处理，请使用 `--output json` 选项。
+* 结果中通常会包含用于预订或验证的链接（`deepLink`）。
+* 如果查询失败（非因无结果导致），建议直接访问 `https://skiplagged.com` 查看详细信息。
+* 价格和可用性可能会随时变化，请将结果视为即时信息，并鼓励用户通过预订链接进行确认。
+
+## 参考资料 / 来源
+
+* Skiplagged MCP 的官方文档及隐私政策：[https://skiplagged.github.io/mcp/](https://skiplagged.github.io/mcp/)
+* MCPorter CLI 的使用说明及自定义 URL 格式：[https://raw.githubusercontent.com/steipete/mcporter/main/README.md](https://raw.githubusercontent.com/steipete/mcporter/main/README.md)

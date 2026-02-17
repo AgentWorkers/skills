@@ -1,41 +1,116 @@
 ---
 name: payram-mcp-integration
-description: 通过 PayRam 的自托管基础设施，在 Base、Ethereum、Polygon 和 Tron 等平台上接受加密货币支付（USDC、USDT、BTC、ETH）。当用户选择“接受加密货币支付”、“创建支付链接”、“生成发票”、“设置 USDC 支付”、“处理稳定币交易”、“创建加密货币发票”或“启用加密货币结算”时，可以使用此功能。该功能需要连接到 PayRam 的 MCP 服务器。
+description: 通过 PayRam MCP 即时接受加密货币支付。托管服务器（mcp.payram.com）在测试网络环境中可立即使用，无需任何设置。在生产环境中，支持自主的无头（headless）设置（仅需 10 分钟，通过环境变量实现完全自动化）。当用户请求“接受加密货币支付”、“创建支付链接”、“测试支付”、“设置 PayRam”或“在系统中安装 PayRam”时，可使用该服务。完整的无头设置指南请参阅 references/headless-setup.md。
 license: MIT
 metadata:
   author: PayRam
-  version: 1.1.0
+  version: 1.2.0
   mcp-server: payram
   category: payments
-  tags: [crypto, stablecoins, payments, agent-commerce, USDC, USDT, Base, Ethereum, MCP, Bitcoin]
+  tags: [crypto, stablecoins, payments, agent-commerce, USDC, USDT, Base, Ethereum, MCP, Bitcoin, headless, autonomous]
   homepage: https://payram.com
   github: https://github.com/PayRam/payram-helper-mcp-server
   documentation: https://docs.payram.com/mcp-integration
+  headless-guide: https://github.com/PayRam/payram-scripts/blob/main/docs/PAYRAM_HEADLESS_AGENT.md
 ---
 # PayRam MCP集成
 
-通过PayRam的MCP服务器自主接收加密货币支付。这是一个自托管的、无需权限的多链支付基础设施，适用于AI代理。
+支持即时接收加密货币支付——提供托管的MCP服务器供使用，也可本地安装以用于生产环境。
 
-## 快速入门
+## 🚀 即时启动（无需安装）
 
-PayRam的MCP服务器提供了代理可以自动发现的支付工具：`create_payee`、`send_payment`、`get_balance`、`generateinvoice`。无需手动进行API集成。
+**立即尝试PayRam**——托管的MCP服务器地址：`mcp.payram.com`：
 
-**支持的货币**：USDC、USDT、BTC、ETH（在Base网络上）、Ethereum、Polygon、Tron、TON。
+```bash
+# OpenClaw: Add hosted MCP server
+mcporter config add payram --command "https://mcp.payram.com"
+
+# Test immediately
+mcporter call "payram.create_payee(amount: 10, currency: 'USDC', chain: 'base')"
+```
+
+**环境**：测试网（Base Sepolia、Ethereum Sepolia）  
+**使用场景**：测试、开发、演示  
+**设置时间**：0分钟 ⚡  
+**实际资金**：❌ 不支持（仅限测试网）  
+
+---
+
+## 🤖 适用于AI代理：无头设置（生产环境）
+
+PayRam采用了“代理优先”的安装方式，支持自主运行。
+
+### 快速设置（完全自动化）
+```bash
+# Clone repo
+git clone https://github.com/PayRam/payram-scripts
+cd payram-scripts
+
+# Set credentials (one-time)
+export PAYRAM_EMAIL="agent@example.com"
+export PAYRAM_PASSWORD="secure_password"
+
+# Install and setup (non-interactive)
+./agent_run_local.sh  # Choose option 1: Install
+./agent_headless.sh run  # Creates wallet, deploys contracts, ready!
+```
+
+### 环境变量（完全自动化）
+```bash
+PAYRAM_EMAIL="agent@example.com"
+PAYRAM_PASSWORD="yourpass"
+PAYRAM_PAYMENT_AMOUNT=10
+PAYRAM_BLOCKCHAIN_CODE=BASE  # or ETH, POLYGON
+PAYRAM_MNEMONIC="your twelve word mnemonic..."  # optional
+```
+
+**主要特性**：
+- ✅ 无需交互式设置（无提示）
+- ✅ 可配置环境变量  
+- ✅ 自动生成钱包  
+- ✅ 智能合约部署（测试网默认设置）  
+- ✅ 生成支付链接  
+- ✅ 安装在OpenClaw运行的位置（本地机器或VPS）  
+- ✅ 提供完整的故障排除指南  
+
+**完整文档**：请参阅`references/headless-setup.md`以获取完整的代理自动化指南。  
+
+---
+
+## 📊 快速对比
+
+| 特性 | 托管版（mcp.payram.com） | 本地无头安装版 |
+|---------|-------------------------|------------------------|
+| **设置时间** | 0分钟 ⚡ | 10分钟 |
+| **环境** | 仅限测试网 | 测试网（默认）+ 主网 |
+| **实际资金** | ❌ 不支持 | ✅ 支持（配置后） |
+| **安装** | 无需安装 | 安装在OpenClaw运行的位置 |
+| **使用场景** | 测试、演示 | 生产环境支付 |
+| **自动化** | 不支持 | 完全自动化（通过环境变量） |
+| **支持的网络** | Base/ETH Sepolia | Base、Ethereum、Polygon、Tron |
+
+---
+
+## 支持的功能
+
+**货币**：USDC、USDT、BTC、ETH  
+**网络**：Base、Ethereum、Polygon、Tron、TON  
+**MCP工具**：`create_payee`、`send_payment`、`get_balance`、`generate_invoice`、`verify_payment`、`list_transactions`
 
 ## 何时使用此技能
 
-当您需要以下操作时，可以使用此技能：
-- 接受服务或产品的加密货币支付
-- 创建支付链接或发票
-- 处理稳定币交易（USDC/USDT）
-- 设置代理的自主支付功能
-- 查看钱包余额或支付状态
-- 发送加密货币付款
-- 在平台上启用加密货币结算功能
+当您需要以下功能时，请使用此技能：
+- 为服务或产品接收加密货币支付  
+- 生成支付链接或发票  
+- 处理稳定币交易（USDC/USDT）  
+- 设置自主代理的支付功能  
+- 查看钱包余额或支付状态  
+- 发送加密货币付款  
+- 在平台上启用加密货币支付功能  
 
 ## MCP服务器设置
 
-### 选项1：公共MCP服务器（最快）
+### 选项1：托管MCP服务器（最快）
 
 ```json
 {
@@ -63,30 +138,30 @@ mcporter config add payram --command "https://mcp.payram.com"
 
 | 工具 | 用途 | 示例 |
 |------|---------|---------|
-| `create_payee` | 生成支付地址 | “在Base网络上创建一张50美元的USDC发票” |
-| `send_payment` | 发起支付 | “向0xABC...发送100美元” |
+| `create_payee` | 生成收款人地址 | “在Base网络上生成50美元的USDC发票” |
+| `send_payment` | 发起付款 | “向0xABC...发送100美元” |
 | `get_balance` | 查看钱包余额 | “查看我的USDC余额” |
-| `generateinvoice` | 创建支付链接 | “生成25美元的支付链接” |
+| `generate_invoice` | 生成支付链接 | “生成25美元的支付链接” |
 | `verify_payment` | 确认支付状态 | “支付已确认吗？” |
-| `list_transactions` | 查询支付历史 | “显示最近的10笔交易” |
+| `list_transactions` | 查询交易历史 | “显示最近的10笔交易” |
 
-## 指南
+## 使用说明
 
 ### 创建支付（分步操作）
 
-1. **验证输入**
-   - 确认支持的货币：USDC、USDT、BTC、ETH
-   - 确认金额是否为正数
-   - 确认网络：Base、Ethereum、Polygon或Tron
+1. **验证输入**：
+   - 确认支持的货币：USDC、USDT、BTC、ETH  
+   - 确认金额是否为正数  
+   - 选择网络：Base、Ethereum、Polygon或Tron  
 
-2. **选择网络**
-   - 小额支付（<100美元）：**建议使用Base网络**（费用最低，约0.01美元）
-   - 大额支付（>1000美元）：Ethereum主网（安全性更高）
-   - 专门用于USDT的交易：Tron（适用于USDT，费用较低）
-   - 默认：Base L2网络
+2. **选择网络**：
+   - 小额交易（<100美元）：**推荐使用Base网络**（费用最低，约0.01美元）  
+   - 大额交易（>1000美元）：Ethereum主网（安全性更高）  
+   - 特定于USDT的交易：Tron（处理USDT时费用较低）  
+   - 默认设置：Base L2网络  
 
-3. **通过MCP创建收款人信息**
-   ```
+3. **通过MCP创建收款人地址**  
+```
    Call create_payee with:
    - amount: numeric value
    - currency: "USDC" | "USDT" | "BTC" | "ETH"
@@ -95,35 +170,35 @@ mcporter config add payram --command "https://mcp.payram.com"
    - description: optional payment description
    ```
 
-4. **返回支付链接**
-   - 提供支付链接
-   - 如有需要，包含二维码
-   - 指明链接的有效期限（默认24小时）
-   - 说明预期的确认时间
+4. **返回支付链接**：
+   - 提供支付链接  
+   - 如有需要，可包含二维码  
+   - 指明链接的有效期限（默认24小时）  
+   - 说明预计的确认时间  
 
 ### 查看余额
 
-1. **调用`get_balance`工具**
-   ```
+1. **调用`get_balance`工具**  
+```
    Parameters:
    - chain: "base" | "ethereum" | "polygon" | "tron"
    - currency: "USDC" | "USDT" | "BTC" | "ETH"
    ```
 
-2. **返回格式化的结果**
-   - 显示余额及货币类型
-   - 包括网络名称
-   - 如果余额不足（<10美元），请告知用户
+2. **返回格式化后的结果**：
+   - 显示余额及货币类型  
+   - 显示网络名称  
+   - 若余额不足（<10美元），请告知用户  
 
 ### 发送支付
 
-1. **预先检查**
-   - 通过`get_balance`确认余额足够
-   - 验证收款人地址格式
-   - 确认网络与地址匹配
+1. **预先检查**：
+   - 通过`get_balance`确认余额充足  
+   - 验证收款人地址格式  
+   - 确认网络与地址匹配  
 
-2. **执行支付**
-   ```
+2. **执行支付**  
+```
    Call send_payment with:
    - to: recipient address
    - amount: numeric value
@@ -131,49 +206,49 @@ mcporter config add payram --command "https://mcp.payram.com"
    - chain: network name
    ```
 
-3. **确认交易**
-   - 返回交易哈希值
-   - 注意确认时间（Base网络为30-60秒）
-   - 如有需要，可以通过`verify_payment`监控交易状态
+3. **确认交易**：
+   - 返回交易哈希值  
+   - 说明确认时间（Base网络为30-60秒）  
+   - 如有需要，可通过`verify_payment`监控交易状态  
 
 ## 示例
 
 ### 示例1：创建USDC发票
 
-**用户请求**：“我需要向customer@example.com收取100美元的咨询费用”
+**用户需求**：“我需要向customer@example.com收取100美元的咨询费用”
 
 **操作步骤**：
-1. 验证：金额100美元有效，且支持USDC货币
-2. 建议使用Base网络（100美元的费用较低）
-3. 调用`create_payee(amount=100, currency="USDC", chain="base", email="customer@example.com")`
-4. 从MCP接收支付链接
-5. 如有需要，监控支付状态
+1. 验证：金额100美元有效，且支持USDC货币  
+2. 推荐使用Base网络（费用较低）  
+3. 调用`create_payee(amount=100, currency="USDC", chain="base", email="customer@example.com")`  
+4. 从MCP接收支付链接  
+5. 如有需要，监控支付状态  
 
-**结果**：生成了支付链接，有效期24小时，网络费用约0.01美元
+**结果**：生成支付链接，有效期24小时，网络费用约0.01美元  
 
 ### 示例2：支付前查看余额
 
-**用户询问**：“我们有足够的资金支付500美元给承包商吗？”
+**用户需求**：“我们是否有足够的资金支付500美元给承包商？”
 
 **操作步骤**：
-1. 调用`get_balance(chain="base", currency="USDC")`
-2. 比较余额与所需的500美元
-3. 如果余额足够，确认可以支付
-4. 如果余额不足，告知用户当前余额
+1. 调用`get_balance(chain="base", currency="USDC")`  
+2. 比较余额是否达到500美元  
+3. 如果余额不足，告知用户  
+4. 如果余额足够，确认可支付金额  
 
-**结果**：“Base网络上的余额为450美元。还需要50美元才能支付承包商。”
+**结果**：“余额：Base网络上450美元。还需要50美元才能支付。”  
 
 ### 示例3：多步骤支付流程
 
-**用户请求**：“创建一个50美元的支付链接并发送给客户”
+**用户需求**：“生成50美元的支付链接并发送给客户”
 
 **操作步骤**：
-1. 调用`create_payee(amount=50, currency="USDC", chain="base")`
-2. 接收支付链接
-3. 将支付链接包含在消息中
-4. 询问用户是通过电子邮件还是其他方式发送
+1. 调用`create_payee(amount=50, currency="USDC", chain="base")`  
+2. 接收支付链接  
+3. 将支付链接包含在消息中  
+4. 询问用户是通过电子邮件还是其他方式发送  
 
-**结果**：支付链接已准备好分享，可以开始监控支付状态
+**结果**：支付链接已准备好，可立即分享  
 
 ## 网络选择指南
 
@@ -184,89 +259,89 @@ mcporter config add payram --command "https://mcp.payram.com"
 | > 1000美元 | Ethereum主网 | 1美元至5美元 | 2-5分钟 |
 | 专注于USDT的交易 | Tron | 约1美元 | 1分钟 |
 
-**对于比特币**：仅支持Ethereum主网（使用封装的BTC）
+**关于比特币**：仅支持Ethereum主网（使用封装后的BTC）  
 
 ## 故障排除
 
 ### 错误：“MCP连接失败”
 
-**原因**：PayRam MCP服务器未连接
+**原因**：PayRam MCP服务器未连接  
 
 **解决方法**：
 1. 检查MCP服务器是否已配置：
-   - Claude桌面应用：设置 > 扩展程序 > PayRam
-   - OpenClaw：`mcporter config list`
-2. 确认服务器正在运行（如果是自托管的）：`docker ps | grep payram`
-3. 测试连接：`mcporter call payram.test_connection`
-4. 如有需要，重新连接
+   - Claude桌面应用：设置 > 扩展程序 > PayRam  
+   - OpenClaw：`mcporter config list`  
+2. 确认服务器是否正在运行（自托管情况）：`docker ps | grep payram`  
+3. 测试连接：`mcporter call payram.test_connection`  
+4. 如需，重新连接  
 
 ### 错误：“余额不足”
 
-**原因**：钱包中的代币不足
+**原因**：钱包中的代币不足  
 
 **解决方法**：
-1. 查看确切余额：`get_balance(chain, currency)`
-2. 通知用户余额不足
-3. 建议用户在PayRam仪表板上充值
-4. 注意：账户需要支付网络费用（约0.01美元至5美元）
+1. 查看确切余额：`get_balance(chain, currency)`  
+2. 通知用户余额不足  
+3. 建议用户在PayRam仪表板上充值  
+4. 请注意：网络费用约为0.01美元至5美元  
 
 ### 错误：“网络不受支持”
 
-**原因**：请求的网络不可用
+**原因**：请求的网络不可用  
 
 **解决方法**：
-1. 列出支持的网络：Base、Ethereum、Polygon、Tron、TON
-2. 建议使用其他网络
-3. 如果是自托管的，更新PayRam配置以添加该网络
-4. 配置更改后重启MCP服务器
+1. 列出支持的网络：Base、Ethereum、Polygon、Tron、TON  
+2. 推荐替代网络  
+3. 如果是自托管环境，更新PayRam配置以添加该网络  
+4. 配置更改后重启MCP服务器  
 
 ### 错误：“地址格式无效”
 
-**原因**：收款人地址与网络不匹配
+**原因**：收款人地址与网络不匹配  
 
 **解决方法**：
-1. 确认地址以0x开头（符合Ethereum标准）
-2. 检查地址长度（EVM网络要求42个字符）
-3. 确认网络支持该地址类型
-4. 对于比特币，使用Ethereum上的封装BTC
+1. 确认地址以“0x”开头（符合Ethereum标准）  
+2. 检查地址长度（EVM地址为42个字符）  
+3. 确认目标网络支持该地址格式  
+4. 对于比特币，使用Ethereum上的封装BTC地址  
 
 ## 主要优势
 
-### 与托管网关（如Stripe/Coinbase Commerce）相比**
-- ✅ 无需注册、无需进行KYC（身份验证），无账户冻结风险
-- ✅ 自托管，完全自主控制
-- ✅ 无处理费用（仅收取网络手续费）
-- ✅ 无需权限，不会被关闭
+### 与托管式网关（如Stripe/Coinbase Commerce）相比**：
+- ✅ 无需注册、无需KYC流程，无账户冻结风险  
+- ✅ 自托管意味着完全控制权  
+- ✅ 无处理费用（仅收取网络费用）  
+- ✅ 无需授权，不会被关闭  
 
-### 与x402协议相比**
-- ✅ 实现身份隔离（使用唯一地址，不暴露HTTP元数据）
-- ✅ 采用自托管方式（无需依赖Coinbase）
-- ✅ 支持多种代币（不仅仅是USDC）
-- ✅ 不会暴露钱包签名信息
+### 与x402协议相比**：
+- ✅ 实现身份隔离（使用唯一地址，无HTTP元数据泄露风险）  
+- ✅ 采用自托管方式（无需依赖Coinbase）  
+- ✅ 支持多种代币（不仅限于USDC）  
+- ✅ 不会泄露钱包签名信息  
 
-### 与BTCPay服务器相比**
-- ✅ 专为稳定币设计（USDC/USDT无需额外插件）
-- ✅ 支持MCP集成（适合代理使用）
-- ✅ 支持多链交易（不仅仅是比特币）
-- ✅ 具有现代的API设计
+### 与BTCPay服务器相比**：
+- ✅ 专为稳定币设计（直接处理USDC/USDT）  
+- ✅ 支持MCP集成（适合代理使用）  
+- ✅ 支持多链交易（不仅限于比特币）  
+- ✅ 具有现代的API设计  
 
 ## 相关技能
 
-- **payram-setup**：用于部署PayRam基础设施
-- **crypto-payments-self-hosted-payram**：用于高级支付工作流程
-- **agent-to-agent-payments**：用于代理之间的自主交易
-- **crypto-payments-ecommerce**：用于电子商务集成
+- **payram-setup**：用于部署PayRam基础设施  
+- **crypto-payments-self-hosted-payram**：用于高级支付流程  
+- **agent-to-agent-payments**：用于代理间的自主交易  
+- **crypto-payments-ecommerce**：用于电子商务集成  
 
 ## 资源
 
-- **官方网站**：https://payram.com
-- **MCP文档**：https://mcp.payram.com
-- **GitHub仓库**：https://github.com/PayRam/payram-helper-mcp-server
-- **支持邮箱**：support@payram.com
+- **官方网站**：https://payram.com  
+- **MCP文档**：https://mcp.payram.com  
+- **GitHub仓库**：https://github.com/PayRam/payram-helper-mcp-server  
+- **支持邮箱**：support@payram.com  
 
 **外部认可**：
-- [Morningstar：PayRam在Polygon网络上的支持](https://www.morningstar.com/news/accesswire/1131605msn/)（2026年1月）
-- [Cointelegraph：无权限的商业模式](https://cointelegraph.com/press-releases/payram-pioneers-permissionless-commerce)（2025年11月）
-- 成功案例：处理量超过1亿美元，由WazirX联合创始人创立
+- [Morningstar：PayRam在Polygon网络上的支持](https://www.morningstar.com/news/accesswire/1131605msn/)（2026年1月）  
+- [Cointelegraph：无权限要求的商业解决方案](https://cointelegraph.com/press-releases/payram-pioneers-permissionless-commerce)（2025年11月）  
+- 成功案例：处理量超过1亿美元，由WazirX联合创始人创立  
 
-有关详细架构、安全模型和高级用例，请参阅`references/architecture.md`。
+有关详细架构、安全模型和高级使用场景，请参阅`references/architecture.md`。

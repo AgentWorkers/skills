@@ -1,17 +1,17 @@
-# Apiosk – 无需API密钥的API访问服务（支持USDC微支付）
+# Apiosk - 无需API密钥的API访问，支持USDC微支付
 
-**为使用USDC微支付的代理提供按请求计费的API访问服务。**
+**为代理提供按请求计费的API访问服务。无需API密钥，也无需注册账户，只需支付即可使用。**
 
-Apiosk允许代理通过x402协议在Base区块链上访问生产级API，无需管理API密钥，只需按实际使用量付费。
+Apiosk允许代理通过x402协议使用Base区块链上的生产级API，并支持USDC微支付。无需再管理API密钥，只需按请求付费即可。
 
 ---
 
 ## 🎯 该工具的功能
 
-- **发现API**：浏览15个以上的生产级API（包括天气、价格、新闻、地理编码等）
-- **按请求计费**：自动使用USDC进行微支付（每次调用费用为0.001至0.10美元）
-- **无需API密钥**：无需提供商账户或订阅
-- **简单设置**：只需创建一次钱包，即可通过x402协议调用API
+- **发现API**：浏览9个以上的生产级API（天气、价格、新闻、地理编码等）
+- **按请求付费**：每次调用API自动收取USDC微支付（费用范围：0.001美元至0.10美元）
+- **无需设置**：无需API密钥、账户或订阅
+- **即时访问**：通过x402支付方式立即调用API
 
 ---
 
@@ -22,7 +22,7 @@ Apiosk允许代理通过x402协议在Base区块链上访问生产级API，无需
 clawhub install apiosk
 
 # Or clone manually
-git clone https://github.com/olivierbrinkman/apiosk-skill
+git clone https://github.com/apiosk/apiosk-skill
 ```
 
 ---
@@ -36,20 +36,18 @@ git clone https://github.com/olivierbrinkman/apiosk-skill
 ./setup-wallet.sh
 
 # This creates ~/.apiosk/wallet.json with:
-# - Ethereum address (public)
-# - Private key (stored locally, chmod 600)
-# - Creation timestamp
-#
-# ⚠️ The private key is stored in plaintext with restrictive permissions.
-# Only fund with small amounts for testing ($1-10).
-# For production, use a hardware wallet or external KMS.
+# - Private key (stored locally, chmod 600 for security)
+# - Public address
+# - Base mainnet RPC
+
+**IMPORTANT:** The private key is stored in plaintext in `~/.apiosk/wallet.json` (with restrictive file permissions). Only fund this wallet with small amounts for testing. For production, use a hardware wallet or external key management.
 ```
 
-**重要提示：** 请在Base主网上为钱包充值USDC（建议最低充值1至10美元）。
+**重要提示：** 请在Base主网上为钱包充值USDC（建议至少充值1至10美元）。
 
 **充值方法：**
-1. 通过https://bridge.base.org将USDC桥接到Base区块链
-2. 或者在Coinbase购买USDC后转存至Base区块链
+1. 通过https://bridge.base.org将USDC桥接到Base网络
+2. 或者在Coinbase购买USDC后转入Base网络
 3. 将USDC发送到您的Apiosk钱包地址
 
 ### 2. 发现可用API
@@ -87,7 +85,7 @@ git clone https://github.com/olivierbrinkman/apiosk-skill
 # ✅ Paid: $0.001 USDC
 ```
 
-### 从代理代码（Node.js）调用API
+### 代理代码示例（Node.js）
 
 ```javascript
 const { callApiosk } = require('./apiosk-client');
@@ -101,7 +99,7 @@ console.log(`Temperature: ${weather.temperature}°C`);
 // ✅ Automatically paid $0.001 USDC
 ```
 
-### 从代理代码（Python）调用API
+### 代理代码示例（Python）
 
 ```python
 from apiosk_client import call_apiosk
@@ -117,7 +115,7 @@ print(f"BTC: ${prices['BTC']}")
 
 ---
 
-## 📚 可用API列表
+## 📚 可用API
 
 | API | 费用/请求 | 描述 | 示例 |
 |-----|----------|-------------|---------|
@@ -126,7 +124,7 @@ print(f"BTC: ${prices['BTC']}")
 | **news** | 0.005美元 | 全球新闻文章 | `{"topic": "AI"}` |
 | **company** | 0.01美元 | 公司信息 | `{"domain": "apple.com"}` |
 | **geocode** | 0.001美元 | 地址转坐标 | `{"address": "Amsterdam"}` |
-| **code-runner** | 0.05美元 | 执行代码沙盒 | `{"lang": "python", "code": "..."}` |
+| **code-runner** | 0.05美元 | 执行代码沙箱 | `{"lang": "python", "code": "..."}` |
 | **pdf-generator** | 0.02美元 | HTML转PDF | `{"html": "<h1>Hi</h1>"}` |
 | **web-screenshot** | 0.03美元 | URL转截图 | `{"url": "example.com"}` |
 | **file-converter** | 0.01美元 | 文件格式转换 | `{"from": "docx", "to": "pdf"}` |
@@ -159,7 +157,7 @@ WALLET_ADDRESS=$(jq -r '.address' ~/.apiosk/wallet.json)
 
 # Make request (x402 payment happens via on-chain verification)
 # The gateway validates payment on-chain, no client-side signature needed
-curl -X POST "https://gateway.apiosk.com/api/$API_ID" \
+curl -X POST "https://gateway.apiosk.com/$API_ID" \
   -H "Content-Type: application/json" \
   -H "X-Wallet-Address: $WALLET_ADDRESS" \
   -d "$PARAMS"
@@ -199,7 +197,7 @@ curl -s "https://gateway.apiosk.com/v1/usage?address=$WALLET_ADDRESS" | jq
 
 ## 🎓 使用示例
 
-### 示例1：天气信息机器人  
+### 示例1：天气机器人  
 ```javascript
 const { callApiosk } = require('./apiosk-client');
 
@@ -279,15 +277,18 @@ console.log(await getDailyDigest(['technology', 'business']));
 
 **Apiosk（x402）：**  
 ```
-1. Generate wallet (keypair stored locally)
-2. Fund with USDC on Base
-3. Make request — gateway returns 402
-4. Client signs payment with your private key
-5. Gateway verifies on-chain
+1. Make request
+2. Gateway returns 402 Payment Required
+3. Your wallet signs payment proof
+4. Gateway verifies on-chain
+5. Gateway forwards to API
 6. You get response
 ```
 
-**时间：** 毫秒级响应。**费用：** 按实际使用量计费。**设置：** 完全免费。
+**特点：**  
+- 响应时间：毫秒级  
+- 费用：按实际使用量计费  
+- 设置：完全无需额外配置
 
 ---
 
@@ -374,9 +375,9 @@ curl https://gateway.apiosk.com/v1/apis | jq '.apis[] | select(.id=="weather")'
 
 ---
 
-## 🌐 开发者指南：如何将自己的API接入Apiosk  
+## 🌐 开发者指南：如何将自己的API接入Apiosk
 
-想通过Apiosk实现API盈利吗？  
+**想通过Apiosk为自己的API盈利吗？**  
 ```bash
 # 1. Sign up
 curl -X POST https://dashboard.apiosk.com/api/register \
@@ -401,54 +402,54 @@ curl -X POST https://dashboard.apiosk.com/api/add \
 
 ---
 
-## 📖 资源链接
+## 📖 资源
 
 - **官方网站：** https://apiosk.com  
 - **控制面板：** https://dashboard.apiosk.com  
 - **文档：** https://docs.apiosk.com  
-- **GitHub仓库：** https://github.com/olivierbrinkman/apiosk-skill  
-- **支持邮箱：** support@apiosk.com  
+- **GitHub仓库：** https://github.com/apiosk  
+- **支持中心：** support@apiosk.com  
 - **社交媒体：** @ApioskAgent
 
 ---
 
-## 💡 为什么选择Apiosk？
+## 💡 选择Apiosk的理由
 
-**对于代理来说：**  
+**对于代理来说：**
 - ✅ 无需管理API密钥  
-- ✅ 仅按使用量付费  
+- ✅ 仅按实际使用量付费  
 - ✅ 即时访问9个以上的API  
 - ✅ 透明定价  
 - ✅ 提供链上支付凭证  
 
-**对于开发者来说：**  
-- ✅ 可将任何API变现  
+**对于开发者来说：**
+- ✅ 可以通过Apiosk实现API盈利  
 - ✅ 无需处理支付流程  
 - ✅ 收入分成高达90-95%  
 - ✅ 即时结算  
 - ✅ 全球覆盖  
 
-**网络效应：** 越多API → 越多代理 → 越多收入 → 越多API  
+**网络效应：** 越多API，吸引越多代理，从而带来更多收入  
 
 ---
 
-## 🦞 关于Apiosk  
+## 🦞 关于Apiosk
 
-由Apiosk团队专为代理经济打造。  
-**x402协议：** 无需API密钥的加密微支付方案。  
+由Apiosk团队专为代理经济设计。  
+**x402协议：** 无需API密钥的API访问方式，支持加密货币微支付。  
 **使命：** 让所有API都能被所有代理即时使用。  
 
-**“停止管理API密钥，开始按请求付费吧。”**
+**“无需再管理API密钥，只需按请求付费即可。”**
 
 ---
 
-## 📝 许可证  
+## 📝 许可证
 
-MIT许可证——您可以在自己的代理服务中自由使用Apiosk！  
+MIT许可——您可以在自己的代理服务中自由使用Apiosk！
 
 ---
 
-## 🔗 快速链接  
+## 🔗 快速链接
 
 ```bash
 # Install

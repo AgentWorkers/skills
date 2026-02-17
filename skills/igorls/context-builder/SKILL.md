@@ -2,199 +2,167 @@
 name: context-builder
 description: 使用 `context-builder CLI` 从任意目录生成针对 LLM（大型语言模型）优化的代码库上下文。
 homepage: https://github.com/igorls/context-builder
-version: 0.7.1
+version: 0.8.3
 requires:
-  - cargo
   - context-builder
 ---
-# Context Builder — 一种智能的代码分析工具
+# Context Builder — 一个用于生成代码上下文的工具
 
-该工具可以从任意代码库目录生成结构化的 Markdown 文件，适用于大型语言模型（LLM）的阅读。生成的文件经过优化，具备基于相关性的文件排序、自动的令牌预算控制以及智能的默认配置。
+该工具可以从任意代码库目录生成一个结构化的 Markdown 文件，适用于大型语言模型（LLM）的阅读。生成的文件经过优化，具有基于相关性的文件排序、对抽象语法树（AST）敏感的文件签名、自动的令牌预算控制以及智能的默认配置。
 
 ## 安装
 
-```bash
-cargo install context-builder
-```
+预构建的二进制文件（带有 SHA256 校验和）也可从 [GitHub 仓库](https://github.com/igorls/context-builder/releases/latest) 下载。  
+验证版本：`context-builder --version`（预期输出：`0.8.3`）
 
-验证安装结果：`context-builder --version`
+## 安全性与路径范围控制
+
+> **重要提示**：此工具会读取指定目录中的文件内容。使用该工具的代理程序必须遵守以下规则：
+
+- **仅针对明确的项目目录**：始终提供项目根目录的完整路径（例如 `/home/user/projects/myapp`），切勿指向用户主目录、系统路径或凭证存储目录（如 `~/.ssh`、`~/.aws`、`/etc`、`~/`、`/`）。
+- **使用过滤条件**：使用 `-f` 选项来限制文件类型（例如 `-f rs,toml,md`），以减少信息泄露的风险。
+- **将输出文件保存在项目内部**：将结果写入项目的 `docs/` 文件夹或 `/tmp/`，切勿保存在共享或公共位置。
+- **共享前请审核**：输出文件可能包含 API 密钥、敏感信息或凭证；务必审核内容，或使用 `.gitignore` 规则排除敏感文件。
+
+**内置的安全保护机制（始终启用，无需额外配置）：**
+- 自动排除 `.git/`、`node_modules/` 及其他 19 个敏感目录。
+- 当存在 `.git` 目录时，会尊重 `.gitignore` 规则。
+- 通过 UTF-8 标识自动识别并跳过二进制文件。
+- 自动排除输出文件和缓存目录，以防被恶意利用。
 
 ## 使用场景
 
-- **深度代码审查**：将整个代码库输入到大型语言模型中，用于架构分析或错误排查。
+- **深度代码审查**：将整个代码库传递给 LLM 进行架构分析或错误排查。
 - **新员工入职**：生成项目快照，帮助理解不熟悉的代码库。
-- **基于差异的更新**：在代码更改后，仅生成差异部分，以更新大型语言模型的理解。
+- **基于差异的更新**：代码更改后，仅生成差异部分以更新 LLM 的理解。
+- **提取函数/类签名**：提取函数/类的签名，以便更高效地分析代码结构。
 - **跨项目研究**：快速打包依赖项的源代码以供分析。
 
 ## 核心工作流程
 
-### 1. 全项目上下文（快速生成）
+### 1. 快速生成代码上下文（整个项目）
 
-```bash
-context-builder -d /path/to/project -y -o context.md
-```
+- 使用 `-y` 选项可跳过确认提示（当路径范围明确时推荐使用）。
+- 输出内容包括：头部信息 → 文件树 → 按相关性排序的文件（配置文件 → 源代码 → 测试文件 → 文档文件）。
 
-- 使用 `-y` 选项可跳过确认提示（非交互式使用时必备）。
-- 输出内容包括：头部文件、文件树以及按相关性排序的文件（配置文件、源代码文件、测试文件、文档文件）。
+### 2. 生成特定类型文件的上下文
 
-### 2. 指定类型的文件上下文
+- 使用 `-f rs,toml` 仅包含 Rust 和 TOML 文件。
+- 使用 `-i docs,assets` 可按名称排除某些目录。
 
-```bash
-context-builder -d /path/to/project -f rs,toml -i docs,assets -y -o context.md
-```
+### 3. 提取抽象语法树签名（使用最少令牌）
 
-- 使用 `-f rs,toml` 选项仅包含 Rust 和 TOML 文件。
-- 使用 `-i docs,assets` 选项可排除指定的目录。
+- 用提取的函数/类签名替换文件内容（每个文件约 4K 到 15K 个令牌）。
+- 支持 8 种语言：Rust、JavaScript（.js/.jsx）、TypeScript（.ts/.tsx）、Python、Go、Java、C、C++。
+- 安装时需启用 `--features tree-sitter-all` 选项。
 
-### 3. 令牌预算限制
+### 4. 带有结构摘要的签名
 
-```bash
-context-builder -d /path/to/project --max-tokens 100000 -y -o context.md
-```
+- 使用 `--structure` 选项可添加文件结构摘要（例如：“6 个函数，2 个结构体，1 个实现块”）。
+- 结合 `--visibility public` 选项可仅显示公开 API 的内容。
 
-- 将输出长度限制在约 10 万个令牌以内。
-- 文件会按相关性顺序被包含在输出中，直到令牌预算用完。
-- 如果输出超过 12.8 万个令牌，系统会自动发出警告。
+### 5. 控制令牌数量
 
-### 4. 令牌数量预览
+- 将输出令牌数量限制在约 100K 个以内。
+- 文件按相关性顺序输出，直到令牌预算用完。
+- 如果输出超过 128K 个令牌，系统会自动发出警告。
 
-```bash
-context-builder -d /path/to/project --token-count
-```
+### 6. 预览令牌数量
 
-- 先显示令牌数量的预估值，无需生成实际输出。
-- 可先使用此功能判断是否需要进一步过滤。
+- 先打印令牌数量预估值，无需生成实际文件内容。
+- 可先使用此选项判断是否需要进一步过滤或启用 `--signatures` 选项。
 
-### 5. 增量差异分析
+### 7. 增量差异分析
 
-首先确保 `context-builder.toml` 文件存在：
-
-```toml
-timestamped_output = true
-auto_diff = true
-```
-
-然后运行两次命令：
-
-```bash
-# First run: baseline snapshot
-context-builder -d /path/to/project -y
-
-# After code changes: generates diff annotations
-context-builder -d /path/to/project -y
-```
-
-**（仅输出差异部分，不包含完整文件内容）**
+- 首先确保 `context-builder.toml` 文件存在。
+- 然后运行两次命令以获取最小化的输出（仅显示差异部分）。
 
 ## 智能默认配置
 
 以下行为无需额外配置：
 
-| 功能 | 默认设置 |
+| 功能 | 行为 |
 |---------|----------|
-| **自动排除**：`node_modules`、`dist`、`build`、`__pycache__`、`.venv`、`vendor` 等目录会被自动排除。 |
-| **自我排除**：输出文件、缓存目录以及 `context-builder.toml` 本身也会被自动排除。 |
-| **`.gitignore` 文件**：如果存在 `.git` 目录，会自动应用 `.gitignore` 规则。 |
-| **二进制文件检测**：通过 UTF-8 标识自动跳过二进制文件。 |
-| **文件排序**：配置文件和文档文件优先显示，接着是源代码文件（入口文件在前），然后是测试文件、构建/持续集成相关文件、锁定文件。
+| **自动排除** | 自动排除 `node_modules`、`dist`、`build`、`__pycache__`、`.venv` 等敏感目录。 |
+| **自动排除输出文件** | 自动排除输出文件、缓存目录和 `context-builder.toml` 文件。 |
+| **自动应用 `.gitignore` 规则** | 当存在 `.git` 目录时自动忽略相关文件。 |
+| **识别二进制文件** | 通过 UTF-8 标识自动跳过二进制文件。 |
+| **文件排序** | 输出顺序为：配置文件 → 源代码 → 测试文件 → 构建/持续集成相关文件 → 锁定文件。
 
-## 命令行参考（与代理相关的语法）
+## 命令行参考（代理程序相关参数）
 
-| 选项 | 作用 | 使用说明 |
+| 参数 | 作用 | 使用说明 |
 |------|---------|----------------|
-| `-d <路径>` | 指定输入目录 | 为确保准确性，请始终使用绝对路径。 |
-| `-o <输出路径>` | 指定输出文件路径 | 可将结果写入临时目录或文档目录。 |
-| `-f <文件扩展名>` | 按文件扩展名过滤文件 | 例如：`-f rs,toml,md`。 |
-| `-i <要排除的目录/文件>` | 指定要排除的目录或文件 | 例如：`-i tests,docs,assets`。 |
-| `--max-tokens <令牌上限>` | 设置令牌使用上限 | 对于大多数模型使用 `100000`，Gemini 模型使用 `200000`。 |
+| `-d <PATH>` | 指定输入目录 | 为确保准确性，请使用绝对路径。 |
+| `-o <FILE>` | 指定输出路径 | 将结果保存在项目的 `docs/` 文件夹或 `/tmp/`。 |
+| `-f <EXT>` | 按文件扩展名过滤 | 例如：`-f rs,toml,md`。 |
+| `-i <NAME>` | 指定要排除的目录或文件 | 例如：`-i tests,docs,assets`。 |
+| `--max-tokens <N>` | 设置令牌数量上限 | 对大多数模型使用 `100000`，对 Gemini 模型使用 `200000`。 |
 | `--token-count` | 预估令牌数量 | 先运行此选项判断是否需要过滤。 |
-| `-y` | 跳过所有提示 | **在代理工作流程中必须使用此选项**。 |
-| `--preview` | 仅显示文件树结构 | 快速查看文件结构而不生成输出。 |
-| `--diff-only` | 仅输出差异部分 | 适用于增量更新，以减少令牌消耗。 |
-| `--init` | 自动创建配置文件 | 自动识别项目中的文件类型。 |
+| `-y` | 跳过所有提示 | 仅在使用明确指定的项目路径时使用。 |
+| `--preview` | 仅显示文件树结构 | 快速预览文件内容，不生成输出。 |
+| `--diff-only` | 仅输出差异部分 | 适用于增量更新，减少令牌使用量。 |
+| `--signatures` | 提取抽象语法树签名 | 安装时需启用 `tree-sitter-all` 功能。 |
+| `--structure` | 添加结构摘要 | 与 `--signatures` 一起使用，以获得更简洁的输出。 |
+| `--visibility <V>` | 按可见性过滤 | 默认为 `all`（所有文件），`public`（仅显示公开 API）。 |
+| `--truncate <MODE>` | 自动选择截断策略 | `smart`（基于 AST 的智能截断）或 `simple`。 |
+| `--init` | 创建配置文件 | 自动检测项目中的文件类型。 |
+| `--clear-cache` | 清除差异缓存 | 如果差异输出过时或错误，请使用此选项。 |
 
 ## 使用示例
 
 ### 示例：深度代码审查
 
-生成指定范围的上下文文件，然后提交给大型语言模型进行深入分析：
+生成特定范围的代码上下文文件，然后将其传递给 LLM 进行深入分析。
 
-```bash
-# Step 1: Generate focused context
-context-builder -d /path/to/project -f rs,toml --max-tokens 120000 -y -o docs/deep_think_context.md
+### 示例：仅显示 API 接口信息
 
-# Step 2: Feed to LLM with a review prompt
-# Attach docs/deep_think_context.md and ask for:
-# - Architecture review
-# - Bug hunting
-# - Performance analysis
-```
+仅提取文件的 API 签名信息。
 
 ### 示例：比较两个版本
 
-```bash
-# Generate context for both versions
-context-builder -d ./v1 -f py -y -o /tmp/v1_context.md
-context-builder -d ./v2 -f py -y -o /tmp/v2_context.md
+比较两个代码库的差异。
 
-# Feed both to an LLM for comparative analysis
-```
+### 示例：提取单项目中的代码片段
 
-### 示例：从单仓库中提取特定部分进行分析
-
-```bash
-# Focus on a specific package within a monorepo
-context-builder -d /path/to/monorepo/packages/core -f ts,tsx -i __tests__,__mocks__ -y -o core_context.md
-```
-
-### 示例：在制定策略前快速检查文件数量
-
-```bash
-# Check if the project fits in context
-context-builder -d /path/to/project --token-count
-
-# If > 128K tokens, scope it down:
-context-builder -d /path/to/project -f rs,toml --max-tokens 100000 --token-count
-```
+在决定处理策略前，先快速查看代码规模。
 
 ## 配置文件（可选）
 
-在项目根目录下创建 `context-builder.toml` 文件以保存配置：
-
-```toml
-output = "docs/context.md"
-output_folder = "docs"
-filter = ["rs", "toml"]
-ignore = ["target", "benches"]
-timestamped_output = true
-auto_diff = true
-max_tokens = 120000
-```
-
-可以使用 `context-builder --init` 自动初始化配置。
+在项目根目录创建 `context-builder.toml` 文件以保存配置设置。
 
 ## 输出格式
 
-生成的 Markdown 文件遵循以下结构：
+生成的 Markdown 文件结构如下：
 
-    # 目录结构报告
-    [项目名称、过滤规则、内容哈希值]
+```
+# 目录结构报告
+[元数据：项目名称、过滤条件、内容哈希]
 
-    ## 文件树
-    [包含的文件结构可视化展示]
+## 文件树
+[包含的文件结构]
 
-    ## 文件列表
-    ### 文件：src/main.rs
-    [代码块，文件内容按扩展名高亮显示]
+## 文件列表
+### 文件: src/main.rs
+[文件内容及语法高亮显示（根据文件扩展名区分）
 
-    ### 文件：src/lib.rs
-    ...
+### 文件: src/lib.rs
+[...]
+```
 
-文件会按照**相关性顺序**显示（而非字母顺序），优先显示配置文件和入口文件，从而帮助大型语言模型更快地理解项目结构。
+文件按相关性排序（非字母顺序），优先显示配置文件和入口文件，以便 LLM 更快地理解代码结构。
+
+当启用 `--signatures` 选项时，文件内容会被替换为提取的签名：
+
+```
+### 文件: src/lib.rs
+[...]
+```
 
 ## 错误处理
 
-- 如果未安装 `context-builder`，请使用 `cargo install context-builder` 进行安装。
-- 如果输出超出令牌限制，可以使用 `--max-tokens` 选项设置上限，或通过 `-f` 和 `-i` 选项缩小筛选范围。
-- 即使项目没有 `.git` 目录，系统也会自动排除相关文件，以防止依赖项信息过多。
-- 如果差异输出显得过时或不准确，可以使用 `--clear-cache` 选项清除缓存。
+- 如果未安装 `context-builder`，请使用 `cargo install context-builder --features tree-sitter-all` 进行安装。
+- 如果某个文件的签名信息为空，可能是因为该语言不支持或相关功能未在安装时启用。
+- 如果输出超出令牌限制，可以调整 `--max-tokens` 参数，或使用 `-f`、`-i` 选项进行过滤。
+- 即使项目没有 `.git` 目录，系统仍会自动排除敏感文件。
+- 如果差异输出过时或错误，请使用 `--clear-cache` 选项清除缓存。

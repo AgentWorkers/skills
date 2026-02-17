@@ -8,6 +8,14 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 OPENCLAW_CONFIG="${OPENCLAW_CONFIG:-$HOME/.openclaw/openclaw.json}"
 BRAINDB_PORT="${BRAINDB_PORT:-3333}"
 BACKUP_DIR="$HOME/.openclaw/braindb-backup"
+DO_MIGRATE=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --migrate) DO_MIGRATE=true ;;
+    --port=*) BRAINDB_PORT="${arg#*=}" ;;
+  esac
+done
 
 echo "🧠 BrainDB Installer"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -191,15 +199,15 @@ else
   if [ "$FILE_COUNT" -gt "0" ]; then
     echo "   Found $FILE_COUNT workspace files to import."
     echo ""
-    echo "   Migration is fully local by default (no external API calls)."
-    read -p "   Import existing memories into BrainDB? [Y/n] " -n 1 -r REPLY
-    echo ""
-    
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+    if [ "$DO_MIGRATE" = true ]; then
+      echo "   Migrating (local-only, no external API calls)..."
       echo ""
       node "$SCRIPT_DIR/migrate.cjs" "$WORKSPACE" --braindb "http://localhost:$BRAINDB_PORT"
     else
-      echo "   Skipped. Run later: node $SCRIPT_DIR/migrate.cjs $WORKSPACE"
+      echo "   Run migration to import existing knowledge:"
+      echo "   node $SCRIPT_DIR/migrate.cjs $WORKSPACE --braindb http://localhost:$BRAINDB_PORT"
+      echo ""
+      echo "   Or re-run with: ./install.sh --migrate"
     fi
   else
     echo "   No workspace files found to migrate."

@@ -2,6 +2,7 @@ import express from 'express';
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { createCaptureRoute, warmPatternCache } from './auto-capture.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = process.env.BRAINDB_DATA || join(__dirname, 'data');
@@ -362,19 +363,42 @@ async function getQueryEmbedding(query) {
 }
 
 // Query expansion: map colloquial phrases to domain terms
+// ─── Action Intent Detection ─────────────────────────────
+function detectActionIntent(query) {
+  const lq = query.toLowerCase();
+  const actionPatterns = [
+    /\b(send|post|check|scan|run|build|create|deploy|fetch|search|schedule|set up|configure|install|update|restart|stop|start|delete|remove|monitor|automate|notify|alert)\b/,
+    /\b(i need to|i want to|can you|please|let's|let me|go ahead and)\b/,
+    /\b(what tool|which tool|what's the command|what script)\b/,
+  ];
+  return actionPatterns.some(p => p.test(lq));
+}
+
 function expandQueryLocal(query) {
-  const expansions = {
-    'make money': 'revenue income earnings profit',
+  // Generic expansions — override/extend via config.json "queryExpansions"
+  const defaults = {
+    'make money': 'revenue income earnings profit client',
     'how much': 'amount total cost price revenue',
-    'who am i': 'Jarvis CSO identity role',
+    'who am i': 'identity role name title background',
+    'what am i': 'identity role name assistant agent',
+    'who is': 'identity background role name profile',
+    'my name': 'name identity who am called',
     'what happened': 'event milestone decision',
     'build next': 'product roadmap app idea project',
-    'team members': 'AI agents employees roster scout forge pulse',
-    'reach out': 'contact phone email whatsapp',
-    'the app': 'peridocs myepbuddy product software',
-    'the business': 'Oaiken LLC revenue clients',
-    'my family': 'Michelle kids Madison Kinsley Cameron Julian',
+    'my tools': 'tools scripts commands CLI platform',
+    'what tools': 'tools scripts commands CLI platform',
+    'my computer': 'hardware computer machine server',
+    'work on': 'product roadmap opportunity project next',
+    'should we': 'product roadmap opportunity project next priority',
+    'kids': 'children family school son daughter',
+    'children': 'kids family school son daughter',
+    'family': 'wife kids children spouse partner',
+    'wife': 'spouse partner family',
+    'personality': 'behavior communication style tone vibe soul',
+    'how do i': 'workflow process steps guide instructions',
   };
+  const custom = CONFIG.queryExpansions || {};
+  const expansions = { ...defaults, ...custom };
   let expanded = query;
   const lq = query.toLowerCase();
   for (const [phrase, terms] of Object.entries(expansions)) {
@@ -414,6 +438,16 @@ async function semanticRecall(query, maxResults = 10) {
       }
     }
 
+    // Term-coverage boost: memories containing more expansion terms rank higher
+    const expansionTerms = expandedQuery.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    if (expansionTerms.length > 3) {
+      for (const mem of scored) {
+        const memText = `${mem.trigger} ${mem.content}`.toLowerCase();
+        const coverage = expansionTerms.filter(t => memText.includes(t)).length / expansionTerms.length;
+        mem.similarity += coverage * 0.08;
+      }
+    }
+
     scored.sort((a, b) => b.similarity - a.similarity);
     return scored.slice(0, maxResults);
   } catch (e) {
@@ -439,9 +473,12 @@ async function addToEmbeddingCache(id, trigger, content, strength, type, shard) 
 }
 
 // ─── Recall (Read Path — HA-aware, semantic + graph) ────
-async function recall({ query, context = {}, maxResults = 10, spreadDepth = 1, shards = null }) {
+async function recall({ query, context = {}, maxResults = 10, spreadDepth = 1, shards = null, executionAware = 'auto' }) {
   const targetShards = (shards || Object.keys(SHARDS).filter(s => s !== 'association'))
     .filter(s => shardHealth[s].status !== 'offline');
+
+  const isActionQuery = executionAware === 'on' || 
+    (executionAware === 'auto' && detectActionIntent(query));
 
   if (targetShards.length === 0) {
     return []; // All shards offline — return empty rather than error
@@ -529,24 +566,46 @@ async function recall({ query, context = {}, maxResults = 10, spreadDepth = 1, s
   }
 
   // Sort: semantic similarity is primary signal, text match is supplementary
-  // Semantic matches with sim > 0.4 always rank above text-only matches
+  // When action intent detected, procedural/execution memories get a boost
   allResults.sort((a, b) => {
     const simA = a.similarity || 0;
     const simB = b.similarity || 0;
-    // Tier 1: Strong semantic matches (sim > 0.4) — ranked by similarity
-    // Tier 2: Weak semantic + text matches — ranked by relevance
-    const tierA = simA > 0.4 ? 1 : 0;
-    const tierB = simB > 0.4 ? 1 : 0;
-    if (tierA !== tierB) return tierB - tierA; // higher tier wins
+
+    let execBoostA = 0, execBoostB = 0;
+    if (isActionQuery) {
+      if (a.source_shard === 'procedural') execBoostA += 0.1;
+      if (b.source_shard === 'procedural') execBoostB += 0.1;
+      const ctxA = typeof a.context === 'object' ? a.context : {};
+      const ctxB = typeof b.context === 'object' ? b.context : {};
+      if (ctxA.source === 'execution-awareness') execBoostA += 0.15;
+      if (ctxB.source === 'execution-awareness') execBoostB += 0.15;
+      if (ctxA.category === 'tool-catalog') execBoostA += 0.05;
+      if (ctxB.category === 'tool-catalog') execBoostB += 0.05;
+    }
+
+    const effSimA = simA + execBoostA;
+    const effSimB = simB + execBoostB;
+
+    const tierA = effSimA > 0.4 ? 1 : 0;
+    const tierB = effSimB > 0.4 ? 1 : 0;
+    if (tierA !== tierB) return tierB - tierA;
     if (tierA === 1) {
-      // Within semantic tier: rank by similarity (strength as tiebreaker)
-      const scoreA = simA + (a.strength || 0) * 0.1;
-      const scoreB = simB + (b.strength || 0) * 0.1;
+      const scoreA = effSimA + (a.strength || 0) * 0.1;
+      const scoreB = effSimB + (b.strength || 0) * 0.1;
       return scoreB - scoreA;
     }
-    // Within text tier: rank by relevance
     return (b.relevance || 0) - (a.relevance || 0);
   });
+
+  if (isActionQuery) {
+    for (const r of allResults) {
+      if (r.source_shard === 'procedural' || 
+          (typeof r.context === 'object' && r.context?.source === 'execution-awareness')) {
+        r.executionRelevant = true;
+      }
+    }
+  }
+
   return allResults.slice(0, maxResults);
 }
 
@@ -669,12 +728,17 @@ app.post('/memory/encode', async (req, res) => {
 
 app.post('/memory/recall', async (req, res) => {
   try {
-    const results = await recall(req.body);
+    const { query, executionAware, ...rest } = req.body;
+    const isAction = executionAware === 'on' || 
+      (executionAware !== 'off' && detectActionIntent(query || ''));
+    const results = await recall({ query, executionAware, ...rest });
     const online = Object.values(shardHealth).filter(s => s.status === 'online').length;
+    const execResults = results.filter(r => r.executionRelevant).length;
     res.json({
       ok: true, count: results.length, results,
       shardsQueried: online,
       degraded: online < Object.keys(SHARDS).length,
+      ...(isAction && { actionIntent: true, executionResults: execResults }),
     });
   } catch (e) {
     res.status(400).json({ ok: false, error: e.message });
@@ -733,6 +797,9 @@ app.post('/memory/execution-focus', async (req, res) => {
     res.status(400).json({ ok: false, error: e.message, latency: Date.now() - start });
   }
 });
+
+// ─── Auto-Capture: Learn from tool executions ────────────
+app.post('/memory/capture-execution', createCaptureRoute(encode, recall));
 
 app.post('/memory/decay', async (req, res) => {
   try { res.json({ ok: true, ...(await runDecay()) }); }
@@ -1479,7 +1546,7 @@ app.post('/memory/auto-encode', async (req, res) => {
       `- [${m.type}] ${m.trigger}: ${(m.content || '').slice(0, 100)}`
     ).join('\n');
 
-    const routerPrompt = `You are a memory encoding router for an AI agent (Jarvis) serving Jacy Hoag — USAF MSgt, runs Oaiken LLC, building software products.
+    const routerPrompt = `You are a memory encoding router for an AI agent's persistent memory system.
 
 Given a conversation turn, decide what lasting memories should be stored. Focus on PERSONAL, USER-SPECIFIC data that an LLM wouldn't know from training:
 - Decisions made, preferences stated
@@ -1516,7 +1583,7 @@ Rules:
 - Skip greetings, routine status checks, "yes/no" responses, tool outputs
 - Distill into clean memory text — facts, not quotes
 - shard choices: "semantic" (facts/prefs/identity), "procedural" (rules/workflows/lessons), "episodic" (events/milestones/decisions)
-- motivation_delta values 0-1: survive (self-preservation), serve (helping Jacy), grow (learning), protect (security), build (creating)
+- motivation_delta values 0-1: survive (self-preservation), serve (helping user), grow (learning), protect (security), build (creating)
 - Output 0-5 memories per turn (usually 0-1)
 - If not worth remembering, set worth_remembering=false and explain in skip_reason`;
 
@@ -1603,11 +1670,85 @@ Rules:
   }
 });
 
+// ─── Session Context — Compaction-Proof Conversational Memory ─────────
+const SESSION_CONTEXT_PREFIX = 'session-ctx::';
+
+app.post('/memory/session-context', async (req, res) => {
+  const start = Date.now();
+  const { sessionKey, topic, activeTask, lastUserMessage, lastAgentAction, pendingQuestions, decisions, summary } = req.body;
+  if (!sessionKey) return res.status(400).json({ ok: false, error: 'sessionKey required' });
+
+  const contextId = `${SESSION_CONTEXT_PREFIX}${sessionKey}`;
+  const content = [
+    summary && `Summary: ${summary}`,
+    topic && `Topic: ${topic}`,
+    activeTask && `Active task: ${activeTask}`,
+    lastUserMessage && `Last user said: ${lastUserMessage}`,
+    lastAgentAction && `Agent was doing: ${lastAgentAction}`,
+    pendingQuestions && `Pending: ${pendingQuestions}`,
+    decisions && `Decisions: ${decisions}`,
+  ].filter(Boolean).join('\n');
+  if (!content) return res.status(400).json({ ok: false, error: 'No context fields provided' });
+
+  try {
+    // Delete previous session context (overwrite)
+    for (const shardName of ['episodic']) {
+      try {
+        await cypher(shardName, {
+          statement: `MATCH (m:Memory) WHERE m.trigger STARTS WITH $prefix DETACH DELETE m`,
+          parameters: { prefix: contextId },
+        });
+      } catch {}
+    }
+    // Remove from embedding cache
+    for (let i = embeddingCache.length - 1; i >= 0; i--) {
+      if (embeddingCache[i].trigger && embeddingCache[i].trigger.startsWith(contextId)) {
+        embeddingCache.splice(i, 1);
+      }
+    }
+    const result = await encode({
+      event: contextId,
+      content,
+      context: { source: 'session-context', sessionKey, when: new Date().toISOString() },
+      shard: 'episodic',
+      motivationDelta: { survive: 0.8, serve: 0.5 },
+      dedupThreshold: 0,
+    });
+    res.json({ ok: true, id: result.id, latency: Date.now() - start });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
+app.get('/memory/session-context', async (req, res) => {
+  const start = Date.now();
+  const { sessionKey } = req.query;
+  const prefix = sessionKey ? `${SESSION_CONTEXT_PREFIX}${sessionKey}` : SESSION_CONTEXT_PREFIX;
+  try {
+    const r = await cypher('episodic', {
+      statement: `MATCH (m:Memory) WHERE m.trigger STARTS WITH $prefix
+        RETURN m.id AS id, m.content AS content, m.trigger AS trigger, m.created AS created
+        ORDER BY m.created DESC LIMIT ${sessionKey ? 1 : 5}`,
+      parameters: { prefix },
+    });
+    const data = r?.[0]?.data;
+    if (sessionKey) {
+      const row = data?.[0];
+      res.json({ ok: true, context: row ? { id: row.row[0], content: row.row[1], trigger: row.row[2], created: row.row[3] } : null, latency: Date.now() - start });
+    } else {
+      res.json({ ok: true, contexts: (data || []).map(d => ({ id: d.row[0], content: d.row[1], created: d.row[2] })), latency: Date.now() - start });
+    }
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🧠 BrainDB Gateway v0.4.0 listening on port ${PORT}`);
+  console.log(`🧠 BrainDB Gateway v0.5.0 listening on port ${PORT}`);
   console.log(`   Architecture: ${ARCHITECTURE}`);
   console.log(`   Shards: ${Object.keys(SHARDS).join(', ')}`);
   console.log(`   Auth: ${API_KEY ? 'API key required' : 'open (localhost only)'}`);
   console.log(`   Write queue: ${writeQueue.length} pending`);
+  warmPatternCache(recall).catch(() => {});
 });

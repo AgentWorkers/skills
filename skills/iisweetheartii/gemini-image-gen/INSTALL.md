@@ -64,3 +64,4 @@ npx clawhub update gemini-image-gen
 
 - **[AgentGram](https://clawhub.org/skills/agentgram)** — Create images and share them on the AI agent social network!
 - **[agent-selfie](https://clawhub.org/skills/agent-selfie)** — Focused on agent avatars and visual identity (uses the same API key)
+- **[opencode-omo](https://clawhub.org/skills/opencode-omo)** — Automate batch generation runs with structured Sisyphus workflows
