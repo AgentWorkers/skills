@@ -1,206 +1,107 @@
 ---
 name: peaq-robotics
-description: 通过启动 ROS 2 节点并调用相关服务来控制 peaq-robotics-ros2（例如：创建/读取数据、添加/读取存储内容、访问控制、连接 USDT 等）。当请求中提到 peaq ROS2、机器人 DID、区块链存储、访问权限、连接 USDT 或 ROS 2 服务调用时，请使用此方法。
+description: >
+  **OpenClaw 的 peaq-robotics-ros2 核心运行时**  
+  用于启动/停止 ROS 2 节点，并调用 DID（数据存储）、存储以及访问控制服务。适用于需要运行现有的 peaq ROS2 工作区的场景（不涉及安装、构建或资金传输等操作）。
+metadata: {"openclaw":{"emoji":"robot","requires":{"bins":["ros2","python3"],"env":["PEAQ_ROS2_ROOT"]}}}
 ---
-# Peaq ROS 2 集成
+# peaq-robotics（核心功能）
 
-## 概述
+## 该技能的用途
 
-使用此技能，可以通过启动 ROS 2 节点并调用其服务来操作 peaq-robotics-ros2 工作空间，以实现身份验证、存储、访问控制以及 USDT 转换等功能。
+当机器已经具备可用的`peaq-robotics-ros2`工作空间，并且您希望OpenClaw能够运行ROS 2的核心节点并调用peaq服务时，可以使用此技能：
+- 创建/读取DID（Digital Identity）
+- 添加/读取存储数据
+- 执行与角色/权限相关的操作
 
-## 安装和共享（第一步）
+## 该技能不支持的功能
 
-1. **决定其他代理如何安装此技能：**
-   - **同一主机上共享：** 将此文件夹放置在 `~/.openclaw/skills/peaq-robotics`，以便主机上的所有代理都能看到它。
-   - **按工作空间划分：** 将其放置在 `<workspace>/skills/peaq-robotics`。
-   - **远程代理：** 将其发布到 ClawHub/ClawdHub，或传输打包好的 `peaq-robotics.skill` 文件。
+为了降低风险并简化在注册系统中的审批流程，该技能不支持以下功能：
+- 仓库克隆/构建自动化
+- 资金转移命令
+- 钱包操作
+- 通过环境变量覆盖来扩展可信设置/JSON配置
 
-2. **安装 peaq-robotics-ros2 仓库**（默认从 `https://github.com/peaqnetwork/peaq-robotics-ros2` 安装到 `~/peaq-robotics-ros2`）。此操作会自动将 `peaq_robot.example.yaml` 复制到 `peaq_robot.yaml`，并固定主网 WSS，同时自动运行 `colcon build --symlink-install`：
-   - `{baseDir}/scripts/peaq_ros2.sh install`
-   - **可选的固定版本：** `{baseDir}/scripts/peaq_ros2.sh install --ref <tag|commit>`
-   - **更新现有克隆：** `{baseDir}/scripts/peaq_ros2.sh install --update`
-   - **如果希望稍后构建，则跳过构建：** `{baseDir}/scripts/peaq_ros2.sh install --skip-build`
+如果您需要自动化安装、初始化或管理资金，请使用配套的管理员技能（`peaq-robotics-admin`）。
 
-**要求：** 主机上需要安装 ROS 2 和 `colcon`（安装器使用默认的 `ROS_SETUP`，位于 `/opt/ros/humble/setup.bash`）。
+## 必需的先决条件
 
-**安装器安全注意事项：**
-   - 仅接受 `origin` 指向官方 `peaqnetwork/peaq-robotics-ros2` 仓库的现有克隆。
-   - 安装器不会修改上游源代码。
-   - 为了可重复的安装，请使用 `--ref` 参数固定一个已知的标签/提交。
-   - 默认情况下，设置脚本仅从受信任的来源（`/opt/ros`、`<PEAQ_ROS2_ROOT>/install`）获取配置。如需允许自定义配置来源，请设置 `PEAQ_ROS2_TRUSTED_SETUP_ROOTS`（CSV 格式）或 `PEAQ_ROS2_TRUST_SETUP_OVERRIDES=1`。
+在使用核心命令之前，请确保满足以下条件：
+- 已安装ROS 2，并且ROS 2能够正常运行。
+- `peaq-robotics-ros2`工作空间已经存在且已完成构建。
+- `PEAQ_ROS2_ROOT`变量指向正确的仓库路径。
+- 配置文件`PEAQ_ROS2_CONFIG_YAML`已配置，或者使用默认路径`<PEAQ_ROS2_ROOT>/peaq_ros2/examples/config/peaq_robot.yaml`。
+- 当前shell会话已正确初始化ROS环境。
 
-**网络配置：**
-   - `PEAQ_ROS2_NETWORK_PRIMARY`（默认为 `wss://quicknode3.peaq.xyz`）
-   - `PEAQ_ROS2_NETWORK_FALLBACKS`（CSV 格式，默认为 `wss://quicknode1.peaq.xyz,wss://quicknode2.peaq.xyz,wss://peaq.api.onfinality.io/public-ws,wss://peaq-rpc.publicnode.com`）
-   - 如果主网络失败，`core-configure` 会自动重试并切换网络。
-   - 设置 `PEAQ_ROS2_PIN_NETWORK=0` 可以保持配置网络不变。
+## 手动设置指南（无需安装脚本）
 
-**钱包路径：**
-   - `PEAQ_ROS2_WALLET_PATH`（可选）用于在安装过程中设置钱包路径。默认值为 `~/.peaq_robot/wallet.json`。
+请根据`peaq-robotics-ros2`的官方文档，手动完成仓库克隆、构建和配置步骤，然后为OpenClaw运行时设置相应的环境变量：
 
-3. **通过 OpenClaw 技能配置环境变量**，以确保所有代理使用相同的 ROS 2 工作空间：
-   - `PEAQ_ROS2_ROOT`：peaq-robotics-ros2 仓库的根目录。
-   - `PEAQ_ROS2_CONFIG_YAML`：配置文件的路径。
-   - `ROS_DOMAIN_ID`（可选）：用于 ROS 2 域名隔离。
-   - `PEAQ_ROS2_LOG_DIR` 和 `PEAQ_ROS2_PID_DIR`（可选）：用于覆盖默认值（后缀为 `-<ROS_DOMAIN_ID>`）。
-
-**注意：** 如果从包含 `AGENTS.md`/`TOOLS.md` 的 OpenClaw 工作空间调用此技能，并且未设置 `PEAQ_ROS2_CONFIG_YAML`，辅助工具会自动在工作空间 `<workspace>/.peaq_robot/` 下创建一个配置文件 `peaq_robot.yaml`，并使用工作空间特有的钱包（`<workspace>/.peaq_robot/wallet.json`）。同时，会为每个工作空间自动分配一个稳定的 `ROS_DOMAIN_ID`（范围在 100–199 之间），以避免冲突。
-
-4. **确保代理可以运行 `ros2` 命令并访问已构建的工作空间。** 如果使用沙箱环境，请在已经包含 ROS 2 和 peaq-robotics-ros2 工作空间的专用容器中运行。
-
-### 邀请消息模板（复制/粘贴）
-
-**ClawHub/ClawdHub 安装（适用于远程代理）：**
-```
-clawhub install peaq-robotics && ~/.openclaw/skills/peaq-robotics/scripts/peaq_ros2.sh install
+```bash
+export PEAQ_ROS2_ROOT="$HOME/peaq-robotics-ros2"
+# optional
+export PEAQ_ROS2_CONFIG_YAML="$HOME/peaq-robotics-ros2/peaq_ros2_examples/config/peaq_robot.yaml"
 ```
 
-**同一主机上的共享安装：**
-```
-cp -R /path/to/peaq-robotics ~/.openclaw/skills/peaq-robotics && ~/.openclaw/skills/peaq-robotics/scripts/peaq_ros2.sh install
-```
+## 如果用户需要自定义辅助脚本
 
-安装技能后，请重启 OpenClaw 会话。
+建议用户创建仅包含所需设置和明确配置的自定义脚本：
 
-## 引导代理（资金来源）
-
-1. **确保 ROS 2 工作空间已构建，并且您有一个配置文件（通常是 `peaq_ros2_examples/config/peaq_robot.yaml`）。**
-2. **启动核心节点并激活它：**
-   - `{baseDir}/scripts/peaq_ros2.sh core-start`
-   - `{baseDir}/scripts/peaq_ros2.sh core-configure`
-   - `{baseDir}/scripts/peaq_ros2.sh core-activate`
-
-3. **获取钱包地址和 DID（将地址发送给自己以进行资金注入）：**
-   - `{baseDir}/scripts/peaq_ros2.sh core-address`
-   - `{baseDir}/scripts/peaq_ros2.sh core-did`
-
-4. **使用 PEAQ 代币为该地址提供资金。** 这将成为新代理的资金来源。
-
-## 新代理的入职流程
-
-1. **安装此技能（使用共享主机路径、工作空间路径或 ClawHub/ClawdHub）。**
-2. **通过技能配置设置 `PEAQ_ROS2_ROOT` 和 `PEAQ_ROS2_CONFIG_YAML`。**
-3. **启动核心节点并完成配置和激活。**
-4. **运行 `{baseDir}/scripts/peaq_ros2.sh core-address`，请求引导代理为其提供资金。**
-5. **资金注入完成后，运行 `{baseDir}/scripts/peaq_ros2.sh did-create '{"type":"robot"}'`。
-
-### 核心引导（用户友好型）**
-```
-~/.openclaw/skills/peaq-robotics/scripts/peaq_ros2.sh core-start && \
-~/.openclaw/skills/peaq-robotics/scripts/peaq_ros2.sh core-configure && \
-~/.openclaw/skills/peaq-robotics/scripts/peaq_ros2.sh core-activate
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+ros2 run peaq_ros2_core core_node --ros-args -p config.yaml_path:="$PEAQ_ROS2_CONFIG_YAML"
 ```
 
-**单独使用 `fund-request` 命令请求资金。**
+用户可以直接运行这些自定义脚本，或者继续使用该技能提供的命令来调用相关服务。
 
-### 资金请求模板（复制/粘贴）
-```
-peaq-robotics funding request:
-address: <PASTE_CORE_ADDRESS>
-reason: initial DID creation + storage/access ops
-amount: <AMOUNT> PEAQ
-```
+## 核心命令
 
-### 资金转移（代理之间）**
+### 节点生命周期相关命令
+- `{baseDir}/scripts/peaq_ros2.sh core-start`：启动peaq-robotics核心服务
+- `{baseDir}/scripts/peaq_ros2.sh core-configure`：配置peaq-robotics服务
+- `{baseDir}/scripts/peaq_ros2.sh core-activate`：激活peaq-robotics服务
+- `{baseDir}/scripts/peaq_ros2.sh core-stop`：停止peaq-robotics服务
 
-**使用已提供资金的代理向新代理转移 PEAQ：**
-- **检查余额：** `{baseDir}/scripts/peaq_ros2.sh balance [address]`
-- **向另一个代理转账：** `{baseDir}/scripts/peaq_ros2.sh fund <to_address> <amount>`
-- **生成请求：** `{baseDir}/scripts/peaq_ros2.sh fund-request [amount] [reason]`
+### 身份管理相关命令
+- `{baseDir}/scripts/peaq_ros2.sh did-create`：创建新的DID
+- `{baseDir}/scripts/peaq_ros2.sh did-create '{"type":"robot"}`：创建类型为“robot”的DID
+- `{baseDir}/scripts/peaq_ros2.sh did-create @/path/to/file.json`：创建指定路径的JSON文件
+- `{baseDir}/scripts/peaq_ros2.sh did-read`：读取指定路径的JSON文件
 
-**注意事项：**
-- `fund` 命令使用配置文件中的 `wallet.path` 指定的本地代理钱包。
-- `fund` 和 `tether-usdt-transfer` 命令默认是禁用的；在运行资金转移之前，请设置 `PEAQ_ROS2_ENABLE_TRANSFERS=1`。
-- 默认金额单位为 PEAQ；可以使用 `--planck` 传递原始的 Planck 单位。
-- 如果资金转移返回临时 WebSocket 错误，脚本会在失败前检查余额变化。
-- 当未配置 Pinata 时（`storage.mode` 缺失或 `pinata jwt` 为空），存储桥接默认使用本地 IPFS。
+### 存储管理相关命令
+- `{baseDir}/scripts/peaq_ros2.sh store-add sensor_data '{"temp":25.5}' FAST`：快速存储传感器数据
+- `{baseDir}/scripts/peaq_ros2.sh store-read sensor_data`：读取存储的数据
 
-### 一键式资金请求（复制/粘贴）
-```
-peaq-robotics fund-request: address=<ADDRESS> amount=<AMOUNT> PEAQ reason="DID + storage init"
-```
+### 访问控制相关命令
+- `{baseDir}/scripts/peaq_ros2.sh access-create-role operator 'Robot operator'`：创建名为“Robot operator”的角色
+- `{baseDir}/scripts/peaq_ros2.sh access-create-permission move_robot`：为“Robot operator”角色分配“move_robot”权限
+- `{baseDir}/scripts/peaq_ros2.sh access-assign-permission move_robot operator`：重新分配“move_robot”权限
+- `{baseDir}/scripts/peaq_ros2.sh access-grant-role operator did:peaq:<address>`：向指定地址的账户授予权限
 
-### 自动通知资金提供者（代理之间）
+### 身份卡管理相关命令
+- `{baseDir}/scripts/peaq_ros2.sh identity-card-json [name] [roles_csv] [endpoints_json] [metadata_json]`：生成身份卡信息
+- `{baseDir}/scripts/peaq_ros2.sh identity-card-did-create [name] [roles_csv] [endpoints_json] [metadata_json]`：创建新的身份卡
+- `{baseDir}/scripts/peaq_ros2.sh identity-card-did-read`：读取身份卡信息
 
-**如果您知道资金提供者的代理 ID，可以使用 OpenClaw 的代理间通信工具发送请求：**
-1. **生成请求行：** `{baseDir}/scripts/peaq_ros2.sh fund-request [amount] [reason]`
-2. **通过 `sessions_send` 将请求发送给资金提供者代理。**
+### 资金请求相关命令（仅提供模板，不支持资金转移）
+- `{baseDir}/scripts/peaq_ros2.sh fund-request [amount] [reason]`：提交资金请求
 
-### 代理间的通信（使用 OpenClaw）**
+## 行为与安全注意事项
+- 该技能本身不负责生成ROS配置脚本；环境初始化需在外部完成。
+- 输入的`@/path/file.json`文件必须位于以下路径：
+  - `peaq-robotics`技能文件夹
+  - `PEAQ_ROS2_ROOT`目录
+  - `peaq_ros2`工作空间下的`.peaq_robot`文件
+- JSON参数在调用ROS 2服务之前会进行解析和验证。
+- 服务请求的数据将以JSON对象的形式传递给`ros2 service call`（不支持Shell中的YAML插值）。
 
-代理可以通过 OpenClaw 会话进行通信：
-1. **创建另一个代理：** `openclaw agents add <agent-id> --workspace <dir> --non-interactive`
-2. **发送消息：** `openclaw agent --agent <agent-id> --message "<your message>"`
+## 一键操作提示
+- “启动peaq-robotics核心服务并创建我的DID。如果需要资金，请发送一条资金请求。”
+- “读取我的DID信息，将其存储为`agent_state`，然后再读取出来。”
+- “创建名为‘operator’的角色，为其分配‘move_robot’权限，并显示相应的响应。”
 
-**使用此方法将 `fund-request` 请求发送给资金提供者代理。**
+## 详细参考资料
 
-## 身份卡（与 DID 关联的联系记录）**
-
-使用身份卡将 DID 变为可操作的代理联系记录（包括名称、角色和端点）。这些信息在创建 DID 时会被嵌入其中。
-
-- **生成 JSON 文件：** `{baseDir}/scripts/peaq_ros2.sh identity-card-json [name] [roles_csv] [endpoints_json] [metadata_json]`
-- **使用身份卡元数据创建 DID：** `{baseDir}/scripts/peaq_ros2.sh identity-card-did-create [name] [roles_csv] [endpoints_json] [metadata_json]`
-- **从 DID 读取身份卡信息：** `{baseDir}/scripts/peaq_ros2.sh identity-card-did-read`
-
-**身份卡 JSON 的格式：**
-```
-{
-  "schema": "peaq.identityCard.v1",
-  "name": "Agent Name",
-  "roles": ["funder", "operator"],
-  "endpoints": {"openclaw": {"agentId": "funder"}},
-  "metadata": { "any": "extra fields" }
-}
-```
-
-**注意事项：**
-- `name` 默认为 OpenClaw 代理 ID（如果可用），否则使用主机名。
-- 对于现有的 DID，ROS2 核心服务不支持更新（仅支持创建）。
-
-## 核心工作流程
-
-### 启动节点（常见操作）
-
-1. **启动并激活核心节点：**
-   - `{baseDir}/scripts/peaq_ros2.sh core-start`
-   - `{baseDir}/scripts/peaq_ros2.sh core-configure`
-   - `{baseDir}/scripts/peaq_ros2.sh core-activate`
-
-**核心节点激活后，单独运行 `fund-request` 命令。**
-
-2. **可选节点：**
-   - **存储桥接：** `{baseDir}/scripts/peaq_ros2.sh storage-start`
-   - **事件节点：** `{baseDir}/scripts/peaq_ros2.sh events-start`
-   - **Tether 节点：** `{baseDir}/scripts/peaq_ros2.sh tether-start`（需要 tether 配置以及 `peaq_ros2_tether/js` 中的 npm 安装）
-   - **人形机器人桥接：** `{baseDir}/scripts/peaq_ros2.sh humanoid-start`
-
-### 调用服务**
-
-使用辅助脚本的子命令来调用常见服务：
-- **创建 DID（如果省略，则默认类型为 "robot"）：** `{baseDir}/scripts/peaq_ros2.sh did-create`
-- **使用元数据 JSON 或完整的 DID 文档创建 DID：** `{baseDir}/scripts/peaq_ros2.sh did-create '{"type":"robot"}`
-- **从文件创建 DID：** `{baseDir}/scripts/peaq_ros2.sh did-create @/path/to/did_doc.json`
-- **读取 DID：** `{baseDir}/scripts/peaq_ros2.sh did-read`
-- **存储数据：** `{baseDir}/scripts/peaq_ros2.sh store-add sensor_data '{"temp":25.5}' FAST`
-- **读取数据：** `{baseDir}/scripts/peaq_ros2.sh store-read sensor_data`
-- **访问控制：** `{baseDir}/scripts/peaq_ros2.sh access-create-role operator 'Robot operator'`
-
-**注意事项：**
-- `did-create` 命令将包含 DID 字段（`id`、`controller`、`services`、`verificationMethods` 等）的 JSON 视为完整的 DID 文档。
-- 纯元数据 JSON 会被封装到 DID 的 `services` 字段中（类型为 `peaqMetadata`），以便在链上保存。
-- 在每次服务调用之前（`did-create`、`store-add`、身份卡元数据），都会对 JSON 输入进行验证。
-- 服务负载会被序列化为 JSON 对象（而不是 shell 构建的 YAML 字符串），从而降低用户提供内容带来的注入风险。
-- 输入路径 `@/path/file.json` 仅限于允许的根目录（`skill folder`、`PEAQ_ROS2_ROOT` 和工作空间 `.peaq_robot`）；可以通过 `PEAQ_ROS2_JSON_ALLOWED_ROOTS` 设置额外的根目录。
-
-**有关完整的服务/参数映射和原始 ROS 2 主题/服务名称，请参阅 `references/peaq_ros2_services.md`。**
-
-## 安全性和防护措施**
-
-- 在执行任何可能产生链上费用或实际资金操作的步骤之前，请务必确认。
-- **切勿通过 ROS 2 服务传递私钥或助记词**；Tether 操作仅使用地址进行调用。
-- 钱包密钥应保持本地存储。辅助脚本避免在命令行中打印或传递助记词。
-- 如果在同一主机上运行多个 ROS 2 图谱，请为每个环境设置不同的 `ROS_DOMAIN_ID` 以避免冲突。
-
-## 参考资料**
-
-- **服务映射：** `references/peaq_ros2_services.md`
+有关所有服务名称和字段的详细信息，请参阅：
+- `references/peaq_ros2_services.md`

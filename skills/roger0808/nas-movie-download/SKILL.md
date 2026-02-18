@@ -1,41 +1,53 @@
 ---
 name: nas-movie-download
-description: 通过Jackett和qBittorrent搜索和下载电影。当用户需要从种子源下载电影或视频、搜索特定电影标题或管理电影下载时，可以使用这些工具。
+description: Search and download movies via Jackett and qBittorrent. Use when user wants to download movies or videos from torrent sources, search for specific movie titles, or manage movie downloads. Now includes automatic subtitle download support.
 ---
 
-# NAS电影下载
+# NAS Movie Download
 
-这是一个自动化电影下载系统，使用Jackett进行种子搜索，使用qBittorrent进行下载管理。
+Automated movie downloading system using Jackett for torrent search and qBittorrent for download management.
 
-## 配置
+**新功能：自动字幕下载支持！** 🎬
 
-### 环境变量
+## Configuration
 
-设置以下环境变量以确保该功能正常运行：
+### Environment Variables
 
-**Jackett配置：**
-- `JACKETT_URL`：Jackett服务地址（默认：http://192.168.1.246:9117）
-- `JACKETT_API_KEY`：Jackett API密钥（默认：o5gp976vq8cm084cqkcv30av9v3e5jpy）
+Set these environment variables for the skill to function properly:
 
-**qBittorrent配置：**
-- `QB_URL`：qBittorrent网页界面地址（默认：http://192.168.1.246:8888）
-- `QB_USERNAME`：qBittorrent用户名（默认：admin）
-- `QB_PASSWORD`：qBittorrent密码（默认：adminadmin）
+**Jackett Configuration:**
+- `JACKETT_URL`: Jackett service URL (default: http://192.168.1.246:9117)
+- `JACKETT_API_KEY`: Jackett API key (default: o5gp976vq8cm084cqkcv30av9v3e5jpy)
 
-### 索引器设置
+**qBittorrent Configuration:**
+- `QB_URL`: qBittorrent Web UI URL (default: http://192.168.1.246:8888)
+- `QB_USERNAME`: qBittorrent username (default: admin)
+- `QB_PASSWORD`: qBittorrent password (default: adminadmin)
 
-该系统支持Jackett的多种索引器。当前已配置的索引器包括：
+**Subtitle Configuration:**
+- `OPENSUBTITLES_API_KEY`: OpenSubtitles API key (optional, can also save to `config/opensubtitles.key`)
+- `SUBTITLE_LANGUAGES`: Default subtitle languages (default: zh-cn,en)
+
+### OpenSubtitles Setup
+
+1. 注册账号：https://www.opensubtitles.com
+2. 获取 API Key
+3. 保存到配置文件：`echo "your-api-key" > config/opensubtitles.key`
+
+### Indexer Setup
+
+The skill works with Jackett indexers. Currently configured indexers:
 - The Pirate Bay
 - TheRARBG
 - YTS
 
-请确保这些索引器已在Jackett中启用并正确配置，以获得最佳搜索效果。
+Ensure these indexers are enabled and configured in your Jackett installation for best results.
 
-## 使用方法
+## Usage
 
-### 搜索电影
+### Search Movies
 
-仅搜索电影信息，不进行下载：
+Search for movies without downloading:
 
 ```bash
 scripts/jackett-search.sh -q "Inception"
@@ -43,124 +55,217 @@ scripts/jackett-search.sh -q "The Matrix"
 scripts/jackett-search.sh -q "死期将至"  # Chinese movie names supported
 ```
 
-### 下载最高质量的版本
+### Download with Automatic Subtitles 🆕
 
-搜索并自动下载最高质量的版本：
+One-click download with automatic subtitle fetching:
 
 ```bash
-scripts/download-movie.sh -q "Inception"
+# Download movie and automatically download subtitles after completion
+scripts/download-movie.sh -q "Young Sheldon" -s -w
+
+# Download with specific languages
+scripts/download-movie.sh -q "Community" -s -l zh-cn,en
+
+# Download movie only (no subtitles)
 scripts/download-movie.sh -q "The Matrix"
 ```
 
-### 手动下载流程
+**参数说明：**
+- `-s, --with-subtitle`: 启用自动字幕下载
+- `-w, --wait`: 等待下载完成后自动下载字幕
+- `-l, --languages`: 指定字幕语言（默认：zh-cn,en）
 
-如需更精细地控制下载过程：
-1. 搜索电影：`scripts/jackett-search.sh -q "电影名称"`
-2. 查看搜索结果并复制磁力链接
-3. 将磁力链接添加到qBittorrent：`scripts/qbittorrent-add.sh -m "magnet:?xt=urn:btih:..."`
+### Manual Download Workflow
 
-### 测试配置
+For more control over the download process:
 
-验证Jackett和qBittorrent的配置是否正确：
+1. Search: `scripts/jackett-search.sh -q "movie name"`
+2. Review results and copy magnet link
+3. Add to qBittorrent: `scripts/qbittorrent-add.sh -m "magnet:?xt=urn:btih:..."`
+4. Download subtitles: `scripts/subtitle-download.sh -d "/path/to/downloaded/files"`
+
+### Subtitle Download Only
+
+Download subtitles for existing video files:
+
+```bash
+# Single file
+scripts/subtitle-download.sh -f "/path/to/video.mkv" -l zh-cn,en
+
+# Entire directory (recursive)
+scripts/subtitle-download.sh -d "/path/to/tv/show" -r
+
+# Specific languages
+scripts/subtitle-download.sh -d "/media/Young Sheldon" -l zh-cn,en,ja
+```
+
+**Language Codes:**
+- `zh-cn`: 中文简体
+- `zh-tw`: 中文繁体
+- `en`: 英文
+- `ja`: 日文
+- `ko`: 韩文
+
+### Test Configuration
+
+Verify your Jackett and qBittorrent setup:
 
 ```bash
 scripts/test-config.sh
 ```
 
-## 质量优先级
+## Quality Selection
 
-系统按以下顺序优先选择电影质量：
-1. **4K/UHD**：包含“4K”、“2160p”、“UHD”字样的电影
-2. **1080P/全高清**：包含“1080p”、“FHD”字样的电影
-3. **720P/高清**：包含“720p”、“HD”字样的电影
-4. **其他**：其他质量级别的电影
+The skill automatically prioritizes quality in this order:
 
-使用`download-movie.sh`命令时，系统会自动选择可用种子中的最高质量版本。
+1. **4K/UHD**: Contains "4K", "2160p", "UHD"
+2. **1080P/Full HD**: Contains "1080p", "FHD"
+3. **720P/HD**: Contains "720p", "HD"
+4. **Other**: Other quality levels
 
-## 脚本详情
+When using `download-movie.sh`, the highest quality available torrent will be selected automatically.
+
+## Script Details
 
 ### jackett-search.sh
 
-用于在Jackett中搜索种子文件。
+Search Jackett for torrents.
 
-**参数：**
-- `-q, --query`：搜索查询（必填）
-- `-u, --url`：Jackett服务地址（可选，使用环境变量）
-- `-k, --api-key`：API密钥（可选，使用环境变量）
+**Parameters:**
+- `-q, --query`: Search query (required)
+- `-u, --url`: Jackett URL (optional, uses env var)
+- `-k, --api-key`: API key (optional, uses env var)
 
-**示例：**
+**Example:**
 ```bash
 scripts/jackett-search.sh -q "Inception" -u http://192.168.1.246:9117
 ```
 
 ### qbittorrent-add.sh
 
-用于将搜索到的种子文件添加到qBittorrent。
+Add torrent to qBittorrent.
 
-**参数：**
-- `-m, --magnet`：磁力链接（必填）
-- `-u, --url`：qBittorrent服务地址（可选，使用环境变量）
-- `-n, --username`：用户名（可选，使用环境变量）
-- `-p, --password`：密码（可选，使用环境变量）
+**Parameters:**
+- `-m, --magnet`: Magnet link (required)
+- `-u, --url`: qBittorrent URL (optional, uses env var)
+- `-n, --username`: Username (optional, uses env var)
+- `-p, --password`: Password (optional, uses env var)
 
-**示例：**
+**Example:**
 ```bash
 scripts/qbittorrent-add.sh -m "magnet:?xt=urn:btih:..."
 ```
 
 ### download-movie.sh
 
-一键完成搜索和下载。
+One-click search and download with optional subtitle support.
 
-**参数：**
-- `-q, --query`：电影名称（必填）
+**Parameters:**
+- `-q, --query`: Movie name (required)
+- `-s, --with-subtitle`: Enable automatic subtitle download
+- `-w, --wait`: Wait for download to complete before downloading subtitles
+- `-l, --languages`: Subtitle languages (default: zh-cn,en)
 
-**示例：**
+**Example:**
 ```bash
+# Basic download
 scripts/download-movie.sh -q "The Matrix"
+
+# Download with subtitles
+scripts/download-movie.sh -q "Young Sheldon" -s -w -l zh-cn,en
 ```
 
-## 提示与最佳实践：
-- 使用英文电影名称以获得更好的搜索结果
-- 如果搜索无结果，请检查Jackett索引器的状态
-- 监控qBittorrent的下载进度
-- 下载4K内容时请考虑存储空间
-- 定期测试配置以确保服务正常运行
+### subtitle-download.sh 🆕
 
-## 故障排除
+Download subtitles for video files using OpenSubtitles API.
 
-### 无搜索结果
-1. 确认Jackett正在运行：`curl http://192.168.1.246:9117`
-2. 检查Jackett中是否启用了相应的索引器
-- 尝试使用英文电影名称进行搜索
-- 确认API密钥是否正确
+**Parameters:**
+- `-f, --file`: Single video file path
+- `-d, --directory`: Process all videos in directory
+- `-l, --languages`: Subtitle languages, comma-separated (default: zh-cn,en)
+- `-k, --api-key`: OpenSubtitles API Key (optional if configured)
+- `-r, --recursive`: Recursively process subdirectories
+- `-h, --help`: Show help
 
-### qBittorrent连接失败
-1. 确认qBittorrent正在运行
-- 检查qBittorrent设置中是否启用了网页界面
-- 核对用户名和密码
-- 确保网络连接正常
+**Example:**
+```bash
+# Single file
+scripts/subtitle-download.sh -f "/media/movie.mkv"
 
-### 权限问题
+# Batch process directory
+scripts/subtitle-download.sh -d "/media/TV Shows" -r -l zh-cn,en
+```
 
-确保脚本具有执行权限：
+**Features:**
+- Automatically parses video filenames (TV episodes, movies)
+- Downloads best-rated subtitles for each language
+- Renames subtitles to match video filenames
+- Skips existing subtitle files
+- Supports batch processing
+
+## Tips and Best Practices
+
+- **Use English movie names** for better search results
+- **Check Jackett indexer status** if searches return no results
+- **Monitor qBittorrent** to manage download progress
+- **Consider storage space** when downloading 4K content
+- **Test configuration** periodically to ensure services are running
+- **For TV series**: Use `-s -w` flag to auto-download subtitles for all episodes
+
+## Troubleshooting
+
+### No Search Results
+
+1. Verify Jackett is running: `curl http://192.168.1.246:9117`
+2. Check Jackett indexers are enabled in Jackett UI
+3. Try English movie names
+4. Verify API key is correct
+
+### qBittorrent Connection Failed
+
+1. Confirm qBittorrent is running
+2. Check Web UI is enabled in qBittorrent settings
+3. Verify username and password
+4. Ensure network connectivity to qBittorrent server
+
+### Subtitle Download Issues
+
+1. **No API Key**: Save your key to `config/opensubtitles.key` or use `-k` flag
+2. **No subtitles found**: Try different language codes or the video may not have subtitles available
+3. **API limit**: OpenSubtitles free tier has rate limits; wait a few minutes and retry
+
+### Permission Issues
+
+Ensure scripts have execute permissions:
 
 ```bash
 chmod +x scripts/*.sh
 ```
 
-## 安全注意事项：
-- 保护API密钥，切勿将其提交到版本控制系统中
-- 尽可能使用HTTPS连接
-- 考虑为种子下载流量设置VPN
-- 定期检查qBittorrent是否存在未经授权的下载行为
+## Security Notes
 
-## 依赖软件
-- `curl`：用于发送HTTP请求
-- `jq`：用于解析JSON数据
+- Keep API keys secure and don't commit them to version control
+- Use HTTPS connections when possible
+- Consider setting up VPN for torrent traffic
+- Monitor qBittorrent for unauthorized downloads
+
+## Dependencies
+
+- `curl`: For HTTP requests
+- `jq`: For JSON parsing
+- `bc`: For floating point calculations (subtitle download progress)
 - Bash shell
 
-如果未安装`jq`，请先安装它：
+Install dependencies if missing:
 ```bash
-apt-get install jq
+apt-get install curl jq bc
 ```
+
+## Changelog
+
+### v2.0 - 2025-02-17
+- ✅ Added automatic subtitle download support
+- ✅ New `subtitle-download.sh` script
+- ✅ Updated `download-movie.sh` with `-s` and `-w` flags
+- ✅ Support for OpenSubtitles API
+- ✅ Multi-language subtitle support (zh-cn, en, ja, ko, etc.)

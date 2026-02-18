@@ -1,10 +1,9 @@
 ---
-slug: "standards-compliance-checker"
-display_name: "Standards Compliance Checker"
-description: "检查数据是否符合建筑标准。根据 ISO 19650、IFC、COBie 和 UniFormat 标准对数据进行验证。"
----
-
-# 标准合规性检查工具
+name: "standards-compliance-checker"
+description: "检查数据是否符合建筑规范。根据 ISO 19650、IFC、COBie 和 UniFormat 标准对数据进行验证。"
+homepage: "https://datadrivenconstruction.io"
+metadata: {"openclaw": {"emoji": "📐", "os": ["darwin", "linux", "win32"], "homepage": "https://datadrivenconstruction.io", "requires": {"bins": ["python3"]}}}
+---# 标准合规性检查工具
 
 ## 商业案例
 
@@ -16,10 +15,9 @@ description: "检查数据是否符合建筑标准。根据 ISO 19650、IFC、CO
 - 手动检查容易出错
 
 ### 解决方案
-自动检查建筑数据是否符合主要标准，包括 ISO 19650、IFC、COBie 和 UniFormat。
+针对主要的建筑数据标准（包括 ISO 19650、IFC、COBie 和 UniFormat）进行自动合规性检查。
 
 ## 技术实现
-
 ```python
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
@@ -262,7 +260,6 @@ class StandardsComplianceChecker:
 ```
 
 ## 快速入门
-
 ```python
 # Initialize checker
 checker = StandardsComplianceChecker()
@@ -279,7 +276,7 @@ print(f"Compliance: {report.compliance_level.value}")
 print(f"Passed: {report.passed}/{report.total_rules}")
 ```
 
-## 常见用例
+## 常见使用场景
 
 ### 1. COBie 验证
 ```python
@@ -307,7 +304,7 @@ reports = checker.check_multiple_standards(
 )
 ```
 
-## 资源参考
+## 参考资源
 - **DDC 手册**：第 2.5 章 - 数据模型与标准
 - **ISO 19650**：使用 BIM 进行信息管理
 - **官方网站**：https://datadrivenconstruction.io

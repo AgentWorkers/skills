@@ -1,32 +1,29 @@
 ---
 name: mema-vault
-description: Mema的安全凭证管理器：采用AES-256加密算法及最佳实践来存储、检索和轮换敏感信息。绝不会在日志或日常聊天中输出原始的敏感数据。
+description: 使用 AES-256（Fernet）加密技术的安全凭证管理器。该工具通过强制性的“主密钥”来存储、检索和轮换敏感信息（如 API 密钥、数据库凭据等）。
+metadata: {"openclaw":{"requires":{"env":["MEMA_VAULT_MASTER_KEY"]},"install":[{"id":"pip","kind":"exec","command":"pip install cryptography"}]}}
 ---
-
 # Mema Vault
 
-## 设置（首次使用）
-1. 将 `.env.example` 复制到 `.env`。
-2. 生成一个 master 密钥：`openssl rand -base64 32`。
-3. 在 `.env` 文件中设置 `MEMA_VAULT_MASTER_KEY`。
-4. 选择后端（`file` 或 `redis`）。
+## 前提条件
+- **密钥**: 必须设置为环境变量 `MEMA_VAULT_MASTER_KEY`。
+- **依赖项**: 需要 `cryptography` Python 包。
 
-## 使用方法
-- **角色**：安全的密钥保管者。
-- **触发命令**：`Get API key for X`（获取 X 的 API 密钥）、`Update password for Y`（更新 Y 的密码）、`Where is my token?`（我的令牌在哪里？）。
-- **输出方式**：加密后的秘密（格式为 `sk-***`）或在安全环境中直接使用（例如，通过环境变量注入）。
+## 核心工作流程
 
-## 功能
-1. **存储**：加密并保存秘密（到 Redis 或文件中）。
-2. **检索**：安全地解密并提供秘密。
-3. **审计**：跟踪对敏感数据的访问记录。
-4. **密钥轮换**：提供用于密钥轮换的辅助脚本。
+### 1. 存储凭证
+对新的凭证进行加密并保存。
+- **用法**: `python3 $WORKSPACE/skills/mema-vault/scripts/vault.py set <service> <user> <password> [--meta "info"]`
 
-## 安全规则
-- **除非用户明确请求“show me”，否则** **绝不要** 将完整秘密显示给用户。
-- **绝不要** 将秘密记录到磁盘上。
-- 严格遵循 `.gitignore` 文件的规则。
-- 建议优先使用环境变量而非配置文件来存储敏感信息。
+### 2. 获取凭证
+检索凭证。默认情况下，密码会在输出中被屏蔽。
+- **用法**: `python3 $WORKSPACE/skills/mema-vault/scripts/vault.py get <service>`
+- **显示原始内容**: 仅在需要安全注入时使用 `--show` 标志。
 
-## 参考资料
-- [安全政策](references/security-policy.md)
+### 3. 列出凭证
+- **用法**: `python3 $WORKSPACE/skills/mema-vault/scripts/vault.py list`
+
+## 安全标准
+- **加密**: 使用 AES-256 CBC 算法进行加密，并结合 PBKDF2HMAC 加密算法（迭代次数为 480,000 次）。
+- **屏蔽**: 除非明确要求，否则凭证信息会在标准日志/输出中被屏蔽。
+- **隔离**: 密钥绝不能以明文形式存储在磁盘上。

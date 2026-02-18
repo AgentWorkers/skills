@@ -1,75 +1,82 @@
 ---
 name: Infrastructure
-description: "设计、配置并连接云资源，以实现跨服务器、网络和服务的协同工作。"
+slug: infrastructure
+version: 1.0.1
+description: 设计、配置并连接跨服务器、网络和服务的云资源。
+changelog: User-driven credential model, explicit tool requirements
+metadata: {"clawdbot":{"emoji":"🏗️","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
-
 ## 范围
 
-本技能涵盖**架构设计与协调**——即各个组件如何协同工作。对于具体的组件，应使用相应的专门技能，例如：`server`（服务器管理）、`docker`（Docker容器管理）、`ci-cd`（持续集成与持续部署）、`ssl`（安全套接字层）、`monitoring`（监控）。
+本技能：
+- ✅ 指导架构决策
+- ✅ 提供用户可执行的配置命令
+- ✅ 文档化基础设施模式
 
-## 适用场景
+**以用户为中心的模型：**
+- 用户在需要时提供云服务凭证
+- 用户运行配置命令
+- 本技能提供决策指导并生成相应的命令
 
-- 规划新项目的架构
-- 以编程方式配置虚拟私有服务器（VPS）或云资源
-- 网络配置：防火墙、虚拟专用网络（VPN）、负载均衡器、DNS路由
-- 基础设施即代码（Infrastructure as Code，例如使用Terraform或Pulumi）
-- 实现跨多服务器的服务连接
-- 制定备份策略与灾难恢复方案
-- 进行成本分析与优化
+**本技能不执行以下操作：**
+- ❌ 直接存储或访问云服务凭证
+- ❌ 自动运行配置命令
+- ❌ 未经用户确认的情况下修改基础设施
 
-## 决策框架
+**实施方式：** 用户运行本技能提供的命令，或使用 `server` 技能来执行这些命令。
 
-| 问题 | 本技能适用吗？ |  
-|--------|---------|  
-| “我该如何为这个项目设计基础设施？” | ✅ 是的 |  
-| “我应该添加新的服务器还是扩展现有服务器？” | ✅ 是的 |  
-| “我该如何实现跨服务器的服务连接？” | ✅ 是的 |  
-| “我该如何配置Nginx？” | ❌ 请使用`server`技能 |  
-| “我该如何编写Dockerfile？” | ❌ 请使用`docker`技能 |  
-| “我该如何设置GitHub Actions？” | ❌ 请使用`ci-cd`技能 |  
+## 快速参考
 
-## 架构模式
+| 主题 | 文件 |
+|-------|------|
+| 架构模式 | `patterns.md` |
+| 提供商相关命令 | `providers.md` |
+| 备份策略 | `backups.md` |
 
-| 阶段 | 推荐的架构方案 |  
-|------|-------------------|  
-| MVP（用户数<1000） | 单个VPS，可选使用Docker Compose及托管数据库 |  
-| 成长阶段（用户数1000-50000） | 专用数据库、负载均衡器、独立的工作进程 |  
-| 扩展阶段（用户数>50000） | 多区域部署、自动扩展、内容分发网络（CDN）、使用托管服务 |  
+## 核心规则
 
-详细架构模式请参阅`patterns.md`。
+### 1. 用户运行命令
+本技能生成命令，由用户执行：
+```
+Agent: "To create the server, run:
+        hcloud server create --name web1 --type cx21 --image ubuntu-24.04
+        
+        This requires HCLOUD_TOKEN in your environment."
+User: [runs command]
+```
 
-## 云服务提供商快速参考
+### 2. 必需工具（用户自行安装）
+| 提供商 | 工具 | 安装方式 |
+|----------|------|---------|
+| Hetzner | `hcloud` | 使用 `brew install hcloud` 安装 |
+| AWS | `aws` | 使用 `brew install awscli` 安装 |
+| DigitalOcean | `doctl` | 使用 `brew install doctl` 安装 |
+| Docker | `docker` | 安装 Docker Desktop |
 
-| 任务 | Hetzner | AWS | DigitalOcean |  
-|------|---------|-----|--------------|  
-| 创建服务器 | `hcloud server create` | `aws ec2 run-instances` | `doctl compute droplet create` |  
-| 防火墙 | Cloud Firewall | Security Groups | Cloud Firewall |  
-| DNS | 外部DNS服务（如Cloudflare） | Route53 | 自定义域名配置 |  
-| 负载均衡器 | Load Balancer | ALB/NLB | Load Balancer |  
+### 3. 凭证处理
+- 用户将凭证设置到自己的环境变量中
+- 本技能从不存储或记录凭证信息
+- 命令会引用环境变量：`$HCLOUD_TOKEN`、`$AWS_ACCESS_KEY_ID`
 
-各服务提供商的具体命令请参阅`providers.md`。
+### 4. 架构建议
 
-## 网络配置要点
+| 阶段 | 推荐方案 |
+|-------|-------------|
+| MVP 阶段 | 单个虚拟专用服务器（VPS）+ Docker Compose |
+| 扩展阶段 | 专用数据库+负载均衡器 |
+| 扩展到多区域阶段 | 多区域部署+内容分发网络（CDN） |
 
-- **防火墙配置**：默认设置为拒绝所有流量，仅开放必要的端口。  
-- **VPN设置**：服务器间通信推荐使用WireGuard；快速搭建可使用Tailscale。  
-- **DNS服务**：多数情况下推荐使用Cloudflare；迁移期间建议设置较短的TTL值（时间-to-live）。  
-- **负载均衡**：初期可使用反向代理（如Caddy或Traefik），根据需求再添加负载均衡器。
+### 5. 决策框架
+| 问题 | 答案 |
+|----------|--------|
+| 如何构建基础设施？ | ✅ 请使用本技能 |
+| 是否需要添加更多服务器？ | ✅ 请使用本技能 |
+| 如何配置 Nginx？ | 请使用 `server` 技能 |
+| 如何编写 Dockerfile？ | 请使用 `docker` 技能 |
 
-## 备份策略
-
-| 数据类型 | 备份方法 | 备份频率 |  
-|---------|---------|-----------|  
-| 数据库 | 使用`pg_dump`备份至S3/B2存储 | 每日备份，更改前立即执行 |  
-| 磁盘卷 | 使用快照备份 | 每周备份一次 |  
-| 配置文件 | 通过Git（基础设施即代码）进行备份 | 每次配置更改时备份 |  
-
-备份脚本及恢复流程请参阅`backups.md`。
-
-## 成本优化建议
-
-- 选择合适大小的服务器实例（大多数应用程序的实际需求可能低于预期）  
-- 对于稳定的工作负载，使用预留实例以节省成本（通常可节省30%-50%）  
-- 批量作业可使用弹性计算资源（如Spot实例或可抢占实例）  
-- 监控数据输出流量——这往往是容易被忽视的隐性成本  
-- 相较于大型云服务提供商，Hetzner或OVH通常提供更透明的定价方案
+### 6. 备份策略
+| 数据类型 | 备份方法 | 备份频率 |
+|------|--------|-----------|
+| 数据库 | 使用 `pg_dump` 备份到 S3/B2 | 每日 |
+| 磁盘卷 | 创建快照 | 每周 |
+| 配置文件 | 使用 Git 进行版本控制 | 每次修改后 |

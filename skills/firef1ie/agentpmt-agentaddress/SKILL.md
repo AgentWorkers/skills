@@ -1,77 +1,120 @@
+---  
+**名称：agentpmt-agentaddress**  
+**描述：** 生成一个 AgentAddress 钱包，使用 x402 购买 AgentPMT 信用点数，并通过签名工具/工作流调用参与付费的 AgentPMT 市场。  
+**官网：** https://www.agentpmt.com/agentaddress  
+
 ---
-name: agentpmt-agentaddress
-description: 生成一个 AgentAddress 钱包，并使用它来购买价值为 x402 的 AgentPMT 信用点数；之后，利用该钱包生成的签名来调用外部工具。
-homepage: https://www.agentpmt.com/agentaddress
----
-# AgentPMT：代理地址与外部购买流程
 
-当用户希望使用自主代理执行以下操作时，请使用此流程：
-- 创建自己的代理地址钱包；
-- 购买 AgentPMT 信用点数；
-- 使用这些信用点数调用外部工具。
+# AgentPMT AgentAddress + 付费市场流程  
+当自主代理需要执行以下操作时，请使用此技能：  
+- 创建或加载 EVM 钱包；  
+- 通过 x402 购买 AgentPMT 信用点数；  
+- 通过调用付费市场工具和工作流来使用这些信用点数。  
 
-请始终指向 AgentPMT Next.js 的外部端点（`/api/external/...`），而非内部后端容器路由。
+始终通过 `https://www.agentpmt.com/api/external/...` 访问生产环境的外部端点。  
 
-## 必需的端点
+## 外部端点  
+**钱包与信用点数相关操作：**  
+- `POST /api/external/agentaddress`  
+- `POST /api/external/credits/purchase`  
+- `POST /api/external/auth/session`  
+- `POST /api/external/credits/balance`  
 
-- `POST /api/external/agentaddress`
-- `POST /api/external/credits/purchase`
-- `POST /api/external/auth/session`
-- `POST /api/external/tools/{productId}/invoke`
-- `POST /api/external/credits/balance`（可选：余额查询）
+**市场工具相关操作：**  
+- `GET /api/external/tools`  
+- `POST /api/external/tools/{productId}/invoke`  
 
-## 流程
+**市场工作流相关操作：**  
+- `GET /api/external/workflows`  
+- `POST /api/external/workflows/{workflowId}/fetch`  
+- `POST /api/external/workflows/{workflowId}/start`  
+- `POST /api/external/workflows/active`  
+- `POST /api/external/workflows/{workflowId}/end`  
 
-1. **生成钱包（无需认证）**：
-- 调用 `POST /api/external/agentaddress`。
-- 安全地保存 `evmAddress`、`evmPrivateKey` 和 `mnemonic`。
+## x402 信用点数购买合约  
+**信用点数定价与验证规则：**  
+- `100 信用点数 = 1 美元`  
+- 必须使用 USDC 作为基础单位（计算公式：`信用点数 × 10000`）  
+- 信用点数必须以 `500` 的增量进行购买  
 
-2. **使用 x402 协议购买信用点数**：
-- 发送首次购买请求：
-  - 请求体：`{"wallet_address":"<address>","credits":500,"payment_method":"x402"}`
-- 期望收到 `402` 状态码，并读取 `PAYMENT-REQUIRED` 头部信息（以 base64 编码的 JSON 格式）。
-- 生成用于 USDC 的 EIP-3009 `TransferWithAuthorization` 签名：
-  - 发送方：代理钱包
-  - 收件方：返回的 `payTo` 地址
-  - 金额：返回的 `amount`
-  - 有效期（`validAfter` 和 `validBefore`）
-  - 随机数（`nonce`）
-- 发送第二次购买请求，此时需要在请求头中包含 `PAYMENT-SIGNATURE`（包含签名和授权信息的 base64 JSON 数据）。
+**请求体示例（请参考 **_CODE_BLOCK_0_**）：**  
 
-3. **获取会话随机数（nonce）**：
-- 调用 `POST /api/external/auth/session`，并传入 `{"wallet_address":"<address>"}`。
+**两步握手流程：**  
+1. 第一次请求会返回 `402` 状态码以及 `PAYMENT-REQUIRED` 标头（包含 Base64 编码的 JSON 数据）。  
+2. 解码该头部信息并使用 EIP-3009 协议生成 `TransferWithAuthorization` 签名。  
+3. 重新发送请求，此时需要在请求头中添加 `PAYMENT-SIGNATURE` 标头（同样包含 Base64 编码的签名数据）。  
 
-4. **签署工具调用请求**（使用 EIP-191 协议和个人签名）：
-- 将参数转换为标准 JSON 格式，并计算其小写 SHA-256 哈希值。
-- 按照以下格式构建请求消息：
-```
-agentpmt-external
-wallet:{wallet_lowercased}
-session:{session_nonce}
-request:{request_id}
-action:invoke
-product:{product_id}
-payload:{payload_hash}
-```
-- 使用代理的私钥对消息进行签名。
+**`PAYMENT-REQUIRED.accepts[0]` 中应包含的签名参数：**  
+- `network`  
+- `amount`（购买金额）  
+- `asset`（资产类型）  
+- `payTo`（收款地址）  
+- 可选参数：`extra.name` 和 `extra.version`  
 
-5. **调用工具**：
-- 调用 `POST /api/external/tools/{productId}/invoke`，并提供以下参数：
-  - `wallet_address`
-  - `session_nonce`
-  - `request_id`（每个请求的唯一标识符）
-  - `signature`
-  - `parameters`
+## 签名合约（EIP-191）**  
+所有外部签名请求都必须使用以下格式的签名数据：  
+**_CODE_BLOCK_1_**  
 
-## 安全规则
+**签名数据哈希方法：**  
+- `canonical_json = json.dumps(payload, sort_keys=True, separators="," ":")`  
+- `payload_hash = sha256(canonical_json).hexdigest()`  
 
-- 绝不要以明文形式显示或记录私钥/助记词。
-- 在可能的情况下，避免在提示文本中显示敏感信息。
-- 使用不同的 `request_id` 避免重放攻击。
-- 在签名后的消息中确保 `wallet` 地址始终使用小写形式。
-- 如果信用点数不足（收到 `402` 状态码），请先购买更多信用点数后再重试。
+**操作类型与对应的请求参数：**  
+- **查询余额：**  
+  - `action = balance`  
+  - `product = -`  
+  - `payload_hash = ""`  
 
-## 参考资料
+- **调用工具：**  
+  - `action = invoke`  
+  - `product = {productId}`  
+  - `payload_hash = sha256(canonical_json(parameters))`  
 
-有关具体的请求示例，请参阅：
-- `{baseDir}/examples/agentpmt_external_wallet_flow.md`
+- **获取工作流信息：**  
+  - `action = workflow_fetch`  
+  - `product = {workflowId}`  
+  - `payload_hash = ""`  
+
+- **启动工作流：**  
+  - `action = workflow_start`  
+  - `product = {workflowId}`  
+  - `payload_hash = sha256(canonical_json({"instance_id": instance_id}))`  
+
+- **激活工作流：**  
+  - `action = workflow_active`  
+  - `product = -`  
+  - `payload_hash = sha256(canonical_json({"instance_id": instance_id}))`  
+
+- **结束工作流：**  
+  - `action = workflow_end`  
+  - `product = {workflowId}`  
+  - `payload_hash = sha256(canonical_json({"workflow_session_id": workflow_session_id}))`  
+
+## 付费市场参与流程：**  
+1. 创建或加载钱包。  
+2. 使用 x402 购买信用点数。  
+3. 生成会话令牌（nonce）。  
+4. 通过 `GET /api/external/tools` 查找可用的付费工具。  
+5. 签名后调用 `POST /api/external/tools/{productId}/invoke` 来执行工具。  
+6. 通过 `POST /api/external/credits/balance` 检查余额。  
+7. （可选）执行以下操作：  
+  - 列出所有可用的工作流；  
+  - 调用工作流（`start`/`end`）；  
+  - 使用工作流元数据调用相关工具；  
+
+## 错误处理规则：**  
+- **购买请求失败（返回 `402` 状态码）**：正常现象，需使用 `PAYMENT-REQUIRED` 标头并重新尝试。  
+- **调用请求失败（返回 `402` 状态码）**：信用点数不足，请重新购买所需金额。  
+- **签名请求失败（返回 `409` 状态码）**：请求 ID 重复，请生成新的请求 ID。  
+- **签名请求失败（返回 `401` 状态码）**：签名或会话信息不匹配，请重新生成会话并重新签名。  
+- **购买请求失败（返回 `400` 状态码）**：请将信用点数调整为最接近的 `500` 的增量。  
+
+## 安全规则：**  
+- 绝不要记录私钥或助记词。  
+- 在签名消息中，钱包地址需使用小写形式。  
+- 每次签名请求都必须使用唯一的 `request_id`。  
+- 会话令牌应与特定钱包关联，并在签名或会话出错时刷新。  
+
+**参考文件：**  
+- `examples/agentpmt_external_wallet_flow.md`  
+- `examples/agentpmt_paid_marketplace_quickstart.py`

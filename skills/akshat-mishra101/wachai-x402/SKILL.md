@@ -1,192 +1,192 @@
 ---
 name: x402-wach
-description: 由 WACH.AI 提供支持的 DeFi 风险分析工具包，通过 x402 支付方式使用。目前支持 ERC-20 和 Solana SPL 类型的代币资产风险分析。当用户需要检查代币的安全性、评估 DeFi 风险、检测恶意网站（“蜜罐”）、分析流动性、持有人分布或以太坊、Polygon、Base、BSC、Solana 上智能合约的漏洞时，可以使用该工具包。在 Base 平台上，每次查询的费用为 0.01 美元。
+description: 由 WACH.AI 提供支持的 DeFi 风险分析工具包，通过 AWAL 钱包托管服务进行 x402 支付。当用户需要查询代币的安全性、评估 DeFi 风险、检测“蜜罐”（恶意陷阱）、分析流动性、持有人分布或以太坊（Ethereum）、Polygon、Base、BSC 或 Solana 上代币的智能合约漏洞时，可以使用该工具包。在 Base 平台上，每次查询的费用为 0.01 美元（USDC）。
 license: MIT
-compatibility: Requires Node.js 18+, npm, network access, and a funded EVM wallet (USDC on Base).
+compatibility: Requires Node.js 18+, npm, network access, AWAL installed and authenticated, and a funded AWAL wallet with USDC on Base.
 metadata:
   author: quillai-network
-  version: "1.0"
+  version: "3.0"
   endpoint: https://x402.wach.ai/verify-token
   payment: 0.01 USDC on Base (automatic via x402)
 ---
-
 # x402-wach — DeFi风险分析工具
 
-这是一个由WACH.AI提供支持的DeFi风险分析工具，使用x402 HTTP支付协议进行处理。所有支付操作都是自动完成的（每个请求的费用为0.01 USDC，基于Base网络）。
+这是一个由WACH.AI提供的DeFi风险分析工具包，它使用x402技术，并通过AWAL（Automatic Wallet Authentication Layer）来管理用户的私钥安全。
 
-**目前支持的功能：**
+## OpenClaw的硬性规则（不可协商）
 
-- **资产风险分析**：支持ERC-20代币（Ethereum、Polygon、Base、BSC）和Solana SPL代币
+当此功能被激活时，OpenClaw必须严格遵守以下规则：
 
-## 何时使用此工具
+1. **严禁请求或泄露敏感信息**
+   - 绝对不要询问用户的私钥、助记词、钱包导出文件或原始签名数据。
+   - 严禁建议用户使用`wallet.json`或任何本地密钥文件。
 
-当用户需要执行以下操作时，可以使用此工具：
-- **评估特定代币或资产的风险**；
-- **检查代币的安全性**或判断其是否为钓鱼网站/陷阱；
-- **获取代币风险评分**（整体评分、代码评分、市场评分）；
-- **分析代币持有者分布**（大户集中度、主要持有者、交易所钱包）；
-- **审查流动性状况**（总流动性、交易对、去中心化交易所（DEX））；
-- **检查智能合约的安全性**（所有权信息、铸造权限、冻结权限、黑名单、暂停机制）；
-- **查询代币市场数据**（价格、市值、24小时交易量、供应量）。
+2. **仅使用AWAL进行密钥管理**
+   - 所有的设置和支付操作都必须通过AWAL支持的命令来完成。
+   - 对于旧版本的本地钱包指令，此功能将视为无效。
 
-## 安装
+3. **在发起支付请求前进行准备检查**
+   - 在执行`verify-risk`命令之前，确保AWAL已经正确设置（通过`wallet setup`或`wallet doctor`命令）。
+   - 如果未准备好，请引导用户完成登录或资金充值流程。
 
-可以通过npm全局安装此工具的命令行界面（CLI）：
+4. **遵守支付限制**
+   - 默认的每次支付上限为10000个原子单位USDC（约0.01美元）。
+   - 除非用户明确要求，否则不得提高支付上限。
 
-```bash
-npm install -g @quillai-network/x402-wach
-```
+5. **如实显示支付失败原因**
+   - 如果支付失败，必须明确指出失败原因及后续操作步骤（如身份验证问题、账户余额问题、网络问题或命令不匹配等）。
+   - 除非收到了有效的报告数据，否则不得假装支付成功。
 
-或者将其本地安装到项目中：
+6. **避免重复支付**
+   - 对于网络或临时性的错误，最多只允许重试一次。
+   - 重试时需保持相同的请求参数，并告知用户已尝试过重试。
 
-```bash
-npm install @quillai-network/x402-wach
-```
+7. **在最终报告中提供来源链接**
+   - 建议使用TokenSense提供的链接格式：
+     - `https://tokensense.wach.ai/<chain>/<tokenAddress>`
+   - 仅在必要时使用API作为备用方案。
 
-验证安装是否成功：
+## 何时使用此功能
 
-```bash
-x402-wach --version
-```
+当用户需要以下操作时，可以使用此功能：
+- 评估某种代币的DeFi风险
+- 检测是否存在诈骗或诱骗行为
+- 分析代币持有者的集中程度及流动性
+- 审查合约的安全性
+- 获取风险评分及代码质量分析结果
+- 对`eth`、`pol`、`base`、`bsc`或`sol`等链上的代币进行综合评估
 
-## 设置
+## 支持的链
 
-安装完成后，请按照以下步骤进行配置，以便开始代币分析：
+| 简称 | 链名                | 代币标准           |
+|------|------------------|-------------------|
+| `eth`  | Ethereum           | ERC-20              |
+| `pol`  | Polygon             | ERC-20              |
+| `base` | Base                | ERC-20              |
+| `bsc`  | Binance Smart Chain     | BEP-20              |
+| `sol`  | Solana              | SPL                |
 
-### 1. 创建或导入钱包
+无论分析哪个链，支付都将以USDC为单位进行。
 
-您需要一个EVM钱包来签名x402支付请求。
+## OpenClaw的命令使用指南
 
-```bash
-# Option A — Generate a brand new wallet
-x402-wach wallet create
+### 1) 准备/设置
 
-# Option B — Import an existing wallet by private key
-x402-wach wallet import
-```
-
-钱包文件存储在`~/.x402-wach/wallet.json`中，并具有受限的文件权限（仅所有者可读写）。
-
-### 2. 为钱包充值
-
-每次代币分析的费用为0.01 USDC（基于Base网络）。请将USDC发送到您的钱包地址。
-
-```bash
-# Check your wallet address
-x402-wach wallet info
-```
-
-您可以通过https://bridge.base.org将USDC从Ethereum或其他区块链桥接至Base网络。
-
-### 3. 准备就绪
-
-随时可以运行设置指南以开始使用该工具：
+执行以下命令：
 
 ```bash
-x402-wach guide
+x402-wach wallet setup
 ```
 
-## 支持的区块链
+如果系统提示尚未准备好，执行以下命令：
 
-| 简称 | 区块链            | 代币标准          | 适用范围                          |
-| ---------- | ------------------- | -------------- | -------------------------------- |
-| `eth`      | Ethereum           | ERC-20             | Ethereum主网上的代币                     |
-| `pol`      | Polygon             | ERC-20             | Polygon上的代币                     |
-| `base`     | Base                | ERC-20             | Base上的代币                     |
-| `bsc`      | Binance Smart Chain | BEP-20             | BSC上的代币                     |
-| `sol`      | Solana              | SPL               | Solana上的代币                     |
+```bash
+x402-wach wallet doctor
+x402-wach wallet login <EMAIL>
+x402-wach wallet verify <FLOW_ID> <OTP>
+x402-wach wallet balance
+```
 
-## 命令
+**解释：**
+- `✓ Ready to make x402 payments with AWAL`：表示可以使用AWAL进行x402支付，可以继续分析。
+- `AWAL wallet is not authenticated`：表示AWAL钱包未经过身份验证，需要用户登录并完成验证。
+- `Insufficient USDC on Base`：表示Base链上的USDC余额不足，需要用户向AWAL地址充值。
+- `Could not read AWAL balance/status`：表示无法读取AWAL的余额或状态信息，需要运行`wallet doctor`命令获取详细错误信息。
 
-### 分析代币风险
+### 2) 进行风险分析
+
+执行以下命令：
 
 ```bash
 x402-wach verify-risk <TOKEN_ADDRESS> <CHAIN_SHORT_NAME>
 ```
 
-**参数：**
-- `TOKEN_ADDRESS`：代币的合约地址
-  - EVM区块链：以`0x`开头，后跟40个十六进制字符（例如：`0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48`）
-  - Solana地址：32–44个base58字符的字符串（例如：`6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN`）
-- `CHAIN_SHORT_NAME`：`eth`、`pol`、`base`、`bsc`、`sol`之一
-
-**示例：**
+**推荐的安全支付上限格式：**
 
 ```bash
-# Analyze USDC on Ethereum
-x402-wach verify-risk 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 eth
-
-# Analyze TRUMP on Solana
-x402-wach verify-risk 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN sol
-
-# Analyze USDC on Base
-x402-wach verify-risk 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 base
+x402-wach verify-risk <TOKEN_ADDRESS> <CHAIN_SHORT_NAME> --max-amount-atomic 10000
 ```
 
-### 钱包管理
+### 3) 可选辅助命令
 
 ```bash
-# Create a new wallet
-x402-wach wallet create
-
-# Import an existing wallet by private key
-x402-wach wallet import
-
-# View wallet address and file location
-x402-wach wallet info
-```
-
-### 其他命令
-
-```bash
-# List all supported chains
+x402-wach wallet status
+x402-wach wallet address
 x402-wach chains
-
-# Step-by-step setup guide
 x402-wach guide
-
-# Help
-x402-wach --help
 ```
 
-## 程序化使用
+## 工具结果解读规则
 
-该工具的SDK也可作为Node.js/TypeScript库使用：
+### 准备状态/错误信息
+
+- 如果输出中包含`✓ Ready`：表示可以安全地进行支付分析。
+- 如果输出中包含`not authenticated`：表示需要用户输入OTP进行身份验证。
+- 如果输出中包含`Insufficient USDC`：表示Base链上的USDC余额不足，需要用户充值。
+- 如果输出中包含来自AWAL的错误提示：表示命令不匹配或版本问题，需要运行`x402-wach wallet doctor`并使用相应的子命令。
+- 如果输出中包含JSON解析错误：表示AWAL的输出格式不正确，需要重新尝试或检查AWAL的配置。
+
+### `verify-risk`的输出结果
+
+- `Token analysis complete!` + 各项分析结果已填充：表示分析成功。
+- 只有标题而没有内容：表示报告解析失败，需要检查工具的解析逻辑。
+- `No token found` / `empty report`：表示未找到对应的代币或报告为空：表示调用成功但目标地址上没有该代币。
+- `402/payment error`：表示支付过程中出现错误，需要用户检查账户余额、支付上限或身份验证信息。
+
+## 用户安全指南
+
+如果遇到问题，请提供以下引导信息：
+
+```bash
+x402-wach wallet doctor
+x402-wach wallet login <email>
+x402-wach wallet verify <flowId> <otp>
+x402-wach wallet balance
+```
+
+然后尝试重新操作：
+
+```bash
+x402-wach verify-risk <TOKEN_ADDRESS> <CHAIN_SHORT_NAME> --max-amount-atomic 10000
+```
+
+## 程序化使用方式（适用于自动化脚本）
 
 ```typescript
-import { verifyTokenRisk, validateTokenAddress } from "@quillai-network/x402-wach";
+import {
+  getAwalReadiness,
+  validateTokenAddress,
+  verifyTokenRisk,
+} from "@quillai-network/x402-wach";
 
-// Always validate before calling (avoids wasting USDC on invalid inputs)
-const validation = validateTokenAddress("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "eth");
-if (!validation.valid) {
-  console.error(validation.error);
-} else {
-  const report = await verifyTokenRisk("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "eth");
-  console.log(report);
-}
+const token = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+const chain = "eth";
+
+const validation = validateTokenAddress(token, chain);
+if (!validation.valid) throw new Error(validation.error);
+
+const readiness = await getAwalReadiness(10_000);
+if (!readiness.ready) throw new Error(readiness.reasons.join("; "));
+
+const report = await verifyTokenRisk(token, chain, { maxAmountAtomic: 10_000 });
+console.log(report);
 ```
 
-## 输出结构
+## 预期报告内容
 
-风险分析报告包含以下内容（如可用）：
-- **市场数据**：价格、市值、24小时交易量、价格变动、总供应量；
-- **风险评分**：整体评分、代码评分、市场评分（0–100%）；
-- **钓鱼网站分析**：判断代币是否为钓鱼网站，以及相关的买卖/转账费用信息；
-- **持有者信息**：总持有者数量、主要持有者（包括交易所钱包）及持有比例；
-- **流动性**：总流动性（以USDC计）、交易对数量、主要去中心化交易所；
-- **代码分析**：所有权检查、铸造/冻结权限、黑名单机制、暂停机制；
-- **社交与社区信息**：Twitter、Discord、Telegram链接及官方网站信息。
+分析成功后，报告将包含以下内容：
+- 市场数据
+- 风险评分
+- 代币持有者分布
+- 流动性分析
+- 合约安全评估
+- 社交媒体与社区信息
+- 数据来源（TokenSense链接）及报告生成时间
 
-## 特殊情况与错误处理：
-- **地址格式错误**：CLI会在发送请求前（以及任何支付操作前）验证地址格式。EVM地址必须以`0x`开头，后跟40个十六进制字符；Solana地址必须是32–44个base58字符。
-- **地址链路错误**：CLI会检测地址是否正确，并提示使用正确的区块链。
-- **代币不存在**：如果在选定的区块链上找不到该代币，会显示错误信息而非空报告。
-- **USDC不足**：如果钱包资金不足，x402支付会失败，并提示用户充值。
-- **未配置钱包**：CLI会提示用户运行`x402-wach wallet create`或`x402-wach wallet import`命令来创建或导入钱包。
+## OpenClaw的绝对禁止事项
 
-## 重要说明：
-- 每次分析费用为0.01 USDC（基于Base网络），通过x402支付协议自动扣除。
-- 无论分析的代币位于哪个区块链，支付始终在Base网络上完成。
-- 钱包文件存储在`~/.x402-wach/wallet.json`中，具有受限的文件权限（仅所有者可访问）。
-- 在调用`verify-risk`之前，请务必验证代币地址和区块链信息，以避免为无效请求支付费用。
-- 该工具仅用于DeFi风险分析，目前主要支持ERC-20/SPL代币的风险分析，未来将支持更多类型的分析。
+- 禁止使用或建议用户使用`wallet create`、`wallet import`或`wallet.json`命令。
+- 禁止询问用户的私钥或助记词。
+- 禁止在用户不知情的情况下调整支付上限。
+- 如果解析报告失败，不得假装分析成功。
+- 在需要诊断问题时，不得隐藏AWAL的原始错误信息。

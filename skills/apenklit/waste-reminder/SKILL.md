@@ -1,30 +1,42 @@
 # 废物回收提醒技能
 
-这是一个灵活且节省令牌的技能，用于自动发送废物容器回收提醒。
+这是一个灵活且高效利用令牌的技能，用于自动发送废物回收提醒。
 
 ## 概述
 
-该技能可根据用户定义的时间表自动发送废物回收提醒。它使用简单的JSON配置文件，以实现最大的灵活性和最小的令牌使用量。
+该技能可根据用户定义的日程安排自动发送废物回收提醒。它使用简单的JSON配置文件，以实现最大的灵活性和最小的令牌消耗。
 
-## 特点
+**工作原理：**
+该技能会读取用户的配置文件和日程安排，确定需要发送的提醒内容，并以AI助手能够处理的格式输出这些信息。随后，AI助手会将这些提醒消息发送到指定的渠道。
+
+**输出格式：**
+```
+SEND_TO:recipient_id
+CHANNEL:whatsapp
+Your message here
+---
+```
+
+这种设计使得配置简单且令牌使用效率更高——该技能无需API密钥或直接的网络访问权限。
+
+## 主要功能
 
 - 支持多种类型的废物容器
-- 自定义提醒时间表（每次回收最多可设置4次提醒）
-- 灵活的目标设置（团队、个人或升级通知）
-- 多渠道支持（WhatsApp、Telegram、Discord、Email）
-- 确认系统（收到确认后停止进一步提醒）
-- 需要一个配置文件来管理所有时间表
-- 高效利用令牌（减少不必要的令牌消耗）
+- 自定义提醒日程（每次回收最多可发送4条提醒）
+- 灵活的目标设置（群组、个人或升级通知）
+- 多渠道支持（WhatsApp、Telegram、Discord、电子邮件）
+- 确认系统（避免重复发送提醒）
+- 通过一个配置文件管理所有设置
+- 高效利用令牌（无需额外生成AI令牌）
 
-## 安装
-
+## 安装方法
 ```bash
 clawhub install waste-reminder
 ```
 
 ## 用户设置
 
-安装此技能后，AI助手会发送给您一个配置模板。您可以使用任何语言回复，AI会自动将其转换为正确的格式！
+安装该技能后，AI助手会发送一个配置模板给用户。用户可以用任何语言回复，AI会自动将其转换为正确的格式！
 
 ### 示例模板（包含所有选项）
 
@@ -54,14 +66,14 @@ Upcoming pickups:
 - 2026-03-02: blue
 ```
 
-AI会将您提供的内容转换为正确的JSON格式，并完成所有设置。
+AI会将该模板转换为正确的JSON格式并完成所有设置。
 
-## 配置
+## 配置文件
 
-该技能将配置信息存储在以下路径：
+配置文件存储路径：
 `/data/.openclaw/workspace/data/waste-reminder/`
 
-### 相关文件
+## 相关文件
 
 ```
 waste-reminder/
@@ -138,17 +150,19 @@ waste-reminder/
 }
 ```
 
-## Cron作业
+## Cron作业设置
 
 请添加一个每15分钟运行一次的Cron作业：
 - 名称：`Waste Reminder Check`
-- 时间表：每15分钟执行一次
-- 脚本：`/data/.openclaw/workspace/skills/waste-reminder/waste_cron.py`
+- 时间安排：每15分钟执行一次
+- 脚本路径：`/data/.openclaw/workspace/skills/waste-reminder/waste_cron.py`
+
+该Cron脚本会检查是否有需要发送的提醒，并将结果输出。AI助手会根据Cron作业的触发来发送相应的消息。
 
 ## 用户命令
 
-- 确认：`container is out`（表示废物容器已收集）
-- 查看：`waste schedule` 或 `waste status`（查看废物回收时间表或状态）
+- 确认：`container is out`（表示容器已取出）
+- 查看：`waste schedule` 或 `waste status`（查看废物回收日程）
 - 添加：`waste add [date] [container]`（添加新的废物回收任务）
 - 删除：`waste remove [date] [container]`（删除指定的废物回收任务）
 
@@ -163,9 +177,9 @@ waste-reminder/
 
 ## 模板占位符说明
 
-- `{container_emoji}`：用于表示废物容器的emoji符号
-- `{container_name}`：废物容器的名称
-- `{date}`：废物回收的日期
+- `{container_emoji}`：表示废物的emoji符号
+- `{container_name}`：废物的名称
+- `{date}`：回收任务的日期
 
 ## 支持的渠道
 
@@ -174,17 +188,17 @@ waste-reminder/
 - `discord`：使用Webhook URL作为渠道标识
 - `email`：使用电子邮件地址作为渠道标识
 
-每个目标对象都需要同时指定`id`和`channel`。
+每个目标渠道都需要同时指定`id`和`channel`。
 
-## 目标命名规则
+## 目标渠道命名规则
 
-目标对象的命名应包含渠道后缀：
-- `group_whatsapp`、`group_telegram`、`group_discord`
-- `me_whatsapp`、`me_telegram`、`me_discord`
-- `partner_whatsapp`、`partner_telegram`、`partner_discord`
+渠道名称的命名规则如下：
+- `group_whatsapp`、`group_telegram`、`group_discord`：表示群组渠道
+- `me_whatsapp`、`me_telegram`、`me_discord`：表示个人渠道
+- `partner_whatsapp`、`partner_telegram`、`partner_discord`：表示合作伙伴渠道
 
-渠道名称会从目标对象名称中自动提取出来。
+渠道名称中的“group”或“me”会自动识别对应的类型。
 
 ## 许可证
 
-MIT许可证
+本技能遵循MIT许可证。

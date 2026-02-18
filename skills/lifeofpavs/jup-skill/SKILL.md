@@ -1,10 +1,20 @@
 ---
 name: jupiter-skill
-description: 在 Solana 上执行 Jupiter API 操作——获取报价、签署交易、执行交易对换（swap）以及参与预测市场（prediction markets）。适用于实现代币对换（token swaps）、定期投资计划（DCA）、限价单（limit orders）、借贷（lending）等功能，或任何与 Jupiter 相关的集成场景。其中包含用于 Ultra 和 Metis 交易对换流程的脚本。
+description: 在 Solana 上执行 Jupiter API 操作：获取报价、签署交易、执行交易对换（swap）以及参与预测市场（prediction markets）。这些功能适用于实现代币对换（token swaps）、定期定额投资（DCA）、限价单（limit orders）、借贷（lending）以及任何与 Jupiter 相关的集成方案。文件中包含了针对 Ultra 和 Metis 平台的交易对换流程的脚本。
+metadata:
+  primary_credential: JUP_API_KEY
+  required_environment_variables:
+    - JUP_API_KEY
+  optional_environment_variables:
+    - SOLANA_RPC_URL
+  required_config_paths:
+    - ~/.config/solana/id.json
+  sensitive_inputs:
+    - Solana wallet JSON file containing private key material
 ---
 # Jupiter API 技能
 
-通过 4 个实用脚本执行 Jupiter API 操作，用于在 Solana 上获取数据、签署交易和执行交易对换。
+通过 4 个实用脚本执行 Jupiter API 操作，用于获取数据、签署交易以及在 Solana 上执行交易交换。
 
 **基础 URL**: `https://api.jup.ag`
 
@@ -14,7 +24,7 @@ description: 在 Solana 上执行 Jupiter API 操作——获取报价、签署�
 |------|--------|---------|
 | 获取任何 Jupiter API 数据 | `fetch-api.ts` | `pnpm fetch-api -e /ultra/v1/search -p '{"query":"SOL"}'` |
 | 签署交易 | `wallet-sign.ts` | `pnpm wallet-sign -t "BASE64_TX" -w ~/.config/solana/id.json` |
-| 执行 Ultra 订单 | `execute-ultra.ts` | `pnpm execute-ultra -r "REQUEST_ID" -t "SIGNED_TX"` |
+| 执行 Ultra 交易 | `execute-ultra.ts` | `pnpm execute-ultra -r "REQUEST_ID" -t "SIGNED_TX"` |
 | 将交易发送到 RPC | `send-transaction.ts` | `pnpm send-transaction -t "SIGNED_TX"` |
 
 ## 设置
@@ -25,9 +35,11 @@ cd /path/to/jup-skill
 pnpm install
 ```
 
+每次克隆项目后（以及依赖项发生变化后），请运行 `pnpm install`，然后再执行任何 `pnpm fetch-api`、`pnpm wallet-sign`、`pnpm execute-ultra` 或 `pnpm send-transaction` 命令。
+
 ## API 密钥设置
 
-**必需。** 所有 Jupiter API 端点都需要 `x-api-key` 标头。
+**必须设置。** 所有 Jupiter API 端点都需要 `x-api-key` 头部信息。
 
 1. 访问 [portal.jup.ag](https://portal.jup.ag)
 2. 创建账户并生成 API 密钥
@@ -35,7 +47,16 @@ pnpm install
    ```bash
    export JUP_API_KEY=your_api_key_here
    ```
-   或者在每个命令中通过 `--api-key` 标志传递。
+   或者在每个命令中通过 `--api-key` 标志传递密钥。
+
+## 钱包安全
+
+签署交易需要访问本地的 Solana 钱包 JSON 文件（`--wallet`），其中包含私钥信息。
+
+- 不要使用高价值的钱包进行自动化操作。
+- 建议使用余额较低的专用钱包来完成此工作流程。
+- 在测试时，建议使用临时密钥。
+- 如果您的设置支持，建议使用硬件签名而不是原始密钥文件。
 
 ## 脚本
 
@@ -74,14 +95,14 @@ pnpm fetch-api -e /swap/v1/swap -m POST -b '{
 - `-e, --endpoint`（必需）：API 路径，例如 `/ultra/v1/order`
 - `-p, --params`：查询参数（GET）或请求体（POST）作为 JSON 字符串
 - `-b, --body`：POST 请求的请求体
-- `-m, --method`：HTTP 方法，`GET`（默认）或 `POST`
+- `-m, --method`：HTTP 方法，默认为 `GET` 或 `POST`
 - `-k, --api-key`：API 密钥（或使用 `JUP_API_KEY` 环境变量）
 
 ### wallet-sign.ts
 
 使用本地钱包文件签署交易。
 
-> **安全提示**：必须使用 `--wallet` 标志。此脚本不接受命令行参数中的私钥，以防止在 shell 历史记录和进程列表中暴露私钥。
+> **安全提示**：必须使用 `--wallet` 标志。此脚本不接受命令行参数中的私钥，以防止私钥泄露到 shell 历史记录和进程列表中。
 
 ```bash
 # Using Solana CLI wallet (JSON array format)
@@ -95,11 +116,11 @@ pnpm wallet-sign -t "BASE64_UNSIGNED_TX" --wallet ~/my-wallets/trading.json
 - `-t, --unsigned-tx`（必需）：Base64 编码的未签名交易
 - `-w, --wallet`（必需）：Solana CLI JSON 钱包文件的路径（支持使用 `~` 表示当前目录）
 
-**输出：** 签署后的交易（base64 格式）输出到标准输出。
+**输出：** 签署后的交易（Base64 格式）输出到标准输出。
 
 ### execute-ultra.ts
 
-签署交易后执行 Ultra 订单。
+签署交易后执行 Ultra 交易。
 
 ```bash
 pnpm execute-ultra -r "REQUEST_ID_FROM_ORDER" -t "BASE64_SIGNED_TX"
@@ -114,7 +135,7 @@ pnpm execute-ultra -r "REQUEST_ID_FROM_ORDER" -t "BASE64_SIGNED_TX"
 
 ### send-transaction.ts
 
-将已签名的交易发送到 Solana RPC。**用于 Metis 交易对换**（Ultra 内部处理 RPC）。
+将已签名的交易发送到 Solana RPC。**用于 Metis 交易交换**（Ultra 内部处理 RPC）。
 
 > **警告**：默认的公共 Solana RPC（`api.mainnet-beta.solana.com`）有速率限制，不适合生产环境使用。请使用专用的 RPC 提供者（如 Helius、QuickNode、Triton 等）进行生产应用。
 
@@ -133,7 +154,7 @@ pnpm send-transaction -t "BASE64_SIGNED_TX"
 **参数：**
 - `-t, --signed-tx`（必需）：Base64 编码的已签名交易
 - `-r, --rpc-url`：RPC 端点（默认：`https://api.mainnet-beta.solana.com`）
-- `--skip-preflight`：跳过预检（更快，但安全性较低）
+- `--skip-preflight`：跳过预检查（更快，但不太安全）
 - `--max-retries`：最大重试次数（默认：3）
 
 **输出：** 交易签名输出到标准输出。
@@ -142,9 +163,9 @@ pnpm send-transaction -t "BASE64_SIGNED_TX"
 
 ## 工作流程
 
-### Ultra 交易对换（推荐）
+### Ultra 交易交换（推荐）
 
-Ultra 不需要 RPC，无需支付 gas，并具有自动滑点优化。
+Ultra 不需要 RPC，无需支付 gas，且具有自动滑点优化功能。
 
 ```
 Ultra Swap Progress:
@@ -166,7 +187,7 @@ ORDER=$(pnpm fetch-api -e /ultra/v1/order -p '{
 echo "$ORDER"
 ```
 
-响应中包含 `requestId` 和未签名的交易（base64 格式）。
+响应中包含 `requestId` 和未签名的交易（Base64 格式）。
 
 **步骤 2：签署交易**
 
@@ -190,9 +211,9 @@ pnpm execute-ultra -r "$REQUEST_ID" -t "$SIGNED_TX"
 
 ---
 
-### Metis 交易对换（高级）
+### Metis 交易交换（高级）
 
-当需要自定义交易组合或精细控制时，使用 Metis。
+当需要自定义交易组成或精细控制时，可以使用 Metis。
 
 ```
 Metis Swap Progress:
@@ -246,7 +267,7 @@ pnpm send-transaction -t "$SIGNED_TX" -r "https://your-rpc.com"
 
 ### 预测市场（测试版）
 
-根据真实世界事件结果进行交易。合约交易金额为 $0-$1 USD，价格反映事件发生的概率。
+根据实际事件结果进行交易。合约的交易金额为 $0-$1 USD，价格根据事件发生的概率而定。
 
 ```
 Prediction Market Flow:
@@ -284,7 +305,7 @@ ORDER=$(pnpm fetch-api -e /prediction/v1/orders -m POST -b '{
 }')
 ```
 
-响应中包含未签名的交易（base64 格式）和订单详情。
+响应中包含未签名的交易（Base64 格式）和订单详情。
 
 **步骤 3：签署并发送**
 
@@ -320,12 +341,12 @@ SIGNED_TX=$(pnpm wallet-sign -t "$UNSIGNED_TX" -w ~/.config/solana/id.json)
 pnpm send-transaction -t "$SIGNED_TX" -r "YOUR_RPC_URL"
 ```
 
-## 预测 API 端点
+## Jupiter API 端点
 
 | 方法 | 端点 | 描述 |
 |--------|----------|-------------|
-| GET | `/prediction/v1/events` | 使用过滤器列出事件 |
-| GET | `/prediction/v1/events/search` | 根据查询搜索事件 |
+| GET | `/prediction/v1/events` | 列出带有过滤条件的事件 |
+| GET | `/prediction/v1/events/search` | 根据查询条件搜索事件 |
 | GET | `/prediction/v1/events/{eventId}` | 获取事件详情 |
 | GET | `/prediction/v1/markets/{marketId}` | 获取市场详情 |
 | GET | `/prediction/v1/orderbook/{marketId}` | 获取订单簿 |
@@ -335,12 +356,12 @@ pnpm send-transaction -t "$SIGNED_TX" -r "YOUR_RPC_URL"
 | DELETE | `/prediction/v1/positions/{positionPubkey}` | 卖出头寸 |
 | POST | `/prediction/v1/positions/{positionPubkey}/claim` | 领取收益 |
 | GET | `/prediction/v1/leaderboards` | 查看排行榜 |
-| GET | `/prediction/v1/profiles/{ownerPubkey}` | 用户资料统计 |
+| GET | `/prediction/v1/profiles/{ownerPubkey}` | 用户个人资料 |
 
 **关键概念**
 
-- **合约**：以单位进行交易，每个单位的价值为 $0-$1，基于概率
-- **YES/NO**：二元结果 - 如果你认为事件会发生则购买 YES，否则购买 NO
+- **合约**：以单位进行交易，每个单位的价值根据概率在 $0-$1 之间浮动
+- **YES/NO**：二元结果——如果你认为事件会发生则买入“YES”，否则买入“NO”
 - **结算**：获胜的合约支付 $1，失败的合约支付 $0
 - **无领取费用**：获胜者每份合约可获得全额 $1
 
@@ -348,9 +369,9 @@ pnpm send-transaction -t "$SIGNED_TX" -r "YOUR_RPC_URL"
 
 ### Jupiter 借贷
 
-存入代币以赚取收益或抵押代币进行借贷。
+存入代币以获取收益或抵押代币进行借贷。
 
-**存入（赚取收益）**
+**存入（获取收益）**
 
 ```bash
 # Get deposit transaction
@@ -379,9 +400,9 @@ WITHDRAW=$(pnpm fetch-api -e /lend/v1/earn/withdraw -m POST -b '{
 
 ---
 
-### 投资组合 API
+## 投资组合 API
 
-跟踪 DeFi 头寸、平台信息和在 Solana 上质押的 JUP。
+跟踪 DeFi 头寸、平台信息和在 Solana 上的 JUP 持有量。
 
 **获取头寸**
 
@@ -409,18 +430,18 @@ pnpm fetch-api -e /portfolio/v1/platforms
 ```
 
 响应包括平台详情：
-- `id`：平台标识符（例如 `jupiter-exchange`）
+- `id`：平台标识符（例如，`jupiter-exchange`）
 - `name`：显示名称
-- `image`：Logo URL
+- `image`：标志 URL
 - `description`：平台概述
 - `defiLlamaId`：DefiLlama 参考链接
 - `isDeprecated`：平台是否已弃用
 - `tags`：分类标签
-- `links`：社交/网站链接（网站、Discord、Twitter、GitHub、文档）
+- `links`：社交媒体/网站链接（网站、Discord、Twitter、GitHub、文档）
 
-**获取质押的 JUP**
+**获取抵押的 JUP**
 
-检查钱包的质押 JUP 金额和待解押金额。
+检查钱包的抵押 JUP 金额和待解冻金额。
 
 ```bash
 pnpm fetch-api -e /portfolio/v1/staked-jup/YOUR_WALLET_ADDRESS
@@ -439,12 +460,12 @@ pnpm fetch-api -e /portfolio/v1/staked-jup/YOUR_WALLET_ADDRESS
 }
 ```
 
-- `stakedAmount`：总质押的 JUP 金额
-- `unstaking`：待解押的金额及完成时间戳（毫秒）
+- `stakedAmount`：总共抵押的 JUP 金额
+- `unstaking`：待解冻的 JUP 金额及完成时间戳（毫秒）
 
 ---
 
-### 触发 API（限价单）
+## 触发 API（限价单）
 
 创建在价格条件满足时自动执行的订单。
 
@@ -470,10 +491,10 @@ pnpm send-transaction -t "$SIGNED_TX" -r "YOUR_RPC_URL"
 ```
 
 参数：
-- `makingAmount`：要出售的输入代币数量（最小单位）
+- `makingAmount`：要出售的输入代币数量（以最小单位计）
 - `takingAmount`：要接收的输出代币最小数量
-- `expiredAt`：过期时间戳（null = 无过期）
-- `slippageBps`：可选的滑点容忍度（0 = 仅精确价格）
+- `expiredAt`：过期时间（Unix 时间戳，null 表示无过期）
+- `slippageBps`：可选的滑点容忍度（0 表示仅精确价格）
 
 **获取订单**
 
@@ -503,22 +524,22 @@ CANCEL_ALL=$(pnpm fetch-api -e /trigger/v1/cancelOrders -m POST -b '{
 }')
 ```
 
-**触发 API 端点**
+## 触发 API 端点**
 
 | 方法 | 端点 | 描述 |
 |--------|----------|-------------|
 | POST | `/trigger/v1/createOrder` | 创建限价单 |
-| GET | `/trigger/v1/getTriggerOrders` | 根据钱包获取订单 |
+| GET | `/trigger/v1/getTriggerOrders` | 获取钱包的订单 |
 | POST | `/trigger/v1/cancelOrder` | 取消单个订单 |
 | POST | `/trigger/v1/cancelOrders` | 批量取消多个订单 |
 
-**费用**：稳定对价为 0.03%，其他对价为 0.1%。
+**费用**：稳定对的费用为 0.03%，其他对的费用为 0.1%。
 
 ---
 
-### 定期 API（DCA）
+## 定期 API（DCA）
 
-在指定时间间隔自动购买代币。
+按指定间隔自动购买代币。
 
 **创建定期订单**
 
@@ -548,9 +569,9 @@ pnpm send-transaction -t "$SIGNED_TX" -r "YOUR_RPC_URL"
 参数：
 - `inAmount`：总花费金额（原始单位）
 - `numberOfOrders`：要购买的订单数量
-- `interval`：购买间隔（86400 = 每天）
-- `minPrice`/`maxPrice`：可选的价格范围（null = 任意价格）
-- `startAt`：开始时间戳（null = 立即）
+- `interval`：购买间隔（86400 表示每天）
+- `minPrice`/`maxPrice`：可选的价格范围（null 表示任意价格）
+- `startAt`：开始时间（Unix 时间戳，null 表示立即执行）
 
 **获取订单**
 
@@ -573,15 +594,15 @@ CANCEL=$(pnpm fetch-api -e /recurring/v1/cancelOrder -m POST -b '{
 # Sign and send transaction
 ```
 
-**定期 API 端点**
+## 定期 API 端点**
 
 | 方法 | 端点 | 描述 |
 |--------|----------|-------------|
 | POST | `/recurring/v1/createOrder` | 创建定期订单 |
-| GET | `/recurring/v1/getRecurringOrders` | 根据钱包获取定期订单 |
-| POST | `/recurring/v1/cancelOrder` | 取消订单 |
+| GET | `/recurring/v1/getRecurringOrders` | 获取钱包的定期订单 |
+| POST | `/recurring/v1/cancelOrder` | 取消定期订单 |
 
-**费用**：每次执行费用为 0.1%。Token2022 代币不支持。
+**费用**：每次执行费用为 0.1%。Token2022 代币不支持定期订单。
 
 ---
 
@@ -589,14 +610,14 @@ CANCEL=$(pnpm fetch-api -e /recurring/v1/cancelOrder -m POST -b '{
 
 | 使用场景 | API | 端点 |
 |----------|-----|----------|
-| 代币交易对换（默认） | Ultra | `/ultra/v1/order`, `/ultra/v1/execute` |
-| 带控制的交易对换 | Metis | `/swap/v1/quote`, `/swap/v1/swap` |
+| 代币交换（默认） | Ultra | `/ultra/v1/order`, `/ultra/v1/execute` |
+| 带控制的交换 | Metis | `/swap/v1/quote`, `/swap/v1/swap` |
 | 限价单 | Trigger | `/trigger/v1/createOrder`, `/trigger/v1/cancelOrder` |
 | 获取限价单 | Trigger | `/trigger/v1/getTriggerOrders` |
 | 定期订单 | Recurring | `/recurring/v1/createOrder`, `/recurring/v1/cancelOrder` |
 | 获取定期订单 | Recurring | `/recurring/v1/getRecurringOrders` |
 | 代币搜索 | Ultra | `/ultra/v1/search` |
-| 代币持有情况 | Ultra | `/ultra/v1/holdings/{address}` |
+| 代币持有量 | Ultra | `/ultra/v1/holdings/{address}` |
 | 代币警告 | Ultra | `/ultra/v1/shield` |
 | 代币价格 | Price | `/price/v3?ids={mints}` |
 | 代币元数据 | Tokens | `/tokens/v2/search?query={query}` |
@@ -616,28 +637,28 @@ CANCEL=$(pnpm fetch-api -e /recurring/v1/cancelOrder -m POST -b '{
 | 等级 | 速率限制 |
 |------|------------|
 | 免费 | 每分钟 60 次请求 |
-| 专业版 | 每分钟最多 30,000 次请求 |
-| Ultra | 根据执行的交易对换量动态调整 |
+| 专业级 | 每分钟最多 30,000 次请求 |
+| Ultra | 根据执行的交易量动态调整 |
 
-随着执行的交易对换量增加，Ultra 的速率限制也会增加。基础限制为每 10 秒 50 次请求。
+随着执行的交易量增加，Ultra 的速率限制也会增加。基础限制为每 10 秒 50 次请求。
 
 ### 费用
 
 | API | 费用 |
 |-----|-----|
-| Ultra | 每笔交易对换 5-10 个基点 |
-| Metis | 无 Jupiter 费用（用户需支付 gas） |
+| Ultra | 每笔交易 0.5-1.0% 的费用 |
+| Metis | 不收取 Jupiter 费用（用户需支付 gas 费用） |
 
-集成商可以添加自定义费用（50-255 个基点）。Jupiter 会收取集成商费用的 20%。
+集成商可以添加自定义费用（50-255 bps）。Jupiter 会收取集成商费用的 20%。
 
 ### 无 gas 要求
 
-Ultra 提供“无 gas”交易对换服务，Jupiter 支付交易费用，但有以下重要限制：
-- **用户仍需 SOL** 用于账户租金（创建代币账户）
-- **用户必须签署** 交易（并非真正的“零接触”）
-- **最低交易金额**：约 $10 等值
-- 当接受方持有量小于 0.01 SOL 时自动执行
-- JupiterZ RFQ：做市商支付交易费用
+Ultra 提供“无 gas”交易交换服务，Jupiter 支付交易费用，但有以下重要注意事项：
+- **用户仍需 SOL** 用于支付账户租金（创建代币账户）
+- **用户必须签署** 交易（并非真正的“零接触”操作）
+- **最低交易金额**：约 $10 美元
+- 当接受方持有量小于 0.01 SOL 时，交易会自动执行
+- JupiterZ RFQ：做市商需要支付交易费用
 
 ### 交易大小限制
 
@@ -647,30 +668,30 @@ Solana 交易的大小限制为 **1232 字节**。如果超过此限制：
 
 ### 代币限制
 
-- **Token2022**：不支持定期（DCA）订单
+- **Token2022**：不支持定期订单（DCA）
 - 某些代币可能有转账费用或冻结权限
 
-### Ultra 与 Metis 的比较
+### Ultra 与 Metis 的区别
 
 | 特性 | Ultra | Metis |
 |---------|-------|-------|
-| 是否需要 RPC | 不需要（Jupiter 处理） | 需要（用户需要使用 RPC） |
-| 无 gas | 是（满足特定条件时） | 否 |
+| 是否需要 RPC | 不需要（Jupiter 处理） | 需要（用户需要通过 RPC） |
+| 是否无 gas | 是（满足特定条件时） | 否 |
 | 是否支持自定义指令 | 不支持 | 支持 |
 | 交易组合 | 不支持 | 支持 |
 | 滑点 | 自动优化 | 手动设置 |
 
-**大多数交易对换使用 Ultra**。**仅在需要添加自定义指令或组合交易时使用 Metis**。
+**大多数情况下使用 Ultra**。**仅在需要添加自定义指令或组合交易时使用 Metis**。
 
 ### 常见错误
 
 | 错误 | 原因 | 解决方法 |
 |-------|-------|-----|
-| `TransactionExpiredBlockhashNotFound` | Blockhash 过期 | 重新请求订单/报价 |
+| `TransactionExpiredBlockhashNotFound` | 区块哈希过期 | 重新请求订单/报价 |
 | `SlippageToleranceExceeded` | 价格变动过大 | 增加滑点容忍度或重试 |
 | `InsufficientFunds` | SOL/代币不足 | 检查余额 |
-| `RateLimited (429)` | 请求过多 | 等待或升级等级 |
-| `InvalidSignature` | 签名错误或交易损坏 | 验证钱包地址是否与接受方地址匹配 |
+| `RateLimited (429)` | 请求过多 | 等待或升级账户等级 |
+| `InvalidSignature` | 签名错误或交易损坏 | 验证钱包地址是否正确 |
 
 ### Ultra 执行错误代码
 
@@ -678,8 +699,8 @@ Solana 交易的大小限制为 **1232 字节**。如果超过此限制：
 |------|---------|
 | 0 | 成功 |
 | -1 至 -5 | 客户端/验证错误 |
-| -1000 至 -1999 | 分集器路由错误 |
-| -2000 至 -2999 | RFQ（做市商）错误 |
+| -1000 至 -1999 | 集成器路由错误 |
+| -2000 至 -2999 | 做市商（RFQ）错误 |
 
 ---
 
@@ -696,7 +717,7 @@ Solana 交易的大小限制为 **1232 字节**。如果超过此限制：
 
 | 代币 | 发行地址 |
 |-------|--------------|
-| SOL（wrapped） | `So1111111111111111111111111111111111111112` |
+| SOL（封装版） | `So11111111111111111111111111111111111111112` |
 | USDC | `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v` |
 | USDT | `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB` |
 | JUP | `JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN` |
@@ -705,7 +726,38 @@ Solana 交易的大小限制为 **1232 字节**。如果超过此限制：
 
 ## 资源
 
-- [Jupiter 门户](https://portal.jup.ag) - API 密钥管理
+**更新说明：** 本技能包含 Jupiter API 的使用指南，但 API 可能会发生变化。每次运行/会话后，请根据 [dev.jup.ag](https://dev.jup.ag) 上的最新文档验证端点和参数。
+
+### Claude 同步的文档链接
+
+每次运行/会话前，请先查看以下文档：
+
+- `https://dev.jup.ag/llms.txt`
+- `https://dev.jup.ag/llms-full.txt`
+
+然后查看特定于工作流程的文档：
+
+- `https://dev.jup.ag/get-started/index.md`
+- `https://dev.jup.ag/portal/setup.md`
+- `https://dev.jup.ag/portal/rate-limit.md`
+- `https://dev.jup.ag/portal/responses.md`
+- `https://dev.jup.ag/docs/ultra/index.md`
+- `https://dev.jup.ag/docs/ultra/get-started.md`
+- `https://dev.jup.ag/docs/ultra/get-order.md`
+- `https://dev.jup.ag/docs/ultra/execute-order.md`
+- `https://dev.jup.ag/docs/ultra/response.md`
+- `https://dev.jup.ag/docs/ultra/rate-limit.md`
+- `https://dev.jup.ag/docs/ultra/search-token.md`
+- `https://dev.jup.ag/docs/swap/index.md`
+- `https://dev.jup.ag/docs/swap/get-quote.md`
+- `https://dev.jup.ag/docs/swap/build-swap-transaction.md`
+- `https://dev.jup.ag/docs/swap/send-swap-transaction.md`
+- `https://dev.jup.ag/docs/swap/common-errors.md`
+- `https://dev.jup.ag/updates/index.md`
+
+任何 Jupiter 文档页面都可以通过在路径后添加 `.md` 来获取 Markdown 格式。
+
+- [Jupiter 官网](https://portal.jup.ag) - API 密钥管理
 - [Jupiter 文档](https://dev.jup.ag) - 完整文档
 - [状态页面](https://status.jup.ag) - API 状态
 - [Solscan](https://solscan.io) - 交易浏览器

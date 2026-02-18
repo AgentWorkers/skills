@@ -1,0 +1,11 @@
+{
+  "owner": "boilerrat",
+  "slug": "colormind",
+  "displayName": "Colormind",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771295649672,
+    "commit": "https://github.com/openclaw/skills/commit/51cd4be6791b49c131e825acd2ab8a6841cf791a"
+  },
+  "history": []
+}

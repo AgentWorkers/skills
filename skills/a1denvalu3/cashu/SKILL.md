@@ -1,6 +1,6 @@
 ---
 name: cashu
-description: 这就是用于比特币支付的相关工具。请使用 Nutshell (Cashu) CLI 来管理 Cashu 的电子钱包、发送/接收代币以及支付 Lightning Network 的发票。
+description: 这就是用于比特币支付的功能。使用 Nutshell (Cashu) CLI 来管理 Cashu 的电子钱包、发送/接收代币以及支付 Lightning Network 的发票。
 compatibility: Requires `cashu` CLI (installed via pipx).
 metadata:
   project: nutshell
@@ -12,14 +12,13 @@ metadata:
 env:
   CASHU_DIR: ~/.cashu
 ---
-
 # Nutshell（Cashu CLI）
 
-Nutshell 是一个用于 Cashu 的命令行工具，Cashu 是一种基于比特币的电子现金（ecash）协议。它允许您私密地发送和接收电子现金令牌，并与 Lightning Network 进行交互。
+Nutshell 是一个用于 Cashu 的命令行钱包工具。Cashu 是一种基于 Bitcoin 的电子现金（ecash）协议，它允许用户私密地发送和接收电子现金令牌，并与 Lightning Network 进行交互。
 
 ## 安装
 
-使用 Nutshell 需要 `cashu` CLI。您可以通过 `pipx`（推荐）或 `pip` 来安装它：
+使用 Nutshell 需要 `cashu` CLI。可以通过 `pipx`（推荐）或 `pip` 进行安装：
 
 ```bash
 # Recommended (isolated environment)
@@ -29,17 +28,17 @@ pipx install cashu
 pip install cashu
 ```
 
-请确保该二进制文件的路径已添加到您的 `PATH` 环境变量中。
+确保安装后的二进制文件路径被添加到系统的 `PATH` 环境变量中。
 
 ## 环境配置（必需）
 
-为了使 CLI 正常工作，需要设置两个环境变量：
+为了正常使用 Nutshell CLI，需要配置两个环境变量：
 
-1. `CASHU_DIR`：钱包数据的目录（通常为 `~/.cashu`）。
-2. `MINT_URL`：您要使用的 Cashu 造币器的 URL。
+1. `CASHU_DIR`：钱包数据的存储目录（通常为 `~/.cashu`）。
+2. `MINT_URL`：要使用的 Cashu 代币铸造服务的 URL。
 
 **Linux / macOS：**
-将变量添加到命令前，或在您的 shell 配置文件中导出它们。
+将这两个变量添加到命令前，或在 shell 配置文件中导出它们。
 ```bash
 # Per-command
 CASHU_DIR=~/.cashu MINT_URL=https://mint.example.com cashu balance
@@ -49,7 +48,7 @@ export CASHU_DIR=~/.cashu
 export MINT_URL=https://mint.example.com
 ```
 
-**Windows (PowerShell：**
+**Windows（PowerShell）：**
 ```powershell
 $env:CASHU_DIR = "$HOME\.cashu"
 $env:MINT_URL = "https://mint.example.com"
@@ -58,11 +57,11 @@ cashu balance
 
 ## CLI 使用方法
 
-以下所有示例均假设 `CASHU_DIR` 和 `MINT_URL` 已设置。如果未在 shell 配置文件中保存这些变量，请在每个命令前加上它们。
+以下所有示例均假设 `CASHU_DIR` 和 `MINT_URL` 已经设置。如果未在 shell 配置文件中保存这些变量，请在每个命令前手动添加它们。
 
-**提示：** 在使用代理时，务必使用 `--yes`（或 `-y`）标志来跳过交互式提示和确认。这对于代理来说是强制性的，因为代理无法响应标准输入（如 “Confirm payment? [y/N]”）；省略该标志会导致命令挂起或超时。
+**提示：** 在使用 Nutshell 作为代理时，务必使用 `--yes`（或 `-y`）标志来跳过交互式提示和确认。这是强制性的，因为代理无法响应标准输入（如 “确认支付？[y/N]”）；如果不使用该标志，命令将挂起并超时。
 
-### 查看余额与信息
+### 查看余额和信息
 
 ```bash
 # Check wallet balance
@@ -78,7 +77,7 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes info
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes wallets
 ```
 
-### 发送和接收
+### 发送和接收电子现金令牌
 
 **发送 Cashu 令牌：**
 
@@ -104,7 +103,7 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes receive <token_string>
 CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes pay <bolt11_invoice>
 ```
 
-**支付 Lightning 地址（LNURL）：**
+**向 Lightning 地址支付（LNURL）：**
 
 ```bash
 # Pay an LNURL/Lightning Address (automatically resolves the invoice)
@@ -121,7 +120,7 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes invoice <amount>
 
 ### Lightning 地址（LNURL）
 
-管理您的 Nostr Lightning 地址（例如 `user@npubx.cash`）以接收付款。
+管理你的 Nostr Lightning 地址（例如 `user@npubx.cash`）以接收付款。
 
 ```bash
 # Create (or display) your static Lightning Address
@@ -146,10 +145,14 @@ CASHU_DIR=~/.cashu MINT_URL=<url> cashu --yes invoices
 
 ## 配置
 
-Nutshell 使用位于 `CASHU_DIR` 目录下的 `.env` 文件来进行额外配置。
-如果未提供 `MINT_URL`，系统可能会使用默认的公共测试造币器，从而导致错误。请始终指定您信任的造币器。
+Nutshell 使用位于 `CASHU_DIR` 目录下的 `.env` 文件进行额外配置。
+如果未提供 `MINT_URL`，系统可能会使用默认的公共测试代币铸造服务，从而导致错误。请务必指定你信任的代币铸造服务。
 
 ## 注意事项
 
-- 令牌是由 `cashuA...`（V3）或 `cashuB...`（V4）开头的字符串组成的。
-- 如果使用大量资金，请务必备份您的助记词（参见 `cashu info`）。
+- 令牌是由 `cashuA...`（V3）或 `cashuB...`（V4）开头的字符串表示。
+- 如果使用较大金额，请务必备份你的助记词（参见 `cashu info` 命令）。
+
+## 贡献
+
+如需提交问题或参与开发，请访问：https://github.com/cashubtc/nutshell

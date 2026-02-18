@@ -1,11 +1,11 @@
 ---
-name: homeassistant
-description: 这是一个专为 Home Assistant 设计的 AI 代理技能（Skill）。通过 REST API，可以控制 25 个以上的实体领域（Entity Domains），同时具备安全保护机制、Webhook 功能、库存管理功能以及完整的命令行界面（CLI）支持。支持的功能包括：灯光控制、气候调节、门锁控制、人员检测、天气信息、日历管理、通知系统、文本到语音（TTS）转换、脚本执行、自动化任务等。
-metadata: {"openclaw":{"emoji":"🏠","requires":{"env":["HA_URL","HA_TOKEN"],"bins":["curl","jq"]},"primaryEnv":"HA_TOKEN"}}
+name: ha-ultimate
+description: 这是一个专为 Home Assistant 设计的 AI 代理技能（Skill）。通过 REST API 可以控制 25 个以上的实体领域（Entity Domains），同时具备安全保护机制、Webhook 功能、库存管理功能以及完整的命令行接口（CLI）支持。该技能支持对灯光、气候系统、门锁、人员检测、天气信息、日历、通知系统、文本到语音（TTS）功能、脚本执行、自动化任务等进行控制。
+metadata: {"openclaw":{"emoji":"🏠","requires":{"env":["HA_URL","HA_TOKEN"],"bins":["curl","jq"]},"optionalBins":["node"],"primaryEnv":"HA_TOKEN","configPaths":["$HOME/.config/homeassistant/config.json",".env"]}}
 ---
-# Home Assistant — 终极技能
+# ha-ultimate — 完整的Home Assistant技能
 
-通过 Home Assistant 的 REST API 控制您的智能家居，具备安全防护功能、设备清单管理以及全面的设备覆盖能力。
+通过Home Assistant的REST API控制您的智能家居，具备安全保护功能、设备清单管理以及全面的设备覆盖能力。
 
 ## 设置
 
@@ -16,17 +16,19 @@ export HA_URL="http://your-ha-instance:8123"
 export HA_TOKEN="your-long-lived-access-token"
 ```
 
-或者可以在技能目录下创建一个 `.env` 文件（某些代理会自动加载该文件）：
+或者您可以在技能目录下创建一个`.env`文件（由`ha.sh`自动加载）：
 
 ```env
 HA_URL=http://192.168.1.100:8123
 HA_TOKEN=eyJ...your-token...
 ```
 
+CLI封装工具也会检查`$HOME/.config/homeassistant/config.json`文件作为备用选项（该文件包含`url`和`token`键）。请使用严格的权限保护此文件（`chmod 600`），因为它可能包含您的访问令牌。
+
 ### 2. 获取长期有效的访问令牌
 
-1. 打开 Home Assistant → 个人资料（左下角）
-2. 滚动到“长期有效访问令牌”部分
+1. 打开Home Assistant → 个人资料（左下角）
+2. 滚动到“长期访问令牌”
 3. 点击“创建令牌”，并为其命名（例如：“OpenClaw”）
 4. 立即复制令牌（仅显示一次）
 
@@ -36,60 +38,60 @@ HA_TOKEN=eyJ...your-token...
 curl -s -H "Authorization: Bearer $HA_TOKEN" "$HA_URL/api/" | jq
 ```
 
-或者使用 CLI 包装器进行测试：
+或者使用CLI封装工具：
 
 ```bash
 scripts/ha.sh info
 ```
 
-### 4. 生成设备清单（推荐）
+### 4. 生成设备清单（推荐，需要Node.js）
 
-运行一次命令以创建完整的设备清单：
+**注意：**Node.js是一个**可选**的依赖项，仅在`inventory.js`中需要。如果无法使用Node.js，`ha.sh inventory`会回退到使用curl+jq来列出设备。
 
 ```bash
 node scripts/inventory.js
 ```
 
-该命令会生成 `ENTITIES.md` 文件，其中包含按领域分类的设备信息（名称、区域和当前状态）。**在操作设备之前，请先阅读 ENTITIES.md 文件**，以了解可用的设备。
+这会生成`ENTITIES.md`文件，其中包含按领域分类的所有设备信息，包括设备名称、区域和当前状态。**在操作设备之前，请先阅读ENTITIES.md文件**以了解可用的设备。
 
 ### 5. Docker / 容器网络
 
-如果在 Docker 中运行：
-- **建议使用 IP 地址**：`http://192.168.1.100:8123`
+如果在Docker中运行：
+- **使用IP地址**（推荐）：`http://192.168.1.100:8123`
 - **Tailscale**：`http://homeassistant.ts.net:8123`
-- **避免使用 mDNS**：在 Docker 中 `homeassistant.local` 通常无法解析
+- **避免使用mDNS**：在Docker中`homeassistant.local`通常无法解析
 - **Nabu Casa**：`https://xxxxx.ui.nabu.casa`（需要订阅）
 
 ---
 
 ## 安全规则
 
-本技能实现了**分层安全系统**，以防止对安全关键设备进行意外操作。
+此技能实现了**分层的安全系统**，以防止对安全关键设备进行意外操作。
 
 ### 第一层：强制确认（代理行为）
 
-在执行以下操作之前，**必须先获得用户的确认**：
-- **锁具** — 锁上或解锁任何锁具
-- **报警面板** — 启用或关闭报警
-- **车库门** — 打开或关闭车库门（使用 `device_class: garage`）
-- **安全自动化** — 禁用与安全相关的自动化任务
+在执行以下操作之前，**必须始终获得用户的确认**：
+- **锁** — 锁定或解锁任何锁具
+- **报警面板** — 启用或禁用报警
+- **车库门** — 打开或关闭（使用`device_class: garage`的命令）
+- **安全自动化** — 禁用与安全相关的自动化
 - **遮阳帘** — 打开或关闭控制物理访问的遮阳帘（如大门、屏障）
 
 在没有用户明确确认的情况下，切勿对安全敏感的设备进行任何操作。
 
-### 第二层：关键操作模式
+### 第二层：关键操作工作流程
 
-对于关键领域，使用以下工作流程：
-1. **尝试执行操作** — 正常执行命令
-2. **通知用户** — “⚠️ 打开车库门是一个关键操作。您确定要继续吗？”
-3. **等待用户确认** — 用户回答“是”、“好的”、“可以”或任何肯定的答复
-4. **只有在得到确认后** — 才继续执行操作
+对于关键领域（锁、报警面板、车库门、控制物理访问的遮阳帘），在执行任何命令之前，请遵循以下工作流程：
+1. **识别操作的性质** — 检查设备领域是否为锁、报警控制面板或遮阳帘（`device_class`为garage/gate）
+2. **通知用户并请求确认** — “⚠️ 打开车库门是一个关键操作。您确定要继续吗？”
+3. **等待明确的确认** — 用户回答“是”、“好的”、“可以”或任何肯定的回应
+4. **只有在得到确认后才能执行命令** — 绝不要在没有确认的情况下执行命令
 
-可接受的确认回答包括：“是”、“好的”、“可以”、“执行”或任何明确的肯定答复。不需要使用特定的短语。
+**重要提示：** 是代理（而非脚本）负责执行这一确认流程。CLI封装工具（`scripts/ha.sh`）会检查`blocked_entities.json`文件，但交互式确认必须在代理对话层面完成，才能对关键领域执行任何命令。
 
-### 第三层：被屏蔽的设备（可选配置）
+### 第三层：被阻止的设备（可选配置）
 
-用户可以通过在 `blocked_entities.json` 文件中列出设备来永久屏蔽这些设备：
+用户可以通过在`blocked_entities.json`文件中列出设备来永久阻止这些设备：
 
 ```json
 {
@@ -98,13 +100,13 @@ node scripts/inventory.js
 }
 ```
 
-**被屏蔽的设备在任何情况下都无法被控制**，即使用户已确认也是如此。在执行任何操作之前，请检查该文件是否存在。
+**被阻止的设备在任何情况下都无法被控制**，即使获得了用户确认。在执行任何操作之前，请检查该文件是否存在。
 
 ---
 
-## CLI 包装器
+## CLI封装工具
 
-`scripts/ha.sh` CLI 提供了对 Home Assistant 所有功能的便捷访问：
+`scripts/ha.sh` CLI提供了对所有Home Assistant功能的便捷访问：
 
 ```bash
 # Test connection
@@ -166,7 +168,7 @@ curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
   | jq -r '.[] | select(.entity_id | startswith("sensor.")) | "\(.entity_id): \(.state) \(.attributes.unit_of_measurement // "")"'
 ```
 
-替换 `switch.`、`light.`、`sensor.` 等前缀，可以查询任何领域的设备。
+替换领域前缀（`switch.`、`light.`、`sensor.`等）以发现任何领域的设备。
 
 ### 获取单个设备的状态
 
@@ -176,7 +178,7 @@ curl -s "$HA_URL/api/states/ENTITY_ID" -H "Authorization: Bearer $HA_TOKEN"
 
 ### 区域与楼层发现
 
-使用模板 API 查询区域、楼层和标签信息。
+使用模板API查询区域、楼层和标签。
 
 ```bash
 # List all areas
@@ -291,7 +293,7 @@ curl -s -X POST "$HA_URL/api/services/script/bedtime_routine" \
   -d '{"variables": {"brightness": 20, "delay_minutes": 5}}'
 ```
 
-## 自动化任务
+## 自动化
 
 ```bash
 # List all automations
@@ -344,7 +346,7 @@ curl -s -X POST "$HA_URL/api/services/climate/set_preset_mode" \
 
 ## 遮阳帘（百叶窗、车库门）
 
-**安全提示：** 在打开/关闭车库门或大门之前，请先获得用户的确认。
+**安全提示：** 在打开/关闭车库门或大门之前，请务必获得用户的确认。
 
 ```bash
 # Open
@@ -374,7 +376,7 @@ curl -s -X POST "$HA_URL/api/services/cover/stop_cover" \
 
 ## 锁具
 
-**安全提示：** 在锁上/解锁之前，请务必先获得用户的确认。
+**安全提示：** 在锁定/解锁之前，请务必始终获得用户的确认。
 
 ```bash
 # Lock
@@ -446,7 +448,7 @@ curl -s -X POST "$HA_URL/api/services/vacuum/return_to_base" \
 
 ## 报警控制面板
 
-**安全提示：** 在启用/关闭报警系统之前，请先获得用户的确认。
+**安全提示：** 在启用/禁用报警系统之前，请务必始终获得用户的确认。
 
 ```bash
 # Arm (home mode)
@@ -488,9 +490,9 @@ curl -s -X POST "$HA_URL/api/services/notify/notify" \
   -d '{"message": "System alert", "title": "Home Assistant"}'
 ```
 
-将 `mobile_app_phone` 替换为实际的服务名称。
+将`mobile_app_phone`替换为列表命令中的实际服务名称。
 
-## 人员与位置追踪
+## 人员与位置
 
 ```bash
 # Who is home?
@@ -502,7 +504,7 @@ curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
   | jq -r '.[] | select(.entity_id | startswith("device_tracker.")) | "\(.entity_id): \(.state)"'
 ```
 
-状态：`home`、`not_home` 或区域名称。
+状态：`home`、`not_home`或区域名称。
 
 ## 天气
 
@@ -524,7 +526,7 @@ curl -s -X POST "$HA_URL/api/services/weather/get_forecasts" \
   -d '{"entity_id": "weather.home", "type": "hourly"}'
 ```
 
-## 输入辅助功能
+## 输入辅助设备
 
 ```bash
 # Toggle an input boolean
@@ -582,13 +584,13 @@ curl -s -X POST "$HA_URL/api/services/tts/speak" \
   -d '{"entity_id": "tts.google_en", "media_player_entity_id": "media_player.living_room_speaker", "message": "Dinner is ready"}'
 ```
 
-将 `tts.google_en` 替换为您的文本转语音服务，将 `media_player` 替换为目标扬声器。
+将`tts.google_en`替换为您的文本转语音服务，将媒体播放器替换为目标扬声器。
 
 ---
 
 ## 调用任何服务
 
-调用 Home Assistant 服务的通用模式：
+调用任何Home Assistant服务的一般模式：
 
 ```bash
 curl -s -X POST "$HA_URL/api/services/{domain}/{service}" \
@@ -599,7 +601,7 @@ curl -s -X POST "$HA_URL/api/services/{domain}/{service}" \
 
 ### 批量操作
 
-通过传递设备 ID 数组，可以一次性控制多个设备：
+通过传递设备ID数组，可以在一次调用中控制多个设备：
 
 ```bash
 curl -s -X POST "$HA_URL/api/services/light/turn_off" \
@@ -612,7 +614,7 @@ curl -s -X POST "$HA_URL/api/services/light/turn_off" \
 
 ## 模板评估
 
-`/api/template` 端点会在服务器端评估 Jinja2 模板。这对于需要复杂计算的查询非常有用（而不仅仅是读取设备状态）。
+ `/api/template`端点在服务器端评估Jinja2模板。这对于需要复杂计算的查询非常有用。
 
 ```bash
 curl -s -X POST "$HA_URL/api/template" \
@@ -643,7 +645,7 @@ curl -s -X POST "$HA_URL/api/template" \
   -d '{"template": "{{ area_entities(\"kitchen\") | select(\"match\", \"light.\") | list }}"}'
 ```
 
-可用的模板函数包括：`states()`、`is_state()`、`state_attr()`、`areas()`、`area_entities()`、`area_name()`、`floors()`、`floor_areas()`、`labels()`、`label_entities()`、`devices()`、`device_entities()`、`now()`、`relative_time()`。
+可用的模板函数：`states()`、`is_state()`、`state_attr()`、`areas()`、`area_entities()`、`area_name()`、`floors()`、`floor_areas()`、`labels()`、`label_entities()`、`devices()`、`device_entities()`、`now()`、`relative_time()`。
 
 ---
 
@@ -663,7 +665,7 @@ curl -s "$HA_URL/api/history/period/2025-01-15T00:00:00Z?end_time=2025-01-15T23:
   | jq '.[0]'
 ```
 
-### 日志记录
+### 日志
 
 ```bash
 # Recent logbook entries
@@ -678,9 +680,9 @@ curl -s "$HA_URL/api/logbook?entity=light.living_room" \
 
 ---
 
-## 仪表盘概览
+## 仪表板概览
 
-快速查看所有活跃设备的状态：
+所有活跃设备的快速状态：
 
 ```bash
 # All lights that are on
@@ -710,11 +712,11 @@ curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
 
 ---
 
-## 入站 Webhook（Home Assistant → 代理）
+## 入站Webhook（Home Assistant → 代理）
 
-要接收来自 Home Assistant 自动化的事件：
+要接收来自Home Assistant自动化的事件：
 
-### 1. 在 Home Assistant 中定义 REST 命令
+### 1. 在Home Assistant中定义REST命令
 
 ```yaml
 # configuration.yaml
@@ -728,7 +730,7 @@ rest_command:
     payload: '{"event": "{{ event }}", "area": "{{ area }}", "entity": "{{ entity }}"}'
 ```
 
-### 2. 使用 Webhook 功能创建自动化任务
+### 2. 使用Webhook动作创建Home Assistant自动化
 
 ```yaml
 # automations.yaml
@@ -745,17 +747,17 @@ rest_command:
         entity: binary_sensor.motion_hallway
 ```
 
-### 3. 代理处理
+### 3. 在代理中处理
 
-代理会接收 Webhook 的 POST 请求，并根据事件类型和数据通知用户或采取相应操作。
+代理会接收Webhook的POST请求，并可以根据事件类型和数据通知用户或采取相应行动。
 
-有关完整的 Webhook 设置，请参阅 [references/webhooks.md](references/webhooks.md)。
+有关完整的Webhook设置，请参阅[references/webhooks.md](references/webhooks.md)。
 
 ---
 
 ## 错误处理
 
-### 检查 API 连接
+### 检查API连接
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}" "$HA_URL/api/" \
@@ -772,16 +774,16 @@ HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
 # 200 = exists, 404 = not found
 ```
 
-### HTTP 状态码
+### HTTP状态码
 
 | 代码 | 含义 |
 |------|---------|
 | 200 | 成功 |
-| 400 | 请求错误（JSON 格式不正确或服务数据无效） |
+| 400 | 请求错误（JSON格式不正确或服务数据无效） |
 | 401 | 未经授权（令牌错误或缺失） |
 | 404 | 设备或端点未找到 |
-| 405 | 方法不允许（使用了错误的 HTTP 方法） |
-| 503 | Home Assistant 正在启动或不可用 |
+| 405 | 方法不允许（HTTP方法错误） |
+| 503 | Home Assistant正在启动或不可用 |
 
 ### 响应格式
 
@@ -791,11 +793,11 @@ HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
 [{"entity_id": "light.living_room", "state": "on", "attributes": {...}, "last_changed": "..."}]
 ```
 
-- 如果调用成功但状态没有变化：返回 `[]`（空数组）
-- 读取设备状态（`/api/states/...`）：返回单个设备状态对象
-- 出现错误：返回 `{"message": "..."` 以及相应的 HTTP 错误代码
+- 如果调用成功且状态未改变：返回`[]`（空数组）
+- 获取状态（`/api/states/...`）：返回单个状态对象
+- 出现错误：返回`{"message": "..."`以及HTTP错误代码
 
-有关更多故障排除信息，请参阅 [references/troubleshooting.md](references/troubleshooting.md)。
+有关更多故障排除信息，请参阅[references/troubleshooting.md](references/troubleshooting.md)。
 
 ---
 
@@ -804,17 +806,17 @@ HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
 | 领域 | 示例 |
 |--------|----------|
 | `switch.*` | 智能插座、通用开关 |
-| `light.*` | 灯具（Hue、LIFX 等） |
+| `light.*` | 灯具（Hue、LIFX等） |
 | `scene.*` | 预配置的场景 |
 | `script.*` | 可重用的动作序列 |
 | `automation.*` | 自动化任务 |
 | `climate.*` | 温控器、空调设备 |
-| `cover.*` | 遮阳帘、车库门、大门 |
+| `cover.*` | 百叶窗、车库门、大门 |
 | `lock.*` | 智能锁 |
 | `fan.*` | 风扇、通风设备 |
 | `media_player.*` | 电视、扬声器、流媒体设备 |
-| `vacuum.*` | 吸尘器 |
-| `alarm_control_panel.*` | 安防系统 |
+| `vacuum.*` | 吸尘机器人 |
+| `alarm_control_panel.*` | 安全系统 |
 | `notify.*` | 通知目标 |
 | `person.*` | 人员/位置追踪 |
 | `device_tracker.*` | 设备位置 |
@@ -826,17 +828,17 @@ HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
 | `input_boolean.*` | 虚拟开关 |
 | `input_number.*` | 数字滑块 |
 | `input_select.*` | 下拉选择器 |
-| `input_text.*` | 文本输入框 |
-| `input_datetime.*` | 日期/时间输入框 |
+| `input_text.*` | 文本输入 |
+| `input_datetime.*` | 日期/时间输入 |
 
 ---
 
 ## 注意事项
 
-- API 默认返回 JSON 格式的数据
-- 长期有效的访问令牌不会过期——请妥善保管
-- 在使用前，请先用 `list` 命令测试设备 ID
-- 对于锁具、报警系统和车库门，操作前务必先获得用户确认
-- 使用 `scripts/inventory.js` 生成完整的设备清单
-- 在操作任何设备之前，请检查 `blocked_entities.json` 文件是否存在
-- 有关完整的 API 参考，请参阅 [references/api.md](references/api.md)
+- API默认返回JSON格式的数据
+- 长期有效的令牌不会过期 — 请妥善保管
+- 在首次使用前，先用列表命令测试设备ID
+- 对于锁具、报警系统和车库门，**必须始终获得用户的确认**
+- 使用`scripts/inventory.js`在首次使用前生成完整的设备清单
+- 在对任何设备执行操作之前，请检查`blocked_entities.json`文件是否存在
+- 有关完整的API参考，请参阅[references/api.md](references/api.md)

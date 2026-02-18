@@ -2,104 +2,87 @@
 
 name: dogecoin-node
 
-version: 1.0.3
+version: 1.0.4
 
 description: >
-  **技能：配置并运行具有 RPC 访问功能、区块链工具以及可选的小费功能的 Dogecoin Core 全节点**
+  **技能：配置并运行具备 RPC 访问功能、区块链工具以及可选的小费功能的 Dogecoin Core 全节点**
   **技能描述：**  
-  本技能涵盖了如何设置和操作一个完整的 Dogecoin Core 节点，使其具备以下功能：  
-  1. **RPC 访问**：允许通过远程过程调用（Remote Procedure Call）与 Dogecoin Core 服务器进行交互。  
-  2. **区块链工具**：提供用于查询、分析和操作 Dogecoin 区块链的数据和工具。  
-  3. **可选的小费功能**：用户可以选择是否为服务提供者提供小费（通过特定的交易方式）。  
+  本技能涵盖了如何搭建和操作一个完整的 Dogecoin Core 节点，该节点支持 RPC（Remote Procedure Call）接口，配备了必要的区块链工具，并提供了可选的小费（tipping）功能。以下是实现这一目标的详细步骤和所需知识：
+  - **环境准备：**  
+    - 确保您拥有安装 Dogecoin Core 的系统（推荐使用 Linux 或 macOS）。
+    - 安装所需的所有依赖软件和工具。
+  - **节点配置：**  
+    - 配置 Dogecoin Core 的网络参数，包括节点地址、端口等。
+    - 设置节点的加密方式（如 RSA 或 ECDSA）。
+  - **RPC 接口配置：**  
+    - 指定节点允许接收 RPC 请求的地址和端口。
+    - 配置 RPC 服务的安全设置（如身份验证、加密方式等）。
+  - **区块链工具集成：**  
+    - 集成必要的区块链工具，如钱包管理器、交易监控工具等，以便更好地管理 Dogecoin 财产。
+    - 使用这些工具进行交易、查看区块信息等操作。
+  - **小费功能配置（可选）：**  
+    - 如果需要启用小费功能，需配置相应的接口和支付机制。
+    - 确保用户可以方便地向节点发送小费，并接收相应的奖励。
+  - **节点运行与维护：**  
+    - 启动并监控节点的运行状态。
+    - 定期更新 Dogecoin Core 和相关工具到最新版本。
+    - 处理节点可能出现的问题和故障。
+  - **安全考虑：**  
+    - 采取适当的安全措施，保护节点免受攻击和数据泄露。
+    - 定期备份节点数据，以防数据丢失。
   **技能要求：**  
-  - 熟悉 Dogecoin Core 的基本架构和命令行接口（CLI）。  
-  - 理解区块链技术的基本原理。  
-  - 具备基本的 shell 或终端操作技能。  
-  **技能应用场景：**  
-  - 用于开发 Dogecoin 相关的应用程序或服务。  
-  - 用于维护和优化 Dogecoin 网络的节点。  
-  **技能步骤：**  
-  1. **安装 Dogecoin Core：**  
-     - 从官方渠道下载并安装 Dogecoin Core 的最新版本。  
-     - 配置必要的环境变量（如 PATH、JAVA_HOME 等）。  
-  2. **配置网络参数：**  
-     - 设置节点的 IP 地址、端口以及网络配置（如比特币网络的默认参数）。  
-  3. **启动节点：**  
-     - 使用相应的命令启动 Dogecoin Core 节点。  
-     - 监控节点的运行状态和日志以确认其正常运行。  
-  4. **配置 RPC 服务：**  
-     - 根据需要配置 RPC 服务的访问权限和安全性设置。  
-  5. **集成区块链工具：**  
-     - 编写脚本或使用现有的工具来查询、下载或上传 Dogecoin 块链数据。  
-  6. **启用小费功能（可选）：**  
-     - 根据项目需求，配置小费功能的实现细节（如接收小费的地址、交易类型等）。  
-  7. **测试和调试：**  
-     - 对节点进行全面的测试，确保所有功能正常工作。  
-     - 根据测试结果进行必要的调试和优化。  
-  **注意事项：**  
-  - 请确保遵循 Dogecoin Core 的官方文档和社区指南进行操作。  
-  - 定期更新 Dogecoin Core 以获取最新的安全补丁和功能改进。  
-  - 对于涉及敏感数据（如私钥）的操作，请采取适当的安全措施。
+  - 具备基本的 Linux 或 macOS 操作系统知识。
+  - 熟悉 Dogecoin Core 的命令行接口（CLI）和配置选项。
+  - 对区块链技术和分布式系统有基本了解。
+  - 对编程有一定了解，尤其是 Python 或其他用于配置和监控的工具语言。
+  **适用场景：**  
+  - 个人或小型团队，希望自行管理 Dogecoin 财产并进行相关操作。
+  - 开发者或研究人员，需要深入了解 Dogecoin 的底层架构和功能。
+  **学习资源：**  
+  - Dogecoin Core 官方文档：[https://docs.dogecoin.org/](https://docs.dogecoin.org/)
+  - 相关技术博客和论坛：[https://github.com/dogecoin/dogecoin-core/wiki/](https://github.com/dogecoin/dogecoin-core/wiki/)
+  - 教程和视频教程：[https://www.youtube.com/watch?v=52a9X279qQ4D5U1K8](https://www.youtube.com/watch?v=52a9X279qQ4D5U1K8)
 
 ---
 
 # Dogecoin 节点技能
 
-该技能旨在通过 RPC 完全自动化 Dogecoin Core 全节点及其命令行界面（CLI）的集成与操作，从而支持各种用例下的区块链工具和钱包管理，包括使用 SQLite 实现的小费功能。
+该技能旨在通过 RPC（Remote Procedure Call）完全自动化 Dogecoin Core 完整节点及其命令行界面（CLI）的集成与操作，从而支持各种用例下的区块链工具和钱包管理功能，包括使用 SQLite 实现的小费功能。
 
 ## 功能
 
-1. **获取钱包余额**
+1. **查询钱包余额**
+   - 获取指定 Dogecoin 钱包地址的当前余额。
+   - 例如：`/dogecoin-node balance <wallet_address>`
 
-    - 获取指定 Dogecoin 钱包地址的当前余额。
-
-    - 示例：`/dogecoin balance <wallet_address>`
-
-
-2. **发送 DOGE**
-
-    - 从已连接的钱包向指定地址发送 Dogecoin。
-
-    - 示例：`/dogecoin send <recipient_address> <amount>`
-
+2. **发送 Dogecoin**
+   - 从连接的钱包向指定地址发送 Dogecoin。
+   - 例如：`/dogecoin-node send <recipient_address> <amount>`
 
 3. **查看交易记录**
+   - 获取钱包的最新交易详情。
+   - 例如：`/dogecoin-node txs <wallet_address>`
 
-    - 获取钱包的最近交易详情。
-
-    - 示例：`/dogecoin txs <wallet_address>`
-
-
-4. **查询 DOGE 价格**
-
-    - 获取最新的 Dogecoin 价格（以美元计）。
-
-    - 示例：`/dogecoin price`
-
+4. **查询 Dogecoin 价格**
+   - 获取最新的 Dogecoin 价格（以美元计）。
+   - 例如：`/dogecoin-node price`
 
 5. **帮助命令**
-
-    - 显示命令的相关帮助信息。
-
-    - 示例：`/dogecoin help`
-
+   - 显示有关命令的帮助信息。
+   - 例如：`/dogecoin-node help`
 
 ## 安装
 
 ### 先决条件
 
 1. 一个已完全同步的 Dogecoin Core RPC 节点。
-
 2. 在 `dogecoin.conf` 文件中配置了 Dogecoin 的 `rpcuser` 和 `rpcpassword`。
-
 3. OpenClaw Gateway 已更新至最新版本。
-
 
 ### 配置节点的步骤
 
 1. **安装二进制文件并下载 Dogecoin Core**
-
-```bash
+   ```bash
 
 cd ~/downloads
 
@@ -109,10 +92,8 @@ curl -L -o dogecoin-1.14.9-x86_64-linux-gnu.tar.gz \
 
 ```
 
-
 2. 解压并放置二进制文件
-
-```bash
+   ```bash
 
 tar xf dogecoin-1.14.9-x86_64-linux-gnu.tar.gz
 
@@ -126,10 +107,8 @@ ln -sf ~/bin/dogecoin-1.14.9/bin/dogecoin-cli ~/dogecoin-cli
 
 ```
 
-
-3. **设置 Prime 数据目录（用于 ~/.dogecoin）**
-
-```bash
+3. **设置 Prime 数据目录（用于 `~/.dogecoin`）
+   ```bash
 
 ./dogecoind -datadir=$HOME/.dogecoin -server=1 -listen=0 -daemon
 
@@ -142,10 +121,8 @@ sleep 30
 
 ```
 
-
 4. **配置 RPC 凭据（仅限本地主机）**
-
-```bash
+   ```bash
 
 cat > ~/.dogecoin/dogecoin.conf <<'EOF'
 
@@ -173,21 +150,16 @@ EOF
 
 ```
 
-
 5. 启动并同步节点
-
-```bash
+   ```bash
 
 ./dogecoind -datadir=$HOME/.dogecoin -daemon
 
 
 ```
 
-
-检查同步状态：
-
-
-```bash
+   检查同步状态：
+   ```bash
 
 ./dogecoin-cli -datadir=$HOME/.dogecoin getblockcount
 
@@ -196,45 +168,27 @@ EOF
 
 ```
 
-
-优雅地停止节点：
-
-
-```bash
+   清洁地停止节点：
+   ```bash
 
 ./dogecoin-cli -datadir=$HOME/.dogecoin stop
 
 
 ```
 
+## 示例用法（所有 Telegram 命令）
 
-## 示例用法
-
-（所有 Telegram 命令均可通过 Dogecoin CLI 实现；建议将所有 RPC/CLI 命令也添加到 Telegram 命令中）
-
-* `/dogecoin balance D8nLvyHGiDDjSm2UKnWxWehueu5Me5wTix`
-
-
-* `/dogecoin send D8nLvyHGiDDjSm2UKnWxWehueu5Me5wTix 10`
-
-
-* `/dogecoin txs D8nLvyHGiDDjSm2UKnWxWehueu5Me5wTix`
-
-
-* `/dogecoin price`
-
-
-* `/dogecoin help`
-
+* `/dogecoin-node balance D8nLvyHGiDDjSm2UKnWxWehueu5Me5wTix`
+* `/dogecoin-node send D8nLvyHGiDDjSm2UKnWxWehueu5Me5wTix 10`
+* `/dogecoin-node txs D8nLvyHGiDDjSm2UKnWxWehueu5Me5wTix`
+* `/dogecoin-node price`
+* `/dogecoin-node help`
 
 ## RPC/CLI 命令速查表
 
-以下是常用的 Dogecoin CLI 命令列表。使用这些命令与节点进行交互；如需查看完整命令列表，请执行 `./dogecoin-cli help`。
-
+以下是常用的 Dogecoin CLI 命令列表。使用这些命令与节点进行交互。如需查看所有命令，请执行 `./dogecoin-cli help`。
 
 ### 区块链相关命令
-
-
 ```bash
 
 ./dogecoin-cli getblockcount # Get the current block height
@@ -250,10 +204,7 @@ EOF
 
 ```
 
-
 ### 网络相关命令
-
-
 ```bash
 
 ./dogecoin-cli getconnectioncount # Number of connections to the network
@@ -267,10 +218,7 @@ EOF
 
 ```
 
-
 ### 钱包相关命令
-
-
 ```bash
 
 ./dogecoin-cli getwalletinfo # Wallet details (balance, keys, etc.)
@@ -286,10 +234,7 @@ EOF
 
 ```
 
-
 ### 实用工具命令
-
-
 ```bash
 
 ./dogecoin-cli stop # Stop the Dogecoin node safely
@@ -299,23 +244,18 @@ EOF
 
 ```
 
-
-对于未列出的动态查询需求，请随时参考：`./dogecoin-cli help`。
-
+对于不在列表中的动态查询需求，请始终参考：`./dogecoin-cli help`。
 
 ---
 
-## 自动化健康检查（可选功能）：
+## 自动化健康检查（可选功能）
 
-该文件可作为维护 Dogecoin 节点运行状态的主要验证工具。
-
+该文件作为维护 Dogecoin 节点运行状态的主要验证工具。
 
 ### 健康检查脚本设置：
 
-1. 要启用健康检查功能，请在此位置（`.openwork/workspace/archive/health/`）创建 `doge_health_check.sh` 文件，并添加以下代码：
-
-
-```bash
+1. 要启用健康检查功能，请在 `.openwork/workspace/archive/health/` 目录下创建 `doge_health_check.sh` 文件，并添加以下代码：
+   ```bash
 
 mkdir -p ~/.openwork/workspace/archive/health/
 
@@ -406,25 +346,19 @@ EOF
 
 ```
 
-
 # 5. 授予执行权限
-
 chmod +x ~/.openwork/workspace/archive/health/doge_health_check.sh
-
 
 ---
 
-## 小费集成（可选功能）：
+## 小费集成（可选功能）
 
-在设置并同步节点后，您可以启用小费功能。该功能允许您发送 Dogecoin 小费、维护用户钱包数据库并记录交易记录。
-
+一旦节点设置完成并开始同步，您可以启用小费功能。该功能允许您发送 Dogecoin 小费、维护用户钱包数据库并记录交易记录。
 
 ### 小费脚本设置：
 
-1. 要启用小费功能，请在此位置（`.openwork/workspace/archive/tipping/`）创建 `dogecoin_tipping.py` 文件，并添加以下代码：
-
-
-```bash
+1. 要启用小费功能，请在 `.openwork/workspace/archive/tipping/` 目录下创建 `dogecoin_tipping.py` 文件，并添加以下代码：
+   ```bash
 
 mkdir -p ~/.openwork/workspace/archive/tipping/
 
@@ -618,7 +552,6 @@ EOF
 
 ```
 
-
 ---
 
-相关技术细节已在前文文档中说明。如需优化或扩展功能，请随时联系我们！
+相关技术细节已在前文文档中说明。如需改进或扩展功能，请随时联系我们！

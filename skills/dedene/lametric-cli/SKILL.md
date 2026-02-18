@@ -9,9 +9,6 @@ metadata:
   openclaw:
     primaryEnv: LAMETRIC_API_KEY
     requires:
-      env:
-        - LAMETRIC_API_KEY
-        - LAMETRIC_DEVICE
       bins:
         - lametric
     install:
@@ -25,9 +22,9 @@ metadata:
 ---
 # LaMetric CLI
 
-这是一个用于控制LaMetric TIME/SKY设备的命令行工具（CLI），支持发送通知、调整设备设置、管理定时器以及流式传输内容等功能。
+这是一个用于控制LaMetric TIME/SKY设备的命令行工具（CLI）。它支持发送通知、调整设备设置、管理定时器以及流式传输内容等功能。
 
-## 前提条件
+## 先决条件
 
 ### 安装
 
@@ -48,7 +45,7 @@ go install github.com/dedene/lametric-cli/cmd/lametric@latest
 lametric setup
 ```
 
-或手动配置：
+或者手动进行配置：
 
 ```bash
 # Store API key securely
@@ -59,7 +56,7 @@ export LAMETRIC_API_KEY=your-api-key
 export LAMETRIC_DEVICE=192.168.1.100
 ```
 
-配置文件位置：`~/.config/lametric-cli/config.yaml`
+配置文件的位置：`~/.config/lametric-cli/config.yaml`
 
 ## 核心工作流程
 
@@ -70,12 +67,12 @@ export LAMETRIC_DEVICE=192.168.1.100
 lametric notify "Hello World"
 ```
 
-- **带图标和声音的通知：**
+- **带有图标和声音的通知：**
 ```bash
 lametric notify "Build passed" --icon=checkmark --sound=positive1
 ```
 
-- **紧急警报（唤醒设备、播放警报）：**
+- **紧急警报（唤醒设备、播放警报声）：**
 ```bash
 lametric notify "ALERT: Server down" --priority=critical --sound=alarm1
 ```
@@ -96,7 +93,7 @@ echo "Build complete" | lametric notify
 git log -1 --format="%s" | lametric notify --icon=github
 ```
 
-- **等待用户确认：**
+- **等待用户确认关闭通知：**
 ```bash
 lametric notify "Confirm deployment?" --wait
 ```
@@ -108,14 +105,14 @@ lametric notify "Confirm deployment?" --wait
 lametric device
 ```
 
-- **调整屏幕亮度：**
+- **显示屏幕亮度：**
 ```bash
 lametric display get
 lametric display brightness 50      # Set to 50%
 lametric display mode auto          # Auto brightness
 ```
 
-- **调节音量：**
+- **调整音量：**
 ```bash
 lametric audio get
 lametric audio volume 30            # Set to 30%
@@ -163,7 +160,7 @@ lametric app prev                   # Switch to previous app
 
 ### 流式传输
 
-- 将图像或视频流式传输到设备显示屏：
+- 将图片或视频流式传输到设备显示屏：
 ```bash
 lametric stream start               # Start streaming session
 lametric stream image logo.png      # Send static image
@@ -184,7 +181,7 @@ lametric discover
 lametric discover --timeout=10s
 ```
 
-## 常用功能模式
+## 常见使用场景
 
 - **构建/持续集成（Build/CI）通知：**
 ```bash
@@ -221,7 +218,7 @@ lametric notify "Meeting in 5 min" --icon=calendar --sound=alarm3 --priority=war
 
 ### 常用图标
 
-| 别名 | 描述 |
+| 图标 | 描述 |
 |-------|-------------|
 | `checkmark` | 成功/完成 |
 | `error` | 错误/失败 |
@@ -230,7 +227,7 @@ lametric notify "Meeting in 5 min" --icon=calendar --sound=alarm3 --priority=war
 | `rocket` | 部署/启动 |
 | `github` | GitHub |
 | `slack` | Slack通知 |
-| `mail` | 邮件通知 |
+| `mail` | 电子邮件 |
 | `calendar` | 日历/会议提醒 |
 | `download` | 下载 |
 | `upload` | 上传 |
@@ -261,8 +258,8 @@ lametric notify "Meeting in 5 min" --icon=calendar --sound=alarm3 --priority=war
 
 - **连接失败**：
   1. 验证设备IP地址：`lametric discover`
-  2. 确保设备在同一网络内
-  3. 检查API密钥是否正确：`lametric auth get-key --device=NAME`
+  2. 确认设备处于同一网络中
+  3. 检查API密钥是否正确：`lametric auth get-key --device=设备名称`
 
 ### 认证错误：
 ```bash
@@ -283,7 +280,6 @@ lametric setup
 ```
 
 ## 安装说明
-
 ```bash
 brew install dedene/tap/lametric
 ```

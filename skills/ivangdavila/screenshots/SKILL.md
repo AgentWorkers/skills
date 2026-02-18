@@ -1,91 +1,78 @@
 ---
 name: Screenshots
-description: 生成适用于 App Store 和 Google Play 的专业截图，这些截图具备自动调整大小的功能、设备边框、营销文案，以及支持迭代式视觉学习（即通过多次迭代来优化截图效果）。
+slug: screenshots
+version: 1.0.1
+description: 生成专业的App Store和Google Play应用截图，这些截图会自动调整大小、包含设备边框、营销文案，并支持迭代的视觉学习功能。
+changelog: Preferences now persist across skill updates
+metadata: {"clawdbot":{"emoji":"📱","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
+## 快速参考
 
-## 情境检测
+| 用途 | 文件名       |
+|---------|-----------|
+| 存储尺寸和规格      | `specs.md`     |
+| 市场营销文本叠加层    | `text-style.md`   |
+| 按类别划分的视觉模板    | `templates.md`   |
+| 完整的创建工作流程    | `workflow.md`   |
+| 从反馈中学习     | `feedback.md`    |
 
-| 使用场景 | 所需信息 |
-|---------|------|
-| 需要商店的精确尺寸 | `specs.md` |
-| 创建营销文本叠加层 | `text-style.md` |
-| 按类别选择视觉模板 | `templates.md` |
-| 完整的创建工作流程 | `workflow.md` |
+## 内存存储
 
----
+用户偏好设置存储在 `~/screenshots/memory.md` 文件中。激活后即可查看。
 
-## 工作区
+**格式说明：**
+```markdown
+# Screenshots Memory
 
-将所有截图项目保存在 `~/screenshots/` 目录下：
+## Style Preferences
+- style: dominant-color | gradient | minimal | dark | light
+- fonts: preferred headline fonts
+- frames: with-frame | frameless | floating
+- tone: punchy | descriptive | minimal
+
+## Learned Patterns
+- templates that converted well
+- font/size combinations that worked
+```
+
+首次使用时创建文件夹：`mkdir -p ~/screenshots`
+
+## 工作区结构
+
 ```
 ~/screenshots/
+├── memory.md              # Style preferences (persistent)
 ├── {app-slug}/
 │   ├── config.md          # Brand: colors, fonts, style
 │   ├── raw/               # Raw simulator/device captures
-│   ├── v1/                # Version 1 exports
-│   ├── v2/                # Version 2 (after changes)
+│   ├── v1/, v2/           # Version exports
 │   └── latest -> v2/      # Symlink to current
-├── templates/             # Reusable visual templates
-└── learnings.md           # Visual patterns that work
+└── templates/             # Reusable visual templates
 ```
-
----
 
 ## 核心工作流程
 
-1. **数据收集** — 收集原始截图、应用图标以及品牌颜色信息
-2. **尺寸处理** — 根据 `specs.md` 文件生成所有所需的尺寸
-3. **样式设置** — 应用背景、设备边框和文本叠加层
-4. **质量审核** — 使用视觉检查工具验证截图质量
-5. **迭代优化** — 根据用户反馈进行调整
-6. **导出结果** — 按商店、设备或语言进行分类整理
+1. **收集数据** — 收集原始截图、应用图标以及品牌颜色信息。
+2. **尺寸处理** — 根据 `specs.md` 文件生成所有所需的屏幕尺寸。
+3. **样式设计** — 应用背景、设备边框和文本叠加层。
+4. **质量审核** — 使用视觉检查工具验证截图质量。
+5. **迭代优化** — 根据用户反馈进行调整。
+6. **导出结果** — 按商店/设备/语言对截图进行分类。
 
----
-
-## 质量检查清单（发送前）
+## 质量检查清单
 
 使用视觉检查工具验证每一组截图：
-- [ ] 缩略图中的文字是否可读？
-- [ ] 图像中的文字是否位于安全区域（非角落、非刘海区域）？
+- [ ] 缩略图中的文本是否可读？
+- [ ] 图片中是否有不安全的文本区域（如屏幕角落、刘海区域）？
 - [ ] 所有截图的样式是否一致？
 - [ ] 设备边框是否与目标尺寸匹配？
 - [ ] 颜色是否与应用品牌风格协调？
 
-**如果任何一项检查未通过** → 在展示给用户之前必须修复。
-
----
-
-## 用户偏好（自动学习）
-
-### 风格选项
-<!-- 主要颜色 | 渐变效果 | 极简风格 | 深色风格 | 浅色风格 |
-
-### 字体选项
-<!-- 偏好的标题字体 |
-
-### 设备边框选项
-<!-- 带边框 | 无边框 | 浮动式边框 |
-
-### 文本风格
-<!-- 强烈表达的 | 描述性的 | 极简风格的 |
-
----
+**如果任何一项检查未通过**，请在展示给用户之前进行修复。
 
 ## 版本控制规则
 
-- **禁止直接覆盖** — 每个版本都保存在 `v{n}/` 目录下
-- 创建一个符号链接 `latest` 指向当前已批准的版本
-- `config.md` 文件用于存储品牌相关的设置，以便后续使用
-- 当用户要求“恢复旧样式”时，可以对比不同版本
-
----
-
-## 学习循环
-
-每个项目完成后，更新学习记录文件（`~/screenshots/learnings.md`）：
-- 成功转换的模板
-- 表现良好的字体/尺寸组合
-- 按应用类别划分的背景样式
-- 受到用户好评的文本样式
-
-在开始新项目之前，请查看学习记录文件。详细的学习系统信息请参考 `feedback.md`。
+- **严禁覆盖现有文件** — 每批截图都保存在 `v{n}/` 目录下。
+- **创建符号链接 `latest` 指向当前已批准的版本**。
+- `config.md` 文件用于存储品牌相关的设置，以便后续重新生成截图。
+- 当用户要求“恢复旧样式”时，需要对比不同版本的截图。

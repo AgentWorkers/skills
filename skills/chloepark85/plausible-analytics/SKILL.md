@@ -1,16 +1,24 @@
 ---
 name: plausible-analytics
-description: 查询并分析来自 Plausible Analytics 的网站数据。当您需要查看实时访客数量、获取特定时间段内的页面浏览量及访客统计数据、分析流量来源或热门页面、检查访客的地理位置分布，或者为使用 Plausible Analytics 追踪的网站生成分析报告和洞察时，可以使用此功能。
+description: 查询并分析来自 Plausible Analytics 的网站分析数据。当您需要查看实时访客数量、获取特定时间段的页面浏览量和访客统计数据、分析流量来源或热门页面、检查地理位置分布，或者为使用 Plausible Analytics 追踪的网站生成分析报告和洞察时，可以使用该功能。
+metadata:
+  openclaw:
+    requires:
+      env:
+        - PLAUSIBLE_API_KEY
+      bins:
+        - node
+    primaryEnv: PLAUSIBLE_API_KEY
 ---
 # Plausible Analytics
 
 ## 概述
 
-Plausible Analytics 提供了一个 API，用于检索和分析网站分析数据。该服务支持实时访客追踪、历史统计数据、流量来源分析，以及按页面、来源或国家进行的详细数据细分。
+Plausible Analytics 提供了一种从其 API 中检索和分析网站分析数据的功能。该服务支持实时访客追踪、历史统计数据、流量来源分析，以及按页面、来源或国家进行的详细数据细分。
 
 ## 快速入门
 
-所有脚本都需要 `PLAUSIBLE_API_KEY` 环境变量。网站 ID 可以通过 `PLAUSIBLE_SITE_ID` 环境变量提供，或者作为脚本参数传递。
+所有脚本都需要 `PLAUSIBLE_API_KEY` 环境变量。站点 ID 可以通过 `PLAUSIBLE_SITE_ID` 环境变量提供，或者作为脚本参数传递。
 
 ```bash
 # Set API key
@@ -45,7 +53,7 @@ node scripts/stats.mjs <site-id> [--period day|7d|30d|month|6mo|12mo] [--date YY
 
 参数：
 - `period` - 要查询的时间段（默认：`day`）
-- `date` - 指定时间段的具体日期（默认：今天）
+- `date` - 该时间段内的具体日期（默认：今天）
 
 示例：
 ```bash
@@ -89,9 +97,9 @@ node scripts/breakdown.mjs <site-id> <property> [--period day|7d|30d] [--limit N
 
 属性：
 - `visit:source` - 流量来源（Google、Twitter、直接访问等）
-- `visit:referrer` - 引用 URL
+- `visit:referrer` - 引荐 URL
 - `visit:utm_medium` / `visit:utm_source` / `visit:utm_campaign` - UTM 参数
-- `visit:device` - 桌面设备与移动设备
+- `visit:device` - 桌面设备 vs 移动设备
 - `visit:browser` - 浏览器类型
 - `visit:os` - 操作系统
 - `visit:country` - 国家
@@ -130,7 +138,7 @@ node scripts/breakdown.mjs example.com visit:country --period 30d
 ## 环境变量
 
 - `PLAUSIBLE_API_KEY`（必填）- 您的 Plausible Analytics API 密钥
-- `PLAUSIBLE_SITE_ID`（可选）- 默认使用的网站 ID
+- `PLAUSIBLE_SITE_ID`（可选）- 要使用的默认站点 ID
 
 ## 资源
 

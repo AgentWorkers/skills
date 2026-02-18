@@ -1,9 +1,9 @@
 ---
 emoji: 📈
 name: maxxit-lazy-trading
-version: 1.1.0
+version: 1.2.0
 author: Maxxit
-description: 通过 Maxxit 的懒惰交易（Lazy Trading）API，在 Ostium 平台上执行永久性交易（即长期持有的交易）。该 API 提供了用于开仓/平仓、管理风险以及获取市场数据的程序化接口。
+description: Execute perpetual trades on Ostium via Maxxit's Lazy Trading API. Includes programmatic endpoints for opening/closing positions, managing risk, fetching market data, and copy-trading other OpenClaw agents.
 homepage: https://maxxit.ai
 repository: https://github.com/Maxxit-ai/maxxit-latest
 disableModelInvocation: true
@@ -21,134 +21,316 @@ metadata:
     primaryCredential: MAXXIT_API_KEY
 ---
 
-# Maxxit 懒人交易（Lazy Trading）
+# Maxxit Lazy Trading
 
-通过 Maxxit 的懒人交易 API，在 Ostium 协议上执行永久性期货交易。此功能支持通过编程接口自动化执行开仓/平仓操作以及风险管理。
+Execute perpetual futures trades on Ostium protocol through Maxxit's Lazy Trading API. This skill enables automated trading through programmatic endpoints for opening/closing positions and managing risk.
 
-## 适用场景
+## When to Use This Skill
 
-- 用户希望在 Ostium 上进行交易
-- 用户查询懒人交易账户详情
-- 用户查看 USDC/ETH 余额
-- 用户查看未平仓头寸或投资组合
-- 用户查看平仓历史或盈亏情况
-- 用户查询可交易的符号
-- 用户获取市场数据或 LunarCrush 指标以用于分析
-- 用户需要整个市场的快照用于交易决策
-- 用户希望比较不同代币的排名（AltRank）
-- 用户希望识别高情绪值的交易机会
-- 用户希望了解加密货币的社交媒体关注趋势
-- 用户希望开新的交易头寸（多头/空头）
-- 用户希望平仓现有头寸
-- 用户希望设置或修改止盈水平
-- 用户希望设置或修改止损水平
-- 用户希望获取当前代币/市场价格
-- 用户提及“懒人交易”、“永久性合约”或“期货交易”
-- 用户希望自动化交易流程
-
----
-
-## ⚠️ 重要提示：API 参数规则（在调用任何接口之前请务必阅读）
-
-> **切勿假设、猜测或凭空设定 API 请求参数的值。** 所有必需的参数必须来自之前的 API 响应或用户的明确输入。如果缺少某个必需参数，必须首先从相应的依赖接口获取该参数。
-
-### 参数依赖关系图
-
-以下显示了每个必需参数的来源。**在调用接口之前，请务必解决所有依赖关系。**
-
-| 参数 | 来源 | 需要获取的接口 |
-|---------|--------|------------------------|
-| `userAddress` / `address` | `/club-details` 响应 → `user_wallet` | `GET /club-details` |
-| `agentAddress` | `/club-details` 响应 → `ostium_agent_address` | `GET /club-details` |
-| `tradeIndex` | `/open-position` 响应 → `actualTradeIndex` **或** `/positions` 响应 → `tradeIndex` | `POST /open-position` 或 `POST /positions` |
-| `pairIndex` | `/positions` 响应 → `pairIndex` **或** `/symbols` 响应 → 符号 `id` | `POST /positions` 或 `GET /symbols` |
-| `entryPrice` | `/open-position` 响应 → `entryPrice` **或** `/positions` 响应 → `entryPrice` | `POST /open-position` 或 `POST /positions` |
-| `market` / `symbol` | 用户指定的代币 **或** `/symbols` 响应 → `symbol` | 用户输入或 `GET /symbols` |
-| `side` | 用户指定“long”或“short” | 用户输入（必需） |
-| `collateral` | 用户指定的 USDC 金额 | 用户输入（必需） |
-| `leverage` | 用户指定的杠杆倍数 | 用户输入（必需） |
-| `takeProfitPercent` | 用户指定的百分比（例如：0.30 = 30%） | 用户输入（必需） |
-| `stopLossPercent` | 用户指定的百分比（例如：0.10 = 10%） | 用户输入（必需） |
-
-### 强制性工作流程规则
-
-1. **始终首先调用 `/club-details` 以获取 `userWallet`（用作 `userAddress`/`address`）和 `ostium_agent_address`（用作 `agentAddress`）。将这些信息缓存起来，因为它们在会话期间不会改变。**
-2. **切勿硬编码或猜测钱包地址。** 这些地址对每个用户都是唯一的，必须从 `/club-details` 中获取。**
-3. **开仓时：** 首先获取市场数据（通过 `/lunarcrush` 或 `/market-data`），向用户展示数据，获取明确的交易参数（抵押品、杠杆、方向、止盈、止损），然后执行交易。**
-4. **开仓后设置止盈/止损时：** 使用 `/open-position` 响应中的 `actualTradeIndex`。如果之前没有该信息（例如，头寸是在之前开的），则调用 `/positions` 来获取 `tradeIndex`、`pairIndex` 和 `entryPrice`。
-5. **平仓时：** 需要 `tradeIndex` —— 必须首先调用 `/positions` 来查找用户指定市场/头寸对应的正确索引。
-6. **向用户询问交易参数** —— 切勿假设抵押品金额、杠杆、止盈百分比或止损百分比。提供默认值，但允许用户确认或修改。
-7. **在交易前，如果不确定某个代币是否在 Ostium 上可用，通过调用 `/symbols` 来验证市场是否存在。**
-
-### 在每次 API 调用前的准备工作（请在心中默记）
+- User wants to execute trades on Ostium
+- User asks about their lazy trading account details
+- User wants to check their USDC/ETH balance
+- User wants to view their open positions or portfolio
+- User wants to see their closed position history or PnL
+- User wants to discover available trading symbols
+- User wants to get market data or LunarCrush metrics for analysis
+- User wants a whole market snapshot for the trading purpose
+- User wants to compare altcoin rankings (AltRank) across different tokens
+- User wants to identify high-sentiment trading opportunities
+- User wants to know social volume trends for crypto assets
+- User wants to open a new trading position (long/short)
+- User wants to close an existing position
+- User wants to set or modify take profit levels
+- User wants to set or modify stop loss levels
+- User wants to fetch current token/market prices
+- User mentions "lazy trade", "perps", "perpetuals", or "futures trading"
+- User wants to automate their trading workflow
+- User wants to copy-trade or mirror another trader's positions
+- User wants to discover other OpenClaw agents to learn from
+- User wants to see what trades top-performing traders are making
+- User wants to find high-impact-factor traders to replicate
 
 ---
 
-## 认证
+## ⚠️ CRITICAL: API Parameter Rules (Read Before Calling ANY Endpoint)
 
-所有请求都需要一个以 `lt_` 为前缀的 API 密钥。可以通过以下方式传递：
-- 请求头：`X-API-KEY: lt_你的_API_key`
-- 或者：`Authorization: Bearer lt_你的_API_key`
+> **NEVER assume, guess, or hallucinate values for API request parameters.** Every required parameter must come from either a prior API response or explicit user input. If you don't have a required value, you MUST fetch it from the appropriate dependency endpoint first.
 
-## API 接口
+### Parameter Dependency Graph
 
-### 获取账户详情
+The following shows where each required parameter comes from. **Always resolve dependencies before calling an endpoint.**
 
-检索懒人交易账户信息，包括代理状态、Telegram 连接和交易偏好设置。
+| Parameter | Source | Endpoint to Fetch From |
+|-----------|--------|------------------------|
+| `userAddress` / `address` | `/club-details` response → `user_wallet` | `GET /club-details` |
+| `agentAddress` | `/club-details` response → `ostium_agent_address` | `GET /club-details` |
+| `tradeIndex` | `/open-position` response → `actualTradeIndex` **OR** `/positions` response → `tradeIndex` | `POST /open-position` or `POST /positions` |
+| `pairIndex` | `/positions` response → `pairIndex` **OR** `/symbols` response → symbol `id` | `POST /positions` or `GET /symbols` |
+| `entryPrice` | `/open-position` response → `entryPrice` **OR** `/positions` response → `entryPrice` | `POST /open-position` or `POST /positions` |
+| `market` / `symbol` | User specifies the token **OR** `/symbols` response → `symbol` | User input or `GET /symbols` |
+| `side` | User specifies `"long"` or `"short"` | User input (required) |
+| `collateral` | User specifies the USDC amount | User input (required) |
+| `leverage` | User specifies the multiplier | User input (required) |
+| `takeProfitPercent` | User specifies (e.g., 0.30 = 30%) | User input (required) |
+| `stopLossPercent` | User specifies (e.g., 0.10 = 10%) | User input (required) |
+| `address` (for copy-trader-trades) | `/copy-traders` response → `creatorWallet` or `walletAddress` | `GET /copy-traders` |
 
-### 获取可用符号
+### Mandatory Workflow Rules
 
-检索 Ostium 交易所中所有可交易的符号。使用这些信息来了解可以交易的符号以及获取它们的 LunarCrush 数据。
+1. **Always call `/club-details` first** to get `user_wallet` (used as `userAddress`/`address`) and `ostium_agent_address` (used as `agentAddress`). Cache these for the session — they don't change.
+2. **Never hardcode or guess wallet addresses.** They are unique per user and must come from `/club-details`.
+3. **For opening a position:** Fetch market data first (via `/lunarcrush` or `/market-data`), present it to the user, get explicit confirmation plus trade parameters (collateral, leverage, side, TP, SL), then execute.
+4. **For setting TP/SL after opening:** Use the `actualTradeIndex` from the `/open-position` response. If you don't have it (e.g., position was opened earlier), call `/positions` to get `tradeIndex`, `pairIndex`, and `entryPrice`.
+5. **For closing a position:** You need the `tradeIndex` — always call `/positions` first to look up the correct one for the user's specified market/position.
+6. **Ask the user for trade parameters** — never assume collateral amount, leverage, TP%, or SL%. Present defaults but let the user confirm or override.
+7. **Validate the market exists** by calling `/symbols` before trading if you're unsure whether a token is available on Ostium.
 
-### 获取 LunarCrush 市场数据
+### Pre-Flight Checklist (Run Mentally Before Every API Call)
 
-检索特定符号的缓存 LunarCrush 市场指标。这些数据包括社交情绪、价格变化、波动性和市场排名。
+```
+✅ Do I have the user's wallet address? → If not, call /club-details
+✅ Do I have the agent address? → If not, call /club-details
+✅ Does this endpoint need a tradeIndex? → If not in hand, call /positions
+✅ Does this endpoint need entryPrice/pairIndex? → If not in hand, call /positions
+✅ Did I ask the user for all trade parameters? → collateral, leverage, side, TP%, SL%
+✅ Is the market/symbol valid? → If unsure, call /symbols to verify
+```
 
-> **⚠️ 依赖关系**：必须先调用 `/symbols` 接口以获取准确的符号字符串（例如：“BTC/USD”）。符号参数必须完全匹配。
+---
 
-### LunarCrush 字段说明
+## Authentication
 
-| 字段 | 类型 | 描述 |
+All requests require an API key with prefix `lt_`. Pass it via:
+- Header: `X-API-KEY: lt_your_api_key`
+- Or: `Authorization: Bearer lt_your_api_key`
+
+## API Endpoints
+
+### Get Account Details
+
+Retrieve lazy trading account information including agent status, Telegram connection, and trading preferences.
+
+```bash
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/club-details" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "user_wallet": "0x...",
+  "agent": {
+    "id": "agent-uuid",
+    "name": "Lazy Trader - Username",
+    "venue": "ostium",
+    "status": "active"
+  },
+  "telegram_user": {
+    "id": 123,
+    "telegram_user_id": "123456789",
+    "telegram_username": "trader"
+  },
+  "deployment": {
+    "id": "deployment-uuid",
+    "status": "active",
+    "enabled_venues": ["ostium"]
+  },
+  "trading_preferences": {
+    "risk_tolerance": "medium",
+    "trade_frequency": "moderate"
+  },
+  "ostium_agent_address": "0x..."
+}
+```
+
+### Get Available Symbols
+
+Retrieve all available trading symbols from the Ostium exchange. Use this to discover which symbols you can trade and get LunarCrush data for.
+
+```bash
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/symbols" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "symbols": [
+    {
+      "id": 0,
+      "symbol": "BTC/USD",
+      "group": "crypto",
+      "maxLeverage": 150
+    },
+    {
+      "id": 1,
+      "symbol": "ETH/USD",
+      "group": "crypto",
+      "maxLeverage": 100
+    }
+  ],
+  "groupedSymbols": {
+    "crypto": [
+      { "id": 0, "symbol": "BTC/USD", "group": "crypto", "maxLeverage": 150 },
+      { "id": 1, "symbol": "ETH/USD", "group": "crypto", "maxLeverage": 100 }
+    ],
+    "forex": [...]
+  },
+  "count": 45
+}
+```
+
+### Get LunarCrush Market Data
+
+Retrieve cached LunarCrush market metrics for a specific symbol. This data includes social sentiment, price changes, volatility, and market rankings.
+
+> **⚠️ Dependency**: You must call the `/symbols` endpoint first to get the exact symbol string (e.g., `"BTC/USD"`). The symbol parameter requires an exact match.
+
+```bash
+# First, get available symbols
+SYMBOL=$(curl -s -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/symbols" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}" | jq -r '.symbols[0].symbol')
+
+# Then, get LunarCrush data for that symbol
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/lunarcrush?symbol=${SYMBOL}" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "symbol": "BTC/USD",
+  "lunarcrush": {
+    "galaxy_score": 72.5,
+    "alt_rank": 1,
+    "social_volume_24h": 15234,
+    "sentiment": 68.3,
+    "percent_change_24h": 2.45,
+    "volatility": 0.032,
+    "price": "95000.12345678",
+    "volume_24h": "45000000000.00000000",
+    "market_cap": "1850000000000.00000000",
+    "market_cap_rank": 1,
+    "social_dominance": 45.2,
+    "market_dominance": 52.1,
+    "interactions_24h": 890000,
+    "galaxy_score_previous": 70.1,
+    "alt_rank_previous": 1
+  },
+  "updated_at": "2026-02-14T08:30:00.000Z"
+}
+```
+
+**LunarCrush Field Descriptions:**
+
+| Field | Type | Description |
 |-------|------|-------------|
-| `galaxy_score` | 浮点数 | 综合社交、市场和开发者活动的整体代币质量评分（0-100） |
-| `alt_rank` | 整数 | 在所有加密货币中的排名（排名越低越好，1 为最佳） |
-| `social_volume_24h` | 浮点数 | 过去 24 小时的社交媒体提及量 |
-| `sentiment` | 浮点数 | 市场情绪评分（0-100，50 表示中性，>50 表示看涨） |
-| `percent_change_24h` | 浮点数 | 过去 24 小时的价格变化百分比 |
-| `volatility` | 浮点数 | 价格波动性评分（0-0.02 表示稳定，0.02-0.05 表示正常，>0.05 表示风险较高） |
-| `price` | 字符串 | 当前价格（以 USD 为单位，使用小数格式） |
-| `volume_24h` | 字符串 | 过去 24 小时的交易量（使用小数格式） |
-| `market_cap` | 字符串 | 市场资本化（使用小数格式） |
-| `market_cap_rank` | 整数 | 按市场资本化排名的顺序（排名越低越好） |
-| `social_dominance` | 浮点数 | 相对于总市场的社交媒体关注度 |
-| `market_dominance` | 浮点数 | 相对于总市场的市场资本化占比 |
-| `interactions_24h` | 浮点数 | 过去 24 小时的社交媒体互动量 |
-| `galaxy_score_previous` | 浮点数 | 上一次的银河评分（用于趋势分析） |
-| `alt_rank_previous` | 整数 | 上一次的代币排名（用于趋势分析） |
+| `galaxy_score` | Float | Overall coin quality score (0-100) combining social, market, and developer activity |
+| `alt_rank` | Int | Rank among all cryptocurrencies (lower is better, 1 = best) |
+| `social_volume_24h` | Float | Social media mentions in last 24 hours |
+| `sentiment` | Float | Market sentiment score (0-100, 50 is neutral, >50 is bullish) |
+| `percent_change_24h` | Float | Price change percentage in last 24 hours |
+| `volatility` | Float | Price volatility score (0-1, <0.02 stable, 0.02-0.05 normal, >0.05 risky) |
+| `price` | String | Current price in USD (decimal string for precision) |
+| `volume_24h` | String | Trading volume in last 24 hours (decimal string) |
+| `market_cap` | String | Market capitalization (decimal string) |
+| `market_cap_rank` | Int | Rank by market cap (lower is better) |
+| `social_dominance` | Float | Social volume relative to total market |
+| `market_dominance` | Float | Market cap relative to total market |
+| `interactions_24h` | Float | Social media interactions in last 24 hours |
+| `galaxy_score_previous` | Float | Previous galaxy score (for trend analysis) |
+| `alt_rank_previous` | Int | Previous alt rank (for trend analysis) |
 
-**数据更新频率：**
-- LunarCrush 数据由后台任务定期更新和缓存
-- 通过检查 `updated_at` 字段可以了解数据最后一次更新的时间
-- 数据通常每隔几小时更新一次
+**Data Freshness:**
+- LunarCrush data is cached and updated periodically by a background worker
+- Check the `updated_at` field to see when the data was last refreshed
+- Data is typically refreshed every few hours
 
-### 获取账户余额
+### Get Account Balance
 
-检索用户 Ostium 钱包地址的 USDC 和 ETH 余额。
+Retrieve USDC and ETH balance for the user's Ostium wallet address.
 
-> **⚠️ 依赖关系**：`address` 字段是用户的 Ostium 钱包地址（`user_wallet`）。必须首先从 `/club-details` 中获取该地址 —— 切勿硬编码或猜测。
+> **⚠️ Dependency**: The `address` field is the user's Ostium wallet address (`user_wallet`). You MUST fetch it from `/club-details` first — do NOT hardcode or assume any address.
 
-### 获取投资组合头寸
+```bash
+curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/balance" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d "{"address": "0x..."}"
+```
 
-获取用户 Ostium 交易账户的所有未平仓头寸。**此接口非常重要** —— 它返回 `tradeIndex`、`pairIndex` 和 `entryPrice`，这些信息是平仓和设置止盈/止损所必需的。
+**Response:**
+```json
+{
+  "success": true,
+  "address": "0x...",
+  "usdcBalance": "1000.50",
+  "ethBalance": "0.045"
+}
+```
 
-> **⚠️ 依赖关系**：`address` 字段必须来自 `/club-details` → `user_wallet`。切勿猜测。
+### Get Portfolio Positions
 
-**🔑 此接口提供的值被以下接口使用：**
-- `/close-position`（需要 `tradeIndex`）
-- `/set-take-profit`（需要 `tradeIndex`、`pairIndex`、`entryPrice`）
-- `/set-stop-loss`（需要 `tradeIndex`、`pairIndex`、`entryPrice`）
+Get all open positions for the user's Ostium trading account. **This endpoint is critical** — it returns `tradeIndex`, `pairIndex`, and `entryPrice` which are required for closing positions and setting TP/SL.
 
-### 请求体示例：
+> **⚠️ Dependency**: The `address` field must come from `/club-details` → `user_wallet`. NEVER guess it.
+>
+> **🔑 This endpoint provides values needed by**: `/close-position` (needs `tradeIndex`), `/set-take-profit` (needs `tradeIndex`, `pairIndex`, `entryPrice`), `/set-stop-loss` (needs `tradeIndex`, `pairIndex`, `entryPrice`).
+
+```bash
+curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/positions" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d "{"address": "0x..."}"
+```
+
+**Request Body:**
+```json
+{
+  "address": "0x..."  // REQUIRED — from /club-details → user_wallet. NEVER guess this.
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "positions": [
+    {
+      "market": "BTC",
+      "marketFull": "BTC/USD",
+      "side": "long",
+      "collateral": 100.0,
+      "entryPrice": 95000.0,
+      "leverage": 10.0,
+      "tradeId": "12345",
+      "tradeIndex": 2,
+      "pairIndex": "0",
+      "notionalUsd": 1000.0,
+      "totalFees": 2.50,
+      "stopLossPrice": 85500.0,
+      "takeProfitPrice": 0.0
+    }
+  ],
+  "totalPositions": 1
+}
+```
+
+> **Key fields to extract from each position:**
+> - `tradeIndex` — needed for `/close-position`, `/set-take-profit`, `/set-stop-loss`
+> - `pairIndex` — needed for `/set-take-profit`, `/set-stop-loss`
+> - `entryPrice` — needed for `/set-take-profit`, `/set-stop-loss`
+> - `side` — needed for `/set-take-profit`, `/set-stop-loss`
+```
+
+### Get Position History
+
+Get raw trading history for an address (includes open, close, cancelled orders, etc.).
+
+**Note:** The user's Ostium wallet address can be fetched from the `/api/lazy-trading/programmatic/club-details` endpoint (see Get Account Balance section above).
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
@@ -157,15 +339,15 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
   -d '{"address": "0x...", "count": 50}'
 ```
 
-### 响应示例：
-
+**Request Body:**
 ```json
 {
-  "address": "0x...",  // 用户的 Ostium 钱包地址（必需）
-  "count": 50           // 要检索的最近订单数量（默认：50）
+  "address": "0x...",  // User's Ostium wallet address (required)
+  "count": 50           // Number of recent orders to retrieve (default: 50)
 }
 ```
 
+**Response:**
 ```json
 {
   "success": true,
@@ -189,122 +371,246 @@ curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/history" \
 }
 ```
 
+### Open Position
+
+Open a new perpetual futures position on Ostium.
+
+> **⚠️ Dependencies — ALL must be resolved BEFORE calling this endpoint:**
+> 1. `agentAddress` → from `/club-details` → `ostium_agent_address` (NEVER guess)
+> 2. `userAddress` → from `/club-details` → `user_wallet` (NEVER guess)
+> 3. `market` → validate via `/symbols` endpoint if unsure the token exists
+> 4. `side`, `collateral`, `leverage` → **ASK the user explicitly**, do not assume
+>
+> **📊 Recommended Pre-Trade Flow:**
+> 1. Call `/lunarcrush?symbol=TOKEN/USD` or `/market-data` to get market conditions
+> 2. Present the market data to the user (price, sentiment, volatility)
+> 3. Ask the user: "Do you want to proceed? Specify: collateral (USDC), leverage, long/short"
+> 4. Only after user confirms → call `/open-position`
+>
+> **🔑 SAVE the response** — `actualTradeIndex` and `entryPrice` are needed for setting TP/SL later.
+
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/open-position" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "agentAddress": "0x...", \
-    "userAddress": "0x...", \
+    "agentAddress": "0x...",
+    "userAddress": "0x...",
     "market": "BTC",
     "side": "long",
     "collateral": 100,
     "leverage": 10
-  }
+  }'
 ```
 
+**Request Body:**
 ```json
 {
-  "agentAddress": "0x...",      // 必需 —— 来自 /club-details → ostium_agent_address。切勿猜测。
-  "userAddress": "0x...",       // 必需 —— 来自 /club-details → user_wallet。切勿猜测。
-  "market": "BTC",              // 必需 —— 代币符号。如果不确定，请通过 /symbols 验证。
-  "side": "long",               // 必需 —— “long” 或 “short”。请询问用户。
-  "collateral": 100,            // 必需 —— 抵押品（以 USDC 计）。请询问用户。
-  "leverage": 10,               // 可选（默认：10）。请询问用户。
-  "deploymentId": "uuid...",    // 可选 —— 相关的部署 ID
-  "signalId": "uuid...",        // 可选 —— 相关的信号 ID
-  "isTestnet": false            // 可选（默认：false）
+  "agentAddress": "0x...",      // REQUIRED — from /club-details → ostium_agent_address. NEVER guess.
+  "userAddress": "0x...",       // REQUIRED — from /club-details → user_wallet. NEVER guess.
+  "market": "BTC",              // REQUIRED — Token symbol. Validate via /symbols if unsure.
+  "side": "long",               // REQUIRED — "long" or "short". ASK the user.
+  "collateral": 100,            // REQUIRED — Collateral in USDC. ASK the user.
+  "leverage": 10,               // Optional (default: 10). ASK the user.
+  "deploymentId": "uuid...",    // Optional — associated deployment ID
+  "signalId": "uuid...",        // Optional — associated signal ID
+  "isTestnet": false            // Optional (default: false)
 }
 ```
 
+**Response (IMPORTANT — save these values):**
 ```json
 {
   "success": true,
   "orderId": "order_123",
   "tradeId": "trade_abc",
-  "transactionHash": "0x...", \
-  "txHash": "0x...", \
+  "transactionHash": "0x...",
+  "txHash": "0x...",
   "status": "OPEN",
-  "message": "头寸已成功开仓",
-  "actualTradeIndex": 2,       // 请保存此值 —— 用于 /set-take-profit 和 /set-stop-loss
-  "entryPrice": 95000.0         // 请保存此值 —— 用于 /set-take-profit 和 /set-stop-loss
+  "message": "Position opened successfully",
+  "actualTradeIndex": 2,       // ← SAVE THIS — needed for /set-take-profit and /set-stop-loss
+  "entryPrice": 95000.0         // ← SAVE THIS — needed for /set-take-profit and /set-stop-loss
 }
 ```
+
+### Close Position
+
+Close an existing perpetual futures position on Ostium.
+
+> **⚠️ Dependencies — resolve BEFORE calling this endpoint:**
+> 1. `agentAddress` → from `/club-details` → `ostium_agent_address`
+> 2. `userAddress` → from `/club-details` → `user_wallet`
+> 3. `tradeIndex` → call `/positions` first to find the position you want to close, then use its `tradeIndex`
+>
+> **NEVER guess the `tradeIndex` or `tradeId`.** Always fetch from `/positions` endpoint.
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/close-position" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "agentAddress": "0x...", \
-    "userAddress": "0x...", \
+    "agentAddress": "0x...",
+    "userAddress": "0x...",
     "market": "BTC",
     "tradeId": "12345"
+  }'
+```
+
+**Request Body:**
+```json
+{
+  "agentAddress": "0x...",      // REQUIRED — from /club-details → ostium_agent_address. NEVER guess.
+  "userAddress": "0x...",       // REQUIRED — from /club-details → user_wallet. NEVER guess.
+  "market": "BTC",              // REQUIRED — Token symbol
+  "tradeId": "12345",           // Optional — from /positions → tradeId
+  "actualTradeIndex": 2,         // Highly recommended — from /positions → tradeIndex. NEVER guess.
+  "isTestnet": false            // Optional (default: false)
 }
 ```
 
+**Response:**
 ```json
 {
-  "agentAddress": "0x...",      // 必需 —— 来自 /club-details → ostium_agent_address。切勿猜测。
-  "userAddress": "0x...",       // 必需 —— 来自 /club-details → user_wallet。切勿猜测。
-  "market": "BTC",              // 必需 —— 代币符号
-  "tradeId": "12345",           // 可选 —— 来自 /positions → tradeId
-  "actualTradeIndex": 2,         // 强烈建议 —— 来自 /positions → tradeIndex。切勿猜测。
-  "isTestnet": false            // 可选（默认：false）
+  "success": true,
+  "result": {
+    "txHash": "0x...",
+    "market": "BTC",
+    "closePnl": 25.50
+  },
+  "closePnl": 25.50,
+  "message": "Position closed successfully",
+  "alreadyClosed": false
 }
 ```
+
+### Set Take Profit
+
+Set or update take-profit level for an existing position on Ostium.
+
+> **⚠️ Dependencies — you need ALL of these before calling:**
+> 1. `agentAddress` → from `/club-details` → `ostium_agent_address`
+> 2. `userAddress` → from `/club-details` → `user_wallet`
+> 3. `tradeIndex` → from `/open-position` response → `actualTradeIndex`, **OR** from `/positions` → `tradeIndex`
+> 4. `entryPrice` → from `/open-position` response → `entryPrice`, **OR** from `/positions` → `entryPrice`
+> 5. `pairIndex` → from `/positions` → `pairIndex`, **OR** from `/symbols` → symbol `id`
+> 6. `takeProfitPercent` → **ASK the user** (default: 0.30 = 30%)
+> 7. `side` → from `/positions` → `side` ("long" or "short")
+>
+> **If you just opened a position:** Use `actualTradeIndex` and `entryPrice` from the `/open-position` response.
+> **If the position was opened earlier:** Call `/positions` to fetch `tradeIndex`, `entryPrice`, `pairIndex`, and `side`.
 
 ```bash
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/set-take-profit" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "agentAddress": "0x...", \
-    "userAddress": "0x...", \
+    "agentAddress": "0x...",
+    "userAddress": "0x...",
     "market": "BTC",
     "tradeIndex": 2,
     "takeProfitPercent": 0.30,
     "entryPrice": 90000,
     "pairIndex": 0
-  }
+  }'
 ```
 
+**Request Body:**
+```json
+{
+  "agentAddress": "0x...",        // REQUIRED — from /club-details. NEVER guess.
+  "userAddress": "0x...",         // REQUIRED — from /club-details. NEVER guess.
+  "market": "BTC",                // REQUIRED — Token symbol
+  "tradeIndex": 2,                // REQUIRED — from /open-position or /positions. NEVER guess.
+  "takeProfitPercent": 0.30,       // Optional (default: 0.30 = 30%). ASK the user.
+  "entryPrice": 90000,             // REQUIRED — from /open-position or /positions. NEVER guess.
+  "pairIndex": 0,                  // REQUIRED — from /positions or /symbols. NEVER guess.
+  "side": "long",                  // Optional (default: "long") — from /positions.
+  "isTestnet": false              // Optional (default: false)
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Take profit set successfully",
+  "tpPrice": 117000.0
+}
+```
+
+### Set Stop Loss
+
+Set or update stop-loss level for an existing position on Ostium.
+
+> **⚠️ Dependencies — identical to Set Take Profit. You need ALL of these before calling:**
+> 1. `agentAddress` → from `/club-details` → `ostium_agent_address`
+> 2. `userAddress` → from `/club-details` → `user_wallet`
+> 3. `tradeIndex` → from `/open-position` response → `actualTradeIndex`, **OR** from `/positions` → `tradeIndex`
+> 4. `entryPrice` → from `/open-position` response → `entryPrice`, **OR** from `/positions` → `entryPrice`
+> 5. `pairIndex` → from `/positions` → `pairIndex`, **OR** from `/symbols` → symbol `id`
+> 6. `stopLossPercent` → **ASK the user** (default: 0.10 = 10%)
+> 7. `side` → from `/positions` → `side` ("long" or "short")
+>
+> **If you just opened a position:** Use `actualTradeIndex` and `entryPrice` from the `/open-position` response.
+> **If the position was opened earlier:** Call `/positions` to fetch `tradeIndex`, `entryPrice`, `pairIndex`, and `side`.
+
 ```bash
+# Same dependency resolution as Set Take Profit (see above for full example)
+# Step 1: Get addresses from /club-details
+# Step 2: Get position details from /positions
+# Step 3: Set stop loss with user-specified stopLossPercent
+
 curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/set-stop-loss" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "agentAddress": "0x...", \
-    "userAddress": "0x...", \
-    "market": "BTC",
-    "tradeIndex": 2,
-    "takeProfitPercent": 0.30,
-    "entryPrice": 90000,
-    "pairIndex": 0
-  }
-```
-
-```bash
-curl -L -X POST "${MAXXIT_API_URL}/api/lazy-trading/programmatic/set-stop-loss" \
-  -H "X-API-KEY: ${MAXXIT_API_KEY}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "agentAddress": "0x...", \
-    "userAddress": "0x...", \
+    "agentAddress": "0x...",
+    "userAddress": "0x...",
     "market": "BTC",
     "tradeIndex": 2,
     "stopLossPercent": 0.10,
     "entryPrice": 90000,
     "pairIndex": 0,
     "side": "long"
-  }
+  }'
 ```
+
+**Request Body:**
+```json
+{
+  "agentAddress": "0x...",        // REQUIRED — from /club-details. NEVER guess.
+  "userAddress": "0x...",         // REQUIRED — from /club-details. NEVER guess.
+  "market": "BTC",                // REQUIRED — Token symbol
+  "tradeIndex": 2,                // REQUIRED — from /open-position or /positions. NEVER guess.
+  "stopLossPercent": 0.10,         // Optional (default: 0.10 = 10%). ASK the user.
+  "entryPrice": 90000,             // REQUIRED — from /open-position or /positions. NEVER guess.
+  "pairIndex": 0,                  // REQUIRED — from /positions or /symbols. NEVER guess.
+  "side": "long",                  // Optional (default: "long") — from /positions.
+  "isTestnet": false              // Optional (default: false)
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Stop loss set successfully",
+  "slPrice": 81000.0,
+  "liquidationPrice": 85500.0,
+  "adjusted": false
+}
+```
+
+### Get All Market Data
+
+Retrieve the complete market snapshot from Ostium, including all symbols and their full LunarCrush metrics. This is highly recommended for AI agents that want to perform market-wide scanning or analysis in a single request.
 
 ```bash
 curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/market-data" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}"
 ```
 
+**Response:**
 ```json
 {
   "success": true,
@@ -323,7 +629,7 @@ curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/market-data" \
         "volatility": 0.032,
         "price": "95000.12345678",
         "volume_24h": "45000000000.00000000",
-        "market_cap": "185000000000.00000000",
+        "market_cap": "1850000000000.00000000",
         "market_cap_rank": 1,
         "social_dominance": 45.2,
         "market_dominance": 52.1,
@@ -339,48 +645,360 @@ curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/market-data" \
 }
 ```
 
+### Get Token Price
+
+Fetch the current market price for a token from Ostium price feed.
+
 ```bash
-curl -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/price?token=BTC&isTestnet=false" \
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/price?token=BTC&isTestnet=false" \
   -H "X-API-KEY: ${MAXXIT_API_KEY}"
 ```
 
-## 准备工作流程：
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|-------|----------|-------------|
+| `token` | string | Yes | Token symbol to fetch price for (e.g., BTC, ETH, SOL) |
+| `isTestnet` | boolean | No | Use testnet price feed (default: false) |
 
-1. **步骤 1：** 从 `/club-details` 获取地址（`userWallet` 和 `ostium_agent_address`）。
-2. **步骤 2：** 从 `/symbols` 验证用户请求的代币是否在 Ostium 上可用，并获取准确的符号字符串和最大杠杆倍数。
-3. **步骤 3：** 调用 `/lunarcrush?symbol=TOKEN/USD`（或 `/market-data` 获取所有代币的数据）。
-4. **步骤 4：** 向用户展示数据，并询问交易参数。
-5. **步骤 5：** 根据步骤 1 和 4 的信息，执行开仓操作。
-6. **步骤 6（如果用户需要设置止盈/止损）：** 调用 `/set-take-profit` 和/或 `/set-stop-loss`。
+**Response:**
+```json
+{
+  "success": true,
+  "token": "BTC",
+  "price": 95000.0,
+  "isMarketOpen": true,
+  "isDayTradingClosed": false
+}
+```
+
+### Discover Traders to Copy (Copy Trading — Step 1)
+
+Discover other OpenClaw Traders and top-performing traders to potentially copy-trade. This is the **first step** in the copy-trading workflow — the returned wallet addresses are used as the `address` parameter in the `/copy-trader-trades` endpoint.
+
+> **⚠️ Dependency Chain**: This endpoint provides the wallet addresses needed by `/copy-trader-trades`. You MUST call this endpoint FIRST to get trader addresses — do NOT guess or hardcode addresses.
+
+```bash
+# Get all traders (OpenClaw + Leaderboard)
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/copy-traders" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+
+# Get only OpenClaw Traders (prioritized)
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/copy-traders?source=openclaw" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+
+# Get only Leaderboard traders with filters
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/copy-traders?source=leaderboard&minImpactFactor=50&minTrades=100" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+```
+
+**Query Parameters:**
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `source` | string | `all` | `openclaw` (OpenClaw agents only), `leaderboard` (top traders only), `all` (both) |
+| `limit` | int | 20 | Max results per tier (max 100) |
+| `minTrades` | int | — | Min trade count filter (leaderboard only) |
+| `minImpactFactor` | float | — | Min impact factor filter (leaderboard only) |
+
+**Response:**
+```json
+{
+  "success": true,
+  "openclawTraders": [
+    {
+      "agentId": "3dbc322f-...",
+      "agentName": "OpenClaw Trader - 140226114735",
+      "creatorWallet": "0x4e7f1e29d9e1f81c3e9249e3444843c2006f3325",
+      "venue": "OSTIUM",
+      "status": "PRIVATE",
+      "isCopyTradeClub": false,
+      "performance": {
+        "apr30d": 0,
+        "apr90d": 0,
+        "aprSinceInception": 0,
+        "sharpe30d": 0
+      },
+      "deployment": {
+        "id": "dep-uuid",
+        "status": "ACTIVE",
+        "safeWallet": "0x...",
+        "isTestnet": false
+      }
+    }
+  ],
+  "topTraders": [
+    {
+      "walletAddress": "0xabc...",
+      "totalVolume": "1500000.000000",
+      "totalClosedVolume": "1200000.000000",
+      "totalPnl": "85000.000000",
+      "totalProfitTrades": 120,
+      "totalLossTrades": 30,
+      "totalTrades": 150,
+      "winRate": 0.80,
+      "lastActiveAt": "2026-02-15T10:30:00.000Z",
+      "scores": {
+        "edgeScore": 0.82,
+        "consistencyScore": 0.75,
+        "stakeScore": 0.68,
+        "freshnessScore": 0.92,
+        "impactFactor": 72.5
+      },
+      "updatedAt": "2026-02-17T06:00:00.000Z"
+    }
+  ],
+  "openclawCount": 5,
+  "topTradersCount": 20
+}
+```
+
+**Key fields to use in next steps:**
+- `openclawTraders[].creatorWallet` → use as `address` in `/copy-trader-trades`
+- `topTraders[].walletAddress` → use as `address` in `/copy-trader-trades`
+
+### Get Trader's Recent Trades (Copy Trading — Step 2)
+
+Fetch recent on-chain trades for a specific trader address. This queries the Ostium subgraph in real-time for fresh trade data.
+
+> **⚠️ Dependency**: The `address` parameter MUST come from the `/copy-traders` endpoint response:
+> - For OpenClaw traders: use `creatorWallet` from `openclawTraders[]`
+> - For leaderboard traders: use `walletAddress` from `topTraders[]`
+>
+> **NEVER guess or hardcode the address.** Always call `/copy-traders` first.
+
+```bash
+# Step 1: Discover traders first
+TRADER_ADDRESS=$(curl -s -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/copy-traders?source=openclaw" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}" | jq -r '.openclawTraders[0].creatorWallet')
+
+# Step 2: Fetch their recent trades
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/copy-trader-trades?address=${TRADER_ADDRESS}" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+
+# With custom lookback and limit
+curl -L -X GET "${MAXXIT_API_URL}/api/lazy-trading/programmatic/copy-trader-trades?address=${TRADER_ADDRESS}&hours=48&limit=50" \
+  -H "X-API-KEY: ${MAXXIT_API_KEY}"
+```
+
+**Query Parameters:**
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `address` | string | *required* | Trader wallet address (from `/copy-traders`) |
+| `limit` | int | 20 | Max trades to return (max 50) |
+| `hours` | int | 24 | Lookback window in hours (max 168 / 7 days) |
+
+**Response:**
+```json
+{
+  "success": true,
+  "traderAddress": "0x4e7f1e29d9e1f81c3e9249e3444843c2006f3325",
+  "trades": [
+    {
+      "tradeId": "0x123...",
+      "side": "LONG",
+      "tokenSymbol": "BTC",
+      "pair": "BTC/USD",
+      "collateral": 500.00,
+      "leverage": 10.0,
+      "entryPrice": 95000.50,
+      "takeProfitPrice": 100000.00,
+      "stopLossPrice": 90000.00,
+      "timestamp": "2026-02-17T14:30:00.000Z"
+    }
+  ],
+  "count": 5,
+  "lookbackHours": 24
+}
+```
+
+**Trade Field Descriptions:**
+| Field | Description |
+|-------|-------------|
+| `side` | `"LONG"` or `"SHORT"` — the trade direction |
+| `tokenSymbol` | Token being traded (e.g., `BTC`, `ETH`) |
+| `pair` | Full pair label (e.g., `BTC/USD`) |
+| `collateral` | USDC amount used as collateral |
+| `leverage` | Leverage multiplier (e.g., 10.0 = 10x) |
+| `entryPrice` | Price at which the trade was opened |
+| `takeProfitPrice` | Take profit price (null if not set) |
+| `stopLossPrice` | Stop loss price (null if not set) |
+| `timestamp` | When the trade was opened |
+
+> **Next step**: After reviewing the trades, use `/open-position` to open a similar position. You'll need your own `agentAddress` and `userAddress` from `/club-details`.
+
+## Signal Format Examples
+
+The lazy trading system processes natural language trading signals. Here are examples:
+
+### Opening Positions
+- `"Long ETH with 5x leverage, entry at 3200"`
+- `"Short BTC 10x, TP 60000, SL 68000"`
+- `"Buy 100 USDC worth of ETH perpetual"`
+
+### With Risk Management
+- `"Long SOL 3x leverage, entry 150, take profit 180, stop loss 140"`
+- `"Short AVAX 5x, risk 2% of portfolio"`
+
+### Closing Positions
+- `"Close ETH long position"`
+- `"Take profit on BTC short"`
 
 ---
 
-## 环境变量
+## Complete Workflow Examples
 
-| 变量 | 描述 | 示例 |
+These are the mandatory step-by-step workflows for common trading operations. **Follow these exactly.**
+
+### Workflow 1: Opening a New Position (Full Flow)
+
+```
+Step 1: GET /club-details
+   → Extract: user_wallet (→ userAddress), ostium_agent_address (→ agentAddress)
+   → Cache these for the session
+
+Step 2: GET /symbols
+   → Verify the user's requested token is available on Ostium
+   → Extract exact symbol string and maxLeverage
+
+Step 3: GET /lunarcrush?symbol=TOKEN/USD  (or GET /market-data for all)
+   → Get market data: price, sentiment, volatility, galaxy_score
+   → Present this data to the user:
+     "BTC is currently at $95,000 with sentiment 68.3 (bullish) and volatility 0.032 (normal).
+      Galaxy Score: 72.5/100. Do you want to proceed?"
+
+Step 4: ASK the user for trade parameters
+   → "Please confirm: collateral (USDC), leverage, long or short?"
+   → "Would you like to set TP and SL? If so, what percentages?"
+   → Wait for explicit user confirmation before proceeding
+
+Step 5: POST /open-position
+   → Use agentAddress and userAddress from Step 1
+   → Use market, side, collateral, leverage from Step 4
+   → SAVE the response: actualTradeIndex and entryPrice
+
+Step 6 (if user wants TP/SL): POST /set-take-profit and/or POST /set-stop-loss
+   → Use tradeIndex = actualTradeIndex from Step 5
+   → Use entryPrice from Step 5
+   → For pairIndex, use the symbol id from Step 2 or call /positions
+   → Use takeProfitPercent/stopLossPercent from Step 4
+```
+
+### Workflow 2: Closing an Existing Position
+
+```
+Step 1: GET /club-details
+   → Extract: user_wallet, ostium_agent_address
+
+Step 2: POST /positions (address = user_wallet from Step 1)
+   → List all open positions
+   → Present them to the user if multiple: "You have 3 open positions: BTC long, ETH short, SOL long. Which one do you want to close?"
+   → Extract the tradeIndex for the position to close
+
+Step 3: POST /close-position
+   → Use agentAddress and userAddress from Step 1
+   → Use market and actualTradeIndex from Step 2
+   → Show the user the closePnl from the response
+```
+
+### Workflow 3: Setting TP/SL on an Existing Position
+
+```
+Step 1: GET /club-details
+   → Extract: user_wallet, ostium_agent_address
+
+Step 2: POST /positions (address = user_wallet from Step 1)
+   → Find the target position
+   → Extract: tradeIndex, entryPrice, pairIndex, side
+
+Step 3: ASK the user
+   → "Position: BTC long at $95,000. Current TP: none, SL: $85,500."
+   → "What TP% and SL% would you like to set?"
+
+Step 4: POST /set-take-profit and/or POST /set-stop-loss
+   → Use ALL values from Steps 1-3 — NEVER guess any of them
+```
+
+### Workflow 4: Checking Portfolio & Market Overview
+
+```
+Step 1: GET /club-details
+   → Extract: user_wallet
+
+Step 2: POST /balance (address = user_wallet)
+   → Show the user their USDC and ETH balances
+
+Step 3: POST /positions (address = user_wallet)
+   → Show all open positions with PnL details
+
+Step 4 (optional): GET /market-data
+   → Show market conditions for tokens they hold
+```
+
+### Workflow 5: Copy-Trading Another OpenClaw Agent (Full Flow)
+
+```
+Step 1: GET /copy-traders?source=openclaw
+   → Discover other OpenClaw Trader agents
+   → Extract: creatorWallet from the trader you want to copy
+   → IMPORTANT: This is a REQUIRED first step — you cannot call
+     /copy-trader-trades without an address from this endpoint
+
+Step 2: GET /copy-trader-trades?address={creatorWallet}
+   → Fetch recent trades for that trader from the Ostium subgraph
+   → Review: side (LONG/SHORT), tokenSymbol, leverage, collateral, entry price
+   → Decide: "Should I copy this trade?"
+   → DEPENDENCY: The address param comes from Step 1 (creatorWallet or walletAddress)
+
+Step 3: GET /club-details
+   → Get YOUR OWN userAddress (user_wallet) and agentAddress (ostium_agent_address)
+   → These are needed to execute your own trade
+
+Step 4: POST /open-position
+   → Mirror the trade from Step 2 using your own addresses from Step 3:
+     - market = tokenSymbol from the copied trade
+     - side = side from the copied trade (LONG/SHORT → long/short)
+     - collateral = decide based on your own risk tolerance
+     - leverage = match the copied trader's leverage or adjust
+   → SAVE: actualTradeIndex and entryPrice from response
+
+Step 5 (optional): POST /set-take-profit and/or POST /set-stop-loss
+   → Use actualTradeIndex and entryPrice from Step 4
+   → Match the copied trader's TP/SL ratios or set your own
+```
+
+**Dependency Chain Summary:**
+```
+/copy-traders → provides address → /copy-trader-trades → provides trade details
+/club-details → provides your addresses → /open-position → copies the trade
+```
+
+---
+
+## Environment Variables
+
+| Variable | Description | Example |
 |----------|-------------|---------|
-| `MAXXIT_API_KEY` | 懒人交易 API 密钥（以 `lt_` 开头） | `lt_abc123...` |
-| `MAXXIT_API_URL` | Maxxit API 基本 URL | `https://maxxit.ai` |
+| `MAXXIT_API_KEY` | Your lazy trading API key (starts with `lt_`) | `lt_abc123...` |
+| `MAXXIT_API_URL` | Maxxit API base URL | `https://maxxit.ai` |
 
-## 错误处理
+## Error Handling
 
-| 状态码 | 含义 |
+| Status Code | Meaning |
 |-------------|---------|
-| 401 | API 密钥无效或缺失 |
-| 404 | 未找到懒人交易代理（请先完成设置） |
-| 400 | 消息/参数缺失或无效 |
-| 405 | HTTP 方法错误 |
-| 500 | 服务器错误 |
+| 401 | Invalid or missing API key |
+| 404 | Lazy trader agent not found (complete setup first) |
+| 400 | Missing or invalid message / parameters |
+| 405 | Wrong HTTP method |
+| 500 | Server error |
 
-## 开始使用
+## Getting Started
 
-1. **设置懒人交易**：访问 https://maxxit.ai/lazy-trading 连接钱包并配置代理。
-2. **生成 API 密钥**：前往控制面板生成 API 密钥。
-3. **配置环境**：设置 `MAXXIT_API_KEY` 和 `MAXXIT_API_URL`。
-4. **开始交易**：使用此功能发送交易指令！
+1. **Set up Lazy Trading**: Visit https://maxxit.ai/lazy-trading to connect your wallet and configure your agent
+2. **Generate API Key**: Go to your dashboard and create an API key
+3. **Configure Environment**: Set `MAXXIT_API_KEY` and `MAXXIT_API_URL`
+4. **Start Trading**: Use this skill to send signals!
 
-## 安全注意事项
+## Security Notes
 
-- **切勿共享您的 API 密钥**。
-- API 密钥可以在控制面板中重新生成。
-- 所有交易都在链上执行，并使用您委托的钱包权限。
+- Never share your API key
+- API keys can be revoked and regenerated from the dashboard
+- All trades execute on-chain with your delegated wallet permissions

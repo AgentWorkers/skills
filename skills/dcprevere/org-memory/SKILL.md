@@ -3,10 +3,9 @@ name: org-memory
 description: "使用 org-mode 文件构建结构化的知识库和任务管理系统。通过 `org` CLI 可以查询、修改、链接以及搜索 org 文件和 org-roam 数据库中的内容。"
 metadata: {"openclaw":{"emoji":"🦄","requires":{"bins":["org"]},"install":[{"id":"github-release","kind":"manual","label":"Download from GitHub releases: https://github.com/dcprevere/org-cli/releases"}]}}
 ---
-
 # org-memory
 
-使用 `org` 命令行工具（CLI）来维护 `org-mode` 文件中结构化、相互关联且易于阅读的知识内容。`org-mode` 文件是具有丰富结构的纯文本文件，包含标题、待办事项状态、标签、属性、时间戳和链接等内容。结合 `org-roam` 工具，它们可以形成一个由 SQLite 数据库支持的知识图谱。
+使用 `org` CLI 来维护结构化、链接化且易于人类阅读的知识内容，这些内容存储在 org-mode 文件中。org 文件是具有丰富结构的纯文本文件，包含标题、待办事项状态、标签、属性、时间戳和链接。结合 `org-roam`，它们可以形成一个由 SQLite 数据库支持的知识图谱。
 
 ## 快捷操作
 
@@ -14,70 +13,76 @@ metadata: {"openclaw":{"emoji":"🦄","requires":{"bins":["org"]},"install":[{"i
 
 | 操作模式 | 动作 |
 |---------|--------|
-| `Remember: <信息>` | 将信息保存到代理的知识库（`$ORG_MEMORY_AGENT_DIR`）中。创建或更新一个节点，以便用户日后查阅。 |
-| `Note: <任务或信息>` | 将该信息添加到用户的 `org-mode` 文件（`$ORG_MEMORY_HUMAN_DIR/inbox.org`）中，供用户执行相应的操作。 |
+| `Remember: <信息>` | 将信息保存到知识库中（`$ORG_MEMORY_AGENT_DIR`）。创建或更新一个节点，以便您日后查询。 |
+| `Note: <任务或信息>` | 将该信息添加到用户的 org 文件中（`$ORG_MEMORY_HUMAN_DIR/inbox.org`），供用户后续处理。 |
 
-**示例：**
-- “Remember: Sarah prefers morning meetings” → 在代理的知识库中为 Sarah 创建/更新一个节点。
-- “Note: Buy groceries” → 在用户的待办事项列表中添加一条任务。
-- “Remember: The API uses OAuth2, not API keys” → 在代理的知识库中为该 API 创建/更新一个节点。
-- “Note: Review PR #42 by Friday” → 在用户的待办事项列表中添加一条带有截止日期的任务。
+示例：
+- “Remember: Sarah prefers morning meetings” → 在您的仓库中为 Sarah 创建或更新一个节点。
+- “Note: Buy groceries” → 在用户的收件箱中添加一个待办事项。
+- “Remember: The API uses OAuth2, not API keys” → 在您的仓库中为该 API 创建或更新一个节点。
+- “Note: Review PR #42 by Friday” → 在用户的收件箱中添加一个带有截止日期的待办事项。
 
-**注意：** 不需要用户确认快捷操作的执行结果——直接执行操作后，再确认信息是否已保存。
+不要询问确认，直接执行操作。每次执行操作后，都会以以下格式输出一条信息：
+
+```
+org-memory: <action> <file-path>
+```
+
+示例：`org-memory: added TODO to ~/org/human/inbox.org`, `org-memory: created node ~/org/agent/sarah.org`, `org-memory: updated ~/org/agent/sarah.org`.
 
 ## 输出格式
 
-所有命令都支持使用 `-f json` 选项来生成结构化的输出格式，输出格式为 `{"ok":true,"data":...}`。如果出现错误，输出格式为 `{"ok":false,"error":{"type":"...","message":"..."}`。请务必使用 `-f json` 选项。
+所有命令都支持 `-f json` 选项，以生成结构化的输出，格式为 `{"ok":true,"data":...}`。如果出现错误，会返回 `{"ok":false,"error":{"type":"...","message":"..."}`。请始终使用 `-f json`。
 
 ## 命令说明
 
-运行 `org schema` 可以获取所有命令、参数和标志的机器可读描述，从而无需记忆具体的接口信息。
+运行 `org schema` 可以获取所有命令、参数和标志的机器可读描述。这样您就可以在不记住接口细节的情况下构建有效的命令。
 
 ## 配置
 
-配置通过环境变量完成。将配置信息设置在 `openclaw.json` 文件中，这样每次执行命令时都会自动应用这些配置。
+配置通过环境变量完成。请将配置设置到 `openclaw.json` 文件中，以便所有命令都能自动使用这些配置。
 
 | 变量 | 默认值 | 作用 |
 |---|---|---|
 | `ORG_MEMORY_USE_FOR_AGENT` | `true` | 启用代理的知识库功能 |
-| `ORG_MEMORY_AGENT_DIR` | `~/org/agent` | 代理的 `org-mode` 文件目录 |
+| `ORG_MEMORY_AGENT_DIR` | `~/org/agent` | 代理的 org 文件目录 |
 | `ORG_MEMORY_AGENT_DATABASE_LOCATION` | `~/.local/share/org-memory/agent/.org.db` | 代理的数据库文件路径 |
-| `ORG_MEMORY_USE_FOR_HUMAN` | `true` | 启用用户 `org-mode` 文件中的任务管理功能 |
-| `ORG_MEMORY_HUMAN_DIR` | `~/org/human` | 用户的 `org-mode` 文件目录 |
+| `ORG_MEMORY_USE_FOR_HUMAN` | `true` | 启用用户 org 文件中的任务管理功能 |
+| `ORG_MEMORY_HUMAN_DIR` | `~/org/human` | 用户的 org 文件目录 |
 | `ORG_MEMORY_HUMAN_DATABASE_LOCATION` | `~/.local/share/org-memory/human/.org.db` | 用户的数据库文件路径 |
 
-如果 `ORG_MEMORY_USE_FOR_AGENT` 未设置为 `true`，则跳过知识管理相关内容；如果 `ORG_MEMORY_USE_FOR_HUMAN` 未设置为 `true`，则跳过任务管理和批量操作相关内容。
+如果 `ORG_MEMORY_USE_FOR_AGENT` 未设置为 `true`，则跳过知识管理部分；如果 `ORG_MEMORY_USE_FOR_HUMAN` 未设置为 `true`，则跳过任务管理和批量操作部分。
 
-**注意：** 必须使用 `--db` 选项指定正确的数据库路径。`org` CLI 会在每次执行命令后自动使用 `--db` 指定的数据库进行同步。如果不使用 `--db`，它会默认使用 Emacs 的 `org-roam` 数据库（`~/.emacs.d/org-roam.db`），但这可能不是您想要的结果。
+请始终使用 `--db` 参数指定正确的数据库路径。CLI 会使用 `--db` 参数的值在每次修改后自动同步数据库。如果没有指定 `--db`，CLI 会默认使用 Emacs 的 org-roam 数据库（`~/.emacs.d/org-roam.db`），但这可能不是您想要的结果。
 
-**初始化操作：** 在每个启用相关功能的目录中创建第一个节点：
+请为每个启用的目录创建一个初始节点：
 
 ```bash
 org roam node create "Index" -d "$ORG_MEMORY_AGENT_DIR" --db "$ORG_MEMORY_AGENT_DATABASE_LOCATION" -f json
 ```
 
-响应中会包含节点的 ID、文件路径、标题和标签。后续命令可以使用这些信息。
+响应中会包含节点的 ID、文件路径、标题和标签。在后续命令中可以使用这些信息。
 
 ## 知识管理
 
 当 `ORG_MEMORY_USE_FOR_AGENT` 为 `true` 时，以下规则适用：
 
-### ⚠️ 创建前务必先搜索
+### ⚠️ 创建前请务必搜索
 
-在创建节点或链接之前，先检查该实体是否已经存在：
+在创建节点或链接之前，请先检查该实体是否已经存在：
 
 ```bash
 org roam node find "Sarah" -d "$ORG_MEMORY_AGENT_DIR" --db "$ORG_MEMORY_AGENT_DATABASE_LOCATION" -f json
 ```
 
-- 如果找到该实体：使用现有的节点 ID 和文件路径。
+- 如果找到现有节点：使用该节点的 ID 和文件路径。
 - 如果未找到（返回 `headline_not_found` 错误）：创建一个新的节点。
 
-**切勿在未搜索的情况下直接创建节点**，否则会导致知识图谱出现重复。
+**切勿在未搜索的情况下创建节点**，否则会导致知识图谱出现重复。
 
 ### 记录实体
 
-只有在确认不存在现有节点的情况下，才能进行记录：
+只有在确认没有现有节点的情况下，才能进行记录：
 
 ```bash
 org roam node create "Sarah" -d "$ORG_MEMORY_AGENT_DIR" --db "$ORG_MEMORY_AGENT_DATABASE_LOCATION" -t person -t work -f json
@@ -95,11 +100,11 @@ org add <file> "Unavailable March 2026" --tag scheduling --db "$ORG_MEMORY_AGENT
 org note <file> "Unavailable March 2026" "Out all of March per human." --db "$ORG_MEMORY_AGENT_DATABASE_LOCATION" -f json
 ```
 
-**注意：** `org note` 命令用于向标题（而非文件级别的节点）添加注释。如果某个节点是文件级别的（尚未添加标题），请先使用 `org add` 命令创建一个标题，然后再添加注释。
+**注意：** `org note` 命令用于向标题添加备注，而不是直接向文件级别的节点添加备注。如果某个节点是文件级别的（尚未添加标题），请先使用 `org add` 命令创建一个标题，然后再添加备注。
 
 ### 链接两个节点
 
-**务必先搜索两个节点** 以获取它们的 ID：
+**请务必先搜索两个节点** 以获取它们的 ID：
 
 ```bash
 # Find source node
@@ -111,13 +116,13 @@ org roam node find "Alice" -d "$ORG_MEMORY_AGENT_DIR" --db "$ORG_MEMORY_AGENT_DA
 # → Returns {"ok":true,"data":{"id":"a1b2c3d4-...",...}}
 ```
 
-如果任一节点不存在，请先创建该节点，然后使用返回的 ID 进行链接：
+如果其中一个节点不存在，请先创建该节点，然后使用返回的 ID 进行链接：
 
 ```bash
 org roam link add <source-file> "<source-id>" "<target-id>" -d "$ORG_MEMORY_AGENT_DIR" --db "$ORG_MEMORY_AGENT_DATABASE_LOCATION" --description "manages" -f json
 ```
 
-`--description` 参数用于设置节点之间的关联元数据（可选）。
+`--description` 参数是用于描述节点之间关系的可选元数据。
 
 ### 查询知识
 
@@ -130,7 +135,7 @@ org search "Sarah.*March" -d "$ORG_MEMORY_AGENT_DIR" -f json
 
 ### 添加别名和引用
 
-别名可以让节点通过多个名称被访问；引用用于关联外部 URL 或标识符：
+别名可以让节点通过多个名称被查找；引用则用于关联 URL 或外部标识符：
 
 ```bash
 org roam alias add <file> "a1b2c3d4-..." "Sarah Chen" --db "$ORG_MEMORY_AGENT_DATABASE_LOCATION"
@@ -141,7 +146,7 @@ org roam ref add <file> "a1b2c3d4-..." "https://github.com/sarahchen" --db "$ORG
 
 当 `ORG_MEMORY_USE_FOR_HUMAN` 为 `true` 时，以下规则适用：
 
-### 读取用户的待办事项状态
+### 查看用户的状态
 
 ```bash
 org agenda today -d "$ORG_MEMORY_HUMAN_DIR" -f json
@@ -162,7 +167,7 @@ org refile $ORG_MEMORY_HUMAN_DIR/inbox.org "Review PR #42" $ORG_MEMORY_HUMAN_DIR
 
 ### 写入前预览
 
-使用 `--dry-run` 选项可以预览修改操作的效果，而不会实际修改文件内容：
+使用 `--dry-run` 命令预览修改后的结果，而不会实际修改文件：
 
 ```bash
 org todo tasks.org "Buy groceries" DONE --dry-run -f json
@@ -172,7 +177,7 @@ org todo tasks.org "Buy groceries" DONE --dry-run -f json
 
 当 `ORG_MEMORY_USE_FOR_HUMAN` 为 `true` 时，以下规则适用：
 
-可以原子性地执行多个修改操作。命令会按顺序处理内存中的数据，只有所有操作都成功后才会写入文件：
+可以原子性地执行多个操作。命令会按顺序对内存中的状态进行操作，只有所有操作都成功后才会写入文件：
 
 ```bash
 echo '{"commands":[
@@ -184,21 +189,22 @@ echo '{"commands":[
 
 ## 何时记录知识
 
-当代理和用户的功能都启用时，需要区分用户的请求和系统生成的背景信息：用户的请求应记录在 `$ORG_MEMORY_HUMAN_DIR` 中，系统生成的背景信息应记录在 `$ORG_MEMORY_AGENT_DIR` 中。
+当同时启用代理和用户功能时，需要区分用户的请求和系统生成的背景信息：用户的请求应记录在 `$ORG_MEMORY_HUMAN_DIR` 中，系统生成的背景信息应记录在 `$ORG_MEMORY_AGENT_DIR` 中。
 
-**示例：**
-- “Cancel my Thursday meeting with Sarah and reschedule the API migration review to next week. Sarah is going to be out all of March.”  
-  - 取消并重新安排会议：属于用户的请求，记录在 `$ORG_MEMORY_HUMAN_DIR` 中。
-- “Sarah is going to be out all of March.”  
-  - 这是系统生成的背景信息，记录在 `$ORG_MEMORY_AGENT_DIR` 中。
+示例：
+- “Cancel my Thursday meeting with Sarah and reschedule the API migration review to next week. Sarah is going to be out all of March.”（取消与 Sarah 的周四会议，并将 API 迁移审查安排到下周。Sarah 三月份都不在。）
+  - 取消和重新安排会议属于用户请求，记录在 `$ORG_MEMORY_HUMAN_DIR` 中。
+  - Sarah 三月份不在属于系统生成的背景信息，记录在 `$ORG_MEMORY_AGENT_DIR` 中。
 
-**注意：** 如果仅启用代理的知识管理功能，所有相关内容都会记录在 `$ORG_MEMORY_AGENT_DIR` 中；如果仅启用用户文件管理功能，只处理用户的明确请求。
+如果只启用了代理的知识管理功能，所有相关内容都记录在 `$ORG_MEMORY_AGENT_DIR` 中；如果只启用了用户文件管理功能，只处理用户的明确请求。
 
-在创建节点之前，请先检查该节点是否已经存在。请使用命令返回的数据，避免进行额外的查询。
+在创建节点之前，请先检查该节点是否已经存在。请使用操作返回的数据，而不是再次进行查询。
+
+**每次写入操作后都必须进行记录**。每次对任一目录进行修改后，都会输出 `org-memory: <操作> <文件路径>`。切勿默默地写入文件。
 
 ## 稳定的标识符
 
-始终使用节点的 `org-id` 或完整标题来引用节点，而不是使用其在文件中的位置编号（位置编号可能会在文件编辑后发生变化）。如果将来需要引用某个节点，请为其设置一个唯一的 ID：
+请始终使用 org-id 或完整的标题来引用节点，而不是使用文件中的位置编号。文件被编辑后，位置编号可能会发生变化。如果您将来需要引用某个标题，请为其设置一个唯一的 ID：
 
 ```bash
 org property set file.org "My task" ID "$(uuidgen)" --db "$ORG_MEMORY_HUMAN_DATABASE_LOCATION" -f json
@@ -208,20 +214,20 @@ org property set file.org "My task" ID "$(uuidgen)" --db "$ORG_MEMORY_HUMAN_DATA
 
 根据 `ok` 字段的值来处理错误：
 - `file_not_found`：路径错误或文件已被删除。
-- `headline_not_found`：标识符不匹配；重新查询以获取当前状态。
-- `parse_error`：文件包含解析器无法处理的格式；不要重试。
-- `invalid_args`：请检查 `org schema` 或使用 `org <command> --help` 获取帮助信息。
+- `headline_not_found`：标识符不匹配；请重新查询以获取当前状态。
+- `parse_error`：文件包含解析器无法处理的格式；请不要重试。
+- `invalid_args`：请检查 `org schema` 或使用 `org <命令> --help` 获取帮助信息。
 
-## 故障排除：
+## 故障排除
 
 ### 创建了重复节点
-**原因：** 创建前未进行搜索。请先运行 `node find` 命令。如果发现重复节点，请手动删除新文件并运行 `org roam sync` 命令进行同步。
+在创建节点之前，请务必先执行 `node find` 操作。如果发现重复节点，请手动删除新文件并运行 `org roam sync`。
 
 ### 使用 `org note` 时出现 “headline_not_found” 错误
-**原因：** 尝试向文件级别的节点（0 级节点）添加注释。请先使用 `org add` 命令创建一个标题，然后再使用 `org note` 命令添加注释。
+如果您尝试向文件级别的节点（即没有标题的节点）添加备注，请先使用 `org add` 命令创建一个标题，然后再使用 `org note` 命令添加备注。
 
 ### 链接显示的文本不正确
-`--description` 参数用于设置节点之间的关联元数据，而不是显示文本。链接显示的是目标节点的标题，这是 `org-roam` 的正常行为。
+`--description` 参数用于设置关系元数据，而非显示文本。链接显示的是目标节点的标题，这是 org-roam 的正常行为。
 
 ### 数据库不同步
-运行 `org roam sync -d <dir> --db <db-path>` 命令可以从文件中重建数据库。
+运行 `org roam sync -d <dir> --db <db-path>` 命令来重新构建数据库。

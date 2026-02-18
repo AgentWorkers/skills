@@ -1,101 +1,92 @@
 ---
 name: Cameras
-description: 通过协议支持和智能家居集成功能，您可以连接安全摄像头、捕获快照、控制摄影设备，并处理视频流。
+slug: cameras
+version: 1.0.1
+description: 通过协议支持，连接到安全摄像头，捕获快照，并处理视频流。
+changelog: User-driven credential model, declared tool requirements
+metadata: {"clawdbot":{"emoji":"📷","requires":{"bins":["ffmpeg"]},"os":["linux","darwin"]}}
 ---
+## 范围
 
-## 决策树
+本技能包括：
+- ✅ 生成用于摄像头捕获的命令
+- ✅ 指导如何将摄像头集成到安全系统中
+- ✅ 提供针对摄像头问题的故障排除支持
 
-| 任务 | 参考文档 |
-|------|-----------|
-| 连接安全摄像头（Ring、Nest、IP摄像头） | 查看 `security-integration.md` |
-| 从网络摄像头或USB摄像头捕获视频 | 查看 `capture.md` |
-| 控制单反相机/无反相机（远程拍摄） | 查看 `photography-control.md` |
-| 处理视频（检测、识别） | 查看 `processing.md` |
-| 选择或比较摄像头（购买指南） | 查看 `buying-guide.md` |
+**用户驱动的模型：**
+- 用户提供摄像头访问凭据（RTSP地址、密码）
+- 用户运行捕获命令
+- 用户安装所需的工具
 
----
+**本技能不执行以下操作：**
+- ❌ 保存摄像头凭据
+- ❌ 未经用户请求自动运行捕获操作
+- ❌ 未经用户提供访问信息的情况下访问摄像头
 
-## 核心功能
+## 要求
 
-**具备此技能的代理可以执行以下操作：**
+**必备软件：**
+- `ffmpeg` — 用于捕获和录制视频
 
-1. **根据需求从任何已连接的摄像头捕获快照**  
-2. **录制短片（10-60秒）以供查看或发送**  
-3. **列出系统或网络中可用的摄像头**  
-4. **接收来自安全系统的运动警报**  
-5. **控制摄影设备（拍摄、调整设置、下载视频）**  
-6. **利用视觉模型描述摄像头所拍摄的内容**  
+**可选软件（用户可根据需要安装）：**
+- `gphoto2` — 用于控制DSLR或无反光镜相机
+- `v4l2-ctl` — 用于Linux系统上的USB摄像头
 
----
+## 快速参考
 
-## 协议快速参考
+| 主题 | 对应文档文件 |
+|-------|------|
+| 安全摄像头集成 | `security-integration.md` |
+| USB/网络摄像头捕获 | `capture.md` |
+| DSLR控制 | `photography-control.md` |
+| 视频处理 | `processing.md` |
 
-| 协议 | 用例 | 访问方式 |
-|----------|----------|---------------|
-| **RTSP** | IP摄像头、NVR | `rtsp://user:pass@ip:554/stream` |
-| **ONVIF** | 发现设备 + 控制 | `python-onvif-zeep`（自动发现） |
-| **HTTP/MJPEG** | 简单的IP摄像头 | `/snapshot.jpg`, `/video.mjpg` |
-| **Home Assistant** | 统一访问 | REST API `/api/camera_proxy/` |
-| **Frigate** | 运动事件 + 视频片段 | MQTT + HTTP API |
-| **USB/V4L2** | 网络摄像头、采集卡 | `ffmpeg`, `opencv`（通过设备索引访问） |
-| **gPhoto2** | 单反相机/无反相机的控制 | 使用USB PTP协议 |
+## 核心规则
 
----
-
-## 常用命令
-
+### 1. 用户提供摄像头访问权限
+当用户请求进行视频捕获时：
 ```
-# List cameras
-ffmpeg -list_devices true -f avfoundation -i dummy  # macOS
-v4l2-ctl --list-devices                              # Linux
+User: "Snapshot from my front door camera"
+Agent: "I need the RTSP URL. Format: rtsp://user:pass@ip/stream
+        Provide it or set CAMERA_FRONT_URL in env."
+User: "rtsp://admin:pass@192.168.1.50/stream1"
+→ Agent generates: ffmpeg -i "URL" -frames:v 1 snapshot.jpg
+```
 
-# Snapshot from RTSP
-ffmpeg -i "rtsp://user:pass@ip/stream" -frames:v 1 snapshot.jpg
-
-# Snapshot from webcam
-ffmpeg -f avfoundation -i "0" -frames:v 1 webcam.jpg  # macOS
-ffmpeg -f v4l2 -i /dev/video0 -frames:v 1 webcam.jpg  # Linux
+### 2. 常用命令
+```bash
+# Snapshot from RTSP (user provides URL)
+ffmpeg -i "$RTSP_URL" -frames:v 1 snapshot.jpg
 
 # Record 10s clip
-ffmpeg -i "rtsp://ip/stream" -t 10 -c copy clip.mp4
+ffmpeg -i "$RTSP_URL" -t 10 -c copy clip.mp4
+
+# Webcam snapshot (macOS)
+ffmpeg -f avfoundation -i "0" -frames:v 1 webcam.jpg
+
+# Webcam snapshot (Linux)
+ffmpeg -f v4l2 -i /dev/video0 -frames:v 1 webcam.jpg
 ```
 
----
+### 3. 协议参考
+| 协议 | 使用场景 | URL格式 |
+|----------|----------|------------|
+| RTSP | IP摄像头 | `rtsp://user:pass@ip:554/stream` |
+| HTTP | 简单摄像头 | `http://ip/snapshot.jpg` |
+| V4L2 | USB摄像头 | `/dev/video0` |
 
-## 集成模式
-
-### 与Home Assistant集成
-如果摄像头已经集成到Home Assistant中，可以使用REST API进行控制：
+### 4. 集成方式
+**与Home Assistant集成：**
 ```
 GET /api/camera_proxy/camera.front_door
-→ Returns JPEG snapshot
 ```
+用户需要提供Home Assistant的URL和访问令牌。
 
-### 与Frigate集成（推荐用于安全监控）
-Frigate负责视频检测，代理只需监听相关事件：
-- MQTT：`frigate/events`（接收运动警报）
-- HTTP：`/api/events/{id}/snapshot.jpg`（获取快照）
+**与Frigate集成：**
+- 使用MQTT协议发送事件：`frigate/events`（用于接收警报）
+- 使用HTTP协议获取截图：`/api/events/{id}/snapshot.jpg`
 
-### 与视觉模型集成
-捕获快照后，将其发送给视觉模型进行处理：
-```
-1. ffmpeg → snapshot.jpg
-2. Vision API → "A person standing at the front door"
-3. Return description to user
-```
-
----
-
-## 故障排除
-
-| 问题 | 解决方案 |
-|---------|----------|
-| 摄像头无法连接 | 检查网络连接、电源状态以及IP地址是否更改 |
-| RTSP连接超时 | 尝试添加 `?tcp` 参数或使用端口8554 |
-| 权限问题 | 以sudo权限运行程序，或将用户添加到视频访问组 |
-| 仅输出音频无视频 | 流媒体路径错误，尝试使用 `/stream1`, `/ch01/main` |
-| gPhoto2相机占用中 | 关闭其他使用该相机的应用程序，重新插入USB线 |
-
----
-
-（注：由于代码块内容未提供，实际翻译中保留了相应的占位符 `_CODE_BLOCK_0_`。在实际文档中，这些占位符将被具体的代码或说明替换。）
+### 5. 安全性注意事项**
+- **严禁记录包含凭据的摄像头URL**  
+- **建议用户将相关URL存储在环境变量中**  
+- **RTSP流可能未加密——请注意局域网安全风险**

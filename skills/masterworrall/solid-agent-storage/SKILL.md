@@ -1,28 +1,30 @@
 ---
 name: solid-agent-storage
 description: 使用 Solid 协议为你的 AI 代理分配一个持久性的身份标识（WebID）以及个人数据存储空间（Pod）。
-version: 0.1.0
+version: 0.1.1
 author: Interition
 license: Apache-2.0
 metadata: {"requires": {"bins": ["node", "docker"], "env": ["SOLID_SERVER_URL", "INTERITION_PASSPHRASE"]}, "categories": ["storage", "identity", "data"], "homepage": "https://github.com/masterworrall/agent-interition"}
 ---
 # Solid Agent Storage
 
-本技能为您提供了一个名为 **Solid Pod** 的个人数据存储服务，该存储服务具有一个 **WebID**（您在网络上的身份标识）。您可以使用它来存储数据、读取数据，并与其他代理共享特定资源。
+该技能为您提供了一个名为 **Solid Pod** 的个人数据存储空间，该存储空间拥有一个 **WebID**（您在网络上的身份标识）。您可以在其中存储数据、读取数据，并与其他代理共享特定资源。
 
-## 何时使用本技能
+## 何时使用此技能
 
-- 当您需要在对话中记住某些信息（如笔记、偏好设置或学到的知识点）时。
-- 当您需要存储结构化数据（支持 RDF/Turtle 格式的数据，或任何类型的内容）时。
+- 当您需要在多次对话中记住某些信息（如笔记、偏好设置或学到的知识）时。
+- 当您需要存储结构化数据（例如使用 RDF/Turtle 格式的链接数据，或任何类型的内容）时。
 - 当您需要与其他也拥有 Solid Pod 的代理共享数据时。
-- 当您需要一个其他代理或服务可以验证的持久性身份标识时。
+- 当您需要一个其他代理或服务可以验证的持久身份标识时。
 
-## 设置
+## 设置要求
+
+使用此技能需要运行 [Community Solid Server](https://github.com/CommunitySolidServer/CommunitySolidServer)（简称 CSS）。该服务器不包含在此软件包中，请参阅 [源代码仓库](https://github.com/masterworrall/agent-interition) 以获取 Docker 设置说明。
 
 在使用任何命令之前，请确保：
-1. Solid 服务器正在运行（在 `agent-interaction` 目录中执行 `docker-compose up` 命令）。
-2. `SOLID_SERVER_URL` 已经设置（默认值：`http://localhost:3000`）。
-3. `INTERITION_PASSPHRASE` 已经设置（用于加密存储的凭据）。
+1. Community Solid Server 正在运行且可访问（默认地址：`http://localhost:3000`）。
+2. `SOLID_SERVER_URL` 已设置为服务器的地址（默认值：`http://localhost:3000`）。**请仅指向您控制且信任的服务器**——该技能会与服务器交换凭证。
+3. `INTERITION_PASSPHRASE` 已设置（用于加密存储的凭证）。请使用强密码并妥善保管。
 
 ## 命令
 
@@ -52,7 +54,7 @@ scripts/provision.sh --name researcher --displayName "Research Assistant"
 scripts/write.sh --agent <name> --url <resource-url> --content <data> [--content-type <mime-type>]
 ```
 
-**示例 — 存储一条笔记：**
+**示例——存储一条笔记：**
 ```bash
 scripts/write.sh --agent researcher \
   --url "http://localhost:3000/agents/researcher/memory/notes.ttl" \
@@ -63,7 +65,7 @@ scripts/write.sh --agent researcher \
   --content-type "text/turtle"
 ```
 
-**示例 — 存储纯文本：**
+**示例——存储纯文本：**
 ```bash
 scripts/write.sh --agent researcher \
   --url "http://localhost:3000/agents/researcher/memory/summary.txt" \
@@ -91,15 +93,15 @@ scripts/read.sh --agent researcher --url "http://localhost:3000/agents/researche
 
 ### 授予其他代理访问权限
 
-允许其他代理读取或写入特定的资源。
+允许其他代理读取或写入特定资源。
 
 ```bash
 scripts/grant-access.sh --agent <owner-name> --resource <url> --grantee <webId> --modes <Read,Write,...>
 ```
 
-**有效权限模式：** `Read`、`Write`、`Append`、`Control`
+**有效权限模式：** `Read`（读取）、`Write`（写入）、`Append`（追加）、`Control`（控制）
 
-**示例 — 允许其他代理读取您的笔记：**
+**示例——允许其他代理读取您的笔记：**
 ```bash
 scripts/grant-access.sh --agent researcher \
   --resource "http://localhost:3000/agents/researcher/shared/report.ttl" \
@@ -109,7 +111,7 @@ scripts/grant-access.sh --agent researcher \
 
 ### 撤销访问权限
 
-移除之前授予的访问权限。
+取消之前授予的访问权限。
 
 ```bash
 scripts/revoke-access.sh --agent <owner-name> --resource <url> --grantee <webId>
@@ -127,11 +129,11 @@ scripts/status.sh
 
 每个代理的 Solid Pod 包含以下容器：
 
-| 路径          | 用途                         |
-|-----------------|-----------------------------|
-| `/agents/{name}/memory/`   | 代理的私有内存（笔记、学到的知识点、偏好设置） |
-| `/agents/{name}/shared/`   | 用于与其他代理共享的资源         |
-| `/agents/{name}/conversations/` | 对话记录和上下文信息         |
+| 路径          | 用途                |
+|------------------|----------------------|
+| `/agents/{name}/memory/`   | 代理的私有内存空间（笔记、学到的知识、偏好设置） |
+| `/agents/{name}/shared/`   | 用于与其他代理共享的资源          |
+| `/agents/{name}/conversations/` | 对话记录和上下文信息        |
 
 ## Turtle 模板
 
@@ -165,14 +167,14 @@ scripts/status.sh
 
 ## 错误处理
 
-所有命令的输出均为 JSON 格式。在发生错误时，标准错误输出（stderr）中会显示相应的错误信息：
+所有命令的输出均为 JSON 格式。发生错误时，标准错误输出（stderr）会显示相应的错误信息：
 ```json
 {"error": "description of what went wrong"}
 ```
 
 常见错误：
-- “未提供密码短语” — 请设置 `INTERITION_PASSPHRASE` 环境变量。
-- “未找到凭据” — 请先运行 `provision.sh` 命令。
-- “密码短语无效” — `INTERITION_PASSPHRASE` 的值不正确。
-- “HTTP 401” — 凭据已过期；请重新配置代理。
+- “未提供密码” — 请设置 `INTERITION_PASSPHRASE` 环境变量。
+- “未找到凭证” — 请先运行 `provision.sh` 命令。
+- “密码无效” — `INTERITION_PASSPHRASE` 的值不正确。
+- “HTTP 401” — 凭证已过期；请重新配置代理。
 - “HTTP 404” — 请求的资源在该 URL 处不存在。

@@ -1,10 +1,10 @@
 ---
 name: hubspot
 description: HubSpot CRM与CMS的API集成，支持联系人（Contacts）、公司（Companies）、交易（Deals）、负责人（Owners）以及内容管理（Content Management）的功能。
-metadata: {"clawdbot":{"secrets":["HUBSPOT_ACCESS_TOKEN"]}}
+homepage: https://github.com/kwall1/hubspot-skill
+metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["curl","jq"],"env":["HUBSPOT_ACCESS_TOKEN"]},"primaryEnv":"HUBSPOT_ACCESS_TOKEN"}}
 ---
-
-# HubSpot 技能
+# HubSpot Skill
 
 通过 REST API 与 HubSpot 客户关系管理（CRM）和内容管理系统（CMS）进行交互。
 
@@ -15,11 +15,11 @@ metadata: {"clawdbot":{"secrets":["HUBSPOT_ACCESS_TOKEN"]}}
 HUBSPOT_ACCESS_TOKEN=pat-na2-xxxxx
 ```
 
-## API 基础
+## API 基址
 
-所有端点使用的地址：`https://api.hubapi.com`
+所有端点的基址为：`https://api.hubapi.com`
 
-授权头：`Bearer $HUBSPOT_ACCESS_TOKEN`
+授权头部：`Bearer $HUBSPOT_ACCESS_TOKEN`
 
 ---
 
@@ -246,7 +246,7 @@ curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 ## 搜索操作符
 
-在搜索端点中，可以使用以下操作符作为过滤器：
+在搜索端点中，可以使用以下操作符作为过滤条件：
 
 | 操作符 | 描述 |
 |----------|-------------|
@@ -259,13 +259,13 @@ curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 | `CONTAINS_TOKEN` | 包含单词 |
 | `NOT_CONTAINS_TOKEN` | 不包含单词 |
 | `HAS_PROPERTY` | 具有该属性 |
-| `NOT_HAS_PROPERTY` | 不具有该属性 |
+| `NOTHAS_PROPERTY` | 不具有该属性 |
 
 ---
 
 ## PowerShell 示例
 
-在 Windows/PowerShell 中，使用 `Invoke-RestMethod` 方法：
+在 Windows/PowerShell 中，使用 `Invoke-RestMethod` 命令进行操作：
 
 ```powershell
 $headers = @{ 
@@ -297,5 +297,5 @@ Invoke-RestMethod -Method POST -Uri "https://api.hubapi.com/crm/v3/objects/conta
 
 - 支持完整的 CRUD 操作（创建、读取、更新、删除），具体取决于权限范围。
 - 私有应用的请求速率限制为每 10 秒 100 次请求。
-- 分页：使用 `paging.next.after` 参数来获取下一页。
+- 分页：使用 `paging.next.after` 参数来获取下一页数据。
 - 门户 ID 存在于记录 URL 中，例如：`https://app-na2.hubspot.com/contacts/{portalId}/record/...`

@@ -1,0 +1,11 @@
+{
+  "owner": "takahashigy",
+  "slug": "ezcto-smart-web-reader",
+  "displayName": "EZCTO Smart Web Reader",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1771316766963,
+    "commit": "https://github.com/openclaw/skills/commit/0676bfcab66c17efc489971db1ad885617da5287"
+  },
+  "history": []
+}

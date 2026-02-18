@@ -1,6 +1,6 @@
 ---
 name: postiz
-description: Postiz 是一款用于安排社交媒体和聊天平台发布内容的工具，支持发布到 28 个以上的平台，包括 X（原 Twitter）、LinkedIn、LinkedIn Page、Reddit、Instagram、Facebook Page、Threads、YouTube、Google My Business、TikTok、Pinterest、Dribbble、Discord、Slack、Kick、Twitch、Mastodon、Bluesky、Lemmy、Farcaster、Telegram、Nostr、VK、Medium、Dev.to、Hashnode 和 WordPress。
+description: Postiz 是一款用于安排社交媒体和聊天平台发布内容的工具，支持发布到 28 个以上的平台，包括：X（原 Twitter）、LinkedIn、LinkedIn Page、Reddit、Instagram、Facebook Page、Threads、YouTube、Google My Business、TikTok、Pinterest、Dribbble、Discord、Slack、Kick、Twitch、Mastodon、Bluesky、Lemmy、Farcaster、Telegram、Nostr、VK、Medium、Dev.to、Hashnode 和 WordPress。
 homepage: https://docs.postiz.com/public-api/introduction
 metadata: {"clawdbot":{"emoji":"🌎","requires":{"bins":[],"env":["POSTIZ_API_URL","POSTIZ_API_KEY"]}}}
 ---
@@ -18,7 +18,7 @@ npm release: https://www.npmjs.com/package/postiz
 | 属性 | 值 |
 |----------|-------|
 | **名称** | postiz |
-| **描述** | 用于在 28 个以上平台上自动发布内容的社交媒体管理 CLI |
+| **描述** | 用于跨 28 个以上平台调度帖子的社交媒体自动化 CLI |
 | **支持的工具** | Bash (postiz:*) |
 
 ---
@@ -27,12 +27,12 @@ npm release: https://www.npmjs.com/package/postiz
 
 使用 Postiz CLI 的基本步骤如下：
 
-1. **发现** - 列出可用的集成工具及其配置信息。
-2. **获取数据** - 使用集成工具获取动态数据（如徽章、播放列表、公司信息等）。
+1. **发现** - 列出可用的集成工具并获取其配置信息。
+2. **获取数据** - 使用集成工具检索动态数据（如徽章、播放列表、公司信息等）。
 3. **准备** - 如有需要，上传媒体文件。
-4. **发布** - 根据内容、媒体文件及平台特定设置创建帖子。
-5. **分析** - 通过平台及帖子级别的数据进行分析。
-6. **处理缺失数据** - 如果分析结果返回 `{"missing": true}`，则运行 `posts:missing` 命令列出缺失的数据，随后运行 `posts:connect` 命令进行数据关联。
+4. **发布** - 创建包含内容、媒体及平台特定设置的帖子。
+5. **分析** - 通过平台及帖子级别的分析来监控发布效果。
+6. **处理缺失数据** - 如果分析结果返回 `{"missing": true}`，则运行 `posts:missing` 来获取缺失的数据，随后运行 `posts:connect` 来链接这些数据。
 
 ```bash
 # 1. Discover
@@ -132,7 +132,7 @@ postiz posts:list --startDate "2024-01-01T00:00:00Z" --endDate "2024-12-31T23:59
 postiz posts:delete <post-id>
 ```
 
-### 分析数据
+### 分析发布效果
 
 ```bash
 # Get platform analytics (default: last 7 days)
@@ -148,11 +148,11 @@ postiz analytics:post <post-id>
 postiz analytics:post <post-id> -d 30
 ```
 
-该命令会返回一系列指标（如粉丝数、浏览量、点赞数、评论数）以及每日数据点和百分比变化。
+该命令会返回一系列指标（如关注者数量、浏览量、点赞数、评论数）以及每日数据点和百分比变化。
 
 **⚠️ 重要提示：处理缺失的发布 ID**
 
-如果 `analytics:post` 返回 `{"missing": true}`，说明帖子已发布但平台未返回有效的发布 ID。必须先解决这个问题，分析功能才能正常使用：
+如果 `analytics:post` 返回 `{"missing": true}` 而不是分析数据数组，说明帖子已发布但平台未返回可用的帖子 ID。在分析数据之前，**必须** 解决这个问题：
 
 ```bash
 # 1. analytics:post returns {"missing": true}
@@ -169,9 +169,9 @@ postiz posts:connect <post-id> --release-id "7321456789012345678"
 postiz analytics:post <post-id>
 ```
 
-### 关联缺失的帖子
+### 连接缺失的帖子
 
-某些平台（如 TikTok）在发布帖子后不会立即返回发布 ID。此时，帖子的 `releaseId` 会被设置为 `"missing"`，直到问题解决之前分析数据将无法获取。
+某些平台（如 TikTok）在帖子发布后不会立即返回帖子 ID。在这种情况下，帖子的 `releaseId` 会被设置为 `"missing"`，直到问题解决之前分析数据将无法使用。
 
 ```bash
 # List recent content from the provider for a post with missing release ID
@@ -181,11 +181,11 @@ postiz posts:missing <post-id>
 postiz posts:connect <post-id> --release-id "<content-id>"
 ```
 
-如果某个平台不支持该功能，或者帖子没有缺失的发布 ID，该命令将返回一个空数组。
+如果提供者不支持该功能，或者帖子没有缺失的发布 ID，该命令将返回一个空数组。
 
 ### 上传媒体文件
 
-**⚠️ 重要提示：** 在使用媒体文件发布帖子之前，务必先将其上传到 Postiz。许多平台（如 TikTok、Instagram、YouTube）要求使用经过验证的 URL，否则会拒绝外部链接。
+**⚠️ 重要提示：** 在使用媒体文件发布帖子之前，务必先将其上传到 Postiz。许多平台（如 TikTok、Instagram、YouTube）**要求使用经过验证的 URL**，否则会拒绝外部链接。
 
 ```bash
 # Upload file and get URL
@@ -268,7 +268,7 @@ postiz posts:create \
   -i "tiktok-id"
 ```
 
-### 模式 3：在 Twitter 上创建多条帖子
+### 模式 3：在 Twitter 上创建多条帖子（线程形式）**
 
 ```bash
 postiz posts:create \
@@ -281,7 +281,7 @@ postiz posts:create \
   -i "twitter-id"
 ```
 
-### 模式 4：跨平台发布内容
+### 模式 4：跨多个平台发布内容
 
 ```bash
 # Create JSON file with platform-specific content
@@ -340,7 +340,35 @@ postiz posts:create \
   -i "$INTEGRATION_ID"
 ```
 
-### 模式 7：错误处理与重试
+### 模式 7：批量调度发布
+
+```bash
+#!/bin/bash
+
+# Schedule posts for the week
+DATES=(
+  "2024-02-14T09:00:00Z"
+  "2024-02-15T09:00:00Z"
+  "2024-02-16T09:00:00Z"
+)
+
+CONTENT=(
+  "Monday motivation 💪"
+  "Tuesday tips 💡"
+  "Wednesday wisdom 🧠"
+)
+
+for i in "${!DATES[@]}"; do
+  postiz posts:create \
+    -c "${CONTENT[$i]}" \
+    -s "${DATES[$i]}" \
+    -i "twitter-id" \
+    -m "post-${i}.jpg"
+  echo "Scheduled: ${CONTENT[$i]} for ${DATES[$i]}"
+done
+```
+
+### 模式 8：错误处理与重试
 
 ```bash
 #!/bin/bash
@@ -374,21 +402,21 @@ done
 
 ### 集成工具的工作流程
 
-许多集成工具需要动态数据（如 ID、标签、播放列表等），这些数据无法硬编码。Postiz 的工作流程支持以下步骤：
+许多集成工具需要动态数据（如 ID、标签、播放列表等），这些数据无法硬编码。Postiz 的工作流程支持以下操作：
 
 1. **检查可用工具** - `integrations:settings` 会返回一个 `tools` 数组。
-2. **查看工具详情** - 每个工具都包含 `methodName`、`description` 和 `dataSchema`。
-3. **触发工具** - 使用 `integrations:trigger` 命令并传递所需参数。
-4. **使用工具返回的数据** - 这些数据将用于帖子的设置中。
+2. **查看工具的详细信息** - 每个工具都包含 `methodName`、`description` 和 `dataSchema`。
+3. **触发工具** - 使用 `integrations:trigger` 调用相应的工具，并传入所需参数。
+4. **使用工具返回的数据** - 工具会返回可用于帖子设置的数据。
 
-**按平台划分的工具示例：**
+**按平台划分的示例工具：**
 - **Reddit**：`getFlairs`、`searchSubreddits`、`getSubreddits`
 - **YouTube**：`getPlaylists`、`getCategories`、`getChannels`
 - **LinkedIn**：`getCompanies`、`getOrganizations`
 - **Twitter/X**：`getListsowned`、`getCommunities`
 - **Pinterest**：`getBoards`、`getBoardSections`
 
-### 平台特定设置结构
+### 平台特定设置的结构
 
 平台特定的设置使用 `__type` 字段进行区分：
 
@@ -415,15 +443,15 @@ done
 }
 ```
 
-直接传递设置参数：
+**直接传递设置：**
 ```bash
 postiz posts:create -c "Content" -s "2024-12-31T12:00:00Z" --settings '{"subreddit":[...]}' -i "reddit-id"
 # Backend automatically adds "__type" based on integration ID
 ```
 
-### 评论与多条帖子
+### 评论与多条帖子（如 Twitter/X 上的线程）
 
-帖子可以包含评论（在 Twitter/X 上表现为多条帖子，在其他平台上表现为回复）。每条评论都可以附带媒体文件：
+帖子可以包含评论（Twitter/X 上的多条帖子形式），每条评论也可以有自己的媒体文件：
 
 ```bash
 # Using multiple -c and -m flags
@@ -432,18 +460,31 @@ postiz posts:create \
   -c "Comment 1" -m "comment-img.jpg" \
   -c "Comment 2" -m "another.jpg,more.jpg" \
   -s "2024-12-31T12:00:00Z" \
-  -d 5000 \  # Delay between comments in ms
+  -d 5 \  # Delay between comments in minutes
   -i "integration-id"
+```
+
+**内部处理机制：**
+```json
+{
+  "posts": [{
+    "value": [
+      { "content": "Main post", "image": ["image1.jpg", "image2.jpg"] },
+      { "content": "Comment 1", "image": ["comment-img.jpg"], "delay": 5 },
+      { "content": "Comment 2", "image": ["another.jpg", "more.jpg"], "delay": 5 }
+    ]
+  }]
+}
 ```
 
 ### 日期处理
 
 所有日期均采用 ISO 8601 格式：
-- **安排发布时间**：`-s "2024-12-31T12:00:00Z"`
+- **调度帖子**：`-s "2024-12-31T12:00:00Z"`
 - **列出帖子**：`--startDate "2024-01-01T00:00:00Z" --endDate "2024-12-31T23:59:59Z"`
-- **默认值**：`posts:list` 会使用过去 30 天到未来 30 天的时间范围。
+- **默认值**：`posts:list` 会使用过去 30 天到未来 30 天内的数据
 
-### 媒体文件上传
+### 媒体文件上传的响应
 
 上传操作会返回包含文件路径和元数据的 JSON 数据：
 
@@ -455,20 +496,31 @@ postiz posts:create \
 }
 ```
 
-提取文件路径以供帖子使用：
+**提取文件路径以用于帖子内容：**
 ```bash
 RESULT=$(postiz upload image.jpg)
 PATH=$(echo "$RESULT" | jq -r '.path')
 postiz posts:create -c "Content" -s "2024-12-31T12:00:00Z" -m "$PATH" -i "integration-id"
 ```
 
-### JSON 模式与 CLI 参数
+### JSON 模式与 CLI 标志
 
-**CLI 参数** - 适用于快速发布帖子的简单操作。
-**JSON 模式** - 适用于涉及多个平台和复杂设置的复杂操作：
-- 支持跨平台发布、设置多样化的帖子。
-- 支持包含多条评论的帖子。
-- 支持设置帖子之间的延迟时间。
+**CLI 标志** - 用于快速发布帖子：
+```bash
+postiz posts:create -c "Content" -m "img.jpg" -i "twitter-id"
+```
+
+**JSON 模式** - 用于处理多个平台及复杂设置的帖子：
+```bash
+postiz posts:create --json post.json
+```
+
+JSON 模式支持：
+- 多个平台及每个平台的不同内容
+- 复杂的平台特定设置
+- 定时发布的帖子
+- 包含多条评论的帖子
+- 设置帖子之间的延迟时间
 
 ---
 
@@ -511,7 +563,7 @@ postiz posts:create \
   -i "tiktok-id"
 ```
 
-### Twitter/X
+### Twitter (X)
 ```bash
 postiz posts:create \
   -c "Tweet content" \
@@ -564,20 +616,20 @@ postiz posts:create \
 ## 支持资源
 
 **详细文档：**
-- [HOW_TO_RUN.md](./HOW_TO_RUN.md) - 安装与设置方法
+- [HOW_TO_RUN.md](./HOW_TO_RUN.md) - 安装和设置方法
 - [COMMAND_LINE_GUIDE.md](./COMMAND_LINE_GUIDE.md) - 完整的命令语法参考
-- [PROVIDER_SETTINGS.md](./PROVIDER_SETTINGS.md) - 28 个以上平台的设置规范
-- [INTEGRATION_TOOLS_WORKFLOW.md](./INTEGRATION_TOOLS_WORKFLOW.md) - 完整的工具使用指南
+- [PROVIDER_SETTINGS.md](./PROVIDER_SETTINGS.md) - 所有 28 个以上平台的设置规范
+- [INTEGRATION_TOOLS_WORKFLOW.md](./INTEGRATION_TOOLS_WORKFLOW.md) - 完整的工具使用流程指南
 - [INTEGRATION_SETTINGS_DISCOVERY.md](./INTEGRATION_SETTINGS_DISCOVERY.md) - 设置发现流程
 - [SUPPORTED_FILE_TYPES.md](./SUPPORTED_FILE_TYPES.md) - 所支持的媒体格式
 - [PROJECT_structure.md](./PROJECT_structure.md) - 代码架构
 - [PUBLISHING.md](./PUBLISHING.md) - npm 发布指南
 
 **现成的使用示例：**
-- [examples/EXAMPLES.md](./examples/EXAMPLES.md) - 全面示例
-- [examples/basic-usage.sh](./examples/basic-usage.sh) - Shell 脚本使用示例
+- [examples/EXAMPLES.md](./examples/EXAMPLES.md) - 全面的使用示例
+- [examples/basic-usage.sh](./examples/basic-usage.sh) - Shell 脚本基本用法
 - [examples/post-with-comments.json](./examples/post-with-comments.json) - 包含评论的帖子示例
-- [examples/multi-platform-with-settings.json](./examples/multi-platform-with-settings.json) - 跨平台发布内容的示例
+- [examples/multi-platform-with-settings.json](./examples/multi-platform-with-settings.json) - 多平台发布示例
 - [examples/youtube-video.json](./examples/youtube-video.json) - 包含标签的 YouTube 帖子示例
 - [examples/reddit-post.json](./examples/reddit-post.json) - 包含子版块的 Reddit 帖子示例
 - [examples/tiktok-video.json](./examples/tiktok-video.json) - 包含隐私设置的 TikTok 帖子示例
@@ -586,17 +638,17 @@ postiz posts:create \
 
 ## 常见问题与注意事项
 
-1. **API 密钥未设置** - 使用 CLI 之前务必执行 `export POSTIZ_API_KEY=value`。
-2. **集成 ID 无效** - 运行 `integrations:list` 命令获取当前的集成 ID。
+1. **API 密钥未设置** - 使用 CLI 之前务必执行 `export POSTIZ_API_KEY=key`。
+2. **集成 ID 无效** - 运行 `integrations:list` 以获取当前的集成 ID。
 3. **设置格式不匹配** - 检查 `integrations:settings` 中是否包含所有必需的字段。
-4. **必须先上传媒体文件** - ⚠️ **重要提示：** TikTok、Instagram、YouTube 等平台仅接受经过验证的 URL。请先使用 `postiz upload` 命令上传文件，然后使用返回的 URL。外部链接将被拒绝！
-5. **Shell 中的 JSON 编码** - 使用单引号来编写 JSON 字符串：`--settings '{...}'`。
+4. **必须先上传媒体文件** - ⚠️ **重要提示：** TikTok、Instagram、YouTube 等平台仅接受经过验证的 URL。请先使用 `postiz upload` 上传文件，然后在命令中使用返回的 URL。外部链接将被拒绝！
+5. **在 Shell 中处理 JSON 数据** - 使用单引号来传递 JSON 数据：`--settings '{...}'`。
 6. **日期格式** - 必须使用 ISO 8601 格式：`"2024-12-31T12:00:00Z"`，这是强制要求的。
 7. **工具未找到** - 在 `integrations:settings` 的输出中检查可用的工具。
 8. **字符长度限制** - 不同平台有不同的字符长度限制，请查看设置中的 `maxLength`。
-9. **必需的设置** - 某些平台有特定的设置要求（例如 Reddit 需要标题，YouTube 需要标题字段）。
-10. **媒体文件格式** - CLI 会根据文件扩展名自动检测文件类型，请确保文件格式正确。
-11. **分析结果返回 `{"missing": true}`** - 帖子已发布但平台未返回发布 ID。此时请运行 `posts:missing <post-id>` 获取缺失的数据，然后运行 `posts:connect <post-id> --release-id "<id>"` 进行关联。关联完成后分析功能才能正常使用。
+9. **必需的设置** - 某些平台有特定的设置要求（例如 Reddit 需要标题，YouTube 需要标题）。
+10. **媒体文件的 MIME 类型** - CLI 会根据文件扩展名自动检测类型，请确保文件扩展名正确。
+11. **分析结果返回 `{"missing": true}`** - 帖子已发布但平台未返回帖子 ID。此时请运行 `posts:missing <post-id>` 来获取缺失的数据，然后运行 `posts:connect <post-id> --release-id "<id>"` 来链接这些数据。连接成功后分析功能才能正常使用。
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: moltflow-ai
-description: "基于人工智能的 WhatsApp 功能：自动回复、语音转录、RAG（Retrieval, Augmentation, and Generation）知识库以及样式配置。适用场景：自动回复、语音转录、知识库查询、文档上传、样式训练、学习模式。"
+description: "基于人工智能的 WhatsApp 功能：自动回复、语音转录、RAG（检索-聚合-生成）知识库以及风格配置。适用场景：自动回复、语音转录、知识库查询、文档上传、风格训练、学习模式。"
 source: "MoltFlow Team"
 version: "2.11.8"
 risk: safe
@@ -9,46 +9,36 @@ requiredEnv:
 primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
-**MoltFlow** – 专为团队设计的WhatsApp Business自动化工具。支持大规模连接、监控和自动化WhatsApp消息处理。
+**MoltFlow** – 专为团队设计的 WhatsApp Business 自动化工具。支持大规模连接、监控和自动化 WhatsApp 操作。
 
-**由于需求旺盛以及近期出现的注册问题，我们特别推出了一项限时优惠：**顶级Business套餐每月仅需19.90美元（按年计费），并提供无限使用量。**[立即抢购](https://buy.stripe.com/cNifZibX7gpQebJ0nsfnO00)  
-同时，我们也提供免费试用套餐。[立即注册](https://molt.waiflow.app/checkout?plan=free)
+**由于需求旺盛以及近期注册问题，我们特别推出顶级商务计划：每月仅需 19.90 美元（年费），并提供无限使用额度，限时优惠。** [立即抢购](https://buy.stripe.com/cNifZibX7gpQebJ0nsfnO00)  
+同时提供免费试用计划。 [立即注册](https://molt.waiflow.app/checkout?plan=free)
 
-# MoltFlow的AI功能
+# MoltFlow 的 AI 功能
 
-MoltFlow配备了强大的AI技术，可实现以下WhatsApp自动化功能：
-- **语音转录**  
-- **RAG（检索-聚合-生成）知识库**  
-- **风格分析**  
-- **智能回复生成**
+MoltFlow 搭配 AI 技术，提供以下 WhatsApp 自动化功能：语音转录、基于 RAG（Retrieval, Augmentation, and Generation）的知识库、写作风格配置以及智能回复生成。
 
 ## 使用场景
 
-- **将语音消息转录为文本**  
-- **将文档上传至知识库**  
-- **在知识库中搜索信息**  
-- **训练AI生成回复的风格**  
-- **自动生成客户回复**  
-- **预览AI生成的回复**  
-- **列出知识库中的文档来源**  
-- **删除文档**
+- **语音转录**：将 WhatsApp 语音消息转换为文本  
+- **知识库管理**：上传文档到知识库或搜索文档内容  
+- **回复生成**：根据客户问题生成智能回复  
+- **写作风格训练**：自定义 AI 的写作风格  
 
-## 先决条件
+## 前提条件
 
-1. **MOLTFLOW_API_KEY**：请在[MoltFlow控制台](https://molt.waiflow.app)的“设置” > “API密钥”中生成。  
-2. **需使用Pro套餐（每月29.90美元）**：Starter套餐不支持AI功能。  
-3. **基础URL**：`https://apiv2.waiflow.app/api/v2`  
-4. 所有AI相关接口均以`/ai`为前缀。
+1. **MOLTFLOW_API_KEY**：请在 [MoltFlow 控制台](https://molt.waiflow.app) 的“设置” > “API 密钥”中生成。  
+2. **至少需使用 Pro 计划（每月 29.90 美元）**：免费计划不支持 AI 功能。  
+3. 基础 API 地址：`https://apiv2.waiflow.app/api/v2`  
+4. 所有 AI 相关接口均以 `/ai` 为前缀。  
 
-## 所需API密钥权限
+## 所需 API 密钥权限
 
 | 权限范围 | 访问权限 |
 |---------|---------|
-| `ai`    | `read/manage`   |
+| `ai` | `read/manage` |  
 
-**注意：**访问对话上下文功能需要用户明确授权（在“设置” > “账户” > “数据访问”中启用）。发送消息无需此权限，仅访问上下文数据时需要授权。
-
-## 认证
+## 认证要求
 
 所有请求必须包含以下认证信息之一：  
 ```
@@ -57,196 +47,202 @@ Authorization: Bearer <jwt_token>
 或  
 ```
 X-API-Key: <your_api_key>
-```
+```  
 
 ---
 
-## 语音转录
+## **语音转录**
 
-使用Whisper AI技术将WhatsApp语音消息转录为文本。转录过程通过Celery后台任务异步完成。
+使用 Whisper AI 对 WhatsApp 语音消息进行转录。转录过程通过 Celery 工作进程异步处理。  
 
-| 方法 | API端点 | 描述 |
-|------|---------|--------|
-| POST | `/ai/voice/transcribe` | 排队语音消息进行转录 |
+| 方法 | API 端点 | 描述 |
+|--------|----------|-------------|
+| POST | `/ai/voice/transcribe` | 提交语音消息进行转录 |
 | GET | `/ai/voice/status/{task_id}` | 查看转录任务状态 |
 | GET | `/ai/messages/{message_id}/transcript` | 获取消息的转录结果 |
 
-### 排队转录
+### 提交转录任务  
 
 **POST** `/ai/voice/transcribe`  
+
 **响应代码**：`200 OK`  
 
-### 查看状态
+---
+
+### 查看转录状态  
 
 **GET** `/ai/voice/status/{task_id}`  
-**状态值**：`queued`（排队中）、`processing`（处理中）、`completed`（已完成）、`failed`（失败）
 
-### 获取转录结果
+**状态值**：`queued`（排队中）、`processing`（处理中）、`completed`（已完成）、`failed`（失败）  
+
+### 获取转录结果  
 
 **GET** `/ai/messages/{message_id}/transcript`  
 
 ---
 
-## RAG知识库
+## **基于 RAG 的知识库**
 
-用户可以上传文档以构建可搜索的知识库。AI在生成回复时会参考这些文档内容，确保回复的准确性。
+构建一个可搜索的知识库，支持基于业务数据的智能回复生成。  
 
-| 方法 | API端点 | 描述 |
-|------|---------|--------|
+| 方法 | API 端点 | 描述 |
+|--------|----------|-------------|
 | POST | `/ai/knowledge/ingest` | 上传并索引文档 |
-| POST | `/ai/knowledge/search` | 在文档中执行语义搜索 |
+| POST | `/ai/knowledge/search` | 在文档中搜索信息 |
 | GET | `/ai/knowledge/sources` | 列出所有已索引的文档 |
 | DELETE | `/ai/knowledge/{source_id}` | 删除文档 |
 
-### 上传文档
+### 上传文档  
 
-**POST** `/ai/knowledge/ingest` （支持multipart/form-data格式）  
-**文件要求**：PDF或TXT格式（文件大小不超过100MB）  
+**POST** `/ai/knowledge/ingest` （使用 `multipart/form-data`）  
+
+| 参数 | 类型 | 描述 |
+|-------|------|-------------|
+| `file` | 文件 | PDF 或 TXT 文件（最大 100MB） |
+
 **响应代码**：`200 OK`  
 
-**支持的文件类型**：`application/pdf`、`text/plain`（`.pdf`、`.txt`）
+**支持的文件类型**：`application/pdf`、`text/plain`（`.pdf`、`.txt`）  
 
-### 在知识库中搜索
+### 搜索知识库  
 
 **POST** `/ai/knowledge/search`  
+
 **响应代码**：`200 OK`  
 
-**可选过滤条件**：（可根据实际需求添加）
+**可选过滤条件**：  
 
-### 列出文档
+---
+
+## **管理文档**  
 
 **GET** `/ai/knowledge/sources`  
-**文档状态**：`processing`（处理中）、`indexed`（已索引）、`failed`（失败）
 
-### 删除文档
+**文档状态**：`processing`（处理中）、`indexed`（已索引）、`failed`（失败）  
 
-**DELETE** `/ai/knowledge/{source_id}`  
-**响应代码**：`204 No Content`  
+### 删除文档  
+
+**DELETE** `/ai/knowledge/{source_id}` （返回 `204 No Content`）  
 
 ---
 
-## 风格分析（学习模式）
+## **写作风格配置**  
 
-通过分析特定聊天记录来训练AI，使其能够模仿您的写作风格。风格分析可以针对单个聊天（`per_chat`）或所有聊天记录（`general`）进行。AI会在生成回复时自动选择最合适的风格。
+允许为特定聊天或全局配置写作风格。AI 会根据内容自动选择最合适的回复风格。  
 
-| 方法 | API端点 | 描述 |
-|------|---------|--------|
-| POST | `/ai/style/train` | 开始训练风格分析 |
+| 方法 | API 端点 | 描述 |
+|--------|----------|-------------|
+| POST | `/ai/style/train` | 开始训练写作风格 |
 | GET | `/ai/style/status/{task_id}` | 查看训练进度 |
-| GET | `/ai/style/profile` | 获取风格分析结果 |
-| GET | `/ai/style/profiles` | 查看所有风格分析配置 |
-| DELETE | `/ai/style/profile/{profile_id}` | 删除风格分析配置 |
+| GET | `/ai/style/profile` | 获取写作风格配置 |
+| GET | `/ai/style/profiles` | 查看所有风格配置 |
+| DELETE | `/ai/style/profile/{profile_id}` | 删除风格配置 |
 
-### 训练风格分析
+### 训练写作风格  
 
 **POST** `/ai/style/train`  
-**必填字段**：  
-- `contact_id`（字符串）：可选  
-- `session_id`（UUID）：可选  
-- `wa_chat_id`（字符串）：可选（用于指定聊天记录）  
-- `name`（字符串）：可选（例如：“Sales”、“Support”、“Family”）  
 
-**注**：若要为所有聊天记录生成通用风格，可省略`session_id`和`wa_chat_id`。  
+**参数说明**：  
+- `contact_id`（可选）：聊天 ID  
+- `session_id`（可选）：会话 ID  
+- `wa_chat_id`（可选）：WhatsApp 聊天 ID（用于指定训练范围）  
+- `name`（可选）：风格配置名称（如“销售”、“支持”等）  
+
+**注意**：如需为所有聊天生成通用回复风格，可省略 `session_id` 和 `wa_chat_id`。  
+
 **响应代码**：`200 OK`  
 
-训练过程为异步进行。可通过相应API端点查看训练进度。
+训练过程为异步进行。可通过相应 API 查看进度。  
 
-### 获取风格分析结果
+### 获取写作风格配置  
 
 **GET** `/ai/style/profile?contact_id=5511999999999@c.us`  
-**响应代码**：`200 OK`  
 
-### 列出所有风格分析配置
-
+**所有风格配置列表**：  
 **GET** `/ai/style/profiles`  
-**响应代码**：`200 OK`  
 
-### 删除风格分析配置
-
-**DELETE** `/ai/style/profile/{profile_id}`  
-**响应代码**：`204 No Content`  
+**删除风格配置**：  
+**DELETE** `/ai/style/profile/{profile_id}` （返回 `204 No Content`）  
 
 ---
 
-## 智能回复生成
+## **智能回复生成**  
 
-AI结合RAG知识库内容和您的写作风格生成智能回复建议。  
+利用 RAG 技术和自定义风格配置生成智能回复。  
 
-| 方法 | API端点 | 描述 |
-|------|---------|--------|
+| 方法 | API 端点 | 描述 |
+|--------|----------|-------------|
 | POST | `/ai/generate-reply` | 生成回复建议 |
 | GET | `/ai/preview` | 预览回复内容（不计入使用量） |
 
-**生成回复**
-
+**生成回复**：  
 **POST** `/ai/generate-reply`  
+
 **响应代码**：`200 OK`  
 
 **参数说明**：  
-- `contact_id`（字符串）：必填，表示联系人的WhatsApp JID  
-- `context`（字符串）：必填，表示对话上下文或客户问题（最多2000个字符）  
-- `use_rag`（布尔值）：`true`：在回复中包含知识库内容  
-- `apply_style`（布尔值）：`true`：应用训练好的风格配置  
-- `profile_id`（UUID）：可选，指定要使用的风格配置（跳过自动选择）  
-- `session_id`（UUID）：可选，用于确定回复的上下文范围  
-- `approved`（布尔值）：`true`：表示需要用户确认的回复  
+- `contact_id`：联系人的 WhatsApp ID  
+- `context`：客户问题或提示内容（最多 2000 个字符）  
+- `use_rag`：是否使用知识库内容  
+- `apply_style`：是否应用自定义风格配置  
+- `profile_id`：指定使用的风格配置（可选）  
+- `session_id`：会话 ID（用于配置回复风格）  
+- `approved`：是否需要确认回复（默认为 `false`）  
 
-**注**：若省略`profile_id`且`apply_style`为`true`，API会自动选择最佳风格配置：  
-  - 首先匹配特定聊天记录，  
-  - 然后是会话级别的配置，  
-  - 最后是全局配置（无特定风格时使用）。  
+**注意**：若省略 `profile_id` 且 `apply_style` 为 `true`，API 会自动选择最佳回复风格：  
+- **聊天级别** → **会话级别** → **全局级别**  
 
-### 预览回复
-
+**预览回复**：  
 **GET** `/ai/preview?contact_id=5511999999999@c.us&context=What+are+your+hours&use_rag=true&apply_style=true`  
-**响应格式**：与`generate-reply`相同，但不计入使用量统计。
 
-## 安全机制
+预览格式与 `generate-reply` 相同，但不计入使用量。  
 
-MoltFlow的AI回复生成功能包含以下安全措施：  
+## 安全机制  
+
+MoltFlow 的智能回复生成功能包含以下安全措施：  
 - **输入验证**：检测并阻止恶意输入  
 - **意图验证**：对可疑或高风险意图进行确认  
-- **内容过滤**：检查生成内容是否包含个人身份信息（PII）或违反政策的内容  
-- **内容策略**：支持用户自定义的安全规则（详见[moltflow-a2a文档]  
+- **内容过滤**：屏蔽包含个人身份信息（PII）或违反政策的内容  
+- **内容策略**：支持自定义安全规则（详见 `moltflow-a2a` 技能）  
 
 ---
 
 **示例**  
-- **上传文档至知识库**  
-- **使用RAG生成回复**  
-- **使用指定风格生成回复**  
-- **训练风格分析配置**  
+- **上传文档到知识库**  
+- **使用 RAG 生成回复**  
+- **根据特定风格生成回复**  
+- **训练写作风格**  
 
 ---
 
-## 订阅套餐信息  
+## 计划费用对比  
 
-| 功能 | Starter套餐 | Pro套餐（每月29.90美元） | Business套餐（每月69.90美元） |
-|------|-----------------|-------------------------|------------|
+| 功能 | 免费计划 | Pro 计划（每月 29.90 美元） | 商务计划（每月 69.90 美元） |
+|--------|------------------|-----------------|------------|
 | 语音转录 | **无** | **有** | **有** |
-| RAG知识库 | **无** | **有（10份文档）** | **有（无限份文档）** |
-| 风格分析 | **无** | **有（3个配置）** | **有（无限个配置）** |
+| RAG 知识库 | **无** | **有（10 份文档）** | **有（无限量）** |
+| 写作风格配置 | **无** | **有（3 个风格配置）** | **有（无限量）** |
 | 智能回复生成 | **无** | **有** | **有** |
 
 ---
 
 ## 错误代码及含义  
 
-| 状态码 | 含义 |
+| 状态码 | 错误原因 |
 |--------|---------|
-| 400 | 请求错误（输入无效或文件类型不支持） |
-| 401 | 未经授权（缺少或无效的认证信息） |
-| 403 | 功能仅限Pro及以上套餐使用 |
-| 404 | 资源未找到（消息、文档或风格分析配置） |
-| 413 | 文件过大（超过100MB限制） |
-| 429 | 使用频率超出限制 |
+| 400 | 请求无效（输入错误或文件类型不支持） |
+| 401 | 未授权（缺少或无效的认证信息） |
+| 403 | 需要 Pro 计划才能使用该功能 |
+| 404 | 资源未找到（消息、文档或风格配置缺失） |
+| 413 | 文件过大（超过 100MB） |
+| 429 | 使用频率受限 |
 
 ---
 
 **相关工具**  
-- **moltflow**：核心API，支持会话管理、消息发送、群组管理等功能  
+- **moltflow**：核心 API，支持会话管理、消息发送、群组管理等功能  
 - **moltflow-outreach**：批量发送消息、定时发送、自定义群组管理  
-- **moltflow-leads**：潜在客户检测、任务跟踪、批量操作、CSV/JSON导出 |
-- **moltflow-a2a**：支持代理间加密通信和内容策略管理 |
-- **moltflow-reviews**：评论收集与评价管理 |
-- **moltflow-admin**：平台管理、用户管理及套餐配置
+- **moltflow-leads**：潜在客户检测、流程跟踪、批量操作、CSV/JSON 导出  
+- **moltflow-a2a**：代理间通信协议、加密消息传输、内容策略管理  
+- **moltflow-reviews**：评论收集和客户评价管理  
+- **moltflow-admin**：平台管理、用户管理、计划配置

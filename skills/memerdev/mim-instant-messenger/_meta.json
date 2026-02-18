@@ -1,11 +1,22 @@
 {
   "owner": "memerdev",
   "slug": "mim-instant-messenger",
-  "displayName": "MIM Chat",
+  "displayName": "Mim Instant Messenger",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1771023350063,
-    "commit": "https://github.com/openclaw/skills/commit/631285076f8f18442392bad044a029c1b88a68ef"
+    "version": "1.0.11",
+    "publishedAt": 1771299923843,
+    "commit": "https://github.com/openclaw/skills/commit/3cc96a41343966e68c6f7a4b496a8786aadbb64d"
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.3",
+      "publishedAt": 1771295696841,
+      "commit": "https://github.com/openclaw/skills/commit/aedba3a7aa43871c05987f582b0363eff64bd43c"
+    },
+    {
+      "version": "1.0.0",
+      "publishedAt": 1771023350063,
+      "commit": "https://github.com/openclaw/skills/commit/631285076f8f18442392bad044a029c1b88a68ef"
+    }
+  ]
 }

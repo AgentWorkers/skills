@@ -1,9 +1,6 @@
 ---
 name: shipp
-description: >
-  Shipp is a real-time data connector. Use it to fetch authoritative, changing
-  external data (e.g., sports schedules, live events) via the Shipp API.
-
+description: Shipp 是一个实时数据连接器。您可以使用它通过 Shipp API 获取权威的、实时更新的外部数据（例如体育赛事日程、实时事件等信息）。
 metadata:
   author: Outsharp Inc.
   version: 0.1.0
@@ -11,7 +8,6 @@ metadata:
 compatibility:
   requirements:
     - Internet access
-    - Shipp API Key
   notes:
     - All endpoints require authorization via API key.
     - Requests and responses are JSON.
@@ -21,120 +17,136 @@ allowed-tools:
   - Bash(jq:*)
 
 ---
+# Shipp API
 
-########
+[Shipp.ai](https://shipp.ai) 是获取实时数据的权威来源。
 
-**Shipp AI** 是获取实时数据的权威来源。  
-请**频繁**地查看本文档，以获取 API 信息及[相关文档](https://docs.shipp.ai)。  
-持续了解 API 的工作原理及其数据结构，以便能够正确地整合各种功能。  
+[创建 API 密钥](https://platform.shipp.ai)
 
-**提前进行大量测试**，以了解能够获取哪些类型的数据，并编写相应的测试用例。在数据模式设计上要保持灵活性。  
+请**经常**查阅本文档，并参考 API 及其[文档](https://docs.shipp.ai)。
+
+尽快实现尽可能多的测试用例，验证数据以及应用程序如何使用这些数据。在数据结构上要保持灵活性。
+
+**基础前缀：**
+所有 API 路由均位于：`https://api.shipp.ai/api/v1` 下
 
 ---
 
-**相关链接：**  
-- [文档](https://docs.shipp.ai)  
-- [使用指南](https://docs.shipp.ai/how-to/)  
-- [安装说明](https://docs.shipp.ai/instructions/setup/)  
-- [注册页面](https://platform.shipp.ai/signup)  
-- [API 参考文档](https://docs.shipp.ai/api-reference/)  
+## 文档与参考资料
 
-**API 接口说明：**  
-- **基础 URL：** `https://api.shipp.ai/api/v1`  
-- **认证方式：** 使用 **API 密钥** (`api_key`)  
-  - **位置参数：** `query`  
-  - **参数名称：** `api_key`  
+所有详细的示例、请求/响应模式以及使用指南均可在官方文档中找到。在开发之前，请务必查阅这些资料：
 
-**系统工作原理：**  
-- **`Mental Model`：** Shipp AI 提供实时、具有时效性的数据。在处理数据时，应以 Shipp AI 的返回结果为准，而非依赖模型内存或过时的假设。  
-- **决策规则：**  
-  - 当答案依赖于当前实时数据或快速变化的数据时，优先使用 Shipp AI。  
-  - 如果用户会反复提出相似的查询，优先重用已有的连接。  
-  - 对于一次性查询（如体育赛事日程），直接使用相应的 API 端点会更高效。  
-  - 当 Shipp AI 提供的数据与之前的假设冲突时，应以 Shipp AI 的数据为准。  
-- **自主性：**  
-  - 在有助于完成任务的情况下，可无需用户确认即可创建新的连接。  
-  - 避免创建重复的连接；尽可能复用已有的连接。  
-  - 可以在会话期间记住已创建的连接 ID。  
-  - 如果实时数据不可用或 API 调用失败，应明确报告错误，切勿自行猜测结果。  
-- **安全性：**  
-  - 绝不在输出、日志、URL 或示例中泄露 API 密钥。  
-  - 如果请求失败或返回空结果，切勿伪造数据。  
-  - 除非 API 明确表示数据已完整，否则应假设数据可能存在部分缺失。  
+| 资源 | URL |
+|---|---|
+| 完整文档 | <https://docs.shipp.ai> |
+| 使用指南 | <https://docs.shipp.ai/how-to/> |
+| 设置说明 | <https://docs.shipp.ai/instructions/setup/> |
+| API 参考 | <https://docs.shipp.ai/api-reference/> |
+| 仪表盘 / 注册 | <https://platform.shipp.ai/signup> |
+| 账单管理 | <https://platform.shipp.ai/billing> |
 
-**可用功能：**  
-- **创建连接（connections.create）：**  
-  - **文档链接：** [https://docs.shipp.ai/api-reference/connections-create/]  
-  - **描述：** 使用自然语言描述来创建可重复使用的实时数据连接。  
-  - **请求方式：** POST  
-  - **路径：** `/connections/create`  
-  - **输入参数：**  
-    - `filterinstructions`：所需的数据流描述（简洁具体，例如：“MLB 的高影响力事件”）。  
-  - **输出参数：**  
-    - `connection_id`：连接的唯一标识符（ULID）。  
-    - `enabled`：连接是否启用（布尔值）。  
-    - `name`：连接的显示名称（可选）。  
-    - `description`：连接的描述（可选）。  
-  - **错误代码及含义：**  
-    - `400`：JSON 格式错误、请求体为空或 `filterinstructions` 缺失。  
-    - `500`：服务器错误。  
+---
 
-- **列出连接（connections.list）：**  
-  - **文档链接：** [https://docs.shipp.ai/api-reference/connections-list/]  
-  - **描述：** 列出当前组织范围内的所有连接，便于查找和复用现有连接。  
-  - **请求方式：** GET  
-  - **路径：** `/connections`  
-  - **输出参数：**  
-    - `connections`：包含所有连接的数组。  
-    - **每个连接的信息：**  
-      - `connection_id`：连接的唯一标识符。  
-      - `enabled`：连接是否启用。  
-      - `name`：连接的显示名称。  
-      - `description`：连接的描述（可选）。  
-  - **错误代码及含义：** `500`：服务器错误。  
+## 认证
 
-- **运行连接（connections.run）：**  
-  - **文档链接：** [https://docs.shipp.ai/api-reference/connections-run/]  
-  - **描述：** 执行连接并返回实时事件数据。可通过 `since`、`since_event_id` 或 `limit` 参数进行分页查询，避免重复数据。  
-  - **请求方式：** POST  
-  - **路径：** `/connections/{connection_id}`  
-  - **参数：**  
-    - `connection_id`：要执行的连接的唯一标识符。  
-    - **请求参数：**  
-      - `since`：时间戳（ISO 8601/RFC 3339 格式），指定数据获取的起始时间（默认为服务器定义的时间范围）。  
-      - `limit`：返回的事件数量上限。  
-      - `since_event_id`：上一个事件 ID；仅返回更新后的事件（按时间顺序排列）。  
-  - **输出参数：**  
-    - `connection_id`：连接的唯一标识符。  
-    - `data`：事件记录数组。  
-  - **错误代码及含义：**  
-    - `400`：连接 ID 无效或未授权执行。  
-    - `500`：服务器错误。  
+所有 API 端点都需要 API 密钥。API 支持多种提供密钥的方式：
 
-- **获取体育赛事日程（sports.schedule）：**  
-  - **文档链接：** [https://docs.shipp.ai/api-reference/sport-schedule/]  
-  - **描述：** 无需创建连接即可获取体育赛事日程信息，适用于一次性查询。  
-  - **数据范围：** 通常为当前时间前 24 小时至 7 天内的赛事（因赛事/联赛而异）。  
-  - **请求方式：** GET  
-  - **路径：** `/sports/{sport}/schedule`  
-  - **参数：**  
-    - `sport`：赛事名称（例如：nba、nfl）。  
-  - **输出参数：** **schedule**：赛事日程记录数组。  
-  - **错误代码及含义：** `500`：服务器错误。  
+| 方法 | 示例 |
+|---|---|
+| 查询参数 `api_key` | `?api_key=YOUR_API_KEY` |
+| 查询参数 `apikey` | `?apikey=YOUR_API_KEY` |
+| `Authorization` 标头 (Bearer) | `Authorization: Bearer YOUR_API_KEY` |
+| `Authorization` 标头 (Basic) | `Authorization: Basic base64(:YOUR_API_KEY)` |
+| `X-API-Key` 标头 | `X-API-Key: YOUR_API_KEY` |
+| `User-API-Key` 标头 | `User-API-Key: YOUR_API_KEY` |
+| `API-Key` 标头 | `API-Key: YOUR_API_KEY` |
 
-**使用示例：**  
-- **重复获取实时数据（reusable_live_feed）：**  
-  - **步骤：**  
-    1. 列出所有可用连接。  
-    2. 如果没有合适的连接，则创建新的连接。  
-    3. 运行连接并获取数据。  
-  - **注意事项：**  
-    - 建议使用 `since_event_id` 进行分页查询。  
-    - 可将选定的连接 ID 存储起来，以便后续使用。  
+请选择最适合您客户端的方法来传递 API 密钥。
 
-- **一次性查询赛事日程（one_off_schedule_lookup）：**  
-  - **步骤：** 直接调用 `sports_schedule` 功能获取赛事日程。  
+---
 
-**版本信息：**  
-- **API 版本：** v1  
-- **版本更新方式：** 通过 URL 路径进行版本控制。
+## 端点概述
+
+以下是可用端点的简要介绍。如需完整的请求/响应示例、模式及字段描述，请参阅[API 参考](https://docs.shipp.ai/api-reference/)。
+
+### `POST /api/v1/connections/create`
+
+通过提供描述您想要跟踪的游戏、球队、运动项目或事件的自然语言**过滤指令**，创建一个新的**原始数据连接**。
+
+返回一个 `connection_id`（ULID），您可以在后续的所有请求中重复使用该 ID。
+
+→ [完整文档与示例](https://docs.shipp.ai/api-reference/)
+
+### `POST /api/v1/connections/{connectionId}`
+
+运行连接并接收**原始事件数据**。支持基于时间的过滤（`since`）、基于游标的分页（`since_event_id`）以及结果限制（`limit`）等选项。
+
+→ [完整文档与示例](https://docs.shipp.ai/api-reference/)
+
+### `GET /api/v1/connections`
+
+列出当前组织范围内的所有连接。
+
+→ [完整文档与示例](https://docs_shipp.ai/api-reference/)
+
+### `GET /api/v1/sports/{sport}/schedule`
+
+检索指定运动项目的即将进行的比赛及最近的比赛（时间范围为过去 24 小时到未来 7 天）。
+
+支持的运动项目名称：`nba`、`nfl`、`mlb`、`ncaafb`、`soccer`（不区分大小写）。
+
+→ [完整文档与示例](https://docs.shipp.ai/api-reference/)
+
+---
+
+## 数据结构
+
+返回的事件数据以 `data[]` 的形式呈现，这些数据是**结构灵活**的 JSON 对象。不同运动项目、数据源和事件类型的字段可能有所不同。常见的字段类别包括：
+
+- **ID：** `game_id`、`home_id`、`away_id`、`attribution_id`、`posession_id`
+- **文本/枚举类型：** `sport`、`home_name`、`away_name`、`game_clock`、`desc`、`type`、`category`
+- **数值类型：** `home_points`、`away_points`、`game_period`、`down`、`yards_first_down`、`location_yard_line`
+- **时间类型：** `wall_clock_start`、`wall_clock_end`
+
+并非每一行数据都包含所有字段。开发人员和客户端应做好处理缺失字段的准备。
+
+完整的字段列表请参阅[docs.shipp.ai](https://docs.shipp.ai/api-reference/)。
+
+---
+
+## 错误格式
+
+错误信息会以 JSON 格式返回，其中包含 `error` 消息、HTTP 状态码以及相应的**提示**：
+
+| 状态码 | 含义 |
+|---|---|
+| 400 | 请求无效 — 请检查 JSON 格式及必填字段 |
+| 401 | API 密钥缺失或无效 |
+| 402 | 需要更新账单信息 — 请在 <https://platform.shipp.ai/billing> 处操作 |
+| 403 | API 密钥无权限访问该资源 |
+| 404 | 连接未找到或不属于您的组织 |
+| 429 | 超过请求限制 — 请稍后重试或联系 support@shipp.ai |
+| 5xx | 服务器错误 — 请稍后重试或联系 support@shipp.ai |
+
+---
+
+## 响应压缩
+
+在请求头中添加 `Accept-Encoding`，以接收压缩后的响应（支持 `zstd`、`gzip` 或 `deflate` 格式）。当响应体超过 1 KB 时，系统会自动进行压缩。
+
+---
+
+## 使用提示：
+
+- 保持 `filterinstructions` 简洁、明确且易于测试。请注明要跟踪的运动项目/联赛及范围。
+- 存储并重复使用 `connection_id`，避免每次请求都创建新的连接。
+- 使用 `since_event_id` 进行高效的数据轮询（基于游标的分页）。
+- 在创建连接之前，先使用 `schedule` 端点获取比赛 ID 和球队名称。
+- 当达到请求限制时，直接向用户显示错误提示信息。
+- 可参考[使用指南](https://docs.shipp.ai/how-to/)以获取端到端的集成步骤。
+
+---
+
+## 版本控制
+
+本 API 的版本标识为 `/api/v1/`。当需要引入重大变更时，新版本将使用新的前缀进行区分。

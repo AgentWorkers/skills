@@ -3,11 +3,16 @@
   "slug": "payram-mcp-integration",
   "displayName": "Payram Mcp Integration",
   "latest": {
-    "version": "1.2.0",
-    "publishedAt": 1771224089570,
-    "commit": "https://github.com/openclaw/skills/commit/243599388234d85e3cdadfb4c1dcc739920b4df4"
+    "version": "1.2.1",
+    "publishedAt": 1771369134996,
+    "commit": "https://github.com/openclaw/skills/commit/77fea4f42f9433a4a6164f93f2804a36379bea57"
   },
   "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1771224089570,
+      "commit": "https://github.com/openclaw/skills/commit/243599388234d85e3cdadfb4c1dcc739920b4df4"
+    },
     {
       "version": "1.1.0",
       "publishedAt": 1771193197025,

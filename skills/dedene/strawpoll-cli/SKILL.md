@@ -1,10 +1,6 @@
 ---
 name: strawpoll-cli
-description: >
-  Create and manage StrawPoll polls, meeting polls, and ranking polls from the terminal
-  using the strawpoll CLI. Use when the user wants to create polls, view poll results,
-  schedule meetings with availability, run ranked-choice votes, delete or update polls,
-  or automate StrawPoll workflows in scripts.
+description: 使用 `strawpoll` CLI 从终端创建和管理 StrawPoll 投票、会议投票以及排名投票。当用户需要创建投票、查看投票结果、安排有时间限制的会议、进行排序选择投票、删除或更新投票，或者在脚本中自动化 StrawPoll 工作流程时，可以使用该工具。
 license: MIT
 homepage: https://github.com/dedene/strawpoll-cli
 metadata:
@@ -13,9 +9,6 @@ metadata:
   openclaw:
     primaryEnv: STRAWPOLL_API_KEY
     requires:
-      env:
-        - STRAWPOLL_API_KEY
-        - STRAWPOLL_KEYRING_BACKEND
       bins:
         - strawpoll
     install:
@@ -27,7 +20,6 @@ metadata:
         package: github.com/dedene/strawpoll-cli/cmd/strawpoll
         bins: [strawpoll]
 ---
-
 # strawpoll-cli
 
 这是一个用于 [StrawPoll API v3](https://strawpoll.com/) 的命令行接口。支持三种类型的投票：多项选择、会议可用性投票以及排名投票。
@@ -195,9 +187,9 @@ strawpoll config path
 
 配置文件保存在 `~/.config/strawpoll/config.yaml` 中。
 
-## 交互模式
+## 交互式模式
 
-在终端中运行命令时（不带参数），会启动一个交互式向导：
+在终端中运行该命令时（不带参数），会启动一个交互式向导：
 
 ```bash
 # Launches wizard (poll title, options, settings)
@@ -214,11 +206,11 @@ strawpoll meeting create "Team sync"
 - 投票选项：最少 2 个，最多 30 个
 - 投票 ID：可以接受简短的 ID 或完整的 URL（包含/不包含 `https://`、`www.`、`/polls/`）
 - 截止时间：使用 RFC3339 格式（例如 `2025-03-15T18:00:00Z`）或持续时间（例如 `24h`、`1h30m`）
-- 会议日期：`YYYY-MM-DD` 表示全天，`YYYY-MM-DD HH:MM-HH:MM` 表示特定时间范围
+- 会议日期：`YYYY-MM-DD` 表示全天，`YYYY-MM-DD HH:MM-HH:MM` 表示特定时间段
 - 时区：使用 IANA 格式（例如 `Europe/Berlin`、`America/New_York`）
-- 无专门的投票接口——投票只能通过投票 URL 在浏览器中完成
+- 该工具不提供专门的投票接口——投票只能通过投票 URL 在浏览器中完成
 
-## Shell 完成提示
+## Shell 自动补全功能
 
 ```bash
 strawpoll completion bash > /etc/bash_completion.d/strawpoll
@@ -226,7 +218,7 @@ strawpoll completion zsh > "${fpath[1]}/_strawpoll"
 strawpoll completion fish > ~/.config/fish/completions/strawpoll.fish
 ```
 
-有关所有命令的参数详细信息，请参阅 [reference.md](reference.md)。
+有关所有命令的参数详情，请参阅 [reference.md](reference.md)。
 
 ## 安装
 

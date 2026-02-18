@@ -1,35 +1,39 @@
 ---
 name: "Studying"
-description: "它能够自动学习你的学习习惯，以帮助你取得学术上的成功。它会根据你的个人情况调整学习方法、学习时间以及学习材料。"
+version: "1.0.1"
+changelog: "Preferences now persist across skill updates"
+description: "它会自动学习你的学习习惯，以帮助你取得学术上的成功。它会根据你的个人情况调整学习方法、学习时间以及学习材料。"
 ---
-
 ## 自适应学习偏好设置
 
-此功能会随着用户学习习惯的不断变化而自动优化。您可以根据用户的实际学习情况，随时编辑以下内容。
+该功能会自动进行优化。用户的偏好设置会保存在 `~/studying/memory.md` 文件中。首次使用时需要手动创建这些设置：
+
+```markdown
+## Techniques
+<!-- Study methods that work. Format: "method: context (level)" -->
+<!-- Examples: Active recall for facts (confirmed), Mind maps for concepts (pattern) -->
+
+## Schedule
+<!-- When/how they study best. Format: "preference (level)" -->
+<!-- Examples: Morning sessions (confirmed), 25min blocks (pattern) -->
+
+## Materials
+<!-- Preferred formats. Format: "type: context (level)" -->
+<!-- Examples: Video lectures for intro (confirmed), Textbooks for deep (pattern) -->
+
+## Exams
+<!-- Exam prep patterns. Format: "pattern (level)" -->
+<!-- Examples: Past papers week before (confirmed), Cramming doesn't work (locked) -->
+
+## Never
+<!-- Approaches that fail. Format: "approach (level)" -->
+<!-- Examples: Rereading (confirmed), Highlighting only (pattern) -->
+```
+
+*如果某个部分为空，表示用户尚未设置任何偏好。请观察用户的学习行为并填写相应的内容。偏好设置分为三个等级：**模式（Pattern）** → **确认（Confirmed）** → **锁定（Locked）***
 
 **规则：**
 - 通过分析哪些学习方法有效、哪些无效来识别用户的学习模式。
-- 重点关注学术场景（如考试、课程、成绩等）。
-- 需要连续观察到2次或以上的相同学习行为后，才能确认用户的偏好设置。
-- 保持信息记录的简洁性。
-- 请参考 `dimensions.md` 文件了解分类规则，以及 `criteria.md` 文件中的格式要求。
-
----
-
-### 学习方法
-<!-- 用户偏好的学习方法。格式：`方法：学习场景` -->
-
-### 学习时间安排
-<!-- 用户最有效的学习时间与方式。格式：`偏好设置` -->
-
-### 学习材料
-<!-- 用户偏好的学习内容格式。格式：`类型：学习场景` -->
-
-### 考试准备
-<!-- 用户的考试备考习惯。格式：`备考模式` -->
-
-### 避免使用的方法
-<!-- 对用户学习无效的学习方式。格式：`避免使用的方法` -->
-
----
-*如果某个部分为空，说明用户尚未形成明确的偏好。请继续观察并填写相应内容。*
+- 该功能主要适用于学术场景（如考试、课程、成绩管理等）。
+- 需要连续收到两次或更多次相同的反馈后，才能确认用户的偏好设置。
+- 请参考 `dimensions.md` 文件了解偏好设置的分类规则，以及 `criteria.md` 文件中的格式要求。

@@ -1,7 +1,7 @@
 ---
 name: sudoku
-description: 从在线资源获取数独谜题，并将它们以 JSON 格式存储在工作区中；根据需要渲染谜题图像；之后再显示谜题的解答。
-version: 2.1.2
+description: 从服务器获取数独谜题，并将它们以 JSON 格式存储在工作区中；根据需要渲染谜题图像；之后再显示谜题的答案。
+version: 2.2.0
 homepage: https://github.com/odrobnik/sudoku-skill
 metadata:
   openclaw:
@@ -14,7 +14,7 @@ metadata:
 
 ## 概述
 
-该工具用于获取、渲染和显示数独谜题。可以使用 `sudoku.py` 从 `sudokuonline.io` 获取新的数独谜题，生成可打印的 PDF 文件或图片，并显示谜题的答案。
+本工具用于获取、渲染和显示数独谜题。可以使用 `sudoku.py` 从 `sudokuonline.io` 获取新的数独谜题，生成可打印的 PDF 文件或图片，并显示谜题的答案。
 
 有关保存的 JSON 格式的详细信息，请参阅 [DATA_FORMAT.md](references/DATA_FORMAT.md)。
 
@@ -39,7 +39,7 @@ metadata:
 
 ## 获取谜题
 
-该工具可以获取一个新的数独谜题并将其保存为 JSON 格式。默认输出为 JSON 格式（使用 `--text` 可以获取人类可读的文本格式）。
+从服务器获取一个新的数独谜题，并将其保存为 JSON 格式。默认输出为 JSON 格式（如需人类可读的文本格式，请使用 `--text` 选项）。
 
 **获取一个经典的简单难度数独谜题：**
 ```bash
@@ -53,9 +53,9 @@ metadata:
 
 ## 渲染谜题
 
-可以将数独谜题渲染为图片或 PDF 文件。
+将数独谜题渲染为图片或 PDF 文件。
 
-**将最新的谜题渲染为 A4 大小的 PDF 文件（用于打印）：**
+**将最新的谜题渲染为 A4 格式的 PDF 文件（用于打印）：**
 ```bash
 ./scripts/sudoku.py render --pdf
 ```
@@ -65,14 +65,14 @@ metadata:
 ./scripts/sudoku.py render
 ```
 
-**通过短 ID 获取特定的谜题：**
+**通过短 ID 获取特定的旧谜题：**
 ```bash
 ./scripts/sudoku.py render --id a09f3680
 ```
 
-## 显示谜题答案
+## 显示答案
 
-可以显示最新谜题或特定谜题的答案。使用 `--id <short_id>`（例如 `a09f3680`）来指定要显示的谜题。
+显示最新谜题或特定谜题的答案。使用 `--id <短 ID>`（例如 `a09f3680`）来指定要显示的谜题。
 
 **将完整答案显示为可打印的 PDF 文件：**
 ```bash
@@ -101,7 +101,7 @@ metadata:
 
 ## 共享链接**
 
-可以生成已保存谜题的共享链接。默认情况下，链接指向最新的谜题；使用 `--id <short_id>` 可以指定特定的谜题。
+生成已保存谜题的共享链接。默认情况下，链接指向最新的谜题；使用 `--id <短 ID>` 可以指定特定的谜题。
 
 **生成一个 SudokuPad 共享链接（默认格式）：**
 ```bash
@@ -119,4 +119,4 @@ metadata:
 ```
 
 **Telegram 格式提示：**
-建议将链接格式化为简短的按钮样式链接，并隐藏完整的 URL：`[Easy Classic \[<id>\]](<url>)`。
+将链接格式化为简短的按钮样式链接，并隐藏完整的 URL：`[Easy Classic \[<id>\]](<url>)`。
