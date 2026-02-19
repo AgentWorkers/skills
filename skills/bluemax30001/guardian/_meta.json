@@ -1,0 +1,11 @@
+{
+  "owner": "bluemax30001",
+  "slug": "guardian",
+  "displayName": "Guardian — Security Scanner for OpenClaw Agents",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1771494893289,
+    "commit": "https://github.com/openclaw/skills/commit/b7c31c636fd70526eb048f331775a00ca85001a0"
+  },
+  "history": []
+}

@@ -1,57 +1,148 @@
 ---
 name: agent-sleep
-description: 一种受生物机制启发的休息与记忆巩固系统，专为智能代理（Agents）设计。该系统支持周期性的“睡眠”周期，通过这些周期来压缩内存数据、清理冗余信息，并帮助代理反思自身的学习成果（即“洞察”）。
+description: Agent 睡眠系统 - 记忆整合、日志归档、工作区清理（支持 CortexGraph）
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🛌",
-        "category": "system",
-        "schedulable": true
-      }
-  }
+  openclaw:
+    emoji: "🛌"
+    category: "system"
+    tags: ["memory", "sleep", "consolidation", "cortexgraph"]
+    schedulable: true
 ---
-# 代理睡眠系统 🛌
 
-就像人类一样，代理也需要“睡眠”（离线维护）来防止内存碎片化和上下文污染。
+# Agent Sleep System 🛌
+
+像人类一样，Agent 需要"睡眠"（离线维护）来防止记忆碎片化和上下文污染。
 
 ## 功能
 
-1. **微休眠**：在任务执行过程中快速清理不必要的上下文数据。
-2. **深度睡眠**：每晚将日常日志整合到长期存储中。
-3. **模拟休眠状态**：在后台进行模拟操作（可选）。
+1. **Micro-Rest** - 快速上下文修剪
+2. **Deep Sleep** - 每日日志整合到长期记忆
+3. **CortexGraph 同步** - 同步到 CortexGraph（带遗忘曲线）
+4. **Dreaming** - 后台模拟（可选）
 
 ## 工具
 
-### `sleep_check`
-检查代理是否处于“疲劳”状态（基于运行时间或令牌使用情况）。
+### sleep_status
+检查 agent 是否"累了"（基于运行时间或 token 使用）
 ```bash
-python3 src/sleep_status.py
+python3 scripts/sleep_status.py
 ```
 
-### `sleep_cycle`
-立即触发睡眠周期：
-- **轻度睡眠**：压缩最近的日志。
-- **深度睡眠**：对日志进行归档并清理临时文件。
+### run_sleep_cycle
+触发睡眠周期
+- **Light**: 压缩最近日志
+- **Deep**: 归档 + 文件清理
+- **CortexGraph**: 同步到 CortexGraph
 ```bash
-python3 scripts/run_sleep_cycle.py --mode [light|deep]
+python3 scripts/run_sleep_cycle.py --mode [light|deep|cortexgraph]
 ```
 
-### `sleep_schedule`
-设置代理的睡眠周期（通过 Cron 任务实现）。
+### schedule
+设置生物钟（cron jobs）
 ```bash
-python3 src/schedule.py --set "0 3 * * *"  # Sleep at 3 AM
+python3 scripts/schedule.py --set "0 3 * * *"  # 3 AM 睡眠
 ```
 
 ## 工作流程
 
-1. **触发睡眠**：Cron 任务在凌晨 3:00 触发睡眠周期。
-2. **数据整合**：读取 `memory/YYYY-MM-DD.md` 文件，提取关键信息。
-3. **数据更新**：将提取的信息添加到 `MEMORY.md` 文件中。
-4. **日志清理**：将原始日志移至 `memory/archive/` 目录。
-5. **文件清理**：删除临时文件（如 `*.tmp`、`__pycache__`）。
+### Deep Sleep 模式
+```
+1. 触发 → Cron 在 3:00 AM 启动
+2. 读取 → memory/YYYY-MM-DD.md（昨天日志）
+3. 提取 → 高价值洞察
+4. 追加 → 到 MEMORY.md
+5. 归档 → 原始日志到 memory/archive/
+6. 清理 → 删除临时文件
+```
 
-## 设置要求
+### CortexGraph 模式
+```
+1. 读取 → MEMORY.md + daily logs
+2. 同步 → 到 CortexGraph
+3. 应用 → 遗忘曲线（自动衰减）
+4. 晋升 → 高价值记忆到 LTM
+```
 
-1. 确保系统中存在 `memory/` 目录。
-2. 运行 `sleep_schedule` 命令以启用自动睡眠功能。
+## 遗忘曲线
+
+CortexGraph 使用 Ebbinghaus 遗忘曲线：
+```
+score = (use_count)^β × e^(-λ × Δt) × strength
+```
+
+- **β** = 0.6（使用频率权重）
+- **λ** = ln(2) / half_life（默认 3 天）
+- **strength** = 1.0-2.0（重要性）
+
+## 使用
+
+### 手动触发
+```bash
+# 轻量睡眠
+python3 scripts/run_sleep_cycle.py --mode light
+
+# 深度睡眠
+python3 scripts/run_sleep_cycle.py --mode deep
+
+# CortexGraph 同步
+python3 scripts/run_sleep_cycle.py --mode cortexgraph
+```
+
+### 定时设置
+```bash
+# 每天凌晨 3 点深度睡眠
+python3 scripts/schedule.py --set "0 3 * * *"
+
+# 每 6 小时 CortexGraph 同步
+python3 scripts/schedule.py --set "0 */6 * * *"
+```
+
+## 目录结构
+
+```
+agent-sleep/
+├── SKILL.md
+├── AGENT.md
+├── scripts/
+│   ├── run_sleep_cycle.py
+│   ├── sleep_status.py
+│   └── schedule.py
+└── memory/
+    ├── archive/        # 归档的日志
+    └── consolidated/   # 整合的记忆
+```
+
+## 配置
+
+### 环境变量
+```bash
+# CortexGraph 配置
+export CORTEXGRAPH_STORAGE_PATH=~/.config/cortexgraph/jsonl
+export CORTEXGRAPH_DECAY_MODEL=power_law
+export CORTEXGRAPH_PL_HALFLIFE_DAYS=3.0
+```
+
+### ClawHub 配置
+```bash
+clawhub install agent-sleep
+```
+
+## 最佳实践
+
+1. **每日 Deep Sleep** - 凌晨 3 点
+2. **每 6 小时 CortexGraph 同步** - 保持记忆新鲜
+3. **每周 GC** - 清理低分记忆
+4. **每月晋升** - 高价值记忆升级到 LTM
+
+## 与其他 Skill 集成
+
+| Skill | 集成方式 |
+|-------|----------|
+| memory-sync-cn | 使用其脚本同步到 CortexGraph |
+| agent-library | 使用其压缩功能 |
+| cortexgraph | 直接调用 MCP 工具 |
+
+---
+
+*版本: 1.1.0*
+*更新: 添加 CortexGraph 支持*
