@@ -1,18 +1,11 @@
 ---
 name: dialogue-audio
-description: |
-  Multi-speaker dialogue audio creation with Dia TTS.
-  Covers speaker tags, emotion control, pacing, conversation flow, and post-production.
-  Use for: podcasts, audiobooks, explainers, character dialogue, conversational content.
-  Triggers: dialogue audio, multi speaker, conversation audio, dia tts, two speakers,
-  podcast audio, character voices, voice acting, dialogue generation, conversation tts,
-  multi voice, speaker tags, dialogue recording
+description: "使用 Dia TTS 创建多角色对话音频：涵盖角色标签、情感控制、对话节奏、对话流程以及后期制作。适用于：播客、有声书、讲解内容、角色对白、对话式内容等场景。相关功能包括：对话音频生成、多角色对话处理、对话文本转语音（TTS）、双角色对话、播客音频制作、角色配音、对话内容生成等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # 对话音频
 
-通过 [inference.sh](https://inference.sh) 命令行工具，利用 Dia TTS 创建逼真的多角色对话。
+通过 [inference.sh](https://inference.sh) 命令行工具，使用 Dia TTS 创建逼真的多角色对话。
 
 ## 快速入门
 
@@ -25,35 +18,37 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可以[手动安装并验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 说话者标签
 
-Dia TTS 使用 `[S1]` 和 `[S2]` 来区分不同的说话者。
+Dia TTS 使用 `[S1]` 和 `[S2]` 来区分两个说话者。
 
 | 标签 | 角色 | 语音 |
 |-----|------|-------|
-| `[S1]` | 说话者1 | 自动分配的语音A |
-| `[S2]` | 说话者2 | 自动分配的语音B |
+| `[S1]` | 说话者 1 | 自动分配的语音 A |
+| `[S2]` | 说话者 2 | 自动分配的语音 B |
 
 **规则：**
 - 每个说话者的发言前必须加上相应的标签
 - 标签必须大写：使用 `[S1]` 而不是 `[s1]`
-- 每次对话生成中最多只能有2个说话者
-- 同一对话过程中，每个说话者的语音要保持一致
+- 每次对话中最多只能有两个说话者
+- 同一说话者在整个对话过程中使用一致的语音
 
 ## 情感与表达控制
 
-Dia TTS 能够根据标点符号和非语言线索来调整情感表达：
+Dia TTS 能够根据标点符号和非语言线索来调整情感表达。
 
 ### 标点符号的效果
 
 | 标点符号 | 效果 | 例子 |
 |-------------|--------|---------|
-| `.` | 中性、陈述语气、适度的停顿 | “这很重要。” |
+| `.` | 中立、陈述性语气，短暂停顿 | “这很重要。” |
 | `!` | 强调、兴奋、充满活力 | “太棒了！” |
-| `?` | 语调上升、表示疑问 | “你确定吗？” |
-| `...` | 犹豫、声音逐渐减弱、长时间的停顿 | “我以为会成功……但并没有。” |
+| `?` | 语气上升，表示疑问 | “你确定吗？” |
+| `...` | 犹豫、声音渐弱，长时间停顿 | “我以为会成功……但并没有。” |
 | `,` | 短暂的停顿 | “首先，我们分析。然后，我们行动。” |
-| `—` 或 `--` | 表示中断或话题转换 | “我本来想说——算了。” |
+| `—` 或 `--` | 表示中断或话题转换 | “我本来想说……算了。” |
 
 ### 非语言声音
 
@@ -92,15 +87,15 @@ infsh app run falai/dia-tts --input '{
 
 | 技巧 | 停顿时长 | 适用场景 |
 |-----------|-------------|---------|
-| 逗号 `,` | 约0.3秒 | 用于分隔从句或列表项 |
-| 句号 `.` | 约0.5秒 | 用于分隔句子 |
-| 省略号 `...` | 约1.0秒 | 用于制造戏剧性停顿、表示思考或犹豫 |
-| 新说话者标签 | 约0.3秒 | 用于自然地切换说话者 |
+| 逗号 `,` | 约 0.3 秒 | 用于分隔从句或列表项 |
+| 句号 `.` | 约 0.5 秒 | 用于分隔句子 |
+| 省略号 `...` | 约 1.0 秒 | 用于制造戏剧性停顿、表示思考或犹豫 |
+| 新说话者标签 | 约 0.3 秒 | 用于自然地切换说话者 |
 
 ### 速度控制
 
-- **短句子** = 更快的语速 |
-- **包含逗号的长句子** = 有节奏的、深思熟虑的语速 |
+- **简短的句子** = 更快的语速
+- **包含逗号的较长句子** = 有节奏、深思熟虑的语速
 - **问题后接回答** = 产生互动的对话节奏
 
 ```bash
@@ -125,7 +120,7 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-### 教程/解释说明
+### 教程/解释类内容
 
 ```bash
 infsh app run falai/dia-tts --input '{
@@ -145,7 +140,7 @@ infsh app run falai/dia-tts --input '{
 
 ### 音量标准化
 
-两个说话者的音量应该保持一致。如果其中一个说话者的音量较大：
+两个说话者的音量应保持一致。如果其中一个说话者的音量较大：
 
 ```bash
 # Merge with balanced audio
@@ -167,7 +162,7 @@ infsh app run infsh/media-merger --input '{
 
 ### 分割长对话
 
-对于超过30秒的对话，建议分段生成：
+对于超过 30 秒的对话，建议将其分割成多个部分：
 
 ```bash
 # Segment 1: Introduction
@@ -195,31 +190,31 @@ infsh app run infsh/media-merger --input '{
 
 | 应该做 | 不应该做 |
 |----|-------|
-| 用人们实际说话的方式编写脚本 | 用书面语言编写脚本 |
-| 使用短句子（<15个词） | 使用冗长的学术句子 |
-| 使用缩写（如“can't”、“won't”） | 使用正式的表述（如“cannot”、“will not” |
-| 使用自然的填充词（如“So,”、“Well,） | 每个句子都结构完美 |
-| 句子长度要多样化 | 所有句子长度相同 |
-| 包含反应（如“Exactly!”, “Hmm.”） | 只使用单方面的独白 |
-| 生成前先大声朗读 | 假设脚本听起来自然 |
+| 用人们实际说话的方式编写脚本 | 用书面语的方式编写脚本 |
+| 使用短句（< 15 个词） | 使用长而复杂的学术句子 |
+| 使用缩写（如 “can't”, “won't”） | 使用正式的表述（如 “cannot”, “will not”） |
+| 使用自然的填充词（如 “So”, “Well,”） | 每个句子都结构完美 |
+| 变化句子长度 | 所有句子长度相同 |
+| 包含反应（如 “Exactly!”, “Hmm.”） | 只使用单方面的独白 |
+| 生成前先大声朗读脚本 | 相信它听起来自然 |
 
 ## 常见错误
 
 | 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| 独白超过3句话 | 听起来像讲座，而不是对话 | 将内容拆分成多个对话片段 |
+| 独白超过 3 句 | 听起来像演讲，而不是对话 | 将内容拆分成多个对话片段 |
 | 没有情感变化 | 语气平淡、机械 | 使用标点符号和非语言线索来表达情感 |
 | 缺少说话者标签 | 语音无法交替 | 每个说话者的发言前加上 `[S1]` 或 `[S2]` |
-| 使用正式的书面语言 | 朗读时听起来不自然 | 使用缩写和短句子 |
-| 主题转换时没有停顿 | 会让对话显得仓促 | 使用 `...` 或场景转换的停顿 |
-| 语调始终不变 | 会显得单调 | 通过调整语速来营造不同的情绪氛围 |
+| 使用正式的书面语言 | 说出来会显得不自然 | 使用缩写和短句 |
+| 主题之间没有停顿 | 会让对话显得仓促 | 使用 `...` 或场景转换来分隔 |
+| 所有句子的节奏一致 | 会显得单调 | 通过调整语速来营造不同的情绪氛围 |
 
 ## 相关技能
 
 ```bash
-npx skills add inferencesh/skills@text-to-speech
-npx skills add inferencesh/skills@ai-podcast-creation
-npx skills add inferencesh/skills@ai-avatar-video
+npx skills add inference-sh/skills@text-to-speech
+npx skills add inference-sh/skills@ai-podcast-creation
+npx skills add inference-sh/skills@ai-avatar-video
 ```
 
 浏览所有应用程序：`infsh app list`

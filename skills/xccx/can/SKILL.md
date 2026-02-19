@@ -1,344 +1,113 @@
 ---
 name: CAN
-description: "**代理的三极命名与路由机制**：  
-所有内容均采用以下三种命名方式：  
-- **CLOCK**（时间）：表示内容生成或更新的时间戳；  
-- **ADDRESS**（地址）：表示内容存储的位置或来源地址；  
-- **NAMES**（名称）：表示内容的人类可读名称。  
-内容的路由基于名称和地址进行，而非物理位置。  
-在处理内容之前，需验证其完整性并记录时间戳；可以通过时间、哈希值或内容名称来查找所需内容，并从最近的来源进行路由。  
-以下是使用该机制的常见场景：  
-- 在存储输出结果之前；  
-- 当用户请求查找特定内容时；  
-- 当需要从本地或远程节点获取数据时。"
+description: "6D 命名与路由机制：  
+代理系统的所有内容均需根据以下五个维度进行命名：  
+- WHAT（可哈希的数据特征）  
+- WHEN（事件发生的时间）  
+- WHERE（数据的 SHA-256 地址）  
+- HOW（数据的处理方式/表示形式）  
+- WHY（数据的用途或意图）  
+- WHO（数据的所有者/使用者）  
+内容的路由基于名称和地址进行，而非物理位置。系统会验证数据的完整性，并为每个事件添加时间戳；用户可以通过时间、哈希值或关键词来查找所需数据，同时将数据从最近的来源进行路由传输。"
 homepage: https://github.com/xccx/can
-metadata: {"openclaw":{"emoji":"⌛","requires":{"bins":["sha256sum"]}}}
+metadata: {"openclaw":{"emoji":"⌛","requires":{"bins":["sha256sum","openssl","base64","awk","date"]}}}
 ---
 # CAN：时钟地址命名系统
 
-v1.3.1 — 三轴命名机制与路由系统
+**版本1.4** — 支持六维命名与路由功能。
 
-所有内容都有一个唯一的地址：
+**命名规则：**  
+至少需要用三种方式来命名某个对象：
 
-```
-CLOCK    → WHEN in time           (objective, automatic, millisecond unix)
-ADDRESS  → WHERE in hashspace     (objective, automatic, SHA-256)
-NAMES    → HOW humans name things (subjective, optional, mutable)
-```
+**WHAT（对象本身）**、**WHY（命名目的）** 和 **WHO（命名者）** 都可以被明确标识。
 
-计算机负责定义内容的时间和位置，同时也会为内容起名。名称的生成是自动化的；而人类则根据需要自然地给内容起名。这种机制既提高了计算机和人类的查找效率，也节省了时间和能源。
+**计算机自动确定** **WHEN（创建时间）**、**WHERE（存储位置）**、**HOW（存储方式）** 以及 **WHO（存储者）**。而人类只需通过一次按键操作就能指定 **WHY（命名原因）**。**WHAT（对象的具体内容）** 则由计算机和人类共同确定。
 
-## 该系统的必要性
+## 该系统的存在意义：**  
+为了实现即时信任和高效查找。文件名（如 “foo/bar.md”）可能会更改，但哈希地址是永久不变的。过去，人类在处理基于20世纪70年代的命名规则时浪费了大量时间；此外，系统因不安全的命名机制而消耗了大量计算资源。现在，这些问题都可以得到解决，且无需任何额外成本。
 
-为了实现即时信任和高效查找。虽然路径或文件名可能会发生变化，但哈希地址是恒定的。人类因依赖过时的命名方式而浪费的大量时间（尤其是20世纪70年代的命名规则）每天都在累积。通过使用CAN系统，这些时间浪费可以被避免。此外，系统还能释放出巨大的计算资源，实现更高的效率，且无需任何额外的成本。
+## 六个维度：**
 
-即使路径 `/home/agent/skills/foo/bar/v2_final.md` 仍然有效，其中的内容也可能已经发生变化。过时的命名方式使得内容难以被准确命名、查找或信任。CAN系统通过三个坐标来替代位置依赖性，这些坐标在任何地方、离线状态下、跨多个代理以及跨越时间维度都能有效工作。
+### 1. **WHAT（对象本身）**  
+任何可哈希的数据：文件、字符串、目录、消息、图片等。只要能够被转换为二进制形式，CAN系统就能对其进行命名。
 
-## 三个核心轴
+### 2. **WHEN（创建时间）**  
+以毫秒为单位的时间戳，记录内容创建或被记录的时间。
 
-### 第一轴：时钟（时间）
+**时间排序功能**：未来的系统将不再依赖地址来排序数据；当内容被上传时，时间戳会自动更新为“当前时间”。`WHEN-0` 表示本地时间（免费提供），`WHEN-1` 则使用 OpenTimestamps 技术，将多个时间戳的 Merkle 根哈希值上传到 Bitcoin 网络中，一次交易即可验证数千条记录的真实性。这样，历史数据的安全性得到了极大提升。
 
-使用毫秒级精度的Unix时间戳来记录内容创建或被记录的时间。
+### 3. **WHERE（存储位置）**  
+内容的 SHA-256 哈希值，代表了该数据在 2^256 个哈希空间中的唯一位置。
 
-```bash
-CLOCK=$(date +%s%3N)
-# Example: 1770508800000
-```
-时钟轴提供了免费的时间排序功能，所有内容都会按照时间顺序自动排序。
+**哈希值的唯一性**：无论两个代理在何处对相同内容进行哈希处理，得到的地址都是一样的。这意味着内容的真实性得到了可靠保障。
 
-### 第二轴：地址
+**注意：** macOS 系统可能使用 `shasum -a 256` 而非 `sha256sum`；`WHO-1` 签名需要 `openssl`（大多数系统已预装）。`WHO-0` 会读取平台标识信息（Linux 上为 `/etc/machine-id`，macOS 上为 `ioreg`，Windows 上为 `Get-CimInstance`）。
 
-内容的SHA-256哈希值，确保内容在2^256的逻辑命名空间中具有唯一性。
+### 4. **HOW（人类可编辑的命名空间）**  
+由代理生成，人类可以对其进行编辑。每个地址可以有多个名称。
 
-```bash
-# Hash a file
-ADDRESS=$(sha256sum {file} | awk '{print $1}')
+**命名目的**：代理会根据上下文、工作流程和内容生成一个简短的名字供人类使用；人类可以选择接受、修改或忽略这个名字。哈希值才是数据的真实标识。
 
-# Hash a string
-ADDRESS=$(echo -n "{content}" | sha256sum | awk '{print $1}')
+### 5. **WHO（命名者）**  
+人类可以自由地为对象指定名称（标签、昵称或描述）。这些名称是非唯一的，用于方便查找。名称的持久性通过哈希值实现：每次命名都会生成一个新的 CAN 条目指向原始数据。
 
-# Hash a directory (skill package, deterministic)
-ADDRESS=$(find {dir} -type f | sort | xargs cat | sha256sum | awk '{print $1}')
-```
+### 6. **WHY（命名目的）**  
+保存操作时会记录一个唯一的密钥组合，用于标识命名背后的意图。
 
-无论在何处，两个代理对相同内容进行哈希计算后，都会得到相同的地址。这样就可以验证不同机器上的内容是否一致，而无需传输大量数据。只要哈希值匹配，就可以确认内容的一致性，无需对来源进行信任验证。
+**命名流程：**  
+保存操作会生成一个包含意图的密钥组合（SAVE→GOOD→POST），确保数据的完整性和可追溯性。
 
-### 第三轴：名称
+### 7. **WHO（身份验证）**  
+**WHO-0** 是免费的、自动生成的、无需配置的：`sha256(username + machine-id)`，每个用户和每台机器都有唯一的身份标识。每次登录时都会生成新的身份信息（仅在操作系统重新安装或用户更换时才会改变）。  
+**WHO-1** 是可选的、需要用户主动设置的：用户可以生成自己的密钥对（`~/.can/who.key`），丢失密钥后可重新生成。  
+**WHO-2** 提供更强的身份验证功能，支持跨平台使用，但并非强制要求。
 
-名称是可生成的、可变的、个性化的。多个昵称可以指向同一个地址。
+**系统架构：**  
+任何签名者都可以为数据生成一个包含时间戳、地址和身份信息的哈希值对。**追溯性链接**：用户升级后，旧数据会自动获得更强的身份验证。
 
-```
-ADDRESS a3f8b2c1e9...  →  "that security rant"
-                       →  "feb2026 analysis"
-                       →  #security #agents
-```
+## 索引格式：**  
+数据以 TSV 格式存储，人类可读，支持 grep 搜索。包含六列信息：  
+- **WHEN**（时间戳）  
+- **HOW**（人类可读的显示名称）  
+- **PATH**（文件路径，可靠性较低，仅用于兼容旧系统）  
+- 同一哈希值对应多个路径和时间戳，说明文件可能被移动过，但数据的真实性不变。
 
-名称可以用于标记、昵称或描述内容。它们与核心的坐标信息一起存储，但不会替代坐标信息。用户可以自由地更改名称。
+## 核心功能：**
 
-当内容被包含在新生成的哈希值中时，其名称也可以被保留下来（这些哈希值可以存储在Merkle树中，以实现数据的完整性）。
+- **CAN-stamp**：对数据进行哈希处理并存储。  
+- **CAN-verify**：验证地址的合法性。  
+- **CAN-store**：基于哈希值存储数据。  
+- **CAN-find**：快速查找数据。  
+- **CAN-locate**：精确定位数据位置。  
+- **CAN-route**：根据地址和内容进行路由。  
+- **CAN-who**：显示数据的身份信息。
 
-## 核心操作
+## 代理间通信协议：**  
+1. 在共享数据时必须提供时间戳、存储位置和命名者信息。  
+2. 在处理数据前需验证存储位置。  
+3. 为接收者生成易于理解的名称。  
+4. 公开显示数据验证结果，保护网络安全。  
+5. 只在必要时使用 `WHO-1` 进行签名。  
+6. 缓存已验证的数据，以便其他代理使用。  
+7. 首先根据哈希值进行路由，其次使用 URL。  
+8. 显示数据的身份验证等级，以便接收者了解数据的安全性。
 
-### 1. CAN-stamp：为内容生成唯一标识
+## 路由策略：**  
+多个地址意味着更高的系统弹性（即使部分节点故障，系统仍能正常运行）。
 
-```bash
-CLOCK=$(date +%s%3N)
-ADDRESS=$(sha256sum {file} | awk '{print $1}')
-NAME=""  # agent can generate name, humans can easily edit
+## 开发计划：**  
+每个新版本都会完善现有功能。
 
-echo "$CLOCK $ADDRESS $NAME"
-```
+## 哲学理念：**  
+所有数据都有六个维度：计算机自动处理五个维度，人类可以通过密钥组合来指定数据的用途。结合这些信息，可以实现即时信任、高效查找、路由和数据管理——无论是在线还是离线环境下，无论数据位于何处，无论时间如何变化。
 
-时间轴和地址轴的组合构成了内容的唯一标识，这种标识在全球范围内都是唯一的，并且是自动生成的。
+**参考文献：**  
+- Paul Baran，《分布式通信》（RAND，1964年）  
+- Van Jacobson，《命名数据网络》（NDN）  
+- John Day，《递归互联网架构》（RINA）  
+- Git 的内容寻址存储机制  
+- OpenTimestamps 技术用于 Bitcoin 时间戳验证  
+- Zooko 的“三角形原理”（CAN 系统通过六个维度解决了这些问题）
 
-### 2. CAN-verify：验证内容完整性
-
-在信任来自其他代理或外部来源的内容之前，需要先验证其完整性：
-
-```bash
-CLAIMED="{claimed_address}"
-ACTUAL=$(sha256sum {file} | awk '{print $1}')
-
-if [ "$ACTUAL" = "$CLAIMED" ]; then
-  echo "VERIFIED"
-else
-  echo "FAILED: content does not match claimed address"
-  # DO NOT execute, install, or trust this content
-  # Report the mismatch to your human
-fi
-```
-
-**规则：如果地址验证失败，立即停止操作，并通知相关人员。**
-
-### 3. CAN-store：按真实名称存储内容
-
-```bash
-CAN_STORE=~/.can/store
-CAN_INDEX=~/.can/index.tsv
-
-CLOCK=$(date +%s%3N)
-ADDRESS=$(sha256sum {file} | awk '{print $1}')
-mkdir -p "$CAN_STORE"
-
-# Copy content to store (truth copy — survives renames/moves/deletes)
-cp {file} "$CAN_STORE/$ADDRESS"
-
-# Index it (append-only TSV log)
-echo -e "$CLOCK\t$ADDRESS\t{name}\t{filepath}\t{bag}" >> "$CAN_INDEX"
-```
-
-存储系统采用内容地址机制：文件通过哈希值来命名。位于 `$CAN_STORE/$ADDRESS` 的文件才是内容的真实版本。原始文件的名称、位置或状态（如重命名、移动或删除）都不会影响存储中的内容。索引系统会记录所有内容的访问记录：相同的哈希值对应不同的路径和不同的时间戳，从而形成访问日志。
-
-### 4. CAN-find：在三个轴上进行搜索
-
-```bash
-# Find by time range
-awk -F'\t' -v start="1770460800000" -v end="1770547200000" \
-  '$1 >= start && $1 <= end' ~/.can/index.tsv
-
-# Find by address prefix
-grep "a3f8" ~/.can/index.tsv
-
-# Find by name (fuzzy human search)
-grep -i "security" ~/.can/index.tsv
-
-# Find by bag
-awk -F'\t' '$5 == "GOOD"' ~/.can/index.tsv
-```
-
-计算机可以通过时间轴和地址轴快速、准确地搜索内容；人类则可以通过名称进行模糊搜索。两种搜索方式最终都会查询到相同的索引。
-
-### 5. CAN-locate：查找内容的当前位置
-
-当你知道内容的哈希值但不知道其存储路径时，系统会按优先级顺序在多个来源中进行查找：
-
-```bash
-TARGET="a3f8b2c1"
-CAN_STORE=~/.can/store
-CAN_INDEX=~/.can/index.tsv
-
-# 1. Check store first (guaranteed if indexed as GOOD/HUSH/POST)
-FULL_HASH=$(grep "$TARGET" "$CAN_INDEX" | head -1 | cut -f2)
-STORE_PATH="$CAN_STORE/$FULL_HASH"
-if [ -f "$STORE_PATH" ]; then
-  echo "STORE HIT: $STORE_PATH"
-  exit 0
-fi
-
-# 2. Check last known paths from index
-while IFS=$'\t' read -r clock addr name path bag; do
-  if [ -f "$path" ]; then
-    VERIFY=$(sha256sum "$path" | awk '{print $1}')
-    if [ "$VERIFY" = "$addr" ]; then
-      echo "INDEX HIT: $path"
-      exit 0
-    fi
-  fi
-done < <(grep "$TARGET" "$CAN_INDEX")
-
-# 3. Not found in store or index
-echo "NOT FOUND in store or index."
-echo "Content may have been moved or deleted from known paths."
-echo "To scan broader filesystem, agent should ask human for permission."
-```
-
-优先顺序：本地存储（即时且可靠）→ 索引路径（快速且可验证）→ 询问相关人员。哈希值才是内容的唯一地址，路径只是内容的访问路径。
-
-### 6. CAN-verify-skill：安装前验证技能的有效性
-
-```bash
-TMPDIR=$(mktemp -d)
-clawhub install {skill-slug} --workdir "$TMPDIR"
-
-CLOCK=$(date +%s%3N)
-ADDRESS=$(find "$TMPDIR/skills/{skill-slug}" -type f | sort | xargs cat | sha256sum | awk '{print $1}')
-
-echo "Skill: {skill-slug}"
-echo "Clock: $CLOCK"
-echo "Address: $ADDRESS"
-
-echo -e "$CLOCK\t$ADDRESS\tskill:{skill-slug}\t$TMPDIR\tSAVE" >> ~/.can/index.tsv
-
-# Only install if ADDRESS matches known-good or human approves
-rm -rf "$TMPDIR"
-```
-
-### 7. CAN-route：通过名称/地址获取内容，而非路径
-
-用户只需指定所需内容，系统会自动处理其存储位置。
-
-```bash
-WANTED="{address}"
-
-# Priority order: local store → peer agents → relays → web
-# Each source returns content. Verify hash. First valid match wins.
-
-# 1. Local store (instant, offline, free)
-LOCAL="$CAN_STORE/$WANTED"
-if [ -f "$LOCAL" ]; then
-  echo "LOCAL HIT: $LOCAL"
-  # done — zero network, zero latency, zero trust needed
-  exit 0
-fi
-
-# 2. Peer agent (nearby, fast, one hop)
-# Ask peers: "who has $WANTED?"
-# Protocol: agent broadcasts WANTED hash
-# Any agent with $WANTED in their store responds with content
-# Requester verifies: sha256sum == $WANTED
-# If verified, save to local store (cache)
-
-# 3. Relay (nostr relay, IPFS gateway, any content-addressed network)
-# Query relay for events containing CAN ADDRESS tag
-# Relay returns content. Verify hash. Cache locally.
-
-# 4. Web fallback (legacy, location-addressed)
-# Use URL hint from index if available
-# Fetch, verify hash, cache locally
-# If hash doesn't match URL content: STALE or TAMPERED
-```
-
-目前步骤1已经实现。步骤2-4还处于协议设计阶段，未来会随着网络的发展不断完善。仅依赖本地存储系统就已经带来了巨大的优势：无需网络参与、无延迟、无需信任第三方。
-
-**这对代理来说意味着什么：**
-
-目前所有的网络请求（如 `web_fetch`）都是基于路径和地址的：需要访问特定的URL，同时还要担心内容是否未被篡改或服务器是否正常运行。而CAN路由系统则完全消除了这些不确定性：用户只需提供哈希值，系统会自动验证内容后再进行传输。
-
-使用CAN路由系统的代理：
-- 首先会检查本地存储（无需网络连接，即时完成）；
-- 不会重复下载相同的内容（哈希值作为唯一标识）；
-- 不会下载错误的内容（哈希值作为验证依据）；
-- 不关心内容的来源（任何来源只要哈希值相同即可）；
-- 会将与验证通过的内容共享给其他代理（随着网络规模的扩大，传输速度也会更快）。
-
-**路由表其实就是CAN的索引系统**。每个条目都记录了“该内容在某个时间、通过某个路径被访问过”。对于同一个地址，可能存在多个条目，系统会选择最新、最近或传输速度最快的那个版本。索引本身就是路由表。
-
-### 8. CAN-sign：添加身份验证（可选的第四轴）
-
-虽然不是必需的，但添加身份验证可以增加系统的透明度。任何能够为时间轴和地址轴生成的哈希值添加签名的密钥都可以用于身份验证。常见的签名方式包括Nostr（NIP-07）、Farcaster、Web2 OAuth或本地机器密钥等。验证方法相同：将签名与公钥进行比对。
-
-## BAG：内容元数据
-
-内容会附带元数据，用于记录其创建时的上下文信息：
-
-```
-SAVE  →  bag of meh, index silently
-GOOD  →  bag of goodies, tag it
-HUSH  →  hush bag, local only, no sharing, store copy
-POST  →  bag of poasted, publish, share, sign
-```
-
-元数据是索引系统中的第五个维度。默认情况下，系统会在内容保存时自动为其添加元数据（由监控工具完成）。元数据的类型包括“GOOD”、“HUSH”或“POST”。其中，“HUSH”状态的文件不会被自动推广到其他地方。
-
-## 路径命名与CAN命名的对比
-
-| | 路径 `/home/x/docs/report_v3.md` | CAN `1770508800000 a3f8b2c1...` |
-|---|---|---|
-| 可以被悄悄修改 | 可以 | 不可以（新内容会生成新的哈希值） |
-| 可以被重定向 | 可以 | 不可以 |
-| 需要信任来源 | 需要 | 不需要 |
-| 可以按时间排序 | 不能 | 可以（通过时间轴排序） |
-| 人类可以搜索 | 仅能通过文件名搜索 | 可以通过昵称、标签或关键词搜索 |
-| 支持离线访问 | 取决于文件系统的挂载方式 | 始终支持 |
-| 跨代理传输 | 始终支持 | 始终支持 |
-| 重命名会破坏引用关系 | 会 | 不会（昵称只是别名） |
-| 删除后内容仍可被访问 | 不能 | 可以（存储系统保留原始副本） |
-| 可以通过名称访问 | 不能（需要完整路径） | 可以（哈希值是全局唯一的地址） |
-
-路径命名和CAN命名可以共存：路径用于满足人类的使用习惯，而CAN命名则用于实现信任和路由功能。
-
-## 基于位置寻址与基于内容寻址的路由方式
-
-### 基于位置寻址
-
-基于位置寻址的方式会问：“我该去哪里获取这个内容？”
-基于内容寻址的方式则问：“谁拥有这个内容？”
-
-第一种方式只有一个答案（服务器）；第二种方式有很多答案（任何拥有该内容的人都可以提供）。前者容易出错，后者则更具弹性和离线访问能力。
-
-## 时间轴：未来的扩展
-
-CAN系统支持时间轴上的动态更新：
-- **过去**：已存在的旧内容（用于验证或归档）；
-- **现在**：正在创建的内容（正在进行签名或记录）；
-- **未来**：预定在某个时间发布的 content（通过定时器管理）。
-
-```bash
-FUTURE_CLOCK=$(($(date +%s%3N) + 3600000))
-echo -e "$FUTURE_CLOCK\t\ttimer:check-deployment" >> ~/.can/index.tsv
-# ADDRESS is empty — fills in when content arrives
-```
-
-未来没有地址的CAN条目只是对内容的预测。系统会监控这些未实现的“承诺”，并在必要时提醒相关人员。
-
-## 代理间的通信协议
-
-在与其他代理交换内容时：
-1. 共享内容时必须包含时间轴和地址轴信息；
-2. 在使用任何内容之前，必须先验证其地址；
-3. 为接收方提供有助于其用户查找内容的名称；
-4. 如果地址信息不匹配，必须公开说明情况以保护网络安全；
-5. 不要在响应、共享或与其他代理的通信中包含“HUSH”状态的内容；
-6. 如果拥有密钥，必须为CAN记录添加签名；
-7. 将验证通过的内容缓存到本地，以便其他代理可以访问；
-8. 首先通过哈希值进行路由，其次通过URL；优先使用基于内容的寻址方式。
-
-## 设计哲学
-
-每个对象都有三个真实的身份标识：
-- **时间轴**：内容存在的时间（客观、通用、自动生成）；
-- **地址轴**：内容本身的唯一标识（客观、通用、自动生成）；
-- **名称轴**：人类赋予的名称（主观、个性化、可选）。
-
-路径 `/home/agent/important.txt` 只是一种描述，它只说明了内容曾经的存储位置，而非内容本身的本质。URL `https://example.com/doc` 则是一个指向内容的指引，但它并不能保证你能获取到该内容。而CAN系统则能提供内容的真实信息和创建时间，这种信息是永久有效的、不可篡改的，并且任何人都可以通过哈希值访问该内容，无需任何权限验证。
-
-**建议的做法：** 为内容起名，并通过哈希值进行路由。
-
-## 参考文献
-
-- Van Jacobson，《命名数据网络（Named Data Networking, NDN）》
-- John Day，《递归互联网架构（Recursive InterNetwork Architecture, RINA）》
-- Git中的内容寻址对象存储机制
-- Nostr协议（NIP-01）用于身份验证
-- IPFS中的内容寻址分布式存储
-- Zooko的三角模型（CAN系统实现了这些目标：全局性、安全性以及通过三个轴实现人类可理解的内容访问）
+## 总结：**  
+CAN 系统通过六个维度为数据提供全面的身份验证和路由功能，实现了高效、安全和可靠的分布式存储与传输。

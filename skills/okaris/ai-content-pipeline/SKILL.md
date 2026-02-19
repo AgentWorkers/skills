@@ -1,21 +1,13 @@
 ---
 name: ai-content-pipeline
-description: |
-  Build multi-step AI content creation pipelines combining image, video, audio, and text.
-  Workflow examples: generate image -> animate -> add voiceover -> merge with music.
-  Tools: FLUX, Veo, Kokoro TTS, OmniHuman, media merger, upscaling.
-  Use for: YouTube videos, social media content, marketing materials, automated content.
-  Triggers: content pipeline, ai workflow, content creation, multi-step ai,
-  content automation, ai video workflow, generate and edit, ai content factory,
-  automated content creation, ai production pipeline, media pipeline, content at scale
+description: "构建结合图像、视频、音频和文本的多步骤AI内容创作流程。工作流程示例包括：生成图像 -> 添加动画效果 -> 添加旁白 -> 与音乐合成。使用的工具包括：FLUX、Veo、Kokoro TTS、OmniHuman、媒体合并工具以及图像质量提升工具。应用场景包括：YouTube视频、社交媒体内容、营销材料以及自动化内容生成。相关概念包括：内容创作流程（content pipeline）、AI工作流程（AI workflow）、多步骤AI技术（multi-step AI）、内容自动化（content automation）、AI视频制作流程（AI video workflow）、AI内容工厂（AI content factory）等。"
 allowed-tools: Bash(infsh *)
 ---
+# 人工智能内容管道
 
-# 人工智能内容制作流程
+通过 [inference.sh](https://inference.sh) 命令行界面（CLI）构建多步骤的内容创作管道。
 
-![人工智能内容制作流程](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg06qgcg105rh6y1kvxm4wvm.png)
-
-通过 [inference.sh](https://inference.sh) 命令行界面（CLI）构建多步骤的内容制作流程。
+![人工智能内容管道](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg06qgcg105rh6y1kvxm4wvm.png)
 
 ## 快速入门
 
@@ -27,7 +19,9 @@ infsh app run falai/flux-dev --input '{"prompt": "portrait of a woman smiling"}'
 infsh app run falai/wan-2-5 --input '{"image_url": "<url-from-previous>"}'
 ```
 
-## 流程模式
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需提升权限或启动后台进程。也可以选择[手动安装与验证](https://dist.inference.sh/cli/checksums.txt)。
+
+## 管道模式
 
 ### 模式 1：图片 -> 视频 -> 音频
 
@@ -49,9 +43,9 @@ infsh app run falai/wan-2-5 --input '{"image_url": "<url-from-previous>"}'
 
 ## 完整工作流程
 
-### YouTube 短视频制作流程
+### YouTube 短视频管道
 
-根据指定主题制作一个完整的短视频。
+根据指定主题创建一个完整的短视频。
 
 ```bash
 # 1. Generate script with Claude
@@ -85,7 +79,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### 语音播报视频流程
+### 语音播报视频管道
 
 创建一个能够播报内容的人工智能阿凡达。
 
@@ -113,9 +107,9 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }' > talking_head.json
 ```
 
-### 产品演示流程
+### 产品演示管道
 
-制作产品展示视频。
+创建一个产品展示视频。
 
 ```bash
 # 1. Generate product image
@@ -142,7 +136,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### 博文转视频流程
+### 博文转视频管道
 
 将文本内容转换为视频格式。
 
@@ -180,53 +174,53 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## 流程构建模块
+## 管道构建模块
 
 ### 内容生成
 
-| 步骤 | 应用程序 | 用途 |
+| 步骤 | 应用程序 | 功能 |
 |------|-----|---------|
-| 脚本 | `openrouter/claude-sonnet-45` | 编写内容 |
-| 研究 | `tavily/search-assistant` | 收集信息 |
-| 摘要 | `openrouter/claude-haiku-45` | 提炼内容 |
+| 脚本 | `openrouter/claude-sonnet-45` | 生成文本内容 |
+| 研究 | `tavily/search-assistant` | 收集相关信息 |
+| 摘要 | `openrouter/claude-haiku-45` | 提取内容要点 |
 
 ### 视觉素材
 
-| 步骤 | 应用程序 | 用途 |
+| 步骤 | 应用程序 | 功能 |
 |------|-----|---------|
 | 图片 | `falai/flux-dev` | 生成图片 |
 | 图片 | `google/imagen-3` | 替代图片生成工具 |
-| 图像放大 | `falai/topaz-image-upscaler` | 提升图片质量 |
+| 图像缩放 | `falai/topaz-image-upscaler` | 提升图片质量 |
 
-### 动画制作
+### 动画
 
-| 步骤 | 应用程序 | 用途 |
+| 步骤 | 应用程序 | 功能 |
 |------|-----|---------|
 | I2V | `falai/wan-2-5` | 图片动画化 |
 | T2V | `google/veo-3-1-fast` | 从文本生成动画 |
 | 阿凡达 | `bytedance/omnihuman-1-5` | 生成语音播报的阿凡达 |
 
-### 音频处理
+### 音频
 
-| 步骤 | 应用程序 | 用途 |
+| 步骤 | 应用程序 | 功能 |
 |------|-----|---------|
-| 文本转语音 | `infsh/kokoro-tts` | 语音合成 |
+| 文本转语音 (TTS) | `infsh/kokoro-tts` | 为内容添加语音解说 |
 | 音乐 | `infsh/ai-music` | 背景音乐 |
-| 音效 | `infsh/hunyuanvideo-foley` | 音效制作 |
+| 音效 | `infsh/hunyuanvideo-foley` | 添加音效 |
 
 ### 后期制作
 
-| 步骤 | 应用程序 | 用途 |
+| 步骤 | 应用程序 | 功能 |
 |------|-----|---------|
-| 视频放大 | `falai/topaz-video-upscaler` | 提升视频质量 |
+| 视频缩放 | `falai/topaz-video-upscaler` | 提升视频质量 |
 | 媒体合并 | `infsh/media-merger` | 合并多种媒体文件 |
-| 字幕添加 | `infsh/caption-video` | 添加字幕 |
+| 字幕添加 | `infsh/caption-video` | 为视频添加字幕 |
 
 ## 最佳实践
 
-1. **先规划流程** - 在开始之前明确每个步骤的具体内容。
-2. **保存中间结果** - 将输出结果保存以便后续迭代。
-3. **选择合适的质量设置** - 草稿阶段使用快速模型，最终成品使用高质量模型。
+1. **先规划管道** - 在运行之前明确每个步骤的流程。
+2. **保存中间结果** - 存储中间输出以便后续修改。
+3. **选择合适的质量设置** - 草稿阶段使用快速模型，最终版本使用高质量模型。
 4. **保持分辨率一致** - 确保整个流程中的画面比例一致。
 5. **测试每个步骤** - 在继续下一步之前验证输出结果。
 
@@ -234,24 +228,24 @@ infsh app run infsh/media-merger --input '{
 
 ```bash
 # Video generation models
-npx skills add inferencesh/skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # Image generation
-npx skills add inferencesh/skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 
 # Text-to-speech
-npx skills add inferencesh/skills@text-to-speech
+npx skills add inference-sh/skills@text-to-speech
 
 # LLM models for scripts
-npx skills add inferencesh/skills@llm-models
+npx skills add inference-sh/skills@llm-models
 
 # Full platform skill
-npx skills add inferencesh/skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
 浏览所有可用应用程序：`infsh app list`
 
 ## 文档资料
 
-- [内容制作流程示例](https://inference.sh/docs/examples/content-pipeline) - 官方流程指南
-- [工作流程构建指南](https://inference.sh/blog/guides/ai-workflows) - 工作流程最佳实践
+- [内容管道示例](https://inference.sh/docs/examples/content-pipeline) - 官方管道指南
+- [工作流程构建](https://inference.sh/blog/guides/ai-workflows) - 工作流程最佳实践指南

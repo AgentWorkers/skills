@@ -1,6 +1,6 @@
 ---
 name: jules-api
-description: "通过 `curl` 使用 Jules REST API（v1alpha）来列出源代码、创建会话、监控活动、批准计划、发送消息以及检索输出结果（例如 PR 的 URL）。当用户希望以编程方式将编码任务委托给 Jules 时，可以使用该 API。"
+description: "通过 `curl` 使用 Jules REST API（v1alpha）来执行以下操作：列出源代码信息、创建会话、监控活动、批准计划、发送消息以及检索输出结果（例如 PR 的 URL）。当用户希望以编程方式将编码任务委托给 Jules 时，可以使用此 API。使用此功能需要设置 `JULES_API_KEY` 环境变量（可从 https://jules.google.com/settings#api 获取）。"
 env:
   JULES_API_KEY:
     required: true
@@ -24,6 +24,9 @@ dependencies:
 ## 快速入门
 
 ```bash
+# 0. Set your API key (required — get one at https://jules.google.com/settings#api)
+export JULES_API_KEY="your-api-key-here"
+
 # 1. Verify available sources (pre-flight check)
 ./scripts/jules_api.sh sources
 
@@ -41,17 +44,17 @@ dependencies:
 ./scripts/jules_api.sh approve-plan --session SESSION_ID
 ```
 
-**注意：** 使用您的 GitHub 用户名/组织名，而不是本地系统的用户名（例如，`sources/github/octocat/Hello-World`，而不是 `sources/github/$USER/Hello-World`）。
+**注意：** 使用你的 GitHub 用户名/组织名，而不是本地系统用户名（例如，`sources/github/octocat/Hello-World`，而不是 `sources/github/$USER/Hello-World`）。
 
 ## 概述
 
-此技能允许您通过编程方式与 **Jules REST API (v1alpha)** 进行交互，从而将编码任务委托给 Jules（Google 的自主 AI 编码代理）。它支持以下功能：
+此技能允许你通过编程方式与 **Jules REST API (v1alpha)** 进行交互，从而将编码任务委托给 Jules（Google 的自主 AI 编码代理）。它支持以下功能：
 
-- **任务分配**：创建带有特定提示的新编码会话
+- **任务分配**：创建带有具体提示的新编码会话
 - **会话监控**：实时跟踪会话状态和活动
 - **计划管理**：批准或审查生成的计划
 - **消息传递**：向活跃的会话发送跟进消息
-- **结果整合**：从已完成的会话中检索 PR URL 和代码更改
+- **结果整合**：从已完成的会话中获取 PR URL 和代码更改
 
 ## 开始使用前
 
@@ -59,19 +62,19 @@ dependencies:
 
 在 Jules 网页应用中创建一个 API 密钥：
 - 访问：https://jules.google.com/settings#api
-- 您最多可以同时拥有 **3 个 API 密钥**
+- 你最多可以同时拥有 **3 个 API 密钥**
 
-将该密钥导出到运行代理的机器上：
+将密钥导出到运行代理的机器上：
 
 ```bash
 export JULES_API_KEY="your-api-key-here"
 ```
 
-### 2. 连接您的 GitHub 仓库
+### 2. 连接你的 GitHub 仓库
 
-在 API 能够操作 GitHub 仓库之前，您必须：
+在 API 能够操作 GitHub 仓库之前，你必须：
 1. 通过 Jules 网页界面安装 **Jules GitHub 应用**
-2. 授予 Jules 访问您希望其操作的特定仓库的权限
+2. 授予 Jules 访问你希望其操作的特定仓库的权限
 
 ### 3. 验证仓库访问权限
 
@@ -80,7 +83,7 @@ export JULES_API_KEY="your-api-key-here"
 ./scripts/jules_api.sh sources
 ```
 
-您将看到如下内容：
+你会看到如下信息：
 ```json
 {
   "sources": [
@@ -107,7 +110,7 @@ export JULES_API_KEY="your-api-key-here"
 | 基础 URL | `https://jules.googleapis.com/v1alpha` |
 | 身份验证头 | `x-goog-api-key: $JULES_API_KEY` |
 
-所有请求均使用以下方式进行身份验证：
+所有请求都使用以下方式进行身份验证：
 ```bash
 -H "x-goog-api-key: $JULES_API_KEY"
 ```
@@ -120,7 +123,7 @@ export JULES_API_KEY="your-api-key-here"
 |----------|-------------|
 | **来源** | 与 Jules 连接的 GitHub 仓库。格式：`sources/github/{owner}/{repo}` |
 | **会话** | Jules 执行编码任务的工作单元。包含状态、活动和输出 |
-| **活动** | 会话中的单个事件（例如生成计划、发送消息、进度更新等） |
+| **活动** | 会话中的单个事件（例如，生成计划、发送消息、进度更新等） |
 
 ### 会话状态
 
@@ -164,13 +167,13 @@ export JULES_API_KEY="your-api-key-here"
 ```
 
 **推荐原因：**
-- 您可以在 Jules 执行更改之前审查和批准计划
+- 你在 Jules 执行更改之前先审查并批准计划
 - 完成后自动创建 PR
-- 在自动化与人工监督之间取得平衡
+- 在自动化和人工监督之间取得平衡
 
 ### 选项 2：完全自动化的会话（无需计划批准）
 
-对于低风险或常规任务（位于非敏感仓库中），您可以跳过计划批准：
+对于低风险或常规任务（位于非敏感仓库中），你可以跳过计划批准：
 
 ```bash
 # Create session without plan approval (use only for low-risk tasks)
@@ -182,7 +185,7 @@ export JULES_API_KEY="your-api-key-here"
   --auto-pr
 ```
 
-**警告：** 如果不使用 `--require-plan-approval`，Jules 将自动批准其计划并执行更改。仅适用于非关键仓库中的低风险任务。
+**警告：** 如果不使用 `--require-plan-approval`，Jules 会自动批准其计划并执行更改。仅适用于非关键仓库中的低风险任务。
 
 ### 选项 3：交互式会话
 
@@ -218,9 +221,9 @@ curl -sS \
 **查询参数：**
 | 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `pageSize` | integer | 30 | 返回的来源数量（1-100） |
-| `pageToken` | string | - | 上一次响应的令牌，用于分页 |
-| `filter` | string | - | AIP-160 过滤器（例如，`name=sources/source1`）
+| `pageSize` | 整数 | 30 | 返回的来源数量（1-100） |
+| `pageToken` | 字符串 | - | 上一次响应的分页令牌 |
+| `filter` | 字符串 | - | AIP-160 过滤器（例如，`name=sources/source1`）
 
 **响应：**
 ```json
@@ -245,7 +248,7 @@ curl -sS \
 ```
 
 #### 获取来源
-按名称检索单个来源。
+按名称获取单个来源。
 
 ```bash
 curl -sS \
@@ -282,14 +285,14 @@ curl -sS "https://jules.googleapis.com/v1alpha/sessions" \
 ```
 
 **请求体字段：**
-| 字段 | 类型 | 是否必填 | 描述 |
+| 字段 | 类型 | 是否必需 | 描述 |
 |-------|------|----------|-------------|
-| `prompt` | string | 是 | 用于 Jules 的任务描述 |
-| `title` | string | 否 | 会话的简短标题 |
-| `sourceContext.source` | string | 是 | 来源名称（例如，`sources/github/owner/repo`） |
-| `sourceContext.githubRepoContext.startingBranch` | string | 是 | 要从哪个分支开始 |
-| `requirePlanApproval` | boolean | 否 | 如果为 true，则暂停以等待计划批准。建议在生产仓库中使用 true |
-| `automationMode` | string | 否 | 设置为 `AUTO_CREATE_PR` 以自动创建 PR |
+| `prompt` | 字符串 | 是 | 用于 Jules 的任务描述 |
+| `title` | 字符串 | 否 | 会话的简短标题 |
+| `sourceContext.source` | 字符串 | 是 | 来源名称（例如，`sources/github/owner/repo`） |
+| `sourceContext.githubRepoContext.startingBranch` | 字符串 | 是 | 要从哪个分支开始 |
+| `requirePlanApproval` | 布尔值 | 否 | 如果为 true，则暂停以等待计划批准。建议在生产仓库中使用 true |
+| `automationMode` | 字符串 | 否 | 设置为 `AUTO_CREATE_PR` 以自动创建 PR |
 
 **响应：**
 ```json
@@ -306,7 +309,7 @@ curl -sS "https://jules.googleapis.com/v1alpha/sessions" \
 ```
 
 #### 列出会话
-列出您的会话。
+列出你的会话。
 
 ```bash
 curl -sS \
@@ -317,8 +320,8 @@ curl -sS \
 **查询参数：**
 | 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `pageSize` | integer | 30 | 返回的会话数量（1-100） |
-| `pageToken` | string | - | 上一次响应的令牌，用于分页 |
+| `pageSize` | 整数 | 返回的会话数量（1-100） |
+| `pageToken` | 字符串 | - | 上一次响应的分页令牌 |
 
 #### 获取会话
 按 ID 获取单个会话。
@@ -398,8 +401,8 @@ curl -sS \
 **查询参数：**
 | 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `pageSize` | integer | 50 | 返回的活动数量（1-100） |
-| `pageToken` | string | - | 上一次响应的令牌，用于分页 |
+| `pageSize` | 整数 | 返回的活动数量（1-100） |
+| `pageToken` | 字符串 | - | 上一次响应的分页令牌 |
 
 **响应：**
 ```json
@@ -457,7 +460,7 @@ curl -sS \
 
 `scripts/jules_api.sh` 脚本为常见的 API 操作提供了便捷的封装。
 
-**使用方法：**
+**用法：**
 ```bash
 # List sources
 ./scripts/jules_api.sh sources
@@ -491,9 +494,9 @@ curl -sS \
 | `--title` | 会话标题 |
 | `--prompt` | 任务描述或消息内容 |
 | `--session` | 会话 ID |
-| `--branch` | 起始分支（默认：`main`） |
+| `--branch` | 起始分支（默认：`main` |
 | `--auto-pr` | 启用自动创建 PR |
-| `--require-plan-approval` | 要求明确批准计划（默认） |
+| `--require-plan-approval` | 要求明确的计划批准（默认） |
 | `--no-plan-approval` | 跳过计划批准（仅用于低风险任务） |
 | `--page-size` | 返回的结果数量 |
 
@@ -501,7 +504,7 @@ curl -sS \
 
 `scripts/jules.js` 脚本为编程使用封装了 Jules CLI。
 
-**使用方法：**
+**用法：**
 ```bash
 node scripts/jules.js version
 node scripts/jules.js list-repos
@@ -510,7 +513,7 @@ node scripts/jules.js new --repo owner/repo --task "Your task"
 node scripts/jules.js pull --session SESSION_ID
 ```
 
-## 常见错误模式
+## 常见错误
 
 ### “Source not found” 或 “Repository not found”
 
@@ -518,7 +521,7 @@ node scripts/jules.js pull --session SESSION_ID
 
 **解决方案：**
 1. 运行 `./scripts/jules_api.sh sources` 以列出可用的来源
-2. 确保已为此仓库安装了 Jules GitHub 应用
+2. 确保已为该仓库安装了 Jules GitHub 应用
 3. 使用列表中的确切来源名称（例如，`sources/github/octocat/Hello-World`）
 
 ### “Missing JULES_API_KEY”
@@ -537,39 +540,39 @@ export JULES_API_KEY="your-api-key"
 **解决方案：**
 1. 在 https://jules.google.com/settings#api 生成新的 API 密钥
 2. 更新 `JULES_API_KEY` 环境变量
-3. 注意：您最多可以同时拥有 3 个 API 密钥
+3. 注意：你最多可以同时拥有 3 个 API 密钥
 
 ### 会话卡在 AWAITING_PLAN_APPROVAL 状态
 
-**原因：** 会话是在 `requirePlanApproval: true` 的情况下创建的。
+**原因：** 会话创建时设置了 `requirePlanApproval: true`。
 
 **解决方案：**
 ```bash
 ./scripts/jules_api.sh approve-plan --session SESSION_ID
 ```
 
-### 任务失败并显示模糊错误
+### 任务因模糊的提示而失败
 
-**原因：** 模糊的提示可能会导致意外结果。
+**原因：** 模糊的提示可能导致意外结果。
 
 **解决方案：**
 - 编写清晰、具体的提示
 - 将大型任务分解为更小、更具体的任务
-- 避免使用需要长时间运行的命令（例如开发服务器、监视脚本）
+- 避免使用需要长时间运行的命令（例如开发服务器、监控脚本）
 
 ### 大文件被跳过
 
-**原因：** 超过 768,000 个令牌的文件可能会被跳过。
+**原因：** 超过 768,000 个字符的文件可能会被跳过。
 
 **解决方案：**
-- 分解对非常大文件的操作
+- 将对大文件的操作分解为多个部分
 - 考虑在处理之前分割大文件
 
 ## 最佳实践
 
 ### 编写有效的提示
 
-1. **具体明确**：不要使用“修复错误”，而是使用“修复 `auth.js:45` 中的 `null pointer exception`（当 `email` 未定义时）”
+1. **具体明确**：不要使用“修复错误”，而应使用“修复 `auth.js:45` 中的 `null pointer exception`（当 `email` 未定义时）”
 2. **提供上下文**：提及相关的文件、函数或错误信息
 3. **保持任务专注**：每个会话只处理一个逻辑任务
 
@@ -577,25 +580,25 @@ export JULES_API_KEY="your-api-key"
 
 1. 轮询会话状态以跟踪进度
 2. 检查活动以获取详细的进度更新
-3. 在 `AWAITING_USER_FEEDBACK` 状态下发送澄清消息
+3. 对于 `AWAITING_USER_FEEDBACK` 状态，发送澄清消息
 
 ### 安全性
 
-1. 从不将密钥或凭据包含在提示中
+1. 不要在提示中包含任何秘密或凭据
 2. 合并之前审查生成的 PR
 3. 使用 `requirePlanApproval: true`（建议对所有仓库使用，尤其是生产环境）
-4. 仅在计划使用 Jules 的仓库上安装 Jules GitHub 应用——限制访问范围
-5. 将 `JULES_API_KEY` 视为机密：安全存储，定期轮换，并且永远不要将其粘贴到不可信的地方
+4. 仅在你打算与 Jules 一起使用的仓库上安装 Jules GitHub 应用——限制访问范围
+5. 将 `JULES_API_KEY` 视为敏感信息：安全存储它，定期轮换，并且永远不要将其粘贴到不可信的地方
 
 ### 性能
 
 1. 使用 `automationMode: AUTO_CREATE_PR` 以简化工作流程
 2. 仅对非关键仓库中的常规、低风险任务跳过计划批准（`requirePlanApproval: false`）
-3. 将复杂任务分解为更小的会话
+3. 将复杂任务分解为多个会话
 
 ## 提取结果
 
-当会话完成时，从输出中检索 PR URL：
+当会话完成时，从输出中获取 PR URL：
 
 ```bash
 # Get session details
@@ -605,12 +608,12 @@ curl -sS \
   | jq '.outputs[].pullRequest.url'
 ```
 
-## 已知限制
+## 已知的限制
 
 - **Alpha API**：规格可能会更改；API 密钥和定义是实验性的
-- **不允许长时间运行的命令**：Jules 无法运行 `npm run dev` 或类似的监视脚本
-- **上下文大小**：超过 768,000 个令牌的文件可能会被跳过
-- **提示的准确性**：模糊的提示可能会导致意外结果
+- **不允许长时间运行的命令**：Jules 无法运行 `npm run dev` 或类似的监控脚本
+- **上下文大小**：超过 768,000 个字符的文件可能会被跳过
+- **提示的准确性**：模糊的提示可能导致意外结果
 
 ## 参考资料
 

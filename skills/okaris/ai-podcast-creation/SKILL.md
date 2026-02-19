@@ -1,19 +1,41 @@
 ---
 name: ai-podcast-creation
-description: |
-  Create AI-powered podcasts with text-to-speech, music, and audio editing.
-  Tools: Kokoro TTS, DIA TTS, Chatterbox, AI music generation, media merger.
-  Capabilities: multi-voice conversations, background music, intro/outro, full episodes.
-  Use for: podcast production, audiobooks, voice content, audio newsletters.
-  Triggers: podcast, ai podcast, text to speech podcast, audio content, voice over,
-  ai audiobook, multi voice, conversation ai, notebooklm alternative, audio generation,
-  podcast automation, ai narrator, voice content, audio newsletter, podcast maker
+description: "**使用Kokoro TTS、DIA TTS、Chatterbox等工具，结合AI音乐生成和媒体合并功能，制作包含文本转语音、音乐编辑及音频编辑的AI驱动播客。**  
+**功能特点：**  
+- 支持多声部对话  
+- 可添加背景音乐  
+- 提供开场/结尾音效  
+- 支持完整剧集的录制与发布  
+**适用场景：**  
+- 播客制作  
+- 有声书制作  
+- 音频内容创作  
+- 音频新闻通讯  
+**相关工具与技术：**  
+- Kokoro TTS（文本转语音服务）  
+- DIA TTS（文本转语音服务）  
+- Chatterbox（智能对话系统）  
+- AI音乐生成工具  
+- 媒体合并软件  
+**应用场景示例：**  
+- 自动化播客录制流程  
+- 生成高质量的有声书  
+- 制作个性化的音频新闻通讯  
+**关键词：**  
+- AI播客  
+- 文本转语音  
+- 音乐编辑  
+- 媒体融合  
+- 多声部对话  
+- 自动化工具  
+- AI narrators（AI旁白系统）"
 allowed-tools: Bash(infsh *)
 ---
-
 # AI播客制作
 
 通过[inference.sh](https://inference.sh)命令行工具（CLI），您可以创建由AI驱动的播客和音频内容。
+
+![AI播客制作](https://cloud.inference.sh/u/4mg21r6ta37mpaz6ktzwtt8krr/01jz00krptarq4bwm89g539aea.png)
 
 ## 快速入门
 
@@ -27,34 +49,36 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从`dist.inference.sh`下载相应的二进制文件，并验证其SHA-256校验和。无需提升权限或启动后台进程。也可选择[手动安装与验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 可用的语音合成引擎
 
 ### Kokoro TTS
 
-| 语音ID | 描述 | 适合的场景 |
+| 语音ID | 描述 | 适合场景 |
 |----------|-------------|----------|
-| `af_sarah` | 美国女性，温暖的语音 | 主播、旁白 |
-| `af_nicole` | 美国女性，专业的语音 | 新闻、商业内容 |
-| `am_michael` | 美国男性，权威的语音 | 纪录片、科技类内容 |
-| `am_adam` | 美国男性，日常对话风格 | 休闲播客 |
-| `bf_emma` | 英国女性，优雅的语音 | 有声书 |
-| `bm_george` | 英国男性，经典的语音 | 正式场合的内容 |
+| `af_sarah` | 美国女性，温暖的语调 | 主播、旁白 |
+| `af_nicole` | 美国女性，专业的语调 | 新闻、商务类内容 |
+| `am_michael` | 美国男性，权威的语调 | 纪录片、科技类内容 |
+| `am_adam` | 美国男性，日常对话的语调 | 休闲类播客 |
+| `bf_emma` | 英国女性，优雅的语调 | 有声书 |
+| `bm_george` | 英国男性，经典的语调 | 正式场合的内容 |
 
-### DIA TTS（对话风格）
+### DIA TTS（适用于对话场景）
 
-| 语音ID | 描述 | 适合的场景 |
+| 语音ID | 描述 | 适合场景 |
 |----------|-------------|----------|
-| `dia-conversational` | 自然对话风格 | 对话、访谈 |
+| `dia-conversational` | 自然对话风格 | 对话、采访 |
 
 ### Chatterbox
 
-| 语音ID | 描述 | 适合的场景 |
+| 语音ID | 描述 | 适合场景 |
 |----------|-------------|----------|
-| `chatterbox-default` | 表情丰富的语音 | 休闲、娱乐类内容 |
+| `chatterbox-default` | 表达力丰富 | 休闲娱乐类内容 |
 
-## 播客工作流程
+## 播客制作流程
 
-### 简单的旁白制作
+### 简单旁白
 
 ```bash
 # Single voice podcast segment
@@ -128,7 +152,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### 从文档生成播客风格的讨论内容
+### 从文档生成播客风格的内容
 
 ```bash
 # 1. Extract key points
@@ -219,7 +243,7 @@ infsh app run openrouter/claude-sonnet-45 --input '{
 
 ## 播客模板
 
-### 面试格式
+### 采访格式
 
 ```
 HOST: Introduction and welcome
@@ -261,30 +285,30 @@ Outro
 
 ## 最佳实践
 
-1. **使用自然的标点符号** – 用逗号和句号来控制语速和节奏。
-2. **使用简短的句子** – 更易于朗读和聆听。
+1. **使用自然的标点符号** – 用逗号和句号来控制语速。
+2. **使用简短的句子** – 更便于朗读和聆听。
 3. **使用多种语音** – 不同的语音可以避免单调感。
-4. **背景音乐** – 音量控制在10-15%之间。
-5. **平滑过渡** – 在不同段落之间实现无缝切换。
+4. **添加背景音乐** – 音量控制在10-15%之间。
+5. **使用平滑的过渡效果** – 使段落之间的切换更加自然。
 6. **编辑脚本** – 在生成音频之前删除冗余内容。
 
 ## 相关技能
 
 ```bash
 # Text-to-speech models
-npx skills add inference-sh/agent-skills@text-to-speech
+npx skills add inference-sh/skills@text-to-speech
 
 # AI music generation
-npx skills add inference-sh/agent-skills@ai-music-generation
+npx skills add inference-sh/skills@ai-music-generation
 
 # LLM for scripts
-npx skills add inference-sh/agent-skills@llm-models
+npx skills add inference-sh/skills@llm-models
 
 # Content pipelines
-npx skills add inference-sh/agent-skills@ai-content-pipeline
+npx skills add inference-sh/skills@ai-content-pipeline
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
 查看所有应用程序：`infsh app list --category audio`

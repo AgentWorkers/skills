@@ -1,287 +1,318 @@
-# SurrealDB知识图谱内存系统 v2.0
+# SurrealDB知识图谱内存系统 v2.1
 
-这是一个基于SurrealDB构建的知识图谱内存系统，支持向量化语义搜索、置信度评分、图谱感知的事实关系处理、**情景记忆**、**工作记忆**以及**基于结果的学习**功能。
+这是一个全面的知识图谱内存系统，具备语义搜索、情景记忆、工作记忆以及自动上下文注入功能。
 
-## 描述
+## 用途
 
-该系统可用于：
-- 以相互关联的事实形式存储和检索知识
-- 进行带有置信度权重的语义搜索
-- 管理事实之间的关系（支持支持、矛盾、更新等操作）
-- 从内存文件中提取由大型语言模型（LLM）生成的知识
-- 通过人工智能发现事实之间的关联
-- **新功能 v2.0**：支持情景记忆，用于记录任务历史和学习过程
-- **新功能 v2.0**：引入工作记忆功能，以提高任务处理的稳定性
-- **新功能 v2.0**：基于结果进行置信度调整（有助于成功的事实会获得更高的置信度）
-- **新功能 v2.0**：实现上下文感知的搜索功能（根据任务内容优化搜索结果）
-- **新功能 v2.0**：对重要事实进行同步写入
+该技能可用于：
+- **语义记忆**：通过带有置信度加权的向量搜索来存储和检索事实信息。
+- **情景记忆**：记录任务历史并从中学习。
+- **工作记忆**：跟踪活跃任务的状态，并在系统崩溃时恢复数据。
+- **自动上下文注入**：将相关上下文自动插入到代理的提示中。
+- **结果校准**：根据任务结果调整事实的置信度。
 
-**触发命令**：
-- `remember this`：记住某个内容
-- `store fact`：存储一个事实
-- `what do you know about`：查询相关知识
-- `memory search`：执行内存搜索
-- `similar tasks`：查找类似的任务
-- `past episodes`：查看过去的任务记录
-- `working memory`：查询工作记忆中的信息
-- `knowledge graph`：查询知识图谱
+## 触发语句：
+- “记住这个”
+- “存储事实”
+- “你知道……吗？”
+- “搜索知识”
+- “查找类似的任务”
+- “从历史中学习”
 
-## ⚠️ 安全性与安装说明
+## 新版本（v2）的功能
 
-该系统执行系统级操作，请在安装前仔细阅读以下说明：
+| 功能 | 说明 |
+|---------|-------------|
+| **语义事实** | 带有置信度评分的向量索引事实 |
+| **情景记忆** | 包含决策、问题、解决方案和学习内容的任务历史记录 |
+| **工作记忆** | 可在系统崩溃后恢复的基于YAML的任务状态 |
+| **结果校准** | 在成功完成任务的事实中增加置信度 |
+| **自动注入** | 自动将相关事实/情景插入到提示中 |
+| **实体提取** | 自动进行实体链接和关系发现 |
+| **置信度衰减** | 过时的事实会随时间自然衰减 |
 
-| 操作        | 执行位置    | 说明                          |
-|--------------|------------|---------------------------------------------|
-| **网络安装**    | `install.sh`     | 运行 `curl https://install.surrealdb.com \| sh`                |
-| **源代码修补**    | `integrate-clawdbot.sh` | 使用 `sed -i` 修复 Clawdbot 的源代码文件            |
-| **服务管理**    | `memory.ts`     | 启动 SurrealDB 服务器并导入数据库模式             |
-| **Python 包安装**   | `install.sh`     | 通过 pip 安装 surrealdb、openai 和 pyyaml                |
-| **文件访问**    | `extract-knowledge.py` | 读取 `MEMORY.md` 及相关 md 文件以提取数据             |
+## 仪表盘界面
 
-**默认凭据**：示例中使用 `root/root`；在生产环境中请更换凭据，并确保仅允许本地访问。
+控制面板中的“Memory”标签页采用两列布局：
 
-**API 密钥**：需要设置 `OPENAI_API_KEY`，用于文本嵌入（`text-embedding-3-small`）和大型语言模型提取（`GPT-4o-mini`）功能。
+### 左侧栏：
+- **📊 统计数据**：事实、实体、关系和存档项目的实时数量
+- **置信度条形图**：置信度得分的可视化显示
+- **来源分类**：按源文件分组的事实
+- **🏥 系统健康状况**：SurrealDB的状态、数据库模式及Python依赖项
+- **🔗 DB Studio**：快速链接到SurrealDB的Web界面
 
-## v2.0 新特性
+### 右侧栏：
+- **📥 知识提取**
+  - *提取变更*：从修改过的文件中逐步提取事实
+  - *发现关系*：发现现有事实之间的语义关系
+  *完整同步*：完成提取及关系发现
+  - 进度条，显示实时状态更新
 
-### 1. 情景记忆（Episodic Memory）
-- 从过去的任务尝试中学习：  
-  ```bash
-# Find similar past tasks
-mcporter call surrealdb-memory.episode_search query="deploy API" limit:5
+- **🔧 维护**
+  - *应用衰减**：降低过时事实的置信度
+  *清理过时数据**：将置信度低于阈值的事实存档
+  *全面清理**：执行完整的维护周期
 
-# Get actionable learnings
-mcporter call surrealdb-memory.episode_learnings task_goal="Build REST API"
-# Returns: ["Always validate OAuth tokens first", "⚠️ Past failure: Token expired mid-deploy"]
-```
+- **💡 提示**：操作的快速参考
 
-### 2. 工作记忆（Working Memory）
-- 能够在系统崩溃后仍保留当前任务的状态：  
-  ```bash
-# Check active task status
-mcporter call surrealdb-memory.working_memory_status
-```
-
-工作记忆通过 Python 进行管理：  
-  ```python
-from working_memory import WorkingMemory
-
-wm = WorkingMemory()
-wm.start_task("Deploy marketing pipeline", plan=[...])
-wm.update_step(1, status="complete", result_summary="Audited 12 templates")
-episode = wm.complete_task(outcome="success")
-```
-
-### 3. 同步写入（Synchronous Writes）
-- 重要事实会立即被存储（而非批量处理）：  
-  ```bash
-mcporter call surrealdb-memory.knowledge_store_sync \
-    content="Client X uses OAuth2 not API keys" \
-    importance:0.85
-```
-
-### 4. 上下文感知搜索（Context-Aware Search）
-- 根据当前任务内容优化搜索结果：  
-  ```bash
-mcporter call surrealdb-memory.context_aware_search \
-    query="API authentication" \
-    task_context="Deploy marketing automation for ClientX"
-```
-
-### 5. 结果驱动的置信度调整（Outcome-Based Confidence Calibration）
-- 有助于成功的事实会获得更高的置信度；与失败相关的事实则会降低置信度。这一过程是自动完成的。
-
-## MCP 工具（MCP Tools, v2.0）
-
-| 工具        | 功能描述                          |
-|-------------|---------------------------------------------|
-| `knowledge_search` | 通过查询进行语义搜索                      |
-| `knowledge_recall` | 带有完整上下文（包括关系和实体）的事实检索            |
-| `knowledge_store` | 带有置信度和标签的新事实存储                    |
-| `knowledge_stats` | 提供知识图谱的统计信息（包含任务记录）             |
-| `knowledge_store_sync` | **新功能 v2.0**：基于重要性决定数据写入策略（>0.7 时立即写入） |
-| `episode_search` | **新功能 v2.0**：查找相似的过去任务/事件           |
-| `episode_learnings` | **新功能 v2.0**：从历史记录中获取可操作的洞察           |
-| `episode_store` | **新功能 v2.0**：存储已完成的任务记录             |
-| `working_memory_status` | **新功能 v2.0**：查询当前任务进度                   |
-| `context_aware_search` | **新功能 v2.0**：根据任务上下文优化搜索结果           |
+当系统需要设置时，会显示一个**安装**部分，其中包含手动设置步骤。
 
 ## 先决条件
 
-- 确保已安装并运行 SurrealDB：  
-  ```bash
+1. **已安装并运行SurrealDB**：
+   ```bash
    # Install (one-time)
    ./scripts/install.sh
    
    # Start server
-   surreal start --bind 127.0.0.1:8000 --user root --pass root file:~/.clawdbot/memory/knowledge.db
+   surreal start --bind 127.0.0.1:8000 --user root --pass root file:~/.openclaw/memory/knowledge.db
    ```
 
-- 安装必要的 Python 依赖项：  
-  ```bash
+2. **Python依赖项**（使用该技能的虚拟环境）：
+   ```bash
    cd /path/to/surrealdb-memory
    python3 -m venv .venv
    source .venv/bin/activate
-   pip install -r scripts/requirements.txt
+   pip install surrealdb openai pyyaml
    ```
 
-- 设置 OpenAI API 密钥以使用嵌入和提取功能：  
-  ```bash
-   export OPENAI_API_KEY="sk-..."
-   ```
+3. **OpenAI API密钥**（用于嵌入操作，需在OpenClaw配置或环境中设置）
 
-## 快速入门
+4. **mcporter**已配置并连接到该技能的MCP服务器
 
-```bash
-# Initialize the database schema (includes v2 tables)
-./scripts/init-db.sh
+## MCP服务器设置
 
-# OR apply v2 schema to existing database
-python3 scripts/migrate-v2.py
-
-# Run initial knowledge extraction
-source .venv/bin/activate
-python3 scripts/extract-knowledge.py extract --full
-
-# Check status
-mcporter call surrealdb-memory.knowledge_stats
-```
-
-## MCP 服务器配置
-
-请将以下配置添加到您的 mcporter 配置文件中：  
+在`config/mcporter.json`文件中进行以下配置：
 ```json
 {
-  "surrealdb-memory": {
-    "command": "/path/to/.venv/bin/python3 /path/to/scripts/mcp-server-v2.py"
+  "servers": {
+    "surrealdb-memory": {
+      "command": ["python3", "/path/to/surrealdb-memory/scripts/mcp-server-v2.py"],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "SURREAL_URL": "http://localhost:8000",
+        "SURREAL_USER": "root",
+        "SURREAL_PASS": "root"
+      }
+    }
   }
 }
 ```
 
-## 命令行接口（CLI）命令
+## MCP工具（共11个）
 
-### `knowledge-tool.py`（简单 CLI 工具）
+### 核心工具
+| 工具 | 说明 |
+|------|-------------|
+| `knowledge_search` | 对事实进行语义搜索 |
+| `knowledge_recall` | 获取包含完整上下文（关系、实体）的事实 |
+| `knowledge_store` | 存储新事实 |
+| `knowledge_stats` | 获取数据库统计信息 |
+
+### v2版本的工具
+| 工具 | 说明 |
+|------|-------------|
+| `knowledge_store_sync` | 带有重要性优先级的存储（重要性高则立即写入） |
+| `episode_search` | 查找类似的过去任务 |
+| `episode_learnings` | 从历史记录中获取可操作的教训 |
+| `episode_store` | 记录已完成的任务 |
+| `working_memory_status` | 获取当前任务状态 |
+| `context_aware_search` | 带有任务上下文增强的搜索 |
+| `memory_inject` | **用于提示的智能上下文注入** |
+
+### `memory_inject`工具
+
+`memory_inject`工具返回格式化后的上下文，可直接用于提示生成：
+```bash
+mcporter call surrealdb-memory.memory_inject \
+    query="user message" \
+    max_facts:7 \
+    max_episodes:3 \
+    confidence_threshold:0.9 \
+    include_relations:true
+```
+
+## 自动注入（增强循环集成）
+
+启用此功能后，内存内容会自动在每次代理操作时被注入：
+
+1. **在模式界面中启用**：
+   - 打开控制面板 → “Mode”标签页
+   - 滚动到“🧠 Memory & Knowledge Graph”部分
+   - 切换“Auto-Inject Context”选项
+   - 配置限制（最大事实数量、最大情景数量、置信度阈值）
+
+2. **工作原理**：
+   - 每当用户发送消息时，会自动调用`memory_inject`函数
+   - 根据用户的查询内容搜索相关事实
+   - 如果事实的置信度低于阈值，会包含情景记忆
+   - 格式化后的上下文会被插入到代理的提示中
+
+3. **配置（在模式设置中）**：
+| 设置 | 默认值 | 说明 |
+|---------|---------|-------------|
+| Auto-Inject Context | 关闭 | 开启/关闭自动注入 |
+| Max Facts | 7 | 最大可注入的语义事实数量 |
+| Max Episodes | 3 | 最大情景数量 |
+| Confidence Threshold | 90% | 当置信度低于此值时包含情景 |
+| Include Relations | 开启 | 是否包含实体关系 |
+
+## 带进度跟踪的提取功能
+
+当通过UI执行提取操作时，您会看到：
+- **进度条**：显示提取进度的百分比
+- **当前步骤**：显示正在处理的操作（例如：“从MEMORY.md文件中提取事实”）
+- **计数器**：显示文件处理的进度（例如：“(3/7)”）
+- **详细信息**：显示子步骤的详细信息
+
+进度会通过轮询实时更新。完成后，统计信息会自动刷新。
+
+## 命令行接口（CLI命令）
 
 ```bash
-python3 scripts/knowledge-tool.py search "query" --limit 10
-python3 scripts/knowledge-tool.py recall "query"
-python3 scripts/knowledge-tool.py store "Fact content" --confidence 0.9
-python3 scripts/knowledge-tool.py stats
+# Activate venv
+source .venv/bin/activate
+
+# Store a fact
+python scripts/memory-cli.py store "Important fact" --confidence 0.9
+
+# Search
+python scripts/memory-cli.py search "query"
+
+# Get stats
+python scripts/knowledge-tool.py stats
+
+# Run maintenance
+python scripts/memory-cli.py maintain
+
+# Extract from files
+python scripts/extract-knowledge.py extract        # Changed files only
+python scripts/extract-knowledge.py extract --full # All files
+python scripts/extract-knowledge.py discover-relations
 ```
 
-### `extract-knowledge.py`
+## 数据库模式（v2）
 
-| 命令          | 功能描述                        |
-|----------------|--------------------------------------------|
-| `extract`       | 仅从已更改的文件中提取数据                   |
-| `extract --full`    | 提取所有文件中的数据                     |
-| `status`       | 显示提取进度和统计信息                   |
-| `reconcile`      | 进行数据整合（删除冗余、过时或孤立的数据）             |
-| `discover-relations` | 通过人工智能发现事实之间的关系             |
-| `dedupe`       | 删除重复的事实                         |
+### 表结构
+- `fact`：包含嵌入信息和置信度的语义事实
+- `entity`：提取的实体（人物、地点、概念）
+- `relates_to`：事实之间的关系
+- `mentions`：事实与实体之间的链接
+- `episode`：包含任务结果的历史记录
+- `working_memory`：活跃任务的快照
 
-### `migrate-v2.py`  
+### 关键字段（fact）
+- `content`：事实的文本内容
+- `embedding`：用于语义搜索的向量
+- `confidence`：基础置信度（0-1）
+- `success_count` / `failure_count`：任务结果的记录
+- `scope`：全局、客户端或代理级别
 
-```bash
-# Apply v2 schema (safe to run multiple times)
-python3 scripts/migrate-v2.py
+### 关键字段（episode）
+- `goal`：尝试完成的目标
+- `outcome`：成功、失败或放弃
+- `decisions`：所做的关键决策
+- `problems`：遇到的问题（结构化）
+- `solutions`：采用的解决方案（结构化）
+- `key_learnings`：从中提取的教训
 
-# Force recreate v2 tables
-python3 scripts/migrate-v2.py --force
-```
+## 置信度评分
 
-## 架构（Architecture, v2.0）
-
-```
-Tier 1: Context Window (conversation)
-    ↕ (continuous read/write during loop iterations)
-Tier 1.5: Working Memory (~/.working-memory/current-task.yaml)  ← NEW
-    ↕ (persisted every N iterations)
-Tier 2: File-Based Memory (daily logs, MEMORY.md)
-    ↕ (cron extraction + sync writes for important facts)
-Tier 3: Knowledge Graph (facts, entities, relations, episodes)  ← ENHANCED
-```
-
-## 置信度评分（Confidence Scoring）
-
-每个事实的置信度由以下因素综合计算得出：
+置信度的计算方式如下：
 - **基础置信度**（0.0–1.0）
-- **来自高置信度支持事实的增强**  
-- **来自被提及的知名实体的增强**  
-- **基于任务结果的调整**  
-- **来自矛盾事实的负面影响**  
-- **时间衰减**（每月降低 5%）
+- **来自支持事实的增强**：来自相关事实的置信度提升
+- **来自知名实体的增强**：来自知名实体的置信度提升
+- **基于结果的历史调整**：根据成功/失败情况调整置信度
+- **来自矛盾事实的减分**：因矛盾事实导致的置信度下降
+- **时间衰减**：可配置，每月约5%
 
-## 控制界面集成（Control UI Integration）
+## 维护
 
-该系统为 Clawdbot 仪表板提供了一个名为 “Memory” 的标签页，具备以下功能：
-- 查看统计信息（事实、实体、关系、任务记录）
-- 监控系统健康状态
-- 一键自动修复功能
-- 运行维护操作
-- 查看数据提取进度
+### 自动维护（Cron任务）
 
-## 相关文件
+```bash
+# Extract facts from memory files (every 6 hours)
+0 */6 * * * cd ~/openclaw/skills/surrealdb-memory && source .venv/bin/activate && python scripts/extract-knowledge.py extract
 
+# Discover relations (daily at 3 AM)
+0 3 * * * cd ~/openclaw/skills/surrealdb-memory && source .venv/bin/activate && python scripts/extract-knowledge.py discover-relations
 ```
-surrealdb-memory/
-├── SKILL.md                      # This file
-├── INSTRUCTIONS.md               # Setup and usage guide
-├── UPGRADE-V2.md                 # V2 upgrade guide
-├── CHANGELOG.md                  # Version history
-├── package.json                  # Skill metadata
-├── scripts/
-│   ├── mcp-server-v2.py          # MCP server with 10 tools (v2)
-│   ├── mcp-server.py             # Legacy MCP server (v1)
-│   ├── working_memory.py         # Working memory module (v2)
-│   ├── episodes.py               # Episodic memory module (v2)
-│   ├── migrate-v2.py             # V2 schema migration
-│   ├── schema-v2.sql             # V2 database schema
-│   ├── schema-v2-additive.sql    # Additive v2 schema
-│   ├── knowledge-tool.py         # Simple CLI wrapper
-│   ├── extract-knowledge.py      # LLM extraction from memory files
-│   ├── memory-cli.py             # Full CLI for CRUD operations
-│   ├── schema.sql                # Original schema
-│   ├── init-db.sh                # Initialize database
-│   ├── install.sh                # Install SurrealDB binary
-│   └── requirements.txt          # Python dependencies
-├── clawdbot-integration/
-│   ├── gateway/
-│   │   └── memory.ts             # Gateway RPC handlers
-│   └── ui/
-│       ├── memory-view.ts        # Memory tab view (Lit)
-│       └── memory-controller.ts  # Memory tab controller
-└── references/
-    ├── surql-examples.md         # SurrealQL query patterns
-    └── conflict-patterns.md      # Contradiction detection rules
-```
+
+### 手动维护（通过UI）
+
+使用“Memory”标签页中的“维护”功能：
+- **应用衰减**：降低过时事实的置信度
+- **清理过时数据**：将置信度低于0.3的事实存档
+- **全面清理**：执行完整的维护周期
+
+## 文件
+
+### 脚本
+| 文件 | 用途 |
+|------|---------|
+| `mcp-server-v2.py` | 包含所有11个工具的MCP服务器 |
+| `mcp-server.py` | 旧版v1的MCP服务器 |
+| `episodes.py`：情景记忆模块 |
+| `working_memory.py`：工作记忆模块 |
+| `memory-cli.py`：用于手动操作的命令行工具 |
+| `extract-knowledge.py`：从文件批量提取数据 |
+| `knowledge-tools.py`：高级提取工具 |
+| `schema-v2.sql`：v2版本的数据库模式 |
+| `migrate-v2.py`：迁移脚本 |
+
+### 集成
+
+| 文件 | 用途 |
+|------|---------|
+| `openclaw-integration/gateway/memory.ts`：网关服务器相关代码 |
+| `openclaw-integration/ui/memory-view.ts`：记忆图谱仪表盘UI |
+| `openclaw-integration/ui/memory-controller.ts`：UI控制器相关代码 |
 
 ## 故障排除
 
-- 如果出现 “连接被拒绝” 的错误，请尝试启动 SurrealDB 服务：  
-  ```bash
-surreal start --user root --pass root file:~/.clawdbot/memory/knowledge.db
-```
+**“连接被拒绝”**
+→ 启动SurrealDB：`surreal start --bind 127.0.0.1:8000 --user root --pass root file:~/.openclaw/memory/knowledge.db`
 
-- 如果提示 “surrealdb 包未安装”，请先安装 Python 依赖项：  
-  ```bash
+**“未配置MCP服务器”**
+→ 确保`mcporter`从包含`config/mcporter.json`文件的目录中运行，并且其中定义了surrealdb-memory服务器
+
+**`memory_inject`返回空结果**
+→ 检查环境变量中是否设置了`OPENAI_API_KEY`
+→ 确保SurrealDB正在运行且数据库模式已初始化
+
+**搜索结果为空**
+→ 通过UI或CLI执行提取操作，以从内存文件中填充事实数据
+
+**进度条不更新**
+→ 确保在UI更新后重新启动网关服务
+→ 检查浏览器控制台中的轮询错误
+
+## 从v1版本迁移
+
+```bash
+# Apply v2 schema (additive, won't delete existing data)
+./scripts/migrate-v2.sh
+
+# Or manually:
 source .venv/bin/activate
-pip install -r scripts/requirements.txt
+python scripts/migrate-v2.py
 ```
 
-- 如果找不到 “episode table”，请运行 v2.0 版本的迁移脚本：  
-  ```bash
-python3 scripts/migrate-v2.py
+## 统计信息
+
+通过UI（仪表盘）或CLI查看知识图谱：
+```bash
+mcporter call surrealdb-memory.knowledge_stats
 ```
 
-- 如果未设置 `OPENAI_API_KEY`，请先导出该密钥：  
-  ```bash
-export OPENAI_API_KEY="sk-..."
+示例输出：
+```json
+{
+  "facts": 379,
+  "entities": 485,
+  "relations": 106,
+  "episodes": 3,
+  "avg_confidence": 0.99
+}
 ```
-
-## 版本历史
-
-- **v2.0.0**（2026-02-17）：新增情景记忆、工作记忆功能及基于结果的学习机制  
-- **v1.2.0**（2026-02-09）：添加 MCP 服务器及四项新工具  
-- **v1.1.0**（2026-02-09）：集成 Gateway 系统、实现关系发现功能及控制界面  
-- **v1.0.0**（2026-01-31）：初始版本，包含数据提取和命令行接口

@@ -1,10 +1,10 @@
 ---
 name: api-gateway
-description: >
-  这是一个由 Maton (https://maton.ai) 提供的 API 网关，用于通过管理的 OAuth 连接调用第三方 API。  
-  当用户需要与 Slack、HubSpot、Salesforce、Google Workspace、Stripe 等外部服务进行交互时，可以使用此功能。  
-  访问权限仅限于您通过 OAuth 显式授权的连接——仅凭 API 密钥无法访问任何第三方服务。  
-  使用此功能需要网络连接以及有效的 Maton API 密钥。
+description: |
+  API gateway for calling third-party APIs with managed OAuth connections, provided by Maton (https://maton.ai).
+  Use this skill when users want to interact with external services like Slack, HubSpot, Salesforce, Google Workspace, Stripe, and more.
+  Access is scoped to connections you explicitly authorize via OAuth - the API key alone does not grant access to any third-party service.
+  Requires network access and valid Maton API key.
 metadata:
   author: maton
   version: "1.0"
@@ -15,11 +15,12 @@ metadata:
       env:
         - MATON_API_KEY
 ---
-# API网关
 
-这是一个代理服务，用于通过[Maton](https://maton.ai)提供的管理型OAuth连接直接访问第三方API。该API网关允许您直接调用原生API端点。
+# API Gateway
 
-## 快速入门
+Passthrough proxy for direct access to third-party APIs using managed OAuth connections, provided by [Maton](https://maton.ai). The API gateway lets you call native API endpoints directly.
+
+## Quick Start
 
 ```bash
 # Native Slack API call
@@ -33,43 +34,44 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## 基本URL
+
+## Base URL
 
 ```
 https://gateway.maton.ai/{app}/{native-api-path}
 ```
 
-请将`{app}`替换为服务名称，将`{native-api-path}`替换为实际的API端点路径。
+Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path.
 
-**重要提示**：URL路径必须以连接的应用程序名称开头（例如：`/google-mail/...`）。这个前缀告诉网关使用哪个应用程序的连接。例如，Gmail的原生API路径以`gmail/v1/`开头，因此完整的路径看起来像`/google-mail/gmail/v1/users/me/messages`。
+IMPORTANT: The URL path MUST start with the connection's app name (eg. `/google-mail/...`). This prefix tells the gateway which app connection to use. For example, the native Gmail API path starts with `gmail/v1/`, so full paths look like `/google-mail/gmail/v1/users/me/messages`.
 
-## 认证
+## Authentication
 
-所有请求都需要在`Authorization`头部包含Maton API密钥：
+All requests require the Maton API key in the Authorization header:
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-API网关会自动为目标服务注入相应的OAuth令牌。
+The API gateway automatically injects the appropriate OAuth token for the target service.
 
-**环境变量**：您可以将API密钥设置为`MATON_API_KEY`环境变量：
+**Environment Variable:** You can set your API key as the `MATON_API_KEY` environment variable:
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-## 获取您的API密钥
+## Getting Your API Key
 
-1. 在[maton.ai](https://maton.ai)登录或创建账户。
-2. 转到[maton.ai/settings](https://maton.ai/settings)。
-3. 点击API Key部分右侧的复制按钮来复制密钥。
+1. Sign in or create an account at [maton.ai](https://maton.ai)
+2. Go to [maton.ai/settings](https://maton.ai/settings)
+3. Click the copy button on the right side of API Key section to copy it
 
-## 连接管理
+## Connection Management
 
-连接管理使用一个单独的基本URL：`https://ctrl.maton.ai`
+Connection management uses a separate base URL: `https://ctrl.maton.ai`
 
-### 列出连接
+### List Connections
 
 ```bash
 python <<'EOF'
@@ -80,11 +82,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**查询参数（可选）：**
-- `app` - 按服务名称过滤（例如：`slack`、`hubspot`、`salesforce`）
-- `status` - 按连接状态过滤（`ACTIVE`、`PENDING`、`FAILED`）
+**Query Parameters (optional):**
+- `app` - Filter by service name (e.g., `slack`, `hubspot`, `salesforce`)
+- `status` - Filter by connection status (`ACTIVE`, `PENDING`, `FAILED`)
 
-**响应：**
+**Response:**
 ```json
 {
   "connections": [
@@ -101,7 +103,7 @@ EOF
 }
 ```
 
-### 创建连接
+### Create Connection
 
 ```bash
 python <<'EOF'
@@ -114,7 +116,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 获取连接
+### Get Connection
 
 ```bash
 python <<'EOF'
@@ -125,7 +127,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**响应：**
+**Response:**
 ```json
 {
   "connection": {
@@ -140,9 +142,9 @@ EOF
 }
 ```
 
-在浏览器中打开返回的URL以完成OAuth认证。
+Open the returned URL in a browser to complete OAuth.
 
-### 删除连接
+### Delete Connection
 
 ```bash
 python <<'EOF'
@@ -153,9 +155,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 指定连接
+### Specifying Connection
 
-如果您对同一应用程序有多个连接，可以通过添加`Maton-Connection`头部和连接ID来指定使用哪个连接：
+If you have multiple connections for the same app, you can specify which connection to use by adding the `Maton-Connection` header with the connection ID:
 
 ```bash
 python <<'EOF'
@@ -169,11 +171,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略了该头部，网关将使用该应用程序的默认（最旧的）活动连接。
+If omitted, the gateway uses the default (oldest) active connection for that app.
 
-## 支持的服务
+## Supported Services
 
-| 服务 | 应用程序名称 | 代理的基本URL |
+| Service | App Name | Base URL Proxied |
 |---------|----------|------------------|
 | ActiveCampaign | `active-campaign` | `{account}.api-us1.com` |
 | Acuity Scheduling | `acuity-scheduling` | `acuityscheduling.com` |
@@ -192,7 +194,7 @@ EOF
 | ClickFunnels | `clickfunnels` | `{subdomain}.myclickfunnels.com` |
 | ClickSend | `clicksend` | `rest.clicksend.com` |
 | ClickUp | `clickup` | `api.clickup.com` |
-| Clockify | `clockify` | `api_clockify.me` |
+| Clockify | `clockify` | `api.clockify.me` |
 | Coda | `coda` | `coda.io` |
 | Confluence | `confluence` | `api.atlassian.com` |
 | CompanyCam | `companycam` | `api.companycam.com` |
@@ -259,7 +261,7 @@ EOF
 | SignNow | `signnow` | `api.signnow.com` |
 | Slack | `slack` | `slack.com` |
 | Snapchat | `snapchat` | `adsapi.snapchat.com` |
-| Square | `squareup` | `connect.square.com` |
+| Square | `squareup` | `connect.squareup.com` |
 | Stripe | `stripe` | `api.stripe.com` |
 | Systeme.io | `systeme` | `api.systeme.io` |
 | Tally | `tally` | `api.tally.so` |
@@ -277,6 +279,7 @@ EOF
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
+| Zoho Bookings | `zoho-bookings` | `www.zohoapis.com` |
 | Zoho Books | `zoho-books` | `www.zohoapis.com` |
 | Zoho Calendar | `zoho-calendar` | `calendar.zoho.com` |
 | Zoho CRM | `zoho-crm` | `www.zohoapis.com` |
@@ -285,120 +288,122 @@ EOF
 | Zoho People | `zoho-people` | `people.zoho.com` |
 | Zoho Recruit | `zoho-recruit` | `recruit.zoho.com` |
 
-有关每个提供者的详细路由指南，请参阅[参考资料/](references/)：
-- [ActiveCampaign](references/active-campaign.md) - 联系人、交易、标签、列表、自动化、活动
-- [Acuity Scheduling](references/acuity-scheduling.md) - 预约、日历、客户、可用性
-- [Airtable](references/airtable.md) - 记录、数据库、表格
-- [Apollo](references/apollo.md) - 人员搜索、信息丰富、联系人
-- [Asana](references/asana.md) - 任务、项目、工作空间、Webhook
-- [Attio](references/attio.md) - 人员、公司、记录、任务
-- [Basecamp](references/basecamp.md) - 项目、待办事项、消息、日程表、文档
-- [beehiiv](references/beehiiv.md) - 出版物、订阅、帖子、自定义字段
-- [Box](references/box.md) - 文件、文件夹、协作、共享链接
-- [Brevo](references/brevo.md) - 联系人、电子邮件活动、交易邮件、模板
-- [Calendly](references/calendly.md) - 事件类型、预定事件、可用性、Webhook
-- [Cal.com](references/cal-com.md) - 事件类型、预订、日程安排、可用时间槽、Webhook
-- [CallRail](references/callrail.md) - 呼叫、跟踪器、公司、标签、分析
-- [Chargebee](references/chargebee.md) - 订阅、客户、发票
-- [ClickFunnels](references/clickfunnels.md) - 联系人、产品、订单、课程、Webhook
-- [ClickSend](references/clicksend.md) - SMS、MMS、语音消息、联系人、列表
-- [ClickUp](references/clickup.md) - 任务、列表、文件夹、工作空间、Webhook
-- [Clockify](references/clockify.md) - 时间跟踪、项目、客户、任务、工作空间
-- [Coda](references/coda.md) - 文档、页面、表格、行、公式、控件
-- [Confluence](references/confluence.md) - 页面、工作空间、博客文章、评论、附件
-- [CompanyCam](references/companycam.md) - 项目、照片、用户、标签、组、文档
-- [Cognito Forms](references/cognito-forms.md) - 表单、条目、文档、文件
-- [Constant Contact](references/constant-contact.md) - 联系人、电子邮件活动、列表、细分市场
-- [Dropbox](references/dropbox.md) - 文件、文件夹、搜索、元数据、修订、标签
-- [Dropbox Business](references/dropbox-business.md) - 团队成员、组、团队文件夹、设备、审计日志
-- [ElevenLabs](references/elevenlabs.md) - 文本转语音、语音克隆、音频处理
-- [Eventbrite](references/eventbrite.md) - 活动、场地、票务、订单、参与者
-- [Fathom](references/fathom.md) - 会议记录、摘要、总结、Webhook
-- [Firebase](references/fireflies.md) - 项目、Web应用程序、Android应用程序、iOS应用程序、配置
-- [GetResponse](references/getresponse.md) - 活动、联系人、新闻通讯、自动回复器、标签、细分市场
-- [GitHub](references/github.md) - 仓库、问题、拉取请求、提交
-- [Gumroad](references/gumroad.md) - 产品、销售、订阅者、许可证、Webhook
-- [Google Ads](references/google-ads.md) - 活动、广告组、GAQL查询
-- [Google Analytics Admin](references/google-analytics-admin.md) - 报告、维度、指标
-- [Google Analytics Data](references/google-analytics-data.md) - 报告、维度、指标
-- [Google BigQuery](references/google-bigquery.md) - 数据集、表格、作业、SQL查询
-- [Google Calendar](references/google-calendar.md) - 活动、日历、空闲/忙碌
-- [Google Classroom](references/google-classroom.md) - 课程、课程作业、学生、教师、公告
-- [Google Contacts](references/google-contacts.md) - 联系人、联系人组、人员搜索
-- [Google Docs](references/google-docs.md) - 文档创建、批量更新
-- [Google Drive](references/google-drive.md) - 文件、文件夹、权限
-- [Google Forms](references/google-forms.md) - 表单、问题、回复
-- [Gmail](references/google-mail.md) - 消息、线程、标签
-- [Google Meet](references/google-meet.md) - 工作空间、会议记录、参与者
-- [Google Merchant](references/google-merchant.md) - 产品、库存、促销、报告
-- [Google Play](references/google-play.md) - 应用内产品、订阅、评论
-- [Google Search Console](references/google-search-console.md) - 搜索分析、站点地图
-- [Google Sheets](references/google-sheets.md) - 值、范围、格式
-- [Google Slides](references/google-slides.md) - 演示文稿、幻灯片、格式
-- [Google Tasks](references/google-tasks.md) - 任务列表、任务、子任务
-- [Google Workspace Admin](references/google-workspace-admin.md) - 用户、组、组织单位、域名、角色
-- [HubSpot](references/hubspot.md) - 联系人、公司、交易
-- [Instantly](references/instantly.md) - 活动、潜在客户、账户、电子邮件推广
-- [Jira](references/jira.md) | 问题、项目、JQL查询
-- [Jobber](references/jobber.md) | 客户、工作、发票、报价（GraphQL）
-- [JotForm](references/jotform.md) | 表单、提交、Webhook
-- [Keap](references/keap.md) | 联系人、公司、标签、任务、机会、活动
-- [Kit](references/kit.md) | 订阅者、标签、表单、序列、广播
-- [Klaviyo](references/klaviyo.md) | 轮廓、列表、活动、流程、事件
-- [Lemlist](references/lemlist.md) | 活动、潜在客户、活动、日程安排、取消订阅
-- [Linear](references/linear.md) | 问题、项目、团队、周期（GraphQL）
-- [LinkedIn](references/linkedin.md) | 轮廓、帖子、分享、媒体上传
-- [Mailchimp](references/mailchimp.md) | 目标受众、活动、模板、自动化
-- [MailerLite](references/mailerlite.md) | 订阅者、组、活动、自动化、表单
-- [Mailgun](references/mailgun.md) | 发送电子邮件、域名、路由、模板、邮件列表、抑制
-- [ManyChat](references/manychat.md) | 订阅者、标签、流程、消息
-- [Microsoft Excel](references/microsoft-excel.md) | 工作簿、工作表、范围、表格
-- [Microsoft To Do](references/microsoft-to-do.md) | 任务列表、任务、待办事项列表、链接资源
-- [Monday.com](references/monday.md) | 板块、项目、列、组（GraphQL）
-- [Motion](references/motion.md) | 任务、项目、工作空间、日程安排
-- [Netlify](references/netlify.md) | 网站、部署、构建、DNS、环境变量
-- [Notion](references/notion.md) | 页面、数据库、块
-- [OneDrive](references/one-drive.md) | 文件、文件夹、驱动器、共享
-- [Outlook](references/outlook.md) | 邮件、日历、联系人
-- [PDF.co](references/pdf-co.md) | PDF转换、合并、分割、编辑、文本提取、条形码
-- [Pipedrive](references/pipedrive.md) | 交易、人员、组织、活动
-- [Podio](references/podio.md) | 组织、工作空间、应用程序、项目、任务、评论
-- [QuickBooks](references/quickbooks.md) | 客户、发票、报告
-- [Quo](references/quo.md) | 呼叫、消息、联系人、对话、Webhook
-- [Salesforce](references/salesforce.md) | SOQL、sObjects、CRUD
-- [SignNow](references/signnow.md) | 文档、模板、邀请、电子签名
-- [SendGrid](references/sendgrid.md) | 发送电子邮件、联系人、模板、抑制、统计
-- [Slack](references/slack.md) | 消息、频道、用户
-- [Snapchat](references/snapchat.md) | 广告账户、活动、广告团队、广告、创意、受众
-- [Square](references/squareup.md) | 支付、客户、订单、目录、库存、发票
-- [Stripe](references/stripe.md) | 客户、订阅、支付
-- [Systeme.io](references/systeme.md) | 联系人、标签、课程、社区、Webhook
-- [Tally](references/tally.md) | 表单、提交、工作空间、Webhook
-- [Telegram](references/telegram.md) | 消息、聊天、机器人、更新、投票
-- [TickTick](references/ticktick.md) | 任务、项目、任务列表
-- [Todoist](references/to-doist.md) | 任务、项目、部分、标签、评论
-- [Toggl Track](references/toggl-track.md) | 时间条目、项目、客户、标签、工作空间
-- [Trello](references/trello.md) | 板块、列表、卡片、检查表
-- [Twilio](references/twilio.md) | SMS、语音通话、电话号码、消息
-- [Typeform](references/typeform.md) | 表单、回复、洞察
-- [Vimeo](references/vimeo.md) | 视频、文件夹、相册、评论
-- [WhatsApp Business](references/whatsapp-business.md) | 消息、模板、媒体
-- [WooCommerce](references/woocommerce.md) | 产品、订单、客户
-- [WordPress.com](references/wordpress.md) | 文章、页面、网站、用户、设置
-- [Xero](references/xero.md) | 联系人、发票、报告
-- [YouTube](references/youtube.md) | 视频、播放列表、频道
-- [Zoho Bigin](references/zoho-bigin.md) | 联系人、公司、管道、产品
-- [Zoho Books](references/zoho-books.md) | 发票、联系人、账单
-- [Zoho Calendar](references/zoho-calendar.md) | 日历、活动、参与者
-- [Zoho CRM](references/zoho-crm.md) | 潜在客户、联系人、账户、交易
-- [Zoho Inventory](references/zoho-inventory.md) | 商品、销售订单、发票
-- [Zoho Mail](references/zoho-mail.md) | 消息、文件夹、标签
-- [Zoho People](references/zoho-people.md) | 员工、部门、职位、出勤
-- [Zoho Recruit](references/zoho-recruit.md) | 招聘、职位空缺、面试
+See [references/](references/) for detailed routing guides per provider:
+- [ActiveCampaign](references/active-campaign.md) - Contacts, deals, tags, lists, automations, campaigns
+- [Acuity Scheduling](references/acuity-scheduling.md) - Appointments, calendars, clients, availability
+- [Airtable](references/airtable.md) - Records, bases, tables
+- [Apollo](references/apollo.md) - People search, enrichment, contacts
+- [Asana](references/asana.md) - Tasks, projects, workspaces, webhooks
+- [Attio](references/attio.md) - People, companies, records, tasks
+- [Basecamp](references/basecamp.md) - Projects, to-dos, messages, schedules, documents
+- [beehiiv](references/beehiiv.md) - Publications, subscriptions, posts, custom fields
+- [Box](references/box.md) - Files, folders, collaborations, shared links
+- [Brevo](references/brevo.md) - Contacts, email campaigns, transactional emails, templates
+- [Calendly](references/calendly.md) - Event types, scheduled events, availability, webhooks
+- [Cal.com](references/cal-com.md) - Event types, bookings, schedules, availability slots, webhooks
+- [CallRail](references/callrail.md) - Calls, trackers, companies, tags, analytics
+- [Chargebee](references/chargebee.md) - Subscriptions, customers, invoices
+- [ClickFunnels](references/clickfunnels.md) - Contacts, products, orders, courses, webhooks
+- [ClickSend](references/clicksend.md) - SMS, MMS, voice messages, contacts, lists
+- [ClickUp](references/clickup.md) - Tasks, lists, folders, spaces, webhooks
+- [Clockify](references/clockify.md) - Time tracking, projects, clients, tasks, workspaces
+- [Coda](references/coda.md) - Docs, pages, tables, rows, formulas, controls
+- [Confluence](references/confluence.md) - Pages, spaces, blogposts, comments, attachments
+- [CompanyCam](references/companycam.md) - Projects, photos, users, tags, groups, documents
+- [Cognito Forms](references/cognito-forms.md) - Forms, entries, documents, files
+- [Constant Contact](references/constant-contact.md) - Contacts, email campaigns, lists, segments
+- [Dropbox](references/dropbox.md) - Files, folders, search, metadata, revisions, tags
+- [Dropbox Business](references/dropbox-business.md) - Team members, groups, team folders, devices, audit logs
+- [ElevenLabs](references/elevenlabs.md) - Text-to-speech, voice cloning, sound effects, audio processing
+- [Eventbrite](references/eventbrite.md) - Events, venues, tickets, orders, attendees
+- [Fathom](references/fathom.md) - Meeting recordings, transcripts, summaries, webhooks
+- [Firebase](references/firebase.md) - Projects, web apps, Android apps, iOS apps, configurations
+- [Fireflies](references/fireflies.md) - Meeting transcripts, summaries, AskFred AI, channels
+- [GetResponse](references/getresponse.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
+- [GitHub](references/github.md) - Repositories, issues, pull requests, commits
+- [Gumroad](references/gumroad.md) - Products, sales, subscribers, licenses, webhooks
+- [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
+- [Google Analytics Admin](references/google-analytics-admin.md) - Reports, dimensions, metrics
+- [Google Analytics Data](references/google-analytics-data.md) - Reports, dimensions, metrics
+- [Google BigQuery](references/google-bigquery.md) - Datasets, tables, jobs, SQL queries
+- [Google Calendar](references/google-calendar.md) - Events, calendars, free/busy
+- [Google Classroom](references/google-classroom.md) - Courses, coursework, students, teachers, announcements
+- [Google Contacts](references/google-contacts.md) - Contacts, contact groups, people search
+- [Google Docs](references/google-docs.md) - Document creation, batch updates
+- [Google Drive](references/google-drive.md) - Files, folders, permissions
+- [Google Forms](references/google-forms.md) - Forms, questions, responses
+- [Gmail](references/google-mail.md) - Messages, threads, labels
+- [Google Meet](references/google-meet.md) - Spaces, conference records, participants
+- [Google Merchant](references/google-merchant.md) - Products, inventories, promotions, reports
+- [Google Play](references/google-play.md) - In-app products, subscriptions, reviews
+- [Google Search Console](references/google-search-console.md) - Search analytics, sitemaps
+- [Google Sheets](references/google-sheets.md) - Values, ranges, formatting
+- [Google Slides](references/google-slides.md) - Presentations, slides, formatting
+- [Google Tasks](references/google-tasks.md) - Task lists, tasks, subtasks
+- [Google Workspace Admin](references/google-workspace-admin.md) - Users, groups, org units, domains, roles
+- [HubSpot](references/hubspot.md) - Contacts, companies, deals
+- [Instantly](references/instantly.md) - Campaigns, leads, accounts, email outreach
+- [Jira](references/jira.md) - Issues, projects, JQL queries
+- [Jobber](references/jobber.md) - Clients, jobs, invoices, quotes (GraphQL)
+- [JotForm](references/jotform.md) - Forms, submissions, webhooks
+- [Keap](references/keap.md) - Contacts, companies, tags, tasks, opportunities, campaigns
+- [Kit](references/kit.md) - Subscribers, tags, forms, sequences, broadcasts
+- [Klaviyo](references/klaviyo.md) - Profiles, lists, campaigns, flows, events
+- [Lemlist](references/lemlist.md) - Campaigns, leads, activities, schedules, unsubscribes
+- [Linear](references/linear.md) - Issues, projects, teams, cycles (GraphQL)
+- [LinkedIn](references/linkedin.md) - Profile, posts, shares, media uploads
+- [Mailchimp](references/mailchimp.md) - Audiences, campaigns, templates, automations
+- [MailerLite](references/mailerlite.md) - Subscribers, groups, campaigns, automations, forms
+- [Mailgun](references/mailgun.md) - Email sending, domains, routes, templates, mailing lists, suppressions
+- [ManyChat](references/manychat.md) - Subscribers, tags, flows, messaging
+- [Microsoft Excel](references/microsoft-excel.md) - Workbooks, worksheets, ranges, tables, charts
+- [Microsoft To Do](references/microsoft-to-do.md) - Task lists, tasks, checklist items, linked resources
+- [Monday.com](references/monday.md) - Boards, items, columns, groups (GraphQL)
+- [Motion](references/motion.md) - Tasks, projects, workspaces, schedules
+- [Netlify](references/netlify.md) - Sites, deploys, builds, DNS, environment variables
+- [Notion](references/notion.md) - Pages, databases, blocks
+- [OneDrive](references/one-drive.md) - Files, folders, drives, sharing
+- [Outlook](references/outlook.md) - Mail, calendar, contacts
+- [PDF.co](references/pdf-co.md) - PDF conversion, merge, split, edit, text extraction, barcodes
+- [Pipedrive](references/pipedrive.md) - Deals, persons, organizations, activities
+- [Podio](references/podio.md) - Organizations, workspaces, apps, items, tasks, comments
+- [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
+- [Quo](references/quo.md) - Calls, messages, contacts, conversations, webhooks
+- [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
+- [SignNow](references/signnow.md) - Documents, templates, invites, e-signatures
+- [SendGrid](references/sendgrid.md) - Email sending, contacts, templates, suppressions, statistics
+- [Slack](references/slack.md) - Messages, channels, users
+- [Snapchat](references/snapchat.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
+- [Square](references/squareup.md) - Payments, customers, orders, catalog, inventory, invoices
+- [Stripe](references/stripe.md) - Customers, subscriptions, payments
+- [Systeme.io](references/systeme.md) - Contacts, tags, courses, communities, webhooks
+- [Tally](references/tally.md) - Forms, submissions, workspaces, webhooks
+- [Telegram](references/telegram.md) - Messages, chats, bots, updates, polls
+- [TickTick](references/ticktick.md) - Tasks, projects, task lists
+- [Todoist](references/todoist.md) - Tasks, projects, sections, labels, comments
+- [Toggl Track](references/toggl-track.md) - Time entries, projects, clients, tags, workspaces
+- [Trello](references/trello.md) - Boards, lists, cards, checklists
+- [Twilio](references/twilio.md) - SMS, voice calls, phone numbers, messaging
+- [Typeform](references/typeform.md) - Forms, responses, insights
+- [Vimeo](references/vimeo.md) - Videos, folders, albums, comments, likes
+- [WhatsApp Business](references/whatsapp-business.md) - Messages, templates, media
+- [WooCommerce](references/woocommerce.md) - Products, orders, customers, coupons
+- [WordPress.com](references/wordpress.md) - Posts, pages, sites, users, settings
+- [Xero](references/xero.md) - Contacts, invoices, reports
+- [YouTube](references/youtube.md) - Videos, playlists, channels, subscriptions
+- [Zoho Bigin](references/zoho-bigin.md) - Contacts, companies, pipelines, products
+- [Zoho Bookings](references/zoho-bookings.md) - Appointments, services, staff, workspaces
+- [Zoho Books](references/zoho-books.md) - Invoices, contacts, bills, expenses
+- [Zoho Calendar](references/zoho-calendar.md) - Calendars, events, attendees, reminders
+- [Zoho CRM](references/zoho-crm.md) - Leads, contacts, accounts, deals, search
+- [Zoho Inventory](references/zoho-inventory.md) - Items, sales orders, invoices, purchase orders, bills
+- [Zoho Mail](references/zoho-mail.md) - Messages, folders, labels, attachments
+- [Zoho People](references/zoho-people.md) - Employees, departments, designations, attendance, leave
+- [Zoho Recruit](references/zoho-recruit.md) - Candidates, job openings, interviews, applications
 
-## 示例
+## Examples
 
-### Slack - 发送消息（原生API）
+### Slack - Post Message (Native API)
 
 ```bash
 # Native Slack API: POST https://slack.com/api/chat.postMessage
@@ -412,7 +417,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### HubSpot - 创建联系人（原生API）
+### HubSpot - Create Contact (Native API)
 
 ```bash
 # Native HubSpot API: POST https://api.hubapi.com/crm/v3/objects/contacts
@@ -426,7 +431,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Google Sheets - 获取电子表格值（原生API）
+### Google Sheets - Get Spreadsheet Values (Native API)
 
 ```bash
 # Native Sheets API: GET https://sheets.googleapis.com/v4/spreadsheets/{id}/values/{range}
@@ -438,7 +443,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Salesforce - SOQL查询（原生API）
+### Salesforce - SOQL Query (Native API)
 
 ```bash
 # Native Salesforce API: GET https://{instance}.salesforce.com/services/data/v64.0/query?q=...
@@ -450,7 +455,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Airtable - 列出表格（原生API）
+### Airtable - List Tables (Native API)
 
 ```bash
 # Native Airtable API: GET https://api.airtable.com/v0/meta/bases/{id}/tables
@@ -462,7 +467,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Notion - 查询数据库（原生API）
+### Notion - Query Database (Native API)
 
 ```bash
 # Native Notion API: POST https://api.notion.com/v1/data_sources/{id}/query
@@ -477,7 +482,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Stripe - 列出客户（原生API）
+### Stripe - List Customers (Native API)
 
 ```bash
 # Native Stripe API: GET https://api.stripe.com/v1/customers
@@ -489,9 +494,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## 代码示例
+## Code Examples
 
-### JavaScript（Node.js）
+### JavaScript (Node.js)
 
 ```javascript
 const response = await fetch('https://gateway.maton.ai/slack/api/chat.postMessage', {
@@ -517,27 +522,27 @@ response = requests.post(
 )
 ```
 
-## 错误处理
+## Error Handling
 
-| 状态 | 含义 |
+| Status | Meaning |
 |--------|---------|
-| 400 | 请求的应用程序连接缺失 |
-| 401 | Maton API密钥无效或缺失 |
-| 429 | 每账户每秒10次请求的限制 |
-| 500 | 内部服务器错误 |
-| 4xx/5xx | 来自目标API的传递错误 |
+| 400 | Missing connection for the requested app |
+| 401 | Invalid or missing Maton API key |
+| 429 | Rate limited (10 requests/second per account) |
+| 500 | Internal Server Error |
+| 4xx/5xx | Passthrough error from the target API |
 
-目标API的错误会以其原始状态代码和响应体传递。
+Errors from the target API are passed through with their original status codes and response bodies.
 
-### 故障排除：API密钥问题
+### Troubleshooting: API Key Issues
 
-1. 确保设置了`MATON_API_KEY`环境变量：
+1. Check that the `MATON_API_KEY` environment variable is set:
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. 通过列出连接来验证API密钥是否有效：
+2. Verify the API key is valid by listing connections:
 
 ```bash
 python <<'EOF'
@@ -548,13 +553,14 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 故障排除：应用程序名称无效
+### Troubleshooting: Invalid App Name
 
-1. 确保您的URL路径以正确的应用程序名称开头。路径必须以`/google-mail/`开头。例如：
-- 正确：`https://gateway.maton.ai/google-mail/gmail/v1/users/me/messages`
-- 错误：`https://gateway.maton.ai/gmail/v1/users/me/messages`
+1. Verify your URL path starts with the correct app name. The path must begin with `/google-mail/`. For example:
 
-2. 确保您有该应用程序的活跃连接。列出您的连接以进行验证：
+- Correct: `https://gateway.maton.ai/google-mail/gmail/v1/users/me/messages`
+- Incorrect: `https://gateway.maton.ai/gmail/v1/users/me/messages`
+
+2. Ensure you have an active connection for the app. List your connections to verify:
 
 ```bash
 python <<'EOF'
@@ -565,31 +571,35 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 故障排除：服务器错误
+### Troubleshooting: Server Error
 
-500错误可能表示OAuth令牌已过期。尝试通过上面的连接管理部分创建新的连接并完成OAuth认证。如果新连接是“ACTIVE”的，请删除旧连接，以确保网关使用新的连接。
+A 500 error may indicate an expired OAuth token. Try creating a new connection via the Connection Management section above and completing OAuth authorization. If the new connection is "ACTIVE", delete the old connection to ensure the gateway uses the new one.
 
-## 速率限制
+## Rate Limits
 
-- 每账户每秒10次请求
-- 目标API的速率限制也适用
+- 10 requests per second per account
+- Target API rate limits also apply
 
-## 注意事项
+## Notes
 
-- 当使用`curl`处理包含括号`fields[]`、`sort[]`、`records[]`的URL时，请使用`-g`标志以禁用全局解析。
-- 当将`curl`输出传递给`jq`时，某些shell可能无法正确扩展环境变量，这可能导致“无效API密钥”错误。
+- When using curl with URLs containing brackets (`fields[]`, `sort[]`, `records[]`), use the `-g` flag to disable glob parsing
+- When piping curl output to `jq`, environment variables may not expand correctly in some shells, which can cause "Invalid API key" errors
 
-## 提示
+## Tips
 
-1. **使用原生API文档**：请参考每个服务的官方API文档以获取端点路径和参数。
-2. **头部会被转发**：自定义头部（`Host`和`Authorization`除外）会被转发到目标API。
-3. **查询参数有效**：URL查询参数会被传递给目标API。
-4. **支持所有HTTP方法**：GET、POST、PUT、PATCH、DELETE都受支持。
-5. **QuickBooks的特殊情况**：在路径中使用`:realmId`，它将被替换为连接的领域ID。
+1. **Use native API docs**: Refer to each service's official API documentation for endpoint paths and parameters.
 
-## 可选资源
+2. **Headers are forwarded**: Custom headers (except `Host` and `Authorization`) are forwarded to the target API.
+
+3. **Query params work**: URL query parameters are passed through to the target API.
+
+4. **All HTTP methods supported**: GET, POST, PUT, PATCH, DELETE are all supported.
+
+5. **QuickBooks special case**: Use `:realmId` in the path and it will be replaced with the connected realm ID.
+
+## Optional
 
 - [Github](https://github.com/maton-ai/api-gateway-skill)
-- [API参考](https://www.maton.ai/docs/api-reference)
-- [Maton社区](https://discord.com/invite/dBfFAcefs2)
-- [Maton支持](mailto:support@maton.ai)
+- [API Reference](https://www.maton.ai/docs/api-reference)
+- [Maton Community](https://discord.com/invite/dBfFAcefs2)
+- [Maton Support](mailto:support@maton.ai)

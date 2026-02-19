@@ -1,19 +1,13 @@
 ---
 name: ai-voice-cloning
-description: |
-  AI voice generation, text-to-speech, and voice synthesis via inference.sh CLI.
-  Models: Kokoro TTS, DIA, Chatterbox, Higgs, VibeVoice for natural speech.
-  Capabilities: multiple voices, emotions, accents, long-form narration, conversation.
-  Use for: voiceovers, audiobooks, podcasts, video narration, accessibility.
-  Triggers: voice cloning, tts, text to speech, ai voice, voice generation,
-  voice synthesis, voice over, narration, speech synthesis, ai narrator,
-  elevenlabs alternative, natural voice, realistic speech, voice ai
+description: "通过 `inference.sh` 命令行工具实现 AI 语音生成、文本转语音（TTS）及语音合成功能。支持的模型包括：Kokoro TTS、DIA、Chatterbox、Higgs、VibeVoice，可生成自然流畅的语音。功能特点包括：支持多种语音风格、情感表达、口音设置，支持长篇叙述及对话场景。应用场景包括：配音、有声书制作、播客录制、视频解说以及提升内容的可访问性（如为视障用户提供语音描述）。相关命令包括：语音克隆、文本转语音、AI 语音生成、语音合成等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # 人工智能语音生成
 
-通过 [inference.sh](https://inference.sh) 命令行界面（CLI）生成自然的语音效果。
+通过 [inference.sh](https://inference.sh) 命令行工具生成自然的人造语音。
+
+![人工智能语音生成](https://cloud.inference.sh/u/4mg21r6ta37mpaz6ktzwtt8krr/01jz00krptarq4bwm89g539aea.png)
 
 ## 快速入门
 
@@ -27,37 +21,39 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可以选择 [手动安装并验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 可用模型
 
 | 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Kokoro TTS | `infsh/kokoro-tts` | 自然的语音效果，支持多种声音 |
+| Kokoro TTS | `infsh/kokoro-tts` | 自然音色，多种语音风格 |
 | DIA | `infsh/dia-tts` | 适合对话场景，表达力强 |
 | Chatterbox | `infsh/chatterbox` | 适合休闲娱乐场景 |
-| Higgs | `infsh/higgs-tts` | 适合专业旁白场景 |
-| VibeVoice | `infsh/vibevoice` | 具备丰富的情感表现力 |
+| Higgs | `infsh/higgs-tts` | 适合专业旁白 |
+| VibeVoice | `infsh/vibevoice` | 适合表达情感的语音 |
 
 ## Kokoro 语音库
 
 ### 美式英语
 
-| 语音 ID | 性别 | 语音风格 |
+| 语音 ID | 性别 | 风格 |
 |----------|--------|-------|
-| `af_sarah` | 女性 | 温暖、友好的语气 |
-| `af_nicole` | 女性 | 专业的语气 |
+| `af_sarah` | 女性 | 温暖、友好 |
+| `af_nicole` | 女性 | 专业 |
 | `af_sky` | 女性 | 年轻人风格 |
-| `am_michael` | 男性 | 权威性强的语气 |
-| `am_adam` | 男性 | 适合对话的语气 |
-| `am_echo` | 男性 | 清晰、中立的语气 |
+| `am_michael` | 男性 | 权威感强 |
+| `am_adam` | 男性 | 适合对话 |
+| `am_echo` | 男性 | 语气清晰、中性 |
 
 ### 英式英语
 
-| 语音 ID | 性别 | 语音风格 |
+| 语音 ID | 性别 | 风格 |
 |----------|--------|-------|
-| `bf_emma` | 女性 | 优雅的语气 |
-| `bf_isabella` | 女性 | 温暖的语气 |
-| `bm_george` | 男性 | 古典的语气 |
-| `bm_lewis` | 男性 | 现代的语气 |
+| `bf_emma` | 女性 | 优雅 |
+| `bf_isabella` | 女性 | 温暖 |
+| `bm_george` | 男性 | 古典风格 |
+| `bm_lewis` | 男性 | 现代风格 |
 
 ## 语音生成示例
 
@@ -134,7 +130,7 @@ infsh app run infsh/media-merger --input '{
 
 ## 长篇内容处理
 
-- 如果内容超过 5000 个字符，建议将其分割成多个部分进行处理：
+- 如果内容超过 5000 个字符，请将其分割成多个部分进行处理：
 
 ```bash
 # Process long text in chunks
@@ -160,7 +156,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## 语音与视频的结合
+## 语音与视频结合的工作流程
 
 ### 为视频添加旁白
 
@@ -198,11 +194,11 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 
 | 语速 | 效果 | 适用场景 |
 |-------|--------|---------|
-| 0.8 | 语速较慢 | 适合有声书、冥想场景 |
-| 0.9 | 语速稍慢 | 适合教育、教程内容 |
+| 0.8 | 语速较慢 | 适合有声书、冥想 |
+| 0.9 | 语速稍慢 | 教育类内容、教程 |
 | 1.0 | 正常语速 | 通用场景 |
-| 1.1 | 语速稍快 | 适合广告、需要活力的场景 |
-| 1.2 | 语速很快 | 适合快速公告 |
+| 1.1 | 语速稍快 | 商业广告、需要活力的场景 |
+| 1.2 | 语速很快 | 快速公告 |
 
 ```bash
 # Slow narration
@@ -213,15 +209,17 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## 使用标点符号控制语速节奏
+## 使用标点符号控制节奏
 
-- 标点符号可以帮助控制语音的节奏：
-  - 句号（.`）：表示完整的停顿 |
-  - 逗号（`,`）：表示短暂的停顿 |
-  - …（`...`）：表示较长的停顿 |
-  - 句号（`!`）：表示强调 |
-  - 问号（`?`）：表示疑问的语气 |
-  - 破折号（`-`）：表示短暂的停顿 |
+- 使用标点符号来控制语音的节奏：
+| 标点符号 | 效果 |
+|-------------|--------|
+| 句号 `.` | 长暂停 |
+| 逗号 `,` | 短暂停 |
+| `...` | 长暂停 |
+| `!` | 强调 |
+| `?` | 提问语气 |
+| `-` | 快速停顿 |
 
 ```bash
 infsh app run infsh/kokoro-tts --input '{
@@ -232,40 +230,40 @@ infsh app run infsh/kokoro-tts --input '{
 
 ## 最佳实践
 
-1. **根据内容选择合适的语音**：商务场景使用专业语音，社交场景使用自然的语音。
-2. **使用标点符号**：通过句号和逗号来控制语速节奏。
-3. **保持句子简短**：这样更容易生成自然的语音效果。
-4. **测试不同的语音**：同样的文本用不同的语音表达出来会有不同的效果。
-5. **调整语速**：通常语速稍慢会显得更自然。
-6. **分段处理长内容**：将长内容分成小段进行处理，以保持一致性。
+1. **根据内容选择合适的语音**：商务场景使用专业语音，社交场景使用自然的语音风格。
+2. **使用标点符号**：通过句号和逗号来控制语速和节奏。
+3. **保持句子简短**：这样更容易生成语音，听起来也更自然。
+4. **测试不同的语音**：同样的文本用不同的语音表达出来效果可能不同。
+5. **调整语速**：通常语速稍慢会让人感觉更自然。
+6. **分段处理长内容**：将长内容分成小块进行处理，以保持一致性。
 
 ## 应用场景
 
-- **旁白**：视频解说、广告
+- **旁白**：视频解说、商业广告
 - **有声书**：整本书的朗读
-- **播客**：AI 播客主持人及嘉宾
+- **播客**：AI 主播和嘉宾角色
 - **电子学习**：课程讲解
-- **无障碍阅读**：为屏幕阅读器生成语音内容
-- **交互式语音应答（IVR）**：电话系统中的语音消息
-- **内容本地化**：将文本翻译并转化为语音
+- **无障碍技术**：屏幕阅读器的辅助内容
+- **交互式语音应答（IVR）**：电话系统的语音提示
+- **内容本地化**：文本的翻译和语音化
 
 ## 相关技能
 
 ```bash
 # All TTS models
-npx skills add inference-sh/agent-skills@text-to-speech
+npx skills add inference-sh/skills@text-to-speech
 
 # Podcast creation
-npx skills add inference-sh/agent-skills@ai-podcast-creation
+npx skills add inference-sh/skills@ai-podcast-creation
 
 # AI avatars
-npx skills add inference-sh/agent-skills@ai-avatar-video
+npx skills add inference-sh/skills@ai-avatar-video
 
 # Video generation
-npx skills add inference-sh/agent-skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
 查看音频应用：`infsh app list --category audio`

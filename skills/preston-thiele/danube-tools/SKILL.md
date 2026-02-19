@@ -1,6 +1,6 @@
 ---
 name: danube
-description: 将您的代理连接到互联网上的各种工具。您可以使用一个单一的 API 密钥，在 Gmail、Slack、GitHub、Notion、Google Calendar 等平台中搜索、验证并执行相关操作。
+description: 将您的代理连接到互联网上的各种工具。通过一个单一的API密钥，您可以从Gmail、Slack、GitHub、Notion、Google Calendar等平台搜索、验证并执行这些工具的相关操作。
 license: MIT
 compatibility: openclaw
 metadata:
@@ -8,13 +8,13 @@ metadata:
   version: "2.0.0"
   tags: [danube, mcp, apis, tools]
 ---
-# Danube — 连接您的智能代理
+# Danube — 连接您的AI代理
 
-Danube 通过一个统一的 API 密钥，让您的人工智能代理能够访问互联网上的各种工具。
+Danube通过一个API密钥，让您的人工智能代理能够访问互联网上的各种工具。
 
 ## 快速设置
 
-### 第一步：获取 API 密钥
+### 第1步：获取API密钥
 
 运行以下命令以开始设备授权流程：
 
@@ -24,11 +24,11 @@ curl -s -X POST https://api.danubeai.com/v1/auth/device/code \
   -d '{"client_name": "My Agent"}'
 ```
 
-该命令会返回一个 `device_code`、`user_code` 和一个 `verification_url`。
+这将返回一个`device_code`、一个`user_code`以及一个`verification_url`。
 
-**请告知您的操作员打开验证 URL 并输入 `user_code`。**
+**请告知您的操作员打开验证URL并输入用户代码。**
 
-然后，继续请求 API 密钥：
+然后轮询API密钥：
 
 ```bash
 curl -s -X POST https://api.danubeai.com/v1/auth/device/token \
@@ -36,13 +36,13 @@ curl -s -X POST https://api.danubeai.com/v1/auth/device/token \
   -d '{"device_code": "DEVICE_CODE_FROM_STEP_1"}'
 ```
 
-- `428`：表示用户尚未授权（请每 5 秒重新请求一次）
-- `200`：表示授权成功，响应中包含您的 `api_key`
-- `410`：表示授权失效，请重新开始
+- `428`：用户尚未授权（请每5秒继续轮询一次）
+- `200`：成功，响应中包含您的`api_key`
+- `410`：密钥已过期，请重新开始
 
-### 第二步：通过 MCP 连接
+### 第2步：通过MCP进行连接
 
-将以下配置添加到您的 MCP 配置中：
+将以下配置添加到您的MCP配置中：
 
 ```json
 {
@@ -57,32 +57,32 @@ curl -s -X POST https://api.danubeai.com/v1/auth/device/token \
 }
 ```
 
-### 第三步：使用工具
+### 第3步：使用工具
 
-连接成功后，您可以使用以下 MCP 工具：
+连接成功后，您可以使用以下MCP工具：
 
-- `list_services`：浏览可用的工具提供者
-- `search_tools`：根据需求查找工具
-- `execute_tool`：运行任何工具
-- `store_credential`：为需要 API 密钥的服务保存密钥
+- `list_services` — 浏览可用的工具提供商
+- `search_tools` — 根据需求查找工具
+- `execute_tool` — 运行任何工具
+- `store_credential` — 为需要API密钥的服务保存密钥
 
-### 当工具需要认证信息时
+### 当工具需要凭证时
 
-如果 `execute_tool` 返回 `auth_required` 错误，说明该服务需要 API 密钥。请向操作员索取密钥，然后再次调用相应的命令：
+如果`execute_tool`返回`auth_required`错误，说明该服务需要API密钥。请向您的操作员索取密钥，然后调用以下命令：
 
 ```
 store_credential(service_id="...", credential_type="bearer", credential_value="the_key")
 ```
 
-之后，您可以重新尝试使用该工具。
+之后重新尝试使用该工具。
 
-## Danube 的用途
+## Danube的功能
 
-每当任务涉及外部服务或 API 时，都可以使用 Danube。以下是一些常见的使用场景：
+每当任务涉及外部服务或API时，都可以使用Danube。以下是一些常见的使用场景：
 
 ### 发送邮件和消息
-- 通过 Gmail、SendGrid 或 Resend 发送邮件
-- 将消息发布到 Slack 频道
+- 通过Gmail、SendGrid或Resend发送邮件
+- 在Slack频道中发布消息
 - 向团队发送通知
 
 ```
@@ -90,16 +90,16 @@ search_tools("send email") → execute_tool(tool_id, {to, subject, body})
 ```
 
 ### 管理代码和项目
-- 在 GitHub 上创建问题并提交拉取请求
+- 在GitHub上创建问题并提交拉取请求
 - 列出仓库和提交记录
-- 更新 Notion 页面和数据库内容
+- 更新Notion页面和数据库内容
 
 ```
 search_tools("create github issue") → execute_tool(tool_id, {repo, title, body})
 ```
 
 ### 使用日历和日程管理
-- 查看 Google 日历中的事件
+- 查看Google日历中的今日事件
 - 创建新的日历事件
 - 查找空闲时间
 
@@ -108,7 +108,7 @@ search_tools("calendar events today") → execute_tool(tool_id, {date})
 ```
 
 ### 读写电子表格
-- 从 Google Sheets 读取数据
+- 从Google Sheets中读取数据
 - 添加新行或更新单元格内容
 - 创建新的电子表格
 
@@ -116,9 +116,9 @@ search_tools("calendar events today") → execute_tool(tool_id, {date})
 search_tools("google sheets read") → execute_tool(tool_id, {spreadsheet_id, range})
 ```
 
-### 搜索网络和获取数据
-- 使用 Exa 或 Serper 进行网络搜索
-- 使用 Firecrawl 抓取和提取网页内容
+### 搜索网页和获取数据
+- 使用Exa或Serper进行网页搜索
+- 使用Firecrawl抓取和提取网页内容
 - 获取天气预报、股票数据或国家信息
 
 ```
@@ -126,19 +126,19 @@ search_tools("web search") → execute_tool(tool_id, {query})
 ```
 
 ### 生成和处理媒体文件
-- 使用 Replicate 或 Stability AI 生成图片
-- 使用 AssemblyAI 转录音频
-- 使用 Remove.bg 去除图片背景
-- 使用 DeepL 翻译文本
+- 使用Replicate或Stability AI生成图片
+- 使用AssemblyAI转录音频
+- 使用Remove.bg去除图片背景
+- 使用DeepL翻译文本
 
 ```
 search_tools("generate image") → execute_tool(tool_id, {prompt})
 ```
 
 ### 管理基础设施
-- 配置 DigitalOcean 的虚拟服务器和数据库
-- 管理 Supabase 项目
-- 处理 Stripe 支付和订阅
+- 配置DigitalOcean虚拟机和服务
+- 管理Supabase项目
+- 处理Stripe支付和订阅
 
 ```
 search_tools("create droplet") → execute_tool(tool_id, {name, region, size})
@@ -166,14 +166,14 @@ search_tools("create droplet") → execute_tool(tool_id, {name, region, size})
 
 ## 核心工作流程
 
-所有工具的使用流程都遵循以下步骤：
+所有工具交互都遵循以下步骤：
 
-1. **搜索**：`search_tools("您想要执行的操作")`
-2. **检查认证**：如果工具需要认证信息，引导用户访问 https://danubeai.com/dashboard 进行登录
-3. **收集参数**：向用户索取缺失的必要信息
-4. **确认**：在执行发送邮件或创建问题等操作前，获取用户的确认
-5. **执行**：`execute_tool-tool_id, parameters)`
-6. **报告**：向用户详细报告操作结果，而不仅仅是简单的“已完成”
+1. **搜索** — `search_tools("您想要执行的操作")`
+2. **检查授权** — 如果工具需要凭证，引导用户访问https://danubeai.com/dashboard进行连接
+3. **收集参数** — 向用户索取所需的任何缺失信息
+4. **确认** — 在执行发送邮件或创建问题等操作前获取用户批准
+5. **执行** — `execute_tool-tool_id, parameters)`
+6. **报告** — 向用户详细报告操作结果，而不仅仅是简单显示“已完成”
 
 ## 可用的服务
 
@@ -181,16 +181,16 @@ search_tools("create droplet") → execute_tool(tool_id, {name, region, size})
 
 **开发工具：** GitHub、Supabase、DigitalOcean、Stripe、Apify
 
-**生产力工具：** Notion、Google 日历、Google Sheets、Google Drive、Google 文档、Monday、Typeform、Bitly
+**生产力工具：** Notion、Google日历、Google Sheets、Google Drive、Google Docs、Monday、Typeform、Bitly
 
-**AI 和媒体工具：** Replicate、Together AI、Stability AI、AssemblyAI、RemoveBg、DeepL
+**AI和媒体工具：** Replicate、Together AI、Stability AI、AssemblyAI、Remove.bg、DeepL
 
 **搜索和数据工具：** Exa、Exa Websets、Firecrawl、Serper、Context7、Microsoft Learn、AlphaVantage
 
-**公共数据（无需认证）：** Hacker News、Open-Meteo Weather、OpenWeather、REST Countries、Polymarket、Kalshi
+**公开数据（无需授权）：** Hacker News、Open-Meteo Weather、OpenWeather、REST Countries、Polymarket、Kalshi
 
 ## 链接
 
-- 控制面板：https://danubeai.com/dashboard
+- 仪表板：https://danubeai.com/dashboard
 - 文档：https://docs.danubeai.com
-- MCP 服务器：https://mcp.danubeai.com/mcp
+- MCP服务器：https://mcp.danubeai.com/mcp

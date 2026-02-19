@@ -8,6 +8,7 @@
  *   profile <username>          Recent tweets from a user
  *   tweet <tweet_id>            Fetch a single tweet
  *   article <url>               Fetch and read full article content
+ *   capabilities                Print machine-readable capability manifest
  *   watchlist                   Show watchlist
  *   watchlist add <user>        Add user to watchlist
  *   watchlist remove <user>     Remove user from watchlist
@@ -17,6 +18,14 @@
  *   like <tweet_id>             Like a tweet (requires OAuth)
  *   unlike <tweet_id>           Unlike a tweet (requires OAuth)
  *   following [username]        List accounts you follow (requires OAuth)
+ *   follow <@user|id>           Follow a user (requires OAuth)
+ *   unfollow <@user|id>         Unfollow a user (requires OAuth)
+ *   media <tweet_id|url>        Download media from a tweet
+ *   stream [options]            Stream tweets using X filtered stream (rules-based)
+ *   stream-rules [subcommand]   Manage filtered stream rules
+ *   lists [subcommand]          Manage your X lists (requires OAuth)
+ *   blocks [subcommand]         Manage blocked users (requires OAuth)
+ *   mutes [subcommand]          Manage muted users (requires OAuth)
  *   bookmark <tweet_id>         Bookmark a tweet (requires OAuth)
  *   unbookmark <tweet_id>       Remove a bookmark (requires OAuth)
  *   trends [location] [opts]    Fetch trending topics
@@ -59,7 +68,16 @@ import * as cache from "./lib/cache";
 import * as fmt from "./lib/format";
 import { authSetup, authStatus, authRefresh } from "./lib/oauth";
 import { cmdBookmarks } from "./lib/bookmarks";
-import { cmdLikes, cmdLike, cmdUnlike, cmdFollowing, cmdBookmarkSave, cmdUnbookmark } from "./lib/engagement";
+import {
+  cmdLikes,
+  cmdLike,
+  cmdUnlike,
+  cmdFollowing,
+  cmdFollow,
+  cmdUnfollow,
+  cmdBookmarkSave,
+  cmdUnbookmark,
+} from "./lib/engagement";
 import { cmdTrends } from "./lib/trends";
 import { cmdAnalyze } from "./lib/grok";
 import { cmdCosts, trackCost, checkBudget } from "./lib/costs";
@@ -71,6 +89,14 @@ import { fetchArticle, formatArticle } from "./lib/article";
 import { cmdXSearch } from "./lib/x_search";
 import { cmdCollections } from "./lib/collections";
 import { cmdMCPServer } from "./lib/mcp";
+import { cmdLists } from "./lib/lists";
+import { cmdBlocks, cmdMutes } from "./lib/moderation";
+import { cmdStream, cmdStreamRules } from "./lib/stream";
+import { cmdMedia } from "./lib/media";
+import { cmdCapabilities } from "./lib/capabilities";
+import { buildOutputMeta, printJsonWithMeta, printJsonlWithMeta } from "./lib/output-meta";
+import { cmdAuthDoctor, cmdHealth } from "./lib/health";
+import { consumeCommandFallback, recordCommandResult } from "./lib/reliability";
 
 const SKILL_DIR = import.meta.dir;
 const WATCHLIST_PATH = join(SKILL_DIR, "data", "watchlist.json");
@@ -78,8 +104,111 @@ const DRAFTS_DIR = join(SKILL_DIR, "data", "exports");
 
 // --- Arg parsing ---
 
+type PolicyMode = "read_only" | "engagement" | "moderation";
+type RequiredMode = PolicyMode;
+
+function policyRank(mode: PolicyMode): number {
+  switch (mode) {
+    case "read_only": return 1;
+    case "engagement": return 2;
+    case "moderation": return 3;
+  }
+}
+
+function parseGlobalPolicy(argv: string[]): PolicyMode {
+  let parsed: PolicyMode = "read_only";
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] !== "--policy") continue;
+    const raw = argv[i + 1];
+    if (!raw) {
+      console.error(`{"error":{"code":"POLICY_INVALID","message":"--policy requires one of: read_only, engagement, moderation"}}`);
+      process.exit(2);
+    }
+    if (raw !== "read_only" && raw !== "engagement" && raw !== "moderation") {
+      console.error(`{"error":{"code":"POLICY_INVALID","message":"Invalid --policy value","value":"${raw}"}}`);
+      process.exit(2);
+    }
+    parsed = raw as PolicyMode;
+    argv.splice(i, 2);
+    i--;
+  }
+  return parsed;
+}
+
 const args = process.argv.slice(2);
+const policyMode = parseGlobalPolicy(args);
 const command = args[0];
+
+const COMMAND_POLICY: Record<string, RequiredMode> = {
+  search: "read_only",
+  s: "read_only",
+  watch: "read_only",
+  w: "read_only",
+  diff: "engagement",
+  followers: "engagement",
+  report: "read_only",
+  thread: "read_only",
+  t: "read_only",
+  profile: "read_only",
+  p: "read_only",
+  tweet: "read_only",
+  media: "read_only",
+  article: "read_only",
+  read: "read_only",
+  bookmarks: "engagement",
+  bm: "engagement",
+  bookmark: "engagement",
+  unbookmark: "engagement",
+  likes: "engagement",
+  like: "engagement",
+  unlike: "engagement",
+  following: "engagement",
+  follow: "engagement",
+  unfollow: "engagement",
+  lists: "engagement",
+  list: "engagement",
+  blocks: "moderation",
+  block: "moderation",
+  mutes: "moderation",
+  mute: "moderation",
+  trends: "read_only",
+  tr: "read_only",
+  analyze: "read_only",
+  ask: "read_only",
+  costs: "read_only",
+  cost: "read_only",
+  auth: "read_only",
+  health: "read_only",
+  watchlist: "read_only",
+  wl: "read_only",
+  cache: "read_only",
+  "ai-search": "read_only",
+  x_search: "read_only",
+  xsearch: "read_only",
+  collections: "read_only",
+  kb: "read_only",
+  mcp: "read_only",
+  "mcp-server": "read_only",
+  capabilities: "read_only",
+  caps: "read_only",
+};
+
+function enforcePolicyOrExit(cmd?: string): void {
+  if (!cmd) return;
+  const required = COMMAND_POLICY[cmd] || "read_only";
+  if (policyRank(policyMode) >= policyRank(required)) return;
+  const payload = {
+    error: {
+      code: "POLICY_DENIED",
+      message: `Command '${cmd}' requires '${required}' policy mode`,
+      command: cmd,
+      policy_mode: policyMode,
+      required_mode: required,
+    },
+  };
+  console.error(JSON.stringify(payload));
+  process.exit(2);
+}
 
 function getFlag(name: string): boolean {
   const idx = args.indexOf(`--${name}`);
@@ -131,6 +260,7 @@ function warnIfOverBudget(): void {
 // --- Commands ---
 
 async function cmdSearch() {
+  const startedAtMs = Date.now();
   // Parse new flags first (before getOpt consumes positional args)
   const quick = getFlag("quick");
   const quality = getFlag("quality");
@@ -189,10 +319,12 @@ async function cmdSearch() {
   // Check cache (cache key does NOT include quick flag — shared between modes)
   const cacheParams = `sort=${sortOpt}&pages=${pages}&since=${since || "7d"}`;
   const cached = cache.get(query, cacheParams, cacheTtlMs);
+  let cacheHit = false;
   let tweets: api.Tweet[];
 
   if (cached) {
     tweets = cached;
+    cacheHit = true;
     console.error(`(cached — ${tweets.length} tweets)`);
   } else {
     tweets = await api.search(query, {
@@ -242,18 +374,27 @@ async function cmdSearch() {
     sentimentResults = await analyzeSentiment(tweets.slice(0, limit));
   }
 
+  const shown = tweets.slice(0, limit);
+  const endpoint = fullArchive ? "/2/tweets/search/all" : "/2/tweets/search/recent";
+  const estimatedCostUsd = cacheHit ? 0 : rawTweetCount * (fullArchive ? 0.01 : 0.005);
+  const outputMeta = buildOutputMeta({
+    source: "x_api_v2",
+    startedAtMs,
+    cached: cacheHit,
+    confidence: 1,
+    apiEndpoint: endpoint,
+    estimatedCostUsd,
+  });
+
   // Output
   if (asCsv) {
-    console.log(fmt.formatCsv(tweets.slice(0, limit)));
+    console.log(fmt.formatCsv(shown));
   } else if (asJsonl) {
-    console.log(fmt.formatJsonl(tweets.slice(0, limit)));
+    const payload = sentimentResults ? enrichTweets(shown, sentimentResults) : shown;
+    printJsonlWithMeta(outputMeta, payload, "tweet");
   } else if (asJson) {
-    if (sentimentResults) {
-      const enriched = enrichTweets(tweets.slice(0, limit), sentimentResults);
-      console.log(JSON.stringify(enriched, null, 2));
-    } else {
-      console.log(JSON.stringify(tweets.slice(0, limit), null, 2));
-    }
+    const payload = sentimentResults ? enrichTweets(shown, sentimentResults) : shown;
+    printJsonWithMeta(outputMeta, payload);
   } else if (asMarkdown) {
     const md = fmt.formatResearchMarkdown(query, tweets, {
       queries: [query],
@@ -334,6 +475,7 @@ async function cmdThread() {
 }
 
 async function cmdProfile() {
+  const startedAtMs = Date.now();
   const username = args[1]?.replace(/^@/, "");
   if (!username) {
     console.error("Usage: xint profile <username>");
@@ -353,7 +495,15 @@ async function cmdProfile() {
   trackCost("profile", `/2/users/by/username/${username}`, tweets.length + 1);
 
   if (asJson) {
-    console.log(JSON.stringify({ user, tweets }, null, 2));
+    const outputMeta = buildOutputMeta({
+      source: "x_api_v2",
+      startedAtMs,
+      cached: false,
+      confidence: 1,
+      apiEndpoint: `/2/users/by/username/${username}`,
+      estimatedCostUsd: (tweets.length + 1) * 0.005,
+    });
+    printJsonWithMeta(outputMeta, { user, tweets });
   } else {
     console.log(fmt.formatProfileTelegram(user, tweets));
   }
@@ -362,6 +512,7 @@ async function cmdProfile() {
 }
 
 async function cmdTweet() {
+  const startedAtMs = Date.now();
   const tweetId = args[1];
   if (!tweetId) {
     console.error("Usage: xint tweet <tweet_id>");
@@ -380,7 +531,15 @@ async function cmdTweet() {
 
   const asJson = getFlag("json");
   if (asJson) {
-    console.log(JSON.stringify(tweet, null, 2));
+    const outputMeta = buildOutputMeta({
+      source: "x_api_v2",
+      startedAtMs,
+      cached: false,
+      confidence: tweet ? 1 : 0,
+      apiEndpoint: `/2/tweets/${tweetId}`,
+      estimatedCostUsd: 0.005,
+    });
+    printJsonWithMeta(outputMeta, tweet);
   } else {
     console.log(fmt.formatTweetTelegram(tweet, undefined, { full: true }));
   }
@@ -553,11 +712,15 @@ async function cmdAuth() {
     case "refresh":
       await authRefresh();
       break;
+    case "doctor":
+      await cmdAuthDoctor(args.slice(2));
+      break;
     default:
       console.log(`auth commands:
   auth setup [--manual]   Set up OAuth 2.0 (PKCE) authentication
   auth status             Check token status
-  auth refresh            Manually refresh tokens`);
+  auth refresh            Manually refresh tokens
+  auth doctor [--json]    Validate auth credentials and scopes`);
   }
 }
 
@@ -573,31 +736,46 @@ Commands:
   profile <username>          Recent tweets from a user
   tweet <tweet_id>            Fetch a single tweet
   article <url>               Fetch and read full article content
+  capabilities                Print machine-readable capability manifest
   bookmarks [options]         Fetch your bookmarked tweets (OAuth required)
   likes [options]             Fetch your liked tweets (OAuth required)
   like <tweet_id>             Like a tweet (OAuth required)
   unlike <tweet_id>           Unlike a tweet (OAuth required)
   following [username]        List accounts you follow (OAuth required)
+  follow <@user|id>           Follow a user (OAuth required)
+  unfollow <@user|id>         Unfollow a user (OAuth required)
+  media <tweet_id|url>        Download media from a tweet
+  stream [options]            Stream tweets using X filtered stream
+  stream-rules [subcmd]       Manage filtered stream rules
+  lists [subcmd]              Manage your X lists (OAuth required)
+  blocks [subcmd]             Manage blocked users (OAuth required)
+  mutes [subcmd]              Manage muted users (OAuth required)
   bookmark <tweet_id>         Bookmark a tweet (OAuth required)
   unbookmark <tweet_id>       Remove a bookmark (OAuth required)
   trends [location] [opts]    Fetch trending topics
   analyze <query>             Analyze with Grok AI (xAI)
   costs [today|week|month]    View API cost tracking & budget
+  health [--json]             Runtime health, auth checks, and reliability stats
   auth setup [--manual]       Set up OAuth 2.0 PKCE authentication
   auth status                 Check OAuth token status
   auth refresh                Manually refresh OAuth tokens
+  auth doctor [--json]        Validate auth credentials and scopes
   watchlist                   Show watchlist
   watchlist add <user> [note] Add user to watchlist
   watchlist remove <user>     Remove user from watchlist
   watchlist check             Check recent from all watchlist accounts
   cache clear                 Clear search cache
+  --policy <mode>             Global policy: read_only | engagement | moderation
   ai-search <file>           Search X via xAI's x_search tool (AI-powered)
   collections <subcmd>       Manage xAI Collections Knowledge Base
   mcp-server [options]        Start MCP server for AI agents (Claude, OpenAI)
+  capabilities [--compact]    Print JSON capability/pricing/policy schema
 
 MCP Server options:
   --sse                       Run in SSE mode (HTTP server)
   --port=<N>                  Port for SSE mode (default: 3000)
+  --policy=<mode>             MCP policy mode: read_only|engagement|moderation
+  --no-budget-guard           Disable budget guard for tool calls
   Run without flags for stdio mode (for Claude Code integration)
 
 Search options:
@@ -629,6 +807,18 @@ Watch options:
   --quiet, -q                Suppress per-poll headers
   --jsonl                    Output JSONL for piping
 
+Stream options:
+  --json                     Output JSON per stream event
+  --jsonl                    Output JSONL per stream event
+  --max-events N             Stop after N events
+  --backfill N               Backfill 1-5 minutes (X API option)
+  --webhook <url>            POST event payloads to URL
+  --quiet, -q                Suppress stream status logs
+
+Stream rules options:
+  xint stream-rules [list|add|delete|clear]
+  Run 'xint stream-rules --help' for full examples
+
 Diff options:
   --following                Track following list instead of followers
   --history                  Show all saved snapshots
@@ -650,6 +840,26 @@ Bookmark/Like options:
   --markdown                 Markdown output
   --save                     Save to data/exports/
   --no-cache                 Skip cache
+  follow/unfollow also accept: --json
+
+Media options:
+  --dir <path>               Output directory (default: data/media)
+  --max-items <N>            Download up to N media items
+  --name-template <tpl>      Filename template tokens:
+                             {tweet_id} {username} {index} {type}
+                             {media_key} {created_at} {ext}
+  --photos-only              Download photos only
+  --video-only               Download videos/GIFs only
+  --json                     Output JSON summary
+
+Lists options:
+  xint lists [list|create|update|delete|members]
+  Run 'xint lists' for full subcommand help and examples
+
+Blocks/Mutes options:
+  xint blocks [list|add|remove]
+  xint mutes [list|add|remove]
+  Run 'xint blocks --help' or 'xint mutes --help' for examples
 
 Trends options:
   [location]                 Location name or WOEID (default: worldwide)
@@ -674,99 +884,184 @@ Costs options:
 
 // --- Main ---
 
+function metricCommandName(cmd?: string): string | null {
+  if (!cmd) return null;
+  if (cmd === "s") return "search";
+  if (cmd === "w") return "watch";
+  if (cmd === "t") return "thread";
+  if (cmd === "p") return "profile";
+  if (cmd === "tr") return "trends";
+  if (cmd === "cost") return "costs";
+  if (cmd === "bm") return "bookmarks";
+  if (cmd === "caps") return "capabilities";
+  if (cmd === "wl") return "watchlist";
+  if (cmd === "kb") return "collections";
+  if (cmd === "mcp") return "mcp-server";
+  if (cmd === "stream_rules") return "stream-rules";
+  if (cmd === "bm-save") return "bookmark";
+  if (cmd === "bm-remove") return "unbookmark";
+  if (cmd === "followers") return "diff";
+  if (cmd === "ask") return "analyze";
+  if (cmd === "read") return "article";
+  if (cmd === "x_search" || cmd === "xsearch" || cmd === "ai-search") return "ai-search";
+  if (cmd === "list") return "lists";
+  if (cmd === "block") return "blocks";
+  if (cmd === "mute") return "mutes";
+  const known = new Set([
+    "search", "watch", "diff", "report", "thread", "profile", "tweet", "article",
+    "bookmarks", "likes", "like", "unlike", "following", "follow", "unfollow",
+    "media", "stream", "stream-rules", "lists", "blocks", "mutes", "bookmark",
+    "unbookmark", "trends", "analyze", "costs", "health", "auth", "watchlist",
+    "cache", "ai-search", "collections", "mcp-server", "capabilities",
+  ]);
+  return known.has(cmd) ? cmd : null;
+}
+
 async function main() {
-  switch (command) {
-    case "search":
-    case "s":
-      await cmdSearch();
-      break;
-    case "thread":
-    case "t":
-      await cmdThread();
-      break;
-    case "profile":
-    case "p":
-      await cmdProfile();
-      break;
-    case "tweet":
-      await cmdTweet();
-      break;
-    case "article":
-    case "read":
-      await cmdArticle();
-      break;
-    case "bookmarks":
-    case "bm":
-      await cmdBookmarks(args.slice(1));
-      break;
-    case "likes":
-      await cmdLikes(args.slice(1));
-      break;
-    case "like":
-      await cmdLike(args.slice(1));
-      break;
-    case "unlike":
-      await cmdUnlike(args.slice(1));
-      break;
-    case "following":
-      await cmdFollowing(args.slice(1));
-      break;
-    case "bookmark":
-    case "bm-save":
-      await cmdBookmarkSave(args.slice(1));
-      break;
-    case "unbookmark":
-    case "bm-remove":
-      await cmdUnbookmark(args.slice(1));
-      break;
-    case "trends":
-    case "tr":
-      await cmdTrends(args.slice(1));
-      break;
-    case "analyze":
-    case "ask":
-      await cmdAnalyze(args.slice(1));
-      break;
-    case "costs":
-    case "cost":
-      cmdCosts(args.slice(1));
-      break;
-    case "auth":
-      await cmdAuth();
-      break;
-    case "watchlist":
-    case "wl":
-      await cmdWatchlist();
-      break;
-    case "cache":
-      await cmdCache();
-      break;
-    case "watch":
-    case "w":
-      await cmdWatch(args.slice(1));
-      break;
-    case "diff":
-    case "followers":
-      await cmdDiff(args.slice(1));
-      break;
-    case "report":
-      await cmdReport(args.slice(1));
-      break;
-    case "ai-search":
-    case "x_search":
-    case "xsearch":
-      await cmdXSearch(args.slice(1));
-      break;
-    case "collections":
-    case "kb":
-      await cmdCollections(args.slice(1));
-      break;
-    case "mcp":
-    case "mcp-server":
-      await cmdMCPServer(args.slice(1));
-      break;
-    default:
-      usage();
+  enforcePolicyOrExit(command);
+  const metricCommand = metricCommandName(command);
+  const startedAtMs = Date.now();
+
+  try {
+    switch (command) {
+      case "search":
+      case "s":
+        await cmdSearch();
+        break;
+      case "thread":
+      case "t":
+        await cmdThread();
+        break;
+      case "profile":
+      case "p":
+        await cmdProfile();
+        break;
+      case "tweet":
+        await cmdTweet();
+        break;
+      case "article":
+      case "read":
+        await cmdArticle();
+        break;
+      case "bookmarks":
+      case "bm":
+        await cmdBookmarks(args.slice(1));
+        break;
+      case "likes":
+        await cmdLikes(args.slice(1));
+        break;
+      case "like":
+        await cmdLike(args.slice(1));
+        break;
+      case "unlike":
+        await cmdUnlike(args.slice(1));
+        break;
+      case "following":
+        await cmdFollowing(args.slice(1));
+        break;
+      case "follow":
+        await cmdFollow(args.slice(1));
+        break;
+      case "unfollow":
+        await cmdUnfollow(args.slice(1));
+        break;
+      case "media":
+        await cmdMedia(args.slice(1));
+        break;
+      case "stream":
+        await cmdStream(args.slice(1));
+        break;
+      case "stream-rules":
+      case "stream_rules":
+        await cmdStreamRules(args.slice(1));
+        break;
+      case "lists":
+      case "list":
+        await cmdLists(args.slice(1));
+        break;
+      case "blocks":
+      case "block":
+        await cmdBlocks(args.slice(1));
+        break;
+      case "mutes":
+      case "mute":
+        await cmdMutes(args.slice(1));
+        break;
+      case "bookmark":
+      case "bm-save":
+        await cmdBookmarkSave(args.slice(1));
+        break;
+      case "unbookmark":
+      case "bm-remove":
+        await cmdUnbookmark(args.slice(1));
+        break;
+      case "trends":
+      case "tr":
+        await cmdTrends(args.slice(1));
+        break;
+      case "analyze":
+      case "ask":
+        await cmdAnalyze(args.slice(1));
+        break;
+      case "costs":
+      case "cost":
+        cmdCosts(args.slice(1));
+        break;
+      case "health":
+        await cmdHealth(args.slice(1));
+        break;
+      case "auth":
+        await cmdAuth();
+        break;
+      case "watchlist":
+      case "wl":
+        await cmdWatchlist();
+        break;
+      case "cache":
+        await cmdCache();
+        break;
+      case "watch":
+      case "w":
+        await cmdWatch(args.slice(1));
+        break;
+      case "diff":
+      case "followers":
+        await cmdDiff(args.slice(1));
+        break;
+      case "report":
+        await cmdReport(args.slice(1));
+        break;
+      case "ai-search":
+      case "x_search":
+      case "xsearch":
+        await cmdXSearch(args.slice(1));
+        break;
+      case "collections":
+      case "kb":
+        await cmdCollections(args.slice(1));
+        break;
+      case "mcp":
+      case "mcp-server":
+        process.env.XINT_POLICY_MODE = policyMode;
+        await cmdMCPServer(args.slice(1));
+        break;
+      case "capabilities":
+      case "caps":
+        cmdCapabilities(args.slice(1));
+        break;
+      default:
+        usage();
+    }
+    if (metricCommand) {
+      const fallback = consumeCommandFallback(metricCommand);
+      recordCommandResult(metricCommand, true, Date.now() - startedAtMs, { mode: "cli", fallback });
+    }
+  } catch (error) {
+    if (metricCommand) {
+      const fallback = consumeCommandFallback(metricCommand);
+      recordCommandResult(metricCommand, false, Date.now() - startedAtMs, { mode: "cli", fallback });
+    }
+    throw error;
   }
 }
 

@@ -1,6 +1,6 @@
 ---
 name: srt
-description: 韩国SRT（Super Rapid Train）的搜索、预订及管理功能
+description: 韩国SRT（Super Rapid Train）的搜索、预订及票务管理
 homepage: https://github.com/khj809/openclaw-srt-skill
 user-invocable: true
 metadata:
@@ -8,545 +8,183 @@ metadata:
     "openclaw":
       {
         "emoji": "🚅",
-        "requires": { "bins": ["python3", "uv"] },
+        "requires": { "bins": ["python3", "uv"], "env": ["SRT_PHONE", "SRT_PASSWORD"] },
         "install": [
-          {"id": "uv", "kind": "uv", "package": "SRTrain", "label": "Install SRTrain (uv)"}
+          {"id": "uv", "kind": "uv", "package": "SRTrain", "label": "Install SRTrain from PyPI (uv) — source: https://pypi.org/project/SRTrain / https://github.com/ryanking13/SRT"}
         ]
       },
   }
 ---
-
-# SRT韩国高铁服务技能
-
-这是一个OpenClaw技能，用于管理韩国SRT（Super Rapid Train）的预订，支持搜索、预订、查看和取消功能。
-
-## 主要功能
-
-- 🔍 **搜索列车**：可以查询指定站点之间的列车，并显示实时的座位可用情况。
-- 🎫 **预订列车**：支持自动重试机制，以保护用户账户安全。
-- 📋 **查看预订**：用户可以查看所有已有的预订信息。
-- 🗑️ **取消预订**：提供确认提示后即可取消预订。
-- 🤖 **兼容AI**：输出JSON格式的数据，便于程序化访问。
-- 🛡️ **速率限制**：防止账户被封禁（每次预订间隔至少3秒，每次搜索间隔至少5秒）。
-- ⚠️ **重试保护**：每个会话最多允许10次重试。
+# SRT 韩国火车服务技能
 
 ## 先决条件
 
-- 安装了Python 3.10或更高版本。
-- 拥有SRT账户（包含手机号码和密码）。
-- 安装并配置了OpenClaw。
+在运行脚本之前，必须设置环境变量 `SRT_PHONE`（格式：`010-XXXX-XXXX`）和 `SRT_PASSWORD`。
 
-## 配置
+## 参考
 
-将SRT的用户名和密码设置为环境变量：
+**环境变量：**
+| 变量 | 是否必需 | 说明 |
+|----------|----------|-------------|
+| `SRT_PHONE` | ✅ | SRT 账户电话号码（必须使用连字符：`010-XXXX-XXXX`） |
+| `SRT_PASSWORD` | ✅ | SRT 账户密码 |
+| `SRT_DATA_DIR` | 可选 | 用于存储日志、缓存和状态文件的目录。默认为系统临时目录（`/tmp/srt`）。 |
 
+**车站名称**（仅限韩文）：
+수서（水西）、부산（釜山）、동대구（东大邱）、대전（大田）、천안아산（天安牙山）、오송（乌松）、광주송정（光州松亭）、울산（蔚山）、포항（浦项）、경주（庆州）、김천구미（金川九美）、익산（益山）、전주（全州）、목포（木浦）、신경주（新庆州）
+
+**日期：** `YYYYMMDD` · **时间：** `HHMMSS`（例如：`200000` 表示 20:00）
+
+---
+
+## 命令
+
+### 搜索
 ```bash
-export SRT_PHONE="010-1234-5678"
-export SRT_PASSWORD="your_password"
+cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py search \
+  --departure "수서" --arrival "동대구" --date "20260227" --time "200000"
 ```
+搜索参数和结果会被缓存（保存在 `SRT_DATA_DIR` 目录中），并且是 `reserve` 命令所必需的。
 
-将这些变量添加到你的shell配置文件（如`~/.zshrc`或`~/.bashrc`）中，以便长期使用。
-
-**安全提示：**请勿将凭据提交到版本控制系统中。
-
-**重要提示：**手机号码必须使用`010-XXXX-XXXX`的格式。
-
-## 使用方法
-
-### 用户调用命令
-
-在OpenClaw中使用`/srt`命令：
-
-```
-/srt search --departure "수서" --arrival "부산" --date "20260217" --time "140000"
-/srt reserve --train-id "1"
-/srt reserve --retry --timeout-minutes 60
-/srt reserve --retry --train-id "1,3,5" --timeout-minutes 60
-/srt log -n 30
-/srt list
-/srt cancel --reservation-id "RES123456"
-```
-
-### 通过自然语言（AI协调）
-
-AI可以根据用户的意图调用此技能：
-
-**示例：**
-- “搜索2月17日从首尔SRT站到釜山站的列车。”
-- “预订最快的列车。”
-- “查看我的预订信息。”
-- “取消我在釜山的预订。”
-
-### 直接使用CLI
-
+### 预订（一次性）
 ```bash
-# Search trains
-uv run --with SRTrain python3 scripts/srt_cli.py search \
-  --departure "수서" \
-  --arrival "부산" \
-  --date "20260217" \
-  --time "140000" \
-  --passengers "adult=2"
-
-# Make reservation (single attempt)
-uv run --with SRTrain python3 scripts/srt_cli.py reserve --train-id "1"
-
-# Make reservation with automatic retry - all trains (background mode recommended)
-uv run --with SRTrain python3 scripts/srt_cli.py reserve --retry \
-  --timeout-minutes 60 \
-  --wait-seconds 10
-
-# Make reservation with automatic retry - specific trains only
-uv run --with SRTrain python3 scripts/srt_cli.py reserve --retry \
-  --train-id "1,3,5" \
-  --timeout-minutes 60 \
-  --wait-seconds 10
-
-# Check reservation log
-uv run --with SRTrain python3 scripts/srt_cli.py log -n 30
-
-# View bookings
-uv run --with SRTrain python3 scripts/srt_cli.py list --format json
-
-# Cancel booking
-uv run --with SRTrain python3 scripts/srt_cli.py cancel \
-  --reservation-id "RES123456" \
-  --confirm
+cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py reserve --train-id "1"
 ```
+`--train-id` 是搜索结果中的索引（从 1 开始）。必须先运行 `search` 命令。
 
-## 常见韩国车站名称
-
-**主要SRT车站：**
-- 首尔SRT站（수서, Suseo）
-- 釜山（부산, Busan）
-- 大邱（동대구, Dongdaegu）
-- 大田（대전, Daejeon）
-- 天安-牙山（천안아산, Cheonan-Asan）
-- 五松（오송, Osong）
-- 光州松亭（광주송정, Gwangju-Songjeong）
-- 乌山（울산, Ulsan）
-- 浦项（포항, Pohang）
-- 庆州（경주, Gyeongju）
-- 金泉-古美（김천구미, Gimcheon-Gumi）
-- 伊川（익산, Iksan）
-- 全州（전주, Jeonju）
-- 木浦（목포, Mokpo）
-- 新庆州（신경주, Singyeongju）
-
-**重要提示：**SRT API只能识别韩文（Hangul）车站名称。
-
-## 日期和时间格式
-
-- **日期：**YYYYMMDD（例如，20260217表示2026年2月17日）
-- **时间：**HHMMSS（例如，140000表示下午2点，093000表示上午9点30分）
-
-## 用于AI代理的工具
-
-此技能提供了5个工具来管理SRT列车预订：
-
-### 1. `search_trains`  
-搜索指定站点之间的可用列车。
-
-**使用方法：**
+### 查看预订信息
 ```bash
-uv run --with SRTrain python3 scripts/srt_cli.py search \
-  --departure "수서" \
-  --arrival "부산" \
-  --date "20260217" \
-  --time "120000"
+cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py list --format json
 ```
 
-**返回值：**包含座位可用情况的列车列表（JSON格式）：
+### 取消预订
+```bash
+cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py cancel \
+  --reservation-id "RES123456" --confirm
+```
 
+---
+
+## 持续监控（取消订单的监控）
+
+对于“不断尝试直到有座位可用”的请求，请**不要在 cron 作业中循环执行**。
+正确的做法是：运行 `makereservation.py --retry` 作为持续的后台进程，然后创建另一个 cron 作业来读取日志并生成报告。
+
+### 第一步：搜索（填充缓存）
+```bash
+cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py search \
+  --departure "수서" --arrival "동대구" --date "20260227" --time "200000"
+```
+从搜索结果中获取目标火车的 `train_id`。
+
+### 第二步：启动后台重试进程
+```bash
+LOG_FILE=<choose_any_path>.log
+PID_FILE=<choose_any_path>.pid
+cd <project_dir> && nohup uv run --with SRTrain python3 scripts/make_reservation.py \
+  --train-id <id> --retry --timeout-minutes 1440 --wait-seconds 10 \
+  --log-file "$LOG_FILE" > /dev/null 2>&1 &
+echo $! > "$PID_FILE"
+```
+
+脚本在启动时会输出 `LOG_FILE: <path>` —— 请记录这个路径，以便知道日志文件的位置。
+您也可以通过设置 `SRT_DATA_DIR` 来指定自动生成的日志和缓存文件的位置。
+
+**`make_reservation.py` 的选项：**
+| 选项 | 默认值 | 说明 |
+|--------|---------|-------------|
+| `--train-id` | （所有） | 搜索结果中的索引（用逗号分隔多个火车） |
+| `--retry` | false | 启用持续重试模式 |
+| `--timeout-minutes` | 60 | 总时长。设置为 1440 表示 24 小时 |
+| `--wait-seconds` | 10 | 每次尝试之间的延迟时间 |
+| `--log-file` | auto | 显式的日志文件路径（覆盖 `SRT_DATA_DIR` 的默认值） |
+
+需要关注的日志标记：
+- `=== 시도 #N` —— 尝试次数 |
+- `SUCCESS` —— 预订成功（包含预订编号和座位信息） |
+- `TIMEOUT` —— 未成功且超时
+
+### 第三步：创建定期报告的 cron 作业
+创建一个每隔 15 分钟执行的 cron 作业，该作业会：
+1. 检查进程状态：
+   ```bash
+   PID=$(cat <pid_file> 2>/dev/null)
+   kill -0 "$PID" 2>/dev/null && echo "RUNNING" || echo "NOT_RUNNING"
+   ```
+2. 读取日志尾部内容：`tail -50 <log_file>`
+3. 从日志中解析尝试次数和最后一次尝试的时间
+4. 向指定频道报告结果
+5. 当日志中显示 `SUCCESS` 时，提取预订编号和座位信息，然后停止该 cron 作业
+6. 当发生 `TIMEOUT` 或进程停止运行时，报告结果并停止该 cron 作业
+
+### 第四步：创建终止作业
+在任务结束时间创建一个 `at`-schedule 类型的 cron 作业，该作业会：
+1. 杀死相关进程：`kill $(cat <pid_file>)`
+2. 根据 ID 删除之前的报告 cron 作业
+3. 读取最终日志并报告结果
+
+---
+
+## JSON 输出
+
+**搜索结果项：**
 ```json
 {
-  "success": true,
-  "data": [
-    {
-      "train_id": "1",
-      "train_number": "301",
-      "train_name": "SRT301",
-      "departure_time": "120500",
-      "arrival_time": "143000",
-      "departure_station": "수서",
-      "arrival_station": "부산",
-      "seat_available": true,
-      "general_seat": "예약가능",
-      "special_seat": "예약가능"
-    }
-  ]
+  "train_number": "369",
+  "departure_time": "200000",
+  "arrival_time": "213600",
+  "departure_station": "수서",
+  "arrival_station": "동대구",
+  "seat_available": false,
+  "general_seat": "매진",
+  "special_seat": "매진",
+  "train_id": "1"
 }
 ```
 
-### 2. `makereservation`  
-预订列车，支持可选的自动重试功能。
-
-**单次尝试使用方法：**
-```bash
-uv run --with SRTrain python3 scripts/srt_cli.py reserve --train-id "1"
-```
-
-**带重试功能的使用方法：**
-```bash
-# Try all trains
-uv run --with SRTrain python3 scripts/srt_cli.py reserve --retry \
-  --timeout-minutes 60 \
-  --wait-seconds 10
-
-# Try specific trains only
-uv run --with SRTrain python3 scripts/srt_cli.py reserve --retry \
-  --train-id "1,3,5" \
-  --timeout-minutes 60 \
-  --wait-seconds 10
-```
-
-**选项：**
-- `--train-id`：要预订的列车ID（用逗号分隔，例如“1”或“1,3,5”；省略则尝试所有列车）
-- `--retry`：启用自动重试
-- `--timeout-minutes`：最大重试时间（默认：60分钟）
-- `--wait-seconds`：每次重试之间的等待时间（默认：10秒）
-
-**`--retry`选项的行为：**
-1. 遍历搜索结果中的所有可用列车。
-2. 在每次尝试之间等待`--wait-seconds`指定的时间（加上速率限制的延迟）。
-3. 重复尝试直到成功或超时。
-4. 将进度记录到`~/.openclaw/tmp/srt/reserve.log`文件中。
-
-**返回值：**包含支付截止日期的预订详情（JSON格式）：
-
-**注意：**  
-- 用户需要通过SRT应用程序或网站手动完成支付。
-- 在使用重试模式时，建议在后台运行该工具并定期检查日志文件。
-
-### 3. `view_bookings`  
-列出所有当前的预订信息。
-
-**使用方法：**
-```bash
-uv run --with SRTrain python3 scripts/srt_cli.py list --format json
-```
-
-**返回值：**所有有效预订的列表（JSON格式）：
-
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "reservation_id": "RES123456",
-      "journey_date": "20260217",
-      "journey_time": "120500",
-      "departure": "수서",
-      "arrival": "부산",
-      "train_number": "301",
-      "seat_number": "3A",
-      "payment_required": true
-    }
-  ]
-}
-```
-
-### 4. `cancel_booking`  
-通过ID取消预订。
-
-**使用方法：**
-```bash
-uv run --with SRTrain python3 scripts/srt_cli.py cancel \
-  --reservation-id "RES123456" \
-  --confirm
-```
-
-**返回值：**取消预订的确认信息（JSON格式）：
-
+**预订结果：**
 ```json
 {
   "success": true,
   "data": {
-    "success": true,
     "reservation_id": "RES123456",
-    "message": "Reservation cancelled successfully"
+    "train_number": "369",
+    "seat_number": "3A",
+    "payment_required": true
   }
 }
 ```
 
-### 5. `check_log`  
-查看预订尝试的进度（对重试模式特别有用）。
+退出代码：`0` = 成功 · `1` = 可重试（没有座位） · `2` = 错误
 
-**使用方法：**
-```bash
-uv run --with SRTrain python3 scripts/srt_cli.py log -n 30
-```
-
-**返回值：**`~/.openclaw/tmp/srt/reserve.log`文件中的最后N行记录。
-
-**选项：**
-- `-n, --lines`：显示的行数（默认：20行）
+---
 
 ## 错误处理
 
-该技能会提供清晰、易于理解的错误信息：
+| 错误类型 | 原因 | 解决方案 |
+|-------|-------|-----------|
+| `AuthenticationFailed` | 凭据错误 | 检查 `SRT_PHONE` 和 `SRT_PASSWORD` 是否正确 |
+| `NoSeatsAvailable` | 座位已售罄 | 使用 `--retry` 选项或尝试其他火车 |
+| `StationNotFound` | 车站名称无效 | 请使用上述韩文车站名称 |
+| `NoTrainsFound` | 未找到火车 | 尝试其他日期/时间 |
+| `RateLimitExceeded` | 尝试次数过多 | 等待几分钟后再试 |
 
-**常见错误：**
-
-1. **AuthenticationFailed**  
-   - 凭据无效  
-   - **解决方法：**检查配置文件中的手机号码和密码。
-
-2. **NoSeatsAvailable**  
-   - 列车已售罄  
-   - **解决方法：**尝试其他列车或时间。  
-   - **退出代码：**1（可重试）
-
-3. **StationNotFound**  
-   - 车站名称无效  
-   - **解决方法：**使用上述列表中的韩文车站名称。
-
-4. **NoTrainsFound**  
-   - 指定路线/时间没有列车  
-   - **解决方法：**尝试其他日期或时间。
-
-5. **RateLimitExceeded**  
-   - 重试次数超过限制（每个会话最多10次）  
-   **解决方法：**等待几分钟后再试。
-
-6. **NetworkError**  
-   - 连接超时或失败  
-   **解决方法：**检查网络连接并重新尝试。
-
-**退出代码：**
-- `0`：成功  
-- `1`：可重试的错误（例如，座位已售罄）  
-- `2`：致命错误（例如，认证失败、输入无效）
-
-## ⚠️ 速率限制和账户保护
-
-为防止SRT账户被服务器封禁，请遵循以下规则：
-
-- **请求间隔：**  
-  - 预订尝试之间至少间隔3秒。  
-  - 搜索请求之间至少间隔5秒。  
-- **每次会话最多10次重试。**  
-- **失败后的重试间隔逐渐增加（3秒 → 5秒 → 10秒 → 15秒 → 20秒 → 30秒）。  
-
-**对用户的影响：**  
-- 该技能会自动等待指定时间后再发送请求。  
-- 用户会看到类似“⏳ 正在等待以保护SRT服务器（3秒）”的提示。  
-- 如果达到重试限制，请等待几分钟后再试。
-
-**对于AI协调：**  
-- AI应在重试期间通知用户等待情况。  
-- 例如：“正在重试中，请等待3秒...”  
-- 如果尝试10次失败，建议用户选择其他时间或日期。
+---
 
 ## 自然语言处理
 
-当用户使用韩文进行请求时，AI应：  
-1. **从自然语言中提取参数**：  
-   - 车站名称（如果是英文，请转换为韩文）。  
-   - 日期（如“明天”、“下周五”应转换为YYYYMMDD格式）。  
-   - 时间（如“下午2点”、“12点以后”应转换为HHMMSS格式）。  
-   - 乘客人数（未指定时默认为1人）。  
+从韩文输入中提取的信息：
+- 车站名称 → 使用韩文表示（如 수서、동대구 等）
+- 日期 → 使用相对表达式（例如 “내일” 或 “다음주 금요일”）转换为 `YYYYMMDD` 格式
+- 时间 → 使用 “20시 이후” 或 “오후 2시” 等表达式转换为 `HHMMSS` 格式
+- 乘客人数 → 如果未指定，则默认为 1
 
-2. **按正确顺序调用工具**：  
-   - 首先搜索列车，然后预订，最后取消。  
-   - 在重试时处理速率限制逻辑。  
+**常见指令模式：**
+- “검색해줘” → 执行 `search` 命令
+- “예약해줘”（一次性预订） → 先执行 `search`，然后执行 `reserve` 命令
+- “취소표 나오면 잡아줘 / 될 때까지 돌려줘” → 使用上述的持续监控流程
+- “내 예약 확인해줘” → 执行 `list` 命令
+- “취소해줘” → 先执行 `list`，然后执行 `cancel` 命令
 
-3. **优雅地处理错误**：  
-   - 如果座位已售罄，建议尝试其他列车。  
-   - 如果找不到车站，提示正确的韩文名称。  
-   - 在显示等待信息时使用韩文。  
-
-4. **用韩文确认操作结果**：  
-   - “预订已完成。”  
-   - “3秒后将尝试下一班列车。”  
-   - “请在SRT应用程序中完成支付。”  
-
-## 实际使用场景
-
-### 场景1：简单预订  
-**用户：**“预订2月17日从首尔SRT站到大邱站的列车，时间在12点以后，选择最快的列车，预订2张票。”  
-
-**AI操作：**  
-1. 解析参数：出发站=首尔SRT站，到达站=大邱站，日期=20260217，时间=120000，乘客人数=2。  
-2. 搜索列车。  
-3. 选择第一班可用列车。  
-4. 预订列车。  
-5. 提醒用户支付信息。
-
-### 场景2：重复尝试直到成功  
-**用户：**“如果售罄了，请不断尝试，直到成功为止。”  
-
-**AI操作：**  
-1. 搜索列车。  
-2. 启动后台重试：  
-   ```bash
-   exec reserve --retry --timeout-minutes 60 --wait-seconds 10 (in background)
-   ```  
-3. 创建监控任务（使用`agentTurn`）：  
-   ```bash
-   cron add --job '{
-     "schedule": {"kind": "every", "everyMs": 120000},
-     "payload": {
-       "kind": "agentTurn",
-       "message": "Check SRT retry log and report progress",
-       "deliver": true,
-       "channel": "discord"
-     },
-     "sessionTarget": "isolated",
-     "enabled": true
-   }'
-   cron wake --mode "now"
-   ```  
-4. 通知用户：“已开始后台重试，每2分钟更新一次结果。”  
-
-## ⚠️ 后台重试监控  
-
-**强制要求：**  
-使用`isolated`会话和`agentTurn` cron任务来监控`reserve --retry`命令的执行。
-
-### 设置方法  
-
-```bash
-# 1. Start background retry
-exec reserve --retry --timeout-minutes 60 (background)
-
-# 2. Create monitoring cron (isolated + agentTurn)
-cron add --job '{
-  "schedule": {"kind": "every", "everyMs": 120000},
-  "payload": {
-    "kind": "agentTurn",
-    "message": "Check `srt_cli.py log -n 30`, parse progress, report to user. Delete cron if done.",
-    "deliver": true,
-    "channel": "discord"
-  },
-  "sessionTarget": "isolated",
-  "enabled": true
-}'
-
-# 3. Wake immediately
-cron wake --mode "now"
-```
-
-### 所需条件：  
-- `sessionTarget`：设置为`"isolated"`（而非`"main"`）。  
-- `payload.kind`：设置为`"agentTurn"`（而非`"systemEvent"`）。  
-- `payload.deliver`：设置为`true`。  
-- **调度频率：**根据任务持续时间，每1-3分钟执行一次。  
-- **唤醒机制：**创建任务后始终执行`cron wake --mode "now"`。  
-
-**原因：**  
-- 在`main`会话中使用`systemEvent`无法触发代理操作。  
-- `isolated`会话中的`agentTurn`会实际执行任务并报告结果。  
-- 这可以防止账户被封禁、消息堆积和无声监控问题。
-
-### 场景3：查看和取消预订  
-**用户：**“查看我的预订信息，然后取消最快的那班列车。”  
-
-**AI操作：**  
-1. 列出所有预订信息。  
-2. 根据日期/时间找到最早的预订，然后取消它。  
-
-### 场景4：修改预订  
-**用户：**“取消我在釜山的预订，然后重新预订到大邱站。”  
-
-**AI操作：**  
-1. 列出所有预订信息。  
-2. 找到釜山的预订并取消它。  
-3. 搜索前往大邱站的列车（相同日期和时间）。  
-4. 预订新的列车。  
-5. 确认两次操作的结果。
-
-## 支付说明  
-
-**重要提示：**  
-该技能仅支持搜索和预订列车，**不支持支付处理。  
-
-预订完成后，用户会收到预订编号。  
-请通过以下方式完成支付：  
-- SRT移动应用程序（iOS/Android）  
-- SRT官方网站（https://etk.srail.kr）  
-
-**注意支付截止时间**：通常为预订后的20分钟内。  
-未支付的预订将自动取消。
-
-## 故障排除  
-
-### 错误信息说明：  
-- “无法找到SRT认证信息”：  
-  - 确保`SRT_phone`和`SRT_PASSWORD`环境变量已设置正确。  
-  - 检查shell配置文件（`~/.zshrc`或`~/.bashrc`）中是否包含`export`命令。  
-  - 例如：`export SRT_phone="010-1234-5678"`。  
-
-- “找不到搜索结果”：  
-  - 在调用`reserve`命令之前，请先运行`search`命令。  
-  - 搜索结果会缓存在`~/.openclaw/tmp/srt/last_search.pkl`文件中。  
-
-- **重试次数超过限制**：  
-  - 你已经尝试了10次预订。  
-  - 请等待5-10分钟后再试。  
-  - 尝试其他列车或时间。  
-
-### 登录失败  
-- 确认凭据是否正确。  
-- 检查SRT服务是否可用。  
-- 确保手机号码格式正确（包含连字符，例如010-1234-5678）。  
-
-## 开发相关内容  
-
-### 本地测试  
-```bash
-# Install dependencies
-# Install uv if not already installed
-# https://docs.astral.sh/uv/getting-started/installation/
-
-# Configure credentials
-export SRT_PHONE="010-1234-5678"
-export SRT_PASSWORD="your_password"
-
-# Test commands
-uv run --with SRTrain python3 scripts/srt_cli.py search --departure "수서" --arrival "부산" --date "20260203" --time "140000"
-uv run --with SRTrain python3 scripts/srt_cli.py list
-```  
-
-### 发布到ClawHub  
-```bash
-# Authenticate
-clawhub login
-
-# Publish
-clawhub publish . \
-  --slug srt \
-  --name "SRT Korean Train Service" \
-  --version 0.1.2 \
-  --tags latest
-```  
-
-## 许可证  
-
-本技能采用MIT许可证。  
-
-## 技术支持  
-
-如有问题或疑问，请：  
-- 在GitHub上提交问题。  
-- 查看SRT服务状态：https://etk.srail.kr  
-
-## 版本历史  
-
-- **0.1.3**：改进了重试机制和监控要求：  
-  - 统一了`reserve`命令，添加了`--retry`参数。  
-  - 增加了`--timeout-minutes`参数以设置基于时间的重试限制（默认60分钟）。  
-  - 支持通过逗号分隔的多个列车ID（例如“1,3,5”）。  
-  - 将`--wait-seconds`的默认值从20秒改为10秒。  
-  - 搜索结果默认包含已售罄的列车（`available_only=False`）。  
-  - 引入了隔离会话和`agentTurn` cron任务以支持后台重试。  
-
-- **0.1.2**：添加了`--all`参数以处理已售罄的列车（已弃用）。  
-- **0.1.1**：使用`uv`进行依赖管理。  
-  - 用`uv run --with SRTrain`替代了`venv/pip`。  
-  - 仅使用环境变量存储凭据（不再使用配置文件）。  
-
-- **0.1.0**：初始版本：  
-  - 支持搜索列车、预订、查看和取消预订。  
-  - 实现了速率限制保护。  
-  - 输出符合AI要求的JSON格式数据。
+## 支付说明
+预订必须在预订后的 20 分钟内通过 SRT 应用程序或 <https://etk.srail.kr> 完成支付。

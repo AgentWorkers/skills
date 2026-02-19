@@ -1,18 +1,13 @@
 ---
 name: web-search
-description: |
-  Web search and content extraction with Tavily and Exa via inference.sh CLI.
-  Apps: Tavily Search, Tavily Extract, Exa Search, Exa Answer, Exa Extract.
-  Capabilities: AI-powered search, content extraction, direct answers, research.
-  Use for: research, RAG pipelines, fact-checking, content aggregation, agents.
-  Triggers: web search, tavily, exa, search api, content extraction, research,
-  internet search, ai search, search assistant, web scraping, rag, perplexity alternative
+description: "使用 `inference.sh` CLI 通过 Tavily 和 Exa 进行网页搜索和内容提取。相关应用程序包括：Tavily Search、Tavily Extract、Exa Search、Exa Answer、Exa Extract。主要功能包括：基于人工智能的搜索、内容提取、直接提供答案以及辅助研究工作。应用场景包括：学术研究、信息检索管道（RAG – Retrieval, Aggregation, and Generation）、事实核查、内容聚合以及自动化任务处理。触发条件包括：执行网页搜索、调用 Tavily 或 Exa 的相关 API、执行内容提取操作等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # 网页搜索与内容提取
 
-您可以使用 [inference.sh](https://inference.sh) 命令行工具在网页上搜索并提取内容。
+您可以通过 [inference.sh](https://inference.sh) 命令行工具在网页上搜索并提取内容。
+
+![网页搜索与内容提取](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgndqjxd780zm2j3rmada6y8.jpeg)
 
 ## 快速入门
 
@@ -22,6 +17,8 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 # Search the web
 infsh app run tavily/search-assistant --input '{"query": "latest AI developments 2024"}'
 ```
+
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可以选择[手动安装并验证](https://dist.inference.sh/cli/checksums.txt)。
 
 ## 可用的应用程序
 
@@ -36,7 +33,7 @@ infsh app run tavily/search-assistant --input '{"query": "latest AI developments
 
 | 应用程序 | 应用程序 ID | 说明 |
 |-----|--------|-------------|
-| Search | `exa/search` | 智能网页搜索工具，支持 AI 功能 |
+| Search | `exa/search` | 智能网页搜索工具 |
 | Answer | `exa/answer` | 提供直接的事实性答案 |
 | Extract | `exa/extract` | 从网页中提取并分析内容 |
 
@@ -123,7 +120,7 @@ infsh app run openrouter/claude-haiku-45 --input '{
 ## 使用场景
 
 - **研究**：收集任何主题的信息
-- **检索增强生成 (RAG)**：结合检索结果进行内容生成
+- **检索增强生成 (RAG)**：利用 AI 改进信息检索效果
 - **事实核查**：通过来源验证信息
 - **内容聚合**：从多个来源收集数据
 - **智能助手**：构建具备研究能力的人工智能助手
@@ -132,19 +129,19 @@ infsh app run openrouter/claude-haiku-45 --input '{
 
 ```bash
 # Full platform skill (all 150+ apps)
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 
 # LLM models (combine with search for RAG)
-npx skills add inference-sh/agent-skills@llm-models
+npx skills add inference-sh/skills@llm-models
 
 # Image generation
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 ```
 
 查看所有应用程序：`infsh app list`
 
 ## 文档资料
 
-- [将工具添加到智能助手中](https://inference.sh/docs/agents/adding-tools) - 为智能助手配备搜索功能
+- [为智能助手添加工具](https://inference.sh/docs/agents/adding-tools) - 为智能助手配备搜索功能
 - [构建研究型智能助手](https://inference.sh/blog/guides/research-agent) - 大语言模型与搜索功能的集成指南
-- [工具集成指南](https://inference.sh/blog/tools/integration-tax) - 为什么使用预构建的工具很重要
+- [工具集成指南](https://inference.sh/blog/tools/integration-tax) - 了解预构建工具的重要性

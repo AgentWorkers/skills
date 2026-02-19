@@ -1,102 +1,96 @@
 ---
-name: pywayne-cv-tools
-description: OpenCV YAML 文件读写工具。在使用 `pywayne.cv.tools` 模块时，这些工具可用于读取 OpenCV FileStorage 的 YAML 文件。支持嵌套结构、NumPy 数组、基本数据类型以及列表。能够处理 `cv2.FileNode` 的解析，包括 `Map`、`Seq` 和 `matrix` 节点。
+name: pywayne-vio-tools
+description: VIO（视觉惯性测距）数据处理工具，用于SE(3)姿态转换和3D可视化。适用于处理SE(3)矩阵时需要进行姿态表示转换（tx, ty, tz, qw, qx, qy, qz），以及需要带有方向箭头的姿态轨迹3D可视化，或者进行视觉惯性测距数据的转换与分析的场景。
 ---
-# Pywayne CV YAML I/O
+# Pywayne VIO 工具
 
-该模块提供了用于读写 OpenCV `cv2.FileStorage` YAML 文件的实用工具。
+## 概述
+
+提供用于 VIO 数据处理的实用工具：在 SE(3) 变换矩阵和姿态表示之间进行转换，并以 3D 形式可视化姿态轨迹，同时显示方向指示器。
 
 ## 快速入门
 
 ```python
-from pywayne.cv.tools import read_cv_yaml, write_cv_yaml
+from pywayne.vio.tools import SE3_to_pose, pose_to_SE3, visualize_pose
 import numpy as np
 
-# Write to YAML file
-data = {
-    "camera_name": "test_camera",
-    "image_width": 1920,
-    "image_height": 1080,
-    "calibration_matrix": np.eye(3)
-}
-write_cv_yaml('config.yaml', data)
+# Convert SE(3) to pose
+SE3 = np.eye(4)  # Single 4x4 SE(3) matrix
+pose = SE3_to_pose(SE3)  # Returns [tx, ty, tz, qw, qx, qy, qz]
 
-# Read from YAML file
-data = read_cv_yaml('config.yaml')
-print(data)
+# Batch conversion
+SE3_array = np.random.randn(10, 4, 4)  # 10 SE(3) matrices
+poses = SE3_to_pose(SE3_array)
+
+# Convert back to SE(3)
+SE3_recon = pose_to_SE3(pose)
+
+# Visualize poses
+visualize_pose(poses)  # 3D plot with position markers and orientation arrows
 ```
 
-## 支持的数据类型
+## 核心功能
 
-| 类型 | 处理方式 |
-|------|---------|
-| `int`、`float`、`str` | 直接写入文件 |
-| `np.ndarray` | 使用 `fs.write()` 方法写入文件 |
-| `list` | 使用 `FileNode_SEQ` 方法写入文件 |
-| `dict` | 使用 `FileNode_MAP` 方法写入文件 |
-| `None` | 被忽略 |
+### SE3_to_pose
 
-## 读取文件
+将 SE(3) 变换矩阵转换为姿态表示。
 
-```python
-from pywayne.cv.tools import read_cv_yaml
+**输入：** `SE3_mat` - 单个 4x4 的 SE(3) 矩阵，或形状为 (N, 4, 4) 的 N 个 SE(3) 矩阵数组
 
-# Read YAML file (returns dict or None on error)
-data = read_cv_yaml('camera_config.yaml')
-if data:
-    print(data['camera_name'])
-    print(data['image_width'])
+**输出：** `pose` - 形状为 (7,) 或 (N, 7) 的数组，包含 [tx, ty, tz, qw, qx, qy, qz]
+
+**依赖库：** `qmt.quatFromRotMat()`（用于提取四元数）
+
+### pose_to_SE3
+
+将姿态表示转换回 SE(3) 变换矩阵。
+
+**输入：** `pose_mat` - 单个姿态表示（形状为 (7,)），或形状为 (N, 7) 的 N 个姿态表示（每个表示包含 [tx, ty, tz, qw, qx, qy, qz]）
+
+**输出：** `SE3_mat` - 形状为 (4, 4) 或 (N, 4, 4) 的 SE(3) 矩阵数组
+
+**依赖库：** `qmt.quatToRotMat()`, `ahrs.Quaternion`
+
+### visualize_pose
+
+以 3D 形式可视化 SE(3) 姿态，同时显示位置标记和方向箭头。
+
+**参数：**
+- `poses`：姿态数组 [tx, ty, tz, qw, qx, qy, qz]
+- `arrow_length_ratio`：方向箭头的比例因子（默认值：0.1）
+
+**可视化效果：**
+- 黑点：位置（平移）
+- 红色箭头：X 轴方向
+- 绿色箭头：Y 轴方向
+- 蓝色箭头：Z 轴方向
+
+**依赖库：** `matplotlib.pyplot`, `qmt.quatToRotMat()`
+
+## 数据格式
+
+### SE(3) 矩阵
+```
+[[R00 R01 R02 tx]
+ [R10 R11 R12 ty]
+ [R20 R21 R22 tz]
+ [  0   0   0  1]]
 ```
 
-**注意事项：**
-- 递归处理嵌套结构 |
-- 如果文件无法打开，返回 `None` |
-- 使用 `wayne_print` 显示错误信息（错误信息以红色/黄色显示） |
-- 对于字典和列表，支持 `FileNode_MAP` 和 `FileNode_SEQ` 两种格式 |
-- 矩阵节点通过 `.mat()` 方法进行读取
-
-## 写入文件
-
-```python
-from pywayne.cv.tools import write_cv_yaml
-
-# Write data to YAML file
-data = {
-    "matrix": np.eye(3),
-    "vector": [1, 2, 3]
-}
-success = write_cv_yaml('config.yaml', data)
-
-if success:
-    print("Write successful")
+### 姿态表示
 ```
+[tx, ty, tz, qw, qx, qy, qz]
+```
+- 平移：tx, ty, tz（米）
+- 四元数：qw, qx, qy, qz（汉密尔顿约定）
 
-**注意事项：**
-- 成功时返回 `True`，失败时返回 `False` |
-- 对于 OpenCV 中的列表，如果键为空，则使用空键进行处理 |
-- 支持使用空键字符串表示未命名的序列 |
-- 在写入过程中会忽略 `None` 值
+## 所需依赖库：
+- `numpy` - 数组操作库
+- `qmt` - 四元数处理库
+- `ahrs` - 四元数类
+- `matplotlib` - 3D 可视化库
 
-## 所需依赖库
-
-- `cv2`（OpenCV）：用于文件存储操作 |
-- `numpy`：用于处理 numpy 数组 |
-- `pywayne.tools`：用于日志记录（使用 `wayne_print`）
-
-## API 参考
-
-| 函数 | 描述 |
-|---------|-------------|
-| `read_cv_yaml(path)` | 读取 OpenCV YAML 文件，返回字典或 `None` |
-| `write_cv_yaml(path, data)` | 将字典写入 OpenCV YAML 文件，返回布尔值 |
-
-## 文件结构处理
-
-该模块支持 OpenCV 的 `cv2.FileNode` 类型：
-
-| 节点类型 | 处理方式 |
-|-----------|---------|
-| Map | 使用 `.keys()` 方法（需要可调用对象） |
-| Seq | 通过元素迭代进行递归解析 |
-| Matrix | 使用 `.mat()` 方法 |
-| Int/Float/String | 使用 `.real()`、`.int()`、`.string()` 方法 |
+安装方法：
+```bash
+pip install numpy qmt ahrs matplotlib
+```

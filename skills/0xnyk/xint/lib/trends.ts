@@ -12,6 +12,8 @@ import { BASE, sleep, search } from "./api";
 import type { Tweet } from "./api";
 import * as cache from "./cache";
 import { trackCost } from "./costs";
+import { buildOutputMeta, printJsonWithMeta } from "./output-meta";
+import { markCommandFallback } from "./reliability";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -431,6 +433,7 @@ function printTrends(result: TrendsResult, limit: number): void {
 // ---------------------------------------------------------------------------
 
 export async function cmdTrends(args: string[]): Promise<void> {
+  const startedAtMs = Date.now();
   let location = "worldwide";
   let limit = 20;
   let jsonOutput = false;
@@ -487,9 +490,22 @@ export async function cmdTrends(args: string[]): Promise<void> {
   }
 
   const result = await fetchTrends(woeid, { noCache });
+  if (result.source === "search_fallback") {
+    markCommandFallback("trends");
+  }
 
   if (jsonOutput) {
-    console.log(JSON.stringify(result, null, 2));
+    const isFallback = result.source === "search_fallback";
+    const estimatedCostUsd = isFallback ? 0.5 : 0.1;
+    const meta = buildOutputMeta({
+      source: isFallback ? "x_api_v2_search_fallback" : "x_api_v2",
+      startedAtMs,
+      cached: false,
+      confidence: isFallback ? 0.7 : 1,
+      apiEndpoint: isFallback ? "/2/tweets/search/recent" : `/2/trends/by/woeid/${woeid}`,
+      estimatedCostUsd,
+    });
+    printJsonWithMeta(meta, result);
   } else {
     printTrends(result, limit);
   }

@@ -1,14 +1,13 @@
 ---
 name: apple-mail-search
-description: 快速且安全的 Apple Mail 搜索功能，支持查看邮件正文内容。
+description: "在 macOS 上，Apple Mail 提供了高效的元数据搜索功能以及全文查找功能。用户可以通过主题、发件人、收件人或日期来查找 Mail.app 中的消息；还可以打开这些消息并阅读其完整内容。"
 homepage: https://clawdhub.com/gumadeiras/apple-mail-search-safe
-repository: https://github.com/gumadeiras/apple-mail-search-cli
+repository: https://github.com/gumadeiras/fruitmail-cli
 metadata: {"clawdbot":{"emoji":"📧","requires":{"bins":["fruitmail"]},"install":[{"id":"node","kind":"node","package":"apple-mail-search-cli","bins":["fruitmail"],"label":"Install fruitmail CLI (npm)"}]}}
 ---
-
 # Fruitmail（快速且安全）
 
-这是一个基于SQLite的苹果邮件应用程序（Apple Mail.app）搜索工具，支持查看邮件的完整内容。
+这是一个基于SQLite的快速搜索工具，用于查找Apple Mail.app中的邮件，并支持查看邮件的完整内容。
 
 ## 安装
 
@@ -43,9 +42,9 @@ fruitmail stats
 | 命令 | 描述 |
 |---------|-------------|
 | `search` | 使用过滤器进行复杂搜索 |
-| `sender <查询>` | 按发送者邮箱地址搜索 |
+| `sender <query>` | 按发件人邮箱地址搜索 |
 | `unread` | 列出未读邮件 |
-| `body <id>` | 阅读邮件的完整内容（通过AppleScript） |
+| `body <id>` | 读取邮件的完整内容（需要使用AppleScript） |
 | `open <id>` | 在Mail.app中打开邮件 |
 | `stats` | 查看数据库统计信息 |
 
@@ -83,15 +82,15 @@ fruitmail sender "@amazon.com" --limit 50
 ## 技术细节
 
 - **数据库位置：** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index` |
-- **查询方式：** 使用SQLite（只读）结合AppleScript来获取邮件内容 |
-- **安全性：** 仅支持只读操作，防止数据被修改；支持可选的`--copy`模式用于复制数据 |
+- **查询方式：** 使用SQLite（只读） + AppleScript（用于读取邮件内容） |
+- **安全性：** 采用只读模式，防止数据被修改；支持`--copy`选项（用于复制数据） |
 
 ## 注意事项
 
 - **仅适用于macOS** — 该工具会查询Apple Mail.app的本地数据库 |
-- **仅支持读取操作** — 无法发送或新建邮件 |
+- **仅支持读取** — 可以搜索和查看邮件，但不能发送邮件 |
 - **如需发送邮件，请使用`himalaya`工具（支持IMAP/SMTP协议） |
 
 ## 来源
 
-https://github.com/gumadeiras/apple-mail-search-cli
+https://github.com/gumadeiras/fruitmail-cli

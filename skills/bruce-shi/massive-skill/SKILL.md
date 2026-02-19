@@ -1,21 +1,21 @@
 ---
-name: polygon-api
-description: 通过命令行界面（CLI）访问 Polygon/Massive 的股票、加密货币、外汇、期权、指数、期货、市场数据以及新闻相关的 API。
+name: massive-api
+description: 通过命令行界面（CLI）访问 Massive（Polygon）提供的股票、加密货币、外汇、期权、指数、期货以及市场数据和新闻相关的 API。
 metadata:
   openclaw:
     requires:
-      bins: ["bun"]
-      env: ["POLY_API_KEY"]
-    primaryEnv: "POLY_API_KEY"
+      bins: ["npx"]
+      env: ["MASSIVE_API_KEY"]
+    primaryEnv: "MASSIVE_API_KEY"
 ---
-# Polygon（Massive）市场数据技能
+# Massive(Polygon) 市场数据工具
 
-这是一个用于访问 [Polygon/Massive](https://massive.com) 金融数据 API 的命令行工具（CLI）和 JavaScript 客户端封装。支持股票、加密货币、外汇、期权、指数、期货、市场状态、新闻以及参考数据等类型的数据。
+这是一个用于访问 [Massive(Polygon)](https://massive.com) 金融数据 API 的命令行界面（CLI）工具以及 JavaScript 客户端封装。支持股票、加密货币、外汇、期权、指数、期货、市场状态、新闻和参考数据等类型的数据查询。
 
-## 命令行工具（CLI）的使用方法
+## CLI 使用方法
 
 ```bash
-bun cli.js <command> [options]
+npx --yes massive <command> [options]
 ```
 
 所有命令的输出结果均为 JSON 格式，直接显示在标准输出（stdout）中。使用 `--help` 可查看所有命令的列表；使用 `<command> --help` 可查看特定命令的详细选项。

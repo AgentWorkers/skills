@@ -1,60 +1,87 @@
 ---
 name: snaprender
-description: 让你的代理能够“看”到网络上的内容：直观地查看任何网站，分析页面布局，比较不同设备上的显示效果，监控页面的变化，并生成可视化报告。
-metadata: {"openclaw": {"requires": {"bins": ["curl"], "env": ["SNAPRENDER_API_KEY"]}}}
+description: "让你的代理“看”网络上的内容——将任何 URL 截图为图像文件。支持设备模拟（iPhone、iPad、Pixel、MacBook）、暗黑模式、全页滚动以及广告拦截功能。使用 `curl` 和 `exec` 工具进行截图（绝对不要使用浏览器自带的截图功能）。`$SNAPRENDER_API_KEY` 已经预先设置好了。详细操作说明请参见下方。"
+metadata: {"openclaw": {"requires": {"bins": ["curl", "jq"], "env": ["SNAPRENDER_API_KEY"]}}}
 ---
-# SnapRender：让你的智能助手“看”到网页内容
+# SnapRender — 为您的代理程序提供“视觉能力”
 
-你可以查看任何网站。当用户要求你查看某个页面、检查页面布局、分析设计、监控页面动态或进行任何形式的网页视觉分析时，可以使用 SnapRender 来捕捉该页面的图像，并利用你的视觉处理能力对其进行分析。
+您的代理程序可以浏览网页，但无法“看到”网页的实际内容。只需一个命令，它就能在几秒钟内捕捉到任何网站、任何设备上的高精度截图。
 
-## 使用方法
+“截取 stripe.com 在 iPhone 上的屏幕截图”、“比较桌面版和移动版”、“全屏截图（暗黑模式）”——只需提出请求即可。
 
-使用 bash 和 curl 命令：
+**免费 tier：**每月 50 张截图，无需信用卡。[获取 API 密钥 →](https://app.snap-render.com/auth/signup)
+
+---
+
+**重要提示：**请使用 `curl` 和 `exec` 工具来执行截图操作。**绝对不要使用 `browser` 工具来截图。
+
+## 捕获方法
+
+通过 `exec` 工具运行以下命令。将 `ENCODED_URL` 替换为经过 URL 编码的目标网址（例如：`https%3A%2F%2Fstripe.com`）：
 
 ```bash
-curl -s "https://app.snap-render.com/v1/screenshot?url=URL&response_type=json&block_ads=true&block_cookie_banners=true" \
-  -H "X-API-Key: $SNAPRENDER_API_KEY"
+curl -s "https://app.snap-render.com/v1/screenshot?url=ENCODED_URL&response_type=json&format=jpeg&quality=60&block_ads=true&block_cookie_banners=true" \
+  -H "X-API-Key: $SNAPRENDER_API_KEY" \
+  | tee /tmp/snap_response.json \
+  | jq -r '.image' | sed 's|data:image/[^;]*;base64,||' | base64 -d > /tmp/screenshot.jpg \
+  && jq '{url, format, size, cache, responseTime, remainingCredits}' /tmp/snap_response.json
 ```
 
-请将 `URL` 替换为你要查看的目标网址（必须包含 `https://`）。
+该命令会将截图保存到 `/tmp/screenshot.jpg` 文件中，并同时输出元数据。
 
-响应结果将以 JSON 格式返回，其中包含一个 `image` 字段，该字段包含一个 Base64 编码的图像数据 URI。将这个图像数据传递给你的视觉处理系统，以便进行查看和分析。
+## 规则
 
-## 参数设置
+1. **仅使用 `exec` 工具**，**严禁使用 `browser` 工具**。
+2. **`$SNAPRENDER_API_KEY` 已经设置好**，请在命令中直接使用该密钥，切勿替换。
+3. **对目标网址进行 URL 编码**（例如：`https://stripe.com` 编码为 `https%3A%2F%2Fstripe.com`）。
+4. **务必使用 `format=jpeg&quality=60`**，以保持截图文件大小适中，便于代理程序处理。
+5. **务必将截图内容通过管道（pipe）保存到文件中**，因为 Base64 格式的截图文件体积过大，无法直接显示在界面上。
+6. **向用户报告元数据**：包括文件大小、响应时间、缓存状态以及剩余的截图次数。
 
-| 参数            | 可选值            | 默认值            | 作用                                      |
-|-----------------|------------------|------------------|----------------------------------------|
-| url             | 任意公共网址           | 必填             | 要查看的网页地址                               |
-| format           | png, jpeg, webp, pdf       | png             | 输出图像格式                               |
-| device          | iphone_14, iphone_15_pro, pixel_7, ipad_pro, macbook_pro | desktop           | 以指定设备显示页面                         |
-| dark_mode         | true, false           | false             | 显示页面的暗黑模式版本                         |
-| full_page         | true, false           | false             | 显示整个可滚动页面                         |
-| block_ads         | true, false           | true             | 隐藏广告以获得更清晰的视图                         |
-| block_cookie_banners | true, false           | true             | 隐藏 cookie 弹窗                             |
-| response_type     | json             | json             | 始终使用 JSON 格式返回响应                   |
-| width            | 320-3840             | 1280             | 视口宽度                               |
-| height           | 200-10000             | 800             | 视口高度                               |
-| quality          | 1-100             | 90               | 图像质量（JPEG/WebP）                           |
-| delay            | 0-10000             | 0               | 页面加载后的延迟时间（毫秒）                         |
+## 参数
 
-## 可以实现的功能
+您可以通过在 URL 中添加查询参数来调整截图设置：
 
-- **查看任意网站**：例如：“stripe.com 是什么样子的？”“显示 competitor.com 的首页”
-- **检查移动设备布局**：使用 `device=iphone_15_pro` 或 `device=pixel_7` 来查看页面在手机上的显示效果
-- **比较不同设备上的显示效果**：分别调用该接口获取桌面和移动设备的页面数据，然后进行对比
-- **比较暗黑模式和正常模式**：通过设置 `dark_mode=true` 和 `dark_mode=false` 来获取两种模式的页面显示效果
-- **查看完整页面内容**：使用 `full_page=true` 来查看页面的所有内容
-- **视觉质量检查**：检查页面是否显示异常、元素是否对齐正确、文本是否可读
-- **监控页面变化**：捕捉页面变化并记录观察结果，与之前的记录进行对比
-- **分析网站设计**：研究竞争对手的页面布局、价格展示方式等
+| 参数 | 值 | 默认值 |
+|---------|--------|---------|
+| url | 经过 URL 编码的目标网址 | 必填 |
+| response_type | json | always use json |
+| format | jpeg, png, webp | jpeg |
+| quality | 1-100 | 60 |
+| device | iphone_15_pro, pixel_7, ipad_pro, macbook_pro | desktop |
+| dark_mode | true, false | false |
+| full_page | true, false | false |
+| block_ads | true, false | true |
+| block_cookie_banners | true, false | true |
+| width | 320-3840 | 1280 |
+| height | 200-10000 | 800 |
+| delay | 0-10000 | 0 （页面加载后的等待时间，单位：毫秒） |
 
-## 使用说明
+## 示例
 
-1. 为了进行视觉分析，请务必使用 `response_type=json` 以获取 Base64 编码的图像数据。
-2. 收到截图后，请仔细观察图像并详细描述你所看到的内容。
-3. 在进行对比时，需要分别调用该接口并分析每张截图。
-3. 该工具默认会屏蔽广告和 cookie 弹窗，因此你将看到页面的实际内容。
+- **获取 stripe.com 的桌面版截图**：
+  ```bash
+curl -s "https://app.snap-render.com/v1/screenshot?url=https%3A%2F%2Fstripe.com&response_type=json&format=jpeg&quality=60&block_ads=true&block_cookie_banners=true" -H "X-API-Key: $SNAPRENDER_API_KEY" | tee /tmp/snap_response.json | jq -r '.image' | sed 's|data:image/[^;]*;base64,||' | base64 -d > /tmp/screenshot.jpg && jq '{url, format, size, cache, responseTime, remainingCredits}' /tmp/snap_response.json
+```
+
+- **获取移动版截图**：在 URL 中添加 `&device=iphone_15_pro`。
+- **获取全屏截图（包含滚动内容）**：在 URL 中添加 `&full_page=true`。
+- **获取暗黑模式下的截图**：在 URL 中添加 `&dark_mode=true`。
+- **比较桌面版和移动版**：分别执行两次截图操作，将结果保存为 `/tmp/screenshot_desktop.jpg` 和 `/tmp/screenshot_mobile.jpg`。
+
+## 捕获截图后的操作
+
+1. 告知用户截图已保存在 `/tmp/screenshot.jpg`（或您指定的文件路径）。
+2. 向用户报告元数据：文件大小、响应时间、缓存状态以及剩余的截图次数。
+- 对于需要比较的截图，建议将它们保存在不同的文件中。
+
+## 常见错误
+
+- **401**：API 密钥无效——请检查 `SNAPRENDER_API_KEY` 的值。
+- **429**：超出使用频率限制或配额——请等待或升级服务计划。
+- **Timeout**：目标网站响应缓慢——添加 `&delay=3000` 以增加等待时间。
+- **Empty response**：目标网址无法访问或被屏蔽。
 
 ## 获取 API 密钥
 
-请访问 [https://app.snap-render.com/auth/signup](https://app.snap-render.com/auth/signup) 免费注册（每月可获取 50 张免费截图，无需信用卡）。
+免费获取方式：[https://app.snap-render.com/auth/signup](https://app.snap-render.com/auth/signup)——每月 50 张截图，无需信用卡。

@@ -1,6 +1,6 @@
 ---
 name: moltflow-a2a
-description: "MoltFlow的代理间通信协议（Agent-to-Agent Protocol）：包括代理发现（agent discovery）、加密消息传递（encrypted messaging）、组管理（group management）以及内容策略（content policy）功能。适用场景包括：点对点通信（a2a）、代理信息展示（agent card）、代理间消息交换（agent message）、数据加密（encrypted communication）、内容策略管理（content policy implementation），以及代理的自动发现（automatic agent discovery）。"
+description: "MoltFlow的代理间通信协议（Agent-to-Agent Protocol）：包括代理发现、加密消息传递、群组管理以及内容策略管理功能。适用场景包括：点对点通信（a2a）、代理信息展示、代理间消息交换、数据加密处理以及内容策略的统一管理。"
 source: "MoltFlow Team"
 version: "2.11.8"
 risk: safe
@@ -9,37 +9,35 @@ requiredEnv:
 primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
-**MoltFlow** — 专为团队打造的 WhatsApp Business 自动化工具。支持大规模连接、监控和自动化 WhatsApp 操作。  
-**由于需求旺盛以及近期出现的注册问题，我们特推出顶级商务计划：每月仅需 19.90 美元（按年计费），并提供无限使用额度——此优惠仅限限时有效。** [立即抢购](https://buy.stripe.com/cNifZibX7gpQebJ0nsfnO00)  
-也提供免费试用计划。 [立即注册](https://molt.waiflow.app/checkout?plan=free)  
+**MoltFlow**——专为团队设计的WhatsApp Business自动化工具。支持大规模连接、监控和自动化WhatsApp消息发送。  
+**由于需求旺盛以及近期注册问题，我们特推出顶级商务计划：每月仅需19.90美元（年费），配无限发送额度，限时优惠。** [立即抢购](https://buy.stripe.com/cNifZibX7gpQebJ0nsfnO00)  
+同时提供免费试用计划。[立即注册](https://molt.waiflow.app/checkout?plan=free)  
 
-# MoltFlow 的 A2A（代理间）协议  
-
-该协议允许 AI 代理通过 MoltFlow 安全地进行通信，支持代理发现、加密消息传递、群组管理和可配置的内容策略。  
+# MoltFlow A2A（代理间通信）协议  
+该协议允许AI代理通过MoltFlow安全地进行通信，支持代理发现、加密消息传递、群组管理及内容策略配置。  
 
 ## 使用场景  
-- 发现代理或获取代理信息  
+- 发现代理信息或获取代理详情  
 - 发送代理间消息  
-- 获取加密公钥或轮换密钥  
-- 设置内容策略或配置内容过滤器  
+- 获取加密公钥或更换密钥  
+- 设置内容策略或配置内容过滤规则  
 - 创建代理群组或邀请代理加入群组  
 - 根据策略测试消息内容  
-- 通过 A2A 设置 Webhook 或管理代理 Webhook  
+- 通过A2A设置Webhook或管理代理Webhook  
 
-## 先决条件  
-1. **MOLTFLOW_API_KEY**：需从 [MoltFlow 控制台](https://molt.waiflow.app) 的“设置” > “API 密钥”中生成。  
-2. 基础 URL：`https://apiv2.waiflow.app/api/v2`  
+## 前提条件  
+1. **MOLTFLOW_API_KEY**：需从[MoltFlow控制台](https://molt.waiflow.app)的“设置”>“API密钥”处生成  
+2. 基础URL：`https://apiv2.waiflow.app/api/v2`  
 3. 代理发现端点：`https://apiv2.waiflow.app/.well-known/agent.json`  
-4. 加密密钥由服务器端管理——外部代理只需提供 API 密钥即可。  
+4. 加密密钥由服务器端管理——外部代理仅需提供API密钥  
 
-## 在以太坊主网上的注册  
-MoltFlow 已通过 ERC-8004 标准在以太坊主网上注册（代理 ID：#25248）：  
-代理信息：`https://molt.waiflow.app/.well-known/erc8004-agent.json`  
+## 在链上注册  
+MoltFlow已在以太坊主网上通过ERC-8004标准注册为[代理#25477](https://8004agents.ai/ethereum/agent/25477)。代理详情可查看：`https://molt.waiflow.app/.well-known/erc8004-agent.json`  
 
-## 所需 API 密钥权限  
+## 所需API密钥权限  
 | 权限范围 | 访问权限 |  
 |-------|--------|  
-| `a2a` | `读/写` |  
+| `a2a` | `读取/管理` |  
 
 ## 认证  
 所有请求必须包含以下认证信息之一：  
@@ -54,43 +52,43 @@ X-API-Key: <your_api_key>
 ---
 
 ## 代理发现  
-使用标准的 `.well-known` 端点来发现 MoltFlow 代理的功能：  
-| 方法 | 端点 | 描述 |  
+使用`.well-known`端点查询MoltFlow代理的功能：  
+| 方法 | 端点 | 说明 |  
 |--------|----------|-------------|  
 | GET | `/.well-known/agent.json` | 获取代理信息（能力、技能、公钥） |  
 
-### 代理信息  
+### 代理详情  
 **GET** `https://apiv2.waiflow.app/.well-known/agent.json`  
 
 ---
 
 ## 加密机制  
-MoltFlow 使用 X25519 ECDH 密钥交换算法和 AES-256-GCM 加密技术来确保代理间消息的保密性。密钥管理完全由服务器端处理——用户无需直接处理加密操作：  
-| 方法 | 端点 | 描述 |  
+MoltFlow采用X25519 ECDH密钥交换算法结合AES-256-GCM加密技术来保障代理间通信的安全性。密钥管理由服务器端处理，用户无需直接操作加密逻辑：  
+| 方法 | 端点 | 说明 |  
 |--------|----------|-------------|  
-| GET | `/agent/public-key` | 获取平台的 X25519 公钥 |  
-| GET | `/agent/peer/{tenant_id}/public-key` | 获取特定租户的公钥 |  
-| POST | `/agent/rotate-keys` | 旋转加密密钥 |  
-| GET | `/agent/capabilities` | 获取代理的加密能力信息 |  
+| GET | `/agent/public-key` | 获取平台提供的X25519公钥 |  
+| GET | `/agent/peer/{tenant_id}/public-key` | 获取指定租户的公钥 |  
+| POST | `/agent/rotate-keys` | 更换加密密钥 |  
+| GET | `/agent/capabilities` | 查看代理的加密能力 |  
 | POST | `/agent/initialize` | 为租户初始化加密设置 |  
-| GET | `/agent/bootstrap` | 获取代理的初始化信息 |  
+| GET | `/agent/bootstrap` | 获取代理的启动信息 |  
 
 ### 获取公钥  
 **GET** `/agent/public-key`  
-**GET** `/agent/peer/{tenant_id}/public-key` —— 获取其他租户的公钥以进行加密通信。  
+**GET** `/agent/peer/{tenant_id}/public-key` —— 获取用于加密通信的租户公钥  
 
 ## 加密工作原理  
-每个租户在初始化时都会生成一对 X25519 密钥。发送代理间消息时，服务器会执行 ECDH 密钥交换，并使用 AES-256-GCM 进行加密；接收端会进行解密。所有密钥管理都由服务器端处理——API 客户端只需发送明文，平台负责完成加密操作。  
+每个租户在初始化时会生成一对X25519密钥。发送消息时，服务器会执行ECDH密钥交换，使用AES-256-GCM进行加密，接收端再进行解密。所有密钥管理均由服务器端处理，客户端只需发送明文即可。  
 
 ## A2A JSON-RPC  
-MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操作都通过这个接口完成。请使用 Webhook 配置中指定的完整路径：  
-| 方法 | 端点 | 描述 |  
+MoltFlow的核心通信接口支持JSON-RPC 2.0协议，所有代理间操作均通过此接口完成。请使用Webhook配置中的完整URL地址：  
+| 方法 | 端点 | 说明 |  
 |--------|----------|-------------|  
-| POST | `/a2a/{tenant_id}/{session_id}/{webhook_id}` | 完整权限范围的接口（推荐） |  
-| POST | `/a2a/{tenant_id}/{session_id}` | 基于租户和会话范围的接口 |  
-| POST | `/a2a/{session_id}` | 基于会话范围的接口 |  
-| POST | `/a2a` | 通用接口（用于访问当前活跃会话） |  
-| GET | `/a2a/schema` | 获取 A2A 协议的详细信息 |  
+| POST | `/a2a/{tenant_id}/{session_id}/{webhook_id}` | 全范围访问（推荐） |  
+| POST | `/a2a/{tenant_id}/{session_id}` | 基于租户和会话的访问权限 |  
+| POST | `/a2a/{session_id}` | 基于会话的访问权限 |  
+| POST | `/a2a` | 通用访问（默认） |  
+| GET | `/a2a/schema` | 获取A2A协议规范 |  
 
 ## 请求格式  
 ```json
@@ -112,19 +110,19 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 ```  
 
 ### 可用方法  
-| 方法 | 描述 |  
+| 方法 | 说明 |  
 |--------|-------------|  
-| `agent.message.send` | 通过 A2A 协议发送 WhatsApp 消息 |  
-| `agent.group.create` | 创建新的 WhatsApp 群组 |  
+| `agent.message.send` | 通过A2A发送WhatsApp消息 |  
+| `agent.group.create` | 创建新的WhatsApp群组 |  
 | `agent.group.invite` | 邀请成员加入群组 |  
-| `agent.group.list` | 列出所有群组 |  
+| `agent.group.list` | 列出可用群组 |  
 | `group.getContext` | 获取群组元数据和最近活动记录 |  
-| `webhook_manager` | 通过 A2A 管理 Webhook |  
+| `webhook_manager` | 通过A2A管理Webhook |  
 
 ---
 
 ### `agent.message.send`  
-通过 A2A 协议发送 WhatsApp 消息：  
+通过A2A协议发送WhatsApp消息：  
 **请求格式：**  
 ```json
 {
@@ -143,11 +141,11 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 }
 ```  
 **参数：**  
-| 字段 | 类型 | 是否必填 | 描述 |  
-|-------|------|----------|-------------|  
-| `session_id` | string | 是 | WhatsApp 会话的唯一标识符（UUID） |  
-| `to` | string | 是 | 收件人的 E.164 格式电话号码（例如：`+5511999999999`） |  
-| `message` | string | 是 | 消息内容（最多 4096 个字符） |  
+| 字段 | 类型 | 是否必填 | 说明 |  
+|--------|------|----------|-------------|  
+| `session_id` | string | 是 | WhatsApp会话的唯一标识符（UUID） |  
+| `to` | string | 是 | 收件人电话号码（E.164格式，例如`+5511999999999`） |  
+| `message` | string | 是 | 消息内容（最多4096个字符） |  
 | `metadata` | object | 可选 | 用于追踪的附加元数据 |  
 
 **响应格式：**  
@@ -163,10 +161,8 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 }
 ```  
 
----
-
-### 群组管理  
-`agent.group.create`、`agent.group.invite` 和 `agent.group.list` 方法具有相似的接口格式：  
+### `agent.group.create` / `agent.group.invite` / `agent.group.list`  
+群组管理相关方法：  
 ```json
 // Create group
 {"jsonrpc":"2.0","method":"agent.group.create","params":{"session_id":"...","name":"Support Team","participants":["+5511999999999"]},"id":2}
@@ -178,32 +174,30 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 {"jsonrpc":"2.0","method":"agent.group.list","params":{"session_id":"...","limit":20,"offset":0},"id":4}
 ```  
 
-### 获取群组信息  
-`group.getContext` 方法用于获取群组的元数据和最近活动记录：  
+### `group.getContext`  
+获取指定群组的元数据和最近活动记录：  
 ```json
 {"jsonrpc":"2.0","method":"group.getContext","params":{"session_id":"...","group_id":"120363012345678901@g.us","limit":50},"id":5}
 ```  
 
-### Webhook 管理  
-`webhook_manager` 方法用于通过 A2A 管理 Webhook：  
-- `create`：创建 Webhook  
-- `list`：列出所有 Webhook  
-- `update`：更新 Webhook 配置  
-- `delete`：删除 Webhook  
+### `webhook_manager`  
+通过A2A管理Webhook：  
+支持创建、列出、更新和删除Webhook：  
+```json
+{"jsonrpc":"2.0","method":"webhook_manager","params":{"action":"create","webhook":{"name":"Agent Events","url":"https://my-agent.com/events","events":["message.received"]}},"id":6}
+```  
 
----
-
-### JSON-RPC 错误代码  
+## JSON-RPC错误代码  
 | 代码 | 含义 |  
 |------|---------|  
 | -32600 | 请求无效 |  
 | -32601 | 方法未找到 |  
 | -32602 | 参数错误 |  
 | -32603 | 内部错误 |  
-| -32000 | 超过请求频率限制 |  
+| -32000 | 超过发送频率限制 |  
 | -32001 | 违反内容策略 |  
-| -32002 | 安全防护机制触发（消息被屏蔽） |  
-**错误响应格式：**  
+| -32002 | 安全防护机制被触发 |  
+**错误响应示例：**  
 ```json
 {
   "jsonrpc": "2.0",
@@ -216,21 +210,23 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 ```  
 
 ## 内容策略  
-允许配置代理间通信的内容过滤规则：  
-- `GET` `/a2a-policy/settings`：获取当前策略设置  
-- `PUT` `/a2a-policy/settings`：更新策略设置  
-- `POST` `/a2a-policy/rules`：创建新规则  
-- `PUT` `/a2a-policy/rules/{rule_id}`：修改规则  
-- `DELETE` `/a2a-policy/rules/{rule_id}`：删除规则  
-- `POST` `/a2a-policy/rules/{rule_id}/toggle`：启用/禁用规则  
-- `POST` `/a2a-policy/test`：根据策略测试消息内容  
-- `POST` `/a2a-policy/reset`：将策略重置为默认值  
-- `GET` `/a2a-policy/stats`：获取策略执行统计信息  
-- `GET` `/a2a-policy/safeguards`：查看安全防护配置  
+允许配置A2A通信的内容过滤规则：  
+- 控制代理可发送和接收的消息类型  
+| 方法 | 端点 | 说明 |  
+|--------|----------|-------------|  
+| GET | `/a2a-policy/settings` | 获取当前策略设置 |  
+| PUT | `/a2a-policy/settings` | 更新策略设置 |  
+| POST | `/a2a-policy/rules` | 创建新规则 |  
+| PUT | `/a2a-policy/rules/{rule_id}` | 修改规则 |  
+| DELETE | `/a2a-policy/rules/{rule_id}` | 删除规则 |  
+| POST | `/a2a-policy/rules/{rule_id}/toggle` | 启用/禁用规则 |  
+| POST | `/a2a-policy/test` | 根据策略测试消息内容 |  
+| POST | `/a2a-policy/reset` | 将策略重置为默认值 |  
+| GET | `/a2a-policy/stats` | 查看策略执行统计 |  
+| GET | `/a2a-policy/safeguards` | 查看安全防护配置 |  
 
 ### 获取/更新策略设置  
-**GET** `/a2a-policy/settings`：获取当前策略设置。  
-**PUT** `/a2a-policy/settings`：更新策略设置。  
+**GET** `/a2a-policy/settings` 查看当前策略；**PUT** `/a2a-policy/settings` 更新策略：  
 ```json
 {
   "enabled": true,
@@ -244,11 +240,21 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 ```  
 
 ### 创建自定义规则  
-**POST** `/a2a-policy/rules`：创建新的内容过滤规则：  
-**响应格式：** `200 OK`  
+**POST** `/a2a-policy/rules`  
+**响应代码** `200 OK` 表示规则创建成功：  
+```json
+{
+  "id": "rule-uuid-...",
+  "name": "Block competitor mentions",
+  "pattern": "\\b(competitor1|competitor2)\\b",
+  "action": "block",
+  "is_active": true,
+  "created_at": "2026-02-11T10:00:00Z"
+}
+```  
 
 ### 测试消息内容  
-**POST** `/a2a-policy/test`：在不发送消息的情况下测试其是否符合策略要求：  
+**POST** `/a2a-policy/test` —— 在不实际发送消息的情况下测试其是否符合策略要求：  
 ```json
 // Request
 {"content": "Check out https://example.com for more info"}
@@ -257,49 +263,44 @@ MoltFlow 的核心通信接口支持 JSON-RPC 2.0 协议。所有代理间的操
 {"allowed": false, "blocked_reason": "URL detected and block_urls is enabled", "matched_rules": ["built-in:block_urls"], "filtered_content": "Check out [URL REMOVED] for more info"}
 ```  
 
-### 策略统计  
-**GET` `/a2a-policy/stats`：返回统计信息（如总检查次数、被屏蔽次数、被过滤次数及热门规则）。  
-
-## 请求频率限制  
-部分 A2A 方法存在频率限制：  
-| 方法 | 每分钟允许的请求数 |  
+## 发送频率限制  
+各A2A方法均设有发送频率限制：  
+| 方法 | 每分钟最大发送次数 |  
 |--------|-------|  
-| `agent.message.send` | 30 次 |  
-| `agent.group.create` | 5 次 |  
-| `agent.group.invite` | 10 次 |  
-| `agent.group.list` | 60 次 |  
-| `group.getContext` | 30 次 |  
-| `webhook_manager` | 20 次 |  
-超过限制会导致 JSON-RPC 错误 `-32000`。  
+| `agent.message.send` | 30次 |  
+| `agent.group.create` | 5次 |  
+| `agent.group.invite` | 10次 |  
+| `agent.group.list` | 60次 |  
+| `group.getContext` | 30次 |  
+| `webhook_manager` | 20次 |  
+超过限制会返回错误代码 `-32000`。  
 
-## 示例  
-- **发现 MoltFlow 代理**  
-- **通过 A2A 发送消息**  
+## 示例操作  
+- **发现MoltFlow代理**  
+- **通过A2A发送消息**  
 - **配置内容过滤规则**  
 - **测试消息是否符合策略**  
 
----
-
-## 安全机制  
-MoltFlow 采用多层安全防护：  
+## 安全架构  
+MoltFlow采用多层安全防护机制：  
 - TLS 1.3（传输层加密）  
 - X25519 ECDH（密钥交换）  
 - AES-256-GCM（消息加密）  
-- API 密钥/JWT（身份验证）  
+- API密钥/JWT（身份验证）  
 - AgentSafeguard（输入内容验证）  
 - A2AContentFilter（内容过滤）  
-- TieredRateLimiter（请求频率限制）  
+- TieredRateLimiter（发送频率限制）  
 - AuditLog（完整审计记录）  
 
-所有加密密钥的管理都由服务器端处理。外部代理需使用 `MOLTFLOW_API_KEY` 进行身份验证，其余操作均由平台自动处理。  
+所有密钥管理均由服务器端处理。外部代理需使用`MOLTFLOW_API_KEY`进行身份验证，其余操作均由平台自动完成。  
 
 ## 错误响应  
-常见的 HTTP 错误包括：`400`（请求错误）、`401`（未经授权）、`403`（违反策略）、`404`（资源未找到）、`429`（请求频率限制）。JSON-RPC 错误代码遵循上述规范。  
+常见HTTP错误包括：`400`（请求错误）、`401`（未经授权）、`403`（违反策略）、`404`（资源未找到）、`429`（超出发送频率限制）。JSON-RPC错误代码参考上述列表。  
 
-## 相关功能  
-- **moltflow**：核心 API（会话管理、消息发送、群组管理、标签设置、Webhook 配置）  
-- **moltflow-outreach**：批量发送消息、定时发送、自定义群组管理  
-- **moltflow-leads**：潜在客户识别、流程跟踪、批量操作、CSV/JSON 数据导出  
-- **moltflow-ai**：基于 AI 的自动回复、语音转录、知识库管理  
+## 相关服务  
+- **moltflow**：核心API（会话管理、消息发送、群组管理、标签设置、Webhook功能）  
+- **moltflow-outreach**：批量消息发送、定时消息发送、自定义群组管理  
+- **moltflow-leads**：潜在客户识别、流程跟踪、批量操作、CSV/JSON数据导出  
+- **moltflow-ai**：智能自动回复、语音转录、知识库管理  
 - **moltflow-reviews**：评论收集与评价管理  
 - **moltflow-admin**：平台管理、用户管理、计划配置

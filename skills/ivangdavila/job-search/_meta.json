@@ -1,0 +1,11 @@
+{
+  "owner": "ivangdavila",
+  "slug": "job-search",
+  "displayName": "Job Search",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771351772059,
+    "commit": "https://github.com/openclaw/skills/commit/e97bc0bf30f8970599a4c844e012e3772ebdfd56"
+  },
+  "history": []
+}

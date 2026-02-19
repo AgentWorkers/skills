@@ -1,8 +1,8 @@
 ---
 name: leak-publish
-description: 使用预先安装的“leak CLI”工具，在获得明确的公开访问许可的情况下，通过 x402 支付网关发布本地文件。
+description: 使用预先安装的“leak CLI”工具，在获得用户明确同意公开披露文件内容的情况下，将本地文件发布到需要通过 x402 支付网关进行验证的服务器上。
 compatibility: Requires access to the internet
-version: 2026.2.17-beta.1
+version: 2026.2.17
 metadata:
   openclaw:
     emoji: 📡
@@ -22,7 +22,7 @@ metadata:
 ## 概述
 
 该功能仅用于执行发布工作流程：
-- 将本地文件发布到经过 x402 安全认证的服务器上。
+- 将本地文件发布到受 x402 访问控制（HTTP 402 Forbidden）保护的服务器上。
 - 可以通过 `--public` 选项在用户明确同意的情况下公开文件。
 - 使用分离的守护进程（supervisor）来保持发布过程的持续运行。
 
@@ -46,33 +46,34 @@ metadata:
 
 ## 依赖项策略（必须遵守）
 
-1. 确保 `leak` 命令行工具已添加到系统的 `PATH` 环境变量中。
-2. 运行时禁止使用 `npx` 或动态包安装。
+1. 确保 `leak` 命令可在系统的 PATH 环境变量中找到。
+2. 运行时禁止使用 `npx` 或动态包安装工具。
 
 ## 运行时策略（必须遵守）
 
-1. 默认情况下，所有文件的发布操作都是持久化的（即不会在操作完成后立即删除）。
+1. 默认情况下，所有文件发布操作均视为持久性操作（即不会在操作完成后立即终止）。
 2. 除非用户明确要求以前台模式运行，否则使用 `--run-mode auto` 选项。
-3. 使用以下守护进程来管理发布过程：
-  - `systemd --user`（Linux）
-  - `launchd`（macOS）
+3. 使用以下守护进程来管理后台任务：
+  - Linux: `systemd --user`
+  - macOS: `launchd`
   - `tmux`
   - `screen`
-  - 作为备用方案，可以使用 `nohup` 命令。
-4. 在后台启动后，需要记录以下信息：
-  - 守护进程的名称或进程 ID（PID）
+  - 作为备用方案：`nohup`
+4. 在后台任务启动后，需要记录以下信息：
+  - 守护进程的会话 ID 或进程 ID（PID）
   - 日志文件
-  - 用于停止发布的命令
+  - 用于停止任务的命令
 
-## 必需的输入参数
+## 必需输入参数
 
 1. 文件路径。
-2. 文件的价格（以 USDC 为单位）。
-3. 文件发布的有效期（sale window）。
-4. 卖方收款地址（`--pay-to` 参数）。
-5. 文件的公开设置（`--public` 或仅限本地访问）。
+2. 文件售价（以 USDC 为单位）。
+3. 文件发布的有效期（销售窗口）。
+4. 卖家收款地址（`--pay-to` 参数）。
+5. 文件的公开状态（`--public` 或仅限本地访问）。
 
-## 本地发布
+## 本地发布（Local Publish）
+
 ```bash
 bash skills/leak-publish/scripts/publish.sh \
   --run-mode auto \
@@ -83,7 +84,8 @@ bash skills/leak-publish/scripts/publish.sh \
   --network eip155:84532
 ```
 
-## 公开发布
+## 公开发布（Public Publish）
+
 ```bash
 bash skills/leak-publish/scripts/publish.sh \
   --run-mode auto \
@@ -94,14 +96,15 @@ bash skills/leak-publish/scripts/publish.sh \
   --public
 ```
 
-## 运行时检查
+## 运行时检查（Runtime Check）
+
 ```bash
 bash skills/leak-publish/scripts/smoke_persistent_runner.sh --mode auto --sleep-seconds 8
 ```
 
-**预期结果**：检查通过（`PASS`），并且选择了正确的后端服务器。
+**预期结果**：检查通过（`PASS`），并且选择了合适的后端服务器。
 
 ## 故障排除**
 
-- 如果 `leak` 命令行工具未安装，请使用以下命令进行安装：`npm i -g leak-cli`
-- 如果公开文件时出现确认错误，请根据提示重新输入正确的确认信息。
+- 如果 `leak` 命令缺失，请使用以下命令进行安装：`npm i -g leak-cli`
+- 如果公开文件的操作失败，请根据提示重新输入正确的确认信息。

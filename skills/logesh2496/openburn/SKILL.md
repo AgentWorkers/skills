@@ -1,6 +1,6 @@
 ---
 name: openburn
-description: 该技能可自动收集 Pump.fun 创建者的费用，并将收集到的 SOL（Solana 币）的一定比例进行销毁。当用户希望为他们的 Pump.fun 代币设置定期费用收取及 SOL 烧毁计划时，可以使用此技能。
+description: 该技能可自动化收集 Pump.fun 创建者的费用，使用收集到的 SOL（Solana 的代币）购买相应的代币，并将这些代币进行销毁（即执行回购和销毁操作）。当用户希望为他们的 Pump.fun 代币设置定期回购和销毁计划时，可以使用此技能。
 metadata:
   {
     "openclaw":
@@ -8,12 +8,14 @@ metadata:
         "emoji": "🔥",
         "requires":
           {
-            "modules": ["@solana/web3.js", "tsx", "dotenv"],
+            "modules":
+              ["@solana/web3.js", "@solana/spl-token", "tsx", "dotenv"],
             "binaries": ["node", "pnpm"],
             "env":
               [
                 "CREATOR_WALLET_PRIVATE_KEY",
                 "PUMP_FUN_TOKEN_ADDRESS",
+                "JUPITER_API_KEY",
                 "BURN_PERCENTAGE",
                 "MIN_FEE_TO_BURN",
               ],
@@ -24,7 +26,7 @@ metadata:
               "id": "pnpm-solana",
               "kind": "npm",
               "module": "@solana/web3.js",
-              "cmd": "pnpm add @solana/web3.js @pump-fun/pump-sdk tsx dotenv -w",
+              "cmd": "pnpm add @solana/web3.js @solana/spl-token @pump-fun/pump-sdk tsx dotenv -w",
               "label": "Install dependencies",
             },
           ],
@@ -33,58 +35,64 @@ metadata:
 ---
 # Openburn
 
-该技能可帮助用户自动化收集创作者费用，并在Pump.fun平台上燃烧SOL（Solana加密货币）。
+此技能可帮助用户自动化执行 Pump.fun 代币的回购和销毁机制。
 
 ## 工作原理
 
-1. **收集创作者费用**：脚本会从绑定曲线（bonding curve）和自动市场机制（AMM）池中收集交易费用（以SOL为单位）。
-2. **燃烧SOL**：系统会自动将收集到的SOL的指定百分比（可通过配置调整）转移到Solana的销毁地址（`1nc1nerator11111111111111111111111111111111`）进行销毁。
+1. **收集创建者费用**：脚本会从绑定曲线（bonding curve）和自动市场机制（AMM）池中收集交易费用（以 SOL 为单位）。
+2. **购买代币**：使用收集到的 SOL 从绑定曲线中购买代币。
+3. **销毁代币**：将购买的代币发送到 Solana 的销毁地址，从而产生购买压力并推动代币价格上涨。
 
 ## 设置说明
 
-1. **请求用户提供凭证**：
-   - 请用户提供以下信息：
-     - `PUMP_FUN_TOKEN_ADDRESS`（在Pump.fun平台上的代币地址）
-     - `CREATOR_WALLET_PRIVATE_KEY`（用于燃烧操作的钱包私钥）
-     - `BURN_PERCENTAGE`（燃烧费用的百分比，默认值为80%）
-     - `MIN_FEE_TO_BURN`（进行燃烧操作所需的最低费用，默认值为0.1 SOL）
+1. **请求凭据**：
+    请用户提供以下信息：
+    - `PUMP_FUN_TOKEN_ADDRESS`（Pump.fun 上的代币地址）
+    - `CREATOR_WALLET_PRIVATE_KEY`（用于销毁代币的钱包私钥）
+    - `JUPITER_API_KEY`（从 [Jupiter Portal](https://portal.jup.ag/api-keys) 获取）——**仅当代币处于成熟期或脱离绑定曲线时需要**
+    - `BURN_PERCENTAGE`（用于购买代币的收集到的 SOL 的百分比，默认值：80%）
+    - `MIN_FEE_TO_BURN`（执行销毁操作所需的最低 SOL 费用，默认值：0.1）
 
-   > [!重要提示]
-   > 请告知用户，他们的私钥将会被存储在`.env`文件中。
+    > [!重要提示]
+    > 请提醒用户，他们的私钥将被存储在 `.env` 文件中。
 
-2. **存储凭证**：
-   - 检查根目录下是否存在`.env`文件。
-     - 如果存在，则将凭证添加到文件中；如果不存在，则创建该文件。
-     文件格式如下：
+2. **存储凭据**：
+    检查根目录中是否存在 `.env` 文件。
+    - 如果存在，请将凭据添加到文件中。
+    - 如果不存在，请创建该文件。
 
-     ```env
+    格式如下：
+
+    ```env
     PUMP_FUN_TOKEN_ADDRESS=...
     CREATOR_WALLET_PRIVATE_KEY=...
+    JUPITER_API_KEY=...
     BURN_PERCENTAGE=80
     MIN_FEE_TO_BURN=0.1
     ```
 
 3. **注册代币**：
-     在获取并存储`PUMP_FUN_TOKEN_ADDRESS`后，需要通过API注册该代币。
-     **API端点**：`POST https://api.openburn.fun/api/burn/register`
-     **请求体**：
+    在收到并存储了 `PUMP_FUN_TOKEN_ADDRESS` 之后，需要通过 API 注册该代币。
 
-     ```json
+    **端点**：`POST https://api.openburn.fun/api/burn/register`
+    **请求体**：
+
+    ```json
     {
       "tokenAddress": "<PUMP_FUN_TOKEN_ADDRESS>"
     }
     ```
 
-   这一步骤是在安排燃烧任务之前必须完成的。
+    在安排销毁任务之前，必须完成此注册步骤。
 
 4. **安排任务**：
-   - 请用户设置任务执行间隔（默认为每2小时）。
-   - 使用`cron`工具来安排任务：
-     - **任务名称**：`openburn-job`
-     - **执行间隔**：`{"kind": "every", "everyMs": 7200000}`（将7200000替换为用户指定的时间间隔，单位为毫秒）
-     - **会话模式**：`isolated`
-     - **任务数据**：
-       ```json
+    请用户指定任务调度间隔（默认值：每 2 小时）。
+    使用 `cron` 工具来安排新的任务：
+    - **名称**：`openburn-job`
+    - **调度时间**：`{"kind": "every", "everyMs": 7200000}`（将 7200000 替换为用户的间隔时间，单位为毫秒）
+    - **会话目标**：`isolated`
+    - **请求体**：
+      ```json
       {
         "kind": "agentTurn",
         "message": "Execute the openburn script to burn SOL tokens.",
@@ -92,12 +100,13 @@ metadata:
       }
       ```
 
-5. **报告任务安排情况**：
-     发送POST请求以报告任务安排情况。
-     **API端点**：`POST https://api.openburn.fun/api/burn/schedule`
-     **请求体**：
+5. **报告调度信息**：
+    向 `https://api.openburn.fun/api/burn/schedule` 发送 POST 请求以报告任务调度情况。
 
-     ```json
+    **端点**：`POST https://api.openburn.fun/api/burn/schedule`
+    **请求体**：
+
+    ```json
     {
       "jobId": "openburn-job",
       "intervalMs": 7200000
@@ -106,14 +115,15 @@ metadata:
 
 ## 执行说明
 
-当`cron`任务被触发时（系统会发送“Execute the openburn script...”的消息），请执行以下操作：
+当 cron 任务触发时（收到“执行 openburn 脚本...”的消息），请按照以下步骤操作：
 
-1. **运行脚本**：
-    调用位于`skills/openburn/scripts/burn.ts`中的燃烧脚本。
+1. **执行脚本**：
+    运行位于 `skills/openburn/scripts/burn.ts` 的销毁脚本。
+
     ```bash
     node --import tsx skills/openburn/scripts/burn.ts
     ```
 
 2. **报告结果**：
-    脚本会自动将执行结果（包括交易是否成功）报告到`https://api.openburn.fun/api/burn/transaction`。
-   同时，也应在聊天中向用户反馈交易的具体信息（如交易签名等）。
+    脚本会自动将交易成功/失败的信息报告到 `https://api.openburn.fun/api/burn/transaction`。
+    同时，您还需要将交易结果（交易签名）通过聊天界面告知用户。

@@ -1,99 +1,49 @@
 ---
 name: email-webhook
-description: 这是一个通用的接收器，用于接收通过 JSON Webhook 发送的电子邮件。它将收到的邮件信息保存到本地的 JSONL 文件中，以便代理程序进行后续处理。该接收器对邮件来源（Cloudflare、Mailgun 或自定义代理）没有特定要求，可以灵活适应不同的邮件发送方式。
-metadata: {
-  "author": "Skippy & Lucas (AI Commander)",
-  "homepage": "https://aicommander.dev",
-  "env": {
-    "PORT": { "description": "Port to listen on (default: 19192).", "default": "19192" },
-    "WEBHOOK_SECRET": { "description": "Secret token for webhook authentication (Bearer token). REQUIRED for startup." },
-    "INBOX_FILE": { "description": "Filename for the JSONL inbox (default: inbox.jsonl). Path traversal protected.", "default": "inbox.jsonl" }
-  },
-  "openclaw": {
-    "requires": { "bins": ["node"] },
-    "install": [
-      {
-        "id": "npm-deps",
-        "kind": "exec",
-        "command": "npm install express",
-        "label": "Install Node.js dependencies"
-      }
-    ]
-  }
-}
+description: 通过 JSON Webhook 接收传入的电子邮件，并触发代理程序的运行。专为 AI Commander 设计。
+metadata: {"openclaw": {"requires": {"bins": ["node", "openclaw"], "env": ["WEBHOOK_SECRET"]}, "primaryEnv": "WEBHOOK_SECRET", "install": [{"id": "npm-deps", "kind": "node", "package": "express@4.21.2", "label": "Install Webhook dependencies"}]}}
 ---
-# 通用电子邮件 Webhook 接收器
+# 电子邮件 Webhook 接收器
 
-该技能允许代理以标准化的 JSON Webhook 形式接收电子邮件。它提供了一个端点，可以与其他电子邮件到 Webhook 的服务提供商（如 Cloudflare Email Routing、Mailgun Inbound 或 SendGrid Inbound Parse）集成。
+该功能提供了一个安全的端点，用于接收以标准化 JSON 格式发送的 Webhook 数据，并能自动唤醒代理程序（agent）。
 
-## 预期的 Webhook 结构
+## ⚡️ 唤醒机制
 
-接收器期望收到一个具有以下 JSON 结构的 `POST` 请求：
+当收到电子邮件时，服务器会执行 `openclaw system event --mode now` 命令。这确保代理程序能够立即收到通知，并立即处理传入的通信内容，而无需等待下一次心跳周期。
 
-```json
-{
-  "from": "sender@example.com",
-  "to": "agent@yourdomain.com",
-  "subject": "Hello world",
-  "text": "The plain text body",
-  "html": "<div>Optional HTML content</div>",
-  "timestamp": "ISO-8601 string",
-  "attachments": [
-    {
-      "filename": "document.pdf",
-      "mimeType": "application/pdf",
-      "content": "base64-encoded-string"
-    }
-  ]
-}
-```
+## 🚨 安全性与隐私保护
 
-## 安全性与设置
+### 命令注入防护
+服务器使用 `child_process.spawn` 来安全地启动子进程，而非直接执行 shell 命令。用户提供的输入（如邮件头部信息）无法被用来执行任意系统命令。
 
-1. **启动接收器**：运行 `scripts/webhook_server.js` 文件。
-2. **身份验证**：所有请求必须包含 `Authorization: Bearer <WEBHOOK_SECRET>` 标头。
-3. **本地收件箱**：收到的邮件会被添加到工作区目录下的 `inbox.jsonl` 文件中。
+### 路径遍历防护
+`INBOX_FILE` 参数通过 `path.basename()` 函数进行清理处理，确保文件仅被写入服务器的工作目录内。
 
-## 实现示例：Cloudflare Worker
+### 认证
+服务器启动时必须设置一个强密码 `WEBHOOK_SECRET` 环境变量。所有传入的请求都必须在 `Authorization: Bearer <secret>` 头部中提供该密钥。
 
-您可以在连接到 **Email Routing** 的 Cloudflare Worker 中使用以下代码将电子邮件推送到该接收器：
+### 数据存储
+- **本地收件箱**：收到的电子邮件（原始正文和元数据）会被追加到本地的 `inbox.jsonl` 文件中。
+- **清理**：用户应定期更新或删除收件箱文件，以节省磁盘空间并保护隐私。
 
-```javascript
-import PostalMime from 'postal-mime';
+## 环境变量
 
-export default {
-  async email(message, env, ctx) {
-    const rawEmail = await new Response(message.raw).arrayBuffer();
-    const parser = new PostalMime();
-    const parsedEmail = await parser.parse(rawEmail);
+| 变量 | 是否必填 | 默认值 | 说明 |
+|---|---|---|---|
+| `WEBHOOK_SECRET` | 是 | — | 用于 Webhook 认证的密钥。 |
+| `PORT` | 否 | `19192` | 服务器监听的端口。 |
+| `INBOX_FILE` | 否 | `inbox.jsonl` | 活动日志文件的名称。 |
 
-    const payload = {
-      from: message.from,
-      to: message.to,
-      subject: parsedEmail.subject,
-      text: parsedEmail.text,
-      html: parsedEmail.html,
-      timestamp: new Date().toISOString()
-    };
+## 设置步骤
 
-    await fetch(env.WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${env.WEBHOOK_SECRET}`
-      },
-      body: JSON.stringify(payload)
-    });
-  }
-}
-```
-
-## 工具
-
-### 启动 Webhook 服务器
-```bash
-WEBHOOK_SECRET=my-strong-token INBOX_FILE=inbox.jsonl node scripts/webhook_server.js
-```
+1. **安装依赖项**：
+   ```bash
+   npm install express@4.21.2
+   ```
+2. **启动服务器**：
+   ```bash
+   WEBHOOK_SECRET=your-strong-token node scripts/webhook_server.js
+   ```
 
 ## 运行时要求
-需要安装 `express` 和 `node` 模块。
+需要安装 `express`、`node` 和 `openclaw` 命令行工具（CLI）。

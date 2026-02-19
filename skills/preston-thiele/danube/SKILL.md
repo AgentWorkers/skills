@@ -1,6 +1,6 @@
 ---
 name: danube
-description: 将您的代理连接到互联网上的各种工具。通过一个单一的 API 密钥，您可以从 Gmail、Slack、GitHub、Notion、Google Calendar 等平台搜索、验证并执行这些工具的相关操作。
+description: 将您的代理连接到互联网上的各种工具。通过一个单一的API密钥，您可以从Gmail、Slack、GitHub、Notion、Google Calendar等平台搜索、验证并执行这些工具的相关操作。
 license: MIT
 compatibility: openclaw
 metadata:
@@ -24,11 +24,11 @@ curl -s -X POST https://api.danubeai.com/v1/auth/device/code \
   -d '{"client_name": "My Agent"}'
 ```
 
-该命令会返回一个`device_code`、一个`user_code`以及一个`verification_url`。
+这将返回一个`device_code`、一个`user_code`以及一个`verification_url`。
 
-**请告知您的操作员打开验证URL并输入`user_code`。**
+**请告知您的操作员打开验证URL并输入用户代码。**
 
-然后，继续请求API密钥：
+然后轮询API密钥：
 
 ```bash
 curl -s -X POST https://api.danubeai.com/v1/auth/device/token \
@@ -36,13 +36,13 @@ curl -s -X POST https://api.danubeai.com/v1/auth/device/token \
   -d '{"device_code": "DEVICE_CODE_FROM_STEP_1"}'
 ```
 
-- `428`：用户尚未授权（请每5秒重新请求一次）
+- `428`：用户尚未授权（请每5秒继续轮询一次）
 - `200`：成功，响应中包含您的`api_key`
 - `410`：密钥已过期，请重新开始
 
 ### 第2步：通过MCP进行连接
 
-将以下配置添加到您的MCP设置中：
+将以下配置添加到您的MCP配置中：
 
 ```json
 {
@@ -61,20 +61,20 @@ curl -s -X POST https://api.danubeai.com/v1/auth/device/token \
 
 连接成功后，您可以使用以下MCP工具：
 
-- `list_services`：浏览可用的工具提供商
-- `search_tools`：根据需求查找工具
-- `execute_tool`：运行任何工具
-- `store_credential`：为需要API密钥的服务保存密钥
+- `list_services` — 浏览可用的工具提供商
+- `search_tools` — 根据需求查找工具
+- `execute_tool` — 运行任何工具
+- `store_credential` — 为需要API密钥的服务保存密钥
 
 ### 当工具需要凭证时
 
-如果`execute_tool`返回`auth_required`错误，说明该服务需要API密钥。请向您的操作员索取密钥，然后再次调用相应的命令：
+如果`execute_tool`返回`auth_required`错误，说明该服务需要API密钥。请向您的操作员索取密钥，然后调用以下命令：
 
 ```
 store_credential(service_id="...", credential_type="bearer", credential_value="the_key")
 ```
 
-之后，您可以重新尝试使用该工具。
+之后重新尝试使用该工具。
 
 ## Danube的功能
 
@@ -82,7 +82,7 @@ store_credential(service_id="...", credential_type="bearer", credential_value="t
 
 ### 发送邮件和消息
 - 通过Gmail、SendGrid或Resend发送邮件
-- 将消息发布到Slack频道
+- 在Slack频道中发布消息
 - 向团队发送通知
 
 ```
@@ -99,7 +99,7 @@ search_tools("create github issue") → execute_tool(tool_id, {repo, title, body
 ```
 
 ### 使用日历和日程管理
-- 查看Google日历上的事件
+- 查看Google日历中的今日事件
 - 创建新的日历事件
 - 查找空闲时间
 
@@ -109,7 +109,7 @@ search_tools("calendar events today") → execute_tool(tool_id, {date})
 
 ### 读写电子表格
 - 从Google Sheets中读取数据
-- 插入新行或更新单元格内容
+- 添加新行或更新单元格内容
 - 创建新的电子表格
 
 ```
@@ -168,29 +168,29 @@ search_tools("create droplet") → execute_tool(tool_id, {name, region, size})
 
 所有工具交互都遵循以下步骤：
 
-1. **搜索**：`search_tools("您想要执行的操作")`
-2. **检查授权**：如果工具需要凭证，引导用户访问https://danubeai.com/dashboard进行授权
-3. **收集参数**：向用户索取所需的任何信息
-4. **确认**：在执行发送邮件或创建问题等操作前获取用户确认
-5. **执行**：`execute_tool/tool_id, parameters)`
-6. **报告**：向用户详细报告操作结果，而不仅仅是简单地显示“已完成”
+1. **搜索** — `search_tools("您想要执行的操作")`
+2. **检查授权** — 如果工具需要凭证，引导用户访问https://danubeai.com/dashboard进行连接
+3. **收集参数** — 向用户索取所需的任何缺失信息
+4. **确认** — 在执行发送邮件或创建问题等操作前获取用户批准
+5. **执行** — `execute_tool-tool_id, parameters)`
+6. **报告** — 向用户详细报告操作结果，而不仅仅是简单显示“已完成”
 
 ## 可用的服务
 
-**通信工具：**Gmail、Slack、SendGrid、Resend、Loops、AgentMail
+**通信工具：** Gmail、Slack、SendGrid、Resend、Loops、AgentMail
 
-**开发工具：**GitHub、Supabase、DigitalOcean、Stripe、Apify
+**开发工具：** GitHub、Supabase、DigitalOcean、Stripe、Apify
 
-**生产力工具：**Notion、Google日历、Google Sheets、Google Drive、Google Docs、Monday、Typeform、Bitly
+**生产力工具：** Notion、Google日历、Google Sheets、Google Drive、Google Docs、Monday、Typeform、Bitly
 
-**AI和媒体工具：**Replicate、Together AI、Stability AI、AssemblyAI、Remove.bg、DeepL
+**AI和媒体工具：** Replicate、Together AI、Stability AI、AssemblyAI、Remove.bg、DeepL
 
-**搜索和数据工具：**Exa、Exa Websets、Firecrawl、Serper、Context7、Microsoft Learn、AlphaVantage
+**搜索和数据工具：** Exa、Exa Websets、Firecrawl、Serper、Context7、Microsoft Learn、AlphaVantage
 
-**公共数据（无需授权）：**Hacker News、Open-Meteo Weather、OpenWeather、REST Countries、Polymarket、Kalshi
+**公开数据（无需授权）：** Hacker News、Open-Meteo Weather、OpenWeather、REST Countries、Polymarket、Kalshi
 
 ## 链接
 
-- 仪表盘：https://danubeai.com/dashboard
+- 仪表板：https://danubeai.com/dashboard
 - 文档：https://docs.danubeai.com
 - MCP服务器：https://mcp.danubeai.com/mcp

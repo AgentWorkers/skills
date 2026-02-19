@@ -1,163 +1,227 @@
 ---
 name: noya-agent
-description: 与 Noya AI 代理进行交互，用于加密货币交易、预测市场分析、代币研究以及定期定额投资（DCA）策略的制定。当用户需要向 Noya 发送消息、管理对话线程或通过 Noya API 查询代理功能时，可以使用该工具。
+description: 通过 `curl` 命令与 Noya AI 代理进行交互，以执行加密货币交易、预测市场分析、代币评估以及定期定额投资（DCA）策略的相关操作。当用户需要交易代币、查看投资组合、分析市场状况、管理定期定额投资策略，或与 Polymarket/Rain 预测市场进行交互时，可以使用该工具。
+metadata: {"openclaw":{"emoji":"🤖","homepage":"https://agent.noya.ai","requires":{"env":["NOYA_API_KEY"],"bins":["curl","jq"]},"primaryEnv":"NOYA_API_KEY"}}
 ---
 # Noya Agent
 
-Noya 是一个多智能体 AI 系统，可用于加密货币交易、预测市场（如 Polymarket、Rain）、代币分析以及定期投资（DCA）策略的制定。该技能允许通过其 REST API 以编程方式与 Noya 进行交互。
+Noya 是一个多智能体 AI 系统，可用于加密货币交易、预测市场（如 Polymarket、Rain）、代币分析以及定期定额投资（DCA）策略的制定。所有交易都由系统自动处理，用户无需支付任何 gas 费用。
 
-## 先决条件
+- **官方网站：** [agent.noya.ai](https://agent.noya.ai)
+- **API 基本地址：** `https://safenet.one`
 
-1. 在 [agent.noya.ai](https://agent.noya.ai) 注册一个账户。
-2. 从“API 密钥”页面（设置 > API 密钥）生成 API 密钥。
-3. 安全存储该密钥——该密钥仅在注册时显示一次。
+## 信任与安全
 
-## 认证
+- 所有 API 调用均使用 HTTPS 协议。系统仅从环境变量中读取 `NOYA_API_KEY`。
+- 所有链上交易在执行前都需要用户明确确认。
+- 测试期间请使用临时 API 密钥（有效期为 30 天）。如果密钥被泄露，请在设置 > API 密钥中将其撤销。
 
-所有请求都需要包含 `x-api-key` 头部字段：
+## 设置
 
-```
-x-api-key: noya_<your-key>
-```
-
-基础 URL：`https://safenet.one`
-
-## 快速入门
-
-### 向 Noya 发送消息
+1. 在 [agent.noya.ai](https://agent.noya.ai) 注册账户。
+2. 进入设置 > API 密钥，生成新的 API 密钥。
+3. 请妥善保管该密钥（仅会显示一次）。
+4. 设置环境变量：
 
 ```bash
-curl -N https://safenet.one/api/messages/stream \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: noya_YOUR_KEY" \
-  -d '{"message": "What is the current price of ETH?", "threadId": "my-thread-1"}'
+export NOYA_API_KEY="noya_your_key_here"
 ```
 
-响应是一个分块的文本流。每个分块都是一个 JSON 对象，用 `--breakpoint--` 进行分隔。
+在 `~/.openclaw/openclaw.json` 文件中进行配置：
 
-### 列出对话线程
-
-```bash
-curl https://safenet.one/api/threads \
-  -H "x-api-key: noya_YOUR_KEY"
-```
-
-### 获取代理功能
-
-```bash
-curl https://safenet.one/api/agents/summarize \
-  -H "x-api-key: noya_YOUR_KEY"
-```
-
-## 端点
-
-### POST /api/messages/stream
-
-向 Noya 代理发送消息，并接收分块的文本响应。
-
-**请求体：**
-
-| 字段    | 类型   | 是否必填 | 描述                               |
-|----------|--------|----------|---------------------------|
-| message  | string | 是      | 用户发送的消息                         |
-| threadId | string | 是      | 对话线程 ID                           |
-
-**响应：** 分块的文本流。每个分块都是一个 JSON 对象，用 `--breakpoint--\n` 进行分隔。
-
-**分块类型：**
-
-| 类型                 | 描述                                  |
-|----------------------|----------------------------------------------|
-| `message`            | 代理的文本响应片段                         |
-| `tool`               | 工具调用结果及其产生的数据                   |
-| `progress`           | 进度更新（当前/总消息量）                     |
-| `interrupt`          | 代理请求用户确认                         |
-| `reasonForExecution` | 代理解释执行操作的缘由                     |
-| `executionSteps`     | 逐步执行计划                         |
-| `error`              | 错误信息                             |
-
-**解析示例（JavaScript）：**
-
-```javascript
-const response = await fetch("https://safenet.one/api/messages/stream", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "x-api-key": "noya_YOUR_KEY",
-  },
-  body: JSON.stringify({ message: "Analyze SOL", threadId: "t1" }),
-});
-
-const reader = response.body.getReader();
-const decoder = new TextDecoder();
-let buffer = "";
-
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-  buffer += decoder.decode(value, { stream: true });
-  const parts = buffer.split("--breakpoint--\n");
-  buffer = parts.pop();
-  for (const part of parts) {
-    const trimmed = part.trim();
-    if (!trimmed || trimmed === "keep-alive") continue;
-    const chunk = JSON.parse(trimmed);
-    if (chunk.type === "message") {
-      process.stdout.write(chunk.message);
+```json
+{
+  "skills": {
+    "entries": {
+      "noya-agent": {
+        "enabled": true,
+        "apiKey": "noya_your_key_here",
+        "env": {
+          "NOYA_API_KEY": "noya_your_key_here"
+        }
+      }
     }
   }
 }
 ```
 
-### GET /api/threads
+## 使用场景
 
-列出已认证用户的所有对话线程。
+当用户需要执行以下操作时，可以使用 Noya：
+- 查看代币价格或投资组合余额
+- 进行代币交换、跨链桥接或转账
+- 分析代币和市场趋势
+- 在 Polymarket 或 Rain 预测市场中进行交易
+- 设置或管理定期定额投资（DCA）策略
+- 查看去中心化金融（DeFi）资产状况
 
-**响应：**
+**不适用场景：** 非加密货币相关任务、本地文件操作或一般性知识查询。
 
-```json
-{
-  "success": true,
-  "data": { "threads": [{ "id": "...", "name": "...", "created_at": "..." }] }
-}
+## 核心工作流程
+
+所有交互均通过 curl 使用 Noya 的 REST API 完成。主要接口为 `POST /api/messages/stream`，用于接收实时响应。系统提供了相应的辅助脚本。
+
+### 1. 了解功能（首次使用）
+
+调用该接口可获取 Noya 所支持的所有功能类型（代币分析、预测市场、DCA 等）及其相关工具。只需调用一次即可了解 Noya 的全部功能。
+
+### 2. 生成对话 ID（新对话）
+
+为每个新对话主题生成一个 UUID v4：
+
+```bash
+python3 -c "import uuid; print(uuid.uuid4())"
 ```
 
-### GET /api/threads/:threadId/messages
+在 macOS/Linux 系统上，可以使用以下命令：
 
-获取特定线程中的所有消息。
-
-**响应：**
-
-```json
-{
-  "success": true,
-  "data": { "messages": [...] }
-}
+```bash
+uuidgen | tr '[:upper:]' '[:lower:]'
 ```
 
-### DELETE /api/threads/:threadId
+每个对话都需要一个唯一的 UUID。请为每个主题生成一个 UUID，并在后续对话中重复使用。
 
-删除一个对话线程。
+### 3. 发送消息（实时响应）
 
-### POST /api/chat/completions
+使用提供的脚本发送消息并接收解析后的响应：
 
-兼容 OpenAI 的聊天完成功能。会话历史数据存储在 Redis 中。
+```bash
+bash {baseDir}/noya-message.sh "What tokens do I have in my portfolio?" "THREAD_ID_HERE"
+```
 
-**请求体：**
+该脚本会处理实时响应，解析以 `--breakpoint--` 为分隔符的 JSON 数据块，并输出格式化的文本，包括消息内容、工具结果、进度指示以及用户确认提示。
 
-| 字段       | 类型   | 是否必填 | 描述                          |
-|-------------|--------|----------|--------------------------------------|
-| sessionId   | string | 是      | 会话标识符                         |
-| message     | string | 是      | 用户发送的消息                         |
-| config      | object | 否       | 模型配置                           |
-| tools       | array  | 否       | 使用的工具                         |
-| toolResults | array  | 否       | 上次工具调用的结果                     |
+### 4. 继续对话
 
-### GET /api/agents/summarize
+后续对话请使用相同的对话 ID——Noya 会保留对话上下文。
 
-返回所有可用的代理类型及其专长和工具。
+### 5. 回应用户确认请求
 
-## 额外资源
+在某些操作（如代币交换）之前，系统会提示用户确认。用户需在同一对话线程中回复确认信息：
 
-- 完整的 API 规范（包括请求/响应格式）请参阅 [reference.md](reference.md)。
-- MCP 服务器可用：`npx noya-agent-mcp`（使用 `NOYA_API_KEY` 环境变量进行配置）
+```bash
+bash {baseDir}/noya-message.sh "Yes" "SAME_THREAD_ID"
+```
+
+## API 参考（curl 命令）
+
+所有接口请求都需要添加 `x-api-key` 头部字段。基础地址为 `https://safenet.one`。
+
+### 发送消息（实时响应）——使用辅助脚本
+
+```bash
+bash {baseDir}/noya-message.sh "<message>" "<threadId>"
+```
+
+如需获取原始响应数据，可以使用以下命令：
+
+```bash
+curl -s -X POST "https://safenet.one/api/messages/stream" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $NOYA_API_KEY" \
+  -H "x-timezone-name: America/New_York" \
+  -d '{"message": "What is the price of ETH?", "threadId": "YOUR_UUID"}'
+```
+
+原始响应数据以 `--breakpoint--\n` 为分隔符的 JSON 块形式返回，其中包含 `keep-alive\n\n` 信号以保持连接。数据块类型包括：`message`（消息）、`tool`（工具结果）、`interrupt`（中断请求）、`progress`（进度信息）、`reasonForExecution`（执行原因）、`executionSteps`（执行步骤）和 `error`（错误信息）。
+
+### 列出所有对话
+
+```bash
+curl -s -H "x-api-key: $NOYA_API_KEY" \
+  "https://safenet.one/api/threads" | jq '.data.threads'
+```
+
+### 获取对话内容
+
+```bash
+curl -s -H "x-api-key: $NOYA_API_KEY" \
+  "https://safenet.one/api/threads/THREAD_ID/messages" | jq '.data.messages'
+```
+
+### 删除对话
+
+```bash
+curl -s -X DELETE -H "x-api-key: $NOYA_API_KEY" \
+  "https://safenet.one/api/threads/THREAD_ID"
+```
+
+### 获取代理概述
+
+```bash
+curl -s -H "x-api-key: $NOYA_API_KEY" \
+  "https://safenet.one/api/agents/summarize" | jq '.data'
+```
+
+### 聊天结束（兼容 OpenAI，不使用代理工具）
+
+```bash
+curl -s -X POST "https://safenet.one/api/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $NOYA_API_KEY" \
+  -d '{"sessionId": "SESSION_ID", "message": "Hello, what can you do?"}'
+```
+
+### 获取会话历史记录
+
+```bash
+curl -s -H "x-api-key: $NOYA_API_KEY" \
+  "https://safenet.one/api/chat/session/SESSION_ID" | jq '.messages'
+```
+
+### 清除会话
+
+```bash
+curl -s -X DELETE -H "x-api-key: $NOYA_API_KEY" \
+  "https://safenet.one/api/chat/session/SESSION_ID"
+```
+
+## 常用操作模式
+
+- **查看投资组合**：[此处添加相关代码]
+- **代币交换**：[此处添加相关代码]
+- **代币分析**：[此处添加相关代码]
+- **DCA 策略**：[此处添加相关代码]
+- **预测市场**：[此处添加相关代码]
+
+## 重要说明
+
+### 交易确认
+
+Noya 在执行链上交易（如代币交换、跨链桥接、转账、订单）之前，总会要求用户确认。响应中会包含 `[REQUIRES INPUT]` 标签，其中列出了具体操作内容及选项。请务必将确认信息转发给用户，并在同一对话线程中接收用户的回复。切勿自动执行交易。
+
+### 钱包委托（仅限官方网站）
+
+如果 Noya 提出 **委托请求**，用户需在官方网站上完成相关操作：
+```
+"To delegate your wallet, visit https://agent.noya.ai and click
+'Delegate Wallet' in the chat. This is a one-time action."
+```
+
+### 安全部署（仅限官方网站）
+
+如果 Noya 提出 **安全部署请求**，用户需在官方网站上完成相关操作：
+```
+"To deploy your Polymarket Safe, visit https://agent.noya.ai and click
+'Deploy Safe Now'. This is free, takes ~30 seconds, and only needs to be done once."
+```
+
+## 错误处理
+
+| 错误代码 | 处理方法 |
+|---------|-----------|
+| `401 Unauthorized` | API 密钥无效、过期或已被撤销。请在 agent.noya.ai 重新生成密钥。|
+| `400 Bad Request` | 请求体中缺少 `message` 或 `threadId` 参数。|
+| `429 Rate limit` | 请等待几分钟。每 5 分钟内最多允许 15 次请求。|
+
+## 脚本
+
+该技能的目录中包含以下辅助脚本：
+
+| 脚本 | 用途 |
+|--------|---------|
+| `noya-message.sh` | 向 Noya 发送消息并解析实时响应。使用方法：`bash {baseDir}/noya-message.sh "<message>" "<threadId>"` |
+
+## 其他资源
+
+- 完整的 REST API 规范请参阅 [{baseDir}/reference.md](reference.md)。

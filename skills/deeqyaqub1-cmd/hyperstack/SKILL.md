@@ -1,330 +1,256 @@
 ---
 name: hyperstack
-description: "开发者可控的知识图谱内存，专为AI代理设计。该内存支持在多种工具（如Cursor、Claude Desktop、VS Code、LangGraph）之间无缝迁移。通过类型化的信号实现多代理之间的协作；支持显式的类型化关系定义，每次操作均不产生任何LLM（Large Language Model）相关的成本，并提供时间旅行式的调试功能。该技术可节省高达94%的令牌使用量。"
+description: "用于多智能体协作的类型化图内存（Typed Graph Memory）。将 `GOALS.md` 和 `DECISIONS.md` 文件替换为可查询的卡片（queryable cards）和关系（relations）。通过提问“哪些任务与任务 X 相关联？”（What tasks are associated with task X?），可以获得精确的答案，而不仅仅是文本片段。"
 user-invocable: true
 homepage: https://cascadeai.dev/hyperstack
-metadata: {"openclaw":{"emoji":"🃏","requires":{"env":["HYPERSTACK_API_KEY","HYPERSTACK_WORKSPACE"]},"primaryEnv":"HYPERSTACK_API_KEY"}}
+metadata:
+  openclaw:
+    emoji: "🃏"
+    requires:
+      env:
+        - HYPERSTACK_API_KEY
+    primaryEnv: HYPERSTACK_API_KEY
 ---
-
-# HyperStack — 开发者可控的知识图谱内存
-
-## HyperStack 的功能
-
-HyperStack 为你的智能助手提供了持久化的内存，并允许你控制其中的知识图谱。当对话结束时，信息不会丢失；也不会将所有历史记录都塞进每个提示信息中。相反，你的助手会将知识以“卡片”的形式存储（每张卡片大约包含 350 个标记），这些卡片之间有明确的关联关系。
-
-**控制图谱的是你，而不是大型语言模型（LLM）的想象结果。** 与那些通过 LLM 调用来自动提取实体的工具不同（每次操作的成本约为 0.002 美元，且可能存在错误的关系），HyperStack 允许你创建具有明确关联关系的卡片。无需提取成本，也没有错误的链接，写入操作也是即时的。
-
-**跨工具的便携式内存。** 这个知识图谱可以在 Cursor、Claude Desktop、VS Code、LangGraph 或任何支持 MCP/API 的工具中使用。切换集成开发环境（IDE）时，你的助手的记忆内容也不会丢失。每张卡片都会记录它是哪个工具创建的（`sourceAgent` 字段）。
-
-**多智能助手协作。** 智能助手可以通过图谱互相发送信息。智能助手 A 在 Cursor 中存储一个决定，智能助手 B 在 LangGraph 中接收到这个决定。卡片可以定向发送给特定的智能助手（`targetAgent`），并且可以作为收件箱来查询。
-
-**实时智能助手间协作（适用于团队/商业场景）。** 你可以注册 Webhook，这样当有信息发送时，智能助手会立即收到通知。无需轮询。使用 SSE 事件流和 HMAC 签名的数据包，失败时会自动停止发送。没有其他内存工具能够提供基于知识图谱的实时智能助手间通信功能。
-
-**时间旅行调试。** 每张卡片的更改都会被记录版本。你可以随时查询图谱，了解智能助手在做出决定时的具体知识状态。**
-
-**效果：** 每条消息使用的标记数量减少了 94%，对于典型的工作流程，每月可以节省约 254 美元的 API 使用成本。
-
-## 何时使用 HyperStack
-
-在以下情况下使用 HyperStack：
-
-1. **每次对话开始时**：在内存中搜索与用户或项目相关的信息。
-2. **当你学到新内容时**：存储偏好设置、决策、人员信息、技术栈等。
-3. **在回答问题之前**：检查之前是否已经知道答案。
-4. **做出决定时**：记录决定及其理由，并附上决策者的信息。
-5. **当信息量过大时**：将关键事实提取到卡片中，使提示信息简洁明了。
-6. **在追踪依赖关系时**：使用图谱中的链接来查找事物之间的依赖关系。
-7. **在调试时**：回溯时间，查看做出错误决定时的图谱状态。
-8. **在与其他智能助手协作时**：通过 `targetAgent` 发送信息，并查看收件箱。
-
-## 上下文图谱
-
-卡片可以通过类型化的关系相互连接，形成一个知识图谱：
-
-### 卡片类型
-- `person` — 团队成员、联系人、角色
-- `project` — 服务、仓库、基础设施
-- `decision` — 选择 X 而不是 Y 的原因
-- `preference` — 设置、风格、惯例
-- `workflow` — 部署步骤、持续集成/持续交付（CI/CD）、运行手册
-- `event` — 里程碑、事件、发布
-- `signal` — 智能助手间的通信（定向发送给另一个智能助手）
-- `account` — 账户和账单信息
-- `general` — 其他所有内容
-
-### 关系类型
-- `owns` — 个人拥有项目/服务
-- `decided` — 个人做出了决定
-- `approved` — 个人批准了某项内容
-- `uses` — 项目使用了某个依赖项
-- `triggers` — 变化会触发下游效果
-- `blocks` — 某事物阻碍了另一事物
-- `depends-on` — 依赖关系
-- `reviews` — 个人对某事物进行了审查
-- `notifies` — 智能助手间的信号/消息
-- `related` — 一般性的关联
-
-### 图谱遍历（高级功能）
-
-查询图谱以找到相互关联的卡片：
-
-参数：
-- `from` — 起始卡片的唯一标识符
-- `depth` — 遍历的深度（1-3 层，默认为 1）
-- `relation` — 按关系类型过滤（可选）
-- `type` — 按卡片类型过滤（可选）
-
-返回完整的子图谱：节点、边和遍历路径。可用于：
-- **影响分析**：“如果更改认证方式，什么会出问题？”
-- **决策过程**：“我们为什么选择 Stripe？”
-- **所有权**：“谁拥有这个数据库？”
-- **智能助手协作**：“LangGraph 智能助手做出了什么决定？”
-
-### 时间旅行调试（高级功能）
-
-在任意时间点重建图谱：
-
-`at` 参数可以接受任何 ISO 时间戳。API 会根据该时间点的版本历史重建每张卡片——标题、链接和关系都可能不同。这样可以查看智能助手在做出决定时的具体知识状态。
-
-响应中会包含 `"mode": "time-travel"` 和每个节点的 `"versionAt"`，显示该时间点处于活跃状态的版本。
-
-用于：
-- **调试**：“周二认证方式出问题时，图谱是什么样的？”
-- **审计追踪**：“显示这个决定被批准时的图谱状态”
-- **根本原因**：“智能助手在 2 月 5 日更改了这张卡片——之前的状态是什么？”
-
-**注意：** 图谱 API 和时间旅行功能需要高级计划或更高级别的订阅。免费计划仅存储链接，但不支持图谱遍历。
-
-## 便携式内存与多智能助手协作
-
-### `sourceAgent` 的工作原理
-
-每张卡片都会记录它是哪个工具创建的。使用 MCP 服务器或 LangGraph 集成时，这一功能会自动生效。对于直接通过 API 调用的情况，需要传递 `sourceAgent` 参数：
-
-### 智能助手间信号的工作原理
-
-智能助手 A 可以通过 `targetAgent` 将卡片定向发送给智能助手 B：
-
-### 按智能助手查询卡片（收件箱模式）
-
-智能助手 B 可以查询定向发送给它的卡片：
-
-### 查询参数
-
-这些参数可以在列表端点 (`GET /api/cards`) 上组合使用：
-- `sourceAgent` — 按创建卡片的智能助手过滤
-- `targetAgent` — 按卡片接收者过滤
-- `since` — ISO 时间戳，仅返回在此时间之后更新的卡片
-- `type` — 按卡片类型过滤（例如 `signal`）
-
-### 实时智能助手间协作（适用于团队/商业计划）
-
-智能助手可以注册 Webhook 来实时接收事件。
-
-**注册 Webhook：**
-当创建了一张 `targetAgent: "cursor-mcp"` 的卡片时，HyperStack 会通过带有 HMAC 签名的数据包将卡片信息发送到注册的 URL。
-
-**SSE 事件流：**
-返回服务器发送的事件以及心跳信号。可以通过 `?since=` 时间戳重新连接。
-
-**Webhook 管理：**
-- `GET /api/agent-webhooks` — 列出所有 Webhook
-- `PUT /api/agent-webhooks?id=X` — 启用/禁用 Webhook
-- `DELETE /api/agent-webhooks?id=X` — 删除 Webhook
-- 连续失败 10 次后自动禁用
-
-## 自动捕获模式
-
-HyperStack 支持自动捕获记忆内容——但在存储之前**始终需要用户确认**。在有一次有意义的交流后，建议创建卡片并等待用户批准。以下是一些建议的存储场景：
-- **明确表达的偏好**：例如 “我更喜欢 TypeScript 而不是 JavaScript” → 建议将其存储为偏好卡片
-- **做出的决定**：例如 “我们决定使用 PostgreSQL” → 建议将其存储为决策卡片，并附上决策者的信息
-- **提到的人**：例如 “Alice 是我们的后端负责人” → 建议将其存储为人员卡片，并附上所有权信息
-- **技术选择**：例如 “我们使用 Next.js 14 和 App Router” → 建议将其存储为项目卡片
-- **描述的流程**：例如 “我们通过 GitHub Actions 部署到 Vercel” → 建议将其存储为工作流程卡片
-- **依赖关系**：例如 “认证 API 依赖于 Clerk” → 建议将其存储为卡片，并附上 `depends-on` 链接
-
-**自动捕获规则：**
-- **在创建或更新卡片之前始终与用户确认**
-- 只存储在未来会派上用场的信息
-- 绝不存储秘密信息、凭证、个人身份信息（PII）或敏感数据
-- 保持卡片简洁（2-5 句）
-- 使用有意义的唯一标识符（例如 `preference-typescript` 而不是 `card-1`）
-- 更新现有卡片而不是创建重复卡片——先进行搜索
-- **添加链接**：当卡片引用其他卡片时——这样可以构建图谱
-
-## 设置
-
-在 https://cascadeai.dev/hyperstack 获取免费的 API 密钥（免费提供 10 张卡片，无需信用卡）。
-
-设置环境变量：
-API 的基础 URL 是 `https://hyperstack-cloud.vercel.app`。
-
-所有请求都需要添加 `X-API-Key: $HYPERSTACK_API_KEY` 头部字段。
-
-## 数据安全规则
-
-**绝对不要在卡片中存储以下内容：**
-- 密码、API 密钥、标记、任何类型的凭证
-- 社会安全号码、政府身份号码或财务账户号码
-- 信用卡号码或银行详细信息
-- 医疗记录或健康信息
-- 完整地址或电话号码（对于人员卡片，仅使用城市/角色信息）
-
-**在存储任何卡片之前**，请检查：“将这些信息存储在数据泄露中是否安全？” 如果不安全，请不要存储。删除敏感信息，只存储非敏感的内容。
-
-**在使用 `/api/ingest` 之前**，请警告用户原始文本将被发送到外部 API。未经用户确认，不要自动发送数据。在发送之前，请删除任何个人身份信息或敏感内容。
-
-**用户可以控制自己的数据：**
-- 所有卡片都可以随时列出、查看和删除
-- API 密钥可以在 https://cascadeai.dev/hyperstack 更换或撤销
-- 用户在使用主密钥之前应使用临时/测试密钥
-- 数据存储在加密的 PostgreSQL 数据库中（Neon，位于 AWS us-east-1）
-
-## 使用方法
-
-### 存储记忆（包含链接和智能助手跟踪）
-
-创建或更新卡片（通过唯一标识符进行插入操作）。卡片会自动嵌入以便进行语义搜索。
-
-**字段：**
-- `slug`（必填）——唯一标识符，用于插入操作和链接
-- `title`（必填）——简短的描述性标题
-- `body`（必填）——2-5 句的描述
-- `cardType` — 人员、项目、决策、偏好、工作流程、事件、信号、账户、通用
-- `stack` — 项目、人员、决策、偏好、工作流程、通用
-- `keywords` — 搜索词数组
-- `links` — `{target, relation}` 的数组，用于连接卡片
-- `sourceAgent` — 创建卡片的工具/智能助手（由 MCP/LangGraph 自动设置）
-- `targetAgent` — 将卡片定向发送给特定的智能助手
-- `meta` — 用于存储结构化数据的自由格式对象（例如原因、日期等）
-
-### 搜索记忆（混合方式：语义 + 关键词）
-
-使用**混合语义 + 关键词匹配**进行搜索。根据卡片的意义进行查找，而不仅仅是精确的单词匹配。当启用语义搜索时，返回 `"mode": "hybrid"`。顶级结果包含卡片的全文，其他结果仅返回元数据（以节省标记）。
-
-### 查询图谱（高级功能）
-
-从起始卡片开始遍历知识图谱。返回相互关联的卡片、边以及关联类型和遍历路径。
-
-### 回溯时间（高级功能）
-
-使用卡片版本历史在特定时间点重建图谱。返回的每张卡片都反映了该时间点的状态——标题、正文和链接都反映了当时的版本状态。
-
-### 列出卡片（带过滤条件）
-
-返回工作空间中的所有卡片以及卡片数量。
-
-### 删除卡片
-
-永久删除卡片及其嵌入内容。
-
-### 从文本中自动提取信息
-
-自动从原始对话文本中提取结构化记忆内容。无需使用大型语言模型（LLM）——仅使用模式匹配（免费且即时）。
-
-**重要提示：** 在将文本发送到 /api/ingest 之前，始终需要用户确认。在发送之前，请删除任何个人身份信息或敏感内容。
-
-## 分类
-
-| 分类 | 表示符号 | 用途 |
-|-------|-------|---------|
-| `projects` | 📦 | 技术栈、仓库、架构、部署 |
-| `people` | 👤 | 团队成员、联系人、角色、关系 |
-| `decisions` | ⚖️ | 选择 X 而不是 Y 的原因、权衡因素、理由 |
-| `preferences` | ⚙️ | 编辑器设置、工具、编码风格、惯例 |
-| `workflows` | 🔄 | 部署步骤、审查流程、持续集成/持续交付（CI/CD）、运行手册 |
-| `general` | 📄 | 其他所有内容 |
-
-## 重要行为规则
-
-1. **回答之前始终进行搜索**——在对话开始时以及话题发生变化时进行搜索。
-2. **建议存储重要信息**——偏好设置、决策、人员信息、技术选择。始终先与用户确认。绝不要存储秘密信息或个人身份信息。
-3. **在卡片之间添加链接**——当一张卡片引用另一张卡片时，添加一个链接。这样可以构建图谱。
-4. **保持卡片简洁**——每张卡片 2-5 句。
-5. **使用有意义的唯一标识符**——例如使用 `project-webapp` 而不是 `card-123`。唯一标识符用于更新、删除和链接卡片。
-6. **广泛添加关键词**——关键词有助于提高搜索效率。包括同义词和相关术语。
-7. **设置卡片类型**——指定卡片类型可以启用图谱功能，并在可视化探索器中以不同的方式显示卡片。
-8. **删除过时的卡片**——过时的信息会影响搜索效果。当决策发生变化时，更新卡片。
-9. **使用正确的分类**——这有助于过滤结果。
-10. 在相关情况下在响应中显示记忆提示：`🃏 HyperStack | <卡片数量> 张卡片 | <工作空间>`。
-11. **与其他智能助手协作时查看收件箱**——使用 `targetAgent` 查询以查看收到的信息。
-
-## 命令行命令
-
-用户可以输入以下命令：
-- `/hyperstack` 或 `/hs` → 搜索当前话题的相关信息
-- `/hyperstack store` → 将当前上下文存储为卡片
-- `/hyperstack list` → 列出所有卡片
-- `/hyperstack stats` → 显示卡片数量和标记节省情况
-- `/hyperstack graph <slug>` → 显示卡片的图谱关联关系
-- `/hyperstack inbox` → 查看来自其他智能助手的信息
-
-## 标记节省计算
-
-不使用 HyperStack 时，智能助手会在每条消息中存储大量上下文信息：
-- 平均上下文数据量：**每条消息约 6,000 个标记**
-- 假设有 3 个智能助手，每天发送 50 条消息，持续 30 天 = 4,500 条消息
-- 如果使用 GPT-4 级别的 API，每条消息的成本约为 3 美元：**每月每智能助手约 81 美元**
-
-使用 HyperStack 时：
-- 平均每条消息的卡片检索成本：**约 350 个标记**
-- 在相同的使用情况下：**每月每智能助手约 4.72 美元**
-- **节省费用：每月每智能助手约 76 美元，对于典型的 3 个智能助手的设置，每月可节省约 254 美元**
-
-## 其他可用方式
-
-| 平台 | 安装方式 |
-|----------|---------|
-| **MCP Server** | `npx hyperstack-mcp`（适用于 Cursor、Claude Desktop、VS Code、Windsurf）——版本 1.2.0 |
-| **LangGraph** | `pip install hyperstack-langgraph` — 版本 1.1.0 |
-| **Python SDK** | `pip install hyperstack-py` |
-| **REST API** | 适用于任何语言和框架 |
-| **ClawHub Skill** | 你正在使用的就是这个工具 |
-
-## HyperStack 与其他工具的比较
-
-| 对比项 | HyperStack | Mem0 | Zep/Graphiti | Letta |
-|--|------------|------|--------------|-------|
-| 知识图谱 | ✅（显式定义） | ✅（自动提取） | ✅（临时性知识图谱） | ❌（基于内存的块） |
-| 明确的类型化关系 | ✅（10 种类型） | ❌（通用类型） | ❌（通用类型） | ❌ |
-| 跨工具的便携性 | ✅（通过 `sourceAgent`） | ❌ | ❌ | ❌ |
-| 智能助手间信号 | ✅（通过 `targetAgent`） | ❌ | ❌ | ❌ |
-| 实时 Webhook | ✅（适用于团队协作） | ❌ | ❌ | ❌ |
-| 时间旅行调试 | ✅ | ❌ | ⚠️（仅限临时性，不支持调试） | ❌ |
-| 每次操作的成本为零 | ✅ | ❌ | ❌（约 0.002 美元） | ❌（约 0.002 美元） | 变动 |
-| 语义搜索 | ✅ | ✅ | ✅ | ✅ |
-| 设置时间 | **30 秒** | 5-10 分钟 | 5 分钟以上（Neo4j） | 10-15 分钟 |
-| 是否需要 Docker | **不需要** | 需要 | 需要（自托管） | 需要 |
-| 价格策略 | ✅（免费至 29 美元） | ❌（企业版） | ❌（基于费用） | ❌（开源） |
-| 数据安全规则 | ✅ | ❌ | ❌ | ❌ |
-
-### 为什么选择 HyperStack 而不是 Mem0/Zep？
-
-- **你控制图谱**。Mem0 和 Zep 使用 LLM 调用来自动提取实体，每次操作的成本约为 0.002 美元，且可能会提取不存在的关系。HyperStack 允许你明确定义卡片和链接——精确、免费且即时。
-- **便携式内存**。你的 Cursor 智能助手和 LangGraph 智能助手共享同一个图谱。每张卡片都会记录它是哪个工具创建的。没有其他工具提供跨工具的记忆功能，并能记录创建者。
-- **多智能助手协作**。智能助手可以通过图谱互相发送信息。`targetAgent` 可以定向发送卡片，`sourceAgent` 可以记录来源，收件箱功能允许任何智能助手查询信息。时间旅行功能可以显示每个智能助手在何时说了什么。
-- **时间旅行调试**：当智能助手在凌晨 3 点做出了错误决定时，可以回溯时间查看当时的图谱状态。Zep 只能追踪事实变化的时间；HyperStack 可以在任何时间点重建整个图谱结构。
-- **30 秒内完成设置**。无需 Neo4j 或 Docker，也无需 OpenSearch。只需一个 API 密钥和一个环境变量即可。
-
-## 价格
-
-| 计划 | 价格 | 卡片数量 | 主要功能 |
-|------|-------|-------|-------------|
-| **免费** | $0 | 10 张卡片 | 关键词搜索、1 个工作空间 |
-| **高级** | $29/月 | 100 张卡片 | 图谱 API、时间旅行、版本历史、智能助手追踪、可视化探索器、语义搜索、分析功能 |
-| **团队版** | $59/月 | 500 张卡片 | 5 个团队 API 密钥、实时 Webhook、SSE 事件流、无限工作空间 |
-| **企业版** | $149/月 | 2,000 张卡片 | 20 个团队成员、实时 Webhook、SSE 事件流、专属支持 |
-
-在 https://cascadeai.dev/hyperstack 注册。
-
-## 限制事项（透明度）
-
-- 自动提取功能使用模式匹配，而不是大型语言模型（快速且免费，但精度较低）
-- 免费计划仅限 10 张卡片（仅支持关键词搜索，无图谱功能）
-- 图谱 API、时间旅行和可视化探索器需要高级计划或更高级别的订阅
-- 卡片存储在 CascadeAI 的云服务中（使用 Neon 和 AWS）
-- 无离线模式——需要互联网连接
-- 时间旅行的准确性取决于卡片版本历史（在版本更新之前的卡片可能会显示当前状态）
-
-当卡片数量超过 7 张时，会显示提示：
-`💡 你还有 ${count}/10 张免费卡片。升级即可使用图谱 API、时间旅行功能以及 100 张卡片 → https://cascadeai.dev/hyperstack`
+# HyperStack — 用于多智能体协作的类型化图谱内存系统
+
+## 功能简介
+
+HyperStack 通过构建一个类型化的知识图谱，替代了原有的 Markdown 文件（如 GOALS.md、DECISIONS.md、WORKING.md）作为智能体之间的协调工具。任何智能体都可以通过这个图谱来查询所需信息。
+
+**旧版 OpenClaw 多智能体系统中的协调方式**：
+```
+# DECISIONS.md (append-only)
+- 2026-02-15: Use Clerk for auth (coder-agent)
+- 2026-02-16: Migration blocks production deploy (ops-agent)
+```
+“哪些模块需要部署？” → `grep -r "blocks.*deploy" *.md` → 需要手动搜索，且效率低下
+
+**HyperStack 新系统中的协调方式**：
+```
+"What blocks deploy?" → hs_blockers deploy-prod → [migration-23] Auth migration to Clerk
+```
+
+- 使用类型化的数据结构，提供精确的查询结果；
+- 完全不需要使用大型语言模型（LLM）。
+
+## 主要工具
+
+### hs_search
+在共享的知识图谱中进行搜索，结合语义分析和关键词匹配功能。
+```
+hs_search({ query: "authentication setup" })
+```
+
+### hs_store
+将信息存储到图谱中，并自动添加智能体的标识。
+```
+hs_store({
+  slug: "use-clerk",
+  title: "Use Clerk for auth",
+  body: "Better DX, lower cost, native Next.js support",
+  type: "decision",
+  links: "auth-api:triggers,alice:decided"
+})
+```
+
+### hs_decide
+记录决策内容，包括决策者、受影响对象以及决策所阻塞的内容。
+```
+hs_decide({
+  slug: "use-clerk",
+  title: "Use Clerk for auth",
+  rationale: "Better DX, lower cost vs Auth0",
+  affects: "auth-api,user-service",
+  blocks: ""
+})
+```
+
+### hs_blockers
+检查某个任务或信息会被哪些模块阻塞，返回精确的类型化结果，而非模糊搜索结果。
+```
+hs_blockers({ slug: "deploy-prod" })
+→ "1 blocker: [migration-23] Auth migration to Clerk"
+```
+
+### hs_graph
+从任意节点开始遍历知识图谱，查看节点之间的关联关系、所有权信息及依赖关系。支持时间回溯功能：通过指定时间戳，可以还原图谱在特定时间点的状态。
+```
+hs_graph({ from: "auth-api", depth: 2 })
+→ nodes: [auth-api, use-clerk, migration-23, alice]
+→ edges: [auth-api→triggers→use-clerk, migration-23→blocks→deploy-prod]
+
+# Time-travel: see the graph at a specific moment
+hs_graph({ from: "auth-api", depth: 2, at: "2026-02-15T03:00:00Z" })
+```
+
+### hs_my_cards
+列出当前智能体创建的所有信息卡片。
+```
+hs_my_cards()
+→ "3 cards by agent researcher: [finding-clerk-pricing] [finding-auth0-limits]"
+```
+
+### hs_ingest
+从原始文本中自动提取信息。用户只需粘贴对话记录、会议笔记或项目描述，HyperStack 便会自动提取其中涉及的人员、决策内容、偏好设置及技术栈信息。整个过程不消耗任何 LLM 资源（基于正则表达式处理）。
+```
+hs_ingest({ text: "We're using Next.js 14 and PostgreSQL. Alice decided to use Clerk for auth." })
+→ "✅ Created 3 cards from 78 chars:
+  [tech-nextjs] Next.js 14 (preference)
+  [tech-postgresql] PostgreSQL (preference)
+  [decision-use-clerk] Use Clerk for auth (decision)"
+```
+
+### hs_inbox
+接收其他智能体发送给当前智能体的信息卡片。通过这种共享机制实现多智能体间的协作：智能体 A 可以存储信息，智能体 B 通过 `hs_inbox` 功能立即获取这些信息。
+```
+hs_inbox({})
+→ "Inbox for cursor-mcp: 1 card(s)
+  [review-needed] Review auth migration (signal) from=claude-desktop-mcp"
+```
+
+### hs_webhook (Team+)
+允许智能体注册 Webhook，当有信息卡片指向该智能体时，系统会实时发送通知。例如：智能体 A 存储阻塞信息后，智能体 B 会自动收到通知。
+```
+hs_webhook({
+  url: "https://your-server.com/webhook",
+  events: "card.created,signal.received"
+})
+```
+
+### hs_stats ✨ 新功能（v1.0.15）
+提供工作空间的令牌使用情况统计和内存使用情况报告。显示使用 HyperStack 而非手动加载所有数据相比能节省多少资源。此功能需订阅 Pro 计划才能使用。
+```
+hs_stats()
+→ "HyperStack Stats for workspace: default
+   Cards: 24 | Tokens stored: 246 | Stale: 0
+   Without HyperStack: 246 tokens/msg ($11.07/mo)
+   With HyperStack:    200 tokens/msg ($9.00/mo)
+   Saving: 15% — $2.07/mo
+   
+   Card breakdown:
+   decisions: 8 | preferences: 6 | general: 10"
+```
+
+### hs_agent_tokens (Team+) ✨ 新功能（v1.0.15）
+允许为每个智能体创建、列出和撤销受限的访问令牌。不再需要所有智能体共享一个统一的 API 密钥，而是根据需求分配相应的权限。此功能需订阅 Team 计划。
+
+## 多智能体系统设置
+
+每个智能体都有自己的唯一标识。系统会自动为卡片添加创建者的标签，方便追踪信息来源。
+
+**推荐角色**：
+- **协调者**：负责任务分配、监控阻塞情况（使用 `hs_blockers`、`hs_graph`、`hs_decide` 工具）
+- **研究员**：负责信息收集与存储（使用 `hs_search`、`hs_store`、`hs_ingest` 工具）
+- **实施者**：负责执行任务并记录技术决策（使用 `hs_store`、`hs_decide`、`hs_blockers` 工具）
+
+## 设置方式
+
+### 选项 A：VPS 或自托管环境（推荐）
+在本地机器或 VPS 上运行 SDK，通过浏览器进行身份验证，无需手动管理 API 密钥。
+```bash
+npm i hyperstack-core
+npx hyperstack-core login          # opens browser, approve device, done
+npx hyperstack-core init openclaw-multiagent
+```
+凭据保存在 `~/.hyperstack/credentials.json` 文件中，所有命令和工具均可自动完成身份验证。
+
+### 选项 B：通过 OpenClaw 环境变量配置
+1. 获取免费 API 密钥：https://cascadeai.dev/hyperstack
+2. 在 OpenClaw 环境变量中设置 `HYPERSTACK_API_KEY=hs_your_key`
+3. 相关工具可立即使用
+
+### 选项 C：程序化方式（Node.js 适配器）
+```js
+import { createOpenClawAdapter } from "hyperstack-core/adapters/openclaw";
+const adapter = createOpenClawAdapter({ agentId: "builder" });
+await adapter.onSessionStart({ agentName: "Builder", agentRole: "Implementation" });
+// adapter.tools: hs_search, hs_store, hs_decide, hs_blockers, hs_graph, hs_my_cards, hs_ingest
+await adapter.onSessionEnd({ summary: "Completed auth migration" });
+```
+
+## 工作原理
+
+SDK 在用户的机器或 VPS 上运行。所有 `hs_store`、`hs_search`、`hs_blockers` 的请求都会发送到 HyperStack 的 API。用户拥有自己的智能体账户，而图谱本身由 HyperStack 托管。
+
+**免费版本**：支持 10 张卡片，提供关键词搜索功能。
+**Pro 计划（每月 29 美元）**：支持 100 张卡片，支持图谱遍历、语义搜索、时间回溯功能以及令牌使用情况统计。
+**Team 计划（每月 59 美元）**：支持 500 张卡片，提供 5 个团队 API 密钥、Webhook 功能以及无限数量的工作空间，同时支持为每个智能体创建受限的访问令牌。
+
+## 使用场景
+
+- **会议开始时**：使用 `hs_search` 查找相关背景信息
+- **新项目/员工入职时**：使用 `hs_ingest` 从现有文档中自动填充信息
+- **做出决策后**：使用 `hs_decide` 记录决策内容及理由
+- **任务被阻塞时**：使用 `hs_store` 记录阻塞关系
+- **开始工作前**：使用 `hs_blockers` 检查任务依赖关系
+- **调试错误决策时**：使用 `hs_graph` 查看决策时的背景信息
+- **智能体间传递信息时**：使用 `hs_store` 设置 `targetAgent` 参数，其他智能体可通过 `hs_inbox` 接收信息
+- **评估系统效率时**：使用 `hs_stats` 查看令牌使用情况和内存使用状况
+- **限制智能体权限时**：使用 `hs_agent_tokens` 为每个智能体分配必要的访问权限
+
+## 数据安全
+
+**重要提示**：
+- 绝不存储密码、API 密钥、令牌、个人身份信息（PII）或任何敏感数据。即使发生数据泄露，这些信息也不会被泄露。
+- 在存储任何数据之前，必须先获得用户的明确授权。
+
+## 更新日志
+
+### v1.0.15（2026年2月17日）
+
+#### ✨ `hs_stats` — 令牌使用情况与内存管理（Pro+计划）
+- 新增功能：用户可以查看 HyperStack 节省了多少资源以及内存使用状况。
+  - 提供详细的报告，包括：
+    - 存储的卡片数量及内存中使用的令牌总数
+    - 使用 HyperStack 的选择性数据检索方式与手动加载所有数据相比的节省成本
+    - 每月节省的费用（基于每天 100 条消息、按 GPT-4 计费标准计算）
+    - 卡片类型统计（如决策、偏好设置、项目等）
+    - 过去 7 天的活动记录（读取、写入操作、令牌使用情况）
+    - 30 天以上未更新的卡片列表（可能需要重新审核）
+
+**使用场景**：智能体可以在会议结束时调用 `hs_stats` 以评估系统效率，这也是从免费版本升级到 Pro 计划的合理理由。
+
+#### ✨ `hs_agent_tokens` — 为每个智能体分配受限权限（Team+计划）
+- 新功能：每个智能体都可以拥有自己的访问令牌：
+  - `canRead`：限制智能体可以读取的卡片类型
+  - `canWrite`：限制智能体可以写入的卡片类型
+  - `allowedStacks`：限制智能体可以访问的技术栈
+  - `expiresIn`：设置令牌的有效期限（秒级）
+  - 令牌前缀区分：`hsa_` 表示智能体专属令牌，`hs_` 表示全局通用令牌
+
+#### v1.0.14（2026年2月17日）
+
+#### ✨ `hs_ingest` — 从原始文本中自动提取信息（无需 LLM 资源）
+- 在 v1.0.14 之前，需要手动调用 `hs_store` 为每条信息创建卡片，效率较低。
+- 新版本支持从原始文本（如对话记录、会议笔记等）中自动提取结构化卡片，无需使用 LLM 或访问 OpenAI API。
+  - 支持提取以下类型的信息：
+    - **决策内容**（如 “我们决定……”）
+    - **偏好设置**（如 “我们总是使用……”）
+    - **人员信息**（如 “Alice 是负责人”）
+    - **项目信息**（如 “我们正在开发……”）
+    - **工作流程**（如 “先做 X，再做 Y”）
+    - **技术栈信息**（自动识别 40 多种框架和数据库，并汇总到一张卡片中）
+
+**使用场景**：用户只需粘贴项目文档或会议记录，系统即可快速生成完整的信息图谱。
+
+#### ✨ `hs_inbox` — 智能体定向接收信息卡片
+- 在 v1.0.14 之前，智能体只能手动存储带有 `targetAgent` 字段的卡片，无法自动接收其他智能体发送的信息。
+- 新版本支持查询指向当前智能体的卡片，可根据时间戳筛选信息，确保智能体仅看到最近收到的消息。
+
+#### ✨ `hs_webhook` / `hs_webhooks` — 实时通知功能（Team+计划）
+- 团队计划用户可以注册 Webhook，当有信息卡片指向他们时立即收到通知。
+- 支持事件过滤（如 `card.created`、`card.updated`、`signal.received` 等）。
+- 使用 HMAC 签名机制进行验证。
+
+#### 🔧 CLI 登录的 OAuth 设备认证流程
+- `npx hyperstack-core login` 现在支持 RFC 8628 规范的 OAuth 设备认证流程。用户只需在浏览器中批准授权码，系统会自动保存凭据，无需手动复制 API 密钥。
+
+### v1.0.13 及更早版本 — 核心功能
+
+HyperStack 的基础功能包括：
+- **`hs_search`：提供混合关键词搜索和语义搜索功能。关键词搜索免费，语义搜索（基于 pgvector 的向量相似度计算）需订阅 Pro 计划。
+- **`hs_store`：支持创建或更新卡片，并自动添加元数据（如卡片标题、内容、类型、关键词、关联关系等）。
+- **`hs_decide`：专门用于记录决策内容，包括决策者、受影响对象及阻塞关系。
+- **`hs_blockers`：根据给定的卡片 ID，在图谱中查找阻塞该卡片的模块。
+- **`hs_graph`：支持从任意节点遍历图谱，支持配置遍历深度（1-3 层）和时间回溯功能。
+- **`hs_my_cards`：列出当前智能体创建的所有卡片，便于智能体自查自己的信息使用情况。

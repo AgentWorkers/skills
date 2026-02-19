@@ -41,6 +41,19 @@ try:
 except ImportError:
     HAS_OPENCLAW = False
 
+# CLI wizard ASCII header (shown for human-readable output only)
+CLI_HEADER = r"""
+                                            d8b
+                                           88P
+                                          d88
+ .d888b,.d88b,.88P?88   d8P d888b8b   d888888
+ ?8b,   88P  `88P'd88   88 d8P' ?88  d8P' ?88
+   `?8b ?8b  d88  ?8(  d88 88b  ,88b 88b  ,88b
+`?888P' `?888888  `?88P'?8b`?88P'`88b`?88P'`88b
+            `?88
+              88b
+              ?8P
+"""
 
 # Security: Input validation and sanitization
 def validate_task_string(task):
@@ -587,6 +600,10 @@ def main():
     
     args = parser.parse_args()
 
+    # Show ASCII header only for human-readable (non-JSON) output
+    if not getattr(args, "json", False):
+        print(CLI_HEADER)
+
     router = FridayRouter()
 
     task_str = ' '.join(args.task) if 'task' in args and args.task else ""
@@ -669,18 +686,52 @@ def main():
 
         if getattr(args, 'multi', False):
             # Parallel tasks: split message, spawn each, output array
-            tasks = FridayRouter.split_into_tasks(task_str)
+            try:
+                tasks = FridayRouter.split_into_tasks(task_str)
+            except ValueError as e:
+                error_msg = f"❌ Error splitting tasks: {str(e)}"
+                if args.json:
+                    print(json.dumps({"error": error_msg, "type": "ValueError"}))
+                else:
+                    print(error_msg, file=sys.stderr)
+                sys.exit(1)
             if not tasks:
                 tasks = [task_str]
             results = []
             config_patch_result = None
             for i, one_task in enumerate(tasks):
-                spawn_result = router.spawn_agent(
-                    task=one_task,
-                    label=args.label or (f"parallel-{i+1}" if len(tasks) > 1 else None),
-                    required_exec_host=args.required_exec_host,
-                    required_exec_node=args.required_exec_node,
-                )
+                try:
+                    spawn_result = router.spawn_agent(
+                        task=one_task,
+                        label=args.label or (f"parallel-{i+1}" if len(tasks) > 1 else None),
+                        required_exec_host=args.required_exec_host,
+                        required_exec_node=args.required_exec_node,
+                    )
+                except ValueError as e:
+                    error_msg = f"❌ Validation error for task {i+1}: {str(e)}"
+                    if args.json:
+                        print(json.dumps({"error": error_msg, "task_index": i, "type": "ValueError"}))
+                    else:
+                        print(error_msg, file=sys.stderr)
+                        print(f"   Task: {one_task[:100]}...", file=sys.stderr)
+                    sys.exit(1)
+                except Exception as e:
+                    import traceback
+                    error_msg = f"❌ Unexpected error spawning task {i+1}: {type(e).__name__}: {str(e)}"
+                    if args.json:
+                        print(json.dumps({
+                            "error": error_msg,
+                            "task_index": i,
+                            "type": type(e).__name__,
+                            "traceback": traceback.format_exc() if not getattr(sys, 'ps1', None) else None
+                        }))
+                    else:
+                        print(error_msg, file=sys.stderr)
+                        print(f"   Task: {one_task[:100]}...", file=sys.stderr)
+                        if not getattr(sys, 'ps1', None):  # Not in interactive mode
+                            print("\nFull traceback:", file=sys.stderr)
+                            traceback.print_exc(file=sys.stderr)
+                    sys.exit(1)
                 if spawn_result.get("needs_config_patch"):
                     config_patch_result = spawn_result
                     break
@@ -715,12 +766,36 @@ def main():
                 for i, r in enumerate(results, 1):
                     print(f"   {i}. {r['task'][:50]}{'...' if len(r['task']) > 50 else ''} → {r['model'].split('/')[-1]}")
         else:
-            spawn_result = router.spawn_agent(
-                task=task_str,
-                label=args.label,
-                required_exec_host=args.required_exec_host,
-                required_exec_node=args.required_exec_node,
-            )
+            try:
+                spawn_result = router.spawn_agent(
+                    task=task_str,
+                    label=args.label,
+                    required_exec_host=args.required_exec_host,
+                    required_exec_node=args.required_exec_node,
+                )
+            except ValueError as e:
+                error_msg = f"❌ Validation error: {str(e)}"
+                if args.json:
+                    print(json.dumps({"error": error_msg, "type": "ValueError"}))
+                else:
+                    print(error_msg, file=sys.stderr)
+                    print(f"\n   Task: {task_str[:100]}...", file=sys.stderr)
+                sys.exit(1)
+            except Exception as e:
+                import traceback
+                error_msg = f"❌ Unexpected error in spawn_agent: {type(e).__name__}: {str(e)}"
+                if args.json:
+                    print(json.dumps({
+                        "error": error_msg,
+                        "type": type(e).__name__,
+                        "traceback": traceback.format_exc() if not getattr(sys, 'ps1', None) else None
+                    }))
+                else:
+                    print(error_msg, file=sys.stderr)
+                    if not getattr(sys, 'ps1', None):  # Not in interactive mode
+                        print("\nFull traceback:", file=sys.stderr)
+                        traceback.print_exc(file=sys.stderr)
+                sys.exit(1)
 
             if spawn_result.get("needs_config_patch"):
                 if args.json:
@@ -756,4 +831,16 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    import traceback
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n⚠️  Interrupted by user", file=sys.stderr)
+        sys.exit(130)
+    except Exception as e:
+        error_msg = f"❌ Error in router.py: {type(e).__name__}: {str(e)}"
+        print(error_msg, file=sys.stderr)
+        if not getattr(sys, 'ps1', None):  # Not in interactive mode
+            print("\nFull traceback:", file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)

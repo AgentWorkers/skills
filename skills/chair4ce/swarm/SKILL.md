@@ -1,35 +1,34 @@
 ---
 name: swarm
-description: 使用 Gemini Flash 工作进程执行并行任务：成本仅为 Opus 的 1/200。适用于所有可并行化的任务，有助于节省系统资源（如配额）。
+description: 使用 Gemini Flash 工作进程执行并行任务：成本仅为 Opus 的 1/200。适用于任何可并行化的任务，有助于节省系统资源（如配额）。
 homepage: https://github.com/Chair4ce/node-scaling
 metadata: {"clawdbot":{"emoji":"🐝","requires":{"bins":["node"]}}}
 ---
-
 # Swarm — 并行任务执行
 
-**每燃烧一个 Opus 代币，就相当于浪费了时间。而 Swarm 使用 Gemini Flash 技术，成本仅为其 1/200。**
+**你消耗的每一个Opus代币都意味着时间的浪费。Swarm使用Gemini Flash服务，其成本仅为Opus的1/200。**
 
-## 重要性
+## 这为什么重要
 
 | 任务数量 | 所需时间 | 成本 | 备注 |
-|--------|--------|------|-------|
-| 使用 Opus（顺序执行） | 约 30 秒 | 约 0.50 美元 | 会消耗你的代币储备 |
-| 使用 Swarm（并行执行） | 约 1 秒 | 约 0.003 美元 | 节约代币 |
+|---------|---------|------|-------|
+| Opus（顺序执行）| 约30秒 | 约0.50美元 | 会消耗你的预算 |
+| Swarm（并行执行）| 约1秒 | 约0.003美元 | 节省预算 |
 
-虽然最终结果相同，但使用 Swarm 能让你“存活”更久（即节省代币）。  
+虽然最终结果相同，但Swarm能让你更长时间地持续使用服务。
 
-## 何时必须使用 Swarm
+## 何时必须使用Swarm
 
-在遇到以下情况时，必须使用 Swarm：  
-- **3 个或更多独立任务**（如研究、总结、比较）  
-- 需要“比较 X、Y、Z”或“研究排名前 N 的……”  
-- 需要获取/分析多个 URL 的内容  
-- 需要批量处理数据（如文档、实体、事实）  
-- 任何类型的跨主题研究  
+在遇到以下任何情况时，必须使用Swarm：
+- **3个或更多独立任务**（如研究、总结、比较）
+- 需要“比较X、Y、Z”或“研究排名前N的……”
+- 需要从多个URL获取/分析数据
+- 需要批量处理任何内容（如文档、实体、事实）
+- 需要进行多主题的研究
 
-没有例外。这是生存策略，而非优化手段。  
+没有例外。这是生存之道，而非优化手段。
 
-## 快速参考  
+## 快速参考
 
 ```bash
 # Check daemon (do this every session)
@@ -46,9 +45,32 @@ swarm research "OpenAI" "Anthropic" "Mistral" --topic "AI safety"
 
 # Benchmark
 swarm bench --tasks 30
-```  
+```
 
-## JavaScript API  
+## 网页搜索（v1.1.0）
+
+工作者可以通过Google搜索功能在互联网上搜索（仅支持Gemini服务，无额外费用）。
+
+```bash
+# Research endpoint uses web search by default (if enabled in config)
+curl -X POST http://localhost:9999/research \
+  -d '{"subjects": ["Buildertrend", "Jobber"], "topic": "pricing 2026"}'
+
+# Parallel with web search
+curl -X POST http://localhost:9999/parallel \
+  -d '{"prompts": ["Current price of X?"], "options": {"webSearch": true}}'
+```
+
+配置文件：`~/.config/clawdbot/node-scaling.yaml`
+
+```yaml
+node_scaling:
+  web_search:
+    enabled: true          # Enable for research tasks
+    parallel_default: false # Enable for all parallel tasks
+```
+
+## JavaScript API
 
 ```javascript
 const { parallel, research } = require('~/clawd/skills/node-scaling/lib');
@@ -59,63 +81,62 @@ console.log(result.results); // Array of responses
 
 // Multi-phase research (search → fetch → analyze)
 const result = await research(['Subject1', 'Subject2'], 'topic');
-```  
+```
 
-## 守护进程管理  
+## 守护进程管理
 
 ```bash
 swarm start              # Start daemon (background)
 swarm stop               # Stop daemon
-swarm status             # Show status, uptime, task count
+swarm status             # Show status, uptime, cost savings
 swarm restart            # Restart daemon
+swarm savings            # Monthly savings report
 swarm logs [N]           # Last N lines of daemon log
-```  
+```
 
-守护进程负责保持工作进程的运行状态，从而提高响应速度。首次使用时会根据需要自动启动。  
+守护进程负责保持工作者的运行状态，以提升响应速度。首次使用时会根据需要自动启动。
 
-## 性能  
+## 性能
 
-当守护进程运行（使用 20 个工作进程）时：  
-| 任务数量 | 所需时间 | 吞吐量 |
-|--------|--------|---------|
-| 10 个 | 约 700 毫秒 | 14 个任务/秒 |
-| 30 个 | 约 1,000 毫秒 | 30 个任务/秒 |
-| 50 个 | 约 1,450 毫秒 | 35 个任务/秒 |
+在守护进程运行时：
+- 5个任务：约1.5秒，处理速度为3个任务/秒
+- 10个任务：约1.5秒，处理速度为7个任务/秒
+- 30个任务：约2秒，处理速度为15个任务/秒
+- 研究（包含3个阶段）：使用网页搜索功能，处理2个主题需要约3-5秒。
 
-处理的任务数量越多，吞吐量越高（因为可以分摊连接开销）。  
+## 配置文件
 
-## 配置文件  
-
-配置文件位置：`~/.config/clawdbot/node-scaling.yaml`  
+配置文件位置：`~/.config/clawdbot/node-scaling.yaml`
 
 ```yaml
 node_scaling:
   enabled: true
   limits:
-    max_nodes: 20
-    max_concurrent_api: 20
+    max_nodes: 16
+    max_concurrent_api: 16
   provider:
     name: gemini
     model: gemini-2.0-flash
+  web_search:
+    enabled: true
+    parallel_default: false
   cost:
     max_daily_spend: 10.00
-```  
+```
 
-## 故障排除  
+## 故障排除
 
 | 问题 | 解决方法 |
-|------|---------|
-| 守护进程未运行 | 执行 `swarm start` 命令 |
-| 未设置 API 密钥 | 设置 `GEMINI_API_KEY` 或运行 `npm run setup` |
-| 被限制请求频率 | 降低配置文件中的 `max_concurrent_api` 值 |
-| 响应速度慢 | 查看 `swarm status` 以确认工作进程的数量 |
+|-------|---------|
+| 守护进程未运行 | 执行`swarm start`命令 |
+| 未设置API密钥 | 设置`GEMINI_API_KEY`或运行`npm run setup` |
+- 被限制访问频率 | 降低配置文件中的`max_concurrent_api`值 |
+- 网页搜索功能无法使用 | 确保`web_search.enabled: true`且使用的是Gemini服务 |
 
-## 经济性对比  
+## 经济对比
 
-- **Opus**：每百万代币约 15 美元  
-- **Gemini Flash**：每百万代币约 0.075 美元（几乎免费）  
-- 成本优势：200 倍  
+- **Opus**：每百万代币约15美元（这会消耗你的预算）
+- **Gemini Flash**：每百万代币约0.075美元（几乎免费）
+- **成本优势**：便宜200倍
 
-使用 Opus 顺序执行 30 个任务需要约 30 秒，花费约 0.50 美元；而使用 Swarm 并行执行只需 1 秒，花费仅 0.003 美元，且不会消耗 Opus 代币。  
-
-**如果不使用 Swarm 进行并行处理，那简直就是犯错。** 请立即修正这一行为。
+**如果不使用Swarm进行并行处理，那就等于犯了一个错误。**请立即修正这个问题。

@@ -1,17 +1,13 @@
 ---
 name: tools-ui
-description: |
-  Tool lifecycle UI components for React/Next.js from ui.inference.sh.
-  Display tool calls: pending, progress, approval required, results.
-  Capabilities: tool status, progress indicators, approval flows, results display.
-  Use for: showing agent tool calls, human-in-the-loop approvals, tool output.
-  Triggers: tool ui, tool calls, tool status, tool approval, tool results,
-  agent tools, mcp tools ui, function calling ui, tool lifecycle, tool pending
+description: "Tool lifecycle UI components for React/Next.js from ui.inference.sh. Display tool calls: pending, progress, approval required, results. Capabilities: tool status, progress indicators, approval flows, results display. Use for: showing agent tool calls, human-in-the-loop approvals, tool output. Triggers: tool ui, tool calls, tool status, tool approval, tool results,"  agent tools, mcp tools ui, function calling ui, tool lifecycle, tool pending
 ---
 
 # 工具用户界面组件
 
 这些组件来自 [ui.inference.sh](https://ui.inference.sh)，用于管理工具的生命周期。
+
+![工具用户界面组件](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgjw8atdxgkrsr8a2t5peq7b.jpeg)
 
 ## 快速入门
 
@@ -25,7 +21,7 @@ npx shadcn@latest add https://ui.inference.sh/r/tools.json
 |-------|-------------|
 | `pending` | 请求调用工具，正在等待执行 |
 | `running` | 工具正在执行中 |
-| `approval` | 需要人工审批后才能执行 |
+| `approval` | 需要人工批准才能执行 |
 | `success` | 工具执行成功 |
 | `error` | 工具执行失败 |
 
@@ -118,7 +114,7 @@ function ToolDisplay({ tool }) {
 
 ## 工具图标
 
-工具会根据其名称自动显示相应的图标：
+工具会根据其名称自动获取对应的图标：
 
 | 图标模式 | 对应图标 |
 |---------|------|
@@ -127,11 +123,11 @@ function ToolDisplay({ tool }) {
 | `write*`, `create*` | 铅笔 |
 | `delete*`, `remove*` | 垃圾桶 |
 | `send*`, `email*` | 邮件 |
-| 默认 | 拧刀 |
+| 默认 | 扳手 |
 
-## 带有代理组件的情况
+## 与 Agent 组件的集成
 
-代理组件会自动管理工具的生命周期：
+Agent 组件会自动管理工具的生命周期：
 
 ```tsx
 import { Agent } from "@/registry/blocks/agent/agent"
@@ -156,19 +152,19 @@ import { Agent } from "@/registry/blocks/agent/agent"
 
 ```bash
 # Full agent component (recommended)
-npx skills add inference-sh/agent-skills@agent-ui
+npx skills add inference-sh/skills@agent-ui
 
 # Chat UI blocks
-npx skills add inference-sh/agent-skills@chat-ui
+npx skills add inference-sh/skills@chat-ui
 
 # Widgets for tool results
-npx skills add inference-sh/agent-skills@widgets-ui
+npx skills add inference-sh/skills@widgets-ui
 ```
 
-## 文档说明
+## 文档资料
 
-- [将工具添加到代理中](https://inference.sh/docs/agents/adding-tools) - 为代理配置工具
-- [人工参与流程](https://inference.sh/docs/runtime/human-in-the-loop) - 批准流程
-- [工具审批机制](https://inference.sh/blog/tools/approval-gates) - 实现审批功能
+- [向 Agent 添加工具](https://inference.sh/docs/agents/adding-tools) - 为 Agent 配置工具 |
+- [人工参与流程](https://inference.sh/docs/runtime/human-in-the-loop) - 批准流程 |
+- [工具审批机制](https://inference.sh/blog/tools/approval-gates) - 实现审批功能 |
 
 组件文档：[ui.inference.sh/blocks/tools](https://ui.inference.sh/blocks/tools)

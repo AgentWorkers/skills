@@ -1,49 +1,30 @@
 ---
 name: mailgun-simple
-description: Send outbound emails via the Mailgun API. REQUIRED: MAILGUN_API_KEY. Built for AI Commander.
-metadata: {
-  "author": "Skippy & Lucas (AI Commander)",
-  "homepage": "https://aicommander.dev",
-  "env": {
-    "MAILGUN_API_KEY": { "description": "Your private Mailgun API key. REQUIRED.", "required": true },
-    "MAILGUN_DOMAIN": { "description": "Your verified sending domain (default: aicommander.dev).", "default": "aicommander.dev" },
-    "MAILGUN_REGION": { "description": "The API region, either US or EU (default: EU).", "default": "EU" },
-    "MAILGUN_FROM": { "description": "Default sender address (default: Postmaster <postmaster@domain>)." }
-  },
-  "openclaw": {
-    "requires": { "bins": ["node"] },
-    "install": [
-      {
-        "id": "npm-deps",
-        "kind": "exec",
-        "command": "npm install mailgun.js form-data",
-        "label": "Install Mailgun SDK dependencies"
-      }
-    ]
-  }
-}
+description: 通过 Mailgun API 发送出站邮件。需要使用以下参数：MAILGUN_API_KEY、MAILGUN_DOMAIN、MAILGUN_REGION 和 MAILGUN_FROM。
+metadata: {"openclaw": {"requires": {"bins": ["node"], "env": ["MAILGUN_API_KEY", "MAILGUN_DOMAIN", "MAILGUN_REGION", "MAILGUN_FROM"]}, "primaryEnv": "MAILGUN_API_KEY", "install": [{"id": "npm-deps", "kind": "node", "package": "mailgun.js@12.7.0 form-data@4.0.1", "label": "Install Mailgun SDK dependencies"}]}}
 ---
-
 # Mailgun Simple
 
 使用官方的 Mailgun JS SDK 发送出站邮件。
 
-## 🚨 安全性与设置
+## 环境变量
 
-此功能依赖于运行环境，**不**会加载外部的 `.env` 文件。它完全依赖于调用者提供的环境变量。
+| 变量 | 是否必需 | 默认值 | 说明 |
+|---|---|---|---|
+| `MAILGUN_API_KEY` | 是 | — | 你的私有 Mailgun API 密钥。 |
+| `MAILGUN_DOMAIN` | 是 | `aicommander.dev` | 你的已验证的发送域名。 |
+| `MAILGUN_REGION` | 是 | `EU` | API 区域：`EU` 或 `US`。 |
+| `MAILGUN_FROM` | 否 | `Postmaster <postmaster@{domain}>` | 默认的发件人地址。 |
 
-### 环境变量
-- `MAILGUN_API_KEY`：您的私有 Mailgun API 密钥。**必需**。
-- `MAILGUN_DOMAIN`：经过验证的发送域名（默认值：`aicommander.dev`）。
-- `MAILGUN_REGION`：API 所在的区域，可以是 `US` 或 `EU`（默认值：`EU`）。
+## 设置
+
+```bash
+npm install mailgun.js@12.7.0 form-data@4.0.1
+```
 
 ## 工具
 
 ### 发送邮件
-向收件人发送纯文本邮件。
 ```bash
 MAILGUN_API_KEY=xxx MAILGUN_DOMAIN=example.com MAILGUN_REGION=EU node scripts/send_email.js <to> <subject> <text> [from]
 ```
-
-## 运行时要求
-需要以下工具：`mailgun.js`、`form-data` 和 `node`。

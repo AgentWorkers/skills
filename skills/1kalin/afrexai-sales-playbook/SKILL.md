@@ -1,23 +1,21 @@
 ---
 name: afrexai-sales-playbook
 version: 1.0.0
-description: "Complete B2B sales system — from ICP to closed-won. Discovery frameworks, objection handling, pipeline management, forecasting, and deal acceleration. Works for any B2B company."
+description: "完整的B2B销售系统——从潜在客户的发现（ICP）到交易的最终达成。该系统涵盖发现潜在客户的方法、处理客户异议的流程、销售管道管理、销售预测以及加速交易成交的功能，适用于所有B2B企业。"
 author: afrexai
 tags: sales, b2b, pipeline, crm, deals, closing, objections, forecasting, revenue
 ---
+# B2B销售手册 ⚡
 
-# B2B Sales Playbook ⚡
+**一套用于执行可复制、可扩展的B2B销售操作的完整系统。**
 
-**The complete system for running a repeatable, scalable B2B sales operation.**
-
-Not a CRM wrapper. Not a template collection. This is a full sales methodology — from identifying your ideal customer to closing the deal and expanding the account.
+这不是一个CRM包装工具，也不是一个模板集合。这是一套完整的销售方法论——从识别理想客户到完成交易并扩展业务关系。
 
 ---
 
-## Phase 1: Ideal Customer Profile (ICP) & Territory
+## 第一阶段：理想客户画像（ICP）与销售区域规划
 
-### ICP Definition Template
-
+### ICP定义模板
 ```yaml
 icp:
   company:
@@ -62,56 +60,55 @@ icp:
     - cultural: [committee-driven decisions with 6+ stakeholders at low ACV]
 ```
 
-### Territory Planning
+### 销售区域规划
 
-**Account Tiering:**
+**客户分级：**
 
-| Tier | Criteria | Accounts | Time Allocation | Touch Frequency |
+| 级别 | 判断标准 | 客户数量 | 时间分配 | 联系频率 |
 |------|----------|----------|-----------------|-----------------|
-| **Tier 1** | Perfect ICP fit + active pain signals | 20-30 | 50% of time | 2-3x/week |
-| **Tier 2** | Good ICP fit, no active signals yet | 50-80 | 30% of time | 1x/week |
-| **Tier 3** | Partial fit, worth monitoring | 100-200 | 15% of time | 2x/month |
-| **Inbound** | Any qualified inbound | Variable | 5% of time | Respond <1hr |
+| **一级** | 完全符合ICP标准且有明显的业务痛点 | 20-30个客户 | 50%的时间 | 每周2-3次 |
+| **二级** | 符合ICP标准但暂无明显业务痛点 | 50-80个客户 | 30%的时间 | 每周1次 |
+| **三级** | 部分符合ICP标准，值得持续关注 | 100-200个客户 | 15%的时间 | 每月2次 |
+| **新客户** | 任何符合条件的新客户 | 变动 | 5%的时间 | 1小时内回复 |
 
-**Monthly Territory Review:**
-1. Re-score all Tier 1 accounts — any demote to Tier 2?
-2. Scan Tier 2 for new signals — any promote to Tier 1?
-3. Remove dead accounts from Tier 3 (no engagement in 90 days)
-4. Add new accounts from prospecting
-5. Calculate territory coverage: (accounts with activity / total) — target >80% for Tier 1
+**每月销售区域回顾：**
+1. 重新评估所有一级客户——是否有客户降级为二级？
+2. 在二级客户中寻找新的业务线索——是否有客户升级为一级？
+3. 将三级客户中90天内无任何互动的客户移除名单。
+4. 从潜在客户中添加新客户。
+5. 计算销售区域的覆盖率：（有互动的客户数量 / 总客户数量）——一级客户的覆盖率应超过80%。
 
 ---
 
-## Phase 2: Prospecting & Outreach
+## 第二阶段：潜在客户开发与主动联系
 
-### Multi-Channel Sequence Framework
+### 多渠道联系流程框架
 
-**Principle:** No single channel works. Layer them.
+**原则：**没有任何单一渠道是有效的。需要综合使用多种渠道。
 
-**Standard Tier 1 Sequence (14 days):**
+**标准的一级客户开发流程（14天）：**
 
-| Day | Channel | Action | Goal |
+| 第一天 | 渠道 | 行动 | 目标 |
 |-----|---------|--------|------|
-| 1 | Email | Personalized cold email (see template below) | Open + reply |
-| 1 | LinkedIn | View profile + connect (NO pitch in connect msg) | Warm the name |
-| 3 | Email | Follow-up with value add (article, insight, data) | Demonstrate expertise |
-| 5 | LinkedIn | Comment on their recent post (genuine, not salesy) | Build familiarity |
-| 7 | Phone | Cold call (see script below) | Live conversation |
-| 7 | Email | Voicemail follow-up email | Multi-touch reinforcement |
-| 10 | LinkedIn | Send message referencing your email/call attempts | Channel switch |
-| 12 | Email | Breakup email (creates urgency) | Force response |
-| 14 | Phone | Final attempt | Last touch |
+| 1 | 电子邮件 | 发送个性化的冷邮件（参见下方模板） | 期望客户打开邮件并回复 |
+| 1 | LinkedIn | 查看客户资料并添加好友（在好友请求信息中不推销产品） | 建立初步联系 |
+| 3 | 电子邮件 | 发送附加价值的邮件（如文章、见解或数据） | 展示专业能力 |
+| 5 | LinkedIn | 在客户的最新帖子下留言（真诚的，不要推销产品） | 增进熟悉感 |
+| 7 | 电话 | 进行冷电话沟通（参见下方脚本） | 进行实时交流 |
+| 7 | 电子邮件 | 发送语音邮件跟进 | 加强联系 |
+| 10 | LinkedIn | 发送邮件提醒之前的沟通内容 | 促使客户再次回应 |
+| 14 | 电话 | 最后一次尝试 | 最后一次联系 |
 
-**Sequence Rules:**
-- STOP the sequence the moment they reply (positive OR negative)
-- Never send more than 1 email per day to the same person
-- Personalization must reference something SPECIFIC (their company, role, recent news)
-- If they open but don't reply 3x → they're reading, switch to phone
-- If zero engagement after full sequence → move to Tier 3, retry in 90 days
+**流程规则：**
+- 一旦客户回复（无论是正面还是负面），立即停止当前流程。
+- 每天不要向同一客户发送超过一封邮件。
+- 个性化内容必须涉及具体信息（如他们的公司、职位或近期动态）。
+- 如果客户打开邮件但未回复三次，尝试通过电话联系。
+- 如果在整个流程结束后客户仍无任何互动，将客户降级为三级，并在90天后重新尝试。
 
-### Cold Email Templates
+### 冷邮件模板
 
-**Template 1: The Trigger Event**
+**模板1：基于触发事件的邮件**
 ```
 Subject: [Trigger event] → quick thought
 
@@ -128,7 +125,7 @@ Worth a 15-min call to see if this applies to [company]?
 [Your name]
 ```
 
-**Template 2: The Peer Reference**
+**模板2：基于同行推荐的邮件**
 ```
 Subject: How [similar company] solved [problem]
 
@@ -145,7 +142,7 @@ Happy to share what they did differently — no pitch, just the playbook.
 [Your name]
 ```
 
-**Template 3: The Breakup**
+**模板3：结束联系的邮件**
 ```
 Subject: Closing the loop
 
@@ -160,11 +157,11 @@ Deleting your reminder from my CRM now.
 [Your name]
 ```
 
-**Why breakup emails work:** 30-40% reply rate. People respond to loss aversion. "Deleting your reminder" creates fear of losing access.
+**为什么结束联系的邮件有效：**回复率可达30-40%。人们会对失去机会感到不安。“删除您的提醒”会让他们担心失去联系机会。
 
-### Cold Call Script
+### 冷电话脚本
 
-**Opening (first 10 seconds decide everything):**
+**开场白（前10秒决定成败）：**
 ```
 "Hi [Name], this is [You] from [Company]. 
 Did I catch you at an okay time?"
@@ -182,24 +179,23 @@ are you currently dealing with [specific problem]?"
 Would it make sense to set up 20 minutes this week to dig into this properly?"
 ```
 
-**Common cold call responses + rebuttals:**
+**常见的客户回应及应对策略：**
 
-| They Say | You Say |
+| 客户回应 | 你的回应 |
 |----------|---------|
-| "Not interested" | "Totally fair — can I ask, is it because [problem] isn't a priority, or you've already solved it?" |
-| "Send me an email" | "Happy to — what specifically would be most useful to include? That way I don't waste your time." |
-| "We already have a solution" | "Good — how's it working? Most companies I talk to have something in place but still have gaps in [specific area]." |
-| "Bad timing" | "When would be better? I can put a reminder in for [suggested date]." |
-| "How did you get my number?" | "LinkedIn / your website. I know cold calls aren't fun — I'll keep it under 2 minutes." |
+| “不感兴趣” | “完全理解——请问是因为[问题]不是优先事项，还是您已经解决了这个问题？” |
+| “请给我发封邮件” | “很乐意帮忙——具体需要哪些信息？这样我就不会浪费您的时间了。” |
+| “我们已经有解决方案了” | “很好——效果如何？我接触的大多数公司都有相应的解决方案，但在[具体方面]仍有不足。” |
+| “时机不好” | “什么时候比较合适？我可以为您安排一个提醒时间。” |
+| “您是怎么得到我的电话号码的？” | “通过LinkedIn或您的网站。我知道冷电话不太愉快——我会尽量控制在2分钟内结束通话。” |
 
 ---
 
-## Phase 3: Discovery — The Most Important Meeting
+## 第三阶段：深入挖掘——最重要的会议
 
-### MEDDPICC Qualification Framework
+### MEDDPICC评估框架
 
-Score each element 1-3 (1=unknown, 2=partially known, 3=fully confirmed):
-
+对每个评估要素打分1-3分（1=未知，2=部分了解，3=完全确认）：
 ```yaml
 deal_qualification:
   metrics:  # Quantifiable impact they care about
@@ -257,83 +253,82 @@ deal_qualification:
   # <10 = Unqualified, don't invest time
 ```
 
-### Discovery Questions by Category
+### 按类别划分的深入挖掘问题
 
-**Situation (understand current state):**
-1. Walk me through how [process] works today, start to finish.
-2. What tools/systems are involved?
-3. How many people touch this process?
-4. How long has it been this way?
+**了解现状：**
+1. 请详细说明[流程]目前是如何运作的。
+2. 使用了哪些工具或系统？
+3. 有多少人参与这个流程？
+4. 这个流程已经存在多久了？
 
-**Problem (surface the pain):**
-5. Where does it break down?
-6. What's the impact when it fails? (Get a NUMBER)
-7. How often does that happen?
-8. What have you tried to fix it?
-9. Why didn't that work?
+**发现痛点：**
+5. 这个流程在哪里出问题？
+6. 如果问题没有解决，会有什么后果？（请给出具体数字）
+7. 这个问题多久发生一次？
+8. 您尝试过哪些解决方法？
+9. 为什么那些方法没有效果？
 
-**Implication (expand the pain):**
-10. If this doesn't get fixed in the next 6 months, what happens?
-11. How does this affect [their boss / their team / the company]?
-12. What's the cost of doing nothing? (Force them to quantify)
-13. What other initiatives depend on solving this?
+**分析影响：**
+10. 如果这个问题在接下来的6个月内没有解决，会发生什么？
+11. 这会对[他们的老板/团队/公司]产生什么影响？
+12. 不采取任何行动的成本是多少？（迫使他们量化成本）
+13. 还有哪些其他计划依赖于这个问题的解决？
 
-**Need-Payoff (let THEM sell the solution):**
-14. If you could wave a magic wand, what would this look like?
-15. What would it mean for your team if [pain] went away?
-16. If you could get [specific metric improvement], what would that unlock?
-17. How would [their boss] react to those results?
+**需求与收益分析（让客户自己描述解决方案）：**
+14. 如果您能实现神奇的转变，会是什么样子？
+15. 如果[问题]得到解决，对您的团队会有什么好处？
+16. 如果[具体指标]得到改善，会带来什么结果？
+17. [他们的老板]会对这些结果有何反应？
 
-**Process (map the buying journey):**
-18. Besides you, who else needs to weigh in on this?
-19. What's happened before when you've bought software like this?
-20. Is there a budget allocated, or would this need approval?
-21. What's the ideal timeline for having this running?
-22. What would kill this deal?
+**了解购买流程：**
+18. 除了您之外，还有谁需要参与决策？
+19. 之前购买类似软件时发生了什么？
+20. 是否有预算安排，或者需要获得批准？
+21. 实现这个目标的理想时间表是什么？
+22. 什么会阻碍交易的完成？
 
-### Discovery Call Structure (30 min)
+### 深入挖掘会议结构（30分钟）
 
-| Segment | Time | What You Do |
+| 阶段 | 时间 | 你的行动 |
 |---------|------|-------------|
-| Opening | 2 min | Confirm agenda, set expectations, get permission to ask questions |
-| Context | 5 min | Ask situation questions — understand their world |
-| Pain | 10 min | Ask problem + implication questions — go DEEP on 1-2 pains |
-| Vision | 5 min | Ask need-payoff questions — paint the future state |
-| Process | 5 min | Map decision process, timeline, stakeholders |
-| Next Steps | 3 min | Agree on SPECIFIC next action with date |
+| 开场 | 2分钟 | 确认会议议程，设定预期，获得提问许可 |
+| 了解现状 | 5分钟 | 询问相关问题，了解他们的实际情况 |
+| 发现痛点 | 10分钟 | 询问问题，深入探讨1-2个痛点 |
+| 展示未来愿景 | 5分钟 | 询问需求与收益相关的问题，描绘未来的状态 |
+| 明确流程 | 5分钟 | 了解决策流程、时间表和相关方 |
+| 下一步行动 | 3分钟 | 确定具体的下一步行动及时间安排 |
 
-**Golden Rule:** Talk <30% of the time. If you're talking more, you're pitching, not discovering.
+**黄金法则：**讲话时间控制在30%以内。如果讲话时间过长，就是在推销产品，而不是在挖掘客户需求。**
 
 ---
 
-## Phase 4: Demo & Presentation
+## 第四阶段：产品演示与展示
 
-### The Problem-Solution-Proof Framework
+**问题-解决方案-验证框架**
 
-Never demo features. Demo outcomes.
+**永远不要演示功能，而是展示实际效果。**
 
-**Structure:**
-1. **Mirror their pain** (2 min) — "You told me [specific pain from discovery]. Here's what that costs you: [quantified impact]."
-2. **Show the solution** (15 min) — Walk through their USE CASE, not a generic tour. Use THEIR data, THEIR terminology, THEIR workflow.
-3. **Prove it works** (5 min) — Case study of similar company. Before/after numbers. "Company X had the same problem. Here's what happened."
-4. **Address risks** (3 min) — Proactively surface the top concern they haven't raised yet. "Most companies at your stage worry about [X]. Here's how we handle that."
-5. **Next step** (2 min) — Never end without a committed next action.
+**流程：**
+1. **反映他们的痛点**（2分钟）——“您提到[在挖掘阶段发现的具体痛点]。这会给他们带来多大的损失：[量化损失]。**
+2. **展示解决方案**（15分钟）——使用他们的实际数据、术语和工作流程来演示解决方案。
+3. **验证效果**（5分钟）——展示类似公司的案例研究，展示实施前的情况和实施后的效果。
+4. **解决潜在风险**（3分钟）——提前提出他们尚未提出的主要担忧。
+5 **下一步行动**（2分钟）——在会议结束时，一定要确定下一步的具体行动。
 
-### Demo Anti-Patterns
+### 演示时的禁忌行为
 
-| ❌ Don't | ✅ Do Instead |
+| 不要做 | 应该做 |
 |----------|---------------|
-| Show every feature | Show only what maps to their pain |
-| Start with "let me share my screen" | Start with "let me recap what you told me" |
-| Say "and we also do..." | Say "you mentioned [pain] — here's exactly how that works" |
-| Demo to the whole committee at once | Demo to champion first, then do joint session |
-| Let the demo run long | End 5 min early — scarcity signals confidence |
-| Send a recording after | Send a 1-page summary with their specific ROI |
+| 展示所有功能 | 只展示与他们痛点相关的内容 |
+| 从“让我分享屏幕”开始 | 从“让我回顾您刚才说的内容”开始 |
+| 说“我们还提供……” | 说“您提到了[痛点]——这是具体的解决方案” |
+| 向整个团队演示 | 先向关键决策者演示，然后再进行集体讨论 |
+| 演示时间过长 | 提前5分钟结束演示——时间越短越能体现专业性 |
+| 演示结束后发送录像 | 发送一份包含具体投资回报的总结邮件 |
 
-### Mutual Action Plan (MAP)
+### 双方行动计划（MAP）
 
-After demo, create a shared doc with the prospect:
-
+演示结束后，与潜在客户共同制定一份文档：
 ```yaml
 mutual_action_plan:
   deal: "[Company Name] + [Your Company]"
@@ -376,125 +371,122 @@ mutual_action_plan:
       status: pending
 ```
 
-**Why MAPs work:** Shared accountability. Visible timeline. Champion can use it to drive internal momentum. You can reference specific dates when things stall.
+**为什么MAP有效：**共同承担责任，明确时间表。关键决策者可以利用这份文档推动内部进展。当讨论陷入僵局时，你可以参考这份文档。
 
 ---
 
-## Phase 5: Objection Handling
+## 第五阶段：处理客户异议
 
-### The LAER Framework
+**LAER框架**
 
-Every objection follows this pattern:
+每个异议都遵循以下模式：
 
-1. **Listen** — Let them finish. Don't interrupt. Nod.
-2. **Acknowledge** — "That's a fair concern" / "I hear you" (NOT "I understand but...")
-3. **Explore** — "Help me understand — is it [X] specifically, or more about [Y]?" (Diagnose the REAL objection)
-4. **Respond** — Address the real concern, not the surface one.
+1. **倾听**——让他们把话说完，不要打断，点头表示理解。
+2. **确认**——“这是一个合理的担忧” / “我明白了”（不要说“我理解但是……”）
+3. **深入探究**——“请帮我弄清楚——这是[具体问题]，还是更普遍的问题？”（诊断真正的异议）
+4. **回应**——针对真正的担忧进行回应，而不仅仅是表面的问题。
 
-### Objection Playbook
+### 处理不同类型异议的策略
 
-**Price Objections:**
+**价格异议：**
 
-| Objection | Real Meaning | Response |
+| 异议 | 真实含义 | 回应 |
 |-----------|-------------|----------|
-| "Too expensive" | They don't see the value yet | "Compared to what? Help me understand what you're measuring against." Then re-anchor to cost of doing nothing. |
-| "Can you do a discount?" | Testing your confidence | "Our pricing reflects the value we deliver. [Company X] saw [Y result] — the ROI was [Z]x. What specifically feels misaligned?" |
-| "We don't have budget" | Not a priority OR wrong buyer | "Is this a timing issue, or is [problem] not a priority this quarter?" If priority: "When budgets reset, can we plan for that?" |
-| "Competitor is cheaper" | Using you for leverage OR genuinely price-sensitive | "They may be. The question is what [missing capability] costs you over 12 months. Would you like me to map that out?" |
+| “太贵了” | 他们还没有看到产品的价值 | “与什么相比？请告诉我您所衡量的标准是什么？”然后重新强调不采取行动的后果。 |
+| “能打折吗？” | 测试你的信心 | “我们的定价反映了我们提供的价值。[公司X]获得了[Y]的结果，投资回报是[Z]倍。您觉得哪里不对吗？” |
+| “我们没有预算” | 要么他们不是决策者，要么他们不是优先考虑的对象 | “这是时间问题，还是[问题]在这个季度不是优先事项？”如果是优先事项：“预算重新安排后，我们可以计划一下吗？” |
+| “竞争对手的价格更便宜” | 他们可能在利用你压价，或者他们真的对价格敏感 | “他们可能确实如此。问题是[缺失的功能]在12个月内会让他们花费多少成本？我可以帮您计算一下。” |
 
-**Timing Objections:**
+**时间异议：**
 
-| Objection | Real Meaning | Response |
+| 异议 | 真实含义 | 回应 |
 |-----------|-------------|----------|
-| "Not now, maybe next quarter" | No urgency | "What changes next quarter? If [problem] costs you [X/month], that's [3X] by next quarter. What would it take to move this up?" |
-| "We're in the middle of [other project]" | Genuinely busy OR smokescreen | "Totally get it. When does [project] wrap? Let's lock in a date now so it doesn't slip." |
-| "We need to think about it" | Unresolved concern they haven't voiced | "Of course. What specifically do you need to think through? I might be able to address it now." |
+| “现在不行，也许下个季度吧” | 没有紧迫感 | “下个季度情况会怎样变化？如果[问题]每个月花费[X]，那么到下个季度会变成[3X]。” |
+| “我们正在做另一个项目” | 真正忙，或者是在拖延 | “完全理解。[项目]什么时候结束？我们现在就确定一个时间吧。” |
+| “我们需要考虑一下” | 他们还没有表达出真正的担忧 | “当然可以。您具体需要考虑什么？我现在就可以帮忙解决。” |
 
-**Authority Objections:**
+**权限异议：**
 
-| Objection | Real Meaning | Response |
+| 异议 | 真实含义 | 回应 |
 |-----------|-------------|----------|
-| "I need to run this by my boss" | You're not talking to the decision-maker | "Absolutely. What's their biggest concern likely to be? Let's prep for that together." Then: "Would it help if I joined that conversation?" |
-| "Our committee decides" | Multi-stakeholder deal | "Who's on the committee? What does each person care about most? Let's make sure the proposal speaks to all of them." |
+| “我需要跟我的老板商量” | 你没有直接与决策者沟通 | “当然可以。他们最关心的问题是什么？我们一起准备一下。”然后问：“如果我参与讨论会有帮助吗？” |
+| “我们的委员会需要决定” | 这是一个涉及多个决策者的决策 | “委员会里有哪些人？每个人最关心什么？让我们确保提案能满足他们的需求。” |
 
-**Status Quo Objections:**
+**现状异议：**
 
-| Objection | Real Meaning | Response |
+| 异议 | 真实含义 | 回应 |
 |-----------|-------------|----------|
-| "We're fine with what we have" | Fear of change > desire for improvement | "How long have you had it? What's changed in your business since then? Most companies I talk to outgrow [current solution] when they hit [their growth stage]." |
-| "We built our own" | Pride in internal solution | "That's impressive. What's the maintenance cost? Most teams I talk to find their engineers are spending [X%] of time maintaining instead of building product." |
+| “我们现有的方案就很好” | 害怕改变大于对改进的渴望 | “您使用这个方案已经有多久了？从那以后您的业务发生了什么变化？我接触的大多数公司在达到[他们的增长阶段]时都会更换方案。” |
+| “我们自己开发的” | 对内部解决方案感到自豪 | “这很棒。但是维护成本是多少？我接触的团队中，大多数工程师把[X]%的时间都花在维护上，而不是开发新功能。” |
 
-### The "Negative Reverse" Technique
+**“反向质疑”技巧**
 
-When objections keep coming, flip the script:
-
-> "It sounds like this might not be the right fit. Should we just call it?"
-
-This does two things:
-1. Takes pressure off — they stop defending
-2. Forces them to either agree (you saved time) or sell THEMSELVES on why it IS a fit
+**当客户不断提出异议时，可以这样回应：**
+> “听起来这个方案可能不适合您。我们是不是应该直接结束这次讨论？”
+这样做有两个效果：
+1. 减轻他们的压力——他们就不会再辩解了。
+2. 迫使他们要么同意（你节省了时间），要么自己说服自己这个方案确实适合他们。
 
 ---
 
-## Phase 6: Closing & Negotiation
+## 第六阶段：成交与谈判
 
-### Closing Signals (When to Ask)
+### 何时提出成交请求
 
-**Verbal:**
-- "What would implementation look like?"
-- "How does pricing work?"
-- "Can we do a pilot?"
-- "What's the contract length?"
-- "When could we start?"
+**口头表达：**
+- “实施过程会是怎样的？”
+- “价格是多少？”
+- “我们可以做一次试用吗？”
+- “合同的有效期是多久？”
+- “我们什么时候可以开始？”
 
-**Behavioral:**
-- They introduce you to additional stakeholders
-- They ask for references
-- They share internal documents/requirements
-- Response time gets faster
-- They start using "we" and "when" instead of "if"
+**行为表现：**
+- 他们向你介绍其他相关方
+- 他们请求推荐人
+- 他们分享内部文件或需求
+- 回应速度加快
+- 他们开始使用“我们”和“什么时候”这样的表达
 
-### Closing Techniques
+### 成交技巧
 
-**1. The Summary Close**
+**1. 总结式成交法**
 ```
 "So to recap — [problem] is costing you [X/month], you need a solution 
 by [date] for [reason], and [your product] addresses [their top 3 criteria]. 
 Shall I send the agreement?"
 ```
 
-**2. The Next Step Close**
+**2. 下一步行动法**
 ```
 "Based on everything we've discussed, the next step would be 
 [specific action — contract review, pilot setup, intro to CS]. 
 Should I kick that off?"
 ```
 
-**3. The Assumptive Close**
+**3. 假设成交法**
 ```
 "Great — I'll have the proposal over by end of day. 
 Would you prefer monthly or annual billing?"
 ```
 
-**4. The Puppy Dog Close (for hesitant buyers)**
+**4. 对犹豫不决的客户的成交策略**
 ```
 "Tell you what — let's do a 14-day pilot with [specific use case]. 
 You'll see [expected result] in the first week. 
 If it doesn't deliver, no hard feelings. Fair?"
 ```
 
-### Negotiation Rules
+### 谈判规则**
 
-1. **Never negotiate against yourself.** If they ask for a discount, ask what they'd give in return (longer term, case study, referral, faster signature).
-2. **Trade, don't cave.** Every concession must get something back.
-3. **Anchor high.** Start with your full price. The first number sets the range.
-4. **Silence is power.** After stating your price, STOP TALKING. Let them respond.
-5. **Know your walk-away.** Before any negotiation, set your floor. Below that = no deal.
-6. **Bundle value, don't discount price.** Add a month free, add training, add premium support — don't cut the sticker price.
-7. **Create deadline.** "This pricing is valid through [date]" or "I have 2 onboarding slots left this quarter."
+1. **永远不要对自己不利地谈判。**如果他们要求打折，询问他们愿意放弃什么（比如更长的试用期、提供案例研究、推荐人、更快签署合同等）。
+2. **要有所交换，不要轻易让步。**每次让步都必须得到相应的回报。
+3. **从较高的价格开始谈判。**先提出你的最高价格，这会设定谈判的范围。
+4. **沉默就是力量。**说出价格后，停止讲话，让他们先回应。
+5. **明确你的底线。**在谈判之前，先设定你的最低价格。低于这个价格就放弃交易。
+6. **提供附加价值，而不是直接降价。**可以提供一个月的免费试用期、额外培训或高级支持，但不要直接降价。
+7. **设定截止日期。**“这个价格的有效期限是[日期]”或“这个季度我还有两个培训名额。”
 
-### Discount Decision Tree
-
+### 折扣决策树
 ```
 Prospect asks for discount
 ├── Do they have budget? 
@@ -511,28 +503,27 @@ Prospect asks for discount
 
 ---
 
-## Phase 7: Pipeline Management
+## 第七阶段：销售流程管理
 
-### Pipeline Stages & Exit Criteria
+### 销售流程阶段与退出标准
 
-| Stage | Definition | Exit Criteria | Probability |
+| 阶段 | 定义 | 退出标准 | 成交概率 |
 |-------|-----------|---------------|-------------|
-| **Prospecting** | Initial outreach, no meeting yet | Meeting booked | 5% |
-| **Discovery** | First meeting held | Pain confirmed, ICP match validated | 15% |
-| **Evaluation** | Active evaluation, demo delivered | Champion identified, decision criteria known | 30% |
-| **Proposal** | Proposal/pricing sent | Budget confirmed, decision process mapped | 50% |
-| **Negotiation** | Terms being discussed | Verbal commit, legal/procurement started | 75% |
-| **Closed Won** | Contract signed | ✅ Revenue recognized | 100% |
-| **Closed Lost** | Deal lost | Reason documented, next steps noted | 0% |
+| **潜在客户开发** | 初始联系，尚未安排会议 | 会议已经安排 | 5% |
+| **深入挖掘** | 第一次会议已经举行 | 痛点得到确认，客户符合ICP标准 | 15% |
+| **评估** | 正在评估中，已经进行了产品演示 | 确定了关键决策者，了解了决策标准 | 30% |
+**提案阶段** | 提案或价格已经发送 | 预算已经确定，决策流程已经明确 | 50% |
+| **谈判阶段** | 正在讨论条款 | 客户已经口头同意，法律或采购流程已经开始 | 75% |
+| **成交阶段** | 合同已经签署 | ✅ 收入已经确认 | 100% |
+| **失败阶段** | 交易失败 | 记录失败原因，确定下一步行动 | 0% |
 
-**Stage Hygiene Rules:**
-- No deal stays in a stage for more than 2x the average time for that stage
-- Every deal must have a next step with a date
-- If a deal has no activity for 14 days → flag for review
-- Update stages based on BUYER actions, not your actions (you sending a proposal ≠ Proposal stage; them REVIEWING it does)
+**阶段管理规则：**
+- 任何交易在一个阶段停留的时间不得超过该阶段平均时间的两倍。
+- 每个交易都必须有明确的下一步行动和时间安排。
+- 如果一个交易14天内没有任何进展，就需要重新评估。
+- 根据客户的行动来更新销售流程的阶段，而不是根据你的行动（你发送提案并不意味着交易进入了下一个阶段）。
 
-### Weekly Pipeline Review Template
-
+### 每周销售流程回顾模板
 ```yaml
 pipeline_review:
   date: "[YYYY-MM-DD]"
@@ -569,23 +560,22 @@ pipeline_review:
       proposal_to_closed: "[X%]"
 ```
 
-### Forecast Categories
+### 预测分类
 
-| Category | Definition | Rules |
+| 分类 | 定义 | 规则 |
 |----------|-----------|-------|
-| **Commit** | WILL close this period | Verbal yes, contract in legal, no blockers |
-| **Best Case** | High probability this period | Champion pushing, decision process active, some risk |
-| **Pipeline** | Could close this period, needs work | In evaluation, not yet at proposal stage |
-| **Upside** | Unlikely this period but possible | Early stage, right ICP, uncertain timeline |
+| **肯定会成交** | 在这个周期内一定会成交 | 客户已经口头同意，合同已经签订，没有障碍 |
+| **最佳情况** | 在这个周期内有很高的成交可能性 | 关键决策者正在推动，决策流程正在进行中，存在一定的风险 |
+| **待成交** | 可能在这个周期内成交，但还需要进一步工作 | 处在评估阶段，尚未进入提案阶段 |
+| **可能性较低** | 在这个周期内成交的可能性较小，但仍有机会 | 处在早期阶段，客户符合ICP标准，但时间表不确定 |
 
-**Forecast Accuracy Rule:** Your commit number should be within 10% of actual. If it's consistently off, your qualification is broken.
+**预测准确性规则：**你的预测成交数量应该与实际成交数量相差不超过10%。如果预测持续偏离实际情况，说明你的客户评估方法有问题。**
 
 ---
 
-## Phase 8: Deal Acceleration Tactics
+## 第八阶段：加速交易进程的策略
 
-### When Deals Stall — Diagnostic Checklist
-
+### 当交易陷入僵局时的诊断检查清单
 ```
 Deal is stalled. Ask yourself:
 
@@ -599,31 +589,28 @@ Deal is stalled. Ask yourself:
 8. [ ] Have I multi-threaded? (If no → engage other stakeholders)
 ```
 
-### Multi-Threading Strategy
+### 多线程销售策略
 
-**Rule:** Never have just one contact in a deal. If your champion leaves, gets sick, or goes on vacation — your deal dies.
+**规则：**在任何交易中，不能只依赖一个联系人。如果你的关键决策者离开、生病或休假，交易就很可能会失败。
 
-**Minimum contacts by deal size:**
-- <$25K ACV → 2 contacts (champion + economic buyer)
-- $25K-$100K → 3-4 contacts (champion, economic buyer, technical evaluator, end user)
-- $100K+ → 5+ contacts (add: procurement, legal, executive sponsor)
+**根据交易金额确定最低联系人数量：**
+- 交易金额<25,000美元 → 2名联系人（关键决策者 + 经济买家）
+- 25,000美元至100,000美元 → 3-4名联系人（关键决策者、经济买家、技术评估员、最终用户）
+- 100,000美元以上 → 5名以上联系人（增加采购人员、法律人员、高层支持人员）
 
-### Urgency Creation (Ethical)
+### 创造紧迫感的策略（道德原则）
 
-| Technique | How | When to Use |
+| 方法 | 方法 | 适用情况 |
 |-----------|-----|-------------|
-| **Cost of delay** | "Every month this isn't solved costs you $[X]. That's $[3X] by Q[next]." | When they have no timeline |
-| **Capacity constraint** | "We're onboarding 3 clients this quarter. After that, next slot is [date]." | When true (never lie) |
-| **Price timeline** | "Current pricing is locked through [date]." | When price changes are planned |
-| **Competitive risk** | "Your competitor [name] just signed with us." | When true and relevant |
-| **Regulatory deadline** | "[Regulation] takes effect [date]. You need [X weeks] to implement." | When compliance is a factor |
+| **延迟的成本** | “如果这个问题不解决，每个月会让你损失[X]美元。到下个季度这个损失会变成[X]美元。” | 当他们没有明确的时间表时使用 |
+| **资源限制** | “这个季度我们要接待3位新客户。之后下一个接待时间就是[日期]。” | 当情况属实时使用（切勿撒谎） |
+| **价格时间限制** | “当前价格的有效期限是[日期]。** | 当价格有变动时使用 |
+| **竞争对手的威胁** | “你的竞争对手[公司名称]刚刚与我们签约。” | 当这种情况属实且相关时使用 |
+| **法规截止日期** | “[法规]将在[日期]生效。你需要[X]周的时间来准备。” | 当合规性是一个问题时使用 |
 
----
+## 第九阶段：售后与业务扩展
 
-## Phase 9: Post-Sale & Expansion
-
-### Handoff to Customer Success
-
+### 与客户成功团队的交接
 ```yaml
 deal_handoff:
   company: "[Name]"
@@ -658,16 +645,15 @@ deal_handoff:
     - "[Things that were contentious during sales]"
 ```
 
-### Expansion Revenue Playbook
+### 业务扩展策略
 
-**When to upsell (signals):**
-- Usage hits >80% of their current tier/limit
-- They ask about features in higher tiers
-- New team/department asks to join
-- They hit a milestone (growing headcount, new market)
-- Renewal is 90 days away (bundle expansion with renewal)
+**何时进行追加销售：**
+- 客户的使用量达到当前等级/上限的80%以上 |
+- 客户询问更高级别的功能 |
+- 新团队或部门希望加入 |
+- 客户达到某个里程碑（例如团队规模扩大、进入新市场）
 
-**Expansion conversation:**
+**扩展销售时的注意事项：**
 ```
 "I noticed [specific usage signal]. That usually means [outcome they care about] 
 is going well. 
@@ -676,41 +662,38 @@ Other companies at your stage typically [expand to X / add Y] to [benefit].
 Would it make sense to explore that?"
 ```
 
-**Never upsell:**
-- When they have unresolved support issues
-- During the first 60 days
-- When they're at risk of churning
-- Without data showing they'll get value from the expansion
+**何时不应进行追加销售：**
+- 客户仍有未解决的支持问题 |
+- 在交易后的前60天内 |
+- 客户处于流失风险中 |
+- 没有数据表明客户会从扩展服务中获益 |
 
----
+## 第十阶段：指标与自我改进
 
-## Phase 10: Metrics & Self-Improvement
+### 活动指标（领先指标）
 
-### Activity Metrics (Leading Indicators)
-
-| Metric | Target | Why It Matters |
+| 指标 | 目标值 | 重要性 |
 |--------|--------|---------------|
-| Outbound emails/day | 30-50 | Pipeline generation |
-| Calls/day | 15-25 | Pipeline generation |
-| Meetings booked/week | 8-12 | Pipeline conversion |
-| Discovery calls/week | 5-8 | Qualified pipeline |
-| Demos/week | 3-5 | Active evaluation |
-| Proposals sent/week | 2-3 | Close to money |
+| 每天发送的邮件数量 | 30-50封 | 用于生成销售线索 |
+| 每天拨打的电话数量 | 15-25通 | 用于生成销售线索 |
+| 每周安排的会议数量 | 8-12次 | 用于转化销售线索 |
+| 每周进行的挖掘电话数量 | 5-8次 | 用于评估潜在客户 |
+| 每周发送的提案数量 | 2-3份 | 用于促成成交 |
+| 每周进行的演示数量 | 3-5次 | 用于推进销售流程 |
 
-### Outcome Metrics (Lagging Indicators)
+### 结果指标（滞后指标）
 
-| Metric | Formula | Healthy Range |
+| 指标 | 计算公式 | 合理范围 |
 |--------|---------|---------------|
-| Win rate | Won / (Won + Lost) | 20-35% |
-| Avg deal size | Total revenue / Deals closed | Trending up |
-| Sales cycle | Avg days from first touch to close | Trending down |
-| Pipeline coverage | Open pipeline / Quota | 3-4x |
-| Activity-to-meeting ratio | Meetings / (Emails + Calls) | >5% |
-| Meeting-to-opportunity ratio | Opportunities / Meetings | >50% |
-| Forecast accuracy | Actual / Committed | >90% |
+| 成交率 | 成交数量 / （成交数量 + 失败数量） | 20-35% |
+| 平均交易金额 | 总收入 / 成交数量 | 趋势上升 |
+| 销售周期 | 从首次联系到成交的平均时间 | 趋势下降 |
+| 销售线索转化率 | 开启的销售线索数量 / 总销售线索数量 | >50% |
+| 会议数量与销售线索的比例 | 开启的销售线索数量 / （发送的邮件数量 + 打电话的数量） | >50% |
+| 会议数量与潜在客户数量的比例 | 潜在客户数量 / 会议数量 | >50% |
+| 预测准确性 | 实际成交数量 / 预测成交数量 | >90% |
 
-### Win/Loss Analysis Template
-
+### 成交/失败分析模板
 ```yaml
 deal_analysis:
   company: "[Name]"
@@ -742,32 +725,32 @@ deal_analysis:
     relationship: [1-5]
 ```
 
-### Monthly Self-Review Questions
+### 每月自我评估问题
 
-1. What's my win rate trend? (Improving, flat, declining)
-2. Where do deals die most? (Which stage has the biggest drop-off)
-3. Am I talking to the right people? (Economic buyer access rate)
-4. Are my deals getting bigger or smaller?
-5. What objection am I weakest at handling?
-6. Which outreach channel converts best for me?
-7. Am I spending time on the right deals? (80/20 — are 80% of results from 20% of deals?)
-8. What did I learn from my last 3 losses?
+1. 我的成交率趋势如何？（是在提高、持平还是下降？）
+2. 交易失败的主要原因在哪里？（哪个阶段的问题导致失败率最高？）
+3. 我是否在联系正确的人？（我联系的对象是否是决策者？）
+4. 我的交易金额是在增加还是减少？ |
+5. 我在处理哪种类型的异议时最薄弱？ |
+6. 哪种销售渠道的转化效果最好？ |
+7. 我是否在把时间花在正确的客户上？（80%的交易是否来自20%的有效客户？）
+8. 从上一次失败中我学到了什么？ |
 
 ---
 
-## Natural Language Commands
+## 自动化命令
 
-| Command | What It Does |
+| 命令 | 功能 |
 |---------|-------------|
-| "Build my ICP" | Walk through ICP definition template |
-| "Write outreach for [company]" | Generate personalized multi-channel sequence |
-| "Prep me for discovery with [company]" | Build discovery question set based on what you know |
-| "Qualify this deal" | Run MEDDPICC assessment with scoring |
-| "Help me handle [objection]" | Pull relevant playbook + practice response |
-| "Review my pipeline" | Generate weekly pipeline review |
-| "Why am I losing deals?" | Run win/loss analysis on recent losses |
-| "Forecast this quarter" | Categorize deals into commit/best case/pipeline/upside |
-| "Prep a proposal for [company]" | Generate proposal based on discovery notes |
-| "Write a follow-up after [meeting type]" | Generate appropriate follow-up email |
-| "Coach me on [call recording/notes]" | Analyze a sales conversation and give feedback |
-| "How do I close [company]?" | Assess deal state and recommend closing strategy |
+| “生成我的理想客户画像” | 根据ICP定义模板生成客户画像 |
+| “为[公司]生成销售流程” | 根据已知信息生成个性化的多渠道销售流程 |
+| “为[公司]准备挖掘阶段所需的问题” | 根据客户情况生成相应的挖掘问题 |
+| “评估这个交易是否符合标准” | 使用MEDDPICC评估框架进行评估 |
+| “帮助我处理这个异议” | 提供相关的应对策略和练习机会 |
+| “查看我的销售流程” | 生成每周的销售流程回顾报告 |
+| “分析我为什么失败” | 对最近的失败案例进行成交/失败分析 |
+| “预测这个季度的成交情况” | 将交易分类为肯定会成交、最佳情况、待成交或可能性较低的情况 |
+| “为[公司]准备提案” | 根据挖掘结果生成提案 |
+| “在[会议类型]后发送跟进邮件” | 根据会议内容生成合适的跟进邮件 |
+| “指导我如何处理[会议记录/对话内容]” | 分析销售对话并提供反馈 |
+| “指导我如何完成[公司的成交]” | 评估交易情况并推荐成交策略 |

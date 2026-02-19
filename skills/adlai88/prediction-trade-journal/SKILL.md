@@ -1,11 +1,11 @@
 ---
 name: prediction-trade-journal
 displayName: Prediction Trade Journal
-description: 自动记录交易详情（包括相关背景信息），跟踪交易结果，并生成校准报告，以提升交易效率。
+description: 自动记录交易详情及背景信息，跟踪交易结果，并生成校准报告以优化交易策略。
 metadata: {"clawdbot":{"emoji":"📓","requires":{"env":["SIMMER_API_KEY"]},"cron":null,"autostart":false}}
 authors:
   - Simmer (@simmer_markets)
-version: "1.1.2"
+version: "1.1.4"
 published: true
 ---
 # 预测交易日志
@@ -14,9 +14,9 @@ published: true
 
 ## 何时使用此技能
 
-当用户希望执行以下操作时，可以使用此技能：
+当用户需要以下功能时，可以使用此技能：
 - 查看交易历史记录
-- 跟踪胜率和盈亏情况
+- 监控胜率和盈亏情况
 - 生成交易报告
 - 分析哪些交易策略最有效
 
@@ -39,23 +39,23 @@ python tradejournal.py --export trades.csv
 **API 参考：**
 - 基本 URL：`https://api.simmer.markets`
 - 认证方式：`Authorization: Bearer $SIMMER_API_KEY`
-- 获取交易信息：`GET /api/sdk/trades`
+- 获取交易记录的 API：`GET /api/sdk/trades`
 
 ## 工作原理
 
-1. **同步**：向 `/api/sdk/trades` 发送请求以获取交易历史记录。
-2. **存储**：将交易信息及其结果保存在本地。
-3. **跟踪**：在市场行情明确后更新交易结果。
-4. **生成报告**：计算胜率、盈亏情况并进行策略校准分析。
+1. **同步数据**：定期从 `/api/sdk/trades` 获取交易历史记录。
+2. **本地存储**：将交易记录及其结果保存到本地文件中。
+3. **更新结果**：当市场行情变化时，更新交易结果。
+4. **生成报告**：计算胜率、盈亏情况，并进行策略校准分析。
 
-## 命令行接口（CLI）参考
+## 命令行接口 (CLI) 参考
 
 | 命令 | 描述 |
 |---------|-------------|
 | `--sync` | 从 API 获取新的交易记录 |
 | `--history N` | 显示最近 N 笔交易（默认值：10） |
 | `--sync-outcomes` | 更新已结算的交易结果 |
-| `--report daily/weekly/monthly` | 生成汇总报告 |
+| `--report daily/weekly/monthly` | 生成每日/每周/每月的总结报告 |
 | `--config` | 显示配置信息 |
 | `--export FILE.csv` | 将数据导出为 CSV 文件 |
 | `--dry-run` | 预览功能（不进行任何实际操作） |
@@ -64,8 +64,7 @@ python tradejournal.py --export trades.csv
 
 | 设置 | 环境变量 | 默认值 |
 |---------|---------------------|---------|
-| API 密钥 | `SIMMER_API_KEY` | （必填） |
-| API 地址 | `SIMMER_API_URL` | `https://api.simmer.markets` |
+| API 密钥 | `SIMMER_API_KEY` | （必需） |
 
 ## 数据存储
 
@@ -94,7 +93,7 @@ python tradejournal.py --export trades.csv
 
 ## 技能集成
 
-其他技能可以为交易记录添加更多背景信息（如交易理由、交易者的信心水平以及交易来源），从而帮助进行更深入的分析：
+其他技能可以为交易记录添加额外的上下文信息（如交易理由、交易者的信心水平以及交易来源），从而帮助进行更深入的分析：
 
 ```python
 from tradejournal import log_trade
@@ -108,7 +107,7 @@ log_trade(
 )
 ```
 
-这些信息有助于提升交易分析的准确性。
+这些信息有助于提升交易记录的完整性，便于更全面地评估交易策略的表现。
 
 ## 报告示例
 

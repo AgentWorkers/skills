@@ -1,18 +1,17 @@
 ---
 name: javascript-sdk
-description: |
-  JavaScript/TypeScript SDK for inference.sh - run AI apps, build agents, integrate 150+ models.
-  Package: @inferencesh/sdk (npm install). Full TypeScript support, streaming, file uploads.
-  Build agents with template or ad-hoc patterns, tool builder API, skills, human approval.
-  Use for: JavaScript integration, TypeScript, Node.js, React, Next.js, frontend apps.
-  Triggers: javascript sdk, typescript sdk, npm install, node.js api, js client, react ai,
-  next.js ai, frontend sdk, @inferencesh/sdk, typescript agent, browser sdk, js integration
+description: "JavaScript/TypeScript SDK for inference.sh – 用于运行AI应用程序、构建代理程序以及集成150多种模型。  
+包名：@inferencesh/sdk（可通过 `npm install` 安装）。  
+支持完整的TypeScript语法、数据流处理以及文件上传功能；支持使用模板或自定义方式构建代理程序；提供工具构建API以及人工审批机制。  
+适用场景：JavaScript集成、TypeScript开发、Node.js应用、React框架、Next.js项目以及前端应用程序。  
+相关触发命令：`javascript sdk`、`typescript sdk`、`npm install`、`node.js api`、`js client`、`react ai`、`next.js ai`、`frontend sdk`、`@inferencesh/sdk`、`typescript agent`、`browser sdk`、`js integration`。"
 allowed-tools: Bash(npm *), Bash(npx *), Bash(node *), Bash(pnpm *), Bash(yarn *)
 ---
-
 # JavaScript SDK
 
 使用 [inference.sh](https://inference.sh) JavaScript/TypeScript SDK 构建 AI 应用程序。
+
+![JavaScript SDK](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgvftjwhby36trvaj66bwzcf.jpeg)
 
 ## 快速入门
 
@@ -43,7 +42,7 @@ yarn add @inferencesh/sdk
 pnpm add @inferencesh/sdk
 ```
 
-**要求：** Node.js 18.0.0+（或支持 fetch 的现代浏览器）
+**要求：** Node.js 18.0.0+（或支持 `fetch` 方法的现代浏览器）
 
 ## 认证
 
@@ -106,12 +105,12 @@ for await (const update of stream) {
 
 ### 运行参数
 
-| 参数 | 类型 | 说明 |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
 | `app` | 字符串 | 应用程序 ID（格式：namespace/name@version） |
 | `input` | 对象 | 符合应用程序模式的输入数据 |
 | `setup` | 对象 | 隐藏的配置信息 |
-| `infra` | 字符串 | 执行环境：`cloud` 或 `private` |
+| `infra` | 字符串 | 运行模式：`cloud` 或 `private` |
 | `session` | 字符串 | 用于保持会话状态的会话 ID |
 | `session_timeout` | 数字 | 空闲超时时间（1-3600 秒） |
 
@@ -154,9 +153,9 @@ const input = document.querySelector('input[type="file"]');
 const file = await client.uploadFile(input.files[0]);
 ```
 
-## 会话（保持会话状态）
+## 会话（保持状态的执行）
 
-在多次调用中保持工作进程的持续运行：
+在多次调用中保持工作进程的活跃状态：
 
 ```typescript
 // Start new session
@@ -368,7 +367,7 @@ const response = await agent.sendMessage('Describe this', {
 });
 ```
 
-## 技能（可复用的上下文数据）
+## 技能（可重用的上下文数据）
 
 ```typescript
 const agent = client.agent({
@@ -390,9 +389,9 @@ const agent = client.agent({
 
 ## 服务器代理（前端应用程序）
 
-对于浏览器应用程序，通过后端代理来保护 API 密钥的安全：
+对于浏览器应用程序，通过代理将请求转发到后端以保护 API 密钥的安全：
 
-### 客户端设置
+### 客户端配置
 
 ```typescript
 const client = inference({
@@ -508,7 +507,7 @@ const result = await client.run({...});
 - [服务器代理](references/server-proxy.md) - Next.js、Express、Hono、Remix、SvelteKit 的设置指南
 - [流式处理](references/streaming.md) - 实时进度更新和 SSE 处理
 - [文件处理](references/files.md) - 文件上传、下载和管理
-- [会话](references/sessions.md) - 保持会话状态的工作进程
+- [会话](references/sessions.md) - 保持状态的执行及工作进程的持续运行
 - [TypeScript](references/typescript.md) - 类型定义和类型安全模式
 - [React 集成](references/react-integration.md) - Hooks、组件和集成方案
 
@@ -516,24 +515,24 @@ const result = await client.run({...});
 
 ```bash
 # Python SDK
-npx skills add inference-sh/agent-skills@python-sdk
+npx skills add inference-sh/skills@python-sdk
 
 # Full platform skill (all 150+ apps via CLI)
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 
 # LLM models
-npx skills add inference-sh/agent-skills@llm-models
+npx skills add inference-sh/skills@llm-models
 
 # Image generation
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 ```
 
 ## 文档
 
 - [JavaScript SDK 参考](https://inference.sh/docs/api/sdk-javascript) - 完整的 API 文档
-- [代理 SDK 概述](https://inference.sh/docs/api/agent-sdk) - 代理构建指南
-- [工具构建器参考](https://inference.sh/docs/api/agent-tools) - 工具创建指南
-- [服务器代理设置](https://inference.sh/docs/api/sdk/server-proxy) - 前端集成指南
-- [认证](https://inference.sh/docs/api/authentication) - API 密钥设置
+- [代理 SDK 概述](https://inference.sh/docs/api/agent-sdk) - 代理程序的构建方法
+- [工具构建器参考](https://inference.sh/docs/api/agent-tools) - 工具的创建方法
+- [服务器代理设置](https://inference.sh/docs/api/sdk/server-proxy) - 前端应用程序的集成指南
+- [认证](https://inference.sh/docs/api/authentication) - API 密钥的设置方法
 - [流式处理](https://inference.sh/docs/api/sdk/streaming) - 实时更新功能
-- [文件上传](https://inference.sh/docs/api/sdk/files) - 文件处理指南
+- [文件上传](https://inference.sh/docs/api/sdk/files) - 文件处理相关内容

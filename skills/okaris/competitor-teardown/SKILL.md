@@ -1,18 +1,11 @@
 ---
 name: competitor-teardown
-description: |
-  Structured competitive analysis with feature matrices, SWOT, positioning maps, and UX review.
-  Covers research frameworks, pricing comparison, review mining, and visual deliverables.
-  Use for: market research, competitive intelligence, investor decks, product strategy, sales enablement.
-  Triggers: competitor analysis, competitive analysis, competitor teardown, market research,
-  competitive intelligence, swot analysis, competitor comparison, market landscape,
-  competitor review, competitive landscape, feature comparison, market positioning
+description: "结构化的竞争分析方法，包括功能矩阵、SWOT分析、市场定位图以及用户体验评估。该方法涵盖研究框架、价格比较、数据挖掘以及可视化报告的生成。适用于市场研究、竞争情报分析、投资者演示文稿、产品策略制定以及销售支持等场景。相关触发条件包括：竞争对手分析、SWOT分析、竞争对手对比、市场调研、竞争情报收集、产品特性对比以及市场定位评估等。"
 allowed-tools: Bash(infsh *)
 ---
+# 竞品分析
 
-# 竞品分析框架
-
-通过 [inference.sh](https://inference.sh) 命令行工具，结合研究和截图来进行结构化的竞品分析。
+通过 [inference.sh](https://inference.sh) 命令行工具进行结构化的竞品分析，包括研究和截图收集。
 
 ## 快速入门
 
@@ -31,6 +24,8 @@ infsh app run infsh/agent-browser --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可手动进行安装和验证：[手动安装与验证指南](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 竞品分析框架
 
 ### 七层分析模型
@@ -39,11 +34,11 @@ infsh app run infsh/agent-browser --input '{
 |-------|----------------|-------------|
 | 1. **产品** | 功能、用户体验（UX）、质量 | 截图、免费试用版 |
 | 2. **定价** | 价格方案、定价模式、隐藏费用 | 定价页面、销售电话 |
-| 3. **市场定位** | 宣传信息、口号、市场定位（ICP） | 官网、广告 |
-| 4. **用户增长** | 用户数量、收入、增长情况 | 网页搜索结果、新闻报道、融资信息 |
+| 3. **市场定位** | 宣传信息、口号、市场定位（ICP） | 网站、广告 |
+| 4. **用户规模与增长** | 用户数量、收入、发展情况 | 网页搜索结果、新闻报道、融资信息 |
 | 5. **用户评价** | 用户对产品的评价（优点和缺点） | G2、Capterra、App Store |
-| 6. **内容建设** | 博客内容、社交媒体运营、SEO策略 | 官网、社交媒体账号 |
-| 7. **团队背景** | 团队规模、关键成员的背景 | LinkedIn、公司官网的“关于我们”页面 |
+| 6. **内容与营销** | 博客内容、社交媒体活动、SEO 策略 | 网站内容、社交媒体账号 |
+| 7. **团队背景** | 团队规模、关键成员信息 | LinkedIn、公司官网的“关于我们”页面 |
 
 ## 研究命令
 
@@ -109,8 +104,6 @@ infsh app run infsh/agent-browser --input '{
 
 ## 功能矩阵
 
-### 分析结构
-
 ```markdown
 | Feature | Your Product | Competitor A | Competitor B | Competitor C |
 |---------|:---:|:---:|:---:|:---:|
@@ -123,18 +116,16 @@ infsh app run infsh/agent-browser --input '{
 | Integrations | 50+ | 100+ | 30+ | 20+ |
 ```
 
-### 规则说明
+### 分类标准
 
-- ✅ = 完全支持该功能
-- ⚠️ 或 “部分支持” = 功能有限或需满足特定条件
-- ❌ = 该功能不可用
-- 注意特殊说明：如 “仅限付费用户使用”、“企业级版本”、“测试阶段”
-- 首先列出你产品所具备的优势功能
+- ✅ = 完全支持
+- ⚠️ 或 “部分支持” = 功能有限或有使用限制
+- ❌ = 不支持该功能
+- 注意特殊说明：如 “仅限付费用户”、“企业级版本”、“测试版”
+- 首先关注您具有优势的功能
 - 对竞品的优点要如实评估——诚信至关重要
 
 ## 定价比较
-
-### 分析结构
 
 ```markdown
 | | Your Product | Competitor A | Competitor B |
@@ -149,18 +140,18 @@ infsh app run infsh/agent-browser --input '{
 | **Hidden costs** | None | Setup fee $500 | API calls metered |
 ```
 
-### 需要关注的重点
+### 需要关注的要点：
 
 - 最低用户数量要求
 - 是否仅支持年度订阅（降低灵活性）
 - 不同等级之间的功能限制
-- 超额使用费用
+- 过度使用费用
 - 设置/入职费用
 - 合同锁定期
 
 ## SWOT 分析
 
-为每个竞品制作 SWOT 分析报告：
+为每个竞品制定 SWOT 分析：
 
 ```markdown
 ### Competitor A — SWOT
@@ -182,15 +173,15 @@ infsh app run infsh/agent-browser --input '{
 
 使用 2x2 矩阵展示竞品在两个关键维度上的位置。
 
-### 选择有意义的分析维度
+### 选择有意义的维度
 
-| 有意义的维度 | 不合适的维度 |
+| 有意义的维度 | 不太有意义的维度 |
 |-----------|----------|
-| 简单 ↔ 复杂 | 好 ↔ 坏 |
-| 中小企业 ↔ 企业级 | 便宜 ↔ 昂贵（过于明显） |
-| 自助服务 ↔ 人工销售 | 旧产品 ↔ 新产品 |
-| 专业领域 ↔ 广泛适用 | 小型企业 ↔ 大型企业 |
-| 观点固定 ↔ 灵活多变 | — |
+| 简单 vs. 复杂 | 好 vs. 坏 |
+| 中小企业 vs. 企业级 | 便宜 vs. 昂贵（过于明显） |
+| 自助服务 vs. 销售驱动 | 传统 vs. 创新 |
+| 专业领域 vs. 广泛适用 | 规模小 vs. 规模大 |
+| 固定模式 vs. 灵活模式 | — |
 
 ### 模板
 
@@ -208,7 +199,7 @@ infsh app run infsh/agent-browser --input '{
                       SMB
 ```
 
-### 生成可视化报告
+### 生成可视化图表
 
 ```bash
 # Create positioning map with Python
@@ -221,7 +212,7 @@ infsh app run infsh/python-executor --input '{
 
 ### 评价来源
 
-| 平台 | 适用场景 | URL 模式 |
+| 平台 | 适用范围 | URL 模式 |
 |----------|----------|-------------|
 | G2 | B2B SaaS 产品 | g2.com/products/[产品名称]/reviews |
 | Capterra | 商业软件 | capterra.com/software/[产品ID]/reviews |
@@ -230,15 +221,15 @@ infsh app run infsh/python-executor --input '{
 | Product Hunt | 新产品发布 | producthunt.com/posts/[产品名称] |
 | Reddit | 用户评价 | reddit.com/r/[相关子版块] |
 
-### 需要提取的信息
+### 收集评价时需要注意的内容：
 
 | 评价类别 | 关注点 |
 |----------|---------|
 | **最受好评的功能** | 用户最常提到的优点是什么？ |
-| **最受诟病的功能** | 用户不满的地方是什么？（这可能是你的机会） |
-| **用户更换产品的原因** | 用户为何选择更换产品？是什么促使他们做出改变？ |
-| **用户需求** | 用户还缺少哪些功能？ |
-| **用户比较内容** | 用户在比较产品时提到了什么？ |
+| **最常被抱怨的问题** | 用户的不满之处是什么？（这可能是您的机会） |
+| **用户更换产品的原因** | 用户为何选择更换产品？ |
+| **用户需求** | 用户希望添加哪些功能？ |
+| **用户比较内容** | 用户在比较产品时提到了哪些方面？ |
 
 ```bash
 # Mine G2 reviews
@@ -252,7 +243,7 @@ infsh app run exa/search --input '{
 }'
 ```
 
-## 报告输出格式
+## 成果输出格式
 
 ### 执行摘要（1 页）
 
@@ -276,13 +267,13 @@ infsh app run exa/search --input '{
 
 ### 详细报告（针对每个竞品）
 
-1. 公司概况（规模、融资情况、团队构成）
-2. 产品分析（功能介绍、用户体验截图）
+1. 公司概况（规模、融资情况、团队信息）
+2. 产品分析（功能、用户体验截图）
 3. 定价详情
 4. SWOT 分析
-5. 用户评价分析（最受好评的功能、最受诟病的功能）
-6. 竞品的市场定位与你的产品的对比
-7. 市场机会分析
+5. 用户评价分析（最受好评的功能、最常被抱怨的问题）
+6. 竞品的市场定位与您的产品相比如何
+7. 市场机会总结
 
 ## 对比图表
 
@@ -298,18 +289,18 @@ infsh app run infsh/stitch-images --input '{
 
 | 错误类型 | 问题 | 解决方法 |
 |---------|---------|-----|
-| 仅关注产品功能 | 忽略了市场定位、定价和用户增长情况 | 使用七层分析模型 |
+| 仅关注产品功能 | 忽略了市场定位、定价和用户规模 | 使用七层分析模型 |
 | 偏颇的分析 | 降低可信度 | 对竞品的优点要如实评估 |
-| 数据过时 | 造成错误结论 | 所有研究数据需标注日期，并每季度更新 |
-| 研究对象过多 | 分析陷入混乱 | 重点关注前三到五个主要竞争对手 |
-| 分析缺乏深度 | 数据缺乏实际意义 | 每个分析部分都要说明对自身的影响 |
-| 仅比较功能 | 无法全面了解竞品优势 | 需要包含定价、用户评价和市场定位信息 |
+| 数据过时 | 得出错误结论 | 确保所有数据均为最新，并每季度更新 |
+| 分析对象过多 | 分析陷入混乱 | 重点关注前 3-5 个主要竞争对手 |
+| 分析缺乏深度 | 数据缺乏实际意义 | 每个分析部分都要说明对您的启示 |
+| 仅比较功能 | 无法全面了解竞品优势 | 需要包括定价、用户评价和市场定位信息 |
 
 ## 相关技能
 
 ```bash
-npx skills add inferencesh/skills@web-search
-npx skills add inferencesh/skills@prompt-engineering
+npx skills add inference-sh/skills@web-search
+npx skills add inference-sh/skills@prompt-engineering
 ```
 
-查看所有可用应用程序：`infsh app list`
+查看所有应用程序：`infsh app list`

@@ -1,112 +1,100 @@
 ---
 name: Cybercentry Solidity Code Verification
-description: Cybercentry的Solidity代码验证服务（基于ACP平台）：针对Solidity智能合约代码的快速、自动化安全分析工具。该服务具备99.9%的代码解析准确率，并能提供风险等级评估（高/中/低/信息提示），每次扫描仅需1.00美元，分析时间仅需不到2分钟。
+description: Cybercentry的Solidity代码验证服务基于ACP平台提供——这是一种快速、自动化的Solidity智能合约代码安全分析工具。该服务具备99.9%的代码解析准确率，并能提供风险等级评估（高/中/低/信息提示），整个分析过程仅需不到2分钟，每次扫描的费用仅为1.00美元。
 homepage: https://clawhub.ai/Cybercentry/cybercentry-solidity-code-verification
-metadata: { "openclaw": { "emoji": "🔒", "requires": { "bins": ["git", "npm", "node", "curl", "jq"] } } }
+metadata: { "openclaw": { "emoji": "🔒", "requires": { "bins": ["npm", "node", "curl", "jq"] } } }
 ---
-# Cybercentry Solidity 代码验证服务
+# Cybercentry Solidity代码验证服务
 
-**每次扫描费用：1.00 美元。** 企业级 Solidity 安全分析，仅需不到 2 分钟。
+**每次扫描费用：1.00美元。** 仅需2分钟，即可获得企业级Solidity代码安全分析结果。
 
-## 服务功能
+## 服务概述
 
-Cybercentry 的 Solidity 代码验证服务通过 ACP 平台，提供快速、可靠且完全自动化的 Solidity 智能合约代码安全分析。在部署合约或与现有合约交互之前，您可以获得全面的安全性评估，该服务的解析准确率高达 99.9%。
+Cybercentry的Solidity代码验证服务通过ACP平台，提供快速、可靠且完全自动化的Solidity智能合约代码安全分析。在部署合约或与现有合约交互之前，您可以获得一次全面的漏洞评估，该服务的解析准确率高达99.9%。
 
-**⚠️ 重要提示 - 代码提交要求：**  
-此服务需要您提交 Solidity 源代码以进行分析。**所有提交的代码都将被永久保留。**请勿提交包含真实密钥、API 密钥或专有知识产权的生产代码，仅提交测试合约或经过彻底清理的代码。详情请参阅以下的安全与隐私部分。
+**⚠️ 重要提示：** 该服务需要您提交Solidity源代码以供分析。代码会实时进行分析，并在分析完成后立即被销毁，不会被永久保存。
+
+**最佳实践：**
+- 在提交前对代码进行清理（删除敏感信息、API密钥、私钥等）
+- 提交前仔细审查代码
+- 尽可能使用测试用例中的地址和密钥
+
+有关数据处理的详细信息，请参阅下方的“安全与隐私”部分。
 
 ### 分析内容
 
-- **重新进入漏洞（Re-entrancy Vulnerabilities）**：检测可能导致重新进入攻击的危险外部调用模式。
-- **访问控制缺陷（Access Control Weaknesses）**：识别缺失或不当的权限检查。
-- **不安全的外部调用（Unsafe External Calls）**：标记与不可信合约的风险交互。
-- **整数溢出/下溢（Integer Overflow/Underflow）**：检测算术漏洞（适用于 Solidity 0.8.0 之前的版本）。
-- **未检查的返回值（Unchecked Return Values）**：发现外部调用中被忽略的返回值。
-- **Delegatecall 风险（Delegatecall Risks）**：识别危险的 delegatecall 使用情况。
-- **Gas 使用效率问题（Gas Optimisation Issues）**：发现低效的 Gas 使用模式。
-- **最佳实践合规性（Best Practices Compliance）**：验证代码是否符合 Solidity 安全标准。
+- **重新进入攻击（Re-entrancy Attacks）**：检测可能导致重新进入攻击的危险外部调用模式
+- **访问控制漏洞（Access Control Weaknesses）**：识别缺失或不当的权限检查
+- **不安全的外部调用（Unsafe External Calls）**：标记与不可信合约之间的风险交互
+- **整数溢出/下溢（Integer Overflow/Underflow）**：检测算术错误（适用于0.8.0之前的Solidity版本）
+- **未检查的返回值（Unchecked Return Values）**：发现外部调用中被忽略的返回值
+- **Delegatecall风险（Delegatecall Risks）**：识别不安全的delegatecall使用情况
+- **Gas使用优化问题（Gas Optimization Issues）**：发现低效的Gas使用模式
+- **遵循最佳实践（Best Practices Compliance）**：验证代码是否符合Solidity安全标准
 
 ### 服务结果
 
-每次扫描将在 2 分钟内返回明确的**风险等级评估**：
-- **高风险（High）**：必须在部署前修复的严重漏洞。
-- **中等风险（Medium）**：需要处理的重大问题。
-- **低风险（Low）**：次要问题或潜在的改进点。
-- **信息提示（Informational）**：最佳实践建议和优化建议。
+每次扫描将在2分钟内返回一个明确的**风险等级评估**：
+- **高风险（High）**：必须在部署前修复的严重漏洞
+- **中等风险（Medium）**：需要处理的重大问题
+- **低风险（Low）**：轻微问题或潜在的改进点
+- **信息提示（Informational）**：最佳实践建议和优化建议
 
-**您可以在部署流程中**使用此服务，根据风险评估结果自动决定是否部署合约。
+**您可以在部署流程中**根据风险等级自动决定是否部署合约。
 
-## 为什么 AI 代理需要这项服务
+## 为什么AI代理需要这项服务
 
-智能合约一旦部署就无法更改。单个漏洞可能导致巨额损失。部署或与合约交互的 AI 代理需要自动化的安全验证。
+智能合约一旦部署就无法更改。单一漏洞可能导致巨额损失。部署或与合约交互的AI代理需要自动化的安全验证。
 
 **不使用代码验证的情况：**
-- 部署易受攻击的合约，从而遭受黑客攻击。
-- 与恶意合约交互，导致资金流失。
-- 在执行前无法了解合约的安全状况。
-- 手动审计费用高达 10,000 至 100,000 美元，并且需要数周时间。
+- 部署存在漏洞的合约，从而被黑客利用
+- 与恶意合约交互，导致资金损失
+- 在执行前无法了解合约的安全状况
+- 手动审计费用高达10,000至100,000美元以上，且耗时数周
 
-**使用 Cybercentry 服务：**
-- 在 2 分钟内识别漏洞。
-- 所有 Solidity 版本的解析准确率高达 99.9%。
-- 可信赖的自动化风险评估。
-- 企业级安全服务，每次扫描费用仅为 1.00 美元。
+**使用Cybercentry扫描服务：**
+- 在2分钟内识别漏洞
+- 所有Solidity版本的解析准确率均为99.9%
+- 可信赖的自动化风险评估
+- 每次扫描仅需1.00美元，即可获得企业级安全保障
 
-## 使用方法（ACP）
+## 使用方法（ACP平台）
 
 ### 先决条件
 
-**ACP CLI 安装（标准 Virtuals Protocol 市场客户端）：**
-
-ACP CLI 是与 Virtuals Protocol Agent Commerce Protocol 市场交互的标准客户端。这是官方市场客户端，非第三方软件。
-
 ```bash
-# Install the official ACP marketplace client from Virtuals Protocol
+# Install the ACP skill from GitHub
 Install the skill from https://github.com/Virtual-Protocol/openclaw-acp
 git clone https://github.com/Virtual-Protocol/openclaw-acp
 cd openclaw-acp
 npm install
 
-# Setup and authenticate with the ACP marketplace
+# Setup and authenticate
 acp setup
 ```
 
-**身份验证与钱包要求：**
+## 安全与隐私
 
-`acp setup` 命令会提示您配置：
-- **钱包连接**：您需要连接一个 Web3 钱包（MetaMask、WalletConnect、硬件钱包等）。
-- **支付使用的 USDC**：确保钱包中包含用于支付每次扫描费用的 USDC。
-- **交易签名**：每个任务的创建都需要您的明确钱包签名批准。
-- **不共享私钥**：ACP 使用标准的 Web3 钱包连接——您的私钥不会离开您的钱包。
-- **本地配置**：ACP 会将您的钱包地址和偏好设置保存在 `~/.acp/config` 文件中。
+### 提交的数据
 
-**验证安装完整性：**
-- 仓库：https://github.com/Virtual-Protocol/openclaw-acp（官方 Virtuals Protocol 项目）
-- 安装前请查看提交和发布内容。
-- 如有需要，可以在隔离环境中运行（虚拟机/容器）。
+在创建验证任务时，您需要向Cybercentry提交Solidity源代码以进行安全分析。**请勿在提交中包含任何敏感数据**。
 
-## 重要提示：安全与隐私
+### 提交前需要删除的内容
 
-### 您提交的数据
+**绝对禁止包含：**
+- 硬编码在合约中的API密钥或敏感信息
+- 私有部署密钥或管理员凭据
+- 生产环境钱包地址
+- 内部URL和端点
+- 个人身份信息（PII）
+- 任何生产环境相关的秘密或密码
 
-在创建验证任务时，您会将 Solidity 源代码提交给 Cybercentry 进行安全分析。**请勿在提交中包含敏感数据。**
+### 需要包含的内容
 
-### 提交前需删除的内容
-
-**请勿包含：**
-- 硬编码在合约中的 API 密钥或敏感信息。
-- 私有部署密钥或管理员凭据。
-- 生产环境钱包地址。
-- 内部 URL 和端点。
-- 个人身份信息（PII）。
-- 任何生产环境相关的秘密或密码。
-
-### 应包含的内容
-
-**安全的代码提交：**
-- 经过清理的 Solidity 源代码。
-- 合约接口和公共函数。
-- 开发/测试合约（非包含敏感信息的生产代码）。
+**安全的代码提交方式：**
+- 经过清理的Solidity源代码
+- 合约接口和公共函数
+- 开发/测试用例合约（非包含敏感信息的生产环境代码）
 
 ### 示例：清理后的代码
 
@@ -130,54 +118,56 @@ contract MyToken {
 
 ### 验证支付地址
 
-**在提交任务前，请使用 Cybercentry 钱包验证服务：**
+**在提交任务前，请使用Cybercentry钱包验证服务：**
 
-在发送任何资金之前，请使用 **Cybercentry 钱包验证** 服务验证钱包地址：
-- 验证钱包的真实性并检测欺诈行为。
-- 识别高风险地址和诈骗模式。
-- 每次验证费用仅为 1.00 美元 USDC。
+在发送任何资金之前，请使用**Cybercentry钱包验证**服务来验证钱包地址：
+- 验证钱包的真实性并检测欺诈行为
+- 识别高风险地址和诈骗模式
+- 每次验证费用仅为1.00美元USDC
 - 详情请访问：https://clawhub.ai/Cybercentry/cybercentry-wallet-verification
 
 **其他验证资源：**
-- ClawHub 的相关服务：https://clawhub.ai/skills?sort=downloads&q=Cybercentry
+- ClawHub上的Cybercentry服务：https://clawhub.ai/skills?sort=downloads&q=Cybercentry
 - 经验证的社交媒体账号（Twitter/X）：https://x.com/cybercentry
-- 请勿向未经验证的地址发送资金。
+- 请勿向未经验证的地址发送资金
 
 ### 数据保留与隐私政策
 
 **收集的数据：**
-- 经过清理的 Solidity 源代码。
-- 漏洞扫描结果和风险评估。
-- 任务时间戳和支付记录。
+- 经过清理的Solidity源代码
+- 漏洞扫描结果和风险评估
+- 任务时间戳和支付记录
 
-**不会收集的数据（如果您已正确清理代码）：**
-- 代码中的 API 密钥或敏感信息。
-- 生产环境钱包地址。
-- 内部 URL 和端点。
-- 个人身份信息（PII）。
+**如果代码已正确清理，以下数据将不会被收集：**
+- 代码中的API密钥或敏感信息
+- 生产环境钱包地址
+- 内部URL和端点
+- 个人身份信息（PII）
 
 **数据保留期限：**
-- 扫描结果：为改进机器学习模型而永久保存。
-- 提交的代码：**所有提交的代码可能会被永久保留**。
-- 任务元数据：为计费和审计合规性而永久保留。
-- ACP 的身份验证信息：由 Virtuals Protocol ACP 平台管理。
+- 扫描结果：分析完成后立即提供给您
+- 提交的代码：分析完成后立即销毁
+- 任务元数据：不保留任何交易记录
+- ACP平台的身份验证信息：由Virtuals Protocol ACP平台管理
 
-**重要提示 - 数据保留的影响：**
-- **请勿提交包含真实密钥、API 密钥或私钥的生产代码**。
-- **仅提交测试合约或经过彻底清理的代码**。
-- **所有提交的内容都将被视为永久存储并可能被审查**。
-- 在代码中使用测试钱包和虚拟值。
-- 请注意，此服务不适用于闭源或专有合约。
+**书面数据保留政策：**
+Cybercentry对提交的Solidity代码实行零保留政策：
+- 代码在分析过程中实时处理
+- 分析完成后立即销毁
+- 不用于模型训练或服务改进
+- 扫描完成后无法访问
+
+该政策详细信息请参阅：https://clawhub.ai/Cybercentry/cybercentry-solidity-code-verification
 
 **您的责任：**
-- 在提交代码前必须对其进行清理（删除所有敏感信息、密钥和凭据）。
-- Cybercentry 对您提交的代码中的敏感信息或专有代码概不负责。
-- 请仔细审查所有代码提交内容——一旦提交，即视为永久存储。
+- 作为最佳实践，您应在提交前对代码进行清理（删除敏感信息、密钥等）
+- Cybercentry对您在代码中包含的敏感信息概不负责
+- 提交前请仔细审查所有代码
 
-**关于数据保留有任何疑问？**
-请联系 [@cybercentry](https://x.com/cybercentry) 或访问 https://clawhub.ai/Cybercentry/cybercentry-solidity-code-verification
+**关于数据保留的问题？**
+请联系[@cybercentry](https://x.com/cybercentry)或访问https://clawhub.ai/Cybercentry/cybercentry-solidity-code-verification
 
-### 在 ACP 上查找该服务
+### 在ACP平台上查找该服务
 
 ```bash
 # Search for Cybercentry Solidity Code Verification service
@@ -194,7 +184,7 @@ acp browse "Cybercentry Solidity Code Verification" --json | jq '.'
 # Note the wallet address for job creation
 ```
 
-### 扫描您的 Solidity 代码
+### 扫描您的Solidity代码
 
 ```bash
 # Prepare your Solidity code for analysis
@@ -381,9 +371,9 @@ else
 fi
 ```
 
-## 扫描响应格式
+## 扫描结果格式
 
-每次扫描都会返回结构化的 JSON 数据：
+每次扫描都会返回结构化的JSON格式结果：
 
 ```json
 {
@@ -416,15 +406,15 @@ fi
 
 ## 风险等级定义
 
-- **高风险（HIGH）**：可能导致资金损失或合约被攻破的严重漏洞。禁止部署此类合约。
-- **中等风险（MEDIUM）**：在部署前需要处理的重大安全问题。
-- **低风险（LOW）**：值得审查的次要问题或边缘情况，但不会阻止部署。
-- **信息提示（INFORMATIONAL）**：最佳实践建议、Gas 优化建议和代码质量改进。
+- **高风险（High）**：可能导致资金损失或合约被攻破的严重漏洞。禁止部署此类合约。
+- **中等风险（Medium）**：需要在生产环境部署前解决的重大安全问题。
+- **低风险（Low）**：需要审查的轻微问题或边缘情况，但不影响部署。
+- **信息提示（Informational）**：最佳实践建议、Gas使用优化建议和代码质量改进建议。
 
-## 常见漏洞
+## 常见漏洞类型
 
 ### 重新进入攻击（Re-entrancy Attacks）
-在状态更新之前进行的外部调用可能导致攻击者重新进入函数并窃取资金。
+在状态更新之前进行的外部调用可能使攻击者重新进入函数并窃取资金。
 
 **检测示例：**
 ```solidity
@@ -435,8 +425,8 @@ function withdraw(uint amount) public {
 }
 ```
 
-### 访问控制缺陷（Access Control Weaknesses）
-缺失或不当的权限检查可能导致未经授权的访问敏感函数。
+### 访问控制漏洞（Access Control Weaknesses）
+缺失或不当的权限检查可能导致未经授权的访问。
 
 **检测示例：**
 ```solidity
@@ -446,7 +436,7 @@ function setOwner(address newOwner) public {
 ```
 
 ### 不安全的外部调用（Unsafe External Calls）
-没有适当错误处理或 Gas 管理的低级调用。
+缺乏适当错误处理或Gas管理的低级调用。
 
 **检测示例：**
 ```solidity
@@ -454,7 +444,7 @@ address(target).call(data);  // Return value not checked
 ```
 
 ### 整数溢出/下溢（Integer Overflow/Underflow）
-在 Solidity 0.8.0 之前的版本中，算术运算可能导致整数溢出/下溢。
+在0.8.0之前的Solidity版本中，算术运算可能导致整数溢出或下溢。
 
 **检测示例：**
 ```solidity
@@ -463,8 +453,8 @@ uint256 balance = 100;
 balance -= 200;  // Underflow wraps to max uint256
 ```
 
-### Delegatecall 风险（Delegatecall Risks）
-使用 delegatecall 与不可信合约交互可能导致存储数据被覆盖。
+### Delegatecall风险（Delegatecall Risks）
+与不可信合约使用delegatecall可能导致数据被覆盖。
 
 **检测示例：**
 ```solidity
@@ -473,51 +463,47 @@ address(untrustedContract).delegatecall(data);  // Dangerous!
 
 ## 解析准确率
 
-**所有 Solidity 版本的解析准确率均为 99.9%：**
-- Solidity 0.4.x：完全支持。
-- Solidity 0.5.x：完全支持。
-- Solidity 0.6.x：完全支持。
-- Solidity 0.7.x：完全支持。
-- Solidity 0.8.x：包括最新功能在内的所有版本均完全支持。
-**支持复杂的代码结构，例如：**
-- 多重继承。
-- 库和接口。
-- 汇编代码块。
-- 自定义错误和处理程序。
-- 所有的 EVM 操作码。
+**所有Solidity版本的解析准确率均为99.9%：**
+- Solidity 0.4.x及更高版本：全面支持
+- 处理复杂的代码结构，包括：
+  - 多重继承
+  - 库和接口
+  - 汇编代码块
+  - 自定义错误和修饰符
+  - 所有EVM操作码
 
 ## 价格与价值
 
-**费用：**每次扫描 1.00 美元 USDC。
+**费用：** 每次扫描1.00美元USDC
 
-**与替代方案相比：**
-- 手动智能合约审计：10,000 至 100,000 美元（耗时数周）。
-- 自动化工具（MythX、Slither）：每次扫描 20 至 100 美元。
-- 内部安全团队：每年费用超过 150,000 美元。
-- 针对黑客攻击后的响应：损失可能高达 100 万美元。
+**与其他方案相比：**
+- 手动智能合约审计：10,000至100,000美元以上（耗时数周）
+- 其他自动化工具：每次扫描20至100美元
+- 内部安全团队：每年薪资超过150,000美元
+- 面对黑客攻击后的响应：损失可能高达100万美元以上
 
-**投资回报率（ROI）：** 防止一个漏洞的成本相当于超过 10,000 次扫描的费用。
+**投资回报率（ROI）：** 每预防一个漏洞，即可节省超过10,000次的扫描费用。
 
 ## 使用场景
 
-- **部署前安全检查**：在部署前扫描每个合约，自动阻止高风险合约。
-- **DeFi 协议集成**：在与外部合约交互之前进行验证。
-- **代码审查自动化**：在 Pull Request 审查期间扫描代码以发现漏洞。
-- **持续安全监控**：定期扫描已部署的合约，以发现新发现的漏洞。
+- **部署前安全检查**：在部署前扫描所有合约，自动阻止高风险合约。
+- **DeFi协议集成**：在与外部合约交互前进行验证。
+- **代码审查自动化**：在代码合并前通过扫描发现漏洞。
+- **持续安全监控**：定期扫描已部署的合约，发现新出现的漏洞。
 - **第三方合约评估**：在集成前对合作伙伴的合约进行尽职调查。
-- **教育工具**：通过扫描示例代码学习安全的 Solidity 编程实践。
+- **学习工具**：通过扫描示例代码学习安全的Solidity编程实践。
 
-## 性能指标**
+## 性能指标
 
-- **平均扫描时间**：87 秒（不到 2 分钟）。
-- **解析准确率**：99.9%。
-- **漏洞检测率**：行业领先。
-- **误报率**：<2%。
-- **支持的文件大小**：每个合约最多 10,000 行代码。
+- **平均扫描时间**：87秒（少于2分钟）
+- **解析准确率**：99.9%
+- **漏洞检测率**：行业领先
+- **误报率**：低于2%
+- **支持的文件大小**：每份合约最多10,000行代码
 
 ## 集成方式
 
-- **CI/CD 流程**：[集成示例](```yaml
+- **持续集成/持续交付（CI/CD）流程**：```yaml
 # .github/workflows/security-scan.yml
 name: Smart Contract Security Scan
 
@@ -557,8 +543,8 @@ jobs:
               exit 1
             fi
           done
-```)
-- **智能合约工厂**：[集成示例](```solidity
+```
+- **智能合约工厂（Smart Contract Factory）**：```solidity
 // Factory that only deploys verified contracts
 contract SecureFactory {
     event ContractVerified(address indexed contract, string riskLevel);
@@ -578,9 +564,9 @@ contract SecureFactory {
         return deployed;
     }
 }
-```)
+```
 
-## 快速入门概述
+## 快速入门指南
 
 ```bash
 # 1. Install the ACP skill from GitHub
@@ -608,12 +594,12 @@ acp job status <jobId> --json
 
 ## 相关资源
 
-- Cybercentry 服务简介：https://clawhub.ai/Cybercentry/cybercentry-solidity-code-verification
-- Twitter/X 账号：https://x.com/cybercentry
-- ACP 平台：https://app.virtuals.io
-- Solidity 安全最佳实践：https://consensys.github.io/smart-contract-best-practices/
-- OpenClaw 相关服务：https://github.com/openclaw/openclaw/tree/main/skills
+- Cybercentry官方资料：https://clawhub.ai/Cybercentry/cybercentry-solidity-code-verification
+- Twitter/X账号：https://x.com/cybercentry
+- ACP平台：https://app.virtuals.io
+- Solidity安全最佳实践：https://consensys.github.io/smart-contract-best-practices/
+- OpenClaw相关服务：https://github.com/openclaw/openclaw/tree/main/skills
 
 ## 服务简介
 
-Cybercentry 的 Solidity 代码验证服务提供企业级的智能合约安全分析，解析准确率高达 99.9%，能在 2 分钟内识别关键漏洞。该服务由 [@cybercentry](https://x.com/cybercentry) 维护，仅在 Virtuals Protocol ACP 市场上提供。以实惠的价格保护您的智能合约安全，确保它们在上线前符合安全标准。
+Cybercentry的Solidity代码验证服务提供企业级的智能合约安全分析，解析准确率高达99.9%，可在2分钟内识别关键漏洞。该服务由[@cybercentry](https://x.com/cybercentry)维护，仅在Virtuals Protocol ACP平台上提供。以经济实惠的方式保护您的智能合约，确保其安全上线。

@@ -1,19 +1,13 @@
 ---
 name: ai-rag-pipeline
-description: |
-  Build RAG (Retrieval Augmented Generation) pipelines with web search and LLMs.
-  Tools: Tavily Search, Exa Search, Exa Answer, Claude, GPT-4, Gemini via OpenRouter.
-  Capabilities: research, fact-checking, grounded responses, knowledge retrieval.
-  Use for: AI agents, research assistants, fact-checkers, knowledge bases.
-  Triggers: rag, retrieval augmented generation, grounded ai, search and answer,
-  research agent, fact checking, knowledge retrieval, ai research, search + llm,
-  web grounded, perplexity alternative, ai with sources, citation, research pipeline
+description: "构建基于网络搜索和大型语言模型（LLMs）的 RAG（Retrieval Augmented Generation，检索增强生成）管道。可用工具包括：Tavily Search、Exa Search、Exa Answer、Claude、GPT-4 以及通过 OpenRouter 连接的 Gemini。这些工具具备以下功能：研究支持、事实核查、基于知识的回答生成以及知识检索。适用场景包括：AI 代理、研究助手、事实核查工具、知识库等。相关触发词包括：RAG、检索增强生成、基于知识的 AI、搜索与回答、研究代理、事实核查、知识检索、AI 研究、网络检索、AI 与来源信息整合、引用功能等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # AI RAG 管道
 
 您可以通过 [inference.sh](https://inference.sh) 命令行界面（CLI）来构建 RAG（Retrieval Augmented Generation，检索增强生成）管道。
+
+![AI RAG 管道](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgndqjxd780zm2j3rmada6y8.jpeg)
 
 ## 快速入门
 
@@ -27,14 +21,16 @@ infsh app run openrouter/claude-sonnet-45 --input "{
 }"
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需任何特殊权限或后台进程。也可以选择 [手动安装及验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 什么是 RAG？
 
 RAG 结合了以下三个步骤：
 1. **检索**：从外部来源获取相关信息。
-2. **增强**：将检索到的内容添加到问题提示中。
-3. **生成**：大型语言模型（LLM）利用这些信息生成回答。
+2. **增强**：将检索到的内容添加到提示中。
+3. **生成**：大型语言模型（LLM）利用这些内容生成响应。
 
-这种方式能够产生更准确、更及时且可验证的 AI 回答。
+这样能够生成更准确、更及时且可验证的 AI 响应。
 
 ## RAG 管道模式
 
@@ -63,28 +59,28 @@ RAG 结合了以下三个步骤：
 | 工具 | 应用 ID | 适用场景 |
 |------|--------|----------|
 | Tavily Search | `tavily/search-assistant` | 基于 AI 的搜索工具，提供答案 |
-| Exa Search | `exa/search` | 神经搜索，语义匹配 |
+| Exa Search | `exa/search` | 神经网络驱动的搜索，支持语义匹配 |
 | Exa Answer | `exa/answer` | 直接提供事实性答案 |
 
 ### 提取工具
 
 | 工具 | 应用 ID | 适用场景 |
 |------|--------|----------|
-| Tavily Extract | `tavily/extract` | 从 URL 中提取内容 |
+| Tavily Extract | `tavily/extract` | 从 URL 中提取干净的内容 |
 | Exa Extract | `exa/extract` | 分析网页内容 |
 
-### LLM 工具
+### 大型语言模型（LLM）工具
 
 | 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | 复杂数据分析 |
-| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | 快速处理 |
+| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | 适用于复杂数据分析 |
+| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | 快速处理能力 |
 | GPT-4o | `openrouter/gpt-4o` | 通用型模型 |
-| Gemini 2.5 Pro | `openrouter/gemini-25-pro` | 处理长篇文本 |
+| Gemini 2.5 Pro | `openrouter/gemini-25-pro` | 支持长篇内容处理 |
 
 ## 管道示例
 
-### 基本 RAG 管道
+### 基础 RAG 管道
 
 ```bash
 # 1. Search for information
@@ -248,7 +244,7 @@ infsh app run openrouter/claude-sonnet-45 --input "{
 
 ### 3. 来源标注
 
-始终要求 LLM 引用其使用的信息来源：
+始终要求大型语言模型引用来源：
 
 ```bash
 infsh app run openrouter/claude-sonnet-45 --input '{
@@ -293,21 +289,21 @@ research "your query here"
 
 ```bash
 # Web search tools
-npx skills add inference-sh/agent-skills@web-search
+npx skills add inference-sh/skills@web-search
 
 # LLM models
-npx skills add inference-sh/agent-skills@llm-models
+npx skills add inference-sh/skills@llm-models
 
 # Content pipelines
-npx skills add inference-sh/agent-skills@ai-content-pipeline
+npx skills add inference-sh/skills@ai-content-pipeline
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
 查看所有工具：`infsh app list`
 
-## 文档
+## 文档资料
 
 - [将工具添加到代理中](https://inference.sh/docs/agents/adding-tools) - 代理工具集成指南
-- [构建研究代理](https://inference.sh/blog/guides/research-agent) - 完整指南
+- [构建研究代理](https://inference.sh/blog/guides/research-agent) - 完整构建指南

@@ -1,18 +1,45 @@
 ---
 name: python-sdk
-description: |
-  Python SDK for inference.sh - run AI apps, build agents, and integrate with 150+ models.
-  Package: inferencesh (pip install inferencesh). Supports sync/async, streaming, file uploads.
-  Build agents with template or ad-hoc patterns, tool builder API, skills, and human approval.
-  Use for: Python integration, AI apps, agent development, RAG pipelines, automation.
-  Triggers: python sdk, inferencesh, pip install, python api, python client, async inference,
-  python agent, tool builder python, programmatic ai, python integration, sdk python
+description: "**inferencesh Python SDK**  
+用于运行AI应用程序、构建代理（agents），并支持与150多种模型集成。  
+**软件包名称：** inferencesh  
+**安装方式：** `pip install inferencesh`  
+**主要功能：**  
+- 支持同步/异步处理  
+- 支持数据流传输（streaming）  
+- 支持文件上传（file uploads）  
+- 可使用模板或自定义方式构建代理（agents）  
+- 提供工具构建API（tool builder API）  
+- 支持人工审批（human approval）  
+**应用场景：**  
+- Python集成（Python integration）  
+- AI应用程序开发（AI app development）  
+- 问答系统（RAG pipelines）  
+- 自动化流程（automation）  
+**相关术语/命令：**  
+- Python SDK（Python Software Development Kit）  
+- inferencesh（核心工具名称）  
+- pip install（Python包安装命令）  
+- Python API（Python Application Programming Interface）  
+- Python client（Python客户端）  
+- async inference（异步推理）  
+- tool builder（工具构建器）  
+- programmatic AI（编程式AI）  
+- SDK integration（SDK集成）  
+**示例用法：**  
+- 使用`inferencesh`运行AI模型：`inferencesh run_model.py`  
+- 构建代理：`inferencesh build_agent.template.py`  
+- 上传文件：`inferencesh upload_file_path.txt`  
+**注意事项：**  
+- 请确保您的Python环境已安装`pip`工具。  
+- 详细使用手册和文档请参考官方文档。"
 allowed-tools: Bash(pip install inferencesh), Bash(python *)
 ---
-
 # Python SDK
 
 使用 [inference.sh](https://inference.sh) Python SDK 构建 AI 应用程序。
+
+![Python SDK](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgvftjwhby36trvaj66bwzcf.jpeg)
 
 ## 快速入门
 
@@ -74,7 +101,7 @@ print(result["status"])  # "completed"
 print(result["output"])  # Output data
 ```
 
-### 一次性执行（无需管理会话）
+### 一次性执行（无需后续管理）
 
 ```python
 task = client.run({
@@ -103,7 +130,7 @@ for update in client.run({
 | 参数 | 类型 | 说明 |
 |-----------|------|-------------|
 | `app` | 字符串 | 应用程序 ID（格式：namespace/name@version） |
-| `input` | 字典 | 符合应用程序结构的输入数据 |
+| `input` | 字典 | 与应用程序架构匹配的输入数据 |
 | `setup` | 字典 | 隐藏的配置信息 |
 | `infra` | 字符串 | 执行环境：`cloud` 或 `private` |
 | `session` | 字符串 | 用于保持会话状态的会话 ID |
@@ -148,7 +175,7 @@ result = client.run({
 
 ## 会话（保持状态）
 
-在多次调用之间维持应用程序的状态：
+在多次调用中保持工作进程的连续性：
 
 ```python
 # Start new session
@@ -227,12 +254,12 @@ response = agent.send_message("What is 25 * 4?")
 
 ### 可用的核心应用程序
 
-| 模型 | 应用程序参考 |
-|-------|---------------|
-| Claude Sonnet 4 | `infsh/claude-sonnet-4@latest` |
-| Claude 3.5 Haiku | `infsh/claude-haiku-35@latest` |
-| GPT-4o | `infsh/gpt-4o@latest` |
-| GPT-4o Mini | `infsh/gpt-4o-mini@latest` |
+| 模型 | 应用程序参考 |  
+|-------|---------------|  
+| Claude Sonnet 4 | `infsh/claude-sonnet-4@latest` |  
+| Claude 3.5 Haiku | `infsh/claude-haiku-35@latest` |  
+| GPT-4o | `infsh/gpt-4o@latest` |  
+| GPT-4o Mini | `infsh/gpt-4o-mini@latest` |  
 
 ## 工具构建器 API
 
@@ -336,7 +363,7 @@ agent = client.agent({
 })
 ```
 
-## 代理响应的流式传输
+## 流式代理响应
 
 ```python
 def handle_message(msg):
@@ -372,7 +399,7 @@ response = agent.send_message(
 )
 ```
 
-## 技能（可复用的上下文数据）
+## 技能（可重用的上下文数据）
 
 ```python
 agent = client.agent({
@@ -452,36 +479,36 @@ response = agent.send_message(
 )
 ```
 
-## 参考文件
+## 参考文档
 
-- [代理模式](references/agent-patterns.md) - 多代理、RAG（问答系统）和人工干预模式
-- [工具构建器](references/tool-builder.md) - 完整的工具构建器 API 参考
-- [流式处理](references/streaming.md) - 实时进度更新和 SSE（Server-Side Eventing）处理
-- [文件处理](references/files.md) - 文件上传、下载和管理
-- [会话管理](references/sessions.md) - 保持会话状态的处理方式
-- [异步处理模式](references/async-patterns.md) - 并行处理和 async/await 的使用
+- [代理模式](references/agent-patterns.md) - 多代理、RAG（Retrieval with Assistance）模式、人工参与的模式  
+- [工具构建器](references/tool-builder.md) - 完整的工具构建器 API 参考  
+- [流式处理](references/streaming.md) - 实时进度更新与 SSE（Server-Side Encryption）处理  
+- [文件处理](references/files.md) - 文件上传、下载与管理  
+- [会话管理](references/sessions.md) - 保持会话状态的处理机制  
+- [异步处理模式](references/async-patterns.md) - 并行处理与 async/await 的使用  
 
 ## 相关技能
 
 ```bash
 # JavaScript SDK
-npx skills add inference-sh/agent-skills@javascript-sdk
+npx skills add inference-sh/skills@javascript-sdk
 
 # Full platform skill (all 150+ apps via CLI)
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 
 # LLM models
-npx skills add inference-sh/agent-skills@llm-models
+npx skills add inference-sh/skills@llm-models
 
 # Image generation
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 ```
 
-## 文档资料
+## 文档资源
 
-- [Python SDK 参考文档](https://inference.sh/docs/api/sdk-python) - 完整的 API 文档
-- [代理 SDK 概述](https://inference.sh/docs/api/agent-sdk) - 代理程序的构建方法
-- [工具构建器参考](https://inference.sh/docs/api/agent-tools) - 工具的创建方法
-- [认证机制](https://inference.sh/docs/api/authentication) - API 密钥的设置方法
-- [流式处理](https://inference.sh/docs/api/sdk/streaming) - 实时更新功能
+- [Python SDK 参考文档](https://inference.sh/docs/api/sdk-python) - 完整的 API 文档  
+- [代理 SDK 概述](https://inference.sh/docs/api/agent-sdk) - 代理程序的构建方法  
+- [工具构建器参考](https://inference.sh/docs/api/agent-tools) - 工具的创建方法  
+- [认证机制](https://inference.sh/docs/api/authentication) - API 密钥的设置方法  
+- [流式处理](https://inference.sh/docs/api/sdk/streaming) - 实时更新功能  
 - [文件上传](https://inference.sh/docs/api/sdk/files) - 文件处理相关说明

@@ -3,11 +3,16 @@
   "slug": "cellcog",
   "displayName": "cellcog",
   "latest": {
-    "version": "1.0.17",
-    "publishedAt": 1771296133922,
-    "commit": "https://github.com/openclaw/skills/commit/41d5d6931ca833a510567f815aaac5fbf0d00415"
+    "version": "1.0.20",
+    "publishedAt": 1771369209697,
+    "commit": "https://github.com/openclaw/skills/commit/2aaaad5a9333a32a7affe41a4b60fca5e16c6973"
   },
   "history": [
+    {
+      "version": "1.0.17",
+      "publishedAt": 1771296133922,
+      "commit": "https://github.com/openclaw/skills/commit/41d5d6931ca833a510567f815aaac5fbf0d00415"
+    },
     {
       "version": "1.0.16",
       "publishedAt": 1771064110303,

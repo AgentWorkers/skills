@@ -1,7 +1,7 @@
 ---
 name: opengfx
-description: AI品牌设计系统：仅需几分钟即可生成品牌标识、设计风格指南以及社交媒体所需的视觉素材。
-version: 1.2.1
+description: AI品牌设计系统：通过ACP或x402提供Logo设计、样式指南、社交媒体素材以及符合品牌风格的营销图形资源。
+version: 1.4.0
 homepage: https://opengfx.app
 source: https://github.com/aklo360/opengfx-skill
 author: AKLO Labs <aklo@aklo.studio>
@@ -9,113 +9,93 @@ author: AKLO Labs <aklo@aklo.studio>
 # 技能：opengfx
 
 ## 描述
-这是一个 AI 品牌设计系统，能够在几分钟内生成完整的标志系统、风格指南以及社交媒体素材。**品牌名称是可选的**——如果您没有品牌名称，AI 会根据您的概念为您生成一个完美的名称！
+这是一个 AI 品牌设计系统，能够在几分钟内生成完整的标志系统、风格指南、社交媒体素材以及符合品牌风格的营销图形。**品牌名称是可选的**——如果您没有提供，AI 会根据您的概念为您生成一个完美的名称！
 
-**价格：** 每项服务 5 美元（包括标志或社交媒体素材）
+**价格：**
+- 标志系统：5 美元
+- 社交媒体素材：5 美元
+- 品牌风格营销图形：2 美元
 
-**这是一个服务型技能**——它描述了如何通过 ACP（Agent Commerce Protocol）使用外部付费 API 的方法。该技能不涉及代码执行、不修改本地文件，也不需要您提供任何凭证。
+**这是一个服务型技能**——它描述了如何使用一个外部付费 API。无需执行任何代码，无需修改本地文件，也无需提供任何凭证。
 
 ---
 
-## 使用要求
+## 两种集成方式
 
-本技能文档介绍了可通过 ACP 访问的 OpenGFX API 的使用方法。
+| 方法 | 协议 | 适用对象 |
+|--------|----------|----------|
+| **ACP** | Virtuals 协议 | 具备 ACP 技能的 OpenClaw 代理 |
+| **x402** | HTTP 402 | 任何支持加密货币钱包的代理/应用程序 |
 
-**使用该服务需要：**
-- 一个兼容 ACP 的代理/钱包（例如安装了 ACP 技能的 OpenClaw）
-- 基于 Base 链路的 USDC 作为支付方式（每项服务 5 美元）
+这两种方法以相同的价格（5 美元或等值加密货币）提供相同的服务。
 
-**该技能不执行以下操作：**
+---
+
+## 要求
+
+**对于 ACP 集成：**
+- 兼容 ACP 的代理/钱包（例如，安装了 ACP 技能的 OpenClaw）
+- 基础链（Base Chain）上的 USDC 用于支付（每项服务 5 美元）
+
+**对于 x402 集成：**
+- 任何 HTTP 客户端
+- 用于支付签名的钱包（Base 链上的 USDC 或 Solana SOL）
+- 使用 `@x402/fetch` SDK 或手动支付流程
+
+**此技能不执行以下操作：**
 - 安装任何二进制文件
 - 请求或存储私钥
 - 在您的系统上执行任何代码
-
-下面展示的 `acp` 命令仅作为示例——实际的 ACP 集成由您的代理框架负责处理。
 
 ---
 
 ## 隐私与数据
 
-- **您需要提交的信息：** 概念描述（必填）、品牌名称（可选）、标语（可选）
-- **服务流程：** 生成标志系统（图标、品牌名称、锁定图案）、分析设计风格、创建社交媒体素材
-- **数据存储：** 素材存储在 Cloudflare R2 上 30 天后删除。如需提前删除，请联系 aklo@aklo.studio。
-- **建议：** 仅提交您拥有或有权使用的品牌名称/概念。请勿提交机密内容或商标相关的内容。
+- **您需要提供的信息：**品牌概念描述（必填）、品牌名称（可选）、标语（可选）
+- **服务流程：**生成标志系统（图标、品牌名称、锁形图案）、分析设计风格、创建社交媒体素材
+- **数据存储：**素材存储在 Cloudflare R2 中 30 天后删除。如需提前删除，请联系 aklo@aklo.studio。
+- **建议：**仅提交您拥有或有权使用的品牌名称/概念。请勿提交机密或受商标保护的内容。
 
 ---
 
-## 支付流程
+## 选项 1：ACP 集成（Virtuals 协议）
 
-该技能使用 **ACP（Agent Commerce Protocol）** 在 Virtuals Protocol 上进行支付。
+### 代理详情
 
-### 使用步骤
-
-1. **创建任务** → 向 OpenGFX 代理提交任务请求
-2. **支付** → ACP 负责处理支付（使用 Base 链路的 USDC）
-3. **查询任务状态** → 监控任务完成情况
-4. **接收结果** → 在任务交付物中获取素材的 URL
-
-### 谁负责支付？
-
-**支付由您的代理钱包完成，而非本技能本身。**
-
-本技能仅记录 API 的使用方法。支付签名由您的代理的 ACP 集成系统（例如 OpenClaw 内置的钱包或您自己配置的钱包）负责处理。
-
-**本技能不需要您提供或请求任何私钥。**
-
----
-
-## API 参考
-
-**代理钱包地址：** `0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e`
+- **代理钱包：**`0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e`
+- **协议：**ACP（Agent Commerce Protocol）
+- **市场平台：**https://app.virtuals.io/acp
 
 ### 创建带有品牌名称的标志任务
+
 ```bash
 acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e logo \
   --requirements '{"brandName":"Acme","concept":"Modern fintech startup, bold and trustworthy","tagline":"Banking for Everyone"}'
 ```
 
-### 使用 AI 为品牌命名的标志任务
+### 通过 AI 生成品牌名称的标志任务
+
 ```bash
 # Just provide concept — AI will generate the perfect brand name!
 acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e logo \
   --requirements '{"concept":"AI-powered fitness coaching app for busy professionals"}'
 ```
 
-**响应结果：**
-```json
-{
-  "jobId": "abc-123",
-  "status": "processing"
-}
-```
-
 ### 查询任务状态
+
 ```bash
 acp job status <jobId>
 ```
 
-**任务完成后的响应：**
-```json
-{
-  "brand": "Acme",
-  "mode": "light",
-  "assets": {
-    "icon": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/icon.png",
-    "wordmark": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/wordmark.png",
-    "stacked": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/stacked.png",
-    "horizontal": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/horizontal.png",
-    "brandSystem": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/brand-system.json"
-  }
-}
-```
-
 ### 从标志服务创建社交媒体素材
+
 ```bash
 acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e social \
   --requirements '{"brandSystemUrl":"https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/brand-system.json"}'
 ```
 
-### 使用您自己的标志创建社交媒体素材（BYOL）
+### 使用您自己的标志创建社交媒体素材
+
 ```bash
 # AI extracts colors from your logo
 acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e social \
@@ -126,13 +106,212 @@ acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e social \
   --requirements '{"logoUrl":"https://example.com/my-logo.png","brandName":"My Brand","primaryColor":"#FF5500","secondaryColor":"#333333","renderStyle":"gradient"}'
 ```
 
-**任务完成后的响应：**
+### 从标志服务创建品牌风格营销图形
+
+```bash
+acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e gfx \
+  --requirements '{"brandSystemUrl":"https://pub-xxx.r2.dev/acme/brand-system.json","prompt":"Announcement graphic: We just hit 10,000 users! Celebratory vibe.","aspectRatio":"1:1"}'
+```
+
+### 使用您自己的标志创建品牌风格营销图形
+
+```bash
+acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e gfx \
+  --requirements '{"logoUrl":"https://example.com/logo.png","brandName":"Acme","prompt":"Launch graphic for new mobile app","aspectRatio":"16:9"}'
+```
+
+---
+
+## 选项 2：x402 集成（直接 API）
+
+### 基础 URL
+
+```
+https://gateway.opengfx.app
+```
+
+### 端点
+
+| 方法 | 端点 | 描述 |
+|--------|----------|-------------|
+| GET | `/` | API 文档 |
+| GET | `/health` | 系统健康检查 |
+| GET | `/v1/pricing` | 当前 Solana 价格下的价格信息 |
+| POST | `/v1/logo` | 生成标志系统（使用 x402 支付） |
+| POST | `/v1/socials` | 生成社交媒体素材（使用 x402 支付） |
+| POST | `/v1/gfx` | 生成品牌风格营销图形（使用 x402 支付） |
+| GET | `/v1/jobs/:id` | 查看任务状态 |
+| GET | `/v1/jobs` | 列出任务（可按钱包筛选）
+
+### 支持的支付链
+
+| 链路 | 资产 | 网络 |
+|-------|-------|---------|
+| Base | USDC | `eip155:8453` |
+| Solana | SOL | `solana:mainnet` |
+
+### 支付钱包
+
+- **Base（USDC）：**`0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e`
+- **Solana（SOL）：**请查看 `/v1/pricing` 以获取当前钱包信息
+
+### x402 支付流程
+
+1. **请求服务** → 使用 JSON 格式发送 POST 请求到 `/v1/logo` 或 `/v1/socials`
+2. **收到 402 错误代码** → 响应中会包含支付选项（Base USDC 或 Solana SOL）
+3. **签名支付** → 使用钱包签署支付授权
+4. **重新发送请求** → 在请求头中添加 `X-Payment` 以包含签名后的支付信息
+5. **接收任务 ID** → 响应中包含 `jobId` 和 `pollUrl`
+6. **查询任务完成情况** → 使用 `GET` 请求 `/v1/jobs/:jobId` 直到状态变为 "completed"
+7. **获取素材** → 响应中包含所有生成素材的 CDN URL
+
+### 示例：标志请求
+
+```bash
+# Step 1: Initial request (returns 402)
+curl -X POST https://gateway.opengfx.app/v1/logo \
+  -H "Content-Type: application/json" \
+  -d '{"brand_name":"Acme","concept":"Modern fintech startup"}'
+
+# Step 2: After signing payment, retry with X-Payment header
+curl -X POST https://gateway.opengfx.app/v1/logo \
+  -H "Content-Type: application/json" \
+  -H "X-Payment: <base64-encoded-signed-payment>" \
+  -d '{"brand_name":"Acme","concept":"Modern fintech startup"}'
+
+# Step 3: Poll for completion
+curl https://gateway.opengfx.app/v1/jobs/<jobId>
+```
+
+### 使用 @x402/fetch SDK
+
+```typescript
+import { wrapFetch } from '@x402/fetch';
+
+const x402Fetch = wrapFetch(fetch, wallet);
+
+const response = await x402Fetch('https://gateway.opengfx.app/v1/logo', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    brand_name: 'Acme',
+    concept: 'Modern fintech startup'
+  })
+});
+
+const { jobId, pollUrl } = await response.json();
+
+// Poll for completion
+let job;
+do {
+  await new Promise(r => setTimeout(r, 5000));
+  job = await fetch(pollUrl).then(r => r.json());
+} while (job.status === 'processing');
+
+console.log(job.logo); // CDN URLs
+```
+
+---
+
+## 价格
+
+| 服务 | 价格 | 输出内容 |
+|---------|-------|--------|
+| 标志系统 | 5 美元 | 图标、品牌名称、堆叠式设计、水平布局 + brand-system.json 文件 |
+| 社交媒体素材 | 5 美元 | 头像（1K 图像 + ACP 设计）+ Twitter 广告牌 + 社区横幅 |
+| 品牌风格营销图形 | 2 美元 | 单个营销图形（任意纵横比） |
+
+---
+
+## 输入选项
+
+### 标志服务
+
+| 字段 | 是否必填 | 说明 |
+|-------|----------|-------------|
+| `concept` | ✅ | 品牌概念、风格、行业、设计方向 |
+| `brandName` / `brand_name` | ❌ | 品牌名称（如未提供，AI 会自动生成） |
+| `tagline` | ❌ | 可选标语 |
+
+### 社交媒体服务（模式 1：使用标志服务生成的素材）
+
+| 字段 | 是否必填 | 说明 |
+|-------|----------|-------------|
+| `brandSystemUrl` / `brand_system_url` | ✅ | 来自标志服务的 brand-system.json 文件的 URL |
+
+### 社交媒体服务（模式 2：使用您自己的标志）
+
+| 字段 | 是否必填 | 说明 |
+|-------|----------|-------------|
+| `logoUrl` / `logo_url` | ✅ | 您现有的标志图片 URL |
+| `brandName` / `brand_name` | ✅ | 品牌名称 |
+| `tagline` | ❌ | 可选标语 |
+| `primaryColor` / `primary_color` | ❌ | 主要颜色（如未提供，系统会自动提取） |
+| `secondaryColor` / `secondary_color` | ❌ | 次要颜色（hex 格式） |
+| `backgroundColor` / `background_color` | ❌ | 背景颜色（hex 格式） |
+| `renderStyle` / `render_style` | ❌ | 设计风格（扁平、渐变、玻璃质感、铬金色、霓虹色、3D 等） |
+
+### 图形设计服务（模式 1：使用标志服务生成的素材）
+
+| 字段 | 是否必填 | 说明 |
+|-------|----------|-------------|
+| `brandSystemUrl` / `brand_system_url` | ✅ | 来自标志服务的 brand-system.json 文件的 URL |
+| `prompt` | ✅ | 需要生成的图形类型（请具体说明用途和风格） |
+| `aspectRatio` | ✅ | 输出比例（1:1、4:5、16:9、9:16 等，默认为 1:1） |
+
+### 图形设计服务（模式 2：使用您自己的标志）
+
+| 字段 | 是否必填 | 说明 |
+|-------|----------|-------------|
+| `logoUrl` / `logo_url` | ✅ | 您现有的标志图片 URL |
+| `brandName` / `brand_name` | ✅ | 品牌名称 |
+| `prompt` | ✅ | 需要生成的图形类型 |
+| `aspectRatio` | ✅ | 输出比例（默认为 1:1） |
+| `primaryColor` | ✅ | 主要颜色（hex 格式） |
+| `secondaryColor` | ❌ | 次要颜色（hex 格式） |
+| `renderStyle` | ✅ | 设计风格（扁平、渐变、玻璃质感、铬金色、霓虹色、3D 等） |
+
+### 图形设计的纵横比
+
+| 比例 | 像素尺寸 | 适用场景 |
+|-------|--------|----------|
+| `1:1` | 1024×1024 | Instagram、Twitter、LinkedIn 帖子 |
+| `4:5` | 1024×1280 | Instagram 信息流（竖屏） |
+| `9:16` | 1024×1820 | TikTok、Reels 视频 |
+| `16:9` | 1820×1024 | YouTube 缩略图、Twitter 卡片 |
+| `3:2` | 1536×1024 | 博客标题栏 |
+| `2:3` | 1024×1536 | Pinterest 图片 |
+
+---
+
+## 输出结果
+
+### 标志系统响应
+
 ```json
 {
-  "brand": "Acme",
-  "mode": "byol",
-  "assets": {
-    "avatar": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/avatar.png",
+  "jobId": "abc-123",
+  "status": "completed",
+  "brandName": "Acme",
+  "logo": {
+    "icon": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/icon.png",
+    "wordmark": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/wordmark.png",
+    "stacked": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/stacked.png",
+    "horizontal": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/horizontal.png",
+    "brandSystem": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/brand-system.json"
+  }
+}
+```
+
+### 社交媒体素材响应
+
+```json
+{
+  "jobId": "def-456",
+  "status": "completed",
+  "brandName": "Acme",
+  "socials": {
+    "avatarMaster": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/avatar-master.png",
     "avatarAcp": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/avatar-acp.jpg",
     "twitterBanner": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/twitter-banner.png",
     "ogCard": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/og-card.png",
@@ -141,33 +320,41 @@ acp job create 0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e social \
 }
 ```
 
----
+### 图形设计响应
 
-## 价格表
-
-| 服务类型 | 价格 | 输出内容 |
-|---------|-------|--------|
-| 标志系统 | 5 美元 | 图标、品牌名称、堆叠式设计、水平布局 + brand-system.json 文件 |
-| 社交媒体素材 | 5 美元 | 头像（1K 分辨率 + ACP 配置）、Twitter 广告图、OG 卡片、社区广告图 |
+```json
+{
+  "jobId": "gfx-789",
+  "status": "completed",
+  "brandName": "Acme",
+  "gfx": {
+    "url": "https://pub-156972f0e0f44d7594f4593dbbeaddcb.r2.dev/acme/gfx/gfx-789.png",
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1:1"
+  }
+}
+```
 
 ---
 
 ## 供应商信息
 
-- **服务提供者：** OpenGFX
-- **公司名称：** AKLO Labs
-- **官方网站：** https://opengfx.app
-- **GitHub 仓库：** https://github.com/aklo360/opengfx-skill
-- **联系方式：** aklo@aklo.studio
-- **代理钱包地址：** `0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e`
-- **ACP 市场平台：** https://app.virtuals.io/acp
-
----
+- **服务名称：**OpenGFX
+- **提供商：**AKLO Labs
+- **官方网站：**https://opengfx.app
+- **GitHub 仓库：**https://github.com/aklo360/opengfx-skill
+- **支持邮箱：**aklo@aklo.studio
+- **代理钱包：**`0x7cf4CE250a47Baf1ab87820f692BB87B974a6F4e`
+- **x402 接口：**https://gateway.opengfx.app
+- **ACP 市场平台：**https://app.virtuals.io/acp
+- **ClawHub：**https://clawhub.com/skills/opengfx
 
 ## 最佳实践
 
-- **请详细说明您的设计概念**——包括所属行业、设计风格以及目标受众
-- **如有颜色偏好，请一并说明**（例如：“蓝色和金色色调”）
-- **明确设计方向**——如“极简风格”、“趣味风格”、“企业风格”、“科技风格”或“自然风格”
-- **关于色调选择**——AI 会自动判断，但您可以提供提示（例如“暗色调风格”或“明亮友好的风格”）
-- **先进行测试**——在生产使用前，先用低成本的测试任务验证系统功能
+- **明确说明您的设计概念**——包括所属行业、设计风格和目标受众 |
+- **提供颜色偏好**（如果有的话，例如“蓝色和金色色调”）
+- **指定设计风格**——例如“极简风格”、“趣味风格”、“企业风格”、“科技风格”或“自然风格” |
+- **选择明暗色调**——AI 会自动判断，但您可以提供提示（如“暗色调风格”或“明亮友好的风格”）
+- **先进行测试**——使用低成本的测试任务来验证服务效果，再投入生产 |
+- **选择 x402 或 ACP**——如需直接集成，请使用 x402；如果您已经在 Virtuals 生态系统中，可以使用 ACP

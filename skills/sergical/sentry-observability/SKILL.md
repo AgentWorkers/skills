@@ -1,43 +1,90 @@
 ---
 name: sentry
-description: 为 OpenClaw 设置 Sentry 可观测性（安装插件、配置数据源连接（DSN）、使用 Sentry CLI 调查问题）。适用于为 OpenClaw 实例配置错误跟踪、跟踪信息或结构化日志，或在排查 Sentry 相关问题/错误时使用。
+description: "为您的 OpenClaw 实例添加可观测性功能：将错误信息、日志以及跟踪数据发送到 Sentry。通过 Sentry 插件设置监控机制，然后使用 `sentry` CLI 命令行工具来排查问题。"
+metadata:
+  {
+    "openclaw":
+      {
+        "emoji": "🐛",
+        "requires": { "bins": ["sentry"] },
+        "install":
+          [
+            {
+              "id": "npm",
+              "kind": "npm",
+              "package": "sentry",
+              "global": true,
+              "bins": ["sentry"],
+              "label": "Install Sentry CLI (npm)",
+            },
+          ],
+      },
+  }
 ---
-# OpenClaw 的 Sentry 可观测性（Sentry Observability for OpenClaw）
+# Sentry — OpenClaw 可观测性
 
-## 概述
+在 Sentry 中，您可以查看 OpenClaw 实例的运行情况：错误信息、结构化日志以及性能追踪数据。
 
-本文档介绍了两个方面的内容：
-1. 如何设置 `openclaw-plugin-sentry` 插件以实现错误/跟踪/日志的收集
-2. 如何使用 Sentry 命令行界面（CLI）来排查问题
+整个流程分为两个部分：**设置**（配置数据传输）和**查询**（使用 CLI 进行数据查询）。
 
-## 插件设置
+---
 
-### 安装
+## 设置
+
+### 1. 认证
 
 ```bash
-openclaw plugins install openclaw-plugin-sentry
+sentry auth login
 ```
 
-### 配置
+遵循浏览器提示完成 OAuth 认证流程。认证凭据存储在 `~/.sentry/cli.db` 文件中。
 
-需要在 `openclaw.json` 文件中进行以下两项配置更改：
-1. **启用诊断功能**（对于跟踪日志记录是必需的）：
-```json
-{ "diagnostics": { "enabled": true } }
+**替代方案（简短命令）：**
+- `sentry auth login --token <TOKEN>` — 直接输入认证令牌
+- `SENTRY_AUTH_TOKEN=<token>` — 环境变量，适用于持续集成（CI）场景
+
+### 2. 创建项目
+
+为您的 OpenClaw 实例创建一个专属的 Sentry 项目：
+
+```bash
+sentry api /teams/<org>/<team>/projects/ \
+  --method POST \
+  --field name="my-openclaw" \
+  --field platform=node
 ```
 
-2. **配置插件**：
+如果您不知道组织的名称或团队名称，可以先列出所有可用的选项：
+
+```bash
+sentry api /organizations/                          # list orgs
+sentry api /organizations/<org>/teams/              # list teams in org
+```
+
+### 3. 获取 DSN（数据源连接字符串）
+
+```bash
+sentry project view <org>/my-openclaw --json | jq -r '.dsn'
+```
+
+或者通过 API 端点获取 DSN：
+
+```bash
+sentry api /projects/<org>/my-openclaw/keys/ | jq '.[0].dsn.public'
+```
+
+### 4. 配置 OpenClaw
+
+将 DSN 添加到 `openclaw.json` 文件中：
+
 ```json
 {
   "plugins": {
-    "allow": ["sentry"],
     "entries": {
       "sentry": {
         "enabled": true,
         "config": {
-          "dsn": "<your-sentry-dsn>",
-          "environment": "production",
-          "tracesSampleRate": 1.0,
+          "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0",
           "enableLogs": true
         }
       }
@@ -46,95 +93,96 @@ openclaw plugins install openclaw-plugin-sentry
 }
 ```
 
-插件配置文件位于 `plugins.entries.sentry.config` 中，而不是 `sentry` 的顶层配置文件中。
+> **注意：** 配置信息应保存在 `plugins.entries.sentry.config` 文件中，而非直接放在 `sentry` 目录下。
 
-### 获取 DSN（数据源名称）
+接下来，需要安装 Sentry 插件。有关使用 `@sentry/node` 实现该插件的详细信息，请参阅 `references/plugin-setup.md`。
 
-1. 进入 Sentry 的“项目设置”（Project Settings），然后选择“客户端密钥”（Client Keys）以获取 DSN。
-2. 复制 DSN 的 URL（格式通常为 `https://key@o000000.ingest.us.sentry.io/0000000`）。
+> **关于日志缓冲区：** Sentry 的结构化日志会在自动刷新前最多存储 100 条记录。对于像 OpenClaw 这样日志量较小的服务，日志可能会在缓冲区中停留较长时间。建议插件定期（例如每 30 秒）调用 `_INTERNAL_flushLogsBuffer(client)` 方法，并在程序关闭前执行 `Sentry.flush()`。具体实现方式请参考 `references/plugin-setup.md`。
 
-### 收集的数据类型
+### 5. 验证配置
 
-| 数据类型 | 来源 | Sentry 功能 |
-|--------|--------|----------------|
-| 错误（Errors） | 自动捕获的异常（如数据获取失败、AbortError 等） | 问题（Issues） |
-| 跟踪（Traces） | `model_usage` 中的 `ai.chat` 跨度（spans）、`message.processed` 中的 `openclaw.message` 跨度 | 跟踪（Tracing） |
-| 消息（Messages） | `webhook.error`、`session.stuck` | 问题（Issues） |
-| 日志（Logs） | 通过 Gateway 日志传输到 `Sentry.logger` | 结构化日志（Structured Logs） |
+重启 OpenClaw 服务，然后检查 Sentry 中是否有新的事件记录：
 
-### 验证插件是否正常工作
-
-重启系统后，向您的机器人发送一条消息，然后检查日志是否被正确记录：
 ```bash
-sentry issue list <org>/<project>        # Should see any errors
-sentry event list <org>/<project>        # Should see events
+sentry issue list <org>/my-openclaw --limit 5
 ```
 
-或者通过 API 进行验证：
-```bash
-curl -s "https://sentry.io/api/0/organizations/<org>/events/?project=<project-id>&dataset=discover&field=id&field=title&field=event.type&field=timestamp&sort=-timestamp" \
-  -H "Authorization: Bearer $SENTRY_AUTH_TOKEN"
-```
+---
 
-## 使用 Sentry CLI 进行问题排查
+## 查询
 
-### 身份验证设置
+一旦数据传输配置完成，您可以使用 CLI 查询 OpenClaw 的错误信息、性能追踪数据以及相关事件。
+
+### 列出问题
 
 ```bash
-npm install -g sentry
-sentry login
-# Follow browser auth flow — stores config in ~/.sentry/cli.db
-```
-
-### 常用命令
-
-```bash
-# List issues for a project
 sentry issue list <org>/<project>
-
-# View issue details
-sentry issue view <short-id>
-
-# AI-powered root cause analysis
-sentry issue explain <short-id>
-
-# List recent events
-sentry event list <org>/<project>
-
-# Direct API calls
-sentry api /organizations/<org>/projects/
+sentry issue list <org>/<project> --query "is:unresolved" --sort freq --limit 20
+sentry issue list <org>/                              # all projects in org
 ```
 
-### 通过 API 查看跟踪记录
+### 查看问题详情
 
-跟踪记录无法直接在 CLI 中查看，需要使用 API 来获取：
 ```bash
-SENTRY_TOKEN="..."
-curl -s "https://sentry.io/api/0/organizations/<org>/events/?project=<id>&dataset=discover&per_page=10&sort=-timestamp&field=id&field=title&field=timestamp&field=transaction.duration&field=transaction.op&query=event.type:transaction" \
-  -H "Authorization: Bearer $SENTRY_TOKEN"
+sentry issue view <short-id>                          # e.g. MY-OPENCLAW-42
+sentry issue view <short-id> --json                   # structured output
 ```
 
-## 故障排除
+### 人工智能（AI）根本原因分析
 
-### 跟踪记录未显示
+```bash
+sentry issue explain <issue-id>                       # Seer analyzes the root cause
+sentry issue explain <issue-id> --force               # force fresh analysis
+sentry issue plan <issue-id>                          # generate a fix plan (run explain first)
+```
 
-- 确认配置文件中的 `diagnostics.enabled` 是否设置为 `true`（该设置控制事件是否被记录）。
-- 检查插件是否已成功加载：在 Gateway 日志中查找 `sentry: initialized` 的记录。
-- 确保插件与 Gateway 使用相同的事件监听器：插件的 `onDiagnosticEvent` 方法必须使用与 Gateway 相同的监听器集合（OpenClaw 通过 `globalThis.__oc_diag` 来实现这一点）。
+### 结构化日志
 
-### 跟踪记录的持续时间显示为 0ms
+```bash
+sentry log list <org>/<project>                       # last 100 logs
+sentry log list <org>/<project> --limit 50            # last 50
+sentry log list <org>/<project> -q 'level:error'      # filter by level
+sentry log list <org>/<project> -q 'database'         # filter by message
+sentry log list <org>/<project> -f                    # stream in real-time (2s poll)
+sentry log list <org>/<project> -f 5                  # stream with 5s poll
+sentry log list <org>/<project> --json                # structured output
+```
 
-- Sentry SDK v10 要求时间戳以毫秒（milliseconds）为单位。
-- 该插件从诊断事件中获取 `evt.ts` 和 `evt.durationMs` 来记录持续时间。
+### 查看特定日志条目
 
-### 插件无法加载
+```bash
+sentry log view <log-id>                              # 32-char hex ID
+sentry log view <log-id> --json
+sentry log view <log-id> --web                        # open in browser
+```
 
-- 确保 `sentry` 在 `plugins.allow` 数组中。
-- 确保 `openclaw.plugin.json` 文件中的 `configSchema` 配置包含 `additionalProperties: true`。
-- 检查 Gateway 日志中是否有配置验证错误。
+### 检查事件详情
 
-### 日志未显示
+```bash
+sentry event view <event-id>                          # full stack trace + context
+sentry event view <event-id> --json
+```
 
-- 确保插件配置中的 `enableLogs` 设置为 `true`。
-- 可能需要在 Sentry 项目设置中启用结构化日志功能。
-- 使用 `Sentry.logger` API 时，确保使用的 Node.js 版本为 v10 或更高。
+### 直接调用 Sentry API
+
+```bash
+sentry api /projects/<org>/<project>/issues/ --paginate
+sentry api /issues/<id>/ --method PUT --field status=resolved
+sentry api /issues/<id>/ --method PUT --field assignedTo="user@example.com"
+```
+
+### 处理错误的步骤：
+1. `sentry issue list <org>/<project> --query "is:unresolved" --sort date --limit 5` — 列出未解决的问题
+2. `sentry issue view <short-id>` — 查看问题详情、受影响用户及事件时间线
+3. `sentry issue explain <issue-id>` — 查看问题的根本原因（通过 AI 分析）
+4. `sentry issue plan <issue-id>` — 查看具体的修复步骤
+5. 修复问题后：`sentry api /issues/<id>/ --method PUT --field status=resolved` — 更新问题状态为“已解决”
+
+---
+
+## 参考资料：
+- 完整的 CLI 命令列表：`references/cli-commands.md`
+- 插件实现文档：`references/plugin-setup.md`
+- Sentry CLI 文档：https://cli.sentry.dev
+- Sentry API 文档：https://docs.sentry.io/api/
+- Node.js SDK 文档：https://docs.sentry.io/platforms/javascript/guides/node/

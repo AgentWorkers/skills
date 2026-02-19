@@ -1,19 +1,13 @@
 ---
 name: ai-automation-workflows
-description: |
-  Build automated AI workflows combining multiple models and services.
-  Patterns: batch processing, scheduled tasks, event-driven pipelines, agent loops.
-  Tools: inference.sh CLI, bash scripting, Python SDK, webhook integration.
-  Use for: content automation, data processing, monitoring, scheduled generation.
-  Triggers: ai automation, workflow automation, batch processing, ai pipeline,
-  automated content, scheduled ai, ai cron, ai batch job, automated generation,
-  ai workflow, content at scale, automation script, ai orchestration
+description: "构建结合多种模型和服务的自动化 AI 工作流程。常见模式包括：批量处理、定时任务、事件驱动的管道系统以及代理循环（agent loops）。可使用的工具包括：inference.sh 命令行工具（CLI）、Bash 脚本、Python SDK 以及 Webhook 集成。这些工作流程适用于内容自动化、数据处理、监控以及定期内容生成等场景。触发机制包括：AI 自动化、工作流程自动化、批量处理、AI 管道系统、自动化内容生成等。"
 allowed-tools: Bash(infsh *)
 ---
+# AI自动化工作流
 
-# 人工智能自动化工作流
+通过 [inference.sh](https://inference.sh) 命令行工具（CLI）构建自动化AI工作流。
 
-通过 [inference.sh](https://inference.sh) 命令行工具（CLI）构建自动化的人工智能工作流。
+![AI自动化工作流](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg0v0nz7wv0qwqjtq1cam52z.jpeg)
 
 ## 快速入门
 
@@ -26,9 +20,11 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其SHA-256校验和。无需提升权限或启动后台进程。也可选择[手动安装并验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 自动化模式
 
-### 模式 1：批量处理
+### 模式1：批量处理
 
 使用相同的工作流处理多个项目。
 
@@ -52,9 +48,9 @@ for prompt in "${PROMPTS[@]}"; do
 done
 ```
 
-### 模式 2：顺序流程
+### 模式2：顺序流程
 
-将多个人工智能操作串联起来。
+将多个AI操作串联起来执行。
 
 ```bash
 #!/bin/bash
@@ -89,7 +85,7 @@ SOCIAL=$(infsh app run openrouter/claude-haiku-45 --input "{
 echo "Pipeline complete!"
 ```
 
-### 模式 3：并行处理
+### 模式3：并行处理
 
 同时运行多个操作。
 
@@ -112,9 +108,9 @@ wait $PID1 $PID2 $PID3
 echo "All images generated!"
 ```
 
-### 模式 4：条件分支工作流
+### 模式4：条件分支
 
-根据结果进行分支处理。
+根据结果选择不同的处理路径。
 
 ```bash
 #!/bin/bash
@@ -145,7 +141,7 @@ case "$ANALYSIS" in
 esac
 ```
 
-### 模式 5：带回退机制的重试
+### 模式5：重试与回退
 
 优雅地处理失败情况。
 
@@ -181,9 +177,9 @@ generate_with_retry() {
 generate_with_retry "A beautiful sunset over mountains"
 ```
 
-## 计划自动化
+## 定时自动化
 
-### Cron 作业设置
+### Cron作业设置
 
 ```bash
 # Edit crontab
@@ -285,7 +281,7 @@ run_with_alert() {
 run_with_alert infsh app run falai/flux-dev --input '{"prompt": "test"}'
 ```
 
-## Python SDK 自动化
+## Python SDK自动化
 
 ```python
 #!/usr/bin/env python3
@@ -380,28 +376,28 @@ done
 
 ## 最佳实践
 
-1. **速率限制** - 在 API 调用之间添加延迟
+1. **速率限制** - 在API调用之间设置延迟
 2. **错误处理** - 始终检查返回代码
 3. **日志记录** - 记录所有操作
-4. **幂等性** - 设计可安全重运行的功能
+4. **幂等性** - 设计可安全重运行的流程
 5. **监控** - 在发生故障时发出警报
 6. **备份** - 保存中间结果
-7. **超时** - 设置合理的超时限制
+7. **超时设置** - 设置合理的超时限制
 
 ## 相关技能
 
 ```bash
 # Content pipelines
-npx skills add inference-sh/agent-skills@ai-content-pipeline
+npx skills add inference-sh/skills@ai-content-pipeline
 
 # RAG pipelines
-npx skills add inference-sh/agent-skills@ai-rag-pipeline
+npx skills add inference-sh/skills@ai-rag-pipeline
 
 # Social media automation
-npx skills add inference-sh/agent-skills@ai-social-media-content
+npx skills add inference-sh/skills@ai-social-media-content
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
 浏览所有应用程序：`infsh app list`

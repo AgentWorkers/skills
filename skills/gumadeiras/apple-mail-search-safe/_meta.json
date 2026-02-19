@@ -1,13 +1,28 @@
 {
   "owner": "gumadeiras",
   "slug": "apple-mail-search-safe",
-  "displayName": "apple-mail-search-safe",
+  "displayName": "Apple Mail Search Safe (fruitmail)",
   "latest": {
-    "version": "4.0.0",
-    "publishedAt": 1769425452939,
-    "commit": "https://github.com/clawdbot/skills/commit/7e63505e925b67edf19e39c78fccbc9f8c11bb0a"
+    "version": "5.0.4",
+    "publishedAt": 1771448906975,
+    "commit": "https://github.com/openclaw/skills/commit/45afb8536604df8f9b776c0206b77f77ef7e02f9"
   },
   "history": [
+    {
+      "version": "5.0.2",
+      "publishedAt": 1771448707195,
+      "commit": "https://github.com/openclaw/skills/commit/901183822d11f9c6477e67765b7ac9d91c9ae335"
+    },
+    {
+      "version": "5.0.1",
+      "publishedAt": 1771448528658,
+      "commit": "https://github.com/openclaw/skills/commit/b9b0a2902580c45499b55439672ed312fe9e045c"
+    },
+    {
+      "version": "4.0.0",
+      "publishedAt": 1769425452939,
+      "commit": "https://github.com/clawdbot/skills/commit/7e63505e925b67edf19e39c78fccbc9f8c11bb0a"
+    },
     {
       "version": "2026.1.7",
       "publishedAt": 1768516491763,

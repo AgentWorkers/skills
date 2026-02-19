@@ -1,19 +1,41 @@
 ---
 name: ai-marketing-videos
-description: |
-  Create AI marketing videos for ads, promos, product launches, and brand content.
-  Models: Veo, Seedance, Wan, FLUX for visuals, Kokoro for voiceover.
-  Types: product demos, testimonials, explainers, social ads, brand videos.
-  Use for: Facebook ads, YouTube ads, product launches, brand awareness.
-  Triggers: marketing video, ad video, promo video, commercial, brand video,
-  product video, explainer video, ad creative, video ad, facebook ad video,
-  youtube ad, instagram ad, tiktok ad, promotional video, launch video
+description: "**创建用于广告、宣传、产品发布和品牌内容的AI营销视频**  
+**使用的工具及平台：**  
+- **视觉效果制作工具：** Veo、Seedance、Wan、FLUX  
+- **旁白制作工具：** Kokoro  
+**视频类型：**  
+  - 产品演示视频  
+  - 用户评价视频  
+  - 说明视频  
+  - 社交媒体广告  
+  - 品牌宣传视频  
+**适用场景：**  
+- Facebook广告  
+- YouTube广告  
+- 产品发布活动  
+- 品牌推广  
+**触发条件（即视频使用的场景）：**  
+- 营销视频  
+- 广告视频  
+- 宣传视频  
+- 商业广告  
+- 品牌视频  
+- 产品介绍视频  
+- 视频广告  
+- Facebook广告视频  
+- YouTube广告  
+- Instagram广告  
+- TikTok广告  
+- 宣传视频  
+- 产品发布视频"
 allowed-tools: Bash(infsh *)
 ---
+# AI营销视频
 
-# 人工智能营销视频
+您可以通过 [inference.sh](https://inference.sh) 命令行工具来制作专业的营销视频。
 
-通过 [inference.sh](https://inference.sh) 命令行工具制作专业的营销视频。
+![AI营销视频示例](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg2c0egyg243mnyth4y6g51q.jpeg)
 
 ## 快速入门
 
@@ -26,15 +48,17 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可以选择[手动安装及验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 视频广告类型
 
 | 类型 | 时长 | 平台 |
 |------|----------|----------|
-| 开场广告 | 6秒 | YouTube |
-| 短广告 | 15秒 | Instagram、Facebook |
-| 标准广告 | 30秒 | YouTube、电视 |
-| 说明视频 | 60-90秒 | 网站、YouTube |
-| 产品演示 | 30-60秒 | 所有平台 |
+| 开场广告 | 6 秒 | YouTube |
+| 短广告 | 15 秒 | Instagram、Facebook |
+| 标准广告 | 30 秒 | YouTube、电视 |
+| 说明视频 | 60-90 秒 | 网站、YouTube |
+| 产品演示 | 30-60 秒 | 所有平台 |
 
 ## 营销视频模板
 
@@ -65,7 +89,7 @@ infsh app run bytedance/seedance-1-5-pro --input '{
 }'
 ```
 
-### 客户评价风格
+### 用户评价
 
 ```bash
 # Talking head testimonial
@@ -209,7 +233,7 @@ infsh app run google/veo-3-1-fast --input '{
 
 ## 广告创意最佳实践
 
-### 吸引观众的方法（前3秒）
+### 吸引观众注意力的方法（前3秒）
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -224,12 +248,12 @@ infsh app run google/veo-3-1-fast --input '{
 
 ### 视觉层次结构
 
-1. **产品亮点** - 清晰、醒目
-2. **产品优势** - 通过图像展示，而不仅仅是文字说明
-3. **用户评价** - 可见的用户反馈/数据
-4. **行动号召** - 有足够的空间放置文字提示
+1. **产品主角** - 清晰、突出显示
+2. **产品优势** - 通过图片或图表展示，而不仅仅是文字说明
+3. **用户评价** - 显示真实的用户反馈或数据
+4. **行动号召** - 为文字或图片提供足够的空间
 
-### 声音设计
+### 音频设计
 
 ```bash
 # Add appropriate music
@@ -264,32 +288,32 @@ done
 
 ## 视频广告检查清单
 
-- [ ] 前3秒内能够吸引观众
-- [ ] 无需声音也能正常播放（配有字幕/文字）
-- [ ] 产品清晰可见
+- [ ] 前3秒内能够吸引观众注意力
+- [ ] 无需声音也能正常播放（支持字幕/文字）
+- [ ] 产品特征清晰可见
 - [ ] 信息以产品优势为核心
 - [ ] 有一个明确的行动号召
-- [ ] 平台所需的正确宽高比
+- [ ] 根据平台调整正确的宽高比
 - [ ] 保持品牌一致性
-- [ ] 适用于移动设备
+- [ ] 适配移动设备
 
 ## 相关技能
 
 ```bash
 # Video generation
-npx skills add inference-sh/agent-skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # Image generation for thumbnails
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 
 # Text-to-speech for voiceover
-npx skills add inference-sh/agent-skills@text-to-speech
+npx skills add inference-sh/skills@text-to-speech
 
 # Social media content
-npx skills add inference-sh/agent-skills@ai-social-media-content
+npx skills add inference-sh/skills@ai-social-media-content
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
-浏览所有应用程序：`infsh app list`
+查看所有可用工具：`infsh app list`

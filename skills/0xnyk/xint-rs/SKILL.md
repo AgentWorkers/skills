@@ -1,19 +1,19 @@
 ---
 name: xint-rs
 description: >
-  Fast X Intelligence CLI（Rust）——一个用于在终端中搜索、分析并处理X/Twitter数据的工具。适用场景包括：  
-  (1) 用户请求“查询X相关信息”、“在Twitter上搜索某内容”或“了解人们对某事的看法”；  
-  (2) 用户需要实时监控（通过“watch”命令）；  
-  (3) 用户希望利用Grok进行AI驱动的分析（如情感分析）；  
-  (4) 用户需要获取智能分析报告；  
-  (5) 用户希望追踪自己的关注者或关注他人的情况；  
-  (6) 用户想要了解热门话题。  
+  Fast X Intelligence CLI（Rust）——通过终端执行在X/Twitter上的搜索、分析和操作。适用场景包括：  
+  (1) 用户请求“查询x相关信息”、“在Twitter上搜索x”、“了解人们对x的看法”等；  
+  (2) 用户需要实时监控（使用“watch”功能）；  
+  (3) 用户需要基于Grok技术的智能分析（如情感分析、内容分类）；  
+  (4) 用户需要生成智能报告；  
+  (5) 用户希望追踪关注者或关注对象的变化；  
+  (6) 用户需要获取热门话题信息。  
   该工具还支持以下功能：  
   - 书签功能；  
   - 点赞/关注操作（通过OAuth认证）；  
-  - 数据导出（支持CSV、JSON、JSONL格式）。  
+  - 数据导出（格式支持CSV、JSON、JSONL）。  
   **注意事项：**  
-  - 该工具不支持发布推文或发送私信，也不提供企业级功能。
+  - 该工具不支持发布推文或发送私信（DM），也不提供企业级功能。
 credentials:
   - name: X_BEARER_TOKEN
     description: X API v2 bearer token for search, profile, thread, tweet, trends
@@ -27,51 +27,71 @@ credentials:
   - name: X_CLIENT_ID
     description: X OAuth 2.0 client ID for user-context operations (bookmarks, likes, following, diff)
     required: false
+required_env_vars:
+  - X_BEARER_TOKEN
+requiredEnvVars:
+  - X_BEARER_TOKEN
+primary_credential: X_BEARER_TOKEN
+primaryCredential: X_BEARER_TOKEN
+security:
+  always: false
+  autonomous: false
+  local_data_dir: data/
+  network_endpoints:
+    - https://api.x.com
+    - https://x.com
+    - https://api.x.ai
 ---
 # xint — X Intelligence CLI（Rust）
 
-这是一个快速、无依赖的命令行工具，用于在终端中执行与X/Twitter相关的搜索、分析和互动操作。所有输出都会直接写入标准输出（stdout），便于通过管道传输。
+这是一个快速、无依赖的命令行工具，用于在终端中执行与X/Twitter相关的搜索、分析和互动操作。所有输出都会直接输出到标准输出（stdout），便于通过管道传输。
 
 ## 安全注意事项
 
-该工具需要处理敏感的凭据，请遵循以下指南：
+使用此工具需要处理敏感的凭证信息，请遵循以下指南：
 
-### 凭据
-- **X_BEARER_TOKEN**：用于访问X API，属于机密信息，仅应在环境变量或`.env`文件中设置。
-- **XAI_API_KEY**：可选，用于AI分析，同样属于机密信息。
-- **X_CLIENT_ID**：可选，用于OAuth认证，虽然敏感度较低，但也不应公开。
+### 凭证信息
+- **X_BEARER_TOKEN**：X API所需的凭证。请将其视为机密信息，仅通过环境变量或`.env`文件设置。
+- **XAI_API_KEY**：可选，用于AI分析。同样属于机密信息。
+- **X_CLIENT_ID**：可选，用于OAuth认证。虽然敏感度较低，但请不要公开。
 - **XAI_MANAGEMENT_API_KEY**：可选，用于集合管理。
 
 ### 文件写入
-- 该工具会将数据写入`data/`目录，包括缓存文件、导出的数据、快照以及OAuth令牌。
+- 该工具会将数据写入`data/`目录：包括缓存文件、导出文件、快照以及OAuth令牌。
 - OAuth令牌会以严格的权限（`chmod 600`）进行存储。
-- 在共享数据之前，请务必审查其中的内容，因为这些数据可能包含敏感的搜索查询。
+- 在共享数据之前，请仔细检查导出的内容，因为其中可能包含敏感的搜索查询。
 
 ### Webhook
 - `watch`命令支持`--webhook`选项，可将数据发送到外部URL。
 - 仅使用您自己控制的Webhook服务（例如自己的服务器或Slack/Discord账户）。
-- 切勿将敏感的URL作为Webhook的目标。
+- 请勿将敏感的URL作为Webhook的目标。
 
-### 代理程序的自主性
-- 该工具设计为可被添加到代理程序的技能目录中。
-- 提供了“克隆到技能目录”的说明，这是为了确保技能的正常运行。
-- 如果没有明确要求，代理程序在安装新技能之前应先询问用户。
+### 代理执行限制
+- 本文档仅描述了可执行的命令及相关的安全限制。
+- 安装或克隆操作前需要用户的明确授权。
+- 请仅使用文档中规定的命令和参数。
+- 在启用网络功能（如`mcp --sse`、`watch --webhook`）之前，必须获得用户的明确授权。
 
 ### 安装
-- 对于Bun环境，建议优先使用操作系统提供的包管理器进行安装，而非手动执行`curl | bash`命令。
-- 在运行任何安装脚本之前，请务必检查其安全性。
+- 对于所需的工具，尽可能使用操作系统的包管理器进行安装，而非手动执行`curl | bash`命令。
+- 在运行任何安装脚本之前，请务必对其进行验证。
+
+### MCP服务器（可选）
+- 使用`xint mcp`可以启动一个本地MCP服务器，将xint命令作为工具提供。
+- 默认模式下，数据仅通过标准输入/输出（stdio）进行传输；除非明确启用`--sse`选项，否则不会启动外部Web服务器。
+- 请遵守`--policy read_only|engagement|moderation`配置选项以及预算限制。
 
 ## 设置
+需要设置环境变量（位于`.env`文件中或通过其他方式导出）：
+- `X_BEARER_TOKEN`：用于搜索、查看用户资料、推文、话题、趋势、关注和生成报告等操作。
+- `X_CLIENT_ID`：用于OAuth相关操作（如书签、点赞、关注、比较等）。
+- `XAI_API_KEY`：用于AI分析（如分析数据、生成报告、执行搜索等）。
+- `XAI_MANAGEMENT_API_KEY`：用于集合管理（如列出集合、创建集合、验证集合内容、添加文档等）。
 
-需要设置环境变量（位于`.env`文件中）：
-- `X_BEARER_TOKEN`：用于搜索、查看用户资料、推文、话题、趋势、关注列表和生成报告等操作。
-- `X_CLIENT_ID`：用于OAuth相关操作（如书签、点赞、关注、差异分析等）。
-- `XAI_API_KEY`：用于AI分析功能（如分析数据、生成报告、执行搜索等）。
-- `XAI_MANAGEMENT_API_KEY`：用于集合管理（如列出集合、创建集合、验证集合状态、添加文档等）。
+### OAuth设置（一次性操作）
+执行`xint auth setup`命令以完成OAuth配置。
 
-### OAuth设置（一次性操作）：`xint auth setup`
-
-## 命令说明
+## 命令列表
 
 ### 搜索与发现
 ```bash
@@ -91,7 +111,7 @@ xint search "AI agents" --save                # Save to data/exports/
 ```bash
 xint watch "AI agents" -i 5m                  # Poll every 5 minutes
 xint watch "@elonmusk" -i 30s                 # Watch user (auto-expands to from:)
-xint watch "bitcoin" --webhook https://...    # POST new tweets to webhook
+xint watch "bitcoin" --webhook https://example.com/webhook  # POST new tweets to webhook
 xint watch "topic" --jsonl                    # Machine-readable output
 ```
 
@@ -104,7 +124,7 @@ xint thread 1234567890                        # Fetch conversation thread
 ```
 
 ### 文章获取（需要XAI_API_KEY）
-- 可使用xAI的web_search工具从任意URL获取并提取文章的全部内容；同时支持从X推文中提取链接的文章。
+使用xAI的`web_search`工具从任意URL获取并提取文章内容。同时支持从X推文中提取链接的文章。
 ```bash
 # Fetch article content
 xint article "https://example.com"
@@ -135,7 +155,7 @@ xint trends --locations                     # List supported locations
 xint analyze "What's the sentiment around AI?"
 xint analyze --tweets saved.json              # Analyze tweets from file
 cat tweets.json | xint analyze --pipe         # Analyze from stdin
-xint analyze "question" --system "You are..."  # Custom system prompt
+xint analyze "question"                              # Free-form analysis request
 ```
 
 ### 智能报告
@@ -146,7 +166,7 @@ xint report "AI agents" -s                    # Include sentiment analysis
 xint report "AI agents" --save                # Save to data/exports/
 ```
 
-### 关注者跟踪（需要OAuth）
+### 关注者追踪（需要OAuth）
 ```bash
 xint diff @username                           # Snapshot followers, diff vs previous
 xint diff @username --following               # Track following instead
@@ -181,8 +201,8 @@ xint watchlist remove @username               # Remove
 xint watchlist check @username                # Check if watched
 ```
 
-### xAI X Search（无需cookies/GraphQL）
-- 可通过xAI提供的x_search工具直接搜索X平台的内容，无需使用bearer token或cookies，只需提供`XAI_API_KEY`即可。
+### xAI X搜索（无需cookie/GraphQL）
+通过xAI提供的`x_search`工具执行搜索。无需使用bearer token或cookie，仅需`XAI_API_KEY`。
 ```bash
 # Create a queries file
 echo '["AI agents", "solana"]' > queries.json
@@ -201,7 +221,7 @@ xint x-search --queries-file queries.json --model grok-3
 ```
 
 ### xAI集合管理
-- 可通过xAI的Files + Collections API上传文档、管理集合，并进行语义搜索。
+通过xAI的文件和集合API上传文档、管理集合以及进行语义搜索。
 ```bash
 # List existing collections
 xint collections list
@@ -229,10 +249,10 @@ xint cache clear                              # Clear cached data
 ```
 
 ## 输出格式
-大多数命令支持`--json`选项以输出原始JSON格式；搜索命令还支持以下格式：
+大多数命令支持`--json`格式以输出原始JSON数据。搜索命令还支持以下格式：
 - `--jsonl`：每行输出一个JSON对象（适合通过管道传输）。
-- `--csv`：输出适合电子表格的CSV格式。
-- `--markdown`：输出格式化的文本（适用于生成报告）。
+- `--csv`：适合电子表格格式。
+- `--markdown`：格式化后的输出，适用于生成报告。
 
 ## 数据传输（通过管道）
 ```bash
@@ -242,7 +262,7 @@ xint search "topic" --csv > export.csv
 ```
 
 ## 成本控制
-- 使用X API的搜索功能每次请求的费用约为0.005美元。系统设有预算限制，防止费用过高：
-  - 默认每日预算为1.00美元。
-  - 可通过`xint costs budget <amount>`自定义预算。
-  - `watch`命令会在达到预算限制时自动停止执行。
+X API的搜索费用约为每条推文0.005美元。系统设有预算限制，防止费用过高：
+- 默认每日预算限制为1.00美元。
+- 可通过`xint costs budget <amount>`自定义预算。
+- `watch`命令会在达到预算限制时自动停止执行。

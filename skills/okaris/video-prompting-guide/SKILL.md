@@ -1,19 +1,13 @@
 ---
 name: video-prompting-guide
-description: |
-  Best practices and techniques for writing effective AI video generation prompts.
-  Covers: Veo, Seedance, Wan, Grok, Kling, Runway, Pika, Sora prompting strategies.
-  Learn: shot types, camera movements, lighting, pacing, style keywords, negative prompts.
-  Use for: improving video quality, getting consistent results, professional video prompts.
-  Triggers: video prompt, how to prompt video, veo prompts, video generation tips,
-  better ai video, video prompt engineering, video prompt guide, video prompt template,
-  ai video tips, video prompt best practices, video prompt examples, cinematography prompts
+description: "编写高效AI视频生成提示的最佳实践与技巧。涵盖：Veo、Seedance、Wan、Grok、Kling、Runway、Pika、Sora等平台的提示策略。内容包括：镜头类型、摄像机运动方式、光线运用、节奏控制、风格关键词以及如何使用“否定性提示”（即限制某些元素的提示）。这些技巧可用于提升视频质量、获得一致的结果以及创建专业的视频内容。适用场景包括：AI视频生成、视频提示设计、视频制作优化等。相关主题包括：视频提示的编写方法、Veo平台的提示系统、AI视频生成技巧等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # 视频提示指南
 
-通过 [inference.sh](https://inference.sh) 编写有效的人工智能视频生成提示的最佳实践。
+通过 [inference.sh](https://inference.sh) 编写有效 AI 视频生成提示的最佳实践。
+
+![视频提示指南](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg2c0egyg243mnyth4y6g51q.jpeg)
 
 ## 快速入门
 
@@ -25,6 +19,8 @@ infsh app run google/veo-3-1-fast --input '{
   "prompt": "Cinematic tracking shot of a red sports car driving through Tokyo at night, neon lights reflecting on wet streets, rain falling, 4K, shallow depth of field"
 }'
 ```
+
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统/架构，从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需提升权限或运行后台进程。也可以[手动安装并验证](https://dist.inference.sh/cli/checksums.txt)。
 
 ## 提示结构公式
 
@@ -44,56 +40,56 @@ cinematic, 4K, shallow depth of field"
 - **主题**：咖啡
 - **动作**：倒咖啡
 - **场景**：白色陶瓷杯、窗户
-- **光线**：早晨的阳光
+- **光线**：晨间阳光
 - **风格**：暖色调、电影风格
 - **技术参数**：4K 分辨率、浅景深
 
 ## 镜头类型
 
-| 镜头类型 | 描述 | 适用场景 |
+| 镜头类型 | 描述 | 用途 |
 |-----------|-------------|---------|
 | 广角镜头 | 展示整个场景 | 建立场景氛围 |
-| 中景镜头 | 腰部以上视角 | 对话、动作展示 |
-| 特写镜头 | 面部或细节 | 表达情感、展示产品细节 |
-| 极近镜头 | 单个物体特写 | 强调戏剧性或质感 |
-| 航拍镜头 | 俯视角度 | 展示风景或规模感 |
-| 低角度镜头 | 相机从下方拍摄 | 增强视觉冲击力 |
-| 高角度镜头 | 相机从上方拍摄 | 强调脆弱感或紧张氛围 |
-| 斜角镜头 | 倾斜的拍摄角度 | 增加不安或紧张感 |
-| 第一人称视角镜头 | 以第一人称视角拍摄 | 增强沉浸感 |
+| 中景镜头 | 腰部以上视角 | 对话、动作 |
+| 特写镜头 | 面部或细节 | 表现情感、产品细节 |
+| 极近镜头 | 单一物体 | 强调戏剧性、纹理 |
+| 航拍镜头 | 俯视角度 | 展示风景、规模感 |
+| 低角度镜头 | 相机朝上拍摄 | 增强视觉冲击力 |
+| 高角度镜头 | 相机朝下拍摄 | 强调脆弱感 |
+| 斜角镜头 | 倾斜的拍摄角度 | 创造紧张感 |
+| 第一人称视角 | 以第一人称视角拍摄 | 增强沉浸感 |
 
-## 相机移动方式
+## 相机运动
 
-| 移动方式 | 描述 | 效果 |
+| 运动方式 | 描述 | 效果 |
 |----------|-------------|--------|
-| 跟踪拍摄 | 相机跟随拍摄对象 | 使画面更具动态感 |
-| 摇摄（推/拉） | 相机向拍摄对象靠近或远离 | 引导观众注意力 |
+| 跟踪拍摄 | 相机跟随主体 | 使画面更具动态感 |
+| 摇摄（推/拉） | 相机向主体靠近/远离 | 强调焦点、引导观众注意力 |
 | 平移 | 水平旋转 | 展示整个场景 |
-| 俯仰 | 垂直旋转 | 强调高度感 |
+| 俯仰 | 垂直旋转 | 展示高度差异 |
 | 起重机拍摄 | 垂直+水平移动 | 创造戏剧性效果 |
-| 手持拍摄 | 相机轻微晃动 | 增强真实感 |
-| 稳定器拍摄 | 相机稳定移动 | 专业、电影化效果 |
+| 手持拍摄 | 轻微抖动 | 增强真实感、紧迫感 |
+| 稳定器拍摄 | 平稳跟随主体 | 专业、电影化效果 |
 | 缩放 | 镜头放大/缩小 | 快速调整焦点 |
-| 静态拍摄 | 相机无移动 | 适合需要深思的场景 |
+| 静止拍摄 | 无运动 | 用于沉思、展现静态画面 |
 
 ## 光线关键词
 
 | 关键词 | 效果 |
 |---------|--------|
-| 金色时刻 | 温暖、柔和的光线 | 适合浪漫场景 |
-| 蓝色时刻 | 凉爽、忧郁的光线 | 适合黄昏或夜晚场景 |
-| 高调照明 | 明亮、阴影较少 | 适合明亮场景 |
-| 低调照明 | 昏暗、阴影明显 | 适合戏剧性场景 |
-| 轮廓照明 | 光线勾勒出主体轮廓 |
+| 金色时刻 | 温暖、柔和、浪漫 |
+| 蓝色时刻 | 凉爽、情绪化、暮色氛围 |
+| 高调 | 明亮、阴影较少 |
+| 低调 | 昏暗、戏剧性阴影 |
+| 边缘照明 | 主体被光线勾勒轮廓 |
 | 背景光 | 光线来自主体后方 |
-| 柔和的光线 | 温和、 flattering（此处可能有误，应为“柔和的光线”） |
+| 柔和的光线 | 温和、 flattering（此处可能为“柔和的光线效果”） |
 | 强烈光线 | 明显的阴影、对比强烈 |
-| 霓虹光 | 色彩鲜艳、适合都市或赛博朋克风格 |
+| 霓虹光 | 色彩丰富、具有未来感 |
 | 自然光 | 逼真、适合纪录片风格 |
 
 ## 风格关键词
 
-### 电影风格示例
+### 电影风格
 
 ```
 cinematic, film grain, anamorphic lens, letterbox,
@@ -109,7 +105,7 @@ cyberpunk, steampunk, noir, pastel, vibrant,
 muted colors, high contrast, desaturated
 ```
 
-### 质量要求
+### 质量关键词
 
 ```
 4K, 8K, high resolution, photorealistic,
@@ -165,10 +161,10 @@ infsh app run xai/grok-imagine-video --input '{
 | 错误 | 问题 | 更好的解决方法 |
 |---------|---------|-----------------|
 | 提示过于模糊 | “制作一个不错的视频” | 明确指定镜头类型、主题和风格 |
-| 提示过于复杂 | 包含多个场景 | 每个提示只针对一个场景 |
-| 没有描述相机移动 | 静态描述 | 必须包含相机移动或动作 |
-| 风格冲突 | “极简主义与极繁主义结合” | 选择一种统一的美学风格 |
-| 没有指定光线条件 | 视频氛围不明确 | 明确指定光线要求 |
+| 提示过于复杂 | 包含多个场景 | 每个提示对应一个场景 |
+| 没有描述镜头运动 | 静态描述 | 必须包含相机运动或动作 |
+| 风格冲突 | “极简主义与极繁主义结合” | 选择一种统一的风格 |
+| 没有指定光线条件 | 视频氛围不明确 | 明确说明光线要求 |
 
 ## 针对不同模型的使用建议
 
@@ -177,21 +173,28 @@ infsh app run xai/grok-imagine-video --input '{
 - 适合制作逼真、电影风格的内容 |
 - 支持音频生成（Veo 3.0及以上版本） |
 - 最适合使用详细、专业的提示 |
-- 3.1版本支持画面插值功能 |
+- 3.1版本支持帧插值技术
 
 ### Seedance
 
 - 适合捕捉舞蹈和人体动作 |
-- 支持对第一帧画面进行精确控制 |
-- 适合制作连贯的人物动作 |
-- 适合使用参考图片进行创作 |
+- 支持对第一帧画面进行控制 |
+- 适合制作连贯的角色动作 |
+- 与参考图片配合使用效果较好
 
 ### Wan 2.5
 
-- 适合将图片转换为视频 |
-- 能够自然地动画化静态图片 |
+- 适合将静态图片转换为视频 |
+- 能自然地模拟动作 |
 - 具备良好的动作预测能力 |
-- 适用于任何风格的图片 |
+- 适用于任何风格的图片
+
+### Grok
+
+- 通用性较强的视频工具 |
+- 可配置视频时长（5-10秒） |
+- 具有创意的视觉表现能力 |
+- 适合表现抽象概念
 
 ## 工作流程：迭代式提示设计
 
@@ -216,24 +219,24 @@ infsh app run google/veo-3-1-fast --input '{
 
 ```bash
 # Generate videos
-npx skills add inference-sh/agent-skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # Google Veo specific
-npx skills add inference-sh/agent-skills@google-veo
+npx skills add inference-sh/skills@google-veo
 
 # Generate images for image-to-video
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 
 # General prompt engineering
-npx skills add inference-sh/agent-skills@prompt-engineering
+npx skills add inference-sh/skills@prompt-engineering
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
-查看所有视频制作工具：`infsh app list --category video`
+查看所有视频应用：`infsh app list --category video`
 
 ## 文档资料
 
-- [运行应用程序](https://inference.sh/docs/apps/running) - 通过命令行运行应用程序的方法 |
+- [运行应用程序](https://inference.sh/docs/apps/running) - 通过 CLI 运行应用程序的指南 |
 - [视频生成指南](https://inference.sh/blog/guides/video-generation) - 详细的视频制作指南

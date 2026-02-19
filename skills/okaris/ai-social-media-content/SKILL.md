@@ -1,19 +1,30 @@
 ---
 name: ai-social-media-content
-description: |
-  Create AI-powered social media content for TikTok, Instagram, YouTube, Twitter/X.
-  Generate: images, videos, reels, shorts, thumbnails, captions, hashtags.
-  Tools: FLUX, Veo, Seedance, Wan, Kokoro TTS, Claude for copywriting.
-  Use for: content creators, social media managers, influencers, brands.
-  Triggers: social media content, tiktok, instagram reels, youtube shorts, twitter post,
-  content creator, ai influencer, social content, reels, shorts, viral content,
-  thumbnail generator, caption generator, hashtag generator, ugc content
+description: "**生成适用于 TikTok、Instagram、YouTube 和 Twitter 的 AI 驱动型社交媒体内容**  
+- **内容类型**：图片、视频、Reels（TikTok 功能）、Shorts（YouTube 功能）、缩略图、标题文字、标签  
+- **工具**：FLUX、Veo、Seedance、Wan、Kokoro TTS、Claude（用于文案创作）  
+- **适用对象**：内容创作者、社交媒体经理、影响者、品牌  
+- **应用场景**：社交媒体内容生成、TikTok 视频制作、Instagram Reels 制作、YouTube Shorts 制作、Twitter 发文  
+**功能说明：**  
+该工具能够利用 AI 技术自动生成高质量的社交媒体内容，包括图片、视频、Reels 和 Shorts，以及相应的缩略图和标题文字。具体流程如下：  
+1. 使用 FLUX 或其他工具设计内容框架；  
+2. 利用 Veo 或 Wan 生成高质量的图片和视频素材；  
+3. 通过 Kokoro TTS 为内容添加自然语言的旁白；  
+4. 借助 Claude 生成吸引人的文案；  
+5. 生成适合不同平台的标签（如 #TikTokVideo、#InstagramReels、#YouTubeShorts 等）；  
+6. 所生成的内容可用于内容创作者、社交媒体经理和影响者的日常创作，帮助提升内容的吸引力和传播效果。  
+**适用场景示例：**  
+- **内容创作者**：利用这些工具快速制作原创内容，节省时间并提高效率；  
+- **社交媒体经理**：批量生成符合平台规范的内容，提升平台活跃度；  
+- **影响者**：借助 AI 助手提升内容质量，吸引更多粉丝；  
+- **品牌**：通过自动化内容生成提升品牌影响力。"
 allowed-tools: Bash(infsh *)
 ---
-
 # AI社交媒体内容生成
 
-通过 [inference.sh](https://inference.sh) 命令行工具，为所有平台生成社交媒体内容。
+您可以通过 [inference.sh](https://inference.sh) 命令行工具为所有平台生成社交媒体内容。
+
+![AI社交媒体内容示例](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kg2c0egyg243mnyth4y6g51q.jpeg)
 
 ## 快速入门
 
@@ -26,6 +37,8 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可通过 [手动安装与验证](https://dist.inference.sh/cli/checksums.txt) 进行操作。
+
 ## 平台格式
 
 | 平台 | 长宽比 | 时长 | 分辨率 |
@@ -37,9 +50,9 @@ infsh app run google/veo-3-1-fast --input '{
 | YouTube 缩略图 | 16:9 | - | 1280x720 |
 | Twitter/X | 16:9 或 1:1 | <140秒 | 1920x1080 |
 
-## 内容工作流程
+## 内容制作流程
 
-### TikTok / Reels 视频
+### TikTok/Reels 视频
 
 ```bash
 # Generate trending-style content
@@ -48,7 +61,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Instagram 旋转图（Carousel Images）
+### Instagram 旋转图
 
 ```bash
 # Generate cohesive carousel images
@@ -68,7 +81,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Twitter/X 视觉帖子（Visual Post）
+### Twitter/X 视觉帖子
 
 ```bash
 # Generate image for tweet
@@ -83,7 +96,7 @@ infsh app run twitter/post-tweet --input '{
 }'
 ```
 
-### 人物特写内容（Talking Head Content）
+### 人物特写内容
 
 ```bash
 # 1. Write script with Claude
@@ -106,7 +119,7 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 
 ## 内容类型模板
 
-### 热门/病毒式风格（Trending/Viral Style）
+### 热门/病毒式风格
 
 ```bash
 infsh app run google/veo-3 --input '{
@@ -114,7 +127,7 @@ infsh app run google/veo-3 --input '{
 }'
 ```
 
-### 教程/操作指南（Tutorial/How-To）
+### 教程/操作指南
 
 ```bash
 infsh app run google/veo-3-1 --input '{
@@ -122,7 +135,7 @@ infsh app run google/veo-3-1 --input '{
 }'
 ```
 
-### 产品展示（Product Showcase）
+### 产品展示
 
 ```bash
 infsh app run bytedance/seedance-1-5-pro --input '{
@@ -130,7 +143,7 @@ infsh app run bytedance/seedance-1-5-pro --input '{
 }'
 ```
 
-### 生活方式/美学风格（Lifestyle/Aesthetic）
+### 生活方式/美学风格
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -138,7 +151,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### 背景故事（Behind the Scenes）
+### 背景故事
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -146,7 +159,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## 字幕与标签生成（Caption & Hashtag Generation）
+## 字幕与标签生成
 
 ```bash
 # Generate engaging caption
@@ -155,7 +168,7 @@ infsh app run openrouter/claude-haiku-45 --input '{
 }'
 ```
 
-### 吸引观众的内容公式（Hook Formulas）
+### 吸引观众的内容公式
 
 ```bash
 infsh app run openrouter/claude-haiku-45 --input '{
@@ -163,9 +176,9 @@ infsh app run openrouter/claude-haiku-45 --input '{
 }'
 ```
 
-## 多平台内容复用（Multi-Platform Repurposing）
+## 多平台内容复用
 
-### 从长内容到短内容的转换流程（Long to Short Pipeline）
+### 从长内容到短视频的转换流程
 
 ```bash
 # Take a concept and create multiple formats
@@ -187,7 +200,7 @@ infsh app run falai/flux-dev --input "{
 }"
 ```
 
-## 批量内容创建（Batch Content Creation）
+## 批量内容生成
 
 ```bash
 # Generate a week of content
@@ -202,52 +215,52 @@ done
 
 ## 最佳实践
 
-1. **在开头3秒内吸引观众** – 从最吸引人的部分开始。
-2. **优先使用竖屏格式** – TikTok、Reels、YouTube Shorts均采用9:16格式。
-3. **保持视觉风格一致** – 与品牌颜色和风格相匹配。
-4. **预留文本显示区域** – 为平台用户界面元素留出空间。
-5. **使用热门音频** – 单独添加流行音效。
-6. **批量生成内容** – 一次生成多个作品。
+1. **抓住前3秒的注意力** - 从最吸引人的部分开始。
+2. **优先使用竖屏格式** - TikTok、Reels、YouTube Shorts 都适用。
+3. **保持视觉风格一致** - 与品牌颜色和风格相匹配。
+4. **预留文本显示区域** - 为平台的用户界面元素留出空间。
+5. **使用热门背景音乐** - 可单独添加流行的音乐片段。
+6. **批量生成** - 一次生成多条内容。
 
 ## 平台特定提示
 
 ### TikTok
-- 快速切换镜头，使用热门音效。
-- 重要信息需通过文字叠加显示。
-- 立即吸引观众注意力。
+- 快速切换镜头，使用热门背景音乐。
+- 文字要突出显示。
+- 立即吸引观众的注意力。
 
 ### Instagram
-- 保证高质量的视频视觉效果。
+- 保证高质量的视频画质。
 - 使用旋转图来提高互动性。
-- 保持视觉风格的统一性。
+- 保持视觉风格的一致性。
 
 ### YouTube Shorts
-- 清晰传达产品价值。
-- 添加订阅按钮以促进用户互动。
-- 可将较长内容重新剪辑为短视频使用。
+- 清晰地传达产品价值。
+- 使用订阅按钮来引导用户行动。
+- 可以复用较长的视频内容。
 
 ### Twitter/X
 - 使用一张引人注目的图片。
-- 有争议性的内容更容易吸引观众。
-- 可通过多条帖子构建话题讨论。
+- 使用具有争议性的内容来吸引观众。
+- 可以通过多条帖子形成连贯的故事线。
 
 ## 相关技能
 
 ```bash
 # Video generation
-npx skills add inference-sh/agent-skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # Image generation
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 
 # Twitter automation
-npx skills add inference-sh/agent-skills@twitter-automation
+npx skills add inference-sh/skills@twitter-automation
 
 # Text-to-speech for voiceovers
-npx skills add inference-sh/agent-skills@text-to-speech
+npx skills add inference-sh/skills@text-to-speech
 
 # Full platform skill
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 ```
 
-浏览所有可用工具：`infsh app list`
+查看所有可用工具：`infsh app list`

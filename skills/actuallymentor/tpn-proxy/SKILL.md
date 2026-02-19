@@ -1,147 +1,133 @@
 ---
 name: tpn-proxy
 aliases: [tpn, subnet-65, sn65, proxy, socks5]
-description: Make web requests through decentralized SOCKS5 proxies via the Tao Private Network (TPN). This skill is also known as "TPN", "TPN proxy", "subnet 65", or "SN65" — if the user asks to "run TPN", "use a proxy", "use TPN to open", or references "subnet 65", this is the skill they mean. Use when the user wants to route HTTP traffic through a proxy, make anonymous web requests, access geo-restricted content, use a decentralized VPN, fetch a URL through a SOCKS5 proxy, or needs residential proxy IPs. Supports both centralised API key authentication and decentralised x402 micropayments.
+description: 通过 Tao Private Network (TPN) 使用去中心化的 SOCKS5 代理来发起网络请求。该功能也被称为“TPN”、“TPN 代理”、“subnet 65”或“SN65”。当用户要求“运行 TPN”、“使用代理”或提到“subnet 65”时，指的就是这个功能。该功能适用于以下场景：通过代理路由 HTTP 流量、进行匿名网络请求、访问受地理限制的内容、使用去中心化的 VPN、通过 SOCKS5 代理获取 URL，或需要使用住宅区的代理 IP 地址。它支持集中式的 API 密钥认证以及去中心化的 x402 微支付方式。
 metadata: { "openclaw": { "emoji": "📡", "requires": { "bins": ["curl"], "env": ["TPN_API_KEY"] }, "primaryEnv": "TPN_API_KEY" } }
 ---
+# TPN去中心化SOCKS5代理
 
-# TPN Decentralized SOCKS5 Proxy
+该功能通过Tao Private Network的去中心化SOCKS5代理路由网络流量。这些代理属于Bittensor子网（SN65），在80多个国家拥有商业和住宅类型的出口节点。
 
-Route web traffic through Tao Private Network's decentralized SOCKS5 proxies — a Bittensor subnet (SN65) with commercial and residential exit nodes across 80+ countries.
+你可以使用以下命令来请求相关服务：
 
-Ask this skill things like:
-
-- Open https://ipv4.icanhazip.com through a proxy in Germany
-- Show me a curl command that proxies google.com through a US ip address
-- I need a socks5 proxy in Japan for 30 minutes
-- Which countries are available on TPN for proxies?
+- 通过德国的代理访问`https://ipv4.icanhazip.com`
+- 使用美国IP地址代理访问`google.com`
+- 请求在日本使用SOCKS5代理，时长为30分钟
+- 查看TPN支持哪些国家的代理服务
 
 ---
 
-## Security Posture
+## 安全性
 
-| Aspect | Detail |
+| 方面 | 详情 |
 |--------|--------|
-| Environment variables | `TPN_API_KEY` — existence-checked only (`[ -n "$TPN_API_KEY" ]`), never echoed or logged |
-| Files read/written | None |
-| Other secrets accessed | None — no signing keys, no credentials beyond `TPN_API_KEY` |
-| Network destinations | `api.taoprivatenetwork.com` (API calls) + user-specified URLs (validated per Step 5) |
-| x402 signing | Handled entirely by external libraries (`@x402/*`); this skill provides endpoint URLs only |
+| 环境变量 | `TPN_API_KEY` — 仅用于检查是否存在（`[ -n "$TPN_API_KEY" ]`），不会被回显或记录 |
+| 读取/写入的文件 | 无 |
+| 访问的其他秘密信息 | 无 — 除了`TPN_API_KEY`外，没有其他密钥或凭证 |
+| 网络目的地 | `api.taoprivatenetwork.com`（API调用）+ 用户指定的URL（根据第5步进行验证） |
+| x402签名 | 完全由外部库处理（`@x402/*`）；该功能仅提供端点URL |
 
 ---
 
-## This is an action skill
+## 这是一个动作技能
 
-This skill executes API calls and returns results directly — it does not output documentation or instructions for the user to follow.
+该技能会执行API调用并直接返回结果，不会向用户显示文档或操作指南。
 
-**Expected behaviour:**
+**预期行为：**
 
-- Call the TPN API yourself (via `curl` or equivalent) and return the full proxy credentials to the user.
-- When the user asks you to fetch a URL through a proxy, make that request yourself too.
-- Show the full SOCKS5 credentials (username, password, host, port) — these are short-lived and scoped to the proxy lease.
-- The only time you should show the user how to call the API is when they explicitly ask "how do I do this myself?" or similar.
-- If no API key exists, guide the user through account setup — that's the one step only they can do.
+- 你需自行调用TPN API（通过`curl`或其他工具），并将完整的代理凭证返回给用户。
+- 当用户请求通过代理访问某个URL时，你也需自行发起该请求。
+- 显示完整的SOCKS5凭证（用户名、密码、主机、端口）——这些凭证是临时性的，仅适用于当前代理租用期间。
+- 仅当用户明确询问“我该如何自己操作？”时，才需要向用户说明如何调用API。
+- 如果没有API密钥，需指导用户完成账户设置——这是用户唯一能自行完成的步骤。
 
-**A good check:** if your response contains "you can run this command to…" or "use this curl to generate…", reconsider — the user invoked this skill expecting you to run the command and hand them the output.
+**注意事项：** 如果你的回复中包含“你可以运行这个命令来...”或“使用这个curl来生成...”，请重新考虑——用户使用该技能时期望你直接执行命令并给出结果。
 
 ---
 
-## Step-by-Step Procedure
+## 分步流程
 
-Follow this procedure every time the user requests a proxy or asks you to fetch something through a proxy.
+每次用户请求代理或请求通过代理访问某个URL时，请遵循以下步骤：
 
-### Security: Input validation (mandatory)
+### 安全性：输入验证（强制要求）
 
-Before constructing any shell command, **validate every user-provided value**. Never interpolate raw user input into shell commands.
+在构建任何shell命令之前，**必须验证用户提供的所有输入**。切勿将原始用户输入直接插入shell命令中。
 
-| Input              | Validation rule                                                                                     |
+| 输入              | 验证规则                                                                                     |
 |--------------------|------------------------------------------------------------------------------------------------------|
-| `geo`              | Must be exactly 2 uppercase ASCII letters (ISO 3166-1 alpha-2). Reject anything else.                |
-| `minutes`          | Must be a positive integer between 1 and 1440. Reject non-numeric or out-of-range values.            |
-| `connection_type`  | Must be one of: `any`, `datacenter`, `residential`. Reject anything else.                            |
-| `format`           | Must be one of: `text`, `json`. Reject anything else.                                                |
-| URLs (for Step 5)  | Must start with `http://` or `https://`, contain no shell metacharacters (`` ` `` `$` `(` `)` `;` `&` `|` `<` `>` `\n`), and be a well-formed URL. |
+| `geo`              | 必须是2个大写的ASCII字母（ISO 3166-1 alpha-2编码）。拒绝其他格式。                |
+| `minutes`          | 必须是1到1440之间的正整数。拒绝非数字或超出范围的值。            |
+| `connection_type`  | 必须是`any`、`datacenter`或`residential`之一。拒绝其他值。                            |
+| `format`           | 必须是`text`或`json`之一。拒绝其他格式。                                                |
+| URL（第5步使用）      | 必须以`http://`或`https://`开头，不能包含shell特殊字符，并且是一个格式正确的URL。 |
 
-**Rules:**
+**规则：**
 
-- **Never** interpolate raw user input directly into shell commands. Always validate first.
-- **Never** construct `-d` JSON payloads via string concatenation with user input. Use a safe static template and only insert validated values.
-- When using `curl`, always **quote** the URL and proxy URI arguments.
-- Prefer using the agent's built-in HTTP tools (e.g. `WebFetch`) for fetching user-specified URLs rather than constructing `curl` commands.
+- **切勿** 将原始用户输入直接插入shell命令中。务必先进行验证。
+- **切勿** 通过字符串连接用户输入来构建 `-d` JSON负载。使用安全的静态模板，并仅插入经过验证的值。
+- 使用`curl`时，务必对URL和代理URI参数进行转义。
+- 建议使用代理内置的HTTP工具（如`WebFetch`）来获取用户指定的URL，而不是手动构建`curl`命令。
 
-### Step 1: Resolve the API key
+### 第1步：获取API密钥
 
-Check whether `$TPN_API_KEY` is set in the environment (OpenClaw injects this automatically from your config):
+检查环境变量`$TPN_API_KEY`是否已设置（OpenClaw会自动从配置文件中读取该密钥）：
 
-1. Test the variable: `[ -n "$TPN_API_KEY" ] && echo "API key is set" || echo "API key is not set"` — **never** echo, log, or display the key value itself.
-2. If not set → check if the user can pay via [x402](https://www.x402.org) (no API key needed), otherwise guide them through account setup (see the "Set up TPN" example)
+1. 测试该变量：`[ -n "$TPN_API_KEY" ] && echo "API key is set" || echo "API key is not set"` — **切勿** 回显或记录密钥值本身。
+2. 如果未设置 → 检查用户是否可以通过[x402](https://www.x402.org)支付（无需API密钥）；否则指导用户完成账户设置（参见“设置TPN”部分）。
 
-### Step 2: Choose response format
+### 第2步：选择响应格式
 
-| Situation | Use `format` | Why |
+| 情况 | 使用 `format` | 原因 |
 |-----------|--------------|-----|
-| Just need a working proxy URI | `text` (default) | No parsing needed |
-| Need to show structured host/port/user/pass breakdown | `json` | Gives individual fields |
-| Not sure | `text` | Simpler, fewer things to break |
+| 只需要一个有效的代理URI | `text`（默认） | 无需解析 |
+| 需要显示结构化的主机/端口/用户名/密码信息 | `json` | 可以获取各个字段 |
+| 不确定 | `text` | 更简单，出错的可能性更低 |
 
-If you choose `json`, parse the response with `jq`:
+如果选择`json`，请使用`jq`解析响应：
 
 ```bash
 curl -s ... | jq -r '.vpnConfig.username'
 ```
 
-If `jq` is not available, use `format=text` instead — it returns a plain `socks5://` URI that needs no parsing.
+如果`jq`不可用，可以使用`format=text`——它返回一个不需要解析的简单`socks5://` URI。
 
-> **Do not** use `python -c`, `grep`, `cut`, or other shell-based JSON parsing fallbacks. These patterns risk shell injection when combined with dynamic inputs. Stick to `jq` or `format=text`.
+> **切勿** 使用`python -c`、`grep`、`cut`或其他基于shell的JSON解析方法。这些方法在处理动态输入时可能存在安全风险。请始终使用`jq`或`format=text`。
 
-### Step 3: Generate the proxy
+### 第3步：生成代理
 
-```bash
-curl -s -X POST https://api.taoprivatenetwork.com/api/v1/proxy/generate \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: $TPN_API_KEY" \
-  -d '{"minutes": 60, "format": "text", "connection_type": "any"}'
-```
+将用户的请求参数映射到以下字段：
 
-Map the user's request to these parameters:
-
-| Field             | Type    | Required | Default | Description                                    |
+| 参数             | 类型    | 是否必填 | 默认值 | 描述                                    |
 |-------------------|---------|----------|---------|------------------------------------------------|
-| `minutes`         | integer | yes      | —       | Lease duration (1–1440). Default to 60 if not specified. |
-| `geo`             | string  | no       | any     | ISO country code (e.g. `"US"`, `"DE"`, `"JP"`) |
-| `format`          | string  | no       | `text`  | `"text"` for URI string, `"json"` for object   |
-| `connection_type` | string  | no       | `any`   | `"any"`, `"datacenter"`, or `"residential"`    |
+| `minutes`         | 整数 | 是      | —       | 租用时长（1–1440分钟）。未指定时默认为60分钟。 |
+| `geo`             | 字符串  | 否       | 任意     | ISO国家代码（例如`"US"`、`"DE"`、`"JP"`） |
+| `format`          | 字符串  | 否       | `text`  | URI格式为`text`，对象格式为`json`   |
+| `connection_type` | 字符串  | 否       | `any`   | `any`、`datacenter`或`residential`    |
 
-> **Safe JSON body construction:** Always build the `-d` JSON payload as a static single-quoted string with only validated values inserted. Validate `geo` (2 uppercase letters), `minutes` (integer 1–1440), `connection_type` (enum), and `format` (enum) per the validation rules above **before** constructing the curl command. Never concatenate raw user input into the JSON body or any part of the command.
+> **安全的JSON格式构建：** 在构建curl命令之前，务必先验证`geo`（2个大写字母）、`minutes`（1–1440分钟）、`connection_type`（枚举值）和`format`（枚举值）。切勿将原始用户输入直接插入JSON正文或命令的任何部分。
 
-### Step 4: Present the result
+### 第4步：展示结果
 
-Show the **full proxy credentials** so the user can immediately connect. These are temporary (scoped to the lease duration) and safe to display in context. Use the `socks5h://` scheme (with `h`) to ensure DNS resolves through the proxy — this protects user DNS privacy. (When the agent fetches URLs in Step 5, it uses `socks5://` instead — see Step 5.) Include:
+向用户展示**完整的代理凭证**，以便他们立即连接。这些凭证是临时性的（仅适用于当前租用期间），并且在当前上下文中显示是安全的。使用`socks5h://`协议（其中包含`h`前缀）以确保DNS通过代理解析——这可以保护用户的DNS隐私。（在步骤5中，代理会使用`socks5://`协议来获取URL。）展示的内容包括：
+- 结构化的配置信息（主机、端口、用户名、密码、协议、有效期）
+- 完整的`socks5h://` URI
+- 相关的`curl`使用示例
 
-- Structured config block (host, port, username, password, scheme, expiry)
-- Full `socks5h://` URI
-- A ready-to-paste `curl` example when relevant
+### 第5步：如果用户请求访问某个URL
 
-### Step 5: If the user asked you to fetch a URL
+生成代理后，你需要自行发起请求。使用`socks5://`协议（而非`socks5h://`），以确保DNS在本地解析——这样连接的IP地址才是真实的代理IP。
 
-After generating the proxy, make the request yourself. When the agent fetches a URL, use `socks5://` (not `socks5h://`) so DNS resolves locally. This makes checks 5–6 authoritative — the validated public IP is the IP the proxy connects to, eliminating the proxy-side DNS rebinding vector. User-facing credentials (Step 4) continue using `socks5h://` for DNS privacy.
+**建议使用代理内置的HTTP工具**（如`WebFetch`）来获取URL。这是首选方法，因为它可以避免手动构建shell命令。
 
-**Before fetching, validate the target URL using the allowlist model below.** Every check must pass — reject the URL if any check fails.
+**在获取URL之前，必须满足以下验证条件：**
+- 协议必须是`http://`或`https://`
+- 不允许使用shell特殊字符：`` ` `` `$` `(` `)` `;` `&` `|` `<` `>` `\n`
+- 仅接受域名——拒绝原始IP地址（IPv4或IPv6）
+- 拒绝内部主机名：`*.internal`、`*.local`、`*.localhost`、`*.localdomain`、`*.corp`、`*.lan`、`metadata.*`、单标签主机名
+- 主机名必须能够通过本地DNS解析——拒绝无法解析的主机名
+- 解析后的IP地址必须是可公网访问的——拒绝`127.0.0.0/8`、`10.0.0.0/8`、`172.16.0.0/12`、`192.168.0.0/16`、`169.254.0.0/16`、`::1`、`fd00::/8`、`169.254.169.254`
 
-1. **Scheme:** Must start with `http://` or `https://`. Reject all other schemes.
-2. **Shell safety:** Reject any URL containing shell metacharacters: `` ` `` `$` `(` `)` `;` `&` `|` `<` `>` newlines
-3. **No raw IPs:** Reject URLs with raw IP addresses as the hostname (IPv4 or IPv6). Domain names only.
-4. **No internal hostnames:** Reject hostnames matching internal infrastructure patterns:
-   - `*.internal`, `*.local`, `*.localhost`, `*.localdomain`
-   - `*.corp`, `*.lan`
-   - `metadata.*` (cloud metadata endpoints)
-   - Single-label hostnames (no dots — e.g. `localhost`, `redis`, `db`)
-5. **Local DNS resolution required:** Resolve the hostname locally before proxying. If the hostname **fails to resolve** via local DNS, reject it — it may only exist in the proxy's internal DNS. Because the agent uses `socks5://`, local DNS resolution is authoritative — the proxy connects to the same IP the agent validated.
-6. **Public IP required:** The resolved IP must be publicly routable. Reject if it resolves to any private/internal range: `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `::1`, `fd00::/8`, or known cloud metadata addresses (e.g. `169.254.169.254`).
-
-**Preferred method** — use the agent's built-in HTTP tools (e.g. `WebFetch`) with the proxy, which avoids shell command construction entirely.
-
-**If you must use curl**, always double-quote the URL and proxy URI:
+**备用方案——使用curl**（仅在`WebFetch`不可用时使用）：始终对URL和代理URI进行双重转义：
 
 ```bash
 curl --proxy "socks5://username:password@ip:port" \
@@ -149,21 +135,19 @@ curl --proxy "socks5://username:password@ip:port" \
   "https://validated-target-url.com"
 ```
 
-Return the response content to the user — the goal is a complete answer, not a proxy they still need to use themselves.
+将响应内容返回给用户——目标是提供完整的答案，而不是让用户自己继续使用代理。
 
 ---
 
-## Examples
+## 示例
 
-These show exactly what users ask and what you should respond. Study these — they are the gold standard.
+以下是用户可能提出的问题及相应的回答示例：
 
----
+**用户：** “给我一个比利时的SOCKS5代理配置”
 
-**User:** "Give me a socks5 config for Belgium"
+**你：** （生成比利时的代理配置，然后回复：）
 
-**You:** *(generate a BE proxy yourself, then respond:)*
-
-> Here's your Belgian SOCKS5 proxy (valid 60 minutes):
+> 这是你的比利时SOCKS5代理（有效期60分钟）：
 >
 > ```
 > Host:     185.42.170.3
@@ -174,9 +158,9 @@ These show exactly what users ask and what you should respond. Study these — t
 > Expires:  2026-02-16T15:30:00Z
 > ```
 >
-> **Full URI:** `socks5h://u_0CKaBqdE:p_sT6yM3zabqRuhqrahzGOl4i4RTEDgQ7V@185.42.170.3:1080`
+> **完整URI：** `socks5h://u_0CKaBqdE:p_sT6yM3zabqRuhqrahzGOl4i4RTEDgQ7V@185.42.170.3:1080`
 >
-> **curl example:**
+> **curl使用示例：**
 >
 > ```bash
 > curl --proxy socks5h://u_0CKaBqdE:p_sT6yM3zabqRuhqrahzGOl4i4RTEDgQ7V@185.42.170.3:1080 \
@@ -184,15 +168,15 @@ These show exactly what users ask and what you should respond. Study these — t
 >   https://ipv4.icanhazip.com
 > ```
 >
-> This should return a Belgian IP. The proxy expires in 60 minutes — let me know if you need a longer lease.
+> 这将返回一个比利时的IP地址。代理有效期为60分钟——如果需要更长的租期，请告知。
 
 ---
 
-**User:** "Show me a curl command that proxies over Germany"
+**用户：** “给我一个通过德国代理访问的curl命令”
 
-**You:** *(generate a DE proxy yourself, then respond:)*
+**你：** （生成德国的代理配置，然后回复：）
 
-> Here's a curl command routed through a German proxy:
+> 这是通过德国代理访问`https://example.com`的curl命令：
 >
 > ```bash
 > curl --proxy socks5h://u_0E4k7kJ6:p_z2HsXTEXJHYiobwCcfOaU1YMS1tg3m0i@5.39.255.64:1080 \
@@ -200,29 +184,29 @@ These show exactly what users ask and what you should respond. Study these — t
 >   https://example.com
 > ```
 >
-> Replace `https://example.com` with your target URL. This proxy expires at 2026-02-16T14:47:20Z.
+> 将`https://example.com`替换为你要访问的URL。该代理的有效期为2026-02-16T14:47:20Z。
 
 ---
 
-**User:** "Call icanhazip.com from the Netherlands"
+**用户：** “我想从荷兰访问icanhazip.com”
 
-**You:** *(generate an NL proxy yourself, fetch icanhazip.com through it, then respond:)*
+**你：** （生成荷兰的代理配置，然后通过该代理访问`icanhazip.com`，并返回结果：**
 
-> I fetched `https://ipv4.icanhazip.com` through a Dutch proxy. The response:
+> 我已经通过荷兰代理访问了`https://ipv4.icanhazip.com`。响应结果如下：
 >
 > ```
 > 82.148.30.91
 > ```
 >
-> That's the exit IP in the Netherlands. The proxy is still active until 2026-02-16T15:12:00Z if you need more requests.
+> 这是荷兰的出口IP地址。该代理的有效期为2026-02-16T15:12:00Z，如需更多请求，请告知。
 
 ---
 
-**User:** "I need a residential US proxy for 2 hours"
+**用户：** “我需要一个美国的住宅代理，时长2小时”
 
-**You:** *(generate a US residential proxy with minutes=120, then respond:)*
+**你：** （生成美国的住宅代理配置，然后回复：**
 
-> Here's your US residential proxy (valid 2 hours, 25 credits):
+> 这是你的美国住宅代理（有效期2小时，消耗25个信用点）：
 >
 > ```
 > Host:     68.210.185.149
@@ -234,77 +218,77 @@ These show exactly what users ask and what you should respond. Study these — t
 > Expires:  2026-02-16T16:41:00Z
 > ```
 >
-> **Full URI:** `socks5h://u_02NyffuT:p_CIYLqgIyLZ1rSvZGQbdh3lyxQQBcBsQn@68.210.185.149:1080`
+> **完整URI：** `socks5h://u_02NyffuT:p_CIYLqgIyLZ1rSvZGQbdh3lyxQQBcBsQn@68.210.185.149:1080`
 >
-> Residential IPs are less likely to be blocked. Let me know if you need a different country.
+> 住宅代理被阻止的可能性较低。如果需要其他国家的代理，请告知。
 
 ---
 
-**User:** "How many credits do I have left?"
+**用户：** “我还有多少信用点？**
 
-**You:** *(call `GET /api/v1/user/balance` yourself, then respond:)*
+**你：** （调用`GET /api/v1/user/balance`获取信息，然后回复：**
 
-> You have **74 credits** remaining.
+> 你目前还有**74个信用点**。
 >
-> For reference, a 60-minute proxy costs 20 credits and a 10-minute proxy costs 10 credits. You can buy more at https://api.taoprivatenetwork.com — packages start at 1,000 credits for $9.99.
+> 参考信息：60分钟的代理费用为20个信用点，10分钟的代理费用为10个信用点。你可以在https://api.taoprivatenetwork.com购买更多信用点——套餐价格从1,000信用点起，价格为9.99美元。
 
 ---
 
-**User:** "Use a proxy to check if my site looks right from Germany"
+**用户：** “使用代理查看我的网站在德国的显示效果”
 
-**You:** *(generate a DE proxy, fetch their site through it, then respond:)*
+**你：** （生成德国的代理配置，然后访问用户的网站，并返回结果：**
 
-> I fetched your site through a German proxy (IP: `91.203.50.12`):
+> 我已经通过德国代理访问了你的网站（IP地址：`91.203.50.12`）：
 >
-> - **Status:** 200 OK
-> - **Content-Language:** `de` — looks like your site detected the German IP and served the German version
-> - **Page title:** "Willkommen bei Example"
+> - **状态：** 200 OK
+> - **内容语言：** `de` — 看起来你的网站检测到了德国IP并显示了德语版本
+> - **页面标题：** “欢迎访问Example”
 >
-> Everything seems to be working correctly for German visitors. Want me to check from another country?
+> 对德国用户来说，一切显示正常。还需要在其他国家测试吗？
 
 ---
 
-**User:** "Set up TPN" / "How do I get started with TPN?"
+**用户：** “如何设置TPN？” / “我该如何开始使用TPN？”
 
-**You:** *(check if a key already exists — if yes, tell them they're set up; if no:)*
+**你：** （检查用户是否已有API密钥——如果有，告知他们已设置完成；如果没有：**
 
-> To get started with TPN:
+> 要开始使用TPN，请：
 >
-> 1. Go to https://api.taoprivatenetwork.com and create an account
-> 2. From the dashboard, create an API key (it'll look like `tpn-abc123...`)
-> 3. Your first key comes with **100 free credits** — enough for about 5 one-hour proxies
+> 1. 访问https://api.taoprivatenetwork.com创建账户
+> 2. 在控制面板中生成API密钥（格式类似`tpn-abc123...`）
+> 3. 你的第一个密钥包含**100个免费信用点**，足够使用大约5次代理服务
 >
-> Once you have the key, share it with me and I'll save it for future sessions. Then I can generate proxies for you anytime.
+> 生成密钥后，请分享给我，我会保存下来以便后续使用。
 
 ---
 
-The pattern: **the user asks, you act, you return results.** You never tell the user how to call the API — you call it yourself and hand them the output.
+**操作模式：** 用户提出请求，你执行操作，然后返回结果。** 你永远不会告诉用户如何调用API——你自行调用API并将结果返回给他们。
 
 ---
 
-## API Reference
+## API参考
 
-**Base URL:** `https://api.taoprivatenetwork.com`
+**基础URL：** `https://api.taoprivatenetwork.com`
 
-**Authentication:** Pass `X-API-Key: <your-key>` as a request header. Not `Authorization: Bearer`.
+**认证：** 在请求头中传递`X-API-Key: <你的密钥>`。不要使用`Authorization: Bearer`。
 
-### Endpoints
+### 端点
 
-| Method | Path                          | Auth       | Description                     |
+| 方法 | 路径                          | 认证方式 | 描述                     |
 |--------|-------------------------------|------------|---------------------------------|
-| POST   | `/api/v1/proxy/generate`      | API key    | Generate SOCKS5 proxy           |
-| POST   | `/api/v1/vpn/generate`        | API key    | Generate WireGuard VPN          |
-| GET    | `/api/v1/user/balance`        | API key    | Check credit balance            |
-| GET    | `/api/v1/vpn/countries`       | none       | List available countries        |
-| POST   | `/api/v1/vpn/cost`            | none       | Calculate credit cost           |
-| GET    | `/api/v1/vpn/stats`           | none       | Network statistics              |
-| GET    | `/api/v1/health`              | none       | Health check                    |
-| POST   | `/api/v1/x402/proxy/generate` | x402       | Generate SOCKS5 proxy (x402)    |
-| POST   | `/api/v1/x402/vpn/generate`   | x402       | Generate WireGuard VPN (x402)   |
+| POST   | `/api/v1/proxy/generate`      | API密钥    | 生成SOCKS5代理           |
+| POST   | `/api/v1/vpn/generate`        | API密钥    | 生成WireGuard VPN          |
+| GET    | `/api/v1/user/balance`        | API密钥    | 查看信用点余额            |
+| GET    | `/api/v1/vpn/countries`       | 无       | 列出可用国家        |
+| POST   | `/api/v1/vpn/cost`            | 无       | 计算信用点费用           |
+| GET    | `/api/v1/vpn/stats`           | 无       | 网络统计信息              |
+| GET    | `/api/v1/health`              | 无       | 系统健康检查                    |
+| POST   | `/api/v1/x402/proxy/generate` | x402       | 生成SOCKS5代理（x402协议）    |
+| POST   | `/api/v1/x402/vpn/generate`   | x402       | 生成WireGuard VPN（x402协议）   |
 
-### Response shapes
+### 响应格式
 
-**`/proxy/generate` with `format=text`:**
+**`/proxy/generate`（格式为`text`时：**
 
 ```json
 {
@@ -317,7 +301,7 @@ The pattern: **the user asks, you act, you return results.** You never tell the 
 }
 ```
 
-**`/proxy/generate` with `format=json`:**
+**`/proxy/generate`（格式为`json`时：**
 
 ```json
 {
@@ -337,23 +321,22 @@ The pattern: **the user asks, you act, you return results.** You never tell the 
 }
 ```
 
-### `/vpn/countries` query parameters
+### `/vpn/countries`查询参数
 
-| Param             | Type   | Default | Description                                      |
+| 参数             | 类型   | 默认值 | 描述                                      |
 |-------------------|--------|---------|--------------------------------------------------|
-| `format`          | string | `json`  | `"json"` for array, `"text"` for newline-separated |
-| `type`            | string | `code`  | `"code"` for ISO codes, `"name"` for full names   |
-| `connection_type` | string | `any`   | `"any"`, `"datacenter"`, or `"residential"`       |
+| `format`          | 字符串 | `json`  | `"json"`表示数组，`text`表示换行分隔的列表 |
+| `type`            | 字符串 | `code`  | `"code"`表示ISO代码，`name`表示全称   |
+| `connection_type` | 字符串 | `any`   | `"any"`、`datacenter`或`residential`       |
 
-### Using the proxy (for user-facing code examples)
+### 使用代理（针对开发人员）
 
-Only show these if the user explicitly asks "how do I use this in my code?" — otherwise just hand them the config.
+仅当用户明确询问“如何在代码中使用代理”时，才提供相关示例——否则直接提供配置信息。
 
-> **User-facing code should always use `socks5h://`** (with `h`) to resolve DNS through the proxy, preserving DNS privacy. (The agent uses `socks5://` for its own fetching in Step 5, where local DNS resolution is a security feature — see Step 5.)
+> **开发人员代码应始终使用`socks5h://`**（加上`h`前缀）来确保DNS通过代理解析，从而保护DNS隐私。（代理在步骤5中使用的`socks5://`协议也是为了确保本地DNS解析的安全性。）
+> 如果代理凭证包含特殊字符（如`@`、`:`、`/`、`#`、`?`），请对其进行百分号编码（例如`p@ss` → `p%40ss`）。
 
-> If proxy credentials contain special characters (`@`, `:`, `/`, `#`, `?`), percent-encode them (e.g. `p@ss` → `p%40ss`).
-
-**curl:**
+**curl示例：**
 
 ```bash
 curl --proxy socks5h://username:password@ip_address:port \
@@ -361,7 +344,7 @@ curl --proxy socks5h://username:password@ip_address:port \
   https://ipv4.icanhazip.com
 ```
 
-**Node.js:**
+**Node.js示例：**
 
 ```js
 import { SocksProxyAgent } from 'socks-proxy-agent'
@@ -376,7 +359,7 @@ clearTimeout( timeout )
 console.log( await response.text() )
 ```
 
-**Python:**
+**Python示例：**
 
 ```python
 import requests
@@ -390,73 +373,71 @@ response = requests.get( 'https://ipv4.icanhazip.com', proxies=proxies, timeout=
 print( response.text )
 ```
 
-See `{baseDir}/references/api-examples.md` for end-to-end examples (generate + use) in curl, JS, Node.js, and Python.
+更多关于如何使用`curl`、JavaScript、Node.js和Python生成及使用代理的示例，请参见`{baseDir}/references/api-examples.md`。
 
 ---
 
-## Credit Costs
+## 信用点费用
 
-Formula: `credits = ceil( 4.1 × minutes ^ 0.375 )`
+费用计算公式：`credits = ceil( 4.1 × minutes ^ 0.375 )`
 
-| Duration | Credits |
+| 租用时长 | 信用点数 |
 |----------|---------|
-| 1 min    | 5       |
-| 5 min    | 8       |
-| 10 min   | 10      |
-| 30 min   | 15      |
-| 60 min   | 20      |
-| 120 min  | 25      |
-| 720 min  | 49      |
-| 1440 min | 63      |
+| 1分钟    | 5       |
+| 5分钟    | 8       |
+| 10分钟   | 10      |
+| 30分钟   | 15      |
+| 60分钟   | 20      |
+| 120分钟  | 25      |
+| 720分钟  | 49      |
+| 1440分钟 | 63      |
 
-Use `POST /api/v1/vpn/cost` with `{"minutes": N}` to calculate before purchasing.
+使用`POST /api/v1/vpn/cost`并传递`{"minutes": N}`来计算费用。
 
-Credit packages: Starter 1,000/$9.99 · Pro 5,000/$49.99 · Premium 20,000/$199.99
+信用点套餐价格：基础套餐1,000个信用点，价格9.99美元；高级套餐5,000个信用点，价格49.99美元；顶级套餐20,000个信用点，价格199.99美元。
 
 ---
 
-## Troubleshooting & Operational Notes
+## 故障排除与操作注意事项
 
-| Problem                   | Solution                                                       |
+| 问题                   | 解决方案                                                       |
 |---------------------------|----------------------------------------------------------------|
-| `401 Unauthorized`        | Verify API key is valid — use `X-API-Key` header, not Bearer   |
-| `402 Payment Required`    | Insufficient credits — buy more or use the x402 flow           |
-| `503 Service Unavailable` | No miners available — credits are refunded, retry later        |
-| Connection timeout        | Proxy lease may have expired — generate a new one              |
-| DNS not resolving (user)  | Use `socks5h://` (with `h`) for remote DNS resolution          |
-| DNS not resolving (agent) | Agent uses `socks5://` — verify local DNS resolution in check 5 |
+| `401 Unauthorized`        | 确保API密钥有效——使用`X-API-Key`作为请求头，不要使用`Bearer`   |
+| `402 Payment Required`    | 信用点不足——购买更多信用点或使用x402支付方式           |
+| `503 Service Unavailable` | 无可用矿工——退还信用点，稍后重试        |
+| 连接超时        | 代理租期可能已过期——重新生成代理              |
+| 用户的DNS解析失败 | 使用`socks5h://`（加上`h`前缀）进行远程DNS解析          |
+| 代理的DNS解析失败 | 代理使用`socks5://`协议——检查本地DNS解析是否正常          |
 
-**Operational rules:**
+**操作规则：**
 
-- User-facing credentials and code examples: always use `socks5h://` for DNS privacy
-- Agent-side fetching (Step 5): always use `socks5://` so local DNS validation is authoritative
-- Check credit balance with `GET /api/v1/user/balance` before generating proxies in bulk
-- Proxy leases expire at `expiresAt` — never cache or reuse credentials beyond that time
-- If a `503` occurs, credits are refunded automatically — retry after a short delay
+- 对用户提供的凭证和代码示例：始终使用`socks5h://`协议来保护DNS隐私 |
+- 代理的请求处理（步骤5）：始终使用`socks5://`协议，以确保本地DNS解析的准确性 |
+- 在批量生成代理之前，使用`GET /api/v1/user/balance`检查信用点余额 |
+- 代理租期以`expiresAt`字段为准——切勿缓存或重复使用过期的凭证 |
+- 如果出现`503`错误，信用点将自动退还——稍后重试
 
----
+## x402支付方式（高级）
 
-## x402 Payment Flow (Advanced)
+[x402协议](https://www.x402.org)支持使用USDC进行按请求计费的访问。无需账户或API密钥——非常适合已经支持x402协议的代理。
 
-The [x402 protocol](https://www.x402.org) enables pay-per-request access using USDC on Base. No account or API key needed — ideal for autonomous agents that already support x402.
+如果你是支持x402协议的代理，你应该已经知道如何处理支付流程。TPN的x402端点遵循以下标准：
 
-If you are an x402-capable agent, you already know how to handle the payment handshake. The TPN x402 endpoints follow the standard protocol:
+1. 发送`POST /api/v1/x402/proxy/generate`请求——返回`HTTP 402`状态码及`payment-required`请求头
+2. 按照[x402协议](https://www.x402.org)完成支付流程
+3. 重新发送请求以获取SOCKS5代理的凭证
 
-1. `POST /api/v1/x402/proxy/generate` — returns `HTTP 402` with a standard `payment-required` header
-2. Complete the x402 payment flow per the [protocol specification](https://www.x402.org)
-3. Retry with the payment header to receive SOCKS5 credentials
+请求体与普通端点相同。无需提供`X-API-Key`。
 
-Same request body as the centralised endpoint. No `X-API-Key` needed.
-
-See `{baseDir}/references/x402-examples.md` for curl and browser JS examples, and the [x402 spec](https://www.x402.org) for full protocol details. Signing is handled entirely by external libraries — this skill provides endpoint URLs only.
+更多关于x402协议的示例（包括curl和浏览器JS代码）请参见`{baseDir}/references/x402-examples.md`，详细协议规范请参考[https://www.x402.org`。签名处理完全由外部库负责——该功能仅提供端点URL。
 
 ---
 
-## Links
+## 链接
 
-- Dashboard & Account: https://api.taoprivatenetwork.com
-- API Docs: https://api.taoprivatenetwork.com/docs/getting-started/
-- Swagger UI: https://api.taoprivatenetwork.com/api-docs/
-- OpenAPI Spec: https://api.taoprivatenetwork.com/api-docs/openapi.json
-- LLM-friendly docs: https://api.taoprivatenetwork.com/docs/llms-full.txt
-- x402 Protocol: https://www.x402.org
+- 控制面板和账户：https://api.taoprivatenetwork.com
+- API文档：https://api.taoprivatenetwork.com/docs/getting-started/
+- Swagger UI：https://api.taoprivatenetwork.com/api-docs/
+- OpenAPI规范：https://api.taoprivatenetwork.com/api-docs/openapi.json
+- 适合大型语言模型的文档：https://api.taoprivatenetwork.com/docs/llms-full.txt
+- x402协议详情：https://www.x402.org
