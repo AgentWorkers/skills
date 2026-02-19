@@ -18,6 +18,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -32,10 +33,8 @@ jobs:
         env:
           TRANSLATE_API_URL: ${{ secrets.TRANSLATE_API_URL }}
           TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 可选：设置上游仓库 URL
-          # UPSTREAM_REPO_URL: https://github.com/your-fork/skills/archive/refs/heads/main.zip
-          
           python translate.py
 
       - name: Commit and push changes
@@ -43,8 +42,9 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # 添加翻译后的文件
+          # 添加翻译后的文件和 SYNC_COMMIT_ID
           git add skills/
+          git add SYNC_COMMIT_ID
           
           # 检查是否有文件变更
           if git diff --staged --quiet; then
@@ -52,7 +52,10 @@ jobs:
             exit 0
           fi
           
-          git commit -m "chore: sync and translate upstream skills ($(date -u '+%Y-%m-%d %H:%M:%S UTC'))"
+          # 读取 SYNC_COMMIT_ID
+          SYNC_COMMIT_ID=$(cat SYNC_COMMIT_ID 2>/dev/null || echo "unknown")
+          
+          git commit -m "chore: sync and translate upstream skills (commit: ${SYNC_COMMIT_ID}) ($(date -u '+%Y-%m-%d %H:%M:%S UTC'))"
           
           # 推送到远程
           git push origin main
