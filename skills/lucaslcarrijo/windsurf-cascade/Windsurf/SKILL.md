@@ -1,27 +1,27 @@
 ---
 name: windsurf-cascade
 version: 1.0.0
-description: 这是一项关于如何使用Windsurf IDE及其Cascade AI代理来完成各种软件工程任务的综合性技能说明（已更新至2026年的新功能，涵盖技能、工作流程、记忆功能、MCP以及多代理会话等内容）。
+description: 这是一项关于如何使用Windsurf IDE及其Cascade AI代理来完成各种软件工程任务的综合性技能指南（已更新至2026年的新功能，涵盖技能（Skills）、工作流程（Workflows）、记忆（Memories）、MCP以及多代理会话（Multi-agent Sessions）等内容）。
 author: Lucas Carrijo
 ---
 # Windsurf Cascade智能助手技能
 
-本技能提供了使用Windsurf集成开发环境（IDE）及其Cascade人工智能助手的全面指南和工作流程，涵盖了自2026年1月发布的Wave 13版本的所有功能。
+本技能提供了使用Windsurf集成开发环境（IDE）及其Cascade AI智能助手的全面指南和工作流程，涵盖了自2026年1月发布的Wave 13版本的所有功能。
 
 ## 安装
 
 ### 下载
 
-从 [windsurf.com](https://windsurf.com) 下载适合您操作系统的Windsurf编辑器：
-- **macOS**：.dmg安装包（支持Intel和Apple Silicon架构）
-- **Windows**：.exe安装包
-- **Linux**：.deb软件包（Debian/Ubuntu系统）或.tar.gz压缩包
+从 [windsurf.com](https://windsurf.com) 下载适用于您操作系统的Windsurf编辑器：
+- **macOS**: `.dmg` 安装包（支持Intel和Apple Silicon架构）
+- **Windows**: `.exe` 安装包
+- **Linux**: `.deb` 包（Debian/Ubuntu系统）或 `.tar.gz` 压缩包
 
 ### 安装后的设置
 
 **将Windsurf添加到PATH环境变量中（可选，但推荐）：**
 
-在入职培训期间，您可以选择将Windsurf添加到PATH环境变量中，以便通过命令行直接调用它：
+在入职培训期间，您可以选择将Windsurf添加到PATH环境变量中，以便通过命令行直接使用：
 
 ```bash
 # macOS - create symlink manually if needed
@@ -40,13 +40,13 @@ Cmd+Shift+P → "Import VS Code Settings"
 Cmd+Shift+P → "Import Cursor Settings"
 ```
 
-### Windows系统下的WSL设置
+### Windows系统下的WSL（Windows Subsystem for Linux）设置
 
-Windsurf支持WSL（测试版）。请按照以下步骤连接您的WSL实例：
-1. 点击屏幕左下角的远程连接按钮
+Windsurf支持WSL（测试版）。请按照以下步骤连接到您的WSL实例：
+1. 单击左下角的远程连接按钮
 2. 选择“Connect to WSL”或使用命令面板：`Remote-WSL: Connect to WSL`
 
-若需通过WSL终端访问Windsurf功能，请创建一个辅助脚本：
+若需从WSL终端访问Windsurf功能，请创建一个辅助脚本：
 
 ```bash
 #!/bin/bash
@@ -56,27 +56,28 @@ windsurf --folder-uri "vscode-remote://wsl+Ubuntu$CURRENT_PATH"
 
 ### 认证
 
-在入职培训期间或通过个人资料菜单注册或登录您的Windsurf（旧称Codeium）账户。
+在入职培训期间或通过个人资料菜单注册或登录您的Windsurf（原名Codeium）账户。
 
-## Cascade——人工智能助手
+## Cascade——AI智能助手
 
-Cascade是Windsurf的智能辅助工具。它可以理解您的整个代码库，跟踪您的实时操作（编辑、终端操作、剪贴板内容），并能够自主创建文件、编辑多个文件中的代码、运行终端命令以及管理项目相关的数据。
+Cascade是Windsurf的智能助手，它可以理解您的整个代码库，跟踪您的实时操作（编辑、终端操作、剪贴板内容），并能够自动创建文件、编辑多个文件中的代码、运行终端命令以及管理项目相关数据。
 
-### Cascade的模式
+### Cascade模式
 
-Cascade主要提供两种模式：
+Cascade主要有两种模式：
+
 - **编写模式**（`Cmd+L` / `Ctrl+L`）：具有完整的编写权限，可以创建文件、编辑代码、运行终端命令并对代码库进行修改。
 - **聊天模式**（`Cmd+Shift+L` / `Ctrl+Shift+L`切换）：仅支持读取模式，可以回答关于代码库和编码原则的问题，但不会进行任何修改。
 
 ### 模型选择
 
-您可以从Cascade输入框下方的下拉菜单中选择不同的模型。可用模型包括：
+您可以从Cascade输入框下方的下拉菜单中选择不同的模型。可选模型包括：
 - **SWE-1.5**（Windsurf自家的前沿模型，所有用户均可免费使用）
 - **Claude Opus 4.6**、**Claude Sonnet 4.5**
 - **GPT-5.2**、**GPT-5.2-Codex**、**GPT-5.1**、**GPT-5.1-Codex**
 - **Gemini 3 Flash**、**Gemini 3 Pro**
 - **Falcon Alpha**（优化速度的隐身模型）
-- **BYOK**（允许用户自定义模型）
+- **BYOK**（用户自定义模型）
 
 每个模型的使用会消耗相应的信用点数。
 
@@ -89,11 +90,11 @@ Cascade内置了多种工具：
 - **MCP**：通过模型上下文协议调用外部工具
 - **终端**：直接执行shell命令
 
-每个提示最多可以调用25个工具。如果操作暂停，输入`continue`即可继续。
+Cascade每次请求最多可调用25个工具。如果操作暂停，输入`continue`即可恢复。
 
-### 使用@提及引用特定内容
+### 使用@提及引用上下文
 
-您可以在提示中引用特定的文件、函数或上下文内容：
+您可以在提示中引用特定的文件、函数或上下文：
 
 ```
 @filename.ts
@@ -103,17 +104,17 @@ Cascade内置了多种工具：
 
 您还可以：
 - 从文件资源管理器中将文件拖放到Cascade中
-- 从问题面板将问题发送给Cascade处理
+- 从问题面板将问题发送给Cascade
 - 高亮显示错误并点击“解释并修复”
-- 通过@提及来引用之前的对话内容以保持会话间的上下文连贯性
+- 通过@提及来引用之前的对话内容以保持会话间的上下文关联
 
 ### 语音输入
 
-您可以使用语音输入与Cascade进行交互，系统会将其转换为文本。
+您可以通过语音输入与Cascade进行交互，系统会将其转换为文本。
 
 ### 检查点与回滚
 
-Cascade会创建带有名称的检查点。您可以通过将鼠标悬停在提示上并点击回滚箭头来撤销更改。**目前回滚操作是不可逆的。**
+Cascade会创建带有名称的检查点。您可以通过将鼠标悬停在提示上并点击回滚箭头来撤销更改。**需要注意的是，目前回滚操作是不可逆的。**
 
 ## 键盘快捷键
 
@@ -123,29 +124,29 @@ Cascade会创建带有名称的检查点。您可以通过将鼠标悬停在提�
 | 切换编写/聊天模式 | `Cmd+Shift+L` | `Ctrl+Shift+L` |
 | 命令面板 | `Cmd+Shift+P` | `Ctrl+Shift+P` |
 | 内联AI（终端） | `Cmd+I` | `Ctrl+I` |
-| 接受选中的代码差异块 | `Option+Enter` | `Alt+Enter` |
-| 拒绝选中的代码差异块 | `Option+Shift+Backspace` | `Alt+Shift+Backspace` |
-| 快速上下文（查看第一条消息） | `Cmd+Enter` | `Ctrl+Enter` |
+| 接受选中的代码差异部分 | `Option+Enter` | `Alt+Enter` |
+| 拒绝选中的代码差异部分 | `Option+Shift+Backspace` | `Alt+Shift+Backspace` |
+| 快速上下文（显示第一条消息） | `Cmd+Enter` | `Ctrl+Enter` |
 
 ## 技能
 
-技能允许您将指令、模板、检查清单和支持文件打包到文件夹中，以便Cascade能够执行复杂的、多步骤的任务。
+技能允许您将指令、模板、检查表和支持文件打包到文件夹中，以便Cascade能够执行复杂的、多步骤的任务。
 
 ### 创建技能
 
-1. 点击Cascade右上角滑块菜单中的“自定义设置”图标
-2. 转到“技能”面板
-3. 点击“+ 工作区”（特定于项目的技能）或“+ 全局技能”
+1. 单击Cascade右上角自定义设置图标
+2. 转到技能面板
+3. 点击`+ Workspace`（针对特定工作空间）或`+ Global`（全局技能）
 4. 为技能命名（仅使用小写字母、数字和连字符）
 
 ### Skill.md文件格式
 
-`SKILL.md`文件用于存储技能的名称和描述等信息，这些信息会被Cascade用来决定何时自动调用该技能。
+`SKILL.md`文件用于存储技能的名称和描述等信息。描述字段有助于Cascade判断何时自动触发该技能。
 
 ### 调用技能
 
-- **自动调用**：Cascade会根据任务需求自动选择并调用相应的技能。
-- **手动调用**：在提示中@提及技能名称即可。
+- **自动触发**：Cascade会根据任务需求自动调用相应的技能。
+- **手动触发**：在提示中通过@提及来调用技能名称。
 
 有关技能的完整规范，请访问 [agentskills.io](https://agentskills.io)。
 
@@ -155,27 +156,34 @@ Cascade会创建带有名称的检查点。您可以通过将鼠标悬停在提�
 
 ### 创建工作流程
 
-1. 点击“自定义设置”图标 → “工作流程”面板 → “+ 创建工作流程”
-- 或者让Cascade为您自动生成工作流程
+1. 单击自定义设置图标 → 工作流程面板 → `+ Workflow`
+2. 或者让Cascade为您自动生成工作流程
 
 ### 工作流程的存储位置
 
-工作流程保存在`.windsurf/workflows/`目录下。Windsurf会从以下位置查找工作流程：
-- 当前工作区及其子目录
+工作流程保存在`.windsurf/workflows/`目录下。Windsurf会从以下位置自动检测工作流程：
+- 当前工作空间及其子目录
 - 一直到git仓库根目录的父目录
-- 支持多个工作区，并支持去重
+- 支持多个工作空间的工作流程，并会进行去重处理
 
 每个工作流程文件的长度限制为**12,000个字符**。
 
 ### 调用工作流程
 
-工作流程可以相互调用：
-
 ```
 /workflow-name
 ```
 
-### 示例工作流程——代码审查
+工作流程可以相互调用：
+
+```markdown
+## Steps
+1. Call /lint-and-format
+2. Call /run-tests
+3. Deploy to staging
+```
+
+### 示例工作流程——PR审查
 
 ```markdown
 ---
@@ -199,28 +207,28 @@ description: Review PR comments and address them
 
 ### 记忆
 
-- **自动生成**：Cascade在遇到有用内容时会自动生成记忆记录，不会消耗信用点数。
+- **自动生成**：Cascade在遇到有用信息时会自动生成记忆记录，且不会消耗信用点数。
 - **用户创建**：在Cascade中输入`create memory ...`来手动保存上下文信息。
-- 自动生成的记忆记录仅适用于当前工作区。
+- 自动生成的记忆记录仅适用于当前工作空间。
 
 **管理记忆记录：**
-- 通过Windsurf设置 → “设置”选项卡 → “管理记忆记录”来操作
-- 或者在Cascade中点击三个点来管理记忆记录
-- 通过设置 → “自动生成记忆记录”来切换开关
+- 通过Windsurf设置 → 设置选项卡 → “Cascade-Generated Memories”进行管理
+- 或者：在Cascade中点击三个点 → 管理记忆记录
+- 切换自动生成功能：设置 → “Auto-Generate Memories”
 
 ### 规则
 
-规则是由用户手动定义的指令，用于指导Cascade的行为。
+规则是用户为Cascade定义的指令。
 
-**规则级别：**
-- `global_rules.md`：适用于所有工作区
-- `.windsurf/rules/`：包含特定工作区规则的目录
+**规则类型：**
+- `global_rules.md`：适用于所有工作空间
+- `.windsurf/rules/`：包含特定工作空间规则的目录
 - 系统级规则（企业版）：通过MDM策略进行配置
 
 **规则激活模式：**
 - **始终启用**：规则始终生效
-- **全局规则**：适用于符合特定模式的文件（例如`.js`、`src/**/*.ts`）
-- **手动/基于描述**：通过自然语言匹配来激活规则
+- **全局规则**：应用于符合特定模式的文件（例如`.js`、`src/**/*.ts`）
+- **手动/基于描述的规则**：通过自然语言匹配来激活
 
 **规则编写最佳实践：**
 - 保持规则简洁明了
@@ -243,7 +251,7 @@ description: Review PR comments and address them
 
 ### 内联AI终端
 
-在终端中按下`Cmd+I` / `Ctrl+I`可以打开一个内联聊天框，该聊天框可以根据自然语言生成CLI命令。
+在终端中按`Cmd+I` / `Ctrl+I`可以打开一个内联聊天框，该聊天框可以根据自然语言生成CLI命令。
 
 ### Cascade的终端执行功能
 
@@ -251,18 +259,18 @@ Cascade可以直接运行终端命令。您可以在Windsurf设置中配置自�
 - **手动模式**：每次执行命令时都需要用户确认
 - **半自动模式**：自动执行安全命令
 - **快速模式**：无需确认即可自动执行所有命令
-- **自定义模式**：允许/拒绝某些命令的执行
+- **自定义模式**：通过允许/拒绝列表来控制特定命令的执行
 
 ### 专用终端（Wave 13版本）
 
-Windsurf为Cascade提供了专用的zsh shell，提高了命令执行的可靠性。该终端会使用您的`.zshrc`环境变量，并支持完整的交互功能。
+Windsurf为Cascade提供了专用的zsh shell，提升了命令执行的可靠性。该终端使用您的`.zshrc`环境变量，并支持完整的交互功能。
 
-### ⚠️ 与人工智能助手/自动化工具的配合使用
+### ⚠️ 与AI助手/自动化工具的配合使用
 
-当在自动化环境中（如AI助手、脚本、编排器）使用Windsurf时，IDE需要图形用户界面（GUI）环境。对于无头自动化场景，可以采取以下方法：
+当在自动化环境中（如AI助手、脚本或编排器）使用Windsurf时，IDE需要图形用户界面（GUI）环境。对于无界自动化场景，您可以考虑：
 - **使用Windsurf的工作流程**：将多步骤任务定义为工作流程，由Cascade执行
 - **MCP集成**：通过MCP服务器连接外部自动化工具
-- **Cascade钩子**：在Cascade的工作流程关键节点执行自定义shell命令
+- **Cascade钩子**：在Cascade的工作流程中的关键点执行自定义shell命令
 
 ## MCP集成
 
@@ -286,40 +294,40 @@ Windsurf支持Model Context Protocol（MCP）协议，用于连接外部工具�
 }
 ```
 
-访问方式：Windsurf设置 → “Cascade” → “管理MCP服务器” → 查看原始配置文件
+访问方式：Windsurf设置 → Cascade → 管理MCPs → 查看原始配置文件
 
 ### MCP功能
 
 - **MCP市场**：在Windsurf设置中浏览精选的MCP服务器，支持一键配置
-- **@提及**：通过@提及在Cascade中触发MCP工具
-- **启用/禁用**：通过Cascade界面切换MCP服务器的启用状态
-- **传输方式**：支持标准输入输出（STDIN/STDOUT）、Streamable HTTP和SSE协议
+- **@提及**：在Cascade中通过@提及来触发MCP工具
+- **启用/禁用**：通过Cascade界面切换MCP服务器
+- **传输方式**：支持标准输入输出（STDIO）、Streamable HTTP和SSE协议
 - **企业版**：团队管理员可以白名单/黑名单MCP服务器
 
 每次调用MCP工具会消耗一个信用点数。
 
 ## Cascade钩子
 
-您可以在Cascade的工作流程中的关键节点执行自定义shell命令：
+您可以在Cascade的工作流程中的关键点执行自定义shell命令：
 - **模型响应时**：用于日志记录、审计或安全控制
-- **预处理/后处理钩子**：用于验证或管理操作（企业级应用）
+- **预处理/后处理钩子**：用于验证或管理目的（企业版）
 
 ## 同时运行多个Cascade实例
 
 您可以并行运行多个Cascade实例：
 - 打开多个Cascade窗口
-- 使用Git工作区同时处理不同分支，避免冲突
+- 使用Git工作区在不同的分支上同时进行开发，避免冲突
 - 在一个Cascade实例执行时启动另一个Cascade实例
 
 ## 快速上下文功能
 
-按下`Cmd+Enter` / `Ctrl+Enter`可以启用快速上下文功能。该功能利用SWE-grep模型，从大型代码库中快速检索信息，速度提升多达20倍。
+按`Cmd+Enter` / `Ctrl+Enter`可以启用快速上下文功能。该功能利用SWE-grep模型，从大型代码库中快速检索信息，速度提升多达20倍。
 
-## 忽略文件
+## 文件忽略规则
 
-将需要忽略的文件添加到工作区的`.codeiumignore`文件中（语法与`.gitignore`相同）。若需在整个代码库中设置全局忽略规则，请将`.codeiumignore`文件放在`~/.codeium/`目录下。
+将需要忽略的文件添加到工作空间的`.codeiumignore`文件中（格式与`.gitignore`相同）。若需在所有仓库中应用全局忽略规则，请将`.codeiumignore`文件放在`~/.codeium/`目录下。
 
-## 常见的工作流程场景
+## 常见工作流程示例
 
 ### 代码审查
 
@@ -341,8 +349,6 @@ Analyze the following error log and suggest a fix: [paste error]
 ```
 
 ### 错误处理
-
-#### 高亮显示错误后选择“解释并修复”
 
 ### Git集成
 
@@ -368,7 +374,7 @@ description: Deploy to production with safety checks
 5. Verify deployment health checks
 ```
 
-通过`/deploy`命令在Cascade中执行部署操作。
+通过`/deploy`命令在Cascade中调用该脚本进行部署。
 
 ### 实时预览
 
@@ -376,14 +382,14 @@ Windsurf内置了实时预览功能，可用于Web应用程序。您可以请求
 
 ### 应用程序部署
 
-通过Cascade的命令调用功能（支持Netlify部署）一键完成应用程序部署。
+通过Cascade的工具调用功能（支持Netlify部署，目前处于测试阶段），您可以一键完成应用程序的部署。
 
-## 价格信息
+## 价格方案
 
-| 计划 | 价格 | 每月信用点数 | 适用对象 |
+| 价格方案 | 价格 | 每月信用点数 | 适用对象 |
 |---|---|---|---|
-| 免费 | $0 | 25点 | 学生、爱好者 |
-| Pro | $15/月 | 500点 | 个人开发者 |
+| 免费 | $0 | 25个信用点 | 学生、爱好者 |
+| Pro | $15/月 | 500个信用点 | 个人开发者 |
 | Teams | $30/用户/月 | 可定制 | 开发团队 |
 | Enterprise | $60/用户/月 | 可定制 | 大型企业 |
 
@@ -394,7 +400,7 @@ Windsurf内置了实时预览功能，可用于Web应用程序。您可以请求
 | AI助手 | Cascade（具有智能交互能力） | Cursor助手（基于CLI） |
 | 规则管理 | `.windsurf/rules/` + `global_rules.md` | `.cursor/rules` + `CLAUDE.md` |
 | 工作流程 | `.windsurf/workflows/`（使用斜杠命令） | 无（需手动操作） |
-| 记忆功能 | 自动生成 + 用户创建 | 基于代码库的索引 + 项目规则 |
+| 记忆功能 | 自动生成 + 用户自定义 | 基于代码库的索引 + 项目规则 |
 | 技能管理 | `.windsurf/skills/`（文件夹形式） | 无 |
 | 终端支持 | 专用zsh shell + 快速执行模式 | 标准终端 |
 | 实时预览 | 内置功能 | 需依赖扩展程序 |

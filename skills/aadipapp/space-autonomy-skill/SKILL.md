@@ -1,21 +1,18 @@
 ---
 name: space-autonomy-quantum
-description: Autonomous space navigation agent using optical quantum kernels for terrain classification.
+description: 一种利用光学量子内核进行地形分类的自主太空导航代理。
 author: tempguest
 version: 0.1.0
 license: MIT
 ---
+# 太空自主量子技能
 
-# Space Autonomy Quantum Skill
+该技能模拟了一个用于太空探索的自主代理，它使用**光学量子内核**来对地形进行分类。该技能通过实施严格的置信度阈值来确保**最高的安全性**；如果量子分类器无法做出明确判断，代理会触发“安全模式”（SAFE MODE）。
 
-This skill simulates an autonomous agent for space exploration that uses **Optical Quantum Kernels** to classify terrain.
-It emphasizes **highest safety** by implementing strict confidence thresholds. If the quantum classifier is uncertain, the agent triggers a failsafe "SAFE MODE".
+## 特点
+- **量子感知**：利用模拟的光学量子干涉现象来识别地形特征。
+- **安全保护机制**：当分类置信度低于0.8时，系统会自动停止运行。
+- **自主决策**：根据量子内核的检测结果，决定是“导航”还是“避开”目标地形。
 
-## Features
-- **Quantum Perception**: Uses simulated optical quantum interference to recognize terrain features.
-- **Safety Failsafe**: Automatically halts if classification confidence is below 0.8.
-- **Autonomous Decision Making**: Decides to "Navigate" or "Avoid" based on quantum kernel results.
-
-## Commands
-
-- `navigate`: Process a sensor reading and decide on an action.
+## 命令
+- `navigate`：处理传感器数据并决定采取的行动。

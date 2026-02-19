@@ -1,16 +1,7 @@
 ---
 name: raon-os
 version: 0.7.10
-description: "这是一款由人工智能驱动的初创企业辅助工具，专为韩国创业者设计。它具备以下功能：  
-1. 评估商业计划书；  
-2. 为创业者匹配政府提供的资金支持项目（如TIPS、DeepTech、Global TIPS）；  
-3. 帮助创业者与3,972家获得TIPS资助的初创企业建立联系；  
-4. 提供投资者推荐服务；  
-5. 支持与Kakao i OpenBuilder平台集成。  
-该工具还具备以下核心技术：  
-- 基于代理模型的问答系统（Agentic RAG，包括HyDE、Multi-Query、CRAG）；  
-- 结构化数据提取技术；  
-- 财务数据匹配功能（Track B）。"
+description: "这是一款由人工智能驱动的初创企业辅助工具，专为韩国创业者设计。它能够评估商业计划书，帮助创业者匹配政府提供的资金支持计划（如TIPS/DeepTech/Global TIPS），并与3,972家获得TIPS资助的初创企业建立联系，同时提供投资者的推荐意见。此外，该工具还支持与Kakao i OpenBuilder的集成。其主要功能包括：智能的问答系统（支持HyDE、多查询、CRAG等模式）、结构化数据提取技术，以及财务数据匹配功能（Track B）。"
 metadata:
   openclaw:
     env:
@@ -43,8 +34,8 @@ metadata:
 
 ## 安装要求
 
-- **Python 3.9+**（macOS 默认已安装，无需额外安装）
-- **Node.js 18+**（用于执行 `npx @yeomyeonggeori/raon-os` 命令）
+- **Python 3.9+**（macOS 已内置，无需额外安装）
+- **Node.js 18+**（用于执行 `npx @yeomyeonggeori/raon-os`）
 - **LLM API 密钥**（以下选项之一，按优先级排序）：
 
 | 环境变量 | 说明 | 备注 |
@@ -52,10 +43,10 @@ metadata:
 | `OPENROUTER_API_KEY` | **优先级1** — 支持所有 OpenClaw 模型 | 推荐 |
 | `GEMINI_API_KEY` | **优先级2** — Google Gemini + 嵌入式功能 | |
 | `ANTHROPIC_API_KEY` | **优先级3** — Claude | |
-| `OPENAI_API_KEY` | **优先级4** | GPT + 嵌入式功能 | |
-| Ollama 本地版** | 无密钥时自动检测 | 可选 — 使用 `raon.sh install-model` 安装 |
+| `OPENAI_API_KEY` | **优先级4** — GPT + 嵌入式功能 | |
+- **Ollama 本地版** | 无密钥时自动检测 | 可选 — 使用 `raon.sh install-model` 安装 |
 
-- **向量搜索**：如果拥有 `GEMINI_API_KEY` 或 `OPENAI_API_KEY`，则自动启用该功能；否则将使用 BM25 关键词搜索。
+- **向量搜索**：如果配置了 `GEMINI_API_KEY` 或 `OPENAI_API_KEY`，则自动启用向量搜索功能；否则使用 BM25 关键词搜索。
 
 ## 快速入门
 
@@ -91,37 +82,14 @@ RAON_MODEL=google/gemini-2.5-flash  # 모델 강제 지정 (선택)
 RAON_LLM_PROVIDER=openrouter       # 프로바이더 강제 지정 (선택)
 ```
 
-Raon OS 是一款专为创业者设计的辅助工具，可帮助您将商业想法转化为实际项目。
+Raon OS 是一款专为创业团队设计的辅助工具，可帮助您将商业想法转化为实际项目。
 
-## 主要功能
+## 功能介绍
 
-### 1. **biz-plan** — 业务计划书评估
-分析业务计划书（PDF/文本格式），并提供评分及改进建议。
+### 1. **biz-plan** — 商业计划书评估
+分析商业计划书（PDF/文本格式），并提供评分及改进建议。
 
-```bash
-# PDF 평가
-{baseDir}/scripts/raon.sh biz-plan evaluate --file /path/to/plan.pdf
-
-# 텍스트 평가
-{baseDir}/scripts/raon.sh biz-plan evaluate --text "사업 아이디어 설명..."
-
-# JSON 형식 출력
-{baseDir}/scripts/raon.sh biz-plan evaluate --file /path/to/plan.pdf --json
-
-# 결과를 파일로 저장
-{baseDir}/scripts/raon.sh biz-plan evaluate --file /path/to/plan.pdf --output result.md
-
-# 두 사업계획서 비교 분석
-{baseDir}/scripts/raon.sh biz-plan evaluate --file plan_a.pdf --file plan_b.pdf
-
-# 개선안 생성
-{baseDir}/scripts/raon.sh biz-plan improve --file /path/to/plan.pdf
-
-# 평가 히스토리 조회
-{baseDir}/scripts/raon.sh history
-```
-
-**评估内容**：
+**评估内容：**
 - 问题定义与解决方案的适用性
 - 市场规模与竞争分析
 - 商业模式的合理性
@@ -129,52 +97,37 @@ Raon OS 是一款专为创业者设计的辅助工具，可帮助您将商业想
 - 财务规划
 - 技术竞争力
 
-**输出结果**：总分（100分）+ 各项评分 + 具体改进建议
+**输出结果：** 总分（100分制）+ 各项评分 + 具体改进建议
 
 ### 2. **gov-funding** — 政府扶持项目匹配
-根据创业者的资料推荐合适的政府扶持项目。
+根据创业团队的资料，推荐合适的政府扶持项目。
 
-```bash
-# 매칭 (사업계획서 기반)
-{baseDir}/scripts/raon.sh gov-funding match --file /path/to/plan.pdf
+**可申请的扶持计划：** TIPS、K-Startup Grand Challenge、创业成长技术开发项目、预备创业包、初期创业包等
 
-# 매칭 (키워드 기반)
-{baseDir}/scripts/raon.sh gov-funding match --industry "AI/SaaS" --stage "early" --region "서울"
-
-# 지원사업 상세 정보
-{baseDir}/scripts/raon.sh gov-funding info --program "TIPS"
-
-# 지원서 초안 생성
-{baseDir}/scripts/raon.sh gov-funding draft --program "TIPS" --file /path/to/plan.pdf
-
-# 지원 준비 체크리스트
-{baseDir}/scripts/raon.sh gov-funding checklist --program "TIPS" --file /path/to/plan.pdf
-```
-
-**支持项目**：TIPS、K-Startup 大挑战赛、创业成长技术开发计划、预备创业包、初期创业包等
-
-### 3. **investor-match** — 投资者匹配（后续功能）
-根据创业阶段和行业推荐合适的投资者。
+### 3. **investor-match** — 投资者匹配（未来版本将实现）
+根据创业团队的发展阶段和行业特点，推荐合适的投资者。
 
 ```bash
 # 투자자 추천
 {baseDir}/scripts/raon.sh investor-match --stage "pre-a" --industry "AI" --amount "1M"
 ```
 
-## PDF 文件处理（重要提示）
+## PDF 文件处理说明
 
-**注意**：如果用户直接上传 PDF 文件，可能会导致令牌消耗过快。**必须先提取文本内容再进行评估。**
+**重要提示：**  
+如果用户直接上传 PDF 文件，文件内容会超出系统允许的token限制。  
+**必须先提取文本内容再进行评估。**
 
-**处理方式**：
-- 如果 PDF 文件包含 OpenClaw 的附件：
-  1. PDF 文件会被保存在 `media/inbound/` 目录中。
-  2. 不要将 PDF 文件直接嵌入到请求中（否则会导致令牌消耗过快）。
-  3. 使用 `exec` 工具执行 `evaluate.py --file <路径>` 进行评估。
+**处理流程：**
+- 如果 PDF 文件包含 OpenClaw 的附件：  
+  1. PDF 文件会被保存到 `media/inbound/` 目录中。  
+  2. 请勿直接在命令行中插入 PDF 文件（否则会导致 token 耗尽）。  
+  3. 使用 `execute.py --file <文件路径>` 命令进行评估。  
   4. 将评估结果反馈给用户。
 
 ## 使用流程
 
-**典型的创业流程**：
+**典型的创业团队使用流程：**
 
 ```
 1. "내 사업계획서 평가해줘" → biz-plan evaluate
@@ -186,49 +139,35 @@ Raon OS 是一款专为创业者设计的辅助工具，可帮助您将商业想
 
 ## 投资者匹配功能
 
-```bash
-raon.sh investor-match profile --file <pdf>
-# or
-curl -X POST http://localhost:8400/v1/investor ...
-```
+**投资者视角的分析：**
+从投资者的角度分析商业计划书，并生成投资吸引力报告：  
+- **Deal Summary**（1分钟简要总结）  
+- **目标投资者类型**（种子轮/Pre-A轮/行业）  
+- **投资亮点与风险提示**  
+- ** pitching 提示**  
 
-从投资者的角度分析业务计划书，并生成吸引投资者的资料：
-- **Deal Summary**（1分钟项目概要）
-- **目标投资者类型**（种子轮/Pre-A 轮/行业）
-- **投资亮点与风险提示**
-- ** pitching 提示**
+## HTTP API 服务器
 
-## HTTP API 服务
+支持部署本地 REST API 服务器，以便与 Web 聊天工具或外部服务集成：
 
-支持启动本地 REST API 服务器，以便与 Web 聊天工具或其他外部服务集成：
+**API 端点：**  
+- `GET /health` — 系统状态检查  
+- `GET /v1/modes` — 支持的模式列表  
+- `POST /v1/evaluate` — 商业计划书评估  
+- `POST /v1/improve` — 商业计划书优化  
+- `POST /v1/match` — 政府扶持项目匹配  
+- `POST /v1/draft` — 支持申请草稿（需提供项目信息）  
+- `POST /v1/checklist` — 支持申请准备情况检查（需提供项目信息）  
+- `POST /v1/investor` — 投资者资料分析  
 
-```bash
-raon.sh serve           # 기본 포트 8400
-raon.sh serve 9000      # 커스텀 포트
-```
+**请求示例：**  
+（具体请求格式请参考相关文档）
 
-**API 端点**：
-- `GET /health` — 系统健康检查
-- `GET /v1/modes` — 支持的模式列表
-- `POST /v1/evaluate` — 业务计划书评估
-- `POST /v1/improve` — 业务计划书优化
-- `POST /v1/match` — 政府扶持项目匹配
-- `POST /v1/draft` — 支持申请草案（需提供项目信息）
-- `POST /v1/checklist` — 支持申请准备情况检查（需提供项目信息）
-- `POST /v1/investor` — 投资者资料分析
+**CORS 支持**：支持与 Web 前端系统的跨域请求集成。
 
-**请求示例**：
-```bash
-curl -X POST http://localhost:8400/v1/evaluate \
-  -H "Content-Type: application/json" \
-  -d '{"text": "사업계획서 내용..."}'
-```
+## API 集成说明
 
-**支持 CORS**（可与其他 Web 前端集成）。
-
-## API 集成
-
-当前版本基于本地 LLM（基于 RAG 的问答系统）进行工作。
+当前版本采用本地 LLM（基于 RAG 技术）进行评估。  
 如需集成 K-Startup AI API，请配置相应的环境变量：
 
 ```bash
@@ -240,6 +179,6 @@ export RAON_API_KEY="your-api-key"
 
 ## 评估标准参考
 
-各政府扶持项目的评估标准请参考 `references/` 目录下的文件：
-- `references/tips-criteria.md` — TIPS 项目评估标准
+政府扶持项目的评审标准请参考 `references/` 目录下的文件：  
+- `references/tips-criteria.md` — TIPS 评审标准  
 - `references/gov-programs.md` — 主要政府扶持项目列表及申请要求

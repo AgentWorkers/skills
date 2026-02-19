@@ -1,1168 +1,316 @@
 ---
 name: crm-data-cleaner
-description: "Deduplicate, normalize, and enrich CRM contacts and companies. Use when a user needs to clean CRM data, find duplicate contacts, standardize phone numbers or emails, merge duplicate records, audit data quality, or enrich contacts with external sources like Clearbit or Apollo. Works with HubSpot, Salesforce, Pipedrive, or any CRM with CSV export."
+description: "**功能说明：**  
+用于去重、规范化和丰富CRM系统中的联系人及公司信息。适用于需要清理CRM数据、查找重复联系人、统一电话号码或电子邮件地址、合并重复记录、审核数据质量，或通过Clearbit/Apollo等外部数据源补充联系人信息的场景。支持与HubSpot、Salesforce、Pipedrive等支持CSV导出的CRM系统集成使用。  
+**主要功能：**  
+1. **去重**：识别并删除CRM系统中的重复联系人记录。  
+2. **规范化**：统一联系人及公司的基本信息格式（如电话号码、电子邮件地址等）。  
+3. **数据丰富**：利用外部数据源（如Clearbit/Apollo）为联系人添加额外的信息（如地址、社交媒体链接等）。  
+4. **数据审计**：检查数据的质量和准确性。  
+**适用场景：**  
+- 数据清洗：优化CRM数据库中的数据质量。  
+- 数据整合：合并重复记录，确保数据的一致性。  
+- 信息更新：根据外部数据源更新联系人信息。  
+**系统兼容性：**  
+- HubSpot  
+- Salesforce  
+- Pipedrive  
+- 以及其他支持CSV导出的CRM系统。"
 ---
+# CRM数据清洗工具 —— 去重、规范化和丰富联系人信息
+
+## 概述
+
+干净、准确的CRM数据是有效销售和营销操作的基础。数据质量不佳每年平均会给企业带来310万美元的损失，这些损失源于时间浪费、机会错失以及营销活动的低效。本文档提供了全面的框架、工具和自动化策略，以维护所有主要CRM平台中的联系人信息和公司数据的一致性和准确性。
+
+本指南涵盖了CRM数据管理的三大核心方面：**去重**（删除重复记录）、**规范化**（标准化数据格式）以及**丰富化**（利用可靠的外部来源补充缺失信息）。
+
+## 目录
+
+1. [了解数据质量问题](#understanding-data-quality-issues)
+2. [去重策略](#deduplication-strategy)
+3. [数据规范化](#data-normalization)
+4. [数据丰富化](#data-enrichment)
+5. [平台特定实现](#platform-specific-implementation)
+6. [自动化与监控](#automation-and-monitoring)
+7. [维护与治理](#maintenance-and-governance)
+8. [高级技术](#advanced-techniques)
+
+## 了解数据质量问题
+
+### 常见的CRM数据问题
+
+- **重复记录（占数据库的30-40%）**：
+  - 同一个人或公司的多个条目
+  - 名字拼写上的细微差异
+  - 同一联系人的不同电子邮件地址
+  - 不完整或重复的记录
+
+- **格式不一致**：
+  - 电话号码格式：(555) 123-4567 vs 555-123-4567 vs +1.555.123.4567
+  - 公司名称："IBM Corp" vs "International Business Machines Corporation"
+  - 地址格式："St" vs "Street", "CA" vs "California"
+  - 职位名称："VP Marketing" vs "Vice President of Marketing"
+
+- **信息缺失**：
+  - 60%的B2B联系人缺少电话号码
+  - 40%的联系人信息不完整
+  - 35%的联系人缺少职位名称
+  - 25%的联系人缺少完整地址
+
+- **信息过时**：
+  - 20%的联系人会更换工作
+  - 25%的电子邮件地址失效
+  - 电话号码发生变化
+  - 公司重组、合并或更名
+
+### 对业务运营的影响
+
+- **销售效率降低**：
+  - 27%的销售时间用于数据录入和管理
+  - 由于重复记录导致跟进失败
+  - 难以确定主要联系人
+- **营销活动效率低下**：
+  - 邮件退回率增加
+  - 同一收件人收到多条消息
+  - 由于数据不完整导致市场细分不准确
+  - 报告和归因不准确
+
+- **客户体验问题**：
+  - 多个销售代表联系同一潜在客户
+  - 不同渠道间的信息不一致
+  - 由于资料不完整导致个性化服务差
+  - 客户因重复请求信息而感到沮丧
+
+### 数据质量评估框架
+
+- **完整性评分**：
+  - 必填字段填写率：目标95%
+  - 可选字段填写率：目标70%
+  - 关键字段（电子邮件、公司名称）：目标98%
+
+- **准确性评分**：
+  - 电子邮件格式正确率：目标99%
+  - 电话号码格式正确率：目标95%
+  - 地址验证通过率：目标90%
+
+- **一致性评分**：
+  - 格式标准化：目标95%
+  - 命名规则一致性：目标90%
+  - 系统间数据一致性：目标95%
+
+- **唯一性评分**：
+  - 重复联系人比例：目标<2%
+  - 重复公司比例：目标<1%
+  - 合并历史记录清晰：目标100%
+
+## 去重策略
+
+### 重复记录的类型
+
+- **完全重复**：
+  - 关键字段完全相同的记录
+  - 通常由导入错误引起
+  - 容易识别并自动合并
+
+- **近似重复**：
+  - 部分相似但不完全相同的记录
+  - 名字差异（例如：Bob Smith vs Robert Smith）
+  - 电子邮件地址差异（个人邮箱 vs 工作邮箱）
+  - 需要使用模糊匹配算法
+
+- **公司重复**：
+  - 同一家公司但名称不同
+  - "Apple Inc" vs "Apple Computer" vs "Apple"
+  - 子公司与母公司之间的混淆
+  - 域名匹配困难
+
+- **家庭/账户重复**：
+  - 同一家公司的多个联系人
+  - 同一地址下的家庭成员
+  - 不同角色但属于同一组织
+
+### 重复记录检测方法
+
+- **主键匹配**（最可靠）：基于电子邮件地址的匹配
+- **基于电话号码的匹配**（次选）
+- **姓名+公司名称匹配**（模糊匹配）
+
+- **高级匹配算法**：
+  - **Levenshtein距离**：衡量字符串之间的字符差异
+  - 适用于拼写错误和名称变体
+  - 例如："Smith" vs "Smyth" 的Levenshtein距离为1
 
-# CRM Data Cleaner — Dedup, Normalize & Enrich Contacts
-
-## Overview
-
-Clean, accurate CRM data is the foundation of effective sales and marketing operations. Poor data quality costs businesses an average of $3.1 million annually through wasted time, missed opportunities, and ineffective campaigns. This skill provides comprehensive frameworks, tools, and automation strategies to maintain pristine contact and company data across all major CRM platforms.
-
-This guide covers the three pillars of CRM data hygiene: **Deduplication** (removing duplicate records), **Normalization** (standardizing data formats), and **Enrichment** (filling missing information with reliable external sources).
-
-## Table of Contents
-
-1. [Understanding Data Quality Issues](#understanding-data-quality-issues)
-2. [Deduplication Strategy](#deduplication-strategy)
-3. [Data Normalization](#data-normalization)
-4. [Data Enrichment](#data-enrichment)
-5. [Platform-Specific Implementation](#platform-specific-implementation)
-6. [Automation and Monitoring](#automation-and-monitoring)
-7. [Maintenance and Governance](#maintenance-and-governance)
-8. [Advanced Techniques](#advanced-techniques)
-
-## Understanding Data Quality Issues
-
-### Common CRM Data Problems
-
-**Duplicate Records (30-40% of databases)**
-- Multiple entries for same person/company
-- Slight variations in name spelling
-- Different email addresses for same contact
-- Incomplete vs. complete records
-
-**Inconsistent Formatting**
-- Phone numbers: (555) 123-4567 vs 555-123-4567 vs +1.555.123.4567
-- Company names: "IBM Corp" vs "International Business Machines Corporation"
-- Addresses: "St" vs "Street", "CA" vs "California"
-- Job titles: "VP Marketing" vs "Vice President of Marketing"
-
-**Missing Information**
-- 60% of B2B contacts missing phone numbers
-- 40% missing company information
-- 35% missing job titles
-- 25% missing complete addresses
-
-**Outdated Information**
-- Contact changes jobs (20% annually)
-- Email addresses become invalid (25% every 2 years)
-- Phone numbers change
-- Companies reorganize, merge, or rebrand
-
-### Impact on Business Operations
-
-**Sales Productivity Loss**
-- 27% of sales time spent on data entry and management
-- Missed follow-ups due to duplicate records
-- Confusion over primary contact information
-- Difficulty identifying decision makers
-
-**Marketing Campaign Inefficiency**
-- Increased email bounce rates
-- Multiple messages to same recipient
-- Poor segmentation due to incomplete data
-- Inaccurate reporting and attribution
-
-**Customer Experience Issues**
-- Multiple sales reps contacting same prospect
-- Conflicting information across touchpoints
-- Poor personalization due to incomplete profiles
-- Frustration from repeated information requests
-
-### Data Quality Assessment Framework
-
-**Completeness Score**
-- Required fields populated: Target 95%
-- Optional fields populated: Target 70%
-- Critical fields (email, company): Target 98%
-
-**Accuracy Score**
-- Valid email format: Target 99%
-- Valid phone format: Target 95%
-- Verified addresses: Target 90%
-
-**Consistency Score**
-- Standardized formatting: Target 95%
-- Consistent naming conventions: Target 90%
-- Aligned data across systems: Target 95%
-
-**Uniqueness Score**
-- Duplicate contact rate: Target <2%
-- Duplicate company rate: Target <1%
-- Clean merge history: Target 100%
-
-## Deduplication Strategy
-
-### Types of Duplicates
-
-**Exact Duplicates**
-- Identical records with same key fields
-- Usually caused by import errors
-- Easy to identify and merge automatically
-
-**Near Duplicates**
-- Similar but not identical records
-- Name variations: "Bob Smith" vs "Robert Smith"
-- Email variations: personal vs business emails
-- Require fuzzy matching algorithms
-
-**Company Duplicates**
-- Same company with different names
-- "Apple Inc" vs "Apple Computer" vs "Apple"
-- Subsidiary vs parent company confusion
-- Domain-based matching challenges
-
-**Household/Account Duplicates**
-- Multiple contacts at same company
-- Family members at same address
-- Different roles but same organization
-
-### Duplicate Detection Methods
-
-#### Primary Key Matching
-**Email-Based Matching** (Most Reliable)
-```
-Match Criteria:
-- Exact email match = 100% duplicate probability
-- Domain + similar names = 85% probability
-- Multiple emails for same person = merge candidates
-```
-
-**Phone-Based Matching** (Secondary)
-```
-Match Criteria:
-- Exact phone match + similar name = 90% probability
-- Same phone, different names = investigate
-- Multiple formats of same number = normalize first
-```
-
-**Name + Company Matching** (Fuzzy)
-```
-Match Criteria:
-- Exact name + exact company = 95% probability
-- Similar name + exact company = 80% probability
-- Exact name + similar company = 70% probability
-```
-
-#### Advanced Matching Algorithms
-
-**Levenshtein Distance**
-- Measures character differences between strings
-- Useful for typos and variations
-- Example: "Smith" vs "Smyth" = distance of 1
-
-**Soundex Matching**
-- Phonetic matching algorithm
-- Groups similar-sounding names
-- Example: "Smith", "Smyth", "Smithe" = same soundex
-
-**Token Matching**
-- Breaks names into components
-- Matches individual parts
-- Example: "John Michael Smith" matches "J.M. Smith"
-
-### Deduplication Workflow
-
-#### Phase 1: Automated Detection
-
-**High-Confidence Matches (90%+ probability)**
-- Exact email matches
-- Identical phone + similar names
-- Same LinkedIn profile URLs
-- Automatic flagging for review
-
-**Medium-Confidence Matches (60-89% probability)**
-- Similar names + same company
-- Name variations + same domain
-- Fuzzy phone number matches
-- Queue for manual review
-
-**Low-Confidence Matches (40-59% probability)**
-- Loose name similarities
-- Possible company matches
-- Require detailed investigation
-
-#### Phase 2: Manual Review Process
-
-**Review Queue Prioritization**
-1. High-value accounts (enterprise clients)
-2. Active opportunities
-3. Recent activity (last 30 days)
-4. Marketing qualified leads
-5. Bulk import suspects
-
-**Review Criteria Checklist**
-- [ ] Same person confirmation
-- [ ] Most complete record identification
-- [ ] Activity history preservation
-- [ ] Integration considerations
-- [ ] Sales team notifications needed
-
-#### Phase 3: Merge Execution
-
-**Pre-Merge Validation**
-- Backup critical data
-- Identify master record
-- Map fields to preserve
-- Note dependencies (campaigns, workflows)
-
-**Field Merge Rules**
-- Primary email: Business > Personal > Most recent
-- Phone: Mobile > Direct line > Main number
-- Address: Most complete > Most recent
-- Job title: Most senior > Most recent
-- Company: Most complete > Most recent
-
-**Post-Merge Cleanup**
-- Update related records
-- Refresh reports and lists
-- Notify affected team members
-- Document merge decisions
-
-### Platform-Specific Deduplication
-
-#### HubSpot Deduplication
-
-**Native Duplicate Management**
-- Automatic duplicate detection
-- Merge suggestions in contacts view
-- Bulk merge capabilities
-- Activity history preservation
-
-**Custom Duplicate Rules**
-```
-Email + Company Domain matching
-Name similarity + Phone matching
-LinkedIn URL exact matching
-Custom property combinations
-```
-
-**API-Based Deduplication**
-```python
-# Example HubSpot duplicate detection
-import requests
-
-def find_hubspot_duplicates(api_key, batch_size=100):
-    url = f"https://api.hubapi.com/contacts/v1/lists/all/contacts/all"
-    params = {
-        'hapikey': api_key,
-        'count': batch_size,
-        'property': ['email', 'firstname', 'lastname', 'company']
-    }
-    # Implementation details in scripts/
-```
-
-#### Salesforce Deduplication
-
-**Duplicate Rules Setup**
-- Standard duplicate rules (Lead/Contact)
-- Custom matching rules
-- Automatic alerts vs blocking
-- Duplicate job monitoring
-
-**Third-Party Tools**
-- Duplicate Check by CRM Science
-- Cloudingo duplicate management
-- DemandTools by Validity
-- RingLead data management
-
-#### Pipedrive Deduplication
-
-**Manual Duplicate Detection**
-- Smart Contact Data feature
-- Bulk operations for merging
-- Organization-level deduplication
-- Custom field mapping
-
-## Data Normalization
-
-### Phone Number Standardization
-
-#### Global Phone Format Standards
-
-**North American Numbers**
-```
-Input Variations:
-- (555) 123-4567
-- 555-123-4567
-- 555.123.4567
-- +1 555 123 4567
-- 5551234567
-
-Standardized Output:
-- Display: +1 (555) 123-4567
-- Storage: +15551234567
-- Search: 15551234567
-```
-
-**International Numbers**
-```
-Input Variations:
-- +44 20 7946 0958 (UK)
-- 020 7946 0958 (UK local)
-- +49 30 12345678 (Germany)
-- 030-12345678 (Germany local)
-
-Standardized Output:
-- Display: +44 20 7946 0958
-- Storage: +442079460958
-```
-
-#### Phone Validation Rules
-
-**Format Validation**
-- Length checks by country
-- Area code validation
-- Mobile vs landline identification
-- Do Not Call registry checking
-
-**Quality Indicators**
-- Valid: Properly formatted, verified number
-- Invalid: Wrong format, disconnected
-- Mobile: Cell phone identified
-- International: Non-domestic number
-- Suspicious: Pattern matching fake numbers
-
-### Email Address Normalization
-
-#### Email Format Standardization
-
-**Case Normalization**
-```
-Input: John.Smith@COMPANY.COM
-Output: john.smith@company.com
-```
-
-**Domain Standardization**
-```
-Common Variations:
-- gmail.com vs googlemail.com → gmail.com
-- hotmail.com vs live.com vs outlook.com → outlook.com
-- yahoo.com vs ymail.com → yahoo.com
-```
-
-**Plus Addressing Removal**
-```
-Input: john.smith+newsletter@gmail.com
-Output: john.smith@gmail.com
-```
-
-**Dot Normalization (Gmail)**
-```
-Input: j.o.h.n.s.m.i.t.h@gmail.com
-Output: johnsmith@gmail.com
-```
-
-#### Email Validation Levels
-
-**Syntax Validation** (Level 1)
-- RFC 5322 compliance
-- Valid character checking
-- Proper format structure
-
-**Domain Validation** (Level 2)
-- MX record verification
-- Domain existence checking
-- Subdomain validation
-
-**Mailbox Validation** (Level 3)
-- SMTP connection testing
-- Mailbox existence verification
-- Deliverability scoring
-
-### Name Standardization
-
-#### Personal Name Formatting
-
-**Name Case Normalization**
-```
-Input Variations:
-- JOHN SMITH
-- john smith
-- John SMITH
-- jOHN sMITH
-
-Standardized Output:
-- John Smith
-```
-
-**Name Component Parsing**
-```
-Input: "Dr. John Michael Smith Jr."
-Parsed Components:
-- Title: Dr.
-- First Name: John
-- Middle Name: Michael
-- Last Name: Smith
-- Suffix: Jr.
-```
-
-**Cultural Name Considerations**
-- Eastern vs Western name orders
-- Hyphenated names handling
-- Multiple surname traditions
-- Title and honorific preservation
-
-#### Company Name Standardization
-
-**Legal Entity Normalization**
-```
-Input Variations:
-- Apple Inc.
-- Apple Incorporated
-- Apple, Inc
-- Apple Computer Inc.
-
-Standardized Output:
-- Apple Inc.
-```
-
-**Common Abbreviations**
-```
-Standard Mappings:
-- Corp → Corporation
-- Co → Company
-- Ltd → Limited
-- LLC → Limited Liability Company
-- LP → Limited Partnership
-```
-
-**DBA (Doing Business As) Handling**
-```
-Primary: Microsoft Corporation
-DBA: Microsoft, MSFT
-Subsidiaries: GitHub, LinkedIn
-```
-
-### Address Normalization
-
-#### Address Component Standardization
-
-**Street Address Formatting**
-```
-Input Variations:
-- 123 Main St.
-- 123 Main Street
-- 123 MAIN ST
-- 123 main st
-
-Standardized Output:
-- 123 Main Street
-```
-
-**State/Province Normalization**
-```
-US States:
-- California → CA
-- New York → NY
-- Texas → TX
-
-Canadian Provinces:
-- Ontario → ON
-- British Columbia → BC
-- Quebec → QC
-```
-
-**Postal Code Formatting**
-```
-US ZIP Codes:
-- 12345 → 12345
-- 12345-6789 → 12345-6789
-- 123456789 → 12345-6789
-
-Canadian Postal Codes:
-- k1a0a6 → K1A 0A6
-- K1A0A6 → K1A 0A6
-```
-
-#### International Address Standards
-
-**United Kingdom Addresses**
-```
-Standard Format:
-[Building Number] [Street Name]
-[District/Area]
-[Town/City]
-[County] [Postcode]
-[Country]
-```
-
-**European Address Formats**
-- German addresses: Street first, house number after
-- French addresses: Special character handling
-- Nordic countries: Unique postal systems
-
-### Job Title Normalization
-
-#### Title Standardization Rules
-
-**Seniority Level Mapping**
-```
-C-Level Titles:
-- CEO, Chief Executive Officer
-- CTO, Chief Technology Officer
-- CMO, Chief Marketing Officer
-- CFO, Chief Financial Officer
-
-VP Level Titles:
-- VP, Vice President
-- SVP, Senior Vice President
-- EVP, Executive Vice President
-
-Director Level Titles:
-- Director, Dir
-- Senior Director, Sr. Director
-- Executive Director, Exec Director
-```
-
-**Functional Area Mapping**
-```
-Marketing Titles:
-- Marketing Manager → Marketing
-- Brand Manager → Marketing
-- Content Manager → Marketing
-- Digital Marketing Specialist → Marketing
-
-Sales Titles:
-- Sales Representative → Sales
-- Account Manager → Sales
-- Business Development → Sales
-- Sales Engineer → Sales
-```
-
-**Industry-Specific Normalization**
-- Healthcare: MD, RN, PharmD standardization
-- Legal: JD, Esq., Partner titles
-- Academia: PhD, Professor, Dean titles
-- Government: GS levels, military ranks
-
-## Data Enrichment
-
-### Enrichment Data Sources
-
-#### Free Data Sources
-
-**Social Media Platforms**
-- LinkedIn: Job titles, company info, connections
-- Twitter: Engagement data, interests
-- Facebook: Personal interests (B2C)
-- GitHub: Developer profiles, technologies
-
-**Public Databases**
-- Government business registrations
-- SEC filings for public companies
-- Patent databases
-- Professional licensing boards
-
-**Web Scraping Sources**
-- Company websites: Team pages, about sections
-- Industry directories
-- Conference speaker lists
-- Press release databases
-
-#### Paid Enrichment Services
-
-**Comprehensive B2B Platforms**
-
-**ZoomInfo** (Premium)
-- Contact: $14,995/year for 10,000 credits
-- Coverage: 100M+ contacts, 14M+ companies
-- Data Types: Direct phone, email, technographics
-- Accuracy: 95% for contact info
-- API: RESTful with real-time lookups
-
-**Apollo** (Mid-Range)
-- Contact: $49-149/month per user
-- Coverage: 275M+ contacts, 73M+ companies
-- Data Types: Email, phone, intent signals
-- Accuracy: 85-90% email accuracy
-- API: Generous rate limits, bulk operations
-
-**Clearbit** (Developer-Focused)
-- Contact: $99-999/month based on volume
-- Coverage: 85M+ contacts, 12M+ companies
-- Data Types: Firmographics, technographics
-- Accuracy: 85% contact accuracy
-- API: Real-time enrichment, webhooks
-
-**Hunter** (Email-Focused)
-- Contact: $49-399/month
-- Coverage: Email finder and verification
-- Data Types: Email addresses, domain search
-- Accuracy: 95% email verification
-- API: Bulk processing, domain search
-
-#### Specialized Data Providers
-
-**Technographic Data**
-- BuiltWith: Website technology stacks
-- Datanyze: Technology adoption data
-- 6sense: Intent and technology data
-- Bombora: Intent signal data
-
-**Financial Data**
-- Dun & Bradstreet: Credit and financial data
-- Crunchbase: Funding and investor data
-- PitchBook: Private market data
-- FactSet: Public company financials
-
-**Industry-Specific Data**
-- Healthcare: NPI database, medical licenses
-- Legal: Bar association directories
-- Real Estate: MLS data, property records
-- Education: Institution directories
-
-### Enrichment Workflow
-
-#### Data Assessment Phase
-
-**Missing Data Analysis**
-```sql
--- Example missing data analysis
-SELECT 
-    COUNT(*) as total_contacts,
-    COUNT(phone) as has_phone,
-    COUNT(company) as has_company,
-    COUNT(job_title) as has_title,
-    (COUNT(*) - COUNT(phone)) as missing_phone,
-    (COUNT(*) - COUNT(company)) as missing_company
-FROM contacts;
-```
-
-**Enrichment Priority Matrix**
-- High Value + High Confidence = Immediate enrichment
-- High Value + Low Confidence = Manual review
-- Low Value + High Confidence = Batch processing
-- Low Value + Low Confidence = Skip
-
-#### Batch Enrichment Process
-
-**Data Preparation**
-1. Export contact list with unique identifiers
-2. Identify enrichment keys (email, domain, name+company)
-3. Remove duplicates to avoid duplicate charges
-4. Validate existing data quality
-
-**Enrichment Execution**
-1. Email-based enrichment (highest accuracy)
-2. Domain-based company enrichment
-3. Name + Company fuzzy matching
-4. Social profile matching
-5. Phone number verification
-
-**Data Validation**
-1. Cross-reference multiple sources
-2. Confidence scoring per data point
-3. Flag conflicting information
-4. Preserve data provenance
-
-**Integration Back to CRM**
-1. Map enriched fields to CRM properties
-2. Update existing records without overwriting good data
-3. Track enrichment timestamps
-4. Log enrichment sources
-
-### Real-Time Enrichment
-
-#### Form Submission Enrichment
-```javascript
-// Example real-time enrichment on form submit
-document.getElementById('leadForm').addEventListener('submit', async function(e) {
-    const email = document.getElementById('email').value;
-    const company = document.getElementById('company').value;
-    
-    // Enrich contact data
-    const enrichedData = await enrichContact(email, company);
-    
-    // Update hidden form fields
-    updateFormFields(enrichedData);
-});
-```
-
-#### CRM Integration Triggers
-- New contact creation
-- Email address updates
-- Company field changes
-- Lead scoring threshold crossing
-
-#### Progressive Profiling
-- Gradual data collection over multiple interactions
-- Smart form field suggestions
-- Prefilling forms with known data
-- A/B testing optimal field combinations
-
-### Data Quality Monitoring
-
-#### Enrichment Accuracy Tracking
-
-**Verification Metrics**
-- Email deliverability rates
-- Phone connection success rates
-- LinkedIn profile match accuracy
-- Company information consistency
-
-**Data Decay Monitoring**
-- Email bounce rates over time
-- Phone number disconnect rates
-- Job title change frequency
-- Company merger/acquisition impact
-
-**Source Performance Comparison**
-- Accuracy by data provider
-- Cost per successful enrichment
-- Update frequency
-- Coverage by industry/region
-
-## Platform-Specific Implementation
-
-### HubSpot Data Cleaning
-
-#### Native HubSpot Tools
-
-**Data Quality Command Center**
-- Duplicate detection and management
-- Property formatting rules
-- Workflow-based data validation
-- Automated data hygiene tasks
-
-**Property Settings for Data Quality**
-- Field validation rules
-- Required field enforcement
-- Format standardization
-- Default value management
-
-**Workflow Automation**
-```
-Trigger: Contact is created or updated
-Condition: Email domain contains common typos
-Action: Flag for manual review + normalize email
-```
-
-#### HubSpot Integrations
-
-**Third-Party Apps**
-- Insycle: Advanced deduplication and data management
-- PieSync: Data synchronization across platforms
-- Zapier: Custom data cleaning automations
-
-**Custom Development**
-```javascript
-// HubSpot API example for bulk data cleaning
-const hubspot = require('@hubspot/api-client');
-
-async function cleanContactData(contacts) {
-    const hubspotClient = new hubspot.Client({ apiKey: API_KEY });
-    
-    const cleanedContacts = contacts.map(contact => ({
-        id: contact.id,
-        properties: {
-            phone: normalizePhone(contact.properties.phone),
-            email: normalizeEmail(contact.properties.email),
-            company: normalizeCompanyName(contact.properties.company)
-        }
-    }));
-    
-    return await hubspotClient.crm.contacts.batchApi.update({
-        inputs: cleanedContacts
-    });
-}
-```
-
-### Salesforce Data Cleaning
-
-#### Native Salesforce Features
-
-**Duplicate Management**
-- Standard duplicate rules
-- Custom matching rules
-- Duplicate alerts and blocking
-- Merge wizard functionality
-
-**Data Validation Rules**
-```apex
-// Example validation rule for phone format
-REGEX(Phone, "^\\+?1?[2-9]\\d{2}[2-9]\\d{2}\\d{4}$")
-```
-
-**Flow-Based Automation**
-- Screen flows for data entry validation
-- Record-triggered flows for cleaning
-- Scheduled flows for batch processing
-
-#### Salesforce Apps and Tools
-
-**Paid Solutions**
-- Cloudingo: Comprehensive data management
-- DemandTools: Advanced deduplication
-- RingLead: Data cleaning and enrichment
-
-**Custom Apex Solutions**
-```apex
-// Custom Apex for email normalization
-public class EmailNormalizer {
-    public static String normalizeEmail(String email) {
-        if (String.isBlank(email)) return email;
-        return email.toLowerCase().trim();
-    }
-}
-```
-
-### Pipedrive Data Cleaning
-
-#### Native Pipedrive Features
-
-**Smart Contact Data**
-- Automatic duplicate detection
-- Merge suggestions
-- Data enrichment from public sources
-
-**Custom Fields and Validation**
-- Required field settings
-- Field type restrictions
-- Custom property management
-
-**Automation Features**
-- Workflow automation for data tasks
-- Email sync and normalization
-- Activity-based data updates
-
-## Automation and Monitoring
-
-### Automated Data Quality Workflows
-
-#### Continuous Data Validation
-
-**Real-Time Validation**
-- Form submission validation
-- Email syntax checking
-- Phone format verification
-- Required field enforcement
-
-**Scheduled Batch Processing**
-- Daily duplicate detection runs
-- Weekly enrichment batches
-- Monthly data quality reports
-- Quarterly complete audits
-
-**Event-Triggered Cleaning**
-- New record creation
-- Data import completion
-- Email bounce notifications
-- Contact inactivity alerts
-
-#### Quality Score Automation
-
-**Contact Quality Scoring**
-```python
-def calculate_contact_quality_score(contact):
-    score = 0
-    
-    # Completeness (40 points)
-    if contact.email: score += 15
-    if contact.phone: score += 10
-    if contact.company: score += 10
-    if contact.job_title: score += 5
-    
-    # Accuracy (40 points)
-    if is_valid_email(contact.email): score += 20
-    if is_valid_phone(contact.phone): score += 20
-    
-    # Freshness (20 points)
-    days_since_update = (datetime.now() - contact.last_modified).days
-    if days_since_update < 30: score += 20
-    elif days_since_update < 90: score += 10
-    
-    return min(score, 100)
-```
-
-**Company Quality Scoring**
-- Industry classification accuracy
-- Company size verification
-- Website and domain validation
-- Social media presence verification
-
-### Monitoring and Alerting
-
-#### Key Performance Indicators
-
-**Data Quality Metrics**
-- Overall completeness percentage
-- Duplicate contact percentage
-- Email deliverability rate
-- Phone number accuracy rate
-
-**Trend Analysis**
-- Data quality improvement over time
-- Source performance comparison
-- Seasonal data decay patterns
-- Team adoption metrics
-
-**Alert Thresholds**
-- Duplicate detection: >5% increase
-- Email bounces: >10% for campaign
-- Missing data: >20% for key fields
-- Enrichment failures: >30% error rate
-
-#### Reporting Dashboard
-
-**Executive Summary Dashboard**
-- Total records and quality score
-- Data completeness by key fields
-- Enrichment ROI analysis
-- Team productivity impact
-
-**Operational Dashboard**
-- Daily processing statistics
-- Error logs and resolution status
-- Data source performance metrics
-- Automation workflow status
-
-**Detailed Analysis Reports**
-- Field-by-field completion rates
-- Source-by-source quality analysis
-- Historical trend analysis
-- Predictive quality forecasting
-
-### Integration Architecture
-
-#### API-Based Data Flows
-
-**Inbound Data Processing**
-```
-External Source → Validation → Normalization → Deduplication → Enrichment → CRM
-```
-
-**Outbound Data Synchronization**
-```
-CRM → Clean Data → External Systems (Email, Analytics, etc.)
-```
-
-**Real-Time vs Batch Processing**
-- Real-time: Form submissions, high-value contacts
-- Batch: Bulk imports, scheduled maintenance
-- Hybrid: Priority-based processing queues
-
-## Maintenance and Governance
-
-### Data Governance Framework
-
-#### Data Stewardship Roles
-
-**Data Owner (Executive Level)**
-- Define data quality standards
-- Approve data policies
-- Budget allocation for tools
-- Strategic oversight
-
-**Data Steward (Operational Level)**
-- Daily quality monitoring
-- Process execution
-- Issue escalation
-- Training coordination
-
-**Data Users (Sales/Marketing Teams)**
-- Data entry compliance
-- Quality feedback
-- Process adherence
-- Issue reporting
-
-#### Data Quality Policies
-
-**Data Entry Standards**
-```
-Contact Creation Requirements:
-- Email address (validated)
-- Company name (standardized)
-- Job title (normalized)
-- Phone number (formatted)
-- Source attribution
-```
-
-**Update Procedures**
-- Regular data refresh cycles
-- Change approval workflows
-- Bulk update protocols
-- Emergency correction procedures
-
-**Retention and Archival**
-- Active record criteria
-- Archival trigger conditions
-- Data deletion policies
-- Compliance requirements
-
-### Change Management
-
-#### Team Training Programs
-
-**Basic Data Hygiene Training**
-- Importance of data quality
-- Common data entry mistakes
-- Platform-specific best practices
-- Quality monitoring tools
-
-**Advanced Training Topics**
-- Duplicate detection techniques
-- Enrichment strategy optimization
-- Automation workflow design
-- Reporting and analysis
-
-**Ongoing Education**
-- Monthly quality scorecards
-- Best practice sharing sessions
-- Platform update training
-- Industry trend analysis
-
-#### Process Documentation
-
-**Standard Operating Procedures**
-- Daily maintenance tasks
-- Weekly quality reviews
-- Monthly deep cleaning
-- Quarterly audits
-
-**Troubleshooting Guides**
-- Common error resolution
-- Escalation procedures
-- Recovery protocols
-- Emergency contacts
-
-### Compliance and Security
-
-#### Data Privacy Compliance
-
-**GDPR Considerations**
-- Consent management
-- Data processing justification
-- Right to be forgotten
-- Data portability requirements
-
-**CCPA Requirements**
-- Consumer rights notifications
-- Opt-out mechanisms
-- Data sale disclosures
-- Processing transparency
-
-#### Data Security
-
-**Access Controls**
-- Role-based permissions
-- Audit logging
-- Change tracking
-- Approval workflows
-
-**Data Protection**
-- Encryption standards
-- Backup procedures
-- Recovery protocols
-- Breach notification
-
-## Advanced Techniques
-
-### Machine Learning Applications
-
-#### Predictive Data Quality
-
-**Quality Score Prediction**
-- Predict record quality degradation
-- Identify enrichment opportunities
-- Forecast maintenance needs
-- Optimize cleaning schedules
-
-**Duplicate Detection ML**
-- Neural network matching
-- Similarity scoring algorithms
-- Clustering for bulk identification
-- Continuous learning from feedback
-
-#### Natural Language Processing
-
-**Company Name Matching**
-- Fuzzy string matching
-- Alias recognition
-- Subsidiary relationship mapping
-- M&A event detection
-
-**Job Title Standardization**
-- Role classification
-- Seniority level prediction
-- Function area mapping
-- Industry-specific normalization
-
-### Advanced Automation
-
-#### Intelligent Data Routing
-
-**Smart Assignment Rules**
-```python
-def assign_data_cleaning_task(record, quality_issues):
-    if record.value_tier == 'enterprise':
-        return 'manual_review_queue'
-    elif len(quality_issues) > 3:
-        return 'bulk_processing_queue'
-    elif 'duplicate' in quality_issues:
-        return 'dedup_automation_queue'
-    else:
-        return 'standard_cleaning_queue'
-```
-
-**Priority-Based Processing**
-- Value-based prioritization
-- Urgency classification
-- Resource allocation optimization
-- SLA management
-
-#### Custom Data Pipelines
-
-**Real-Time Processing**
-- Stream processing for immediate validation
-- Event-driven cleaning triggers
-- Microservice architecture
-- API-first design
-
-**Batch Processing**
-- Distributed processing systems
-- Scheduled job management
-- Error handling and retry logic
-- Progress monitoring
-
-### Integration Ecosystem
-
-#### Multi-Platform Synchronization
-
-**Bidirectional Sync**
-- CRM ↔ Marketing Automation
-- CRM ↔ Sales Engagement
-- CRM ↔ Customer Support
-- CRM ↔ Analytics Platforms
-
-**Conflict Resolution**
-- Master data management
-- Field-level precedence rules
-- Timestamp-based updates
-- Manual override capabilities
-
-#### API-First Architecture
-
-**RESTful API Design**
-```python
-# Example API endpoint for data cleaning
-@app.route('/api/v1/contacts/clean', methods=['POST'])
-def clean_contact_data():
-    data = request.get_json()
-    
-    # Validate input
-    if not validate_input(data):
-        return {'error': 'Invalid input'}, 400
-    
-    # Process cleaning
-    cleaned_data = {
-        'email': normalize_email(data.get('email')),
-        'phone': normalize_phone(data.get('phone')),
-        'company': normalize_company(data.get('company'))
-    }
-    
-    return {'cleaned_data': cleaned_data}, 200
-```
-
-This comprehensive CRM data cleaning skill provides the foundation for maintaining high-quality customer and prospect data across all major platforms. Implementation of these strategies will dramatically improve sales productivity, marketing effectiveness, and overall customer experience while reducing operational overhead and compliance risk.
+- **Soundex匹配**：语音匹配算法
+  - 将发音相似的名称归为一类
+  - 例如："Smith", "Smyth", "Smithe" 被视为相同
+
+- **Token匹配**：将名字分解成组成部分进行匹配
+
+### 去重工作流程
+
+- **阶段1：自动检测**：
+  - 高置信度匹配（概率>90%）：完全相同的电子邮件地址、相同的电话号码和相似的姓名
+  - 自动标记以供审核
+
+- **阶段2：手动审核**：
+  - 优先审核高价值账户（企业客户）、活跃机会、最近30天的活动记录以及营销线索
+
+- **审核标准**：
+  - 确认联系人是否为同一人
+  - 选择最完整的记录
+  - 保留活动历史
+  - 考虑系统集成需求
+  - 是否需要通知销售团队
+
+- **阶段3：合并执行**：
+  - 合并前验证数据
+  - 确定主记录
+  - 映射字段以保持一致性
+  - 处理依赖关系（如营销活动、工作流程）
+
+### 平台特定的去重方法
+
+- **HubSpot去重**：
+  - 内置去重功能
+  - 在联系人视图中提供合并建议
+  - 支持批量合并
+  - 保留活动历史
+
+- **基于API的去重**：
+  - 提供自定义去重规则
+  - 支持API调用
+
+- **Salesforce去重**：
+  - 标准去重规则
+  - 自定义匹配规则
+  - 提供自动提醒和阻止功能
+
+- **Pipedrive去重**：
+  - 提供手动去重功能
+  - 支持批量合并操作
+  - 支持自定义字段映射
+
+## 数据规范化
+
+### 电话号码标准化
+
+- **全球电话号码格式**：
+  - 北美地区
+  - 国际地区
+
+- **电话号码验证**：
+  - 格式验证
+  - 地区代码验证
+  - 区分移动电话和固定电话
+  - 检查电话号码是否有效
+
+- **电子邮件地址标准化**：
+  - 大写统一
+  - 域名标准化
+  - 删除多余的地址部分
+  - Gmail中的点号处理
+
+- **电子邮件验证级别**：
+  - 语法验证（RFC 5322合规）
+  - 域名验证
+  - 邮箱存在性验证
+
+### 名称标准化
+
+- **个人姓名格式**：
+  - 大写统一
+  - 姓名组成部分解析
+
+- **公司名称标准化**：
+  - 法律实体标准化
+  - 常见缩写处理
+
+- **地址标准化**：
+  - 街道地址格式
+  - 州/省名称标准化
+  - 邮政编码格式
+
+- **国际地址格式**：
+  - 英国地址格式
+  - 欧洲地址格式（不同国家的特殊规则）
+
+### 数据丰富化
+
+### 数据丰富化来源
+
+- **免费数据来源**：
+  - 社交媒体平台（LinkedIn、Twitter、Facebook）
+  - 公共数据库（政府注册信息、SEC文件）
+  - 网页抓取（公司网站、行业目录）
+
+- **付费数据服务**：
+  - 提供详细联系人和公司信息
+
+- **专业数据提供商**：
+  - 技术数据（技术栈、公司概况）
+  - 财务数据（信用记录、投资者信息）
+  - 行业特定数据（医疗行业、法律行业）
+
+### 数据丰富化流程
+
+- **数据评估**：
+  - 分析缺失的数据
+
+- **批量丰富化**：
+  - 出口联系人列表
+  - 选择需要丰富化的字段
+  - 验证数据来源
+
+- **实时丰富化**：
+  - 表单提交时自动丰富信息
+  - 根据事件触发更新
+
+- **监控与报告**：
+  - 监控数据质量指标
+  - 提供详细的报告和分析
+
+### 平台特定的实现
+
+- **HubSpot数据清洗**：
+  - 内置工具和自动化流程
+  - 第三方应用和自定义开发
+
+- **Salesforce数据清洗**：
+  - 内置功能和第三方解决方案
+
+- **Pipedrive数据清洗**：
+  - 内置功能和自定义字段管理
+
+## 自动化与监控
+
+- **自动化数据质量工作流程**：
+  - 实时验证和批量处理
+  - 提供详细的监控和报告
+
+### 维护与治理
+
+- **数据治理框架**：
+  - 明确数据管理角色和职责
+  - 制定数据质量政策和流程
+  - 提供培训和支持
+
+- **持续改进**：
+  - 定期更新数据和流程
+  - 提供持续的教育和培训
+
+### 高级技术
+
+- **机器学习应用**：
+  - 预测数据质量
+  - 自动化去重和优化
+
+- **自然语言处理**：
+  - 提高数据匹配的准确性
+
+- **高级自动化**：
+  - 智能路由和优先级处理
+
+## 结论
+
+本文档提供了全面的CRM数据清洗方法，有助于提高销售效率、营销效果和客户体验，同时降低运营成本和合规风险。

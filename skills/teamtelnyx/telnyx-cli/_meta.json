@@ -1,0 +1,11 @@
+{
+  "owner": "teamtelnyx",
+  "slug": "telnyx-cli",
+  "displayName": "Telnyx Cli",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1770739700579,
+    "commit": "https://github.com/openclaw/skills/commit/d00e95f4ac7f8c118524cd623bd03617a23b86be"
+  },
+  "history": []
+}

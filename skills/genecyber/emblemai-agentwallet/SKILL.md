@@ -1,64 +1,63 @@
 ---
 name: emblem-ai-agent-wallet
-description: Connect to EmblemVault and manage crypto wallets via Emblem AI - Agent Hustle. Supports Solana, Ethereum, Base, BSC, Polygon, Hedera, and Bitcoin. Use when the user wants to trade crypto, check balances, swap tokens, or interact with blockchain wallets.
+description: 通过 Emblem AI - Agent Hustle 连接到 EmblemVault 并管理加密钱包。支持 Solana、Ethereum、Base、BSC、Polygon、Hedera 和 Bitcoin 等区块链平台。适用于用户需要进行加密货币交易、查看余额、交换代币或与区块链钱包交互的场景。
 homepage: https://emblemvault.dev
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🛡️","version":"3.0.8","homepage":"https://emblemvault.dev","primaryEnv":"EMBLEM_PASSWORD","requires":{"bins":["node","npm","emblemai"],"env":["EMBLEM_PASSWORD"]},"config_paths":["~/.emblemai/.env","~/.emblemai/.env.keys","~/.emblemai/session.json","~/.emblemai/history/"],"install":[{"id":"npm","kind":"npm","package":"@emblemvault/agentwallet","bins":["emblemai"],"label":"Install Agent Wallet CLI"}]}}
 ---
-
 # Emblem Agent Wallet
 
-Connect to **Agent Hustle** -- EmblemVault's autonomous crypto AI with 250+ trading tools across 7 blockchains. Browser auth, streaming responses, plugin system, and zero-config agent mode.
+**连接至** **Agent Hustle** – EmblemVault 的自主加密 AI，支持 7 个区块链上的 250 多种交易工具。支持浏览器身份验证、实时响应、插件系统以及无需配置的代理模式。
 
-**Requires the CLI**: `npm install -g @emblemvault/agentwallet`
+**需要安装 CLI：** `npm install -g @emblemvault/agentwallet`
 
 ---
 
-## Quick Start -- How to Use This Skill
+## 快速入门 – 如何使用此技能
 
-**Step 1: Install the CLI**
+**步骤 1：安装 CLI**
 
 ```bash
 npm install -g @emblemvault/agentwallet
 ```
 
-This provides a single command: `emblemai`
+该 CLI 提供一个命令：`emblemai`
 
-**Step 2: Use it**
+**步骤 2：使用它**
 
-When this skill loads, you can ask Agent Hustle anything about crypto:
+当此技能加载后，您可以向 Agent Hustle 提出关于加密货币的任何问题：
 
-- "What are my wallet addresses?"
-- "Show my balances across all chains"
-- "What's trending on Solana?"
-- "Swap $20 of SOL to USDC"
-- "Send 0.1 ETH to 0x..."
+- “我的钱包地址是什么？”
+- “显示我在所有链上的余额”
+- “Solana 上哪些代币正在上涨？”
+- “将 20 美元的 SOL 换成 USDC”
+- “向 0x... 发送 0.1 ETH”
 
-**To invoke this skill, say things like:**
-- "Use my Emblem wallet to check balances"
-- "Ask Agent Hustle what tokens I have"
-- "Connect to EmblemVault"
-- "Check my crypto portfolio"
+**要调用此技能，请输入如下命令：**
+- “使用我的 Emblem 钱包查看余额”
+- “询问 Agent Hustle 我有哪些代币”
+- “连接至 EmblemVault”
+- “查看我的加密货币投资组合”
 
-All requests are routed through `emblemai` under the hood.
+所有请求都会通过 `emblemai` 进行处理。
 
 ---
 
-## Prerequisites
+## 先决条件
 
 - **Node.js** >= 18.0.0
-- **Terminal** with 256-color support (iTerm2, Kitty, Windows Terminal, or any xterm-compatible terminal)
-- **Optional**: [glow](https://github.com/charmbracelet/glow) for rich markdown rendering (`brew install glow` on macOS)
+- 支持 256 色显示的终端（iTerm2、Kitty、Windows Terminal 或任何兼容 xterm 的终端）
+- **可选**：[glow](https://github.com/charmbracelet/glow) 用于丰富的 Markdown 渲染（在 macOS 上使用 `brew install glow`）
 
-## Installation
+## 安装
 
-### From npm (Recommended)
+### 通过 npm 安装（推荐）
 
 ```bash
 npm install -g @emblemvault/agentwallet
 ```
 
-### From source
+### 从源代码安装
 
 ```bash
 git clone https://github.com/EmblemCompany/EmblemAi-AgentWallet-Plugins.git
@@ -67,76 +66,75 @@ npm install
 npm link   # makes `emblemai` available globally
 ```
 
-## First Run
+## 首次运行
 
-1. Install: `npm install -g @emblemvault/agentwallet`
-2. Run: `emblemai`
-3. Authenticate in the browser (or enter a password if prompted)
-4. Check `/plugins` to see which plugins loaded
-5. Type `/help` to see all commands
-6. Try: "What are my wallet addresses?" to verify authentication
+1. 安装：`npm install -g @emblemvault/agentwallet`
+2. 运行：`emblemai`
+3. 在浏览器中登录（或按提示输入密码）
+4. 查看 `/plugins` 以查看已加载的插件
+5. 输入 `/help` 以查看所有命令
+6. 尝试输入：“我的钱包地址是什么？”以验证登录是否成功
 
 ---
 
-## Authentication
+## 身份验证
 
-EmblemAI v3 supports two authentication methods: **browser auth** for interactive use and **password auth** for agent/scripted use.
+EmblemAI v3 支持两种身份验证方法：**浏览器身份验证**（用于交互式使用）和 **密码身份验证**（用于代理/脚本化使用）。
 
-### Browser Auth (Interactive Mode)
+### 浏览器身份验证（交互模式）
 
-When you run `emblemai` without `-p`, the CLI:
+当您不使用 `-p` 参数运行 `emblemai` 时，CLI 会：
 
-1. Checks `~/.emblemai/session.json` for a saved session
-2. If a valid (non-expired) session exists, restores it instantly -- no login needed
-3. If no session, starts a local server on `127.0.0.1:18247` and opens your browser
-4. You authenticate via the EmblemVault auth modal in the browser
-5. The session JWT is captured, saved to disk, and the CLI proceeds
-6. If the browser can't open, the URL is printed for manual copy-paste
-7. If authentication times out (5 minutes), falls back to a password prompt
+1. 检查 `~/.emblemai/session.json` 文件中是否有保存的会话
+2. 如果存在有效（未过期）的会话，则立即恢复会话——无需重新登录
+3. 如果没有会话，则在 `127.0.0.1:18247` 上启动本地服务器并打开浏览器
+4. 您通过浏览器中的 EmblemVault 身份验证模块进行身份验证
+5. 会话 JWT 会被捕获并保存到磁盘上，然后 CLI 继续运行
+6. 如果浏览器无法打开，会显示 URL 供您手动复制粘贴
+7. 如果身份验证超时（5 分钟），则切换到密码输入界面
 
-### Password Auth (Agent Mode)
+### 密码身份验证（代理模式）
 
-**Login and signup are the same action.** The first use of a password creates a vault; subsequent uses return the same vault. Different passwords produce different wallets.
+**登录和注册是相同的操作。** 第一次使用密码会创建一个钱包；后续使用相同的密码会访问同一个钱包。不同的密码会生成不同的钱包。
 
-In agent mode, if no password is provided, a secure random password is auto-generated and stored encrypted via dotenvx. Agent mode works out of the box with no manual setup.
+在代理模式下，如果未提供密码，系统会自动生成一个安全的随机密码并通过 `.env` 文件加密存储。代理模式无需手动设置即可使用。
 
-### What Happens on Authentication
+### 身份验证过程
 
-1. Browser auth: session JWT is received from browser and hydrated into the SDK
-   Password auth: password is sent to `EmblemAuthSDK.authenticatePassword()`
-2. A deterministic vault is derived -- same credentials always yield the same vault
-3. The session provides wallet addresses across multiple chains: Solana, Ethereum, Base, BSC, Polygon, Hedera, Bitcoin
-4. `HustleIncognitoClient` is initialized with the session
+1. **浏览器身份验证**：从浏览器接收 JWT 会话令牌并将其传递给 SDK
+2. **密码身份验证**：密码会被发送到 `EmblemAuthSDK.authenticatePassword()`
+3. 生成一个确定的钱包配置——相同的凭据始终会生成相同的钱包
+4. 会话会提供多个链上的钱包地址：Solana、Ethereum、Base、BSC、Polygon、Hedera、Bitcoin
+5. 使用会话配置初始化 `HustleIncognitoClient`
 
-### Credential Discovery
+### 凭据获取方式
 
-Before making requests, locate the password using this priority:
+在发送请求之前，凭据的获取优先级如下：
 
-| Method | How to use | Priority |
+| 方法 | 使用方式 | 优先级 |
 |--------|-----------|----------|
-| CLI argument | `emblemai -p "your-password"` | 1 (highest, stored encrypted) |
-| Environment variable | `export EMBLEM_PASSWORD="your-password"` | 2 (not stored) |
-| Encrypted credential | dotenvx-encrypted `~/.emblemai/.env` | 3 |
-| Auto-generate (agent mode) | Automatic on first run | 4 |
-| Interactive prompt | Fallback when browser auth fails | 5 (lowest) |
+| CLI 参数 | `emblemai -p "your-password"` | 1（最高优先级，已加密存储） |
+| 环境变量 | `export EMBLEM_PASSWORD="your-password"` | 2（不存储） |
+| `.env` 文件中的加密凭据 | `.env` 文件中的加密凭据 | 3 |
+| 自动生成（代理模式） | 首次运行时自动生成 | 4 |
+| 交互式提示 | 浏览器身份验证失败时的备用方式 | 5（最低优先级） |
 
-If no credentials are found, ask the user:
-> "I need your EmblemVault password to connect to Hustle AI. This password must be at least 16 characters.
->
-> **Note:** If this is your first time, entering a new password will create a new wallet. If you've used this before, use the same password to access your existing wallet.
->
-> Would you like to provide a password?"
+如果找不到凭据，系统会提示用户：
+> “我需要您的 EmblemVault 密码来连接至 Hustle AI。此密码必须至少包含 16 个字符。”
 
-- Password must be 16+ characters
-- No recovery if lost (treat it like a private key)
+> **注意：** 如果这是您第一次使用，输入新密码将创建一个新的钱包。如果您之前使用过该服务，请使用相同的密码来访问现有钱包。
+> “您是否要提供密码？”
+
+- 密码必须包含 16 个或更多字符
+- 丢失密码后无法恢复（请将其视为私钥）
 
 ---
 
-## Execution Notes
+## 执行注意事项
 
-**Allow sufficient time.** Hustle AI queries may take up to 2 minutes for complex operations (trading, cross-chain lookups). The CLI outputs progress dots every 5 seconds to indicate it's working.
+**请等待足够的时间。** 复杂操作（如交易、跨链查询）可能需要最多 2 分钟的时间。CLI 每 5 秒会显示一个进度点，以表明正在处理中。
 
-**Present Hustle's response clearly.** Display the response from Hustle AI to the user in a markdown codeblock:
+**清晰地展示 Hustle AI 的响应。** 将 Hustle AI 的响应以 Markdown 代码块的形式显示给用户：
 
 ```markdown
 **Hustle AI Response:**
@@ -147,11 +145,11 @@ If no credentials are found, ask the user:
 
 ---
 
-## Usage
+## 使用方法
 
-### Agent Mode (For AI Agents -- Single Shot)
+### 代理模式（用于 AI 代理——单次查询）
 
-Use `--agent` mode for programmatic, single-message queries:
+使用 `--agent` 模式进行程序化、单条消息的查询：
 
 ```bash
 # Zero-config -- auto-generates password on first run
@@ -167,7 +165,7 @@ emblemai -a -m "What is my SOL balance?" | jq .
 ADDRESSES=$(emblemai -a -m "List my addresses as JSON")
 ```
 
-Any system that can shell out to a CLI can give its agents a wallet:
+任何可以调用 CLI 的系统都可以为其代理分配一个钱包：
 
 ```bash
 # OpenClaw, CrewAI, AutoGPT, or any agent framework
@@ -176,25 +174,25 @@ emblemai --agent -m "Swap 100 USDC to ETH on Base"
 emblemai --agent -m "What tokens do I hold across all chains?"
 ```
 
-Each password produces a unique, deterministic wallet. To give multiple agents separate wallets, use different passwords:
+每个密码都会生成一个唯一的、确定的钱包。如果需要为多个代理分配不同的钱包，请使用不同的密码：
 
 ```bash
 emblemai --agent -p "agent-alice-wallet-001" -m "My addresses?"
 emblemai --agent -p "agent-bob-wallet-002" -m "My addresses?"
 ```
 
-Agent mode always uses password auth (never browser auth), retains conversation history between calls, and supports the full Hustle AI toolset including trading, transfers, portfolio queries, and cross-chain operations.
+代理模式始终使用密码身份验证（从不使用浏览器身份验证），会保留调用之间的对话历史记录，并支持完整的 Hustle AI 工具集，包括交易、转账、投资组合查询和跨链操作。
 
-### Interactive Mode (For Humans)
+### 交互模式（用于人类用户）
 
-Readline-based interactive mode with streaming AI responses, glow markdown rendering, and slash commands.
+基于命令行的交互模式，支持实时 AI 响应、glow Markdown 渲染以及斜杠命令。
 
 ```bash
 emblemai              # Browser auth (recommended)
 emblemai -p "$PASSWORD"  # Password auth
 ```
 
-### Reset Conversation
+### 重置对话记录
 
 ```bash
 emblemai --reset
@@ -202,278 +200,274 @@ emblemai --reset
 
 ---
 
-## Interactive Commands
+## 交互命令
 
-All commands are prefixed with `/`. Type them in the input bar and press Enter.
+所有命令都以 `/` 为前缀。在输入框中输入命令并按 Enter 键执行。
 
-### General
+### 常用命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/help` | Show all available commands |
-| `/settings` | Show current configuration (vault ID, model, streaming, debug, tools) |
-| `/exit` | Exit the CLI (also: `/quit`) |
+| `/help` | 显示所有可用命令 |
+| `/settings` | 显示当前配置（钱包 ID、模型、实时显示、调试、工具） |
+| `/exit` | 退出 CLI（也称为 `/quit` |
 
-### Chat and History
+### 聊天和历史记录
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/reset` | Clear conversation history and start fresh |
-| `/clear` | Alias for `/reset` |
-| `/history on\|off` | Toggle history retention between messages |
-| `/history` | Show history status and recent messages |
+| `/reset` | 清除对话记录并重新开始 |
+| `/clear` | `/reset` 的别名 |
+| `/history on\|off` | 切换消息的历史记录保留状态 |
+| `/history` | 显示历史记录状态和最近的消息 |
 
-### Streaming and Debug
+### 实时显示和调试
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/stream on\|off` | Toggle streaming mode (tokens appear as generated) |
-| `/stream` | Show current streaming status |
-| `/debug on\|off` | Toggle debug mode (shows tool args, intent context) |
-| `/debug` | Show current debug status |
+| `/stream on\|off` | 切换实时显示模式（代币以生成的形式显示） |
+| `/stream` | 显示当前的实时显示状态 |
+| `/debug on\|off` | 切换调试模式（显示工具参数和意图上下文） |
+| `/debug` | 显示当前的调试状态 |
 
-### Model Selection
+### 模型选择
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/model <id>` | Set the active model by ID |
-| `/model clear` | Reset to API default model |
-| `/model` | Show currently selected model |
+| `/model <id>` | 通过 ID 设置活动模型 |
+| `/model clear` | 重置为 API 默认模型 |
+| `/model` | 显示当前选定的模型 |
 
-### Tool Management
+### 工具管理
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/tools` | List all tools with selection status |
-| `/tools add <id>` | Add a tool to the active set |
-| `/tools remove <id>` | Remove a tool from the active set |
-| `/tools clear` | Clear tool selection (enable auto-tools mode) |
+| `/tools` | 列出所有工具及其启用状态 |
+| `/tools add <id>` | 将工具添加到活动工具集中 |
+| `/tools remove <id>` | 从活动工具集中移除工具 |
+| `/tools clear` | 清除工具选择（启用自动工具模式） |
 
-When no tools are selected, the AI operates in **auto-tools mode**, dynamically choosing appropriate tools based on conversation context.
+当没有选择工具时，AI 会自动选择合适的工具（**自动工具模式**）。
 
-### Authentication
+### 身份验证
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/auth` | Open authentication menu |
-| `/wallet` | Show wallet addresses (EVM, Solana, BTC, Hedera) |
-| `/portfolio` | Show portfolio (routes as a chat query) |
+| `/auth` | 打开身份验证菜单 |
+| `/wallet` | 显示钱包地址（EVM、Solana、BTC、Hedera） |
+| `/portfolio` | 显示投资组合（以聊天查询的形式显示） |
 
-The `/auth` menu provides:
+`/auth` 菜单提供以下选项：
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| 1. Get API Key | Fetch your vault API key |
-| 2. Get Vault Info | Show vault ID, addresses, creation date |
-| 3. Session Info | Show current session details (identifier, expiry, auth type) |
-| 4. Refresh Session | Refresh the auth session token |
-| 5. EVM Address | Show your Ethereum/EVM address |
-| 6. Solana Address | Show your Solana address |
-| 7. BTC Addresses | Show your Bitcoin addresses (P2PKH, P2WPKH, P2TR) |
-| 8. Backup Agent Auth | Export credentials to a backup file |
-| 9. Logout | Clear session and exit (requires re-authentication on next run) |
+| 1. 获取 API 密钥 | 获取您的钱包 API 密钥 |
+| 2. 获取钱包信息 | 显示钱包 ID、地址、创建日期 |
+| 3. 会话信息 | 显示当前会话详情（标识符、有效期、身份验证类型） |
+| 4. 刷新会话 | 刷新身份验证会话令牌 |
+| 5. EVM 地址 | 显示您的 Ethereum/EVM 地址 |
+| 6. Solana 地址 | 显示您的 Solana 地址 |
+| 7. BTC 地址 | 显示您的 Bitcoin 地址（P2PKH、P2WPKH、P2TR） |
+| 8. 备份代理身份验证 | 将凭据导出到备份文件 |
+| 9. 登出 | 清除会话并退出（下次运行时需要重新登录） |
 
-### Payment (PAYG Billing)
+### 支付（PAYG 计费）
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/payment` | Show PAYG billing status (enabled, mode, debt, tokens) |
-| `/payment enable\|disable` | Toggle pay-as-you-go billing |
-| `/payment token <TOKEN>` | Set payment token (SOL, ETH, HUSTLE, etc.) |
-| `/payment mode <MODE>` | Set payment mode: `pay_per_request` or `debt_accumulation` |
+| `/payment` | 显示 PAYG 计费状态（是否启用、模式、债务、代币） |
+| `/payment enable\|disable` | 切换按次计费模式 |
+| `/payment token <TOKEN>` | 设置支付令牌（SOL、ETH、HUSTLE 等） |
+| `/payment mode <MODE>` | 设置支付模式：`pay_per_request` 或 `debt_accumulation` |
 
-### Markdown Rendering
+### Markdown 渲染
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/glow on\|off` | Toggle markdown rendering via glow |
-| `/glow` | Show glow status and version |
+| `/glow on\|off` | 切换通过 glow 的 Markdown 渲染 |
+| `/glow` | 显示 glow 的状态和版本 |
 
-Requires [glow](https://github.com/charmbracelet/glow) to be installed.
+需要先安装 [glow](https://github.com/charmbracelet/glow)。
 
-### Logging
+### 日志记录
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/log on\|off` | Toggle stream logging to file |
-| `/log` | Show logging status and file path |
+| `/log on\|off` | 切换日志记录到文件 |
+| `/log` | 显示日志记录状态和文件路径 |
 
-Log file defaults to `~/.emblemai-stream.log`. Override with `--log-file <path>`.
+日志文件默认位于 `~/.emblemai-stream.log`。可以使用 `--log-file <path>` 来更改路径。
 
 ---
 
-## Keyboard Shortcuts
+## 键盘快捷键
 
-| Key | Action |
+| 键 | 功能 |
 |-----|--------|
-| `Enter` | Send message |
-| `Up` | Recall previous input |
-| `Ctrl+C` | Exit |
-| `Ctrl+D` | Exit (EOF) |
+| `Enter` | 发送消息 |
+| `Up` | 回退上一条输入 |
+| `Ctrl+C` | 退出 |
+| `Ctrl+D` | 退出（结束文件） |
 
 ---
 
-## CLI Flags
+## CLI 标志
 
-| Flag | Alias | Description |
+| 标志 | 别名 | 描述 |
 |------|-------|-------------|
-| `--password <pw>` | `-p` | Authentication password (16+ chars) -- skips browser auth |
-| `--message <msg>` | `-m` | Message for agent mode |
-| `--agent` | `-a` | Run in agent mode (single-shot, password auth only) |
-| `--restore-auth <path>` | | Restore credentials from backup file and exit |
-| `--reset` | | Clear conversation history and exit |
-| `--debug` | | Start with debug mode enabled |
-| `--stream` | | Start with streaming enabled (default: on) |
-| `--log` | | Enable stream logging |
-| `--log-file <path>` | | Override log file path (default: `~/.emblemai-stream.log`) |
-| `--hustle-url <url>` | | Override Hustle API URL |
-| `--auth-url <url>` | | Override auth service URL |
-| `--api-url <url>` | | Override API service URL |
+| `--password <pw>` | `-p` | 身份验证密码（至少 16 个字符）——跳过浏览器身份验证 |
+| `--message <msg>` | `-m` | 代理模式的消息内容 |
+| `--agent` | `-a` | 以代理模式运行（仅使用密码身份验证） |
+| `--restore-auth <path>` | | 从备份文件恢复凭据并退出 |
+| `--reset` | | 清除对话记录并退出 |
+| `--debug` | | 以启用调试模式启动 |
+| `--stream` | | 启用实时显示模式（默认为开启） |
+| `--log` | | 启用日志记录 |
+| `--log-file <path>` | | 更改日志文件路径（默认为 `~/.emblemai-stream.log`） |
+| `--hustle-url <url>` | | 更改 Hustle API 的 URL |
+| `--auth-url <url>` | | 更改身份验证服务的 URL |
+| `--api-url <url>` | | 更改 API 服务的 URL |
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `EMBLEM_PASSWORD` | Authentication password |
-CLI arguments override environment variables when both are provided.
+| `EMBLEM_PASSWORD` | 身份验证密码 |
+
+当提供 CLI 参数和环境变量时，CLI 参数会覆盖环境变量。
 
 ---
 
-## Permissions and Safe Mode
+## 权限和安全模式
 
-The agent operates in **safe mode by default**. Any action that affects the wallet requires the user's explicit confirmation before execution:
+代理默认处于 **安全模式**。任何影响钱包的操作在执行前都需要用户的明确确认：
 
-- **Transactions** (swaps, sends, transfers) -- the agent presents the details and asks for approval
-- **Signing** (message signing, transaction signing) -- requires explicit user consent
-- **Order placement** (limit orders, stop-losses) -- must be confirmed before submission
-- **DeFi operations** (LP deposits, yield farming) -- user must approve each action
+- **交易**（交换、发送、转账）——代理会显示详细信息并请求用户批准 |
+- **签名**（消息签名、交易签名）——需要用户的明确同意 |
+- **订单放置**（限价单、止损）——必须在提交前得到确认 |
+- **DeFi 操作**（LP 存款、收益 farming）——用户必须批准每个操作
 
-Read-only operations (checking balances, viewing addresses, market data, portfolio queries) do not require confirmation and execute immediately.
+只读操作（查看余额、查看地址、市场数据、投资组合查询）无需确认，可以立即执行。
 
-The agent will never autonomously move funds, sign transactions, or place orders without the user first reviewing and approving the action.
+代理永远不会在未经用户审查和批准的情况下自动转移资金、签署交易或放置订单。
 
 ---
 
-## Communication Style
+## 通信风格
 
-**CRITICAL: Use verbose, natural language.**
+**重要提示：使用详细、自然的语言。**
 
-Hustle AI interprets terse commands as "$0" transactions. Always explain your intent in full sentences.
+Hustle AI 会将简短的命令解释为 “$0” 类型的交易。请始终用完整的句子解释您的意图。
 
-| Bad (terse) | Good (verbose) |
+| 错误（简短） | 正确（详细） |
 |-------------|----------------|
-| `"SOL balance"` | `"What is my current SOL balance on Solana?"` |
-| `"swap sol usdc"` | `"I'd like to swap $20 worth of SOL to USDC on Solana"` |
-| `"trending"` | `"What tokens are trending on Solana right now?"` |
+| `"SOL balance"` | `"我在 Solana 上的当前 SOL 余额是多少？"` |
+| `"swap sol usdc"` | `"我想将 20 美元的 SOL 换成 USDC"` |
+| `"trending"` | `"Solana 上目前哪些代币正在上涨？」` |
 
-The more context you provide, the better Hustle understands your intent.
+您提供的上下文越详细，Hustle 对您的意图理解得就越准确。
 
 ---
 
-## Capabilities
+## 功能
 
-| Category | Features |
+| 类别 | 特性 |
 |----------|----------|
-| **Chains** | Solana, Ethereum, Base, BSC, Polygon, Hedera, Bitcoin |
-| **Trading** | Swaps, limit orders, conditional orders, stop-losses |
-| **DeFi** | LP management, yield farming, liquidity pools |
-| **Market Data** | CoinGlass, DeFiLlama, Birdeye, LunarCrush |
-| **NFTs** | OpenSea integration, transfers, listings |
-| **Bridges** | Cross-chain swaps via ChangeNow |
-| **Memecoins** | Pump.fun discovery, trending analysis |
-| **Predictions** | PolyMarket betting and positions |
+| **区块链** | Solana、Ethereum、Base、BSC、Polygon、Hedera、Bitcoin |
+| **交易** | 交换、限价单、条件订单、止损 |
+| **DeFi** | LP 管理、收益 farming、流动性池 |
+| **市场数据** | CoinGlass、DeFiLlama、Birdeye、LunarCrush |
+| **NFTs** | OpenSea 集成、转账、上架 |
+| **桥梁** | 通过 ChangeNow 进行跨链交换 |
+| **Memecoins** | Pump.fun 发现、趋势分析 |
 
----
+## 钱包地址
 
-## Wallet Addresses
+每个密码都会在所有链上生成唯一的钱包地址：
 
-Each password deterministically generates wallet addresses across all chains:
-
-| Chain | Address Type |
+| 链接 | 地址类型 |
 |-------|-------------|
-| **Solana** | Native SPL wallet |
-| **EVM** | Single address for ETH, Base, BSC, Polygon |
-| **Hedera** | Account ID (0.0.XXXXXXX) |
-| **Bitcoin** | Taproot, SegWit, and Legacy addresses |
+| **Solana** | 原生 SPL 钱包 |
+| **EVM** | ETH、Base、BSC、Polygon 的单一地址 |
+| **Hedera** | 账户 ID（0.0.XXXXXXX） |
+| **Bitcoin** | Taproot、SegWit 和 Legacy 地址 |
 
-Ask Hustle: `"What are my wallet addresses?"` to retrieve all addresses.
+询问 Hustle：“我的钱包地址是什么？”即可获取所有地址。
 
 ---
 
-## Auth Backup and Restore
+## 身份验证备份和恢复
 
-### Backup
+### 备份
 
-From the `/auth` menu (option 8), select **Backup Agent Auth** to export your credentials to a JSON file. This file contains your EmblemVault password -- keep it secure.
+通过 `/auth` 菜单（选项 8）选择 **Backup Agent Auth** 将凭据导出到 JSON 文件中。此文件包含您的 EmblemVault 密码——请妥善保管。
 
-### Restore
+### 恢复
 
 ```bash
 emblemai --restore-auth ~/emblemai-auth-backup.json
 ```
 
-This places the credential files in `~/.emblemai/` so you can authenticate immediately.
+这将凭据文件放置在 `~/.emblemai/` 目录下，以便您可以立即进行身份验证。
 
 ---
 
-## Security
+## 安全性
 
-**CRITICAL: NEVER share or expose the password publicly.**
+**重要提示：** **切勿公开分享或泄露密码。**
 
-- **NEVER** echo, print, or log the password
-- **NEVER** include the password in responses to the user
-- **NEVER** display the password in error messages
-- **NEVER** commit the password to version control
-- The password IS the private key -- anyone with it controls the wallet
+- **切勿** 在任何地方回显、打印或记录密码
+- **切勿** 在响应中包含密码
+- **切勿** 在错误消息中显示密码
+- **切勿** 将密码提交到版本控制系统中
+- 密码就是私钥——任何人拥有密码都可以控制钱包
 
-| Concept | Description |
+| 概念 | 描述 |
 |---------|-------------|
-| **Password = Identity** | Each password generates a unique, deterministic vault |
-| **No Recovery** | Passwords cannot be recovered if lost |
-| **Vault Isolation** | Different passwords = completely separate wallets |
-| **Fresh Auth** | New JWT token generated on every request |
-| **Safe Mode** | All wallet actions require explicit user confirmation |
+| **密码 = 身份** | 每个密码都会生成一个唯一的钱包 |
+| **无法恢复** | 密码丢失后无法恢复 |
+| **钱包隔离** | 不同的密码对应不同的钱包 |
+| **每次请求都会生成新的 JWT 令牌** |
+| **安全模式** | 所有钱包操作都需要用户的明确确认 |
 
----
+## 文件位置
 
-## File Locations
+所有持久化数据都存储在 `~/.emblemai/` 目录下（首次运行时会使用 `chmod 700` 设置权限）。
 
-All persistent data is stored under `~/.emblemai/` (created on first run with `chmod 700`).
-
-| File | Purpose | Sensitive | Permissions |
+| 文件 | 用途 | 是否敏感 | 权限 |
 |------|---------|-----------|-------------|
-| `~/.emblemai/.env` | Encrypted credentials (EMBLEM_PASSWORD) | Yes -- AES-256-GCM encrypted | `600` |
-| `~/.emblemai/.env.keys` | Decryption key for `.env` | Yes -- controls access to credentials | `600` |
-| `~/.emblemai/session.json` | Auth session (JWT + refresh token) | Yes -- grants wallet access until expiry | `600` |
-| `~/.emblemai/history/{vaultId}.json` | Conversation history (per vault) | No | `600` |
-| `~/.emblemai-stream.log` | Stream log (when enabled via `/log`) | No | default |
+| `~/.emblemai/.env` | 加密后的凭据（EMBLEM_PASSWORD） | 是 | 使用 AES-256-GCM 加密 | `600` |
+| `~/.emblemai/.env.keys` | `.env` 文件的解密密钥 | 是 | 控制对凭据的访问 | `600` |
+| `~/.emblemai/session.json` | 身份验证会话（JWT + 刷新令牌） | 是 | 授予钱包访问权限直至过期 | `600` |
+| `~/.emblemai/history/{vaultId}.json` | 对话历史记录（每个钱包单独记录） | 否 | `600` |
+| `~/.emblemai/stream.log` | 实时显示日志（通过 `/log` 启用） | 否 | 默认 |
 
-### Encryption Details
+### 加密细节
 
-Credentials are encrypted at rest using [dotenvx](https://dotenvx.com/), which uses **AES-256-GCM** symmetric encryption. The encryption key is stored in `~/.emblemai/.env.keys` and the encrypted payload in `~/.emblemai/.env`. Both files are created with `chmod 600` (owner read/write only). The decryption key never leaves the local machine.
+凭据在静止状态下使用 [dotenvx](https://dotenvx.com/) 进行加密，采用 **AES-256-GCM** 对称加密算法。解密密钥存储在 `~/.emblemai/.env.keys` 文件中，加密后的数据存储在 `~/.emblemai/.env` 文件中。这两个文件的权限设置为 `chmod 600`（仅所有者可读/写）。解密密钥永远不会离开本地机器。
 
-Session tokens (`session.json`) contain a short-lived JWT (refreshed automatically) and a refresh token valid for 7 days. Sessions are not encrypted on disk but are restricted to `chmod 600`. Logging out via `/auth` > Logout deletes the session file.
+会话令牌（`session.json`）包含一个短期的 JWT（会自动刷新）和一个有效期为 7 天的刷新令牌。会话不会在磁盘上加密，但会使用 `chmod 600` 限制访问权限。通过 `/auth` > Logout 退出会删除会话文件。
 
-Legacy credentials (`~/.emblem-vault`) are automatically migrated to the encrypted format on first run and the original is backed up.
+旧的凭据（`~/.emblem-vault`）在首次运行时会自动转换为加密格式，并备份原始文件。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| `emblemai: command not found` | Run: `npm install -g @emblemvault/agentwallet` |
-| "Password must be at least 16 characters" | Use a longer password |
-| "Authentication failed" | Check network connectivity to auth service |
-| Browser doesn't open for auth | Copy the printed URL and open it manually |
-| Session expired | Run `emblemai` again -- browser will open for fresh login |
-| glow not rendering | Install glow: `brew install glow` (optional, falls back to plain text) |
-| Plugin not loading | Check that the npm package is installed |
-| **Slow response** | Normal -- queries can take up to 2 minutes |
+| `emblemai: command not found` | 运行：`npm install -g @emblemvault/agentwallet` |
+| “密码必须至少包含 16 个字符” | 使用更长的密码 |
+| “身份验证失败” | 检查与身份验证服务的网络连接 |
+| 浏览器无法打开进行身份验证 | 复制显示的 URL 并手动打开 |
+| 会话过期 | 重新运行 `emblemai`——浏览器会打开新会话 |
+| glow 无法渲染 | 安装 glow：`brew install glow`（可选，否则会使用纯文本显示） |
+| 插件无法加载 | 确保已安装相应的 npm 包 |
+| **响应缓慢** | 正常现象——查询可能需要最多 2 分钟 |
 
 ---
 
-## Updating
+## 更新信息
 
 ```bash
 npm update -g @emblemvault/agentwallet
@@ -481,7 +475,7 @@ npm update -g @emblemvault/agentwallet
 
 ---
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Install
@@ -506,77 +500,77 @@ emblemai --reset
 
 ---
 
-## Security Advisory
+## 安全提示
 
-This section explains the trust model, what happens on your machine, and how to run the agent securely.
+本部分解释了信任模型、在您的机器上会发生什么以及如何安全地运行代理。
 
-### Trust Model
+### 信任模型
 
-Emblem Agent Wallet is an open-source CLI published by [EmblemCompany](https://github.com/EmblemCompany) on both npm and GitHub. You can verify the package before installing:
+Emblem Agent Wallet 是由 [EmblemCompany](https://github.com/EmblemCompany) 在 npm 和 GitHub 上发布的开源 CLI。在安装之前，您可以验证该包：
 
-- **npm registry**: [@emblemvault/agentwallet](https://www.npmjs.com/package/@emblemvault/agentwallet) -- check the publisher, version history, and download stats
-- **Source code**: [github.com/EmblemCompany/EmblemAi-AgentWallet](https://github.com/EmblemCompany/EmblemAi-AgentWallet) -- full source is public and auditable
-- **Homepage**: [emblemvault.dev](https://emblemvault.dev) -- the project homepage with documentation
+- **npm 注册表**：[`@emblemvault/agentwallet`](https://www.npmjs.com/package/@emblemvault/agentwallet)——查看发布者、版本历史和下载统计信息 |
+- **源代码**：[github.com/EmblemCompany/EmblemAi-AgentWallet](https://github.com/EmblemCompany/EmblemAi-AgentWallet)——源代码公开且可审计 |
+- **官方网站**：[emblemvault.dev](https://emblevault.dev)——项目官方网站，包含文档
 
-The npm package and GitHub repository are maintained by the same organization. You can compare the published package contents against the source repository at any time using `npm pack --dry-run` or by inspecting `node_modules/@emblemvault/agentwallet` after install.
+npm 包和 GitHub 仓库由同一组织维护。您可以使用 `npm pack --dry-run` 或在安装后检查 `node_modules/@emblemvault/agentwallet` 来比较发布的包内容和源代码。
 
-### What Happens During Installation
+### 安装过程
 
-`npm install -g @emblemvault/agentwallet` installs the CLI binary `emblemai` globally. Like all global npm packages, this runs on your machine with your user permissions. The package has no `postinstall` scripts -- it only places the CLI binary and its dependencies.
+`npm install -g @emblemvault/agentwallet` 会在您的机器上全局安装 CLI 可执行文件 `emblemai`。与所有全局 npm 包一样，该文件会在您的用户权限下运行。该包没有 `postinstall` 脚本——它仅安装 CLI 可执行文件及其依赖项。
 
-### What Happens During Authentication
+### 身份验证过程
 
-**Browser auth** (recommended): The CLI starts a temporary local server on `127.0.0.1:18247` (localhost only, not network-accessible) to receive the auth callback from your browser. This server runs only during the login flow and handles a single request. The browser opens the EmblemVault auth modal where you authenticate directly with the EmblemVault service. On success, a session JWT is returned to the local server and saved to disk.
+**浏览器身份验证**（推荐）：CLI 会在 `127.0.0.1:18247`（仅限本地访问，不支持网络访问）上启动一个临时本地服务器，以接收来自浏览器的身份验证回调。此服务器仅在登录过程中运行，并处理一个请求。浏览器会打开 EmblemVault 身份验证模块，您可以直接在其中与 EmblemVault 服务进行身份验证。成功后，会返回一个会话 JWT 并保存到磁盘上。
 
-**Password auth**: The password is sent to EmblemVault's auth API over HTTPS. A session JWT is returned. If using the `-p` flag, the password is also encrypted and stored locally for future sessions.
+**密码身份验证**：密码会通过 HTTPS 发送到 EmblemVault 的身份验证 API。会返回一个会话 JWT。如果使用了 `-p` 标志，密码也会被加密并保存在本地以供后续会话使用。
 
-In both cases, no credentials are sent to any third party. Authentication is strictly between your machine and the EmblemVault auth service.
+在这两种情况下，都不会将凭据发送给第三方。身份验证严格发生在您的机器和 EmblemVault 身份验证服务之间。
 
-### What Gets Stored on Disk
+### 存储在磁盘上的内容
 
-All files are created under `~/.emblemai/` with restrictive permissions:
+所有文件都存储在 `~/.emblemai/` 目录下，并具有严格的权限设置：
 
-| File | What It Contains | How It's Protected |
+| 文件 | 包含内容 | 保护方式 |
 |------|-----------------|-------------------|
-| `.env` | Your EMBLEM_PASSWORD | Encrypted with AES-256-GCM via [dotenvx](https://dotenvx.com/). The password is never stored in plaintext. |
-| `.env.keys` | The AES decryption key for `.env` | File permissions `chmod 600` (owner-only). This key never leaves your machine and is never transmitted over the network. |
-| `session.json` | JWT access token + refresh token | File permissions `chmod 600`. The JWT expires after 15 minutes and is automatically refreshed. The refresh token is valid for 7 days. Logging out deletes this file. |
-| `history/*.json` | Conversation history | File permissions `chmod 600`. Contains your chat messages with the AI. No credentials are stored in history. |
+| `.env` | 您的 EMBLEM_PASSWORD | 使用 [dotenvx](https://dotenvx.com/) 通过 AES-256-GCM 加密 | 是 | `600` |
+| `.env.keys` | `.env` 文件的解密密钥 | 是 | 仅所有者可访问 | `600` |
+| `session.json` | JWT 访问令牌 + 刷新令牌 | 是 | `600`。JWT 有效期为 15 分钟，会自动刷新。刷新令牌有效期为 7 天。退出会删除此文件。 |
+| `history/*.json` | 对话历史记录 | 是 | `600`。包含您与 AI 的聊天记录。历史记录中不存储凭据。 |
 
-The `~/.emblemai/` directory itself is created with `chmod 700` (owner-only access).
+`~/.emblemai/` 目录本身使用 `chmod 700` 设置权限（仅所有者可访问）。
 
-### How Sessions Work
+### 会话工作原理
 
-The auth session uses short-lived JWTs (15-minute expiry) that are automatically refreshed using a 7-day refresh token. This means:
+身份验证会话使用短期有效的 JWT（有效期为 15 分钟），并通过 7 天的刷新令牌自动刷新。这意味着：
 
-- If your session file is compromised, the attacker has at most 7 days of access (refresh token expiry), not indefinite access
-- The JWT is rotated frequently, limiting the window of exposure for any single token
-- Logging out (`/auth` > Logout) immediately invalidates the local session and deletes the file
-- Each refresh issues a new refresh token and invalidates the previous one (rotation)
+- 如果会话文件被泄露，攻击者最多只能访问 7 天（刷新令牌有效期） |
+- JWT 会频繁更新，从而限制任何单个令牌的暴露时间 |
+- 通过 `/auth` > Logout 退出会立即失效会话并删除会话文件 |
+- 每次刷新都会生成一个新的刷新令牌并使之前的令牌失效
 
-### Safe Mode and Transaction Confirmation
+### 安全模式和交易确认
 
-The agent operates in **safe mode by default**. This means:
+代理默认处于 **安全模式**。这意味着：
 
-- **All wallet-modifying actions require your explicit confirmation** before execution -- including swaps, sends, transfers, order placement, signing, and DeFi operations
-- **Read-only operations execute immediately** without confirmation -- balance checks, address lookups, market data, portfolio views
-- The agent will present the full details of any transaction (amounts, addresses, fees) and wait for your approval before submitting
-- There is no "auto-execute" mode -- every transaction requires a human in the loop
+- **所有修改钱包的操作** 在执行前都需要用户的明确确认——包括交换、发送、转账、订单放置、签名和 DeFi 操作 |
+- **只读操作** 可以立即执行——无需确认——例如查看余额、地址查询、市场数据、投资组合查看 |
+- 代理会显示任何交易的全部详细信息（金额、地址、费用），并在提交前等待您的确认 |
+- 没有 “自动执行” 模式——所有操作都需要人工确认
 
-### Password Hygiene
+### 密码管理
 
-Your EMBLEM_PASSWORD is the master key to your wallet. Treat it with the same care as a private key or seed phrase:
+您的 EMBLEM_PASSWORD 是您钱包的密钥。请像对待私钥或种子短语一样谨慎处理它：
 
-- **Use a strong, unique password** (minimum 16 characters). A passphrase of 4+ random words is recommended
-- **Do not reuse passwords** from other services. Your EMBLEM_PASSWORD should be unique to EmblemVault
-- **Store your password securely** using a password manager. The CLI encrypts it on disk, but you should have a backup in case you lose access to the machine
-- **If using `EMBLEM_PASSWORD` as an environment variable** in automation, ensure the host environment is secured -- restrict access to the machine, use process isolation, and avoid logging environment variables
-- **Prefer browser auth for interactive use** -- it avoids placing the password in shell history or environment variables
-- **Different passwords create different wallets** -- this is by design. Use this to separate funds by purpose (e.g., one wallet for daily use, another for long-term holdings)
+- **使用强密码**（至少 16 个字符）。建议使用 4 个以上随机单词组成的密码 |
+- **不要在其他服务中重复使用密码**。您的 EMBLEM_PASSWORD 应该是 EmblemVault 独有的 |
+- **安全存储密码**：使用密码管理器进行存储。CLI 会在磁盘上加密密码，但您应该备份以防丢失访问权限 |
+- **如果在自动化环境中使用 `EMBLEM_PASSWORD` 作为环境变量**，请确保主机环境安全——限制对机器的访问、使用进程隔离，并避免在环境变量中存储密码 |
+- **对于交互式使用，建议使用浏览器身份验证**——这样可以避免在 shell 历史记录或环境变量中存储密码 |
+- **不同的密码会生成不同的钱包**——这是设计意图，以便根据用途区分不同的资金 |
 
-### Verifying the Package
+### 验证包内容
 
-Before or after installation, you can inspect exactly what the package contains:
+在安装之前或之后，您可以查看包的确切内容：
 
 ```bash
 # View package contents without installing
@@ -590,18 +584,18 @@ git clone https://github.com/EmblemCompany/EmblemAi-AgentWallet.git
 diff -r node_modules/@emblemvault/agentwallet EmblemAi-AgentWallet/publish
 ```
 
-### Reporting Security Issues
+### 报告安全问题
 
-If you discover a security vulnerability, please report it responsibly:
+如果您发现安全漏洞，请负责任地报告：
 
-- **GitHub**: Open an issue at [github.com/EmblemCompany/EmblemAi-AgentWallet/issues](https://github.com/EmblemCompany/EmblemAi-AgentWallet/issues)
-- **Discord**: Report in the security channel at [discord.gg/Q93wbfsgBj](https://discord.gg/Q93wbfsgBj)
+- **GitHub**：在 [github.com/EmblemCompany/EmblemAi-AgentWallet/issues](https://github.com/EmblemCompany/EmblemAi-AgentWallet/issues) 提交问题 |
+- **Discord**：在 [discord.gg/Q93wbfsgBj](https://discord.gg/Q93wbfsgBj) 的安全频道报告
 
 ---
 
-## Links
+## 链接
 
-- [npm package](https://www.npmjs.com/package/@emblemvault/agentwallet)
-- [EmblemVault](https://emblemvault.dev)
+- [npm 包](https://www.npmjs.com/package/@emblemvault/agentwallet)
+- [EmblemVault](https://emblevault.dev)
 - [Hustle AI](https://agenthustle.ai)
 - [GitHub](https://github.com/EmblemCompany/EmblemAi-AgentWallet)
