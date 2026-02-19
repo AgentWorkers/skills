@@ -187,12 +187,7 @@ def get_incremental_changes() -> Optional[dict]:
 
     if sync_commit_id == latest_commit_id:
         print("✅ Already up to date, no changes to sync")
-        return {
-            "repo": UPSTREAM_REPO,
-            "base": sync_commit_id,
-            "head": latest_commit_id,
-            "files": [],
-        }
+        sys.exit(0)
 
     print(f"📌 Syncing from {sync_commit_id[:8]} to {latest_commit_id[:8]}")
 

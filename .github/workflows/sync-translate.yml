@@ -1,9 +1,9 @@
 name: Daily Sync & Translate
 
 on:
-  # 每天 UTC 0 点运行（北京时间 8 点）
+  # 每小时 20 分运行
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '20 * * * *'
   # 也可以手动触发
   workflow_dispatch:
 
