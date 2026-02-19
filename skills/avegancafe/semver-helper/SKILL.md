@@ -1,50 +1,122 @@
 ---
 name: semver-helper
-description: 帮助根据代码变更来确定版本号的升级类型（MAJOR、MINOR、PATCH）。提供关于 SemVer 2.0.0 标准的指导。
+description: 语义版本控制 2.0.0 参考指南：选择“重大版本（MAJOR）”、“次要版本（MINOR）”或“修补版本（PATCH）”的快速决策树及示例。
 author: Gelmir
-tags: [semver, versioning, release, git]
+tags: [semver, versioning, release]
 ---
 # Semver 辅助工具
 
-关于 Semantic Versioning 2.0.0 的快速参考指南。
+本文档提供了关于 Semantic Versioning 2.0.0 规则的快速参考。
 
-## 版本格式
+## 核心规则
 
-`MAJOR.MINOR.PATCH`（例如：`1.2.3`）
+对于版本 `MAJOR.MINOR.PATCH` 的更新规则如下：
 
-## 何时升级版本
+| 版本级别 | 何时升级 | 是否需要重置版本号（降低级别）？ |
+|---------|-----------|----------------------|
+| **MAJOR** (X.0.0) | 引入破坏性变更（API 不兼容） | 是，此时 MINOR 和 PATCH 版本号应降为 0 |
+| **MINOR** (0.X.0) | 添加新功能（向后兼容） | 是，此时 PATCH 版本号应降为 0 |
+| **PATCH** (0.0.X) | 修复漏洞（向后兼容） | 否 |
 
-| 版本级别 | 升级时机 | 例子 |
-|-------|-----------|---------|
-| **MAJOR**（X.0.0） | 引入破坏性变更 | 移除某个 API、更改功能行为 |
-| **MINOR**（0.X.0） | 添加新功能（向后兼容） | 添加新函数、新参数 |
-| **PATCH**（0.0.X） | 修复错误（向后兼容） | 修复程序崩溃、拼写错误 |
+## 快速决策树
 
-## 快速检查
-
-```bash
-# Analyze changes and suggest version bump
-uv run python main.py suggest --from 1.0.0 --changes "feat: add auth, fix: null pointer"
-
-# Or check what a specific change means
-uv run python main.py check "breaking: remove old API"
+```
+Did you change anything users depend on?
+├─ No (internal only) → PATCH
+└─ Yes
+   └─ Did you remove/change existing behavior?
+      ├─ Yes → MAJOR
+      └─ No (only added new stuff)
+         └─ Is the new stuff visible to users?
+            ├─ Yes → MINOR
+            └─ No → PATCH
 ```
 
-## 规则
+## 实际示例
 
-1. **MAJOR** — 任何导致不兼容的 API 变更
-2. **MINOR** — 添加新功能（向后兼容）
-3. **PATCH** — 修复错误（向后兼容）
+### 🔴 **MAJOR**（破坏性变更）
 
-## 预发布版本
+- 移除某个函数、端点或命令行参数（CLI flag）
+- 修改函数的返回类型
+- 引入新的必填参数
+- 显著改变默认行为
+- 重命名用户依赖的组件或功能
+- 升级依赖库，导致下游代码需要修改
 
-预发布版本使用以下后缀：
-- `1.0.0-alpha.1`
-- `1.0.0-beta.2`
-- `1.0.0-rc.1`
+**示例：**
+- 将 `removeUser()` 方法重命名为 `deleteUser()`
+- API 响应格式从 `{id: 1}` 更改为 `{data: {id: 1}`
+- 停止支持 Node 16（用户必须升级到更高版本）
 
-## 常见错误
+### 🟡 **MINOR**（新增功能）
 
-- 不要因为添加新功能而升级 **MAJOR** 版本
-- 不要因为修复错误而升级 **MINOR** 版本
-- 升级到更高版本时，不要将版本号重置为更低的数字：例如，`1.2.3` 不应升级为 `2.2.3`，而应升级为 `2.0.0`
+- 添加新功能
+- 添加可选参数
+- 新增导出（exports）
+- 将旧功能标记为过时（仅发出警告，不删除）
+- 提高性能（无需修改 API）
+
+**示例：**
+- 在现有用户功能基础上新增 `createUser()` 方法
+- 在命令行参数中添加 `--format json` 选项
+- 新增事件监听器或钩子（event listeners/hooks）
+- 将旧方法标记为过时（但仍可正常使用）
+
+### 🟢 **PATCH**（修复漏洞）
+
+- 修复漏洞，同时不改变现有功能
+- 更新文档
+- 进行内部重构（用户无法察觉到变化）
+- 更新依赖库（无需修改 API）
+- 添加新的测试用例
+
+**示例：**
+- 修复空指针异常
+- 修正错误信息中的拼写错误
+- 修复竞态条件（race condition）
+- 更新项目说明文档（README）
+
+## 版本升级示例
+
+| 更改内容 | 版本升级情况 |
+|---------|----------------------|
+| 修复空指针问题 | `1.2.3` → `1.2.4` |
+- 添加身份验证功能 | `1.2.3` → `1.3.0` |
+- 移除旧 API | `1.2.3` → `2.0.0` |
+- 修复漏洞 + 添加新功能 | `1.2.3` → `1.3.0` （属于 MINOR 升级） |
+- 修复漏洞 + 移除旧 API | `1.2.3` → `2.0.0` （属于 MAJOR 升级） |
+
+## 预发布版本（Pre-releases）
+
+在正式发布前，使用以下后缀进行测试：
+
+- `2.0.0-alpha.1` — 非常早期，不稳定版本
+- `2.0.0-beta.2` — 功能已完成，正在进行测试
+- `2.0.0-rc.1` — 发布候选版本，进行最终测试
+
+预发布版本的顺序如下：`1.0.0-alpha < 1.0.0-beta < 1.0.0-rc < 1.0.0`
+
+## 常见特殊情况
+
+| 情况 | 是否需要升级版本号 | 原因 |
+|---------|----------------|----------------------|
+| 修复本版本引入的漏洞 | 使用 PATCH 升级 | 仍然属于修复性操作 |
+- 将功能标记为过时（但保持其可用） | 使用 MINOR 升级 | 仅标记为“过时”状态 |
+- 修改未记录的内部行为 | 使用 PATCH 升级 | 用户不应依赖这些行为 |
+- 需要修改 API 的安全漏洞修复 | 使用 MAJOR 升级 | 由于安全问题，属于破坏性变更 |
+- 仅修改内部代码或文档 | 使用 PATCH 升级 | 用户无法察觉到变化 |
+
+## 避免的错误做法
+
+❌ **不要** 为新增重大功能使用 MAJOR 升级
+❌ **不要** 为修复漏洞使用 MINOR 升级
+❌ **不要** 为新增功能使用 PATCH 升级
+❌ **升级版本号时不要重复使用旧的版本号**（例如：`1.2.3 → 2.2.3` 是错误的）
+
+## 快速参考表
+
+```
+Users' code breaks? → MAJOR
+Users get new toys? → MINOR
+Users get fixes? → PATCH
+```

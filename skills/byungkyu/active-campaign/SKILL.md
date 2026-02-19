@@ -1,23 +1,23 @@
 ---
 name: active-campaign
-description: |
-  ActiveCampaign API integration with managed OAuth. Marketing automation, CRM, contacts, deals, and email campaigns.
-  Use this skill when users want to manage contacts, deals, tags, lists, automations, or campaigns in ActiveCampaign.
-  For other third party apps, use the api-gateway skill (https://clawhub.ai/byungkyu/api-gateway).
-  Requires network access and valid Maton API key.
+description: >
+  ActiveCampaign API 集成支持管理的 OAuth 认证机制，可用于实现营销自动化、客户关系管理（CRM）、联系人管理、交易管理以及电子邮件营销等功能。  
+  当用户需要管理 ActiveCampaign 中的联系人、交易、标签、列表、自动化规则或营销活动时，可以使用此功能。  
+  对于其他第三方应用程序，建议使用 `api-gateway` 功能（https://clawhub.ai/byungkyu/api-gateway）。  
+  使用该功能需要网络连接以及有效的 Maton API 密钥。
 metadata:
   author: maton
   version: "1.0"
   clawdbot:
     emoji: 🧠
+    homepage: "https://maton.ai" 
     requires:
       env:
         - MATON_API_KEY
 ---
-
 # ActiveCampaign
 
-您可以使用托管的 OAuth 认证来访问 ActiveCampaign API，从而管理联系人、交易、标签、列表、自动化规则和电子邮件活动。
+通过管理的OAuth认证来访问ActiveCampaign API。可以管理联系人、交易、标签、列表、自动化规则和电子邮件活动。
 
 ## 快速入门
 
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## 基本 URL
+## 基本URL
 
 ```
-https://gateway.maton.ai/active-campaign/api/3/{resource}
+https://gateway.maton.ai/active-campaign/{native-api-path}
 ```
 
-该网关代理会将请求转发到您的 ActiveCampaign 账户 API，并自动插入您的 OAuth 令牌。
+请将 `{native-api-path}` 替换为实际的Airtable API端点路径。该网关会将请求代理到 `{account}.api-us1.com` 并自动插入您的OAuth令牌。
 
 ## 认证
 
-所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### 获取 API 密钥
+### 获取API密钥
 
 1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
 2. 转到 [maton.ai/settings](https://maton.ai/settings)。
-3. 复制您的 API 密钥。
+3. 复制您的API密钥。
 
 ## 连接管理
 
-您可以在 `https://ctrl.maton.ai` 上管理您的 ActiveCampaign OAuth 连接。
+您可以在 `https://ctrl.maton.ai` 上管理您的ActiveCampaign OAuth连接。
 
-### 查看连接
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -113,7 +113,7 @@ EOF
 }
 ```
 
-在浏览器中打开返回的 `url` 以完成 OAuth 认证。
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
 ### 删除连接
 
@@ -128,7 +128,7 @@ EOF
 
 ### 指定连接
 
-如果您有多个 ActiveCampaign 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
+如果您有多个ActiveCampaign连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,24 +140,24 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略此字段，网关将使用默认的（最旧的）活动连接。
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API 参考
+## API参考
 
 ### 联系人
 
-#### 查看联系人列表
+#### 列出联系人
 
 ```bash
 GET /active-campaign/api/3/contacts
 ```
 
 **查询参数：**
-- `limit` - 每页显示的结果数量（默认：20）
+- `limit` - 结果数量（默认：20）
 - `offset` - 开始索引
 - `search` - 按电子邮件搜索
 - `filters[email]` - 按电子邮件过滤
-- `filters[listid]` - 按列表 ID 过滤
+- `filters[listid]` - 按列表ID过滤
 
 **响应：**
 ```json
@@ -257,7 +257,7 @@ Content-Type: application/json
 
 ### 标签
 
-#### 查看标签列表
+#### 列出标签
 
 ```bash
 GET /active-campaign/api/3/tags
@@ -335,7 +335,7 @@ Content-Type: application/json
 }
 ```
 
-#### 从联系人中删除标签
+#### 从联系人中移除标签
 
 ```bash
 DELETE /active-campaign/api/3/contactTags/{contactTagId}
@@ -349,7 +349,7 @@ GET /active-campaign/api/3/contacts/{contactId}/contactTags
 
 ### 列表
 
-#### 查看所有列表
+#### 列出所有列表
 
 ```bash
 GET /active-campaign/api/3/lists
@@ -434,7 +434,7 @@ Content-Type: application/json
 
 ### 交易
 
-#### 查看交易列表
+#### 列出交易
 
 ```bash
 GET /active-campaign/api/3/deals
@@ -442,8 +442,8 @@ GET /active-campaign/api/3/deals
 
 **查询参数：**
 - `search` - 按标题、联系人或组织搜索
-- `filters[stage]` - 按阶段 ID 过滤
-- `filters[owner]` - 按所有者 ID 过滤
+- `filters[stage]` - 按阶段ID过滤
+- `filters[owner]` - 按所有者ID过滤
 
 **响应：**
 ```json
@@ -511,7 +511,7 @@ DELETE /active-campaign/api/3/deals/{dealId}
 
 ### 交易阶段
 
-#### 查看交易阶段列表
+#### 列出交易阶段
 
 ```bash
 GET /active-campaign/api/3/dealStages
@@ -532,9 +532,9 @@ Content-Type: application/json
 }
 ```
 
-### 交易组（Pipeline）
+### 交易组（管道）
 
-#### 查看交易组列表
+#### 列出交易组
 
 ```bash
 GET /active-campaign/api/3/dealGroups
@@ -556,7 +556,7 @@ Content-Type: application/json
 
 ### 自动化规则
 
-#### 查看自动化规则列表
+#### 列出自动化规则
 
 ```bash
 GET /active-campaign/api/3/automations
@@ -588,7 +588,7 @@ GET /active-campaign/api/3/automations/{automationId}
 
 ### 活动
 
-#### 查看活动列表
+#### 列出活动
 
 ```bash
 GET /active-campaign/api/3/campaigns
@@ -619,7 +619,7 @@ GET /active-campaign/api/3/campaigns/{campaignId}
 
 ### 用户
 
-#### 查看用户列表
+#### 列出用户
 
 ```bash
 GET /active-campaign/api/3/users
@@ -648,7 +648,7 @@ GET /active-campaign/api/3/users/{userId}
 
 ### 账户
 
-#### 查看账户列表
+#### 列出账户
 
 ```bash
 GET /active-campaign/api/3/accounts
@@ -669,13 +669,13 @@ Content-Type: application/json
 
 ### 自定义字段
 
-#### 查看字段列表
+#### 列出字段
 
 ```bash
 GET /active-campaign/api/3/fields
 ```
 
-#### 创建自定义字段
+#### 创建字段
 
 ```bash
 POST /active-campaign/api/3/fields
@@ -705,7 +705,7 @@ Content-Type: application/json
 
 ### 备注
 
-#### 查看备注列表
+#### 列出备注
 
 ```bash
 GET /active-campaign/api/3/notes
@@ -728,13 +728,13 @@ Content-Type: application/json
 
 ### Webhook
 
-#### 查看 Webhook 列表
+#### 列出Webhook
 
 ```bash
 GET /active-campaign/api/3/webhooks
 ```
 
-#### 创建 Webhook
+#### 创建Webhook
 
 ```bash
 POST /active-campaign/api/3/webhooks
@@ -752,14 +752,14 @@ Content-Type: application/json
 
 ## 分页
 
-ActiveCampaign 使用基于偏移量的分页机制：
+ActiveCampaign使用基于偏移量的分页方式：
 
 ```bash
 GET /active-campaign/api/3/contacts?limit=20&offset=0
 ```
 
 **参数：**
-- `limit` - 每页显示的结果数量（默认：20）
+- `limit` - 每页的结果数量（默认：20）
 - `offset` - 开始索引
 
 **响应包含元数据：**
@@ -772,7 +772,7 @@ GET /active-campaign/api/3/contacts?limit=20&offset=0
 }
 ```
 
-对于大型数据集，使用 `orders[id]=ASC` 和 `id_greater` 参数可提高性能：
+对于大型数据集，使用 `orders[id]=ASC` 和 `id_greater` 参数以提高性能：
 ```bash
 GET /active-campaign/api/3/contacts?orders[id]=ASC&id_greater=100
 ```
@@ -808,7 +808,7 @@ data = response.json()
 print(data['contacts'])
 ```
 
-### 使用 Python 创建带有标签的联系人
+### Python（创建带有标签的联系人）
 
 ```python
 import os
@@ -850,26 +850,26 @@ print("Tag added to contact")
 
 ## 注意事项
 
-- 所有 API 端点都需要前缀 `/api/3/`。
-- 请求体应使用对象格式表示资源（例如：`{"contact": {...}}`）。
+- 所有端点都需要使用 `/api/3/` 前缀。
+- 请求体使用单数资源名称，并包裹在对象中（例如：`{"contact": {...}}`）。
 - ID 以字符串形式返回。
-- 时间戳采用 ISO 8601 格式，并包含时区信息。
-- 每个账户每秒的请求限制为 5 次。
-- 删除操作返回 200 OK（而非 204）。
-- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）在某些 shell 环境中可能无法正确解析。
+- 时间戳采用ISO 8601格式，并包含时区信息。
+- 每个账户每秒的请求限制为5次。
+- DELETE操作返回200 OK（而不是204）。
+- 重要提示：当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中，环境变量 `$MATON_API_KEY` 可能无法正确展开。
 
 ## 错误处理
 
-| 状态码 | 含义 |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | 未建立 ActiveCampaign 连接或请求无效 |
-| 401 | Maton API 密钥无效或缺失 |
+| 400 | 缺少ActiveCampaign连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
 | 404 | 资源未找到 |
 | 422 | 验证错误 |
-| 429 | 请求速率限制（每秒 5 次） |
-| 4xx/5xx | 来自 ActiveCampaign API 的传递错误 |
+| 429 | 请求速率限制（每秒5次） |
+| 4xx/5xx | 来自ActiveCampaign API的传递错误 |
 
-错误响应会包含详细信息：
+错误响应包含详细信息：
 ```json
 {
   "errors": [
@@ -883,17 +883,17 @@ print("Tag added to contact")
 }
 ```
 
-### 故障排除：API 密钥无效
+### 故障排除：API密钥无效
 
-**当收到“API 密钥无效”的错误时，请务必按照以下步骤操作，再判断是否存在问题：**
+**当收到“API密钥无效”错误时，请务必按照以下步骤操作，再确定问题所在：**
 
-1. 确保 `MATON_API_KEY` 环境变量已设置：
+1. 检查是否设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. 通过查看连接信息来验证 API 密钥是否有效：
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -906,9 +906,9 @@ EOF
 
 ## 资源
 
-- [ActiveCampaign API 概述](https://developers.activecampaign.com/reference/overview)
-- [ActiveCampaign 开发者门户](https://developers.activecampaign.com/)
-- [API 基本 URL](https://developers.activecampaign.com/reference/url)
-- [联系人 API](https://developers.activecampaign.com/reference/list-all-contacts)
-- [标签 API](https://developers.activecampaign.com/reference/contact-tags)
-- [交易 API](https://developers.activecampaign.com/reference/list-all-deals)
+- [ActiveCampaign API概述](https://developers.activecampaign.com/reference/overview)
+- [ActiveCampaign开发者门户](https://developers.activecampaign.com/)
+- [API基本URL](https://developers.activecampaign.com/reference/url)
+- [联系人API](https://developers.activecampaign.com/reference/list-all-contacts)
+- [标签API](https://developers.activecampaign.com/reference/contact-tags)
+- [交易API](https://developers.activecampaign.com/reference/list-all-deals)
