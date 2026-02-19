@@ -1,4 +1,4 @@
-name: Daily Sync & Translate
+name: Hourly Sync & Translate
 
 on:
   # 每小时 20 分运行
