@@ -1,143 +1,109 @@
 ---
 name: moltflow-onboarding
-description: "MoltFlow WhatsApp自动化的主动业务增长工具。该工具通过分析账户元数据（如账户数量、时间戳、群组成员信息等）来发现业务增长机会，并提供相应的策略建议以帮助用户设置自动化流程。适用场景包括：新用户入职、系统设置、业务启动、业务增长、潜在客户管理以及业务优化等环节。"
+description: "**MoltFlow WhatsApp自动化系统的只读账户健康检查及增长机会报告**  
+该报告用于获取账户的元数据（如账户数量、时间戳、群组成员信息等），并展示相关分析结果。适用于以下场景：新员工入职培训、系统设置、项目启动、账户增长策略制定、系统优化、情况汇报以及账户审核等。"
 source: "MoltFlow Team"
-version: "2.11.8"
+version: "2.14.3"
 risk: safe
 requiredEnv:
   - MOLTFLOW_API_KEY
 primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
-**MoltFlow**——专为团队设计的WhatsApp Business自动化工具。支持大规模连接、监控和自动化操作。
+> **MoltFlow** — 专为团队设计的 WhatsApp Business 自动化工具。支持大规模地连接、监控和自动化 WhatsApp 操作。  
+> **由于需求旺盛以及近期出现的注册问题，我们特推出顶级商务计划：每月仅需 19.90 美元（按年计费），并提供无限使用额度——此优惠仅限限时有效。** [**立即抢购**](https://buy.stripe.com/cNifZibX7gpQebJ0nsfnO00)  
+> 免费试用版本也可使用。 [**立即注册**](https://molt.waiflow.app/checkout?plan=free)  
 
-**由于需求旺盛以及近期注册问题，我们特别推出了一项限时优惠：**顶级Business套餐每月仅需19.90美元（按年计费），且配有限量无限使用额度。[立即抢购](https://buy.stripe.com/cNifZibX7gpQebJ0nsfnO00)  
-同时提供免费试用套餐。[立即注册](https://molt.waiflow.app/checkout?plan=free)
+# MoltFlow 账户健康状况与增长报告  
 
-# MoltFlow BizDev Agent——主动式业务发展服务  
-
-您是一名积极主动的业务发展专员：不仅负责账户的初始设置，还会主动寻找商机、挖掘潜在客户，并根据账户数据提出增长策略。  
-
-**您的性格特点：**直接、数据驱动、行动力强。您总是用具体的数据支持您的观点，并为每个任务提出明确的下一步行动方案。您具备“增长黑客”的思维方式——每条聊天记录都可能是潜在客户，每个群组都可能是新的销售渠道。  
+这是一个只读分析工具，用于获取您的 MoltFlow 账户数据并生成可操作的账户健康报告。该工具使用的所有 API 请求均为 `GET` 请求，不会修改任何数据。  
 
 ## 使用场景  
-- 需要帮助开始使用MoltFlow或设置账户  
-- 在聊天记录中寻找潜在客户  
-- 询问如何促进业务增长  
-- 建议提升账户效率的方法  
-- 优化账户配置  
-- 获取每日业务报告或晨间简报  
-- 需要首次设置账户或定期检查账户状态  
+- “帮助我开始使用”或“设置我的账户”  
+- “在聊天记录中寻找潜在客户”或“发现业务机会”  
+- “我该如何实现增长？”或“提供增长建议”  
+- “优化我的设置”或“我忽略了哪些方面？”  
+- “运行每日简报”或“获取晨间报告”  
 
 ## 先决条件  
-1. **MOLTFLOW_API_KEY**：请在[MoltFlow控制台](https://molt.waiflow.app)的“设置”>“API密钥”中生成。  
-2. 基础URL：`https://apiv2.waiflow.app/api/v2`  
+1. **MOLTFLOW_API_KEY** — 请从 [MoltFlow 仪表板](https://molt.waiflow.app) 的 “ Sessions > API Keys” 中生成。  
+2. 基础 URL：`https://apiv2.waiflow.app/api/v2`  
 
-## 所需API密钥权限  
-| 权限范围 | 访问内容 |  
-|---------|---------|  
-| `sessions` | 管理会话信息 |  
-| `messages` | 发送消息 |  
+## 所需 API 密钥权限  
+| 权限范围 | 访问权限 |  
+|---------|--------|  
+| `sessions` | `manage` |  
+| `messages` | `send` |  
 
-## 认证方式  
+## 认证  
 ```
 X-API-Key: <your_api_key>
 ```  
 
 ---
 
-## 代理工作流程  
-当用户使用该功能时，请按照以下步骤操作：保持对话式交流，避免机械式回复，并根据实际情况灵活调整流程。  
+## 第一步：获取账户数据（只读）  
+从以下只读接口获取数据。所有请求均需通过 `X-API-Key: $MOLTFLOW_API_KEY` 头部进行认证。基础 URL：`https://apiv2.waiflow.app/api/v2`  
 
-### 第1阶段：账户数据分析  
-从以下只读接口收集账户信息：  
-| 接口 | 数据内容 | 技能参考文档 |  
-|--------|-----------|-----------------|  
-| `GET /users/me` | 账户及套餐信息 | `moltflow-admin` |  
-| `GET /sessions` | WhatsApp会话记录 | `moltflow` |  
-| `GET /groups` | 被监控的群组信息 | `moltflow` |  
-| `GET /custom-groups` | 自定义群组信息 | `moltflow-outreach` |  
-| `GET /webhooks` | Webhook设置 | `moltflow` |  
-| `GET /reviews/collectors` | 评论收集器设置 | `moltflow-reviews` |  
-| `GET /tenant/settings` | 租户设置 | `moltflow-admin` |  
-| `GET /scheduled-messages` | 已安排的消息 | `moltflow-outreach` |  
-| `GET /usage/current` | 使用情况统计 | `moltflow-admin` |  
-| `GET /leads` | 现有潜在客户信息 | `moltflow-leads` |  
-| `GET /messages/chats/{session_id}` | 单个会话的聊天记录 | `moltflow` |  
-所有接口均为`GET`（只读）请求。认证方式：在请求头中添加`X-API-Key: $MOLTFLOW_API_KEY`。基础URL：`https://apiv2.waiflow.app/api/v2`。具体请求/响应格式请参考相应技能的SKILL.md文档。  
+| 接口 | 数据内容 | 完整文档 |  
+|---------|-----------|-----------|  
+| `GET /users/me` | 账户信息及计划详情 | moltflow-admin SKILL.md |  
+| `GET /sessions` | WhatsApp 会话记录 | moltflow SKILL.md |  
+| `GET /groups` | 被监控的群组信息 | moltflow SKILL.md |  
+| `GET /custom-groups` | 自定义群组信息 | moltflow-outreach SKILL.md |  
+| `GET /webhooks` | Webhook 配置信息 | moltflow SKILL.md |  
+| `GET /reviews/collectors` | 评论收集器设置 | moltflow-reviews SKILL.md |  
+| `GET /tenant/settings` | 租户设置 | moltflow-admin SKILL.md |  
+| `GET /scheduled-messages` | 已安排的消息信息 | moltflow-outreach SKILL.md |  
+| `GET /usage/current` | 使用情况统计 | moltflow-admin SKILL.md |  
+| `GET /leads` | 现有潜在客户信息 | moltflow-leads SKILL.md |  
+| `GET /messages/chats/{session_id}` | 每个会话的聊天记录 | moltflow SKILL.md |  
 
-### 第2阶段：账户状态报告  
-向用户展示账户当前的状态和性能指标。  
+## 第二步：生成账户健康报告  
+将获取的数据格式化为状态仪表板。  
 
-### 第3阶段：主动发现商机  
-根据收集到的数据，生成一份优先级的业务增长机会清单，并仅推荐实际可行的方案。  
+---  
 
-**执行以下分析并展示结果：**  
-#### 3A：发现潜在客户  
-- 通过`GET /messages/chats/{session_id}`（参考moltflow SKILL.md）获取每个会话的聊天记录，并分析相关数据：  
-  - **先发消息但未得到回复的联系人**——这些潜在客户可能正在失去兴趣；  
-  - **消息发送频繁的联系人**——他们是活跃的用户，可能是重要客户；  
-  - **最近7天内未收到回复的联系人**——这些联系人需要立即跟进；  
-  - **未加入任何自定义群组的联系人**——他们可能是尚未被开发的潜在客户。  
-**以清晰的方式呈现分析结果。**  
+## 第三步：分析增长机会  
+利用已获取的数据，识别并展示以下关键信息：  
 
-#### 3B：未监控的群组机会  
-- 通过`GET /groups/available/{session_id}`（参考moltflow SKILL.md）获取可使用的群组信息，并与已监控的群组进行对比。  
+### 3A：聊天分析  
+针对每个活跃会话，分析第一步中获取的聊天记录：  
+- **未回复的联系人** — 发送消息但未收到回复的潜在客户（这些潜在客户可能会流失）  
+- **活跃度高的联系人** — 按消息数量计算最活跃的联系人（尚未被分配到任何自定义群组）  
+- **近期联系人** — 过去 7 天内未收到任何回复的联系人  
+- **未分类的联系人** — 未加入任何自定义群组的联系人  
 
-#### 3C：客户留存与再互动策略  
-分析账户数据，寻找提升客户留存率的方案。  
+### 3B：未监控的群组  
+将可用群组（`GET /groups/available/{session_id}`）与被监控的群组进行对比，突出显示成员数量较多的未监控群组。  
 
-#### 3D：收入优化  
-根据使用情况和套餐限制，提出提升收入的策略。  
+### 3C：使用情况与计划利用率  
+根据使用数据，标记以下情况：  
+- 使用率超过 80% — 接近计划上限  
+- 使用率低于 20% — 未充分利用的资源  
 
-#### 3E：评论收集与用户反馈收集  
-如果系统支持评论收集功能，可建议用户启用该功能。  
+### 3D：未收集的评论  
+如果未配置评论收集器但仍有活跃的聊天记录，需标记这一缺口。  
 
-### 第4阶段：制定行动方案  
-在展示分析结果后，询问用户希望采取哪些行动。**在执行任何可能改变账户状态的操作前，请务必确认用户的意愿。**针对用户的选择，使用相应的API接口指导他们完成操作：  
-| 操作 | API接口 | 技能参考文档 |  
-|------|-------------|-----------------|  
-| 创建自定义群组 | `POST /custom-groups` | `moltflow-outreach SKILL.md` |  
-| 向群组添加成员 | `POST /custom-groups/{id}/members/add` | `moltflow-outreach SKILL.md` |  
-| 开始群组监控 | `POST /groups` | `moltflow SKILL.md` |  
-| 安排消息发送 | `POST /scheduled-messages` | `moltflow-outreach SKILL.md` |  
-| 设置评论收集器 | `POST /reviews/collectors` | `moltflow-reviews SKILL.md` |  
-| 启用AI功能 | `PATCH /tenant/settings` | `moltflow-admin SKILL.md` |  
-具体请求内容、响应格式及curl示例请参考各模块的SKILL.md文档。  
+## 第四步：提供下一步建议  
+在展示分析结果后，列出用户可以采取的具体操作。每个操作都会引用相应的技能模块；请参阅 해당模块的 SKILL.md 文件以获取完整的接口文档、请求格式和示例。  
 
-### 第5阶段：设置偏好与配置  
-在用户采取行动后，收集他们的操作偏好：  
-- **每日简报时间**：何时发送晨间报告？（默认：上午9点）  
-- **时区**：用于安排报告和发送消息（例如：Asia/Jerusalem, America/New_York）  
-- **报告内容**：哪些信息对您最重要？（多选）：  
-  - 新消息及未回复的联系人  
-  - 客户活动与销售进展  
-  - 今日需发送的消息  
-  - 使用情况统计  
-  - 群组监控结果  
-  - 增长机会（每周更新）  
-- **自动发送或需人工确认**：是否允许AI自动回复？  
-- **消息发送时间**：自动化消息应在何时发送？  
-- **语言设置**：AI回复使用哪种语言？（英语/希伯来语，系统自动识别）  
-对于需要修改的设置，请通过`PATCH /tenant/settings`更新账户信息（参考moltflow-admin SKILL.md）。  
+| 建议的操作 | 对应的技能模块 |  
+|-----------------|--------------|  
+| 为热门潜在客户创建自定义群组 | moltflow-outreach |  
+| 开始监控高价值群组 | moltflow（群组监控部分） |  
+| 安排跟进消息 | moltflow-outreach（已安排消息部分） |  
+| 设置评论收集器 | moltflow-reviews |  
+| 配置 AI 功能 | moltflow-admin |  
 
-### 第6阶段：总结业务增长情况  
-向用户展示业务增长的总体情况。  
+**所有操作均需用户明确授权。** 该工具仅用于读取数据并展示分析结果，不会创建、修改或删除任何资源。  
 
 ---
 
-## 重新执行流程  
-当用户再次使用该功能时，将重新执行整个流程并展示最新的分析结果。如果用户提及之前的数据，可进行对比分析。  
-
-**重要规则：**  
-- **禁止自动后台扫描**——所有分析操作均需用户主动触发；  
-- **未经用户明确同意，严禁发送任何消息**；  
-- 在创建群组、启用AI功能或进行任何可能改变账户状态的API调用前，务必确认用户意愿；  
-- 先展示数据，再提出行动建议；  
-- 如果用户选择“跳过”某项操作，请继续执行下一项；  
-- 如果API调用失败，显示错误信息并提供重试或跳过的选项；  
-- 以积极的态度分享分析结果（例如：“我发现12位联系人都未得到回复——这些潜在客户的信息可能正等待您的处理！”）；  
-- 所有API调用均需使用`MOLTFLOW_API_KEY`环境变量；  
-- 分析聊天记录时，重点关注与业务相关的信息，避免涉及私人对话；  
-- 遵守反垃圾邮件规则：切勿主动联系未主动发起联系的人；  
-- 所有API调用都必须经过正确认证，并使用具有相应权限的API密钥。
+## 重要规则  
+- **该工具为只读模式** — 仅用于获取和分析数据，不会修改账户状态。  
+- 所有会修改账户状态的操作（如创建群组、安排消息等）必须通过相应的技能模块进行，并需用户明确授权。  
+- 如果 API 请求失败，会显示错误信息并提供重试或跳过操作的选项。  
+- 所有 API 请求均使用 `MOLTFLOW_API_KEY` 环境变量；切勿硬编码密钥。  
+- 分析聊天记录时，重点关注与业务相关的信息，而非个人聊天内容。  
+- 遵守反垃圾邮件规则：切勿向未主动联系过用户的联系人发送消息。

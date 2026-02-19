@@ -1,57 +1,72 @@
 # 仪式记忆 🔄
 
-**状态：** ✅ 已启用 | **模块：** 仪式记忆（Ritual Memory） | **所属部分：** 代理大脑（Agent Brain）
+**状态:** 📋 代理指南 | **模块:** 仪式 | **所属部分:** 代理大脑
 
-该模块负责习惯的形成和操作流程的简化，用于本地存储用户学到的行为模式。
+该模块用于检测重复行为并跟踪用户的习惯。代理需要监控这些重复行为，并将它们存储为“模式”条目（pattern entries）。
 
-## ⚠️ 无需依赖外部服务
+## 功能介绍
 
-该模块仅跟踪 **本地行为模式**，包括：
-- 用户频繁使用的命令
-- 偏好的格式
-- 工作流程
-- 回应方式
+该模块指导代理注意重复出现的动作，并将这些动作记录为“模式”条目。需要注意的是，该模块不会自动运行——代理必须使用 `similar` 命令手动检测这些模式。
 
-**不包含以下功能：**
-- 加密验证
-- 邮件检查
-- 外部 API 调用
-- 自动监控
+## 检测机制
 
-## 功能说明
+代理使用 `similar` 命令来查找相关的条目：
 
-- **跟踪**：记录用户重复执行的操作
-- **自动化**：为常用操作创建快捷方式
-- **强化**：通过重复使用，使操作自动化
+### 在存储某个程序或偏好设置后
+```bash
+# After storing, check for similar entries
+./scripts/memory.sh similar "<content>" 0.10
 
-## 习惯的形成过程
-
-### 什么会自动化？
-
-| 触发条件 | 执行动作 | 自动化程度 |
-|---------|--------|----------|
-| “研究任务” | 执行研究流程 | 高度自动化 |
-| 新信息 | 存储到内存中 | 高度自动化 |
-| 用户偏好 | 记录用户的表达风格 | 中等程度自动化 |
-
-### 模块的使用方法
-
-```
-Action repeated 3+ times
-    ↓
-Create shortcut
-    ↓
-Strengthen on each use
-    ↓
-Becomes automatic
+# If 3+ SIMILAR_ENTRIES of same type → create a pattern
+./scripts/memory.sh add pattern "User always asks for examples when learning" \
+  inferred "learning,style,examples"
 ```
 
-## 数据存储
+这是一个**手动**步骤，需要代理自行执行——并非自动完成的。
 
-习惯数据存储在 `memory/` 文件夹中，用户可以随时删除这些数据。
+### `similar` 命令的功能：
+- 使用 TF-IDF 和余弦相似度算法进行比较（不依赖外部库）
+- 过滤掉无意义的词汇（stopwords）以提升比较的准确性
+- 只返回得分高于阈值的条目（默认阈值为 0.10）
+- 跨会话（sessions）保持数据持久性（数据由系统自动管理）
 
-## 模块集成
+### 被视为“相似”的条件：
+- TF-IDF 相似度得分 >= 0.10（可配置阈值）
+- 标签相同或部分重叠
+- 动作类型相同（程序/偏好设置）
 
-该模块是代理大脑的一部分，可与以下模块协同工作：
-- **归档**（Archive）：用于存储操作流程
-- **判断器**（Gauge）：确定何时应用相应的操作流程
+## 反模式检测（自动机制）
+
+该模块包含唯一的自动检测机制：当执行 `correct` 命令且多次修正操作使用相同的标签时，系统会建议创建一个“反模式”条目。这一功能已在代码中实现。
+```bash
+# After 3 corrections with tag "code.database":
+# System prints: ANTI_PATTERN_DETECTED: tag 'code.database' has 3 corrections
+# Suggests: add anti-pattern "Avoid inferring code.database - ask explicitly" inferred "code.database,caution"
+```
+
+## 模式条目的存储
+
+存储的“模式”条目包含以下信息：
+- `source`: “推断得出”（非用户直接输入）
+- `confidence`: “不确定”（在得到确认之前）
+- 标签：用于关联相关主题领域
+
+## 模式的生命周期
+
+```
+Behavior observed once     → stored as fact/preference/procedure
+Agent runs similar, finds 3+ matches → agent creates pattern entry (uncertain)
+User confirms pattern      → ./scripts/memory.sh update <id> confidence sure
+User denies pattern        → ./scripts/memory.sh supersede <id> <new_id>
+Pattern unused 60+ days    → decayed via standard decay
+```
+
+## 该模块不执行的操作：
+- 自动检测模式（需要代理手动运行 `similar` 命令）
+- 执行自动化工作流程
+- 调用外部 API 或服务
+- 运行定时任务
+
+## 集成方式：
+- **归档**: 代理通过读取 `similar` 的检测结果来手动识别模式
+- **评估**: 模式条目的状态最初为“不确定”，在得到确认后才会升级为“已确认”状态

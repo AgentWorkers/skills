@@ -1,6 +1,6 @@
 ---
 name: finam
-description: 使用 Finam Trade API 执行交易、管理投资组合、访问实时市场数据、浏览市场资产以及分析市场波动性。
+description: 使用 Finam Trade API 执行交易、管理投资组合、访问实时市场数据、浏览市场资产以及分析资产波动性。
 metadata: '{"openclaw": {"emoji": "📈", "homepage": "https://tradeapi.finam.ru/", "requires": {"bins": ["curl", "jq", "python3"], "env": ["FINAM_API_KEY", "FINAM_ACCOUNT_ID"]}, "primaryEnv": "FINAM_API_KEY"}}'
 ---
 # Finam Trade API 技能
@@ -21,7 +21,7 @@ export FINAM_JWT_TOKEN=$(curl -sL "https://api.finam.ru/v1/sessions" \
 
 ### 列出可用的交易所和股票
 
-**符号格式：** 所有符号必须采用 `ticker@mic` 格式（例如：`SBER@MISX`）
+**符号格式：** 所有符号必须采用 `ticker@mic` 格式（例如，`SBER@MISX`）
 **基础 MIC 代码：**
 - `MISX` - 莫斯科交易所
 - `RUSX` - RTS
@@ -52,9 +52,9 @@ QUERY="apple"
 jq -r --arg q "$QUERY" 'to_entries[] | .value[] | select(.name | ascii_downcase | contains($q)) | "\(.symbol) - \(.name)"' assets/equities.json
 ```
 
-### 按成交量排名前 N 只股票
+### 按成交量排名前 N 名的股票
 
-按成交量降序排列，列出每个市场中最活跃的 100 只股票：
+按交易量降序排列，列出每个市场中最活跃的 100 只股票：
 
 ```shell
 N=10
@@ -70,7 +70,7 @@ jq -r ".[:$N] | .[] | \"\(.ticker) - \(.name)\"" assets/top_us_equities.json
 
 ### 获取账户投资组合
 
-检索投资组合信息，包括持仓、余额和盈亏：
+检索投资组合信息，包括持仓、余额和损益：
 
 ```shell
 curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID" \
@@ -81,7 +81,7 @@ curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID" \
 
 ### 获取最新报价
 
-获取当前的买卖价格和最后一次交易记录：
+获取当前的买卖价格和最新交易记录：
 
 ```shell
 SYMBOL="SBER@MISX"
@@ -91,7 +91,7 @@ curl -sL "https://api.finam.ru/v1/instruments/$SYMBOL/quotes/latest" \
 
 ### 获取订单簿（深度）
 
-查看当前的订单簿（包含买卖价格层次）：
+查看当前的订单簿（包括买卖价格）：
 
 ```shell
 SYMBOL="SBER@MISX"
@@ -125,47 +125,74 @@ curl -sL "https://api.finam.ru/v1/instruments/$SYMBOL/bars?timeframe=$TIMEFRAME&
 **可用的时间范围：**
 - `TIME_FRAME_M1`、`M5`、`M15`、`M30` - 分钟（1、5、15、30）
 - `TIME_FRAME_H1`、`H2`、`H4`、`H8` - 小时（1、2、4、8）
-- `TIME_FRAME_D` - 日（每天）
-- `TIME_FRAME_W` - 周（每周）
-- `TIME_FRAME_MN` - 月（每月）
-- `TIME_FRAME_QR` - 季（每季度）
+- `TIME_FRAME_D` - 日
+- `TIME_FRAME_W` - 周
+- `TIME_FRAME_MN` - 月
+- `TIME_FRAME_QR` - 季度
 
 **日期格式（RFC 3339）：**
 - 格式：`YYYY-MM-DDTHH:MM:SSZ` 或 `YYYY-MM-DDTHH:MM:SS+HH:MM`
-- `startTime` - 包含在结果范围内（时间范围的开始时间）
-- `endTime` - 不包含在结果范围内（时间范围的结束时间）
+- `startTime` - 包含在结果中（时间范围的开始时间）
+- `endTime` - 不包含在结果中（时间范围的结束时间）
 - 例如：
   - `2024-01-15T10:30:00Z`（UTC）
   - `2024-01-15T10:30:00+03:00`（莫斯科时间，UTC+3）
 
+## 新闻
+
+### 获取最新市场新闻
+
+获取并显示最新的新闻标题。无需 JWT 令牌。
+
+俄罗斯市场新闻
+```shell
+curl -sL "https://www.finam.ru/analysis/conews/rsspoint/" | python3 -c "
+import sys, xml.etree.ElementTree as ET
+root = ET.parse(sys.stdin).getroot()
+for item in reversed(root.findall('.//item')):
+    print(f'* {item.findtext('title','')}. {item.findtext('description','').split('...')[0]}')
+"
+```
+
+美国市场新闻
+```shell
+curl -sL "https://www.finam.ru/international/advanced/rsspoint/" | python3 -c "
+import sys, xml.etree.ElementTree as ET
+root = ET.parse(sys.stdin).getroot()
+for item in reversed(root.findall('.//item')):
+    print(f'* {item.findtext('title','')}. {item.findtext('description','').split('...')[0]}')
+"
+```
+
+**参数：**
+- 将 `[:10]` 更改为任意数字，以控制显示的新闻标题数量
+
 ## 订单管理
+
+> **重要提示：** 在下达或取消任何订单之前，必须明确确认用户的详细信息并获得他们的批准。请说明完整的订单参数（符号、方向、数量、类型、价格），并在执行前等待确认。
 
 ### 下单
 
 **订单类型：**
-- `ORDER_TYPEMARKET` - 市场订单（立即执行，无需设置 `limitPrice`）
-- `ORDER_TYPE_LIMIT` - 限价订单（需要设置 `limitPrice`）
+- `ORDER_TYPEMARKET` - 市场订单（立即执行，无需 `limitPrice`）
+- `ORDER_TYPE_LIMIT` - 限价订单（需要 `limitPrice`）
 
 ```shell
-SYMBOL="SBER@MISX"
-QUANTITY="10"
-SIDE="SIDE_BUY"
-ORDER_TYPE="ORDER_TYPE_LIMIT"
-PRICE="310.50"
 curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID/orders" \
   --header "Authorization: $FINAM_JWT_TOKEN" \
   --header "Content-Type: application/json" \
-  --data '{
-    "symbol": "'"$SYMBOL"'",
-    "quantity": {"value": "'"$QUANTITY"'"},
-    "side": "'"$SIDE"'",
-    "type": "'"$ORDER_TYPE"'",
-    "limitPrice": {"value": "'"$PRICE"'"}
-  }' | jq
+  --data "$(jq -n \
+    --arg symbol   "SBER@MISX" \
+    --arg quantity "10" \
+    --arg side     "SIDE_BUY" \
+    --arg type     "ORDER_TYPE_LIMIT" \
+    --arg price    "310.50" \
+    '{symbol: $symbol, quantity: {value: $quantity}, side: $side, type: $type, limitPrice: {value: $price}}')" \
+  | jq
 ```
 
 **参数：**
-- `symbol` - 交易工具（例如：`SBER@MISX`）
+- `symbol` - 交易工具（例如，`SBER@MISX`）
 - `quantity.value` - 股票/合约数量
 - `side` - `SIDE_BUY` 或 `SIDE_SELL`
 - `type` - `ORDER_TYPEMARKET` 或 `ORDER_TYPE_LIMIT`
@@ -183,7 +210,7 @@ curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID/orders/$ORDER_ID" \
 
 ### 取消订单
 
-取消待执行的订单：
+取消待处理的订单：
 
 ```shell
 ORDER_ID="12345678"
@@ -193,11 +220,11 @@ curl -sL --request DELETE "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID/or
 
 ## 脚本
 
-### 波动率扫描器
+### 波动性扫描器
 
-扫描给定市场的前 100 只股票，并根据过去 60 天的年化历史波动率（收盘价与开盘价之差）打印出波动率最高的股票。
+扫描给定市场中波动性最高的 100 只股票，并根据过去 60 天的年化历史波动性（收盘价与开盘价之差）打印出这些股票。
 
-**使用方法：**
+**用法：**
 ```shell
 python3 scripts/volatility.py [ru|us] [N]
 ```
