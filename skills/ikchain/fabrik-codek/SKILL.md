@@ -1,7 +1,7 @@
 ---
 name: fabrik-codek
-description: "面向开发者的认知架构：一种混合式的RAG（向量 + 知识图谱）系统，能够从您的编码过程中学习，并随着时间的推移变得越来越智能。该系统可将任何Ollama模型与您积累的项目知识相结合。完全基于本地运行，无需依赖任何云服务。"
-version: 1.0.0
+description: "面向开发者的认知架构：采用三层混合检索机制（向量检索 + 知识图谱 + 全文搜索），能够从用户的编码过程中学习，并随着时间的推移变得越来越智能。该架构可将任何 Ollama 模型与用户积累的项目知识相结合。完全本地化运行，无需依赖任何云服务。"
+version: 1.3.0
 homepage: https://github.com/ikchain/Fabrik-Codek
 user-invocable: true
 metadata:
@@ -12,20 +12,24 @@ metadata:
     homepage: https://github.com/ikchain/Fabrik-Codek
     os: [macos, linux]
     emoji: "🧠"
+    configPaths:
+      - "~/.claude/projects/*"
+      - "./data/embeddings/"
+      - "./data/graphdb/"
     install:
       - kind: pip
         package: fabrik-codek
         bins: [fabrik]
 ---
-# Fabrik-Codek – 专为开发者设计的本地认知架构
+# Fabrik-Codek – 开发者的本地认知架构
 
-Fabrik-Codek 是一种 **认知架构**，它整合了感知、记忆、推理、学习与行动等功能，其运作方式类似于人类开发者通过不断实践积累经验的过程。与仅能检索文本的普通 RAG（Retrieval-Augmented Grammar）工具不同，Fabrik-Codek 能够构建一个包含实体及其关系的持久性知识图谱（涵盖技术、模式、决策等信息），并结合向量搜索技术进行高效查询。同时，该系统通过持续收集用户的使用数据来优化自身性能，并将这些数据反馈到未来的查询中。
+Fabrik-Codek 是一种 **认知架构**，它将感知、记忆、推理、学习与行动紧密结合在一起，类似于人类开发者随着时间的推移积累专业知识的方式。与仅能检索文本的普通 RAG（Retrieval As Code）工具不同，Fabrik-Codek 结合了三种检索方式：向量搜索（语义搜索）、知识图谱遍历（关系搜索）和全文搜索（基于关键词或 BM25 算法的搜索），并通过 **互惠排名融合（Reciprocal Rank Fusion, RRF）** 技术将这三种方式融合在一起。该系统通过一个数据循环机制不断优化自身性能，该机制会记录用户的使用行为，并将这些信息反馈到后续的查询中。
 
-**工作原理**：您正常编写代码，Fabrik-Codek 会监控您的开发过程，提取相关知识（如代码模式、决策、调试策略等），并将其存储在向量数据库（LanceDB）和知识图谱（NetworkX）中。通过混合检索机制，它能为 AI 代理提供深入的项目上下文理解——不仅仅是简单的关键词匹配，还包括对代码库中各种概念之间联系的全面理解。
+**工作原理**：当你运行 `fabrik learn process` 命令时，Fabrik-Codek 会读取你本地的 Claude Code 会话记录文件（位于 `~/.claude/projects/*` 目录下，这些文件已经是 JSON 格式，存储在本地磁盘上），并从中提取结构化的知识信息（如模式、决策和调试策略）。这些信息会被存储在本地向量数据库（LanceDB，位于 `./data/embeddings/`）和本地知识图谱（使用 NetworkX 构建，位于 `./data/graphdb/`）中。当你通过 MCP 工具进行查询时，Fabrik-Codek 会采用混合检索方式，为你的 AI 代理提供丰富的项目上下文——不仅仅是简单的关键词匹配，还包括对代码库中各个概念之间关联关系的理解。在整个过程中，没有任何数据会被输出到外部。
 
 ## 设置
 
-Fabrik-Codek 作为 MCP（Master Control Point）服务器运行。您可以在 `openclaw.json` 文件中配置相关设置：
+Fabrik-Codek 作为 MCP 服务器运行。你可以在 `openclaw.json` 配置文件中对其进行配置：
 
 ```json
 {
@@ -38,7 +42,7 @@ Fabrik-Codek 作为 MCP（Master Control Point）服务器运行。您可以在 
 }
 ```
 
-若需要支持网络访问（使用 SSE 协议），请参考以下配置：
+如果你需要通过网络进行访问（使用 SSE 传输协议），请参考以下配置：
 
 ```json
 {
@@ -54,37 +58,49 @@ Fabrik-Codek 作为 MCP（Master Control Point）服务器运行。您可以在 
 ## 可用工具
 
 ### `fabrik_search`
-用于在知识库中进行语义向量搜索。当您需要查找相关文档、模式或项目经验中的示例时，可使用此工具。
-**示例**：在知识库中搜索“仓库模式实现”的相关内容。
+用于在知识库中进行语义向量搜索。当你需要从项目积累的知识中查找相关文档、模式或示例时，可以使用此工具。
+
+**示例**：**“在我的知识库中搜索仓库模式的实现方式”。**
 
 ### `fabrik_graph_search`
-用于在知识图谱中搜索实体（技术、模式、策略）及其之间的关系。该工具有助于您理解各种概念之间的关联。
-**示例**：在知识图谱中查找与 FastAPI 相关的实体。
+用于在知识图谱中搜索实体（技术、模式、策略）及其之间的关系。这有助于你理解各个概念之间的联系。
+
+**示例**：**“在知识图谱中查找与 FastAPI 相关的实体”。**
+
+### `fabrik_fulltext_search`
+通过 Meilisearch 进行全文关键词搜索。当你知道要查找的具体关键词或短语时，可以使用此工具进行精确匹配。需要注意的是，Meilisearch 需要在本机运行（可选；系统也可以在没有 Meilisearch 的情况下正常工作）。
+
+**示例**：**“在知识库中搜索 ‘retry exponential backoff’”。**
 
 ### `fabrik_ask`
-向本地大语言模型（LLM）提出编程问题，并可结合知识库中的相关信息。设置 `use_rag=true` 以使用向量搜索机制，或设置 `use_graph=true` 以使用混合检索（向量 + 图谱）方式。
-**示例**：利用知识库中的信息询问如何实现依赖注入。
+可以向本地的 LLM（Large Language Model）提出编程问题，并可以选择性地结合知识库中的相关信息。设置 `use_rag=true` 可以使用向量搜索上下文；设置 `use_graph=true` 可以使用混合搜索方式（结合向量搜索、知识图谱和全文搜索）。
+
+**示例**：**“利用知识库中的信息，询问如何实现依赖注入”。**
 
 ### `fabrik_graph_stats`
-用于获取知识图谱的统计信息，包括实体数量、关系类型及图谱的复杂度等。
+用于获取知识图谱的统计信息，包括实体数量、关系类型以及图谱的复杂度等。
 
 ### `fabrik_status`
-用于检查系统运行状态：包括 Ollama 服务是否可用、RAG 引擎的运行情况、知识图谱的状态以及数据湖的运行状况。
+用于检查系统运行状态：包括 Ollama 的可用性、RAG 引擎、知识图谱、全文搜索功能以及数据湖的状态。
 
 ## 使用场景
 
-- **需要项目背景信息？** 使用 `fabrik_search` 查找相关知识。
-- **探索概念之间的关联？** 使用 `fabrik_graph_search` 遍历知识图谱。
-- **有编程问题？** 使用 `fabrik_ask` 并设置 `use_rag` 或 `use_graph` 以获取更详细的答案。
-- **检查系统配置？** 使用 `fabrik_status` 确认所有组件均正常运行。
+- **需要项目上下文？** 使用 `fabrik_search` 进行语义相似性查询，或使用 `fabrik_fulltext_search` 进行精确关键词匹配。
+- **探索概念之间的关系？** 使用 `fabrik_graph_search` 遍历知识图谱。
+- **有编程问题？** 使用 `fabrik_ask` 并设置相应的选项（`use_rag` 或 `use_graph`）以获取包含上下文的答案。
+- **检查系统配置？** 使用 `fabrik_status` 确认所有组件都在正常运行。
 
-## 系统要求
+## 必备条件
 
 - 已安装 [Fabrik-Codek](https://github.com/ikchain/Fabrik-Codek)（通过 `pip install fabrik-codek` 安装）。
-- 需要在本地运行 [Ollama](https://ollama.ai/)，并下载相应的模型（例如 `ollama pull qwen2.5-coder:7b`）。
+- 本地已运行 [Ollama](https://ollama.ai/)，并下载了相应的模型（例如 `ollama pull qwen2.5-coder:7b`）。
 
-## 安全性与隐私保护
+## 安全性与隐私
 
-- **100% 本地化**：所有数据均存储在您的机器上，无外部 API 调用，无数据传输，也不依赖任何云服务。
-- **无需密码**：Fabrik-Codek 仅连接到本地的 Ollama 服务器（地址：`localhost:11434`）。
+- **100% 本地化**：所有数据都存储在本地机器上，不涉及任何外部 API 调用、遥测数据传输或云服务依赖。
+- **无需密码**：Fabrik-Codek 仅连接到本地的 Ollama 实例（地址为 `localhost:11434`）。
 - **无外部接口**：该工具不会访问任何外部服务。
+- **数据存储路径**：会话记录文件从 `~/.claude/projects/*` 读取（这些文件已经是 JSON 格式，存储在本地磁盘上）；索引后的数据会被写入 `./data/embeddings/`（向量数据库）和 `./data/graphdb/`（知识图谱）。这些路径已在技能的元数据中明确指定。
+- **会话数据管理**：`fabrik learn` 命令是手动触发的，用户可以选择是否执行；索引前会先对会话记录进行审查，以确保不包含敏感信息。
+- **网络访问**：默认使用 `stdio` 协议（无需网络连接）；如果使用 SSE 传输协议（`--transport sse`），默认绑定到 `127.0.0.1` 地址。请确保防火墙/访问控制规则设置正确，以防止索引数据被泄露到网络中。
+- **开源信息**：源代码完全开源，可在 [github.com/ikchain/Fabrik-Codek](https://github.com/ikchain/Fabrik-Codek) 查看（采用 MIT 许可证）。安装前请确认 pip 包的源代码与 GitHub 仓库中的代码一致。
