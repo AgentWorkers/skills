@@ -1,10 +1,10 @@
 ---
 name: api-gateway
 description: >
-  **API网关**：用于调用第三方API的解决方案，支持通过Maton（https://maton.ai）提供的OAuth认证机制进行身份验证。  
-  当用户需要与Slack、HubSpot、Salesforce、Google Workspace、Stripe等外部服务进行交互时，可使用此功能。  
+  **API网关**：用于调用第三方API，并支持通过OAuth进行身份验证。该服务由Maton（https://maton.ai）提供。  
+  当用户需要与Slack、HubSpot、Salesforce、Google Workspace、Stripe等外部服务进行交互时，可以使用此功能。  
   访问权限仅限于您通过OAuth明确授权的连接；仅凭API密钥无法访问任何第三方服务。  
-  使用此功能需要具备网络连接权限以及有效的Maton API密钥。
+  使用此功能需要网络连接以及有效的Maton API密钥。
 metadata:
   author: maton
   version: "1.0"
@@ -17,7 +17,7 @@ metadata:
 ---
 # API网关
 
-该API网关是一个代理服务，用于通过[Maton](https://maton.ai)提供的管理型OAuth连接直接访问第三方API。您可以使用它直接调用这些API的端点。
+这是一个代理服务，用于通过[Maton](https://maton.ai)提供的管理型OAuth连接直接访问第三方API。该API网关允许您直接调用原生API端点。
 
 ## 快速入门
 
@@ -33,25 +33,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## 基础URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/{app}/{native-api-path}
 ```
 
-请将`{app}`替换为您的服务名称，将`{native-api-path}`替换为实际的API端点路径。
+请将`{app}`替换为服务名称，将`{native-api-path}`替换为实际的API端点路径。
 
-**重要提示：**URL路径必须以连接对应的应用程序名称开头（例如：`/google-mail/...`）。这个前缀用于告诉网关使用哪个应用程序的连接。例如，Gmail的API端点路径以`gmail/v1/`开头，因此完整的路径应为`/google-mail/gmail/v1/users/me/messages`。
+**重要提示：**URL路径必须以连接的应用程序名称开头（例如 `/google-mail/`）。这个前缀告诉网关使用哪个应用程序的连接。例如，Gmail的原生API路径以`gmail/v1/`开头，因此完整路径看起来像`/google-mail/gmail/v1/users/me/messages`。
 
 ## 认证
 
-所有请求都需要在`Authorization`头部包含Maton API密钥：
+所有请求都需要在`Authorization`头部中包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-API网关会自动为目标服务插入适当的OAuth令牌。
+API网关会自动为目标服务注入相应的OAuth令牌。
 
 **环境变量：**您可以将API密钥设置为`MATON_API_KEY`环境变量：
 
@@ -59,15 +59,15 @@ API网关会自动为目标服务插入适当的OAuth令牌。
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-## 获取API密钥
+## 获取您的API密钥
 
 1. 在[maton.ai](https://maton.ai)上登录或创建账户。
 2. 转到[maton.ai/settings](https://maton.ai/settings)。
-3. 点击API Key部分右侧的复制按钮来获取密钥。
+3. 点击API Key部分右侧的复制按钮来复制密钥。
 
 ## 连接管理
 
-连接管理使用一个单独的基础URL：`https://ctrl.maton.ai`
+连接管理使用一个单独的基本URL：`https://ctrl.maton.ai`
 
 ### 列出连接
 
@@ -81,7 +81,7 @@ EOF
 ```
 
 **查询参数（可选）：**
-- `app` - 按服务名称过滤（例如：`slack`、`hubspot`、`salesforce`）
+- `app` - 按服务名称过滤（例如 `slack`、`hubspot`、`salesforce`）
 - `status` - 按连接状态过滤（`ACTIVE`、`PENDING`、`FAILED`）
 
 **响应：**
@@ -114,7 +114,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 获取连接信息
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -155,7 +155,7 @@ EOF
 
 ### 指定连接
 
-如果您为同一应用程序拥有多个连接，可以通过添加`Maton-Connection`头部和连接ID来指定使用哪个连接：
+如果您对同一应用程序有多个连接，可以通过添加`Maton-Connection`头部和连接ID来指定使用哪个连接：
 
 ```bash
 python <<'EOF'
@@ -169,11 +169,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略此头部，网关将使用该应用程序的默认（最旧的）活动连接。
+如果省略，则网关将使用该应用程序的默认（最旧的）活动连接。
 
 ## 支持的服务
 
-| 服务 | 应用程序名称 | 代理的基础URL |
+| 服务 | 应用程序名称 | 代理的基本URL |
 |---------|----------|------------------|
 | ActiveCampaign | `active-campaign` | `{account}.api-us1.com` |
 | Acuity Scheduling | `acuity-scheduling` | `acuityscheduling.com` |
@@ -243,6 +243,7 @@ EOF
 | Mailgun | `mailgun` | `api.mailgun.net` |
 | ManyChat | `manychat` | `api.manychat.com` |
 | Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
+| Microsoft Teams | `microsoft-teams` | `graph.microsoft.com` |
 | Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
 | Monday.com | `monday` | `api.monday.com` |
 | Motion | `motion` | `api.usemotion.com` |
@@ -273,33 +274,33 @@ EOF
 | Vimeo | `vimeo` | `api.vimeo.com` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
-| WordPress.com` | `wordpress` | `public-api.wordpress.com` |
+| WordPress.com | `wordpress` | `public-api.wordpress.com` |
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
 | Zoho Bookings | `zoho-bookings` | `www.zohoapis.com` |
 | Zoho Books | `zoho-books` | `www.zohoapis.com` |
 | Zoho Calendar | `zoho-calendar` | `calendar.zoho.com` |
-| Zoho CRM` | `zoho-crm` | `www.zohoapis.com` |
+| Zoho CRM | `zoho-crm` | `www.zohoapis.com` |
 | Zoho Inventory | `zoho-inventory` | `www.zohoapis.com` |
 | Zoho Mail | `zoho-mail` | `mail.zoho.com` |
 | Zoho People | `zoho-people` | `people.zoho.com` |
 | Zoho Recruit | `zoho-recruit` | `recruit.zoho.com` |
 
-有关每个提供商的详细路由指南，请参阅[参考资料/](references/)：
+有关每个提供者的详细路由指南，请参阅[references/](references/)：
 - [ActiveCampaign](references/active-campaign.md) - 联系人、交易、标签、列表、自动化、活动
 - [Acuity Scheduling](references/acuity-scheduling.md) - 预约、日历、客户、可用性
 - [Airtable](references/airtable.md) - 记录、数据库、表格
-- [Apollo](references/apollo.md) - 人员搜索、信息补充、联系人
+- [Apollo](references/apollo.md) - 人员搜索、信息丰富、联系人
 - [Asana](references/asana.md) - 任务、项目、工作空间、Webhook
 - [Attio](references/attio.md) - 人员、公司、记录、任务
 - [Basecamp](references/basecamp.md) - 项目、待办事项、消息、日程安排、文档
-- [beehiiv](references/beehiiv.md) - 发布物、订阅、帖子、自定义字段
+- [beehiiv](references/beehiiv.md) - 出版物、订阅、帖子、自定义字段
 - [Box](references/box.md) - 文件、文件夹、协作、共享链接
 - [Brevo](references/brevo.md) - 联系人、电子邮件活动、交易邮件、模板
 - [Calendly](references/calendly.md) - 事件类型、预定事件、可用性、Webhook
-- [Cal.com](references/cal-com.md) - 事件类型、预订、日程安排、可用时间、Webhook
-- [CallRail](references/callrail.md) - 呼叫、追踪器、公司、标签、分析
+- [Cal.com](references/cal-com.md) - 事件类型、预订、日程安排、可用时间段、Webhook
+- [CallRail](references/callrail.md) - 通话、跟踪器、公司、标签、分析
 - [Chargebee](references/chargebee.md) - 订阅、客户、发票
 - [ClickFunnels](references/clickfunnels.md) - 联系人、产品、订单、课程、Webhook
 - [ClickSend](references/clicksend.md) - SMS、MMS、语音消息、联系人、列表
@@ -309,30 +310,30 @@ EOF
 - [Confluence](references/confluence.md) - 页面、工作空间、博客文章、评论、附件
 - [CompanyCam](references/companycam.md) - 项目、照片、用户、标签、组、文档
 - [Cognito Forms](references/cognito-forms.md) - 表单、条目、文档、文件
-- [Constant Contact](references/constant-contact.md) - 联系人、电子邮件活动、列表、细分市场
-- [Dropbox](references/dropbox.md) - 文件、文件夹、搜索、元数据、修订版本、标签
+- [Constant Contact](references/constant-contact.md) - 联系人、电子邮件活动、列表、细分
+- [Dropbox](references/dropbox.md) - 文件、文件夹、搜索、元数据、版本、标签
 - [Dropbox Business](references/dropbox-business.md) - 团队成员、组、团队文件夹、设备、审计日志
 - [ElevenLabs](references/elevenlabs.md) - 文本转语音、语音克隆、音频处理
 - [Eventbrite](references/eventbrite.md) - 活动、场地、票务、订单、参与者
 - [Fathom](references/fathom.md) - 会议记录、摘要、总结、Webhook
 - [Firebase](references/fathom.md) - 项目、Web应用程序、Android应用程序、iOS应用程序、配置
 - [Fireflies](references/fireflies.md) - 会议记录、摘要、AskFred AI、频道
-- [GetResponse](references/getresponse.md) - 活动、联系人、新闻通讯、自动回复器、标签、细分市场
+- [GetResponse](references/getresponse.md) - 活动、联系人、新闻通讯、自动回复器、标签、细分
 - [GitHub](references/github.md) - 仓库、问题、拉取请求、提交
 - [Gumroad](references/gumroad.md) - 产品、销售、订阅者、许可证、Webhook
 - [Google Ads](references/google-ads.md) - 活动、广告组、GAQL查询
 - [Google Analytics Admin](references/google-analytics-admin.md) - 报告、维度、指标
 - [Google Analytics Data](references/google-analytics-data.md) - 报告、维度、指标
 - [Google BigQuery](references/google-bigquery.md) - 数据集、表格、作业、SQL查询
-- [Google Calendar](references/google-calendar.md) - 事件、日历、空闲/忙碌状态
-- [Google Classroom](references/google-classroom.md) - 课程、课程内容、学生、教师、公告
+- [Google Calendar](references/google-calendar.md) - 活动、日历、空闲/忙碌
+- [Google Classroom](references/google-classroom.md) - 课程、课程作业、学生、教师、公告
 - [Google Contacts](references/google-contacts.md) - 联系人、联系人群组、人员搜索
 - [Google Docs](references/google-docs.md) - 文档创建、批量更新
 - [Google Drive](references/google-drive.md) - 文件、文件夹、权限
 - [Google Forms](references/google-forms.md) - 表单、问题、回复
-- [Gmail](references/google-mail.md) - 消息、线程、标签
+- [Gmail](references/google-mail.md) - 消息、主题、标签
 - [Google Meet](references/google-meet.md) - 工作空间、会议记录、参与者
-- [Google Merchant](references/google-merchant.md) - 产品、库存、促销活动、报告
+- [Google Merchant](references/google-merchant.md) - 产品、库存、促销、报告
 - [Google Play](references/google-play.md) - 应用内产品、订阅、评论
 - [Google Search Console](references/google-search-console.md) - 搜索分析、站点地图
 - [Google Sheets](references/google-sheets.md) - 值、范围、格式
@@ -346,8 +347,8 @@ EOF
 - [JotForm](references/jotform.md) | 表单、提交、Webhook
 - [Keap](references/keap.md) | 联系人、公司、标签、任务、机会、活动
 - [Kit](references/kit.md) | 订阅者、标签、表单、序列、广播
-- [Klaviyo](references/klaviyo.md) | 轮廓、列表、活动、事件
-- [Lemlist](references/lemlist.md) | 活动、潜在客户、日程安排、取消订阅
+- [Klaviyo](references/klaviyo.md) | 轮廓、列表、活动、流程、事件
+- [Lemlist](references/lemlist.md) | 活动、潜在客户、活动、日程安排、取消订阅
 - [Linear](references/linear.md) | 问题、项目、团队、周期（GraphQL）
 - [LinkedIn](references/linkedin.md) | 轮廓、帖子、分享、媒体上传
 - [Mailchimp](references/mailchimp.md) | 目标受众、活动、模板、自动化
@@ -355,8 +356,9 @@ EOF
 - [Mailgun](references/mailgun.md) | 发送电子邮件、域名、路由、模板、邮件列表、抑制
 - [ManyChat](references/manychat.md) | 订阅者、标签、流程、消息
 - [Microsoft Excel](references/microsoft-excel.md) | 工作簿、工作表、范围、表格
+- [Microsoft Teams](references/microsoft-teams.md) | 团队、频道、消息、成员、聊天
 - [Microsoft To Do](references/microsoft-to-do.md) | 任务列表、任务、待办事项列表、链接资源
-- [Monday.com](references/monday.md) | 论坛、项目、列、组（GraphQL）
+- [Monday.com](references/monday.md) | 板块、项目、列、组（GraphQL）
 - [Motion](references/motion.md) | 任务、项目、工作空间、日程安排
 - [Netlify](references/netlify.md) | 网站、部署、构建、DNS、环境变量
 - [Notion](references/notion.md) | 页面、数据库、块
@@ -366,38 +368,38 @@ EOF
 - [Pipedrive](references/pipedrive.md) | 交易、人员、组织、活动
 - [Podio](references/podio.md) | 组织、工作空间、应用程序、项目、任务、评论
 - [QuickBooks](references/quickbooks.md) | 客户、发票、报告
-- [Quo](references/quo.md) | 呼叫、消息、联系人、对话、Webhook
-- [Salesforce](references/salesforce.md) | SOQL、sObjects、CRUD操作
+- [Quo](references/quo.md) | 通话、消息、联系人、对话、Webhook
+- [Salesforce](references/salesforce.md) | SOQL、sObjects、CRUD
 - [SignNow](references/signnow.md) | 文档、模板、邀请、电子签名
-- [SendGrid](references/sendgrid.md) | 发送电子邮件、联系人、模板、抑制、统计信息
+- [SendGrid](references/sendgrid.md) | 发送电子邮件、联系人、模板、抑制、统计
 - [Slack](references/slack.md) | 消息、频道、用户
-- [Snapchat](references/snapchat.md) | 广告账户、活动、广告团队、广告素材、受众
+- [Snapchat](references/snapchat.md) | 广告账户、活动、广告团队、广告、创意、受众
 - [Square](references/squareup.md) | 支付、客户、订单、目录、库存、发票
 - [Stripe](references/stripe.md) | 客户、订阅、支付
 - [Systeme.io](references/systeme.md) | 联系人、标签、课程、社区、Webhook
 - [Tally](references/tally.md) | 表单、提交、工作空间、Webhook
 - [Telegram](references/telegram.md) | 消息、聊天、机器人、更新、投票
 - [TickTick](references/ticktick.md) | 任务、项目、任务列表
-- [Todoist](references/to-doist.md) | 任务、项目、部分、标签、评论
-- [Toggl Track](references/toggl-track.md) | 时间记录、项目、客户、标签、工作空间
-- [Trello](references/trello.md) | 论坛、列表、卡片、待办事项列表
+- [Todoist](references/todoist.md) | 任务、项目、部分、标签、评论
+- [Toggl Track](references/toggl-track.md) | 时间条目、项目、客户、标签、工作空间
+- [Trello](references/trello.md) | 板块、列表、卡片、检查表
 - [Twilio](references/twilio.md) | SMS、语音通话、电话号码、消息
 - [Typeform](references/typeform.md) | 表单、回复、洞察
 - [Vimeo](references/vimeo.md) | 视频、文件夹、相册、评论
 - [WhatsApp Business](references/whatsapp-business.md) | 消息、模板、媒体
 - [WooCommerce](references/woocommerce.md) | 产品、订单、客户
-- [WordPress.com](references/wordpress.md) | 文章、页面、网站、用户
+- [WordPress.com](references/wordpress.md) | 文章、页面、网站、用户、设置
 - [Xero](references/xero.md) | 联系人、发票、报告
-- [YouTube](references/youtube.md) | 视频、播放列表、频道
+- [YouTube](references/youtube.md) | 视频、播放列表、频道、订阅
 - [Zoho Bigin](references/zoho-bigin.md) | 联系人、公司、管道、产品
 - [Zoho Bookings](references/zoho-bookings.md) | 预约、服务、员工、工作空间
 - [Zoho Books](references/zoho-books.md) | 发票、联系人、账单
 - [Zoho Calendar](references/zoho-calendar.md) | 日历、事件、参与者
 - [Zoho CRM](references/zoho-crm.md) | 潜在客户、联系人、账户、交易
-- [Zoho Inventory](references/zoho-inventory.md) | 物品、销售订单、发票
+- [Zoho Inventory](references/zoho-inventory.md) | 商品、销售订单、发票
 - [Zoho Mail](references/zoho-mail.md) | 消息、文件夹、标签
-- [Zoho People](references/zoho-people.md) | 员工、部门、职位、考勤
-- [Zoho Recruit](references/zoho-recruit.md) | 招聘、职位空缺、面试
+- [Zoho People](references/zoho-people.md) | 员工、部门、职位、出勤
+- [Zoho Recruit](references/zoho-recruit.md) | 招聘、职位空缺、面试、申请
 
 ## 示例
 
@@ -524,13 +526,13 @@ response = requests.post(
 
 | 状态 | 含义 |
 |--------|---------|
-| 400 | 所请求的应用程序连接缺失 |
+| 400 | 请求的应用程序连接缺失 |
 | 401 | Maton API密钥无效或缺失 |
-| 429 | 每账户每秒请求次数限制（10次） |
+| 429 | 每账户每秒10次请求的限制 |
 | 500 | 内部服务器错误 |
 | 4xx/5xx | 来自目标API的传递错误 |
 
-目标API返回的错误会保留其原始的状态码和响应内容。
+目标API的错误会以其原始状态代码和响应体传递。
 
 ### 故障排除：API密钥问题
 
@@ -551,9 +553,10 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 故障排除：应用程序名称无效
+### 故障排除：无效的应用程序名称
 
 1. 确保您的URL路径以正确的应用程序名称开头。路径必须以`/google-mail/`开头。例如：
+
 - 正确：`https://gateway.maton.ai/google-mail/gmail/v1/users/me/messages`
 - 错误：`https://gateway.maton.ai/gmail/v1/users/me/messages`
 
@@ -570,25 +573,25 @@ EOF
 
 ### 故障排除：服务器错误
 
-500错误可能表示OAuth令牌已过期。尝试通过上面的连接管理部分创建新的连接并完成OAuth认证。如果新连接处于“ACTIVE”状态，请删除旧连接以确保网关使用新的连接。
+500错误可能表示OAuth令牌已过期。尝试通过上面的连接管理部分创建新的连接并完成OAuth认证。如果新连接是“ACTIVE”，请删除旧连接以确保网关使用新的连接。
 
-## 请求限制
+## 速率限制
 
 - 每账户每秒10次请求
-- 目标API的请求限制也适用
+- 目标API的速率限制也适用
 
 ## 注意事项
 
 - 当使用`curl`处理包含方括号(`fields[]`, `sort[]`, `records[]`)的URL时，请使用`-g`标志以禁用全局解析。
-- 当将`curl`的输出传递给`jq`时，某些shell环境中环境变量可能无法正确展开，这可能导致“无效API密钥”错误。
+- 当将`curl`输出传递给`jq`时，某些shell可能无法正确扩展环境变量，这可能导致“无效API密钥”错误。
 
 ## 提示
 
-1. **使用原生API文档**：请参考每个服务的官方API文档以获取端点路径和参数信息。
-2. **头部信息会被转发**：自定义头部（`Host`和`Authorization`除外）会被转发给目标API。
+1. **使用原生API文档**：请参考每个服务的官方API文档以获取端点路径和参数。
+2. **头部会被转发**：自定义头部（`Host`和`Authorization`除外）会被转发到目标API。
 3. **查询参数有效**：URL查询参数会被传递给目标API。
-4. **支持所有HTTP方法**：GET、POST、PUT、PATCH、DELETE均受支持。
-5. **QuickBooks的特殊情况**：在路径中使用`:realmId`，它将被替换为连接的领域ID。
+4. **支持所有HTTP方法**：支持GET、POST、PUT、PATCH、DELETE。
+5. **QuickBooks特殊情况**：在路径中使用`:realmId`，它将被替换为连接的领域ID。
 
 ## 可选资源
 

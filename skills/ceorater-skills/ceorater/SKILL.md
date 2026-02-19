@@ -1,6 +1,6 @@
 ---
 name: ceorater
-description: "获取标准普尔500指数公司的机构级CEO绩效分析数据。这些分析包括专有评分指标：CEORaterScore（综合评分）、AlphaScore（市场超额表现评分）、RevenueCAGRScore（收入增长评分）以及CompScore（薪酬效率评分）。基础数据涵盖总股票回报（TSR）与标准普尔500指数（SPY）的对比、年均回报率、CEO的总薪酬（来自代理文件的最新一财年数据），以及经任期调整后的收入增长率（Revenue CAGR）。每条记录包含CEO姓名、公司名称、股票代码、所属行业及任期起始/结束日期。目前覆盖517位CEO，数据每日更新。该数据对于投资研究、尽职调查以及高管薪酬分析具有很高的参考价值。"
+description: "获取标准普尔500指数公司的机构级CEO绩效分析数据。这些分析指标包括：CEORaterScore（综合评分）、AlphaScore（市场超额表现评分）、RevenueCAGRScore（收入增长率评分）以及CompScore（薪酬效率评分）。相关基础数据涵盖总股票回报率（TSR）与标准普尔500指数（SPY）的对比情况、年均回报率、CEO的薪酬总额（来自代理文件的最新一财年数据），以及经任期调整后的收入增长率（Revenue CAGR）。每条记录包含CEO的姓名、公司名称、股票代码、所属行业及任期信息。覆盖范围涵盖500多家CEO的数据，每日更新。如需获取实时记录数量及最后更新时间戳，可调用GET /v1/meta接口。该数据对于投资研究、尽职调查及高管薪酬分析具有很高的参考价值。"
 homepage: https://www.ceorater.com
 disable-model-invocation: true
 requires:
@@ -15,10 +15,10 @@ metadata: {"openclaw":{"requires":{"env":["CEORATER_API_KEY"]},"primaryEnv":"CEO
 
 ## 先决条件
 
-1. 在[https://www.ceorater.com/api-docs.html](https://www.ceorater.com/api-docs.html)获取API密钥（每用户每月99美元）。
+1. 在https://www.ceorater.com/api-docs.html获取API密钥（每位用户每月99美元）。
 2. 设置环境变量：`CEORATER_API_KEY=zpka_your_key_here`。
 
-**许可说明：** 自助服务API访问仅允许个人研究和分析。如需将CEORater数据整合到公司自有模型中、用于AI/ML训练或产品开发，需签署企业协议——请联系sales@ceorater.com。
+**许可说明：** 自助服务的API访问仅允许个人研究和分析。如需将CEORater数据整合到公司自有模型、AI/ML训练或产品开发中，需签订企业级协议——请联系sales@ceorater.com。
 
 ## 可用指标
 
@@ -26,48 +26,54 @@ metadata: {"openclaw":{"requires":{"env":["CEORATER_API_KEY"]},"primaryEnv":"CEO
 |--------|-------|-------------|
 | CEORaterScore | 0-100 | CEO综合效能评分 |
 | AlphaScore | 0-100 | 相对于市场基准的绩效表现 |
-| RevenueCAGRScore | 0-100 | 考虑任期因素后的收入增长率百分比 |
+| RevenueCAGRScore | 0-100 | 考虑任期因素后的收入增长率百分位数 |
 | CompScore | A-F | 薪酬效率等级 |
 | TSR During Tenure | % | CEO任期内的总股票回报 |
 | TSR vs. S&P 500 | % | 相对于标准普尔500指数（SPY）的绩效表现 |
 | CEO Compensation | $M | 最新代理文件中记录的CEO总薪酬 |
 | Revenue CAGR | % | 考虑任期因素后的复合年收入增长率 |
 
-## API端点
+## API接口
 
-### 按股票代码查询CEO
+### 根据股票代码查询CEO信息
 ```bash
 curl -H "Authorization: Bearer $CEORATER_API_KEY" \
   "https://api.ceorater.com/v1/ceo/AAPL?format=raw"
 ```
 
-### 搜索CEO
+### 搜索CEO信息
 ```bash
 curl -H "Authorization: Bearer $CEORATER_API_KEY" \
   "https://api.ceorater.com/v1/search?q=technology&format=raw"
 ```
 
-### 列出所有CEO
+### 列出所有CEO信息
 ```bash
 curl -H "Authorization: Bearer $CEORATER_API_KEY" \
   "https://api.ceorater.com/v1/ceos?limit=100&format=raw"
 ```
 
+### 获取元数据（实时记录数量+上次更新时间）
+```bash
+curl -H "Authorization: Bearer $CEORATER_API_KEY" \
+  "https://api.ceorater.com/v1/meta"
+```
+
 ## 使用说明
 
-当用户需要查询CEO的绩效、评级或高管薪酬时：
+当用户询问CEO绩效、评分或高管薪酬时：
 
-1. **查询单个CEO**：使用`/v1/ceo/{ticker}`端点。
-2. **行业/领域分析**：使用`/v1/search?q={query}`。
-3. **批量数据**：使用`/v1/ceos?limit=N`。
+1. **查询单一CEO的信息：** 使用 `/v1/ceo/{ticker}` 接口。
+2. **行业/领域分析：** 使用 `/v1/search?q={query}`。
+3. **批量数据查询：** 使用 `/v1/ceos?limit=N`。
 
-对于适合计算的数值，始终使用`format=raw`格式。
+对于适用于计算的数值型数据，始终使用 `format=raw` 格式。
 
 ### 示例查询
 
 - “Tim Cook的CEORaterScore是多少？” → GET /v1/ceo/AAPL
-- “显示科技行业的CEO” → GET /v1/search?q=technology
-- “哪些CEO的评级最高？” → GET /v1/ceos，按ceoraterScore排序
+- “显示科技行业的CEO信息” → GET /v1/search?q=technology
+- “哪些CEO的评分最高？” → GET /v1/ceos，按ceoraterScore排序
 - “比较Tim Cook和Satya Nadella的绩效” → GET /v1/ceo/AAPL 和 /v1/ceo/MSFT
 
 ## 响应格式（原始数据）
@@ -101,12 +107,12 @@ curl -H "Authorization: Bearer $CEORATER_API_KEY" \
 |------|---------|
 | 401 | API密钥缺失或无效 |
 | 404 | 未找到股票代码 |
-| 400 | 请求参数错误（例如，搜索时缺少`q`参数） |
+| 400 | 请求参数错误（例如，搜索请求中缺少`q`参数） |
 | 429 | 请求次数达到限制，请稍后重试 |
 
 ## 辅助脚本
 
-为方便使用，请运行`{baseDir}/scripts/ceorater.sh`脚本：
+为方便使用，请运行 `{baseDir}/scripts/ceorater.sh` 脚本：
 
 ```bash
 # Get single CEO
@@ -122,13 +128,13 @@ curl -H "Authorization: Bearer $CEORATER_API_KEY" \
 ## 数据覆盖范围
 
 - 覆盖500多名CEO，包括标准普尔500指数成分股。
-- 通过`GET /v1/meta`可获取实时记录数量和更新时间戳。
+- 可通过 `GET /v1/meta` 获取实时记录数量和更新时间。
 - 数据每周一至周五美国市场收盘后更新。
-- 响应内容可缓存最多24小时。
+- 响应结果可缓存最多24小时。
 
 ## 更多信息
 
 - 文档：https://www.ceorater.com/api-docs.html
-- 代理程序清单：https://www.ceorater.com/.well-known/agent.json
+- 代理信息：https://www.ceorater.com/.well-known/agent.json
 - 技术支持：support@ceorater.com
-- 企业销售咨询：sales@ceorater.com
+- 企业级销售咨询：sales@ceorater.com
