@@ -1,7 +1,7 @@
 ---
 name: cocod
-skill_version: 0.0.12
-requires_cocod_version: 0.0.12
+skill_version: 0.0.13
+requires_cocod_version: 0.0.13
 description: 这是一个用于比特币和Lightning支付的Cashu ecash钱包命令行工具（CLI）。它可以用于管理Cashu代币、通过Lightning（bolt11）或ecash发送/接收支付、处理HTTP 402 X-Cashu支付请求，以及查看钱包历史记录。
 compatibility: Requires cocod CLI to be installed. Supports Cashu ecash protocol, Lightning Network payments, and NUT-24 HTTP 402 X-Cashu flows.
 metadata:
@@ -14,13 +14,20 @@ metadata:
 ---
 # Cocod – Cashu 钱包 CLI
 
-Cocod 是一个用于管理 ecash 代币并进行 Bitcoin/Lightning 支付的 Cashu 钱包。它使用 Cashu 协议来实现保护隐私的 ecash 交易。
+Cocod 是一个用于管理 ecash 代币并执行 Bitcoin/Lightning 支付的 Cashu 钱包。它基于 Cashu 协议来实现保护用户隐私的 ecash 交易。
 
-如果 Web 或 API 请求返回 HTTP `402 Payment Required` 错误，并带有 `X-Cashu` 标头，可以使用此技能来解析并处理该请求。
+如果 Web 或 API 请求返回 HTTP `402 Payment Required` 状态码，并且带有 `X-Cashu` 标头，那么可以使用此技能来解析并处理该请求。
+
+## 代理安全政策（必读）
+
+在使用此技能作为代理时，请遵守以下规则：
+- 在执行任何可能消耗钱包资金的命令之前，务必先获得用户的明确许可；除非用户已经明确指示您执行该操作。
+- 在可能的情况下，建议先使用预览/检查命令（例如：`cocod x-cashu parse <request>`）来查看费用和所需信息，然后再执行实际操作（例如：`cocod x-cashu handle <request>`）。
+- 将 `~/.cocod` 目录视为敏感文件，切勿记录、打印或公开其内容（包括配置文件、助记词、钱包状态、套接字文件以及进程 ID 文件），除非用户特别要求您提供部分内容。
 
 ## 什么是 Cashu？
 
-Cashu 是一种基于 Chaumian 技术的 ecash 协议，允许用户私下持有和转移由 Bitcoin 支持的代币。该协议通过盲签名技术实现不可追踪的交易。
+Cashu 是一种基于 Chaumian 技术的 ecash 协议，允许用户私密地持有和转移由 Bitcoin 支持的代币。该协议利用盲签名技术实现不可追踪的交易。
 
 ## 安装
 
@@ -32,17 +39,15 @@ bun install -g cocod
 ## 版本兼容性
 
 此技能依赖于特定的 `cocod` CLI 版本：
-
 - `skill_version` 必须与 npm 包的版本相匹配。
 - `requires_cocod_version` 也必须与该版本保持一致。
 
-请检查您安装的 CLI 版本：
-
+请检查您安装的 CLI 版本是否与文件中指定的版本相符：
 ```bash
 cocod --version
 ```
 
-如果您的 CLI 版本与文件中指定的版本不匹配，请在使用此技能之前更新 `cocod`。
+如果版本不匹配，请在使用此技能之前更新 `cocod`。
 
 ## 快速入门
 
@@ -59,7 +64,7 @@ cocod balance
 
 ## 命令
 
-### 核心钱包功能
+### 核心钱包操作
 
 ```bash
 # Check daemon and wallet status
@@ -90,6 +95,8 @@ cocod receive bolt11 <amount> [--mint-url <url>]
 
 ### 发送付款
 
+**代理规则：**本节中的命令会消耗钱包资金。除非用户已明确授权，否则在执行前请先获得许可。
+
 ```bash
 # Create Cashu token to send to someone
 cocod send cashu <amount> [--mint-url <url>]
@@ -98,9 +105,10 @@ cocod send cashu <amount> [--mint-url <url>]
 cocod send bolt11 <invoice> [--mint-url <url>]
 ```
 
-### 处理 HTTP 402 错误（NUT-24）
+### 处理 HTTP 402 状态码的 Web 支付请求（NUT-24）
 
-当服务器返回 HTTP `402` 错误且带有 `X-Cashu` 标头时，使用以下命令：
+当服务器返回 HTTP `402` 状态码并带有 `X-Cashu` 标头时，请使用以下命令：
+**代理规则：**`cocod x-cashu handle <request>` 可以用于执行付款操作。建议先使用 `cocod x-cashu parse <request>` 来查看付款金额和所需信息，然后再获取用户许可。
 
 ```bash
 # Parse an encoded X-Cashu request from a 402 response header
@@ -111,12 +119,12 @@ cocod x-cashu handle <request>
 ```
 
 **典型操作流程：**
-1. 从响应中提取 `X-Cashu` 标头信息。
-2. 运行 `cocod x-cashu parse <request>` 以检查付款金额和所需条件。
-3. 运行 `cocod x-cashu handle <request>` 生成付款令牌的头部信息。
-4. 使用返回的 `X-Cashu: cashuB...` 标头重新发起原始 Web 请求。
+1. 从服务器的 `402` 响应中提取 `X-Cashu` 标头信息。
+2. 运行 `cocod x-cashu parse <request>` 来查看付款金额和所需信息。
+3. 运行 `cocod x-cashu handle <request>` 以生成付款令牌。
+4. 使用包含 `X-Cashu: cashuB...` 标头的请求重新发送原始 Web 请求。
 
-### 发行 Cashu 代币
+### 新建代币（Mint）
 
 ```bash
 # Add a mint URL
@@ -131,7 +139,9 @@ cocod mints info <url>
 
 ### Lightning 地址（NPC）
 
-Lightning 地址是一种类似电子邮件地址的标识符（例如 `name@npubx.cash`），可用于接收 Lightning 支付。如果您尚未购买用户名，NPC 会为您提供一个免费的地址；购买用户名后，您可以获得一个更易于阅读的地址。购买用户名需要两个步骤，以便在确认付款前查看所需的费用（satoshi）。
+Lightning 地址是一种类似电子邮件地址的标识符（例如：`name@npubx.cash`），用于接收 Lightning 支付。如果您尚未购买用户名，NPC 会为您提供一个免费的 Lightning 地址；购买用户名后，您将获得一个更易于识别的地址。购买用户名需要两个步骤：首先查看所需费用，然后确认支付。
+
+**代理规则：**`cocod npc username <name> --confirm` 是一个消耗钱包资金的操作。除非用户已明确授权，否则在运行 `--confirm` 命令前请先获得许可。
 
 ```bash
 # Get your NPC Lightning Address
@@ -170,7 +180,7 @@ cocod stop
 
 ## 示例
 
-**使用加密初始化钱包：**
+**使用加密方式初始化钱包：**
 
 ```bash
 cocod init --passphrase "my-secret"
@@ -189,7 +199,7 @@ cocod receive bolt11 5000
 cocod send bolt11 lnbc100u1p3w7j3...
 ```
 
-**向朋友发送 Cashu：**
+**向朋友转账 Cashu：**
 
 ```bash
 cocod send cashu 1000
@@ -197,14 +207,14 @@ cocod send cashu 1000
 # Friend receives with: cocod receive cashu cashuAeyJ0b2tlbiI6...
 ```
 
-**查看账户状态和余额：**
+**查看钱包状态和余额：**
 
 ```bash
 cocod status
 cocod balance
 ```
 
-**查看最近的交易记录：**
+**查看近期交易记录：**
 
 ```bash
 cocod history --limit 10
@@ -213,7 +223,7 @@ cocod history --limit 10
 ## 相关概念：
 - **Cashu**：一种使用盲签名技术的隐私保护型 ecash 协议。
 - **Mint**：负责发行和赎回 Cashu 代币的服务器。
-- **Token**：可转移的 Cashu 代币，代表一定的 Satoshi 值。
-- **Bolt11**：Lightning 网络中的发票格式。
-- **NPC**：用于接收付款的 Lightning 地址服务。
-- **Mnemonic**：用于恢复钱包的助记词。
+- **Token**：可转让的 Cashu 代币，代表特定数量的 Satoshi 价值。
+- **Bolt11**：Lightning Network 的发票格式。
+- **NPC**：用于接收 Lightning 支付的地址服务。
+- **Mnemonic**：用于恢复钱包账户的助记词。
