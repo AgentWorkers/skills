@@ -1,9 +1,8 @@
 ---
 name: krea-api
 description: 通过 Krea.ai API 生成图像（Flux、Imagen、Ideogram、Seedream 等）
-version: 0.2.0
+version: 0.2.2
 ---
-
 # Krea.ai 图像生成技能
 
 使用 Krea.ai 的 API 生成图像，支持多种模型，包括 Flux、Imagen 4、Ideogram 3.0 等。
@@ -12,35 +11,43 @@ version: 0.2.0
 
 - ✅ 异步任务生成（POST → 轮询 → 结果）
 - ✅ 支持多种图像模型
-- ✅ 可配置参数（宽度、高度、生成步骤、引导信息、随机种子）
+- ✅ 可配置参数（宽度、高度、生成步骤、指导信息、随机种子）
 - 仅依赖标准库（无需 `requests`）
-- 以安全为首要考虑的凭证处理方式（仅使用文件存储凭证，不使用子进程）
+- 安全的凭证处理机制（使用文件权限）
 
 ## 安全性
 
 本技能注重安全性：
 
-- **不使用子进程** – 凭证信息仅从文件中读取
 - **不支持 Webhook** – 为防止 SSRF（跨站请求伪造）风险
-- **凭证信息存储在文件中** – 凭证来源单一
-- **依赖标准库** – 击击面最小
+- **仅依赖标准库** – 减少攻击面（仅使用 `urllib`）
+- **基于文件的凭证** – 使用安全的文件权限作为主要凭证来源
+
+### 凭证来源（优先级顺序）
+
+1. **命令行参数**：`--key-id` 和 `--secret`（用于一次性使用）
+2. **文件**：`~/.openclaw/credentials/krea.json`
+
+### 关于子进程
+
+`--usage` 标志使用 `subprocess.run(["open", ...])` 在浏览器中打开使用说明页面。这是该技能中唯一的子进程调用。
 
 ## 设置
 
-1. 从 [https://docs.krea.ai/developers/api-keys-and-billing](https://docs.krea.ai/developers/api-keys-and-billing) 获取 Krea.ai 的 API 凭证。
+1. 从 https://docs.krea.ai/developers/api-keys-and-billing 获取 Krea.ai API 凭证。
 2. 创建凭证文件：
 ```bash
-mkdir -p ~/.clawdbot/credentials
+mkdir -p ~/.openclaw/credentials
 ```
 
-3. 添加你的凭证信息：
+3. 添加你的凭证：
 ```bash
-echo '{"apiKey": "YOUR_KEY_ID:YOUR_SECRET"}' > ~/.clawdbot/credentials/krea.json
+echo '{"apiKey": "YOUR_KEY_ID:YOUR_SECRET"}' > ~/.openclaw/credentials/krea.json
 ```
 
 4. 设置安全权限：
 ```bash
-chmod 600 ~/.clawdbot/credentials/krea.json
+chmod 600 ~/.openclaw/credentials/krea.json
 ```
 
 ## 使用方法
@@ -69,7 +76,7 @@ python3 krea_api.py --jobs 10
 ```python
 from krea_api import KreaAPI
 
-api = KreaAPI()  # Reads from ~/.clawdbot/credentials/krea.json
+api = KreaAPI()  # Reads from ~/.openclaw/credentials/krea.json
 
 # Generate and wait
 urls = api.generate_and_wait(
@@ -84,14 +91,14 @@ print(urls)
 ### 参数
 
 | 参数 | 类型 | 默认值 | 描述 |
-|-----------|------|---------|-------------|
+|---------|------|---------|-------------|
 | prompt | str | 必填 | 图像描述（最多 1800 个字符） |
 | model | str | "flux" | 下表中的模型名称 |
 | width | int | 1024 | 图像宽度（512-2368） |
 | height | int | 1024 | 图像高度（512-2368） |
 | steps | int | 25 | 生成步骤（1-100） |
-| guidance_scale | float | 3.0 | 引导信息的缩放比例（0-24） |
-| seed | str | 可选 | 用于生成可重复结果的随机种子 |
+| guidance_scale | float | 3.0 | 指导信息比例（0-24） |
+| seed | str | 可选 | 用于生成一致性的随机种子 |
 
 ### 可用模型
 
@@ -103,11 +110,11 @@ print(urls)
 | seedream-4 | 快速生成图像 |
 | nano-banana | 快速预览图像 |
 
-运行 `python3 krea_api.py --list-models` 可查看所有可用模型。
+运行 `python3 krea_api.py --list-models` 查看所有可用模型。
 
-## 使用情况检查
+## 使用情况查询
 
-Krea.ai 不提供公共的 API 用于检查使用情况。你可以在以下链接查看自己的使用数据：
+Krea.ai 不提供公共的使用情况查询 API。你可以在以下链接查看使用情况：
 
 https://www.krea.ai/settings/usage-statistics
 
@@ -119,28 +126,28 @@ python3 krea_api.py --jobs 10
 
 ## 文件位置
 
-| 文件用途 | 文件路径 |
+| 用途 | 文件路径 |
 |---------|------|
-| 凭证信息 | `~/.clawdbot/credentials/krea.json` |
-| 脚本 | `{skill}/krea_api.py` |
+| 凭证文件 | `~/.openclaw/credentials/krea.json` |
+| 脚本文件 | `{skill}/krea_api.py` |
 | 技能文档 | `{skill}/SKILL.md` |
 
 ## 故障排除
 
 ### “需要 API 凭证”
 
-1. 确认凭证文件是否存在：
+1. 确保凭证文件存在：
 ```bash
-cat ~/.clawdbot/credentials/krea.json
+cat ~/.openclaw/credentials/krea.json
 ```
 
-2. 检查文件权限：
+2. 验证文件权限：
 ```bash
-ls -la ~/.clawdbot/credentials/krea.json
+ls -la ~/.openclaw/credentials/krea.json
 # Should show: -rw-------
 ```
 
-3. 确认文件格式（必须包含冒号）：
+3. 确保凭证格式正确（必须包含冒号）：
 ```json
 {"apiKey": "KEY_ID:SECRET"}
 ```
@@ -151,4 +158,4 @@ ls -la ~/.clawdbot/credentials/krea.json
 
 ## 致谢
 
-感谢 Claude Opus 4.5 帮助研究正确的 API 结构。官方文档错误地提示使用 `/v1/images/flux`，但实际上有效的端点是 `/generate/image/bfl/flux-1-dev`。
+感谢 Claude Opus 4.5 帮助研究正确的 API 结构。文档中错误地提示使用 `/v1/images/flux`，但实际上有效的端点是 `/generate/image/bfl/flux-1-dev`。
