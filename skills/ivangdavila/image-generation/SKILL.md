@@ -1,102 +1,111 @@
 ---
 name: Image Generation
-description: 使用优化后的提示、样式控制功能，生成可用于实际生产的人工智能图像。
-metadata: {"clawdbot":{"emoji":"🎨","os":["linux","darwin","win32"]}}
+slug: image-generation
+version: 1.0.2
+homepage: https://clawic.com/skills/image-generation
+description: 使用提示工程（Prompt Engineering）技术，结合风格控制（Style Control），为 Midjourney、DALL-E、Stable Diffusion、Flux 和 Leonardo 等 AI 模型生成图像。同时提供相应的使用指南（Provider Guides）。
+changelog: Added detailed provider endpoints documentation and feedback section
+metadata: {"clawdbot":{"emoji":"🎨","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
+## 使用场景
 
-# 人工智能图像生成
+用户需要由 AI 生成的图像。该工具负责处理文本到图像的转换、图像编辑、风格转换、图像放大以及选择合适的图像生成服务。
 
-帮助用户创建和优化人工智能生成的图像。
+## 架构
 
-**使用规则：**
-- 询问用户的具体需求：文本转图像、图像编辑、风格转换或图像放大
-- 查看相关提供者的设置文件：`openai.md`、`midjourney.md`、`stable-diffusion.md`、`flux.md`、`leonardo.md`、`ideogram.md`、`replicate.md`
-- 参考 `api-patterns.md` 了解异步处理和最佳实践
-- 查看 `prompting.md` 了解提示工程技巧
-- 在进行图像放大之前，先使用较低分辨率的草图来验证提示的有效性
+用户的偏好信息存储在 `~/image-generation/` 目录中。具体设置方法请参阅 `memory-template.md` 文件。
 
----
+```
+~/image-generation/
+├── memory.md      # Current provider, style, projects
+└── history.md     # Past generations (optional)
+```
 
-## 提供者选择
+## 快速参考
 
-| 使用场景 | 推荐提供者 |
-|----------|-------------|
-| 真实感强的图像、产品图片 | Midjourney、Flux Pro |
-| 在图像中渲染文本 | Ideogram、DALL-E 3 |
-| 快速迭代、API接口 | Flux Schnell、Leonardo |
-*需要最大控制权且本地使用* | Stable Diffusion |
-| 图像编辑、修复缺失部分 | DALL-E 3、Stable Diffusion |
-*成本效益高的API* | Replicate、Leonardo |
+| 主题 | 对应文件 |
+|-------|------|
+| 内存设置 | `memory-template.md` |
+| 提示技巧 | `prompting.md` |
+| API 使用指南 | `api-patterns.md` |
+| OpenAI/DALL-E | `openai.md` |
+| Midjourney | `midjourney.md` |
+| Stable Diffusion | `stable-diffusion.md` |
+| Flux | `flux.md` |
+| Leonardo | `leonardo.md` |
+| Ideogram | `ideogram.md` |
+| Replicate | `replicate.md` |
 
----
+## 核心规则
 
-## 提示技巧基础
+### 1. 先查看用户偏好信息
+请阅读 `~/image-generation/memory.md` 文件，了解用户选择的图像生成服务、偏好的风格以及项目背景信息。
 
-- **先明确主题** — 例如“一只红狐狸”，而不是“森林里有一只红狐狸”
-- **使用风格关键词** — 如“电影级光线效果”、“工作室摄影风格”、“油画风格”
-- **使用否定性提示** — 以排除不需要的元素（Stable Diffusion和Midjourney支持此功能）
-- **分辨率比例很重要** — 1:1的肖像、16:9的风景图、9:16的手机屏幕比例
-- **具体说明要求** — 例如“黄金时刻的光线”，而不仅仅是“良好的光线效果”
+### 2. 先生成草图再确定最终效果
+- 首先尝试生成 512x512 或 1024x1024 大小的图像以验证提示的有效性。
+- 生成 4 个以上的变体版本。
+- 只选择最符合要求的图像进行放大处理。
 
----
+### 3. 根据任务选择合适的图像生成服务
 
-## 分辨率与格式
+| 任务 | 最适合的服务 |
+|------|---------------|
+| 真实主义效果 | Midjourney, Flux Pro |
+| 在图像中添加文本 | Ideogram, DALL-E 3 |
+| 快速迭代 | Flux Schnell, Leonardo |
+| 最高的控制精度 | Stable Diffusion |
+| 图像修复/编辑 | DALL-E 3, Stable Diffusion |
+| 预算有限的 API | Replicate, Leonardo |
 
-- **草图阶段**：使用512x512或1024x1024的分辨率进行多次尝试
-- **最终输出**：使用2048x2048或更高分辨率
-- **图像放大**：使用专门的图像放大工具（如Real-ESRGAN、Topaz）来获得最终效果
-- **格式选择**：PNG格式用于透明图像，JPEG格式用于普通照片，WebP格式适用于网页展示
+### 4. 提示编写规范
+- 先明确主题：例如 “一只红狐狸”，而非 “森林里有一只红狐狸”。
+- 使用具体的风格关键词：如 “电影级光照”、“油画风格”、“工作室摄影”。
+- 表达要具体：例如 “黄金时刻的阳光”，而非 “良好的光照条件”。
+- 确保图像的宽高比与需求匹配：肖像画为 1:1，风景画为 16:9。
 
----
-
-## 常见工作流程
-
-### 文本转图像
-1. 编写包含风格关键词的详细提示
-2. 生成多个不同版本的图像（草图分辨率）
-3. 选择最佳版本，然后再次生成
-4. 将最佳版本放大到最终所需的分辨率
-
-### 图像编辑
-1. 提供原始图像及需要修复的部分（如果需要修复缺失部分）
-2. 描述所需的修改内容
-3. 使用`img2img`工具，调整修复强度（0.3-0.7之间，数值越低，修复效果越接近原始图像）
-
-### 风格转换
-1. 提供参考图像以确定风格
-2. 分别描述图像的主题和内容
-3. 根据不同的提供者调整风格转换的强度
-
----
-
-## 成本优化技巧
-
-- 先使用最低分辨率的草图进行尝试
-- 批量处理相似的请求
-- 使用快速响应的模型进行快速迭代（如Flux Schnell、SDXL Turbo）
-- 仅在最终输出时使用高质量的模型
-- 使用缓存机制重复使用相同的生成参数，以获得一致的效果
-
----
+### 5. 更新用户偏好信息
+- 当用户更换图像生成服务或偏好风格时，及时更新 `memory.md` 文件。
+- 当开始新项目时，也需要将新信息添加到 `memory.md` 中。
 
 ## 常见问题及解决方法
 
-- 图像中的手或手指部分出现错误 — 重新生成图像或使用修复工具进行修复
-- 文本显示混乱 — 使用Ideogram工具或后期添加文本
-- 人脸变形 — 在提示中添加“详细的人脸描述”，或使用专门的人脸修复模型
-- 风格不一致 — 固定生成参数，使用参考图像进行修正
-- 图像中出现水印 — 检查模型训练过程，使用无水印的模型
+- **图像中的手或手指显示不正确** → 重新生成图像或使用图像修复工具。
+- **文本显示混乱** → 使用 Ideogram 工具处理文本，或在后期添加文本。
+- **人脸变形** → 在提示中添加 “详细的人脸特征”，或使用专门的人脸修复模型。
+- **风格不一致** → 固定随机种子值（seed），或使用参考图像。
+- **出现水印** → 检查模型训练情况，使用无水印的模型。
 
----
+## 安全性与隐私
 
-### 当前设置
-<!-- 提供者：当前使用状态 -->
+**会离开您设备的数据：**
+- 发送给所选 AI 生成服务的提示内容。
 
-### 项目示例
-<!-- 用户正在创建的内容 -->
+**保留在本地的数据：**
+- 用户的偏好设置（存储在 `~/image-generation/` 目录中）。
+- 无任何遥测数据或分析信息被发送。
 
-### 个人偏好
-<!-- 用户选择的设置：模型类型、风格、分辨率等 -->
+**本工具不会：**
+- 存储生成的图像（图像存储由图像生成服务负责）。
+- 访问 `~/image-generation/` 目录之外的文件。
 
----
-*未配置的部分表示尚未设置。请参考相关提供者的设置文件进行配置。*
+## 外部接口
+
+| 服务提供商 | 接口地址 | 发送的数据 | 功能 |
+|----------|----------|-----------|---------|
+| OpenAI | api.openai.com | 提示文本 | 使用 DALL-E 生成图像 |
+| Midjourney | discord.com | 提示文本 | 生成图像 |
+| Stability AI | api.stability.ai | 提示文本 | 使用 Stable Diffusion 生成图像 |
+| Replicate | api.replicate.com | 提示文本 | 使用 Flux 或 Stable Diffusion 生成图像 |
+| Leonardo | cloud.leonardo.ai | 提示文本 | 使用 Leonardo 生成图像 |
+| Ideogram | api.ideogram.ai | 提示文本 | 在图像中添加文本 |
+
+外部接口的具体地址取决于所选择的图像生成服务。不会发送其他任何数据。
+
+## 安全注意事项
+
+使用本工具时，提示内容会发送给第三方 AI 服务提供商（如 OpenAI、Midjourney、Stability AI 等）。请确保您信任这些服务才能继续使用本工具。
+
+## 反馈方式
+
+- 如果本工具对您有帮助，请在 ClawHub 上给它打星评价：`clawhub star image-generation`
+- 为了保持功能更新，请执行 `clawhub sync` 操作。

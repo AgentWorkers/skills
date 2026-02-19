@@ -1,266 +1,175 @@
 ---
 name: water-coach
-description: "**水分摄入追踪与健康指导功能**  
-当用户希望记录自己的饮水量、接收饮水提醒、记录身体指标（体重、体脂率、肌肉占比、水分占比），或获取关于自身水分摄入习惯的分析时，可使用该功能。  
-触发条件包括：**水相关事件**（如饮水行为）、**水分摄入提示**、**“多喝水”的建议**、**身体指标变化**（如体重变化）以及**水分摄入目标达成情况**。"
+description: "Hydration tracking and coaching skill. Use when user wants to track water intake, get reminders to drink water, log body metrics, or get analytics on hydration habits."
+compatibility: "Requires python3, openclaw cron feature, heartbeat feature"
+metadata: {"clawdbot":{"emoji":"💧"} 
+  author: oristides
+  version: "1.5.0"
 ---
-# Water Coach v1.2
 
-## 快速入门
+# 💧 Water Coach v1.5.0
 
-该功能帮助用户记录每日饮水量，并根据用户的饮水量进度提供相应的提醒。
 
-## 首次使用（一次性设置）
 
-### 快速入门流程
-无需一次性询问所有信息，只需提出以下基本问题：
-1. **首先：**“你的体重是多少？” → 根据体重计算饮水量目标，立即开始记录。
-2. **后续（可选）：**逐步询问身高、身体指标和个人偏好。
+## 首次设置 [references/setup.md](references/setup.md)
 
-### 配置文件
-在 `memory/water_config.json` 文件中创建配置：
-```json
-{
-  "version": "1.2",
-  "units": {
-    "system": "metric",
-    "weight": "kg",
-    "height": "m",
-    "volume": "ml"
-  },
-  "user": {
-    "weight_kg": null,
-    "height_m": null,
-    "body_fat_pct": null,
-    "muscle_pct": null,
-    "water_pct": null
-  },
-  "settings": {
-    "goal_multiplier": 35,
-    "default_goal_ml": null,
-    "cutoff_hour": 22,
-    "reminder_slots": [
-      {"name": "morning", "hour": 9, "default_ml": 500},
-      {"name": "lunch", "hour": 12, "default_ml": 500},
-      {"name": "afternoon", "hour": 15, "default_ml": 500},
-      {"name": "predinner", "hour": 18, "default_ml": 500},
-      {"name": "evening", "hour": 21, "default_ml": 500}
-    ]
-  },
-  "status": {
-    "snoozed_until": null,
-    "skip_dates": []
-  },
-  "reports": {
-    "weekly_enabled": false,
-    "monthly_enabled": false
-  }
-}
+
+
+## 命令行界面（CLI）结构
+
+```bash
+water_coach.py <namespace> <command> [options]
 ```
 
-### 2. 单位检测与转换
-```python
-# Auto-detect from user input (first time)
-KG_TO_LB = 2.20462
-LB_TO_KG = 0.453592
-ML_TO_OZ = 0.033814
-OZ_TO_ML = 29.5735
-M_TO_FT = 3.28084
-FT_TO_M = 0.3048
-CM_TO_M = 0.01
+命名空间：`water` | `body` | `analytics`
 
-# Detect weight unit
-def detect_weight(s):
-    s = s.lower().strip()
-    if 'lb' in s or 'pound' in s: return 'lb', extract_number(s)
-    if 'kg' in s or 'kilo' in s: return 'kg', extract_number(s)
-    # Number only - assume metric for now
-    return 'kg', float(s)
 
-# Detect height unit  
-def detect_height(s):
-    s = s.lower().strip()
-    if "'" in s or '"' in s: return 'ft', parse_feet_inches(s)
-    if 'cm' in s: return 'cm', extract_number(s)
-    if 'm' in s: return 'm', extract_number(s)
-    return 'm', float(s)  # assume meters
 
-# Store detected system for future use
-config['units']['system'] = 'imperial' if detected == 'lb' else 'metric'
-```
-
-### 3. 脚本（位于 `memory/` 或 `skills/water-coach/scripts/` 目录下）
-
-**calc_daily_goal.py** - 根据体重计算饮水量目标：
-```python
-#!/usr/bin/env python3
-import json, os
-CONFIG = 'memory/water_config.json'
-def get_goal():
-    with open(CONFIG) as f:
-        w = json.load(f)['user']['weight_kg']
-    return w * 35 if w else None
-```
-
-**log_water.py** - 将饮水量记录到 CSV 文件中：
-```python
-#!/usr/bin/env python3
-import csv, json, sys, os
-from datetime import datetime, date
-CONFIG, LOG = 'memory/water_config.json', 'memory/water_log.csv'
-# Reads config, calculates cumulative, appends to CSV
-```
-
-**log_body_metrics.py** - 记录身体指标：
-```python
-#!/usr/bin/env python3
-import csv, json, sys, os
-from datetime import datetime, date
-CONFIG, BODY = 'memory/water_config.json', 'memory/body_metrics.csv'
-# Updates config + logs to body_metrics.csv
-```
-
-**weekly_report.py** / **monthly_report.py** - 分析数据：
-```python
-#!/usr/bin/env python3
-import csv, json, os
-from datetime import datetime, date, timedelta
-# Reads water_log.csv, calculates stats, returns report
-```
-
-## 首次使用时的设置
-
-首次使用时，需要询问用户以下信息：
-1. **体重**（必填）：
-   - 用户可以自由输入（例如：“95kg”、“210 lbs”等）。
-   - 系统会自动检测输入单位：
-     - 如果包含 “kg” 或 “kilos”，则视为公制单位；
-     - 如果包含 “lb”、“lbs” 或 “pounds”，则视为英制单位；
-     - 如果仅输入数字，则默认视为公制单位。
-   - 系统会自动将体重转换为千克。
-
-2. **身高**（可选）：
-   - 用户可以输入 “1.75m”、“5'9''” 等格式。
-   - 系统会自动将身高转换为米。
-
-3. **体脂百分比**（可选）
-4. **肌肉百分比**（可选）
-5. **水分摄入百分比**（可选）
-
-**单位检测示例：**
-| 用户输入 | 检测到的单位 | 存储的单位 |
-|-----------|----------|--------|
-| “95 kg” | 公制 | 95 kg |
-| “210 lbs” | 英制 | 95.25 kg |
-| “1.75m” | 公制 | 1.75 m |
-| “5'9''” | 英制 | 1.75 m |
-| “175cm” | 公制 | 1.75 m |
-
-**注意：** 一旦单位被检测到，系统将使用该单位进行后续的所有记录和提醒。
-
-## 日常记录
-
-### 提醒时间表
-| 时间 | 提醒内容 | 默认饮水量（毫升） |
-|------|------|---------|
-| 早上 | 09:00 | 500ml |
-| 午餐 | 12:00 | 500ml |
-| 下午 | 15:00 | 500ml |
-| 晚餐前 | 18:00 | 500ml |
-| 晚上 | 21:00 | 500ml |
-
-### 用户输入格式
-- `yes 500` → 表示饮用了 500 毫升（公制单位）。
-- `yes 16oz` → 表示饮用了约 473 毫升（英制单位）。
-- `no` → 表示未饮水。
-- `later` → 15-20 分钟后再次提醒。
-
-### 用户输入解析
-系统会解析用户输入以确定单位：
-- 如果输入仅包含数字，则使用配置中设置的默认单位。
-- “500ml” / “500” → 公制单位（毫升）。
-- “16oz” / “16 oz” → 英制单位（盎司）。
-- “2L” / “2 liters” → 自动转换为毫升。
-- “8 glasses” → 每杯约 500 毫升。
-
-### 自适应机制
-- 如果用户饮水量低于目标（<50%），系统会增加提醒次数。
-- 如果用户饮水量超过目标，系统会减少提醒次数。
-- 系统在晚上 10:00 之后不再发送提醒。
-
-## 自然语言意图识别
-系统会解析用户的文本信息以理解其意图，无需用户输入精确的命令。
-
-### 跳过当天或休息日
-用户可能表示：
-- “今天休息”
-- “今天不记录饮水量”
-- “今天生病了”
-- “今天要旅行”
-- “今天不喝水”
-- “休息几天”
-- “这个周末外出”
-
-**系统操作：** 将该日期标记为“跳过”，不计入连续记录的天数。
-
-**回复：** “明白了！请休息好 💙 当天已跳过记录。”
-
-### 调整饮水量目标
-用户可能表示：
-- “今天感觉腹胀，需要减少饮水量”
-- “今天运动量很大，需要多喝水”
-- “今天活动量较少，2 升就够了”
-- “可以降低饮水量目标吗？”
-- “明天想提高饮水量目标”
-
-**系统操作：**
-- 如果是临时调整，将目标值临时存储在 `status.temp_goal_ml` 中。
-- 如果是永久性调整，更新 `settings.default_goal_ml`。
-
-**回复：** “明白了！[日期] 的饮水量目标已调整为 X 毫升。”
-
-### 暂停提醒
-用户可能表示：
-- “要去度假”
-- “接下来一周很忙”
-- “不要打扰我”
-- “暂停提醒几天”
-- “暂停提醒 X 天”
-
-**系统操作：** 将提醒时间设置为 `status.snoozed_until`，并在该日期之前不再发送提醒。
-
-**回复：** “祝你旅途愉快！提醒功能已暂停至 [日期]。输入 ‘I'm back’ 可以恢复提醒。”
-
-### 恢复提醒
-用户可能表示：
-- “我回来了”
-- “准备继续记录饮水量”
-- “恢复提醒”
-- “停止暂停”
-
-**系统操作：** 清除 `status.snoozed_until`，恢复正常的提醒功能。
-
-**回复：** “欢迎回来！💧 现在可以继续记录饮水量了。”
-
-### 特殊情况处理
-- 如果用户错过提醒时间（晚上 10:00），系统会自动记录 0 毫升。
-- 如果用户事后补充饮水量（例如：“今天喝了 2 升水”），系统会补录当天的饮水量。
-- 如果用户提到前一天饮水量（例如：“昨天喝了 2 升水”），系统会记录前天的饮水量。
+---
 
 ## 数据格式
-- 数据存储在 `water_log.csv` 和 `body_metrics.csv` 文件中：
+
+### CSV 格式
 ```
-timestamp,date,slot,answer,ml_drank,cumulative_ml,daily_goal,goal_pct
-```
-```
-date,weight_kg,height_m,bmi,body_fat_pct,muscle_pct,water_pct
+logged_at,drank_at,date,slot,ml_drank,goal_at_time,message_id
 ```
 
-## 自然语言命令
-无需输入具体命令，系统会通过自然语言理解用户的意图：
-- **开始记录饮水量**： “start water tracking”
-- **记录饮水量**： “drank 500ml” / “had 2 liters”
-- **跳过当天或休息**： “今天生病了” / “今天不记录”
-- **调整饮水量目标**： “今天减少饮水量” / “需要多喝水”
-- **暂停提醒**： “要去度假” / “不要打扰我”
-- **恢复记录**： “我回来了” / “恢复记录”
+| 列名 | 说明 |
+|--------|-------------|
+| logged_at | 用户告知你的时间（当前时间） |
+| drank_at | 用户实际饮水的时间（用户可以指定过去的时间） |
+| date | 从 drank_at 推导出的日期 |
+| slot | 时段：早晨/午餐/下午/晚上/手动 |
+| ml_drank | 饮水量（单位：毫升） |
+| goal_at_time | 当前的目标饮水量 |
+| message_id | 审计追踪信息——指向相关对话的链接 |
+
+**重要规则：**
+- **drank_at 是必填项**——必须提供
+- 如果用户未指定 drank_at，则默认为 logged_at
+- **累计饮水量在查询时计算**（不存储在数据库中）
+- 使用 drank_at 来确定计入当天的饮水量
+
+详细信息请参阅 [references/log_format.md](references/log_format.md)
+
+### 审计追踪
+
+每条饮水记录包含以下信息：
+- **message_id**：指向用户请求记录的对话消息的链接
+- **自动获取**：CLI 会从会话记录中自动获取 message_id
+- **查看记录**：使用 `water audit <message_id>` 可查看记录及其上下文
+
+
+
+```bash
+# Check proof of a water entry
+water audit msg_123
+# Returns: entry data + surrounding messages for context
+```
+
+
+
+## 日常命令
+
+```bash
+# Water
+water status                                      # Current progress (calculated from drank_at)
+water log 500                                    # Log intake (drank_at = now)
+water log 500 --drank-at=2026-02-18T18:00:00Z  # Log with past time
+water log 500 --drank-at=2026-02-18T18:00:00Z --message-id=msg_123
+water dynamic                                    # Check if extra notification needed
+water threshold                                  # Get expected % for current hour
+water set_body_weight 80                        # Update weight + logs to body_metrics
+water set_body_weight 80 --update-goal          # + update goal
+water audit <message_id>                        # Get entry + conversation context
+
+# Body
+body log --weight=80 --height=1.75 --body-fat=18
+body latest          # Get latest metrics
+body history 30     # Get history
+
+# Analytics
+analytics week       # Weekly briefing (Sunday 8pm)
+analytics month     # Monthly briefing (2nd day 8pm)
+```
+
+
+
+## 必须遵守的规则
+
+1. **始终使用 CLI**——切勿手动计算饮水量
+2. **首先由 LLM 解释用户指令**——例如：“eu tomei 2 copos”（我喝了2杯水）→ CLI 会记录为 500 毫升
+3. **阈值通过 CLI 设置**——不要硬编码阈值
+4. **目标饮水量由用户自行决定**——建议的饮水量为体重 × 35 毫升：
+   - 设置时：询问用户体重 → 建议目标饮水量 → **请用户确认**
+   - 体重更新时：询问“是否要将目标饮水量更新为新的建议值？”
+   - 用户可以设置任意目标饮水量（如医生建议的饮水量、个人偏好等）
+
+
+
+## 配置结构
+
+```
+water-coach/
+├── SKILL.md              ← You are here
+├── scripts/
+│   ├── water_coach.py   ← Unified CLI
+│   └── water.py         ← Core functions
+├── data/
+│   ├── water_config.json (Current configs)
+│   ├── water_log.csv
+│   └── body_metrics.csv
+└── references/
+    ├── setup.md
+    ├── dynamic.md
+    └── log_format.md
+```
+
+
+
+## 通知安排
+
+| 通知类型 | 通知时间 | 命令 |
+|------|------|---------|
+| 基本通知（每天5次） | 上午9点、中午12点、下午3点、下午6点、晚上9点 | 显示饮水状态 |
+| 动态通知 | 每约30分钟 | 显示实时饮水情况 |
+| 周报 | 每周日晚上8点 | 提供每周饮水分析 |
+| 月报 | 每月第二天晚上8点 | 提供每月饮水分析 |
+
+---
+
+## 快速参考
+
+| 功能 | 命令 |
+|------|---------|
+| 查看进度 | `water_coach.py water status` |
+| 记录饮水量 | `water_coach.py water log 500` |
+| 需要更多信息？ | `water_coach.py water dynamic` |
+| 查看身体指标 | `water_coach.py body log --weight=80` |
+| 查看周报 | `water_coach.py analytics week` |
+| 查看月报 | `water_coach.py analytics month` |
+
+## 动态调度详情 → [references/dynamic.md](references/dynamic.md)
+
+
+
+## 测试
+
+```bash
+python3 -m pytest skills/water-coach/scripts/test/test_water.py -v
+```
+
+
+
+## 示例
+
+```
+User: "eu tomei 2 copos"
+Agent: (LLM interprets: 2 copos ≈ 500ml)
+Agent: exec("water_coach.py water log 500")
+→ Python logs to CSV
+```
+
+
+
+代理评估 → [evaluation/AGENT.md](evaluation/AGENT.md)
