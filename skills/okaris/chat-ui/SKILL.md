@@ -1,17 +1,13 @@
 ---
 name: chat-ui
-description: |
-  Chat UI building blocks for React/Next.js from ui.inference.sh.
-  Components: container, messages, input, typing indicators, avatars.
-  Capabilities: chat interfaces, message lists, input handling, streaming.
-  Use for: building custom chat UIs, messaging interfaces, AI assistants.
-  Triggers: chat ui, chat component, message list, chat input, shadcn chat,
-  react chat, chat interface, messaging ui, conversation ui, chat building blocks
+description: "Chat UI building blocks for React/Next.js from ui.inference.sh. Components: container, messages, input, typing indicators, avatars. Capabilities: chat interfaces, message lists, input handling, streaming. Use for: building custom chat UIs, messaging interfaces, AI assistants. Triggers: chat ui, chat component, message list, chat input, shadcn chat,"  react chat, chat interface, messaging ui, conversation ui, chat building blocks
 ---
 
 # 聊天用户界面组件
 
 这些聊天组件来自 [ui.inference.sh](https://ui.inference.sh)。
+
+![聊天用户界面组件](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgvftp7hb8wby7z66fvs9asd.jpeg)
 
 ## 快速入门
 
@@ -60,7 +56,7 @@ import { ChatInput } from "@/registry/blocks/chat/chat-input"
 />
 ```
 
-### 输入状态指示器
+### 输入提示（显示用户正在输入的内容）
 
 ```tsx
 import { TypingIndicator } from "@/registry/blocks/chat/typing-indicator"
@@ -103,11 +99,11 @@ export function Chat() {
 
 ## 消息类型
 
-| 类型 | 说明 |
+| 类型 | 描述 |
 |------|-------------|
-| `user` | 用户发送的消息（右对齐显示） |
+| `user` | 用户输入的消息（右对齐显示） |
 | `assistant` | 人工智能生成的回复（左对齐显示） |
-| `system` | 系统发送的消息（居中显示） |
+| `system` | 系统消息（居中显示） |
 
 ## 样式设计
 
@@ -125,19 +121,19 @@ export function Chat() {
 
 ```bash
 # Full agent component (recommended)
-npx skills add inference-sh/agent-skills@agent-ui
+npx skills add inference-sh/skills@agent-ui
 
 # Declarative widgets
-npx skills add inference-sh/agent-skills@widgets-ui
+npx skills add inference-sh/skills@widgets-ui
 
 # Markdown rendering
-npx skills add inference-sh/agent-skills@markdown-ui
+npx skills add inference-sh/skills@markdown-ui
 ```
 
 ## 文档资料
 
 - [与智能助手进行聊天](https://inference.sh/docs/agents/chatting) - 如何构建聊天界面 |
 - [智能助手的用户体验设计模式](https://inference.sh/blog/ux/agent-ux-patterns) - 聊天界面的最佳实践 |
-- [实时流式响应](https://inference.sh/blog/observability/streaming) - 实时流式消息传递技术
+- [实时流式响应](https://inference.sh/blog/observability/streaming) - 实时流式显示回复内容 |
 
-组件文档：[ui.inference.sh/blocks/chat](https://ui.inference.sh/blocks/chat)
+组件详细文档：[ui.inference.sh/blocks/chat](https://ui.inference.sh/blocks/chat)

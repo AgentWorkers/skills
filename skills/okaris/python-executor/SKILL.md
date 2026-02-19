@@ -1,21 +1,15 @@
 ---
 name: python-executor
-description: |
-  Execute Python code in a safe sandboxed environment via [inference.sh](https://inference.sh).
-  Pre-installed: NumPy, Pandas, Matplotlib, requests, BeautifulSoup, Selenium,
-  Playwright, MoviePy, Pillow, OpenCV, trimesh, and 100+ more libraries.
-  Use for: data processing, web scraping, image manipulation, video creation,
-  3D model processing, PDF generation, API calls, automation scripts.
-  Triggers: python, execute code, run script, web scraping, data analysis,
-  image processing, video editing, 3D models, automation, pandas, matplotlib
+description: "您可以通过 [inference.sh](https://inference.sh) 在一个安全的沙箱环境中执行 Python 代码。该环境预先安装了以下库：NumPy、Pandas、Matplotlib、requests、BeautifulSoup、Selenium、Playwright、MoviePy、Pillow、OpenCV、trimesh 以及 100 多个其他库。该工具可用于数据处理、网络爬虫、图像处理、视频制作、3D 模型处理、PDF 生成、API 调用以及自动化脚本的编写。支持的功能包括：Python 代码执行、脚本运行、网络爬取、数据分析、图像处理、视频编辑、3D 模型处理以及自动化操作等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # Python代码执行器
 
 在安全、沙盒化的环境中执行Python代码，该环境预装了100多个库。
 
-## 快速入门
+![Python代码执行器](https://cloud.inference.sh/u/33sqbmzt3mrg2xxphnhw5g5ear/01k8d8b4mckh6z89dhtxh72dsz.png)
+
+## 快速开始
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,6 +19,8 @@ infsh app run infsh/python-executor --input '{
   "code": "import pandas as pd\nprint(pd.__version__)"
 }'
 ```
+
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统/架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其SHA-256校验和。无需提升权限或启动后台进程。也可以选择[手动安装并验证](https://dist.inference.sh/cli/checksums.txt)。
 
 ## 应用详情
 
@@ -85,7 +81,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### 数据分析与可视化
+### 带有可视化的数据分析
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -128,7 +124,7 @@ infsh app run infsh/python-executor --input '{
 
 ## 文件输出
 
-所有生成的文件将自动保存到`outputs/`目录：
+所有生成的文件将自动保存在 `outputs/` 目录中：
 
 ```python
 # These files will be in the response
@@ -153,7 +149,7 @@ infsh app run infsh/python-executor@high_memory --input input.json
 - **网页抓取** - 从网站提取数据
 - **数据分析** - 处理和可视化数据集
 - **图像处理** - 调整图像大小、裁剪、合成图片
-- **视频制作** - 生成带有文字覆盖层的视频
+- **视频制作** - 制作带有文字叠加的视频
 - **3D处理** - 加载、转换、导出3D模型
 - **API集成** - 调用外部API
 - **PDF生成** - 创建报告和文档
@@ -161,26 +157,26 @@ infsh app run infsh/python-executor@high_memory --input input.json
 
 ## 重要说明
 
-- **仅支持CPU** - 不支持GPU/机器学习库（如需使用，请使用专门的AI工具）
-- **安全执行** - 代码在隔离的子进程中运行
-- **非交互式** - 使用`plt.savefig()`而非`plt.show()`进行输出
-- **文件自动检测** - 生成的文件会自动被检测并返回
+- **仅支持CPU** - 不支持GPU或机器学习库（如需使用这些功能，请使用专门的AI工具）
+- **安全执行** - 在隔离的子进程中运行代码
+- **非交互式** - 使用 `plt.savefig()` 而不是 `plt.show()` 保存图像
+- **文件自动检测** - 生成的文件会自动被识别并返回
 
 ## 相关技能
 
 ```bash
 # AI image generation (for ML-based images)
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 
 # AI video generation (for ML-based videos)
-npx skills add inference-sh/agent-skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # LLM models (for text generation)
-npx skills add inference-sh/agent-skills@llm-models
+npx skills add inference-sh/skills@llm-models
 ```
 
 ## 文档资料
 
-- [运行应用程序](https://inference.sh/docs/apps/running) - 通过命令行（CLI）运行应用程序的方法
-- [应用程序代码](https://inference.sh/docs/extend/app-code) - 了解应用程序的执行原理
+- [运行应用程序](https://inference.sh/docs/apps/running) - 通过命令行运行应用程序的方法
+- [应用程序代码结构](https://inference.sh/docs/extend/app-code) - 了解应用程序的执行原理
 - [沙盒化代码执行](https://inference.sh/blog/tools/sandboxed-execution) - 为代理程序提供安全的代码执行环境

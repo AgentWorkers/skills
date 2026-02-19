@@ -1,17 +1,13 @@
 ---
 name: widgets-ui
-description: |
-  Declarative UI widgets from JSON for React/Next.js from ui.inference.sh.
-  Render rich interactive UIs from structured agent responses.
-  Capabilities: forms, buttons, cards, layouts, inputs, selects, checkboxes.
-  Use for: agent-generated UIs, dynamic forms, data display, interactive cards.
-  Triggers: widgets, declarative ui, json ui, widget renderer, agent widgets,
-  dynamic ui, form widgets, card widgets, shadcn widgets, structured output ui
+description: "Declarative UI widgets from JSON for React/Next.js from ui.inference.sh. Render rich interactive UIs from structured agent responses. Capabilities: forms, buttons, cards, layouts, inputs, selects, checkboxes. Use for: agent-generated UIs, dynamic forms, data display, interactive cards. Triggers: widgets, declarative ui, json ui, widget renderer, agent widgets,"  dynamic ui, form widgets, card widgets, shadcn widgets, structured output ui
 ---
 
 # Widget Renderer
 
-通过 [ui.inference.sh](https://ui.inference.sh) 从 JSON 文件中生成声明式用户界面（Declarative UI）。
+通过 [ui.inference.sh](https://ui.inference.sh) 从 JSON 文件生成声明式用户界面（Declarative UI）。
+
+![Widget Renderer](https://cloud.inference.sh/u/33sqbmzt3mrg2xxphnhw5g5ear/01kah2rcteycyxw8ffmtpq1zec.png)
 
 ## 快速入门
 
@@ -40,7 +36,7 @@ const widget: Widget = {
 />
 ```
 
-## 组件类型
+## 小部件类型
 
 ### 布局（Layout）
 
@@ -59,7 +55,7 @@ const widget: Widget = {
 { "type": "label", "value": "Field label", "fieldName": "email" }
 ```
 
-### 交互式组件（Interactive Components）
+### 交互式功能（Interactive）
 
 ```json
 { "type": "button", "label": "Submit", "variant": "default", "onClickAction": { "type": "submit" } }
@@ -69,7 +65,7 @@ const widget: Widget = {
 { "type": "checkbox", "name": "agree", "label": "I agree", "defaultChecked": false }
 ```
 
-### 显示方式（Display Methods）
+### 显示方式（Display）
 
 ```json
 { "type": "badge", "label": "New", "variant": "secondary" }
@@ -78,7 +74,7 @@ const widget: Widget = {
 { "type": "divider" }
 ```
 
-## 示例：飞行信息卡片（Flight Card Example）
+## 示例：飞行信息卡（Flight Card）
 
 ```tsx
 const flightWidget: Widget = {
@@ -109,7 +105,7 @@ const flightWidget: Widget = {
 }
 ```
 
-## 示例：表单（Form Example）
+## 示例：表单（Form）
 
 ```tsx
 const formWidget: Widget = {
@@ -129,7 +125,7 @@ const formWidget: Widget = {
 }
 ```
 
-## 渐变效果（Gradient Effects）
+## 渐变效果（Gradients）
 
 | 名称 | 描述 |
 |------|-------------|
@@ -139,7 +135,7 @@ const formWidget: Widget = {
 | `gradient-cool` | 冷蓝色渐变 |
 | `gradient-midnight` | 深蓝色渐变 |
 
-## 动作处理（Action Handling）
+## 动作处理（Handling Actions）
 
 ```tsx
 const handleAction = (action: WidgetAction, formData?: WidgetFormData) => {
@@ -154,23 +150,23 @@ const handleAction = (action: WidgetAction, formData?: WidgetFormData) => {
 }
 ```
 
-## 相关技能（Related Skills）
+## 相关技能
 
 ```bash
 # Full agent component
-npx skills add inference-sh/agent-skills@agent-ui
+npx skills add inference-sh/skills@agent-ui
 
 # Chat UI blocks
-npx skills add inference-sh/agent-skills@chat-ui
+npx skills add inference-sh/skills@chat-ui
 
 # Tool UI
-npx skills add inference-sh/agent-skills@tools-ui
+npx skills add inference-sh/skills@tools-ui
 ```
 
-## 文档资料（Documentation）
+## 文档资料
 
-- [组件概述](https://inference.sh/docs/agents/widgets/overview) - 了解组件功能 |
-- [组件 JSON 结构](https://inference.sh/docs/agents/widgets/schema) - 组件的 JSON 格式 |
-- [生成用户界面的代理（Agents That Generate UI）](https://inference.sh/blog/ux/generative-ui) - 如何构建自动生成用户界面的系统 |
+- [小部件概述](https://inference.sh/docs/agents/widgets/overview) - 了解小部件的功能  
+- [小部件 JSON 结构](https://inference.sh/docs/agents/widgets/schema) - 小部件的 JSON 格式  
+- [生成用户界面的代理（Agents That Generate UI）](https://inference.sh/blog/ux/generative-ui) - 如何构建生成式用户界面  
 
 组件文档：[ui.inference.sh/blocks/widgets](https://ui.inference.sh/blocks/widgets)
