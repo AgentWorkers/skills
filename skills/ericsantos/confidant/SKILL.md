@@ -1,6 +1,8 @@
 ---
 name: confidant
-description: 用于AI代理的安全秘密信息传递及凭据设置向导。当您需要从用户那里获取敏感信息（如API密钥、密码、令牌）或需要将凭据保存到配置文件中时，请使用该工具。切勿通过聊天方式请求用户的秘密信息——请改用Confidant。
+description: >
+  **AI代理的安全秘密信息传递与凭据设置向导**  
+  当您需要从用户那里获取敏感信息（如API密钥、密码、令牌）或需要将凭据保存到配置文件中时，请使用此向导。切勿通过聊天方式请求用户的秘密信息——请改用Confidant工具。
 ---
 # Confidant
 
@@ -18,7 +20,7 @@ description: 用于AI代理的安全秘密信息传递及凭据设置向导。�
 - ✅ 如果服务器未运行，则启动服务器（或重用现有服务器）
 - ✅ 通过网页表单创建安全请求
 - ✅ 检测现有的隧道（ngrok 或 localtunnel）
-- ✅ 返回可供分享的 URL
+- ✅ 返回可供共享的 URL
 
 **如果用户位于远程位置**（不在同一网络中），请添加 `--tunnel` 参数：
 
@@ -26,7 +28,7 @@ description: 用于AI代理的安全秘密信息传递及凭据设置向导。�
 {skill}/scripts/request-secret.sh --label "OpenAI API Key" --service openai --tunnel
 ```
 
-这将自动启动 [localtunnel](https://theboroer.github.io/localtunnel-www/)（无需注册账号），并返回一个公共 URL。
+这将自动启动 [localtunnel](https://theboroer.github.io/localtunnel-www/)（无需注册账户），并返回一个公共 URL。
 
 **输出示例：**
 ```
@@ -39,7 +41,7 @@ Save to: ~/.config/openai/api_key
 Share the URL above with the user. Secret expires after submission or 24h.
 ```
 
-分享 URL → 用户打开该 URL → 提交秘密 → 完成。
+分享该 URL → 用户打开链接 → 提交秘密 → 完成。
 
 ## 脚本
 
@@ -67,13 +69,13 @@ Share the URL above with the user. Secret expires after submission or 24h.
 
 | 参数 | 说明 |
 |------|-------------|
-| `--label <文本>` | 在网页表单上显示的说明 **（必填）** |
+| `--label <文本>` | 在网页表单上显示的描述 **（必填）** |
 | `--service <名称>` | 自动保存到 `~/.config/<名称>/api_key` |
 | `--save <路径>` | 自动保存到指定文件路径 |
 | `--env <变量名>` | 设置环境变量（需要 `--service` 或 `--save` 参数） |
 | `--tunnel` | 如果未检测到隧道，则启动 localtunnel（适用于远程用户） |
-| `--port <端口>` | 服务器端口（默认：3000） |
-| `--timeout <秒>` | 启动服务器的最大等待时间（默认：15 秒） |
+| `--port <端口号>` | 服务器端口号（默认：3000） |
+| `--timeout <秒数>` | 启动服务器的最大等待时间（默认：15 秒） |
 | `--json` | 以 JSON 格式输出结果，而非人类可读的文本 |
 
 ### `check-server.sh` — 服务器诊断（无副作用）
@@ -83,38 +85,39 @@ Share the URL above with the user. Secret expires after submission or 24h.
 {skill}/scripts/check-server.sh --json
 ```
 
-报告服务器状态、端口、进程 ID 以及隧道状态（ngrok 或 localtunnel）。
+报告服务器状态、端口号、进程 ID 以及隧道状态（ngrok 或 localtunnel）。
 
 ## 代理使用规则
 
-1. **切勿要求用户在聊天中粘贴秘密信息** — 始终使用此工具来接收秘密。
-2. **切勿在聊天中泄露任何接收到的秘密** — 甚至不能部分泄露。
-3. **切勿直接使用 `curl` 命令调用 Confidant API** — 必须使用相应的脚本。
-4. **切勿为了启动新服务器而关闭现有的服务器**。
-5. 当用户位于远程位置时，请使用 `--tunnel` 参数。
-6. 建议使用 `--service` 参数来保存 API 密钥——这是最规范的用法。
-7. 收到秘密后，应默默地完成后续处理。
+1. **绝不要要求用户在聊天中粘贴秘密信息** — 始终使用此工具进行传输。
+2. **绝不要在聊天中透露接收到的秘密信息** — 甚至不能部分透露。
+3. **绝不要直接使用 `curl` 命令调用 Confidant API** — 请使用相应的脚本。
+4. **绝不要为了启动新服务器而关闭现有的服务器**。
+5. **绝不要直接暴露服务器端口**（如公共 IP 地址、防火墙规则等） — 请使用 `--tunnel` 参数。
+6. 当用户位于远程位置时，请使用 `--tunnel` 参数。
+7. 建议使用 `--service` 参数来保存 API 密钥——这是最规范的用法。
+8. 收到秘密信息后，应默默地确认接收成功。
 
 ## 工作原理
 
 1. 脚本会启动 Confidant 服务器（或在端口 3000 上重用现有服务器）。
-2. 通过带有唯一 ID 的网页表单创建安全请求。
-3. （可选）为公共访问启动 localtunnel（或检测现有的 ngrok/localtunnel）。
-4. 用户在浏览器中打开 URL 并提交秘密信息。
-5. 秘密信息会被接收并保存到磁盘（权限设置为 `chmod 600`），随后在服务器端被销毁。
+2. 通过带有唯一 ID 的网页表单创建请求。
+3. 可选地启动 localtunnel 以供公众访问（或检测现有的 ngrok/localtunnel）。
+4. 用户在浏览器中打开提供的 URL 并提交秘密信息。
+5. 秘密信息会被接收并（可选地）保存到磁盘（权限设置为 `chmod 600`），随后在服务器上被销毁。
 
 ## 隧道选项
 
-| 提供者 | 是否需要账号 | 使用方法 |
+| 提供方 | 是否需要账户 | 使用方法 |
 |----------|---------------|-----|
-| **localtunnel**（默认） | 不需要 | 使用 `--tunnel` 参数或 `npx localtunnel --port 3000` |
-| **ngrok** | 需要账号（免费 tier） | 如果在同一端口上运行，会自动检测到 |
+| **localtunnel**（默认） | 不需要 | 使用 `--tunnel` 参数或 `npx localtunnel --port 3000` 命令 |
+| **ngrok** | 需要账户（免费 tier） | 如果在同一端口上运行，则会自动检测到 |
 
 脚本会自动检测这两种隧道。如果两者均未运行且指定了 `--tunnel` 参数，则会启动 localtunnel。
 
 ## 高级用法：直接使用 CLI
 
-对于脚本未涵盖的特殊情况：
+对于脚本未涵盖的特殊情况，可以使用以下命令：
 
 ```bash
 # Start server only
