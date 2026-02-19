@@ -1,0 +1,11 @@
+{
+  "owner": "hidicence",
+  "slug": "x-knowledge-base",
+  "displayName": "X Knowledge Base",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771427423501,
+    "commit": "https://github.com/openclaw/skills/commit/dbf680b6f61f47845179a915f4f32084e7299cf9"
+  },
+  "history": []
+}
