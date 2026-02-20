@@ -1,11 +1,15 @@
 ---
-name: zohobookings
+name: zoho-bookings
 description: >
   **Zoho Bookings API集成与托管式OAuth**  
-  该功能支持用户通过OAuth身份验证来管理预约、服务、员工信息以及工作空间。  
-  当用户需要在Zoho Bookings中预约服务、查看员工可用性或管理工作空间时，可使用此功能。  
-  对于其他第三方应用程序，建议使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。  
-  使用此功能需要网络连接以及有效的Maton API密钥。
+  该功能支持用户预约、管理服务、查看员工排班情况以及管理工作空间。  
+  **适用场景**：  
+  当用户需要预订预约、管理服务、查看员工可用性或在Zoho Bookings中管理工作空间时，可使用此功能。  
+  **替代方案**：  
+  对于其他第三方应用程序，建议使用`api-gateway`功能（链接：https://clawhub.ai/byungkyu/api-gateway）。  
+  **使用要求**：  
+  - 需要网络连接；  
+  - 必须拥有有效的Maton API密钥。
 metadata:
   author: maton
   version: "1.0"
@@ -18,7 +22,7 @@ metadata:
 ---
 # Zoho Bookings
 
-您可以使用托管的 OAuth 认证来访问 Zoho Bookings API。该 API 允许您执行完整的 CRUD 操作（创建、读取、更新和删除），以管理预约、服务、员工和工作空间。
+您可以使用管理的 OAuth 认证来访问 Zoho Bookings API。该 API 允许您对预约、服务、员工和工作空间进行完整的 CRUD 操作（创建、读取、更新和删除）。
 
 ## 快速入门
 
@@ -42,7 +46,7 @@ https://gateway.maton.ai/zoho-bookings/bookings/v1/json/{endpoint}
 
 ## 认证
 
-所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
@@ -129,7 +133,7 @@ EOF
 
 ### 指定连接
 
-如果您有多个 Zoho Bookings 连接，请使用 `Maton-Connection` 头指定要使用的连接：
+如果您有多个 Zoho Bookings 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,7 +145,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略此头，网关将使用默认的（最旧的）活动连接。
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
 ## API 参考
 
@@ -281,7 +285,7 @@ Content-Type: application/x-www-form-urlencoded
 |-----------|------|----------|-------------|
 | `name` | string | 是 | 服务名称 |
 | `workspace_id` | string | 是 | 工作空间 ID |
-| `duration` | integer | 否 | 服务持续时间（分钟） |
+| `duration` | integer | 否 | 服务时长（分钟） |
 | `cost` | number | 否 | 服务价格 |
 | `pre_buffer` | integer | 否 | 服务前的缓冲时间（分钟） |
 | `post_buffer` | integer | 否 | 服务后的缓冲时间（分钟） |
@@ -370,7 +374,7 @@ Content-Type: application/x-www-form-urlencoded
 | 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
 | `service_id` | string | 是 | 服务 ID |
-| `staff_id` | string | 是* | 员工 ID（*或 resource_id/group_id） |
+| `staff_id` | string | 是* | 员工 ID（或资源 ID/组 ID） |
 | `from_time` | string | 是 | 开始时间：`dd-MMM-yyyy HH:mm:ss`（24 小时制） |
 | `timezone` | string | 否 | 时区（例如：`America/Los_Angeles`） |
 | `customer_details` | string | 是 | 包含 `name`、`email`、`phone_number` 的 JSON 字符串 |
@@ -458,8 +462,8 @@ Content-Type: application/x-www-form-urlencoded
 
 | 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `from_time` | string | 开始日期：`dd-MMM-yyyy HH:mm:ss` |
-| `to_time` | string | 结束日期：`dd-MMM-yyyy HH:mm:ss` |
+| `from_time` | string | 开始日期：`dd-MMM/yyyy HH:mm:ss` |
+| `to_time` | string | 结束日期：`dd-MMM/yyyy HH:mm:ss` |
 | `status` | string | `UPCOMING`、`CANCEL`、`COMPLETED`、`NO_SHOW`、`PENDING` |
 | `service_id` | string | 按服务过滤 |
 | `staff_id` | string | 按员工过滤 |
@@ -614,15 +618,15 @@ data = response.json()
 ## 注意事项
 
 - 日期/时间格式：`dd-MMM-yyyy HH:mm:ss`（例如：`20-Feb-2026 10:00:00`）
-- 预约 ID 以 `#` 为前缀（URL 编码为 `%23`）
+- 预约 ID 以 `#` 为前缀（URL 编码格式为 `%23`）
 - `customer_details` 必须是 JSON 字符串，不能是对象
 - `fetchappointment` 请求中的参数需要用 `data` 字段作为 JSON 数据发送
 - 其他 POST 请求端点使用常规表单字段
 - 服务类型：`APPOINTMENT`、`RESOURCE`、`CLASS`、`COLLECTIVE`
 - 状态值：`UPCOMING`、`CANCEL`、`ONGOING`、`PENDING`、`COMPLETED`、`NO_SHOW`
 - 默认分页数量：每页 50 条预约（最多 100 条）
-- 如果收到范围错误，请联系 Maton 支持团队（support@maton.ai），并提供具体的操作、API 和使用场景
-- 重要提示：当 URL 包含括号时，使用 `curl -g` 选项来禁用全局解析
+- 如果收到范围错误，请联系 Maton 支持团队（support@maton.ai），并提供具体的操作、API 及使用场景
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 选项来禁用全局解析
 - 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 可能无法正确解析
 
 ## 错误处理
@@ -631,10 +635,10 @@ data = response.json()
 |--------|---------|
 | 400 | 未找到 Zoho Bookings 连接或请求无效 |
 | 401 | Maton API 密钥无效或缺失 |
-| 429 | 日限达到 |
+| 429 | 调用次数受限 |
 | 4xx/5xx | 来自 Zoho Bookings API 的传递错误 |
 
-### 日限
+### 调用次数限制
 
 | 计划 | 每日限制 |
 |------|-------------|
@@ -662,12 +666,12 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 故障排除：无效的应用名称
+### 故障排除：无效的 API 名称
 
 1. 确保您的 URL 路径以 `zoho-bookings` 开头。例如：
 
-- 正确：`https://gateway.maton.ai/zoho-bookings/bookings/v1/json/workspaces`
-- 错误：`https://gateway.maton.ai/bookings/v1/json/workspaces`
+- 正确格式：`https://gateway.maton.ai/zoho-bookings/bookings/v1/json/workspaces`
+- 错误格式：`https://gateway.maton.ai/bookings/v1/json/workspaces`
 
 ## 资源
 
@@ -677,4 +681,4 @@ EOF
 - [获取服务信息 API](https://www.zoho.com/bookings/help/api/v1/fetch-services.html)
 - [获取员工信息 API](https://www.zoho.com/bookings/help/api/v1/fetch-staff.html)
 - [Maton 社区](https://discord.com/invite/dBfFAcefs2)
-- [Maton 支持](mailto:support@maton.ai)
+- [Maton 支持团队](mailto:support@maton.ai)

@@ -1,10 +1,42 @@
 ---
 name: hubspot-suite
-description: "这是一个全面的 HubSpot CRM（客户关系管理）、营销、销售、服务以及内容管理系统（CMS）管理套件。它涵盖了 HubSpot 的所有 API，包括 CRM 对象（联系人、公司、交易、工单、自定义对象）、关联关系、属性、互动记录（电话、电子邮件、会议、笔记、任务）、工作流与自动化流程、列表、表单、电子邮件营销、报告与分析功能、数据质量与去重处理、数据导入/导出、Webhook、数据管道（pipelines）、内容管理以及电子商务相关功能。该套件支持两种认证方式：私有应用（API 密钥）认证和新的 HubSpot 开发者平台（基于 CLI 的应用程序）。适用于所有与 HubSpot 相关的任务，包括 CRM 管理、营销自动化、销售流程管理、数据迁移、报告生成、数据质量审计以及 HubSpot 系统管理。"
+description: "这是一款全面的 HubSpot CRM（客户关系管理）、营销、销售、服务以及内容管理系统（CMS）管理工具。它支持 HubSpot 的所有 API，涵盖以下功能：  
+- CRM 对象（联系人、公司、交易、工单、自定义对象）  
+- 对象之间的关联关系  
+- 对象属性  
+- 客户互动记录（电话、电子邮件、会议、笔记、任务）  
+- 工作流程与自动化  
+- 列表管理  
+- 表单设计  
+- 电子邮件营销  
+- 报告与数据分析  
+- 数据质量检测与去重  
+- 数据导入/导出  
+- Webhook 功能  
+- 数据处理流程（pipelines）  
+- 内容管理系统（CMS）内容管理  
+- 客户对话记录  
+该工具支持两种认证方式：  
+1. **私有应用（API 密钥）**  
+2. **新的 HubSpot 开发者平台（基于 CLI 的应用程序）**  
+适用于所有与 HubSpot 相关的任务，包括：  
+- CRM 管理  
+- 营销自动化  
+- 销售流程管理  
+- 数据迁移  
+- 数据质量审计  
+- HubSpot 系统管理  
+总之，这是一款功能齐全、易于使用的 HubSpot 管理工具，能够满足企业对客户关系管理、市场营销和业务运营的多样化需求。"
+metadata:
+  openclaw:
+    requires:
+      env:
+        - HUBSPOT_ACCESS_TOKEN
+    primaryCredential: HUBSPOT_ACCESS_TOKEN
 ---
 # HubSpot套件——全面的CRM与营销平台
 
-本文档涵盖了HubSpot平台的全部功能，包括CRM、营销、销售、服务、内容管理系统（CMS）以及开发工具。
+本文档涵盖了HubSpot平台的全部功能，包括CRM、营销、销售、服务、内容管理系统（CMS）以及开发者工具。
 
 ## 快速入门
 
@@ -17,7 +49,7 @@ export HUBSPOT_ACCESS_TOKEN="pat-na1-xxx"  # or pat-eu1-xxx
 export HUBSPOT_API_KEY="your-api-key"
 ```
 
-有关完整的认证指南（包括新的开发者平台），请参阅`references/auth-setup.md`。
+有关完整的认证指南（包括新开发者平台的认证流程），请参阅`references/auth-setup.md`。
 
 ### 2. 基本API测试
 ```bash
@@ -32,10 +64,10 @@ curl -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 - `references/crm-companies.md` → 公司记录及层级结构
 - `references/crm-deals.md` → 销售流程、交易阶段
 - `references/crm-tickets.md` → 支持工单、SLA管理
-- `references/crm-custom-objects.md` → 自定义对象模式
+- `references/crm-custom-objects.md` → 自定义对象架构
 
 **数据与关联：**
-- `references/associations.md` → 建立记录关联（联系人→公司、交易→联系人）
+- `references/associations.md` → 记录之间的关联（例如：联系人→公司、交易→联系人）
 - `references/properties.md` → 自定义属性、字段组
 - `references/data-quality.md` → 数据去重、数据清洗
 - `references/import-export.md` → 批量数据导入/导出
@@ -47,7 +79,7 @@ curl -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 **营销与销售：**
 - `references/lists.md` → 联系人列表、客户细分
-- `references/forms.md` → 登录页面表单
+- `references/forms.md` → 登录页表单
 - `references/email-marketing.md` → 电子邮件营销活动
 - `references/conversations.md` → 实时聊天、聊天机器人
 
@@ -56,7 +88,7 @@ curl -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 - `references/webhooks.md` → 实时事件通知
 
 **内容与商务：**
-- `references/cms.md` → 网站页面、博客文章、HubDB
+- `references/cms.md` → 网站页面、博客文章、HubSpot数据库（HubDB）
 - `references/commerce.md` → 产品信息、报价单、发票
 
 **平台与开发：**
@@ -101,7 +133,7 @@ curl -X PUT "https://api.hubapi.com/crm/v3/objects/deals/DEAL_ID/associations/co
 ./scripts/data-audit.sh
 ```
 
-### 5. 导出流程报告
+### 5. 导出自动化流程报告
 ```bash
 ./scripts/pipeline-report.sh > pipeline_report.csv
 ```
@@ -154,11 +186,11 @@ chmod +x scripts/*.sh
 
 ## API基础知识
 
-### 请求限制
-- **私有应用程序：**每10秒100次请求
-- **OAuth应用程序：**每10秒100次请求
-- **搜索API：**每秒4次请求
-- **批量操作：**每次请求最多100条记录
+### 请求速率限制
+- **私有应用程序：** 每10秒100次请求
+- **OAuth应用程序：** 每10秒100次请求
+- **搜索API：** 每秒4次请求
+- **批量操作：** 每次请求最多处理100条记录
 
 ### 分页
 所有列表接口均使用`after`参数进行分页：
@@ -167,12 +199,12 @@ curl "https://api.hubapi.com/crm/v3/objects/contacts?after=12345&limit=100"
 ```
 
 ### 错误处理
-- **429：**请求次数超出限制 → 等待后重试
-- **400：**请求错误 → 检查属性名称/值
-- **401：**认证失败 → 检查令牌/权限范围
-- **404：**对象未找到 → 验证ID是否存在
+- **429：** 请求速率限制超出 → 等待片刻后重试
+- **400：** 请求错误 → 检查属性名称/值
+- **401：** 认证失败 → 检查令牌/权限范围
+- **404：** 对象未找到 → 确认ID是否存在
 
-### 常见请求头
+### 常见请求头信息
 ```bash
 -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN"
 -H "Content-Type: application/json"
@@ -205,12 +237,12 @@ curl -X POST "https://api.hubapi.com/crm/v3/objects/contacts/batch/create" \
 ```
 
 ### 操作符
-- **EQ, NEQ：**等于、不等于
-- **LT, LTE, GT, GTE：**小于/大于
-- **CONTAINS_TOKEN：**包含指定单词
-- **HAS_PROPERTY, NOTHAS_PROPERTY：**属性存在/不存在
-- **IN, NOT_IN：**值在列表中
-- **BETWEEN：**数值/日期范围
+- **EQ, NEQ：** 等于、不等于
+- **LT, LTE, GT, GTE：** 小于/大于
+- **CONTAINS_TOKEN：** 包含指定单词
+- **HAS_PROPERTY, NOTHAS_PROPERTY：** 对象具有/不具有指定属性
+- **IN, NOT_IN：** 值在列表中
+- **BETWEEN：** 数值/日期范围
 
 ### 高级搜索示例
 ```bash
@@ -243,10 +275,10 @@ export HUBSPOT_BASE_URL="https://api.hubapi.com"  # Override for testing
 
 ## 需要帮助吗？
 
-1. **API相关问题：**请参阅`references/rate-limits.md`和`references/search-filters.md`
-2. **认证问题：**请参阅`references/auth-setup.md`
-3. **用户界面相关问题：**请参阅`references/knowledge-base-tips.md`
-4. **数据问题：**请使用`references/data-quality.md`
-5. **特定对象操作：**请查找相应的`references/crm-*.md`文件
+1. **API相关问题：** 查阅`references/rate-limits.md`和`references/search-filters.md`
+2. **认证问题：** 参考`references/auth-setup.md`
+3. **用户界面相关问题：** 查阅`references/knowledge-base-tips.md`
+4. **数据相关问题：** 使用`references/data-quality.md`
+5. **特定对象操作：** 查找相应的`references/crm-*.md`文件
 
-本文档涵盖了HubSpot平台的全部功能。请根据您的需求从相应的参考文档开始学习，然后使用脚本自动化重复性操作。
+本文档涵盖了HubSpot平台的全部功能。请根据您的需求选择相应的参考文档开始学习，然后使用脚本自动化重复性操作。
