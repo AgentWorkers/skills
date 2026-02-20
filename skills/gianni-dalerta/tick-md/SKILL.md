@@ -1,12 +1,18 @@
-# 多代理协调系统（Tick Multi-Agent Coordination）
+# 多代理协调
 
-通过结构化的Markdown文件来协调人类代理和AI代理之间的工作。用户可以自然地与你交互，而你则负责在TICK.md文件中透明地管理各项任务。
+使用结构化的 Markdown 文件来协调人类代理和 AI 代理之间的工作。用户可以自然地与你交互，而你则通过 TICK.md 文件透明地管理各项任务。
 
 ## 安装
 
-**前提条件**：你的环境中已经安装并配置好了Tick命令行工具（CLI）和MCP服务器。
+**先决条件**：你的环境中已经安装并配置了 Tick CLI 和 MCP 服务器。
 
-**首次设置？** 请参阅`INSTALL.md`以获取针对特定编辑器的安装说明。
+**首次设置？** 请参阅 `INSTALL.md` 以获取特定编辑器的安装说明。
+
+## 安全规范
+
+- 在编辑 MCP 配置文件之前，必须获得用户的明确批准。
+- 在执行任何将更改推送到远程 Git 的命令（如 `tick sync --push` 或 `git push`）之前，必须获得用户的明确批准。
+- 如果没有获得用户的明确批准，应使用只读/状态相关的命令，并解释即将执行的写操作。
 
 **快速检查**：
 ```bash
@@ -22,15 +28,15 @@ tick init
 
 ## 核心概念
 
-**Tick协议**：基于Git的任务协调机制，通过TICK.md文件实现：
-- **人类可读**：使用标准Markdown格式，并结合YAML格式
-- **机器可解析**：结构化的数据格式，便于工具处理
-- **Git支持**：具备完整的版本控制和审计追踪功能
-- **本地优先**：无需依赖云服务
+**Tick 协议**：基于 Git 的任务协调机制，通过 TICK.md 文件实现
+- **人类可读**：使用标准 Markdown 和 YAML 格式
+- **机器可解析**：为工具提供结构化的数据
+- **Git 支持**：具备完整的版本控制和审计追踪功能
+- **优先使用本地存储**：无需依赖云服务
 
 ## 快速入门
 
-### 检查Tick是否已初始化
+### 检查 Tick 是否已初始化
 ```bash
 ls TICK.md
 ```
@@ -89,7 +95,7 @@ tick list --claimed-by @bot-name
 
 ### 3. 与其他代理协调
 
-**用户**：“其他代理完成任务了吗？”
+**用户**：“其他代理是否已经完成了他们的任务？”
 
 ```bash
 # Check overall status
@@ -104,7 +110,7 @@ tick validate
 
 ### 4. 分解复杂任务
 
-**用户**：“需要制作一个包含图表和数据导出的用户仪表板。”
+**用户**：“创建一个带有图表和数据导出的用户仪表板”
 
 **你的操作**：
 ```bash
@@ -130,7 +136,8 @@ tick list                          # List tasks with filters
 tick graph                         # Visualize dependencies
 tick watch                         # Monitor changes in real-time
 tick validate                      # Check for errors
-tick sync --push                   # Commit and push to git
+tick sync --pull                   # Pull latest changes
+# tick sync --push                 # Only with explicit user approval
 ```
 
 ### 任务操作
@@ -155,7 +162,7 @@ tick edit TASK-001 \               # Direct field edit
   --status in_progress
 ```
 
-### 修正与恢复
+### 问题修复与恢复
 ```bash
 tick reopen TASK-001 @agent        # Reopen completed task
 tick reopen TASK-001 @agent \      # Reopen and re-block dependents
@@ -226,32 +233,32 @@ tick agent list --type bot         # Filter by type
 tick agent list --status working   # Filter by status
 ```
 
-## MCP工具（替代CLI）
+## MCP 工具（CLI 的替代方案）
 
-如果使用Model Context Protocol，可以使用以下工具代替CLI命令：
+如果使用 Model Context Protocol，可以使用以下工具代替 CLI 命令：
 
 ### 状态与检查
-- `tick_status`：获取项目状态（代理、任务、进度）
-- `tick_validate`：验证TICK.md文件的结构
-- `tick_agent_list`：列出代理列表（可选过滤条件）
+- `tick_status` - 获取项目状态（代理、任务、进度）
+- `tick_validate` - 验证 TICK.md 文件的结构
+- `tick_agent_list` - 列出代理（可选过滤）
 
 ### 任务管理
-- `tick_add`：创建新任务
-- `tick_claim`：将任务分配给代理
-- `tick_release`：释放被代理占用的任务
-- `tick_done`：完成任务（自动解除依赖关系）
-- `tick_comment`：为任务添加备注
+- `tick_add` - 创建新任务
+- `tick_claim` - 为代理分配任务
+- `tick_release` - 释放被分配的任务
+- `tick_done` - 完成任务（自动解除依赖关系的阻塞）
+- `tick_comment` - 为任务添加备注
 
-### 修正与恢复
-- `tick_reopen`：重新打开已完成的任务
-- `tick_delete`：删除任务
-- `tick_edit`：直接编辑任务字段（绕过状态机）
-- `tick_undo`：撤销上一次操作
+### 问题修复与恢复
+- `tick_reopen` - 重新打开已完成的任务
+- `tick_delete` - 删除任务
+- `tick_edit` - 直接编辑任务字段（绕过状态机）
+- `tick_undo` - 撤销上一次的操作
 
-### 代理管理
-- `tick_agent_register`：注册新代理
+### 代理操作
+- `tick_agent_register` - 注册新代理
 
-**MCP示例**：
+**MCP 示例**：
 ```javascript
 // Create task via MCP
 await tick_add({
@@ -270,10 +277,10 @@ await tick_claim({
 
 ## 最佳实践
 
-### 1. 首先进行自然对话
+### 1. 先进行自然对话
 
-✅ **正确做法**：用户提出请求时，你自动创建相应任务。
-❌ **错误做法**：让用户手动创建任务。
+✅ **正确做法**：用户提出请求时，自动创建相应任务
+❌ **错误做法**：要求用户手动创建任务
 
 ### 2. 始终使用代理的名称
 
@@ -300,7 +307,7 @@ tick comment TASK-005 @bot --note "Updated API"
 
 ### 4. 分解大型任务
 
-将复杂任务拆分为包含依赖关系的子任务：
+**创建带有依赖关系的子任务**：
 ```bash
 tick add "Set up CI/CD pipeline" --priority high
 tick add "Configure GitHub Actions" --depends-on TASK-010
@@ -318,13 +325,13 @@ tick status
 tick claim TASK-XXX @your-name
 ```
 
-## 理解TICK.md文件的结构
+## 理解 TICK.md 的结构
 
 该文件包含三个部分：
 
 1. **前置内容**（YAML）：项目元数据
-2. **代理列表**（Markdown）：哪些代理正在处理哪些任务
-3. **任务块**（YAML + Markdown）：包含任务详情和历史记录的详细信息
+2. **代理列表**（Markdown）：谁在处理哪些任务
+3. **任务块**（YAML + Markdown）：包含任务详情和历史记录
 
 **示例**：
 ```markdown
@@ -366,7 +373,7 @@ Implemented JWT-based authentication with token refresh...
 
 ### 自动解除依赖关系
 
-当你完成任务后，相关依赖任务会自动解除阻塞：
+当你完成任务后，依赖任务会自动解除阻塞：
 ```bash
 # TASK-002 depends on TASK-001
 # TASK-002 status: blocked
@@ -377,7 +384,7 @@ tick done TASK-001 @bot
 
 ### 检测循环依赖关系
 
-系统会自动检测并处理循环依赖关系：
+系统会自动检测循环依赖关系：
 ```bash
 tick validate
 # Error: Circular dependency detected: TASK-001 → TASK-002 → TASK-003 → TASK-001
@@ -385,15 +392,16 @@ tick validate
 
 ### 智能提交信息
 
-提交代码时使用描述性信息，便于理解变更内容：
+提交消息应简洁明了：
 ```bash
+# Only run with explicit user approval
 tick sync --push
 # Automatically generates: "feat: complete TASK-001, TASK-002; update TASK-003"
 ```
 
 ### 重新打开已完成的任务
 
-如果任务被错误地标记为已完成，可以重新打开它：
+如果任务被错误地标记为已完成：
 ```bash
 tick reopen TASK-001 @bot
 # Sets status back to in_progress, records in history
@@ -402,9 +410,9 @@ tick reopen TASK-001 @bot --re-block
 # Also re-blocks any tasks that depend on this one
 ```
 
-### 修正错误
+### 更正错误
 
-及时发现并修正错误：
+**如何处理错误**：
 ```bash
 # Undo the last tick operation
 tick undo
@@ -418,7 +426,7 @@ tick edit TASK-001 --status todo --priority urgent
 
 ### 批量操作
 
-对于多个更改，可以一次性提交：
+**进行多个更改时无需多次提交**：
 ```bash
 tick batch start
 # Now make multiple changes...
@@ -432,7 +440,7 @@ tick batch commit   # Single commit for all changes
 
 ### 实时监控
 
-系统提供实时任务状态监控功能：
+**实时跟踪任务进度**：
 ```bash
 tick watch
 # [10:23:45] ✓ Added: TASK-015 - Implement user search
@@ -448,27 +456,27 @@ Essential:     status | add | claim | done | list | graph
 Corrections:   reopen | delete | edit | undo
 Bulk:          import | batch start/commit/abort
 Coordination:  agent register | agent list | validate | watch
-Git:           sync --pull | sync --push
+Git:           sync --pull | sync --push (explicit user approval required)
 ```
 
-## 关键提示
+## 重要提示
 
-1. **用户与你交互，而不是直接与Tick系统交互**
-2. **你负责透明地维护TICK.md文件的内容**
+1. **用户是与你交互，而不是直接与 Tick 交互**
+2. **你需要透明地维护 TICK.md 文件**
 3. **仪表板仅用于查看信息，而非主要交互工具**
 4. **始终一致地使用代理的名称**
-5. **经常添加评论以展示任务进度**
-6. **同步前务必验证文件内容**
+5. **频繁添加评论以展示任务进度**
+6. **在同步前验证数据**
 7. **在分配任务前检查任务状态**
 8. **将复杂任务分解为子任务**
 
 ## 资源
 
-- **GitHub仓库**：https://github.com/your-org/tick-md
+- **GitHub**：https://github.com/your-org/tick-md
 - **文档**：https://tick-md.dev/docs
-- **CLI包（npm）**：https://npmjs.com/package/tick-md
-- **MCP服务器包（npm）**：https://npmjs.com/package/tick-mcp-server
+- **CLI（npm）**：https://npmjs.com/package/tick-md
+- **MCP 服务器（npm）**：https://npmjs.com/package/tick-mcp-server
 
 ## 许可证
 
-MIT许可证
+MIT

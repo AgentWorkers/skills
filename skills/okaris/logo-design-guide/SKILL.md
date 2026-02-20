@@ -1,14 +1,66 @@
 ---
 name: logo-design-guide
-description: |
-  Logo design principles and AI image generation best practices for creating logos.
-  Covers logo types, prompting techniques, scalability rules, and iteration workflows.
-  Use for: brand identity, startup logos, app icons, favicons, logo concepts.
-  Triggers: logo design, create logo, brand logo, logo generation, ai logo,
-  logo maker, icon design, brand mark, logo concept, startup logo, app icon logo
+description: "**Logo设计原则与AI图像生成最佳实践**  
+本文介绍了Logo设计的核心原则以及利用AI技术生成Logo的方法，涵盖了Logo的类型、设计技巧、可扩展性要求以及迭代工作流程。内容适用于品牌标识、初创企业Logo、应用程序图标、网站图标等场景。  
+**适用场景：**  
+- 品牌形象构建  
+- 初创企业Logo设计  
+- 应用程序图标设计  
+- 网站图标设计  
+- Logo概念开发  
+**相关术语：**  
+- Logo设计（Logo Design）  
+- AI图像生成（AI Image Generation）  
+- Logo类型（Logo Types）  
+- 设计技巧（Design Techniques）  
+- 可扩展性（Scalability）  
+- 迭代流程（Iteration Workflow）  
+**主要内容：**  
+1. **Logo设计原则：**  
+   - 简洁性（Simplicity）  
+   - 易识别性（Recognition）  
+   - 一致性（Consistency）  
+   - 可扩展性（Scalability）  
+   - 文化适应性（Cultural Relevance）  
+   - 适应性（Adaptability）  
+2. **AI图像生成最佳实践：**  
+   - 选择合适的AI工具（Selecting the Right AI Tool）  
+   - 提供清晰的设计指导（Providing Clear Design Guidelines）  
+   - 处理版权问题（Handling Copyright Issues）  
+   - 评估生成结果（Evaluating Generation Results）  
+   - 迭代优化（Iterative Optimization）  
+3. **Logo类型：**  
+   - 图形Logo（Graphic Logos）  
+   - 文字Logo（Text Logos）  
+   - 组合Logo（Combination Logos）  
+   - 动态Logo（Dynamic Logos）  
+4. **设计技巧：**  
+   - 确定Logo目标（Defining Design Goals）  
+   - 创意构思（Creative Concepting）  
+   - 色彩搭配（Color Scheme）  
+   字体选择（Font Selection）  
+   构图布局（Layout Design）  
+   可访问性（Accessibility）  
+5. **可扩展性规则：**  
+   - 适应不同尺寸（Responsive Design）  
+   - 易于修改（Easy Modification）  
+   保持一致性（Consistent Appearance）  
+   易于识别（Clear Recognition）  
+6. **迭代工作流程：**  
+   - 初始构思（Initial Concept）  
+   - 设计草图（Sketching）  
+   - AI生成（AI Generation）  
+   - 结果评估（Result Evaluation）  
+   优化修改（Optimization and Revision）  
+   最终确定（Final Approval）  
+**实用建议：**  
+- 了解目标受众（Understand Your Audience）  
+- 保持设计一致性（Maintain Design Consistency）  
+- 测试不同平台（Test on Various Platforms）  
+- 寻求专业意见（Seek Professional Advice）  
+通过遵循这些原则和最佳实践，您可以创建出既美观又实用的Logo，有效提升品牌影响力。"
 allowed-tools: Bash(infsh *)
 ---
-
 # 标志设计指南
 
 通过 [inference.sh](https://inference.sh) 命令行工具，利用人工智能图像生成技术来设计有效的标志。
@@ -26,29 +78,31 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需提升权限或运行后台进程。也可选择 [手动安装及验证](https://dist.inference.sh/cli/checksums.txt)。
+
 ## 标志类型
 
 | 类型 | 描述 | 适用场景 | 示例 |
 |------|-------------|-------------|---------|
-| **文字标志** | 以标志形式呈现的公司名称 | 品牌名称简洁（少于10个字符） | Google、Coca-Cola |
+| **文字标志** | 将公司名称设计成标志形式 | 品牌名称简洁（少于 10 个字符） | Google、Coca-Cola |
 | **字母标志** | 仅使用首字母 | 公司名称较长，正式场合使用 | IBM、HBO、CNN |
-| **图形标志** | 易于识别的图标/符号 | 适用于通用品牌，无需文字 | Apple、Twitter的鸟形图标 |
-| **抽象标志** | 几何形状或非具象的图形 | 科技公司或概念性品牌 | Nike的Swoosh标志、Pepsi的标志 |
-| **吉祥物标志** | 以字符或形象为特色的标志 | 适合友好型品牌或食品/体育相关品牌 | KFC的Colonel标志、Pringles的标志 |
-| **组合标志** | 图标与文字标志结合 | 需要同时具备识别度和名称的新品牌 | Burger King、Adidas的标志 |
+| **图像标志** | 可识别的图标/符号 | 适用于通用品牌，无需文字 | Apple、Twitter 的小鸟图标 |
+| **抽象标志** | 几何形状或非具象的图形 | 科技公司或概念性品牌 | Nike 的 swoosh 标志、Pepsi 的标志 |
+| **吉祥物标志** | 以字符或形象为特色的标志 | 适合友好型品牌或食品/体育相关品牌 | KFC 的 Colonel、Pringles 的标志 |
+| **组合标志** | 图标与文字标志结合 | 需要同时具备识别度和品牌名称的新品牌 | Burger King、Adidas |
 
 ## 人工智能的局限性
 
-**人工智能图像生成工具无法可靠地处理文本。** 文字可能会变形、拼写错误或出现乱码。
+**人工智能图像生成工具无法可靠地渲染文本。** 文字可能会变形、拼写错误或显示混乱。
 
 **应对策略：**
 1. 仅使用人工智能生成图标/符号。
-2. 在设计工具（如Figma、Canva、Illustrator）中添加文字/文字标志。
+2. 在设计工具（如 Figma、Canva、Illustrator）中添加文本/文字标志。
 3. 或者采用组合方式：先使用人工智能生成图标，再手动设置文字。
 
-## 设计标志时的提示词
+## 标志设计提示
 
-### 有效的提示词
+### 有效的关键词
 
 ```
 flat vector logo, simple minimal icon, single color silhouette,
@@ -56,7 +110,7 @@ geometric logo mark, clean lines, negative space design,
 line art logo, flat design icon, minimalist symbol
 ```
 
-### 无效的提示词
+### 不建议使用的关键词
 
 ```
 ❌ photorealistic logo (contradiction — logos aren't photos)
@@ -65,13 +119,13 @@ line art logo, flat design icon, minimalist symbol
 ❌ logo with text "Company Name" (text rendering fails)
 ```
 
-### 提示词的结构
+### 提示结构
 
 ```
 flat vector logo of [subject], [style], [color constraint], [background], [additional detail]
 ```
 
-### 各类型标志的示例
+### 各类型标志的设计示例
 
 ```bash
 # Abstract geometric
@@ -95,39 +149,38 @@ infsh app run xai/grok-imagine-image-pro --input '{
 }'
 ```
 
-## 可扩展性要求
+## 可伸缩性要求
 
 标志必须适用于各种尺寸：
 
 | 使用场景 | 尺寸 | 必须满足的条件 |
 |---------|------|----------------|
-| 网站图标（Favicon） | 16x16像素 | 图标轮廓清晰可辨 |
-| 应用程序图标 | 1024x1024像素 | 图标细节完整可见 |
-| 社交媒体头像 | 400x400像素 | 一眼就能看清楚 |
-| 名片 | 约1英寸大小 | 印刷效果清晰 |
-| 广告牌 | 超过10英尺高 | 无像素化，设计简单 |
+| 书签图标 | 16x16 像素 | 图标轮廓清晰可辨 |
+| 应用图标 | 1024x1024 像素 | 图像细节完整可见 |
+| 社交媒体头像 | 400x400 像素 | 一眼就能看清楚 |
+| 名片 | 约 1 英寸大小 | 打印效果清晰 |
+| 广告牌 | 超过 10 英尺高 | 无像素失真，设计简单 |
 
-### 可扩展性检查清单
+### 可伸缩性检查清单
 
-- [ ] 作为16像素的Favicon时仍可识别（眯眼看也能辨认）
-- [ ] 在单色背景下（黑白）仍可识别
-- [ ] 在反色背景下（黑白）仍可识别
-- [ ] 小尺寸下没有细节丢失
-- [ ] 线条细小不会在缩小后消失
+- [ ] 作为 16 像素的书签图标时仍可识别（眯眼看也能辨认）
+- [ ] 单色显示时（黑白背景）仍可识别
+- [ ] 倒置显示时（黑白背景）仍可识别
+- [ ] 在小尺寸下没有细节丢失
+- [ ] 线条不会在缩小后变得过细或消失
 - [ ] 轮廓清晰，无需依赖颜色
 
 ## 颜色指南
 
-- **主要标志的颜色不超过2-3种**
-- 必须能在**单色**背景下显示（黑色、白色或品牌主色调）
-- 考虑**色彩心理学**：
+- 主标志的颜色最多使用 2-3 种
+- 必须能在 **单色** 下显示（黑色、白色或品牌主色调）
+- 考虑 **色彩心理学**：
   - 蓝色：代表信任、专业（金融、科技、医疗）
   - 红色：代表活力、紧迫感（食品、娱乐、零售）
   - 绿色：代表成长、自然（健康、可持续性、金融）
   - 橙色：代表友好、创意（初创企业、年轻品牌）
   - 紫色：代表奢华、智慧（美容、教育）
-  - 黑色：代表高端、优雅（时尚、奢侈品、科技）
-- 在浅色和深色背景下都进行测试
+- 在浅色和深色背景下都需测试效果
 
 ## 设计迭代流程
 
@@ -163,28 +216,28 @@ infsh app run falai/topaz-image-upscaler --input '{
 |---------|---------|-----|
 | 细节过多 | 小尺寸时轮廓模糊 | 简化为基本形状 |
 | 过度依赖颜色 | 在黑白背景下无法识别 | 先设计纯黑色的版本 |
-| 人工智能生成的文字 | 文字出现乱码或拼写错误 | 先生成图标，再手动添加文字 |
-- 过于追求潮流的效果（如发光、阴影） | 易过时，打印时可能出现问题 | 保持设计简洁、 timeless（永恒的设计风格） |
-- 颜色过多 | 打印时难以呈现，成本较高 | 颜色不超过2-3种 |
-- 无意义的不对称设计 | 看起来不完整 | 有意识地使用不对称设计，或保持对称性 |
+| 使用人工智能生成的文字 | 文字显示混乱或拼写错误 | 先生成图标，再手动添加文字 |
+| 过于追求时尚的效果（如发光、阴影） | 易过时，打印效果不佳 | 保持设计简洁、经典 |
+| 颜色过多 | 打印效果差，成本较高 | 颜色不超过 2-3 种 |
+| 无意义的不对称设计 | 看起来不完整 | 有意图地使用不对称设计，或保持对称性 |
 
 ## 文件格式及用途
 
 | 格式 | 适用场景 |
 |--------|----------|
-| SVG | 可缩放的矢量格式，适用于网页和编辑 |
-| PNG（透明背景） | 数字用途，如演示文稿 |
+| SVG | 可伸缩的矢量图形，适用于网页和编辑 |
+| PNG（透明背景） | 数字媒体、演示文稿 |
 | PNG（白色背景） | 文档、电子邮件签名 |
-| ICO / Favicon | 网站图标（16x16px、32x16px、48x16px） |
-| 高分辨率PNG（4096px以上） | 打印、广告牌 |
+| ICO / 书签图标 | 网站书签图标（16、32、48 像素） |
+| 高分辨率 PNG（4096 像素以上） | 打印、广告牌 |
 
-**注意：** 人工智能生成的图像为位图（PNG格式）。如需真正的矢量SVG格式，可将AI生成的图像作为参考，在矢量编辑工具中重新绘制，或使用AI转SVG的工具进行转换。
+**注意：** 人工智能生成的图像为栅格图像（PNG 格式）。如需真正的矢量 SVG，可将 AI 生成的图像作为参考，在矢量工具中重新绘制，或使用 AI 到 SVG 的转换工具。
 
 ## 相关技能
 
 ```bash
-npx skills add inferencesh/skills@ai-image-generation
-npx skills add inferencesh/skills@prompt-engineering
+npx skills add inference-sh/skills@ai-image-generation
+npx skills add inference-sh/skills@prompt-engineering
 ```
 
 查看所有可用工具：`infsh app list`

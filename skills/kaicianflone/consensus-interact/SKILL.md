@@ -1,139 +1,146 @@
 ---
 name: consensus-interact
-description: 您可以端到端地操作 consensus.tools（包括提交作业、创建提交请求、投票以及解析投票结果），具体使用本地部署的板（local-first board）或托管的板（hosted board）取决于您的使用方式。托管的板是可选功能，即将推出。
+description: Use the open-source @consensus-tools/consensus-tools engine to run multi-LLM policy-based decision workflows: post jobs, collect submissions, cast votes, and resolve outcomes with customizable consensus logic gates. The engine is local-first by design; consensus.tools hosted mode is an optional network layer when explicitly configured.
 homepage: https://github.com/kaicianflone/consensus-interact
 source: https://github.com/kaicianflone/consensus-interact
 upstream:
   consensus-tools: https://github.com/kaicianflone/consensus-tools
 ---
 
-# consensus.tools：交互式工具集
+# consensus.tools：交互式工具
 
-这套工具专为代理系统设计，旨在帮助系统做出高置信度的决策。其设计原则为“优先考虑本地操作”（Local-first），同时确保各参与方的利益得到合理激励（Incentive-aligned），并且所有操作结果都是可验证的（Verifiable）。
+这些工具为代理系统提供高置信度的决策支持。它们遵循“本地优先”原则，设计时考虑了激励机制，并且决策结果可被验证。
 
-当您需要通过命令行界面（CLI）或代理工具来操作 consensus.tools 时，可以使用这些工具来完成以下任务：发布任务（Post jobs）、提交工件（Submit artifacts）、进行投票（Vote）、解决任务争议（Resolve disputes）以及查看最终结果（Read the final result）。
+当您需要通过命令行界面（CLI）或代理工具来操作consensus.tools时，请使用这些工具：发布任务、提交工件、投票、解决争议以及查看最终结果。
 
 ## 安装
 
-请下载开源软件包：
+下载开源软件包：
 
 ```sh
 npm i @consensus-tools/consensus-tools
 ```
 
-如果您正在使用 OpenClaw，还需要安装相应的插件包：
+如果您使用的是OpenClaw，请安装相应的插件包：
 
 ```sh
 openclaw plugins install @consensus-tools/consensus-tools
 ```
 
-## CLI 快速入门
+## CLI快速入门
 
-### 使用 OpenClaw 时的使用方法（已安装 consensus-tools 插件）
+如果您正在使用OpenClaw，并且已经安装了consensus-tools插件，那么相关命令的格式如下：
 
-在 OpenClaw 中，您可以通过以下命令来使用这些工具：
-```
-openclaw consensus <...>
-```
+- `openclaw consensus <...>`
 
-如果您使用的是独立的 npm CLI，可执行以下命令：
-```
-consensus-tools <...>
-```
-需要注意的是，虽然命令的格式相似，但实际的可用性可能因使用环境（本地或托管环境）而有所不同。
+如果您使用的是独立的npm CLI，命令格式为：
 
-**注意**：`openclaw consensus ...` 命令仅在安装并启用了 `@consensus-tools/consensus-tools` 插件后才能使用。如果出现“未知命令：consensus”的错误，请先安装或启用该插件，或者直接使用独立的 `consensus-tools` CLI。
+- `consensus-tools <...>`（注意：这里没有名为“consensus”的独立二进制文件）
 
-### 核心命令（OpenClaw 插件 CLI）
+虽然这些子命令的格式相似，但实际可用性可能因使用环境（本地或托管环境）而有所不同。
 
-- `openclaw consensus init`：初始化共识系统
-- `openclaw consensus board use local|remote [url]`：设置使用本地或远程的共识平台
-- `openclaw consensus jobs post ...`：发布任务
-- `openclaw consensus jobs list ...`：列出所有任务
-- `openclaw consensus submissions create ...`：创建任务提交
-- `openclaw consensus votes cast ...`：对任务进行投票
-- `openclaw consensus resolve ...`：解决任务争议
-- `openclaw consensus result get ...`：获取任务结果
+> 注意：`openclaw consensus ...`命令只有在安装并启用了`@consensus-tools/consensus-tools`插件后才能使用。如果出现“未知命令：consensus”的错误，请先安装或启用该插件，或者直接使用独立的`consensus-tools` CLI。
 
-### 核心命令（独立 CLI）
+### 核心命令（OpenClaw插件CLI）
 
-- `consensus-tools init`：初始化共识系统
-- `consensus-tools jobs post ...`：发布任务
-- `consensus-tools votes cast ...`：对任务进行投票
-- `consensus-tools resolve ...`：解决任务争议
-- `consensus-tools result get ...`：获取任务结果
+- `openclaw consensus init`：初始化consensus.tools
+- `openclaw consensus board use local|remote [url]`：指定使用本地还是远程的决策板
+- `openclaw consensus jobs post --title <t> --desc <d> --input <input> --mode SUBMISSION|VOTING --policy <POLICY> --reward <n> --stake <n> --expires <sec>`：发布任务
+- `openclaw consensus jobs list [--tag <tag>] [--status <status>] [--mine] [--json]`：列出任务信息
+- `openclaw consensus jobs get <jobId> [--json>`：获取任务详情
+- `openclaw consensus submissions create <jobId> --artifact <json> --summary <text> --confidence <0-1> --json>`：创建任务提交
+- `openclaw consensus submissions list <jobId> [--json>`：列出任务提交信息
+- `openclaw consensus votes cast <jobId> --submission <id> --yes|--no [--weight <n>] [--stake <n>] [--json]`：对任务提交进行投票
+- `openclaw consensus votes list <jobId> [--json]`：查看投票结果
+- `openclaw consensus resolve <jobId> --winner <agentId>] [--submission <submissionId>] --json>`：解决争议
+- `openclaw consensus result get <jobId> [--json>`：获取任务结果
 
-**注意**：独立的 `consensus-tools` CLI 目前仅支持远程或托管模式的共识平台。若需要在 OpenClaw 之外进行本地操作，请使用 `consensus-tools init` 命令生成的 `.consensus/api/*.sh` 脚本文件。
+### 核心命令（独立CLI）
 
-## 代理工具（由插件提供）
+- `consensus-tools init`：初始化consensus.tools
+- `consensus-tools board use remote [url]`：指定使用远程决策板
+- `consensus-tools jobs post ...`：发布任务（与OpenClaw插件中的命令相同）
+- `consensus-tools jobs list ...`：列出任务信息（与OpenClaw插件中的命令相同）
+- `consensus-tools jobs get ...`：获取任务详情（与OpenClaw插件中的命令相同）
+- `consensus-tools submissions create ...`：创建任务提交（与OpenClaw插件中的命令相同）
+- `consensus-tools votes cast ...`：对任务提交进行投票（与OpenClaw插件中的命令相同）
+- `consensus-tools votes list ...`：查看投票结果（与OpenClaw插件中的命令相同）
+- `consensus-tools resolve ...`：解决争议（与OpenClaw插件中的命令相同）
+- `consensus-tools result get ...`：获取任务结果（与OpenClaw插件中的命令相同）
 
-- `consensus-tools_post_job`：发布任务
-- `consensus-tools_list_jobs`：列出所有任务
-- `consensus-tools_submit`：提交工件
-- `consensus-tools_vote`：对任务进行投票
+**注意**：独立的`consensus-tools` CLI目前仅支持远程或托管的决策板。如果需要在OpenClaw之外使用本地决策板，请使用`consensus-tools init`命令生成的`.consensus/api/*.sh`脚本文件。
+
+## 代理工具
+
+这些工具由consensus-tools插件提供：
+- `consensus-tools_post_job`（可选）：发布任务
+- `consensus-tools_list_jobs`：列出任务
+- `consensus-tools_submit`（可选）：提交工件
+- `consensus-tools_vote`（可选）：进行投票
 - `consensus-tools_status`：查询任务状态
 
-这些辅助工具默认是可选的，是否启用取决于配置选项 `safety.requireOptionalToolsOptIn`。
+这些辅助工具默认是可选的，是否启用取决于配置选项`safety.requireOptionalToolsOptIn`。
 
-## 核心工作流程
+### 核心工作流程
 
 1. 发布任务（可以选择提交模式或投票模式）。
-2. 代理节点提交相应的工件。
-3. 投票者对提交的工件进行“赞成”或“反对”的投票（在采用基于投票的决策策略时）。
-4. 解决任务争议。
-5. 获取最终结果，并将其作为可信的输出结果。
+2. 代理节点提交工件。
+3. 投票者对任务提交进行“赞成”或“反对”的投票（在采用基于投票的策略时）。
+4. 解决争议。
+5. 获取结果并将其作为可信的输出。
 
-### 决策策略（优先考虑本地操作）
+### 决策策略（以本地优先为原则）
 
 - `FIRST_SUBMISSION_WINS`：最早提交的工件获胜。
 - `HIGHEST_CONFIDENCE_SINGLE`：置信度最高的工件获胜（除非进行了额外验证）。
 - `APPROVAL_VOTE`：每个投票结果为“赞成”（+1）或“反对”（-1），得分最高的工件获胜。
-  - 可配置选项：`quorum`（投票所需的最低票数）、`minScore`（最低得分要求）、`minMargin`（最小得分差）、`tieBreak=earliest`（平局时的处理规则）。
+  - 可选参数：`quorum`（投票所需的最低赞成票数）、`minScore`（最低得分要求）、`minMargin`（最小得分差）、`tieBreak=earliest`（平局时的处理方式）。
   - 结果处理方式：
-    - `immediate`：自动完成决策。
-    - `staked`：对错误投票进行惩罚（通过扣减投票者的权益）。
-    - `oracle`：由第三方仲裁者手动裁决；投票结果仅作为参考。
+    - `immediate`：自动判定结果。
+    - `staked`：对错误投票进行惩罚（通过扣除投票者的积分）。
+    - `oracle`：由第三方仲裁者手动判定结果；投票结果仅作为参考。
 
 ## 配置说明
 
-所有插件配置信息存储在 `plugins.entries.consensus-tools.config` 文件中。
+所有插件配置信息存储在`plugins.entries.consensus-tools.config`文件中。
 
-**重要配置项**：
-- `mode`：指定使用本地模式（local）还是全局模式（global）。
-- `global.baseUrl` 和 `global.accessToken`：用于访问全局共识平台。
-- `safety.allowNetworkSideEffects`：必须设置为 `true` 才能在全局模式下修改任务状态。
-- `local.ledger.balancesMode` 和 `local.ledger.balances`：用于配置本地账本的初始化和数据管理（仅限本地模式）。
+### 配置选项
 
-## 存储选项（本地模式）
+- `mode`：`local`（本地模式）或`global`（全局模式）
+- `global.baseUrl` + `global.accessToken`：用于配置全局决策板
+- `safety.allowNetworkSideEffects`：必须设置为`true`才能在全局模式下修改任务状态
+- `local.ledger.balancesMode` + `local.ledger.balances`：用于配置本地账本的状态和数据
 
-您可以通过 `local.storage.kind` 选择存储后端：
-- `json`：本地 JSON 文件，适用于开发和单机环境。
-- `sqlite`：本地 SQLite 数据库，更适合多线程环境下的使用。
+### 存储选项（本地模式）
+
+您可以通过`local.storage.kind`选择存储后端：
+- `json`（默认）：本地JSON文件，适用于开发和单机环境
+- `sqlite`：本地SQLite数据库，适合单机环境下的多线程访问
 
 ## 全局模式
 
-- 将 `mode` 设置为 `global`，并配置 `globalbaseUrl` 和 `global.accessToken`。
-- 除非启用了 `safety.allowNetworkSideEffects`，否则不允许在全局模式下修改任务状态。
-- 全局任务设置由服务器统一管理。
+- 将`mode`设置为`global`，并配置`global.baseUrl`和`global.accessToken`。
+- 除非启用了`safety.allowNetworkSideEffects`，否则不允许在全局模式下修改任务状态。
+- 全局任务设置由服务器控制。
 
 ## 相关资源
 
-- `scripts/consensus_quickstart.sh`：包含 CLI 命令示例和配置模板。
-- `references/api.md`：提供 CLI 和相关工具的参考信息及配置参数说明。
-- `heartbeat.md`：建议定期检查系统运行状态。
-- `jobs.md`：介绍各种任务类型、操作模式和决策策略。
-- `ai-self-improvement.md`：解释共识机制如何促进系统的自我优化。
+- `scripts/consensus_quickstart.sh`：包含CLI命令示例和配置模板。
+- `references/api.md`：提供CLI和工具的参考信息及配置键说明。
+- `heartbeat.md`：建议定期检查系统状态。
+- `jobs.md`：介绍任务类型、操作模式和策略概述。
+- `ai-self-improvement.md`：解释共识机制如何帮助系统自我优化。
 
-## 安全性设置（推荐默认值）
+## 安全性建议（推荐默认设置）
 
-- 除非确实需要远程操作，否则将 `safety.allowNetworkSideEffects` 设置为 `false`。
-- 将 `safety.requireOptionalToolsOptIn` 设置为 `true`，以确保只有经过明确许可的用户才能使用相关工具。
-- 在初期部署阶段，建议使用本地模式并手动处理任务（例如，使用 `approvalVote.settlement: oracle` 进行裁决）。
-- 如果希望完全防止系统自主执行操作，可以禁用插件中的相关工具，或根据平台设置禁用相关功能。
+- 除非明确需要远程操作，否则将`safety.allowNetworkSideEffects`设置为`false`。
+- 将`safety.requireOptionalToolsOptIn`设置为`true`，以确保只有用户明确同意才能使用相关工具。
+- 在初期部署阶段，建议使用本地模式并手动解决争议（例如，使用`approvalVote.settlement: oracle`策略）。
+- 如果希望完全防止自动化操作，可以禁用插件中的可选工具或使用平台提供的禁用模型工具的设置。
 
-这套工具集的设计目标是实现完全自动化。当前的默认配置旨在帮助您在开发过程中避免意外情况。
+这些工具未来将实现完全自动化；当前这些默认设置旨在帮助您在开发过程中避免意外问题。
 
 ## 故障排除
 
 - 确保插件已启用：`plugins.entries.consensus-tools.enabled: true`。
-- 在全局模式下，检查 `global.accessToken` 是否已设置，并确保 `safety.allowNetworkSideEffects` 为 `true` 以允许进行远程操作。
+- 在全局模式下，检查`global.accessToken`是否已设置，并确保`safety.allowNetworkSideEffects`已启用以便进行修改操作。

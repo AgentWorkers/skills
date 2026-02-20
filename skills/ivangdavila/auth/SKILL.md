@@ -1,90 +1,118 @@
 ---
 name: Auth
-description: 为每种使用场景设计并实现符合相应规范的认证系统。
-metadata: {"clawdbot":{"emoji":"🛡️","os":["linux","darwin","win32"]}}
+slug: auth
+version: 1.3.0
+homepage: https://clawic.com/skills/auth
+description: 为Web和移动应用程序构建安全的认证机制，支持会话（sessions）、JSON Web Tokens (JWT)、OAuth、无密码登录（passwordless login）、多因素认证（MFA）以及单点登录（SSO）等功能。
+changelog: "Added documentation-only disclaimer, clarified example code does not execute"
+metadata: {"clawdbot":{"emoji":"🔐","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
+## 仅用于文档说明的技能
 
-## 会话（Session）与令牌（Token）  
+本技能仅作为**参考指南**，其中包含用于演示认证模式的代码示例。
 
-- **服务器会话（Server Sessions）**：实现简单，可立即撤销，需要会话存储机制——适用于传统Web应用程序。  
-- **无状态令牌（Stateless Tokens，如JWT）**：具有可扩展性，无需共享状态——适用于API、微服务及移动应用。  
-- **混合模式（Hybrid Approach）**：Web应用使用会话，API接口使用令牌——通常是实际开发中的最佳选择。  
-- 为防止CSRF攻击，会话cookie应设置`httpOnly`、`Secure`属性，并将`SameSite`设置为`Lax`。  
+**重要提示：**  
+本技能中的代码示例：  
+- 仅供开发者参考和修改使用；  
+- 包含占位符（如 `SECRET`、`API_KEY` 等）；  
+- 仅用于引用外部服务；  
+- 不会被代理程序执行。  
 
-## 密码处理（Password Handling）  
+代理程序负责提供指导，开发者需在自己的项目中实现相关功能。  
 
-- 使用`bcrypt`（计算成本为10-12次哈希运算）、`Argon2id`或`scrypt`进行密码加密；绝对禁止使用`MD5`、`SHA1`或纯`SHA256`。  
-- **切勿**存储明文密码、加密后的密码或可逆的哈希值。  
-- `bcrypt`/`argon2`的加密过程中会自动包含盐值（salt），无需单独管理。  
-- 对密码进行时间安全的比较（time-safe comparison）以防止时间攻击（timing attacks）。  
+## 使用场景  
+当用户需要关于认证实现的帮助时，代理程序会解释登录流程、令牌策略、密码安全、OAuth集成及会话管理等方面的知识。  
 
-## 多因素认证（Multi-Factor Authentication, MFA）  
+## 快速参考  
+| 主题 | 文件名 |  
+|------|------|  
+| 会话与 JWT 策略 | `strategies.md` |  
+| 密码处理 | `passwords.md` |  
+| 多因素认证（MFA）实现 | `mfa.md` |  
+| OAuth 与社交登录 | `oauth.md` |  
+| 框架中间件 | `middleware.md` |  
 
-- **TOTP（One-Time Password）**：在安全性和可用性之间取得了良好的平衡。  
-- **短信（SMS）**：由于SIM卡容易被替换，安全性较低——高安全性的应用应避免使用。  
-- **WebAuthn/Passkeys**：是最强的认证方式，具有抗钓鱼攻击能力——尽可能提供这种认证方式。  
-- **恢复码（Recovery Codes）**：在设置多因素认证时生成，存储为哈希值，仅限一次性使用。  
+## 范围  
+本技能仅用于：  
+- 解释认证相关概念；  
+- 通过代码示例展示认证模式；  
+- 提供最佳实践指导。  
 
-## 无密码登录选项（Passwordless Login Options）  
+**注意事项：**  
+- 本技能绝不会执行任何代码；  
+- 不会发起网络请求；  
+- 不会访问任何凭据；  
+- 不会存储数据；  
+- 不会读取环境变量。  
 
-- **魔法链接（Magic Links）**：通过电子邮件发送包含临时令牌的链接——如果电子邮件可信，则这种方式简单且安全。  
-- **WebAuthn**：支持生物识别或安全密钥——当系统支持时，提供最佳的用户体验。  
-- **通过电子邮件发送的一次性密码（OTP via Email）**：类似于魔法链接，但用户需要手动复制验证码——适用于不同设备。  
-- **仅支持社交登录（Social Login Only）**：适用于消费类应用，可减少用户操作麻烦。  
+## 关于代码示例的说明  
+辅助文件中的代码示例包含：  
+- 如 `process.env.JWT_SECRET` 这样的环境变量（均为占位符）；  
+- 对 OAuth 提供者的 API 调用（仅作为参考示例）；  
+- 如 `SECRET`、`REFRESH_SECRET` 这样的敏感信息（仅为示例名称）。  
 
-## 适用场景与选择依据（Use Cases and Selection Criteria）  
+代理程序无法访问这些值，这些示例仅用于说明开发者应在自己的项目中进行配置。  
 
-- **内部工具（Internal Tools）**：使用公司提供的身份提供者（IdP，如Okta、Azure AD、Google Workspace）进行单点登录（SSO）。  
-- **消费类应用（Consumer Apps）**：支持社交登录，并提供电子邮件/密码作为备用方式；对于现代用户界面，优先采用无密码登录。  
-- **B2B SaaS（Business-to-Business SaaS）**：为企业客户提供SAML/OIDC支持。  
-- **仅提供API访问的应用（API-Only Services）**：为服务账户使用API密钥，为用户授权访问时使用OAuth。  
-- **高安全性要求（High Security）**：必须实施多因素认证，优先选择WebAuthn；对于敏感操作，应增加额外的认证步骤。  
+## 核心规则  
 
-## 注册流程（Registration Process）  
+### 1. 认证（Authentication）与授权（Authorization）  
+- **认证**：用于确定用户身份；  
+- **授权**：用于确定用户可以执行的操作（两者属于不同范畴）。  
+- 先进行认证，再检查用户权限。  
 
-- 在账户激活前进行电子邮件验证——防止垃圾邮件并确认用户联系方式的有效性。  
-- **最小数据收集（Minimum Data Collection）**：对于大多数应用，电子邮件和密码即可。  
-- **密码强度（Password Strength）**：检查密码是否存在于已泄露的密码列表中（如HaveIBeenPwned），而不仅仅是依赖密码复杂度规则。  
-- **限制注册频率（Rate Limiting Registration）**：防止注册攻击和滥用。  
+### 2. 选择合适的策略  
+| 使用场景 | 策略 | 原因 |  
+|----------|----------|-----|  
+| 传统 Web 应用 | 会话（Session）+ Cookie | 简单、可即时撤销权限；  
+| 移动应用 | JWT（生命周期较短）+ 刷新令牌 | 不需要 Cookie、支持离线登录；  
+| API/微服务 | JWT | 无状态、可扩展；  
+| 企业级应用 | SSO（SAML/OIDC） | 集中式身份管理；  
+| 消费者应用 | 社交登录 + 电子邮件备用方案 | 降低登录难度。  
 
-## 登录安全（Login Security）  
+### 3. **切勿自行实现加密算法**  
+- 对密码使用 bcrypt（成本为 12）或 Argon2id 进行加密；  
+- 使用经过验证的库来处理 JWT 和 OAuth；  
+- 绝不要手动实现密码哈希或令牌签名；  
+- 绝不要存储明文或可逆加密的密码。  
 
-- **按IP地址和账户限制登录尝试次数（Rate Limiting by IP and Account）**：3-5次失败后应延迟登录或要求输入验证码（CAPTCHA）。  
-- **账户锁定（Account Lockout）**：优先采用渐进式锁定机制（progressive locking），而非直接禁用账户（hard lockout）。  
-- **不要透露账户是否存在（Don’t Reveal Account Existence）**：无论是输入错误电子邮件还是错误密码，都应显示“凭据无效”。  
-- **记录所有认证事件（Log All Authentication Events）**：包括IP地址、用户代理和时间戳。  
+### 4. **深度防御**  
+```
+Rate limiting -> CAPTCHA -> Account lockout -> MFA -> Audit logging
+```  
 
-## 会话管理（Session Management）  
+### 5. **默认采取安全措施**  
+- 使用 `httpOnly`、`Secure` 和 `SameSite=Lax` 属性保护 Cookie；  
+- 令牌的生命周期应较短（例如：15 分钟访问权限，7 天后刷新）；  
+- 登录时重新生成会话 ID；  
+- 对敏感操作要求重新认证。  
 
-- **登录时重新生成会话ID（Regenerate Session ID upon Login）**：防止会话被固定（session fixation）。  
-- **设置绝对超时时间（Absolute Timeout）**：24小时至7天；同时设置空闲超时时间（idle timeout），以平衡安全性和用户体验。  
-- **向用户显示活跃会话（Show Active Sessions）**：允许用户远程登出。  
-- **在密码更改或发生安全事件时失效所有会话（ Invalidate All Sessions）**。  
+### 6. **安全失败处理**  
+```javascript
+// Bad - reveals if email exists
+if (!user) return { error: 'User not found' };
 
-## 账户恢复（Account Recovery）  
+// Good - same error for both cases
+if (!user || !validPassword) {
+  return { error: 'Invalid credentials' };
+}
+```  
 
-- **通过电子邮件链接重置密码（Password Reset via Email Link）**：令牌的有效期最长为1小时，且仅限一次性使用。  
-- **避免使用安全问题（Avoid Security Questions）**：这些问题答案容易被猜测或公开。  
-- **切勿**在电子邮件中发送密码。  
-- **通过其他渠道通知用户密码更改（Notify Users of Password Changes via Alternative Channels）**。  
+### 7. **记录所有操作（敏感信息除外）**  
+| 应记录的内容 | 不应记录的内容 |  
+|---------|----------------|  
+| 登录成功/失败 | 密码信息 |  
+| IP 地址、用户代理、时间戳 | 令牌信息 |  
+| 多因素认证事件 | 会话 ID |  
+| 密码更改记录 | 恢复码信息 |  
 
-## “记住我”功能（Remember Me Feature）  
+## 常见错误  
+- 使用 MD5/SHA1 算法存储密码（应使用 bcrypt 或 Argon2id）；  
+- 设置 JWT 的过期时间为 30 天（应设置较短的访问期限并使用刷新令牌）；  
+- 在验证用户是否存在时泄露敏感信息（应使用通用错误消息）；  
+- 实施硬性账户锁定机制（可能导致服务拒绝攻击）；  
+- 使用短信进行多因素认证（易受 SIM 卡更换攻击）；  
+- 不对登录请求进行速率限制（可能导致暴力破解）。  
 
-- **使用长期有效的令牌（Use Long-Lived Tokens）**：但不要无限期延长会话的有效期。  
-- **服务器端存储哈希后的令牌（Store Hashed Tokens on the Server）**；每次使用时更新令牌。  
-- **对于敏感操作（如密码更改、支付）**：仍需用户输入密码。  
-- **允许用户撤销已保存的登录设备（Allow Users to Revoke Saved Devices）**。  
-
-## 登出（Logout）  
-
-- **彻底销毁服务器会话（Destroy Server Sessions）**：而不仅仅是清除cookie。  
-- **对于令牌（Tokens）**：从客户端删除令牌，并在需要立即撤销时将其加入黑名单。  
-- **清除所有与认证相关的存储数据（Clear All Authentication-Related Data）**：包括cookie和localStorage。  
-- **提供防CSRF攻击的登出接口（Provide CSRF-Protected Logout Interface）**：防止登出过程中的CSRF攻击。  
-
-## 审计与监控（Audit & Monitoring）  
-
-- **记录所有认证操作（Log All Authentication Activities）**：包括成功登录、失败尝试、密码更改及多因素认证事件。  
-- **触发警报的情况（Trigger Alerts for）**：多次登录失败、从新位置/设备登录、用户位置与记录不符等情况。  
-- **保留日志（Retain Logs for Compliance）**：至少保留90天，通常为1-2年。  
-- **绝不要记录密码或令牌信息（Never Log Passwords or Tokens）**，即使登录失败也不例外。
+## 反馈方式  
+- 如本文档有用，请点赞：`clawhub star auth`；  
+- 保持信息更新：`clawhub sync`
