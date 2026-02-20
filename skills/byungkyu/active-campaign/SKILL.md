@@ -1,23 +1,24 @@
 ---
 name: active-campaign
 description: >
-  ActiveCampaign API 集成支持管理的 OAuth 认证机制，可用于实现营销自动化、客户关系管理（CRM）、联系人管理、交易管理以及电子邮件营销等功能。  
-  当用户需要管理 ActiveCampaign 中的联系人、交易、标签、列表、自动化规则或营销活动时，可以使用此功能。  
-  对于其他第三方应用程序，建议使用 `api-gateway` 功能（https://clawhub.ai/byungkyu/api-gateway）。  
-  使用该功能需要网络连接以及有效的 Maton API 密钥。
+  **ActiveCampaign API集成（支持OAuth认证）**  
+  该功能支持与ActiveCampaign的自动化营销系统（Marketing Automation）、客户关系管理（CRM）、联系人管理（Contacts）、交易管理（Deals）以及电子邮件营销（Email Campaigns）进行集成。  
+  当用户需要管理ActiveCampaign中的联系人、交易、标签、列表、自动化流程或营销活动时，可使用此功能。  
+  对于其他第三方应用程序，建议使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。  
+  使用此功能需要网络连接以及有效的Maton API密钥。
 metadata:
   author: maton
   version: "1.0"
   clawdbot:
     emoji: 🧠
-    homepage: "https://maton.ai" 
+    homepage: "https://maton.ai"
     requires:
       env:
         - MATON_API_KEY
 ---
 # ActiveCampaign
 
-通过管理的OAuth认证来访问ActiveCampaign API。可以管理联系人、交易、标签、列表、自动化规则和电子邮件活动。
+通过管理的OAuth认证来访问ActiveCampaign API。您可以管理联系人、交易、标签、列表、自动化规则以及电子邮件活动。
 
 ## 快速入门
 
@@ -37,7 +38,7 @@ EOF
 https://gateway.maton.ai/active-campaign/{native-api-path}
 ```
 
-请将 `{native-api-path}` 替换为实际的Airtable API端点路径。该网关会将请求代理到 `{account}.api-us1.com` 并自动插入您的OAuth令牌。
+请将 `{native-api-path}` 替换为实际的ActiveCampaign API端点路径。该网关会将请求代理到 `{account}.api-us1.com` 并自动插入您的OAuth令牌。
 
 ## 认证
 
@@ -140,7 +141,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略，则网关将使用默认的（最旧的）活动连接。
+如果省略该头部，网关将使用默认的（最旧的）活动连接。
 
 ## API参考
 
@@ -335,7 +336,7 @@ Content-Type: application/json
 }
 ```
 
-#### 从联系人中移除标签
+#### 从联系人中删除标签
 
 ```bash
 DELETE /active-campaign/api/3/contactTags/{contactTagId}
@@ -532,7 +533,7 @@ Content-Type: application/json
 }
 ```
 
-### 交易组（管道）
+### 交易组（Pipeline）
 
 #### 列出交易组
 
@@ -675,7 +676,7 @@ Content-Type: application/json
 GET /active-campaign/api/3/fields
 ```
 
-#### 创建字段
+#### 创建自定义字段
 
 ```bash
 POST /active-campaign/api/3/fields
@@ -752,14 +753,14 @@ Content-Type: application/json
 
 ## 分页
 
-ActiveCampaign使用基于偏移量的分页方式：
+ActiveCampaign使用基于偏移量的分页机制：
 
 ```bash
 GET /active-campaign/api/3/contacts?limit=20&offset=0
 ```
 
 **参数：**
-- `limit` - 每页的结果数量（默认：20）
+- `limit` - 每页显示的结果数量（默认：20）
 - `offset` - 开始索引
 
 **响应包含元数据：**
@@ -850,26 +851,26 @@ print("Tag added to contact")
 
 ## 注意事项
 
-- 所有端点都需要使用 `/api/3/` 前缀。
-- 请求体使用单数资源名称，并包裹在对象中（例如：`{"contact": {...}}`）。
+- 所有端点都需要加上 `/api/3/` 前缀。
+- 请求体使用对象格式来表示资源（例如：`{"contact": {...}}`）。
 - ID 以字符串形式返回。
 - 时间戳采用ISO 8601格式，并包含时区信息。
 - 每个账户每秒的请求限制为5次。
 - DELETE操作返回200 OK（而不是204）。
-- 重要提示：当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中，环境变量 `$MATON_API_KEY` 可能无法正确展开。
+- **重要提示：** 当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
 ## 错误处理
 
-| 状态 | 含义 |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | 缺少ActiveCampaign连接或请求无效 |
+| 400 | 未建立ActiveCampaign连接或请求无效 |
 | 401 | Maton API密钥无效或缺失 |
 | 404 | 资源未找到 |
 | 422 | 验证错误 |
 | 429 | 请求速率限制（每秒5次） |
 | 4xx/5xx | 来自ActiveCampaign API的传递错误 |
 
-错误响应包含详细信息：
+错误响应会包含详细信息：
 ```json
 {
   "errors": [
@@ -885,9 +886,9 @@ print("Tag added to contact")
 
 ### 故障排除：API密钥无效
 
-**当收到“API密钥无效”错误时，请务必按照以下步骤操作，再确定问题所在：**
+**当收到“API密钥无效”的错误时，请务必按照以下步骤操作，再判断是否存在问题：**
 
-1. 检查是否设置了 `MATON_API_KEY` 环境变量：
+1. 确保 `MATON_API_KEY` 环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
