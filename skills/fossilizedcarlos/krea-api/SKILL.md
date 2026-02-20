@@ -1,8 +1,16 @@
 ---
 name: krea-api
-description: 通过 Krea.ai API 生成图像（Flux、Imagen、Ideogram、Seedream 等）
-version: 0.2.2
+description: Generate images via Krea.ai API (Flux, Imagen, Ideogram, Seedream, etc.)
+version: 0.2.4
+metadata:
+  credentials:
+    - id: krea
+      description: Krea.ai API key (format: KEY_ID:SECRET)
+      envVar: null
+      file: ~/.openclaw/credentials/krea.json
+      required: true
 ---
+
 # Krea.ai 图像生成技能
 
 使用 Krea.ai 的 API 生成图像，支持多种模型，包括 Flux、Imagen 4、Ideogram 3.0 等。
@@ -21,7 +29,8 @@ version: 0.2.2
 
 - **不支持 Webhook** – 为防止 SSRF（跨站请求伪造）风险
 - **仅依赖标准库** – 减少攻击面（仅使用 `urllib`）
-- **基于文件的凭证** – 使用安全的文件权限作为主要凭证来源
+- **基于文件的凭证** – 主要凭证来源，具有安全权限
+- **输入验证** – 在调用 API 之前对所有参数进行验证
 
 ### 凭证来源（优先级顺序）
 
@@ -30,17 +39,17 @@ version: 0.2.2
 
 ### 关于子进程
 
-`--usage` 标志使用 `subprocess.run(["open", ...])` 在浏览器中打开使用说明页面。这是该技能中唯一的子进程调用。
+`--usage` 标志使用 `webbrowser.open()`（标准库）在浏览器中打开使用说明页面，不涉及子进程调用。
 
 ## 设置
 
-1. 从 https://docs.krea.ai/developers/api-keys-and-billing 获取 Krea.ai API 凭证。
+1. 从 https://docs.krea.ai/developers/api-keys-and-billing 获取 Krea.ai API 凭证
 2. 创建凭证文件：
 ```bash
 mkdir -p ~/.openclaw/credentials
 ```
 
-3. 添加你的凭证：
+3. 添加凭证：
 ```bash
 echo '{"apiKey": "YOUR_KEY_ID:YOUR_SECRET"}' > ~/.openclaw/credentials/krea.json
 ```
@@ -91,14 +100,14 @@ print(urls)
 ### 参数
 
 | 参数 | 类型 | 默认值 | 描述 |
-|---------|------|---------|-------------|
+|-----------|------|---------|-------------|
 | prompt | str | 必填 | 图像描述（最多 1800 个字符） |
 | model | str | "flux" | 下表中的模型名称 |
 | width | int | 1024 | 图像宽度（512-2368） |
 | height | int | 1024 | 图像高度（512-2368） |
 | steps | int | 25 | 生成步骤（1-100） |
 | guidance_scale | float | 3.0 | 指导信息比例（0-24） |
-| seed | str | 可选 | 用于生成一致性的随机种子 |
+| seed | str | 无 | 用于生成一致性的随机种子 |
 
 ### 可用模型
 
@@ -112,9 +121,9 @@ print(urls)
 
 运行 `python3 krea_api.py --list-models` 查看所有可用模型。
 
-## 使用情况查询
+## 使用情况检查
 
-Krea.ai 不提供公共的使用情况查询 API。你可以在以下链接查看使用情况：
+Krea.ai 不提供公共的使用情况 API。您可以在以下地址查看使用情况：
 
 https://www.krea.ai/settings/usage-statistics
 
@@ -136,21 +145,18 @@ python3 krea_api.py --jobs 10
 
 ### “需要 API 凭证”
 
-1. 确保凭证文件存在：
-```bash
-cat ~/.openclaw/credentials/krea.json
-```
-
-2. 验证文件权限：
+1. 确认凭证文件存在：
 ```bash
 ls -la ~/.openclaw/credentials/krea.json
 # Should show: -rw-------
 ```
 
-3. 确保凭证格式正确（必须包含冒号）：
+2. 验证文件格式（必须包含冒号）：
 ```json
 {"apiKey": "KEY_ID:SECRET"}
 ```
+
+⚠️ **安全提示**：切勿使用 `cat` 命令查看凭证文件——其中包含敏感信息。
 
 ### 模型未找到
 
