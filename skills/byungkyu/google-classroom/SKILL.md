@@ -1,10 +1,11 @@
 ---
-name: googleclassroom
+name: google-classroom
 description: >
-  **Google Classroom API 集成与托管的 OAuth 认证**  
-  该功能支持对课程、作业、学生、教师以及公告进行管理。当用户需要创建课程、管理作业进度、跟踪学生的提交情况或发布公告时，可以使用此功能。  
-  对于其他第三方应用程序，请使用 `api-gateway` 功能（https://clawhub.ai/byungkyu/api-gateway）。  
-  使用该功能需要网络连接以及有效的 Maton API 密钥。
+  **Google Classroom API集成与托管的OAuth认证**  
+  支持管理课程、作业、学生、教师以及公告功能。  
+  当用户需要创建课程、管理作业、跟踪学生提交情况或发布公告时，可使用此功能。  
+  对于其他第三方应用程序，请使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。  
+  该功能需要网络连接以及有效的Maton API密钥。
 metadata:
   author: maton
   version: "1.0"
@@ -143,7 +144,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略此参数，系统将使用默认的（最旧的）活动连接。
+如果省略该头部，系统将使用默认的（最旧的）活动连接。
 
 ## API 参考
 
@@ -160,9 +161,9 @@ GET /v1/courses?pageSize=10
 ```
 
 **查询参数：**
-- `courseStates` - 按状态筛选：`ACTIVE`（活动）、`ARCHIVED`（已归档）、`PROVISIONED`（已提供）、`DECLINED`（被拒绝）、`SUSPENDED`（暂停）
-- `teacherId` - 按教师 ID 筛选（使用 `me` 表示当前用户）
-- `studentId` - 按学生 ID 筛选（使用 `me` 表示当前用户）
+- `courseStates` - 按状态过滤：`ACTIVE`（活动）、`ARCHIVED`（已归档）、`PROVISIONED`（已提供）、`DECLINED`（被拒绝）、`SUSPENDED`（暂停）
+- `teacherId` - 按教师 ID 过滤（使用 `me` 表示当前用户）
+- `studentId` - 按学生 ID 过滤（使用 `me` 表示当前用户）
 - `pageSize` - 每页显示的结果数量（最多 100 个）
 - `pageToken` - 下一页的令牌
 
@@ -189,7 +190,7 @@ GET /v1/courses?pageSize=10
 }
 ```
 
-#### 获取课程详情
+#### 获取课程信息
 
 ```bash
 GET /v1/courses/{courseId}
@@ -234,7 +235,7 @@ Content-Type: application/json
 }
 ```
 
-**注意：** 使用 `updateMask` 查询参数指定要更新的字段。
+**注意：** 使用 `updateMask` 查询参数来指定要更新的字段。
 
 #### 删除课程
 
@@ -242,7 +243,7 @@ Content-Type: application/json
 DELETE /v1/courses/{courseId}
 ```
 
-**注意：** 在删除课程之前，必须先将其归档。归档课程的方法是将其 `courseState` 设置为 `ARCHIVED`。
+**注意：** 在删除课程之前，必须先将其归档。要归档课程，请将其 `courseState` 设置为 `ARCHIVED`。
 
 ### 课程作业（作业）
 
@@ -255,12 +256,12 @@ GET /v1/courses/{courseId}/courseWork?orderBy=dueDate
 ```
 
 **查询参数：**
-- `courseWorkStates` - 按状态筛选：`PUBLISHED`（已发布）、`DRAFT`（草稿）、`DELETED`（已删除）
+- `courseWorkStates` - 按状态过滤：`PUBLISHED`（已发布）、`DRAFT`（草稿）、`DELETED`（已删除）
 - `orderBy` - 排序方式：`dueDate`（截止日期）、`updateTime`（更新时间）
 - `pageSize` - 每页显示的结果数量
 - `pageToken` - 下一页的令牌
 
-#### 获取课程作业详情
+#### 获取课程作业信息
 
 ```bash
 GET /v1/courses/{courseId}/courseWork/{courseWorkId}
@@ -292,8 +293,8 @@ Content-Type: application/json
 
 **作业类型：**
 - `ASSIGNMENT`（常规作业）
-- `SHORT_ANSWER_question`（简答题）
-- `MULTIPLE_CHOICE-question`（多选题）
+- `SHORT_ANSWER QUESTION`（简答题）
+- `MULTIPLE_CHOICE QUESTION`（选择题）
 
 **状态：**
 - `DRAFT`（对学生不可见）
@@ -327,12 +328,12 @@ GET /v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions?states=T
 ```
 
 **查询参数：**
-- `states` - 按状态筛选：`NEW`（新提交）、`CREATED`（已创建）、`TURNED_IN`（已提交）、`RETURNED_BY_STUDENT`（已被学生取回）
-- `userId` - 按学生 ID 筛选
+- `states` - 按状态过滤：`NEW`（新建）、`CREATED`（已创建）、`TURNED_IN`（已提交）、`RETURNED_BY_STUDENT`（被学生取回）
+- `userId` - 按学生 ID 过滤
 - `pageSize` - 每页显示的结果数量
 - `pageToken` - 下一页的令牌
 
-**注意：** 只有状态为 `PUBLISHED` 的课程作业才能被列出。
+**注意：** 只有当课程作业处于 `PUBLISHED` 状态时，才能列出提交的内容。
 
 **响应：**
 ```json
@@ -357,7 +358,7 @@ GET /v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions?states=T
 GET /v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions/{submissionId}
 ```
 
-#### 给作业打分
+#### 给提交的内容评分
 
 ```bash
 PATCH /v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions/{submissionId}?updateMask=assignedGrade,draftGrade
@@ -369,7 +370,7 @@ Content-Type: application/json
 }
 ```
 
-#### 返回提交内容
+#### 返回提交的内容
 
 ```bash
 POST /v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions/{submissionId}:return
@@ -470,7 +471,7 @@ GET /v1/courses/{courseId}/announcements
 GET /v1/courses/{courseId}/announcements?announcementStates=PUBLISHED
 ```
 
-#### 获取公告详情
+#### 获取公告信息
 
 ```bash
 GET /v1/courses/{courseId}/announcements/{announcementId}
@@ -517,7 +518,7 @@ DELETE /v1/courses/{courseId}/announcements/{announcementId}
 GET /v1/courses/{courseId}/topics
 ```
 
-#### 获取主题详情
+#### 获取主题信息
 
 ```bash
 GET /v1/courses/{courseId}/topics/{topicId}
@@ -559,7 +560,7 @@ DELETE /v1/courses/{courseId}/topics/{topicId}
 GET /v1/courses/{courseId}/courseWorkMaterials
 ```
 
-#### 获取课程作业材料详情
+#### 获取课程作业材料信息
 
 ```bash
 GET /v1/courses/{courseId}/courseWorkMaterials/{courseWorkMaterialId}
@@ -606,7 +607,7 @@ POST /v1/invitations/{invitationId}:accept
 DELETE /v1/invitations/{invitationId}
 ```
 
-### 用户信息
+### 用户资料
 
 #### 获取当前用户信息
 
@@ -633,7 +634,7 @@ GET /v1/userProfiles/me
 }
 ```
 
-#### 获取用户个人资料
+#### 获取用户资料
 
 ```bash
 GET /v1/userProfiles/{userId}
@@ -663,7 +664,7 @@ GET /v1/courses?pageSize=10
 }
 ```
 
-要获取下一页，请执行以下操作：
+要获取下一页，请使用以下代码：
 
 ```bash
 GET /v1/courses?pageSize=10&pageToken=Ci8KLRIrEikKDmIMCLK8v8wGEIDQrsYBCgsI...
@@ -734,34 +735,34 @@ print(response.json())
 
 ## 注意事项
 
-- **更新字段时必须使用 `updateMask`**：PUT 请求需要 `updateMask` 查询参数来指定要更新的字段。
-- **删除课程前必须先将其归档**：在删除课程之前，必须将其 `courseState` 设置为 `ARCHIVED`。
-- **访问学生提交的内容时，课程作业必须处于 `PUBLISHED` 状态**。
-- **用户 ID**：使用 `me` 表示当前已认证的用户。
-- **时间戳**：日期使用 `{year, month, day}` 格式；时间使用 `{hours, minutes}` 格式。
-- **重要提示**：当将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量（如 `$MATON_API_KEY`）。
+- **必填参数：** `updateMask`：PATCH 请求需要 `updateMask` 查询参数来指定要更新的字段。
+- **课程删除：** 在删除课程之前，必须先将其归档（`courseState: "ARCHIVED"`）。
+- **学生提交内容：** 只有当课程作业处于 `PUBLISHED` 状态时，才能获取学生的提交内容。
+- **用户 ID：** 使用 `me` 来表示当前已认证的用户。
+- **时间戳：** 日期使用 `{year, month, day}` 格式；时间使用 `{hours, minutes}` 格式。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）在某些 shell 环境中可能无法正确解析。
 
 ## 错误处理
 
 | 状态 | 含义 |
 |--------|---------|
-| 400 | 请求无效、参数错误或前置条件未满足 |
-| 401 | API 密钥无效或令牌已过期 |
-| 403 | 权限被拒绝 |
+| 400 | 请求无效、参数错误或前置条件失败 |
+| 401 | API 密钥无效或令牌过期 |
+| 403 | 没有权限 |
 | 404 | 资源未找到 |
 | 409 | 冲突（例如，用户已注册） |
-| 429 | 请求频率受限 |
+| 429 | 请求次数限制 |
 | 4xx/5xx | 来自 Google Classroom API 的传递错误 |
 
 ### 常见错误
 
-**前置条件未满足（400）**
-- 在删除课程时：必须先将其归档。
+**前置条件检查失败（400）**
+- 在删除课程时：课程必须先被归档。
 - 在列出提交内容时：课程作业必须已发布。
 
 **权限被拒绝（403）**
 - 用户没有执行该操作所需的角色（教师/所有者）。
-- 试图访问超出权限范围的 Guardian 信息。
+- 试图访问监护信息时没有正确的权限范围。
 
 ## 资源
 
@@ -770,4 +771,4 @@ print(response.json())
 - [课程作业资源参考](https://developers.google.com/workspace/classroom/reference/rest/v1/courses.courseWork)
 - [学生提交内容参考](https://developers.google.com/workspace/classroom/reference/rest/v1/courses.courseWork.studentSubmissions)
 - [Maton 社区](https://discord.com/invite/dBfFAcefs2)
-- [Maton 支持团队](mailto:support@maton.ai)
+- [Maton 支持](mailto:support@maton.ai)
