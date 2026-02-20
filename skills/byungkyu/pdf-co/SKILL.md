@@ -1,9 +1,10 @@
 ---
-name: pdfco
-description: |
-  PDF.co API integration with managed OAuth. Convert, merge, split, edit PDFs and extract data.
-  Use this skill when users want to convert PDFs to/from other formats, merge or split PDFs, add watermarks or text, extract text/tables, or parse invoices.
-  For other third party apps, use the api-gateway skill (https://clawhub.ai/byungkyu/api-gateway).
+name: pdf-co
+description: >
+  **PDF.co API集成与OAuth认证**  
+  支持PDF文件的转换、合并、拆分、编辑以及数据提取功能。  
+  当用户需要将PDF文件转换为其他格式、合并或拆分PDF文件、添加水印或文本、提取文本/表格内容，或解析发票信息时，可使用此功能。  
+  对于其他第三方应用程序，建议使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。
 compatibility: Requires network access and valid Maton API key
 metadata:
   author: maton
@@ -15,10 +16,9 @@ metadata:
       env:
         - MATON_API_KEY
 ---
-
 # PDF.co
 
-使用受管理的身份验证方式访问 PDF.co API。支持转换、合并、分割和编辑 PDF 文件，并具备完整的文档操作功能。
+使用受管理的身份验证方式访问 PDF.co API。支持转换、合并、拆分和编辑 PDF 文件，并提供全面的文档操作功能。
 
 ## 快速入门
 
@@ -40,7 +40,7 @@ EOF
 https://gateway.maton.ai/pdf-co/{native-api-path}
 ```
 
-请将 `{native-api-path}` 替换为实际的 PDF.co API 端点路径。该网关会将请求代理到 `api.pdf.co` 并自动插入您的 API 凭据。
+请将 `{native-api-path}` 替换为实际的 PDF.co API 端点路径。该网关会将请求代理到 `api.pdf.co` 并自动注入您的 API 凭据。
 
 ## 身份验证
 
@@ -145,7 +145,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略该头部，网关将使用默认的（最旧的）活动连接。
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
 ## API 参考
 
@@ -335,9 +335,9 @@ Content-Type: application/json
 }
 ```
 
-### 分割 PDF 文件
+### 拆分 PDF 文件
 
-将 PDF 文件分割成多个文件。
+将 PDF 文件拆分为多个文件。
 
 ```bash
 POST /pdf-co/v1/pdf/split
@@ -376,7 +376,7 @@ Content-Type: application/json
 }
 ```
 
-### 添加文本和图片
+### 向 PDF 中添加文本和图片
 
 向 PDF 文件中添加文本、图片或其他内容。
 
@@ -424,7 +424,7 @@ Content-Type: application/json
 }
 ```
 
-### 添加密码
+### 设置密码
 
 ```bash
 POST /pdf-co/v1/pdf/security/add
@@ -593,13 +593,13 @@ print(result['url'])
 ## 注意事项
 
 - 所有文件 URL 必须是公开可访问的，或者使用 PDF.co 的临时存储服务。
-- 合并操作时，多个 URL 应用逗号分隔。
+- 合并操作所需的多个 URL 应用逗号分隔。
 - 页面索引从 0 开始（第一页为 `0`）。
 - 页面范围格式如下：`0-2`（第 0、1、2 页），`3-`（从第 3 页开始），`0,2,4`（指定页面）。
-- 输出文件会临时存储，默认 60 分钟后过期。
+- 输出文件默认会临时存储，并在 60 分钟后过期。
 - 对于大文件，请使用 `async: true` 以避免超时。
 - 使用 `inline: true` 可以直接在响应中获取内容，而无需通过 URL。
-- 重要提示：当 URL 包含括号时，使用 `curl -g` 可以避免全局解析。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 可以避免全局解析问题。
 - 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析。
 
 ## 错误处理
@@ -633,8 +633,8 @@ EOF
 ### 故障排除：应用名称无效
 
 1. 确保您的 URL 路径以 `pdf-co` 开头。例如：
-- 正确格式：`https://gateway.maton.ai/pdf-co/v1/pdf/merge`
-- 错误格式：`https://gateway.maton.ai/v1/pdf/merge`
+- 正确：`https://gateway.maton.ai/pdf-co/v1/pdf/merge`
+- 错误：`https://gateway.maton.ai/v1/pdf/merge`
 
 ## 资源
 
