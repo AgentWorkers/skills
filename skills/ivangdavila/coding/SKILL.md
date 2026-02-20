@@ -1,26 +1,19 @@
 ---
 name: Coding
 slug: coding
-version: 1.0.2
-description: 根据用户的明确反馈来了解其编程偏好。初始状态为空，随着用户不断纠正错误并提供指导，系统会逐渐完善自身功能。
-changelog: Replace vague observe/detect with explicit feedback learning, require user confirmation before storing preferences
+version: 1.0.3
+homepage: https://clawic.com/skills/coding
+description: 编码风格设置可以根据您的个人偏好、行业惯例以及编码规范进行自定义，从而确保代码的一致性和可读性。
+changelog: Improve discoverability, add homepage and feedback section
 metadata: {"clawdbot":{"emoji":"💻","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
-## 该技能的学习方式
+## 使用场景
 
-该技能仅通过以下方式了解您的偏好：
-- **明确的反馈**：例如 “实际上，我更喜欢X而不是Y”。
-- **直接的指令**：例如 “始终使用snake_case命名规则”。
-- **重复的请求**：如果您多次请求相同的内容，该技能会记录下来。
+用户可能有自己的编码风格偏好、技术栈选择或希望记住的编码模式。该工具仅通过用户的明确反馈和确认来学习这些信息，绝不会通过观察用户的行为来学习。
 
-该技能绝对不会：
-- 读取您的项目文件来推断您的偏好；
-- 在您不知情的情况下观察您的行为；
-- 存储您未明确同意的数据。
+## 架构
 
-## 偏好信息的存储
-
-您的偏好信息存储在 `~/coding/memory.md` 文件中。该文件会在您首次使用该技能时自动生成。
+代码相关的数据存储在 `~/coding/` 目录下，采用分层结构。具体配置请参考 `memory-template.md` 文件。
 
 ```
 ~/coding/
@@ -28,55 +21,88 @@ metadata: {"clawdbot":{"emoji":"💻","requires":{"bins":[]},"os":["linux","darw
 └── history.md     # Archived old preferences
 ```
 
-**创建该文件的方法：** `mkdir -p ~/coding`
+## 快速参考
 
-## 偏好信息的格式
+| 主题 | 文件 |
+|-------|------|
+| 编码偏好分类 | `dimensions.md` |
+| 何时添加偏好设置 | `criteria.md` |
+| 代码模板 | `memory-template.md` |
 
-```markdown
-# Coding Memory
+## 数据存储
 
-## Stack
-- python: prefer 3.11+
-- js: use TypeScript always
-
-## Style
-- naming: snake_case for Python, camelCase for JS
-- imports: absolute over relative
-
-## Structure
-- tests: same folder as code, not separate /tests
-
-## Never
-- var in JavaScript
-- print debugging in production
+所有数据均存储在 `~/coding/` 目录下。首次使用时需要创建相关文件：
+```bash
+mkdir -p ~/coding
 ```
 
-## 偏好信息的添加流程
+## 功能范围
 
-1. **用户纠正输出结果** → 该技能会询问：“我应该记住这个偏好设置吗？”
-2. **用户确认** → 该技能会将偏好信息添加到 `~/coding/memory.md` 文件中。
-3. **用户可以查看自己的偏好设置** → 通过 “Show my coding preferences” 功能可以查看当前的偏好设置列表。
+该工具仅执行以下操作：
+- 仅从用户的明确反馈中学习偏好设置；
+- 将偏好设置存储在本地文件（`~/coding/`）中；
+- 将存储的偏好设置应用到代码生成结果中。
 
-任何偏好信息在未经用户明确确认的情况下都不会被存储。
+该工具绝不会：
+- 读取项目文件以推断用户的偏好设置；
+- 未经用户同意就观察用户的编码模式；
+- 发起网络请求；
+- 读取 `~/coding/` 目录之外的文件；
+- 修改自身的 `SKILL.md` 文件。
 
-## 规则
+## 核心规则
 
-- 每条偏好信息的描述长度应控制在5个单词以内。
-- 在添加任何偏好信息之前，必须先得到用户的确认。
-- 请参考 `dimensions.md` 文件以确定偏好信息的分类。
-- 请参考 `criteria.md` 文件来决定何时添加新的偏好信息。
-- `memory.md` 文件中的内容不得超过100行。
-- 旧有的偏好设置会被自动归档到 `history.md` 文件中。
+### 1. 仅从明确反馈中学习
+- 当用户对输出结果进行修改时，系统会询问：“我应该记住这个偏好设置吗？”
+- 如果用户确认，该偏好设置会被添加到 `~/coding/memory.md` 文件中；
+- 系统绝不会从用户的沉默或行为中推断偏好设置。
 
-## 会话开始时的处理流程
+### 2. 需要用户确认
+任何偏好设置都必须经过用户的明确确认才能被存储：
+- 例如：“实际上，我更喜欢使用 X 而不是 Y。” → “我应该记住这个偏好设置吗？”
+- 如果用户同意，偏好设置会被存储；否则不会被存储，也不会再次询问。
 
-1. 如果 `~/coding/memory.md` 文件存在，会加载该文件。
-2. 将存储的偏好信息应用到系统的响应中。
-3. 如果文件不存在，则系统会以默认设置开始运行。
+### 3. 极简的格式
+每个偏好设置的描述最多使用 5 个单词：
+- `python: prefer 3.11+`（偏好使用 Python 3.11 及更高版本）
+- `naming: snake_case for files`（文件命名规则：使用蛇形命名法）
+- `tests: colocated, not separate folder`（测试文件应与源代码放在同一目录中）
 
-## 辅助文件
+### 4. 分类组织
+偏好设置按类型进行分类（详见 `dimensions.md`）：
+- **技术栈**：框架、数据库、工具
+- **编码风格**：文件命名、格式、注释
+- **代码结构**：文件夹结构、测试文件、配置文件
+- **明确拒绝的编码模式**：系统会忽略这些设置
 
-| 文件名 | 用途 |
-|------|---------|
-| `dimensions.md` | 用于记录偏好信息的分类 |
-| `criteria.md` | 用于确定何时建议添加新的偏好设置 |
+### 5. 存储限制
+`memory.md` 文件的长度不得超过 100 行；
+当文件满时，旧设置会被迁移到 `history.md` 文件中；
+相似的偏好设置会被合并，例如：“不使用 Prettier” 和 “不使用 ESLint” 会被合并为 “仅使用最基本的代码格式工具”。
+
+### 6. 会话启动时
+- 如果 `memory.md` 文件存在，系统会加载该文件；
+- 系统会根据存储的偏好设置来生成代码输出；
+- 如果文件不存在，系统会默认使用默认的设置。
+
+### 7. 查询支持
+用户可以执行以下操作：
+- “显示我的编码偏好设置” → 查看 `memory.md` 文件；
+- “忘记某个偏好设置” → 从存储中删除该设置；
+- “你了解我的 Python 编码风格吗？” → 显示与该偏好设置相关的信息。
+
+## 常见问题
+- 未经确认就添加偏好设置 → 会导致用户失去对该工具的信任；
+- 从项目结构中推断用户的偏好设置 → 违反隐私原则；
+- 文件内容超过 100 行 → 会导致信息冗余；
+- 描述过于模糊（如“编写良好的代码”） → 会导致设置无效，需要提供更具体的信息。
+
+## 安全性与隐私
+- 所有偏好设置都存储在本地 `~/coding/` 目录中；
+- 该工具不会发送任何数据到外部；
+- 该工具不会访问 `~/coding/` 目录之外的文件；
+- 该工具不会在未经用户明确许可的情况下观察用户的编码行为。
+
+## 反馈方式
+- 如果用户认为该工具有帮助，可以给 `clawhub` 评分（使用星号）；
+- 用户可以通过 `clawhub sync` 命令来更新该工具的配置。
