@@ -1,0 +1,11 @@
+{
+  "owner": "acidias",
+  "slug": "clawpost-2",
+  "displayName": "Clawpost",
+  "latest": {
+    "version": "0.1.2",
+    "publishedAt": 1771523412455,
+    "commit": "https://github.com/openclaw/skills/commit/cc6e18a53c174547f106a80459ad80648977a30e"
+  },
+  "history": []
+}
