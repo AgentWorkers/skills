@@ -1,0 +1,11 @@
+{
+  "owner": "blackpixcom",
+  "slug": "blackpix",
+  "displayName": "BlackPix",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771509871722,
+    "commit": "https://github.com/openclaw/skills/commit/08a57b18f5183d54865e62092a607b3df6ba4a76"
+  },
+  "history": []
+}
