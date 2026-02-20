@@ -1,36 +1,83 @@
 ---
 name: pylon-support
-description: 通过 Pylon 的 REST API 来处理工单。当您需要列出或检查问题、添加内部备注/客户回复，或执行任何自定义的 Pylon API 调用时，请使用该接口。
+description: Work with Pylon tickets via their REST API. Use when you need to list or inspect issues, add internal notes/customer replies, or run any ad‑hoc Pylon API call.
+metadata:
+  {
+    "openclaw":
+      {
+        "requires": { "env": ["PYLON_API_TOKEN"] },
+        "primaryEnv": "PYLON_API_TOKEN",
+      },
+  }
 ---
-# Pylon 支持操作
 
-本技能包提供了轻量级的工具，用于与 Pylon 的 REST API 进行交互，使您能够在不离开终端的情况下审核工单、跟进处理或发布更新。
+# Pylon Support Operations
 
-## 设置
+This skill bundles lightweight tooling for interacting with Pylon's REST API so you can audit tickets, chase follow‑ups, or post updates without leaving the terminal.
 
-1. 创建一个具有所需权限（如查看问题、消息、联系人等）的 Pylon API 令牌。
-2. 在运行任何脚本之前，先导出该令牌：
+## Setup
+
+1. Create a Pylon API token with the permissions you need (issues, messages, contacts, etc.).
+2. Export it before running any script:
    ```bash
    export PYLON_API_TOKEN="<token>"
    ```
-3. 可选：使用 `PYLON_API_BASE` 替换基础 URL（适用于测试环境）。
+3. Optional: override the base URL (for staging) with `PYLON_API_BASE`.
+4. (Optional) Create a config file at `~/.pylonrc` to cache your user id or custom defaults. Use `pylon_env.py` to manage it.
 
-有关端点概述和示例请求体的详细信息，请参阅 [`references/pylon_api.md`](references/pylon_api.md)。
+See [`references/pylon_api.md`](references/pylon_api.md) for endpoint summaries and example payloads.
 
-## 脚本
+## Scripts
 
 ### `scripts/pylon_list_issues.py`
-该脚本可以快速列出 `/issues` 中的数据，并提供常见的过滤选项，帮助您快速找到需要处理的工单。
+Quickly dumps `/issues` with common filters so you can spot blockers.
 
 ```bash
 python3 scripts/pylon_list_issues.py --state waiting_on_you --limit 25
-python3 scripts/pylon_list_issues.py --assignee-id usr_123 --team-id team_9
+python3 scripts/pylon_list_issues.py --team-id team_9
 ```
 
-脚本会打印 API 的响应结果；如果适用，还会显示下一页的查询游标。您可以通过 `--page-cursor` 参数继续查询下一页的数据。
+Set `--assignee-id <user-id>` if you want the script to filter the response down to a single owner (useful because the API sometimes ignores that server-side filter). You can discover your user ID via: `python3 scripts/pylon_request.py /users --param search=jordan`.
+
+The script prints the API response and, when applicable, the `cursor` for the next page. Feed that cursor back through `--page-cursor` to continue.
+
+### `scripts/pylon_env.py`
+Lightweight config helper for caching your user id or preferred defaults inside `~/.pylonrc` (path overridable with `PYLON_CONFIG_FILE`).
+
+```bash
+# Discover and cache your /me user id
+python3 scripts/pylon_env.py --refresh-user-id
+
+# Set a default window size and view summary
+env PYLON_CONFIG_FILE=~/.pylonrc python3 scripts/pylon_env.py --set-window-days 7
+python3 scripts/pylon_env.py --show
+```
+
+### `scripts/pylon_my_queue.py`
+Produces a readable summary of your queue: counts by state plus per-ticket details (title, priority, last update, link).
+
+```bash
+# Quick view using cached user id
+python3 scripts/pylon_my_queue.py
+
+# Override assignee or window, limit API fetches
+python3 scripts/pylon_my_queue.py --assignee-id usr_123 --window-days 14 --limit 400
+```
+
+### `scripts/pylon_triage_report.py`
+Higher-level triage report: fetch multiple assignees at once, bucket by state, and show the top N tickets per state with last-update timestamps.
+
+```bash
+# My queue, 30-day window, top 10 per state
+python3 scripts/pylon_triage_report.py --top 10
+
+# Team view for multiple assignees, 14-day window
+python3 scripts/pylon_triage_report.py \
+  --assignee-id usr_kody --assignee-id usr_skyler --window-days 14 --top 5
+```
 
 ### `scripts/pylon_request.py`
-这是一个通用脚本，用于调用 Pylon 的任意端点。您需要提供端点路径、请求方法以及可选的参数或请求体。
+General-purpose wrapper for any Pylon endpoint. Provide the path, method, and optional params/body.
 
 ```bash
 # Update a ticket state
@@ -47,18 +94,18 @@ python3 scripts/pylon_request.py /issues/iss_123/messages \
 python3 scripts/pylon_request.py /issues/iss_123/messages
 ```
 
-**参数说明**：
-- `--param key=value`：用于添加查询参数（可重复使用）。
-- `--data '{...}'` 或 `--data-file payload.json`：用于指定请求体内容。
+Flags:
+- `--param key=value` (repeatable) to add query params.
+- `--data '{...}'` or `--data-file payload.json` for the request body.
 
 ### `scripts/pylon_client.py`
-这是一个通用的辅助脚本，负责处理身份验证、基础 URL 的设置以及 JSON 数据的解析。如果您需要编写更具体的任务脚本，请导入此脚本。
+Shared helper that handles auth, base URL, and JSON parsing. Import it if you add more task-specific scripts.
 
-## 工作流程建议
+## Workflow tips
 
-1. **每天早上进行工单分类**：运行 `pylon_list_issues.py --state waiting_on_you` 可以查看团队尚未回复的工单列表。
-2. **深入查看工单详情**：使用 `pylon_request.py /issues/<id>` 获取工单的元数据，再通过 `/issues/<id>/messages` 查看工单的交流记录。
-3. **快速更新工单状态**：使用 `--method PATCH` 来修改工单状态或设置工单的提醒时间。
-4. **在交接过程中添加上下文信息**：在通过 Slack 标记团队成员之前，可以使用 `is_private=true` 选项发布内部备注。
+1. **Triage every morning**: `pylon_list_issues.py --state waiting_on_you` gives you the queue of items where your team owes a reply.
+2. **Deep dive a ticket**: use `pylon_request.py /issues/<id>` to pull the metadata, then `/issues/<id>/messages` for the conversation history.
+3. **Update statuses quickly**: patch the issue state or snooze window via `--method PATCH` calls.
+4. **Add context while handoffs happen**: post internal notes with `is_private=true` before tagging teammates in Slack.
 
-有关所有可用端点（如用户、联系人、标签等）的详细信息，请参阅 [`references/pylon_api.md`](references/pylon_api.md)。如果需要未在此文档中提及的字段，请参考官方文档。
+Refer to [`references/pylon_api.md`](references/pylon_api.md) for the full list of helpful endpoints (users, contacts, tags, etc.) and link to the official docs when you need fields not covered here.
